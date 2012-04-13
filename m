@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SIgxS-0004cj-HU
- for barebox@lists.infradead.org; Fri, 13 Apr 2012 13:55:11 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 1/7] ARM: add initial i.MX6 support
-Date: Fri, 13 Apr 2012 15:54:27 +0200
-Message-Id: <1334325273-1701-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1334325273-1701-1-git-send-email-s.hauer@pengutronix.de>
-References: <1334325273-1701-1-git-send-email-s.hauer@pengutronix.de>
+Received: from exprod5og115.obsmtp.com ([64.18.0.246])
+ by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SIgBE-0002De-IN
+ for barebox@lists.infradead.org; Fri, 13 Apr 2012 13:04:57 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Fri, 13 Apr 2012 14:04:31 +0100
+Message-Id: <1334322272-26898-3-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1334322272-26898-1-git-send-email-renaud.barbier@ge.com>
+References: <1334322272-26898-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,78 +21,171 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-To: barebox@lists.infradead.org
+Subject: [PATCH V2 2/3] Minimal support of the MPC85xx architecture
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+The directories cpu-85xx and mach-mpc85xx contain a minimal CPU support
+suitable for the P2020RDB board. This includes startup code for the CPU,
+peripherals and clock source initialization as well as header files
+and updates to configuration and build files.
+
+Also the introduction of the new CPU architecture and board support
+leads to the update of existing header files. Are added:
+ - functions and macros to manipulate bits of registers field values.
+ - external declaration of cache handling functions to prevent
+   compilation warnings.
+ - new processor definitions.
+ - macros (in replacement of existing definitions) to set 85xx TLB
+   registers.
+
+Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- arch/arm/mach-imx/Kconfig                     |    7 +-
- arch/arm/mach-imx/Makefile                    |    1 +
- arch/arm/mach-imx/imx6.c                      |   71 +
- arch/arm/mach-imx/include/mach/clock-imx6.h   |  530 +++
- arch/arm/mach-imx/include/mach/devices-imx6.h |   46 +
- arch/arm/mach-imx/include/mach/generic.h      |    6 +
- arch/arm/mach-imx/include/mach/imx-regs.h     |    2 +
- arch/arm/mach-imx/include/mach/imx6-anadig.h  |  721 ++++
- arch/arm/mach-imx/include/mach/imx6-regs.h    |  132 +
- arch/arm/mach-imx/include/mach/imx6.h         |    6 +
- arch/arm/mach-imx/include/mach/iomux-mx6.h    | 5630 +++++++++++++++++++++++++
- arch/arm/mach-imx/speed-imx6.c                |  393 ++
- drivers/mci/Kconfig                           |    2 +-
- include/asm-generic/barebox.lds.h             |    7 +-
- 14 files changed, 7551 insertions(+), 3 deletions(-)
- create mode 100644 arch/arm/mach-imx/imx6.c
- create mode 100644 arch/arm/mach-imx/include/mach/clock-imx6.h
- create mode 100644 arch/arm/mach-imx/include/mach/devices-imx6.h
- create mode 100644 arch/arm/mach-imx/include/mach/imx6-anadig.h
- create mode 100644 arch/arm/mach-imx/include/mach/imx6-regs.h
- create mode 100644 arch/arm/mach-imx/include/mach/imx6.h
- create mode 100644 arch/arm/mach-imx/include/mach/iomux-mx6.h
- create mode 100644 arch/arm/mach-imx/speed-imx6.c
+ arch/ppc/Kconfig                                  |    3 +
+ arch/ppc/Makefile                                 |    7 +
+ arch/ppc/cpu-85xx/Makefile                        |    7 +
+ arch/ppc/cpu-85xx/cpu.c                           |  115 +++
+ arch/ppc/cpu-85xx/cpu_init.c                      |  145 +++
+ arch/ppc/cpu-85xx/fixed_ivor.S                    |   61 ++
+ arch/ppc/cpu-85xx/release.S                       |  265 +++++
+ arch/ppc/cpu-85xx/resetvec.S                      |    2 +
+ arch/ppc/cpu-85xx/start.S                         | 1097 +++++++++++++++++++++
+ arch/ppc/cpu-85xx/tlb.c                           |  228 +++++
+ arch/ppc/cpu-85xx/traps.c                         |  300 ++++++
+ arch/ppc/include/asm/bitops.h                     |   42 +
+ arch/ppc/include/asm/cache.h                      |    2 +
+ arch/ppc/include/asm/common.h                     |    1 +
+ arch/ppc/include/asm/config.h                     |   44 +
+ arch/ppc/include/asm/config_mpc85xx.h             |   37 +
+ arch/ppc/include/asm/e500.h                       |   39 +
+ arch/ppc/include/asm/fsl_ddr_sdram.h              |   34 +
+ arch/ppc/include/asm/fsl_i2c.h                    |   10 +-
+ arch/ppc/include/asm/fsl_law.h                    |   91 ++
+ arch/ppc/include/asm/fsl_lbc.h                    |   67 ++
+ arch/ppc/include/asm/global_data.h                |   57 ++
+ arch/ppc/include/asm/io.h                         |   20 +
+ arch/ppc/include/asm/mmu.h                        |   69 ++-
+ arch/ppc/include/asm/processor.h                  |   44 +
+ arch/ppc/lib/Makefile                             |    2 +
+ arch/ppc/lib/board.c                              |   11 +-
+ arch/ppc/lib/reloc.S                              |   47 +
+ arch/ppc/lib/time-mpc85xx.c                       |   54 +
+ arch/ppc/mach-mpc85xx/Kconfig                     |   45 +
+ arch/ppc/mach-mpc85xx/Makefile                    |    5 +
+ arch/ppc/mach-mpc85xx/cpuid.c                     |   69 ++
+ arch/ppc/mach-mpc85xx/fsl_law.c                   |  156 +++
+ arch/ppc/mach-mpc85xx/fsl_lbc.c                   |   17 +
+ arch/ppc/mach-mpc85xx/include/mach/clocks.h       |   11 +
+ arch/ppc/mach-mpc85xx/include/mach/early_udelay.h |   33 +
+ arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h   |  132 +++
+ arch/ppc/mach-mpc85xx/include/mach/mp.h           |   15 +
+ arch/ppc/mach-mpc85xx/include/mach/mpc85xx.h      |   17 +
+ arch/ppc/mach-mpc85xx/include/mach/ppc_asm.tmpl   |  208 ++++
+ arch/ppc/mach-mpc85xx/mp.c                        |  156 +++
+ arch/ppc/mach-mpc85xx/speed.c                     |   97 ++
+ include/linux/types.h                             |    2 +
+ 43 files changed, 3846 insertions(+), 18 deletions(-)
+ create mode 100644 arch/ppc/cpu-85xx/Makefile
+ create mode 100644 arch/ppc/cpu-85xx/cpu.c
+ create mode 100644 arch/ppc/cpu-85xx/cpu_init.c
+ create mode 100644 arch/ppc/cpu-85xx/fixed_ivor.S
+ create mode 100644 arch/ppc/cpu-85xx/release.S
+ create mode 100644 arch/ppc/cpu-85xx/resetvec.S
+ create mode 100644 arch/ppc/cpu-85xx/start.S
+ create mode 100644 arch/ppc/cpu-85xx/tlb.c
+ create mode 100644 arch/ppc/cpu-85xx/traps.c
+ create mode 100644 arch/ppc/include/asm/config.h
+ create mode 100644 arch/ppc/include/asm/config_mpc85xx.h
+ create mode 100644 arch/ppc/include/asm/e500.h
+ create mode 100644 arch/ppc/include/asm/fsl_ddr_sdram.h
+ create mode 100644 arch/ppc/include/asm/fsl_law.h
+ create mode 100644 arch/ppc/include/asm/fsl_lbc.h
+ create mode 100644 arch/ppc/include/asm/global_data.h
+ create mode 100644 arch/ppc/lib/reloc.S
+ create mode 100644 arch/ppc/lib/time-mpc85xx.c
+ create mode 100644 arch/ppc/mach-mpc85xx/Kconfig
+ create mode 100644 arch/ppc/mach-mpc85xx/Makefile
+ create mode 100644 arch/ppc/mach-mpc85xx/cpuid.c
+ create mode 100644 arch/ppc/mach-mpc85xx/fsl_law.c
+ create mode 100644 arch/ppc/mach-mpc85xx/fsl_lbc.c
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/clocks.h
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/early_udelay.h
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/mp.h
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/mpc85xx.h
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/ppc_asm.tmpl
+ create mode 100644 arch/ppc/mach-mpc85xx/mp.c
+ create mode 100644 arch/ppc/mach-mpc85xx/speed.c
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 2f317c2..8a0979a 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -68,7 +68,7 @@ choice
+diff --git a/arch/ppc/Kconfig b/arch/ppc/Kconfig
+index 164598f..d124065 100644
+--- a/arch/ppc/Kconfig
++++ b/arch/ppc/Kconfig
+@@ -12,9 +12,12 @@ choice
+ config ARCH_MPC5XXX
+ 	bool "Freescale MPC5xxx"
  
- config ARCH_IMX_INTERNAL_BOOT
- 	bool "support internal boot mode"
--	depends on ARCH_IMX25 || ARCH_IMX35 || ARCH_IMX51 || ARCH_IMX53
-+	depends on ARCH_IMX25 || ARCH_IMX35 || ARCH_IMX51 || ARCH_IMX53 || ARCH_IMX6
- 
- config ARCH_IMX_EXTERNAL_BOOT
- 	bool "support external boot mode"
-@@ -165,6 +165,11 @@ config ARCH_IMX53
- 	select CPU_V7
- 	select ARCH_HAS_FEC_IMX
- 
-+config ARCH_IMX6
-+	bool "i.MX6"
-+	select ARCH_HAS_FEC_IMX
-+	select CPU_V7
-+
++config ARCH_MPC85XX
++	bool "Freescale MPC85xx"
  endchoice
  
- # ----------------------------------------------------------
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index a9aa9e2..03e2421 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -7,6 +7,7 @@ obj-$(CONFIG_ARCH_IMX31) += speed-imx31.o imx31.o iomux-v2.o
- obj-$(CONFIG_ARCH_IMX35) += speed-imx35.o imx35.o iomux-v3.o
- obj-$(CONFIG_ARCH_IMX51) += speed-imx51.o imx51.o iomux-v3.o imx5.o
- obj-$(CONFIG_ARCH_IMX53) += speed-imx53.o imx53.o iomux-v3.o imx5.o
-+obj-$(CONFIG_ARCH_IMX6) += speed-imx6.o imx6.o iomux-v3.o
- obj-$(CONFIG_IMX_CLKO)	+= clko.o
- obj-$(CONFIG_IMX_IIM)	+= iim.o
- obj-$(CONFIG_NAND_IMX) += nand.o
-diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+ source arch/ppc/mach-mpc5xxx/Kconfig
++source arch/ppc/mach-mpc85xx/Kconfig
+ source common/Kconfig
+ source commands/Kconfig
+ source net/Kconfig
+diff --git a/arch/ppc/Makefile b/arch/ppc/Makefile
+index 2d9e47f..6ab1db1 100644
+--- a/arch/ppc/Makefile
++++ b/arch/ppc/Makefile
+@@ -7,9 +7,16 @@ ifdef CONFIG_RELOCATABLE
+ CPPFLAGS += -fPIC -mrelocatable
+ endif
+ 
++ifdef CONFIG_MPC85xx
++CPPFLAGS += -ffixed-r2 -Wa,-me500x2 -msoft-float -mno-string
++endif
+ 
+ board-$(CONFIG_MACH_PHYCORE_MPC5200B_TINY)	:= pcm030
++
+ machine-$(CONFIG_ARCH_MPC5200)			:= mpc5xxx
++machine-$(CONFIG_ARCH_MPC85XX)			:= mpc85xx
++
++cpu-$(CONFIG_ARCH_MPC85XX)			:= 85xx
+ 
+ TEXT_BASE = $(CONFIG_TEXT_BASE)
+ 
+diff --git a/arch/ppc/cpu-85xx/Makefile b/arch/ppc/cpu-85xx/Makefile
 new file mode 100644
-index 0000000..a443343
+index 0000000..be1ad21
 --- /dev/null
-+++ b/arch/arm/mach-imx/imx6.c
-@@ -0,0 +1,71 @@
++++ b/arch/ppc/cpu-85xx/Makefile
+@@ -0,0 +1,7 @@
++obj-y 			+= cpu.o
++obj-y			+= cpu_init.o
++obj-y			+= traps.o
++obj-y			+= tlb.o
++extra-y			+= start.o
++extra-y			+= resetvec.o
++obj-$(CONFIG_MP)	+= release.o
+diff --git a/arch/ppc/cpu-85xx/cpu.c b/arch/ppc/cpu-85xx/cpu.c
+new file mode 100644
+index 0000000..e26961e
+--- /dev/null
++++ b/arch/ppc/cpu-85xx/cpu.c
+@@ -0,0 +1,115 @@
 +/*
++ * Copyright 2012 GE Intelligent Platforms, Inc
++ * Copyright 2004,2007-2011 Freescale Semiconductor, Inc.
++ * (C) Copyright 2002, 2003 Motorola Inc.
++ * Xianghua Xiao (X.Xiao@motorola.com)
++ *
++ * (C) Copyright 2000
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
 + * published by the Free Software Foundation; either version 2 of
@@ -110,692 +202,117 @@ index 0000000..a443343
 + * MA 02111-1307 USA
 + */
 +
-+#include <init.h>
++#include <config.h>
 +#include <common.h>
-+#include <io.h>
-+#include <sizes.h>
-+#include <mach/imx6-regs.h>
++#include <command.h>
++#include <asm/processor.h>
++#include <asm/config_mpc85xx.h>
++#include <asm/e500.h>
++#include <asm/common.h>
++#include <asm/config.h>
++#include <asm/cache.h>
++#include <asm/io.h>
++#include <asm/mmu.h>
++#include <asm/fsl_ddr_sdram.h>
++#include <mach/immap_85xx.h>
++#include <mach/clocks.h>
 +
-+#include "gpio.h"
-+
-+void *imx_gpio_base[] = {
-+	(void *)MX6_GPIO1_BASE_ADDR,
-+	(void *)MX6_GPIO2_BASE_ADDR,
-+	(void *)MX6_GPIO3_BASE_ADDR,
-+	(void *)MX6_GPIO4_BASE_ADDR,
-+	(void *)MX6_GPIO5_BASE_ADDR,
-+	(void *)MX6_GPIO6_BASE_ADDR,
-+	(void *)MX6_GPIO7_BASE_ADDR,
-+};
-+
-+int imx_gpio_count = ARRAY_SIZE(imx_gpio_base) * 32;
-+
-+void imx6_init_lowlevel(void)
++int cpu_init_board_data(bd_t *bd)
 +{
-+	void __iomem *aips1 = (void *)MX6_AIPS1_ON_BASE_ADDR;
-+	void __iomem *aips2 = (void *)MX6_AIPS2_ON_BASE_ADDR;
++	struct sys_info sysinfo;
 +
-+	/*
-+	 * Set all MPROTx to be non-bufferable, trusted for R/W,
-+	 * not forced to user-mode.
-+	 */
-+	writel(0x77777777, aips1);
-+	writel(0x77777777, aips1 + 0x4);
-+	writel(0, aips1 + 0x40);
-+	writel(0, aips1 + 0x44);
-+	writel(0, aips1 + 0x48);
-+	writel(0, aips1 + 0x4c);
-+	writel(0, aips1 + 0x50);
++	get_sys_info(&sysinfo);
 +
-+	writel(0x77777777, aips2);
-+	writel(0x77777777, aips2 + 0x4);
-+	writel(0, aips2 + 0x40);
-+	writel(0, aips2 + 0x44);
-+	writel(0, aips2 + 0x48);
-+	writel(0, aips2 + 0x4c);
-+	writel(0, aips2 + 0x50);
++	bd->bi_intfreq = sysinfo.freqProcessor[0];
++	bd->bi_busfreq = sysinfo.freqSystemBus;
 +
-+	/* enable all clocks */
-+	writel(0xffffffff, 0x020c4068);
-+	writel(0xffffffff, 0x020c406c);
-+	writel(0xffffffff, 0x020c4070);
-+	writel(0xffffffff, 0x020c4074);
-+	writel(0xffffffff, 0x020c4078);
-+	writel(0xffffffff, 0x020c407c);
-+	writel(0xffffffff, 0x020c4080);
++	return 0;
 +}
-diff --git a/arch/arm/mach-imx/include/mach/clock-imx6.h b/arch/arm/mach-imx/include/mach/clock-imx6.h
-new file mode 100644
-index 0000000..d724927
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/clock-imx6.h
-@@ -0,0 +1,530 @@
++
++void __noreturn reset_cpu(unsigned long addr)
++{
++	void __iomem *regs = (void __iomem *)MPC85xx_GUTS_ADDR;
++
++	/* Everything after the first generation of PQ3 parts has RSTCR */
++	out_be32(regs + MPC85xx_GUTS_RSTCR_OFFSET, 0x2);  /* HRESET_REQ */
++	udelay(100);
++
++	while (1)
++		;
++}
++
++unsigned long get_timebase_clock(void)
++{
++	struct sys_info sysinfo;
++
++	get_sys_info(&sysinfo);
++
++	return (sysinfo.freqSystemBus + 4UL)/8UL;
++}
++
 +/*
-+ * Copyright (C) 2010-2011 Freescale Semiconductor, Inc. All Rights Reserved.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+
-+ * You should have received a copy of the GNU General Public License along
-+ * with this program; if not, write to the Free Software Foundation, Inc.,
-+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ * Return the memory size based on the configuration registers.
 + */
++phys_size_t get_effective_memsize(void)
++{
++	void __iomem *regs = (void __iomem *)(MPC85xx_DDR_ADDR);
++	phys_size_t sdram_size;
++	uint san , ean;
++	uint reg;
++	int ix;
 +
-+#ifndef __ARCH_ARM_MACH_MX6_CRM_REGS_H__
-+#define __ARCH_ARM_MACH_MX6_CRM_REGS_H__
++	sdram_size = 0;
 +
-+#define MXC_CCM_BASE   MX6_CCM_BASE_ADDR
++	for (ix = 0; ix < CFG_CHIP_SELECTS_PER_CTRL; ix++) {
++		if (in_be32(regs + DDR_OFF(CS0_CONFIG) + (ix * 8)) &
++				SDRAM_CFG_MEM_EN) {
++			reg = in_be32(regs + DDR_OFF(CS0_BNDS) + (ix * 8));
++			/* start address */
++			san = (reg & 0x0fff00000) >>  16;
++			/* end address   */
++			ean = (reg & 0x00000fff);
++			sdram_size =  ((ean - san + 1) << 24);
++		}
++	}
 +
-+/* Register addresses of CCM*/
-+#define MXC_CCM_CCR		(MXC_CCM_BASE + 0x00)
-+#define MXC_CCM_CCDR		(MXC_CCM_BASE + 0x04)
-+#define MXC_CCM_CSR		(MXC_CCM_BASE + 0x08)
-+#define MXC_CCM_CCSR		(MXC_CCM_BASE + 0x0C)
-+#define MXC_CCM_CACRR		(MXC_CCM_BASE + 0x10)
-+#define MXC_CCM_CBCDR		(MXC_CCM_BASE + 0x14)
-+#define MXC_CCM_CBCMR		(MXC_CCM_BASE + 0x18)
-+#define MXC_CCM_CSCMR1		(MXC_CCM_BASE + 0x1C)
-+#define MXC_CCM_CSCMR2		(MXC_CCM_BASE + 0x20)
-+#define MXC_CCM_CSCDR1		(MXC_CCM_BASE + 0x24)
-+#define MXC_CCM_CS1CDR		(MXC_CCM_BASE + 0x28)
-+#define MXC_CCM_CS2CDR		(MXC_CCM_BASE + 0x2C)
-+#define MXC_CCM_CDCDR		(MXC_CCM_BASE + 0x30)
-+#define MXC_CCM_CHSCDR		(MXC_CCM_BASE + 0x34)
-+#define MXC_CCM_CSCDR2		(MXC_CCM_BASE + 0x38)
-+#define MXC_CCM_CSCDR3		(MXC_CCM_BASE + 0x3C)
-+#define MXC_CCM_CSCDR4		(MXC_CCM_BASE + 0x40)
-+#define MXC_CCM_CWDR		(MXC_CCM_BASE + 0x44)
-+#define MXC_CCM_CDHIPR		(MXC_CCM_BASE + 0x48)
-+#define MXC_CCM_CDCR		(MXC_CCM_BASE + 0x4C)
-+#define MXC_CCM_CTOR		(MXC_CCM_BASE + 0x50)
-+#define MXC_CCM_CLPCR		(MXC_CCM_BASE + 0x54)
-+#define MXC_CCM_CISR		(MXC_CCM_BASE + 0x58)
-+#define MXC_CCM_CIMR		(MXC_CCM_BASE + 0x5C)
-+#define MXC_CCM_CCOSR		(MXC_CCM_BASE + 0x60)
-+#define MXC_CCM_CGPR		(MXC_CCM_BASE + 0x64)
-+#define MXC_CCM_CCGR0		(MXC_CCM_BASE + 0x68)
-+#define MXC_CCM_CCGR1		(MXC_CCM_BASE + 0x6C)
-+#define MXC_CCM_CCGR2		(MXC_CCM_BASE + 0x70)
-+#define MXC_CCM_CCGR3		(MXC_CCM_BASE + 0x74)
-+#define MXC_CCM_CCGR4		(MXC_CCM_BASE + 0x78)
-+#define MXC_CCM_CCGR5		(MXC_CCM_BASE + 0x7C)
-+#define MXC_CCM_CCGR6		(MXC_CCM_BASE + 0x80)
-+#define MXC_CCM_CCGR7		(MXC_CCM_BASE + 0x80)
-+#define MXC_CCM_CMEOR		(MXC_CCM_BASE + 0x88)
++	return sdram_size;
++}
 +
-+/* Define the bits in register CCR */
-+#define MXC_CCM_CCR_RBC_EN				(1 << 27)
-+#define MXC_CCM_CCR_REG_BYPASS_CNT_MASK 		(0x3F << 21)
-+#define MXC_CCM_CCR_REG_BYPASS_CNT_OFFSET 		(21)
-+#define MXC_CCM_CCR_WB_COUNT_MASK 			(0x7)
-+#define MXC_CCM_CCR_WB_COUNT_OFFSET			(1 << 16)
-+#define MXC_CCM_CCR_COSC_EN				(1 << 12)
-+#define MXC_CCM_CCR_OSCNT_MASK				(0xFF)
-+#define MXC_CCM_CCR_OSCNT_OFFSET			(0)
++long int initdram(int board_type)
++{
++	phys_size_t dram_size = 0;
 +
-+/* Define the bits in register CCDR */
-+#define MXC_CCM_CCDR_MMDC_CH1_HS_MASK			(1 << 16)
-+#define MXC_CCM_CCDR_MMDC_CH0_HS_MASK			(1 << 17)
++	dram_size = fixed_sdram();
 +
-+/* Define the bits in register CSR */
-+#define MXC_CCM_CSR_COSC_READY				(1 << 5)
-+#define MXC_CCM_CSR_REF_EN_B				(1 << 0)
++	dram_size = setup_ddr_tlbs(dram_size / 0x100000);
++	dram_size *= 0x100000;
 +
-+/* Define the bits in register CCSR */
-+#define MXC_CCM_CCSR_PDF_540M_AUTO_DIS			(1 << 15)
-+#define MXC_CCM_CCSR_PDF_720M_AUTO_DIS			(1 << 14)
-+#define MXC_CCM_CCSR_PDF_454M_AUTO_DIS			(1 << 13)
-+#define MXC_CCM_CCSR_PDF_508M_AUTO_DIS			(1 << 12)
-+#define MXC_CCM_CCSR_PDF_594M_AUTO_DIS			(1 << 11)
-+#define MXC_CCM_CCSR_PDF_352M_AUTO_DIS			(1 << 10)
-+#define MXC_CCM_CCSR_PDF_400M_AUTO_DIS			(1 << 9)
-+#define MXC_CCM_CCSR_STEP_SEL				(1 << 8)
-+#define MXC_CCM_CCSR_PLL1_SW_CLK_SEL			(1 << 2)
-+#define MXC_CCM_CCSR_PLL2_SW_CLK_SEL			(1 << 1)
-+#define MXC_CCM_CCSR_PLL3_SW_CLK_SEL			(1 << 0)
-+
-+/* Define the bits in register CACRR */
-+#define MXC_CCM_CACRR_ARM_PODF_OFFSET			(0)
-+#define MXC_CCM_CACRR_ARM_PODF_MASK			(0x7)
-+
-+/* Define the bits in register CBCDR */
-+#define MXC_CCM_CBCDR_PERIPH_CLK2_PODF_MASK		(0x7 << 27)
-+#define MXC_CCM_CBCDR_PERIPH_CLK2_PODF_OFFSET		(27)
-+#define MXC_CCM_CBCDR_PERIPH2_CLK2_SEL			(1 << 26)
-+#define MXC_CCM_CBCDR_PERIPH_CLK_SEL			(1 << 25)
-+#define MXC_CCM_CBCDR_MMDC_CH0_PODF_MASK		(0x7 << 19)
-+#define MXC_CCM_CBCDR_MMDC_CH0_PODF_OFFSET		(19)
-+#define MXC_CCM_CBCDR_AXI_PODF_MASK			(0x7 << 16)
-+#define MXC_CCM_CBCDR_AXI_PODF_OFFSET			(16)
-+#define MXC_CCM_CBCDR_AHB_PODF_MASK			(0x7 << 10)
-+#define MXC_CCM_CBCDR_AHB_PODF_OFFSET			(10)
-+#define MXC_CCM_CBCDR_IPG_PODF_MASK			(0x3 << 8)
-+#define MXC_CCM_CBCDR_IPG_PODF_OFFSET			(8)
-+#define MXC_CCM_CBCDR_AXI_ALT_SEL			(1 << 7)
-+#define MXC_CCM_CBCDR_AXI_SEL				(1 << 6)
-+#define MXC_CCM_CBCDR_MMDC_CH1_PODF_MASK		(0x7 << 3)
-+#define MXC_CCM_CBCDR_MMDC_CH1_PODF_OFFSET		(3)
-+#define MXC_CCM_CBCDR_PERIPH2_CLK2_PODF_MASK		(0x7 << 0)
-+#define MXC_CCM_CBCDR_PERIPH2_CLK2_PODF_OFFSET		(0)
-+
-+/* Define the bits in register CBCMR */
-+#define MXC_CCM_CBCMR_GPU3D_SHADER_PODF_MASK		(0x7 << 29)
-+#define MXC_CCM_CBCMR_GPU3D_SHADER_PODF_OFFSET		(29)
-+#define MXC_CCM_CBCMR_GPU3D_CORE_PODF_MASK		(0x7 << 26)
-+#define MXC_CCM_CBCMR_GPU3D_CORE_PODF_OFFSET		(26)
-+#define MXC_CCM_CBCMR_GPU2D_CORE_PODF_MASK		(0x7 << 23)
-+#define MXC_CCM_CBCMR_GPU2D_CORE_PODF_OFFSET		(23)
-+#define MXC_CCM_CBCMR_PRE_PERIPH2_CLK_SEL_MASK		(0x3 << 21)
-+#define MXC_CCM_CBCMR_PRE_PERIPH2_CLK_SEL_OFFSET	(21)
-+#define MXC_CCM_CBCMR_PRE_PERIPH2_CLK2_SEL		(1 << 20)
-+#define MXC_CCM_CBCMR_PRE_PERIPH_CLK_SEL_MASK		(0x3 << 18)
-+#define MXC_CCM_CBCMR_PRE_PERIPH_CLK_SEL_OFFSET		(18)
-+#define MXC_CCM_CBCMR_GPU2D_CLK_SEL_MASK		(0x3 << 16)
-+#define MXC_CCM_CBCMR_GPU2D_CLK_SEL_OFFSET		(16)
-+#define MXC_CCM_CBCMR_VPU_AXI_CLK_SEL_MASK		(0x3 << 14)
-+#define MXC_CCM_CBCMR_VPU_AXI_CLK_SEL_OFFSET		(14)
-+#define MXC_CCM_CBCMR_PERIPH_CLK2_SEL_MASK		(0x3 << 12)
-+#define MXC_CCM_CBCMR_PERIPH_CLK2_SEL_OFFSET		(12)
-+#define MXC_CCM_CBCMR_VDOAXI_CLK_SEL			(1 << 11)
-+#define MXC_CCM_CBCMR_PCIE_AXI_CLK_SEL			(1 << 10)
-+#define MXC_CCM_CBCMR_GPU3D_SHADER_CLK_SEL_MASK		(0x3 << 8)
-+#define MXC_CCM_CBCMR_GPU3D_SHADER_CLK_SEL_OFFSET	(8)
-+#define MXC_CCM_CBCMR_GPU3D_CORE_CLK_SEL_MASK		(0x3 << 4)
-+#define MXC_CCM_CBCMR_GPU3D_CORE_CLK_SEL_OFFSET		(4)
-+#define MXC_CCM_CBCMR_GPU3D_AXI_CLK_SEL			(1 << 1)
-+#define MXC_CCM_CBCMR_GPU2D_AXI_CLK_SEL			(1 << 0)
-+
-+/* Define the bits in register CSCMR1 */
-+#define MXC_CCM_CSCMR1_ACLK_EMI_SLOW_MASK		(0x3 << 29)
-+#define MXC_CCM_CSCMR1_ACLK_EMI_SLOW_OFFSET		(29)
-+#define MXC_CCM_CSCMR1_ACLK_EMI_MASK			(0x3 << 27)
-+#define MXC_CCM_CSCMR1_ACLK_EMI_OFFSET			(27)
-+#define MXC_CCM_CSCMR1_ACLK_EMI_SLOW_PODF_MASK		(0x7 << 23)
-+#define MXC_CCM_CSCMR1_ACLK_EMI_SLOW_PODF_OFFSET	(23)
-+#define MXC_CCM_CSCMR1_ACLK_EMI_PODF_MASK		(0x7 << 20)
-+#define MXC_CCM_CSCMR1_ACLK_EMI_PODF_OFFSET		(20)
-+#define MXC_CCM_CSCMR1_USDHC4_CLK_SEL			(1 << 19)
-+#define MXC_CCM_CSCMR1_USDHC3_CLK_SEL			(1 << 18)
-+#define MXC_CCM_CSCMR1_USDHC2_CLK_SEL			(1 << 17)
-+#define MXC_CCM_CSCMR1_USDHC1_CLK_SEL			(1 << 16)
-+#define MXC_CCM_CSCMR1_SSI3_CLK_SEL_MASK		(0x3 << 14)
-+#define MXC_CCM_CSCMR1_SSI3_CLK_SEL_OFFSET		(14)
-+#define MXC_CCM_CSCMR1_SSI2_CLK_SEL_MASK		(0x3 << 12)
-+#define MXC_CCM_CSCMR1_SSI2_CLK_SEL_OFFSET		(12)
-+#define MXC_CCM_CSCMR1_SSI1_CLK_SEL_MASK		(0x3 << 10)
-+#define MXC_CCM_CSCMR1_SSI1_CLK_SEL_OFFSET		(10)
-+#define MXC_CCM_CSCMR1_PERCLK_PODF_MASK			(0x3F)
-+
-+/* Define the bits in register CSCMR2 */
-+#define MXC_CCM_CSCMR2_ESAI_PRE_SEL_MASK		(0x3 << 19)
-+#define MXC_CCM_CSCMR2_ESAI_PRE_SEL_OFFSET		(19)
-+#define MXC_CCM_CSCMR2_LDB_DI1_IPU_DIV			(1 << 11)
-+#define MXC_CCM_CSCMR2_LDB_DI0_IPU_DIV			(1 << 10)
-+#define MXC_CCM_CSCMR2_CAN_CLK_SEL_MASK			(0x3F << 2)
-+#define MXC_CCM_CSCMR2_CAN_CLK_SEL_OFFSET		(2)
-+
-+/* Define the bits in register CSCDR1 */
-+#define MXC_CCM_CSCDR1_VPU_AXI_PODF_MASK		(0x7 << 25)
-+#define MXC_CCM_CSCDR1_VPU_AXI_PODF_OFFSET		(25)
-+#define MXC_CCM_CSCDR1_USDHC4_PODF_MASK			(0x7 << 22)
-+#define MXC_CCM_CSCDR1_USDHC4_PODF_OFFSET		(22)
-+#define MXC_CCM_CSCDR1_USDHC3_PODF_MASK			(0x7 << 19)
-+#define MXC_CCM_CSCDR1_USDHC3_PODF_OFFSET		(19)
-+#define MXC_CCM_CSCDR1_USDHC2_PODF_MASK			(0x7 << 16)
-+#define MXC_CCM_CSCDR1_USDHC2_PODF_OFFSET		(16)
-+#define MXC_CCM_CSCDR1_USDHC1_PODF_MASK			(0x7 << 11)
-+#define MXC_CCM_CSCDR1_USDHC1_PODF_OFFSET		(11)
-+#define MXC_CCM_CSCDR1_USBOH3_CLK_PRED_OFFSET		(8)
-+#define MXC_CCM_CSCDR1_USBOH3_CLK_PRED_MASK		(0x7 << 8)
-+#define MXC_CCM_CSCDR1_USBOH3_CLK_PODF_OFFSET		(6)
-+#define MXC_CCM_CSCDR1_USBOH3_CLK_PODF_MASK		(0x3 << 6)
-+#define MXC_CCM_CSCDR1_UART_CLK_PODF_MASK		(0x3F)
-+#define MXC_CCM_CSCDR1_UART_CLK_PODF_OFFSET		(0)
-+
-+/* Define the bits in register CS1CDR */
-+#define MXC_CCM_CS1CDR_ESAI_CLK_PODF_MASK		(0x3F << 25)
-+#define MXC_CCM_CS1CDR_ESAI_CLK_PODF_OFFSET		(25)
-+#define MXC_CCM_CS1CDR_SSI3_CLK_PODF_MASK		(0x3F << 16)
-+#define MXC_CCM_CS1CDR_SSI3_CLK_PODF_OFFSET		(16)
-+#define MXC_CCM_CS1CDR_ESAI_CLK_PRED_MASK		(0x3 << 9)
-+#define MXC_CCM_CS1CDR_ESAI_CLK_PRED_OFFSET		(9)
-+#define MXC_CCM_CS1CDR_SSI1_CLK_PRED_MASK		(0x7 << 6)
-+#define MXC_CCM_CS1CDR_SSI1_CLK_PRED_OFFSET		(6)
-+#define MXC_CCM_CS1CDR_SSI1_CLK_PODF_MASK		(0x3F)
-+#define MXC_CCM_CS1CDR_SSI1_CLK_PODF_OFFSET		(0)
-+
-+/* Define the bits in register CS2CDR */
-+#define MXC_CCM_CS2CDR_ENFC_CLK_PODF_MASK		(0x3F << 21)
-+#define MXC_CCM_CS2CDR_ENFC_CLK_PODF_OFFSET		(21)
-+#define MXC_CCM_CS2CDR_ENFC_CLK_PRED_MASK		(0x7 << 18)
-+#define MXC_CCM_CS2CDR_ENFC_CLK_PRED_OFFSET		(18)
-+#define MXC_CCM_CS2CDR_ENFC_CLK_SEL_MASK		(0x3 << 16)
-+#define MXC_CCM_CS2CDR_ENFC_CLK_SEL_OFFSET		(16)
-+#define MXC_CCM_CS2CDR_LDB_DI1_CLK_SEL_MASK		(0x7 << 12)
-+#define MXC_CCM_CS2CDR_LDB_DI1_CLK_SEL_OFFSET		(12)
-+#define MXC_CCM_CS2CDR_LDB_DI0_CLK_SEL_MASK		(0x7 << 9)
-+#define MXC_CCM_CS2CDR_LDB_DI0_CLK_SEL_OFFSET		(9)
-+#define MXC_CCM_CS2CDR_SSI2_CLK_PRED_MASK		(0x7 << 6)
-+#define MXC_CCM_CS2CDR_SSI2_CLK_PRED_OFFSET		(6)
-+#define MXC_CCM_CS2CDR_SSI2_CLK_PODF_MASK		(0x3F)
-+#define MXC_CCM_CS2CDR_SSI2_CLK_PODF_OFFSET		(0)
-+
-+/* Define the bits in register CDCDR */
-+#define MXC_CCM_CDCDR_HSI_TX_PODF_MASK			(0x7 << 29)
-+#define MXC_CCM_CDCDR_HSI_TX_PODF_OFFSET		(29)
-+#define MXC_CCM_CDCDR_HSI_TX_CLK_SEL			(1 << 28)
-+#define MXC_CCM_CDCDR_SPDIF0_CLK_PRED_MASK		(0x7 << 25)
-+#define MXC_CCM_CDCDR_SPDIF0_CLK_PRED_OFFSET		(25)
-+#define MXC_CCM_CDCDR_SPDIF0_CLK_PODF_MASK		(0x7 << 19)
-+#define MXC_CCM_CDCDR_SPDIF0_CLK_PODF_OFFSET		(19)
-+#define MXC_CCM_CDCDR_SPDIF0_CLK_SEL_MASK		(0x3 << 20)
-+#define MXC_CCM_CDCDR_SPDIF0_CLK_SEL_OFFSET		(20)
-+#define MXC_CCM_CDCDR_SPDIF1_CLK_PRED_MASK		(0x7 << 12)
-+#define MXC_CCM_CDCDR_SPDIF1_CLK_PRED_OFFSET		(12)
-+#define MXC_CCM_CDCDR_SPDIF1_CLK_PODF_MASK		(0x7 << 9)
-+#define MXC_CCM_CDCDR_SPDIF1_CLK_PODF_OFFSET		(9)
-+#define MXC_CCM_CDCDR_SPDIF1_CLK_SEL_MASK		(0x3 << 7)
-+#define MXC_CCM_CDCDR_SPDIF1_CLK_SEL_OFFSET		(7)
-+
-+/* Define the bits in register CHSCCDR */
-+#define MXC_CCM_CHSCCDR_IPU1_DI1_PRE_CLK_SEL_MASK	(0x7 << 15)
-+#define MXC_CCM_CHSCCDR_IPU1_DI1_PRE_CLK_SEL_OFFSET	(15)
-+#define MXC_CCM_CHSCCDR_IPU1_DI1_PODF_MASK		(0x7 << 12)
-+#define MXC_CCM_CHSCCDR_IPU1_DI1_PODF_OFFSET		(12)
-+#define MXC_CCM_CHSCCDR_IPU1_DI1_CLK_SEL_MASK		(0x7 << 9)
-+#define MXC_CCM_CHSCCDR_IPU1_DI1_CLK_SEL_OFFSET		(9)
-+#define MXC_CCM_CHSCCDR_IPU1_DI0_PRE_CLK_SEL_MASK	(0x7 << 6)
-+#define MXC_CCM_CHSCCDR_IPU1_DI0_PRE_CLK_SEL_OFFSET	(6)
-+#define MXC_CCM_CHSCCDR_IPU1_DI0_PODF_MASK		(0x7 << 3)
-+#define MXC_CCM_CHSCCDR_IPU1_DI0_PODF_OFFSET		(3)
-+#define MXC_CCM_CHSCCDR_IPU1_DI0_CLK_SEL_MASK		(0x7)
-+#define MXC_CCM_CHSCCDR_IPU1_DI0_CLK_SEL_OFFSET		(0)
-+
-+/* Define the bits in register CSCDR2 */
-+#define MXC_CCM_CSCDR2_ECSPI_CLK_PODF_MASK		(0x3F << 19)
-+#define MXC_CCM_CSCDR2_ECSPI_CLK_PODF_OFFSET		(19)
-+#define MXC_CCM_CHSCCDR_IPU2_DI1_PRE_CLK_SEL_MASK	(0x7 << 15)
-+#define MXC_CCM_CHSCCDR_IPU2_DI1_PRE_CLK_SEL_OFFSET	(15)
-+#define MXC_CCM_CHSCCDR_IPU2_DI1_PODF_MASK		(0x7 << 12)
-+#define MXC_CCM_CHSCCDR_IPU2_DI1_PODF_OFFSET		(12)
-+#define MXC_CCM_CHSCCDR_IPU2_DI1_CLK_SEL_MASK		(0x7 << 9)
-+#define MXC_CCM_CHSCCDR_IPU2_DI1_CLK_SEL_OFFSET		(9)
-+#define MXC_CCM_CHSCCDR_IPU2_DI0_PRE_CLK_SEL_MASK	(0x7 << 6)
-+#define MXC_CCM_CHSCCDR_IPU2_DI0_PRE_CLK_SEL_OFFSET	(6)
-+#define MXC_CCM_CHSCCDR_IPU2_DI0_PODF_MASK		(0x7 << 3)
-+#define MXC_CCM_CHSCCDR_IPU2_DI0_PODF_OFFSET		(3)
-+#define MXC_CCM_CHSCCDR_IPU2_DI0_CLK_SEL_MASK		(0x7)
-+#define MXC_CCM_CHSCCDR_IPU2_DI0_CLK_SEL_OFFSET		(0)
-+
-+/* Define the bits in register CSCDR3 */
-+#define MXC_CCM_CSCDR3_IPU2_HSP_PODF_MASK		(0x7 << 16)
-+#define MXC_CCM_CSCDR3_IPU2_HSP_PODF_OFFSET		(16)
-+#define MXC_CCM_CSCDR3_IPU2_HSP_CLK_SEL_MASK		(0x3 << 14)
-+#define MXC_CCM_CSCDR3_IPU2_HSP_CLK_SEL_OFFSET		(14)
-+#define MXC_CCM_CSCDR3_IPU1_HSP_PODF_MASK		(0x7 << 11)
-+#define MXC_CCM_CSCDR3_IPU1_HSP_PODF_OFFSET		(11)
-+#define MXC_CCM_CSCDR3_IPU1_HSP_CLK_SEL_MASK		(0x3 << 9)
-+#define MXC_CCM_CSCDR3_IPU1_HSP_CLK_SEL_OFFSET		(9)
-+
-+/* Define the bits in register CDHIPR */
-+#define MXC_CCM_CDHIPR_ARM_PODF_BUSY			(1 << 16)
-+#define MXC_CCM_CDHIPR_PERIPH_CLK_SEL_BUSY		(1 << 5)
-+#define MXC_CCM_CDHIPR_MMDC_CH0_PODF_BUSY		(1 << 4)
-+#define MXC_CCM_CDHIPR_PERIPH2_CLK_SEL_BUSY		(1 << 3)
-+#define MXC_CCM_CDHIPR_MMDC_CH1_PODF_BUSY		(1 << 2)
-+#define MXC_CCM_CDHIPR_AHB_PODF_BUSY			(1 << 1)
-+#define MXC_CCM_CDHIPR_AXI_PODF_BUSY			(1)
-+
-+/* Define the bits in register CLPCR */
-+#define MXC_CCM_CLPCR_MASK_L2CC_IDLE			(1 << 27)
-+#define MXC_CCM_CLPCR_MASK_SCU_IDLE			(1 << 26)
-+#define MXC_CCM_CLPCR_MASK_CORE3_WFI			(1 << 25)
-+#define MXC_CCM_CLPCR_MASK_CORE2_WFI			(1 << 24)
-+#define MXC_CCM_CLPCR_MASK_CORE1_WFI			(1 << 23)
-+#define MXC_CCM_CLPCR_MASK_CORE0_WFI			(1 << 22)
-+#define MXC_CCM_CLPCR_BYP_MMDC_CH1_LPM_HS		(1 << 21)
-+#define MXC_CCM_CLPCR_BYP_MMDC_CH0_LPM_HS		(1 << 19)
-+#define MXC_CCM_CLPCR_WB_CORE_AT_LPM			(1 << 17)
-+#define MXC_CCM_CLPCR_WB_PER_AT_LPM			(1 << 17)
-+#define MXC_CCM_CLPCR_COSC_PWRDOWN			(1 << 11)
-+#define MXC_CCM_CLPCR_STBY_COUNT_MASK			(0x3 << 9)
-+#define MXC_CCM_CLPCR_STBY_COUNT_OFFSET			(9)
-+#define MXC_CCM_CLPCR_VSTBY				(1 << 8)
-+#define MXC_CCM_CLPCR_DIS_REF_OSC			(1 << 7)
-+#define MXC_CCM_CLPCR_SBYOS				(1 << 6)
-+#define MXC_CCM_CLPCR_ARM_CLK_DIS_ON_LPM		(1 << 5)
-+#define MXC_CCM_CLPCR_LPSR_CLK_SEL_MASK			(0x3 << 3)
-+#define MXC_CCM_CLPCR_LPSR_CLK_SEL_OFFSET		(3)
-+#define MXC_CCM_CLPCR_BYPASS_PMIC_VFUNC_READY		(1 << 2)
-+#define MXC_CCM_CLPCR_LPM_MASK				(0x3)
-+#define MXC_CCM_CLPCR_LPM_OFFSET			(0)
-+
-+/* Define the bits in register CISR */
-+#define MXC_CCM_CISR_ARM_PODF_LOADED			(1 << 26)
-+#define MXC_CCM_CISR_MMDC_CH0_PODF_LOADED		(1 << 23)
-+#define MXC_CCM_CISR_PERIPH_CLK_SEL_LOADED		(1 << 22)
-+#define MXC_CCM_CISR_MMDC_CH1_PODF_LOADED		(1 << 21)
-+#define MXC_CCM_CISR_AHB_PODF_LOADED			(1 << 20)
-+#define MXC_CCM_CISR_PERIPH2_CLK_SEL_LOADED		(1 << 19)
-+#define MXC_CCM_CISR_AXI_PODF_LOADED			(1 << 17)
-+#define MXC_CCM_CISR_COSC_READY				(1 << 6)
-+#define MXC_CCM_CISR_LRF_PLL				(1)
-+
-+/* Define the bits in register CIMR */
-+#define MXC_CCM_CIMR_MASK_ARM_PODF_LOADED		(1 << 26)
-+#define MXC_CCM_CIMR_MASK_MMDC_CH0_PODF_LOADED		(1 << 23)
-+#define MXC_CCM_CIMR_MASK_PERIPH_CLK_SEL_LOADED		(1 << 22)
-+#define MXC_CCM_CIMR_MASK_MMDC_CH1_PODF_LOADED		(1 << 21)
-+#define MXC_CCM_CIMR_MASK_AHB_PODF_LOADED		(1 << 20)
-+#define MXC_CCM_CIMR_MASK_PERIPH2_CLK_SEL_LOADED	(1 << 22)
-+#define MXC_CCM_CIMR_MASK_AXI_PODF_LOADED		(1 << 17)
-+#define MXC_CCM_CIMR_MASK_COSC_READY			(1 << 6)
-+#define MXC_CCM_CIMR_MASK_LRF_PLL			(1)
-+
-+/* Define the bits in register CCOSR */
-+#define MXC_CCM_CCOSR_CKO2_EN_OFFSET			(1 << 24)
-+#define MXC_CCM_CCOSR_CKO2_DIV_MASK			(0x7 << 21)
-+#define MXC_CCM_CCOSR_CKO2_DIV_OFFSET			(21)
-+#define MXC_CCM_CCOSR_CKO2_SEL_OFFSET			(16)
-+#define MXC_CCM_CCOSR_CKO2_SEL_MASK			(0x1F << 16)
-+#define MXC_CCM_CCOSR_CKOL_EN				(0x1 << 7)
-+#define MXC_CCM_CCOSR_CKOL_DIV_MASK			(0x7 << 4)
-+#define MXC_CCM_CCOSR_CKOL_DIV_OFFSET			(4)
-+#define MXC_CCM_CCOSR_CKOL_SEL_MASK			(0xF)
-+#define MXC_CCM_CCOSR_CKOL_SEL_OFFSET			(0)
-+
-+/* Define the bits in registers CGPR */
-+#define MXC_CCM_CGPR_EFUSE_PROG_SUPPLY_GATE		(1 << 4)
-+#define MXC_CCM_CGPR_MMDC_EXT_CLK_DIS			(1 << 2)
-+#define MXC_CCM_CGPR_PMIC_DELAY_SCALER			(1)
-+
-+/* Define the bits in registers CCGRx */
-+#define MXC_CCM_CCGR_CG_MASK				3
-+
-+#define MXC_CCM_CCGR0_CG15_OFFSET			30
-+#define MXC_CCM_CCGR0_CG15_MASK			(0x3 << 30)
-+#define MXC_CCM_CCGR0_CG14_OFFSET			28
-+#define MXC_CCM_CCGR0_CG14_MASK			(0x3 << 28)
-+#define MXC_CCM_CCGR0_CG13_OFFSET			26
-+#define MXC_CCM_CCGR0_CG13_MASK			(0x3 << 26)
-+#define MXC_CCM_CCGR0_CG12_OFFSET			24
-+#define MXC_CCM_CCGR0_CG12_MASK			(0x3 << 24)
-+#define MXC_CCM_CCGR0_CG11_OFFSET			22
-+#define MXC_CCM_CCGR0_CG11_MASK			(0x3 << 22)
-+#define MXC_CCM_CCGR0_CG10_OFFSET			20
-+#define MXC_CCM_CCGR0_CG10_MASK			(0x3 << 20)
-+#define MXC_CCM_CCGR0_CG9_OFFSET			18
-+#define MXC_CCM_CCGR0_CG9_MASK			(0x3 << 18)
-+#define MXC_CCM_CCGR0_CG8_OFFSET			16
-+#define MXC_CCM_CCGR0_CG8_MASK			(0x3 << 16)
-+#define MXC_CCM_CCGR0_CG7_OFFSET			14
-+#define MXC_CCM_CCGR0_CG6_OFFSET			12
-+#define MXC_CCM_CCGR0_CG5_OFFSET			10
-+#define MXC_CCM_CCGR0_CG5_MASK			(0x3 << 10)
-+#define MXC_CCM_CCGR0_CG4_OFFSET			8
-+#define MXC_CCM_CCGR0_CG4_MASK			(0x3 << 8)
-+#define MXC_CCM_CCGR0_CG3_OFFSET			6
-+#define MXC_CCM_CCGR0_CG3_MASK			(0x3 << 6)
-+#define MXC_CCM_CCGR0_CG2_OFFSET			4
-+#define MXC_CCM_CCGR0_CG2_MASK			(0x3 << 4)
-+#define MXC_CCM_CCGR0_CG1_OFFSET			2
-+#define MXC_CCM_CCGR0_CG1_MASK			(0x3 << 2)
-+#define MXC_CCM_CCGR0_CG0_OFFSET			0
-+#define MXC_CCM_CCGR0_CG0_MASK				3
-+
-+#define MXC_CCM_CCGR1_CG15_OFFSET			30
-+#define MXC_CCM_CCGR1_CG14_OFFSET			28
-+#define MXC_CCM_CCGR1_CG13_OFFSET			26
-+#define MXC_CCM_CCGR1_CG12_OFFSET			24
-+#define MXC_CCM_CCGR1_CG11_OFFSET			22
-+#define MXC_CCM_CCGR1_CG10_OFFSET			20
-+#define MXC_CCM_CCGR1_CG9_OFFSET			18
-+#define MXC_CCM_CCGR1_CG8_OFFSET			16
-+#define MXC_CCM_CCGR1_CG7_OFFSET			14
-+#define MXC_CCM_CCGR1_CG6_OFFSET			12
-+#define MXC_CCM_CCGR1_CG5_OFFSET			10
-+#define MXC_CCM_CCGR1_CG4_OFFSET			8
-+#define MXC_CCM_CCGR1_CG3_OFFSET			6
-+#define MXC_CCM_CCGR1_CG2_OFFSET			4
-+#define MXC_CCM_CCGR1_CG1_OFFSET			2
-+#define MXC_CCM_CCGR1_CG0_OFFSET			0
-+
-+#define MXC_CCM_CCGR2_CG15_OFFSET			30
-+#define MXC_CCM_CCGR2_CG14_OFFSET			28
-+#define MXC_CCM_CCGR2_CG13_OFFSET			26
-+#define MXC_CCM_CCGR2_CG12_OFFSET			24
-+#define MXC_CCM_CCGR2_CG11_OFFSET			22
-+#define MXC_CCM_CCGR2_CG10_OFFSET			20
-+#define MXC_CCM_CCGR2_CG9_OFFSET			18
-+#define MXC_CCM_CCGR2_CG8_OFFSET			16
-+#define MXC_CCM_CCGR2_CG7_OFFSET			14
-+#define MXC_CCM_CCGR2_CG6_OFFSET			12
-+#define MXC_CCM_CCGR2_CG5_OFFSET			10
-+#define MXC_CCM_CCGR2_CG4_OFFSET			8
-+#define MXC_CCM_CCGR2_CG3_OFFSET			6
-+#define MXC_CCM_CCGR2_CG2_OFFSET			4
-+#define MXC_CCM_CCGR2_CG1_OFFSET			2
-+#define MXC_CCM_CCGR2_CG0_OFFSET			0
-+
-+#define MXC_CCM_CCGR3_CG15_OFFSET			30
-+#define MXC_CCM_CCGR3_CG14_OFFSET			28
-+#define MXC_CCM_CCGR3_CG13_OFFSET			26
-+#define MXC_CCM_CCGR3_CG12_OFFSET			24
-+#define MXC_CCM_CCGR3_CG11_OFFSET			22
-+#define MXC_CCM_CCGR3_CG10_OFFSET			20
-+#define MXC_CCM_CCGR3_CG9_OFFSET			18
-+#define MXC_CCM_CCGR3_CG8_OFFSET			16
-+#define MXC_CCM_CCGR3_CG7_OFFSET			14
-+#define MXC_CCM_CCGR3_CG6_OFFSET			12
-+#define MXC_CCM_CCGR3_CG5_OFFSET			10
-+#define MXC_CCM_CCGR3_CG4_OFFSET			8
-+#define MXC_CCM_CCGR3_CG3_OFFSET			6
-+#define MXC_CCM_CCGR3_CG2_OFFSET			4
-+#define MXC_CCM_CCGR3_CG1_OFFSET			2
-+#define MXC_CCM_CCGR3_CG0_OFFSET			0
-+
-+#define MXC_CCM_CCGR4_CG15_OFFSET			30
-+#define MXC_CCM_CCGR4_CG14_OFFSET			28
-+#define MXC_CCM_CCGR4_CG13_OFFSET			26
-+#define MXC_CCM_CCGR4_CG12_OFFSET			24
-+#define MXC_CCM_CCGR4_CG11_OFFSET			22
-+#define MXC_CCM_CCGR4_CG10_OFFSET			20
-+#define MXC_CCM_CCGR4_CG9_OFFSET			18
-+#define MXC_CCM_CCGR4_CG8_OFFSET			16
-+#define MXC_CCM_CCGR4_CG7_OFFSET			14
-+#define MXC_CCM_CCGR4_CG6_OFFSET			12
-+#define MXC_CCM_CCGR4_CG5_OFFSET			10
-+#define MXC_CCM_CCGR4_CG4_OFFSET			8
-+#define MXC_CCM_CCGR4_CG3_OFFSET			6
-+#define MXC_CCM_CCGR4_CG2_OFFSET			4
-+#define MXC_CCM_CCGR4_CG1_OFFSET			2
-+#define MXC_CCM_CCGR4_CG0_OFFSET			0
-+
-+#define MXC_CCM_CCGR5_CG15_OFFSET			30
-+#define MXC_CCM_CCGR5_CG14_OFFSET			28
-+#define MXC_CCM_CCGR5_CG14_MASK			(0x3 << 28)
-+#define MXC_CCM_CCGR5_CG13_OFFSET			26
-+#define MXC_CCM_CCGR5_CG13_MASK			(0x3 << 26)
-+#define MXC_CCM_CCGR5_CG12_OFFSET			24
-+#define MXC_CCM_CCGR5_CG12_MASK			(0x3 << 24)
-+#define MXC_CCM_CCGR5_CG11_OFFSET			22
-+#define MXC_CCM_CCGR5_CG11_MASK			(0x3 << 22)
-+#define MXC_CCM_CCGR5_CG10_OFFSET			20
-+#define MXC_CCM_CCGR5_CG10_MASK			(0x3 << 20)
-+#define MXC_CCM_CCGR5_CG9_OFFSET			18
-+#define MXC_CCM_CCGR5_CG9_MASK			(0x3 << 18)
-+#define MXC_CCM_CCGR5_CG8_OFFSET			16
-+#define MXC_CCM_CCGR5_CG8_MASK			(0x3 << 16)
-+#define MXC_CCM_CCGR5_CG7_OFFSET			14
-+#define MXC_CCM_CCGR5_CG7_MASK			(0x3 << 14)
-+#define MXC_CCM_CCGR5_CG6_OFFSET			12
-+#define MXC_CCM_CCGR5_CG6_MASK			(0x3 << 12)
-+#define MXC_CCM_CCGR5_CG5_OFFSET			10
-+#define MXC_CCM_CCGR5_CG4_OFFSET			8
-+#define MXC_CCM_CCGR5_CG3_OFFSET			6
-+#define MXC_CCM_CCGR5_CG2_OFFSET			4
-+#define MXC_CCM_CCGR5_CG2_MASK			(0x3 << 4)
-+#define MXC_CCM_CCGR5_CG1_OFFSET			2
-+#define MXC_CCM_CCGR5_CG0_OFFSET			0
-+
-+#define MXC_CCM_CCGR6_CG15_OFFSET			30
-+#define MXC_CCM_CCGR6_CG14_OFFSET			28
-+#define MXC_CCM_CCGR6_CG14_MASK			(0x3 << 28)
-+#define MXC_CCM_CCGR6_CG13_OFFSET			26
-+#define MXC_CCM_CCGR6_CG13_MASK			(0x3 << 26)
-+#define MXC_CCM_CCGR6_CG12_OFFSET			24
-+#define MXC_CCM_CCGR6_CG12_MASK			(0x3 << 24)
-+#define MXC_CCM_CCGR6_CG11_OFFSET			22
-+#define MXC_CCM_CCGR6_CG11_MASK			(0x3 << 22)
-+#define MXC_CCM_CCGR6_CG10_OFFSET			20
-+#define MXC_CCM_CCGR6_CG10_MASK			(0x3 << 20)
-+#define MXC_CCM_CCGR6_CG9_OFFSET			18
-+#define MXC_CCM_CCGR6_CG9_MASK			(0x3 << 18)
-+#define MXC_CCM_CCGR6_CG8_OFFSET			16
-+#define MXC_CCM_CCGR6_CG8_MASK			(0x3 << 16)
-+#define MXC_CCM_CCGR6_CG7_OFFSET			14
-+#define MXC_CCM_CCGR6_CG7_MASK			(0x3 << 14)
-+#define MXC_CCM_CCGR6_CG6_OFFSET			12
-+#define MXC_CCM_CCGR6_CG6_MASK			(0x3 << 12)
-+#define MXC_CCM_CCGR6_CG5_OFFSET			10
-+#define MXC_CCM_CCGR6_CG4_OFFSET			8
-+#define MXC_CCM_CCGR6_CG3_OFFSET			6
-+#define MXC_CCM_CCGR6_CG2_OFFSET			4
-+#define MXC_CCM_CCGR6_CG2_MASK			(0x3 << 4)
-+#define MXC_CCM_CCGR6_CG1_OFFSET			2
-+#define MXC_CCM_CCGR6_CG0_OFFSET			0
-+
-+#define MXC_CCM_CCGR7_CG15_OFFSET			30
-+#define MXC_CCM_CCGR7_CG14_OFFSET			28
-+#define MXC_CCM_CCGR7_CG14_MASK			(0x3 << 28)
-+#define MXC_CCM_CCGR7_CG13_OFFSET			26
-+#define MXC_CCM_CCGR7_CG13_MASK			(0x3 << 26)
-+#define MXC_CCM_CCGR7_CG12_OFFSET			24
-+#define MXC_CCM_CCGR7_CG12_MASK			(0x3 << 24)
-+#define MXC_CCM_CCGR7_CG11_OFFSET			22
-+#define MXC_CCM_CCGR7_CG11_MASK			(0x3 << 22)
-+#define MXC_CCM_CCGR7_CG10_OFFSET			20
-+#define MXC_CCM_CCGR7_CG10_MASK			(0x3 << 20)
-+#define MXC_CCM_CCGR7_CG9_OFFSET			18
-+#define MXC_CCM_CCGR7_CG9_MASK			(0x3 << 18)
-+#define MXC_CCM_CCGR7_CG8_OFFSET			16
-+#define MXC_CCM_CCGR7_CG8_MASK			(0x3 << 16)
-+#define MXC_CCM_CCGR7_CG7_OFFSET			14
-+#define MXC_CCM_CCGR7_CG7_MASK			(0x3 << 14)
-+#define MXC_CCM_CCGR7_CG6_OFFSET			12
-+#define MXC_CCM_CCGR7_CG6_MASK			(0x3 << 12)
-+#define MXC_CCM_CCGR7_CG5_OFFSET			10
-+#define MXC_CCM_CCGR7_CG4_OFFSET			8
-+#define MXC_CCM_CCGR7_CG3_OFFSET			6
-+#define MXC_CCM_CCGR7_CG2_OFFSET			4
-+#define MXC_CCM_CCGR7_CG2_MASK			(0x3 << 4)
-+#define MXC_CCM_CCGR7_CG1_OFFSET			2
-+#define MXC_CCM_CCGR7_CG0_OFFSET			0
-+
-+#endif				/* __ARCH_ARM_MACH_MX6_CRM_REGS_H__ */
-diff --git a/arch/arm/mach-imx/include/mach/devices-imx6.h b/arch/arm/mach-imx/include/mach/devices-imx6.h
++	return dram_size;
++}
+diff --git a/arch/ppc/cpu-85xx/cpu_init.c b/arch/ppc/cpu-85xx/cpu_init.c
 new file mode 100644
-index 0000000..e4a72ac
+index 0000000..e8c0a9e
 --- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/devices-imx6.h
-@@ -0,0 +1,46 @@
-+#include <mach/devices.h>
-+
-+static inline struct device_d *imx6_add_uart0(void)
-+{
-+	return imx_add_uart((void *)MX6_UART1_BASE_ADDR, 0);
-+}
-+
-+static inline struct device_d *imx6_add_uart1(void)
-+{
-+	return imx_add_uart((void *)MX6_UART2_BASE_ADDR, 1);
-+}
-+
-+static inline struct device_d *imx6_add_uart2(void)
-+{
-+	return imx_add_uart((void *)MX6_UART3_BASE_ADDR, 2);
-+}
-+
-+static inline struct device_d *imx6_add_uart3(void)
-+{
-+	return imx_add_uart((void *)MX6_UART4_BASE_ADDR, 3);
-+}
-+
-+static inline struct device_d *imx6_add_mmc0(struct esdhc_platform_data *pdata)
-+{
-+	return imx_add_esdhc((void *)MX6_USDHC1_BASE_ADDR, 0, pdata);
-+}
-+
-+static inline struct device_d *imx6_add_mmc1(struct esdhc_platform_data *pdata)
-+{
-+	return imx_add_esdhc((void *)MX6_USDHC2_BASE_ADDR, 1, pdata);
-+}
-+
-+static inline struct device_d *imx6_add_mmc2(struct esdhc_platform_data *pdata)
-+{
-+	return imx_add_esdhc((void *)MX6_USDHC3_BASE_ADDR, 2, pdata);
-+}
-+
-+static inline struct device_d *imx6_add_mmc3(struct esdhc_platform_data *pdata)
-+{
-+	return imx_add_esdhc((void *)MX6_USDHC4_BASE_ADDR, 3, pdata);
-+}
-+
-+static inline struct device_d *imx6_add_fec(struct fec_platform_data *pdata)
-+{
-+	return imx_add_fec((void *)MX6_ENET_BASE_ADDR, pdata);
-+}
-diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
-index 8ff04fb..edfd452 100644
---- a/arch/arm/mach-imx/include/mach/generic.h
-+++ b/arch/arm/mach-imx/include/mach/generic.h
-@@ -57,5 +57,11 @@ u64 imx_uid(void);
- #define cpu_is_mx53()	(0)
- #endif
- 
-+#ifdef CONFIG_ARCH_IMX6
-+#define cpu_is_mx6()	(1)
-+#else
-+#define cpu_is_mx6()	(0)
-+#endif
-+
- #define cpu_is_mx23()	(0)
- #define cpu_is_mx28()	(0)
-diff --git a/arch/arm/mach-imx/include/mach/imx-regs.h b/arch/arm/mach-imx/include/mach/imx-regs.h
-index 789397e..2d28158 100644
---- a/arch/arm/mach-imx/include/mach/imx-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx-regs.h
-@@ -55,6 +55,8 @@
- # include <mach/imx51-regs.h>
- #elif defined CONFIG_ARCH_IMX53
- # include <mach/imx53-regs.h>
-+#elif defined CONFIG_ARCH_IMX6
-+# include <mach/imx6-regs.h>
- #else
- # error "unknown i.MX soc type"
- #endif
-diff --git a/arch/arm/mach-imx/include/mach/imx6-anadig.h b/arch/arm/mach-imx/include/mach/imx6-anadig.h
-new file mode 100644
-index 0000000..5a1b36a
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/imx6-anadig.h
-@@ -0,0 +1,721 @@
++++ b/arch/ppc/cpu-85xx/cpu_init.c
+@@ -0,0 +1,145 @@
 +/*
-+ * Freescale ANADIG Register Definitions
++ * Copyright 2012 GE Intelligent Platforms, Inc.
 + *
-+ * Copyright 2008-2011 Freescale Semiconductor, Inc. All Rights Reserved.
++ * Copyright 2007-2011 Freescale Semiconductor, Inc.
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
++ * (C) Copyright 2003 Motorola Inc.
++ * Modified by Xianghua Xiao, X.Xiao@motorola.com
++ *
++ * (C) Copyright 2000
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -804,6926 +321,4123 @@ index 0000000..5a1b36a
 + *
 + * You should have received a copy of the GNU General Public License
 + * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
-+ *
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
 + */
 +
-+#ifndef __ARCH_ARM___ANADIG_H
-+#define __ARCH_ARM___ANADIG_H
-+
-+#define HW_ANADIG_PLL_SYS	(0x00000000)
-+#define HW_ANADIG_PLL_SYS_SET	(0x00000004)
-+#define HW_ANADIG_PLL_SYS_CLR	(0x00000008)
-+#define HW_ANADIG_PLL_SYS_TOG	(0x0000000c)
-+
-+#define BM_ANADIG_PLL_SYS_LOCK 0x80000000
-+#define BM_ANADIG_PLL_SYS_PLL_SEL 0x00080000
-+#define BM_ANADIG_PLL_SYS_LVDS_24MHZ_SEL 0x00040000
-+#define BM_ANADIG_PLL_SYS_LVDS_SEL 0x00020000
-+#define BM_ANADIG_PLL_SYS_BYPASS 0x00010000
-+#define BP_ANADIG_PLL_SYS_BYPASS_CLK_SRC      14
-+#define BM_ANADIG_PLL_SYS_BYPASS_CLK_SRC 0x0000C000
-+#define BF_ANADIG_PLL_SYS_BYPASS_CLK_SRC(v)  (((v) << 14) & BM_ANADIG_PLL_SYS_BYPASS_CLK_SRC)
-+#define BV_ANADIG_PLL_SYS_BYPASS_CLK_SRC__OSC_24M  0x0
-+#define BV_ANADIG_PLL_SYS_BYPASS_CLK_SRC__ANACLK_1 0x1
-+#define BV_ANADIG_PLL_SYS_BYPASS_CLK_SRC__ANACLK_2 0x2
-+#define BV_ANADIG_PLL_SYS_BYPASS_CLK_SRC__XOR      0x3
-+#define BM_ANADIG_PLL_SYS_ENABLE 0x00002000
-+#define BM_ANADIG_PLL_SYS_POWERDOWN 0x00001000
-+#define BM_ANADIG_PLL_SYS_HOLD_RING_OFF 0x00000800
-+#define BM_ANADIG_PLL_SYS_DOUBLE_CP 0x00000400
-+#define BM_ANADIG_PLL_SYS_HALF_CP 0x00000200
-+#define BM_ANADIG_PLL_SYS_DOUBLE_LF 0x00000100
-+#define BM_ANADIG_PLL_SYS_HALF_LF 0x00000080
-+#define BP_ANADIG_PLL_SYS_DIV_SELECT      0
-+#define BM_ANADIG_PLL_SYS_DIV_SELECT 0x0000007F
-+#define BF_ANADIG_PLL_SYS_DIV_SELECT(v)  (((v) << 0) & BM_ANADIG_PLL_SYS_DIV_SELECT)
-+
-+#define HW_ANADIG_USB1_PLL_480_CTRL	(0x00000010)
-+#define HW_ANADIG_USB1_PLL_480_CTRL_SET	(0x00000014)
-+#define HW_ANADIG_USB1_PLL_480_CTRL_CLR	(0x00000018)
-+#define HW_ANADIG_USB1_PLL_480_CTRL_TOG	(0x0000001c)
-+
-+#define BM_ANADIG_USB1_PLL_480_CTRL_LOCK 0x80000000
-+#define BM_ANADIG_USB1_PLL_480_CTRL_BYPASS 0x00010000
-+#define BP_ANADIG_USB1_PLL_480_CTRL_BYPASS_CLK_SRC      14
-+#define BM_ANADIG_USB1_PLL_480_CTRL_BYPASS_CLK_SRC 0x0000C000
-+#define BF_ANADIG_USB1_PLL_480_CTRL_BYPASS_CLK_SRC(v)  (((v) << 14) & BM_ANADIG_USB1_PLL_480_CTRL_BYPASS_CLK_SRC)
-+#define BV_ANADIG_USB1_PLL_480_CTRL_BYPASS_CLK_SRC__OSC_24M  0x0
-+#define BV_ANADIG_USB1_PLL_480_CTRL_BYPASS_CLK_SRC__ANACLK_1 0x1
-+#define BV_ANADIG_USB1_PLL_480_CTRL_BYPASS_CLK_SRC__ANACLK_2 0x2
-+#define BV_ANADIG_USB1_PLL_480_CTRL_BYPASS_CLK_SRC__XOR      0x3
-+#define BM_ANADIG_USB1_PLL_480_CTRL_ENABLE 0x00002000
-+#define BM_ANADIG_USB1_PLL_480_CTRL_POWER 0x00001000
-+#define BM_ANADIG_USB1_PLL_480_CTRL_HOLD_RING_OFF 0x00000800
-+#define BM_ANADIG_USB1_PLL_480_CTRL_DOUBLE_CP 0x00000400
-+#define BM_ANADIG_USB1_PLL_480_CTRL_HALF_CP 0x00000200
-+#define BM_ANADIG_USB1_PLL_480_CTRL_DOUBLE_LF 0x00000100
-+#define BM_ANADIG_USB1_PLL_480_CTRL_HALF_LF 0x00000080
-+#define BM_ANADIG_USB1_PLL_480_CTRL_EN_USB_CLKS 0x00000040
-+#define BP_ANADIG_USB1_PLL_480_CTRL_CONTROL0      2
-+#define BM_ANADIG_USB1_PLL_480_CTRL_CONTROL0 0x0000001C
-+#define BF_ANADIG_USB1_PLL_480_CTRL_CONTROL0(v)  (((v) << 2) & BM_ANADIG_USB1_PLL_480_CTRL_CONTROL0)
-+#define BP_ANADIG_USB1_PLL_480_CTRL_DIV_SELECT      0
-+#define BM_ANADIG_USB1_PLL_480_CTRL_DIV_SELECT 0x00000003
-+#define BF_ANADIG_USB1_PLL_480_CTRL_DIV_SELECT(v)  (((v) << 0) & BM_ANADIG_USB1_PLL_480_CTRL_DIV_SELECT)
-+
-+#define HW_ANADIG_USB2_PLL_480_CTRL	(0x00000020)
-+#define HW_ANADIG_USB2_PLL_480_CTRL_SET	(0x00000024)
-+#define HW_ANADIG_USB2_PLL_480_CTRL_CLR	(0x00000028)
-+#define HW_ANADIG_USB2_PLL_480_CTRL_TOG	(0x0000002c)
-+
-+#define BM_ANADIG_USB2_PLL_480_CTRL_LOCK 0x80000000
-+#define BM_ANADIG_USB2_PLL_480_CTRL_BYPASS 0x00010000
-+#define BP_ANADIG_USB2_PLL_480_CTRL_BYPASS_CLK_SRC      14
-+#define BM_ANADIG_USB2_PLL_480_CTRL_BYPASS_CLK_SRC 0x0000C000
-+#define BF_ANADIG_USB2_PLL_480_CTRL_BYPASS_CLK_SRC(v)  (((v) << 14) & BM_ANADIG_USB2_PLL_480_CTRL_BYPASS_CLK_SRC)
-+#define BV_ANADIG_USB2_PLL_480_CTRL_BYPASS_CLK_SRC__OSC_24M  0x0
-+#define BV_ANADIG_USB2_PLL_480_CTRL_BYPASS_CLK_SRC__ANACLK_1 0x1
-+#define BV_ANADIG_USB2_PLL_480_CTRL_BYPASS_CLK_SRC__ANACLK_2 0x2
-+#define BV_ANADIG_USB2_PLL_480_CTRL_BYPASS_CLK_SRC__XOR      0x3
-+#define BM_ANADIG_USB2_PLL_480_CTRL_ENABLE 0x00002000
-+#define BM_ANADIG_USB2_PLL_480_CTRL_POWER 0x00001000
-+#define BM_ANADIG_USB2_PLL_480_CTRL_HOLD_RING_OFF 0x00000800
-+#define BM_ANADIG_USB2_PLL_480_CTRL_DOUBLE_CP 0x00000400
-+#define BM_ANADIG_USB2_PLL_480_CTRL_HALF_CP 0x00000200
-+#define BM_ANADIG_USB2_PLL_480_CTRL_DOUBLE_LF 0x00000100
-+#define BM_ANADIG_USB2_PLL_480_CTRL_HALF_LF 0x00000080
-+#define BM_ANADIG_USB2_PLL_480_CTRL_EN_USB_CLKS 0x00000040
-+#define BP_ANADIG_USB2_PLL_480_CTRL_CONTROL0      2
-+#define BM_ANADIG_USB2_PLL_480_CTRL_CONTROL0 0x0000001C
-+#define BF_ANADIG_USB2_PLL_480_CTRL_CONTROL0(v)  (((v) << 2) & BM_ANADIG_USB2_PLL_480_CTRL_CONTROL0)
-+#define BP_ANADIG_USB2_PLL_480_CTRL_DIV_SELECT      0
-+#define BM_ANADIG_USB2_PLL_480_CTRL_DIV_SELECT 0x00000003
-+#define BF_ANADIG_USB2_PLL_480_CTRL_DIV_SELECT(v)  (((v) << 0) & BM_ANADIG_USB2_PLL_480_CTRL_DIV_SELECT)
-+
-+#define HW_ANADIG_PLL_528	(0x00000030)
-+#define HW_ANADIG_PLL_528_SET	(0x00000034)
-+#define HW_ANADIG_PLL_528_CLR	(0x00000038)
-+#define HW_ANADIG_PLL_528_TOG	(0x0000003c)
-+
-+#define BM_ANADIG_PLL_528_LOCK 0x80000000
-+#define BM_ANADIG_PLL_528_PFD_OFFSET_EN 0x00040000
-+#define BM_ANADIG_PLL_528_DITHER_ENABLE 0x00020000
-+#define BM_ANADIG_PLL_528_BYPASS 0x00010000
-+#define BP_ANADIG_PLL_528_BYPASS_CLK_SRC      14
-+#define BM_ANADIG_PLL_528_BYPASS_CLK_SRC 0x0000C000
-+#define BF_ANADIG_PLL_528_BYPASS_CLK_SRC(v)  (((v) << 14) & BM_ANADIG_PLL_528_BYPASS_CLK_SRC)
-+#define BV_ANADIG_PLL_528_BYPASS_CLK_SRC__OSC_24M  0x0
-+#define BV_ANADIG_PLL_528_BYPASS_CLK_SRC__ANACLK_1 0x1
-+#define BV_ANADIG_PLL_528_BYPASS_CLK_SRC__ANACLK_2 0x2
-+#define BV_ANADIG_PLL_528_BYPASS_CLK_SRC__XOR      0x3
-+#define BM_ANADIG_PLL_528_ENABLE 0x00002000
-+#define BM_ANADIG_PLL_528_POWERDOWN 0x00001000
-+#define BM_ANADIG_PLL_528_HOLD_RING_OFF 0x00000800
-+#define BM_ANADIG_PLL_528_DOUBLE_CP 0x00000400
-+#define BM_ANADIG_PLL_528_HALF_CP 0x00000200
-+#define BM_ANADIG_PLL_528_DOUBLE_LF 0x00000100
-+#define BM_ANADIG_PLL_528_HALF_LF 0x00000080
-+#define BM_ANADIG_PLL_528_DIV_SELECT 0x00000001
-+
-+#define HW_ANADIG_PLL_528_SS	(0x00000040)
-+
-+#define BP_ANADIG_PLL_528_SS_STOP      16
-+#define BM_ANADIG_PLL_528_SS_STOP 0xFFFF0000
-+#define BF_ANADIG_PLL_528_SS_STOP(v) (((v) << 16) & BM_ANADIG_PLL_528_SS_STOP)
-+#define BM_ANADIG_PLL_528_SS_ENABLE 0x00008000
-+#define BP_ANADIG_PLL_528_SS_STEP      0
-+#define BM_ANADIG_PLL_528_SS_STEP 0x00007FFF
-+#define BF_ANADIG_PLL_528_SS_STEP(v)  (((v) << 0) & BM_ANADIG_PLL_528_SS_STEP)
-+
-+#define HW_ANADIG_PLL_528_NUM	(0x00000050)
-+
-+#define BP_ANADIG_PLL_528_NUM_A      0
-+#define BM_ANADIG_PLL_528_NUM_A 0x3FFFFFFF
-+#define BF_ANADIG_PLL_528_NUM_A(v)  (((v) << 0) & BM_ANADIG_PLL_528_NUM_A)
-+
-+#define HW_ANADIG_PLL_528_DENOM	(0x00000060)
-+
-+#define BP_ANADIG_PLL_528_DENOM_B      0
-+#define BM_ANADIG_PLL_528_DENOM_B 0x3FFFFFFF
-+#define BF_ANADIG_PLL_528_DENOM_B(v)  (((v) << 0) & BM_ANADIG_PLL_528_DENOM_B)
-+
-+#define HW_ANADIG_PLL_AUDIO	(0x00000070)
-+#define HW_ANADIG_PLL_AUDIO_SET	(0x00000074)
-+#define HW_ANADIG_PLL_AUDIO_CLR	(0x00000078)
-+#define HW_ANADIG_PLL_AUDIO_TOG	(0x0000007c)
-+
-+#define BM_ANADIG_PLL_AUDIO_LOCK 0x80000000
-+#define BM_ANADIG_PLL_AUDIO_SSC_EN 0x00200000
-+#define BP_ANADIG_PLL_AUDIO_TEST_DIV_SELECT      19
-+#define BM_ANADIG_PLL_AUDIO_TEST_DIV_SELECT 0x00180000
-+#define BF_ANADIG_PLL_AUDIO_TEST_DIV_SELECT(v)  (((v) << 19) & BM_ANADIG_PLL_AUDIO_TEST_DIV_SELECT)
-+#define BM_ANADIG_PLL_AUDIO_PFD_OFFSET_EN 0x00040000
-+#define BM_ANADIG_PLL_AUDIO_DITHER_ENABLE 0x00020000
-+#define BM_ANADIG_PLL_AUDIO_BYPASS 0x00010000
-+#define BP_ANADIG_PLL_AUDIO_BYPASS_CLK_SRC      14
-+#define BM_ANADIG_PLL_AUDIO_BYPASS_CLK_SRC 0x0000C000
-+#define BF_ANADIG_PLL_AUDIO_BYPASS_CLK_SRC(v)  (((v) << 14) & BM_ANADIG_PLL_AUDIO_BYPASS_CLK_SRC)
-+#define BV_ANADIG_PLL_AUDIO_BYPASS_CLK_SRC__OSC_24M  0x0
-+#define BV_ANADIG_PLL_AUDIO_BYPASS_CLK_SRC__ANACLK_1 0x1
-+#define BV_ANADIG_PLL_AUDIO_BYPASS_CLK_SRC__ANACLK_2 0x2
-+#define BV_ANADIG_PLL_AUDIO_BYPASS_CLK_SRC__XOR      0x3
-+#define BM_ANADIG_PLL_AUDIO_ENABLE 0x00002000
-+#define BM_ANADIG_PLL_AUDIO_POWERDOWN 0x00001000
-+#define BM_ANADIG_PLL_AUDIO_HOLD_RING_OFF 0x00000800
-+#define BM_ANADIG_PLL_AUDIO_DOUBLE_CP 0x00000400
-+#define BM_ANADIG_PLL_AUDIO_HALF_CP 0x00000200
-+#define BM_ANADIG_PLL_AUDIO_DOUBLE_LF 0x00000100
-+#define BM_ANADIG_PLL_AUDIO_HALF_LF 0x00000080
-+#define BP_ANADIG_PLL_AUDIO_DIV_SELECT      0
-+#define BM_ANADIG_PLL_AUDIO_DIV_SELECT 0x0000007F
-+#define BF_ANADIG_PLL_AUDIO_DIV_SELECT(v)  (((v) << 0) & BM_ANADIG_PLL_AUDIO_DIV_SELECT)
-+
-+#define HW_ANADIG_PLL_AUDIO_NUM	(0x00000080)
-+
-+#define BP_ANADIG_PLL_AUDIO_NUM_A      0
-+#define BM_ANADIG_PLL_AUDIO_NUM_A 0x3FFFFFFF
-+#define BF_ANADIG_PLL_AUDIO_NUM_A(v)  (((v) << 0) & BM_ANADIG_PLL_AUDIO_NUM_A)
-+
-+#define HW_ANADIG_PLL_AUDIO_DENOM	(0x00000090)
-+
-+#define BP_ANADIG_PLL_AUDIO_DENOM_B      0
-+#define BM_ANADIG_PLL_AUDIO_DENOM_B 0x3FFFFFFF
-+#define BF_ANADIG_PLL_AUDIO_DENOM_B(v)  (((v) << 0) & BM_ANADIG_PLL_AUDIO_DENOM_B)
-+
-+#define HW_ANADIG_PLL_VIDEO	(0x000000a0)
-+#define HW_ANADIG_PLL_VIDEO_SET	(0x000000a4)
-+#define HW_ANADIG_PLL_VIDEO_CLR	(0x000000a8)
-+#define HW_ANADIG_PLL_VIDEO_TOG	(0x000000ac)
-+
-+#define BM_ANADIG_PLL_VIDEO_LOCK 0x80000000
-+#define BM_ANADIG_PLL_VIDEO_SSC_EN 0x00200000
-+#define BP_ANADIG_PLL_VIDEO_TEST_DIV_SELECT      19
-+#define BM_ANADIG_PLL_VIDEO_TEST_DIV_SELECT 0x00180000
-+#define BF_ANADIG_PLL_VIDEO_TEST_DIV_SELECT(v)  (((v) << 19) & BM_ANADIG_PLL_VIDEO_TEST_DIV_SELECT)
-+#define BM_ANADIG_PLL_VIDEO_PFD_OFFSET_EN 0x00040000
-+#define BM_ANADIG_PLL_VIDEO_DITHER_ENABLE 0x00020000
-+#define BM_ANADIG_PLL_VIDEO_BYPASS 0x00010000
-+#define BP_ANADIG_PLL_VIDEO_BYPASS_CLK_SRC      14
-+#define BM_ANADIG_PLL_VIDEO_BYPASS_CLK_SRC 0x0000C000
-+#define BF_ANADIG_PLL_VIDEO_BYPASS_CLK_SRC(v)  (((v) << 14) & BM_ANADIG_PLL_VIDEO_BYPASS_CLK_SRC)
-+#define BV_ANADIG_PLL_VIDEO_BYPASS_CLK_SRC__OSC_24M  0x0
-+#define BV_ANADIG_PLL_VIDEO_BYPASS_CLK_SRC__ANACLK_1 0x1
-+#define BV_ANADIG_PLL_VIDEO_BYPASS_CLK_SRC__ANACLK_2 0x2
-+#define BV_ANADIG_PLL_VIDEO_BYPASS_CLK_SRC__XOR      0x3
-+#define BM_ANADIG_PLL_VIDEO_ENABLE 0x00002000
-+#define BM_ANADIG_PLL_VIDEO_POWERDOWN 0x00001000
-+#define BM_ANADIG_PLL_VIDEO_HOLD_RING_OFF 0x00000800
-+#define BM_ANADIG_PLL_VIDEO_DOUBLE_CP 0x00000400
-+#define BM_ANADIG_PLL_VIDEO_HALF_CP 0x00000200
-+#define BM_ANADIG_PLL_VIDEO_DOUBLE_LF 0x00000100
-+#define BM_ANADIG_PLL_VIDEO_HALF_LF 0x00000080
-+#define BP_ANADIG_PLL_VIDEO_DIV_SELECT      0
-+#define BM_ANADIG_PLL_VIDEO_DIV_SELECT 0x0000007F
-+#define BF_ANADIG_PLL_VIDEO_DIV_SELECT(v)  (((v) << 0) & BM_ANADIG_PLL_VIDEO_DIV_SELECT)
-+
-+#define HW_ANADIG_PLL_VIDEO_NUM	(0x000000b0)
-+
-+#define BP_ANADIG_PLL_VIDEO_NUM_A      0
-+#define BM_ANADIG_PLL_VIDEO_NUM_A 0x3FFFFFFF
-+#define BF_ANADIG_PLL_VIDEO_NUM_A(v)  (((v) << 0) & BM_ANADIG_PLL_VIDEO_NUM_A)
-+
-+#define HW_ANADIG_PLL_VIDEO_DENOM	(0x000000c0)
-+
-+#define BP_ANADIG_PLL_VIDEO_DENOM_B      0
-+#define BM_ANADIG_PLL_VIDEO_DENOM_B 0x3FFFFFFF
-+#define BF_ANADIG_PLL_VIDEO_DENOM_B(v)  (((v) << 0) & BM_ANADIG_PLL_VIDEO_DENOM_B)
-+
-+#define HW_ANADIG_PLL_MLB	(0x000000d0)
-+#define HW_ANADIG_PLL_MLB_SET	(0x000000d4)
-+#define HW_ANADIG_PLL_MLB_CLR	(0x000000d8)
-+#define HW_ANADIG_PLL_MLB_TOG	(0x000000dc)
-+
-+#define BM_ANADIG_PLL_MLB_LOCK 0x80000000
-+#define BP_ANADIG_PLL_MLB_MLB_FLT_RES_SEL      26
-+#define BM_ANADIG_PLL_MLB_MLB_FLT_RES_SEL 0x1C000000
-+#define BF_ANADIG_PLL_MLB_MLB_FLT_RES_SEL(v)  (((v) << 26) & BM_ANADIG_PLL_MLB_MLB_FLT_RES_SEL)
-+#define BP_ANADIG_PLL_MLB_RX_CLK_DELAY_CFG      23
-+#define BM_ANADIG_PLL_MLB_RX_CLK_DELAY_CFG 0x03800000
-+#define BF_ANADIG_PLL_MLB_RX_CLK_DELAY_CFG(v)  (((v) << 23) & BM_ANADIG_PLL_MLB_RX_CLK_DELAY_CFG)
-+#define BP_ANADIG_PLL_MLB_VDDD_DELAY_CFG      20
-+#define BM_ANADIG_PLL_MLB_VDDD_DELAY_CFG 0x00700000
-+#define BF_ANADIG_PLL_MLB_VDDD_DELAY_CFG(v)  (((v) << 20) & BM_ANADIG_PLL_MLB_VDDD_DELAY_CFG)
-+#define BP_ANADIG_PLL_MLB_VDDA_DELAY_CFG      17
-+#define BM_ANADIG_PLL_MLB_VDDA_DELAY_CFG 0x000E0000
-+#define BF_ANADIG_PLL_MLB_VDDA_DELAY_CFG(v)  (((v) << 17) & BM_ANADIG_PLL_MLB_VDDA_DELAY_CFG)
-+#define BM_ANADIG_PLL_MLB_BYPASS 0x00010000
-+#define BP_ANADIG_PLL_MLB_PHASE_SEL      12
-+#define BM_ANADIG_PLL_MLB_PHASE_SEL 0x00003000
-+#define BF_ANADIG_PLL_MLB_PHASE_SEL(v)  (((v) << 12) & BM_ANADIG_PLL_MLB_PHASE_SEL)
-+#define BM_ANADIG_PLL_MLB_HOLD_RING_OFF 0x00000800
-+#define BM_ANADIG_PLL_MLB_DOUBLE_CP 0x00000400
-+#define BM_ANADIG_PLL_MLB_HALF_CP 0x00000200
-+
-+#define HW_ANADIG_PLL_ENET	(0x000000e0)
-+#define HW_ANADIG_PLL_ENET_SET	(0x000000e4)
-+#define HW_ANADIG_PLL_ENET_CLR	(0x000000e8)
-+#define HW_ANADIG_PLL_ENET_TOG	(0x000000ec)
-+
-+#define BM_ANADIG_PLL_ENET_LOCK 0x80000000
-+#define BM_ANADIG_PLL_ENET_ENABLE_SATA 0x00100000
-+#define BM_ANADIG_PLL_ENET_ENABLE_PCIE 0x00080000
-+#define BM_ANADIG_PLL_ENET_PFD_OFFSET_EN 0x00040000
-+#define BM_ANADIG_PLL_ENET_DITHER_ENABLE 0x00020000
-+#define BM_ANADIG_PLL_ENET_BYPASS 0x00010000
-+#define BP_ANADIG_PLL_ENET_BYPASS_CLK_SRC      14
-+#define BM_ANADIG_PLL_ENET_BYPASS_CLK_SRC 0x0000C000
-+#define BF_ANADIG_PLL_ENET_BYPASS_CLK_SRC(v)  (((v) << 14) & BM_ANADIG_PLL_ENET_BYPASS_CLK_SRC)
-+#define BV_ANADIG_PLL_ENET_BYPASS_CLK_SRC__OSC_24M  0x0
-+#define BV_ANADIG_PLL_ENET_BYPASS_CLK_SRC__ANACLK_1 0x1
-+#define BV_ANADIG_PLL_ENET_BYPASS_CLK_SRC__ANACLK_2 0x2
-+#define BV_ANADIG_PLL_ENET_BYPASS_CLK_SRC__XOR      0x3
-+#define BM_ANADIG_PLL_ENET_ENABLE 0x00002000
-+#define BM_ANADIG_PLL_ENET_POWERDOWN 0x00001000
-+#define BM_ANADIG_PLL_ENET_HOLD_RING_OFF 0x00000800
-+#define BM_ANADIG_PLL_ENET_DOUBLE_CP 0x00000400
-+#define BM_ANADIG_PLL_ENET_HALF_CP 0x00000200
-+#define BM_ANADIG_PLL_ENET_DOUBLE_LF 0x00000100
-+#define BM_ANADIG_PLL_ENET_HALF_LF 0x00000080
-+#define BP_ANADIG_PLL_ENET_DIV_SELECT      0
-+#define BM_ANADIG_PLL_ENET_DIV_SELECT 0x00000003
-+#define BF_ANADIG_PLL_ENET_DIV_SELECT(v)  (((v) << 0) & BM_ANADIG_PLL_ENET_DIV_SELECT)
-+
-+#define HW_ANADIG_PFD_480	(0x000000f0)
-+#define HW_ANADIG_PFD_480_SET	(0x000000f4)
-+#define HW_ANADIG_PFD_480_CLR	(0x000000f8)
-+#define HW_ANADIG_PFD_480_TOG	(0x000000fc)
-+
-+#define BM_ANADIG_PFD_480_PFD3_CLKGATE 0x80000000
-+#define BM_ANADIG_PFD_480_PFD3_STABLE 0x40000000
-+#define BP_ANADIG_PFD_480_PFD3_FRAC      24
-+#define BM_ANADIG_PFD_480_PFD3_FRAC 0x3F000000
-+#define BF_ANADIG_PFD_480_PFD3_FRAC(v)  (((v) << 24) & BM_ANADIG_PFD_480_PFD3_FRAC)
-+#define BM_ANADIG_PFD_480_PFD2_CLKGATE 0x00800000
-+#define BM_ANADIG_PFD_480_PFD2_STABLE 0x00400000
-+#define BP_ANADIG_PFD_480_PFD2_FRAC      16
-+#define BM_ANADIG_PFD_480_PFD2_FRAC 0x003F0000
-+#define BF_ANADIG_PFD_480_PFD2_FRAC(v)  (((v) << 16) & BM_ANADIG_PFD_480_PFD2_FRAC)
-+#define BM_ANADIG_PFD_480_PFD1_CLKGATE 0x00008000
-+#define BM_ANADIG_PFD_480_PFD1_STABLE 0x00004000
-+#define BP_ANADIG_PFD_480_PFD1_FRAC      8
-+#define BM_ANADIG_PFD_480_PFD1_FRAC 0x00003F00
-+#define BF_ANADIG_PFD_480_PFD1_FRAC(v)  (((v) << 8) & BM_ANADIG_PFD_480_PFD1_FRAC)
-+#define BM_ANADIG_PFD_480_PFD0_CLKGATE 0x00000080
-+#define BM_ANADIG_PFD_480_PFD0_STABLE 0x00000040
-+#define BP_ANADIG_PFD_480_PFD0_FRAC      0
-+#define BM_ANADIG_PFD_480_PFD0_FRAC 0x0000003F
-+#define BF_ANADIG_PFD_480_PFD0_FRAC(v)  (((v) << 0) & BM_ANADIG_PFD_480_PFD0_FRAC)
-+
-+#define HW_ANADIG_PFD_528	(0x00000100)
-+#define HW_ANADIG_PFD_528_SET	(0x00000104)
-+#define HW_ANADIG_PFD_528_CLR	(0x00000108)
-+#define HW_ANADIG_PFD_528_TOG	(0x0000010c)
-+
-+#define BM_ANADIG_PFD_528_PFD3_CLKGATE 0x80000000
-+#define BM_ANADIG_PFD_528_PFD3_STABLE 0x40000000
-+#define BP_ANADIG_PFD_528_PFD3_FRAC      24
-+#define BM_ANADIG_PFD_528_PFD3_FRAC 0x3F000000
-+#define BF_ANADIG_PFD_528_PFD3_FRAC(v)  (((v) << 24) & BM_ANADIG_PFD_528_PFD3_FRAC)
-+#define BM_ANADIG_PFD_528_PFD2_CLKGATE 0x00800000
-+#define BM_ANADIG_PFD_528_PFD2_STABLE 0x00400000
-+#define BP_ANADIG_PFD_528_PFD2_FRAC      16
-+#define BM_ANADIG_PFD_528_PFD2_FRAC 0x003F0000
-+#define BF_ANADIG_PFD_528_PFD2_FRAC(v)  (((v) << 16) & BM_ANADIG_PFD_528_PFD2_FRAC)
-+#define BM_ANADIG_PFD_528_PFD1_CLKGATE 0x00008000
-+#define BM_ANADIG_PFD_528_PFD1_STABLE 0x00004000
-+#define BP_ANADIG_PFD_528_PFD1_FRAC      8
-+#define BM_ANADIG_PFD_528_PFD1_FRAC 0x00003F00
-+#define BF_ANADIG_PFD_528_PFD1_FRAC(v)  (((v) << 8) & BM_ANADIG_PFD_528_PFD1_FRAC)
-+#define BM_ANADIG_PFD_528_PFD0_CLKGATE 0x00000080
-+#define BM_ANADIG_PFD_528_PFD0_STABLE 0x00000040
-+#define BP_ANADIG_PFD_528_PFD0_FRAC      0
-+#define BM_ANADIG_PFD_528_PFD0_FRAC 0x0000003F
-+#define BF_ANADIG_PFD_528_PFD0_FRAC(v)  (((v) << 0) & BM_ANADIG_PFD_528_PFD0_FRAC)
-+
-+#define HW_ANADIG_REG_1P1	(0x00000110)
-+#define HW_ANADIG_REG_1P1_SET	(0x00000114)
-+#define HW_ANADIG_REG_1P1_CLR	(0x00000118)
-+#define HW_ANADIG_REG_1P1_TOG	(0x0000011c)
-+
-+#define BM_ANADIG_REG_1P1_OK_VDD1P1 0x00020000
-+#define BM_ANADIG_REG_1P1_BO_VDD1P1 0x00010000
-+#define BP_ANADIG_REG_1P1_OUTPUT_TRG      8
-+#define BM_ANADIG_REG_1P1_OUTPUT_TRG 0x00001F00
-+#define BF_ANADIG_REG_1P1_OUTPUT_TRG(v)  (((v) << 8) & BM_ANADIG_REG_1P1_OUTPUT_TRG)
-+#define BP_ANADIG_REG_1P1_BO_OFFSET      4
-+#define BM_ANADIG_REG_1P1_BO_OFFSET 0x00000070
-+#define BF_ANADIG_REG_1P1_BO_OFFSET(v)  (((v) << 4) & BM_ANADIG_REG_1P1_BO_OFFSET)
-+#define BM_ANADIG_REG_1P1_ENABLE_PULLDOWN 0x00000008
-+#define BM_ANADIG_REG_1P1_ENABLE_ILIMIT 0x00000004
-+#define BM_ANADIG_REG_1P1_ENABLE_BO 0x00000002
-+#define BM_ANADIG_REG_1P1_ENABLE_LINREG 0x00000001
-+
-+#define HW_ANADIG_REG_3P0	(0x00000120)
-+#define HW_ANADIG_REG_3P0_SET	(0x00000124)
-+#define HW_ANADIG_REG_3P0_CLR	(0x00000128)
-+#define HW_ANADIG_REG_3P0_TOG	(0x0000012c)
-+
-+#define BM_ANADIG_REG_3P0_OK_VDD3P0 0x00020000
-+#define BM_ANADIG_REG_3P0_BO_VDD3P0 0x00010000
-+#define BP_ANADIG_REG_3P0_OUTPUT_TRG      8
-+#define BM_ANADIG_REG_3P0_OUTPUT_TRG 0x00001F00
-+#define BF_ANADIG_REG_3P0_OUTPUT_TRG(v)  (((v) << 8) & BM_ANADIG_REG_3P0_OUTPUT_TRG)
-+#define BM_ANADIG_REG_3P0_VBUS_SEL 0x00000080
-+#define BP_ANADIG_REG_3P0_BO_OFFSET      4
-+#define BM_ANADIG_REG_3P0_BO_OFFSET 0x00000070
-+#define BF_ANADIG_REG_3P0_BO_OFFSET(v)  (((v) << 4) & BM_ANADIG_REG_3P0_BO_OFFSET)
-+#define BM_ANADIG_REG_3P0_ENABLE_ILIMIT 0x00000004
-+#define BM_ANADIG_REG_3P0_ENABLE_BO 0x00000002
-+#define BM_ANADIG_REG_3P0_ENABLE_LINREG 0x00000001
-+
-+#define HW_ANADIG_REG_2P5	(0x00000130)
-+#define HW_ANADIG_REG_2P5_SET	(0x00000134)
-+#define HW_ANADIG_REG_2P5_CLR	(0x00000138)
-+#define HW_ANADIG_REG_2P5_TOG	(0x0000013c)
-+
-+#define BM_ANADIG_REG_2P5_ENABLE_WEAK_LINREG 0x00040000
-+#define BM_ANADIG_REG_2P5_OK_VDD2P5 0x00020000
-+#define BM_ANADIG_REG_2P5_BO_VDD2P5 0x00010000
-+#define BP_ANADIG_REG_2P5_OUTPUT_TRG      8
-+#define BM_ANADIG_REG_2P5_OUTPUT_TRG 0x00001F00
-+#define BF_ANADIG_REG_2P5_OUTPUT_TRG(v)  (((v) << 8) & BM_ANADIG_REG_2P5_OUTPUT_TRG)
-+#define BP_ANADIG_REG_2P5_BO_OFFSET      4
-+#define BM_ANADIG_REG_2P5_BO_OFFSET 0x00000070
-+#define BF_ANADIG_REG_2P5_BO_OFFSET(v)  (((v) << 4) & BM_ANADIG_REG_2P5_BO_OFFSET)
-+#define BM_ANADIG_REG_2P5_ENABLE_PULLDOWN 0x00000008
-+#define BM_ANADIG_REG_2P5_ENABLE_ILIMIT 0x00000004
-+#define BM_ANADIG_REG_2P5_ENABLE_BO 0x00000002
-+#define BM_ANADIG_REG_2P5_ENABLE_LINREG 0x00000001
-+
-+#define HW_ANADIG_REG_CORE	(0x00000140)
-+#define HW_ANADIG_REG_CORE_SET	(0x00000144)
-+#define HW_ANADIG_REG_CORE_CLR	(0x00000148)
-+#define HW_ANADIG_REG_CORE_TOG	(0x0000014c)
-+
-+#define BM_ANADIG_REG_CORE_REF_SHIFT 0x80000000
-+#define BM_ANADIG_REG_CORE_FET_ODRIVE 0x20000000
-+#define BP_ANADIG_REG_CORE_RAMP_RATE      27
-+#define BM_ANADIG_REG_CORE_RAMP_RATE 0x18000000
-+#define BF_ANADIG_REG_CORE_RAMP_RATE(v)  (((v) << 27) & BM_ANADIG_REG_CORE_RAMP_RATE)
-+#define BP_ANADIG_REG_CORE_REG2_ADJ      23
-+#define BM_ANADIG_REG_CORE_REG2_ADJ 0x07800000
-+#define BF_ANADIG_REG_CORE_REG2_ADJ(v)  (((v) << 23) & BM_ANADIG_REG_CORE_REG2_ADJ)
-+#define BP_ANADIG_REG_CORE_REG2_TRG      18
-+#define BM_ANADIG_REG_CORE_REG2_TRG 0x007C0000
-+#define BF_ANADIG_REG_CORE_REG2_TRG(v)  (((v) << 18) & BM_ANADIG_REG_CORE_REG2_TRG)
-+#define BP_ANADIG_REG_CORE_REG1_ADJ      14
-+#define BM_ANADIG_REG_CORE_REG1_ADJ 0x0003C000
-+#define BF_ANADIG_REG_CORE_REG1_ADJ(v)  (((v) << 14) & BM_ANADIG_REG_CORE_REG1_ADJ)
-+#define BP_ANADIG_REG_CORE_REG1_TRG      9
-+#define BM_ANADIG_REG_CORE_REG1_TRG 0x00003E00
-+#define BF_ANADIG_REG_CORE_REG1_TRG(v)  (((v) << 9) & BM_ANADIG_REG_CORE_REG1_TRG)
-+#define BP_ANADIG_REG_CORE_REG0_ADJ      5
-+#define BM_ANADIG_REG_CORE_REG0_ADJ 0x000001E0
-+#define BF_ANADIG_REG_CORE_REG0_ADJ(v)  (((v) << 5) & BM_ANADIG_REG_CORE_REG0_ADJ)
-+#define BP_ANADIG_REG_CORE_REG0_TRG      0
-+#define BM_ANADIG_REG_CORE_REG0_TRG 0x0000001F
-+#define BF_ANADIG_REG_CORE_REG0_TRG(v)  (((v) << 0) & BM_ANADIG_REG_CORE_REG0_TRG)
-+
-+#define HW_ANADIG_ANA_MISC0	(0x00000150)
-+#define HW_ANADIG_ANA_MISC0_SET	(0x00000154)
-+#define HW_ANADIG_ANA_MISC0_CLR	(0x00000158)
-+#define HW_ANADIG_ANA_MISC0_TOG	(0x0000015c)
-+
-+#define BP_ANADIG_ANA_MISC0_CLKGATE_DELAY      26
-+#define BM_ANADIG_ANA_MISC0_CLKGATE_DELAY 0x1C000000
-+#define BF_ANADIG_ANA_MISC0_CLKGATE_DELAY(v)  (((v) << 26) & BM_ANADIG_ANA_MISC0_CLKGATE_DELAY)
-+#define BM_ANADIG_ANA_MISC0_CLKGATE_CTRL 0x02000000
-+#define BP_ANADIG_ANA_MISC0_ANAMUX      21
-+#define BM_ANADIG_ANA_MISC0_ANAMUX 0x01E00000
-+#define BF_ANADIG_ANA_MISC0_ANAMUX(v)  (((v) << 21) & BM_ANADIG_ANA_MISC0_ANAMUX)
-+#define BM_ANADIG_ANA_MISC0_ANAMUX_EN 0x00100000
-+#define BP_ANADIG_ANA_MISC0_WBCP_VPW_THRESH      18
-+#define BM_ANADIG_ANA_MISC0_WBCP_VPW_THRESH 0x000C0000
-+#define BF_ANADIG_ANA_MISC0_WBCP_VPW_THRESH(v)  (((v) << 18) & BM_ANADIG_ANA_MISC0_WBCP_VPW_THRESH)
-+#define BM_ANADIG_ANA_MISC0_OSC_XTALOK_EN 0x00020000
-+#define BM_ANADIG_ANA_MISC0_OSC_XTALOK 0x00010000
-+#define BP_ANADIG_ANA_MISC0_OSC_I      14
-+#define BM_ANADIG_ANA_MISC0_OSC_I 0x0000C000
-+#define BF_ANADIG_ANA_MISC0_OSC_I(v)  (((v) << 14) & BM_ANADIG_ANA_MISC0_OSC_I)
-+#define BM_ANADIG_ANA_MISC0_RTC_RINGOSC_EN 0x00002000
-+#define BM_ANADIG_ANA_MISC0_STOP_MODE_CONFIG 0x00001000
-+#define BP_ANADIG_ANA_MISC0_REFTOP_BIAS_TST      8
-+#define BM_ANADIG_ANA_MISC0_REFTOP_BIAS_TST 0x00000300
-+#define BF_ANADIG_ANA_MISC0_REFTOP_BIAS_TST(v)  (((v) << 8) & BM_ANADIG_ANA_MISC0_REFTOP_BIAS_TST)
-+#define BM_ANADIG_ANA_MISC0_REFTOP_VBGUP 0x00000080
-+#define BP_ANADIG_ANA_MISC0_REFTOP_VBGADJ      4
-+#define BM_ANADIG_ANA_MISC0_REFTOP_VBGADJ 0x00000070
-+#define BF_ANADIG_ANA_MISC0_REFTOP_VBGADJ(v)  (((v) << 4) & BM_ANADIG_ANA_MISC0_REFTOP_VBGADJ)
-+#define BM_ANADIG_ANA_MISC0_REFTOP_SELBIASOFF 0x00000008
-+#define BM_ANADIG_ANA_MISC0_REFTOP_LOWPOWER 0x00000004
-+#define BM_ANADIG_ANA_MISC0_REFTOP_PWDVBGUP 0x00000002
-+#define BM_ANADIG_ANA_MISC0_REFTOP_PWD 0x00000001
-+
-+#define HW_ANADIG_ANA_MISC1	(0x00000160)
-+#define HW_ANADIG_ANA_MISC1_SET	(0x00000164)
-+#define HW_ANADIG_ANA_MISC1_CLR	(0x00000168)
-+#define HW_ANADIG_ANA_MISC1_TOG	(0x0000016c)
-+
-+#define BM_ANADIG_ANA_MISC1_IRQ_DIG_BO 0x80000000
-+#define BM_ANADIG_ANA_MISC1_IRQ_ANA_BO 0x40000000
-+#define BM_ANADIG_ANA_MISC1_IRQ_TEMPSENSE_BO 0x20000000
-+#define BM_ANADIG_ANA_MISC1_LVDSCLK2_IBEN 0x00002000
-+#define BM_ANADIG_ANA_MISC1_LVDSCLK1_IBEN 0x00001000
-+#define BM_ANADIG_ANA_MISC1_LVDSCLK2_OBEN 0x00000800
-+#define BM_ANADIG_ANA_MISC1_LVDSCLK1_OBEN 0x00000400
-+#define BP_ANADIG_ANA_MISC1_LVDS2_CLK_SEL      5
-+#define BM_ANADIG_ANA_MISC1_LVDS2_CLK_SEL 0x000003E0
-+#define BF_ANADIG_ANA_MISC1_LVDS2_CLK_SEL(v)  (((v) << 5) & BM_ANADIG_ANA_MISC1_LVDS2_CLK_SEL)
-+#define BP_ANADIG_ANA_MISC1_LVDS1_CLK_SEL      0
-+#define BM_ANADIG_ANA_MISC1_LVDS1_CLK_SEL 0x0000001F
-+#define BF_ANADIG_ANA_MISC1_LVDS1_CLK_SEL(v)  (((v) << 0) & BM_ANADIG_ANA_MISC1_LVDS1_CLK_SEL)
-+
-+#define HW_ANADIG_ANA_MISC2	(0x00000170)
-+#define HW_ANADIG_ANA_MISC2_SET	(0x00000174)
-+#define HW_ANADIG_ANA_MISC2_CLR	(0x00000178)
-+#define HW_ANADIG_ANA_MISC2_TOG	(0x0000017c)
-+
-+#define BP_ANADIG_ANA_MISC2_CONTROL3      30
-+#define BM_ANADIG_ANA_MISC2_CONTROL3 0xC0000000
-+#define BF_ANADIG_ANA_MISC2_CONTROL3(v) (((v) << 30) & BM_ANADIG_ANA_MISC2_CONTROL3)
-+#define BP_ANADIG_ANA_MISC2_REG2_STEP_TIME      28
-+#define BM_ANADIG_ANA_MISC2_REG2_STEP_TIME 0x30000000
-+#define BF_ANADIG_ANA_MISC2_REG2_STEP_TIME(v)  (((v) << 28) & BM_ANADIG_ANA_MISC2_REG2_STEP_TIME)
-+#define BP_ANADIG_ANA_MISC2_REG1_STEP_TIME      26
-+#define BM_ANADIG_ANA_MISC2_REG1_STEP_TIME 0x0C000000
-+#define BF_ANADIG_ANA_MISC2_REG1_STEP_TIME(v)  (((v) << 26) & BM_ANADIG_ANA_MISC2_REG1_STEP_TIME)
-+#define BP_ANADIG_ANA_MISC2_REG0_STEP_TIME      24
-+#define BM_ANADIG_ANA_MISC2_REG0_STEP_TIME 0x03000000
-+#define BF_ANADIG_ANA_MISC2_REG0_STEP_TIME(v)  (((v) << 24) & BM_ANADIG_ANA_MISC2_REG0_STEP_TIME)
-+#define BM_ANADIG_ANA_MISC2_CONTROL2 0x00800000
-+#define BM_ANADIG_ANA_MISC2_REG2_OK 0x00400000
-+#define BM_ANADIG_ANA_MISC2_REG2_ENABLE_BO 0x00200000
-+#define BM_ANADIG_ANA_MISC2_REG2_BO_STATUS 0x00080000
-+#define BP_ANADIG_ANA_MISC2_REG2_BO_OFFSET      16
-+#define BM_ANADIG_ANA_MISC2_REG2_BO_OFFSET 0x00070000
-+#define BF_ANADIG_ANA_MISC2_REG2_BO_OFFSET(v)  (((v) << 16) & BM_ANADIG_ANA_MISC2_REG2_BO_OFFSET)
-+#define BM_ANADIG_ANA_MISC2_CONTROL1 0x00008000
-+#define BM_ANADIG_ANA_MISC2_REG1_OK 0x00004000
-+#define BM_ANADIG_ANA_MISC2_REG1_ENABLE_BO 0x00002000
-+#define BM_ANADIG_ANA_MISC2_REG1_BO_STATUS 0x00000800
-+#define BP_ANADIG_ANA_MISC2_REG1_BO_OFFSET      8
-+#define BM_ANADIG_ANA_MISC2_REG1_BO_OFFSET 0x00000700
-+#define BF_ANADIG_ANA_MISC2_REG1_BO_OFFSET(v)  (((v) << 8) & BM_ANADIG_ANA_MISC2_REG1_BO_OFFSET)
-+#define BM_ANADIG_ANA_MISC2_CONTROL0 0x00000080
-+#define BM_ANADIG_ANA_MISC2_REG0_OK 0x00000040
-+#define BM_ANADIG_ANA_MISC2_REG0_ENABLE_BO 0x00000020
-+#define BM_ANADIG_ANA_MISC2_REG0_BO_STATUS 0x00000008
-+#define BP_ANADIG_ANA_MISC2_REG0_BO_OFFSET      0
-+#define BM_ANADIG_ANA_MISC2_REG0_BO_OFFSET 0x00000007
-+#define BF_ANADIG_ANA_MISC2_REG0_BO_OFFSET(v)  (((v) << 0) & BM_ANADIG_ANA_MISC2_REG0_BO_OFFSET)
-+
-+#define HW_ANADIG_TEMPSENSE0	(0x00000180)
-+#define HW_ANADIG_TEMPSENSE0_SET	(0x00000184)
-+#define HW_ANADIG_TEMPSENSE0_CLR	(0x00000188)
-+#define HW_ANADIG_TEMPSENSE0_TOG	(0x0000018c)
-+
-+#define BP_ANADIG_TEMPSENSE0_ALARM_VALUE      20
-+#define BM_ANADIG_TEMPSENSE0_ALARM_VALUE 0xFFF00000
-+#define BF_ANADIG_TEMPSENSE0_ALARM_VALUE(v) (((v) << 20) & BM_ANADIG_TEMPSENSE0_ALARM_VALUE)
-+#define BP_ANADIG_TEMPSENSE0_TEMP_VALUE      8
-+#define BM_ANADIG_TEMPSENSE0_TEMP_VALUE 0x000FFF00
-+#define BF_ANADIG_TEMPSENSE0_TEMP_VALUE(v)  (((v) << 8) & BM_ANADIG_TEMPSENSE0_TEMP_VALUE)
-+#define BM_ANADIG_TEMPSENSE0_TEST 0x00000040
-+#define BP_ANADIG_TEMPSENSE0_VBGADJ      3
-+#define BM_ANADIG_TEMPSENSE0_VBGADJ 0x00000038
-+#define BF_ANADIG_TEMPSENSE0_VBGADJ(v)  (((v) << 3) & BM_ANADIG_TEMPSENSE0_VBGADJ)
-+#define BM_ANADIG_TEMPSENSE0_FINISHED 0x00000004
-+#define BM_ANADIG_TEMPSENSE0_MEASURE_TEMP 0x00000002
-+#define BM_ANADIG_TEMPSENSE0_POWER_DOWN 0x00000001
-+
-+#define HW_ANADIG_TEMPSENSE1	(0x00000190)
-+#define HW_ANADIG_TEMPSENSE1_SET	(0x00000194)
-+#define HW_ANADIG_TEMPSENSE1_CLR	(0x00000198)
-+#define HW_ANADIG_TEMPSENSE1_TOG	(0x0000019c)
-+
-+#define BP_ANADIG_TEMPSENSE1_MEASURE_FREQ      0
-+#define BM_ANADIG_TEMPSENSE1_MEASURE_FREQ 0x0000FFFF
-+#define BF_ANADIG_TEMPSENSE1_MEASURE_FREQ(v)  (((v) << 0) & BM_ANADIG_TEMPSENSE1_MEASURE_FREQ)
-+
-+#define HW_ANADIG_USB1_VBUS_DETECT	(0x000001a0)
-+#define HW_ANADIG_USB1_VBUS_DETECT_SET	(0x000001a4)
-+#define HW_ANADIG_USB1_VBUS_DETECT_CLR	(0x000001a8)
-+#define HW_ANADIG_USB1_VBUS_DETECT_TOG	(0x000001ac)
-+
-+#define BM_ANADIG_USB1_VBUS_DETECT_EN_CHARGER_RESISTOR 0x80000000
-+#define BM_ANADIG_USB1_VBUS_DETECT_CHARGE_VBUS 0x08000000
-+#define BM_ANADIG_USB1_VBUS_DETECT_DISCHARGE_VBUS 0x04000000
-+#define BM_ANADIG_USB1_VBUS_DETECT_VBUSVALID_PWRUP_CMPS 0x00100000
-+#define BM_ANADIG_USB1_VBUS_DETECT_VBUSVALID_5VDETECT 0x00080000
-+#define BM_ANADIG_USB1_VBUS_DETECT_VBUSVALID_TO_B 0x00040000
-+#define BM_ANADIG_USB1_VBUS_DETECT_VBUSVALID_OVERRIDE 0x00000080
-+#define BM_ANADIG_USB1_VBUS_DETECT_AVALID_OVERRIDE 0x00000040
-+#define BM_ANADIG_USB1_VBUS_DETECT_BVALID_OVERRIDE 0x00000020
-+#define BM_ANADIG_USB1_VBUS_DETECT_SESSEND_OVERRIDE 0x00000010
-+#define BM_ANADIG_USB1_VBUS_DETECT_VBUS_OVERRIDE_EN 0x00000008
-+#define BP_ANADIG_USB1_VBUS_DETECT_VBUSVALID_THRESH      0
-+#define BM_ANADIG_USB1_VBUS_DETECT_VBUSVALID_THRESH 0x00000007
-+#define BF_ANADIG_USB1_VBUS_DETECT_VBUSVALID_THRESH(v)  (((v) << 0) & BM_ANADIG_USB1_VBUS_DETECT_VBUSVALID_THRESH)
-+
-+#define HW_ANADIG_USB1_CHRG_DETECT	(0x000001b0)
-+#define HW_ANADIG_USB1_CHRG_DETECT_SET	(0x000001b4)
-+#define HW_ANADIG_USB1_CHRG_DETECT_CLR	(0x000001b8)
-+#define HW_ANADIG_USB1_CHRG_DETECT_TOG	(0x000001bc)
-+
-+#define BM_ANADIG_USB1_CHRG_DETECT_BGR_BIAS 0x00800000
-+#define BM_ANADIG_USB1_CHRG_DETECT_EN_B 0x00100000
-+#define BM_ANADIG_USB1_CHRG_DETECT_CHK_CHRG_B 0x00080000
-+#define BM_ANADIG_USB1_CHRG_DETECT_CHK_CONTACT 0x00040000
-+#define BM_ANADIG_USB1_CHRG_DETECT_FORCE_DETECT 0x00000001
-+
-+#define HW_ANADIG_USB1_VBUS_DET_STAT	(0x000001c0)
-+#define HW_ANADIG_USB1_VBUS_DET_STAT_SET	(0x000001c4)
-+#define HW_ANADIG_USB1_VBUS_DET_STAT_CLR	(0x000001c8)
-+#define HW_ANADIG_USB1_VBUS_DET_STAT_TOG	(0x000001cc)
-+
-+#define BM_ANADIG_USB1_VBUS_DET_STAT_VBUS_VALID 0x00000008
-+#define BM_ANADIG_USB1_VBUS_DET_STAT_AVALID 0x00000004
-+#define BM_ANADIG_USB1_VBUS_DET_STAT_BVALID 0x00000002
-+#define BM_ANADIG_USB1_VBUS_DET_STAT_SESSEND 0x00000001
-+
-+#define HW_ANADIG_USB1_CHRG_DET_STAT	(0x000001d0)
-+#define HW_ANADIG_USB1_CHRG_DET_STAT_SET	(0x000001d4)
-+#define HW_ANADIG_USB1_CHRG_DET_STAT_CLR	(0x000001d8)
-+#define HW_ANADIG_USB1_CHRG_DET_STAT_TOG	(0x000001dc)
-+
-+#define BM_ANADIG_USB1_CHRG_DET_STAT_DP_STATE 0x00000008
-+#define BM_ANADIG_USB1_CHRG_DET_STAT_DM_STATE 0x00000004
-+#define BM_ANADIG_USB1_CHRG_DET_STAT_CHRG_DETECTED 0x00000002
-+#define BM_ANADIG_USB1_CHRG_DET_STAT_PLUG_CONTACT 0x00000001
-+
-+#define HW_ANADIG_USB1_LOOPBACK	(0x000001e0)
-+#define HW_ANADIG_USB1_LOOPBACK_SET	(0x000001e4)
-+#define HW_ANADIG_USB1_LOOPBACK_CLR	(0x000001e8)
-+#define HW_ANADIG_USB1_LOOPBACK_TOG	(0x000001ec)
-+
-+#define BM_ANADIG_USB1_LOOPBACK_UTMO_DIG_TST1 0x00000100
-+#define BM_ANADIG_USB1_LOOPBACK_UTMO_DIG_TST0 0x00000080
-+#define BM_ANADIG_USB1_LOOPBACK_TSTI_TX_HIZ 0x00000040
-+#define BM_ANADIG_USB1_LOOPBACK_TSTI_TX_EN 0x00000020
-+#define BM_ANADIG_USB1_LOOPBACK_TSTI_TX_LS_MODE 0x00000010
-+#define BM_ANADIG_USB1_LOOPBACK_TSTI_TX_HS_MODE 0x00000008
-+#define BM_ANADIG_USB1_LOOPBACK_UTMI_DIG_TST1 0x00000004
-+#define BM_ANADIG_USB1_LOOPBACK_UTMI_DIG_TST0 0x00000002
-+#define BM_ANADIG_USB1_LOOPBACK_UTMI_TESTSTART 0x00000001
-+
-+#define HW_ANADIG_USB1_MISC	(0x000001f0)
-+#define HW_ANADIG_USB1_MISC_SET	(0x000001f4)
-+#define HW_ANADIG_USB1_MISC_CLR	(0x000001f8)
-+#define HW_ANADIG_USB1_MISC_TOG	(0x000001fc)
-+
-+#define BM_ANADIG_USB1_MISC_EN_CLK_UTMI 0x40000000
-+#define BM_ANADIG_USB1_MISC_RX_VPIN_FS 0x20000000
-+#define BM_ANADIG_USB1_MISC_RX_VMIN_FS 0x10000000
-+#define BM_ANADIG_USB1_MISC_RX_RXD_FS 0x08000000
-+#define BM_ANADIG_USB1_MISC_RX_SQUELCH 0x04000000
-+#define BM_ANADIG_USB1_MISC_RX_DISCON_DET 0x02000000
-+#define BM_ANADIG_USB1_MISC_RX_HS_DATA 0x01000000
-+#define BM_ANADIG_USB1_MISC_EN_DEGLITCH 0x00000002
-+#define BM_ANADIG_USB1_MISC_HS_USE_EXTERNAL_R 0x00000001
-+
-+#define HW_ANADIG_USB2_VBUS_DETECT	(0x00000200)
-+#define HW_ANADIG_USB2_VBUS_DETECT_SET	(0x00000204)
-+#define HW_ANADIG_USB2_VBUS_DETECT_CLR	(0x00000208)
-+#define HW_ANADIG_USB2_VBUS_DETECT_TOG	(0x0000020c)
-+
-+#define BM_ANADIG_USB2_VBUS_DETECT_EN_CHARGER_RESISTOR 0x80000000
-+#define BM_ANADIG_USB2_VBUS_DETECT_CHARGE_VBUS 0x08000000
-+#define BM_ANADIG_USB2_VBUS_DETECT_DISCHARGE_VBUS 0x04000000
-+#define BM_ANADIG_USB2_VBUS_DETECT_VBUSVALID_PWRUP_CMPS 0x00100000
-+#define BM_ANADIG_USB2_VBUS_DETECT_VBUSVALID_5VDETECT 0x00080000
-+#define BM_ANADIG_USB2_VBUS_DETECT_VBUSVALID_TO_B 0x00040000
-+#define BP_ANADIG_USB2_VBUS_DETECT_VBUSVALID_THRESH      0
-+#define BM_ANADIG_USB2_VBUS_DETECT_VBUSVALID_THRESH 0x00000007
-+#define BF_ANADIG_USB2_VBUS_DETECT_VBUSVALID_THRESH(v)  (((v) << 0) & BM_ANADIG_USB2_VBUS_DETECT_VBUSVALID_THRESH)
-+
-+#define HW_ANADIG_USB2_CHRG_DETECT	(0x00000210)
-+#define HW_ANADIG_USB2_CHRG_DETECT_SET	(0x00000214)
-+#define HW_ANADIG_USB2_CHRG_DETECT_CLR	(0x00000218)
-+#define HW_ANADIG_USB2_CHRG_DETECT_TOG	(0x0000021c)
-+
-+#define BM_ANADIG_USB2_CHRG_DETECT_BGR_BIAS 0x00800000
-+#define BM_ANADIG_USB2_CHRG_DETECT_EN_B 0x00100000
-+#define BM_ANADIG_USB2_CHRG_DETECT_CHK_CHRG_B 0x00080000
-+#define BM_ANADIG_USB2_CHRG_DETECT_CHK_CONTACT 0x00040000
-+#define BM_ANADIG_USB2_CHRG_DETECT_FORCE_DETECT 0x00000001
-+
-+#define HW_ANADIG_USB2_VBUS_DET_STAT	(0x00000220)
-+#define HW_ANADIG_USB2_VBUS_DET_STAT_SET	(0x00000224)
-+#define HW_ANADIG_USB2_VBUS_DET_STAT_CLR	(0x00000228)
-+#define HW_ANADIG_USB2_VBUS_DET_STAT_TOG	(0x0000022c)
-+
-+#define BM_ANADIG_USB2_VBUS_DET_STAT_VBUS_VALID 0x00000008
-+#define BM_ANADIG_USB2_VBUS_DET_STAT_AVALID 0x00000004
-+#define BM_ANADIG_USB2_VBUS_DET_STAT_BVALID 0x00000002
-+#define BM_ANADIG_USB2_VBUS_DET_STAT_SESSEND 0x00000001
-+
-+#define HW_ANADIG_USB2_CHRG_DET_STAT	(0x00000230)
-+#define HW_ANADIG_USB2_CHRG_DET_STAT_SET	(0x00000234)
-+#define HW_ANADIG_USB2_CHRG_DET_STAT_CLR	(0x00000238)
-+#define HW_ANADIG_USB2_CHRG_DET_STAT_TOG	(0x0000023c)
-+
-+#define BM_ANADIG_USB2_CHRG_DET_STAT_DP_STATE 0x00000008
-+#define BM_ANADIG_USB2_CHRG_DET_STAT_DM_STATE 0x00000004
-+#define BM_ANADIG_USB2_CHRG_DET_STAT_CHRG_DETECTED 0x00000002
-+#define BM_ANADIG_USB2_CHRG_DET_STAT_PLUG_CONTACT 0x00000001
-+
-+#define HW_ANADIG_USB2_LOOPBACK	(0x00000240)
-+#define HW_ANADIG_USB2_LOOPBACK_SET	(0x00000244)
-+#define HW_ANADIG_USB2_LOOPBACK_CLR	(0x00000248)
-+#define HW_ANADIG_USB2_LOOPBACK_TOG	(0x0000024c)
-+
-+#define BM_ANADIG_USB2_LOOPBACK_UTMO_DIG_TST1 0x00000100
-+#define BM_ANADIG_USB2_LOOPBACK_UTMO_DIG_TST0 0x00000080
-+#define BM_ANADIG_USB2_LOOPBACK_TSTI_TX_HIZ 0x00000040
-+#define BM_ANADIG_USB2_LOOPBACK_TSTI_TX_EN 0x00000020
-+#define BM_ANADIG_USB2_LOOPBACK_TSTI_TX_LS_MODE 0x00000010
-+#define BM_ANADIG_USB2_LOOPBACK_TSTI_TX_HS_MODE 0x00000008
-+#define BM_ANADIG_USB2_LOOPBACK_UTMI_DIG_TST1 0x00000004
-+#define BM_ANADIG_USB2_LOOPBACK_UTMI_DIG_TST0 0x00000002
-+#define BM_ANADIG_USB2_LOOPBACK_UTMI_TESTSTART 0x00000001
-+
-+#define HW_ANADIG_USB2_MISC	(0x00000250)
-+#define HW_ANADIG_USB2_MISC_SET	(0x00000254)
-+#define HW_ANADIG_USB2_MISC_CLR	(0x00000258)
-+#define HW_ANADIG_USB2_MISC_TOG	(0x0000025c)
-+
-+#define BM_ANADIG_USB2_MISC_EN_CLK_UTMI 0x40000000
-+#define BM_ANADIG_USB2_MISC_RX_VPIN_FS 0x20000000
-+#define BM_ANADIG_USB2_MISC_RX_VMIN_FS 0x10000000
-+#define BM_ANADIG_USB2_MISC_RX_RXD_FS 0x08000000
-+#define BM_ANADIG_USB2_MISC_RX_SQUELCH 0x04000000
-+#define BM_ANADIG_USB2_MISC_RX_DISCON_DET 0x02000000
-+#define BM_ANADIG_USB2_MISC_RX_HS_DATA 0x01000000
-+#define BM_ANADIG_USB2_MISC_EN_DEGLITCH 0x00000002
-+#define BM_ANADIG_USB2_MISC_HS_USE_EXTERNAL_R 0x00000001
-+
-+#define HW_ANADIG_DIGPROG	(0x00000260)
-+
-+#define BP_ANADIG_DIGPROG_MAJOR      8
-+#define BM_ANADIG_DIGPROG_MAJOR 0x00FFFF00
-+#define BF_ANADIG_DIGPROG_MAJOR(v)  (((v) << 8) & BM_ANADIG_DIGPROG_MAJOR)
-+#define BP_ANADIG_DIGPROG_MINOR      0
-+#define BM_ANADIG_DIGPROG_MINOR 0x000000FF
-+#define BF_ANADIG_DIGPROG_MINOR(v)  (((v) << 0) & BM_ANADIG_DIGPROG_MINOR)
-+#endif /* __ARCH_ARM___ANADIG_H */
-diff --git a/arch/arm/mach-imx/include/mach/imx6-regs.h b/arch/arm/mach-imx/include/mach/imx6-regs.h
++#include <common.h>
++#include <init.h>
++#include <asm/processor.h>
++#include <asm/global_data.h>
++#include <asm/io.h>
++#include <asm/cache.h>
++#include <asm/mmu.h>
++#include <asm/fsl_law.h>
++#include <mach/immap_85xx.h>
++#include <mach/mp.h>
++
++DECLARE_GLOBAL_DATA_PTR;
++
++static void setup_ccsrbar(void)
++{
++	u32 temp;
++	u32 mas0, mas1, mas2, mas3, mas7;
++	u32 *ccsr_virt = (u32 *)(CFG_CCSRBAR + 0x1000);
++
++	mas0 = MAS0_TLBSEL(0) | MAS0_ESEL(1);
++	mas1 = MAS1_VALID | MAS1_TID(0) | MAS1_TS | MAS1_TSIZE(BOOKE_PAGESZ_4K);
++	/* mas1 is the same as above */
++	mas2 = FSL_BOOKE_MAS2(CFG_CCSRBAR + 0x1000, MAS2_I|MAS2_G);
++	mas3 = FSL_BOOKE_MAS3(CFG_CCSRBAR_DEFAULT, 0, MAS3_SW|MAS3_SR);
++	mas7 = FSL_BOOKE_MAS7(CFG_CCSRBAR_DEFAULT);
++
++	write_tlb(mas0, mas1, mas2, mas3, mas7);
++
++	temp = in_be32(ccsr_virt);
++	out_be32(ccsr_virt, CFG_CCSRBAR_PHYS >> 12);
++	temp = in_be32((u32 *)CFG_CCSRBAR);
++}
++
++void cpu_init_early_f(void)
++{
++	u32 mas0, mas1, mas2, mas3, mas7;
++	int i;
++
++	/* Pointer is writable since we allocated a register for it */
++	gd = (struct global_data *) (CFG_INIT_RAM_ADDR + CFG_INIT_SP_OFFSET);
++
++	/*
++	 * Clear initial global data.
++	 */
++	for (i = 0; i < sizeof(struct global_data); i++)
++		((char *)gd)[i] = 0;
++
++	mas0 = MAS0_TLBSEL(0) | MAS0_ESEL(0);
++	mas1 = MAS1_VALID | MAS1_TID(0) | MAS1_TS | MAS1_TSIZE(BOOKE_PAGESZ_4K);
++	mas2 = FSL_BOOKE_MAS2(CFG_CCSRBAR, MAS2_I|MAS2_G);
++	mas3 = FSL_BOOKE_MAS3(CFG_CCSRBAR_PHYS, 0, MAS3_SW|MAS3_SR);
++	mas7 = FSL_BOOKE_MAS7(CFG_CCSRBAR_PHYS);
++
++	write_tlb(mas0, mas1, mas2, mas3, mas7);
++
++	/* set up CCSR if we want it moved */
++	if (CFG_CCSRBAR_DEFAULT != CFG_CCSRBAR_PHYS)
++		setup_ccsrbar();
++
++	init_laws();
++	invalidate_tlb(0);
++	init_tlbs();
++}
++
++void cpu_init_f(void)
++{
++	disable_tlb(14);
++	disable_tlb(15);
++
++	init_early_memctl_regs();
++
++	init_used_tlb_cams();
++}
++
++int l2_cache_init(void)
++{
++	void __iomem *l2cache = (void __iomem *)MPC85xx_L2_ADDR;
++	uint cache_ctl;
++	uint svr, ver;
++	u32 l2siz_field;
++
++	svr = get_svr();
++	ver = SVR_SOC_VER(svr);
++
++	asm("msync;isync");
++	cache_ctl = in_be32(l2cache + MPC85xx_L2_CTL_OFFSET);
++
++	l2siz_field = (cache_ctl >> 28) & 0x3;
++
++	switch (l2siz_field) {
++	case 0x0:
++		return -1;
++		break;
++	case 0x1:
++		cache_ctl = 0xc0000000; /* set L2E=1, L2I=1, L2SRAM=0 */
++		break;
++	case 0x2:
++		/* set L2E=1, L2I=1, & L2SRAM=0 */
++		cache_ctl = 0xc0000000;
++		break;
++	case 0x3:
++		/* set L2E=1, L2I=1, & L2SRAM=0 */
++		cache_ctl = 0xc0000000;
++		break;
++	}
++
++	if (!(in_be32(l2cache + MPC85xx_L2_CTL_OFFSET) & MPC85xx_L2CTL_L2E)) {
++		asm("msync;isync");
++		/* invalidate & enable */
++		out_be32(l2cache + MPC85xx_L2_CTL_OFFSET, cache_ctl);
++		asm("msync;isync");
++	}
++
++	return 0;
++}
+diff --git a/arch/ppc/cpu-85xx/fixed_ivor.S b/arch/ppc/cpu-85xx/fixed_ivor.S
 new file mode 100644
-index 0000000..e62cc79
+index 0000000..a00a435
 --- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/imx6-regs.h
-@@ -0,0 +1,132 @@
-+#ifndef __MACH_IMX6_REGS_H
-+#define __MACH_IMX6_REGS_H
-+
-+#define IMX_TIM1_BASE	0x02098000
-+#define IMX_WDT_BASE	0x020bc000
-+#define IMX_IOMUXC_BASE 0x020e0000
-+
-+#define GPT_TCTL	0x00
-+#define GPT_TPRER	0x04
-+#define GPT_TCMP	0x10
-+#define GPT_TCR		0x1c
-+#define GPT_TCN		0x24
-+#define GPT_TSTAT	0x08
-+
-+/* Part 2: Bitfields */
-+#define TCTL_SWR	(1<<15)	/* Software reset */
-+#define TCTL_FRR	(1<<9)	/* Freerun / restart */
-+#define TCTL_CAP	(3<<6)	/* Capture Edge */
-+#define TCTL_OM		(1<<5)	/* output mode */
-+#define TCTL_IRQEN	(1<<4)	/* interrupt enable */
-+#define TCTL_CLKSOURCE	(6)	/* Clock source bit position */
-+#define TCTL_TEN	(1)	/* Timer enable */
-+#define TPRER_PRES	(0xff)	/* Prescale */
-+#define TSTAT_CAPT	(1<<1)	/* Capture event */
-+#define TSTAT_COMP	(1)	/* Compare event */
-+
-+#define MX6_AIPS1_ARB_BASE_ADDR		0x02000000
-+#define MX6_AIPS2_ARB_BASE_ADDR		0x02100000
-+
-+/* Defines for Blocks connected via AIPS (SkyBlue) */
-+#define MX6_ATZ1_BASE_ADDR              MX6_AIPS1_ARB_BASE_ADDR
-+#define MX6_ATZ2_BASE_ADDR              MX6_AIPS2_ARB_BASE_ADDR
-+
-+#define IPU_CTRL_BASE_ADDR	0x02400000
-+
-+/* slots 0,7 of SDMA reserved, therefore left unused in IPMUX3 */
-+#define MX6_SPDIF_BASE_ADDR             (MX6_ATZ1_BASE_ADDR + 0x04000)
-+#define MX6_ECSPI1_BASE_ADDR            (MX6_ATZ1_BASE_ADDR + 0x08000)
-+#define MX6_ECSPI2_BASE_ADDR            (MX6_ATZ1_BASE_ADDR + 0x0C000)
-+#define MX6_ECSPI3_BASE_ADDR            (MX6_ATZ1_BASE_ADDR + 0x10000)
-+#define MX6_ECSPI4_BASE_ADDR            (MX6_ATZ1_BASE_ADDR + 0x14000)
-+#define MX6_ECSPI5_BASE_ADDR            (MX6_ATZ1_BASE_ADDR + 0x18000)
-+#define MX6_UART1_BASE_ADDR             (MX6_ATZ1_BASE_ADDR + 0x20000)
-+#define MX6_ESAI1_BASE_ADDR             (MX6_ATZ1_BASE_ADDR + 0x24000)
-+#define MX6_SSI1_BASE_ADDR              (MX6_ATZ1_BASE_ADDR + 0x28000)
-+#define MX6_SSI2_BASE_ADDR              (MX6_ATZ1_BASE_ADDR + 0x2C000)
-+#define MX6_SSI3_BASE_ADDR              (MX6_ATZ1_BASE_ADDR + 0x30000)
-+#define MX6_ASRC_BASE_ADDR              (MX6_ATZ1_BASE_ADDR + 0x34000)
-+#define MX6_SPBA_BASE_ADDR              (MX6_ATZ1_BASE_ADDR + 0x3C000)
-+#define MX6_VPU_BASE_ADDR               (MX6_ATZ1_BASE_ADDR + 0x40000)
-+
-+/* ATZ#1- On Platform */
-+#define MX6_AIPS1_ON_BASE_ADDR          (MX6_ATZ1_BASE_ADDR + 0x7C000)
-+
-+/* ATZ#1- Off Platform */
-+#define MX6_AIPS1_OFF_BASE_ADDR         (MX6_ATZ1_BASE_ADDR + 0x80000)
-+
-+#define MX6_PWM1_BASE_ADDR              (MX6_AIPS1_OFF_BASE_ADDR + 0x0000)
-+#define MX6_PWM2_BASE_ADDR              (MX6_AIPS1_OFF_BASE_ADDR + 0x4000)
-+#define MX6_PWM3_BASE_ADDR              (MX6_AIPS1_OFF_BASE_ADDR + 0x8000)
-+#define MX6_PWM4_BASE_ADDR              (MX6_AIPS1_OFF_BASE_ADDR + 0xC000)
-+#define MX6_CAN1_BASE_ADDR              (MX6_AIPS1_OFF_BASE_ADDR + 0x10000)
-+#define MX6_CAN2_BASE_ADDR              (MX6_AIPS1_OFF_BASE_ADDR + 0x14000)
-+#define MX6_GPT_BASE_ADDR               (MX6_AIPS1_OFF_BASE_ADDR + 0x18000)
-+#define MX6_GPIO1_BASE_ADDR             (MX6_AIPS1_OFF_BASE_ADDR + 0x1C000)
-+#define MX6_GPIO2_BASE_ADDR             (MX6_AIPS1_OFF_BASE_ADDR + 0x20000)
-+#define MX6_GPIO3_BASE_ADDR             (MX6_AIPS1_OFF_BASE_ADDR + 0x24000)
-+#define MX6_GPIO4_BASE_ADDR             (MX6_AIPS1_OFF_BASE_ADDR + 0x28000)
-+#define MX6_GPIO5_BASE_ADDR             (MX6_AIPS1_OFF_BASE_ADDR + 0x2C000)
-+#define MX6_GPIO6_BASE_ADDR             (MX6_AIPS1_OFF_BASE_ADDR + 0x30000)
-+#define MX6_GPIO7_BASE_ADDR             (MX6_AIPS1_OFF_BASE_ADDR + 0x34000)
-+#define MX6_KPP_BASE_ADDR               (MX6_AIPS1_OFF_BASE_ADDR + 0x38000)
-+#define MX6_WDOG1_BASE_ADDR             (MX6_AIPS1_OFF_BASE_ADDR + 0x3C000)
-+#define MX6_WDOG2_BASE_ADDR             (MX6_AIPS1_OFF_BASE_ADDR + 0x40000)
-+#define MX6_CCM_BASE_ADDR               (MX6_AIPS1_OFF_BASE_ADDR + 0x44000)
-+#define MX6_ANATOP_BASE_ADDR            (MX6_AIPS1_OFF_BASE_ADDR + 0x48000)
-+#define MX6_SNVS_BASE_ADDR              (MX6_AIPS1_OFF_BASE_ADDR + 0x4C000)
-+#define MX6_EPIT1_BASE_ADDR             (MX6_AIPS1_OFF_BASE_ADDR + 0x50000)
-+#define MX6_EPIT2_BASE_ADDR             (MX6_AIPS1_OFF_BASE_ADDR + 0x54000)
-+#define MX6_SRC_BASE_ADDR               (MX6_AIPS1_OFF_BASE_ADDR + 0x58000)
-+#define MX6_GPC_BASE_ADDR               (MX6_AIPS1_OFF_BASE_ADDR + 0x5C000)
-+#define MX6_IOMUXC_BASE_ADDR            (MX6_AIPS1_OFF_BASE_ADDR + 0x60000)
-+#define MX6_DCIC1_BASE_ADDR             (MX6_AIPS1_OFF_BASE_ADDR + 0x64000)
-+#define MX6_DCIC2_BASE_ADDR             (MX6_AIPS1_OFF_BASE_ADDR + 0x68000)
-+#define MX6_DMA_REQ_PORT_HOST_BASE_ADDR (MX6_AIPS1_OFF_BASE_ADDR + 0x6C000)
-+
-+/* ATZ#2- On Platform */
-+#define MX6_AIPS2_ON_BASE_ADDR          (MX6_ATZ2_BASE_ADDR + 0x7C000)
-+
-+/* ATZ#2- Off Platform */
-+#define MX6_AIPS2_OFF_BASE_ADDR         (MX6_ATZ2_BASE_ADDR + 0x80000)
-+
-+/* ATZ#2  - Global enable (0) */
-+#define MX6_CAAM_BASE_ADDR              (MX6_ATZ2_BASE_ADDR)
-+#define MX6_ARM_BASE_ADDR		(MX6_ATZ2_BASE_ADDR + 0x40000)
-+
-+#define MX6_USBOH3_PL301_BASE_ADDR      (MX6_AIPS2_OFF_BASE_ADDR + 0x0000)
-+#define MX6_USBOH3_USB_BASE_ADDR        (MX6_AIPS2_OFF_BASE_ADDR + 0x4000)
-+#define MX6_OTG_BASE_ADDR		MX6_USBOH3_USB_BASE_ADDR
-+#define MX6_ENET_BASE_ADDR              (MX6_AIPS2_OFF_BASE_ADDR + 0x8000)
-+#define MX6_MLB_BASE_ADDR               (MX6_AIPS2_OFF_BASE_ADDR + 0xC000)
-+
-+#define MX6_USDHC1_BASE_ADDR            (MX6_AIPS2_OFF_BASE_ADDR + 0x10000)
-+#define MX6_USDHC2_BASE_ADDR            (MX6_AIPS2_OFF_BASE_ADDR + 0x14000)
-+#define MX6_USDHC3_BASE_ADDR            (MX6_AIPS2_OFF_BASE_ADDR + 0x18000)
-+#define MX6_USDHC4_BASE_ADDR            (MX6_AIPS2_OFF_BASE_ADDR + 0x1C000)
-+#define MX6_I2C1_BASE_ADDR              (MX6_AIPS2_OFF_BASE_ADDR + 0x20000)
-+#define MX6_I2C2_BASE_ADDR              (MX6_AIPS2_OFF_BASE_ADDR + 0x24000)
-+#define MX6_I2C3_BASE_ADDR              (MX6_AIPS2_OFF_BASE_ADDR + 0x28000)
-+#define MX6_ROMCP_BASE_ADDR             (MX6_AIPS2_OFF_BASE_ADDR + 0x2C000)
-+#define MX6_MMDC_P0_BASE_ADDR           (MX6_AIPS2_OFF_BASE_ADDR + 0x30000)
-+#define MX6_MMDC_P1_BASE_ADDR           (MX6_AIPS2_OFF_BASE_ADDR + 0x34000)
-+#define MX6_WEIM_BASE_ADDR              (MX6_AIPS2_OFF_BASE_ADDR + 0x38000)
-+#define MX6_OCOTP_BASE_ADDR             (MX6_AIPS2_OFF_BASE_ADDR + 0x3C000)
-+#define MX6_CSU_BASE_ADDR               (MX6_AIPS2_OFF_BASE_ADDR + 0x40000)
-+#define MX6_IP2APB_PERFMON1_BASE_ADDR   (MX6_AIPS2_OFF_BASE_ADDR + 0x44000)
-+#define MX6_IP2APB_PERFMON2_BASE_ADDR   (MX6_AIPS2_OFF_BASE_ADDR + 0x48000)
-+#define MX6_IP2APB_PERFMON3_BASE_ADDR   (MX6_AIPS2_OFF_BASE_ADDR + 0x4C000)
-+#define MX6_IP2APB_TZASC1_BASE_ADDR     (MX6_AIPS2_OFF_BASE_ADDR + 0x50000)
-+#define MX6_IP2APB_TZASC2_BASE_ADDR     (MX6_AIPS2_OFF_BASE_ADDR + 0x54000)
-+#define MX6_AUDMUX_BASE_ADDR            (MX6_AIPS2_OFF_BASE_ADDR + 0x58000)
-+#define MX6_MIPI_CSI2_BASE_ADDR         (MX6_AIPS2_OFF_BASE_ADDR + 0x5C000)
-+#define MX6_MIPI_DSI_BASE_ADDR          (MX6_AIPS2_OFF_BASE_ADDR + 0x60000)
-+#define MX6_VDOA_BASE_ADDR              (MX6_AIPS2_OFF_BASE_ADDR + 0x64000)
-+#define MX6_UART2_BASE_ADDR             (MX6_AIPS2_OFF_BASE_ADDR + 0x68000)
-+#define MX6_UART3_BASE_ADDR             (MX6_AIPS2_OFF_BASE_ADDR + 0x6C000)
-+#define MX6_UART4_BASE_ADDR             (MX6_AIPS2_OFF_BASE_ADDR + 0x70000)
-+#define MX6_UART5_BASE_ADDR             (MX6_AIPS2_OFF_BASE_ADDR + 0x74000)
-+#define MX6_IP2APB_USBPHY1_BASE_ADDR    (MX6_AIPS2_OFF_BASE_ADDR + 0x78000)
-+#define MX6_IP2APB_USBPHY2_BASE_ADDR    (MX6_AIPS2_OFF_BASE_ADDR + 0x7C000)
-+
-+#endif /* __MACH_IMX6_REGS_H */
-diff --git a/arch/arm/mach-imx/include/mach/imx6.h b/arch/arm/mach-imx/include/mach/imx6.h
-new file mode 100644
-index 0000000..518cf98
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/imx6.h
-@@ -0,0 +1,6 @@
-+#ifndef __MACH_IMX6_H
-+#define __MACH_IMX6_H
-+
-+void imx6_init_lowlevel(void);
-+
-+#endif /* __MACH_IMX6_H */
-diff --git a/arch/arm/mach-imx/include/mach/iomux-mx6.h b/arch/arm/mach-imx/include/mach/iomux-mx6.h
-new file mode 100644
-index 0000000..f50fd8a
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/iomux-mx6.h
-@@ -0,0 +1,5630 @@
++++ b/arch/ppc/cpu-85xx/fixed_ivor.S
+@@ -0,0 +1,61 @@
 +/*
-+ * Copyright (C) 2011 Freescale Semiconductor, Inc. All Rights Reserved.
++ * Copyright 2009 Freescale Semiconductor, Inc.
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+
++ * Kumar Gala <kumar.gala@freescale.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
-+
-+ * You should have received a copy of the GNU General Public License along
-+ * with this program; if not, write to the Free Software Foundation, Inc.,
-+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 + *
-+ * Auto Generate file, please don't edit it
-+ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
 + */
-+#define MUX_PAD_CTRL(x)                ((iomux_v3_cfg_t)(x) << MUX_PAD_CTRL_SHIFT)
 +
-+#ifndef __MACH_IOMUX_MX6Q_H__
-+#define __MACH_IOMUX_MX6Q_H__
++/* This file is intended to be included by other asm code since
++ * we will want to execute this on both the primary core when
++ * it does a bootm and the secondary core's that get released
++ * out of the spin table.
++ */
 +
-+#include <mach/iomux-v3.h>
++#define SET_IVOR(vector_number, vector_offset)	\
++	li	r3,vector_offset@l; 		\
++	mtspr	SPRN_IVOR##vector_number,r3;
 +
-+#define NON_MUX_I       0x3FF
-+#define NON_PAD_I       0x7FF
++#define SET_GIVOR(vector_number, vector_offset)	\
++	li	r3,vector_offset@l; 		\
++	mtspr	SPRN_GIVOR##vector_number,r3;
++
++	SET_IVOR(0, 0x020) /* Critical Input */
++	SET_IVOR(1, 0x000) /* Machine Check */
++	SET_IVOR(2, 0x060) /* Data Storage */
++	SET_IVOR(3, 0x080) /* Instruction Storage */
++	SET_IVOR(4, 0x0a0) /* External Input */
++	SET_IVOR(5, 0x0c0) /* Alignment */
++	SET_IVOR(6, 0x0e0) /* Program */
++	SET_IVOR(7, 0x100) /* FP Unavailable */
++	SET_IVOR(8, 0x120) /* System Call */
++	SET_IVOR(9, 0x140) /* Auxiliary Processor Unavailable */
++	SET_IVOR(10, 0x160) /* Decrementer */
++	SET_IVOR(11, 0x180) /* Fixed Interval Timer */
++	SET_IVOR(12, 0x1a0) /* Watchdog Timer */
++	SET_IVOR(13, 0x1c0) /* Data TLB Error */
++	SET_IVOR(14, 0x1e0) /* Instruction TLB Error */
++	SET_IVOR(15, 0x040) /* Debug */
++
++	/* e500v1 & e500v2 only */
++	SET_IVOR(32, 0x200) /* SPE Unavailable */
++	SET_IVOR(33, 0x220) /* Embedded FP Data */
++	SET_IVOR(34, 0x240) /* Embedded FP Round */
++
++	SET_IVOR(35, 0x260) /* Performance monitor */
+diff --git a/arch/ppc/cpu-85xx/release.S b/arch/ppc/cpu-85xx/release.S
+new file mode 100644
+index 0000000..4ddaca0
+--- /dev/null
++++ b/arch/ppc/cpu-85xx/release.S
+@@ -0,0 +1,265 @@
++/*
++ * Copyright 2008-2010 Freescale Semiconductor, Inc.
++ * Kumar Gala <kumar.gala@freescale.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <config.h>
++#include <asm/config_mpc85xx.h>
++#include <mach/mpc85xx.h>
++
++#define _LINUX_CONFIG_H 1	/* avoid reading Linux autoconf.h file	*/
++
++#include <mach/ppc_asm.tmpl>
++#include <asm/ppc_defs.h>
++
++#include <asm/cache.h>
++#include <asm/mmu.h>
++
++/* To boot secondary cpus, we need a place for them to start up.
++ * Normally, they start at 0xfffffffc, but that's usually the
++ * firmware, and we don't want to have to run the firmware again.
++ * Instead, the primary cpu will set the BPTR to point here to
++ * this page.  We then set up the core, and head to
++ * start_secondary.  Note that this means that the code below
++ * must never exceed 1023 instructions (the branch at the end
++ * would then be the 1024th).
++ */
++	.globl	__secondary_start_page
++	.align	12
++__secondary_start_page:
++/* First do some preliminary setup */
++	lis	r3, HID0_EMCP@h		/* enable machine check */
++
++	ori	r3,r3,HID0_TBEN@l	/* enable Timebase */
++
++	mtspr	SPRN_HID0,r3
++
++	li	r3,(HID1_ASTME|HID1_ABE)@l	/* Addr streaming & broadcast */
++	mfspr   r0,PVR
++	andi.	r0,r0,0xff
++	cmpwi	r0,0x50@l	/* if we are rev 5.0 or greater set MBDD */
++	blt 1f
++	/* Set MBDD bit also */
++	ori r3, r3, HID1_MBDD@l
++1:
++	mtspr	SPRN_HID1,r3
++
++	/* Enable branch prediction */
++	lis	r3,BUCSR_ENABLE@h
++	ori	r3,r3,BUCSR_ENABLE@l
++	mtspr	SPRN_BUCSR,r3
++
++	/* Ensure TB is 0 */
++	li	r3,0
++	mttbl	r3
++	mttbu	r3
++
++	/* Enable/invalidate the I-Cache */
++	lis	r2,(L1CSR1_ICFI|L1CSR1_ICLFR)@h
++	ori	r2,r2,(L1CSR1_ICFI|L1CSR1_ICLFR)@l
++	mtspr	SPRN_L1CSR1,r2
++1:
++	mfspr	r3,SPRN_L1CSR1
++	and.	r1,r3,r2
++	bne	1b
++
++	lis	r3,(L1CSR1_CPE|L1CSR1_ICE)@h
++	ori	r3,r3,(L1CSR1_CPE|L1CSR1_ICE)@l
++	mtspr	SPRN_L1CSR1,r3
++	isync
++2:
++	mfspr	r3,SPRN_L1CSR1
++	andi.	r1,r3,L1CSR1_ICE@l
++	beq	2b
++
++	/* Enable/invalidate the D-Cache */
++	lis	r2,(L1CSR0_DCFI|L1CSR0_DCLFR)@h
++	ori	r2,r2,(L1CSR0_DCFI|L1CSR0_DCLFR)@l
++	mtspr	SPRN_L1CSR0,r2
++1:
++	mfspr	r3,SPRN_L1CSR0
++	and.	r1,r3,r2
++	bne	1b
++
++	lis	r3,(L1CSR0_CPE|L1CSR0_DCE)@h
++	ori	r3,r3,(L1CSR0_CPE|L1CSR0_DCE)@l
++	mtspr	SPRN_L1CSR0,r3
++	isync
++2:
++	mfspr	r3,SPRN_L1CSR0
++	andi.	r1,r3,L1CSR0_DCE@l
++	beq	2b
++
++#define toreset(x) (x - __secondary_start_page + 0xfffff000)
++
++	/* get our PIR to figure out our table entry */
++	lis	r3,toreset(__spin_table)@h
++	ori	r3,r3,toreset(__spin_table)@l
++
++	/* r10 has the base address for the entry */
++	mfspr	r0,SPRN_PIR
++	mr	r4,r0
++	slwi	r8,r4,5
++	add	r10,r3,r8
++
++#define EPAPR_MAGIC		(0x45504150)
++#define ENTRY_ADDR_UPPER	0
++#define ENTRY_ADDR_LOWER	4
++#define ENTRY_R3_UPPER		8
++#define ENTRY_R3_LOWER		12
++#define ENTRY_RESV		16
++#define ENTRY_PIR		20
++#define ENTRY_R6_UPPER		24
++#define ENTRY_R6_LOWER		28
++#define ENTRY_SIZE		32
++
++	/* setup the entry */
++	li	r3,0
++	li	r8,1
++	stw	r0,ENTRY_PIR(r10)
++	stw	r3,ENTRY_ADDR_UPPER(r10)
++	stw	r8,ENTRY_ADDR_LOWER(r10)
++	stw	r3,ENTRY_R3_UPPER(r10)
++	stw	r4,ENTRY_R3_LOWER(r10)
++	stw	r3,ENTRY_R6_UPPER(r10)
++	stw	r3,ENTRY_R6_LOWER(r10)
++
++	/* load r13 with the address of the 'bootpg' in SDRAM */
++	lis	r13,toreset(__bootpg_addr)@h
++	ori	r13,r13,toreset(__bootpg_addr)@l
++	lwz	r13,0(r13)
++
++	/* setup mapping for AS = 1, and jump there */
++	lis	r11,(MAS0_TLBSEL(1)|MAS0_ESEL(1))@h
++	mtspr	SPRN_MAS0,r11
++	lis	r11,(MAS1_VALID|MAS1_IPROT)@h
++	ori	r11,r11,(MAS1_TS|MAS1_TSIZE(BOOKE_PAGESZ_4K))@l
++	mtspr	SPRN_MAS1,r11
++	oris	r11,r13,(MAS2_I|MAS2_G)@h
++	ori	r11,r13,(MAS2_I|MAS2_G)@l
++	mtspr	SPRN_MAS2,r11
++	oris	r11,r13,(MAS3_SX|MAS3_SW|MAS3_SR)@h
++	ori	r11,r13,(MAS3_SX|MAS3_SW|MAS3_SR)@l
++	mtspr	SPRN_MAS3,r11
++	tlbwe
++
++	bl	1f
++1:	mflr	r11
++	/*
++	 * OR in 0xfff to create a mask of the bootpg SDRAM address.  We use
++	 * this mask to fixup the cpu spin table and the address that we want
++	 * to jump to, eg change them from 0xfffffxxx to 0x7ffffxxx if the
++	 * bootpg is at 0x7ffff000 in SDRAM.
++	 */
++	ori	r13,r13,0xfff
++	and	r11, r11, r13
++	and	r10, r10, r13
++
++	addi	r11,r11,(2f-1b)
++	mfmsr	r13
++	ori	r12,r13,MSR_IS|MSR_DS@l
++
++	mtspr	SPRN_SRR0,r11
++	mtspr	SPRN_SRR1,r12
++	rfi
++
++	/* spin waiting for addr */
++2:
++	lwz	r4,ENTRY_ADDR_LOWER(r10)
++	andi.	r11,r4,1
++	bne	2b
++	isync
++
++	/* setup IVORs to match fixed offsets */
++#include "fixed_ivor.S"
++
++	/* get the upper bits of the addr */
++	lwz	r11,ENTRY_ADDR_UPPER(r10)
++
++	/* setup branch addr */
++	mtspr	SPRN_SRR0,r4
++
++	/* mark the entry as released */
++	li	r8,3
++	stw	r8,ENTRY_ADDR_LOWER(r10)
++
++	/* mask by ~64M to setup our tlb we will jump to */
++	rlwinm	r12,r4,0,0,5
++
++	/* setup r3, r4, r5, r6, r7, r8, r9 */
++	lwz	r3,ENTRY_R3_LOWER(r10)
++	li	r4,0
++	li	r5,0
++	lwz	r6,ENTRY_R6_LOWER(r10)
++	lis	r7,(64*1024*1024)@h
++	li	r8,0
++	li	r9,0
++
++	/* load up the pir */
++	lwz	r0,ENTRY_PIR(r10)
++	mtspr	SPRN_PIR,r0
++	mfspr	r0,SPRN_PIR
++	stw	r0,ENTRY_PIR(r10)
++
++	mtspr	IVPR,r12
++/*
++ * Coming here, we know the cpu has one TLB mapping in TLB1[0]
++ * which maps 0xfffff000-0xffffffff one-to-one.  We set up a
++ * second mapping that maps addr 1:1 for 64M, and then we jump to
++ * addr
++ */
++	lis	r10,(MAS0_TLBSEL(1)|MAS0_ESEL(0))@h
++	mtspr	SPRN_MAS0,r10
++	lis	r10,(MAS1_VALID|MAS1_IPROT)@h
++	ori	r10,r10,(MAS1_TSIZE(BOOKE_PAGESZ_64M))@l
++	mtspr	SPRN_MAS1,r10
++	/* WIMGE = 0b00000 for now */
++	mtspr	SPRN_MAS2,r12
++	ori	r12,r12,(MAS3_SX|MAS3_SW|MAS3_SR)
++	mtspr	SPRN_MAS3,r12
++	tlbwe
++
++/* Now we have another mapping for this page, so we jump to that
++ * mapping
++ */
++	mtspr	SPRN_SRR1,r13
++	rfi
++
++	/*
++	 * Allocate some space for the SDRAM address of the bootpg.
++	 * This variable has to be in the boot page so that it can
++	 * be accessed by secondary cores when they come out of reset.
++	 */
++	.globl __bootpg_addr
++__bootpg_addr:
++	.long	0
++
++	.align L1_CACHE_SHIFT
++	.globl __spin_table
++__spin_table:
++	.space MAX_CPUS*ENTRY_SIZE
++
++	/* Fill in the empty space.  The actual reset vector is
++	 * the last word of the page */
++__secondary_start_code_end:
++	.space 4092 - (__secondary_start_code_end - __secondary_start_page)
++__secondary_reset_vector:
++	b	__secondary_start_page
+diff --git a/arch/ppc/cpu-85xx/resetvec.S b/arch/ppc/cpu-85xx/resetvec.S
+new file mode 100644
+index 0000000..29555d4
+--- /dev/null
++++ b/arch/ppc/cpu-85xx/resetvec.S
+@@ -0,0 +1,2 @@
++	.section .resetvec,"ax"
++	b _start_e500
+diff --git a/arch/ppc/cpu-85xx/start.S b/arch/ppc/cpu-85xx/start.S
+new file mode 100644
+index 0000000..491f196
+--- /dev/null
++++ b/arch/ppc/cpu-85xx/start.S
+@@ -0,0 +1,1097 @@
++/*
++ * Copyright 2004, 2007-2011 Freescale Semiconductor, Inc.
++ * Copyright (C) 2003  Motorola,Inc.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
 +
 +/*
-+ * Use to set PAD control
++ * U-Boot Startup Code for Motorola 85xx PowerPC based Embedded Boards
++ *
++ * The processor starts at 0xfffffffc and the code is first executed in the
++ * last 4K page(0xfffff000-0xffffffff) in flash/rom.
 + */
-+#define MX6_PAD_CTL_HYS		(1 << 16)
 +
-+#define MX6_PAD_CTL_PUS_100K_DOWN	(0 << 14)
-+#define MX6_PAD_CTL_PUS_47K_UP	(1 << 14)
-+#define MX6_PAD_CTL_PUS_100K_UP	(2 << 14)
-+#define MX6_PAD_CTL_PUS_22K_UP	(3 << 14)
-+
-+#define MX6_PAD_CTL_PUE		(1 << 13)
-+#define MX6_PAD_CTL_PKE		(1 << 12)
-+#define MX6_PAD_CTL_ODE		(1 << 11)
-+
-+#define MX6_PAD_CTL_SPEED_LOW	(1 << 6)
-+#define MX6_PAD_CTL_SPEED_MED	(2 << 6)
-+#define MX6_PAD_CTL_SPEED_HIGH	(3 << 6)
-+
-+#define MX6_PAD_CTL_DSE_DISABLE	(0 << 3)
-+#define MX6_PAD_CTL_DSE_240ohm	(1 << 3)
-+#define MX6_PAD_CTL_DSE_120ohm	(2 << 3)
-+#define MX6_PAD_CTL_DSE_80ohm	(3 << 3)
-+#define MX6_PAD_CTL_DSE_60ohm	(4 << 3)
-+#define MX6_PAD_CTL_DSE_48ohm	(5 << 3)
-+#define MX6_PAD_CTL_DSE_40ohm	(6 << 3)
-+#define MX6_PAD_CTL_DSE_34ohm	(7 << 3)
-+
-+#define MX6_PAD_CTL_SRE_FAST	(1 << 0)
-+#define MX6_PAD_CTL_SRE_SLOW	(0 << 0)
-+
-+#define MX6Q_UART_PAD_CTRL	(MX6_PAD_CTL_PKE | MX6_PAD_CTL_PUE |	\
-+		MX6_PAD_CTL_PUS_100K_UP | MX6_PAD_CTL_SPEED_MED | \
-+		MX6_PAD_CTL_DSE_40ohm | MX6_PAD_CTL_SRE_FAST | MX6_PAD_CTL_HYS)
-+
-+#define MX6Q_ECSPI_PAD_CTRL	(MX6_PAD_CTL_SRE_FAST | MX6_PAD_CTL_PUS_100K_DOWN | MX6_PAD_CTL_SPEED_MED | \
-+		MX6_PAD_CTL_DSE_40ohm | MX6_PAD_CTL_HYS)
-+
-+#define MX6Q_USDHC_PAD_CTRL	(MX6_PAD_CTL_PKE | MX6_PAD_CTL_PUE |	\
-+		MX6_PAD_CTL_PUS_47K_UP | MX6_PAD_CTL_SPEED_HIGH | \
-+		MX6_PAD_CTL_DSE_40ohm | MX6_PAD_CTL_SRE_FAST | MX6_PAD_CTL_HYS)
-+
-+#define MX6Q_ENET_PAD_CTRL	(MX6_PAD_CTL_PKE | MX6_PAD_CTL_PUE |	\
-+		MX6_PAD_CTL_PUS_100K_UP | MX6_PAD_CTL_SPEED_MED | \
-+		MX6_PAD_CTL_DSE_40ohm | MX6_PAD_CTL_HYS)
-+
-+#define MX6Q_I2C_PAD_CTRL	(MX6_PAD_CTL_PKE | MX6_PAD_CTL_PUE |	\
-+		MX6_PAD_CTL_PUS_100K_UP | MX6_PAD_CTL_SPEED_MED | \
-+		MX6_PAD_CTL_DSE_40ohm | MX6_PAD_CTL_HYS | \
-+		MX6_PAD_CTL_ODE | MX6_PAD_CTL_SRE_FAST)
-+
-+#define MX6Q_PWM_PAD_CTRL	(MX6_PAD_CTL_PKE | MX6_PAD_CTL_PUE |	\
-+		MX6_PAD_CTL_PUS_100K_UP | MX6_PAD_CTL_SPEED_MED| \
-+		MX6_PAD_CTL_DSE_40ohm | MX6_PAD_CTL_HYS | \
-+		MX6_PAD_CTL_ODE | MX6_PAD_CTL_SRE_FAST)
-+
-+#define MX6Q_HIGH_DRV (MX6_PAD_CTL_DSE_120ohm)
-+
-+#define _MX6Q_PAD_SD2_DAT1__USDHC2_DAT1                                        \
-+		IOMUX_PAD(0x0360, 0x004C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT1__ECSPI5_SS0                                         \
-+		IOMUX_PAD(0x0360, 0x004C, 1, 0x0834, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT1__WEIM_WEIM_CS_2                                     \
-+		IOMUX_PAD(0x0360, 0x004C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT1__AUDMUX_AUD4_TXFS                                   \
-+		IOMUX_PAD(0x0360, 0x004C, 3, 0x07C8, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT1__KPP_COL_7                                          \
-+		IOMUX_PAD(0x0360, 0x004C, 4, 0x08F0, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT1__GPIO_1_14                                          \
-+		IOMUX_PAD(0x0360, 0x004C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT1__CCM_WAIT                                           \
-+		IOMUX_PAD(0x0360, 0x004C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT1__ANATOP_ANATOP_TESTO_0                              \
-+		IOMUX_PAD(0x0360, 0x004C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD2_DAT2__USDHC2_DAT2                                        \
-+		IOMUX_PAD(0x0364, 0x0050, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT2__ECSPI5_SS1                                         \
-+		IOMUX_PAD(0x0364, 0x0050, 1, 0x0838, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT2__WEIM_WEIM_CS_3                                     \
-+		IOMUX_PAD(0x0364, 0x0050, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT2__AUDMUX_AUD4_TXD                                    \
-+		IOMUX_PAD(0x0364, 0x0050, 3, 0x07B8, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT2__KPP_ROW_6                                          \
-+		IOMUX_PAD(0x0364, 0x0050, 4, 0x08F8, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT2__GPIO_1_13                                          \
-+		IOMUX_PAD(0x0364, 0x0050, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT2__CCM_STOP                                           \
-+		IOMUX_PAD(0x0364, 0x0050, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT2__ANATOP_ANATOP_TESTO_1                              \
-+		IOMUX_PAD(0x0364, 0x0050, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD2_DAT0__USDHC2_DAT0                                        \
-+		IOMUX_PAD(0x0368, 0x0054, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT0__ECSPI5_MISO                                        \
-+		IOMUX_PAD(0x0368, 0x0054, 1, 0x082C, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT0__AUDMUX_AUD4_RXD                                    \
-+		IOMUX_PAD(0x0368, 0x0054, 3, 0x07B4, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT0__KPP_ROW_7                                          \
-+		IOMUX_PAD(0x0368, 0x0054, 4, 0x08FC, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT0__GPIO_1_15                                          \
-+		IOMUX_PAD(0x0368, 0x0054, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT0__DCIC2_DCIC_OUT                                     \
-+		IOMUX_PAD(0x0368, 0x0054, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT0__ANATOP_ANATOP_TESTO_2                              \
-+		IOMUX_PAD(0x0368, 0x0054, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_RGMII_TXC__USBOH3_H2_DATA                                    \
-+		IOMUX_PAD(0x036C, 0x0058, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TXC__ENET_RGMII_TXC                                    \
-+		IOMUX_PAD(0x036C, 0x0058, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TXC__SPDIF_SPDIF_EXTCLK                                \
-+		IOMUX_PAD(0x036C, 0x0058, 2, 0x0918, 0, 0)
-+#define _MX6Q_PAD_RGMII_TXC__GPIO_6_19                                         \
-+		IOMUX_PAD(0x036C, 0x0058, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TXC__MIPI_CORE_DPHY_TEST_IN_0                          \
-+		IOMUX_PAD(0x036C, 0x0058, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TXC__ANATOP_ANATOP_24M_OUT                             \
-+		IOMUX_PAD(0x036C, 0x0058, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_RGMII_TD0__MIPI_HSI_CTRL_TX_READY                            \
-+		IOMUX_PAD(0x0370, 0x005C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TD0__ENET_RGMII_TD0                                    \
-+		IOMUX_PAD(0x0370, 0x005C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TD0__GPIO_6_20                                         \
-+		IOMUX_PAD(0x0370, 0x005C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TD0__MIPI_CORE_DPHY_TEST_IN_1                          \
-+		IOMUX_PAD(0x0370, 0x005C, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_RGMII_TD1__MIPI_HSI_CTRL_RX_FLAG                             \
-+		IOMUX_PAD(0x0374, 0x0060, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TD1__ENET_RGMII_TD1                                    \
-+		IOMUX_PAD(0x0374, 0x0060, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TD1__GPIO_6_21                                         \
-+		IOMUX_PAD(0x0374, 0x0060, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TD1__MIPI_CORE_DPHY_TEST_IN_2                          \
-+		IOMUX_PAD(0x0374, 0x0060, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TD1__CCM_PLL3_BYP                                      \
-+		IOMUX_PAD(0x0374, 0x0060, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_RGMII_TD2__MIPI_HSI_CTRL_RX_DATA                             \
-+		IOMUX_PAD(0x0378, 0x0064, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TD2__ENET_RGMII_TD2                                    \
-+		IOMUX_PAD(0x0378, 0x0064, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TD2__GPIO_6_22                                         \
-+		IOMUX_PAD(0x0378, 0x0064, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TD2__MIPI_CORE_DPHY_TEST_IN_3                          \
-+		IOMUX_PAD(0x0378, 0x0064, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TD2__CCM_PLL2_BYP                                      \
-+		IOMUX_PAD(0x0378, 0x0064, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_RGMII_TD3__MIPI_HSI_CTRL_RX_WAKE                             \
-+		IOMUX_PAD(0x037C, 0x0068, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TD3__ENET_RGMII_TD3                                    \
-+		IOMUX_PAD(0x037C, 0x0068, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TD3__GPIO_6_23                                         \
-+		IOMUX_PAD(0x037C, 0x0068, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TD3__MIPI_CORE_DPHY_TEST_IN_4                          \
-+		IOMUX_PAD(0x037C, 0x0068, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_RGMII_RX_CTL__USBOH3_H3_DATA                                 \
-+		IOMUX_PAD(0x0380, 0x006C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_RX_CTL__ENET_RGMII_RX_CTL                              \
-+		IOMUX_PAD(0x0380, 0x006C, 1, 0x0858, 0, 0)
-+#define _MX6Q_PAD_RGMII_RX_CTL__GPIO_6_24                                      \
-+		IOMUX_PAD(0x0380, 0x006C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_RX_CTL__MIPI_CORE_DPHY_TEST_IN_5                       \
-+		IOMUX_PAD(0x0380, 0x006C, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_RGMII_RD0__MIPI_HSI_CTRL_RX_READY                            \
-+		IOMUX_PAD(0x0384, 0x0070, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_RD0__ENET_RGMII_RD0                                    \
-+		IOMUX_PAD(0x0384, 0x0070, 1, 0x0848, 0, 0)
-+#define _MX6Q_PAD_RGMII_RD0__GPIO_6_25                                         \
-+		IOMUX_PAD(0x0384, 0x0070, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_RD0__MIPI_CORE_DPHY_TEST_IN_6                          \
-+		IOMUX_PAD(0x0384, 0x0070, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_RGMII_TX_CTL__USBOH3_H2_STROBE                               \
-+		IOMUX_PAD(0x0388, 0x0074, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TX_CTL__ENET_RGMII_TX_CTL                              \
-+		IOMUX_PAD(0x0388, 0x0074, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TX_CTL__GPIO_6_26                                      \
-+		IOMUX_PAD(0x0388, 0x0074, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TX_CTL__MIPI_CORE_DPHY_TEST_IN_7                       \
-+		IOMUX_PAD(0x0388, 0x0074, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_TX_CTL__ENET_ANATOP_ETHERNET_REF_OUT                   \
-+		IOMUX_PAD(0x0388, 0x0074, 7, 0x083C, 0, 0)
-+
-+#define _MX6Q_PAD_RGMII_RD1__MIPI_HSI_CTRL_TX_FLAG                             \
-+		IOMUX_PAD(0x038C, 0x0078, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_RD1__ENET_RGMII_RD1                                    \
-+		IOMUX_PAD(0x038C, 0x0078, 1, 0x084C, 0, 0)
-+#define _MX6Q_PAD_RGMII_RD1__GPIO_6_27                                         \
-+		IOMUX_PAD(0x038C, 0x0078, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_RD1__MIPI_CORE_DPHY_TEST_IN_8                          \
-+		IOMUX_PAD(0x038C, 0x0078, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_RD1__SJC_FAIL                                          \
-+		IOMUX_PAD(0x038C, 0x0078, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_RGMII_RD2__MIPI_HSI_CTRL_TX_DATA                             \
-+		IOMUX_PAD(0x0390, 0x007C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_RD2__ENET_RGMII_RD2                                    \
-+		IOMUX_PAD(0x0390, 0x007C, 1, 0x0850, 0, 0)
-+#define _MX6Q_PAD_RGMII_RD2__GPIO_6_28                                         \
-+		IOMUX_PAD(0x0390, 0x007C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_RD2__MIPI_CORE_DPHY_TEST_IN_9                          \
-+		IOMUX_PAD(0x0390, 0x007C, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_RGMII_RD3__MIPI_HSI_CTRL_TX_WAKE                             \
-+		IOMUX_PAD(0x0394, 0x0080, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_RD3__ENET_RGMII_RD3                                    \
-+		IOMUX_PAD(0x0394, 0x0080, 1, 0x0854, 0, 0)
-+#define _MX6Q_PAD_RGMII_RD3__GPIO_6_29                                         \
-+		IOMUX_PAD(0x0394, 0x0080, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_RD3__MIPI_CORE_DPHY_TEST_IN_10                         \
-+		IOMUX_PAD(0x0394, 0x0080, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_RGMII_RXC__USBOH3_H3_STROBE                                  \
-+		IOMUX_PAD(0x0398, 0x0084, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_RXC__ENET_RGMII_RXC                                    \
-+		IOMUX_PAD(0x0398, 0x0084, 1, 0x0844, 0, 0)
-+#define _MX6Q_PAD_RGMII_RXC__GPIO_6_30                                         \
-+		IOMUX_PAD(0x0398, 0x0084, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_RGMII_RXC__MIPI_CORE_DPHY_TEST_IN_11                         \
-+		IOMUX_PAD(0x0398, 0x0084, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_A25__WEIM_WEIM_A_25                                      \
-+		IOMUX_PAD(0x039C, 0x0088, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A25__ECSPI4_SS1                                          \
-+		IOMUX_PAD(0x039C, 0x0088, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A25__ECSPI2_RDY                                          \
-+		IOMUX_PAD(0x039C, 0x0088, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A25__IPU1_DI1_PIN12                                      \
-+		IOMUX_PAD(0x039C, 0x0088, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A25__IPU1_DI0_D1_CS                                      \
-+		IOMUX_PAD(0x039C, 0x0088, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A25__GPIO_5_2                                            \
-+		IOMUX_PAD(0x039C, 0x0088, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A25__HDMI_TX_CEC_LINE                                    \
-+		IOMUX_PAD(0x039C, 0x0088, 6, 0x088C, 0, 0)
-+#define _MX6Q_PAD_EIM_A25__PL301_MX6QPER1_HBURST_0                             \
-+		IOMUX_PAD(0x039C, 0x0088, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_EB2__WEIM_WEIM_EB_2                                      \
-+		IOMUX_PAD(0x03A0, 0x008C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB2__ECSPI1_SS0                                          \
-+		IOMUX_PAD(0x03A0, 0x008C, 1, 0x0800, 0, 0)
-+#define _MX6Q_PAD_EIM_EB2__CCM_DI1_EXT_CLK                                     \
-+		IOMUX_PAD(0x03A0, 0x008C, 2, 0x07EC, 0, 0)
-+#define _MX6Q_PAD_EIM_EB2__IPU2_CSI1_D_19                                      \
-+		IOMUX_PAD(0x03A0, 0x008C, 3, 0x08D4, 0, 0)
-+#define _MX6Q_PAD_EIM_EB2__HDMI_TX_DDC_SCL                                     \
-+		IOMUX_PAD(0x03A0, 0x008C, 4, 0x0890, 0, 0)
-+#define _MX6Q_PAD_EIM_EB2__GPIO_2_30                                           \
-+		IOMUX_PAD(0x03A0, 0x008C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB2__I2C2_SCL                                            \
-+		IOMUX_PAD(0x03A0, 0x008C, 6 | IOMUX_CONFIG_SION, 0x08A0, 0, 0)
-+#define _MX6Q_PAD_EIM_EB2__SRC_BT_CFG_30                                       \
-+		IOMUX_PAD(0x03A0, 0x008C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_D16__WEIM_WEIM_D_16                                      \
-+		IOMUX_PAD(0x03A4, 0x0090, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D16__ECSPI1_SCLK                                         \
-+		IOMUX_PAD(0x03A4, 0x0090, 1, 0x07F4, 0, 0)
-+#define _MX6Q_PAD_EIM_D16__IPU1_DI0_PIN5                                       \
-+		IOMUX_PAD(0x03A4, 0x0090, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D16__IPU2_CSI1_D_18                                      \
-+		IOMUX_PAD(0x03A4, 0x0090, 3, 0x08D0, 0, 0)
-+#define _MX6Q_PAD_EIM_D16__HDMI_TX_DDC_SDA                                     \
-+		IOMUX_PAD(0x03A4, 0x0090, 4, 0x0894, 0, 0)
-+#define _MX6Q_PAD_EIM_D16__GPIO_3_16                                           \
-+		IOMUX_PAD(0x03A4, 0x0090, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D16__I2C2_SDA                                            \
-+		IOMUX_PAD(0x03A4, 0x0090, 6 | IOMUX_CONFIG_SION, 0x08A4, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_D17__WEIM_WEIM_D_17                                      \
-+		IOMUX_PAD(0x03A8, 0x0094, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D17__ECSPI1_MISO                                         \
-+		IOMUX_PAD(0x03A8, 0x0094, 1, 0x07F8, 0, 0)
-+#define _MX6Q_PAD_EIM_D17__IPU1_DI0_PIN6                                       \
-+		IOMUX_PAD(0x03A8, 0x0094, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D17__IPU2_CSI1_PIXCLK                                    \
-+		IOMUX_PAD(0x03A8, 0x0094, 3, 0x08E0, 0, 0)
-+#define _MX6Q_PAD_EIM_D17__DCIC1_DCIC_OUT                                      \
-+		IOMUX_PAD(0x03A8, 0x0094, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D17__GPIO_3_17                                           \
-+		IOMUX_PAD(0x03A8, 0x0094, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D17__I2C3_SCL                                            \
-+		IOMUX_PAD(0x03A8, 0x0094, 6 | IOMUX_CONFIG_SION, 0x08A8, 0, 0)
-+#define _MX6Q_PAD_EIM_D17__PL301_MX6QPER1_HBURST_1                             \
-+		IOMUX_PAD(0x03A8, 0x0094, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_D18__WEIM_WEIM_D_18                                      \
-+		IOMUX_PAD(0x03AC, 0x0098, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D18__ECSPI1_MOSI                                         \
-+		IOMUX_PAD(0x03AC, 0x0098, 1, 0x07FC, 0, 0)
-+#define _MX6Q_PAD_EIM_D18__IPU1_DI0_PIN7                                       \
-+		IOMUX_PAD(0x03AC, 0x0098, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D18__IPU2_CSI1_D_17                                      \
-+		IOMUX_PAD(0x03AC, 0x0098, 3, 0x08CC, 0, 0)
-+#define _MX6Q_PAD_EIM_D18__IPU1_DI1_D0_CS                                      \
-+		IOMUX_PAD(0x03AC, 0x0098, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D18__GPIO_3_18                                           \
-+		IOMUX_PAD(0x03AC, 0x0098, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D18__I2C3_SDA                                            \
-+		IOMUX_PAD(0x03AC, 0x0098, 6 | IOMUX_CONFIG_SION, 0x08AC, 0, 0)
-+#define _MX6Q_PAD_EIM_D18__PL301_MX6QPER1_HBURST_2                             \
-+		IOMUX_PAD(0x03AC, 0x0098, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_D19__WEIM_WEIM_D_19                                      \
-+		IOMUX_PAD(0x03B0, 0x009C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D19__ECSPI1_SS1                                          \
-+		IOMUX_PAD(0x03B0, 0x009C, 1, 0x0804, 0, 0)
-+#define _MX6Q_PAD_EIM_D19__IPU1_DI0_PIN8                                       \
-+		IOMUX_PAD(0x03B0, 0x009C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D19__IPU2_CSI1_D_16                                      \
-+		IOMUX_PAD(0x03B0, 0x009C, 3, 0x08C8, 0, 0)
-+#define _MX6Q_PAD_EIM_D19__UART1_CTS                                           \
-+		IOMUX_PAD(0x03B0, 0x009C, 4, 0x091C, 0, 0)
-+#define _MX6Q_PAD_EIM_D19__GPIO_3_19                                           \
-+		IOMUX_PAD(0x03B0, 0x009C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D19__EPIT1_EPITO                                         \
-+		IOMUX_PAD(0x03B0, 0x009C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D19__PL301_MX6QPER1_HRESP                                \
-+		IOMUX_PAD(0x03B0, 0x009C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_D20__WEIM_WEIM_D_20                                      \
-+		IOMUX_PAD(0x03B4, 0x00A0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D20__ECSPI4_SS0                                          \
-+		IOMUX_PAD(0x03B4, 0x00A0, 1, 0x0824, 0, 0)
-+#define _MX6Q_PAD_EIM_D20__IPU1_DI0_PIN16                                      \
-+		IOMUX_PAD(0x03B4, 0x00A0, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D20__IPU2_CSI1_D_15                                      \
-+		IOMUX_PAD(0x03B4, 0x00A0, 3, 0x08C4, 0, 0)
-+#define _MX6Q_PAD_EIM_D20__UART1_CTS                                           \
-+		IOMUX_PAD(0x03B4, 0x00A0, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D20__UART1_RTS                                           \
-+		IOMUX_PAD(0x03B4, 0x00A0, 4, 0x091C, 1, 0)
-+#define _MX6Q_PAD_EIM_D20__GPIO_3_20                                           \
-+		IOMUX_PAD(0x03B4, 0x00A0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D20__EPIT2_EPITO                                         \
-+		IOMUX_PAD(0x03B4, 0x00A0, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_D21__WEIM_WEIM_D_21                                      \
-+		IOMUX_PAD(0x03B8, 0x00A4, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D21__ECSPI4_SCLK                                         \
-+		IOMUX_PAD(0x03B8, 0x00A4, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D21__IPU1_DI0_PIN17                                      \
-+		IOMUX_PAD(0x03B8, 0x00A4, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D21__IPU2_CSI1_D_11                                      \
-+		IOMUX_PAD(0x03B8, 0x00A4, 3, 0x08B4, 0, 0)
-+#define _MX6Q_PAD_EIM_D21__USBOH3_USBOTG_OC                                    \
-+		IOMUX_PAD(0x03B8, 0x00A4, 4, 0x0944, 0, 0)
-+#define _MX6Q_PAD_EIM_D21__GPIO_3_21                                           \
-+		IOMUX_PAD(0x03B8, 0x00A4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D21__I2C1_SCL                                            \
-+		IOMUX_PAD(0x03B8, 0x00A4, 6 | IOMUX_CONFIG_SION, 0x0898, 0, 0)
-+#define _MX6Q_PAD_EIM_D21__SPDIF_IN1                                           \
-+		IOMUX_PAD(0x03B8, 0x00A4, 7, 0x0914, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_D22__WEIM_WEIM_D_22                                      \
-+		IOMUX_PAD(0x03BC, 0x00A8, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D22__ECSPI4_MISO                                         \
-+		IOMUX_PAD(0x03BC, 0x00A8, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D22__IPU1_DI0_PIN1                                       \
-+		IOMUX_PAD(0x03BC, 0x00A8, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D22__IPU2_CSI1_D_10                                      \
-+		IOMUX_PAD(0x03BC, 0x00A8, 3, 0x08B0, 0, 0)
-+#define _MX6Q_PAD_EIM_D22__USBOH3_USBOTG_PWR                                   \
-+		IOMUX_PAD(0x03BC, 0x00A8, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D22__GPIO_3_22                                           \
-+		IOMUX_PAD(0x03BC, 0x00A8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D22__SPDIF_OUT1                                          \
-+		IOMUX_PAD(0x03BC, 0x00A8, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D22__PL301_MX6QPER1_HWRITE                               \
-+		IOMUX_PAD(0x03BC, 0x00A8, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_D23__WEIM_WEIM_D_23                                      \
-+		IOMUX_PAD(0x03C0, 0x00AC, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D23__IPU1_DI0_D0_CS                                      \
-+		IOMUX_PAD(0x03C0, 0x00AC, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D23__UART3_CTS                                           \
-+		IOMUX_PAD(0x03C0, 0x00AC, 2, 0x092C, 0, 0)
-+#define _MX6Q_PAD_EIM_D23__UART1_DCD                                           \
-+		IOMUX_PAD(0x03C0, 0x00AC, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D23__IPU2_CSI1_DATA_EN                                   \
-+		IOMUX_PAD(0x03C0, 0x00AC, 4, 0x08D8, 0, 0)
-+#define _MX6Q_PAD_EIM_D23__GPIO_3_23                                           \
-+		IOMUX_PAD(0x03C0, 0x00AC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D23__IPU1_DI1_PIN2                                       \
-+		IOMUX_PAD(0x03C0, 0x00AC, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D23__IPU1_DI1_PIN14                                      \
-+		IOMUX_PAD(0x03C0, 0x00AC, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_EB3__WEIM_WEIM_EB_3                                      \
-+		IOMUX_PAD(0x03C4, 0x00B0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB3__ECSPI4_RDY                                          \
-+		IOMUX_PAD(0x03C4, 0x00B0, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB3__UART3_CTS                                           \
-+		IOMUX_PAD(0x03C4, 0x00B0, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB3__UART3_RTS                                           \
-+		IOMUX_PAD(0x03C4, 0x00B0, 2, 0x092C, 1, 0)
-+#define _MX6Q_PAD_EIM_EB3__UART1_RI                                            \
-+		IOMUX_PAD(0x03C4, 0x00B0, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB3__IPU2_CSI1_HSYNC                                     \
-+		IOMUX_PAD(0x03C4, 0x00B0, 4, 0x08DC, 0, 0)
-+#define _MX6Q_PAD_EIM_EB3__GPIO_2_31                                           \
-+		IOMUX_PAD(0x03C4, 0x00B0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB3__IPU1_DI1_PIN3                                       \
-+		IOMUX_PAD(0x03C4, 0x00B0, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB3__SRC_BT_CFG_31                                       \
-+		IOMUX_PAD(0x03C4, 0x00B0, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_D24__WEIM_WEIM_D_24                                      \
-+		IOMUX_PAD(0x03C8, 0x00B4, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D24__ECSPI4_SS2                                          \
-+		IOMUX_PAD(0x03C8, 0x00B4, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D24__UART3_TXD                                           \
-+		IOMUX_PAD(0x03C8, 0x00B4, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D24__UART3_RXD                                           \
-+		IOMUX_PAD(0x03C8, 0x00B4, 2, 0x0930, 0, 0)
-+#define _MX6Q_PAD_EIM_D24__ECSPI1_SS2                                          \
-+		IOMUX_PAD(0x03C8, 0x00B4, 3, 0x0808, 0, 0)
-+#define _MX6Q_PAD_EIM_D24__ECSPI2_SS2                                          \
-+		IOMUX_PAD(0x03C8, 0x00B4, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D24__GPIO_3_24                                           \
-+		IOMUX_PAD(0x03C8, 0x00B4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D24__AUDMUX_AUD5_RXFS                                    \
-+		IOMUX_PAD(0x03C8, 0x00B4, 6, 0x07D8, 0, 0)
-+#define _MX6Q_PAD_EIM_D24__UART1_DTR                                           \
-+		IOMUX_PAD(0x03C8, 0x00B4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_D25__WEIM_WEIM_D_25                                      \
-+		IOMUX_PAD(0x03CC, 0x00B8, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D25__ECSPI4_SS3                                          \
-+		IOMUX_PAD(0x03CC, 0x00B8, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D25__UART3_TXD                                           \
-+		IOMUX_PAD(0x03CC, 0x00B8, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D25__UART3_RXD                                           \
-+		IOMUX_PAD(0x03CC, 0x00B8, 2, 0x0930, 1, 0)
-+#define _MX6Q_PAD_EIM_D25__ECSPI1_SS3                                          \
-+		IOMUX_PAD(0x03CC, 0x00B8, 3, 0x080C, 0, 0)
-+#define _MX6Q_PAD_EIM_D25__ECSPI2_SS3                                          \
-+		IOMUX_PAD(0x03CC, 0x00B8, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D25__GPIO_3_25                                           \
-+		IOMUX_PAD(0x03CC, 0x00B8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D25__AUDMUX_AUD5_RXC                                     \
-+		IOMUX_PAD(0x03CC, 0x00B8, 6, 0x07D4, 0, 0)
-+#define _MX6Q_PAD_EIM_D25__UART1_DSR                                           \
-+		IOMUX_PAD(0x03CC, 0x00B8, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_D26__WEIM_WEIM_D_26                                      \
-+		IOMUX_PAD(0x03D0, 0x00BC, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D26__IPU1_DI1_PIN11                                      \
-+		IOMUX_PAD(0x03D0, 0x00BC, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D26__IPU1_CSI0_D_1                                       \
-+		IOMUX_PAD(0x03D0, 0x00BC, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D26__IPU2_CSI1_D_14                                      \
-+		IOMUX_PAD(0x03D0, 0x00BC, 3, 0x08C0, 0, 0)
-+#define _MX6Q_PAD_EIM_D26__UART2_TXD                                           \
-+		IOMUX_PAD(0x03D0, 0x00BC, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D26__UART2_RXD                                           \
-+		IOMUX_PAD(0x03D0, 0x00BC, 4, 0x0928, 0, 0)
-+#define _MX6Q_PAD_EIM_D26__GPIO_3_26                                           \
-+		IOMUX_PAD(0x03D0, 0x00BC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D26__IPU1_SISG_2                                         \
-+		IOMUX_PAD(0x03D0, 0x00BC, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D26__IPU1_DISP1_DAT_22                                   \
-+		IOMUX_PAD(0x03D0, 0x00BC, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_D27__WEIM_WEIM_D_27                                      \
-+		IOMUX_PAD(0x03D4, 0x00C0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D27__IPU1_DI1_PIN13                                      \
-+		IOMUX_PAD(0x03D4, 0x00C0, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D27__IPU1_CSI0_D_0                                       \
-+		IOMUX_PAD(0x03D4, 0x00C0, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D27__IPU2_CSI1_D_13                                      \
-+		IOMUX_PAD(0x03D4, 0x00C0, 3, 0x08BC, 0, 0)
-+#define _MX6Q_PAD_EIM_D27__UART2_TXD                                           \
-+		IOMUX_PAD(0x03D4, 0x00C0, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D27__UART2_RXD                                           \
-+		IOMUX_PAD(0x03D4, 0x00C0, 4, 0x0928, 1, 0)
-+#define _MX6Q_PAD_EIM_D27__GPIO_3_27                                           \
-+		IOMUX_PAD(0x03D4, 0x00C0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D27__IPU1_SISG_3                                         \
-+		IOMUX_PAD(0x03D4, 0x00C0, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D27__IPU1_DISP1_DAT_23                                   \
-+		IOMUX_PAD(0x03D4, 0x00C0, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_D28__WEIM_WEIM_D_28                                      \
-+		IOMUX_PAD(0x03D8, 0x00C4, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D28__I2C1_SDA                                            \
-+		IOMUX_PAD(0x03D8, 0x00C4, 1 | IOMUX_CONFIG_SION, 0x089C, 0, 0)
-+#define _MX6Q_PAD_EIM_D28__ECSPI4_MOSI                                         \
-+		IOMUX_PAD(0x03D8, 0x00C4, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D28__IPU2_CSI1_D_12                                      \
-+		IOMUX_PAD(0x03D8, 0x00C4, 3, 0x08B8, 0, 0)
-+#define _MX6Q_PAD_EIM_D28__UART2_CTS                                           \
-+		IOMUX_PAD(0x03D8, 0x00C4, 4, 0x0924, 0, 0)
-+#define _MX6Q_PAD_EIM_D28__GPIO_3_28                                           \
-+		IOMUX_PAD(0x03D8, 0x00C4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D28__IPU1_EXT_TRIG                                       \
-+		IOMUX_PAD(0x03D8, 0x00C4, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D28__IPU1_DI0_PIN13                                      \
-+		IOMUX_PAD(0x03D8, 0x00C4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_D29__WEIM_WEIM_D_29                                      \
-+		IOMUX_PAD(0x03DC, 0x00C8, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D29__IPU1_DI1_PIN15                                      \
-+		IOMUX_PAD(0x03DC, 0x00C8, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D29__ECSPI4_SS0                                          \
-+		IOMUX_PAD(0x03DC, 0x00C8, 2, 0x0824, 1, 0)
-+#define _MX6Q_PAD_EIM_D29__UART2_CTS                                           \
-+		IOMUX_PAD(0x03DC, 0x00C8, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D29__UART2_RTS                                           \
-+		IOMUX_PAD(0x03DC, 0x00C8, 4, 0x0924, 1, 0)
-+#define _MX6Q_PAD_EIM_D29__GPIO_3_29                                           \
-+		IOMUX_PAD(0x03DC, 0x00C8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D29__IPU2_CSI1_VSYNC                                     \
-+		IOMUX_PAD(0x03DC, 0x00C8, 6, 0x08E4, 0, 0)
-+#define _MX6Q_PAD_EIM_D29__IPU1_DI0_PIN14                                      \
-+		IOMUX_PAD(0x03DC, 0x00C8, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_D30__WEIM_WEIM_D_30                                      \
-+		IOMUX_PAD(0x03E0, 0x00CC, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D30__IPU1_DISP1_DAT_21                                   \
-+		IOMUX_PAD(0x03E0, 0x00CC, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D30__IPU1_DI0_PIN11                                      \
-+		IOMUX_PAD(0x03E0, 0x00CC, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D30__IPU1_CSI0_D_3                                       \
-+		IOMUX_PAD(0x03E0, 0x00CC, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D30__UART3_CTS                                           \
-+		IOMUX_PAD(0x03E0, 0x00CC, 4, 0x092C, 2, 0)
-+#define _MX6Q_PAD_EIM_D30__GPIO_3_30                                           \
-+		IOMUX_PAD(0x03E0, 0x00CC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D30__USBOH3_USBH1_OC                                     \
-+		IOMUX_PAD(0x03E0, 0x00CC, 6, 0x0948, 0, 0)
-+#define _MX6Q_PAD_EIM_D30__PL301_MX6QPER1_HPROT_0                              \
-+		IOMUX_PAD(0x03E0, 0x00CC, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_D31__WEIM_WEIM_D_31                                      \
-+		IOMUX_PAD(0x03E4, 0x00D0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D31__IPU1_DISP1_DAT_20                                   \
-+		IOMUX_PAD(0x03E4, 0x00D0, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D31__IPU1_DI0_PIN12                                      \
-+		IOMUX_PAD(0x03E4, 0x00D0, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D31__IPU1_CSI0_D_2                                       \
-+		IOMUX_PAD(0x03E4, 0x00D0, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D31__UART3_CTS                                           \
-+		IOMUX_PAD(0x03E4, 0x00D0, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D31__UART3_RTS                                           \
-+		IOMUX_PAD(0x03E4, 0x00D0, 4, 0x092C, 3, 0)
-+#define _MX6Q_PAD_EIM_D31__GPIO_3_31                                           \
-+		IOMUX_PAD(0x03E4, 0x00D0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D31__USBOH3_USBH1_PWR                                    \
-+		IOMUX_PAD(0x03E4, 0x00D0, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_D31__PL301_MX6QPER1_HPROT_1                              \
-+		IOMUX_PAD(0x03E4, 0x00D0, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_A24__WEIM_WEIM_A_24                                      \
-+		IOMUX_PAD(0x03E8, 0x00D4, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A24__IPU1_DISP1_DAT_19                                   \
-+		IOMUX_PAD(0x03E8, 0x00D4, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A24__IPU2_CSI1_D_19                                      \
-+		IOMUX_PAD(0x03E8, 0x00D4, 2, 0x08D4, 1, 0)
-+#define _MX6Q_PAD_EIM_A24__IPU2_SISG_2                                         \
-+		IOMUX_PAD(0x03E8, 0x00D4, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A24__IPU1_SISG_2                                         \
-+		IOMUX_PAD(0x03E8, 0x00D4, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A24__GPIO_5_4                                            \
-+		IOMUX_PAD(0x03E8, 0x00D4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A24__PL301_MX6QPER1_HPROT_2                              \
-+		IOMUX_PAD(0x03E8, 0x00D4, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A24__SRC_BT_CFG_24                                       \
-+		IOMUX_PAD(0x03E8, 0x00D4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_A23__WEIM_WEIM_A_23                                      \
-+		IOMUX_PAD(0x03EC, 0x00D8, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A23__IPU1_DISP1_DAT_18                                   \
-+		IOMUX_PAD(0x03EC, 0x00D8, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A23__IPU2_CSI1_D_18                                      \
-+		IOMUX_PAD(0x03EC, 0x00D8, 2, 0x08D0, 1, 0)
-+#define _MX6Q_PAD_EIM_A23__IPU2_SISG_3                                         \
-+		IOMUX_PAD(0x03EC, 0x00D8, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A23__IPU1_SISG_3                                         \
-+		IOMUX_PAD(0x03EC, 0x00D8, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A23__GPIO_6_6                                            \
-+		IOMUX_PAD(0x03EC, 0x00D8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A23__PL301_MX6QPER1_HPROT_3                              \
-+		IOMUX_PAD(0x03EC, 0x00D8, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A23__SRC_BT_CFG_23                                       \
-+		IOMUX_PAD(0x03EC, 0x00D8, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_A22__WEIM_WEIM_A_22                                      \
-+		IOMUX_PAD(0x03F0, 0x00DC, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A22__IPU1_DISP1_DAT_17                                   \
-+		IOMUX_PAD(0x03F0, 0x00DC, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A22__IPU2_CSI1_D_17                                      \
-+		IOMUX_PAD(0x03F0, 0x00DC, 2, 0x08CC, 1, 0)
-+#define _MX6Q_PAD_EIM_A22__GPIO_2_16                                           \
-+		IOMUX_PAD(0x03F0, 0x00DC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A22__TPSMP_HDATA_0                                       \
-+		IOMUX_PAD(0x03F0, 0x00DC, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A22__SRC_BT_CFG_22                                       \
-+		IOMUX_PAD(0x03F0, 0x00DC, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_A21__WEIM_WEIM_A_21                                      \
-+		IOMUX_PAD(0x03F4, 0x00E0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A21__IPU1_DISP1_DAT_16                                   \
-+		IOMUX_PAD(0x03F4, 0x00E0, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A21__IPU2_CSI1_D_16                                      \
-+		IOMUX_PAD(0x03F4, 0x00E0, 2, 0x08C8, 1, 0)
-+#define _MX6Q_PAD_EIM_A21__RESERVED_RESERVED                                   \
-+		IOMUX_PAD(0x03F4, 0x00E0, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A21__MIPI_CORE_DPHY_TEST_OUT_18                          \
-+		IOMUX_PAD(0x03F4, 0x00E0, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A21__GPIO_2_17                                           \
-+		IOMUX_PAD(0x03F4, 0x00E0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A21__TPSMP_HDATA_1                                       \
-+		IOMUX_PAD(0x03F4, 0x00E0, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A21__SRC_BT_CFG_21                                       \
-+		IOMUX_PAD(0x03F4, 0x00E0, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_A20__WEIM_WEIM_A_20                                      \
-+		IOMUX_PAD(0x03F8, 0x00E4, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A20__IPU1_DISP1_DAT_15                                   \
-+		IOMUX_PAD(0x03F8, 0x00E4, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A20__IPU2_CSI1_D_15                                      \
-+		IOMUX_PAD(0x03F8, 0x00E4, 2, 0x08C4, 1, 0)
-+#define _MX6Q_PAD_EIM_A20__RESERVED_RESERVED                                   \
-+		IOMUX_PAD(0x03F8, 0x00E4, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A20__MIPI_CORE_DPHY_TEST_OUT_19                          \
-+		IOMUX_PAD(0x03F8, 0x00E4, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A20__GPIO_2_18                                           \
-+		IOMUX_PAD(0x03F8, 0x00E4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A20__TPSMP_HDATA_2                                       \
-+		IOMUX_PAD(0x03F8, 0x00E4, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A20__SRC_BT_CFG_20                                       \
-+		IOMUX_PAD(0x03F8, 0x00E4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_A19__WEIM_WEIM_A_19                                      \
-+		IOMUX_PAD(0x03FC, 0x00E8, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A19__IPU1_DISP1_DAT_14                                   \
-+		IOMUX_PAD(0x03FC, 0x00E8, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A19__IPU2_CSI1_D_14                                      \
-+		IOMUX_PAD(0x03FC, 0x00E8, 2, 0x08C0, 1, 0)
-+#define _MX6Q_PAD_EIM_A19__RESERVED_RESERVED                                   \
-+		IOMUX_PAD(0x03FC, 0x00E8, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A19__MIPI_CORE_DPHY_TEST_OUT_20                          \
-+		IOMUX_PAD(0x03FC, 0x00E8, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A19__GPIO_2_19                                           \
-+		IOMUX_PAD(0x03FC, 0x00E8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A19__TPSMP_HDATA_3                                       \
-+		IOMUX_PAD(0x03FC, 0x00E8, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A19__SRC_BT_CFG_19                                       \
-+		IOMUX_PAD(0x03FC, 0x00E8, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_A18__WEIM_WEIM_A_18                                      \
-+		IOMUX_PAD(0x0400, 0x00EC, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A18__IPU1_DISP1_DAT_13                                   \
-+		IOMUX_PAD(0x0400, 0x00EC, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A18__IPU2_CSI1_D_13                                      \
-+		IOMUX_PAD(0x0400, 0x00EC, 2, 0x08BC, 1, 0)
-+#define _MX6Q_PAD_EIM_A18__RESERVED_RESERVED                                   \
-+		IOMUX_PAD(0x0400, 0x00EC, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A18__MIPI_CORE_DPHY_TEST_OUT_21                          \
-+		IOMUX_PAD(0x0400, 0x00EC, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A18__GPIO_2_20                                           \
-+		IOMUX_PAD(0x0400, 0x00EC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A18__TPSMP_HDATA_4                                       \
-+		IOMUX_PAD(0x0400, 0x00EC, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A18__SRC_BT_CFG_18                                       \
-+		IOMUX_PAD(0x0400, 0x00EC, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_A17__WEIM_WEIM_A_17                                      \
-+		IOMUX_PAD(0x0404, 0x00F0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A17__IPU1_DISP1_DAT_12                                   \
-+		IOMUX_PAD(0x0404, 0x00F0, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A17__IPU2_CSI1_D_12                                      \
-+		IOMUX_PAD(0x0404, 0x00F0, 2, 0x08B8, 1, 0)
-+#define _MX6Q_PAD_EIM_A17__RESERVED_RESERVED                                   \
-+		IOMUX_PAD(0x0404, 0x00F0, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A17__MIPI_CORE_DPHY_TEST_OUT_22                          \
-+		IOMUX_PAD(0x0404, 0x00F0, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A17__GPIO_2_21                                           \
-+		IOMUX_PAD(0x0404, 0x00F0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A17__TPSMP_HDATA_5                                       \
-+		IOMUX_PAD(0x0404, 0x00F0, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A17__SRC_BT_CFG_17                                       \
-+		IOMUX_PAD(0x0404, 0x00F0, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_A16__WEIM_WEIM_A_16                                      \
-+		IOMUX_PAD(0x0408, 0x00F4, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A16__IPU1_DI1_DISP_CLK                                   \
-+		IOMUX_PAD(0x0408, 0x00F4, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A16__IPU2_CSI1_PIXCLK                                    \
-+		IOMUX_PAD(0x0408, 0x00F4, 2, 0x08E0, 1, 0)
-+#define _MX6Q_PAD_EIM_A16__MIPI_CORE_DPHY_TEST_OUT_23                          \
-+		IOMUX_PAD(0x0408, 0x00F4, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A16__GPIO_2_22                                           \
-+		IOMUX_PAD(0x0408, 0x00F4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A16__TPSMP_HDATA_6                                       \
-+		IOMUX_PAD(0x0408, 0x00F4, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_A16__SRC_BT_CFG_16                                       \
-+		IOMUX_PAD(0x0408, 0x00F4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_CS0__WEIM_WEIM_CS_0                                      \
-+		IOMUX_PAD(0x040C, 0x00F8, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_CS0__IPU1_DI1_PIN5                                       \
-+		IOMUX_PAD(0x040C, 0x00F8, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_CS0__ECSPI2_SCLK                                         \
-+		IOMUX_PAD(0x040C, 0x00F8, 2, 0x0810, 0, 0)
-+#define _MX6Q_PAD_EIM_CS0__MIPI_CORE_DPHY_TEST_OUT_24                          \
-+		IOMUX_PAD(0x040C, 0x00F8, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_CS0__GPIO_2_23                                           \
-+		IOMUX_PAD(0x040C, 0x00F8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_CS0__TPSMP_HDATA_7                                       \
-+		IOMUX_PAD(0x040C, 0x00F8, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_CS1__WEIM_WEIM_CS_1                                      \
-+		IOMUX_PAD(0x0410, 0x00FC, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_CS1__IPU1_DI1_PIN6                                       \
-+		IOMUX_PAD(0x0410, 0x00FC, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_CS1__ECSPI2_MOSI                                         \
-+		IOMUX_PAD(0x0410, 0x00FC, 2, 0x0818, 0, 0)
-+#define _MX6Q_PAD_EIM_CS1__MIPI_CORE_DPHY_TEST_OUT_25                          \
-+		IOMUX_PAD(0x0410, 0x00FC, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_CS1__GPIO_2_24                                           \
-+		IOMUX_PAD(0x0410, 0x00FC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_CS1__TPSMP_HDATA_8                                       \
-+		IOMUX_PAD(0x0410, 0x00FC, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_OE__WEIM_WEIM_OE                                         \
-+		IOMUX_PAD(0x0414, 0x0100, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_OE__IPU1_DI1_PIN7                                        \
-+		IOMUX_PAD(0x0414, 0x0100, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_OE__ECSPI2_MISO                                          \
-+		IOMUX_PAD(0x0414, 0x0100, 2, 0x0814, 0, 0)
-+#define _MX6Q_PAD_EIM_OE__MIPI_CORE_DPHY_TEST_OUT_26                           \
-+		IOMUX_PAD(0x0414, 0x0100, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_OE__GPIO_2_25                                            \
-+		IOMUX_PAD(0x0414, 0x0100, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_OE__TPSMP_HDATA_9                                        \
-+		IOMUX_PAD(0x0414, 0x0100, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_RW__WEIM_WEIM_RW                                         \
-+		IOMUX_PAD(0x0418, 0x0104, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_RW__IPU1_DI1_PIN8                                        \
-+		IOMUX_PAD(0x0418, 0x0104, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_RW__ECSPI2_SS0                                           \
-+		IOMUX_PAD(0x0418, 0x0104, 2, 0x081C, 0, 0)
-+#define _MX6Q_PAD_EIM_RW__MIPI_CORE_DPHY_TEST_OUT_27                           \
-+		IOMUX_PAD(0x0418, 0x0104, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_RW__GPIO_2_26                                            \
-+		IOMUX_PAD(0x0418, 0x0104, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_RW__TPSMP_HDATA_10                                       \
-+		IOMUX_PAD(0x0418, 0x0104, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_RW__SRC_BT_CFG_29                                        \
-+		IOMUX_PAD(0x0418, 0x0104, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_LBA__WEIM_WEIM_LBA                                       \
-+		IOMUX_PAD(0x041C, 0x0108, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_LBA__IPU1_DI1_PIN17                                      \
-+		IOMUX_PAD(0x041C, 0x0108, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_LBA__ECSPI2_SS1                                          \
-+		IOMUX_PAD(0x041C, 0x0108, 2, 0x0820, 0, 0)
-+#define _MX6Q_PAD_EIM_LBA__GPIO_2_27                                           \
-+		IOMUX_PAD(0x041C, 0x0108, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_LBA__TPSMP_HDATA_11                                      \
-+		IOMUX_PAD(0x041C, 0x0108, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_LBA__SRC_BT_CFG_26                                       \
-+		IOMUX_PAD(0x041C, 0x0108, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_EB0__WEIM_WEIM_EB_0                                      \
-+		IOMUX_PAD(0x0420, 0x010C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB0__IPU1_DISP1_DAT_11                                   \
-+		IOMUX_PAD(0x0420, 0x010C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB0__IPU2_CSI1_D_11                                      \
-+		IOMUX_PAD(0x0420, 0x010C, 2, 0x08B4, 1, 0)
-+#define _MX6Q_PAD_EIM_EB0__MIPI_CORE_DPHY_TEST_OUT_0                           \
-+		IOMUX_PAD(0x0420, 0x010C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB0__CCM_PMIC_RDY                                        \
-+		IOMUX_PAD(0x0420, 0x010C, 4, 0x07F0, 0, 0)
-+#define _MX6Q_PAD_EIM_EB0__GPIO_2_28                                           \
-+		IOMUX_PAD(0x0420, 0x010C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB0__TPSMP_HDATA_12                                      \
-+		IOMUX_PAD(0x0420, 0x010C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB0__SRC_BT_CFG_27                                       \
-+		IOMUX_PAD(0x0420, 0x010C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_EB1__WEIM_WEIM_EB_1                                      \
-+		IOMUX_PAD(0x0424, 0x0110, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB1__IPU1_DISP1_DAT_10                                   \
-+		IOMUX_PAD(0x0424, 0x0110, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB1__IPU2_CSI1_D_10                                      \
-+		IOMUX_PAD(0x0424, 0x0110, 2, 0x08B0, 1, 0)
-+#define _MX6Q_PAD_EIM_EB1__MIPI_CORE_DPHY_TEST_OUT_1                           \
-+		IOMUX_PAD(0x0424, 0x0110, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB1__GPIO_2_29                                           \
-+		IOMUX_PAD(0x0424, 0x0110, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB1__TPSMP_HDATA_13                                      \
-+		IOMUX_PAD(0x0424, 0x0110, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_EB1__SRC_BT_CFG_28                                       \
-+		IOMUX_PAD(0x0424, 0x0110, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_DA0__WEIM_WEIM_DA_A_0                                    \
-+		IOMUX_PAD(0x0428, 0x0114, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA0__IPU1_DISP1_DAT_9                                    \
-+		IOMUX_PAD(0x0428, 0x0114, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA0__IPU2_CSI1_D_9                                       \
-+		IOMUX_PAD(0x0428, 0x0114, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA0__MIPI_CORE_DPHY_TEST_OUT_2                           \
-+		IOMUX_PAD(0x0428, 0x0114, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA0__GPIO_3_0                                            \
-+		IOMUX_PAD(0x0428, 0x0114, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA0__TPSMP_HDATA_14                                      \
-+		IOMUX_PAD(0x0428, 0x0114, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA0__SRC_BT_CFG_0                                        \
-+		IOMUX_PAD(0x0428, 0x0114, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_DA1__WEIM_WEIM_DA_A_1                                    \
-+		IOMUX_PAD(0x042C, 0x0118, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA1__IPU1_DISP1_DAT_8                                    \
-+		IOMUX_PAD(0x042C, 0x0118, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA1__IPU2_CSI1_D_8                                       \
-+		IOMUX_PAD(0x042C, 0x0118, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA1__MIPI_CORE_DPHY_TEST_OUT_3                           \
-+		IOMUX_PAD(0x042C, 0x0118, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA1__ANATOP_USBPHY1_TSTI_TX_LS_MODE                      \
-+		IOMUX_PAD(0x042C, 0x0118, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA1__GPIO_3_1                                            \
-+		IOMUX_PAD(0x042C, 0x0118, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA1__TPSMP_HDATA_15                                      \
-+		IOMUX_PAD(0x042C, 0x0118, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA1__SRC_BT_CFG_1                                        \
-+		IOMUX_PAD(0x042C, 0x0118, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_DA2__WEIM_WEIM_DA_A_2                                    \
-+		IOMUX_PAD(0x0430, 0x011C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA2__IPU1_DISP1_DAT_7                                    \
-+		IOMUX_PAD(0x0430, 0x011C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA2__IPU2_CSI1_D_7                                       \
-+		IOMUX_PAD(0x0430, 0x011C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA2__MIPI_CORE_DPHY_TEST_OUT_4                           \
-+		IOMUX_PAD(0x0430, 0x011C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA2__ANATOP_USBPHY1_TSTI_TX_HS_MODE                      \
-+		IOMUX_PAD(0x0430, 0x011C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA2__GPIO_3_2                                            \
-+		IOMUX_PAD(0x0430, 0x011C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA2__TPSMP_HDATA_16                                      \
-+		IOMUX_PAD(0x0430, 0x011C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA2__SRC_BT_CFG_2                                        \
-+		IOMUX_PAD(0x0430, 0x011C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_DA3__WEIM_WEIM_DA_A_3                                    \
-+		IOMUX_PAD(0x0434, 0x0120, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA3__IPU1_DISP1_DAT_6                                    \
-+		IOMUX_PAD(0x0434, 0x0120, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA3__IPU2_CSI1_D_6                                       \
-+		IOMUX_PAD(0x0434, 0x0120, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA3__MIPI_CORE_DPHY_TEST_OUT_5                           \
-+		IOMUX_PAD(0x0434, 0x0120, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA3__ANATOP_USBPHY1_TSTI_TX_HIZ                          \
-+		IOMUX_PAD(0x0434, 0x0120, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA3__GPIO_3_3                                            \
-+		IOMUX_PAD(0x0434, 0x0120, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA3__TPSMP_HDATA_17                                      \
-+		IOMUX_PAD(0x0434, 0x0120, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA3__SRC_BT_CFG_3                                        \
-+		IOMUX_PAD(0x0434, 0x0120, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_DA4__WEIM_WEIM_DA_A_4                                    \
-+		IOMUX_PAD(0x0438, 0x0124, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA4__IPU1_DISP1_DAT_5                                    \
-+		IOMUX_PAD(0x0438, 0x0124, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA4__IPU2_CSI1_D_5                                       \
-+		IOMUX_PAD(0x0438, 0x0124, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA4__MIPI_CORE_DPHY_TEST_OUT_6                           \
-+		IOMUX_PAD(0x0438, 0x0124, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA4__ANATOP_USBPHY1_TSTI_TX_EN                           \
-+		IOMUX_PAD(0x0438, 0x0124, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA4__GPIO_3_4                                            \
-+		IOMUX_PAD(0x0438, 0x0124, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA4__TPSMP_HDATA_18                                      \
-+		IOMUX_PAD(0x0438, 0x0124, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA4__SRC_BT_CFG_4                                        \
-+		IOMUX_PAD(0x0438, 0x0124, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_DA5__WEIM_WEIM_DA_A_5                                    \
-+		IOMUX_PAD(0x043C, 0x0128, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA5__IPU1_DISP1_DAT_4                                    \
-+		IOMUX_PAD(0x043C, 0x0128, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA5__IPU2_CSI1_D_4                                       \
-+		IOMUX_PAD(0x043C, 0x0128, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA5__MIPI_CORE_DPHY_TEST_OUT_7                           \
-+		IOMUX_PAD(0x043C, 0x0128, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA5__ANATOP_USBPHY1_TSTI_TX_DP                           \
-+		IOMUX_PAD(0x043C, 0x0128, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA5__GPIO_3_5                                            \
-+		IOMUX_PAD(0x043C, 0x0128, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA5__TPSMP_HDATA_19                                      \
-+		IOMUX_PAD(0x043C, 0x0128, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA5__SRC_BT_CFG_5                                        \
-+		IOMUX_PAD(0x043C, 0x0128, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_DA6__WEIM_WEIM_DA_A_6                                    \
-+		IOMUX_PAD(0x0440, 0x012C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA6__IPU1_DISP1_DAT_3                                    \
-+		IOMUX_PAD(0x0440, 0x012C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA6__IPU2_CSI1_D_3                                       \
-+		IOMUX_PAD(0x0440, 0x012C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA6__MIPI_CORE_DPHY_TEST_OUT_8                           \
-+		IOMUX_PAD(0x0440, 0x012C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA6__ANATOP_USBPHY1_TSTI_TX_DN                           \
-+		IOMUX_PAD(0x0440, 0x012C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA6__GPIO_3_6                                            \
-+		IOMUX_PAD(0x0440, 0x012C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA6__TPSMP_HDATA_20                                      \
-+		IOMUX_PAD(0x0440, 0x012C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA6__SRC_BT_CFG_6                                        \
-+		IOMUX_PAD(0x0440, 0x012C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_DA7__WEIM_WEIM_DA_A_7                                    \
-+		IOMUX_PAD(0x0444, 0x0130, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA7__IPU1_DISP1_DAT_2                                    \
-+		IOMUX_PAD(0x0444, 0x0130, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA7__IPU2_CSI1_D_2                                       \
-+		IOMUX_PAD(0x0444, 0x0130, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA7__MIPI_CORE_DPHY_TEST_OUT_9                           \
-+		IOMUX_PAD(0x0444, 0x0130, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA7__GPIO_3_7                                            \
-+		IOMUX_PAD(0x0444, 0x0130, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA7__TPSMP_HDATA_21                                      \
-+		IOMUX_PAD(0x0444, 0x0130, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA7__SRC_BT_CFG_7                                        \
-+		IOMUX_PAD(0x0444, 0x0130, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_DA8__WEIM_WEIM_DA_A_8                                    \
-+		IOMUX_PAD(0x0448, 0x0134, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA8__IPU1_DISP1_DAT_1                                    \
-+		IOMUX_PAD(0x0448, 0x0134, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA8__IPU2_CSI1_D_1                                       \
-+		IOMUX_PAD(0x0448, 0x0134, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA8__MIPI_CORE_DPHY_TEST_OUT_10                          \
-+		IOMUX_PAD(0x0448, 0x0134, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA8__GPIO_3_8                                            \
-+		IOMUX_PAD(0x0448, 0x0134, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA8__TPSMP_HDATA_22                                      \
-+		IOMUX_PAD(0x0448, 0x0134, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA8__SRC_BT_CFG_8                                        \
-+		IOMUX_PAD(0x0448, 0x0134, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_DA9__WEIM_WEIM_DA_A_9                                    \
-+		IOMUX_PAD(0x044C, 0x0138, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA9__IPU1_DISP1_DAT_0                                    \
-+		IOMUX_PAD(0x044C, 0x0138, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA9__IPU2_CSI1_D_0                                       \
-+		IOMUX_PAD(0x044C, 0x0138, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA9__MIPI_CORE_DPHY_TEST_OUT_11                          \
-+		IOMUX_PAD(0x044C, 0x0138, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA9__GPIO_3_9                                            \
-+		IOMUX_PAD(0x044C, 0x0138, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA9__TPSMP_HDATA_23                                      \
-+		IOMUX_PAD(0x044C, 0x0138, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA9__SRC_BT_CFG_9                                        \
-+		IOMUX_PAD(0x044C, 0x0138, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_DA10__WEIM_WEIM_DA_A_10                                  \
-+		IOMUX_PAD(0x0450, 0x013C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA10__IPU1_DI1_PIN15                                     \
-+		IOMUX_PAD(0x0450, 0x013C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA10__IPU2_CSI1_DATA_EN                                  \
-+		IOMUX_PAD(0x0450, 0x013C, 2, 0x08D8, 1, 0)
-+#define _MX6Q_PAD_EIM_DA10__MIPI_CORE_DPHY_TEST_OUT_12                         \
-+		IOMUX_PAD(0x0450, 0x013C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA10__GPIO_3_10                                          \
-+		IOMUX_PAD(0x0450, 0x013C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA10__TPSMP_HDATA_24                                     \
-+		IOMUX_PAD(0x0450, 0x013C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA10__SRC_BT_CFG_10                                      \
-+		IOMUX_PAD(0x0450, 0x013C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_DA11__WEIM_WEIM_DA_A_11                                  \
-+		IOMUX_PAD(0x0454, 0x0140, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA11__IPU1_DI1_PIN2                                      \
-+		IOMUX_PAD(0x0454, 0x0140, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA11__IPU2_CSI1_HSYNC                                    \
-+		IOMUX_PAD(0x0454, 0x0140, 2, 0x08DC, 1, 0)
-+#define _MX6Q_PAD_EIM_DA11__MIPI_CORE_DPHY_TEST_OUT_13                         \
-+		IOMUX_PAD(0x0454, 0x0140, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA11__SDMA_DEBUG_EVT_CHN_LINES_6                         \
-+		IOMUX_PAD(0x0454, 0x0140, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA11__GPIO_3_11                                          \
-+		IOMUX_PAD(0x0454, 0x0140, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA11__TPSMP_HDATA_25                                     \
-+		IOMUX_PAD(0x0454, 0x0140, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA11__SRC_BT_CFG_11                                      \
-+		IOMUX_PAD(0x0454, 0x0140, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_DA12__WEIM_WEIM_DA_A_12                                  \
-+		IOMUX_PAD(0x0458, 0x0144, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA12__IPU1_DI1_PIN3                                      \
-+		IOMUX_PAD(0x0458, 0x0144, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA12__IPU2_CSI1_VSYNC                                    \
-+		IOMUX_PAD(0x0458, 0x0144, 2, 0x08E4, 1, 0)
-+#define _MX6Q_PAD_EIM_DA12__MIPI_CORE_DPHY_TEST_OUT_14                         \
-+		IOMUX_PAD(0x0458, 0x0144, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA12__SDMA_DEBUG_EVT_CHN_LINES_3                         \
-+		IOMUX_PAD(0x0458, 0x0144, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA12__GPIO_3_12                                          \
-+		IOMUX_PAD(0x0458, 0x0144, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA12__TPSMP_HDATA_26                                     \
-+		IOMUX_PAD(0x0458, 0x0144, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA12__SRC_BT_CFG_12                                      \
-+		IOMUX_PAD(0x0458, 0x0144, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_DA13__WEIM_WEIM_DA_A_13                                  \
-+		IOMUX_PAD(0x045C, 0x0148, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA13__IPU1_DI1_D0_CS                                     \
-+		IOMUX_PAD(0x045C, 0x0148, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA13__CCM_DI1_EXT_CLK                                    \
-+		IOMUX_PAD(0x045C, 0x0148, 2, 0x07EC, 1, 0)
-+#define _MX6Q_PAD_EIM_DA13__MIPI_CORE_DPHY_TEST_OUT_15                         \
-+		IOMUX_PAD(0x045C, 0x0148, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA13__SDMA_DEBUG_EVT_CHN_LINES_4                         \
-+		IOMUX_PAD(0x045C, 0x0148, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA13__GPIO_3_13                                          \
-+		IOMUX_PAD(0x045C, 0x0148, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA13__TPSMP_HDATA_27                                     \
-+		IOMUX_PAD(0x045C, 0x0148, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA13__SRC_BT_CFG_13                                      \
-+		IOMUX_PAD(0x045C, 0x0148, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_DA14__WEIM_WEIM_DA_A_14                                  \
-+		IOMUX_PAD(0x0460, 0x014C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA14__IPU1_DI1_D1_CS                                     \
-+		IOMUX_PAD(0x0460, 0x014C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA14__CCM_DI0_EXT_CLK                                    \
-+		IOMUX_PAD(0x0460, 0x014C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA14__MIPI_CORE_DPHY_TEST_OUT_16                         \
-+		IOMUX_PAD(0x0460, 0x014C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA14__SDMA_DEBUG_EVT_CHN_LINES_5                         \
-+		IOMUX_PAD(0x0460, 0x014C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA14__GPIO_3_14                                          \
-+		IOMUX_PAD(0x0460, 0x014C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA14__TPSMP_HDATA_28                                     \
-+		IOMUX_PAD(0x0460, 0x014C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA14__SRC_BT_CFG_14                                      \
-+		IOMUX_PAD(0x0460, 0x014C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_DA15__WEIM_WEIM_DA_A_15                                  \
-+		IOMUX_PAD(0x0464, 0x0150, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA15__IPU1_DI1_PIN1                                      \
-+		IOMUX_PAD(0x0464, 0x0150, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA15__IPU1_DI1_PIN4                                      \
-+		IOMUX_PAD(0x0464, 0x0150, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA15__MIPI_CORE_DPHY_TEST_OUT_17                         \
-+		IOMUX_PAD(0x0464, 0x0150, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA15__GPIO_3_15                                          \
-+		IOMUX_PAD(0x0464, 0x0150, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA15__TPSMP_HDATA_29                                     \
-+		IOMUX_PAD(0x0464, 0x0150, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_DA15__SRC_BT_CFG_15                                      \
-+		IOMUX_PAD(0x0464, 0x0150, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_WAIT__WEIM_WEIM_WAIT                                     \
-+		IOMUX_PAD(0x0468, 0x0154, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_WAIT__WEIM_WEIM_DTACK_B                                  \
-+		IOMUX_PAD(0x0468, 0x0154, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_WAIT__GPIO_5_0                                           \
-+		IOMUX_PAD(0x0468, 0x0154, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_WAIT__TPSMP_HDATA_30                                     \
-+		IOMUX_PAD(0x0468, 0x0154, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_WAIT__SRC_BT_CFG_25                                      \
-+		IOMUX_PAD(0x0468, 0x0154, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_EIM_BCLK__WEIM_WEIM_BCLK                                     \
-+		IOMUX_PAD(0x046C, 0x0158, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_BCLK__IPU1_DI1_PIN16                                     \
-+		IOMUX_PAD(0x046C, 0x0158, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_BCLK__GPIO_6_31                                          \
-+		IOMUX_PAD(0x046C, 0x0158, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_EIM_BCLK__TPSMP_HDATA_31                                     \
-+		IOMUX_PAD(0x046C, 0x0158, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DI0_DISP_CLK__IPU1_DI0_DISP_CLK                              \
-+		IOMUX_PAD(0x0470, 0x015C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_DISP_CLK__IPU2_DI0_DISP_CLK                              \
-+		IOMUX_PAD(0x0470, 0x015C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_DISP_CLK__MIPI_CORE_DPHY_TEST_OUT_28                     \
-+		IOMUX_PAD(0x0470, 0x015C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_DISP_CLK__SDMA_DEBUG_CORE_STATE_0                        \
-+		IOMUX_PAD(0x0470, 0x015C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_DISP_CLK__GPIO_4_16                                      \
-+		IOMUX_PAD(0x0470, 0x015C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_DISP_CLK__MMDC_MMDC_DEBUG_0                              \
-+		IOMUX_PAD(0x0470, 0x015C, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DI0_PIN15__IPU1_DI0_PIN15                                    \
-+		IOMUX_PAD(0x0474, 0x0160, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN15__IPU2_DI0_PIN15                                    \
-+		IOMUX_PAD(0x0474, 0x0160, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN15__AUDMUX_AUD6_TXC                                   \
-+		IOMUX_PAD(0x0474, 0x0160, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN15__MIPI_CORE_DPHY_TEST_OUT_29                        \
-+		IOMUX_PAD(0x0474, 0x0160, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN15__SDMA_DEBUG_CORE_STATE_1                           \
-+		IOMUX_PAD(0x0474, 0x0160, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN15__GPIO_4_17                                         \
-+		IOMUX_PAD(0x0474, 0x0160, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN15__MMDC_MMDC_DEBUG_1                                 \
-+		IOMUX_PAD(0x0474, 0x0160, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DI0_PIN2__IPU1_DI0_PIN2                                      \
-+		IOMUX_PAD(0x0478, 0x0164, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN2__IPU2_DI0_PIN2                                      \
-+		IOMUX_PAD(0x0478, 0x0164, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN2__AUDMUX_AUD6_TXD                                    \
-+		IOMUX_PAD(0x0478, 0x0164, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN2__MIPI_CORE_DPHY_TEST_OUT_30                         \
-+		IOMUX_PAD(0x0478, 0x0164, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN2__SDMA_DEBUG_CORE_STATE_2                            \
-+		IOMUX_PAD(0x0478, 0x0164, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN2__GPIO_4_18                                          \
-+		IOMUX_PAD(0x0478, 0x0164, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN2__MMDC_MMDC_DEBUG_2                                  \
-+		IOMUX_PAD(0x0478, 0x0164, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN2__PL301_MX6QPER1_HADDR_9                             \
-+		IOMUX_PAD(0x0478, 0x0164, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DI0_PIN3__IPU1_DI0_PIN3                                      \
-+		IOMUX_PAD(0x047C, 0x0168, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN3__IPU2_DI0_PIN3                                      \
-+		IOMUX_PAD(0x047C, 0x0168, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN3__AUDMUX_AUD6_TXFS                                   \
-+		IOMUX_PAD(0x047C, 0x0168, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN3__MIPI_CORE_DPHY_TEST_OUT_31                         \
-+		IOMUX_PAD(0x047C, 0x0168, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN3__SDMA_DEBUG_CORE_STATE_3                            \
-+		IOMUX_PAD(0x047C, 0x0168, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN3__GPIO_4_19                                          \
-+		IOMUX_PAD(0x047C, 0x0168, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN3__MMDC_MMDC_DEBUG_3                                  \
-+		IOMUX_PAD(0x047C, 0x0168, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN3__PL301_MX6QPER1_HADDR_10                            \
-+		IOMUX_PAD(0x047C, 0x0168, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DI0_PIN4__IPU1_DI0_PIN4                                      \
-+		IOMUX_PAD(0x0480, 0x016C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN4__IPU2_DI0_PIN4                                      \
-+		IOMUX_PAD(0x0480, 0x016C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN4__AUDMUX_AUD6_RXD                                    \
-+		IOMUX_PAD(0x0480, 0x016C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN4__USDHC1_WP                                          \
-+		IOMUX_PAD(0x0480, 0x016C, 3, 0x094C, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN4__SDMA_DEBUG_YIELD                                   \
-+		IOMUX_PAD(0x0480, 0x016C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN4__GPIO_4_20                                          \
-+		IOMUX_PAD(0x0480, 0x016C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN4__MMDC_MMDC_DEBUG_4                                  \
-+		IOMUX_PAD(0x0480, 0x016C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DI0_PIN4__PL301_MX6QPER1_HADDR_11                            \
-+		IOMUX_PAD(0x0480, 0x016C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT0__IPU1_DISP0_DAT_0                                 \
-+		IOMUX_PAD(0x0484, 0x0170, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT0__IPU2_DISP0_DAT_0                                 \
-+		IOMUX_PAD(0x0484, 0x0170, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT0__ECSPI3_SCLK                                      \
-+		IOMUX_PAD(0x0484, 0x0170, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT0__USDHC1_USDHC_DEBUG_0                             \
-+		IOMUX_PAD(0x0484, 0x0170, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT0__SDMA_DEBUG_CORE_RUN                              \
-+		IOMUX_PAD(0x0484, 0x0170, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT0__GPIO_4_21                                        \
-+		IOMUX_PAD(0x0484, 0x0170, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT0__MMDC_MMDC_DEBUG_5                                \
-+		IOMUX_PAD(0x0484, 0x0170, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT1__IPU1_DISP0_DAT_1                                 \
-+		IOMUX_PAD(0x0488, 0x0174, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT1__IPU2_DISP0_DAT_1                                 \
-+		IOMUX_PAD(0x0488, 0x0174, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT1__ECSPI3_MOSI                                      \
-+		IOMUX_PAD(0x0488, 0x0174, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT1__USDHC1_USDHC_DEBUG_1                             \
-+		IOMUX_PAD(0x0488, 0x0174, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT1__SDMA_DEBUG_EVENT_CHANNEL_SEL                     \
-+		IOMUX_PAD(0x0488, 0x0174, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT1__GPIO_4_22                                        \
-+		IOMUX_PAD(0x0488, 0x0174, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT1__MMDC_MMDC_DEBUG_6                                \
-+		IOMUX_PAD(0x0488, 0x0174, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT1__PL301_MX6QPER1_HADDR_12                          \
-+		IOMUX_PAD(0x0488, 0x0174, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT2__IPU1_DISP0_DAT_2                                 \
-+		IOMUX_PAD(0x048C, 0x0178, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT2__IPU2_DISP0_DAT_2                                 \
-+		IOMUX_PAD(0x048C, 0x0178, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT2__ECSPI3_MISO                                      \
-+		IOMUX_PAD(0x048C, 0x0178, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT2__USDHC1_USDHC_DEBUG_2                             \
-+		IOMUX_PAD(0x048C, 0x0178, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT2__SDMA_DEBUG_MODE                                  \
-+		IOMUX_PAD(0x048C, 0x0178, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT2__GPIO_4_23                                        \
-+		IOMUX_PAD(0x048C, 0x0178, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT2__MMDC_MMDC_DEBUG_7                                \
-+		IOMUX_PAD(0x048C, 0x0178, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT2__PL301_MX6QPER1_HADDR_13                          \
-+		IOMUX_PAD(0x048C, 0x0178, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT3__IPU1_DISP0_DAT_3                                 \
-+		IOMUX_PAD(0x0490, 0x017C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT3__IPU2_DISP0_DAT_3                                 \
-+		IOMUX_PAD(0x0490, 0x017C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT3__ECSPI3_SS0                                       \
-+		IOMUX_PAD(0x0490, 0x017C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT3__USDHC1_USDHC_DEBUG_3                             \
-+		IOMUX_PAD(0x0490, 0x017C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT3__SDMA_DEBUG_BUS_ERROR                             \
-+		IOMUX_PAD(0x0490, 0x017C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT3__GPIO_4_24                                        \
-+		IOMUX_PAD(0x0490, 0x017C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT3__MMDC_MMDC_DEBUG_8                                \
-+		IOMUX_PAD(0x0490, 0x017C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT3__PL301_MX6QPER1_HADDR_14                          \
-+		IOMUX_PAD(0x0490, 0x017C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT4__IPU1_DISP0_DAT_4                                 \
-+		IOMUX_PAD(0x0494, 0x0180, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT4__IPU2_DISP0_DAT_4                                 \
-+		IOMUX_PAD(0x0494, 0x0180, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT4__ECSPI3_SS1                                       \
-+		IOMUX_PAD(0x0494, 0x0180, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT4__USDHC1_USDHC_DEBUG_4                             \
-+		IOMUX_PAD(0x0494, 0x0180, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT4__SDMA_DEBUG_BUS_RWB                               \
-+		IOMUX_PAD(0x0494, 0x0180, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT4__GPIO_4_25                                        \
-+		IOMUX_PAD(0x0494, 0x0180, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT4__MMDC_MMDC_DEBUG_9                                \
-+		IOMUX_PAD(0x0494, 0x0180, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT4__PL301_MX6QPER1_HADDR_15                          \
-+		IOMUX_PAD(0x0494, 0x0180, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT5__IPU1_DISP0_DAT_5                                 \
-+		IOMUX_PAD(0x0498, 0x0184, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT5__IPU2_DISP0_DAT_5                                 \
-+		IOMUX_PAD(0x0498, 0x0184, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT5__ECSPI3_SS2                                       \
-+		IOMUX_PAD(0x0498, 0x0184, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT5__AUDMUX_AUD6_RXFS                                 \
-+		IOMUX_PAD(0x0498, 0x0184, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT5__SDMA_DEBUG_MATCHED_DMBUS                         \
-+		IOMUX_PAD(0x0498, 0x0184, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT5__GPIO_4_26                                        \
-+		IOMUX_PAD(0x0498, 0x0184, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT5__MMDC_MMDC_DEBUG_10                               \
-+		IOMUX_PAD(0x0498, 0x0184, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT5__PL301_MX6QPER1_HADDR_16                          \
-+		IOMUX_PAD(0x0498, 0x0184, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT6__IPU1_DISP0_DAT_6                                 \
-+		IOMUX_PAD(0x049C, 0x0188, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT6__IPU2_DISP0_DAT_6                                 \
-+		IOMUX_PAD(0x049C, 0x0188, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT6__ECSPI3_SS3                                       \
-+		IOMUX_PAD(0x049C, 0x0188, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT6__AUDMUX_AUD6_RXC                                  \
-+		IOMUX_PAD(0x049C, 0x0188, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT6__SDMA_DEBUG_RTBUFFER_WRITE                        \
-+		IOMUX_PAD(0x049C, 0x0188, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT6__GPIO_4_27                                        \
-+		IOMUX_PAD(0x049C, 0x0188, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT6__MMDC_MMDC_DEBUG_11                               \
-+		IOMUX_PAD(0x049C, 0x0188, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT6__PL301_MX6QPER1_HADDR_17                          \
-+		IOMUX_PAD(0x049C, 0x0188, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT7__IPU1_DISP0_DAT_7                                 \
-+		IOMUX_PAD(0x04A0, 0x018C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT7__IPU2_DISP0_DAT_7                                 \
-+		IOMUX_PAD(0x04A0, 0x018C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT7__ECSPI3_RDY                                       \
-+		IOMUX_PAD(0x04A0, 0x018C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT7__USDHC1_USDHC_DEBUG_5                             \
-+		IOMUX_PAD(0x04A0, 0x018C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT7__SDMA_DEBUG_EVENT_CHANNEL_0                       \
-+		IOMUX_PAD(0x04A0, 0x018C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT7__GPIO_4_28                                        \
-+		IOMUX_PAD(0x04A0, 0x018C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT7__MMDC_MMDC_DEBUG_12                               \
-+		IOMUX_PAD(0x04A0, 0x018C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT7__PL301_MX6QPER1_HADDR_18                          \
-+		IOMUX_PAD(0x04A0, 0x018C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT8__IPU1_DISP0_DAT_8                                 \
-+		IOMUX_PAD(0x04A4, 0x0190, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT8__IPU2_DISP0_DAT_8                                 \
-+		IOMUX_PAD(0x04A4, 0x0190, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT8__PWM1_PWMO                                        \
-+		IOMUX_PAD(0x04A4, 0x0190, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT8__WDOG1_WDOG_B                                     \
-+		IOMUX_PAD(0x04A4, 0x0190, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT8__SDMA_DEBUG_EVENT_CHANNEL_1                       \
-+		IOMUX_PAD(0x04A4, 0x0190, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT8__GPIO_4_29                                        \
-+		IOMUX_PAD(0x04A4, 0x0190, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT8__MMDC_MMDC_DEBUG_13                               \
-+		IOMUX_PAD(0x04A4, 0x0190, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT8__PL301_MX6QPER1_HADDR_19                          \
-+		IOMUX_PAD(0x04A4, 0x0190, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT9__IPU1_DISP0_DAT_9                                 \
-+		IOMUX_PAD(0x04A8, 0x0194, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT9__IPU2_DISP0_DAT_9                                 \
-+		IOMUX_PAD(0x04A8, 0x0194, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT9__PWM2_PWMO                                        \
-+		IOMUX_PAD(0x04A8, 0x0194, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT9__WDOG2_WDOG_B                                     \
-+		IOMUX_PAD(0x04A8, 0x0194, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT9__SDMA_DEBUG_EVENT_CHANNEL_2                       \
-+		IOMUX_PAD(0x04A8, 0x0194, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT9__GPIO_4_30                                        \
-+		IOMUX_PAD(0x04A8, 0x0194, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT9__MMDC_MMDC_DEBUG_14                               \
-+		IOMUX_PAD(0x04A8, 0x0194, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT9__PL301_MX6QPER1_HADDR_20                          \
-+		IOMUX_PAD(0x04A8, 0x0194, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT10__IPU1_DISP0_DAT_10                               \
-+		IOMUX_PAD(0x04AC, 0x0198, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT10__IPU2_DISP0_DAT_10                               \
-+		IOMUX_PAD(0x04AC, 0x0198, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT10__USDHC1_USDHC_DEBUG_6                            \
-+		IOMUX_PAD(0x04AC, 0x0198, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT10__SDMA_DEBUG_EVENT_CHANNEL_3                      \
-+		IOMUX_PAD(0x04AC, 0x0198, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT10__GPIO_4_31                                       \
-+		IOMUX_PAD(0x04AC, 0x0198, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT10__MMDC_MMDC_DEBUG_15                              \
-+		IOMUX_PAD(0x04AC, 0x0198, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT10__PL301_MX6QPER1_HADDR_21                         \
-+		IOMUX_PAD(0x04AC, 0x0198, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT11__IPU1_DISP0_DAT_11                               \
-+		IOMUX_PAD(0x04B0, 0x019C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT11__IPU2_DISP0_DAT_11                               \
-+		IOMUX_PAD(0x04B0, 0x019C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT11__USDHC1_USDHC_DEBUG_7                            \
-+		IOMUX_PAD(0x04B0, 0x019C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT11__SDMA_DEBUG_EVENT_CHANNEL_4                      \
-+		IOMUX_PAD(0x04B0, 0x019C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT11__GPIO_5_5                                        \
-+		IOMUX_PAD(0x04B0, 0x019C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT11__MMDC_MMDC_DEBUG_16                              \
-+		IOMUX_PAD(0x04B0, 0x019C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT11__PL301_MX6QPER1_HADDR_22                         \
-+		IOMUX_PAD(0x04B0, 0x019C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT12__IPU1_DISP0_DAT_12                               \
-+		IOMUX_PAD(0x04B4, 0x01A0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT12__IPU2_DISP0_DAT_12                               \
-+		IOMUX_PAD(0x04B4, 0x01A0, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT12__RESERVED_RESERVED                               \
-+		IOMUX_PAD(0x04B4, 0x01A0, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT12__SDMA_DEBUG_EVENT_CHANNEL_5                      \
-+		IOMUX_PAD(0x04B4, 0x01A0, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT12__GPIO_5_6                                        \
-+		IOMUX_PAD(0x04B4, 0x01A0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT12__MMDC_MMDC_DEBUG_17                              \
-+		IOMUX_PAD(0x04B4, 0x01A0, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT12__PL301_MX6QPER1_HADDR_23                         \
-+		IOMUX_PAD(0x04B4, 0x01A0, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT13__IPU1_DISP0_DAT_13                               \
-+		IOMUX_PAD(0x04B8, 0x01A4, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT13__IPU2_DISP0_DAT_13                               \
-+		IOMUX_PAD(0x04B8, 0x01A4, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT13__AUDMUX_AUD5_RXFS                                \
-+		IOMUX_PAD(0x04B8, 0x01A4, 3, 0x07D8, 1, 0)
-+#define _MX6Q_PAD_DISP0_DAT13__SDMA_DEBUG_EVT_CHN_LINES_0                      \
-+		IOMUX_PAD(0x04B8, 0x01A4, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT13__GPIO_5_7                                        \
-+		IOMUX_PAD(0x04B8, 0x01A4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT13__MMDC_MMDC_DEBUG_18                              \
-+		IOMUX_PAD(0x04B8, 0x01A4, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT13__PL301_MX6QPER1_HADDR_24                         \
-+		IOMUX_PAD(0x04B8, 0x01A4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT14__IPU1_DISP0_DAT_14                               \
-+		IOMUX_PAD(0x04BC, 0x01A8, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT14__IPU2_DISP0_DAT_14                               \
-+		IOMUX_PAD(0x04BC, 0x01A8, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT14__AUDMUX_AUD5_RXC                                 \
-+		IOMUX_PAD(0x04BC, 0x01A8, 3, 0x07D4, 1, 0)
-+#define _MX6Q_PAD_DISP0_DAT14__SDMA_DEBUG_EVT_CHN_LINES_1                      \
-+		IOMUX_PAD(0x04BC, 0x01A8, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT14__GPIO_5_8                                        \
-+		IOMUX_PAD(0x04BC, 0x01A8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT14__MMDC_MMDC_DEBUG_19                              \
-+		IOMUX_PAD(0x04BC, 0x01A8, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT15__IPU1_DISP0_DAT_15                               \
-+		IOMUX_PAD(0x04C0, 0x01AC, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT15__IPU2_DISP0_DAT_15                               \
-+		IOMUX_PAD(0x04C0, 0x01AC, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT15__ECSPI1_SS1                                      \
-+		IOMUX_PAD(0x04C0, 0x01AC, 2, 0x0804, 1, 0)
-+#define _MX6Q_PAD_DISP0_DAT15__ECSPI2_SS1                                      \
-+		IOMUX_PAD(0x04C0, 0x01AC, 3, 0x0820, 1, 0)
-+#define _MX6Q_PAD_DISP0_DAT15__SDMA_DEBUG_EVT_CHN_LINES_2                      \
-+		IOMUX_PAD(0x04C0, 0x01AC, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT15__GPIO_5_9                                        \
-+		IOMUX_PAD(0x04C0, 0x01AC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT15__MMDC_MMDC_DEBUG_20                              \
-+		IOMUX_PAD(0x04C0, 0x01AC, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT15__PL301_MX6QPER1_HADDR_25                         \
-+		IOMUX_PAD(0x04C0, 0x01AC, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT16__IPU1_DISP0_DAT_16                               \
-+		IOMUX_PAD(0x04C4, 0x01B0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT16__IPU2_DISP0_DAT_16                               \
-+		IOMUX_PAD(0x04C4, 0x01B0, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT16__ECSPI2_MOSI                                     \
-+		IOMUX_PAD(0x04C4, 0x01B0, 2, 0x0818, 1, 0)
-+#define _MX6Q_PAD_DISP0_DAT16__AUDMUX_AUD5_TXC                                 \
-+		IOMUX_PAD(0x04C4, 0x01B0, 3, 0x07DC, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT16__SDMA_SDMA_EXT_EVENT_0                           \
-+		IOMUX_PAD(0x04C4, 0x01B0, 4, 0x090C, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT16__GPIO_5_10                                       \
-+		IOMUX_PAD(0x04C4, 0x01B0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT16__MMDC_MMDC_DEBUG_21                              \
-+		IOMUX_PAD(0x04C4, 0x01B0, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT16__PL301_MX6QPER1_HADDR_26                         \
-+		IOMUX_PAD(0x04C4, 0x01B0, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT17__IPU1_DISP0_DAT_17                               \
-+		IOMUX_PAD(0x04C8, 0x01B4, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT17__IPU2_DISP0_DAT_17                               \
-+		IOMUX_PAD(0x04C8, 0x01B4, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT17__ECSPI2_MISO                                     \
-+		IOMUX_PAD(0x04C8, 0x01B4, 2, 0x0814, 1, 0)
-+#define _MX6Q_PAD_DISP0_DAT17__AUDMUX_AUD5_TXD                                 \
-+		IOMUX_PAD(0x04C8, 0x01B4, 3, 0x07D0, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT17__SDMA_SDMA_EXT_EVENT_1                           \
-+		IOMUX_PAD(0x04C8, 0x01B4, 4, 0x0910, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT17__GPIO_5_11                                       \
-+		IOMUX_PAD(0x04C8, 0x01B4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT17__MMDC_MMDC_DEBUG_22                              \
-+		IOMUX_PAD(0x04C8, 0x01B4, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT17__PL301_MX6QPER1_HADDR_27                         \
-+		IOMUX_PAD(0x04C8, 0x01B4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT18__IPU1_DISP0_DAT_18                               \
-+		IOMUX_PAD(0x04CC, 0x01B8, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT18__IPU2_DISP0_DAT_18                               \
-+		IOMUX_PAD(0x04CC, 0x01B8, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT18__ECSPI2_SS0                                      \
-+		IOMUX_PAD(0x04CC, 0x01B8, 2, 0x081C, 1, 0)
-+#define _MX6Q_PAD_DISP0_DAT18__AUDMUX_AUD5_TXFS                                \
-+		IOMUX_PAD(0x04CC, 0x01B8, 3, 0x07E0, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT18__AUDMUX_AUD4_RXFS                                \
-+		IOMUX_PAD(0x04CC, 0x01B8, 4, 0x07C0, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT18__GPIO_5_12                                       \
-+		IOMUX_PAD(0x04CC, 0x01B8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT18__MMDC_MMDC_DEBUG_23                              \
-+		IOMUX_PAD(0x04CC, 0x01B8, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT18__WEIM_WEIM_CS_2                                  \
-+		IOMUX_PAD(0x04CC, 0x01B8, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT19__IPU1_DISP0_DAT_19                               \
-+		IOMUX_PAD(0x04D0, 0x01BC, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT19__IPU2_DISP0_DAT_19                               \
-+		IOMUX_PAD(0x04D0, 0x01BC, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT19__ECSPI2_SCLK                                     \
-+		IOMUX_PAD(0x04D0, 0x01BC, 2, 0x0810, 1, 0)
-+#define _MX6Q_PAD_DISP0_DAT19__AUDMUX_AUD5_RXD                                 \
-+		IOMUX_PAD(0x04D0, 0x01BC, 3, 0x07CC, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT19__AUDMUX_AUD4_RXC                                 \
-+		IOMUX_PAD(0x04D0, 0x01BC, 4, 0x07BC, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT19__GPIO_5_13                                       \
-+		IOMUX_PAD(0x04D0, 0x01BC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT19__MMDC_MMDC_DEBUG_24                              \
-+		IOMUX_PAD(0x04D0, 0x01BC, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT19__WEIM_WEIM_CS_3                                  \
-+		IOMUX_PAD(0x04D0, 0x01BC, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT20__IPU1_DISP0_DAT_20                               \
-+		IOMUX_PAD(0x04D4, 0x01C0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT20__IPU2_DISP0_DAT_20                               \
-+		IOMUX_PAD(0x04D4, 0x01C0, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT20__ECSPI1_SCLK                                     \
-+		IOMUX_PAD(0x04D4, 0x01C0, 2, 0x07F4, 1, 0)
-+#define _MX6Q_PAD_DISP0_DAT20__AUDMUX_AUD4_TXC                                 \
-+		IOMUX_PAD(0x04D4, 0x01C0, 3, 0x07C4, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT20__SDMA_DEBUG_EVT_CHN_LINES_7                      \
-+		IOMUX_PAD(0x04D4, 0x01C0, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT20__GPIO_5_14                                       \
-+		IOMUX_PAD(0x04D4, 0x01C0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT20__MMDC_MMDC_DEBUG_25                              \
-+		IOMUX_PAD(0x04D4, 0x01C0, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT20__PL301_MX6QPER1_HADDR_28                         \
-+		IOMUX_PAD(0x04D4, 0x01C0, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT21__IPU1_DISP0_DAT_21                               \
-+		IOMUX_PAD(0x04D8, 0x01C4, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT21__IPU2_DISP0_DAT_21                               \
-+		IOMUX_PAD(0x04D8, 0x01C4, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT21__ECSPI1_MOSI                                     \
-+		IOMUX_PAD(0x04D8, 0x01C4, 2, 0x07FC, 1, 0)
-+#define _MX6Q_PAD_DISP0_DAT21__AUDMUX_AUD4_TXD                                 \
-+		IOMUX_PAD(0x04D8, 0x01C4, 3, 0x07B8, 1, 0)
-+#define _MX6Q_PAD_DISP0_DAT21__SDMA_DEBUG_BUS_DEVICE_0                         \
-+		IOMUX_PAD(0x04D8, 0x01C4, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT21__GPIO_5_15                                       \
-+		IOMUX_PAD(0x04D8, 0x01C4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT21__MMDC_MMDC_DEBUG_26                              \
-+		IOMUX_PAD(0x04D8, 0x01C4, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT21__PL301_MX6QPER1_HADDR_29                         \
-+		IOMUX_PAD(0x04D8, 0x01C4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT22__IPU1_DISP0_DAT_22                               \
-+		IOMUX_PAD(0x04DC, 0x01C8, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT22__IPU2_DISP0_DAT_22                               \
-+		IOMUX_PAD(0x04DC, 0x01C8, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT22__ECSPI1_MISO                                     \
-+		IOMUX_PAD(0x04DC, 0x01C8, 2, 0x07F8, 1, 0)
-+#define _MX6Q_PAD_DISP0_DAT22__AUDMUX_AUD4_TXFS                                \
-+		IOMUX_PAD(0x04DC, 0x01C8, 3, 0x07C8, 1, 0)
-+#define _MX6Q_PAD_DISP0_DAT22__SDMA_DEBUG_BUS_DEVICE_1                         \
-+		IOMUX_PAD(0x04DC, 0x01C8, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT22__GPIO_5_16                                       \
-+		IOMUX_PAD(0x04DC, 0x01C8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT22__MMDC_MMDC_DEBUG_27                              \
-+		IOMUX_PAD(0x04DC, 0x01C8, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT22__PL301_MX6QPER1_HADDR_30                         \
-+		IOMUX_PAD(0x04DC, 0x01C8, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DISP0_DAT23__IPU1_DISP0_DAT_23                               \
-+		IOMUX_PAD(0x04E0, 0x01CC, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT23__IPU2_DISP0_DAT_23                               \
-+		IOMUX_PAD(0x04E0, 0x01CC, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT23__ECSPI1_SS0                                      \
-+		IOMUX_PAD(0x04E0, 0x01CC, 2, 0x0800, 1, 0)
-+#define _MX6Q_PAD_DISP0_DAT23__AUDMUX_AUD4_RXD                                 \
-+		IOMUX_PAD(0x04E0, 0x01CC, 3, 0x07B4, 1, 0)
-+#define _MX6Q_PAD_DISP0_DAT23__SDMA_DEBUG_BUS_DEVICE_2                         \
-+		IOMUX_PAD(0x04E0, 0x01CC, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT23__GPIO_5_17                                       \
-+		IOMUX_PAD(0x04E0, 0x01CC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT23__MMDC_MMDC_DEBUG_28                              \
-+		IOMUX_PAD(0x04E0, 0x01CC, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_DISP0_DAT23__PL301_MX6QPER1_HADDR_31                         \
-+		IOMUX_PAD(0x04E0, 0x01CC, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_ENET_MDIO__RESERVED_RESERVED                                 \
-+		IOMUX_PAD(0x04E4, 0x01D0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_MDIO__ENET_MDIO                                         \
-+		IOMUX_PAD(0x04E4, 0x01D0, 1, 0x0840, 0, 0)
-+#define _MX6Q_PAD_ENET_MDIO__ESAI1_SCKR                                        \
-+		IOMUX_PAD(0x04E4, 0x01D0, 2, 0x086C, 0, 0)
-+#define _MX6Q_PAD_ENET_MDIO__SDMA_DEBUG_BUS_DEVICE_3                           \
-+		IOMUX_PAD(0x04E4, 0x01D0, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_MDIO__ENET_1588_EVENT1_OUT                              \
-+		IOMUX_PAD(0x04E4, 0x01D0, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_MDIO__GPIO_1_22                                         \
-+		IOMUX_PAD(0x04E4, 0x01D0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_MDIO__SPDIF_PLOCK                                       \
-+		IOMUX_PAD(0x04E4, 0x01D0, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_ENET_REF_CLK__RESERVED_RESERVED                              \
-+		IOMUX_PAD(0x04E8, 0x01D4, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_REF_CLK__ENET_TX_CLK                                    \
-+		IOMUX_PAD(0x04E8, 0x01D4, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_REF_CLK__ESAI1_FSR                                      \
-+		IOMUX_PAD(0x04E8, 0x01D4, 2, 0x085C, 0, 0)
-+#define _MX6Q_PAD_ENET_REF_CLK__SDMA_DEBUG_BUS_DEVICE_4                        \
-+		IOMUX_PAD(0x04E8, 0x01D4, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_REF_CLK__GPIO_1_23                                      \
-+		IOMUX_PAD(0x04E8, 0x01D4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_REF_CLK__SPDIF_SRCLK                                    \
-+		IOMUX_PAD(0x04E8, 0x01D4, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_REF_CLK__ANATOP_USBPHY1_TSTO_RX_SQUELCH                 \
-+		IOMUX_PAD(0x04E8, 0x01D4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_ENET_RX_ER__ENET_RX_ER                                       \
-+		IOMUX_PAD(0x04EC, 0x01D8, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_RX_ER__ESAI1_HCKR                                       \
-+		IOMUX_PAD(0x04EC, 0x01D8, 2, 0x0864, 0, 0)
-+#define _MX6Q_PAD_ENET_RX_ER__SPDIF_IN1                                        \
-+		IOMUX_PAD(0x04EC, 0x01D8, 3, 0x0914, 1, 0)
-+#define _MX6Q_PAD_ENET_RX_ER__ENET_1588_EVENT2_OUT                             \
-+		IOMUX_PAD(0x04EC, 0x01D8, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_RX_ER__GPIO_1_24                                        \
-+		IOMUX_PAD(0x04EC, 0x01D8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_RX_ER__PHY_TDI                                          \
-+		IOMUX_PAD(0x04EC, 0x01D8, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_RX_ER__ANATOP_USBPHY1_TSTO_RX_HS_RXD                    \
-+		IOMUX_PAD(0x04EC, 0x01D8, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_ENET_CRS_DV__RESERVED_RESERVED                               \
-+		IOMUX_PAD(0x04F0, 0x01DC, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_CRS_DV__ENET_RX_EN                                      \
-+		IOMUX_PAD(0x04F0, 0x01DC, 1, 0x0858, 1, 0)
-+#define _MX6Q_PAD_ENET_CRS_DV__ESAI1_SCKT                                      \
-+		IOMUX_PAD(0x04F0, 0x01DC, 2, 0x0870, 0, 0)
-+#define _MX6Q_PAD_ENET_CRS_DV__SPDIF_SPDIF_EXTCLK                              \
-+		IOMUX_PAD(0x04F0, 0x01DC, 3, 0x0918, 1, 0)
-+#define _MX6Q_PAD_ENET_CRS_DV__GPIO_1_25                                       \
-+		IOMUX_PAD(0x04F0, 0x01DC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_CRS_DV__PHY_TDO                                         \
-+		IOMUX_PAD(0x04F0, 0x01DC, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_CRS_DV__ANATOP_USBPHY1_TSTO_RX_FS_RXD                   \
-+		IOMUX_PAD(0x04F0, 0x01DC, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_ENET_RXD1__MLB_MLBSIG                                        \
-+		IOMUX_PAD(0x04F4, 0x01E0, 0, 0x0908, 0, 0)
-+#define _MX6Q_PAD_ENET_RXD1__ENET_RDATA_1                                      \
-+		IOMUX_PAD(0x04F4, 0x01E0, 1, 0x084C, 1, 0)
-+#define _MX6Q_PAD_ENET_RXD1__ESAI1_FST                                         \
-+		IOMUX_PAD(0x04F4, 0x01E0, 2, 0x0860, 0, 0)
-+#define _MX6Q_PAD_ENET_RXD1__ENET_1588_EVENT3_OUT                              \
-+		IOMUX_PAD(0x04F4, 0x01E0, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_RXD1__GPIO_1_26                                         \
-+		IOMUX_PAD(0x04F4, 0x01E0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_RXD1__PHY_TCK                                           \
-+		IOMUX_PAD(0x04F4, 0x01E0, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_RXD1__ANATOP_USBPHY1_TSTO_RX_DISCON_DET                 \
-+		IOMUX_PAD(0x04F4, 0x01E0, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_ENET_RXD0__OSC32K_32K_OUT                                    \
-+		IOMUX_PAD(0x04F8, 0x01E4, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_RXD0__ENET_RDATA_0                                      \
-+		IOMUX_PAD(0x04F8, 0x01E4, 1, 0x0848, 1, 0)
-+#define _MX6Q_PAD_ENET_RXD0__ESAI1_HCKT                                        \
-+		IOMUX_PAD(0x04F8, 0x01E4, 2, 0x0868, 0, 0)
-+#define _MX6Q_PAD_ENET_RXD0__SPDIF_OUT1                                        \
-+		IOMUX_PAD(0x04F8, 0x01E4, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_RXD0__GPIO_1_27                                         \
-+		IOMUX_PAD(0x04F8, 0x01E4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_RXD0__PHY_TMS                                           \
-+		IOMUX_PAD(0x04F8, 0x01E4, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_RXD0__ANATOP_USBPHY1_TSTO_PLL_CLK20DIV                  \
-+		IOMUX_PAD(0x04F8, 0x01E4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_ENET_TX_EN__RESERVED_RESERVED                                \
-+		IOMUX_PAD(0x04FC, 0x01E8, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_TX_EN__ENET_TX_EN                                       \
-+		IOMUX_PAD(0x04FC, 0x01E8, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_TX_EN__ESAI1_TX3_RX2                                    \
-+		IOMUX_PAD(0x04FC, 0x01E8, 2, 0x0880, 0, 0)
-+#define _MX6Q_PAD_ENET_TX_EN__GPIO_1_28                                        \
-+		IOMUX_PAD(0x04FC, 0x01E8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_TX_EN__SATA_PHY_TDI                                     \
-+		IOMUX_PAD(0x04FC, 0x01E8, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_TX_EN__ANATOP_USBPHY2_TSTO_RX_SQUELCH                   \
-+		IOMUX_PAD(0x04FC, 0x01E8, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_ENET_TXD1__MLB_MLBCLK                                        \
-+		IOMUX_PAD(0x0500, 0x01EC, 0, 0x0900, 0, 0)
-+#define _MX6Q_PAD_ENET_TXD1__ENET_TDATA_1                                      \
-+		IOMUX_PAD(0x0500, 0x01EC, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_TXD1__ESAI1_TX2_RX3                                     \
-+		IOMUX_PAD(0x0500, 0x01EC, 2, 0x087C, 0, 0)
-+#define _MX6Q_PAD_ENET_TXD1__ENET_1588_EVENT0_IN                               \
-+		IOMUX_PAD(0x0500, 0x01EC, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_TXD1__GPIO_1_29                                         \
-+		IOMUX_PAD(0x0500, 0x01EC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_TXD1__SATA_PHY_TDO                                      \
-+		IOMUX_PAD(0x0500, 0x01EC, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_TXD1__ANATOP_USBPHY2_TSTO_RX_HS_RXD                     \
-+		IOMUX_PAD(0x0500, 0x01EC, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_ENET_TXD0__RESERVED_RESERVED                                 \
-+		IOMUX_PAD(0x0504, 0x01F0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_TXD0__ENET_TDATA_0                                      \
-+		IOMUX_PAD(0x0504, 0x01F0, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_TXD0__ESAI1_TX4_RX1                                     \
-+		IOMUX_PAD(0x0504, 0x01F0, 2, 0x0884, 0, 0)
-+#define _MX6Q_PAD_ENET_TXD0__GPIO_1_30                                         \
-+		IOMUX_PAD(0x0504, 0x01F0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_TXD0__SATA_PHY_TCK                                      \
-+		IOMUX_PAD(0x0504, 0x01F0, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_TXD0__ANATOP_USBPHY2_TSTO_RX_FS_RXD                     \
-+		IOMUX_PAD(0x0504, 0x01F0, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_ENET_MDC__MLB_MLBDAT                                         \
-+		IOMUX_PAD(0x0508, 0x01F4, 0, 0x0904, 0, 0)
-+#define _MX6Q_PAD_ENET_MDC__ENET_MDC                                           \
-+		IOMUX_PAD(0x0508, 0x01F4, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_MDC__ESAI1_TX5_RX0                                      \
-+		IOMUX_PAD(0x0508, 0x01F4, 2, 0x0888, 0, 0)
-+#define _MX6Q_PAD_ENET_MDC__ENET_1588_EVENT1_IN                                \
-+		IOMUX_PAD(0x0508, 0x01F4, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_MDC__GPIO_1_31                                          \
-+		IOMUX_PAD(0x0508, 0x01F4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_MDC__SATA_PHY_TMS                                       \
-+		IOMUX_PAD(0x0508, 0x01F4, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_ENET_MDC__ANATOP_USBPHY2_TSTO_RX_DISCON_DET                  \
-+		IOMUX_PAD(0x0508, 0x01F4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D40__MMDC_DRAM_D_40                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D41__MMDC_DRAM_D_41                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D42__MMDC_DRAM_D_42                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D43__MMDC_DRAM_D_43                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D44__MMDC_DRAM_D_44                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D45__MMDC_DRAM_D_45                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D46__MMDC_DRAM_D_46                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D47__MMDC_DRAM_D_47                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDQS5__MMDC_DRAM_SDQS_5                                 \
-+		IOMUX_PAD(0x050C, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_DQM5__MMDC_DRAM_DQM_5                                   \
-+		IOMUX_PAD(0x0510, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D32__MMDC_DRAM_D_32                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D33__MMDC_DRAM_D_33                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D34__MMDC_DRAM_D_34                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D35__MMDC_DRAM_D_35                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D36__MMDC_DRAM_D_36                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D37__MMDC_DRAM_D_37                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D38__MMDC_DRAM_D_38                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D39__MMDC_DRAM_D_39                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_DQM4__MMDC_DRAM_DQM_4                                   \
-+		IOMUX_PAD(0x0514, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDQS4__MMDC_DRAM_SDQS_4                                 \
-+		IOMUX_PAD(0x0518, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D24__MMDC_DRAM_D_24                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D25__MMDC_DRAM_D_25                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D26__MMDC_DRAM_D_26                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D27__MMDC_DRAM_D_27                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D28__MMDC_DRAM_D_28                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D29__MMDC_DRAM_D_29                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDQS3__MMDC_DRAM_SDQS_3                                 \
-+		IOMUX_PAD(0x051C, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D30__MMDC_DRAM_D_30                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D31__MMDC_DRAM_D_31                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_DQM3__MMDC_DRAM_DQM_3                                   \
-+		IOMUX_PAD(0x0520, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D16__MMDC_DRAM_D_16                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D17__MMDC_DRAM_D_17                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D18__MMDC_DRAM_D_18                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D19__MMDC_DRAM_D_19                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D20__MMDC_DRAM_D_20                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D21__MMDC_DRAM_D_21                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D22__MMDC_DRAM_D_22                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDQS2__MMDC_DRAM_SDQS_2                                 \
-+		IOMUX_PAD(0x0524, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D23__MMDC_DRAM_D_23                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_DQM2__MMDC_DRAM_DQM_2                                   \
-+		IOMUX_PAD(0x0528, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_A0__MMDC_DRAM_A_0                                       \
-+		IOMUX_PAD(0x052C, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_A1__MMDC_DRAM_A_1                                       \
-+		IOMUX_PAD(0x0530, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_A2__MMDC_DRAM_A_2                                       \
-+		IOMUX_PAD(0x0534, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_A3__MMDC_DRAM_A_3                                       \
-+		IOMUX_PAD(0x0538, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_A4__MMDC_DRAM_A_4                                       \
-+		IOMUX_PAD(0x053C, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_A5__MMDC_DRAM_A_5                                       \
-+		IOMUX_PAD(0x0540, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_A6__MMDC_DRAM_A_6                                       \
-+		IOMUX_PAD(0x0544, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_A7__MMDC_DRAM_A_7                                       \
-+		IOMUX_PAD(0x0548, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_A8__MMDC_DRAM_A_8                                       \
-+		IOMUX_PAD(0x054C, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_A9__MMDC_DRAM_A_9                                       \
-+		IOMUX_PAD(0x0550, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_A10__MMDC_DRAM_A_10                                     \
-+		IOMUX_PAD(0x0554, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_A11__MMDC_DRAM_A_11                                     \
-+		IOMUX_PAD(0x0558, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_A12__MMDC_DRAM_A_12                                     \
-+		IOMUX_PAD(0x055C, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_A13__MMDC_DRAM_A_13                                     \
-+		IOMUX_PAD(0x0560, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_A14__MMDC_DRAM_A_14                                     \
-+		IOMUX_PAD(0x0564, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_A15__MMDC_DRAM_A_15                                     \
-+		IOMUX_PAD(0x0568, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_CAS__MMDC_DRAM_CAS                                      \
-+		IOMUX_PAD(0x056C, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_CS0__MMDC_DRAM_CS_0                                     \
-+		IOMUX_PAD(0x0570, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_CS1__MMDC_DRAM_CS_1                                     \
-+		IOMUX_PAD(0x0574, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_RAS__MMDC_DRAM_RAS                                      \
-+		IOMUX_PAD(0x0578, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_RESET__MMDC_DRAM_RESET                                  \
-+		IOMUX_PAD(0x057C, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDBA0__MMDC_DRAM_SDBA_0                                 \
-+		IOMUX_PAD(0x0580, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDBA1__MMDC_DRAM_SDBA_1                                 \
-+		IOMUX_PAD(0x0584, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDCLK_0__MMDC_DRAM_SDCLK0                               \
-+		IOMUX_PAD(0x0588, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDBA2__MMDC_DRAM_SDBA_2                                 \
-+		IOMUX_PAD(0x058C, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDCKE0__MMDC_DRAM_SDCKE_0                               \
-+		IOMUX_PAD(0x0590, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDCLK_1__MMDC_DRAM_SDCLK1                               \
-+		IOMUX_PAD(0x0594, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDCKE1__MMDC_DRAM_SDCKE_1                               \
-+		IOMUX_PAD(0x0598, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDODT0__MMDC_DRAM_ODT_0                                 \
-+		IOMUX_PAD(0x059C, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDODT1__MMDC_DRAM_ODT_1                                 \
-+		IOMUX_PAD(0x05A0, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDWE__MMDC_DRAM_SDWE                                    \
-+		IOMUX_PAD(0x05A4, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D0__MMDC_DRAM_D_0                                       \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D1__MMDC_DRAM_D_1                                       \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D2__MMDC_DRAM_D_2                                       \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D3__MMDC_DRAM_D_3                                       \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D4__MMDC_DRAM_D_4                                       \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D5__MMDC_DRAM_D_5                                       \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDQS0__MMDC_DRAM_SDQS_0                                 \
-+		IOMUX_PAD(0x05A8, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D6__MMDC_DRAM_D_6                                       \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D7__MMDC_DRAM_D_7                                       \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_DQM0__MMDC_DRAM_DQM_0                                   \
-+		IOMUX_PAD(0x05AC, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D8__MMDC_DRAM_D_8                                       \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D9__MMDC_DRAM_D_9                                       \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D10__MMDC_DRAM_D_10                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D11__MMDC_DRAM_D_11                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D12__MMDC_DRAM_D_12                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D13__MMDC_DRAM_D_13                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D14__MMDC_DRAM_D_14                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDQS1__MMDC_DRAM_SDQS_1                                 \
-+		IOMUX_PAD(0x05B0, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D15__MMDC_DRAM_D_15                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_DQM1__MMDC_DRAM_DQM_1                                   \
-+		IOMUX_PAD(0x05B4, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D48__MMDC_DRAM_D_48                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D49__MMDC_DRAM_D_49                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D50__MMDC_DRAM_D_50                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D51__MMDC_DRAM_D_51                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D52__MMDC_DRAM_D_52                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D53__MMDC_DRAM_D_53                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D54__MMDC_DRAM_D_54                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D55__MMDC_DRAM_D_55                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDQS6__MMDC_DRAM_SDQS_6                                 \
-+		IOMUX_PAD(0x05B8, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_DQM6__MMDC_DRAM_DQM_6                                   \
-+		IOMUX_PAD(0x05BC, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D56__MMDC_DRAM_D_56                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_SDQS7__MMDC_DRAM_SDQS_7                                 \
-+		IOMUX_PAD(0x05C0, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D57__MMDC_DRAM_D_57                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D58__MMDC_DRAM_D_58                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D59__MMDC_DRAM_D_59                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D60__MMDC_DRAM_D_60                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_DQM7__MMDC_DRAM_DQM_7                                   \
-+		IOMUX_PAD(0x05C4, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D61__MMDC_DRAM_D_61                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D62__MMDC_DRAM_D_62                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_DRAM_D63__MMDC_DRAM_D_63                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_KEY_COL0__ECSPI1_SCLK                                        \
-+		IOMUX_PAD(0x05C8, 0x01F8, 0, 0x07F4, 2, 0)
-+#define _MX6Q_PAD_KEY_COL0__ENET_RDATA_3                                       \
-+		IOMUX_PAD(0x05C8, 0x01F8, 1, 0x0854, 1, 0)
-+#define _MX6Q_PAD_KEY_COL0__AUDMUX_AUD5_TXC                                    \
-+		IOMUX_PAD(0x05C8, 0x01F8, 2, 0x07DC, 1, 0)
-+#define _MX6Q_PAD_KEY_COL0__KPP_COL_0                                          \
-+		IOMUX_PAD(0x05C8, 0x01F8, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL0__UART4_TXD                                          \
-+		IOMUX_PAD(0x05C8, 0x01F8, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL0__UART4_RXD                                          \
-+		IOMUX_PAD(0x05C8, 0x01F8, 4, 0x0938, 0, 0)
-+#define _MX6Q_PAD_KEY_COL0__GPIO_4_6                                           \
-+		IOMUX_PAD(0x05C8, 0x01F8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL0__DCIC1_DCIC_OUT                                     \
-+		IOMUX_PAD(0x05C8, 0x01F8, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL0__SRC_ANY_PU_RST                                     \
-+		IOMUX_PAD(0x05C8, 0x01F8, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_KEY_ROW0__ECSPI1_MOSI                                        \
-+		IOMUX_PAD(0x05CC, 0x01FC, 0, 0x07FC, 2, 0)
-+#define _MX6Q_PAD_KEY_ROW0__ENET_TDATA_3                                       \
-+		IOMUX_PAD(0x05CC, 0x01FC, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW0__AUDMUX_AUD5_TXD                                    \
-+		IOMUX_PAD(0x05CC, 0x01FC, 2, 0x07D0, 1, 0)
-+#define _MX6Q_PAD_KEY_ROW0__KPP_ROW_0                                          \
-+		IOMUX_PAD(0x05CC, 0x01FC, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW0__UART4_TXD                                          \
-+		IOMUX_PAD(0x05CC, 0x01FC, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW0__UART4_RXD                                          \
-+		IOMUX_PAD(0x05CC, 0x01FC, 4, 0x0938, 1, 0)
-+#define _MX6Q_PAD_KEY_ROW0__GPIO_4_7                                           \
-+		IOMUX_PAD(0x05CC, 0x01FC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW0__DCIC2_DCIC_OUT                                     \
-+		IOMUX_PAD(0x05CC, 0x01FC, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW0__PL301_MX6QPER1_HADDR_0                             \
-+		IOMUX_PAD(0x05CC, 0x01FC, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_KEY_COL1__ECSPI1_MISO                                        \
-+		IOMUX_PAD(0x05D0, 0x0200, 0, 0x07F8, 2, 0)
-+#define _MX6Q_PAD_KEY_COL1__ENET_MDIO                                          \
-+		IOMUX_PAD(0x05D0, 0x0200, 1, 0x0840, 1, 0)
-+#define _MX6Q_PAD_KEY_COL1__AUDMUX_AUD5_TXFS                                   \
-+		IOMUX_PAD(0x05D0, 0x0200, 2, 0x07E0, 1, 0)
-+#define _MX6Q_PAD_KEY_COL1__KPP_COL_1                                          \
-+		IOMUX_PAD(0x05D0, 0x0200, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL1__UART5_TXD                                          \
-+		IOMUX_PAD(0x05D0, 0x0200, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL1__UART5_RXD                                          \
-+		IOMUX_PAD(0x05D0, 0x0200, 4, 0x0940, 0, 0)
-+#define _MX6Q_PAD_KEY_COL1__GPIO_4_8                                           \
-+		IOMUX_PAD(0x05D0, 0x0200, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL1__USDHC1_VSELECT                                     \
-+		IOMUX_PAD(0x05D0, 0x0200, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL1__PL301_MX6QPER1_HADDR_1                             \
-+		IOMUX_PAD(0x05D0, 0x0200, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_KEY_ROW1__ECSPI1_SS0                                         \
-+		IOMUX_PAD(0x05D4, 0x0204, 0, 0x0800, 2, 0)
-+#define _MX6Q_PAD_KEY_ROW1__ENET_COL                                           \
-+		IOMUX_PAD(0x05D4, 0x0204, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW1__AUDMUX_AUD5_RXD                                    \
-+		IOMUX_PAD(0x05D4, 0x0204, 2, 0x07CC, 1, 0)
-+#define _MX6Q_PAD_KEY_ROW1__KPP_ROW_1                                          \
-+		IOMUX_PAD(0x05D4, 0x0204, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW1__UART5_TXD                                          \
-+		IOMUX_PAD(0x05D4, 0x0204, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW1__UART5_RXD                                          \
-+		IOMUX_PAD(0x05D4, 0x0204, 4, 0x0940, 1, 0)
-+#define _MX6Q_PAD_KEY_ROW1__GPIO_4_9                                           \
-+		IOMUX_PAD(0x05D4, 0x0204, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW1__USDHC2_VSELECT                                     \
-+		IOMUX_PAD(0x05D4, 0x0204, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW1__PL301_MX6QPER1_HADDR_2                             \
-+		IOMUX_PAD(0x05D4, 0x0204, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_KEY_COL2__ECSPI1_SS1                                         \
-+		IOMUX_PAD(0x05D8, 0x0208, 0, 0x0804, 2, 0)
-+#define _MX6Q_PAD_KEY_COL2__ENET_RDATA_2                                       \
-+		IOMUX_PAD(0x05D8, 0x0208, 1, 0x0850, 1, 0)
-+#define _MX6Q_PAD_KEY_COL2__CAN1_TXCAN                                         \
-+		IOMUX_PAD(0x05D8, 0x0208, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL2__KPP_COL_2                                          \
-+		IOMUX_PAD(0x05D8, 0x0208, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL2__ENET_MDC                                           \
-+		IOMUX_PAD(0x05D8, 0x0208, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL2__GPIO_4_10                                          \
-+		IOMUX_PAD(0x05D8, 0x0208, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL2__USBOH3_H1USB_PWRCTL_WAKEUP                         \
-+		IOMUX_PAD(0x05D8, 0x0208, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL2__PL301_MX6QPER1_HADDR_3                             \
-+		IOMUX_PAD(0x05D8, 0x0208, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_KEY_ROW2__ECSPI1_SS2                                         \
-+		IOMUX_PAD(0x05DC, 0x020C, 0, 0x0808, 1, 0)
-+#define _MX6Q_PAD_KEY_ROW2__ENET_TDATA_2                                       \
-+		IOMUX_PAD(0x05DC, 0x020C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW2__CAN1_RXCAN                                         \
-+		IOMUX_PAD(0x05DC, 0x020C, 2, 0x07E4, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW2__KPP_ROW_2                                          \
-+		IOMUX_PAD(0x05DC, 0x020C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW2__USDHC2_VSELECT                                     \
-+		IOMUX_PAD(0x05DC, 0x020C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW2__GPIO_4_11                                          \
-+		IOMUX_PAD(0x05DC, 0x020C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW2__HDMI_TX_CEC_LINE                                   \
-+		IOMUX_PAD(0x05DC, 0x020C, 6, 0x088C, 1, 0)
-+#define _MX6Q_PAD_KEY_ROW2__PL301_MX6QPER1_HADDR_4                             \
-+		IOMUX_PAD(0x05DC, 0x020C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_KEY_COL3__ECSPI1_SS3                                         \
-+		IOMUX_PAD(0x05E0, 0x0210, 0, 0x080C, 1, 0)
-+#define _MX6Q_PAD_KEY_COL3__ENET_CRS                                           \
-+		IOMUX_PAD(0x05E0, 0x0210, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL3__HDMI_TX_DDC_SCL                                    \
-+		IOMUX_PAD(0x05E0, 0x0210, 2, 0x0890, 1, 0)
-+#define _MX6Q_PAD_KEY_COL3__KPP_COL_3                                          \
-+		IOMUX_PAD(0x05E0, 0x0210, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL3__I2C2_SCL                                           \
-+		IOMUX_PAD(0x05E0, 0x0210, 4 | IOMUX_CONFIG_SION, 0x08A0, 1, 0)
-+#define _MX6Q_PAD_KEY_COL3__GPIO_4_12                                          \
-+		IOMUX_PAD(0x05E0, 0x0210, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL3__SPDIF_IN1                                          \
-+		IOMUX_PAD(0x05E0, 0x0210, 6, 0x0914, 2, 0)
-+#define _MX6Q_PAD_KEY_COL3__PL301_MX6QPER1_HADDR_5                             \
-+		IOMUX_PAD(0x05E0, 0x0210, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_KEY_ROW3__OSC32K_32K_OUT                                     \
-+		IOMUX_PAD(0x05E4, 0x0214, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW3__ASRC_ASRC_EXT_CLK                                  \
-+		IOMUX_PAD(0x05E4, 0x0214, 1, 0x07B0, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW3__HDMI_TX_DDC_SDA                                    \
-+		IOMUX_PAD(0x05E4, 0x0214, 2, 0x0894, 1, 0)
-+#define _MX6Q_PAD_KEY_ROW3__KPP_ROW_3                                          \
-+		IOMUX_PAD(0x05E4, 0x0214, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW3__I2C2_SDA                                           \
-+		IOMUX_PAD(0x05E4, 0x0214, 4 | IOMUX_CONFIG_SION, 0x08A4, 1, 0)
-+#define _MX6Q_PAD_KEY_ROW3__GPIO_4_13                                          \
-+		IOMUX_PAD(0x05E4, 0x0214, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW3__USDHC1_VSELECT                                     \
-+		IOMUX_PAD(0x05E4, 0x0214, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW3__PL301_MX6QPER1_HADDR_6                             \
-+		IOMUX_PAD(0x05E4, 0x0214, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_KEY_COL4__CAN2_TXCAN                                         \
-+		IOMUX_PAD(0x05E8, 0x0218, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL4__IPU1_SISG_4                                        \
-+		IOMUX_PAD(0x05E8, 0x0218, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL4__USBOH3_USBOTG_OC                                   \
-+		IOMUX_PAD(0x05E8, 0x0218, 2, 0x0944, 1, 0)
-+#define _MX6Q_PAD_KEY_COL4__KPP_COL_4                                          \
-+		IOMUX_PAD(0x05E8, 0x0218, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL4__UART5_CTS                                          \
-+		IOMUX_PAD(0x05E8, 0x0218, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL4__UART5_RTS                                          \
-+		IOMUX_PAD(0x05E8, 0x0218, 4, 0x093C, 0, 0)
-+#define _MX6Q_PAD_KEY_COL4__GPIO_4_14                                          \
-+		IOMUX_PAD(0x05E8, 0x0218, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL4__MMDC_MMDC_DEBUG_49                                 \
-+		IOMUX_PAD(0x05E8, 0x0218, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_COL4__PL301_MX6QPER1_HADDR_7                             \
-+		IOMUX_PAD(0x05E8, 0x0218, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_KEY_ROW4__CAN2_RXCAN                                         \
-+		IOMUX_PAD(0x05EC, 0x021C, 0, 0x07E8, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW4__IPU1_SISG_5                                        \
-+		IOMUX_PAD(0x05EC, 0x021C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW4__USBOH3_USBOTG_PWR                                  \
-+		IOMUX_PAD(0x05EC, 0x021C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW4__KPP_ROW_4                                          \
-+		IOMUX_PAD(0x05EC, 0x021C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW4__UART5_CTS                                          \
-+		IOMUX_PAD(0x05EC, 0x021C, 4, 0x093C, 1, 0)
-+#define _MX6Q_PAD_KEY_ROW4__GPIO_4_15                                          \
-+		IOMUX_PAD(0x05EC, 0x021C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW4__MMDC_MMDC_DEBUG_50                                 \
-+		IOMUX_PAD(0x05EC, 0x021C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_KEY_ROW4__PL301_MX6QPER1_HADDR_8                             \
-+		IOMUX_PAD(0x05EC, 0x021C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_GPIO_0__CCM_CLKO                                             \
-+		IOMUX_PAD(0x05F0, 0x0220, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_0__KPP_COL_5                                            \
-+		IOMUX_PAD(0x05F0, 0x0220, 2, 0x08E8, 0, 0)
-+#define _MX6Q_PAD_GPIO_0__ASRC_ASRC_EXT_CLK                                    \
-+		IOMUX_PAD(0x05F0, 0x0220, 3, 0x07B0, 1, 0)
-+#define _MX6Q_PAD_GPIO_0__EPIT1_EPITO                                          \
-+		IOMUX_PAD(0x05F0, 0x0220, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_0__GPIO_1_0                                             \
-+		IOMUX_PAD(0x05F0, 0x0220, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_0__USBOH3_USBH1_PWR                                     \
-+		IOMUX_PAD(0x05F0, 0x0220, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_0__SNVS_HP_WRAPPER_SNVS_VIO_5                           \
-+		IOMUX_PAD(0x05F0, 0x0220, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_GPIO_1__ESAI1_SCKR                                           \
-+		IOMUX_PAD(0x05F4, 0x0224, 0, 0x086C, 1, 0)
-+#define _MX6Q_PAD_GPIO_1__WDOG2_WDOG_B                                         \
-+		IOMUX_PAD(0x05F4, 0x0224, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_1__KPP_ROW_5                                            \
-+		IOMUX_PAD(0x05F4, 0x0224, 2, 0x08F4, 0, 0)
-+#define _MX6Q_PAD_GPIO_1__PWM2_PWMO                                            \
-+		IOMUX_PAD(0x05F4, 0x0224, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_1__GPIO_1_1                                             \
-+		IOMUX_PAD(0x05F4, 0x0224, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_1__USDHC1_CD                                            \
-+		IOMUX_PAD(0x05F4, 0x0224, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_1__SRC_TESTER_ACK                                       \
-+		IOMUX_PAD(0x05F4, 0x0224, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_GPIO_9__ESAI1_FSR                                            \
-+		IOMUX_PAD(0x05F8, 0x0228, 0, 0x085C, 1, 0)
-+#define _MX6Q_PAD_GPIO_9__WDOG1_WDOG_B                                         \
-+		IOMUX_PAD(0x05F8, 0x0228, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_9__KPP_COL_6                                            \
-+		IOMUX_PAD(0x05F8, 0x0228, 2, 0x08EC, 0, 0)
-+#define _MX6Q_PAD_GPIO_9__CCM_REF_EN_B                                         \
-+		IOMUX_PAD(0x05F8, 0x0228, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_9__PWM1_PWMO                                            \
-+		IOMUX_PAD(0x05F8, 0x0228, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_9__GPIO_1_9                                             \
-+		IOMUX_PAD(0x05F8, 0x0228, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_9__USDHC1_WP                                            \
-+		IOMUX_PAD(0x05F8, 0x0228, 6, 0x094C, 1, 0)
-+#define _MX6Q_PAD_GPIO_9__SRC_EARLY_RST                                        \
-+		IOMUX_PAD(0x05F8, 0x0228, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_GPIO_3__ESAI1_HCKR                                           \
-+		IOMUX_PAD(0x05FC, 0x022C, 0, 0x0864, 1, 0)
-+#define _MX6Q_PAD_GPIO_3__OBSERVE_MUX_OBSRV_INT_OUT0                           \
-+		IOMUX_PAD(0x05FC, 0x022C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_3__I2C3_SCL                                             \
-+		IOMUX_PAD(0x05FC, 0x022C, 2 | IOMUX_CONFIG_SION, 0x08A8, 1, 0)
-+#define _MX6Q_PAD_GPIO_3__ANATOP_ANATOP_24M_OUT                                \
-+		IOMUX_PAD(0x05FC, 0x022C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_3__CCM_CLKO2                                            \
-+		IOMUX_PAD(0x05FC, 0x022C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_3__GPIO_1_3                                             \
-+		IOMUX_PAD(0x05FC, 0x022C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_3__USBOH3_USBH1_OC                                      \
-+		IOMUX_PAD(0x05FC, 0x022C, 6, 0x0948, 1, 0)
-+#define _MX6Q_PAD_GPIO_3__MLB_MLBCLK                                           \
-+		IOMUX_PAD(0x05FC, 0x022C, 7, 0x0900, 1, 0)
-+
-+#define _MX6Q_PAD_GPIO_6__ESAI1_SCKT                                           \
-+		IOMUX_PAD(0x0600, 0x0230, 0, 0x0870, 1, 0)
-+#define _MX6Q_PAD_GPIO_6__OBSERVE_MUX_OBSRV_INT_OUT1                           \
-+		IOMUX_PAD(0x0600, 0x0230, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_6__I2C3_SDA                                             \
-+		IOMUX_PAD(0x0600, 0x0230, 2 | IOMUX_CONFIG_SION, 0x08AC, 1, 0)
-+#define _MX6Q_PAD_GPIO_6__CCM_CCM_OUT_0                                        \
-+		IOMUX_PAD(0x0600, 0x0230, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_6__CSU_CSU_INT_DEB                                      \
-+		IOMUX_PAD(0x0600, 0x0230, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_6__GPIO_1_6                                             \
-+		IOMUX_PAD(0x0600, 0x0230, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_6__USDHC2_LCTL                                          \
-+		IOMUX_PAD(0x0600, 0x0230, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_6__MLB_MLBSIG                                           \
-+		IOMUX_PAD(0x0600, 0x0230, 7, 0x0908, 1, 0)
-+
-+#define _MX6Q_PAD_GPIO_2__ESAI1_FST                                            \
-+		IOMUX_PAD(0x0604, 0x0234, 0, 0x0860, 1, 0)
-+#define _MX6Q_PAD_GPIO_2__OBSERVE_MUX_OBSRV_INT_OUT2                           \
-+		IOMUX_PAD(0x0604, 0x0234, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_2__KPP_ROW_6                                            \
-+		IOMUX_PAD(0x0604, 0x0234, 2, 0x08F8, 1, 0)
-+#define _MX6Q_PAD_GPIO_2__CCM_CCM_OUT_1                                        \
-+		IOMUX_PAD(0x0604, 0x0234, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_2__CSU_CSU_ALARM_AUT_0                                  \
-+		IOMUX_PAD(0x0604, 0x0234, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_2__GPIO_1_2                                             \
-+		IOMUX_PAD(0x0604, 0x0234, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_2__USDHC2_WP                                            \
-+		IOMUX_PAD(0x0604, 0x0234, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_2__MLB_MLBDAT                                           \
-+		IOMUX_PAD(0x0604, 0x0234, 7, 0x0904, 1, 0)
-+
-+#define _MX6Q_PAD_GPIO_4__ESAI1_HCKT                                           \
-+		IOMUX_PAD(0x0608, 0x0238, 0, 0x0868, 1, 0)
-+#define _MX6Q_PAD_GPIO_4__OBSERVE_MUX_OBSRV_INT_OUT3                           \
-+		IOMUX_PAD(0x0608, 0x0238, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_4__KPP_COL_7                                            \
-+		IOMUX_PAD(0x0608, 0x0238, 2, 0x08F0, 1, 0)
-+#define _MX6Q_PAD_GPIO_4__CCM_CCM_OUT_2                                        \
-+		IOMUX_PAD(0x0608, 0x0238, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_4__CSU_CSU_ALARM_AUT_1                                  \
-+		IOMUX_PAD(0x0608, 0x0238, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_4__GPIO_1_4                                             \
-+		IOMUX_PAD(0x0608, 0x0238, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_4__USDHC2_CD                                            \
-+		IOMUX_PAD(0x0608, 0x0238, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_4__OCOTP_CTRL_WRAPPER_FUSE_LATCHED                      \
-+		IOMUX_PAD(0x0608, 0x0238, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_GPIO_5__ESAI1_TX2_RX3                                        \
-+		IOMUX_PAD(0x060C, 0x023C, 0, 0x087C, 1, 0)
-+#define _MX6Q_PAD_GPIO_5__OBSERVE_MUX_OBSRV_INT_OUT4                           \
-+		IOMUX_PAD(0x060C, 0x023C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_5__KPP_ROW_7                                            \
-+		IOMUX_PAD(0x060C, 0x023C, 2, 0x08FC, 1, 0)
-+#define _MX6Q_PAD_GPIO_5__CCM_CLKO                                             \
-+		IOMUX_PAD(0x060C, 0x023C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_5__CSU_CSU_ALARM_AUT_2                                  \
-+		IOMUX_PAD(0x060C, 0x023C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_5__GPIO_1_5                                             \
-+		IOMUX_PAD(0x060C, 0x023C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_5__I2C3_SCL                                             \
-+		IOMUX_PAD(0x060C, 0x023C, 6 | IOMUX_CONFIG_SION, 0x08A8, 2, 0)
-+#define _MX6Q_PAD_GPIO_5__CHEETAH_EVENTI                                       \
-+		IOMUX_PAD(0x060C, 0x023C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_GPIO_7__ESAI1_TX4_RX1                                        \
-+		IOMUX_PAD(0x0610, 0x0240, 0, 0x0884, 1, 0)
-+#define _MX6Q_PAD_GPIO_7__ECSPI5_RDY                                           \
-+		IOMUX_PAD(0x0610, 0x0240, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_7__EPIT1_EPITO                                          \
-+		IOMUX_PAD(0x0610, 0x0240, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_7__CAN1_TXCAN                                           \
-+		IOMUX_PAD(0x0610, 0x0240, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_7__UART2_TXD                                            \
-+		IOMUX_PAD(0x0610, 0x0240, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_7__UART2_RXD                                            \
-+		IOMUX_PAD(0x0610, 0x0240, 4, 0x0928, 2, 0)
-+#define _MX6Q_PAD_GPIO_7__GPIO_1_7                                             \
-+		IOMUX_PAD(0x0610, 0x0240, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_7__SPDIF_PLOCK                                          \
-+		IOMUX_PAD(0x0610, 0x0240, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_7__USBOH3_OTGUSB_HOST_MODE                              \
-+		IOMUX_PAD(0x0610, 0x0240, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_GPIO_8__ESAI1_TX5_RX0                                        \
-+		IOMUX_PAD(0x0614, 0x0244, 0, 0x0888, 1, 0)
-+#define _MX6Q_PAD_GPIO_8__ANATOP_ANATOP_32K_OUT                                \
-+		IOMUX_PAD(0x0614, 0x0244, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_8__EPIT2_EPITO                                          \
-+		IOMUX_PAD(0x0614, 0x0244, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_8__CAN1_RXCAN                                           \
-+		IOMUX_PAD(0x0614, 0x0244, 3, 0x07E4, 1, 0)
-+#define _MX6Q_PAD_GPIO_8__UART2_TXD                                            \
-+		IOMUX_PAD(0x0614, 0x0244, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_8__UART2_RXD                                            \
-+		IOMUX_PAD(0x0614, 0x0244, 4, 0x0928, 3, 0)
-+#define _MX6Q_PAD_GPIO_8__GPIO_1_8                                             \
-+		IOMUX_PAD(0x0614, 0x0244, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_8__SPDIF_SRCLK                                          \
-+		IOMUX_PAD(0x0614, 0x0244, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_8__USBOH3_OTGUSB_PWRCTL_WAKEUP                          \
-+		IOMUX_PAD(0x0614, 0x0244, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_GPIO_16__ESAI1_TX3_RX2                                       \
-+		IOMUX_PAD(0x0618, 0x0248, 0, 0x0880, 1, 0)
-+#define _MX6Q_PAD_GPIO_16__ENET_1588_EVENT2_IN                                 \
-+		IOMUX_PAD(0x0618, 0x0248, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_16__ENET_ANATOP_ETHERNET_REF_OUT                        \
-+		IOMUX_PAD(0x0618, 0x0248, 2, 0x083C, 1, 0)
-+#define _MX6Q_PAD_GPIO_16__USDHC1_LCTL                                         \
-+		IOMUX_PAD(0x0618, 0x0248, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_16__SPDIF_IN1                                           \
-+		IOMUX_PAD(0x0618, 0x0248, 4, 0x0914, 3, 0)
-+#define _MX6Q_PAD_GPIO_16__GPIO_7_11                                           \
-+		IOMUX_PAD(0x0618, 0x0248, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_16__I2C3_SDA                                            \
-+		IOMUX_PAD(0x0618, 0x0248, 6 | IOMUX_CONFIG_SION, 0x08AC, 2, 0)
-+#define _MX6Q_PAD_GPIO_16__SJC_DE_B                                            \
-+		IOMUX_PAD(0x0618, 0x0248, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_GPIO_17__ESAI1_TX0                                           \
-+		IOMUX_PAD(0x061C, 0x024C, 0, 0x0874, 0, 0)
-+#define _MX6Q_PAD_GPIO_17__ENET_1588_EVENT3_IN                                 \
-+		IOMUX_PAD(0x061C, 0x024C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_17__CCM_PMIC_RDY                                        \
-+		IOMUX_PAD(0x061C, 0x024C, 2, 0x07F0, 1, 0)
-+#define _MX6Q_PAD_GPIO_17__SDMA_SDMA_EXT_EVENT_0                               \
-+		IOMUX_PAD(0x061C, 0x024C, 3, 0x090C, 1, 0)
-+#define _MX6Q_PAD_GPIO_17__SPDIF_OUT1                                          \
-+		IOMUX_PAD(0x061C, 0x024C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_17__GPIO_7_12                                           \
-+		IOMUX_PAD(0x061C, 0x024C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_17__SJC_JTAG_ACT                                        \
-+		IOMUX_PAD(0x061C, 0x024C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_GPIO_18__ESAI1_TX1                                           \
-+		IOMUX_PAD(0x0620, 0x0250, 0, 0x0878, 0, 0)
-+#define _MX6Q_PAD_GPIO_18__ENET_RX_CLK                                         \
-+		IOMUX_PAD(0x0620, 0x0250, 1, 0x0844, 1, 0)
-+#define _MX6Q_PAD_GPIO_18__USDHC3_VSELECT                                      \
-+		IOMUX_PAD(0x0620, 0x0250, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_18__SDMA_SDMA_EXT_EVENT_1                               \
-+		IOMUX_PAD(0x0620, 0x0250, 3, 0x0910, 1, 0)
-+#define _MX6Q_PAD_GPIO_18__ASRC_ASRC_EXT_CLK                                   \
-+		IOMUX_PAD(0x0620, 0x0250, 4, 0x07B0, 2, 0)
-+#define _MX6Q_PAD_GPIO_18__GPIO_7_13                                           \
-+		IOMUX_PAD(0x0620, 0x0250, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_18__SNVS_HP_WRAPPER_SNVS_VIO_5_CTL                      \
-+		IOMUX_PAD(0x0620, 0x0250, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_18__SRC_SYSTEM_RST                                      \
-+		IOMUX_PAD(0x0620, 0x0250, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_GPIO_19__KPP_COL_5                                           \
-+		IOMUX_PAD(0x0624, 0x0254, 0, 0x08E8, 1, 0)
-+#define _MX6Q_PAD_GPIO_19__ENET_1588_EVENT0_OUT                                \
-+		IOMUX_PAD(0x0624, 0x0254, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_19__SPDIF_OUT1                                          \
-+		IOMUX_PAD(0x0624, 0x0254, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_19__CCM_CLKO                                            \
-+		IOMUX_PAD(0x0624, 0x0254, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_19__ECSPI1_RDY                                          \
-+		IOMUX_PAD(0x0624, 0x0254, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_19__GPIO_4_5                                            \
-+		IOMUX_PAD(0x0624, 0x0254, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_19__ENET_TX_ER                                          \
-+		IOMUX_PAD(0x0624, 0x0254, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_GPIO_19__SRC_INT_BOOT                                        \
-+		IOMUX_PAD(0x0624, 0x0254, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_PIXCLK__IPU1_CSI0_PIXCLK                                \
-+		IOMUX_PAD(0x0628, 0x0258, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_PIXCLK__PCIE_CTRL_DIAG_STATUS_BUS_MUX_12                \
-+		IOMUX_PAD(0x0628, 0x0258, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_PIXCLK__SDMA_DEBUG_PC_0                                 \
-+		IOMUX_PAD(0x0628, 0x0258, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_PIXCLK__GPIO_5_18                                       \
-+		IOMUX_PAD(0x0628, 0x0258, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_PIXCLK__MMDC_MMDC_DEBUG_29                              \
-+		IOMUX_PAD(0x0628, 0x0258, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_PIXCLK__CHEETAH_EVENTO                                  \
-+		IOMUX_PAD(0x0628, 0x0258, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_MCLK__IPU1_CSI0_HSYNC                                   \
-+		IOMUX_PAD(0x062C, 0x025C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_MCLK__PCIE_CTRL_DIAG_STATUS_BUS_MUX_13                  \
-+		IOMUX_PAD(0x062C, 0x025C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_MCLK__CCM_CLKO                                          \
-+		IOMUX_PAD(0x062C, 0x025C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_MCLK__SDMA_DEBUG_PC_1                                   \
-+		IOMUX_PAD(0x062C, 0x025C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_MCLK__GPIO_5_19                                         \
-+		IOMUX_PAD(0x062C, 0x025C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_MCLK__MMDC_MMDC_DEBUG_30                                \
-+		IOMUX_PAD(0x062C, 0x025C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_MCLK__CHEETAH_TRCTL                                     \
-+		IOMUX_PAD(0x062C, 0x025C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DATA_EN__IPU1_CSI0_DATA_EN                              \
-+		IOMUX_PAD(0x0630, 0x0260, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DATA_EN__WEIM_WEIM_D_0                                  \
-+		IOMUX_PAD(0x0630, 0x0260, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DATA_EN__PCIE_CTRL_DIAG_STATUS_BUS_MUX_14               \
-+		IOMUX_PAD(0x0630, 0x0260, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DATA_EN__SDMA_DEBUG_PC_2                                \
-+		IOMUX_PAD(0x0630, 0x0260, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DATA_EN__GPIO_5_20                                      \
-+		IOMUX_PAD(0x0630, 0x0260, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DATA_EN__MMDC_MMDC_DEBUG_31                             \
-+		IOMUX_PAD(0x0630, 0x0260, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DATA_EN__CHEETAH_TRCLK                                  \
-+		IOMUX_PAD(0x0630, 0x0260, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_VSYNC__IPU1_CSI0_VSYNC                                  \
-+		IOMUX_PAD(0x0634, 0x0264, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_VSYNC__WEIM_WEIM_D_1                                    \
-+		IOMUX_PAD(0x0634, 0x0264, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_VSYNC__PCIE_CTRL_DIAG_STATUS_BUS_MUX_15                 \
-+		IOMUX_PAD(0x0634, 0x0264, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_VSYNC__SDMA_DEBUG_PC_3                                  \
-+		IOMUX_PAD(0x0634, 0x0264, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_VSYNC__GPIO_5_21                                        \
-+		IOMUX_PAD(0x0634, 0x0264, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_VSYNC__MMDC_MMDC_DEBUG_32                               \
-+		IOMUX_PAD(0x0634, 0x0264, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_VSYNC__CHEETAH_TRACE_0                                  \
-+		IOMUX_PAD(0x0634, 0x0264, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DAT4__IPU1_CSI0_D_4                                     \
-+		IOMUX_PAD(0x0638, 0x0268, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT4__WEIM_WEIM_D_2                                     \
-+		IOMUX_PAD(0x0638, 0x0268, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT4__ECSPI1_SCLK                                       \
-+		IOMUX_PAD(0x0638, 0x0268, 2, 0x07F4, 3, 0)
-+#define _MX6Q_PAD_CSI0_DAT4__KPP_COL_5                                         \
-+		IOMUX_PAD(0x0638, 0x0268, 3, 0x08E8, 2, 0)
-+#define _MX6Q_PAD_CSI0_DAT4__AUDMUX_AUD3_TXC                                   \
-+		IOMUX_PAD(0x0638, 0x0268, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT4__GPIO_5_22                                         \
-+		IOMUX_PAD(0x0638, 0x0268, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT4__MMDC_MMDC_DEBUG_43                                \
-+		IOMUX_PAD(0x0638, 0x0268, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT4__CHEETAH_TRACE_1                                   \
-+		IOMUX_PAD(0x0638, 0x0268, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DAT5__IPU1_CSI0_D_5                                     \
-+		IOMUX_PAD(0x063C, 0x026C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT5__WEIM_WEIM_D_3                                     \
-+		IOMUX_PAD(0x063C, 0x026C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT5__ECSPI1_MOSI                                       \
-+		IOMUX_PAD(0x063C, 0x026C, 2, 0x07FC, 3, 0)
-+#define _MX6Q_PAD_CSI0_DAT5__KPP_ROW_5                                         \
-+		IOMUX_PAD(0x063C, 0x026C, 3, 0x08F4, 1, 0)
-+#define _MX6Q_PAD_CSI0_DAT5__AUDMUX_AUD3_TXD                                   \
-+		IOMUX_PAD(0x063C, 0x026C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT5__GPIO_5_23                                         \
-+		IOMUX_PAD(0x063C, 0x026C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT5__MMDC_MMDC_DEBUG_44                                \
-+		IOMUX_PAD(0x063C, 0x026C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT5__CHEETAH_TRACE_2                                   \
-+		IOMUX_PAD(0x063C, 0x026C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DAT6__IPU1_CSI0_D_6                                     \
-+		IOMUX_PAD(0x0640, 0x0270, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT6__WEIM_WEIM_D_4                                     \
-+		IOMUX_PAD(0x0640, 0x0270, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT6__ECSPI1_MISO                                       \
-+		IOMUX_PAD(0x0640, 0x0270, 2, 0x07F8, 3, 0)
-+#define _MX6Q_PAD_CSI0_DAT6__KPP_COL_6                                         \
-+		IOMUX_PAD(0x0640, 0x0270, 3, 0x08EC, 1, 0)
-+#define _MX6Q_PAD_CSI0_DAT6__AUDMUX_AUD3_TXFS                                  \
-+		IOMUX_PAD(0x0640, 0x0270, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT6__GPIO_5_24                                         \
-+		IOMUX_PAD(0x0640, 0x0270, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT6__MMDC_MMDC_DEBUG_45                                \
-+		IOMUX_PAD(0x0640, 0x0270, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT6__CHEETAH_TRACE_3                                   \
-+		IOMUX_PAD(0x0640, 0x0270, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DAT7__IPU1_CSI0_D_7                                     \
-+		IOMUX_PAD(0x0644, 0x0274, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT7__WEIM_WEIM_D_5                                     \
-+		IOMUX_PAD(0x0644, 0x0274, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT7__ECSPI1_SS0                                        \
-+		IOMUX_PAD(0x0644, 0x0274, 2, 0x0800, 3, 0)
-+#define _MX6Q_PAD_CSI0_DAT7__KPP_ROW_6                                         \
-+		IOMUX_PAD(0x0644, 0x0274, 3, 0x08F8, 2, 0)
-+#define _MX6Q_PAD_CSI0_DAT7__AUDMUX_AUD3_RXD                                   \
-+		IOMUX_PAD(0x0644, 0x0274, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT7__GPIO_5_25                                         \
-+		IOMUX_PAD(0x0644, 0x0274, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT7__MMDC_MMDC_DEBUG_46                                \
-+		IOMUX_PAD(0x0644, 0x0274, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT7__CHEETAH_TRACE_4                                   \
-+		IOMUX_PAD(0x0644, 0x0274, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DAT8__IPU1_CSI0_D_8                                     \
-+		IOMUX_PAD(0x0648, 0x0278, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT8__WEIM_WEIM_D_6                                     \
-+		IOMUX_PAD(0x0648, 0x0278, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT8__ECSPI2_SCLK                                       \
-+		IOMUX_PAD(0x0648, 0x0278, 2, 0x0810, 2, 0)
-+#define _MX6Q_PAD_CSI0_DAT8__KPP_COL_7                                         \
-+		IOMUX_PAD(0x0648, 0x0278, 3, 0x08F0, 2, 0)
-+#define _MX6Q_PAD_CSI0_DAT8__I2C1_SDA                                          \
-+		IOMUX_PAD(0x0648, 0x0278, 4 | IOMUX_CONFIG_SION, 0x089C, 1, 0)
-+#define _MX6Q_PAD_CSI0_DAT8__GPIO_5_26                                         \
-+		IOMUX_PAD(0x0648, 0x0278, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT8__MMDC_MMDC_DEBUG_47                                \
-+		IOMUX_PAD(0x0648, 0x0278, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT8__CHEETAH_TRACE_5                                   \
-+		IOMUX_PAD(0x0648, 0x0278, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DAT9__IPU1_CSI0_D_9                                     \
-+		IOMUX_PAD(0x064C, 0x027C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT9__WEIM_WEIM_D_7                                     \
-+		IOMUX_PAD(0x064C, 0x027C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT9__ECSPI2_MOSI                                       \
-+		IOMUX_PAD(0x064C, 0x027C, 2, 0x0818, 2, 0)
-+#define _MX6Q_PAD_CSI0_DAT9__KPP_ROW_7                                         \
-+		IOMUX_PAD(0x064C, 0x027C, 3, 0x08FC, 2, 0)
-+#define _MX6Q_PAD_CSI0_DAT9__I2C1_SCL                                          \
-+		IOMUX_PAD(0x064C, 0x027C, 4 | IOMUX_CONFIG_SION, 0x0898, 1, 0)
-+#define _MX6Q_PAD_CSI0_DAT9__GPIO_5_27                                         \
-+		IOMUX_PAD(0x064C, 0x027C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT9__MMDC_MMDC_DEBUG_48                                \
-+		IOMUX_PAD(0x064C, 0x027C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT9__CHEETAH_TRACE_6                                   \
-+		IOMUX_PAD(0x064C, 0x027C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DAT10__IPU1_CSI0_D_10                                   \
-+		IOMUX_PAD(0x0650, 0x0280, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT10__AUDMUX_AUD3_RXC                                  \
-+		IOMUX_PAD(0x0650, 0x0280, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT10__ECSPI2_MISO                                      \
-+		IOMUX_PAD(0x0650, 0x0280, 2, 0x0814, 2, 0)
-+#define _MX6Q_PAD_CSI0_DAT10__UART1_TXD                                        \
-+		IOMUX_PAD(0x0650, 0x0280, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT10__UART1_RXD                                        \
-+		IOMUX_PAD(0x0650, 0x0280, 3, 0x0920, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT10__SDMA_DEBUG_PC_4                                  \
-+		IOMUX_PAD(0x0650, 0x0280, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT10__GPIO_5_28                                        \
-+		IOMUX_PAD(0x0650, 0x0280, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT10__MMDC_MMDC_DEBUG_33                               \
-+		IOMUX_PAD(0x0650, 0x0280, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT10__CHEETAH_TRACE_7                                  \
-+		IOMUX_PAD(0x0650, 0x0280, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DAT11__IPU1_CSI0_D_11                                   \
-+		IOMUX_PAD(0x0654, 0x0284, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT11__AUDMUX_AUD3_RXFS                                 \
-+		IOMUX_PAD(0x0654, 0x0284, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT11__ECSPI2_SS0                                       \
-+		IOMUX_PAD(0x0654, 0x0284, 2, 0x081C, 2, 0)
-+#define _MX6Q_PAD_CSI0_DAT11__UART1_TXD                                        \
-+		IOMUX_PAD(0x0654, 0x0284, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT11__UART1_RXD                                        \
-+		IOMUX_PAD(0x0654, 0x0284, 3, 0x0920, 1, 0)
-+#define _MX6Q_PAD_CSI0_DAT11__SDMA_DEBUG_PC_5                                  \
-+		IOMUX_PAD(0x0654, 0x0284, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT11__GPIO_5_29                                        \
-+		IOMUX_PAD(0x0654, 0x0284, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT11__MMDC_MMDC_DEBUG_34                               \
-+		IOMUX_PAD(0x0654, 0x0284, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT11__CHEETAH_TRACE_8                                  \
-+		IOMUX_PAD(0x0654, 0x0284, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DAT12__IPU1_CSI0_D_12                                   \
-+		IOMUX_PAD(0x0658, 0x0288, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT12__WEIM_WEIM_D_8                                    \
-+		IOMUX_PAD(0x0658, 0x0288, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT12__PCIE_CTRL_DIAG_STATUS_BUS_MUX_16                 \
-+		IOMUX_PAD(0x0658, 0x0288, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT12__UART4_TXD                                        \
-+		IOMUX_PAD(0x0658, 0x0288, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT12__UART4_RXD                                        \
-+		IOMUX_PAD(0x0658, 0x0288, 3, 0x0938, 2, 0)
-+#define _MX6Q_PAD_CSI0_DAT12__SDMA_DEBUG_PC_6                                  \
-+		IOMUX_PAD(0x0658, 0x0288, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT12__GPIO_5_30                                        \
-+		IOMUX_PAD(0x0658, 0x0288, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT12__MMDC_MMDC_DEBUG_35                               \
-+		IOMUX_PAD(0x0658, 0x0288, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT12__CHEETAH_TRACE_9                                  \
-+		IOMUX_PAD(0x0658, 0x0288, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DAT13__IPU1_CSI0_D_13                                   \
-+		IOMUX_PAD(0x065C, 0x028C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT13__WEIM_WEIM_D_9                                    \
-+		IOMUX_PAD(0x065C, 0x028C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT13__PCIE_CTRL_DIAG_STATUS_BUS_MUX_17                 \
-+		IOMUX_PAD(0x065C, 0x028C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT13__UART4_TXD                                        \
-+		IOMUX_PAD(0x065C, 0x028C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT13__UART4_RXD                                        \
-+		IOMUX_PAD(0x065C, 0x028C, 3, 0x0938, 3, 0)
-+#define _MX6Q_PAD_CSI0_DAT13__SDMA_DEBUG_PC_7                                  \
-+		IOMUX_PAD(0x065C, 0x028C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT13__GPIO_5_31                                        \
-+		IOMUX_PAD(0x065C, 0x028C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT13__MMDC_MMDC_DEBUG_36                               \
-+		IOMUX_PAD(0x065C, 0x028C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT13__CHEETAH_TRACE_10                                 \
-+		IOMUX_PAD(0x065C, 0x028C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DAT14__IPU1_CSI0_D_14                                   \
-+		IOMUX_PAD(0x0660, 0x0290, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT14__WEIM_WEIM_D_10                                   \
-+		IOMUX_PAD(0x0660, 0x0290, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT14__PCIE_CTRL_DIAG_STATUS_BUS_MUX_18                 \
-+		IOMUX_PAD(0x0660, 0x0290, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT14__UART5_TXD                                        \
-+		IOMUX_PAD(0x0660, 0x0290, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT14__UART5_RXD                                        \
-+		IOMUX_PAD(0x0660, 0x0290, 3, 0x0940, 2, 0)
-+#define _MX6Q_PAD_CSI0_DAT14__SDMA_DEBUG_PC_8                                  \
-+		IOMUX_PAD(0x0660, 0x0290, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT14__GPIO_6_0                                         \
-+		IOMUX_PAD(0x0660, 0x0290, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT14__MMDC_MMDC_DEBUG_37                               \
-+		IOMUX_PAD(0x0660, 0x0290, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT14__CHEETAH_TRACE_11                                 \
-+		IOMUX_PAD(0x0660, 0x0290, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DAT15__IPU1_CSI0_D_15                                   \
-+		IOMUX_PAD(0x0664, 0x0294, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT15__WEIM_WEIM_D_11                                   \
-+		IOMUX_PAD(0x0664, 0x0294, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT15__PCIE_CTRL_DIAG_STATUS_BUS_MUX_19                 \
-+		IOMUX_PAD(0x0664, 0x0294, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT15__UART5_TXD                                        \
-+		IOMUX_PAD(0x0664, 0x0294, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT15__UART5_RXD                                        \
-+		IOMUX_PAD(0x0664, 0x0294, 3, 0x0940, 3, 0)
-+#define _MX6Q_PAD_CSI0_DAT15__SDMA_DEBUG_PC_9                                  \
-+		IOMUX_PAD(0x0664, 0x0294, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT15__GPIO_6_1                                         \
-+		IOMUX_PAD(0x0664, 0x0294, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT15__MMDC_MMDC_DEBUG_38                               \
-+		IOMUX_PAD(0x0664, 0x0294, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT15__CHEETAH_TRACE_12                                 \
-+		IOMUX_PAD(0x0664, 0x0294, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DAT16__IPU1_CSI0_D_16                                   \
-+		IOMUX_PAD(0x0668, 0x0298, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT16__WEIM_WEIM_D_12                                   \
-+		IOMUX_PAD(0x0668, 0x0298, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT16__PCIE_CTRL_DIAG_STATUS_BUS_MUX_20                 \
-+		IOMUX_PAD(0x0668, 0x0298, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT16__UART4_CTS                                        \
-+		IOMUX_PAD(0x0668, 0x0298, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT16__UART4_RTS                                        \
-+		IOMUX_PAD(0x0668, 0x0298, 3, 0x0934, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT16__SDMA_DEBUG_PC_10                                 \
-+		IOMUX_PAD(0x0668, 0x0298, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT16__GPIO_6_2                                         \
-+		IOMUX_PAD(0x0668, 0x0298, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT16__MMDC_MMDC_DEBUG_39                               \
-+		IOMUX_PAD(0x0668, 0x0298, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT16__CHEETAH_TRACE_13                                 \
-+		IOMUX_PAD(0x0668, 0x0298, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DAT17__IPU1_CSI0_D_17                                   \
-+		IOMUX_PAD(0x066C, 0x029C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT17__WEIM_WEIM_D_13                                   \
-+		IOMUX_PAD(0x066C, 0x029C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT17__PCIE_CTRL_DIAG_STATUS_BUS_MUX_21                 \
-+		IOMUX_PAD(0x066C, 0x029C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT17__UART4_CTS                                        \
-+		IOMUX_PAD(0x066C, 0x029C, 3, 0x0934, 1, 0)
-+#define _MX6Q_PAD_CSI0_DAT17__SDMA_DEBUG_PC_11                                 \
-+		IOMUX_PAD(0x066C, 0x029C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT17__GPIO_6_3                                         \
-+		IOMUX_PAD(0x066C, 0x029C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT17__MMDC_MMDC_DEBUG_40                               \
-+		IOMUX_PAD(0x066C, 0x029C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT17__CHEETAH_TRACE_14                                 \
-+		IOMUX_PAD(0x066C, 0x029C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DAT18__IPU1_CSI0_D_18                                   \
-+		IOMUX_PAD(0x0670, 0x02A0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT18__WEIM_WEIM_D_14                                   \
-+		IOMUX_PAD(0x0670, 0x02A0, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT18__PCIE_CTRL_DIAG_STATUS_BUS_MUX_22                 \
-+		IOMUX_PAD(0x0670, 0x02A0, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT18__UART5_CTS                                        \
-+		IOMUX_PAD(0x0670, 0x02A0, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT18__UART5_RTS                                        \
-+		IOMUX_PAD(0x0670, 0x02A0, 3, 0x093C, 2, 0)
-+#define _MX6Q_PAD_CSI0_DAT18__SDMA_DEBUG_PC_12                                 \
-+		IOMUX_PAD(0x0670, 0x02A0, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT18__GPIO_6_4                                         \
-+		IOMUX_PAD(0x0670, 0x02A0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT18__MMDC_MMDC_DEBUG_41                               \
-+		IOMUX_PAD(0x0670, 0x02A0, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT18__CHEETAH_TRACE_15                                 \
-+		IOMUX_PAD(0x0670, 0x02A0, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_CSI0_DAT19__IPU1_CSI0_D_19                                   \
-+		IOMUX_PAD(0x0674, 0x02A4, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT19__WEIM_WEIM_D_15                                   \
-+		IOMUX_PAD(0x0674, 0x02A4, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT19__PCIE_CTRL_DIAG_STATUS_BUS_MUX_23                 \
-+		IOMUX_PAD(0x0674, 0x02A4, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT19__UART5_CTS                                        \
-+		IOMUX_PAD(0x0674, 0x02A4, 3, 0x093C, 3, 0)
-+#define _MX6Q_PAD_CSI0_DAT19__SDMA_DEBUG_PC_13                                 \
-+		IOMUX_PAD(0x0674, 0x02A4, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT19__GPIO_6_5                                         \
-+		IOMUX_PAD(0x0674, 0x02A4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT19__MMDC_MMDC_DEBUG_42                               \
-+		IOMUX_PAD(0x0674, 0x02A4, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_CSI0_DAT19__ANATOP_ANATOP_TESTO_9                            \
-+		IOMUX_PAD(0x0674, 0x02A4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_JTAG_TMS__SJC_TMS                                            \
-+		IOMUX_PAD(0x0678, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_JTAG_MOD__SJC_MOD                                            \
-+		IOMUX_PAD(0x067C, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_JTAG_TRSTB__SJC_TRSTB                                        \
-+		IOMUX_PAD(0x0680, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_JTAG_TDI__SJC_TDI                                            \
-+		IOMUX_PAD(0x0684, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_JTAG_TCK__SJC_TCK                                            \
-+		IOMUX_PAD(0x0688, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_JTAG_TDO__SJC_TDO                                            \
-+		IOMUX_PAD(0x068C, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_LVDS1_TX3_P__LDB_LVDS1_TX3                                   \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_LVDS1_TX2_P__LDB_LVDS1_TX2                                   \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_LVDS1_CLK_P__LDB_LVDS1_CLK                                   \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_LVDS1_TX1_P__LDB_LVDS1_TX1                                   \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_LVDS1_TX0_P__LDB_LVDS1_TX0                                   \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_LVDS0_TX3_P__LDB_LVDS0_TX3                                   \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_LVDS0_CLK_P__LDB_LVDS0_CLK                                   \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_LVDS0_TX2_P__LDB_LVDS0_TX2                                   \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_LVDS0_TX1_P__LDB_LVDS0_TX1                                   \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_LVDS0_TX0_P__LDB_LVDS0_TX0                                   \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_TAMPER__SNVS_LP_WRAPPER_SNVS_TD1                             \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_PMIC_ON_REQ__SNVS_LP_WRAPPER_SNVS_WAKEUP_ALARM               \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_PMIC_STBY_REQ__CCM_PMIC_VSTBY_REQ                            \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_POR_B__SRC_POR_B                                             \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_BOOT_MODE1__SRC_BOOT_MODE_1                                  \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_RESET_IN_B__SRC_RESET_B                                      \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_BOOT_MODE0__SRC_BOOT_MODE_0                                  \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_TEST_MODE__TCU_TEST_MODE                                     \
-+		IOMUX_PAD(NO_PAD_I, NO_MUX_I, 0, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD3_DAT7__USDHC3_DAT7                                        \
-+		IOMUX_PAD(0x0690, 0x02A8, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT7__UART1_TXD                                          \
-+		IOMUX_PAD(0x0690, 0x02A8, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT7__UART1_RXD                                          \
-+		IOMUX_PAD(0x0690, 0x02A8, 1, 0x0920, 2, 0)
-+#define _MX6Q_PAD_SD3_DAT7__PCIE_CTRL_DIAG_STATUS_BUS_MUX_24                   \
-+		IOMUX_PAD(0x0690, 0x02A8, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT7__USBOH3_UH3_DFD_OUT_0                               \
-+		IOMUX_PAD(0x0690, 0x02A8, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT7__USBOH3_UH2_DFD_OUT_0                               \
-+		IOMUX_PAD(0x0690, 0x02A8, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT7__GPIO_6_17                                          \
-+		IOMUX_PAD(0x0690, 0x02A8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT7__MIPI_CORE_DPHY_TEST_IN_12                          \
-+		IOMUX_PAD(0x0690, 0x02A8, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT7__ANATOP_USBPHY2_TSTO_PLL_CLK20DIV                   \
-+		IOMUX_PAD(0x0690, 0x02A8, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD3_DAT6__USDHC3_DAT6                                        \
-+		IOMUX_PAD(0x0694, 0x02AC, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT6__UART1_TXD                                          \
-+		IOMUX_PAD(0x0694, 0x02AC, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT6__UART1_RXD                                          \
-+		IOMUX_PAD(0x0694, 0x02AC, 1, 0x0920, 3, 0)
-+#define _MX6Q_PAD_SD3_DAT6__PCIE_CTRL_DIAG_STATUS_BUS_MUX_25                   \
-+		IOMUX_PAD(0x0694, 0x02AC, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT6__USBOH3_UH3_DFD_OUT_1                               \
-+		IOMUX_PAD(0x0694, 0x02AC, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT6__USBOH3_UH2_DFD_OUT_1                               \
-+		IOMUX_PAD(0x0694, 0x02AC, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT6__GPIO_6_18                                          \
-+		IOMUX_PAD(0x0694, 0x02AC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT6__MIPI_CORE_DPHY_TEST_IN_13                          \
-+		IOMUX_PAD(0x0694, 0x02AC, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT6__ANATOP_ANATOP_TESTO_10                             \
-+		IOMUX_PAD(0x0694, 0x02AC, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD3_DAT5__USDHC3_DAT5                                        \
-+		IOMUX_PAD(0x0698, 0x02B0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT5__UART2_TXD                                          \
-+		IOMUX_PAD(0x0698, 0x02B0, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT5__UART2_RXD                                          \
-+		IOMUX_PAD(0x0698, 0x02B0, 1, 0x0928, 4, 0)
-+#define _MX6Q_PAD_SD3_DAT5__PCIE_CTRL_DIAG_STATUS_BUS_MUX_26                   \
-+		IOMUX_PAD(0x0698, 0x02B0, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT5__USBOH3_UH3_DFD_OUT_2                               \
-+		IOMUX_PAD(0x0698, 0x02B0, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT5__USBOH3_UH2_DFD_OUT_2                               \
-+		IOMUX_PAD(0x0698, 0x02B0, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT5__GPIO_7_0                                           \
-+		IOMUX_PAD(0x0698, 0x02B0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT5__MIPI_CORE_DPHY_TEST_IN_14                          \
-+		IOMUX_PAD(0x0698, 0x02B0, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT5__ANATOP_ANATOP_TESTO_11                             \
-+		IOMUX_PAD(0x0698, 0x02B0, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD3_DAT4__USDHC3_DAT4                                        \
-+		IOMUX_PAD(0x069C, 0x02B4, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT4__UART2_TXD                                          \
-+		IOMUX_PAD(0x069C, 0x02B4, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT4__UART2_RXD                                          \
-+		IOMUX_PAD(0x069C, 0x02B4, 1, 0x0928, 5, 0)
-+#define _MX6Q_PAD_SD3_DAT4__PCIE_CTRL_DIAG_STATUS_BUS_MUX_27                   \
-+		IOMUX_PAD(0x069C, 0x02B4, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT4__USBOH3_UH3_DFD_OUT_3                               \
-+		IOMUX_PAD(0x069C, 0x02B4, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT4__USBOH3_UH2_DFD_OUT_3                               \
-+		IOMUX_PAD(0x069C, 0x02B4, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT4__GPIO_7_1                                           \
-+		IOMUX_PAD(0x069C, 0x02B4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT4__MIPI_CORE_DPHY_TEST_IN_15                          \
-+		IOMUX_PAD(0x069C, 0x02B4, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT4__ANATOP_ANATOP_TESTO_12                             \
-+		IOMUX_PAD(0x069C, 0x02B4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD3_CMD__USDHC3_CMD                                          \
-+		IOMUX_PAD(0x06A0, 0x02B8, 0 | IOMUX_CONFIG_SION, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_CMD__UART2_CTS                                           \
-+		IOMUX_PAD(0x06A0, 0x02B8, 1, 0x0924, 2, 0)
-+#define _MX6Q_PAD_SD3_CMD__CAN1_TXCAN                                          \
-+		IOMUX_PAD(0x06A0, 0x02B8, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_CMD__USBOH3_UH3_DFD_OUT_4                                \
-+		IOMUX_PAD(0x06A0, 0x02B8, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_CMD__USBOH3_UH2_DFD_OUT_4                                \
-+		IOMUX_PAD(0x06A0, 0x02B8, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_CMD__GPIO_7_2                                            \
-+		IOMUX_PAD(0x06A0, 0x02B8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_CMD__MIPI_CORE_DPHY_TEST_IN_16                           \
-+		IOMUX_PAD(0x06A0, 0x02B8, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_CMD__ANATOP_ANATOP_TESTO_13                              \
-+		IOMUX_PAD(0x06A0, 0x02B8, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD3_CLK__USDHC3_CLK                                          \
-+		IOMUX_PAD(0x06A4, 0x02BC, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_CLK__UART2_CTS                                           \
-+		IOMUX_PAD(0x06A4, 0x02BC, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_CLK__UART2_RTS                                           \
-+		IOMUX_PAD(0x06A4, 0x02BC, 1, 0x0924, 3, 0)
-+#define _MX6Q_PAD_SD3_CLK__CAN1_RXCAN                                          \
-+		IOMUX_PAD(0x06A4, 0x02BC, 2, 0x07E4, 2, 0)
-+#define _MX6Q_PAD_SD3_CLK__USBOH3_UH3_DFD_OUT_5                                \
-+		IOMUX_PAD(0x06A4, 0x02BC, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_CLK__USBOH3_UH2_DFD_OUT_5                                \
-+		IOMUX_PAD(0x06A4, 0x02BC, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_CLK__GPIO_7_3                                            \
-+		IOMUX_PAD(0x06A4, 0x02BC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_CLK__MIPI_CORE_DPHY_TEST_IN_17                           \
-+		IOMUX_PAD(0x06A4, 0x02BC, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_CLK__ANATOP_ANATOP_TESTO_14                              \
-+		IOMUX_PAD(0x06A4, 0x02BC, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD3_DAT0__USDHC3_DAT0                                        \
-+		IOMUX_PAD(0x06A8, 0x02C0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT0__UART1_CTS                                          \
-+		IOMUX_PAD(0x06A8, 0x02C0, 1, 0x091C, 2, 0)
-+#define _MX6Q_PAD_SD3_DAT0__CAN2_TXCAN                                         \
-+		IOMUX_PAD(0x06A8, 0x02C0, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT0__USBOH3_UH3_DFD_OUT_6                               \
-+		IOMUX_PAD(0x06A8, 0x02C0, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT0__USBOH3_UH2_DFD_OUT_6                               \
-+		IOMUX_PAD(0x06A8, 0x02C0, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT0__GPIO_7_4                                           \
-+		IOMUX_PAD(0x06A8, 0x02C0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT0__MIPI_CORE_DPHY_TEST_IN_18                          \
-+		IOMUX_PAD(0x06A8, 0x02C0, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT0__ANATOP_ANATOP_TESTO_15                             \
-+		IOMUX_PAD(0x06A8, 0x02C0, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD3_DAT1__USDHC3_DAT1                                        \
-+		IOMUX_PAD(0x06AC, 0x02C4, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT1__UART1_CTS                                          \
-+		IOMUX_PAD(0x06AC, 0x02C4, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT1__UART1_RTS                                          \
-+		IOMUX_PAD(0x06AC, 0x02C4, 1, 0x091C, 3, 0)
-+#define _MX6Q_PAD_SD3_DAT1__CAN2_RXCAN                                         \
-+		IOMUX_PAD(0x06AC, 0x02C4, 2, 0x07E8, 1, 0)
-+#define _MX6Q_PAD_SD3_DAT1__USBOH3_UH3_DFD_OUT_7                               \
-+		IOMUX_PAD(0x06AC, 0x02C4, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT1__USBOH3_UH2_DFD_OUT_7                               \
-+		IOMUX_PAD(0x06AC, 0x02C4, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT1__GPIO_7_5                                           \
-+		IOMUX_PAD(0x06AC, 0x02C4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT1__MIPI_CORE_DPHY_TEST_IN_19                          \
-+		IOMUX_PAD(0x06AC, 0x02C4, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT1__ANATOP_ANATOP_TESTI_0                              \
-+		IOMUX_PAD(0x06AC, 0x02C4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD3_DAT2__USDHC3_DAT2                                        \
-+		IOMUX_PAD(0x06B0, 0x02C8, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT2__PCIE_CTRL_DIAG_STATUS_BUS_MUX_28                   \
-+		IOMUX_PAD(0x06B0, 0x02C8, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT2__USBOH3_UH3_DFD_OUT_8                               \
-+		IOMUX_PAD(0x06B0, 0x02C8, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT2__USBOH3_UH2_DFD_OUT_8                               \
-+		IOMUX_PAD(0x06B0, 0x02C8, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT2__GPIO_7_6                                           \
-+		IOMUX_PAD(0x06B0, 0x02C8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT2__MIPI_CORE_DPHY_TEST_IN_20                          \
-+		IOMUX_PAD(0x06B0, 0x02C8, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT2__ANATOP_ANATOP_TESTI_1                              \
-+		IOMUX_PAD(0x06B0, 0x02C8, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD3_DAT3__USDHC3_DAT3                                        \
-+		IOMUX_PAD(0x06B4, 0x02CC, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT3__UART3_CTS                                          \
-+		IOMUX_PAD(0x06B4, 0x02CC, 1, 0x092C, 4, 0)
-+#define _MX6Q_PAD_SD3_DAT3__PCIE_CTRL_DIAG_STATUS_BUS_MUX_29                   \
-+		IOMUX_PAD(0x06B4, 0x02CC, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT3__USBOH3_UH3_DFD_OUT_9                               \
-+		IOMUX_PAD(0x06B4, 0x02CC, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT3__USBOH3_UH2_DFD_OUT_9                               \
-+		IOMUX_PAD(0x06B4, 0x02CC, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT3__GPIO_7_7                                           \
-+		IOMUX_PAD(0x06B4, 0x02CC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT3__MIPI_CORE_DPHY_TEST_IN_21                          \
-+		IOMUX_PAD(0x06B4, 0x02CC, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_DAT3__ANATOP_ANATOP_TESTI_2                              \
-+		IOMUX_PAD(0x06B4, 0x02CC, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD3_RST__USDHC3_RST                                          \
-+		IOMUX_PAD(0x06B8, 0x02D0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_RST__UART3_CTS                                           \
-+		IOMUX_PAD(0x06B8, 0x02D0, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_RST__UART3_RTS                                           \
-+		IOMUX_PAD(0x06B8, 0x02D0, 1, 0x092C, 5, 0)
-+#define _MX6Q_PAD_SD3_RST__PCIE_CTRL_DIAG_STATUS_BUS_MUX_30                    \
-+		IOMUX_PAD(0x06B8, 0x02D0, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_RST__USBOH3_UH3_DFD_OUT_10                               \
-+		IOMUX_PAD(0x06B8, 0x02D0, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_RST__USBOH3_UH2_DFD_OUT_10                               \
-+		IOMUX_PAD(0x06B8, 0x02D0, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_RST__GPIO_7_8                                            \
-+		IOMUX_PAD(0x06B8, 0x02D0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_RST__MIPI_CORE_DPHY_TEST_IN_22                           \
-+		IOMUX_PAD(0x06B8, 0x02D0, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD3_RST__ANATOP_ANATOP_TESTI_3                               \
-+		IOMUX_PAD(0x06B8, 0x02D0, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_NANDF_CLE__RAWNAND_CLE                                       \
-+		IOMUX_PAD(0x06BC, 0x02D4, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CLE__IPU2_SISG_4                                       \
-+		IOMUX_PAD(0x06BC, 0x02D4, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CLE__PCIE_CTRL_DIAG_STATUS_BUS_MUX_31                  \
-+		IOMUX_PAD(0x06BC, 0x02D4, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CLE__USBOH3_UH3_DFD_OUT_11                             \
-+		IOMUX_PAD(0x06BC, 0x02D4, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CLE__USBOH3_UH2_DFD_OUT_11                             \
-+		IOMUX_PAD(0x06BC, 0x02D4, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CLE__GPIO_6_7                                          \
-+		IOMUX_PAD(0x06BC, 0x02D4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CLE__MIPI_CORE_DPHY_TEST_IN_23                         \
-+		IOMUX_PAD(0x06BC, 0x02D4, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CLE__TPSMP_HTRANS_0                                    \
-+		IOMUX_PAD(0x06BC, 0x02D4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_NANDF_ALE__RAWNAND_ALE                                       \
-+		IOMUX_PAD(0x06C0, 0x02D8, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_ALE__USDHC4_RST                                        \
-+		IOMUX_PAD(0x06C0, 0x02D8, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_ALE__PCIE_CTRL_DIAG_STATUS_BUS_MUX_0                   \
-+		IOMUX_PAD(0x06C0, 0x02D8, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_ALE__USBOH3_UH3_DFD_OUT_12                             \
-+		IOMUX_PAD(0x06C0, 0x02D8, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_ALE__USBOH3_UH2_DFD_OUT_12                             \
-+		IOMUX_PAD(0x06C0, 0x02D8, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_ALE__GPIO_6_8                                          \
-+		IOMUX_PAD(0x06C0, 0x02D8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_ALE__MIPI_CORE_DPHY_TEST_IN_24                         \
-+		IOMUX_PAD(0x06C0, 0x02D8, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_ALE__TPSMP_HTRANS_1                                    \
-+		IOMUX_PAD(0x06C0, 0x02D8, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_NANDF_WP_B__RAWNAND_RESETN                                   \
-+		IOMUX_PAD(0x06C4, 0x02DC, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_WP_B__IPU2_SISG_5                                      \
-+		IOMUX_PAD(0x06C4, 0x02DC, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_WP_B__PCIE_CTRL_DIAG_STATUS_BUS_MUX_1                  \
-+		IOMUX_PAD(0x06C4, 0x02DC, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_WP_B__USBOH3_UH3_DFD_OUT_13                            \
-+		IOMUX_PAD(0x06C4, 0x02DC, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_WP_B__USBOH3_UH2_DFD_OUT_13                            \
-+		IOMUX_PAD(0x06C4, 0x02DC, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_WP_B__GPIO_6_9                                         \
-+		IOMUX_PAD(0x06C4, 0x02DC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_WP_B__MIPI_CORE_DPHY_TEST_OUT_32                       \
-+		IOMUX_PAD(0x06C4, 0x02DC, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_WP_B__PL301_MX6QPER1_HSIZE_0                           \
-+		IOMUX_PAD(0x06C4, 0x02DC, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_NANDF_RB0__RAWNAND_READY0                                    \
-+		IOMUX_PAD(0x06C8, 0x02E0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_RB0__IPU2_DI0_PIN1                                     \
-+		IOMUX_PAD(0x06C8, 0x02E0, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_RB0__PCIE_CTRL_DIAG_STATUS_BUS_MUX_2                   \
-+		IOMUX_PAD(0x06C8, 0x02E0, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_RB0__USBOH3_UH3_DFD_OUT_14                             \
-+		IOMUX_PAD(0x06C8, 0x02E0, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_RB0__USBOH3_UH2_DFD_OUT_14                             \
-+		IOMUX_PAD(0x06C8, 0x02E0, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_RB0__GPIO_6_10                                         \
-+		IOMUX_PAD(0x06C8, 0x02E0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_RB0__MIPI_CORE_DPHY_TEST_OUT_33                        \
-+		IOMUX_PAD(0x06C8, 0x02E0, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_RB0__PL301_MX6QPER1_HSIZE_1                            \
-+		IOMUX_PAD(0x06C8, 0x02E0, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_NANDF_CS0__RAWNAND_CE0N                                      \
-+		IOMUX_PAD(0x06CC, 0x02E4, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS0__USBOH3_UH3_DFD_OUT_15                             \
-+		IOMUX_PAD(0x06CC, 0x02E4, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS0__USBOH3_UH2_DFD_OUT_15                             \
-+		IOMUX_PAD(0x06CC, 0x02E4, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS0__GPIO_6_11                                         \
-+		IOMUX_PAD(0x06CC, 0x02E4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS0__PL301_MX6QPER1_HSIZE_2                            \
-+		IOMUX_PAD(0x06CC, 0x02E4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_NANDF_CS1__RAWNAND_CE1N                                      \
-+		IOMUX_PAD(0x06D0, 0x02E8, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS1__USDHC4_VSELECT                                    \
-+		IOMUX_PAD(0x06D0, 0x02E8, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS1__USDHC3_VSELECT                                    \
-+		IOMUX_PAD(0x06D0, 0x02E8, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS1__PCIE_CTRL_DIAG_STATUS_BUS_MUX_3                   \
-+		IOMUX_PAD(0x06D0, 0x02E8, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS1__GPIO_6_14                                         \
-+		IOMUX_PAD(0x06D0, 0x02E8, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS1__PL301_MX6QPER1_HREADYOUT                          \
-+		IOMUX_PAD(0x06D0, 0x02E8, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_NANDF_CS2__RAWNAND_CE2N                                      \
-+		IOMUX_PAD(0x06D4, 0x02EC, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS2__IPU1_SISG_0                                       \
-+		IOMUX_PAD(0x06D4, 0x02EC, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS2__ESAI1_TX0                                         \
-+		IOMUX_PAD(0x06D4, 0x02EC, 2, 0x0874, 1, 0)
-+#define _MX6Q_PAD_NANDF_CS2__WEIM_WEIM_CRE                                     \
-+		IOMUX_PAD(0x06D4, 0x02EC, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS2__CCM_CLKO2                                         \
-+		IOMUX_PAD(0x06D4, 0x02EC, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS2__GPIO_6_15                                         \
-+		IOMUX_PAD(0x06D4, 0x02EC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS2__IPU2_SISG_0                                       \
-+		IOMUX_PAD(0x06D4, 0x02EC, 6, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_NANDF_CS3__RAWNAND_CE3N                                      \
-+		IOMUX_PAD(0x06D8, 0x02F0, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS3__IPU1_SISG_1                                       \
-+		IOMUX_PAD(0x06D8, 0x02F0, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS3__ESAI1_TX1                                         \
-+		IOMUX_PAD(0x06D8, 0x02F0, 2, 0x0878, 1, 0)
-+#define _MX6Q_PAD_NANDF_CS3__WEIM_WEIM_A_26                                    \
-+		IOMUX_PAD(0x06D8, 0x02F0, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS3__PCIE_CTRL_DIAG_STATUS_BUS_MUX_4                   \
-+		IOMUX_PAD(0x06D8, 0x02F0, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS3__GPIO_6_16                                         \
-+		IOMUX_PAD(0x06D8, 0x02F0, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS3__IPU2_SISG_1                                       \
-+		IOMUX_PAD(0x06D8, 0x02F0, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_CS3__TPSMP_CLK                                         \
-+		IOMUX_PAD(0x06D8, 0x02F0, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD4_CMD__USDHC4_CMD                                          \
-+		IOMUX_PAD(0x06DC, 0x02F4, 0 | IOMUX_CONFIG_SION, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_CMD__RAWNAND_RDN                                         \
-+		IOMUX_PAD(0x06DC, 0x02F4, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_CMD__UART3_TXD                                           \
-+		IOMUX_PAD(0x06DC, 0x02F4, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_CMD__UART3_RXD                                           \
-+		IOMUX_PAD(0x06DC, 0x02F4, 2, 0x0930, 2, 0)
-+#define _MX6Q_PAD_SD4_CMD__PCIE_CTRL_DIAG_STATUS_BUS_MUX_5                     \
-+		IOMUX_PAD(0x06DC, 0x02F4, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_CMD__GPIO_7_9                                            \
-+		IOMUX_PAD(0x06DC, 0x02F4, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_CMD__TPSMP_HDATA_DIR                                     \
-+		IOMUX_PAD(0x06DC, 0x02F4, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD4_CLK__USDHC4_CLK                                          \
-+		IOMUX_PAD(0x06E0, 0x02F8, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_CLK__RAWNAND_WRN                                         \
-+		IOMUX_PAD(0x06E0, 0x02F8, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_CLK__UART3_TXD                                           \
-+		IOMUX_PAD(0x06E0, 0x02F8, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_CLK__UART3_RXD                                           \
-+		IOMUX_PAD(0x06E0, 0x02F8, 2, 0x0930, 3, 0)
-+#define _MX6Q_PAD_SD4_CLK__PCIE_CTRL_DIAG_STATUS_BUS_MUX_6                     \
-+		IOMUX_PAD(0x06E0, 0x02F8, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_CLK__GPIO_7_10                                           \
-+		IOMUX_PAD(0x06E0, 0x02F8, 5, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_NANDF_D0__RAWNAND_D0                                         \
-+		IOMUX_PAD(0x06E4, 0x02FC, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D0__USDHC1_DAT4                                        \
-+		IOMUX_PAD(0x06E4, 0x02FC, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D0__GPU3D_GPU_DEBUG_OUT_0                              \
-+		IOMUX_PAD(0x06E4, 0x02FC, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D0__USBOH3_UH2_DFD_OUT_16                              \
-+		IOMUX_PAD(0x06E4, 0x02FC, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D0__USBOH3_UH3_DFD_OUT_16                              \
-+		IOMUX_PAD(0x06E4, 0x02FC, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D0__GPIO_2_0                                           \
-+		IOMUX_PAD(0x06E4, 0x02FC, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D0__IPU1_IPU_DIAG_BUS_0                                \
-+		IOMUX_PAD(0x06E4, 0x02FC, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D0__IPU2_IPU_DIAG_BUS_0                                \
-+		IOMUX_PAD(0x06E4, 0x02FC, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_NANDF_D1__RAWNAND_D1                                         \
-+		IOMUX_PAD(0x06E8, 0x0300, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D1__USDHC1_DAT5                                        \
-+		IOMUX_PAD(0x06E8, 0x0300, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D1__GPU3D_GPU_DEBUG_OUT_1                              \
-+		IOMUX_PAD(0x06E8, 0x0300, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D1__USBOH3_UH2_DFD_OUT_17                              \
-+		IOMUX_PAD(0x06E8, 0x0300, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D1__USBOH3_UH3_DFD_OUT_17                              \
-+		IOMUX_PAD(0x06E8, 0x0300, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D1__GPIO_2_1                                           \
-+		IOMUX_PAD(0x06E8, 0x0300, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D1__IPU1_IPU_DIAG_BUS_1                                \
-+		IOMUX_PAD(0x06E8, 0x0300, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D1__IPU2_IPU_DIAG_BUS_1                                \
-+		IOMUX_PAD(0x06E8, 0x0300, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_NANDF_D2__RAWNAND_D2                                         \
-+		IOMUX_PAD(0x06EC, 0x0304, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D2__USDHC1_DAT6                                        \
-+		IOMUX_PAD(0x06EC, 0x0304, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D2__GPU3D_GPU_DEBUG_OUT_2                              \
-+		IOMUX_PAD(0x06EC, 0x0304, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D2__USBOH3_UH2_DFD_OUT_18                              \
-+		IOMUX_PAD(0x06EC, 0x0304, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D2__USBOH3_UH3_DFD_OUT_18                              \
-+		IOMUX_PAD(0x06EC, 0x0304, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D2__GPIO_2_2                                           \
-+		IOMUX_PAD(0x06EC, 0x0304, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D2__IPU1_IPU_DIAG_BUS_2                                \
-+		IOMUX_PAD(0x06EC, 0x0304, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D2__IPU2_IPU_DIAG_BUS_2                                \
-+		IOMUX_PAD(0x06EC, 0x0304, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_NANDF_D3__RAWNAND_D3                                         \
-+		IOMUX_PAD(0x06F0, 0x0308, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D3__USDHC1_DAT7                                        \
-+		IOMUX_PAD(0x06F0, 0x0308, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D3__GPU3D_GPU_DEBUG_OUT_3                              \
-+		IOMUX_PAD(0x06F0, 0x0308, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D3__USBOH3_UH2_DFD_OUT_19                              \
-+		IOMUX_PAD(0x06F0, 0x0308, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D3__USBOH3_UH3_DFD_OUT_19                              \
-+		IOMUX_PAD(0x06F0, 0x0308, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D3__GPIO_2_3                                           \
-+		IOMUX_PAD(0x06F0, 0x0308, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D3__IPU1_IPU_DIAG_BUS_3                                \
-+		IOMUX_PAD(0x06F0, 0x0308, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D3__IPU2_IPU_DIAG_BUS_3                                \
-+		IOMUX_PAD(0x06F0, 0x0308, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_NANDF_D4__RAWNAND_D4                                         \
-+		IOMUX_PAD(0x06F4, 0x030C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D4__USDHC2_DAT4                                        \
-+		IOMUX_PAD(0x06F4, 0x030C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D4__GPU3D_GPU_DEBUG_OUT_4                              \
-+		IOMUX_PAD(0x06F4, 0x030C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D4__USBOH3_UH2_DFD_OUT_20                              \
-+		IOMUX_PAD(0x06F4, 0x030C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D4__USBOH3_UH3_DFD_OUT_20                              \
-+		IOMUX_PAD(0x06F4, 0x030C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D4__GPIO_2_4                                           \
-+		IOMUX_PAD(0x06F4, 0x030C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D4__IPU1_IPU_DIAG_BUS_4                                \
-+		IOMUX_PAD(0x06F4, 0x030C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D4__IPU2_IPU_DIAG_BUS_4                                \
-+		IOMUX_PAD(0x06F4, 0x030C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_NANDF_D5__RAWNAND_D5                                         \
-+		IOMUX_PAD(0x06F8, 0x0310, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D5__USDHC2_DAT5                                        \
-+		IOMUX_PAD(0x06F8, 0x0310, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D5__GPU3D_GPU_DEBUG_OUT_5                              \
-+		IOMUX_PAD(0x06F8, 0x0310, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D5__USBOH3_UH2_DFD_OUT_21                              \
-+		IOMUX_PAD(0x06F8, 0x0310, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D5__USBOH3_UH3_DFD_OUT_21                              \
-+		IOMUX_PAD(0x06F8, 0x0310, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D5__GPIO_2_5                                           \
-+		IOMUX_PAD(0x06F8, 0x0310, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D5__IPU1_IPU_DIAG_BUS_5                                \
-+		IOMUX_PAD(0x06F8, 0x0310, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D5__IPU2_IPU_DIAG_BUS_5                                \
-+		IOMUX_PAD(0x06F8, 0x0310, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_NANDF_D6__RAWNAND_D6                                         \
-+		IOMUX_PAD(0x06FC, 0x0314, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D6__USDHC2_DAT6                                        \
-+		IOMUX_PAD(0x06FC, 0x0314, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D6__GPU3D_GPU_DEBUG_OUT_6                              \
-+		IOMUX_PAD(0x06FC, 0x0314, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D6__USBOH3_UH2_DFD_OUT_22                              \
-+		IOMUX_PAD(0x06FC, 0x0314, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D6__USBOH3_UH3_DFD_OUT_22                              \
-+		IOMUX_PAD(0x06FC, 0x0314, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D6__GPIO_2_6                                           \
-+		IOMUX_PAD(0x06FC, 0x0314, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D6__IPU1_IPU_DIAG_BUS_6                                \
-+		IOMUX_PAD(0x06FC, 0x0314, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D6__IPU2_IPU_DIAG_BUS_6                                \
-+		IOMUX_PAD(0x06FC, 0x0314, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_NANDF_D7__RAWNAND_D7                                         \
-+		IOMUX_PAD(0x0700, 0x0318, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D7__USDHC2_DAT7                                        \
-+		IOMUX_PAD(0x0700, 0x0318, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D7__GPU3D_GPU_DEBUG_OUT_7                              \
-+		IOMUX_PAD(0x0700, 0x0318, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D7__USBOH3_UH2_DFD_OUT_23                              \
-+		IOMUX_PAD(0x0700, 0x0318, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D7__USBOH3_UH3_DFD_OUT_23                              \
-+		IOMUX_PAD(0x0700, 0x0318, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D7__GPIO_2_7                                           \
-+		IOMUX_PAD(0x0700, 0x0318, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D7__IPU1_IPU_DIAG_BUS_7                                \
-+		IOMUX_PAD(0x0700, 0x0318, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_NANDF_D7__IPU2_IPU_DIAG_BUS_7                                \
-+		IOMUX_PAD(0x0700, 0x0318, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD4_DAT0__RAWNAND_D8                                         \
-+		IOMUX_PAD(0x0704, 0x031C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT0__USDHC4_DAT0                                        \
-+		IOMUX_PAD(0x0704, 0x031C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT0__RAWNAND_DQS                                        \
-+		IOMUX_PAD(0x0704, 0x031C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT0__USBOH3_UH2_DFD_OUT_24                              \
-+		IOMUX_PAD(0x0704, 0x031C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT0__USBOH3_UH3_DFD_OUT_24                              \
-+		IOMUX_PAD(0x0704, 0x031C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT0__GPIO_2_8                                           \
-+		IOMUX_PAD(0x0704, 0x031C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT0__IPU1_IPU_DIAG_BUS_8                                \
-+		IOMUX_PAD(0x0704, 0x031C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT0__IPU2_IPU_DIAG_BUS_8                                \
-+		IOMUX_PAD(0x0704, 0x031C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD4_DAT1__RAWNAND_D9                                         \
-+		IOMUX_PAD(0x0708, 0x0320, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT1__USDHC4_DAT1                                        \
-+		IOMUX_PAD(0x0708, 0x0320, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT1__PWM3_PWMO                                          \
-+		IOMUX_PAD(0x0708, 0x0320, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT1__USBOH3_UH2_DFD_OUT_25                              \
-+		IOMUX_PAD(0x0708, 0x0320, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT1__USBOH3_UH3_DFD_OUT_25                              \
-+		IOMUX_PAD(0x0708, 0x0320, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT1__GPIO_2_9                                           \
-+		IOMUX_PAD(0x0708, 0x0320, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT1__IPU1_IPU_DIAG_BUS_9                                \
-+		IOMUX_PAD(0x0708, 0x0320, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT1__IPU2_IPU_DIAG_BUS_9                                \
-+		IOMUX_PAD(0x0708, 0x0320, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD4_DAT2__RAWNAND_D10                                        \
-+		IOMUX_PAD(0x070C, 0x0324, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT2__USDHC4_DAT2                                        \
-+		IOMUX_PAD(0x070C, 0x0324, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT2__PWM4_PWMO                                          \
-+		IOMUX_PAD(0x070C, 0x0324, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT2__USBOH3_UH2_DFD_OUT_26                              \
-+		IOMUX_PAD(0x070C, 0x0324, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT2__USBOH3_UH3_DFD_OUT_26                              \
-+		IOMUX_PAD(0x070C, 0x0324, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT2__GPIO_2_10                                          \
-+		IOMUX_PAD(0x070C, 0x0324, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT2__IPU1_IPU_DIAG_BUS_10                               \
-+		IOMUX_PAD(0x070C, 0x0324, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT2__IPU2_IPU_DIAG_BUS_10                               \
-+		IOMUX_PAD(0x070C, 0x0324, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD4_DAT3__RAWNAND_D11                                        \
-+		IOMUX_PAD(0x0710, 0x0328, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT3__USDHC4_DAT3                                        \
-+		IOMUX_PAD(0x0710, 0x0328, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT3__USBOH3_UH2_DFD_OUT_27                              \
-+		IOMUX_PAD(0x0710, 0x0328, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT3__USBOH3_UH3_DFD_OUT_27                              \
-+		IOMUX_PAD(0x0710, 0x0328, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT3__GPIO_2_11                                          \
-+		IOMUX_PAD(0x0710, 0x0328, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT3__IPU1_IPU_DIAG_BUS_11                               \
-+		IOMUX_PAD(0x0710, 0x0328, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT3__IPU2_IPU_DIAG_BUS_11                               \
-+		IOMUX_PAD(0x0710, 0x0328, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD4_DAT4__RAWNAND_D12                                        \
-+		IOMUX_PAD(0x0714, 0x032C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT4__USDHC4_DAT4                                        \
-+		IOMUX_PAD(0x0714, 0x032C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT4__UART2_TXD                                          \
-+		IOMUX_PAD(0x0714, 0x032C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT4__UART2_RXD                                          \
-+		IOMUX_PAD(0x0714, 0x032C, 2, 0x0928, 6, 0)
-+#define _MX6Q_PAD_SD4_DAT4__USBOH3_UH2_DFD_OUT_28                              \
-+		IOMUX_PAD(0x0714, 0x032C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT4__USBOH3_UH3_DFD_OUT_28                              \
-+		IOMUX_PAD(0x0714, 0x032C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT4__GPIO_2_12                                          \
-+		IOMUX_PAD(0x0714, 0x032C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT4__IPU1_IPU_DIAG_BUS_12                               \
-+		IOMUX_PAD(0x0714, 0x032C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT4__IPU2_IPU_DIAG_BUS_12                               \
-+		IOMUX_PAD(0x0714, 0x032C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD4_DAT5__RAWNAND_D13                                        \
-+		IOMUX_PAD(0x0718, 0x0330, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT5__USDHC4_DAT5                                        \
-+		IOMUX_PAD(0x0718, 0x0330, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT5__UART2_CTS                                          \
-+		IOMUX_PAD(0x0718, 0x0330, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT5__UART2_RTS                                          \
-+		IOMUX_PAD(0x0718, 0x0330, 2, 0x0924, 4, 0)
-+#define _MX6Q_PAD_SD4_DAT5__USBOH3_UH2_DFD_OUT_29                              \
-+		IOMUX_PAD(0x0718, 0x0330, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT5__USBOH3_UH3_DFD_OUT_29                              \
-+		IOMUX_PAD(0x0718, 0x0330, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT5__GPIO_2_13                                          \
-+		IOMUX_PAD(0x0718, 0x0330, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT5__IPU1_IPU_DIAG_BUS_13                               \
-+		IOMUX_PAD(0x0718, 0x0330, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT5__IPU2_IPU_DIAG_BUS_13                               \
-+		IOMUX_PAD(0x0718, 0x0330, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD4_DAT6__RAWNAND_D14                                        \
-+		IOMUX_PAD(0x071C, 0x0334, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT6__USDHC4_DAT6                                        \
-+		IOMUX_PAD(0x071C, 0x0334, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT6__UART2_CTS                                          \
-+		IOMUX_PAD(0x071C, 0x0334, 2, 0x0924, 5, 0)
-+#define _MX6Q_PAD_SD4_DAT6__USBOH3_UH2_DFD_OUT_30                              \
-+		IOMUX_PAD(0x071C, 0x0334, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT6__USBOH3_UH3_DFD_OUT_30                              \
-+		IOMUX_PAD(0x071C, 0x0334, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT6__GPIO_2_14                                          \
-+		IOMUX_PAD(0x071C, 0x0334, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT6__IPU1_IPU_DIAG_BUS_14                               \
-+		IOMUX_PAD(0x071C, 0x0334, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT6__IPU2_IPU_DIAG_BUS_14                               \
-+		IOMUX_PAD(0x071C, 0x0334, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD4_DAT7__RAWNAND_D15                                        \
-+		IOMUX_PAD(0x0720, 0x0338, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT7__USDHC4_DAT7                                        \
-+		IOMUX_PAD(0x0720, 0x0338, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT7__UART2_TXD                                          \
-+		IOMUX_PAD(0x0720, 0x0338, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT7__UART2_RXD                                          \
-+		IOMUX_PAD(0x0720, 0x0338, 2, 0x0928, 7, 0)
-+#define _MX6Q_PAD_SD4_DAT7__USBOH3_UH2_DFD_OUT_31                              \
-+		IOMUX_PAD(0x0720, 0x0338, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT7__USBOH3_UH3_DFD_OUT_31                              \
-+		IOMUX_PAD(0x0720, 0x0338, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT7__GPIO_2_15                                          \
-+		IOMUX_PAD(0x0720, 0x0338, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT7__IPU1_IPU_DIAG_BUS_15                               \
-+		IOMUX_PAD(0x0720, 0x0338, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD4_DAT7__IPU2_IPU_DIAG_BUS_15                               \
-+		IOMUX_PAD(0x0720, 0x0338, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD1_DAT1__USDHC1_DAT1                                        \
-+		IOMUX_PAD(0x0724, 0x033C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT1__ECSPI5_SS0                                         \
-+		IOMUX_PAD(0x0724, 0x033C, 1, 0x0834, 1, 0)
-+#define _MX6Q_PAD_SD1_DAT1__PWM3_PWMO                                          \
-+		IOMUX_PAD(0x0724, 0x033C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT1__GPT_CAPIN2                                         \
-+		IOMUX_PAD(0x0724, 0x033C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT1__PCIE_CTRL_DIAG_STATUS_BUS_MUX_7                    \
-+		IOMUX_PAD(0x0724, 0x033C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT1__GPIO_1_17                                          \
-+		IOMUX_PAD(0x0724, 0x033C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT1__HDMI_TX_OPHYDTB_0                                  \
-+		IOMUX_PAD(0x0724, 0x033C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT1__ANATOP_ANATOP_TESTO_8                              \
-+		IOMUX_PAD(0x0724, 0x033C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD1_DAT0__USDHC1_DAT0                                        \
-+		IOMUX_PAD(0x0728, 0x0340, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT0__ECSPI5_MISO                                        \
-+		IOMUX_PAD(0x0728, 0x0340, 1, 0x082C, 1, 0)
-+#define _MX6Q_PAD_SD1_DAT0__CAAM_WRAPPER_RNG_OSC_OBS                           \
-+		IOMUX_PAD(0x0728, 0x0340, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT0__GPT_CAPIN1                                         \
-+		IOMUX_PAD(0x0728, 0x0340, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT0__PCIE_CTRL_DIAG_STATUS_BUS_MUX_8                    \
-+		IOMUX_PAD(0x0728, 0x0340, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT0__GPIO_1_16                                          \
-+		IOMUX_PAD(0x0728, 0x0340, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT0__HDMI_TX_OPHYDTB_1                                  \
-+		IOMUX_PAD(0x0728, 0x0340, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT0__ANATOP_ANATOP_TESTO_7                              \
-+		IOMUX_PAD(0x0728, 0x0340, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD1_DAT3__USDHC1_DAT3                                        \
-+		IOMUX_PAD(0x072C, 0x0344, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT3__ECSPI5_SS2                                         \
-+		IOMUX_PAD(0x072C, 0x0344, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT3__GPT_CMPOUT3                                        \
-+		IOMUX_PAD(0x072C, 0x0344, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT3__PWM1_PWMO                                          \
-+		IOMUX_PAD(0x072C, 0x0344, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT3__WDOG2_WDOG_B                                       \
-+		IOMUX_PAD(0x072C, 0x0344, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT3__GPIO_1_21                                          \
-+		IOMUX_PAD(0x072C, 0x0344, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT3__WDOG2_WDOG_RST_B_DEB                               \
-+		IOMUX_PAD(0x072C, 0x0344, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT3__ANATOP_ANATOP_TESTO_6                              \
-+		IOMUX_PAD(0x072C, 0x0344, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD1_CMD__USDHC1_CMD                                          \
-+		IOMUX_PAD(0x0730, 0x0348, 0 | IOMUX_CONFIG_SION, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_CMD__ECSPI5_MOSI                                         \
-+		IOMUX_PAD(0x0730, 0x0348, 1, 0x0830, 0, 0)
-+#define _MX6Q_PAD_SD1_CMD__PWM4_PWMO                                           \
-+		IOMUX_PAD(0x0730, 0x0348, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_CMD__GPT_CMPOUT1                                         \
-+		IOMUX_PAD(0x0730, 0x0348, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_CMD__GPIO_1_18                                           \
-+		IOMUX_PAD(0x0730, 0x0348, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_CMD__ANATOP_ANATOP_TESTO_5                               \
-+		IOMUX_PAD(0x0730, 0x0348, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD1_DAT2__USDHC1_DAT2                                        \
-+		IOMUX_PAD(0x0734, 0x034C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT2__ECSPI5_SS1                                         \
-+		IOMUX_PAD(0x0734, 0x034C, 1, 0x0838, 1, 0)
-+#define _MX6Q_PAD_SD1_DAT2__GPT_CMPOUT2                                        \
-+		IOMUX_PAD(0x0734, 0x034C, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT2__PWM2_PWMO                                          \
-+		IOMUX_PAD(0x0734, 0x034C, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT2__WDOG1_WDOG_B                                       \
-+		IOMUX_PAD(0x0734, 0x034C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT2__GPIO_1_19                                          \
-+		IOMUX_PAD(0x0734, 0x034C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT2__WDOG1_WDOG_RST_B_DEB                               \
-+		IOMUX_PAD(0x0734, 0x034C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_DAT2__ANATOP_ANATOP_TESTO_4                              \
-+		IOMUX_PAD(0x0734, 0x034C, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD1_CLK__USDHC1_CLK                                          \
-+		IOMUX_PAD(0x0738, 0x0350, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_CLK__ECSPI5_SCLK                                         \
-+		IOMUX_PAD(0x0738, 0x0350, 1, 0x0828, 0, 0)
-+#define _MX6Q_PAD_SD1_CLK__OSC32K_32K_OUT                                      \
-+		IOMUX_PAD(0x0738, 0x0350, 2, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_CLK__GPT_CLKIN                                           \
-+		IOMUX_PAD(0x0738, 0x0350, 3, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_CLK__GPIO_1_20                                           \
-+		IOMUX_PAD(0x0738, 0x0350, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_CLK__PHY_DTB_0                                           \
-+		IOMUX_PAD(0x0738, 0x0350, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD1_CLK__SATA_PHY_DTB_0                                      \
-+		IOMUX_PAD(0x0738, 0x0350, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD2_CLK__USDHC2_CLK                                          \
-+		IOMUX_PAD(0x073C, 0x0354, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_CLK__ECSPI5_SCLK                                         \
-+		IOMUX_PAD(0x073C, 0x0354, 1, 0x0828, 1, 0)
-+#define _MX6Q_PAD_SD2_CLK__KPP_COL_5                                           \
-+		IOMUX_PAD(0x073C, 0x0354, 2, 0x08E8, 3, 0)
-+#define _MX6Q_PAD_SD2_CLK__AUDMUX_AUD4_RXFS                                    \
-+		IOMUX_PAD(0x073C, 0x0354, 3, 0x07C0, 1, 0)
-+#define _MX6Q_PAD_SD2_CLK__PCIE_CTRL_DIAG_STATUS_BUS_MUX_9                     \
-+		IOMUX_PAD(0x073C, 0x0354, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_CLK__GPIO_1_10                                           \
-+		IOMUX_PAD(0x073C, 0x0354, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_CLK__PHY_DTB_1                                           \
-+		IOMUX_PAD(0x073C, 0x0354, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_CLK__SATA_PHY_DTB_1                                      \
-+		IOMUX_PAD(0x073C, 0x0354, 7, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD2_CMD__USDHC2_CMD                                          \
-+		IOMUX_PAD(0x0740, 0x0358, 0 | IOMUX_CONFIG_SION, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_CMD__ECSPI5_MOSI                                         \
-+		IOMUX_PAD(0x0740, 0x0358, 1, 0x0830, 1, 0)
-+#define _MX6Q_PAD_SD2_CMD__KPP_ROW_5                                           \
-+		IOMUX_PAD(0x0740, 0x0358, 2, 0x08F4, 2, 0)
-+#define _MX6Q_PAD_SD2_CMD__AUDMUX_AUD4_RXC                                     \
-+		IOMUX_PAD(0x0740, 0x0358, 3, 0x07BC, 1, 0)
-+#define _MX6Q_PAD_SD2_CMD__PCIE_CTRL_DIAG_STATUS_BUS_MUX_10                    \
-+		IOMUX_PAD(0x0740, 0x0358, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_CMD__GPIO_1_11                                           \
-+		IOMUX_PAD(0x0740, 0x0358, 5, 0x0000, 0, 0)
-+
-+#define _MX6Q_PAD_SD2_DAT3__USDHC2_DAT3                                        \
-+		IOMUX_PAD(0x0744, 0x035C, 0, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT3__ECSPI5_SS3                                         \
-+		IOMUX_PAD(0x0744, 0x035C, 1, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT3__KPP_COL_6                                          \
-+		IOMUX_PAD(0x0744, 0x035C, 2, 0x08EC, 2, 0)
-+#define _MX6Q_PAD_SD2_DAT3__AUDMUX_AUD4_TXC                                    \
-+		IOMUX_PAD(0x0744, 0x035C, 3, 0x07C4, 1, 0)
-+#define _MX6Q_PAD_SD2_DAT3__PCIE_CTRL_DIAG_STATUS_BUS_MUX_11                   \
-+		IOMUX_PAD(0x0744, 0x035C, 4, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT3__GPIO_1_12                                          \
-+		IOMUX_PAD(0x0744, 0x035C, 5, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT3__SJC_DONE                                           \
-+		IOMUX_PAD(0x0744, 0x035C, 6, 0x0000, 0, 0)
-+#define _MX6Q_PAD_SD2_DAT3__ANATOP_ANATOP_TESTO_3                              \
-+		IOMUX_PAD(0x0744, 0x035C, 7, 0x0000, 0, 0)
-+
-+#define  MX6Q_PAD_SD2_DAT1__USDHC2_DAT1                          (_MX6Q_PAD_SD2_DAT1__USDHC2_DAT1 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT1__ECSPI5_SS0                           (_MX6Q_PAD_SD2_DAT1__ECSPI5_SS0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT1__WEIM_WEIM_CS_2                       (_MX6Q_PAD_SD2_DAT1__WEIM_WEIM_CS_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT1__AUDMUX_AUD4_TXFS                     (_MX6Q_PAD_SD2_DAT1__AUDMUX_AUD4_TXFS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT1__KPP_COL_7                            (_MX6Q_PAD_SD2_DAT1__KPP_COL_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT1__GPIO_1_14                            (_MX6Q_PAD_SD2_DAT1__GPIO_1_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT1__CCM_WAIT                             (_MX6Q_PAD_SD2_DAT1__CCM_WAIT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT1__ANATOP_ANATOP_TESTO_0                (_MX6Q_PAD_SD2_DAT1__ANATOP_ANATOP_TESTO_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD2_DAT2__USDHC2_DAT2                          (_MX6Q_PAD_SD2_DAT2__USDHC2_DAT2 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT2__ECSPI5_SS1                           (_MX6Q_PAD_SD2_DAT2__ECSPI5_SS1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT2__WEIM_WEIM_CS_3                       (_MX6Q_PAD_SD2_DAT2__WEIM_WEIM_CS_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT2__AUDMUX_AUD4_TXD                      (_MX6Q_PAD_SD2_DAT2__AUDMUX_AUD4_TXD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT2__KPP_ROW_6                            (_MX6Q_PAD_SD2_DAT2__KPP_ROW_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT2__GPIO_1_13                            (_MX6Q_PAD_SD2_DAT2__GPIO_1_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT2__CCM_STOP                             (_MX6Q_PAD_SD2_DAT2__CCM_STOP | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT2__ANATOP_ANATOP_TESTO_1                (_MX6Q_PAD_SD2_DAT2__ANATOP_ANATOP_TESTO_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD2_DAT0__USDHC2_DAT0                          (_MX6Q_PAD_SD2_DAT0__USDHC2_DAT0 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT0__ECSPI5_MISO                          (_MX6Q_PAD_SD2_DAT0__ECSPI5_MISO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT0__AUDMUX_AUD4_RXD                      (_MX6Q_PAD_SD2_DAT0__AUDMUX_AUD4_RXD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT0__KPP_ROW_7                            (_MX6Q_PAD_SD2_DAT0__KPP_ROW_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT0__GPIO_1_15                            (_MX6Q_PAD_SD2_DAT0__GPIO_1_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT0__DCIC2_DCIC_OUT                       (_MX6Q_PAD_SD2_DAT0__DCIC2_DCIC_OUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT0__ANATOP_ANATOP_TESTO_2                (_MX6Q_PAD_SD2_DAT0__ANATOP_ANATOP_TESTO_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_RGMII_TXC__USBOH3_H2_DATA                      (_MX6Q_PAD_RGMII_TXC__USBOH3_H2_DATA | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TXC__ENET_RGMII_TXC                      (_MX6Q_PAD_RGMII_TXC__ENET_RGMII_TXC | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TXC__SPDIF_SPDIF_EXTCLK                  (_MX6Q_PAD_RGMII_TXC__SPDIF_SPDIF_EXTCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TXC__GPIO_6_19                           (_MX6Q_PAD_RGMII_TXC__GPIO_6_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TXC__MIPI_CORE_DPHY_TEST_IN_0            (_MX6Q_PAD_RGMII_TXC__MIPI_CORE_DPHY_TEST_IN_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TXC__ANATOP_ANATOP_24M_OUT               (_MX6Q_PAD_RGMII_TXC__ANATOP_ANATOP_24M_OUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_RGMII_TD0__MIPI_HSI_CTRL_TX_READY              (_MX6Q_PAD_RGMII_TD0__MIPI_HSI_CTRL_TX_READY | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TD0__ENET_RGMII_TD0                      (_MX6Q_PAD_RGMII_TD0__ENET_RGMII_TD0 | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TD0__GPIO_6_20                           (_MX6Q_PAD_RGMII_TD0__GPIO_6_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TD0__MIPI_CORE_DPHY_TEST_IN_1            (_MX6Q_PAD_RGMII_TD0__MIPI_CORE_DPHY_TEST_IN_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_RGMII_TD1__MIPI_HSI_CTRL_RX_FLAG               (_MX6Q_PAD_RGMII_TD1__MIPI_HSI_CTRL_RX_FLAG | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TD1__ENET_RGMII_TD1                      (_MX6Q_PAD_RGMII_TD1__ENET_RGMII_TD1 | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TD1__GPIO_6_21                           (_MX6Q_PAD_RGMII_TD1__GPIO_6_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TD1__MIPI_CORE_DPHY_TEST_IN_2            (_MX6Q_PAD_RGMII_TD1__MIPI_CORE_DPHY_TEST_IN_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TD1__CCM_PLL3_BYP                        (_MX6Q_PAD_RGMII_TD1__CCM_PLL3_BYP | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_RGMII_TD2__MIPI_HSI_CTRL_RX_DATA               (_MX6Q_PAD_RGMII_TD2__MIPI_HSI_CTRL_RX_DATA | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TD2__ENET_RGMII_TD2                      (_MX6Q_PAD_RGMII_TD2__ENET_RGMII_TD2 | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TD2__GPIO_6_22                           (_MX6Q_PAD_RGMII_TD2__GPIO_6_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TD2__MIPI_CORE_DPHY_TEST_IN_3            (_MX6Q_PAD_RGMII_TD2__MIPI_CORE_DPHY_TEST_IN_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TD2__CCM_PLL2_BYP                        (_MX6Q_PAD_RGMII_TD2__CCM_PLL2_BYP | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_RGMII_TD3__MIPI_HSI_CTRL_RX_WAKE               (_MX6Q_PAD_RGMII_TD3__MIPI_HSI_CTRL_RX_WAKE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TD3__ENET_RGMII_TD3                      (_MX6Q_PAD_RGMII_TD3__ENET_RGMII_TD3 | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TD3__GPIO_6_23                           (_MX6Q_PAD_RGMII_TD3__GPIO_6_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TD3__MIPI_CORE_DPHY_TEST_IN_4            (_MX6Q_PAD_RGMII_TD3__MIPI_CORE_DPHY_TEST_IN_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_RGMII_RX_CTL__USBOH3_H3_DATA                   (_MX6Q_PAD_RGMII_RX_CTL__USBOH3_H3_DATA | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RX_CTL__ENET_RGMII_RX_CTL                (_MX6Q_PAD_RGMII_RX_CTL__ENET_RGMII_RX_CTL | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RX_CTL__GPIO_6_24                        (_MX6Q_PAD_RGMII_RX_CTL__GPIO_6_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RX_CTL__MIPI_CORE_DPHY_TEST_IN_5         (_MX6Q_PAD_RGMII_RX_CTL__MIPI_CORE_DPHY_TEST_IN_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_RGMII_RD0__MIPI_HSI_CTRL_RX_READY              (_MX6Q_PAD_RGMII_RD0__MIPI_HSI_CTRL_RX_READY | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RD0__ENET_RGMII_RD0                      (_MX6Q_PAD_RGMII_RD0__ENET_RGMII_RD0 | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RD0__GPIO_6_25                           (_MX6Q_PAD_RGMII_RD0__GPIO_6_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RD0__MIPI_CORE_DPHY_TEST_IN_6            (_MX6Q_PAD_RGMII_RD0__MIPI_CORE_DPHY_TEST_IN_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_RGMII_TX_CTL__USBOH3_H2_STROBE                 (_MX6Q_PAD_RGMII_TX_CTL__USBOH3_H2_STROBE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TX_CTL__ENET_RGMII_TX_CTL                (_MX6Q_PAD_RGMII_TX_CTL__ENET_RGMII_TX_CTL | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TX_CTL__GPIO_6_26                        (_MX6Q_PAD_RGMII_TX_CTL__GPIO_6_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TX_CTL__MIPI_CORE_DPHY_TEST_IN_7         (_MX6Q_PAD_RGMII_TX_CTL__MIPI_CORE_DPHY_TEST_IN_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_TX_CTL__ENET_ANATOP_ETHERNET_REF_OUT     (_MX6Q_PAD_RGMII_TX_CTL__ENET_ANATOP_ETHERNET_REF_OUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_RGMII_RD1__MIPI_HSI_CTRL_TX_FLAG               (_MX6Q_PAD_RGMII_RD1__MIPI_HSI_CTRL_TX_FLAG | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RD1__ENET_RGMII_RD1                      (_MX6Q_PAD_RGMII_RD1__ENET_RGMII_RD1 | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RD1__GPIO_6_27                           (_MX6Q_PAD_RGMII_RD1__GPIO_6_27 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RD1__MIPI_CORE_DPHY_TEST_IN_8            (_MX6Q_PAD_RGMII_RD1__MIPI_CORE_DPHY_TEST_IN_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RD1__SJC_FAIL                            (_MX6Q_PAD_RGMII_RD1__SJC_FAIL | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_RGMII_RD2__MIPI_HSI_CTRL_TX_DATA               (_MX6Q_PAD_RGMII_RD2__MIPI_HSI_CTRL_TX_DATA | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RD2__ENET_RGMII_RD2                      (_MX6Q_PAD_RGMII_RD2__ENET_RGMII_RD2 | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RD2__GPIO_6_28                           (_MX6Q_PAD_RGMII_RD2__GPIO_6_28 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RD2__MIPI_CORE_DPHY_TEST_IN_9            (_MX6Q_PAD_RGMII_RD2__MIPI_CORE_DPHY_TEST_IN_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_RGMII_RD3__MIPI_HSI_CTRL_TX_WAKE               (_MX6Q_PAD_RGMII_RD3__MIPI_HSI_CTRL_TX_WAKE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RD3__ENET_RGMII_RD3                      (_MX6Q_PAD_RGMII_RD3__ENET_RGMII_RD3 | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RD3__GPIO_6_29                           (_MX6Q_PAD_RGMII_RD3__GPIO_6_29 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RD3__MIPI_CORE_DPHY_TEST_IN_10           (_MX6Q_PAD_RGMII_RD3__MIPI_CORE_DPHY_TEST_IN_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_RGMII_RXC__USBOH3_H3_STROBE                    (_MX6Q_PAD_RGMII_RXC__USBOH3_H3_STROBE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RXC__ENET_RGMII_RXC                      (_MX6Q_PAD_RGMII_RXC__ENET_RGMII_RXC | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RXC__GPIO_6_30                           (_MX6Q_PAD_RGMII_RXC__GPIO_6_30 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_RGMII_RXC__MIPI_CORE_DPHY_TEST_IN_11           (_MX6Q_PAD_RGMII_RXC__MIPI_CORE_DPHY_TEST_IN_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_A25__WEIM_WEIM_A_25                        (_MX6Q_PAD_EIM_A25__WEIM_WEIM_A_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A25__ECSPI4_SS1                            (_MX6Q_PAD_EIM_A25__ECSPI4_SS1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A25__ECSPI2_RDY                            (_MX6Q_PAD_EIM_A25__ECSPI2_RDY | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A25__IPU1_DI1_PIN12                        (_MX6Q_PAD_EIM_A25__IPU1_DI1_PIN12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A25__IPU1_DI0_D1_CS                        (_MX6Q_PAD_EIM_A25__IPU1_DI0_D1_CS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A25__GPIO_5_2                              (_MX6Q_PAD_EIM_A25__GPIO_5_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A25__HDMI_TX_CEC_LINE                      (_MX6Q_PAD_EIM_A25__HDMI_TX_CEC_LINE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A25__PL301_MX6QPER1_HBURST_0               (_MX6Q_PAD_EIM_A25__PL301_MX6QPER1_HBURST_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_EB2__WEIM_WEIM_EB_2                        (_MX6Q_PAD_EIM_EB2__WEIM_WEIM_EB_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB2__ECSPI1_SS0                            (_MX6Q_PAD_EIM_EB2__ECSPI1_SS0 | MUX_PAD_CTRL(MX6Q_ECSPI_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB2__CCM_DI1_EXT_CLK                       (_MX6Q_PAD_EIM_EB2__CCM_DI1_EXT_CLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB2__IPU2_CSI1_D_19                        (_MX6Q_PAD_EIM_EB2__IPU2_CSI1_D_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB2__HDMI_TX_DDC_SCL                       (_MX6Q_PAD_EIM_EB2__HDMI_TX_DDC_SCL | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB2__GPIO_2_30                             (_MX6Q_PAD_EIM_EB2__GPIO_2_30 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB2__I2C2_SCL                              (_MX6Q_PAD_EIM_EB2__I2C2_SCL | MUX_PAD_CTRL(MX6Q_I2C_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB2__SRC_BT_CFG_30                         (_MX6Q_PAD_EIM_EB2__SRC_BT_CFG_30 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_D16__WEIM_WEIM_D_16                        (_MX6Q_PAD_EIM_D16__WEIM_WEIM_D_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D16__ECSPI1_SCLK                           (_MX6Q_PAD_EIM_D16__ECSPI1_SCLK | MUX_PAD_CTRL(MX6Q_ECSPI_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D16__IPU1_DI0_PIN5                         (_MX6Q_PAD_EIM_D16__IPU1_DI0_PIN5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D16__IPU2_CSI1_D_18                        (_MX6Q_PAD_EIM_D16__IPU2_CSI1_D_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D16__HDMI_TX_DDC_SDA                       (_MX6Q_PAD_EIM_D16__HDMI_TX_DDC_SDA | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D16__GPIO_3_16                             (_MX6Q_PAD_EIM_D16__GPIO_3_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D16__I2C2_SDA                              (_MX6Q_PAD_EIM_D16__I2C2_SDA | MUX_PAD_CTRL(MX6Q_I2C_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_D17__WEIM_WEIM_D_17                        (_MX6Q_PAD_EIM_D17__WEIM_WEIM_D_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D17__ECSPI1_MISO                           (_MX6Q_PAD_EIM_D17__ECSPI1_MISO | MUX_PAD_CTRL(MX6Q_ECSPI_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D17__IPU1_DI0_PIN6                         (_MX6Q_PAD_EIM_D17__IPU1_DI0_PIN6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D17__IPU2_CSI1_PIXCLK                      (_MX6Q_PAD_EIM_D17__IPU2_CSI1_PIXCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D17__DCIC1_DCIC_OUT                        (_MX6Q_PAD_EIM_D17__DCIC1_DCIC_OUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D17__GPIO_3_17                             (_MX6Q_PAD_EIM_D17__GPIO_3_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D17__I2C3_SCL                              (_MX6Q_PAD_EIM_D17__I2C3_SCL | MUX_PAD_CTRL(MX6Q_I2C_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D17__PL301_MX6QPER1_HBURST_1               (_MX6Q_PAD_EIM_D17__PL301_MX6QPER1_HBURST_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_D18__WEIM_WEIM_D_18                        (_MX6Q_PAD_EIM_D18__WEIM_WEIM_D_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D18__ECSPI1_MOSI                           (_MX6Q_PAD_EIM_D18__ECSPI1_MOSI | MUX_PAD_CTRL(MX6Q_ECSPI_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D18__IPU1_DI0_PIN7                         (_MX6Q_PAD_EIM_D18__IPU1_DI0_PIN7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D18__IPU2_CSI1_D_17                        (_MX6Q_PAD_EIM_D18__IPU2_CSI1_D_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D18__IPU1_DI1_D0_CS                        (_MX6Q_PAD_EIM_D18__IPU1_DI1_D0_CS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D18__GPIO_3_18                             (_MX6Q_PAD_EIM_D18__GPIO_3_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D18__I2C3_SDA                              (_MX6Q_PAD_EIM_D18__I2C3_SDA | MUX_PAD_CTRL(MX6Q_I2C_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D18__PL301_MX6QPER1_HBURST_2               (_MX6Q_PAD_EIM_D18__PL301_MX6QPER1_HBURST_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_D19__WEIM_WEIM_D_19                        (_MX6Q_PAD_EIM_D19__WEIM_WEIM_D_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D19__ECSPI1_SS1                            (_MX6Q_PAD_EIM_D19__ECSPI1_SS1 | MUX_PAD_CTRL(MX6Q_ECSPI_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D19__IPU1_DI0_PIN8                         (_MX6Q_PAD_EIM_D19__IPU1_DI0_PIN8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D19__IPU2_CSI1_D_16                        (_MX6Q_PAD_EIM_D19__IPU2_CSI1_D_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D19__UART1_CTS                             (_MX6Q_PAD_EIM_D19__UART1_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D19__GPIO_3_19                             (_MX6Q_PAD_EIM_D19__GPIO_3_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D19__EPIT1_EPITO                           (_MX6Q_PAD_EIM_D19__EPIT1_EPITO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D19__PL301_MX6QPER1_HRESP                  (_MX6Q_PAD_EIM_D19__PL301_MX6QPER1_HRESP | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_D20__WEIM_WEIM_D_20                        (_MX6Q_PAD_EIM_D20__WEIM_WEIM_D_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D20__ECSPI4_SS0                            (_MX6Q_PAD_EIM_D20__ECSPI4_SS0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D20__IPU1_DI0_PIN16                        (_MX6Q_PAD_EIM_D20__IPU1_DI0_PIN16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D20__IPU2_CSI1_D_15                        (_MX6Q_PAD_EIM_D20__IPU2_CSI1_D_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D20__UART1_CTS                             (_MX6Q_PAD_EIM_D20__UART1_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D20__UART1_RTS                             (_MX6Q_PAD_EIM_D20__UART1_RTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D20__GPIO_3_20                             (_MX6Q_PAD_EIM_D20__GPIO_3_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D20__EPIT2_EPITO                           (_MX6Q_PAD_EIM_D20__EPIT2_EPITO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_D21__WEIM_WEIM_D_21                        (_MX6Q_PAD_EIM_D21__WEIM_WEIM_D_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D21__ECSPI4_SCLK                           (_MX6Q_PAD_EIM_D21__ECSPI4_SCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D21__IPU1_DI0_PIN17                        (_MX6Q_PAD_EIM_D21__IPU1_DI0_PIN17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D21__IPU2_CSI1_D_11                        (_MX6Q_PAD_EIM_D21__IPU2_CSI1_D_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D21__USBOH3_USBOTG_OC                      (_MX6Q_PAD_EIM_D21__USBOH3_USBOTG_OC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D21__GPIO_3_21                             (_MX6Q_PAD_EIM_D21__GPIO_3_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D21__I2C1_SCL                              (_MX6Q_PAD_EIM_D21__I2C1_SCL | MUX_PAD_CTRL(MX6Q_I2C_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D21__SPDIF_IN1                             (_MX6Q_PAD_EIM_D21__SPDIF_IN1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_D22__WEIM_WEIM_D_22                        (_MX6Q_PAD_EIM_D22__WEIM_WEIM_D_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D22__ECSPI4_MISO                           (_MX6Q_PAD_EIM_D22__ECSPI4_MISO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D22__IPU1_DI0_PIN1                         (_MX6Q_PAD_EIM_D22__IPU1_DI0_PIN1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D22__IPU2_CSI1_D_10                        (_MX6Q_PAD_EIM_D22__IPU2_CSI1_D_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D22__USBOH3_USBOTG_PWR                     (_MX6Q_PAD_EIM_D22__USBOH3_USBOTG_PWR | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D22__GPIO_3_22                             (_MX6Q_PAD_EIM_D22__GPIO_3_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D22__SPDIF_OUT1                            (_MX6Q_PAD_EIM_D22__SPDIF_OUT1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D22__PL301_MX6QPER1_HWRITE                 (_MX6Q_PAD_EIM_D22__PL301_MX6QPER1_HWRITE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_D23__WEIM_WEIM_D_23                        (_MX6Q_PAD_EIM_D23__WEIM_WEIM_D_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D23__IPU1_DI0_D0_CS                        (_MX6Q_PAD_EIM_D23__IPU1_DI0_D0_CS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D23__UART3_CTS                             (_MX6Q_PAD_EIM_D23__UART3_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D23__UART1_DCD                             (_MX6Q_PAD_EIM_D23__UART1_DCD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D23__IPU2_CSI1_DATA_EN                     (_MX6Q_PAD_EIM_D23__IPU2_CSI1_DATA_EN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D23__GPIO_3_23                             (_MX6Q_PAD_EIM_D23__GPIO_3_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D23__IPU1_DI1_PIN2                         (_MX6Q_PAD_EIM_D23__IPU1_DI1_PIN2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D23__IPU1_DI1_PIN14                        (_MX6Q_PAD_EIM_D23__IPU1_DI1_PIN14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_EB3__WEIM_WEIM_EB_3                        (_MX6Q_PAD_EIM_EB3__WEIM_WEIM_EB_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB3__ECSPI4_RDY                            (_MX6Q_PAD_EIM_EB3__ECSPI4_RDY | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB3__UART3_CTS                             (_MX6Q_PAD_EIM_EB3__UART3_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB3__UART3_RTS                             (_MX6Q_PAD_EIM_EB3__UART3_RTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB3__UART1_RI                              (_MX6Q_PAD_EIM_EB3__UART1_RI | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB3__IPU2_CSI1_HSYNC                       (_MX6Q_PAD_EIM_EB3__IPU2_CSI1_HSYNC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB3__GPIO_2_31                             (_MX6Q_PAD_EIM_EB3__GPIO_2_31 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB3__IPU1_DI1_PIN3                         (_MX6Q_PAD_EIM_EB3__IPU1_DI1_PIN3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB3__SRC_BT_CFG_31                         (_MX6Q_PAD_EIM_EB3__SRC_BT_CFG_31 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_D24__WEIM_WEIM_D_24                        (_MX6Q_PAD_EIM_D24__WEIM_WEIM_D_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D24__ECSPI4_SS2                            (_MX6Q_PAD_EIM_D24__ECSPI4_SS2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D24__UART3_TXD                             (_MX6Q_PAD_EIM_D24__UART3_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D24__UART3_RXD                             (_MX6Q_PAD_EIM_D24__UART3_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D24__ECSPI1_SS2                            (_MX6Q_PAD_EIM_D24__ECSPI1_SS2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D24__ECSPI2_SS2                            (_MX6Q_PAD_EIM_D24__ECSPI2_SS2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D24__GPIO_3_24                             (_MX6Q_PAD_EIM_D24__GPIO_3_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D24__AUDMUX_AUD5_RXFS                      (_MX6Q_PAD_EIM_D24__AUDMUX_AUD5_RXFS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D24__UART1_DTR                             (_MX6Q_PAD_EIM_D24__UART1_DTR | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_D25__WEIM_WEIM_D_25                        (_MX6Q_PAD_EIM_D25__WEIM_WEIM_D_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D25__ECSPI4_SS3                            (_MX6Q_PAD_EIM_D25__ECSPI4_SS3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D25__UART3_TXD                             (_MX6Q_PAD_EIM_D25__UART3_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D25__UART3_RXD                             (_MX6Q_PAD_EIM_D25__UART3_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D25__ECSPI1_SS3                            (_MX6Q_PAD_EIM_D25__ECSPI1_SS3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D25__ECSPI2_SS3                            (_MX6Q_PAD_EIM_D25__ECSPI2_SS3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D25__GPIO_3_25                             (_MX6Q_PAD_EIM_D25__GPIO_3_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D25__AUDMUX_AUD5_RXC                       (_MX6Q_PAD_EIM_D25__AUDMUX_AUD5_RXC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D25__UART1_DSR                             (_MX6Q_PAD_EIM_D25__UART1_DSR | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_D26__WEIM_WEIM_D_26                        (_MX6Q_PAD_EIM_D26__WEIM_WEIM_D_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D26__IPU1_DI1_PIN11                        (_MX6Q_PAD_EIM_D26__IPU1_DI1_PIN11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D26__IPU1_CSI0_D_1                         (_MX6Q_PAD_EIM_D26__IPU1_CSI0_D_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D26__IPU2_CSI1_D_14                        (_MX6Q_PAD_EIM_D26__IPU2_CSI1_D_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D26__UART2_TXD                             (_MX6Q_PAD_EIM_D26__UART2_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D26__UART2_RXD                             (_MX6Q_PAD_EIM_D26__UART2_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D26__GPIO_3_26                             (_MX6Q_PAD_EIM_D26__GPIO_3_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D26__IPU1_SISG_2                           (_MX6Q_PAD_EIM_D26__IPU1_SISG_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D26__IPU1_DISP1_DAT_22                     (_MX6Q_PAD_EIM_D26__IPU1_DISP1_DAT_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_D27__WEIM_WEIM_D_27                        (_MX6Q_PAD_EIM_D27__WEIM_WEIM_D_27 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D27__IPU1_DI1_PIN13                        (_MX6Q_PAD_EIM_D27__IPU1_DI1_PIN13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D27__IPU1_CSI0_D_0                         (_MX6Q_PAD_EIM_D27__IPU1_CSI0_D_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D27__IPU2_CSI1_D_13                        (_MX6Q_PAD_EIM_D27__IPU2_CSI1_D_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D27__UART2_TXD                             (_MX6Q_PAD_EIM_D27__UART2_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D27__UART2_RXD                             (_MX6Q_PAD_EIM_D27__UART2_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D27__GPIO_3_27                             (_MX6Q_PAD_EIM_D27__GPIO_3_27 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D27__IPU1_SISG_3                           (_MX6Q_PAD_EIM_D27__IPU1_SISG_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D27__IPU1_DISP1_DAT_23                     (_MX6Q_PAD_EIM_D27__IPU1_DISP1_DAT_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_D28__WEIM_WEIM_D_28                        (_MX6Q_PAD_EIM_D28__WEIM_WEIM_D_28 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D28__I2C1_SDA                              (_MX6Q_PAD_EIM_D28__I2C1_SDA | MUX_PAD_CTRL(MX6Q_I2C_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D28__ECSPI4_MOSI                           (_MX6Q_PAD_EIM_D28__ECSPI4_MOSI | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D28__IPU2_CSI1_D_12                        (_MX6Q_PAD_EIM_D28__IPU2_CSI1_D_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D28__UART2_CTS                             (_MX6Q_PAD_EIM_D28__UART2_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D28__GPIO_3_28                             (_MX6Q_PAD_EIM_D28__GPIO_3_28 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D28__IPU1_EXT_TRIG                         (_MX6Q_PAD_EIM_D28__IPU1_EXT_TRIG | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D28__IPU1_DI0_PIN13                        (_MX6Q_PAD_EIM_D28__IPU1_DI0_PIN13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_D29__WEIM_WEIM_D_29                        (_MX6Q_PAD_EIM_D29__WEIM_WEIM_D_29 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D29__IPU1_DI1_PIN15                        (_MX6Q_PAD_EIM_D29__IPU1_DI1_PIN15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D29__ECSPI4_SS0                            (_MX6Q_PAD_EIM_D29__ECSPI4_SS0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D29__UART2_CTS                             (_MX6Q_PAD_EIM_D29__UART2_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D29__UART2_RTS                             (_MX6Q_PAD_EIM_D29__UART2_RTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D29__GPIO_3_29                             (_MX6Q_PAD_EIM_D29__GPIO_3_29 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D29__IPU2_CSI1_VSYNC                       (_MX6Q_PAD_EIM_D29__IPU2_CSI1_VSYNC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D29__IPU1_DI0_PIN14                        (_MX6Q_PAD_EIM_D29__IPU1_DI0_PIN14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_D30__WEIM_WEIM_D_30                        (_MX6Q_PAD_EIM_D30__WEIM_WEIM_D_30 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D30__IPU1_DISP1_DAT_21                     (_MX6Q_PAD_EIM_D30__IPU1_DISP1_DAT_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D30__IPU1_DI0_PIN11                        (_MX6Q_PAD_EIM_D30__IPU1_DI0_PIN11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D30__IPU1_CSI0_D_3                         (_MX6Q_PAD_EIM_D30__IPU1_CSI0_D_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D30__UART3_CTS                             (_MX6Q_PAD_EIM_D30__UART3_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D30__GPIO_3_30                             (_MX6Q_PAD_EIM_D30__GPIO_3_30 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D30__USBOH3_USBH1_OC                       (_MX6Q_PAD_EIM_D30__USBOH3_USBH1_OC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D30__PL301_MX6QPER1_HPROT_0                (_MX6Q_PAD_EIM_D30__PL301_MX6QPER1_HPROT_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_D31__WEIM_WEIM_D_31                        (_MX6Q_PAD_EIM_D31__WEIM_WEIM_D_31 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D31__IPU1_DISP1_DAT_20                     (_MX6Q_PAD_EIM_D31__IPU1_DISP1_DAT_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D31__IPU1_DI0_PIN12                        (_MX6Q_PAD_EIM_D31__IPU1_DI0_PIN12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D31__IPU1_CSI0_D_2                         (_MX6Q_PAD_EIM_D31__IPU1_CSI0_D_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D31__UART3_CTS                             (_MX6Q_PAD_EIM_D31__UART3_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D31__UART3_RTS                             (_MX6Q_PAD_EIM_D31__UART3_RTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D31__GPIO_3_31                             (_MX6Q_PAD_EIM_D31__GPIO_3_31 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D31__USBOH3_USBH1_PWR                      (_MX6Q_PAD_EIM_D31__USBOH3_USBH1_PWR | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_D31__PL301_MX6QPER1_HPROT_1                (_MX6Q_PAD_EIM_D31__PL301_MX6QPER1_HPROT_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_A24__WEIM_WEIM_A_24                        (_MX6Q_PAD_EIM_A24__WEIM_WEIM_A_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A24__IPU1_DISP1_DAT_19                     (_MX6Q_PAD_EIM_A24__IPU1_DISP1_DAT_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A24__IPU2_CSI1_D_19                        (_MX6Q_PAD_EIM_A24__IPU2_CSI1_D_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A24__IPU2_SISG_2                           (_MX6Q_PAD_EIM_A24__IPU2_SISG_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A24__IPU1_SISG_2                           (_MX6Q_PAD_EIM_A24__IPU1_SISG_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A24__GPIO_5_4                              (_MX6Q_PAD_EIM_A24__GPIO_5_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A24__PL301_MX6QPER1_HPROT_2                (_MX6Q_PAD_EIM_A24__PL301_MX6QPER1_HPROT_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A24__SRC_BT_CFG_24                         (_MX6Q_PAD_EIM_A24__SRC_BT_CFG_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_A23__WEIM_WEIM_A_23                        (_MX6Q_PAD_EIM_A23__WEIM_WEIM_A_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A23__IPU1_DISP1_DAT_18                     (_MX6Q_PAD_EIM_A23__IPU1_DISP1_DAT_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A23__IPU2_CSI1_D_18                        (_MX6Q_PAD_EIM_A23__IPU2_CSI1_D_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A23__IPU2_SISG_3                           (_MX6Q_PAD_EIM_A23__IPU2_SISG_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A23__IPU1_SISG_3                           (_MX6Q_PAD_EIM_A23__IPU1_SISG_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A23__GPIO_6_6                              (_MX6Q_PAD_EIM_A23__GPIO_6_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A23__PL301_MX6QPER1_HPROT_3                (_MX6Q_PAD_EIM_A23__PL301_MX6QPER1_HPROT_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A23__SRC_BT_CFG_23                         (_MX6Q_PAD_EIM_A23__SRC_BT_CFG_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_A22__WEIM_WEIM_A_22                        (_MX6Q_PAD_EIM_A22__WEIM_WEIM_A_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A22__IPU1_DISP1_DAT_17                     (_MX6Q_PAD_EIM_A22__IPU1_DISP1_DAT_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A22__IPU2_CSI1_D_17                        (_MX6Q_PAD_EIM_A22__IPU2_CSI1_D_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A22__GPIO_2_16                             (_MX6Q_PAD_EIM_A22__GPIO_2_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A22__TPSMP_HDATA_0                         (_MX6Q_PAD_EIM_A22__TPSMP_HDATA_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A22__SRC_BT_CFG_22                         (_MX6Q_PAD_EIM_A22__SRC_BT_CFG_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_A21__WEIM_WEIM_A_21                        (_MX6Q_PAD_EIM_A21__WEIM_WEIM_A_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A21__IPU1_DISP1_DAT_16                     (_MX6Q_PAD_EIM_A21__IPU1_DISP1_DAT_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A21__IPU2_CSI1_D_16                        (_MX6Q_PAD_EIM_A21__IPU2_CSI1_D_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A21__RESERVED_RESERVED                     (_MX6Q_PAD_EIM_A21__RESERVED_RESERVED | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A21__MIPI_CORE_DPHY_TEST_OUT_18            (_MX6Q_PAD_EIM_A21__MIPI_CORE_DPHY_TEST_OUT_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A21__GPIO_2_17                             (_MX6Q_PAD_EIM_A21__GPIO_2_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A21__TPSMP_HDATA_1                         (_MX6Q_PAD_EIM_A21__TPSMP_HDATA_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A21__SRC_BT_CFG_21                         (_MX6Q_PAD_EIM_A21__SRC_BT_CFG_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_A20__WEIM_WEIM_A_20                        (_MX6Q_PAD_EIM_A20__WEIM_WEIM_A_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A20__IPU1_DISP1_DAT_15                     (_MX6Q_PAD_EIM_A20__IPU1_DISP1_DAT_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A20__IPU2_CSI1_D_15                        (_MX6Q_PAD_EIM_A20__IPU2_CSI1_D_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A20__RESERVED_RESERVED                     (_MX6Q_PAD_EIM_A20__RESERVED_RESERVED | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A20__MIPI_CORE_DPHY_TEST_OUT_19            (_MX6Q_PAD_EIM_A20__MIPI_CORE_DPHY_TEST_OUT_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A20__GPIO_2_18                             (_MX6Q_PAD_EIM_A20__GPIO_2_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A20__TPSMP_HDATA_2                         (_MX6Q_PAD_EIM_A20__TPSMP_HDATA_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A20__SRC_BT_CFG_20                         (_MX6Q_PAD_EIM_A20__SRC_BT_CFG_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_A19__WEIM_WEIM_A_19                        (_MX6Q_PAD_EIM_A19__WEIM_WEIM_A_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A19__IPU1_DISP1_DAT_14                     (_MX6Q_PAD_EIM_A19__IPU1_DISP1_DAT_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A19__IPU2_CSI1_D_14                        (_MX6Q_PAD_EIM_A19__IPU2_CSI1_D_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A19__RESERVED_RESERVED                     (_MX6Q_PAD_EIM_A19__RESERVED_RESERVED | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A19__MIPI_CORE_DPHY_TEST_OUT_20            (_MX6Q_PAD_EIM_A19__MIPI_CORE_DPHY_TEST_OUT_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A19__GPIO_2_19                             (_MX6Q_PAD_EIM_A19__GPIO_2_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A19__TPSMP_HDATA_3                         (_MX6Q_PAD_EIM_A19__TPSMP_HDATA_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A19__SRC_BT_CFG_19                         (_MX6Q_PAD_EIM_A19__SRC_BT_CFG_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_A18__WEIM_WEIM_A_18                        (_MX6Q_PAD_EIM_A18__WEIM_WEIM_A_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A18__IPU1_DISP1_DAT_13                     (_MX6Q_PAD_EIM_A18__IPU1_DISP1_DAT_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A18__IPU2_CSI1_D_13                        (_MX6Q_PAD_EIM_A18__IPU2_CSI1_D_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A18__RESERVED_RESERVED                     (_MX6Q_PAD_EIM_A18__RESERVED_RESERVED | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A18__MIPI_CORE_DPHY_TEST_OUT_21            (_MX6Q_PAD_EIM_A18__MIPI_CORE_DPHY_TEST_OUT_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A18__GPIO_2_20                             (_MX6Q_PAD_EIM_A18__GPIO_2_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A18__TPSMP_HDATA_4                         (_MX6Q_PAD_EIM_A18__TPSMP_HDATA_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A18__SRC_BT_CFG_18                         (_MX6Q_PAD_EIM_A18__SRC_BT_CFG_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_A17__WEIM_WEIM_A_17                        (_MX6Q_PAD_EIM_A17__WEIM_WEIM_A_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A17__IPU1_DISP1_DAT_12                     (_MX6Q_PAD_EIM_A17__IPU1_DISP1_DAT_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A17__IPU2_CSI1_D_12                        (_MX6Q_PAD_EIM_A17__IPU2_CSI1_D_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A17__RESERVED_RESERVED                     (_MX6Q_PAD_EIM_A17__RESERVED_RESERVED | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A17__MIPI_CORE_DPHY_TEST_OUT_22            (_MX6Q_PAD_EIM_A17__MIPI_CORE_DPHY_TEST_OUT_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A17__GPIO_2_21                             (_MX6Q_PAD_EIM_A17__GPIO_2_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A17__TPSMP_HDATA_5                         (_MX6Q_PAD_EIM_A17__TPSMP_HDATA_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A17__SRC_BT_CFG_17                         (_MX6Q_PAD_EIM_A17__SRC_BT_CFG_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_A16__WEIM_WEIM_A_16                        (_MX6Q_PAD_EIM_A16__WEIM_WEIM_A_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A16__IPU1_DI1_DISP_CLK                     (_MX6Q_PAD_EIM_A16__IPU1_DI1_DISP_CLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A16__IPU2_CSI1_PIXCLK                      (_MX6Q_PAD_EIM_A16__IPU2_CSI1_PIXCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A16__MIPI_CORE_DPHY_TEST_OUT_23            (_MX6Q_PAD_EIM_A16__MIPI_CORE_DPHY_TEST_OUT_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A16__GPIO_2_22                             (_MX6Q_PAD_EIM_A16__GPIO_2_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A16__TPSMP_HDATA_6                         (_MX6Q_PAD_EIM_A16__TPSMP_HDATA_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_A16__SRC_BT_CFG_16                         (_MX6Q_PAD_EIM_A16__SRC_BT_CFG_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_CS0__WEIM_WEIM_CS_0                        (_MX6Q_PAD_EIM_CS0__WEIM_WEIM_CS_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_CS0__IPU1_DI1_PIN5                         (_MX6Q_PAD_EIM_CS0__IPU1_DI1_PIN5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_CS0__ECSPI2_SCLK                           (_MX6Q_PAD_EIM_CS0__ECSPI2_SCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_CS0__MIPI_CORE_DPHY_TEST_OUT_24            (_MX6Q_PAD_EIM_CS0__MIPI_CORE_DPHY_TEST_OUT_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_CS0__GPIO_2_23                             (_MX6Q_PAD_EIM_CS0__GPIO_2_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_CS0__TPSMP_HDATA_7                         (_MX6Q_PAD_EIM_CS0__TPSMP_HDATA_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_CS1__WEIM_WEIM_CS_1                        (_MX6Q_PAD_EIM_CS1__WEIM_WEIM_CS_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_CS1__IPU1_DI1_PIN6                         (_MX6Q_PAD_EIM_CS1__IPU1_DI1_PIN6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_CS1__ECSPI2_MOSI                           (_MX6Q_PAD_EIM_CS1__ECSPI2_MOSI | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_CS1__MIPI_CORE_DPHY_TEST_OUT_25            (_MX6Q_PAD_EIM_CS1__MIPI_CORE_DPHY_TEST_OUT_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_CS1__GPIO_2_24                             (_MX6Q_PAD_EIM_CS1__GPIO_2_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_CS1__TPSMP_HDATA_8                         (_MX6Q_PAD_EIM_CS1__TPSMP_HDATA_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_OE__WEIM_WEIM_OE                           (_MX6Q_PAD_EIM_OE__WEIM_WEIM_OE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_OE__IPU1_DI1_PIN7                          (_MX6Q_PAD_EIM_OE__IPU1_DI1_PIN7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_OE__ECSPI2_MISO                            (_MX6Q_PAD_EIM_OE__ECSPI2_MISO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_OE__MIPI_CORE_DPHY_TEST_OUT_26             (_MX6Q_PAD_EIM_OE__MIPI_CORE_DPHY_TEST_OUT_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_OE__GPIO_2_25                              (_MX6Q_PAD_EIM_OE__GPIO_2_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_OE__TPSMP_HDATA_9                          (_MX6Q_PAD_EIM_OE__TPSMP_HDATA_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_RW__WEIM_WEIM_RW                           (_MX6Q_PAD_EIM_RW__WEIM_WEIM_RW | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_RW__IPU1_DI1_PIN8                          (_MX6Q_PAD_EIM_RW__IPU1_DI1_PIN8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_RW__ECSPI2_SS0                             (_MX6Q_PAD_EIM_RW__ECSPI2_SS0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_RW__MIPI_CORE_DPHY_TEST_OUT_27             (_MX6Q_PAD_EIM_RW__MIPI_CORE_DPHY_TEST_OUT_27 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_RW__GPIO_2_26                              (_MX6Q_PAD_EIM_RW__GPIO_2_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_RW__TPSMP_HDATA_10                         (_MX6Q_PAD_EIM_RW__TPSMP_HDATA_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_RW__SRC_BT_CFG_29                          (_MX6Q_PAD_EIM_RW__SRC_BT_CFG_29 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_LBA__WEIM_WEIM_LBA                         (_MX6Q_PAD_EIM_LBA__WEIM_WEIM_LBA | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_LBA__IPU1_DI1_PIN17                        (_MX6Q_PAD_EIM_LBA__IPU1_DI1_PIN17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_LBA__ECSPI2_SS1                            (_MX6Q_PAD_EIM_LBA__ECSPI2_SS1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_LBA__GPIO_2_27                             (_MX6Q_PAD_EIM_LBA__GPIO_2_27 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_LBA__TPSMP_HDATA_11                        (_MX6Q_PAD_EIM_LBA__TPSMP_HDATA_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_LBA__SRC_BT_CFG_26                         (_MX6Q_PAD_EIM_LBA__SRC_BT_CFG_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_EB0__WEIM_WEIM_EB_0                        (_MX6Q_PAD_EIM_EB0__WEIM_WEIM_EB_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB0__IPU1_DISP1_DAT_11                     (_MX6Q_PAD_EIM_EB0__IPU1_DISP1_DAT_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB0__IPU2_CSI1_D_11                        (_MX6Q_PAD_EIM_EB0__IPU2_CSI1_D_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB0__MIPI_CORE_DPHY_TEST_OUT_0             (_MX6Q_PAD_EIM_EB0__MIPI_CORE_DPHY_TEST_OUT_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB0__CCM_PMIC_RDY                          (_MX6Q_PAD_EIM_EB0__CCM_PMIC_RDY | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB0__GPIO_2_28                             (_MX6Q_PAD_EIM_EB0__GPIO_2_28 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB0__TPSMP_HDATA_12                        (_MX6Q_PAD_EIM_EB0__TPSMP_HDATA_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB0__SRC_BT_CFG_27                         (_MX6Q_PAD_EIM_EB0__SRC_BT_CFG_27 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_EB1__WEIM_WEIM_EB_1                        (_MX6Q_PAD_EIM_EB1__WEIM_WEIM_EB_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB1__IPU1_DISP1_DAT_10                     (_MX6Q_PAD_EIM_EB1__IPU1_DISP1_DAT_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB1__IPU2_CSI1_D_10                        (_MX6Q_PAD_EIM_EB1__IPU2_CSI1_D_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB1__MIPI_CORE_DPHY_TEST_OUT_1             (_MX6Q_PAD_EIM_EB1__MIPI_CORE_DPHY_TEST_OUT_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB1__GPIO_2_29                             (_MX6Q_PAD_EIM_EB1__GPIO_2_29 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB1__TPSMP_HDATA_13                        (_MX6Q_PAD_EIM_EB1__TPSMP_HDATA_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_EB1__SRC_BT_CFG_28                         (_MX6Q_PAD_EIM_EB1__SRC_BT_CFG_28 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_DA0__WEIM_WEIM_DA_A_0                      (_MX6Q_PAD_EIM_DA0__WEIM_WEIM_DA_A_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA0__IPU1_DISP1_DAT_9                      (_MX6Q_PAD_EIM_DA0__IPU1_DISP1_DAT_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA0__IPU2_CSI1_D_9                         (_MX6Q_PAD_EIM_DA0__IPU2_CSI1_D_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA0__MIPI_CORE_DPHY_TEST_OUT_2             (_MX6Q_PAD_EIM_DA0__MIPI_CORE_DPHY_TEST_OUT_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA0__GPIO_3_0                              (_MX6Q_PAD_EIM_DA0__GPIO_3_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA0__TPSMP_HDATA_14                        (_MX6Q_PAD_EIM_DA0__TPSMP_HDATA_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA0__SRC_BT_CFG_0                          (_MX6Q_PAD_EIM_DA0__SRC_BT_CFG_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_DA1__WEIM_WEIM_DA_A_1                      (_MX6Q_PAD_EIM_DA1__WEIM_WEIM_DA_A_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA1__IPU1_DISP1_DAT_8                      (_MX6Q_PAD_EIM_DA1__IPU1_DISP1_DAT_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA1__IPU2_CSI1_D_8                         (_MX6Q_PAD_EIM_DA1__IPU2_CSI1_D_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA1__MIPI_CORE_DPHY_TEST_OUT_3             (_MX6Q_PAD_EIM_DA1__MIPI_CORE_DPHY_TEST_OUT_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA1__ANATOP_USBPHY1_TSTI_TX_LS_MODE        (_MX6Q_PAD_EIM_DA1__ANATOP_USBPHY1_TSTI_TX_LS_MODE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA1__GPIO_3_1                              (_MX6Q_PAD_EIM_DA1__GPIO_3_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA1__TPSMP_HDATA_15                        (_MX6Q_PAD_EIM_DA1__TPSMP_HDATA_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA1__SRC_BT_CFG_1                          (_MX6Q_PAD_EIM_DA1__SRC_BT_CFG_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_DA2__WEIM_WEIM_DA_A_2                      (_MX6Q_PAD_EIM_DA2__WEIM_WEIM_DA_A_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA2__IPU1_DISP1_DAT_7                      (_MX6Q_PAD_EIM_DA2__IPU1_DISP1_DAT_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA2__IPU2_CSI1_D_7                         (_MX6Q_PAD_EIM_DA2__IPU2_CSI1_D_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA2__MIPI_CORE_DPHY_TEST_OUT_4             (_MX6Q_PAD_EIM_DA2__MIPI_CORE_DPHY_TEST_OUT_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA2__ANATOP_USBPHY1_TSTI_TX_HS_MODE        (_MX6Q_PAD_EIM_DA2__ANATOP_USBPHY1_TSTI_TX_HS_MODE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA2__GPIO_3_2                              (_MX6Q_PAD_EIM_DA2__GPIO_3_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA2__TPSMP_HDATA_16                        (_MX6Q_PAD_EIM_DA2__TPSMP_HDATA_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA2__SRC_BT_CFG_2                          (_MX6Q_PAD_EIM_DA2__SRC_BT_CFG_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_DA3__WEIM_WEIM_DA_A_3                      (_MX6Q_PAD_EIM_DA3__WEIM_WEIM_DA_A_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA3__IPU1_DISP1_DAT_6                      (_MX6Q_PAD_EIM_DA3__IPU1_DISP1_DAT_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA3__IPU2_CSI1_D_6                         (_MX6Q_PAD_EIM_DA3__IPU2_CSI1_D_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA3__MIPI_CORE_DPHY_TEST_OUT_5             (_MX6Q_PAD_EIM_DA3__MIPI_CORE_DPHY_TEST_OUT_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA3__ANATOP_USBPHY1_TSTI_TX_HIZ            (_MX6Q_PAD_EIM_DA3__ANATOP_USBPHY1_TSTI_TX_HIZ | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA3__GPIO_3_3                              (_MX6Q_PAD_EIM_DA3__GPIO_3_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA3__TPSMP_HDATA_17                        (_MX6Q_PAD_EIM_DA3__TPSMP_HDATA_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA3__SRC_BT_CFG_3                          (_MX6Q_PAD_EIM_DA3__SRC_BT_CFG_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_DA4__WEIM_WEIM_DA_A_4                      (_MX6Q_PAD_EIM_DA4__WEIM_WEIM_DA_A_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA4__IPU1_DISP1_DAT_5                      (_MX6Q_PAD_EIM_DA4__IPU1_DISP1_DAT_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA4__IPU2_CSI1_D_5                         (_MX6Q_PAD_EIM_DA4__IPU2_CSI1_D_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA4__MIPI_CORE_DPHY_TEST_OUT_6             (_MX6Q_PAD_EIM_DA4__MIPI_CORE_DPHY_TEST_OUT_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA4__ANATOP_USBPHY1_TSTI_TX_EN             (_MX6Q_PAD_EIM_DA4__ANATOP_USBPHY1_TSTI_TX_EN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA4__GPIO_3_4                              (_MX6Q_PAD_EIM_DA4__GPIO_3_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA4__TPSMP_HDATA_18                        (_MX6Q_PAD_EIM_DA4__TPSMP_HDATA_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA4__SRC_BT_CFG_4                          (_MX6Q_PAD_EIM_DA4__SRC_BT_CFG_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_DA5__WEIM_WEIM_DA_A_5                      (_MX6Q_PAD_EIM_DA5__WEIM_WEIM_DA_A_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA5__IPU1_DISP1_DAT_4                      (_MX6Q_PAD_EIM_DA5__IPU1_DISP1_DAT_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA5__IPU2_CSI1_D_4                         (_MX6Q_PAD_EIM_DA5__IPU2_CSI1_D_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA5__MIPI_CORE_DPHY_TEST_OUT_7             (_MX6Q_PAD_EIM_DA5__MIPI_CORE_DPHY_TEST_OUT_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA5__ANATOP_USBPHY1_TSTI_TX_DP             (_MX6Q_PAD_EIM_DA5__ANATOP_USBPHY1_TSTI_TX_DP | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA5__GPIO_3_5                              (_MX6Q_PAD_EIM_DA5__GPIO_3_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA5__TPSMP_HDATA_19                        (_MX6Q_PAD_EIM_DA5__TPSMP_HDATA_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA5__SRC_BT_CFG_5                          (_MX6Q_PAD_EIM_DA5__SRC_BT_CFG_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_DA6__WEIM_WEIM_DA_A_6                      (_MX6Q_PAD_EIM_DA6__WEIM_WEIM_DA_A_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA6__IPU1_DISP1_DAT_3                      (_MX6Q_PAD_EIM_DA6__IPU1_DISP1_DAT_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA6__IPU2_CSI1_D_3                         (_MX6Q_PAD_EIM_DA6__IPU2_CSI1_D_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA6__MIPI_CORE_DPHY_TEST_OUT_8             (_MX6Q_PAD_EIM_DA6__MIPI_CORE_DPHY_TEST_OUT_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA6__ANATOP_USBPHY1_TSTI_TX_DN             (_MX6Q_PAD_EIM_DA6__ANATOP_USBPHY1_TSTI_TX_DN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA6__GPIO_3_6                              (_MX6Q_PAD_EIM_DA6__GPIO_3_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA6__TPSMP_HDATA_20                        (_MX6Q_PAD_EIM_DA6__TPSMP_HDATA_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA6__SRC_BT_CFG_6                          (_MX6Q_PAD_EIM_DA6__SRC_BT_CFG_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_DA7__WEIM_WEIM_DA_A_7                      (_MX6Q_PAD_EIM_DA7__WEIM_WEIM_DA_A_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA7__IPU1_DISP1_DAT_2                      (_MX6Q_PAD_EIM_DA7__IPU1_DISP1_DAT_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA7__IPU2_CSI1_D_2                         (_MX6Q_PAD_EIM_DA7__IPU2_CSI1_D_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA7__MIPI_CORE_DPHY_TEST_OUT_9             (_MX6Q_PAD_EIM_DA7__MIPI_CORE_DPHY_TEST_OUT_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA7__GPIO_3_7                              (_MX6Q_PAD_EIM_DA7__GPIO_3_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA7__TPSMP_HDATA_21                        (_MX6Q_PAD_EIM_DA7__TPSMP_HDATA_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA7__SRC_BT_CFG_7                          (_MX6Q_PAD_EIM_DA7__SRC_BT_CFG_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_DA8__WEIM_WEIM_DA_A_8                      (_MX6Q_PAD_EIM_DA8__WEIM_WEIM_DA_A_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA8__IPU1_DISP1_DAT_1                      (_MX6Q_PAD_EIM_DA8__IPU1_DISP1_DAT_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA8__IPU2_CSI1_D_1                         (_MX6Q_PAD_EIM_DA8__IPU2_CSI1_D_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA8__MIPI_CORE_DPHY_TEST_OUT_10            (_MX6Q_PAD_EIM_DA8__MIPI_CORE_DPHY_TEST_OUT_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA8__GPIO_3_8                              (_MX6Q_PAD_EIM_DA8__GPIO_3_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA8__TPSMP_HDATA_22                        (_MX6Q_PAD_EIM_DA8__TPSMP_HDATA_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA8__SRC_BT_CFG_8                          (_MX6Q_PAD_EIM_DA8__SRC_BT_CFG_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_DA9__WEIM_WEIM_DA_A_9                      (_MX6Q_PAD_EIM_DA9__WEIM_WEIM_DA_A_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA9__IPU1_DISP1_DAT_0                      (_MX6Q_PAD_EIM_DA9__IPU1_DISP1_DAT_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA9__IPU2_CSI1_D_0                         (_MX6Q_PAD_EIM_DA9__IPU2_CSI1_D_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA9__MIPI_CORE_DPHY_TEST_OUT_11            (_MX6Q_PAD_EIM_DA9__MIPI_CORE_DPHY_TEST_OUT_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA9__GPIO_3_9                              (_MX6Q_PAD_EIM_DA9__GPIO_3_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA9__TPSMP_HDATA_23                        (_MX6Q_PAD_EIM_DA9__TPSMP_HDATA_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA9__SRC_BT_CFG_9                          (_MX6Q_PAD_EIM_DA9__SRC_BT_CFG_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_DA10__WEIM_WEIM_DA_A_10                    (_MX6Q_PAD_EIM_DA10__WEIM_WEIM_DA_A_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA10__IPU1_DI1_PIN15                       (_MX6Q_PAD_EIM_DA10__IPU1_DI1_PIN15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA10__IPU2_CSI1_DATA_EN                    (_MX6Q_PAD_EIM_DA10__IPU2_CSI1_DATA_EN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA10__MIPI_CORE_DPHY_TEST_OUT_12           (_MX6Q_PAD_EIM_DA10__MIPI_CORE_DPHY_TEST_OUT_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA10__GPIO_3_10                            (_MX6Q_PAD_EIM_DA10__GPIO_3_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA10__TPSMP_HDATA_24                       (_MX6Q_PAD_EIM_DA10__TPSMP_HDATA_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA10__SRC_BT_CFG_10                        (_MX6Q_PAD_EIM_DA10__SRC_BT_CFG_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_DA11__WEIM_WEIM_DA_A_11                    (_MX6Q_PAD_EIM_DA11__WEIM_WEIM_DA_A_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA11__IPU1_DI1_PIN2                        (_MX6Q_PAD_EIM_DA11__IPU1_DI1_PIN2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA11__IPU2_CSI1_HSYNC                      (_MX6Q_PAD_EIM_DA11__IPU2_CSI1_HSYNC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA11__MIPI_CORE_DPHY_TEST_OUT_13           (_MX6Q_PAD_EIM_DA11__MIPI_CORE_DPHY_TEST_OUT_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA11__SDMA_DEBUG_EVT_CHN_LINES_6           (_MX6Q_PAD_EIM_DA11__SDMA_DEBUG_EVT_CHN_LINES_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA11__GPIO_3_11                            (_MX6Q_PAD_EIM_DA11__GPIO_3_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA11__TPSMP_HDATA_25                       (_MX6Q_PAD_EIM_DA11__TPSMP_HDATA_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA11__SRC_BT_CFG_11                        (_MX6Q_PAD_EIM_DA11__SRC_BT_CFG_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_DA12__WEIM_WEIM_DA_A_12                    (_MX6Q_PAD_EIM_DA12__WEIM_WEIM_DA_A_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA12__IPU1_DI1_PIN3                        (_MX6Q_PAD_EIM_DA12__IPU1_DI1_PIN3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA12__IPU2_CSI1_VSYNC                      (_MX6Q_PAD_EIM_DA12__IPU2_CSI1_VSYNC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA12__MIPI_CORE_DPHY_TEST_OUT_14           (_MX6Q_PAD_EIM_DA12__MIPI_CORE_DPHY_TEST_OUT_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA12__SDMA_DEBUG_EVT_CHN_LINES_3           (_MX6Q_PAD_EIM_DA12__SDMA_DEBUG_EVT_CHN_LINES_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA12__GPIO_3_12                            (_MX6Q_PAD_EIM_DA12__GPIO_3_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA12__TPSMP_HDATA_26                       (_MX6Q_PAD_EIM_DA12__TPSMP_HDATA_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA12__SRC_BT_CFG_12                        (_MX6Q_PAD_EIM_DA12__SRC_BT_CFG_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_DA13__WEIM_WEIM_DA_A_13                    (_MX6Q_PAD_EIM_DA13__WEIM_WEIM_DA_A_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA13__IPU1_DI1_D0_CS                       (_MX6Q_PAD_EIM_DA13__IPU1_DI1_D0_CS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA13__CCM_DI1_EXT_CLK                      (_MX6Q_PAD_EIM_DA13__CCM_DI1_EXT_CLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA13__MIPI_CORE_DPHY_TEST_OUT_15           (_MX6Q_PAD_EIM_DA13__MIPI_CORE_DPHY_TEST_OUT_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA13__SDMA_DEBUG_EVT_CHN_LINES_4           (_MX6Q_PAD_EIM_DA13__SDMA_DEBUG_EVT_CHN_LINES_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA13__GPIO_3_13                            (_MX6Q_PAD_EIM_DA13__GPIO_3_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA13__TPSMP_HDATA_27                       (_MX6Q_PAD_EIM_DA13__TPSMP_HDATA_27 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA13__SRC_BT_CFG_13                        (_MX6Q_PAD_EIM_DA13__SRC_BT_CFG_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_DA14__WEIM_WEIM_DA_A_14                    (_MX6Q_PAD_EIM_DA14__WEIM_WEIM_DA_A_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA14__IPU1_DI1_D1_CS                       (_MX6Q_PAD_EIM_DA14__IPU1_DI1_D1_CS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA14__CCM_DI0_EXT_CLK                      (_MX6Q_PAD_EIM_DA14__CCM_DI0_EXT_CLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA14__MIPI_CORE_DPHY_TEST_OUT_16           (_MX6Q_PAD_EIM_DA14__MIPI_CORE_DPHY_TEST_OUT_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA14__SDMA_DEBUG_EVT_CHN_LINES_5           (_MX6Q_PAD_EIM_DA14__SDMA_DEBUG_EVT_CHN_LINES_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA14__GPIO_3_14                            (_MX6Q_PAD_EIM_DA14__GPIO_3_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA14__TPSMP_HDATA_28                       (_MX6Q_PAD_EIM_DA14__TPSMP_HDATA_28 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA14__SRC_BT_CFG_14                        (_MX6Q_PAD_EIM_DA14__SRC_BT_CFG_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_DA15__WEIM_WEIM_DA_A_15                    (_MX6Q_PAD_EIM_DA15__WEIM_WEIM_DA_A_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA15__IPU1_DI1_PIN1                        (_MX6Q_PAD_EIM_DA15__IPU1_DI1_PIN1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA15__IPU1_DI1_PIN4                        (_MX6Q_PAD_EIM_DA15__IPU1_DI1_PIN4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA15__MIPI_CORE_DPHY_TEST_OUT_17           (_MX6Q_PAD_EIM_DA15__MIPI_CORE_DPHY_TEST_OUT_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA15__GPIO_3_15                            (_MX6Q_PAD_EIM_DA15__GPIO_3_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA15__TPSMP_HDATA_29                       (_MX6Q_PAD_EIM_DA15__TPSMP_HDATA_29 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_DA15__SRC_BT_CFG_15                        (_MX6Q_PAD_EIM_DA15__SRC_BT_CFG_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_WAIT__WEIM_WEIM_WAIT                       (_MX6Q_PAD_EIM_WAIT__WEIM_WEIM_WAIT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_WAIT__WEIM_WEIM_DTACK_B                    (_MX6Q_PAD_EIM_WAIT__WEIM_WEIM_DTACK_B | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_WAIT__GPIO_5_0                             (_MX6Q_PAD_EIM_WAIT__GPIO_5_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_WAIT__TPSMP_HDATA_30                       (_MX6Q_PAD_EIM_WAIT__TPSMP_HDATA_30 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_WAIT__SRC_BT_CFG_25                        (_MX6Q_PAD_EIM_WAIT__SRC_BT_CFG_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_EIM_BCLK__WEIM_WEIM_BCLK                       (_MX6Q_PAD_EIM_BCLK__WEIM_WEIM_BCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_BCLK__IPU1_DI1_PIN16                       (_MX6Q_PAD_EIM_BCLK__IPU1_DI1_PIN16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_BCLK__GPIO_6_31                            (_MX6Q_PAD_EIM_BCLK__GPIO_6_31 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_EIM_BCLK__TPSMP_HDATA_31                       (_MX6Q_PAD_EIM_BCLK__TPSMP_HDATA_31 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DI0_DISP_CLK__IPU1_DI0_DISP_CLK                (_MX6Q_PAD_DI0_DISP_CLK__IPU1_DI0_DISP_CLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_DISP_CLK__IPU2_DI0_DISP_CLK                (_MX6Q_PAD_DI0_DISP_CLK__IPU2_DI0_DISP_CLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_DISP_CLK__MIPI_CORE_DPHY_TEST_OUT_28       (_MX6Q_PAD_DI0_DISP_CLK__MIPI_CORE_DPHY_TEST_OUT_28 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_DISP_CLK__SDMA_DEBUG_CORE_STATE_0          (_MX6Q_PAD_DI0_DISP_CLK__SDMA_DEBUG_CORE_STATE_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_DISP_CLK__GPIO_4_16                        (_MX6Q_PAD_DI0_DISP_CLK__GPIO_4_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_DISP_CLK__MMDC_MMDC_DEBUG_0                (_MX6Q_PAD_DI0_DISP_CLK__MMDC_MMDC_DEBUG_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DI0_PIN15__IPU1_DI0_PIN15                      (_MX6Q_PAD_DI0_PIN15__IPU1_DI0_PIN15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN15__IPU2_DI0_PIN15                      (_MX6Q_PAD_DI0_PIN15__IPU2_DI0_PIN15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN15__AUDMUX_AUD6_TXC                     (_MX6Q_PAD_DI0_PIN15__AUDMUX_AUD6_TXC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN15__MIPI_CORE_DPHY_TEST_OUT_29          (_MX6Q_PAD_DI0_PIN15__MIPI_CORE_DPHY_TEST_OUT_29 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN15__SDMA_DEBUG_CORE_STATE_1             (_MX6Q_PAD_DI0_PIN15__SDMA_DEBUG_CORE_STATE_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN15__GPIO_4_17                           (_MX6Q_PAD_DI0_PIN15__GPIO_4_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN15__MMDC_MMDC_DEBUG_1                   (_MX6Q_PAD_DI0_PIN15__MMDC_MMDC_DEBUG_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DI0_PIN2__IPU1_DI0_PIN2                        (_MX6Q_PAD_DI0_PIN2__IPU1_DI0_PIN2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN2__IPU2_DI0_PIN2                        (_MX6Q_PAD_DI0_PIN2__IPU2_DI0_PIN2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN2__AUDMUX_AUD6_TXD                      (_MX6Q_PAD_DI0_PIN2__AUDMUX_AUD6_TXD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN2__MIPI_CORE_DPHY_TEST_OUT_30           (_MX6Q_PAD_DI0_PIN2__MIPI_CORE_DPHY_TEST_OUT_30 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN2__SDMA_DEBUG_CORE_STATE_2              (_MX6Q_PAD_DI0_PIN2__SDMA_DEBUG_CORE_STATE_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN2__GPIO_4_18                            (_MX6Q_PAD_DI0_PIN2__GPIO_4_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN2__MMDC_MMDC_DEBUG_2                    (_MX6Q_PAD_DI0_PIN2__MMDC_MMDC_DEBUG_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN2__PL301_MX6QPER1_HADDR_9               (_MX6Q_PAD_DI0_PIN2__PL301_MX6QPER1_HADDR_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DI0_PIN3__IPU1_DI0_PIN3                        (_MX6Q_PAD_DI0_PIN3__IPU1_DI0_PIN3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN3__IPU2_DI0_PIN3                        (_MX6Q_PAD_DI0_PIN3__IPU2_DI0_PIN3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN3__AUDMUX_AUD6_TXFS                     (_MX6Q_PAD_DI0_PIN3__AUDMUX_AUD6_TXFS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN3__MIPI_CORE_DPHY_TEST_OUT_31           (_MX6Q_PAD_DI0_PIN3__MIPI_CORE_DPHY_TEST_OUT_31 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN3__SDMA_DEBUG_CORE_STATE_3              (_MX6Q_PAD_DI0_PIN3__SDMA_DEBUG_CORE_STATE_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN3__GPIO_4_19                            (_MX6Q_PAD_DI0_PIN3__GPIO_4_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN3__MMDC_MMDC_DEBUG_3                    (_MX6Q_PAD_DI0_PIN3__MMDC_MMDC_DEBUG_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN3__PL301_MX6QPER1_HADDR_10              (_MX6Q_PAD_DI0_PIN3__PL301_MX6QPER1_HADDR_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DI0_PIN4__IPU1_DI0_PIN4                        (_MX6Q_PAD_DI0_PIN4__IPU1_DI0_PIN4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN4__IPU2_DI0_PIN4                        (_MX6Q_PAD_DI0_PIN4__IPU2_DI0_PIN4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN4__AUDMUX_AUD6_RXD                      (_MX6Q_PAD_DI0_PIN4__AUDMUX_AUD6_RXD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN4__USDHC1_WP                            (_MX6Q_PAD_DI0_PIN4__USDHC1_WP | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN4__SDMA_DEBUG_YIELD                     (_MX6Q_PAD_DI0_PIN4__SDMA_DEBUG_YIELD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN4__GPIO_4_20                            (_MX6Q_PAD_DI0_PIN4__GPIO_4_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN4__MMDC_MMDC_DEBUG_4                    (_MX6Q_PAD_DI0_PIN4__MMDC_MMDC_DEBUG_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DI0_PIN4__PL301_MX6QPER1_HADDR_11              (_MX6Q_PAD_DI0_PIN4__PL301_MX6QPER1_HADDR_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT0__IPU1_DISP0_DAT_0                   (_MX6Q_PAD_DISP0_DAT0__IPU1_DISP0_DAT_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT0__IPU2_DISP0_DAT_0                   (_MX6Q_PAD_DISP0_DAT0__IPU2_DISP0_DAT_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT0__ECSPI3_SCLK                        (_MX6Q_PAD_DISP0_DAT0__ECSPI3_SCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT0__USDHC1_USDHC_DEBUG_0               (_MX6Q_PAD_DISP0_DAT0__USDHC1_USDHC_DEBUG_0 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT0__SDMA_DEBUG_CORE_RUN                (_MX6Q_PAD_DISP0_DAT0__SDMA_DEBUG_CORE_RUN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT0__GPIO_4_21                          (_MX6Q_PAD_DISP0_DAT0__GPIO_4_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT0__MMDC_MMDC_DEBUG_5                  (_MX6Q_PAD_DISP0_DAT0__MMDC_MMDC_DEBUG_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT1__IPU1_DISP0_DAT_1                   (_MX6Q_PAD_DISP0_DAT1__IPU1_DISP0_DAT_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT1__IPU2_DISP0_DAT_1                   (_MX6Q_PAD_DISP0_DAT1__IPU2_DISP0_DAT_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT1__ECSPI3_MOSI                        (_MX6Q_PAD_DISP0_DAT1__ECSPI3_MOSI | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT1__USDHC1_USDHC_DEBUG_1               (_MX6Q_PAD_DISP0_DAT1__USDHC1_USDHC_DEBUG_1 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT1__SDMA_DEBUG_EVENT_CHANNEL_SEL       (_MX6Q_PAD_DISP0_DAT1__SDMA_DEBUG_EVENT_CHANNEL_SEL | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT1__GPIO_4_22                          (_MX6Q_PAD_DISP0_DAT1__GPIO_4_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT1__MMDC_MMDC_DEBUG_6                  (_MX6Q_PAD_DISP0_DAT1__MMDC_MMDC_DEBUG_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT1__PL301_MX6QPER1_HADDR_12            (_MX6Q_PAD_DISP0_DAT1__PL301_MX6QPER1_HADDR_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT2__IPU1_DISP0_DAT_2                   (_MX6Q_PAD_DISP0_DAT2__IPU1_DISP0_DAT_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT2__IPU2_DISP0_DAT_2                   (_MX6Q_PAD_DISP0_DAT2__IPU2_DISP0_DAT_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT2__ECSPI3_MISO                        (_MX6Q_PAD_DISP0_DAT2__ECSPI3_MISO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT2__USDHC1_USDHC_DEBUG_2               (_MX6Q_PAD_DISP0_DAT2__USDHC1_USDHC_DEBUG_2 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT2__SDMA_DEBUG_MODE                    (_MX6Q_PAD_DISP0_DAT2__SDMA_DEBUG_MODE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT2__GPIO_4_23                          (_MX6Q_PAD_DISP0_DAT2__GPIO_4_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT2__MMDC_MMDC_DEBUG_7                  (_MX6Q_PAD_DISP0_DAT2__MMDC_MMDC_DEBUG_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT2__PL301_MX6QPER1_HADDR_13            (_MX6Q_PAD_DISP0_DAT2__PL301_MX6QPER1_HADDR_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT3__IPU1_DISP0_DAT_3                   (_MX6Q_PAD_DISP0_DAT3__IPU1_DISP0_DAT_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT3__IPU2_DISP0_DAT_3                   (_MX6Q_PAD_DISP0_DAT3__IPU2_DISP0_DAT_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT3__ECSPI3_SS0                         (_MX6Q_PAD_DISP0_DAT3__ECSPI3_SS0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT3__USDHC1_USDHC_DEBUG_3               (_MX6Q_PAD_DISP0_DAT3__USDHC1_USDHC_DEBUG_3 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT3__SDMA_DEBUG_BUS_ERROR               (_MX6Q_PAD_DISP0_DAT3__SDMA_DEBUG_BUS_ERROR | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT3__GPIO_4_24                          (_MX6Q_PAD_DISP0_DAT3__GPIO_4_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT3__MMDC_MMDC_DEBUG_8                  (_MX6Q_PAD_DISP0_DAT3__MMDC_MMDC_DEBUG_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT3__PL301_MX6QPER1_HADDR_14            (_MX6Q_PAD_DISP0_DAT3__PL301_MX6QPER1_HADDR_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT4__IPU1_DISP0_DAT_4                   (_MX6Q_PAD_DISP0_DAT4__IPU1_DISP0_DAT_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT4__IPU2_DISP0_DAT_4                   (_MX6Q_PAD_DISP0_DAT4__IPU2_DISP0_DAT_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT4__ECSPI3_SS1                         (_MX6Q_PAD_DISP0_DAT4__ECSPI3_SS1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT4__USDHC1_USDHC_DEBUG_4               (_MX6Q_PAD_DISP0_DAT4__USDHC1_USDHC_DEBUG_4 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT4__SDMA_DEBUG_BUS_RWB                 (_MX6Q_PAD_DISP0_DAT4__SDMA_DEBUG_BUS_RWB | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT4__GPIO_4_25                          (_MX6Q_PAD_DISP0_DAT4__GPIO_4_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT4__MMDC_MMDC_DEBUG_9                  (_MX6Q_PAD_DISP0_DAT4__MMDC_MMDC_DEBUG_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT4__PL301_MX6QPER1_HADDR_15            (_MX6Q_PAD_DISP0_DAT4__PL301_MX6QPER1_HADDR_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT5__IPU1_DISP0_DAT_5                   (_MX6Q_PAD_DISP0_DAT5__IPU1_DISP0_DAT_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT5__IPU2_DISP0_DAT_5                   (_MX6Q_PAD_DISP0_DAT5__IPU2_DISP0_DAT_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT5__ECSPI3_SS2                         (_MX6Q_PAD_DISP0_DAT5__ECSPI3_SS2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT5__AUDMUX_AUD6_RXFS                   (_MX6Q_PAD_DISP0_DAT5__AUDMUX_AUD6_RXFS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT5__SDMA_DEBUG_MATCHED_DMBUS           (_MX6Q_PAD_DISP0_DAT5__SDMA_DEBUG_MATCHED_DMBUS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT5__GPIO_4_26                          (_MX6Q_PAD_DISP0_DAT5__GPIO_4_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT5__MMDC_MMDC_DEBUG_10                 (_MX6Q_PAD_DISP0_DAT5__MMDC_MMDC_DEBUG_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT5__PL301_MX6QPER1_HADDR_16            (_MX6Q_PAD_DISP0_DAT5__PL301_MX6QPER1_HADDR_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT6__IPU1_DISP0_DAT_6                   (_MX6Q_PAD_DISP0_DAT6__IPU1_DISP0_DAT_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT6__IPU2_DISP0_DAT_6                   (_MX6Q_PAD_DISP0_DAT6__IPU2_DISP0_DAT_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT6__ECSPI3_SS3                         (_MX6Q_PAD_DISP0_DAT6__ECSPI3_SS3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT6__AUDMUX_AUD6_RXC                    (_MX6Q_PAD_DISP0_DAT6__AUDMUX_AUD6_RXC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT6__SDMA_DEBUG_RTBUFFER_WRITE          (_MX6Q_PAD_DISP0_DAT6__SDMA_DEBUG_RTBUFFER_WRITE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT6__GPIO_4_27                          (_MX6Q_PAD_DISP0_DAT6__GPIO_4_27 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT6__MMDC_MMDC_DEBUG_11                 (_MX6Q_PAD_DISP0_DAT6__MMDC_MMDC_DEBUG_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT6__PL301_MX6QPER1_HADDR_17            (_MX6Q_PAD_DISP0_DAT6__PL301_MX6QPER1_HADDR_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT7__IPU1_DISP0_DAT_7                   (_MX6Q_PAD_DISP0_DAT7__IPU1_DISP0_DAT_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT7__IPU2_DISP0_DAT_7                   (_MX6Q_PAD_DISP0_DAT7__IPU2_DISP0_DAT_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT7__ECSPI3_RDY                         (_MX6Q_PAD_DISP0_DAT7__ECSPI3_RDY | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT7__USDHC1_USDHC_DEBUG_5               (_MX6Q_PAD_DISP0_DAT7__USDHC1_USDHC_DEBUG_5 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT7__SDMA_DEBUG_EVENT_CHANNEL_0         (_MX6Q_PAD_DISP0_DAT7__SDMA_DEBUG_EVENT_CHANNEL_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT7__GPIO_4_28                          (_MX6Q_PAD_DISP0_DAT7__GPIO_4_28 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT7__MMDC_MMDC_DEBUG_12                 (_MX6Q_PAD_DISP0_DAT7__MMDC_MMDC_DEBUG_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT7__PL301_MX6QPER1_HADDR_18            (_MX6Q_PAD_DISP0_DAT7__PL301_MX6QPER1_HADDR_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT8__IPU1_DISP0_DAT_8                   (_MX6Q_PAD_DISP0_DAT8__IPU1_DISP0_DAT_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT8__IPU2_DISP0_DAT_8                   (_MX6Q_PAD_DISP0_DAT8__IPU2_DISP0_DAT_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT8__PWM1_PWMO                          (_MX6Q_PAD_DISP0_DAT8__PWM1_PWMO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT8__WDOG1_WDOG_B                       (_MX6Q_PAD_DISP0_DAT8__WDOG1_WDOG_B | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT8__SDMA_DEBUG_EVENT_CHANNEL_1         (_MX6Q_PAD_DISP0_DAT8__SDMA_DEBUG_EVENT_CHANNEL_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT8__GPIO_4_29                          (_MX6Q_PAD_DISP0_DAT8__GPIO_4_29 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT8__MMDC_MMDC_DEBUG_13                 (_MX6Q_PAD_DISP0_DAT8__MMDC_MMDC_DEBUG_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT8__PL301_MX6QPER1_HADDR_19            (_MX6Q_PAD_DISP0_DAT8__PL301_MX6QPER1_HADDR_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT9__IPU1_DISP0_DAT_9                   (_MX6Q_PAD_DISP0_DAT9__IPU1_DISP0_DAT_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT9__IPU2_DISP0_DAT_9                   (_MX6Q_PAD_DISP0_DAT9__IPU2_DISP0_DAT_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT9__PWM2_PWMO                          (_MX6Q_PAD_DISP0_DAT9__PWM2_PWMO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT9__WDOG2_WDOG_B                       (_MX6Q_PAD_DISP0_DAT9__WDOG2_WDOG_B | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT9__SDMA_DEBUG_EVENT_CHANNEL_2         (_MX6Q_PAD_DISP0_DAT9__SDMA_DEBUG_EVENT_CHANNEL_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT9__GPIO_4_30                          (_MX6Q_PAD_DISP0_DAT9__GPIO_4_30 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT9__MMDC_MMDC_DEBUG_14                 (_MX6Q_PAD_DISP0_DAT9__MMDC_MMDC_DEBUG_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT9__PL301_MX6QPER1_HADDR_20            (_MX6Q_PAD_DISP0_DAT9__PL301_MX6QPER1_HADDR_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT10__IPU1_DISP0_DAT_10                 (_MX6Q_PAD_DISP0_DAT10__IPU1_DISP0_DAT_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT10__IPU2_DISP0_DAT_10                 (_MX6Q_PAD_DISP0_DAT10__IPU2_DISP0_DAT_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT10__USDHC1_USDHC_DEBUG_6              (_MX6Q_PAD_DISP0_DAT10__USDHC1_USDHC_DEBUG_6 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT10__SDMA_DEBUG_EVENT_CHANNEL_3        (_MX6Q_PAD_DISP0_DAT10__SDMA_DEBUG_EVENT_CHANNEL_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT10__GPIO_4_31                         (_MX6Q_PAD_DISP0_DAT10__GPIO_4_31 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT10__MMDC_MMDC_DEBUG_15                (_MX6Q_PAD_DISP0_DAT10__MMDC_MMDC_DEBUG_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT10__PL301_MX6QPER1_HADDR_21           (_MX6Q_PAD_DISP0_DAT10__PL301_MX6QPER1_HADDR_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT11__IPU1_DISP0_DAT_11                 (_MX6Q_PAD_DISP0_DAT11__IPU1_DISP0_DAT_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT11__IPU2_DISP0_DAT_11                 (_MX6Q_PAD_DISP0_DAT11__IPU2_DISP0_DAT_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT11__USDHC1_USDHC_DEBUG_7              (_MX6Q_PAD_DISP0_DAT11__USDHC1_USDHC_DEBUG_7 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT11__SDMA_DEBUG_EVENT_CHANNEL_4        (_MX6Q_PAD_DISP0_DAT11__SDMA_DEBUG_EVENT_CHANNEL_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT11__GPIO_5_5                          (_MX6Q_PAD_DISP0_DAT11__GPIO_5_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT11__MMDC_MMDC_DEBUG_16                (_MX6Q_PAD_DISP0_DAT11__MMDC_MMDC_DEBUG_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT11__PL301_MX6QPER1_HADDR_22           (_MX6Q_PAD_DISP0_DAT11__PL301_MX6QPER1_HADDR_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT12__IPU1_DISP0_DAT_12                 (_MX6Q_PAD_DISP0_DAT12__IPU1_DISP0_DAT_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT12__IPU2_DISP0_DAT_12                 (_MX6Q_PAD_DISP0_DAT12__IPU2_DISP0_DAT_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT12__RESERVED_RESERVED                 (_MX6Q_PAD_DISP0_DAT12__RESERVED_RESERVED | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT12__SDMA_DEBUG_EVENT_CHANNEL_5        (_MX6Q_PAD_DISP0_DAT12__SDMA_DEBUG_EVENT_CHANNEL_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT12__GPIO_5_6                          (_MX6Q_PAD_DISP0_DAT12__GPIO_5_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT12__MMDC_MMDC_DEBUG_17                (_MX6Q_PAD_DISP0_DAT12__MMDC_MMDC_DEBUG_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT12__PL301_MX6QPER1_HADDR_23           (_MX6Q_PAD_DISP0_DAT12__PL301_MX6QPER1_HADDR_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT13__IPU1_DISP0_DAT_13                 (_MX6Q_PAD_DISP0_DAT13__IPU1_DISP0_DAT_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT13__IPU2_DISP0_DAT_13                 (_MX6Q_PAD_DISP0_DAT13__IPU2_DISP0_DAT_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT13__AUDMUX_AUD5_RXFS                  (_MX6Q_PAD_DISP0_DAT13__AUDMUX_AUD5_RXFS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT13__SDMA_DEBUG_EVT_CHN_LINES_0        (_MX6Q_PAD_DISP0_DAT13__SDMA_DEBUG_EVT_CHN_LINES_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT13__GPIO_5_7                          (_MX6Q_PAD_DISP0_DAT13__GPIO_5_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT13__MMDC_MMDC_DEBUG_18                (_MX6Q_PAD_DISP0_DAT13__MMDC_MMDC_DEBUG_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT13__PL301_MX6QPER1_HADDR_24           (_MX6Q_PAD_DISP0_DAT13__PL301_MX6QPER1_HADDR_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT14__IPU1_DISP0_DAT_14                 (_MX6Q_PAD_DISP0_DAT14__IPU1_DISP0_DAT_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT14__IPU2_DISP0_DAT_14                 (_MX6Q_PAD_DISP0_DAT14__IPU2_DISP0_DAT_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT14__AUDMUX_AUD5_RXC                   (_MX6Q_PAD_DISP0_DAT14__AUDMUX_AUD5_RXC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT14__SDMA_DEBUG_EVT_CHN_LINES_1        (_MX6Q_PAD_DISP0_DAT14__SDMA_DEBUG_EVT_CHN_LINES_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT14__GPIO_5_8                          (_MX6Q_PAD_DISP0_DAT14__GPIO_5_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT14__MMDC_MMDC_DEBUG_19                (_MX6Q_PAD_DISP0_DAT14__MMDC_MMDC_DEBUG_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT15__IPU1_DISP0_DAT_15                 (_MX6Q_PAD_DISP0_DAT15__IPU1_DISP0_DAT_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT15__IPU2_DISP0_DAT_15                 (_MX6Q_PAD_DISP0_DAT15__IPU2_DISP0_DAT_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT15__ECSPI1_SS1                        (_MX6Q_PAD_DISP0_DAT15__ECSPI1_SS1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT15__ECSPI2_SS1                        (_MX6Q_PAD_DISP0_DAT15__ECSPI2_SS1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT15__SDMA_DEBUG_EVT_CHN_LINES_2        (_MX6Q_PAD_DISP0_DAT15__SDMA_DEBUG_EVT_CHN_LINES_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT15__GPIO_5_9                          (_MX6Q_PAD_DISP0_DAT15__GPIO_5_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT15__MMDC_MMDC_DEBUG_20                (_MX6Q_PAD_DISP0_DAT15__MMDC_MMDC_DEBUG_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT15__PL301_MX6QPER1_HADDR_25           (_MX6Q_PAD_DISP0_DAT15__PL301_MX6QPER1_HADDR_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT16__IPU1_DISP0_DAT_16                 (_MX6Q_PAD_DISP0_DAT16__IPU1_DISP0_DAT_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT16__IPU2_DISP0_DAT_16                 (_MX6Q_PAD_DISP0_DAT16__IPU2_DISP0_DAT_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT16__ECSPI2_MOSI                       (_MX6Q_PAD_DISP0_DAT16__ECSPI2_MOSI | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT16__AUDMUX_AUD5_TXC                   (_MX6Q_PAD_DISP0_DAT16__AUDMUX_AUD5_TXC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT16__SDMA_SDMA_EXT_EVENT_0             (_MX6Q_PAD_DISP0_DAT16__SDMA_SDMA_EXT_EVENT_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT16__GPIO_5_10                         (_MX6Q_PAD_DISP0_DAT16__GPIO_5_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT16__MMDC_MMDC_DEBUG_21                (_MX6Q_PAD_DISP0_DAT16__MMDC_MMDC_DEBUG_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT16__PL301_MX6QPER1_HADDR_26           (_MX6Q_PAD_DISP0_DAT16__PL301_MX6QPER1_HADDR_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT17__IPU1_DISP0_DAT_17                 (_MX6Q_PAD_DISP0_DAT17__IPU1_DISP0_DAT_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT17__IPU2_DISP0_DAT_17                 (_MX6Q_PAD_DISP0_DAT17__IPU2_DISP0_DAT_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT17__ECSPI2_MISO                       (_MX6Q_PAD_DISP0_DAT17__ECSPI2_MISO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT17__AUDMUX_AUD5_TXD                   (_MX6Q_PAD_DISP0_DAT17__AUDMUX_AUD5_TXD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT17__SDMA_SDMA_EXT_EVENT_1             (_MX6Q_PAD_DISP0_DAT17__SDMA_SDMA_EXT_EVENT_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT17__GPIO_5_11                         (_MX6Q_PAD_DISP0_DAT17__GPIO_5_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT17__MMDC_MMDC_DEBUG_22                (_MX6Q_PAD_DISP0_DAT17__MMDC_MMDC_DEBUG_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT17__PL301_MX6QPER1_HADDR_27           (_MX6Q_PAD_DISP0_DAT17__PL301_MX6QPER1_HADDR_27 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT18__IPU1_DISP0_DAT_18                 (_MX6Q_PAD_DISP0_DAT18__IPU1_DISP0_DAT_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT18__IPU2_DISP0_DAT_18                 (_MX6Q_PAD_DISP0_DAT18__IPU2_DISP0_DAT_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT18__ECSPI2_SS0                        (_MX6Q_PAD_DISP0_DAT18__ECSPI2_SS0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT18__AUDMUX_AUD5_TXFS                  (_MX6Q_PAD_DISP0_DAT18__AUDMUX_AUD5_TXFS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT18__AUDMUX_AUD4_RXFS                  (_MX6Q_PAD_DISP0_DAT18__AUDMUX_AUD4_RXFS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT18__GPIO_5_12                         (_MX6Q_PAD_DISP0_DAT18__GPIO_5_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT18__MMDC_MMDC_DEBUG_23                (_MX6Q_PAD_DISP0_DAT18__MMDC_MMDC_DEBUG_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT18__WEIM_WEIM_CS_2                    (_MX6Q_PAD_DISP0_DAT18__WEIM_WEIM_CS_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT19__IPU1_DISP0_DAT_19                 (_MX6Q_PAD_DISP0_DAT19__IPU1_DISP0_DAT_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT19__IPU2_DISP0_DAT_19                 (_MX6Q_PAD_DISP0_DAT19__IPU2_DISP0_DAT_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT19__ECSPI2_SCLK                       (_MX6Q_PAD_DISP0_DAT19__ECSPI2_SCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT19__AUDMUX_AUD5_RXD                   (_MX6Q_PAD_DISP0_DAT19__AUDMUX_AUD5_RXD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT19__AUDMUX_AUD4_RXC                   (_MX6Q_PAD_DISP0_DAT19__AUDMUX_AUD4_RXC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT19__GPIO_5_13                         (_MX6Q_PAD_DISP0_DAT19__GPIO_5_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT19__MMDC_MMDC_DEBUG_24                (_MX6Q_PAD_DISP0_DAT19__MMDC_MMDC_DEBUG_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT19__WEIM_WEIM_CS_3                    (_MX6Q_PAD_DISP0_DAT19__WEIM_WEIM_CS_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT20__IPU1_DISP0_DAT_20                 (_MX6Q_PAD_DISP0_DAT20__IPU1_DISP0_DAT_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT20__IPU2_DISP0_DAT_20                 (_MX6Q_PAD_DISP0_DAT20__IPU2_DISP0_DAT_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT20__ECSPI1_SCLK                       (_MX6Q_PAD_DISP0_DAT20__ECSPI1_SCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT20__AUDMUX_AUD4_TXC                   (_MX6Q_PAD_DISP0_DAT20__AUDMUX_AUD4_TXC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT20__SDMA_DEBUG_EVT_CHN_LINES_7        (_MX6Q_PAD_DISP0_DAT20__SDMA_DEBUG_EVT_CHN_LINES_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT20__GPIO_5_14                         (_MX6Q_PAD_DISP0_DAT20__GPIO_5_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT20__MMDC_MMDC_DEBUG_25                (_MX6Q_PAD_DISP0_DAT20__MMDC_MMDC_DEBUG_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT20__PL301_MX6QPER1_HADDR_28           (_MX6Q_PAD_DISP0_DAT20__PL301_MX6QPER1_HADDR_28 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT21__IPU1_DISP0_DAT_21                 (_MX6Q_PAD_DISP0_DAT21__IPU1_DISP0_DAT_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT21__IPU2_DISP0_DAT_21                 (_MX6Q_PAD_DISP0_DAT21__IPU2_DISP0_DAT_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT21__ECSPI1_MOSI                       (_MX6Q_PAD_DISP0_DAT21__ECSPI1_MOSI | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT21__AUDMUX_AUD4_TXD                   (_MX6Q_PAD_DISP0_DAT21__AUDMUX_AUD4_TXD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT21__SDMA_DEBUG_BUS_DEVICE_0           (_MX6Q_PAD_DISP0_DAT21__SDMA_DEBUG_BUS_DEVICE_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT21__GPIO_5_15                         (_MX6Q_PAD_DISP0_DAT21__GPIO_5_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT21__MMDC_MMDC_DEBUG_26                (_MX6Q_PAD_DISP0_DAT21__MMDC_MMDC_DEBUG_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT21__PL301_MX6QPER1_HADDR_29           (_MX6Q_PAD_DISP0_DAT21__PL301_MX6QPER1_HADDR_29 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT22__IPU1_DISP0_DAT_22                 (_MX6Q_PAD_DISP0_DAT22__IPU1_DISP0_DAT_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT22__IPU2_DISP0_DAT_22                 (_MX6Q_PAD_DISP0_DAT22__IPU2_DISP0_DAT_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT22__ECSPI1_MISO                       (_MX6Q_PAD_DISP0_DAT22__ECSPI1_MISO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT22__AUDMUX_AUD4_TXFS                  (_MX6Q_PAD_DISP0_DAT22__AUDMUX_AUD4_TXFS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT22__SDMA_DEBUG_BUS_DEVICE_1           (_MX6Q_PAD_DISP0_DAT22__SDMA_DEBUG_BUS_DEVICE_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT22__GPIO_5_16                         (_MX6Q_PAD_DISP0_DAT22__GPIO_5_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT22__MMDC_MMDC_DEBUG_27                (_MX6Q_PAD_DISP0_DAT22__MMDC_MMDC_DEBUG_27 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT22__PL301_MX6QPER1_HADDR_30           (_MX6Q_PAD_DISP0_DAT22__PL301_MX6QPER1_HADDR_30 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DISP0_DAT23__IPU1_DISP0_DAT_23                 (_MX6Q_PAD_DISP0_DAT23__IPU1_DISP0_DAT_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT23__IPU2_DISP0_DAT_23                 (_MX6Q_PAD_DISP0_DAT23__IPU2_DISP0_DAT_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT23__ECSPI1_SS0                        (_MX6Q_PAD_DISP0_DAT23__ECSPI1_SS0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT23__AUDMUX_AUD4_RXD                   (_MX6Q_PAD_DISP0_DAT23__AUDMUX_AUD4_RXD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT23__SDMA_DEBUG_BUS_DEVICE_2           (_MX6Q_PAD_DISP0_DAT23__SDMA_DEBUG_BUS_DEVICE_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT23__GPIO_5_17                         (_MX6Q_PAD_DISP0_DAT23__GPIO_5_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT23__MMDC_MMDC_DEBUG_28                (_MX6Q_PAD_DISP0_DAT23__MMDC_MMDC_DEBUG_28 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_DISP0_DAT23__PL301_MX6QPER1_HADDR_31           (_MX6Q_PAD_DISP0_DAT23__PL301_MX6QPER1_HADDR_31 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_ENET_MDIO__RESERVED_RESERVED                   (_MX6Q_PAD_ENET_MDIO__RESERVED_RESERVED | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_MDIO__ENET_MDIO                           (_MX6Q_PAD_ENET_MDIO__ENET_MDIO | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_MDIO__ESAI1_SCKR                          (_MX6Q_PAD_ENET_MDIO__ESAI1_SCKR | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_MDIO__SDMA_DEBUG_BUS_DEVICE_3             (_MX6Q_PAD_ENET_MDIO__SDMA_DEBUG_BUS_DEVICE_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_MDIO__ENET_1588_EVENT1_OUT                (_MX6Q_PAD_ENET_MDIO__ENET_1588_EVENT1_OUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_MDIO__GPIO_1_22                           (_MX6Q_PAD_ENET_MDIO__GPIO_1_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_MDIO__SPDIF_PLOCK                         (_MX6Q_PAD_ENET_MDIO__SPDIF_PLOCK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_ENET_REF_CLK__RESERVED_RESERVED                (_MX6Q_PAD_ENET_REF_CLK__RESERVED_RESERVED | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_REF_CLK__ENET_TX_CLK                      (_MX6Q_PAD_ENET_REF_CLK__ENET_TX_CLK | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_REF_CLK__ESAI1_FSR                        (_MX6Q_PAD_ENET_REF_CLK__ESAI1_FSR | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_REF_CLK__SDMA_DEBUG_BUS_DEVICE_4          (_MX6Q_PAD_ENET_REF_CLK__SDMA_DEBUG_BUS_DEVICE_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_REF_CLK__GPIO_1_23                        (_MX6Q_PAD_ENET_REF_CLK__GPIO_1_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_REF_CLK__SPDIF_SRCLK                      (_MX6Q_PAD_ENET_REF_CLK__SPDIF_SRCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_REF_CLK__ANATOP_USBPHY1_TSTO_RX_SQUELCH   (_MX6Q_PAD_ENET_REF_CLK__ANATOP_USBPHY1_TSTO_RX_SQUELCH | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_ENET_RX_ER__ENET_RX_ER                         (_MX6Q_PAD_ENET_RX_ER__ENET_RX_ER | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RX_ER__ESAI1_HCKR                         (_MX6Q_PAD_ENET_RX_ER__ESAI1_HCKR | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RX_ER__SPDIF_IN1                          (_MX6Q_PAD_ENET_RX_ER__SPDIF_IN1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RX_ER__ENET_1588_EVENT2_OUT               (_MX6Q_PAD_ENET_RX_ER__ENET_1588_EVENT2_OUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RX_ER__GPIO_1_24                          (_MX6Q_PAD_ENET_RX_ER__GPIO_1_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RX_ER__PHY_TDI                            (_MX6Q_PAD_ENET_RX_ER__PHY_TDI | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RX_ER__ANATOP_USBPHY1_TSTO_RX_HS_RXD      (_MX6Q_PAD_ENET_RX_ER__ANATOP_USBPHY1_TSTO_RX_HS_RXD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_ENET_CRS_DV__RESERVED_RESERVED                 (_MX6Q_PAD_ENET_CRS_DV__RESERVED_RESERVED | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_CRS_DV__ENET_RX_EN                        (_MX6Q_PAD_ENET_CRS_DV__ENET_RX_EN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_CRS_DV__ESAI1_SCKT                        (_MX6Q_PAD_ENET_CRS_DV__ESAI1_SCKT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_CRS_DV__SPDIF_SPDIF_EXTCLK                (_MX6Q_PAD_ENET_CRS_DV__SPDIF_SPDIF_EXTCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_CRS_DV__GPIO_1_25                         (_MX6Q_PAD_ENET_CRS_DV__GPIO_1_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_CRS_DV__PHY_TDO                           (_MX6Q_PAD_ENET_CRS_DV__PHY_TDO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_CRS_DV__ANATOP_USBPHY1_TSTO_RX_FS_RXD     (_MX6Q_PAD_ENET_CRS_DV__ANATOP_USBPHY1_TSTO_RX_FS_RXD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_ENET_RXD1__MLB_MLBSIG                          (_MX6Q_PAD_ENET_RXD1__MLB_MLBSIG | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RXD1__ENET_RDATA_1                        (_MX6Q_PAD_ENET_RXD1__ENET_RDATA_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RXD1__ESAI1_FST                           (_MX6Q_PAD_ENET_RXD1__ESAI1_FST | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RXD1__ENET_1588_EVENT3_OUT                (_MX6Q_PAD_ENET_RXD1__ENET_1588_EVENT3_OUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RXD1__GPIO_1_26                           (_MX6Q_PAD_ENET_RXD1__GPIO_1_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RXD1__PHY_TCK                             (_MX6Q_PAD_ENET_RXD1__PHY_TCK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RXD1__ANATOP_USBPHY1_TSTO_RX_DISCON_DET   (_MX6Q_PAD_ENET_RXD1__ANATOP_USBPHY1_TSTO_RX_DISCON_DET | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_ENET_RXD0__OSC32K_32K_OUT                      (_MX6Q_PAD_ENET_RXD0__OSC32K_32K_OUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RXD0__ENET_RDATA_0                        (_MX6Q_PAD_ENET_RXD0__ENET_RDATA_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RXD0__ESAI1_HCKT                          (_MX6Q_PAD_ENET_RXD0__ESAI1_HCKT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RXD0__SPDIF_OUT1                          (_MX6Q_PAD_ENET_RXD0__SPDIF_OUT1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RXD0__GPIO_1_27                           (_MX6Q_PAD_ENET_RXD0__GPIO_1_27 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RXD0__PHY_TMS                             (_MX6Q_PAD_ENET_RXD0__PHY_TMS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_RXD0__ANATOP_USBPHY1_TSTO_PLL_CLK20DIV    (_MX6Q_PAD_ENET_RXD0__ANATOP_USBPHY1_TSTO_PLL_CLK20DIV | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_ENET_TX_EN__RESERVED_RESERVED                  (_MX6Q_PAD_ENET_TX_EN__RESERVED_RESERVED | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_TX_EN__ENET_TX_EN                         (_MX6Q_PAD_ENET_TX_EN__ENET_TX_EN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_TX_EN__ESAI1_TX3_RX2                      (_MX6Q_PAD_ENET_TX_EN__ESAI1_TX3_RX2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_TX_EN__GPIO_1_28                          (_MX6Q_PAD_ENET_TX_EN__GPIO_1_28 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_TX_EN__SATA_PHY_TDI                       (_MX6Q_PAD_ENET_TX_EN__SATA_PHY_TDI | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_TX_EN__ANATOP_USBPHY2_TSTO_RX_SQUELCH     (_MX6Q_PAD_ENET_TX_EN__ANATOP_USBPHY2_TSTO_RX_SQUELCH | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_ENET_TXD1__MLB_MLBCLK                          (_MX6Q_PAD_ENET_TXD1__MLB_MLBCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_TXD1__ENET_TDATA_1                        (_MX6Q_PAD_ENET_TXD1__ENET_TDATA_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_TXD1__ESAI1_TX2_RX3                       (_MX6Q_PAD_ENET_TXD1__ESAI1_TX2_RX3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_TXD1__ENET_1588_EVENT0_IN                 (_MX6Q_PAD_ENET_TXD1__ENET_1588_EVENT0_IN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_TXD1__GPIO_1_29                           (_MX6Q_PAD_ENET_TXD1__GPIO_1_29 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_TXD1__SATA_PHY_TDO                        (_MX6Q_PAD_ENET_TXD1__SATA_PHY_TDO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_TXD1__ANATOP_USBPHY2_TSTO_RX_HS_RXD       (_MX6Q_PAD_ENET_TXD1__ANATOP_USBPHY2_TSTO_RX_HS_RXD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_ENET_TXD0__RESERVED_RESERVED                   (_MX6Q_PAD_ENET_TXD0__RESERVED_RESERVED | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_TXD0__ENET_TDATA_0                        (_MX6Q_PAD_ENET_TXD0__ENET_TDATA_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_TXD0__ESAI1_TX4_RX1                       (_MX6Q_PAD_ENET_TXD0__ESAI1_TX4_RX1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_TXD0__GPIO_1_30                           (_MX6Q_PAD_ENET_TXD0__GPIO_1_30 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_TXD0__SATA_PHY_TCK                        (_MX6Q_PAD_ENET_TXD0__SATA_PHY_TCK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_TXD0__ANATOP_USBPHY2_TSTO_RX_FS_RXD       (_MX6Q_PAD_ENET_TXD0__ANATOP_USBPHY2_TSTO_RX_FS_RXD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_ENET_MDC__MLB_MLBDAT                           (_MX6Q_PAD_ENET_MDC__MLB_MLBDAT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_MDC__ENET_MDC                             (_MX6Q_PAD_ENET_MDC__ENET_MDC | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_MDC__ESAI1_TX5_RX0                        (_MX6Q_PAD_ENET_MDC__ESAI1_TX5_RX0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_MDC__ENET_1588_EVENT1_IN                  (_MX6Q_PAD_ENET_MDC__ENET_1588_EVENT1_IN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_MDC__GPIO_1_31                            (_MX6Q_PAD_ENET_MDC__GPIO_1_31 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_MDC__SATA_PHY_TMS                         (_MX6Q_PAD_ENET_MDC__SATA_PHY_TMS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_ENET_MDC__ANATOP_USBPHY2_TSTO_RX_DISCON_DET    (_MX6Q_PAD_ENET_MDC__ANATOP_USBPHY2_TSTO_RX_DISCON_DET | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D40__MMDC_DRAM_D_40                       (_MX6Q_PAD_DRAM_D40__MMDC_DRAM_D_40 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D41__MMDC_DRAM_D_41                       (_MX6Q_PAD_DRAM_D41__MMDC_DRAM_D_41 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D42__MMDC_DRAM_D_42                       (_MX6Q_PAD_DRAM_D42__MMDC_DRAM_D_42 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D43__MMDC_DRAM_D_43                       (_MX6Q_PAD_DRAM_D43__MMDC_DRAM_D_43 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D44__MMDC_DRAM_D_44                       (_MX6Q_PAD_DRAM_D44__MMDC_DRAM_D_44 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D45__MMDC_DRAM_D_45                       (_MX6Q_PAD_DRAM_D45__MMDC_DRAM_D_45 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D46__MMDC_DRAM_D_46                       (_MX6Q_PAD_DRAM_D46__MMDC_DRAM_D_46 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D47__MMDC_DRAM_D_47                       (_MX6Q_PAD_DRAM_D47__MMDC_DRAM_D_47 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDQS5__MMDC_DRAM_SDQS_5                   (_MX6Q_PAD_DRAM_SDQS5__MMDC_DRAM_SDQS_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_DQM5__MMDC_DRAM_DQM_5                     (_MX6Q_PAD_DRAM_DQM5__MMDC_DRAM_DQM_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D32__MMDC_DRAM_D_32                       (_MX6Q_PAD_DRAM_D32__MMDC_DRAM_D_32 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D33__MMDC_DRAM_D_33                       (_MX6Q_PAD_DRAM_D33__MMDC_DRAM_D_33 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D34__MMDC_DRAM_D_34                       (_MX6Q_PAD_DRAM_D34__MMDC_DRAM_D_34 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D35__MMDC_DRAM_D_35                       (_MX6Q_PAD_DRAM_D35__MMDC_DRAM_D_35 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D36__MMDC_DRAM_D_36                       (_MX6Q_PAD_DRAM_D36__MMDC_DRAM_D_36 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D37__MMDC_DRAM_D_37                       (_MX6Q_PAD_DRAM_D37__MMDC_DRAM_D_37 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D38__MMDC_DRAM_D_38                       (_MX6Q_PAD_DRAM_D38__MMDC_DRAM_D_38 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D39__MMDC_DRAM_D_39                       (_MX6Q_PAD_DRAM_D39__MMDC_DRAM_D_39 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_DQM4__MMDC_DRAM_DQM_4                     (_MX6Q_PAD_DRAM_DQM4__MMDC_DRAM_DQM_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDQS4__MMDC_DRAM_SDQS_4                   (_MX6Q_PAD_DRAM_SDQS4__MMDC_DRAM_SDQS_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D24__MMDC_DRAM_D_24                       (_MX6Q_PAD_DRAM_D24__MMDC_DRAM_D_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D25__MMDC_DRAM_D_25                       (_MX6Q_PAD_DRAM_D25__MMDC_DRAM_D_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D26__MMDC_DRAM_D_26                       (_MX6Q_PAD_DRAM_D26__MMDC_DRAM_D_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D27__MMDC_DRAM_D_27                       (_MX6Q_PAD_DRAM_D27__MMDC_DRAM_D_27 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D28__MMDC_DRAM_D_28                       (_MX6Q_PAD_DRAM_D28__MMDC_DRAM_D_28 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D29__MMDC_DRAM_D_29                       (_MX6Q_PAD_DRAM_D29__MMDC_DRAM_D_29 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDQS3__MMDC_DRAM_SDQS_3                   (_MX6Q_PAD_DRAM_SDQS3__MMDC_DRAM_SDQS_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D30__MMDC_DRAM_D_30                       (_MX6Q_PAD_DRAM_D30__MMDC_DRAM_D_30 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D31__MMDC_DRAM_D_31                       (_MX6Q_PAD_DRAM_D31__MMDC_DRAM_D_31 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_DQM3__MMDC_DRAM_DQM_3                     (_MX6Q_PAD_DRAM_DQM3__MMDC_DRAM_DQM_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D16__MMDC_DRAM_D_16                       (_MX6Q_PAD_DRAM_D16__MMDC_DRAM_D_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D17__MMDC_DRAM_D_17                       (_MX6Q_PAD_DRAM_D17__MMDC_DRAM_D_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D18__MMDC_DRAM_D_18                       (_MX6Q_PAD_DRAM_D18__MMDC_DRAM_D_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D19__MMDC_DRAM_D_19                       (_MX6Q_PAD_DRAM_D19__MMDC_DRAM_D_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D20__MMDC_DRAM_D_20                       (_MX6Q_PAD_DRAM_D20__MMDC_DRAM_D_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D21__MMDC_DRAM_D_21                       (_MX6Q_PAD_DRAM_D21__MMDC_DRAM_D_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D22__MMDC_DRAM_D_22                       (_MX6Q_PAD_DRAM_D22__MMDC_DRAM_D_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDQS2__MMDC_DRAM_SDQS_2                   (_MX6Q_PAD_DRAM_SDQS2__MMDC_DRAM_SDQS_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D23__MMDC_DRAM_D_23                       (_MX6Q_PAD_DRAM_D23__MMDC_DRAM_D_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_DQM2__MMDC_DRAM_DQM_2                     (_MX6Q_PAD_DRAM_DQM2__MMDC_DRAM_DQM_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_A0__MMDC_DRAM_A_0                         (_MX6Q_PAD_DRAM_A0__MMDC_DRAM_A_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_A1__MMDC_DRAM_A_1                         (_MX6Q_PAD_DRAM_A1__MMDC_DRAM_A_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_A2__MMDC_DRAM_A_2                         (_MX6Q_PAD_DRAM_A2__MMDC_DRAM_A_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_A3__MMDC_DRAM_A_3                         (_MX6Q_PAD_DRAM_A3__MMDC_DRAM_A_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_A4__MMDC_DRAM_A_4                         (_MX6Q_PAD_DRAM_A4__MMDC_DRAM_A_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_A5__MMDC_DRAM_A_5                         (_MX6Q_PAD_DRAM_A5__MMDC_DRAM_A_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_A6__MMDC_DRAM_A_6                         (_MX6Q_PAD_DRAM_A6__MMDC_DRAM_A_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_A7__MMDC_DRAM_A_7                         (_MX6Q_PAD_DRAM_A7__MMDC_DRAM_A_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_A8__MMDC_DRAM_A_8                         (_MX6Q_PAD_DRAM_A8__MMDC_DRAM_A_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_A9__MMDC_DRAM_A_9                         (_MX6Q_PAD_DRAM_A9__MMDC_DRAM_A_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_A10__MMDC_DRAM_A_10                       (_MX6Q_PAD_DRAM_A10__MMDC_DRAM_A_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_A11__MMDC_DRAM_A_11                       (_MX6Q_PAD_DRAM_A11__MMDC_DRAM_A_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_A12__MMDC_DRAM_A_12                       (_MX6Q_PAD_DRAM_A12__MMDC_DRAM_A_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_A13__MMDC_DRAM_A_13                       (_MX6Q_PAD_DRAM_A13__MMDC_DRAM_A_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_A14__MMDC_DRAM_A_14                       (_MX6Q_PAD_DRAM_A14__MMDC_DRAM_A_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_A15__MMDC_DRAM_A_15                       (_MX6Q_PAD_DRAM_A15__MMDC_DRAM_A_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_CAS__MMDC_DRAM_CAS                        (_MX6Q_PAD_DRAM_CAS__MMDC_DRAM_CAS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_CS0__MMDC_DRAM_CS_0                       (_MX6Q_PAD_DRAM_CS0__MMDC_DRAM_CS_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_CS1__MMDC_DRAM_CS_1                       (_MX6Q_PAD_DRAM_CS1__MMDC_DRAM_CS_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_RAS__MMDC_DRAM_RAS                        (_MX6Q_PAD_DRAM_RAS__MMDC_DRAM_RAS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_RESET__MMDC_DRAM_RESET                    (_MX6Q_PAD_DRAM_RESET__MMDC_DRAM_RESET | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDBA0__MMDC_DRAM_SDBA_0                   (_MX6Q_PAD_DRAM_SDBA0__MMDC_DRAM_SDBA_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDBA1__MMDC_DRAM_SDBA_1                   (_MX6Q_PAD_DRAM_SDBA1__MMDC_DRAM_SDBA_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDCLK_0__MMDC_DRAM_SDCLK0                 (_MX6Q_PAD_DRAM_SDCLK_0__MMDC_DRAM_SDCLK0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDBA2__MMDC_DRAM_SDBA_2                   (_MX6Q_PAD_DRAM_SDBA2__MMDC_DRAM_SDBA_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDCKE0__MMDC_DRAM_SDCKE_0                 (_MX6Q_PAD_DRAM_SDCKE0__MMDC_DRAM_SDCKE_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDCLK_1__MMDC_DRAM_SDCLK1                 (_MX6Q_PAD_DRAM_SDCLK_1__MMDC_DRAM_SDCLK1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDCKE1__MMDC_DRAM_SDCKE_1                 (_MX6Q_PAD_DRAM_SDCKE1__MMDC_DRAM_SDCKE_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDODT0__MMDC_DRAM_ODT_0                   (_MX6Q_PAD_DRAM_SDODT0__MMDC_DRAM_ODT_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDODT1__MMDC_DRAM_ODT_1                   (_MX6Q_PAD_DRAM_SDODT1__MMDC_DRAM_ODT_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDWE__MMDC_DRAM_SDWE                      (_MX6Q_PAD_DRAM_SDWE__MMDC_DRAM_SDWE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D0__MMDC_DRAM_D_0                         (_MX6Q_PAD_DRAM_D0__MMDC_DRAM_D_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D1__MMDC_DRAM_D_1                         (_MX6Q_PAD_DRAM_D1__MMDC_DRAM_D_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D2__MMDC_DRAM_D_2                         (_MX6Q_PAD_DRAM_D2__MMDC_DRAM_D_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D3__MMDC_DRAM_D_3                         (_MX6Q_PAD_DRAM_D3__MMDC_DRAM_D_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D4__MMDC_DRAM_D_4                         (_MX6Q_PAD_DRAM_D4__MMDC_DRAM_D_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D5__MMDC_DRAM_D_5                         (_MX6Q_PAD_DRAM_D5__MMDC_DRAM_D_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDQS0__MMDC_DRAM_SDQS_0                   (_MX6Q_PAD_DRAM_SDQS0__MMDC_DRAM_SDQS_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D6__MMDC_DRAM_D_6                         (_MX6Q_PAD_DRAM_D6__MMDC_DRAM_D_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D7__MMDC_DRAM_D_7                         (_MX6Q_PAD_DRAM_D7__MMDC_DRAM_D_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_DQM0__MMDC_DRAM_DQM_0                     (_MX6Q_PAD_DRAM_DQM0__MMDC_DRAM_DQM_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D8__MMDC_DRAM_D_8                         (_MX6Q_PAD_DRAM_D8__MMDC_DRAM_D_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D9__MMDC_DRAM_D_9                         (_MX6Q_PAD_DRAM_D9__MMDC_DRAM_D_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D10__MMDC_DRAM_D_10                       (_MX6Q_PAD_DRAM_D10__MMDC_DRAM_D_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D11__MMDC_DRAM_D_11                       (_MX6Q_PAD_DRAM_D11__MMDC_DRAM_D_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D12__MMDC_DRAM_D_12                       (_MX6Q_PAD_DRAM_D12__MMDC_DRAM_D_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D13__MMDC_DRAM_D_13                       (_MX6Q_PAD_DRAM_D13__MMDC_DRAM_D_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D14__MMDC_DRAM_D_14                       (_MX6Q_PAD_DRAM_D14__MMDC_DRAM_D_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDQS1__MMDC_DRAM_SDQS_1                   (_MX6Q_PAD_DRAM_SDQS1__MMDC_DRAM_SDQS_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D15__MMDC_DRAM_D_15                       (_MX6Q_PAD_DRAM_D15__MMDC_DRAM_D_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_DQM1__MMDC_DRAM_DQM_1                     (_MX6Q_PAD_DRAM_DQM1__MMDC_DRAM_DQM_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D48__MMDC_DRAM_D_48                       (_MX6Q_PAD_DRAM_D48__MMDC_DRAM_D_48 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D49__MMDC_DRAM_D_49                       (_MX6Q_PAD_DRAM_D49__MMDC_DRAM_D_49 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D50__MMDC_DRAM_D_50                       (_MX6Q_PAD_DRAM_D50__MMDC_DRAM_D_50 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D51__MMDC_DRAM_D_51                       (_MX6Q_PAD_DRAM_D51__MMDC_DRAM_D_51 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D52__MMDC_DRAM_D_52                       (_MX6Q_PAD_DRAM_D52__MMDC_DRAM_D_52 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D53__MMDC_DRAM_D_53                       (_MX6Q_PAD_DRAM_D53__MMDC_DRAM_D_53 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D54__MMDC_DRAM_D_54                       (_MX6Q_PAD_DRAM_D54__MMDC_DRAM_D_54 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D55__MMDC_DRAM_D_55                       (_MX6Q_PAD_DRAM_D55__MMDC_DRAM_D_55 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDQS6__MMDC_DRAM_SDQS_6                   (_MX6Q_PAD_DRAM_SDQS6__MMDC_DRAM_SDQS_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_DQM6__MMDC_DRAM_DQM_6                     (_MX6Q_PAD_DRAM_DQM6__MMDC_DRAM_DQM_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D56__MMDC_DRAM_D_56                       (_MX6Q_PAD_DRAM_D56__MMDC_DRAM_D_56 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_SDQS7__MMDC_DRAM_SDQS_7                   (_MX6Q_PAD_DRAM_SDQS7__MMDC_DRAM_SDQS_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D57__MMDC_DRAM_D_57                       (_MX6Q_PAD_DRAM_D57__MMDC_DRAM_D_57 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D58__MMDC_DRAM_D_58                       (_MX6Q_PAD_DRAM_D58__MMDC_DRAM_D_58 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D59__MMDC_DRAM_D_59                       (_MX6Q_PAD_DRAM_D59__MMDC_DRAM_D_59 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D60__MMDC_DRAM_D_60                       (_MX6Q_PAD_DRAM_D60__MMDC_DRAM_D_60 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_DQM7__MMDC_DRAM_DQM_7                     (_MX6Q_PAD_DRAM_DQM7__MMDC_DRAM_DQM_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D61__MMDC_DRAM_D_61                       (_MX6Q_PAD_DRAM_D61__MMDC_DRAM_D_61 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D62__MMDC_DRAM_D_62                       (_MX6Q_PAD_DRAM_D62__MMDC_DRAM_D_62 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_DRAM_D63__MMDC_DRAM_D_63                       (_MX6Q_PAD_DRAM_D63__MMDC_DRAM_D_63 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_KEY_COL0__ECSPI1_SCLK                          (_MX6Q_PAD_KEY_COL0__ECSPI1_SCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL0__ENET_RDATA_3                         (_MX6Q_PAD_KEY_COL0__ENET_RDATA_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL0__AUDMUX_AUD5_TXC                      (_MX6Q_PAD_KEY_COL0__AUDMUX_AUD5_TXC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL0__KPP_COL_0                            (_MX6Q_PAD_KEY_COL0__KPP_COL_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL0__UART4_TXD                            (_MX6Q_PAD_KEY_COL0__UART4_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL0__UART4_RXD                            (_MX6Q_PAD_KEY_COL0__UART4_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL0__GPIO_4_6                             (_MX6Q_PAD_KEY_COL0__GPIO_4_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL0__DCIC1_DCIC_OUT                       (_MX6Q_PAD_KEY_COL0__DCIC1_DCIC_OUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL0__SRC_ANY_PU_RST                       (_MX6Q_PAD_KEY_COL0__SRC_ANY_PU_RST | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_KEY_ROW0__ECSPI1_MOSI                          (_MX6Q_PAD_KEY_ROW0__ECSPI1_MOSI | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW0__ENET_TDATA_3                         (_MX6Q_PAD_KEY_ROW0__ENET_TDATA_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW0__AUDMUX_AUD5_TXD                      (_MX6Q_PAD_KEY_ROW0__AUDMUX_AUD5_TXD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW0__KPP_ROW_0                            (_MX6Q_PAD_KEY_ROW0__KPP_ROW_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW0__UART4_TXD                            (_MX6Q_PAD_KEY_ROW0__UART4_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW0__UART4_RXD                            (_MX6Q_PAD_KEY_ROW0__UART4_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW0__GPIO_4_7                             (_MX6Q_PAD_KEY_ROW0__GPIO_4_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW0__DCIC2_DCIC_OUT                       (_MX6Q_PAD_KEY_ROW0__DCIC2_DCIC_OUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW0__PL301_MX6QPER1_HADDR_0               (_MX6Q_PAD_KEY_ROW0__PL301_MX6QPER1_HADDR_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_KEY_COL1__ECSPI1_MISO                          (_MX6Q_PAD_KEY_COL1__ECSPI1_MISO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL1__ENET_MDIO                            (_MX6Q_PAD_KEY_COL1__ENET_MDIO | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL1__AUDMUX_AUD5_TXFS                     (_MX6Q_PAD_KEY_COL1__AUDMUX_AUD5_TXFS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL1__KPP_COL_1                            (_MX6Q_PAD_KEY_COL1__KPP_COL_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL1__UART5_TXD                            (_MX6Q_PAD_KEY_COL1__UART5_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL1__UART5_RXD                            (_MX6Q_PAD_KEY_COL1__UART5_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL1__GPIO_4_8                             (_MX6Q_PAD_KEY_COL1__GPIO_4_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL1__USDHC1_VSELECT                       (_MX6Q_PAD_KEY_COL1__USDHC1_VSELECT | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL1__PL301_MX6QPER1_HADDR_1               (_MX6Q_PAD_KEY_COL1__PL301_MX6QPER1_HADDR_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_KEY_ROW1__ECSPI1_SS0                           (_MX6Q_PAD_KEY_ROW1__ECSPI1_SS0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW1__ENET_COL                             (_MX6Q_PAD_KEY_ROW1__ENET_COL | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW1__AUDMUX_AUD5_RXD                      (_MX6Q_PAD_KEY_ROW1__AUDMUX_AUD5_RXD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW1__KPP_ROW_1                            (_MX6Q_PAD_KEY_ROW1__KPP_ROW_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW1__UART5_TXD                            (_MX6Q_PAD_KEY_ROW1__UART5_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW1__UART5_RXD                            (_MX6Q_PAD_KEY_ROW1__UART5_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW1__GPIO_4_9                             (_MX6Q_PAD_KEY_ROW1__GPIO_4_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW1__USDHC2_VSELECT                       (_MX6Q_PAD_KEY_ROW1__USDHC2_VSELECT | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW1__PL301_MX6QPER1_HADDR_2               (_MX6Q_PAD_KEY_ROW1__PL301_MX6QPER1_HADDR_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_KEY_COL2__ECSPI1_SS1                           (_MX6Q_PAD_KEY_COL2__ECSPI1_SS1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL2__ENET_RDATA_2                         (_MX6Q_PAD_KEY_COL2__ENET_RDATA_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL2__CAN1_TXCAN                           (_MX6Q_PAD_KEY_COL2__CAN1_TXCAN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL2__KPP_COL_2                            (_MX6Q_PAD_KEY_COL2__KPP_COL_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL2__ENET_MDC                             (_MX6Q_PAD_KEY_COL2__ENET_MDC | MUX_PAD_CTRL(MX6Q_ENET_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL2__GPIO_4_10                            (_MX6Q_PAD_KEY_COL2__GPIO_4_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL2__USBOH3_H1USB_PWRCTL_WAKEUP           (_MX6Q_PAD_KEY_COL2__USBOH3_H1USB_PWRCTL_WAKEUP | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL2__PL301_MX6QPER1_HADDR_3      (_MX6Q_PAD_KEY_COL2__PL301_MX6QPER1_HADDR_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_KEY_ROW2__ECSPI1_SS2                           (_MX6Q_PAD_KEY_ROW2__ECSPI1_SS2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW2__ENET_TDATA_2                         (_MX6Q_PAD_KEY_ROW2__ENET_TDATA_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW2__CAN1_RXCAN                           (_MX6Q_PAD_KEY_ROW2__CAN1_RXCAN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW2__KPP_ROW_2                            (_MX6Q_PAD_KEY_ROW2__KPP_ROW_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW2__USDHC2_VSELECT                       (_MX6Q_PAD_KEY_ROW2__USDHC2_VSELECT | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW2__GPIO_4_11                            (_MX6Q_PAD_KEY_ROW2__GPIO_4_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW2__HDMI_TX_CEC_LINE                     (_MX6Q_PAD_KEY_ROW2__HDMI_TX_CEC_LINE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW2__PL301_MX6QPER1_HADDR_4               (_MX6Q_PAD_KEY_ROW2__PL301_MX6QPER1_HADDR_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_KEY_COL3__ECSPI1_SS3                           (_MX6Q_PAD_KEY_COL3__ECSPI1_SS3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL3__ENET_CRS                             (_MX6Q_PAD_KEY_COL3__ENET_CRS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL3__HDMI_TX_DDC_SCL                      (_MX6Q_PAD_KEY_COL3__HDMI_TX_DDC_SCL | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL3__KPP_COL_3                            (_MX6Q_PAD_KEY_COL3__KPP_COL_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL3__I2C2_SCL                             (_MX6Q_PAD_KEY_COL3__I2C2_SCL | MUX_PAD_CTRL(MX6Q_I2C_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL3__GPIO_4_12                            (_MX6Q_PAD_KEY_COL3__GPIO_4_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL3__SPDIF_IN1                            (_MX6Q_PAD_KEY_COL3__SPDIF_IN1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL3__PL301_MX6QPER1_HADDR_5               (_MX6Q_PAD_KEY_COL3__PL301_MX6QPER1_HADDR_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_KEY_ROW3__OSC32K_32K_OUT                       (_MX6Q_PAD_KEY_ROW3__OSC32K_32K_OUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW3__ASRC_ASRC_EXT_CLK                    (_MX6Q_PAD_KEY_ROW3__ASRC_ASRC_EXT_CLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW3__HDMI_TX_DDC_SDA                      (_MX6Q_PAD_KEY_ROW3__HDMI_TX_DDC_SDA | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW3__KPP_ROW_3                            (_MX6Q_PAD_KEY_ROW3__KPP_ROW_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW3__I2C2_SDA                             (_MX6Q_PAD_KEY_ROW3__I2C2_SDA | MUX_PAD_CTRL(MX6Q_I2C_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW3__GPIO_4_13                            (_MX6Q_PAD_KEY_ROW3__GPIO_4_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW3__USDHC1_VSELECT                       (_MX6Q_PAD_KEY_ROW3__USDHC1_VSELECT | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW3__PL301_MX6QPER1_HADDR_6      (_MX6Q_PAD_KEY_ROW3__PL301_MX6QPER1_HADDR_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_KEY_COL4__CAN2_TXCAN                           (_MX6Q_PAD_KEY_COL4__CAN2_TXCAN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL4__IPU1_SISG_4                          (_MX6Q_PAD_KEY_COL4__IPU1_SISG_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL4__USBOH3_USBOTG_OC                     (_MX6Q_PAD_KEY_COL4__USBOH3_USBOTG_OC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL4__KPP_COL_4                            (_MX6Q_PAD_KEY_COL4__KPP_COL_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL4__UART5_CTS                            (_MX6Q_PAD_KEY_COL4__UART5_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL4__UART5_RTS                            (_MX6Q_PAD_KEY_COL4__UART5_RTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL4__GPIO_4_14                            (_MX6Q_PAD_KEY_COL4__GPIO_4_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL4__MMDC_MMDC_DEBUG_49                   (_MX6Q_PAD_KEY_COL4__MMDC_MMDC_DEBUG_49 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_COL4__PL301_MX6QPER1_HADDR_7      (_MX6Q_PAD_KEY_COL4__PL301_MX6QPER1_HADDR_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_KEY_ROW4__CAN2_RXCAN                           (_MX6Q_PAD_KEY_ROW4__CAN2_RXCAN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW4__IPU1_SISG_5                          (_MX6Q_PAD_KEY_ROW4__IPU1_SISG_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW4__USBOH3_USBOTG_PWR                    (_MX6Q_PAD_KEY_ROW4__USBOH3_USBOTG_PWR | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW4__KPP_ROW_4                            (_MX6Q_PAD_KEY_ROW4__KPP_ROW_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW4__UART5_CTS                            (_MX6Q_PAD_KEY_ROW4__UART5_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW4__GPIO_4_15                            (_MX6Q_PAD_KEY_ROW4__GPIO_4_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW4__MMDC_MMDC_DEBUG_50                   (_MX6Q_PAD_KEY_ROW4__MMDC_MMDC_DEBUG_50 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_KEY_ROW4__PL301_MX6QPER1_HADDR_8      (_MX6Q_PAD_KEY_ROW4__PL301_MX6QPER1_HADDR_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_GPIO_0__CCM_CLKO                               (_MX6Q_PAD_GPIO_0__CCM_CLKO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_0__KPP_COL_5                              (_MX6Q_PAD_GPIO_0__KPP_COL_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_0__ASRC_ASRC_EXT_CLK                      (_MX6Q_PAD_GPIO_0__ASRC_ASRC_EXT_CLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_0__EPIT1_EPITO                            (_MX6Q_PAD_GPIO_0__EPIT1_EPITO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_0__GPIO_1_0                               (_MX6Q_PAD_GPIO_0__GPIO_1_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_0__USBOH3_USBH1_PWR                       (_MX6Q_PAD_GPIO_0__USBOH3_USBH1_PWR | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_0__SNVS_HP_WRAPPER_SNVS_VIO_5             (_MX6Q_PAD_GPIO_0__SNVS_HP_WRAPPER_SNVS_VIO_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_GPIO_1__ESAI1_SCKR                             (_MX6Q_PAD_GPIO_1__ESAI1_SCKR | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_1__WDOG2_WDOG_B                           (_MX6Q_PAD_GPIO_1__WDOG2_WDOG_B | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_1__KPP_ROW_5                              (_MX6Q_PAD_GPIO_1__KPP_ROW_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_1__PWM2_PWMO                              (_MX6Q_PAD_GPIO_1__PWM2_PWMO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_1__GPIO_1_1                               (_MX6Q_PAD_GPIO_1__GPIO_1_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_1__USDHC1_CD                              (_MX6Q_PAD_GPIO_1__USDHC1_CD | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_1__SRC_TESTER_ACK                         (_MX6Q_PAD_GPIO_1__SRC_TESTER_ACK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_GPIO_9__ESAI1_FSR                              (_MX6Q_PAD_GPIO_9__ESAI1_FSR | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_9__WDOG1_WDOG_B                           (_MX6Q_PAD_GPIO_9__WDOG1_WDOG_B | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_9__KPP_COL_6                              (_MX6Q_PAD_GPIO_9__KPP_COL_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_9__CCM_REF_EN_B                           (_MX6Q_PAD_GPIO_9__CCM_REF_EN_B | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_9__PWM1_PWMO                              (_MX6Q_PAD_GPIO_9__PWM1_PWMO | MUX_PAD_CTRL(MX6Q_PWM_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_9__GPIO_1_9                               (_MX6Q_PAD_GPIO_9__GPIO_1_9 | MUX_PAD_CTRL(MX6Q_HIGH_DRV))
-+#define  MX6Q_PAD_GPIO_9__USDHC1_WP                              (_MX6Q_PAD_GPIO_9__USDHC1_WP | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_9__SRC_EARLY_RST                          (_MX6Q_PAD_GPIO_9__SRC_EARLY_RST | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_GPIO_3__ESAI1_HCKR                             (_MX6Q_PAD_GPIO_3__ESAI1_HCKR | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_3__OBSERVE_MUX_OBSRV_INT_OUT0             (_MX6Q_PAD_GPIO_3__OBSERVE_MUX_OBSRV_INT_OUT0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_3__I2C3_SCL                               (_MX6Q_PAD_GPIO_3__I2C3_SCL | MUX_PAD_CTRL(MX6Q_I2C_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_3__ANATOP_ANATOP_24M_OUT                  (_MX6Q_PAD_GPIO_3__ANATOP_ANATOP_24M_OUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_3__CCM_CLKO2                              (_MX6Q_PAD_GPIO_3__CCM_CLKO2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_3__GPIO_1_3                               (_MX6Q_PAD_GPIO_3__GPIO_1_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_3__USBOH3_USBH1_OC                        (_MX6Q_PAD_GPIO_3__USBOH3_USBH1_OC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_3__MLB_MLBCLK                             (_MX6Q_PAD_GPIO_3__MLB_MLBCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_GPIO_6__ESAI1_SCKT                             (_MX6Q_PAD_GPIO_6__ESAI1_SCKT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_6__OBSERVE_MUX_OBSRV_INT_OUT1             (_MX6Q_PAD_GPIO_6__OBSERVE_MUX_OBSRV_INT_OUT1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_6__I2C3_SDA                               (_MX6Q_PAD_GPIO_6__I2C3_SDA | MUX_PAD_CTRL(MX6Q_I2C_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_6__CCM_CCM_OUT_0                          (_MX6Q_PAD_GPIO_6__CCM_CCM_OUT_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_6__CSU_CSU_INT_DEB                        (_MX6Q_PAD_GPIO_6__CSU_CSU_INT_DEB | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_6__GPIO_1_6                               (_MX6Q_PAD_GPIO_6__GPIO_1_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_6__USDHC2_LCTL                            (_MX6Q_PAD_GPIO_6__USDHC2_LCTL | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_6__MLB_MLBSIG                             (_MX6Q_PAD_GPIO_6__MLB_MLBSIG | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_GPIO_2__ESAI1_FST                              (_MX6Q_PAD_GPIO_2__ESAI1_FST | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_2__OBSERVE_MUX_OBSRV_INT_OUT2             (_MX6Q_PAD_GPIO_2__OBSERVE_MUX_OBSRV_INT_OUT2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_2__KPP_ROW_6                              (_MX6Q_PAD_GPIO_2__KPP_ROW_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_2__CCM_CCM_OUT_1                          (_MX6Q_PAD_GPIO_2__CCM_CCM_OUT_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_2__CSU_CSU_ALARM_AUT_0                    (_MX6Q_PAD_GPIO_2__CSU_CSU_ALARM_AUT_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_2__GPIO_1_2                               (_MX6Q_PAD_GPIO_2__GPIO_1_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_2__USDHC2_WP                              (_MX6Q_PAD_GPIO_2__USDHC2_WP | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_2__MLB_MLBDAT                             (_MX6Q_PAD_GPIO_2__MLB_MLBDAT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_GPIO_4__ESAI1_HCKT                             (_MX6Q_PAD_GPIO_4__ESAI1_HCKT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_4__OBSERVE_MUX_OBSRV_INT_OUT3             (_MX6Q_PAD_GPIO_4__OBSERVE_MUX_OBSRV_INT_OUT3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_4__KPP_COL_7                              (_MX6Q_PAD_GPIO_4__KPP_COL_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_4__CCM_CCM_OUT_2                          (_MX6Q_PAD_GPIO_4__CCM_CCM_OUT_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_4__CSU_CSU_ALARM_AUT_1                    (_MX6Q_PAD_GPIO_4__CSU_CSU_ALARM_AUT_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_4__GPIO_1_4                               (_MX6Q_PAD_GPIO_4__GPIO_1_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_4__USDHC2_CD                              (_MX6Q_PAD_GPIO_4__USDHC2_CD | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_4__OCOTP_CTRL_WRAPPER_FUSE_LATCHED        (_MX6Q_PAD_GPIO_4__OCOTP_CTRL_WRAPPER_FUSE_LATCHED | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_GPIO_5__ESAI1_TX2_RX3                          (_MX6Q_PAD_GPIO_5__ESAI1_TX2_RX3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_5__OBSERVE_MUX_OBSRV_INT_OUT4             (_MX6Q_PAD_GPIO_5__OBSERVE_MUX_OBSRV_INT_OUT4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_5__KPP_ROW_7                              (_MX6Q_PAD_GPIO_5__KPP_ROW_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_5__CCM_CLKO                               (_MX6Q_PAD_GPIO_5__CCM_CLKO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_5__CSU_CSU_ALARM_AUT_2                    (_MX6Q_PAD_GPIO_5__CSU_CSU_ALARM_AUT_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_5__GPIO_1_5                               (_MX6Q_PAD_GPIO_5__GPIO_1_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_5__I2C3_SCL                               (_MX6Q_PAD_GPIO_5__I2C3_SCL | MUX_PAD_CTRL(MX6Q_I2C_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_5__CHEETAH_EVENTI                         (_MX6Q_PAD_GPIO_5__CHEETAH_EVENTI | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_GPIO_7__ESAI1_TX4_RX1                          (_MX6Q_PAD_GPIO_7__ESAI1_TX4_RX1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_7__ECSPI5_RDY                             (_MX6Q_PAD_GPIO_7__ECSPI5_RDY | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_7__EPIT1_EPITO                            (_MX6Q_PAD_GPIO_7__EPIT1_EPITO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_7__CAN1_TXCAN                             (_MX6Q_PAD_GPIO_7__CAN1_TXCAN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_7__UART2_TXD                              (_MX6Q_PAD_GPIO_7__UART2_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_7__UART2_RXD                              (_MX6Q_PAD_GPIO_7__UART2_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_7__GPIO_1_7                               (_MX6Q_PAD_GPIO_7__GPIO_1_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_7__SPDIF_PLOCK                            (_MX6Q_PAD_GPIO_7__SPDIF_PLOCK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_7__USBOH3_OTGUSB_HOST_MODE                (_MX6Q_PAD_GPIO_7__USBOH3_OTGUSB_HOST_MODE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_GPIO_8__ESAI1_TX5_RX0                          (_MX6Q_PAD_GPIO_8__ESAI1_TX5_RX0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_8__ANATOP_ANATOP_32K_OUT                  (_MX6Q_PAD_GPIO_8__ANATOP_ANATOP_32K_OUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_8__EPIT2_EPITO                            (_MX6Q_PAD_GPIO_8__EPIT2_EPITO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_8__CAN1_RXCAN                             (_MX6Q_PAD_GPIO_8__CAN1_RXCAN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_8__UART2_TXD                              (_MX6Q_PAD_GPIO_8__UART2_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_8__UART2_RXD                              (_MX6Q_PAD_GPIO_8__UART2_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_8__GPIO_1_8                               (_MX6Q_PAD_GPIO_8__GPIO_1_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_8__SPDIF_SRCLK                            (_MX6Q_PAD_GPIO_8__SPDIF_SRCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_8__USBOH3_OTGUSB_PWRCTL_WAKEUP            (_MX6Q_PAD_GPIO_8__USBOH3_OTGUSB_PWRCTL_WAKEUP | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_GPIO_16__ESAI1_TX3_RX2                         (_MX6Q_PAD_GPIO_16__ESAI1_TX3_RX2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_16__ENET_1588_EVENT2_IN                   (_MX6Q_PAD_GPIO_16__ENET_1588_EVENT2_IN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_16__ENET_ANATOP_ETHERNET_REF_OUT          (_MX6Q_PAD_GPIO_16__ENET_ANATOP_ETHERNET_REF_OUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_16__USDHC1_LCTL                           (_MX6Q_PAD_GPIO_16__USDHC1_LCTL | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_16__SPDIF_IN1                             (_MX6Q_PAD_GPIO_16__SPDIF_IN1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_16__GPIO_7_11                             (_MX6Q_PAD_GPIO_16__GPIO_7_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_16__I2C3_SDA                              (_MX6Q_PAD_GPIO_16__I2C3_SDA | MUX_PAD_CTRL(MX6Q_I2C_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_16__SJC_DE_B                              (_MX6Q_PAD_GPIO_16__SJC_DE_B | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_GPIO_17__ESAI1_TX0                             (_MX6Q_PAD_GPIO_17__ESAI1_TX0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_17__ENET_1588_EVENT3_IN                   (_MX6Q_PAD_GPIO_17__ENET_1588_EVENT3_IN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_17__CCM_PMIC_RDY                          (_MX6Q_PAD_GPIO_17__CCM_PMIC_RDY | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_17__SDMA_SDMA_EXT_EVENT_0                 (_MX6Q_PAD_GPIO_17__SDMA_SDMA_EXT_EVENT_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_17__SPDIF_OUT1                            (_MX6Q_PAD_GPIO_17__SPDIF_OUT1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_17__GPIO_7_12                             (_MX6Q_PAD_GPIO_17__GPIO_7_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_17__SJC_JTAG_ACT                          (_MX6Q_PAD_GPIO_17__SJC_JTAG_ACT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_GPIO_18__ESAI1_TX1                             (_MX6Q_PAD_GPIO_18__ESAI1_TX1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_18__ENET_RX_CLK                           (_MX6Q_PAD_GPIO_18__ENET_RX_CLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_18__USDHC3_VSELECT                        (_MX6Q_PAD_GPIO_18__USDHC3_VSELECT | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_18__SDMA_SDMA_EXT_EVENT_1                 (_MX6Q_PAD_GPIO_18__SDMA_SDMA_EXT_EVENT_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_18__ASRC_ASRC_EXT_CLK                     (_MX6Q_PAD_GPIO_18__ASRC_ASRC_EXT_CLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_18__GPIO_7_13                             (_MX6Q_PAD_GPIO_18__GPIO_7_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_18__SNVS_HP_WRAPPER_SNVS_VIO_5_CTL        (_MX6Q_PAD_GPIO_18__SNVS_HP_WRAPPER_SNVS_VIO_5_CTL | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_18__SRC_SYSTEM_RST                        (_MX6Q_PAD_GPIO_18__SRC_SYSTEM_RST | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_GPIO_19__KPP_COL_5                             (_MX6Q_PAD_GPIO_19__KPP_COL_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_19__ENET_1588_EVENT0_OUT                  (_MX6Q_PAD_GPIO_19__ENET_1588_EVENT0_OUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_19__SPDIF_OUT1                            (_MX6Q_PAD_GPIO_19__SPDIF_OUT1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_19__CCM_CLKO                              (_MX6Q_PAD_GPIO_19__CCM_CLKO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_19__ECSPI1_RDY                            (_MX6Q_PAD_GPIO_19__ECSPI1_RDY | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_19__GPIO_4_5                              (_MX6Q_PAD_GPIO_19__GPIO_4_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_19__ENET_TX_ER                            (_MX6Q_PAD_GPIO_19__ENET_TX_ER | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_GPIO_19__SRC_INT_BOOT                          (_MX6Q_PAD_GPIO_19__SRC_INT_BOOT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_PIXCLK__IPU1_CSI0_PIXCLK                  (_MX6Q_PAD_CSI0_PIXCLK__IPU1_CSI0_PIXCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_PIXCLK__PCIE_CTRL_DIAG_STATUS_BUS_MUX_12  (_MX6Q_PAD_CSI0_PIXCLK__PCIE_CTRL_DIAG_STATUS_BUS_MUX_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_PIXCLK__SDMA_DEBUG_PC_0                   (_MX6Q_PAD_CSI0_PIXCLK__SDMA_DEBUG_PC_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_PIXCLK__GPIO_5_18                         (_MX6Q_PAD_CSI0_PIXCLK__GPIO_5_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_PIXCLK__MMDC_MMDC_DEBUG_29                (_MX6Q_PAD_CSI0_PIXCLK__MMDC_MMDC_DEBUG_29 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_PIXCLK__CHEETAH_EVENTO                    (_MX6Q_PAD_CSI0_PIXCLK__CHEETAH_EVENTO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_MCLK__IPU1_CSI0_HSYNC                     (_MX6Q_PAD_CSI0_MCLK__IPU1_CSI0_HSYNC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_MCLK__PCIE_CTRL_DIAG_STATUS_BUS_MUX_13    (_MX6Q_PAD_CSI0_MCLK__PCIE_CTRL_DIAG_STATUS_BUS_MUX_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_MCLK__CCM_CLKO                            (_MX6Q_PAD_CSI0_MCLK__CCM_CLKO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_MCLK__SDMA_DEBUG_PC_1                     (_MX6Q_PAD_CSI0_MCLK__SDMA_DEBUG_PC_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_MCLK__GPIO_5_19                           (_MX6Q_PAD_CSI0_MCLK__GPIO_5_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_MCLK__MMDC_MMDC_DEBUG_30                  (_MX6Q_PAD_CSI0_MCLK__MMDC_MMDC_DEBUG_30 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_MCLK__CHEETAH_TRCTL                       (_MX6Q_PAD_CSI0_MCLK__CHEETAH_TRCTL | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DATA_EN__IPU1_CSI0_DATA_EN                (_MX6Q_PAD_CSI0_DATA_EN__IPU1_CSI0_DATA_EN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DATA_EN__WEIM_WEIM_D_0                    (_MX6Q_PAD_CSI0_DATA_EN__WEIM_WEIM_D_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DATA_EN__PCIE_CTRL_DIAG_STATUS_BUS_MUX_14 (_MX6Q_PAD_CSI0_DATA_EN__PCIE_CTRL_DIAG_STATUS_BUS_MUX_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DATA_EN__SDMA_DEBUG_PC_2                  (_MX6Q_PAD_CSI0_DATA_EN__SDMA_DEBUG_PC_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DATA_EN__GPIO_5_20                        (_MX6Q_PAD_CSI0_DATA_EN__GPIO_5_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DATA_EN__MMDC_MMDC_DEBUG_31               (_MX6Q_PAD_CSI0_DATA_EN__MMDC_MMDC_DEBUG_31 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DATA_EN__CHEETAH_TRCLK                    (_MX6Q_PAD_CSI0_DATA_EN__CHEETAH_TRCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_VSYNC__IPU1_CSI0_VSYNC                    (_MX6Q_PAD_CSI0_VSYNC__IPU1_CSI0_VSYNC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_VSYNC__WEIM_WEIM_D_1                      (_MX6Q_PAD_CSI0_VSYNC__WEIM_WEIM_D_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_VSYNC__PCIE_CTRL_DIAG_STATUS_BUS_MUX_15   (_MX6Q_PAD_CSI0_VSYNC__PCIE_CTRL_DIAG_STATUS_BUS_MUX_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_VSYNC__SDMA_DEBUG_PC_3                    (_MX6Q_PAD_CSI0_VSYNC__SDMA_DEBUG_PC_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_VSYNC__GPIO_5_21                          (_MX6Q_PAD_CSI0_VSYNC__GPIO_5_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_VSYNC__MMDC_MMDC_DEBUG_32                 (_MX6Q_PAD_CSI0_VSYNC__MMDC_MMDC_DEBUG_32 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_VSYNC__CHEETAH_TRACE_0                    (_MX6Q_PAD_CSI0_VSYNC__CHEETAH_TRACE_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DAT4__IPU1_CSI0_D_4                       (_MX6Q_PAD_CSI0_DAT4__IPU1_CSI0_D_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT4__WEIM_WEIM_D_2                       (_MX6Q_PAD_CSI0_DAT4__WEIM_WEIM_D_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT4__ECSPI1_SCLK                         (_MX6Q_PAD_CSI0_DAT4__ECSPI1_SCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT4__KPP_COL_5                           (_MX6Q_PAD_CSI0_DAT4__KPP_COL_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT4__AUDMUX_AUD3_TXC                     (_MX6Q_PAD_CSI0_DAT4__AUDMUX_AUD3_TXC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT4__GPIO_5_22                           (_MX6Q_PAD_CSI0_DAT4__GPIO_5_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT4__MMDC_MMDC_DEBUG_43                  (_MX6Q_PAD_CSI0_DAT4__MMDC_MMDC_DEBUG_43 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT4__CHEETAH_TRACE_1                     (_MX6Q_PAD_CSI0_DAT4__CHEETAH_TRACE_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DAT5__IPU1_CSI0_D_5                       (_MX6Q_PAD_CSI0_DAT5__IPU1_CSI0_D_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT5__WEIM_WEIM_D_3                       (_MX6Q_PAD_CSI0_DAT5__WEIM_WEIM_D_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT5__ECSPI1_MOSI                         (_MX6Q_PAD_CSI0_DAT5__ECSPI1_MOSI | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT5__KPP_ROW_5                           (_MX6Q_PAD_CSI0_DAT5__KPP_ROW_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT5__AUDMUX_AUD3_TXD                     (_MX6Q_PAD_CSI0_DAT5__AUDMUX_AUD3_TXD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT5__GPIO_5_23                           (_MX6Q_PAD_CSI0_DAT5__GPIO_5_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT5__MMDC_MMDC_DEBUG_44                  (_MX6Q_PAD_CSI0_DAT5__MMDC_MMDC_DEBUG_44 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT5__CHEETAH_TRACE_2                     (_MX6Q_PAD_CSI0_DAT5__CHEETAH_TRACE_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DAT6__IPU1_CSI0_D_6                       (_MX6Q_PAD_CSI0_DAT6__IPU1_CSI0_D_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT6__WEIM_WEIM_D_4                       (_MX6Q_PAD_CSI0_DAT6__WEIM_WEIM_D_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT6__ECSPI1_MISO                         (_MX6Q_PAD_CSI0_DAT6__ECSPI1_MISO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT6__KPP_COL_6                           (_MX6Q_PAD_CSI0_DAT6__KPP_COL_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT6__AUDMUX_AUD3_TXFS                    (_MX6Q_PAD_CSI0_DAT6__AUDMUX_AUD3_TXFS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT6__GPIO_5_24                           (_MX6Q_PAD_CSI0_DAT6__GPIO_5_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT6__MMDC_MMDC_DEBUG_45                  (_MX6Q_PAD_CSI0_DAT6__MMDC_MMDC_DEBUG_45 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT6__CHEETAH_TRACE_3                     (_MX6Q_PAD_CSI0_DAT6__CHEETAH_TRACE_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DAT7__IPU1_CSI0_D_7                       (_MX6Q_PAD_CSI0_DAT7__IPU1_CSI0_D_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT7__WEIM_WEIM_D_5                       (_MX6Q_PAD_CSI0_DAT7__WEIM_WEIM_D_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT7__ECSPI1_SS0                          (_MX6Q_PAD_CSI0_DAT7__ECSPI1_SS0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT7__KPP_ROW_6                           (_MX6Q_PAD_CSI0_DAT7__KPP_ROW_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT7__AUDMUX_AUD3_RXD                     (_MX6Q_PAD_CSI0_DAT7__AUDMUX_AUD3_RXD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT7__GPIO_5_25                           (_MX6Q_PAD_CSI0_DAT7__GPIO_5_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT7__MMDC_MMDC_DEBUG_46                  (_MX6Q_PAD_CSI0_DAT7__MMDC_MMDC_DEBUG_46 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT7__CHEETAH_TRACE_4                     (_MX6Q_PAD_CSI0_DAT7__CHEETAH_TRACE_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DAT8__IPU1_CSI0_D_8                       (_MX6Q_PAD_CSI0_DAT8__IPU1_CSI0_D_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT8__WEIM_WEIM_D_6                       (_MX6Q_PAD_CSI0_DAT8__WEIM_WEIM_D_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT8__ECSPI2_SCLK                         (_MX6Q_PAD_CSI0_DAT8__ECSPI2_SCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT8__KPP_COL_7                           (_MX6Q_PAD_CSI0_DAT8__KPP_COL_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT8__I2C1_SDA                            (_MX6Q_PAD_CSI0_DAT8__I2C1_SDA | MUX_PAD_CTRL(MX6Q_I2C_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT8__GPIO_5_26                           (_MX6Q_PAD_CSI0_DAT8__GPIO_5_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT8__MMDC_MMDC_DEBUG_47                  (_MX6Q_PAD_CSI0_DAT8__MMDC_MMDC_DEBUG_47 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT8__CHEETAH_TRACE_5                     (_MX6Q_PAD_CSI0_DAT8__CHEETAH_TRACE_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DAT9__IPU1_CSI0_D_9                       (_MX6Q_PAD_CSI0_DAT9__IPU1_CSI0_D_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT9__WEIM_WEIM_D_7                       (_MX6Q_PAD_CSI0_DAT9__WEIM_WEIM_D_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT9__ECSPI2_MOSI                         (_MX6Q_PAD_CSI0_DAT9__ECSPI2_MOSI | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT9__KPP_ROW_7                           (_MX6Q_PAD_CSI0_DAT9__KPP_ROW_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT9__I2C1_SCL                            (_MX6Q_PAD_CSI0_DAT9__I2C1_SCL | MUX_PAD_CTRL(MX6Q_I2C_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT9__GPIO_5_27                           (_MX6Q_PAD_CSI0_DAT9__GPIO_5_27 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT9__MMDC_MMDC_DEBUG_48                  (_MX6Q_PAD_CSI0_DAT9__MMDC_MMDC_DEBUG_48 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT9__CHEETAH_TRACE_6                     (_MX6Q_PAD_CSI0_DAT9__CHEETAH_TRACE_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DAT10__IPU1_CSI0_D_10                     (_MX6Q_PAD_CSI0_DAT10__IPU1_CSI0_D_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT10__AUDMUX_AUD3_RXC                    (_MX6Q_PAD_CSI0_DAT10__AUDMUX_AUD3_RXC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT10__ECSPI2_MISO                        (_MX6Q_PAD_CSI0_DAT10__ECSPI2_MISO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT10__UART1_TXD                          (_MX6Q_PAD_CSI0_DAT10__UART1_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT10__UART1_RXD                          (_MX6Q_PAD_CSI0_DAT10__UART1_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT10__SDMA_DEBUG_PC_4                    (_MX6Q_PAD_CSI0_DAT10__SDMA_DEBUG_PC_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT10__GPIO_5_28                          (_MX6Q_PAD_CSI0_DAT10__GPIO_5_28 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT10__MMDC_MMDC_DEBUG_33                 (_MX6Q_PAD_CSI0_DAT10__MMDC_MMDC_DEBUG_33 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT10__CHEETAH_TRACE_7                    (_MX6Q_PAD_CSI0_DAT10__CHEETAH_TRACE_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DAT11__IPU1_CSI0_D_11                     (_MX6Q_PAD_CSI0_DAT11__IPU1_CSI0_D_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT11__AUDMUX_AUD3_RXFS                   (_MX6Q_PAD_CSI0_DAT11__AUDMUX_AUD3_RXFS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT11__ECSPI2_SS0                         (_MX6Q_PAD_CSI0_DAT11__ECSPI2_SS0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT11__UART1_TXD                          (_MX6Q_PAD_CSI0_DAT11__UART1_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT11__UART1_RXD                          (_MX6Q_PAD_CSI0_DAT11__UART1_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT11__SDMA_DEBUG_PC_5                    (_MX6Q_PAD_CSI0_DAT11__SDMA_DEBUG_PC_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT11__GPIO_5_29                          (_MX6Q_PAD_CSI0_DAT11__GPIO_5_29 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT11__MMDC_MMDC_DEBUG_34                 (_MX6Q_PAD_CSI0_DAT11__MMDC_MMDC_DEBUG_34 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT11__CHEETAH_TRACE_8                    (_MX6Q_PAD_CSI0_DAT11__CHEETAH_TRACE_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DAT12__IPU1_CSI0_D_12                     (_MX6Q_PAD_CSI0_DAT12__IPU1_CSI0_D_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT12__WEIM_WEIM_D_8                      (_MX6Q_PAD_CSI0_DAT12__WEIM_WEIM_D_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT12__PCIE_CTRL_DIAG_STATUS_BUS_MUX_16   (_MX6Q_PAD_CSI0_DAT12__PCIE_CTRL_DIAG_STATUS_BUS_MUX_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT12__UART4_TXD                          (_MX6Q_PAD_CSI0_DAT12__UART4_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT12__UART4_RXD                          (_MX6Q_PAD_CSI0_DAT12__UART4_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT12__SDMA_DEBUG_PC_6                    (_MX6Q_PAD_CSI0_DAT12__SDMA_DEBUG_PC_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT12__GPIO_5_30                          (_MX6Q_PAD_CSI0_DAT12__GPIO_5_30 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT12__MMDC_MMDC_DEBUG_35                 (_MX6Q_PAD_CSI0_DAT12__MMDC_MMDC_DEBUG_35 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT12__CHEETAH_TRACE_9                    (_MX6Q_PAD_CSI0_DAT12__CHEETAH_TRACE_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DAT13__IPU1_CSI0_D_13                     (_MX6Q_PAD_CSI0_DAT13__IPU1_CSI0_D_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT13__WEIM_WEIM_D_9                      (_MX6Q_PAD_CSI0_DAT13__WEIM_WEIM_D_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT13__PCIE_CTRL_DIAG_STATUS_BUS_MUX_17   (_MX6Q_PAD_CSI0_DAT13__PCIE_CTRL_DIAG_STATUS_BUS_MUX_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT13__UART4_TXD                          (_MX6Q_PAD_CSI0_DAT13__UART4_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT13__UART4_RXD                          (_MX6Q_PAD_CSI0_DAT13__UART4_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT13__SDMA_DEBUG_PC_7                    (_MX6Q_PAD_CSI0_DAT13__SDMA_DEBUG_PC_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT13__GPIO_5_31                          (_MX6Q_PAD_CSI0_DAT13__GPIO_5_31 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT13__MMDC_MMDC_DEBUG_36                 (_MX6Q_PAD_CSI0_DAT13__MMDC_MMDC_DEBUG_36 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT13__CHEETAH_TRACE_10                   (_MX6Q_PAD_CSI0_DAT13__CHEETAH_TRACE_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DAT14__IPU1_CSI0_D_14                     (_MX6Q_PAD_CSI0_DAT14__IPU1_CSI0_D_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT14__WEIM_WEIM_D_10                     (_MX6Q_PAD_CSI0_DAT14__WEIM_WEIM_D_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT14__PCIE_CTRL_DIAG_STATUS_BUS_MUX_18   (_MX6Q_PAD_CSI0_DAT14__PCIE_CTRL_DIAG_STATUS_BUS_MUX_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT14__UART5_TXD                          (_MX6Q_PAD_CSI0_DAT14__UART5_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT14__UART5_RXD                          (_MX6Q_PAD_CSI0_DAT14__UART5_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT14__SDMA_DEBUG_PC_8                    (_MX6Q_PAD_CSI0_DAT14__SDMA_DEBUG_PC_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT14__GPIO_6_0                           (_MX6Q_PAD_CSI0_DAT14__GPIO_6_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT14__MMDC_MMDC_DEBUG_37                 (_MX6Q_PAD_CSI0_DAT14__MMDC_MMDC_DEBUG_37 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT14__CHEETAH_TRACE_11                   (_MX6Q_PAD_CSI0_DAT14__CHEETAH_TRACE_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DAT15__IPU1_CSI0_D_15                     (_MX6Q_PAD_CSI0_DAT15__IPU1_CSI0_D_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT15__WEIM_WEIM_D_11                     (_MX6Q_PAD_CSI0_DAT15__WEIM_WEIM_D_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT15__PCIE_CTRL_DIAG_STATUS_BUS_MUX_19   (_MX6Q_PAD_CSI0_DAT15__PCIE_CTRL_DIAG_STATUS_BUS_MUX_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT15__UART5_TXD                          (_MX6Q_PAD_CSI0_DAT15__UART5_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT15__UART5_RXD                          (_MX6Q_PAD_CSI0_DAT15__UART5_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT15__SDMA_DEBUG_PC_9                    (_MX6Q_PAD_CSI0_DAT15__SDMA_DEBUG_PC_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT15__GPIO_6_1                           (_MX6Q_PAD_CSI0_DAT15__GPIO_6_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT15__MMDC_MMDC_DEBUG_38                 (_MX6Q_PAD_CSI0_DAT15__MMDC_MMDC_DEBUG_38 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT15__CHEETAH_TRACE_12                   (_MX6Q_PAD_CSI0_DAT15__CHEETAH_TRACE_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DAT16__IPU1_CSI0_D_16                     (_MX6Q_PAD_CSI0_DAT16__IPU1_CSI0_D_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT16__WEIM_WEIM_D_12                     (_MX6Q_PAD_CSI0_DAT16__WEIM_WEIM_D_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT16__PCIE_CTRL_DIAG_STATUS_BUS_MUX_20   (_MX6Q_PAD_CSI0_DAT16__PCIE_CTRL_DIAG_STATUS_BUS_MUX_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT16__UART4_CTS                          (_MX6Q_PAD_CSI0_DAT16__UART4_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT16__UART4_RTS                          (_MX6Q_PAD_CSI0_DAT16__UART4_RTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT16__SDMA_DEBUG_PC_10                   (_MX6Q_PAD_CSI0_DAT16__SDMA_DEBUG_PC_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT16__GPIO_6_2                           (_MX6Q_PAD_CSI0_DAT16__GPIO_6_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT16__MMDC_MMDC_DEBUG_39                 (_MX6Q_PAD_CSI0_DAT16__MMDC_MMDC_DEBUG_39 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT16__CHEETAH_TRACE_13                   (_MX6Q_PAD_CSI0_DAT16__CHEETAH_TRACE_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DAT17__IPU1_CSI0_D_17                     (_MX6Q_PAD_CSI0_DAT17__IPU1_CSI0_D_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT17__WEIM_WEIM_D_13                     (_MX6Q_PAD_CSI0_DAT17__WEIM_WEIM_D_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT17__PCIE_CTRL_DIAG_STATUS_BUS_MUX_21   (_MX6Q_PAD_CSI0_DAT17__PCIE_CTRL_DIAG_STATUS_BUS_MUX_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT17__UART4_CTS                          (_MX6Q_PAD_CSI0_DAT17__UART4_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT17__SDMA_DEBUG_PC_11                   (_MX6Q_PAD_CSI0_DAT17__SDMA_DEBUG_PC_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT17__GPIO_6_3                           (_MX6Q_PAD_CSI0_DAT17__GPIO_6_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT17__MMDC_MMDC_DEBUG_40                 (_MX6Q_PAD_CSI0_DAT17__MMDC_MMDC_DEBUG_40 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT17__CHEETAH_TRACE_14                   (_MX6Q_PAD_CSI0_DAT17__CHEETAH_TRACE_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DAT18__IPU1_CSI0_D_18                     (_MX6Q_PAD_CSI0_DAT18__IPU1_CSI0_D_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT18__WEIM_WEIM_D_14                     (_MX6Q_PAD_CSI0_DAT18__WEIM_WEIM_D_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT18__PCIE_CTRL_DIAG_STATUS_BUS_MUX_22   (_MX6Q_PAD_CSI0_DAT18__PCIE_CTRL_DIAG_STATUS_BUS_MUX_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT18__UART5_CTS                          (_MX6Q_PAD_CSI0_DAT18__UART5_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT18__UART5_RTS                          (_MX6Q_PAD_CSI0_DAT18__UART5_RTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT18__SDMA_DEBUG_PC_12                   (_MX6Q_PAD_CSI0_DAT18__SDMA_DEBUG_PC_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT18__GPIO_6_4                           (_MX6Q_PAD_CSI0_DAT18__GPIO_6_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT18__MMDC_MMDC_DEBUG_41                 (_MX6Q_PAD_CSI0_DAT18__MMDC_MMDC_DEBUG_41 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT18__CHEETAH_TRACE_15                   (_MX6Q_PAD_CSI0_DAT18__CHEETAH_TRACE_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_CSI0_DAT19__IPU1_CSI0_D_19                     (_MX6Q_PAD_CSI0_DAT19__IPU1_CSI0_D_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT19__WEIM_WEIM_D_15                     (_MX6Q_PAD_CSI0_DAT19__WEIM_WEIM_D_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT19__PCIE_CTRL_DIAG_STATUS_BUS_MUX_23   (_MX6Q_PAD_CSI0_DAT19__PCIE_CTRL_DIAG_STATUS_BUS_MUX_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT19__UART5_CTS                          (_MX6Q_PAD_CSI0_DAT19__UART5_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT19__SDMA_DEBUG_PC_13                   (_MX6Q_PAD_CSI0_DAT19__SDMA_DEBUG_PC_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT19__GPIO_6_5                           (_MX6Q_PAD_CSI0_DAT19__GPIO_6_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT19__MMDC_MMDC_DEBUG_42                 (_MX6Q_PAD_CSI0_DAT19__MMDC_MMDC_DEBUG_42 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_CSI0_DAT19__ANATOP_ANATOP_TESTO_9              (_MX6Q_PAD_CSI0_DAT19__ANATOP_ANATOP_TESTO_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_JTAG_TMS__SJC_TMS                              (_MX6Q_PAD_JTAG_TMS__SJC_TMS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_JTAG_MOD__SJC_MOD                              (_MX6Q_PAD_JTAG_MOD__SJC_MOD | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_JTAG_TRSTB__SJC_TRSTB                          (_MX6Q_PAD_JTAG_TRSTB__SJC_TRSTB | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_JTAG_TDI__SJC_TDI                              (_MX6Q_PAD_JTAG_TDI__SJC_TDI | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_JTAG_TCK__SJC_TCK                              (_MX6Q_PAD_JTAG_TCK__SJC_TCK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_JTAG_TDO__SJC_TDO                              (_MX6Q_PAD_JTAG_TDO__SJC_TDO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_LVDS1_TX3_P__LDB_LVDS1_TX3                     (_MX6Q_PAD_LVDS1_TX3_P__LDB_LVDS1_TX3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_LVDS1_TX2_P__LDB_LVDS1_TX2                     (_MX6Q_PAD_LVDS1_TX2_P__LDB_LVDS1_TX2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_LVDS1_CLK_P__LDB_LVDS1_CLK                     (_MX6Q_PAD_LVDS1_CLK_P__LDB_LVDS1_CLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_LVDS1_TX1_P__LDB_LVDS1_TX1                     (_MX6Q_PAD_LVDS1_TX1_P__LDB_LVDS1_TX1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_LVDS1_TX0_P__LDB_LVDS1_TX0                     (_MX6Q_PAD_LVDS1_TX0_P__LDB_LVDS1_TX0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_LVDS0_TX3_P__LDB_LVDS0_TX3                     (_MX6Q_PAD_LVDS0_TX3_P__LDB_LVDS0_TX3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_LVDS0_CLK_P__LDB_LVDS0_CLK                     (_MX6Q_PAD_LVDS0_CLK_P__LDB_LVDS0_CLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_LVDS0_TX2_P__LDB_LVDS0_TX2                     (_MX6Q_PAD_LVDS0_TX2_P__LDB_LVDS0_TX2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_LVDS0_TX1_P__LDB_LVDS0_TX1                     (_MX6Q_PAD_LVDS0_TX1_P__LDB_LVDS0_TX1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_LVDS0_TX0_P__LDB_LVDS0_TX0                     (_MX6Q_PAD_LVDS0_TX0_P__LDB_LVDS0_TX0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_TAMPER__SNVS_LP_WRAPPER_SNVS_TD1               (_MX6Q_PAD_TAMPER__SNVS_LP_WRAPPER_SNVS_TD1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_PMIC_ON_REQ__SNVS_LP_WRAPPER_SNVS_WAKEUP_ALARM (_MX6Q_PAD_PMIC_ON_REQ__SNVS_LP_WRAPPER_SNVS_WAKEUP_ALARM | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_PMIC_STBY_REQ__CCM_PMIC_VSTBY_REQ              (_MX6Q_PAD_PMIC_STBY_REQ__CCM_PMIC_VSTBY_REQ | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_POR_B__SRC_POR_B                               (_MX6Q_PAD_POR_B__SRC_POR_B | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_BOOT_MODE1__SRC_BOOT_MODE_1                    (_MX6Q_PAD_BOOT_MODE1__SRC_BOOT_MODE_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_RESET_IN_B__SRC_RESET_B                        (_MX6Q_PAD_RESET_IN_B__SRC_RESET_B | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_BOOT_MODE0__SRC_BOOT_MODE_0                    (_MX6Q_PAD_BOOT_MODE0__SRC_BOOT_MODE_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_TEST_MODE__TCU_TEST_MODE                       (_MX6Q_PAD_TEST_MODE__TCU_TEST_MODE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD3_DAT7__USDHC3_DAT7                          (_MX6Q_PAD_SD3_DAT7__USDHC3_DAT7 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT7__UART1_TXD                            (_MX6Q_PAD_SD3_DAT7__UART1_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT7__UART1_RXD                            (_MX6Q_PAD_SD3_DAT7__UART1_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT7__PCIE_CTRL_DIAG_STATUS_BUS_MUX_24     (_MX6Q_PAD_SD3_DAT7__PCIE_CTRL_DIAG_STATUS_BUS_MUX_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT7__USBOH3_UH3_DFD_OUT_0                 (_MX6Q_PAD_SD3_DAT7__USBOH3_UH3_DFD_OUT_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT7__USBOH3_UH2_DFD_OUT_0                 (_MX6Q_PAD_SD3_DAT7__USBOH3_UH2_DFD_OUT_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT7__GPIO_6_17                            (_MX6Q_PAD_SD3_DAT7__GPIO_6_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT7__MIPI_CORE_DPHY_TEST_IN_12            (_MX6Q_PAD_SD3_DAT7__MIPI_CORE_DPHY_TEST_IN_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT7__ANATOP_USBPHY2_TSTO_PLL_CLK20DIV     (_MX6Q_PAD_SD3_DAT7__ANATOP_USBPHY2_TSTO_PLL_CLK20DIV | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD3_DAT6__USDHC3_DAT6                          (_MX6Q_PAD_SD3_DAT6__USDHC3_DAT6 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT6__UART1_TXD                            (_MX6Q_PAD_SD3_DAT6__UART1_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT6__UART1_RXD                            (_MX6Q_PAD_SD3_DAT6__UART1_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT6__PCIE_CTRL_DIAG_STATUS_BUS_MUX_25     (_MX6Q_PAD_SD3_DAT6__PCIE_CTRL_DIAG_STATUS_BUS_MUX_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT6__USBOH3_UH3_DFD_OUT_1                 (_MX6Q_PAD_SD3_DAT6__USBOH3_UH3_DFD_OUT_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT6__USBOH3_UH2_DFD_OUT_1                 (_MX6Q_PAD_SD3_DAT6__USBOH3_UH2_DFD_OUT_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT6__GPIO_6_18                            (_MX6Q_PAD_SD3_DAT6__GPIO_6_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT6__MIPI_CORE_DPHY_TEST_IN_13            (_MX6Q_PAD_SD3_DAT6__MIPI_CORE_DPHY_TEST_IN_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT6__ANATOP_ANATOP_TESTO_10               (_MX6Q_PAD_SD3_DAT6__ANATOP_ANATOP_TESTO_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD3_DAT5__USDHC3_DAT5                          (_MX6Q_PAD_SD3_DAT5__USDHC3_DAT5 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT5__UART2_TXD                            (_MX6Q_PAD_SD3_DAT5__UART2_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT5__UART2_RXD                            (_MX6Q_PAD_SD3_DAT5__UART2_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT5__PCIE_CTRL_DIAG_STATUS_BUS_MUX_26     (_MX6Q_PAD_SD3_DAT5__PCIE_CTRL_DIAG_STATUS_BUS_MUX_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT5__USBOH3_UH3_DFD_OUT_2                 (_MX6Q_PAD_SD3_DAT5__USBOH3_UH3_DFD_OUT_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT5__USBOH3_UH2_DFD_OUT_2                 (_MX6Q_PAD_SD3_DAT5__USBOH3_UH2_DFD_OUT_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT5__GPIO_7_0                             (_MX6Q_PAD_SD3_DAT5__GPIO_7_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT5__MIPI_CORE_DPHY_TEST_IN_14            (_MX6Q_PAD_SD3_DAT5__MIPI_CORE_DPHY_TEST_IN_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT5__ANATOP_ANATOP_TESTO_11               (_MX6Q_PAD_SD3_DAT5__ANATOP_ANATOP_TESTO_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD3_DAT4__USDHC3_DAT4                          (_MX6Q_PAD_SD3_DAT4__USDHC3_DAT4 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT4__UART2_TXD                            (_MX6Q_PAD_SD3_DAT4__UART2_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT4__UART2_RXD                            (_MX6Q_PAD_SD3_DAT4__UART2_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT4__PCIE_CTRL_DIAG_STATUS_BUS_MUX_27     (_MX6Q_PAD_SD3_DAT4__PCIE_CTRL_DIAG_STATUS_BUS_MUX_27 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT4__USBOH3_UH3_DFD_OUT_3                 (_MX6Q_PAD_SD3_DAT4__USBOH3_UH3_DFD_OUT_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT4__USBOH3_UH2_DFD_OUT_3                 (_MX6Q_PAD_SD3_DAT4__USBOH3_UH2_DFD_OUT_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT4__GPIO_7_1                             (_MX6Q_PAD_SD3_DAT4__GPIO_7_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT4__MIPI_CORE_DPHY_TEST_IN_15            (_MX6Q_PAD_SD3_DAT4__MIPI_CORE_DPHY_TEST_IN_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT4__ANATOP_ANATOP_TESTO_12               (_MX6Q_PAD_SD3_DAT4__ANATOP_ANATOP_TESTO_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD3_CMD__USDHC3_CMD                            (_MX6Q_PAD_SD3_CMD__USDHC3_CMD | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_CMD__UART2_CTS                             (_MX6Q_PAD_SD3_CMD__UART2_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_CMD__CAN1_TXCAN                            (_MX6Q_PAD_SD3_CMD__CAN1_TXCAN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_CMD__USBOH3_UH3_DFD_OUT_4                  (_MX6Q_PAD_SD3_CMD__USBOH3_UH3_DFD_OUT_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_CMD__USBOH3_UH2_DFD_OUT_4                  (_MX6Q_PAD_SD3_CMD__USBOH3_UH2_DFD_OUT_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_CMD__GPIO_7_2                              (_MX6Q_PAD_SD3_CMD__GPIO_7_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_CMD__MIPI_CORE_DPHY_TEST_IN_16             (_MX6Q_PAD_SD3_CMD__MIPI_CORE_DPHY_TEST_IN_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_CMD__ANATOP_ANATOP_TESTO_13                (_MX6Q_PAD_SD3_CMD__ANATOP_ANATOP_TESTO_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD3_CLK__USDHC3_CLK                            (_MX6Q_PAD_SD3_CLK__USDHC3_CLK | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_CLK__UART2_CTS                             (_MX6Q_PAD_SD3_CLK__UART2_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_CLK__UART2_RTS                             (_MX6Q_PAD_SD3_CLK__UART2_RTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_CLK__CAN1_RXCAN                            (_MX6Q_PAD_SD3_CLK__CAN1_RXCAN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_CLK__USBOH3_UH3_DFD_OUT_5                  (_MX6Q_PAD_SD3_CLK__USBOH3_UH3_DFD_OUT_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_CLK__USBOH3_UH2_DFD_OUT_5                  (_MX6Q_PAD_SD3_CLK__USBOH3_UH2_DFD_OUT_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_CLK__GPIO_7_3                              (_MX6Q_PAD_SD3_CLK__GPIO_7_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_CLK__MIPI_CORE_DPHY_TEST_IN_17             (_MX6Q_PAD_SD3_CLK__MIPI_CORE_DPHY_TEST_IN_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_CLK__ANATOP_ANATOP_TESTO_14                (_MX6Q_PAD_SD3_CLK__ANATOP_ANATOP_TESTO_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD3_DAT0__USDHC3_DAT0                          (_MX6Q_PAD_SD3_DAT0__USDHC3_DAT0 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT0__UART1_CTS                            (_MX6Q_PAD_SD3_DAT0__UART1_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT0__CAN2_TXCAN                           (_MX6Q_PAD_SD3_DAT0__CAN2_TXCAN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT0__USBOH3_UH3_DFD_OUT_6                 (_MX6Q_PAD_SD3_DAT0__USBOH3_UH3_DFD_OUT_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT0__USBOH3_UH2_DFD_OUT_6                 (_MX6Q_PAD_SD3_DAT0__USBOH3_UH2_DFD_OUT_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT0__GPIO_7_4                             (_MX6Q_PAD_SD3_DAT0__GPIO_7_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT0__MIPI_CORE_DPHY_TEST_IN_18            (_MX6Q_PAD_SD3_DAT0__MIPI_CORE_DPHY_TEST_IN_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT0__ANATOP_ANATOP_TESTO_15               (_MX6Q_PAD_SD3_DAT0__ANATOP_ANATOP_TESTO_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD3_DAT1__USDHC3_DAT1                          (_MX6Q_PAD_SD3_DAT1__USDHC3_DAT1 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT1__UART1_CTS                            (_MX6Q_PAD_SD3_DAT1__UART1_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT1__UART1_RTS                            (_MX6Q_PAD_SD3_DAT1__UART1_RTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT1__CAN2_RXCAN                           (_MX6Q_PAD_SD3_DAT1__CAN2_RXCAN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT1__USBOH3_UH3_DFD_OUT_7                 (_MX6Q_PAD_SD3_DAT1__USBOH3_UH3_DFD_OUT_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT1__USBOH3_UH2_DFD_OUT_7                 (_MX6Q_PAD_SD3_DAT1__USBOH3_UH2_DFD_OUT_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT1__GPIO_7_5                             (_MX6Q_PAD_SD3_DAT1__GPIO_7_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT1__MIPI_CORE_DPHY_TEST_IN_19            (_MX6Q_PAD_SD3_DAT1__MIPI_CORE_DPHY_TEST_IN_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT1__ANATOP_ANATOP_TESTI_0                (_MX6Q_PAD_SD3_DAT1__ANATOP_ANATOP_TESTI_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD3_DAT2__USDHC3_DAT2                          (_MX6Q_PAD_SD3_DAT2__USDHC3_DAT2 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT2__PCIE_CTRL_DIAG_STATUS_BUS_MUX_28     (_MX6Q_PAD_SD3_DAT2__PCIE_CTRL_DIAG_STATUS_BUS_MUX_28 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT2__USBOH3_UH3_DFD_OUT_8                 (_MX6Q_PAD_SD3_DAT2__USBOH3_UH3_DFD_OUT_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT2__USBOH3_UH2_DFD_OUT_8                 (_MX6Q_PAD_SD3_DAT2__USBOH3_UH2_DFD_OUT_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT2__GPIO_7_6                             (_MX6Q_PAD_SD3_DAT2__GPIO_7_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT2__MIPI_CORE_DPHY_TEST_IN_20            (_MX6Q_PAD_SD3_DAT2__MIPI_CORE_DPHY_TEST_IN_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT2__ANATOP_ANATOP_TESTI_1                (_MX6Q_PAD_SD3_DAT2__ANATOP_ANATOP_TESTI_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD3_DAT3__USDHC3_DAT3                          (_MX6Q_PAD_SD3_DAT3__USDHC3_DAT3 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT3__UART3_CTS                            (_MX6Q_PAD_SD3_DAT3__UART3_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT3__PCIE_CTRL_DIAG_STATUS_BUS_MUX_29     (_MX6Q_PAD_SD3_DAT3__PCIE_CTRL_DIAG_STATUS_BUS_MUX_29 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT3__USBOH3_UH3_DFD_OUT_9                 (_MX6Q_PAD_SD3_DAT3__USBOH3_UH3_DFD_OUT_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT3__USBOH3_UH2_DFD_OUT_9                 (_MX6Q_PAD_SD3_DAT3__USBOH3_UH2_DFD_OUT_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT3__GPIO_7_7                             (_MX6Q_PAD_SD3_DAT3__GPIO_7_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT3__MIPI_CORE_DPHY_TEST_IN_21            (_MX6Q_PAD_SD3_DAT3__MIPI_CORE_DPHY_TEST_IN_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_DAT3__ANATOP_ANATOP_TESTI_2                (_MX6Q_PAD_SD3_DAT3__ANATOP_ANATOP_TESTI_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD3_RST__USDHC3_RST                            (_MX6Q_PAD_SD3_RST__USDHC3_RST | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_RST__UART3_CTS                             (_MX6Q_PAD_SD3_RST__UART3_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_RST__UART3_RTS                             (_MX6Q_PAD_SD3_RST__UART3_RTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_RST__PCIE_CTRL_DIAG_STATUS_BUS_MUX_30      (_MX6Q_PAD_SD3_RST__PCIE_CTRL_DIAG_STATUS_BUS_MUX_30 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_RST__USBOH3_UH3_DFD_OUT_10                 (_MX6Q_PAD_SD3_RST__USBOH3_UH3_DFD_OUT_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_RST__USBOH3_UH2_DFD_OUT_10                 (_MX6Q_PAD_SD3_RST__USBOH3_UH2_DFD_OUT_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_RST__GPIO_7_8                              (_MX6Q_PAD_SD3_RST__GPIO_7_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_RST__MIPI_CORE_DPHY_TEST_IN_22             (_MX6Q_PAD_SD3_RST__MIPI_CORE_DPHY_TEST_IN_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD3_RST__ANATOP_ANATOP_TESTI_3                 (_MX6Q_PAD_SD3_RST__ANATOP_ANATOP_TESTI_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_NANDF_CLE__RAWNAND_CLE                         (_MX6Q_PAD_NANDF_CLE__RAWNAND_CLE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CLE__IPU2_SISG_4                         (_MX6Q_PAD_NANDF_CLE__IPU2_SISG_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CLE__PCIE_CTRL_DIAG_STATUS_BUS_MUX_31    (_MX6Q_PAD_NANDF_CLE__PCIE_CTRL_DIAG_STATUS_BUS_MUX_31 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CLE__USBOH3_UH3_DFD_OUT_11               (_MX6Q_PAD_NANDF_CLE__USBOH3_UH3_DFD_OUT_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CLE__USBOH3_UH2_DFD_OUT_11               (_MX6Q_PAD_NANDF_CLE__USBOH3_UH2_DFD_OUT_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CLE__GPIO_6_7                            (_MX6Q_PAD_NANDF_CLE__GPIO_6_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CLE__MIPI_CORE_DPHY_TEST_IN_23           (_MX6Q_PAD_NANDF_CLE__MIPI_CORE_DPHY_TEST_IN_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CLE__TPSMP_HTRANS_0                      (_MX6Q_PAD_NANDF_CLE__TPSMP_HTRANS_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_NANDF_ALE__RAWNAND_ALE                         (_MX6Q_PAD_NANDF_ALE__RAWNAND_ALE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_ALE__USDHC4_RST                          (_MX6Q_PAD_NANDF_ALE__USDHC4_RST | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_ALE__PCIE_CTRL_DIAG_STATUS_BUS_MUX_0     (_MX6Q_PAD_NANDF_ALE__PCIE_CTRL_DIAG_STATUS_BUS_MUX_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_ALE__USBOH3_UH3_DFD_OUT_12               (_MX6Q_PAD_NANDF_ALE__USBOH3_UH3_DFD_OUT_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_ALE__USBOH3_UH2_DFD_OUT_12               (_MX6Q_PAD_NANDF_ALE__USBOH3_UH2_DFD_OUT_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_ALE__GPIO_6_8                            (_MX6Q_PAD_NANDF_ALE__GPIO_6_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_ALE__MIPI_CORE_DPHY_TEST_IN_24           (_MX6Q_PAD_NANDF_ALE__MIPI_CORE_DPHY_TEST_IN_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_ALE__TPSMP_HTRANS_1                      (_MX6Q_PAD_NANDF_ALE__TPSMP_HTRANS_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_NANDF_WP_B__RAWNAND_RESETN                     (_MX6Q_PAD_NANDF_WP_B__RAWNAND_RESETN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_WP_B__IPU2_SISG_5                        (_MX6Q_PAD_NANDF_WP_B__IPU2_SISG_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_WP_B__PCIE_CTRL_DIAG_STATUS_BUS_MUX_1    (_MX6Q_PAD_NANDF_WP_B__PCIE_CTRL_DIAG_STATUS_BUS_MUX_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_WP_B__USBOH3_UH3_DFD_OUT_13              (_MX6Q_PAD_NANDF_WP_B__USBOH3_UH3_DFD_OUT_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_WP_B__USBOH3_UH2_DFD_OUT_13              (_MX6Q_PAD_NANDF_WP_B__USBOH3_UH2_DFD_OUT_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_WP_B__GPIO_6_9                           (_MX6Q_PAD_NANDF_WP_B__GPIO_6_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_WP_B__MIPI_CORE_DPHY_TEST_OUT_32         (_MX6Q_PAD_NANDF_WP_B__MIPI_CORE_DPHY_TEST_OUT_32 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_WP_B__PL301_MX6QPER1_HSIZE_0    (_MX6Q_PAD_NANDF_WP_B__PL301_MX6QPER1_HSIZE_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_NANDF_RB0__RAWNAND_READY0                      (_MX6Q_PAD_NANDF_RB0__RAWNAND_READY0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_RB0__IPU2_DI0_PIN1                       (_MX6Q_PAD_NANDF_RB0__IPU2_DI0_PIN1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_RB0__PCIE_CTRL_DIAG_STATUS_BUS_MUX_2     (_MX6Q_PAD_NANDF_RB0__PCIE_CTRL_DIAG_STATUS_BUS_MUX_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_RB0__USBOH3_UH3_DFD_OUT_14               (_MX6Q_PAD_NANDF_RB0__USBOH3_UH3_DFD_OUT_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_RB0__USBOH3_UH2_DFD_OUT_14               (_MX6Q_PAD_NANDF_RB0__USBOH3_UH2_DFD_OUT_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_RB0__GPIO_6_10                           (_MX6Q_PAD_NANDF_RB0__GPIO_6_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_RB0__MIPI_CORE_DPHY_TEST_OUT_33          (_MX6Q_PAD_NANDF_RB0__MIPI_CORE_DPHY_TEST_OUT_33 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_RB0__PL301_MX6QPER1_HSIZE_1     (_MX6Q_PAD_NANDF_RB0__PL301_MX6QPER1_HSIZE_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_NANDF_CS0__RAWNAND_CE0N                        (_MX6Q_PAD_NANDF_CS0__RAWNAND_CE0N | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS0__USBOH3_UH3_DFD_OUT_15               (_MX6Q_PAD_NANDF_CS0__USBOH3_UH3_DFD_OUT_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS0__USBOH3_UH2_DFD_OUT_15               (_MX6Q_PAD_NANDF_CS0__USBOH3_UH2_DFD_OUT_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS0__GPIO_6_11                           (_MX6Q_PAD_NANDF_CS0__GPIO_6_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS0__PL301_MX6QPER1_HSIZE_2     (_MX6Q_PAD_NANDF_CS0__PL301_MX6QPER1_HSIZE_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_NANDF_CS1__RAWNAND_CE1N                        (_MX6Q_PAD_NANDF_CS1__RAWNAND_CE1N | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS1__USDHC4_VSELECT                      (_MX6Q_PAD_NANDF_CS1__USDHC4_VSELECT | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS1__USDHC3_VSELECT                      (_MX6Q_PAD_NANDF_CS1__USDHC3_VSELECT | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS1__PCIE_CTRL_DIAG_STATUS_BUS_MUX_3     (_MX6Q_PAD_NANDF_CS1__PCIE_CTRL_DIAG_STATUS_BUS_MUX_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS1__GPIO_6_14                           (_MX6Q_PAD_NANDF_CS1__GPIO_6_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS1__PL301_MX6QPER1_HREADYOUT   (_MX6Q_PAD_NANDF_CS1__PL301_MX6QPER1_HREADYOUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_NANDF_CS2__RAWNAND_CE2N                        (_MX6Q_PAD_NANDF_CS2__RAWNAND_CE2N | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS2__IPU1_SISG_0                         (_MX6Q_PAD_NANDF_CS2__IPU1_SISG_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS2__ESAI1_TX0                           (_MX6Q_PAD_NANDF_CS2__ESAI1_TX0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS2__WEIM_WEIM_CRE                       (_MX6Q_PAD_NANDF_CS2__WEIM_WEIM_CRE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS2__CCM_CLKO2                           (_MX6Q_PAD_NANDF_CS2__CCM_CLKO2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS2__GPIO_6_15                           (_MX6Q_PAD_NANDF_CS2__GPIO_6_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS2__IPU2_SISG_0                         (_MX6Q_PAD_NANDF_CS2__IPU2_SISG_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_NANDF_CS3__RAWNAND_CE3N                        (_MX6Q_PAD_NANDF_CS3__RAWNAND_CE3N | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS3__IPU1_SISG_1                         (_MX6Q_PAD_NANDF_CS3__IPU1_SISG_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS3__ESAI1_TX1                           (_MX6Q_PAD_NANDF_CS3__ESAI1_TX1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS3__WEIM_WEIM_A_26                      (_MX6Q_PAD_NANDF_CS3__WEIM_WEIM_A_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS3__PCIE_CTRL_DIAG_STATUS_BUS_MUX_4     (_MX6Q_PAD_NANDF_CS3__PCIE_CTRL_DIAG_STATUS_BUS_MUX_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS3__GPIO_6_16                           (_MX6Q_PAD_NANDF_CS3__GPIO_6_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS3__IPU2_SISG_1                         (_MX6Q_PAD_NANDF_CS3__IPU2_SISG_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_CS3__TPSMP_CLK                           (_MX6Q_PAD_NANDF_CS3__TPSMP_CLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD4_CMD__USDHC4_CMD                            (_MX6Q_PAD_SD4_CMD__USDHC4_CMD | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_CMD__RAWNAND_RDN                           (_MX6Q_PAD_SD4_CMD__RAWNAND_RDN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_CMD__UART3_TXD                             (_MX6Q_PAD_SD4_CMD__UART3_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_CMD__UART3_RXD                             (_MX6Q_PAD_SD4_CMD__UART3_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_CMD__PCIE_CTRL_DIAG_STATUS_BUS_MUX_5       (_MX6Q_PAD_SD4_CMD__PCIE_CTRL_DIAG_STATUS_BUS_MUX_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_CMD__GPIO_7_9                              (_MX6Q_PAD_SD4_CMD__GPIO_7_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_CMD__TPSMP_HDATA_DIR                       (_MX6Q_PAD_SD4_CMD__TPSMP_HDATA_DIR | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD4_CLK__USDHC4_CLK                            (_MX6Q_PAD_SD4_CLK__USDHC4_CLK | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_CLK__RAWNAND_WRN                           (_MX6Q_PAD_SD4_CLK__RAWNAND_WRN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_CLK__UART3_TXD                             (_MX6Q_PAD_SD4_CLK__UART3_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_CLK__UART3_RXD                             (_MX6Q_PAD_SD4_CLK__UART3_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_CLK__PCIE_CTRL_DIAG_STATUS_BUS_MUX_6       (_MX6Q_PAD_SD4_CLK__PCIE_CTRL_DIAG_STATUS_BUS_MUX_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_CLK__GPIO_7_10                             (_MX6Q_PAD_SD4_CLK__GPIO_7_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_NANDF_D0__RAWNAND_D0                           (_MX6Q_PAD_NANDF_D0__RAWNAND_D0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D0__USDHC1_DAT4                          (_MX6Q_PAD_NANDF_D0__USDHC1_DAT4 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D0__GPU3D_GPU_DEBUG_OUT_0                (_MX6Q_PAD_NANDF_D0__GPU3D_GPU_DEBUG_OUT_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D0__USBOH3_UH2_DFD_OUT_16                (_MX6Q_PAD_NANDF_D0__USBOH3_UH2_DFD_OUT_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D0__USBOH3_UH3_DFD_OUT_16                (_MX6Q_PAD_NANDF_D0__USBOH3_UH3_DFD_OUT_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D0__GPIO_2_0                             (_MX6Q_PAD_NANDF_D0__GPIO_2_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D0__IPU1_IPU_DIAG_BUS_0                  (_MX6Q_PAD_NANDF_D0__IPU1_IPU_DIAG_BUS_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D0__IPU2_IPU_DIAG_BUS_0                  (_MX6Q_PAD_NANDF_D0__IPU2_IPU_DIAG_BUS_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_NANDF_D1__RAWNAND_D1                           (_MX6Q_PAD_NANDF_D1__RAWNAND_D1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D1__USDHC1_DAT5                          (_MX6Q_PAD_NANDF_D1__USDHC1_DAT5 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D1__GPU3D_GPU_DEBUG_OUT_1                (_MX6Q_PAD_NANDF_D1__GPU3D_GPU_DEBUG_OUT_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D1__USBOH3_UH2_DFD_OUT_17                (_MX6Q_PAD_NANDF_D1__USBOH3_UH2_DFD_OUT_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D1__USBOH3_UH3_DFD_OUT_17                (_MX6Q_PAD_NANDF_D1__USBOH3_UH3_DFD_OUT_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D1__GPIO_2_1                             (_MX6Q_PAD_NANDF_D1__GPIO_2_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D1__IPU1_IPU_DIAG_BUS_1                  (_MX6Q_PAD_NANDF_D1__IPU1_IPU_DIAG_BUS_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D1__IPU2_IPU_DIAG_BUS_1                  (_MX6Q_PAD_NANDF_D1__IPU2_IPU_DIAG_BUS_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_NANDF_D2__RAWNAND_D2                           (_MX6Q_PAD_NANDF_D2__RAWNAND_D2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D2__USDHC1_DAT6                          (_MX6Q_PAD_NANDF_D2__USDHC1_DAT6 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D2__GPU3D_GPU_DEBUG_OUT_2                (_MX6Q_PAD_NANDF_D2__GPU3D_GPU_DEBUG_OUT_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D2__USBOH3_UH2_DFD_OUT_18                (_MX6Q_PAD_NANDF_D2__USBOH3_UH2_DFD_OUT_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D2__USBOH3_UH3_DFD_OUT_18                (_MX6Q_PAD_NANDF_D2__USBOH3_UH3_DFD_OUT_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D2__GPIO_2_2                             (_MX6Q_PAD_NANDF_D2__GPIO_2_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D2__IPU1_IPU_DIAG_BUS_2                  (_MX6Q_PAD_NANDF_D2__IPU1_IPU_DIAG_BUS_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D2__IPU2_IPU_DIAG_BUS_2                  (_MX6Q_PAD_NANDF_D2__IPU2_IPU_DIAG_BUS_2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_NANDF_D3__RAWNAND_D3                           (_MX6Q_PAD_NANDF_D3__RAWNAND_D3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D3__USDHC1_DAT7                          (_MX6Q_PAD_NANDF_D3__USDHC1_DAT7 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D3__GPU3D_GPU_DEBUG_OUT_3                (_MX6Q_PAD_NANDF_D3__GPU3D_GPU_DEBUG_OUT_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D3__USBOH3_UH2_DFD_OUT_19                (_MX6Q_PAD_NANDF_D3__USBOH3_UH2_DFD_OUT_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D3__USBOH3_UH3_DFD_OUT_19                (_MX6Q_PAD_NANDF_D3__USBOH3_UH3_DFD_OUT_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D3__GPIO_2_3                             (_MX6Q_PAD_NANDF_D3__GPIO_2_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D3__IPU1_IPU_DIAG_BUS_3                  (_MX6Q_PAD_NANDF_D3__IPU1_IPU_DIAG_BUS_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D3__IPU2_IPU_DIAG_BUS_3                  (_MX6Q_PAD_NANDF_D3__IPU2_IPU_DIAG_BUS_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_NANDF_D4__RAWNAND_D4                           (_MX6Q_PAD_NANDF_D4__RAWNAND_D4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D4__USDHC2_DAT4                          (_MX6Q_PAD_NANDF_D4__USDHC2_DAT4 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D4__GPU3D_GPU_DEBUG_OUT_4                (_MX6Q_PAD_NANDF_D4__GPU3D_GPU_DEBUG_OUT_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D4__USBOH3_UH2_DFD_OUT_20                (_MX6Q_PAD_NANDF_D4__USBOH3_UH2_DFD_OUT_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D4__USBOH3_UH3_DFD_OUT_20                (_MX6Q_PAD_NANDF_D4__USBOH3_UH3_DFD_OUT_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D4__GPIO_2_4                             (_MX6Q_PAD_NANDF_D4__GPIO_2_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D4__IPU1_IPU_DIAG_BUS_4                  (_MX6Q_PAD_NANDF_D4__IPU1_IPU_DIAG_BUS_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D4__IPU2_IPU_DIAG_BUS_4                  (_MX6Q_PAD_NANDF_D4__IPU2_IPU_DIAG_BUS_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_NANDF_D5__RAWNAND_D5                           (_MX6Q_PAD_NANDF_D5__RAWNAND_D5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D5__USDHC2_DAT5                          (_MX6Q_PAD_NANDF_D5__USDHC2_DAT5 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D5__GPU3D_GPU_DEBUG_OUT_5                (_MX6Q_PAD_NANDF_D5__GPU3D_GPU_DEBUG_OUT_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D5__USBOH3_UH2_DFD_OUT_21                (_MX6Q_PAD_NANDF_D5__USBOH3_UH2_DFD_OUT_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D5__USBOH3_UH3_DFD_OUT_21                (_MX6Q_PAD_NANDF_D5__USBOH3_UH3_DFD_OUT_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D5__GPIO_2_5                             (_MX6Q_PAD_NANDF_D5__GPIO_2_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D5__IPU1_IPU_DIAG_BUS_5                  (_MX6Q_PAD_NANDF_D5__IPU1_IPU_DIAG_BUS_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D5__IPU2_IPU_DIAG_BUS_5                  (_MX6Q_PAD_NANDF_D5__IPU2_IPU_DIAG_BUS_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_NANDF_D6__RAWNAND_D6                           (_MX6Q_PAD_NANDF_D6__RAWNAND_D6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D6__USDHC2_DAT6                          (_MX6Q_PAD_NANDF_D6__USDHC2_DAT6 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D6__GPU3D_GPU_DEBUG_OUT_6                (_MX6Q_PAD_NANDF_D6__GPU3D_GPU_DEBUG_OUT_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D6__USBOH3_UH2_DFD_OUT_22                (_MX6Q_PAD_NANDF_D6__USBOH3_UH2_DFD_OUT_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D6__USBOH3_UH3_DFD_OUT_22                (_MX6Q_PAD_NANDF_D6__USBOH3_UH3_DFD_OUT_22 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D6__GPIO_2_6                             (_MX6Q_PAD_NANDF_D6__GPIO_2_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D6__IPU1_IPU_DIAG_BUS_6                  (_MX6Q_PAD_NANDF_D6__IPU1_IPU_DIAG_BUS_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D6__IPU2_IPU_DIAG_BUS_6                  (_MX6Q_PAD_NANDF_D6__IPU2_IPU_DIAG_BUS_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_NANDF_D7__RAWNAND_D7                           (_MX6Q_PAD_NANDF_D7__RAWNAND_D7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D7__USDHC2_DAT7                          (_MX6Q_PAD_NANDF_D7__USDHC2_DAT7 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D7__GPU3D_GPU_DEBUG_OUT_7                (_MX6Q_PAD_NANDF_D7__GPU3D_GPU_DEBUG_OUT_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D7__USBOH3_UH2_DFD_OUT_23                (_MX6Q_PAD_NANDF_D7__USBOH3_UH2_DFD_OUT_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D7__USBOH3_UH3_DFD_OUT_23                (_MX6Q_PAD_NANDF_D7__USBOH3_UH3_DFD_OUT_23 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D7__GPIO_2_7                             (_MX6Q_PAD_NANDF_D7__GPIO_2_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D7__IPU1_IPU_DIAG_BUS_7                  (_MX6Q_PAD_NANDF_D7__IPU1_IPU_DIAG_BUS_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_NANDF_D7__IPU2_IPU_DIAG_BUS_7                  (_MX6Q_PAD_NANDF_D7__IPU2_IPU_DIAG_BUS_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD4_DAT0__RAWNAND_D8                           (_MX6Q_PAD_SD4_DAT0__RAWNAND_D8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT0__USDHC4_DAT0                          (_MX6Q_PAD_SD4_DAT0__USDHC4_DAT0 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT0__RAWNAND_DQS                          (_MX6Q_PAD_SD4_DAT0__RAWNAND_DQS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT0__USBOH3_UH2_DFD_OUT_24                (_MX6Q_PAD_SD4_DAT0__USBOH3_UH2_DFD_OUT_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT0__USBOH3_UH3_DFD_OUT_24                (_MX6Q_PAD_SD4_DAT0__USBOH3_UH3_DFD_OUT_24 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT0__GPIO_2_8                             (_MX6Q_PAD_SD4_DAT0__GPIO_2_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT0__IPU1_IPU_DIAG_BUS_8                  (_MX6Q_PAD_SD4_DAT0__IPU1_IPU_DIAG_BUS_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT0__IPU2_IPU_DIAG_BUS_8                  (_MX6Q_PAD_SD4_DAT0__IPU2_IPU_DIAG_BUS_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD4_DAT1__RAWNAND_D9                           (_MX6Q_PAD_SD4_DAT1__RAWNAND_D9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT1__USDHC4_DAT1                          (_MX6Q_PAD_SD4_DAT1__USDHC4_DAT1 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT1__PWM3_PWMO                            (_MX6Q_PAD_SD4_DAT1__PWM3_PWMO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT1__USBOH3_UH2_DFD_OUT_25                (_MX6Q_PAD_SD4_DAT1__USBOH3_UH2_DFD_OUT_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT1__USBOH3_UH3_DFD_OUT_25                (_MX6Q_PAD_SD4_DAT1__USBOH3_UH3_DFD_OUT_25 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT1__GPIO_2_9                             (_MX6Q_PAD_SD4_DAT1__GPIO_2_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT1__IPU1_IPU_DIAG_BUS_9                  (_MX6Q_PAD_SD4_DAT1__IPU1_IPU_DIAG_BUS_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT1__IPU2_IPU_DIAG_BUS_9                  (_MX6Q_PAD_SD4_DAT1__IPU2_IPU_DIAG_BUS_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD4_DAT2__RAWNAND_D10                          (_MX6Q_PAD_SD4_DAT2__RAWNAND_D10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT2__USDHC4_DAT2                          (_MX6Q_PAD_SD4_DAT2__USDHC4_DAT2 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT2__PWM4_PWMO                            (_MX6Q_PAD_SD4_DAT2__PWM4_PWMO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT2__USBOH3_UH2_DFD_OUT_26                (_MX6Q_PAD_SD4_DAT2__USBOH3_UH2_DFD_OUT_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT2__USBOH3_UH3_DFD_OUT_26                (_MX6Q_PAD_SD4_DAT2__USBOH3_UH3_DFD_OUT_26 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT2__GPIO_2_10                            (_MX6Q_PAD_SD4_DAT2__GPIO_2_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT2__IPU1_IPU_DIAG_BUS_10                 (_MX6Q_PAD_SD4_DAT2__IPU1_IPU_DIAG_BUS_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT2__IPU2_IPU_DIAG_BUS_10                 (_MX6Q_PAD_SD4_DAT2__IPU2_IPU_DIAG_BUS_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD4_DAT3__RAWNAND_D11                          (_MX6Q_PAD_SD4_DAT3__RAWNAND_D11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT3__USDHC4_DAT3                          (_MX6Q_PAD_SD4_DAT3__USDHC4_DAT3 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT3__USBOH3_UH2_DFD_OUT_27                (_MX6Q_PAD_SD4_DAT3__USBOH3_UH2_DFD_OUT_27 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT3__USBOH3_UH3_DFD_OUT_27                (_MX6Q_PAD_SD4_DAT3__USBOH3_UH3_DFD_OUT_27 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT3__GPIO_2_11                            (_MX6Q_PAD_SD4_DAT3__GPIO_2_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT3__IPU1_IPU_DIAG_BUS_11                 (_MX6Q_PAD_SD4_DAT3__IPU1_IPU_DIAG_BUS_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT3__IPU2_IPU_DIAG_BUS_11                 (_MX6Q_PAD_SD4_DAT3__IPU2_IPU_DIAG_BUS_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD4_DAT4__RAWNAND_D12                          (_MX6Q_PAD_SD4_DAT4__RAWNAND_D12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT4__USDHC4_DAT4                          (_MX6Q_PAD_SD4_DAT4__USDHC4_DAT4 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT4__UART2_TXD                            (_MX6Q_PAD_SD4_DAT4__UART2_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT4__UART2_RXD                            (_MX6Q_PAD_SD4_DAT4__UART2_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT4__USBOH3_UH2_DFD_OUT_28                (_MX6Q_PAD_SD4_DAT4__USBOH3_UH2_DFD_OUT_28 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT4__USBOH3_UH3_DFD_OUT_28                (_MX6Q_PAD_SD4_DAT4__USBOH3_UH3_DFD_OUT_28 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT4__GPIO_2_12                            (_MX6Q_PAD_SD4_DAT4__GPIO_2_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT4__IPU1_IPU_DIAG_BUS_12                 (_MX6Q_PAD_SD4_DAT4__IPU1_IPU_DIAG_BUS_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT4__IPU2_IPU_DIAG_BUS_12                 (_MX6Q_PAD_SD4_DAT4__IPU2_IPU_DIAG_BUS_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD4_DAT5__RAWNAND_D13                          (_MX6Q_PAD_SD4_DAT5__RAWNAND_D13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT5__USDHC4_DAT5                          (_MX6Q_PAD_SD4_DAT5__USDHC4_DAT5 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT5__UART2_CTS                            (_MX6Q_PAD_SD4_DAT5__UART2_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT5__UART2_RTS                            (_MX6Q_PAD_SD4_DAT5__UART2_RTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT5__USBOH3_UH2_DFD_OUT_29                (_MX6Q_PAD_SD4_DAT5__USBOH3_UH2_DFD_OUT_29 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT5__USBOH3_UH3_DFD_OUT_29                (_MX6Q_PAD_SD4_DAT5__USBOH3_UH3_DFD_OUT_29 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT5__GPIO_2_13                            (_MX6Q_PAD_SD4_DAT5__GPIO_2_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT5__IPU1_IPU_DIAG_BUS_13                 (_MX6Q_PAD_SD4_DAT5__IPU1_IPU_DIAG_BUS_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT5__IPU2_IPU_DIAG_BUS_13                 (_MX6Q_PAD_SD4_DAT5__IPU2_IPU_DIAG_BUS_13 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD4_DAT6__RAWNAND_D14                          (_MX6Q_PAD_SD4_DAT6__RAWNAND_D14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT6__USDHC4_DAT6                          (_MX6Q_PAD_SD4_DAT6__USDHC4_DAT6 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT6__UART2_CTS                            (_MX6Q_PAD_SD4_DAT6__UART2_CTS | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT6__USBOH3_UH2_DFD_OUT_30                (_MX6Q_PAD_SD4_DAT6__USBOH3_UH2_DFD_OUT_30 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT6__USBOH3_UH3_DFD_OUT_30                (_MX6Q_PAD_SD4_DAT6__USBOH3_UH3_DFD_OUT_30 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT6__GPIO_2_14                            (_MX6Q_PAD_SD4_DAT6__GPIO_2_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT6__IPU1_IPU_DIAG_BUS_14                 (_MX6Q_PAD_SD4_DAT6__IPU1_IPU_DIAG_BUS_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT6__IPU2_IPU_DIAG_BUS_14                 (_MX6Q_PAD_SD4_DAT6__IPU2_IPU_DIAG_BUS_14 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD4_DAT7__RAWNAND_D15                          (_MX6Q_PAD_SD4_DAT7__RAWNAND_D15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT7__USDHC4_DAT7                          (_MX6Q_PAD_SD4_DAT7__USDHC4_DAT7 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT7__UART2_TXD                            (_MX6Q_PAD_SD4_DAT7__UART2_TXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT7__UART2_RXD                            (_MX6Q_PAD_SD4_DAT7__UART2_RXD | MUX_PAD_CTRL(MX6Q_UART_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT7__USBOH3_UH2_DFD_OUT_31                (_MX6Q_PAD_SD4_DAT7__USBOH3_UH2_DFD_OUT_31 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT7__USBOH3_UH3_DFD_OUT_31                (_MX6Q_PAD_SD4_DAT7__USBOH3_UH3_DFD_OUT_31 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT7__GPIO_2_15                            (_MX6Q_PAD_SD4_DAT7__GPIO_2_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT7__IPU1_IPU_DIAG_BUS_15                 (_MX6Q_PAD_SD4_DAT7__IPU1_IPU_DIAG_BUS_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD4_DAT7__IPU2_IPU_DIAG_BUS_15                 (_MX6Q_PAD_SD4_DAT7__IPU2_IPU_DIAG_BUS_15 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD1_DAT1__USDHC1_DAT1                          (_MX6Q_PAD_SD1_DAT1__USDHC1_DAT1 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT1__ECSPI5_SS0                           (_MX6Q_PAD_SD1_DAT1__ECSPI5_SS0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT1__PWM3_PWMO                            (_MX6Q_PAD_SD1_DAT1__PWM3_PWMO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT1__GPT_CAPIN2                           (_MX6Q_PAD_SD1_DAT1__GPT_CAPIN2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT1__PCIE_CTRL_DIAG_STATUS_BUS_MUX_7      (_MX6Q_PAD_SD1_DAT1__PCIE_CTRL_DIAG_STATUS_BUS_MUX_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT1__GPIO_1_17                            (_MX6Q_PAD_SD1_DAT1__GPIO_1_17 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT1__HDMI_TX_OPHYDTB_0                    (_MX6Q_PAD_SD1_DAT1__HDMI_TX_OPHYDTB_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT1__ANATOP_ANATOP_TESTO_8                (_MX6Q_PAD_SD1_DAT1__ANATOP_ANATOP_TESTO_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD1_DAT0__USDHC1_DAT0                          (_MX6Q_PAD_SD1_DAT0__USDHC1_DAT0 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT0__ECSPI5_MISO                          (_MX6Q_PAD_SD1_DAT0__ECSPI5_MISO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT0__CAAM_WRAPPER_RNG_OSC_OBS             (_MX6Q_PAD_SD1_DAT0__CAAM_WRAPPER_RNG_OSC_OBS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT0__GPT_CAPIN1                           (_MX6Q_PAD_SD1_DAT0__GPT_CAPIN1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT0__PCIE_CTRL_DIAG_STATUS_BUS_MUX_8      (_MX6Q_PAD_SD1_DAT0__PCIE_CTRL_DIAG_STATUS_BUS_MUX_8 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT0__GPIO_1_16                            (_MX6Q_PAD_SD1_DAT0__GPIO_1_16 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT0__HDMI_TX_OPHYDTB_1                    (_MX6Q_PAD_SD1_DAT0__HDMI_TX_OPHYDTB_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT0__ANATOP_ANATOP_TESTO_7                (_MX6Q_PAD_SD1_DAT0__ANATOP_ANATOP_TESTO_7 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD1_DAT3__USDHC1_DAT3                          (_MX6Q_PAD_SD1_DAT3__USDHC1_DAT3 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT3__ECSPI5_SS2                           (_MX6Q_PAD_SD1_DAT3__ECSPI5_SS2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT3__GPT_CMPOUT3                          (_MX6Q_PAD_SD1_DAT3__GPT_CMPOUT3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT3__PWM1_PWMO                            (_MX6Q_PAD_SD1_DAT3__PWM1_PWMO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT3__WDOG2_WDOG_B                         (_MX6Q_PAD_SD1_DAT3__WDOG2_WDOG_B | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT3__GPIO_1_21                            (_MX6Q_PAD_SD1_DAT3__GPIO_1_21 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT3__WDOG2_WDOG_RST_B_DEB                 (_MX6Q_PAD_SD1_DAT3__WDOG2_WDOG_RST_B_DEB | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT3__ANATOP_ANATOP_TESTO_6                (_MX6Q_PAD_SD1_DAT3__ANATOP_ANATOP_TESTO_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD1_CMD__USDHC1_CMD                            (_MX6Q_PAD_SD1_CMD__USDHC1_CMD | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_CMD__ECSPI5_MOSI                           (_MX6Q_PAD_SD1_CMD__ECSPI5_MOSI | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_CMD__PWM4_PWMO                             (_MX6Q_PAD_SD1_CMD__PWM4_PWMO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_CMD__GPT_CMPOUT1                           (_MX6Q_PAD_SD1_CMD__GPT_CMPOUT1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_CMD__GPIO_1_18                             (_MX6Q_PAD_SD1_CMD__GPIO_1_18 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_CMD__ANATOP_ANATOP_TESTO_5                 (_MX6Q_PAD_SD1_CMD__ANATOP_ANATOP_TESTO_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD1_DAT2__USDHC1_DAT2                          (_MX6Q_PAD_SD1_DAT2__USDHC1_DAT2 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT2__ECSPI5_SS1                           (_MX6Q_PAD_SD1_DAT2__ECSPI5_SS1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT2__GPT_CMPOUT2                          (_MX6Q_PAD_SD1_DAT2__GPT_CMPOUT2 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT2__PWM2_PWMO                            (_MX6Q_PAD_SD1_DAT2__PWM2_PWMO | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT2__WDOG1_WDOG_B                         (_MX6Q_PAD_SD1_DAT2__WDOG1_WDOG_B | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT2__GPIO_1_19                            (_MX6Q_PAD_SD1_DAT2__GPIO_1_19 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT2__WDOG1_WDOG_RST_B_DEB                 (_MX6Q_PAD_SD1_DAT2__WDOG1_WDOG_RST_B_DEB | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_DAT2__ANATOP_ANATOP_TESTO_4                (_MX6Q_PAD_SD1_DAT2__ANATOP_ANATOP_TESTO_4 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD1_CLK__USDHC1_CLK                            (_MX6Q_PAD_SD1_CLK__USDHC1_CLK | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_CLK__ECSPI5_SCLK                           (_MX6Q_PAD_SD1_CLK__ECSPI5_SCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_CLK__OSC32K_32K_OUT                        (_MX6Q_PAD_SD1_CLK__OSC32K_32K_OUT | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_CLK__GPT_CLKIN                             (_MX6Q_PAD_SD1_CLK__GPT_CLKIN | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_CLK__GPIO_1_20                             (_MX6Q_PAD_SD1_CLK__GPIO_1_20 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_CLK__PHY_DTB_0                             (_MX6Q_PAD_SD1_CLK__PHY_DTB_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD1_CLK__SATA_PHY_DTB_0                        (_MX6Q_PAD_SD1_CLK__SATA_PHY_DTB_0 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD2_CLK__USDHC2_CLK                            (_MX6Q_PAD_SD2_CLK__USDHC2_CLK | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_CLK__ECSPI5_SCLK                           (_MX6Q_PAD_SD2_CLK__ECSPI5_SCLK | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_CLK__KPP_COL_5                             (_MX6Q_PAD_SD2_CLK__KPP_COL_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_CLK__AUDMUX_AUD4_RXFS                      (_MX6Q_PAD_SD2_CLK__AUDMUX_AUD4_RXFS | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_CLK__PCIE_CTRL_DIAG_STATUS_BUS_MUX_9       (_MX6Q_PAD_SD2_CLK__PCIE_CTRL_DIAG_STATUS_BUS_MUX_9 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_CLK__GPIO_1_10                             (_MX6Q_PAD_SD2_CLK__GPIO_1_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_CLK__PHY_DTB_1                             (_MX6Q_PAD_SD2_CLK__PHY_DTB_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_CLK__SATA_PHY_DTB_1                        (_MX6Q_PAD_SD2_CLK__SATA_PHY_DTB_1 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD2_CMD__USDHC2_CMD                            (_MX6Q_PAD_SD2_CMD__USDHC2_CMD | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_CMD__ECSPI5_MOSI                           (_MX6Q_PAD_SD2_CMD__ECSPI5_MOSI | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_CMD__KPP_ROW_5                             (_MX6Q_PAD_SD2_CMD__KPP_ROW_5 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_CMD__AUDMUX_AUD4_RXC                       (_MX6Q_PAD_SD2_CMD__AUDMUX_AUD4_RXC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_CMD__PCIE_CTRL_DIAG_STATUS_BUS_MUX_10      (_MX6Q_PAD_SD2_CMD__PCIE_CTRL_DIAG_STATUS_BUS_MUX_10 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_CMD__GPIO_1_11                             (_MX6Q_PAD_SD2_CMD__GPIO_1_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
-+#define  MX6Q_PAD_SD2_DAT3__USDHC2_DAT3                          (_MX6Q_PAD_SD2_DAT3__USDHC2_DAT3 | MUX_PAD_CTRL(MX6Q_USDHC_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT3__ECSPI5_SS3                           (_MX6Q_PAD_SD2_DAT3__ECSPI5_SS3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT3__KPP_COL_6                            (_MX6Q_PAD_SD2_DAT3__KPP_COL_6 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT3__AUDMUX_AUD4_TXC                      (_MX6Q_PAD_SD2_DAT3__AUDMUX_AUD4_TXC | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT3__PCIE_CTRL_DIAG_STATUS_BUS_MUX_11     (_MX6Q_PAD_SD2_DAT3__PCIE_CTRL_DIAG_STATUS_BUS_MUX_11 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT3__GPIO_1_12                            (_MX6Q_PAD_SD2_DAT3__GPIO_1_12 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT3__SJC_DONE                             (_MX6Q_PAD_SD2_DAT3__SJC_DONE | MUX_PAD_CTRL(NO_PAD_CTRL))
-+#define  MX6Q_PAD_SD2_DAT3__ANATOP_ANATOP_TESTO_3                (_MX6Q_PAD_SD2_DAT3__ANATOP_ANATOP_TESTO_3 | MUX_PAD_CTRL(NO_PAD_CTRL))
-+
++#include <config.h>
++#include <asm/config.h>
++#include <mach/mpc85xx.h>
++
++#define _LINUX_CONFIG_H 1	/* avoid reading Linux autoconf.h file	*/
++
++#include <asm/processor.h>
++#include <mach/ppc_asm.tmpl>
++#include <asm/ppc_defs.h>
++
++#include <asm/cache.h>
++#include <asm/mmu.h>
++
++#undef	MSR_KERNEL
++#define MSR_KERNEL ( MSR_ME )	/* Machine Check */
++
++/*
++ * Set up GOT: Global Offset Table
++ *
++ * Use r12 to access the GOT
++ */
++	START_GOT
++	GOT_ENTRY(_GOT2_TABLE_)
++	GOT_ENTRY(_FIXUP_TABLE_)
++
++	GOT_ENTRY(_start)
++	GOT_ENTRY(_start_of_vectors)
++	GOT_ENTRY(_end_of_vectors)
++	GOT_ENTRY(transfer_to_handler)
++	GOT_ENTRY(__init_end)
++	GOT_ENTRY(_end)
++	GOT_ENTRY(__bss_start)
++	END_GOT
++
++/*
++ * e500 Startup -- after reset only the last 4KB of the effective
++ * address space is mapped in the MMU L2 TLB1 Entry0. The .bootpg
++ * section is located at THIS LAST page and basically does three
++ * things: clear some registers, set up exception tables and
++ * add more TLB entries for 'larger spaces'(e.g. the boot rom) to
++ * continue the boot procedure.
++ * Once the boot rom is mapped by TLB entries we can proceed
++ * with normal startup.
++ */
++
++	.section .bootpg,"ax"
++	.globl _start_e500
++
++_start_e500:
++
++/* clear registers/arrays not reset by hardware */
++
++	/* L1 */
++	li	r0,2
++	mtspr	L1CSR0,r0	/* invalidate d-cache */
++	mtspr	L1CSR1,r0	/* invalidate i-cache */
++
++	mfspr	r1,DBSR
++	mtspr	DBSR,r1		/* Clear all valid bits */
++
++	/* Enable/invalidate the I-Cache */
++	lis	r2,(L1CSR1_ICFI|L1CSR1_ICLFR)@h
++	ori	r2,r2,(L1CSR1_ICFI|L1CSR1_ICLFR)@l
++	mtspr	SPRN_L1CSR1,r2
++1:
++	mfspr	r3,SPRN_L1CSR1
++	and.	r1,r3,r2
++	bne	1b
++
++	lis	r3,(L1CSR1_CPE|L1CSR1_ICE)@h
++	ori	r3,r3,(L1CSR1_CPE|L1CSR1_ICE)@l
++	mtspr	SPRN_L1CSR1,r3
++	isync
++2:
++	mfspr	r3,SPRN_L1CSR1
++	andi.	r1,r3,L1CSR1_ICE@l
++	beq	2b
++
++	/* Enable/invalidate the D-Cache */
++	lis	r2,(L1CSR0_DCFI|L1CSR0_DCLFR)@h
++	ori	r2,r2,(L1CSR0_DCFI|L1CSR0_DCLFR)@l
++	mtspr	SPRN_L1CSR0,r2
++1:
++	mfspr	r3,SPRN_L1CSR0
++	and.	r1,r3,r2
++	bne	1b
++
++	lis	r3,(L1CSR0_CPE|L1CSR0_DCE)@h
++	ori	r3,r3,(L1CSR0_CPE|L1CSR0_DCE)@l
++	mtspr	SPRN_L1CSR0,r3
++	isync
++2:
++	mfspr	r3,SPRN_L1CSR0
++	andi.	r1,r3,L1CSR0_DCE@l
++	beq	2b
++
++	/* Setup interrupt vectors */
++	lis	r1,TEXT_BASE@h
++	mtspr	IVPR,r1
++
++	li	r1,0x0100
++	mtspr	IVOR0,r1	/* 0: Critical input */
++	li	r1,0x0200
++	mtspr	IVOR1,r1	/* 1: Machine check */
++	li	r1,0x0300
++	mtspr	IVOR2,r1	/* 2: Data storage */
++	li	r1,0x0400
++	mtspr	IVOR3,r1	/* 3: Instruction storage */
++	li	r1,0x0500
++	mtspr	IVOR4,r1	/* 4: External interrupt */
++	li	r1,0x0600
++	mtspr	IVOR5,r1	/* 5: Alignment */
++	li	r1,0x0700
++	mtspr	IVOR6,r1	/* 6: Program check */
++	li	r1,0x0800
++	mtspr	IVOR7,r1	/* 7: floating point unavailable */
++	li	r1,0x0900
++	mtspr	IVOR8,r1	/* 8: System call */
++	/* 9: Auxiliary processor unavailable(unsupported) */
++	li	r1,0x0a00
++	mtspr	IVOR10,r1	/* 10: Decrementer */
++	li	r1,0x0b00
++	mtspr	IVOR11,r1	/* 11: Interval timer */
++	li	r1,0x0c00
++	mtspr	IVOR12,r1	/* 12: Watchdog timer */
++	li	r1,0x0d00
++	mtspr	IVOR13,r1	/* 13: Data TLB error */
++	li	r1,0x0e00
++	mtspr	IVOR14,r1	/* 14: Instruction TLB error */
++	li	r1,0x0f00
++	mtspr	IVOR15,r1	/* 15: Debug */
++
++	/* Clear and set up some registers. */
++	li      r0,0x0000
++	lis	r1,0xffff
++	mtspr	DEC,r0			/* prevent dec exceptions */
++	mttbl	r0			/* prevent fit & wdt exceptions */
++	mttbu	r0
++	mtspr	TSR,r1			/* clear all timer exception status */
++	mtspr	TCR,r0			/* disable all */
++	mtspr	ESR,r0			/* clear exception syndrome register */
++	mtspr	MCSR,r0			/* machine check syndrome register */
++	mtxer	r0			/* clear integer exception register */
++
++	/* Enable Time Base and Select Time Base Clock */
++	lis	r0,HID0_EMCP@h		/* Enable machine check */
++	ori	r0,r0,HID0_TBEN@l	/* Enable Timebase */
++	mtspr	HID0,r0
++
++	li	r0,(HID1_ASTME|HID1_ABE)@l	/* Addr streaming & broadcast */
++	mfspr	r3,PVR
++	andi.	r3,r3, 0xff
++	cmpwi	r3,0x50@l	/* if we are rev 5.0 or greater set MBDD */
++	blt 1f
++	/* Set MBDD bit also */
++	ori r0, r0, HID1_MBDD@l
++1:
++	mtspr	HID1,r0
++
++	/* Enable Branch Prediction */
++#if defined(CFG_BTB)
++	lis	r0,BUCSR_ENABLE@h
++	ori	r0,r0,BUCSR_ENABLE@l
++	mtspr	SPRN_BUCSR,r0
 +#endif
-diff --git a/arch/arm/mach-imx/speed-imx6.c b/arch/arm/mach-imx/speed-imx6.c
-new file mode 100644
-index 0000000..4cc9fdb
---- /dev/null
-+++ b/arch/arm/mach-imx/speed-imx6.c
-@@ -0,0 +1,393 @@
-+#include <common.h>
-+#include <asm/io.h>
-+#include <asm-generic/div64.h>
-+#include <mach/imx-regs.h>
-+#include <mach/clock-imx6.h>
-+#include <mach/imx6-anadig.h>
 +
-+enum pll_clocks {
-+	CPU_PLL1,	/* System PLL */
-+	BUS_PLL2,	/* System Bus PLL*/
-+	USBOTG_PLL3,    /* OTG USB PLL */
-+	AUD_PLL4,	/* Audio PLL */
-+	VID_PLL5,	/* Video PLL */
-+	MLB_PLL6,	/* MLB PLL */
-+	USBHOST_PLL7,   /* Host USB PLL */
-+	ENET_PLL8,      /* ENET PLL */
++	lis     r6,FSL_BOOKE_MAS0(1, 15, 0)@h
++	ori     r6,r6,FSL_BOOKE_MAS0(1, 15, 0)@l
++
++	/* create a temp mapping in AS=1 to the 4M boot window */
++	lis     r7,FSL_BOOKE_MAS1(1, 1, 0, 1, BOOKE_PAGESZ_4M)@h
++	ori     r7,r7,FSL_BOOKE_MAS1(1, 1, 0, 1, BOOKE_PAGESZ_4M)@l
++
++	lis     r8,FSL_BOOKE_MAS2(TEXT_BASE & 0xffc00000, (MAS2_I|MAS2_G))@h
++	ori     r8,r8,FSL_BOOKE_MAS2(TEXT_BASE & 0xffc00000, (MAS2_I|MAS2_G))@l
++
++	/* The 85xx has the default boot window 0xff800000 - 0xffffffff */
++	lis     r9,FSL_BOOKE_MAS3(0xffc00000, 0, (MAS3_SX|MAS3_SW|MAS3_SR))@h
++	ori     r9,r9,FSL_BOOKE_MAS3(0xffc00000, 0, (MAS3_SX|MAS3_SW|MAS3_SR))@l
++
++	mtspr   MAS0,r6
++	mtspr   MAS1,r7
++	mtspr   MAS2,r8
++	mtspr   MAS3,r9
++	isync
++	msync
++	tlbwe
++
++	/* create a temp mapping in AS=1 to the stack */
++	lis     r6,FSL_BOOKE_MAS0(1, 14, 0)@h
++	ori     r6,r6,FSL_BOOKE_MAS0(1, 14, 0)@l
++
++	lis     r7,FSL_BOOKE_MAS1(1, 1, 0, 1, BOOKE_PAGESZ_16K)@h
++	ori     r7,r7,FSL_BOOKE_MAS1(1, 1, 0, 1, BOOKE_PAGESZ_16K)@l
++
++	lis     r8,FSL_BOOKE_MAS2(CFG_INIT_RAM_ADDR, 0)@h
++	ori     r8,r8,FSL_BOOKE_MAS2(CFG_INIT_RAM_ADDR, 0)@l
++
++	lis     r9,FSL_BOOKE_MAS3(CFG_INIT_RAM_ADDR, 0,
++                                  (MAS3_SX|MAS3_SW|MAS3_SR))@h
++	ori     r9,r9,FSL_BOOKE_MAS3(CFG_INIT_RAM_ADDR, 0,
++                                     (MAS3_SX|MAS3_SW|MAS3_SR))@l
++
++	mtspr   MAS0,r6
++	mtspr   MAS1,r7
++	mtspr   MAS2,r8
++	mtspr   MAS3,r9
++	isync
++	msync
++	tlbwe
++
++	lis	r6,MSR_IS|MSR_DS@h
++	ori	r6,r6,MSR_IS|MSR_DS@l
++	lis	r7,switch_as@h
++	ori	r7,r7,switch_as@l
++
++	mtspr	SPRN_SRR0,r7
++	mtspr	SPRN_SRR1,r6
++	rfi
++
++switch_as:
++/* L1 DCache is used for initial RAM */
++
++	/* Allocate initial RAM in data cache.  */
++	lis	r3,CFG_INIT_RAM_ADDR@h
++	ori	r3,r3,CFG_INIT_RAM_ADDR@l
++	mfspr	r2, L1CFG0
++	andi.	r2, r2, 0x1ff
++	/* cache size * 1024 / (2 * L1 line size) */
++	slwi	r2, r2, (10 - 1 - L1_CACHE_SHIFT)
++	mtctr	r2
++	li	r0,0
++1:
++	dcbz	r0,r3
++	dcbtls	0,r0,r3
++	addi	r3,r3,CACHELINE_SIZE
++	bdnz	1b
++
++	/*
++	 * Jump out the last 4K page and continue to 'normal' start.
++	 * Calculate absolute address in FLASH and jump there.
++	 */
++	lis	r3,TEXT_BASE@h
++	ori	r3,r3,TEXT_BASE@l
++	addi	r3,r3,_start_cont - _start + _START_OFFSET
++	mtlr	r3
++	blr
++
++	.text
++	.globl	_start
++_start:
++	.long	0x62626F78		/* Barebox Magic Number */
++
++	.align	4
++	.globl	_start_cont
++_start_cont:
++	/* Setup the stack in initial RAM,could be L2-as-SRAM or L1 dcache */
++	lis	r1,CFG_INIT_RAM_ADDR@h
++	ori	r1,r1,CFG_INIT_SP_OFFSET@l
++
++	li	r0,0
++	stwu	r0,-4(r1)
++	stwu	r0,-4(r1)		/* Terminate call chain */
++
++	stwu	r1,-8(r1)		/* Save back chain and move SP */
++	lis	r0,RESET_VECTOR@h	/* Address of reset vector */
++	ori	r0,r0,RESET_VECTOR@l
++	stwu	r1,-8(r1)		/* Save back chain and move SP */
++	stw	r0,+12(r1)		/* Save return addr (underflow vect) */
++
++	GET_GOT
++	bl	cpu_init_early_f
++
++	/* switch back to AS = 0 */
++	lis	r3,(MSR_CE|MSR_ME|MSR_DE)@h
++	ori	r3,r3,(MSR_CE|MSR_ME|MSR_DE)@l
++	mtmsr	r3
++	isync
++
++	bl      cpu_init_f
++	bl      initdram
++	b       relocate_code
++	isync
++
++	/* NOTREACHED - board_init_f() does not return */
++
++	. = EXC_OFF_SYS_RESET
++	.globl	_start_of_vectors
++_start_of_vectors:
++
++/* Critical input. */
++	CRIT_EXCEPTION(0x0100, CriticalInput, CritcalInputException)
++
++/* Machine check */
++	MCK_EXCEPTION(0x200, MachineCheck, MachineCheckException)
++
++/* Data Storage exception. */
++	STD_EXCEPTION(0x0300, DataStorage, UnknownException)
++
++/* Instruction Storage exception. */
++	STD_EXCEPTION(0x0400, InstStorage, UnknownException)
++
++/* External Interrupt exception. */
++#ifdef CFG_USE_IRQ
++	STD_EXCEPTION(0x0500, ExtInterrupt, ExtIntException)
++#endif
++
++/* Alignment exception. */
++	. = 0x0600
++Alignment:
++	EXCEPTION_PROLOG(SRR0, SRR1)
++	mfspr	r4,DAR
++	stw	r4,_DAR(r21)
++	mfspr	r5,DSISR
++	stw	r5,_DSISR(r21)
++	addi	r3,r1,STACK_FRAME_OVERHEAD
++	EXC_XFER_TEMPLATE(Alignment, AlignmentException, MSR_KERNEL, COPY_EE)
++
++/* Program check exception */
++	. = 0x0700
++ProgramCheck:
++	EXCEPTION_PROLOG(SRR0, SRR1)
++	addi	r3,r1,STACK_FRAME_OVERHEAD
++	EXC_XFER_TEMPLATE(ProgramCheck, ProgramCheckException,
++		MSR_KERNEL, COPY_EE)
++
++	/* No FPU on MPC85xx.  This exception is not supposed to happen.
++	*/
++	STD_EXCEPTION(0x0800, FPUnavailable, UnknownException)
++
++	. = 0x0900
++/*
++ * r0 - SYSCALL number
++ * r3-... arguments
++ */
++SystemCall:
++	addis	r11,r0,0	/* get functions table addr */
++	ori	r11,r11,0	/* Note: this code is patched in trap_init */
++	addis	r12,r0,0	/* get number of functions */
++	ori	r12,r12,0
++
++	cmplw	0,r0,r12
++	bge	1f
++
++	rlwinm	r0,r0,2,0,31	/* fn_addr = fn_tbl[r0] */
++	add	r11,r11,r0
++	lwz	r11,0(r11)
++
++	li	r20,0xd00-4	/* Get stack pointer */
++	lwz	r12,0(r20)
++	subi	r12,r12,12	/* Adjust stack pointer */
++	li	r0,0xc00+_end_back-SystemCall
++	cmplw	0,r0,r12	/* Check stack overflow */
++	bgt	1f
++	stw	r12,0(r20)
++
++	mflr	r0
++	stw	r0,0(r12)
++	mfspr	r0,SRR0
++	stw	r0,4(r12)
++	mfspr	r0,SRR1
++	stw	r0,8(r12)
++
++	li	r12,0xc00+_back-SystemCall
++	mtlr	r12
++	mtspr	SRR0,r11
++
++1:	SYNC
++	rfi
++_back:
++
++	mfmsr	r11			/* Disable interrupts */
++	li	r12,0
++	ori	r12,r12,MSR_EE
++	andc	r11,r11,r12
++	SYNC				/* Some chip revs need this... */
++	mtmsr	r11
++	SYNC
++
++	li	r12,0xd00-4		/* restore regs */
++	lwz	r12,0(r12)
++
++	lwz	r11,0(r12)
++	mtlr	r11
++	lwz	r11,4(r12)
++	mtspr	SRR0,r11
++	lwz	r11,8(r12)
++	mtspr	SRR1,r11
++
++	addi	r12,r12,12		/* Adjust stack pointer */
++	li	r20,0xd00-4
++	stw	r12,0(r20)
++
++	SYNC
++	rfi
++_end_back:
++
++	STD_EXCEPTION(0x0a00, Decrementer, UnknownException)
++	STD_EXCEPTION(0x0b00, IntervalTimer, UnknownException)
++	STD_EXCEPTION(0x0c00, WatchdogTimer, UnknownException)
++
++	STD_EXCEPTION(0x0d00, DataTLBError, UnknownException)
++	STD_EXCEPTION(0x0e00, InstructionTLBError, UnknownException)
++
++	CRIT_EXCEPTION(0x0f00, DebugBreakpoint, DebugException )
++
++	.globl	_end_of_vectors
++_end_of_vectors:
++
++
++	. = . + (0x100 - ( . & 0xff ))	/* align for debug */
++
++/*
++ * This code finishes saving the registers to the exception frame
++ * and jumps to the appropriate handler for the exception.
++ * Register r21 is pointer into trap frame, r1 has new stack pointer.
++ */
++	.globl	transfer_to_handler
++transfer_to_handler:
++	stw	r22,_NIP(r21)
++	lis	r22,MSR_POW@h
++	andc	r23,r23,r22
++	stw	r23,_MSR(r21)
++	SAVE_GPR(7, r21)
++	SAVE_4GPRS(8, r21)
++	SAVE_8GPRS(12, r21)
++	SAVE_8GPRS(24, r21)
++
++	mflr	r23
++	andi.	r24,r23,0x3f00		/* get vector offset  */
++	stw	r24,TRAP(r21)
++	li	r22,0
++	stw	r22,RESULT(r21)
++	mtspr	SPRG2,r22		/* r1 is now kernel sp */
++
++	lwz	r24,0(r23)		/* virtual address of handler 	*/
++	lwz	r23,4(r23)		/* where to go when done 	*/
++	mtspr	SRR0,r24
++	mtspr	SRR1,r20
++	mtlr	r23
++	SYNC
++	rfi				/* jump to handler, enable MMU  */
++
++int_return:
++	mfmsr	r28		/* Disable interrupts */
++	li	r4,0
++	ori	r4,r4,MSR_EE
++	andc	r28,r28,r4
++	SYNC			/* Some chip revs need this... */
++	mtmsr	r28
++	SYNC
++	lwz	r2,_CTR(r1)
++	lwz	r0,_LINK(r1)
++	mtctr	r2
++	mtlr	r0
++	lwz	r2,_XER(r1)
++	lwz	r0,_CCR(r1)
++	mtspr	XER,r2
++	mtcrf	0xFF,r0
++	REST_10GPRS(3, r1)
++	REST_10GPRS(13, r1)
++	REST_8GPRS(23, r1)
++	REST_GPR(31, r1)
++	lwz	r2,_NIP(r1)	/* Restore environment */
++	lwz	r0,_MSR(r1)
++	mtspr	SRR0,r2
++	mtspr	SRR1,r0
++	lwz	r0,GPR0(r1)
++	lwz	r2,GPR2(r1)
++	lwz	r1,GPR1(r1)
++	SYNC
++	rfi
++
++crit_return:
++	mfmsr	r28		/* Disable interrupts */
++	li	r4,0
++	ori	r4,r4,MSR_EE
++	andc	r28,r28,r4
++	SYNC			/* Some chip revs need this... */
++	mtmsr	r28
++	SYNC
++	lwz	r2,_CTR(r1)
++	lwz	r0,_LINK(r1)
++	mtctr	r2
++	mtlr	r0
++	lwz	r2,_XER(r1)
++	lwz	r0,_CCR(r1)
++	mtspr	XER,r2
++	mtcrf	0xFF,r0
++	REST_10GPRS(3, r1)
++	REST_10GPRS(13, r1)
++	REST_8GPRS(23, r1)
++	REST_GPR(31, r1)
++	lwz	r2,_NIP(r1)	/* Restore environment */
++	lwz	r0,_MSR(r1)
++	mtspr	SPRN_CSRR0,r2
++	mtspr	SPRN_CSRR1,r0
++	lwz	r0,GPR0(r1)
++	lwz	r2,GPR2(r1)
++	lwz	r1,GPR1(r1)
++	SYNC
++	rfci
++
++mck_return:
++	mfmsr	r28		/* Disable interrupts */
++	li	r4,0
++	ori	r4,r4,MSR_EE
++	andc	r28,r28,r4
++	SYNC			/* Some chip revs need this... */
++	mtmsr	r28
++	SYNC
++	lwz	r2,_CTR(r1)
++	lwz	r0,_LINK(r1)
++	mtctr	r2
++	mtlr	r0
++	lwz	r2,_XER(r1)
++	lwz	r0,_CCR(r1)
++	mtspr	XER,r2
++	mtcrf	0xFF,r0
++	REST_10GPRS(3, r1)
++	REST_10GPRS(13, r1)
++	REST_8GPRS(23, r1)
++	REST_GPR(31, r1)
++	lwz	r2,_NIP(r1)	/* Restore environment */
++	lwz	r0,_MSR(r1)
++	mtspr	SPRN_MCSRR0,r2
++	mtspr	SPRN_MCSRR1,r0
++	lwz	r0,GPR0(r1)
++	lwz	r2,GPR2(r1)
++	lwz	r1,GPR1(r1)
++	SYNC
++	rfmci
++
++/*
++ * Cache functions.
++ */
++.globl invalidate_icache
++invalidate_icache:
++	mfspr	r0,L1CSR1
++	ori	r0,r0,L1CSR1_ICFI
++	msync
++	isync
++	mtspr	L1CSR1,r0
++	isync
++	blr				/* entire I cache */
++
++.globl invalidate_dcache
++invalidate_dcache:
++	mfspr	r0,L1CSR0
++	ori	r0,r0,L1CSR0_DCFI
++	msync
++	isync
++	mtspr	L1CSR0,r0
++	isync
++	blr
++
++	.globl	icache_enable
++icache_enable:
++	mflr	r8
++	bl	invalidate_icache
++	mtlr	r8
++	isync
++	mfspr	r4,L1CSR1
++	ori	r4,r4,0x0001
++	oris	r4,r4,0x0001
++	mtspr	L1CSR1,r4
++	isync
++	blr
++
++	.globl	icache_disable
++icache_disable:
++	mfspr	r0,L1CSR1
++	lis	r3,0
++	ori	r3,r3,L1CSR1_ICE
++	andc	r0,r0,r3
++	mtspr	L1CSR1,r0
++	isync
++	blr
++
++	.globl	icache_status
++icache_status:
++	mfspr	r3,L1CSR1
++	andi.	r3,r3,L1CSR1_ICE
++	blr
++
++	.globl	dcache_enable
++dcache_enable:
++	mflr	r8
++	bl	invalidate_dcache
++	mtlr	r8
++	isync
++	mfspr	r0,L1CSR0
++	ori	r0,r0,0x0001
++	oris	r0,r0,0x0001
++	msync
++	isync
++	mtspr	L1CSR0,r0
++	isync
++	blr
++
++	.globl	dcache_disable
++dcache_disable:
++	mfspr	r3,L1CSR0
++	lis	r4,0
++	ori	r4,r4,L1CSR0_DCE
++	andc	r3,r3,r4
++	mtspr	L1CSR0,r3
++	isync
++	blr
++
++	.globl	dcache_status
++dcache_status:
++	mfspr	r3,L1CSR0
++	andi.	r3,r3,L1CSR0_DCE
++	blr
++
++	.globl get_pir
++get_pir:
++	mfspr	r3,PIR
++	blr
++
++	.globl get_pvr
++get_pvr:
++	mfspr	r3,PVR
++	blr
++
++	.globl get_svr
++get_svr:
++	mfspr	r3,SVR
++	blr
++
++	.globl wr_tcr
++wr_tcr:
++	mtspr	TCR,r3
++	blr
++
++/*---------------------------------------------------------------------------
++ * Function:	 in8
++ * Description:	 Input 8 bits
++ *--------------------------------------------------------------------------- */
++	.globl	in8
++in8:
++	lbz	r3,0x0000(r3)
++	blr
++
++/*---------------------------------------------------------------------------
++ * Function:	 out8
++ * Description:	 Output 8 bits
++ *--------------------------------------------------------------------------- */
++	.globl	out8
++out8:
++	stb	r4,0x0000(r3)
++	sync
++	blr
++
++/*---------------------------------------------------------------------------
++ * Function:	 out16
++ * Description:	 Output 16 bits
++ *--------------------------------------------------------------------------- */
++	.globl	out16
++out16:
++	sth	r4,0x0000(r3)
++	sync
++	blr
++
++/*---------------------------------------------------------------------------
++ * Function:	 out16r
++ * Description:	 Byte reverse and output 16 bits
++ *--------------------------------------------------------------------------- */
++	.globl	out16r
++out16r:
++	sthbrx	r4,r0,r3
++	sync
++	blr
++
++/*---------------------------------------------------------------------------
++ * Function:	 out32
++ * Description:	 Output 32 bits
++ *--------------------------------------------------------------------------- */
++	.globl	out32
++out32:
++	stw	r4,0x0000(r3)
++	sync
++	blr
++
++/*---------------------------------------------------------------------------
++ * Function:	 out32r
++ * Description:	 Byte reverse and output 32 bits
++ *--------------------------------------------------------------------------- */
++	.globl	out32r
++out32r:
++	stwbrx	r4,r0,r3
++	sync
++	blr
++
++/*---------------------------------------------------------------------------
++ * Function:	 in16
++ * Description:	 Input 16 bits
++ *--------------------------------------------------------------------------- */
++	.globl	in16
++in16:
++	lhz	r3,0x0000(r3)
++	blr
++
++/*---------------------------------------------------------------------------
++ * Function:	 in16r
++ * Description:	 Input 16 bits and byte reverse
++ *--------------------------------------------------------------------------- */
++	.globl	in16r
++in16r:
++	lhbrx	r3,r0,r3
++	blr
++
++/*---------------------------------------------------------------------------
++ * Function:	 in32
++ * Description:	 Input 32 bits
++ *--------------------------------------------------------------------------- */
++	.globl	in32
++in32:
++	lwz	3,0x0000(3)
++	blr
++
++/*---------------------------------------------------------------------------
++ * Function:	 in32r
++ * Description:	 Input 32 bits and byte reverse
++ *--------------------------------------------------------------------------- */
++	.globl	in32r
++in32r:
++	lwbrx	r3,r0,r3
++	blr
++
++/*
++ * void write_tlb(mas0, mas1, mas2, mas3, mas7)
++ */
++	.globl	write_tlb
++write_tlb:
++	mtspr	MAS0,r3
++	mtspr	MAS1,r4
++	mtspr	MAS2,r5
++	mtspr	MAS3,r6
++	li	r3,0
++	isync
++	tlbwe
++	msync
++	isync
++	blr
++
++/*
++ * void relocate_code (end of ram)
++ *
++ * This "function" does not return, instead it continues in RAM
++ * after relocating the monitor code.
++ *
++ * r3 = dest
++ * r4 = src
++ * r5 = length in bytes
++ * r6 = cachelinesize
++ */
++	.globl	relocate_code
++relocate_code:
++	mr	r9, r3			/* Save end of RAM 	*/
++
++	lis	r10, (_end - _start)@h	/* Size			*/
++	ori	r10, r10, (_end - _start)@l
++	sub	r3,  r3, r10
++
++	/* 64KB aligned */
++	lis	r10, 0xffff0000@h
++	ori	r10, r10, 0xffff0000@l
++	and	r3, r3, r10
++
++	mr	r1, r3		/* Set new stack just below barebox code */
++	mr	r10, r3 	/* Save copy of Destination Address */
++
++	bl 	calc_source
++calc_source:
++	mfspr	r4, LR	/* r4 = address in memory (flash, RAM) */
++	subi	r4, r4, (calc_source - _start)
++
++	GET_GOT
++	lis	r5, __init_size@h
++	ori	r5, r5, __init_size@l
++
++	li	r6,CACHELINE_SIZE		/* Cache Line Size	*/
++
++	/*
++	 * Fix GOT pointer:
++	 *
++	 * New GOT-PTR = (old GOT-PTR - TEXT_BASE) + Destination Address
++	 *
++	 * Offset:
++	 */
++	sub	r15,r10,r4
++
++	/* First our own GOT */
++	add	r12,r12,r15
++	/*add	r14,r14,r15 */
++	/* then the one used by the C code */
++	add	r30,r30,r15
++
++	/*
++	 * Now relocate code
++	 */
++
++	cmplw	cr1,r3,r4
++	addi	r0,r5,3
++	srwi.	r0,r0,2
++	beq	cr1,4f		/* In place copy is not necessary	*/
++	beq	7f		/* Protect against 0 count		*/
++	mtctr	r0
++	bge	cr1,2f
++
++	la	r8,-4(r4)
++	la	r7,-4(r3)
++1:	lwzu	r0,4(r8)
++	stwu	r0,4(r7)
++	bdnz	1b
++	b	4f
++
++2:	slwi	r0,r0,2
++	add	r8,r4,r0
++	add	r7,r3,r0
++3:	lwzu	r0,-4(r8)
++	stwu	r0,-4(r7)
++	bdnz	3b
++
++/*
++ * Now flush the cache: note that we must start from a cache aligned
++ * address. Otherwise we might miss one cache line.
++ */
++4:	cmpwi	r6,0
++	add	r5,r3,r5
++	beq	7f		/* Always flush prefetch queue in any case */
++	subi	r0,r6,1
++	andc	r3,r3,r0
++	mr	r4,r3
++5:	dcbst	0,r4
++	add	r4,r4,r6
++	cmplw	r4,r5
++	blt	5b
++	sync			/* Wait for all dcbst to complete on bus */
++	mr	r4,r3
++6:	icbi	0,r4
++	add	r4,r4,r6
++	cmplw	r4,r5
++	blt	6b
++7:	sync			/* Wait for all icbi to complete on bus */
++	isync
++
++	/*
++	 * Re-point the IVPR at RAM
++	 */
++	mtspr	IVPR,r10
++
++/*
++ * We are done. Do not return, instead branch to second part of board
++ * initialization, now running from RAM.
++ */
++
++	addi	r0,r10,in_ram - _start + _START_OFFSET
++	mtlr	r0
++	blr				/* NEVER RETURNS! */
++
++	.globl	in_ram
++in_ram:
++
++	/*
++	 * Relocation Function, r12 point to got2+0x8000
++	 *
++	 * Adjust got2 pointers, no need to check for 0, this code
++	 * already puts a few entries in the table.
++	 */
++	li	r0,__got2_entries@sectoff@l
++	la	r3,GOT(_GOT2_TABLE_)
++	lwz	r11,GOT(_GOT2_TABLE_)
++	mtctr	r0
++	sub	r11,r3,r11
++	addi	r3,r3,-4
++1:	lwzu	r0,4(r3)
++	cmpwi	r0,0
++	beq-	2f
++	add	r0,r0,r11
++	stw	r0,0(r3)
++2:	bdnz	1b
++
++	/*
++	 * Now adjust the fixups and the pointers to the fixups
++	 * in case we need to move ourselves again.
++	 */
++	li	r0,__fixup_entries@sectoff@l
++	lwz	r3,GOT(_FIXUP_TABLE_)
++	cmpwi	r0,0
++	mtctr	r0
++	addi	r3,r3,-4
++	beq	4f
++3:	lwzu	r4,4(r3)
++	lwzux	r0,r4,r11
++	cmpwi	r0,0
++	add	r0,r0,r11
++	stw	r4,0(r3)
++	beq-	5f
++	stw	r0,0(r4)
++5:	bdnz	3b
++4:
++clear_bss:
++	/*
++	 * Now clear BSS segment
++	 */
++	lwz	r3,GOT(__bss_start)
++	lwz	r4,GOT(_end)
++
++	cmplw	0,r3,r4
++	beq	6f
++
++	li	r0,0
++5:
++	stw	r0,0(r3)
++	addi	r3,r3,4
++	cmplw	0,r3,r4
++	bne	5b
++6:
++
++	mr 	r3, r10		/* Destination Address      */
++	bl 	board_init_r
++
++	/*
++	 * Copy exception vector code to low memory
++	 *
++	 * r3: dest_addr
++	 * r7: source address, r8: end address, r9: target address
++	 */
++	.globl	trap_init
++trap_init:
++	mflr	r4			/* save link register		*/
++	GET_GOT
++	lwz	r7,GOT(_start_of_vectors)
++	lwz	r8,GOT(_end_of_vectors)
++
++	li	r9,0x100		/* reset vector always at 0x100 */
++
++	cmplw	0,r7,r8
++	bgelr				/* return if r7>=r8 - just in case */
++1:
++	lwz	r0,0(r7)
++	stw	r0,0(r9)
++	addi	r7,r7,4
++	addi	r9,r9,4
++	cmplw	0,r7,r8
++	bne	1b
++
++	/*
++	 * relocate `hdlr' and `int_return' entries
++	 */
++	li	r7,.L_CriticalInput - _start + _START_OFFSET
++	bl	trap_reloc
++	li	r7,.L_MachineCheck - _start + _START_OFFSET
++	bl	trap_reloc
++	li	r7,.L_DataStorage - _start + _START_OFFSET
++	bl	trap_reloc
++	li	r7,.L_InstStorage - _start + _START_OFFSET
++	bl	trap_reloc
++	li	r7,.L_Alignment - _start + _START_OFFSET
++	bl	trap_reloc
++	li	r7,.L_ProgramCheck - _start + _START_OFFSET
++	bl	trap_reloc
++	li	r7,.L_FPUnavailable - _start + _START_OFFSET
++	bl	trap_reloc
++	li	r7,.L_Decrementer - _start + _START_OFFSET
++	bl	trap_reloc
++	li	r7,.L_IntervalTimer - _start + _START_OFFSET
++	li	r8,_end_of_vectors - _start + _START_OFFSET
++2:
++	bl	trap_reloc
++	addi	r7,r7,0x100		/* next exception vector	*/
++	cmplw	0,r7,r8
++	blt	2b
++
++	lis	r7,0x0
++	mtspr	IVPR,r7
++
++	mtlr	r4			/* restore link register	*/
++	blr
++
++
++.globl _text_base
++_text_base:
++	.long TEXT_BASE
++
++.globl unlock_ram_in_cache
++unlock_ram_in_cache:
++	/* invalidate the INIT_RAM section */
++	lis	r3,(CFG_INIT_RAM_ADDR & ~(CACHELINE_SIZE-1))@h
++	ori	r3,r3,(CFG_INIT_RAM_ADDR & ~(CACHELINE_SIZE-1))@l
++	mfspr	r4,L1CFG0
++	andi.	r4,r4,0x1ff
++	slwi	r4,r4,(10 - 1 - L1_CACHE_SHIFT)
++	mtctr	r4
++1:	dcbi	r0,r3
++	addi	r3,r3,CACHELINE_SIZE
++	bdnz	1b
++	sync
++
++	/* Invalidate the TLB entries for the cache */
++	lis	r3,CFG_INIT_RAM_ADDR@h
++	ori	r3,r3,CFG_INIT_RAM_ADDR@l
++	tlbivax	0,r3
++	addi	r3,r3,0x1000
++	tlbivax	0,r3
++	addi	r3,r3,0x1000
++	tlbivax	0,r3
++	addi	r3,r3,0x1000
++	tlbivax	0,r3
++	isync
++	blr
++
++.globl flush_dcache
++flush_dcache:
++	mfspr	r3,SPRN_L1CFG0
++
++	rlwinm	r5,r3,9,3	/* Extract cache block size */
++	twlgti	r5,1		/* Only 32 and 64 byte cache blocks
++				 * are currently defined.
++				 */
++	li	r4,32
++	subfic	r6,r5,2		/* r6 = log2(1KiB / cache block size) -
++				 *      log2(number of ways)
++				 */
++	slw	r5,r4,r5	/* r5 = cache block size */
++
++	rlwinm	r7,r3,0,0xff	/* Extract number of KiB in the cache */
++	mulli	r7,r7,13	/* An 8-way cache will require 13
++				 * loads per set.
++				 */
++	slw	r7,r7,r6
++
++	/* save off HID0 and set DCFA */
++	mfspr	r8,SPRN_HID0
++	ori	r9,r8,HID0_DCFA@l
++	mtspr	SPRN_HID0,r9
++	isync
++
++	lis	r4,0
++	mtctr	r7
++
++1:	lwz	r3,0(r4)	/* Load... */
++	add	r4,r4,r5
++	bdnz	1b
++
++	msync
++	lis	r4,0
++	mtctr	r7
++
++1:	dcbf	0,r4		/* ...and flush. */
++	add	r4,r4,r5
++	bdnz	1b
++
++	/* restore HID0 */
++	mtspr	SPRN_HID0,r8
++	isync
++
++	blr
++
++.globl setup_ivors
++setup_ivors:
++
++#include "fixed_ivor.S"
++	blr
+diff --git a/arch/ppc/cpu-85xx/tlb.c b/arch/ppc/cpu-85xx/tlb.c
+new file mode 100644
+index 0000000..6f22424
+--- /dev/null
++++ b/arch/ppc/cpu-85xx/tlb.c
+@@ -0,0 +1,228 @@
++/*
++ * Copyright 2012 GE Intelligent Platforms, Inc.
++ *
++ * Copyright 2008-2009 Freescale Semiconductor, Inc.
++ *
++ * (C) Copyright 2000
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <common.h>
++#include <asm/processor.h>
++#include <asm/global_data.h>
++#include <asm/mmu.h>
++#include <asm/bitops.h>
++
++DECLARE_GLOBAL_DATA_PTR;
++
++void invalidate_tlb(u8 tlb)
++{
++	if (tlb == 0)
++		mtspr(MMUCSR0, 0x4);
++	if (tlb == 1)
++		mtspr(MMUCSR0, 0x2);
++}
++
++void init_tlbs(void)
++{
++	int i;
++
++	for (i = 0; i < num_tlb_entries; i++) {
++		write_tlb(tlb_table[i].mas0,
++			  tlb_table[i].mas1,
++			  tlb_table[i].mas2,
++			  tlb_table[i].mas3,
++			  tlb_table[i].mas7);
++	}
++
++	return ;
++}
++
++static inline void use_tlb_cam(u8 idx)
++{
++	int i = idx / 32;
++	int bit = idx % 32;
++
++	gd->used_tlb_cams[i] |= (1 << bit);
++}
++
++static inline void free_tlb_cam(u8 idx)
++{
++	int i = idx / 32;
++	int bit = idx % 32;
++
++	gd->used_tlb_cams[i] &= ~(1 << bit);
++}
++
++void init_used_tlb_cams(void)
++{
++	int i;
++	unsigned int num_cam = mfspr(SPRN_TLB1CFG) & 0xfff;
++
++	for (i = 0; i < ((NUM_TLBCAMS+31)/32); i++)
++		gd->used_tlb_cams[i] = 0;
++
++	/* walk all the entries */
++	for (i = 0; i < num_cam; i++) {
++		mtspr(MAS0, FSL_BOOKE_MAS0(1, i, 0));
++		asm volatile("tlbre;isync");
++		if (mfspr(MAS1) & MAS1_VALID)
++			use_tlb_cam(i);
++	}
++}
++
++static int find_free_tlbcam(void)
++{
++	int i;
++	u32 idx;
++
++	for (i = 0; i < ((NUM_TLBCAMS+31)/32); i++) {
++		idx = ffz(gd->used_tlb_cams[i]);
++
++		if (idx != 32)
++			break;
++	}
++
++	idx += i * 32;
++
++	if (idx >= NUM_TLBCAMS)
++		return -1;
++
++	return idx;
++}
++
++void set_tlb(u8 tlb, u32 epn, u64 rpn,
++	     u8 perms, u8 wimge,
++	     u8 ts, u8 esel, u8 tsize, u8 iprot)
++{
++	u32 _mas0, _mas1, _mas2, _mas3, _mas7;
++
++	if (tlb == 1)
++		use_tlb_cam(esel);
++
++	_mas0 = FSL_BOOKE_MAS0(tlb, esel, 0);
++	_mas1 = FSL_BOOKE_MAS1(1, iprot, 0, ts, tsize);
++	_mas2 = FSL_BOOKE_MAS2(epn, wimge);
++	_mas3 = FSL_BOOKE_MAS3(rpn, 0, perms);
++	_mas7 = FSL_BOOKE_MAS7(rpn);
++
++	write_tlb(_mas0, _mas1, _mas2, _mas3, _mas7);
++
++}
++
++void disable_tlb(u8 esel)
++{
++	u32 _mas0, _mas1, _mas2, _mas3, _mas7;
++
++	free_tlb_cam(esel);
++
++	_mas0 = FSL_BOOKE_MAS0(1, esel, 0);
++	_mas1 = 0;
++	_mas2 = 0;
++	_mas3 = 0;
++	_mas7 = 0;
++
++	mtspr(MAS0, _mas0);
++	mtspr(MAS1, _mas1);
++	mtspr(MAS2, _mas2);
++	mtspr(MAS3, _mas3);
++	asm volatile("isync;msync;tlbwe;isync");
++}
++
++static void tlbsx(const unsigned *addr)
++{
++	__asm__ __volatile__ ("tlbsx 0,%0" : : "r" (addr), "m" (*addr));
++}
++
++/* return -1 if we didn't find anything */
++int find_tlb_idx(void *addr, u8 tlbsel)
++{
++	u32 _mas0, _mas1;
++
++	/* zero out Search PID, AS */
++	mtspr(MAS6, 0);
++
++	tlbsx(addr);
++
++	_mas0 = mfspr(MAS0);
++	_mas1 = mfspr(MAS1);
++
++	/* we found something, and its in the TLB we expect */
++	if ((MAS1_VALID & _mas1) &&
++		(MAS0_TLBSEL(tlbsel) == (_mas0 & MAS0_TLBSEL_MSK))) {
++		return (_mas0 & MAS0_ESEL_MSK) >> 16;
++	}
++
++	return -1;
++}
++
++static unsigned int setup_ddr_tlbs_phys(phys_addr_t p_addr,
++					unsigned int memsize_in_meg)
++{
++	int i;
++	unsigned int tlb_size;
++	unsigned int wimge = 0;
++	unsigned int ram_tlb_address = (unsigned int)CFG_SDRAM_BASE;
++	unsigned int max_cam = (mfspr(SPRN_TLB1CFG) >> 16) & 0xf;
++	u64 size, memsize = (u64)memsize_in_meg << 20;
++
++	size = min((u64)memsize, (u64)MAX_MEM_MAPPED);
++
++	/* Convert (4^max) kB to (2^max) bytes */
++	max_cam = max_cam * 2 + 10;
++
++	for (i = 0; size && i < 8; i++) {
++		int ram_tlb_index = find_free_tlbcam();
++		u32 camsize = __ilog2_u64(size) & ~1U;
++		u32 align = __ilog2(ram_tlb_address) & ~1U;
++
++		if (ram_tlb_index == -1)
++			break;
++
++		if (align == -2)
++			align = max_cam;
++		if (camsize > align)
++			camsize = align;
++
++		if (camsize > max_cam)
++			camsize = max_cam;
++
++		tlb_size = (camsize - 10) / 2;
++
++		set_tlb(1, ram_tlb_address, p_addr,
++			MAS3_SX|MAS3_SW|MAS3_SR, wimge,
++			0, ram_tlb_index, tlb_size, 1);
++
++		size -= 1ULL << camsize;
++		memsize -= 1ULL << camsize;
++		ram_tlb_address += 1UL << camsize;
++		p_addr += 1UL << camsize;
++	}
++
++	if (memsize)
++		printf("%lld left unmapped\n", memsize);
++	return memsize_in_meg;
++}
++
++unsigned int setup_ddr_tlbs(unsigned int memsize_in_meg)
++{
++	return setup_ddr_tlbs_phys(CFG_SDRAM_BASE, memsize_in_meg);
++}
+diff --git a/arch/ppc/cpu-85xx/traps.c b/arch/ppc/cpu-85xx/traps.c
+new file mode 100644
+index 0000000..dcbaadf
+--- /dev/null
++++ b/arch/ppc/cpu-85xx/traps.c
+@@ -0,0 +1,300 @@
++/*
++ * linux/arch/powerpc/kernel/traps.c
++ *
++ * Copyright 2007 Freescale Semiconductor.
++ * Copyright (C) 2003 Motorola
++ * Modified by Xianghua Xiao(x.xiao@motorola.com)
++ *
++ * Copyright (C) 1995-1996  Gary Thomas (gdt@linuxppc.org)
++ *
++ * Modified by Cort Dougan (cort@cs.nmt.edu)
++ * and Paul Mackerras (paulus@cs.anu.edu.au)
++ *
++ * (C) Copyright 2000
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++/*
++ * This file handles the architecture-dependent parts of hardware exceptions
++ */
++
++#include <common.h>
++#include <command.h>
++#include <init.h>
++#include <kgdb.h>
++#include <asm/processor.h>
++#include <asm/fsl_ddr_sdram.h>
++#include <asm/global_data.h>
++#include <mach/immap_85xx.h>
++
++DECLARE_GLOBAL_DATA_PTR;
++int machinecheck_count;
++int machinecheck_error;
++
++/*
++ * End of addressable memory.
++ */
++#define END_OF_MEM (gd->bd->bi_memstart + get_effective_memsize())
++
++static inline void set_tsr(unsigned long val)
++{
++	asm volatile("mtspr 0x150, %0" : : "r" (val));
++}
++
++static inline unsigned long get_esr(void)
++{
++	unsigned long val;
++	asm volatile("mfspr %0, 0x03e" : "=r" (val) : );
++	return val;
++}
++
++#define ESR_MCI 0x80000000
++#define ESR_PIL 0x08000000
++#define ESR_PPR 0x04000000
++#define ESR_PTR 0x02000000
++#define ESR_DST 0x00800000
++#define ESR_DIZ 0x00400000
++#define ESR_U0F 0x00008000
++
++/*
++ * Trap & Exception support
++ */
++void print_backtrace(unsigned long *sp)
++{
++	int cnt = 0;
++	unsigned long i;
++
++	printf("Call backtrace: ");
++	while (sp) {
++		if ((uint)sp > END_OF_MEM)
++			break;
++
++		i = sp[1];
++		if (cnt++ % 7 == 0)
++			printf("\n");
++		printf("%08lX ", i);
++		if (cnt > 32)
++			break;
++		sp = (unsigned long *)*sp;
++	}
++	printf("\n");
++}
++
++void show_regs(struct pt_regs *regs)
++{
++	int i;
++
++	printf("NIP: %08lX XER: %08lX LR: %08lX REGS: %p TRAP: %04lx "
++		"DAR: %08lX\n",
++	       regs->nip, regs->xer, regs->link, regs, regs->trap, regs->dar);
++	printf("MSR: %08lx EE: %01x PR: %01x FP: %01x ME: %01x "
++		"IR/DR: %01x%01x\n",
++	       regs->msr, regs->msr&MSR_EE ? 1 : 0, regs->msr&MSR_PR ? 1 : 0,
++	       regs->msr & MSR_FP ? 1 : 0, regs->msr&MSR_ME ? 1 : 0,
++	       regs->msr&MSR_IR ? 1 : 0,
++	       regs->msr&MSR_DR ? 1 : 0);
++
++	printf("\n");
++	for (i = 0;  i < 32;  i++) {
++		if ((i % 8) == 0)
++			printf("GPR%02d: ", i);
++
++		printf("%08lX ", regs->gpr[i]);
++		if ((i % 8) == 7)
++			printf("\n");
++	}
++}
++
++void _exception(int signr, struct pt_regs *regs)
++{
++	show_regs(regs);
++	print_backtrace((unsigned long *)regs->gpr[1]);
++	panic("Exception in kernel pc %lx signal %d", regs->nip, signr);
++}
++
++void CritcalInputException(struct pt_regs *regs)
++{
++	panic("Critical Input Exception");
++}
++
++static int exception_init(void)
++{
++	machinecheck_count = 0;
++	machinecheck_error = 0;
++
++	return 0;
++}
++core_initcall(exception_init);
++
++void MachineCheckException(struct pt_regs *regs)
++{
++	unsigned long fixup;
++	unsigned int mcsr, mcsrr0, mcsrr1, mcar;
++
++	/*
++	 * Probing PCI using config cycles cause this exception
++	 * when a device is not present.  Catch it and return to
++	 * the PCI exception handler.
++	 */
++	fixup = search_exception_table(regs->nip);
++	if (fixup != 0) {
++		regs->nip = fixup;
++		return;
++	}
++
++	mcsrr0 = mfspr(SPRN_MCSRR0);
++	mcsrr1 = mfspr(SPRN_MCSRR1);
++	mcsr = mfspr(SPRN_MCSR);
++	mcar = mfspr(SPRN_MCAR);
++
++	machinecheck_count++;
++	machinecheck_error = 1;
++
++#if defined(CONFIG_KGDB)
++	if (debugger_exception_handler && (*debugger_exception_handler)(regs))
++		return;
++#endif
++
++	printf("Machine check in kernel mode.\n");
++	printf("Caused by (from mcsr): ");
++	printf("mcsr = 0x%08x\n", mcsr);
++	if (mcsr & 0x80000000)
++		printf("Machine check input pin\n");
++	if (mcsr & 0x40000000)
++		printf("Instruction cache parity error\n");
++	if (mcsr & 0x20000000)
++		printf("Data cache push parity error\n");
++	if (mcsr & 0x10000000)
++		printf("Data cache parity error\n");
++	if (mcsr & 0x00000080)
++		printf("Bus instruction address error\n");
++	if (mcsr & 0x00000040)
++		printf("Bus Read address error\n");
++	if (mcsr & 0x00000020)
++		printf("Bus Write address error\n");
++	if (mcsr & 0x00000010)
++		printf("Bus Instruction data bus error\n");
++	if (mcsr & 0x00000008)
++		printf("Bus Read data bus error\n");
++	if (mcsr & 0x00000004)
++		printf("Bus Write bus error\n");
++	if (mcsr & 0x00000002)
++		printf("Bus Instruction parity error\n");
++	if (mcsr & 0x00000001)
++		printf("Bus Read parity error\n");
++
++	show_regs(regs);
++	printf("MCSR=0x%08x\tMCSRR0=0x%08x\nMCSRR1=0x%08x\tMCAR=0x%08x\n",
++		mcsr, mcsrr0, mcsrr1, mcar);
++	print_backtrace((unsigned long *)regs->gpr[1]);
++	if (machinecheck_count > 10)
++		panic("machine check count too high\n");
++
++	if (machinecheck_count > 1) {
++		regs->nip += 4; /* skip offending instruction */
++		printf("Skipping current instr, Returning to 0x%08lx\n",
++		       regs->nip);
++	} else {
++		printf("Returning back to 0x%08lx\n", regs->nip);
++	}
++}
++
++void AlignmentException(struct pt_regs *regs)
++{
++#if defined(CONFIG_KGDB)
++	if (debugger_exception_handler && (*debugger_exception_handler)(regs))
++		return;
++#endif
++
++	show_regs(regs);
++	print_backtrace((unsigned long *)regs->gpr[1]);
++	panic("Alignment Exception");
++}
++
++void ProgramCheckException(struct pt_regs *regs)
++{
++	long esr_val;
++
++#if defined(CONFIG_KGDB)
++	if (debugger_exception_handler && (*debugger_exception_handler)(regs))
++		return;
++#endif
++
++	show_regs(regs);
++
++	esr_val = get_esr();
++	if (esr_val & ESR_PIL)
++		printf("** Illegal Instruction **\n");
++	else if (esr_val & ESR_PPR)
++		printf("** Privileged Instruction **\n");
++	else if (esr_val & ESR_PTR)
++		printf("** Trap Instruction **\n");
++
++	print_backtrace((unsigned long *)regs->gpr[1]);
++	panic("Program Check Exception");
++}
++
++void PITException(struct pt_regs *regs)
++{
++	/* Reset PIT interrupt */
++	set_tsr(0x0c000000);
++
++}
++
++void UnknownException(struct pt_regs *regs)
++{
++#if defined(CONFIG_KGDB)
++	if (debugger_exception_handler && (*debugger_exception_handler)(regs))
++		return;
++#endif
++
++	printf("Bad trap at PC: %lx, SR: %lx, vector=%lx\n",
++	       regs->nip, regs->msr, regs->trap);
++	_exception(0, regs);
++}
++
++void ExtIntException(struct pt_regs *regs)
++{
++	void __iomem *pic = (void __iomem *)(MPC8xxx_PIC_ADDR);
++
++	uint vect;
++
++#if defined(CONFIG_KGDB)
++	if (debugger_exception_handler && (*debugger_exception_handler)(regs))
++		return;
++#endif
++	printf("External Interrupt Exception at PC: %lx, SR: %lx, vector=%lx",
++	       regs->nip, regs->msr, regs->trap);
++	vect = in_be32(pic + MPC85xx_PIC_IACK0_OFFSET);
++	printf(" irq IACK0@%05x=%d\n", (int)(pic + MPC85xx_PIC_IACK0_OFFSET),
++		vect);
++	show_regs(regs);
++	print_backtrace((unsigned long *)regs->gpr[1]);
++}
++
++void DebugException(struct pt_regs *regs)
++{
++	printf("Debugger trap at @ %lx\n", regs->nip);
++	show_regs(regs);
++#if defined(CONFIG_BEDBUG)
++	do_bedbug_breakpoint(regs);
++#endif
++}
+diff --git a/arch/ppc/include/asm/bitops.h b/arch/ppc/include/asm/bitops.h
+index 8048232..3b31d54 100644
+--- a/arch/ppc/include/asm/bitops.h
++++ b/arch/ppc/include/asm/bitops.h
+@@ -166,6 +166,48 @@ extern __inline__ int ffz(unsigned int x)
+ 	return __ilog2(x & -x);
+ }
+ 
++/*
++ * fls: find last (most-significant) bit set.
++ * Note fls(0) = 0, fls(1) = 1, fls(0x80000000) = 32.
++ */
++static inline int fls(unsigned int x)
++{
++	int lz;
++
++	asm ("cntlzw %0,%1" : "=r" (lz) : "r" (x));
++	return 32 - lz;
++}
++
++/*
++ * fls64 - find last set bit in a 64-bit word
++ * @x: the word to search
++ *
++ * This is defined in a similar way as the libc and compiler builtin
++ * ffsll, but returns the position of the most significant set bit.
++ *
++ * fls64(value) returns 0 if value is 0 or the position of the last
++ * set bit if value is nonzero. The last (most significant) bit is
++ * at position 64.
++ */
++
++static inline int fls64(__u64 x)
++{
++	__u32 h = x >> 32;
++	if (h)
++		return fls(h) + 32;
++	return fls(x);
++}
++
++static inline int __ilog2_u64(u64 n)
++{
++	return fls64(n) - 1;
++}
++
++static inline int ffs64(u64 x)
++{
++	return __ilog2_u64(x & -x) + 1ull;
++}
++
+ #ifdef __KERNEL__
+ 
+ /*
+diff --git a/arch/ppc/include/asm/cache.h b/arch/ppc/include/asm/cache.h
+index 4f7ca86..147ceb6 100644
+--- a/arch/ppc/include/asm/cache.h
++++ b/arch/ppc/include/asm/cache.h
+@@ -31,6 +31,8 @@
+ extern void flush_dcache_range(unsigned long start, unsigned long stop);
+ extern void clean_dcache_range(unsigned long start, unsigned long stop);
+ extern void invalidate_dcache_range(unsigned long start, unsigned long stop);
++extern void flush_dcache(void);
++extern void invalidate_icache(void);
+ #ifdef CFG_INIT_RAM_LOCK
+ extern void unlock_ram_in_cache(void);
+ #endif /* CFG_INIT_RAM_LOCK */
+diff --git a/arch/ppc/include/asm/common.h b/arch/ppc/include/asm/common.h
+index 732fbaf..e3636d9 100644
+--- a/arch/ppc/include/asm/common.h
++++ b/arch/ppc/include/asm/common.h
+@@ -34,5 +34,6 @@ static inline unsigned long get_pc(void)
+ 	return pc;
+ }
+ 
++int l2_cache_init(void);
+ extern unsigned long search_exception_table(unsigned long);
+ #endif /* __ASM_COMMON_H */
+diff --git a/arch/ppc/include/asm/config.h b/arch/ppc/include/asm/config.h
+new file mode 100644
+index 0000000..9c4458b
+--- /dev/null
++++ b/arch/ppc/include/asm/config.h
+@@ -0,0 +1,44 @@
++/*
++ * Copyright 2012 GE Intelligent Platforms, Inc.
++ * Copyright 2009-2011 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#ifndef _ASM_CONFIG_H_
++#define _ASM_CONFIG_H_
++
++#ifdef CONFIG_MPC85xx
++#include <asm/config_mpc85xx.h>
++#endif
++
++#ifndef MAX_MEM_MAPPED
++#if defined(CONFIG_E500)
++#define MAX_MEM_MAPPED	((phys_size_t)(2 << 30))
++#endif
++#endif
++
++/*
++ * Provide a default boot page translation virtual address that lines up with
++ * Freescale's default e500 reset page.
++ */
++#if (defined(CONFIG_E500) && defined(CONFIG_MP))
++#ifndef BPTR_VIRT_ADDR
++#define BPTR_VIRT_ADDR	0xfffff000
++#endif
++#endif
++
++#endif /* _ASM_CONFIG_H_ */
+diff --git a/arch/ppc/include/asm/config_mpc85xx.h b/arch/ppc/include/asm/config_mpc85xx.h
+new file mode 100644
+index 0000000..5da4f2f
+--- /dev/null
++++ b/arch/ppc/include/asm/config_mpc85xx.h
+@@ -0,0 +1,37 @@
++/*
++ * Copyright 2012 GE Intelligent Platforms, Inc.
++ * Copyright 2011 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#ifndef _ASM_MPC85xx_CONFIG_H_
++#define _ASM_MPC85xx_CONFIG_H_
++
++/* Number of TLB CAM entries we have on FSL Book-E chips */
++#if defined(CONFIG_E500)
++#define NUM_TLBCAMS	16
++#endif
++
++#if defined(CONFIG_P2020)
++#define MAX_CPUS	2
++#define FSL_NUM_LAWS	12
++#define FSL_SEC_COMPAT	2
++#else
++#error Processor type not defined for this platform
++#endif
++
++#endif /* _ASM_MPC85xx_CONFIG_H_ */
+diff --git a/arch/ppc/include/asm/e500.h b/arch/ppc/include/asm/e500.h
+new file mode 100644
+index 0000000..36aa5a8
+--- /dev/null
++++ b/arch/ppc/include/asm/e500.h
+@@ -0,0 +1,39 @@
++/*
++ * Copyright 2012 GE Intelligent Platforms, Inc.
++ * Copyright 2003 Motorola,Inc.
++ * Xianghua Xiao(x.xiao@motorola.com)
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#ifndef	__E500_H__
++#define __E500_H__
++
++#ifndef __ASSEMBLY__
++#include <asm/config_mpc85xx.h>
++
++struct sys_info {
++	unsigned long freqProcessor[MAX_CPUS];
++	unsigned long freqSystemBus;
++	unsigned long freqDDRBus;
++	unsigned long freqLocalBus;
 +};
 +
-+#define SZ_DEC_1M		1000000
++#endif  /* _ASMLANGUAGE */
 +
-+/* Out-of-reset PFDs and clock source definitions */
-+#define PLL2_PFD0_FREQ		352000000
-+#define PLL2_PFD1_FREQ		594000000
-+#define PLL2_PFD2_FREQ		400000000
-+#define PLL2_PFD2_DIV_FREQ	200000000
-+#define PLL3_PFD0_FREQ		720000000
-+#define PLL3_PFD1_FREQ		540000000
-+#define PLL3_PFD2_FREQ		508200000
-+#define PLL3_PFD3_FREQ		454700000
-+#define PLL3_80M		80000000
-+#define PLL3_60M		60000000
++#define RESET_VECTOR	0xfffffffc
 +
-+#define AHB_CLK_ROOT		132000000
-+#define IPG_CLK_ROOT		66000000
-+#define ENET_FREQ_0		25000000
-+#define ENET_FREQ_1		50000000
-+#define ENET_FREQ_2		100000000
-+#define ENET_FREQ_3		125000000
++#endif	/* __E500_H__ */
+diff --git a/arch/ppc/include/asm/fsl_ddr_sdram.h b/arch/ppc/include/asm/fsl_ddr_sdram.h
+new file mode 100644
+index 0000000..5de2d72
+--- /dev/null
++++ b/arch/ppc/include/asm/fsl_ddr_sdram.h
+@@ -0,0 +1,34 @@
++/*
++ * Copyright 2012 GE Intelligent Platforms, Inc.
++ * Copyright 2008-2011 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * Version 2 as published by the Free Software Foundation.
++ */
 +
-+#define CONFIG_MX6_HCLK_FREQ      24000000
++#ifndef FSL_DDR_MEMCTL_H
++#define FSL_DDR_MEMCTL_H
 +
-+static u32 __decode_pll(enum pll_clocks pll, u32 infreq)
++/*
++ * DDR_SDRAM_CFG - DDR SDRAM Control Configuration
++ */
++#define SDRAM_CFG_MEM_EN		0x80000000
++#define SDRAM_CFG_SREN			0x40000000
++#define SDRAM_CFG_ECC_EN		0x20000000
++#define SDRAM_CFG_RD_EN			0x10000000
++#define SDRAM_CFG_SDRAM_TYPE_DDR1	0x02000000
++#define SDRAM_CFG_SDRAM_TYPE_DDR2	0x03000000
++#define SDRAM_CFG_SDRAM_TYPE_MASK	0x07000000
++#define SDRAM_CFG_SDRAM_TYPE_SHIFT	24
++#define SDRAM_CFG_DYN_PWR		0x00200000
++#define SDRAM_CFG_32_BE			0x00080000
++#define SDRAM_CFG_8_BE			0x00040000
++#define SDRAM_CFG_NCAP			0x00020000
++#define SDRAM_CFG_2T_EN			0x00008000
++#define SDRAM_CFG_BI			0x00000001
++
++extern phys_size_t get_effective_memsize(void);
++extern phys_size_t fixed_sdram(void);
++
++#endif
+diff --git a/arch/ppc/include/asm/fsl_i2c.h b/arch/ppc/include/asm/fsl_i2c.h
+index 4f71341..b219d0b 100644
+--- a/arch/ppc/include/asm/fsl_i2c.h
++++ b/arch/ppc/include/asm/fsl_i2c.h
+@@ -36,13 +36,13 @@ typedef struct fsl_i2c {
+ 
+ 	u8 adr;		/* I2C slave address */
+ 	u8 res0[3];
+-#define I2C_ADR		0xFE
++#define I2C_ADR		0xfe
+ #define I2C_ADR_SHIFT	1
+ #define I2C_ADR_RES	~(I2C_ADR)
+ 
+ 	u8 fdr;		/* I2C frequency divider register */
+ 	u8 res1[3];
+-#define IC2_FDR		0x3F
++#define IC2_FDR		0x3f
+ #define IC2_FDR_SHIFT	0
+ #define IC2_FDR_RES	~(IC2_FDR)
+ 
+@@ -69,18 +69,18 @@ typedef struct fsl_i2c {
+ 
+ 	u8 dr;		/* I2C data register */
+ 	u8 res4[3];
+-#define I2C_DR		0xFF
++#define I2C_DR		0xff
+ #define I2C_DR_SHIFT	0
+ #define I2C_DR_RES	~(I2C_DR)
+ 
+ 	u8 dfsrr;	/* I2C digital filter sampling rate register */
+ 	u8 res5[3];
+-#define I2C_DFSRR	0x3F
++#define I2C_DFSRR	0x3f
+ #define I2C_DFSRR_SHIFT	0
+ #define I2C_DFSRR_RES	~(I2C_DR)
+ 
+ 	/* Fill out the reserved block */
+-	u8 res6[0xE8];
++	u8 res6[0xe8];
+ } fsl_i2c_t;
+ 
+ #endif	/* _ASM_I2C_H_ */
+diff --git a/arch/ppc/include/asm/fsl_law.h b/arch/ppc/include/asm/fsl_law.h
+new file mode 100644
+index 0000000..14f29e5
+--- /dev/null
++++ b/arch/ppc/include/asm/fsl_law.h
+@@ -0,0 +1,91 @@
++/*
++ * Copyright 2008-2010 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * Version 2 as published by the Free Software Foundation.
++ */
++
++#ifndef _FSL_LAW_H_
++#define _FSL_LAW_H_
++
++#include <asm/io.h>
++
++#define LAW_EN	0x80000000
++
++#define SET_LAW_ENTRY(idx, a, sz, trgt) \
++	{ .index = idx, .addr = a, .size = sz, .trgt_id = trgt }
++
++#define SET_LAW(a, sz, trgt) \
++	{ .index = -1, .addr = a, .size = sz, .trgt_id = trgt }
++
++enum law_size {
++	LAW_SIZE_4K = 0xb,
++	LAW_SIZE_8K,
++	LAW_SIZE_16K,
++	LAW_SIZE_32K,
++	LAW_SIZE_64K,
++	LAW_SIZE_128K,
++	LAW_SIZE_256K,
++	LAW_SIZE_512K,
++	LAW_SIZE_1M,
++	LAW_SIZE_2M,
++	LAW_SIZE_4M,
++	LAW_SIZE_8M,
++	LAW_SIZE_16M,
++	LAW_SIZE_32M,
++	LAW_SIZE_64M,
++	LAW_SIZE_128M,
++	LAW_SIZE_256M,
++	LAW_SIZE_512M,
++	LAW_SIZE_1G,
++	LAW_SIZE_2G,
++	LAW_SIZE_4G,
++	LAW_SIZE_8G,
++	LAW_SIZE_16G,
++	LAW_SIZE_32G,
++};
++
++#define law_size_bits(sz)	(__ilog2_u64(sz) - 1)
++#define lawar_size(x)	(1ULL << (((x) & 0x3f) + 1))
++
++enum law_trgt_if {
++	LAW_TRGT_IF_PCI = 0x00,
++	LAW_TRGT_IF_PCI_2 = 0x01,
++	LAW_TRGT_IF_PCIE_1 = 0x02,
++#if !defined(CONFIG_P2020)
++	LAW_TRGT_IF_PCIE_3 = 0x03,
++#endif
++	LAW_TRGT_IF_LBC = 0x04,
++	LAW_TRGT_IF_CCSR = 0x08,
++	LAW_TRGT_IF_DDR_INTRLV = 0x0b,
++	LAW_TRGT_IF_RIO = 0x0c,
++	LAW_TRGT_IF_RIO_2 = 0x0d,
++	LAW_TRGT_IF_DDR = 0x0f,
++	LAW_TRGT_IF_DDR_2 = 0x16,	/* 2nd controller */
++};
++#define LAW_TRGT_IF_DDR_1	LAW_TRGT_IF_DDR
++#define LAW_TRGT_IF_PCI_1	LAW_TRGT_IF_PCI
++#define LAW_TRGT_IF_PCIX	LAW_TRGT_IF_PCI
++#define LAW_TRGT_IF_PCIE_2	LAW_TRGT_IF_PCI_2
++#define LAW_TRGT_IF_RIO_1	LAW_TRGT_IF_RIO
++
++
++#if defined(CONFIG_P2020)
++#define LAW_TRGT_IF_PCIE_3	LAW_TRGT_IF_PCI
++#endif
++
++struct law_entry {
++	int index;
++	phys_addr_t addr;
++	enum law_size size;
++	enum law_trgt_if trgt_id;
++};
++
++extern int set_ddr_laws(u64 start, u64 sz, enum law_trgt_if id);
++extern void init_laws(void);
++
++/* define in board code */
++extern struct law_entry law_table[];
++extern int num_law_entries;
++#endif
+diff --git a/arch/ppc/include/asm/fsl_lbc.h b/arch/ppc/include/asm/fsl_lbc.h
+new file mode 100644
+index 0000000..8c6b08a
+--- /dev/null
++++ b/arch/ppc/include/asm/fsl_lbc.h
+@@ -0,0 +1,67 @@
++/*
++ * Copyright 2012 GE Intelligent Platforms, Inc.
++ * Copyright (C) 2004-2008,2010-2011 Freescale Semiconductor, Inc.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ */
++
++#ifndef __ASM_PPC_FSL_LBC_H
++#define __ASM_PPC_FSL_LBC_H
++
++#include <config.h>
++#include <common.h>
++
++/*
++ * BR - Base Registers
++ */
++#define BR_PS				0x00001800
++#define BR_PS_SHIFT			11
++#define BR_PS_8				0x00000800	/* Port Size 8 bit */
++#define BR_PS_16			0x00001000	/* Port Size 16 bit */
++#define BR_PS_32			0x00001800	/* Port Size 32 bit */
++#define BR_V				0x00000001
++#define BR_V_SHIFT			0
++
++/* Convert an address into the right format for the BR registers */
++#define BR_PHYS_ADDR(x) ((x) & 0xffff8000)
++
++/* helpers to convert values into an OR address mask (GPCM mode) */
++#if 0
++#define P2SZ_TO_AM(s)	((~((s) - 1)) & 0xffff8000)	/* must be pow of 2 */
++#define MEG_TO_AM(m)	P2SZ_TO_AM((m) << 20)
++#endif
++
++/*
++ * CLKDIV is five bits only on 8536, 8572, and 8610, so far, but the fifth bit
++ * should always be zero on older parts that have a four bit CLKDIV.
++ */
++#define LCRR_CLKDIV			0x0000001f
++#define LCRR_CLKDIV_SHIFT		0
++#define LCRR_CLKDIV_4			0x00000002
++#define LCRR_CLKDIV_8			0x00000004
++#define LCRR_CLKDIV_16			0x00000008
++
++#ifndef __ASSEMBLY__
++#include <asm/io.h>
++
++extern void init_early_memctl_regs(void);
++
++/* LBC register offsets. */
++#define FSL_LBC_BRX(x)	((x) * 8)	/* bank register offsets.  */
++#define FSL_LBC_ORX(x)	(4 + ((x) * 8)) /* option register offset. */
++#define FSL_LBC_LCCR	0x0d4		/* Clock ration register. */
++
++#define LBC_BASE_ADDR ((void __iomem *)LBC_ADDR)
++#define get_lbc_br(x) (in_be32((LBC_BASE_ADDR + FSL_LBC_BRX(x))))
++#define get_lbc_or(x) (in_be32((LBC_BASE_ADDR + FSL_LBC_ORX(x))))
++#define set_lbc_br(x, v) (out_be32((LBC_BASE_ADDR + FSL_LBC_BRX(x)), v))
++#define set_lbc_or(x, v) (out_be32((LBC_BASE_ADDR + FSL_LBC_ORX(x)), v))
++
++#endif /* __ASSEMBLY__ */
++#endif /* __ASM_PPC_FSL_LBC_H */
+diff --git a/arch/ppc/include/asm/global_data.h b/arch/ppc/include/asm/global_data.h
+new file mode 100644
+index 0000000..ea33c84
+--- /dev/null
++++ b/arch/ppc/include/asm/global_data.h
+@@ -0,0 +1,57 @@
++/*
++ * Copyright 2012 GE Intelligent Platforms, Inc.
++ * (C) Copyright 2002-2010
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#ifndef	__ASM_GBL_DATA_H
++#define __ASM_GBL_DATA_H
++
++#include "config.h"
++#include "asm/types.h"
++
++/*
++ * The following data structure is placed in some memory wich is
++ * available very early after boot (some locked parts of the data cache)
++ * to allow for a minimum set of global variables during system initialization
++ * (until we have set * up the memory controller so that we can use RAM).
++ */
++
++struct	global_data {
++	bd_t		*bd;
++	unsigned long	flags;
++	unsigned long	baudrate;
++	unsigned long	cpu_clk;	/* CPU clock in Hz! */
++	unsigned long	bus_clk;
++	unsigned long	mem_clk;
++	u32 lbc_clk;
++	void *cpu;
++	u32 i2c1_clk;
++	u32 i2c2_clk;
++	u32 used_laws;
++	u32 used_tlb_cams[(NUM_TLBCAMS+31)/32];
++	phys_size_t	ram_size;
++	unsigned long	board_type;
++};
++
++#define DECLARE_GLOBAL_DATA_PTR		register struct global_data \
++					*gd asm ("r2")
++#endif /* __ASM_GBL_DATA_H */
+diff --git a/arch/ppc/include/asm/io.h b/arch/ppc/include/asm/io.h
+index 052ae15..13187ca 100644
+--- a/arch/ppc/include/asm/io.h
++++ b/arch/ppc/include/asm/io.h
+@@ -176,6 +176,26 @@ extern inline void out_be32(volatile unsigned *addr, int val)
+     __asm__ __volatile__("stw%U0%X0 %1,%0; eieio" : "=m" (*addr) : "r" (val));
+ }
+ 
++/*
++ * Clear and set bits in one shot. These macros can be used to clear and
++ * set multiple bits in a register using a single call. These macros can
++ * also be used to set a multiple-bit bit pattern using a mask, by
++ * specifying the mask in the 'clear' parameter and the new bit pattern
++ * in the 'set' parameter.
++ */
++#define clrbits(type, addr, clear) \
++	out_##type((addr), in_##type(addr) & ~(clear))
++
++#define setbits(type, addr, set) \
++	out_##type((addr), in_##type(addr) | (set))
++
++#define clrsetbits(type, addr, clear, set) \
++	out_##type((addr), (in_##type(addr) & ~(clear)) | (set))
++
++#define clrbits_be32(addr, clear) clrbits(be32, addr, clear)
++#define setbits_be32(addr, set) setbits(be32, addr, set)
++#define clrsetbits_be32(addr, clear, set) clrsetbits(be32, addr, clear, set)
++
+ /* these ones were originally in config.h */
+ unsigned char	in8(unsigned int);
+ void		out8(unsigned int, unsigned char);
+diff --git a/arch/ppc/include/asm/mmu.h b/arch/ppc/include/asm/mmu.h
+index 1667041..bba5ab5 100644
+--- a/arch/ppc/include/asm/mmu.h
++++ b/arch/ppc/include/asm/mmu.h
+@@ -372,15 +372,17 @@ extern int write_bat(ppc_bat_t bat, unsigned long upper, unsigned long lower);
+  * e500 support
+  */
+ 
+-#define MAS0_TLBSEL     0x10000000
+-#define MAS0_ESEL       0x000F0000
+-#define MAS0_NV         0x00000001
++#define MAS0_TLBSEL_MSK 0x30000000
++#define MAS0_TLBSEL(x)  (((x) << 28) & MAS0_TLBSEL_MSK)
++#define MAS0_ESEL_MSK   0x0FFF0000
++#define MAS0_ESEL(x)    (((x) << 16) & MAS0_ESEL_MSK)
++#define MAS0_NV(x)      ((x) & 0x00000FFF)
+ 
+ #define MAS1_VALID      0x80000000
+ #define MAS1_IPROT      0x40000000
+-#define MAS1_TID        0x00FF0000
++#define MAS1_TID(x)     (((x) << 16) & 0x3FFF0000)
+ #define MAS1_TS         0x00001000
+-#define MAS1_TSIZE   	0x00000F00
++#define MAS1_TSIZE(x)   (((x) << 8) & 0x00000F00)
+ 
+ #define MAS2_EPN        0xFFFFF000
+ #define MAS2_SHAREN     0x00000200
+@@ -404,10 +406,10 @@ extern int write_bat(ppc_bat_t bat, unsigned long upper, unsigned long lower);
+ #define MAS3_UR         0x00000002
+ #define MAS3_SR         0x00000001
+ 
+-#define MAS4_TLBSELD    0x10000000
+-#define MAS4_TIDDSEL    0x00030000
++#define MAS4_TLBSELD(x) MAS0_TLBSEL(x)
++#define MAS4_TIDDSEL    0x000F0000
++#define MAS4_TSIZED(x)  MAS1_TSIZE(x)
+ #define MAS4_DSHAREN    0x00001000
+-#define MAS4_TSIZED(x)  (x << 8)
+ #define MAS4_X0D        0x00000040
+ #define MAS4_X1D        0x00000020
+ #define MAS4_WD         0x00000010
+@@ -419,6 +421,23 @@ extern int write_bat(ppc_bat_t bat, unsigned long upper, unsigned long lower);
+ #define MAS6_SPID       0x00FF0000
+ #define MAS6_SAS        0x00000001
+ 
++#define MAS7_RPN	0xFFFFFFFF
++
++#define FSL_BOOKE_MAS0(tlbsel, esel, nv) \
++		(MAS0_TLBSEL(tlbsel) | MAS0_ESEL(esel) | MAS0_NV(nv))
++#define FSL_BOOKE_MAS1(v, iprot, tid, ts, tsize) \
++		((((v) << 31) & MAS1_VALID)             |\
++		(((iprot) << 30) & MAS1_IPROT)          |\
++		(MAS1_TID(tid))				|\
++		(((ts) << 12) & MAS1_TS)                |\
++		(MAS1_TSIZE(tsize)))
++#define FSL_BOOKE_MAS2(epn, wimge) \
++		(((epn) & MAS3_RPN) | (wimge))
++#define FSL_BOOKE_MAS3(rpn, user, perms) \
++		(((rpn) & MAS3_RPN) | (user) | (perms))
++#define FSL_BOOKE_MAS7(rpn) \
++		(((u64)(rpn)) >> 32)
++
+ #define BOOKE_PAGESZ_1K         0
+ #define BOOKE_PAGESZ_4K         1
+ #define BOOKE_PAGESZ_16K        2
+@@ -436,6 +455,40 @@ extern int write_bat(ppc_bat_t bat, unsigned long upper, unsigned long lower);
+ #define LAWBAR_BASE_ADDR	0x00FFFFFF
+ #define LAWAR_TRGT_IF		0x01F00000
+ #else
++#ifdef CONFIG_E500
++#ifndef __ASSEMBLY__
++extern void set_tlb(u8 tlb, u32 epn, u64 rpn,
++		u8 perms, u8 wimge,
++		u8 ts, u8 esel, u8 tsize, u8 iprot);
++extern void disable_tlb(u8 esel);
++extern void invalidate_tlb(u8 tlb);
++extern void init_tlbs(void);
++extern int find_tlb_idx(void *addr, u8 tlbsel);
++extern void init_used_tlb_cams(void);
++
++extern unsigned int setup_ddr_tlbs(unsigned int memsize_in_meg);
++extern void write_tlb(u32 _mas0, u32 _mas1, u32 _mas2, u32 _mas3, u32 _mas7);
++
++#define SET_TLB_ENTRY(_tlb, _epn, _rpn, _perms, _wimge, _ts, _esel, _sz,\
++			_iprot) \
++	{ .mas0 = FSL_BOOKE_MAS0(_tlb, _esel, 0), \
++	  .mas1 = FSL_BOOKE_MAS1(1, _iprot, 0, _ts, _sz), \
++	  .mas2 = FSL_BOOKE_MAS2(_epn, _wimge), \
++	  .mas3 = FSL_BOOKE_MAS3(_rpn, 0, _perms), \
++	  .mas7 = FSL_BOOKE_MAS7(_rpn), }
++
++struct fsl_e_tlb_entry {
++	u32	mas0;
++	u32	mas1;
++	u32	mas2;
++	u32	mas3;
++	u32	mas7;
++};
++extern struct fsl_e_tlb_entry tlb_table[];
++extern int num_tlb_entries;
++#endif
++#endif
++
+ #define LAWBAR_BASE_ADDR	0x000FFFFF
+ #define LAWAR_TRGT_IF		0x00F00000
+ #endif
+diff --git a/arch/ppc/include/asm/processor.h b/arch/ppc/include/asm/processor.h
+index 9c6f79a..29e0622 100644
+--- a/arch/ppc/include/asm/processor.h
++++ b/arch/ppc/include/asm/processor.h
+@@ -217,6 +217,7 @@
+ #define   HID0_DPM	(1<<20)
+ #define   HID0_ICE	(1<<HID0_ICE_SHIFT)	/* Instruction Cache Enable */
+ #define   HID0_DCE	(1<<HID0_DCE_SHIFT)	/* Data Cache Enable */
++#define   HID0_TBEN	(1<<14)		/* Time Base Enable */
+ #define   HID0_ILOCK	(1<<13)		/* Instruction Cache Lock */
+ #define   HID0_DLOCK	(1<<HID0_DLOCK_SHIFT)	/* Data Cache Lock */
+ #define   HID0_ICFI	(1<<11)		/* Instr. Cache Flash Invalidate */
+@@ -231,6 +232,10 @@
+ #define   HID0_BHTE	(1<<2)		/* Branch History Table Enable */
+ #define   HID0_BTCD	(1<<1)		/* Branch target cache disable */
+ #define SPRN_HID1	0x3F1	/* Hardware Implementation Register 1 */
++#define   HID1_RFXE     (1<<17)		/* Read Fault Exception Enable */
++#define   HID1_ASTME    (1<<13)		/* Address bus streaming mode */
++#define   HID1_ABE      (1<<12)		/* Address broadcast enable */
++#define   HID1_MBDD     (1<<6)		/* optimized sync instruction */
+ #define SPRN_IABR	0x3F2	/* Instruction Address Breakpoint Register */
+ #ifndef CONFIG_BOOKE
+ #define SPRN_IAC1	0x3F4	/* Instruction Address Compare 1 */
+@@ -410,13 +415,20 @@
+ #define SPRN_IVOR15	0x19f	/* Interrupt Vector Offset Register 15 */
+ 
+ /* e500 definitions */
++#define SPRN_L1CFG0     0x203   /* L1 Cache Configuration Register 0 */
+ #define SPRN_L1CSR0     0x3f2   /* L1 Cache Control and Status Register 0 */
++#define   L1CSR0_CPE            0x00010000      /* Data Cache Parity Enable */
++#define   L1CSR0_DCLFR          0x00000100      /* D-Cache Lock Flash Reset */
+ #define   L1CSR0_DCFI           0x00000002      /* Data Cache Flash Invalidate */
+ #define   L1CSR0_DCE            0x00000001      /* Data Cache Enable */
+ #define SPRN_L1CSR1     0x3f3   /* L1 Cache Control and Status Register 1 */
++#define   L1CSR1_CPE           0x00010000       /* I-Cache Parity Enable */
++#define   L1CSR1_ICLFR          0x00000100      /* I-Cache Lock Flash Reset */
+ #define   L1CSR1_ICFI           0x00000002      /* Instruction Cache Flash Invalidate */
+ #define   L1CSR1_ICE            0x00000001      /* Instruction Cache Enable */
+ 
++#define SPRN_TLB0CFG   0x2B0   /* TLB 0 Config Register */
++#define SPRN_TLB1CFG   0x2B1   /* TLB 1 Config Register */
+ #define SPRN_MMUCSR0	0x3f4	/* MMU control and status register 0 */
+ #define SPRN_MAS0       0x270   /* MMU Assist Register 0 */
+ #define SPRN_MAS1       0x271   /* MMU Assist Register 1 */
+@@ -436,11 +448,17 @@
+ #define SPRN_MCSRR0     0x23a   /* Machine Check Save and Restore Register 0 */
+ #define SPRN_MCSRR1     0x23b   /* Machine Check Save and Restore Register 1 */
+ #define SPRN_BUCSR	0x3f5	/* Branch Control and Status Register */
++#define   BUCSR_STAC_EN 0x01000000      /* Segment target addr cache enable */
++#define   BUCSR_LS_EN   0x00400000      /* Link stack enable */
++#define   BUCSR_BBFI    0x00000200      /* Branch buffer flash invalidate */
++#define   BUCSR_BPEN    0x00000001      /* Branch prediction enable */
++#define   BUCSR_ENABLE (BUCSR_STAC_EN|BUCSR_LS_EN|BUCSR_BBFI|BUCSR_BPEN)
+ #define SPRN_BBEAR      0x201   /* Branch Buffer Entry Address Register */
+ #define SPRN_BBTAR      0x202   /* Branch Buffer Target Address Register */
+ #define SPRN_PID1       0x279   /* Process ID Register 1 */
+ #define SPRN_PID2       0x27a   /* Process ID Register 2 */
+ #define SPRN_MCSR	0x23c	/* Machine Check Syndrome register */
++#define SPRN_MCAR	0x23d	/* Machine Check Address register */
+ #define ESR_ST          0x00800000      /* Store Operation */
+ 
+ #if defined(CONFIG_MPC86xx)
+@@ -586,6 +604,7 @@
+ #define MCSRR1	SPRN_MCSRR1
+ #define L1CSR0 	SPRN_L1CSR0
+ #define L1CSR1	SPRN_L1CSR1
++#define L1CFG0 SPRN_L1CFG0
+ #define MCSR	SPRN_MCSR
+ #define MMUCSR0	SPRN_MMUCSR0
+ #define BUCSR	SPRN_BUCSR
+@@ -600,7 +619,13 @@
+ #define MAS5	SPRN_MAS5
+ #define MAS6	SPRN_MAS6
+ #define MAS7	SPRN_MAS7
++#define MAS8	SPRN_MAS8
+ 
++#if defined(CONFIG_MPC85xx)
++#define DAR_DEAR DEAR
++#else
++#define DAR_DEAR DAR
++#endif
+ /* Device Control Registers */
+ 
+ #define DCRN_BEAR	0x090	/* Bus Error Address Register */
+@@ -818,6 +843,8 @@
+ #define SVR_MAJ(svr)	(((svr) >>  4) & 0xF)	/* Major revision field*/
+ #define SVR_MIN(svr)	(((svr) >>  0) & 0xF)	/* Minor revision field*/
+ 
++/* Some parts define SVR[0:23] as the SOC version */
++#define SVR_SOC_VER(svr) (((svr) >> 8) & 0xFFFFFF)	/* SOC Version fields */
+ 
+ /*
+  * SVR_VER() Version Values
+@@ -830,6 +857,10 @@
+ #define SVR_8548	0x8031
+ #define SVR_8548_E	0x8039
+ #define SVR_8641	0x8090
++#define SVR_P2020	0x80E200
++#define SVR_P2020_E	0x80EA00
++
++#define SVR_Unknown	0xFFFFFF
+ 
+ 
+ /* I am just adding a single entry for 8260 boards.  I think we may be
+@@ -924,6 +955,19 @@ n:
+ #define SR15	15
+ 
+ #ifndef __ASSEMBLY__
++
++struct cpu_type {
++	char name[15];
++	u32 soc_ver;
++	u32 num_cores;
++};
++
++struct cpu_type *identify_cpu(u32 ver);
++
++#if defined(CONFIG_MPC85xx)
++#define CPU_TYPE_ENTRY(n, v, nc) \
++	{ .name = #n, .soc_ver = SVR_##v, .num_cores = (nc), }
++#endif
+ #ifndef CONFIG_MACH_SPECIFIC
+ extern int _machine;
+ extern int have_of;
+diff --git a/arch/ppc/lib/Makefile b/arch/ppc/lib/Makefile
+index 2af000a..549f1e2 100644
+--- a/arch/ppc/lib/Makefile
++++ b/arch/ppc/lib/Makefile
+@@ -5,9 +5,11 @@ obj-y += kgdb.o
+ obj-y += ppcstring.o
+ obj-y += ticks.o
+ obj-$(CONFIG_MPC5200) += time-mpc5200.o
++obj-$(CONFIG_ARCH_MPC85XX) += time-mpc85xx.o
+ obj-y += misc.o
+ obj-$(CONFIG_CMD_BOOTM) += ppclinux.o
+ obj-y += board_data.o
+ obj-$(CONFIG_MODULES) += module.o
+ obj-y += crtsavres.o
++obj-y += reloc.o
+ 
+diff --git a/arch/ppc/lib/board.c b/arch/ppc/lib/board.c
+index a840c75..2982237 100644
+--- a/arch/ppc/lib/board.c
++++ b/arch/ppc/lib/board.c
+@@ -30,22 +30,23 @@
+ #include <net.h>
+ #include <asm-generic/memory_layout.h>
+ 
+-/************************************************************************
+- *
++/*
+  * This is the next part if the initialization sequence: we are now
+  * running from RAM and have a "normal" C environment, i. e. global
+  * data can be written, BSS has been cleared, the stack size in not
+  * that critical any more, etc.
+- *
+- ************************************************************************
+  */
+ 
+-void board_init_r (ulong end_of_ram)
++void board_init_r(ulong dest_addr)
+ {
+ 	unsigned long malloc_end;
+ 
+ 	asm ("sync ; isync");
+ 
++#ifdef CONFIG_MPC85xx
++	_text_base = dest_addr;
++#endif
++
+ 	/*
+ 	 * FIXME: 128k stack size. Is this enough? should
+ 	 *        it be configurable?
+diff --git a/arch/ppc/lib/reloc.S b/arch/ppc/lib/reloc.S
+new file mode 100644
+index 0000000..92ee189
+--- /dev/null
++++ b/arch/ppc/lib/reloc.S
+@@ -0,0 +1,47 @@
++/*
++ * Copyright (C) 2009 Wolfgang Denk <wd@denx.de>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <asm/ppc_asm.tmpl>
++
++	.file	"reloc.S"
++
++	.text
++	/*
++	 * Function: relocate entries for one exception vector
++	 */
++	.globl trap_reloc
++	.type	trap_reloc, @function
++trap_reloc:
++	lwz	r0, 0(r7)		/* hdlr ...		*/
++	add	r0, r0, r3		/*  ... += dest_addr	*/
++	stw	r0, 0(r7)
++
++	lwz	r0, 4(r7)		/* int_return ...	*/
++	add	r0, r0, r3		/*  ... += dest_addr	*/
++	stw	r0, 4(r7)
++
++	lwz	r0, 8(r7)		/* transfer_to_handler ...*/
++	add	r0, r0, r3		/*  ... += dest_addr	*/
++	stw	r0, 8(r7)
++
++	blr
++	.size	trap_reloc, .-trap_reloc
+diff --git a/arch/ppc/lib/time-mpc85xx.c b/arch/ppc/lib/time-mpc85xx.c
+new file mode 100644
+index 0000000..4e36bad
+--- /dev/null
++++ b/arch/ppc/lib/time-mpc85xx.c
+@@ -0,0 +1,54 @@
++/*
++ * Copyright 2012 GE Intelligent Platforms, Inc.
++ * (C) Copyright 2000, 2001
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <common.h>
++#include <clock.h>
++#include <init.h>
++#include <mach/clocks.h>
++#include <asm/common.h>
++
++uint64_t ppc_clocksource_read(void)
 +{
-+	u32 div;
++	return get_ticks();
++}
 +
-+	switch (pll) {
-+	case CPU_PLL1:
-+		div = readl(MX6_ANATOP_BASE_ADDR + HW_ANADIG_PLL_SYS) &
-+			BM_ANADIG_PLL_SYS_DIV_SELECT;
-+		return infreq * (div >> 1);
-+	case BUS_PLL2:
-+		div = readl(MX6_ANATOP_BASE_ADDR + HW_ANADIG_PLL_528) &
-+			BM_ANADIG_PLL_528_DIV_SELECT;
-+		return infreq * (20 + (div << 1));
-+	case USBOTG_PLL3:
-+		div = readl(MX6_ANATOP_BASE_ADDR + HW_ANADIG_USB2_PLL_480_CTRL) &
-+			BM_ANADIG_USB2_PLL_480_CTRL_DIV_SELECT;
-+		return infreq * (20 + (div << 1));
-+	case ENET_PLL8:
-+		div = readl(MX6_ANATOP_BASE_ADDR + HW_ANADIG_PLL_ENET) &
-+			BM_ANADIG_PLL_ENET_DIV_SELECT;
-+		switch (div) {
-+		default:
-+		case 0:
-+			return ENET_FREQ_0;
-+		case 1:
-+			return ENET_FREQ_1;
-+		case 2:
-+			return ENET_FREQ_2;
-+		case 3:
-+			return ENET_FREQ_3;
-+		}
-+	case AUD_PLL4:
-+	case VID_PLL5:
-+	case MLB_PLL6:
-+	case USBHOST_PLL7:
-+	default:
++static struct clocksource cs = {
++	.read	= ppc_clocksource_read,
++	.mask	= CLOCKSOURCE_MASK(64),
++};
++
++static int clocksource_init(void)
++{
++	/* reset time base */
++	asm ("li 3,0 ; mttbu 3 ; mttbl 3 ;");
++
++	clocks_calc_mult_shift(&cs.mult, &cs.shift, get_timebase_clock(),
++			       NSEC_PER_SEC, 10);
++
++	init_clock(&cs);
++
++	return 0;
++}
++
++core_initcall(clocksource_init);
+diff --git a/arch/ppc/mach-mpc85xx/Kconfig b/arch/ppc/mach-mpc85xx/Kconfig
+new file mode 100644
+index 0000000..4758951
+--- /dev/null
++++ b/arch/ppc/mach-mpc85xx/Kconfig
+@@ -0,0 +1,45 @@
++if ARCH_MPC85XX
++
++config TEXT_BASE
++	hex
++	default 0xeff80000 if P2020RDB
++
++config BOARDINFO
++	default "P2020_RDB" if P2020RDB
++
++config MPC85xx
++	bool
++	default y if P2020RDB
++
++choice
++	prompt "Select your board"
++
++config P2020RDB
++	bool "P2020RDB"
++	help
++	Say Y here if you are using the Freescale P2020RDB
++
++endchoice
++endif
++
++if P2020RDB
++config P2020
++	bool
++	default y
++
++config BOOKE
++	bool
++	default y
++
++config E500
++	bool
++	default y
++
++config MP
++	bool
++	default y if P2020
++
++config FSL_ELBC
++	bool
++	default y
++endif
+diff --git a/arch/ppc/mach-mpc85xx/Makefile b/arch/ppc/mach-mpc85xx/Makefile
+new file mode 100644
+index 0000000..36f87c0
+--- /dev/null
++++ b/arch/ppc/mach-mpc85xx/Makefile
+@@ -0,0 +1,5 @@
++obj-y 			+= cpuid.o
++obj-y			+= fsl_lbc.o
++obj-y			+= fsl_law.o
++obj-y			+= speed.o
++obj-$(CONFIG_MP)	+= mp.o
+diff --git a/arch/ppc/mach-mpc85xx/cpuid.c b/arch/ppc/mach-mpc85xx/cpuid.c
+new file mode 100644
+index 0000000..52d63ca
+--- /dev/null
++++ b/arch/ppc/mach-mpc85xx/cpuid.c
+@@ -0,0 +1,69 @@
++/*
++ * Copyright 2009-2011 Freescale Semiconductor, Inc.
++ *
++ * This file is derived from arch/powerpc/cpu/mpc85xx/cpu.c and
++ * arch/powerpc/cpu/mpc86xx/cpu.c. Basically this file contains
++ * cpu specific common code for 85xx/86xx processors.
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <config.h>
++#include <common.h>
++#include <command.h>
++#include <asm/cache.h>
++#include <asm/io.h>
++#include <asm/global_data.h>
++#include <mach/immap_85xx.h>
++
++struct cpu_type cpu_type_list[] = {
++	CPU_TYPE_ENTRY(P2020, P2020, 2),
++	CPU_TYPE_ENTRY(P2020, P2020_E, 2),
++};
++
++struct cpu_type cpu_type_unknown = CPU_TYPE_ENTRY(Unknown, Unknown, 1);
++
++struct cpu_type *identify_cpu(u32 ver)
++{
++	int i;
++	for (i = 0; i < ARRAY_SIZE(cpu_type_list); i++) {
++		if (cpu_type_list[i].soc_ver == ver)
++			return &cpu_type_list[i];
++	}
++	return &cpu_type_unknown;
++}
++
++int cpu_numcores(void)
++{
++	void __iomem *pic = (void __iomem *)MPC8xxx_PIC_ADDR;
++	struct cpu_type *cpu;
++	uint svr;
++	uint ver;
++
++	svr = get_svr();
++	ver = SVR_SOC_VER(svr);
++	cpu = identify_cpu(ver);
++
++	/* better to query feature reporting register than just assume 1 */
++	if (cpu == &cpu_type_unknown)
++		return ((in_be32(pic + MPC85xx_PIC_FRR_OFFSET) &
++			MPC8xxx_PICFRR_NCPU_MASK) >> MPC8xxx_PICFRR_NCPU_SHIFT)
++			+ 1;
++
++	return cpu->num_cores;
++}
+diff --git a/arch/ppc/mach-mpc85xx/fsl_law.c b/arch/ppc/mach-mpc85xx/fsl_law.c
+new file mode 100644
+index 0000000..57999f4
+--- /dev/null
++++ b/arch/ppc/mach-mpc85xx/fsl_law.c
+@@ -0,0 +1,156 @@
++/*
++ * Copyright 2008-2011 Freescale Semiconductor, Inc.
++ *
++ * (C) Copyright 2000
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <common.h>
++#include <asm/global_data.h>
++#include <asm/fsl_law.h>
++#include <asm/io.h>
++
++DECLARE_GLOBAL_DATA_PTR;
++
++#define FSL_HW_NUM_LAWS FSL_NUM_LAWS
++
++#define LAW_BASE (CFG_IMMR + 0xC08)
++#define LAWAR_ADDR(x) ((u32 *)LAW_BASE + 8 * (x) + 2)
++#define LAWBAR_ADDR(x) ((u32 *)LAW_BASE + 8 * (x))
++#define LAWBAR_SHIFT 12
++
++static inline phys_addr_t get_law_base_addr(int idx)
++{
++	return (phys_addr_t)in_be32(LAWBAR_ADDR(idx)) << LAWBAR_SHIFT;
++}
++
++static inline void set_law_base_addr(int idx, phys_addr_t addr)
++{
++	out_be32(LAWBAR_ADDR(idx), addr >> LAWBAR_SHIFT);
++}
++
++static void set_law(u8 idx, phys_addr_t addr, enum law_size sz,
++		    enum law_trgt_if id)
++{
++	gd->used_laws |= (1 << idx);
++
++	out_be32(LAWAR_ADDR(idx), 0);
++	set_law_base_addr(idx, addr);
++	out_be32(LAWAR_ADDR(idx), LAW_EN | ((u32)id << 20) | (u32)sz);
++
++	/* Read back so that we sync the writes */
++	in_be32(LAWAR_ADDR(idx));
++}
++
++static int set_next_law(phys_addr_t addr, enum law_size sz, enum law_trgt_if id)
++{
++	u32 idx = ffz(gd->used_laws);
++
++	if (idx >= FSL_HW_NUM_LAWS)
++		return -1;
++
++	set_law(idx, addr, sz, id);
++
++	return idx;
++}
++
++static int set_last_law(phys_addr_t addr, enum law_size sz, enum law_trgt_if id)
++{
++	u32 idx;
++
++	/* we have no LAWs free */
++	if (gd->used_laws == -1)
++		return -1;
++
++	/* grab the last free law */
++	idx = __ilog2(~(gd->used_laws));
++
++	if (idx >= FSL_HW_NUM_LAWS)
++		return -1;
++
++	set_law(idx, addr, sz, id);
++
++	return idx;
++}
++
++/* use up to 2 LAWs for DDR, used the last available LAWs */
++int set_ddr_laws(u64 start, u64 sz, enum law_trgt_if id)
++{
++	u64 start_align, law_sz;
++	int law_sz_enc;
++
++	if (start == 0)
++		start_align = 1ull << (LAW_SIZE_32G + 1);
++	else
++		start_align = 1ull << (ffs64(start) - 1);
++
++	law_sz = min(start_align, sz);
++	law_sz_enc = __ilog2_u64(law_sz) - 1;
++
++	if (set_last_law(start, law_sz_enc, id) < 0)
++		return -1;
++
++	/* recalculate size based on what was actually covered by the law */
++	law_sz = 1ull << __ilog2_u64(law_sz);
++
++	/* do we still have anything to map */
++	sz = sz - law_sz;
++	if (sz) {
++		start += law_sz;
++
++		start_align = 1ull << (ffs64(start) - 1);
++		law_sz = min(start_align, sz);
++		law_sz_enc = __ilog2_u64(law_sz) - 1;
++
++		if (set_last_law(start, law_sz_enc, id) < 0)
++			return -1;
++	} else {
 +		return 0;
 +	}
++
++	/* do we still have anything to map */
++	sz = sz - law_sz;
++	if (sz)
++		return 1;
++
++	return 0;
 +}
 +
-+static u32 __get_mcu_main_clk(void)
++void init_laws(void)
 +{
-+	u32 reg, freq;
-+	reg = (__REG(MXC_CCM_CACRR) & MXC_CCM_CACRR_ARM_PODF_MASK) >>
-+	    MXC_CCM_CACRR_ARM_PODF_OFFSET;
-+	freq = __decode_pll(CPU_PLL1, CONFIG_MX6_HCLK_FREQ);
-+	return freq / (reg + 1);
-+}
++	int i;
 +
-+static u32 __get_periph_clk(void)
-+{
-+	u32 reg;
-+	reg = __REG(MXC_CCM_CBCDR);
-+	if (reg & MXC_CCM_CBCDR_PERIPH_CLK_SEL) {
-+		reg = __REG(MXC_CCM_CBCMR);
-+		switch ((reg & MXC_CCM_CBCMR_PERIPH_CLK2_SEL_MASK) >>
-+			MXC_CCM_CBCMR_PERIPH_CLK2_SEL_OFFSET) {
-+		case 0:
-+			return __decode_pll(USBOTG_PLL3, CONFIG_MX6_HCLK_FREQ);
-+		case 1:
-+		case 2:
-+			return CONFIG_MX6_HCLK_FREQ;
-+		default:
-+			return 0;
-+		}
-+	} else {
-+		reg = __REG(MXC_CCM_CBCMR);
-+		switch ((reg & MXC_CCM_CBCMR_PRE_PERIPH_CLK_SEL_MASK) >>
-+			MXC_CCM_CBCMR_PRE_PERIPH_CLK_SEL_OFFSET) {
-+		default:
-+		case 0:
-+			return __decode_pll(BUS_PLL2, CONFIG_MX6_HCLK_FREQ);
-+		case 1:
-+			return PLL2_PFD2_FREQ;
-+		case 2:
-+			return PLL2_PFD0_FREQ;
-+		case 3:
-+			return PLL2_PFD2_DIV_FREQ;
-+		}
-+	}
-+}
++	if (FSL_HW_NUM_LAWS < 32)
++		gd->used_laws = ~((1 << FSL_HW_NUM_LAWS) - 1);
++	else if (FSL_HW_NUM_LAWS == 32)
++		gd->used_laws = 0;
++	else
++		panic("FSL_HW_NUM_LAWS can not be > 32 w/o code changes");
 +
-+static u32 __get_ipg_clk(void)
-+{
-+	u32 ahb_podf, ipg_podf;
-+
-+	ahb_podf = __REG(MXC_CCM_CBCDR);
-+	ipg_podf = (ahb_podf & MXC_CCM_CBCDR_IPG_PODF_MASK) >>
-+			MXC_CCM_CBCDR_IPG_PODF_OFFSET;
-+	ahb_podf = (ahb_podf & MXC_CCM_CBCDR_AHB_PODF_MASK) >>
-+			MXC_CCM_CBCDR_AHB_PODF_OFFSET;
-+	return __get_periph_clk() / ((ahb_podf + 1) * (ipg_podf + 1));
-+}
-+
-+u32 imx_get_gptclk(void)
-+{
-+	return __get_ipg_clk();
-+}
-+
-+static u32 __get_ipg_per_clk(void)
-+{
-+	u32 podf;
-+	u32 clk_root = __get_ipg_clk();
-+
-+	podf = __REG(MXC_CCM_CSCMR1) & MXC_CCM_CSCMR1_PERCLK_PODF_MASK;
-+	return clk_root / (podf + 1);
-+}
-+
-+u32 imx_get_uartclk(void)
-+{
-+	u32 freq = PLL3_80M, reg, podf;
-+
-+	reg = __REG(MXC_CCM_CSCDR1);
-+	podf = (reg & MXC_CCM_CSCDR1_UART_CLK_PODF_MASK) >>
-+		MXC_CCM_CSCDR1_UART_CLK_PODF_OFFSET;
-+	freq /= (podf + 1);
-+
-+	return freq;
-+}
-+
-+static u32 __get_cspi_clk(void)
-+{
-+	u32 freq = PLL3_60M, reg, podf;
-+
-+	reg = __REG(MXC_CCM_CSCDR2);
-+	podf = (reg & MXC_CCM_CSCDR2_ECSPI_CLK_PODF_MASK) >>
-+		MXC_CCM_CSCDR2_ECSPI_CLK_PODF_OFFSET;
-+	freq /= (podf + 1);
-+
-+	return freq;
-+}
-+
-+static u32 __get_axi_clk(void)
-+{
-+	u32 clkroot;
-+	u32 cbcdr =  __REG(MXC_CCM_CBCDR);
-+	u32 podf = (cbcdr & MXC_CCM_CBCDR_AXI_PODF_MASK) >>
-+		MXC_CCM_CBCDR_AXI_PODF_OFFSET;
-+
-+	if (cbcdr & MXC_CCM_CBCDR_AXI_SEL) {
-+		if (cbcdr & MXC_CCM_CBCDR_AXI_ALT_SEL)
-+			clkroot = PLL2_PFD2_FREQ;
++	for (i = 0; i < num_law_entries; i++) {
++		if (law_table[i].index == -1)
++			set_next_law(law_table[i].addr, law_table[i].size,
++					law_table[i].trgt_id);
 +		else
-+			clkroot = PLL3_PFD1_FREQ;;
-+	} else
-+		clkroot = __get_periph_clk();
-+
-+	return  clkroot / (podf + 1);
-+}
-+
-+static u32 __get_ahb_clk(void)
-+{
-+	u32 cbcdr =  __REG(MXC_CCM_CBCDR);
-+	u32 podf = (cbcdr & MXC_CCM_CBCDR_AHB_PODF_MASK) \
-+			>> MXC_CCM_CBCDR_AHB_PODF_OFFSET;
-+
-+	return  __get_periph_clk() / (podf + 1);
-+}
-+
-+static u32 __get_emi_slow_clk(void)
-+{
-+	u32 cscmr1 =  __REG(MXC_CCM_CSCMR1);
-+	u32 emi_clk_sel = (cscmr1 & MXC_CCM_CSCMR1_ACLK_EMI_SLOW_MASK) >>
-+		MXC_CCM_CSCMR1_ACLK_EMI_SLOW_OFFSET;
-+	u32 podf = (cscmr1 & MXC_CCM_CSCMR1_ACLK_EMI_SLOW_PODF_MASK) >>
-+			MXC_CCM_CSCMR1_ACLK_EMI_PODF_OFFSET;
-+
-+	switch (emi_clk_sel) {
-+	default:
-+	case 0:
-+		return __get_axi_clk() / (podf + 1);
-+	case 1:
-+		return __decode_pll(USBOTG_PLL3, CONFIG_MX6_HCLK_FREQ) /
-+			(podf + 1);
-+	case 2:
-+		return PLL2_PFD2_FREQ / (podf + 1);
-+	case 3:
-+		return PLL2_PFD0_FREQ / (podf + 1);
++			set_law(law_table[i].index, law_table[i].addr,
++				law_table[i].size, law_table[i].trgt_id);
 +	}
 +}
+diff --git a/arch/ppc/mach-mpc85xx/fsl_lbc.c b/arch/ppc/mach-mpc85xx/fsl_lbc.c
+new file mode 100644
+index 0000000..78a46e8
+--- /dev/null
++++ b/arch/ppc/mach-mpc85xx/fsl_lbc.c
+@@ -0,0 +1,17 @@
++/*
++ * Copyright 2010-2011 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * Version 2 as published by the Free Software Foundation.
++ */
 +
-+static u32 __get_nfc_clk(void)
++#include <common.h>
++#include <asm/fsl_lbc.h>
++#include <mach/immap_85xx.h>
++
++void init_early_memctl_regs(void)
 +{
-+	u32 clkroot;
-+	u32 cs2cdr =  __REG(MXC_CCM_CS2CDR);
-+	u32 podf = (cs2cdr & MXC_CCM_CS2CDR_ENFC_CLK_PODF_MASK) \
-+			>> MXC_CCM_CS2CDR_ENFC_CLK_PODF_OFFSET;
-+	u32 pred = (cs2cdr & MXC_CCM_CS2CDR_ENFC_CLK_PRED_MASK) \
-+			>> MXC_CCM_CS2CDR_ENFC_CLK_PRED_OFFSET;
++	set_lbc_br(0, CFG_BR0_PRELIM);
++	set_lbc_or(0, CFG_OR0_PRELIM);
++}
+diff --git a/arch/ppc/mach-mpc85xx/include/mach/clocks.h b/arch/ppc/mach-mpc85xx/include/mach/clocks.h
+new file mode 100644
+index 0000000..99c63be
+--- /dev/null
++++ b/arch/ppc/mach-mpc85xx/include/mach/clocks.h
+@@ -0,0 +1,11 @@
++#ifndef __ASM_ARCH_CLOCKS_H
++#define __ASM_ARCH_CLOCKS_H
 +
-+	switch ((cs2cdr & MXC_CCM_CS2CDR_ENFC_CLK_SEL_MASK) >>
-+		MXC_CCM_CS2CDR_ENFC_CLK_SEL_OFFSET) {
-+		default:
-+		case 0:
-+			clkroot = PLL2_PFD0_FREQ;
++#include <mach/mpc85xx.h>
++
++#define NSEC_PER_SEC	1000000000L
++
++unsigned long get_bus_freq(ulong dummy);
++unsigned long get_timebase_clock(void);
++void get_sys_info(struct sys_info *sysInfo);
++#endif /* __ASM_ARCH_CLOCKS_H */
+diff --git a/arch/ppc/mach-mpc85xx/include/mach/early_udelay.h b/arch/ppc/mach-mpc85xx/include/mach/early_udelay.h
+new file mode 100644
+index 0000000..e0d8989
+--- /dev/null
++++ b/arch/ppc/mach-mpc85xx/include/mach/early_udelay.h
+@@ -0,0 +1,33 @@
++/*
++ * Copyright (C) 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <common.h>
++
++/* delay execution before timers are initialized */
++static inline void early_udelay(uint32_t usecs)
++{
++	/* loop takes 4 cycles. */
++	 uint32_t loops = usecs * (1000 / 4); /* CPU freq = 1Ghz */
++
++	while (loops)
++		loops--;
++}
+diff --git a/arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h b/arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h
+new file mode 100644
+index 0000000..b802249
+--- /dev/null
++++ b/arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h
+@@ -0,0 +1,132 @@
++/*
++ * MPC85xx Internal Memory Map
++ *
++ * Copyright 2007-2011 Freescale Semiconductor, Inc.
++ *
++ * Copyright(c) 2002,2003 Motorola Inc.
++ * Xianghua Xiao (x.xiao@motorola.com)
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#ifndef __IMMAP_85xx__
++#define __IMMAP_85xx__
++
++#include <asm/types.h>
++#include <asm/fsl_lbc.h>
++#include <asm/config.h>
++
++#define MPC85xx_LOCAL_OFFSET	0x0000
++#define MPC85xx_ECM_OFFSET	0x1000
++#define MPC85xx_DDR_OFFSET	0x2000
++#define MPC85xx_LBC_OFFSET	0x5000
++
++#define MPC85xx_GPIO_OFFSET	0xf000
++#define MPC85xx_L2_OFFSET	0x20000
++
++#define MPC85xx_PIC_OFFSET	0x40000
++#define MPC85xx_GUTS_OFFSET	0xe0000
++
++#define MPC85xx_LOCAL_ADDR	(CFG_IMMR + MPC85xx_LOCAL_OFFSET)
++#define MPC85xx_ECM_ADDR	(CFG_IMMR + MPC85xx_ECM_OFFSET)
++#define MPC85xx_GUTS_ADDR	(CFG_IMMR + MPC85xx_GUTS_OFFSET)
++#define MPC85xx_DDR_ADDR	(CFG_IMMR + MPC85xx_DDR_OFFSET)
++#define LBC_ADDR		(CFG_IMMR + MPC85xx_LBC_OFFSET)
++#define MPC85xx_GPIO_ADDR	(CFG_IMMR + MPC85xx_GPIO_OFFSET)
++#define MPC85xx_L2_ADDR		(CFG_IMMR + MPC85xx_L2_OFFSET)
++#define MPC8xxx_PIC_ADDR	(CFG_IMMR + MPC85xx_PIC_OFFSET)
++
++/* Local-Access Registers */
++#define MPC85xx_LOCAL_BPTR_OFFSET	0x20 /* Boot Page Translation */
++
++/* ECM Registers */
++#define MPC85xx_ECM_EEBPCR_OFFSET	0x00 /* ECM CCB Port Configuration */
++
++/*
++ * DDR Memory Controller Register Offsets
++ */
++/* Chip Select 0, 1,2, 3 Memory Bounds */
++#define MPC85xx_DDR_CS0_BNDS_OFFSET		0x000
++#define MPC85xx_DDR_CS1_BNDS_OFFSET		0x008
++#define MPC85xx_DDR_CS2_BNDS_OFFSET		0x010
++#define MPC85xx_DDR_CS3_BNDS_OFFSET		0x018
++/* Chip Select 0, 1, 2, 3 Configuration */
++#define MPC85xx_DDR_CS0_CONFIG_OFFSET		0x080
++#define MPC85xx_DDR_CS1_CONFIG_OFFSET		0x084
++#define MPC85xx_DDR_CS2_CONFIG_OFFSET		0x088
++#define MPC85xx_DDR_CS3_CONFIG_OFFSET		0x08c
++/* SDRAM Timing Configuration 0, 1, 2, 3 */
++#define MPC85xx_DDR_TIMING_CFG_3_OFFSET		0x100
++#define MPC85xx_DDR_TIMING_CFG_0_OFFSET		0x104
++#define MPC85xx_DDR_TIMING_CFG_1_OFFSET		0x108
++#define MPC85xx_DDR_TIMING_CFG_2_OFFSET		0x10c
++/* SDRAM Control Configuration */
++#define MPC85xx_DDR_SDRAM_CFG_OFFSET		0x110
++#define MPC85xx_DDR_SDRAM_CFG_2_OFFSET		0x114
++/* SDRAM Mode Configuration */
++#define MPC85xx_DDR_SDRAM_MODE_OFFSET		0x118
++#define MPC85xx_DDR_SDRAM_MODE_2_OFFSET		0x11c
++/* SDRAM Mode Control */
++#define MPC85xx_DDR_SDRAM_MD_CNTL_OFFSET	0x120
++/* SDRAM Interval Configuration */
++#define MPC85xx_DDR_SDRAM_INTERVAL_OFFSET	0x124
++/* SDRAM Data initialization */
++#define MPC85xx_DDR_SDRAM_DATA_INIT_OFFSET	0x128
++/* SDRAM Clock Control */
++#define MPC85xx_DDR_SDRAM_CLK_CNTL_OFFSET	0x130
++/* training init and extended addr */
++#define MPC85xx_DDR_SDRAM_INIT_ADDR_OFFSET	0x148
++#define MPC85xx_DDR_SDRAM_INIT_ADDR_EXT_OFFSET	0x14c
++
++#define DDR_OFF(REGNAME)	(MPC85xx_DDR_##REGNAME##_OFFSET)
++
++/*
++ * GPIO Register Offsets
++ */
++#define MPC85xx_GPIO_GPDIR	0x00
++#define MPC85xx_GPIO_GPDAT	0x08
++
++/*
++ * L2 Cache Register Offsets
++ */
++#define MPC85xx_L2_CTL_OFFSET	0x0		/* L2 configuration 0 */
++#define		MPC85xx_L2CTL_L2E	0x80000000
++
++/* PIC registers offsets */
++#define MPC85xx_PIC_WHOAMI_OFFSET	0x090
++#define MPC85xx_PIC_FRR_OFFSET		0x1000	/* Feature Reporting */
++/* PIC registers fields values and masks. */
++#define MPC8xxx_PICFRR_NCPU_MASK	0x00001f00
++#define MPC8xxx_PICFRR_NCPU_SHIFT	8
++#define MPC85xx_PICGCR_RST		0x80000000
++#define MPC85xx_PICGCR_M		0x20000000
++
++#define MPC85xx_PIC_IACK0_OFFSET	0x600a0	/* IRQ Acknowledge for
++						   Processor 0 */
++
++/* Global Utilities Register Offsets and field values */
++#define MPC85xx_GUTS_PORPLLSR_OFFSET	0x0
++#define		MPC85xx_PORPLLSR_DDR_RATIO		0x00003e00
++#define		MPC85xx_PORPLLSR_DDR_RATIO_SHIFT	9
++#define MPC85xx_GUTS_DEVDISR_OFFSET	0x70
++#define		MPC85xx_DEVDISR_TB0	0x00004000
++#define		MPC85xx_DEVDISR_TB1	0x00001000
++#define MPC85xx_GUTS_RSTCR_OFFSET	0xb0
++
++#endif /*__IMMAP_85xx__*/
+diff --git a/arch/ppc/mach-mpc85xx/include/mach/mp.h b/arch/ppc/mach-mpc85xx/include/mach/mp.h
+new file mode 100644
+index 0000000..19b5c87
+--- /dev/null
++++ b/arch/ppc/mach-mpc85xx/include/mach/mp.h
+@@ -0,0 +1,15 @@
++#ifndef __MPC85XX_MP_H_
++#define __MPC85XX_MP_H_
++
++void setup_mp(void);
++int cpu_numcores(void);
++
++extern ulong __secondary_start_page;
++extern ulong __spin_table;
++extern ulong __bootpg_addr;
++
++#define BOOT_ENTRY_ADDR_LOWER	1
++#define NUM_BOOT_ENTRY		8
++#define SIZE_BOOT_ENTRY		(NUM_BOOT_ENTRY * sizeof(u32))
++
++#endif
+diff --git a/arch/ppc/mach-mpc85xx/include/mach/mpc85xx.h b/arch/ppc/mach-mpc85xx/include/mach/mpc85xx.h
+new file mode 100644
+index 0000000..ba27c64
+--- /dev/null
++++ b/arch/ppc/mach-mpc85xx/include/mach/mpc85xx.h
+@@ -0,0 +1,17 @@
++/*
++ * Copyright 2004, 2007 Freescale Semiconductor.
++ * Copyright(c) 2003 Motorola Inc.
++ */
++
++#ifndef	__MPC85xx_H__
++#define __MPC85xx_H__
++
++/* define for common ppc_asm.tmpl */
++#define EXC_OFF_SYS_RESET	0x100	/* System reset */
++#define _START_OFFSET		0
++
++#if defined(CONFIG_E500)
++#include <asm/e500.h>
++#endif
++
++#endif	/* __MPC85xx_H__ */
+diff --git a/arch/ppc/mach-mpc85xx/include/mach/ppc_asm.tmpl b/arch/ppc/mach-mpc85xx/include/mach/ppc_asm.tmpl
+new file mode 100644
+index 0000000..2dd3535
+--- /dev/null
++++ b/arch/ppc/mach-mpc85xx/include/mach/ppc_asm.tmpl
+@@ -0,0 +1,208 @@
++/*
++ * (C) Copyright 2000-2002
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++/*
++ * This file contains all the macros and symbols which define
++ * a PowerPC assembly language environment.
++ */
++#ifndef	__PPC_ASM_TMPL__
++#define __PPC_ASM_TMPL__
++
++/*
++ * These definitions simplify the ugly declarations necessary for GOT
++ * definitions.
++ *
++ * Stolen from prepboot/bootldr.h, (C) 1998 Gabriel Paubert, paubert@iram.es
++ *
++ * Uses r12 to access the GOT
++ */
++
++#define START_GOT			\
++	.section	".got2","aw";	\
++.LCTOC1 = .+32768
++
++#define END_GOT				\
++	.text
++
++#define GET_GOT				\
++	bl	1f		;	\
++	.text	2		;	\
++0:	.long	.LCTOC1-1f	;	\
++	.text			;	\
++1:	mflr	r12		;	\
++	lwz	r0,0b-1b(r12)	;	\
++	add	r12,r0,r12	;
++
++#define GOT_ENTRY(NAME)		.L_ ## NAME = . - .LCTOC1 ; .long NAME
++
++#define GOT(NAME)		.L_ ## NAME (r12)
++
++/* Register names */
++#define	r0	0
++#define	r1	1
++#define	r2	2
++#define	r3	3
++#define	r4	4
++#define	r5	5
++#define	r6	6
++#define	r7	7
++#define	r8	8
++#define	r9	9
++#define	r10	10
++#define	r11	11
++#define	r12	12
++#define	r13	13
++#define	r14	14
++#define	r15	15
++#define	r16	16
++#define	r17	17
++#define	r18	18
++#define	r19	19
++#define	r20	20
++#define	r21	21
++#define	r22	22
++#define	r23	23
++#define	r24	24
++#define	r25	25
++#define	r26	26
++#define	r27	27
++#define	r28	28
++#define	r29	29
++#define	r30	30
++#define	r31	31
++
++#define curptr r2
++
++#define SYNC \
++	sync; \
++	isync
++
++/*
++ * Macros for storing registers into and loading registers from
++ * exception frames.
++ */
++#define SAVE_GPR(n, base)	stw	n,GPR0+4*(n)(base)
++#define SAVE_2GPRS(n, base)	SAVE_GPR(n, base); SAVE_GPR(n+1, base)
++#define SAVE_4GPRS(n, base)	SAVE_2GPRS(n, base); SAVE_2GPRS(n+2, base)
++#define SAVE_8GPRS(n, base)	SAVE_4GPRS(n, base); SAVE_4GPRS(n+4, base)
++#define SAVE_10GPRS(n, base)	SAVE_8GPRS(n, base); SAVE_2GPRS(n+8, base)
++#define REST_GPR(n, base)	lwz	n,GPR0+4*(n)(base)
++#define REST_2GPRS(n, base)	REST_GPR(n, base); REST_GPR(n+1, base)
++#define REST_4GPRS(n, base)	REST_2GPRS(n, base); REST_2GPRS(n+2, base)
++#define REST_8GPRS(n, base)	REST_4GPRS(n, base); REST_4GPRS(n+4, base)
++#define REST_10GPRS(n, base)	REST_8GPRS(n, base); REST_2GPRS(n+8, base)
++
++/*
++ * GCC sometimes accesses words at negative offsets from the stack
++ * pointer, although the SysV ABI says it shouldn't.  To cope with
++ * this, we leave this much untouched space on the stack on exception
++ * entry.
++ */
++#define STACK_UNDERHEAD	64
++
++/*
++ * Exception entry code.  This code runs with address translation
++ * turned off, i.e. using physical addresses.
++ * We assume sprg3 has the physical address of the current
++ * task's thread_struct.
++ */
++#define EXCEPTION_PROLOG(reg1, reg2)	\
++	mtspr	SPRG0,r20;	\
++	mtspr	SPRG1,r21;	\
++	mfcr	r20;		\
++	subi	r21,r1,INT_FRAME_SIZE+STACK_UNDERHEAD;	/* alloc exc. frame */\
++	stw	r20,_CCR(r21);		/* save registers */ \
++	stw	r22,GPR22(r21);	\
++	stw	r23,GPR23(r21);	\
++	mfspr	r20,SPRG0;	\
++	stw	r20,GPR20(r21);	\
++	mfspr	r22,SPRG1;	\
++	stw	r22,GPR21(r21);	\
++	mflr	r20;		\
++	stw	r20,_LINK(r21);	\
++	mfctr	r22;		\
++	stw	r22,_CTR(r21);	\
++	mfspr	r20,XER;	\
++	stw	r20,_XER(r21);	\
++	mfspr	r20, DAR_DEAR;	\
++	stw	r20,_DAR(r21);	\
++	mfspr	r22,reg1;	\
++	mfspr	r23,reg2;	\
++	stw	r0,GPR0(r21);	\
++	stw	r1,GPR1(r21);	\
++	stw	r2,GPR2(r21);	\
++	stw	r1,0(r21);	\
++	mr	r1,r21;			/* set new kernel sp */	\
++	SAVE_4GPRS(3, r21);
++/*
++ * Note: code which follows this uses cr0.eq (set if from kernel),
++ * r21, r22 (SRR0), and r23 (SRR1).
++ */
++
++/*
++ * Exception vectors.
++ *
++ * The data words for `hdlr' and `int_return' are initialized with
++ * OFFSET values only; they must be relocated first before they can
++ * be used!
++ */
++#define COPY_EE(d, s)		rlwimi d,s,0,16,16
++#define NOCOPY(d, s)
++#define EXC_XFER_TEMPLATE(label, hdlr, msr, copyee)	\
++	bl	1f;					\
++1:	mflr    r20;					\
++	lwz	r20,(.L_ ## label)-1b+8(r20);		\
++	mtlr	r20;					\
++	li	r20,msr;				\
++	copyee(r20,r23);				\
++	rlwimi	r20,r23,0,25,25;			\
++	blrl;						\
++.L_ ## label :						\
++	.long	hdlr - _start + _START_OFFSET;		\
++	.long	int_return - _start + _START_OFFSET;	\
++	.long	transfer_to_handler - _start + _START_OFFSET
++
++#define STD_EXCEPTION(n, label, hdlr)				\
++	. = n;							\
++label:								\
++	EXCEPTION_PROLOG(SRR0, SRR1);				\
++	addi	r3,r1,STACK_FRAME_OVERHEAD;			\
++	EXC_XFER_TEMPLATE(label, hdlr, MSR_KERNEL, NOCOPY)	\
++
++#define CRIT_EXCEPTION(n, label, hdlr)				\
++	. = n;							\
++label:								\
++	EXCEPTION_PROLOG(CSRR0, CSRR1);				\
++	addi	r3,r1,STACK_FRAME_OVERHEAD;			\
++	EXC_XFER_TEMPLATE(label, hdlr,				\
++	MSR_KERNEL & ~(MSR_ME|MSR_DE|MSR_CE), NOCOPY)		\
++
++#define MCK_EXCEPTION(n, label, hdlr)				\
++	. = n;							\
++label:								\
++	EXCEPTION_PROLOG(MCSRR0, MCSRR1);			\
++	addi	r3,r1,STACK_FRAME_OVERHEAD;			\
++	EXC_XFER_TEMPLATE(label, hdlr,				\
++	MSR_KERNEL & ~(MSR_ME|MSR_DE|MSR_CE), NOCOPY)		\
++
++#endif	/* __PPC_ASM_TMPL__ */
+diff --git a/arch/ppc/mach-mpc85xx/mp.c b/arch/ppc/mach-mpc85xx/mp.c
+new file mode 100644
+index 0000000..02dc7fa
+--- /dev/null
++++ b/arch/ppc/mach-mpc85xx/mp.c
+@@ -0,0 +1,156 @@
++/*
++ * Copyright 2008-2010 Freescale Semiconductor, Inc.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <config.h>
++#include <common.h>
++#include <environment.h>
++#include <asm/processor.h>
++#include <asm/io.h>
++#include <asm/mmu.h>
++#include <asm/fsl_law.h>
++#include <asm/fsl_ddr_sdram.h>
++#include <mach/immap_85xx.h>
++#include <mach/early_udelay.h>
++#include <mach/mp.h>
++
++/*
++ * Determine if Barebox should keep secondary cores in reset, or let them out
++ * of reset and hold them in a spinloop.
++ *
++ */
++static int hold_cores_in_reset(int verbose)
++{
++	/* Do not hold core in reset. */
++	return 0;
++}
++
++static u32 determine_mp_bootpg(void)
++{
++	/* if we have 4G or more of memory, put the boot page at 4Gb-4k */
++	if ((u64)get_effective_memsize() > 0xfffff000)
++		return 0xfffff000;
++
++	return get_effective_memsize() - 4096;
++}
++
++static ulong get_spin_virt_addr(void)
++{
++	return BPTR_VIRT_ADDR + (ulong)&__spin_table -
++		(ulong)&__secondary_start_page;
++}
++
++static void plat_mp_up(unsigned long bootpg)
++{
++	u32 up, cpu_up_mask, whoami;
++	u32 *table = (u32 *)get_spin_virt_addr();
++	u32 bpcr;
++	void __iomem *local = (void __iomem *)(MPC85xx_LOCAL_ADDR);
++	void __iomem *ecm = (void __iomem *)(MPC85xx_ECM_ADDR);
++	void __iomem *gur = (void __iomem *)(MPC85xx_GUTS_ADDR);
++	void __iomem *pic = (void __iomem *)(MPC8xxx_PIC_ADDR);
++	u32 devdisr;
++	int timeout = 10;
++
++	whoami = in_be32(pic + MPC85xx_PIC_WHOAMI_OFFSET);
++	out_be32(local + MPC85xx_LOCAL_BPTR_OFFSET,
++		0x80000000 | (bootpg >> 12));
++
++	/* disable time base at the platform */
++	devdisr = in_be32(gur + MPC85xx_GUTS_DEVDISR_OFFSET);
++	if (whoami)
++		devdisr |= MPC85xx_DEVDISR_TB0;
++	else
++		devdisr |= MPC85xx_DEVDISR_TB1;
++	out_be32(gur + MPC85xx_GUTS_DEVDISR_OFFSET, devdisr);
++
++	up = ((1 << cpu_numcores()) - 1);
++	bpcr = in_be32(ecm + MPC85xx_ECM_EEBPCR_OFFSET);
++	bpcr |= (up << 24);
++	out_be32(ecm + MPC85xx_ECM_EEBPCR_OFFSET, bpcr);
++	asm("sync; isync; msync");
++
++	cpu_up_mask = 1 << whoami;
++	/* wait for everyone */
++	while (timeout) {
++		int i;
++		for (i = 0; i < cpu_numcores(); i++) {
++			if (table[i * NUM_BOOT_ENTRY + BOOT_ENTRY_ADDR_LOWER])
++				cpu_up_mask |= (1 << i);
++		};
++
++		if ((cpu_up_mask & up) == up)
 +			break;
-+		case 1:
-+			clkroot = __decode_pll(BUS_PLL2, CONFIG_MX6_HCLK_FREQ);
-+			break;
-+		case 2:
-+			clkroot = __decode_pll(USBOTG_PLL3, CONFIG_MX6_HCLK_FREQ);
-+			break;
-+		case 3:
-+			clkroot = PLL2_PFD2_FREQ;
-+			break;
++
++		early_udelay(100);
++		timeout--;
 +	}
 +
-+	return  clkroot / (pred+1) / (podf+1);
-+}
++	if (timeout == 0)
++		debug("CPU up timeout. CPU up mask is %x should be %x\n",
++			cpu_up_mask, up);
 +
-+static u32 __get_ddr_clk(void)
-+{
-+	u32 cbcdr = __REG(MXC_CCM_CBCDR);
-+	u32 podf = (cbcdr & MXC_CCM_CBCDR_MMDC_CH0_PODF_MASK) >>
-+		MXC_CCM_CBCDR_MMDC_CH0_PODF_OFFSET;
-+
-+	return __get_periph_clk() / (podf + 1);
-+}
-+
-+static u32 __get_usdhc1_clk(void)
-+{
-+	u32 clkroot;
-+	u32 cscmr1 = __REG(MXC_CCM_CSCMR1);
-+	u32 cscdr1 = __REG(MXC_CCM_CSCDR1);
-+	u32 podf = (cscdr1 & MXC_CCM_CSCDR1_USDHC1_PODF_MASK) >>
-+		MXC_CCM_CSCDR1_USDHC1_PODF_OFFSET;
-+
-+	if (cscmr1 & MXC_CCM_CSCMR1_USDHC1_CLK_SEL)
-+		clkroot = PLL2_PFD0_FREQ;
++	/* enable time base at the platform */
++	if (whoami)
++		devdisr |= MPC85xx_DEVDISR_TB1;
 +	else
-+		clkroot = PLL2_PFD2_FREQ;
++		devdisr |= MPC85xx_DEVDISR_TB0;
++	out_be32(gur + MPC85xx_GUTS_DEVDISR_OFFSET, devdisr);
++	mtspr(SPRN_TBWU, 0);
++	mtspr(SPRN_TBWL, 0);
 +
-+	return clkroot / (podf + 1);
++	devdisr &= ~(MPC85xx_DEVDISR_TB0 | MPC85xx_DEVDISR_TB1);
++	out_be32(gur + MPC85xx_GUTS_DEVDISR_OFFSET, devdisr);
 +}
 +
-+static u32 __get_usdhc2_clk(void)
++void setup_mp(void)
 +{
-+	u32 clkroot;
-+	u32 cscmr1 = __REG(MXC_CCM_CSCMR1);
-+	u32 cscdr1 = __REG(MXC_CCM_CSCDR1);
-+	u32 podf = (cscdr1 & MXC_CCM_CSCDR1_USDHC2_PODF_MASK) >>
-+		MXC_CCM_CSCDR1_USDHC2_PODF_OFFSET;
++	ulong fixup = (ulong)&__secondary_start_page;
++	u32 bootpg = determine_mp_bootpg();
++	int i;
 +
-+	if (cscmr1 & MXC_CCM_CSCMR1_USDHC2_CLK_SEL)
-+		clkroot = PLL2_PFD0_FREQ;
-+	else
-+		clkroot = PLL2_PFD2_FREQ;
++	if (hold_cores_in_reset(0))
++		return;
 +
-+	return clkroot / (podf + 1);
-+}
++	/* Store the bootpg's SDRAM address for use by secondary CPU cores */
++	__bootpg_addr = bootpg;
 +
-+static u32 __get_usdhc3_clk(void)
-+{
-+	u32 clkroot;
-+	u32 cscmr1 = __REG(MXC_CCM_CSCMR1);
-+	u32 cscdr1 = __REG(MXC_CCM_CSCDR1);
-+	u32 podf = (cscdr1 & MXC_CCM_CSCDR1_USDHC3_PODF_MASK) >>
-+		MXC_CCM_CSCDR1_USDHC3_PODF_OFFSET;
++	/* look for the tlb covering the reset page, there better be one */
++	i = find_tlb_idx((void *)BPTR_VIRT_ADDR, 1);
 +
-+	if (cscmr1 & MXC_CCM_CSCMR1_USDHC3_CLK_SEL)
-+		clkroot = PLL2_PFD0_FREQ;
-+	else
-+		clkroot = PLL2_PFD2_FREQ;
++	/* we found a match */
++	if (i != -1) {
++		/* map reset page to bootpg so we can copy code there */
++		disable_tlb(i);
 +
-+	return clkroot / (podf + 1);
-+}
++		set_tlb(1, BPTR_VIRT_ADDR, bootpg, /* tlb, epn, rpn */
++			MAS3_SX|MAS3_SW|MAS3_SR,
++			MAS2_I|MAS2_G, /* perms, wimge */
++			0, i, BOOKE_PAGESZ_4K, 1); /* ts, esel, tsize, iprot */
 +
-+static u32 __get_usdhc4_clk(void)
-+{
-+	u32 clkroot;
-+	u32 cscmr1 = __REG(MXC_CCM_CSCMR1);
-+	u32 cscdr1 = __REG(MXC_CCM_CSCDR1);
-+	u32 podf = (cscdr1 & MXC_CCM_CSCDR1_USDHC4_PODF_MASK) >>
-+		MXC_CCM_CSCDR1_USDHC4_PODF_OFFSET;
++		memcpy((void *)BPTR_VIRT_ADDR, (void *)fixup, 4096);
 +
-+	if (cscmr1 & MXC_CCM_CSCMR1_USDHC4_CLK_SEL)
-+		clkroot = PLL2_PFD0_FREQ;
-+	else
-+		clkroot = PLL2_PFD2_FREQ;
-+
-+	return clkroot / (podf + 1);
-+}
-+
-+u32 imx_get_mmcclk(void)
-+{
-+	return __get_usdhc3_clk();
-+}
-+
-+u32 imx_get_fecclk(void)
-+{
-+	return __get_ipg_clk();
-+}
-+
-+void imx_dump_clocks(void)
-+{
-+	u32 freq;
-+
-+	freq = __decode_pll(CPU_PLL1, CONFIG_MX6_HCLK_FREQ);
-+	printf("mx6q pll1: %d\n", freq);
-+	freq = __decode_pll(BUS_PLL2, CONFIG_MX6_HCLK_FREQ);
-+	printf("mx6q pll2: %d\n", freq);
-+	freq = __decode_pll(USBOTG_PLL3, CONFIG_MX6_HCLK_FREQ);
-+	printf("mx6q pll3: %d\n", freq);
-+	freq = __decode_pll(ENET_PLL8, CONFIG_MX6_HCLK_FREQ);
-+	printf("mx6q pll8: %d\n", freq);
-+	printf("mcu main:  %d\n", __get_mcu_main_clk());
-+	printf("periph:    %d\n", __get_periph_clk());
-+	printf("ipg:       %d\n", __get_ipg_clk());
-+	printf("ipg per:   %d\n", __get_ipg_per_clk());
-+	printf("cspi:      %d\n", __get_cspi_clk());
-+	printf("axi:       %d\n", __get_axi_clk());
-+	printf("ahb:       %d\n", __get_ahb_clk());
-+	printf("emi slow:  %d\n", __get_emi_slow_clk());
-+	printf("nfc:       %d\n", __get_nfc_clk());
-+	printf("ddr:       %d\n", __get_ddr_clk());
-+	printf("usdhc1:    %d\n", __get_usdhc1_clk());
-+	printf("usdhc2:    %d\n", __get_usdhc2_clk());
-+	printf("usdhc3:    %d\n", __get_usdhc3_clk());
-+	printf("usdhc4:    %d\n", __get_usdhc4_clk());
-+}
-+
-+void imx6_ipu_clk_enable(int di)
-+{
-+	u32 reg;
-+
-+	if (di == 1) {
-+		reg = readl(MXC_CCM_CCGR3);
-+		reg |= 0xC033;
-+		writel(reg, MXC_CCM_CCGR3);
++		plat_mp_up(bootpg);
 +	} else {
-+		reg = readl(MXC_CCM_CCGR3);
-+		reg |= 0x300F;
-+		writel(reg, MXC_CCM_CCGR3);
++		puts("WARNING: No reset page TLB. "
++			"Skipping secondary core setup\n");
++	}
++}
+diff --git a/arch/ppc/mach-mpc85xx/speed.c b/arch/ppc/mach-mpc85xx/speed.c
+new file mode 100644
+index 0000000..074de55
+--- /dev/null
++++ b/arch/ppc/mach-mpc85xx/speed.c
+@@ -0,0 +1,97 @@
++/*
++ * Copyright 2012 GE Intelligent Platforms, Inc.
++ *
++ * Copyright 2004, 2007-2011 Freescale Semiconductor, Inc.
++ *
++ * (C) Copyright 2003 Motorola Inc.
++ * Xianghua Xiao, (X.Xiao@motorola.com)
++ *
++ * (C) Copyright 2000
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <common.h>
++#include <asm/ppc_asm.tmpl>
++#include <asm/processor.h>
++#include <asm/io.h>
++#include <mach/mpc85xx.h>
++#include <mach/immap_85xx.h>
++#include <mach/mp.h>
++
++void get_sys_info(struct sys_info *sysInfo)
++{
++	void __iomem *gur = (void __iomem *)(MPC85xx_GUTS_ADDR);
++	uint plat_ratio, e500_ratio, half_freqSystemBus;
++	uint lcrr_div;
++	int i;
++
++	plat_ratio = in_be32(gur + MPC85xx_GUTS_PORPLLSR_OFFSET) & 0x0000003e;
++	plat_ratio >>= 1;
++	sysInfo->freqSystemBus = plat_ratio * CFG_SYS_CLK_FREQ;
++
++	/*
++	 * Divide before multiply to avoid integer
++	 * overflow for processor speeds above 2GHz.
++	 */
++	half_freqSystemBus = sysInfo->freqSystemBus/2;
++	for (i = 0; i < cpu_numcores(); i++) {
++		e500_ratio = (in_be32(gur + MPC85xx_GUTS_PORPLLSR_OFFSET) >>
++				(i * 8 + 16)) & 0x3f;
++		sysInfo->freqProcessor[i] = e500_ratio * half_freqSystemBus;
 +	}
 +
-+	reg = readl(MX6_ANATOP_BASE_ADDR + 0xF0);
-+	reg &= ~0x00003F00;
-+	reg |= 0x00001300;
-+	writel(reg, MX6_ANATOP_BASE_ADDR + 0xF4);
++	/* Note: freqDDRBus is the MCLK frequency, not the data rate. */
++	sysInfo->freqDDRBus = sysInfo->freqSystemBus;
 +
-+	reg = readl(MXC_CCM_CS2CDR);
-+	reg &= ~0x00007E00;
-+	reg |= 0x00001200;
-+	writel(reg, MXC_CCM_CS2CDR);
++#ifdef CFG_DDR_CLK_FREQ
++	{
++		u32 ddr_ratio = (in_be32(gur + MPC85xx_GUTS_PORPLLSR_OFFSET) &
++					MPC85xx_PORPLLSR_DDR_RATIO) >>
++					MPC85xx_PORPLLSR_DDR_RATIO_SHIFT;
++		if (ddr_ratio != 0x7)
++			sysInfo->freqDDRBus = ddr_ratio * CFG_DDR_CLK_FREQ;
++	}
++#endif
 +
-+	reg = readl(MXC_CCM_CSCMR2);
-+	reg |= 0x00000C00;
-+	writel(reg, MXC_CCM_CSCMR2);
++	lcrr_div = in_be32(LBC_BASE_ADDR + FSL_LBC_LCCR) & LCRR_CLKDIV;
 +
-+	reg = 0x0002A953;
-+	writel(reg, MXC_CCM_CHSCDR);
++	if (lcrr_div == 2 || lcrr_div == 4 || lcrr_div == 8) {
++		/*
++		 * The entire PQ38 family use the same bit-representation
++		 * for twice the clock divider values.
++		 */
++		lcrr_div *= 2;
++
++		sysInfo->freqLocalBus = sysInfo->freqSystemBus / lcrr_div;
++	} else {
++		/* In case anyone cares what the unknown value is */
++		sysInfo->freqLocalBus = lcrr_div;
++	}
 +}
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index 73efa66..b1a678e 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -54,7 +54,7 @@ config MCI_IMX
++
++unsigned long get_bus_freq(ulong dummy)
++{
++	struct sys_info sys_info;
++
++	get_sys_info(&sys_info);
++
++	return sys_info.freqSystemBus;
++}
+diff --git a/include/linux/types.h b/include/linux/types.h
+index 16cc3ce..76c6b67 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -144,8 +144,10 @@ typedef __u32 __bitwise __wsum;
  
- config MCI_IMX_ESDHC
- 	bool "i.MX esdhc"
--	depends on ARCH_IMX25 || ARCH_IMX35 || ARCH_IMX51 || ARCH_IMX53
-+	depends on ARCH_IMX
- 	help
- 	  Enable this entry to add support to read and write SD cards on a
- 	  Freescale i.MX25/35/51 based system.
-diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-index 3c0be96..e853ca1 100644
---- a/include/asm-generic/barebox.lds.h
-+++ b/include/asm-generic/barebox.lds.h
-@@ -1,5 +1,10 @@
- 
--#if defined CONFIG_ARCH_IMX25 || defined CONFIG_ARCH_IMX35 || defined CONFIG_ARCH_IMX51 || defined CONFIG_ARCH_IMX53 || defined CONFIG_X86
-+#if defined CONFIG_ARCH_IMX25 || \
-+	defined CONFIG_ARCH_IMX35 || \
-+	defined CONFIG_ARCH_IMX51 || \
-+	defined CONFIG_ARCH_IMX53 || \
-+	defined CONFIG_ARCH_IMX6 || \
-+	defined CONFIG_X86
- #include <mach/barebox.lds.h>
+ #ifdef CONFIG_PHYS_ADDR_T_64BIT
+ typedef u64 phys_addr_t;
++typedef u64 phys_size_t;
+ #else
+ typedef u32 phys_addr_t;
++typedef u32 phys_size_t;
  #endif
  
+ typedef phys_addr_t resource_size_t;
 -- 
-1.7.10
+1.7.1
 
 
 _______________________________________________
