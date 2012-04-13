@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SIdzr-0007hy-Ko
- for barebox@lists.infradead.org; Fri, 13 Apr 2012 10:44:56 +0000
-From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Fri, 13 Apr 2012 12:44:46 +0200
-Message-Id: <1334313886-29058-1-git-send-email-w.sang@pengutronix.de>
+Received: from 2.mo3.mail-out.ovh.net ([46.105.75.36]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SIeam-0001Q1-3O
+ for barebox@lists.infradead.org; Fri, 13 Apr 2012 11:23:05 +0000
+Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 7E968FF927A
+ for <barebox@lists.infradead.org>; Fri, 13 Apr 2012 13:24:09 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Fri, 13 Apr 2012 13:05:20 +0200
+Message-Id: <1334315120-23538-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arm: tx28: select OCOTP driver
+Subject: [PATCH 1/1] mx53/loco: udpate defconfig with USB host
 To: barebox@lists.infradead.org
 
-Compile fixes unknown symbol 'mxs_ocotp_read' for tx28 defconfig. Since
-the vendor stores the MAC address in OCOTP, we always want this driver.
+enable USB storage.
 
-Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-mxs/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/configs/freescale_mx53_loco_defconfig |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
-index 4c869dc..3348a3c 100644
---- a/arch/arm/mach-mxs/Kconfig
-+++ b/arch/arm/mach-mxs/Kconfig
-@@ -91,6 +91,7 @@ choice
- 
- config MACH_TX28STK5
- 	bool "TX28-stk5"
-+	select MXS_OCOTP
- 	help
- 	  Select this entry if you are running the TX28 CPU module on the
- 	  KARO TX28 Starterkit5.
+diff --git a/arch/arm/configs/freescale_mx53_loco_defconfig b/arch/arm/configs/freescale_mx53_loco_defconfig
+index f31d5bf..b983198 100644
+--- a/arch/arm/configs/freescale_mx53_loco_defconfig
++++ b/arch/arm/configs/freescale_mx53_loco_defconfig
+@@ -57,6 +57,10 @@ CONFIG_DRIVER_NET_FEC_IMX=y
+ # CONFIG_SPI is not set
+ CONFIG_I2C=y
+ CONFIG_I2C_IMX=y
++CONFIG_USB=y
++CONFIG_USB_EHCI=y
++CONFIG_USB_ULPI=y
++CONFIG_USB_STORAGE=y
+ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+ CONFIG_MCI_IMX_ESDHC=y
 -- 
-1.7.9.5
+1.7.9.1
 
 
 _______________________________________________
