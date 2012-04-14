@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo3.mail-out.ovh.net ([46.105.44.175]
- helo=mo3.mail-out.ovh.net)
+Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SJ5wt-0001G5-Lr
- for barebox@lists.infradead.org; Sat, 14 Apr 2012 16:35:44 +0000
-Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id B76A2FF87A4
- for <barebox@lists.infradead.org>; Sat, 14 Apr 2012 18:36:52 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 14 Apr 2012 18:17:42 +0200
-Message-Id: <1334420262-4823-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20120414161509.GC30672@game.jcrosoft.org>
+ id 1SJ79Q-0001wN-Dy
+ for barebox@lists.infradead.org; Sat, 14 Apr 2012 17:52:46 +0000
+Received: from eb-e6520 (unknown [82.233.81.124])
+ by smtp3-g21.free.fr (Postfix) with ESMTP id E61ECA625D
+ for <barebox@lists.infradead.org>; Sat, 14 Apr 2012 19:52:37 +0200 (CEST)
+Date: Sat, 14 Apr 2012 19:52:36 +0200
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20120414195236.353b42df@eb-e6520>
+In-Reply-To: <1334420262-4823-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120414161509.GC30672@game.jcrosoft.org>
+ <1334420262-4823-1-git-send-email-plagnioj@jcrosoft.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,44 +21,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] beagle/xload: update defconfig
+Subject: Re: [PATCH 1/3] beagle: add default env support
 To: barebox@lists.infradead.org
 
-enable Thumb2 and menu support
+Le Sat, 14 Apr 2012 18:17:40 +0200,
+Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/configs/omap3530_beagle_xload_defconfig |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+> update defconfig too to support oftree
+> =
 
-diff --git a/arch/arm/configs/omap3530_beagle_xload_defconfig b/arch/arm/configs/omap3530_beagle_xload_defconfig
-index d951b1c..8a1fe84 100644
---- a/arch/arm/configs/omap3530_beagle_xload_defconfig
-+++ b/arch/arm/configs/omap3530_beagle_xload_defconfig
-@@ -2,6 +2,7 @@ CONFIG_ARCH_OMAP=y
- CONFIG_OMAP_BUILD_IFT=y
- CONFIG_MACH_BEAGLE=y
- CONFIG_AEABI=y
-+CONFIG_THUMB2_BAREBOX=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- # CONFIG_ARM_EXCEPTIONS is not set
- CONFIG_TEXT_BASE=0x40200000
-@@ -12,6 +13,7 @@ CONFIG_MALLOC_BASE=0x87BFFF10
- CONFIG_MALLOC_DUMMY=y
- CONFIG_PROMPT="X-load Beagle>"
- CONFIG_SHELL_NONE=y
-+CONFIG_MENU=y
- # CONFIG_ERRNO_MESSAGES is not set
- # CONFIG_TIMESTAMP is not set
- # CONFIG_CONSOLE_FULL is not set
--- 
-1.7.9.1
+.../...
+> +# can be either 'nfs', 'tftp' or 'nand'
+> +kernel_loc=3Dnfs
+> +# can be either 'net', 'nand' or 'initrd'
+> +rootfs_loc=3Dnet
+> +# can be either 'nfs', 'tftp', 'nand' or empty
+> +oftree_loc=3Dnfs
+> +
+I understand that NFS can be useful for development, but I think we
+should have a default configuration for the "standard" way to use the
+board. In the present case, this is booting from a SDCard and not from
+NFS.
 
+Eric
 
 _______________________________________________
 barebox mailing list
