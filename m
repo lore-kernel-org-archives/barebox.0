@@ -1,22 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo3.mail-out.ovh.net ([188.165.43.173]
+Received: from 11.mo3.mail-out.ovh.net ([87.98.184.158]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SIuid-0005yu-Hw
- for barebox@lists.infradead.org; Sat, 14 Apr 2012 04:36:17 +0000
+ id 1SIusS-00063C-41
+ for barebox@lists.infradead.org; Sat, 14 Apr 2012 04:46:25 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 316B6FF88B2
- for <barebox@lists.infradead.org>; Sat, 14 Apr 2012 06:37:18 +0200 (CEST)
-Date: Sat, 14 Apr 2012 06:18:20 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id ECEEAFF88F7
+ for <barebox@lists.infradead.org>; Sat, 14 Apr 2012 06:47:30 +0200 (CEST)
+Date: Sat, 14 Apr 2012 06:28:32 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120414041820.GA2074@game.jcrosoft.org>
+Message-ID: <20120414042832.GB2074@game.jcrosoft.org>
 References: <F9C551623D2CBB4C9488801D14F864C614B2F7@ex-mb1.corp.adtran.com>
  <20120413202303.GT3852@pengutronix.de>
- <F9C551623D2CBB4C9488801D14F864C614BE42@ex-mb1.corp.adtran.com>
- <20120413231206.555628dd@eb-e6520>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120413231206.555628dd@eb-e6520>
+In-Reply-To: <20120413202303.GT3852@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,66 +23,106 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: I want to use Barebox
-To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
-Cc: barebox@lists.infradead.org
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On 23:12 Fri 13 Apr     , Eric B=E9nard wrote:
-> Hi Andy,
-> =
+On 22:23 Fri 13 Apr     , Sascha Hauer wrote:
+> On Fri, Apr 13, 2012 at 03:37:04PM +0000, ANDY KENNEDY wrote:
+> > I first saw Barebox about a year ago, did a little poking around and
+> > realized that this seems like the way to go for booting an embedded
+> > system.  I am, however, meeting opposition to implementing Barebox in
+> > our current system.  I need some help on questions I cannot answer.  If
+> > you could, please take the time to answer the following few issues.
+> > 
+> > 1)  I have a concern that barebox is not mainstream enough yet.
+> 
+> Well by using it you could make it a bit more mainstream ;)
+> 
+> > 
+> > 2)  I have a feeling we will always be porting everyone's bsp (that
+> >     already has a working u-boot) to barebox.
+> 
+> I'd say that usually barebox better abstracts from the hardware, so
+> different boards usually feel much more the same. With U-Boot the usage
+> often differs across different boards. Having a common environment
+> becomes a real advantage when you have many different boards.
+> 
+> > 3)  I also don't really see the real advantage over standard u-boot
+> >     (what's the 'killer' application?).
+> 
+> For me the basic killing feature is that barebox has filesystem support
+> which means that you can mount filesystems and only have one
+> 'ls' (cp, rm,..) command to access all files and devices. U-Boot instead
+> has a set of these commands for each filesystem and device:
+> 
+>   fatload <interface> <dev[:part]>  <addr> <filename> [bytes]
+>   nand read - addr off|partition size
+>   mmc read addr blk# cnt
+>   eeprom read  devaddr addr off cnt
+> 
+> All these commands have a different syntax and are non obvious to use.
+> Also note that the target of all the commands above is a chunk of plain
+> SDRAM. This means that in case of a system update you always have to
+> copy the update image first from the device to SDRAM and then from SDRAM
+> to the target device. To do this you have to know where SDRAM is (varies
+> across different boards) and also the size of the update image is
+> limited by the amount of free SDRAM you have. With barebox all this goes
+> down to for example cp /mnt/usb0-fat/rootimage /dev/nor0.root.
+> 
+> There are other things aswell:
+> 
+> - barebox has a sane configuration system (U-Boot is configured using
+>   several thousand CFG_* defines)
+> - barebox can always start itself as a second stage loader (with U-Boot
+>   you have to compile a special ramboot image which then again can't
+>   start first stage)
+> - barebox can start zImages, raw Linux images, uImages, all using the
+>   same command (U-Boot is limited to uImages)
+you forget Android Image
+> - barebox has command line options, U-Boot only supports positional
+>   arguments
+> - barebox has a driver model which means that you can register devices
+>   which automatically find the correct driver.
+> - you can put your environment into files as opposed to 'executable
+>   environment variables' in U-Boot
+we have full feature bootp support with a dhcp client supporting
+vondor id
+client id
+client uuid
+user class
 
-> Le Fri, 13 Apr 2012 20:38:12 +0000,
-> ANDY KENNEDY <ANDY.KENNEDY@adtran.com> a =E9crit :
-> =
+and very esay to extend
 
-> > > > 1)  I have a concern that barebox is not mainstream enough yet.
-> > > =
+we have menu support that you can write in c or shell
 
-> > > Well by using it you could make it a bit more mainstream ;)
-> > =
+we have shell support with shell script (file)
+U-Boot use var to store the shell which is quite hard to customised
+and make it nearly imposssible to foactorize.
 
-> > Hmmm.  That will be an UP HILL battle for me, I'm sure.  Are there any
-> > stats on how many folks / who all uses Barebox currently?
-> > =
+On barebox we have a defaultenv that you just need to cusmoize in your board
+without having to touch it. (this simplify to adding of platform quite a lot).
 
-> we are using it on all our i.MX based SOM (i.MX25/35/51/53), and have
-> been using it in several custom product developped (mainly i.MX & AT91
-> based, some of them being in production) for customers (in one product
-> the bootloader is even still named u-boot-v2 as the code for i.MX27 was
-> already in a very good shape at that time ;-)
-> =
+We have DFU support, srial of USB device that you can select at the runtime
+(take a look on the Atmel reference baord or the Calao)
 
-> In the past, RedBoot was often available in official BSPs and at that
-> time some people had the same hesitation to use the community u-boot
-> instead of the manufacturer's RedBoot ... and after a few years u-boot
-> became the de facto standard bootloader for many official BSP.
-> =
+We have pull support that allow you to have recurent task evenif we do not
+support IRQ (impossible in u-boot)
 
-> Moreover, some manufacturer's BSP can be quite hard to adapt to a
-> custom hardware which is not the exact copy of the evaluation board,
-> but of course, for a manager, using an official BSP gives a feeling of
-> security and seems to be the obvious choice (even if the official BSP is
-> not maintained once it's available and not really validated outside the
-> case of one evaluation board) ...
-I agree with Sasha and Eric
+And if you need modules support to extend barebox feature at the run time
 
-I've sevral customer using barebox in productoin on AT91, IMX, OMAP and SH
-and asking to do not use U-Boot anymore.
+And framebufer support (derived from the kernel)
 
-and yes we port or re-write the bsp of the vendor in Barebox but you do it
-once. After you just have to add board which is really more esaly and less
-time consuming.
+I'm sure I forget some feature but barebox is design to easly share the code
+with the kernel and to simplify the life of the developper and the end
+customer
 
-Some vendor start now to take a look on barebox to propose both BSP U-Boot =
-and
-Barebox.
-
-I personnaly maintain U-Boot ARM for few years and switch to barebox as to
-have the feature and code quality I need it was too much time consuming.
+And I implement complex boot sequence easly in barebox where in U-Boot evenif
+I known perfecly I get hard time.
 
 Best Regards,
 J.
