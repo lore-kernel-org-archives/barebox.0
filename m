@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SJ9MD-0003Ak-Eh
- for barebox@lists.infradead.org; Sat, 14 Apr 2012 20:14:06 +0000
-Date: Sat, 14 Apr 2012 22:13:56 +0200
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SJ9OO-0001tH-15
+ for barebox@lists.infradead.org; Sat, 14 Apr 2012 20:16:21 +0000
+Date: Sat, 14 Apr 2012 22:16:14 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120414201356.GC3852@pengutronix.de>
-References: <1334325273-1701-1-git-send-email-s.hauer@pengutronix.de>
- <1334325273-1701-2-git-send-email-s.hauer@pengutronix.de>
- <20120414161123.GB30672@game.jcrosoft.org>
+Message-ID: <20120414201614.GD3852@pengutronix.de>
+References: <20120414161509.GC30672@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120414161123.GB30672@game.jcrosoft.org>
+In-Reply-To: <20120414161509.GC30672@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,50 +22,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] ARM: add initial i.MX6 support
+Subject: Re: [PATCH 0/3] Omap xloader boot menu support and beagle env
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Apr 14, 2012 at 06:11:23PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 15:54 Fri 13 Apr     , Sascha Hauer wrote:
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/mach-imx/Kconfig                     |    7 +-
-> >  arch/arm/mach-imx/Makefile                    |    1 +
-> >  arch/arm/mach-imx/imx6.c                      |   71 +
-> >  arch/arm/mach-imx/include/mach/clock-imx6.h   |  530 +++
-> >  arch/arm/mach-imx/include/mach/devices-imx6.h |   46 +
-> >  arch/arm/mach-imx/include/mach/generic.h      |    6 +
-> >  arch/arm/mach-imx/include/mach/imx-regs.h     |    2 +
-> >  arch/arm/mach-imx/include/mach/imx6-anadig.h  |  721 ++++
-> >  arch/arm/mach-imx/include/mach/imx6-regs.h    |  132 +
-> >  arch/arm/mach-imx/include/mach/imx6.h         |    6 +
-> >  arch/arm/mach-imx/include/mach/iomux-mx6.h    | 5630 +++++++++++++++++++++++++
-> >  arch/arm/mach-imx/speed-imx6.c                |  393 ++
-> >  drivers/mci/Kconfig                           |    2 +-
-> >  include/asm-generic/barebox.lds.h             |    7 +-
-> >  14 files changed, 7551 insertions(+), 3 deletions(-)
-> >  create mode 100644 arch/arm/mach-imx/imx6.c
-> >  create mode 100644 arch/arm/mach-imx/include/mach/clock-imx6.h
-> >  create mode 100644 arch/arm/mach-imx/include/mach/devices-imx6.h
-> >  create mode 100644 arch/arm/mach-imx/include/mach/imx6-anadig.h
-> >  create mode 100644 arch/arm/mach-imx/include/mach/imx6-regs.h
-> >  create mode 100644 arch/arm/mach-imx/include/mach/imx6.h
-> >  create mode 100644 arch/arm/mach-imx/include/mach/iomux-mx6.h
-> >  create mode 100644 arch/arm/mach-imx/speed-imx6.c
-> > 
-> > diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> > index 2f317c2..8a0979a 100644
-> > --- a/arch/arm/mach-imx/Kconfig
-> > +++ b/arch/arm/mach-imx/Kconfig
-> on IMX you could set the ARCH_BAREBOX_MAX_BARE_INIT_SIZE so you can check at
-> the compilation that the code fit in sram
+On Sat, Apr 14, 2012 at 06:15:09PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
+> 
+> 	The following patch seri add the support of a boot menu in the xloader
+> 
+> 	This will allow to choice where we boot from.
+> 	As example if the nand boot is broken we can choose to boot from mmc.
+> 	The autoboot is set to 1s as most of the time you expect to boot from the
+> 	default boot.
 
-No, there is no such limitation here.
-
-Please trim your answers.
+No, please no delays which can't be configured away.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
