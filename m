@@ -1,17 +1,26 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.mo3.mail-out.ovh.net ([188.165.33.202]
+Received: from 6.mo3.mail-out.ovh.net ([188.165.43.173]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SJQ7n-0007jS-Dz
- for barebox@lists.infradead.org; Sun, 15 Apr 2012 14:08:20 +0000
+ id 1SJQ93-0007mS-Qg
+ for barebox@lists.infradead.org; Sun, 15 Apr 2012 14:09:38 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 16B70FF86C1
- for <barebox@lists.infradead.org>; Sun, 15 Apr 2012 15:46:57 +0200 (CEST)
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 3AC3CFF871E
+ for <barebox@lists.infradead.org>; Sun, 15 Apr 2012 16:10:49 +0200 (CEST)
+Date: Sun, 15 Apr 2012 15:51:31 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 15 Apr 2012 15:27:39 +0200
-Message-Id: <1334496459-11221-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1334462739-17265-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1334462739-17265-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20120415135131.GM30672@game.jcrosoft.org>
+References: <1334325273-1701-1-git-send-email-s.hauer@pengutronix.de>
+ <1334325273-1701-2-git-send-email-s.hauer@pengutronix.de>
+ <20120414161123.GB30672@game.jcrosoft.org>
+ <20120414201356.GC3852@pengutronix.de>
+ <20120415013142.GE30672@game.jcrosoft.org>
+ <20120415095313.GE3852@pengutronix.de>
+ <20120415114710.GJ30672@game.jcrosoft.org>
+ <20120415134919.GI3852@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20120415134919.GI3852@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,77 +29,80 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3 v2] net: dhcp: add support to send the hostname to the
- dhcp server
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/7] ARM: add initial i.MX6 support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- net/dhcp.c |   14 ++++++++++++--
- 1 files changed, 12 insertions(+), 2 deletions(-)
+On 15:49 Sun 15 Apr     , Sascha Hauer wrote:
+> On Sun, Apr 15, 2012 at 01:47:10PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 11:53 Sun 15 Apr     , Sascha Hauer wrote:
+> > > On Sun, Apr 15, 2012 at 03:31:42AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > On 22:13 Sat 14 Apr     , Sascha Hauer wrote:
+> > > > > On Sat, Apr 14, 2012 at 06:11:23PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > > > On 15:54 Fri 13 Apr     , Sascha Hauer wrote:
+> > > > > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > > > > > ---
+> > > > > > >  arch/arm/mach-imx/Kconfig                     |    7 +-
+> > > > > > >  arch/arm/mach-imx/Makefile                    |    1 +
+> > > > > > >  arch/arm/mach-imx/imx6.c                      |   71 +
+> > > > > > >  arch/arm/mach-imx/include/mach/clock-imx6.h   |  530 +++
+> > > > > > >  arch/arm/mach-imx/include/mach/devices-imx6.h |   46 +
+> > > > > > >  arch/arm/mach-imx/include/mach/generic.h      |    6 +
+> > > > > > >  arch/arm/mach-imx/include/mach/imx-regs.h     |    2 +
+> > > > > > >  arch/arm/mach-imx/include/mach/imx6-anadig.h  |  721 ++++
+> > > > > > >  arch/arm/mach-imx/include/mach/imx6-regs.h    |  132 +
+> > > > > > >  arch/arm/mach-imx/include/mach/imx6.h         |    6 +
+> > > > > > >  arch/arm/mach-imx/include/mach/iomux-mx6.h    | 5630 +++++++++++++++++++++++++
+> > > > > > >  arch/arm/mach-imx/speed-imx6.c                |  393 ++
+> > > > > > >  drivers/mci/Kconfig                           |    2 +-
+> > > > > > >  include/asm-generic/barebox.lds.h             |    7 +-
+> > > > > > >  14 files changed, 7551 insertions(+), 3 deletions(-)
+> > > > > > >  create mode 100644 arch/arm/mach-imx/imx6.c
+> > > > > > >  create mode 100644 arch/arm/mach-imx/include/mach/clock-imx6.h
+> > > > > > >  create mode 100644 arch/arm/mach-imx/include/mach/devices-imx6.h
+> > > > > > >  create mode 100644 arch/arm/mach-imx/include/mach/imx6-anadig.h
+> > > > > > >  create mode 100644 arch/arm/mach-imx/include/mach/imx6-regs.h
+> > > > > > >  create mode 100644 arch/arm/mach-imx/include/mach/imx6.h
+> > > > > > >  create mode 100644 arch/arm/mach-imx/include/mach/iomux-mx6.h
+> > > > > > >  create mode 100644 arch/arm/mach-imx/speed-imx6.c
+> > > > > > > 
+> > > > > > > diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> > > > > > > index 2f317c2..8a0979a 100644
+> > > > > > > --- a/arch/arm/mach-imx/Kconfig
+> > > > > > > +++ b/arch/arm/mach-imx/Kconfig
+> > > > > > on IMX you could set the ARCH_BAREBOX_MAX_BARE_INIT_SIZE so you can check at
+> > > > > > the compilation that the code fit in sram
+> > > > > 
+> > > > > No, there is no such limitation here.
+> > > > > 
+> > > > > Please trim your answers.
+> > > > when you boot from internal boot from nand we have no limit?
+> > > > 
+> > > > IIRC we have
+> > > 
+> > > No, there is no limit, at least not when we use the real barebox size
+> > > instead of 0x40000 like you suggested.
+> >  I mean to the BARE_INIT not barebox itself
+> 
+> There is no bare_init section with internal boot.
+yes you are wight BARE_INIT_SIZE does not contain PRE_IMAGE
 
-diff --git a/net/dhcp.c b/net/dhcp.c
-index 0116ba4..9dc1c28 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -237,6 +237,7 @@ static int dhcp_set_string_options(struct dhcp_param *param, u8 *e)
- 	return str_len + 2;
- }
- 
-+#define DHCP_HOSTNAME		12
- #define DHCP_VENDOR_ID		60
- #define DHCP_CLIENT_ID		61
- #define DHCP_USER_CLASS		77
-@@ -244,6 +245,10 @@ static int dhcp_set_string_options(struct dhcp_param *param, u8 *e)
- 
- struct dhcp_param dhcp_params[] = {
- 	{
-+		.option = DHCP_HOSTNAME,
-+		.handle = dhcp_set_string_options,
-+		.barebox_var_name = "hostname",
-+	}, {
- 		.option = DHCP_VENDOR_ID,
- 		.handle = dhcp_set_string_options,
- 		.barebox_var_name = "dhcp_vendor_id",
-@@ -614,8 +619,11 @@ static int do_dhcp(int argc, char *argv[])
- 
- 	dhcp_reset_env();
- 
--	while((opt = getopt(argc, argv, "v:c:u:U:")) > 0) {
-+	while((opt = getopt(argc, argv, "H:v:c:u:U:")) > 0) {
- 		switch(opt) {
-+		case 'H':
-+			dhcp_set_param_data(DHCP_HOSTNAME, optarg);
-+			break;
- 		case 'v':
- 			dhcp_set_param_data(DHCP_VENDOR_ID, optarg);
- 			break;
-@@ -672,6 +680,8 @@ out:
- BAREBOX_CMD_HELP_START(dhcp)
- BAREBOX_CMD_HELP_USAGE("dhcp [OPTIONS]\n")
- BAREBOX_CMD_HELP_SHORT("Invoke dhcp client to obtain ip/boot params.\n")
-+BAREBOX_CMD_HELP_OPT  ("-H <hostname>",
-+"Hostname to send to the DHCP server\n");
- BAREBOX_CMD_HELP_OPT  ("-v <vendor_id>",
- "DHCP Vendor ID (code 60) submitted in DHCP requests. It can\n"
- "be used in the DHCP server's configuration to select options\n"
-@@ -698,7 +708,7 @@ BAREBOX_CMD_END
- 
- BAREBOX_MAGICVAR(bootfile, "bootfile returned from DHCP request");
- BAREBOX_MAGICVAR(nameserver, "Nameserver returned from DHCP request");
--BAREBOX_MAGICVAR(hostname, "hostname returned from DHCP request");
-+BAREBOX_MAGICVAR(hostname, "hostname to send or returned from DHCP request");
- BAREBOX_MAGICVAR(domainname, "domainname returned from DHCP request");
- BAREBOX_MAGICVAR(rootpath, "rootpath returned from DHCP request");
- BAREBOX_MAGICVAR(dhcp_vendor_id, "vendor id to send to the DHCP server");
--- 
-1.7.9.1
+maybe we need to allow such mechanism for it too
 
+Best Regards,
+J.
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
