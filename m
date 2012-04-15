@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SJQtE-00014F-S9
- for barebox@lists.infradead.org; Sun, 15 Apr 2012 14:57:21 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1SJQt9-00051o-9H
- for barebox@lists.infradead.org; Sun, 15 Apr 2012 16:57:15 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <sha@pengutronix.de>) id 1SJQt9-0008LL-8N
- for barebox@lists.infradead.org; Sun, 15 Apr 2012 16:57:15 +0200
+ id 1SJQvm-00015i-VF
+ for barebox@lists.infradead.org; Sun, 15 Apr 2012 14:59:59 +0000
+Date: Sun, 15 Apr 2012 16:59:53 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 15 Apr 2012 16:57:12 +0200
-Message-Id: <1334501834-32001-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20120415145953.GK3852@pengutronix.de>
+References: <1334322272-26898-1-git-send-email-renaud.barbier@ge.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1334322272-26898-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,28 +18,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ppc cleanup
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH V2 0/3] MPC85xx support
+To: Renaud Barbier <renaud.barbier@ge.com>
+Cc: barebox@lists.infradead.org
 
-This removes some unused code from the ppc port.
+Hi Renaud,
 
-----------------------------------------------------------------
-Sascha Hauer (2):
-      ppc: remove unused init_board_data function
-      ppc: remove unused bd_t
+On Fri, Apr 13, 2012 at 02:04:29PM +0100, Renaud Barbier wrote:
+> This patchset introduces the MPC85xx architecture to Barebox. The
+> existing PPC code is modified to enable multiple PowerPC architecture
+> support. All existing architecture specific MPC5xxx code which prevents
+> adding additional architectures is moved into the architecture specific
+> subdirectories and the PCM030 configuration fixed to use this new
+> configuration.
+> 
+> Base MPC85xx infrastructure is added to enable the required
+> functionality for a minimal boot target in 32 bit addressing mode
+> using an e500v2 core.
+> 
+> Finally support is added for a minimal Freescale P2020RDB platform with
+> driver support currently limited to NOR and serial port only.
+> 
+> Renaud Barbier (3):
+>   Preparation stage to support multiple PPC architectures
+>   Minimal support of the MPC85xx architecture
+>   Minimal P2020RDB platform support and configuration file
+> 
 
- arch/ppc/include/asm/barebox.h |  103 ----------------------------------------
- arch/ppc/include/asm/common.h  |    3 --
- arch/ppc/lib/Makefile          |    1 -
- arch/ppc/lib/board_data.c      |   49 -------------------
- arch/ppc/mach-mpc5xxx/cpu.c    |   10 ----
- 5 files changed, 166 deletions(-)
- delete mode 100644 arch/ppc/lib/board_data.c
+Much better than the last version, thanks.
+
+I realized that you base parts of your code on the unused board_data. I
+just sent out a patch to remove the unused code, and you shouldn't use
+it on the new mpc85xx support also.
+
+I'll have a close look at your series later, this is only one thing I
+realized when looking at it.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
