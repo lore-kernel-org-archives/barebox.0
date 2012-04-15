@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SJQo8-00005j-QZ
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SJQo8-0007W5-Am
  for barebox@lists.infradead.org; Sun, 15 Apr 2012 14:52:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 15 Apr 2012 16:51:55 +0200
-Message-Id: <1334501517-29478-3-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 15 Apr 2012 16:51:57 +0200
+Message-Id: <1334501517-29478-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1334501517-29478-1-git-send-email-s.hauer@pengutronix.de>
 References: <1334501517-29478-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,33 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] automount: fix argument parsing
+Subject: [PATCH 4/4] automount: remove existing automountpoint
 To: barebox@lists.infradead.org
 
-With getopt we have to use argv[optind] instead of hardcoded argv[0]
+Before creating a new mountpoint on an already existing mountpoint
+we have to remove it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/automount.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/fs.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/commands/automount.c b/commands/automount.c
-index 5fc68f3..8c0e4de 100644
---- a/commands/automount.c
-+++ b/commands/automount.c
-@@ -40,10 +40,10 @@ static int do_automount(int argc, char *argv[])
- 		}
- 	}
+diff --git a/fs/fs.c b/fs/fs.c
+index 64997cc..04dace4 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -259,6 +259,8 @@ int automount_add(const char *path, const char *cmd)
+ 	am->path = normalise_path(path);
+ 	am->cmd = xstrdup(cmd);
  
--	if (argc != 3)
-+	if (optind + 2 != argc)
- 		return COMMAND_ERROR_USAGE;
- 
--	ret = automount_add(argv[1], argv[2]);
-+	ret = automount_add(argv[optind], argv[optind + 1]);
- 	if (ret)
- 		printf("adding automountpoint failed: %s\n",
- 				strerror(-ret));
++	automount_remove(am->path);
++
+ 	ret = stat(path, &s);
+ 	if (!ret) {
+ 		/*
 -- 
 1.7.10
 
