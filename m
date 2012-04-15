@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SJQRV-0003kr-MQ
- for barebox@lists.infradead.org; Sun, 15 Apr 2012 14:28:42 +0000
+ id 1SJQRZ-0003mL-NE
+ for barebox@lists.infradead.org; Sun, 15 Apr 2012 14:28:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 15 Apr 2012 16:28:28 +0200
-Message-Id: <1334500111-26382-6-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 15 Apr 2012 16:28:30 +0200
+Message-Id: <1334500111-26382-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1334500111-26382-1-git-send-email-s.hauer@pengutronix.de>
 References: <1334500111-26382-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,49 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] dhcp: set global nameserver/domainname
+Subject: [PATCH 7/8] fs tftp: use resolv to resolv ip address
 To: barebox@lists.infradead.org
 
-The nameserver and domainname are now globally available using
-the 'net' device. Use it.
+instead of assuming the backingstore is a ip address, use resolv()
+to make it possible to pass in a hostname.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/dhcp.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/tftp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/dhcp.c b/net/dhcp.c
-index 0116ba4..8569917 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -170,7 +170,7 @@ struct dhcp_opt dhcp_options[] = {
- 	}, {
- 		.option = 6,
- 		.handle = env_ip_handle,
--		.barebox_var_name = "nameserver",
-+		.barebox_var_name = "net.nameserver",
- 	}, {
- 		.option = 12,
- 		.handle = env_str_handle,
-@@ -178,7 +178,7 @@ struct dhcp_opt dhcp_options[] = {
- 	}, {
- 		.option = 15,
- 		.handle = env_str_handle,
--		.barebox_var_name = "domainname",
-+		.barebox_var_name = "net.domainname",
- 	}, {
- 		.option = 17,
- 		.handle = env_str_handle,
-@@ -697,9 +697,7 @@ BAREBOX_CMD_START(dhcp)
- BAREBOX_CMD_END
+diff --git a/fs/tftp.c b/fs/tftp.c
+index 463e0fc..e8a209e 100644
+--- a/fs/tftp.c
++++ b/fs/tftp.c
+@@ -603,7 +603,7 @@ static int tftp_probe(struct device_d *dev)
  
- BAREBOX_MAGICVAR(bootfile, "bootfile returned from DHCP request");
--BAREBOX_MAGICVAR(nameserver, "Nameserver returned from DHCP request");
- BAREBOX_MAGICVAR(hostname, "hostname returned from DHCP request");
--BAREBOX_MAGICVAR(domainname, "domainname returned from DHCP request");
- BAREBOX_MAGICVAR(rootpath, "rootpath returned from DHCP request");
- BAREBOX_MAGICVAR(dhcp_vendor_id, "vendor id to send to the DHCP server");
- BAREBOX_MAGICVAR(dhcp_client_uuid, "cliend uuid to send to the DHCP server");
+ 	dev->priv = priv;
+ 
+-	string_to_ip(fsdev->backingstore, &priv->server);
++	priv->server = resolv(fsdev->backingstore);
+ 
+ 	return 0;
+ }
 -- 
 1.7.10
 
