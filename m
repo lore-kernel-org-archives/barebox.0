@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SJQRZ-0003mL-NE
- for barebox@lists.infradead.org; Sun, 15 Apr 2012 14:28:46 +0000
+ id 1SJQRV-0003ks-MP
+ for barebox@lists.infradead.org; Sun, 15 Apr 2012 14:28:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 15 Apr 2012 16:28:30 +0200
-Message-Id: <1334500111-26382-8-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 15 Apr 2012 16:28:24 +0200
+Message-Id: <1334500111-26382-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1334500111-26382-1-git-send-email-s.hauer@pengutronix.de>
 References: <1334500111-26382-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] fs tftp: use resolv to resolv ip address
+Subject: [PATCH 1/8] net dns: remove debug code
 To: barebox@lists.infradead.org
-
-instead of assuming the backingstore is a ip address, use resolv()
-to make it possible to pass in a hostname.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/tftp.c |    2 +-
+ net/dns.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/tftp.c b/fs/tftp.c
-index 463e0fc..e8a209e 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -603,7 +603,7 @@ static int tftp_probe(struct device_d *dev)
+diff --git a/net/dns.c b/net/dns.c
+index fb1178a..0d6c337 100644
+--- a/net/dns.c
++++ b/net/dns.c
+@@ -97,7 +97,7 @@ static int dns_send(char *name)
+ 		dotptr = s;
+ 	} while (*(dotptr + 1));
+ 	*dotptr = 0;
+-//memory_display(fullname, 0, strlen(fullname), 1);
++
+ 	strcpy(header->data, fullname);
  
- 	dev->priv = priv;
- 
--	string_to_ip(fsdev->backingstore, &priv->server);
-+	priv->server = resolv(fsdev->backingstore);
- 
- 	return 0;
- }
+ 	p = header->data + strlen(fullname);
 -- 
 1.7.10
 
