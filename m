@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SJPTN-0007xG-JC
+ id 1SJPTN-0007xF-Hm
  for barebox@lists.infradead.org; Sun, 15 Apr 2012 13:26:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 15 Apr 2012 15:26:20 +0200
-Message-Id: <1334496380-4091-7-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 15 Apr 2012 15:26:19 +0200
+Message-Id: <1334496380-4091-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1334496380-4091-1-git-send-email-s.hauer@pengutronix.de>
 References: <1334496380-4091-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] fs tftp: use resolv to resolv ip address
+Subject: [PATCH 5/6] dns: use global nameserver/domainname
 To: barebox@lists.infradead.org
-
-instead of assuming the backingstore is a ip address, use resolv()
-to make it possible to pass in a hostname.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/tftp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/dns.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/tftp.c b/fs/tftp.c
-index 463e0fc..e8a209e 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -603,7 +603,7 @@ static int tftp_probe(struct device_d *dev)
+diff --git a/net/dns.c b/net/dns.c
+index 0d6c337..81fa2ae 100644
+--- a/net/dns.c
++++ b/net/dns.c
+@@ -77,7 +77,7 @@ static int dns_send(char *name)
+ 	header->nauth    = 0;
+ 	header->nother   = 0;
  
- 	dev->priv = priv;
+-	domain = getenv("domainname");
++	domain = net_get_domainname();
  
--	string_to_ip(fsdev->backingstore, &priv->server);
-+	priv->server = resolv(fsdev->backingstore);
+ 	if (!strchr(name, '.') && domain && *domain)
+ 		fullname = asprintf(".%s.%s.", name, domain);
+@@ -205,11 +205,11 @@ IPaddr_t resolv(char *host)
  
- 	return 0;
- }
+ 	dns_state = STATE_INIT;
+ 
+-	ip = getenv_ip_dns("nameserver", 0);
++	ip = net_get_nameserver();
+ 	if (!ip)
+ 		return 0;
+ 
+-	debug("resolving host %s via nameserver %s\n", host, getenv("nameserver"));
++	debug("resolving host %s via nameserver %s\n", host, ip_to_string(ip));
+ 
+ 	dns_con = net_udp_new(ip, DNS_PORT, dns_handler, NULL);
+ 	if (IS_ERR(dns_con))
 -- 
 1.7.10
 
