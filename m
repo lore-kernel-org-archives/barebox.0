@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SJSLf-0003y1-9L
- for barebox@lists.infradead.org; Sun, 15 Apr 2012 16:30:48 +0000
-Date: Sun, 15 Apr 2012 18:30:40 +0200
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SJSYl-0000Y9-CO
+ for barebox@lists.infradead.org; Sun, 15 Apr 2012 16:44:20 +0000
+Date: Sun, 15 Apr 2012 18:44:11 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120415163040.GL3852@pengutronix.de>
-References: <20120414155623.GA30672@game.jcrosoft.org>
- <1334419343-1121-6-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20120415164411.GM3852@pengutronix.de>
+References: <1332415393-18394-1-git-send-email-christian.kapeller@cmotion.eu>
+ <1332415393-18394-3-git-send-email-christian.kapeller@cmotion.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1334419343-1121-6-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1332415393-18394-3-git-send-email-christian.kapeller@cmotion.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,36 +23,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/6] arm: bootm: zImage: add error message when can not
- request the memory
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH V2 2/2] Add board support for Karo TX51 i.mx51 SODIMM
+ module.
+To: Christian Kapeller <christian.kapeller@cmotion.eu>
 Cc: barebox@lists.infradead.org
 
-On Sat, Apr 14, 2012 at 06:02:23PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> This will allow to understand what happened.
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Hi Christian,
+
+On Thu, Mar 22, 2012 at 12:23:13PM +0100, Christian Kapeller wrote:
+> Supported devices:
+>  - nand
+>  - ethernet
+>  - mmc0, mmc1 (on stk5v3 development board)
+>  - led (on stk5v3 development board)
 > ---
->  arch/arm/lib/bootm.c |    2 ++
->  1 files changed, 2 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-> index 26053dc..1e29afd 100644
-> --- a/arch/arm/lib/bootm.c
-> +++ b/arch/arm/lib/bootm.c
-> @@ -239,6 +239,8 @@ static int do_bootz_linux(struct image_data *data)
->  
->  	data->os_res = request_sdram_region("zimage", load_address, end);
->  	if (!data->os_res) {
-> +		pr_err("bootm/zImage: failled to request memory at 0x%lx to 0x%lx (%d).\n",
-> +		       load_address, load_address + end, end);
+>  arch/arm/Makefile                        |    1 +
+>  arch/arm/boards/karo-tx51/Makefile       |    2 +
+>  arch/arm/boards/karo-tx51/config.h       |   21 +++
+>  arch/arm/boards/karo-tx51/env/config     |   43 +++++
+>  arch/arm/boards/karo-tx51/flash_header.c |   58 ++++++
+>  arch/arm/boards/karo-tx51/tx51.c         |  290 ++++++++++++++++++++++++++++++
+>  arch/arm/boards/karo-tx51/tx51.dox       |   50 +++++
+>  arch/arm/configs/tx51stk5_defconfig      |  148 +++++++++++++++
+>  arch/arm/mach-imx/Kconfig                |    8 +
+>  9 files changed, 621 insertions(+), 0 deletions(-)
+>  create mode 100644 arch/arm/boards/karo-tx51/Makefile
+>  create mode 100644 arch/arm/boards/karo-tx51/config.h
+>  create mode 100644 arch/arm/boards/karo-tx51/env/config
+>  create mode 100644 arch/arm/boards/karo-tx51/flash_header.c
+>  create mode 100644 arch/arm/boards/karo-tx51/tx51.c
+>  create mode 100644 arch/arm/boards/karo-tx51/tx51.dox
+>  create mode 100644 arch/arm/configs/tx51stk5_defconfig
 
-s/failled/failed/
+Better late than never, I just applied this patch with some slight
+adjustments to make it compile on the newer codebase. Unfortunately
+I cannot find out tx51 board, so I couldn't test it. I hope it works.
+The iomux patch became unnecessary in the mean time, so I skipped that.
 
-I applied the remaining patches from this series.
-
-Sascha
-
+Thanks
+ Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
