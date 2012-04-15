@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SJQRV-0003kw-MS
- for barebox@lists.infradead.org; Sun, 15 Apr 2012 14:28:42 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SJQRU-0007Dl-Ox
+ for barebox@lists.infradead.org; Sun, 15 Apr 2012 14:28:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 15 Apr 2012 16:28:29 +0200
-Message-Id: <1334500111-26382-7-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 15 Apr 2012 16:28:27 +0200
+Message-Id: <1334500111-26382-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1334500111-26382-1-git-send-email-s.hauer@pengutronix.de>
 References: <1334500111-26382-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,44 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/8] dns: use global nameserver/domainname
+Subject: [PATCH 4/8] net: register a 'net' device to store network specific
+ variables
 To: barebox@lists.infradead.org
 
-nameserver and domainname are now globally available in the 'net' device.
-use these variables.
+'nameserver' and 'domainname' should be globally available variables
+specific to networking. Register a 'net' device to store these variables.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/dns.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/net.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/dns.c b/net/dns.c
-index 0d6c337..e13d654 100644
---- a/net/dns.c
-+++ b/net/dns.c
-@@ -77,7 +77,7 @@ static int dns_send(char *name)
- 	header->nauth    = 0;
- 	header->nother   = 0;
+diff --git a/net/net.c b/net/net.c
+index d164992..6e2c14b 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -666,6 +666,11 @@ out:
+ 	return ret;
+ }
  
--	domain = getenv("domainname");
-+	domain = getenv("net.domainname");
++static struct device_d net_device = {
++	.name = "net",
++	.id = DEVICE_ID_SINGLE,
++};
++
+ static int net_init(void)
+ {
+ 	int i;
+@@ -673,6 +678,10 @@ static int net_init(void)
+ 	for (i = 0; i < PKTBUFSRX; i++)
+ 		NetRxPackets[i] =  xmemalign(32, PKTSIZE);
  
- 	if (!strchr(name, '.') && domain && *domain)
- 		fullname = asprintf(".%s.%s.", name, domain);
-@@ -205,11 +205,11 @@ IPaddr_t resolv(char *host)
++	register_device(&net_device);
++	dev_add_param(&net_device, "nameserver", NULL, NULL, 0);
++	dev_add_param(&net_device, "domainname", NULL, NULL, 0);
++
+ 	return 0;
+ }
  
- 	dns_state = STATE_INIT;
- 
--	ip = getenv_ip_dns("nameserver", 0);
-+	ip = getenv_ip("net.nameserver");
- 	if (!ip)
- 		return 0;
- 
--	debug("resolving host %s via nameserver %s\n", host, getenv("nameserver"));
-+	debug("resolving host %s via nameserver %s\n", host, ip_to_string(ip));
- 
- 	dns_con = net_udp_new(ip, DNS_PORT, dns_handler, NULL);
- 	if (IS_ERR(dns_con))
 -- 
 1.7.10
 
