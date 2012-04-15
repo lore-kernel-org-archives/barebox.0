@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tango.tkos.co.il ([62.219.50.35])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SJKFq-0005zL-2D
- for barebox@lists.infradead.org; Sun, 15 Apr 2012 07:52:15 +0000
-Date: Sun, 15 Apr 2012 10:51:43 +0300
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20120415075143.GA2942@tarshish>
-References: <1334462739-17265-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SJM99-0003Ey-B0
+ for barebox@lists.infradead.org; Sun, 15 Apr 2012 09:53:28 +0000
+Date: Sun, 15 Apr 2012 11:53:13 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120415095313.GE3852@pengutronix.de>
+References: <1334325273-1701-1-git-send-email-s.hauer@pengutronix.de>
+ <1334325273-1701-2-git-send-email-s.hauer@pengutronix.de>
+ <20120414161123.GB30672@game.jcrosoft.org>
+ <20120414201356.GC3852@pengutronix.de>
+ <20120415013142.GE30672@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1334462739-17265-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20120415013142.GE30672@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,75 +26,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] net: dhcp: add support to send the hostname to the
- dhcp server
+Subject: Re: [PATCH 1/7] ARM: add initial i.MX6 support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Hi Jean-Christophe,
-
-On Sun, Apr 15, 2012 at 06:05:37AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  net/dhcp.c |   11 +++++++++--
->  1 files changed, 9 insertions(+), 2 deletions(-)
+On Sun, Apr 15, 2012 at 03:31:42AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 22:13 Sat 14 Apr     , Sascha Hauer wrote:
+> > On Sat, Apr 14, 2012 at 06:11:23PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > On 15:54 Fri 13 Apr     , Sascha Hauer wrote:
+> > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > > ---
+> > > >  arch/arm/mach-imx/Kconfig                     |    7 +-
+> > > >  arch/arm/mach-imx/Makefile                    |    1 +
+> > > >  arch/arm/mach-imx/imx6.c                      |   71 +
+> > > >  arch/arm/mach-imx/include/mach/clock-imx6.h   |  530 +++
+> > > >  arch/arm/mach-imx/include/mach/devices-imx6.h |   46 +
+> > > >  arch/arm/mach-imx/include/mach/generic.h      |    6 +
+> > > >  arch/arm/mach-imx/include/mach/imx-regs.h     |    2 +
+> > > >  arch/arm/mach-imx/include/mach/imx6-anadig.h  |  721 ++++
+> > > >  arch/arm/mach-imx/include/mach/imx6-regs.h    |  132 +
+> > > >  arch/arm/mach-imx/include/mach/imx6.h         |    6 +
+> > > >  arch/arm/mach-imx/include/mach/iomux-mx6.h    | 5630 +++++++++++++++++++++++++
+> > > >  arch/arm/mach-imx/speed-imx6.c                |  393 ++
+> > > >  drivers/mci/Kconfig                           |    2 +-
+> > > >  include/asm-generic/barebox.lds.h             |    7 +-
+> > > >  14 files changed, 7551 insertions(+), 3 deletions(-)
+> > > >  create mode 100644 arch/arm/mach-imx/imx6.c
+> > > >  create mode 100644 arch/arm/mach-imx/include/mach/clock-imx6.h
+> > > >  create mode 100644 arch/arm/mach-imx/include/mach/devices-imx6.h
+> > > >  create mode 100644 arch/arm/mach-imx/include/mach/imx6-anadig.h
+> > > >  create mode 100644 arch/arm/mach-imx/include/mach/imx6-regs.h
+> > > >  create mode 100644 arch/arm/mach-imx/include/mach/imx6.h
+> > > >  create mode 100644 arch/arm/mach-imx/include/mach/iomux-mx6.h
+> > > >  create mode 100644 arch/arm/mach-imx/speed-imx6.c
+> > > > 
+> > > > diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> > > > index 2f317c2..8a0979a 100644
+> > > > --- a/arch/arm/mach-imx/Kconfig
+> > > > +++ b/arch/arm/mach-imx/Kconfig
+> > > on IMX you could set the ARCH_BAREBOX_MAX_BARE_INIT_SIZE so you can check at
+> > > the compilation that the code fit in sram
+> > 
+> > No, there is no such limitation here.
+> > 
+> > Please trim your answers.
+> when you boot from internal boot from nand we have no limit?
 > 
-> diff --git a/net/dhcp.c b/net/dhcp.c
-> index 0116ba4..c3c41a0 100644
-> --- a/net/dhcp.c
-> +++ b/net/dhcp.c
-> @@ -237,6 +237,7 @@ static int dhcp_set_string_options(struct dhcp_param *param, u8 *e)
->  	return str_len + 2;
->  }
->  
-> +#define DHCP_HOSTNAME		12
->  #define DHCP_VENDOR_ID		60
->  #define DHCP_CLIENT_ID		61
->  #define DHCP_USER_CLASS		77
-> @@ -244,6 +245,10 @@ static int dhcp_set_string_options(struct dhcp_param *param, u8 *e)
->  
->  struct dhcp_param dhcp_params[] = {
->  	{
-> +		.option = DHCP_HOSTNAME,
-> +		.handle = dhcp_set_string_options,
-> +		.barebox_var_name = "hostname",
-> +	}, {
->  		.option = DHCP_VENDOR_ID,
->  		.handle = dhcp_set_string_options,
->  		.barebox_var_name = "dhcp_vendor_id",
-> @@ -614,8 +619,10 @@ static int do_dhcp(int argc, char *argv[])
->  
->  	dhcp_reset_env();
->  
-> -	while((opt = getopt(argc, argv, "v:c:u:U:")) > 0) {
-> +	while((opt = getopt(argc, argv, "h:v:c:u:U:")) > 0) {
->  		switch(opt) {
-> +		case 'U':
+> IIRC we have
 
-s/U/h/
+No, there is no limit, at least not when we use the real barebox size
+instead of 0x40000 like you suggested.
 
-baruch
-
-> +			dhcp_set_param_data(DHCP_HOSTNAME, optarg);
->  		case 'v':
->  			dhcp_set_param_data(DHCP_VENDOR_ID, optarg);
->  			break;
-> @@ -698,7 +705,7 @@ BAREBOX_CMD_END
->  
->  BAREBOX_MAGICVAR(bootfile, "bootfile returned from DHCP request");
->  BAREBOX_MAGICVAR(nameserver, "Nameserver returned from DHCP request");
-> -BAREBOX_MAGICVAR(hostname, "hostname returned from DHCP request");
-> +BAREBOX_MAGICVAR(hostname, "hostname to send or returned from DHCP request");
->  BAREBOX_MAGICVAR(domainname, "domainname returned from DHCP request");
->  BAREBOX_MAGICVAR(rootpath, "rootpath returned from DHCP request");
->  BAREBOX_MAGICVAR(dhcp_vendor_id, "vendor id to send to the DHCP server");
-> -- 
-> 1.7.9.1
+Sascha
 
 -- 
-     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
