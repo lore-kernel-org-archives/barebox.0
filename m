@@ -1,26 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo3.mail-out.ovh.net ([188.165.43.173]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SJQ93-0007mS-Qg
- for barebox@lists.infradead.org; Sun, 15 Apr 2012 14:09:38 +0000
-Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 3AC3CFF871E
- for <barebox@lists.infradead.org>; Sun, 15 Apr 2012 16:10:49 +0200 (CEST)
-Date: Sun, 15 Apr 2012 15:51:31 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120415135131.GM30672@game.jcrosoft.org>
-References: <1334325273-1701-1-git-send-email-s.hauer@pengutronix.de>
- <1334325273-1701-2-git-send-email-s.hauer@pengutronix.de>
- <20120414161123.GB30672@game.jcrosoft.org>
- <20120414201356.GC3852@pengutronix.de>
- <20120415013142.GE30672@game.jcrosoft.org>
- <20120415095313.GE3852@pengutronix.de>
- <20120415114710.GJ30672@game.jcrosoft.org>
- <20120415134919.GI3852@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120415134919.GI3852@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SJQRV-0003kw-MS
+ for barebox@lists.infradead.org; Sun, 15 Apr 2012 14:28:42 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Sun, 15 Apr 2012 16:28:29 +0200
+Message-Id: <1334500111-26382-7-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1334500111-26382-1-git-send-email-s.hauer@pengutronix.de>
+References: <1334500111-26382-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,80 +16,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] ARM: add initial i.MX6 support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 6/8] dns: use global nameserver/domainname
+To: barebox@lists.infradead.org
 
-On 15:49 Sun 15 Apr     , Sascha Hauer wrote:
-> On Sun, Apr 15, 2012 at 01:47:10PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 11:53 Sun 15 Apr     , Sascha Hauer wrote:
-> > > On Sun, Apr 15, 2012 at 03:31:42AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > On 22:13 Sat 14 Apr     , Sascha Hauer wrote:
-> > > > > On Sat, Apr 14, 2012 at 06:11:23PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > > > On 15:54 Fri 13 Apr     , Sascha Hauer wrote:
-> > > > > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > > > > > ---
-> > > > > > >  arch/arm/mach-imx/Kconfig                     |    7 +-
-> > > > > > >  arch/arm/mach-imx/Makefile                    |    1 +
-> > > > > > >  arch/arm/mach-imx/imx6.c                      |   71 +
-> > > > > > >  arch/arm/mach-imx/include/mach/clock-imx6.h   |  530 +++
-> > > > > > >  arch/arm/mach-imx/include/mach/devices-imx6.h |   46 +
-> > > > > > >  arch/arm/mach-imx/include/mach/generic.h      |    6 +
-> > > > > > >  arch/arm/mach-imx/include/mach/imx-regs.h     |    2 +
-> > > > > > >  arch/arm/mach-imx/include/mach/imx6-anadig.h  |  721 ++++
-> > > > > > >  arch/arm/mach-imx/include/mach/imx6-regs.h    |  132 +
-> > > > > > >  arch/arm/mach-imx/include/mach/imx6.h         |    6 +
-> > > > > > >  arch/arm/mach-imx/include/mach/iomux-mx6.h    | 5630 +++++++++++++++++++++++++
-> > > > > > >  arch/arm/mach-imx/speed-imx6.c                |  393 ++
-> > > > > > >  drivers/mci/Kconfig                           |    2 +-
-> > > > > > >  include/asm-generic/barebox.lds.h             |    7 +-
-> > > > > > >  14 files changed, 7551 insertions(+), 3 deletions(-)
-> > > > > > >  create mode 100644 arch/arm/mach-imx/imx6.c
-> > > > > > >  create mode 100644 arch/arm/mach-imx/include/mach/clock-imx6.h
-> > > > > > >  create mode 100644 arch/arm/mach-imx/include/mach/devices-imx6.h
-> > > > > > >  create mode 100644 arch/arm/mach-imx/include/mach/imx6-anadig.h
-> > > > > > >  create mode 100644 arch/arm/mach-imx/include/mach/imx6-regs.h
-> > > > > > >  create mode 100644 arch/arm/mach-imx/include/mach/imx6.h
-> > > > > > >  create mode 100644 arch/arm/mach-imx/include/mach/iomux-mx6.h
-> > > > > > >  create mode 100644 arch/arm/mach-imx/speed-imx6.c
-> > > > > > > 
-> > > > > > > diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> > > > > > > index 2f317c2..8a0979a 100644
-> > > > > > > --- a/arch/arm/mach-imx/Kconfig
-> > > > > > > +++ b/arch/arm/mach-imx/Kconfig
-> > > > > > on IMX you could set the ARCH_BAREBOX_MAX_BARE_INIT_SIZE so you can check at
-> > > > > > the compilation that the code fit in sram
-> > > > > 
-> > > > > No, there is no such limitation here.
-> > > > > 
-> > > > > Please trim your answers.
-> > > > when you boot from internal boot from nand we have no limit?
-> > > > 
-> > > > IIRC we have
-> > > 
-> > > No, there is no limit, at least not when we use the real barebox size
-> > > instead of 0x40000 like you suggested.
-> >  I mean to the BARE_INIT not barebox itself
-> 
-> There is no bare_init section with internal boot.
-yes you are wight BARE_INIT_SIZE does not contain PRE_IMAGE
+nameserver and domainname are now globally available in the 'net' device.
+use these variables.
 
-maybe we need to allow such mechanism for it too
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ net/dns.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Best Regards,
-J.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+diff --git a/net/dns.c b/net/dns.c
+index 0d6c337..e13d654 100644
+--- a/net/dns.c
++++ b/net/dns.c
+@@ -77,7 +77,7 @@ static int dns_send(char *name)
+ 	header->nauth    = 0;
+ 	header->nother   = 0;
+ 
+-	domain = getenv("domainname");
++	domain = getenv("net.domainname");
+ 
+ 	if (!strchr(name, '.') && domain && *domain)
+ 		fullname = asprintf(".%s.%s.", name, domain);
+@@ -205,11 +205,11 @@ IPaddr_t resolv(char *host)
+ 
+ 	dns_state = STATE_INIT;
+ 
+-	ip = getenv_ip_dns("nameserver", 0);
++	ip = getenv_ip("net.nameserver");
+ 	if (!ip)
+ 		return 0;
+ 
+-	debug("resolving host %s via nameserver %s\n", host, getenv("nameserver"));
++	debug("resolving host %s via nameserver %s\n", host, ip_to_string(ip));
+ 
+ 	dns_con = net_udp_new(ip, DNS_PORT, dns_handler, NULL);
+ 	if (IS_ERR(dns_con))
+-- 
+1.7.10
+
 
 _______________________________________________
 barebox mailing list
