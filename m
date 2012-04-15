@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SJQRV-0007Dm-Eu
- for barebox@lists.infradead.org; Sun, 15 Apr 2012 14:28:42 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SJQo8-00005j-QZ
+ for barebox@lists.infradead.org; Sun, 15 Apr 2012 14:52:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 15 Apr 2012 16:28:25 +0200
-Message-Id: <1334500111-26382-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1334500111-26382-1-git-send-email-s.hauer@pengutronix.de>
-References: <1334500111-26382-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 15 Apr 2012 16:51:55 +0200
+Message-Id: <1334501517-29478-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1334501517-29478-1-git-send-email-s.hauer@pengutronix.de>
+References: <1334501517-29478-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,111 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/8] net: use static string in string_to_ip
+Subject: [PATCH 2/4] automount: fix argument parsing
 To: barebox@lists.infradead.org
 
-Simplify usage of ip_to_string by using a static string.
+With getopt we have to use argv[optind] instead of hardcoded argv[0]
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/net.h   |    2 +-
- lib/parameter.c |    6 +-----
- net/net.c       |   14 ++++++--------
- net/tftp.c      |    3 +--
- 4 files changed, 9 insertions(+), 16 deletions(-)
+ commands/automount.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net.h b/include/net.h
-index 3f2187e..01e4b22 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -274,7 +274,7 @@ static inline void net_copy_uint32(uint32_t *to, uint32_t *from)
- }
+diff --git a/commands/automount.c b/commands/automount.c
+index 5fc68f3..8c0e4de 100644
+--- a/commands/automount.c
++++ b/commands/automount.c
+@@ -40,10 +40,10 @@ static int do_automount(int argc, char *argv[])
+ 		}
+ 	}
  
- /* Convert an IP address to a string */
--char *ip_to_string (IPaddr_t x, char *s);
-+char *ip_to_string (IPaddr_t x);
+-	if (argc != 3)
++	if (optind + 2 != argc)
+ 		return COMMAND_ERROR_USAGE;
  
- /* Convert a string to ip address */
- int string_to_ip(const char *s, IPaddr_t *ip);
-diff --git a/lib/parameter.c b/lib/parameter.c
-index 379a057..5a7ae1a 100644
---- a/lib/parameter.c
-+++ b/lib/parameter.c
-@@ -74,11 +74,7 @@ IPaddr_t dev_get_param_ip(struct device_d *dev, char *name)
- 
- int dev_set_param_ip(struct device_d *dev, char *name, IPaddr_t ip)
- {
--	char ipstr[sizeof("xxx.xxx.xxx.xxx")];
--
--	ip_to_string(ip, ipstr);
--
--	return dev_set_param(dev, name, ipstr);
-+	return dev_set_param(dev, name, ip_to_string(ip));
- }
- #endif
- 
-diff --git a/net/net.c b/net/net.c
-index 046ddd4..d164992 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -85,8 +85,10 @@ uint16_t net_checksum(unsigned char *ptr, int len)
- 	return xsum & 0xffff;
- }
- 
--char *ip_to_string (IPaddr_t x, char *s)
-+char *ip_to_string (IPaddr_t x)
- {
-+	static char s[sizeof("xxx.xxx.xxx.xxx")];
-+
- 	x = ntohl (x);
- 	sprintf (s, "%d.%d.%d.%d",
- 		 (int) ((x >> 24) & 0xff),
-@@ -146,9 +148,9 @@ IPaddr_t getenv_ip_dns(const char *name, int dns)
- 
- int setenv_ip(const char *name, IPaddr_t ip)
- {
--	char str[sizeof("xxx.xxx.xxx.xxx")];
-+	const char *str;
- 
--	ip_to_string(ip, str);
-+	str = ip_to_string(ip);
- 
- 	setenv(name, str);
- 
-@@ -157,11 +159,7 @@ int setenv_ip(const char *name, IPaddr_t ip)
- 
- void print_IPaddr (IPaddr_t x)
- {
--	char tmp[16];
--
--	ip_to_string (x, tmp);
--
--	puts (tmp);
-+	puts(ip_to_string(x));
- }
- 
- int string_to_ethaddr(const char *str, char *enetaddr)
-diff --git a/net/tftp.c b/net/tftp.c
-index fc33c94..ca12638 100644
---- a/net/tftp.c
-+++ b/net/tftp.c
-@@ -273,7 +273,6 @@ static void tftp_handler(void *ctx, char *packet, unsigned len)
- static int do_tftpb(int argc, char *argv[])
- {
- 	char *localfile, *remotefile, *file1, *file2;
--	char ip1[16];
- 	int opt;
- 	struct stat s;
- 	unsigned long flags;
-@@ -328,7 +327,7 @@ static int do_tftpb(int argc, char *argv[])
- 
- 	printf("TFTP %s server %s ('%s' -> '%s')\n",
- 			tftp_push ? "to" : "from",
--			ip_to_string(net_get_serverip(), ip1),
-+			ip_to_string(net_get_serverip()),
- 			file1, file2);
- 
- 	init_progression_bar(tftp_push ? s.st_size : 0);
+-	ret = automount_add(argv[1], argv[2]);
++	ret = automount_add(argv[optind], argv[optind + 1]);
+ 	if (ret)
+ 		printf("adding automountpoint failed: %s\n",
+ 				strerror(-ret));
 -- 
 1.7.10
 
