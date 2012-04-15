@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SJQtE-0007ap-Sq
+ id 1SJQtE-0007ao-Si
  for barebox@lists.infradead.org; Sun, 15 Apr 2012 14:57:22 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 15 Apr 2012 16:57:14 +0200
-Message-Id: <1334501834-32001-3-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 15 Apr 2012 16:57:13 +0200
+Message-Id: <1334501834-32001-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1334501834-32001-1-git-send-email-s.hauer@pengutronix.de>
 References: <1334501834-32001-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,126 +21,120 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ppc: remove unused bd_t
+Subject: [PATCH 1/2] ppc: remove unused init_board_data function
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/ppc/include/asm/barebox.h |  103 ----------------------------------------
- 1 file changed, 103 deletions(-)
+ arch/ppc/include/asm/common.h |    3 ---
+ arch/ppc/lib/Makefile         |    1 -
+ arch/ppc/lib/board_data.c     |   49 -----------------------------------------
+ arch/ppc/mach-mpc5xxx/cpu.c   |   10 ---------
+ 4 files changed, 63 deletions(-)
+ delete mode 100644 arch/ppc/lib/board_data.c
 
-diff --git a/arch/ppc/include/asm/barebox.h b/arch/ppc/include/asm/barebox.h
-index ac81495..a08e998 100644
---- a/arch/ppc/include/asm/barebox.h
-+++ b/arch/ppc/include/asm/barebox.h
-@@ -28,107 +28,4 @@
- #ifndef __BAREBOX_H__
- #define __BAREBOX_H__
+diff --git a/arch/ppc/include/asm/common.h b/arch/ppc/include/asm/common.h
+index b7c524a..b375d07 100644
+--- a/arch/ppc/include/asm/common.h
++++ b/arch/ppc/include/asm/common.h
+@@ -14,9 +14,6 @@ uint	get_svr	      (void);
  
--/*
-- * Board information passed to Linux kernel from barebox
-- *
-- * include/asm-ppc/barebox.h
-- */
+ void	trap_init     (ulong);
+ 
+-int cpu_init_board_data(bd_t *bd);
+-int init_board_data(bd_t *bd);
 -
--#ifndef __ASSEMBLY__
+ static inline unsigned long get_pc(void)
+ {
+ 	unsigned long pc;
+diff --git a/arch/ppc/lib/Makefile b/arch/ppc/lib/Makefile
+index b611ddf..9e389b7 100644
+--- a/arch/ppc/lib/Makefile
++++ b/arch/ppc/lib/Makefile
+@@ -7,7 +7,6 @@ obj-y += ticks.o
+ obj-y += time.o
+ obj-y += misc.o
+ obj-$(CONFIG_CMD_BOOTM) += ppclinux.o
+-obj-y += board_data.o
+ obj-$(CONFIG_MODULES) += module.o
+ obj-y += crtsavres.o
+ 
+diff --git a/arch/ppc/lib/board_data.c b/arch/ppc/lib/board_data.c
+deleted file mode 100644
+index ff9f0d0..0000000
+--- a/arch/ppc/lib/board_data.c
++++ /dev/null
+@@ -1,49 +0,0 @@
+-#include <common.h>
 -
--typedef struct bd_info {
--	unsigned long	bi_memstart;	/* start of DRAM memory */
--	unsigned long	bi_memsize;	/* size	 of DRAM memory in bytes */
--	unsigned long	bi_flashstart;	/* start of FLASH memory */
--	unsigned long	bi_flashsize;	/* size	 of FLASH memory */
--	unsigned long	bi_flashoffset; /* reserved area for startup monitor */
--	unsigned long	bi_sramstart;	/* start of SRAM memory */
--	unsigned long	bi_sramsize;	/* size	 of SRAM memory */
--#if defined(CONFIG_5xx) || defined(CONFIG_8xx) || defined(CONFIG_8260) \
--	|| defined(CONFIG_E500) || defined(CONFIG_MPC86xx)
--	unsigned long	bi_immr_base;	/* base of IMMR register */
--#endif
--#if defined(CONFIG_MPC5xxx)
--	unsigned long	bi_mbar_base;	/* base of internal registers */
--#endif
--#if defined(CONFIG_MPC83XX)
--	unsigned long	bi_immrbar;
--#endif
--#if defined(CONFIG_MPC8220)
--	unsigned long	bi_mbar_base;	/* base of internal registers */
--	unsigned long   bi_inpfreq;     /* Input Freq, In MHz */
--	unsigned long   bi_pcifreq;     /* PCI Freq, in MHz */
--	unsigned long   bi_pevfreq;     /* PEV Freq, in MHz */
--	unsigned long   bi_flbfreq;     /* Flexbus Freq, in MHz */
--	unsigned long   bi_vcofreq;     /* VCO Freq, in MHz */
--#endif
--	unsigned long	bi_bootflags;	/* boot / reboot flag (for LynxOS) */
--	unsigned long	bi_ip_addr;	/* IP Address */
--	unsigned char	bi_enetaddr[6];	/* Ethernet adress */
--	unsigned short	bi_ethspeed;	/* Ethernet speed in Mbps */
--	unsigned long	bi_intfreq;	/* Internal Freq, in MHz */
--	unsigned long	bi_busfreq;	/* Bus Freq, in MHz */
--#if defined(CONFIG_CPM2)
--	unsigned long	bi_cpmfreq;	/* CPM_CLK Freq, in MHz */
--	unsigned long	bi_brgfreq;	/* BRG_CLK Freq, in MHz */
--	unsigned long	bi_sccfreq;	/* SCC_CLK Freq, in MHz */
--	unsigned long	bi_vco;		/* VCO Out from PLL, in MHz */
--#endif
--#if defined(CONFIG_MPC5xxx)
--	unsigned long	bi_ipbfreq;	/* IPB Bus Freq, in MHz */
--	unsigned long	bi_pcifreq;	/* PCI Bus Freq, in MHz */
--#endif
--	unsigned long	bi_baudrate;	/* Console Baudrate */
--#if defined(CONFIG_405)   || \
--    defined(CONFIG_405GP) || \
--    defined(CONFIG_405CR) || \
--    defined(CONFIG_405EP) || \
--    defined(CONFIG_440)
--	unsigned char	bi_s_version[4];	/* Version of this structure */
--	unsigned char	bi_r_version[32];	/* Version of the ROM (AMCC) */
--	unsigned int	bi_procfreq;	/* CPU (Internal) Freq, in Hz */
--	unsigned int	bi_plb_busfreq;	/* PLB Bus speed, in Hz */
--	unsigned int	bi_pci_busfreq;	/* PCI Bus speed, in Hz */
--	unsigned char	bi_pci_enetaddr[6];	/* PCI Ethernet MAC address */
--#endif
--#if defined(CONFIG_HYMOD)
--	hymod_conf_t	bi_hymod_conf;	/* hymod configuration information */
--#endif
+-int init_board_data(bd_t *bd)
+-{
+-	cpu_init_board_data(bd);
 -
--#ifdef CONFIG_HAS_ETH1
--	/* second onboard ethernet port */
--	unsigned char   bi_enet1addr[6];
--#endif
--#ifdef CONFIG_HAS_ETH2
--	/* third onboard ethernet port */
--	unsigned char	bi_enet2addr[6];
--#endif
--#ifdef CONFIG_HAS_ETH3
--	unsigned char   bi_enet3addr[6];
--#endif
+-	bd->bi_memstart  = 0;	/* start of  DRAM memory	*/
+-//	bd->bi_memsize   = gd->ram_size;	/* size  of  DRAM memory in bytes */ /* FIXME */
 -
--#if defined(CONFIG_405GP) || defined(CONFIG_405EP) || defined (CONFIG_440GX) || \
--    defined(CONFIG_440EP) || defined(CONFIG_440GR) || \
--    defined(CONFIG_440EPX) || defined(CONFIG_440GRX)
--	unsigned int	bi_opbfreq;		/* OPB clock in Hz */
--	int		bi_iic_fast[2];		/* Use fast i2c mode */
--#endif
--#if defined(CONFIG_NX823)
--	unsigned char	bi_sernum[8];
--#endif
--#if defined(CONFIG_4xx)
--#if defined(CONFIG_440GX)
--	int 		bi_phynum[4];           /* Determines phy mapping */
--	int 		bi_phymode[4];          /* Determines phy mode */
--#elif defined(CONFIG_405EP) || defined(CONFIG_440)
--	int 		bi_phynum[2];           /* Determines phy mapping */
--	int 		bi_phymode[2];          /* Determines phy mode */
+-#ifdef CONFIG_IP860
+-	bd->bi_sramstart = SRAM_BASE;	/* start of  SRAM memory	*/
+-	bd->bi_sramsize  = SRAM_SIZE;	/* size  of  SRAM memory	*/
 -#else
--	int 		bi_phynum[1];           /* Determines phy mapping */
--	int 		bi_phymode[1];          /* Determines phy mode */
+-	bd->bi_sramstart = 0;		/* FIXME */ /* start of  SRAM memory	*/
+-	bd->bi_sramsize  = 0;		/* FIXME */ /* size  of  SRAM memory	*/
 -#endif
--#endif /* defined(CONFIG_4xx) */
--} bd_t;
 -
--#endif /* __ASSEMBLY__ */
- #endif	/* __BAREBOX_H__ */
+-#if defined(CONFIG_8xx) || defined(CONFIG_8260) || defined(CONFIG_5xx) || \
+-    defined(CONFIG_E500) || defined(CONFIG_MPC86xx)
+-	bd->bi_immr_base = CFG_IMMR;	/* base  of IMMR register     */
+-#endif
+-
+-#ifdef CONFIG_LYNXOS
+-	bd->bi_bootflags = bootflag;	/* boot / reboot flag (for LynxOS)    */
+-#endif
+-
+-#if defined(CONFIG_CPM2)
+-	bd->bi_cpmfreq = gd->cpm_clk;
+-	bd->bi_brgfreq = gd->brg_clk;
+-	bd->bi_sccfreq = gd->scc_clk;
+-	bd->bi_vco     = gd->vco_out;
+-#endif /* CONFIG_CPM2 */
+-//	bd->bi_baudrate = gd->baudrate;	/* Console Baudrate     */
+-
+-#ifdef CFG_EXTBDINFO
+-	strncpy ((char *)bd->bi_s_version, "1.2", sizeof (bd->bi_s_version));
+-	strncpy ((char *)bd->bi_r_version, BAREBOX_VERSION, sizeof (bd->bi_r_version));
+-
+-	bd->bi_procfreq = gd->cpu_clk;	/* Processor Speed, In Hz */
+-	bd->bi_plb_busfreq = gd->bus_clk;
+-#if defined(CONFIG_405GP) || defined(CONFIG_405EP) || defined(CONFIG_440EP) || defined(CONFIG_440GR)
+-	bd->bi_pci_busfreq = get_PCI_freq ();
+-	bd->bi_opbfreq = get_OPB_freq ();
+-#elif defined(CONFIG_XILINX_ML300)
+-	bd->bi_pci_busfreq = get_PCI_freq ();
+-#endif
+-#endif
+-	return 0;
+-}
+diff --git a/arch/ppc/mach-mpc5xxx/cpu.c b/arch/ppc/mach-mpc5xxx/cpu.c
+index 62ddb1f..579c73b 100644
+--- a/arch/ppc/mach-mpc5xxx/cpu.c
++++ b/arch/ppc/mach-mpc5xxx/cpu.c
+@@ -102,16 +102,6 @@ static int of_register_mpc5200_fixup(void)
+ late_initcall(of_register_mpc5200_fixup);
+ #endif
+ 
+-int cpu_init_board_data(bd_t *bd)
+-{
+-	bd->bi_intfreq = get_cpu_clock();	/* Internal Freq, in Hz */
+-	bd->bi_busfreq = get_bus_clock();	/* Bus Freq,      in Hz */
+-	bd->bi_mbar_base = CFG_MBAR;		/* base of internal registers */
+-	bd->bi_ipbfreq = get_ipb_clock();
+-	bd->bi_pcifreq = get_pci_clock();
+-	return 0;
+-}
+-
+ unsigned long mpc5200_get_sdram_size(unsigned int cs)
+ {
+ 	unsigned long size;
 -- 
 1.7.10
 
