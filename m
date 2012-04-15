@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo3.mail-out.ovh.net ([178.32.98.231]
+Received: from 10.mo3.mail-out.ovh.net ([87.98.165.232]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SJEi9-0007D1-05
- for barebox@lists.infradead.org; Sun, 15 Apr 2012 01:57:05 +0000
+ id 1SJH04-00021D-HU
+ for barebox@lists.infradead.org; Sun, 15 Apr 2012 04:23:45 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 6144FFF8875
- for <barebox@lists.infradead.org>; Sun, 15 Apr 2012 03:58:15 +0200 (CEST)
-Date: Sun, 15 Apr 2012 03:39:05 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 10DFCFF8452
+ for <barebox@lists.infradead.org>; Sun, 15 Apr 2012 06:24:54 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120415013905.GF30672@game.jcrosoft.org>
-References: <20120414161509.GC30672@game.jcrosoft.org>
- <20120414201614.GD3852@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120414201614.GD3852@pengutronix.de>
+Date: Sun, 15 Apr 2012 06:05:37 +0200
+Message-Id: <1334462739-17265-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,33 +18,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] Omap xloader boot menu support and beagle env
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] net: dhcp: add support to send the hostname to the dhcp
+ server
+To: barebox@lists.infradead.org
 
-On 22:16 Sat 14 Apr     , Sascha Hauer wrote:
-> On Sat, Apr 14, 2012 at 06:15:09PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Hi,
-> > 
-> > 	The following patch seri add the support of a boot menu in the xloader
-> > 
-> > 	This will allow to choice where we boot from.
-> > 	As example if the nand boot is broken we can choose to boot from mmc.
-> > 	The autoboot is set to 1s as most of the time you expect to boot from the
-> > 	default boot.
-> 
-> No, please no delays which can't be configured away.
-with no delay the first entry is selected so minimal delay is 1s
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ net/dhcp.c |   11 +++++++++--
+ 1 files changed, 9 insertions(+), 2 deletions(-)
 
-The idea is that even you boot from nand you can load the code from MMC for
-barebox
+diff --git a/net/dhcp.c b/net/dhcp.c
+index 0116ba4..c3c41a0 100644
+--- a/net/dhcp.c
++++ b/net/dhcp.c
+@@ -237,6 +237,7 @@ static int dhcp_set_string_options(struct dhcp_param *param, u8 *e)
+ 	return str_len + 2;
+ }
+ 
++#define DHCP_HOSTNAME		12
+ #define DHCP_VENDOR_ID		60
+ #define DHCP_CLIENT_ID		61
+ #define DHCP_USER_CLASS		77
+@@ -244,6 +245,10 @@ static int dhcp_set_string_options(struct dhcp_param *param, u8 *e)
+ 
+ struct dhcp_param dhcp_params[] = {
+ 	{
++		.option = DHCP_HOSTNAME,
++		.handle = dhcp_set_string_options,
++		.barebox_var_name = "hostname",
++	}, {
+ 		.option = DHCP_VENDOR_ID,
+ 		.handle = dhcp_set_string_options,
+ 		.barebox_var_name = "dhcp_vendor_id",
+@@ -614,8 +619,10 @@ static int do_dhcp(int argc, char *argv[])
+ 
+ 	dhcp_reset_env();
+ 
+-	while((opt = getopt(argc, argv, "v:c:u:U:")) > 0) {
++	while((opt = getopt(argc, argv, "h:v:c:u:U:")) > 0) {
+ 		switch(opt) {
++		case 'U':
++			dhcp_set_param_data(DHCP_HOSTNAME, optarg);
+ 		case 'v':
+ 			dhcp_set_param_data(DHCP_VENDOR_ID, optarg);
+ 			break;
+@@ -698,7 +705,7 @@ BAREBOX_CMD_END
+ 
+ BAREBOX_MAGICVAR(bootfile, "bootfile returned from DHCP request");
+ BAREBOX_MAGICVAR(nameserver, "Nameserver returned from DHCP request");
+-BAREBOX_MAGICVAR(hostname, "hostname returned from DHCP request");
++BAREBOX_MAGICVAR(hostname, "hostname to send or returned from DHCP request");
+ BAREBOX_MAGICVAR(domainname, "domainname returned from DHCP request");
+ BAREBOX_MAGICVAR(rootpath, "rootpath returned from DHCP request");
+ BAREBOX_MAGICVAR(dhcp_vendor_id, "vendor id to send to the DHCP server");
+-- 
+1.7.9.1
 
-Best Rebards,
-J.
 
 _______________________________________________
 barebox mailing list
