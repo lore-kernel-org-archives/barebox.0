@@ -1,21 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo3.mail-out.ovh.net ([46.105.44.175]
+Received: from 19.mo3.mail-out.ovh.net ([178.32.98.231]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SJSuy-0004Dd-HT
- for barebox@lists.infradead.org; Sun, 15 Apr 2012 17:07:17 +0000
+ id 1SJT2i-0004IH-G5
+ for barebox@lists.infradead.org; Sun, 15 Apr 2012 17:15:16 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id A8B9AFF87CE
- for <barebox@lists.infradead.org>; Sun, 15 Apr 2012 19:08:24 +0200 (CEST)
-Date: Sun, 15 Apr 2012 18:49:05 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id E40D9FF86D8
+ for <barebox@lists.infradead.org>; Sun, 15 Apr 2012 19:16:27 +0200 (CEST)
+Date: Sun, 15 Apr 2012 18:57:09 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120415164905.GP30672@game.jcrosoft.org>
-References: <1334462739-17265-1-git-send-email-plagnioj@jcrosoft.com>
- <1334462739-17265-2-git-send-email-plagnioj@jcrosoft.com>
- <20120415165758.GN3852@pengutronix.de>
+Message-ID: <20120415165709.GQ30672@game.jcrosoft.org>
+References: <1334506961-31245-1-git-send-email-s.hauer@pengutronix.de>
+ <1334506961-31245-2-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120415165758.GN3852@pengutronix.de>
+In-Reply-To: <1334506961-31245-2-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,64 +27,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] net: dhcp: allow to user env var as user class too
+Subject: Re: [PATCH 1/2] add 2nd generation default env
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 18:57 Sun 15 Apr     , Sascha Hauer wrote:
-> On Sun, Apr 15, 2012 at 06:05:38AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  net/dhcp.c |   11 +++++++++--
-> >  1 files changed, 9 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/net/dhcp.c b/net/dhcp.c
-> > index c3c41a0..ecff819 100644
-> > --- a/net/dhcp.c
-> > +++ b/net/dhcp.c
-> > @@ -211,6 +211,7 @@ struct dhcp_opt dhcp_options[] = {
-> >  struct dhcp_param {
-> >  	unsigned char option;
-> >  	const char *barebox_var_name;
-> > +	const char *barebox_var_alt_name;
-> >  	int (*handle)(struct dhcp_param *param, u8 *e);
-> >  	void *data;
-> >  };
-> > @@ -220,8 +221,12 @@ static int dhcp_set_string_options(struct dhcp_param *param, u8 *e)
-> >  	int str_len;
-> >  	char* str = param->data;
-> >  
-> > -	if (!str && param->barebox_var_name)
-> > -		str = (char*)getenv(param->barebox_var_name);
-> > +	if (!str) {
-> > +		if (param->barebox_var_name)
-> > +			str = (char*)getenv(param->barebox_var_name);
-> > +		else if (param->barebox_var_alt_name)
-> > +			str = (char*)getenv(param->barebox_var_alt_name);
-> > +	}
-> >  
-> >  	if (!str)
-> >  		return 0;
-> > @@ -260,6 +265,7 @@ struct dhcp_param dhcp_params[] = {
-> >  		.option = DHCP_USER_CLASS,
-> >  		.handle = dhcp_set_string_options,
-> >  		.barebox_var_name = "dhcp_user_class",
-> > +		.barebox_var_alt_name = "user",
-> >  	}, {
-> >  		.option = DHCP_CLIENT_UUID,
-> >  		.handle = dhcp_set_string_options,
-> > @@ -712,5 +718,6 @@ BAREBOX_MAGICVAR(dhcp_vendor_id, "vendor id to send to the DHCP server");
-> >  BAREBOX_MAGICVAR(dhcp_client_uuid, "cliend uuid to send to the DHCP server");
-> >  BAREBOX_MAGICVAR(dhcp_client_id, "cliend id to send to the DHCP server");
-> >  BAREBOX_MAGICVAR(dhcp_user_class, "user class to send to the DHCP server");
-> > +BAREBOX_MAGICVAR(user, "user class to send to the DHCP server");
+On 18:22 Sun 15 Apr     , Sascha Hauer wrote:
+> The current default environment grows in complexity and still is
+> quite unflexible. The basic mistake we (or better I) made is that
+> we had a boot script and tried to control its behaviour with
+> variables passed to this script. This had the consequence that
+> with every new feature we had to pass another variable to this
+> script and add another if/else to the script. This environment
+> set inverts this behaviour. It introduces a set of helper functions
+> which /env/config can use to do its job.
 > 
-> This does not look good. I think 'user' is a too generic name to be a
-> magicvar, also it does not fit into the current dhcp_ scheme. Why not
-> add a dhcp_user_class=$user to the environment if necessary?
-I known but I want to have a automatic and common way to manage it
+> The helpers are:
+> 
+> /env/bin/ifup
+> 
+> bring up networking. Uses /env/network/$interface to configure the
+> interface. If something has to be done to discover the interface (for
+> USB devices), the code can be put into /env/network/${interface}-discover
+> 
+> /env/bin/bootargs-root-*
+> 
+> Add fields to $bootargs relevant for the kernel to find its rootfs. We
+> currently have helpers for ubi, nfs, initrd and jffs2
+> 
+> /env/bin/bootargs-ip-*
+> 
+> Add fields to $bootargs relevant for the kernel to configure networking.
+> Currently we have helpers for dhcp, static or ip=none
+> 
+> /env/bin/mtdparts-init
+> /env/bin/mtdparts-add
+> 
+> Add barebox partitions to mtd like devices and construct the mtdparts
+> Kernel option.
+> 
+> Additionally the automount feature is used to transparently mount
+> filesystems. With this only the device/file which contains the kernel
+> has to be specified in /env/config.
 
-without any modification for the user
+can you give us few days to try before apply it
 
 Best Regards,
 J.
