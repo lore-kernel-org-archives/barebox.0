@@ -1,21 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
+Received: from 13.mo3.mail-out.ovh.net ([188.165.33.202]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SJEZD-00075b-BT
- for barebox@lists.infradead.org; Sun, 15 Apr 2012 01:47:55 +0000
+ id 1SJEb1-000780-Bi
+ for barebox@lists.infradead.org; Sun, 15 Apr 2012 01:49:45 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id DB73EFF8875
- for <barebox@lists.infradead.org>; Sun, 15 Apr 2012 03:48:59 +0200 (CEST)
-Date: Sun, 15 Apr 2012 03:29:49 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 6F97BFF87D1
+ for <barebox@lists.infradead.org>; Sun, 15 Apr 2012 03:50:53 +0200 (CEST)
+Date: Sun, 15 Apr 2012 03:31:42 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120415012949.GD30672@game.jcrosoft.org>
-References: <20120414161509.GC30672@game.jcrosoft.org>
- <1334420262-4823-1-git-send-email-plagnioj@jcrosoft.com>
- <20120414195236.353b42df@eb-e6520>
+Message-ID: <20120415013142.GE30672@game.jcrosoft.org>
+References: <1334325273-1701-1-git-send-email-s.hauer@pengutronix.de>
+ <1334325273-1701-2-git-send-email-s.hauer@pengutronix.de>
+ <20120414161123.GB30672@game.jcrosoft.org>
+ <20120414201356.GC3852@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120414195236.353b42df@eb-e6520>
+In-Reply-To: <20120414201356.GC3852@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,41 +25,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] beagle: add default env support
-To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
+Subject: Re: [PATCH 1/7] ARM: add initial i.MX6 support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 19:52 Sat 14 Apr     , Eric B=E9nard wrote:
-> Le Sat, 14 Apr 2012 18:17:40 +0200,
-> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
-> =
+On 22:13 Sat 14 Apr     , Sascha Hauer wrote:
+> On Sat, Apr 14, 2012 at 06:11:23PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 15:54 Fri 13 Apr     , Sascha Hauer wrote:
+> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > ---
+> > >  arch/arm/mach-imx/Kconfig                     |    7 +-
+> > >  arch/arm/mach-imx/Makefile                    |    1 +
+> > >  arch/arm/mach-imx/imx6.c                      |   71 +
+> > >  arch/arm/mach-imx/include/mach/clock-imx6.h   |  530 +++
+> > >  arch/arm/mach-imx/include/mach/devices-imx6.h |   46 +
+> > >  arch/arm/mach-imx/include/mach/generic.h      |    6 +
+> > >  arch/arm/mach-imx/include/mach/imx-regs.h     |    2 +
+> > >  arch/arm/mach-imx/include/mach/imx6-anadig.h  |  721 ++++
+> > >  arch/arm/mach-imx/include/mach/imx6-regs.h    |  132 +
+> > >  arch/arm/mach-imx/include/mach/imx6.h         |    6 +
+> > >  arch/arm/mach-imx/include/mach/iomux-mx6.h    | 5630 +++++++++++++++++++++++++
+> > >  arch/arm/mach-imx/speed-imx6.c                |  393 ++
+> > >  drivers/mci/Kconfig                           |    2 +-
+> > >  include/asm-generic/barebox.lds.h             |    7 +-
+> > >  14 files changed, 7551 insertions(+), 3 deletions(-)
+> > >  create mode 100644 arch/arm/mach-imx/imx6.c
+> > >  create mode 100644 arch/arm/mach-imx/include/mach/clock-imx6.h
+> > >  create mode 100644 arch/arm/mach-imx/include/mach/devices-imx6.h
+> > >  create mode 100644 arch/arm/mach-imx/include/mach/imx6-anadig.h
+> > >  create mode 100644 arch/arm/mach-imx/include/mach/imx6-regs.h
+> > >  create mode 100644 arch/arm/mach-imx/include/mach/imx6.h
+> > >  create mode 100644 arch/arm/mach-imx/include/mach/iomux-mx6.h
+> > >  create mode 100644 arch/arm/mach-imx/speed-imx6.c
+> > > 
+> > > diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> > > index 2f317c2..8a0979a 100644
+> > > --- a/arch/arm/mach-imx/Kconfig
+> > > +++ b/arch/arm/mach-imx/Kconfig
+> > on IMX you could set the ARCH_BAREBOX_MAX_BARE_INIT_SIZE so you can check at
+> > the compilation that the code fit in sram
+> 
+> No, there is no such limitation here.
+> 
+> Please trim your answers.
+when you boot from internal boot from nand we have no limit?
 
-> > update defconfig too to support oftree
-> > =
-
-> .../...
-> > +# can be either 'nfs', 'tftp' or 'nand'
-> > +kernel_loc=3Dnfs
-> > +# can be either 'net', 'nand' or 'initrd'
-> > +rootfs_loc=3Dnet
-> > +# can be either 'nfs', 'tftp', 'nand' or empty
-> > +oftree_loc=3Dnfs
-> > +
-> I understand that NFS can be useful for development, but I think we
-> should have a default configuration for the "standard" way to use the
-> board. In the present case, this is booting from a SDCard and not from
-> NFS.
-boot from SD card does not work barebox does not detect the SDCard on any
-version
-
-I try on via beagle c3
-with 2GB and 8GB
-
-where my loco deteect it both
+IIRC we have
 
 Best Regards,
 J.
