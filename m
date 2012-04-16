@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SMDNT-0005YU-Ub
- for barebox@lists.infradead.org; Mon, 23 Apr 2012 07:08:05 +0000
-Date: Mon, 23 Apr 2012 09:07:56 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120423070756.GB3852@pengutronix.de>
-References: <20120419053846.GA20601@game.jcrosoft.org>
- <1334814298-11468-9-git-send-email-plagnioj@jcrosoft.com>
- <20120423060327.GU3852@pengutronix.de>
- <20120423062146.GJ20601@game.jcrosoft.org>
+Received: from mx2.rafi.de ([178.15.151.13])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SJnTD-0007LW-Rx
+ for barebox@lists.infradead.org; Mon, 16 Apr 2012 15:04:00 +0000
+In-Reply-To: <20120416145351.43234ea7@eb-e6520>
+References: <OF62A1617C.00758B18-ONC12579E2.00369768-C12579E2.00370E2B@o0802.rafi.inhouse>
+ <20120416111108.GV30672@game.jcrosoft.org>
+ <OF8CCAF0FB.FEC72171-ONC12579E2.004009D2-C12579E2.00413C07@o0802.rafi.inhouse>
+ <20120416121937.GR3852@pengutronix.de>
+ <OFE1B60695.7A4CF434-ONC12579E2.0043DD1E-C12579E2.004453E0@o0802.rafi.inhouse>
+ <20120416145351.43234ea7@eb-e6520>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120423062146.GJ20601@game.jcrosoft.org>
+Message-ID: <OF73ABAF6E.8BAAC950-ONC12579E2.00528706-C12579E2.0052BF35@o0802.rafi.inhouse>
+From: christian.buettner@rafi.de
+Date: Mon, 16 Apr 2012 17:03:50 +0200
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,56 +22,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============6948909621351349746=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 09/11] complete: add go and sleep support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: tftpserver
+To: barebox@lists.infradead.org
 
-On Mon, Apr 23, 2012 at 08:21:46AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 08:03 Mon 23 Apr     , Sascha Hauer wrote:
-> > >  BAREBOX_CMD_START(sleep)
-> > >  	.cmd		= do_sleep,
-> > >  	.usage		= "delay execution for n seconds",
-> > > +	BAREBOX_CMD_COMPLETE(cammand_var_complete)
-> > >  BAREBOX_CMD_END
-> > > diff --git a/common/complete.c b/common/complete.c
-> > > index 5213b10..9ecce25 100644
-> > > --- a/common/complete.c
-> > > +++ b/common/complete.c
-> > > @@ -193,6 +193,11 @@ int empty_complete(struct string_list *sl, char *instr)
-> > >  	return 1;
-> > >  }
-> > >  
-> > > +int cammand_var_complete(struct string_list *sl, char *instr)
-> > > +{
-> > > +	return 0;
-> > > +}
-> > 
-> > Two patches before this one you introduced empty_complete. This function
-> > does the same, except that it returns 0 instead of 1. The return value
-> > of the complete functions is never checked, so what is going on here?
-> 
-> the return value is checked.
-> 
-> no this different we return 0 as you can use env var complete
+Dies ist eine mehrteilige Nachricht im MIME-Format.
+--===============6948909621351349746==
+Content-Type: multipart/alternative; boundary="=_alternative 0052BF33C12579E2_="
 
-Can you then add a meaningful comment what command cmdtp->complete
-should return and what it means? A define instead of using '1' may make
-sense aswell.
+Dies ist eine mehrteilige Nachricht im MIME-Format.
+--=_alternative 0052BF33C12579E2_=
+Content-Type: text/plain; charset="US-ASCII"
 
-Sascha
+Hi,
+
+is there a patch containing a tftp server on barebox, beeing able to 
+connect to and send data from any client?
+
+- christian
+--=_alternative 0052BF33C12579E2_=
+Content-Type: text/html; charset="US-ASCII"
+
+<font size=2 face="sans-serif">Hi,</font>
+<br>
+<br><font size=2 face="sans-serif">is there a patch containing a tftp server
+on barebox, beeing able to connect to and send data from any client?</font>
+<br>
+<br><font size=2 face="sans-serif">- christian</font>
+--=_alternative 0052BF33C12579E2_=--
 
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--===============6948909621351349746==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============6948909621351349746==--
