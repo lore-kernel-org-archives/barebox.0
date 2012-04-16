@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo3.mail-out.ovh.net ([87.98.165.232]
- helo=mo3.mail-out.ovh.net)
+Received: from mx2.rafi.de ([178.15.151.13])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SJk8e-0003ig-4S
- for barebox@lists.infradead.org; Mon, 16 Apr 2012 11:30:32 +0000
-Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id B4705FF8E73
- for <barebox@lists.infradead.org>; Mon, 16 Apr 2012 13:31:45 +0200 (CEST)
-Date: Mon, 16 Apr 2012 13:12:15 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120416111215.GW30672@game.jcrosoft.org>
-References: <1334500111-26382-1-git-send-email-s.hauer@pengutronix.de>
- <1334562295-15058-1-git-send-email-s.hauer@pengutronix.de>
+ id 1SJkU0-00048g-MA
+ for barebox@lists.infradead.org; Mon, 16 Apr 2012 11:52:38 +0000
+In-Reply-To: <20120416111108.GV30672@game.jcrosoft.org>
+References: <OF62A1617C.00758B18-ONC12579E2.00369768-C12579E2.00370E2B@o0802.rafi.inhouse>
+ <20120416111108.GV30672@game.jcrosoft.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1334562295-15058-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <OF8CCAF0FB.FEC72171-ONC12579E2.004009D2-C12579E2.00413C07@o0802.rafi.inhouse>
+From: christian.buettner@rafi.de
+Date: Mon, 16 Apr 2012 13:52:33 +0200
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,25 +18,140 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============5390803923702201079=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Use DEVICE_ID_DYNAMIC where applicable
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Antwort: Re: barebox JSON
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 09:44 Mon 16 Apr     , Sascha Hauer wrote:
-> We now have DEVICE_ID_DYNAMIC for dynamic allocation of device ids,
-> Use it where applicable.
+Dies ist eine mehrteilige Nachricht im MIME-Format.
+--===============5390803923702201079==
+Content-Type: multipart/alternative; boundary="=_alternative 00413C07C12579E2_="
 
-if it's set everywhere so siwtch it to -2 after so -1 have the same meaning as
-in the kernel
+Dies ist eine mehrteilige Nachricht im MIME-Format.
+--=_alternative 00413C07C12579E2_=
+Content-Type: text/plain; charset="US-ASCII"
+
+The advantage is a generic interface used in mass production.
+
+I formulate my question in another way.
+Is there an approach launching a little tool, that listens to UART or 
+Ethernet when the bootloader starts.
+The tool is kind of an dispatcher, using an incoming message to start e.g. 
+an update of the kernel.
+
+- christian
+
+
+
+Von:    Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+An:     christian.buettner@rafi.de
+Kopie:  barebox@lists.infradead.org
+Datum:  16.04.2012 13:29
+Betreff:        Re: barebox JSON
+
+
+
+On 12:01 Mon 16 Apr     , christian.buettner@rafi.de wrote:
+>    hi all,
+> 
+>    is there allready an approach to accept JSON messages through a UART 
+or
+>    Ethernet interface?
+>    I am thinking of an update mechanism in the bootloader, beeing able 
+to
+>    exchange the kernel, rootfs or change env settings..
+JSON no
+
+but you can use script to do it other container
+
+and protocol like xyzmodem /nfs and co so what is the advantage of JSON?
 
 Best Regards,
 J.
+> 
+>    - christian
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+
+--=_alternative 00413C07C12579E2_=
+Content-Type: text/html; charset="US-ASCII"
+
+<font size=2 face="sans-serif">The advantage is a generic interface used
+in mass production.</font>
+<br>
+<br><font size=2 face="sans-serif">I formulate my question in another way.</font>
+<br><font size=2 face="sans-serif">Is there an approach launching a little
+tool, that listens to UART or Ethernet when the bootloader starts.</font>
+<br><font size=2 face="sans-serif">The tool is kind of an dispatcher, using
+an incoming message to start e.g. an update of the kernel.</font>
+<br>
+<br><font size=2 face="sans-serif">- christian</font>
+<br>
+<br>
+<br>
+<br><font size=1 color=#5f5f5f face="sans-serif">Von: &nbsp; &nbsp; &nbsp;
+&nbsp;</font><font size=1 face="sans-serif">Jean-Christophe PLAGNIOL-VILLARD
+&lt;plagnioj@jcrosoft.com&gt;</font>
+<br><font size=1 color=#5f5f5f face="sans-serif">An: &nbsp; &nbsp; &nbsp;
+&nbsp;</font><font size=1 face="sans-serif">christian.buettner@rafi.de</font>
+<br><font size=1 color=#5f5f5f face="sans-serif">Kopie: &nbsp; &nbsp; &nbsp;
+&nbsp;</font><font size=1 face="sans-serif">barebox@lists.infradead.org</font>
+<br><font size=1 color=#5f5f5f face="sans-serif">Datum: &nbsp; &nbsp; &nbsp;
+&nbsp;</font><font size=1 face="sans-serif">16.04.2012 13:29</font>
+<br><font size=1 color=#5f5f5f face="sans-serif">Betreff: &nbsp; &nbsp;
+&nbsp; &nbsp;</font><font size=1 face="sans-serif">Re: barebox
+JSON</font>
+<br>
+<hr noshade>
+<br>
+<br>
+<br><tt><font size=2>On 12:01 Mon 16 Apr &nbsp; &nbsp; , christian.buettner@rafi.de
+wrote:<br>
+&gt; &nbsp; &nbsp;hi all,<br>
+&gt; <br>
+&gt; &nbsp; &nbsp;is there allready an approach to accept JSON messages
+through a UART or<br>
+&gt; &nbsp; &nbsp;Ethernet interface?<br>
+&gt; &nbsp; &nbsp;I am thinking of an update mechanism in the bootloader,
+beeing able to<br>
+&gt; &nbsp; &nbsp;exchange the kernel, rootfs or change env settings..<br>
+JSON no<br>
+<br>
+but you can use script to do it other container<br>
+<br>
+and protocol like xyzmodem /nfs and co so what is the advantage of JSON?<br>
+<br>
+Best Regards,<br>
+J.<br>
+&gt; <br>
+&gt; &nbsp; &nbsp;- christian<br>
+<br>
+&gt; _______________________________________________<br>
+&gt; barebox mailing list<br>
+&gt; barebox@lists.infradead.org<br>
+&gt; </font></tt><a href=http://lists.infradead.org/mailman/listinfo/barebox><tt><font size=2>http://lists.infradead.org/mailman/listinfo/barebox</font></tt></a><tt><font size=2><br>
+<br>
+</font></tt>
+<br>
+--=_alternative 00413C07C12579E2_=--
+
+
+--===============5390803923702201079==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============5390803923702201079==--
