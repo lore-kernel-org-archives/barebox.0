@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SJrtn-0001rQ-7v
- for barebox@lists.infradead.org; Mon, 16 Apr 2012 19:47:44 +0000
+ id 1SJs9f-0002k9-H8
+ for barebox@lists.infradead.org; Mon, 16 Apr 2012 20:04:08 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Mon, 16 Apr 2012 21:47:13 +0200
-Message-Id: <1334605638-23095-2-git-send-email-robert.jarzmik@free.fr>
-In-Reply-To: <1334605638-23095-1-git-send-email-robert.jarzmik@free.fr>
-References: <1334605638-23095-1-git-send-email-robert.jarzmik@free.fr>
+Date: Mon, 16 Apr 2012 22:03:36 +0200
+Message-Id: <1334606616-26134-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,105 +19,128 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] mci: pxamci define timeouts
+Subject: [PATCH] mtd: docg3 fixes backport from Linux kernel
 To: barebox@lists.infradead.org
 
-Instead of using hard encoded values in the code, use defines to setup
-the timeouts of reads/writes/commands.
-Fix the read timeout as defined in the PXA Developer Manual.
+Backport 2 fixes back from Linux kernel (title verbatim from
+Linux kernel log) :
+ - docg3 fix in-middle of blocks reads
+ - docg3 reduce read alignment burden
+
+These 2 enable partial reads from the MTD (ie. read only the
+111 first bytes), which enable linux kernel booting or UBIFS
+from barebox.
 
 Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- drivers/mci/pxamci.c |   21 +++++++++++++--------
- 1 files changed, 13 insertions(+), 8 deletions(-)
+ drivers/mtd/devices/docg3.c |   36 +++++++++++++++++++++++-------------
+ 1 files changed, 23 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/mci/pxamci.c b/drivers/mci/pxamci.c
-index 239b46a..ee2f08c 100644
---- a/drivers/mci/pxamci.c
-+++ b/drivers/mci/pxamci.c
-@@ -25,6 +25,10 @@
+diff --git a/drivers/mtd/devices/docg3.c b/drivers/mtd/devices/docg3.c
+index 7a40908..d19969b 100644
+--- a/drivers/mtd/devices/docg3.c
++++ b/drivers/mtd/devices/docg3.c
+@@ -163,7 +163,7 @@ static void doc_read_data_area(struct docg3 *docg3, void *buf, int len,
+ 	u8 data8, *dst8;
  
- #define DRIVER_NAME	"pxa-mmc"
+ 	doc_dbg("doc_read_data_area(buf=%p, len=%d)\n", buf, len);
+-	cdr = len & 0x3;
++	cdr = len & 0x1;
+ 	len4 = len - cdr;
  
-+#define RX_TIMEOUT (100 * MSECOND)
-+#define TX_TIMEOUT (250 * MSECOND)
-+#define CMD_TIMEOUT (100 * MSECOND)
-+
- static void clk_enable(void)
- {
- 	CKEN |= CKEN_MMC;
-@@ -54,7 +58,7 @@ static void pxamci_stop_clock(struct pxamci_host *host)
- 	stat = mmc_readl(MMC_STAT);
- 	if (stat & STAT_CLK_EN)
- 		writel(STOP_CLOCK, host->base + MMC_STRPCL);
--	while (!is_timeout(start, 10 * MSECOND) && stat & STAT_CLK_EN)
-+	while (!is_timeout(start, CMD_TIMEOUT) && stat & STAT_CLK_EN)
- 		stat = mmc_readl(MMC_STAT);
- 
- 	if (stat & STAT_CLK_EN)
-@@ -63,12 +67,12 @@ static void pxamci_stop_clock(struct pxamci_host *host)
- 
- static void pxamci_setup_data(struct pxamci_host *host, struct mci_data *data)
- {
--	static const unsigned int timeout = 100000000; /* 10ms */
-+	static const unsigned int timeout_ns = 1000 * MSECOND; /* 1000 ms */
- 
- 	mci_dbg("nbblocks=%d, blocksize=%d\n", data->blocks, data->blocksize);
- 	mmc_writel(data->blocks, MMC_NOB);
- 	mmc_writel(data->blocksize, MMC_BLKLEN);
--	mmc_writel((timeout + 255) / 256, MMC_RDTO);
-+	mmc_writel(DIV_ROUND_UP(timeout_ns, 13128), MMC_RDTO);
+ 	if (first)
+@@ -395,9 +395,14 @@ err:
  }
  
- static int pxamci_read_data(struct pxamci_host *host, unsigned char *dst,
-@@ -83,9 +87,10 @@ static int pxamci_read_data(struct pxamci_host *host, unsigned char *dst,
- 		trf_len = min_t(int, len, MMC_FIFO_LENGTH);
+ static int doc_read_page_getbytes(struct docg3 *docg3, int len, u_char *buf,
+-				  int first)
++				  int first, int last_odd)
+ {
+-	doc_read_data_area(docg3, buf, len, first);
++	if (last_odd && len > 0) {
++		doc_read_data_area(docg3, buf, 1, first);
++		doc_read_data_area(docg3, buf ? buf + 1 : buf, len - 1, 0);
++	} else {
++		doc_read_data_area(docg3, buf, len, first);
++	}
+ 	doc_delay(docg3, 2);
+ 	return len;
+ }
+@@ -448,7 +453,7 @@ static int doc_read_oob(struct mtd_info *mtd, loff_t from,
+ 			struct mtd_oob_ops *ops)
+ {
+ 	struct docg3 *docg3 = mtd->priv;
+-	int block0, block1, page, ret, ofs = 0;
++	int block0, block1, page, ret, skip, ofs = 0;
+ 	u8 *oobbuf = ops->oobbuf;
+ 	u8 *buf = ops->datbuf;
+ 	size_t len, ooblen, nbdata, nboob;
+@@ -468,8 +473,7 @@ static int doc_read_oob(struct mtd_info *mtd, loff_t from,
  
- 		for (start = get_time_ns(), ret = -ETIMEDOUT;
--		     ret && !is_timeout(start, 10 * MSECOND);)
-+		     ret && !is_timeout(start, RX_TIMEOUT);)
- 			if (mmc_readl(MMC_I_REG) & RXFIFO_RD_REQ)
- 				ret = 0;
-+
- 		trf_len1 = trf_len % 4;
- 		trf_len4 = trf_len / 4;
- 		for (dst4 = (u32 *)dst; !ret && trf_len4 > 0; trf_len4--)
-@@ -97,7 +102,7 @@ static int pxamci_read_data(struct pxamci_host *host, unsigned char *dst,
+ 	doc_dbg("doc_read_oob(from=%lld, mode=%d, data=(%p:%zu), oob=(%p:%zu))\n",
+ 		from, ops->mode, buf, len, oobbuf, ooblen);
+-	if ((len % DOC_LAYOUT_PAGE_SIZE) || (ooblen % DOC_LAYOUT_OOB_SIZE) ||
+-	    (from % DOC_LAYOUT_PAGE_SIZE))
++	if (ooblen % DOC_LAYOUT_OOB_SIZE)
+ 		return -EINVAL;
  
- 	if (!ret)
- 		for (start = get_time_ns(), ret = -ETIMEDOUT;
--		     ret && !is_timeout(start, 10 * MSECOND);)
-+		     ret && !is_timeout(start, RX_TIMEOUT);)
- 			if (mmc_readl(MMC_STAT) & STAT_DATA_TRAN_DONE)
- 				ret = 0;
- 	mci_dbg("ret=%d, remain=%d, stat=%x, mmc_i_reg=%x\n",
-@@ -118,7 +123,7 @@ static int pxamci_write_data(struct pxamci_host *host, const unsigned char *src,
- 		partial = trf_len < MMC_FIFO_LENGTH;
+ 	ret = -EINVAL;
+@@ -481,10 +485,11 @@ static int doc_read_oob(struct mtd_info *mtd, loff_t from,
+ 	ops->oobretlen = 0;
+ 	ops->retlen = 0;
+ 	ret = 0;
++	skip = from % DOC_LAYOUT_PAGE_SIZE;
+ 	while (!ret && (len > 0 || ooblen > 0)) {
+ 		calc_block_sector(from, &block0, &block1, &page, &ofs,
+ 			docg3->reliable);
+-		nbdata = min_t(size_t, len, (size_t)DOC_LAYOUT_PAGE_SIZE);
++		nbdata = min_t(size_t, len, DOC_LAYOUT_PAGE_SIZE - skip);
+ 		nboob = min_t(size_t, ooblen, (size_t)DOC_LAYOUT_OOB_SIZE);
+ 		ret = doc_read_page_prepare(docg3, block0, block1, page, ofs);
+ 		if (ret < 0)
+@@ -492,16 +497,20 @@ static int doc_read_oob(struct mtd_info *mtd, loff_t from,
+ 		ret = doc_read_page_ecc_init(docg3, DOC_ECC_BCH_TOTAL_BYTES);
+ 		if (ret < 0)
+ 			goto err_in_read;
+-		ret = doc_read_page_getbytes(docg3, nbdata, buf, 1);
++		ret = doc_read_page_getbytes(docg3, skip, NULL, 1, 0);
++		if (ret < skip)
++			goto err_in_read;
++		ret = doc_read_page_getbytes(docg3, nbdata, buf, 0, skip % 2);
+ 		if (ret < nbdata)
+ 			goto err_in_read;
+-		doc_read_page_getbytes(docg3, DOC_LAYOUT_PAGE_SIZE - nbdata,
+-				       NULL, 0);
+-		ret = doc_read_page_getbytes(docg3, nboob, oobbuf, 0);
++		doc_read_page_getbytes(docg3,
++				       DOC_LAYOUT_PAGE_SIZE - nbdata - skip,
++				       NULL, 0, (skip + nbdata) % 2);
++		ret = doc_read_page_getbytes(docg3, nboob, oobbuf, 0, 0);
+ 		if (ret < nboob)
+ 			goto err_in_read;
+ 		doc_read_page_getbytes(docg3, DOC_LAYOUT_OOB_SIZE - nboob,
+-				       NULL, 0);
++				       NULL, 0, nboob % 2);
  
- 		for (start = get_time_ns(), ret = -ETIMEDOUT;
--		     ret && !is_timeout(start, 10 * MSECOND);)
-+		     ret && !is_timeout(start, TX_TIMEOUT);)
- 			if (mmc_readl(MMC_I_REG) & TXFIFO_WR_REQ)
- 				ret = 0;
- 		for (; !ret && trf_len > 0; trf_len--, len--)
-@@ -129,7 +134,7 @@ static int pxamci_write_data(struct pxamci_host *host, const unsigned char *src,
+ 		doc_get_bch_hw_ecc(docg3, hwecc);
+ 		eccconf1 = doc_register_readb(docg3, DOC_ECCCONF1);
+@@ -549,6 +558,7 @@ static int doc_read_oob(struct mtd_info *mtd, loff_t from,
+ 		len -= nbdata;
+ 		ooblen -= nboob;
+ 		from += DOC_LAYOUT_PAGE_SIZE;
++		skip = 0;
+ 	}
  
- 	if (!ret)
- 		for (start = get_time_ns(), ret = -ETIMEDOUT;
--		     ret && !is_timeout(start, 100 * MSECOND);)  {
-+		     ret && !is_timeout(start, TX_TIMEOUT);)  {
- 			stat = mmc_readl(MMC_STAT);
- 			stat &= STAT_DATA_TRAN_DONE | STAT_PRG_DONE;
- 			if (stat == (STAT_DATA_TRAN_DONE | STAT_PRG_DONE))
-@@ -236,7 +241,7 @@ static int pxamci_mmccmd(struct pxamci_host *host, struct mci_cmd *cmd,
- 
- 	pxamci_start_cmd(host, cmd, cmddat);
- 	for (start = get_time_ns(), ret = -ETIMEDOUT;
--	     ret && !is_timeout(start, 10 * MSECOND);)
-+	     ret && !is_timeout(start, CMD_TIMEOUT);)
- 		if (mmc_readl(MMC_STAT) & STAT_END_CMD_RES)
- 			ret = 0;
- 
+ 	return ret;
+@@ -589,7 +599,7 @@ static int doc_reload_bbt(struct docg3 *docg3)
+ 						     DOC_LAYOUT_PAGE_SIZE);
+ 		if (!ret)
+ 			doc_read_page_getbytes(docg3, DOC_LAYOUT_PAGE_SIZE,
+-					       buf, 1);
++					       buf, 1, 0);
+ 		buf += DOC_LAYOUT_PAGE_SIZE;
+ 	}
+ 	doc_read_page_finish(docg3);
 -- 
 1.7.5.4
 
