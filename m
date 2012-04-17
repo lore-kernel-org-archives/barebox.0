@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SKEdq-0001Lv-7d
- for barebox@lists.infradead.org; Tue, 17 Apr 2012 20:04:51 +0000
-Date: Tue, 17 Apr 2012 22:04:30 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120417200430.GI3852@pengutronix.de>
-References: <1334605638-23095-1-git-send-email-robert.jarzmik@free.fr>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1334605638-23095-1-git-send-email-robert.jarzmik@free.fr>
+Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SKH5o-0001Jv-2m
+ for barebox@lists.infradead.org; Tue, 17 Apr 2012 22:41:49 +0000
+Date: Wed, 18 Apr 2012 00:41:39 +0200
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20120418004139.4bdc7da1@eb-e6520>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,58 +19,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/6] mci: pxamci fixes
-To: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: 800x480 Display broken on i.MX25 with MMU
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Robert,
+Hi,
 
-On Mon, Apr 16, 2012 at 09:47:12PM +0200, Robert Jarzmik wrote:
-> This serie was triggered by several tests to copy files from
-> one directory to another on 2 SD cards :
->  - one slow 256MB card
->  - one fast 8G Transcend 8X card
-> 
-> The fixes improve :
->  - writes which do no longer fail (mostly because of R1b and
->  CMD12 handling)
->  - initial mounting of SD card from env (poweron ramp delay)
-> 
-> Happy review.
-> 
+on an i.MX25, it seems that 3100ea14668853aeedae85ec83e3536b59ba7728
+broke framebuffer usage with a 800x480 display when MMU is enabled :
+about 1/4 of the display (at the bottom) is garbage.
 
-The patches look good. I applied them all.
+v2011.08.0 : it works fine
 
-Thanks
- Sascha
+v2011.09.0 : it fails
 
-> Robert Jarzmik (6):
->   mci: pxamci define timeouts
->   mci: pxamci change clocks handling
->   mci: pxamci fix response type
->   mci: pxamci fix CMD12 handling
->   mci: pxamci fix R1b responses
->   mci: pxamci poweron ramp delay
-> 
->  drivers/mci/pxamci.c |   49 +++++++++++++++++++++++++++++++------------------
->  drivers/mci/pxamci.h |    1 +
->  2 files changed, 32 insertions(+), 18 deletions(-)
-> 
-> -- 
-> 1.7.5.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+disabling MMU makes it work again in v2011.09.0
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+then in v2011.09.0 it works with MMU enabled after reverting the
+following commits :
+43ebdba64a6e1c12fe58aa57e905cfdcef922126
+56c379160b9f0b52efcaaefce9adb6121d5865d7
+a6c333c7f2dbe49189dd5343da3c921659e88cbf
+3100ea14668853aeedae85ec83e3536b59ba7728
+
+So it seems something was broken during MMU rework and I don't yet know
+what : Sascha do you have an idea ?
+
+Thanks,
+Eric
 
 _______________________________________________
 barebox mailing list
