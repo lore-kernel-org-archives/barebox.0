@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo3.mail-out.ovh.net ([188.165.41.191]
+Received: from 3.mo3.mail-out.ovh.net ([46.105.44.175]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SKUJU-0002Ly-3t
- for barebox@lists.infradead.org; Wed, 18 Apr 2012 12:48:51 +0000
+ id 1SKUJU-0002Lz-7G
+ for barebox@lists.infradead.org; Wed, 18 Apr 2012 12:48:54 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 7F8A8FF90CC
- for <barebox@lists.infradead.org>; Wed, 18 Apr 2012 14:50:07 +0200 (CEST)
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 10404FF9122
+ for <barebox@lists.infradead.org>; Wed, 18 Apr 2012 14:50:08 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 18 Apr 2012 14:30:03 +0200
-Message-Id: <1334752204-11841-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 18 Apr 2012 14:30:04 +0200
+Message-Id: <1334752204-11841-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20120418120834.GD1980@game.jcrosoft.org>
 References: <20120418120834.GD1980@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -25,27 +25,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] dhcp: fix typo introduce during rebase of hostname patch
+Subject: [PATCH 3/3] config: fix missing switch machine to hostname during
+ merge
 To: barebox@lists.infradead.org
+
+So we can use it for dhcp request too.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- net/dhcp.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ arch/arm/boards/eukrea_cpuimx35/env/config |   14 +++++++-------
+ 1 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/net/dhcp.c b/net/dhcp.c
-index 1d01d05..0c882fb 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -681,7 +681,7 @@ BAREBOX_CMD_HELP_START(dhcp)
- BAREBOX_CMD_HELP_USAGE("dhcp [OPTIONS]\n")
- BAREBOX_CMD_HELP_SHORT("Invoke dhcp client to obtain ip/boot params.\n")
- BAREBOX_CMD_HELP_OPT  ("-H <hostname>",
--"Hostname to send to the DHCP server\n");
-+"Hostname to send to the DHCP server\n")
- BAREBOX_CMD_HELP_OPT  ("-v <vendor_id>",
- "DHCP Vendor ID (code 60) submitted in DHCP requests. It can\n"
- "be used in the DHCP server's configuration to select options\n"
+diff --git a/arch/arm/boards/eukrea_cpuimx35/env/config b/arch/arm/boards/eukrea_cpuimx35/env/config
+index 8f64ba0..1b19bd2 100644
+--- a/arch/arm/boards/eukrea_cpuimx35/env/config
++++ b/arch/arm/boards/eukrea_cpuimx35/env/config
+@@ -3,7 +3,7 @@
+ # otg port mode : can be 'host' or 'device'
+ otg_mode="device"
+ 
+-machine=eukrea-cpuimx35
++hostname=eukrea-cpuimx35
+ 
+ # use 'dhcp' to do dhcp in barebox and in kernel
+ # use 'none' if you want to skip kernel ip autoconfiguration
+@@ -22,16 +22,16 @@ rootfs_loc=nand
+ 
+ # rootfs
+ rootfs_type=ubifs
+-rootfsimage=$machine/rootfs.$rootfs_type
++rootfsimage=$hostname/rootfs.$rootfs_type
+ 
+ # kernel
+-kernelimage=$machine/uImage-${machine}.bin
++kernelimage=$hostname/uImage-${hostname}.bin
+ 
+ # barebox and it's env
+-bareboximage=$machine/barebox-${machine}.bin
+-bareboxenvimage=$machine/bareboxenv-${machine}.bin
++bareboximage=$hostname/barebox-${hostname}.bin
++bareboxenvimage=$hostname/bareboxenv-${hostname}.bin
+ 
+-nfsroot="$eth0.serverip:/srv/nfs/$machine"
++nfsroot="$eth0.serverip:/srv/nfs/$hostname"
+ 
+ autoboot_timeout=1
+ 
+@@ -40,7 +40,7 @@ bootargs="console=ttymxc0,115200 otg_mode=$otg_mode"
+ nand_parts="256k(barebox)ro,128k(bareboxenv),3M(kernel),-(root)"
+ rootfs_mtdblock_nand=3
+ nand_device="mxc_nand"
+-ubiroot="$machine-rootfs"
++ubiroot="$hostname-rootfs"
+ device_type="nand"
+ 
+ # set a fancy prompt (if support is compiled in)
 -- 
 1.7.9.1
 
