@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SKV49-0004mU-SN
- for barebox@lists.infradead.org; Wed, 18 Apr 2012 13:37:07 +0000
-Date: Wed, 18 Apr 2012 15:36:41 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120418133641.GT3852@pengutronix.de>
-References: <20120418120834.GD1980@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120418120834.GD1980@game.jcrosoft.org>
+Received: from smtp18.mail.ru ([94.100.176.155])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SKZYO-0000WG-S4
+ for barebox@lists.infradead.org; Wed, 18 Apr 2012 18:24:34 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Wed, 18 Apr 2012 22:25:10 +0400
+Message-Id: <1334773510-13806-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,61 +14,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] fixes
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Allow use platform_ide driver without ALT-registers
+To: barebox@lists.infradead.org
 
-On Wed, Apr 18, 2012 at 02:08:34PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> HI,
-> 
-> 	the following patch series is ramdom fixes of the next
-> 
-> The following changes since commit a2d2e8868fe3c963ebac634b695ae18bb4b411ca:
-> 
->   config: switch machine to hostname (2012-04-18 12:03:58 +0200)
-> 
-> are available in the git repository at:
-> 
->   git://git.jcrosoft.org/barebox.git fixes
-> 
-> for you to fetch changes up to 8c04018b528bb638e22b7f573617842482bbc05a:
-> 
->   config: fix missing switch machine to hostname during merge (2012-04-18 19:51:05 +0800)
 
-Applied, thanks.
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ drivers/ata/intf_platform_ide.c |   12 +++++++++---
+ 1 files changed, 9 insertions(+), 3 deletions(-)
 
-Sascha
-
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (3):
->       arm: bootm: zImage: add error message when can not request the memory
->       dhcp: fix typo introduce during rebase of hostname patch
->       config: fix missing switch machine to hostname during merge
-> 
->  arch/arm/boards/eukrea_cpuimx35/env/config |   14 +++++++-------
->  arch/arm/lib/bootm.c                       |    2 ++
->  net/dhcp.c                                 |    2 +-
->  3 files changed, 10 insertions(+), 8 deletions(-)
-> 
-> Best Regards,
-> J.
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/ata/intf_platform_ide.c b/drivers/ata/intf_platform_ide.c
+index 1955a9c..af20e05 100644
+--- a/drivers/ata/intf_platform_ide.c
++++ b/drivers/ata/intf_platform_ide.c
+@@ -64,10 +64,16 @@ static void platform_ide_setup_port(void *reg_base, void *alt_base,
+ 	ioaddr->status_addr = reg_base + (IDE_REG_STATUS << shift);
+ 	ioaddr->command_addr = reg_base + (IDE_REG_CMD << shift);
+ 
+-	ioaddr->altstatus_addr = alt_base + (IDE_REG_ALT_STATUS << shift);
+-	ioaddr->ctl_addr = alt_base + (IDE_REG_DEV_CTL << shift);
+-
+-	ioaddr->alt_dev_addr = alt_base + (IDE_REG_DRV_ADDR << shift);
++	if (alt_base) {
++		ioaddr->altstatus_addr = alt_base + (IDE_REG_ALT_STATUS << shift);
++		ioaddr->ctl_addr = alt_base + (IDE_REG_DEV_CTL << shift);
++
++		ioaddr->alt_dev_addr = alt_base + (IDE_REG_DRV_ADDR << shift);
++	} else {
++		ioaddr->altstatus_addr = ioaddr->status_addr;
++		ioaddr->ctl_addr = ioaddr->status_addr;
++		/* ioaddr->alt_dev_addr not used in driver */
++	}
+ }
+ 
+ static int platform_ide_probe(struct device_d *dev)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.3.4
+
 
 _______________________________________________
 barebox mailing list
