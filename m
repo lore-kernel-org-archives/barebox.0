@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 11.mo3.mail-out.ovh.net ([87.98.184.158]
+Received: from 3.mo3.mail-out.ovh.net ([46.105.44.175]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SKU4N-0004Oo-5H
- for barebox@lists.infradead.org; Wed, 18 Apr 2012 12:33:15 +0000
+ id 1SKU9C-0005cZ-MB
+ for barebox@lists.infradead.org; Wed, 18 Apr 2012 12:38:14 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 47F1AFF97C5
- for <barebox@lists.infradead.org>; Wed, 18 Apr 2012 14:22:30 +0200 (CEST)
-Date: Wed, 18 Apr 2012 14:02:30 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 89884FF9864
+ for <barebox@lists.infradead.org>; Wed, 18 Apr 2012 14:28:33 +0200 (CEST)
+Date: Wed, 18 Apr 2012 14:08:34 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120418120230.GC1980@game.jcrosoft.org>
+Message-ID: <20120418120834.GD1980@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
@@ -24,22 +24,12 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5 v2] introduce binfmt support
+Subject: [PATCH 0/3] fixes
 To: barebox@lists.infradead.org
 
-Hi,i
+HI,
 
-	the following patch series
-
-	Introduce binfmt support
-
-	This will allow to execute any file and detect it's type to handle it.
-	This will allow to use shell for bootp bootfile or dfu.
-
-v2:
-
-fix simple conole support
-rebase against next
+	the following patch series is ramdom fixes of the next
 
 The following changes since commit a2d2e8868fe3c963ebac634b695ae18bb4b411ca:
 
@@ -47,33 +37,22 @@ The following changes since commit a2d2e8868fe3c963ebac634b695ae18bb4b411ca:
 
 are available in the git repository at:
 
-  git://git.jcrosoft.org/barebox.git binfmt
+  git://git.jcrosoft.org/barebox.git fixes
 
-for you to fetch changes up to 2b26b148f4c8633a19bca0cbb96d4393ece8f54e:
+for you to fetch changes up to 8c04018b528bb638e22b7f573617842482bbc05a:
 
-  defaultenv: add binfmt support (2012-04-18 20:19:20 +0800)
+  config: fix missing switch machine to hostname during merge (2012-04-18 19:51:05 +0800)
 
 ----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (5):
-      filetype: add Bourne Shell support
-      Introduce binfmt support
-      bootm: add uimage binfmt support
-      arm: bootm: add barebox, zImage and aImage binfmt support
-      defaultenv: add binfmt support
+Jean-Christophe PLAGNIOL-VILLARD (3):
+      arm: bootm: zImage: add error message when can not request the memory
+      dhcp: fix typo introduce during rebase of hostname patch
+      config: fix missing switch machine to hostname during merge
 
- arch/arm/lib/bootm.c |   22 +++++++++++-
- commands/bootm.c     |   12 ++++++
- common/Kconfig       |    5 +++
- common/Makefile      |    1 +
- common/binfmt.c      |   95 ++++++++++++++++++++++++++++++++++++++++++++++++++
- common/filetype.c    |    3 ++
- common/hush.c        |   31 ++++++++++------
- defaultenv/bin/boot  |    4 ++
- include/binfmt.h     |   39 ++++++++++++++++++++
- include/filetype.h   |    1 +
- 10 files changed, 200 insertions(+), 13 deletions(-)
- create mode 100644 common/binfmt.c
- create mode 100644 include/binfmt.h
+ arch/arm/boards/eukrea_cpuimx35/env/config |   14 +++++++-------
+ arch/arm/lib/bootm.c                       |    2 ++
+ net/dhcp.c                                 |    2 +-
+ 3 files changed, 10 insertions(+), 8 deletions(-)
 
 Best Regards,
 J.
