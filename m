@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SKZqD-0007ad-5t
- for barebox@lists.infradead.org; Wed, 18 Apr 2012 18:43:02 +0000
-Date: Wed, 18 Apr 2012 20:42:41 +0200
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SKZrI-0008GG-NE
+ for barebox@lists.infradead.org; Wed, 18 Apr 2012 18:44:10 +0000
+Date: Wed, 18 Apr 2012 20:43:51 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120418184241.GW3852@pengutronix.de>
-References: <20120418120230.GC1980@game.jcrosoft.org>
+Message-ID: <20120418184351.GX3852@pengutronix.de>
+References: <1334773510-13806-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120418120230.GC1980@game.jcrosoft.org>
+In-Reply-To: <1334773510-13806-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,66 +22,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/5 v2] introduce binfmt support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] Allow use platform_ide driver without ALT-registers
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Wed, Apr 18, 2012 at 02:02:30PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,i
+On Wed, Apr 18, 2012 at 10:25:10PM +0400, Alexander Shiyan wrote:
 > 
-> 	the following patch series
-> 
-> 	Introduce binfmt support
-> 
-> 	This will allow to execute any file and detect it's type to handle it.
-> 	This will allow to use shell for bootp bootfile or dfu.
-> 
-> v2:
-> 
-> fix simple conole support
-> rebase against next
-> 
-> The following changes since commit a2d2e8868fe3c963ebac634b695ae18bb4b411ca:
-> 
->   config: switch machine to hostname (2012-04-18 12:03:58 +0200)
-> 
-> are available in the git repository at:
-> 
->   git://git.jcrosoft.org/barebox.git binfmt
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-Pulled, thanks.
+Applied, thanks
 
 Sascha
 
+> ---
+>  drivers/ata/intf_platform_ide.c |   12 +++++++++---
+>  1 files changed, 9 insertions(+), 3 deletions(-)
 > 
-> for you to fetch changes up to 2b26b148f4c8633a19bca0cbb96d4393ece8f54e:
+> diff --git a/drivers/ata/intf_platform_ide.c b/drivers/ata/intf_platform_ide.c
+> index 1955a9c..af20e05 100644
+> --- a/drivers/ata/intf_platform_ide.c
+> +++ b/drivers/ata/intf_platform_ide.c
+> @@ -64,10 +64,16 @@ static void platform_ide_setup_port(void *reg_base, void *alt_base,
+>  	ioaddr->status_addr = reg_base + (IDE_REG_STATUS << shift);
+>  	ioaddr->command_addr = reg_base + (IDE_REG_CMD << shift);
+>  
+> -	ioaddr->altstatus_addr = alt_base + (IDE_REG_ALT_STATUS << shift);
+> -	ioaddr->ctl_addr = alt_base + (IDE_REG_DEV_CTL << shift);
+> -
+> -	ioaddr->alt_dev_addr = alt_base + (IDE_REG_DRV_ADDR << shift);
+> +	if (alt_base) {
+> +		ioaddr->altstatus_addr = alt_base + (IDE_REG_ALT_STATUS << shift);
+> +		ioaddr->ctl_addr = alt_base + (IDE_REG_DEV_CTL << shift);
+> +
+> +		ioaddr->alt_dev_addr = alt_base + (IDE_REG_DRV_ADDR << shift);
+> +	} else {
+> +		ioaddr->altstatus_addr = ioaddr->status_addr;
+> +		ioaddr->ctl_addr = ioaddr->status_addr;
+> +		/* ioaddr->alt_dev_addr not used in driver */
+> +	}
+>  }
+>  
+>  static int platform_ide_probe(struct device_d *dev)
+> -- 
+> 1.7.3.4
 > 
->   defaultenv: add binfmt support (2012-04-18 20:19:20 +0800)
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (5):
->       filetype: add Bourne Shell support
->       Introduce binfmt support
->       bootm: add uimage binfmt support
->       arm: bootm: add barebox, zImage and aImage binfmt support
->       defaultenv: add binfmt support
-> 
->  arch/arm/lib/bootm.c |   22 +++++++++++-
->  commands/bootm.c     |   12 ++++++
->  common/Kconfig       |    5 +++
->  common/Makefile      |    1 +
->  common/binfmt.c      |   95 ++++++++++++++++++++++++++++++++++++++++++++++++++
->  common/filetype.c    |    3 ++
->  common/hush.c        |   31 ++++++++++------
->  defaultenv/bin/boot  |    4 ++
->  include/binfmt.h     |   39 ++++++++++++++++++++
->  include/filetype.h   |    1 +
->  10 files changed, 200 insertions(+), 13 deletions(-)
->  create mode 100644 common/binfmt.c
->  create mode 100644 include/binfmt.h
-> 
-> Best Regards,
-> J.
 > 
 > _______________________________________________
 > barebox mailing list
