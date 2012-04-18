@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SKQtb-0002mk-33
- for barebox@lists.infradead.org; Wed, 18 Apr 2012 09:09:56 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed, 18 Apr 2012 11:09:20 +0200
-Message-Id: <1334740160-19918-3-git-send-email-s.trumtrar@pengutronix.de>
-In-Reply-To: <1334740160-19918-1-git-send-email-s.trumtrar@pengutronix.de>
-References: <1334740160-19918-1-git-send-email-s.trumtrar@pengutronix.de>
+ id 1SKRlI-0003zj-LJ
+ for barebox@lists.infradead.org; Wed, 18 Apr 2012 10:05:26 +0000
+Date: Wed, 18 Apr 2012 12:05:05 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120418100505.GQ3852@pengutronix.de>
+References: <1334462739-17265-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1334462739-17265-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,72 +18,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] bootm: Align oftree
-To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH 1/3] net: dhcp: add support to send the hostname to the
+ dhcp server
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Arm needs 64-Bit alignment of the oftree as mentioned in the documentation
-Documentation/arm/Booting.
+Applied 1/3v2 and 3/3. I didn't apply 2/ for reasons mentioned.
 
-Other architectures may need a bigger alignment so align to 4K.
+Sascha
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- commands/bootm.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+On Sun, Apr 15, 2012 at 06:05:37AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  net/dhcp.c |   11 +++++++++--
+>  1 files changed, 9 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/dhcp.c b/net/dhcp.c
+> index 0116ba4..c3c41a0 100644
+> --- a/net/dhcp.c
+> +++ b/net/dhcp.c
+> @@ -237,6 +237,7 @@ static int dhcp_set_string_options(struct dhcp_param *param, u8 *e)
+>  	return str_len + 2;
+>  }
+>  
+> +#define DHCP_HOSTNAME		12
+>  #define DHCP_VENDOR_ID		60
+>  #define DHCP_CLIENT_ID		61
+>  #define DHCP_USER_CLASS		77
+> @@ -244,6 +245,10 @@ static int dhcp_set_string_options(struct dhcp_param *param, u8 *e)
+>  
+>  struct dhcp_param dhcp_params[] = {
+>  	{
+> +		.option = DHCP_HOSTNAME,
+> +		.handle = dhcp_set_string_options,
+> +		.barebox_var_name = "hostname",
+> +	}, {
+>  		.option = DHCP_VENDOR_ID,
+>  		.handle = dhcp_set_string_options,
+>  		.barebox_var_name = "dhcp_vendor_id",
+> @@ -614,8 +619,10 @@ static int do_dhcp(int argc, char *argv[])
+>  
+>  	dhcp_reset_env();
+>  
+> -	while((opt = getopt(argc, argv, "v:c:u:U:")) > 0) {
+> +	while((opt = getopt(argc, argv, "h:v:c:u:U:")) > 0) {
+>  		switch(opt) {
+> +		case 'U':
+> +			dhcp_set_param_data(DHCP_HOSTNAME, optarg);
+>  		case 'v':
+>  			dhcp_set_param_data(DHCP_VENDOR_ID, optarg);
+>  			break;
+> @@ -698,7 +705,7 @@ BAREBOX_CMD_END
+>  
+>  BAREBOX_MAGICVAR(bootfile, "bootfile returned from DHCP request");
+>  BAREBOX_MAGICVAR(nameserver, "Nameserver returned from DHCP request");
+> -BAREBOX_MAGICVAR(hostname, "hostname returned from DHCP request");
+> +BAREBOX_MAGICVAR(hostname, "hostname to send or returned from DHCP request");
+>  BAREBOX_MAGICVAR(domainname, "domainname returned from DHCP request");
+>  BAREBOX_MAGICVAR(rootpath, "rootpath returned from DHCP request");
+>  BAREBOX_MAGICVAR(dhcp_vendor_id, "vendor id to send to the DHCP server");
+> -- 
+> 1.7.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 4f4cbb3..c89a3cc 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -150,7 +150,7 @@ static int bootm_open_initrd_uimage(struct image_data *data)
- static int bootm_open_oftree(struct image_data *data, char *oftree, int num)
- {
- 	enum filetype ft;
--	struct fdt_header *fdt;
-+	struct fdt_header *fdt, *fixfdt;
- 	int ret;
- 	size_t size;
- 
-@@ -201,21 +201,25 @@ static int bootm_open_oftree(struct image_data *data, char *oftree, int num)
- 				file_type_to_string(ft));
- 	}
- 
--	fdt = xrealloc(fdt, size + 0x8000);
--	ret = fdt_open_into(fdt, fdt, size + 0x8000);
-+	fixfdt = xmemalign(4096, size + 0x8000);
-+	memcpy(fixfdt, fdt, size);
-+
-+	free(fdt);
-+
-+	ret = fdt_open_into(fixfdt, fixfdt, size + 0x8000);
- 	if (ret) {
- 		printf("unable to parse %s\n", oftree);
- 		return -ENODEV;
- 	}
- 
--	ret = of_fix_tree(fdt);
-+	ret = of_fix_tree(fixfdt);
- 	if (ret)
- 		return ret;
- 
- 	if (bootm_verbose(data) > 1)
--		fdt_print(fdt, "/");
-+		fdt_print(fixfdt, "/");
- 
--	data->oftree = fdt;
-+	data->oftree = fixfdt;
- 
- 	return ret;
- }
 -- 
-1.7.10
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
