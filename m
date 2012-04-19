@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.z9.com ([64.142.101.243])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SKl45-0006Ou-3w
- for barebox@lists.infradead.org; Thu, 19 Apr 2012 06:42:05 +0000
+ id 1SKl4f-0006Ue-Fu
+ for barebox@lists.infradead.org; Thu, 19 Apr 2012 06:42:42 +0000
 Received: from GPontisPC by z9.com (MDaemon PRO v12.5.4)
- with ESMTP id md50000201896.msg
- for <barebox@lists.infradead.org>; Wed, 18 Apr 2012 23:32:49 -0700
+ with ESMTP id md50000201899.msg
+ for <barebox@lists.infradead.org>; Wed, 18 Apr 2012 23:42:34 -0700
 From: "George Pontis" <GPontis@z9.com>
-Date: Wed, 18 Apr 2012 23:32:41 -0700
-Message-ID: <036401cd1df6$38a4b0d0$a9ee1270$@com>
+Date: Wed, 18 Apr 2012 23:42:25 -0700
+Message-ID: <037201cd1df7$94b2b600$be182200$@com>
 MIME-Version: 1.0
 Content-Language: en-us
 List-Id: <barebox.lists.infradead.org>
@@ -19,51 +19,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2635917597313424705=="
+Content-Type: multipart/mixed; boundary="===============6575284604572321004=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: New user - having a few issues with MMC
+Subject: New user: need a hand booting the kernel from NAND
 To: barebox@lists.infradead.org
 
 This is a multi-part message in MIME format.
 
---===============2635917597313424705==
+--===============6575284604572321004==
 Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0365_01CD1DBB.8C45FFE0"
+	boundary="----=_NextPart_000_0373_01CD1DBC.E853DE00"
 Content-Language: en-us
 
 This is a multi-part message in MIME format.
 
-------=_NextPart_000_0365_01CD1DBB.8C45FFE0
+------=_NextPart_000_0373_01CD1DBC.E853DE00
 Content-Type: text/plain;
 	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi fellow barebox users. What a great loader, thanks to all of you for
-sharing your work on this.
+Machine is a custom at91sam9g45 board with NOR and NAND flash. The bootstrap
+loader and barebox, and barebox environment are in the NOR flash. All seems
+to be working well there. The NAND is partitioned into 2 chunks:
+2560K(kernel),-(root)
 
  
 
-I've brought barebox up on a custom at91sam9g45 board that has both NOR and
-NAND flash, and one SD card connected to the MMC interface. I was previously
-using all these with an older version of u-boot and in Linux, so I am pretty
-sure that the hardware is working properly. 
+I used ubimkvol to create a volume on root and the nfs command to put a root
+filesystem on it. Seems to work fine if I get the kernel via NFS.
 
  
 
-For some reason, I can't access any files on a 4G SD card. After booting
-into barebox, there is a /dev/disk0. I can mount it without error, for
-example mount /dev/disk0 fat /mmc. But ls /mmc does not show any content,
-and I know that there are many files there. The card is not partitioned.
-Have I overlooked something ? If not, any suggestions where to look for the
-cause of the problem ?
+I have a good working kernel in uImage format, and used "nfs
+/var/share/uImage  /dev/nand0.kernel.bb" in an attempt to write it to the
+2560K partition. The nfs copy seemed to work fine. However, it will not
+accept the image. I get messages about an unknown format, suggesting to try
+-f. Was it the wrong procedure that I used to copy the uImage ?
+
+ 
+
+Thanks for any help or pointers.
 
  
 
 George
 
 
-------=_NextPart_000_0365_01CD1DBB.8C45FFE0
+------=_NextPart_000_0373_01CD1DBC.E853DE00
 Content-Type: text/html;
 	charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
@@ -114,28 +117,30 @@ div.WordSection1
 <o:shapelayout v:ext=3D"edit">
 <o:idmap v:ext=3D"edit" data=3D"1" />
 </o:shapelayout></xml><![endif]--></head><body lang=3DEN-US link=3Dblue =
-vlink=3Dpurple><div class=3DWordSection1><p class=3DMsoNormal>Hi fellow =
-barebox users. What a great loader, thanks to all of you for sharing =
-your work on this.<o:p></o:p></p><p =
-class=3DMsoNormal><o:p>&nbsp;</o:p></p><p class=3DMsoNormal>I&#8217;ve =
-brought barebox up on a custom at91sam9g45 board that has both NOR and =
-NAND flash, and one SD card connected to the MMC interface. I was =
-previously using all these with an older version of u-boot and in Linux, =
-so I am pretty sure that the hardware is working properly. =
-<o:p></o:p></p><p class=3DMsoNormal><o:p>&nbsp;</o:p></p><p =
-class=3DMsoNormal>For some reason, I can&#8217;t access any files on a =
-4G SD card. After booting into barebox, there is a /dev/disk0. I can =
-mount it without error, for example mount /dev/disk0 fat /mmc. But ls =
-/mmc does not show any content, and I know that there are many files =
-there. The card is not partitioned. Have I overlooked something ? If =
-not, any suggestions where to look for the cause of the problem =
+vlink=3Dpurple><div class=3DWordSection1><p class=3DMsoNormal>Machine is =
+a custom at91sam9g45 board with NOR and NAND flash. The bootstrap loader =
+and barebox, and barebox environment are in the NOR flash. All seems to =
+be working well there. The NAND is partitioned into 2 chunks: =
+2560K(kernel),-(root)<o:p></o:p></p><p =
+class=3DMsoNormal><o:p>&nbsp;</o:p></p><p class=3DMsoNormal>I used =
+ubimkvol to create a volume on root and the nfs command to put a root =
+filesystem on it. Seems to work fine if I get the kernel via =
+NFS.<o:p></o:p></p><p class=3DMsoNormal><o:p>&nbsp;</o:p></p><p =
+class=3DMsoNormal>I have a good working kernel in uImage format, and =
+used &#8220;nfs &nbsp;/var/share/uImage =
+&nbsp;/dev/nand0.kernel.bb&#8221; in an attempt to write it to the 2560K =
+partition. The nfs copy seemed to work fine. However, it will not accept =
+the image. I get messages about an unknown format, suggesting to try =
+&#8211;f. Was it the wrong procedure that I used to copy the uImage =
 ?<o:p></o:p></p><p class=3DMsoNormal><o:p>&nbsp;</o:p></p><p =
+class=3DMsoNormal>Thanks for any help or pointers.<o:p></o:p></p><p =
+class=3DMsoNormal><o:p>&nbsp;</o:p></p><p =
 class=3DMsoNormal>George<o:p></o:p></p></div></body></html>
-------=_NextPart_000_0365_01CD1DBB.8C45FFE0--
+------=_NextPart_000_0373_01CD1DBC.E853DE00--
 
 
 
---===============2635917597313424705==
+--===============6575284604572321004==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -146,4 +151,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============2635917597313424705==--
+--===============6575284604572321004==--
