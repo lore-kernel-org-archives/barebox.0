@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 12.mo3.mail-out.ovh.net ([188.165.41.191]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SKkT9-0003gl-UK
+ id 1SKkTD-0003hi-Lx
  for barebox@lists.infradead.org; Thu, 19 Apr 2012 06:04:00 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 1C091FF8ABD
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 9E06BFF8AC4
  for <barebox@lists.infradead.org>; Thu, 19 Apr 2012 08:05:14 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 19 Apr 2012 07:44:56 +0200
-Message-Id: <1334814298-11468-9-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 19 Apr 2012 07:44:57 +0200
+Message-Id: <1334814298-11468-10-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20120419053846.GA20601@game.jcrosoft.org>
 References: <20120419053846.GA20601@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -25,78 +25,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/11] complete: add go and sleep support
+Subject: [PATCH 10/11] complete: add delpart complete support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/go.c      |    2 ++
- commands/sleep.c   |    2 ++
- common/complete.c  |    5 +++++
- include/complete.h |    1 +
- 4 files changed, 10 insertions(+), 0 deletions(-)
+ commands/partition.c |    2 ++
+ fs/devfs-core.c      |   19 +++++++++++++++++++
+ include/complete.h   |    1 +
+ 3 files changed, 22 insertions(+), 0 deletions(-)
 
-diff --git a/commands/go.c b/commands/go.c
-index c821207..e9e9d40 100644
---- a/commands/go.c
-+++ b/commands/go.c
-@@ -25,6 +25,7 @@
+diff --git a/commands/partition.c b/commands/partition.c
+index 4892261..6cce042 100644
+--- a/commands/partition.c
++++ b/commands/partition.c
+@@ -32,6 +32,7 @@
  
  #include <common.h>
  #include <command.h>
 +#include <complete.h>
- #include <fs.h>
- #include <fcntl.h>
- #include <linux/ctype.h>
-@@ -91,4 +92,5 @@ BAREBOX_CMD_START(go)
- 	.cmd		= do_go,
- 	.usage		= "start application at address or file",
- 	BAREBOX_CMD_HELP(cmd_go_help)
-+	BAREBOX_CMD_COMPLETE(cammand_var_complete)
+ #include <driver.h>
+ #include <malloc.h>
+ #include <partition.h>
+@@ -225,5 +226,6 @@ BAREBOX_CMD_START(delpart)
+ 	.cmd = do_delpart,
+ 	.usage = "delete partition(s)",
+ 	BAREBOX_CMD_HELP(cmd_delpart_help)
++	BAREBOX_CMD_COMPLETE(devfs_partition_complete)
  BAREBOX_CMD_END
-diff --git a/commands/sleep.c b/commands/sleep.c
-index f772e87..c5f7867 100644
---- a/commands/sleep.c
-+++ b/commands/sleep.c
-@@ -22,6 +22,7 @@
  
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index 3014d0e..4a34df6 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -20,6 +20,7 @@
+  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  */
  #include <common.h>
- #include <command.h>
 +#include <complete.h>
- #include <clock.h>
+ #include <driver.h>
+ #include <errno.h>
+ #include <malloc.h>
+@@ -29,6 +30,24 @@
  
- static int do_sleep(int argc, char *argv[])
-@@ -46,4 +47,5 @@ static int do_sleep(int argc, char *argv[])
- BAREBOX_CMD_START(sleep)
- 	.cmd		= do_sleep,
- 	.usage		= "delay execution for n seconds",
-+	BAREBOX_CMD_COMPLETE(cammand_var_complete)
- BAREBOX_CMD_END
-diff --git a/common/complete.c b/common/complete.c
-index 5213b10..9ecce25 100644
---- a/common/complete.c
-+++ b/common/complete.c
-@@ -193,6 +193,11 @@ int empty_complete(struct string_list *sl, char *instr)
- 	return 1;
- }
+ LIST_HEAD(cdev_list);
  
-+int cammand_var_complete(struct string_list *sl, char *instr)
++#ifdef CONFIG_AUTO_COMPLETE
++int devfs_partition_complete(struct string_list *sl, char *instr)
 +{
++	struct cdev *cdev;
++	int len;
++
++	len = strlen(instr);
++
++	list_for_each_entry(cdev, &cdev_list, list) {
++		if (cdev->flags & DEVFS_IS_PARTITION &&
++		    !strncmp(instr, cdev->name, len)) {
++			string_list_add_asprintf(sl, "%s ", cdev->name);
++		}
++	}
 +	return 0;
 +}
++#endif
 +
- static int env_param_complete(struct string_list *sl, char *instr, int eval)
+ struct cdev *cdev_by_name(const char *filename)
  {
- 	struct device_d *dev;
+ 	struct cdev *cdev;
 diff --git a/include/complete.h b/include/complete.h
-index ea8c53a..4336a26 100644
+index 4336a26..c029809 100644
 --- a/include/complete.h
 +++ b/include/complete.h
-@@ -12,6 +12,7 @@ int command_complete(struct string_list *sl, char *instr);
- int device_complete(struct string_list *sl, char *instr);
+@@ -13,6 +13,7 @@ int device_complete(struct string_list *sl, char *instr);
  int empty_complete(struct string_list *sl, char *instr);
  int eth_complete(struct string_list *sl, char *instr);
-+int cammand_var_complete(struct string_list *sl, char *instr);
+ int cammand_var_complete(struct string_list *sl, char *instr);
++int devfs_partition_complete(struct string_list *sl, char *instr);
  
  #endif /* __COMPLETE_ */
  
