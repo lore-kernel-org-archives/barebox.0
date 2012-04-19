@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo3.mail-out.ovh.net ([87.98.172.162]
+Received: from 6.mo3.mail-out.ovh.net ([188.165.43.173]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SKkTB-0003h5-3G
- for barebox@lists.infradead.org; Thu, 19 Apr 2012 06:04:00 +0000
+ id 1SKkT7-0003fI-Rd
+ for barebox@lists.infradead.org; Thu, 19 Apr 2012 06:03:55 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 2C1D2FF8AD4
- for <barebox@lists.infradead.org>; Thu, 19 Apr 2012 08:05:15 +0200 (CEST)
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 281A2FF8AD5
+ for <barebox@lists.infradead.org>; Thu, 19 Apr 2012 08:05:11 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 19 Apr 2012 07:44:58 +0200
-Message-Id: <1334814298-11468-11-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 19 Apr 2012 07:44:52 +0200
+Message-Id: <1334814298-11468-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20120419053846.GA20601@game.jcrosoft.org>
 References: <20120419053846.GA20601@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -25,71 +25,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/11] complete: add executable file support
+Subject: [PATCH 05/11] complete: add device name complete support for devinfo
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/complete.c |   30 +++++++++++++++++++-----------
- 1 files changed, 19 insertions(+), 11 deletions(-)
+ common/complete.c     |   20 ++++++++++++++++++++
+ drivers/base/driver.c |    2 ++
+ include/complete.h    |    1 +
+ 3 files changed, 23 insertions(+), 0 deletions(-)
 
 diff --git a/common/complete.c b/common/complete.c
-index 9ecce25..01e9f5d 100644
+index 9515072..cf06101 100644
 --- a/common/complete.c
 +++ b/common/complete.c
-@@ -26,7 +26,7 @@
- #include <command.h>
- #include <environment.h>
+@@ -145,6 +145,26 @@ int command_complete(struct string_list *sl, char *instr)
+ 	return 0;
+ }
  
--static int file_complete(struct string_list *sl, char *instr)
-+static int file_complete(struct string_list *sl, char *instr, int exec)
- {
- 	char *path = strdup(instr);
- 	struct stat s;
-@@ -46,15 +46,20 @@ static int file_complete(struct string_list *sl, char *instr)
- 		if (!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
- 			continue;
- 
--		if (!strncmp(base, d->d_name, strlen(base))) {
--			strcpy(tmp, instr);
--			strcat(tmp, d->d_name + strlen(base));
--			if (!stat(tmp, &s) && S_ISDIR(s.st_mode))
--				strcat(tmp, "/");
--			else
--				strcat(tmp, " ");
--			string_list_add_sorted(sl, tmp);
-+		if (strncmp(base, d->d_name, strlen(base)))
++int device_complete(struct string_list *sl, char *instr)
++{
++	struct device_d *dev;
++	int len;
++
++	if (!instr)
++		instr = "";
++
++	len = strlen(instr);
++
++	for_each_device(dev) {
++		if (strncmp(instr, dev_name(dev), len))
 +			continue;
 +
-+		strcpy(tmp, instr);
-+		strcat(tmp, d->d_name + strlen(base));
-+		if (!stat(tmp, &s) && S_ISDIR(s.st_mode)) {
-+			strcat(tmp, "/");
-+		} else {
-+			if (exec && !S_ISREG(s.st_mode))
-+				continue;
-+			strcat(tmp, " ");
- 		}
++		string_list_add_asprintf(sl, "%s ", dev_name(dev));
++	}
 +
-+		string_list_add_sorted(sl, tmp);
- 	}
++	return 0;
++}
++
+ static int device_param_complete(char *begin, struct device_d *dev,
+ 				 struct string_list *sl, char *instr)
+ {
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 2d206f9..03b1834 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -33,6 +33,7 @@
+ #include <errno.h>
+ #include <fs.h>
+ #include <linux/list.h>
++#include <complete.h>
  
- 	closedir(dir);
-@@ -316,9 +321,12 @@ int complete(char *instr, char **outstr)
- 	instr = cmd_complete_lookup(&sl, t);
- 	if (!instr) {
- 		instr = t;
--		if ((t = strrchr(t, ' '))) {
-+		if (t && (t[0] == '/' || !strncmp(t, "./", 2))) {
-+			file_complete(&sl, t, 1);
-+			instr = t;
-+		} else if ((t = strrchr(t, ' '))) {
- 			t++;
--			file_complete(&sl, t);
-+			file_complete(&sl, t, 0);
- 			instr = t;
- 		} else {
- 			command_complete(&sl, instr);
+ LIST_HEAD(device_list);
+ EXPORT_SYMBOL(device_list);
+@@ -443,6 +444,7 @@ BAREBOX_CMD_START(devinfo)
+ 	.cmd		= do_devinfo,
+ 	.usage		= "Show information about devices and drivers.",
+ 	BAREBOX_CMD_HELP(cmd_devinfo_help)
++	BAREBOX_CMD_COMPLETE(device_complete)
+ BAREBOX_CMD_END
+ #endif
+ 
+diff --git a/include/complete.h b/include/complete.h
+index 3f1fe89..8dfc99c 100644
+--- a/include/complete.h
++++ b/include/complete.h
+@@ -9,6 +9,7 @@ int complete(char *instr, char **outstr);
+ void complete_reset(void);
+ 
+ int command_complete(struct string_list *sl, char *instr);
++int device_complete(struct string_list *sl, char *instr);
+ 
+ #endif /* __COMPLETE_ */
+ 
 -- 
 1.7.9.1
 
