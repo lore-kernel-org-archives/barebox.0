@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.z9.com ([64.142.101.243])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SKl4f-0006Ue-Fu
- for barebox@lists.infradead.org; Thu, 19 Apr 2012 06:42:42 +0000
-Received: from GPontisPC by z9.com (MDaemon PRO v12.5.4)
- with ESMTP id md50000201899.msg
- for <barebox@lists.infradead.org>; Wed, 18 Apr 2012 23:42:34 -0700
-From: "George Pontis" <GPontis@z9.com>
-Date: Wed, 18 Apr 2012 23:42:25 -0700
-Message-ID: <037201cd1df7$94b2b600$be182200$@com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SKlDC-00036U-18
+ for barebox@lists.infradead.org; Thu, 19 Apr 2012 06:51:31 +0000
+Date: Thu, 19 Apr 2012 08:51:11 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120419065111.GJ3852@pengutronix.de>
+References: <1334779364-15157-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
-Content-Language: en-us
+Content-Disposition: inline
+In-Reply-To: <1334779364-15157-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,136 +18,200 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============6575284604572321004=="
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: New user: need a hand booting the kernel from NAND
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] Merge silicon definitions i.MX35, i.MX51 and i.MX53
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-This is a multi-part message in MIME format.
+On Thu, Apr 19, 2012 at 12:02:44AM +0400, Alexander Shiyan wrote:
+> Also definition can be modified in arch/arm/boards/pcm043/lowlevel.c,
+> but I am not sure is we can call imx_silicon_revision() from
+> board_init_lowlevel().
+> =
 
---===============6575284604572321004==
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0373_01CD1DBC.E853DE00"
-Content-Language: en-us
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-This is a multi-part message in MIME format.
+Applied, thanks.
 
-------=_NextPart_000_0373_01CD1DBC.E853DE00
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Sascha
 
-Machine is a custom at91sam9g45 board with NOR and NAND flash. The bootstrap
-loader and barebox, and barebox environment are in the NOR flash. All seems
-to be working well there. The NAND is partitioned into 2 chunks:
-2560K(kernel),-(root)
+> ---
+>  arch/arm/boards/freescale-mx51-pdk/board.c  |    2 +-
+>  arch/arm/mach-imx/imx35.c                   |    3 ++-
+>  arch/arm/mach-imx/imx51.c                   |   12 ++++++------
+>  arch/arm/mach-imx/include/mach/generic.h    |    3 ---
+>  arch/arm/mach-imx/include/mach/imx-regs.h   |    8 ++++++++
+>  arch/arm/mach-imx/include/mach/imx51-regs.h |   13 -------------
+>  6 files changed, 17 insertions(+), 24 deletions(-)
+> =
 
- 
+> diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards=
+/freescale-mx51-pdk/board.c
+> index f5e0da7..3b1b574 100644
+> --- a/arch/arm/boards/freescale-mx51-pdk/board.c
+> +++ b/arch/arm/boards/freescale-mx51-pdk/board.c
+> @@ -141,7 +141,7 @@ static void babbage_power_init(void)
+>  	/* power up the system first */
+>  	mc13xxx_reg_write(mc13xxx, MC13892_REG_POWER_MISC, 0x00200000);
+>  =
 
-I used ubimkvol to create a volume on root and the nfs command to put a root
-filesystem on it. Seems to work fine if I get the kernel via NFS.
+> -	if (imx_silicon_revision() < MX51_CHIP_REV_3_0) {
+> +	if (imx_silicon_revision() < IMX_CHIP_REV_3_0) {
+>  		/* Set core voltage to 1.1V */
+>  		mc13xxx_reg_read(mc13xxx, MC13892_REG_SW_0, &val);
+>  		val &=3D ~0x1f;
+> diff --git a/arch/arm/mach-imx/imx35.c b/arch/arm/mach-imx/imx35.c
+> index 381a564..fe0c99e 100644
+> --- a/arch/arm/mach-imx/imx35.c
+> +++ b/arch/arm/mach-imx/imx35.c
+> @@ -37,7 +37,8 @@ int imx_silicon_revision()
+>  {
+>  	uint32_t reg;
+>  	reg =3D readl(IMX_IIM_BASE + IIM_SREV);
+> -	reg +=3D IMX35_CHIP_REVISION_1_0;
+> +	/* 0=D700 =3D TO 1.0, First silicon */
+> +	reg +=3D IMX_CHIP_REV_1_0;
+>  =
 
- 
+>  	return (reg & 0xFF);
+>  }
+> diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
+> index 4cfd03b..25cc6da 100644
+> --- a/arch/arm/mach-imx/imx51.c
+> +++ b/arch/arm/mach-imx/imx51.c
+> @@ -20,8 +20,8 @@
+>  #include <sizes.h>
+>  #include <environment.h>
+>  #include <io.h>
+> -#include <mach/imx51-regs.h>
+>  #include <mach/imx5.h>
+> +#include <mach/imx-regs.h>
+>  #include <mach/clock-imx51_53.h>
+>  =
 
-I have a good working kernel in uImage format, and used "nfs
-/var/share/uImage  /dev/nand0.kernel.bb" in an attempt to write it to the
-2560K partition. The nfs copy seemed to work fine. However, it will not
-accept the image. I get messages about an unknown format, suggesting to try
--f. Was it the wrong procedure that I used to copy the uImage ?
+>  #include "gpio.h"
+> @@ -53,19 +53,19 @@ static int query_silicon_revision(void)
+>  	rev =3D readl(rom + SI_REV);
+>  	switch (rev) {
+>  	case 0x1:
+> -		mx51_silicon_revision =3D MX51_CHIP_REV_1_0;
+> +		mx51_silicon_revision =3D IMX_CHIP_REV_1_0;
+>  		mx51_rev_string =3D "1.0";
+>  		break;
+>  	case 0x2:
+> -		mx51_silicon_revision =3D MX51_CHIP_REV_1_1;
+> +		mx51_silicon_revision =3D IMX_CHIP_REV_1_1;
+>  		mx51_rev_string =3D "1.1";
+>  		break;
+>  	case 0x10:
+> -		mx51_silicon_revision =3D MX51_CHIP_REV_2_0;
+> +		mx51_silicon_revision =3D IMX_CHIP_REV_2_0;
+>  		mx51_rev_string =3D "2.0";
+>  		break;
+>  	case 0x20:
+> -		mx51_silicon_revision =3D MX51_CHIP_REV_3_0;
+> +		mx51_silicon_revision =3D IMX_CHIP_REV_3_0;
+>  		mx51_rev_string =3D "3.0";
+>  		break;
+>  	default:
+> @@ -194,7 +194,7 @@ void imx51_init_lowlevel(unsigned int cpufreq_mhz)
+>  	imx5_init_lowlevel();
+>  =
 
- 
+>  	/* disable write combine for TO 2 and lower revs */
+> -	if (imx_silicon_revision() < MX51_CHIP_REV_3_0) {
+> +	if (imx_silicon_revision() < IMX_CHIP_REV_3_0) {
+>  		__asm__ __volatile__("mrc 15, 1, %0, c9, c0, 1":"=3Dr"(r));
+>  		r |=3D (1 << 25);
+>  		__asm__ __volatile__("mcr 15, 1, %0, c9, c0, 1" : : "r"(r));
+> diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx=
+/include/mach/generic.h
+> index 8ff04fb..930d52c 100644
+> --- a/arch/arm/mach-imx/include/mach/generic.h
+> +++ b/arch/arm/mach-imx/include/mach/generic.h
+> @@ -3,9 +3,6 @@ int imx_silicon_revision(void);
+>  #define IMX27_CHIP_REVISION_1_0   0
+>  #define IMX27_CHIP_REVISION_2_0   1
+>  =
 
-Thanks for any help or pointers.
+> -#define IMX35_CHIP_REVISION_1_0   0x10
+> -#define IMX35_CHIP_REVISION_2_0   0x20
+> -
+>  u64 imx_uid(void);
+>  =
 
- 
+>  =
 
-George
+> diff --git a/arch/arm/mach-imx/include/mach/imx-regs.h b/arch/arm/mach-im=
+x/include/mach/imx-regs.h
+> index 789397e..5bd5182 100644
+> --- a/arch/arm/mach-imx/include/mach/imx-regs.h
+> +++ b/arch/arm/mach-imx/include/mach/imx-regs.h
+> @@ -107,7 +107,15 @@
+>  =
 
+>  /* silicon revisions  */
+>  #define IMX_CHIP_REV_1_0	0x10
+> +#define IMX_CHIP_REV_1_1	0x11
+> +#define IMX_CHIP_REV_1_2	0x12
+> +#define IMX_CHIP_REV_1_3	0x13
+>  #define IMX_CHIP_REV_2_0	0x20
+>  #define IMX_CHIP_REV_2_1	0x21
+> +#define IMX_CHIP_REV_2_2	0x22
+> +#define IMX_CHIP_REV_2_3	0x23
+> +#define IMX_CHIP_REV_3_0	0x30
+> +#define IMX_CHIP_REV_3_1	0x31
+> +#define IMX_CHIP_REV_3_2	0x32
+>  =
 
-------=_NextPart_000_0373_01CD1DBC.E853DE00
-Content-Type: text/html;
-	charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+>  #endif				/* _IMX_REGS_H */
+> diff --git a/arch/arm/mach-imx/include/mach/imx51-regs.h b/arch/arm/mach-=
+imx/include/mach/imx51-regs.h
+> index 90e81cb..3eb0a1f 100644
+> --- a/arch/arm/mach-imx/include/mach/imx51-regs.h
+> +++ b/arch/arm/mach-imx/include/mach/imx51-regs.h
+> @@ -130,17 +130,4 @@
+>  #define MX51_CS4_BASE_ADDR		0xCC000000
+>  #define MX51_CS5_BASE_ADDR		0xCE000000
+>  =
 
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" =
-xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
-xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" =
-xmlns=3D"http://www.w3.org/TR/REC-html40"><head><meta =
-http-equiv=3DContent-Type content=3D"text/html; =
-charset=3Dus-ascii"><meta name=3DGenerator content=3D"Microsoft Word 12 =
-(filtered medium)"><style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0in;
-	margin-bottom:.0001pt;
-	font-size:11.0pt;
-	font-family:"Calibri","sans-serif";}
-a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:blue;
-	text-decoration:underline;}
-a:visited, span.MsoHyperlinkFollowed
-	{mso-style-priority:99;
-	color:purple;
-	text-decoration:underline;}
-span.EmailStyle17
-	{mso-style-type:personal-compose;
-	font-family:"Calibri","sans-serif";
-	color:windowtext;}
-.MsoChpDefault
-	{mso-style-type:export-only;}
-@page WordSection1
-	{size:8.5in 11.0in;
-	margin:1.0in 1.0in 1.0in 1.0in;}
-div.WordSection1
-	{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext=3D"edit">
-<o:idmap v:ext=3D"edit" data=3D"1" />
-</o:shapelayout></xml><![endif]--></head><body lang=3DEN-US link=3Dblue =
-vlink=3Dpurple><div class=3DWordSection1><p class=3DMsoNormal>Machine is =
-a custom at91sam9g45 board with NOR and NAND flash. The bootstrap loader =
-and barebox, and barebox environment are in the NOR flash. All seems to =
-be working well there. The NAND is partitioned into 2 chunks: =
-2560K(kernel),-(root)<o:p></o:p></p><p =
-class=3DMsoNormal><o:p>&nbsp;</o:p></p><p class=3DMsoNormal>I used =
-ubimkvol to create a volume on root and the nfs command to put a root =
-filesystem on it. Seems to work fine if I get the kernel via =
-NFS.<o:p></o:p></p><p class=3DMsoNormal><o:p>&nbsp;</o:p></p><p =
-class=3DMsoNormal>I have a good working kernel in uImage format, and =
-used &#8220;nfs &nbsp;/var/share/uImage =
-&nbsp;/dev/nand0.kernel.bb&#8221; in an attempt to write it to the 2560K =
-partition. The nfs copy seemed to work fine. However, it will not accept =
-the image. I get messages about an unknown format, suggesting to try =
-&#8211;f. Was it the wrong procedure that I used to copy the uImage =
-?<o:p></o:p></p><p class=3DMsoNormal><o:p>&nbsp;</o:p></p><p =
-class=3DMsoNormal>Thanks for any help or pointers.<o:p></o:p></p><p =
-class=3DMsoNormal><o:p>&nbsp;</o:p></p><p =
-class=3DMsoNormal>George<o:p></o:p></p></div></body></html>
-------=_NextPart_000_0373_01CD1DBC.E853DE00--
+> -/* silicon revisions specific to i.MX51 */
+> -#define MX51_CHIP_REV_1_0	0x10
+> -#define MX51_CHIP_REV_1_1	0x11
+> -#define MX51_CHIP_REV_1_2	0x12
+> -#define MX51_CHIP_REV_1_3	0x13
+> -#define MX51_CHIP_REV_2_0	0x20
+> -#define MX51_CHIP_REV_2_1	0x21
+> -#define MX51_CHIP_REV_2_2	0x22
+> -#define MX51_CHIP_REV_2_3	0x23
+> -#define MX51_CHIP_REV_3_0	0x30
+> -#define MX51_CHIP_REV_3_1	0x31
+> -#define MX51_CHIP_REV_3_2	0x32
+> -
+>  #endif /* __MACH_IMX51_REGS_H */
+> -- =
 
+> 1.7.3.4
+> =
 
+> =
 
---===============6575284604572321004==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============6575284604572321004==--
