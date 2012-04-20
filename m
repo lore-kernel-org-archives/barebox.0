@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo3.mail-out.ovh.net ([188.165.43.98]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SKqAu-0000vR-Bh
- for barebox@lists.infradead.org; Thu, 19 Apr 2012 12:09:28 +0000
-Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 80198FF903A
- for <barebox@lists.infradead.org>; Thu, 19 Apr 2012 14:10:46 +0200 (CEST)
-Date: Thu, 19 Apr 2012 13:50:33 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120419115033.GT16641@game.jcrosoft.org>
-References: <20120419053846.GA20601@game.jcrosoft.org>
- <20120419063914.GG3852@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120419063914.GG3852@pengutronix.de>
+Received: from exprod5og106.obsmtp.com ([64.18.0.182])
+ by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SLA28-00057I-C2
+ for barebox@lists.infradead.org; Fri, 20 Apr 2012 09:21:43 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Fri, 20 Apr 2012 10:21:28 +0100
+Message-Id: <1334913691-13315-1-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <20120415145953.GK3852@pengutronix.de>
+References: <20120415145953.GK3852@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,68 +16,133 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/11 v2] improve complete support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH V3 0/3] MPC85xx support
+To: barebox@lists.infradead.org
 
-On 08:39 Thu 19 Apr     , Sascha Hauer wrote:
-> On Thu, Apr 19, 2012 at 07:38:46AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Hi,
-> > 
-> > 	the following patch serie improve the complete support
-> > 	by adding a complete framework to aalow commands complete support
-> > 
-> > 	the add also car complete support for eval and setting and executable
-> > 	file support
-> > 
-> > 	this also include an update of the stringlist API to support asprintf
-> > 	API
-> > 
-> > The following changes since commit a7ddbc40865a8ffe716aca686763780febad575c:
-> > 
-> >   Merge branch 'binfmt' of git://git.jcrosoft.org/barebox into next (2012-04-18 20:42:17 +0200)
-> > 
-> > are available in the git repository at:
-> > 
-> > 
-> >   git://git.jcrosoft.org/barebox.git complete
-> > 
-> > for you to fetch changes up to fcbc878be12d1c8d2bf839255b1bb7bd465adb96:
-> > 
-> >   complete: add executable file support (2012-04-19 13:49:42 +0800)
-> 
-> Looks interesting, I just gave it a try. I didn't have a close look at
-> it yet. The variable completion feels strange. Pressing a<tab><tab>
-> expands to
-> 
-> barebox@Phytec phyCORE-i.MX27:/ a
-> addpart                   autoboot_timeout=
-> a=                        armlinux_architecture=
-> 
-> I really don't expect this and it seems quite non standard. Not sure if
-> I like it.
-Agreed it's not standard but after using it you become quite used to it
-> 
-> Another thing is, does it make sense to add a CONFIG_AUTO_COMPLETE_ADVANCED
-> for the more obscure completions?
-yeah was not sure aout it too
-but as the auto complete is here to help I choose to don't do so
+This is an update of the patchset to address the removal of the unused
+board_data.
 
-as exmple devinfo you surch for display the current param of a device
-the complete help you to go to it more quick see the param with 2 <tab> with
-typing devinfo fb0
+This patchset introduces the MPC85xx architecture to Barebox. The
+existing PPC code is modified to enable multiple PowerPC architecture
+support. All existing architecture specific MPC5xxx code which prevents
+adding additional architectures is moved into the architecture specific
+subdirectories and the PCM030 configuration fixed to use this new
+configuration.
 
-And them see that this driver have a probe or not etc...
+Base MPC85xx infrastructure is added to enable the required
+functionality for a minimal boot target in 32 bit addressing mode
+using an e500v2 core.
 
-when you do echo $eth0<tab><tab> you can easly choose and see the available
-param
+Finally support is added for a minimal Freescale P2020RDB platform with
+driver support currently limited to NOR and serial port only.
 
-Best Regards,
-J.
+Renaud Barbier (3):
+  Preparation stage to support multiple PPC architectures
+  Minimal support of the MPC85xx architecture
+  Minimal P2020RDB platform support and configuration file
+
+ arch/ppc/Kconfig                                  |   45 +-
+ arch/ppc/Makefile                                 |   27 +-
+ arch/ppc/boards/freescale-p2020rdb/Makefile       |    4 +
+ arch/ppc/boards/freescale-p2020rdb/barebox.lds.S  |  144 +++
+ arch/ppc/boards/freescale-p2020rdb/config.h       |   98 ++
+ arch/ppc/boards/freescale-p2020rdb/law.c          |   31 +
+ arch/ppc/boards/freescale-p2020rdb/p2020rdb.c     |  237 +++++
+ arch/ppc/boards/freescale-p2020rdb/tlb.c          |   62 ++
+ arch/ppc/configs/p2020rdb_defconfig               |   23 +
+ arch/ppc/configs/pcm030_defconfig                 |    3 +
+ arch/ppc/cpu-85xx/Makefile                        |    7 +
+ arch/ppc/cpu-85xx/cpu.c                           |  103 ++
+ arch/ppc/cpu-85xx/cpu_init.c                      |  145 +++
+ arch/ppc/cpu-85xx/fixed_ivor.S                    |   61 ++
+ arch/ppc/cpu-85xx/release.S                       |  265 +++++
+ arch/ppc/cpu-85xx/resetvec.S                      |    2 +
+ arch/ppc/cpu-85xx/start.S                         | 1097 +++++++++++++++++++++
+ arch/ppc/cpu-85xx/tlb.c                           |  228 +++++
+ arch/ppc/cpu-85xx/traps.c                         |  300 ++++++
+ arch/ppc/include/asm/bitops.h                     |   42 +
+ arch/ppc/include/asm/cache.h                      |   19 +-
+ arch/ppc/include/asm/common.h                     |    2 +
+ arch/ppc/include/asm/config.h                     |   44 +
+ arch/ppc/include/asm/config_mpc85xx.h             |   37 +
+ arch/ppc/include/asm/e500.h                       |   39 +
+ arch/ppc/include/asm/fsl_ddr_sdram.h              |   34 +
+ arch/ppc/include/asm/fsl_i2c.h                    |   10 +-
+ arch/ppc/include/asm/fsl_law.h                    |   91 ++
+ arch/ppc/include/asm/fsl_lbc.h                    |   67 ++
+ arch/ppc/include/asm/global_data.h                |   56 ++
+ arch/ppc/include/asm/io.h                         |   20 +
+ arch/ppc/include/asm/mmu.h                        |   69 ++-
+ arch/ppc/include/asm/processor.h                  |   44 +
+ arch/ppc/lib/Makefile                             |    4 +-
+ arch/ppc/lib/board.c                              |   11 +-
+ arch/ppc/lib/reloc.S                              |   47 +
+ arch/ppc/lib/{time.c => time-mpc5200.c}           |   27 +-
+ arch/ppc/lib/{time.c => time-mpc85xx.c}           |   34 +-
+ arch/ppc/mach-mpc5xxx/Kconfig                     |   43 +-
+ arch/ppc/mach-mpc5xxx/pci_mpc5200.c               |    2 +-
+ arch/ppc/mach-mpc5xxx/start.S                     |    2 +-
+ arch/ppc/mach-mpc5xxx/traps.c                     |    6 +-
+ arch/ppc/mach-mpc85xx/Kconfig                     |   45 +
+ arch/ppc/mach-mpc85xx/Makefile                    |    5 +
+ arch/ppc/mach-mpc85xx/cpuid.c                     |   69 ++
+ arch/ppc/mach-mpc85xx/fsl_law.c                   |  156 +++
+ arch/ppc/mach-mpc85xx/fsl_lbc.c                   |   17 +
+ arch/ppc/mach-mpc85xx/include/mach/clocks.h       |   11 +
+ arch/ppc/mach-mpc85xx/include/mach/early_udelay.h |   33 +
+ arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h   |  132 +++
+ arch/ppc/mach-mpc85xx/include/mach/mp.h           |   15 +
+ arch/ppc/mach-mpc85xx/include/mach/mpc85xx.h      |   17 +
+ arch/ppc/mach-mpc85xx/include/mach/ppc_asm.tmpl   |  208 ++++
+ arch/ppc/mach-mpc85xx/mp.c                        |  156 +++
+ arch/ppc/mach-mpc85xx/speed.c                     |   97 ++
+ include/linux/types.h                             |    2 +
+ 56 files changed, 4462 insertions(+), 133 deletions(-)
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/Makefile
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/barebox.lds.S
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/config.h
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/law.c
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/tlb.c
+ create mode 100644 arch/ppc/configs/p2020rdb_defconfig
+ create mode 100644 arch/ppc/cpu-85xx/Makefile
+ create mode 100644 arch/ppc/cpu-85xx/cpu.c
+ create mode 100644 arch/ppc/cpu-85xx/cpu_init.c
+ create mode 100644 arch/ppc/cpu-85xx/fixed_ivor.S
+ create mode 100644 arch/ppc/cpu-85xx/release.S
+ create mode 100644 arch/ppc/cpu-85xx/resetvec.S
+ create mode 100644 arch/ppc/cpu-85xx/start.S
+ create mode 100644 arch/ppc/cpu-85xx/tlb.c
+ create mode 100644 arch/ppc/cpu-85xx/traps.c
+ create mode 100644 arch/ppc/include/asm/config.h
+ create mode 100644 arch/ppc/include/asm/config_mpc85xx.h
+ create mode 100644 arch/ppc/include/asm/e500.h
+ create mode 100644 arch/ppc/include/asm/fsl_ddr_sdram.h
+ create mode 100644 arch/ppc/include/asm/fsl_law.h
+ create mode 100644 arch/ppc/include/asm/fsl_lbc.h
+ create mode 100644 arch/ppc/include/asm/global_data.h
+ create mode 100644 arch/ppc/lib/reloc.S
+ copy arch/ppc/lib/{time.c => time-mpc5200.c} (71%)
+ rename arch/ppc/lib/{time.c => time-mpc85xx.c} (65%)
+ create mode 100644 arch/ppc/mach-mpc85xx/Kconfig
+ create mode 100644 arch/ppc/mach-mpc85xx/Makefile
+ create mode 100644 arch/ppc/mach-mpc85xx/cpuid.c
+ create mode 100644 arch/ppc/mach-mpc85xx/fsl_law.c
+ create mode 100644 arch/ppc/mach-mpc85xx/fsl_lbc.c
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/clocks.h
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/early_udelay.h
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/mp.h
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/mpc85xx.h
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/ppc_asm.tmpl
+ create mode 100644 arch/ppc/mach-mpc85xx/mp.c
+ create mode 100644 arch/ppc/mach-mpc85xx/speed.c
+
 
 _______________________________________________
 barebox mailing list
