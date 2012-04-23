@@ -1,15 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SMCcx-0003U5-L0
- for barebox@lists.infradead.org; Mon, 23 Apr 2012 06:20:02 +0000
-Date: Mon, 23 Apr 2012 08:19:53 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120423061953.GV3852@pengutronix.de>
-References: <m3hawbbohx.fsf@intrepid.localdomain>
+Received: from 16.mo3.mail-out.ovh.net ([188.165.56.217]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SMCxe-0006Tu-9p
+ for barebox@lists.infradead.org; Mon, 23 Apr 2012 06:41:23 +0000
+Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 5133EFFA3D2
+ for <barebox@lists.infradead.org>; Mon, 23 Apr 2012 08:42:53 +0200 (CEST)
+Date: Mon, 23 Apr 2012 08:21:46 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120423062146.GJ20601@game.jcrosoft.org>
+References: <20120419053846.GA20601@game.jcrosoft.org>
+ <1334814298-11468-9-git-send-email-plagnioj@jcrosoft.com>
+ <20120423060327.GU3852@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <m3hawbbohx.fsf@intrepid.localdomain>
+In-Reply-To: <20120423060327.GU3852@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +28,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: ARM page 0 set for page fault
-To: Krzysztof Halasa <khc@pm.waw.pl>
+Subject: Re: [PATCH 09/11] complete: add go and sleep support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Krzysztof,
+On 08:03 Mon 23 Apr     , Sascha Hauer wrote:
+> On Thu, Apr 19, 2012 at 07:44:56AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  commands/go.c      |    2 ++
+> >  commands/sleep.c   |    2 ++
+> >  common/complete.c  |    5 +++++
+> >  include/complete.h |    1 +
+> >  4 files changed, 10 insertions(+), 0 deletions(-)
+> > 
+> > diff --git a/commands/go.c b/commands/go.c
+> > index c821207..e9e9d40 100644
+> > --- a/commands/go.c
+> > +++ b/commands/go.c
+> > @@ -25,6 +25,7 @@
+> >  
+> >  #include <common.h>
+> >  #include <command.h>
+> > +#include <complete.h>
+> >  #include <fs.h>
+> >  #include <fcntl.h>
+> >  #include <linux/ctype.h>
+> > @@ -91,4 +92,5 @@ BAREBOX_CMD_START(go)
+> >  	.cmd		= do_go,
+> >  	.usage		= "start application at address or file",
+> >  	BAREBOX_CMD_HELP(cmd_go_help)
+> > +	BAREBOX_CMD_COMPLETE(cammand_var_complete)
+> >  BAREBOX_CMD_END
+> > diff --git a/commands/sleep.c b/commands/sleep.c
+> > index f772e87..c5f7867 100644
+> > --- a/commands/sleep.c
+> > +++ b/commands/sleep.c
+> > @@ -22,6 +22,7 @@
+> >  
+> >  #include <common.h>
+> >  #include <command.h>
+> > +#include <complete.h>
+> >  #include <clock.h>
+> >  
+> >  static int do_sleep(int argc, char *argv[])
+> > @@ -46,4 +47,5 @@ static int do_sleep(int argc, char *argv[])
+> >  BAREBOX_CMD_START(sleep)
+> >  	.cmd		= do_sleep,
+> >  	.usage		= "delay execution for n seconds",
+> > +	BAREBOX_CMD_COMPLETE(cammand_var_complete)
+> >  BAREBOX_CMD_END
+> > diff --git a/common/complete.c b/common/complete.c
+> > index 5213b10..9ecce25 100644
+> > --- a/common/complete.c
+> > +++ b/common/complete.c
+> > @@ -193,6 +193,11 @@ int empty_complete(struct string_list *sl, char *instr)
+> >  	return 1;
+> >  }
+> >  
+> > +int cammand_var_complete(struct string_list *sl, char *instr)
+> > +{
+> > +	return 0;
+> > +}
+> 
+> Two patches before this one you introduced empty_complete. This function
+> does the same, except that it returns 0 instead of 1. The return value
+> of the complete functions is never checked, so what is going on here?
 
-On Sun, Apr 22, 2012 at 08:38:50PM +0200, Krzysztof Halasa wrote:
-> Hi,
-> 
-> I'm trying to port my old IXP4xx (Intel XScale ARM big-endian mostly)
-> patches to the current Barebox. Noticed the page #0 (virtual = physical
-> addresses 0 - 0x1FFF, or the first 4 KiB of RAM) is not present:
-> 
-> commit abcf935e
-> Author: Sascha Hauer <s.hauer@pengutronix.de>
-> Date:   Sun Aug 7 19:00:56 2011 +0200
-> 
->     ARM mmu: use high vectors if possible
-> 
->     Using high vectors allows us to map a faulting zero page to
->     catch NULL pointer dereferences.
-> 
-> Unfortunately this causes "md" (memory dump) etc. to fail (also
-> executing Linux kernel fails since the tags are located at 0x100 -
-> should I relocate them?).
-> 
-> Should I do it differently, e.g. access RAM through an alias (IXP4xx has
-> RAM aliased all over the place, one could also use MMU tables for this)
-> so that the page fault only occurs on internal, not user-visible
-> accesses (= users should not be able to access the first virtual page,
-> even it they think the do)?
+the return value is checked.
 
-I would prefer the following order of precedence:
+no this different we return 0 as you can use env var complete
 
-- Locate ATAGS to somewhere else. The kernel takes a pointer to ATAGs
-  anyway, so this should work.
-- Map SDRAM at 0x0 to some other place using the MMU. When the kernel
-  then starts with MMU off the ATAGs are where the Kernel expects them
-  to be.
-- At an #ifdef around the code in mmu.c to make the zero page non
-  faulting. Having the zero page faulting is a very useful feature
-  though, so I would only go this way if nothing else helps.
+the empty_complete means no args.
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Bst Regards,
 
 _______________________________________________
 barebox mailing list
