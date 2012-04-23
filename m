@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.mo3.mail-out.ovh.net ([188.165.33.202]
+Received: from 11.mo3.mail-out.ovh.net ([87.98.184.158]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SMDaz-0006io-OP
- for barebox@lists.infradead.org; Mon, 23 Apr 2012 07:22:09 +0000
+ id 1SMDay-0006iK-Li
+ for barebox@lists.infradead.org; Mon, 23 Apr 2012 07:22:08 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 687ABFFA68A
- for <barebox@lists.infradead.org>; Mon, 23 Apr 2012 09:23:34 +0200 (CEST)
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id A1C95FFA6DC
+ for <barebox@lists.infradead.org>; Mon, 23 Apr 2012 09:23:32 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 23 Apr 2012 09:02:19 +0200
-Message-Id: <1335164539-2188-10-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 23 Apr 2012 09:02:16 +0200
+Message-Id: <1335164539-2188-7-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20120423065650.GM20601@game.jcrosoft.org>
 References: <20120423065650.GM20601@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -25,112 +25,416 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/10] multilink: NPE-B firmware + boot script
+Subject: [PATCH 07/10] ARM: Add support for Linksys NSLU2 support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/multilink/env/NPE-B          |  Bin 0 -> 11964 bytes
- arch/arm/boards/multilink/env/bin/init_board |    4 ++++
- 2 files changed, 4 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/boards/multilink/env/NPE-B
- create mode 100644 arch/arm/boards/multilink/env/bin/init_board
+ arch/arm/Makefile                          |    1 +
+ arch/arm/boards/nslu2/Makefile             |    1 +
+ arch/arm/boards/nslu2/config.h             |    6 +
+ arch/arm/boards/nslu2/env/config           |   36 ++++++
+ arch/arm/boards/nslu2/init.c               |  171 ++++++++++++++++++++++++++++
+ arch/arm/configs/nslu2_defconfig           |   65 +++++++++++
+ arch/arm/cpu/Kconfig                       |    6 +-
+ arch/arm/mach-ixp4xx/Kconfig               |   12 ++
+ arch/arm/mach-ixp4xx/board_lowlevel_init.c |    4 +-
+ 9 files changed, 300 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/boards/nslu2/Makefile
+ create mode 100644 arch/arm/boards/nslu2/config.h
+ create mode 100644 arch/arm/boards/nslu2/env/config
+ create mode 100644 arch/arm/boards/nslu2/init.c
+ create mode 100644 arch/arm/configs/nslu2_defconfig
 
-diff --git a/arch/arm/boards/multilink/env/NPE-B b/arch/arm/boards/multilink/env/NPE-B
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index cc5223e..34abd19 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -97,6 +97,7 @@ board-$(CONFIG_MACH_MMCCPU)			:= mmccpu
+ board-$(CONFIG_MACH_MX1ADS)			:= mx1ads
+ board-$(CONFIG_MACH_NOMADIK_8815NHK)		:= nhk8815
+ board-$(CONFIG_MACH_NXDB500)			:= netx
++board-$(CONFIG_MACH_NSLU2)			:= nslu2
+ board-$(CONFIG_MACH_OMAP343xSDP)		:= omap343xdsp
+ board-$(CONFIG_MACH_BEAGLE)			:= beagle
+ board-$(CONFIG_MACH_OMAP3EVM)			:= omap3evm
+diff --git a/arch/arm/boards/nslu2/Makefile b/arch/arm/boards/nslu2/Makefile
 new file mode 100644
-index 0000000000000000000000000000000000000000..e62a944d267d429961eb1433b30e0ecdedc251f6
-GIT binary patch
-literal 11964
-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
-
-literal 0
-HcmV?d00001
-
-diff --git a/arch/arm/boards/multilink/env/bin/init_board b/arch/arm/boards/multilink/env/bin/init_board
-new file mode 100644
-index 0000000..96ece8d
+index 0000000..eb072c0
 --- /dev/null
-+++ b/arch/arm/boards/multilink/env/bin/init_board
-@@ -0,0 +1,4 @@
++++ b/arch/arm/boards/nslu2/Makefile
+@@ -0,0 +1 @@
++obj-y += init.o
+diff --git a/arch/arm/boards/nslu2/config.h b/arch/arm/boards/nslu2/config.h
+new file mode 100644
+index 0000000..279d0bc
+--- /dev/null
++++ b/arch/arm/boards/nslu2/config.h
+@@ -0,0 +1,6 @@
++/*
++ * SDRAM settings
++ */
++#define CONFIG_SDRAM_CONFIG	0x18
++#define CONFIG_SDRAM_MODE	0x1
++#define CONFIG_SDRAM_REFRESH	0x81a
+diff --git a/arch/arm/boards/nslu2/env/config b/arch/arm/boards/nslu2/env/config
+new file mode 100644
+index 0000000..3a6eaa2
+--- /dev/null
++++ b/arch/arm/boards/nslu2/env/config
+@@ -0,0 +1,36 @@
 +#!/bin/sh
 +
-+mkdir /firmware
-+cp /env/NPE-B /firmware
++# use 'dhcp' to do dhcp in barebox and in kernel
++# use 'none' if you want to skip kernel ip autoconfiguration
++ip=dhcp-barebox
++dhcp_vendor_id=barebox-nslu2
++
++# or set your networking parameters here
++#eth0.ipaddr=a.b.c.d
++#eth0.netmask=a.b.c.d
++#eth0.gateway=a.b.c.d
++#eth0.serverip=a.b.c.d
++
++# can be either 'nfs', 'tftp' or 'nor'
++kernel_loc=nfs
++# can be either 'net', 'nor' or 'initrd'
++rootfs_loc=net
++
++# can be either 'jffs2' or 'ubifs'
++rootfs_type=ubifs
++rootfsimage=root.$rootfs_type
++
++kernelimage=zImage
++#kernelimage=uImage
++#kernelimage=Image
++#kernelimage=Image.lzo
++
++nor_parts="256k(barebox)ro,64k(bareboxenv),1536k(kernel),-(root)"
++rootfs_mtdblock_nor=3
++
++autoboot_timeout=3
++
++bootargs="console=ttyS0,115200"
++
++# set a fancy prompt (if support is compiled in)
++PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m\n# "
+diff --git a/arch/arm/boards/nslu2/init.c b/arch/arm/boards/nslu2/init.c
+new file mode 100644
+index 0000000..dc594fb
+--- /dev/null
++++ b/arch/arm/boards/nslu2/init.c
+@@ -0,0 +1,171 @@
++//#define DEBUG
++#include <common.h>
++#include <errno.h>
++#include <init.h>
++#include <linux/types.h>
++#include <asm/armlinux.h>
++#include <asm/io.h>
++#include <generated/mach-types.h>
++#include <mach/ixp4xx-regs.h>
++#include <mach/platform.h>
++#include <sizes.h>
++#include <led.h>
++#include <gpio.h>
++
++
++/* LEDs */
++#define NSLU2_LED_RED_GPIO	0
++#define NSLU2_LED_GRN_GPIO	1
++#define NSLU2_LED_DISK1_GPIO	3
++#define NSLU2_LED_DISK2_GPIO	2
++
++#ifdef CONFIG_LED_GPIO
++struct gpio_led leds[] = {
++	{
++		.gpio		= NSLU2_LED_GRN_GPIO,
++		.led = {
++			.name	= "nslu2:green:ready",
++		},
++	}, {
++		.gpio		= NSLU2_LED_RED_GPIO,
++		.led = {
++			.name	= "nslu2:red:status",
++		},
++	}, {
++		.gpio		= NSLU2_LED_DISK1_GPIO,
++		.active_low	= true,
++		.led = {
++			.name	= "nslu2:green:disk-1",
++		},
++	}, {
++		.gpio		= NSLU2_LED_DISK2_GPIO,
++		.active_low	= true,
++		.led = {
++			.name	= "nslu2:green:disk-2",
++		},
++	},
++};
++
++static void nslu2_leds_init(void)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(leds); i++)
++		led_gpio_register(&leds[i]);
++	led_set_trigger(LED_TRIGGER_HEARTBEAT, &leds[0].led);
++}
++#else
++static void nslu2_leds_init(void) {}
++#endif
++
++#ifdef CONFIG_DRIVER_NET_IXP4XX_ETH
++static struct eth_plat_info eth_pinfo = {
++	.npe		= 1,
++	.phy		= 1,
++	.rxq		= 20,
++	.txreadyq	= 29,
++};
++
++static void nslu2_eth_init(void)
++{
++	int i;
++	u32 f;
++
++	/*
++	 * Map in a portion of the flash and read the MAC address.
++	 * Since it is stored in BE in the flash itself, we need to
++	 * byteswap it if we're in LE mode.
++	 */
++	f = IXP4XX_EXP_BASE(0);
++	for (i = 0; i < 6; i++)
++#ifdef __ARMEB__
++		eth_pinfo.hwaddr[i] = readb(f + 0x3FFB0 + i);
++#else
++		eth_pinfo.hwaddr[i] = readb(f + 0x3FFB0 + (i^3));
++#endif
++
++	ixp4xx_add_eth(1, &eth_pinfo);
++}
++#else
++static void nslu2_eth_init(void) {}
++#endif
++
++static int nslu2_mem_init(void)
++{
++	arm_add_mem_device("ram0", 0x00000000, SZ_32M);
++
++	return 0;
++}
++mem_initcall(nslu2_mem_init);
++
++static inline u8 __init flash_readb(u32 addr)
++{
++	return __raw_readb(IXP4XX_EXP_BASE(0) + addr);
++}
++
++static int __init nslu2_devices_init(void)
++{
++	IXP4XX_EXP_CS0 = IXP4XX_EXP_WR_EN | IXP4XX_EXP_BYTE_RD16 |
++		IXP4XX_EXP_EN | IXP4XX_EXP_BITS(24) |
++		IXP4XX_EXP_T1(3) | IXP4XX_EXP_T2(3) | IXP4XX_EXP_T3(3) |
++		IXP4XX_EXP_T4(1) | IXP4XX_EXP_T5(2);
++
++	add_cfi_flash_device(0, IXP4XX_EXP_BASE(0), SZ_8M, 0);
++
++	devfs_add_partition("nor0", 0x0, SZ_256K,
++			    DEVFS_PARTITION_FIXED | DEVFS_PARTITION_READONLY, "barebox");
++	devfs_add_partition("nor0", SZ_256K, SZ_256K,
++			    DEVFS_PARTITION_FIXED, "env0");
++
++	nslu2_eth_init();
++	nslu2_leds_init();
++
++/*
++ * GPIO settings
++ */
++#define GPIO_BUZZER		4
++#define GPIO_POWERBUTTON	5
++#define GPIO_I2C_SCL		6
++#define GPIO_I2C_SDA		7
++#define GPIO_POWEROFF		8
++#define GPIO_PCI_INTC		9
++#define GPIO_PCI_INTB		10
++#define GPIO_PCI_INTA		11
++#define GPIO_RESSETBUTTOM	12
++#define GPIO_PCI_RESET		13
++#define GPIO_EXTBUS_CLK		14
++
++	/*
++	 * Setup GPIO's for PCI INTA & INTB & INTC
++	 */
++	gpio_direction_input(GPIO_PCI_INTA);
++	gpio_int_act_low_set(GPIO_PCI_INTA);
++	gpio_direction_input(GPIO_PCI_INTB);
++	gpio_int_act_low_set(GPIO_PCI_INTB);
++	gpio_direction_input(GPIO_PCI_INTC);
++	gpio_int_act_low_set(GPIO_PCI_INTC);
++
++	gpio_direction_input(GPIO_RESSETBUTTOM);
++	gpio_direction_input(GPIO_POWERBUTTON);
++
++	/*
++	 * Setup GPIO's for 33MHz clock output
++	 */
++	*IXP4XX_GPIO_GPCLKR = 0x01FF01FF;
++	gpio_direction_output(GPIO_PCI_RESET, IXP4XX_GPIO_HIGH);
++	gpio_line_config(GPIO_EXTBUS_CLK, IXP4XX_GPIO_OUT);
++
++	armlinux_set_bootparams((void *)(0x00000100));
++	armlinux_set_architecture(MACH_TYPE_NSLU2);
++
++	return 0;
++}
++device_initcall(nslu2_devices_init);
++
++static int nslu2_console_init(void)
++{
++	ixp4xx_add_uart1();
++	ixp4xx_add_uart2();
++	return 0;
++}
++console_initcall(nslu2_console_init);
+diff --git a/arch/arm/configs/nslu2_defconfig b/arch/arm/configs/nslu2_defconfig
+new file mode 100644
+index 0000000..7a1a43b
+--- /dev/null
++++ b/arch/arm/configs/nslu2_defconfig
+@@ -0,0 +1,65 @@
++CONFIG_ARCH_IXP4XX=y
++CONFIG_BOOT_ENDIANNESS_SWITCH=y
++CONFIG_MACH_NSLU2=y
++CONFIG_IXP4XX_QMGR=y
++CONFIG_IXP4XX_NPE=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++# CONFIG_ARM_EXCEPTIONS is not set
++CONFIG_EXPERIMENTAL=y
++# CONFIG_MACH_DO_LOWLEVEL_INIT is not set
++CONFIG_LONGHELP=y
++CONFIG_GLOB=y
++CONFIG_PROMPT_HUSH_PS2="mgl# "
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++# CONFIG_CONSOLE_ACTIVATE_FIRST is not set
++CONFIG_CONSOLE_ACTIVATE_ALL=y
++CONFIG_PARTITION=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/nslu2/env"
++CONFIG_DEBUG_INFO=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_PASSWD=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_MTEST=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_LED=y
++CONFIG_CMD_LED_TRIGGER=y
++CONFIG_NET=y
++CONFIG_NET_DHCP=y
++CONFIG_NET_NFS=y
++CONFIG_NET_PING=y
++CONFIG_NET_TFTP=y
++CONFIG_NET_TFTP_PUSH=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_DRIVER_SERIAL_ARM_DCC=y
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_DRIVER_NET_IXP4XX_ETH=y
++# CONFIG_SPI is not set
++CONFIG_DRIVER_CFI=y
++# CONFIG_DRIVER_CFI_AMD is not set
++# CONFIG_DRIVER_CFI_BANK_WIDTH_1 is not set
++# CONFIG_DRIVER_CFI_BANK_WIDTH_4 is not set
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_TRIGGERS=y
++CONFIG_FS_CRAMFS=y
++CONFIG_SHA1=y
++CONFIG_SHA256=y
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index f55e862..230f596 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -46,10 +46,14 @@ config CPU_V7
+ 	select CPU_32v7
+ 
+ # Xscale PXA25x, PXA27x
+-config CPU_XSCALE
++config CPU_PXA
+ 	bool
+ 	select CPU_32v4T
+ 
++config CPU_XSCALE
++	bool
++	select CPU_32v5
++
+ # Figure out what processor architecture version we should be using.
+ # This defines the compiler instruction set which depends on the machine type.
+ config CPU_32v4T
+diff --git a/arch/arm/mach-ixp4xx/Kconfig b/arch/arm/mach-ixp4xx/Kconfig
+index f9388bf..480511c 100644
+--- a/arch/arm/mach-ixp4xx/Kconfig
++++ b/arch/arm/mach-ixp4xx/Kconfig
+@@ -1,13 +1,25 @@
+ if ARCH_IXP4XX
+ 
++config ARCH_TEXT_BASE
++	hex
++	default 0x00f80000
++
+ config IXP4XX_GENERIC_LOWLEVEL_INIT
+ 	bool
+ 
+ choice
+ 	prompt "IXP4xx Board Type"
+ 
++config MACH_NSLU2
++	bool "Linksys NSLU2"
++	select MACH_HAS_LOWLEVEL_INIT
++	select IXP4XX_GENERIC_LOWLEVEL_INIT
++
+ endchoice
+ 
++config BOARDINFO
++	default "Linksys NSLU2" if MACH_NSLU2
++
+ config IXP4XX_QMGR
+ 	tristate "IXP4xx Queue Manager support"
+ 	help
+diff --git a/arch/arm/mach-ixp4xx/board_lowlevel_init.c b/arch/arm/mach-ixp4xx/board_lowlevel_init.c
+index 061246d..e5a43da 100644
+--- a/arch/arm/mach-ixp4xx/board_lowlevel_init.c
++++ b/arch/arm/mach-ixp4xx/board_lowlevel_init.c
+@@ -11,10 +11,12 @@
+ #include <asm/system.h>
+ #include <mach/ixp4xx-regs.h>
+ 
++#define nop() asm volatile ("nop;\n\t"::)
++
+ static void inline delay(int x)
+ {
+ 	while (x-- > 0)
+-		barrier();
++		nop();
+ }
+ 
+ void __naked __bare_init board_init_lowlevel(void)
 -- 
 1.7.9.1
 
