@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo3.mail-out.ovh.net ([46.105.75.36]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SMDld-00007j-4p
- for barebox@lists.infradead.org; Mon, 23 Apr 2012 07:33:02 +0000
-Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 4431FFFA65F
- for <barebox@lists.infradead.org>; Mon, 23 Apr 2012 09:23:33 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 23 Apr 2012 09:02:17 +0200
-Message-Id: <1335164539-2188-8-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20120423065650.GM20601@game.jcrosoft.org>
-References: <20120423065650.GM20601@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SMEP6-0003dm-Fv
+ for barebox@lists.infradead.org; Mon, 23 Apr 2012 08:13:50 +0000
+Date: Mon, 23 Apr 2012 10:13:35 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120423081335.GD3852@pengutronix.de>
+References: <20120415145953.GK3852@pengutronix.de>
+ <1334913691-13315-3-git-send-email-renaud.barbier@ge.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1334913691-13315-3-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,236 +19,185 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/10] ARM: Add support for Goramo Multilink router platform.
-To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khc@pm.waw.pl>
+Subject: Re: [PATCH V3 2/3] Minimal support of the MPC85xx architecture
+To: Renaud Barbier <renaud.barbier@ge.com>
+Cc: barebox@lists.infradead.org
 
-RnJvbTogS3J6eXN6dG9mIEhhxYJhc2EgPGtoY0BwbS53YXcucGw+CgpTaWduZWQtb2ZmLWJ5OiBL
-cnp5c3p0b2YgSGHFgmFzYSA8a2hjQHBtLndhdy5wbD4KU2lnbmVkLW9mZi1ieTogSmVhbi1DaHJp
-c3RvcGhlIFBMQUdOSU9MLVZJTExBUkQgPHBsYWduaW9qQGpjcm9zb2Z0LmNvbT4KLS0tCiBEb2N1
-bWVudGF0aW9uL2JvYXJkcy5kb3ggICAgICAgICAgICAgICAgICB8ICAgIDEgKwogYXJjaC9hcm0v
-TWFrZWZpbGUgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAxICsKIGFyY2gvYXJtL2JvYXJk
-cy9tdWx0aWxpbmsvTWFrZWZpbGUgICAgICAgIHwgICAgMSArCiBhcmNoL2FybS9ib2FyZHMvbXVs
-dGlsaW5rL2Vudi9jb25maWcgICAgICB8ICAgMzYgKysrKysrKysKIGFyY2gvYXJtL2JvYXJkcy9t
-dWx0aWxpbmsvbG93bGV2ZWxfaW5pdC5TIHwgICA2NCArKysrKysrKysrKysrKwogYXJjaC9hcm0v
-Ym9hcmRzL211bHRpbGluay9tdWx0aWxpbmsuYyAgICAgfCAgMTMxICsrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrCiBhcmNoL2FybS9ib2FyZHMvbXVsdGlsaW5rL211bHRpbGluay5kb3ggICB8
-ICAgMzYgKysrKysrKysKIGFyY2gvYXJtL2NvbmZpZ3MvbXVsdGlsaW5rX2RlZmNvbmZpZyAgICAg
-IHwgICA1NSArKysrKysrKysrKysKIGFyY2gvYXJtL21hY2gtaXhwNHh4L0tjb25maWcgICAgICAg
-ICAgICAgIHwgICAgNSArCiA5IGZpbGVzIGNoYW5nZWQsIDMzMCBpbnNlcnRpb25zKCspLCAwIGRl
-bGV0aW9ucygtKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9tdWx0aWxpbmsv
-TWFrZWZpbGUKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvbXVsdGlsaW5rL2Nv
-bmZpZy5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL211bHRpbGluay9lbnYv
-Y29uZmlnCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL211bHRpbGluay9sb3ds
-ZXZlbF9pbml0LlMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvbXVsdGlsaW5r
-L211bHRpbGluay5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL211bHRpbGlu
-ay9tdWx0aWxpbmsuZG94CiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vY29uZmlncy9tdWx0
-aWxpbmtfZGVmY29uZmlnCgpkaWZmIC0tZ2l0IGEvRG9jdW1lbnRhdGlvbi9ib2FyZHMuZG94IGIv
-RG9jdW1lbnRhdGlvbi9ib2FyZHMuZG94CmluZGV4IGJhMzMyYTcuLjI3ZWRjNjIgMTAwNjQ0Ci0t
-LSBhL0RvY3VtZW50YXRpb24vYm9hcmRzLmRveAorKysgYi9Eb2N1bWVudGF0aW9uL2JvYXJkcy5k
-b3gKQEAgLTIxLDYgKzIxLDcgQEAgQVJNIHR5cGU6CiBAbGkgQHN1YnBhZ2UgYm9hcmRfbG9jbwog
-QGxpIEBzdWJwYWdlIGNodW1ieW9uZQogQGxpIEBzdWJwYWdlIHNjYjkzMjgKKyBhdCBsaSBAc3Vi
-cGFnZSBtdWx0aWxpbmsKIEBsaSBAc3VicGFnZSBuZXR4CiBAbGkgQHN1YnBhZ2UgZGV2X29tYXBf
-YXJjaAogQGxpIEBzdWJwYWdlIGE5bTI0NDAKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL01ha2VmaWxl
-IGIvYXJjaC9hcm0vTWFrZWZpbGUKaW5kZXggMzRhYmQxOS4uNzgyOTM4YSAxMDA2NDQKLS0tIGEv
-YXJjaC9hcm0vTWFrZWZpbGUKKysrIGIvYXJjaC9hcm0vTWFrZWZpbGUKQEAgLTk0LDYgKzk0LDcg
-QEAgYm9hcmQtJChDT05GSUdfTUFDSF9JTVgyMUFEUykJCQk6PSBpbXgyMWFkcwogYm9hcmQtJChD
-T05GSUdfTUFDSF9JTVgyN0FEUykJCQk6PSBpbXgyN2FkcwogYm9hcmQtJChDT05GSUdfTUFDSF9N
-SU9BNzAxKQkJCTo9IG1pb2E3MDEKIGJvYXJkLSQoQ09ORklHX01BQ0hfTU1DQ1BVKQkJCTo9IG1t
-Y2NwdQorYm9hcmQtJChDT05GSUdfTUFDSF9NVUxUSUxJTkspCQkJOj0gbXVsdGlsaW5rCiBib2Fy
-ZC0kKENPTkZJR19NQUNIX01YMUFEUykJCQk6PSBteDFhZHMKIGJvYXJkLSQoQ09ORklHX01BQ0hf
-Tk9NQURJS184ODE1TkhLKQkJOj0gbmhrODgxNQogYm9hcmQtJChDT05GSUdfTUFDSF9OWERCNTAw
-KQkJCTo9IG5ldHgKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9tdWx0aWxpbmsvTWFrZWZp
-bGUgYi9hcmNoL2FybS9ib2FyZHMvbXVsdGlsaW5rL01ha2VmaWxlCm5ldyBmaWxlIG1vZGUgMTAw
-NjQ0CmluZGV4IDAwMDAwMDAuLmQ1YThiYmMKLS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9i
-b2FyZHMvbXVsdGlsaW5rL01ha2VmaWxlCkBAIC0wLDAgKzEgQEAKK29iai15ICs9IGxvd2xldmVs
-X2luaXQubyBtdWx0aWxpbmsubwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL211bHRpbGlu
-ay9jb25maWcuaCBiL2FyY2gvYXJtL2JvYXJkcy9tdWx0aWxpbmsvY29uZmlnLmgKbmV3IGZpbGUg
-bW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uZTY5ZGUyOQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
-Ym9hcmRzL211bHRpbGluay9lbnYvY29uZmlnIGIvYXJjaC9hcm0vYm9hcmRzL211bHRpbGluay9l
-bnYvY29uZmlnCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAuLjNhNmVhYTIKLS0t
-IC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9ib2FyZHMvbXVsdGlsaW5rL2Vudi9jb25maWcKQEAg
-LTAsMCArMSwzNiBAQAorIyEvYmluL3NoCisKKyMgdXNlICdkaGNwJyB0byBkbyBkaGNwIGluIGJh
-cmVib3ggYW5kIGluIGtlcm5lbAorIyB1c2UgJ25vbmUnIGlmIHlvdSB3YW50IHRvIHNraXAga2Vy
-bmVsIGlwIGF1dG9jb25maWd1cmF0aW9uCitpcD1kaGNwLWJhcmVib3gKK2RoY3BfdmVuZG9yX2lk
-PWJhcmVib3gtbnNsdTIKKworIyBvciBzZXQgeW91ciBuZXR3b3JraW5nIHBhcmFtZXRlcnMgaGVy
-ZQorI2V0aDAuaXBhZGRyPWEuYi5jLmQKKyNldGgwLm5ldG1hc2s9YS5iLmMuZAorI2V0aDAuZ2F0
-ZXdheT1hLmIuYy5kCisjZXRoMC5zZXJ2ZXJpcD1hLmIuYy5kCisKKyMgY2FuIGJlIGVpdGhlciAn
-bmZzJywgJ3RmdHAnIG9yICdub3InCitrZXJuZWxfbG9jPW5mcworIyBjYW4gYmUgZWl0aGVyICdu
-ZXQnLCAnbm9yJyBvciAnaW5pdHJkJworcm9vdGZzX2xvYz1uZXQKKworIyBjYW4gYmUgZWl0aGVy
-ICdqZmZzMicgb3IgJ3ViaWZzJworcm9vdGZzX3R5cGU9dWJpZnMKK3Jvb3Rmc2ltYWdlPXJvb3Qu
-JHJvb3Rmc190eXBlCisKK2tlcm5lbGltYWdlPXpJbWFnZQorI2tlcm5lbGltYWdlPXVJbWFnZQor
-I2tlcm5lbGltYWdlPUltYWdlCisja2VybmVsaW1hZ2U9SW1hZ2UubHpvCisKK25vcl9wYXJ0cz0i
-MjU2ayhiYXJlYm94KXJvLDY0ayhiYXJlYm94ZW52KSwxNTM2ayhrZXJuZWwpLC0ocm9vdCkiCity
-b290ZnNfbXRkYmxvY2tfbm9yPTMKKworYXV0b2Jvb3RfdGltZW91dD0zCisKK2Jvb3RhcmdzPSJj
-b25zb2xlPXR0eVMwLDExNTIwMCIKKworIyBzZXQgYSBmYW5jeSBwcm9tcHQgKGlmIHN1cHBvcnQg
-aXMgY29tcGlsZWQgaW4pCitQUzE9IlxlWzE7MzJtYmFyZWJveEBcZVsxOzMxbVxoOlx3XGVbMG1c
-biMgIgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL211bHRpbGluay9sb3dsZXZlbF9pbml0
-LlMgYi9hcmNoL2FybS9ib2FyZHMvbXVsdGlsaW5rL2xvd2xldmVsX2luaXQuUwpuZXcgZmlsZSBt
-b2RlIDEwMDY0NAppbmRleCAwMDAwMDAwLi45NzBlZjcyCi0tLSAvZGV2L251bGwKKysrIGIvYXJj
-aC9hcm0vYm9hcmRzL211bHRpbGluay9sb3dsZXZlbF9pbml0LlMKQEAgLTAsMCArMSw2NCBAQAor
-I2luY2x1ZGUgPG1hY2gvaXhwNHh4LXJlZ3MuaD4KKworCS5zZWN0aW9uICIudGV4dF9iYXJlX2lu
-aXQiLCAiYXgiCisJLmJhbGlnbiAweDQwCisJLnNwYWNlIDB4NDAgLyogY29uZmlndXJhdGlvbiBi
-bG9jayBhdCAweDQwICovCisKKwkubWFjcm8gREVMQVlfRk9SIGN5Y2xlcywgcmVnMAorCWxkciBc
-cmVnMCwgPVxjeWNsZXMKKwlzdWJzIFxyZWcwLCBccmVnMCwgIzEKKwlzdWJuZSBwYywgcGMsICMw
-eGMKKwkuZW5kbQorCisjZGVmaW5lIENGR19TRFJBTV9TSVpFICAgIDB4NTAgLyogdTMyICovCisj
-ZGVmaW5lIENGR19TRFJBTV9DT05GICAgIDB4NTQgLyogdTMyICovCisjZGVmaW5lIENGR19TRFJB
-TV9NT0RFICAgIDB4NTggLyogdTMyICovCisjZGVmaW5lIENGR19TRFJBTV9SRUZSRVNIIDB4NUMg
-LyogdTMyICovCisKKy5nbG9ibCBib2FyZF9pbml0X2xvd2xldmVsCitib2FyZF9pbml0X2xvd2xl
-dmVsOgorCW1vdiByOCwgI0lYUDRYWF9FWFBfQkFTRSgwKQorCWxkciByMSwgW3I4LCAjQ0ZHX1NE
-UkFNX0NPTkZdCisJbGRyIHIyLCA9SVhQNFhYX1NEUkFNX0NPTkZJRworCXN0ciByMSwgW3IyXQor
-CisJLyogZGlzYWJsZSByZWZyZXNoIGN5Y2xlcyAqLworCW1vdiByMSwgIzAKKwlhZGQgcjIsIHIy
-LCAjNCAvKiByMiA9IElYUDRYWF9TRFJBTV9SRUZSRVNIICovCisJc3RyIHIxLCBbcjJdCisKKwkv
-KiBzZW5kIE5PUCBjb21tYW5kICovCisJbW92IHIxLCAjMworCWFkZCByMywgcjIsICM0IC8qIHIz
-ID0gSVhQNFhYX1NEUkFNX0lSICovCisJc3RyIHIxLCBbcjNdCisJREVMQVlfRk9SIDB4NDAwMCwg
-cjAKKworCS8qIHNldCBTRFJBTSBpbnRlcm5hbCByZWZyZXNoICovCisJbGRyIHIxLCBbcjgsICND
-RkdfU0RSQU1fUkVGUkVTSF0KKwlzdHIgcjEsIFtyMl0KKwlERUxBWV9GT1IgMHg0MDAwLCByMAor
-CisJLyogc2VuZCBwcmVjaGFyZ2UtYWxsIGNvbW1hbmQgdG8gY2xvc2UgYWxsIG9wZW4gYmFua3Mg
-Ki8KKwltb3YgcjEsICMyCisJc3RyIHIxLCBbcjNdCisJREVMQVlfRk9SIDB4NDAwMCwgcjAKKwor
-CS8qIHByb3ZpZGUgOCBhdXRvLXJlZnJlc2ggY3ljbGVzICovCisJbW92IHIxLCAjNAorCW1vdiBy
-NCwgIzgKKzE6CXN0ciByMSwgW3IzXQorCURFTEFZX0ZPUiAweDEwMCwgcjAKKwlzdWJzIHI0LCBy
-NCwgIzEKKwlibmUgMWIKKworCS8qIHNldCBtb2RlIHJlZ2lzdGVyIGluIFNEUkFNICovCisJbGRy
-IHIxLCBbcjgsICNDRkdfU0RSQU1fTU9ERV0KKwlzdHIgcjEsIFtyM10KKwlERUxBWV9GT1IgMHg0
-MDAwLCByMAorCisJLyogc2VuZCBub3JtYWwgb3BlcmF0aW9uIGNvbW1hbmQgKi8KKwltb3YgcjEs
-ICM2CisJc3RyIHIxLCBbcjNdCisJREVMQVlfRk9SIDB4NDAwMCwgcjAKKworCW1vdiBwYywgbHIK
-ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9tdWx0aWxpbmsvbXVsdGlsaW5rLmMgYi9hcmNo
-L2FybS9ib2FyZHMvbXVsdGlsaW5rL211bHRpbGluay5jCm5ldyBmaWxlIG1vZGUgMTAwNjQ0Cmlu
-ZGV4IDAwMDAwMDAuLjVkNDk3YjUKLS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9ib2FyZHMv
-bXVsdGlsaW5rL211bHRpbGluay5jCkBAIC0wLDAgKzEsMTMxIEBACisvLyNkZWZpbmUgREVCVUcK
-KyNpbmNsdWRlIDxjb21tb24uaD4KKyNpbmNsdWRlIDxlcnJuby5oPgorI2luY2x1ZGUgPGluaXQu
-aD4KKyNpbmNsdWRlIDxsaW51eC90eXBlcy5oPgorI2luY2x1ZGUgPGFzbS9hcm1saW51eC5oPgor
-I2luY2x1ZGUgPGFzbS9pby5oPgorI2luY2x1ZGUgPGlvLmg+CisjaW5jbHVkZSA8Z2VuZXJhdGVk
-L21hY2gtdHlwZXMuaD4KKyNpbmNsdWRlIDxtYWNoL2l4cDR4eC1yZWdzLmg+CisjaW5jbHVkZSA8
-bWFjaC9wbGF0Zm9ybS5oPgorCisvKiBvZmZzZXRzIGZyb20gc3RhcnQgb2YgZmxhc2ggUk9NID0g
-MHg1MDAwMDAwMCAqLworI2RlZmluZSBDRkdfRVRIMF9BRERSRVNTCTB4NDAgLyogNiBieXRlcyAq
-LworI2RlZmluZSBDRkdfRVRIMV9BRERSRVNTCTB4NDYgLyogNiBieXRlcyAqLworI2RlZmluZSBD
-RkdfUkVWCQkJMHg0QyAvKiB1MzIgKi8KKyNkZWZpbmUgQ0ZHX1NEUkFNX1NJWkUJCTB4NTAgLyog
-dTMyICovCisjZGVmaW5lIENGR19TRFJBTV9DT05GCQkweDU0IC8qIHUzMiAqLworI2RlZmluZSBD
-RkdfU0RSQU1fTU9ERQkJMHg1OCAvKiB1MzIgKi8KKyNkZWZpbmUgQ0ZHX1NEUkFNX1JFRlJFU0gJ
-MHg1QyAvKiB1MzIgKi8KKworI2RlZmluZSBDRkdfSFdfQklUUwkJMHg2MCAvKiB1MzIgKi8KKyNk
-ZWZpbmUgIENGR19IV19VU0JfUE9SVFMJMHgwMDAwMDAwNyAvKiAwID0gbm8gTkVDIGNoaXAsIDEt
-NSA9IHBvcnRzICMgKi8KKyNkZWZpbmUgIENGR19IV19IQVNfUENJX1NMT1QJMHgwMDAwMDAwOAor
-I2RlZmluZSAgQ0ZHX0hXX0hBU19FVEgwCTB4MDAwMDAwMTAKKyNkZWZpbmUgIENGR19IV19IQVNf
-RVRIMQkweDAwMDAwMDIwCisjZGVmaW5lICBDRkdfSFdfSEFTX0hTUzAJMHgwMDAwMDA0MAorI2Rl
-ZmluZSAgQ0ZHX0hXX0hBU19IU1MxCTB4MDAwMDAwODAKKyNkZWZpbmUgIENGR19IV19IQVNfVUFS
-VDAJMHgwMDAwMDEwMAorI2RlZmluZSAgQ0ZHX0hXX0hBU19VQVJUMQkweDAwMDAwMjAwCisjZGVm
-aW5lICBDRkdfSFdfSEFTX0VFUFJPTQkweDAwMDAwNDAwCisKKyNkZWZpbmUgRVRIX0FMRU4JNgor
-CisjZGVmaW5lIEJBUkVCT1hfU1RBUlQJMHgwMDAwMAorI2RlZmluZSBCQVJFQk9YX0xFTkdUSAkw
-eDM0MDAwCisjZGVmaW5lIE5QRV9BX1NUQVJUCShCQVJFQk9YX1NUQVJUICsgQkFSRUJPWF9MRU5H
-VEgpCisjZGVmaW5lIE5QRV9BX0xFTkdUSAkweDA1MDAwCisjZGVmaW5lIE5QRV9CX1NUQVJUCShO
-UEVfQV9TVEFSVCArIE5QRV9BX0xFTkdUSCkKKyNkZWZpbmUgTlBFX0JfTEVOR1RICTB4MDMwMDAK
-KyNkZWZpbmUgTlBFX0NfU1RBUlQJKE5QRV9CX1NUQVJUICsgTlBFX0JfTEVOR1RIKQorI2RlZmlu
-ZSBOUEVfQ19MRU5HVEgJMHgwNDAwMAorI2RlZmluZSBOUEVfRU5WMF9TVEFSVAkoTlBFX0NfU1RB
-UlQgKyBOUEVfQ19MRU5HVEgpCisjZGVmaW5lIE5QRV9FTlYwX0xFTkdUSAkweDIwMDAwCisKKyNp
-ZmRlZiBDT05GSUdfRFJJVkVSX05FVF9JWFA0WFhfRVRICitzdGF0aWMgc3RydWN0IGV0aF9wbGF0
-X2luZm8gZXRoX3BpbmZvWzJdID0geworCXsKKwkJLm5wZSAgICAgID0gMSwKKwkJLnBoeSAgICAg
-ID0gMCwKKwkJLnJ4cSAgICAgID0gMjAsCisJCS50eHJlYWR5cSA9IDI5LAorCX0sIHsKKwkJLm5w
-ZSAgICAgID0gMiwKKwkJLnBoeSAgICAgID0gMSwKKwkJLnJ4cSAgICAgID0gMjEsCisJCS50eHJl
-YWR5cSA9IDMwLAorCX0KK307CisKK3N0YXRpYyB2b2lkIGdtbF9ldGhfaW5pdCh2b2lkKQorewor
-CWludCBpOworCXUzMiBod19iaXRzOworCisJaHdfYml0cyA9IF9fcmF3X3JlYWRsKElYUDRYWF9F
-WFBfQkFTRSgwKSArIENGR19IV19CSVRTKTsKKworCWlmIChod19iaXRzICYgQ0ZHX0hXX0hBU19F
-VEgwKSB7CisJCWZvciAoaSA9IDA7IGkgPCBFVEhfQUxFTjsgaSsrKQorCQkJZXRoX3BpbmZvWzBd
-Lmh3YWRkcltpXSA9IGNwdV9yZWFkYihDRkdfRVRIMF9BRERSRVNTICsgaSk7CisJCWl4cDR4eF9h
-ZGRfZXRoKDEsICZldGhfcGluZm9bMF0pOworCX0KKworCWlmIChod19iaXRzICYgQ0ZHX0hXX0hB
-U19FVEgxKSB7CisJCWZvciAoaSA9IDA7IGkgPCBFVEhfQUxFTjsgaSsrKQorCQkJZXRoX3BpbmZv
-WzFdLmh3YWRkcltpXSA9IGNwdV9yZWFkYihDRkdfRVRIMV9BRERSRVNTICsgaSk7CisJCWl4cDR4
-eF9hZGRfZXRoKDIsICZldGhfcGluZm9bMV0pOworCX0KK30KKyNlbHNlCitzdGF0aWMgdm9pZCBn
-bWxfZXRoX2luaXQodm9pZCkge30KKyNlbmRpZgorCitzdGF0aWMgaW50IGdtbF9tZW1faW5pdCh2
-b2lkKQoreworCXUzMiBzaXplID0gX19yYXdfcmVhZGwoSVhQNFhYX0VYUF9CQVNFKDApICsgQ0ZH
-X1NEUkFNX1NJWkUpOworCisJYXJtX2FkZF9tZW1fZGV2aWNlKCJyYW0wIiwgMHgwMDAwMDAwMCwg
-c2l6ZSk7CisKKwlyZXR1cm4gMDsKK30KK21lbV9pbml0Y2FsbChnbWxfbWVtX2luaXQpOworCitz
-dGF0aWMgaW5saW5lIHU4IF9faW5pdCBmbGFzaF9yZWFkYih1MzIgYWRkcikKK3sKKwlyZXR1cm4g
-X19yYXdfcmVhZGIoSVhQNFhYX0VYUF9CQVNFKDApICsgYWRkcik7Cit9CisKK3N0YXRpYyBpbnQg
-X19pbml0IGdtbF9kZXZpY2VzX2luaXQodm9pZCkKK3sKKwlJWFA0WFhfRVhQX0NTMCA9IElYUDRY
-WF9FWFBfRU4gfCBJWFA0WFhfRVhQX0lOVEVMIHwKKwkJSVhQNFhYX0VYUF9CSVRTKDI0KSB8IElY
-UDRYWF9FWFBfV1JfRU4gfCBJWFA0WFhfRVhQX0JZVEVfUkQxNjsKKworCWFkZF9jZmlfZmxhc2hf
-ZGV2aWNlKDAsIElYUDRYWF9FWFBfQkFTRSgwKSwgMCwgMCk7CisKKwlkZXZmc19hZGRfcGFydGl0
-aW9uKCJub3IwIiwgQkFSRUJPWF9TVEFSVCwgQkFSRUJPWF9MRU5HVEgsCisJCQkgICAgREVWRlNf
-UEFSVElUSU9OX0ZJWEVEIHwgREVWRlNfUEFSVElUSU9OX1JFQURPTkxZLCAiYmFyZWJveCIpOwor
-CWRldmZzX2FkZF9wYXJ0aXRpb24oIm5vcjAiLCBOUEVfQV9TVEFSVCwgTlBFX0FfTEVOR1RILAor
-CQkJICAgIERFVkZTX1BBUlRJVElPTl9GSVhFRCB8IERFVkZTX1BBUlRJVElPTl9SRUFET05MWSwg
-Ik5QRS1BIik7CisJZGV2ZnNfYWRkX3BhcnRpdGlvbigibm9yMCIsIE5QRV9CX1NUQVJULCBOUEVf
-Ql9MRU5HVEgsCisJCQkgICAgREVWRlNfUEFSVElUSU9OX0ZJWEVEIHwgREVWRlNfUEFSVElUSU9O
-X1JFQURPTkxZLCAiTlBFLUIiKTsKKwlkZXZmc19hZGRfcGFydGl0aW9uKCJub3IwIiwgTlBFX0Nf
-U1RBUlQsIE5QRV9DX0xFTkdUSCwKKwkJCSAgICBERVZGU19QQVJUSVRJT05fRklYRUQgfCBERVZG
-U19QQVJUSVRJT05fUkVBRE9OTFksICJOUEUtQyIpOworCWRldmZzX2FkZF9wYXJ0aXRpb24oIm5v
-cjAiLCBOUEVfRU5WMF9TVEFSVCwgTlBFX0VOVjBfTEVOR1RILAorCQkJICAgIERFVkZTX1BBUlRJ
-VElPTl9GSVhFRCwgImVudjAiKTsKKworCWdtbF9ldGhfaW5pdCgpOworCisJYXJtbGludXhfc2V0
-X2Jvb3RwYXJhbXMoKHZvaWQgKikoMHgwMDAwMDEwMCkpOworCWFybWxpbnV4X3NldF9hcmNoaXRl
-Y3R1cmUoTUFDSF9UWVBFX0dPUkFNT19NTFIpOworCisJcmV0dXJuIDA7Cit9CitkZXZpY2VfaW5p
-dGNhbGwoZ21sX2RldmljZXNfaW5pdCk7CisKK3N0YXRpYyBpbnQgZ21sX2NvbnNvbGVfaW5pdCh2
-b2lkKQoreworCWl4cDR4eF9hZGRfdWFydDEoKTsKKwlyZXR1cm4gMDsKK30KK2NvbnNvbGVfaW5p
-dGNhbGwoZ21sX2NvbnNvbGVfaW5pdCk7CmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvbXVs
-dGlsaW5rL211bHRpbGluay5kb3ggYi9hcmNoL2FybS9ib2FyZHMvbXVsdGlsaW5rL211bHRpbGlu
-ay5kb3gKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uZWFkYTFlMQotLS0gL2Rl
-di9udWxsCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9tdWx0aWxpbmsvbXVsdGlsaW5rLmRveApAQCAt
-MCwwICsxLDM2IEBACisvKiogQHBhZ2UgbXVsdGlsaW5rIEdvcmFtbyBNdWx0aUxpbmsKKworVGhl
-c2UgYm9hcmRzIGFyZSBiYXNlZCBvbiBJbnRlbCBJWFA0MnggQ1BVLgorCitWYXJpYW50czoKKwor
-TWljcm9Sb3V0ZXIgbW9kdWxlOiBJWFA0MjEgb3IgSVhQNDI1IDI2NiBNSHogQ1BVLCAzMiBNaUIg
-U0RSQU0sCisgICAxIG9yIDIgRmFzdCBFdGhlcm5ldCBwb3J0cywgMiBzeW5jIHNlcmlhbCBwb3J0
-cywgMSBSUy0yMzIgKGNvbnNvbGUpIHBvcnQuCisKK011bHRpTGluayB2LjE6IElYUDQyNSAyNjYg
-b3IgNTMzIE1IeiBDUFUsIDY0IC0gMjU2IE1pQiBTRFJBTSwKKyAgIDIgRmFzdCBFdGhlcm5ldCBw
-b3J0cywgMiBzeW5jIHNlcmlhbCBwb3J0cywgMSAtIDIgUlMtMjMyIHBvcnRzLAorICAgYSBtaW5p
-LVBDSSBzbG90LCAyIG9wdGlvbmFsIFVTQiBob3N0IGNvbm5lY3RvcnMuCisKK011bHRpTGluayB2
-LjI6IElYUDQyNSAyNjYgb3IgNTMzIE1IeiBDUFUsIDY0IC0gMjU2IE1pQiBTRFJBTSwKKyAgIDIg
-RmFzdCBFdGhlcm5ldCBwb3J0cywgMiBzeW5jIHNlcmlhbCBwb3J0cywgMSAtIDIgUlMtMjMyIHBv
-cnRzLAorICAgMiBhZGRpdGlvbmFsIG9wdGlvbmFsIEZhc3Qgb3IgR2lnYWJpdCBFdGhlcm5ldCBw
-b3J0cywgYSBtaW5pLVBDSSBzbG90LAorICAgNCBvcHRpb25hbCBVU0IgaG9zdCBjb25uZWN0b3Jz
-LCBvcHRpb25hbCBSZWFsLVRpbWUgQ2xvY2ssCisgICBvcHRpb25hbCBJREUgY29ubmVjdG9yLgor
-CisxNiBNaUIgSW50ZWwgU3RyYXRhRmxhc2ggbWVtb3J5IGlzIHBhcnRpdGlvbmVkIGFzIGZvbGxv
-d3M6CisKKzB4MDAwMDAtMHgzNDAwMCA6IEJhcmVib3ggaW1hZ2UKKzB4MzQwMDAtMHgzOTAwMCA6
-IE5QRS1BIG1pY3JvY29kZQorMHgzOTAwMC0weDNjMDAwIDogTlBFLUIgbWljcm9jb2RlCisweDNj
-MDAwLTB4NDAwMDAgOiBOUEUtQyBtaWNyb2NvZGUKKzB4NDAwMDAtMHg2MDAwMCA6IGVudjAKKwor
-VGhlcmUgaXMgYSBmYWN0b3J5IGNvbmZpZ3VyYXRpb24gcmVnaW9uIHdpdGhpbiBCYXJlYm94IGlt
-YWdlIGF0IGxvY2F0aW9ucworMHg0MCAtIDB4N0YuIERldGFpbHMgYXJlIGluIGZpbGUgbXVsdGls
-aW5rLmMKKworQmFyZWJveCBpbWFnZSBhbmQgTlBFIG1pY3JvY29kZSBmaWxlcyBhcmUgY29tYmlu
-ZWQgaW4gZmlyc3QgdHdvIGJsb2Nrcworb2YgZmxhc2ggbWVtb3J5LiBOUEUtQSBtaWNyb2NvZGUg
-aXMgbm90IHVzZWQgYnkgQmFyZWJveCAoYnV0IG1heSBiZSB1c2VkCitieSBMaW51eCBIU1MgZHJp
-dmVyKS4gTlBFLUIgbWljcm9jb2RlIGlzIG5lZWRlZCBmb3IgZXRoMCBhbmQgTlBFLUMgZm9yCitl
-dGgxLiBCYXJlYm94IG5lZWRzIHZlcnNpb24gMi40IG9mIHJlZ3VsYXIgbm9uLVZMQU4tYXdhcmUg
-bWljcm9jb2RlIGZpbGVzCisod2l0aCBvciB3aXRob3V0IGNyeXB0byBzdXBwb3J0KS4KKyovCmRp
-ZmYgLS1naXQgYS9hcmNoL2FybS9jb25maWdzL211bHRpbGlua19kZWZjb25maWcgYi9hcmNoL2Fy
-bS9jb25maWdzL211bHRpbGlua19kZWZjb25maWcKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXgg
-MDAwMDAwMC4uZjA5MGVjOAotLS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL2NvbmZpZ3MvbXVs
-dGlsaW5rX2RlZmNvbmZpZwpAQCAtMCwwICsxLDU1IEBACitDT05GSUdfQVJDSF9JWFA0WFg9eQor
-Q09ORklHX0FSTV9PUFRJTVpFRF9TVFJJTkdfRlVOQ1RJT05TPXkKKyMgQ09ORklHX0FSTV9FWENF
-UFRJT05TIGlzIG5vdCBzZXQKK0NPTkZJR19URVhUX0JBU0U9MHgwMWQwMDAwMAorQ09ORklHX0VY
-UEVSSU1FTlRBTD15CisjIENPTkZJR19NQUNIX0RPX0xPV0xFVkVMX0lOSVQgaXMgbm90IHNldAor
-Q09ORklHX0xPTkdIRUxQPXkKK0NPTkZJR19HTE9CPXkKK0NPTkZJR19QUk9NUFRfSFVTSF9QUzI9
-Im1nbCMgIgorQ09ORklHX0hVU0hfRkFOQ1lfUFJPTVBUPXkKK0NPTkZJR19DTURMSU5FX0VESVRJ
-Tkc9eQorQ09ORklHX0FVVE9fQ09NUExFVEU9eQorQ09ORklHX01FTlU9eQorIyBDT05GSUdfQ09O
-U09MRV9BQ1RJVkFURV9GSVJTVCBpcyBub3Qgc2V0CitDT05GSUdfQ09OU09MRV9BQ1RJVkFURV9B
-TEw9eQorQ09ORklHX1BBUlRJVElPTj15CitDT05GSUdfREVGQVVMVF9FTlZJUk9OTUVOVF9HRU5F
-UklDPXkKK0NPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX1BBVEg9ImFyY2gvYXJtL2JvYXJkcy9t
-dWx0aWxpbmsvZW52IgorQ09ORklHX0RFQlVHX0lORk89eQorQ09ORklHX0NNRF9FRElUPXkKK0NP
-TkZJR19DTURfU0xFRVA9eQorQ09ORklHX0NNRF9TQVZFRU5WPXkKK0NPTkZJR19DTURfTE9BREVO
-Vj15CitDT05GSUdfQ01EX0VYUE9SVD15CitDT05GSUdfQ01EX1BSSU5URU5WPXkKK0NPTkZJR19D
-TURfUkVBRExJTkU9eQorQ09ORklHX0NNRF9NRU5VPXkKK0NPTkZJR19DTURfTUVOVV9NQU5BR0VN
-RU5UPXkKK0NPTkZJR19DTURfUEFTU1dEPXkKK0NPTkZJR19DTURfRUNIT19FPXkKK0NPTkZJR19D
-TURfTE9BREI9eQorQ09ORklHX0NNRF9NRU1JTkZPPXkKK0NPTkZJR19DTURfTVRFU1Q9eQorQ09O
-RklHX0NNRF9GTEFTSD15CitDT05GSUdfQ01EX0JPT1RNX1pMSUI9eQorQ09ORklHX0NNRF9CT09U
-TV9CWkxJQj15CitDT05GSUdfQ01EX0JPT1RNX1NIT1dfVFlQRT15CitDT05GSUdfQ01EX1JFU0VU
-PXkKK0NPTkZJR19DTURfR089eQorQ09ORklHX0NNRF9USU1FT1VUPXkKK0NPTkZJR19DTURfUEFS
-VElUSU9OPXkKK0NPTkZJR19DTURfVU5MWk89eQorQ09ORklHX05FVD15CitDT05GSUdfTkVUX0RI
-Q1A9eQorQ09ORklHX05FVF9ORlM9eQorQ09ORklHX05FVF9QSU5HPXkKK0NPTkZJR19ORVRfVEZU
-UD15CitDT05GSUdfTkVUX1RGVFBfUFVTSD15CitDT05GSUdfTkVUX05FVENPTlNPTEU9eQorQ09O
-RklHX0RSSVZFUl9TRVJJQUxfQVJNX0RDQz15CitDT05GSUdfRFJJVkVSX1NFUklBTF9OUzE2NTUw
-PXkKKyMgQ09ORklHX1NQSSBpcyBub3Qgc2V0CitDT05GSUdfRlNfQ1JBTUZTPXkKK0NPTkZJR19T
-SEExPXkKK0NPTkZJR19TSEEyNTY9eQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1peHA0eHgv
-S2NvbmZpZyBiL2FyY2gvYXJtL21hY2gtaXhwNHh4L0tjb25maWcKaW5kZXggNDgwNTExYy4uMzk2
-MDgxMSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1peHA0eHgvS2NvbmZpZworKysgYi9hcmNo
-L2FybS9tYWNoLWl4cDR4eC9LY29uZmlnCkBAIC0xMCw2ICsxMCwxMCBAQCBjb25maWcgSVhQNFhY
-X0dFTkVSSUNfTE9XTEVWRUxfSU5JVAogY2hvaWNlCiAJcHJvbXB0ICJJWFA0eHggQm9hcmQgVHlw
-ZSIKIAorY29uZmlnIE1BQ0hfTVVMVElMSU5LCisJYm9vbCAiR29yYW1vIE11bHRpTGluayIKKwlz
-ZWxlY3QgTUFDSF9IQVNfTE9XTEVWRUxfSU5JVAorCiBjb25maWcgTUFDSF9OU0xVMgogCWJvb2wg
-IkxpbmtzeXMgTlNMVTIiCiAJc2VsZWN0IE1BQ0hfSEFTX0xPV0xFVkVMX0lOSVQKQEAgLTE4LDYg
-KzIyLDcgQEAgY29uZmlnIE1BQ0hfTlNMVTIKIGVuZGNob2ljZQogCiBjb25maWcgQk9BUkRJTkZP
-CisJZGVmYXVsdCAiR29yYW1vIE11bHRpTGluayIgaWYgTUFDSF9NVUxUSUxJTksKIAlkZWZhdWx0
-ICJMaW5rc3lzIE5TTFUyIiBpZiBNQUNIX05TTFUyCiAKIGNvbmZpZyBJWFA0WFhfUU1HUgotLSAK
-MS43LjkuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Fri, Apr 20, 2012 at 10:21:30AM +0100, Renaud Barbier wrote:
+> The directories cpu-85xx and mach-mpc85xx contain a minimal CPU support
+> suitable for the P2020RDB board. This includes startup code for the CPU,
+> peripherals and clock source initialization as well as header files
+> and updates to configuration and build files.
+> 
+> Also the introduction of the new CPU architecture and board support
+> leads to the update of existing header files. Are added:
+>  - functions and macros to manipulate bits of registers field values.
+>  - external declaration of cache handling functions to prevent
+>    compilation warnings.
+>  - new processor definitions.
+>  - macros (in replacement of existing definitions) to set 85xx TLB
+>    registers.
+
+Could you seperate the update of the existing header files to some extra
+patches? This would ease the review.
+Generally smaller patches would be much easier to swallow.
+
+>  arch/ppc/lib/Makefile                             |    2 +
+>  arch/ppc/lib/board.c                              |   11 +-
+>  arch/ppc/lib/reloc.S                              |   47 +
+>  arch/ppc/lib/time-mpc85xx.c                       |   54 +
+
+As suggested in 1/3 this should also be in arch/ppc/mach-mpc85xx.
+
+>  arch/ppc/mach-mpc85xx/Kconfig                     |   45 +
+>  arch/ppc/mach-mpc85xx/Makefile                    |    5 +
+>  arch/ppc/mach-mpc85xx/cpuid.c                     |   69 ++
+>  arch/ppc/mach-mpc85xx/fsl_law.c                   |  156 +++
+>  arch/ppc/mach-mpc85xx/fsl_lbc.c                   |   17 +
+>  arch/ppc/mach-mpc85xx/include/mach/clocks.h       |   11 +
+>  arch/ppc/mach-mpc85xx/include/mach/early_udelay.h |   33 +
+>  arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h   |  132 +++
+>  arch/ppc/mach-mpc85xx/include/mach/mp.h           |   15 +
+>  arch/ppc/mach-mpc85xx/include/mach/mpc85xx.h      |   17 +
+>  arch/ppc/mach-mpc85xx/include/mach/ppc_asm.tmpl   |  208 ++++
+
+U-Boot only has one ppc_asm.tmpl. Can we share this aswell?
+
+>  arch/ppc/mach-mpc85xx/mp.c                        |  156 +++
+>  arch/ppc/mach-mpc85xx/speed.c                     |   97 ++
+>  include/linux/types.h                             |    2 +
+> +
+> +#include <config.h>
+> +#include <asm/config_mpc85xx.h>
+> +#include <mach/mpc85xx.h>
+> +
+> +#define _LINUX_CONFIG_H 1	/* avoid reading Linux autoconf.h file	*/
+
+This seems unnecessary.
+
+> diff --git a/arch/ppc/include/asm/global_data.h b/arch/ppc/include/asm/global_data.h
+> new file mode 100644
+> index 0000000..8c1a975
+> --- /dev/null
+> +++ b/arch/ppc/include/asm/global_data.h
+> @@ -0,0 +1,56 @@
+> +/*
+> + * Copyright 2012 GE Intelligent Platforms, Inc.
+> + * (C) Copyright 2002-2010
+> + * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+> + *
+> + * See file CREDITS for list of people who contributed to this
+> + * project.
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> + * MA 02111-1307 USA
+> + */
+> +
+> +#ifndef	__ASM_GBL_DATA_H
+> +#define __ASM_GBL_DATA_H
+> +
+> +#include "config.h"
+> +#include "asm/types.h"
+> +
+> +/*
+> + * The following data structure is placed in some memory wich is
+> + * available very early after boot (some locked parts of the data cache)
+> + * to allow for a minimum set of global variables during system initialization
+> + * (until we have set * up the memory controller so that we can use RAM).
+> + */
+> +
+> +struct	global_data {
+> +	unsigned long	flags;
+> +	unsigned long	baudrate;
+> +	unsigned long	cpu_clk;	/* CPU clock in Hz! */
+> +	unsigned long	bus_clk;
+> +	unsigned long	mem_clk;
+> +	u32 lbc_clk;
+> +	void *cpu;
+> +	u32 i2c1_clk;
+> +	u32 i2c2_clk;
+> +	u32 used_laws;
+> +	u32 used_tlb_cams[(NUM_TLBCAMS+31)/32];
+> +	phys_size_t	ram_size;
+> +	unsigned long	board_type;
+> +};
+
+This struct should not exist. Most fields are unused anyway, only
+used_laws and used_tlb_cams are used. These two fields are used in a
+single file only, so no need to put them somewhere globally.
+
+> +
+> +#define DECLARE_GLOBAL_DATA_PTR		register struct global_data \
+> +					*gd asm ("r2")
+
+With the above struct removed you can also remove this one and with it
+the -ffixed-r2 compiler option to help gcc to generate a slightly more
+efficient code.
+
+
+> +++ b/arch/ppc/mach-mpc85xx/include/mach/early_udelay.h
+> @@ -0,0 +1,33 @@
+> +/*
+> + * Copyright (C) 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
+> + *
+> + * See file CREDITS for list of people who contributed to this
+> + * project.
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> + * MA 02111-1307 USA
+> + */
+> +
+> +#include <common.h>
+> +
+> +/* delay execution before timers are initialized */
+> +static inline void early_udelay(uint32_t usecs)
+> +{
+> +	/* loop takes 4 cycles. */
+> +	 uint32_t loops = usecs * (1000 / 4); /* CPU freq = 1Ghz */
+> +
+> +	while (loops)
+> +		loops--;
+> +}
+
+Are you sure this works? without loops being volatile gcc can optimize
+the whole loop away.
+
+Sascha
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
