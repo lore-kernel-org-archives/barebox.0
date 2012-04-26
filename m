@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from f220.mail.ru ([217.69.128.153])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SNIre-0002u5-9O
- for barebox@lists.infradead.org; Thu, 26 Apr 2012 07:11:43 +0000
-Date: Thu, 26 Apr 2012 09:11:40 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120426071140.GG3852@pengutronix.de>
+ id 1SNJ2d-0003S8-22
+ for barebox@lists.infradead.org; Thu, 26 Apr 2012 07:23:04 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Thu, 26 Apr 2012 11:22:59 +0400
 References: <1335386138-15103-1-git-send-email-shc_work@mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1335386138-15103-1-git-send-email-shc_work@mail.ru>
+ <20120426071140.GG3852@pengutronix.de>
+In-Reply-To: <20120426071140.GG3852@pengutronix.de>
+Message-Id: <E1SNJ2Z-0003rF-35.shc_work-mail-ru@f220.mail.ru>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,104 +19,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] PCM038: Added config option for PCM970 development board
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSF0gUENNMDM4OiBBZGRlZCBjb25maWcgb3B0aW9uIGZv?=
+ =?UTF-8?B?ciBQQ005NzAgZGV2ZWxvcG1lbnQgYm9hcmQ=?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Alexander,
-
-On Thu, Apr 26, 2012 at 12:35:38AM +0400, Alexander Shiyan wrote:
-> This change includes:
-> - Adding Kconfig option for PCM970 development board.
-> - Moving some devices from PCM038, which really not installed on module.
-> - Some reformatting source code.
-> 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-
-Can you please try and make the patch smaller so that we can see what is
-going on?
-
->  
->  #include "pll.h"
->  
-> +#define GPIO_SPI_CS0	(GPIO_PORTD + 28)
-> +
->  static struct fec_platform_data fec_info = {
-> -	.xcv_type = MII100,
-> -	.phy_addr = 1,
-> +	.xcv_type	= MII100,
-> +	.phy_addr	= 1,
->  };
-
-This only adds to the patch size and increases the chance that a 'git
-blame' only directs to cosmetic changes instead of the commit
-introducing a real change.
-
-I do not enforce a particular alignment. I agree that having struct
-initializers aligned looks nice, but it also has the disadvantage that
-the alignment may break with a longer variable name.
-
-So in short, if an author has decided for one or the other, just keep
-it like it is.
-
->  
-> -static int pcm038_spi_cs[] = {GPIO_PORTD + 28};
-> +static int pcm038_spi_cs[] = { GPIO_SPI_CS0, };
-
-Seems unrelated to this patch.
-
-> -/**
-> - * If the PLL settings are in place switch the CPU core frequency to the max. value
-> - */
-> -static int pcm038_power_init(void)
-> -{
-> -	uint32_t spctl0;
-> -
-> -	spctl0 = get_pll_spctl10();
-> -
-> -	/* PLL registers already set to their final values? */
-> -	if (spctl0 == SPCTL0_VAL && MPCTL0 == MPCTL0_VAL) {
-> -		console_flush();
-> -		if (!pmic_power()) {
-> -			/* wait for required power level to run the CPU at 400 MHz */
-> -			udelay(100000);
-> -			CSCR = CSCR_VAL_FINAL;
-> -			PCDR0 = 0x130410c3;
-> -			PCDR1 = 0x09030911;
-> -			/* Clocks have changed. Notify clients */
-> -			clock_notifier_call_chain();
-> -		} else {
-> -			printf("Failed to initialize PMIC. Will continue with low CPU speed\n");
-> -		}
-> -	}
-> -
-> -	/* clock gating enable */
-> -	GPCR = 0x00050f08;
-> -
-> -	return 0;
-> -}
-> -
-> -late_initcall(pcm038_power_init);
-
-You move pcm038_power_init from a late_initcall to a direct call
-somewhere else. There might be reasons to do this, but such a change
-should not be hidden in a big patch which according to the commit log
-factors out baseboard code. Also I don't see why the function moves
-to another place in this patch.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGh1LCAyNiBBcHIgMjAxMiAwOToxMTo0MCArMDIwMCDQvtGCIFNhc2NoYSBIYXVlciA8cy5oYXVl
+ckBwZW5ndXRyb25peC5kZT46CgouLi4KPiA+IC0vKioKPiA+IC0gKiBJZiB0aGUgUExMIHNldHRp
+bmdzIGFyZSBpbiBwbGFjZSBzd2l0Y2ggdGhlIENQVSBjb3JlIGZyZXF1ZW5jeSB0byB0aGUgbWF4
+LiB2YWx1ZQo+ID4gLSAqLwo+ID4gLXN0YXRpYyBpbnQgcGNtMDM4X3Bvd2VyX2luaXQodm9pZCkK
+PiA+IC17Cj4gPiAtCXVpbnQzMl90IHNwY3RsMDsKPiA+IC0KPiA+IC0Jc3BjdGwwID0gZ2V0X3Bs
+bF9zcGN0bDEwKCk7Cj4gPiAtCj4gPiAtCS8qIFBMTCByZWdpc3RlcnMgYWxyZWFkeSBzZXQgdG8g
+dGhlaXIgZmluYWwgdmFsdWVzPyAqLwo+ID4gLQlpZiAoc3BjdGwwID09IFNQQ1RMMF9WQUwgJiYg
+TVBDVEwwID09IE1QQ1RMMF9WQUwpIHsKPiA+IC0JCWNvbnNvbGVfZmx1c2goKTsKPiA+IC0JCWlm
+ICghcG1pY19wb3dlcigpKSB7Cj4gPiAtCQkJLyogd2FpdCBmb3IgcmVxdWlyZWQgcG93ZXIgbGV2
+ZWwgdG8gcnVuIHRoZSBDUFUgYXQgNDAwIE1IeiAqLwo+ID4gLQkJCXVkZWxheSgxMDAwMDApOwo+
+ID4gLQkJCUNTQ1IgPSBDU0NSX1ZBTF9GSU5BTDsKPiA+IC0JCQlQQ0RSMCA9IDB4MTMwNDEwYzM7
+Cj4gPiAtCQkJUENEUjEgPSAweDA5MDMwOTExOwo+ID4gLQkJCS8qIENsb2NrcyBoYXZlIGNoYW5n
+ZWQuIE5vdGlmeSBjbGllbnRzICovCj4gPiAtCQkJY2xvY2tfbm90aWZpZXJfY2FsbF9jaGFpbigp
+Owo+ID4gLQkJfSBlbHNlIHsKPiA+IC0JCQlwcmludGYoIkZhaWxlZCB0byBpbml0aWFsaXplIFBN
+SUMuIFdpbGwgY29udGludWUgd2l0aCBsb3cgQ1BVIHNwZWVkXG4iKTsKPiA+IC0JCX0KPiA+IC0J
+fQo+ID4gLQo+ID4gLQkvKiBjbG9jayBnYXRpbmcgZW5hYmxlICovCj4gPiAtCUdQQ1IgPSAweDAw
+MDUwZjA4Owo+ID4gLQo+ID4gLQlyZXR1cm4gMDsKPiA+IC19Cj4gPiAtCj4gPiAtbGF0ZV9pbml0
+Y2FsbChwY20wMzhfcG93ZXJfaW5pdCk7Cj4gCj4gWW91IG1vdmUgcGNtMDM4X3Bvd2VyX2luaXQg
+ZnJvbSBhIGxhdGVfaW5pdGNhbGwgdG8gYSBkaXJlY3QgY2FsbAo+IHNvbWV3aGVyZSBlbHNlLiBU
+aGVyZSBtaWdodCBiZSByZWFzb25zIHRvIGRvIHRoaXMsIGJ1dCBzdWNoIGEgY2hhbmdlCj4gc2hv
+dWxkIG5vdCBiZSBoaWRkZW4gaW4gYSBiaWcgcGF0Y2ggd2hpY2ggYWNjb3JkaW5nIHRvIHRoZSBj
+b21taXQgbG9nCj4gZmFjdG9ycyBvdXQgYmFzZWJvYXJkIGNvZGUuIEFsc28gSSBkb24ndCBzZWUg
+d2h5IHRoZSBmdW5jdGlvbiBtb3Zlcwo+IHRvIGFub3RoZXIgcGxhY2UgaW4gdGhpcyBwYXRjaC4K
+CkkgbWFrZSBwY205NzBfaW5pdCBpbiBsYXRlX2luaXRjYWxsLCBzbyB3ZSBtdXN0IHN1cmUgdGhh
+dCBwb3dlciAmIGZyZXF1ZW5jeQphbHJlYWR5IGluaXRpYWxpemVkIGJlZm9yZS4KT0ssIEkgd2ls
+bCB0cnkgdG8gZG8gc2Vjb25kIHZlcnNpb24gb2YgdGhpcyBwYXRjaCBsYXRlci4KX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
+c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
