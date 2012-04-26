@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ey0-f177.google.com ([209.85.215.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SNSqe-0002Fz-9L
- for barebox@lists.infradead.org; Thu, 26 Apr 2012 17:51:21 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 26 Apr 2012 19:50:24 +0200
-References: <4F7B1221.2050907@gmail.com>
- <201204032248.44260.jbe@pengutronix.de> <4F99574B.9040304@gmail.com>
-In-Reply-To: <4F99574B.9040304@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201204261950.24311.jbe@pengutronix.de>
+ id 1SNTzP-0008WK-RP
+ for barebox@lists.infradead.org; Thu, 26 Apr 2012 19:04:28 +0000
+Received: by eaak13 with SMTP id k13so457984eaa.36
+ for <barebox@lists.infradead.org>; Thu, 26 Apr 2012 12:04:24 -0700 (PDT)
+From: Jaccon Bastiaansen <jaccon.bastiaansen@gmail.com>
+Date: Thu, 26 Apr 2012 21:03:59 +0200
+Message-Id: <1335467039-15807-1-git-send-email-jaccon.bastiaansen@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,33 +16,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: S5PV210 CPU support
+Subject: [PATCH] Increase heapsize for i.MX21ADS board again.
 To: barebox@lists.infradead.org
-Cc: Alexey Galakhov <agalakhov@gmail.com>
 
-Alexey Galakhov wrote:
-> Alexey Galakhov wrote:
-> > Does somebody work on support of Samsung S5PC1xx and/or S5PV210 SoC?
-> > I'm just trying to port Barebox to Mini210/Tiny210 boards from
-> > FrinedlyArm.
->
-> JFYI, it starts successfully and gives command line. Now cleaning up the
-> code and preparing patches.
+Barebox cannot boot the recent mainline Linux kernels for the
+i.MX21ADS board anymore when using TFTP, because the heap is too
+small.
 
-\o/
+This is solved by increasing the heapsize to 8Mbyte.
 
-I'm looking forward for your patches.
+Signed-off-by: Jaccon Bastiaansen <jaccon.bastiaansen@gmail.com>
+---
+ arch/arm/configs/mx21ads_defconfig |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-Regards,
-Juergen
-
+diff --git a/arch/arm/configs/mx21ads_defconfig b/arch/arm/configs/mx21ads_defconfig
+index 175c229..6726d8c 100644
+--- a/arch/arm/configs/mx21ads_defconfig
++++ b/arch/arm/configs/mx21ads_defconfig
+@@ -3,7 +3,7 @@ CONFIG_ARCH_IMX21=y
+ CONFIG_IMX_CLKO=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_TEXT_BASE=0xc1000000
+-CONFIG_MALLOC_SIZE=0x500000
++CONFIG_MALLOC_SIZE=0x800000
+ CONFIG_LONGHELP=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
