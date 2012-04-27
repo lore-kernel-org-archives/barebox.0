@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SNhXR-0006sX-OB
- for barebox@lists.infradead.org; Fri, 27 Apr 2012 09:32:31 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1SNhXQ-0000Fs-29
- for barebox@lists.infradead.org; Fri, 27 Apr 2012 11:32:28 +0200
-Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <jbe@pengutronix.de>) id 1SNhXQ-0004E2-07
- for barebox@lists.infradead.org; Fri, 27 Apr 2012 11:32:28 +0200
+ id 1SNhXW-0006ua-8c
+ for barebox@lists.infradead.org; Fri, 27 Apr 2012 09:32:34 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 27 Apr 2012 11:32:23 +0200
-Message-Id: <1335519145-12349-6-git-send-email-jbe@pengutronix.de>
+Date: Fri, 27 Apr 2012 11:32:21 +0200
+Message-Id: <1335519145-12349-4-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1335519145-12349-1-git-send-email-jbe@pengutronix.de>
 References: <1335519145-12349-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,45 +21,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] netX: XPEC firmware is always of attribute const
+Subject: [PATCH 3/7] netX: UART may not initialize correctly.
 To: barebox@lists.infradead.org
+Cc: Michael Trensch <MTrensch@gmail.com>
 
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+From: Michael Trensch <MTrensch@gmail.com>
+
+The netX internal UART latches register settings and internally uses
+them only if written in the correct order. Other orders may work, but
+sometimes the UART gets stuck, as the baudrate has not correctly been
+set.
+
+Signed-off-by: Michael Trensch <MTrensch@gmail.com>
+Acked-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/mach-netx/generic.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/serial/serial_netx.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-netx/generic.c b/arch/arm/mach-netx/generic.c
-index f9d643f..5ce7a0d 100644
---- a/arch/arm/mach-netx/generic.c
-+++ b/arch/arm/mach-netx/generic.c
-@@ -45,9 +45,10 @@ static int xc_check_ptr(int xcno, unsigned long adr, unsigned int size)
- 	return -1;
- }
+diff --git a/drivers/serial/serial_netx.c b/drivers/serial/serial_netx.c
+index 2d4ef11..838293f 100644
+--- a/drivers/serial/serial_netx.c
++++ b/drivers/serial/serial_netx.c
+@@ -77,10 +77,7 @@ static int netx_serial_init_port(struct console_device *cdev)
  
--static int xc_patch(int xcno, void *patch, int count)
-+static int xc_patch(int xcno, const void *patch, int count)
- {
--	unsigned int adr, val, *p = patch;
-+	unsigned int adr, val;
-+	const unsigned int *p = patch;
+ 	/* disable uart */
+ 	writel(0, base + UART_CR);
+-
+-	writel(LINE_CR_8BIT | LINE_CR_FEN, base + UART_LINE_CR);
+-
+-	writel(DRV_ENABLE_TX | DRV_ENABLE_RTS, base + UART_DRV_ENABLE);
++	writel(BRM_CR_BAUD_RATE_MODE, base + UART_BRM_CR);
  
- 	int i;
- 	for (i = 0; i < count; i++) {
-@@ -69,11 +70,11 @@ static void memset32(void *s, int c, int n)
- 		*t++ = 0;
- }
+ 	/* set baud rate */
+ 	divisor = 115200 * 4096;
+@@ -88,9 +85,11 @@ static int netx_serial_init_port(struct console_device *cdev)
+ 	divisor *= 256;
+ 	divisor /= 100000;
  
--static void memcpy32(void *trg, void *src, int size)
-+static void memcpy32(void *trg, const void *src, int size)
- {
- 	int i;
- 	u32 *t = trg;
--	u32 *s = src;
-+	const u32 *s = src;
- 	for (i = 0; i < (size >> 2); i++)
- 		*t++ = *s++;
- }
+-	writel((divisor >> 8) & 0xff, base + UART_BAUDDIV_MSB);
+ 	writel(divisor & 0xff, base + UART_BAUDDIV_LSB);
+-	writel(BRM_CR_BAUD_RATE_MODE, base + UART_BRM_CR);
++	writel((divisor >> 8) & 0xff, base + UART_BAUDDIV_MSB);
++	writel(DRV_ENABLE_TX | DRV_ENABLE_RTS, base + UART_DRV_ENABLE);
++
++	writel(LINE_CR_8BIT | LINE_CR_FEN, base + UART_LINE_CR);
+ 
+ 	/* Finally, enable the UART */
+ 	writel(CR_UARTEN, base + UART_CR);
 -- 
 1.7.10
 
