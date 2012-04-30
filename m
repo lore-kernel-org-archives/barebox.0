@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo4.mail-out.ovh.net ([178.33.248.196]
+Received: from 15.mo4.mail-out.ovh.net ([91.121.62.11]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SOq0Q-00042J-LY
- for barebox@lists.infradead.org; Mon, 30 Apr 2012 12:47:07 +0000
+ id 1SOq0R-00042V-ML
+ for barebox@lists.infradead.org; Mon, 30 Apr 2012 12:47:08 +0000
 Received: from mail97.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 8B1FB1050564
- for <barebox@lists.infradead.org>; Mon, 30 Apr 2012 14:48:24 +0200 (CEST)
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 45C371050601
+ for <barebox@lists.infradead.org>; Mon, 30 Apr 2012 14:48:26 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 30 Apr 2012 14:25:54 +0200
-Message-Id: <1335788764-30430-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 30 Apr 2012 14:25:57 +0200
+Message-Id: <1335788764-30430-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20120430122334.GE2992@game.jcrosoft.org>
 References: <20120430122334.GE2992@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -25,75 +25,165 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/11] stringlist: use seperately allocated string
+Subject: [PATCH 04/11] complete: add generic command complete framework
 To: barebox@lists.infradead.org
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+introduce generic command specific complete callback
 
-Allocate the string in string list seperately instead of
-embedding a zero length string into struct stringlist.
-Besides looking cleaner this allows us to implement a
-string_list_asprintf.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/stringlist.h |    6 ++++--
- lib/stringlist.c     |   10 ++++------
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ common/complete.c  |   55 +++++++++++++++++++++++++++++++++++++--------------
+ include/command.h  |    8 +++++++
+ include/complete.h |    7 ++++++
+ 3 files changed, 55 insertions(+), 15 deletions(-)
 
-diff --git a/include/stringlist.h b/include/stringlist.h
-index c923542..4b3cbf3 100644
---- a/include/stringlist.h
-+++ b/include/stringlist.h
-@@ -5,7 +5,7 @@
+diff --git a/common/complete.c b/common/complete.c
+index 9d749e0..d848396 100644
+--- a/common/complete.c
++++ b/common/complete.c
+@@ -20,13 +20,10 @@
+ #include <common.h>
+ #include <complete.h>
+ #include <xfuncs.h>
+-#include <linux/list.h>
+-#include <malloc.h>
+ #include <fs.h>
+ #include <linux/stat.h>
+ #include <libgen.h>
+ #include <command.h>
+-#include <stringlist.h>
+ #include <environment.h>
  
- struct string_list {
- 	struct list_head list;
--	char str[0];
-+	char *str;
- };
- 
- int string_list_add(struct string_list *sl, char *str);
-@@ -22,8 +22,10 @@ static inline void string_list_free(struct string_list *sl)
- {
- 	struct string_list *entry, *safe;
- 
--	list_for_each_entry_safe(entry, safe, &sl->list, list)
-+	list_for_each_entry_safe(entry, safe, &sl->list, list) {
-+		free(entry->str);
- 		free(entry);
-+	}
+ static int file_complete(struct string_list *sl, char *instr)
+@@ -131,7 +128,7 @@ static int path_command_complete(struct string_list *sl, char *instr)
+ 	return 0;
  }
  
- #endif /* __STRING_H */
-diff --git a/lib/stringlist.c b/lib/stringlist.c
-index a8ff979..c8b835e 100644
---- a/lib/stringlist.c
-+++ b/lib/stringlist.c
-@@ -16,9 +16,8 @@ int string_list_add(struct string_list *sl, char *str)
+-static int command_complete(struct string_list *sl, char *instr)
++int command_complete(struct string_list *sl, char *instr)
  {
- 	struct string_list *new;
+ 	struct command *cmdtp;
  
--	new = xmalloc(sizeof(struct string_list) + strlen(str) + 1);
--
--	strcpy(new->str, str);
-+	new = xmalloc(sizeof(*new));
-+	new->str = xstrdup(str);
+@@ -236,6 +233,32 @@ void complete_reset(void)
+ 	tab_pressed = 0;
+ }
  
- 	list_add_tail(&new->list, &sl->list);
- 
-@@ -29,9 +28,8 @@ int string_list_add_sorted(struct string_list *sl, char *str)
++static char* cmd_complete_lookup(struct string_list *sl, char *instr)
++{
++	struct command *cmdtp;
++	int len;
++	int ret = 1;
++	char *res = NULL;
++
++	for_each_command(cmdtp) {
++		len = strlen(cmdtp->name);
++		if (!strncmp(instr, cmdtp->name, len) && instr[len] == ' ') {
++			instr += len + 1;
++			if (cmdtp->complete) {
++				ret = cmdtp->complete(sl, instr);
++				res = instr;
++			}
++			goto end;
++		}
++	}
++
++end:
++	if (ret == COMPLETE_CONTINUE && *instr == '$')
++		env_param_complete(sl, instr + 1, 1);
++
++	return res;
++}
++
+ int complete(char *instr, char **outstr)
  {
- 	struct string_list *new;
+ 	struct string_list sl, *entry, *first_entry;
+@@ -259,20 +282,22 @@ int complete(char *instr, char **outstr)
+ 	while (*t == ' ')
+ 		t++;
  
--	new = xmalloc(sizeof(struct string_list) + strlen(str) + 1);
+-	instr = t;
 -
--	strcpy(new->str, str);
-+	new = xmalloc(sizeof(*new));
-+	new->str = xstrdup(str);
+ 	/* get the completion possibilities */
+-	if ((t = strrchr(t, ' '))) {
+-		t++;
+-		file_complete(&sl, t);
++	instr = cmd_complete_lookup(&sl, t);
++	if (!instr) {
+ 		instr = t;
+-	} else {
+-		command_complete(&sl, instr);
+-		path_command_complete(&sl, instr);
+-		env_param_complete(&sl, instr, 0);
++		if ((t = strrchr(t, ' '))) {
++			t++;
++			file_complete(&sl, t);
++			instr = t;
++		} else {
++			command_complete(&sl, instr);
++			path_command_complete(&sl, instr);
++			env_param_complete(&sl, instr, 0);
++		}
++		if (*instr == '$')
++			env_param_complete(&sl, instr + 1, 1);
+ 	}
+-	if (*instr == '$')
+-		env_param_complete(&sl, instr + 1, 1);
  
- 	list_add_sort(&new->list, &sl->list, string_list_compare);
+ 	pos = strlen(instr);
+ 
+diff --git a/include/command.h b/include/command.h
+index b2e8449..80cbf56 100644
+--- a/include/command.h
++++ b/include/command.h
+@@ -40,6 +40,8 @@ extern struct list_head command_list;
+ 
+ #define for_each_command(cmd)	list_for_each_entry(cmd, &command_list, list)
+ 
++struct string_list;
++
+ /*
+  * Monitor Command Table
+  */
+@@ -48,6 +50,7 @@ struct command {
+ 	const char	**aliases;
+ 					/* Implementation function	*/
+ 	int		(*cmd)(int, char *[]);
++	int		(*complete)(struct string_list *sl, char *instr);
+ 	const char	*usage;		/* Usage message	(short)	*/
+ 
+ 	struct list_head list;		/* List of commands		*/
+@@ -88,6 +91,11 @@ const struct command __barebox_cmd_##_name						\
+ 
+ #define BAREBOX_CMD_END					\
+ };
++#ifdef CONFIG_AUTO_COMPLETE
++#define BAREBOX_CMD_COMPLETE(_cpt) .complete = _cpt,
++#else
++#define BAREBOX_CMD_COMPLETE(_cpt)
++#endif
+ 
+ #define BAREBOX_CMD_HELP_START(_name) \
+ static const __maybe_unused char cmd_##_name##_help[] =
+diff --git a/include/complete.h b/include/complete.h
+index cc0e88d..0c8ebd6 100644
+--- a/include/complete.h
++++ b/include/complete.h
+@@ -2,9 +2,16 @@
+ #define __COMPLETE_
+ 
+ #include <linux/list.h>
++#include <malloc.h>
++#include <stringlist.h>
++
++#define COMPLETE_END		0
++#define COMPLETE_CONTINUE	1
+ 
+ int complete(char *instr, char **outstr);
+ void complete_reset(void);
+ 
++int command_complete(struct string_list *sl, char *instr);
++
+ #endif /* __COMPLETE_ */
  
 -- 
 1.7.9.1
