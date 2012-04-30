@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SOodi-00077O-RP
- for barebox@lists.infradead.org; Mon, 30 Apr 2012 11:19:36 +0000
+ id 1SOodi-00077Q-ST
+ for barebox@lists.infradead.org; Mon, 30 Apr 2012 11:19:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 30 Apr 2012 13:19:24 +0200
-Message-Id: <1335784768-9189-10-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 30 Apr 2012 13:19:28 +0200
+Message-Id: <1335784768-9189-14-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1335784768-9189-1-git-send-email-s.hauer@pengutronix.de>
 References: <1335784768-9189-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,42 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/13] hush: pass GLOB_NOCHECK to glob
+Subject: [PATCH 13/13] defaultenv: remove now unnecessary hush-hack
 To: barebox@lists.infradead.org
-
-By doing so glob will not return GLOB_NOMATCH anymore but instead
-just does what fake_glob would do.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/hush.c |    7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ defaultenv/bin/hush_hack |    1 -
+ defaultenv/bin/init      |    5 +----
+ 2 files changed, 1 insertion(+), 5 deletions(-)
+ delete mode 100644 defaultenv/bin/hush_hack
 
-diff --git a/common/hush.c b/common/hush.c
-index ea6e53b..d7ed624 100644
---- a/common/hush.c
-+++ b/common/hush.c
-@@ -962,11 +962,6 @@ static int xglob(o_string *dest, int flags, glob_t *pglob)
- 	} else if (glob_needed(dest->data)) {
- 		gr = glob(dest->data, flags, NULL, pglob);
- 		debug("glob returned %d\n",gr);
--		if (gr == GLOB_NOMATCH) {
--			/* quote removal, or more accurately, backslash removal */
--			gr = fake_glob(dest->data, flags, NULL, pglob);
--			debug("globhack returned %d\n",gr);
--		}
- 	} else {
- 		gr = fake_glob(dest->data, flags, NULL, pglob);
- 		debug("globhack returned %d\n",gr);
-@@ -1172,7 +1167,7 @@ static int done_word(o_string *dest, struct p_context *ctx)
- {
- 	struct child_prog *child = ctx->child;
- 	glob_t *glob_target;
--	int gr, flags = 0;
-+	int gr, flags = GLOB_NOCHECK;
+diff --git a/defaultenv/bin/hush_hack b/defaultenv/bin/hush_hack
+deleted file mode 100644
+index 5fffa92..0000000
+--- a/defaultenv/bin/hush_hack
++++ /dev/null
+@@ -1 +0,0 @@
+-nand -a /dev/nand0.*
+diff --git a/defaultenv/bin/init b/defaultenv/bin/init
+index 7452bb6..6e85a82 100644
+--- a/defaultenv/bin/init
++++ b/defaultenv/bin/init
+@@ -14,10 +14,7 @@ fi
  
- 	debug("%s: %s %p\n", __func__, dest->data, child);
- 	if (dest->length == 0 && !dest->nonnull) {
+ if [ -e /dev/nand0 -a -n "$nand_parts" ]; then
+ 	addpart /dev/nand0 $nand_parts
+-
+-	# Uh, oh, hush first expands wildcards and then starts executing
+-	# commands. What a bug!
+-	source /env/bin/hush_hack
++	nand -a /dev/nand0.*
+ fi
+ 
+ if [ -f /env/bin/init_board ]; then
 -- 
 1.7.10
 
