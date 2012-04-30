@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo4.mail-out.ovh.net ([178.33.248.196]
+Received: from 6.mo4.mail-out.ovh.net ([188.165.36.253]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SOpSw-0001C9-EV
- for barebox@lists.infradead.org; Mon, 30 Apr 2012 12:12:31 +0000
+ id 1SOpYH-0001sN-85
+ for barebox@lists.infradead.org; Mon, 30 Apr 2012 12:18:01 +0000
 Received: from mail97.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 114A310509A4
- for <barebox@lists.infradead.org>; Mon, 30 Apr 2012 14:13:46 +0200 (CEST)
-Date: Mon, 30 Apr 2012 13:51:30 +0200
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 1958A10508C0
+ for <barebox@lists.infradead.org>; Mon, 30 Apr 2012 14:19:18 +0200 (CEST)
+Date: Mon, 30 Apr 2012 13:57:03 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120430115130.GC2992@game.jcrosoft.org>
-References: <1335621130-935-1-git-send-email-antonynpavlov@gmail.com>
- <CAA4bVAE_Q=Fisk0HP7MJ8RgHs3UafwTvUp6TAgp6FdeU+S00bQ@mail.gmail.com>
+Message-ID: <20120430115703.GD2992@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAA4bVAE_Q=Fisk0HP7MJ8RgHs3UafwTvUp6TAgp6FdeU+S00bQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,48 +20,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 1/2] MIPS: start.S: add "barebox" label at _start + 8
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/3] qemu-malta nor flash support
+To: barebox@lists.infradead.org
 
-On 20:04 Sat 28 Apr     , Antony Pavlov wrote:
-> On 28 April 2012 17:52, Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > ---
-> > =A0arch/mips/boot/start.S | =A0 =A08 ++++++++
-> > =A01 file changed, 8 insertions(+)
-> >
-> > diff --git a/arch/mips/boot/start.S b/arch/mips/boot/start.S
-> > index b756d40..d8f4fd5 100644
-> > --- a/arch/mips/boot/start.S
-> > +++ b/arch/mips/boot/start.S
-> > @@ -52,6 +52,14 @@ _pc: addiu =A0 \rd, ra, \label - _pc =A0 =A0 =A0 =A0=
- =A0 # label is assumed to be
-> > =A0 =A0 =A0 =A0.align 4
-> >
-> > =A0EXPORT(_start)
-> > +
-> > + =A0 =A0 =A0 b =A0 =A0 =A0 __start
-> > + =A0 =A0 =A0 =A0nop
-> > +
-> > + =A0 =A0 =A0 .ascii =A0"barebox"
-> =
+Hi,
 
-> There is the problem with mips64 (thank to Jean-Christophe).
-> We must set offset for "barebox" string more explicitly.
-> =
+	The following patch serie add CFI flash support
 
-> I will remake the patches.
-I double check by building the malta as 64bit it work but it's true it will=
- be
-better to specified the offset explecitly
+The following changes since commit 6b489256ee1358973d536e723c77c2483e6b9f5b:
 
-btw we need to discuss with the kernel ML to add a Magic too in the
-vmlinux.bin and vmlinu.bin to be able to detect there type automatically
+  Makefile: add barebox.srec to 'clean' (2012-04-30 14:01:34 +0200)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git tags/malta-cfi-flash
+
+for you to fetch changes up to 37a97ca3fce6a92e25e7855359270f83548793bd:
+
+  qemu-malta: add nor flash support (2012-04-30 20:16:28 +0800)
+
+----------------------------------------------------------------
+Mips: malta add cfi flash support
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (3):
+      mips: add in_be16/32 and out_be16/32 for cfi support
+      qemu-malta: rename serial.c to init.c
+      qemu-malta: add nor flash support
+
+ arch/mips/boards/qemu-malta/Makefile             |    2 +-
+ arch/mips/boards/qemu-malta/{serial.c => init.c} |   14 ++++++++++++++
+ arch/mips/configs/qemu-malta_defconfig           |    5 +++++
+ arch/mips/include/asm/io.h                       |    5 +++++
+ 4 files changed, 25 insertions(+), 1 deletions(-)
+ rename arch/mips/boards/qemu-malta/{serial.c => init.c} (76%)
 
 Best Regards,
 J.
