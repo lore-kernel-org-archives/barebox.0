@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo4.mail-out.ovh.net ([188.165.36.253]
- helo=mo4.mail-out.ovh.net)
+Received: from mo4.mail-out.ovh.net ([178.32.228.4])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SOpbG-0002AK-Om
- for barebox@lists.infradead.org; Mon, 30 Apr 2012 12:21:08 +0000
+ id 1SOpbI-0002AY-R4
+ for barebox@lists.infradead.org; Mon, 30 Apr 2012 12:21:09 +0000
 Received: from mail97.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 31E1B10507BE
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id D2BDF1050791
  for <barebox@lists.infradead.org>; Mon, 30 Apr 2012 14:22:25 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 30 Apr 2012 14:00:05 +0200
-Message-Id: <1335787207-27838-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 30 Apr 2012 14:00:07 +0200
+Message-Id: <1335787207-27838-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20120430115703.GD2992@game.jcrosoft.org>
 References: <20120430115703.GD2992@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -25,28 +24,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] mips: add in_be16/32 and out_be16/32 for cfi support
+Subject: [PATCH 3/3] qemu-malta: add nor flash support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/mips/include/asm/io.h |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
+ arch/mips/boards/qemu-malta/init.c     |   13 +++++++++++++
+ arch/mips/configs/qemu-malta_defconfig |    5 +++++
+ 2 files changed, 18 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 5e12860..4100e1e 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -71,4 +71,9 @@ static inline void __raw_writel(u32 b, volatile void __iomem *addr)
- #define writew(b,addr) __raw_writew(__cpu_to_le16(b),addr)
- #define writel(b,addr) __raw_writel(__cpu_to_le32(b),addr)
+diff --git a/arch/mips/boards/qemu-malta/init.c b/arch/mips/boards/qemu-malta/init.c
+index 502b346..4709989 100644
+--- a/arch/mips/boards/qemu-malta/init.c
++++ b/arch/mips/boards/qemu-malta/init.c
+@@ -25,8 +25,21 @@
+ #include <ns16550.h>
+ #include <mach/hardware.h>
+ #include <io.h>
++#include <partition.h>
++#include <sizes.h>
+ #include <asm/common.h>
  
-+#define in_be16(a)	__be16_to_cpu(__raw_readw(a))
-+#define in_be32(a)	__be32_to_cpu(__raw_readl(a))
-+#define out_be16(a, v)	__raw_writew(__cpu_to_be16(v), a)
-+#define out_be32(a, v)	__raw_writel(__cpu_to_be32(v), a)
++static int malta_devices_init(void)
++{
++	add_cfi_flash_device(0, 0x1e000000, SZ_4M, 0);
 +
- #endif	/* __ASM_MIPS_IO_H */
++	devfs_add_partition("nor0", 0x0, SZ_512K, PARTITION_FIXED, "self");
++	devfs_add_partition("nor0", SZ_512K, SZ_64K, PARTITION_FIXED, "env0");
++
++	return 0;
++}
++device_initcall(malta_devices_init);
++
+ static struct NS16550_plat serial_plat = {
+ 	.clock = 1843200, /* no matter for emulated port */
+ 	.shift = 0,
+diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
+index eac21e7..50e0dc4 100644
+--- a/arch/mips/configs/qemu-malta_defconfig
++++ b/arch/mips/configs/qemu-malta_defconfig
+@@ -50,6 +50,11 @@ CONFIG_NET_TFTP_PUSH=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ # CONFIG_SPI is not set
++CONFIG_DRIVER_CFI=y
++# CONFIG_DRIVER_CFI_AMD is not set
++# CONFIG_DRIVER_CFI_BANK_WIDTH_1 is not set
++# CONFIG_DRIVER_CFI_BANK_WIDTH_2 is not set
++CONFIG_CFI_BUFFER_WRITE=y
+ CONFIG_MTD=y
+ CONFIG_FS_CRAMFS=y
+ CONFIG_FS_FAT=y
 -- 
 1.7.9.1
 
