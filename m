@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-gy0-f177.google.com ([209.85.160.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SOpjr-0002a7-9Q
- for barebox@lists.infradead.org; Mon, 30 Apr 2012 12:30:00 +0000
-Received: by ghbf11 with SMTP id f11so1360478ghb.36
- for <barebox@lists.infradead.org>; Mon, 30 Apr 2012 05:29:55 -0700 (PDT)
+Received: from 2.mo4.mail-out.ovh.net ([46.105.72.36]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SOpxx-0003yl-7V
+ for barebox@lists.infradead.org; Mon, 30 Apr 2012 12:44:34 +0000
+Received: from mail97.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 0D5291050A7F
+ for <barebox@lists.infradead.org>; Mon, 30 Apr 2012 14:45:50 +0200 (CEST)
+Date: Mon, 30 Apr 2012 14:23:34 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120430122334.GE2992@game.jcrosoft.org>
 MIME-Version: 1.0
-In-Reply-To: <20120427142310.GG17184@pengutronix.de>
-References: <CAD9ZU8CNj+DEft7R9LqEGx5GgQ3X1BMA=YcWbLjXmwuUrcLfKQ@mail.gmail.com>
- <20120427142310.GG17184@pengutronix.de>
-Date: Mon, 30 Apr 2012 14:29:55 +0200
-Message-ID: <CAD9ZU8Cbsa0L5rgBudy7ADwgrxNrrsRPf_qx=PdrQCRJvvmrxA@mail.gmail.com>
-From: Gabriel Tisan <gabriel.tisan@gmail.com>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,55 +24,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx35_nand driver
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 00/11 v3] improve complete support
+To: barebox@lists.infradead.org
 
->> Hi !
->>
->> I try to upgrade a custom board from an old version(2009) of barebox
->> to a new one.
->>
->> But I have some problems when the nand driver is
->> loading(imx35_add_nand(&nand_info)
->>
->> After I boot with the old barebox, I use tftp to load the new version
->> of barebox in ram and at run I get this on console :
->>
->> NAND device: Manufacturer ID: 0x2c, Chip ID: 0xdc (Micron NAND 512MiB
->> 3,3V 8-bit)
->> Bad block table not found for chip 0
->> Bad block table not found for chip 0
->> Scanning device for bad blocks
->> Bad eraseblock 0 at 0x00000000
->> Bad eraseblock 1 at 0x00020000
->> Bad eraseblock 2 at 0x00040000
->> ................
->>
->> It seems that it could not find the bad block tables, although on the
->> old barebox they are found.
->>
->> Has someone an idea what I could try to go forward ?
->
-> Not a good idea. Some things to check:
->
-> have you played with the nand clock in your board setup (IMX_CCM_BASE +
-> CCM_PDR4)?
-No. I have almost the same board setup like freescale-mx35-3-stack
+Hi,
 
-> do you pass hw_ecc = 1 to the nand driver? I think this was the same
-> back in 2009, but I don't really know.
-Yes. I use this :
-struct imx_nand_platform_data nand_info = {
-	.hw_ecc		= 1,
-	.flash_bbt	= 1,
-};
+	the following patch serie improve the complete support
+	by adding a complete framework to aalow commands complete support
 
-bbt_pattern has also not changed from 2009.
+	the add also car complete support for eval and setting and executable
+	file support
 
-However thanks !
+	this also include an update of the stringlist API to support asprintf
+	API
 
-Gabriel
+v3:
+
+	add macro for complete state
+
+The following changes since commit 6b489256ee1358973d536e723c77c2483e6b9f5b:
+
+  Makefile: add barebox.srec to 'clean' (2012-04-30 14:01:34 +0200)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git tags/complete_update_support
+
+for you to fetch changes up to 9492976bc88a9fe4633202681fcdc24ce1dab636:
+
+  complete: add executable file support (2012-04-30 20:37:40 +0800)
+
+----------------------------------------------------------------
+improve complete support
+
+The following patch serie improve the complete support
+by adding a complete framework to aalow commands complete support.
+
+The add also car complete support for eval and setting and executable
+file support
+
+This also include an update of the stringlist API to support asprintf
+API
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (9):
+      complete: add var and device param complete support
+      complete: add generic command complete framework
+      complete: add device name complete support for devinfo
+      complete: add help complete support
+      complete: add empty complete support
+      complete: add eth interface complete support
+      complete: add go and sleep support
+      complete: add delpart complete support
+      complete: add executable file support
+
+Sascha Hauer (2):
+      stringlist: use seperately allocated string
+      stringlist: implement string_list_add_asprintf
+
+ arch/arm/cpu/cpuinfo.c        |    2 +
+ arch/arm/mach-imx/speed.c     |    2 +
+ arch/arm/mach-mxs/imx.c       |    2 +
+ commands/clear.c              |    2 +
+ commands/false.c              |    2 +
+ commands/go.c                 |    2 +
+ commands/help.c               |    2 +
+ commands/login.c              |    2 +
+ commands/lsmod.c              |    2 +
+ commands/meminfo.c            |    2 +
+ commands/net.c                |    2 +
+ commands/partition.c          |    2 +
+ commands/passwd.c             |    2 +
+ commands/pwd.c                |    2 +
+ commands/reginfo.c            |    2 +
+ commands/reset.c              |    2 +
+ commands/sleep.c              |    2 +
+ commands/true.c               |    2 +
+ commands/usb.c                |    2 +
+ commands/version.c            |    2 +
+ common/complete.c             |  201 +++++++++++++++++++++++++++++++++++------
+ drivers/base/driver.c         |    2 +
+ drivers/usb/gadget/u_serial.c |    2 +
+ fs/devfs-core.c               |   19 ++++
+ include/command.h             |    8 ++
+ include/complete.h            |   12 +++
+ include/stringlist.h          |    7 +-
+ lib/stringlist.c              |   32 ++++++-
+ net/dhcp.c                    |    2 +
+ net/eth.c                     |   21 +++++
+ 30 files changed, 312 insertions(+), 34 deletions(-)
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
