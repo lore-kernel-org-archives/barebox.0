@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SOpJJ-00015y-OI
- for barebox@lists.infradead.org; Mon, 30 Apr 2012 12:02:34 +0000
-Date: Mon, 30 Apr 2012 14:02:30 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120430120230.GK4141@pengutronix.de>
-References: <1335628376-6568-1-git-send-email-antonynpavlov@gmail.com>
- <E1SOA1b-0006GH-9v.shc_work-mail-ru@f99.mail.ru>
+Received: from 1.mo4.mail-out.ovh.net ([178.33.248.196]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SOpSw-0001C9-EV
+ for barebox@lists.infradead.org; Mon, 30 Apr 2012 12:12:31 +0000
+Received: from mail97.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 114A310509A4
+ for <barebox@lists.infradead.org>; Mon, 30 Apr 2012 14:13:46 +0200 (CEST)
+Date: Mon, 30 Apr 2012 13:51:30 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120430115130.GC2992@game.jcrosoft.org>
+References: <1335621130-935-1-git-send-email-antonynpavlov@gmail.com>
+ <CAA4bVAE_Q=Fisk0HP7MJ8RgHs3UafwTvUp6TAgp6FdeU+S00bQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <E1SOA1b-0006GH-9v.shc_work-mail-ru@f99.mail.ru>
+In-Reply-To: <CAA4bVAE_Q=Fisk0HP7MJ8RgHs3UafwTvUp6TAgp6FdeU+S00bQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,40 +23,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Makefile: add barebox.srec to 'clean'
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [RFC 1/2] MIPS: start.S: add "barebox" label at _start + 8
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-T24gU2F0LCBBcHIgMjgsIDIwMTIgYXQgMDc6NTc6MzFQTSArMDQwMCwgQWxleGFuZGVyIFNoaXlh
-biB3cm90ZToKPiBTYXQsIDI4IEFwciAyMDEyIDE5OjUyOjU2ICswNDAwINC+0YIgQW50b255IFBh
-dmxvdiA8YW50b255bnBhdmxvdkBnbWFpbC5jb20+Ogo+ID4gU2lnbmVkLW9mZi1ieTogQW50b255
-IFBhdmxvdiA8YW50b255bnBhdmxvdkBnbWFpbC5jb20+Cj4gPiAtLS0KPiA+ICBNYWtlZmlsZSB8
-ICAgIDMgKystCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlv
-bigtKQo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvTWFrZWZpbGUgYi9NYWtlZmlsZQo+ID4gaW5kZXgg
-ZmI4NTkxNS4uNDRiN2RiZCAxMDA2NDQKPiA+IC0tLSBhL01ha2VmaWxlCj4gPiArKysgYi9NYWtl
-ZmlsZQo+ID4gQEAgLTEwMDIsNyArMTAwMiw4IEBAIGVuZGlmICMgQ09ORklHX01PRFVMRVMKPiA+
-ICBDTEVBTl9ESVJTICArPSAkKE1PRFZFUkRJUikKPiA+ICBDTEVBTl9GSUxFUyArPQliYXJlYm94
-IFN5c3RlbS5tYXAgaW5jbHVkZS9nZW5lcmF0ZWQvYmFyZWJveF9kZWZhdWx0X2Vudi5oIFwKPiA+
-ICAgICAgICAgICAgICAgICAgLnRtcF92ZXJzaW9uIC50bXBfYmFyZWJveCogYmFyZWJveC5iaW4g
-YmFyZWJveC5tYXAgYmFyZWJveC5TIFwKPiA+IC0JCS50bXBfa2FsbHN5bXMqIGJhcmVib3hfZGVm
-YXVsdF9lbnYqIGJhcmVib3gubGRyIERveHlmaWxlLnZlcnNpb24KPiA+ICsJCS50bXBfa2FsbHN5
-bXMqIGJhcmVib3hfZGVmYXVsdF9lbnYqIGJhcmVib3gubGRyIFwKPiA+ICsJCURveHlmaWxlLnZl
-cnNpb24gYmFyZWJveC5zcmVjCj4gPiAgCj4gPiAgIyBEaXJlY3RvcmllcyAmIGZpbGVzIHJlbW92
-ZWQgd2l0aCAnbWFrZSBtcnByb3BlcicKPiA+ICBNUlBST1BFUl9ESVJTICArPSBpbmNsdWRlL2Nv
-bmZpZyBpbmNsdWRlMiB1c3IvaW5jbHVkZQo+IENhbiB3ZSBhZGQgdGhlcmUgYmFyZWJveCogPwoK
-RG9uJ3Qga25vdyB0aGUgaW1wbGljYXRpb25zLiBGb3Igbm93IEkgYXBwbGllZCBBbnRvbnlzIHBh
-dGNoLgoKU2FzY2hhCgo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCj4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
-Ci0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAg
-ICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgs
-IDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAg
-fApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5
-LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
-b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On 20:04 Sat 28 Apr     , Antony Pavlov wrote:
+> On 28 April 2012 17:52, Antony Pavlov <antonynpavlov@gmail.com> wrote:
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > ---
+> > =A0arch/mips/boot/start.S | =A0 =A08 ++++++++
+> > =A01 file changed, 8 insertions(+)
+> >
+> > diff --git a/arch/mips/boot/start.S b/arch/mips/boot/start.S
+> > index b756d40..d8f4fd5 100644
+> > --- a/arch/mips/boot/start.S
+> > +++ b/arch/mips/boot/start.S
+> > @@ -52,6 +52,14 @@ _pc: addiu =A0 \rd, ra, \label - _pc =A0 =A0 =A0 =A0=
+ =A0 # label is assumed to be
+> > =A0 =A0 =A0 =A0.align 4
+> >
+> > =A0EXPORT(_start)
+> > +
+> > + =A0 =A0 =A0 b =A0 =A0 =A0 __start
+> > + =A0 =A0 =A0 =A0nop
+> > +
+> > + =A0 =A0 =A0 .ascii =A0"barebox"
+> =
+
+> There is the problem with mips64 (thank to Jean-Christophe).
+> We must set offset for "barebox" string more explicitly.
+> =
+
+> I will remake the patches.
+I double check by building the malta as 64bit it work but it's true it will=
+ be
+better to specified the offset explecitly
+
+btw we need to discuss with the kernel ML to add a Magic too in the
+vmlinux.bin and vmlinu.bin to be able to detect there type automatically
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
