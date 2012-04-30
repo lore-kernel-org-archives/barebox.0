@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-iy0-f177.google.com ([209.85.210.177])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SOA86-0000Er-Nz
- for barebox@lists.infradead.org; Sat, 28 Apr 2012 16:04:16 +0000
-Received: by iaky10 with SMTP id y10so2957949iak.36
- for <barebox@lists.infradead.org>; Sat, 28 Apr 2012 09:04:13 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <1335621130-935-1-git-send-email-antonynpavlov@gmail.com>
-References: <1335621130-935-1-git-send-email-antonynpavlov@gmail.com>
-Date: Sat, 28 Apr 2012 20:04:13 +0400
-Message-ID: <CAA4bVAE_Q=Fisk0HP7MJ8RgHs3UafwTvUp6TAgp6FdeU+S00bQ@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+ id 1SOodt-00079l-Cu
+ for barebox@lists.infradead.org; Mon, 30 Apr 2012 11:19:46 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 30 Apr 2012 13:19:25 +0200
+Message-Id: <1335784768-9189-11-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1335784768-9189-1-git-send-email-s.hauer@pengutronix.de>
+References: <1335784768-9189-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,54 +16,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 1/2] MIPS: start.S: add "barebox" label at _start + 8
+Subject: [PATCH 10/13] glob: activate GLOB_NOCHECK flag
 To: barebox@lists.infradead.org
 
-On 28 April 2012 17:52, Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
-> =A0arch/mips/boot/start.S | =A0 =A08 ++++++++
-> =A01 file changed, 8 insertions(+)
->
-> diff --git a/arch/mips/boot/start.S b/arch/mips/boot/start.S
-> index b756d40..d8f4fd5 100644
-> --- a/arch/mips/boot/start.S
-> +++ b/arch/mips/boot/start.S
-> @@ -52,6 +52,14 @@ _pc: addiu =A0 \rd, ra, \label - _pc =A0 =A0 =A0 =A0 =
-=A0 # label is assumed to be
-> =A0 =A0 =A0 =A0.align 4
->
-> =A0EXPORT(_start)
-> +
-> + =A0 =A0 =A0 b =A0 =A0 =A0 __start
-> + =A0 =A0 =A0 =A0nop
-> +
-> + =A0 =A0 =A0 .ascii =A0"barebox"
+Needed for hush.
 
-There is the problem with mips64 (thank to Jean-Christophe).
-We must set offset for "barebox" string more explicitly.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ lib/glob.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-I will remake the patches.
+diff --git a/lib/glob.c b/lib/glob.c
+index 43d2f67..74d2b12 100644
+--- a/lib/glob.c
++++ b/lib/glob.c
+@@ -209,7 +209,7 @@ int glob(const char *pattern, int flags,
+ 
+ 		if (pglob->gl_pathc == oldcount) {
+ 			/* No matches.  */
+-#ifdef CONFIG_GLOB_NOCHECK
++
+ 			if (flags & GLOB_NOCHECK) {
+ 				size_t len = strlen(pattern) + 1;
+ 				char *patcopy = (char *)xmalloc(len);
+@@ -232,9 +232,7 @@ int glob(const char *pattern, int flags,
+ 				pglob->gl_pathv[pglob->gl_pathc++] = patcopy;
+ 				pglob->gl_pathv[pglob->gl_pathc] = NULL;
+ 				pglob->gl_flags = flags;
+-			} else
+-#endif
+-			{
++			} else {
+ 				status = GLOB_NOMATCH;
+ 				goto out;
+ 			}
+@@ -367,7 +365,7 @@ static int glob_in_dir(const char *pattern, const char *directory,
+ 				break;
+ 		}
+ 	}
+-#ifdef CONFIG_GLOB_NOCHECK
++
+ 	if (nfound == 0 && (flags & GLOB_NOCHECK)) {
+ 		size_t len = strlen(pattern);
+ 		nfound = 1;
+@@ -378,7 +376,7 @@ static int glob_in_dir(const char *pattern, const char *directory,
+ 		memcpy(names->name, pattern, len);
+ 		names->name[len] = '\0';
+ 	}
+-#endif
++
+ 	pglob->gl_pathv
+ 	    = (char **)xrealloc(pglob->gl_pathv,
+ 			       (pglob->gl_pathc +
+-- 
+1.7.10
 
-> + =A0 =A0 =A0 .byte =A0 0
-> +
-> +__start:
-> =A0 =A0 =A0 =A0/* disable watchpoints */
-> =A0 =A0 =A0 =A0mtc0 =A0 =A0zero, CP0_WATCHLO
-> =A0 =A0 =A0 =A0mtc0 =A0 =A0zero, CP0_WATCHHI
-> --
-> 1.7.10
->
-
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
