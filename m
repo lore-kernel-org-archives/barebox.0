@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo4.mail-out.ovh.net ([91.121.62.11]
+Received: from 5.mo4.mail-out.ovh.net ([188.165.44.50]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SOq0R-00042V-ML
- for barebox@lists.infradead.org; Mon, 30 Apr 2012 12:47:08 +0000
+ id 1SOq0T-00042t-6m
+ for barebox@lists.infradead.org; Mon, 30 Apr 2012 12:47:10 +0000
 Received: from mail97.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 45C371050601
- for <barebox@lists.infradead.org>; Mon, 30 Apr 2012 14:48:26 +0200 (CEST)
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 0C39A1050647
+ for <barebox@lists.infradead.org>; Mon, 30 Apr 2012 14:48:27 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 30 Apr 2012 14:25:57 +0200
-Message-Id: <1335788764-30430-4-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 30 Apr 2012 14:25:58 +0200
+Message-Id: <1335788764-30430-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <20120430122334.GE2992@game.jcrosoft.org>
 References: <20120430122334.GE2992@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
@@ -25,164 +25,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/11] complete: add generic command complete framework
+Subject: [PATCH 05/11] complete: add device name complete support for devinfo
 To: barebox@lists.infradead.org
-
-introduce generic command specific complete callback
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/complete.c  |   55 +++++++++++++++++++++++++++++++++++++--------------
- include/command.h  |    8 +++++++
- include/complete.h |    7 ++++++
- 3 files changed, 55 insertions(+), 15 deletions(-)
+ common/complete.c     |   20 ++++++++++++++++++++
+ drivers/base/driver.c |    2 ++
+ include/complete.h    |    1 +
+ 3 files changed, 23 insertions(+), 0 deletions(-)
 
 diff --git a/common/complete.c b/common/complete.c
-index 9d749e0..d848396 100644
+index d848396..c2b37e4 100644
 --- a/common/complete.c
 +++ b/common/complete.c
-@@ -20,13 +20,10 @@
- #include <common.h>
- #include <complete.h>
- #include <xfuncs.h>
--#include <linux/list.h>
--#include <malloc.h>
- #include <fs.h>
- #include <linux/stat.h>
- #include <libgen.h>
- #include <command.h>
--#include <stringlist.h>
- #include <environment.h>
- 
- static int file_complete(struct string_list *sl, char *instr)
-@@ -131,7 +128,7 @@ static int path_command_complete(struct string_list *sl, char *instr)
+@@ -145,6 +145,26 @@ int command_complete(struct string_list *sl, char *instr)
  	return 0;
  }
  
--static int command_complete(struct string_list *sl, char *instr)
-+int command_complete(struct string_list *sl, char *instr)
- {
- 	struct command *cmdtp;
- 
-@@ -236,6 +233,32 @@ void complete_reset(void)
- 	tab_pressed = 0;
- }
- 
-+static char* cmd_complete_lookup(struct string_list *sl, char *instr)
++int device_complete(struct string_list *sl, char *instr)
 +{
-+	struct command *cmdtp;
++	struct device_d *dev;
 +	int len;
-+	int ret = 1;
-+	char *res = NULL;
 +
-+	for_each_command(cmdtp) {
-+		len = strlen(cmdtp->name);
-+		if (!strncmp(instr, cmdtp->name, len) && instr[len] == ' ') {
-+			instr += len + 1;
-+			if (cmdtp->complete) {
-+				ret = cmdtp->complete(sl, instr);
-+				res = instr;
-+			}
-+			goto end;
-+		}
++	if (!instr)
++		instr = "";
++
++	len = strlen(instr);
++
++	for_each_device(dev) {
++		if (strncmp(instr, dev_name(dev), len))
++			continue;
++
++		string_list_add_asprintf(sl, "%s ", dev_name(dev));
 +	}
 +
-+end:
-+	if (ret == COMPLETE_CONTINUE && *instr == '$')
-+		env_param_complete(sl, instr + 1, 1);
-+
-+	return res;
++	return COMPLETE_CONTINUE;
 +}
 +
- int complete(char *instr, char **outstr)
+ static int device_param_complete(char *begin, struct device_d *dev,
+ 				 struct string_list *sl, char *instr)
  {
- 	struct string_list sl, *entry, *first_entry;
-@@ -259,20 +282,22 @@ int complete(char *instr, char **outstr)
- 	while (*t == ' ')
- 		t++;
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 9924fee..547d684 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -33,6 +33,7 @@
+ #include <errno.h>
+ #include <fs.h>
+ #include <linux/list.h>
++#include <complete.h>
  
--	instr = t;
--
- 	/* get the completion possibilities */
--	if ((t = strrchr(t, ' '))) {
--		t++;
--		file_complete(&sl, t);
-+	instr = cmd_complete_lookup(&sl, t);
-+	if (!instr) {
- 		instr = t;
--	} else {
--		command_complete(&sl, instr);
--		path_command_complete(&sl, instr);
--		env_param_complete(&sl, instr, 0);
-+		if ((t = strrchr(t, ' '))) {
-+			t++;
-+			file_complete(&sl, t);
-+			instr = t;
-+		} else {
-+			command_complete(&sl, instr);
-+			path_command_complete(&sl, instr);
-+			env_param_complete(&sl, instr, 0);
-+		}
-+		if (*instr == '$')
-+			env_param_complete(&sl, instr + 1, 1);
- 	}
--	if (*instr == '$')
--		env_param_complete(&sl, instr + 1, 1);
+ LIST_HEAD(device_list);
+ EXPORT_SYMBOL(device_list);
+@@ -443,6 +444,7 @@ BAREBOX_CMD_START(devinfo)
+ 	.cmd		= do_devinfo,
+ 	.usage		= "Show information about devices and drivers.",
+ 	BAREBOX_CMD_HELP(cmd_devinfo_help)
++	BAREBOX_CMD_COMPLETE(device_complete)
+ BAREBOX_CMD_END
+ #endif
  
- 	pos = strlen(instr);
- 
-diff --git a/include/command.h b/include/command.h
-index b2e8449..80cbf56 100644
---- a/include/command.h
-+++ b/include/command.h
-@@ -40,6 +40,8 @@ extern struct list_head command_list;
- 
- #define for_each_command(cmd)	list_for_each_entry(cmd, &command_list, list)
- 
-+struct string_list;
-+
- /*
-  * Monitor Command Table
-  */
-@@ -48,6 +50,7 @@ struct command {
- 	const char	**aliases;
- 					/* Implementation function	*/
- 	int		(*cmd)(int, char *[]);
-+	int		(*complete)(struct string_list *sl, char *instr);
- 	const char	*usage;		/* Usage message	(short)	*/
- 
- 	struct list_head list;		/* List of commands		*/
-@@ -88,6 +91,11 @@ const struct command __barebox_cmd_##_name						\
- 
- #define BAREBOX_CMD_END					\
- };
-+#ifdef CONFIG_AUTO_COMPLETE
-+#define BAREBOX_CMD_COMPLETE(_cpt) .complete = _cpt,
-+#else
-+#define BAREBOX_CMD_COMPLETE(_cpt)
-+#endif
- 
- #define BAREBOX_CMD_HELP_START(_name) \
- static const __maybe_unused char cmd_##_name##_help[] =
 diff --git a/include/complete.h b/include/complete.h
-index cc0e88d..0c8ebd6 100644
+index 0c8ebd6..9f8d784 100644
 --- a/include/complete.h
 +++ b/include/complete.h
-@@ -2,9 +2,16 @@
- #define __COMPLETE_
- 
- #include <linux/list.h>
-+#include <malloc.h>
-+#include <stringlist.h>
-+
-+#define COMPLETE_END		0
-+#define COMPLETE_CONTINUE	1
- 
- int complete(char *instr, char **outstr);
+@@ -12,6 +12,7 @@ int complete(char *instr, char **outstr);
  void complete_reset(void);
  
-+int command_complete(struct string_list *sl, char *instr);
-+
+ int command_complete(struct string_list *sl, char *instr);
++int device_complete(struct string_list *sl, char *instr);
+ 
  #endif /* __COMPLETE_ */
  
 -- 
