@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SOoqg-0000O0-Cf
- for barebox@lists.infradead.org; Mon, 30 Apr 2012 11:32:58 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1SOoqe-0005qs-N3
- for barebox@lists.infradead.org; Mon, 30 Apr 2012 13:32:56 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <sha@pengutronix.de>) id 1SOoqe-0003tp-Lh
- for barebox@lists.infradead.org; Mon, 30 Apr 2012 13:32:56 +0200
+ id 1SOoqg-0000O1-Cg
+ for barebox@lists.infradead.org; Mon, 30 Apr 2012 11:32:59 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 30 Apr 2012 13:32:51 +0200
-Message-Id: <1335785575-14953-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 30 Apr 2012 13:32:52 +0200
+Message-Id: <1335785575-14953-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1335785575-14953-1-git-send-email-s.hauer@pengutronix.de>
+References: <1335785575-14953-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,26 +21,104 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: misc patches
+Subject: [PATCH 1/4] edit: Add proper screen size handling
 To: barebox@lists.infradead.org
 
-Some misc patches
+We used to have a quite slow algorithm to detect the screen size
+which was unused for long time. This patch changes this to first
+set the cursor to x=999, y=999 and the read back the actual cursor
+position. Since I am not confident that this works on all terminals
+this is only used when edit is called as 'sedit'.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/edit.c |   50 ++++++++++++++++++++------------------------------
+ 1 file changed, 20 insertions(+), 30 deletions(-)
 
-----------------------------------------------------------------
-Sascha Hauer (4):
-      edit: Add proper screen size handling
-      remove dlmalloc.src
-      dhcp: set start time
-      tlsf_malloc: return valid pointer for malloc(0)
+diff --git a/commands/edit.c b/commands/edit.c
+index db2f89a..fae76cd 100644
+--- a/commands/edit.c
++++ b/commands/edit.c
+@@ -355,37 +355,26 @@ static void merge_line(struct line *line)
+ 	refresh(1);
+ }
+ 
+-/* not a good idea on slow serial lines */
+-/* #define GETWINSIZE */
++#define ESC "\033"
+ 
+-#ifdef GETWINSIZE
+-static void getwinsize(void) {
+-	int y, yy = 25, xx = 80, i, n, r;
++static void getwinsize(void)
++{
++	int i = 0, r;
+ 	char buf[100];
+ 	char *endp;
+ 
+-	for (y = 25; y < 320; y++) {
+-		pos(y, y);
+-		printf("%c[6n", 27);
+-		i = 0;
+-		while ((r = getc()) != 'R') {
+-			buf[i] = r;
+-			i++;
+-		}
+-		n = simple_strtoul(buf + 2, &endp, 10);
+-		if (n == y + 1)
+-			yy = y + 1;
+-		n = simple_strtoul(endp + 1, NULL, 10);
+-		if (n == y + 1)
+-			xx = y + 1;
++	printf(ESC "7" ESC "[r" ESC "[999;999H" ESC "[6n");
++
++	while ((r = getc()) != 'R') {
++		buf[i] = r;
++		i++;
+ 	}
+-	pos(0,0);
+-	screenheight = yy;
+-	screenwidth = xx;
+-	printf("%d %d\n", xx, yy);
+-	mdelay(1000);
++
++	screenheight = simple_strtoul(buf + 2, &endp, 10);
++	screenwidth = simple_strtoul(endp + 1, NULL, 10);
++
++	pos(0, 0);
+ }
+-#endif
+ 
+ static int do_edit(int argc, char *argv[])
+ {
+@@ -397,18 +386,19 @@ static int do_edit(int argc, char *argv[])
+ 	if (argc != 2)
+ 		return COMMAND_ERROR_USAGE;
+ 
++	screenwidth = 80;
++	screenheight = 25;
++
+ 	/* check if we are called as "sedit" instead of "edit" */
+-	if (*argv[0] == 's')
++	if (*argv[0] == 's') {
+ 		smartscroll = 1;
++		getwinsize();
++	}
+ 
+ 	buffer = NULL;
+ 	if(edit_read_file(argv[1]))
+ 		return 1;
+ 
+-#ifdef GETWINSIZE
+-	getwinsize();
+-#endif
+-
+ 	cursx  = 0;
+ 	cursy  = 0;
+ 	textx  = 0;
+-- 
+1.7.10
 
- commands/edit.c      |   50 +-
- common/dlmalloc.src  | 3265 --------------------------------------------------
- common/tlsf_malloc.c |    7 +
- net/dhcp.c           |    1 +
- 4 files changed, 28 insertions(+), 3295 deletions(-)
- delete mode 100644 common/dlmalloc.src
 
 _______________________________________________
 barebox mailing list
