@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SOodi-00077L-Pn
- for barebox@lists.infradead.org; Mon, 30 Apr 2012 11:19:37 +0000
+ id 1SOodi-00077N-QL
+ for barebox@lists.infradead.org; Mon, 30 Apr 2012 11:19:38 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 30 Apr 2012 13:19:23 +0200
-Message-Id: <1335784768-9189-9-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 30 Apr 2012 13:19:17 +0200
+Message-Id: <1335784768-9189-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1335784768-9189-1-git-send-email-s.hauer@pengutronix.de>
 References: <1335784768-9189-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,103 +21,176 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/13] hush: simplify globhack
+Subject: [PATCH 02/13] hush: safe an indention level by continueing a loop
 To: barebox@lists.infradead.org
-
-hush used to escape '*' '[' '?' during parsing because the quotes
-got removed in the first parsing loop.
-
-globhack is used to remove these escapes again for glob. Since we now
-keep the quotes until the end of parsing and we no longer escape glob
-wildcards, we do no longer have to remove any quotes. With this globhack
-can be much simpler.
-
-While at it, change the prototype to match the one from glob() and rename
-the function to fake_glob, because that's what it is: it just copies the
-input string into the output struct without actually globbing.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/hush.c |   39 ++++++++-------------------------------
- 1 file changed, 8 insertions(+), 31 deletions(-)
+ common/hush.c |  135 +++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 69 insertions(+), 66 deletions(-)
 
 diff --git a/common/hush.c b/common/hush.c
-index e32e884..ea6e53b 100644
+index 091938d..9b512f9 100644
 --- a/common/hush.c
 +++ b/common/hush.c
-@@ -911,26 +911,11 @@ static int free_pipe_list(struct pipe *head, int indent)
- 	return rcode;
- }
+@@ -1274,7 +1274,7 @@ static int parse_stream(o_string *dest, struct p_context *ctx,
+ 	 * found.  When recursing, quote state is passed in via dest->quote. */
  
--/* The API for glob is arguably broken.  This routine pushes a non-matching
-- * string into the output structure, removing non-backslashed backslashes.
-- * If someone can prove me wrong, by performing this function within the
-- * original glob(3) api, feel free to rewrite this routine into oblivion.
-- * Return code (0 vs. GLOB_NOSPACE) matches glob(3).
-- * XXX broken if the last character is '\\', check that before calling.
-- */
--static int globhack(const char *src, int flags, glob_t *pglob)
-+static int fake_glob(const char *src, int flags,
-+		int (*errfunc) (const char *epath, int eerrno),
-+		glob_t *pglob)
- {
--	int cnt = 0, pathc;
--	const char *s;
--	char *dest;
--
--	for (cnt = 1, s = src; s && *s; s++) {
--		if (*s == '\\' && strchr("*[?", *(s + 1)))
--			s++;
--		cnt++;
--	}
--
--	dest = xmalloc(cnt);
-+	int pathc;
- 
- 	if (!(flags & GLOB_APPEND)) {
- 		globfree(pglob);
-@@ -940,17 +925,9 @@ static int globhack(const char *src, int flags, glob_t *pglob)
- 	}
- 	pathc = ++pglob->gl_pathc;
- 	pglob->gl_pathv = xrealloc(pglob->gl_pathv, (pathc + 1) * sizeof(*pglob->gl_pathv));
--	pglob->gl_pathv[pathc - 1] = dest;
-+	pglob->gl_pathv[pathc - 1] = xstrdup(src);
- 	pglob->gl_pathv[pathc] = NULL;
- 
--	for (s = src; s && *s; s++, dest++) {
--		if (*s == '\\' && strchr("*[?", *(s + 1)))
--			s++;
--		*dest = *s;
--	}
--
--	*dest = '\0';
--
- 	return 0;
- }
- 
-@@ -977,7 +954,7 @@ static int xglob(o_string *dest, int flags, glob_t *pglob)
- 	if (dest->length == 0) {
- 		if (dest->nonnull) {
- 			/* bash man page calls this an "explicit" null */
--			gr = globhack(dest->data, flags, pglob);
-+			gr = fake_glob(dest->data, flags, NULL, pglob);
- 			debug("globhack returned %d\n",gr);
- 		} else {
- 			return 0;
-@@ -987,11 +964,11 @@ static int xglob(o_string *dest, int flags, glob_t *pglob)
- 		debug("glob returned %d\n",gr);
- 		if (gr == GLOB_NOMATCH) {
- 			/* quote removal, or more accurately, backslash removal */
--			gr = globhack(dest->data, flags, pglob);
-+			gr = fake_glob(dest->data, flags, NULL, pglob);
- 			debug("globhack returned %d\n",gr);
+ 	debug("parse_stream, end_trigger=%d\n",end_trigger);
+-	while ((ch=b_getch(input))!=EOF) {
++	while ((ch = b_getch(input)) != EOF) {
+ 		m = map[ch];
+ 		if (input->__promptme == 0)
+ 			return 1;
+@@ -1298,80 +1298,83 @@ static int parse_stream(o_string *dest, struct p_context *ctx,
+ 			if (end_trigger != '\0' && ch=='\n')
+ 				done_pipe(ctx,PIPE_SEQ);
  		}
- 	} else {
--		gr = globhack(dest->data, flags, pglob);
-+		gr = fake_glob(dest->data, flags, NULL, pglob);
- 		debug("globhack returned %d\n",gr);
++
+ 		if (ch == end_trigger && !dest->quote && ctx->w==RES_NONE) {
+ 			debug("leaving parse_stream (triggered)\n");
+ 			return 0;
+ 		}
+-		if (m != 2) {
+-			switch (ch) {
+-			case '#':
+-				if (dest->length == 0 && !dest->quote) {
+-					while (ch = b_peek(input), ch != EOF && ch!='\n') {
+-						b_getch(input);
+-					}
+-				} else {
+-					b_addqchr(dest, ch, dest->quote);
+-				}
+-				break;
+-			case '\\':
+-				if (next == EOF) {
+-					syntax();
+-					return 1;
+-				}
+-				b_addqchr(dest, '\\', dest->quote);
+-				b_addqchr(dest, b_getch(input), dest->quote);
+-				break;
+-			case '$':
+-				if (handle_dollar(dest, ctx, input)!=0)
+-					return 1;
+-				break;
+-			case '\'':
+-				dest->nonnull = 1;
+-				while (ch = b_getch(input), ch!=EOF && ch != '\'') {
+-					if (input->__promptme == 0)
+-						return 1;
+-					b_addchr(dest,ch);
+-				}
+-				if (ch == EOF) {
+-					syntax();
+-					return 1;
+-				}
+-				break;
+-			case '"':
+-				dest->nonnull = 1;
+-				dest->quote = !dest->quote;
+-				break;
+-			case ';':
+-				done_word(dest, ctx);
+-				done_pipe(ctx, PIPE_SEQ);
+-				break;
+-			case '&':
+-				done_word(dest, ctx);
+-				if (next == '&') {
++
++		if (m == 2)
++			continue;
++
++		switch (ch) {
++		case '#':
++			if (dest->length == 0 && !dest->quote) {
++				while (ch = b_peek(input), ch != EOF && ch!='\n') {
+ 					b_getch(input);
+-					done_pipe(ctx, PIPE_AND);
+-				} else {
+-					syntax_err();
+-					return 1;
+ 				}
+-				break;
+-			case '|':
+-				done_word(dest, ctx);
+-				if (next == '|') {
+-					b_getch(input);
+-					done_pipe(ctx, PIPE_OR);
+-				} else {
+-					/* we could pick up a file descriptor choice here
+-					 * with redirect_opt_num(), but bash doesn't do it.
+-					 * "echo foo 2| cat" yields "foo 2". */
+-					syntax_err();
++			} else {
++				b_addqchr(dest, ch, dest->quote);
++			}
++			break;
++		case '\\':
++			if (next == EOF) {
++				syntax();
++				return 1;
++			}
++			b_addqchr(dest, '\\', dest->quote);
++			b_addqchr(dest, b_getch(input), dest->quote);
++			break;
++		case '$':
++			if (handle_dollar(dest, ctx, input)!=0)
++				return 1;
++			break;
++		case '\'':
++			dest->nonnull = 1;
++			while (ch = b_getch(input), ch!=EOF && ch != '\'') {
++				if (input->__promptme == 0)
+ 					return 1;
+-				}
+-				break;
+-			default:
+-				syntax();   /* this is really an internal logic error */
++				b_addchr(dest,ch);
++			}
++			if (ch == EOF) {
++				syntax();
+ 				return 1;
+ 			}
++			break;
++		case '"':
++			dest->nonnull = 1;
++			dest->quote = !dest->quote;
++			break;
++		case ';':
++			done_word(dest, ctx);
++			done_pipe(ctx, PIPE_SEQ);
++			break;
++		case '&':
++			done_word(dest, ctx);
++			if (next == '&') {
++				b_getch(input);
++				done_pipe(ctx, PIPE_AND);
++			} else {
++				syntax_err();
++				return 1;
++			}
++			break;
++		case '|':
++			done_word(dest, ctx);
++			if (next == '|') {
++				b_getch(input);
++				done_pipe(ctx, PIPE_OR);
++			} else {
++				/* we could pick up a file descriptor choice here
++				 * with redirect_opt_num(), but bash doesn't do it.
++				 * "echo foo 2| cat" yields "foo 2". */
++				syntax_err();
++				return 1;
++			}
++			break;
++		default:
++			syntax();   /* this is really an internal logic error */
++			return 1;
+ 		}
  	}
- 	if (gr != 0) { /* GLOB_ABORTED ? */
+ 
 -- 
 1.7.10
 
