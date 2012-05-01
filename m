@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og106.obsmtp.com ([64.18.0.182])
+Received: from exprod5og110.obsmtp.com ([64.18.0.20])
  by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SP9La-0007kz-PK
- for barebox@lists.infradead.org; Tue, 01 May 2012 09:26:17 +0000
+ id 1SP9Lc-0007lk-E9
+ for barebox@lists.infradead.org; Tue, 01 May 2012 09:26:22 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Tue,  1 May 2012 10:26:02 +0100
-Message-Id: <1335864363-18383-4-git-send-email-renaud.barbier@ge.com>
+Date: Tue,  1 May 2012 10:26:03 +0100
+Message-Id: <1335864363-18383-5-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1335864363-18383-1-git-send-email-renaud.barbier@ge.com>
 References: <1335864363-18383-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,382 +21,687 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH V4 3/4] Header files update to support the mpc85xx.
+Subject: [PATCH V4 4/4] Minimal P2020RDB platform support and configuration
+ file
 To: barebox@lists.infradead.org
 
-The introduction of the new CPU architecture and board support
-leads to the update of existing header files. Are added:
- - functions and macros to manipulate bits of registers field values.
- - external declaration of cache handling functions to prevent
-   compilation warnings.
- - new processor definitions.
- - macros (in replacement of existing definitions) to set 85xx TLB
-   registers.
+This is a limited board support for the P2020RDB platform.
+The DDR is configured for a memory bus running at 667Mhz.
+The board  boots from NOR flash and output the prompt to the
+serial port at 115200 bauds. No other drivers are provided.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- arch/ppc/include/asm/bitops.h    |   42 +++++++++++++++++++++++
- arch/ppc/include/asm/cache.h     |    2 +
- arch/ppc/include/asm/common.h    |    1 +
- arch/ppc/include/asm/io.h        |   20 +++++++++++
- arch/ppc/include/asm/mmu.h       |   69 +++++++++++++++++++++++++++++++++----
- arch/ppc/include/asm/processor.h |   44 ++++++++++++++++++++++++
- include/linux/types.h            |    2 +
- 7 files changed, 172 insertions(+), 8 deletions(-)
+ arch/ppc/Makefile                                |    1 +
+ arch/ppc/boards/freescale-p2020rdb/Makefile      |    4 +
+ arch/ppc/boards/freescale-p2020rdb/barebox.lds.S |  144 +++++++++++++
+ arch/ppc/boards/freescale-p2020rdb/config.h      |   98 +++++++++
+ arch/ppc/boards/freescale-p2020rdb/law.c         |   31 +++
+ arch/ppc/boards/freescale-p2020rdb/p2020rdb.c    |  237 ++++++++++++++++++++++
+ arch/ppc/boards/freescale-p2020rdb/tlb.c         |   62 ++++++
+ arch/ppc/configs/p2020rdb_defconfig              |   23 ++
+ 8 files changed, 600 insertions(+), 0 deletions(-)
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/Makefile
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/barebox.lds.S
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/config.h
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/law.c
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/tlb.c
+ create mode 100644 arch/ppc/configs/p2020rdb_defconfig
 
-diff --git a/arch/ppc/include/asm/bitops.h b/arch/ppc/include/asm/bitops.h
-index 8048232..3b31d54 100644
---- a/arch/ppc/include/asm/bitops.h
-+++ b/arch/ppc/include/asm/bitops.h
-@@ -166,6 +166,48 @@ extern __inline__ int ffz(unsigned int x)
- 	return __ilog2(x & -x);
- }
+diff --git a/arch/ppc/Makefile b/arch/ppc/Makefile
+index 67eb667..f0322a2 100644
+--- a/arch/ppc/Makefile
++++ b/arch/ppc/Makefile
+@@ -12,6 +12,7 @@ CPPFLAGS += -Wa,-me500x2 -msoft-float -mno-string
+ endif
  
+ board-$(CONFIG_MACH_PHYCORE_MPC5200B_TINY)	:= pcm030
++board-$(CONFIG_P2020RDB)			:= freescale-p2020rdb
+ 
+ machine-$(CONFIG_ARCH_MPC5200)			:= mpc5xxx
+ machine-$(CONFIG_ARCH_MPC85XX)			:= mpc85xx
+diff --git a/arch/ppc/boards/freescale-p2020rdb/Makefile b/arch/ppc/boards/freescale-p2020rdb/Makefile
+new file mode 100644
+index 0000000..141b680
+--- /dev/null
++++ b/arch/ppc/boards/freescale-p2020rdb/Makefile
+@@ -0,0 +1,4 @@
++obj-y	+= p2020rdb.o
++obj-y	+= law.o
++obj-y	+= tlb.o
++extra-y += barebox.lds
+diff --git a/arch/ppc/boards/freescale-p2020rdb/barebox.lds.S b/arch/ppc/boards/freescale-p2020rdb/barebox.lds.S
+new file mode 100644
+index 0000000..cfccea9
+--- /dev/null
++++ b/arch/ppc/boards/freescale-p2020rdb/barebox.lds.S
+@@ -0,0 +1,144 @@
 +/*
-+ * fls: find last (most-significant) bit set.
-+ * Note fls(0) = 0, fls(1) = 1, fls(0x80000000) = 32.
-+ */
-+static inline int fls(unsigned int x)
-+{
-+	int lz;
-+
-+	asm ("cntlzw %0,%1" : "=r" (lz) : "r" (x));
-+	return 32 - lz;
-+}
-+
-+/*
-+ * fls64 - find last set bit in a 64-bit word
-+ * @x: the word to search
++ * Copyright 2012 GE Intelligent Platforms, Inc.
++ * Copyright 2007-2009, 2011 Freescale Semiconductor, Inc.
 + *
-+ * This is defined in a similar way as the libc and compiler builtin
-+ * ffsll, but returns the position of the most significant set bit.
++ * See file CREDITS for list of people who contributed to this
++ * project.
 + *
-+ * fls64(value) returns 0 if value is 0 or the position of the last
-+ * set bit if value is nonzero. The last (most significant) bit is
-+ * at position 64.
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
 + */
 +
-+static inline int fls64(__u64 x)
++#include <asm-generic/barebox.lds.h>
++
++#define RESET_VECTOR_ADDRESS	0xeffffffc
++
++OUTPUT_ARCH("powerpc")
++
++PHDRS
 +{
-+	__u32 h = x >> 32;
-+	if (h)
-+		return fls(h) + 32;
-+	return fls(x);
++  text PT_LOAD;
++  bss PT_LOAD;
 +}
 +
-+static inline int __ilog2_u64(u64 n)
++SECTIONS
 +{
-+	return fls64(n) - 1;
-+}
++  /* Read-only sections, merged into text segment: */
++  . = TEXT_BASE;
 +
-+static inline int ffs64(u64 x)
-+{
-+	return __ilog2_u64(x & -x) + 1ull;
-+}
++  .text      :
++  {
++    *(.text*)
++  } :text
 +
- #ifdef __KERNEL__
- 
- /*
-diff --git a/arch/ppc/include/asm/cache.h b/arch/ppc/include/asm/cache.h
-index 4f7ca86..147ceb6 100644
---- a/arch/ppc/include/asm/cache.h
-+++ b/arch/ppc/include/asm/cache.h
-@@ -31,6 +31,8 @@
- extern void flush_dcache_range(unsigned long start, unsigned long stop);
- extern void clean_dcache_range(unsigned long start, unsigned long stop);
- extern void invalidate_dcache_range(unsigned long start, unsigned long stop);
-+extern void flush_dcache(void);
-+extern void invalidate_icache(void);
- #ifdef CFG_INIT_RAM_LOCK
- extern void unlock_ram_in_cache(void);
- #endif /* CFG_INIT_RAM_LOCK */
-diff --git a/arch/ppc/include/asm/common.h b/arch/ppc/include/asm/common.h
-index 045817b..689ec23 100644
---- a/arch/ppc/include/asm/common.h
-+++ b/arch/ppc/include/asm/common.h
-@@ -31,5 +31,6 @@ static inline unsigned long get_pc(void)
- 	return pc;
- }
- 
-+int l2_cache_init(void);
- extern unsigned long search_exception_table(unsigned long);
- #endif /* __ASM_COMMON_H */
-diff --git a/arch/ppc/include/asm/io.h b/arch/ppc/include/asm/io.h
-index 052ae15..13187ca 100644
---- a/arch/ppc/include/asm/io.h
-+++ b/arch/ppc/include/asm/io.h
-@@ -176,6 +176,26 @@ extern inline void out_be32(volatile unsigned *addr, int val)
-     __asm__ __volatile__("stw%U0%X0 %1,%0; eieio" : "=m" (*addr) : "r" (val));
- }
- 
++  _etext = .;
++  PROVIDE (etext = .);
++
++  .rodata    :
++  {
++    *(SORT_BY_ALIGNMENT(SORT_BY_NAME(.rodata*)))
++  } :text
++
++  /* Read-write section, merged into data segment: */
++  . = (. + 0x00FF) & 0xFFFFFF00;
++
++  _erotext = .;
++  PROVIDE (erotext = .);
++
++  .reloc   :
++  {
++    _GOT2_TABLE_ = .;
++    KEEP(*(.got2))
++    KEEP(*(.got))
++    PROVIDE(_GLOBAL_OFFSET_TABLE_ = . + 4);
++    _FIXUP_TABLE_ = .;
++    KEEP(*(.fixup))
++  }
++  __got2_entries = ((_GLOBAL_OFFSET_TABLE_ - _GOT2_TABLE_) >> 2) - 1;
++  __fixup_entries = (. - _FIXUP_TABLE_) >> 2;
++
++  .data    :
++  {
++    *(.data*)
++    *(.data1*)
++    *(.sdata*)
++    *(.sdata2*)
++    *(.dynamic*)
++    CONSTRUCTORS
++  }
++  _edata  =  .;
++  PROVIDE (edata = .);
++
++  . = .;
++  __barebox_cmd_start = .;
++  .barebox_cmd : { BAREBOX_CMDS }
++  __barebox_cmd_end = .;
++
++  __barebox_initcalls_start = .;
++  .barebox_initcalls : { INITCALLS }
++  __barebox_initcalls_end = .;
++  __initcall_entries = (__barebox_initcalls_end - __barebox_initcalls_start)>>2;
++
++  __usymtab_start = .;
++  __usymtab : { BAREBOX_SYMS }
++  __usymtab_end = .;
++
++  __early_init_data_begin = .;
++  .early_init_data : { *(.early_init_data) }
++  __early_init_data_end = .;
++
++  . = .;
++  __start___ex_table = .;
++  __ex_table : { *(__ex_table) }
++  __stop___ex_table = .;
++
++  . = ALIGN(256);
++  __init_begin = .;
++  .text.init : { *(.text.init) }
++  .data.init : { *(.data.init) }
++  . = ALIGN(256);
++  __init_end = .;
++
++  __init_size = __init_end - _start;
++
++  .bootpg RESET_VECTOR_ADDRESS - 0xffc :
++  {
++    _text = .;
++    _stext = .;
++    arch/ppc/cpu-85xx/start.o	(.bootpg)
++  } :text = 0xffff
++
++  .resetvec RESET_VECTOR_ADDRESS :
++  {
++    arch/ppc/cpu-85xx/resetvec.o	(.resetvec)
++  } :text = 0xffff
++
++  . = RESET_VECTOR_ADDRESS + 0x4;
++
++  . = 0x10000;
++  __bss_start = .;
++  .bss        :
++  {
++    *(.sbss*) *(.scommon*)
++    *(.dynbss*)
++    *(.bss*)
++    *(COMMON)
++  } :bss
++
++  . = ALIGN(4);
++  __bss_stop = .;
++  _end = . ;
++  PROVIDE (end = .);
++}
+diff --git a/arch/ppc/boards/freescale-p2020rdb/config.h b/arch/ppc/boards/freescale-p2020rdb/config.h
+new file mode 100644
+index 0000000..c780747
+--- /dev/null
++++ b/arch/ppc/boards/freescale-p2020rdb/config.h
+@@ -0,0 +1,98 @@
 +/*
-+ * Clear and set bits in one shot. These macros can be used to clear and
-+ * set multiple bits in a register using a single call. These macros can
-+ * also be used to set a multiple-bit bit pattern using a mask, by
-+ * specifying the mask in the 'clear' parameter and the new bit pattern
-+ * in the 'set' parameter.
++ * Copyright 2012 GE Intelligent Platforms, Inc.
++ * Copyright 2009-2011 Freescale Semiconductor, Inc.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
 + */
-+#define clrbits(type, addr, clear) \
-+	out_##type((addr), in_##type(addr) & ~(clear))
 +
-+#define setbits(type, addr, set) \
-+	out_##type((addr), in_##type(addr) | (set))
++/*
++ * P2020RDB board configuration file
++ */
 +
-+#define clrsetbits(type, addr, clear, set) \
-+	out_##type((addr), (in_##type(addr) & ~(clear)) | (set))
++#ifndef __CONFIG_H
++#define __CONFIG_H
 +
-+#define clrbits_be32(addr, clear) clrbits(be32, addr, clear)
-+#define setbits_be32(addr, set) setbits(be32, addr, set)
-+#define clrsetbits_be32(addr, clear, set) clrsetbits(be32, addr, clear, set)
-+
- /* these ones were originally in config.h */
- unsigned char	in8(unsigned int);
- void		out8(unsigned int, unsigned char);
-diff --git a/arch/ppc/include/asm/mmu.h b/arch/ppc/include/asm/mmu.h
-index 1667041..bba5ab5 100644
---- a/arch/ppc/include/asm/mmu.h
-+++ b/arch/ppc/include/asm/mmu.h
-@@ -372,15 +372,17 @@ extern int write_bat(ppc_bat_t bat, unsigned long upper, unsigned long lower);
-  * e500 support
-  */
- 
--#define MAS0_TLBSEL     0x10000000
--#define MAS0_ESEL       0x000F0000
--#define MAS0_NV         0x00000001
-+#define MAS0_TLBSEL_MSK 0x30000000
-+#define MAS0_TLBSEL(x)  (((x) << 28) & MAS0_TLBSEL_MSK)
-+#define MAS0_ESEL_MSK   0x0FFF0000
-+#define MAS0_ESEL(x)    (((x) << 16) & MAS0_ESEL_MSK)
-+#define MAS0_NV(x)      ((x) & 0x00000FFF)
- 
- #define MAS1_VALID      0x80000000
- #define MAS1_IPROT      0x40000000
--#define MAS1_TID        0x00FF0000
-+#define MAS1_TID(x)     (((x) << 16) & 0x3FFF0000)
- #define MAS1_TS         0x00001000
--#define MAS1_TSIZE   	0x00000F00
-+#define MAS1_TSIZE(x)   (((x) << 8) & 0x00000F00)
- 
- #define MAS2_EPN        0xFFFFF000
- #define MAS2_SHAREN     0x00000200
-@@ -404,10 +406,10 @@ extern int write_bat(ppc_bat_t bat, unsigned long upper, unsigned long lower);
- #define MAS3_UR         0x00000002
- #define MAS3_SR         0x00000001
- 
--#define MAS4_TLBSELD    0x10000000
--#define MAS4_TIDDSEL    0x00030000
-+#define MAS4_TLBSELD(x) MAS0_TLBSEL(x)
-+#define MAS4_TIDDSEL    0x000F0000
-+#define MAS4_TSIZED(x)  MAS1_TSIZE(x)
- #define MAS4_DSHAREN    0x00001000
--#define MAS4_TSIZED(x)  (x << 8)
- #define MAS4_X0D        0x00000040
- #define MAS4_X1D        0x00000020
- #define MAS4_WD         0x00000010
-@@ -419,6 +421,23 @@ extern int write_bat(ppc_bat_t bat, unsigned long upper, unsigned long lower);
- #define MAS6_SPID       0x00FF0000
- #define MAS6_SAS        0x00000001
- 
-+#define MAS7_RPN	0xFFFFFFFF
-+
-+#define FSL_BOOKE_MAS0(tlbsel, esel, nv) \
-+		(MAS0_TLBSEL(tlbsel) | MAS0_ESEL(esel) | MAS0_NV(nv))
-+#define FSL_BOOKE_MAS1(v, iprot, tid, ts, tsize) \
-+		((((v) << 31) & MAS1_VALID)             |\
-+		(((iprot) << 30) & MAS1_IPROT)          |\
-+		(MAS1_TID(tid))				|\
-+		(((ts) << 12) & MAS1_TS)                |\
-+		(MAS1_TSIZE(tsize)))
-+#define FSL_BOOKE_MAS2(epn, wimge) \
-+		(((epn) & MAS3_RPN) | (wimge))
-+#define FSL_BOOKE_MAS3(rpn, user, perms) \
-+		(((rpn) & MAS3_RPN) | (user) | (perms))
-+#define FSL_BOOKE_MAS7(rpn) \
-+		(((u64)(rpn)) >> 32)
-+
- #define BOOKE_PAGESZ_1K         0
- #define BOOKE_PAGESZ_4K         1
- #define BOOKE_PAGESZ_16K        2
-@@ -436,6 +455,40 @@ extern int write_bat(ppc_bat_t bat, unsigned long upper, unsigned long lower);
- #define LAWBAR_BASE_ADDR	0x00FFFFFF
- #define LAWAR_TRGT_IF		0x01F00000
- #else
-+#ifdef CONFIG_E500
 +#ifndef __ASSEMBLY__
-+extern void set_tlb(u8 tlb, u32 epn, u64 rpn,
-+		u8 perms, u8 wimge,
-+		u8 ts, u8 esel, u8 tsize, u8 iprot);
-+extern void disable_tlb(u8 esel);
-+extern void invalidate_tlb(u8 tlb);
-+extern void init_tlbs(void);
-+extern int find_tlb_idx(void *addr, u8 tlbsel);
-+extern void init_used_tlb_cams(void);
-+
-+extern unsigned int setup_ddr_tlbs(unsigned int memsize_in_meg);
-+extern void write_tlb(u32 _mas0, u32 _mas1, u32 _mas2, u32 _mas3, u32 _mas7);
-+
-+#define SET_TLB_ENTRY(_tlb, _epn, _rpn, _perms, _wimge, _ts, _esel, _sz,\
-+			_iprot) \
-+	{ .mas0 = FSL_BOOKE_MAS0(_tlb, _esel, 0), \
-+	  .mas1 = FSL_BOOKE_MAS1(1, _iprot, 0, _ts, _sz), \
-+	  .mas2 = FSL_BOOKE_MAS2(_epn, _wimge), \
-+	  .mas3 = FSL_BOOKE_MAS3(_rpn, 0, _perms), \
-+	  .mas7 = FSL_BOOKE_MAS7(_rpn), }
-+
-+struct fsl_e_tlb_entry {
-+	u32	mas0;
-+	u32	mas1;
-+	u32	mas2;
-+	u32	mas3;
-+	u32	mas7;
-+};
-+extern struct fsl_e_tlb_entry tlb_table[];
-+extern int num_tlb_entries;
++extern unsigned long get_board_sys_clk(unsigned long dummy);
 +#endif
-+#endif
++#define CFG_SYS_CLK_FREQ	get_board_sys_clk(0)
++#define CFG_DDR_CLK_FREQ	66666666
 +
- #define LAWBAR_BASE_ADDR	0x000FFFFF
- #define LAWAR_TRGT_IF		0x00F00000
- #endif
-diff --git a/arch/ppc/include/asm/processor.h b/arch/ppc/include/asm/processor.h
-index 9c6f79a..29e0622 100644
---- a/arch/ppc/include/asm/processor.h
-+++ b/arch/ppc/include/asm/processor.h
-@@ -217,6 +217,7 @@
- #define   HID0_DPM	(1<<20)
- #define   HID0_ICE	(1<<HID0_ICE_SHIFT)	/* Instruction Cache Enable */
- #define   HID0_DCE	(1<<HID0_DCE_SHIFT)	/* Data Cache Enable */
-+#define   HID0_TBEN	(1<<14)		/* Time Base Enable */
- #define   HID0_ILOCK	(1<<13)		/* Instruction Cache Lock */
- #define   HID0_DLOCK	(1<<HID0_DLOCK_SHIFT)	/* Data Cache Lock */
- #define   HID0_ICFI	(1<<11)		/* Instr. Cache Flash Invalidate */
-@@ -231,6 +232,10 @@
- #define   HID0_BHTE	(1<<2)		/* Branch History Table Enable */
- #define   HID0_BTCD	(1<<1)		/* Branch target cache disable */
- #define SPRN_HID1	0x3F1	/* Hardware Implementation Register 1 */
-+#define   HID1_RFXE     (1<<17)		/* Read Fault Exception Enable */
-+#define   HID1_ASTME    (1<<13)		/* Address bus streaming mode */
-+#define   HID1_ABE      (1<<12)		/* Address broadcast enable */
-+#define   HID1_MBDD     (1<<6)		/* optimized sync instruction */
- #define SPRN_IABR	0x3F2	/* Instruction Address Breakpoint Register */
- #ifndef CONFIG_BOOKE
- #define SPRN_IAC1	0x3F4	/* Instruction Address Compare 1 */
-@@ -410,13 +415,20 @@
- #define SPRN_IVOR15	0x19f	/* Interrupt Vector Offset Register 15 */
- 
- /* e500 definitions */
-+#define SPRN_L1CFG0     0x203   /* L1 Cache Configuration Register 0 */
- #define SPRN_L1CSR0     0x3f2   /* L1 Cache Control and Status Register 0 */
-+#define   L1CSR0_CPE            0x00010000      /* Data Cache Parity Enable */
-+#define   L1CSR0_DCLFR          0x00000100      /* D-Cache Lock Flash Reset */
- #define   L1CSR0_DCFI           0x00000002      /* Data Cache Flash Invalidate */
- #define   L1CSR0_DCE            0x00000001      /* Data Cache Enable */
- #define SPRN_L1CSR1     0x3f3   /* L1 Cache Control and Status Register 1 */
-+#define   L1CSR1_CPE           0x00010000       /* I-Cache Parity Enable */
-+#define   L1CSR1_ICLFR          0x00000100      /* I-Cache Lock Flash Reset */
- #define   L1CSR1_ICFI           0x00000002      /* Instruction Cache Flash Invalidate */
- #define   L1CSR1_ICE            0x00000001      /* Instruction Cache Enable */
- 
-+#define SPRN_TLB0CFG   0x2B0   /* TLB 0 Config Register */
-+#define SPRN_TLB1CFG   0x2B1   /* TLB 1 Config Register */
- #define SPRN_MMUCSR0	0x3f4	/* MMU control and status register 0 */
- #define SPRN_MAS0       0x270   /* MMU Assist Register 0 */
- #define SPRN_MAS1       0x271   /* MMU Assist Register 1 */
-@@ -436,11 +448,17 @@
- #define SPRN_MCSRR0     0x23a   /* Machine Check Save and Restore Register 0 */
- #define SPRN_MCSRR1     0x23b   /* Machine Check Save and Restore Register 1 */
- #define SPRN_BUCSR	0x3f5	/* Branch Control and Status Register */
-+#define   BUCSR_STAC_EN 0x01000000      /* Segment target addr cache enable */
-+#define   BUCSR_LS_EN   0x00400000      /* Link stack enable */
-+#define   BUCSR_BBFI    0x00000200      /* Branch buffer flash invalidate */
-+#define   BUCSR_BPEN    0x00000001      /* Branch prediction enable */
-+#define   BUCSR_ENABLE (BUCSR_STAC_EN|BUCSR_LS_EN|BUCSR_BBFI|BUCSR_BPEN)
- #define SPRN_BBEAR      0x201   /* Branch Buffer Entry Address Register */
- #define SPRN_BBTAR      0x202   /* Branch Buffer Target Address Register */
- #define SPRN_PID1       0x279   /* Process ID Register 1 */
- #define SPRN_PID2       0x27a   /* Process ID Register 2 */
- #define SPRN_MCSR	0x23c	/* Machine Check Syndrome register */
-+#define SPRN_MCAR	0x23d	/* Machine Check Address register */
- #define ESR_ST          0x00800000      /* Store Operation */
- 
- #if defined(CONFIG_MPC86xx)
-@@ -586,6 +604,7 @@
- #define MCSRR1	SPRN_MCSRR1
- #define L1CSR0 	SPRN_L1CSR0
- #define L1CSR1	SPRN_L1CSR1
-+#define L1CFG0 SPRN_L1CFG0
- #define MCSR	SPRN_MCSR
- #define MMUCSR0	SPRN_MMUCSR0
- #define BUCSR	SPRN_BUCSR
-@@ -600,7 +619,13 @@
- #define MAS5	SPRN_MAS5
- #define MAS6	SPRN_MAS6
- #define MAS7	SPRN_MAS7
-+#define MAS8	SPRN_MAS8
- 
-+#if defined(CONFIG_MPC85xx)
-+#define DAR_DEAR DEAR
-+#else
-+#define DAR_DEAR DAR
-+#endif
- /* Device Control Registers */
- 
- #define DCRN_BEAR	0x090	/* Bus Error Address Register */
-@@ -818,6 +843,8 @@
- #define SVR_MAJ(svr)	(((svr) >>  4) & 0xF)	/* Major revision field*/
- #define SVR_MIN(svr)	(((svr) >>  0) & 0xF)	/* Minor revision field*/
- 
-+/* Some parts define SVR[0:23] as the SOC version */
-+#define SVR_SOC_VER(svr) (((svr) >> 8) & 0xFFFFFF)	/* SOC Version fields */
- 
- /*
-  * SVR_VER() Version Values
-@@ -830,6 +857,10 @@
- #define SVR_8548	0x8031
- #define SVR_8548_E	0x8039
- #define SVR_8641	0x8090
-+#define SVR_P2020	0x80E200
-+#define SVR_P2020_E	0x80EA00
++#define CFG_BTB			/* toggle branch predition */
 +
-+#define SVR_Unknown	0xFFFFFF
- 
- 
- /* I am just adding a single entry for 8260 boards.  I think we may be
-@@ -924,6 +955,19 @@ n:
- #define SR15	15
- 
- #ifndef __ASSEMBLY__
++/*
++ * Base addresses -- Note these are effective addresses where the
++ * actual resources get mapped (not physical addresses)
++ */
++#define CFG_CCSRBAR_DEFAULT	0xff700000
 +
-+struct cpu_type {
-+	char name[15];
-+	u32 soc_ver;
-+	u32 num_cores;
++#define CFG_CCSRBAR		0xffe00000	/* relocated CCSRBAR */
++#define CFG_CCSRBAR_PHYS	CFG_CCSRBAR
++
++#define CFG_IMMR		CFG_CCSRBAR
++
++/* DDR Setup */
++
++#define CFG_CHIP_SELECTS_PER_CTRL   1
++
++#define CFG_SDRAM_BASE		0x00000000
++
++/* These timings are adjusted for a 667Mhz clock. */
++#define CFG_SYS_DDR_CS0_BNDS		0x0000003f	/* 1GB */
++#define CFG_SYS_DDR_CS0_CONFIG	        0x80014202
++#define CFG_SYS_DDR_TIMING_3		0x00030000
++#define CFG_SYS_DDR_TIMING_0		0x55770802
++#define CFG_SYS_DDR_TIMING_1		0x5f599543
++#define CFG_SYS_DDR_TIMING_2		0x0fa074d1
++
++#define CFG_SYS_DDR_CONTROL		0xc3000000
++#define CFG_SYS_DDR_CONTROL2		0x24401000
++#define CFG_SYS_DDR_MODE_1		0x00040852
++#define CFG_SYS_DDR_MODE_2		0x00000000
++#define CFG_SYS_MD_CNTL			0x00000000
++#define CFG_SYS_DDR_INTERVAL		0x0a280100
++
++#define CFG_SYS_DDR_DATA_INIT	        0xdeadbeef
++#define CFG_SYS_DDR_CLK_CTRL		0x03000000
++
++/*
++ * Memory map
++ *
++ * 0x0000_0000	0x3fff_ffff	DDR			1G cacheablen
++ *
++ * Localbus non-cacheable
++ * 0xef00_0000	0xefff_ffff	FLASH			16M non-cacheable
++ * 0xffd0_0000	0xffd0_3fff	L1 for stack		16K Cacheable TLB0
++ */
++
++/*
++ * Local Bus Definitions
++ */
++#define CFG_FLASH_BASE		0xef000000
++#define CFG_FLASH_BASE_PHYS	CFG_FLASH_BASE
++
++#define CFG_INIT_RAM_ADDR	0xffd00000	/* stack in RAM */
++/* Leave 256 bytes for global data */
++#define CFG_INIT_SP_OFFSET	(0x00004000 - 256)
++
++#define CFG_BR0_PRELIM	(BR_PHYS_ADDR(CFG_FLASH_BASE_PHYS) |	\
++			 BR_PS_16 | BR_V)	/* NOR Base Address */
++#define CFG_OR0_PRELIM  0xff000ff7		/* NOR Options      */
++
++#endif	/* __CONFIG_H */
+diff --git a/arch/ppc/boards/freescale-p2020rdb/law.c b/arch/ppc/boards/freescale-p2020rdb/law.c
+new file mode 100644
+index 0000000..e748ccc
+--- /dev/null
++++ b/arch/ppc/boards/freescale-p2020rdb/law.c
+@@ -0,0 +1,31 @@
++/*
++ * Copyright 2009-2010 Freescale Semiconductor, Inc.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <common.h>
++#include <asm/fsl_law.h>
++#include <asm/mmu.h>
++
++struct law_entry law_table[] = {
++	SET_LAW(CFG_FLASH_BASE_PHYS, LAW_SIZE_16M, LAW_TRGT_IF_LBC),
 +};
 +
-+struct cpu_type *identify_cpu(u32 ver);
++int num_law_entries = ARRAY_SIZE(law_table);
+diff --git a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+new file mode 100644
+index 0000000..c28d452
+--- /dev/null
++++ b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+@@ -0,0 +1,237 @@
++/*
++ * Copyright 2012 GE Intelligent Platforms, Inc.
++ * Copyright 2009-2011 Freescale Semiconductor, Inc.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
 +
-+#if defined(CONFIG_MPC85xx)
-+#define CPU_TYPE_ENTRY(n, v, nc) \
-+	{ .name = #n, .soc_ver = SVR_##v, .num_cores = (nc), }
-+#endif
- #ifndef CONFIG_MACH_SPECIFIC
- extern int _machine;
- extern int have_of;
-diff --git a/include/linux/types.h b/include/linux/types.h
-index 16cc3ce..76c6b67 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -144,8 +144,10 @@ typedef __u32 __bitwise __wsum;
- 
- #ifdef CONFIG_PHYS_ADDR_T_64BIT
- typedef u64 phys_addr_t;
-+typedef u64 phys_size_t;
- #else
- typedef u32 phys_addr_t;
-+typedef u32 phys_size_t;
- #endif
- 
- typedef phys_addr_t resource_size_t;
++#include <common.h>
++#include <init.h>
++#include <driver.h>
++#include <ns16550.h>
++#include <types.h>
++#include <partition.h>
++#include <memory.h>
++#include <asm/mmu.h>
++#include <asm/cache.h>
++#include <asm/fsl_ddr_sdram.h>
++#include <asm/fsl_law.h>
++#include <asm/io.h>
++#include <mach/immap_85xx.h>
++#include <mach/mp.h>
++#include <mach/clocks.h>
++#include <mach/early_udelay.h>
++
++#define VSC7385_RST_SET		0x00080000
++#define SLIC_RST_SET		0x00040000
++#define SGMII_PHY_RST_SET	0x00020000
++#define PCIE_RST_SET		0x00010000
++#define RGMII_PHY_RST_SET	0x02000000
++
++#define USB_RST_CLR		0x04000000
++
++
++#define GPIO_DIR		0x060f0000
++
++#define BOARD_PERI_RST_SET	(VSC7385_RST_SET | SLIC_RST_SET | \
++				SGMII_PHY_RST_SET | PCIE_RST_SET | \
++				RGMII_PHY_RST_SET)
++
++#define SYSCLK_MASK	0x00200000
++#define BOARDREV_MASK	0x10100000
++#define BOARDREV_B	0x10100000
++#define BOARDREV_C	0x00100000
++#define BOARDREV_D	0x00000000
++
++#define SYSCLK_66	66666666
++#define SYSCLK_50	50000000
++#define SYSCLK_100	100000000
++
++static int devices_init(void)
++{
++	add_cfi_flash_device(-1, CFG_FLASH_BASE, 16 << 20, 0);
++
++	devfs_add_partition("nor0", 0xf80000, 0x80000, PARTITION_FIXED,
++			    "self0");
++	return 0;
++}
++
++device_initcall(devices_init);
++
++static struct NS16550_plat serial_plat = {
++	.clock = 0,
++	.shift = 0,
++};
++
++static int p2020_console_init(void)
++{
++	serial_plat.clock = get_bus_freq(0);
++
++	add_ns16550_device(-1, 0xffe04500, 16, IORESOURCE_MEM_8BIT,
++			   &serial_plat);
++	return 0;
++}
++
++console_initcall(p2020_console_init);
++
++static int mem_init(void)
++{
++	barebox_add_memory_bank("ram0", 0x0, 1024 << 20);
++
++	return 0;
++}
++mem_initcall(mem_init);
++
++/*
++ * fixed_sdram: fixed sdram settings.
++ *
++ * This function is used for debugging purpose and in case there is
++ * a failure with the SPD.
++ */
++phys_size_t fixed_sdram(void)
++{
++	void __iomem *regs = (void __iomem *)(MPC85xx_DDR_ADDR);
++	int sdram_cfg = (SDRAM_CFG_MEM_EN | SDRAM_CFG_SREN |
++			 SDRAM_CFG_SDRAM_TYPE_DDR2);
++	phys_size_t dram_size;
++
++	/* If already enabled (running from RAM), get out */
++	if (in_be32(regs + DDR_OFF(SDRAM_CFG)) & SDRAM_CFG_MEM_EN)
++		return get_effective_memsize();
++
++	out_be32(regs + DDR_OFF(CS0_BNDS), CFG_SYS_DDR_CS0_BNDS);
++	out_be32(regs + DDR_OFF(CS0_CONFIG), CFG_SYS_DDR_CS0_CONFIG);
++	out_be32(regs + DDR_OFF(TIMING_CFG_3), CFG_SYS_DDR_TIMING_3);
++	out_be32(regs + DDR_OFF(TIMING_CFG_0), CFG_SYS_DDR_TIMING_0);
++	out_be32(regs + DDR_OFF(TIMING_CFG_1), CFG_SYS_DDR_TIMING_1);
++	out_be32(regs + DDR_OFF(TIMING_CFG_2), CFG_SYS_DDR_TIMING_2);
++	out_be32(regs + DDR_OFF(SDRAM_CFG_2), CFG_SYS_DDR_CONTROL2);
++	out_be32(regs + DDR_OFF(SDRAM_MODE), CFG_SYS_DDR_MODE_1);
++	out_be32(regs + DDR_OFF(SDRAM_MODE_2), CFG_SYS_DDR_MODE_2);
++	out_be32(regs + DDR_OFF(SDRAM_MD_CNTL), CFG_SYS_MD_CNTL);
++	/* Basic refresh rate (7.8us),high temp is 3.9us  */
++	out_be32(regs + DDR_OFF(SDRAM_INTERVAL),
++			CFG_SYS_DDR_INTERVAL);
++	out_be32(regs + DDR_OFF(SDRAM_DATA_INIT),
++			CFG_SYS_DDR_DATA_INIT);
++	out_be32(regs + DDR_OFF(SDRAM_CLK_CNTL),
++			CFG_SYS_DDR_CLK_CTRL);
++
++	out_be32(regs + DDR_OFF(SDRAM_INIT_ADDR), 0);
++	out_be32(regs + DDR_OFF(SDRAM_INIT_ADDR_EXT), 0);
++	/*
++	 * Wait 200us for the DDR clock to stabilize.
++	 */
++	early_udelay(200);
++	asm volatile ("sync;isync");
++
++	out_be32(regs + DDR_OFF(SDRAM_CFG), sdram_cfg);
++
++	dram_size = get_effective_memsize();
++	if (set_ddr_laws(0, dram_size, LAW_TRGT_IF_DDR) < 0)
++		return 0;
++
++	return dram_size;
++}
++
++unsigned long get_board_sys_clk(ulong dummy)
++{
++	u32 val_gpdat, sysclk_gpio, board_rev_gpio;
++	void __iomem *gpio_regs = (void __iomem *)MPC85xx_GPIO_ADDR;
++
++	val_gpdat = in_be32(gpio_regs + MPC85xx_GPIO_GPDAT);
++	sysclk_gpio = val_gpdat & SYSCLK_MASK;
++	board_rev_gpio = val_gpdat & BOARDREV_MASK;
++
++	if (board_rev_gpio == BOARDREV_C) {
++		if (sysclk_gpio == 0)
++			return SYSCLK_66;
++		else
++			return SYSCLK_100;
++	} else if (board_rev_gpio == BOARDREV_B) {
++		if (sysclk_gpio == 0)
++			return SYSCLK_66;
++		else
++			return SYSCLK_50;
++	} else if (board_rev_gpio == BOARDREV_D) {
++		if (sysclk_gpio == 0)
++			return SYSCLK_66;
++		else
++			return SYSCLK_100;
++	}
++	return 0;
++}
++
++static void checkboard(void)
++{
++	u32 val_gpdat, board_rev_gpio;
++	void __iomem *gpio_regs = (void __iomem *)MPC85xx_GPIO_ADDR;
++
++	val_gpdat = in_be32(gpio_regs + MPC85xx_GPIO_GPDAT);
++	board_rev_gpio = val_gpdat & BOARDREV_MASK;
++
++	if ((board_rev_gpio != BOARDREV_C) && (board_rev_gpio != BOARDREV_B) &&
++	    (board_rev_gpio != BOARDREV_D))
++		panic("Unexpected Board REV %x detected!!\n", board_rev_gpio);
++
++	setbits_be32((gpio_regs + MPC85xx_GPIO_GPDIR), GPIO_DIR);
++
++	/*
++	 * Bringing the following peripherals out of reset via GPIOs
++	 * 0 = reset and 1 = out of reset
++	 * GPIO12 - Reset to Ethernet Switch
++	 * GPIO13 - Reset to SLIC/SLAC devices
++	 * GPIO14 - Reset to SGMII_PHY_N
++	 * GPIO15 - Reset to PCIe slots
++	 * GPIO6  - Reset to RGMII PHY
++	 * GPIO5  - Reset to USB3300 devices 1 = reset and 0 = out of reset
++	 */
++	clrsetbits_be32((gpio_regs + MPC85xx_GPIO_GPDAT), USB_RST_CLR,
++			BOARD_PERI_RST_SET);
++}
++
++static int board_init_r(void)
++{
++	const unsigned int flashbase = CFG_FLASH_BASE;
++	const u8 flash_esel = find_tlb_idx((void *)flashbase, 1);
++
++	checkboard();
++
++	/* Flush d-cache and invalidate i-cache of any FLASH data */
++	flush_dcache();
++	invalidate_icache();
++
++	/* invalidate existing TLB entry for flash */
++	disable_tlb(flash_esel);
++
++	/*
++	 * Remap Boot flash region to caching-inhibited
++	 * so that flash can be erased properly.
++	 */
++	set_tlb(1, flashbase, CFG_FLASH_BASE_PHYS,
++		MAS3_SX|MAS3_SW|MAS3_SR, MAS2_I|MAS2_G,
++		0, flash_esel, BOOKE_PAGESZ_16M, 1);
++
++	l2_cache_init();
++
++	setup_mp();
++
++	return 0;
++}
++core_initcall(board_init_r);
+diff --git a/arch/ppc/boards/freescale-p2020rdb/tlb.c b/arch/ppc/boards/freescale-p2020rdb/tlb.c
+new file mode 100644
+index 0000000..037f429
+--- /dev/null
++++ b/arch/ppc/boards/freescale-p2020rdb/tlb.c
+@@ -0,0 +1,62 @@
++/*
++ * Copyright 2011 Freescale Semiconductor, Inc.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <common.h>
++#include <asm/mmu.h>
++
++struct fsl_e_tlb_entry tlb_table[] = {
++	/* TLB 0 - for temp stack in cache */
++	SET_TLB_ENTRY(0, CFG_INIT_RAM_ADDR, CFG_INIT_RAM_ADDR,
++			MAS3_SX|MAS3_SW|MAS3_SR, 0,
++			0, 0, BOOKE_PAGESZ_4K, 0),
++	SET_TLB_ENTRY(0, CFG_INIT_RAM_ADDR + (4 * 1024),
++			CFG_INIT_RAM_ADDR + (4 * 1024),
++			MAS3_SX|MAS3_SW|MAS3_SR, 0,
++			0, 0, BOOKE_PAGESZ_4K, 0),
++	SET_TLB_ENTRY(0, CFG_INIT_RAM_ADDR + (8 * 1024),
++			CFG_INIT_RAM_ADDR + (8 * 1024),
++			MAS3_SX|MAS3_SW|MAS3_SR, 0,
++			0, 0, BOOKE_PAGESZ_4K, 0),
++	SET_TLB_ENTRY(0, CFG_INIT_RAM_ADDR + (12 * 1024),
++			CFG_INIT_RAM_ADDR + (12 * 1024),
++			MAS3_SX|MAS3_SW|MAS3_SR, 0,
++			0, 0, BOOKE_PAGESZ_4K, 0),
++
++	/* TLB 1 */
++	/* *I*** - Covers boot page */
++	SET_TLB_ENTRY(1, 0xfffff000, 0xfffff000,
++			MAS3_SX|MAS3_SW|MAS3_SR, MAS2_I|MAS2_G,
++			0, 0, BOOKE_PAGESZ_4K, 1),
++
++	/* *I*G* - CCSRBAR */
++	SET_TLB_ENTRY(1, CFG_CCSRBAR, CFG_CCSRBAR_PHYS,
++			MAS3_SX|MAS3_SW|MAS3_SR, MAS2_I|MAS2_G,
++			0, 1, BOOKE_PAGESZ_1M, 1),
++
++	/* W**G* - Flash/promjet, localbus */
++	/* This will be changed to *I*G* after relocation to RAM. */
++	SET_TLB_ENTRY(1, CFG_FLASH_BASE, CFG_FLASH_BASE_PHYS,
++			MAS3_SX|MAS3_SR, MAS2_W|MAS2_G,
++			0, 2, BOOKE_PAGESZ_16M, 1),
++};
++
++int num_tlb_entries = ARRAY_SIZE(tlb_table);
+diff --git a/arch/ppc/configs/p2020rdb_defconfig b/arch/ppc/configs/p2020rdb_defconfig
+new file mode 100644
+index 0000000..f8a0687
+--- /dev/null
++++ b/arch/ppc/configs/p2020rdb_defconfig
+@@ -0,0 +1,23 @@
++CONFIG_ARCH_MPC85XX=y
++CONFIG_P2020RDB=y
++CONFIG_P2020=y
++CONFIG_LONGHELP=y
++CONFIG_GLOB=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_FSL_ELBC=y
++CONFIG_DRIVER_CFI=y
++CONFIG_DRIVER_CFI_AMD=y
++CONFIG_DRIVER_CFI_INTEL=n
++CONFIG_DRIVER_CFI_BANK_WIDTH_1=n
++CONFIG_DRIVER_CFI_BANK_WIDTH_2=y
++CONFIG_DRIVER_CFI_BANK_WIDTH_4=n
++CONFIG_MTD=y
++CONFIG_MALLOC_SIZE=0x200000
++CONFIG_BAUDRATE=115200
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_RELOCATABLE=y
 -- 
 1.7.1
 
