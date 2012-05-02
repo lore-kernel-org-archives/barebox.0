@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mta-gw01.evok.ch ([193.33.30.91])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STK1c-0006aK-3f
- for barebox@lists.infradead.org; Sat, 12 May 2012 21:38:53 +0000
-Date: Sat, 12 May 2012 23:38:45 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20120512213845.GA22395@pengutronix.de>
-References: <m3397emhaw.fsf@intrepid.localdomain>
+ id 1SPWog-0004cl-BL
+ for barebox@lists.infradead.org; Wed, 02 May 2012 10:29:51 +0000
+Received: from 213-193-97-58.static.cablecom.ch ([213.193.97.58]
+ helo=dc.sensometrix.local)
+ by mta-gw01.evok.ch with esmtps (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+ (Exim 4.72) (envelope-from <patrick.gerber@sensometrix.ch>)
+ id 1SPWoR-0005XQ-Pa
+ for barebox@lists.infradead.org; Wed, 02 May 2012 12:29:35 +0200
+Message-ID: <4FA10C8D.9010803@sensometrix.ch>
+Date: Wed, 2 May 2012 12:29:33 +0200
+From: Patrick Gerber <patrick.gerber@sensometrix.ch>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <m3397emhaw.fsf@intrepid.localdomain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,44 +21,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: put a valid "barebox" signature in the header on
- big-endian systems.
-To: Krzysztof Halasa <khc@pm.waw.pl>
-Cc: barebox@lists.infradead.org
+Subject: Flashing kernel from Linux
+To: barebox@lists.infradead.org
 
-SGVsbG8gS3J6eXN6dG9mLAoKT24gU2F0LCBNYXkgMDUsIDIwMTIgYXQgMTE6NDc6MTlQTSArMDIw
-MCwgS3J6eXN6dG9mIEhhbGFzYSB3cm90ZToKPiBTaWduZWQtb2ZmLWJ5OiBLcnp5c3p0b2YgSGHF
-gmFzYSA8a2hjQHBtLndhdy5wbD4KPiAKPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vaW5jbHVkZS9h
-c20vYmFyZWJveC1hcm0taGVhZC5oIGIvYXJjaC9hcm0vaW5jbHVkZS9hc20vYmFyZWJveC1hcm0t
-aGVhZC5oCj4gaW5kZXggMGRjMzA3NC4uMmMyNTBlOSAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9p
-bmNsdWRlL2FzbS9iYXJlYm94LWFybS1oZWFkLmgKPiArKysgYi9hcmNoL2FybS9pbmNsdWRlL2Fz
-bS9iYXJlYm94LWFybS1oZWFkLmgKPiBAQCAtMjQsOCArMjQsNyBAQCBzdGF0aWMgaW5saW5lIHZv
-aWQgYmFyZWJveF9hcm1faGVhZCh2b2lkKQo+ICAJCSIxOiBiIDFiXG4iCj4gIAkJIjE6IGIgMWJc
-biIKPiAgI2VuZGlmCj4gLQkJIi53b3JkIDB4NjU3MjYxNjJcbiIJCQkvKiAnYmFyZScgKi8KPiAt
-CQkiLndvcmQgMHgwMDc4NmY2MlxuIgkJCS8qICdib3gnICovCj4gKwkJIi5hc2NpeiBcImJhcmVi
-b3hcIlxuIgo+ICAJCSIud29yZCBfdGV4dFxuIgkJCQkvKiB0ZXh0IGJhc2UuIElmIGNvcGllZCB0
-aGVyZSwKPiAgCQkJCQkJCSAqIGJhcmVib3ggY2FuIHNraXAgcmVsb2NhdGlvbgo+ICAJCQkJCQkJ
-ICovCkFub3RoZXIgZG93bnNpZGUgb2YgdGhpcyBwYXRjaCAoYXBhcnQgZnJvbSB0aGUgZmlsZSB0
-eXBlIGRldGVjdGlvbiB0aGF0CnN0aWxsIG5lZWRzIGFkYXB0aW9uPykgaXMgdGhhdCB0aGUgbWFn
-aWMgaXMgZGlmZmVyZW50IGRlcGVuZGluZyBvbgplbmRpYW5lc3MuIEknbSBub3Qgc3VyZSBpZiBp
-dCByZWFsbHkgbWF0dGVycywgYnV0IHRoaXMgY2hhbmdlIG1ha2VzIGl0CmhhcmRlciAob3IgYXQg
-bGVhc3QgbW9yZSBlcnJvciBwcm9uZSkgZm9yIHRvb2xzIGxpa2UgZmlsZSgxKSB0byBkZXRlY3QK
-dGhlIGltYWdlIHR5cGUuIChXZWxsLCBpdCBtaWdodCBiZSBoYXJkIGFueWhvdywgYXMgYmFyZWJv
-eCBkb2VzIGhhdmUgYQptYWNoaW5lIHNwZWNpZmljIGhlYWRlciBhbnlob3cgZGVwZW5kaW5nIG9u
-IHRoZSBtYWNoaW5lLikKCk1vcmVvdmVyIEkgd29uZGVyIHdoYXQgdGhlIG1vdGl2YXRpb24gaGVy
-ZSBpcyB0byBjaGFuZ2UgYSBtYWdpYy4gV2FzIGl0Cmp1c3QgIm9oLCB0aGlzIGxvb2tzIHVnbHki
-PyBJZiB5ZXMsIGlzIHRoYXQgZW5vdWdoPwoKSnVzdCBteSAwLjAy4oKsIG9uIHRoaXMgcGF0Y2gs
-IEkgZG9uJ3Qga25vdyBob3cgbWFueSBiaWcgZW5kaWFuIGJhcmVib3gKaW1hZ2VzIGFyZSBvdXQg
-dGhlcmUgYW5kIEkgZG9uJ3QgcmVhbGx5IGNhcmUgKG5laXRoZXIgYWJvdXQgYmlnIGVuZGlhbgpp
-bWFnZXMgbm9yIGFib3V0IHRoaXMgY2hhbmdlKS4gU28gZmVlbCBmcmVlIHRvIGlnbm9yZSBteSBj
-b25jZXJucyBpZiB5b3UKa25vdyBiZXR0ZXIuCgpCZXN0IHJlZ2FyZHMKVXdlCgotLSAKUGVuZ3V0
-cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgVXdlIEtsZWluZS1Lw7ZuaWcg
-ICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8
-IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8CgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
-LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9iYXJlYm94Cg==
+Dear mailing list
+
+I used to flash the linux kernel using barebox update command.
+Now I would like to do the same from the Linux side. A simple dd to =
+
+/dev/mtdblockX used to work with uboot but doesn't work with barebox. =
+
+Barebox complain at startup about bad image...
+Do you have any hint about how to flash the kernel from the Linux side ?
+
+Thanks in advance
+
+Patrick
+
+-- =
+
+____________________________________
+Patrick Gerber
+patrick.gerber@sensometrix.ch
+
+Sensometrix SA
+rue Albert-Richard 2
+1201 Gen=E8ve
++41 (0) 22 510 22 01
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
