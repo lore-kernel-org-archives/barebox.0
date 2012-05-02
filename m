@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STMVJ-00007O-M9
- for barebox@lists.infradead.org; Sun, 13 May 2012 00:17:42 +0000
-Date: Sun, 13 May 2012 02:17:31 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20120513001731.GC22395@pengutronix.de>
-References: <m3397emhaw.fsf@intrepid.localdomain>
- <20120512213845.GA22395@pengutronix.de>
- <CAA4bVAG8Hf6hDKk2=UXh5_TxXSSG+1c15=ER8LNKM-omtOnorw@mail.gmail.com>
+Received: from protonic.xs4all.nl ([213.84.116.84])
+ by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SPZ1S-0000aB-9k
+ for barebox@lists.infradead.org; Wed, 02 May 2012 12:51:11 +0000
+Received: from [192.168.1.166] (erd943.prtnl [192.168.1.166])
+ by protonic.xs4all.nl (Postfix) with ESMTP id 50CCE281A4
+ for <barebox@lists.infradead.org>; Wed,  2 May 2012 14:47:31 +0200 (CEST)
+Message-ID: <4FA12DB0.6010507@protonic.nl>
+Date: Wed, 02 May 2012 14:50:56 +0200
+From: Robin van der Gracht <robin@protonic.nl>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAA4bVAG8Hf6hDKk2=UXh5_TxXSSG+1c15=ER8LNKM-omtOnorw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,53 +18,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: put a valid "barebox" signature in the header on
- big-endian systems.
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Krzysztof Halasa <khc@pm.waw.pl>
+Subject: drivers/power ? drivers/hwmon ?
+To: barebox@lists.infradead.org
 
-T24gU3VuLCBNYXkgMTMsIDIwMTIgYXQgMDM6NTY6NDhBTSArMDQwMCwgQW50b255IFBhdmxvdiB3
-cm90ZToKPiBPbiAxMyBNYXkgMjAxMiAwMTozOCwgVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5l
-LWtvZW5pZ0BwZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4gPiBIZWxsbyBLcnp5c3p0b2YsCj4gPgo+
-ID4gT24gU2F0LCBNYXkgMDUsIDIwMTIgYXQgMTE6NDc6MTlQTSArMDIwMCwgS3J6eXN6dG9mIEhh
-bGFzYSB3cm90ZToKPiA+PiBTaWduZWQtb2ZmLWJ5OiBLcnp5c3p0b2YgSGHFgmFzYSA8a2hjQHBt
-Lndhdy5wbD4KPiA+Pgo+ID4+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9pbmNsdWRlL2FzbS9iYXJl
-Ym94LWFybS1oZWFkLmggYi9hcmNoL2FybS9pbmNsdWRlL2FzbS9iYXJlYm94LWFybS1oZWFkLmgK
-PiA+PiBpbmRleCAwZGMzMDc0Li4yYzI1MGU5IDEwMDY0NAo+ID4+IC0tLSBhL2FyY2gvYXJtL2lu
-Y2x1ZGUvYXNtL2JhcmVib3gtYXJtLWhlYWQuaAo+ID4+ICsrKyBiL2FyY2gvYXJtL2luY2x1ZGUv
-YXNtL2JhcmVib3gtYXJtLWhlYWQuaAo+ID4+IEBAIC0yNCw4ICsyNCw3IEBAIHN0YXRpYyBpbmxp
-bmUgdm9pZCBiYXJlYm94X2FybV9oZWFkKHZvaWQpCj4gPj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-IjE6IGIgMWJcbiIKPiA+PiDCoCDCoCDCoCDCoCDCoCDCoCDCoCAiMTogYiAxYlxuIgo+ID4+IMKg
-I2VuZGlmCj4gPj4gLSDCoCDCoCDCoCDCoCDCoCDCoCAiLndvcmQgMHg2NTcyNjE2MlxuIiDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoC8qICdiYXJlJyAqLwo+ID4+IC0gwqAgwqAgwqAgwqAg
-wqAgwqAgIi53b3JkIDB4MDA3ODZmNjJcbiIgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAv
-KiAnYm94JyAqLwo+ID4+ICsgwqAgwqAgwqAgwqAgwqAgwqAgIi5hc2NpeiBcImJhcmVib3hcIlxu
-Igo+ID4+IMKgIMKgIMKgIMKgIMKgIMKgIMKgICIud29yZCBfdGV4dFxuIiDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCAvKiB0ZXh0IGJhc2UuIElmIGNvcGllZCB0aGVyZSwKPiA+
-PiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCogYmFyZWJveCBjYW4gc2tpcCByZWxvY2F0aW9u
-Cj4gPj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAqLwo+ID4gQW5vdGhlciBkb3duc2lkZSBv
-ZiB0aGlzIHBhdGNoIChhcGFydCBmcm9tIHRoZSBmaWxlIHR5cGUgZGV0ZWN0aW9uIHRoYXQKPiA+
-IHN0aWxsIG5lZWRzIGFkYXB0aW9uPykgaXMgdGhhdCB0aGUgbWFnaWMgaXMgZGlmZmVyZW50IGRl
-cGVuZGluZyBvbgo+ID4gZW5kaWFuZXNzLgo+IAo+IENhbiB0aGlzIGFkZGl0aW9uIHRvIHRoZSBw
-YXRjaCBmaXggdGhlIGVuZGlhbmVzcyBpc3N1ZT8KPiAKPiAtLS0gYS9jb21tb24vZmlsZXR5cGUu
-Ywo+ICsrKyBiL2NvbW1vbi9maWxldHlwZS5jCj4gQEAgLTU2LDcgKzU2LDcgQEAgZW51bSBmaWxl
-dHlwZSBmaWxlX2RldGVjdF90eXBlKHZvaWQgKl9idWYpCj4gCj4gICAgICAgICBpZiAoc3RybmNt
-cChidWY4LCAiIyEvYmluL3NoIiwgOSkgPT0gMCkKPiAgICAgICAgICAgICAgICAgcmV0dXJuIGZp
-bGV0eXBlX3NoOwo+IC0gICAgICAgaWYgKGJ1Zls4XSA9PSAweDY1NzI2MTYyICYmIGJ1Zls5XSA9
-PSAweDAwNzg2ZjYyKQo+ICsgICAgICAgaWYgKHN0cm5jbXAoYnVmOCArIDB4MjAsICJiYXJlYm94
-IiwgNykgPT0gMCkKdGhlIG9yaWdpbmFsIGNoZWNrZWQgOCBieXRlcywgeW91IG9ubHkgY2hlY2sg
-Ny4gSXMgdGhpcyBpbnRlbmRlZD8KCj4gICAgICAgICAgICAgICAgIHJldHVybiBmaWxldHlwZV9h
-cm1fYmFyZWJveDsKPiAgICAgICAgIGlmIChidWZbOV0gPT0gMHgwMTZmMjgxOCB8fCBidWZbOV0g
-PT0gMHgxODI4NmYwMSkKPiAgICAgICAgICAgICAgICAgcmV0dXJuIGZpbGV0eXBlX2FybV96aW1h
-Z2U7CgpCZXN0IHJlZ2FyZHMKVXdlCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHwgVXdlIEtsZWluZS1Lw7ZuaWcgICAgICAgICAgICB8CkluZHVzdHJpYWwg
-TGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXgu
-ZGUvICB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
-YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
-c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hello,
+
+Currently i'm writing a BSP for our new board. I quickly figured out 
+there are no
+driver sections: hwmon and power. Why don't they exist (yet)?
+Can i give a shot at creating them?
+
+reguards,
+
+-- 
+Robin van der Gracht
+Protonic Holland.
+tel.: +31 (0) 229 212928
+fax.: +31 (0) 229 210930
+Factorij 36 / 1689 AL Zwaag
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
