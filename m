@@ -1,12 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtpbg55.qq.com ([64.71.138.44])
- by merlin.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SPZm9-00069W-Ky
- for barebox@lists.infradead.org; Wed, 02 May 2012 13:39:31 +0000
-From: "=?gb18030?B?trfGxrLUx+4=?=" <154554381@qq.com>
-Mime-Version: 1.0
-Date: Wed, 2 May 2012 21:38:14 +0800
-Message-ID: <tencent_64684E693A952BFD1D0DB18F@qq.com>
+Received: from mail-pb0-f49.google.com ([209.85.160.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SPdV1-0006M7-CN
+ for barebox@lists.infradead.org; Wed, 02 May 2012 17:38:00 +0000
+Received: by pbbrq13 with SMTP id rq13so1474996pbb.36
+ for <barebox@lists.infradead.org>; Wed, 02 May 2012 10:37:57 -0700 (PDT)
+MIME-Version: 1.0
+Date: Wed, 2 May 2012 21:37:57 +0400
+Message-ID: <CAA4bVAF2pVHxuqUO4b5vU=HKnCUtocLfwVS0MqQiF-vX0Ud8KA@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,50 +17,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============4154155826255932415=="
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: support for OMAP-L138
-To: =?gb18030?B?YmFyZWJveA==?= <barebox@lists.infradead.org>
+Subject: improved complete support: the list of available variable name
+ completions is dubbed
+To: barebox <barebox@lists.infradead.org>
 
-This is a multi-part message in MIME format.
+Hi, All!
 
---===============4154155826255932415==
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_4FA138C6_DD9526F8_5D286600"
-Content-Transfer-Encoding: 8Bit
+I have tested improved complete support in barebox.
 
-This is a multi-part message in MIME format.
+I have found that the list of available variable name completions is
+dubbed, e.g.
 
-------=_NextPart_4FA138C6_DD9526F8_5D286600
-Content-Type: text/plain;
-	charset="gb18030"
-Content-Transfer-Encoding: base64
+barebox:/ echo $<TAB>
+$PATH               $net.nameserver     $net.domainname
+$cs0.baudrate       $cs0.active         $cs1.active
+$cs1.ip             $cs1.port           $eth0.ipaddr
+$eth0.ethaddr       $eth0.gateway       $eth0.netmask
+$eth0.serverip      $PATH               $net.nameserver
+$net.domainname     $cs0.baudrate       $cs0.active
+$cs1.active         $cs1.ip             $cs1.port
+$eth0.ipaddr        $eth0.ethaddr       $eth0.gateway
+$eth0.netmask       $eth0.serverip
+barebox:/
 
-YW55Ym9keSBjYW4gc3VwcG9ydCBiYXJlYm94IGZvciBvbWFwLWwxMzggd2l0aCB1YXJ0LG5h
-bmQsdXNiLGRyaXZlcnM=
+This barebox build is based on the 'next' git branch, last commit is
 
-------=_NextPart_4FA138C6_DD9526F8_5D286600
-Content-Type: text/html;
-	charset="gb18030"
-Content-Transfer-Encoding: base64
+commit e4e3fbd22bca38f10f1cd7a3f5eb75e0b265dcaa
+Merge: 8ca4264 9492976
+Author: Sascha Hauer <s.hauer@pengutronix.de>
+Date:   Tue May 1 21:41:59 2012 +0200
 
-PGRpdj5hbnlib2R5IGNhbiBzdXBwb3J0IGJhcmVib3ggZm9yIG9tYXAtbDEzOCB3aXRoIHVh
-cnQsbmFuZCx1c2IsZHJpdmVyczwvZGl2Pgo=
+    Merge tag 'complete_update_support' of git://git.jcrosoft.org/barebo
 
-------=_NextPart_4FA138C6_DD9526F8_5D286600--
+-- =
 
-
-
---===============4154155826255932415==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============4154155826255932415==--
