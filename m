@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SPq4C-0002wF-A1
- for barebox@lists.infradead.org; Thu, 03 May 2012 07:03:09 +0000
-Date: Thu, 3 May 2012 09:03:01 +0200
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120503090301.4afb2f4a@eb-e6520>
-In-Reply-To: <20120503050727.GN16762@game.jcrosoft.org>
-References: <CAA4bVAF2pVHxuqUO4b5vU=HKnCUtocLfwVS0MqQiF-vX0Ud8KA@mail.gmail.com>
- <20120503050727.GN16762@game.jcrosoft.org>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SPqDM-0003aS-CY
+ for barebox@lists.infradead.org; Thu, 03 May 2012 07:12:37 +0000
+Date: Thu, 3 May 2012 09:12:33 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120503071233.GG4141@pengutronix.de>
+References: <1335864363-18383-1-git-send-email-renaud.barbier@ge.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1335864363-18383-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,94 +18,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: improved complete support: the list of available variable name
- completions is dubbed
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH V4 0/4] MPC85xx support
+To: Renaud Barbier <renaud.barbier@ge.com>
+Cc: barebox@lists.infradead.org
 
-Hi Jean-Christophe,
+Hi Renaud,
 
-Le Thu, 3 May 2012 07:07:27 +0200,
-Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
+On Tue, May 01, 2012 at 10:25:59AM +0100, Renaud Barbier wrote:
+> The patchset V4 introduces the MPC85xx architecture to Barebox and
+> addresses the comments of the version 3. The existing PPC code is
+> modified to enable multiple PowerPC architecture support.
+> All existing architecture specific MPC5xxx code which prevents
+> adding additional architectures is moved into the architecture specific
+> subdirectories and the PCM030 configuration fixed to use this new
+> configuration.
+> 
+> Base MPC85xx infrastructure is added to enable the required
+> functionality for a minimal boot target in 32 bit addressing mode
+> using an e500v2 core. To address V3 comments global variables that
+> helped handling TLBs and LAWs are replaced by search functions.
+> 
+> Finally support is added for a minimal Freescale P2020RDB platform with
+> driver support currently limited to NOR and serial port only.
+> 
+> Renaud Barbier (4):
+>   Preparation stage to support multiple PPC architectures
+>   Minimal support of the MPC85xx architecture
+>   Header files update to support the mpc85xx.
+>   Minimal P2020RDB platform support and configuration file
 
-> On 21:37 Wed 02 May     , Antony Pavlov wrote:
-> > Hi, All!
-> > =
+You might have noticed I applied parts of your patches, namely 1/4 and
+the bulk of 3/4. A git rebase should make your patches a bit smaller and
+should make you less dependent on future ppc changes.
 
-> > I have tested improved complete support in barebox.
-> > =
+Generally smaller patches are easier to review and will make merging
+your series faster, so it would be nice if you could split this up a bit
+more. This is especially important for the parts of the patches that
+affect other users like mpc5200 aswell.
 
-> > I have found that the list of available variable name completions is
-> > dubbed, e.g.
-> I just test it again on malta
-> =
+Sorry for not replying with a more detailed review, but your patch is
+quite big and my spare time is rather small at the moment.
 
-> # qemu-system-mips64 -nodefaults -M malta -m 256 -nographic -serial stdio=
- -monitor null -bios build/malta-64/barebox.bin =
+Thanks
+ Sascha
 
-> =
-
-> =
-
-> barebox 2012.04.0-00049-ga88907a #0 Thu May 3 12:43:17 CST 2012
-> =
-
-> =
-
-> Board: qemu malta
-> registered netconsole as cs1
-> ## Unknown FLASH on Bank at 0x1e000000 - Size =3D 0x00000000 =3D 0 MB
-> Malloc space: 0xa0400000 -> 0xa07fffff (size  4 MB)
-> Open /dev/env0 No such file or directory
-> running /env/bin/init...
-> not found
-> barebox:/ echo $
-> $net.nameserver     $net.domainname     $cs0.baudrate =
-
-> $cs0.active         $cs1.active         $cs1.ip =
-
-> $cs1.port           $net.nameserver     $net.domainname =
-
-> $cs0.baudrate       $cs0.active         $cs1.active =
-
-> $cs1.ip             $cs1.port           =
-
-> barebox:/ echo $
-> $net.nameserver     $net.domainname     $cs0.baudrate =
-
-> $cs0.active         $cs1.active         $cs1.ip =
-
-> $cs1.port           $net.nameserver     $net.domainname =
-
-> $cs0.baudrate       $cs0.active         $cs1.active =
-
-> $cs1.ip             $cs1.port           =
-
-> barebox:/ echo $
-> $net.nameserver     $net.domainname     $cs0.baudrate =
-
-  ^1
-> $cs0.active         $cs1.active         $cs1.ip =
-
-  ^1
-> $cs1.port           $net.nameserver     $net.domainname =
-
-  ^1                  ^2
-> $cs0.baudrate       $cs0.active         $cs1.active =
-
-                      ^2
-> $cs1.ip             $cs1.port           =
-
-                      ^2
- =
-
-and you ge the same result as Antony : variables are present twice.
-
-Eric
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
