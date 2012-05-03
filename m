@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SQ02T-0003Xy-7p
- for barebox@lists.infradead.org; Thu, 03 May 2012 17:42:03 +0000
+ id 1SQ0B6-0007vu-3A
+ for barebox@lists.infradead.org; Thu, 03 May 2012 17:51:00 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 3 May 2012 19:41:00 +0200
+Date: Thu, 3 May 2012 19:49:55 +0200
 References: <1336050844-7043-1-git-send-email-agalakhov@gmail.com>
- <1336050844-7043-3-git-send-email-agalakhov@gmail.com>
-In-Reply-To: <1336050844-7043-3-git-send-email-agalakhov@gmail.com>
+ <1336050844-7043-4-git-send-email-agalakhov@gmail.com>
+In-Reply-To: <1336050844-7043-4-git-send-email-agalakhov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201205031941.00662.jbe@pengutronix.de>
+Message-Id: <201205031949.55938.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,56 +19,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] Fine split S3C arch dependencies from generic code
+Subject: Re: [PATCH 3/4] Minimal S5PV210 + Tiny210 support (2nd stage only)
 To: barebox@lists.infradead.org
 Cc: Alexey Galakhov <agalakhov@gmail.com>
 
-QWxleGV5IEdhbGFraG92IHdyb3RlOgo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL210ZC9uYW5kL01h
-a2VmaWxlIGIvZHJpdmVycy9tdGQvbmFuZC9NYWtlZmlsZQo+IGluZGV4IDVjNmQ4YjMuLjNlMjEx
-ZDUgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9tdGQvbmFuZC9NYWtlZmlsZQo+ICsrKyBiL2RyaXZl
-cnMvbXRkL25hbmQvTWFrZWZpbGUKPiBAQCAtMTQsNCArMTQsNCBAQCBvYmotJChDT05GSUdfTVRE
-X05BTkRfTk9NQURJSynCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCs9IG5vbWFkaWtf
-bmFuZC5vCj4gIG9iai0kKENPTkZJR19OQU5EX0lNWCkJCSs9IG5hbmRfaW14Lm8gCj4gIG9iai0k
-KENPTkZJR19OQU5EX09NQVBfR1BNQynCoMKgwqDCoMKgwqDCoMKgwqArPSBuYW5kX29tYXBfZ3Bt
-Yy5vIG5hbmRfb21hcF9iY2hfZGVjb2Rlci5vCj4gIG9iai0kKENPTkZJR19OQU5EX0FUTUVMKcKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgKz0gYXRtZWxfbmFuZC5vCj4gLW9iai0kKENPTkZJR19O
-QU5EX1MzQzI0WFgpwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCs9IG5hbmRfczNjMjR4eC5vCj4gK29i
-ai0kKENPTkZJR19OQU5EX1MzQynCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqArPSBuYW5k
-X3MzYy5vCgo+IGRlbGV0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL210ZC9uYW5kL25hbmRfczNjMjR4
-eC5jCj4gY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbXRkL25hbmQvbmFuZF9zM2MuYwoKPiBj
-cmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1zYW1zdW5nL2luY2x1ZGUvbWFjaC9zM2Mt
-bmFuZC5oCj4gZGVsZXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtc2Ftc3VuZy9pbmNsdWRl
-L21hY2gvczNjMjR4eC1uYW5kLmgKClRoYXQgaXMgYSByZWFsbHkgYmFkIGlkZWEuIEkganVzdCBy
-ZW5hbWVkIHRoZXNlIGZpbGVzIGF0IEphbnVhcnkgMjAxMiB0byByZWZsZWN0CnRoZWlyIENQVSAo
-cmVmZXIgYjI5YjhmNDNkNTZiNjJlNDA2MzQ5YTVjZjFlZDU2ZjE3NDU0YzFmNykuIFdoeSBkbyB5
-b3UgcmV2ZXJ0CnRoaXMgY2hhbmdlIGFnYWluPyBUaGUgTkFORCBjb250cm9sbGVyIGluIHRoZSBT
-M0MyNFhYIENQVSBpcyB1bmlxdWUgdG8gdGhpcwpDUFUuIFRoZSBOQU5EIGNvbnRyb2xsZXIgaW4g
-dGhlIFMzQzY0MTAgZGlmZmVycyBmcm9tIGl0LCBhbmQgSSBndWVzcyB0aGUgc2FtZQppcyB0cnVl
-IGluIHRoZSBTNSBDUFUuIFNvLCB0aGUgbmV3ZXIgQ1BVcyBuZWVkIHRoZWlyIG93biBOQU5EIGRy
-aXZlcnMuCgpXaGF0IGlzIHRoZSBzZW5zZSBvZiByZW5hbWluZyB0aGVzZSBmaWxlcz8KCj4gY3Jl
-YXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtc2Ftc3VuZy9jbG9ja3MtczNjMjR4MC5jCj4g
-ZGVsZXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtc2Ftc3VuZy9zM2MyNHh4LWNsb2Nrcy5j
-Cgo+IGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9tYWNoLXNhbXN1bmcvaW5jbHVkZS9tYWNo
-L2dwaW8tczNjMjR4MC5oCj4gZGVsZXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtc2Ftc3Vu
-Zy9pbmNsdWRlL21hY2gvczNjMjR4eC1ncGlvLmgKClRoaXMgcmVuYW1lIF9jb3VsZF8gbWFrZSBz
-ZW5zZToKCj4gZGVsZXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtc2Ftc3VuZy9sb3dsZXZl
-bC1pbml0LlMKPiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1zYW1zdW5nL2xvd2xl
-dmVsLXMzYzI0eDAuUwoKQnV0IG9uIHRoZSBvdGhlciBoYW5kLCB0aGlzIGxvd2xldmVsIGluaXQg
-aXMgb25seSByZXF1aXJlZCBvbiB0aGUgUzNDMjR4eApDUFVzLCBhcyBhbGwgbmV3ZXIgQ1BVcyBh
-cmUgY29taW5nIHdpdGggYW4gaW50ZXJuYWwgUk9NIChjYWxsZWQgaVJPTSkgYW5kCmJvb3Rpbmcg
-Y29tcGxldGVseSBkaWZmZXJlbnQuIFNvLCBmb3IgdGhlc2UgQ1BVcyB0aGVyZSBpcyBubyBuZWVk
-IGZvciBzdWNoCmxvd2xldmVsIGZ1bmN0aW9ucy4KClNvIHNvcnJ5LCB0aGlzIHBhdGNoIGRvZXNu
-J3QgZG8gYSAiRmluZSBzcGxpdCIuCgpNeSBiMjliOGY0M2Q1NmI2MmU0MDYzNDlhNWNmMWVkNTZm
-MTc0NTRjMWY3IGFscmVhZHkgc2VwYXJhdGVkIHRoZSBTM0MyNHh4CmZyb20gb3RoZXIgU2Ftc3Vu
-ZyBpbXBsZW1lbnRhdGlvbnMuIEkgdGhpbmsgdGhlcmUgaXMgbm8gbmVlZCB0byB0b3VjaCBhbGwK
-dGhlIFMzQzI0eHggcmVsYXRlZCBmaWxlcyBhZ2FpbiB3aGVuIGFkZGluZyBhIG5ldyBTYW1zdW5n
-IENQVS4KCkp1ZXJnZW4KCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgfCBKdWVyZ2VuIEJlaXNlcnQgICAgICAgICAgICAgfApMaW51eCBTb2x1dGlvbnMg
-Zm9yIFNjaWVuY2UgYW5kIEluZHVzdHJ5ICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRl
-LyAgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
-ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
-cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Alexey Galakhov wrote:
+> [...]
+> diff --git a/arch/arm/boards/tiny210/lowlevel.c b/arch/arm/boards/tiny210/lowlevel.c
+> new file mode 100644 
+> index 0000000..3615d8a
+> --- /dev/null
+> +++ b/arch/arm/boards/tiny210/lowlevel.c
+> @@ -0,0 +1,31 @@
+> +/*
+> + * Copyright (C) 2012 Alexey Galakhov
+> + *
+> + * See file CREDITS for list of people who contributed to this
+> + * project.
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License
+> + * version 2 as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> + * MA 02111-1307 USA
+> + */
+> +#include <config.h>
+> +#include <common.h>
+> +#include <init.h>
+> +#include <io.h>
+> +#include <asm/barebox-arm.h>
+> +#include <mach/s3c-iomap.h>
+> +#include <mach/s3c-clocks.h>
+> +
+> +void __bare_init board_init_lowlevel(void)
+> +{
+> +}
+
+Why do you add an empty function?
+
+[...]
+
+Juergen
+
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
