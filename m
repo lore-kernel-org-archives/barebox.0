@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-f49.google.com ([209.85.213.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SQ0KP-00017S-Dd
- for barebox@lists.infradead.org; Thu, 03 May 2012 18:00:35 +0000
-Received: by yhjj52 with SMTP id j52so2351930yhj.36
- for <barebox@lists.infradead.org>; Thu, 03 May 2012 11:00:31 -0700 (PDT)
+ id 1SQ0Km-0001Du-0G
+ for barebox@lists.infradead.org; Thu, 03 May 2012 18:00:57 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Thu, 3 May 2012 19:59:56 +0200
+References: <1336050844-7043-1-git-send-email-agalakhov@gmail.com>
+ <1336050844-7043-5-git-send-email-agalakhov@gmail.com>
+In-Reply-To: <1336050844-7043-5-git-send-email-agalakhov@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <1336032068-19869-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1336032068-19869-1-git-send-email-plagnioj@jcrosoft.com>
-Date: Thu, 3 May 2012 22:00:30 +0400
-Message-ID: <CAA4bVAFLC7iHa7+S4-6qx9bZCQzPMMUqBu4OSkK7_4iYrSZAQg@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Content-Disposition: inline
+Message-Id: <201205031959.57093.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,99 +19,105 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] complete: fix duplicate env eval list
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/4] S5PV210 iROM magic boot code
+To: barebox@lists.infradead.org
+Cc: Alexey Galakhov <agalakhov@gmail.com>
 
-I have just checked this patch.
-The patch fixes the problem with dubbing.
+Alexey Galakhov wrote:
+> [...]
+> diff --git a/arch/arm/mach-samsung/s5p-irom-boot.c b/arch/arm/mach-samsung/s5p-irom-boot.c
+> new file mode 100644 
+> index 0000000..8fa0de4
+> --- /dev/null
+> +++ b/arch/arm/mach-samsung/s5p-irom-boot.c
+> @@ -0,0 +1,64 @@
+> +/*
+> + * Copyright (C) 2012 Alexey Galakhov
+> + *
+> + * Based on code from u-boot found somewhere on the web
+> + * that seems to originate from Samsung
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + */
+> +
+> +#include <config.h>
+> +#include <common.h>
+> +#include <init.h>
+> +#include <mach/s3c-generic.h>
+> +
+> +/*
+> + * These magical address values are from u-boot
+> + * Not sure what they really mean but they work
+> + */
+> +#if 1 /* S5PV210 and other CPUs */
+> +# define MADDR_CH 0xD0037488
+> +# define MADDR_CP 0xD0037F98
+> +#else /* not sure when, some older CPUs */
+> +# define MADDR_CH 0xD003A508
+> +# define MADDR_CP 0xD003E008
+> +#endif
+> +
+> +typedef uint32_t (*mmc2mem_func)
+> +(uint32_t channel, uint32_t start_block, uint16_t block_count, uint32_t *dest, uint32_t init);
+> + 
+> +/*
+> + * Call to the magical iROM code present on S5P CPUs
+> + * Block seems to be 512 bytes
+> + */
+> +int __bare_init s5p_irom_mmc_load(void *dest, uint32_t start_block, uint16_t block_count)
+> +{ 
+> +	uint32_t ret;
+> +	uint32_t chan;
+> +	uint32_t ch = *(volatile uint32_t*)(MADDR_CH);
+> +	mmc2mem_func cp_func = (mmc2mem_func)(*(uint32_t*)(MADDR_CP));
+> +	switch (ch)
+> +	{
+> +	case 0xEB000000:
+> +		chan = 0;
+> +		break;
+> +	case 0xEB200000:
+> +		chan = 2;
+> +		break;
+> +	default:
+> +		return 0;
+> +	}
+> +
+> +	ret = cp_func(chan, start_block, block_count, (uint32_t*)dest, 0);
+> +	if (ret == 0)
+> +		return 0; /* error */
+> +	return 1;
+> +}
 
-On 3 May 2012 12:01, Jean-Christophe PLAGNIOL-VILLARD
-<plagnioj@jcrosoft.com> wrote:
-> this can be reproductable by this sequence
->
-> barebox:/ <TAB>
-> . =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0? =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0[ =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0addpart
-> bootm =A0 =A0 =A0 =A0 =A0 =A0 =A0cat =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cd =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 clear
-> cp =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 cpuinfo =A0 =A0 =A0 =A0 =A0 =A0crc32 =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0delpart
-> devinfo =A0 =A0 =A0 =A0 =A0 =A0dhcp =A0 =A0 =A0 =A0 =A0 =A0 =A0 echo =A0 =
-=A0 =A0 =A0 =A0 =A0 =A0 edit
-> erase =A0 =A0 =A0 =A0 =A0 =A0 =A0ethact =A0 =A0 =A0 =A0 =A0 =A0 exit =A0 =
-=A0 =A0 =A0 =A0 =A0 =A0 export
-> false =A0 =A0 =A0 =A0 =A0 =A0 =A0getopt =A0 =A0 =A0 =A0 =A0 =A0 go =A0 =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0 help
-> host =A0 =A0 =A0 =A0 =A0 =A0 =A0 loadb =A0 =A0 =A0 =A0 =A0 =A0 =A0loadenv=
- =A0 =A0 =A0 =A0 =A0 =A0loady
-> login =A0 =A0 =A0 =A0 =A0 =A0 =A0ls =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 md =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 md5sum
-> memcmp =A0 =A0 =A0 =A0 =A0 =A0 memcpy =A0 =A0 =A0 =A0 =A0 =A0 meminfo =A0=
- =A0 =A0 =A0 =A0 =A0memset
-> menu =A0 =A0 =A0 =A0 =A0 =A0 =A0 mkdir =A0 =A0 =A0 =A0 =A0 =A0 =A0mount =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0mtest
-> mw =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 nfs =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0pas=
-swd =A0 =A0 =A0 =A0 =A0 =A0 ping
-> printenv =A0 =A0 =A0 =A0 =A0 protect =A0 =A0 =A0 =A0 =A0 =A0pwd =A0 =A0 =
-=A0 =A0 =A0 =A0 =A0 =A0readline
-> reset =A0 =A0 =A0 =A0 =A0 =A0 =A0rm =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 rmdir=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0saveenv
-> sedit =A0 =A0 =A0 =A0 =A0 =A0 =A0sh =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 sha1s=
-um =A0 =A0 =A0 =A0 =A0 =A0sha256sum
-> sleep =A0 =A0 =A0 =A0 =A0 =A0 =A0source =A0 =A0 =A0 =A0 =A0 =A0 test =A0 =
-=A0 =A0 =A0 =A0 =A0 =A0 tftp
-> time =A0 =A0 =A0 =A0 =A0 =A0 =A0 timeout =A0 =A0 =A0 =A0 =A0 =A0true =A0 =
-=A0 =A0 =A0 =A0 =A0 =A0 umount
-> uncompress =A0 =A0 =A0 =A0 unprotect =A0 =A0 =A0 =A0 =A0version =A0 =A0 =
-=A0 =A0 =A0 =A0net.nameserver=3D
-> net.domainname=3D =A0 =A0cs0.baudrate=3D =A0 =A0 =A0cs0.active=3D =A0 =A0=
- =A0 =A0cs1.active=3D
-> cs1.ip=3D =A0 =A0 =A0 =A0 =A0 =A0cs1.port=3D
-> barebox:/ $<TAB>
-> $net.nameserver =A0 =A0 $net.domainname =A0 =A0 $cs0.baudrate
-> $cs0.active =A0 =A0 =A0 =A0 $cs1.active =A0 =A0 =A0 =A0 $cs1.ip
-> $cs1.port =A0 =A0 =A0 =A0 =A0 $net.nameserver =A0 =A0 $net.domainname
-> $cs0.baudrate =A0 =A0 =A0 $cs0.active =A0 =A0 =A0 =A0 $cs1.active
-> $cs1.ip =A0 =A0 =A0 =A0 =A0 =A0 $cs1.port
-> barebox:/ $
->
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
-> =A0common/complete.c | =A0 =A02 +-
-> =A01 files changed, 1 insertions(+), 1 deletions(-)
->
-> diff --git a/common/complete.c b/common/complete.c
-> index 0b03d7c..0780888 100644
-> --- a/common/complete.c
-> +++ b/common/complete.c
-> @@ -272,7 +272,7 @@ static char* cmd_complete_lookup(struct string_list *=
-sl, char *instr)
-> =A0{
-> =A0 =A0 =A0 =A0struct command *cmdtp;
-> =A0 =A0 =A0 =A0int len;
-> - =A0 =A0 =A0 int ret =3D 1;
-> + =A0 =A0 =A0 int ret =3D COMPLETE_END;
-> =A0 =A0 =A0 =A0char *res =3D NULL;
->
-> =A0 =A0 =A0 =A0for_each_command(cmdtp) {
-> --
-> 1.7.9.1
->
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+It seems to be a low hanging fruit to use the iROM to access some of the
+peripherals. But there is no way to tell the compiler the calling convention
+to the ROM functions. And the entry points seems guessed only. This results
+into "it works for me with this compiler and these compiler flags and that
+CPU's silicon revision"...
 
--- =
+The S3C6410 CPU comes also with such an iROM. But calling it is only useful in
+the first stage loader (and the S3C6410 iROM has a defined jump table to
+call specific functions, there is no need to guess the real entry points).
 
-Best regards,
-=A0 Antony Pavlov
+Writing a Barebox driver for this MMC/SD unit instead should be the correct
+way.
+
+Juergen
+
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
