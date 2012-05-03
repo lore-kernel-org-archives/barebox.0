@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo4.mail-out.ovh.net ([188.165.44.50]
- helo=mo4.mail-out.ovh.net)
+Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SPob4-00059y-GD
- for barebox@lists.infradead.org; Thu, 03 May 2012 05:29:00 +0000
-Received: from mail97.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 56CEB104E6C7
- for <barebox@lists.infradead.org>; Thu,  3 May 2012 07:30:19 +0200 (CEST)
-Date: Thu, 3 May 2012 07:07:27 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120503050727.GN16762@game.jcrosoft.org>
+ id 1SPq3k-0002r7-5p
+ for barebox@lists.infradead.org; Thu, 03 May 2012 07:02:41 +0000
+Date: Thu, 3 May 2012 09:02:31 +0200
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20120503090231.7b00f763@eb-e6520>
+In-Reply-To: <20120503050727.GN16762@game.jcrosoft.org>
 References: <CAA4bVAF2pVHxuqUO4b5vU=HKnCUtocLfwVS0MqQiF-vX0Ud8KA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAA4bVAF2pVHxuqUO4b5vU=HKnCUtocLfwVS0MqQiF-vX0Ud8KA@mail.gmail.com>
+ <20120503050727.GN16762@game.jcrosoft.org>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,103 +24,86 @@ Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: improved complete support: the list of available variable name
  completions is dubbed
-To: Antony Pavlov <antonynpavlov@gmail.com>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox <barebox@lists.infradead.org>
 
-On 21:37 Wed 02 May     , Antony Pavlov wrote:
-> Hi, All!
+Le Thu, 3 May 2012 07:07:27 +0200,
+Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
+
+> On 21:37 Wed 02 May     , Antony Pavlov wrote:
+> > Hi, All!
+> > =
+
+> > I have tested improved complete support in barebox.
+> > =
+
+> > I have found that the list of available variable name completions is
+> > dubbed, e.g.
+> I just test it again on malta
 > =
 
-> I have tested improved complete support in barebox.
-> =
-
-> I have found that the list of available variable name completions is
-> dubbed, e.g.
-I just test it again on malta
-
-# qemu-system-mips64 -nodefaults -M malta -m 256 -nographic -serial stdio -=
-monitor null -bios build/malta-64/barebox.bin =
-
-
-
-barebox 2012.04.0-00049-ga88907a #0 Thu May 3 12:43:17 CST 2012
-
-
-Board: qemu malta
-registered netconsole as cs1
-## Unknown FLASH on Bank at 0x1e000000 - Size =3D 0x00000000 =3D 0 MB
-Malloc space: 0xa0400000 -> 0xa07fffff (size  4 MB)
-Open /dev/env0 No such file or directory
-running /env/bin/init...
-not found
-barebox:/ echo $
-$net.nameserver     $net.domainname     $cs0.baudrate =
-
-$cs0.active         $cs1.active         $cs1.ip =
-
-$cs1.port           $net.nameserver     $net.domainname =
-
-$cs0.baudrate       $cs0.active         $cs1.active =
-
-$cs1.ip             $cs1.port           =
-
-barebox:/ echo $
-$net.nameserver     $net.domainname     $cs0.baudrate =
-
-$cs0.active         $cs1.active         $cs1.ip =
-
-$cs1.port           $net.nameserver     $net.domainname =
-
-$cs0.baudrate       $cs0.active         $cs1.active =
-
-$cs1.ip             $cs1.port           =
-
-barebox:/ echo $
-$net.nameserver     $net.domainname     $cs0.baudrate =
-
-$cs0.active         $cs1.active         $cs1.ip =
-
-$cs1.port           $net.nameserver     $net.domainname =
-
-$cs0.baudrate       $cs0.active         $cs1.active =
-
-$cs1.ip             $cs1.port           =
-
-
-Best Regards,
-J.
+> # qemu-system-mips64 -nodefaults -M malta -m 256 -nographic -serial stdio=
+ -monitor null -bios build/malta-64/barebox.bin =
 
 > =
 
-> barebox:/ echo $<TAB>
-> $PATH               $net.nameserver     $net.domainname
-> $cs0.baudrate       $cs0.active         $cs1.active
-> $cs1.ip             $cs1.port           $eth0.ipaddr
-> $eth0.ethaddr       $eth0.gateway       $eth0.netmask
-> $eth0.serverip      $PATH               $net.nameserver
-> $net.domainname     $cs0.baudrate       $cs0.active
-> $cs1.active         $cs1.ip             $cs1.port
-> $eth0.ipaddr        $eth0.ethaddr       $eth0.gateway
-> $eth0.netmask       $eth0.serverip
-> barebox:/
 > =
 
-> This barebox build is based on the 'next' git branch, last commit is
+> barebox 2012.04.0-00049-ga88907a #0 Thu May 3 12:43:17 CST 2012
 > =
 
-> commit e4e3fbd22bca38f10f1cd7a3f5eb75e0b265dcaa
-> Merge: 8ca4264 9492976
-> Author: Sascha Hauer <s.hauer@pengutronix.de>
-> Date:   Tue May 1 21:41:59 2012 +0200
 > =
 
->     Merge tag 'complete_update_support' of git://git.jcrosoft.org/barebo
-> =
+> Board: qemu malta
+> registered netconsole as cs1
+> ## Unknown FLASH on Bank at 0x1e000000 - Size =3D 0x00000000 =3D 0 MB
+> Malloc space: 0xa0400000 -> 0xa07fffff (size  4 MB)
+> Open /dev/env0 No such file or directory
+> running /env/bin/init...
+> not found
+> barebox:/ echo $
+> $net.nameserver     $net.domainname     $cs0.baudrate =
 
-> -- =
+> $cs0.active         $cs1.active         $cs1.ip =
 
-> Best regards,
-> =A0 Antony Pavlov
+> $cs1.port           $net.nameserver     $net.domainname =
+
+> $cs0.baudrate       $cs0.active         $cs1.active =
+
+> $cs1.ip             $cs1.port           =
+
+> barebox:/ echo $
+> $net.nameserver     $net.domainname     $cs0.baudrate =
+
+> $cs0.active         $cs1.active         $cs1.ip =
+
+> $cs1.port           $net.nameserver     $net.domainname =
+
+> $cs0.baudrate       $cs0.active         $cs1.active =
+
+> $cs1.ip             $cs1.port           =
+
+> barebox:/ echo $
+> $net.nameserver     $net.domainname     $cs0.baudrate =
+
+  ^1
+> $cs0.active         $cs1.active         $cs1.ip =
+
+  ^1
+> $cs1.port           $net.nameserver     $net.domainname =
+
+  ^1                  ^2
+> $cs0.baudrate       $cs0.active         $cs1.active =
+
+                      ^2
+> $cs1.ip             $cs1.port           =
+
+                      ^2
+ =
+
+and you ge the same result as Antony : variables are present twice.
+
+Eric
 
 _______________________________________________
 barebox mailing list
