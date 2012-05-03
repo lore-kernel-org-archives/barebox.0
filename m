@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SPq3k-0002r7-5p
- for barebox@lists.infradead.org; Thu, 03 May 2012 07:02:41 +0000
-Date: Thu, 3 May 2012 09:02:31 +0200
+ id 1SPq4C-0002wF-A1
+ for barebox@lists.infradead.org; Thu, 03 May 2012 07:03:09 +0000
+Date: Thu, 3 May 2012 09:03:01 +0200
 From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120503090231.7b00f763@eb-e6520>
+Message-ID: <20120503090301.4afb2f4a@eb-e6520>
 In-Reply-To: <20120503050727.GN16762@game.jcrosoft.org>
 References: <CAA4bVAF2pVHxuqUO4b5vU=HKnCUtocLfwVS0MqQiF-vX0Ud8KA@mail.gmail.com>
  <20120503050727.GN16762@game.jcrosoft.org>
@@ -26,6 +26,8 @@ Subject: Re: improved complete support: the list of available variable name
  completions is dubbed
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox <barebox@lists.infradead.org>
+
+Hi Jean-Christophe,
 
 Le Thu, 3 May 2012 07:07:27 +0200,
 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
