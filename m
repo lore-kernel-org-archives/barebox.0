@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SPqDM-0003aS-CY
- for barebox@lists.infradead.org; Thu, 03 May 2012 07:12:37 +0000
-Date: Thu, 3 May 2012 09:12:33 +0200
+ id 1SPqDn-0003c2-1e
+ for barebox@lists.infradead.org; Thu, 03 May 2012 07:13:04 +0000
+Date: Thu, 3 May 2012 09:13:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120503071233.GG4141@pengutronix.de>
+Message-ID: <20120503071301.GH13302@pengutronix.de>
 References: <1335864363-18383-1-git-send-email-renaud.barbier@ge.com>
+ <1335864363-18383-4-git-send-email-renaud.barbier@ge.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1335864363-18383-1-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1335864363-18383-4-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,49 +23,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V4 0/4] MPC85xx support
+Subject: Re: [PATCH V4 3/4] Header files update to support the mpc85xx.
 To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
-Hi Renaud,
-
-On Tue, May 01, 2012 at 10:25:59AM +0100, Renaud Barbier wrote:
-> The patchset V4 introduces the MPC85xx architecture to Barebox and
-> addresses the comments of the version 3. The existing PPC code is
-> modified to enable multiple PowerPC architecture support.
-> All existing architecture specific MPC5xxx code which prevents
-> adding additional architectures is moved into the architecture specific
-> subdirectories and the PCM030 configuration fixed to use this new
-> configuration.
+On Tue, May 01, 2012 at 10:26:02AM +0100, Renaud Barbier wrote:
+> The introduction of the new CPU architecture and board support
+> leads to the update of existing header files. Are added:
+>  - functions and macros to manipulate bits of registers field values.
+>  - external declaration of cache handling functions to prevent
+>    compilation warnings.
+>  - new processor definitions.
+>  - macros (in replacement of existing definitions) to set 85xx TLB
+>    registers.
 > 
-> Base MPC85xx infrastructure is added to enable the required
-> functionality for a minimal boot target in 32 bit addressing mode
-> using an e500v2 core. To address V3 comments global variables that
-> helped handling TLBs and LAWs are replaced by search functions.
+> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+> ---
+>  arch/ppc/include/asm/bitops.h    |   42 +++++++++++++++++++++++
+>  arch/ppc/include/asm/cache.h     |    2 +
+>  arch/ppc/include/asm/common.h    |    1 +
+>  arch/ppc/include/asm/io.h        |   20 +++++++++++
+>  arch/ppc/include/asm/mmu.h       |   69 +++++++++++++++++++++++++++++++++----
+>  arch/ppc/include/asm/processor.h |   44 ++++++++++++++++++++++++
+>  include/linux/types.h            |    2 +
+>  7 files changed, 172 insertions(+), 8 deletions(-)
 > 
-> Finally support is added for a minimal Freescale P2020RDB platform with
-> driver support currently limited to NOR and serial port only.
-> 
-> Renaud Barbier (4):
->   Preparation stage to support multiple PPC architectures
->   Minimal support of the MPC85xx architecture
->   Header files update to support the mpc85xx.
->   Minimal P2020RDB platform support and configuration file
 
-You might have noticed I applied parts of your patches, namely 1/4 and
-the bulk of 3/4. A git rebase should make your patches a bit smaller and
-should make you less dependent on future ppc changes.
+> +#ifdef CONFIG_E500
+> +#ifndef __ASSEMBLY__
+> +extern void set_tlb(u8 tlb, u32 epn, u64 rpn,
+> +		u8 perms, u8 wimge,
+> +		u8 ts, u8 esel, u8 tsize, u8 iprot);
+> +extern void disable_tlb(u8 esel);
+> +extern void invalidate_tlb(u8 tlb);
+> +extern void init_tlbs(void);
+> +extern int find_tlb_idx(void *addr, u8 tlbsel);
+> +extern void init_used_tlb_cams(void);
+> +
+> +extern unsigned int setup_ddr_tlbs(unsigned int memsize_in_meg);
+> +extern void write_tlb(u32 _mas0, u32 _mas1, u32 _mas2, u32 _mas3, u32 _mas7);
+> +
+> +#define SET_TLB_ENTRY(_tlb, _epn, _rpn, _perms, _wimge, _ts, _esel, _sz,\
+> +			_iprot) \
+> +	{ .mas0 = FSL_BOOKE_MAS0(_tlb, _esel, 0), \
+> +	  .mas1 = FSL_BOOKE_MAS1(1, _iprot, 0, _ts, _sz), \
+> +	  .mas2 = FSL_BOOKE_MAS2(_epn, _wimge), \
+> +	  .mas3 = FSL_BOOKE_MAS3(_rpn, 0, _perms), \
+> +	  .mas7 = FSL_BOOKE_MAS7(_rpn), }
+> +
+> +struct fsl_e_tlb_entry {
+> +	u32	mas0;
+> +	u32	mas1;
+> +	u32	mas2;
+> +	u32	mas3;
+> +	u32	mas7;
+> +};
+> +extern struct fsl_e_tlb_entry tlb_table[];
+> +extern int num_tlb_entries;
+> +#endif
+> +#endif
 
-Generally smaller patches are easier to review and will make merging
-your series faster, so it would be nice if you could split this up a bit
-more. This is especially important for the parts of the patches that
-affect other users like mpc5200 aswell.
+Please move such declarations which are really only for mpc85xx to some
+header file under arch/ppc/*85xx/ and add a mpc85xx (or e500? I'm not
+very familiar with PowerPC) prefix to the function names. Also these
+functions are added (and used) in an earlier patch, so the declarations
+should be there aswell.
 
-Sorry for not replying with a more detailed review, but your patch is
-quite big and my spare time is rather small at the moment.
+As far as I can see some other functions also have quite a generic name
+but are really mpc85xx specific.
 
-Thanks
- Sascha
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
