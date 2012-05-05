@@ -1,14 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yx0-f177.google.com ([209.85.213.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SQm7J-0004Jo-Lr
- for barebox@lists.infradead.org; Sat, 05 May 2012 21:02:14 +0000
-Received: by yenr9 with SMTP id r9so1239492yen.36
- for <barebox@lists.infradead.org>; Sat, 05 May 2012 14:02:10 -0700 (PDT)
+Received: from inx.pm.waw.pl ([195.116.170.130])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SQmYA-0001m5-Eb
+ for barebox@lists.infradead.org; Sat, 05 May 2012 21:29:59 +0000
+From: Krzysztof Halasa <khc@pm.waw.pl>
+Date: Sat, 05 May 2012 23:26:22 +0200
+Message-ID: <m31umynwu9.fsf@intrepid.localdomain>
 MIME-Version: 1.0
-Date: Sat, 5 May 2012 23:02:10 +0200
-Message-ID: <CAOQ7t2ZNu14D4Y3nDKxGVSAxp4gR9K-mDuN21fwXfNHwMiZ38w@mail.gmail.com>
-From: Carlo Caione <carlo.caione@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,39 +15,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox, omap3530_beagle_xload and qemu-linaro
+Subject: RFC: Force a 2s delay on startup to allow bypassing /dev/env0.
 To: barebox@lists.infradead.org
 
-Hi,
-I was trying to run barebox (omap3530_beagle_xload) under qemu-linaro
-(-M beagle). This is what I get:
-
-carlo@belfagor:~/projects/barebox-img$ qemu-system-arm -M beagle
--nographic -sd sd.img
-qemu: fatal: Trying to execute code outside RAM or ROM at 0x00014080
-
-R00=4020a5bf R01=4020a5bf R02=4020a5bf R03=4020a5bf
-R04=4020ae70 R05=4020a5bf R06=400001d3 R07=ffffffff
-R08=00000000 R09=ffffffff R10=00000000 R11=00000002
-R12=4020be7c R13=402064b0 R14=40205c8c R15=00014080
-PSR=200001db --C- A und32
-Aborted (core dumped)
-
-Using the original linaro images (with u-boot inside) everything works
-well so I think the problem here is barebox.
-
-Any idea?
-
-Thank you,
-
---
-Carlo
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SnVzdCByZXF1ZXN0aW5nIGNvbW1lbnRzLiBJJ20gdXNpbmcgdGhpcyBvbiBteSBody4KClRoZSBp
+ZGVhIGlzIHRoYXQgL2Vudi9iaW4vaW5pdCBtYXkgYmUgdW5pbnRlcnJ1cHRpYmxlIGFuZCB0aGUg
+dXNlcgptYXkgYmUgdW5hYmxlIHRvIHJlY292ZXIgY29udHJvbCBvdmVyIHRoZSBiYXJlYm94LiBQ
+ZXJoYXBzIHRoZXJlIGlzCmEgYmV0dGVyIHdheT8KClNpZ25lZC1vZmYtYnk6IEtyenlzenRvZiBI
+YcWCYXNhIDxraGNAcG0ud2F3LnBsPgoKZGlmZiAtLWdpdCBhL2NvbW1vbi9zdGFydHVwLmMgYi9j
+b21tb24vc3RhcnR1cC5jCmluZGV4IGFiZDFiNzcuLmZkZTk5ZDUgMTAwNjQ0Ci0tLSBhL2NvbW1v
+bi9zdGFydHVwLmMKKysrIGIvY29tbW9uL3N0YXJ0dXAuYwpAQCAtMzAsNiArMzAsNyBAQAogICog
+QGJyaWVmIE1haW4gZW50cnkgaW50byB0aGUgQyBwYXJ0IG9mIGJhcmVib3gKICAqLwogI2luY2x1
+ZGUgPGNvbW1vbi5oPgorI2luY2x1ZGUgPGNsb2NrLmg+CiAjaW5jbHVkZSA8aW5pdC5oPgogI2lu
+Y2x1ZGUgPGNvbW1hbmQuaD4KICNpbmNsdWRlIDxtYWxsb2MuaD4KQEAgLTExNyw2ICsxMTgsOCBA
+QCB2b2lkIHN0YXJ0X2JhcmVib3ggKHZvaWQpCiAJaW50IHJlc3VsdDsKICNpZmRlZiBDT05GSUdf
+Q09NTUFORF9TVVBQT1JUCiAJc3RydWN0IHN0YXQgczsKKwl1aW50NjRfdCBzdGFydDsKKwlpbnQg
+c3RvcCA9IDA7CiAjZW5kaWYKIAogCWZvciAoaW5pdGNhbGwgPSBfX2JhcmVib3hfaW5pdGNhbGxz
+X3N0YXJ0OwpAQCAtMTMwLDYgKzEzMywxNyBAQCB2b2lkIHN0YXJ0X2JhcmVib3ggKHZvaWQpCiAK
+IAlkaXNwbGF5X21lbWluZm8oKTsKIAorI2lmZGVmIENPTkZJR19DT01NQU5EX1NVUFBPUlQKKwlz
+dGFydCA9IGdldF90aW1lX25zKCk7CisJcHJpbnRmKCJcblByZXNzIENvbnRyb2wtQyB0byBzdG9w
+LiIpOworCXdoaWxlICghaXNfdGltZW91dChzdGFydCwgMiAqIFNFQ09ORCkpCisJCWlmIChjdHJs
+YygpKSB7CisJCQlzdG9wID0gMTsKKwkJCWJyZWFrOworCQl9CisJcHV0Y2hhcignXG4nKTsKKyNl
+bmRpZgorCiAjaWZkZWYgQ09ORklHX0VOVl9IQU5ETElORwogCWlmIChlbnZmc19sb2FkKGRlZmF1
+bHRfZW52aXJvbm1lbnRfcGF0aCwgIi9lbnYiKSkgewogI2lmZGVmIENPTkZJR19ERUZBVUxUX0VO
+VklST05NRU5UCkBAIC0xNDEsMTQgKzE1NSwxNiBAQCB2b2lkIHN0YXJ0X2JhcmVib3ggKHZvaWQp
+CiAJfQogI2VuZGlmCiAjaWZkZWYgQ09ORklHX0NPTU1BTkRfU1VQUE9SVAotCXByaW50ZigicnVu
+bmluZyAvZW52L2Jpbi9pbml0Li4uXG4iKTsKLQotCWlmICghc3RhdCgiL2Vudi9iaW4vaW5pdCIs
+ICZzKSkgeworCWlmIChzdG9wKQorCQlwcmludGYoInNraXBwaW5nIC9lbnYvYmluL2luaXRcbiIp
+OworCWVsc2UgaWYgKCFzdGF0KCIvZW52L2Jpbi9pbml0IiwgJnMpKSB7CisJCXByaW50ZigicnVu
+bmluZyAvZW52L2Jpbi9pbml0Li4uXG4iKTsKIAkJcnVuX2NvbW1hbmQoInNvdXJjZSAvZW52L2Jp
+bi9pbml0IiwgMCk7Ci0JfSBlbHNlIHsKLQkJcHJpbnRmKCJub3QgZm91bmRcbiIpOwotCX0KKwl9
+IGVsc2UKKwkJcHJpbnRmKCIvZW52L2Jpbi9pbml0IG5vdCBmb3VuZFxuIik7CisKICNlbmRpZgor
+CiAJLyogbWFpbl9sb29wKCkgY2FuIHJldHVybiB0byByZXRyeSBhdXRvYm9vdCwgaWYgc28ganVz
+dCBydW4gaXQgYWdhaW4uICovCiAJZm9yICg7OykKIAkJcnVuX3NoZWxsKCk7CgotLSAKS3J6eXN6
+dG9mIEhhbGFzYQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
