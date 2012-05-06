@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp19.mail.ru ([94.100.176.156])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SQuEz-0001sR-7T
- for barebox@lists.infradead.org; Sun, 06 May 2012 05:42:42 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun,  6 May 2012 09:42:39 +0400
-Message-Id: <1336282959-5961-1-git-send-email-shc_work@mail.ru>
+ id 1SR54f-000389-2t
+ for barebox@lists.infradead.org; Sun, 06 May 2012 17:16:46 +0000
+Date: Sun, 6 May 2012 19:16:38 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120506171638.GT4141@pengutronix.de>
+References: <m31umynwu9.fsf@intrepid.localdomain>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <m31umynwu9.fsf@intrepid.localdomain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,49 +18,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] PCM038: choose boot device by parsing barebox_loc magic
- variable
-To: barebox@lists.infradead.org
+Subject: Re: RFC: Force a 2s delay on startup to allow bypassing /dev/env0.
+To: Krzysztof Halasa <khc@pm.waw.pl>
+Cc: barebox@lists.infradead.org
 
----
- arch/arm/boards/pcm038/env/config |   12 ++++++++++--
- 1 files changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/boards/pcm038/env/config b/arch/arm/boards/pcm038/env/config
-index 32be5ec..59f3e89 100644
---- a/arch/arm/boards/pcm038/env/config
-+++ b/arch/arm/boards/pcm038/env/config
-@@ -14,10 +14,18 @@ ip=dhcp
- #eth0.gateway=a.b.c.d
- #eth0.serverip=a.b.c.d
- 
-+if [ x$barebox_loc = xnand ]; then
-+	kernel_loc=nand
-+	rootfs_loc=nand
-+elif [ x$barebox_loc = xnor ]; then
-+	kernel_loc=nor
-+	rootfs_loc=nor
-+else
- # can be either 'nfs', 'tftp', 'nor' or 'nand'
--kernel_loc=tftp
-+	kernel_loc=tftp
- # can be either 'net', 'nor', 'nand' or 'initrd'
--rootfs_loc=net
-+	rootfs_loc=net
-+fi
- 
- # can be either 'jffs2' or 'ubifs'
- rootfs_type=ubifs
--- 
-1.7.3.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gU2F0LCBNYXkgMDUsIDIwMTIgYXQgMTE6MjY6MjJQTSArMDIwMCwgS3J6eXN6dG9mIEhhbGFz
+YSB3cm90ZToKPiBKdXN0IHJlcXVlc3RpbmcgY29tbWVudHMuIEknbSB1c2luZyB0aGlzIG9uIG15
+IGh3Lgo+IAo+IFRoZSBpZGVhIGlzIHRoYXQgL2Vudi9iaW4vaW5pdCBtYXkgYmUgdW5pbnRlcnJ1
+cHRpYmxlIGFuZCB0aGUgdXNlcgo+IG1heSBiZSB1bmFibGUgdG8gcmVjb3ZlciBjb250cm9sIG92
+ZXIgdGhlIGJhcmVib3guIFBlcmhhcHMgdGhlcmUgaXMKPiBhIGJldHRlciB3YXk/CgpCZWluZyBh
+YmxlIHRvIGludGVycnVwdCBiZWZvcmUgZW52aXJvbm1lbnQgcHJvY2Vzc2luZyBpcyBhIGdvb2Qg
+dGhpbmcgdG8KaGF2ZSwgdGhlIGRlbGF5IHRob3VnaCBpcyBub3QgYWNjZXB0YWJsZSBiZWNhdXNl
+IGl0IHdvdWxkIGluY3JlYXNlIHRoZQpib290IHRpbWUgb24gc29tZSBzeXN0ZW1zIGJ5IDQwMCUu
+IEl0IHNob3VsZCB3b3JrIHdpdGhvdXQgdGhlIGRlbGF5CmFzd2VsbC4KClNhc2NoYQoKCj4gCj4g
+U2lnbmVkLW9mZi1ieTogS3J6eXN6dG9mIEhhxYJhc2EgPGtoY0BwbS53YXcucGw+Cj4gCj4gZGlm
+ZiAtLWdpdCBhL2NvbW1vbi9zdGFydHVwLmMgYi9jb21tb24vc3RhcnR1cC5jCj4gaW5kZXggYWJk
+MWI3Ny4uZmRlOTlkNSAxMDA2NDQKPiAtLS0gYS9jb21tb24vc3RhcnR1cC5jCj4gKysrIGIvY29t
+bW9uL3N0YXJ0dXAuYwo+IEBAIC0zMCw2ICszMCw3IEBACj4gICAqIEBicmllZiBNYWluIGVudHJ5
+IGludG8gdGhlIEMgcGFydCBvZiBiYXJlYm94Cj4gICAqLwo+ICAjaW5jbHVkZSA8Y29tbW9uLmg+
+Cj4gKyNpbmNsdWRlIDxjbG9jay5oPgo+ICAjaW5jbHVkZSA8aW5pdC5oPgo+ICAjaW5jbHVkZSA8
+Y29tbWFuZC5oPgo+ICAjaW5jbHVkZSA8bWFsbG9jLmg+Cj4gQEAgLTExNyw2ICsxMTgsOCBAQCB2
+b2lkIHN0YXJ0X2JhcmVib3ggKHZvaWQpCj4gIAlpbnQgcmVzdWx0Owo+ICAjaWZkZWYgQ09ORklH
+X0NPTU1BTkRfU1VQUE9SVAo+ICAJc3RydWN0IHN0YXQgczsKPiArCXVpbnQ2NF90IHN0YXJ0Owo+
+ICsJaW50IHN0b3AgPSAwOwo+ICAjZW5kaWYKPiAgCj4gIAlmb3IgKGluaXRjYWxsID0gX19iYXJl
+Ym94X2luaXRjYWxsc19zdGFydDsKPiBAQCAtMTMwLDYgKzEzMywxNyBAQCB2b2lkIHN0YXJ0X2Jh
+cmVib3ggKHZvaWQpCj4gIAo+ICAJZGlzcGxheV9tZW1pbmZvKCk7Cj4gIAo+ICsjaWZkZWYgQ09O
+RklHX0NPTU1BTkRfU1VQUE9SVAo+ICsJc3RhcnQgPSBnZXRfdGltZV9ucygpOwo+ICsJcHJpbnRm
+KCJcblByZXNzIENvbnRyb2wtQyB0byBzdG9wLiIpOwo+ICsJd2hpbGUgKCFpc190aW1lb3V0KHN0
+YXJ0LCAyICogU0VDT05EKSkKPiArCQlpZiAoY3RybGMoKSkgewo+ICsJCQlzdG9wID0gMTsKPiAr
+CQkJYnJlYWs7Cj4gKwkJfQo+ICsJcHV0Y2hhcignXG4nKTsKPiArI2VuZGlmCj4gKwo+ICAjaWZk
+ZWYgQ09ORklHX0VOVl9IQU5ETElORwo+ICAJaWYgKGVudmZzX2xvYWQoZGVmYXVsdF9lbnZpcm9u
+bWVudF9wYXRoLCAiL2VudiIpKSB7Cj4gICNpZmRlZiBDT05GSUdfREVGQVVMVF9FTlZJUk9OTUVO
+VAo+IEBAIC0xNDEsMTQgKzE1NSwxNiBAQCB2b2lkIHN0YXJ0X2JhcmVib3ggKHZvaWQpCj4gIAl9
+Cj4gICNlbmRpZgo+ICAjaWZkZWYgQ09ORklHX0NPTU1BTkRfU1VQUE9SVAo+IC0JcHJpbnRmKCJy
+dW5uaW5nIC9lbnYvYmluL2luaXQuLi5cbiIpOwo+IC0KPiAtCWlmICghc3RhdCgiL2Vudi9iaW4v
+aW5pdCIsICZzKSkgewo+ICsJaWYgKHN0b3ApCj4gKwkJcHJpbnRmKCJza2lwcGluZyAvZW52L2Jp
+bi9pbml0XG4iKTsKPiArCWVsc2UgaWYgKCFzdGF0KCIvZW52L2Jpbi9pbml0IiwgJnMpKSB7Cj4g
+KwkJcHJpbnRmKCJydW5uaW5nIC9lbnYvYmluL2luaXQuLi5cbiIpOwo+ICAJCXJ1bl9jb21tYW5k
+KCJzb3VyY2UgL2Vudi9iaW4vaW5pdCIsIDApOwo+IC0JfSBlbHNlIHsKPiAtCQlwcmludGYoIm5v
+dCBmb3VuZFxuIik7Cj4gLQl9Cj4gKwl9IGVsc2UKPiArCQlwcmludGYoIi9lbnYvYmluL2luaXQg
+bm90IGZvdW5kXG4iKTsKPiArCj4gICNlbmRpZgo+ICsKPiAgCS8qIG1haW5fbG9vcCgpIGNhbiBy
+ZXR1cm4gdG8gcmV0cnkgYXV0b2Jvb3QsIGlmIHNvIGp1c3QgcnVuIGl0IGFnYWluLiAqLwo+ICAJ
+Zm9yICg7OykKPiAgCQlydW5fc2hlbGwoKTsKPiAKPiAtLSAKPiBLcnp5c3p0b2YgSGFsYXNhCj4g
+Cj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJl
+Ym94IG1haWxpbmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9s
+aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKLS0gClBlbmd1dHJv
+bml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0
+dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVz
+aGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0
+IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTct
+NTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
+YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
+c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
