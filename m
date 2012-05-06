@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SR61s-00046m-Gu
- for barebox@lists.infradead.org; Sun, 06 May 2012 18:17:57 +0000
-Date: Sun, 6 May 2012 20:17:54 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120506181754.GA4141@pengutronix.de>
-References: <m3397emhaw.fsf@intrepid.localdomain>
+Received: from inx.pm.waw.pl ([195.116.170.130])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SR7oY-0006bg-JX
+ for barebox@lists.infradead.org; Sun, 06 May 2012 20:12:19 +0000
+From: Krzysztof Halasa <khc@pm.waw.pl>
+References: <m3k40qmhsn.fsf@intrepid.localdomain>
+ <20120506173507.GV4141@pengutronix.de>
+Date: Sun, 06 May 2012 22:08:48 +0200
+In-Reply-To: <20120506173507.GV4141@pengutronix.de> (Sascha Hauer's message of
+ "Sun, 6 May 2012 19:35:07 +0200")
+Message-ID: <m3397dysvj.fsf@intrepid.localdomain>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <m3397emhaw.fsf@intrepid.localdomain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,39 +19,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: put a valid "barebox" signature in the header on
- big-endian systems.
-To: Krzysztof Halasa <khc@pm.waw.pl>
+Subject: Re: [PATCH] Cosmetic: fix endianness convertions in read[wlq]().
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-T24gU2F0LCBNYXkgMDUsIDIwMTIgYXQgMTE6NDc6MTlQTSArMDIwMCwgS3J6eXN6dG9mIEhhbGFz
-YSB3cm90ZToKPiBTaWduZWQtb2ZmLWJ5OiBLcnp5c3p0b2YgSGHFgmFzYSA8a2hjQHBtLndhdy5w
-bD4KPiAKPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vaW5jbHVkZS9hc20vYmFyZWJveC1hcm0taGVh
-ZC5oIGIvYXJjaC9hcm0vaW5jbHVkZS9hc20vYmFyZWJveC1hcm0taGVhZC5oCj4gaW5kZXggMGRj
-MzA3NC4uMmMyNTBlOSAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9pbmNsdWRlL2FzbS9iYXJlYm94
-LWFybS1oZWFkLmgKPiArKysgYi9hcmNoL2FybS9pbmNsdWRlL2FzbS9iYXJlYm94LWFybS1oZWFk
-LmgKPiBAQCAtMjQsOCArMjQsNyBAQCBzdGF0aWMgaW5saW5lIHZvaWQgYmFyZWJveF9hcm1faGVh
-ZCh2b2lkKQo+ICAJCSIxOiBiIDFiXG4iCj4gIAkJIjE6IGIgMWJcbiIKPiAgI2VuZGlmCj4gLQkJ
-Ii53b3JkIDB4NjU3MjYxNjJcbiIJCQkvKiAnYmFyZScgKi8KPiAtCQkiLndvcmQgMHgwMDc4NmY2
-MlxuIgkJCS8qICdib3gnICovCj4gKwkJIi5hc2NpeiBcImJhcmVib3hcIlxuIgo+ICAJCSIud29y
-ZCBfdGV4dFxuIgkJCQkvKiB0ZXh0IGJhc2UuIElmIGNvcGllZCB0aGVyZSwKPiAgCQkJCQkJCSAq
-IGJhcmVib3ggY2FuIHNraXAgcmVsb2NhdGlvbgoKRG9lcyB0aGUgYmFyZWJveCBmaWxldHlwZSBk
-ZXRlY3Rpb24gbmVlZCBhIGZpeCBhc3dlbGw/CgplbnVtIGZpbGV0eXBlIGZpbGVfZGV0ZWN0X3R5
-cGUodm9pZCAqX2J1ZikKewogICAgICAgIHUzMiAqYnVmID0gX2J1ZjsKICAgICAgICB1OCAqYnVm
-OCA9IF9idWY7CgogICAgICAgIGlmIChzdHJuY21wKGJ1ZjgsICIjIS9iaW4vc2giLCA5KSA9PSAw
-KQogICAgICAgICAgICAgICAgcmV0dXJuIGZpbGV0eXBlX3NoOwogICAgICAgIGlmIChidWZbOF0g
-PT0gMHg2NTcyNjE2MiAmJiBidWZbOV0gPT0gMHgwMDc4NmY2MikKICAgICAgICAgICAgICAgIHJl
-dHVybiBmaWxldHlwZV9hcm1fYmFyZWJveDsKClRoaXMgc2VlbXMgd3Jvbmcgb24gYmlnIGVuZGlh
-biBzeXN0ZW1zLgoKU2FzY2hhCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51
-eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8g
-IHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0
-OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAg
-ICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+Sascha Hauer <s.hauer@pengutronix.de> writes:
+
+>> -#define readw(addr) __le16_to_cpu(__raw_readw(addr))
+>> -#define readl(addr) __le32_to_cpu(__raw_readl(addr))
+>> +#define readw(addr) __cpu_to_le16(__raw_readw(addr))
+>> +#define readl(addr) __cpu_to_le32(__raw_readl(addr))
+>
+> This seems wrong. readw/l are supposed to do little endian reads and that
+> is exactly what the code you remove does: It reads in cpu native
+> endianess and interprets that as a little endian word which is then
+> converted into cpu native endian word.
+> (Also the code is copied from the kernel which makes me quite confident
+> that it's correct)
+
+Well... That's right. I forgot the PCI on ARM is set in order-preserving
+mode. This means that while the peripherals (u32) are accessed simply
+with __raw_readl(), on PCI bus __raw_readl() yields wrong-endian value
+(le32 instead of u32). I wonder how it passes sparse.
+-- 
+Krzysztof Halasa
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
