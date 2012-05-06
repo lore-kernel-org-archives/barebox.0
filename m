@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from inx.pm.waw.pl ([195.116.170.130])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SR5pn-00067j-Rg
- for barebox@lists.infradead.org; Sun, 06 May 2012 18:05:29 +0000
-From: Krzysztof Halasa <khc@pm.waw.pl>
-References: <m3wr4qmhwq.fsf@intrepid.localdomain>
- <20120506174334.GW4141@pengutronix.de>
-Date: Sun, 06 May 2012 20:01:58 +0200
-In-Reply-To: <20120506174334.GW4141@pengutronix.de> (Sascha Hauer's message of
- "Sun, 6 May 2012 19:43:34 +0200")
-Message-ID: <m37gwpyyqx.fsf@intrepid.localdomain>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SR5qH-0003ss-1b
+ for barebox@lists.infradead.org; Sun, 06 May 2012 18:05:58 +0000
+Date: Sun, 6 May 2012 20:05:55 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120506180555.GX4141@pengutronix.de>
+References: <m3bom2mhek.fsf@intrepid.localdomain>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <m3bom2mhek.fsf@intrepid.localdomain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +18,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: RFC: Fix big endian MMIO primitives.
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: RFC: memmap() now returns NULL on failure.
+To: Krzysztof Halasa <khc@pm.waw.pl>
 Cc: barebox@lists.infradead.org
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
-
-> Maybe we should rather use the __raw_* variants in the cfi driver aswell
-> which is the only user of the functions below.
-
-We can do that for the sake of compatibility with Linux.
-
-> For some reason I
-> believed that the __raw_* variants also do little endian accesses which
-> is wrong.
-> I don't like the naming of the __raw_* variants very much as the
-> underscores and 'raw' suggests that these are internal functions which
-> one should rather not use, but in fact these are the correct functions
-> in most SoC (non PCI) drivers. Anyway, since Linux has this functions we
-> should use them aswell, everything else probably leads to more
-> confusion.
-
-I don't know.
-
-I would rename:
-__raw_* -> cpu_*() as they are just plain and simple accessors with
-native endianness.
-
-readl() and friends -> le32_readl() etc.
-The 'l' is somewhat redundant, the size is already determined by '32'
-(and 16, 8). Maybe le32_read() or read_le32()?
-
-Your call. We can just limit this renaming to cpu_* -> __raw_*.
-
-
-To be honest, I would like this stuff renamed in Linux as well. Perhaps
-some day.
--- 
-Krzysztof Halasa
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gU2F0LCBNYXkgMDUsIDIwMTIgYXQgMTE6NDU6MDdQTSArMDIwMCwgS3J6eXN6dG9mIEhhbGFz
+YSB3cm90ZToKPiBPcmlnaW5hbGx5LCBtb3N0IGNhbGxlcnMgZXhwZWN0ZWQgLTEgd2hpbGUgc29t
+ZSB0aG91Z2h0IHRoZXknZCBnZXQgTlVMTAo+IG9uIGZhaWx1cmUuIE5VTEwgc2VlbXMgY2xlYW5l
+ciB0byBtZS4KClVuaXggbW1hcCBhbHNvIHJldHVybnMgKHZvaWQgKiktMSwgc28gcmV0dXJuaW5n
+IHRoaXMgdmFsdWUgaXMgbm90IHRoYXQKdW51c3VhbC4gSSB0aGluayB3ZSBzaG91bGQga2VlcCB0
+aGlzIGFuZCBmaXggdGhlIGVycm9yIGNoZWNrcyBpbnN0ZWFkLApmb3IgdGhlIHJlYXNvbiB5b3Ug
+bWVudGlvbiBiZWxvdy4KClNhc2NoYQoKPiAKPiBPZiBjb3Vyc2UgaXMgd2Ugd2FudCB0byBhbGxv
+dyBtZW1tYXBwaW5nIG9mICIvZGV2L3JhbSIgb3Igc29tZXRoaW5nCj4gYWxpa2UgdGhlbiB3ZSBj
+YW4ndCBhcHBseSB0aGlzIHBhdGNoLCB3ZSBuZWVkIHRvIGZpeCB0aGUgTlVMTC1leHBlY3RlcnMK
+PiBpbnN0ZWFkLiBBbHRlcm5hdGl2ZWx5IHdlIGNvdWxkIHBhc3MgJm1lbSBhcyBhbiBhcmd1bWVu
+dCAodGhhdCdzIHdoYXQKPiBpbmRpdmlkdWFsIGZzIG1lbW1hcCBpbXBsZW1lbnRhdGlvbnMgZG8p
+Lgo+IAo+IFNpZ25lZC1vZmYtYnk6IEtyenlzenRvZiBIYcWCYXNhIDxraGNAcG0ud2F3LnBsPgo+
+IAo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9saWIvYm9vdHUuYyBiL2FyY2gvYXJtL2xpYi9ib290
+dS5jCj4gaW5kZXggMGQxNTVjYi4uNDc4NTI1ZSAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9saWIv
+Ym9vdHUuYwo+ICsrKyBiL2FyY2gvYXJtL2xpYi9ib290dS5jCj4gQEAgLTE3LDcgKzE3LDcgQEAg
+c3RhdGljIGludCBkb19ib290dShpbnQgYXJnYywgY2hhciAqYXJndltdKQo+ICAKPiAgCWZkID0g
+b3Blbihhcmd2WzFdLCBPX1JET05MWSk7Cj4gIAlpZiAoZmQgPiAwKQo+IC0JCWtlcm5lbCA9ICh2
+b2lkICopbWVtbWFwKGZkLCBQUk9UX1JFQUQpOwo+ICsJCWtlcm5lbCA9IG1lbW1hcChmZCwgUFJP
+VF9SRUFEKTsKPiAgCj4gIAlpZiAoIWtlcm5lbCkKPiAgCQlrZXJuZWwgPSAodm9pZCAqKXNpbXBs
+ZV9zdHJ0b3VsKGFyZ3ZbMV0sIE5VTEwsIDApOwo+IGRpZmYgLS1naXQgYS9jb21tYW5kcy9ibXAu
+YyBiL2NvbW1hbmRzL2JtcC5jCj4gaW5kZXggNDEzMDQ3NC4uOTdlNTg3NyAxMDA2NDQKPiAtLS0g
+YS9jb21tYW5kcy9ibXAuYwo+ICsrKyBiL2NvbW1hbmRzL2JtcC5jCj4gQEAgLTc0LDcgKzc0LDcg
+QEAgc3RhdGljIGludCBkb19ibXAoaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKPiAgCX0KPiAgCj4g
+IAlmYiA9IG1lbW1hcChmZCwgUFJPVF9SRUFEIHwgUFJPVF9XUklURSk7Cj4gLQlpZiAoZmIgPT0g
+KHZvaWQgKiktMSkgewo+ICsJaWYgKGZiID09IE5VTEwpIHsKPiAgCQlwZXJyb3IoIm1lbW1hcCIp
+Owo+ICAJCWdvdG8gZmFpbGVkX21lbW1hcDsKPiAgCX0KPiBkaWZmIC0tZ2l0IGEvY29tbWFuZHMv
+Z28uYyBiL2NvbW1hbmRzL2dvLmMKPiBpbmRleCBlOWU5ZDQwLi4xMWIwY2ZmIDEwMDY0NAo+IC0t
+LSBhL2NvbW1hbmRzL2dvLmMKPiArKysgYi9jb21tYW5kcy9nby5jCj4gQEAgLTQ5LDcgKzQ5LDcg
+QEAgc3RhdGljIGludCBkb19nbyhpbnQgYXJnYywgY2hhciAqYXJndltdKQo+ICAJCX0KPiAgCj4g
+IAkJYWRkciA9IG1lbW1hcChmZCwgUFJPVF9SRUFEKTsKPiAtCQlpZiAoYWRkciA9PSAodm9pZCAq
+KS0xKSB7Cj4gKwkJaWYgKGFkZHIgPT0gTlVMTCkgewo+ICAJCQlwZXJyb3IoIm1lbW1hcCIpOwo+
+ICAJCQlnb3RvIG91dDsKPiAgCQl9Cj4gZGlmZiAtLWdpdCBhL2NvbW1vbi9kaWdlc3QuYyBiL2Nv
+bW1vbi9kaWdlc3QuYwo+IGluZGV4IGEzMjczOTUuLjdjYzVkYzMgMTAwNjQ0Cj4gLS0tIGEvY29t
+bW9uL2RpZ2VzdC5jCj4gKysrIGIvY29tbW9uL2RpZ2VzdC5jCj4gQEAgLTk3LDcgKzk3LDcgQEAg
+aW50IGRpZ2VzdF9maWxlX3dpbmRvdyhzdHJ1Y3QgZGlnZXN0ICpkLCBjaGFyICpmaWxlbmFtZSwK
+PiAgCX0KPiAgCj4gIAlidWYgPSBtZW1tYXAoZmQsIFBST1RfUkVBRCk7Cj4gLQlpZiAoYnVmID09
+ICh2b2lkICopLTEpIHsKPiArCWlmIChidWYgPT0gTlVMTCkgewo+ICAJCWJ1ZiA9IHhtYWxsb2Mo
+NDA5Nik7Cj4gIAkJZmxhZ3MgPSAxOwo+ICAJfQo+IGRpZmYgLS1naXQgYS9mcy9mcy5jIGIvZnMv
+ZnMuYwo+IGluZGV4IDA0ZGFjZTQuLjRlYmQyYmMgMTAwNjQ0Cj4gLS0tIGEvZnMvZnMuYwo+ICsr
+KyBiL2ZzL2ZzLmMKPiBAQCAtNzgxLDcgKzc4MSw3IEBAIHZvaWQgKm1lbW1hcChpbnQgZmQsIGlu
+dCBmbGFncykKPiAgCXN0cnVjdCBkZXZpY2VfZCAqZGV2Owo+ICAJc3RydWN0IGZzX2RyaXZlcl9k
+ICpmc2RydjsKPiAgCUZJTEUgKmYgPSAmZmlsZXNbZmRdOwo+IC0Jdm9pZCAqcmV0ID0gKHZvaWQg
+KiktMTsKPiArCXZvaWQgKnJldCA9IE5VTEw7Cj4gIAo+ICAJaWYgKGNoZWNrX2ZkKGZkKSkKPiAg
+CQlyZXR1cm4gcmV0Owo+IAo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCj4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVh
+ZC5vcmcKPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
+b3gKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAg
+ICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2
+LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAg
+ICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAg
+KzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
+YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
+eAo=
