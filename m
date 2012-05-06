@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from inx.pm.waw.pl ([195.116.170.130])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SR7oY-0006bg-JX
- for barebox@lists.infradead.org; Sun, 06 May 2012 20:12:19 +0000
+ id 1SR7yf-0000zr-6w
+ for barebox@lists.infradead.org; Sun, 06 May 2012 20:22:46 +0000
 From: Krzysztof Halasa <khc@pm.waw.pl>
-References: <m3k40qmhsn.fsf@intrepid.localdomain>
- <20120506173507.GV4141@pengutronix.de>
-Date: Sun, 06 May 2012 22:08:48 +0200
-In-Reply-To: <20120506173507.GV4141@pengutronix.de> (Sascha Hauer's message of
- "Sun, 6 May 2012 19:35:07 +0200")
-Message-ID: <m3397dysvj.fsf@intrepid.localdomain>
+References: <m3397emhaw.fsf@intrepid.localdomain>
+ <20120506181754.GA4141@pengutronix.de>
+Date: Sun, 06 May 2012 22:19:16 +0200
+In-Reply-To: <20120506181754.GA4141@pengutronix.de> (Sascha Hauer's message of
+ "Sun, 6 May 2012 20:17:54 +0200")
+Message-ID: <m3y5p5xdtn.fsf@intrepid.localdomain>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,28 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Cosmetic: fix endianness convertions in read[wlq]().
+Subject: Re: [PATCH] ARM: put a valid "barebox" signature in the header on
+ big-endian systems.
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
 Sascha Hauer <s.hauer@pengutronix.de> writes:
 
->> -#define readw(addr) __le16_to_cpu(__raw_readw(addr))
->> -#define readl(addr) __le32_to_cpu(__raw_readl(addr))
->> +#define readw(addr) __cpu_to_le16(__raw_readw(addr))
->> +#define readl(addr) __cpu_to_le32(__raw_readl(addr))
+>> -		".word 0x65726162\n"			/* 'bare' */
+>> -		".word 0x00786f62\n"			/* 'box' */
+>> +		".asciz \"barebox\"\n"
+>>  		".word _text\n"				/* text base. If copied there,
+>>  							 * barebox can skip relocation
 >
-> This seems wrong. readw/l are supposed to do little endian reads and that
-> is exactly what the code you remove does: It reads in cpu native
-> endianess and interprets that as a little endian word which is then
-> converted into cpu native endian word.
-> (Also the code is copied from the kernel which makes me quite confident
-> that it's correct)
+> Does the barebox filetype detection need a fix aswell?
 
-Well... That's right. I forgot the PCI on ARM is set in order-preserving
-mode. This means that while the peripherals (u32) are accessed simply
-with __raw_readl(), on PCI bus __raw_readl() yields wrong-endian value
-(le32 instead of u32). I wonder how it passes sparse.
+I guess so.
+
+> enum filetype file_detect_type(void *_buf)
+> {
+>         u32 *buf = _buf;
+>         u8 *buf8 = _buf;
+>
+>         if (strncmp(buf8, "#!/bin/sh", 9) == 0)
+>                 return filetype_sh;
+
+BTW there can be a white space between "#!" part and the interpreter
+name.
+
+>         if (buf[8] == 0x65726162 && buf[9] == 0x00786f62)
+>                 return filetype_arm_barebox;
+>
+> This seems wrong on big endian systems.
+
+Definitely.
+A memcmp() would be better (I don't know about the buffer length).
 -- 
 Krzysztof Halasa
 
