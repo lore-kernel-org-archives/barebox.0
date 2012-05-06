@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
+Received: from smtp19.mail.ru ([94.100.176.156])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SQnso-0005Rm-7G
- for barebox@lists.infradead.org; Sat, 05 May 2012 22:55:22 +0000
-Received: by lbbgg6 with SMTP id gg6so3481380lbb.36
- for <barebox@lists.infradead.org>; Sat, 05 May 2012 15:55:19 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun,  6 May 2012 02:55:10 +0400
-Message-Id: <1336258510-22036-1-git-send-email-antonynpavlov@gmail.com>
+ id 1SQuEz-0001sR-7T
+ for barebox@lists.infradead.org; Sun, 06 May 2012 05:42:42 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sun,  6 May 2012 09:42:39 +0400
+Message-Id: <1336282959-5961-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,47 +19,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] README: fix some typos
+Subject: [PATCH] PCM038: choose boot device by parsing barebox_loc magic
+ variable
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- README |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/boards/pcm038/env/config |   12 ++++++++++--
+ 1 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/README b/README
-index 5662a1c..c875b7d 100644
---- a/README
-+++ b/README
-@@ -56,7 +56,7 @@ Features
-   'eth0.ip=192.168.0.7' or 'echo $eth0.ip'
+diff --git a/arch/arm/boards/pcm038/env/config b/arch/arm/boards/pcm038/env/config
+index 32be5ec..59f3e89 100644
+--- a/arch/arm/boards/pcm038/env/config
++++ b/arch/arm/boards/pcm038/env/config
+@@ -14,10 +14,18 @@ ip=dhcp
+ #eth0.gateway=a.b.c.d
+ #eth0.serverip=a.b.c.d
  
- - initcalls
--  hooks in the startup process can be archieved with *_initcall() directives
-+  hooks in the startup process can be achieved with *_initcall() directives
-   in each file.
++if [ x$barebox_loc = xnand ]; then
++	kernel_loc=nand
++	rootfs_loc=nand
++elif [ x$barebox_loc = xnor ]; then
++	kernel_loc=nor
++	rootfs_loc=nor
++else
+ # can be either 'nfs', 'tftp', 'nor' or 'nand'
+-kernel_loc=tftp
++	kernel_loc=tftp
+ # can be either 'net', 'nor', 'nand' or 'initrd'
+-rootfs_loc=net
++	rootfs_loc=net
++fi
  
- - getopt
-@@ -95,7 +95,7 @@ This command starts a menu box and lets you select all the different
- options available for your architecture. Once the configuration was
- finished (you can simulate this by using the standard demo config file
- with 'make sandbox_defconfig'), there is a .config file in the toplevel
--directory of the sourcode.
-+directory of the source code.
- 
- Once barebox is configured, we can start the compilation
- 
-@@ -106,7 +106,7 @@ If everything goes well, the result is a file called barebox:
-   # ls -l barebox
-     -rwxr-xr-x 1 rsc ptx 114073 Jun 26 22:34 barebox
- 
--Barebox usually needs an environment for storing the configuation data.
-+Barebox usually needs an environment for storing the configuration data.
- You can generate an environment using the example environment contained
- in board/sandbox/env:
- 
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
 -- 
-1.7.10
+1.7.3.4
 
 
 _______________________________________________
