@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SR5Uf-0003jh-M8
- for barebox@lists.infradead.org; Sun, 06 May 2012 17:43:38 +0000
-Date: Sun, 6 May 2012 19:43:34 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120506174334.GW4141@pengutronix.de>
-References: <m3wr4qmhwq.fsf@intrepid.localdomain>
+Received: from inx.pm.waw.pl ([195.116.170.130])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SR5eS-0004zW-SF
+ for barebox@lists.infradead.org; Sun, 06 May 2012 17:53:45 +0000
+From: Krzysztof Halasa <khc@pm.waw.pl>
+References: <m31umynwu9.fsf@intrepid.localdomain>
+ <20120506171638.GT4141@pengutronix.de>
+Date: Sun, 06 May 2012 19:50:14 +0200
+In-Reply-To: <20120506171638.GT4141@pengutronix.de> (Sascha Hauer's message of
+ "Sun, 6 May 2012 19:16:38 +0200")
+Message-ID: <m3bom1yzah.fsf@intrepid.localdomain>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <m3wr4qmhwq.fsf@intrepid.localdomain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,59 +19,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: RFC: Fix big endian MMIO primitives.
-To: Krzysztof Halasa <khc@pm.waw.pl>
+Subject: Re: RFC: Force a 2s delay on startup to allow bypassing /dev/env0.
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-T24gU2F0LCBNYXkgMDUsIDIwMTIgYXQgMTE6MzQ6MTNQTSArMDIwMCwgS3J6eXN6dG9mIEhhbGFz
-YSB3cm90ZToKPiBjcHVfcmVhZCooKSBhbmQgY3B1X3dyaXJlKigpIGFyZSBwcmVjaXNlbHkgZXF1
-YWwgdG8gX19yYXdfcmVhZCooKSBhbmQKPiBfX3Jhd193cml0ZSooKS4KPiAKPiBTdHJpdmluZyBm
-b3IgY29ycmVjdG5lc3Mgd2UgY2FuIHJlcGxhY2UgYWxsIHRob3NlIF9fcmF3XyooKSB3aXRoIGNw
-dV8qKCkKPiBhcyB0aGF0J3MgZXhhY3RseSB3aGF0IHRoZSBmb3JtZXIgb25lcyBkby4gQWxzbyB3
-ZSBjYW4gY2hhbmdlIHJlYWQqKCkKPiBhbmQgd3JpdGUqKCkgaW50byBleHBsaWNpdCBsZVhYXyoo
-KS4gQm90aCBjaGFuZ2VzIGNvdWxkIGFmZmVjdCBwb3J0aW5nCj4gZnJvbSBMaW51eCwgdGhvdWdo
-LgoKTWF5YmUgd2Ugc2hvdWxkIHJhdGhlciB1c2UgdGhlIF9fcmF3XyogdmFyaWFudHMgaW4gdGhl
-IGNmaSBkcml2ZXIgYXN3ZWxsCndoaWNoIGlzIHRoZSBvbmx5IHVzZXIgb2YgdGhlIGZ1bmN0aW9u
-cyBiZWxvdy4gRm9yIHNvbWUgcmVhc29uIEkKYmVsaWV2ZWQgdGhhdCB0aGUgX19yYXdfKiB2YXJp
-YW50cyBhbHNvIGRvIGxpdHRsZSBlbmRpYW4gYWNjZXNzZXMgd2hpY2gKaXMgd3JvbmcuCkkgZG9u
-J3QgbGlrZSB0aGUgbmFtaW5nIG9mIHRoZSBfX3Jhd18qIHZhcmlhbnRzIHZlcnkgbXVjaCBhcyB0
-aGUKdW5kZXJzY29yZXMgYW5kICdyYXcnIHN1Z2dlc3RzIHRoYXQgdGhlc2UgYXJlIGludGVybmFs
-IGZ1bmN0aW9ucyB3aGljaApvbmUgc2hvdWxkIHJhdGhlciBub3QgdXNlLCBidXQgaW4gZmFjdCB0
-aGVzZSBhcmUgdGhlIGNvcnJlY3QgZnVuY3Rpb25zCmluIG1vc3QgU29DIChub24gUENJKSBkcml2
-ZXJzLiBBbnl3YXksIHNpbmNlIExpbnV4IGhhcyB0aGlzIGZ1bmN0aW9ucyB3ZQpzaG91bGQgdXNl
-IHRoZW0gYXN3ZWxsLCBldmVyeXRoaW5nIGVsc2UgcHJvYmFibHkgbGVhZHMgdG8gbW9yZQpjb25m
-dXNpb24uCgpTYXNjaGEKCgo+IAo+IFNpZ25lZC1vZmYtYnk6IEtyenlzenRvZiBIYcWCYXNhIDxr
-aGNAcG0ud2F3LnBsPgo+IAo+IGRpZmYgLS1naXQgYS9pbmNsdWRlL2lvLmggYi9pbmNsdWRlL2lv
-LmgKPiBpbmRleCAzOWI1ZTYxLi44ZDg4NWRlIDEwMDY0NAo+IC0tLSBhL2luY2x1ZGUvaW8uaAo+
-ICsrKyBiL2luY2x1ZGUvaW8uaAo+IEBAIC00LDIwICs0LDExIEBACj4gICNpbmNsdWRlIDxhc20v
-aW8uaD4KPiAgCj4gIC8qIGNwdV9yZWFkL2NwdV93cml0ZTogY3B1IG5hdGl2ZSBpbyBhY2Nlc3Nv
-cnMgKi8KPiAtI2lmIF9fQllURV9PUkRFUiA9PSBfX0JJR19FTkRJQU4KPiAtI2RlZmluZSBjcHVf
-cmVhZGIoYSkJCXJlYWRiKGEpCj4gLSNkZWZpbmUgY3B1X3JlYWR3KGEpCQlpbl9iZTE2KGEpCj4g
-LSNkZWZpbmUgY3B1X3JlYWRsKGEpCQlpbl9iZTMyKGEpCj4gLSNkZWZpbmUgY3B1X3dyaXRlYih2
-LCBhKQl3cml0ZWIoKHYpLCAoYSkpCj4gLSNkZWZpbmUgY3B1X3dyaXRldyh2LCBhKQlvdXRfYmUx
-NigoYSksICh2KSkKPiAtI2RlZmluZSBjcHVfd3JpdGVsKHYsIGEpCW91dF9iZTMyKChhKSwgKHYp
-KQo+IC0jZWxzZQo+IC0jZGVmaW5lIGNwdV9yZWFkYihhKQkJcmVhZGIoYSkKPiAtI2RlZmluZSBj
-cHVfcmVhZHcoYSkJCXJlYWR3KGEpCj4gLSNkZWZpbmUgY3B1X3JlYWRsKGEpCQlyZWFkbChhKQo+
-IC0jZGVmaW5lIGNwdV93cml0ZWIodiwgYSkJd3JpdGViKCh2KSwgKGEpKQo+IC0jZGVmaW5lIGNw
-dV93cml0ZXcodiwgYSkJd3JpdGV3KCh2KSwgKGEpKQo+IC0jZGVmaW5lIGNwdV93cml0ZWwodiwg
-YSkJd3JpdGVsKCh2KSwgKGEpKQo+IC0jZW5kaWYKPiArI2RlZmluZSBjcHVfcmVhZGIoYSkJCV9f
-cmF3X3JlYWRiKGEpCj4gKyNkZWZpbmUgY3B1X3JlYWR3KGEpCQlfX3Jhd19yZWFkdyhhKQo+ICsj
-ZGVmaW5lIGNwdV9yZWFkbChhKQkJX19yYXdfcmVhZGwoYSkKPiArI2RlZmluZSBjcHVfd3JpdGVi
-KHYsIGEpCV9fcmF3X3dyaXRlYigodiksIChhKSkKPiArI2RlZmluZSBjcHVfd3JpdGV3KHYsIGEp
-CV9fcmF3X3dyaXRldygodiksIChhKSkKPiArI2RlZmluZSBjcHVfd3JpdGVsKHYsIGEpCV9fcmF3
-X3dyaXRlbCgodiksIChhKSkKPiAgCj4gICNlbmRpZiAvKiBfX0lPX0ggKi8KPiAKPiBfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+IGJhcmVib3ggbWFpbGlu
-ZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94CgotLSAKUGVuZ3V0cm9uaXggZS5LLiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwK
-SW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5w
-ZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJt
-YW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVp
-bSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
-bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Sascha Hauer <s.hauer@pengutronix.de> writes:
+
+> Being able to interrupt before environment processing is a good thing to
+> have, the delay though is not acceptable because it would increase the
+> boot time on some systems by 400%. It should work without the delay
+> aswell.
+
+Actually the delay is a bit problematic for me as well.
+Unfortunately the boot code has to initialize the serial port, clearing
+the incoming FIFO. This means I can't "queue" the ^C character, barebox
+has to wait for it (maybe not for the whole 2 seconds).
+
+Or am I mistaken?
+-- 
+Krzysztof Halasa
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
