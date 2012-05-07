@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SRIiv-00042x-Og
- for barebox@lists.infradead.org; Mon, 07 May 2012 07:51:15 +0000
-Date: Mon, 7 May 2012 09:51:09 +0200
+ id 1SRInU-0004k3-Pz
+ for barebox@lists.infradead.org; Mon, 07 May 2012 07:55:57 +0000
+Date: Mon, 7 May 2012 09:55:52 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120507075109.GC4141@pengutronix.de>
-References: <m3wr4qmhwq.fsf@intrepid.localdomain>
+Message-ID: <20120507075552.GD4141@pengutronix.de>
+References: <1336258510-22036-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <m3wr4qmhwq.fsf@intrepid.localdomain>
+In-Reply-To: <1336258510-22036-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +18,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: RFC: Fix big endian MMIO primitives.
-To: Krzysztof Halasa <khc@pm.waw.pl>
+Subject: Re: [PATCH] README: fix some typos
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-T24gU2F0LCBNYXkgMDUsIDIwMTIgYXQgMTE6MzQ6MTNQTSArMDIwMCwgS3J6eXN6dG9mIEhhbGFz
-YSB3cm90ZToKPiBjcHVfcmVhZCooKSBhbmQgY3B1X3dyaXJlKigpIGFyZSBwcmVjaXNlbHkgZXF1
-YWwgdG8gX19yYXdfcmVhZCooKSBhbmQKPiBfX3Jhd193cml0ZSooKS4KPiAKPiBTdHJpdmluZyBm
-b3IgY29ycmVjdG5lc3Mgd2UgY2FuIHJlcGxhY2UgYWxsIHRob3NlIF9fcmF3XyooKSB3aXRoIGNw
-dV8qKCkKPiBhcyB0aGF0J3MgZXhhY3RseSB3aGF0IHRoZSBmb3JtZXIgb25lcyBkby4gQWxzbyB3
-ZSBjYW4gY2hhbmdlIHJlYWQqKCkKPiBhbmQgd3JpdGUqKCkgaW50byBleHBsaWNpdCBsZVhYXyoo
-KS4gQm90aCBjaGFuZ2VzIGNvdWxkIGFmZmVjdCBwb3J0aW5nCj4gZnJvbSBMaW51eCwgdGhvdWdo
-Lgo+IAo+IFNpZ25lZC1vZmYtYnk6IEtyenlzenRvZiBIYcWCYXNhIDxraGNAcG0ud2F3LnBsPgoK
-QXBwbGllZCwgdGhhbmtzCgpTYXNjaGEKCj4gCj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvaW8uaCBi
-L2luY2x1ZGUvaW8uaAo+IGluZGV4IDM5YjVlNjEuLjhkODg1ZGUgMTAwNjQ0Cj4gLS0tIGEvaW5j
-bHVkZS9pby5oCj4gKysrIGIvaW5jbHVkZS9pby5oCj4gQEAgLTQsMjAgKzQsMTEgQEAKPiAgI2lu
-Y2x1ZGUgPGFzbS9pby5oPgo+ICAKPiAgLyogY3B1X3JlYWQvY3B1X3dyaXRlOiBjcHUgbmF0aXZl
-IGlvIGFjY2Vzc29ycyAqLwo+IC0jaWYgX19CWVRFX09SREVSID09IF9fQklHX0VORElBTgo+IC0j
-ZGVmaW5lIGNwdV9yZWFkYihhKQkJcmVhZGIoYSkKPiAtI2RlZmluZSBjcHVfcmVhZHcoYSkJCWlu
-X2JlMTYoYSkKPiAtI2RlZmluZSBjcHVfcmVhZGwoYSkJCWluX2JlMzIoYSkKPiAtI2RlZmluZSBj
-cHVfd3JpdGViKHYsIGEpCXdyaXRlYigodiksIChhKSkKPiAtI2RlZmluZSBjcHVfd3JpdGV3KHYs
-IGEpCW91dF9iZTE2KChhKSwgKHYpKQo+IC0jZGVmaW5lIGNwdV93cml0ZWwodiwgYSkJb3V0X2Jl
-MzIoKGEpLCAodikpCj4gLSNlbHNlCj4gLSNkZWZpbmUgY3B1X3JlYWRiKGEpCQlyZWFkYihhKQo+
-IC0jZGVmaW5lIGNwdV9yZWFkdyhhKQkJcmVhZHcoYSkKPiAtI2RlZmluZSBjcHVfcmVhZGwoYSkJ
-CXJlYWRsKGEpCj4gLSNkZWZpbmUgY3B1X3dyaXRlYih2LCBhKQl3cml0ZWIoKHYpLCAoYSkpCj4g
-LSNkZWZpbmUgY3B1X3dyaXRldyh2LCBhKQl3cml0ZXcoKHYpLCAoYSkpCj4gLSNkZWZpbmUgY3B1
-X3dyaXRlbCh2LCBhKQl3cml0ZWwoKHYpLCAoYSkpCj4gLSNlbmRpZgo+ICsjZGVmaW5lIGNwdV9y
-ZWFkYihhKQkJX19yYXdfcmVhZGIoYSkKPiArI2RlZmluZSBjcHVfcmVhZHcoYSkJCV9fcmF3X3Jl
-YWR3KGEpCj4gKyNkZWZpbmUgY3B1X3JlYWRsKGEpCQlfX3Jhd19yZWFkbChhKQo+ICsjZGVmaW5l
-IGNwdV93cml0ZWIodiwgYSkJX19yYXdfd3JpdGViKCh2KSwgKGEpKQo+ICsjZGVmaW5lIGNwdV93
-cml0ZXcodiwgYSkJX19yYXdfd3JpdGV3KCh2KSwgKGEpKQo+ICsjZGVmaW5lIGNwdV93cml0ZWwo
-diwgYSkJX19yYXdfd3JpdGVsKCh2KSwgKGEpKQo+ICAKPiAgI2VuZGlmIC8qIF9fSU9fSCAqLwo+
-IAo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFy
-ZWJveCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCi0tIApQZW5ndXRy
-b25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBo
-dHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRl
-c2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNo
-dCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3
-LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Sun, May 06, 2012 at 02:55:10AM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  README |    6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+
+Applied, thanks.
+
+Sascha
+
+> 
+> diff --git a/README b/README
+> index 5662a1c..c875b7d 100644
+> --- a/README
+> +++ b/README
+> @@ -56,7 +56,7 @@ Features
+>    'eth0.ip=192.168.0.7' or 'echo $eth0.ip'
+>  
+>  - initcalls
+> -  hooks in the startup process can be archieved with *_initcall() directives
+> +  hooks in the startup process can be achieved with *_initcall() directives
+>    in each file.
+>  
+>  - getopt
+> @@ -95,7 +95,7 @@ This command starts a menu box and lets you select all the different
+>  options available for your architecture. Once the configuration was
+>  finished (you can simulate this by using the standard demo config file
+>  with 'make sandbox_defconfig'), there is a .config file in the toplevel
+> -directory of the sourcode.
+> +directory of the source code.
+>  
+>  Once barebox is configured, we can start the compilation
+>  
+> @@ -106,7 +106,7 @@ If everything goes well, the result is a file called barebox:
+>    # ls -l barebox
+>      -rwxr-xr-x 1 rsc ptx 114073 Jun 26 22:34 barebox
+>  
+> -Barebox usually needs an environment for storing the configuation data.
+> +Barebox usually needs an environment for storing the configuration data.
+>  You can generate an environment using the example environment contained
+>  in board/sandbox/env:
+>  
+> -- 
+> 1.7.10
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
