@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pz0-f49.google.com ([209.85.210.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SRBdw-00076u-SU
- for barebox@lists.infradead.org; Mon, 07 May 2012 00:17:38 +0000
-Received: by dadm1 with SMTP id m1so1999030dad.36
- for <barebox@lists.infradead.org>; Sun, 06 May 2012 17:17:34 -0700 (PDT)
-From: Marc Reilly <marc@cpdesign.com.au>
-Date: Mon, 7 May 2012 10:14:24 +1000
-References: <m31umynwu9.fsf@intrepid.localdomain>
- <20120506171638.GT4141@pengutronix.de> <m3bom1yzah.fsf@intrepid.localdomain>
-In-Reply-To: <m3bom1yzah.fsf@intrepid.localdomain>
+ id 1SRIiv-00042x-Og
+ for barebox@lists.infradead.org; Mon, 07 May 2012 07:51:15 +0000
+Date: Mon, 7 May 2012 09:51:09 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120507075109.GC4141@pengutronix.de>
+References: <m3wr4qmhwq.fsf@intrepid.localdomain>
 MIME-Version: 1.0
-Message-Id: <201205071014.25217.marc@cpdesign.com.au>
-Reply-To: marc@cpdesign.com.au
+Content-Disposition: inline
+In-Reply-To: <m3wr4qmhwq.fsf@intrepid.localdomain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,83 +18,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1530579363540042486=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: RFC: Force a 2s delay on startup to allow bypassing /dev/env0.
-To: barebox@lists.infradead.org
-Cc: Krzysztof Halasa <khc@pm.waw.pl>
+Subject: Re: RFC: Fix big endian MMIO primitives.
+To: Krzysztof Halasa <khc@pm.waw.pl>
+Cc: barebox@lists.infradead.org
 
---===============1530579363540042486==
-Content-Type: multipart/alternative;
-  boundary="Boundary-01=_hPxpPHljlekMVwi"
-Content-Transfer-Encoding: 7bit
-
---Boundary-01=_hPxpPHljlekMVwi
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-
-On Monday, May 07, 2012 03:50:14 AM Krzysztof Halasa wrote:
-> Sascha Hauer <s.hauer@pengutronix.de> writes:
-> > Being able to interrupt before environment processing is a good thing to
-> > have, the delay though is not acceptable because it would increase the
-> > boot time on some systems by 400%. It should work without the delay
-> > aswell.
-
-I agree, adding 2 seconds to boot time wouldn't be very well received.
-
-Our board has several gpio buttons which are checked for a specific press 
-configuration at startup, eg, when buttons 1,3 and 4 only are held down, the 
-auto boot is delayed.
-This is obviously dependent on board hardware, but does make any delay 
-optional. 
-
-This is in our init script itself, but could just as easily be coded to check 
-before the init script is run. You could set it up as a board installed 
-callback...
-
-Cheers,
-Marc
-
---Boundary-01=_hPxpPHljlekMVwi
-Content-Type: text/html;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-<html><head><meta name="qrichtext" content="1" /><style type="text/css">
-p, li { white-space: pre-wrap; }
-</style></head><body style=" font-family:'Monospace'; font-size:9pt; font-weight:400; font-style:normal;">
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">On Monday, May 07, 2012 03:50:14 AM Krzysztof Halasa wrote:</p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">&gt; Sascha Hauer &lt;s.hauer@pengutronix.de&gt; writes:</p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">&gt; &gt; Being able to interrupt before environment processing is a good thing to</p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">&gt; &gt; have, the delay though is not acceptable because it would increase the</p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">&gt; &gt; boot time on some systems by 400%. It should work without the delay</p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">&gt; &gt; aswell.</p>
-<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><br /></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">I agree, adding 2 seconds to boot time wouldn't be very well received.</p>
-<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><br /></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">Our board has several gpio buttons which are checked for a specific press configuration at startup, eg, when buttons 1,3 and 4 only are held down, the auto boot is delayed.</p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">This is obviously dependent on board hardware, but does make any delay optional. </p>
-<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><br /></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">This is in our init script itself, but could just as easily be coded to check before the init script is run. You could set it up as a board installed callback...</p>
-<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><br /></p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">Cheers,</p>
-<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">Marc</p>
-<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"><br /></p></body></html>
---Boundary-01=_hPxpPHljlekMVwi--
-
-
---===============1530579363540042486==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1530579363540042486==--
+T24gU2F0LCBNYXkgMDUsIDIwMTIgYXQgMTE6MzQ6MTNQTSArMDIwMCwgS3J6eXN6dG9mIEhhbGFz
+YSB3cm90ZToKPiBjcHVfcmVhZCooKSBhbmQgY3B1X3dyaXJlKigpIGFyZSBwcmVjaXNlbHkgZXF1
+YWwgdG8gX19yYXdfcmVhZCooKSBhbmQKPiBfX3Jhd193cml0ZSooKS4KPiAKPiBTdHJpdmluZyBm
+b3IgY29ycmVjdG5lc3Mgd2UgY2FuIHJlcGxhY2UgYWxsIHRob3NlIF9fcmF3XyooKSB3aXRoIGNw
+dV8qKCkKPiBhcyB0aGF0J3MgZXhhY3RseSB3aGF0IHRoZSBmb3JtZXIgb25lcyBkby4gQWxzbyB3
+ZSBjYW4gY2hhbmdlIHJlYWQqKCkKPiBhbmQgd3JpdGUqKCkgaW50byBleHBsaWNpdCBsZVhYXyoo
+KS4gQm90aCBjaGFuZ2VzIGNvdWxkIGFmZmVjdCBwb3J0aW5nCj4gZnJvbSBMaW51eCwgdGhvdWdo
+Lgo+IAo+IFNpZ25lZC1vZmYtYnk6IEtyenlzenRvZiBIYcWCYXNhIDxraGNAcG0ud2F3LnBsPgoK
+QXBwbGllZCwgdGhhbmtzCgpTYXNjaGEKCj4gCj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvaW8uaCBi
+L2luY2x1ZGUvaW8uaAo+IGluZGV4IDM5YjVlNjEuLjhkODg1ZGUgMTAwNjQ0Cj4gLS0tIGEvaW5j
+bHVkZS9pby5oCj4gKysrIGIvaW5jbHVkZS9pby5oCj4gQEAgLTQsMjAgKzQsMTEgQEAKPiAgI2lu
+Y2x1ZGUgPGFzbS9pby5oPgo+ICAKPiAgLyogY3B1X3JlYWQvY3B1X3dyaXRlOiBjcHUgbmF0aXZl
+IGlvIGFjY2Vzc29ycyAqLwo+IC0jaWYgX19CWVRFX09SREVSID09IF9fQklHX0VORElBTgo+IC0j
+ZGVmaW5lIGNwdV9yZWFkYihhKQkJcmVhZGIoYSkKPiAtI2RlZmluZSBjcHVfcmVhZHcoYSkJCWlu
+X2JlMTYoYSkKPiAtI2RlZmluZSBjcHVfcmVhZGwoYSkJCWluX2JlMzIoYSkKPiAtI2RlZmluZSBj
+cHVfd3JpdGViKHYsIGEpCXdyaXRlYigodiksIChhKSkKPiAtI2RlZmluZSBjcHVfd3JpdGV3KHYs
+IGEpCW91dF9iZTE2KChhKSwgKHYpKQo+IC0jZGVmaW5lIGNwdV93cml0ZWwodiwgYSkJb3V0X2Jl
+MzIoKGEpLCAodikpCj4gLSNlbHNlCj4gLSNkZWZpbmUgY3B1X3JlYWRiKGEpCQlyZWFkYihhKQo+
+IC0jZGVmaW5lIGNwdV9yZWFkdyhhKQkJcmVhZHcoYSkKPiAtI2RlZmluZSBjcHVfcmVhZGwoYSkJ
+CXJlYWRsKGEpCj4gLSNkZWZpbmUgY3B1X3dyaXRlYih2LCBhKQl3cml0ZWIoKHYpLCAoYSkpCj4g
+LSNkZWZpbmUgY3B1X3dyaXRldyh2LCBhKQl3cml0ZXcoKHYpLCAoYSkpCj4gLSNkZWZpbmUgY3B1
+X3dyaXRlbCh2LCBhKQl3cml0ZWwoKHYpLCAoYSkpCj4gLSNlbmRpZgo+ICsjZGVmaW5lIGNwdV9y
+ZWFkYihhKQkJX19yYXdfcmVhZGIoYSkKPiArI2RlZmluZSBjcHVfcmVhZHcoYSkJCV9fcmF3X3Jl
+YWR3KGEpCj4gKyNkZWZpbmUgY3B1X3JlYWRsKGEpCQlfX3Jhd19yZWFkbChhKQo+ICsjZGVmaW5l
+IGNwdV93cml0ZWIodiwgYSkJX19yYXdfd3JpdGViKCh2KSwgKGEpKQo+ICsjZGVmaW5lIGNwdV93
+cml0ZXcodiwgYSkJX19yYXdfd3JpdGV3KCh2KSwgKGEpKQo+ICsjZGVmaW5lIGNwdV93cml0ZWwo
+diwgYSkJX19yYXdfd3JpdGVsKCh2KSwgKGEpKQo+ICAKPiAgI2VuZGlmIC8qIF9fSU9fSCAqLwo+
+IAo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFy
+ZWJveCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8v
+bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCi0tIApQZW5ndXRy
+b25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBo
+dHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRl
+c2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNo
+dCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3
+LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
+aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
