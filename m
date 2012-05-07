@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx2.rafi.de ([178.15.151.13])
+Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]
+ helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SRLS6-00039l-MA
- for barebox@lists.infradead.org; Mon, 07 May 2012 10:46:03 +0000
-In-Reply-To: <20120507095032.GA27341@pengutronix.de>
-References: <OF1B77598C.D26552F3-ONC12579F7.0033D84B-C12579F7.0034098E@o0802.rafi.inhouse>
- <20120507095032.GA27341@pengutronix.de>
+ id 1SRO8z-0004YZ-Mb
+ for barebox@lists.infradead.org; Mon, 07 May 2012 13:38:30 +0000
+Received: from mail413.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 91C25104F12B
+ for <barebox@lists.infradead.org>; Mon,  7 May 2012 15:39:58 +0200 (CEST)
+Date: Mon, 7 May 2012 15:38:24 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120507133824.GA10138@game.jcrosoft.org>
+References: <m37gwqmhcd.fsf@intrepid.localdomain>
 MIME-Version: 1.0
-Message-ID: <OFD0FFDBEE.D1D1B52B-ONC12579F7.003A6D09-C12579F7.003B1F22@o0802.rafi.inhouse>
-From: christian.buettner@rafi.de
-Date: Mon, 7 May 2012 12:46:00 +0200
+Content-Disposition: inline
+In-Reply-To: <m37gwqmhcd.fsf@intrepid.localdomain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,125 +22,25 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============4655337381067292632=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Antwort: Re: string processing
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] ARM: Changes to bootz.
+To: Krzysztof Halasa <khc@pm.waw.pl>
 Cc: barebox@lists.infradead.org
 
-Dies ist eine mehrteilige Nachricht im MIME-Format.
---===============4655337381067292632==
-Content-Type: multipart/alternative; boundary="=_alternative 003B1F21C12579F7_="
-
-Dies ist eine mehrteilige Nachricht im MIME-Format.
---=_alternative 003B1F21C12579F7_=
-Content-Type: text/plain; charset="US-ASCII"
-
-Ok thx.
-How about scanf variations? sscanf would fit best :)
-
-How can i proceed adding those missing functions? Copy Paste from glibc?
-
-- christian
-
-
-
-Von:    Sascha Hauer <s.hauer@pengutronix.de>
-An:     christian.buettner@rafi.de
-Kopie:  barebox@lists.infradead.org
-Datum:  07.05.2012 11:50
-Betreff:        Re: string processing
-
-
-
-On Mon, May 07, 2012 at 11:28:38AM +0200, christian.buettner@rafi.de 
-wrote:
-> hi all,
-> 
-> i was looking for c functions doing string processing. I cannot find 
-> things like sscanf or atoi. 
-> How do you work with strings when you implement custom commands?
-
-We have simple_strtoul which currently is the only function to help with
-string to integer conversion.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-
---=_alternative 003B1F21C12579F7_=
-Content-Type: text/html; charset="US-ASCII"
-
-<font size=2 face="sans-serif">Ok thx.</font>
-<br><font size=2 face="sans-serif">How about scanf variations? sscanf would
-fit best :)</font>
-<br>
-<br><font size=2 face="sans-serif">How can i proceed adding those missing
-functions? Copy Paste from glibc?</font>
-<br>
-<br><font size=2 face="sans-serif">- christian</font>
-<br>
-<br>
-<br>
-<br><font size=1 color=#5f5f5f face="sans-serif">Von: &nbsp; &nbsp; &nbsp;
-&nbsp;</font><font size=1 face="sans-serif">Sascha Hauer &lt;s.hauer@pengutronix.de&gt;</font>
-<br><font size=1 color=#5f5f5f face="sans-serif">An: &nbsp; &nbsp; &nbsp;
-&nbsp;</font><font size=1 face="sans-serif">christian.buettner@rafi.de</font>
-<br><font size=1 color=#5f5f5f face="sans-serif">Kopie: &nbsp; &nbsp; &nbsp;
-&nbsp;</font><font size=1 face="sans-serif">barebox@lists.infradead.org</font>
-<br><font size=1 color=#5f5f5f face="sans-serif">Datum: &nbsp; &nbsp; &nbsp;
-&nbsp;</font><font size=1 face="sans-serif">07.05.2012 11:50</font>
-<br><font size=1 color=#5f5f5f face="sans-serif">Betreff: &nbsp; &nbsp;
-&nbsp; &nbsp;</font><font size=1 face="sans-serif">Re: string processing</font>
-<br>
-<hr noshade>
-<br>
-<br>
-<br><tt><font size=2>On Mon, May 07, 2012 at 11:28:38AM +0200, christian.buettner@rafi.de
-wrote:<br>
-&gt; hi all,<br>
-&gt; <br>
-&gt; i was looking for c functions doing string processing. I cannot find
-<br>
-&gt; things like sscanf or atoi. <br>
-&gt; How do you work with strings when you implement custom commands?<br>
-<br>
-We have simple_strtoul which currently is the only function to help with<br>
-string to integer conversion.<br>
-<br>
-Sascha<br>
-<br>
--- <br>
-Pengutronix e.K. &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |<br>
-Industrial Linux Solutions &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-&nbsp; | </font></tt><a href=http://www.pengutronix.de/><tt><font size=2>http://www.pengutronix.de/</font></tt></a><tt><font size=2>
-&nbsp;|<br>
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0 &nbsp;
-&nbsp;|<br>
-Amtsgericht Hildesheim, HRA 2686 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | Fax:
-&nbsp; +49-5121-206917-5555 |<br>
-</font></tt>
-<br>
---=_alternative 003B1F21C12579F7_=--
-
-
---===============4655337381067292632==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
-
---===============4655337381067292632==--
+T24gMjM6NDYgU2F0IDA1IE1heSAgICAgLCBLcnp5c3p0b2YgSGFsYXNhIHdyb3RlOgo+IEZpeGVk
+IGJvb3R6IGNvbW1hbmQgdG8gYWx3YXlzIGNoZWNrIGlmIHRoZSB6SW1hZ2UgZml0cyBjb21wbGV0
+ZWx5Cj4gaW4gdGhlIGZpcnN0IDEyOCBNQiBvZiBSQU0uCj4gQWxsb3dzIG9wZXJhdGlvbiB3aXRo
+IG1vcmUgdGhhbiAxMjggTUIgUkFNLgo+IFdlIGRvbid0IHRyeSB0byBmcmVlKCkgbWVtbWFwcGVk
+IHpJbWFnZSBhbnltb3JlLgo+IEVuZGlhbm5lc3Mgc3dhcHBpbmcgaXMgbm93IHBvc3NpYmxlIHdp
+dGggbWVtbWFwcGFibGUgekltYWdlLCB0b28uCj4gCj4gU2lnbmVkLW9mZi1ieTogS3J6eXN6dG9m
+IEhhxYJhc2EgPGtoY0BwbS53YXcucGw+Cj4gCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2xpYi9i
+b290ei5jIGIvYXJjaC9hcm0vbGliL2Jvb3R6LmMKPiBpbmRleCBmMzk0YTZiLi5jMTFmNDNhIDEw
+MDY0NAo+IC0tLSBhL2FyY2gvYXJtL2xpYi9ib290ei5jCj4gKysrIGIvYXJjaC9hcm0vbGliL2Jv
+b3R6LmMKPiBAQCAtMjEsMTQgKzIxLDIwIEBAIHN0cnVjdCB6aW1hZ2VfaGVhZGVyIHsKSSB0aGlu
+ayB3ZSBjYW4gc2ltcGx5IGRyb3AgdGhpcyBjb2RlIGFzIGl0J3MgaGFuZGxlIGJ5IGJvb3RtIHRv
+bwoKQmVzdCBSZWdhcmRzLApKLgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
+b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
