@@ -1,11 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og114.obsmtp.com ([64.18.0.28])
- by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SSTrP-0007xk-QC
- for barebox@lists.infradead.org; Thu, 10 May 2012 13:56:52 +0000
-From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Thu, 10 May 2012 14:56:46 +0100
-Message-Id: <1336658206-14496-1-git-send-email-renaud.barbier@ge.com>
+Received: from mo4.mail-out.ovh.net ([178.32.228.4])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SSWH7-0003hx-BF
+ for barebox@lists.infradead.org; Thu, 10 May 2012 16:31:35 +0000
+Received: from mail413.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 91FAB104E0F6
+ for <barebox@lists.infradead.org>; Thu, 10 May 2012 18:33:10 +0200 (CEST)
+Date: Thu, 10 May 2012 18:31:32 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120510163132.GD13709@game.jcrosoft.org>
+References: <1336642330-23675-1-git-send-email-antonynpavlov@gmail.com>
+ <1336642330-23675-5-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1336642330-23675-5-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,117 +22,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] ppc reloc.S: use a common trap relocation function
-To: barebox@lists.infradead.org
+Subject: Re: [RFC 4/5] MIPS: XBurst: add Ritmix RZX-50 board support
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-The trap relocation function trap_reloc can be used across several PPC
-platforms and is added to the ppc library. Accordingly, the definition
-of trap_reloc is removed from mach-mpc5xxx/start.S
+> diff --git a/arch/mips/boards/rzx50/Makefile b/arch/mips/boards/rzx50/Makefile
+> new file mode 100644
+> index 0000000..ff1a655
+> --- /dev/null
+> +++ b/arch/mips/boards/rzx50/Makefile
+> @@ -0,0 +1 @@
+> +obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial.o
+> diff --git a/arch/mips/boards/rzx50/config.h b/arch/mips/boards/rzx50/config.h
+> new file mode 100644
+> index 0000000..eb4ab08
+> --- /dev/null
+> +++ b/arch/mips/boards/rzx50/config.h
+> @@ -0,0 +1,19 @@
+> +/*
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> + * MA 02111-1307 USA
+> + *
+> + */
+> +
+> +/* nothing special yet */
+> diff --git a/arch/mips/boards/rzx50/rzx50.dox b/arch/mips/boards/rzx50/rzx50.dox
+> new file mode 100644
+> index 0000000..9f0d600
+> --- /dev/null
+> +++ b/arch/mips/boards/rzx50/rzx50.dox
+> @@ -0,0 +1,20 @@
+> +/** @page rzx50 Ritmix RZX-50 game console
+> +
+> +The portable game console has
+> +@li JZ4755 SoC;
+> +@li 64 MiB SDRAM;
+> +@li 4 MiB microSDHC card / 4 MiB NAND type Flash Memory;
+4 MiB? of 4 BiG?
 
-Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
----
- arch/ppc/lib/Makefile         |    1 +
- arch/ppc/lib/reloc.S          |   47 +++++++++++++++++++++++++++++++++++++++++
- arch/ppc/mach-mpc5xxx/start.S |   14 ------------
- 3 files changed, 48 insertions(+), 14 deletions(-)
- create mode 100644 arch/ppc/lib/reloc.S
-
-diff --git a/arch/ppc/lib/Makefile b/arch/ppc/lib/Makefile
-index 0f5e017..ba2f078 100644
---- a/arch/ppc/lib/Makefile
-+++ b/arch/ppc/lib/Makefile
-@@ -8,4 +8,5 @@ obj-y += misc.o
- obj-$(CONFIG_CMD_BOOTM) += ppclinux.o
- obj-$(CONFIG_MODULES) += module.o
- obj-y += crtsavres.o
-+obj-y += reloc.o
- 
-diff --git a/arch/ppc/lib/reloc.S b/arch/ppc/lib/reloc.S
-new file mode 100644
-index 0000000..92ee189
---- /dev/null
-+++ b/arch/ppc/lib/reloc.S
-@@ -0,0 +1,47 @@
-+/*
-+ * Copyright (C) 2009 Wolfgang Denk <wd@denx.de>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ */
-+
-+#include <asm/ppc_asm.tmpl>
-+
-+	.file	"reloc.S"
-+
-+	.text
-+	/*
-+	 * Function: relocate entries for one exception vector
-+	 */
-+	.globl trap_reloc
-+	.type	trap_reloc, @function
-+trap_reloc:
-+	lwz	r0, 0(r7)		/* hdlr ...		*/
-+	add	r0, r0, r3		/*  ... += dest_addr	*/
-+	stw	r0, 0(r7)
-+
-+	lwz	r0, 4(r7)		/* int_return ...	*/
-+	add	r0, r0, r3		/*  ... += dest_addr	*/
-+	stw	r0, 4(r7)
-+
-+	lwz	r0, 8(r7)		/* transfer_to_handler ...*/
-+	add	r0, r0, r3		/*  ... += dest_addr	*/
-+	stw	r0, 8(r7)
-+
-+	blr
-+	.size	trap_reloc, .-trap_reloc
-diff --git a/arch/ppc/mach-mpc5xxx/start.S b/arch/ppc/mach-mpc5xxx/start.S
-index e098a87..04e8fe3 100644
---- a/arch/ppc/mach-mpc5xxx/start.S
-+++ b/arch/ppc/mach-mpc5xxx/start.S
-@@ -726,20 +726,6 @@ trap_init:
- 	mtlr	r4			/* restore link register    */
- 	blr
- 
--	/*
--	 * Function: relocate entries for one exception vector
--	 */
--trap_reloc:
--	lwz	r0, 0(r7)		/* hdlr ...			*/
--	add	r0, r0, r3		/*  ... += dest_addr		*/
--	stw	r0, 0(r7)
--
--	lwz	r0, 4(r7)		/* int_return ...		*/
--	add	r0, r0, r3		/*  ... += dest_addr		*/
--	stw	r0, 4(r7)
--
--	blr
--
- .globl _text_base
- _text_base:
- 	.long TEXT_BASE
--- 
-1.7.1
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
