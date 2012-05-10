@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SSPkC-0001Rg-Cy
+ id 1SSPkC-0001Rd-CJ
  for barebox@lists.infradead.org; Thu, 10 May 2012 09:34:12 +0000
-Received: by lbbgg6 with SMTP id gg6so1123673lbb.36
- for <barebox@lists.infradead.org>; Thu, 10 May 2012 02:32:27 -0700 (PDT)
+Received: by laap9 with SMTP id p9so1126308laa.36
+ for <barebox@lists.infradead.org>; Thu, 10 May 2012 02:32:21 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 10 May 2012 13:32:09 +0400
-Message-Id: <1336642330-23675-5-git-send-email-antonynpavlov@gmail.com>
+Date: Thu, 10 May 2012 13:32:06 +0400
+Message-Id: <1336642330-23675-2-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1336642330-23675-1-git-send-email-antonynpavlov@gmail.com>
 References: <1336642330-23675-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,115 +23,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 4/5] MIPS: XBurst: add Ritmix RZX-50 board support
+Subject: [RFC 1/5] MIPS: add common header file for DEBUG_LL via NS16550
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/Makefile                            |    1 +
- arch/mips/boards/rzx50/Kconfig                |    6 +++
- arch/mips/boards/rzx50/Makefile               |    1 +
- arch/mips/boards/rzx50/config.h               |   19 +++++++
- arch/mips/boards/rzx50/rzx50.dox              |   20 ++++++++
- arch/mips/boards/rzx50/serial.c               |   66 +++++++++++++++++++++++++
- arch/mips/mach-xburst/Kconfig                 |   11 +++++
- arch/mips/mach-xburst/include/mach/debug_ll.h |    4 ++
- arch/mips/mach-xburst/mach-xburst.dox         |    2 +
- 9 files changed, 130 insertions(+)
- create mode 100644 arch/mips/boards/rzx50/Kconfig
- create mode 100644 arch/mips/boards/rzx50/Makefile
- create mode 100644 arch/mips/boards/rzx50/config.h
- create mode 100644 arch/mips/boards/rzx50/rzx50.dox
- create mode 100644 arch/mips/boards/rzx50/serial.c
+ arch/mips/include/debug_ll_common.h |   40 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+ create mode 100644 arch/mips/include/debug_ll_common.h
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 345d9a2..f28c21d 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -67,6 +67,7 @@ machine-$(CONFIG_MACH_MIPS_BCM47XX)	:= bcm47xx
- board-$(CONFIG_BOARD_DLINK_DIR320)	:= dlink-dir-320
- 
- machine-$(CONFIG_MACH_MIPS_XBURST)	:= xburst
-+board-$(CONFIG_BOARD_RZX50)	:= rzx50
- 
- machdirs := $(patsubst %,arch/mips/mach-%/,$(machine-y))
- 
-diff --git a/arch/mips/boards/rzx50/Kconfig b/arch/mips/boards/rzx50/Kconfig
+diff --git a/arch/mips/include/debug_ll_common.h b/arch/mips/include/debug_ll_common.h
 new file mode 100644
-index 0000000..38401aa
+index 0000000..7c26f54
 --- /dev/null
-+++ b/arch/mips/boards/rzx50/Kconfig
-@@ -0,0 +1,6 @@
-+if BOARD_RZX50
-+
-+config BOARDINFO
-+	default "Ritmix RZX-50"
-+
-+endif
-diff --git a/arch/mips/boards/rzx50/Makefile b/arch/mips/boards/rzx50/Makefile
-new file mode 100644
-index 0000000..ff1a655
---- /dev/null
-+++ b/arch/mips/boards/rzx50/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial.o
-diff --git a/arch/mips/boards/rzx50/config.h b/arch/mips/boards/rzx50/config.h
-new file mode 100644
-index 0000000..eb4ab08
---- /dev/null
-+++ b/arch/mips/boards/rzx50/config.h
-@@ -0,0 +1,19 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
-+ */
-+
-+/* nothing special yet */
-diff --git a/arch/mips/boards/rzx50/rzx50.dox b/arch/mips/boards/rzx50/rzx50.dox
-new file mode 100644
-index 0000000..9f0d600
---- /dev/null
-+++ b/arch/mips/boards/rzx50/rzx50.dox
-@@ -0,0 +1,20 @@
-+/** @page rzx50 Ritmix RZX-50 game console
-+
-+The portable game console has
-+@li JZ4755 SoC;
-+@li 64 MiB SDRAM;
-+@li 4 MiB microSDHC card / 4 MiB NAND type Flash Memory;
-+@li RS232 serial interface (LV-TTL levels on board!);
-+@li LCD display;
-+@li Video out interface;
-+@li 1xUSB interface;
-+@li buttons.
-+
-+The game console uses U-Boot as firmware.
-+
-+Barebox can be started from U-boot using Z-modem.
-+
-+Ritmix RZX-50 links:
-+@li ...
-+
-+*/
-diff --git a/arch/mips/boards/rzx50/serial.c b/arch/mips/boards/rzx50/serial.c
-new file mode 100644
-index 0000000..308cd18
---- /dev/null
-+++ b/arch/mips/boards/rzx50/serial.c
-@@ -0,0 +1,66 @@
++++ b/arch/mips/include/debug_ll_common.h
+@@ -0,0 +1,40 @@
 +/*
 + * Copyright (C) 2012 Antony Pavlov <antonynpavlov@gmail.com>
 + *
@@ -152,98 +58,26 @@ index 0000000..308cd18
 + * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 + */
 +
-+#include <common.h>
-+#include <types.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <ns16550.h>
-+#include <mach/jz4750d_regs.h>
-+#include <io.h>
-+#include <asm/common.h>
++/** @file
++ *  This file contains declaration for early output support
++ */
++#ifndef __INCLUDE_ARCH_DEBUG_LL_COMMON_H__
++#define __INCLUDE_ARCH_DEBUG_LL_COMMON_H__
 +
-+#define JZ4750D_UART_SHIFT	2
++#include <asm/io.h>
 +
-+#define ier		(1 << JZ4750D_UART_SHIFT)
-+#define fcr		(2 << JZ4750D_UART_SHIFT)
++#define rbr		(0 << DEBUG_LL_UART_SHIFT)
++#define lsr		(5 << DEBUG_LL_UART_SHIFT)
 +
-+static void jz4750d_serial_reg_write(unsigned int val, unsigned long base,
-+	unsigned char reg_offset)
++#define LSR_THRE	0x20	/* Xmit holding register empty */
++
++static __inline__ void putc(char ch)
 +{
-+	switch (reg_offset) {
-+	case fcr:
-+		val |= 0x10; /* Enable uart module */
-+		break;
-+	case ier:
-+		val |= (val & 0x4) << 2;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	writeb(val & 0xff, (void *)(base + reg_offset));
++	while (!(__raw_readb((u8 *)DEBUG_LL_UART_ADDR + lsr) & LSR_THRE));
++	__raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + rbr);
 +}
 +
-+static struct NS16550_plat serial_plat = {
-+	.clock = 12000000,
-+	.shift = JZ4750D_UART_SHIFT,
-+	.reg_write = &jz4750d_serial_reg_write,
-+};
-+
-+static int rzx50_console_init(void)
-+{
-+	/* Register the serial port */
-+	add_ns16550_device(-1, UART1_BASE, 8 << JZ4750D_UART_SHIFT,
-+			IORESOURCE_MEM_8BIT, &serial_plat);
-+
-+	return 0;
-+}
-+console_initcall(rzx50_console_init);
-diff --git a/arch/mips/mach-xburst/Kconfig b/arch/mips/mach-xburst/Kconfig
-index 0306f2e..60e411c 100644
---- a/arch/mips/mach-xburst/Kconfig
-+++ b/arch/mips/mach-xburst/Kconfig
-@@ -7,4 +7,15 @@ config ARCH_TEXT_BASE
- config CPU_JZ4755
- 	bool
- 
-+choice
-+	prompt "Board type"
-+
-+config BOARD_RZX50
-+	bool "Ritmix RZX-50"
-+	select CPU_JZ4755
-+
-+endchoice
-+
-+source arch/mips/boards/rzx50/Kconfig
-+
- endif
-diff --git a/arch/mips/mach-xburst/include/mach/debug_ll.h b/arch/mips/mach-xburst/include/mach/debug_ll.h
-index 90f6528..a8c82f2 100644
---- a/arch/mips/mach-xburst/include/mach/debug_ll.h
-+++ b/arch/mips/mach-xburst/include/mach/debug_ll.h
-@@ -24,6 +24,10 @@
- /** @file
-  *  This File contains declaration for early output support
-  */
-+#ifdef CONFIG_BOARD_RZX50
-+#include <mach/debug_ll_jz4755.h>
-+#endif
-+
- #include <debug_ll_common.h>
- 
- #endif  /* __MACH_XBURST_DEBUG_LL__ */
-diff --git a/arch/mips/mach-xburst/mach-xburst.dox b/arch/mips/mach-xburst/mach-xburst.dox
-index 84ae221..a5e524d 100644
---- a/arch/mips/mach-xburst/mach-xburst.dox
-+++ b/arch/mips/mach-xburst/mach-xburst.dox
-@@ -2,4 +2,6 @@
- 
- @section xburst_boards XBurst-based boards
- 
-+@li @subpage rzx50
-+
- */
++#endif  /* __INCLUDE_ARCH_DEBUG_LL_COMMON_H__ */
 -- 
 1.7.10
 
