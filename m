@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og104.obsmtp.com ([64.18.0.178])
- by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SSnYB-0000cC-L3
- for barebox@lists.infradead.org; Fri, 11 May 2012 10:58:39 +0000
-From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Fri, 11 May 2012 11:58:13 +0100
-Message-Id: <1336733893-9907-1-git-send-email-renaud.barbier@ge.com>
+Received: from smtp11.mail.ru ([94.100.176.85])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SSryZ-000440-SA
+ for barebox@lists.infradead.org; Fri, 11 May 2012 15:41:53 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Fri, 11 May 2012 19:42:18 +0400
+Message-Id: <1336750939-18572-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,34 +19,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] linux/types.h: define phys_size_t
+Subject: [PATCH 1/2] i2c: Fix barebox crash when 'count' is not set for
+ i2c_read command
 To: barebox@lists.infradead.org
 
-Add this definition in preparation for the introduction of the
-mpc85xx support.
+Running i2c_read without the 'count' setting causes an error and reboots.
 
-Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+barebox@Phytec phyCORE-i.MX27:/ i2c_read -b 1 -a 0x4a -r 0x00
+ERROR: out of memory
+no stack data available
 ---
- include/linux/types.h |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+ commands/i2c.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/include/linux/types.h b/include/linux/types.h
-index 16cc3ce..76c6b67 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -144,8 +144,10 @@ typedef __u32 __bitwise __wsum;
+diff --git a/commands/i2c.c b/commands/i2c.c
+index b3d09dc..39bae35 100644
+--- a/commands/i2c.c
++++ b/commands/i2c.c
+@@ -170,7 +170,7 @@ static int do_i2c_read(int argc, char *argv[])
+ 		}
+ 	}
  
- #ifdef CONFIG_PHYS_ADDR_T_64BIT
- typedef u64 phys_addr_t;
-+typedef u64 phys_size_t;
- #else
- typedef u32 phys_addr_t;
-+typedef u32 phys_size_t;
- #endif
+-	if ((addr < 0) || (reg < 0) || (count == 0) || (addr > 0x7F))
++	if ((addr < 0) || (reg < 0) || (count < 1) || (addr > 0x7F))
+ 		return COMMAND_ERROR_USAGE;
  
- typedef phys_addr_t resource_size_t;
+ 	adapter = i2c_get_adapter(bus);
 -- 
-1.7.1
+1.7.3.4
 
 
 _______________________________________________
