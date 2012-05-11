@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SSvpu-0002RS-Ue
- for barebox@lists.infradead.org; Fri, 11 May 2012 19:49:12 +0000
-Date: Fri, 11 May 2012 21:49:07 +0200
+ id 1SSw2R-0003Wx-Q2
+ for barebox@lists.infradead.org; Fri, 11 May 2012 20:02:08 +0000
+Date: Fri, 11 May 2012 22:02:05 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120511194907.GR27341@pengutronix.de>
-References: <CAOQ7t2ZNu14D4Y3nDKxGVSAxp4gR9K-mDuN21fwXfNHwMiZ38w@mail.gmail.com>
+Message-ID: <20120511200205.GT27341@pengutronix.de>
+References: <20120511183511.GM27341@pengutronix.de>
+ <1336762729-20308-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAOQ7t2ZNu14D4Y3nDKxGVSAxp4gR9K-mDuN21fwXfNHwMiZ38w@mail.gmail.com>
+In-Reply-To: <1336762729-20308-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,38 +23,128 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox, omap3530_beagle_xload and qemu-linaro
-To: Carlo Caione <carlo.caione@gmail.com>
+Subject: Re: [PATCH 2/2] i2c: Added switch for allowing usage 16bit register
+ addresses
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Sat, May 05, 2012 at 11:02:10PM +0200, Carlo Caione wrote:
-> Hi,
-> I was trying to run barebox (omap3530_beagle_xload) under qemu-linaro
-> (-M beagle). This is what I get:
+On Fri, May 11, 2012 at 10:58:49PM +0400, Alexander Shiyan wrote:
+> ---
+>  commands/i2c.c |   26 +++++++++++++++++---------
+>  1 files changed, 17 insertions(+), 9 deletions(-)
 > 
-> carlo@belfagor:~/projects/barebox-img$ qemu-system-arm -M beagle
-> -nographic -sd sd.img
-> qemu: fatal: Trying to execute code outside RAM or ROM at 0x00014080
-> 
-> R00=4020a5bf R01=4020a5bf R02=4020a5bf R03=4020a5bf
-> R04=4020ae70 R05=4020a5bf R06=400001d3 R07=ffffffff
-> R08=00000000 R09=ffffffff R10=00000000 R11=00000002
-> R12=4020be7c R13=402064b0 R14=40205c8c R15=00014080
-> PSR=200001db --C- A und32
-> Aborted (core dumped)
-> 
-> Using the original linaro images (with u-boot inside) everything works
-> well so I think the problem here is barebox.
-> 
-> Any idea?
 
-Might be worth disassembling the code at r14=40205c88 which is probably
-the code address which jumps to nirvana.
-
-I haven't tried recently, but it should work on real hardware.
+Applied and realized afterwards that you forgot to sign off your
+patches. Please resend this one, I'll replace it.
 
 Sascha
 
+> diff --git a/commands/i2c.c b/commands/i2c.c
+> index 39bae35..1eaa968 100644
+> --- a/commands/i2c.c
+> +++ b/commands/i2c.c
+> @@ -74,10 +74,10 @@ static int do_i2c_write(int argc, char *argv[])
+>  {
+>  	struct i2c_adapter *adapter = NULL;
+>  	struct i2c_client client;
+> -	int addr = -1, reg = -1, count = -1, verbose = 0, ret, opt, i, bus = 0;
+> +	int addr = -1, reg = -1, count = -1, verbose = 0, ret, opt, i, bus = 0, wide = 0;
+>  	u8 *buf;
+>  
+> -	while ((opt = getopt(argc, argv, "a:b:r:v")) > 0) {
+> +	while ((opt = getopt(argc, argv, "a:b:r:v:w")) > 0) {
+>  		switch (opt) {
+>  		case 'a':
+>  			addr = simple_strtol(optarg, NULL, 0);
+> @@ -91,6 +91,9 @@ static int do_i2c_write(int argc, char *argv[])
+>  		case 'v':
+>  			verbose = 1;
+>  			break;
+> +		case 'w':
+> +			wide = 1;
+> +			break;
+>  		}
+>  	}
+>  
+> @@ -112,13 +115,13 @@ static int do_i2c_write(int argc, char *argv[])
+>  	for (i = 0; i < count; i++)
+>  		*(buf + i) = (char) simple_strtol(argv[optind+i], NULL, 16);
+>  
+> -	ret = i2c_write_reg(&client, reg, buf, count);
+> +	ret = i2c_write_reg(&client, reg | (wide ? I2C_ADDR_16_BIT : 0), buf, count);
+>  	if (ret != count)
+>  		goto out;
+>  	ret = 0;
+>  
+>  	if (verbose) {
+> -		printf("wrote %i bytes starting at reg 0x%02x to i2cdev 0x%02x on bus %i\n",
+> +		printf("wrote %i bytes starting at reg 0x%04x to i2cdev 0x%02x on bus %i\n",
+>  			count, reg, addr, adapter->nr);
+>  		for (i = 0; i < count; i++)
+>  			printf("0x%02x ", *(buf + i));
+> @@ -135,7 +138,8 @@ static const __maybe_unused char cmd_i2c_write_help[] =
+>  "write to i2c device.\n"
+>  "  -a 0x<addr>   i2c device address\n"
+>  "  -b <bus_num>  i2c bus number (default = 0)\n"
+> -"  -r 0x<reg>    start register\n";
+> +"  -r 0x<reg>    start register\n"
+> +"  -w            use 16bit-wide address access\n";
+>  
+>  BAREBOX_CMD_START(i2c_write)
+>  	.cmd		= do_i2c_write,
+> @@ -148,9 +152,9 @@ static int do_i2c_read(int argc, char *argv[])
+>  	struct i2c_adapter *adapter = NULL;
+>  	struct i2c_client client;
+>  	u8 *buf;
+> -	int count = -1, addr = -1, reg = -1, verbose = 0, ret, opt, bus = 0;
+> +	int count = -1, addr = -1, reg = -1, verbose = 0, ret, opt, bus = 0, wide = 0;
+>  
+> -	while ((opt = getopt(argc, argv, "a:b:c:r:v")) > 0) {
+> +	while ((opt = getopt(argc, argv, "a:b:c:r:v:w")) > 0) {
+>  		switch (opt) {
+>  		case 'a':
+>  			addr = simple_strtol(optarg, NULL, 0);
+> @@ -167,6 +171,9 @@ static int do_i2c_read(int argc, char *argv[])
+>  		case 'v':
+>  			verbose = 1;
+>  			break;
+> +		case 'w':
+> +			wide = 1;
+> +			break;
+>  		}
+>  	}
+>  
+> @@ -183,11 +190,11 @@ static int do_i2c_read(int argc, char *argv[])
+>  	client.addr = addr;
+>  
+>  	buf = xmalloc(count);
+> -	ret = i2c_read_reg(&client, reg, buf, count);
+> +	ret = i2c_read_reg(&client, reg | (wide ? I2C_ADDR_16_BIT : 0), buf, count);
+>  	if (ret == count) {
+>  		int i;
+>  		if (verbose)
+> -			printf("read %i bytes starting at reg 0x%02x from i2cdev 0x%02x on bus %i\n",
+> +			printf("read %i bytes starting at reg 0x%04x from i2cdev 0x%02x on bus %i\n",
+>  				count, reg, addr, adapter->nr);
+>  		for (i = 0; i < count; i++)
+>  			printf("0x%02x ", *(buf + i));
+> @@ -205,6 +212,7 @@ static const __maybe_unused char cmd_i2c_read_help[] =
+>  "  -a 0x<addr>   i2c device address\n"
+>  "  -b <bus_num>  i2c bus number (default = 0)\n"
+>  "  -r 0x<reg>    start register\n"
+> +"  -w            use 16bit-wide address access\n"
+>  "  -c <count>    byte count\n";
+>  
+>  BAREBOX_CMD_START(i2c_read)
+> -- 
+> 1.7.3.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
