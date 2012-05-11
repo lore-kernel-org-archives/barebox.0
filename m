@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SSuKa-0001PE-V7
- for barebox@lists.infradead.org; Fri, 11 May 2012 18:12:46 +0000
-Date: Fri, 11 May 2012 20:12:42 +0200
+ id 1SSuMw-0001Sb-5E
+ for barebox@lists.infradead.org; Fri, 11 May 2012 18:15:10 +0000
+Date: Fri, 11 May 2012 20:15:08 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120511181242.GJ27341@pengutronix.de>
+Message-ID: <20120511181508.GK27341@pengutronix.de>
 References: <1336750939-18572-1-git-send-email-shc_work@mail.ru>
+ <1336750939-18572-2-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1336750939-18572-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1336750939-18572-2-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,49 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] i2c: Fix barebox crash when 'count' is not set for
- i2c_read command
+Subject: Re: [PATCH 2/2] i2c: Added switch for allowing usage 16bit register
+ addresses
 To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Fri, May 11, 2012 at 07:42:18PM +0400, Alexander Shiyan wrote:
-> Running i2c_read without the 'count' setting causes an error and reboots.
-> 
-
-Applied to master.
-
-Thanks
- Sascha
-
-> barebox@Phytec phyCORE-i.MX27:/ i2c_read -b 1 -a 0x4a -r 0x00
-> ERROR: out of memory
-> no stack data available
+On Fri, May 11, 2012 at 07:42:19PM +0400, Alexander Shiyan wrote:
 > ---
->  commands/i2c.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/commands/i2c.c b/commands/i2c.c
-> index b3d09dc..39bae35 100644
-> --- a/commands/i2c.c
-> +++ b/commands/i2c.c
-> @@ -170,7 +170,7 @@ static int do_i2c_read(int argc, char *argv[])
->  		}
->  	}
->  
-> -	if ((addr < 0) || (reg < 0) || (count == 0) || (addr > 0x7F))
-> +	if ((addr < 0) || (reg < 0) || (count < 1) || (addr > 0x7F))
->  		return COMMAND_ERROR_USAGE;
->  
->  	adapter = i2c_get_adapter(bus);
-> -- 
-> 1.7.3.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+>  			printf("0x%02x ", *(buf + i));
+> @@ -135,7 +138,8 @@ static const __maybe_unused char cmd_i2c_write_help[] =
+>  "write to i2c device.\n"
+>  "  -a 0x<addr>   i2c device address\n"
+>  "  -b <bus_num>  i2c bus number (default = 0)\n"
+> -"  -r 0x<reg>    start register\n";
+> +"  -r 0x<reg>    start register\n"
+> +"  -w            use the word as an address\n";
+
+Can we have 'do word (16bit) accesses' here to make this a bit more
+explicit?
+
+> @@ -205,6 +212,7 @@ static const __maybe_unused char cmd_i2c_read_help[] =
+>  "  -a 0x<addr>   i2c device address\n"
+>  "  -b <bus_num>  i2c bus number (default = 0)\n"
+>  "  -r 0x<reg>    start register\n"
+> +"  -w            use the word as an address\n"
+>  "  -c <count>    byte count\n";
+
+ditto
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
