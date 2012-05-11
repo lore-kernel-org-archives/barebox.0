@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SSv5J-0003hH-Ko
- for barebox@lists.infradead.org; Fri, 11 May 2012 19:01:03 +0000
-Date: Fri, 11 May 2012 21:00:59 +0200
+ id 1SSvpu-0002RS-Ue
+ for barebox@lists.infradead.org; Fri, 11 May 2012 19:49:12 +0000
+Date: Fri, 11 May 2012 21:49:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120511190059.GP27341@pengutronix.de>
-References: <m3fwbemhq0.fsf@intrepid.localdomain>
+Message-ID: <20120511194907.GR27341@pengutronix.de>
+References: <CAOQ7t2ZNu14D4Y3nDKxGVSAxp4gR9K-mDuN21fwXfNHwMiZ38w@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <m3fwbemhq0.fsf@intrepid.localdomain>
+In-Reply-To: <CAOQ7t2ZNu14D4Y3nDKxGVSAxp4gR9K-mDuN21fwXfNHwMiZ38w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,43 +18,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: Shutdown barebox (MMU) before setting ATAGS to
- avoid page #0 fault.
-To: Krzysztof Halasa <khc@pm.waw.pl>
+Subject: Re: barebox, omap3530_beagle_xload and qemu-linaro
+To: Carlo Caione <carlo.caione@gmail.com>
 Cc: barebox@lists.infradead.org
 
-SGkgS3J6eXN6dG9mLAoKT24gU2F0LCBNYXkgMDUsIDIwMTIgYXQgMTE6Mzg6MTVQTSArMDIwMCwg
-S3J6eXN6dG9mIEhhbGFzYSB3cm90ZToKPiBUaGlzIGRvZXNuJ3QgZml4IHRoZSAibWQiIGlzc3Vl
-Lgo+IAo+IFNpZ25lZC1vZmYtYnk6IEtyenlzenRvZiBIYcWCYXNhIDxraGNAcG0ud2F3LnBsPgo+
-IAo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9saWIvYXJtbGludXguYyBiL2FyY2gvYXJtL2xpYi9h
-cm1saW51eC5jCj4gaW5kZXggYTE2NzAzNi4uODQ3ZmVmYSAxMDA2NDQKPiAtLS0gYS9hcmNoL2Fy
-bS9saWIvYXJtbGludXguYwo+ICsrKyBiL2FyY2gvYXJtL2xpYi9hcm1saW51eC5jCj4gQEAgLTI2
-MCwxMiArMjYwLDE1IEBAIHZvaWQgc3RhcnRfbGludXgodm9pZCAqYWRyLCBpbnQgc3dhcCwgdW5z
-aWduZWQgbG9uZyBpbml0cmRfYWRkcmVzcywKPiAgCWlmIChvZnRyZWUpIHsKPiAgCQlwcmludGYo
-ImJvb3RpbmcgTGludXgga2VybmVsIHdpdGggZGV2aWNldHJlZVxuIik7Cj4gIAkJcGFyYW1zID0g
-b2Z0cmVlOwo+IC0JfSBlbHNlIHsKPiArCX0KPiArCj4gKwlzaHV0ZG93bl9iYXJlYm94KCk7Cj4g
-Kwo+ICsJaWYgKCFvZnRyZWUpIHsKPiAgCQlzZXR1cF90YWdzKGluaXRyZF9hZGRyZXNzLCBpbml0
-cmRfc2l6ZSwgc3dhcCk7Cj4gIAkJcGFyYW1zID0gYXJtbGludXhfYm9vdHBhcmFtczsKPiAgCX0K
-CkkgZG9uJ3QgbGlrZSB0aGlzIHZlcnkgbXVjaCBiZWNhdXNlIEkgdGhpbmsgdGhhdCBzaHV0ZG93
-bl9iYXJlYm94IHNob3VsZApiZSB0aGUgbGFzdCB0aGluZyBiZWZvcmUganVtcGluZyB0byB0aGUg
-a2VybmVsLiBBbHNvIGl0IG1ha2VzIHN0YXJ0aW5nCm9mIHRoZSBrZXJuZWwgcG90ZW50aWFsbHkg
-c2xvd2VyIGFzIHdlIGV4ZWN1dGUgY29kZSB3aXRoIGNhY2hlcwpkaXNhYmxlZC4KCkJUVyBJIGRv
-bid0IHVuZGVyc3RhbmQgd2h5IHRoZSB6ZXJvIHBhZ2UgaXMgZmF1bHRpbmcgaW4geW91ciBjYXNl
-CmFueXdheS4gWW91IGhhdmUgU0RGQU0gYXQgMHgwLCByaWdodD8gU28gd2UgaGF2ZQoKdmVjdG9y
-c19pbml0KCkgLT4gc2V0cyB6ZXJvIHBhZ2UgdG8gZmF1bHRpbmcKZm9yX2VhY2hfbWVtb3J5X2Jh
-bmsoKQoJY3JlYXRlX3NlY3Rpb25zKCk7IC0+IHNob3VsZCBzZXQgdGhlIHplcm8gcGFnZSBhY2Nl
-c3NpYmxlIGFnYWluCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlmIHdlIGhhdmUgYSBT
-RFJBTSBiYW5rIGF0IDB4MAoKQW0gSSBnZXR0aW5nIHNvbWV0aGluZyB3cm9uZyBoZXJlPwoKU2Fz
-Y2hhCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAg
-ICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4g
-Ni04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0w
-ICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAg
-ICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+On Sat, May 05, 2012 at 11:02:10PM +0200, Carlo Caione wrote:
+> Hi,
+> I was trying to run barebox (omap3530_beagle_xload) under qemu-linaro
+> (-M beagle). This is what I get:
+> 
+> carlo@belfagor:~/projects/barebox-img$ qemu-system-arm -M beagle
+> -nographic -sd sd.img
+> qemu: fatal: Trying to execute code outside RAM or ROM at 0x00014080
+> 
+> R00=4020a5bf R01=4020a5bf R02=4020a5bf R03=4020a5bf
+> R04=4020ae70 R05=4020a5bf R06=400001d3 R07=ffffffff
+> R08=00000000 R09=ffffffff R10=00000000 R11=00000002
+> R12=4020be7c R13=402064b0 R14=40205c8c R15=00014080
+> PSR=200001db --C- A und32
+> Aborted (core dumped)
+> 
+> Using the original linaro images (with u-boot inside) everything works
+> well so I think the problem here is barebox.
+> 
+> Any idea?
+
+Might be worth disassembling the code at r14=40205c88 which is probably
+the code address which jumps to nirvana.
+
+I haven't tried recently, but it should work on real hardware.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
