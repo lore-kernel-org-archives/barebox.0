@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-gg0-f177.google.com ([209.85.161.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SSltB-0006bD-4C
- for barebox@lists.infradead.org; Fri, 11 May 2012 09:12:06 +0000
-Received: by ggcs5 with SMTP id s5so1858540ggc.36
- for <barebox@lists.infradead.org>; Fri, 11 May 2012 02:11:52 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20120511072013.GZ27341@pengutronix.de>
-References: <1336642330-23675-1-git-send-email-antonynpavlov@gmail.com>
- <1336642330-23675-2-git-send-email-antonynpavlov@gmail.com>
- <20120511072013.GZ27341@pengutronix.de>
-Date: Fri, 11 May 2012 13:11:51 +0400
-Message-ID: <CAA4bVAGFKWvkxTm+u6ZkH8Z4eRU-hoW8-n+rKi0cJqxPZnNvjQ@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Received: from exprod5og104.obsmtp.com ([64.18.0.178])
+ by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SSnYB-0000cC-L3
+ for barebox@lists.infradead.org; Fri, 11 May 2012 10:58:39 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Fri, 11 May 2012 11:58:13 +0100
+Message-Id: <1336733893-9907-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,108 +14,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 1/5] MIPS: add common header file for DEBUG_LL via NS16550
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] linux/types.h: define phys_size_t
+To: barebox@lists.infradead.org
 
-On 11 May 2012 11:20, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Thu, May 10, 2012 at 01:32:06PM +0400, Antony Pavlov wrote:
->> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
->> ---
->> =A0arch/mips/include/debug_ll_common.h | =A0 40 ++++++++++++++++++++++++=
-+++++++++++
->> =A01 file changed, 40 insertions(+)
->> =A0create mode 100644 arch/mips/include/debug_ll_common.h
->>
->> diff --git a/arch/mips/include/debug_ll_common.h b/arch/mips/include/deb=
-ug_ll_common.h
->
-> Does that mean that every mips has a ns16550? If not the file should
-> have 16550 in its name.
+Add this definition in preparation for the introduction of the
+mpc85xx support.
 
-You are right!
+Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+---
+ include/linux/types.h |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
 
-Can we use the header like this for the other architectures (ARM etc) too?
+diff --git a/include/linux/types.h b/include/linux/types.h
+index 16cc3ce..76c6b67 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -144,8 +144,10 @@ typedef __u32 __bitwise __wsum;
+ 
+ #ifdef CONFIG_PHYS_ADDR_T_64BIT
+ typedef u64 phys_addr_t;
++typedef u64 phys_size_t;
+ #else
+ typedef u32 phys_addr_t;
++typedef u32 phys_size_t;
+ #endif
+ 
+ typedef phys_addr_t resource_size_t;
+-- 
+1.7.1
 
-> Sascha
->
->> new file mode 100644
->> index 0000000..7c26f54
->> --- /dev/null
->> +++ b/arch/mips/include/debug_ll_common.h
->> @@ -0,0 +1,40 @@
->> +/*
->> + * Copyright (C) 2012 Antony Pavlov <antonynpavlov@gmail.com>
->> + *
->> + * This file is part of barebox.
->> + * See file CREDITS for list of people who contributed to this project.
->> + *
->> + * This program is free software; you can redistribute it and/or modify
->> + * it under the terms of the GNU General Public License version 2
->> + * as published by the Free Software Foundation.
->> + *
->> + * This program is distributed in the hope that it will be useful,
->> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
->> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. =A0See the
->> + * GNU General Public License for more details.
->> + *
->> + * You should have received a copy of the GNU General Public License
->> + * along with this program; if not, write to the Free Software
->> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA =A002111-13=
-07 =A0USA
->> + */
->> +
->> +/** @file
->> + * =A0This file contains declaration for early output support
->> + */
->> +#ifndef __INCLUDE_ARCH_DEBUG_LL_COMMON_H__
->> +#define __INCLUDE_ARCH_DEBUG_LL_COMMON_H__
->> +
->> +#include <asm/io.h>
->> +
->> +#define rbr =A0 =A0 =A0 =A0 =A0(0 << DEBUG_LL_UART_SHIFT)
->> +#define lsr =A0 =A0 =A0 =A0 =A0(5 << DEBUG_LL_UART_SHIFT)
->> +
->> +#define LSR_THRE =A0 =A0 0x20 =A0 =A0/* Xmit holding register empty */
->> +
->> +static __inline__ void putc(char ch)
->> +{
->> + =A0 =A0 while (!(__raw_readb((u8 *)DEBUG_LL_UART_ADDR + lsr) & LSR_THR=
-E));
->> + =A0 =A0 __raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + rbr);
->> +}
->> +
->> +#endif =A0/* __INCLUDE_ARCH_DEBUG_LL_COMMON_H__ */
->> --
->> 1.7.10
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
->
-> --
-> Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 |
-> Industrial Linux Solutions =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | http://www.p=
-engutronix.de/ =A0|
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0 =A0=
- =A0|
-> Amtsgericht Hildesheim, HRA 2686 =A0 =A0 =A0 =A0 =A0 | Fax: =A0 +49-5121-=
-206917-5555 |
-
-
-
--- =
-
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
