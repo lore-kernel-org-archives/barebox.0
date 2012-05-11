@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp14.mail.ru ([94.100.176.91])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SSulu-0002dJ-2t
- for barebox@lists.infradead.org; Fri, 11 May 2012 18:40:58 +0000
-Date: Fri, 11 May 2012 20:40:56 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120511184056.GO27341@pengutronix.de>
-References: <m3sjfemhv5.fsf@intrepid.localdomain>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <m3sjfemhv5.fsf@intrepid.localdomain>
+ id 1SSv0u-0002hx-97
+ for barebox@lists.infradead.org; Fri, 11 May 2012 18:56:29 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Fri, 11 May 2012 22:58:49 +0400
+Message-Id: <1336762729-20308-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <20120511183511.GM27341@pengutronix.de>
+References: <20120511183511.GM27341@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,34 +16,121 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] NOR flash: reduce size of cfiword_t if not using 64-bit
- bus.
-To: Krzysztof Halasa <khc@pm.waw.pl>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] i2c: Added switch for allowing usage 16bit register
+ addresses
+To: barebox@lists.infradead.org
 
-SGkgS3J6eXN6dG9mLAoKT24gU2F0LCBNYXkgMDUsIDIwMTIgYXQgMTE6MzU6MTBQTSArMDIwMCwg
-S3J6eXN6dG9mIEhhbGFzYSB3cm90ZToKPiBTaWduZWQtb2ZmLWJ5OiBLcnp5c3p0b2YgSGHFgmFz
-YSA8a2hjQHBtLndhdy5wbD4KPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9ub3IvY2ZpX2ZsYXNo
-LmggYi9kcml2ZXJzL25vci9jZmlfZmxhc2guaAo+IGluZGV4IGRmNDgyYjYuLmZlYzA4OTQgMTAw
-NjQ0Cj4gLS0tIGEvZHJpdmVycy9ub3IvY2ZpX2ZsYXNoLmgKPiArKysgYi9kcml2ZXJzL25vci9j
-ZmlfZmxhc2guaAo+IEBAIC0zMCw3ICszMCwxNyBAQAo+ICAjaW5jbHVkZSA8bGludXgvbXRkL210
-ZC5oPgo+ICAKPiAgdHlwZWRlZiB1bnNpZ25lZCBsb25nIGZsYXNoX3NlY3RfdDsKPiArCj4gKyNp
-ZiAgIGRlZmluZWQoQ09ORklHX0RSSVZFUl9DRklfQkFOS19XSURUSF84KQo+ICB0eXBlZGVmIHU2
-NCBjZml3b3JkX3Q7Cj4gKyNlbGlmIGRlZmluZWQoQ09ORklHX0RSSVZFUl9DRklfQkFOS19XSURU
-SF80KQo+ICt0eXBlZGVmIHUzMiBjZml3b3JkX3Q7Cj4gKyNlbGlmIGRlZmluZWQoQ09ORklHX0RS
-SVZFUl9DRklfQkFOS19XSURUSF8yKQo+ICt0eXBlZGVmIHUxNiBjZml3b3JkX3Q7Cj4gKyNlbHNl
-Cj4gK3R5cGVkZWYgdTggY2Zpd29yZF90Owo+ICsjZW5kaWYKCklzIHRoaXMgd29ydGggaXQ/IERv
-IHdlIHNhZmUgYmluYXJ5IHNpemUgb3Igd2hhdCBlbHNlIGlzIHRoZSByZWFzb25pbmcKZm9yIHRo
-aXMgcGF0Y2g/CgpTYXNjaGEKCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51
-eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8g
-IHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0
-OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAg
-ICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+---
+ commands/i2c.c |   26 +++++++++++++++++---------
+ 1 files changed, 17 insertions(+), 9 deletions(-)
+
+diff --git a/commands/i2c.c b/commands/i2c.c
+index 39bae35..1eaa968 100644
+--- a/commands/i2c.c
++++ b/commands/i2c.c
+@@ -74,10 +74,10 @@ static int do_i2c_write(int argc, char *argv[])
+ {
+ 	struct i2c_adapter *adapter = NULL;
+ 	struct i2c_client client;
+-	int addr = -1, reg = -1, count = -1, verbose = 0, ret, opt, i, bus = 0;
++	int addr = -1, reg = -1, count = -1, verbose = 0, ret, opt, i, bus = 0, wide = 0;
+ 	u8 *buf;
+ 
+-	while ((opt = getopt(argc, argv, "a:b:r:v")) > 0) {
++	while ((opt = getopt(argc, argv, "a:b:r:v:w")) > 0) {
+ 		switch (opt) {
+ 		case 'a':
+ 			addr = simple_strtol(optarg, NULL, 0);
+@@ -91,6 +91,9 @@ static int do_i2c_write(int argc, char *argv[])
+ 		case 'v':
+ 			verbose = 1;
+ 			break;
++		case 'w':
++			wide = 1;
++			break;
+ 		}
+ 	}
+ 
+@@ -112,13 +115,13 @@ static int do_i2c_write(int argc, char *argv[])
+ 	for (i = 0; i < count; i++)
+ 		*(buf + i) = (char) simple_strtol(argv[optind+i], NULL, 16);
+ 
+-	ret = i2c_write_reg(&client, reg, buf, count);
++	ret = i2c_write_reg(&client, reg | (wide ? I2C_ADDR_16_BIT : 0), buf, count);
+ 	if (ret != count)
+ 		goto out;
+ 	ret = 0;
+ 
+ 	if (verbose) {
+-		printf("wrote %i bytes starting at reg 0x%02x to i2cdev 0x%02x on bus %i\n",
++		printf("wrote %i bytes starting at reg 0x%04x to i2cdev 0x%02x on bus %i\n",
+ 			count, reg, addr, adapter->nr);
+ 		for (i = 0; i < count; i++)
+ 			printf("0x%02x ", *(buf + i));
+@@ -135,7 +138,8 @@ static const __maybe_unused char cmd_i2c_write_help[] =
+ "write to i2c device.\n"
+ "  -a 0x<addr>   i2c device address\n"
+ "  -b <bus_num>  i2c bus number (default = 0)\n"
+-"  -r 0x<reg>    start register\n";
++"  -r 0x<reg>    start register\n"
++"  -w            use 16bit-wide address access\n";
+ 
+ BAREBOX_CMD_START(i2c_write)
+ 	.cmd		= do_i2c_write,
+@@ -148,9 +152,9 @@ static int do_i2c_read(int argc, char *argv[])
+ 	struct i2c_adapter *adapter = NULL;
+ 	struct i2c_client client;
+ 	u8 *buf;
+-	int count = -1, addr = -1, reg = -1, verbose = 0, ret, opt, bus = 0;
++	int count = -1, addr = -1, reg = -1, verbose = 0, ret, opt, bus = 0, wide = 0;
+ 
+-	while ((opt = getopt(argc, argv, "a:b:c:r:v")) > 0) {
++	while ((opt = getopt(argc, argv, "a:b:c:r:v:w")) > 0) {
+ 		switch (opt) {
+ 		case 'a':
+ 			addr = simple_strtol(optarg, NULL, 0);
+@@ -167,6 +171,9 @@ static int do_i2c_read(int argc, char *argv[])
+ 		case 'v':
+ 			verbose = 1;
+ 			break;
++		case 'w':
++			wide = 1;
++			break;
+ 		}
+ 	}
+ 
+@@ -183,11 +190,11 @@ static int do_i2c_read(int argc, char *argv[])
+ 	client.addr = addr;
+ 
+ 	buf = xmalloc(count);
+-	ret = i2c_read_reg(&client, reg, buf, count);
++	ret = i2c_read_reg(&client, reg | (wide ? I2C_ADDR_16_BIT : 0), buf, count);
+ 	if (ret == count) {
+ 		int i;
+ 		if (verbose)
+-			printf("read %i bytes starting at reg 0x%02x from i2cdev 0x%02x on bus %i\n",
++			printf("read %i bytes starting at reg 0x%04x from i2cdev 0x%02x on bus %i\n",
+ 				count, reg, addr, adapter->nr);
+ 		for (i = 0; i < count; i++)
+ 			printf("0x%02x ", *(buf + i));
+@@ -205,6 +212,7 @@ static const __maybe_unused char cmd_i2c_read_help[] =
+ "  -a 0x<addr>   i2c device address\n"
+ "  -b <bus_num>  i2c bus number (default = 0)\n"
+ "  -r 0x<reg>    start register\n"
++"  -w            use 16bit-wide address access\n"
+ "  -c <count>    byte count\n";
+ 
+ BAREBOX_CMD_START(i2c_read)
+-- 
+1.7.3.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
