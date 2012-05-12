@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp12.mail.ru ([94.100.176.89])
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SSwE6-0004bR-CM
- for barebox@lists.infradead.org; Fri, 11 May 2012 20:14:11 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 12 May 2012 00:17:08 +0400
-Message-Id: <1336767428-21412-2-git-send-email-shc_work@mail.ru>
-In-Reply-To: <20120511200205.GT27341@pengutronix.de>
-References: <20120511200205.GT27341@pengutronix.de>
+ id 1ST6Xs-000439-Dt
+ for barebox@lists.infradead.org; Sat, 12 May 2012 07:15:32 +0000
+Received: by laap9 with SMTP id p9so2978371laa.36
+ for <barebox@lists.infradead.org>; Sat, 12 May 2012 00:15:10 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Sat, 12 May 2012 11:15:03 +0400
+Message-Id: <1336806904-6251-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,115 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] i2c: Added switch for allowing usage 16bit register
- addresses
+Subject: [PATCH 1/2] MIPS: add common header file for DEBUG_LL via NS16550
 To: barebox@lists.infradead.org
 
-
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- commands/i2c.c |   26 +++++++++++++++++---------
- 1 files changed, 17 insertions(+), 9 deletions(-)
+ arch/mips/include/debug_ll_ns16550.h |   40 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+ create mode 100644 arch/mips/include/debug_ll_ns16550.h
 
-diff --git a/commands/i2c.c b/commands/i2c.c
-index 39bae35..1eaa968 100644
---- a/commands/i2c.c
-+++ b/commands/i2c.c
-@@ -74,10 +74,10 @@ static int do_i2c_write(int argc, char *argv[])
- {
- 	struct i2c_adapter *adapter = NULL;
- 	struct i2c_client client;
--	int addr = -1, reg = -1, count = -1, verbose = 0, ret, opt, i, bus = 0;
-+	int addr = -1, reg = -1, count = -1, verbose = 0, ret, opt, i, bus = 0, wide = 0;
- 	u8 *buf;
- 
--	while ((opt = getopt(argc, argv, "a:b:r:v")) > 0) {
-+	while ((opt = getopt(argc, argv, "a:b:r:v:w")) > 0) {
- 		switch (opt) {
- 		case 'a':
- 			addr = simple_strtol(optarg, NULL, 0);
-@@ -91,6 +91,9 @@ static int do_i2c_write(int argc, char *argv[])
- 		case 'v':
- 			verbose = 1;
- 			break;
-+		case 'w':
-+			wide = 1;
-+			break;
- 		}
- 	}
- 
-@@ -112,13 +115,13 @@ static int do_i2c_write(int argc, char *argv[])
- 	for (i = 0; i < count; i++)
- 		*(buf + i) = (char) simple_strtol(argv[optind+i], NULL, 16);
- 
--	ret = i2c_write_reg(&client, reg, buf, count);
-+	ret = i2c_write_reg(&client, reg | (wide ? I2C_ADDR_16_BIT : 0), buf, count);
- 	if (ret != count)
- 		goto out;
- 	ret = 0;
- 
- 	if (verbose) {
--		printf("wrote %i bytes starting at reg 0x%02x to i2cdev 0x%02x on bus %i\n",
-+		printf("wrote %i bytes starting at reg 0x%04x to i2cdev 0x%02x on bus %i\n",
- 			count, reg, addr, adapter->nr);
- 		for (i = 0; i < count; i++)
- 			printf("0x%02x ", *(buf + i));
-@@ -135,7 +138,8 @@ static const __maybe_unused char cmd_i2c_write_help[] =
- "write to i2c device.\n"
- "  -a 0x<addr>   i2c device address\n"
- "  -b <bus_num>  i2c bus number (default = 0)\n"
--"  -r 0x<reg>    start register\n";
-+"  -r 0x<reg>    start register\n"
-+"  -w            use 16bit-wide address access\n";
- 
- BAREBOX_CMD_START(i2c_write)
- 	.cmd		= do_i2c_write,
-@@ -148,9 +152,9 @@ static int do_i2c_read(int argc, char *argv[])
- 	struct i2c_adapter *adapter = NULL;
- 	struct i2c_client client;
- 	u8 *buf;
--	int count = -1, addr = -1, reg = -1, verbose = 0, ret, opt, bus = 0;
-+	int count = -1, addr = -1, reg = -1, verbose = 0, ret, opt, bus = 0, wide = 0;
- 
--	while ((opt = getopt(argc, argv, "a:b:c:r:v")) > 0) {
-+	while ((opt = getopt(argc, argv, "a:b:c:r:v:w")) > 0) {
- 		switch (opt) {
- 		case 'a':
- 			addr = simple_strtol(optarg, NULL, 0);
-@@ -167,6 +171,9 @@ static int do_i2c_read(int argc, char *argv[])
- 		case 'v':
- 			verbose = 1;
- 			break;
-+		case 'w':
-+			wide = 1;
-+			break;
- 		}
- 	}
- 
-@@ -183,11 +190,11 @@ static int do_i2c_read(int argc, char *argv[])
- 	client.addr = addr;
- 
- 	buf = xmalloc(count);
--	ret = i2c_read_reg(&client, reg, buf, count);
-+	ret = i2c_read_reg(&client, reg | (wide ? I2C_ADDR_16_BIT : 0), buf, count);
- 	if (ret == count) {
- 		int i;
- 		if (verbose)
--			printf("read %i bytes starting at reg 0x%02x from i2cdev 0x%02x on bus %i\n",
-+			printf("read %i bytes starting at reg 0x%04x from i2cdev 0x%02x on bus %i\n",
- 				count, reg, addr, adapter->nr);
- 		for (i = 0; i < count; i++)
- 			printf("0x%02x ", *(buf + i));
-@@ -205,6 +212,7 @@ static const __maybe_unused char cmd_i2c_read_help[] =
- "  -a 0x<addr>   i2c device address\n"
- "  -b <bus_num>  i2c bus number (default = 0)\n"
- "  -r 0x<reg>    start register\n"
-+"  -w            use 16bit-wide address access\n"
- "  -c <count>    byte count\n";
- 
- BAREBOX_CMD_START(i2c_read)
+diff --git a/arch/mips/include/debug_ll_ns16550.h b/arch/mips/include/debug_ll_ns16550.h
+new file mode 100644
+index 0000000..9280219
+--- /dev/null
++++ b/arch/mips/include/debug_ll_ns16550.h
+@@ -0,0 +1,40 @@
++/*
++ * Copyright (C) 2012 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++/** @file
++ *  This file contains declaration for early output support
++ */
++#ifndef __INCLUDE_ARCH_DEBUG_LL_NS16550_H__
++#define __INCLUDE_ARCH_DEBUG_LL_NS16550_H__
++
++#include <asm/io.h>
++
++#define rbr		(0 << DEBUG_LL_UART_SHIFT)
++#define lsr		(5 << DEBUG_LL_UART_SHIFT)
++
++#define LSR_THRE	0x20	/* Xmit holding register empty */
++
++static __inline__ void putc(char ch)
++{
++	while (!(__raw_readb((u8 *)DEBUG_LL_UART_ADDR + lsr) & LSR_THRE));
++	__raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + rbr);
++}
++
++#endif  /* __INCLUDE_ARCH_DEBUG_LL_NS16550_H__ */
 -- 
-1.7.3.4
+1.7.10
 
 
 _______________________________________________
