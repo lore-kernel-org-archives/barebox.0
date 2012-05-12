@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STF65-00074N-LT
- for barebox@lists.infradead.org; Sat, 12 May 2012 16:23:10 +0000
-Received: by lbbgg6 with SMTP id gg6so3176813lbb.36
- for <barebox@lists.infradead.org>; Sat, 12 May 2012 09:23:05 -0700 (PDT)
-Message-ID: <4FAE8E66.4010701@gmail.com>
-Date: Sat, 12 May 2012 22:23:02 +0600
-From: Alexey Galakhov <agalakhov@gmail.com>
+Received: from inx.pm.waw.pl ([195.116.170.130])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1STHki-0003Ks-HR
+ for barebox@lists.infradead.org; Sat, 12 May 2012 19:13:17 +0000
+From: Krzysztof Halasa <khc@pm.waw.pl>
+References: <m3sjfemhv5.fsf@intrepid.localdomain>
+ <20120511184056.GO27341@pengutronix.de>
+Date: Sat, 12 May 2012 21:09:35 +0200
+In-Reply-To: <20120511184056.GO27341@pengutronix.de> (Sascha Hauer's message
+ of "Fri, 11 May 2012 20:40:56 +0200")
+Message-ID: <m3likx2p3k.fsf@intrepid.localdomain>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,122 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [Pull request] Minimal S5PV210 support
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] NOR flash: reduce size of cfiword_t if not using 64-bit
+ bus.
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This is minimal working Samsung S5PV210 CPU support and very minimal
-example Tiny210 board support. No working MMC or NAND drivers yet.
+Hi,
 
-It is able to start from MMC using iROM, can blink LEDs and has working
-command-line. It has working DRAM and clock initialization. Also there
-is BL1 file cooker.
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-The checksummed image is named barebox.s5p and should be dd-ed from 1st
-512-byte sector of an MMC card.
+>> +++ b/drivers/nor/cfi_flash.h
+>> @@ -30,7 +30,17 @@
+>>  #include <linux/mtd/mtd.h>
+>>  
+>>  typedef unsigned long flash_sect_t;
+>> +
+>> +#if   defined(CONFIG_DRIVER_CFI_BANK_WIDTH_8)
+>>  typedef u64 cfiword_t;
+>> +#elif defined(CONFIG_DRIVER_CFI_BANK_WIDTH_4)
+>> +typedef u32 cfiword_t;
+>> +#elif defined(CONFIG_DRIVER_CFI_BANK_WIDTH_2)
+>> +typedef u16 cfiword_t;
+>> +#else
+>> +typedef u8 cfiword_t;
+>> +#endif
+>
+> Is this worth it? Do we safe binary size or what else is the reasoning
+> for this patch?
 
-TODO: add S5P NAND driver, add MMC driver.
-TODO: get rid of iROM booting.
-TODO: support USB and DM9000 in Tiny210.
+Well, I haven't done any measurments :-(
+But I guess long long operations on a 32-bit CPU aren't very effective.
 
-The following changes since commit c7c32736bcd428ef146fa49846defaeff0679fdb:
-
-  i2c: Fix barebox crash when 'count' is not set for i2c_read command
-(2012-05-11 20:12:19 +0200)
-
-are available in the git repository at:
-
-  git://github.com/agalakhov/barebox.git master
-
-for you to fetch changes up to 1a50adbbea14a995e14301725b969680410a3f24:
-
-  S5P boot header and image generator (2012-05-12 22:08:58 +0600)
-
-----------------------------------------------------------------
-Alexey Galakhov (9):
-      Support most Samsung SoCs in S3C serial driver
-      Fine split S3C arch dependencies from generic code
-      Minimal S5PV210 + Tiny210 support (2nd stage only)
-      S5PV210 iROM magic boot code
-      S5P DRAM support
-      S5P lowlevel clock init
-      Revert "S5PV210 iROM magic boot code"
-      S5P iROM boot support - improved
-      S5P boot header and image generator
-
- .gitignore                                         |    2 +
- arch/arm/Kconfig                                   |    6 +
- arch/arm/Makefile                                  |    8 +
- arch/arm/boards/a9m2410/a9m2410.c                  |   10 +-
- arch/arm/boards/a9m2410/config.h                   |    2 +-
- arch/arm/boards/a9m2410/lowlevel_init.S            |    2 +-
- arch/arm/boards/a9m2440/a9m2410dev.c               |    2 +-
- arch/arm/boards/a9m2440/a9m2440.c                  |   10 +-
- arch/arm/boards/a9m2440/config.h                   |    2 +-
- arch/arm/boards/a9m2440/lowlevel_init.S            |    4 +-
- arch/arm/boards/mini2440/config.h                  |    2 +-
- arch/arm/boards/mini2440/lowlevel_init.S           |    2 +-
- arch/arm/boards/mini2440/mini2440.c                |   10 +-
- arch/arm/boards/tiny210/Makefile                   |    1 +
- arch/arm/boards/tiny210/config.h                   |   23 +
- arch/arm/boards/tiny210/lowlevel.c                 |   58 ++
- arch/arm/boards/tiny210/tiny210.c                  |  113 +++
- arch/arm/configs/a9m2410_defconfig                 |    2 +-
- arch/arm/configs/a9m2440_defconfig                 |    4 +-
- arch/arm/configs/mini2440_defconfig                |    2 +-
- arch/arm/mach-samsung/Kconfig                      |   63 +-
- arch/arm/mach-samsung/Makefile                     |    8 +-
- .../{s3c24xx-clocks.c => clocks-s3c24x0.c}         |   17 +
- arch/arm/mach-samsung/clocks-s5pcxx.c              |   98 +++
- arch/arm/mach-samsung/generic.c                    |  112 ---
- arch/arm/mach-samsung/gpio-s3c24x0.c               |    2 +-
- arch/arm/mach-samsung/gpio-s5pcxx.c                |  123 +++
- .../arm/mach-samsung/include/mach/clocks-s3c24x0.h |   24 +
- arch/arm/mach-samsung/include/mach/clocks-s5pcxx.h |   55 ++
- .../mach/{s3c24xx-gpio.h => gpio-s3c24x0.h}        |    6 +-
- arch/arm/mach-samsung/include/mach/gpio.h          |    3 +
- arch/arm/mach-samsung/include/mach/iomap-s3c24x0.h |   69 ++
- arch/arm/mach-samsung/include/mach/iomap-s5pcxx.h  |   52 ++
- arch/arm/mach-samsung/include/mach/iomux-s5pcxx.h  |  798
-++++++++++++++++++++
- .../mach/{s3c24xx-nand.h => nand-s3c24x0.h}        |    4 +-
- arch/arm/mach-samsung/include/mach/s3c-clocks.h    |   25 +-
- arch/arm/mach-samsung/include/mach/s3c-generic.h   |   13 +-
- arch/arm/mach-samsung/include/mach/s3c-iomap.h     |   56 +-
- arch/arm/mach-samsung/include/mach/s5pcxx-irom.h   |   32 +
- .../{lowlevel-init.S => lowlevel-s3c24x0.S}        |   12 +-
- arch/arm/mach-samsung/lowlevel-s5pcxx.c            |   61 ++
- arch/arm/mach-samsung/mem-s3c24x0.c                |  143 ++++
- arch/arm/mach-samsung/mem-s5pcxx.c                 |  260 +++++++
- arch/arm/mach-samsung/s5p-irom-boot.c              |   59 ++
- drivers/mtd/nand/nand_s3c24xx.c                    |   16 +-
- drivers/serial/Kconfig                             |    2 +-
- drivers/serial/serial_s3c.c                        |   55 +-
- scripts/Makefile                                   |    1 +
- scripts/s5p_cksum.c                                |  140 ++++
- 49 files changed, 2319 insertions(+), 255 deletions(-)
- create mode 100644 arch/arm/boards/tiny210/Makefile
- create mode 100644 arch/arm/boards/tiny210/config.h
- create mode 100644 arch/arm/boards/tiny210/lowlevel.c
- create mode 100644 arch/arm/boards/tiny210/tiny210.c
- rename arch/arm/mach-samsung/{s3c24xx-clocks.c => clocks-s3c24x0.c} (91%)
- create mode 100644 arch/arm/mach-samsung/clocks-s5pcxx.c
- create mode 100644 arch/arm/mach-samsung/gpio-s5pcxx.c
- create mode 100644 arch/arm/mach-samsung/include/mach/clocks-s3c24x0.h
- create mode 100644 arch/arm/mach-samsung/include/mach/clocks-s5pcxx.h
- rename arch/arm/mach-samsung/include/mach/{s3c24xx-gpio.h =>
-gpio-s3c24x0.h} (96%)
- create mode 100644 arch/arm/mach-samsung/include/mach/iomap-s3c24x0.h
- create mode 100644 arch/arm/mach-samsung/include/mach/iomap-s5pcxx.h
- create mode 100644 arch/arm/mach-samsung/include/mach/iomux-s5pcxx.h
- rename arch/arm/mach-samsung/include/mach/{s3c24xx-nand.h =>
-nand-s3c24x0.h} (95%)
- create mode 100644 arch/arm/mach-samsung/include/mach/s5pcxx-irom.h
- rename arch/arm/mach-samsung/{lowlevel-init.S => lowlevel-s3c24x0.S} (96%)
- create mode 100644 arch/arm/mach-samsung/lowlevel-s5pcxx.c
- create mode 100644 arch/arm/mach-samsung/mem-s3c24x0.c
- create mode 100644 arch/arm/mach-samsung/mem-s5pcxx.c
- create mode 100644 arch/arm/mach-samsung/s5p-irom-boot.c
- create mode 100644 scripts/s5p_cksum.c
+Just checked, with WIDTH_2 on my IXP425 the barebox.bin shrunk from
+239456 to 239264 bytes. That's 192 bytes saved with this patch.
+-- 
+Krzysztof Halasa
 
 _______________________________________________
 barebox mailing list
