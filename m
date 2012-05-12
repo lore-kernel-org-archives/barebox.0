@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ST6Xs-000439-Dt
+ id 1ST6Xs-00043J-Dt
  for barebox@lists.infradead.org; Sat, 12 May 2012 07:15:32 +0000
-Received: by laap9 with SMTP id p9so2978371laa.36
- for <barebox@lists.infradead.org>; Sat, 12 May 2012 00:15:10 -0700 (PDT)
+Received: by lbbgg6 with SMTP id gg6so2975091lbb.36
+ for <barebox@lists.infradead.org>; Sat, 12 May 2012 00:15:12 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat, 12 May 2012 11:15:03 +0400
-Message-Id: <1336806904-6251-1-git-send-email-antonynpavlov@gmail.com>
+Date: Sat, 12 May 2012 11:15:04 +0400
+Message-Id: <1336806904-6251-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1336806904-6251-1-git-send-email-antonynpavlov@gmail.com>
+References: <1336806904-6251-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,61 +23,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] MIPS: add common header file for DEBUG_LL via NS16550
+Subject: [PATCH 2/2] MIPS: malta: use common DEBUG_LL code for NS16550
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/include/debug_ll_ns16550.h |   40 ++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
- create mode 100644 arch/mips/include/debug_ll_ns16550.h
+ arch/mips/mach-malta/include/mach/debug_ll.h |   11 +----------
+ arch/mips/mach-malta/include/mach/hardware.h |    1 +
+ 2 files changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/arch/mips/include/debug_ll_ns16550.h b/arch/mips/include/debug_ll_ns16550.h
-new file mode 100644
-index 0000000..9280219
---- /dev/null
-+++ b/arch/mips/include/debug_ll_ns16550.h
-@@ -0,0 +1,40 @@
-+/*
-+ * Copyright (C) 2012 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+
-+/** @file
-+ *  This file contains declaration for early output support
-+ */
-+#ifndef __INCLUDE_ARCH_DEBUG_LL_NS16550_H__
-+#define __INCLUDE_ARCH_DEBUG_LL_NS16550_H__
-+
-+#include <asm/io.h>
-+
-+#define rbr		(0 << DEBUG_LL_UART_SHIFT)
-+#define lsr		(5 << DEBUG_LL_UART_SHIFT)
-+
-+#define LSR_THRE	0x20	/* Xmit holding register empty */
-+
-+static __inline__ void putc(char ch)
-+{
-+	while (!(__raw_readb((u8 *)DEBUG_LL_UART_ADDR + lsr) & LSR_THRE));
-+	__raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + rbr);
-+}
-+
-+#endif  /* __INCLUDE_ARCH_DEBUG_LL_NS16550_H__ */
+diff --git a/arch/mips/mach-malta/include/mach/debug_ll.h b/arch/mips/mach-malta/include/mach/debug_ll.h
+index ccc9d9b..9de469b 100644
+--- a/arch/mips/mach-malta/include/mach/debug_ll.h
++++ b/arch/mips/mach-malta/include/mach/debug_ll.h
+@@ -24,17 +24,8 @@
+ #ifndef __INCLUDE_ARCH_DEBUG_LL_H__
+ #define   __INCLUDE_ARCH_DEBUG_LL_H__
+ 
+-#include <io.h>
+ #include <mach/hardware.h>
+ 
+-#define rbr		0
+-#define lsr		5
+-#define LSR_THRE	0x20	/* Xmit holding register empty */
+-
+-static __inline__ void putc(char ch)
+-{
+-	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE));
+-	__raw_writeb(ch, DEBUG_LL_UART_ADDR + rbr);
+-}
++#include <debug_ll_ns16550.h>
+ 
+ #endif  /* __INCLUDE_ARCH_DEBUG_LL_H__ */
+diff --git a/arch/mips/mach-malta/include/mach/hardware.h b/arch/mips/mach-malta/include/mach/hardware.h
+index f827cc3..ddeb1b7 100644
+--- a/arch/mips/mach-malta/include/mach/hardware.h
++++ b/arch/mips/mach-malta/include/mach/hardware.h
+@@ -22,6 +22,7 @@
+ #define   __INCLUDE_ARCH_HARDWARE_H__
+ 
+ #define DEBUG_LL_UART_ADDR	0xb00003f8
++#define DEBUG_LL_UART_SHIFT	0
+ 
+ /*
+  * Reset register.
 -- 
 1.7.10
 
