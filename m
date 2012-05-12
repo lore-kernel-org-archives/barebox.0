@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SPX1I-0005r1-Sn
- for barebox@lists.infradead.org; Wed, 02 May 2012 10:42:53 +0000
-Date: Wed, 2 May 2012 12:42:49 +0200
+ id 1STK1c-0006aK-3f
+ for barebox@lists.infradead.org; Sat, 12 May 2012 21:38:53 +0000
+Date: Sat, 12 May 2012 23:38:45 +0200
 From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20120502104249.GA20039@pengutronix.de>
-References: <4FA10C8D.9010803@sensometrix.ch>
+Message-ID: <20120512213845.GA22395@pengutronix.de>
+References: <m3397emhaw.fsf@intrepid.localdomain>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <4FA10C8D.9010803@sensometrix.ch>
+In-Reply-To: <m3397emhaw.fsf@intrepid.localdomain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +18,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Flashing kernel from Linux
-To: Patrick Gerber <patrick.gerber@sensometrix.ch>
+Subject: Re: [PATCH] ARM: put a valid "barebox" signature in the header on
+ big-endian systems.
+To: Krzysztof Halasa <khc@pm.waw.pl>
 Cc: barebox@lists.infradead.org
 
-On Wed, May 02, 2012 at 12:29:33PM +0200, Patrick Gerber wrote:
-> Dear mailing list
-> =
-
-> I used to flash the linux kernel using barebox update command.
-> Now I would like to do the same from the Linux side. A simple dd to
-> /dev/mtdblockX used to work with uboot but doesn't work with
-> barebox. Barebox complain at startup about bad image...
-> Do you have any hint about how to flash the kernel from the Linux side ?
-You first need to erase the flash (using flash_erase from the mtd-utils)
-and then you might need to use nandwrite to actually write the image.
-
-IIRC Busybox contains these utilities, too.
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gS3J6eXN6dG9mLAoKT24gU2F0LCBNYXkgMDUsIDIwMTIgYXQgMTE6NDc6MTlQTSArMDIw
+MCwgS3J6eXN6dG9mIEhhbGFzYSB3cm90ZToKPiBTaWduZWQtb2ZmLWJ5OiBLcnp5c3p0b2YgSGHF
+gmFzYSA8a2hjQHBtLndhdy5wbD4KPiAKPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vaW5jbHVkZS9h
+c20vYmFyZWJveC1hcm0taGVhZC5oIGIvYXJjaC9hcm0vaW5jbHVkZS9hc20vYmFyZWJveC1hcm0t
+aGVhZC5oCj4gaW5kZXggMGRjMzA3NC4uMmMyNTBlOSAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9p
+bmNsdWRlL2FzbS9iYXJlYm94LWFybS1oZWFkLmgKPiArKysgYi9hcmNoL2FybS9pbmNsdWRlL2Fz
+bS9iYXJlYm94LWFybS1oZWFkLmgKPiBAQCAtMjQsOCArMjQsNyBAQCBzdGF0aWMgaW5saW5lIHZv
+aWQgYmFyZWJveF9hcm1faGVhZCh2b2lkKQo+ICAJCSIxOiBiIDFiXG4iCj4gIAkJIjE6IGIgMWJc
+biIKPiAgI2VuZGlmCj4gLQkJIi53b3JkIDB4NjU3MjYxNjJcbiIJCQkvKiAnYmFyZScgKi8KPiAt
+CQkiLndvcmQgMHgwMDc4NmY2MlxuIgkJCS8qICdib3gnICovCj4gKwkJIi5hc2NpeiBcImJhcmVi
+b3hcIlxuIgo+ICAJCSIud29yZCBfdGV4dFxuIgkJCQkvKiB0ZXh0IGJhc2UuIElmIGNvcGllZCB0
+aGVyZSwKPiAgCQkJCQkJCSAqIGJhcmVib3ggY2FuIHNraXAgcmVsb2NhdGlvbgo+ICAJCQkJCQkJ
+ICovCkFub3RoZXIgZG93bnNpZGUgb2YgdGhpcyBwYXRjaCAoYXBhcnQgZnJvbSB0aGUgZmlsZSB0
+eXBlIGRldGVjdGlvbiB0aGF0CnN0aWxsIG5lZWRzIGFkYXB0aW9uPykgaXMgdGhhdCB0aGUgbWFn
+aWMgaXMgZGlmZmVyZW50IGRlcGVuZGluZyBvbgplbmRpYW5lc3MuIEknbSBub3Qgc3VyZSBpZiBp
+dCByZWFsbHkgbWF0dGVycywgYnV0IHRoaXMgY2hhbmdlIG1ha2VzIGl0CmhhcmRlciAob3IgYXQg
+bGVhc3QgbW9yZSBlcnJvciBwcm9uZSkgZm9yIHRvb2xzIGxpa2UgZmlsZSgxKSB0byBkZXRlY3QK
+dGhlIGltYWdlIHR5cGUuIChXZWxsLCBpdCBtaWdodCBiZSBoYXJkIGFueWhvdywgYXMgYmFyZWJv
+eCBkb2VzIGhhdmUgYQptYWNoaW5lIHNwZWNpZmljIGhlYWRlciBhbnlob3cgZGVwZW5kaW5nIG9u
+IHRoZSBtYWNoaW5lLikKCk1vcmVvdmVyIEkgd29uZGVyIHdoYXQgdGhlIG1vdGl2YXRpb24gaGVy
+ZSBpcyB0byBjaGFuZ2UgYSBtYWdpYy4gV2FzIGl0Cmp1c3QgIm9oLCB0aGlzIGxvb2tzIHVnbHki
+PyBJZiB5ZXMsIGlzIHRoYXQgZW5vdWdoPwoKSnVzdCBteSAwLjAy4oKsIG9uIHRoaXMgcGF0Y2gs
+IEkgZG9uJ3Qga25vdyBob3cgbWFueSBiaWcgZW5kaWFuIGJhcmVib3gKaW1hZ2VzIGFyZSBvdXQg
+dGhlcmUgYW5kIEkgZG9uJ3QgcmVhbGx5IGNhcmUgKG5laXRoZXIgYWJvdXQgYmlnIGVuZGlhbgpp
+bWFnZXMgbm9yIGFib3V0IHRoaXMgY2hhbmdlKS4gU28gZmVlbCBmcmVlIHRvIGlnbm9yZSBteSBj
+b25jZXJucyBpZiB5b3UKa25vdyBiZXR0ZXIuCgpCZXN0IHJlZ2FyZHMKVXdlCgotLSAKUGVuZ3V0
+cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgVXdlIEtsZWluZS1Lw7ZuaWcg
+ICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8
+IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8CgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
+LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9iYXJlYm94Cg==
