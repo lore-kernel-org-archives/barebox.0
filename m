@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STK2z-0006dO-Ba
- for barebox@lists.infradead.org; Sat, 12 May 2012 21:40:17 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Sat, 12 May 2012 23:40:12 +0200
-Message-Id: <1336858812-23098-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ id 1STK6I-0006ox-3Q
+ for barebox@lists.infradead.org; Sat, 12 May 2012 21:43:42 +0000
+Date: Sat, 12 May 2012 23:43:40 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20120512214340.GB22395@pengutronix.de>
+References: <1336858812-23098-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1336858812-23098-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,28 +18,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] defaultenv: don't overwrite  in config
+Subject: Re: [PATCH] defaultenv: don't overwrite  in config
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-VGhpcyBwYXRjaCBwcm9vdmVkIHRvIGJlIHVzZWZ1bCB3aGlsZSB3b3JraW5nIHdpdGggYSBjb2xs
-ZWFndWUgb24gYSBzaW5nbGUKbWFjaGluZS4gSXQgYWxsb3dzIHRvIHN3aXRjaCB0aGUgdXNlciB3
-aXRob3V0IGVkaXRpbmcgL2Vudi9jb25maWcgYnkKanVzdCBpc3N1aW5nOgoKCWV4cG9ydCB1c2Vy
-PW1lCgouIE5vdGUsIGluIGJhc2ggdGhpcyBjb25zdHJ1Y3QgKGkuZS4gYW4gaWYgd2l0aG91dCBi
-b2R5KSBiYWlscyBvdXQgd2l0aDoKCglTeW50YXggZXJyb3I6ICJmaSIgdW5leHBlY3RlZAoKYnV0
-IGluIGh1c2ggaXQgc2VlbXMgdG8gZG8gdGhlIHJpZ2h0IHRoaW5nLgoKU2lnbmVkLW9mZi1ieTog
-VXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBk
-ZWZhdWx0ZW52L2NvbmZpZyB8ICAgIDQgKysrLQogMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9u
-cygrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2RlZmF1bHRlbnYvY29uZmlnIGIvZGVm
-YXVsdGVudi9jb25maWcKaW5kZXggM2U0YzJlZS4uN2I2MWQyOSAxMDA2NDQKLS0tIGEvZGVmYXVs
-dGVudi9jb25maWcKKysrIGIvZGVmYXVsdGVudi9jb25maWcKQEAgLTEsNyArMSw5IEBACiAjIS9i
-aW4vc2gKIAogaG9zdG5hbWU9RklYTUUKLSN1c2VyPQoraWYgWyAteiAiJHVzZXIiIF07IHRoZW4K
-KyMJdXNlcj0KK2ZpCiAKICMgRW50ZXIgTUFDIGFkZHJlc3MgaGVyZSBpZiBub3QgcmV0cmlldmVk
-IGF1dG9tYXRpY2FsbHkKICNldGgwLmV0aGFkZHI9ZGU6YWQ6YmU6ZWY6MDA6MDAKLS0gCjEuNy4x
-MAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hmm, originally I had "$user" in the Subject between the two
+whitespaces. I wonder how I dropped it ...
+
+Sascha, do you fix that up when (and if) you commit the patch please?
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
