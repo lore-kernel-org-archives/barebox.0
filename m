@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STXXO-0002jN-8G
- for barebox@lists.infradead.org; Sun, 13 May 2012 12:04:35 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1STXXL-0004wo-Qz
- for barebox@lists.infradead.org; Sun, 13 May 2012 14:04:31 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <sha@pengutronix.de>) id 1STXXK-00071x-M6
- for barebox@lists.infradead.org; Sun, 13 May 2012 14:04:30 +0200
+ id 1STXXO-0002jO-8F
+ for barebox@lists.infradead.org; Sun, 13 May 2012 12:04:36 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 13 May 2012 14:04:27 +0200
-Message-Id: <1336910669-26908-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 13 May 2012 14:04:28 +0200
+Message-Id: <1336910669-26908-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1336910669-26908-1-git-send-email-s.hauer@pengutronix.de>
+References: <1336910669-26908-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,21 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: device parameter patches
+Subject: [PATCH 1/2] parameter: return empty string for unset parameters
 To: barebox@lists.infradead.org
 
-Two small patches...
+Currently we return NULL for unset parameters. As we can't set them
+back to NULL once set this is not very consistent. Return an empty
+string instead.
 
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (2):
-      parameter: return empty string for unset parameters
-      parameter: remove unused struct member
-
- include/param.h |    1 -
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
  lib/parameter.c |    2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/parameter.c b/lib/parameter.c
+index baf7720..c75c21e 100644
+--- a/lib/parameter.c
++++ b/lib/parameter.c
+@@ -135,7 +135,7 @@ int dev_param_set_generic(struct device_d *dev, struct param_d *p,
+ 
+ static const char *param_get_generic(struct device_d *dev, struct param_d *p)
+ {
+-	return p->value;
++	return p->value ? p->value : "";
+ }
+ 
+ static struct param_d *__dev_add_param(struct device_d *dev, const char *name,
+-- 
+1.7.10
+
 
 _______________________________________________
 barebox mailing list
