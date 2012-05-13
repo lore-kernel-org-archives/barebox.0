@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STY6E-0003ZT-Vi
- for barebox@lists.infradead.org; Sun, 13 May 2012 12:40:35 +0000
-Received: by lbbgg6 with SMTP id gg6so3492790lbb.36
- for <barebox@lists.infradead.org>; Sun, 13 May 2012 05:40:33 -0700 (PDT)
+ id 1STY6P-0003aS-0Y
+ for barebox@lists.infradead.org; Sun, 13 May 2012 12:40:45 +0000
+Received: by laap9 with SMTP id p9so3495821laa.36
+ for <barebox@lists.infradead.org>; Sun, 13 May 2012 05:40:42 -0700 (PDT)
 From: Alexey Galakhov <agalakhov@gmail.com>
-Date: Sun, 13 May 2012 18:39:57 +0600
-Message-Id: <1336912806-4163-1-git-send-email-agalakhov@gmail.com>
-In-Reply-To: <20120513090917.GX27341@pengutronix.de>
+Date: Sun, 13 May 2012 18:39:58 +0600
+Message-Id: <1336912806-4163-2-git-send-email-agalakhov@gmail.com>
+In-Reply-To: <1336912806-4163-1-git-send-email-agalakhov@gmail.com>
 References: <20120513090917.GX27341@pengutronix.de>
+ <1336912806-4163-1-git-send-email-agalakhov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,115 +24,147 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/9] Minimal S5PV210 support
+Subject: [PATCH 1/9] Support most Samsung SoCs in S3C serial driver
 To: barebox@lists.infradead.org
 Cc: Alexey Galakhov <agalakhov@gmail.com>
 
-This is minimal working Samsung S5PV210 CPU support and very minimal
-example Tiny210 board support. No working MMC or NAND drivers yet.
+Signed-off-by: Alexey Galakhov <agalakhov@gmail.com>
+---
+ arch/arm/mach-samsung/include/mach/s3c-generic.h |    4 ++
+ arch/arm/mach-samsung/s3c24xx-clocks.c           |   17 +++++++
+ drivers/serial/serial_s3c.c                      |   55 +++++++++++++++-------
+ 3 files changed, 59 insertions(+), 17 deletions(-)
 
-It is able to start from MMC using iROM, can blink LEDs and has working
-command-line. It has working DRAM and clock initialization. Also there
-is BL1 file cooker.
-
-The checksummed image is named barebox.s5p and should be dd-ed
-from 1st 512-byte sector of an MMC card.
-
-TODO: add S5P NAND driver, add MMC driver.
-TODO: get rid of iROM booting.
-TODO: support USB and DM9000 in Tiny210.
-
-Alexey Galakhov (9):
-  Support most Samsung SoCs in S3C serial driver
-  Fine split S3C arch dependencies from generic code
-  Minimal S5PV210 + Tiny210 support (2nd stage only)
-  S5PV210 iROM magic boot code
-  S5P DRAM support
-  S5P lowlevel clock init
-  Revert "S5PV210 iROM magic boot code"
-  S5P iROM boot support - improved
-  S5P boot header and image generator
-
- .gitignore                                         |    2 +
- arch/arm/Kconfig                                   |    6 +
- arch/arm/Makefile                                  |    8 +
- arch/arm/boards/a9m2410/a9m2410.c                  |   10 +-
- arch/arm/boards/a9m2410/config.h                   |    2 +-
- arch/arm/boards/a9m2410/lowlevel_init.S            |    2 +-
- arch/arm/boards/a9m2440/a9m2410dev.c               |    2 +-
- arch/arm/boards/a9m2440/a9m2440.c                  |   10 +-
- arch/arm/boards/a9m2440/config.h                   |    2 +-
- arch/arm/boards/a9m2440/lowlevel_init.S            |    4 +-
- arch/arm/boards/mini2440/config.h                  |    2 +-
- arch/arm/boards/mini2440/lowlevel_init.S           |    2 +-
- arch/arm/boards/mini2440/mini2440.c                |   10 +-
- arch/arm/boards/tiny210/Makefile                   |    1 +
- arch/arm/boards/tiny210/config.h                   |   23 +
- arch/arm/boards/tiny210/lowlevel.c                 |   58 ++
- arch/arm/boards/tiny210/tiny210.c                  |  113 +++
- arch/arm/configs/a9m2410_defconfig                 |    2 +-
- arch/arm/configs/a9m2440_defconfig                 |    4 +-
- arch/arm/configs/mini2440_defconfig                |    2 +-
- arch/arm/mach-samsung/Kconfig                      |   63 +-
- arch/arm/mach-samsung/Makefile                     |    8 +-
- arch/arm/mach-samsung/clocks-s3c24x0.c             |  157 ++++
- arch/arm/mach-samsung/clocks-s5pcxx.c              |   98 +++
- arch/arm/mach-samsung/generic.c                    |  112 ---
- arch/arm/mach-samsung/gpio-s3c24x0.c               |    2 +-
- arch/arm/mach-samsung/gpio-s5pcxx.c                |  123 +++
- .../arm/mach-samsung/include/mach/clocks-s3c24x0.h |   24 +
- arch/arm/mach-samsung/include/mach/clocks-s5pcxx.h |   55 ++
- arch/arm/mach-samsung/include/mach/gpio-s3c24x0.h  |   77 ++
- arch/arm/mach-samsung/include/mach/gpio.h          |    3 +
- arch/arm/mach-samsung/include/mach/iomap-s3c24x0.h |   69 ++
- arch/arm/mach-samsung/include/mach/iomap-s5pcxx.h  |   52 ++
- arch/arm/mach-samsung/include/mach/iomux-s5pcxx.h  |  798 ++++++++++++++++++++
- arch/arm/mach-samsung/include/mach/nand-s3c24x0.h  |   54 ++
- arch/arm/mach-samsung/include/mach/s3c-clocks.h    |   25 +-
- arch/arm/mach-samsung/include/mach/s3c-generic.h   |   13 +-
- arch/arm/mach-samsung/include/mach/s3c-iomap.h     |   56 +-
- arch/arm/mach-samsung/include/mach/s3c24xx-gpio.h  |   77 --
- arch/arm/mach-samsung/include/mach/s3c24xx-nand.h  |   54 --
- arch/arm/mach-samsung/include/mach/s5pcxx-irom.h   |   32 +
- arch/arm/mach-samsung/lowlevel-init.S              |  317 --------
- arch/arm/mach-samsung/lowlevel-s3c24x0.S           |  317 ++++++++
- arch/arm/mach-samsung/lowlevel-s5pcxx.c            |   61 ++
- arch/arm/mach-samsung/mem-s3c24x0.c                |  143 ++++
- arch/arm/mach-samsung/mem-s5pcxx.c                 |  260 +++++++
- arch/arm/mach-samsung/s3c24xx-clocks.c             |  140 ----
- arch/arm/mach-samsung/s5p-irom-boot.c              |   59 ++
- drivers/mtd/nand/nand_s3c24xx.c                    |   16 +-
- drivers/serial/Kconfig                             |    2 +-
- drivers/serial/serial_s3c.c                        |   55 +-
- scripts/Makefile                                   |    1 +
- scripts/s5p_cksum.c                                |  140 ++++
- 53 files changed, 2896 insertions(+), 832 deletions(-)
- create mode 100644 arch/arm/boards/tiny210/Makefile
- create mode 100644 arch/arm/boards/tiny210/config.h
- create mode 100644 arch/arm/boards/tiny210/lowlevel.c
- create mode 100644 arch/arm/boards/tiny210/tiny210.c
- create mode 100644 arch/arm/mach-samsung/clocks-s3c24x0.c
- create mode 100644 arch/arm/mach-samsung/clocks-s5pcxx.c
- create mode 100644 arch/arm/mach-samsung/gpio-s5pcxx.c
- create mode 100644 arch/arm/mach-samsung/include/mach/clocks-s3c24x0.h
- create mode 100644 arch/arm/mach-samsung/include/mach/clocks-s5pcxx.h
- create mode 100644 arch/arm/mach-samsung/include/mach/gpio-s3c24x0.h
- create mode 100644 arch/arm/mach-samsung/include/mach/iomap-s3c24x0.h
- create mode 100644 arch/arm/mach-samsung/include/mach/iomap-s5pcxx.h
- create mode 100644 arch/arm/mach-samsung/include/mach/iomux-s5pcxx.h
- create mode 100644 arch/arm/mach-samsung/include/mach/nand-s3c24x0.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-gpio.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-nand.h
- create mode 100644 arch/arm/mach-samsung/include/mach/s5pcxx-irom.h
- delete mode 100644 arch/arm/mach-samsung/lowlevel-init.S
- create mode 100644 arch/arm/mach-samsung/lowlevel-s3c24x0.S
- create mode 100644 arch/arm/mach-samsung/lowlevel-s5pcxx.c
- create mode 100644 arch/arm/mach-samsung/mem-s3c24x0.c
- create mode 100644 arch/arm/mach-samsung/mem-s5pcxx.c
- delete mode 100644 arch/arm/mach-samsung/s3c24xx-clocks.c
- create mode 100644 arch/arm/mach-samsung/s5p-irom-boot.c
- create mode 100644 scripts/s5p_cksum.c
-
+diff --git a/arch/arm/mach-samsung/include/mach/s3c-generic.h b/arch/arm/mach-samsung/include/mach/s3c-generic.h
+index 4ea3dd7..5d3808e 100644
+--- a/arch/arm/mach-samsung/include/mach/s3c-generic.h
++++ b/arch/arm/mach-samsung/include/mach/s3c-generic.h
+@@ -30,5 +30,9 @@ uint32_t s3c_get_fclk(void);
+ uint32_t s3c_get_hclk(void);
+ uint32_t s3c_get_pclk(void);
+ uint32_t s3c_get_uclk(void);
++
++unsigned s3c_get_uart_clk(unsigned src);
++
+ uint32_t s3c24xx_get_memory_size(void);
++
+ void s3c24xx_disable_second_sdram_bank(void);
+diff --git a/arch/arm/mach-samsung/s3c24xx-clocks.c b/arch/arm/mach-samsung/s3c24xx-clocks.c
+index a99d1b9..38d8b75 100644
+--- a/arch/arm/mach-samsung/s3c24xx-clocks.c
++++ b/arch/arm/mach-samsung/s3c24xx-clocks.c
+@@ -117,6 +117,23 @@ uint32_t s3c24_get_uclk(void)
+ 	return s3c_get_upllclk();
+ }
+ 
++/** 
++ * Return correct UART frequency based on the UCON register
++ */
++unsigned s3c_get_uart_clk(unsigned src)
++{
++	switch (src & 3) {
++	case 0:
++	case 2:
++		return s3c_get_pclk();
++	case 1:
++		return 0; /* TODO UEXTCLK */
++	case 3:
++		return 0; /* TODO FCLK/n */
++	}
++	return 0; /* not reached, to make compiler happy */
++}
++
+ /**
+  * Show the user the current clock settings
+  */
+diff --git a/drivers/serial/serial_s3c.c b/drivers/serial/serial_s3c.c
+index 2bdc1df..7a9b355 100644
+--- a/drivers/serial/serial_s3c.c
++++ b/drivers/serial/serial_s3c.c
+@@ -40,6 +40,17 @@
+ #define UTXH 0x20		/* transmitt */
+ #define URXH 0x24		/* receive */
+ #define UBRDIV 0x28		/* baudrate generator */
++#ifdef S3C_UART_HAS_UBRDIVSLOT
++# define UBRDIVSLOT 0x2c	/* baudrate slot generator */
++#endif
++#ifdef S3C_UART_HAS_UINTM
++# define UINTM 0x38		/* interrupt mask register */
++#endif
++
++#ifndef S3C_UART_CLKSEL
++/* Use pclk */
++# define S3C_UART_CLKSEL 0
++#endif
+ 
+ struct s3c_uart {
+ 	void __iomem *regs;
+@@ -51,26 +62,32 @@ struct s3c_uart {
+ static unsigned s3c_get_arch_uart_input_clock(void __iomem *base)
+ {
+ 	unsigned reg = readw(base + UCON);
+-
+-	switch (reg & 0xc00) {
+-		case 0x000:
+-		case 0x800:
+-			return s3c_get_pclk();
+-		case 0x400:
+-			break;	/* TODO UEXTCLK */
+-		case 0xc00:
+-			break;	/* TODO FCLK/n */
+-	}
+-
+-	return 0;	/* not nice, but we can't emit an error message! */
++	reg = (reg >> 10) & 0x3;
++	return s3c_get_uart_clk(reg);
+ }
+ 
++#ifdef S3C_UART_HAS_UBRDIVSLOT
++/*
++ * This table takes the fractional value of the baud divisor and gives
++ * the recommended setting for the UDIVSLOT register. Refer the datasheet
++ * for further details
++ */
++static const uint16_t udivslot_table[] __maybe_unused = {
++	0x0000, 0x0080, 0x0808, 0x0888, 0x2222, 0x4924, 0x4A52, 0x54AA,
++	0x5555, 0xD555, 0xD5D5, 0xDDD5, 0xDDDD, 0xDFDD, 0xDFDF, 0xFFDF,
++};
++#endif
++
+ static int s3c_serial_setbaudrate(struct console_device *cdev, int baudrate)
+ {
+ 	struct s3c_uart *priv = to_s3c_uart(cdev);
+ 	void __iomem *base = priv->regs;
+ 	unsigned val;
+ 
++#ifdef S3C_UART_HAS_UBRDIVSLOT
++	val = s3c_get_arch_uart_input_clock(base) / baudrate;
++	writew(udivslot_table[val & 15], base + UBRDIVSLOT);
++#endif
+ 	val = s3c_get_arch_uart_input_clock(base) / (16 * baudrate) - 1;
+ 	writew(val, base + UBRDIV);
+ 
+@@ -88,11 +105,15 @@ static int s3c_serial_init_port(struct console_device *cdev)
+ 
+ 	/* Normal,No parity,1 stop,8 bit */
+ 	writeb(0x03, base + ULCON);
+-	/*
+-	 * tx=level,rx=edge,disable timeout int.,enable rx error int.,
+-	 * normal,interrupt or polling
+-	 */
+-	writew(0x0245, base + UCON);
++
++	/* tx=level,rx=edge,disable timeout int.,enable rx error int.,
++	 * normal, interrupt or polling, no pre-divider */
++	writew(0x0245 | ((S3C_UART_CLKSEL) << 10), base + UCON);
++
++#ifdef S3C_UART_HAS_UINTM
++	/* 'interrupt or polling mode' for both directions */
++	writeb(0xf, base + UINTM);
++#endif
+ 
+ #ifdef CONFIG_DRIVER_SERIAL_S3C_AUTOSYNC
+ 	writeb(0x10, base + UMCON); /* enable auto flow control */
 -- 
 1.7.10
 
