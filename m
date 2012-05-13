@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STWL5-0002SA-Qt
- for barebox@lists.infradead.org; Sun, 13 May 2012 10:47:49 +0000
+ id 1STWMO-0002Ve-SK
+ for barebox@lists.infradead.org; Sun, 13 May 2012 10:49:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 13 May 2012 12:47:42 +0200
-Message-Id: <1336906062-21617-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 13 May 2012 12:48:52 +0200
+Message-Id: <1336906132-21987-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,1104 +19,1105 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Make errno a positive value
+Subject: [PATCH] fs: Add NFS support
 To: barebox@lists.infradead.org
 
-Normally errno contains a positive error value. A certain unnamed developer
-mixed this up while implementing U-Boot-v2. Also, normally errno is never
-set to zero by any library function.
-This patch fixes this.
+This patch adds readonly NFS support. Currently no links are supported.
+This is based on the previous U-Boot/NetBSD based code and some Kernel
+bits.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/crc.c       |    2 +-
- commands/ls.c        |    6 +-
- commands/mem.c       |   10 +-
- commands/saveenv.c   |    6 +-
- common/env.c         |    2 +-
- common/environment.c |    6 +-
- common/misc.c        |    2 +-
- fs/fs.c              |  350 +++++++++++++++++++++++++++++++-------------------
- lib/make_directory.c |   13 +-
- lib/parameter.c      |   16 ++-
- 10 files changed, 251 insertions(+), 162 deletions(-)
+ fs/Kconfig  |    4 +
+ fs/Makefile |    1 +
+ fs/nfs.c    | 1054 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 1059 insertions(+)
+ create mode 100644 fs/nfs.c
 
-diff --git a/commands/crc.c b/commands/crc.c
-index df22941..a0d3af6 100644
---- a/commands/crc.c
-+++ b/commands/crc.c
-@@ -48,7 +48,7 @@ static int file_crc(char* filename, ulong start, ulong size, ulong *crc,
+diff --git a/fs/Kconfig b/fs/Kconfig
+index e5f307f..769a99e 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -23,6 +23,10 @@ config FS_TFTP
+ 	bool
+ 	prompt "tftp support"
  
- 	if (start > 0) {
- 		ret = lseek(fd, start, SEEK_SET);
--		if (ret == -1) {
-+		if (ret < 0) {
- 			perror("lseek");
- 			goto out;
- 		}
-diff --git a/commands/ls.c b/commands/ls.c
-index c98d2da..ad609f3 100644
---- a/commands/ls.c
-+++ b/commands/ls.c
-@@ -49,7 +49,7 @@ int ls(const char *path, ulong flags)
- 	string_list_init(&sl);
- 
- 	if (stat(path, &s))
--		return errno;
-+		return -errno;
- 
- 	if (flags & LS_SHOWARG && s.st_mode & S_IFDIR)
- 		printf("%s:\n", path);
-@@ -61,7 +61,7 @@ int ls(const char *path, ulong flags)
- 
- 	dir = opendir(path);
- 	if (!dir)
--		return errno;
-+		return -errno;
- 
- 	while ((d = readdir(dir))) {
- 		sprintf(tmp, "%s/%s", path, d->d_name);
-@@ -85,7 +85,7 @@ int ls(const char *path, ulong flags)
- 
- 	dir = opendir(path);
- 	if (!dir) {
--		errno = -ENOENT;
-+		errno = ENOENT;
- 		return -ENOENT;
- 	}
- 
-diff --git a/commands/mem.c b/commands/mem.c
-index d8e90e0..f32e5d8 100644
---- a/commands/mem.c
-+++ b/commands/mem.c
-@@ -122,7 +122,7 @@ static int open_and_lseek(const char *filename, int mode, off_t pos)
- 		return fd;
- 
- 	ret = lseek(fd, pos, SEEK_SET);
--	if (ret == -1) {
-+	if (ret < 0) {
- 		perror("lseek");
- 		close(fd);
- 		return ret;
-@@ -170,7 +170,6 @@ static int do_mem_md(int argc, char *argv[])
- 	char *filename = DEVMEM;
- 	int mode = O_RWSIZE_4;
- 
--	errno = 0;
- 	if (mem_parse_options(argc, argv, "bwls:", &mode, &filename, NULL) < 0)
- 		return 1;
- 
-@@ -207,7 +206,7 @@ static int do_mem_md(int argc, char *argv[])
- out:
- 	close(fd);
- 
--	return errno;
-+	return ret ? 1 : 0;
- }
- 
- static const __maybe_unused char cmd_md_help[] =
-@@ -243,8 +242,6 @@ static int do_mem_mw(int argc, char *argv[])
- 	int mode = O_RWSIZE_4;
- 	ulong adr;
- 
--	errno = 0;
--
- 	if (mem_parse_options(argc, argv, "bwld:", &mode, NULL, &filename) < 0)
- 		return 1;
- 
-@@ -279,12 +276,13 @@ static int do_mem_mw(int argc, char *argv[])
- 			perror("write");
- 			break;
- 		}
-+		ret = 0;
- 		optind++;
- 	}
- 
- 	close(fd);
- 
--	return errno;
-+	return ret ? 1 : 0;
- }
- 
- static const __maybe_unused char cmd_mw_help[] =
-diff --git a/commands/saveenv.c b/commands/saveenv.c
-index a4b2796..549fcd4 100644
---- a/commands/saveenv.c
-+++ b/commands/saveenv.c
-@@ -54,7 +54,7 @@ static int do_saveenv(int argc, char *argv[])
- 	ret = protect(fd, ~0, 0, 0);
- 
- 	/* ENOSYS is no error here, many devices do not need it */
--	if (ret && errno != -ENOSYS) {
-+	if (ret && errno != ENOSYS) {
- 		printf("could not unprotect %s: %s\n", filename, errno_str());
- 		close(fd);
- 		return 1;
-@@ -63,7 +63,7 @@ static int do_saveenv(int argc, char *argv[])
- 	ret = erase(fd, ~0, 0);
- 
- 	/* ENOSYS is no error here, many devices do not need it */
--	if (ret && errno != -ENOSYS) {
-+	if (ret && errno != ENOSYS) {
- 		printf("could not erase %s: %s\n", filename, errno_str());
- 		close(fd);
- 		return 1;
-@@ -82,7 +82,7 @@ static int do_saveenv(int argc, char *argv[])
- 	ret = protect(fd, ~0, 0, 1);
- 
- 	/* ENOSYS is no error here, many devices do not need it */
--	if (ret && errno != -ENOSYS) {
-+	if (ret && errno != ENOSYS) {
- 		printf("could not protect %s: %s\n", filename, errno_str());
- 		close(fd);
- 		return 1;
-diff --git a/common/env.c b/common/env.c
-index e57a520..a01a27e 100644
---- a/common/env.c
-+++ b/common/env.c
-@@ -219,7 +219,7 @@ int setenv(const char *_name, const char *value)
- 		else
- 			ret = -ENODEV;
- 
--		errno = ret;
-+		errno = -ret;
- 
- 		if (ret < 0)
- 			perror("set parameter");
-diff --git a/common/environment.c b/common/environment.c
-index 0fdbd03..52ce0de 100644
---- a/common/environment.c
-+++ b/common/environment.c
-@@ -187,7 +187,7 @@ int envfs_load(char *filename, char *dir)
- 	ret = read(envfd, &super, sizeof(struct envfs_super));
- 	if ( ret < sizeof(struct envfs_super)) {
- 		perror("read");
--		ret = errno;
-+		ret = -errno;
- 		goto out;
- 	}
- 
-@@ -210,7 +210,7 @@ int envfs_load(char *filename, char *dir)
- 	ret = read(envfd, buf, size);
- 	if (ret < size) {
- 		perror("read");
--		ret = errno;
-+		ret = -errno;
- 		goto out;
- 	}
- 
-@@ -256,7 +256,7 @@ int envfs_load(char *filename, char *dir)
- 				inode_size);
- 		if (ret < inode_size) {
- 			perror("write");
--			ret = errno;
-+			ret = -errno;
- 			close(fd);
- 			goto out;
- 		}
-diff --git a/common/misc.c b/common/misc.c
-index b31a45c..01e1b19 100644
---- a/common/misc.c
-+++ b/common/misc.c
-@@ -112,7 +112,7 @@ EXPORT_SYMBOL(strerror);
- 
- const char *errno_str(void)
- {
--	return strerror(-errno);
-+	return strerror(errno);
- }
- EXPORT_SYMBOL(errno_str);
- 
-diff --git a/fs/fs.c b/fs/fs.c
-index 04dace4..ea5ed11 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -211,8 +211,8 @@ static void put_file(FILE *f)
- static int check_fd(int fd)
- {
- 	if (fd < 0 || fd >= MAX_FILES || !files[fd].in_use) {
--		errno = -EBADF;
--		return errno;
-+		errno = EBADF;
-+		return -errno;
- 	}
- 
- 	return 0;
-@@ -361,7 +361,7 @@ static int dir_is_empty(const char *pathname)
- 
- 	dir = opendir(pathname);
- 	if (!dir) {
--		errno = -ENOENT;
-+		errno = ENOENT;
- 		return -ENOENT;
- 	}
- 
-@@ -389,47 +389,42 @@ static int path_check_prereq(const char *path, unsigned int flags)
- {
- 	struct stat s;
- 	unsigned int m;
--
--	errno = 0;
-+	int ret = 0;
- 
- 	if (stat(path, &s)) {
--		if (flags & S_UB_DOES_NOT_EXIST) {
--			errno = 0;
-+		if (flags & S_UB_DOES_NOT_EXIST)
- 			goto out;
--		}
--		errno = -ENOENT;
-+		ret = -ENOENT;
- 		goto out;
- 	}
- 
- 	if (flags & S_UB_DOES_NOT_EXIST) {
--		errno = -EEXIST;
-+		ret = -EEXIST;
- 		goto out;
- 	}
- 
--	if (flags == S_UB_EXISTS) {
--		errno = 0;
-+	if (flags == S_UB_EXISTS)
- 		goto out;
--	}
- 
- 	m = s.st_mode;
- 
- 	if (S_ISDIR(m)) {
- 		if (flags & S_IFREG) {
--			errno = -EISDIR;
-+			ret = -EISDIR;
- 			goto out;
- 		}
- 		if ((flags & S_UB_IS_EMPTY) && !dir_is_empty(path)) {
--			errno = -ENOTEMPTY;
-+			ret = -ENOTEMPTY;
- 			goto out;
- 		}
- 	}
- 	if ((flags & S_IFDIR) && S_ISREG(m)) {
--		errno = -ENOTDIR;
-+		ret = -ENOTDIR;
- 		goto out;
- 	}
- 
- out:
--	return errno;
-+	return ret;
- }
- 
- const char *getcwd(void)
-@@ -441,9 +436,11 @@ EXPORT_SYMBOL(getcwd);
- int chdir(const char *pathname)
- {
- 	char *p = normalise_path(pathname);
--	errno = 0;
-+	int ret;
++config FS_NFS
++	bool
++	prompt "nfs support"
 +
+ source fs/fat/Kconfig
  
--	if (path_check_prereq(p, S_IFDIR))
-+	ret = path_check_prereq(p, S_IFDIR);
-+	if (ret)
- 		goto out;
- 
- 	strcpy(cwd, p);
-@@ -451,7 +448,10 @@ int chdir(const char *pathname)
- out:
- 	free(p);
- 
--	return errno;
-+	if (ret)
-+		errno = -ret;
+ config PARTITION_NEED_MTD
+diff --git a/fs/Makefile b/fs/Makefile
+index d204093..1b52bee 100644
+--- a/fs/Makefile
++++ b/fs/Makefile
+@@ -5,3 +5,4 @@ obj-$(CONFIG_FS_DEVFS)	+= devfs.o
+ obj-$(CONFIG_FS_FAT)	+= fat/
+ obj-y	+= fs.o
+ obj-$(CONFIG_FS_TFTP)	+= tftp.o
++obj-$(CONFIG_FS_NFS)	+= nfs.o
+diff --git a/fs/nfs.c b/fs/nfs.c
+new file mode 100644
+index 0000000..75a8f25
+--- /dev/null
++++ b/fs/nfs.c
+@@ -0,0 +1,1054 @@
++/*
++ * nfs.c - barebox NFS driver
++ *
++ * Copyright (c) 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ * Copyright (c) Masami Komiya <mkomiya@sonare.it> 2004
++ *
++ * Based on U-Boot NFS code which is based on NetBSD code
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
 +
-+	return ret;
- }
- EXPORT_SYMBOL(chdir);
- 
-@@ -461,24 +461,34 @@ int unlink(const char *pathname)
- 	struct fs_driver_d *fsdrv;
- 	char *p = normalise_path(pathname);
- 	char *freep = p;
-+	int ret;
- 
--	if (path_check_prereq(pathname, S_IFREG))
-+	ret = path_check_prereq(pathname, S_IFREG);
-+	if (ret) {
-+		ret = -EINVAL;
- 		goto out;
++#include <common.h>
++#include <net.h>
++#include <driver.h>
++#include <fs.h>
++#include <errno.h>
++#include <libgen.h>
++#include <fcntl.h>
++#include <fs.h>
++#include <init.h>
++#include <linux/stat.h>
++#include <linux/err.h>
++#include <kfifo.h>
++#include <sizes.h>
++
++#define SUNRPC_PORT     111
++
++#define PROG_PORTMAP    100000
++#define PROG_NFS        100003
++#define PROG_MOUNT      100005
++
++#define MSG_CALL        0
++#define MSG_REPLY       1
++
++#define PORTMAP_GETPORT 3
++
++#define MOUNT_ADDENTRY	1
++#define MOUNT_UMOUNT	3
++
++#define NFS_GETATTR     1
++#define NFS_LOOKUP      4
++#define NFS_READLINK    5
++#define NFS_READ        6
++#define NFS_READDIR	16
++
++#define NFS_FHSIZE      32
++
++enum nfs_stat {
++	NFS_OK		= 0,
++	NFSERR_PERM	= 1,
++	NFSERR_NOENT	= 2,
++	NFSERR_IO	= 5,
++	NFSERR_NXIO	= 6,
++	NFSERR_ACCES	= 13,
++	NFSERR_EXIST	= 17,
++	NFSERR_NODEV	= 19,
++	NFSERR_NOTDIR	= 20,
++	NFSERR_ISDIR	= 21,
++	NFSERR_FBIG	= 27,
++	NFSERR_NOSPC	= 28,
++	NFSERR_ROFS	= 30,
++	NFSERR_NAMETOOLONG=63,
++	NFSERR_NOTEMPTY	= 66,
++	NFSERR_DQUOT	= 69,
++	NFSERR_STALE	= 70,
++	NFSERR_WFLUSH	= 99,
++};
++
++static void *nfs_packet;
++static int nfs_len;
++
++struct rpc_call {
++	uint32_t id;
++	uint32_t type;
++	uint32_t rpcvers;
++	uint32_t prog;
++	uint32_t vers;
++	uint32_t proc;
++	uint32_t data[0];
++};
++
++struct rpc_reply {
++	uint32_t id;
++	uint32_t type;
++	uint32_t rstatus;
++	uint32_t verifier;
++	uint32_t v2;
++	uint32_t astatus;
++	uint32_t data[0];
++};
++
++#define NFS_TIMEOUT	(2 * SECOND)
++#define NFS_MAX_RESEND	5
++
++struct nfs_priv {
++	struct net_connection *con;
++	IPaddr_t server;
++	char *path;
++	int mount_port;
++	int nfs_port;
++	unsigned long rpc_id;
++	char rootfh[NFS_FHSIZE];
++};
++
++struct file_priv {
++	struct kfifo *fifo;
++	void *buf;
++	char filefh[NFS_FHSIZE];
++	struct nfs_priv *npriv;
++};
++
++static uint64_t nfs_timer_start;
++
++static int	nfs_state;
++#define STATE_DONE			1
++#define STATE_START			2
++
++enum ftype {
++	NFNON = 0,
++	NFREG = 1,
++	NFDIR = 2,
++	NFBLK = 3,
++	NFCHR = 4,
++	NFLNK = 5
++};
++
++struct fattr {
++	uint32_t type;
++	uint32_t mode;
++	uint32_t nlink;
++	uint32_t uid;
++	uint32_t gid;
++	uint32_t size;
++	uint32_t blocksize;
++	uint32_t rdev;
++	uint32_t blocks;
++};
++
++struct readdirargs {
++	char filefh[NFS_FHSIZE];
++	uint32_t cookie;
++	uint32_t count;
++};
++
++struct xdr_stream {
++	__be32 *p;
++	void *buf;
++	__be32 *end;
++};
++
++#define xdr_zero 0
++#define XDR_QUADLEN(l)		(((l) + 3) >> 2)
++
++static void xdr_init(struct xdr_stream *stream, void *buf, int len)
++{
++	stream->p = stream->buf = buf;
++	stream->end = stream->buf + len;
++}
++
++static __be32 *__xdr_inline_decode(struct xdr_stream *xdr, size_t nbytes)
++{
++	__be32 *p = xdr->p;
++	__be32 *q = p + XDR_QUADLEN(nbytes);
++
++        if (q > xdr->end || q < p)
++		return NULL;
++	xdr->p = q;
++	return p;
++}
++
++static __be32 *xdr_inline_decode(struct xdr_stream *xdr, size_t nbytes)
++{
++	__be32 *p;
++
++	if (nbytes == 0)
++		return xdr->p;
++	if (xdr->p == xdr->end)
++		return NULL;
++	p = __xdr_inline_decode(xdr, nbytes);
++
++	return p;
++}
++
++static int decode_filename(struct xdr_stream *xdr,
++		char *name, u32 *length)
++{
++	__be32 *p;
++	u32 count;
++
++	p = xdr_inline_decode(xdr, 4);
++	if (!p)
++		goto out_overflow;
++	count = be32_to_cpup(p);
++	if (count > 255)
++		goto out_nametoolong;
++	p = xdr_inline_decode(xdr, count);
++	if (!p)
++		goto out_overflow;
++	memcpy(name, p, count);
++	name[count] = 0;
++	*length = count;
++	return 0;
++out_nametoolong:
++	printk("NFS: returned filename too long: %u\n", count);
++	return -ENAMETOOLONG;
++out_overflow:
++	printf("%s overflow\n",__func__);
++	return -EIO;
++}
++
++/*
++ * rpc_add_credentials - Add RPC authentication/verifier entries
++ */
++static uint32_t *rpc_add_credentials(uint32_t *p)
++{
++	int hl;
++	int hostnamelen = 0;
++
++	/*
++	 * Here's the executive summary on authentication requirements of the
++	 * various NFS server implementations:	Linux accepts both AUTH_NONE
++	 * and AUTH_UNIX authentication (also accepts an empty hostname field
++	 * in the AUTH_UNIX scheme).  *BSD refuses AUTH_NONE, but accepts
++	 * AUTH_UNIX (also accepts an empty hostname field in the AUTH_UNIX
++	 * scheme).  To be safe, use AUTH_UNIX and pass the hostname if we have
++	 * it (if the BOOTP/DHCP reply didn't give one, just use an empty
++	 * hostname).
++	 */
++
++	hl = (hostnamelen + 3) & ~3;
++
++	/* Provide an AUTH_UNIX credential.  */
++	*p++ = htonl(1);		/* AUTH_UNIX */
++	*p++ = htonl(hl + 20);		/* auth length */
++	*p++ = htonl(0);		/* stamp */
++	*p++ = htonl(hostnamelen);	/* hostname string */
++
++	if (hostnamelen & 3)
++		*(p + hostnamelen / 4) = 0; /* add zero padding */
++
++	/* memcpy(p, hostname, hostnamelen); */ /* empty hostname */
++
++	p += hl / 4;
++	*p++ = 0;			/* uid */
++	*p++ = 0;			/* gid */
++	*p++ = 0;			/* auxiliary gid list */
++
++	/* Provide an AUTH_NONE verifier.  */
++	*p++ = 0;			/* AUTH_NONE */
++	*p++ = 0;			/* auth length */
++
++	return p;
++}
++
++static int rpc_check_reply(unsigned char *pkt, int rpc_prog, unsigned long rpc_id, int *nfserr)
++{
++	uint32_t *data;
++	struct rpc_reply rpc;
++
++	*nfserr = 0;
++
++	if (!pkt)
++		return -EAGAIN;
++
++	memcpy(&rpc, pkt, sizeof(rpc));
++
++	if (ntohl(rpc.id) != rpc_id)
++		return -EINVAL;
++
++	if (rpc.rstatus  ||
++	    rpc.verifier ||
++	    rpc.astatus ) {
++		return -EINVAL;
 +	}
- 
- 	fsdev = get_fs_device_and_root_path(&p);
--	if (!fsdev)
-+	if (!fsdev) {
-+		ret = -ENOENT;
- 		goto out;
++
++	if (rpc_prog == PROG_PORTMAP)
++		return 0;
++
++	data = (uint32_t *)(pkt + sizeof(struct rpc_reply));
++	*nfserr = ntohl(net_read_uint32(data));
++	*nfserr = -*nfserr;
++
++	debug("%s: state: %d, err %d\n", __func__, nfs_state, *nfserr);
++
++	return 0;
++}
++
++/*
++ * rpc_req - synchronous RPC request
++ */
++static int rpc_req(struct nfs_priv *npriv, int rpc_prog, int rpc_proc,
++		uint32_t *data, int datalen)
++{
++	struct rpc_call pkt;
++	unsigned long id;
++	int dport;
++	int ret;
++	unsigned char *payload = net_udp_get_payload(npriv->con);
++	int nfserr;
++	int tries = 0;
++
++	npriv->rpc_id++;
++	id = npriv->rpc_id;
++
++	pkt.id = htonl(id);
++	pkt.type = htonl(MSG_CALL);
++	pkt.rpcvers = htonl(2);	/* use RPC version 2 */
++	pkt.prog = htonl(rpc_prog);
++	pkt.vers = htonl(2);	/* portmapper is version 2 */
++	pkt.proc = htonl(rpc_proc);
++
++	memcpy(payload, &pkt, sizeof(pkt));
++	memcpy(payload + sizeof(pkt), data, datalen * sizeof(uint32_t));
++
++	if (rpc_prog == PROG_PORTMAP)
++		dport = SUNRPC_PORT;
++	else if (rpc_prog == PROG_MOUNT)
++		dport = npriv->mount_port;
++	else
++		dport = npriv->nfs_port;
++
++	npriv->con->udp->uh_dport = htons(dport);
++
++again:
++	ret = net_udp_send(npriv->con, sizeof(pkt) + datalen * sizeof(uint32_t));
++
++	nfs_timer_start = get_time_ns();
++
++	nfs_state = STATE_START;
++	nfs_packet = NULL;
++
++	while (nfs_state != STATE_DONE) {
++		if (ctrlc()) {
++			ret = -EINTR;
++			break;
++		}
++		net_poll();
++
++		if (is_timeout(nfs_timer_start, NFS_TIMEOUT)) {
++			tries++;
++			if (tries == NFS_MAX_RESEND)
++				return -ETIMEDOUT;
++			goto again;
++		}
++
++		ret = rpc_check_reply(nfs_packet, rpc_prog,
++				npriv->rpc_id, &nfserr);
++		if (!ret) {
++			ret = nfserr;
++			break;
++		}
 +	}
- 	fsdrv = fsdev->driver;
- 
- 	if (!fsdrv->unlink) {
--		errno = -ENOSYS;
-+		ret = -ENOSYS;
- 		goto out;
- 	}
- 
--	errno = fsdrv->unlink(&fsdev->dev, p);
-+	ret = fsdrv->unlink(&fsdev->dev, p);
-+	if (ret)
-+		errno = -ret;
- out:
- 	free(freep);
--	return errno;
-+	if (ret)
-+		errno = -ret;
++
 +	return ret;
- }
- EXPORT_SYMBOL(unlink);
- 
-@@ -491,28 +501,31 @@ int open(const char *pathname, int flags, ...)
- 	struct stat s;
- 	char *path = normalise_path(pathname);
- 	char *freep = path;
++}
++
++/*
++ * rpc_lookup_req - Lookup RPC Port numbers
++ */
++static int rpc_lookup_req(struct nfs_priv *npriv, int prog, int ver)
++{
++	uint32_t data[16];
 +	int ret;
- 
- 	exist_err = stat(path, &s);
- 
- 	if (!exist_err && S_ISDIR(s.st_mode)) {
--		errno = -EISDIR;
-+		ret = -EISDIR;
- 		goto out1;
- 	}
- 
- 	if (exist_err && !(flags & O_CREAT)) {
--		errno = exist_err;
-+		ret = exist_err;
- 		goto out1;
- 	}
- 
- 	f = get_file();
- 	if (!f) {
--		errno = -EMFILE;
-+		ret = -EMFILE;
- 		goto out1;
- 	}
- 
- 	fsdev = get_fs_device_and_root_path(&path);
--	if (!fsdev)
-+	if (!fsdev) {
-+		ret = -ENOENT;
- 		goto out;
++	uint32_t port;
++
++	data[0] = 0; data[1] = 0;	/* auth credential */
++	data[2] = 0; data[3] = 0;	/* auth verifier */
++	data[4] = htonl(prog);
++	data[5] = htonl(ver);
++	data[6] = htonl(17);	/* IP_UDP */
++	data[7] = 0;
++
++	ret = rpc_req(npriv, PROG_PORTMAP, PORTMAP_GETPORT, data, 8);
++	if (ret)
++		return ret;
++
++	port = net_read_uint32((uint32_t *)(nfs_packet + sizeof(struct rpc_reply)));
++
++	switch (prog) {
++	case PROG_MOUNT:
++		npriv->mount_port = ntohl(port);
++		debug("mount port: %d\n", npriv->mount_port);
++		break;
++	case PROG_NFS:
++		npriv->nfs_port = ntohl(port);
++		debug("nfs port: %d\n", npriv->nfs_port);
++		break;
++	default:
++		return -EINVAL;
 +	}
- 
- 	fsdrv = fsdev->driver;
- 
-@@ -520,28 +533,28 @@ int open(const char *pathname, int flags, ...)
- 	f->flags = flags;
- 
- 	if ((flags & O_ACCMODE) && !fsdrv->write) {
--		errno = -EROFS;
-+		ret = -EROFS;
- 		goto out;
- 	}
- 
- 	if (exist_err) {
- 		if (NULL != fsdrv->create)
--			errno = fsdrv->create(&fsdev->dev, path,
-+			ret = fsdrv->create(&fsdev->dev, path,
- 					S_IFREG | S_IRWXU | S_IRWXG | S_IRWXO);
- 		else
--			errno = -EROFS;
--		if (errno)
-+			ret = -EROFS;
-+		if (ret)
- 			goto out;
- 	}
--	errno = fsdrv->open(&fsdev->dev, f, path);
--	if (errno)
-+	ret = fsdrv->open(&fsdev->dev, f, path);
-+	if (ret)
- 		goto out;
- 
- 
- 	if (flags & O_TRUNC) {
--		errno = fsdrv->truncate(&fsdev->dev, f, 0);
-+		ret = fsdrv->truncate(&fsdev->dev, f, 0);
- 		f->size = 0;
--		if (errno)
-+		if (ret)
- 			goto out;
- 	}
- 
-@@ -555,7 +568,9 @@ out:
- 	put_file(f);
- out1:
- 	free(freep);
--	return errno;
-+	if (ret)
-+		errno = -ret;
-+	return ret;
- }
- EXPORT_SYMBOL(open);
- 
-@@ -570,19 +585,22 @@ int ioctl(int fd, int request, void *buf)
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
- 	FILE *f = &files[fd];
-+	int ret;
- 
- 	if (check_fd(fd))
--		return errno;
-+		return -errno;
- 
- 	dev = f->dev;
- 
- 	fsdrv = dev_to_fs_driver(dev);
- 
- 	if (fsdrv->ioctl)
--		errno = fsdrv->ioctl(dev, f, request, buf);
-+		ret = fsdrv->ioctl(dev, f, request, buf);
- 	else
--		errno = -ENOSYS;
--	return errno;
-+		ret = -ENOSYS;
-+	if (ret)
-+		errno = -ret;
-+	return ret;
- }
- 
- int read(int fd, void *buf, size_t count)
-@@ -590,9 +608,10 @@ int read(int fd, void *buf, size_t count)
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
- 	FILE *f = &files[fd];
-+	int ret;
- 
- 	if (check_fd(fd))
--		return errno;
-+		return -errno;
- 
- 	dev = f->dev;
- 
-@@ -604,11 +623,13 @@ int read(int fd, void *buf, size_t count)
- 	if (!count)
- 		return 0;
- 
--	errno = fsdrv->read(dev, f, buf, count);
-+	ret = fsdrv->read(dev, f, buf, count);
- 
--	if (errno > 0)
--		f->pos += errno;
--	return errno;
-+	if (ret > 0)
-+		f->pos += ret;
-+	if (ret < 0)
-+		errno = -ret;
-+	return ret;
- }
- EXPORT_SYMBOL(read);
- 
-@@ -617,30 +638,33 @@ ssize_t write(int fd, const void *buf, size_t count)
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
- 	FILE *f = &files[fd];
-+	int ret;
- 
- 	if (check_fd(fd))
--		return errno;
-+		return -errno;
- 
- 	dev = f->dev;
- 
- 	fsdrv = dev_to_fs_driver(dev);
- 	if (f->pos + count > f->size) {
--		errno = fsdrv->truncate(dev, f, f->pos + count);
--		if (errno) {
--			if (errno != -ENOSPC)
--				return errno;
-+		ret = fsdrv->truncate(dev, f, f->pos + count);
-+		if (ret) {
-+			if (ret != -ENOSPC)
-+				goto out;
- 			count = f->size - f->pos;
- 			if (!count)
--				return errno;
-+				goto out;
- 		} else {
- 			f->size = f->pos + count;
- 		}
- 	}
--	errno = fsdrv->write(dev, f, buf, count);
--
--	if (errno > 0)
--		f->pos += errno;
--	return errno;
-+	ret = fsdrv->write(dev, f, buf, count);
-+	if (ret > 0)
-+		f->pos += ret;
-+out:
-+	if (ret < 0)
-+		errno = -ret;
-+	return ret;
- }
- EXPORT_SYMBOL(write);
- 
-@@ -649,19 +673,23 @@ int flush(int fd)
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
- 	FILE *f = &files[fd];
-+	int ret;
- 
- 	if (check_fd(fd))
--		return errno;
-+		return -errno;
- 
- 	dev = f->dev;
- 
- 	fsdrv = dev_to_fs_driver(dev);
- 	if (fsdrv->flush)
--		errno = fsdrv->flush(dev, f);
-+		ret = fsdrv->flush(dev, f);
- 	else
--		errno = 0;
-+		ret = 0;
 +
-+	if (ret)
-+		errno = -ret;
- 
--	return errno;
-+	return ret;
- }
- 
- off_t lseek(int fildes, off_t offset, int whence)
-@@ -670,20 +698,21 @@ off_t lseek(int fildes, off_t offset, int whence)
- 	struct fs_driver_d *fsdrv;
- 	FILE *f = &files[fildes];
- 	off_t pos;
++	return 0;
++}
++
++/*
++ * nfs_mount_req - Mount an NFS Filesystem
++ */
++static int nfs_mount_req(struct nfs_priv *npriv)
++{
++	uint32_t data[1024];
++	uint32_t *p;
++	int len;
++	int pathlen;
 +	int ret;
- 
- 	if (check_fd(fildes))
- 		return -1;
- 
--	errno = 0;
--
- 	dev = f->dev;
- 	fsdrv = dev_to_fs_driver(dev);
- 	if (!fsdrv->lseek) {
--		errno = -ENOSYS;
--		return -1;
-+		ret = -ENOSYS;
-+		goto out;
- 	}
- 
--	switch(whence) {
-+	ret = -EINVAL;
 +
-+	switch (whence) {
- 	case SEEK_SET:
- 		if (offset > f->size)
- 			goto out;
-@@ -703,11 +732,13 @@ off_t lseek(int fildes, off_t offset, int whence)
- 		goto out;
- 	}
- 
--	return fsdrv->lseek(dev, f, pos);
-+	ret = fsdrv->lseek(dev, f, pos);
- 
- out:
--	errno = -EINVAL;
--	return -1;
++	pathlen = strlen(npriv->path);
++
++	debug("%s: %s\n", __func__, npriv->path);
++
++	p = &(data[0]);
++	p = rpc_add_credentials(p);
++
++	*p++ = htonl(pathlen);
++	if (pathlen & 3)
++		*(p + pathlen / 4) = 0;
++
++	memcpy (p, npriv->path, pathlen);
++	p += (pathlen + 3) / 4;
++
++	len = p - &(data[0]);
++
++	ret = rpc_req(npriv, PROG_MOUNT, MOUNT_ADDENTRY, data, len);
 +	if (ret)
-+		errno = -ret;
++		return ret;
 +
-+	return ret;
- }
- EXPORT_SYMBOL(lseek);
- 
-@@ -716,9 +747,10 @@ int erase(int fd, size_t count, unsigned long offset)
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
- 	FILE *f = &files[fd];
++	memcpy(npriv->rootfh, nfs_packet + sizeof(struct rpc_reply) + 4, NFS_FHSIZE);
++
++	return 0;
++}
++
++/*
++ * nfs_umountall_req - Unmount all our NFS Filesystems on the Server
++ */
++static void nfs_umount_req(struct nfs_priv *npriv)
++{
++	uint32_t data[1024];
++	uint32_t *p;
++	int len;
++	int pathlen;
++
++	pathlen = strlen(npriv->path);
++
++	p = &(data[0]);
++	p = rpc_add_credentials(p);
++
++	*p++ = htonl(pathlen);
++	if (pathlen & 3)
++		*(p + pathlen / 4) = 0;
++
++	memcpy (p, npriv->path, pathlen);
++	p += (pathlen + 3) / 4;
++
++	len = p - &(data[0]);
++
++	rpc_req(npriv, PROG_MOUNT, MOUNT_UMOUNT, data, len);
++}
++
++/*
++ * nfs_lookup_req - Lookup Pathname
++ */
++static int nfs_lookup_req(struct file_priv *priv, const char *filename,
++		int fnamelen)
++{
++	uint32_t data[1024];
++	uint32_t *p;
++	int len;
 +	int ret;
- 
- 	if (check_fd(fd))
--		return errno;
-+		return -errno;
- 
- 	dev = f->dev;
- 
-@@ -728,11 +760,14 @@ int erase(int fd, size_t count, unsigned long offset)
- 		count = f->size - f->pos;
- 
- 	if (fsdrv->erase)
--		errno = fsdrv->erase(dev, f, count, offset);
-+		ret = fsdrv->erase(dev, f, count, offset);
- 	else
--		errno = -ENOSYS;
-+		ret = -ENOSYS;
 +
++	p = &(data[0]);
++	p = rpc_add_credentials(p);
++
++	memcpy(p, priv->filefh, NFS_FHSIZE);
++
++	p += (NFS_FHSIZE / 4);
++	*p++ = htonl(fnamelen);
++
++	if (fnamelen & 3)
++		*(p + fnamelen / 4) = 0;
++
++	memcpy(p, filename, fnamelen);
++	p += (fnamelen + 3) / 4;
++
++	len = p - &(data[0]);
++
++	ret = rpc_req(priv->npriv, PROG_NFS, NFS_LOOKUP, data, len);
 +	if (ret)
-+		errno = -ret;
- 
--	return errno;
-+	return ret;
- }
- EXPORT_SYMBOL(erase);
- 
-@@ -741,9 +776,10 @@ int protect(int fd, size_t count, unsigned long offset, int prot)
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
- 	FILE *f = &files[fd];
++		return ret;
++
++	memcpy(priv->filefh, nfs_packet + sizeof(struct rpc_reply) + 4, NFS_FHSIZE);
++
++	return 0;
++}
++
++static int nfs_attr_req(struct file_priv *priv, struct stat *s)
++{
++	uint32_t data[1024];
++	uint32_t *p;
++	int len;
 +	int ret;
- 
- 	if (check_fd(fd))
--		return errno;
-+		return -errno;
- 
- 	dev = f->dev;
- 
-@@ -753,11 +789,14 @@ int protect(int fd, size_t count, unsigned long offset, int prot)
- 		count = f->size - f->pos;
- 
- 	if (fsdrv->protect)
--		errno = fsdrv->protect(dev, f, count, offset, prot);
-+		ret = fsdrv->protect(dev, f, count, offset, prot);
- 	else
--		errno = -ENOSYS;
-+		ret = -ENOSYS;
++	struct fattr *fattr;
++	uint32_t type;
 +
++	p = &(data[0]);
++	p = rpc_add_credentials(p);
++
++	memcpy(p, priv->filefh, NFS_FHSIZE);
++	p += (NFS_FHSIZE / 4);
++	*p++ = 0;
++
++	len = p - &(data[0]);
++
++	ret = rpc_req(priv->npriv, PROG_NFS, NFS_GETATTR, data, len);
 +	if (ret)
-+		errno = -ret;
- 
--	return errno;
-+	return ret;
- }
- EXPORT_SYMBOL(protect);
- 
-@@ -781,21 +820,25 @@ void *memmap(int fd, int flags)
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
- 	FILE *f = &files[fd];
--	void *ret = (void *)-1;
-+	void *retp = (void *)-1;
++		return ret;
++
++	fattr = nfs_packet + sizeof(struct rpc_reply) + 4;
++
++	type = ntohl(net_read_uint32(&fattr->type));
++
++	s->st_size = ntohl(net_read_uint32(&fattr->size));
++	s->st_mode = ntohl(net_read_uint32(&fattr->mode));
++
++	return 0;
++}
++
++static void *nfs_readdirattr_req(struct file_priv *priv, int *plen, uint32_t cookie)
++{
++	uint32_t data[1024];
++	uint32_t *p;
++	int len;
 +	int ret;
- 
- 	if (check_fd(fd))
--		return ret;
-+		return retp;
- 
- 	dev = f->dev;
- 
- 	fsdrv = dev_to_fs_driver(dev);
- 
- 	if (fsdrv->memmap)
--		errno = fsdrv->memmap(dev, f, &ret, flags);
-+		ret = fsdrv->memmap(dev, f, &retp, flags);
- 	else
--		errno = -EINVAL;
-+		ret = -EINVAL;
- 
--	return ret;
-+	if (ret)
-+		errno = -ret;
++	void *buf;
 +
-+	return retp;
- }
- EXPORT_SYMBOL(memmap);
- 
-@@ -804,17 +847,22 @@ int close(int fd)
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
- 	FILE *f = &files[fd];
++	p = &(data[0]);
++	p = rpc_add_credentials(p);
++
++	memcpy(p, priv->filefh, NFS_FHSIZE);
++	p += (NFS_FHSIZE / 4);
++	*p++ = htonl(cookie); /* cookie */
++	*p++ = htonl(1024); /* count */
++	*p++ = 0;
++
++	len = p - &(data[0]);
++
++	ret = rpc_req(priv->npriv, PROG_NFS, NFS_READDIR, data, len);
++	if (ret)
++		return NULL;
++
++	*plen = nfs_len - sizeof(struct rpc_reply) + 4;
++
++	buf = xzalloc(*plen);
++
++	memcpy(buf, nfs_packet + sizeof(struct rpc_reply) + 4, *plen);
++
++	return buf;
++}
++
++/*
++ * nfs_read_req - Read File on NFS Server
++ */
++static int nfs_read_req(struct file_priv *priv, int offset, int readlen)
++{
++	uint32_t data[1024];
++	uint32_t *p;
++	uint32_t *filedata;
++	int len;
 +	int ret;
- 
- 	if (check_fd(fd))
--		return errno;
-+		return -errno;
- 
- 	dev = f->dev;
- 
- 	fsdrv = dev_to_fs_driver(dev);
--	errno = fsdrv->close(dev, f);
-+	ret = fsdrv->close(dev, f);
- 
- 	put_file(f);
--	return errno;
++	int rlen;
 +
-+	if (ret)
-+		errno = -ret;
++	p = &(data[0]);
++	p = rpc_add_credentials(p);
 +
-+	return ret;
- }
- EXPORT_SYMBOL(close);
- 
-@@ -893,23 +941,22 @@ int mount(const char *device, const char *fsname, const char *_path)
- 	int ret;
- 	char *path = normalise_path(_path);
- 
--	errno = 0;
--
- 	debug("mount: %s on %s type %s\n", device, path, fsname);
- 
- 	if (fs_dev_root) {
- 		fsdev = get_fsdevice_by_path(path);
- 		if (fsdev != fs_dev_root) {
- 			printf("sorry, no nested mounts\n");
--			errno = -EBUSY;
-+			ret = -EBUSY;
- 			goto err_free_path;
- 		}
--		if (path_check_prereq(path, S_IFDIR))
-+		ret = path_check_prereq(path, S_IFDIR);
-+		if (ret)
- 			goto err_free_path;
- 	} else {
- 		/* no mtab, so we only allow to mount on '/' */
- 		if (*path != '/' || *(path + 1)) {
--			errno = -ENOTDIR;
-+			ret = -ENOTDIR;
- 			goto err_free_path;
- 		}
- 	}
-@@ -924,22 +971,19 @@ int mount(const char *device, const char *fsname, const char *_path)
- 	if (!strncmp(device, "/dev/", 5))
- 		fsdev->cdev = cdev_by_name(device + 5);
- 
--	if ((ret = register_device(&fsdev->dev))) {
--		errno = ret;
-+	ret = register_device(&fsdev->dev);
-+	if (ret)
- 		goto err_register;
--	}
- 
- 	if (!fsdev->dev.driver) {
- 		/*
- 		 * Driver didn't accept the device or no driver for this
- 		 * device. Bail out
- 		 */
--		errno = -EINVAL;
-+		ret = -EINVAL;
- 		goto err_no_driver;
- 	}
- 
--	errno = 0;
--
- 	return 0;
- 
- err_no_driver:
-@@ -949,7 +993,9 @@ err_register:
- err_free_path:
- 	free(path);
- 
--	return errno;
-+	errno = -ret;
++	memcpy (p, priv->filefh, NFS_FHSIZE);
++	p += (NFS_FHSIZE / 4);
++	*p++ = htonl(offset);
++	*p++ = htonl(readlen);
++	*p++ = 0;
 +
-+	return ret;
- }
- EXPORT_SYMBOL(mount);
- 
-@@ -968,13 +1014,13 @@ int umount(const char *pathname)
- 	free(p);
- 
- 	if (f == fs_dev_root && !list_is_singular(&fs_device_list)) {
--		errno = -EBUSY;
--		return errno;
-+		errno = EBUSY;
-+		return -EBUSY;
- 	}
- 
- 	if (!fsdev) {
--		errno = -EFAULT;
--		return errno;
-+		errno = EFAULT;
-+		return -EFAULT;
- 	}
- 
- 	unregister_device(&fsdev->dev);
-@@ -990,13 +1036,17 @@ DIR *opendir(const char *pathname)
- 	struct fs_driver_d *fsdrv;
- 	char *p = normalise_path(pathname);
- 	char *freep = p;
-+	int ret;
- 
--	if (path_check_prereq(pathname, S_IFDIR))
-+	ret = path_check_prereq(pathname, S_IFDIR);
++	len = p - &(data[0]);
++
++	ret = rpc_req(priv->npriv, PROG_NFS, NFS_READ, data, len);
 +	if (ret)
- 		goto out;
- 
- 	fsdev = get_fs_device_and_root_path(&p);
--	if (!fsdev)
-+	if (!fsdev) {
-+		ret = -ENOENT;
- 		goto out;
-+	}
- 	fsdrv = fsdev->driver;
- 
- 	debug("opendir: fsdrv: %p\n",fsdrv);
-@@ -1005,31 +1055,51 @@ DIR *opendir(const char *pathname)
- 	if (dir) {
- 		dir->dev = &fsdev->dev;
- 		dir->fsdrv = fsdrv;
++		return ret;
++
++	filedata = (uint32_t *)(nfs_packet + sizeof(struct rpc_reply));
++
++	rlen = ntohl(net_read_uint32(filedata + 18));
++
++	kfifo_put(priv->fifo, (char *)(filedata + 19), rlen);
++
++	return 0;
++}
++
++#if 0
++static int nfs_readlink_reply(unsigned char *pkt, unsigned len)
++{
++	uint32_t *data;
++	char *path;
++	int rlen;
++//	int ret;
++
++	data = (uint32_t *)(pkt + sizeof(struct rpc_reply));
++
++	data++;
++
++	rlen = ntohl(net_read_uint32(data)); /* new path length */
++
++	data++;
++	path = (char *)data;
++
++	if (*path != '/') {
++		strcat(nfs_path, "/");
++		strncat(nfs_path, path, rlen);
 +	} else {
-+		/*
-+		 * FIXME: The fs drivers should return ERR_PTR here so that
-+		 * we are able to forward the error
-+		 */
++		memcpy(nfs_path, path, rlen);
++		nfs_path[rlen] = 0;
++	}
++	return 0;
++}
++#endif
++
++static void nfs_handler(void *ctx, char *packet, unsigned len)
++{
++	char *pkt = net_eth_to_udp_payload(packet);
++
++	nfs_state = STATE_DONE;
++	nfs_packet = pkt;
++	nfs_len = len;
++}
++
++static int nfs_create(struct device_d *dev, const char *pathname, mode_t mode)
++{
++	return -ENOSYS;
++}
++
++static int nfs_unlink(struct device_d *dev, const char *pathname)
++{
++	return -ENOSYS;
++}
++
++static int nfs_mkdir(struct device_d *dev, const char *pathname)
++{
++	return -ENOSYS;
++}
++
++static int nfs_rmdir(struct device_d *dev, const char *pathname)
++{
++	return -ENOSYS;
++}
++
++static int nfs_truncate(struct device_d *dev, FILE *f, ulong size)
++{
++	return -ENOSYS;
++}
++
++static struct file_priv *nfs_do_open(struct device_d *dev, const char *filename)
++{
++	struct file_priv *priv;
++	struct nfs_priv *npriv = dev->priv;
++	int ret;
++	const char *fname, *tok;
++
++	priv = xzalloc(sizeof(*priv));
++
++	priv->npriv = npriv;
++
++	if (!*filename) {
++		memcpy(priv->filefh, npriv->rootfh, NFS_FHSIZE);
++		return priv;
++	}
++
++	filename++;
++
++	fname = filename;
++
++	memcpy(priv->filefh, npriv->rootfh, NFS_FHSIZE);
++
++	while (*fname) {
++		int flen;
++
++		tok = strchr(fname, '/');
++		if (tok)
++			flen = tok - fname;
++		else
++			flen = strlen(fname);
++
++		ret = nfs_lookup_req(priv, fname, flen);
++		if (ret)
++			goto out;
++
++		if (tok)
++			fname += flen + 1;
++		else
++			break;
++	}
++
++	return priv;
++
++out:
++	free(priv);
++
++	return ERR_PTR(ret);
++}
++
++static void nfs_do_close(struct file_priv *priv)
++{
++	if (priv->fifo)
++		kfifo_free(priv->fifo);
++
++	free(priv);
++}
++
++static struct file_priv *nfs_do_stat(struct device_d *dev, const char *filename, struct stat *s)
++{
++	struct file_priv *priv;
++	int ret;
++
++	priv = nfs_do_open(dev, filename);
++	if (IS_ERR(priv))
++		return priv;
++
++	ret = nfs_attr_req(priv, s);
++	if (ret) {
++		nfs_do_close(priv);
++		return ERR_PTR(ret);
++	}
++
++	return priv;
++}
++
++static int nfs_open(struct device_d *dev, FILE *file, const char *filename)
++{
++	struct file_priv *priv;
++	struct stat s;
++
++	priv = nfs_do_stat(dev, filename, &s);
++	if (IS_ERR(priv))
++		return PTR_ERR(priv);
++
++	file->inode = priv;
++	file->size = s.st_size;
++
++	priv->fifo = kfifo_alloc(1024);
++	if (!priv->fifo) {
++		free(priv);
++		return -ENOMEM;
++	}
++
++	return 0;
++}
++
++static int nfs_close(struct device_d *dev, FILE *file)
++{
++	struct file_priv *priv = file->inode;
++
++	nfs_do_close(priv);
++
++	return 0;
++}
++
++static int nfs_write(struct device_d *_dev, FILE *file, const void *inbuf,
++		size_t insize)
++{
++	return -ENOSYS;
++}
++
++static int nfs_read(struct device_d *dev, FILE *file, void *buf, size_t insize)
++{
++	struct file_priv *priv = file->inode;
++	int now, outsize = 0, ret, pos = file->pos;
++
++	while (insize) {
++		now = kfifo_get(priv->fifo, buf, insize);
++		outsize += now;
++		buf += now;
++		insize -= now;
++
++		if (insize) {
++			now = 1024;
++
++			if (pos + now > file->size)
++				now = file->size - pos;
++
++			ret = nfs_read_req(priv, pos, now);
++			if (ret)
++				return ret;
++			pos += now;
++		}
++	}
++
++	return outsize;
++}
++
++static off_t nfs_lseek(struct device_d *dev, FILE *file, off_t pos)
++{
++	struct file_priv *priv = file->inode;
++
++	file->pos = pos;
++	kfifo_reset(priv->fifo);
++
++	return file->pos;
++}
++
++struct nfs_dir {
++	DIR dir;
++	struct xdr_stream stream;
++	struct dirent ent;
++	struct file_priv *priv;
++	uint32_t cookie;
++};
++
++static DIR *nfs_opendir(struct device_d *dev, const char *pathname)
++{
++	struct file_priv *priv;
++	struct stat s;
++	int ret;
++	void *buf;
++	struct nfs_dir *dir;
++	int len;
++
++	priv = nfs_do_open(dev, pathname);
++	if (IS_ERR(priv))
++		return NULL;
++
++	ret = nfs_attr_req(priv, &s);
++	if (ret)
++		return NULL;
++
++	if (!S_ISDIR(s.st_mode))
++		return NULL;
++
++	dir = xzalloc(sizeof(*dir));
++	dir->priv = priv;
++
++	buf = nfs_readdirattr_req(priv, &len, 0);
++	if (!buf)
++		return NULL;
++
++	xdr_init(&dir->stream, buf, len);
++
++	return &dir->dir;
++}
++
++static struct dirent *nfs_readdir(struct device_d *dev, DIR *dir)
++{
++	struct nfs_dir *ndir = (void *)dir;
++	__be32 *p;
++	int ret;
++	int len;
++	struct xdr_stream *xdr = &ndir->stream;
++
++again:
++	p = xdr_inline_decode(xdr, 4);
++	if (!p)
++		goto out_overflow;
++
++	if (*p++ == xdr_zero) {
++		p = xdr_inline_decode(xdr, 4);
++		if (!p)
++			goto out_overflow;
++		if (*p++ == xdr_zero) {
++			void *buf;
++			int len;
++
++			/*
++			 * End of current entries, read next chunk.
++			 */
++
++			free(ndir->stream.buf);
++
++			buf = nfs_readdirattr_req(ndir->priv, &len, ndir->cookie);
++			if (!buf)
++				return NULL;
++
++			xdr_init(&ndir->stream, buf, len);
++
++			goto again;
++		}
++		return NULL; /* -EINVAL */
++	}
++
++	p = xdr_inline_decode(xdr, 4);
++	if (!p)
++		goto out_overflow;
++
++	ret = decode_filename(xdr, ndir->ent.d_name, &len);
++	if (ret)
++		return NULL;
++
++	/*
++	 * The type (size and byte order) of nfscookie isn't defined in
++	 * RFC 1094.  This implementation assumes that it's an XDR uint32.
++	 */
++	p = xdr_inline_decode(xdr, 4);
++	if (!p)
++		goto out_overflow;
++
++	ndir->cookie = be32_to_cpup(p);
++
++	return &ndir->ent;
++
++out_overflow:
++
++	printf("nfs: overflow error\n");
++
++	return NULL;
++
++}
++
++static int nfs_closedir(struct device_d *dev, DIR *dir)
++{
++	struct nfs_dir *ndir = (void *)dir;
++
++	nfs_do_close(ndir->priv);
++	free(ndir->stream.buf);
++	free(ndir);
++
++	return 0;
++}
++
++static int nfs_stat(struct device_d *dev, const char *filename, struct stat *s)
++{
++	struct file_priv *priv;
++
++	priv = nfs_do_stat(dev, filename, s);
++	if (IS_ERR(priv)) {
++		return PTR_ERR(priv);
++	} else {
++		nfs_do_close(priv);
++		return 0;
++	}
++}
++
++static int nfs_probe(struct device_d *dev)
++{
++	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct nfs_priv *npriv = xzalloc(sizeof(struct nfs_priv));
++	char *tmp = xstrdup(fsdev->backingstore);
++	char *path;
++	int ret;
++
++	dev->priv = npriv;
++
++	debug("nfs: mount: %s\n", fsdev->backingstore);
++
++	path = strchr(tmp, ':');
++	if (!path) {
 +		ret = -EINVAL;
- 	}
- 
- out:
- 	free(freep);
++		goto err;
++	}
 +
-+	if (ret)
-+		errno = -ret;
++	*path = 0;
 +
- 	return dir;
- }
- EXPORT_SYMBOL(opendir);
- 
- struct dirent *readdir(DIR *dir)
- {
--	if (!dir)
--		return NULL;
-+	struct dirent *ent;
++	npriv->path = xstrdup(path + 1);
 +
-+	ent = dir->fsdrv->readdir(dir->dev, dir);
- 
--	return dir->fsdrv->readdir(dir->dev, dir);
-+	if (!ent)
-+		errno = EBADF;
++	npriv->server = resolv(tmp);
 +
-+	return ent;
- }
- EXPORT_SYMBOL(readdir);
- 
- int closedir(DIR *dir)
- {
-+	int ret;
++	debug("nfs: server: %s path: %s\n", tmp, npriv->path);
 +
- 	if (!dir) {
--		errno = -EBADF;
--		return -1;
-+		errno = EBADF;
-+		return -EBADF;
- 	}
- 
--	return dir->fsdrv->closedir(dir->dev, dir);
-+	ret = dir->fsdrv->closedir(dir->dev, dir);
-+	if (ret)
-+		errno = -ret;
++	npriv->con = net_udp_new(npriv->server, 0, nfs_handler, npriv);
++	if (IS_ERR(npriv->con)) {
++		ret = PTR_ERR(npriv->con);
++		goto err1;
++	}
 +
-+	return ret;
- }
- EXPORT_SYMBOL(closedir);
- 
-@@ -1040,6 +1110,7 @@ int stat(const char *filename, struct stat *s)
- 	struct fs_device_d *fsdev;
- 	char *f = normalise_path(filename);
- 	char *freep = f;
-+	int ret;
- 
- 	automount_mount(f, 1);
- 
-@@ -1047,7 +1118,7 @@ int stat(const char *filename, struct stat *s)
- 
- 	fsdev = get_fsdevice_by_path(f);
- 	if (!fsdev) {
--		errno = -ENOENT;
-+		ret = -ENOENT;
- 		goto out;
- 	}
- 
-@@ -1062,10 +1133,14 @@ int stat(const char *filename, struct stat *s)
- 	if (*f == 0)
- 		f = "/";
- 
--	errno = fsdrv->stat(dev, f, s);
-+	ret = fsdrv->stat(dev, f, s);
- out:
- 	free(freep);
--	return errno;
++	/* Need a priviliged source port */
++	net_udp_bind(npriv->con, 1000);
 +
-+	if (ret)
-+		errno = -ret;
++	ret = rpc_lookup_req(npriv, PROG_MOUNT, 1);
++	if (ret) {
++		printf("lookup mount port failed with %d\n", ret);
++		goto err2;
++	}
++
++	ret = rpc_lookup_req(npriv, PROG_NFS, 2);
++	if (ret) {
++		printf("lookup nfs port failed with %d\n", ret);
++		goto err2;
++	}
++
++	ret = nfs_mount_req(npriv);
++	if (ret) {
++		printf("mounting failed with %d\n", ret);
++		goto err2;
++	}
++
++	free(tmp);
++
++	return 0;
++
++err2:
++	net_unregister(npriv->con);
++err1:
++	free(npriv->path);
++err:
++	free(tmp);
++	free(npriv);
 +
 +	return ret;
- }
- EXPORT_SYMBOL(stat);
- 
-@@ -1075,24 +1150,30 @@ int mkdir (const char *pathname, mode_t mode)
- 	struct fs_device_d *fsdev;
- 	char *p = normalise_path(pathname);
- 	char *freep = p;
-+	int ret;
- 
--	if (path_check_prereq(pathname, S_UB_DOES_NOT_EXIST))
-+	ret = path_check_prereq(pathname, S_UB_DOES_NOT_EXIST);
-+	if (ret)
- 		goto out;
- 
- 	fsdev = get_fs_device_and_root_path(&p);
--	if (!fsdev)
--		goto out;
--	fsdrv = fsdev->driver;
--
--	if (fsdrv->mkdir) {
--		errno = fsdrv->mkdir(&fsdev->dev, p);
-+	if (!fsdev) {
-+		ret = -ENOENT;
- 		goto out;
- 	}
-+	fsdrv = fsdev->driver;
- 
--	errno = -EROFS;
-+	if (fsdrv->mkdir)
-+		ret = fsdrv->mkdir(&fsdev->dev, p);
-+	else
-+		ret = -EROFS;
- out:
- 	free(freep);
--	return errno;
++}
 +
-+	if (ret)
-+		errno = -ret;
++static void nfs_remove(struct device_d *dev)
++{
++	struct nfs_priv *npriv = dev->priv;
 +
-+	return ret;
- }
- EXPORT_SYMBOL(mkdir);
- 
-@@ -1102,24 +1183,30 @@ int rmdir (const char *pathname)
- 	struct fs_device_d *fsdev;
- 	char *p = normalise_path(pathname);
- 	char *freep = p;
-+	int ret;
- 
--	if (path_check_prereq(pathname, S_IFDIR | S_UB_IS_EMPTY))
-+	ret = path_check_prereq(pathname, S_IFDIR | S_UB_IS_EMPTY);
-+	if (ret)
- 		goto out;
- 
- 	fsdev = get_fs_device_and_root_path(&p);
--	if (!fsdev)
--		goto out;
--	fsdrv = fsdev->driver;
--
--	if (fsdrv->rmdir) {
--		errno = fsdrv->rmdir(&fsdev->dev, p);
-+	if (!fsdev) {
-+		ret = -ENOENT;
- 		goto out;
- 	}
-+	fsdrv = fsdev->driver;
- 
--	errno = -EROFS;
-+	if (fsdrv->rmdir)
-+		ret = fsdrv->rmdir(&fsdev->dev, p);
-+	else
-+		ret = -EROFS;
- out:
- 	free(freep);
--	return errno;
++	nfs_umount_req(npriv);
 +
-+	if (ret)
-+		errno = -ret;
++	net_unregister(npriv->con);
++	free(npriv->path);
++	free(npriv);
++}
 +
-+	return ret;
- }
- EXPORT_SYMBOL(rmdir);
- 
-@@ -1184,4 +1271,3 @@ ssize_t mem_write(struct cdev *cdev, const void *buf, size_t count, ulong offset
- 	return size;
- }
- EXPORT_SYMBOL(mem_write);
--
-diff --git a/lib/make_directory.c b/lib/make_directory.c
-index 274bc14..c14c86d 100644
---- a/lib/make_directory.c
-+++ b/lib/make_directory.c
-@@ -12,6 +12,7 @@ int make_directory(const char *dir)
- 	char *s = strdup(dir);
- 	char *path = s;
- 	char c;
-+	int ret = 0;
- 
- 	do {
- 		c = 0;
-@@ -33,12 +34,10 @@ int make_directory(const char *dir)
- 
- 			/* If we failed for any other reason than the directory
- 			 * already exists, output a diagnostic and return -1.*/
--#ifdef __BAREBOX__
--			if (errno != -EEXIST)
--#else
--			if (errno != EEXIST)
--#endif
-+			if (errno != EEXIST) {
-+				ret = -errno;
- 				break;
-+			}
- 		}
- 		if (!c)
- 			goto out;
-@@ -50,7 +49,9 @@ int make_directory(const char *dir)
- 
- out:
- 	free(path);
--	return errno;
-+	if (ret)
-+		errno = -ret;
-+	return ret;
- }
- #ifdef __BAREBOX__
- EXPORT_SYMBOL(make_directory);
-diff --git a/lib/parameter.c b/lib/parameter.c
-index baf7720..1e2e10c 100644
---- a/lib/parameter.c
-+++ b/lib/parameter.c
-@@ -54,7 +54,7 @@ const char *dev_get_param(struct device_d *dev, const char *name)
- 	struct param_d *param = get_param_by_name(dev, name);
- 
- 	if (!param) {
--		errno = -EINVAL;
-+		errno = EINVAL;
- 		return NULL;
- 	}
- 
-@@ -87,26 +87,30 @@ int dev_set_param_ip(struct device_d *dev, char *name, IPaddr_t ip)
- int dev_set_param(struct device_d *dev, const char *name, const char *val)
- {
- 	struct param_d *param;
-+	int ret;
- 
- 	if (!dev) {
--		errno = -ENODEV;
-+		errno = ENODEV;
- 		return -ENODEV;
- 	}
- 
- 	param = get_param_by_name(dev, name);
- 
- 	if (!param) {
--		errno = -EINVAL;
-+		errno = EINVAL;
- 		return -EINVAL;
- 	}
- 
- 	if (param->flags & PARAM_FLAG_RO) {
--		errno = -EACCES;
-+		errno = EACCES;
- 		return -EACCES;
- 	}
- 
--	errno = param->set(dev, param, val);
--	return errno;
-+	ret = param->set(dev, param, val);
-+	if (ret)
-+		errno = -ret;
++static struct fs_driver_d nfs_driver = {
++	.open      = nfs_open,
++	.close     = nfs_close,
++	.read      = nfs_read,
++	.lseek     = nfs_lseek,
++	.opendir   = nfs_opendir,
++	.readdir   = nfs_readdir,
++	.closedir  = nfs_closedir,
++	.stat      = nfs_stat,
++	.create    = nfs_create,
++	.unlink    = nfs_unlink,
++	.mkdir     = nfs_mkdir,
++	.rmdir     = nfs_rmdir,
++	.write     = nfs_write,
++	.truncate  = nfs_truncate,
++	.flags     = 0,
++	.drv = {
++		.probe  = nfs_probe,
++		.remove = nfs_remove,
++		.name = "nfs",
++	}
++};
 +
-+	return ret;
- }
- 
- /**
++static int nfs_init(void)
++{
++	return register_fs_driver(&nfs_driver);
++}
++coredevice_initcall(nfs_init);
 -- 
 1.7.10
 
