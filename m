@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STY6j-0003cD-7m
- for barebox@lists.infradead.org; Sun, 13 May 2012 12:41:06 +0000
-Received: by mail-lpp01m010-f49.google.com with SMTP id p9so3495853laa.36
- for <barebox@lists.infradead.org>; Sun, 13 May 2012 05:41:04 -0700 (PDT)
+ id 1STY6l-0003d4-K7
+ for barebox@lists.infradead.org; Sun, 13 May 2012 12:41:08 +0000
+Received: by mail-lpp01m010-f49.google.com with SMTP id p9so3495868laa.36
+ for <barebox@lists.infradead.org>; Sun, 13 May 2012 05:41:07 -0700 (PDT)
 From: Alexey Galakhov <agalakhov@gmail.com>
-Date: Sun, 13 May 2012 18:40:05 +0600
-Message-Id: <1336912806-4163-9-git-send-email-agalakhov@gmail.com>
+Date: Sun, 13 May 2012 18:40:06 +0600
+Message-Id: <1336912806-4163-10-git-send-email-agalakhov@gmail.com>
 In-Reply-To: <1336912806-4163-1-git-send-email-agalakhov@gmail.com>
 References: <20120513090917.GX27341@pengutronix.de>
  <1336912806-4163-1-git-send-email-agalakhov@gmail.com>
@@ -24,198 +24,211 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/9] S5P iROM boot support - improved
+Subject: [PATCH 9/9] S5P boot header and image generator
 To: barebox@lists.infradead.org
 Cc: Alexey Galakhov <agalakhov@gmail.com>
 
+Signed-off-by: Alexey Galakhov <agalakhov@gmail.com>
 ---
- arch/arm/boards/tiny210/lowlevel.c               |   13 ++++-
- arch/arm/mach-samsung/Kconfig                    |   11 ++++
- arch/arm/mach-samsung/Makefile                   |    1 +
- arch/arm/mach-samsung/include/mach/s5pcxx-irom.h |   32 ++++++++++++
- arch/arm/mach-samsung/s5p-irom-boot.c            |   59 ++++++++++++++++++++++
- 5 files changed, 115 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/mach-samsung/include/mach/s5pcxx-irom.h
- create mode 100644 arch/arm/mach-samsung/s5p-irom-boot.c
+ .gitignore          |    2 +
+ arch/arm/Makefile   |    7 +++
+ scripts/Makefile    |    1 +
+ scripts/s5p_cksum.c |  140 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 150 insertions(+)
+ create mode 100644 scripts/s5p_cksum.c
 
-diff --git a/arch/arm/boards/tiny210/lowlevel.c b/arch/arm/boards/tiny210/lowlevel.c
-index d14b9eb..d8e1fca 100644
---- a/arch/arm/boards/tiny210/lowlevel.c
-+++ b/arch/arm/boards/tiny210/lowlevel.c
-@@ -23,12 +23,16 @@
- #include <init.h>
- #include <io.h>
- #include <asm/barebox-arm.h>
-+#include <asm/sections.h>
- #include <mach/s3c-iomap.h>
- #include <mach/s3c-clocks.h>
- #include <mach/s3c-generic.h>
+diff --git a/.gitignore b/.gitignore
+index 8a5c583..5f76602 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -33,6 +33,7 @@ barebox.S
+ barebox.bin
+ barebox.srec
+ barebox.netx
++barebox.s5p
+ barebox.map
+ System.map
+ Module.symvers
+@@ -63,3 +64,4 @@ cscope.*
+ # patches
+ *.patch
+ scripts/gen_netx_image
++scripts/s5p_cksum
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 1af1090..fc29aca 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -165,6 +165,13 @@ ifeq ($(machine-y),netx)
+ KBUILD_IMAGE := barebox.netx
+ endif
  
-+#include <mach/s5pcxx-irom.h>
++barebox.s5p: barebox.bin
++	$(Q)scripts/s5p_cksum barebox.bin barebox.s5p
 +
- void __bare_init board_init_lowlevel(void)
- {
-+    uint32_t r;
- 
- #ifdef CONFIG_S3C_PLL_INIT
- 	s5p_init_pll();
-@@ -41,7 +45,14 @@ void __bare_init board_init_lowlevel(void)
- 	s5p_init_dram_bank(S5P_DMC0_BASE, 0x20E00323, 0);
- #endif
- 
--	/* TODO: load barebox to DRAM here */
-+#ifdef CONFIG_S5P_USE_IROM
-+	/* FIXME this boots from MMC only */
-+	if (! s5p_irom_load_mmc((void*)TEXT_BASE - 16, 1, (barebox_image_size + 16 + 511) / 512))
-+		while (1) { } /* hang */
-+#endif
- 
-+	/* Jump to SDRAM */
-+	r = (unsigned)TEXT_BASE;
-+	__asm__ __volatile__("mov pc, %0" : : "r"(r));
- 	while (1) { } /* hang */
- }
-diff --git a/arch/arm/mach-samsung/Kconfig b/arch/arm/mach-samsung/Kconfig
-index fcef677..1387d05 100644
---- a/arch/arm/mach-samsung/Kconfig
-+++ b/arch/arm/mach-samsung/Kconfig
-@@ -98,6 +98,7 @@ config MACH_TINY210
- 	select CPU_S5PV210
- 	select MACH_HAS_LOWLEVEL_INIT
- 	select MACH_DO_LOWLEVEL_INIT
-+	select S5P_USE_IROM
- 
- endchoice
- 
-@@ -136,6 +137,16 @@ config S3C_NAND_BOOT
- 	  Add generic support to boot from NAND flash. Image loading will be
- 	  skipped if the code is running from NOR or already from SDRAM.
- 
-+if ARCH_S5PCxx
-+
-+config S5P_USE_IROM
-+	bool
-+	prompt "Use iROM for booting"
-+	help
-+	  Use CPU built-in iROM code for booting. If unsure, say N.
-+
++ifeq ($(CONFIG_ARCH_S5PCxx),y)
++KBUILD_IMAGE := barebox.s5p
 +endif
 +
- endmenu
+ MLO: barebox.bin
+ 	@echo "  IFT    " $@
+ 	$(Q)scripts/omap_signGP barebox.bin $(TEXT_BASE) 1
+diff --git a/scripts/Makefile b/scripts/Makefile
+index cb049fd..784d205 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -10,6 +10,7 @@ hostprogs-y                      += mkimage
+ hostprogs-y                      += bareboxenv
+ hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
+ hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP
++hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
  
- endif
-diff --git a/arch/arm/mach-samsung/Makefile b/arch/arm/mach-samsung/Makefile
-index e05d292..0e23eae 100644
---- a/arch/arm/mach-samsung/Makefile
-+++ b/arch/arm/mach-samsung/Makefile
-@@ -3,4 +3,5 @@ obj-lowlevel-$(CONFIG_ARCH_S3C24xx) += lowlevel-s3c24x0.o
- obj-lowlevel-$(CONFIG_ARCH_S5PCxx) += lowlevel-s5pcxx.o
- obj-$(CONFIG_ARCH_S3C24xx) += gpio-s3c24x0.o clocks-s3c24x0.o mem-s3c24x0.o
- obj-$(CONFIG_ARCH_S5PCxx) += gpio-s5pcxx.o clocks-s5pcxx.o mem-s5pcxx.o
-+obj-$(CONFIG_S5P_USE_IROM) += s5p-irom-boot.o
- obj-$(CONFIG_S3C_LOWLEVEL_INIT) += $(obj-lowlevel-y)
-diff --git a/arch/arm/mach-samsung/include/mach/s5pcxx-irom.h b/arch/arm/mach-samsung/include/mach/s5pcxx-irom.h
+ always		:= $(hostprogs-y) $(hostprogs-m)
+ 
+diff --git a/scripts/s5p_cksum.c b/scripts/s5p_cksum.c
 new file mode 100644
-index 0000000..65c2fb4
+index 0000000..7142532
 --- /dev/null
-+++ b/arch/arm/mach-samsung/include/mach/s5pcxx-irom.h
-@@ -0,0 +1,32 @@
++++ b/scripts/s5p_cksum.c
+@@ -0,0 +1,140 @@
 +/*
 + * Copyright (C) 2012 Alexey Galakhov
 + *
-+ * Based on code from u-boot found somewhere on the web
-+ * that seems to originate from Samsung
++ * See file CREDITS for list of people who contributed to this
++ * project.
 + *
 + * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
++ * modify it under the terms of the GNU General Public License
++ * version 2 as published by the Free Software Foundation.
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
-+ */
-+
-+/**
-+ * Using iROM to boot is generally not a good idea. However we don't have
-+ * another method of booting yet.
-+ * TODO: implement NAND and SD booting and remove this file.
-+ */
-+
-+#ifndef __S5PCXX_IROM_H
-+#define __S5PCXX_IROM_H
-+
-+#include <config.h>
-+#include <common.h>
-+
-+int __bare_init s5p_irom_load_mmc(void *dest, uint32_t start_block, uint16_t block_count);
-+
-+#endif /* __S5PCXX_IROM_H */
-diff --git a/arch/arm/mach-samsung/s5p-irom-boot.c b/arch/arm/mach-samsung/s5p-irom-boot.c
-new file mode 100644
-index 0000000..dd47f072
---- /dev/null
-+++ b/arch/arm/mach-samsung/s5p-irom-boot.c
-@@ -0,0 +1,59 @@
-+/*
-+ * Copyright (C) 2012 Alexey Galakhov
 + *
-+ * Based on code from u-boot found somewhere on the web
-+ * that seems to originate from Samsung
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
 + */
 +
-+/**
-+ * Using iROM to boot is generally not a good idea. However we don't have
-+ * another method of booting yet.
-+ * TODO: implement NAND and SD booting and remove this file.
-+ */
++#include <stdio.h>
++#include <stdint.h>
++#include <stdlib.h>
++#include <string.h>
++#include <stddef.h>
++#include <errno.h>
 +
-+#include <config.h>
-+#include <common.h>
-+#include <init.h>
-+#include <mach/s3c-generic.h>
-+#include <mach/s5pcxx-irom.h>
++#define DEFAULT_BUF_SIZE 8192
 +
-+/* Magical addressed from S5PV210 Application Note */
-+
-+/* Variables */
-+#define ADDR_globalBlockSize	0xD0037480
-+#define ADDR_globalSDHCInfoBit	0xD0037484
-+#define ADDR_V210_SDMMC_BASE	0xD0037488
-+/* Functions */
-+#define ADDR_NF8_ReadPage_Adv		0xD0037F90
-+#define ADDR_NF16_ReadPage_Adv		0xD0037F94
-+#define ADDR_CopySDMMCtoMem		0xD0037F98
-+#define ADDR_CopyMMC4_3toMem		0xD0037F9C
-+#define ADDR_CopyOND_ReadMultiPages	0xD0037FA0
-+#define ADDR_CopyOND_ReadMultiPages_Adv	0xD0037FA4
-+#define ADDR_Copy_eSSDtoMem		0xD0037FA8
-+#define ADDR_Copy_eSSDtoMem_Adv		0xD0037FAC
-+#define ADDR_NF8_ReadPage_Adv128p	0xD0037FB0
-+
-+#define R(x) (*(volatile uint32_t*)(x))
-+
-+int __bare_init s5p_irom_load_mmc(void *dest, uint32_t start_block, uint16_t block_count)
++static int usage(const char* me)
 +{
-+	typedef uint32_t (*func_t) (int32_t, uint32_t, uint16_t, uint32_t*, int8_t);
-+	uint32_t ret;
-+	uint32_t chbase = R(ADDR_V210_SDMMC_BASE);
-+	func_t func = (func_t)R(ADDR_CopySDMMCtoMem);
-+	int chan = (chbase - 0xEB000000) >> 20;
-+	if (chan != 0 && chan != 2)
++	printf("Usage: %s <input> <output> [<bufsize]\n", me);
++	return 1;
++}
++
++static void put32(uint8_t *ptr, uint32_t value)
++{
++	ptr[0] = value & 0xFF;
++	ptr[1] = (value >> 8) & 0xFF;
++	ptr[2] = (value >> 16) & 0xFF;
++	ptr[3] = (value >> 24) & 0xFF;
++}
++
++static size_t safe_fread(void *buf, size_t len, FILE* file)
++{
++	size_t rd = fread(buf, 1, len, file);
++	if (! rd) {
++		if (ferror(file))
++			fprintf(stderr, "Error reading file: %s\n", strerror(errno));
++		else
++			fprintf(stderr, "Unexpected end of file\n");
++	}
++	return rd;
++}
++
++static size_t safe_fwrite(const void *buf, size_t len, FILE* file)
++{
++	size_t wr = fwrite(buf, 1, len, file);
++	if (wr != len) {
++		fprintf(stderr, "Error writing file: %s\n", strerror(errno));
 +		return 0;
-+	return func(chan, start_block, block_count, (uint32_t*)dest, 0) ? 1 : 0;
++	}
++	return wr;
++}
++
++static int process(FILE *input, FILE *output, uint8_t *buf, unsigned bufsize)
++{
++	size_t rd;
++	unsigned i;
++	uint32_t cksum;
++	/* Read first chunk */
++	rd = safe_fread(buf + 16, bufsize - 16, input);
++	if (! rd)
++		return 4;
++	/* Calculate header */
++	put32(buf + 0, bufsize);
++	cksum = 0;
++	for (i = 16; i < bufsize; ++i)
++		cksum += (uint32_t)buf[i];
++	put32(buf + 8, cksum);
++	if (! safe_fwrite(buf, bufsize, output))
++		return 4;
++	/* Copy the rest of file */
++	while (! feof(input)) {
++		rd = safe_fread(buf, bufsize, input);
++		if (! rd)
++			return 4;
++		if (! safe_fwrite(buf, rd, output))
++			return 4;
++	}
++	return 0;
++}
++
++static int work(const char* me, const char *infile, const char *outfile, unsigned bufsize)
++{
++	uint8_t *buf;
++	FILE *input;
++	FILE *output;
++	int ret;
++	if (bufsize < 512 || bufsize > 65536)
++		return usage(me);
++	buf = calloc(1, bufsize);
++	if (! buf) {
++		fprintf(stderr, "Unable to allocate %u bytes of memory\n", bufsize);
++		return 2;
++	}
++	input = fopen(infile, "r");
++	if (! input) {
++		fprintf(stderr, "Cannot open `%s' for reading\n", infile);
++		free(buf);
++		return 3;
++	}
++	output = fopen(outfile, "w");
++	if (! output) {
++		fprintf(stderr, "Cannot open `%s' for writing\n", outfile);
++		fclose(input);
++		free(buf);
++		return 3;
++	}
++
++	ret = process(input, output, buf, bufsize);
++
++	fclose(output);
++	fclose(input);
++	free(buf);
++	return ret;
++}
++
++int main(int argc, char** argv)
++{
++	switch (argc) {
++	case 3:
++		return work(argv[0], argv[1], argv[2], DEFAULT_BUF_SIZE);
++	case 4:
++		return work(argv[0], argv[1], argv[2], atoi(argv[3]));
++	default:
++		return usage(argv[0]);
++	}
 +}
 -- 
 1.7.10
