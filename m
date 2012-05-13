@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp22.mail.ru ([94.100.176.175])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STRVX-0007K2-6D
- for barebox@lists.infradead.org; Sun, 13 May 2012 05:38:15 +0000
+ id 1STRVf-0007LA-JV
+ for barebox@lists.infradead.org; Sun, 13 May 2012 05:38:24 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 13 May 2012 09:38:03 +0400
-Message-Id: <1336887485-11941-2-git-send-email-shc_work@mail.ru>
+Date: Sun, 13 May 2012 09:38:05 +0400
+Message-Id: <1336887485-11941-4-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1336887485-11941-1-git-send-email-shc_work@mail.ru>
 References: <1336887485-11941-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,178 +21,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] PCM038: Call power_init() after initializing SPI.
+Subject: [PATCH 4/4] PCM038: Initial PCM970 development board support
 To: barebox@lists.infradead.org
 
-Power and frequency should be setup before initialize other devices.
+Some devices need to be moved to the PCM970 source file later, because
+in fact these devices are not installed on the main unit PCM038.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/boards/pcm038/pcm038.c |  140 +++++++++++++++++---------------------
- 1 files changed, 63 insertions(+), 77 deletions(-)
+ arch/arm/boards/pcm038/Makefile |    5 ++---
+ arch/arm/boards/pcm038/pcm038.c |    3 ---
+ arch/arm/boards/pcm038/pcm970.c |   30 ++++++++++++++++++++++++++++++
+ arch/arm/mach-imx/Kconfig       |    8 ++++++++
+ 4 files changed, 40 insertions(+), 6 deletions(-)
+ create mode 100644 arch/arm/boards/pcm038/pcm970.c
 
+diff --git a/arch/arm/boards/pcm038/Makefile b/arch/arm/boards/pcm038/Makefile
+index 970804e..6cd3a5b 100644
+--- a/arch/arm/boards/pcm038/Makefile
++++ b/arch/arm/boards/pcm038/Makefile
+@@ -1,3 +1,2 @@
+-
+-obj-y += lowlevel.o
+-obj-y += pcm038.o
++obj-y					+= lowlevel.o pcm038.o
++obj-$(CONFIG_MACH_PCM970_BASEBOARD)	+= pcm970.o
 diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
-index d481bdc..7814244 100644
+index 4f0a60a..db60f2c 100644
 --- a/arch/arm/boards/pcm038/pcm038.c
 +++ b/arch/arm/boards/pcm038/pcm038.c
-@@ -131,6 +131,67 @@ static void pcm038_usbh_init(void)
- }
- #endif
+@@ -287,9 +287,6 @@ static int pcm038_devices_init(void)
+ 	/* configure SRAM on cs1 */
+ 	imx27_setup_weimcs(1, 0x0000d843, 0x22252521, 0x22220a00);
  
-+/**
-+ * The spctl0 register is a beast: Seems you can read it
-+ * only one times without writing it again.
+-	/* configure SJA1000 on cs4 */
+-	imx27_setup_weimcs(4, 0x0000DCF6, 0x444A0301, 0x44443302);
+-
+ 	/* initizalize gpios */
+ 	for (i = 0; i < ARRAY_SIZE(mode); i++)
+ 		imx_gpio_mode(mode[i]);
+diff --git a/arch/arm/boards/pcm038/pcm970.c b/arch/arm/boards/pcm038/pcm970.c
+new file mode 100644
+index 0000000..cdd68a3
+--- /dev/null
++++ b/arch/arm/boards/pcm038/pcm970.c
+@@ -0,0 +1,30 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
 + */
-+static inline uint32_t get_pll_spctl10(void)
++
++#include <io.h>
++#include <init.h>
++#include <mach/imx-regs.h>
++
++static int pcm970_init(void)
 +{
-+	uint32_t reg;
-+
-+	reg = SPCTL0;
-+	SPCTL0 = reg;
-+
-+	return reg;
-+}
-+
-+/**
-+ * If the PLL settings are in place switch the CPU core frequency to the max. value
-+ */
-+static int pcm038_power_init(void)
-+{
-+#ifdef CONFIG_MFD_MC13XXX
-+	uint32_t spctl0 = get_pll_spctl10();
-+	struct mc13xxx *mc13xxx = mc13xxx_get();
-+
-+	/* PLL registers already set to their final values? */
-+	if (spctl0 == SPCTL0_VAL && MPCTL0 == MPCTL0_VAL) {
-+		console_flush();
-+		if (mc13xxx) {
-+			mc13xxx_reg_write(mc13xxx, MC13783_REG_SWITCHERS(0),
-+				MC13783_SWX_VOLTAGE(MC13783_SWX_VOLTAGE_1_450) |
-+				MC13783_SWX_VOLTAGE_DVS(MC13783_SWX_VOLTAGE_1_450) |
-+				MC13783_SWX_VOLTAGE_STANDBY(MC13783_SWX_VOLTAGE_1_450));
-+
-+			mc13xxx_reg_write(mc13xxx, MC13783_REG_SWITCHERS(4),
-+				MC13783_SW1A_MODE(MC13783_SWX_MODE_NO_PULSE_SKIP) |
-+				MC13783_SW1A_MODE_STANDBY(MC13783_SWX_MODE_NO_PULSE_SKIP) |
-+				MC13783_SW1A_SOFTSTART |
-+				MC13783_SW1B_MODE(MC13783_SWX_MODE_NO_PULSE_SKIP) |
-+				MC13783_SW1B_MODE_STANDBY(MC13783_SWX_MODE_NO_PULSE_SKIP) |
-+				MC13783_SW1B_SOFTSTART |
-+				MC13783_SW_PLL_FACTOR(32));
-+
-+			/* wait for required power level to run the CPU at 400 MHz */
-+			udelay(100000);
-+			CSCR = CSCR_VAL_FINAL;
-+			PCDR0 = 0x130410c3;
-+			PCDR1 = 0x09030911;
-+
-+			/* Clocks have changed. Notify clients */
-+			clock_notifier_call_chain();
-+		} else {
-+			printf("Failed to initialize PMIC. Will continue with low CPU speed\n");
-+		}
-+	}
-+#endif
-+
-+	/* clock gating enable */
-+	GPCR = 0x00050f08;
++	/* Configure SJA1000 on cs4 */
++	imx27_setup_weimcs(4, 0x0000DCF6, 0x444A0301, 0x44443302);
 +
 +	return 0;
 +}
 +
- static int pcm038_mem_init(void)
- {
- 	arm_add_mem_device("ram0", 0xa0000000, 128 * 1024 * 1024);
-@@ -245,6 +306,8 @@ static int pcm038_devices_init(void)
- 	spi_register_board_info(pcm038_spi_board_info, ARRAY_SIZE(pcm038_spi_board_info));
- 	imx27_add_spi0(&pcm038_spi_0_data);
++late_initcall(pcm970_init);
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 3236762..b402677 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -294,6 +294,14 @@ config MACH_PCM038
+ 	  Say Y here if you are using Phytec's phyCORE-i.MX27 (pcm038) equipped
+ 	  with a Freescale i.MX27 Processor
  
-+	pcm038_power_init();
++config MACH_PCM970_BASEBOARD
++	bool "PHYTEC PCM970 development board"
++	depends on MACH_PCM038
++	default y
++	help
++	  This adds board specific devices that can be found on Phytec's
++	  PCM970 evaluation board.
 +
- 	add_cfi_flash_device(-1, 0xC0000000, 32 * 1024 * 1024, 0);
- 	imx27_add_nand(&nand_info);
- 	imx27_add_fb(&pcm038_fb_data);
-@@ -305,80 +368,3 @@ static int pcm038_console_init(void)
- }
- 
- console_initcall(pcm038_console_init);
--
--#ifdef CONFIG_MFD_MC13XXX
--static int pmic_power(void)
--{
--	struct mc13xxx *mc13xxx;
--
--	mc13xxx = mc13xxx_get();
--	if (!mc13xxx)
--		return -ENODEV;
--
--	mc13xxx_reg_write(mc13xxx, MC13783_REG_SWITCHERS(0),
--		MC13783_SWX_VOLTAGE(MC13783_SWX_VOLTAGE_1_450) |
--		MC13783_SWX_VOLTAGE_DVS(MC13783_SWX_VOLTAGE_1_450) |
--		MC13783_SWX_VOLTAGE_STANDBY(MC13783_SWX_VOLTAGE_1_450));
--
--	mc13xxx_reg_write(mc13xxx, MC13783_REG_SWITCHERS(4),
--		MC13783_SW1A_MODE(MC13783_SWX_MODE_NO_PULSE_SKIP) |
--		MC13783_SW1A_MODE_STANDBY(MC13783_SWX_MODE_NO_PULSE_SKIP) |
--		MC13783_SW1A_SOFTSTART |
--		MC13783_SW1B_MODE(MC13783_SWX_MODE_NO_PULSE_SKIP) |
--		MC13783_SW1B_MODE_STANDBY(MC13783_SWX_MODE_NO_PULSE_SKIP) |
--		MC13783_SW1B_SOFTSTART |
--		MC13783_SW_PLL_FACTOR(32));
--
--	return 0;
--}
--#else
--# define pmic_power()	(1)
--#endif
--
--/**
-- * The spctl0 register is a beast: Seems you can read it
-- * only one times without writing it again.
-- */
--static inline uint32_t get_pll_spctl10(void)
--{
--	uint32_t reg;
--
--	reg = SPCTL0;
--	SPCTL0 = reg;
--
--	return reg;
--}
--
--/**
-- * If the PLL settings are in place switch the CPU core frequency to the max. value
-- */
--static int pcm038_power_init(void)
--{
--	uint32_t spctl0;
--
--	spctl0 = get_pll_spctl10();
--
--	/* PLL registers already set to their final values? */
--	if (spctl0 == SPCTL0_VAL && MPCTL0 == MPCTL0_VAL) {
--		console_flush();
--		if (!pmic_power()) {
--			/* wait for required power level to run the CPU at 400 MHz */
--			udelay(100000);
--			CSCR = CSCR_VAL_FINAL;
--			PCDR0 = 0x130410c3;
--			PCDR1 = 0x09030911;
--			/* Clocks have changed. Notify clients */
--			clock_notifier_call_chain();
--		} else {
--			printf("Failed to initialize PMIC. Will continue with low CPU speed\n");
--		}
--	}
--
--	/* clock gating enable */
--	GPCR = 0x00050f08;
--
--	return 0;
--}
--
--late_initcall(pcm038_power_init);
--
+ config MACH_NESO
+ 	bool "Garz+Fricke Neso"
+ 	select MACH_HAS_LOWLEVEL_INIT
 -- 
 1.7.3.4
 
