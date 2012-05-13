@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp22.mail.ru ([94.100.176.175])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STRVb-0007Kc-EJ
- for barebox@lists.infradead.org; Sun, 13 May 2012 05:38:20 +0000
+ id 1STRVV-0007Jk-OC
+ for barebox@lists.infradead.org; Sun, 13 May 2012 05:38:14 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 13 May 2012 09:38:04 +0400
-Message-Id: <1336887485-11941-3-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1336887485-11941-1-git-send-email-shc_work@mail.ru>
-References: <1336887485-11941-1-git-send-email-shc_work@mail.ru>
+Date: Sun, 13 May 2012 09:38:02 +0400
+Message-Id: <1336887485-11941-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +19,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] PCM038: Remove unused includes
+Subject: [PATCH 1/4] PCM038: Update board description
 To: barebox@lists.infradead.org
 
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/boards/pcm038/pcm038.c |    3 ---
- 1 files changed, 0 insertions(+), 3 deletions(-)
+ arch/arm/boards/pcm038/pcm038.dox |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
-index 7814244..4f0a60a 100644
---- a/arch/arm/boards/pcm038/pcm038.c
-+++ b/arch/arm/boards/pcm038/pcm038.c
-@@ -30,15 +30,12 @@
- #include <generated/mach-types.h>
- #include <partition.h>
- #include <fs.h>
--#include <fcntl.h>
- #include <nand.h>
--#include <command.h>
- #include <spi/spi.h>
- #include <io.h>
- #include <mach/imx-nand.h>
- #include <mach/imx-pll.h>
- #include <mach/imxfb.h>
--#include <asm/mmu.h>
- #include <i2c/i2c.h>
- #include <usb/ulpi.h>
- #include <mach/spi.h>
+diff --git a/arch/arm/boards/pcm038/pcm038.dox b/arch/arm/boards/pcm038/pcm038.dox
+index 9b17674..85177d2 100644
+--- a/arch/arm/boards/pcm038/pcm038.dox
++++ b/arch/arm/boards/pcm038/pcm038.dox
+@@ -2,7 +2,8 @@
+ 
+ This CPU card is based on a Freescale i.MX27 CPU. The card is shipped with:
+ 
+-- up to 32MiB NOR type Flash Memory
+-- 32MiB synchronous dynamic RAM
++- up to 64MB NOR Flash Memory
++- up to 1GB NAND Flash Memory
++- up to 256MB DRAM
+ 
+ */
 -- 
 1.7.3.4
 
