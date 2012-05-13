@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STXZw-0002uS-4X
- for barebox@lists.infradead.org; Sun, 13 May 2012 12:07:12 +0000
+ id 1STXmT-0003C8-Hd
+ for barebox@lists.infradead.org; Sun, 13 May 2012 12:20:10 +0000
+Date: Sun, 13 May 2012 14:20:05 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 13 May 2012 14:07:06 +0200
-Message-Id: <1336910826-27453-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20120513122005.GZ27341@pengutronix.de>
+References: <m3397emhaw.fsf@intrepid.localdomain>
+ <20120512213845.GA22395@pengutronix.de>
+ <m3k40gflaq.fsf@intrepid.localdomain>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <m3k40gflaq.fsf@intrepid.localdomain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,87 +20,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] timeout: allow to set a variable with the key pressed
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: put a valid "barebox" signature in the header on
+ big-endian systems.
+To: Krzysztof Halasa <khc@pm.waw.pl>
+Cc: barebox@lists.infradead.org, Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 
-Useful if we want to know which key caused the timeout.
+On Sun, May 13, 2012 at 12:05:33PM +0200, Krzysztof Halasa wrote:
+> Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de> writes:
+> =
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/timeout.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+> >> +++ b/arch/arm/include/asm/barebox-arm-head.h
+> >> @@ -24,8 +24,7 @@ static inline void barebox_arm_head(void)
+> >>  		"1: b 1b\n"
+> >>  		"1: b 1b\n"
+> >>  #endif
+> >> -		".word 0x65726162\n"			/* 'bare' */
+> >> -		".word 0x00786f62\n"			/* 'box' */
+> >> +		".asciz \"barebox\"\n"
+> >>  		".word _text\n"				/* text base. If copied there,
+> >>  							 * barebox can skip relocation
+> >>  							 */
+> > Another downside of this patch (apart from the file type detection that
+> > still needs adaption?) is that the magic is different depending on
+> > endianess.
+> =
 
-diff --git a/commands/timeout.c b/commands/timeout.c
-index 01ece52..d4e90cd 100644
---- a/commands/timeout.c
-+++ b/commands/timeout.c
-@@ -25,6 +25,7 @@
- #include <errno.h>
- #include <getopt.h>
- #include <clock.h>
-+#include <environment.h>
- 
- #define TIMEOUT_RETURN	(1 << 0)
- #define TIMEOUT_CTRLC	(1 << 1)
-@@ -35,9 +36,11 @@ static int do_timeout(int argc, char *argv[])
- {
- 	int timeout = 3, ret = 1;
- 	int flags = 0, opt, countdown;
-+	int key = 0;
- 	uint64_t start, second;
-+	const char *varname = NULL;
- 
--	while((opt = getopt(argc, argv, "t:crsa")) > 0) {
-+	while((opt = getopt(argc, argv, "t:crsav:")) > 0) {
- 		switch(opt) {
- 		case 'r':
- 			flags |= TIMEOUT_RETURN;
-@@ -51,6 +54,9 @@ static int do_timeout(int argc, char *argv[])
- 		case 's':
- 			flags |= TIMEOUT_SILENT;
- 			break;
-+		case 'v':
-+			varname = optarg;
-+			break;
- 		default:
- 			return 1;
- 		}
-@@ -71,13 +77,14 @@ static int do_timeout(int argc, char *argv[])
- 
- 	do {
- 		if (tstc()) {
--			int key = getc();
-+			key = getc();
- 			if (flags & TIMEOUT_CTRLC && key == 3)
- 				goto  out;
- 			if (flags & TIMEOUT_ANYKEY)
- 				goto out;
- 			if (flags & TIMEOUT_RETURN && key == '\n')
- 				goto out;
-+			key = 0;
- 		}
- 		if (!(flags & TIMEOUT_SILENT) && is_timeout(second, SECOND)) {
- 			printf("\b\b%2d", countdown--);
-@@ -87,6 +94,11 @@ static int do_timeout(int argc, char *argv[])
- 
- 	ret = 0;
- out:
-+	if (varname && key) {
-+		char str[2] = { };
-+		str[0] = key;
-+		setenv(varname, str);
-+	}
- 	if (!(flags & TIMEOUT_SILENT))
- 		printf("\n");
- 
--- 
-1.7.10
+> Actually it's the opposite - i.e., the magic is now always "barebox\0"
+> and doesn't depend on endianness :-)
+> =
 
+> Without this patch, the magic changes with endianness (it becomes
+> "erab\0xob" on BE).
+
+This may have the upside that with this we are able to detect foreign
+endian images like done in the zImage support. Here we use this to know
+that we have to swap byte endianess before jumping to the kernel.
+
+I probably should have chosen some arbitrary number rather than a
+string, then nobody would have wondered about this ;)
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
