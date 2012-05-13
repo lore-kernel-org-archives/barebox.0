@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STexr-0004Ew-3a
- for barebox@lists.infradead.org; Sun, 13 May 2012 20:00:24 +0000
-Date: Sun, 13 May 2012 22:00:19 +0200
+ id 1STeyq-0004OC-4g
+ for barebox@lists.infradead.org; Sun, 13 May 2012 20:01:24 +0000
+Date: Sun, 13 May 2012 22:01:21 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120513200019.GD27341@pengutronix.de>
-References: <1336911983-18930-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20120513200121.GE27341@pengutronix.de>
+References: <1336927010-13872-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1336911983-18930-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1336927010-13872-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,13 +22,12 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Removed duplicate definition for DEVFS_PARTITION_xxx
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] fix typo funtion -> function
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, May 13, 2012 at 04:26:23PM +0400, Alexander Shiyan wrote:
-> 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+On Sun, May 13, 2012 at 08:36:50PM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
 Applied, thanks
 
