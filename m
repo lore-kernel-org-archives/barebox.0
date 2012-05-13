@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STUiW-0001K6-Ne
- for barebox@lists.infradead.org; Sun, 13 May 2012 09:03:53 +0000
-Date: Sun, 13 May 2012 11:03:50 +0200
+ id 1STUjz-0001PN-Si
+ for barebox@lists.infradead.org; Sun, 13 May 2012 09:05:24 +0000
+Date: Sun, 13 May 2012 11:05:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120513090350.GV27341@pengutronix.de>
-References: <m3sjfemhv5.fsf@intrepid.localdomain>
+Message-ID: <20120513090522.GW27341@pengutronix.de>
+References: <1336858812-23098-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <m3sjfemhv5.fsf@intrepid.localdomain>
+In-Reply-To: <1336858812-23098-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +18,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] NOR flash: reduce size of cfiword_t if not using 64-bit
- bus.
-To: Krzysztof Halasa <khc@pm.waw.pl>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] defaultenv: don't overwrite  in config
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-T24gU2F0LCBNYXkgMDUsIDIwMTIgYXQgMTE6MzU6MTBQTSArMDIwMCwgS3J6eXN6dG9mIEhhbGFz
-YSB3cm90ZToKPiBTaWduZWQtb2ZmLWJ5OiBLcnp5c3p0b2YgSGHFgmFzYSA8a2hjQHBtLndhdy5w
-bD4KCkFwcGxpZWQsIHRoYW5rcwoKU2FzY2hhCgo+IAo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25v
-ci9jZmlfZmxhc2guaCBiL2RyaXZlcnMvbm9yL2NmaV9mbGFzaC5oCj4gaW5kZXggZGY0ODJiNi4u
-ZmVjMDg5NCAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL25vci9jZmlfZmxhc2guaAo+ICsrKyBiL2Ry
-aXZlcnMvbm9yL2NmaV9mbGFzaC5oCj4gQEAgLTMwLDcgKzMwLDE3IEBACj4gICNpbmNsdWRlIDxs
-aW51eC9tdGQvbXRkLmg+Cj4gIAo+ICB0eXBlZGVmIHVuc2lnbmVkIGxvbmcgZmxhc2hfc2VjdF90
-Owo+ICsKPiArI2lmICAgZGVmaW5lZChDT05GSUdfRFJJVkVSX0NGSV9CQU5LX1dJRFRIXzgpCj4g
-IHR5cGVkZWYgdTY0IGNmaXdvcmRfdDsKPiArI2VsaWYgZGVmaW5lZChDT05GSUdfRFJJVkVSX0NG
-SV9CQU5LX1dJRFRIXzQpCj4gK3R5cGVkZWYgdTMyIGNmaXdvcmRfdDsKPiArI2VsaWYgZGVmaW5l
-ZChDT05GSUdfRFJJVkVSX0NGSV9CQU5LX1dJRFRIXzIpCj4gK3R5cGVkZWYgdTE2IGNmaXdvcmRf
-dDsKPiArI2Vsc2UKPiArdHlwZWRlZiB1OCBjZml3b3JkX3Q7Cj4gKyNlbmRpZgo+ICsKPiAgc3Ry
-dWN0IGNmaV9jbWRfc2V0Owo+ICAKPiAgLyotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+IAo+IF9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFyZWJveCBtYWlsaW5nIGxp
-c3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1
-c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1
-dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkg
-fCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBI
-UkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
-IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Sat, May 12, 2012 at 11:40:12PM +0200, Uwe Kleine-K=F6nig wrote:
+> This patch prooved to be useful while working with a colleague on a single
+> machine. It allows to switch the user without editing /env/config by
+> just issuing:
+> =
+
+> 	export user=3Dme
+> =
+
+> . Note, in bash this construct (i.e. an if without body) bails out with:
+> =
+
+> 	Syntax error: "fi" unexpected
+> =
+
+> but in hush it seems to do the right thing.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+
+Applied, thanks.
+
+I hope though that the current default env will not last for very much
+longer.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
