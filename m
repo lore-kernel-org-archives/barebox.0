@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STY6Y-0003cD-So
- for barebox@lists.infradead.org; Sun, 13 May 2012 12:40:56 +0000
-Received: by laap9 with SMTP id p9so3495853laa.36
- for <barebox@lists.infradead.org>; Sun, 13 May 2012 05:40:53 -0700 (PDT)
+ id 1STY6b-0003d4-JB
+ for barebox@lists.infradead.org; Sun, 13 May 2012 12:41:00 +0000
+Received: by laap9 with SMTP id p9so3495868laa.36
+ for <barebox@lists.infradead.org>; Sun, 13 May 2012 05:40:56 -0700 (PDT)
 From: Alexey Galakhov <agalakhov@gmail.com>
-Date: Sun, 13 May 2012 18:40:01 +0600
-Message-Id: <1336912806-4163-5-git-send-email-agalakhov@gmail.com>
+Date: Sun, 13 May 2012 18:40:02 +0600
+Message-Id: <1336912806-4163-6-git-send-email-agalakhov@gmail.com>
 In-Reply-To: <1336912806-4163-1-git-send-email-agalakhov@gmail.com>
 References: <20120513090917.GX27341@pengutronix.de>
  <1336912806-4163-1-git-send-email-agalakhov@gmail.com>
@@ -24,123 +24,105 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/9] S5PV210 iROM magic boot code
+Subject: [PATCH 5/9] S5P DRAM support
 To: barebox@lists.infradead.org
 Cc: Alexey Galakhov <agalakhov@gmail.com>
 
 Signed-off-by: Alexey Galakhov <agalakhov@gmail.com>
 ---
- arch/arm/Kconfig                                 |    1 +
- arch/arm/boards/tiny210/lowlevel.c               |   11 +++-
- arch/arm/lib/barebox.lds.S                       |    4 ++
- arch/arm/mach-samsung/Kconfig                    |    1 +
- arch/arm/mach-samsung/Makefile                   |    1 +
- arch/arm/mach-samsung/include/mach/s3c-generic.h |    4 ++
- arch/arm/mach-samsung/s5p-irom-boot.c            |   64 ++++++++++++++++++++++
- common/Kconfig                                   |   24 ++++++++
- 8 files changed, 108 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/mach-samsung/s5p-irom-boot.c
+ arch/arm/boards/tiny210/config.h                  |    9 +
+ arch/arm/boards/tiny210/lowlevel.c                |    4 +-
+ arch/arm/boards/tiny210/tiny210.c                 |    2 +-
+ arch/arm/mach-samsung/Makefile                    |    2 +-
+ arch/arm/mach-samsung/include/mach/iomap-s5pcxx.h |    3 +
+ arch/arm/mach-samsung/include/mach/s3c-generic.h  |    1 +
+ arch/arm/mach-samsung/mem-s5pcxx.c                |  260 +++++++++++++++++++++
+ 7 files changed, 278 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm/mach-samsung/mem-s5pcxx.c
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index f465084..6012a1a 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -16,6 +16,7 @@ config ARM
- 	select HAS_MODULES
- 	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
- 	select HAVE_CONFIGURABLE_TEXT_BASE
-+	select HAVE_BARE_INIT_PADDING
- 	default y
- 
- config ARM_AMBA
+diff --git a/arch/arm/boards/tiny210/config.h b/arch/arm/boards/tiny210/config.h
+index ebf661e..83cb0b4 100644
+--- a/arch/arm/boards/tiny210/config.h
++++ b/arch/arm/boards/tiny210/config.h
+@@ -1 +1,10 @@
+ #define S5PCXX_CLOCK_REFERENCE 24000000
++
++#define S5P_DRAM_DDR2
++
++#define S5P_DRAM_WR	3
++#define S5P_DRAM_CAS	4
++#define DMC_TIMING_AREF	0x00000618
++#define DMC_TIMING_ROW	0x2B34438A
++#define DMC_TIMING_DATA	0x24240000
++#define DMC_TIMING_PWR	0x0BDC0343
 diff --git a/arch/arm/boards/tiny210/lowlevel.c b/arch/arm/boards/tiny210/lowlevel.c
-index 8926fda..fe43565 100644
+index fe43565..dcf4091 100644
 --- a/arch/arm/boards/tiny210/lowlevel.c
 +++ b/arch/arm/boards/tiny210/lowlevel.c
-@@ -23,11 +23,15 @@
- #include <init.h>
- #include <io.h>
- #include <asm/barebox-arm.h>
-+#include <asm/sections.h>
- #include <mach/s3c-iomap.h>
- #include <mach/s3c-clocks.h>
-+#include <mach/s3c-generic.h>
- 
- void __bare_init board_init_lowlevel(void)
- {
-+	unsigned r;
-+
- 	/* TODO: initialize PLL here */
- 
+@@ -37,7 +37,9 @@ void __bare_init board_init_lowlevel(void)
  	if (get_pc() < 0xD0000000) /* Are we running from iRAM? */
-@@ -35,7 +39,10 @@ void __bare_init board_init_lowlevel(void)
+ 		return; /* No, we don't. */
  
- 	/* TODO: initialize DRAM here */
- 
--	/* TODO: load barebox to DRAM here */
-+	if (! s5p_irom_mmc_load((void*)TEXT_BASE - 16, 1, (barebox_image_size + 16 + 511) / 512))
-+		while (1) { } /* hang */
- 
--	while (1) { } /* hang */
-+	/* Jump to SDRAM */
-+	r = (unsigned)TEXT_BASE;
-+	__asm__ __volatile__("mov pc, %0" : : "r"(r));
- }
-diff --git a/arch/arm/lib/barebox.lds.S b/arch/arm/lib/barebox.lds.S
-index 3fd271b..4d02eda 100644
---- a/arch/arm/lib/barebox.lds.S
-+++ b/arch/arm/lib/barebox.lds.S
-@@ -49,6 +49,10 @@ SECTIONS
- 		__bare_init_start = .;
- 		*(.text_bare_init*)
- 		__bare_init_end = .;
-+#ifdef CONFIG_BAREBOX_BARE_INIT_PADDING
-+		. = (. + (CONFIG_BAREBOX_BARE_INIT_PADDING_SIZE));
-+		. = ALIGN(CONFIG_BAREBOX_BARE_INIT_PADDING_ALIGN);
+-	/* TODO: initialize DRAM here */
++#ifdef CONFIG_S3C_SDRAM_INIT
++	s5p_init_dram_bank(S5P_DMC0_BASE, 0x20E00323, 0);
 +#endif
- 		__exceptions_start = .;
- 		KEEP(*(.text_exceptions*))
- 		__exceptions_stop = .;
-diff --git a/arch/arm/mach-samsung/Kconfig b/arch/arm/mach-samsung/Kconfig
-index fcef677..183b84d 100644
---- a/arch/arm/mach-samsung/Kconfig
-+++ b/arch/arm/mach-samsung/Kconfig
-@@ -98,6 +98,7 @@ config MACH_TINY210
- 	select CPU_S5PV210
- 	select MACH_HAS_LOWLEVEL_INIT
- 	select MACH_DO_LOWLEVEL_INIT
-+	select BAREBOX_BARE_INIT_PADDING
  
- endchoice
+ 	if (! s5p_irom_mmc_load((void*)TEXT_BASE - 16, 1, (barebox_image_size + 16 + 511) / 512))
+ 		while (1) { } /* hang */
+diff --git a/arch/arm/boards/tiny210/tiny210.c b/arch/arm/boards/tiny210/tiny210.c
+index eb23196..f3a5d33 100644
+--- a/arch/arm/boards/tiny210/tiny210.c
++++ b/arch/arm/boards/tiny210/tiny210.c
+@@ -70,7 +70,7 @@ static struct gpio_led leds[] = {
  
+ static int tiny210_mem_init(void)
+ {
+-	arm_add_mem_device("ram0", S3C_SDRAM_BASE, (512 << 20));
++	arm_add_mem_device("ram0", S3C_SDRAM_BASE, s3c_get_memory_size());
+ 	return 0;
+ }
+ mem_initcall(tiny210_mem_init);
 diff --git a/arch/arm/mach-samsung/Makefile b/arch/arm/mach-samsung/Makefile
-index 66f3fd2..0123743 100644
+index 0123743..ac59d7b 100644
 --- a/arch/arm/mach-samsung/Makefile
 +++ b/arch/arm/mach-samsung/Makefile
-@@ -2,4 +2,5 @@ obj-y += s3c-timer.o generic.o
+@@ -1,6 +1,6 @@
+ obj-y += s3c-timer.o generic.o
  obj-lowlevel-$(CONFIG_ARCH_S3C24xx) += lowlevel-s3c24x0.o
  obj-$(CONFIG_ARCH_S3C24xx) += gpio-s3c24x0.o clocks-s3c24x0.o mem-s3c24x0.o
- obj-$(CONFIG_ARCH_S5PCxx) += gpio-s5pcxx.o clocks-s5pcxx.o
-+obj-$(CONFIG_ARCH_S5PCxx) += s5p-irom-boot.o
+-obj-$(CONFIG_ARCH_S5PCxx) += gpio-s5pcxx.o clocks-s5pcxx.o
++obj-$(CONFIG_ARCH_S5PCxx) += gpio-s5pcxx.o clocks-s5pcxx.o mem-s5pcxx.o
+ obj-$(CONFIG_ARCH_S5PCxx) += s5p-irom-boot.o
  obj-$(CONFIG_S3C_LOWLEVEL_INIT) += $(obj-lowlevel-y)
+diff --git a/arch/arm/mach-samsung/include/mach/iomap-s5pcxx.h b/arch/arm/mach-samsung/include/mach/iomap-s5pcxx.h
+index cb05527..248f868 100644
+--- a/arch/arm/mach-samsung/include/mach/iomap-s5pcxx.h
++++ b/arch/arm/mach-samsung/include/mach/iomap-s5pcxx.h
+@@ -47,3 +47,6 @@
+ #define S3C_UART3_SIZE 0x400
+ #define S3C_UART_HAS_UBRDIVSLOT
+ #define S3C_UART_HAS_UINTM
++
++#define S5P_DMC0_BASE 0xF0000000
++#define S5P_DMC1_BASE 0xF1400000
 diff --git a/arch/arm/mach-samsung/include/mach/s3c-generic.h b/arch/arm/mach-samsung/include/mach/s3c-generic.h
-index 62d2c93..d6d1a3e 100644
+index d6d1a3e..381ad7b 100644
 --- a/arch/arm/mach-samsung/include/mach/s3c-generic.h
 +++ b/arch/arm/mach-samsung/include/mach/s3c-generic.h
-@@ -38,3 +38,7 @@ uint32_t s3c_get_memory_size(void);
- #ifdef CONFIG_ARCH_S3C24xx
- void s3c24xx_disable_second_sdram_bank(void);
+@@ -40,5 +40,6 @@ void s3c24xx_disable_second_sdram_bank(void);
  #endif
-+
-+#ifdef CONFIG_ARCH_S5PCxx
-+int s5p_irom_mmc_load(void *dest, uint32_t start_block, uint16_t block_count);
-+#endif
-diff --git a/arch/arm/mach-samsung/s5p-irom-boot.c b/arch/arm/mach-samsung/s5p-irom-boot.c
+ 
+ #ifdef CONFIG_ARCH_S5PCxx
++void s5p_init_dram_bank(uint32_t base, uint32_t mc0, uint32_t mc1);
+ int s5p_irom_mmc_load(void *dest, uint32_t start_block, uint16_t block_count);
+ #endif
+diff --git a/arch/arm/mach-samsung/mem-s5pcxx.c b/arch/arm/mach-samsung/mem-s5pcxx.c
 new file mode 100644
-index 0000000..8fa0de4
+index 0000000..f3d325a
 --- /dev/null
-+++ b/arch/arm/mach-samsung/s5p-irom-boot.c
-@@ -0,0 +1,64 @@
++++ b/arch/arm/mach-samsung/mem-s5pcxx.c
+@@ -0,0 +1,260 @@
 +/*
 + * Copyright (C) 2012 Alexey Galakhov
 + *
@@ -160,86 +142,247 @@ index 0000000..8fa0de4
 +
 +#include <config.h>
 +#include <common.h>
++#include <io.h>
 +#include <init.h>
 +#include <mach/s3c-generic.h>
++#include <mach/s3c-iomap.h>
 +
-+/*
-+ * These magical address values are from u-boot
-+ * Not sure what they really mean but they work
++#define S5P_DMC_CONCONTROL	0x00
++#define S5P_DMC_MEMCONTROL	0x04
++#define S5P_DMC_MEMCONFIG0	0x08
++#define S5P_DMC_MEMCONFIG1	0x0C
++#define S5P_DMC_DIRECTCMD	0x10
++#define S5P_DMC_PRECHCONFIG	0x14
++#define S5P_DMC_PHYCONTROL0	0x18
++#define S5P_DMC_PHYCONTROL1	0x1C
++#define S5P_DMC_PWRDNCONFIG	0x28
++#define S5P_DMC_TIMINGAREF	0x30
++#define S5P_DMC_TIMINGROW	0x34
++#define S5P_DMC_TIMINGDATA	0x38
++#define S5P_DMC_TIMINGPOWER	0x3C
++#define S5P_DMC_PHYSTATUS	0x40
++
++/* DRAM commands */
++#define CMD(x)  ((x) << 24)
++#define BANK(x) ((x) << 16)
++#define CHIP(x) ((x) << 20)
++#define ADDR(x) (x)
++
++/**
++ *  MR definition:
++ *  1 11
++ *  2 1098 7654 3210
++ *      |     |  ^^^- burst length, 010=4, 011=8
++ *      |     | ^- burst type 0=sequnential, 1=interleaved
++ *      |   ^^^-- CAS latency
++ *      |  ^----- test, 0=normal, 1=test
++ *      |^---- DLL reset, 1=yes
++ *    ^^^----- WR, 1=2, 2=3 etc.
++ *  ^------- PD, 0=fast exit, 1=low power
++ *
++ *  EMR1 definition:
++ *  1 11
++ *  2 1098 7654 3210
++ *         |       ^- DLL, 0=enable
++ *         |      ^-- output strength, 0=full, 1=reduced
++ *         |^.. .^--- Rtt, 00=off, 01=75, 10=150, 11=50 Ohm
++ *         | ^^ ^-- Posted CAS# AL, 0-6
++ *      ^^ ^------ OCD: 000=OCD exit, 111=enable defaults
++ *     ^------ DQS#, 0=enable, 1=disable
++ *    ^------- RDQS enable, 0=no, 1=yes
++ *  ^-------- outputs, 0=enabled, 1=disabled
++ *
++ *  EMR2 definition:
++ *  bit 7
++ *  1 1
++ *  2 1098 7654 3210
++ *         ^-- SRT, 0=1x (0-85 deg.C), 1=2x (>85 deg.C)
++ *  all other bits = 0
++ *
++ *  EMR3 definition: all bits 0
 + */
-+#if 1 /* S5PV210 and other CPUs */
-+# define MADDR_CH 0xD0037488
-+# define MADDR_CP 0xD0037F98
-+#else /* not sure when, some older CPUs */
-+# define MADDR_CH 0xD003A508
-+# define MADDR_CP 0xD003E008
++
++#define MRS	CMD(0x0)
++#define PALL	CMD(0x1)
++#define PRE	CMD(0x2)
++#define DPD	CMD(0x3)
++#define REFS	CMD(0x4)
++#define REFA	CMD(0x5)
++#define CKEL	CMD(0x6)
++#define NOP	CMD(0x7)
++#define REFSX	CMD(0x8)
++#define MRR	CMD(0x9)
++
++#define EMRS1 (MRS | BANK(1))
++#define EMRS2 (MRS | BANK(2))
++#define EMRS3 (MRS | BANK(3))
++
++/* Burst is (1 << S5P_DRAM_BURST), i.e. S5P_DRAM_BURST=2 for burst 4 */
++#ifndef S5P_DRAM_BURST
++/* (LP)DDR2 supports burst 4 only, make it default */
++# define S5P_DRAM_BURST 2
 +#endif
 +
-+typedef uint32_t (*mmc2mem_func)
-+(uint32_t channel, uint32_t start_block, uint16_t block_count, uint32_t *dest, uint32_t init);
-+
-+/*
-+ * Call to the magical iROM code present on S5P CPUs
-+ * Block seems to be 512 bytes
++/**
++ * Initialization sequences for different kinds of DRAM
 + */
-+int __bare_init s5p_irom_mmc_load(void *dest, uint32_t start_block, uint16_t block_count)
++#define dcmd(x) writel((x) | CHIP(chip), base + S5P_DMC_DIRECTCMD)
++
++/* TODO: LPDDR and LPDDR2 */
++
++#ifdef S5P_DRAM_DDR2
++static void __bare_init init_seq(uint32_t base, unsigned chip)
 +{
-+	uint32_t ret;
-+	uint32_t chan;
-+	uint32_t ch = *(volatile uint32_t*)(MADDR_CH);
-+	mmc2mem_func cp_func = (mmc2mem_func)(*(uint32_t*)(MADDR_CP));
-+	switch (ch)
-+	{
-+	case 0xEB000000:
-+		chan = 0;
-+		break;
-+	case 0xEB200000:
-+		chan = 2;
-+		break;
-+	default:
-+		return 0;
-+	}
-+
-+	ret = cp_func(chan, start_block, block_count, (uint32_t*)dest, 0);
-+	if (ret == 0)
-+		return 0; /* error */
-+	return 1;
++	const uint32_t emr = 0x400; /* DQS disable */
++	const uint32_t mr = (((S5P_DRAM_WR) - 1) << 9)
++			  | ((S5P_DRAM_CAS) << 4)
++			  | (S5P_DRAM_BURST);
++	dcmd(NOP);
++	/* FIXME wait here? */
++	dcmd(PALL); dcmd(EMRS2); dcmd(EMRS3);
++	dcmd(EMRS1 | ADDR(emr));         /* DQS disable */
++	dcmd(MRS   | ADDR(mr | 0x100));  /* DLL reset */
++	dcmd(PALL); dcmd(REFA); dcmd(REFA);
++	dcmd(MRS   | ADDR(mr));          /* DLL no reset */
++	dcmd(EMRS1 | ADDR(emr | 0x380)); /* OCD defaults */
++	dcmd(EMRS1 | ADDR(emr));         /* OCD exit */
 +}
-diff --git a/common/Kconfig b/common/Kconfig
-index 73d620a..199268e 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -124,6 +124,30 @@ config BAREBOX_MAX_BARE_INIT_SIZE
- 	  this will allow your bare_init will fit in SRAM as example
- 	  ARCH can overwrite it via ARCH_BAREBOX_MAX_BARE_INIT_SIZE
- 
-+config HAVE_BARE_INIT_PADDING
-+	bool
++#endif
 +
-+config BAREBOX_BARE_INIT_PADDING
-+	depends on HAVE_BARE_INIT_PADDING
-+	bool "Enable bare_init tail padding"
-+	default n
-+	help
-+	  Some architectures require that 1st stage loader is padded
-+	  with zeroes. This will add zero padding at the end of
-+	  bare_init block. If unsure, say n.
++#undef dcmd
 +
-+config BAREBOX_BARE_INIT_PADDING_SIZE
-+	depends on BAREBOX_BARE_INIT_PADDING
-+	prompt "Minimal bare_init padding size"
-+	hex
-+	default 0x4
 +
-+config BAREBOX_BARE_INIT_PADDING_ALIGN
-+	depends on BAREBOX_BARE_INIT_PADDING
-+	prompt "bare_init end alignment"
-+	hex
-+	default 0x200
++static inline void __bare_init start_dll(uint32_t base)
++{
++	uint32_t pc0 = 0x00101000; /* the only legal initial value */
++	uint32_t lv;
++	/* Init DLL */
++	writel(pc0, base + S5P_DMC_PHYCONTROL0);
++#ifdef S5P_DRAM_DDR2
++	/* refcount 8, 180 deg. shift */
++	writel(0x00000086, base + S5P_DMC_PHYCONTROL1);
++#else
++	/* refcount 8, 90 deg. shift */
++	writel(0x00000085, base + S5P_DMC_PHYCONTROL1);
++#endif
++	/* DLL on */
++	pc0 |= 0x2;
++	writel(pc0, base + S5P_DMC_PHYCONTROL0);
++	/* DLL start */
++	pc0 |= 0x1;
++	writel(pc0, base + S5P_DMC_PHYCONTROL0);
 +
- config HAVE_CONFIGURABLE_MEMORY_LAYOUT
- 	bool
- 
++	/* Find lock val */
++	do {
++		lv = readl(base + S5P_DMC_PHYSTATUS);
++	} while ((lv & 0x7) != 0x7);
++
++	lv >>= 6;
++	lv &= 0xff; /* ctrl_lock_value[9:2] - coarse */
++	pc0 |= (lv << 24); /* ctrl_force */
++	writel(pc0, base + S5P_DMC_PHYCONTROL0); /* force value locking */
++}
++
++
++
++void __bare_init s5p_init_dram_bank(uint32_t base, uint32_t mc0, uint32_t mc1)
++{
++#ifdef S5P_DRAM_LPDDR
++	uint32_t reg = 0x100;
++#endif
++#ifdef S5P_DRAM_LPDDR2
++	uint32_t reg = 0x200;
++#endif
++#ifdef S5P_DRAM_DDR2
++	uint32_t reg = 0x400;
++#endif
++	reg |= (S5P_DRAM_BURST) << 20;
++#ifdef S5P_DRAM_16BIT
++	reg |= 0x1000;
++#else /* 32-bit */
++	reg |= 0x2000;
++#endif
++	if (mc1)
++		reg |= 0x10000; /* two chips */
++
++	start_dll(base);
++	writel(reg, base + S5P_DMC_MEMCONTROL);
++
++	/* Set up memory layout */
++	writel(mc0, base + S5P_DMC_MEMCONFIG0);
++	if (mc1)
++		writel(mc1, base + S5P_DMC_MEMCONFIG1);
++	/* Open page precharge policy - reasonable defaults */
++	writel(0xFF000000, base + S5P_DMC_PRECHCONFIG);
++	/* Set up timings */
++	writel(DMC_TIMING_AREF, base + S5P_DMC_TIMINGAREF);
++	writel(DMC_TIMING_ROW,  base + S5P_DMC_TIMINGROW);
++	writel(DMC_TIMING_DATA, base + S5P_DMC_TIMINGDATA);
++	writel(DMC_TIMING_PWR,  base + S5P_DMC_TIMINGPOWER);
++
++	/* Start-Up Commands */
++	init_seq(base, 0);
++	if (mc1)
++		init_seq(base, 1);
++
++	/* Reasonable defaults and auto-refresh on */
++	writel(0x0FFF1070, base + S5P_DMC_CONCONTROL);
++	/* Reasonable defaults */
++	writel(0xFFFF00FF, base + S5P_DMC_PWRDNCONFIG);
++}
++
++
++#define BANK_ENABLED(base) (readl((base) + S5P_DMC_PHYCONTROL0) & 1)
++#define NUM_EXTRA_CHIPS(base) ((readl((base) + S5P_DMC_MEMCONTROL) >> 16) & 0xF)
++
++#define BANK_START(x) ((x) & 0xFF000000)
++#define BANK_END(x) (BANK_START(x) | ~(((x) & 0x00FF0000) << 8))
++#define BANK_LEN(x) (BANK_END(x) - BANK_START(x) + 1)
++
++static inline void sortswap(uint32_t *x, uint32_t *y)
++{
++	if (*y < *x) {
++		*x ^= *y;
++		*y ^= *x;
++		*x ^= *y;
++	}
++}
++
++uint32_t s3c_get_memory_size(void)
++{
++	int i;
++	uint32_t len;
++	uint32_t mc[4] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
++	/* Read MEMCONFIG registers */
++	if (BANK_ENABLED(S5P_DMC0_BASE)) {
++		mc[0] = readl(S5P_DMC0_BASE + S5P_DMC_MEMCONFIG0);
++		if (NUM_EXTRA_CHIPS(S5P_DMC0_BASE) > 0)
++			mc[1] = readl(S5P_DMC0_BASE + S5P_DMC_MEMCONFIG1);
++	}
++	if (BANK_ENABLED(S5P_DMC1_BASE)) {
++		mc[2] = readl(S5P_DMC1_BASE + S5P_DMC_MEMCONFIG0);
++		if (NUM_EXTRA_CHIPS(S5P_DMC1_BASE) > 0)
++			mc[3] = readl(S5P_DMC1_BASE + S5P_DMC_MEMCONFIG1);
++	}
++	/* Sort using a sorting network */
++	sortswap(mc + 0, mc + 2);
++	sortswap(mc + 1, mc + 3);
++	sortswap(mc + 0, mc + 1);
++	sortswap(mc + 2, mc + 3);
++	sortswap(mc + 1, mc + 2);
++	/* Is at least one chip enabled? */
++	if (mc[0] == 0xFFFFFFFF)
++		return 0;
++	/* Determine maximum continuous region at start */
++	len = BANK_LEN(mc[0]);
++	for (i = 1; i < 4; ++i) {
++		if (BANK_START(mc[i]) == BANK_END(mc[i - 1]) + 1)
++			len += BANK_LEN(mc[i]);
++		else
++			break;
++	}
++	return len;
++}
 -- 
 1.7.10
 
