@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STr7s-0007zP-D5
- for barebox@lists.infradead.org; Mon, 14 May 2012 08:59:33 +0000
-Received: by lbbgg6 with SMTP id gg6so3937010lbb.36
- for <barebox@lists.infradead.org>; Mon, 14 May 2012 01:59:30 -0700 (PDT)
-Message-ID: <4FB0C96F.30502@gmail.com>
-Date: Mon, 14 May 2012 14:59:27 +0600
-From: Alexey Galakhov <agalakhov@gmail.com>
-MIME-Version: 1.0
+ id 1STr9x-0000vh-Me
+ for barebox@lists.infradead.org; Mon, 14 May 2012 09:01:43 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Mon, 14 May 2012 11:00:32 +0200
 References: <20120513090917.GX27341@pengutronix.de>
- <1336912806-4163-1-git-send-email-agalakhov@gmail.com>
- <1336912806-4163-3-git-send-email-agalakhov@gmail.com>
  <201205141003.02064.jbe@pengutronix.de> <4FB0C830.7010701@gmail.com>
- <20120514085716.GC30400@pengutronix.de>
-In-Reply-To: <20120514085716.GC30400@pengutronix.de>
+In-Reply-To: <4FB0C830.7010701@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201205141100.32982.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,17 +24,30 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/9] Fine split S3C arch dependencies from generic code
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Juergen Beisert <jbe@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Alexey Galakhov <agalakhov@gmail.com>
 
-On 14.05.2012 14:57, Sascha Hauer wrote:
+Alexey Galakhov wrote:
+> On 14.05.2012 14:03, Juergen Beisert wrote:
+> > You have to touch all S3C24xx based board files just to rename these
+> > files from "<socname>-<function>.h" to "<function>-<socname>.h"?
+>
+> Not exactly so. Yes, I have to rename file - to make space for another
+> one. Having just one file with lots of #ifdefs for two very different
+> architectures seems to be worse than this.
 
-> Hm? The SoC name already is in the filename, so there *is* space for a
-> new file.
+Did you really read my answer?
 
-I'll move this to a separate rename-only patch. If you don't apply them,
-nothing will break.
+Here again:
 
+ ...just to rename these files from "<socname>-<function>.h"
+ to "<function>-<socname>.h"
+
+jbe
+
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
