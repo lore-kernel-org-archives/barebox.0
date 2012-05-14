@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STr2o-0003yV-Dy
- for barebox@lists.infradead.org; Mon, 14 May 2012 08:54:19 +0000
-Received: by lbbgg6 with SMTP id gg6so3933962lbb.36
- for <barebox@lists.infradead.org>; Mon, 14 May 2012 01:54:14 -0700 (PDT)
-Message-ID: <4FB0C830.7010701@gmail.com>
-Date: Mon, 14 May 2012 14:54:08 +0600
+ id 1STr3h-0004fC-NN
+ for barebox@lists.infradead.org; Mon, 14 May 2012 08:55:15 +0000
+Received: by lbbgg6 with SMTP id gg6so3934521lbb.36
+ for <barebox@lists.infradead.org>; Mon, 14 May 2012 01:55:11 -0700 (PDT)
+Message-ID: <4FB0C866.6050703@gmail.com>
+Date: Mon, 14 May 2012 14:55:02 +0600
 From: Alexey Galakhov <agalakhov@gmail.com>
 MIME-Version: 1.0
 References: <20120513090917.GX27341@pengutronix.de>
  <1336912806-4163-1-git-send-email-agalakhov@gmail.com>
- <1336912806-4163-3-git-send-email-agalakhov@gmail.com>
- <201205141003.02064.jbe@pengutronix.de>
-In-Reply-To: <201205141003.02064.jbe@pengutronix.de>
+ <1336912806-4163-5-git-send-email-agalakhov@gmail.com>
+ <20120514075159.GB21318@pengutronix.de>
+In-Reply-To: <20120514075159.GB21318@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,21 +26,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/9] Fine split S3C arch dependencies from generic code
-To: Juergen Beisert <jbe@pengutronix.de>
+Subject: Re: [PATCH 4/9] S5PV210 iROM magic boot code
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 14.05.2012 14:03, Juergen Beisert wrote:
-
-> You have to touch all S3C24xx based board files just to rename these files 
-> from "<socname>-<function>.h" to "<function>-<socname>.h"?
+On 14.05.2012 13:51, Sascha Hauer wrote:
+> On Sun, May 13, 2012 at 06:40:01PM +0600, Alexey Galakhov wrote:
+>> Signed-off-by: Alexey Galakhov <agalakhov@gmail.com>
+>> ---
+>>  arch/arm/Kconfig                                 |    1 +
+>>  arch/arm/boards/tiny210/lowlevel.c               |   11 +++-
+>>  arch/arm/lib/barebox.lds.S                       |    4 ++
+>>  arch/arm/mach-samsung/Kconfig                    |    1 +
+>>  arch/arm/mach-samsung/Makefile                   |    1 +
+>>  arch/arm/mach-samsung/include/mach/s3c-generic.h |    4 ++
+>>  arch/arm/mach-samsung/s5p-irom-boot.c            |   64 ++++++++++++++++++++++
+>>  common/Kconfig                                   |   24 ++++++++
+>>  8 files changed, 108 insertions(+), 2 deletions(-)
 > 
-> jbe
-> 
+> Please clean up your series. This patch gets reverted in 7/9 so
+> no reason to introduce it in the first place.
 
-Not exactly so. Yes, I have to rename file - to make space for another
-one. Having just one file with lots of #ifdefs for two very different
-architectures seems to be worse than this.
+Ok. That's because I pushed the patch to public github before I reverted it.
+
 
 _______________________________________________
 barebox mailing list
