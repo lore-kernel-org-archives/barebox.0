@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STqGJ-00041m-43
- for barebox@lists.infradead.org; Mon, 14 May 2012 08:04:11 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 14 May 2012 10:03:01 +0200
+ id 1STqOf-0004d1-81
+ for barebox@lists.infradead.org; Mon, 14 May 2012 08:12:50 +0000
+Date: Mon, 14 May 2012 10:12:46 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120514081246.GC21318@pengutronix.de>
 References: <20120513090917.GX27341@pengutronix.de>
  <1336912806-4163-1-git-send-email-agalakhov@gmail.com>
  <1336912806-4163-3-git-send-email-agalakhov@gmail.com>
-In-Reply-To: <1336912806-4163-3-git-send-email-agalakhov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201205141003.02064.jbe@pengutronix.de>
+In-Reply-To: <1336912806-4163-3-git-send-email-agalakhov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,48 +25,66 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/9] Fine split S3C arch dependencies from generic code
-To: barebox@lists.infradead.org
-Cc: Alexey Galakhov <agalakhov@gmail.com>
+To: Alexey Galakhov <agalakhov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Alexey Galakhov wrote:
+On Sun, May 13, 2012 at 06:39:59PM +0600, Alexey Galakhov wrote:
 > Signed-off-by: Alexey Galakhov <agalakhov@gmail.com>
 > ---
->  arch/arm/boards/a9m2410/a9m2410.c                  |   10 +-
->  arch/arm/boards/a9m2440/a9m2410dev.c               |    2 +-
->  arch/arm/boards/a9m2440/a9m2440.c                  |   10 +-
->  arch/arm/boards/mini2440/mini2440.c                |   10 +-
-> [...]
->  delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-gpio.h
->  create mode 100644 arch/arm/mach-samsung/include/mach/gpio-s3c24x0.h
-> [...]
->  create mode 100644 arch/arm/mach-samsung/include/mach/nand-s3c24x0.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-nand.h
-> [...]
-> diff --git a/arch/arm/boards/a9m2410/a9m2410.c
-> b/arch/arm/boards/a9m2410/a9m2410.c index 1a3181e..e416c8e 100644
-> --- a/arch/arm/boards/a9m2410/a9m2410.c
-> +++ b/arch/arm/boards/a9m2410/a9m2410.c
-> @@ -33,10 +33,10 @@
->  #include <nand.h>
+>  
+>  // {"NAND 1MiB 3,3V 8-bit", 0xec, 256, 1, 0x1000, 0},
+>  static struct s3c24x0_nand_platform_data nand_info = {
+> @@ -51,7 +51,7 @@ static int a9m2410_mem_init(void)
+>  	 * Note: On this card the second SDRAM page is not used
+>  	 */
+>  	s3c24xx_disable_second_sdram_bank();
+> -	size = s3c24xx_get_memory_size();
+> +	size = s3c_get_memory_size();
+
+s3c24xx_get_memory_size is a s3c24xx specific function, which is called
+from a s3c24xx specific context, so please keep the name like it is.
+
+Generally if two functions need to be implemented differently on
+different SoCs they should have a different name. We learned that
+the hard way in the kernel where we tend to build multiple SoCs in
+a single image. With a generic s3c_ this won't work.
+Not that we want to compile in multiple SoC support into barebox in the
+near future, but the above already *is* done right, so don't change it.
+
+> diff --git a/arch/arm/boards/a9m2440/a9m2410dev.c b/arch/arm/boards/a9m2440/a9m2410dev.c
+> index bedb0f7..f23fc5d 100644
+> --- a/arch/arm/boards/a9m2440/a9m2410dev.c
+> +++ b/arch/arm/boards/a9m2440/a9m2410dev.c
+> @@ -30,7 +30,7 @@
 >  #include <io.h>
 >  #include <mach/s3c-iomap.h>
-> -#include <mach/s3c24xx-nand.h>
-> +#include <mach/nand-s3c24x0.h>
->  #include <mach/s3c-generic.h>
 >  #include <mach/s3c-busctl.h>
 > -#include <mach/s3c24xx-gpio.h>
 > +#include <mach/gpio-s3c24x0.h>
-> [...]
->  delete mode 100644 arch/arm/mach-samsung/s3c24xx-clocks.c
 
-You have to touch all S3C24xx based board files just to rename these files 
-from "<socname>-<function>.h" to "<function>-<socname>.h"?
+Don't rename files if you don't really have to. One may argue if one
+name or the other is better, but once the files are there you need
+really good reasons to change them because tracking git history over renames
+is hard.
+If you really want to change filenames, please generate your patches
+with git format-patch -M which will make it easier to review.
 
-jbe
+>  #include <mach/s3c-iomap.h>
+> -#include <mach/s3c24xx-nand.h>
+> +#include <mach/nand-s3c24x0.h>
+
+Same here.
+
+Overall this patch introduces a lot of churn without explaining why it
+is useful. The series would be much better if you just drop this patch.
+
+Sascha
 
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
