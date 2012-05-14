@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp24.mail.ru ([94.100.176.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STztJ-0002mo-GX
- for barebox@lists.infradead.org; Mon, 14 May 2012 18:21:06 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1STztG-0007Md-Nx
- for barebox@lists.infradead.org; Mon, 14 May 2012 20:21:02 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.77)
- (envelope-from <sha@pengutronix.de>) id 1STztG-0003Tq-Mo
- for barebox@lists.infradead.org; Mon, 14 May 2012 20:21:02 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 14 May 2012 20:20:58 +0200
-Message-Id: <1337019660-12096-1-git-send-email-s.hauer@pengutronix.de>
+ id 1STzxG-00031Q-Nb
+ for barebox@lists.infradead.org; Mon, 14 May 2012 18:25:11 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Mon, 14 May 2012 22:26:33 +0400
+Message-Id: <1337019993-17260-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,27 +19,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Add glob sort support
+Subject: [PATCH] PCM038: Removed unnecessary call to gpio_set_value
 To: barebox@lists.infradead.org
 
-This series adds glob sort support.
+The value already is set by calling gpio_direction_output.
 
-Sascha
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/boards/pcm038/pcm038.c |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
 
-----------------------------------------------------------------
-Sascha Hauer (2):
-      add qsort support
-      glob: Add sorted output support
+diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+index d247edc..f39660c 100644
+--- a/arch/arm/boards/pcm038/pcm038.c
++++ b/arch/arm/boards/pcm038/pcm038.c
+@@ -260,7 +260,6 @@ static int pcm038_devices_init(void)
+ 	PCCR1 |= PCCR1_PERCLK2_EN;
+ 
+ 	gpio_direction_output(GPIO_PORTD | 28, 0);
+-	gpio_set_value(GPIO_PORTD | 28, 0);
+ 
+ 	spi_register_board_info(pcm038_spi_board_info, ARRAY_SIZE(pcm038_spi_board_info));
+ 	imx27_add_spi0(&pcm038_spi_0_data);
+-- 
+1.7.3.4
 
- common/Kconfig  |    8 +++++-
- include/qsort.h |    7 +++++
- lib/Kconfig     |    3 +++
- lib/Makefile    |    1 +
- lib/glob.c      |   11 ++++----
- lib/qsort.c     |   79 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 6 files changed, 102 insertions(+), 7 deletions(-)
- create mode 100644 include/qsort.h
- create mode 100644 lib/qsort.c
 
 _______________________________________________
 barebox mailing list
