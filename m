@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STr9x-0000vh-Me
- for barebox@lists.infradead.org; Mon, 14 May 2012 09:01:43 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 14 May 2012 11:00:32 +0200
-References: <20120513090917.GX27341@pengutronix.de>
- <201205141003.02064.jbe@pengutronix.de> <4FB0C830.7010701@gmail.com>
-In-Reply-To: <4FB0C830.7010701@gmail.com>
+ id 1STrDh-0002Z9-DR
+ for barebox@lists.infradead.org; Mon, 14 May 2012 09:05:34 +0000
+Date: Mon, 14 May 2012 11:05:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120514090531.GE30400@pengutronix.de>
+References: <1336984719-10670-1-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201205141100.32982.jbe@pengutronix.de>
+In-Reply-To: <1336984719-10670-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,31 +22,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/9] Fine split S3C arch dependencies from generic code
-To: barebox@lists.infradead.org
-Cc: Alexey Galakhov <agalakhov@gmail.com>
+Subject: Re: [PATCH] drivers/spi/spi.c: when allocating a struct device_d
+ specify id as -1
+To: Jan Luebbe <jlu@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Alexey Galakhov wrote:
-> On 14.05.2012 14:03, Juergen Beisert wrote:
-> > You have to touch all S3C24xx based board files just to rename these
-> > files from "<socname>-<function>.h" to "<function>-<socname>.h"?
->
-> Not exactly so. Yes, I have to rename file - to make space for another
-> one. Having just one file with lots of #ifdefs for two very different
-> architectures seems to be worse than this.
+On Mon, May 14, 2012 at 10:38:39AM +0200, Jan Luebbe wrote:
+> This causes allocation of a free id and avoids conflicts if multiple
+> identical SPI devices are attached.
+> 
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+> ---
+>  drivers/spi/spi.c |    1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 7a8aed4..b63d02f 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -78,6 +78,7 @@ struct spi_device *spi_new_device(struct spi_master *master,
+>  	proxy->bits_per_word = chip->bits_per_word ? chip->bits_per_word : 8;
+>  	proxy->dev.platform_data = chip->platform_data;
+>  	strcpy(proxy->dev.name, chip->name);
+> +	proxy->dev.id = -1; /* allocate a free id for this chip */
 
-Did you really read my answer?
+Please use DEVICE_ID_DYNAMIC instead.
 
-Here again:
-
- ...just to rename these files from "<socname>-<function>.h"
- to "<function>-<socname>.h"
-
-jbe
+Sascha
 
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
