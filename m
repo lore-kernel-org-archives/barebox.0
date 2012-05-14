@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STvTc-0004Mc-Tr
- for barebox@lists.infradead.org; Mon, 14 May 2012 13:38:17 +0000
-Received: by lbbgg6 with SMTP id gg6so4138510lbb.36
- for <barebox@lists.infradead.org>; Mon, 14 May 2012 06:38:11 -0700 (PDT)
-Message-ID: <4FB10ABD.3080406@gmail.com>
-Date: Mon, 14 May 2012 19:38:05 +0600
-From: Alexey Galakhov <agalakhov@gmail.com>
+ id 1STzMH-00066s-KM
+ for barebox@lists.infradead.org; Mon, 14 May 2012 17:46:59 +0000
+Date: Mon, 14 May 2012 19:46:48 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120514174648.GH30400@pengutronix.de>
+References: <1336988285-6192-1-git-send-email-agalakhov@gmail.com>
 MIME-Version: 1.0
-References: <20120513090917.GX27341@pengutronix.de>
- <201205141157.29518.jbe@pengutronix.de> <4FB0E757.5050508@gmail.com>
- <201205141507.33356.jbe@pengutronix.de>
-In-Reply-To: <201205141507.33356.jbe@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <1336988285-6192-1-git-send-email-agalakhov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,78 +22,192 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/9] Minimal S5PV210 + Tiny210 support (2nd stage only)
-To: Juergen Beisert <jbe@pengutronix.de>
+Subject: Re: [PATCH 1/7] Support most Samsung SoCs in S3C serial driver
+To: Alexey Galakhov <agalakhov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Juergen,
-
-I mostly finished rebasing the patches according to your comments.
-
-Now looks like that:
-
-* Support most Samsung SoCs in S3C serial driver
-* Fine split S3C arch dependencies from generic code
-* Add support for Samsung S5P architecture (S5PV210)
-* S5P boot header and image generator
-* S5P lowlevel clock init
-* S5P DRAM support
-* Add FriendlyArm Tiny210 board (S5PV210)
-
-Lowlevel clock and DRAM inits may be skipped for 2nd stage only
-bootloader. iROM support is now part of board's lowlevel.c and has
-nothing to do with mach-samsung.
-
-Alex
-
-
-On 14.05.2012 19:07, Juergen Beisert wrote:
-> Hi Alexey,
+On Mon, May 14, 2012 at 03:38:05PM +0600, Alexey Galakhov wrote:
+> Ok, I assume this should go into separate series. It fits both S5PV210 and S3C6410.
 > 
-> Alexey Galakhov wrote:
->>>> Using iROM to boot is generally a bad idea, but there's no alternative
->>>> right now.
->>>
->>> For you there might be no alternative right now. But for Barebox its all
->>> right if only a basic support for this new CPU is available.
->>
->> Even if it's not bootable?
+> This adds support for S3C and S5P architectures (all of my knowledge) to the
+> serial driver. Since the only difference between them is in clock handling,
+> this is moved to an arch-dependent separate function.
 > 
-> At least it can act as a second stage bootloader (network boot for example). 
-> This is also the stage at which my S3C6410 currently is.
+> Most modern architectures should define S3C_UART_HAS_UBRDIVSLOT and S3C_UART_HAS_UINTM.
 > 
->> Ok, there's better plan. Instead of adding iROM in a separate file, I'll
->> just call its magic address in board's lowlevel init. So this will be
->> for tiny210 only.
->>
->>> Skip the iROM entirely in your patch series if you want to remove it
->>> later on. What sense would it make to include it and then remove it
->>> again?
->>
->> It depends on what one means "remove again". This may happen after a
->> year or so. While I think I can implement NAND quite fast, I'm not so
->> optimistic about MMC.
+> This adds support for most 
 > 
-> In this case MMC boot support just not exists. If it will work with an ugly 
-> solution there is no more pressure to develop a correct solution for it...and 
-> it will stay forever.
-> Keep it in your repository if you need it for your work.
+> Signed-off-by: Alexey Galakhov <agalakhov@gmail.com>
+
+Applied, thanks
+
+Sascha
+
+> ---
+>  arch/arm/mach-samsung/include/mach/s3c-generic.h |    4 ++
+>  arch/arm/mach-samsung/s3c24xx-clocks.c           |   17 +++++++
+>  drivers/serial/Kconfig                           |    2 +-
+>  drivers/serial/serial_s3c.c                      |   55 +++++++++++++++-------
+>  4 files changed, 60 insertions(+), 18 deletions(-)
 > 
->>>> However, there's one bad thing: it's better to add at least one board to
->>>> Kconfig with the new arch.
->>>
->>> ?
->>
->> If there are no BOARDINFO and board-y defined, barebox cannot be built.
->> So one cannot compile barebox with CONFIG_ARCH_something if there are no
->> boards utilizing it, right? How to test the compilation then? Is it Ok?
+> diff --git a/arch/arm/mach-samsung/include/mach/s3c-generic.h b/arch/arm/mach-samsung/include/mach/s3c-generic.h
+> index 4ea3dd7..5d3808e 100644
+> --- a/arch/arm/mach-samsung/include/mach/s3c-generic.h
+> +++ b/arch/arm/mach-samsung/include/mach/s3c-generic.h
+> @@ -30,5 +30,9 @@ uint32_t s3c_get_fclk(void);
+>  uint32_t s3c_get_hclk(void);
+>  uint32_t s3c_get_pclk(void);
+>  uint32_t s3c_get_uclk(void);
+> +
+> +unsigned s3c_get_uart_clk(unsigned src);
+> +
+>  uint32_t s3c24xx_get_memory_size(void);
+> +
+>  void s3c24xx_disable_second_sdram_bank(void);
+> diff --git a/arch/arm/mach-samsung/s3c24xx-clocks.c b/arch/arm/mach-samsung/s3c24xx-clocks.c
+> index a99d1b9..38d8b75 100644
+> --- a/arch/arm/mach-samsung/s3c24xx-clocks.c
+> +++ b/arch/arm/mach-samsung/s3c24xx-clocks.c
+> @@ -117,6 +117,23 @@ uint32_t s3c24_get_uclk(void)
+>  	return s3c_get_upllclk();
+>  }
+>  
+> +/** 
+> + * Return correct UART frequency based on the UCON register
+> + */
+> +unsigned s3c_get_uart_clk(unsigned src)
+> +{
+> +	switch (src & 3) {
+> +	case 0:
+> +	case 2:
+> +		return s3c_get_pclk();
+> +	case 1:
+> +		return 0; /* TODO UEXTCLK */
+> +	case 3:
+> +		return 0; /* TODO FCLK/n */
+> +	}
+> +	return 0; /* not reached, to make compiler happy */
+> +}
+> +
+>  /**
+>   * Show the user the current clock settings
+>   */
+> diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+> index 186b596..a9383da 100644
+> --- a/drivers/serial/Kconfig
+> +++ b/drivers/serial/Kconfig
+> @@ -80,7 +80,7 @@ config DRIVER_SERIAL_PL010
+>  
+>  config DRIVER_SERIAL_S3C
+>  	bool "Samsung S3C serial driver"
+> -	depends on ARCH_S3C24xx
+> +	depends on ARCH_SAMSUNG
+>  	default y
+>  	help
+>  	  Say Y here if you want to use the CONS on a Samsung S3C CPU
+> diff --git a/drivers/serial/serial_s3c.c b/drivers/serial/serial_s3c.c
+> index 2bdc1df..7a9b355 100644
+> --- a/drivers/serial/serial_s3c.c
+> +++ b/drivers/serial/serial_s3c.c
+> @@ -40,6 +40,17 @@
+>  #define UTXH 0x20		/* transmitt */
+>  #define URXH 0x24		/* receive */
+>  #define UBRDIV 0x28		/* baudrate generator */
+> +#ifdef S3C_UART_HAS_UBRDIVSLOT
+> +# define UBRDIVSLOT 0x2c	/* baudrate slot generator */
+> +#endif
+> +#ifdef S3C_UART_HAS_UINTM
+> +# define UINTM 0x38		/* interrupt mask register */
+> +#endif
+> +
+> +#ifndef S3C_UART_CLKSEL
+> +/* Use pclk */
+> +# define S3C_UART_CLKSEL 0
+> +#endif
+>  
+>  struct s3c_uart {
+>  	void __iomem *regs;
+> @@ -51,26 +62,32 @@ struct s3c_uart {
+>  static unsigned s3c_get_arch_uart_input_clock(void __iomem *base)
+>  {
+>  	unsigned reg = readw(base + UCON);
+> -
+> -	switch (reg & 0xc00) {
+> -		case 0x000:
+> -		case 0x800:
+> -			return s3c_get_pclk();
+> -		case 0x400:
+> -			break;	/* TODO UEXTCLK */
+> -		case 0xc00:
+> -			break;	/* TODO FCLK/n */
+> -	}
+> -
+> -	return 0;	/* not nice, but we can't emit an error message! */
+> +	reg = (reg >> 10) & 0x3;
+> +	return s3c_get_uart_clk(reg);
+>  }
+>  
+> +#ifdef S3C_UART_HAS_UBRDIVSLOT
+> +/*
+> + * This table takes the fractional value of the baud divisor and gives
+> + * the recommended setting for the UDIVSLOT register. Refer the datasheet
+> + * for further details
+> + */
+> +static const uint16_t udivslot_table[] __maybe_unused = {
+> +	0x0000, 0x0080, 0x0808, 0x0888, 0x2222, 0x4924, 0x4A52, 0x54AA,
+> +	0x5555, 0xD555, 0xD5D5, 0xDDD5, 0xDDDD, 0xDFDD, 0xDFDF, 0xFFDF,
+> +};
+> +#endif
+> +
+>  static int s3c_serial_setbaudrate(struct console_device *cdev, int baudrate)
+>  {
+>  	struct s3c_uart *priv = to_s3c_uart(cdev);
+>  	void __iomem *base = priv->regs;
+>  	unsigned val;
+>  
+> +#ifdef S3C_UART_HAS_UBRDIVSLOT
+> +	val = s3c_get_arch_uart_input_clock(base) / baudrate;
+> +	writew(udivslot_table[val & 15], base + UBRDIVSLOT);
+> +#endif
+>  	val = s3c_get_arch_uart_input_clock(base) / (16 * baudrate) - 1;
+>  	writew(val, base + UBRDIV);
+>  
+> @@ -88,11 +105,15 @@ static int s3c_serial_init_port(struct console_device *cdev)
+>  
+>  	/* Normal,No parity,1 stop,8 bit */
+>  	writeb(0x03, base + ULCON);
+> -	/*
+> -	 * tx=level,rx=edge,disable timeout int.,enable rx error int.,
+> -	 * normal,interrupt or polling
+> -	 */
+> -	writew(0x0245, base + UCON);
+> +
+> +	/* tx=level,rx=edge,disable timeout int.,enable rx error int.,
+> +	 * normal, interrupt or polling, no pre-divider */
+> +	writew(0x0245 | ((S3C_UART_CLKSEL) << 10), base + UCON);
+> +
+> +#ifdef S3C_UART_HAS_UINTM
+> +	/* 'interrupt or polling mode' for both directions */
+> +	writeb(0xf, base + UINTM);
+> +#endif
+>  
+>  #ifdef CONFIG_DRIVER_SERIAL_S3C_AUTOSYNC
+>  	writeb(0x10, base + UMCON); /* enable auto flow control */
+> -- 
+> 1.7.10
 > 
-> But you can't first add the consumer of a new API (=board file) and after that 
-> the API itself!
 > 
-> jbe
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
