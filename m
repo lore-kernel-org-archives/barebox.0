@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STsvq-0006Ui-3m
- for barebox@lists.infradead.org; Mon, 14 May 2012 10:55:14 +0000
-Received: by lbbgg6 with SMTP id gg6so4007079lbb.36
- for <barebox@lists.infradead.org>; Mon, 14 May 2012 03:55:10 -0700 (PDT)
-Message-ID: <4FB0E488.50107@gmail.com>
-Date: Mon, 14 May 2012 16:55:04 +0600
+ id 1STt7P-0001s0-Al
+ for barebox@lists.infradead.org; Mon, 14 May 2012 11:07:12 +0000
+Received: by lbbgg6 with SMTP id gg6so4014522lbb.36
+ for <barebox@lists.infradead.org>; Mon, 14 May 2012 04:07:09 -0700 (PDT)
+Message-ID: <4FB0E757.5050508@gmail.com>
+Date: Mon, 14 May 2012 17:07:03 +0600
 From: Alexey Galakhov <agalakhov@gmail.com>
 MIME-Version: 1.0
-References: <1336988285-6192-1-git-send-email-agalakhov@gmail.com>
- <201205141201.05779.jbe@pengutronix.de>
-In-Reply-To: <201205141201.05779.jbe@pengutronix.de>
+References: <20120513090917.GX27341@pengutronix.de>
+ <201205141104.22094.jbe@pengutronix.de> <4FB0D058.3070206@gmail.com>
+ <201205141157.29518.jbe@pengutronix.de>
+In-Reply-To: <201205141157.29518.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,28 +25,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] Support most Samsung SoCs in S3C serial driver
+Subject: Re: [PATCH 3/9] Minimal S5PV210 + Tiny210 support (2nd stage only)
 To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: barebox <barebox@lists.infradead.org>
 
-> Seems there should follow some more text? ;)
-> 
-> As this patch seems mostly like the patch from my S3C6410 repository, you can 
-> also add my:
-> 
-> Signed-off-by: Juergen Beisewrt <kernel@pengutronix.de>
-> 
->> [...]
-> 
-> jbe
-> 
+Hi,
 
-Sorry, just wrong subject :) I forgot to remove 1/7 :)
+On 14.05.2012 15:57, Juergen Beisert wrote:
+> Hi Alexey,
+> 
+> please keep the mailing list at least on CC.
 
-I decided to change your version a little bit to remove explicit #ifdef
-ARCH_something from the driver's code. Most likely more CPUs like Exynos
-will follow, ant they all are alike. I hope this code will fit them
-without further changes.
+Oops. Sorry. Wrong button :)
+
+>> Using iROM to boot is generally a bad idea, but there's no alternative
+>> right now.
+> 
+> For you there might be no alternative right now. But for Barebox its all right 
+> if only a basic support for this new CPU is available.
+
+Even if it's not bootable?
+
+Ok, there's better plan. Instead of adding iROM in a separate file, I'll
+just call its magic address in board's lowlevel init. So this will be
+for tiny210 only.
+
+> Skip the iROM entirely in your patch series if you want to remove it later on. 
+> What sense would it make to include it and then remove it again?
+
+It depends on what one means "remove again". This may happen after a
+year or so. While I think I can implement NAND quite fast, I'm not so
+optimistic about MMC.
+
+>> However, there's one bad thing: it's better to add at least one board to
+>> Kconfig with the new arch.
+> 
+> ?
+
+If there are no BOARDINFO and board-y defined, barebox cannot be built.
+So one cannot compile barebox with CONFIG_ARCH_something if there are no
+boards utilizing it, right? How to test the compilation then? Is it Ok?
+
+Regards,
+Alex
 
 _______________________________________________
 barebox mailing list
