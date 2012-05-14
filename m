@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STr43-0004tQ-Ft
- for barebox@lists.infradead.org; Mon, 14 May 2012 08:55:38 +0000
-Date: Mon, 14 May 2012 10:55:32 +0200
+ id 1STr5m-0006Dx-TL
+ for barebox@lists.infradead.org; Mon, 14 May 2012 08:57:26 +0000
+Date: Mon, 14 May 2012 10:57:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120514085532.GJ13302@pengutronix.de>
-References: <1336929884-19292-1-git-send-email-antonynpavlov@gmail.com>
- <1336929884-19292-3-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20120514085716.GC30400@pengutronix.de>
+References: <20120513090917.GX27341@pengutronix.de>
+ <1336912806-4163-1-git-send-email-agalakhov@gmail.com>
+ <1336912806-4163-3-git-send-email-agalakhov@gmail.com>
+ <201205141003.02064.jbe@pengutronix.de>
+ <4FB0C830.7010701@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1336929884-19292-3-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <4FB0C830.7010701@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,38 +26,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 2/3] MIPS: add the initial support for lowlevel init
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/9] Fine split S3C arch dependencies from generic code
+To: Alexey Galakhov <agalakhov@gmail.com>
+Cc: barebox@lists.infradead.org, Juergen Beisert <jbe@pengutronix.de>
 
-On Sun, May 13, 2012 at 09:24:43PM +0400, Antony Pavlov wrote:
-> This commit introduce the initial support for
-> machine specific lowlevel initialization
-> (e.g. RAM controller or cache memory).
+On Mon, May 14, 2012 at 02:54:08PM +0600, Alexey Galakhov wrote:
+> On 14.05.2012 14:03, Juergen Beisert wrote:
 > 
-> To return from mach_init_lowlevel() it uses
-> explicit mach_init_lowlevel_return label.
-> This saves ra register for using inside mach_init_lowlevel()
+> > You have to touch all S3C24xx based board files just to rename these files 
+> > from "<socname>-<function>.h" to "<function>-<socname>.h"?
+> > 
+> > jbe
+> > 
 > 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  arch/mips/boot/start.S |    8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/arch/mips/boot/start.S b/arch/mips/boot/start.S
-> index 6bf5baa..6db104b 100644
-> --- a/arch/mips/boot/start.S
-> +++ b/arch/mips/boot/start.S
-> @@ -74,6 +74,14 @@ __start:
->  	and	k0, k1
->  	mtc0	k0, CP0_STATUS
->  
-> +#ifdef CONFIG_MACH_DO_LOWLEVEL_INIT
-> +	b	mach_init_lowlevel
-> +	 nop
-       ^^^^
+> Not exactly so. Yes, I have to rename file - to make space for another
+> one.
 
-Space after tab.
+Hm? The SoC name already is in the filename, so there *is* space for a
+new file.
 
 Sascha
 
