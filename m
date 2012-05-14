@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STr7Q-0007cL-C8
- for barebox@lists.infradead.org; Mon, 14 May 2012 08:59:06 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 14 May 2012 10:57:58 +0200
-References: <1336984452-32194-1-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1336984452-32194-1-git-send-email-shc_work@mail.ru>
+ id 1STr7s-0007zP-D5
+ for barebox@lists.infradead.org; Mon, 14 May 2012 08:59:33 +0000
+Received: by lbbgg6 with SMTP id gg6so3937010lbb.36
+ for <barebox@lists.infradead.org>; Mon, 14 May 2012 01:59:30 -0700 (PDT)
+Message-ID: <4FB0C96F.30502@gmail.com>
+Date: Mon, 14 May 2012 14:59:27 +0600
+From: Alexey Galakhov <agalakhov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201205141057.58795.jbe@pengutronix.de>
+References: <20120513090917.GX27341@pengutronix.de>
+ <1336912806-4163-1-git-send-email-agalakhov@gmail.com>
+ <1336912806-4163-3-git-send-email-agalakhov@gmail.com>
+ <201205141003.02064.jbe@pengutronix.de> <4FB0C830.7010701@gmail.com>
+ <20120514085716.GC30400@pengutronix.de>
+In-Reply-To: <20120514085716.GC30400@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,66 +27,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] PCM038: Move USBH2 initialization to PCM970
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/9] Fine split S3C arch dependencies from generic code
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Juergen Beisert <jbe@pengutronix.de>
 
-Alexander Shiyan wrote:
-> [...]
-> @@ -260,19 +238,6 @@ static int pcm038_devices_init(void)
->  		PA29_PF_VSYNC,
->  		PA30_PF_CONTRAST,
->  		PA31_PF_OE_ACD,
-> -		/* USB host 2 */
-> -		PA0_PF_USBH2_CLK,
-> -		PA1_PF_USBH2_DIR,
-> -		PA2_PF_USBH2_DATA7,
-> -		PA3_PF_USBH2_NXT,
-> -		PA4_PF_USBH2_STP,
-> -		PD19_AF_USBH2_DATA4,
-> -		PD20_AF_USBH2_DATA3,
-> -		PD21_AF_USBH2_DATA6,
-> -		PD22_AF_USBH2_DATA0,
-> -		PD23_AF_USBH2_DATA2,
-> -		PD24_AF_USBH2_DATA1,
-> -		PD26_AF_USBH2_DATA5,
->
-> [...]
->
-> +#ifdef CONFIG_USB
-> +static void pcm970_usbh2_init(void)
-> +{
-> +	int i;
-> +	uint32_t temp;
-> +	unsigned int mode[] = {
-> +		/* USB Host 2 */
-> +		PA0_PF_USBH2_CLK,
-> +		PA1_PF_USBH2_DIR,
-> +		PA2_PF_USBH2_DATA7,
-> +		PA3_PF_USBH2_NXT,
-> +		PA4_PF_USBH2_STP,
-> +		PD19_AF_USBH2_DATA4,
-> +		PD20_AF_USBH2_DATA3,
-> +		PD21_AF_USBH2_DATA6,
-> +		PD22_AF_USBH2_DATA0,
-> +		PD23_AF_USBH2_DATA2,
-> +		PD24_AF_USBH2_DATA1,
-> +		PD26_AF_USBH2_DATA5,
-> +	};
->
-> [...]
+On 14.05.2012 14:57, Sascha Hauer wrote:
 
-This changes the initialization of the pins form 'always' to 'sometimes". I 
-feel better if pins are physically connected they also should be initialized. 
-And if the USB software feature is disable they should get initialized as 
-well to keep the signals in a sane state to not confuse externally attached 
-devices (in this case it could be useful to configure them as GPIO instead 
-with reasonable directions and levels).
+> Hm? The SoC name already is in the filename, so there *is* space for a
+> new file.
 
-jbe
+I'll move this to a separate rename-only patch. If you don't apply them,
+nothing will break.
 
--- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
