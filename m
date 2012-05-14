@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STrDh-0002Z9-DR
- for barebox@lists.infradead.org; Mon, 14 May 2012 09:05:34 +0000
-Date: Mon, 14 May 2012 11:05:31 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120514090531.GE30400@pengutronix.de>
-References: <1336984719-10670-1-git-send-email-jlu@pengutronix.de>
+ id 1STrDf-0002YH-O9
+ for barebox@lists.infradead.org; Mon, 14 May 2012 09:05:32 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Mon, 14 May 2012 11:04:21 +0200
+References: <20120513090917.GX27341@pengutronix.de>
+ <201205141013.05760.jbe@pengutronix.de> <4FB0C8EB.1080508@gmail.com>
+In-Reply-To: <4FB0C8EB.1080508@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1336984719-10670-1-git-send-email-jlu@pengutronix.de>
+Message-Id: <201205141104.22094.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] drivers/spi/spi.c: when allocating a struct device_d
- specify id as -1
-To: Jan Luebbe <jlu@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/9] Minimal S5PV210 + Tiny210 support (2nd stage only)
+To: barebox@lists.infradead.org
+Cc: Alexey Galakhov <agalakhov@gmail.com>
 
-On Mon, May 14, 2012 at 10:38:39AM +0200, Jan Luebbe wrote:
-> This causes allocation of a free id and avoids conflicts if multiple
-> identical SPI devices are attached.
-> 
-> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
-> ---
->  drivers/spi/spi.c |    1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 7a8aed4..b63d02f 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -78,6 +78,7 @@ struct spi_device *spi_new_device(struct spi_master *master,
->  	proxy->bits_per_word = chip->bits_per_word ? chip->bits_per_word : 8;
->  	proxy->dev.platform_data = chip->platform_data;
->  	strcpy(proxy->dev.name, chip->name);
-> +	proxy->dev.id = -1; /* allocate a free id for this chip */
+Alexey Galakhov wrote:
+> On 14.05.2012 14:13, Juergen Beisert wrote:
+> > This patch series reflects your development steps (2nd stage first, then
+> > native boot support). But this is not useful when including the results
+> > into the Barebox repository.
+> >
+> > For example you should add your new platform at the end of this patch
+> > series after all the required preparations are done to make it work.
+>
+> Ok, I'll rebase them.
+>
+> The reason to do so was to introduce (harmless?) refactoring first and
+> to add new features next to make git bisect work.
 
-Please use DEVICE_ID_DYNAMIC instead.
+It would be all right if you had introduce the basic support first and it is 
+now part of the repository. And *then* add the native boot support as a 
+really second step and separate patch series.
 
-Sascha
+jbe
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
