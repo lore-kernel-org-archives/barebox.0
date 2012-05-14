@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STr3h-0004fC-NN
- for barebox@lists.infradead.org; Mon, 14 May 2012 08:55:15 +0000
-Received: by lbbgg6 with SMTP id gg6so3934521lbb.36
- for <barebox@lists.infradead.org>; Mon, 14 May 2012 01:55:11 -0700 (PDT)
-Message-ID: <4FB0C866.6050703@gmail.com>
-Date: Mon, 14 May 2012 14:55:02 +0600
-From: Alexey Galakhov <agalakhov@gmail.com>
+ id 1STr43-0004tQ-Ft
+ for barebox@lists.infradead.org; Mon, 14 May 2012 08:55:38 +0000
+Date: Mon, 14 May 2012 10:55:32 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120514085532.GJ13302@pengutronix.de>
+References: <1336929884-19292-1-git-send-email-antonynpavlov@gmail.com>
+ <1336929884-19292-3-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-References: <20120513090917.GX27341@pengutronix.de>
- <1336912806-4163-1-git-send-email-agalakhov@gmail.com>
- <1336912806-4163-5-git-send-email-agalakhov@gmail.com>
- <20120514075159.GB21318@pengutronix.de>
-In-Reply-To: <20120514075159.GB21318@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <1336929884-19292-3-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,29 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/9] S5PV210 iROM magic boot code
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [RFC 2/3] MIPS: add the initial support for lowlevel init
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 14.05.2012 13:51, Sascha Hauer wrote:
-> On Sun, May 13, 2012 at 06:40:01PM +0600, Alexey Galakhov wrote:
->> Signed-off-by: Alexey Galakhov <agalakhov@gmail.com>
->> ---
->>  arch/arm/Kconfig                                 |    1 +
->>  arch/arm/boards/tiny210/lowlevel.c               |   11 +++-
->>  arch/arm/lib/barebox.lds.S                       |    4 ++
->>  arch/arm/mach-samsung/Kconfig                    |    1 +
->>  arch/arm/mach-samsung/Makefile                   |    1 +
->>  arch/arm/mach-samsung/include/mach/s3c-generic.h |    4 ++
->>  arch/arm/mach-samsung/s5p-irom-boot.c            |   64 ++++++++++++++++++++++
->>  common/Kconfig                                   |   24 ++++++++
->>  8 files changed, 108 insertions(+), 2 deletions(-)
+On Sun, May 13, 2012 at 09:24:43PM +0400, Antony Pavlov wrote:
+> This commit introduce the initial support for
+> machine specific lowlevel initialization
+> (e.g. RAM controller or cache memory).
 > 
-> Please clean up your series. This patch gets reverted in 7/9 so
-> no reason to introduce it in the first place.
+> To return from mach_init_lowlevel() it uses
+> explicit mach_init_lowlevel_return label.
+> This saves ra register for using inside mach_init_lowlevel()
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/mips/boot/start.S |    8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/arch/mips/boot/start.S b/arch/mips/boot/start.S
+> index 6bf5baa..6db104b 100644
+> --- a/arch/mips/boot/start.S
+> +++ b/arch/mips/boot/start.S
+> @@ -74,6 +74,14 @@ __start:
+>  	and	k0, k1
+>  	mtc0	k0, CP0_STATUS
+>  
+> +#ifdef CONFIG_MACH_DO_LOWLEVEL_INIT
+> +	b	mach_init_lowlevel
+> +	 nop
+       ^^^^
 
-Ok. That's because I pushed the patch to public github before I reverted it.
+Space after tab.
 
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
