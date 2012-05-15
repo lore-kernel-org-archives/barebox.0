@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SUDrI-0004GL-AR
- for barebox@lists.infradead.org; Tue, 15 May 2012 09:15:58 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 24811BF0D9
- for <barebox@lists.infradead.org>; Tue, 15 May 2012 11:15:48 +0200 (CEST)
-From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Tue, 15 May 2012 11:15:46 +0200
-Message-Id: <1337073346-4256-1-git-send-email-j.weitzel@phytec.de>
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SUHge-0002At-3D
+ for barebox@lists.infradead.org; Tue, 15 May 2012 13:21:16 +0000
+Received: by laap9 with SMTP id p9so5174116laa.36
+ for <barebox@lists.infradead.org>; Tue, 15 May 2012 06:21:09 -0700 (PDT)
+From: Alexey Galakhov <agalakhov@gmail.com>
+Date: Tue, 15 May 2012 19:20:33 +0600
+Message-Id: <1337088040-24138-1-git-send-email-agalakhov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,112 +21,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] ramfs: rember last accessed chunk
+Subject: [PATCHv3 0/7] Cleaned up version of S5PV210 code
 To: barebox@lists.infradead.org
+Cc: Alexey Galakhov <agalakhov@gmail.com>
 
-Writing big files takes longer and longer because of the chunk list
-By storing a pointer of the recent used chunk in the inode, access times are
-improved.
-Testet on with tftp 10M:
-OMAP4 chunk size 4096: 12244ms 8192: 4239ms
-	patched        2647ms        2785ms
-i.MX35 chunk size 8192: 7225ms
-	patched		2691ms
+Hello,
 
-No impact on much smaller files seen
+I cleaned up the S5PV210/Tiny210 patches as discussed before.
+Thank you for useful comments.
 
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
----
- fs/ramfs.c |   46 ++++++++++++++++++++++++++++++++++++----------
- 1 files changed, 36 insertions(+), 10 deletions(-)
+Alexey Galakhov (7):
+  Make S3C24xx config options available for all S3Cs
+  Split S3C generic and S3C24xx specific code
+  Add support for Samsung S5P architecture (S5PV210)
+  S5P boot header and image generator
+  S5P lowlevel clock init
+  S5P DRAM support
+  Add FriendlyArm Tiny210 board (S5PV210)
 
-diff --git a/fs/ramfs.c b/fs/ramfs.c
-index 83ab6df..5c7410b 100644
---- a/fs/ramfs.c
-+++ b/fs/ramfs.c
-@@ -48,6 +48,10 @@ struct ramfs_inode {
- 
- 	ulong size;
- 	struct ramfs_chunk *data;
-+	
-+	/* Points to recently used chunk */
-+	int recent_chunk;
-+	struct ramfs_chunk *recent_chunkp;
- };
- 
- struct ramfs_priv {
-@@ -297,6 +301,34 @@ static int ramfs_close(struct device_d *dev, FILE *f)
- 	return 0;
- }
- 
-+static struct ramfs_chunk *ramfs_find_chunk(struct ramfs_inode *node, int chunk)
-+{
-+	struct ramfs_chunk *data;
-+	int left = chunk;
-+
-+	if (chunk == 0)
-+		return node->data;
-+
-+	if (node->recent_chunk == chunk)
-+		return node->recent_chunkp;
-+
-+	if (node->recent_chunk < chunk && node->recent_chunk != 0) {
-+		/* Start at last known chunk */
-+		data = node->recent_chunkp;
-+		left -= node->recent_chunk;
-+	} else
-+		/* Start at first chunk */
-+		data = node->data;
-+
-+	while (left--)
-+		data = data->next;
-+
-+	node->recent_chunkp = data;
-+	node->recent_chunk = chunk;
-+
-+	return data;
-+}
-+
- static int ramfs_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
- {
- 	struct ramfs_inode *node = (struct ramfs_inode *)f->inode;
-@@ -311,11 +343,7 @@ static int ramfs_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
- 	debug("%s: reading from chunk %d\n", __FUNCTION__, chunk);
- 
- 	/* Position ourself in stream */
--	data = node->data;
--	while (chunk) {
--		data = data->next;
--		chunk--;
--	}
-+	data = ramfs_find_chunk(node, chunk);
- 	ofs = f->pos % CHUNK_SIZE;
- 
- 	/* Read till end of current chunk */
-@@ -364,11 +392,7 @@ static int ramfs_write(struct device_d *_dev, FILE *f, const void *buf, size_t i
- 	debug("%s: writing to chunk %d\n", __FUNCTION__, chunk);
- 
- 	/* Position ourself in stream */
--	data = node->data;
--	while (chunk) {
--		data = data->next;
--		chunk--;
--	}
-+	data = ramfs_find_chunk(node, chunk);
- 	ofs = f->pos % CHUNK_SIZE;
- 
- 	/* Write till end of current chunk */
-@@ -429,6 +453,8 @@ static int ramfs_truncate(struct device_d *dev, FILE *f, ulong size)
- 			ramfs_put_chunk(data);
- 			data = tmp;
- 		}
-+		if (node->recent_chunk > newchunks) 
-+			node->recent_chunk = 0;
- 	}
- 
- 	if (newchunks > oldchunks) {
+ .gitignore                                         |    2 +
+ Makefile                                           |    2 +-
+ arch/arm/Kconfig                                   |    6 +
+ arch/arm/Makefile                                  |    8 +
+ arch/arm/boards/a9m2410/a9m2410.c                  |    4 +-
+ arch/arm/boards/a9m2410/config.h                   |    2 +-
+ arch/arm/boards/a9m2410/lowlevel_init.S            |    2 +-
+ arch/arm/boards/a9m2440/a9m2440.c                  |    4 +-
+ arch/arm/boards/a9m2440/config.h                   |    2 +-
+ arch/arm/boards/a9m2440/lowlevel_init.S            |    2 +-
+ arch/arm/boards/mini2440/config.h                  |    2 +-
+ arch/arm/boards/mini2440/lowlevel_init.S           |    2 +-
+ arch/arm/boards/mini2440/mini2440.c                |    4 +-
+ arch/arm/boards/tiny210/Makefile                   |    1 +
+ arch/arm/boards/tiny210/config.h                   |   21 +
+ arch/arm/boards/tiny210/lowlevel.c                 |   76 ++
+ arch/arm/boards/tiny210/tiny210.c                  |  113 +++
+ arch/arm/configs/a9m2410_defconfig                 |    2 +-
+ arch/arm/configs/a9m2440_defconfig                 |    4 +-
+ arch/arm/configs/mini2440_defconfig                |    2 +-
+ arch/arm/configs/tiny210_defconfig                 |   17 +
+ arch/arm/mach-samsung/Kconfig                      |   57 +-
+ arch/arm/mach-samsung/Makefile                     |    7 +-
+ arch/arm/mach-samsung/clocks-s5pcxx.c              |   98 +++
+ arch/arm/mach-samsung/generic.c                    |  113 ---
+ arch/arm/mach-samsung/gpio-s5pcxx.c                |  123 +++
+ arch/arm/mach-samsung/include/mach/gpio.h          |    3 +
+ arch/arm/mach-samsung/include/mach/iomux-s5pcxx.h  |  798 ++++++++++++++++++++
+ arch/arm/mach-samsung/include/mach/s3c-clocks.h    |   25 +-
+ arch/arm/mach-samsung/include/mach/s3c-generic.h   |    9 +-
+ arch/arm/mach-samsung/include/mach/s3c-iomap.h     |   56 +-
+ .../arm/mach-samsung/include/mach/s3c24xx-clocks.h |   24 +
+ arch/arm/mach-samsung/include/mach/s3c24xx-gpio.h  |    6 +-
+ arch/arm/mach-samsung/include/mach/s3c24xx-iomap.h |   69 ++
+ arch/arm/mach-samsung/include/mach/s3c24xx-nand.h  |    2 +-
+ arch/arm/mach-samsung/include/mach/s5pcxx-clocks.h |   55 ++
+ arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h  |   52 ++
+ arch/arm/mach-samsung/lowlevel-init.S              |  317 --------
+ arch/arm/mach-samsung/lowlevel-s3c24x0.S           |  317 ++++++++
+ arch/arm/mach-samsung/lowlevel-s5pcxx.c            |   61 ++
+ arch/arm/mach-samsung/mem-s3c24x0.c                |  143 ++++
+ arch/arm/mach-samsung/mem-s5pcxx.c                 |  260 +++++++
+ drivers/mtd/nand/nand_s3c24xx.c                    |   10 +-
+ scripts/Makefile                                   |    1 +
+ scripts/s5p_cksum.c                                |  140 ++++
+ 45 files changed, 2490 insertions(+), 534 deletions(-)
+ create mode 100644 arch/arm/boards/tiny210/Makefile
+ create mode 100644 arch/arm/boards/tiny210/config.h
+ create mode 100644 arch/arm/boards/tiny210/lowlevel.c
+ create mode 100644 arch/arm/boards/tiny210/tiny210.c
+ create mode 100644 arch/arm/configs/tiny210_defconfig
+ create mode 100644 arch/arm/mach-samsung/clocks-s5pcxx.c
+ create mode 100644 arch/arm/mach-samsung/gpio-s5pcxx.c
+ create mode 100644 arch/arm/mach-samsung/include/mach/iomux-s5pcxx.h
+ create mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-clocks.h
+ create mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-iomap.h
+ create mode 100644 arch/arm/mach-samsung/include/mach/s5pcxx-clocks.h
+ create mode 100644 arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h
+ delete mode 100644 arch/arm/mach-samsung/lowlevel-init.S
+ create mode 100644 arch/arm/mach-samsung/lowlevel-s3c24x0.S
+ create mode 100644 arch/arm/mach-samsung/lowlevel-s5pcxx.c
+ create mode 100644 arch/arm/mach-samsung/mem-s3c24x0.c
+ create mode 100644 arch/arm/mach-samsung/mem-s5pcxx.c
+ create mode 100644 scripts/s5p_cksum.c
+
 -- 
-1.7.0.4
+1.7.10
 
 
 _______________________________________________
