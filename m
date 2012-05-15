@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SUPBR-0003oq-3a
- for barebox@lists.infradead.org; Tue, 15 May 2012 21:21:29 +0000
+ id 1SUPBe-0003qJ-E6
+ for barebox@lists.infradead.org; Tue, 15 May 2012 21:21:43 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Tue, 15 May 2012 23:21:13 +0200
-Message-Id: <1337116877-17657-2-git-send-email-robert.jarzmik@free.fr>
+Date: Tue, 15 May 2012 23:21:17 +0200
+Message-Id: <1337116877-17657-6-git-send-email-robert.jarzmik@free.fr>
 In-Reply-To: <1337116877-17657-1-git-send-email-robert.jarzmik@free.fr>
 References: <1337116877-17657-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
@@ -21,29 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] arm/board: mioa701 align kernel options with kernel mtd
+Subject: [PATCH 5/5] arch/arm: mioa701 improve barebox_update script
 To: barebox@lists.infradead.org
 
-Recent evolutions of linux kernel's drivers for docg3 chip,
-ie. it's renaming for mtdparts option, is handled by this
-patch.
+Add a check to verify if /barebox.BIP0 exists, and if so,
+unlock the protection area, flash barebox, and reprotect the
+area.
 
 Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- arch/arm/boards/mioa701/env/bin/init |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boards/mioa701/env/bin/barebox_update |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm/boards/mioa701/env/bin/init b/arch/arm/boards/mioa701/env/bin/init
-index 8a54da0..2e806b9 100644
---- a/arch/arm/boards/mioa701/env/bin/init
-+++ b/arch/arm/boards/mioa701/env/bin/init
-@@ -31,5 +31,5 @@ if [ $? != 0 ]; then
- fi
- 
- echo "Booting linux kernel on docg3 chip ..."
--bootargs="$bootargs mtdparts=mtd0:$mtdparts root=/dev/mtd4"
-+bootargs="$bootargs mtdparts=docg3.0:$mtdparts ubi.mtd=4 rootfstype=ubifs root=ubi0:linux_root ro"
- bootm /dev/mtd0.kernel
+diff --git a/arch/arm/boards/mioa701/env/bin/barebox_update b/arch/arm/boards/mioa701/env/bin/barebox_update
+index 564549b..b544563 100644
+--- a/arch/arm/boards/mioa701/env/bin/barebox_update
++++ b/arch/arm/boards/mioa701/env/bin/barebox_update
+@@ -3,3 +3,8 @@
+ # Page+OOB specific partitions
+ addpart /dev/mtdraw0 1081344@3649536(msipl)
+ addpart /dev/mtdraw0 270336@3649536(barebox)
++
++if [ -r /barebox.BIP0 ]; then
++	erase /dev/mtdraw0.barebox
++	cp -v /barebox.BIP0 /dev/mtdraw0.barebox
++fi
 -- 
 1.7.10
 
