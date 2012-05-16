@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STK6I-0006ox-3Q
- for barebox@lists.infradead.org; Sat, 12 May 2012 21:43:42 +0000
-Date: Sat, 12 May 2012 23:43:40 +0200
+ id 1SUjB7-0001u5-8u
+ for barebox@lists.infradead.org; Wed, 16 May 2012 18:42:30 +0000
+Date: Wed, 16 May 2012 20:42:26 +0200
 From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20120512214340.GB22395@pengutronix.de>
-References: <1336858812-23098-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Message-ID: <20120516184226.GO22395@pengutronix.de>
+References: <20120515192934.GM30400@pengutronix.de>
+ <1337148616-13639-1-git-send-email-j.weitzel@phytec.de>
+ <20120516112025.GR30400@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1336858812-23098-1-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20120516112025.GR30400@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,14 +24,33 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] defaultenv: don't overwrite  in config
-To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH] ramfs: rember last accessed chunk
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hmm, originally I had "$user" in the Subject between the two
-whitespaces. I wonder how I dropped it ...
+On Wed, May 16, 2012 at 01:20:25PM +0200, Sascha Hauer wrote:
+> On Wed, May 16, 2012 at 08:10:16AM +0200, Jan Weitzel wrote:
+> > Writing big files takes longer and longer because of the chunk list
+> > By storing a pointer of the recent used chunk in the inode, access time=
+s are
+> > improved.
+> > Testet on with tftp 10M:
+> > OMAP4 chunk size 4096: 12244ms 8192: 4239ms
+> > 	patched        2647ms        2785ms
+> > i.MX35 chunk size 8192: 7225ms
+> > 	patched		2691ms
+> > =
 
-Sascha, do you fix that up when (and if) you commit the patch please?
+> > No impact on much smaller files seen
+> > =
+
+> > Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+> =
+
+> Applied, thanks
+Don't know if it's already too late:
+
+	$Subject ~=3D s/rember/remember/
 
 Best regards
 Uwe
