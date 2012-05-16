@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-f43.google.com ([209.85.213.43])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SUVpt-0007VI-86
- for barebox@lists.infradead.org; Wed, 16 May 2012 04:27:43 +0000
-Received: by yhkk6 with SMTP id k6so460367yhk.16
- for <barebox@lists.infradead.org>; Tue, 15 May 2012 21:27:39 -0700 (PDT)
-MIME-Version: 1.0
-Date: Wed, 16 May 2012 08:27:39 +0400
-Message-ID: <CAA4bVAF6=LXsv7Q97Mi6uSx_0oY+h=pyTOrRip=+dyAykGWKpw@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SUXRH-0007uA-0j
+ for barebox@lists.infradead.org; Wed, 16 May 2012 06:10:24 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 78713BF08D
+ for <barebox@lists.infradead.org>; Wed, 16 May 2012 08:10:18 +0200 (CEST)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Wed, 16 May 2012 08:10:16 +0200
+Message-Id: <1337148616-13639-1-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <20120515192934.GM30400@pengutronix.de>
+References: <20120515192934.GM30400@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,44 +19,121 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: build timestamps don't work
-To: barebox <barebox@lists.infradead.org>
+Subject: [PATCH] ramfs: rember last accessed chunk
+To: barebox@lists.infradead.org
 
-Hi!
+Writing big files takes longer and longer because of the chunk list
+By storing a pointer of the recent used chunk in the inode, access times are
+improved.
+Testet on with tftp 10M:
+OMAP4 chunk size 4096: 12244ms 8192: 4239ms
+	patched        2647ms        2785ms
+i.MX35 chunk size 8192: 7225ms
+	patched		2691ms
 
-  I have found that on my Debian testing build system generation of
-timestamps don't work correctly.
+No impact on much smaller files seen
 
-$ cd barebox.git
-$ git checkout next
-$ make mrproper
-$ make qemu-malta_defconfig
-$ make
-$ cat .version
-0
-$ edit ...
-$ edit ...
-$ edit ...
-$ make
-$ cat .version
-0
-$ echo 4 > .version
-$ make
-$ edit ...
-$ edit ...
-$ edit ...
-$ make
-$ cat .version
-4
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+v2: I will use checkpatch
 
--- =
+ fs/ramfs.c |   47 +++++++++++++++++++++++++++++++++++++----------
+ 1 files changed, 37 insertions(+), 10 deletions(-)
 
-Best regards,
-=A0 Antony Pavlov
+diff --git a/fs/ramfs.c b/fs/ramfs.c
+index 83ab6df..cec5e76 100644
+--- a/fs/ramfs.c
++++ b/fs/ramfs.c
+@@ -48,6 +48,10 @@ struct ramfs_inode {
+ 
+ 	ulong size;
+ 	struct ramfs_chunk *data;
++
++	/* Points to recently used chunk */
++	int recent_chunk;
++	struct ramfs_chunk *recent_chunkp;
+ };
+ 
+ struct ramfs_priv {
+@@ -297,6 +301,35 @@ static int ramfs_close(struct device_d *dev, FILE *f)
+ 	return 0;
+ }
+ 
++static struct ramfs_chunk *ramfs_find_chunk(struct ramfs_inode *node, int chunk)
++{
++	struct ramfs_chunk *data;
++	int left = chunk;
++
++	if (chunk == 0)
++		return node->data;
++
++	if (node->recent_chunk == chunk)
++		return node->recent_chunkp;
++
++	if (node->recent_chunk < chunk && node->recent_chunk != 0) {
++		/* Start at last known chunk */
++		data = node->recent_chunkp;
++		left -= node->recent_chunk;
++	} else {
++		/* Start at first chunk */
++		data = node->data;
++	}
++
++	while (left--)
++		data = data->next;
++
++	node->recent_chunkp = data;
++	node->recent_chunk = chunk;
++
++	return data;
++}
++
+ static int ramfs_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
+ {
+ 	struct ramfs_inode *node = (struct ramfs_inode *)f->inode;
+@@ -311,11 +344,7 @@ static int ramfs_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
+ 	debug("%s: reading from chunk %d\n", __FUNCTION__, chunk);
+ 
+ 	/* Position ourself in stream */
+-	data = node->data;
+-	while (chunk) {
+-		data = data->next;
+-		chunk--;
+-	}
++	data = ramfs_find_chunk(node, chunk);
+ 	ofs = f->pos % CHUNK_SIZE;
+ 
+ 	/* Read till end of current chunk */
+@@ -364,11 +393,7 @@ static int ramfs_write(struct device_d *_dev, FILE *f, const void *buf, size_t i
+ 	debug("%s: writing to chunk %d\n", __FUNCTION__, chunk);
+ 
+ 	/* Position ourself in stream */
+-	data = node->data;
+-	while (chunk) {
+-		data = data->next;
+-		chunk--;
+-	}
++	data = ramfs_find_chunk(node, chunk);
+ 	ofs = f->pos % CHUNK_SIZE;
+ 
+ 	/* Write till end of current chunk */
+@@ -429,6 +454,8 @@ static int ramfs_truncate(struct device_d *dev, FILE *f, ulong size)
+ 			ramfs_put_chunk(data);
+ 			data = tmp;
+ 		}
++		if (node->recent_chunk > newchunks)
++			node->recent_chunk = 0;
+ 	}
+ 
+ 	if (newchunks > oldchunks) {
+-- 
+1.7.0.4
+
 
 _______________________________________________
 barebox mailing list
