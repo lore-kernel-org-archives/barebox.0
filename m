@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SUXRH-0007uA-0j
- for barebox@lists.infradead.org; Wed, 16 May 2012 06:10:24 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 78713BF08D
- for <barebox@lists.infradead.org>; Wed, 16 May 2012 08:10:18 +0200 (CEST)
-From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Wed, 16 May 2012 08:10:16 +0200
-Message-Id: <1337148616-13639-1-git-send-email-j.weitzel@phytec.de>
-In-Reply-To: <20120515192934.GM30400@pengutronix.de>
-References: <20120515192934.GM30400@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SUY4W-0005xe-G2
+ for barebox@lists.infradead.org; Wed, 16 May 2012 06:50:58 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 16 May 2012 08:50:50 +0200
+Message-Id: <1337151050-5455-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,115 +19,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ramfs: rember last accessed chunk
+Subject: [PATCH] dns: fix recursive loop
 To: barebox@lists.infradead.org
 
-Writing big files takes longer and longer because of the chunk list
-By storing a pointer of the recent used chunk in the inode, access times are
-improved.
-Testet on with tftp 10M:
-OMAP4 chunk size 4096: 12244ms 8192: 4239ms
-	patched        2647ms        2785ms
-i.MX35 chunk size 8192: 7225ms
-	patched		2691ms
+resolv() uses getenv_ip() which in turn calls resolv(). Fix
+this inifinite loop by not using getenv_ip directly.
 
-No impact on much smaller files seen
-
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-v2: I will use checkpatch
+ net/dns.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
- fs/ramfs.c |   47 +++++++++++++++++++++++++++++++++++++----------
- 1 files changed, 37 insertions(+), 10 deletions(-)
-
-diff --git a/fs/ramfs.c b/fs/ramfs.c
-index 83ab6df..cec5e76 100644
---- a/fs/ramfs.c
-+++ b/fs/ramfs.c
-@@ -48,6 +48,10 @@ struct ramfs_inode {
+diff --git a/net/dns.c b/net/dns.c
+index e13d654..eb96c57 100644
+--- a/net/dns.c
++++ b/net/dns.c
+@@ -197,6 +197,7 @@ static void dns_handler(void *ctx, char *packet, unsigned len)
+ IPaddr_t resolv(char *host)
+ {
+ 	IPaddr_t ip;
++	const char *ns;
  
- 	ulong size;
- 	struct ramfs_chunk *data;
-+
-+	/* Points to recently used chunk */
-+	int recent_chunk;
-+	struct ramfs_chunk *recent_chunkp;
- };
+ 	if (!string_to_ip(host, &ip))
+ 		return ip;
+@@ -205,8 +206,14 @@ IPaddr_t resolv(char *host)
  
- struct ramfs_priv {
-@@ -297,6 +301,35 @@ static int ramfs_close(struct device_d *dev, FILE *f)
- 	return 0;
- }
+ 	dns_state = STATE_INIT;
  
-+static struct ramfs_chunk *ramfs_find_chunk(struct ramfs_inode *node, int chunk)
-+{
-+	struct ramfs_chunk *data;
-+	int left = chunk;
-+
-+	if (chunk == 0)
-+		return node->data;
-+
-+	if (node->recent_chunk == chunk)
-+		return node->recent_chunkp;
-+
-+	if (node->recent_chunk < chunk && node->recent_chunk != 0) {
-+		/* Start at last known chunk */
-+		data = node->recent_chunkp;
-+		left -= node->recent_chunk;
-+	} else {
-+		/* Start at first chunk */
-+		data = node->data;
+-	ip = getenv_ip("net.nameserver");
+-	if (!ip)
++	ns = getenv("net.nameserver");
++	if (!ns || !*ns) {
++		printk("%s: no nameserver specified in $net.nameserver\n",
++				__func__);
++		return 0;
 +	}
 +
-+	while (left--)
-+		data = data->next;
-+
-+	node->recent_chunkp = data;
-+	node->recent_chunk = chunk;
-+
-+	return data;
-+}
-+
- static int ramfs_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
- {
- 	struct ramfs_inode *node = (struct ramfs_inode *)f->inode;
-@@ -311,11 +344,7 @@ static int ramfs_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
- 	debug("%s: reading from chunk %d\n", __FUNCTION__, chunk);
++	if (string_to_ip(ns, &ip))
+ 		return 0;
  
- 	/* Position ourself in stream */
--	data = node->data;
--	while (chunk) {
--		data = data->next;
--		chunk--;
--	}
-+	data = ramfs_find_chunk(node, chunk);
- 	ofs = f->pos % CHUNK_SIZE;
- 
- 	/* Read till end of current chunk */
-@@ -364,11 +393,7 @@ static int ramfs_write(struct device_d *_dev, FILE *f, const void *buf, size_t i
- 	debug("%s: writing to chunk %d\n", __FUNCTION__, chunk);
- 
- 	/* Position ourself in stream */
--	data = node->data;
--	while (chunk) {
--		data = data->next;
--		chunk--;
--	}
-+	data = ramfs_find_chunk(node, chunk);
- 	ofs = f->pos % CHUNK_SIZE;
- 
- 	/* Write till end of current chunk */
-@@ -429,6 +454,8 @@ static int ramfs_truncate(struct device_d *dev, FILE *f, ulong size)
- 			ramfs_put_chunk(data);
- 			data = tmp;
- 		}
-+		if (node->recent_chunk > newchunks)
-+			node->recent_chunk = 0;
- 	}
- 
- 	if (newchunks > oldchunks) {
+ 	debug("resolving host %s via nameserver %s\n", host, ip_to_string(ip));
 -- 
-1.7.0.4
+1.7.10
 
 
 _______________________________________________
