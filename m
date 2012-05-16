@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SUhu7-0003cF-Se
- for barebox@lists.infradead.org; Wed, 16 May 2012 17:20:55 +0000
-Date: Wed, 16 May 2012 19:20:48 +0200
+ id 1SUhvd-0003kX-8i
+ for barebox@lists.infradead.org; Wed, 16 May 2012 17:22:25 +0000
+Date: Wed, 16 May 2012 19:22:23 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120516172048.GT30400@pengutronix.de>
-References: <1337169776-15407-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20120516172223.GU30400@pengutronix.de>
+References: <1337116877-17657-1-git-send-email-robert.jarzmik@free.fr>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1337169776-15407-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1337116877-17657-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] i.MX SPI: Setup SPI chipselect to inactive state
- while initializing device
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH 0/5] arch/arm: mioa701 linux booting
+To: Robert Jarzmik <robert.jarzmik@free.fr>
 Cc: barebox@lists.infradead.org
 
-On Wed, May 16, 2012 at 04:02:55PM +0400, Alexander Shiyan wrote:
-> To avoid unnecessary preset initial state chipselect lines for SPI, set it to
-> inactive state when adding devices to the system.
+On Tue, May 15, 2012 at 11:21:12PM +0200, Robert Jarzmik wrote:
+> This patch serie makes linux autobooting and barebox flashing
+> and reflashing much more automated.
+> This serie serves as the first fully working barebox setup,
+> fully replacing the existing legacy boot code on the mioa701.
 > 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> --
+> Robert
+> 
 
 Applied, thanks
 
 Sascha
 
-> ---
->  drivers/spi/imx_spi.c |    4 ++++
->  1 files changed, 4 insertions(+), 0 deletions(-)
+> Robert Jarzmik (5):
+>   arm/board: mioa701 align kernel options with kernel mtd
+>   arch/arm: mioa701 make autoboot of Linux work
+>   arch/arm: mioa701 add IPL and DPS1 updater
+>   arch/arm: mioa701 use maximum CPU frequency
+>   arch/arm: mioa701 improve barebox_update script
 > 
-> diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-> index 3b33b66..42358f2 100644
-> --- a/drivers/spi/imx_spi.c
-> +++ b/drivers/spi/imx_spi.c
-> @@ -145,6 +145,10 @@ struct spi_imx_devtype_data {
->  
->  static int imx_spi_setup(struct spi_device *spi)
->  {
-> +	struct imx_spi *imx = container_of(spi->master, struct imx_spi, master);
-> +
-> +	imx->chipselect(spi, 0);
-> +
->  	debug("%s mode 0x%08x bits_per_word: %d speed: %d\n",
->  			__FUNCTION__, spi->mode, spi->bits_per_word,
->  			spi->max_speed_hz);
+>  arch/arm/boards/mioa701/board.c                |   13 +++++++++++--
+>  arch/arm/boards/mioa701/env/bin/barebox_update |    5 +++++
+>  arch/arm/boards/mioa701/env/bin/dps1_unlock    |   12 ++++++++++++
+>  arch/arm/boards/mioa701/env/bin/dps1_update    |   12 ++++++++++++
+>  arch/arm/boards/mioa701/env/bin/init           |   19 ++++++++++++-------
+>  arch/arm/boards/mioa701/env/data/dps1.raw.gz   |  Bin 0 -> 1239 bytes
+>  6 files changed, 52 insertions(+), 9 deletions(-)
+>  create mode 100644 arch/arm/boards/mioa701/env/bin/dps1_unlock
+>  create mode 100644 arch/arm/boards/mioa701/env/bin/dps1_update
+>  create mode 100644 arch/arm/boards/mioa701/env/data/dps1.raw.gz
+> 
 > -- 
-> 1.7.3.4
+> 1.7.10
 > 
 > 
 > _______________________________________________
