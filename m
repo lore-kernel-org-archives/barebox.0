@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SV2v0-00061w-Q5
- for barebox@lists.infradead.org; Thu, 17 May 2012 15:47:15 +0000
-Received: from localhost.localdomain (unknown [82.233.81.124])
- by smtp3-g21.free.fr (Postfix) with ESMTP id 86BCDA6232
- for <barebox@lists.infradead.org>; Thu, 17 May 2012 17:47:04 +0200 (CEST)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Thu, 17 May 2012 17:46:16 +0200
-Message-Id: <1337269578-20570-14-git-send-email-eric@eukrea.com>
-In-Reply-To: <1337269578-20570-1-git-send-email-eric@eukrea.com>
-References: <1337269578-20570-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
+Received: from exprod5og113.obsmtp.com ([64.18.0.26])
+ by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SV3to-0004O4-Sz
+ for barebox@lists.infradead.org; Thu, 17 May 2012 16:50:01 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Thu, 17 May 2012 17:49:42 +0100
+Message-Id: <1337273391-20858-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,75 +14,105 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/16] eukrea_cpuimx35: fix PHY address
+Subject: [PATCH V5 0/9] MPC85xx support
 To: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9h
-cm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgzNS9ldWtyZWFfY3B1aW14MzUuYyB8ICAgOTAgKysrKysr
-KysrKy0tLS0tLS0tLS0KIDEgZmlsZXMgY2hhbmdlZCwgNDUgaW5zZXJ0aW9ucygrKSwgNDUgZGVs
-ZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgzNS9l
-dWtyZWFfY3B1aW14MzUuYyBiL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MzUvZXVrcmVh
-X2NwdWlteDM1LmMKaW5kZXggYmZkZDlkZS4uMTg2OWU5ZCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0v
-Ym9hcmRzL2V1a3JlYV9jcHVpbXgzNS9ldWtyZWFfY3B1aW14MzUuYworKysgYi9hcmNoL2FybS9i
-b2FyZHMvZXVrcmVhX2NwdWlteDM1L2V1a3JlYV9jcHVpbXgzNS5jCkBAIC01OCw3ICs1OCw3IEBA
-CiAKIHN0YXRpYyBzdHJ1Y3QgZmVjX3BsYXRmb3JtX2RhdGEgZmVjX2luZm8gPSB7CiAJLnhjdl90
-eXBlCT0gTUlJMTAwLAotCS5waHlfYWRkcgk9IDB4MUYsCisJLnBoeV9hZGRyCT0gMCwKIH07CiAK
-IHN0cnVjdCBpbXhfbmFuZF9wbGF0Zm9ybV9kYXRhIG5hbmRfaW5mbyA9IHsKQEAgLTE0Myw0OSAr
-MTQzLDYgQEAgc3RhdGljIGludCBldWtyZWFfY3B1aW14MzVfbW11X2luaXQodm9pZCkKIH0KIHBv
-c3RtbXVfaW5pdGNhbGwoZXVrcmVhX2NwdWlteDM1X21tdV9pbml0KTsKIAotc3RhdGljIGludCBl
-dWtyZWFfY3B1aW14MzVfZGV2aWNlc19pbml0KHZvaWQpCi17Ci0jaWZkZWYgQ09ORklHX1VTQl9H
-QURHRVQKLQl1bnNpZ25lZCBpbnQgdG1wOwotI2VuZGlmCi0JaW14MzVfYWRkX25hbmQoJm5hbmRf
-aW5mbyk7Ci0KLQlkZXZmc19hZGRfcGFydGl0aW9uKCJuYW5kMCIsIDB4MDAwMDAsIDB4NDAwMDAs
-IFBBUlRJVElPTl9GSVhFRCwgInNlbGZfcmF3Iik7Ci0JZGV2X2FkZF9iYl9kZXYoInNlbGZfcmF3
-IiwgInNlbGYwIik7Ci0JZGV2ZnNfYWRkX3BhcnRpdGlvbigibmFuZDAiLCAweDQwMDAwLCAweDIw
-MDAwLCBQQVJUSVRJT05fRklYRUQsICJlbnZfcmF3Iik7Ci0JZGV2X2FkZF9iYl9kZXYoImVudl9y
-YXciLCAiZW52MCIpOwotCi0JaW14MzVfYWRkX2ZlYygmZmVjX2luZm8pOwotCWlteDM1X2FkZF9m
-YigmaXB1X2ZiX2RhdGEpOwotCi0JaW14MzVfYWRkX2kyYzAoTlVMTCk7Ci0JaW14MzVfYWRkX21t
-YzAoTlVMTCk7Ci0KLQkvKiBsZWQgZGVmYXVsdCBvZmYgKi8KLQlncGlvX2RpcmVjdGlvbl9vdXRw
-dXQoMzIgKiAyICsgMjksIDEpOwotCi0JLyogU3dpdGNoIDogaW5wdXQgKi8KLQlncGlvX2RpcmVj
-dGlvbl9pbnB1dCgzMiAqIDIgKyAyNSk7Ci0KLSNpZmRlZiBDT05GSUdfVVNCCi0JaW14MzVfdXNi
-X2luaXQoKTsKLQlhZGRfZ2VuZXJpY191c2JfZWhjaV9kZXZpY2UoLTEsIElNWF9PVEdfQkFTRSAr
-IDB4NDAwLCBOVUxMKTsKLSNlbmRpZgotI2lmZGVmIENPTkZJR19VU0JfR0FER0VUCi0JLyogV29y
-a2Fyb3VuZCBFTkdjbTA5MTUyICovCi0JdG1wID0gcmVhZGwoSU1YX09UR19CQVNFICsgMHg2MDgp
-OwotCXdyaXRlbCh0bXAgfCAoMSA8PCAyMyksIElNWF9PVEdfQkFTRSArIDB4NjA4KTsKLQlhZGRf
-Z2VuZXJpY19kZXZpY2UoImZzbC11ZGMiLCAtMSwgTlVMTCwgSU1YX09UR19CQVNFLCAweDIwMCwK
-LQkJCSAgIElPUkVTT1VSQ0VfTUVNLCAmdXNiX3BkYXRhKTsKLSNlbmRpZgotCWFybWxpbnV4X3Nl
-dF9ib290cGFyYW1zKCh2b2lkICopMHg4MDAwMDEwMCk7Ci0JYXJtbGludXhfc2V0X2FyY2hpdGVj
-dHVyZShNQUNIX1RZUEVfRVVLUkVBX0NQVUlNWDM1U0QpOwotCi0JcmV0dXJuIDA7Ci19Ci0KLWRl
-dmljZV9pbml0Y2FsbChldWtyZWFfY3B1aW14MzVfZGV2aWNlc19pbml0KTsKLQogc3RhdGljIHN0
-cnVjdCBwYWRfZGVzYyBldWtyZWFfY3B1aW14MzVfcGFkc1tdID0gewogCU1YMzVfUEFEX0ZFQ19U
-WF9DTEtfX0ZFQ19UWF9DTEssCiAJTVgzNV9QQURfRkVDX1JYX0NMS19fRkVDX1JYX0NMSywKQEAg
-LTIzMCwxMSArMTg3LDU0IEBAIHN0YXRpYyBzdHJ1Y3QgcGFkX2Rlc2MgZXVrcmVhX2NwdWlteDM1
-X3BhZHNbXSA9IHsKIAlNWDM1X1BBRF9MRDE5X19HUElPM18yNSwKIH07CiAKLXN0YXRpYyBpbnQg
-ZXVrcmVhX2NwdWlteDM1X2NvbnNvbGVfaW5pdCh2b2lkKQorc3RhdGljIGludCBldWtyZWFfY3B1
-aW14MzVfZGV2aWNlc19pbml0KHZvaWQpCiB7CisjaWZkZWYgQ09ORklHX1VTQl9HQURHRVQKKwl1
-bnNpZ25lZCBpbnQgdG1wOworI2VuZGlmCiAJbXhjX2lvbXV4X3YzX3NldHVwX211bHRpcGxlX3Bh
-ZHMoZXVrcmVhX2NwdWlteDM1X3BhZHMsCiAJCUFSUkFZX1NJWkUoZXVrcmVhX2NwdWlteDM1X3Bh
-ZHMpKTsKIAorCWlteDM1X2FkZF9uYW5kKCZuYW5kX2luZm8pOworCisJZGV2ZnNfYWRkX3BhcnRp
-dGlvbigibmFuZDAiLCAweDAwMDAwLCAweDQwMDAwLCBQQVJUSVRJT05fRklYRUQsICJzZWxmX3Jh
-dyIpOworCWRldl9hZGRfYmJfZGV2KCJzZWxmX3JhdyIsICJzZWxmMCIpOworCWRldmZzX2FkZF9w
-YXJ0aXRpb24oIm5hbmQwIiwgMHg0MDAwMCwgMHgyMDAwMCwgUEFSVElUSU9OX0ZJWEVELCAiZW52
-X3JhdyIpOworCWRldl9hZGRfYmJfZGV2KCJlbnZfcmF3IiwgImVudjAiKTsKKworCWlteDM1X2Fk
-ZF9mZWMoJmZlY19pbmZvKTsKKwlpbXgzNV9hZGRfZmIoJmlwdV9mYl9kYXRhKTsKKworCWlteDM1
-X2FkZF9pMmMwKE5VTEwpOworCWlteDM1X2FkZF9tbWMwKE5VTEwpOworCisJLyogbGVkIGRlZmF1
-bHQgb2ZmICovCisJZ3Bpb19kaXJlY3Rpb25fb3V0cHV0KDMyICogMiArIDI5LCAxKTsKKworCS8q
-IFN3aXRjaCA6IGlucHV0ICovCisJZ3Bpb19kaXJlY3Rpb25faW5wdXQoMzIgKiAyICsgMjUpOwor
-CisjaWZkZWYgQ09ORklHX1VTQgorCWlteDM1X3VzYl9pbml0KCk7CisJYWRkX2dlbmVyaWNfdXNi
-X2VoY2lfZGV2aWNlKC0xLCBJTVhfT1RHX0JBU0UgKyAweDQwMCwgTlVMTCk7CisjZW5kaWYKKyNp
-ZmRlZiBDT05GSUdfVVNCX0dBREdFVAorCS8qIFdvcmthcm91bmQgRU5HY20wOTE1MiAqLworCXRt
-cCA9IHJlYWRsKElNWF9PVEdfQkFTRSArIDB4NjA4KTsKKwl3cml0ZWwodG1wIHwgKDEgPDwgMjMp
-LCBJTVhfT1RHX0JBU0UgKyAweDYwOCk7CisJYWRkX2dlbmVyaWNfZGV2aWNlKCJmc2wtdWRjIiwg
-LTEsIE5VTEwsIElNWF9PVEdfQkFTRSwgMHgyMDAsCisJCQkgICBJT1JFU09VUkNFX01FTSwgJnVz
-Yl9wZGF0YSk7CisjZW5kaWYKKwlhcm1saW51eF9zZXRfYm9vdHBhcmFtcygodm9pZCAqKTB4ODAw
-MDAxMDApOworCWFybWxpbnV4X3NldF9hcmNoaXRlY3R1cmUoTUFDSF9UWVBFX0VVS1JFQV9DUFVJ
-TVgzNVNEKTsKKworCXJldHVybiAwOworfQorCitkZXZpY2VfaW5pdGNhbGwoZXVrcmVhX2NwdWlt
-eDM1X2RldmljZXNfaW5pdCk7CisKK3N0YXRpYyBpbnQgZXVrcmVhX2NwdWlteDM1X2NvbnNvbGVf
-aW5pdCh2b2lkKQorewogCS8qIHNjcmVlbiBkZWZhdWx0IG9uIHRvIHByZXZlbnQgZmxpY2tlciAq
-LwogCWdwaW9fZGlyZWN0aW9uX291dHB1dCg0LCAwKTsKIAkvKiBiYWNrbGlnaHQgZGVmYXVsdCBv
-ZmYgKi8KLS0gCjEuNy43LjYKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+This patchset splits the bigger patch [V4 2/4] to make it easier to read.
+
+It includes the base MPC85xx infrastructure required for a minimal
+boot target in 32 bit addressing mode using an e500v2 core.
+
+Also support is added for a minimal Freescale P2020RDB platform with
+driver support currently limited to NOR and serial port only.
+
+Renaud Barbier (9):
+  Initial Freescale 85xx Headers.
+  Initial e500v2 start up code
+  e500v2 traps and TLB support code
+  85xx: LAW and LBC initialization
+  85xx clocking support
+  MPC85xx start-up support code
+  Set _text_base to the firmware relocation address
+  85xx core support build files
+  Minimal P2020RDB platform support and configuration file
+
+ arch/ppc/Kconfig                                   |    3 +
+ arch/ppc/Makefile                                  |    8 +
+ arch/ppc/boards/freescale-p2020rdb/Makefile        |    4 +
+ arch/ppc/boards/freescale-p2020rdb/barebox.lds.S   |  144 +++
+ arch/ppc/boards/freescale-p2020rdb/config.h        |   98 ++
+ arch/ppc/boards/freescale-p2020rdb/law.c           |   31 +
+ arch/ppc/boards/freescale-p2020rdb/p2020rdb.c      |  230 +++++
+ arch/ppc/boards/freescale-p2020rdb/tlb.c           |   62 ++
+ arch/ppc/configs/p2020rdb_defconfig                |   23 +
+ arch/ppc/cpu-85xx/Makefile                         |    4 +
+ arch/ppc/cpu-85xx/fixed_ivor.S                     |   61 ++
+ arch/ppc/cpu-85xx/resetvec.S                       |    2 +
+ arch/ppc/cpu-85xx/start.S                          | 1085 ++++++++++++++++++++
+ arch/ppc/cpu-85xx/tlb.c                            |  175 ++++
+ arch/ppc/cpu-85xx/traps.c                          |  272 +++++
+ arch/ppc/include/asm/cache.h                       |    2 +
+ arch/ppc/include/asm/config.h                      |   44 +
+ arch/ppc/include/asm/fsl_ddr_sdram.h               |   33 +
+ arch/ppc/include/asm/fsl_law.h                     |   91 ++
+ arch/ppc/include/asm/fsl_lbc.h                     |   61 ++
+ arch/ppc/lib/board.c                               |    4 +
+ arch/ppc/mach-mpc85xx/Kconfig                      |   41 +
+ arch/ppc/mach-mpc85xx/Makefile                     |    8 +
+ arch/ppc/mach-mpc85xx/cpu.c                        |   85 ++
+ arch/ppc/mach-mpc85xx/cpu_init.c                   |  127 +++
+ arch/ppc/mach-mpc85xx/cpuid.c                      |   73 ++
+ arch/ppc/mach-mpc85xx/fsl_law.c                    |  160 +++
+ arch/ppc/mach-mpc85xx/fsl_lbc.c                    |   17 +
+ arch/ppc/mach-mpc85xx/include/mach/clocks.h        |   18 +
+ .../ppc/mach-mpc85xx/include/mach/config_mpc85xx.h |   39 +
+ arch/ppc/mach-mpc85xx/include/mach/early_udelay.h  |   40 +
+ arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h    |  132 +++
+ arch/ppc/mach-mpc85xx/include/mach/mmu.h           |   47 +
+ arch/ppc/mach-mpc85xx/include/mach/mpc85xx.h       |   23 +
+ arch/ppc/mach-mpc85xx/speed.c                      |  104 ++
+ arch/ppc/mach-mpc85xx/time.c                       |   53 +
+ 36 files changed, 3404 insertions(+), 0 deletions(-)
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/Makefile
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/barebox.lds.S
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/config.h
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/law.c
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/tlb.c
+ create mode 100644 arch/ppc/configs/p2020rdb_defconfig
+ create mode 100644 arch/ppc/cpu-85xx/Makefile
+ create mode 100644 arch/ppc/cpu-85xx/fixed_ivor.S
+ create mode 100644 arch/ppc/cpu-85xx/resetvec.S
+ create mode 100644 arch/ppc/cpu-85xx/start.S
+ create mode 100644 arch/ppc/cpu-85xx/tlb.c
+ create mode 100644 arch/ppc/cpu-85xx/traps.c
+ create mode 100644 arch/ppc/include/asm/config.h
+ create mode 100644 arch/ppc/include/asm/fsl_ddr_sdram.h
+ create mode 100644 arch/ppc/include/asm/fsl_law.h
+ create mode 100644 arch/ppc/include/asm/fsl_lbc.h
+ create mode 100644 arch/ppc/mach-mpc85xx/Kconfig
+ create mode 100644 arch/ppc/mach-mpc85xx/Makefile
+ create mode 100644 arch/ppc/mach-mpc85xx/cpu.c
+ create mode 100644 arch/ppc/mach-mpc85xx/cpu_init.c
+ create mode 100644 arch/ppc/mach-mpc85xx/cpuid.c
+ create mode 100644 arch/ppc/mach-mpc85xx/fsl_law.c
+ create mode 100644 arch/ppc/mach-mpc85xx/fsl_lbc.c
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/clocks.h
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/early_udelay.h
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/mmu.h
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/mpc85xx.h
+ create mode 100644 arch/ppc/mach-mpc85xx/speed.c
+ create mode 100644 arch/ppc/mach-mpc85xx/time.c
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
