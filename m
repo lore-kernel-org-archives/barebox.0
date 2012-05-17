@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-gg0-f177.google.com ([209.85.161.177])
+Received: from mail-yw0-f49.google.com ([209.85.213.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SV7Jf-0000GC-Qb
- for barebox@lists.infradead.org; Thu, 17 May 2012 20:28:56 +0000
-Received: by ggcs5 with SMTP id s5so2591429ggc.36
- for <barebox@lists.infradead.org>; Thu, 17 May 2012 13:28:53 -0700 (PDT)
+ id 1SV8pe-0007RJ-Go
+ for barebox@lists.infradead.org; Thu, 17 May 2012 22:06:02 +0000
+Received: by yhjj52 with SMTP id j52so2695110yhj.36
+ for <barebox@lists.infradead.org>; Thu, 17 May 2012 15:06:00 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20120517181915.GJ30400@pengutronix.de>
-References: <CAA4bVAF6=LXsv7Q97Mi6uSx_0oY+h=pyTOrRip=+dyAykGWKpw@mail.gmail.com>
- <CAA4bVAE=UFvDOv0MS97wZjqBLJKxjxRvt3n+7eQME1gfk++RbA@mail.gmail.com>
- <20120517181915.GJ30400@pengutronix.de>
-Date: Fri, 18 May 2012 00:28:52 +0400
-Message-ID: <CAA4bVAGhuekyOa5cjJHcWJUYm6K4SPn=c3BXTauFP3CvFaMX7A@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri, 18 May 2012 00:06:00 +0200
+Message-ID: <CAOQ7t2aPsARo+NTNDobCAUVjhRR4TE9X7-L5m8xqMo4+R6oNOA@mail.gmail.com>
+From: Carlo Caione <carlo.caione@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,40 +17,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: build timestamps don't work
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: SVC32 and SP
+To: barebox@lists.infradead.org
 
-On 17 May 2012 22:19, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Thu, May 17, 2012 at 09:52:36PM +0400, Antony Pavlov wrote:
->> ping
->>
->> On 16 May 2012 08:27, Antony Pavlov <antonynpavlov@gmail.com> wrote:
->> > Hi!
->> >
->> > =A0I have found that on my Debian testing build system generation of
->> > timestamps don't work correctly.
->
-> I just tried and it works with ARM builds. Tried again with MIPS, and
-> yes, indeed it does not work. Maybe worth looking at the architecture
-> specific Makefile.
->
+Hi,
+I was debugging the problem with barebox and qemu-linaro as I
+described in a previous post.
+This is what I have discovered.
 
-I tried another debian linux. I tried ARM & MIPS: the both don't work.
+The problem is in the strlen function that seems to get corrupted
+runtime during barebox initialization. The problem seems related to
+the switch to SVC32 mode together with the __mmu_cache_flush
+implementation.
+Before setting the cpu to SVC32 mode, the Stack Pointer is correctly
+set to 0x4020fcb0, but, immediately after the writing in the cpsr
+register (__asm__ __volatile__("msr cpsr, %0" : : "r"(r));) the Stack
+Pointer (now R13_SVC) is in 0x40205cb0 that is in the middle of the
+.text section (and precisely in the middle of the strlen routine).
+The problem is that in the __mmu_cache_flush disassembly I have a huge
+push {r0, r1, r2, r3, r4, r5, r6, r7, r9, r10, r11} that overwrites
+the strlen function and corrupts the code.
 
-I checked linux-3.1 build for mips: it work. At least  there is one differr=
-ence:
-in linux if i make 'rm .version && make', then scripts/mkcompile_h
-started _two_ times, but only _one_ time in barebox.
+I'm using:
+arm-none-eabi-gcc (Sourcery CodeBench Lite 2011.09-69) 4.6.1
+QEMU emulator version 1.0.91 (qemu-linaro from git)
 
--- =
-
-Best regards,
-=A0 Antony Pavlov
+--
+Carlo Caione
 
 _______________________________________________
 barebox mailing list
