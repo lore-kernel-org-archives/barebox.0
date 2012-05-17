@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-gg0-f177.google.com ([209.85.161.177])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SV5NJ-0002eS-Py
- for barebox@lists.infradead.org; Thu, 17 May 2012 18:24:34 +0000
-Received: by ggcs5 with SMTP id s5so2427671ggc.36
- for <barebox@lists.infradead.org>; Thu, 17 May 2012 11:24:32 -0700 (PDT)
+ id 1SV5SP-0003Kv-81
+ for barebox@lists.infradead.org; Thu, 17 May 2012 18:29:49 +0000
+Date: Thu, 17 May 2012 20:29:46 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120517182946.GL30400@pengutronix.de>
+References: <1337196316-8632-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20120517181915.GJ30400@pengutronix.de>
-References: <CAA4bVAF6=LXsv7Q97Mi6uSx_0oY+h=pyTOrRip=+dyAykGWKpw@mail.gmail.com>
- <CAA4bVAE=UFvDOv0MS97wZjqBLJKxjxRvt3n+7eQME1gfk++RbA@mail.gmail.com>
- <20120517181915.GJ30400@pengutronix.de>
-Date: Thu, 17 May 2012 22:24:31 +0400
-Message-ID: <CAA4bVAHkzyOp_28U_WhxEdtzoivdJnv-UWMGqsK=oOagBu+XwQ@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1337196316-8632-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +18,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: build timestamps don't work
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [RFC v2 0/4] MIPS: add XBurst processor family support
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On 17 May 2012 22:19, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Thu, May 17, 2012 at 09:52:36PM +0400, Antony Pavlov wrote:
->> ping
->>
->> On 16 May 2012 08:27, Antony Pavlov <antonynpavlov@gmail.com> wrote:
->> > Hi!
->> >
->> > =A0I have found that on my Debian testing build system generation of
->> > timestamps don't work correctly.
->
-> I just tried and it works with ARM builds. Tried again with MIPS, and
-> yes, indeed it does not work. Maybe worth looking at the architecture
-> specific Makefile.
+On Wed, May 16, 2012 at 11:25:12PM +0400, Antony Pavlov wrote:
+> This patch series introduce XBurst processor family support to barebox.
+> 
+> XBurst is an CPU family developed by Ingenic Semiconductor
+> to address the requirements of mobile devices. XBurst processors
+> are used in mobile gaming consoles (e.g. notable Dingoo A320),
+> e-books, mp3-players and so on.
+> 
+> The patches have preliminary status. Please, review it!
 
-Ok, I'll look.
+I read the patches, applied them and then I saw this sentence ;)
+However, the patches look good and are not touching unrelated stuff, so
+it should be fine.
 
--- =
+Sascha
 
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
