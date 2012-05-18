@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SVJjJ-00084W-80
- for barebox@lists.infradead.org; Fri, 18 May 2012 09:44:14 +0000
-Received: by lbbgg6 with SMTP id gg6so2448980lbb.36
- for <barebox@lists.infradead.org>; Fri, 18 May 2012 02:44:10 -0700 (PDT)
+ id 1SVJjP-000835-7m
+ for barebox@lists.infradead.org; Fri, 18 May 2012 09:44:23 +0000
+Received: by mail-lpp01m010-f49.google.com with SMTP id p9so2437214laa.36
+ for <barebox@lists.infradead.org>; Fri, 18 May 2012 02:44:18 -0700 (PDT)
 From: Alexey Galakhov <agalakhov@gmail.com>
-Date: Fri, 18 May 2012 15:43:25 +0600
-Message-Id: <1337334211-12576-2-git-send-email-agalakhov@gmail.com>
+Date: Fri, 18 May 2012 15:43:28 +0600
+Message-Id: <1337334211-12576-5-git-send-email-agalakhov@gmail.com>
 In-Reply-To: <1337334211-12576-1-git-send-email-agalakhov@gmail.com>
 References: <20120517175244.GH30400@pengutronix.de>
  <1337334211-12576-1-git-send-email-agalakhov@gmail.com>
@@ -24,409 +24,226 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] Make S3C24xx config options available for all S3Cs
+Subject: [PATCH 4/7] S5P boot header and image generator
 To: barebox@lists.infradead.org
 Cc: Alexey Galakhov <agalakhov@gmail.com>
 
 Signed-off-by: Alexey Galakhov <agalakhov@gmail.com>
 ---
- arch/arm/boards/a9m2410/a9m2410.c                 |    2 +-
- arch/arm/boards/a9m2410/config.h                  |    2 +-
- arch/arm/boards/a9m2410/lowlevel_init.S           |    2 +-
- arch/arm/boards/a9m2440/a9m2440.c                 |    2 +-
- arch/arm/boards/a9m2440/config.h                  |    2 +-
- arch/arm/boards/a9m2440/lowlevel_init.S           |    2 +-
- arch/arm/boards/mini2440/config.h                 |    2 +-
- arch/arm/boards/mini2440/lowlevel_init.S          |    2 +-
- arch/arm/boards/mini2440/mini2440.c               |    2 +-
- arch/arm/configs/a9m2410_defconfig                |    2 +-
- arch/arm/configs/a9m2440_defconfig                |    4 +--
- arch/arm/configs/mini2440_defconfig               |    2 +-
- arch/arm/mach-samsung/Kconfig                     |   28 ++++++++++-----------
- arch/arm/mach-samsung/Makefile                    |    2 +-
- arch/arm/mach-samsung/include/mach/s3c-iomap.h    |    2 +-
- arch/arm/mach-samsung/include/mach/s3c24xx-nand.h |    2 +-
- arch/arm/mach-samsung/lowlevel-init.S             |   12 ++++-----
- drivers/mtd/nand/nand_s3c24xx.c                   |   10 ++++----
- 18 files changed, 41 insertions(+), 41 deletions(-)
+ .gitignore          |    2 +
+ Makefile            |    2 +-
+ arch/arm/Makefile   |    7 +++
+ scripts/Makefile    |    1 +
+ scripts/s5p_cksum.c |  140 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 151 insertions(+), 1 deletion(-)
+ create mode 100644 scripts/s5p_cksum.c
 
-diff --git a/arch/arm/boards/a9m2410/a9m2410.c b/arch/arm/boards/a9m2410/a9m2410.c
-index 7c51d58..eaafdbd 100644
---- a/arch/arm/boards/a9m2410/a9m2410.c
-+++ b/arch/arm/boards/a9m2410/a9m2410.c
-@@ -136,7 +136,7 @@ static int a9m2410_devices_init(void)
+diff --git a/.gitignore b/.gitignore
+index 8e208e0..df0ed2c 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -33,6 +33,7 @@ barebox.S
+ barebox.bin
+ barebox.srec
+ barebox.netx
++barebox.s5p
+ barebox.map
+ System.map
+ Module.symvers
+@@ -63,3 +64,4 @@ cscope.*
+ # patches
+ *.patch
+ scripts/gen_netx_image
++scripts/s5p_cksum
+diff --git a/Makefile b/Makefile
+index 44b7dbd..91ded1b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1003,7 +1003,7 @@ CLEAN_DIRS  += $(MODVERDIR)
+ CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
+                 .tmp_version .tmp_barebox* barebox.bin barebox.map barebox.S \
+ 		.tmp_kallsyms* barebox_default_env* barebox.ldr \
+-		Doxyfile.version barebox.srec
++		Doxyfile.version barebox.srec barebox.s5p
  
- device_initcall(a9m2410_devices_init);
+ # Directories & files removed with 'make mrproper'
+ MRPROPER_DIRS  += include/config include2 usr/include
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index d0bfd71..40291aa 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -164,6 +164,13 @@ ifeq ($(machine-y),netx)
+ KBUILD_IMAGE := barebox.netx
+ endif
  
--#ifdef CONFIG_S3C24XX_NAND_BOOT
-+#ifdef CONFIG_S3C_NAND_BOOT
- void __bare_init nand_boot(void)
- {
- 	s3c24x0_nand_load_image((void *)TEXT_BASE, 256 * 1024, 0);
-diff --git a/arch/arm/boards/a9m2410/config.h b/arch/arm/boards/a9m2410/config.h
-index 87b05fc..4b8a9a2 100644
---- a/arch/arm/boards/a9m2410/config.h
-+++ b/arch/arm/boards/a9m2410/config.h
-@@ -115,7 +115,7 @@
- #define A9M2410_TWRPH1 1
- 
- /* needed in the generic NAND boot code only */
--#ifdef CONFIG_S3C24XX_NAND_BOOT
-+#ifdef CONFIG_S3C_NAND_BOOT
- # define BOARD_DEFAULT_NAND_TIMING CALC_NFCONF_TIMING(A9M2410_TACLS, A9M2410_TWRPH0, A9M2410_TWRPH1)
- #endif
- 
-diff --git a/arch/arm/boards/a9m2410/lowlevel_init.S b/arch/arm/boards/a9m2410/lowlevel_init.S
-index a106d53..0463b26 100644
---- a/arch/arm/boards/a9m2410/lowlevel_init.S
-+++ b/arch/arm/boards/a9m2410/lowlevel_init.S
-@@ -28,7 +28,7 @@ board_init_lowlevel:
- 
- 	bl s3c24x0_sdram_init
- 
--#ifdef CONFIG_S3C24XX_NAND_BOOT
-+#ifdef CONFIG_S3C_NAND_BOOT
- 	mov lr, r10		/* restore the link register */
- /* up to here we are running from the internal SRAM area */
- 	b s3c24x0_nand_boot	/* does return directly to our caller into SDRAM */
-diff --git a/arch/arm/boards/a9m2440/a9m2440.c b/arch/arm/boards/a9m2440/a9m2440.c
-index fcb8729..1d20248 100644
---- a/arch/arm/boards/a9m2440/a9m2440.c
-+++ b/arch/arm/boards/a9m2440/a9m2440.c
-@@ -155,7 +155,7 @@ static int a9m2440_devices_init(void)
- 
- device_initcall(a9m2440_devices_init);
- 
--#ifdef CONFIG_S3C24XX_NAND_BOOT
-+#ifdef CONFIG_S3C_NAND_BOOT
- void __bare_init nand_boot(void)
- {
- 	s3c24x0_nand_load_image((void *)TEXT_BASE, 256 * 1024, 0);
-diff --git a/arch/arm/boards/a9m2440/config.h b/arch/arm/boards/a9m2440/config.h
-index 43cb6ab..09ad949 100644
---- a/arch/arm/boards/a9m2440/config.h
-+++ b/arch/arm/boards/a9m2440/config.h
-@@ -66,7 +66,7 @@
- #define A9M2440_TWRPH1 1
- 
- /* needed in the generic NAND boot code only */
--#ifdef CONFIG_S3C24XX_NAND_BOOT
-+#ifdef CONFIG_S3C_NAND_BOOT
- # define BOARD_DEFAULT_NAND_TIMING CALC_NFCONF_TIMING(A9M2440_TACLS, A9M2440_TWRPH0, A9M2440_TWRPH1)
- #endif
- 
-diff --git a/arch/arm/boards/a9m2440/lowlevel_init.S b/arch/arm/boards/a9m2440/lowlevel_init.S
-index e915a16..305014c 100644
---- a/arch/arm/boards/a9m2440/lowlevel_init.S
-+++ b/arch/arm/boards/a9m2440/lowlevel_init.S
-@@ -232,7 +232,7 @@ board_init_lowlevel:
- 
- 	bl sdram_init
- 
--#ifdef CONFIG_S3C24XX_NAND_BOOT
-+#ifdef CONFIG_S3C_NAND_BOOT
- 	mov lr, r10		/* restore the link register */
- /* up to here we are running from the internal SRAM area */
- 	b s3c24x0_nand_boot	/* does return directly to our caller into SDRAM */
-diff --git a/arch/arm/boards/mini2440/config.h b/arch/arm/boards/mini2440/config.h
-index 8d36193..674d974 100644
---- a/arch/arm/boards/mini2440/config.h
-+++ b/arch/arm/boards/mini2440/config.h
-@@ -66,7 +66,7 @@
- #define MINI2440_TWRPH1 1
- 
- /* needed in the generic NAND boot code only */
--#ifdef CONFIG_S3C24XX_NAND_BOOT
-+#ifdef CONFIG_S3C_NAND_BOOT
- # define BOARD_DEFAULT_NAND_TIMING \
- 	CALC_NFCONF_TIMING(MINI2440_TACLS, MINI2440_TWRPH0, MINI2440_TWRPH1)
- #endif
-diff --git a/arch/arm/boards/mini2440/lowlevel_init.S b/arch/arm/boards/mini2440/lowlevel_init.S
-index 1c8860a..827cf00 100644
---- a/arch/arm/boards/mini2440/lowlevel_init.S
-+++ b/arch/arm/boards/mini2440/lowlevel_init.S
-@@ -30,7 +30,7 @@ board_init_lowlevel:
- 
- 	bl s3c24x0_sdram_init
- 
--#ifdef CONFIG_S3C24XX_NAND_BOOT
-+#ifdef CONFIG_S3C_NAND_BOOT
- 	mov lr, r10		/* restore the link register */
- /* up to here we are running from the internal SRAM area */
- 	b s3c24x0_nand_boot	/* does return directly to our caller into SDRAM */
-diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
-index 03e3d6c..3d3b820 100644
---- a/arch/arm/boards/mini2440/mini2440.c
-+++ b/arch/arm/boards/mini2440/mini2440.c
-@@ -326,7 +326,7 @@ static int mini2440_devices_init(void)
- 
- device_initcall(mini2440_devices_init);
- 
--#ifdef CONFIG_S3C24XX_NAND_BOOT
-+#ifdef CONFIG_S3C_NAND_BOOT
- void __bare_init nand_boot(void)
- {
- 	s3c24x0_nand_load_image((void *)TEXT_BASE, 256 * 1024, 0);
-diff --git a/arch/arm/configs/a9m2410_defconfig b/arch/arm/configs/a9m2410_defconfig
-index 57e73c7..1955023 100644
---- a/arch/arm/configs/a9m2410_defconfig
-+++ b/arch/arm/configs/a9m2410_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_ARCH_S3C24xx=y
--CONFIG_S3C24XX_NAND_BOOT=y
-+CONFIG_S3C_NAND_BOOT=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_BROKEN=y
- CONFIG_EXPERIMENTAL=y
-diff --git a/arch/arm/configs/a9m2440_defconfig b/arch/arm/configs/a9m2440_defconfig
-index ae7f523..ebdf64f 100644
---- a/arch/arm/configs/a9m2440_defconfig
-+++ b/arch/arm/configs/a9m2440_defconfig
-@@ -1,7 +1,7 @@
- CONFIG_ARCH_S3C24xx=y
- CONFIG_MACH_A9M2440=y
--CONFIG_S3C24XX_SDRAM_INIT=y
--CONFIG_S3C24XX_NAND_BOOT=y
-+CONFIG_S3C_SDRAM_INIT=y
-+CONFIG_S3C_NAND_BOOT=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_BROKEN=y
- CONFIG_EXPERIMENTAL=y
-diff --git a/arch/arm/configs/mini2440_defconfig b/arch/arm/configs/mini2440_defconfig
-index 9b35dd5..efe76e4 100644
---- a/arch/arm/configs/mini2440_defconfig
-+++ b/arch/arm/configs/mini2440_defconfig
-@@ -1,7 +1,7 @@
- CONFIG_ARCH_S3C24xx=y
- CONFIG_MACH_MINI2440=y
- CONFIG_MINI2440_VIDEO_N35=y
--CONFIG_S3C24XX_NAND_BOOT=y
-+CONFIG_S3C_NAND_BOOT=y
- CONFIG_AEABI=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_TEXT_BASE=0x33e00000
-diff --git a/arch/arm/mach-samsung/Kconfig b/arch/arm/mach-samsung/Kconfig
-index bc283dc..63c29ef 100644
---- a/arch/arm/mach-samsung/Kconfig
-+++ b/arch/arm/mach-samsung/Kconfig
-@@ -30,8 +30,8 @@ config MACH_A9M2410
- 	bool "Digi A9M2410"
- 	select CPU_S3C2410
- 	select MACH_HAS_LOWLEVEL_INIT
--	select S3C24XX_PLL_INIT
--	select S3C24XX_SDRAM_INIT
-+	select S3C_PLL_INIT
-+	select S3C_SDRAM_INIT
- 	help
- 	  Say Y here if you are using Digi's Connect Core 9M equipped
- 	  with a Samsung S3C2410 Processor
-@@ -40,7 +40,7 @@ config MACH_A9M2440
- 	bool "Digi A9M2440"
- 	select CPU_S3C2440
- 	select MACH_HAS_LOWLEVEL_INIT
--	select S3C24XX_PLL_INIT
-+	select S3C_PLL_INIT
- 	help
- 	  Say Y here if you are using Digi's Connect Core 9M equipped
- 	  with a Samsung S3C2440 Processor
-@@ -50,8 +50,8 @@ config MACH_MINI2440
- 	select CPU_S3C2440
- 	select MACH_HAS_LOWLEVEL_INIT
- 	select MACH_DO_LOWLEVEL_INIT
--	select S3C24XX_PLL_INIT
--	select S3C24XX_SDRAM_INIT
-+	select S3C_PLL_INIT
-+	select S3C_SDRAM_INIT
- 	select HAS_DM9000
- 	help
- 	  Say Y here if you are using Mini 2440 dev board equipped
-@@ -78,29 +78,31 @@ source arch/arm/boards/mini2440/Kconfig
- 
- endmenu
- 
--menu "S3C24X0 Features              "
++barebox.s5p: barebox.bin
++	$(Q)scripts/s5p_cksum barebox.bin barebox.s5p
++
++ifeq ($(CONFIG_ARCH_S5PCxx),y)
++KBUILD_IMAGE := barebox.s5p
 +endif
 +
-+menu "S3C Features              "
+ MLO: barebox.bin
+ 	@echo "  IFT    " $@
+ 	$(Q)scripts/omap_signGP barebox.bin $(TEXT_BASE) 1
+diff --git a/scripts/Makefile b/scripts/Makefile
+index cb049fd..784d205 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -10,6 +10,7 @@ hostprogs-y                      += mkimage
+ hostprogs-y                      += bareboxenv
+ hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
+ hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP
++hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
  
--config S3C24XX_LOW_LEVEL_INIT
-+config S3C_LOWLEVEL_INIT
- 	bool
+ always		:= $(hostprogs-y) $(hostprogs-m)
  
--config S3C24XX_PLL_INIT
-+config S3C_PLL_INIT
- 	bool
- 	prompt "Reconfigure PLL"
--	select S3C24XX_LOW_LEVEL_INIT
-+	select S3C_LOWLEVEL_INIT
- 	help
- 	  This adds generic code to reconfigure the internal PLL very early
- 	  after reset.
- 
--config S3C24XX_SDRAM_INIT
-+config S3C_SDRAM_INIT
- 	bool
- 	prompt "Initialize SDRAM"
--	select S3C24XX_LOW_LEVEL_INIT
-+	select S3C_LOWLEVEL_INIT
- 	help
- 	  This adds generic code to configure the SDRAM controller after reset.
- 	  The initialisation will be skipped if the code is already running
- 	  from SDRAM.
- 
--config S3C24XX_NAND_BOOT
-+config S3C_NAND_BOOT
- 	bool
- 	prompt "Booting from NAND"
- 	select MTD
-@@ -113,5 +115,3 @@ config S3C24XX_NAND_BOOT
- endmenu
- 
- endif
--
--endif
-diff --git a/arch/arm/mach-samsung/Makefile b/arch/arm/mach-samsung/Makefile
-index 2ba5c3f..349ba9b 100644
---- a/arch/arm/mach-samsung/Makefile
-+++ b/arch/arm/mach-samsung/Makefile
-@@ -1,3 +1,3 @@
- obj-y += s3c-timer.o generic.o
- obj-$(CONFIG_ARCH_S3C24xx) += gpio-s3c24x0.o s3c24xx-clocks.o
--obj-$(CONFIG_S3C24XX_LOW_LEVEL_INIT) += lowlevel-init.o
-+obj-$(CONFIG_S3C_LOWLEVEL_INIT) += lowlevel-init.o
-diff --git a/arch/arm/mach-samsung/include/mach/s3c-iomap.h b/arch/arm/mach-samsung/include/mach/s3c-iomap.h
-index 9e867f8..60d44e3 100644
---- a/arch/arm/mach-samsung/include/mach/s3c-iomap.h
-+++ b/arch/arm/mach-samsung/include/mach/s3c-iomap.h
-@@ -54,7 +54,7 @@
-  * if we are booting from NAND, its internal SRAM occures at
-  * a different address than without this feature
-  */
--#ifdef CONFIG_S3C24XX_NAND_BOOT
-+#ifdef CONFIG_S3C_NAND_BOOT
- # define NFC_RAM_AREA 0x00000000
- #else
- # define NFC_RAM_AREA 0x40000000
-diff --git a/arch/arm/mach-samsung/include/mach/s3c24xx-nand.h b/arch/arm/mach-samsung/include/mach/s3c24xx-nand.h
-index 7610b4e..acd78b8 100644
---- a/arch/arm/mach-samsung/include/mach/s3c24xx-nand.h
-+++ b/arch/arm/mach-samsung/include/mach/s3c24xx-nand.h
-@@ -18,7 +18,7 @@
-  *
-  */
- 
--#ifdef CONFIG_S3C24XX_NAND_BOOT
-+#ifdef CONFIG_S3C_NAND_BOOT
- extern void s3c24x0_nand_load_image(void*, int, int);
- #endif
- 
-diff --git a/arch/arm/mach-samsung/lowlevel-init.S b/arch/arm/mach-samsung/lowlevel-init.S
-index 31c6196..e9471a5 100644
---- a/arch/arm/mach-samsung/lowlevel-init.S
-+++ b/arch/arm/mach-samsung/lowlevel-init.S
-@@ -70,7 +70,7 @@ routine very early in your board_init_lowlevel routine.
-  * Note: Do not use "r10" here in this code
-  */
- 
--#ifdef CONFIG_S3C24XX_PLL_INIT
-+#ifdef CONFIG_S3C_PLL_INIT
- 
- 	.section ".text_bare_init.s3c24x0_pll_init","ax"
- 
-@@ -146,7 +146,7 @@ shared with all other system on chip components. Most of the time this
- configuration is to slow for the CPU and to fast for the other components.
- 
- PLL reprogramming can be done in the machine specific manner very early when
--the CONFIG_S3C24XX_PLL_INIT and CONFIG_MACH_HAS_LOWLEVEL_INIT symbols are
-+the CONFIG_S3C_PLL_INIT and CONFIG_MACH_HAS_LOWLEVEL_INIT symbols are
- defined. The board must provide a board_init_lowlevel() assembler function in
- this case and calling the s3c24x0_pll_init() assembler function.
- 
-@@ -184,7 +184,7 @@ With m = MDIV + 8, p = PDIV + 2 and s = SDIV.
- 
- /* ----------------------------------------------------------------------- */
- 
--#ifdef CONFIG_S3C24XX_SDRAM_INIT
-+#ifdef CONFIG_S3C_SDRAM_INIT
- 
- 	.section ".text_bare_init.s3c24x0_sdram_init","ax"
- 
-@@ -225,7 +225,7 @@ SDRAMDATA:
- The SDRAM controller is very simple and its initialisation requires only a
- few steps. barebox provides a generic routine to do this step.
- 
--Enable CONFIG_S3C24XX_SDRAM_INIT and CONFIG_MACH_HAS_LOWLEVEL_INIT to be able
-+Enable CONFIG_S3C_SDRAM_INIT and CONFIG_MACH_HAS_LOWLEVEL_INIT to be able
- to call the generic s3c24x0_sdram_init() assembler function from within the
- machine specific board_init_lowlevel() assembler function.
- 
-@@ -245,7 +245,7 @@ Define in the machine specific config.h the following list of symbols:
- 
- /* ----------------------------------------------------------------------- */
- 
--#ifdef CONFIG_S3C24XX_NAND_BOOT
-+#ifdef CONFIG_S3C_NAND_BOOT
- 
- 	.section ".text_bare_init.s3c24x0_nand_boot","ax"
- 
-@@ -284,7 +284,7 @@ s3c24x0_nand_boot:
- @page dev_s3c24xx_nandboot_handling Booting from NAND
- 
- To be able to boot from NAND memory only, enable the S3C24x0 NAND driver. Also
--enable CONFIG_S3C24XX_NAND_BOOT and CONFIG_MACH_HAS_LOWLEVEL_INIT to be
-+enable CONFIG_S3C_NAND_BOOT and CONFIG_MACH_HAS_LOWLEVEL_INIT to be
- able to call the s3c24x0_nand_boot() assembler routine from within the
- machine specific board_init_lowlevel() assembler function.
- 
-diff --git a/drivers/mtd/nand/nand_s3c24xx.c b/drivers/mtd/nand/nand_s3c24xx.c
-index dbf2e14..c629701 100644
---- a/drivers/mtd/nand/nand_s3c24xx.c
-+++ b/drivers/mtd/nand/nand_s3c24xx.c
-@@ -36,7 +36,7 @@
- #include <io.h>
- #include <asm-generic/errno.h>
- 
--#ifdef CONFIG_S3C24XX_NAND_BOOT
-+#ifdef CONFIG_S3C_NAND_BOOT
- # define __nand_boot_init __bare_init
- # ifndef BOARD_DEFAULT_NAND_TIMING
- #  define BOARD_DEFAULT_NAND_TIMING 0x0737
-@@ -49,7 +49,7 @@
-  * Define this symbol for testing purpose. It will add a command to read an
-  * image from the NAND like it the boot strap code will do.
-  */
--#define CONFIG_NAND_S3C24XX_BOOT_DEBUG
-+#define CONFIG_NAND_S3C_BOOT_DEBUG
- 
- /* NAND controller's register */
- 
-@@ -497,7 +497,7 @@ static struct driver_d s3c24x0_nand_driver = {
- 	.probe = s3c24x0_nand_probe,
- };
- 
--#ifdef CONFIG_S3C24XX_NAND_BOOT
-+#ifdef CONFIG_S3C_NAND_BOOT
- 
- static void __nand_boot_init wait_for_completion(void __iomem *host)
- {
-@@ -603,7 +603,7 @@ void __nand_boot_init s3c24x0_nand_load_image(void *dest, int size, int page)
- 	disable_nand_controller(host);
- }
- 
--#ifdef CONFIG_NAND_S3C24XX_BOOT_DEBUG
-+#ifdef CONFIG_NAND_S3C_BOOT_DEBUG
- #include <command.h>
- 
- static int do_nand_boot_test(int argc, char *argv[])
-@@ -636,7 +636,7 @@ BAREBOX_CMD_START(nand_boot_test)
- BAREBOX_CMD_END
- #endif
- 
--#endif /* CONFIG_S3C24XX_NAND_BOOT */
-+#endif /* CONFIG_S3C_NAND_BOOT */
- 
- /*
-  * Main initialization routine
+diff --git a/scripts/s5p_cksum.c b/scripts/s5p_cksum.c
+new file mode 100644
+index 0000000..7142532
+--- /dev/null
++++ b/scripts/s5p_cksum.c
+@@ -0,0 +1,140 @@
++/*
++ * Copyright (C) 2012 Alexey Galakhov
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * version 2 as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <stdio.h>
++#include <stdint.h>
++#include <stdlib.h>
++#include <string.h>
++#include <stddef.h>
++#include <errno.h>
++
++#define DEFAULT_BUF_SIZE 8192
++
++static int usage(const char* me)
++{
++	printf("Usage: %s <input> <output> [<bufsize]\n", me);
++	return 1;
++}
++
++static void put32(uint8_t *ptr, uint32_t value)
++{
++	ptr[0] = value & 0xFF;
++	ptr[1] = (value >> 8) & 0xFF;
++	ptr[2] = (value >> 16) & 0xFF;
++	ptr[3] = (value >> 24) & 0xFF;
++}
++
++static size_t safe_fread(void *buf, size_t len, FILE* file)
++{
++	size_t rd = fread(buf, 1, len, file);
++	if (! rd) {
++		if (ferror(file))
++			fprintf(stderr, "Error reading file: %s\n", strerror(errno));
++		else
++			fprintf(stderr, "Unexpected end of file\n");
++	}
++	return rd;
++}
++
++static size_t safe_fwrite(const void *buf, size_t len, FILE* file)
++{
++	size_t wr = fwrite(buf, 1, len, file);
++	if (wr != len) {
++		fprintf(stderr, "Error writing file: %s\n", strerror(errno));
++		return 0;
++	}
++	return wr;
++}
++
++static int process(FILE *input, FILE *output, uint8_t *buf, unsigned bufsize)
++{
++	size_t rd;
++	unsigned i;
++	uint32_t cksum;
++	/* Read first chunk */
++	rd = safe_fread(buf + 16, bufsize - 16, input);
++	if (! rd)
++		return 4;
++	/* Calculate header */
++	put32(buf + 0, bufsize);
++	cksum = 0;
++	for (i = 16; i < bufsize; ++i)
++		cksum += (uint32_t)buf[i];
++	put32(buf + 8, cksum);
++	if (! safe_fwrite(buf, bufsize, output))
++		return 4;
++	/* Copy the rest of file */
++	while (! feof(input)) {
++		rd = safe_fread(buf, bufsize, input);
++		if (! rd)
++			return 4;
++		if (! safe_fwrite(buf, rd, output))
++			return 4;
++	}
++	return 0;
++}
++
++static int work(const char* me, const char *infile, const char *outfile, unsigned bufsize)
++{
++	uint8_t *buf;
++	FILE *input;
++	FILE *output;
++	int ret;
++	if (bufsize < 512 || bufsize > 65536)
++		return usage(me);
++	buf = calloc(1, bufsize);
++	if (! buf) {
++		fprintf(stderr, "Unable to allocate %u bytes of memory\n", bufsize);
++		return 2;
++	}
++	input = fopen(infile, "r");
++	if (! input) {
++		fprintf(stderr, "Cannot open `%s' for reading\n", infile);
++		free(buf);
++		return 3;
++	}
++	output = fopen(outfile, "w");
++	if (! output) {
++		fprintf(stderr, "Cannot open `%s' for writing\n", outfile);
++		fclose(input);
++		free(buf);
++		return 3;
++	}
++
++	ret = process(input, output, buf, bufsize);
++
++	fclose(output);
++	fclose(input);
++	free(buf);
++	return ret;
++}
++
++int main(int argc, char** argv)
++{
++	switch (argc) {
++	case 3:
++		return work(argv[0], argv[1], argv[2], DEFAULT_BUF_SIZE);
++	case 4:
++		return work(argv[0], argv[1], argv[2], atoi(argv[3]));
++	default:
++		return usage(argv[0]);
++	}
++}
 -- 
 1.7.10
 
