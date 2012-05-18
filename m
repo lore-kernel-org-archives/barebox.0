@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-gh0-f177.google.com ([209.85.160.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SVH0B-000849-L2
- for barebox@lists.infradead.org; Fri, 18 May 2012 06:49:28 +0000
-Received: by ghbf11 with SMTP id f11so74194ghb.36
- for <barebox@lists.infradead.org>; Thu, 17 May 2012 23:49:25 -0700 (PDT)
+Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SVHow-0003Aa-HX
+ for barebox@lists.infradead.org; Fri, 18 May 2012 07:41:55 +0000
+Received: from localhost.localdomain (unknown [82.240.38.71])
+ by smtp2-g21.free.fr (Postfix) with ESMTP id 4BE674B00A7
+ for <barebox@lists.infradead.org>; Fri, 18 May 2012 09:41:49 +0200 (CEST)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Fri, 18 May 2012 09:41:37 +0200
+Message-Id: <1337326905-555-2-git-send-email-eric@eukrea.com>
+In-Reply-To: <1337326905-555-1-git-send-email-eric@eukrea.com>
+References: <1337326905-555-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-In-Reply-To: <201205172149.21791.jbe@pengutronix.de>
-References: <1337088040-24138-1-git-send-email-agalakhov@gmail.com>
- <20120517175244.GH30400@pengutronix.de>
- <CA+LT+-RAgWNppoAc44pBHJe7ik-nKgM6tRsJmCAwmMm7J_DbNw@mail.gmail.com>
- <201205172149.21791.jbe@pengutronix.de>
-Date: Fri, 18 May 2012 12:49:25 +0600
-Message-ID: <CA+LT+-QJift5r5cBk6KruuXA1WBZKfTRGpv0Grr83+npmw+jUw@mail.gmail.com>
-From: Alexey Galakhov <agalakhov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,53 +20,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] Split S3C generic and S3C24xx specific code
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 02/10] eukrea_cpuimx25: add display choice in environment
+To: barebox@lists.infradead.org
 
-> Mostly a matter of taste. But sometimes these functions should use a common
-> name: when they are used by a shared driver.
-> If you call a S3C2440 related function by a S3C2440 related driver or board
-> file, we should use a SoC specific name. When we call a function from a
-> driver used for S3C2440 *and* S3C6410 it should use a non SoC specific name.
-> This is a "should" and I fear my S3C24xx code is not perfect in this way.
-
-What if...
-
-int s3c24xx_get_pclk(void);
-int s3c64xx_get_pclk_msys(void);
-int s3c64xx_get_pclk_psys(void);
-
-And in some driver:
-
-#ifdef ...
-    x = s3c24xx_get_pclk();
-#else
-    x = s3c64xx_get_pclk_msys();
-#endif
-
-In some other driver:
-
-#ifdef ...
-    x = s3c24xx_get_pclk();
-#else
-    x = s3c64xx_get_pclk_psys();
-#endif
-
-Ho to do that correctly? Right now I prefer that way:
-
-int s3c_get_some_driver_clk(void);
-defined somewhere in arch/***
-
-Regards.
---
-Alex
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9h
+cm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNS9lbnYvY29uZmlnIHwgICAgNCArKystCiAxIGZpbGVz
+IGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9h
+cmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDI1L2Vudi9jb25maWcgYi9hcmNoL2FybS9ib2Fy
+ZHMvZXVrcmVhX2NwdWlteDI1L2Vudi9jb25maWcKaW5kZXggYmMxY2ZkNS4uNmI2NjFmZCAxMDA2
+NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNS9lbnYvY29uZmlnCisrKyBi
+L2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MjUvZW52L2NvbmZpZwpAQCAtMiw2ICsyLDgg
+QEAKIAogIyBvdGcgcG9ydCBtb2RlIDogY2FuIGJlICdob3N0JyBvciAnZGV2aWNlJwogb3RnX21v
+ZGU9ImRldmljZSIKKyMgdmlkZW8gOiBjYW4gYmUgQ01PLVFWR0EsIFVSVC1XVkdBLCBEVkktVkdB
+IG9yIERWSS1TVkdBCit2aWRlbz0iQ01PLVFWR0EiCiAKIG1hY2hpbmU9ZXVrcmVhLWNwdWlteDI1
+CiAKQEAgLTM1LDcgKzM3LDcgQEAgbmZzcm9vdD0iJGV0aDAuc2VydmVyaXA6L3Nydi9uZnMvJG1h
+Y2hpbmUiCiAKIGF1dG9ib290X3RpbWVvdXQ9MQogCi1ib290YXJncz0iY29uc29sZT10dHlteGMw
+LDExNTIwMCBvdGdfbW9kZT0kb3RnX21vZGUiCitib290YXJncz0iY29uc29sZT10dHlteGMwLDEx
+NTIwMCBvdGdfbW9kZT0kb3RnX21vZGUgdmlkZW89aW14ZmI6JHZpZGVvIgogCiBuYW5kX3BhcnRz
+PSIyNTZrKGJhcmVib3gpcm8sMTI4ayhiYXJlYm94ZW52KSwzTShrZXJuZWwpLC0ocm9vdCkiCiBy
+b290ZnNfbXRkYmxvY2tfbmFuZD0zCi0tIAoxLjcuNy42CgoKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
+aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
+dGluZm8vYmFyZWJveAo=
