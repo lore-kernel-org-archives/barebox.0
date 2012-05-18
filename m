@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SVJjP-000835-7m
- for barebox@lists.infradead.org; Fri, 18 May 2012 09:44:23 +0000
-Received: by mail-lpp01m010-f49.google.com with SMTP id p9so2437214laa.36
- for <barebox@lists.infradead.org>; Fri, 18 May 2012 02:44:18 -0700 (PDT)
+ id 1SVJjR-00084W-Vb
+ for barebox@lists.infradead.org; Fri, 18 May 2012 09:44:24 +0000
+Received: by mail-lb0-f177.google.com with SMTP id gg6so2448980lbb.36
+ for <barebox@lists.infradead.org>; Fri, 18 May 2012 02:44:21 -0700 (PDT)
 From: Alexey Galakhov <agalakhov@gmail.com>
-Date: Fri, 18 May 2012 15:43:28 +0600
-Message-Id: <1337334211-12576-5-git-send-email-agalakhov@gmail.com>
+Date: Fri, 18 May 2012 15:43:29 +0600
+Message-Id: <1337334211-12576-6-git-send-email-agalakhov@gmail.com>
 In-Reply-To: <1337334211-12576-1-git-send-email-agalakhov@gmail.com>
 References: <20120517175244.GH30400@pengutronix.de>
  <1337334211-12576-1-git-send-email-agalakhov@gmail.com>
@@ -24,226 +24,108 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] S5P boot header and image generator
+Subject: [PATCHv4 5/7] S5P lowlevel clock init
 To: barebox@lists.infradead.org
 Cc: Alexey Galakhov <agalakhov@gmail.com>
 
 Signed-off-by: Alexey Galakhov <agalakhov@gmail.com>
 ---
- .gitignore          |    2 +
- Makefile            |    2 +-
- arch/arm/Makefile   |    7 +++
- scripts/Makefile    |    1 +
- scripts/s5p_cksum.c |  140 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 151 insertions(+), 1 deletion(-)
- create mode 100644 scripts/s5p_cksum.c
+ arch/arm/mach-samsung/Makefile                   |    1 +
+ arch/arm/mach-samsung/include/mach/s3c-generic.h |    4 ++
+ arch/arm/mach-samsung/lowlevel-s5pcxx.c          |   61 ++++++++++++++++++++++
+ 3 files changed, 66 insertions(+)
+ create mode 100644 arch/arm/mach-samsung/lowlevel-s5pcxx.c
 
-diff --git a/.gitignore b/.gitignore
-index 8e208e0..df0ed2c 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -33,6 +33,7 @@ barebox.S
- barebox.bin
- barebox.srec
- barebox.netx
-+barebox.s5p
- barebox.map
- System.map
- Module.symvers
-@@ -63,3 +64,4 @@ cscope.*
- # patches
- *.patch
- scripts/gen_netx_image
-+scripts/s5p_cksum
-diff --git a/Makefile b/Makefile
-index 44b7dbd..91ded1b 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1003,7 +1003,7 @@ CLEAN_DIRS  += $(MODVERDIR)
- CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
-                 .tmp_version .tmp_barebox* barebox.bin barebox.map barebox.S \
- 		.tmp_kallsyms* barebox_default_env* barebox.ldr \
--		Doxyfile.version barebox.srec
-+		Doxyfile.version barebox.srec barebox.s5p
- 
- # Directories & files removed with 'make mrproper'
- MRPROPER_DIRS  += include/config include2 usr/include
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index d0bfd71..40291aa 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -164,6 +164,13 @@ ifeq ($(machine-y),netx)
- KBUILD_IMAGE := barebox.netx
- endif
- 
-+barebox.s5p: barebox.bin
-+	$(Q)scripts/s5p_cksum barebox.bin barebox.s5p
+diff --git a/arch/arm/mach-samsung/Makefile b/arch/arm/mach-samsung/Makefile
+index 0b95e14..d7344c8 100644
+--- a/arch/arm/mach-samsung/Makefile
++++ b/arch/arm/mach-samsung/Makefile
+@@ -1,5 +1,6 @@
+ obj-y += s3c-timer.o generic.o
+ obj-lowlevel-$(CONFIG_ARCH_S3C24xx) += lowlevel-s3c24x0.o
++obj-lowlevel-$(CONFIG_ARCH_S5PCxx) += lowlevel-s5pcxx.o
+ obj-$(CONFIG_ARCH_S3C24xx) += gpio-s3c24x0.o s3c24xx-clocks.o mem-s3c24x0.o
+ obj-$(CONFIG_ARCH_S5PCxx) += gpio-s5pcxx.o clocks-s5pcxx.o
+ obj-$(CONFIG_S3C_LOWLEVEL_INIT) += $(obj-lowlevel-y)
+diff --git a/arch/arm/mach-samsung/include/mach/s3c-generic.h b/arch/arm/mach-samsung/include/mach/s3c-generic.h
+index 9d40ef8..11b083d 100644
+--- a/arch/arm/mach-samsung/include/mach/s3c-generic.h
++++ b/arch/arm/mach-samsung/include/mach/s3c-generic.h
+@@ -37,3 +37,7 @@ unsigned s3c_get_uart_clk(unsigned src);
+ uint32_t s3c24xx_get_memory_size(void);
+ void s3c24xx_disable_second_sdram_bank(void);
+ #endif
 +
-+ifeq ($(CONFIG_ARCH_S5PCxx),y)
-+KBUILD_IMAGE := barebox.s5p
-+endif
-+
- MLO: barebox.bin
- 	@echo "  IFT    " $@
- 	$(Q)scripts/omap_signGP barebox.bin $(TEXT_BASE) 1
-diff --git a/scripts/Makefile b/scripts/Makefile
-index cb049fd..784d205 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -10,6 +10,7 @@ hostprogs-y                      += mkimage
- hostprogs-y                      += bareboxenv
- hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
- hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP
-+hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
- 
- always		:= $(hostprogs-y) $(hostprogs-m)
- 
-diff --git a/scripts/s5p_cksum.c b/scripts/s5p_cksum.c
++#ifdef CONFIG_ARCH_S5PCxx
++void s5p_init_pll(void);
++#endif
+diff --git a/arch/arm/mach-samsung/lowlevel-s5pcxx.c b/arch/arm/mach-samsung/lowlevel-s5pcxx.c
 new file mode 100644
-index 0000000..7142532
+index 0000000..15afa47
 --- /dev/null
-+++ b/scripts/s5p_cksum.c
-@@ -0,0 +1,140 @@
++++ b/arch/arm/mach-samsung/lowlevel-s5pcxx.c
+@@ -0,0 +1,61 @@
 +/*
 + * Copyright (C) 2012 Alexey Galakhov
 + *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
++ * Based on code from u-boot found somewhere on the web
++ * that seems to originate from Samsung
 + *
 + * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * version 2 as published by the Free Software Foundation.
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
 + */
 +
-+#include <stdio.h>
-+#include <stdint.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <stddef.h>
-+#include <errno.h>
++#include <config.h>
++#include <common.h>
++#include <io.h>
++#include <init.h>
++#include <mach/s3c-iomap.h>
++#include <mach/s3c-clocks.h>
++#include <mach/s3c-generic.h>
 +
-+#define DEFAULT_BUF_SIZE 8192
-+
-+static int usage(const char* me)
++#ifdef CONFIG_S3C_PLL_INIT
++void  __bare_init s5p_init_pll(void)
 +{
-+	printf("Usage: %s <input> <output> [<bufsize]\n", me);
-+	return 1;
++    uint32_t reg;
++    int i;
++
++    /* Set Mux to FIN */
++    writel(0, S5P_CLK_SRC0);
++
++    writel(BOARD_APLL_LOCKTIME, S5P_xPLL_LOCK + S5P_APLL);
++
++    /* Disable PLL */
++    writel(0, S5P_xPLL_CON + S5P_APLL);
++    writel(0, S5P_xPLL_CON + S5P_MPLL);
++
++    /* Set up dividers */
++    reg = readl(S5P_CLK_DIV0);
++    reg &= ~(BOARD_CLK_DIV0_MASK);
++    reg |= (BOARD_CLK_DIV0_VAL);
++    writel(reg, S5P_CLK_DIV0);
++
++    /* Set up PLLs */
++    writel(BOARD_APLL_VAL, S5P_xPLL_CON + S5P_APLL);
++    writel(BOARD_MPLL_VAL, S5P_xPLL_CON + S5P_MPLL);
++    writel(BOARD_EPLL_VAL, S5P_xPLL_CON + S5P_EPLL);
++    writel(BOARD_VPLL_VAL, S5P_xPLL_CON + S5P_VPLL);
++
++    /* Wait for sync */
++    for (i = 0; i < 0x10000; ++i)
++        barrier();
++
++    reg = readl(S5P_CLK_SRC0);
++    reg |= 0x1111; /* switch MUX to PLL outputs */
++    writel(reg, S5P_CLK_SRC0);
 +}
-+
-+static void put32(uint8_t *ptr, uint32_t value)
-+{
-+	ptr[0] = value & 0xFF;
-+	ptr[1] = (value >> 8) & 0xFF;
-+	ptr[2] = (value >> 16) & 0xFF;
-+	ptr[3] = (value >> 24) & 0xFF;
-+}
-+
-+static size_t safe_fread(void *buf, size_t len, FILE* file)
-+{
-+	size_t rd = fread(buf, 1, len, file);
-+	if (! rd) {
-+		if (ferror(file))
-+			fprintf(stderr, "Error reading file: %s\n", strerror(errno));
-+		else
-+			fprintf(stderr, "Unexpected end of file\n");
-+	}
-+	return rd;
-+}
-+
-+static size_t safe_fwrite(const void *buf, size_t len, FILE* file)
-+{
-+	size_t wr = fwrite(buf, 1, len, file);
-+	if (wr != len) {
-+		fprintf(stderr, "Error writing file: %s\n", strerror(errno));
-+		return 0;
-+	}
-+	return wr;
-+}
-+
-+static int process(FILE *input, FILE *output, uint8_t *buf, unsigned bufsize)
-+{
-+	size_t rd;
-+	unsigned i;
-+	uint32_t cksum;
-+	/* Read first chunk */
-+	rd = safe_fread(buf + 16, bufsize - 16, input);
-+	if (! rd)
-+		return 4;
-+	/* Calculate header */
-+	put32(buf + 0, bufsize);
-+	cksum = 0;
-+	for (i = 16; i < bufsize; ++i)
-+		cksum += (uint32_t)buf[i];
-+	put32(buf + 8, cksum);
-+	if (! safe_fwrite(buf, bufsize, output))
-+		return 4;
-+	/* Copy the rest of file */
-+	while (! feof(input)) {
-+		rd = safe_fread(buf, bufsize, input);
-+		if (! rd)
-+			return 4;
-+		if (! safe_fwrite(buf, rd, output))
-+			return 4;
-+	}
-+	return 0;
-+}
-+
-+static int work(const char* me, const char *infile, const char *outfile, unsigned bufsize)
-+{
-+	uint8_t *buf;
-+	FILE *input;
-+	FILE *output;
-+	int ret;
-+	if (bufsize < 512 || bufsize > 65536)
-+		return usage(me);
-+	buf = calloc(1, bufsize);
-+	if (! buf) {
-+		fprintf(stderr, "Unable to allocate %u bytes of memory\n", bufsize);
-+		return 2;
-+	}
-+	input = fopen(infile, "r");
-+	if (! input) {
-+		fprintf(stderr, "Cannot open `%s' for reading\n", infile);
-+		free(buf);
-+		return 3;
-+	}
-+	output = fopen(outfile, "w");
-+	if (! output) {
-+		fprintf(stderr, "Cannot open `%s' for writing\n", outfile);
-+		fclose(input);
-+		free(buf);
-+		return 3;
-+	}
-+
-+	ret = process(input, output, buf, bufsize);
-+
-+	fclose(output);
-+	fclose(input);
-+	free(buf);
-+	return ret;
-+}
-+
-+int main(int argc, char** argv)
-+{
-+	switch (argc) {
-+	case 3:
-+		return work(argv[0], argv[1], argv[2], DEFAULT_BUF_SIZE);
-+	case 4:
-+		return work(argv[0], argv[1], argv[2], atoi(argv[3]));
-+	default:
-+		return usage(argv[0]);
-+	}
-+}
++#endif /* CONFIG_S3C_PLL_INIT */
 -- 
 1.7.10
 
