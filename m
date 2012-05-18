@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SVJih-00082J-If
- for barebox@lists.infradead.org; Fri, 18 May 2012 09:43:36 +0000
-Date: Fri, 18 May 2012 11:43:34 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120518094334.GT30400@pengutronix.de>
-References: <1337326905-555-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1337326905-555-1-git-send-email-eric@eukrea.com>
+ id 1SVJj2-000835-T2
+ for barebox@lists.infradead.org; Fri, 18 May 2012 09:43:57 +0000
+Received: by laap9 with SMTP id p9so2437214laa.36
+ for <barebox@lists.infradead.org>; Fri, 18 May 2012 02:43:55 -0700 (PDT)
+From: Alexey Galakhov <agalakhov@gmail.com>
+Date: Fri, 18 May 2012 15:43:24 +0600
+Message-Id: <1337334211-12576-1-git-send-email-agalakhov@gmail.com>
+In-Reply-To: <20120517175244.GH30400@pengutronix.de>
+References: <20120517175244.GH30400@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,68 +18,96 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 01/10] eukrea_cpuimx25: workaround ENGcm09152
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCHv4 0/7] S5PV210 support (upd.)
+To: barebox@lists.infradead.org
+Cc: Alexey Galakhov <agalakhov@gmail.com>
 
-Hi Eric,
+Removed function renaming (s3c24xx_get_memory_size).
+Everything else is left untouched and only reflects the
+above change.
 
-On Fri, May 18, 2012 at 09:41:36AM +0200, Eric B=E9nard wrote:
-> else USB device doesn't work as the hardware fix is present on the
-> boards
-> =
+Alexey Galakhov (7):
+  Make S3C24xx config options available for all S3Cs
+  Split S3C generic and S3C24xx specific code
+  Add support for Samsung S5P architecture (S5PV210)
+  S5P boot header and image generator
+  S5P lowlevel clock init
+  S5P DRAM support
+  Add FriendlyArm Tiny210 board (S5PV210)
 
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+ .gitignore                                         |    2 +
+ Makefile                                           |    2 +-
+ arch/arm/Kconfig                                   |    6 +
+ arch/arm/Makefile                                  |    8 +
+ arch/arm/boards/a9m2410/a9m2410.c                  |    2 +-
+ arch/arm/boards/a9m2410/config.h                   |    2 +-
+ arch/arm/boards/a9m2410/lowlevel_init.S            |    2 +-
+ arch/arm/boards/a9m2440/a9m2440.c                  |    2 +-
+ arch/arm/boards/a9m2440/config.h                   |    2 +-
+ arch/arm/boards/a9m2440/lowlevel_init.S            |    2 +-
+ arch/arm/boards/mini2440/config.h                  |    2 +-
+ arch/arm/boards/mini2440/lowlevel_init.S           |    2 +-
+ arch/arm/boards/mini2440/mini2440.c                |    2 +-
+ arch/arm/boards/tiny210/Makefile                   |    1 +
+ arch/arm/boards/tiny210/config.h                   |   21 +
+ arch/arm/boards/tiny210/lowlevel.c                 |   76 ++
+ arch/arm/boards/tiny210/tiny210.c                  |  113 +++
+ arch/arm/configs/a9m2410_defconfig                 |    2 +-
+ arch/arm/configs/a9m2440_defconfig                 |    4 +-
+ arch/arm/configs/mini2440_defconfig                |    2 +-
+ arch/arm/configs/tiny210_defconfig                 |   17 +
+ arch/arm/mach-samsung/Kconfig                      |   57 +-
+ arch/arm/mach-samsung/Makefile                     |    7 +-
+ arch/arm/mach-samsung/clocks-s5pcxx.c              |   98 +++
+ arch/arm/mach-samsung/generic.c                    |  113 ---
+ arch/arm/mach-samsung/gpio-s5pcxx.c                |  123 +++
+ arch/arm/mach-samsung/include/mach/gpio.h          |    3 +
+ arch/arm/mach-samsung/include/mach/iomux-s5pcxx.h  |  798 ++++++++++++++++++++
+ arch/arm/mach-samsung/include/mach/s3c-clocks.h    |   25 +-
+ arch/arm/mach-samsung/include/mach/s3c-generic.h   |    9 +-
+ arch/arm/mach-samsung/include/mach/s3c-iomap.h     |   56 +-
+ .../arm/mach-samsung/include/mach/s3c24xx-clocks.h |   24 +
+ arch/arm/mach-samsung/include/mach/s3c24xx-gpio.h  |    6 +-
+ arch/arm/mach-samsung/include/mach/s3c24xx-iomap.h |   69 ++
+ arch/arm/mach-samsung/include/mach/s3c24xx-nand.h  |    2 +-
+ arch/arm/mach-samsung/include/mach/s5pcxx-clocks.h |   55 ++
+ arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h  |   52 ++
+ arch/arm/mach-samsung/lowlevel-init.S              |  317 --------
+ arch/arm/mach-samsung/lowlevel-s3c24x0.S           |  317 ++++++++
+ arch/arm/mach-samsung/lowlevel-s5pcxx.c            |   61 ++
+ arch/arm/mach-samsung/mem-s3c24x0.c                |  143 ++++
+ arch/arm/mach-samsung/mem-s5pcxx.c                 |  260 +++++++
+ drivers/mtd/nand/nand_s3c24xx.c                    |   10 +-
+ scripts/Makefile                                   |    1 +
+ scripts/s5p_cksum.c                                |  140 ++++
+ 45 files changed, 2487 insertions(+), 531 deletions(-)
+ create mode 100644 arch/arm/boards/tiny210/Makefile
+ create mode 100644 arch/arm/boards/tiny210/config.h
+ create mode 100644 arch/arm/boards/tiny210/lowlevel.c
+ create mode 100644 arch/arm/boards/tiny210/tiny210.c
+ create mode 100644 arch/arm/configs/tiny210_defconfig
+ create mode 100644 arch/arm/mach-samsung/clocks-s5pcxx.c
+ create mode 100644 arch/arm/mach-samsung/gpio-s5pcxx.c
+ create mode 100644 arch/arm/mach-samsung/include/mach/iomux-s5pcxx.h
+ create mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-clocks.h
+ create mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-iomap.h
+ create mode 100644 arch/arm/mach-samsung/include/mach/s5pcxx-clocks.h
+ create mode 100644 arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h
+ delete mode 100644 arch/arm/mach-samsung/lowlevel-init.S
+ create mode 100644 arch/arm/mach-samsung/lowlevel-s3c24x0.S
+ create mode 100644 arch/arm/mach-samsung/lowlevel-s5pcxx.c
+ create mode 100644 arch/arm/mach-samsung/mem-s3c24x0.c
+ create mode 100644 arch/arm/mach-samsung/mem-s5pcxx.c
+ create mode 100644 scripts/s5p_cksum.c
 
-Applied this series. I had to apply several patches manually, please
-check if all went right (and please try and apply your own patches you
-received from the list and see what might have gone wrong to fix it next
-time)
+-- 
+1.7.10
 
-Sascha
-
-> ---
->  arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c |    2 ++
->  1 files changed, 2 insertions(+), 0 deletions(-)
-> =
-
-> diff --git a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c b/arch/arm=
-/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-> index 1e48650..75a99f7 100644
-> --- a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-> +++ b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-> @@ -255,6 +255,8 @@ static int eukrea_cpuimx25_devices_init(void)
->  	imx25_usb_init();
->  	add_generic_usb_ehci_device(-1, IMX_OTG_BASE + 0x400, NULL);
->  #endif
-> +	/* Workaround ENGcm09152 */
-> +	writel(readl(IMX_OTG_BASE + 0x608) | (1 << 23), IMX_OTG_BASE + 0x608);
->  	add_generic_device("fsl-udc", -1, NULL, IMX_OTG_BASE, 0x200,
->  			   IORESOURCE_MEM, &usb_pdata);
->  =
-
-> -- =
-
-> 1.7.7.6
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
