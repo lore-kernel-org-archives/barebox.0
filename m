@@ -1,20 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-f49.google.com ([209.85.213.49])
+Received: from smtp10.mail.ru ([94.100.176.152])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SVKlv-0004Im-2b
- for barebox@lists.infradead.org; Fri, 18 May 2012 10:51:00 +0000
-Received: by yhjj52 with SMTP id j52so3086568yhj.36
- for <barebox@lists.infradead.org>; Fri, 18 May 2012 03:50:57 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20120518084921.GP30400@pengutronix.de>
-References: <CAA4bVAF6=LXsv7Q97Mi6uSx_0oY+h=pyTOrRip=+dyAykGWKpw@mail.gmail.com>
- <CAA4bVAE=UFvDOv0MS97wZjqBLJKxjxRvt3n+7eQME1gfk++RbA@mail.gmail.com>
- <20120517181915.GJ30400@pengutronix.de>
- <CAA4bVAGhuekyOa5cjJHcWJUYm6K4SPn=c3BXTauFP3CvFaMX7A@mail.gmail.com>
- <20120518084921.GP30400@pengutronix.de>
-Date: Fri, 18 May 2012 14:50:56 +0400
-Message-ID: <CAA4bVAF4PuDU+U-v=KPr58YFgRAZDXLSpiGVsSkmgvGP3ZOKOg@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+ id 1SW28U-0005Fq-5Z
+ for barebox@lists.infradead.org; Sun, 20 May 2012 09:09:11 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sun, 20 May 2012 13:09:10 +0400
+Message-Id: <1337504950-24623-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,62 +14,194 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: build timestamps don't work
-To: barebox <barebox@lists.infradead.org>
+Subject: [PATCH v2] PCM970: Added support for CompactFlash
+To: barebox@lists.infradead.org
 
-On 18 May 2012 12:49, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Fri, May 18, 2012 at 12:28:52AM +0400, Antony Pavlov wrote:
->> On 17 May 2012 22:19, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> > On Thu, May 17, 2012 at 09:52:36PM +0400, Antony Pavlov wrote:
->> >> ping
->> >>
->> >> On 16 May 2012 08:27, Antony Pavlov <antonynpavlov@gmail.com> wrote:
->> >> > Hi!
->> >> >
->> >> > =A0I have found that on my Debian testing build system generation of
->> >> > timestamps don't work correctly.
->> >
->> > I just tried and it works with ARM builds. Tried again with MIPS, and
->> > yes, indeed it does not work. Maybe worth looking at the architecture
->> > specific Makefile.
->> >
->>
->> I tried another debian linux. I tried ARM & MIPS: the both don't work.
->>
->> I checked linux-3.1 build for mips: it work. At least =A0there is one di=
-fferrence:
->> in linux if i make 'rm .version && make', then scripts/mkcompile_h
->> started _two_ times, but only _one_ time in barebox.
->
-> Just to make sure, you have the following in your tree, right?
->
-> commit 55c81081e577922a8d7d0a1d633efb7feb3560d4
-> Author: Sascha Hauer <s.hauer@pengutronix.de>
-> Date: =A0 Sun Apr 15 12:05:21 2012 +0200
->
-> =A0 =A0Makefile: fix build timestamps
->
-> =A0 =A0This patch adds the scripts/mkcompile_h from the Kernel. This gives
-> =A0 =A0us additional information about the build like who built this bina=
-ry
-> =A0 =A0and with which compiler. Currently the only information used is the
-> =A0 =A0build timestamp and the generation number.
-> =A0 =A0This also fixes the build timestamp in the banner which is now
-> correct
-> =A0 =A0even with consecutive builds without making clean in between.
->
-> =A0 =A0Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Added support for CompactFlash cards for PCM970 development board via
+PCMCIA window.
 
-Yes, I have this commit in my tree. I used the 'next' branch.
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/boards/pcm038/pcm970.c             |  107 +++++++++++++++++++++++++++
+ arch/arm/mach-imx/include/mach/imx27-regs.h |   13 +++
+ 2 files changed, 120 insertions(+), 0 deletions(-)
 
--- =
+diff --git a/arch/arm/boards/pcm038/pcm970.c b/arch/arm/boards/pcm038/pcm970.c
+index cd80677..ca10afb 100644
+--- a/arch/arm/boards/pcm038/pcm970.c
++++ b/arch/arm/boards/pcm038/pcm970.c
+@@ -18,11 +18,17 @@
+ #include <common.h>
+ #include <io.h>
+ #include <init.h>
++#include <sizes.h>
++#include <platform_ide.h>
+ #include <mach/imx-regs.h>
+ #include <mach/iomux-mx27.h>
+ #include <mach/gpio.h>
+ #include <usb/ulpi.h>
+ 
++#define GPIO_IDE_POWER	(GPIO_PORTE + 18)
++#define GPIO_IDE_PCOE	(GPIO_PORTF + 7)
++#define GPIO_IDE_RESET	(GPIO_PORTF + 10)
++
+ #ifdef CONFIG_USB
+ static void pcm970_usbh2_init(void)
+ {
+@@ -45,6 +51,103 @@ static void pcm970_usbh2_init(void)
+ }
+ #endif
+ 
++#ifdef CONFIG_DISK_INTF_PLATFORM_IDE
++static struct resource pcm970_ide_resources[] = {
++	{
++		.start	= IMX_PCMCIA_MEM_BASE,
++		.size	= SZ_1K,
++		.flags	= IORESOURCE_MEM,
++	},
++};
++
++static void pcm970_ide_reset(int state)
++{
++	/* Switch reset line to low/high state */
++	gpio_set_value(GPIO_IDE_RESET, !!state);
++}
++
++static struct ide_port_info pcm970_ide_pdata = {
++	.ioport_shift	= 0,
++	.reset		= &pcm970_ide_reset,
++};
++
++static struct device_d pcm970_ide_device = {
++	.id		= -1,
++	.name		= "ide_intf",
++	.num_resources	= ARRAY_SIZE(pcm970_ide_resources),
++	.resource	= pcm970_ide_resources,
++	.platform_data	= &pcm970_ide_pdata,
++};
++
++static void pcm970_ide_init(void)
++{
++	uint32_t i;
++	unsigned int mode[] = {
++		/* PCMCIA */
++		PF20_PF_PC_CD1,
++		PF19_PF_PC_CD2,
++		PF18_PF_PC_WAIT,
++		PF17_PF_PC_READY,
++		PF16_PF_PC_PWRON,
++		PF14_PF_PC_VS1,
++		PF13_PF_PC_VS2,
++		PF12_PF_PC_BVD1,
++		PF11_PF_PC_BVD2,
++		PF9_PF_PC_IOIS16,
++		PF8_PF_PC_RW,
++		GPIO_IDE_PCOE | GPIO_GPIO | GPIO_OUT,	/* PCOE */
++		GPIO_IDE_RESET | GPIO_GPIO | GPIO_OUT,	/* Reset */
++		GPIO_IDE_POWER | GPIO_GPIO | GPIO_OUT,	/* Power */
++	};
++
++	for (i = 0; i < ARRAY_SIZE(mode); i++)
++		imx_gpio_mode(mode[i] | GPIO_PUEN);
++
++	/* Always set PCOE signal to low */
++	gpio_set_value(GPIO_IDE_PCOE, 0);
++
++	/* Assert RESET line */
++	gpio_set_value(GPIO_IDE_RESET, 0);
++
++	/* Power up CF-card (Also switched on User-LED) */
++	gpio_set_value(GPIO_IDE_POWER, 1);
++	mdelay(10);
++
++	/* Reset PCMCIA Status Change Register */
++	writel(0x00000fff, PCMCIA_PSCR);
++	mdelay(10);
++
++	/* Check PCMCIA Input Pins Register for Card Detect & Power */
++	if ((readl(PCMCIA_PIPR) & ((1 << 8) | (3 << 3))) != (1 << 8)) {
++		printf("CompactFlash card not found. Driver not enabled.\n");
++		return;
++	}
++
++	/* Disable all interrupts */
++	writel(0, PCMCIA_PER);
++
++	/* Disable all PCMCIA banks */
++	for (i = 0; i < 5; i++)
++		writel(0, PCMCIA_POR(i));
++
++	/* Not use internal PCOE */
++	writel(0, PCMCIA_PGCR);
++
++	/* Setup PCMCIA bank0 for Common memory mode */
++	writel(0, PCMCIA_PBR(0));
++	writel(0, PCMCIA_POFR(0));
++	writel((0 << 25) | (17 << 17) | (4 << 11) | (3 << 5) | 0xf, PCMCIA_POR(0));
++
++	/* Clear PCMCIA General Status Register */
++	writel(0x0000001f, PCMCIA_PGSR);
++
++	/* Make PCMCIA bank0 valid */
++	writel(readl(PCMCIA_POR(0)) | (1 << 29), PCMCIA_POR(0));
++
++	register_device(&pcm970_ide_device);
++}
++#endif
++
+ static int pcm970_init(void)
+ {
+ 	int i;
+@@ -74,6 +177,10 @@ static int pcm970_init(void)
+ 	pcm970_usbh2_init();
+ #endif
+ 
++#ifdef CONFIG_DISK_INTF_PLATFORM_IDE
++	pcm970_ide_init();
++#endif
++
+ 	return 0;
+ }
+ 
+diff --git a/arch/arm/mach-imx/include/mach/imx27-regs.h b/arch/arm/mach-imx/include/mach/imx27-regs.h
+index 437cc7d..19dcad9 100644
+--- a/arch/arm/mach-imx/include/mach/imx27-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx27-regs.h
+@@ -41,6 +41,17 @@
+ #define IMX_NFC_BASE               (0xd8000000)
+ #define IMX_ESD_BASE               (0xd8001000)
+ #define IMX_WEIM_BASE              (0xd8002000)
++#define IMX_M3IF_BASE		(0xd8003000)
++#define IMX_PCMCIA_CTL_BASE	(0xd8004000)
++
++#define PCMCIA_PIPR		(IMX_PCMCIA_CTL_BASE + 0x00)
++#define PCMCIA_PSCR		(IMX_PCMCIA_CTL_BASE + 0x04)
++#define PCMCIA_PER		(IMX_PCMCIA_CTL_BASE + 0x08)
++#define PCMCIA_PBR(x)		(IMX_PCMCIA_CTL_BASE + 0x0c + ((x) << 2))
++#define PCMCIA_POR(x)		(IMX_PCMCIA_CTL_BASE + 0x28 + ((x) << 2))
++#define PCMCIA_POFR(x)		(IMX_PCMCIA_CTL_BASE + 0x44 + ((x) << 2))
++#define PCMCIA_PGCR		(IMX_PCMCIA_CTL_BASE + 0x60)
++#define PCMCIA_PGSR		(IMX_PCMCIA_CTL_BASE + 0x64)
+ 
+ /* AIPI */
+ #define AIPI1_PSR0	__REG(IMX_AIPI1_BASE + 0x00)
+@@ -240,6 +251,8 @@
+ #define IMX_CS4_BASE	0xD4000000
+ #define IMX_CS5_BASE	0xD6000000
+ 
++#define IMX_PCMCIA_MEM_BASE	(0xdc000000)
++
+ #ifndef __ASSEMBLY__
+ static inline void imx27_setup_weimcs(size_t cs, unsigned upper, unsigned lower, unsigned addional)
+ {
+-- 
+1.7.3.4
 
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
