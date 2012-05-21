@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from devils.ext.ti.com ([198.47.26.153])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SWPsY-0005Ha-On
- for barebox@lists.infradead.org; Mon, 21 May 2012 10:30:19 +0000
-Received: from dbdp20.itg.ti.com ([172.24.170.38])
- by devils.ext.ti.com (8.13.7/8.13.7) with ESMTP id q4LAUFW0013620
- for <barebox@lists.infradead.org>; Mon, 21 May 2012 05:30:16 -0500
-Received: from DBDE71.ent.ti.com (localhost [127.0.0.1])
- by dbdp20.itg.ti.com (8.13.8/8.13.8) with ESMTP id q4LAUFC6022702
- for <barebox@lists.infradead.org>; Mon, 21 May 2012 16:00:15 +0530 (IST)
-From: Anand Gadiyar <gadiyar@ti.com>
-Date: Mon, 21 May 2012 16:00:09 +0530
-Message-ID: <1337596213-15239-1-git-send-email-gadiyar@ti.com>
+ id 1SWQLW-0006mG-Ql
+ for barebox@lists.infradead.org; Mon, 21 May 2012 11:00:16 +0000
+Date: Mon, 21 May 2012 13:00:10 +0200
+From: Bjoern Buerger <b.buerger@pengutronix.de>
+Message-ID: <20120521110010.GM19269@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,33 +16,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4] panda: misc patches
-To: barebox@lists.infradead.org
-Cc: Anand Gadiyar <gadiyar@ti.com>
+Subject: Linuxtag 2012 - Tickets & Cookies :o)
+To: oselas@community.pengutronix.de, ptxdist@pengutronix.de, barebox@lists.infradead.org
 
-This series fixes a minor bug in the ehci initialization for panda
-and enables i2c-omap, twlcore and LED support for the board.
+FYI:
 
-This is my first patch posting to the barebox list and I hope I'll
-have many more in future.
+---------------------------------------------------
+Last Minute: Free Linuxtag Tickets
+---------------------------------------------------
 
-The patches are based on the -next branch, tested on an OMAP4430 panda.
-Next up is to get OMAP4460/70 support.
+If you plan to attend LinuxTag 2012 in Berlin, just
+drop us a note (info@pengutronix.de). We have some =
 
-Anand Gadiyar (4):
-  panda: fix crash when not using barebox as second stage
-  panda: add i2c and twlcore to panda
-  panda: add LED support
-  panda: update defconfig for i2c and led support
+free tickets left :-)
 
- arch/arm/boards/panda/board.c    |   33 +++++++++++++++++++++++++++++++++
- arch/arm/configs/panda_defconfig |    8 +++++++-
- 2 files changed, 40 insertions(+), 1 deletions(-)
+---------------------------------------------------                        =
+                                                                           =
+                                                              =
 
+COME TO THE PENGUTRONIX BOOTH - WE HAVE COOKIES :o)                        =
+                                                                           =
+                                                              =
+
+---------------------------------------------------                        =
+                                                                           =
+                                                              =
+
+
+Thanks to the mighty Stratum0=B9 Hackers (Braunschweig)
+and the BJFS=B2 cookie manufactory there will also be
+a limited selection of penguin-, tux- and escher-
+cookies available *g*. Unfortunately, this time =
+
+only the cookie cutters where 3D-printed... :o)
+
+See you in Berlin, =
+
+Bj=F8rn
+
+=B9) http://www.stratum0.org                                               =
+                                                                           =
+                                                                =
+
+   https://twitpic.com/9lgplh    (-:
+   https://yfrog.com/z/mgsn8klj  :-)
+
+=B2) http://www.penguin.de/~bb/photo/2012-05-BJFS_Cookies/
+
+-- =
+
+Pengutronix e.K.                           | Bj=F8rn B=FCrger              =
+  |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-5002 |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
