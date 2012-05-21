@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from out1-smtp.messagingengine.com ([66.111.4.25])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SWQLW-0006mG-Ql
- for barebox@lists.infradead.org; Mon, 21 May 2012 11:00:16 +0000
-Date: Mon, 21 May 2012 13:00:10 +0200
-From: Bjoern Buerger <b.buerger@pengutronix.de>
-Message-ID: <20120521110010.GM19269@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
+ id 1SWUvg-0003Kx-LY
+ for barebox@lists.infradead.org; Mon, 21 May 2012 15:53:53 +0000
+Received: from compute2.internal (compute2.nyi.mail.srv.osa [10.202.2.42])
+ by gateway1.nyi.mail.srv.osa (Postfix) with ESMTP id 5B48120954
+ for <barebox@lists.infradead.org>; Mon, 21 May 2012 11:53:50 -0400 (EDT)
+From: Alan Ott <alan@signal11.us>
+Date: Mon, 21 May 2012 11:53:36 -0400
+Message-Id: <1337615616-7209-1-git-send-email-alan@signal11.us>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,64 +17,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Linuxtag 2012 - Tickets & Cookies :o)
-To: oselas@community.pengutronix.de, ptxdist@pengutronix.de, barebox@lists.infradead.org
+Subject: [PATCH] common: Make MENU depend on PROCESS_ESCAPE_SEQUENCE
+To: barebox@lists.infradead.org
+Cc: Alan Ott <alan@signal11.us>
 
-FYI:
+print_menu_entry() in common/menu.c depeneds on process_escape_sequence().
 
----------------------------------------------------
-Last Minute: Free Linuxtag Tickets
----------------------------------------------------
+Signed-off-by: Alan Ott <alan@signal11.us>
+---
+ common/Kconfig |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-If you plan to attend LinuxTag 2012 in Berlin, just
-drop us a note (info@pengutronix.de). We have some =
+diff --git a/common/Kconfig b/common/Kconfig
+index 73d620a..ebb9400 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -342,6 +342,7 @@ config AUTO_COMPLETE
+ config MENU
+ 	bool
+ 	prompt "Menu Framework"
++	depends on PROCESS_ESCAPE_SEQUENCE
+ 	help
+ 	   a menu framework that allow us to create list menu to simplify
+ 	   barebox and make it more user-frendly
+-- 
+1.7.0.4
 
-free tickets left :-)
-
----------------------------------------------------                        =
-                                                                           =
-                                                              =
-
-COME TO THE PENGUTRONIX BOOTH - WE HAVE COOKIES :o)                        =
-                                                                           =
-                                                              =
-
----------------------------------------------------                        =
-                                                                           =
-                                                              =
-
-
-Thanks to the mighty Stratum0=B9 Hackers (Braunschweig)
-and the BJFS=B2 cookie manufactory there will also be
-a limited selection of penguin-, tux- and escher-
-cookies available *g*. Unfortunately, this time =
-
-only the cookie cutters where 3D-printed... :o)
-
-See you in Berlin, =
-
-Bj=F8rn
-
-=B9) http://www.stratum0.org                                               =
-                                                                           =
-                                                                =
-
-   https://twitpic.com/9lgplh    (-:
-   https://yfrog.com/z/mgsn8klj  :-)
-
-=B2) http://www.penguin.de/~bb/photo/2012-05-BJFS_Cookies/
-
--- =
-
-Pengutronix e.K.                           | Bj=F8rn B=FCrger              =
-  |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-5002 |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
