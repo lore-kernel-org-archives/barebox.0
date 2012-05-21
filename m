@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SWYrw-0008Cz-KF
- for barebox@lists.infradead.org; Mon, 21 May 2012 20:06:17 +0000
-Date: Mon, 21 May 2012 22:06:14 +0200
+ id 1SWYs7-0008Ds-Ou
+ for barebox@lists.infradead.org; Mon, 21 May 2012 20:06:28 +0000
+Date: Mon, 21 May 2012 22:06:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120521200614.GG30400@pengutronix.de>
-References: <1337615616-7209-1-git-send-email-alan@signal11.us>
+Message-ID: <20120521200626.GH30400@pengutronix.de>
+References: <1337615641-7246-1-git-send-email-alan@signal11.us>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1337615616-7209-1-git-send-email-alan@signal11.us>
+In-Reply-To: <1337615641-7246-1-git-send-email-alan@signal11.us>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +22,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] common: Make MENU depend on PROCESS_ESCAPE_SEQUENCE
+Subject: Re: [PATCH] README: change path to sandbox environment
 To: Alan Ott <alan@signal11.us>
 Cc: barebox@lists.infradead.org
 
-Hi Alan,
-
-On Mon, May 21, 2012 at 11:53:36AM -0400, Alan Ott wrote:
-> print_menu_entry() in common/menu.c depeneds on process_escape_sequence().
+On Mon, May 21, 2012 at 11:54:01AM -0400, Alan Ott wrote:
+> The path to the sandbox environment is now arch/sandbox/board/env .
 > 
 > Signed-off-by: Alan Ott <alan@signal11.us>
 
-Applied, thanks
+Also applied
 
 Sascha
 
 > ---
->  common/Kconfig |    1 +
->  1 files changed, 1 insertions(+), 0 deletions(-)
+>  README |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
 > 
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 73d620a..ebb9400 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -342,6 +342,7 @@ config AUTO_COMPLETE
->  config MENU
->  	bool
->  	prompt "Menu Framework"
-> +	depends on PROCESS_ESCAPE_SEQUENCE
->  	help
->  	   a menu framework that allow us to create list menu to simplify
->  	   barebox and make it more user-frendly
+> diff --git a/README b/README
+> index c875b7d..cec9ccb 100644
+> --- a/README
+> +++ b/README
+> @@ -110,7 +110,7 @@ Barebox usually needs an environment for storing the configuration data.
+>  You can generate an environment using the example environment contained
+>  in board/sandbox/env:
+>  
+> -  # ./scripts/bareboxenv -s -p 0x10000 board/sandbox/env/ env.bin
+> +  # ./scripts/bareboxenv -s -p 0x10000 arch/sandbox/board/env env.bin
+>  
+>  To get some files to play with you can generate a cramfs image:
+>    # mkcramfs somedir/ cramfs.bin
 > -- 
 > 1.7.0.4
 > 
