@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SWYoe-00088Y-0P
- for barebox@lists.infradead.org; Mon, 21 May 2012 20:02:52 +0000
-Date: Mon, 21 May 2012 22:02:49 +0200
+ id 1SWYrw-0008Cz-KF
+ for barebox@lists.infradead.org; Mon, 21 May 2012 20:06:17 +0000
+Date: Mon, 21 May 2012 22:06:14 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120521200249.GF30400@pengutronix.de>
-References: <20120517175244.GH30400@pengutronix.de>
- <1337334211-12576-1-git-send-email-agalakhov@gmail.com>
- <1337334211-12576-7-git-send-email-agalakhov@gmail.com>
+Message-ID: <20120521200614.GG30400@pengutronix.de>
+References: <1337615616-7209-1-git-send-email-alan@signal11.us>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1337334211-12576-7-git-send-email-agalakhov@gmail.com>
+In-Reply-To: <1337615616-7209-1-git-send-email-alan@signal11.us>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,35 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv4 6/7] S5P DRAM support
-To: Alexey Galakhov <agalakhov@gmail.com>
+Subject: Re: [PATCH] common: Make MENU depend on PROCESS_ESCAPE_SEQUENCE
+To: Alan Ott <alan@signal11.us>
 Cc: barebox@lists.infradead.org
 
-On Fri, May 18, 2012 at 03:43:30PM +0600, Alexey Galakhov wrote:
-> +void __bare_init s5p_init_dram_bank(uint32_t base, uint32_t mc0, uint32_t mc1)
-> +{
-> +#ifdef S5P_DRAM_LPDDR
-> +	uint32_t reg = 0x100;
-> +#endif
-> +#ifdef S5P_DRAM_LPDDR2
-> +	uint32_t reg = 0x200;
-> +#endif
-> +#ifdef S5P_DRAM_DDR2
-> +	uint32_t reg = 0x400;
-> +#endif
-> +	reg |= (S5P_DRAM_BURST) << 20;
-> +#ifdef S5P_DRAM_16BIT
-> +	reg |= 0x1000;
-> +#else /* 32-bit */
-> +	reg |= 0x2000;
-> +#endif
+Hi Alan,
 
-Since this function is called from board specific code, can we pass in
-the DDR/DDR2 16BIT/32BIT settings as arguments to this function and
-get rid of these ifdefs?
+On Mon, May 21, 2012 at 11:53:36AM -0400, Alan Ott wrote:
+> print_menu_entry() in common/menu.c depeneds on process_escape_sequence().
+> 
+> Signed-off-by: Alan Ott <alan@signal11.us>
+
+Applied, thanks
 
 Sascha
 
+> ---
+>  common/Kconfig |    1 +
+>  1 files changed, 1 insertions(+), 0 deletions(-)
+> 
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 73d620a..ebb9400 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -342,6 +342,7 @@ config AUTO_COMPLETE
+>  config MENU
+>  	bool
+>  	prompt "Menu Framework"
+> +	depends on PROCESS_ESCAPE_SEQUENCE
+>  	help
+>  	   a menu framework that allow us to create list menu to simplify
+>  	   barebox and make it more user-frendly
+> -- 
+> 1.7.0.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
