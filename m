@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from bear.ext.ti.com ([192.94.94.41])
+Received: from comal.ext.ti.com ([198.47.26.152])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SWPsb-0005IH-97
- for barebox@lists.infradead.org; Mon, 21 May 2012 10:30:22 +0000
+ id 1SWPsZ-0005Hf-5C
+ for barebox@lists.infradead.org; Mon, 21 May 2012 10:30:20 +0000
 Received: from dbdp20.itg.ti.com ([172.24.170.38])
- by bear.ext.ti.com (8.13.7/8.13.7) with ESMTP id q4LAUIg8009266
- for <barebox@lists.infradead.org>; Mon, 21 May 2012 05:30:19 -0500
-Received: from DBDE71.ent.ti.com (localhost [127.0.0.1])
- by dbdp20.itg.ti.com (8.13.8/8.13.8) with ESMTP id q4LAUH0I022753
- for <barebox@lists.infradead.org>; Mon, 21 May 2012 16:00:17 +0530 (IST)
+ by comal.ext.ti.com (8.13.7/8.13.7) with ESMTP id q4LAUHP6012558
+ for <barebox@lists.infradead.org>; Mon, 21 May 2012 05:30:18 -0500
+Received: from DBDE70.ent.ti.com (localhost [127.0.0.1])
+ by dbdp20.itg.ti.com (8.13.8/8.13.8) with ESMTP id q4LAUGm2022734
+ for <barebox@lists.infradead.org>; Mon, 21 May 2012 16:00:16 +0530 (IST)
 From: Anand Gadiyar <gadiyar@ti.com>
-Date: Mon, 21 May 2012 16:00:12 +0530
-Message-ID: <1337596213-15239-4-git-send-email-gadiyar@ti.com>
+Date: Mon, 21 May 2012 16:00:11 +0530
+Message-ID: <1337596213-15239-3-git-send-email-gadiyar@ti.com>
 In-Reply-To: <1337596213-15239-1-git-send-email-gadiyar@ti.com>
 References: <1337596213-15239-1-git-send-email-gadiyar@ti.com>
 MIME-Version: 1.0
@@ -27,61 +27,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] panda: add LED support
+Subject: [PATCH 2/4] panda: add i2c and twlcore to panda
 To: barebox@lists.infradead.org
 Cc: Anand Gadiyar <gadiyar@ti.com>
 
-Register GPIO7 as heartbeat LED, same as in the linux kernel.
+Add i2c-omap and twlcore driver to panda board.
+(Based on similar patch for pcm049).
 
 Signed-off-by: Anand Gadiyar <gadiyar@ti.com>
 ---
- arch/arm/boards/panda/board.c |   19 +++++++++++++++++++
- 1 files changed, 19 insertions(+), 0 deletions(-)
+Tested on OMAP4430 Pandaboard
+
+ arch/arm/boards/panda/board.c |   13 +++++++++++++
+ 1 files changed, 13 insertions(+), 0 deletions(-)
 
 diff --git a/arch/arm/boards/panda/board.c b/arch/arm/boards/panda/board.c
-index fcca5dd..84b4ecd 100644
+index 26d365c..fcca5dd 100644
 --- a/arch/arm/boards/panda/board.c
 +++ b/arch/arm/boards/panda/board.c
-@@ -21,6 +21,8 @@
+@@ -20,6 +20,7 @@
+ #include <mach/gpio.h>
  #include <environment.h>
  #include <mach/xload.h>
- #include <i2c/i2c.h>
-+#include <gpio.h>
-+#include <led.h>
++#include <i2c/i2c.h>
  
  static int board_revision;
  
-@@ -113,6 +115,22 @@ static struct i2c_board_info i2c_devices[] = {
- 	},
- };
+@@ -106,6 +107,12 @@ static void __init panda_boardrev_init(void)
+ 	pr_info("PandaBoard Revision: %03d\n", board_revision);
+ }
  
-+struct gpio_led panda_leds[] = {
++static struct i2c_board_info i2c_devices[] = {
 +	{
-+		.gpio = 7,
-+		.led = {
-+			.name = "heartbeat",
-+		},
++		I2C_BOARD_INFO("twl6030", 0x48),
 +	},
 +};
-+
-+static void panda_led_init(void)
-+{
-+	gpio_direction_output(7, 0);
-+	led_gpio_register(&panda_leds[0]);
-+	led_set_trigger(LED_TRIGGER_HEARTBEAT, &panda_leds[0].led);
-+}
 +
  static int panda_devices_init(void)
  {
  	panda_boardrev_init();
-@@ -151,6 +169,7 @@ static int panda_devices_init(void)
+@@ -134,6 +141,12 @@ static int panda_devices_init(void)
+ 		sr32(OMAP44XX_SCRM_ALTCLKSRC, 2, 2, 0x3);
+ 	}
+ 
++	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
++	add_generic_device("i2c-omap", DEVICE_ID_DYNAMIC,
++				NULL, 0x48070000, 0x1000,
++				IORESOURCE_MEM, NULL);
++
++
+ 	add_generic_device("omap-hsmmc", DEVICE_ID_DYNAMIC, NULL, 0x4809C100, SZ_4K,
  			   IORESOURCE_MEM, NULL);
  	panda_ehci_init();
- 
-+	panda_led_init();
- 	armlinux_set_bootparams((void *)0x80000100);
- 	armlinux_set_architecture(MACH_TYPE_OMAP4_PANDA);
- 
 -- 
 1.7.1
 
