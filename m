@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-gg0-f177.google.com ([209.85.161.177])
+Received: from out5-smtp.messagingengine.com ([66.111.4.29])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SWq4i-0005RT-QJ
- for barebox@lists.infradead.org; Tue, 22 May 2012 14:28:37 +0000
-Received: by ggcs5 with SMTP id s5so6192515ggc.36
- for <barebox@lists.infradead.org>; Tue, 22 May 2012 07:28:35 -0700 (PDT)
+ id 1SWqhk-0007y9-Vm
+ for barebox@lists.infradead.org; Tue, 22 May 2012 15:08:58 +0000
+Message-ID: <4FBBAC03.1000006@signal11.us>
+Date: Tue, 22 May 2012 11:08:51 -0400
+From: Alan Ott <alan@signal11.us>
 MIME-Version: 1.0
-From: Roberto Nibali <rnibali@gmail.com>
-Date: Tue, 22 May 2012 16:28:14 +0200
-Message-ID: <CAONxwYMN4tDV-0vcophuLRA0rJC_T6OaLNyZM22yoso09cJFRg@mail.gmail.com>
+References: <1337653364-31191-1-git-send-email-alan@signal11.us>
+ <1337657537-15367-1-git-send-email-alan@signal11.us>
+ <20120522092718.GE28084@game.jcrosoft.org>
+In-Reply-To: <20120522092718.GE28084@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,119 +19,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1290838516986168356=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: SD card probe failure
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] common: Make MENU select PROCESS_ESCAPE_SEQUENCE if
+ HUSH_SHELL is selected
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
---===============1290838516986168356==
-Content-Type: multipart/alternative; boundary=e89a8f3bac1f6bc4fb04c0a0d590
+On 05/22/2012 05:27 AM, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 23:32 Mon 21 May     , Alan Ott wrote:
+>> print_menu_entry() in common/menu.c calls on process_escape_sequence() when
+>> HUSH_SHELL is selected.
+>>
+>> Signed-off-by: Alan Ott <alan@signal11.us>
+>> ---
+>>  common/Kconfig |    1 +
+>>  1 files changed, 1 insertions(+), 0 deletions(-)
+>>
+>> diff --git a/common/Kconfig b/common/Kconfig
+>> index 73d620a..7cd0666 100644
+>> --- a/common/Kconfig
+>> +++ b/common/Kconfig
+>> @@ -342,6 +342,7 @@ config AUTO_COMPLETE
+>>  config MENU
+>>  	bool
+>>  	prompt "Menu Framework"
+>> +	select PROCESS_ESCAPE_SEQUENCE if SHELL_HUSH
+>>  	help
+>>  	   a menu framework that allow us to create list menu to simplify
+>>  	   barebox and make it more user-frendly
+> you miss the point of the code
+>
+> the PROCESS_ESCAPE_SEQUENCE is optionnal and need to stay optionnal
+> evenif Hush is enable
 
---e89a8f3bac1f6bc4fb04c0a0d590
-Content-Type: text/plain; charset=ISO-8859-1
+It's required if both HUSH_SHELL _and_ MENU are selected. The code in
+common/menu.c looks like this:
 
-Hi
+                if (IS_ENABLED(CONFIG_SHELL_HUSH)) {
+                        process_escape_sequence(m->display,
+m->display_buffer,
+                                                m->display_buffer_size);
+                        puts(m->display_buffer);
+                } else {
+                        puts(m->display);
+                }
 
-I'm loading barebox as a second stage bootloader, because I haven't figured
-out yet how to boot it from SD card directly. It seems though as if barebox
-in general is not happy with the SD card:
+Thus, the configuration needs to say, if you turn on MENU (enabling
+menu.c), then select PROCESS_ESCAPE_SEQUENCE if HUSH_SHELL is also
+selected (because it will try to call process_escape_sequence()).
 
+As I described in my other email, it's very easy to create a test case
+which does not build.
 
-barebox 2012.05.0-00194-g38d361d-dirty #0 Mon May 14 10:52:47 CEST 2012
+Keep in mind, I'm talking about making a Kconfig which is correct for
+the code as the code currently is. Maybe in the opinion of some (you?),
+it is the code that should be different, not the configuration. If you
+or someone else has a better idea how to fix this, that would be fine
+too. Right now however, it is broken.
 
+Alan.
 
-Board: SID1 NOAH
-registered netconsole as cs1
-imx-esdhc@mci0: registered as mci0
-imx-esdhc@imx-esdhc0: timeout 1
-Cannot reset the SD/MMC card
-ehci@ehci0: USB EHCI 1.00
-cfi_flash@cfi_flash0: found cfi flash at a0000000, size 67108864
-Malloc space: 0x83b00000 -> 0x83efffff (size  4 MB)
-Stack space : 0x83af8000 -> 0x83b00000 (size 32 kB)
-envfs: wrong magic on /dev/env0
-no valid environment found on /dev/env0. Using default environment
-running /env/bin/init...
-
-Hit any key to stop autoboot:  5
-
-type update_kernel nor [<imagename>] to update kernel into flash
-type update_root nor [<imagename>] to update rootfs into flash
-
-sid1-noah:/
-sid1-noah:/ devinfo mci0
-resources:
-driver: mci
-
- No information available:
-  MCI card not probed yet
-Parameters:
-           probe = 0
-sid1-noah:/ mci0.probe=1
-imx-esdhc@imx-esdhc0: timeout 1
-Cannot reset the SD/MMC card
-set parameter: Connection timed out
-sid1-noah:/
-
-Any ideas? What are possible causes of this?
-
-Regards
-Roberto
-
---e89a8f3bac1f6bc4fb04c0a0d590
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-Hi<div><br></div><div>I&#39;m loading barebox as a second stage bootloader,=
- because I haven&#39;t figured out yet how to boot it from SD card directly=
-. It seems though as if barebox in general is not happy with the SD card:</=
-div>
-
-<div><br></div><div><br></div><div>barebox 2012.05.0-00194-g38d361d-dirty #=
-0 Mon May 14 10:52:47 CEST 2012</div><div><br></div><div><br></div><div>Boa=
-rd: SID1 NOAH</div><div>registered netconsole as cs1</div><div>imx-esdhc@mc=
-i0: registered as mci0</div>
-
-<div>imx-esdhc@imx-esdhc0: timeout 1</div><div>Cannot reset the SD/MMC card=
-</div><div>ehci@ehci0: USB EHCI 1.00</div><div>cfi_flash@cfi_flash0: found =
-cfi flash at a0000000, size 67108864</div><div>Malloc space: 0x83b00000 -&g=
-t; 0x83efffff (size =A04 MB)</div>
-
-<div>Stack space : 0x83af8000 -&gt; 0x83b00000 (size 32 kB)</div><div>envfs=
-: wrong magic on /dev/env0</div><div>no valid environment found on /dev/env=
-0. Using default environment</div><div>running /env/bin/init...</div><div>
-
-<br></div><div>Hit any key to stop autoboot: =A05</div><div><br></div><div>=
-type update_kernel nor [&lt;imagename&gt;] to update kernel into flash</div=
-><div>type update_root nor [&lt;imagename&gt;] to update rootfs into flash<=
-/div>
-
-<div><br></div><div>sid1-noah:/</div><div>sid1-noah:/ devinfo mci0</div><di=
-v>resources:</div><div>driver: mci</div><div><br></div><div>=A0No informati=
-on available:</div><div>=A0 MCI card not probed yet</div><div>Parameters:</=
-div>
-
-<div>=A0 =A0 =A0 =A0 =A0 =A0probe =3D 0</div><div>sid1-noah:/ mci0.probe=3D=
-1</div><div>imx-esdhc@imx-esdhc0: timeout 1</div><div>Cannot reset the SD/M=
-MC card</div><div>set parameter: Connection timed out</div><div>sid1-noah:/=
-=A0</div><div>
-
-<br></div><div>Any ideas? What are possible causes of this?</div><div><br><=
-/div><div>Regards</div><div>Roberto</div>
-
---e89a8f3bac1f6bc4fb04c0a0d590--
-
-
---===============1290838516986168356==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1290838516986168356==--
