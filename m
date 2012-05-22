@@ -1,18 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-gg0-f177.google.com ([209.85.161.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SWuNr-0001eK-Ok
- for barebox@lists.infradead.org; Tue, 22 May 2012 19:04:40 +0000
-Date: Tue, 22 May 2012 21:04:34 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120522190434.GO30400@pengutronix.de>
-References: <1337653364-31191-1-git-send-email-alan@signal11.us>
- <1337657537-15367-1-git-send-email-alan@signal11.us>
- <20120522092718.GE28084@game.jcrosoft.org>
- <4FBBAC03.1000006@signal11.us>
+ id 1SWuVZ-0001ou-I7
+ for barebox@lists.infradead.org; Tue, 22 May 2012 19:12:38 +0000
+Received: by ggcs5 with SMTP id s5so6562286ggc.36
+ for <barebox@lists.infradead.org>; Tue, 22 May 2012 12:12:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4FBBAC03.1000006@signal11.us>
+In-Reply-To: <20120522182946.GL30400@pengutronix.de>
+References: <20120517175244.GH30400@pengutronix.de>
+ <1337334211-12576-1-git-send-email-agalakhov@gmail.com>
+ <1337334211-12576-7-git-send-email-agalakhov@gmail.com>
+ <20120521200249.GF30400@pengutronix.de>
+ <4FBB59AC.6050202@gmail.com>
+ <20120522182946.GL30400@pengutronix.de>
+Date: Wed, 23 May 2012 01:12:35 +0600
+Message-ID: <CA+LT+-T6P=qyur4Txh9uN_C+krQUU0v=aW0GLsSxdWtFKnwkTg@mail.gmail.com>
+From: Alexey Galakhov <agalakhov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,65 +28,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] common: Make MENU select PROCESS_ESCAPE_SEQUENCE if
- HUSH_SHELL is selected
-To: Alan Ott <alan@signal11.us>
+Subject: Re: [PATCHv4 6/7] S5P DRAM support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, May 22, 2012 at 11:08:51AM -0400, Alan Ott wrote:
-> On 05/22/2012 05:27 AM, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 23:32 Mon 21 May     , Alan Ott wrote:
-> >> print_menu_entry() in common/menu.c calls on process_escape_sequence() when
-> >> HUSH_SHELL is selected.
-> >>
-> >> Signed-off-by: Alan Ott <alan@signal11.us>
-> >> ---
-> >>  common/Kconfig |    1 +
-> >>  1 files changed, 1 insertions(+), 0 deletions(-)
-> >>
-> >> diff --git a/common/Kconfig b/common/Kconfig
-> >> index 73d620a..7cd0666 100644
-> >> --- a/common/Kconfig
-> >> +++ b/common/Kconfig
-> >> @@ -342,6 +342,7 @@ config AUTO_COMPLETE
-> >>  config MENU
-> >>  	bool
-> >>  	prompt "Menu Framework"
-> >> +	select PROCESS_ESCAPE_SEQUENCE if SHELL_HUSH
-> >>  	help
-> >>  	   a menu framework that allow us to create list menu to simplify
-> >>  	   barebox and make it more user-frendly
-> > you miss the point of the code
-> >
-> > the PROCESS_ESCAPE_SEQUENCE is optionnal and need to stay optionnal
-> > evenif Hush is enable
-> 
-> It's required if both HUSH_SHELL _and_ MENU are selected. The code in
-> common/menu.c looks like this:
-> 
->                 if (IS_ENABLED(CONFIG_SHELL_HUSH)) {
->                         process_escape_sequence(m->display,
-> m->display_buffer,
->                                                 m->display_buffer_size);
->                         puts(m->display_buffer);
->                 } else {
->                         puts(m->display);
->                 }
+> I see. In this case you could provide a s5p_init_dram_bank_ddr2 which
+> does the setup for ddr2 ram. The linker will then throw away any other
+> eventually compiled in s5p_init_dram_bank_* function. Code common to
+> all sdram setup functions could still be shared without overhead.
+>
+> Sascha
 
-From what I see your v2 patch is correct. Another possibility would
-maybe be replacing the if above with
-IS_ENABLED(CONFIG_PROCESS_ESCAPE_SEQUENCE), but I don't know if that
-would produce correct code.
+Sounds good. Since all s5p_init_dram_bank_* share some common routines
+that should be quite easy. I'll do that.
 
-Jean-Christophe?
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards,
+Alex
 
 _______________________________________________
 barebox mailing list
