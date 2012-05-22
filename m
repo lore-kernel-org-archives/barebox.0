@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SWtqC-0008OD-8r
- for barebox@lists.infradead.org; Tue, 22 May 2012 18:29:54 +0000
-Date: Tue, 22 May 2012 20:29:46 +0200
+ id 1SWu2d-0000XT-Ip
+ for barebox@lists.infradead.org; Tue, 22 May 2012 18:42:44 +0000
+Date: Tue, 22 May 2012 20:42:40 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120522182946.GL30400@pengutronix.de>
-References: <20120517175244.GH30400@pengutronix.de>
- <1337334211-12576-1-git-send-email-agalakhov@gmail.com>
- <1337334211-12576-7-git-send-email-agalakhov@gmail.com>
- <20120521200249.GF30400@pengutronix.de>
- <4FBB59AC.6050202@gmail.com>
+Message-ID: <20120522184240.GM30400@pengutronix.de>
+References: <CAONxwYOZtob20_ao-A-p2TXXLESsLLKadiARUX9drFK=nvJQcQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <4FBB59AC.6050202@gmail.com>
+In-Reply-To: <CAONxwYOZtob20_ao-A-p2TXXLESsLLKadiARUX9drFK=nvJQcQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,65 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv4 6/7] S5P DRAM support
-To: Alexey Galakhov <agalakhov@gmail.com>
+Subject: Re: Booting mx25 based device from SD and NOR
+To: Roberto Nibali <rnibali@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, May 22, 2012 at 03:17:32PM +0600, Alexey Galakhov wrote:
-> On 22.05.2012 02:02, Sascha Hauer wrote:
-> > On Fri, May 18, 2012 at 03:43:30PM +0600, Alexey Galakhov wrote:
-> >> +void __bare_init s5p_init_dram_bank(uint32_t base, uint32_t mc0, uint32_t mc1)
-> >> +{
-> >> +#ifdef S5P_DRAM_LPDDR
-> >> +	uint32_t reg = 0x100;
-> >> +#endif
-> >> +#ifdef S5P_DRAM_LPDDR2
-> >> +	uint32_t reg = 0x200;
-> >> +#endif
-> >> +#ifdef S5P_DRAM_DDR2
-> >> +	uint32_t reg = 0x400;
-> >> +#endif
-> >> +	reg |= (S5P_DRAM_BURST) << 20;
-> >> +#ifdef S5P_DRAM_16BIT
-> >> +	reg |= 0x1000;
-> >> +#else /* 32-bit */
-> >> +	reg |= 0x2000;
-> >> +#endif
-> > 
-> > Since this function is called from board specific code, can we pass in
-> > the DDR/DDR2 16BIT/32BIT settings as arguments to this function and
-> > get rid of these ifdefs?
-> > 
-> > Sascha
-> 
-> Thank you for the question. Most likely not.
-> 
-> According to the datasheet, LPDDR/LPDDR2/DDR2 initialization sequence is
-> completely different. It is in init_seq() function. Since I have no
-> LPDDR(2) hardware to test, I coded the DDR2 version only. A runtime
-> switch like that:
-> 
-> switch(mode) {
-> case LPDDR:
-> 	lpddr_init_seq();
-> 	break;
-> case LPDDR2:
-> 	lpddr2_init_seq();
-> 	break;
-> case DDR2:
-> 	ddr2_init_seq();
-> 	break;
-> }
-> 
-> is too expensive for S5PV210's __bare_init which is very limited in
-> space. Thus it is better to have only one function compiled in.
+Hi Roberto,
 
-I see. In this case you could provide a s5p_init_dram_bank_ddr2 which
-does the setup for ddr2 ram. The linker will then throw away any other
-eventually compiled in s5p_init_dram_bank_* function. Code common to
-all sdram setup functions could still be shared without overhead.
+On Tue, May 22, 2012 at 02:11:46PM +0200, Roberto Nibali wrote:
+> Hi
+> 
+> I have been trying to boot a customized mx25 based device using barebox and
+> I seem to be missing a few basic pointers, I believe, since it does not
+> work. I have attached my config and put my current patch-set online:
+> http://pastebin.com/KUVAwWRk. It's based on git commit 'dadcf5bd8f715'.
+> 
+> I don't know if the way of adding the boatloader to the SD card for later
+> installing it onto NOR flash is the correct one. I currently issue a:
+> 
+> sudo dd if=barebox.bin of=/dev/sdc bs=512 skip=2 seek=2 && sync
+>
+
+You have configured barebox for external boot mode. This is not suitable
+for SD cards, you have to use internal bootmode instead. This requires
+that you provide a dtd header, see for example the babbage board for how
+to do this.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
