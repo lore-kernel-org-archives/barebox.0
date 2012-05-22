@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from out3-smtp.messagingengine.com ([66.111.4.27])
+Received: from mail-bk0-f49.google.com ([209.85.214.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SWfsC-0007A3-IM
- for barebox@lists.infradead.org; Tue, 22 May 2012 03:35:00 +0000
-Message-ID: <4FBB0966.4060908@signal11.us>
-Date: Mon, 21 May 2012 23:35:02 -0400
-From: Alan Ott <alan@signal11.us>
+ id 1SWlDp-0008MN-Tm
+ for barebox@lists.infradead.org; Tue, 22 May 2012 09:17:42 +0000
+Received: by bkwj4 with SMTP id j4so6190011bkw.36
+ for <barebox@lists.infradead.org>; Tue, 22 May 2012 02:17:39 -0700 (PDT)
+Message-ID: <4FBB59AC.6050202@gmail.com>
+Date: Tue, 22 May 2012 15:17:32 +0600
+From: Alexey Galakhov <agalakhov@gmail.com>
 MIME-Version: 1.0
-References: <1337615616-7209-1-git-send-email-alan@signal11.us>
- <20120521200614.GG30400@pengutronix.de>
- <27196FB3-68EB-4583-9AF3-B256AE562D72@jcrosoft.com>
-In-Reply-To: <27196FB3-68EB-4583-9AF3-B256AE562D72@jcrosoft.com>
+References: <20120517175244.GH30400@pengutronix.de>
+ <1337334211-12576-1-git-send-email-agalakhov@gmail.com>
+ <1337334211-12576-7-git-send-email-agalakhov@gmail.com>
+ <20120521200249.GF30400@pengutronix.de>
+In-Reply-To: <20120521200249.GF30400@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,48 +26,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] common: Make MENU depend on PROCESS_ESCAPE_SEQUENCE
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCHv4 6/7] S5P DRAM support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On 05/21/2012 10:40 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi
->
-> Please revert break my work on at91bootstrap where we use the menu without any shell support
->
-> And the does work with or without hush support
+On 22.05.2012 02:02, Sascha Hauer wrote:
+> On Fri, May 18, 2012 at 03:43:30PM +0600, Alexey Galakhov wrote:
+>> +void __bare_init s5p_init_dram_bank(uint32_t base, uint32_t mc0, uint32_t mc1)
+>> +{
+>> +#ifdef S5P_DRAM_LPDDR
+>> +	uint32_t reg = 0x100;
+>> +#endif
+>> +#ifdef S5P_DRAM_LPDDR2
+>> +	uint32_t reg = 0x200;
+>> +#endif
+>> +#ifdef S5P_DRAM_DDR2
+>> +	uint32_t reg = 0x400;
+>> +#endif
+>> +	reg |= (S5P_DRAM_BURST) << 20;
+>> +#ifdef S5P_DRAM_16BIT
+>> +	reg |= 0x1000;
+>> +#else /* 32-bit */
+>> +	reg |= 0x2000;
+>> +#endif
+> 
+> Since this function is called from board specific code, can we pass in
+> the DDR/DDR2 16BIT/32BIT settings as arguments to this function and
+> get rid of these ifdefs?
+> 
+> Sascha
 
-Upon closer inspection, it should be:
+Thank you for the question. Most likely not.
 
-     config MENU
-     bool
-     prompt "Menu Framework"
-+    select PROCESS_ESCAPE_SEQUENCE if SHELL_HUSH
+According to the datasheet, LPDDR/LPDDR2/DDR2 initialization sequence is
+completely different. It is in init_seq() function. Since I have no
+LPDDR(2) hardware to test, I coded the DDR2 version only. A runtime
+switch like that:
 
-I have posted v2 which does this, and I agree that the original patch
-should be reverted in favor of the new one.
+switch(mode) {
+case LPDDR:
+	lpddr_init_seq();
+	break;
+case LPDDR2:
+	lpddr2_init_seq();
+	break;
+case DDR2:
+	ddr2_init_seq();
+	break;
+}
 
-Steps to reproduce on the master branch:
+is too expensive for S5PV210's __bare_init which is very limited in
+space. Thus it is better to have only one function compiled in.
 
-1. build on amd64 (no ARCH= or CROSS_COMPILE= or anything else)
-2. make distclean
-3. make menuconfig
-4.    Select "Menu Framework" from General Settings
-5.    leave everything else default.
-6. make
-7. output at [1] (link error).
+Of course, it is possible to get rid of #ifdefs in s5p_init_dram_bank()
+but #ifdef is still needed for init_seq(). Ot is there any better solution?
 
-Alan.
-
-[1]
-  LD      barebox
-common/built-in.o: In function `print_menu_entry':
-menu.c:(.text+0x5415): undefined reference to `process_escape_sequence'
-common/built-in.o: In function `print_menu':
-menu.c:(.text+0x54a3): undefined reference to `process_escape_sequence'
-collect2: ld returned 1 exit status
-make: *** [barebox] Error 1
-
+Regards,
+--
+Alex
 
 _______________________________________________
 barebox mailing list
