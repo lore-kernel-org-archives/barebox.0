@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from out3-smtp.messagingengine.com ([66.111.4.27])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SWfpb-0006bP-Dd
- for barebox@lists.infradead.org; Tue, 22 May 2012 03:32:19 +0000
+ id 1SWfsC-0007A3-IM
+ for barebox@lists.infradead.org; Tue, 22 May 2012 03:35:00 +0000
+Message-ID: <4FBB0966.4060908@signal11.us>
+Date: Mon, 21 May 2012 23:35:02 -0400
 From: Alan Ott <alan@signal11.us>
-Date: Mon, 21 May 2012 23:32:17 -0400
-Message-Id: <1337657537-15367-1-git-send-email-alan@signal11.us>
-In-Reply-To: <1337653364-31191-1-git-send-email-alan@signal11.us>
-References: <1337653364-31191-1-git-send-email-alan@signal11.us>
+MIME-Version: 1.0
+References: <1337615616-7209-1-git-send-email-alan@signal11.us>
+ <20120521200614.GG30400@pengutronix.de>
+ <27196FB3-68EB-4583-9AF3-B256AE562D72@jcrosoft.com>
+In-Reply-To: <27196FB3-68EB-4583-9AF3-B256AE562D72@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,38 +19,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] common: Make MENU select PROCESS_ESCAPE_SEQUENCE if
- HUSH_SHELL is selected
-To: plagnioj@jcrosoft.com
-Cc: barebox@lists.infradead.org, Alan Ott <alan@signal11.us>
+Subject: Re: [PATCH] common: Make MENU depend on PROCESS_ESCAPE_SEQUENCE
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-print_menu_entry() in common/menu.c calls on process_escape_sequence() when
-HUSH_SHELL is selected.
+On 05/21/2012 10:40 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi
+>
+> Please revert break my work on at91bootstrap where we use the menu without any shell support
+>
+> And the does work with or without hush support
 
-Signed-off-by: Alan Ott <alan@signal11.us>
----
- common/Kconfig |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+Upon closer inspection, it should be:
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 73d620a..7cd0666 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -342,6 +342,7 @@ config AUTO_COMPLETE
- config MENU
- 	bool
- 	prompt "Menu Framework"
-+	select PROCESS_ESCAPE_SEQUENCE if SHELL_HUSH
- 	help
- 	   a menu framework that allow us to create list menu to simplify
- 	   barebox and make it more user-frendly
--- 
-1.7.0.4
+     config MENU
+     bool
+     prompt "Menu Framework"
++    select PROCESS_ESCAPE_SEQUENCE if SHELL_HUSH
+
+I have posted v2 which does this, and I agree that the original patch
+should be reverted in favor of the new one.
+
+Steps to reproduce on the master branch:
+
+1. build on amd64 (no ARCH= or CROSS_COMPILE= or anything else)
+2. make distclean
+3. make menuconfig
+4.    Select "Menu Framework" from General Settings
+5.    leave everything else default.
+6. make
+7. output at [1] (link error).
+
+Alan.
+
+[1]
+  LD      barebox
+common/built-in.o: In function `print_menu_entry':
+menu.c:(.text+0x5415): undefined reference to `process_escape_sequence'
+common/built-in.o: In function `print_menu':
+menu.c:(.text+0x54a3): undefined reference to `process_escape_sequence'
+collect2: ld returned 1 exit status
+make: *** [barebox] Error 1
 
 
 _______________________________________________
