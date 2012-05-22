@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp23.mail.ru ([94.100.176.176])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SWu8T-0000cC-F6
- for barebox@lists.infradead.org; Tue, 22 May 2012 18:48:46 +0000
-Date: Tue, 22 May 2012 20:48:38 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120522184838.GN30400@pengutronix.de>
-References: <CAONxwYMN4tDV-0vcophuLRA0rJC_T6OaLNyZM22yoso09cJFRg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAONxwYMN4tDV-0vcophuLRA0rJC_T6OaLNyZM22yoso09cJFRg@mail.gmail.com>
+ id 1SWu8b-0000ca-9p
+ for barebox@lists.infradead.org; Tue, 22 May 2012 18:48:54 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Tue, 22 May 2012 22:48:48 +0400
+Message-Id: <1337712528-16387-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,75 +14,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: SD card probe failure
-To: Roberto Nibali <rnibali@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM i.MX: Possible bug fixed due misspelling when copy/paste
+To: barebox@lists.infradead.org
 
-On Tue, May 22, 2012 at 04:28:14PM +0200, Roberto Nibali wrote:
-> Hi
-> 
-> I'm loading barebox as a second stage bootloader, because I haven't figured
-> out yet how to boot it from SD card directly. It seems though as if barebox
-> in general is not happy with the SD card:
-> 
-> 
-> barebox 2012.05.0-00194-g38d361d-dirty #0 Mon May 14 10:52:47 CEST 2012
-> 
-> 
-> Board: SID1 NOAH
-> registered netconsole as cs1
-> imx-esdhc@mci0: registered as mci0
-> imx-esdhc@imx-esdhc0: timeout 1
-> Cannot reset the SD/MMC card
-> ehci@ehci0: USB EHCI 1.00
-> cfi_flash@cfi_flash0: found cfi flash at a0000000, size 67108864
-> Malloc space: 0x83b00000 -> 0x83efffff (size  4 MB)
-> Stack space : 0x83af8000 -> 0x83b00000 (size 32 kB)
-> envfs: wrong magic on /dev/env0
-> no valid environment found on /dev/env0. Using default environment
-> running /env/bin/init...
-> 
-> Hit any key to stop autoboot:  5
-> 
-> type update_kernel nor [<imagename>] to update kernel into flash
-> type update_root nor [<imagename>] to update rootfs into flash
-> 
-> sid1-noah:/
-> sid1-noah:/ devinfo mci0
-> resources:
-> driver: mci
-> 
->  No information available:
->   MCI card not probed yet
-> Parameters:
->            probe = 0
-> sid1-noah:/ mci0.probe=1
-> imx-esdhc@imx-esdhc0: timeout 1
-> Cannot reset the SD/MMC card
-> set parameter: Connection timed out
-> sid1-noah:/
-> 
-> Any ideas? What are possible causes of this?
+We must check pointer to function rather than result.
 
-Does the SD card work in the first stage loader? If yes, you could try
-to remove the mux setup from barebox, so that you can be sure that you
-do not misconfigure things that were already configured correctly.
-I have no hardware handy to test the driver on a i.MX25, but Erics
-Eukrea board has MMC support, so I believe the driver should work in
-general.
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/mach-imx/speed-imx51.c |    4 ++--
+ arch/arm/mach-imx/speed-imx53.c |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-Sascha
-
-
+diff --git a/arch/arm/mach-imx/speed-imx51.c b/arch/arm/mach-imx/speed-imx51.c
+index 84f4892..5a845a6 100644
+--- a/arch/arm/mach-imx/speed-imx51.c
++++ b/arch/arm/mach-imx/speed-imx51.c
+@@ -98,9 +98,9 @@ static unsigned long get_rate_select(int select,
+ {
+ 	switch (select) {
+ 	case 0:
+-		return get_rate1() ? get_rate1() : 0;
++		return get_rate1 ? get_rate1() : 0;
+ 	case 1:
+-		return get_rate2() ? get_rate2() : 0;
++		return get_rate2 ? get_rate2() : 0;
+ 	case 2:
+ 		return get_rate3 ? get_rate3() : 0;
+ 	case 3:
+diff --git a/arch/arm/mach-imx/speed-imx53.c b/arch/arm/mach-imx/speed-imx53.c
+index a2385fa..634341e 100644
+--- a/arch/arm/mach-imx/speed-imx53.c
++++ b/arch/arm/mach-imx/speed-imx53.c
+@@ -103,9 +103,9 @@ static unsigned long get_rate_select(int select,
+ {
+ 	switch (select) {
+ 	case 0:
+-		return get_rate1() ? get_rate1() : 0;
++		return get_rate1 ? get_rate1() : 0;
+ 	case 1:
+-		return get_rate2() ? get_rate2() : 0;
++		return get_rate2 ? get_rate2() : 0;
+ 	case 2:
+ 		return get_rate3 ? get_rate3() : 0;
+ 	case 3:
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.3.4
+
 
 _______________________________________________
 barebox mailing list
