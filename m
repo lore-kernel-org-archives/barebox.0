@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SWuKs-0001Sn-26
- for barebox@lists.infradead.org; Tue, 22 May 2012 19:01:36 +0000
-Date: Tue, 22 May 2012 21:01:19 +0200
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120522210119.00028117@eb-e6520>
-In-Reply-To: <20120522184838.GN30400@pengutronix.de>
-References: <CAONxwYMN4tDV-0vcophuLRA0rJC_T6OaLNyZM22yoso09cJFRg@mail.gmail.com>
- <20120522184838.GN30400@pengutronix.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SWuNr-0001eK-Ok
+ for barebox@lists.infradead.org; Tue, 22 May 2012 19:04:40 +0000
+Date: Tue, 22 May 2012 21:04:34 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120522190434.GO30400@pengutronix.de>
+References: <1337653364-31191-1-git-send-email-alan@signal11.us>
+ <1337657537-15367-1-git-send-email-alan@signal11.us>
+ <20120522092718.GE28084@game.jcrosoft.org>
+ <4FBBAC03.1000006@signal11.us>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <4FBBAC03.1000006@signal11.us>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,31 +21,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: SD card probe failure
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v2] common: Make MENU select PROCESS_ESCAPE_SEQUENCE if
+ HUSH_SHELL is selected
+To: Alan Ott <alan@signal11.us>
 Cc: barebox@lists.infradead.org
 
-Hi,
+On Tue, May 22, 2012 at 11:08:51AM -0400, Alan Ott wrote:
+> On 05/22/2012 05:27 AM, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 23:32 Mon 21 May     , Alan Ott wrote:
+> >> print_menu_entry() in common/menu.c calls on process_escape_sequence() when
+> >> HUSH_SHELL is selected.
+> >>
+> >> Signed-off-by: Alan Ott <alan@signal11.us>
+> >> ---
+> >>  common/Kconfig |    1 +
+> >>  1 files changed, 1 insertions(+), 0 deletions(-)
+> >>
+> >> diff --git a/common/Kconfig b/common/Kconfig
+> >> index 73d620a..7cd0666 100644
+> >> --- a/common/Kconfig
+> >> +++ b/common/Kconfig
+> >> @@ -342,6 +342,7 @@ config AUTO_COMPLETE
+> >>  config MENU
+> >>  	bool
+> >>  	prompt "Menu Framework"
+> >> +	select PROCESS_ESCAPE_SEQUENCE if SHELL_HUSH
+> >>  	help
+> >>  	   a menu framework that allow us to create list menu to simplify
+> >>  	   barebox and make it more user-frendly
+> > you miss the point of the code
+> >
+> > the PROCESS_ESCAPE_SEQUENCE is optionnal and need to stay optionnal
+> > evenif Hush is enable
+> 
+> It's required if both HUSH_SHELL _and_ MENU are selected. The code in
+> common/menu.c looks like this:
+> 
+>                 if (IS_ENABLED(CONFIG_SHELL_HUSH)) {
+>                         process_escape_sequence(m->display,
+> m->display_buffer,
+>                                                 m->display_buffer_size);
+>                         puts(m->display_buffer);
+>                 } else {
+>                         puts(m->display);
+>                 }
 
-Le Tue, 22 May 2012 20:48:38 +0200,
-Sascha Hauer <s.hauer@pengutronix.de> a =E9crit :
-> Does the SD card work in the first stage loader? If yes, you could try
-> to remove the mux setup from barebox, so that you can be sure that you
-> do not misconfigure things that were already configured correctly.
-> I have no hardware handy to test the driver on a i.MX25, but Erics
-> Eukrea board has MMC support, so I believe the driver should work in
-> general.
-> =
+From what I see your v2 patch is correct. Another possibility would
+maybe be replacing the if above with
+IS_ENABLED(CONFIG_PROCESS_ESCAPE_SEQUENCE), but I don't know if that
+would produce correct code.
 
-I don't remembed if SD is working under barebox on the i.MX25 but at
-least our default configuration was booting from a SDCard the last time
-I tested it.
+Jean-Christophe?
 
-Eric
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
