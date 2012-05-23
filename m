@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ud04.udmedia.de ([194.117.254.44] helo=mail.ud04.udmedia.de)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SXE9C-00082m-MZ
- for barebox@lists.infradead.org; Wed, 23 May 2012 16:10:52 +0000
-Message-ID: <4FBD05B8.40001@crane-soft.de>
-Date: Wed, 23 May 2012 17:43:52 +0200
-From: "Peter Kuennemann@Crane-Soft" <pkue@crane-soft.de>
+ id 1SXExe-0000t9-Fb
+ for barebox@lists.infradead.org; Wed, 23 May 2012 17:02:59 +0000
+Date: Wed, 23 May 2012 19:02:56 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120523170256.GW30400@pengutronix.de>
+References: <1337504950-24623-1-git-send-email-shc_work@mail.ru>
+ <20120521200814.GI30400@pengutronix.de>
+ <E1SWZ8C-0004o6-G6.shc_work-mail-ru@f302.mail.ru>
 MIME-Version: 1.0
-Reply-To: pkue@crane-soft.de
+Content-Disposition: inline
+In-Reply-To: <E1SWZ8C-0004o6-G6.shc_work-mail-ru@f302.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,88 +20,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Booting PhyTec PCM043/IMX35  from USB/SD-Card
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] PCM970: Added support for CompactFlash
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-Hi all.
-
-I am trying to setup my PCM043/IMX35 board to boot from the
-USB MMC card but til now I do have have any clue how to manage.
-Searching the net, did not provide any hints regard that board.
-
-I'ld like to have barebox to allow me to use the USB/MMC card
-as boot device. Is there a chance to boot from SD-Card at all?
-
--- barebox configuration data --
-
-I have enabled USB support (USB_EHCI/OHCI and  USB_STORAGE ) as well as
-CONFIG_UBI=y
-CONFIG_DISK=y
-CONFIG_DISK_WRITE=y
-...
-CONFIG_USB=y
-CONFIG_USB_EHCI=y
-CONFIG_USB_OHCI=y
-# CONFIG_USB_ULPI is not set
-# CONFIG_USB_TWL4030 is not set
-CONFIG_USB_STORAGE=y
-# CONFIG_USB_GADGET is not set
-# CONFIG_VIDEO is not set
-CONFIG_MCI=y
-...
-CONFIG_MCI_STARTUP=y
-CONFIG_MCI_INFO=y
-CONFIG_MCI_WRITE=y
-CONFIG_MCI_IMX_ESDHC=y
-CONFIG_MCI_IMX_ESDHC_PIO=y
-Device list in bareBox after boot:
-
----------
-
-barebox@Phytec phyCORE-i.MX35:/ ls /dev
-defaultenv             env0                   imx_iim_bank0
-imx_iim_bank1          imx_iim_bank2          imx_iim_bank3
-imx_iim_bank4          imx_iim_bank5          imx_iim_bank6
-imx_iim_bank7          mem                    nand0
-nand0.barebox          nand0.barebox.bb       nand0.bareboxenv
-nand0.bareboxenv.bb    nand0.kernel           nand0.kernel.bb
-nand0.root             nand0.root.bb          nand_oob0
-nor0                   nor0.barebox           nor0.bareboxenv
-nor0.kernel            nor0.root              phy0
-ram0                   self0                  zero
-
-----------
-
-And the environment:
-
-locals:
-machine=pcm043
-kernel_loc=nor
-rootfs_loc=nor
-rootfs_type=jffs2
-rootfsimage=root.jffs2
-kernelimage_type=uimage
-kernelimage=uImage-pcm043
-nfsroot=192.168.1.161:/tftpboot
-autoboot_timeout=3
-bootargs=console=ttymxc0,115200
-nor_parts=256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)
-rootfs_mtdblock_nor=3
-nand_parts=256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)
-rootfs_mtdblock_nand=7
-PS1=\e[1;32mbarebox@\e[1;31m\h:\w\e[0m
-globals:
-barebox_loc=nor
-armlinux_architecture=2072
-PATH=/env/bin
-
-Any comments will be very much appreciated.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVHVlLCBNYXkgMjIsIDIwMTIgYXQgMTI6MjM6MDRBTSArMDQwMCwgQWxleGFuZGVyIFNoaXlh
+biB3cm90ZToKPiBIZWxsby4KPiAKPiBNb24sIDIxIE1heSAyMDEyIDIyOjA4OjE0ICswMjAwINC+
+0YIgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiA+IE9uIFN1biwgTWF5
+IDIwLCAyMDEyIGF0IDAxOjA5OjEwUE0gKzA0MDAsIEFsZXhhbmRlciBTaGl5YW4gd3JvdGU6Cj4g
+PiA+IEFkZGVkIHN1cHBvcnQgZm9yIENvbXBhY3RGbGFzaCBjYXJkcyBmb3IgUENNOTcwIGRldmVs
+b3BtZW50IGJvYXJkIHZpYQo+ID4gPiBQQ01DSUEgd2luZG93Lgo+ID4gPiAKPiA+IERvIHlvdSBj
+b25zaWRlciB0aGlzIHJlYWR5IHRvIGJlIGFwcGxpZWQgbm93Pwo+IAo+IEZvciBtZSBpcyB3b3Jr
+LCBidXQgaXQgd291bGQgYmUgbmljZSBpZiBzb21lb25lIGhhcyBjaGVja2VkIHRoZSB3b3JrCj4g
+b24gYW5vdGhlciB2ZXJzaW9uIG9mIHRoZSBib2FyZC4gSSBoYXZlIGEgbW9kdWxlIHZlcnNpb24g
+MTI4MS4yIGFuZAo+IDEyODAuMSB2ZXJzaW9uIG9mIHRoZSBQQ005NzAgYm9hcmQuCgpHaXZlbiB0
+aGF0IGl0IGNvbXBsZXRlbHkgY29tcGlsZXMgYXdheSB3aGVuIGRpc2FibGVkIEkgYXBwbGllZCBp
+dAp3aXRob3V0IGZ1cnRoZXIgdGVzdGluZy4KClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4g
+ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
+CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cu
+cGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2Vy
+bWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
+aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
