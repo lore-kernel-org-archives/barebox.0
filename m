@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from ud04.udmedia.de ([194.117.254.44] helo=mail.ud04.udmedia.de)
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SXCLF-0005nP-N5
- for barebox@lists.infradead.org; Wed, 23 May 2012 14:15:10 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 23 May 2012 16:15:05 +0200
-Message-Id: <1337782505-8382-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1337782505-8382-1-git-send-email-s.hauer@pengutronix.de>
-References: <1337782505-8382-1-git-send-email-s.hauer@pengutronix.de>
+ id 1SXE9C-00082m-MZ
+ for barebox@lists.infradead.org; Wed, 23 May 2012 16:10:52 +0000
+Message-ID: <4FBD05B8.40001@crane-soft.de>
+Date: Wed, 23 May 2012 17:43:52 +0200
+From: "Peter Kuennemann@Crane-Soft" <pkue@crane-soft.de>
+MIME-Version: 1.0
+Reply-To: pkue@crane-soft.de
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,52 +16,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] defaultenv-2: automount script: run mount only when ifup
- succeeds
+Subject: Booting PhyTec PCM043/IMX35  from USB/SD-Card
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- defaultenv-2/base/init/automount |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Hi all.
 
-diff --git a/defaultenv-2/base/init/automount b/defaultenv-2/base/init/automount
-index e029222..63099f9 100644
---- a/defaultenv-2/base/init/automount
-+++ b/defaultenv-2/base/init/automount
-@@ -8,20 +8,20 @@ fi
- # automount server returned from dhcp server
- 
- mkdir -p /mnt/tftp-dhcp
--automount /mnt/tftp-dhcp 'ifup eth0; mount $eth0.serverip tftp /mnt/tftp-dhcp'
-+automount /mnt/tftp-dhcp 'ifup eth0 && mount $eth0.serverip tftp /mnt/tftp-dhcp'
- 
- # automount nfs server example
- 
- #nfshost=somehost
- #mkdir -p /mnt/${nfshost}
--#automount /mnt/$nfshost "ifup eth0; mount ${nfshost}:/tftpboot nfs /mnt/${nfshost}"
-+#automount /mnt/$nfshost "ifup eth0 && mount ${nfshost}:/tftpboot nfs /mnt/${nfshost}"
- 
- # static tftp server example
- 
- #mkdir -p /mnt/tftp
--#automount -d /mnt/tftp 'ifup eth0; mount $serverip tftp /mnt/tftp'
-+#automount -d /mnt/tftp 'ifup eth0 && mount $serverip tftp /mnt/tftp'
- 
- # FAT on usb disk example
- 
- #mkdir -p /mnt/fat
--#automount -d /mnt/fat 'usb; mount /dev/usbdisk0.0 fat $automount_path'
-+#automount -d /mnt/fat 'usb && [ -e /dev/disk0.0 ] && mount /dev/disk0.0 fat /mnt/fat'
--- 
-1.7.10
+I am trying to setup my PCM043/IMX35 board to boot from the
+USB MMC card but til now I do have have any clue how to manage.
+Searching the net, did not provide any hints regard that board.
 
+I'ld like to have barebox to allow me to use the USB/MMC card
+as boot device. Is there a chance to boot from SD-Card at all?
+
+-- barebox configuration data --
+
+I have enabled USB support (USB_EHCI/OHCI and  USB_STORAGE ) as well as
+CONFIG_UBI=y
+CONFIG_DISK=y
+CONFIG_DISK_WRITE=y
+...
+CONFIG_USB=y
+CONFIG_USB_EHCI=y
+CONFIG_USB_OHCI=y
+# CONFIG_USB_ULPI is not set
+# CONFIG_USB_TWL4030 is not set
+CONFIG_USB_STORAGE=y
+# CONFIG_USB_GADGET is not set
+# CONFIG_VIDEO is not set
+CONFIG_MCI=y
+...
+CONFIG_MCI_STARTUP=y
+CONFIG_MCI_INFO=y
+CONFIG_MCI_WRITE=y
+CONFIG_MCI_IMX_ESDHC=y
+CONFIG_MCI_IMX_ESDHC_PIO=y
+Device list in bareBox after boot:
+
+---------
+
+barebox@Phytec phyCORE-i.MX35:/ ls /dev
+defaultenv             env0                   imx_iim_bank0
+imx_iim_bank1          imx_iim_bank2          imx_iim_bank3
+imx_iim_bank4          imx_iim_bank5          imx_iim_bank6
+imx_iim_bank7          mem                    nand0
+nand0.barebox          nand0.barebox.bb       nand0.bareboxenv
+nand0.bareboxenv.bb    nand0.kernel           nand0.kernel.bb
+nand0.root             nand0.root.bb          nand_oob0
+nor0                   nor0.barebox           nor0.bareboxenv
+nor0.kernel            nor0.root              phy0
+ram0                   self0                  zero
+
+----------
+
+And the environment:
+
+locals:
+machine=pcm043
+kernel_loc=nor
+rootfs_loc=nor
+rootfs_type=jffs2
+rootfsimage=root.jffs2
+kernelimage_type=uimage
+kernelimage=uImage-pcm043
+nfsroot=192.168.1.161:/tftpboot
+autoboot_timeout=3
+bootargs=console=ttymxc0,115200
+nor_parts=256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)
+rootfs_mtdblock_nor=3
+nand_parts=256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)
+rootfs_mtdblock_nand=7
+PS1=\e[1;32mbarebox@\e[1;31m\h:\w\e[0m
+globals:
+barebox_loc=nor
+armlinux_architecture=2072
+PATH=/env/bin
+
+Any comments will be very much appreciated.
 
 _______________________________________________
 barebox mailing list
