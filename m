@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SXA2Z-0006iM-EB
- for barebox@lists.infradead.org; Wed, 23 May 2012 11:47:45 +0000
-Received: from eb-e6520 (unknown [82.240.38.71])
- by smtp2-g21.free.fr (Postfix) with ESMTP id 249BC4B014E
- for <barebox@lists.infradead.org>; Wed, 23 May 2012 13:47:34 +0200 (CEST)
-Date: Wed, 23 May 2012 13:47:33 +0200
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120523134733.6164c4fb@eb-e6520>
-In-Reply-To: <CAONxwYOOSCcUQY7wRy8wrdmWGLrjPfchxY1raxBA034gKCk9KQ@mail.gmail.com>
-References: <CAONxwYOZtob20_ao-A-p2TXXLESsLLKadiARUX9drFK=nvJQcQ@mail.gmail.com>
- <20120522184240.GM30400@pengutronix.de>
- <CAONxwYOOSCcUQY7wRy8wrdmWGLrjPfchxY1raxBA034gKCk9KQ@mail.gmail.com>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SXCJH-0005bW-GJ
+ for barebox@lists.infradead.org; Wed, 23 May 2012 14:13:08 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 23 May 2012 16:13:03 +0200
+Message-Id: <1337782383-6236-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +14,98 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Booting mx25 based device from SD and NOR
+Subject: [PATCH] hush: do not convert to return code too early
 To: barebox@lists.infradead.org
 
-Le Wed, 23 May 2012 12:43:47 +0200,
-Roberto Nibali <rnibali@gmail.com> a =E9crit :
-> Set the switches to boot from SD on the mx25 device and power on. It
-> successfully loads barebox and I can mount the fat partition (of course t=
-he
-> other partition is unmountable, because there is no ext2/3 support in
-> barebox). Booting from my environment currently fails, but I reckon it has
-> to do with my configuration settings. Here is where it gets so far:
-> .../...
-> [  103.029081] VFS: Unable to mount root fs via NFS, trying floppy.
-> [  103.036763] VFS: Cannot open root device "nfs" or unknown-block(2,0)
-> [  103.043157] Please append a correct "root=3D" boot option; here are the
-> available partitions:
-> [  103.052007] b300         1955840 mmcblk0  driver: mmcblk
-> [  103.057512]   b301            1024 mmcblk0p1
-> 00000000-0000-0000-0000-000000000mmcblk0p1
-> [  103.065670]   b302          524288 mmcblk0p2
-> 00000000-0000-0000-0000-000000000mmcblk0p2
-> [  103.073744]   b303         1429504 mmcblk0p3
-> 00000000-0000-0000-0000-000000000mmcblk0p3
-> .../...
-> Thank you very much for your pointers.
-> =
+parse_stream_outer used to convert a exit value to a return code,
+but parse_stream_outer maybe inside a recursion. This means that
+the exit status is lost in this case. Test case:
 
-add to your bootargs root=3D/dev/mmcblk0p3 rootfstype=3Dext3 or something
-like this
+if [ 0 = 0 ]; then
+	false
+	exit $?
+fi
 
-Eric
+echo "shouldn't be here"
+
+Without this patch "shouldn't be here" will be printed.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/hush.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/common/hush.c b/common/hush.c
+index 8e8dd03..3ac1d10 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -757,13 +757,14 @@ static int run_pipe_real(struct p_context *ctx, struct pipe *pi)
+ 	if (child->sp) {
+ 		char * str = NULL;
+ 		struct p_context ctx1;
++		int rcode;
+ 
+ 		str = make_string((child->argv + i));
+-		parse_string_outer(&ctx1, str, FLAG_EXIT_FROM_LOOP | FLAG_REPARSING);
++		rcode = parse_string_outer(&ctx1, str, FLAG_EXIT_FROM_LOOP | FLAG_REPARSING);
+ 		release_context(&ctx1);
+ 		free(str);
+ 
+-		return last_return_code;
++		return rcode;
+ 	}
+ 
+ 	do_glob_in_argv(&globbuf, child->argc - i, &child->argv[i]);
+@@ -1603,7 +1604,7 @@ static int parse_stream_outer(struct p_context *ctx, struct in_str *inp, int fla
+ 			}
+ 			if (code < -1) {	/* exit */
+ 				b_free(&temp);
+-				return -code - 2;
++				return code;
+ 			}
+ 		} else {
+ 			if (ctx->old_flag != 0) {
+@@ -1642,11 +1643,12 @@ static int parse_string_outer(struct p_context *ctx, const char *s, int flag)
+ 		setup_string_in_str(&input, p);
+ 		rcode = parse_stream_outer(ctx, &input, flag);
+ 		free(p);
+-		return rcode;
+ 	} else {
+ 		setup_string_in_str(&input, s);
+-		return parse_stream_outer(ctx, &input, flag);
++		rcode = parse_stream_outer(ctx, &input, flag);
+ 	}
++
++	return rcode;
+ }
+ 
+ static char *insert_var_value(char *inp)
+@@ -1793,6 +1795,8 @@ static int source_script(const char *path, int argc, char *argv[])
+ 	}
+ 
+ 	ret = parse_string_outer(&ctx, script, FLAG_PARSE_SEMICOLON);
++	if (ret < -1)
++		ret = -ret - 2;
+ 
+ 	release_context(&ctx);
+ 	free(script);
+@@ -1809,6 +1813,8 @@ int run_shell(void)
+ 	do {
+ 		setup_file_in_str(&input);
+ 		rcode = parse_stream_outer(&ctx, &input, FLAG_PARSE_SEMICOLON);
++		if (rcode < -1)
++			rcode = -rcode - 2;
+ 		release_context(&ctx);
+ 	} while (!input.__promptme);
+ 
+-- 
+1.7.10
+
 
 _______________________________________________
 barebox mailing list
