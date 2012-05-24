@@ -1,13 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SXYR6-0003xr-UX
- for barebox@lists.infradead.org; Thu, 24 May 2012 13:50:42 +0000
-Received: by laap9 with SMTP id p9so7424823laa.36
- for <barebox@lists.infradead.org>; Thu, 24 May 2012 06:50:37 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 24 May 2012 17:50:20 +0400
-Message-Id: <1337867420-23444-1-git-send-email-antonynpavlov@gmail.com>
+ id 1SXbfV-0000iD-5x
+ for barebox@lists.infradead.org; Thu, 24 May 2012 17:17:45 +0000
+Date: Thu, 24 May 2012 19:17:38 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120524171738.GZ30400@pengutronix.de>
+References: <CAONxwYOZtob20_ao-A-p2TXXLESsLLKadiARUX9drFK=nvJQcQ@mail.gmail.com>
+ <20120522184240.GM30400@pengutronix.de>
+ <CAONxwYOOSCcUQY7wRy8wrdmWGLrjPfchxY1raxBA034gKCk9KQ@mail.gmail.com>
+ <20120523134733.6164c4fb@eb-e6520>
+ <CAONxwYMkcS4Vt04tKHkWijVxYBnt097wyMXr-LK-m5Hyj_Sk_w@mail.gmail.com>
+ <20120524145837.42085b83@eb-e6520>
+ <CAONxwYOdiRnDiRRFikckrj+6pOKA5DgW-hxwRCRgVGQ93p3QUQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAONxwYOdiRnDiRRFikckrj+6pOKA5DgW-hxwRCRgVGQ93p3QUQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,168 +24,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] MIPS: XBurst: suitable solution for per-board debug_ll options
-To: barebox@lists.infradead.org
+Subject: Re: Booting mx25 based device from SD and NOR
+To: Roberto Nibali <rnibali@gmail.com>
+Cc: barebox@lists.infradead.org
 
-In the commit 40492a0c1305835c996e15eb1cce2406473ae76d
-(MIPS: add common header file for DEBUG_LL via NS16550)
-introduced common DEBUG_LL via NS16550 for MIPS
-(see file arch/mips/include/debug_ll_ns16550.h).
+On Thu, May 24, 2012 at 03:18:13PM +0200, Roberto Nibali wrote:
+> Hi Eric
+> =
 
-In the commit 1cbe2b2c00de0efca503a983d0d008833f186f33
-(MIPS: XBurst: add Ritmix RZX-50 board support)
-the file debug_ll_ns16550.h used in
-the file arch/mips/mach-xburst/include/mach/debug_ll.h.
+> On Thu, May 24, 2012 at 2:58 PM, Eric B=E9nard <eric@eukrea.com> wrote:
+> =
 
-Usage looks like this:
+> =
 
-------------------------------------------------
-+#ifdef CONFIG_BOARD_RZX50
-+#include <mach/debug_ll_jz4755.h>
-+#endif
-+
-+#include <debug_ll_ns16550.h>
-------------------------------------------------
+> =
 
-So after adding another board (e.g. A320) we will have something like this:
+> I support WEIM configuration is done in the low level part, isn't it? =
 
-------------------------------------------------
- #ifdef CONFIG_BOARD_RZX50
- #include <mach/debug_ll_jz4755.h>
- #endif
 
-+#ifdef CONFIG_BOARD_A320
-+#include <mach/debug_ll_jz4740.h>
-+#endif
+You don't need to do it in lowlevel init, just before registering the
+cfi device is enough. Usually it's good habit to do only the absolutely
+necessary things in lowlevel init. Doing things later increases the
+chance that you get useful debug output when something goes wrong
 
- #include <debug_ll_ns16550.h>
-------------------------------------------------
+Sascha
 
-This approach has disadvantage:
-* the files mach/debug_ll_jz4740.h and mach/debug_ll_jz4755.h
-(they go to arch/mips/arch-xburst) are __BOARD-SPECIFIC__
-(not SOC- or mach-specific!); The file mach-xburst/include/mach/debug_ll.h
-is outside board directory, but it contain some board related information.
 
-This commit introduce more suitable solution.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/Makefile                                 |    2 ++
- arch/mips/boards/rzx50/include/board/debug_ll.h    |   29 ++++++++++++++++++++
- arch/mips/mach-xburst/include/mach/debug_ll.h      |    5 +---
- .../mach-xburst/include/mach/debug_ll_jz4755.h     |   29 --------------------
- 4 files changed, 32 insertions(+), 33 deletions(-)
- create mode 100644 arch/mips/boards/rzx50/include/board/debug_ll.h
- delete mode 100644 arch/mips/mach-xburst/include/mach/debug_ll_jz4755.h
+-- =
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index f28c21d..6b7dae9 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -96,6 +96,8 @@ else
- MACH  :=
- endif
- 
-+CPPFLAGS += -I$(BOARD)/include
-+
- common-y += $(BOARD) $(MACH)
- common-y += arch/mips/lib/
- common-y += arch/mips/boot/
-diff --git a/arch/mips/boards/rzx50/include/board/debug_ll.h b/arch/mips/boards/rzx50/include/board/debug_ll.h
-new file mode 100644
-index 0000000..babe296
---- /dev/null
-+++ b/arch/mips/boards/rzx50/include/board/debug_ll.h
-@@ -0,0 +1,29 @@
-+/*
-+ * Copyright (C) 2012 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+
-+#ifndef __INCLUDE_DEBUG_LL_JZ4755_H__
-+#define __INCLUDE_DEBUG_LL_JZ4755_H__
-+
-+#include <mach/jz4750d_regs.h>
-+
-+#define DEBUG_LL_UART_ADDR	UART1_BASE
-+#define DEBUG_LL_UART_SHIFT	2
-+
-+#endif  /* __INCLUDE_DEBUG_LL_JZ4755_H__ */
-diff --git a/arch/mips/mach-xburst/include/mach/debug_ll.h b/arch/mips/mach-xburst/include/mach/debug_ll.h
-index c3dbaa2..6e0cc93 100644
---- a/arch/mips/mach-xburst/include/mach/debug_ll.h
-+++ b/arch/mips/mach-xburst/include/mach/debug_ll.h
-@@ -24,10 +24,7 @@
- /** @file
-  *  This File contains declaration for early output support
-  */
--#ifdef CONFIG_BOARD_RZX50
--#include <mach/debug_ll_jz4755.h>
--#endif
--
-+#include <board/debug_ll.h>
- #include <debug_ll_ns16550.h>
- 
- #endif  /* __MACH_XBURST_DEBUG_LL__ */
-diff --git a/arch/mips/mach-xburst/include/mach/debug_ll_jz4755.h b/arch/mips/mach-xburst/include/mach/debug_ll_jz4755.h
-deleted file mode 100644
-index babe296..0000000
---- a/arch/mips/mach-xburst/include/mach/debug_ll_jz4755.h
-+++ /dev/null
-@@ -1,29 +0,0 @@
--/*
-- * Copyright (C) 2012 Antony Pavlov <antonynpavlov@gmail.com>
-- *
-- * This file is part of barebox.
-- * See file CREDITS for list of people who contributed to this project.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2
-- * as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-- */
--
--#ifndef __INCLUDE_DEBUG_LL_JZ4755_H__
--#define __INCLUDE_DEBUG_LL_JZ4755_H__
--
--#include <mach/jz4750d_regs.h>
--
--#define DEBUG_LL_UART_ADDR	UART1_BASE
--#define DEBUG_LL_UART_SHIFT	2
--
--#endif  /* __INCLUDE_DEBUG_LL_JZ4755_H__ */
--- 
-1.7.10
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
