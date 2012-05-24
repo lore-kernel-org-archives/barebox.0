@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SXY5D-0003hD-HE
- for barebox@lists.infradead.org; Thu, 24 May 2012 13:28:05 +0000
-Received: by lbbgg6 with SMTP id gg6so7416851lbb.36
- for <barebox@lists.infradead.org>; Thu, 24 May 2012 06:28:02 -0700 (PDT)
-From: Alexey Galakhov <agalakhov@gmail.com>
-Date: Thu, 24 May 2012 19:27:44 +0600
-Message-Id: <1337866065-6775-2-git-send-email-agalakhov@gmail.com>
-In-Reply-To: <1337866065-6775-1-git-send-email-agalakhov@gmail.com>
-References: <1337866065-6775-1-git-send-email-agalakhov@gmail.com>
+Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SXY8V-0003sL-O3
+ for barebox@lists.infradead.org; Thu, 24 May 2012 13:31:29 +0000
+Date: Thu, 24 May 2012 15:31:19 +0200
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20120524153119.6d724afc@eb-e6520>
+In-Reply-To: <CAONxwYOdiRnDiRRFikckrj+6pOKA5DgW-hxwRCRgVGQ93p3QUQ@mail.gmail.com>
+References: <CAONxwYOZtob20_ao-A-p2TXXLESsLLKadiARUX9drFK=nvJQcQ@mail.gmail.com>
+ <20120522184240.GM30400@pengutronix.de>
+ <CAONxwYOOSCcUQY7wRy8wrdmWGLrjPfchxY1raxBA034gKCk9KQ@mail.gmail.com>
+ <20120523134733.6164c4fb@eb-e6520>
+ <CAONxwYMkcS4Vt04tKHkWijVxYBnt097wyMXr-LK-m5Hyj_Sk_w@mail.gmail.com>
+ <20120524145837.42085b83@eb-e6520>
+ <CAONxwYOdiRnDiRRFikckrj+6pOKA5DgW-hxwRCRgVGQ93p3QUQ@mail.gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,396 +23,98 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] S5P DRAM support
-To: barebox@lists.infradead.org
-Cc: Alexey Galakhov <agalakhov@gmail.com>
+Subject: Re: Booting mx25 based device from SD and NOR
+To: Roberto Nibali <rnibali@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Alexey Galakhov <agalakhov@gmail.com>
----
- arch/arm/mach-samsung/Makefile                    |    2 +-
- arch/arm/mach-samsung/include/mach/s3c-generic.h  |    6 +
- arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h |    3 +
- arch/arm/mach-samsung/mem-s5pcxx.c                |  319 +++++++++++++++++++++
- 4 files changed, 329 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/mach-samsung/mem-s5pcxx.c
+Hi,
 
-diff --git a/arch/arm/mach-samsung/Makefile b/arch/arm/mach-samsung/Makefile
-index d7344c8..6020587 100644
---- a/arch/arm/mach-samsung/Makefile
-+++ b/arch/arm/mach-samsung/Makefile
-@@ -2,5 +2,5 @@ obj-y += s3c-timer.o generic.o
- obj-lowlevel-$(CONFIG_ARCH_S3C24xx) += lowlevel-s3c24x0.o
- obj-lowlevel-$(CONFIG_ARCH_S5PCxx) += lowlevel-s5pcxx.o
- obj-$(CONFIG_ARCH_S3C24xx) += gpio-s3c24x0.o s3c24xx-clocks.o mem-s3c24x0.o
--obj-$(CONFIG_ARCH_S5PCxx) += gpio-s5pcxx.o clocks-s5pcxx.o
-+obj-$(CONFIG_ARCH_S5PCxx) += gpio-s5pcxx.o clocks-s5pcxx.o mem-s5pcxx.o
- obj-$(CONFIG_S3C_LOWLEVEL_INIT) += $(obj-lowlevel-y)
-diff --git a/arch/arm/mach-samsung/include/mach/s3c-generic.h b/arch/arm/mach-samsung/include/mach/s3c-generic.h
-index 11b083d..329c2b4 100644
---- a/arch/arm/mach-samsung/include/mach/s3c-generic.h
-+++ b/arch/arm/mach-samsung/include/mach/s3c-generic.h
-@@ -24,6 +24,8 @@
-  * MA 02111-1307 USA
-  */
- 
-+#include <common.h>
-+
- uint32_t s3c_get_mpllclk(void);
- uint32_t s3c_get_upllclk(void);
- uint32_t s3c_get_fclk(void);
-@@ -40,4 +42,8 @@ void s3c24xx_disable_second_sdram_bank(void);
- 
- #ifdef CONFIG_ARCH_S5PCxx
- void s5p_init_pll(void);
-+void s5p_init_dram_bank_lpddr(phys_addr_t base, uint32_t mc0, uint32_t mc1, int bus16);
-+void s5p_init_dram_bank_lpddr2(phys_addr_t base, uint32_t mc0, uint32_t mc1, int bus16);
-+void s5p_init_dram_bank_ddr2(phys_addr_t base, uint32_t mc0, uint32_t mc1, int bus16);
-+uint32_t s5p_get_memory_size(void);
- #endif
-diff --git a/arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h b/arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h
-index cb05527..248f868 100644
---- a/arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h
-+++ b/arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h
-@@ -47,3 +47,6 @@
- #define S3C_UART3_SIZE 0x400
- #define S3C_UART_HAS_UBRDIVSLOT
- #define S3C_UART_HAS_UINTM
-+
-+#define S5P_DMC0_BASE 0xF0000000
-+#define S5P_DMC1_BASE 0xF1400000
-diff --git a/arch/arm/mach-samsung/mem-s5pcxx.c b/arch/arm/mach-samsung/mem-s5pcxx.c
-new file mode 100644
-index 0000000..b240333
---- /dev/null
-+++ b/arch/arm/mach-samsung/mem-s5pcxx.c
-@@ -0,0 +1,319 @@
-+/*
-+ * Copyright (C) 2012 Alexey Galakhov
-+ *
-+ * Based on code from u-boot found somewhere on the web
-+ * that seems to originate from Samsung
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <config.h>
-+#include <common.h>
-+#include <io.h>
-+#include <init.h>
-+#include <mach/s3c-generic.h>
-+#include <mach/s3c-iomap.h>
-+
-+#define S5P_DMC_CONCONTROL	0x00
-+#define S5P_DMC_MEMCONTROL	0x04
-+#define S5P_DMC_MEMCONFIG0	0x08
-+#define S5P_DMC_MEMCONFIG1	0x0C
-+#define S5P_DMC_DIRECTCMD	0x10
-+#define S5P_DMC_PRECHCONFIG	0x14
-+#define S5P_DMC_PHYCONTROL0	0x18
-+#define S5P_DMC_PHYCONTROL1	0x1C
-+#define S5P_DMC_PWRDNCONFIG	0x28
-+#define S5P_DMC_TIMINGAREF	0x30
-+#define S5P_DMC_TIMINGROW	0x34
-+#define S5P_DMC_TIMINGDATA	0x38
-+#define S5P_DMC_TIMINGPOWER	0x3C
-+#define S5P_DMC_PHYSTATUS	0x40
-+#define S5P_DMC_MRSTATUS	0x54
-+
-+/* DRAM commands */
-+#define CMD(x)  ((x) << 24)
-+#define BANK(x) ((x) << 16)
-+#define CHIP(x) ((x) << 20)
-+#define ADDR(x) (x)
-+
-+/**
-+ *  MR definition:
-+ *  1 11
-+ *  2 1098 7654 3210
-+ *      |     |  ^^^- burst length, 010=4, 011=8
-+ *      |     | ^- burst type 0=sequnential, 1=interleaved
-+ *      |   ^^^-- CAS latency
-+ *      |  ^----- test, 0=normal, 1=test
-+ *      |^---- DLL reset, 1=yes
-+ *    ^^^----- WR, 1=2, 2=3 etc.
-+ *  ^------- PD, 0=fast exit, 1=low power
-+ *
-+ *  EMR1 definition:
-+ *  1 11
-+ *  2 1098 7654 3210
-+ *         |       ^- DLL, 0=enable
-+ *         |      ^-- output strength, 0=full, 1=reduced
-+ *         |^.. .^--- Rtt, 00=off, 01=75, 10=150, 11=50 Ohm
-+ *         | ^^ ^-- Posted CAS# AL, 0-6
-+ *      ^^ ^------ OCD: 000=OCD exit, 111=enable defaults
-+ *     ^------ DQS#, 0=enable, 1=disable
-+ *    ^------- RDQS enable, 0=no, 1=yes
-+ *  ^-------- outputs, 0=enabled, 1=disabled
-+ *
-+ *  EMR2 definition:
-+ *  bit 7
-+ *  1 1
-+ *  2 1098 7654 3210
-+ *         ^-- SRT, 0=1x (0-85 deg.C), 1=2x (>85 deg.C)
-+ *  all other bits = 0
-+ *
-+ *  EMR3 definition: all bits 0
-+ */
-+
-+#define MRS	CMD(0x0)
-+#define PALL	CMD(0x1)
-+#define PRE	CMD(0x2)
-+#define DPD	CMD(0x3)
-+#define REFS	CMD(0x4)
-+#define REFA	CMD(0x5)
-+#define CKEL	CMD(0x6)
-+#define NOP	CMD(0x7)
-+#define REFSX	CMD(0x8)
-+#define MRR	CMD(0x9)
-+
-+#define EMRS1 (MRS | BANK(1))
-+#define EMRS2 (MRS | BANK(2))
-+#define EMRS3 (MRS | BANK(3))
-+
-+/* Burst is (1 << S5P_DRAM_BURST), i.e. S5P_DRAM_BURST=2 for burst 4 */
-+#ifndef S5P_DRAM_BURST
-+/* (LP)DDR2 supports burst 4 only, make it default */
-+# define S5P_DRAM_BURST 2
-+#endif
-+
-+/**
-+ * Initialization sequences for different kinds of DRAM
-+ */
-+#define dcmd(x) writel((x) | CHIP(chip), base + S5P_DMC_DIRECTCMD)
-+
-+static void __bare_init s5p_dram_init_seq_lpddr(phys_addr_t base, unsigned chip)
-+{
-+	const uint32_t emr = 0x400; /* DQS disable */
-+	const uint32_t mr = (((S5P_DRAM_WR) - 1) << 9)
-+			  | ((S5P_DRAM_CAS) << 4)
-+			  | (S5P_DRAM_BURST);
-+	/* FIXME this sequence is untested */
-+	dcmd(PALL); dcmd(REFA); dcmd(REFA);
-+	dcmd(MRS   | ADDR(mr));
-+	dcmd(EMRS1 | ADDR(emr));
-+}
-+
-+static void __bare_init s5p_dram_init_seq_lpddr2(phys_addr_t base, unsigned chip)
-+{
-+	const uint32_t mr = (((S5P_DRAM_WR) - 1) << 9)
-+			  | ((S5P_DRAM_CAS) << 4)
-+			  | (S5P_DRAM_BURST);
-+	/* FIXME this sequence is untested */
-+	dcmd(NOP);
-+	dcmd(MRS | ADDR(mr));
-+	do {
-+		dcmd(MRR);
-+	} while (readl(base + S5P_DMC_MRSTATUS) & 0x01); /* poll DAI */
-+}
-+
-+static void __bare_init s5p_dram_init_seq_ddr2(phys_addr_t base, unsigned chip)
-+{
-+	const uint32_t emr = 0x400; /* DQS disable */
-+	const uint32_t mr = (((S5P_DRAM_WR) - 1) << 9)
-+			  | ((S5P_DRAM_CAS) << 4)
-+			  | (S5P_DRAM_BURST);
-+	dcmd(NOP);
-+	/* FIXME wait here? JEDEC recommends but nobody does */
-+	dcmd(PALL); dcmd(EMRS2); dcmd(EMRS3);
-+	dcmd(EMRS1 | ADDR(emr));         /* DQS disable */
-+	dcmd(MRS   | ADDR(mr | 0x100));  /* DLL reset */
-+	dcmd(PALL); dcmd(REFA); dcmd(REFA);
-+	dcmd(MRS   | ADDR(mr));          /* DLL no reset */
-+	dcmd(EMRS1 | ADDR(emr | 0x380)); /* OCD defaults */
-+	dcmd(EMRS1 | ADDR(emr));         /* OCD exit */
-+}
-+
-+#undef dcmd
-+
-+static inline void __bare_init s5p_dram_start_dll(phys_addr_t base, uint32_t phycon1)
-+{
-+	uint32_t pc0 = 0x00101000; /* the only legal initial value */
-+	uint32_t lv;
-+
-+	/* Init DLL */
-+	writel(pc0, base + S5P_DMC_PHYCONTROL0);
-+	writel(phycon1, base + S5P_DMC_PHYCONTROL1);
-+	writel(0x00000085, base + S5P_DMC_PHYCONTROL1);
-+
-+	/* DLL on */
-+	pc0 |= 0x2;
-+	writel(pc0, base + S5P_DMC_PHYCONTROL0);
-+
-+	/* DLL start */
-+	pc0 |= 0x1;
-+	writel(pc0, base + S5P_DMC_PHYCONTROL0);
-+
-+	/* Find lock val */
-+	do {
-+		lv = readl(base + S5P_DMC_PHYSTATUS);
-+	} while ((lv & 0x7) != 0x7);
-+
-+	lv >>= 6;
-+	lv &= 0xff; /* ctrl_lock_value[9:2] - coarse */
-+	pc0 |= (lv << 24); /* ctrl_force */
-+	writel(pc0, base + S5P_DMC_PHYCONTROL0); /* force value locking */
-+}
-+
-+static inline void __bare_init s5p_dram_setup(phys_addr_t base, uint32_t mc0, uint32_t mc1,
-+				       int bus16, uint32_t mcon)
-+{
-+	mcon |= (S5P_DRAM_BURST) << 20;
-+	/* 16 or 32-bit bus ? */
-+	mcon |= bus16 ? 0x1000 : 0x2000;
-+	if (mc1)
-+		mcon |= 0x10000; /* two chips */
-+
-+	writel(mcon, base + S5P_DMC_MEMCONTROL);
-+
-+	/* Set up memory layout */
-+	writel(mc0, base + S5P_DMC_MEMCONFIG0);
-+	if (mc1)
-+		writel(mc1, base + S5P_DMC_MEMCONFIG1);
-+
-+	/* Open page precharge policy - reasonable defaults */
-+	writel(0xFF000000, base + S5P_DMC_PRECHCONFIG);
-+
-+	/* Set up timings */
-+	writel(DMC_TIMING_AREF, base + S5P_DMC_TIMINGAREF);
-+	writel(DMC_TIMING_ROW,  base + S5P_DMC_TIMINGROW);
-+	writel(DMC_TIMING_DATA, base + S5P_DMC_TIMINGDATA);
-+	writel(DMC_TIMING_PWR,  base + S5P_DMC_TIMINGPOWER);
-+}
-+
-+static inline void __bare_init s5p_dram_start(phys_addr_t base)
-+{
-+	/* Reasonable defaults and auto-refresh on */
-+	writel(0x0FFF1070, base + S5P_DMC_CONCONTROL);
-+	/* Reasonable defaults */
-+	writel(0xFFFF00FF, base + S5P_DMC_PWRDNCONFIG);
-+}
-+
-+/*
-+ * Initialize LPDDR memory bank
-+ */
-+void __bare_init s5p_init_dram_bank_lpddr(phys_addr_t base, uint32_t mc0, uint32_t mc1, int bus16)
-+{
-+	/* refcount 8, 90 deg. shift */
-+	s5p_dram_start_dll(base, 0x00000085);
-+	/* LPDDR type */
-+	s5p_dram_setup(base, mc0, mc1, bus16, 0x100);
-+
-+	/* Start-Up Commands */
-+	s5p_dram_init_seq_lpddr(base, 0);
-+	if (mc1)
-+		s5p_dram_init_seq_lpddr(base, 1);
-+
-+	s5p_dram_start(base);
-+}
-+
-+/*
-+ * Initialize LPDDR2 memory bank
-+ */
-+void __bare_init s5p_init_dram_bank_lpddr2(phys_addr_t base, uint32_t mc0, uint32_t mc1, int bus16)
-+{
-+	/* refcount 8, 90 deg. shift */
-+	s5p_dram_start_dll(base, 0x00000085);
-+	/* LPDDR2 type */
-+	s5p_dram_setup(base, mc0, mc1, bus16, 0x200);
-+
-+	/* Start-Up Commands */
-+	s5p_dram_init_seq_lpddr2(base, 0);
-+	if (mc1)
-+		s5p_dram_init_seq_lpddr2(base, 1);
-+
-+	s5p_dram_start(base);
-+}
-+
-+/*
-+ * Initialize DDR2 memory bank
-+ */
-+void __bare_init s5p_init_dram_bank_ddr2(phys_addr_t base, uint32_t mc0, uint32_t mc1, int bus16)
-+{
-+	/* refcount 8, 180 deg. shift */
-+	s5p_dram_start_dll(base, 0x00000086);
-+	/* DDR2 type */
-+	s5p_dram_setup(base, mc0, mc1, bus16, 0x400);
-+
-+	/* Start-Up Commands */
-+	s5p_dram_init_seq_ddr2(base, 0);
-+	if (mc1)
-+		s5p_dram_init_seq_ddr2(base, 1);
-+
-+	s5p_dram_start(base);
-+}
-+
-+
-+#define BANK_ENABLED(base) (readl((base) + S5P_DMC_PHYCONTROL0) & 1)
-+#define NUM_EXTRA_CHIPS(base) ((readl((base) + S5P_DMC_MEMCONTROL) >> 16) & 0xF)
-+
-+#define BANK_START(x) ((x) & 0xFF000000)
-+#define BANK_END(x) (BANK_START(x) | ~(((x) & 0x00FF0000) << 8))
-+#define BANK_LEN(x) (BANK_END(x) - BANK_START(x) + 1)
-+
-+static inline void sortswap(uint32_t *x, uint32_t *y)
-+{
-+	if (*y < *x) {
-+		*x ^= *y;
-+		*y ^= *x;
-+		*x ^= *y;
-+	}
-+}
-+
-+uint32_t s5p_get_memory_size(void)
-+{
-+	int i;
-+	uint32_t len;
-+	uint32_t mc[4] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
-+	/* Read MEMCONFIG registers */
-+	if (BANK_ENABLED(S5P_DMC0_BASE)) {
-+		mc[0] = readl(S5P_DMC0_BASE + S5P_DMC_MEMCONFIG0);
-+		if (NUM_EXTRA_CHIPS(S5P_DMC0_BASE) > 0)
-+			mc[1] = readl(S5P_DMC0_BASE + S5P_DMC_MEMCONFIG1);
-+	}
-+	if (BANK_ENABLED(S5P_DMC1_BASE)) {
-+		mc[2] = readl(S5P_DMC1_BASE + S5P_DMC_MEMCONFIG0);
-+		if (NUM_EXTRA_CHIPS(S5P_DMC1_BASE) > 0)
-+			mc[3] = readl(S5P_DMC1_BASE + S5P_DMC_MEMCONFIG1);
-+	}
-+	/* Sort using a sorting network */
-+	sortswap(mc + 0, mc + 2);
-+	sortswap(mc + 1, mc + 3);
-+	sortswap(mc + 0, mc + 1);
-+	sortswap(mc + 2, mc + 3);
-+	sortswap(mc + 1, mc + 2);
-+	/* Is at least one chip enabled? */
-+	if (mc[0] == 0xFFFFFFFF)
-+		return 0;
-+	/* Determine maximum continuous region at start */
-+	len = BANK_LEN(mc[0]);
-+	for (i = 1; i < 4; ++i) {
-+		if (BANK_START(mc[i]) == BANK_END(mc[i - 1]) + 1)
-+			len += BANK_LEN(mc[i]);
-+		else
-+			break;
-+	}
-+	return len;
-+}
--- 
-1.7.10
+Le Thu, 24 May 2012 15:18:13 +0200,
+Roberto Nibali <rnibali@gmail.com> a =E9crit :
+> On Thu, May 24, 2012 at 2:58 PM, Eric B=E9nard <eric@eukrea.com> wrote:
+> > Le Thu, 24 May 2012 14:49:36 +0200,
+> > Roberto Nibali <rnibali@gmail.com> a =E9crit :
+> > > I haven't found a combination of root/rootfstype yet that permits me =
+to
+> > > boot from barebox either from NFS, TFTP, MMC/SD or NOR yet. No matter
+> > what
+> > > I try, the kernel spits back at me.
+> > >
+> > well NAND boot + nand rootfs works fine here (cpuimx25) and I assume
+> > NAND boot + sd rootfs would work as sd is properly detected during boot.
+> >
+> > Yep, I believe it's more a question of me setting the parameters correc=
+tly
+> upon boot. But without a proper low level init (which I don't have because
+> I do not really understand all the details of the low level code), there
+> are other factors which could inhibit the proper boot, as you mention bel=
+ow.
+> =
 
+if your sd's partitions are detected by the kernel you must be able to
+boot a rootfs on it it's just a bootargs problem (and kernel
+configuration to have the right FS included).
+> =
+
+> > > Also I have the problem that my NOR is only detected when using bareb=
+ox
+> > as
+> > > a second stage boot loader from uboot. If booting from SD into barebo=
+x,
+> > the
+> > > NOR is not detected. I have added the following changes to figure out
+> > > what's going on:
+> > >
+> > > .../...
+> > > What's going on here?
+> > >
+> > bad iomux and/or bad WEIM configuration
+> =
+
+> =
+
+> I support WEIM configuration is done in the low level part, isn't it? Whe=
+re
+> would I find an appropriate example? I have been reading all the fsl
+> board's low_level codes, but have a hard time figuring out how to apply it
+> to my board.
+> =
+
+> With regard to the IOMUX, I was under the impression that it does not
+> matter much, since after low level code run, the execution path is:
+> =
+
+>         late_initcall()
+>         mem_initcall()
+>         device_initcall() --> add_cfi_flash_device()
+>         console_initcall() --> mxc_iomux_v3_setup_multiple_pads()
+>         core_initcall()
+> =
+
+> So CFI/NOR detection happens before IOMUX setup, at least that's what I
+> have gathered for my board copying from various other examples in barebox.
+> What would the correct code execution path be from the architectural point
+> of view?
+> =
+
+nothing prevents you from moving mxc_iomux_v3_setup_multiple_pads to
+device_initcall as done in =
+
+http://git.pengutronix.de/?p=3Dbarebox.git;a=3Dblob;f=3Darch/arm/boards/euk=
+rea_cpuimx25/eukrea_cpuimx25.c;h=3D1b8f618138023b88893a024ddc0c078b7b9f2325=
+;hb=3Dc48de4beee21c3a5573cec084123c33ae08f6f7a
+
+for the weim setting you may need to do something similar to what is
+done on line 187 of :
+http://git.pengutronix.de/?p=3Dbarebox.git;a=3Dblob;f=3Darch/arm/boards/euk=
+rea_cpuimx27/eukrea_cpuimx27.c;h=3D63e87c9551c440edab572f5252a503ba4d533161=
+;hb=3Dc48de4beee21c3a5573cec084123c33ae08f6f7a
+
+Eric
 
 _______________________________________________
 barebox mailing list
