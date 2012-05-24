@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp15.mail.ru ([94.100.176.133])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SXIBC-0007IH-0V
- for barebox@lists.infradead.org; Wed, 23 May 2012 20:29:11 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 23 May 2012 22:28:59 +0200
-Message-Id: <1337804940-9512-1-git-send-email-s.hauer@pengutronix.de>
+ id 1SXTet-0003nS-PD
+ for barebox@lists.infradead.org; Thu, 24 May 2012 08:44:37 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Thu, 24 May 2012 12:44:29 +0400
+Message-Id: <1337849069-1893-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +19,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM startup: invalidate I-cache before jumping to
- relocated binary
+Subject: [PATCH] i.MX51: Raise frequency for SDHC by switch to PLL2 source
 To: barebox@lists.infradead.org
 
-barebox can startup with I-cache enabled, so to be on the safe
-side we should invalidate the I-cache before jumping to a binary
-we just copied in place.
+Currently, both SDHC clock source is PLL3. We can raise clock
+for SDHC driver by change source from PLL3 to PLL2.
+Below, is debug ouputs with old and new settings.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Detection (PLL3):
+set clock: wanted: 400000 got: 375000
+Operation (PLL3):
+set clock: wanted: 25000000 got: 18000000
+Operation SD4.0 (PLL3):
+set clock: wanted: 52000000 got: 27000000
+
+Detection (PLL2):
+set clock: wanted: 400000 got: 399639
+Operation (PLL2):
+set clock: wanted: 25000000 got: 23750000
+Operation SD4.0 (PLL2):
+set clock: wanted: 52000000 got: 41562500
+
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/cpu/start.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/mach-imx/imx51.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index ede8fd1..0fcc950 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -135,6 +135,9 @@ void __naked __section(.text_ll_return) board_init_lowlevel_return(void)
- 	/* clear bss */
- 	memset(__bss_start, 0, __bss_stop - __bss_start);
+diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
+index 25cc6da..53205a9 100644
+--- a/arch/arm/mach-imx/imx51.c
++++ b/arch/arm/mach-imx/imx51.c
+@@ -269,7 +269,7 @@ void imx51_init_lowlevel(unsigned int cpufreq_mhz)
+ 	writel(0xffffffff, ccm + MX5_CCM_CCGR6);
  
-+	/* flush I-cache before jumping to the copied binary */
-+	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
-+
- 	/* call start_barebox with its absolute address */
- 	r = (unsigned int)&start_barebox;
- 	__asm__ __volatile__("mov pc, %0" : : "r"(r));
+ 	/* Use PLL 2 for UART's, get 66.5MHz from it */
+-	writel(0xA5A2A020, ccm + MX5_CCM_CSCMR1);
++	writel(0xA591A020, ccm + MX5_CCM_CSCMR1);
+ 	writel(0x00C30321, ccm + MX5_CCM_CSCDR1);
+ 
+ 	/* make sure divider effective */
 -- 
-1.7.10
+1.7.3.4
 
 
 _______________________________________________
