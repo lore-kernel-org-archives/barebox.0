@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SXY8V-0003sL-O3
- for barebox@lists.infradead.org; Thu, 24 May 2012 13:31:29 +0000
-Date: Thu, 24 May 2012 15:31:19 +0200
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120524153119.6d724afc@eb-e6520>
-In-Reply-To: <CAONxwYOdiRnDiRRFikckrj+6pOKA5DgW-hxwRCRgVGQ93p3QUQ@mail.gmail.com>
-References: <CAONxwYOZtob20_ao-A-p2TXXLESsLLKadiARUX9drFK=nvJQcQ@mail.gmail.com>
- <20120522184240.GM30400@pengutronix.de>
- <CAONxwYOOSCcUQY7wRy8wrdmWGLrjPfchxY1raxBA034gKCk9KQ@mail.gmail.com>
- <20120523134733.6164c4fb@eb-e6520>
- <CAONxwYMkcS4Vt04tKHkWijVxYBnt097wyMXr-LK-m5Hyj_Sk_w@mail.gmail.com>
- <20120524145837.42085b83@eb-e6520>
- <CAONxwYOdiRnDiRRFikckrj+6pOKA5DgW-hxwRCRgVGQ93p3QUQ@mail.gmail.com>
-Mime-Version: 1.0
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SXYR6-0003xr-UX
+ for barebox@lists.infradead.org; Thu, 24 May 2012 13:50:42 +0000
+Received: by laap9 with SMTP id p9so7424823laa.36
+ for <barebox@lists.infradead.org>; Thu, 24 May 2012 06:50:37 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 24 May 2012 17:50:20 +0400
+Message-Id: <1337867420-23444-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,98 +16,168 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Booting mx25 based device from SD and NOR
-To: Roberto Nibali <rnibali@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [RFC] MIPS: XBurst: suitable solution for per-board debug_ll options
+To: barebox@lists.infradead.org
 
-Hi,
+In the commit 40492a0c1305835c996e15eb1cce2406473ae76d
+(MIPS: add common header file for DEBUG_LL via NS16550)
+introduced common DEBUG_LL via NS16550 for MIPS
+(see file arch/mips/include/debug_ll_ns16550.h).
 
-Le Thu, 24 May 2012 15:18:13 +0200,
-Roberto Nibali <rnibali@gmail.com> a =E9crit :
-> On Thu, May 24, 2012 at 2:58 PM, Eric B=E9nard <eric@eukrea.com> wrote:
-> > Le Thu, 24 May 2012 14:49:36 +0200,
-> > Roberto Nibali <rnibali@gmail.com> a =E9crit :
-> > > I haven't found a combination of root/rootfstype yet that permits me =
-to
-> > > boot from barebox either from NFS, TFTP, MMC/SD or NOR yet. No matter
-> > what
-> > > I try, the kernel spits back at me.
-> > >
-> > well NAND boot + nand rootfs works fine here (cpuimx25) and I assume
-> > NAND boot + sd rootfs would work as sd is properly detected during boot.
-> >
-> > Yep, I believe it's more a question of me setting the parameters correc=
-tly
-> upon boot. But without a proper low level init (which I don't have because
-> I do not really understand all the details of the low level code), there
-> are other factors which could inhibit the proper boot, as you mention bel=
-ow.
-> =
+In the commit 1cbe2b2c00de0efca503a983d0d008833f186f33
+(MIPS: XBurst: add Ritmix RZX-50 board support)
+the file debug_ll_ns16550.h used in
+the file arch/mips/mach-xburst/include/mach/debug_ll.h.
 
-if your sd's partitions are detected by the kernel you must be able to
-boot a rootfs on it it's just a bootargs problem (and kernel
-configuration to have the right FS included).
-> =
+Usage looks like this:
 
-> > > Also I have the problem that my NOR is only detected when using bareb=
-ox
-> > as
-> > > a second stage boot loader from uboot. If booting from SD into barebo=
-x,
-> > the
-> > > NOR is not detected. I have added the following changes to figure out
-> > > what's going on:
-> > >
-> > > .../...
-> > > What's going on here?
-> > >
-> > bad iomux and/or bad WEIM configuration
-> =
+------------------------------------------------
++#ifdef CONFIG_BOARD_RZX50
++#include <mach/debug_ll_jz4755.h>
++#endif
++
++#include <debug_ll_ns16550.h>
+------------------------------------------------
 
-> =
+So after adding another board (e.g. A320) we will have something like this:
 
-> I support WEIM configuration is done in the low level part, isn't it? Whe=
-re
-> would I find an appropriate example? I have been reading all the fsl
-> board's low_level codes, but have a hard time figuring out how to apply it
-> to my board.
-> =
+------------------------------------------------
+ #ifdef CONFIG_BOARD_RZX50
+ #include <mach/debug_ll_jz4755.h>
+ #endif
 
-> With regard to the IOMUX, I was under the impression that it does not
-> matter much, since after low level code run, the execution path is:
-> =
++#ifdef CONFIG_BOARD_A320
++#include <mach/debug_ll_jz4740.h>
++#endif
 
->         late_initcall()
->         mem_initcall()
->         device_initcall() --> add_cfi_flash_device()
->         console_initcall() --> mxc_iomux_v3_setup_multiple_pads()
->         core_initcall()
-> =
+ #include <debug_ll_ns16550.h>
+------------------------------------------------
 
-> So CFI/NOR detection happens before IOMUX setup, at least that's what I
-> have gathered for my board copying from various other examples in barebox.
-> What would the correct code execution path be from the architectural point
-> of view?
-> =
+This approach has disadvantage:
+* the files mach/debug_ll_jz4740.h and mach/debug_ll_jz4755.h
+(they go to arch/mips/arch-xburst) are __BOARD-SPECIFIC__
+(not SOC- or mach-specific!); The file mach-xburst/include/mach/debug_ll.h
+is outside board directory, but it contain some board related information.
 
-nothing prevents you from moving mxc_iomux_v3_setup_multiple_pads to
-device_initcall as done in =
+This commit introduce more suitable solution.
 
-http://git.pengutronix.de/?p=3Dbarebox.git;a=3Dblob;f=3Darch/arm/boards/euk=
-rea_cpuimx25/eukrea_cpuimx25.c;h=3D1b8f618138023b88893a024ddc0c078b7b9f2325=
-;hb=3Dc48de4beee21c3a5573cec084123c33ae08f6f7a
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/Makefile                                 |    2 ++
+ arch/mips/boards/rzx50/include/board/debug_ll.h    |   29 ++++++++++++++++++++
+ arch/mips/mach-xburst/include/mach/debug_ll.h      |    5 +---
+ .../mach-xburst/include/mach/debug_ll_jz4755.h     |   29 --------------------
+ 4 files changed, 32 insertions(+), 33 deletions(-)
+ create mode 100644 arch/mips/boards/rzx50/include/board/debug_ll.h
+ delete mode 100644 arch/mips/mach-xburst/include/mach/debug_ll_jz4755.h
 
-for the weim setting you may need to do something similar to what is
-done on line 187 of :
-http://git.pengutronix.de/?p=3Dbarebox.git;a=3Dblob;f=3Darch/arm/boards/euk=
-rea_cpuimx27/eukrea_cpuimx27.c;h=3D63e87c9551c440edab572f5252a503ba4d533161=
-;hb=3Dc48de4beee21c3a5573cec084123c33ae08f6f7a
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index f28c21d..6b7dae9 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -96,6 +96,8 @@ else
+ MACH  :=
+ endif
+ 
++CPPFLAGS += -I$(BOARD)/include
++
+ common-y += $(BOARD) $(MACH)
+ common-y += arch/mips/lib/
+ common-y += arch/mips/boot/
+diff --git a/arch/mips/boards/rzx50/include/board/debug_ll.h b/arch/mips/boards/rzx50/include/board/debug_ll.h
+new file mode 100644
+index 0000000..babe296
+--- /dev/null
++++ b/arch/mips/boards/rzx50/include/board/debug_ll.h
+@@ -0,0 +1,29 @@
++/*
++ * Copyright (C) 2012 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#ifndef __INCLUDE_DEBUG_LL_JZ4755_H__
++#define __INCLUDE_DEBUG_LL_JZ4755_H__
++
++#include <mach/jz4750d_regs.h>
++
++#define DEBUG_LL_UART_ADDR	UART1_BASE
++#define DEBUG_LL_UART_SHIFT	2
++
++#endif  /* __INCLUDE_DEBUG_LL_JZ4755_H__ */
+diff --git a/arch/mips/mach-xburst/include/mach/debug_ll.h b/arch/mips/mach-xburst/include/mach/debug_ll.h
+index c3dbaa2..6e0cc93 100644
+--- a/arch/mips/mach-xburst/include/mach/debug_ll.h
++++ b/arch/mips/mach-xburst/include/mach/debug_ll.h
+@@ -24,10 +24,7 @@
+ /** @file
+  *  This File contains declaration for early output support
+  */
+-#ifdef CONFIG_BOARD_RZX50
+-#include <mach/debug_ll_jz4755.h>
+-#endif
+-
++#include <board/debug_ll.h>
+ #include <debug_ll_ns16550.h>
+ 
+ #endif  /* __MACH_XBURST_DEBUG_LL__ */
+diff --git a/arch/mips/mach-xburst/include/mach/debug_ll_jz4755.h b/arch/mips/mach-xburst/include/mach/debug_ll_jz4755.h
+deleted file mode 100644
+index babe296..0000000
+--- a/arch/mips/mach-xburst/include/mach/debug_ll_jz4755.h
++++ /dev/null
+@@ -1,29 +0,0 @@
+-/*
+- * Copyright (C) 2012 Antony Pavlov <antonynpavlov@gmail.com>
+- *
+- * This file is part of barebox.
+- * See file CREDITS for list of people who contributed to this project.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2
+- * as published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+- */
+-
+-#ifndef __INCLUDE_DEBUG_LL_JZ4755_H__
+-#define __INCLUDE_DEBUG_LL_JZ4755_H__
+-
+-#include <mach/jz4750d_regs.h>
+-
+-#define DEBUG_LL_UART_ADDR	UART1_BASE
+-#define DEBUG_LL_UART_SHIFT	2
+-
+-#endif  /* __INCLUDE_DEBUG_LL_JZ4755_H__ */
+-- 
+1.7.10
 
-Eric
 
 _______________________________________________
 barebox mailing list
