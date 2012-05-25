@@ -1,22 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
+Received: from slsa667.piensasolutions.com ([217.76.150.252])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SXrSG-0001Y0-85
- for barebox@lists.infradead.org; Fri, 25 May 2012 10:09:11 +0000
-Date: Fri, 25 May 2012 12:08:58 +0200
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120525120858.77dd6e7a@eb-e6520>
-In-Reply-To: <CAONxwYNisYJ+hvHTnxjHs-oPVGDFrhajVxMMrZXFJ8GN7aTg9A@mail.gmail.com>
-References: <CAONxwYOZtob20_ao-A-p2TXXLESsLLKadiARUX9drFK=nvJQcQ@mail.gmail.com>
- <20120522184240.GM30400@pengutronix.de>
- <CAONxwYOOSCcUQY7wRy8wrdmWGLrjPfchxY1raxBA034gKCk9KQ@mail.gmail.com>
- <20120523134733.6164c4fb@eb-e6520>
- <CAONxwYMkcS4Vt04tKHkWijVxYBnt097wyMXr-LK-m5Hyj_Sk_w@mail.gmail.com>
- <20120524145837.42085b83@eb-e6520>
- <CAONxwYOdiRnDiRRFikckrj+6pOKA5DgW-hxwRCRgVGQ93p3QUQ@mail.gmail.com>
- <20120524153119.6d724afc@eb-e6520>
- <CAONxwYNisYJ+hvHTnxjHs-oPVGDFrhajVxMMrZXFJ8GN7aTg9A@mail.gmail.com>
-Mime-Version: 1.0
+ id 1SXrjT-0001x0-IA
+ for barebox@lists.infradead.org; Fri, 25 May 2012 10:26:57 +0000
+Received: from localhost (localhost.localdomain [127.0.0.1])
+ by smtp-02.piensasolutions.com (Postfix) with ESMTP id 650CA2A0843
+ for <barebox@lists.infradead.org>; Fri, 25 May 2012 12:08:30 +0200 (CEST)
+Received: from mail-ee0-f49.google.com (mail-ee0-f49.google.com [74.125.83.49])
+ by smtp-02.piensasolutions.com (Postfix) with ESMTPSA id 333AC2A080B
+ for <barebox@lists.infradead.org>; Fri, 25 May 2012 12:08:30 +0200 (CEST)
+Received: by eekd17 with SMTP id d17so224902eek.36
+ for <barebox@lists.infradead.org>; Fri, 25 May 2012 03:08:29 -0700 (PDT)
+MIME-Version: 1.0
+From: Benoit RAT <benoit@sevensols.com>
+Date: Fri, 25 May 2012 12:08:09 +0200
+Message-ID: <CAHvDM_cjKPKt205M3W+Cn8ns0+_GeYbj7xrtX6D+iiu9cJVt4g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,43 +23,144 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="===============7082907530781984288=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Booting mx25 based device from SD and NOR
-To: Roberto Nibali <rnibali@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Check if valid kernel and/or FS
+To: barebox@lists.infradead.org
 
-Hi Roberto,
+--===============7082907530781984288==
+Content-Type: multipart/alternative; boundary=90e6ba61528cce5ee704c0d98c81
 
-Le Fri, 25 May 2012 11:04:52 +0200,
-Roberto Nibali <rnibali@gmail.com> a =E9crit :
-> > for the weim setting you may need to do something similar to what is
-> > done on line 187 of :
-> >
-> > http://git.pengutronix.de/?p=3Dbarebox.git;a=3Dblob;f=3Darch/arm/boards=
-/eukrea_cpuimx27/eukrea_cpuimx27.c;h=3D63e87c9551c440edab572f5252a503ba4d53=
-3161;hb=3Dc48de4beee21c3a5573cec084123c33ae08f6f7a
-> >
-> >
-> Now that piece certainly was missing, but how the heck did you find out
-> those register values? Where did you get the information about writing to
-> chip select 0 and selecting:
-> =
+--90e6ba61528cce5ee704c0d98c81
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
 
-> CSCR0U: 0x00008F03
-> CSCR0L: 0xA0330D01
-> CSCR0A: 0x002208C0
-> =
+Hy barebox guy,
 
-you need the reference manual of the i.MX25 to know the meaning of
-these registers and the datasheet of your flash to know it's timings
-then you can calculate the value to put in the registers.
+I was wondering if there was a good way to check if I have a correct kernel
+and/or filesystem in my partition before loading them.
+If it is not the case then I will check out for valid images in tftpboot or
+prompt the barebox shell.
 
-Eric
+And another question is how can i know that I am using the barebox
+environment from nand flash instead of the one from a scripts?
+
+Regards,
+
+--
+ <http://www.sevensols.com/>
+*Benoit RAT LAMY*
+
+Engineer (Sw) \ Ingeniero (Sw)
+
+fix. *(+34) 958 285 024*
+
+cel. *(+34) 617 989 123*
+
+e-mail: benoit@sevensols.com
+
+*www.sevensols.com / **www.sevensecurity.es*
+
+_________________________________
+
+*C/ Baza, parcela 19 Nave 3  \ Pol=EDgono Ind. Juncaril \*
+
+*18210 - PELIGROS - GRANADA =96SPAIN*
+
+--90e6ba61528cce5ee704c0d98c81
+Content-Type: text/html; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+
+Hy barebox guy,<div><br></div><div>I was wondering if there was a good way =
+to check if I have a correct kernel and/or filesystem in my partition befor=
+e loading them.</div><div>If it is not the case then I will check out for v=
+alid images in tftpboot or prompt the barebox shell.</div>
+
+<div><br></div><div>And another question is how can i know that I am using =
+the barebox environment from nand flash instead of the one from a scripts?<=
+/div><div><br></div><div>Regards,=A0</div><div><br><span style=3D"font-fami=
+ly:&#39;Times New Roman&#39;;font-size:medium">--</span><br style=3D"font-f=
+amily:&#39;Times New Roman&#39;;font-size:medium">
+
+<div style=3D"font-family:&#39;Times New Roman&#39;;font-size:medium"><a hr=
+ef=3D"http://www.sevensols.com/" target=3D"_blank"><img src=3D"http://www.s=
+evensols.com/logos/logo-118x90.png"></a>=A0</div><div style=3D"font-family:=
+&#39;Times New Roman&#39;;font-size:medium">
+
+<span style=3D"font-family:arial,sans-serif;font-size:13px;border-collapse:=
+collapse;line-height:15px"><b><span lang=3D"EN-US" style=3D"font-family:&#3=
+9;Caecilia LT Std Light&#39;,serif;color:rgb(16,138,208)">Benoit RAT LAMY</=
+span></b></span></div>
+
+<div><p style=3D"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-l=
+eft:0px;line-height:15px;font-family:arial,sans-serif;font-size:13px;border=
+-collapse:collapse"><span lang=3D"EN-US" style=3D"font-family:&#39;Caecilia=
+ LT Std Light&#39;,serif;color:rgb(16,138,208)">Engineer (Sw) \ Ingeniero (=
+Sw)</span></p>
+
+<p style=3D"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0=
+px;line-height:15px;font-family:arial,sans-serif;font-size:13px;border-coll=
+apse:collapse"><span lang=3D"EN-US" style=3D"font-family:&#39;Caecilia LT S=
+td Light&#39;,serif;color:rgb(16,138,208)">fix.=A0<b>(+34) 958 285 024</b><=
+/span></p>
+
+<p style=3D"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0=
+px;line-height:15px;font-size:13px;border-collapse:collapse"><span style=3D=
+"color:rgb(16,138,208);font-family:&#39;Caecilia LT Std Light&#39;,serif">c=
+el.=A0</span><b style=3D"color:rgb(16,138,208);font-family:&#39;Caecilia LT=
+ Std Light&#39;,serif">(+34) 617 989 123</b></p>
+
+<p style=3D"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0=
+px;line-height:15px;font-family:arial,sans-serif;font-size:13px;border-coll=
+apse:collapse"><span lang=3D"EN-US" style=3D"font-family:&#39;Caecilia LT S=
+td Light&#39;,serif;color:rgb(16,138,208)">e-mail:=A0<a href=3D"mailto:beno=
+it@sevensols.com" target=3D"_blank"><font color=3D"#339999">benoit@sevensol=
+s.com</font></a></span></p>
+
+<p style=3D"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0=
+px;line-height:15px;font-family:arial,sans-serif;font-size:13px;border-coll=
+apse:collapse"><b><span lang=3D"ES-TRAD" style=3D"font-family:&#39;Caecilia=
+ LT Std Light&#39;,serif"><span style=3D"text-decoration:none"><font color=
+=3D"#339999"><a href=3D"http://www.sevensols.com/" target=3D"_blank">www.se=
+vensols.com</a>=A0/=A0</font></span></span></b><span lang=3D"ES-TRAD" style=
+=3D"font-family:&#39;Caecilia LT Std Light&#39;,serif;color:rgb(16,138,208)=
+"></span><b><span lang=3D"ES-TRAD" style=3D"font-family:&#39;Caecilia LT St=
+d Light&#39;,serif"><font color=3D"#339999"><a href=3D"http://www.sevensecu=
+rity.es" target=3D"_blank">www.sevensecurity.es</a></font></span></b></p>
+
+<p style=3D"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0=
+px;line-height:15px;font-family:arial,sans-serif;font-size:13px;border-coll=
+apse:collapse"><span lang=3D"ES-TRAD" style=3D"font-family:&#39;Caecilia LT=
+ Std Light&#39;,serif;color:rgb(16,138,208)">______________________________=
+___</span></p>
+
+<p style=3D"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0=
+px;line-height:15px;font-family:arial,sans-serif;font-size:13px;border-coll=
+apse:collapse"><b><span lang=3D"ES-TRAD" style=3D"font-family:&#39;Caecilia=
+ LT Std Light&#39;,serif;color:rgb(16,138,208)">C/ Baza, parcela 19 Nave 3=
+=A0 \ Pol=EDgono Ind. Juncaril \</span></b></p>
+
+<p style=3D"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0=
+px;font-family:arial,sans-serif;font-size:13px;border-collapse:collapse"><b=
+><span style=3D"font-family:&#39;Caecilia LT Std Light&#39;,serif;color:rgb=
+(16,138,208)">18210 - PELIGROS - GRANADA =96SPAIN</span></b></p>
+
+</div><br>
+</div>
+
+--90e6ba61528cce5ee704c0d98c81--
+
+
+--===============7082907530781984288==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============7082907530781984288==--
