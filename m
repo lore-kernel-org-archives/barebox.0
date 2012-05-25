@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-yx0-f177.google.com ([209.85.213.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SXoD6-0008F9-6n
- for barebox@lists.infradead.org; Fri, 25 May 2012 06:41:16 +0000
-Date: Fri, 25 May 2012 08:41:14 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120525064114.GH30400@pengutronix.de>
-References: <1337849069-1893-1-git-send-email-shc_work@mail.ru>
+ id 1SXock-00010L-GP
+ for barebox@lists.infradead.org; Fri, 25 May 2012 07:07:47 +0000
+Received: by yenr9 with SMTP id r9so141729yen.36
+ for <barebox@lists.infradead.org>; Fri, 25 May 2012 00:07:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1337849069-1893-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <20120525063411.GF30400@pengutronix.de>
+References: <1337889903-18638-1-git-send-email-eric@eukrea.com>
+ <20120524202510.GE30400@pengutronix.de> <20120524224640.291aabdd@eb-e6520>
+ <20120525063411.GF30400@pengutronix.de>
+From: Roberto Nibali <rnibali@gmail.com>
+Date: Fri, 25 May 2012 09:07:24 +0200
+Message-ID: <CAONxwYPPKWM5yt_EeSksnVK9PsTN3vhgVhkCy85aiQ8QvASODA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,75 +21,119 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============0466612659951396590=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i.MX51: Raise frequency for SDHC by switch to PLL2 source
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] i.MX25: fix eSDHC1 pads
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Alexander,
+--===============0466612659951396590==
+Content-Type: multipart/alternative; boundary=14dae9340aa36583f504c0d7066d
 
-On Thu, May 24, 2012 at 12:44:29PM +0400, Alexander Shiyan wrote:
-> Currently, both SDHC clock source is PLL3. We can raise clock
-> for SDHC driver by change source from PLL3 to PLL2.
-> Below, is debug ouputs with old and new settings.
+--14dae9340aa36583f504c0d7066d
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-As the kernel does the same change I assume this is fine. Applied.
+On Fri, May 25, 2012 at 8:34 AM, Sascha Hauer <s.hauer@pengutronix.de>wrote=
+:
 
-Sascha
+> On Thu, May 24, 2012 at 10:46:40PM +0200, Eric B=E9nard wrote:
+> > Hi Sascha,
+> >
+> > Le Thu, 24 May 2012 22:25:10 +0200,
+> > Sascha Hauer <s.hauer@pengutronix.de> a =E9crit :
+> > > On Thu, May 24, 2012 at 10:05:03PM +0200, Eric B=E9nard wrote:
+> > > > enabling SION bit makes SDHC1 working on the i.MX25.
+>
 
-> 
-> Detection (PLL3):
-> set clock: wanted: 400000 got: 375000
-> Operation (PLL3):
-> set clock: wanted: 25000000 got: 18000000
-> Operation SD4.0 (PLL3):
-> set clock: wanted: 52000000 got: 27000000
-> 
-> Detection (PLL2):
-> set clock: wanted: 400000 got: 399639
-> Operation (PLL2):
-> set clock: wanted: 25000000 got: 23750000
-> Operation SD4.0 (PLL2):
-> set clock: wanted: 52000000 got: 41562500
-> 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ---
->  arch/arm/mach-imx/imx51.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
-> index 25cc6da..53205a9 100644
-> --- a/arch/arm/mach-imx/imx51.c
-> +++ b/arch/arm/mach-imx/imx51.c
-> @@ -269,7 +269,7 @@ void imx51_init_lowlevel(unsigned int cpufreq_mhz)
->  	writel(0xffffffff, ccm + MX5_CCM_CCGR6);
->  
->  	/* Use PLL 2 for UART's, get 66.5MHz from it */
-> -	writel(0xA5A2A020, ccm + MX5_CCM_CSCMR1);
-> +	writel(0xA591A020, ccm + MX5_CCM_CSCMR1);
->  	writel(0x00C30321, ccm + MX5_CCM_CSCDR1);
->  
->  	/* make sure divider effective */
-> -- 
-> 1.7.3.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+I am a bit surprised since in my case, SDHC1 worked out of the box, after
+disabling all the iomux pad configuration settings. I believe sync'ing the
+iomux with the kernel goes both with the philosophy of barebox and its
+maintainability.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+> > > Can we instead just sync the iomux file with the kernel? I think this
+> >
+> > OK will post the patch syncing barebox & kernel.
+> >
+> > > will make less problems in the longer run. At least as long the iomux
+> > > files in the kernel still exist...
+> > >
+> > is iomux settings planned to be removed from the kernel ?
+>
+> I suppose when all i.MX are converted to devicetree and pinmux they will
+> be removed. I don't know how long this will take though.
+>
+>
+Has anybody started on the mx25 conversion to devicetree and pinmux yet?
+Last time I checked at lot of other fsl cores had already been converted,
+but not this one. Eric, have you tried moving to your mx25 to device tree
+yet?
+
+Cheers
+Roberto
+
+--14dae9340aa36583f504c0d7066d
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<div class=3D"gmail_quote">On Fri, May 25, 2012 at 8:34 AM, Sascha Hauer <s=
+pan dir=3D"ltr">&lt;<a href=3D"mailto:s.hauer@pengutronix.de" target=3D"_bl=
+ank">s.hauer@pengutronix.de</a>&gt;</span> wrote:<br><blockquote class=3D"g=
+mail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-l=
+eft:1ex">
+
+<div class=3D"im">On Thu, May 24, 2012 at 10:46:40PM +0200, Eric B=E9nard w=
+rote:<br>
+&gt; Hi Sascha,<br>
+&gt;<br>
+&gt; Le Thu, 24 May 2012 22:25:10 +0200,<br>
+&gt; Sascha Hauer &lt;<a href=3D"mailto:s.hauer@pengutronix.de">s.hauer@pen=
+gutronix.de</a>&gt; a =E9crit :<br>
+&gt; &gt; On Thu, May 24, 2012 at 10:05:03PM +0200, Eric B=E9nard wrote:<br=
+>
+&gt; &gt; &gt; enabling SION bit makes SDHC1 working on the i.MX25.<br></di=
+v></blockquote><div><br></div><div>I am a bit surprised since in my case, S=
+DHC1 worked out of the box, after disabling all the iomux pad configuration=
+ settings. I believe sync&#39;ing the iomux with the kernel goes both with =
+the philosophy of barebox and its maintainability.</div>
+
+<div>=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;=
+border-left:1px #ccc solid;padding-left:1ex"><div class=3D"im">
+&gt; &gt; Can we instead just sync the iomux file with the kernel? I think =
+this<br>
+&gt;<br>
+&gt; OK will post the patch syncing barebox &amp; kernel.<br>
+&gt;<br>
+&gt; &gt; will make less problems in the longer run. At least as long the i=
+omux<br>
+&gt; &gt; files in the kernel still exist...<br>
+&gt; &gt;<br>
+&gt; is iomux settings planned to be removed from the kernel ?<br>
+<br>
+</div>I suppose when all i.MX are converted to devicetree and pinmux they w=
+ill<br>
+be removed. I don&#39;t know how long this will take though.<br>
+<div class=3D"im HOEnZb"><br></div></blockquote><div>=A0</div><div>Has anyb=
+ody started on the mx25 conversion to devicetree and pinmux yet? Last time =
+I checked at lot of other fsl cores had already been converted, but not thi=
+s one. Eric, have you tried moving to your mx25 to device tree yet?</div>
+
+<div><br></div><div>Cheers</div><div>Roberto</div></div><br>
+
+--14dae9340aa36583f504c0d7066d--
+
+
+--===============0466612659951396590==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============0466612659951396590==--
