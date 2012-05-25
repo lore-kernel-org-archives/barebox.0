@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward12.mail.yandex.net ([95.108.130.94])
+Received: from forward13.mail.yandex.net ([95.108.130.120])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SXvsN-0005jE-LV
- for barebox@lists.infradead.org; Fri, 25 May 2012 14:52:24 +0000
+ id 1SXvsi-0005lw-Vn
+ for barebox@lists.infradead.org; Fri, 25 May 2012 14:52:45 +0000
 Received: from web30f.yandex.ru (web30f.yandex.ru [95.108.130.106])
- by forward12.mail.yandex.net (Yandex) with ESMTP id 0EEECC2148A
- for <barebox@lists.infradead.org>; Fri, 25 May 2012 18:52:16 +0400 (MSK)
+ by forward13.mail.yandex.net (Yandex) with ESMTP id AA88E142783
+ for <barebox@lists.infradead.org>; Fri, 25 May 2012 18:52:40 +0400 (MSK)
 From: Klokov Alexey <Hripus@yandex.ru>
 MIME-Version: 1.0
-Message-Id: <758091337957534@web30f.yandex.ru>
-Date: Fri, 25 May 2012 18:52:14 +0400
+Message-Id: <758281337957559@web30f.yandex.ru>
+Date: Fri, 25 May 2012 18:52:39 +0400
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,10 +22,10 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: hi!
+Subject: test
 To: barebox@lists.infradead.org
 
-subj!
+test
 
 _______________________________________________
 barebox mailing list
