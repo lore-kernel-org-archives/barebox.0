@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SXsSA-0002ya-8h
- for barebox@lists.infradead.org; Fri, 25 May 2012 11:13:07 +0000
-Date: Fri, 25 May 2012 13:12:57 +0200
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120525131257.25cbff73@eb-e6520>
-In-Reply-To: <20120525111020.GH2202@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SXtjz-0006Fy-AF
+ for barebox@lists.infradead.org; Fri, 25 May 2012 12:35:36 +0000
+Date: Fri, 25 May 2012 14:35:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120525123531.GO30400@pengutronix.de>
 References: <CAHvDM_cjKPKt205M3W+Cn8ns0+_GeYbj7xrtX6D+iiu9cJVt4g@mail.gmail.com>
- <20120525111020.GH2202@game.jcrosoft.org>
-Mime-Version: 1.0
+ <20120525125154.1c039173@eb-e6520>
+ <CAHvDM_dXQhSHi+gACuwnbs9i2=Sf93Bt8PBPMdKS0KvvNztmvA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAHvDM_dXQhSHi+gACuwnbs9i2=Sf93Bt8PBPMdKS0KvvNztmvA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,33 +20,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Check if valid kernel and/or FS
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Benoit RAT <benoit@sevensols.com>
+To: Benoit RAT <benoit@sevensols.com>
+Cc: barebox@lists.infradead.org
 
-Hi Jean Christophe,
+On Fri, May 25, 2012 at 12:58:48PM +0200, Benoit RAT wrote:
+> Thanks,
+> 
+> I want to know, if i am using the default environment (the that I am using
+> from compilation)
+> barebox> no valid environment found on /dev/env0. Using default environment
+> 
+> Or I am using the one that there is in /dev/env0
+> 
+> It is in the case someone break something in the NAND flash env, I want to
+> save again the default one.
 
-Le Fri, 25 May 2012 13:10:20 +0200,
-Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
-> >    And another question is how can i know that I am using the barebox
-> >    environment from nand flash instead of the one from a scripts?
-> in the log if see
-> =
+Currently there is no way to detect that, but there is a little trick.
+Put a this_is_compiled_in file into your default environment. Then
+during startup you can do:
 
-> envfs: wrong magic on =
+if [ -f /env/this_is_compiled_in ]; then
+	echo "Sorry man, you lost your environment"
+	rm /env/this_is_compiled_in
+	saveenv
+fi
 
-> =
+Sascha
 
-> which mean you load from the builtin
-> =
-
-how do you check the log from within barebox's scripts ?
-
-Eric
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
