@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SY0ey-0001Si-RN
- for barebox@lists.infradead.org; Fri, 25 May 2012 19:58:54 +0000
-Date: Fri, 25 May 2012 21:58:47 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120525195847.GT30400@pengutronix.de>
-References: <OFFE55D117.F033B5DE-ONC1257A09.006BA85C-C1257A09.006BA869@phytec.de>
+Received: from 5.mo3.mail-out.ovh.net ([87.98.178.36]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SYDWv-0007Lx-EL
+ for barebox@lists.infradead.org; Sat, 26 May 2012 09:43:26 +0000
+Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 0D8A3FF89B6
+ for <barebox@lists.infradead.org>; Sat, 26 May 2012 11:46:24 +0200 (CEST)
+Date: Sat, 26 May 2012 11:43:29 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120526094329.GI2202@game.jcrosoft.org>
+References: <1337269578-20570-1-git-send-email-eric@eukrea.com>
+ <1337269578-20570-10-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <OFFE55D117.F033B5DE-ONC1257A09.006BA85C-C1257A09.006BA869@phytec.de>
+In-Reply-To: <1337269578-20570-10-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,63 +23,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: NAND defect Block handling
-To: =?iso-8859-15?Q?J=FCrgen?= Kilb <J.Kilb@phytec.de>
+Subject: Re: [PATCH 10/16] fs/tftp: depend on NET_TFTP
+To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-Hi J=FCrgen,
-
-On Fri, May 25, 2012 at 09:35:54PM +0200, J=FCrgen Kilb wrote:
-> Hi,
-> I discovered a problem which I thought would be handled in a different wa=
-y..
-> During "tftp 250Mbyte_Testimage.bin /dev/nand0.rootfs.bb" an I/O error oc=
-curred
-> and tftp stopped downloading/writing the file to the nand0.rootfs.bb part=
-ition.
+On 17:46 Thu 17 May     , Eric B=E9nard wrote:
+> else the option remains selected when network gets disabled
 > =
 
-> =3D=3D=3D
-> ...###################################write: I/O error
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> ---
+>  fs/Kconfig |    1 +
+>  1 files changed, 1 insertions(+), 0 deletions(-)
 > =
 
-> tftp failed: error -5
-> =3D=3D=3D
-> =
+> diff --git a/fs/Kconfig b/fs/Kconfig
+> index e5f307f..0aa73df 100644
+> --- a/fs/Kconfig
+> +++ b/fs/Kconfig
+> @@ -22,6 +22,7 @@ config FS_DEVFS
+>  config FS_TFTP
+>  	bool
+>  	prompt "tftp support"
+> +	depends on NET_TFTP
+why such depends on?
 
-> As far as I debugged the problem, a block erase error occurred. I thought=
- the
-> normal behavior should be, mark the defect block as bad and continue with =
+the tftp support is an alternative to the old NET_TFTP
 
-> the next block.
-> =
+on NET ok NET_TFTP nack
 
-> What is the best way to handle such problems?
-> =
-
-> - implement such a behavior if the destination is a *.bb device
-> - add a nand_write command
-> - add a global option to mark a bad nand block
-
-We have a command for this: nand -b
-
-I think the best was would be to automatically mark a block as bad when
-it occurs. It should be configurable during runtime though so that we
-can activate it once we know a driver is actually working. Otherwise
-many developers end up with 100% bad blocks on their nand devices.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Bset Regards,
+J.
 
 _______________________________________________
 barebox mailing list
