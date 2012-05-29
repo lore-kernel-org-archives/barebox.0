@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f49.google.com ([209.85.214.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SZRXH-0006c4-3P
- for barebox@lists.infradead.org; Tue, 29 May 2012 18:52:51 +0000
-Received: by bkwj4 with SMTP id j4so428113bkw.36
- for <barebox@lists.infradead.org>; Tue, 29 May 2012 11:52:48 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 29 May 2012 22:52:40 +0400
-Message-Id: <1338317560-6506-1-git-send-email-antonynpavlov@gmail.com>
+ id 1SZRcJ-0006fW-B8
+ for barebox@lists.infradead.org; Tue, 29 May 2012 18:58:04 +0000
+Date: Tue, 29 May 2012 20:57:55 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120529185755.GD30400@pengutronix.de>
+References: <CAONxwYP5Eu59tpndafUpJrbHNMgZTF_3JaJ2pr5i8ptDugdpBQ@mail.gmail.com>
+ <20120529101450.GS30400@pengutronix.de>
+ <CAONxwYN5yj9wVnmpXQAkgnwZ-zdDxETKMr4x6CFcUjiN_ih5Nw@mail.gmail.com>
+ <CAONxwYPuBCkUE2M6MgpgG7sJQjsYJ8WYhgfhaGUju4f7xcL89g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAONxwYPuBCkUE2M6MgpgG7sJQjsYJ8WYhgfhaGUju4f7xcL89g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,34 +21,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] video/s3c24xx.c: fix doxygen comment for s3cfb_activate_var()
-To: barebox@lists.infradead.org
+Subject: Re: [BUG: barebox-git] failure at common/block.c:248/block_put()!
+To: Roberto Nibali <rnibali@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/video/s3c24xx.c |    1 -
- 1 file changed, 1 deletion(-)
+On Tue, May 29, 2012 at 01:47:36PM +0200, Roberto Nibali wrote:
+> G'day
+> 
+> 
+> 
+> Data Write Failed in PIO Mode.imx-esdhc@imx-esdhc0: timeout 2
+> imx-esdhc@imx-esdhc0: timeout 1
+> imx-esdhc@imx-esdhc0: timeout 1
+> imx-esdhc@imx-esdhc0: timeout 1
+> block_cache: blk->ops->read returned -110
 
-diff --git a/drivers/video/s3c24xx.c b/drivers/video/s3c24xx.c
-index 564ccbd..5d5d8f6 100644
---- a/drivers/video/s3c24xx.c
-+++ b/drivers/video/s3c24xx.c
-@@ -193,7 +193,6 @@ static void s3cfb_disable_controller(struct fb_info *fb_info)
- /**
-  * Prepare the video hardware for a specified video mode
-  * @param fb_info Framebuffer information
-- * @param mode The video mode description to initialize
-  * @return 0 on success
-  */
- static int s3cfb_activate_var(struct fb_info *fb_info)
+Ok, so your problem is inside the esdhc driver. Sorry, I don't know what
+quirks we may need here. Might be worth looking at the kernel or U-Boot
+to find out.
+
+> BUG: failure at common/block.c:249/block_put()!
+> BUG!
+
+Nevertheless we'll need a fix for this. I'll prepare a patch for this if
+noone else is faster ;)
+
+Sascha
+
+
 -- 
-1.7.10
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
