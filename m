@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ob0-f177.google.com ([209.85.214.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SZPD5-0000xC-T7
- for barebox@lists.infradead.org; Tue, 29 May 2012 16:23:52 +0000
-Date: Tue, 29 May 2012 18:23:50 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120529162350.GY30400@pengutronix.de>
-References: <4EE62D17.1090709@eukrea.com> <4EE66F10.7090409@eukrea.com>
- <20111213094800.GF27267@pengutronix.de>
- <4EE76AC1.3070603@eukrea.com>
- <20111213192606.GA27267@pengutronix.de>
- <20120529104844.4df2752d@eb-e6520>
+ id 1SZPQg-0001PY-4z
+ for barebox@lists.infradead.org; Tue, 29 May 2012 16:37:54 +0000
+Received: by obqv19 with SMTP id v19so8601883obq.36
+ for <barebox@lists.infradead.org>; Tue, 29 May 2012 09:37:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120529104844.4df2752d@eb-e6520>
+Date: Tue, 29 May 2012 19:37:47 +0300
+Message-ID: <CAJLCkXMV6mtW7q7MtQuhJstKwb3mGXwJbunLNVKQRZ+ey_gZ2A@mail.gmail.com>
+From: Maxim Gorbachyov <maxim.gorbachyov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,80 +17,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: magicvar breaks tftp (or ramfs)
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: check if RGMII works
+To: barebox@lists.infradead.org
 
-On Tue, May 29, 2012 at 10:48:44AM +0200, Eric B=E9nard wrote:
-> Hi Sascha,
-> =
+Hello.
 
-> > =
+I'm trying to use barebox (current git version) with a Freescale
+i.MX6q based board. The board is similar to Armadillo 2, but it comes
+with another Ethernet PHY. Barebox starts on the board, and there is a
+fec_imx0:
 
-> > I really want to believe this, but I wouldn't be so sure. I think
-> > it's more likely that you found a bug in barebox that your new
-> > toolchain happens to trigger. Could you provide the objdump of
-> > show_progress along with a complete stack trace including register
-> > contents?
-> > =
+barebox@Freescale i.MX6q myboard:/ devinfo fec_imx0
+resources:
+num   : 0
+start : 0x02188000
+size  : 0x00001000
+driver: fec_imx
+no info available for fec_imx0
+no parameters available
 
-> here is the full trace.
-> There is something strange as it seems a wrong value gets loaded into R3
-> leading to the error.
+I've removed AR8031 (Armadillo 2 PHY) code from the mx6_rgmii_rework()
+and added these lines:
 
-I recently found a bug that could match this description. The following
-patch fixes this, but currently I don't now what other places might be
-affected. It's a matter of reviewing all places where dma_inv_range is
-used. Does the problem persist when you turn off the MMU?
+        for (i = 0; i < 16; ++i) {
+                val = mii_read(mdev, mdev->address, i);
+                printf("%s() PHY register %d: 0x%04x\n", __FUNCTION__, i, val);
+        }
 
-Sascha
+Relevant boot log:
 
+mx6_rgmii_rework() PHY register 0: 0x7fff
+mx6_rgmii_rework() PHY register 1: 0xffff
+mx6_rgmii_rework() PHY register 2: 0x7fff
+mx6_rgmii_rework() PHY register 3: 0xffff
+mx6_rgmii_rework() PHY register 4: 0x7fff
+mx6_rgmii_rework() PHY register 5: 0xffff
+mx6_rgmii_rework() PHY register 6: 0x7fff
+mx6_rgmii_rework() PHY register 7: 0xffff
+mx6_rgmii_rework() PHY register 8: 0x7fff
+mx6_rgmii_rework() PHY register 9: 0xffff
+mx6_rgmii_rework() PHY register 10: 0x7fff
+mx6_rgmii_rework() PHY register 11: 0xffff
+mx6_rgmii_rework() PHY register 12: 0x7fff
+mx6_rgmii_rework() PHY register 13: 0xffff
+mx6_rgmii_rework() PHY register 14: 0x7fff
+mx6_rgmii_rework() PHY register 15: 0xffff
 
-
-From f11b34785ba3d33854c752e81c43de0271d19d35 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 24 May 2012 16:02:37 +0200
-Subject: [PATCH] USB gadget fsl: request cacheline aligned buffer
-
-The fsl udc driver allocates a buffer for small requests. The
-driver then calls dma_inv_range later on it. This buffer happens
-to be not cacheline aligned which means that a dma_inv_range can
-corrupt other memory around the buffer.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/usb/gadget/fsl_udc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/usb/gadget/fsl_udc.c b/drivers/usb/gadget/fsl_udc.c
-index 5b64ec2..96cdb30 100644
---- a/drivers/usb/gadget/fsl_udc.c
-+++ b/drivers/usb/gadget/fsl_udc.c
-@@ -2109,7 +2109,8 @@ static int struct_udc_setup(struct fsl_udc *udc,
- 	udc->status_req =3D container_of(fsl_alloc_request(NULL),
- 			struct fsl_req, req);
- 	/* allocate a small amount of memory to get valid address */
--	udc->status_req->req.buf =3D xmalloc(8);
-+	udc->status_req->req.buf =3D xmemalign(4096, 4096);
-+	udc->status_req->req.length =3D 8;
- 	udc->resume_state =3D USB_STATE_NOTATTACHED;
- 	udc->usb_state =3D USB_STATE_POWERED;
- 	udc->ep0_dir =3D 0;
--- =
-
-1.7.10
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+These values are not PHY defaults and actually look strange. I'm not
+sure if mii_read() really works here.
+Could you please suggest how to check if RGMII communication works?
 
 _______________________________________________
 barebox mailing list
