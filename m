@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SZMBE-00075V-C1
- for barebox@lists.infradead.org; Tue, 29 May 2012 13:09:45 +0000
-Received: by laap9 with SMTP id p9so3286560laa.36
- for <barebox@lists.infradead.org>; Tue, 29 May 2012 06:09:42 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 29 May 2012 17:09:33 +0400
-Message-Id: <1338296974-15096-1-git-send-email-antonynpavlov@gmail.com>
+Received: from protonic.xs4all.nl ([213.84.116.84])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SZME7-0007XQ-P5
+ for barebox@lists.infradead.org; Tue, 29 May 2012 13:12:44 +0000
+Received: from [192.168.1.166] (erd943.prtnl [192.168.1.166])
+ by protonic.xs4all.nl (Postfix) with ESMTP id 193CB2836F
+ for <barebox@lists.infradead.org>; Tue, 29 May 2012 14:44:34 +0200 (CEST)
+Message-ID: <4FC4C582.6020003@protonic.nl>
+Date: Tue, 29 May 2012 14:48:02 +0200
+From: Robin van der Gracht <robin@protonic.nl>
+MIME-Version: 1.0
+References: <758281337957559@web30f.yandex.ru>
+In-Reply-To: <758281337957559@web30f.yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,51 +20,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v20120529.1 1/2] toshiba_ac100: add USB host support
-To: barebox@lists.infradead.org
+Subject: Imx28 sdram initialisation?
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/arm/boards/toshiba-ac100/board.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
 
-diff --git a/arch/arm/boards/toshiba-ac100/board.c b/arch/arm/boards/toshiba-ac100/board.c
-index e3a5eba..d933146 100644
---- a/arch/arm/boards/toshiba-ac100/board.c
-+++ b/arch/arm/boards/toshiba-ac100/board.c
-@@ -24,6 +24,8 @@
- #include <init.h>
- #include <asm/armlinux.h>
- #include <sizes.h>
-+#include <usb/ehci.h>
-+#include <mach/iomap.h>
- 
- static int ac100_mem_init(void)
- {
-@@ -32,3 +34,16 @@ static int ac100_mem_init(void)
- 	return 0;
- }
- mem_initcall(ac100_mem_init);
-+
-+static struct ehci_platform_data ehci_pdata = {
-+	.flags = EHCI_HAS_TT,
-+};
-+
-+static int ac100_devices_init(void)
-+{
-+	add_generic_usb_ehci_device(DEVICE_ID_DYNAMIC,
-+		TEGRA_USB3_BASE, &ehci_pdata);
-+
-+	return 0;
-+}
-+device_initcall(ac100_devices_init);
+Hello,
+
+Currently i'm working on our new board, equipped with a imx287 processor,
+using the 'karo-tx28' and  'freescale-mx28-evk' bsp as reference for our 
+own bsp.
+
+But I can't find sdram initialisation, lowlevel routines, or dcd support 
+for imx28.
+So i'm wondering how and where this is done for the boards mentioned before.
+
+Reguards,
+
 -- 
-1.7.10
+Robin van der Gracht
+Protonic Holland.
+tel.: +31 (0) 229 212928
+fax.: +31 (0) 229 210930
+Factorij 36 / 1689 AL Zwaag
 
 
 _______________________________________________
