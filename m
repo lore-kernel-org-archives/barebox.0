@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SZJyM-0004jF-5k
- for barebox@lists.infradead.org; Tue, 29 May 2012 10:48:19 +0000
-Date: Tue, 29 May 2012 12:48:09 +0200
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120529124809.27d0a601@eb-e6520>
-In-Reply-To: <20120529104844.4df2752d@eb-e6520>
-References: <4EE62D17.1090709@eukrea.com> <4EE66F10.7090409@eukrea.com>
- <20111213094800.GF27267@pengutronix.de>
- <4EE76AC1.3070603@eukrea.com>
- <20111213192606.GA27267@pengutronix.de>
- <20120529104844.4df2752d@eb-e6520>
-Mime-Version: 1.0
+Received: from mail-yw0-f49.google.com ([209.85.213.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SZK5g-0005JD-Dg
+ for barebox@lists.infradead.org; Tue, 29 May 2012 10:55:53 +0000
+Received: by yhjj52 with SMTP id j52so2462659yhj.36
+ for <barebox@lists.infradead.org>; Tue, 29 May 2012 03:55:51 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20120529103720.GL2202@game.jcrosoft.org>
+References: <1338192756-3688-1-git-send-email-antonynpavlov@gmail.com>
+ <1338192756-3688-5-git-send-email-antonynpavlov@gmail.com>
+ <20120529083010.GY30400@pengutronix.de>
+ <20120529103720.GL2202@game.jcrosoft.org>
+Date: Tue, 29 May 2012 14:55:51 +0400
+Message-ID: <CAA4bVAHY4D2M2j4_EEPP26oXmqAaYLMfVKBjXgXTec2LMhGhbg@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,24 +26,63 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: magicvar breaks tftp (or ramfs)
-To: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH v20120528 4/5] toshiba-ac100: add USB host support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Le Tue, 29 May 2012 10:48:44 +0200,
-Eric B=E9nard <eric@eukrea.com> a =E9crit :
-> here is the full trace.
-> There is something strange as it seems a wrong value gets loaded into R3
-> leading to the error.
-> =
+On 29 May 2012 14:37, Jean-Christophe PLAGNIOL-VILLARD
+<plagnioj@jcrosoft.com> wrote:
+> On 10:30 Tue 29 May =A0 =A0 , Sascha Hauer wrote:
+>> On Mon, May 28, 2012 at 12:12:35PM +0400, Antony Pavlov wrote:
+>> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+>> > ---
+>> > =A0arch/arm/boards/toshiba-ac100/board.c | =A0 18 ++++++++++++++++++
+>> > =A01 file changed, 18 insertions(+)
+>> >
+>> > diff --git a/arch/arm/boards/toshiba-ac100/board.c b/arch/arm/boards/t=
+oshiba-ac100/board.c
+>> > index e3a5eba..3fd720d 100644
+>> > --- a/arch/arm/boards/toshiba-ac100/board.c
+>> > +++ b/arch/arm/boards/toshiba-ac100/board.c
+>> > @@ -24,6 +24,8 @@
+>> > =A0#include <init.h>
+>> > =A0#include <asm/armlinux.h>
+>> > =A0#include <sizes.h>
+>> > +#include <usb/ehci.h>
+>> > +#include <mach/iomap.h>
+>> >
+>> > =A0static int ac100_mem_init(void)
+>> > =A0{
+>> > @@ -32,3 +34,19 @@ static int ac100_mem_init(void)
+>> > =A0 =A0 return 0;
+>> > =A0}
+>> > =A0mem_initcall(ac100_mem_init);
+>> > +
+>> > +#ifdef CONFIG_USB_EHCI
+>> > +static struct ehci_platform_data ehci_pdata =3D {
+>> > + =A0 .flags =3D EHCI_HAS_TT,
+>> > +};
+>> > +#endif
+>> > +
+>> > +static int ac100_devices_init(void)
+>> > +{
+>> > +#ifdef CONFIG_USB_EHCI
+>> > + =A0 add_generic_usb_ehci_device(-1, TEGRA_USB3_BASE, &ehci_pdata);
+>> > +#endif
+>>
+>> Better skip the ifdefs. It won't hurt except for a few bytes of wated
+>> space.
+> and the -1 need to be a define
 
-and to be complete :
-commenting out =
+Like this?
 
-		printf("%c\b", spinchr[spin++ % (sizeof(spinchr) - 1)]);
-in show_progress.c makes the problem disapear.
+add_generic_usb_ehci_device(DEVICE_ID_DYNAMIC, TEGRA_USB3_BASE, &ehci_pdata=
+);
 
-Eric
+-- =
+
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
