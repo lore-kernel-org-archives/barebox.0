@@ -1,22 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from f129.mail.ru ([94.100.178.190])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SZcac-0005q9-Am
- for barebox@lists.infradead.org; Wed, 30 May 2012 06:41:03 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1SZcaZ-0005V7-W9
- for barebox@lists.infradead.org; Wed, 30 May 2012 08:41:00 +0200
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 30 May 2012 08:39:39 +0200
-References: <CAONxwYMkcS4Vt04tKHkWijVxYBnt097wyMXr-LK-m5Hyj_Sk_w@mail.gmail.com>
- <CAONxwYO8Y9uYCr7VeGq9YbybRAGOZFZEQiKOTRfzm-=fH-0ihg@mail.gmail.com>
- <20120530054738.GF30400@pengutronix.de>
-In-Reply-To: <20120530054738.GF30400@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201205300839.39086.jbe@pengutronix.de>
+ id 1SZeee-0006JY-M0
+ for barebox@lists.infradead.org; Wed, 30 May 2012 08:53:22 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Wed, 30 May 2012 12:53:15 +0400
+References: <1337712528-16387-1-git-send-email-shc_work@mail.ru>
+ <20120529090945.GB30400@pengutronix.de>
+In-Reply-To: <20120529090945.GB30400@pengutronix.de>
+Message-Id: <E1SZeeZ-0003mM-UA.shc_work-mail-ru@f129.mail.ru>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,41 +19,20 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Booting mx25 based device from SD and NOR
-To: barebox@lists.infradead.org
+Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSF0gQVJNIGkuTVg6IFBvc3NpYmxlIGJ1ZyBmaXhlZCBk?=
+ =?UTF-8?B?dWUgbWlzc3BlbGxpbmcgd2hlbiBjb3B5L3Bhc3Rl?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Sascha Hauer wrote:
-> On Tue, May 29, 2012 at 12:14:52PM +0200, Roberto Nibali wrote:
-> > ADDENDUM:
-> > diff --git a/arch/arm/boards/fq-sid1-mx25-noah/Makefile
-> > b/arch/arm/boards/fq-sid1-mx25-noah/Makefile
-> > new file mode 100644
-> > index 0000000..1e9cd54
-> > --- /dev/null
-> > +++ b/arch/arm/boards/fq-sid1-mx25-noah/Makefile
-> > @@ -0,0 +1,26 @@
-> > +#
-> > +# (C) Copyright 2007 Juergen Beisert <jbe@pengutronix.de>
->
-> You should replace this with your own copyright. I think J=FCrgen can live
-> with not having a copyright on trivial files ;)
-
-Sure :)
-
-jbe
-
--- =
-
-Pengutronix e.K.                              | Juergen Beisert            =
- |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/ =
- |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8uCgpUdWUsIDI5IE1heSAyMDEyIDExOjA5OjQ1ICswMjAwINC+0YIgU2FzY2hhIEhhdWVy
+IDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiBPbiBUdWUsIE1heSAyMiwgMjAxMiBhdCAxMDo0
+ODo0OFBNICswNDAwLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+ID4gV2UgbXVzdCBjaGVjayBw
+b2ludGVyIHRvIGZ1bmN0aW9uIHJhdGhlciB0aGFuIHJlc3VsdC4KPiAKPiBBcHBsaWVkLCB0aGFu
+a3MKClBsZWFzZSBhcHBseSB0aGlzIHRvICduZXh0JyB0b28uIFRoYW5rcyEKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
+YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
