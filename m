@@ -1,11 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SZbVC-0004NM-Nx
- for barebox@lists.infradead.org; Wed, 30 May 2012 05:31:24 +0000
+ id 1SZbXZ-0004Uc-ED
+ for barebox@lists.infradead.org; Wed, 30 May 2012 05:33:49 +0000
+Date: Wed, 30 May 2012 07:33:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 30 May 2012 07:31:14 +0200
-Message-Id: <1338355875-18830-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20120530053342.GE30400@pengutronix.de>
+References: <CAONxwYP5Eu59tpndafUpJrbHNMgZTF_3JaJ2pr5i8ptDugdpBQ@mail.gmail.com>
+ <20120529101450.GS30400@pengutronix.de>
+ <CAONxwYN5yj9wVnmpXQAkgnwZ-zdDxETKMr4x6CFcUjiN_ih5Nw@mail.gmail.com>
+ <CAONxwYPuBCkUE2M6MgpgG7sJQjsYJ8WYhgfhaGUju4f7xcL89g@mail.gmail.com>
+ <20120529185755.GD30400@pengutronix.de>
+ <CAONxwYMJdybK9AgnOp5pVNPNFbDmb_-To=w0+S2P1098_mhGoQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAONxwYMJdybK9AgnOp5pVNPNFbDmb_-To=w0+S2P1098_mhGoQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,108 +23,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] block: propagate error code from block_get
-To: barebox@lists.infradead.org
+Subject: Re: [BUG: barebox-git] failure at common/block.c:248/block_put()!
+To: Roberto Nibali <rnibali@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/block.c |   26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+On Tue, May 29, 2012 at 09:57:38PM +0200, Roberto Nibali wrote:
+> Hi
+> 
+> > Data Write Failed in PIO Mode.imx-esdhc@imx-esdhc0: timeout 2
+> > > imx-esdhc@imx-esdhc0: timeout 1
+> > > imx-esdhc@imx-esdhc0: timeout 1
+> > > imx-esdhc@imx-esdhc0: timeout 1
+> > > block_cache: blk->ops->read returned -110
+> >
+> > Ok, so your problem is inside the esdhc driver. Sorry, I don't know what
+> > quirks we may need here. Might be worth looking at the kernel or U-Boot
+> > to find out.
+> 
+> 
+> I don't know where this driver comes from, however I have been revising the
+> i.MX25 Chipset Errata and there are heaps of problems with regard to eSDHC.
+> I will try to address some of them (for example WML related) and see if
+> this fixes anything.
 
-diff --git a/common/block.c b/common/block.c
-index 4253fc4..437dc95 100644
---- a/common/block.c
-+++ b/common/block.c
-@@ -161,7 +161,7 @@ static void *block_get(struct block_device *blk, int block)
- 	int ret;
- 
- 	if (block >= blk->num_blocks)
--		return NULL;
-+		return ERR_PTR(-ENXIO);
- 
- 	outdata = block_get_cached(blk, block);
- 	if (outdata)
-@@ -169,7 +169,7 @@ static void *block_get(struct block_device *blk, int block)
- 
- 	ret = block_cache(blk, block);
- 	if (ret)
--		return NULL;
-+		return ERR_PTR(ret);
- 
- 	outdata = block_get_cached(blk, block);
- 	if (!outdata)
-@@ -191,8 +191,8 @@ static ssize_t block_read(struct cdev *cdev, void *buf, size_t count,
- 		size_t now = BLOCKSIZE(blk) - (offset & mask);
- 		void *iobuf = block_get(blk, block);
- 
--		if (!iobuf)
--			return -EIO;
-+		if (IS_ERR(iobuf))
-+			return PTR_ERR(iobuf);
- 
- 		now = min(count, now);
- 
-@@ -207,8 +207,8 @@ static ssize_t block_read(struct cdev *cdev, void *buf, size_t count,
- 	while (blocks) {
- 		void *iobuf = block_get(blk, block);
- 
--		if (!iobuf)
--			return -EIO;
-+		if (IS_ERR(iobuf))
-+			return PTR_ERR(iobuf);
- 
- 		memcpy(buf, iobuf, BLOCKSIZE(blk));
- 		buf += BLOCKSIZE(blk);
-@@ -220,8 +220,8 @@ static ssize_t block_read(struct cdev *cdev, void *buf, size_t count,
- 	if (count) {
- 		void *iobuf = block_get(blk, block);
- 
--		if (!iobuf)
--			return -EIO;
-+		if (IS_ERR(iobuf))
-+			return PTR_ERR(iobuf);
- 
- 		memcpy(buf, iobuf, count);
- 	}
-@@ -244,7 +244,7 @@ static int block_put(struct block_device *blk, const void *buf, int block)
- 		return -EINVAL;
- 
- 	data = block_get(blk, block);
--	if (!data)
-+	if (IS_ERR(data))
- 		BUG();
- 
- 	memcpy(data, buf, 1 << blk->blockbits);
-@@ -270,8 +270,8 @@ static ssize_t block_write(struct cdev *cdev, const void *buf, size_t count,
- 
- 		now = min(count, now);
- 
--		if (!iobuf)
--			return -EIO;
-+		if (IS_ERR(iobuf))
-+			return PTR_ERR(iobuf);
- 
- 		memcpy(iobuf + (offset & mask), buf, now);
- 		ret = block_put(blk, iobuf, block);
-@@ -299,8 +299,8 @@ static ssize_t block_write(struct cdev *cdev, const void *buf, size_t count,
- 	if (count) {
- 		void *iobuf = block_get(blk, block);
- 
--		if (!iobuf)
--			return -EIO;
-+		if (IS_ERR(iobuf))
-+			return PTR_ERR(iobuf);
- 
- 		memcpy(iobuf, buf, count);
- 		ret = block_put(blk, iobuf, block);
+The driver comes from U-Boot, but the kernel might also be a good source
+to see where the i.MX25 gets special handling.
+
+> 
+> 
+> > > BUG: failure at common/block.c:249/block_put()!
+> > > BUG!
+> >
+> > Nevertheless we'll need a fix for this. I'll prepare a patch for this if
+> > noone else is faster ;)
+> 
+> 
+> Well, the BUG() is legit, I just seem to be the first to hit it. I am not
+> sure how you want to fix it, because if it's an issue with regard to
+> chipset errata, at least a warning has to be issues. Maybe BUG() is a bit
+> excessive ;).
+
+I only want to get rid of the BUG() (see the patches I just sent). Of
+course this won't fix your problems with the driver.
+
+Sascha
+
 -- 
-1.7.10
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
