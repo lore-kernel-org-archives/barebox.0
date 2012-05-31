@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-f177.google.com ([209.85.212.177])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SaAoH-0007Fj-Ko
- for barebox@lists.infradead.org; Thu, 31 May 2012 19:13:26 +0000
-Received: by wibhm14 with SMTP id hm14so983697wib.0
- for <barebox@lists.infradead.org>; Thu, 31 May 2012 12:13:23 -0700 (PDT)
-References: <4FBD05B8.40001@crane-soft.de>
- <20120524195543.GB30400@pengutronix.de> <4FBF5268.1040900@crane-soft.de>
- <20120531182724.GA30400@pengutronix.de>
-In-Reply-To: <20120531182724.GA30400@pengutronix.de>
-Mime-Version: 1.0 (1.0)
-Message-Id: <522FDB4A-4438-4833-A801-D52C53F121D0@crane-soft.de>
-From: CRANESOFT <sailingsmoky@googlemail.com>
-Date: Thu, 31 May 2012 21:13:07 +0200
+ id 1SaBfk-0000JG-GD
+ for barebox@lists.infradead.org; Thu, 31 May 2012 20:08:43 +0000
+Date: Thu, 31 May 2012 22:08:34 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120531200834.GE30400@pengutronix.de>
+References: <CAHvDM_e+yLQbJAa96-XJan8u_K57tDuJyWVqTGLyHxeQ8MG02g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAHvDM_e+yLQbJAa96-XJan8u_K57tDuJyWVqTGLyHxeQ8MG02g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,59 +22,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Booting PhyTec PCM043/IMX35  from USB/SD-Card
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: menu autodisplay does not work
+To: Benoit RAT <benoit@sevensols.com>
+Cc: barebox@lists.infradead.org
 
+On Thu, May 31, 2012 at 05:25:03PM +0200, Benoit RAT wrote:
+> Hy guy,
+> 
+> I found a small bug with menu autodisplay functionality that doesn't work:
+> 
+>  menu -a -m test -d "test menu"
+>  menu -e -a -m test -c "echo 1" -d "test1"
+>  menu -e -a -m test -c "echo 2" -d "test2"
+>  menu -e -a -m test -c "echo 3" -d "test3"
+> 
+> And then I try to autoselect test2 after chosing test 1
+> 
+> 1
+> barebox> menu -m test -s -d "test2"
 
-Am 31.05.2012 um 20:27 schrieb Sascha Hauer <s.hauer@pengutronix.de>:
+I think this is not a bug, it's the documentation that is not clear
+here. The above is only useful in conjunction with -A in which case
+the description given with -d is shown as timeout text.
 
-> Hi Peter,
 > 
-> On Fri, May 25, 2012 at 11:35:36AM +0200, Peter Kuennemann@Crane-Soft wrote:
->> 
->> 
->> To have kernel in flash and rootfs on MMC i tried bootargs as:
->> 
->> ... root=/dev/mmcblk0p1 rootfstype=ext2 rootflags=noatime rw noinitrd rootwait ..
->> 
->> and it boots the kernel properly from flash up to:
->> ...
->> mmcblk0: mmc0:a95c SD01G 968 MiB     <== Recognized the sd card
->> mmcblk0: p1                         <== and partion 1
->> ...
->> 1f00             256 mtdblock0 (driver?)
->> 1f01             128 mtdblock1 (driver?)
->> 1f02            2048 mtdblock2 (driver?)
->> 1f03           30336 mtdblock3 (driver?)
->> 1f04         1048576 mtdblock4 (driver?)
->> b300          992000 mmcblk0 driver: mmcblk
->>  b301          991585 mmcblk0p1                    <=== Something missing here?
->> No filesystem could mount root, tried:  ext2        <===
->> Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(179,1) <===
->> 
->> The mmc does contain a ext2 filesystem with the proper rootfs copied from
->> the jffs2.image that I mounted under Ubuntu as loop device. The kernel has ext2 fs
->> support compiled in.
->> 
->> The rootfs on the mmc is properly accessible when booting kernel and flash footfs
->> on the very same platform.
+> But this does not work!
 > 
-> Has this been solved in the mean time? The above looks correct, I have
-> no idea what's wrong.
+> The only way to perform this is to use
 > 
-> Sascha
-> 
-Sascha,
-I am sorry but this issue has not yet been resolved. I am currently out of office but will pick it up after my return. It may well be a Kernel configuration Problem.
+> menu -m test -S -n 2
+> menu -m test -s
 
-Peter
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+That's a point I do not understand. Looking at the code it's clear to me
+why this have to be two commands, but I think it should be possible to
+combine the select option with the show option. Furthermore I think the
+-S option is quite useless. -S seems to used only to let the -n option
+take effect.
+
+Overall it's not very clear which options exist and which options take
+an argument. I've collected them and here is the result:
+
+-m <menuname>    specify menu to work on
+-l               list existing menus
+-s               show menu
+-a               Add a menu or, when -e is given additionally, add a menu entry
+-r               remove a menu
+-d <description> description, in conjunction with
+                  -a -e: Menu text to show
+		  -A: timeout text to show
+-A <delay>       Autoselect selected entry in <delay> seconds
+-c <command>     run <command> when an entry is selected
+-R               reentrance, used with -a, do not leave the menu after
+                 an entry is selected
+-b 0|1           box entry. used with -a, add a yes/no entry
+-e               when given with -a, add a menu entry. When given with
+                 -l, additionally to the menu also list the entries
+-S -n <num>      select entry <num>, starting at 1. Seperate command,
+                 NOT together with actually showing the menu
+
+I think we should add this to the help text for the menu command, or
+even better, replace the docs and the code for -S -n <num> with a plain
+-S <num>
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
