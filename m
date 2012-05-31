@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SaA0B-00056Q-7e
- for barebox@lists.infradead.org; Thu, 31 May 2012 18:21:40 +0000
-Date: Thu, 31 May 2012 20:21:37 +0200
+ id 1SaA3B-0005Cg-8D
+ for barebox@lists.infradead.org; Thu, 31 May 2012 18:24:46 +0000
+Date: Thu, 31 May 2012 20:24:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120531182137.GY30400@pengutronix.de>
-References: <1338467194-11552-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20120531182442.GZ30400@pengutronix.de>
+References: <1337269578-20570-1-git-send-email-eric@eukrea.com>
+ <1337269578-20570-10-git-send-email-eric@eukrea.com>
+ <20120526094329.GI2202@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1338467194-11552-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <20120526094329.GI2202@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +20,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] block: Fix printf warning
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH 10/16] fs/tftp: depend on NET_TFTP
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, May 31, 2012 at 04:26:34PM +0400, Alexander Shiyan wrote:
-> 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+On Sat, May 26, 2012 at 11:43:29AM +0200, Jean-Christophe PLAGNIOL-VILLARD =
+wrote:
+> On 17:46 Thu 17 May     , Eric B=E9nard wrote:
+> > else the option remains selected when network gets disabled
+> > =
 
-Applied, thanks.
+> > Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> > ---
+> >  fs/Kconfig |    1 +
+> >  1 files changed, 1 insertions(+), 0 deletions(-)
+> > =
+
+> > diff --git a/fs/Kconfig b/fs/Kconfig
+> > index e5f307f..0aa73df 100644
+> > --- a/fs/Kconfig
+> > +++ b/fs/Kconfig
+> > @@ -22,6 +22,7 @@ config FS_DEVFS
+> >  config FS_TFTP
+> >  	bool
+> >  	prompt "tftp support"
+> > +	depends on NET_TFTP
+> why such depends on?
+> =
+
+> the tftp support is an alternative to the old NET_TFTP
+> =
+
+> on NET ok NET_TFTP nack
+
+Right. Fixed this.
 
 Sascha
-> ---
->  common/block.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/common/block.c b/common/block.c
-> index 5983171..71ecfd5 100644
-> --- a/common/block.c
-> +++ b/common/block.c
-> @@ -136,7 +136,7 @@ static int block_cache(struct block_device *blk, int block)
->  	chunk = get_chunk(blk);
->  	chunk->block_start = block & ~blk->blkmask;
->  
-> -	debug("%s: %d to %d %s\n", __func__, chunk->block_start,
-> +	debug("%s: %d to %d\n", __func__, chunk->block_start,
->  			chunk->num);
->  
->  	num_blocks = min(blk->rdbufsize, blk->num_blocks - chunk->block_start);
-> -- 
-> 1.7.3.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
--- 
+
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
