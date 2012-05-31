@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SaA3B-0005Cg-8D
- for barebox@lists.infradead.org; Thu, 31 May 2012 18:24:46 +0000
-Date: Thu, 31 May 2012 20:24:42 +0200
+ id 1SaA5n-0005Hq-3B
+ for barebox@lists.infradead.org; Thu, 31 May 2012 18:27:27 +0000
+Date: Thu, 31 May 2012 20:27:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120531182442.GZ30400@pengutronix.de>
-References: <1337269578-20570-1-git-send-email-eric@eukrea.com>
- <1337269578-20570-10-git-send-email-eric@eukrea.com>
- <20120526094329.GI2202@game.jcrosoft.org>
+Message-ID: <20120531182724.GA30400@pengutronix.de>
+References: <4FBD05B8.40001@crane-soft.de>
+ <20120524195543.GB30400@pengutronix.de>
+ <4FBF5268.1040900@crane-soft.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120526094329.GI2202@game.jcrosoft.org>
+In-Reply-To: <4FBF5268.1040900@crane-soft.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,50 +20,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 10/16] fs/tftp: depend on NET_TFTP
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: Booting PhyTec PCM043/IMX35  from USB/SD-Card
+To: "Peter Kuennemann@Crane-Soft" <pkue@crane-soft.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, May 26, 2012 at 11:43:29AM +0200, Jean-Christophe PLAGNIOL-VILLARD =
-wrote:
-> On 17:46 Thu 17 May     , Eric B=E9nard wrote:
-> > else the option remains selected when network gets disabled
-> > =
+Hi Peter,
 
-> > Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> > ---
-> >  fs/Kconfig |    1 +
-> >  1 files changed, 1 insertions(+), 0 deletions(-)
-> > =
+On Fri, May 25, 2012 at 11:35:36AM +0200, Peter Kuennemann@Crane-Soft wrote:
+> 
+> 
+> To have kernel in flash and rootfs on MMC i tried bootargs as:
+> 
+> ... root=/dev/mmcblk0p1 rootfstype=ext2 rootflags=noatime rw noinitrd rootwait ..
+> 
+> and it boots the kernel properly from flash up to:
+> ...
+> mmcblk0: mmc0:a95c SD01G 968 MiB     <== Recognized the sd card
+>  mmcblk0: p1                         <== and partion 1
+> ...
+> 1f00             256 mtdblock0 (driver?)
+> 1f01             128 mtdblock1 (driver?)
+> 1f02            2048 mtdblock2 (driver?)
+> 1f03           30336 mtdblock3 (driver?)
+> 1f04         1048576 mtdblock4 (driver?)
+> b300          992000 mmcblk0 driver: mmcblk
+>   b301          991585 mmcblk0p1                    <=== Something missing here?
+> No filesystem could mount root, tried:  ext2        <===
+> Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(179,1) <===
+> 
+> The mmc does contain a ext2 filesystem with the proper rootfs copied from
+> the jffs2.image that I mounted under Ubuntu as loop device. The kernel has ext2 fs
+> support compiled in.
+> 
+> The rootfs on the mmc is properly accessible when booting kernel and flash footfs
+> on the very same platform.
 
-> > diff --git a/fs/Kconfig b/fs/Kconfig
-> > index e5f307f..0aa73df 100644
-> > --- a/fs/Kconfig
-> > +++ b/fs/Kconfig
-> > @@ -22,6 +22,7 @@ config FS_DEVFS
-> >  config FS_TFTP
-> >  	bool
-> >  	prompt "tftp support"
-> > +	depends on NET_TFTP
-> why such depends on?
-> =
-
-> the tftp support is an alternative to the old NET_TFTP
-> =
-
-> on NET ok NET_TFTP nack
-
-Right. Fixed this.
+Has this been solved in the mean time? The above looks correct, I have
+no idea what's wrong.
 
 Sascha
 
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
