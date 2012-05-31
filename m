@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-gh0-f171.google.com ([209.85.160.171])
+Received: from mail-wi0-f177.google.com ([209.85.212.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SaAkK-0006uH-UE
- for barebox@lists.infradead.org; Thu, 31 May 2012 19:09:21 +0000
-Received: by ghy10 with SMTP id 10so1309274ghy.16
- for <barebox@lists.infradead.org>; Thu, 31 May 2012 12:09:19 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20120531185203.GD30400@pengutronix.de>
-References: <1337867420-23444-1-git-send-email-antonynpavlov@gmail.com>
- <20120531185203.GD30400@pengutronix.de>
-Date: Thu, 31 May 2012 23:09:18 +0400
-Message-ID: <CAA4bVAGgtSCt=hGO5cFisKYQoG6Mj620UFwcHFmBQtqcxZvQVQ@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+ id 1SaAoH-0007Fj-Ko
+ for barebox@lists.infradead.org; Thu, 31 May 2012 19:13:26 +0000
+Received: by wibhm14 with SMTP id hm14so983697wib.0
+ for <barebox@lists.infradead.org>; Thu, 31 May 2012 12:13:23 -0700 (PDT)
+References: <4FBD05B8.40001@crane-soft.de>
+ <20120524195543.GB30400@pengutronix.de> <4FBF5268.1040900@crane-soft.de>
+ <20120531182724.GA30400@pengutronix.de>
+In-Reply-To: <20120531182724.GA30400@pengutronix.de>
+Mime-Version: 1.0 (1.0)
+Message-Id: <522FDB4A-4438-4833-A801-D52C53F121D0@crane-soft.de>
+From: CRANESOFT <sailingsmoky@googlemail.com>
+Date: Thu, 31 May 2012 21:13:07 +0200
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,72 +21,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] MIPS: XBurst: suitable solution for per-board debug_ll
- options
+Subject: Re: Booting PhyTec PCM043/IMX35  from USB/SD-Card
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On 31 May 2012 22:52, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Thu, May 24, 2012 at 05:50:20PM +0400, Antony Pavlov wrote:
->> In the commit 40492a0c1305835c996e15eb1cce2406473ae76d
->> (MIPS: add common header file for DEBUG_LL via NS16550)
->> introduced common DEBUG_LL via NS16550 for MIPS
->> (see file arch/mips/include/debug_ll_ns16550.h).
->>
->> In the commit 1cbe2b2c00de0efca503a983d0d008833f186f33
->> (MIPS: XBurst: add Ritmix RZX-50 board support)
->> the file debug_ll_ns16550.h used in
->> the file arch/mips/mach-xburst/include/mach/debug_ll.h.
->>
->> Usage looks like this:
->>
->> ------------------------------------------------
->> +#ifdef CONFIG_BOARD_RZX50
->> +#include <mach/debug_ll_jz4755.h>
->> +#endif
->> +
->> +#include <debug_ll_ns16550.h>
->> ------------------------------------------------
->>
->> So after adding another board (e.g. A320) we will have something like th=
-is:
->>
->> ------------------------------------------------
->> =A0#ifdef CONFIG_BOARD_RZX50
->> =A0#include <mach/debug_ll_jz4755.h>
->> =A0#endif
->>
->> +#ifdef CONFIG_BOARD_A320
->> +#include <mach/debug_ll_jz4740.h>
->> +#endif
->>
->> =A0#include <debug_ll_ns16550.h>
->> ------------------------------------------------
->>
->> This approach has disadvantage:
->> * the files mach/debug_ll_jz4740.h and mach/debug_ll_jz4755.h
->> (they go to arch/mips/arch-xburst) are __BOARD-SPECIFIC__
->> (not SOC- or mach-specific!); The file mach-xburst/include/mach/debug_ll=
-.h
->> is outside board directory, but it contain some board related informatio=
-n.
->>
->> This commit introduce more suitable solution.
->
-> Looks good. OK to apply?
 
-No, please. There is a trivial mistype in this patch.
+Am 31.05.2012 um 20:27 schrieb Sascha Hauer <s.hauer@pengutronix.de>:
 
-I'll resend the fixed patch in a short time.
+> Hi Peter,
+> 
+> On Fri, May 25, 2012 at 11:35:36AM +0200, Peter Kuennemann@Crane-Soft wrote:
+>> 
+>> 
+>> To have kernel in flash and rootfs on MMC i tried bootargs as:
+>> 
+>> ... root=/dev/mmcblk0p1 rootfstype=ext2 rootflags=noatime rw noinitrd rootwait ..
+>> 
+>> and it boots the kernel properly from flash up to:
+>> ...
+>> mmcblk0: mmc0:a95c SD01G 968 MiB     <== Recognized the sd card
+>> mmcblk0: p1                         <== and partion 1
+>> ...
+>> 1f00             256 mtdblock0 (driver?)
+>> 1f01             128 mtdblock1 (driver?)
+>> 1f02            2048 mtdblock2 (driver?)
+>> 1f03           30336 mtdblock3 (driver?)
+>> 1f04         1048576 mtdblock4 (driver?)
+>> b300          992000 mmcblk0 driver: mmcblk
+>>  b301          991585 mmcblk0p1                    <=== Something missing here?
+>> No filesystem could mount root, tried:  ext2        <===
+>> Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(179,1) <===
+>> 
+>> The mmc does contain a ext2 filesystem with the proper rootfs copied from
+>> the jffs2.image that I mounted under Ubuntu as loop device. The kernel has ext2 fs
+>> support compiled in.
+>> 
+>> The rootfs on the mmc is properly accessible when booting kernel and flash footfs
+>> on the very same platform.
+> 
+> Has this been solved in the mean time? The above looks correct, I have
+> no idea what's wrong.
+> 
+> Sascha
+> 
+Sascha,
+I am sorry but this issue has not yet been resolved. I am currently out of office but will pick it up after my return. It may well be a Kernel configuration Problem.
 
--- =
-
-Best regards,
-=A0 Antony Pavlov
+Peter
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
