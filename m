@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SbSyO-0000OB-3z
- for barebox@lists.infradead.org; Mon, 04 Jun 2012 08:49:12 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 4 Jun 2012 10:47:44 +0200
-References: <1337151896-5888-1-git-send-email-s.hauer@pengutronix.de>
- <1337151896-5888-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1337151896-5888-3-git-send-email-s.hauer@pengutronix.de>
+Received: from slsa667.piensasolutions.com ([217.76.150.252])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SbWIc-0003QN-P3
+ for barebox@lists.infradead.org; Mon, 04 Jun 2012 12:22:20 +0000
+Received: from localhost (localhost.localdomain [127.0.0.1])
+ by smtp-02.piensasolutions.com (Postfix) with ESMTP id 1212D2A0C85
+ for <barebox@lists.infradead.org>; Mon,  4 Jun 2012 14:22:14 +0200 (CEST)
+Received: from mail-ee0-f49.google.com (mail-ee0-f49.google.com [74.125.83.49])
+ by smtp-02.piensasolutions.com (Postfix) with ESMTPSA id DB2DA2A0C64
+ for <barebox@lists.infradead.org>; Mon,  4 Jun 2012 14:22:13 +0200 (CEST)
+Received: by eekd17 with SMTP id d17so2120385eek.36
+ for <barebox@lists.infradead.org>; Mon, 04 Jun 2012 05:22:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201206041047.45047.jbe@pengutronix.de>
+From: Benoit RAT <benoit@sevensols.com>
+Date: Mon, 4 Jun 2012 14:21:53 +0200
+Message-ID: <CAHvDM_dZOmQWYt2JKd7dRMhTJx08ntCeM+gDPuc9bLmBRQVdBg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,54 +23,158 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="===============5394868273213771763=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] Add next generation default environment template
+Subject: Loading Cpio (gz) image as rootfs
 To: barebox@lists.infradead.org
 
-Sascha Hauer wrote:
-> [...]
-> diff --git a/defaultenv-2/base/init/bootargs-base
-> b/defaultenv-2/base/init/bootargs-base new file mode 100644
-> index 0000000..8e588ad
-> --- /dev/null
-> +++ b/defaultenv-2/base/init/bootargs-base
-> @@ -0,0 +1,8 @@
-> +#!/bin/sh
-> +
-> +if [ "$1" =3D menu ]; then
-> +=A0=A0=A0=A0=A0=A0=A0init-menu-add-entry "$0" "Base bootargs"
-> +=A0=A0=A0=A0=A0=A0=A0exit
-> +fi
-> +
-> +global.linux.bootargs.base=3D"console=3DttyS0,115200"
-> [...]
+--===============5394868273213771763==
+Content-Type: multipart/alternative; boundary=90e6ba5bb91176a80804c1a495f0
 
-Seems if you want to change the console setting here, you always have to sa=
-ve =
+--90e6ba5bb91176a80804c1a495f0
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
 
-the change and restart the system to take affect of the new value when =
+Hy everybody,
 
-the 'boot' command is running. Old behaviour was an immediate change withou=
-t =
+I was wondering if it was possible to load a cpio.gz image as rootfs! (I
+think it is the kernel that load it so it should not be a problem)
+however I don't know how to pass the arguments.
 
-saving and restarting. This was a nice behaviour when one just wants to try=
- a =
+Here you can find the commands, that i am using:
 
-different parameter without destroying the old environment.
+addpart /dev/mem  8M@0x71000000(kernel);
+tftp zImage /dev/mem.kernel
+addpart /dev/mem  32M@0x72000000(fs)
+tftp image.cpio.gz /dev/mem.fs
+bootargs=3D"$bootargs root=3D/dev/ram0 initrd=3D0x72000000"
+bootz /dev/mem.kernel
 
-jbe
+Regards,
 
--- =
+--
+ <http://www.sevensols.com/>  <http://www.sevensecurity.es>
 
-Pengutronix e.K.                              | Juergen Beisert            =
- |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/ =
- |
+*Benoit RAT LAMY*
+
+Engineer (Sw) \ Ingeniero (Sw)
+
+fix. *(+34) 958 285 024*
+
+cel. *(+34) 617 989 123*
+
+e-mail: benoit@sevensols.com
+
+*www.sevensols.com / **www.sevensecurity.es*
+
+_________________________________
+
+*C/ Baza, parcela 19 Nave 3  \ Pol=EDgono Ind. Juncaril \*
+
+*18210 - PELIGROS - GRANADA =96SPAIN*
+
+--90e6ba5bb91176a80804c1a495f0
+Content-Type: text/html; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+
+Hy everybody,<div><br></div><div>I was wondering if it was possible to load=
+ a cpio.gz image as rootfs! (I think it is the kernel that load it so it sh=
+ould not be a problem)</div><div>however I don&#39;t know how to pass the a=
+rguments.</div>
+
+<div><br></div><div>Here you can find the commands, that i am using:</div><=
+div><br></div><div>addpart /dev/mem =A08M@0x71000000(kernel);</div><div>tft=
+p zImage /dev/mem.kernel</div><div>addpart /dev/mem =A032M@0x72000000(fs)</=
+div>
+
+<div><div>tftp image.cpio.gz /dev/mem.fs=A0</div><div>bootargs=3D&quot;$boo=
+targs root=3D/dev/ram0 initrd=3D0x72000000&quot;</div><div>bootz /dev/mem.k=
+ernel</div><div><br></div><div>Regards,</div><div><br></div><div><span styl=
+e=3D"font-family:&#39;Times New Roman&#39;;font-size:medium">--</span></div=
+>
+
+<div style=3D"font-family:&#39;Times New Roman&#39;;font-size:medium"><a hr=
+ef=3D"http://www.sevensols.com/" target=3D"_blank"><img src=3D"http://www.s=
+evensols.com/logos/logo-118x90.png"></a>=A0<a href=3D"http://www.sevensecur=
+ity.es" style=3D"margin-left:10px" target=3D"_blank"><img src=3D"http://www=
+.sevensols.com/logos/logo-7Sec-216x90.png"></a></div>
+
+<br style=3D"font-family:&#39;Times New Roman&#39;;font-size:medium"><div s=
+tyle=3D"font-family:&#39;Times New Roman&#39;;font-size:medium"><span style=
+=3D"font-family:arial,sans-serif;font-size:13px;border-collapse:collapse;li=
+ne-height:15px"><b><span lang=3D"EN-US" style=3D"font-family:&#39;Caecilia =
+LT Std Light&#39;,serif;color:rgb(16,138,208)">Benoit RAT LAMY</span></b></=
+span></div>
+
+<div><p style=3D"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-l=
+eft:0px;line-height:15px;font-family:arial,sans-serif;font-size:13px;border=
+-collapse:collapse"><span lang=3D"EN-US" style=3D"font-family:&#39;Caecilia=
+ LT Std Light&#39;,serif;color:rgb(16,138,208)">Engineer (Sw) \ Ingeniero (=
+Sw)</span></p>
+
+<p style=3D"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0=
+px;line-height:15px;font-family:arial,sans-serif;font-size:13px;border-coll=
+apse:collapse"><span lang=3D"EN-US" style=3D"font-family:&#39;Caecilia LT S=
+td Light&#39;,serif;color:rgb(16,138,208)">fix.=A0<b>(+34) 958 285 024</b><=
+/span></p>
+
+<p style=3D"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0=
+px;line-height:15px;font-size:13px;border-collapse:collapse"><span style=3D=
+"color:rgb(16,138,208);font-family:&#39;Caecilia LT Std Light&#39;,serif">c=
+el.=A0</span><b style=3D"color:rgb(16,138,208);font-family:&#39;Caecilia LT=
+ Std Light&#39;,serif">(+34) 617 989 123</b></p>
+
+<p style=3D"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0=
+px;line-height:15px;font-family:arial,sans-serif;font-size:13px;border-coll=
+apse:collapse"><span lang=3D"EN-US" style=3D"font-family:&#39;Caecilia LT S=
+td Light&#39;,serif;color:rgb(16,138,208)">e-mail:=A0<a href=3D"mailto:beno=
+it@sevensols.com" target=3D"_blank"><font color=3D"#339999">benoit@sevensol=
+s.com</font></a></span></p>
+
+<p style=3D"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0=
+px;line-height:15px;font-family:arial,sans-serif;font-size:13px;border-coll=
+apse:collapse"><b><span lang=3D"ES-TRAD" style=3D"font-family:&#39;Caecilia=
+ LT Std Light&#39;,serif"><span style=3D"text-decoration:none"><font color=
+=3D"#339999"><a href=3D"http://www.sevensols.com/" target=3D"_blank">www.se=
+vensols.com</a>=A0/=A0</font></span></span></b><span lang=3D"ES-TRAD" style=
+=3D"font-family:&#39;Caecilia LT Std Light&#39;,serif;color:rgb(16,138,208)=
+"></span><b><span lang=3D"ES-TRAD" style=3D"font-family:&#39;Caecilia LT St=
+d Light&#39;,serif"><font color=3D"#339999"><a href=3D"http://www.sevensecu=
+rity.es" target=3D"_blank">www.sevensecurity.es</a></font></span></b></p>
+
+<p style=3D"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0=
+px;line-height:15px;font-family:arial,sans-serif;font-size:13px;border-coll=
+apse:collapse"><span lang=3D"ES-TRAD" style=3D"font-family:&#39;Caecilia LT=
+ Std Light&#39;,serif;color:rgb(16,138,208)">______________________________=
+___</span></p>
+
+<p style=3D"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0=
+px;line-height:15px;font-family:arial,sans-serif;font-size:13px;border-coll=
+apse:collapse"><b><span lang=3D"ES-TRAD" style=3D"font-family:&#39;Caecilia=
+ LT Std Light&#39;,serif;color:rgb(16,138,208)">C/ Baza, parcela 19 Nave 3=
+=A0 \ Pol=EDgono Ind. Juncaril \</span></b></p>
+
+<p style=3D"margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0=
+px;font-family:arial,sans-serif;font-size:13px;border-collapse:collapse"><b=
+><span style=3D"font-family:&#39;Caecilia LT Std Light&#39;,serif;color:rgb=
+(16,138,208)">18210 - PELIGROS - GRANADA =96SPAIN</span></b></p>
+
+</div><br>
+</div>
+
+--90e6ba5bb91176a80804c1a495f0--
+
+
+--===============5394868273213771763==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============5394868273213771763==--
