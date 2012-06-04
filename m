@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-f169.google.com ([209.85.212.169])
+Received: from mail-we0-f177.google.com ([74.125.82.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sbe58-0007BR-AR
+ id 1Sbe58-0007BS-Lv
  for barebox@lists.infradead.org; Mon, 04 Jun 2012 20:40:55 +0000
-Received: by wibhn14 with SMTP id hn14so2608073wib.0
+Received: by werc12 with SMTP id c12so3814984wer.36
  for <barebox@lists.infradead.org>; Mon, 04 Jun 2012 13:40:52 -0700 (PDT)
 From: =?UTF-8?q?Dirk=20H=C3=B6rner?= <dirker@gmail.com>
-Date: Mon,  4 Jun 2012 22:40:14 +0200
-Message-Id: <1338842419-27037-2-git-send-email-dirker@gmail.com>
+Date: Mon,  4 Jun 2012 22:40:15 +0200
+Message-Id: <1338842419-27037-3-git-send-email-dirker@gmail.com>
 In-Reply-To: <1338842419-27037-1-git-send-email-dirker@gmail.com>
 References: <1338842419-27037-1-git-send-email-dirker@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,52 +19,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] kbuild: Use Elfnn_Half as replacement for Elfnn_Section
+Subject: =?UTF-8?q?=5BPATCH=202/6=5D=20make=3A=20use=20wc=20-c=20instead=20of=20stat=20-c=25s=20to=20get=20file=20sizes?=
 To: barebox@lists.infradead.org
 
-From: Sam Ravnborg <sam@ravnborg.org>
-
-The Elfnn_Section is not available on all platforms,
-noteworthy are cygwin.
-Use the safe replacement _Half.
-
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
----
- scripts/mod/modpost.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/scripts/mod/modpost.h b/scripts/mod/modpost.h
-index 0c23259..497d614 100644
---- a/scripts/mod/modpost.h
-+++ b/scripts/mod/modpost.h
-@@ -17,7 +17,7 @@
- #define Elf_Shdr    Elf32_Shdr
- #define Elf_Sym     Elf32_Sym
- #define Elf_Addr    Elf32_Addr
--#define Elf_Section Elf32_Section
-+#define Elf_Section Elf32_Half
- #define ELF_ST_BIND ELF32_ST_BIND
- #define ELF_ST_TYPE ELF32_ST_TYPE
- 
-@@ -31,7 +31,7 @@
- #define Elf_Shdr    Elf64_Shdr
- #define Elf_Sym     Elf64_Sym
- #define Elf_Addr    Elf64_Addr
--#define Elf_Section Elf64_Section
-+#define Elf_Section Elf64_Half
- #define ELF_ST_BIND ELF64_ST_BIND
- #define ELF_ST_TYPE ELF64_ST_TYPE
- 
--- 
-1.7.10.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gT1MgWCwgc3RhdCBkb2VzIG5vdCBrbm93IGFib3V0ICVzLiBTb2xhcmlzIGRvZXMgbm90IGhh
+dmUgc3RhdC4gVGhlCmRyYXdiYWNrIHRvIHRoaXMgd2MgLWMgc29sdXRpb24gaXMgdGhhdCB3YyBy
+ZWFkcyBhbGwgdGhlIGJ5dGVzLCBidXQgd2UgYXJlCm9ubHkgZGVhbGluZyB3aXRoIHNtYWxsIGZp
+bGVzIGhlcmUsIHNvIHRoYXQgbm90IGJlIG11Y2ggb2YgYSBwcm9ibGVtLgoKU2lnbmVkLW9mZi1i
+eTogRGlyayBIw7ZybmVyIDxkaXJrZXJAZ21haWwuY29tPgotLS0KIE1ha2VmaWxlICAgICAgICAg
+ICAgIHwgICAgMiArLQogY29tbW9uL01ha2VmaWxlICAgICAgfCAgICAyICstCiBzY3JpcHRzL01h
+a2VmaWxlLmxpYiB8ICAgIDIgKy0KIDMgZmlsZXMgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAz
+IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL01ha2VmaWxlIGIvTWFrZWZpbGUKaW5kZXggYmNh
+YWUwYS4uM2FjODc4OCAxMDA2NDQKLS0tIGEvTWFrZWZpbGUKKysrIGIvTWFrZWZpbGUKQEAgLTUz
+Niw3ICs1MzYsNyBAQCBxdWlldF9jbWRfYmFyZWJveF92ZXJzaW9uID0gR0VOICAgICAudmVyc2lv
+bgogIyBDaGVjayBzaXplIG9mIGEgZmlsZQogcXVpZXRfY21kX2NoZWNrX2ZpbGVfc2l6ZSA9IENI
+S1NJWkUgJEAKICAgICAgIGNtZF9jaGVja19maWxlX3NpemUgPSBzZXQgLWU7CQkJCQlcCi0Jc2l6
+ZT1gc3RhdCAtYyVzICRAYDsJCQkJCQlcCisJc2l6ZT1gd2MgLWMgPCAkQGA7CQkJCQkJXAogCW1h
+eF9zaXplPWBwcmludGYgIiVkIiAkMmA7CQkJCQlcCiAJaWYgWyAkJHNpemUgLWd0ICQkbWF4X3Np
+emUgXSA7CQkJCQlcCiAJdGhlbgkJCQkJCQkJXApkaWZmIC0tZ2l0IGEvY29tbW9uL01ha2VmaWxl
+IGIvY29tbW9uL01ha2VmaWxlCmluZGV4IGE1OGFlZjkuLjljMTRkN2IgMTAwNjQ0Ci0tLSBhL2Nv
+bW1vbi9NYWtlZmlsZQorKysgYi9jb21tb24vTWFrZWZpbGUKQEAgLTc3LDcgKzc3LDcgQEAgYmFy
+ZWJveF9kZWZhdWx0X2Vudi5sem86IGJhcmVib3hfZGVmYXVsdF9lbnYKIAogaW5jbHVkZS9nZW5l
+cmF0ZWQvYmFyZWJveF9kZWZhdWx0X2Vudi5oOiBiYXJlYm94X2RlZmF1bHRfZW52JChiYXJlYm94
+X2RlZmF1bHRfZW52X2NvbXApCiAJJChRKWNhdCAkPCB8ICQob2JqdHJlZSkvc2NyaXB0cy9iaW4y
+YyBkZWZhdWx0X2Vudmlyb25tZW50ID4gJEAKLQkkKFEpZWNobyAiY29uc3QgaW50IGRlZmF1bHRf
+ZW52aXJvbm1lbnRfdW5jb21wcmVzc19zaXplPWBzdGF0IC1jJXMgYmFyZWJveF9kZWZhdWx0X2Vu
+dmA7IiA+PiAkQAorCSQoUSllY2hvICJjb25zdCBpbnQgZGVmYXVsdF9lbnZpcm9ubWVudF91bmNv
+bXByZXNzX3NpemU9YHdjIC1jIDwgYmFyZWJveF9kZWZhdWx0X2VudmA7IiA+PiAkQAogCiBDTEVB
+Tl9GSUxFUyArPSBpbmNsdWRlL2dlbmVyYXRlZC9iYXJlYm94X2RlZmF1bHRfZW52LmggYmFyZWJv
+eF9kZWZhdWx0X2VudgogQ0xFQU5fRklMRVMgKz0gYmFyZWJveF9kZWZhdWx0X2Vudi5neiBiYXJl
+Ym94X2RlZmF1bHRfZW52LmJ6MgpkaWZmIC0tZ2l0IGEvc2NyaXB0cy9NYWtlZmlsZS5saWIgYi9z
+Y3JpcHRzL01ha2VmaWxlLmxpYgppbmRleCBiODQyYzQ4Li45YjAyYjFiIDEwMDY0NAotLS0gYS9z
+Y3JpcHRzL01ha2VmaWxlLmxpYgorKysgYi9zY3JpcHRzL01ha2VmaWxlLmxpYgpAQCAtMTcxLDcg
+KzE3MSw3IEBAIGNtZF9nemlwID0gKGNhdCAkKGZpbHRlci1vdXQgRk9SQ0UsJF4pIHwgZ3ppcCAt
+biAtZiAtOSA+ICRAKSB8fCBcCiBzaXplX2FwcGVuZCA9IHByaW50ZiAkKHNoZWxsCQkJCQkJXAog
+ZGVjX3NpemU9MDsJCQkJCQkJCVwKIGZvciBGIGluICQxOyBkbwkJCQkJCQkJXAotCWZzaXplPSQk
+KHN0YXQgLWMgIiVzIiAkJEYpOwkJCQkJXAorCWZzaXplPSQkKHdjIC1jIDwgJCRGKTsJCQkJCSAg
+ICAgICAgXAogCWRlY19zaXplPSQkKGV4cHIgJCRkZWNfc2l6ZSArICQkZnNpemUpOwkJCQlcCiBk
+b25lOwkJCQkJCQkJCVwKIHByaW50ZiAiJTA4eFxuIiAkJGRlY19zaXplIHwJCQkJCQlcCi0tIAox
+LjcuMTAuMwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
+bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
