@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-f49.google.com ([209.85.213.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SafNe-0001VB-Js
- for barebox@lists.infradead.org; Sat, 02 Jun 2012 03:51:59 +0000
-Received: by yhjj52 with SMTP id j52so2421113yhj.36
- for <barebox@lists.infradead.org>; Fri, 01 Jun 2012 20:51:56 -0700 (PDT)
+ id 1SbSyO-0000OB-3z
+ for barebox@lists.infradead.org; Mon, 04 Jun 2012 08:49:12 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Mon, 4 Jun 2012 10:47:44 +0200
+References: <1337151896-5888-1-git-send-email-s.hauer@pengutronix.de>
+ <1337151896-5888-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1337151896-5888-3-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20120602025222.GO2202@game.jcrosoft.org>
-References: <1338542601-28151-1-git-send-email-antonynpavlov@gmail.com>
- <1338542601-28151-2-git-send-email-antonynpavlov@gmail.com>
- <20120602025222.GO2202@game.jcrosoft.org>
-Date: Sat, 2 Jun 2012 07:51:55 +0400
-Message-ID: <CAA4bVAGTsoeQqEPZnMpd6j34mZUrFzhJ9GcnCwwc_dX3zOmL=w@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Content-Disposition: inline
+Message-Id: <201206041047.45047.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,60 +23,48 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] MIPS: XBurst: suitable solution for per-board debug_ll
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/3] Add next generation default environment template
+To: barebox@lists.infradead.org
 
-On 2 June 2012 06:52, Jean-Christophe PLAGNIOL-VILLARD
-<plagnioj@jcrosoft.com> wrote:
-> On 13:23 Fri 01 Jun =A0 =A0 , Antony Pavlov wrote:
->> In the commit 40492a0c1305835c996e15eb1cce2406473ae76d
->> (MIPS: add common header file for DEBUG_LL via NS16550)
->> introduced common DEBUG_LL via NS16550 for MIPS
->> (see file arch/mips/include/debug_ll_ns16550.h).
->>
->> In the commit 1cbe2b2c00de0efca503a983d0d008833f186f33
->> (MIPS: XBurst: add Ritmix RZX-50 board support)
->> the file debug_ll_ns16550.h used in
->> the file arch/mips/mach-xburst/include/mach/debug_ll.h.
->>
->> Usage looks like this:
->>
->> ------------------------------------------------
->> +#ifdef CONFIG_BOARD_RZX50
->> +#include <mach/debug_ll_jz4755.h>
->> +#endif
->> +
->> +#include <debug_ll_ns16550.h>
->> ------------------------------------------------
->>
->> So after adding another board (e.g. A320) we will have something like th=
-is:
->>
->> ------------------------------------------------
->> =A0#ifdef CONFIG_BOARD_RZX50
->> =A0#include <mach/debug_ll_jz4755.h>
->> =A0#endif
->>
-> I'll include it via config.h or at least have a common hearder name and j=
-ust
-> have a single config to enable it and then enable it at board config level
+Sascha Hauer wrote:
+> [...]
+> diff --git a/defaultenv-2/base/init/bootargs-base
+> b/defaultenv-2/base/init/bootargs-base new file mode 100644
+> index 0000000..8e588ad
+> --- /dev/null
+> +++ b/defaultenv-2/base/init/bootargs-base
+> @@ -0,0 +1,8 @@
+> +#!/bin/sh
+> +
+> +if [ "$1" =3D menu ]; then
+> +=A0=A0=A0=A0=A0=A0=A0init-menu-add-entry "$0" "Base bootargs"
+> +=A0=A0=A0=A0=A0=A0=A0exit
+> +fi
+> +
+> +global.linux.bootargs.base=3D"console=3DttyS0,115200"
+> [...]
 
-This patch makes the chain:
+Seems if you want to change the console setting here, you always have to sa=
+ve =
 
- include/debug_ll.h (controlled by CONFIG_DEBUG_LL)
-    \
-     `arch/mips/mach-xburst/include/mach/debug_ll.h (included if
-CONFIG_DEBUG_LL=3Dy)
-          \
-           `arch/mips/boards/rzx50/include/board/debug_ll.h (actual setup)
+the change and restart the system to take affect of the new value when =
 
-That is wrong?
+the 'boot' command is running. Old behaviour was an immediate change withou=
+t =
+
+saving and restarting. This was a nice behaviour when one just wants to try=
+ a =
+
+different parameter without destroying the old environment.
+
+jbe
 
 -- =
 
-Best regards,
-=A0 Antony Pavlov
+Pengutronix e.K.                              | Juergen Beisert            =
+ |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/ =
+ |
 
 _______________________________________________
 barebox mailing list
