@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f49.google.com ([74.125.82.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sbe5A-0007Bx-JZ
- for barebox@lists.infradead.org; Mon, 04 Jun 2012 20:40:57 +0000
-Received: by wgbds1 with SMTP id ds1so3086787wgb.18
- for <barebox@lists.infradead.org>; Mon, 04 Jun 2012 13:40:55 -0700 (PDT)
-From: =?UTF-8?q?Dirk=20H=C3=B6rner?= <dirker@gmail.com>
-Date: Mon,  4 Jun 2012 22:40:17 +0200
-Message-Id: <1338842419-27037-5-git-send-email-dirker@gmail.com>
-In-Reply-To: <1338842419-27037-1-git-send-email-dirker@gmail.com>
+Received: from 5.mo3.mail-out.ovh.net ([87.98.178.36]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Sbjpi-0004Oa-8l
+ for barebox@lists.infradead.org; Tue, 05 Jun 2012 02:49:23 +0000
+Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id B8444FF8776
+ for <barebox@lists.infradead.org>; Tue,  5 Jun 2012 04:52:37 +0200 (CEST)
+Date: Tue, 5 Jun 2012 04:49:21 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120605024921.GX3377@game.jcrosoft.org>
 References: <1338842419-27037-1-git-send-email-dirker@gmail.com>
+ <1338842419-27037-3-git-send-email-dirker@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1338842419-27037-3-git-send-email-dirker@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,37 +23,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?q?=5BPATCH=204/6=5D=20hostcc=20tools=3A=20include=20=22compiler=2Eh=22=2C=20fix=20included=20headers?=
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/6] make: use wc -c instead of stat -c%s to get file sizes
+To: Dirk =?iso-8859-1?Q?H=F6rner?= <dirker@gmail.com>
+Cc: barebox@lists.infradead.org
 
-V2hlbiBiYXJlYm94IGhlYWRlcnMgZ2V0IGluY2x1ZGVkIGZyb20gSE9TVENDIHRvb2xzIHRoZXkg
-c2hvdWxkIG5vdAppbmNsdWRlIG90aGVyIGFyY2hpdGVjdHVyZSBzcGVjaWZpYyBoZWFkZXJzIGFz
-IGJhcmVib3ggbWlnaHQgZ2V0CmNyb3NzLWNvbXBpbGVkLiBJbnN0ZWFkLCB0aGUgdG9vbCBpdHNl
-bGYgc2hvdWxkIGluY2x1ZGUgImNvbXBpbGVyLmgiLgoKU2lnbmVkLW9mZi1ieTogRGlyayBIw7Zy
-bmVyIDxkaXJrZXJAZ21haWwuY29tPgotLS0KIGluY2x1ZGUvZW52ZnMuaCAgICAgIHwgICAgMiAr
-KwogaW5jbHVkZS9pbWFnZS5oICAgICAgfCAgICAyICstCiBzY3JpcHRzL2JhcmVib3hlbnYuYyB8
-ICAgIDIgKysKIDMgZmlsZXMgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0p
-CgpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9lbnZmcy5oIGIvaW5jbHVkZS9lbnZmcy5oCmluZGV4IGI1
-ODQ5ZDkuLjY3Yjg5MDIgMTAwNjQ0Ci0tLSBhL2luY2x1ZGUvZW52ZnMuaAorKysgYi9pbmNsdWRl
-L2VudmZzLmgKQEAgLTEsNyArMSw5IEBACiAjaWZuZGVmIF9FTlZGU19ICiAjZGVmaW5lIF9FTlZG
-U19ICiAKKyNpZmRlZiBfX0JBUkVCT1hfXwogI2luY2x1ZGUgPGFzbS9ieXRlb3JkZXIuaD4KKyNl
-bmRpZgogCiAjZGVmaW5lIEVOVkZTX01BR0lDCQkgICAgMHg3OThmYmE3OQkvKiBzb21lIHJhbmRv
-bSBudW1iZXIgKi8KICNkZWZpbmUgRU5WRlNfSU5PREVfTUFHSUMJMHg2N2E4Yzc4ZApkaWZmIC0t
-Z2l0IGEvaW5jbHVkZS9pbWFnZS5oIGIvaW5jbHVkZS9pbWFnZS5oCmluZGV4IDM1ZmYwMWIuLjAy
-N2I1ZjIgMTAwNjQ0Ci0tLSBhL2luY2x1ZGUvaW1hZ2UuaAorKysgYi9pbmNsdWRlL2ltYWdlLmgK
-QEAgLTMxLDggKzMxLDggQEAKICNpZm5kZWYgX19JTUFHRV9IX18KICNkZWZpbmUgX19JTUFHRV9I
-X18KIAotI2luY2x1ZGUgPGxpbnV4L3R5cGVzLmg+CiAjaWZkZWYgX19CQVJFQk9YX18KKyNpbmNs
-dWRlIDxsaW51eC90eXBlcy5oPgogI2luY2x1ZGUgPGFzbS9ieXRlb3JkZXIuaD4KICNpbmNsdWRl
-IDxzdGRpby5oPgogI2luY2x1ZGUgPHN0cmluZy5oPgpkaWZmIC0tZ2l0IGEvc2NyaXB0cy9iYXJl
-Ym94ZW52LmMgYi9zY3JpcHRzL2JhcmVib3hlbnYuYwppbmRleCBiMGQ1ODE4Li44NjZlMzQ1IDEw
-MDY0NAotLS0gYS9zY3JpcHRzL2JhcmVib3hlbnYuYworKysgYi9zY3JpcHRzL2JhcmVib3hlbnYu
-YwpAQCAtMzQsNiArMzQsOCBAQAogI2luY2x1ZGUgPGdldG9wdC5oPgogI2luY2x1ZGUgPGxpYmdl
-bi5oPgogCisjaW5jbHVkZSAiY29tcGlsZXIuaCIKKwogI2RlZmluZSBkZWJ1ZyguLi4pCiAKIHZv
-aWQgKnhtYWxsb2Moc2l6ZV90IHNpemUpCi0tIAoxLjcuMTAuMwoKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+HI,
+
+	I don't like this to continue to duplicate code
+
+Best Regards,
+J.
+On 22:40 Mon 04 Jun     , Dirk H=F6rner wrote:
+> On OS X, stat does not know about %s. Solaris does not have stat. The
+> drawback to this wc -c solution is that wc reads all the bytes, but we are
+> only dealing with small files here, so that not be much of a problem.
+> =
+
+> Signed-off-by: Dirk H=F6rner <dirker@gmail.com>
+> ---
+>  Makefile             |    2 +-
+>  common/Makefile      |    2 +-
+>  scripts/Makefile.lib |    2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+> =
+
+> diff --git a/Makefile b/Makefile
+> index bcaae0a..3ac8788 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -536,7 +536,7 @@ quiet_cmd_barebox_version =3D GEN     .version
+>  # Check size of a file
+>  quiet_cmd_check_file_size =3D CHKSIZE $@
+>        cmd_check_file_size =3D set -e;					\
+> -	size=3D`stat -c%s $@`;						\
+> +	size=3D`wc -c < $@`;						\
+>  	max_size=3D`printf "%d" $2`;					\
+>  	if [ $$size -gt $$max_size ] ;					\
+>  	then								\
+> diff --git a/common/Makefile b/common/Makefile
+> index a58aef9..9c14d7b 100644
+> --- a/common/Makefile
+> +++ b/common/Makefile
+> @@ -77,7 +77,7 @@ barebox_default_env.lzo: barebox_default_env
+>  =
+
+>  include/generated/barebox_default_env.h: barebox_default_env$(barebox_de=
+fault_env_comp)
+>  	$(Q)cat $< | $(objtree)/scripts/bin2c default_environment > $@
+> -	$(Q)echo "const int default_environment_uncompress_size=3D`stat -c%s ba=
+rebox_default_env`;" >> $@
+> +	$(Q)echo "const int default_environment_uncompress_size=3D`wc -c < bare=
+box_default_env`;" >> $@
+>  =
+
+>  CLEAN_FILES +=3D include/generated/barebox_default_env.h barebox_default=
+_env
+>  CLEAN_FILES +=3D barebox_default_env.gz barebox_default_env.bz2
+> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> index b842c48..9b02b1b 100644
+> --- a/scripts/Makefile.lib
+> +++ b/scripts/Makefile.lib
+> @@ -171,7 +171,7 @@ cmd_gzip =3D (cat $(filter-out FORCE,$^) | gzip -n -f=
+ -9 > $@) || \
+>  size_append =3D printf $(shell						\
+>  dec_size=3D0;								\
+>  for F in $1; do								\
+> -	fsize=3D$$(stat -c "%s" $$F);					\
+> +	fsize=3D$$(wc -c < $$F);					        \
+>  	dec_size=3D$$(expr $$dec_size + $$fsize);				\
+>  done;									\
+>  printf "%08x\n" $$dec_size |						\
+> -- =
+
+> 1.7.10.3
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
