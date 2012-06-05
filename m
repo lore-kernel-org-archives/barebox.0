@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from c60.cesmail.net ([216.154.195.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SbybL-0001vL-4U
- for barebox@lists.infradead.org; Tue, 05 Jun 2012 18:35:33 +0000
-Message-ID: <20120605143521.bm3yhrn3sgsw8k8k-tcbagvf@webmail.spamcop.net>
-Date: Tue, 05 Jun 2012 14:35:21 -0400
-From: gpontis@spamcop.net
+ id 1SbzeB-0002jl-3F
+ for barebox@lists.infradead.org; Tue, 05 Jun 2012 19:42:32 +0000
+Date: Tue, 5 Jun 2012 21:42:26 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120605194226.GT30400@pengutronix.de>
+References: <1338842419-27037-1-git-send-email-dirker@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <1338842419-27037-1-git-send-email-dirker@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,47 +18,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"; DelSp="Yes"
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Problem copying from NFS to SD card (crash & reboot)
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/6] Support cross-compiling on Mac OS X
+To: Dirk =?iso-8859-15?Q?H=F6rner?= <dirker@gmail.com>
+Cc: barebox@lists.infradead.org
 
-barebox 2012.05.0 (May 18 2012 - 16:56:20)
+Hi Dirk,
 
-Board: NVS 10301
-Clocks: CPU 400 MHz, master 133 MHz, main 12.000 MHz
-registered netconsole as cs1
-cfi_flash@cfi_flash0: found cfi flash at 10000000, size 1048576
-atmel_mci@mci0: registered as mci0
-mci@mci0: registered disk0
-atmel_nand: Use On Flash BBT
-NAND device: Manufacturer ID: 0x20, Chip ID: 0xda (ST Micro NAND  
-256MiB 3,3V 8-bit)
-Bad block table found at page 131008, version 0x01
-Bad block table found at page 130944, version 0x01
-nand_read_bbt: Bad block at 0x0b620000
-Malloc space: 0x71f00000 -> 0x73efffff (size 32 MB)
-Stack space : 0x71ef8000 -> 0x71f00000 (size 32 kB)
-running /env/bin/init...
+On Mon, Jun 04, 2012 at 10:40:13PM +0200, Dirk H=F6rner wrote:
+> Hi all,
+> =
 
-Hit any key to stop autoboot:  3
-barebox / : mkdir /mnt
-barebox / : mount /dev/disk0.0 fat /mnt
-barebox / : ls /mnt
-rootfs.cpio.gz    rootfs.ubi        zImage
-barebox / : nfs /var/share/R3/zImage /mnt
-open: Is a directory
-barebox / : nfs /var/share/R3/zImage /mnt/zImage
-phy0: Link is up - 100/Full
+> this patch series adds support to cross-compile barebox on Mac OS X. Plea=
+se
+> review as I am quite unsure as to whether I have found the best solutions
+> to some of the problems, especially patch two and three.
+> =
 
-Filename '/var/share/R3/zImage'.
-         [##########atmel_mci@atmel_mci0: command/data timeout             ]
-atmel_mci@atmel_mci0: command/data timeout
-BUG: failure at common/block.c:248/block_put()!
-BUG!
-no stack data available
+> The first patch was cherry-picked from Linux.
+> =
+
+> I tested this series on Max OS X 10.6.8 using the yagarto ARM toolchain[1=
+].
+> =
+
+
+Applied the patches nobody has commented on.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
