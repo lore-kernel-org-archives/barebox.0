@@ -1,13 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sc6bB-0005Ib-1H
- for barebox@lists.infradead.org; Wed, 06 Jun 2012 03:07:54 +0000
-Received: by lbbgg6 with SMTP id gg6so5324068lbb.36
- for <barebox@lists.infradead.org>; Tue, 05 Jun 2012 20:07:50 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  6 Jun 2012 07:07:40 +0400
-Message-Id: <1338952060-3333-1-git-send-email-antonynpavlov@gmail.com>
+Received: from smtpgate.bj-ig.de ([194.127.182.6] helo=smtp.bj-ig.de)
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1ScEwV-0001iA-Bm
+ for barebox@lists.infradead.org; Wed, 06 Jun 2012 12:02:28 +0000
+From: =?ISO-8859-1?Q?Andr=E9?= Lochotzke <andre@bj-ig.de>
+Date: Wed, 06 Jun 2012 14:01:51 +0200
+Message-ID: <1338984111.2874.13.camel@andre>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,36 +15,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] video/s3c24xx.c: fix doxygen comment for s3cfb_activate_var()
-To: barebox@lists.infradead.org
+Subject: NOR boot support for barebox on the mini2440
+To: oselas@community.pengutronix.de, barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/video/s3c24xx.c |    1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/video/s3c24xx.c b/drivers/video/s3c24xx.c
-index 564ccbd..5d5d8f6 100644
---- a/drivers/video/s3c24xx.c
-+++ b/drivers/video/s3c24xx.c
-@@ -193,7 +193,6 @@ static void s3cfb_disable_controller(struct fb_info *fb_info)
- /**
-  * Prepare the video hardware for a specified video mode
-  * @param fb_info Framebuffer information
-- * @param mode The video mode description to initialize
-  * @return 0 on success
-  */
- static int s3cfb_activate_var(struct fb_info *fb_info)
--- 
-1.7.10
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sCgpmb3IgYSBzbWFsbCBzdHVkZW50IHByb2plY3QgSSB3YW50IHRvIGFkZCBzdXBwb3J0
+IHRvIGJhcmVib3ggZm9yIGJvb3RpbmcKZnJvbSB0aGUgTk9SIGZsYXNoIG9uIHRoZSBtaW5pMjQ0
+MC4gSSBob3BlIHRoYXQgaXQgd2lsbCBub3QgYmUgdG9vCmRpZmZpY3VsdCBzaW5jZSBiYXJlYm94
+IGNhbiBhbHJlYWR5IGJvb3QgZnJvbSBOT1Igb24gZGlmZmVyZW50IGJvYXJkcy4KCkRpZCBzb21l
+Ym9keSBhbHJlYWR5IGRvIHNvbWUgd29yayB0byBlbmFibGUgTk9SIGJvb3Qgb24gdGhlIG1pbmky
+NDQwPwoKRG8geW91IGhhdmUgYW55IHN1Z2dlc3Rpb24gb2Ygd2hlcmUgSSBzaG91bGQgc3RhcnQ/
+CgpUaGVyZSBpcyBhbHJlYWR5IGFuIHUtYm9vdCB2ZXJzaW9uIHNpbmNlIDIwMTAgWzFdIHRoYXQg
+c3VwcG9ydHMgaXQuIFRoZQpjb2RlIGNhbiBiZSBmb3VuZCBoZXJlIFsyXS4KCkFyZSB0aGUgdS1i
+b290IGFuZCBiYXJlYm94IE5PUiBzdWJzeXN0ZW1zIHZlcnkgZGlmZmVyZW50PyBIb3cgbXVjaCB0
+aW1lCmRvIHlvdSB0aGluayB3b3VsZCBpdCB0YWtlIHRvIGdldCB0aGlzIGRvbmU/CgpSZWdhcmRz
+CkFuZHLDqQoKWzFdCmh0dHA6Ly9ibGl0ZXJuZXNzLmJsb2dzcG90LmRlLzIwMTAvMDQvbmV3LW5v
+ci1mbGFzaC1zdXBwb3J0LWluLXUtYm9vdC5odG1sClsyXSBodHRwOi8vcmVwby5vci5jei93L3Ut
+Ym9vdC1vcGVubW9rby9taW5pMjQ0MC5naXQKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
+ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
+YXJlYm94Cg==
