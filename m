@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Scjt8-0006ZD-SN
- for barebox@lists.infradead.org; Thu, 07 Jun 2012 21:05:05 +0000
+ id 1Scjt9-0006ZL-6V
+ for barebox@lists.infradead.org; Thu, 07 Jun 2012 21:05:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  7 Jun 2012 23:04:58 +0200
-Message-Id: <1339103098-32102-5-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  7 Jun 2012 23:04:56 +0200
+Message-Id: <1339103098-32102-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1339103098-32102-1-git-send-email-s.hauer@pengutronix.de>
 References: <1339103098-32102-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,238 +16,837 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?q?=5BPATCH=204/4=5D=20ARM=20mxs=3A=20add=20bcb=20command=20to=20create=20=27boot=20control=20block=27=20for=20NAND=20boot?=
+Subject: [PATCH 2/4] dma: add mxs-apbh-dma driver
 To: barebox@lists.infradead.org
-Cc: wsa@pengutronix.de, Wolfram Sang <w.sang@pengutronix.de>
+Cc: Marek Vasut <marek.vasut@gmail.com>, wsa@pengutronix.de, Wolfram Sang <w.sang@pengutronix.de>
 
-RnJvbTogV29sZnJhbSBTYW5nIDx3LnNhbmdAcGVuZ3V0cm9uaXguZGU+CgpXZSB3cml0ZSBhIHBy
-b3BlciBGQ0IsIGJ1dCBubyBEQkJUIHNpbmNlIGl0IGlzIHVucmVzb2x2ZWQgaG93IHRvIGtlZXAg
-aXQKaW4gc3luYyB3aXRoIExpbnV4LWJhc2VkIEJCVHMuIEFsc28sIHdlIGltcGx5IHNlYXJjaGNv
-dW50ID0gNCBhbmQgc3RyaWRlCj0gNjQgKHdoaWNoIGlzIHRoZSBkZWZhdWx0KSB1bnRpbCB3ZSBj
-YW4gdmVyaWZ5IHZpYSBvY290cC4KClNpZ25lZC1vZmYtYnk6IFdvbGZyYW0gU2FuZyA8dy5zYW5n
-QHBlbmd1dHJvbml4LmRlPgotLS0KIGFyY2gvYXJtL21hY2gtbXhzL0tjb25maWcgIHwgICAgOCAr
-CiBhcmNoL2FybS9tYWNoLW14cy9NYWtlZmlsZSB8ICAgIDEgKwogYXJjaC9hcm0vbWFjaC1teHMv
-YmNiLmMgICAgfCAgMzk5ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrCiAzIGZpbGVzIGNoYW5nZWQsIDQwOCBpbnNlcnRpb25zKCspCiBjcmVhdGUgbW9kZSAxMDA2
-NDQgYXJjaC9hcm0vbWFjaC1teHMvYmNiLmMKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW14
-cy9LY29uZmlnIGIvYXJjaC9hcm0vbWFjaC1teHMvS2NvbmZpZwppbmRleCAzMzQ4YTNjLi5mYTYw
-M2ZlIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW14cy9LY29uZmlnCisrKyBiL2FyY2gvYXJt
-L21hY2gtbXhzL0tjb25maWcKQEAgLTgwLDYgKzgwLDE0IEBAIGNvbmZpZyBNWFNfT0NPVFAKIAkg
-IGludGVybmFsIHZpZXcpLiBEb24ndCB1c2UgcmVnaXN0ZXIgb2Zmc2V0cyBoZXJlLCB0aGUgU0VU
-LCBDTFIgYW5kCiAJICBUR0wgcmVnaXN0ZXJzIGFyZSBub3QgbWFwcGVkIQogCitjb25maWcgTVhT
-X0NNRF9CQ0IKKwlkZXBlbmRzIG9uIE5BTkRfTVhTCisJdHJpc3RhdGUgIk5hbmQgYmNiIGNvbW1h
-bmQiCisJaGVscAorCSAgVG8gYmUgYWJsZSB0byBib290IGZyb20gTkFORCB0aGUgaS5NWDIzLzI4
-IG5lZWQgYSBCb290IENvbnRyb2wgQmxvY2sKKwkgIGluIGZsYXNoLiBUaGlzIG9wdGlvbiBlbmFi
-bGVkIHRoZSAnYmNiJyBjb21tYW5kIHdoaWNoIGNhbiBiZSB1c2VkIHRvCisJICBnZW5lcmF0ZSB0
-aGlzIGJsb2NrIGR1cmluZyBydW50aW1lLgorCiBlbmRtZW51CiAKIG1lbnUgIkJvYXJkIHNwZWNp
-ZmljIHNldHRpbmdzICAgICAgICIKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtbXhzL01ha2Vm
-aWxlIGIvYXJjaC9hcm0vbWFjaC1teHMvTWFrZWZpbGUKaW5kZXggMjY4ZTdkYy4uMzUzOWNhNCAx
-MDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1teHMvTWFrZWZpbGUKKysrIGIvYXJjaC9hcm0vbWFj
-aC1teHMvTWFrZWZpbGUKQEAgLTMsMyArMyw0IEBAIG9iai0kKENPTkZJR19EUklWRVJfVklERU9f
-U1RNKSArPSBpbXhfbGNkX2Nsay5vCiBvYmotJChDT05GSUdfQVJDSF9JTVgyMykgKz0gc3BlZWQt
-aW14MjMubyBjbG9ja3NvdXJjZS1pbXgyMy5vIHVzYi5vCiBvYmotJChDT05GSUdfQVJDSF9JTVgy
-OCkgKz0gc3BlZWQtaW14MjgubyBjbG9ja3NvdXJjZS1pbXgyOC5vCiBvYmotJChDT05GSUdfTVhT
-X09DT1RQKSArPSBvY290cC5vCitvYmotJChDT05GSUdfTVhTX0NNRF9CQ0IpICs9IGJjYi5vCmRp
-ZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW14cy9iY2IuYyBiL2FyY2gvYXJtL21hY2gtbXhzL2Jj
-Yi5jCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAuLmQwYTNkZGMKLS0tIC9kZXYv
-bnVsbAorKysgYi9hcmNoL2FybS9tYWNoLW14cy9iY2IuYwpAQCAtMCwwICsxLDM5OSBAQAorLyoK
-KyAqIChDKSBDb3B5cmlnaHQgMjAxMSBXb2xmcmFtIFNhbmcsIFBlbmd1dHJvbml4IGUuSy4KKyAq
-CisgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUg
-aXQgYW5kL29yCisgKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJh
-bCBQdWJsaWMgTGljZW5zZSBhcworICogcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZv
-dW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIgb2YKKyAqIHRoZSBMaWNlbnNlLCBvciAoYXQgeW91
-ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgorICoKKyAqIEJhc2VkIG9uIGEgc2ltaWxhciBm
-dW5jdGlvbiBpbiBLYXJvIEVsZWN0cm9uaWNzIFRYMjgtVS1Cb290IChmbGFzaC5jKS4KKyAqIFBy
-b2JhYmx5IHdyaXR0ZW4gYnkgTG90aGFyIFdhw59tYW5uIChsaWtlIHR4MjguYykuCisgKi8KKwor
-I2luY2x1ZGUgPGNvbW1vbi5oPgorI2luY2x1ZGUgPGNvbW1hbmQuaD4KKyNpbmNsdWRlIDxlbnZp
-cm9ubWVudC5oPgorI2luY2x1ZGUgPG1hbGxvYy5oPgorI2luY2x1ZGUgPG5hbmQuaD4KKyNpbmNs
-dWRlIDxzaXplcy5oPgorI2luY2x1ZGUgPGVycm5vLmg+CisjaW5jbHVkZSA8aW8uaD4KKworI2lu
-Y2x1ZGUgPG1hY2gvaW14LXJlZ3MuaD4KKworI2luY2x1ZGUgPGxpbnV4L2Vyci5oPgorI2luY2x1
-ZGUgPGxpbnV4L210ZC9uYW5kLmg+CisKKyNkZWZpbmUgRkNCX1NUQVJUX0JMT0NLCQkwCisjZGVm
-aW5lIE5VTV9GQ0JfQkxPQ0tTCQkxCisjZGVmaW5lIE1BWF9GQ0JfQkxPQ0tTCQkzMjc2OAorCisj
-ZGVmaW5lIEdQTUlfVElNSU5HMAkJCQkweDAwMDAwMDcwCisjZGVmaW5lCUdQTUlfVElNSU5HMF9B
-RERSRVNTX1NFVFVQX01BU0sJCQkoMHhmZiA8PCAxNikKKyNkZWZpbmUJR1BNSV9USU1JTkcwX0FE
-RFJFU1NfU0VUVVBfT0ZGU0VUCQkxNgorI2RlZmluZQlHUE1JX1RJTUlORzBfREFUQV9IT0xEX01B
-U0sJCQkoMHhmZiA8PCA4KQorI2RlZmluZQlHUE1JX1RJTUlORzBfREFUQV9IT0xEX09GRlNFVAkJ
-CTgKKyNkZWZpbmUJR1BNSV9USU1JTkcwX0RBVEFfU0VUVVBfTUFTSwkJCTB4ZmYKKyNkZWZpbmUJ
-R1BNSV9USU1JTkcwX0RBVEFfU0VUVVBfT0ZGU0VUCQkJMAorCisjZGVmaW5lIEdQTUlfVElNSU5H
-MQkJCQkweDAwMDAwMDgwCisKKyNkZWZpbmUgQkNIX01PREUJCQkJMHgwMDAwMDAyMAorCisjZGVm
-aW5lIEJDSF9GTEFTSDBMQVlPVVQwCQkJMHgwMDAwMDA4MAorI2RlZmluZQlCQ0hfRkxBU0hMQVlP
-VVQwX05CTE9DS1NfTUFTSwkJCSgweGZmIDw8IDI0KQorI2RlZmluZQlCQ0hfRkxBU0hMQVlPVVQw
-X05CTE9DS1NfT0ZGU0VUCQkJMjQKKyNkZWZpbmUJQkNIX0ZMQVNITEFZT1VUMF9NRVRBX1NJWkVf
-TUFTSwkJCSgweGZmIDw8IDE2KQorI2RlZmluZQlCQ0hfRkxBU0hMQVlPVVQwX01FVEFfU0laRV9P
-RkZTRVQJCTE2CisjZGVmaW5lCUJDSF9GTEFTSExBWU9VVDBfRUNDMF9NQVNLCQkJKDB4ZiA8PCAx
-MikKKyNkZWZpbmUJQkNIX0ZMQVNITEFZT1VUMF9FQ0MwX09GRlNFVAkJCTEyCisjZGVmaW5lCUJD
-SF9GTEFTSExBWU9VVDBfREFUQTBfU0laRV9NQVNLCQkweGZmZgorI2RlZmluZQlCQ0hfRkxBU0hM
-QVlPVVQwX0RBVEEwX1NJWkVfT0ZGU0VUCQkwCisKKyNkZWZpbmUgQkNIX0ZMQVNIMExBWU9VVDEJ
-CQkweDAwMDAwMDkwCisjZGVmaW5lCUJDSF9GTEFTSExBWU9VVDFfUEFHRV9TSVpFX01BU0sJCQko
-MHhmZmZmIDw8IDE2KQorI2RlZmluZQlCQ0hfRkxBU0hMQVlPVVQxX1BBR0VfU0laRV9PRkZTRVQJ
-CTE2CisjZGVmaW5lCUJDSF9GTEFTSExBWU9VVDFfRUNDTl9NQVNLCQkJKDB4ZiA8PCAxMikKKyNk
-ZWZpbmUJQkNIX0ZMQVNITEFZT1VUMV9FQ0NOX09GRlNFVAkJCTEyCisjZGVmaW5lCUJDSF9GTEFT
-SExBWU9VVDFfREFUQU5fU0laRV9NQVNLCQkweGZmZgorI2RlZmluZQlCQ0hfRkxBU0hMQVlPVVQx
-X0RBVEFOX1NJWkVfT0ZGU0VUCQkwCisKK3N0cnVjdCBteDI4X25hbmRfdGltaW5nIHsKKwl1OCBk
-YXRhX3NldHVwOworCXU4IGRhdGFfaG9sZDsKKwl1OCBhZGRyZXNzX3NldHVwOworCXU4IGRzYW1w
-bGVfdGltZTsKKwl1OCBuYW5kX3RpbWluZ19zdGF0ZTsKKwl1OCB0UkVBOworCXU4IHRSTE9IOwor
-CXU4IHRSSE9IOworfTsKKworc3RydWN0IG14MjhfZmNiIHsKKwl1MzIgY2hlY2tzdW07CisJdTMy
-IGZpbmdlcnByaW50OworCXUzMiB2ZXJzaW9uOworCXN0cnVjdCBteDI4X25hbmRfdGltaW5nIHRp
-bWluZzsKKwl1MzIgcGFnZV9kYXRhX3NpemU7CisJdTMyIHRvdGFsX3BhZ2Vfc2l6ZTsKKwl1MzIg
-c2VjdG9yc19wZXJfYmxvY2s7CisJdTMyIG51bWJlcl9vZl9uYW5kczsJLyogbm90IHVzZWQgYnkg
-Uk9NIGNvZGUgKi8KKwl1MzIgdG90YWxfaW50ZXJuYWxfZGllOwkvKiBub3QgdXNlZCBieSBST00g
-Y29kZSAqLworCXUzMiBjZWxsX3R5cGU7CQkvKiBub3QgdXNlZCBieSBST00gY29kZSAqLworCXUz
-MiBlY2NfYmxvY2tuX3R5cGU7CisJdTMyIGVjY19ibG9jazBfc2l6ZTsKKwl1MzIgZWNjX2Jsb2Nr
-bl9zaXplOworCXUzMiBlY2NfYmxvY2swX3R5cGU7CisJdTMyIG1ldGFkYXRhX3NpemU7CisJdTMy
-IGVjY19ibG9ja3NfcGVyX3BhZ2U7CisJdTMyIHJzcnZkWzZdOwkJIC8qIG5vdCB1c2VkIGJ5IFJP
-TSBjb2RlICovCisJdTMyIGJjaF9tb2RlOworCXUzMiBib290X3BhdGNoOworCXUzMiBwYXRjaF9z
-ZWN0b3JzOworCXUzMiBmdzFfc3RhcnRfcGFnZTsKKwl1MzIgZncyX3N0YXJ0X3BhZ2U7CisJdTMy
-IGZ3MV9zZWN0b3JzOworCXUzMiBmdzJfc2VjdG9yczsKKwl1MzIgZGJidF9zZWFyY2hfYXJlYTsK
-Kwl1MzIgYmJfbWFya19ieXRlOworCXUzMiBiYl9tYXJrX3N0YXJ0Yml0OworCXUzMiBiYl9tYXJr
-X3BoeXNfb2Zmc2V0OworfTsKKworc3RydWN0IG14MjhfZGJidF9oZWFkZXIgeworCXUzMiBjaGVj
-a3N1bTsKKwl1MzIgZmluZ2VycHJpbnQ7CisJdTMyIHZlcnNpb247CisJdTMyIG51bWJlcl9iYjsK
-Kwl1MzIgbnVtYmVyX3BhZ2VzOworCXU4IHNwYXJlWzQ5Ml07Cit9OworCitzdHJ1Y3QgbXgyOF9k
-YmJ0IHsKKwl1MzIgbmFuZF9udW1iZXI7CisJdTMyIG51bWJlcl9iYjsKKwl1MzIgYmJfbnVtWzIw
-NDAgLyA0XTsKK307CisKKyNkZWZpbmUgQkZfVkFMKHYsIGJmKQkJKCgodikgJiBiZiMjX01BU0sp
-ID4+IGJmIyNfT0ZGU0VUKQorI2RlZmluZSBHRVRCSVQodixuKQkoKCh2KSA+PiAobikpICYgMHgx
-KQorCitzdGF0aWMgdTggY2FsY3VsYXRlX3Bhcml0eV8xM184KHU4IGQpCit7CisJdTggcCA9IDA7
-CisKKwlwIHw9IChHRVRCSVQoZCwgNikgXiBHRVRCSVQoZCwgNSkgXiBHRVRCSVQoZCwgMykgXiBH
-RVRCSVQoZCwgMikpCQkgPDwgMDsKKwlwIHw9IChHRVRCSVQoZCwgNykgXiBHRVRCSVQoZCwgNSkg
-XiBHRVRCSVQoZCwgNCkgXiBHRVRCSVQoZCwgMikgXiBHRVRCSVQoZCwgMSkpIDw8IDE7CisJcCB8
-PSAoR0VUQklUKGQsIDcpIF4gR0VUQklUKGQsIDYpIF4gR0VUQklUKGQsIDUpIF4gR0VUQklUKGQs
-IDEpIF4gR0VUQklUKGQsIDApKSA8PCAyOworCXAgfD0gKEdFVEJJVChkLCA3KSBeIEdFVEJJVChk
-LCA0KSBeIEdFVEJJVChkLCAzKSBeIEdFVEJJVChkLCAwKSkJCSA8PCAzOworCXAgfD0gKEdFVEJJ
-VChkLCA2KSBeIEdFVEJJVChkLCA0KSBeIEdFVEJJVChkLCAzKSBeIEdFVEJJVChkLCAyKSBeIEdF
-VEJJVChkLCAxKSBeIEdFVEJJVChkLCAwKSkgPDwgNDsKKwlyZXR1cm4gcDsKK30KKworc3RhdGlj
-IHZvaWQgZW5jb2RlX2hhbW1pbmdfMTNfOCh2b2lkICpfc3JjLCB2b2lkICpfZWNjLCBzaXplX3Qg
-c2l6ZSkKK3sKKwlpbnQgaTsKKwl1OCAqc3JjID0gX3NyYzsKKwl1OCAqZWNjID0gX2VjYzsKKwor
-CWZvciAoaSA9IDA7IGkgPCBzaXplOyBpKyspCisJCWVjY1tpXSA9IGNhbGN1bGF0ZV9wYXJpdHlf
-MTNfOChzcmNbaV0pOworfQorCitzdGF0aWMgdTMyIGNhbGNfY2hrc3VtKHZvaWQgKmJ1Ziwgc2l6
-ZV90IHNpemUpCit7CisJdTMyIGNoa3N1bSA9IDA7CisJdTggKmJwID0gYnVmOworCXNpemVfdCBp
-OworCisJZm9yIChpID0gMDsgaSA8IHNpemU7IGkrKykKKwkJY2hrc3VtICs9IGJwW2ldOworCisJ
-cmV0dXJuIH5jaGtzdW07Cit9CisKKy8qCisgIFBoeXNpY2FsIG9yZ2FuaXNhdGlvbiBvZiBkYXRh
-IGluIE5BTkQgZmxhc2g6CisgIG1ldGFkYXRhCisgIHBheWxvYWQgY2h1bmsgMCAobWF5IGJlIGVt
-cHR5KQorICBlY2MgZm9yIG1ldGFkYXRhICsgcGF5bG9hZCBjaHVuayAwCisgIHBheWxvYWQgY2h1
-bmsgMQorICBlY2MgZm9yIHBheWxvYWQgY2h1bmsgMQorLi4uCisgIHBheWxvYWQgY2h1bmsgbgor
-ICBlY2MgZm9yIHBheWxvYWQgY2h1bmsgbgorICovCisKK3N0YXRpYyBpbnQgY2FsY19iYl9vZmZz
-ZXQoc3RydWN0IG10ZF9pbmZvICptdGQsIHN0cnVjdCBteDI4X2ZjYiAqZmNiKQoreworCWludCBi
-Yl9tYXJrX29mZnNldDsKKwlpbnQgY2h1bmtfZGF0YV9zaXplID0gZmNiLT5lY2NfYmxvY2tuX3Np
-emUgKiA4OworCWludCBjaHVua19lY2Nfc2l6ZSA9IChmY2ItPmVjY19ibG9ja25fdHlwZSA8PCAx
-KSAqIDEzOworCWludCBjaHVua190b3RhbF9zaXplID0gY2h1bmtfZGF0YV9zaXplICsgY2h1bmtf
-ZWNjX3NpemU7CisJaW50IGJiX21hcmtfY2h1bmssIGJiX21hcmtfY2h1bmtfb2ZmczsKKworCWJi
-X21hcmtfb2Zmc2V0ID0gKG10ZC0+d3JpdGVzaXplIC0gZmNiLT5tZXRhZGF0YV9zaXplKSAqIDg7
-CisJaWYgKGZjYi0+ZWNjX2Jsb2NrMF9zaXplID09IDApCisJCWJiX21hcmtfb2Zmc2V0IC09IChm
-Y2ItPmVjY19ibG9jazBfdHlwZSA8PCAxKSAqIDEzOworCisJYmJfbWFya19jaHVuayA9IGJiX21h
-cmtfb2Zmc2V0IC8gY2h1bmtfdG90YWxfc2l6ZTsKKwliYl9tYXJrX2NodW5rX29mZnMgPSBiYl9t
-YXJrX29mZnNldCAtIChiYl9tYXJrX2NodW5rICogY2h1bmtfdG90YWxfc2l6ZSk7CisJaWYgKGJi
-X21hcmtfY2h1bmtfb2ZmcyA+IGNodW5rX2RhdGFfc2l6ZSkgeworCQlwcmludGYoIlVuc3VwcG9y
-dGVkIEVDQyBsYXlvdXQ7IEJCIG1hcmsgcmVzaWRlcyBpbiBFQ0MgZGF0YTogJXVcbiIsCisJCQli
-Yl9tYXJrX2NodW5rX29mZnMpOworCQlyZXR1cm4gLUVJTlZBTDsKKwl9CisJYmJfbWFya19vZmZz
-ZXQgLT0gYmJfbWFya19jaHVuayAqIGNodW5rX2VjY19zaXplOworCXJldHVybiBiYl9tYXJrX29m
-ZnNldDsKK30KKworc3RhdGljIHN0cnVjdCBteDI4X2ZjYiAqY3JlYXRlX2ZjYihzdHJ1Y3QgbXRk
-X2luZm8gKm10ZCwgdm9pZCAqYnVmLCB1bnNpZ25lZCBmdzFfc3RhcnRfYmxvY2ssCisJCQkJc2l6
-ZV90IGZ3X3NpemUsIHVuc2lnbmVkIGZ3Ml9zdGFydF9ibG9jaykKK3sKKwl1MzIgZmwwLCBmbDEs
-IHQwOworCWludCBtZXRhZGF0YV9zaXplOworCWludCBiYl9tYXJrX2JpdF9vZmZzOworCXN0cnVj
-dCBteDI4X2ZjYiAqZmNiOworCWludCBmY2Jfb2ZmczsKKwl2b2lkIF9faW9tZW0gKmJjaF9yZWdz
-ID0gKHZvaWQgKilNWFNfQkNIX0JBU0U7CisJdm9pZCBfX2lvbWVtICpncG1pX3JlZ3MgPSAodm9p
-ZCAqKU1YU19HUE1JX0JBU0U7CisKKwlmbDAgPSByZWFkbChiY2hfcmVncyArIEJDSF9GTEFTSDBM
-QVlPVVQwKTsKKwlmbDEgPSByZWFkbChiY2hfcmVncyArIEJDSF9GTEFTSDBMQVlPVVQxKTsKKwl0
-MCA9IHJlYWRsKGdwbWlfcmVncyArIEdQTUlfVElNSU5HMCk7CisJbWV0YWRhdGFfc2l6ZSA9IEJG
-X1ZBTChmbDAsIEJDSF9GTEFTSExBWU9VVDBfTUVUQV9TSVpFKTsKKworCWZjYiA9IGJ1ZiArIEFM
-SUdOKG1ldGFkYXRhX3NpemUsIDQpOworCWZjYl9vZmZzID0gKHZvaWQgKilmY2IgLSBidWY7CisK
-KwltZW1zZXQoYnVmLCAweDAwLCBmY2Jfb2Zmcyk7CisJbWVtc2V0KGZjYiwgMHgwMCwgc2l6ZW9m
-KCpmY2IpKTsKKwltZW1zZXQoZmNiICsgMSwgMHhmZiwgbXRkLT5lcmFzZXNpemUgLSBmY2Jfb2Zm
-cyAtIHNpemVvZigqZmNiKSk7CisKKwlzdHJuY3B5KChjaGFyICopJmZjYi0+ZmluZ2VycHJpbnQs
-ICJGQ0IgIiwgNCk7CisJZmNiLT52ZXJzaW9uID0gY3B1X3RvX2JlMzIoMSk7CisKKwlmY2ItPnRp
-bWluZy5kYXRhX3NldHVwID0gQkZfVkFMKHQwLCBHUE1JX1RJTUlORzBfREFUQV9TRVRVUCk7CisJ
-ZmNiLT50aW1pbmcuZGF0YV9ob2xkID0gQkZfVkFMKHQwLCBHUE1JX1RJTUlORzBfREFUQV9IT0xE
-KTsKKwlmY2ItPnRpbWluZy5hZGRyZXNzX3NldHVwID0gQkZfVkFMKHQwLCBHUE1JX1RJTUlORzBf
-QUREUkVTU19TRVRVUCk7CisKKwlmY2ItPnBhZ2VfZGF0YV9zaXplID0gbXRkLT53cml0ZXNpemU7
-CisJZmNiLT50b3RhbF9wYWdlX3NpemUgPSBtdGQtPndyaXRlc2l6ZSArIG10ZC0+b29ic2l6ZTsK
-KwlmY2ItPnNlY3RvcnNfcGVyX2Jsb2NrID0gbXRkLT5lcmFzZXNpemUgLyBtdGQtPndyaXRlc2l6
-ZTsKKworCWZjYi0+ZWNjX2Jsb2NrMF90eXBlID0gQkZfVkFMKGZsMCwgQkNIX0ZMQVNITEFZT1VU
-MF9FQ0MwKTsKKwlmY2ItPmVjY19ibG9jazBfc2l6ZSA9IEJGX1ZBTChmbDAsIEJDSF9GTEFTSExB
-WU9VVDBfREFUQTBfU0laRSk7CisJZmNiLT5lY2NfYmxvY2tuX3R5cGUgPSBCRl9WQUwoZmwxLCBC
-Q0hfRkxBU0hMQVlPVVQxX0VDQ04pOworCWZjYi0+ZWNjX2Jsb2Nrbl9zaXplID0gQkZfVkFMKGZs
-MSwgQkNIX0ZMQVNITEFZT1VUMV9EQVRBTl9TSVpFKTsKKworCWZjYi0+bWV0YWRhdGFfc2l6ZSA9
-IEJGX1ZBTChmbDAsIEJDSF9GTEFTSExBWU9VVDBfTUVUQV9TSVpFKTsKKwlmY2ItPmVjY19ibG9j
-a3NfcGVyX3BhZ2UgPSBCRl9WQUwoZmwwLCBCQ0hfRkxBU0hMQVlPVVQwX05CTE9DS1MpOworCWZj
-Yi0+YmNoX21vZGUgPSByZWFkbChiY2hfcmVncyArIEJDSF9NT0RFKTsKKy8qCisJZmNiLT5ib290
-X3BhdGNoID0gMDsKKwlmY2ItPnBhdGNoX3NlY3RvcnMgPSAwOworKi8KKwlmY2ItPmZ3MV9zdGFy
-dF9wYWdlID0gZncxX3N0YXJ0X2Jsb2NrIC8gbXRkLT53cml0ZXNpemU7CisJZmNiLT5mdzFfc2Vj
-dG9ycyA9IERJVl9ST1VORF9VUChmd19zaXplLCBtdGQtPndyaXRlc2l6ZSk7CisKKwlpZiAoZncy
-X3N0YXJ0X2Jsb2NrICE9IDAgJiYgZncyX3N0YXJ0X2Jsb2NrIDwgbXRkLT5zaXplIC8gbXRkLT5l
-cmFzZXNpemUpIHsKKwkJZmNiLT5mdzJfc3RhcnRfcGFnZSA9IGZ3Ml9zdGFydF9ibG9jayAvIG10
-ZC0+d3JpdGVzaXplOworCQlmY2ItPmZ3Ml9zZWN0b3JzID0gZmNiLT5mdzFfc2VjdG9yczsKKwl9
-CisKKwlmY2ItPmRiYnRfc2VhcmNoX2FyZWEgPSAxOworCisJYmJfbWFya19iaXRfb2ZmcyA9IGNh
-bGNfYmJfb2Zmc2V0KG10ZCwgZmNiKTsKKwlpZiAoYmJfbWFya19iaXRfb2ZmcyA8IDApCisJCXJl
-dHVybiBFUlJfUFRSKGJiX21hcmtfYml0X29mZnMpOworCWZjYi0+YmJfbWFya19ieXRlID0gYmJf
-bWFya19iaXRfb2ZmcyAvIDg7CisJZmNiLT5iYl9tYXJrX3N0YXJ0Yml0ID0gYmJfbWFya19iaXRf
-b2ZmcyAlIDg7CisJZmNiLT5iYl9tYXJrX3BoeXNfb2Zmc2V0ID0gbXRkLT53cml0ZXNpemU7CisK
-KwlmY2ItPmNoZWNrc3VtID0gY2FsY19jaGtzdW0oJmZjYi0+ZmluZ2VycHJpbnQsIDUxMiAtIDQp
-OworCXJldHVybiBmY2I7Cit9CisKK3N0YXRpYyBpbnQgZmluZF9mY2Ioc3RydWN0IG10ZF9pbmZv
-ICptdGQsIHZvaWQgKnJlZiwgaW50IHBhZ2UpCit7CisJaW50IHJldCA9IDA7CisJc3RydWN0IG5h
-bmRfY2hpcCAqY2hpcCA9IG10ZC0+cHJpdjsKKwl2b2lkICpidWYgPSBtYWxsb2MobXRkLT5lcmFz
-ZXNpemUpOworCisJaWYgKGJ1ZiA9PSBOVUxMKQorCQlyZXR1cm4gLUVOT01FTTsKKworCWNoaXAt
-PnNlbGVjdF9jaGlwKG10ZCwgMCk7CisJY2hpcC0+Y21kZnVuYyhtdGQsIE5BTkRfQ01EX1JFQUQw
-LCAweDAwLCBwYWdlKTsKKwlyZXQgPSBjaGlwLT5lY2MucmVhZF9wYWdlX3JhdyhtdGQsIGNoaXAs
-IGJ1Zik7CisJaWYgKHJldCkgeworCQlwcmludGYoIkZhaWxlZCB0byByZWFkIEZDQiBmcm9tIHBh
-Z2UgJXU6ICVkXG4iLCBwYWdlLCByZXQpOworCQlyZXR1cm4gcmV0OworCX0KKwljaGlwLT5zZWxl
-Y3RfY2hpcChtdGQsIC0xKTsKKwlpZiAobWVtY21wKGJ1ZiwgcmVmLCBtdGQtPndyaXRlc2l6ZSkg
-PT0gMCkgeworCQlwcmludGYoIiVzOiBGb3VuZCBGQ0IgaW4gcGFnZSAldSAoJTA4eClcbiIsIF9f
-ZnVuY19fLAorCQkJcGFnZSwgcGFnZSAqIG10ZC0+d3JpdGVzaXplKTsKKwkJcmV0ID0gMTsKKwl9
-CisJZnJlZShidWYpOworCXJldHVybiByZXQ7Cit9CisKK3N0YXRpYyBpbnQgd3JpdGVfZmNiKHN0
-cnVjdCBtdGRfaW5mbyAqbXRkLCB2b2lkICpidWYsIGludCBibG9jaykKK3sKKwlpbnQgcmV0Owor
-CXN0cnVjdCBuYW5kX2NoaXAgKmNoaXAgPSBtdGQtPnByaXY7CisJaW50IHBhZ2UgPSBibG9jayAv
-IG10ZC0+d3JpdGVzaXplOworCXN0cnVjdCBlcmFzZV9pbmZvIGVyYXNlX29wdHMgPSB7CisJCS5t
-dGQgPSBtdGQsCisJCS5hZGRyID0gYmxvY2ssCisJCS5sZW4gPSBtdGQtPmVyYXNlc2l6ZSwKKwkJ
-LmNhbGxiYWNrID0gTlVMTCwKKwl9OworCisJcmV0ID0gZmluZF9mY2IobXRkLCBidWYsIHBhZ2Up
-OworCWlmIChyZXQgPiAwKSB7CisJCXByaW50ZigiRkNCIGF0IGJsb2NrICUwOHggaXMgdXAgdG8g
-ZGF0ZVxuIiwgYmxvY2spOworCQlyZXR1cm4gMDsKKwl9CisKKwlyZXQgPSBtdGQtPmVyYXNlKG10
-ZCwgJmVyYXNlX29wdHMpOworCWlmIChyZXQpIHsKKwkJcHJpbnRmKCJGYWlsZWQgdG8gZXJhc2Ug
-RkNCIGJsb2NrICUwOHhcbiIsIGJsb2NrKTsKKwkJcmV0dXJuIHJldDsKKwl9CisKKwlwcmludGYo
-IldyaXRpbmcgRkNCIHRvIGJsb2NrICUwOHhcbiIsIGJsb2NrKTsKKwljaGlwLT5zZWxlY3RfY2hp
-cChtdGQsIDApOworCXJldCA9IGNoaXAtPndyaXRlX3BhZ2UobXRkLCBjaGlwLCBidWYsIHBhZ2Us
-IDAsIDEpOworCWlmIChyZXQpIHsKKwkJcHJpbnRmKCJGYWlsZWQgdG8gd3JpdGUgRkNCIHRvIGJs
-b2NrICUwOHg6ICVkXG4iLCBibG9jaywgcmV0KTsKKwl9CisJY2hpcC0+c2VsZWN0X2NoaXAobXRk
-LCAtMSk7CisJcmV0dXJuIHJldDsKK30KKworaW50IHVwZGF0ZV9iY2IoaW50IGFyZ2MsIGNoYXIg
-KmFyZ3ZbXSkKK3sKKwlpbnQgcmV0OworCWludCBibG9jazsKKwl2b2lkICpidWY7CisJc3RydWN0
-IG14MjhfZmNiICpmY2I7CisJc3RydWN0IGNkZXYgKnRtcF9jZGV2LCAqYmNiX2NkZXYsICpmaXJt
-d2FyZV9jZGV2OworCXVuc2lnbmVkIGxvbmcgZncyX29mZnNldCA9IDA7CisJc3RydWN0IG10ZF9p
-bmZvICptdGQ7CisJdW5zaWduZWQgZmNiX3dyaXR0ZW4gPSAwOworCisJaWYgKGFyZ2MgPT0gMSkK
-KwkJcmV0dXJuIENPTU1BTkRfRVJST1JfVVNBR0U7CisKKwl0bXBfY2RldiA9IGNkZXZfYnlfbmFt
-ZSgibmFuZDAiKTsKKwlpZiAoIXRtcF9jZGV2IHx8ICF0bXBfY2Rldi0+bXRkKSB7CisJCXByX2Vy
-cigiJXM6IE5vIE5BTkQgZGV2aWNlIVxuIiwgX19mdW5jX18pOworCQlyZXR1cm4gLUVOT0RFVjsK
-Kwl9CisKKwltdGQgPSB0bXBfY2Rldi0+bXRkOworCisJYmNiX2NkZXYgPSBjZGV2X2J5X25hbWUo
-Im5hbmQwLmJjYiIpOworCWlmICghYmNiX2NkZXYpIHsKKwkJcHJfZXJyKCIlczogTm8gRkNCIGRl
-dmljZSFcbiIsIF9fZnVuY19fKTsKKwkJcmV0dXJuIC1FTk9ERVY7CisJfQorCisJZmlybXdhcmVf
-Y2RldiA9IGNkZXZfYnlfbmFtZShhcmd2WzFdKTsKKwlpZiAoIWZpcm13YXJlX2NkZXYpIHsKKwkJ
-cHJfZXJyKCIlczogQm9vdHN0cmVhbS1JbWFnZSBub3QgZm91bmQhXG4iLCBfX2Z1bmNfXyk7CisJ
-CXJldHVybiAtRU5PREVWOworCX0KKworCWlmIChhcmdjID4gMikgeworCQl0bXBfY2RldiA9IGNk
-ZXZfYnlfbmFtZShhcmd2WzJdKTsKKwkJaWYgKCF0bXBfY2RldikgeworCQkJcHJfZXJyKCIlczog
-UmVkdW5kYW50IEJvb3RzdHJlYW0tSW1hZ2Ugbm90IGZvdW5kIVxuIiwgX19mdW5jX18pOworCQkJ
-cmV0dXJuIC1FTk9ERVY7CisJCX0KKwkJZncyX29mZnNldCA9IHRtcF9jZGV2LT5vZmZzZXQ7CisJ
-fQorCisJYnVmID0gbWFsbG9jKG10ZC0+ZXJhc2VzaXplKTsKKwlpZiAoIWJ1ZikKKwkJcmV0dXJu
-IC1FTk9NRU07CisKKwlmY2IgPSBjcmVhdGVfZmNiKG10ZCwgYnVmLCBmaXJtd2FyZV9jZGV2LT5v
-ZmZzZXQsIGZpcm13YXJlX2NkZXYtPnNpemUsIGZ3Ml9vZmZzZXQpOworCWlmIChJU19FUlIoZmNi
-KSkgeworCQlwcmludGYoIkZhaWxlZCB0byBpbml0aWFsaXplIEZDQjogJWxkXG4iLCBQVFJfRVJS
-KGZjYikpOworCQlyZXR1cm4gUFRSX0VSUihmY2IpOworCX0KKwllbmNvZGVfaGFtbWluZ18xM184
-KGZjYiwgKHZvaWQgKilmY2IgKyA1MTIsIDUxMik7CisKKwlmb3IgKGJsb2NrID0gYmNiX2NkZXYt
-Pm9mZnNldDsgYmxvY2sgPCBiY2JfY2Rldi0+b2Zmc2V0ICsgYmNiX2NkZXYtPnNpemUgLyAyOwor
-CQlibG9jayArPSBtdGQtPmVyYXNlc2l6ZSkgeworCisJCWlmIChuYW5kX2lzYmFkX2JidChtdGQs
-IGJsb2NrLCBmYWxzZSkpCisJCQljb250aW51ZTsKKworCQlyZXQgPSB3cml0ZV9mY2IobXRkLCBi
-dWYsIGJsb2NrKTsKKwkJaWYgKHJldCkgeworCQkJcHJpbnRmKCJGYWlsZWQgdG8gd3JpdGUgRkNC
-IHRvIGJsb2NrICV1XG4iLCBibG9jayk7CisJCQlyZXR1cm4gcmV0OworCQl9CisKKwkJZmNiX3dy
-aXR0ZW4rKzsKKwl9CisKKwlyZXR1cm4gZmNiX3dyaXR0ZW4gPyAwIDogLUVOT1NQQzsKK30KKwor
-QkFSRUJPWF9DTURfSEVMUF9TVEFSVChiY2IpCitCQVJFQk9YX0NNRF9IRUxQX1VTQUdFKCJiY2Ig
-PGZpcnN0X2Jvb3RzdHJlYW0+IFtzZWNvbmRfYm9vdHN0cmVhbV1cbiIpCitCQVJFQk9YX0NNRF9I
-RUxQX1NIT1JUKCJXcml0ZSBhIEJDQiB0byBOQU5EIGZsYXNoIHdoaWNoIGFuIE1YMjMvMjggbmVl
-ZHMgdG8gYm9vdC5cbiIpCitCQVJFQk9YX0NNRF9IRUxQX1RFWFQgKCJFeGFtcGxlOiBiY2IgbmFu
-ZDAuYm9vdHN0cmVhbVxuIikKK0JBUkVCT1hfQ01EX0hFTFBfRU5ECisKK0JBUkVCT1hfQ01EX1NU
-QVJUKGJjYikKKwkuY21kID0gdXBkYXRlX2JjYiwKKwkudXNhZ2UgPSAiV3JpdGVzIGEgTVgyMy8y
-OCBCQ0IgZGF0YSBzdHJ1Y3R1cmUgdG8gZmxhc2giLAorCUJBUkVCT1hfQ01EX0hFTFAoY21kX2Jj
-Yl9oZWxwKQorQkFSRUJPWF9DTURfRU5ECi0tIAoxLjcuMTAKCgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cg==
+From: Wolfram Sang <w.sang@pengutronix.de>
+
+Based on the U-Boot version. Changed to kernel style register layout, added
+MX23 support, made MMU aware and adapted to barebox.
+
+Signed-off-by: Marek Vasut <marek.vasut@gmail.com>
+Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-mxs/include/mach/dma.h |  145 +++++++++
+ drivers/Kconfig                      |    1 +
+ drivers/Makefile                     |    1 +
+ drivers/dma/Kconfig                  |    8 +
+ drivers/dma/Makefile                 |    1 +
+ drivers/dma/apbh_dma.c               |  598 ++++++++++++++++++++++++++++++++++
+ 6 files changed, 754 insertions(+)
+ create mode 100644 arch/arm/mach-mxs/include/mach/dma.h
+ create mode 100644 drivers/dma/Kconfig
+ create mode 100644 drivers/dma/Makefile
+ create mode 100644 drivers/dma/apbh_dma.c
+
+diff --git a/arch/arm/mach-mxs/include/mach/dma.h b/arch/arm/mach-mxs/include/mach/dma.h
+new file mode 100644
+index 0000000..52747e2
+--- /dev/null
++++ b/arch/arm/mach-mxs/include/mach/dma.h
+@@ -0,0 +1,145 @@
++/*
++ * Freescale i.MX28 APBH DMA
++ *
++ * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
++ * on behalf of DENX Software Engineering GmbH
++ *
++ * Based on code from LTIB:
++ * Copyright 2008-2010 Freescale Semiconductor, Inc. All Rights Reserved.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
++ *
++ */
++
++#ifndef __DMA_H__
++#define __DMA_H__
++
++#include <linux/list.h>
++
++#ifndef	CONFIG_ARCH_DMA_PIO_WORDS
++#define	DMA_PIO_WORDS		15
++#else
++#define	DMA_PIO_WORDS		CONFIG_ARCH_DMA_PIO_WORDS
++#endif
++
++#define MXS_DMA_ALIGNMENT	32
++
++/*
++ * MXS DMA channels
++ */
++enum {
++	MXS_DMA_CHANNEL_AHB_APBH_SSP0 = 0,
++	MXS_DMA_CHANNEL_AHB_APBH_SSP1,
++	MXS_DMA_CHANNEL_AHB_APBH_SSP2,
++	MXS_DMA_CHANNEL_AHB_APBH_SSP3,
++	MXS_DMA_CHANNEL_AHB_APBH_GPMI0,
++	MXS_DMA_CHANNEL_AHB_APBH_GPMI1,
++	MXS_DMA_CHANNEL_AHB_APBH_GPMI2,
++	MXS_DMA_CHANNEL_AHB_APBH_GPMI3,
++	MXS_DMA_CHANNEL_AHB_APBH_GPMI4,
++	MXS_DMA_CHANNEL_AHB_APBH_GPMI5,
++	MXS_DMA_CHANNEL_AHB_APBH_GPMI6,
++	MXS_DMA_CHANNEL_AHB_APBH_GPMI7,
++	MXS_DMA_CHANNEL_AHB_APBH_SSP,
++	MXS_MAX_DMA_CHANNELS,
++};
++
++/*
++ * MXS DMA hardware command.
++ *
++ * This structure describes the in-memory layout of an entire DMA command,
++ * including space for the maximum number of PIO accesses. See the appropriate
++ * reference manual for a detailed description of what these fields mean to the
++ * DMA hardware.
++ */
++#define	MXS_DMA_DESC_COMMAND_MASK	0x3
++#define	MXS_DMA_DESC_COMMAND_OFFSET	0
++#define	MXS_DMA_DESC_COMMAND_NO_DMAXFER	0x0
++#define	MXS_DMA_DESC_COMMAND_DMA_WRITE	0x1
++#define	MXS_DMA_DESC_COMMAND_DMA_READ	0x2
++#define	MXS_DMA_DESC_COMMAND_DMA_SENSE	0x3
++#define	MXS_DMA_DESC_CHAIN		(1 << 2)
++#define	MXS_DMA_DESC_IRQ		(1 << 3)
++#define	MXS_DMA_DESC_NAND_LOCK		(1 << 4)
++#define	MXS_DMA_DESC_NAND_WAIT_4_READY	(1 << 5)
++#define	MXS_DMA_DESC_DEC_SEM		(1 << 6)
++#define	MXS_DMA_DESC_WAIT4END		(1 << 7)
++#define	MXS_DMA_DESC_HALT_ON_TERMINATE	(1 << 8)
++#define	MXS_DMA_DESC_TERMINATE_FLUSH	(1 << 9)
++#define	MXS_DMA_DESC_PIO_WORDS_MASK	(0xf << 12)
++#define	MXS_DMA_DESC_PIO_WORDS_OFFSET	12
++#define	MXS_DMA_DESC_BYTES_MASK		(0xffff << 16)
++#define	MXS_DMA_DESC_BYTES_OFFSET	16
++
++struct mxs_dma_cmd {
++	unsigned long		next;
++	unsigned long		data;
++	union {
++		dma_addr_t	address;
++		unsigned long	alternate;
++	};
++	unsigned long		pio_words[DMA_PIO_WORDS];
++};
++
++/*
++ * MXS DMA command descriptor.
++ *
++ * This structure incorporates an MXS DMA hardware command structure, along
++ * with metadata.
++ */
++#define	MXS_DMA_DESC_FIRST	(1 << 0)
++#define	MXS_DMA_DESC_LAST	(1 << 1)
++#define	MXS_DMA_DESC_READY	(1 << 31)
++
++struct mxs_dma_desc {
++	struct mxs_dma_cmd	cmd;
++	unsigned int		flags;
++	dma_addr_t		address;
++	void			*buffer;
++	struct list_head	node;
++};
++
++/**
++ * MXS DMA channel
++ *
++ * This structure represents a single DMA channel. The MXS platform code
++ * maintains an array of these structures to represent every DMA channel in the
++ * system (see mxs_dma_channels).
++ */
++#define	MXS_DMA_FLAGS_IDLE	0
++#define	MXS_DMA_FLAGS_BUSY	(1 << 0)
++#define	MXS_DMA_FLAGS_FREE	0
++#define	MXS_DMA_FLAGS_ALLOCATED	(1 << 16)
++#define	MXS_DMA_FLAGS_VALID	(1 << 31)
++
++struct mxs_dma_chan {
++	const char *name;
++	unsigned long dev;
++	struct mxs_dma_device *dma;
++	unsigned int flags;
++	unsigned int active_num;
++	unsigned int pending_num;
++	struct list_head active;
++	struct list_head done;
++};
++
++struct mxs_dma_desc *mxs_dma_desc_alloc(void);
++void mxs_dma_desc_free(struct mxs_dma_desc *);
++int mxs_dma_desc_append(int channel, struct mxs_dma_desc *pdesc);
++
++int mxs_dma_go(int chan);
++int mxs_dma_init(void);
++
++#endif	/* __DMA_H__ */
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index c52c56a..037b0d4 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -17,5 +17,6 @@ source "drivers/eeprom/Kconfig"
+ source "drivers/input/Kconfig"
+ 
+ source "drivers/pwm/Kconfig"
++source "drivers/dma/Kconfig"
+ 
+ endmenu
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 3aefc12..f40b321 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -15,3 +15,4 @@ obj-$(CONFIG_LED) += led/
+ obj-y	+= eeprom/
+ obj-$(CONFIG_PWM) += pwm/
+ obj-y	+= input/
++obj-y	+= dma/
+diff --git a/drivers/dma/Kconfig b/drivers/dma/Kconfig
+new file mode 100644
+index 0000000..ec6c894
+--- /dev/null
++++ b/drivers/dma/Kconfig
+@@ -0,0 +1,8 @@
++menu "DMA support"
++
++config MXS_APBH_DMA
++	tristate "MXS APBH DMA ENGINE"
++	depends on ARCH_IMX23 || ARCH_IMX28
++	help
++	Experimental!
++endmenu
+diff --git a/drivers/dma/Makefile b/drivers/dma/Makefile
+new file mode 100644
+index 0000000..7a3a3b2
+--- /dev/null
++++ b/drivers/dma/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_MXS_APBH_DMA)	+= apbh_dma.o
+diff --git a/drivers/dma/apbh_dma.c b/drivers/dma/apbh_dma.c
+new file mode 100644
+index 0000000..363878f
+--- /dev/null
++++ b/drivers/dma/apbh_dma.c
+@@ -0,0 +1,598 @@
++/*
++ * Freescale i.MX28 APBH DMA driver
++ *
++ * Copyright (C) 2011 Wolfram Sang <w.sang@pengutronix.de>
++ *
++ * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
++ * on behalf of DENX Software Engineering GmbH
++ *
++ * Based on code from LTIB:
++ * Copyright (C) 2010 Freescale Semiconductor, Inc. All Rights Reserved.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
++
++#include <linux/list.h>
++
++#include <common.h>
++#include <malloc.h>
++#include <errno.h>
++#include <asm/mmu.h>
++#include <asm/io.h>
++#include <mach/clock.h>
++#include <mach/imx-regs.h>
++#include <mach/dma.h>
++#include <mach/mxs.h>
++
++#define HW_APBHX_CTRL0				0x000
++#define BM_APBH_CTRL0_APB_BURST8_EN		(1 << 29)
++#define BM_APBH_CTRL0_APB_BURST_EN		(1 << 28)
++#define BP_APBH_CTRL0_CLKGATE_CHANNEL		8
++#define BP_APBH_CTRL0_RESET_CHANNEL		16
++#define HW_APBHX_CTRL1				0x010
++#define	BP_APBHX_CTRL1_CH_CMDCMPLT_IRQ_EN	16
++#define HW_APBHX_CTRL2				0x020
++#define HW_APBHX_CHANNEL_CTRL			0x030
++#define BP_APBHX_CHANNEL_CTRL_RESET_CHANNEL	16
++#define HW_APBH_VERSION				(cpu_is_mx23() ? 0x3f0 : 0x800)
++#define HW_APBX_VERSION				0x800
++#define BP_APBHX_VERSION_MAJOR			24
++#define HW_APBHX_CHn_NXTCMDAR(n) \
++	((apbh_is_old ? 0x050 : 0x110) + (n) * 0x70)
++#define HW_APBHX_CHn_SEMA(n) \
++	((apbh_is_old ? 0x080 : 0x140) + (n) * 0x70)
++#define	BM_APBHX_CHn_SEMA_PHORE			(0xff << 16)
++#define	BP_APBHX_CHn_SEMA_PHORE			16
++
++static struct mxs_dma_chan mxs_dma_channels[MXS_MAX_DMA_CHANNELS];
++static bool apbh_is_old;
++
++/*
++ * Test is the DMA channel is valid channel
++ */
++int mxs_dma_validate_chan(int channel)
++{
++	struct mxs_dma_chan *pchan;
++
++	if ((channel < 0) || (channel >= MXS_MAX_DMA_CHANNELS))
++		return -EINVAL;
++
++	pchan = mxs_dma_channels + channel;
++	if (!(pchan->flags & MXS_DMA_FLAGS_ALLOCATED))
++		return -EINVAL;
++
++	return 0;
++}
++
++/*
++ * Return the address of the command within a descriptor.
++ */
++static unsigned int mxs_dma_cmd_address(struct mxs_dma_desc *desc)
++{
++	return desc->address + offsetof(struct mxs_dma_desc, cmd);
++}
++
++/*
++ * Read a DMA channel's hardware semaphore.
++ *
++ * As used by the MXS platform's DMA software, the DMA channel's hardware
++ * semaphore reflects the number of DMA commands the hardware will process, but
++ * has not yet finished. This is a volatile value read directly from hardware,
++ * so it must be be viewed as immediately stale.
++ *
++ * If the channel is not marked busy, or has finished processing all its
++ * commands, this value should be zero.
++ *
++ * See mxs_dma_append() for details on how DMA command blocks must be configured
++ * to maintain the expected behavior of the semaphore's value.
++ */
++static int mxs_dma_read_semaphore(int channel)
++{
++	void __iomem *apbh_regs = (void *)MXS_APBH_BASE;
++	uint32_t tmp;
++	int ret;
++
++	ret = mxs_dma_validate_chan(channel);
++	if (ret)
++		return ret;
++
++	tmp = readl(apbh_regs + HW_APBHX_CHn_SEMA(channel));
++
++	tmp &= BM_APBHX_CHn_SEMA_PHORE;
++	tmp >>= BP_APBHX_CHn_SEMA_PHORE;
++
++	return tmp;
++}
++
++/*
++ * Enable a DMA channel.
++ *
++ * If the given channel has any DMA descriptors on its active list, this
++ * function causes the DMA hardware to begin processing them.
++ *
++ * This function marks the DMA channel as "busy," whether or not there are any
++ * descriptors to process.
++ */
++static int mxs_dma_enable(int channel)
++{
++	void __iomem *apbh_regs = (void *)MXS_APBH_BASE;
++	unsigned int sem;
++	struct mxs_dma_chan *pchan;
++	struct mxs_dma_desc *pdesc;
++	int channel_bit, ret;
++
++	ret = mxs_dma_validate_chan(channel);
++	if (ret)
++		return ret;
++
++	pchan = mxs_dma_channels + channel;
++
++	if (pchan->pending_num == 0) {
++		pchan->flags |= MXS_DMA_FLAGS_BUSY;
++		return 0;
++	}
++
++	pdesc = list_first_entry(&pchan->active, struct mxs_dma_desc, node);
++	if (pdesc == NULL)
++		return -EFAULT;
++
++	if (pchan->flags & MXS_DMA_FLAGS_BUSY) {
++		if (!(pdesc->cmd.data & MXS_DMA_DESC_CHAIN))
++			return 0;
++
++		sem = mxs_dma_read_semaphore(channel);
++		if (sem == 0)
++			return 0;
++
++		if (sem == 1) {
++			pdesc = list_entry(pdesc->node.next,
++					   struct mxs_dma_desc, node);
++			writel(mxs_dma_cmd_address(pdesc),
++				apbh_regs + HW_APBHX_CHn_NXTCMDAR(channel));
++		}
++		writel(pchan->pending_num,
++			apbh_regs + HW_APBHX_CHn_SEMA(channel));
++		pchan->active_num += pchan->pending_num;
++		pchan->pending_num = 0;
++	} else {
++		pchan->active_num += pchan->pending_num;
++		pchan->pending_num = 0;
++		writel(mxs_dma_cmd_address(pdesc),
++			apbh_regs + HW_APBHX_CHn_NXTCMDAR(channel));
++		writel(pchan->active_num,
++			apbh_regs + HW_APBHX_CHn_SEMA(channel));
++		channel_bit = channel + (apbh_is_old ? BP_APBH_CTRL0_CLKGATE_CHANNEL : 0);
++		writel(1 << channel_bit, apbh_regs + HW_APBHX_CTRL0 + BIT_CLR);
++	}
++
++	pchan->flags |= MXS_DMA_FLAGS_BUSY;
++	return 0;
++}
++
++/*
++ * Disable a DMA channel.
++ *
++ * This function shuts down a DMA channel and marks it as "not busy." Any
++ * descriptors on the active list are immediately moved to the head of the
++ * "done" list, whether or not they have actually been processed by the
++ * hardware. The "ready" flags of these descriptors are NOT cleared, so they
++ * still appear to be active.
++ *
++ * This function immediately shuts down a DMA channel's hardware, aborting any
++ * I/O that may be in progress, potentially leaving I/O hardware in an undefined
++ * state. It is unwise to call this function if there is ANY chance the hardware
++ * is still processing a command.
++ */
++static int mxs_dma_disable(int channel)
++{
++	struct mxs_dma_chan *pchan;
++	void __iomem *apbh_regs = (void *)MXS_APBH_BASE;
++	int channel_bit, ret;
++
++	ret = mxs_dma_validate_chan(channel);
++	if (ret)
++		return ret;
++
++	pchan = mxs_dma_channels + channel;
++
++	if (!(pchan->flags & MXS_DMA_FLAGS_BUSY))
++		return -EINVAL;
++
++	channel_bit = channel + (apbh_is_old ? BP_APBH_CTRL0_CLKGATE_CHANNEL : 0);
++	writel(1 << channel_bit, apbh_regs + HW_APBHX_CTRL0 + BIT_SET);
++
++	pchan->flags &= ~MXS_DMA_FLAGS_BUSY;
++	pchan->active_num = 0;
++	pchan->pending_num = 0;
++	list_splice_init(&pchan->active, &pchan->done);
++
++	return 0;
++}
++
++/*
++ * Resets the DMA channel hardware.
++ */
++static int mxs_dma_reset(int channel)
++{
++	void __iomem *apbh_regs = (void *)MXS_APBH_BASE;
++	int ret;
++
++	ret = mxs_dma_validate_chan(channel);
++	if (ret)
++		return ret;
++
++	if (apbh_is_old)
++		writel(1 << (channel + BP_APBH_CTRL0_RESET_CHANNEL),
++			apbh_regs + HW_APBHX_CTRL0 + BIT_SET);
++	else
++		writel(1 << (channel + BP_APBHX_CHANNEL_CTRL_RESET_CHANNEL),
++			apbh_regs + HW_APBHX_CHANNEL_CTRL + BIT_SET);
++
++	return 0;
++}
++
++/*
++ * Enable or disable DMA interrupt.
++ *
++ * This function enables the given DMA channel to interrupt the CPU.
++ */
++static int mxs_dma_enable_irq(int channel, int enable)
++{
++	void __iomem *apbh_regs = (void *)MXS_APBH_BASE;
++	int ret;
++
++	ret = mxs_dma_validate_chan(channel);
++	if (ret)
++		return ret;
++
++	if (enable)
++		writel(1 << (channel + BP_APBHX_CTRL1_CH_CMDCMPLT_IRQ_EN),
++			apbh_regs + HW_APBHX_CTRL1 + BIT_SET);
++	else
++		writel(1 << (channel + BP_APBHX_CTRL1_CH_CMDCMPLT_IRQ_EN),
++			apbh_regs + HW_APBHX_CTRL1 + BIT_CLR);
++
++	return 0;
++}
++
++/*
++ * Clear DMA interrupt.
++ *
++ * The software that is using the DMA channel must register to receive its
++ * interrupts and, when they arrive, must call this function to clear them.
++ */
++static int mxs_dma_ack_irq(int channel)
++{
++	void __iomem *apbh_regs = (void *)MXS_APBH_BASE;
++	int ret;
++
++	ret = mxs_dma_validate_chan(channel);
++	if (ret)
++		return ret;
++
++	writel(1 << channel, apbh_regs + HW_APBHX_CTRL1 + BIT_CLR);
++	writel(1 << channel, apbh_regs + HW_APBHX_CTRL2 + BIT_CLR);
++
++	return 0;
++}
++
++/*
++ * Request to reserve a DMA channel
++ */
++static int mxs_dma_request(int channel)
++{
++	struct mxs_dma_chan *pchan;
++
++	if ((channel < 0) || (channel >= MXS_MAX_DMA_CHANNELS))
++		return -EINVAL;
++
++	pchan = mxs_dma_channels + channel;
++	if ((pchan->flags & MXS_DMA_FLAGS_VALID) != MXS_DMA_FLAGS_VALID)
++		return -ENODEV;
++
++	if (pchan->flags & MXS_DMA_FLAGS_ALLOCATED)
++		return -EBUSY;
++
++	pchan->flags |= MXS_DMA_FLAGS_ALLOCATED;
++	pchan->active_num = 0;
++	pchan->pending_num = 0;
++
++	INIT_LIST_HEAD(&pchan->active);
++	INIT_LIST_HEAD(&pchan->done);
++
++	return 0;
++}
++
++/*
++ * Release a DMA channel.
++ *
++ * This function releases a DMA channel from its current owner.
++ *
++ * The channel will NOT be released if it's marked "busy" (see
++ * mxs_dma_enable()).
++ */
++static int mxs_dma_release(int channel)
++{
++	struct mxs_dma_chan *pchan;
++	int ret;
++
++	ret = mxs_dma_validate_chan(channel);
++	if (ret)
++		return ret;
++
++	pchan = mxs_dma_channels + channel;
++
++	if (pchan->flags & MXS_DMA_FLAGS_BUSY)
++		return -EBUSY;
++
++	pchan->dev = 0;
++	pchan->active_num = 0;
++	pchan->pending_num = 0;
++	pchan->flags &= ~MXS_DMA_FLAGS_ALLOCATED;
++
++	return 0;
++}
++
++/*
++ * Allocate DMA descriptor
++ */
++struct mxs_dma_desc *mxs_dma_desc_alloc(void)
++{
++	struct mxs_dma_desc *pdesc;
++
++	pdesc = dma_alloc_coherent(sizeof(struct mxs_dma_desc));
++
++	if (pdesc == NULL)
++		return NULL;
++
++	memset(pdesc, 0, sizeof(*pdesc));
++	pdesc->address = (dma_addr_t)pdesc;
++
++	return pdesc;
++};
++
++/*
++ * Free DMA descriptor
++ */
++void mxs_dma_desc_free(struct mxs_dma_desc *pdesc)
++{
++	if (pdesc == NULL)
++		return;
++
++	free(pdesc);
++}
++
++/*
++ * Add a DMA descriptor to a channel.
++ *
++ * If the descriptor list for this channel is not empty, this function sets the
++ * CHAIN bit and the NEXTCMD_ADDR fields in the last descriptor's DMA command so
++ * it will chain to the new descriptor's command.
++ *
++ * Then, this function marks the new descriptor as "ready," adds it to the end
++ * of the active descriptor list, and increments the count of pending
++ * descriptors.
++ *
++ * The MXS platform DMA software imposes some rules on DMA commands to maintain
++ * important invariants. These rules are NOT checked, but they must be carefully
++ * applied by software that uses MXS DMA channels.
++ *
++ * Invariant:
++ *     The DMA channel's hardware semaphore must reflect the number of DMA
++ *     commands the hardware will process, but has not yet finished.
++ *
++ * Explanation:
++ *     A DMA channel begins processing commands when its hardware semaphore is
++ *     written with a value greater than zero, and it stops processing commands
++ *     when the semaphore returns to zero.
++ *
++ *     When a channel finishes a DMA command, it will decrement its semaphore if
++ *     the DECREMENT_SEMAPHORE bit is set in that command's flags bits.
++ *
++ *     In principle, it's not necessary for the DECREMENT_SEMAPHORE to be set,
++ *     unless it suits the purposes of the software. For example, one could
++ *     construct a series of five DMA commands, with the DECREMENT_SEMAPHORE
++ *     bit set only in the last one. Then, setting the DMA channel's hardware
++ *     semaphore to one would cause the entire series of five commands to be
++ *     processed. However, this example would violate the invariant given above.
++ *
++ * Rule:
++ *    ALL DMA commands MUST have the DECREMENT_SEMAPHORE bit set so that the DMA
++ *    channel's hardware semaphore will be decremented EVERY time a command is
++ *    processed.
++ */
++int mxs_dma_desc_append(int channel, struct mxs_dma_desc *pdesc)
++{
++	struct mxs_dma_chan *pchan;
++	struct mxs_dma_desc *last;
++	int ret;
++
++	ret = mxs_dma_validate_chan(channel);
++	if (ret)
++		return ret;
++
++	pchan = mxs_dma_channels + channel;
++
++	pdesc->cmd.next = mxs_dma_cmd_address(pdesc);
++	pdesc->flags |= MXS_DMA_DESC_FIRST | MXS_DMA_DESC_LAST;
++
++	if (!list_empty(&pchan->active)) {
++		last = list_entry(pchan->active.prev, struct mxs_dma_desc,
++					node);
++
++		pdesc->flags &= ~MXS_DMA_DESC_FIRST;
++		last->flags &= ~MXS_DMA_DESC_LAST;
++
++		last->cmd.next = mxs_dma_cmd_address(pdesc);
++		last->cmd.data |= MXS_DMA_DESC_CHAIN;
++	}
++	pdesc->flags |= MXS_DMA_DESC_READY;
++	if (pdesc->flags & MXS_DMA_DESC_FIRST)
++		pchan->pending_num++;
++	list_add_tail(&pdesc->node, &pchan->active);
++
++	return ret;
++}
++
++/*
++ * Clean up processed DMA descriptors.
++ *
++ * This function removes processed DMA descriptors from the "active" list. Pass
++ * in a non-NULL list head to get the descriptors moved to your list. Pass NULL
++ * to get the descriptors moved to the channel's "done" list. Descriptors on
++ * the "done" list can be retrieved with mxs_dma_get_finished().
++ *
++ * This function marks the DMA channel as "not busy" if no unprocessed
++ * descriptors remain on the "active" list.
++ */
++static int mxs_dma_finish(int channel, struct list_head *head)
++{
++	int sem;
++	struct mxs_dma_chan *pchan;
++	struct list_head *p, *q;
++	struct mxs_dma_desc *pdesc;
++	int ret;
++
++	ret = mxs_dma_validate_chan(channel);
++	if (ret)
++		return ret;
++
++	pchan = mxs_dma_channels + channel;
++
++	sem = mxs_dma_read_semaphore(channel);
++	if (sem < 0)
++		return sem;
++
++	if (sem == pchan->active_num)
++		return 0;
++
++	list_for_each_safe(p, q, &pchan->active) {
++		if ((pchan->active_num) <= sem)
++			break;
++
++		pdesc = list_entry(p, struct mxs_dma_desc, node);
++		pdesc->flags &= ~MXS_DMA_DESC_READY;
++
++		if (head)
++			list_move_tail(p, head);
++		else
++			list_move_tail(p, &pchan->done);
++
++		if (pdesc->flags & MXS_DMA_DESC_LAST)
++			pchan->active_num--;
++	}
++
++	if (sem == 0)
++		pchan->flags &= ~MXS_DMA_FLAGS_BUSY;
++
++	return 0;
++}
++
++/*
++ * Wait for DMA channel to complete
++ */
++static int mxs_dma_wait_complete(uint32_t timeout, unsigned int chan)
++{
++	void __iomem *apbh_regs = (void *)MXS_APBH_BASE;
++	int ret;
++
++	ret = mxs_dma_validate_chan(chan);
++	if (ret)
++		return ret;
++
++	while (--timeout) {
++		if (readl(apbh_regs + HW_APBHX_CTRL1) & (1 << chan))
++			break;
++		udelay(1);
++	}
++
++	if (timeout == 0) {
++		ret = -ETIMEDOUT;
++		mxs_dma_reset(chan);
++	}
++
++	return ret;
++}
++
++/*
++ * Execute the DMA channel
++ */
++int mxs_dma_go(int chan)
++{
++	uint32_t timeout = 10000;
++	int ret;
++
++	LIST_HEAD(tmp_desc_list);
++
++	mxs_dma_enable_irq(chan, 1);
++	mxs_dma_enable(chan);
++
++	/* Wait for DMA to finish. */
++	ret = mxs_dma_wait_complete(timeout, chan);
++
++	/* Clear out the descriptors we just ran. */
++	mxs_dma_finish(chan, &tmp_desc_list);
++
++	/* Shut the DMA channel down. */
++	mxs_dma_ack_irq(chan);
++	mxs_dma_reset(chan);
++	mxs_dma_enable_irq(chan, 0);
++	mxs_dma_disable(chan);
++
++	return ret;
++}
++
++/*
++ * Initialize the DMA hardware
++ */
++int mxs_dma_init(void)
++{
++	void __iomem *apbh_regs = (void *)MXS_APBH_BASE;
++	struct mxs_dma_chan *pchan;
++	int ret, channel;
++	u32 val, reg;
++
++	mxs_reset_block(apbh_regs, 0);
++
++	/* HACK: Get CPUID and determine APBH version */
++	val = readl(0x8001c310) >> 16;
++	if (val == 0x2800)
++		reg = MXS_APBH_BASE + 0x0800;
++	else
++		reg = MXS_APBH_BASE + 0x03f0;
++
++	apbh_is_old = (readl((void *)reg) >> 24) < 3;
++
++	writel(BM_APBH_CTRL0_APB_BURST8_EN,
++		apbh_regs + HW_APBHX_CTRL0 + BIT_SET);
++
++	writel(BM_APBH_CTRL0_APB_BURST_EN,
++		apbh_regs + HW_APBHX_CTRL0 + BIT_SET);
++
++	for (channel = 0; channel < MXS_MAX_DMA_CHANNELS; channel++) {
++		pchan = mxs_dma_channels + channel;
++		pchan->flags = MXS_DMA_FLAGS_VALID;
++
++		ret = mxs_dma_request(channel);
++
++		if (ret) {
++			printf("MXS DMA: Can't acquire DMA channel %i\n",
++				channel);
++
++			goto err;
++		}
++
++		mxs_dma_reset(channel);
++		mxs_dma_ack_irq(channel);
++	}
++
++	return 0;
++
++err:
++	while (--channel >= 0)
++		mxs_dma_release(channel);
++	return ret;
++}
+-- 
+1.7.10
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
