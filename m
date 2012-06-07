@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Scjt9-0006ZL-6V
- for barebox@lists.infradead.org; Thu, 07 Jun 2012 21:05:06 +0000
+ id 1ScjtH-0006ad-8A
+ for barebox@lists.infradead.org; Thu, 07 Jun 2012 21:05:14 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  7 Jun 2012 23:04:56 +0200
-Message-Id: <1339103098-32102-3-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  7 Jun 2012 23:04:57 +0200
+Message-Id: <1339103098-32102-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1339103098-32102-1-git-send-email-s.hauer@pengutronix.de>
 References: <1339103098-32102-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,231 +21,191 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] dma: add mxs-apbh-dma driver
+Subject: [PATCH 3/4] mtd nand: add mxs-nand driver
 To: barebox@lists.infradead.org
 Cc: Marek Vasut <marek.vasut@gmail.com>, wsa@pengutronix.de, Wolfram Sang <w.sang@pengutronix.de>
 
 From: Wolfram Sang <w.sang@pengutronix.de>
 
 Based on the U-Boot version. Changed to kernel style register layout, added
-MX23 support, made MMU aware and adapted to barebox.
+MX23 support (WIP!), made MMU aware and adapted to barebox.
 
 Signed-off-by: Marek Vasut <marek.vasut@gmail.com>
 Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-mxs/include/mach/dma.h |  145 +++++++++
- drivers/Kconfig                      |    1 +
- drivers/Makefile                     |    1 +
- drivers/dma/Kconfig                  |    8 +
- drivers/dma/Makefile                 |    1 +
- drivers/dma/apbh_dma.c               |  598 ++++++++++++++++++++++++++++++++++
- 6 files changed, 754 insertions(+)
- create mode 100644 arch/arm/mach-mxs/include/mach/dma.h
- create mode 100644 drivers/dma/Kconfig
- create mode 100644 drivers/dma/Makefile
- create mode 100644 drivers/dma/apbh_dma.c
+ arch/arm/mach-mxs/include/mach/clock-imx23.h |    1 +
+ arch/arm/mach-mxs/include/mach/clock-imx28.h |    1 +
+ arch/arm/mach-mxs/include/mach/imx23-regs.h  |    3 +
+ arch/arm/mach-mxs/include/mach/imx28-regs.h  |    4 +-
+ arch/arm/mach-mxs/speed-imx23.c              |   19 +
+ arch/arm/mach-mxs/speed-imx28.c              |   19 +
+ drivers/mtd/nand/Kconfig                     |    5 +
+ drivers/mtd/nand/Makefile                    |    2 +
+ drivers/mtd/nand/nand_mxs.c                  | 1257 ++++++++++++++++++++++++++
+ 9 files changed, 1310 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/mtd/nand/nand_mxs.c
 
-diff --git a/arch/arm/mach-mxs/include/mach/dma.h b/arch/arm/mach-mxs/include/mach/dma.h
-new file mode 100644
-index 0000000..52747e2
---- /dev/null
-+++ b/arch/arm/mach-mxs/include/mach/dma.h
-@@ -0,0 +1,145 @@
-+/*
-+ * Freescale i.MX28 APBH DMA
-+ *
-+ * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
-+ * on behalf of DENX Software Engineering GmbH
-+ *
-+ * Based on code from LTIB:
-+ * Copyright 2008-2010 Freescale Semiconductor, Inc. All Rights Reserved.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
-+ *
-+ */
-+
-+#ifndef __DMA_H__
-+#define __DMA_H__
-+
-+#include <linux/list.h>
-+
-+#ifndef	CONFIG_ARCH_DMA_PIO_WORDS
-+#define	DMA_PIO_WORDS		15
-+#else
-+#define	DMA_PIO_WORDS		CONFIG_ARCH_DMA_PIO_WORDS
-+#endif
-+
-+#define MXS_DMA_ALIGNMENT	32
-+
-+/*
-+ * MXS DMA channels
-+ */
-+enum {
-+	MXS_DMA_CHANNEL_AHB_APBH_SSP0 = 0,
-+	MXS_DMA_CHANNEL_AHB_APBH_SSP1,
-+	MXS_DMA_CHANNEL_AHB_APBH_SSP2,
-+	MXS_DMA_CHANNEL_AHB_APBH_SSP3,
-+	MXS_DMA_CHANNEL_AHB_APBH_GPMI0,
-+	MXS_DMA_CHANNEL_AHB_APBH_GPMI1,
-+	MXS_DMA_CHANNEL_AHB_APBH_GPMI2,
-+	MXS_DMA_CHANNEL_AHB_APBH_GPMI3,
-+	MXS_DMA_CHANNEL_AHB_APBH_GPMI4,
-+	MXS_DMA_CHANNEL_AHB_APBH_GPMI5,
-+	MXS_DMA_CHANNEL_AHB_APBH_GPMI6,
-+	MXS_DMA_CHANNEL_AHB_APBH_GPMI7,
-+	MXS_DMA_CHANNEL_AHB_APBH_SSP,
-+	MXS_MAX_DMA_CHANNELS,
-+};
-+
-+/*
-+ * MXS DMA hardware command.
-+ *
-+ * This structure describes the in-memory layout of an entire DMA command,
-+ * including space for the maximum number of PIO accesses. See the appropriate
-+ * reference manual for a detailed description of what these fields mean to the
-+ * DMA hardware.
-+ */
-+#define	MXS_DMA_DESC_COMMAND_MASK	0x3
-+#define	MXS_DMA_DESC_COMMAND_OFFSET	0
-+#define	MXS_DMA_DESC_COMMAND_NO_DMAXFER	0x0
-+#define	MXS_DMA_DESC_COMMAND_DMA_WRITE	0x1
-+#define	MXS_DMA_DESC_COMMAND_DMA_READ	0x2
-+#define	MXS_DMA_DESC_COMMAND_DMA_SENSE	0x3
-+#define	MXS_DMA_DESC_CHAIN		(1 << 2)
-+#define	MXS_DMA_DESC_IRQ		(1 << 3)
-+#define	MXS_DMA_DESC_NAND_LOCK		(1 << 4)
-+#define	MXS_DMA_DESC_NAND_WAIT_4_READY	(1 << 5)
-+#define	MXS_DMA_DESC_DEC_SEM		(1 << 6)
-+#define	MXS_DMA_DESC_WAIT4END		(1 << 7)
-+#define	MXS_DMA_DESC_HALT_ON_TERMINATE	(1 << 8)
-+#define	MXS_DMA_DESC_TERMINATE_FLUSH	(1 << 9)
-+#define	MXS_DMA_DESC_PIO_WORDS_MASK	(0xf << 12)
-+#define	MXS_DMA_DESC_PIO_WORDS_OFFSET	12
-+#define	MXS_DMA_DESC_BYTES_MASK		(0xffff << 16)
-+#define	MXS_DMA_DESC_BYTES_OFFSET	16
-+
-+struct mxs_dma_cmd {
-+	unsigned long		next;
-+	unsigned long		data;
-+	union {
-+		dma_addr_t	address;
-+		unsigned long	alternate;
-+	};
-+	unsigned long		pio_words[DMA_PIO_WORDS];
-+};
-+
-+/*
-+ * MXS DMA command descriptor.
-+ *
-+ * This structure incorporates an MXS DMA hardware command structure, along
-+ * with metadata.
-+ */
-+#define	MXS_DMA_DESC_FIRST	(1 << 0)
-+#define	MXS_DMA_DESC_LAST	(1 << 1)
-+#define	MXS_DMA_DESC_READY	(1 << 31)
-+
-+struct mxs_dma_desc {
-+	struct mxs_dma_cmd	cmd;
-+	unsigned int		flags;
-+	dma_addr_t		address;
-+	void			*buffer;
-+	struct list_head	node;
-+};
-+
-+/**
-+ * MXS DMA channel
-+ *
-+ * This structure represents a single DMA channel. The MXS platform code
-+ * maintains an array of these structures to represent every DMA channel in the
-+ * system (see mxs_dma_channels).
-+ */
-+#define	MXS_DMA_FLAGS_IDLE	0
-+#define	MXS_DMA_FLAGS_BUSY	(1 << 0)
-+#define	MXS_DMA_FLAGS_FREE	0
-+#define	MXS_DMA_FLAGS_ALLOCATED	(1 << 16)
-+#define	MXS_DMA_FLAGS_VALID	(1 << 31)
-+
-+struct mxs_dma_chan {
-+	const char *name;
-+	unsigned long dev;
-+	struct mxs_dma_device *dma;
-+	unsigned int flags;
-+	unsigned int active_num;
-+	unsigned int pending_num;
-+	struct list_head active;
-+	struct list_head done;
-+};
-+
-+struct mxs_dma_desc *mxs_dma_desc_alloc(void);
-+void mxs_dma_desc_free(struct mxs_dma_desc *);
-+int mxs_dma_desc_append(int channel, struct mxs_dma_desc *pdesc);
-+
-+int mxs_dma_go(int chan);
-+int mxs_dma_init(void);
-+
-+#endif	/* __DMA_H__ */
-diff --git a/drivers/Kconfig b/drivers/Kconfig
-index c52c56a..037b0d4 100644
---- a/drivers/Kconfig
-+++ b/drivers/Kconfig
-@@ -17,5 +17,6 @@ source "drivers/eeprom/Kconfig"
- source "drivers/input/Kconfig"
+diff --git a/arch/arm/mach-mxs/include/mach/clock-imx23.h b/arch/arm/mach-mxs/include/mach/clock-imx23.h
+index 723f343..410651d 100644
+--- a/arch/arm/mach-mxs/include/mach/clock-imx23.h
++++ b/arch/arm/mach-mxs/include/mach/clock-imx23.h
+@@ -24,5 +24,6 @@ unsigned imx_set_sspclk(unsigned, unsigned, int);
+ unsigned imx_set_ioclk(unsigned);
+ unsigned imx_set_lcdifclk(unsigned);
+ unsigned imx_get_lcdifclk(void);
++void imx_enable_nandclk(void);
  
- source "drivers/pwm/Kconfig"
-+source "drivers/dma/Kconfig"
+ #endif /* MACH_CLOCK_IMX23_H */
+diff --git a/arch/arm/mach-mxs/include/mach/clock-imx28.h b/arch/arm/mach-mxs/include/mach/clock-imx28.h
+index 45fb043..48c53ee 100644
+--- a/arch/arm/mach-mxs/include/mach/clock-imx28.h
++++ b/arch/arm/mach-mxs/include/mach/clock-imx28.h
+@@ -26,6 +26,7 @@ unsigned imx_set_lcdifclk(unsigned);
+ unsigned imx_get_lcdifclk(void);
+ unsigned imx_get_fecclk(void);
+ void imx_enable_enetclk(void);
++void imx_enable_nandclk(void);
  
- endmenu
-diff --git a/drivers/Makefile b/drivers/Makefile
-index 3aefc12..f40b321 100644
---- a/drivers/Makefile
-+++ b/drivers/Makefile
-@@ -15,3 +15,4 @@ obj-$(CONFIG_LED) += led/
- obj-y	+= eeprom/
- obj-$(CONFIG_PWM) += pwm/
- obj-y	+= input/
-+obj-y	+= dma/
-diff --git a/drivers/dma/Kconfig b/drivers/dma/Kconfig
-new file mode 100644
-index 0000000..ec6c894
---- /dev/null
-+++ b/drivers/dma/Kconfig
-@@ -0,0 +1,8 @@
-+menu "DMA support"
+ #endif /* MACH_CLOCK_IMX28_H */
+ 
+diff --git a/arch/arm/mach-mxs/include/mach/imx23-regs.h b/arch/arm/mach-mxs/include/mach/imx23-regs.h
+index 60f5bf9..7ea3057 100644
+--- a/arch/arm/mach-mxs/include/mach/imx23-regs.h
++++ b/arch/arm/mach-mxs/include/mach/imx23-regs.h
+@@ -27,6 +27,9 @@
+ #endif
+ 
+ #define IMX_MEMORY_BASE		0x40000000
++#define MXS_APBH_BASE		0x80004000
++#define MXS_BCH_BASE		0x8000a000
++#define MXS_GPMI_BASE		0x8000c000
+ #define IMX_UART1_BASE		0x8006c000
+ #define IMX_UART2_BASE		0x8006e000
+ #define IMX_DBGUART_BASE	0x80070000
+diff --git a/arch/arm/mach-mxs/include/mach/imx28-regs.h b/arch/arm/mach-mxs/include/mach/imx28-regs.h
+index 9a2052c..04414b8 100644
+--- a/arch/arm/mach-mxs/include/mach/imx28-regs.h
++++ b/arch/arm/mach-mxs/include/mach/imx28-regs.h
+@@ -23,7 +23,9 @@
+ #define IMX_SRAM_BASE		0x00000000
+ #define IMX_MEMORY_BASE		0x40000000
+ 
+-#define IMX_NFC_BASE		0x8000C000
++#define MXS_APBH_BASE		0x80004000
++#define MXS_BCH_BASE		0x8000a000
++#define MXS_GPMI_BASE		0x8000c000
+ #define IMX_SSP0_BASE		0x80010000
+ #define IMX_SSP1_BASE		0x80012000
+ #define IMX_SSP2_BASE		0x80014000
+diff --git a/arch/arm/mach-mxs/speed-imx23.c b/arch/arm/mach-mxs/speed-imx23.c
+index b10c786..3a2a1b6 100644
+--- a/arch/arm/mach-mxs/speed-imx23.c
++++ b/arch/arm/mach-mxs/speed-imx23.c
+@@ -47,6 +47,8 @@
+ # define GET_SSP_DIV(x) ((x) & CLKCTRL_SSP_DIV_MASK)
+ # define SET_SSP_DIV(x) ((x) & CLKCTRL_SSP_DIV_MASK)
+ #define HW_CLKCTRL_GPMI 0x080
++# define CLKCTRL_GPMI_CLKGATE (1 << 31)
++# define CLKCTRL_GPMI_DIV_MASK 0x3ff
+ /* note: no set/clear register! */
+ #define HW_CLKCTRL_SPDIF 0x090
+ /* note: no set/clear register! */
+@@ -266,6 +268,23 @@ unsigned imx_set_sspclk(unsigned index, unsigned nc, int high)
+ 	return imx_get_sspclk(index);
+ }
+ 
++void imx_enable_nandclk(void)
++{
++	uint32_t reg;
 +
-+config MXS_APBH_DMA
-+	tristate "MXS APBH DMA ENGINE"
-+	depends on ARCH_IMX23 || ARCH_IMX28
-+	help
-+	Experimental!
-+endmenu
-diff --git a/drivers/dma/Makefile b/drivers/dma/Makefile
++	/* Clear bypass bit; refman says clear, but fsl-code does set. Hooray! */
++	writel(CLKCTRL_CLKSEQ_BYPASS_GPMI,
++		IMX_CCM_BASE + HW_CLKCTRL_CLKSEQ + BIT_SET);
++
++	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_GPMI) & ~CLKCTRL_GPMI_CLKGATE;
++	writel(reg, IMX_CCM_BASE + HW_CLKCTRL_GPMI);
++	udelay(1000);
++	/* Initialize DIV to 1 */
++	reg &= ~CLKCTRL_GPMI_DIV_MASK;
++	reg |= 1;
++	writel(reg, IMX_CCM_BASE + HW_CLKCTRL_GPMI);
++}
++
+ void imx_dump_clocks(void)
+ {
+ 	printf("mpll:    %10u kHz\n", imx_get_mpllclk() / 1000);
+diff --git a/arch/arm/mach-mxs/speed-imx28.c b/arch/arm/mach-mxs/speed-imx28.c
+index 67cdbdf..8f8c88d 100644
+--- a/arch/arm/mach-mxs/speed-imx28.c
++++ b/arch/arm/mach-mxs/speed-imx28.c
+@@ -48,6 +48,8 @@
+ # define GET_SSP_DIV(x) ((x) & CLKCTRL_SSP_DIV_MASK)
+ # define SET_SSP_DIV(x) ((x) & CLKCTRL_SSP_DIV_MASK)
+ #define HW_CLKCTRL_GPMI 0x0d0
++# define CLKCTRL_GPMI_CLKGATE (1 << 31)
++# define CLKCTRL_GPMI_DIV_MASK 0x3ff
+ /* note: no set/clear register! */
+ #define HW_CLKCTRL_SPDIF 0x0e0
+ /* note: no set/clear register! */
+@@ -376,6 +378,23 @@ void imx_enable_enetclk(void)
+ 		IMX_CCM_BASE + HW_CLKCTRL_ENET);
+ }
+ 
++void imx_enable_nandclk(void)
++{
++	uint32_t reg;
++
++	/* Clear bypass bit; refman says clear, but fsl-code does set. Hooray! */
++	writel(CLKCTRL_CLKSEQ_BYPASS_GPMI,
++		IMX_CCM_BASE + HW_CLKCTRL_CLKSEQ + BIT_SET);
++
++	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_GPMI) & ~CLKCTRL_GPMI_CLKGATE;
++	writel(reg, IMX_CCM_BASE + HW_CLKCTRL_GPMI);
++	udelay(1000);
++	/* Initialize DIV to 1 */
++	reg &= ~CLKCTRL_GPMI_DIV_MASK;
++	reg |= 1;
++	writel(reg, IMX_CCM_BASE + HW_CLKCTRL_GPMI);
++}
++
+ void imx_dump_clocks(void)
+ {
+ 	printf("mpll:    %10u kHz\n", imx_get_mpllclk() / 1000);
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index 926a64b..3f90643 100644
+--- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -53,6 +53,11 @@ config NAND_IMX
+ 	prompt "i.MX NAND driver"
+ 	depends on ARCH_IMX
+ 
++config NAND_MXS
++	bool
++	prompt "i.MX23/28 NAND driver"
++	depends on MXS_APBH_DMA
++
+ config NAND_OMAP_GPMC
+ 	tristate "NAND Flash Support for GPMC based OMAP platforms"
+ 	depends on OMAP_GPMC
+diff --git a/drivers/mtd/nand/Makefile b/drivers/mtd/nand/Makefile
+index 5c6d8b3..4179618 100644
+--- a/drivers/mtd/nand/Makefile
++++ b/drivers/mtd/nand/Makefile
+@@ -15,3 +15,5 @@ obj-$(CONFIG_NAND_IMX)			+= nand_imx.o
+ obj-$(CONFIG_NAND_OMAP_GPMC)		+= nand_omap_gpmc.o nand_omap_bch_decoder.o
+ obj-$(CONFIG_NAND_ATMEL)		+= atmel_nand.o
+ obj-$(CONFIG_NAND_S3C24XX)		+= nand_s3c24xx.o
++obj-$(CONFIG_NAND_S3C24X0)		+= nand_s3c2410.o
++obj-$(CONFIG_NAND_MXS)			+= nand_mxs.o
+diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
 new file mode 100644
-index 0000000..7a3a3b2
+index 0000000..8964436
 --- /dev/null
-+++ b/drivers/dma/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_MXS_APBH_DMA)	+= apbh_dma.o
-diff --git a/drivers/dma/apbh_dma.c b/drivers/dma/apbh_dma.c
-new file mode 100644
-index 0000000..363878f
---- /dev/null
-+++ b/drivers/dma/apbh_dma.c
-@@ -0,0 +1,598 @@
++++ b/drivers/mtd/nand/nand_mxs.c
+@@ -0,0 +1,1257 @@
 +/*
-+ * Freescale i.MX28 APBH DMA driver
++ * Freescale i.MX28 NAND flash driver
 + *
 + * Copyright (C) 2011 Wolfram Sang <w.sang@pengutronix.de>
 + *
@@ -253,7 +213,10 @@ index 0000000..363878f
 + * on behalf of DENX Software Engineering GmbH
 + *
 + * Based on code from LTIB:
-+ * Copyright (C) 2010 Freescale Semiconductor, Inc. All Rights Reserved.
++ * Freescale GPMI NFC NAND Flash Driver
++ *
++ * Copyright (C) 2010 Freescale Semiconductor, Inc.
++ * Copyright (C) 2008 Embedded Alley Solutions, Inc.
 + *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License as published by
@@ -261,587 +224,1243 @@ index 0000000..363878f
 + * (at your option) any later version.
 + */
 +
-+#include <linux/list.h>
-+
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/nand.h>
++#include <linux/types.h>
 +#include <common.h>
 +#include <malloc.h>
 +#include <errno.h>
++#include <driver.h>
++#include <init.h>
 +#include <asm/mmu.h>
 +#include <asm/io.h>
 +#include <mach/clock.h>
 +#include <mach/imx-regs.h>
 +#include <mach/dma.h>
-+#include <mach/mxs.h>
 +
-+#define HW_APBHX_CTRL0				0x000
-+#define BM_APBH_CTRL0_APB_BURST8_EN		(1 << 29)
-+#define BM_APBH_CTRL0_APB_BURST_EN		(1 << 28)
-+#define BP_APBH_CTRL0_CLKGATE_CHANNEL		8
-+#define BP_APBH_CTRL0_RESET_CHANNEL		16
-+#define HW_APBHX_CTRL1				0x010
-+#define	BP_APBHX_CTRL1_CH_CMDCMPLT_IRQ_EN	16
-+#define HW_APBHX_CTRL2				0x020
-+#define HW_APBHX_CHANNEL_CTRL			0x030
-+#define BP_APBHX_CHANNEL_CTRL_RESET_CHANNEL	16
-+#define HW_APBH_VERSION				(cpu_is_mx23() ? 0x3f0 : 0x800)
-+#define HW_APBX_VERSION				0x800
-+#define BP_APBHX_VERSION_MAJOR			24
-+#define HW_APBHX_CHn_NXTCMDAR(n) \
-+	((apbh_is_old ? 0x050 : 0x110) + (n) * 0x70)
-+#define HW_APBHX_CHn_SEMA(n) \
-+	((apbh_is_old ? 0x080 : 0x140) + (n) * 0x70)
-+#define	BM_APBHX_CHn_SEMA_PHORE			(0xff << 16)
-+#define	BP_APBHX_CHn_SEMA_PHORE			16
++#define	MX28_BLOCK_SFTRST				(1 << 31)
++#define	MX28_BLOCK_CLKGATE				(1 << 30)
 +
-+static struct mxs_dma_chan mxs_dma_channels[MXS_MAX_DMA_CHANNELS];
-+static bool apbh_is_old;
++#define GPMI_CTRL0					0x00000000
++#define	GPMI_CTRL0_RUN					(1 << 29)
++#define	GPMI_CTRL0_DEV_IRQ_EN				(1 << 28)
++/* Disable for now since we don't need it and it is different on MX23.
++#define	GPMI_CTRL0_LOCK_CS				(1 << 27)
++*/
++#define	GPMI_CTRL0_UDMA					(1 << 26)
++#define	GPMI_CTRL0_COMMAND_MODE_MASK			(0x3 << 24)
++#define	GPMI_CTRL0_COMMAND_MODE_OFFSET			24
++#define	GPMI_CTRL0_COMMAND_MODE_WRITE			(0x0 << 24)
++#define	GPMI_CTRL0_COMMAND_MODE_READ			(0x1 << 24)
++#define	GPMI_CTRL0_COMMAND_MODE_READ_AND_COMPARE	(0x2 << 24)
++#define	GPMI_CTRL0_COMMAND_MODE_WAIT_FOR_READY		(0x3 << 24)
++#define	GPMI_CTRL0_WORD_LENGTH				(1 << 23)
++/* Careful: Is 0x3 on MX23
++#define	GPMI_CTRL0_CS_MASK				(0x7 << 20)
++*/
++#define	GPMI_CTRL0_CS_OFFSET				20
++#define	GPMI_CTRL0_ADDRESS_MASK				(0x7 << 17)
++#define	GPMI_CTRL0_ADDRESS_OFFSET			17
++#define	GPMI_CTRL0_ADDRESS_NAND_DATA			(0x0 << 17)
++#define	GPMI_CTRL0_ADDRESS_NAND_CLE			(0x1 << 17)
++#define	GPMI_CTRL0_ADDRESS_NAND_ALE			(0x2 << 17)
++#define	GPMI_CTRL0_ADDRESS_INCREMENT			(1 << 16)
++#define	GPMI_CTRL0_XFER_COUNT_MASK			0xffff
++#define	GPMI_CTRL0_XFER_COUNT_OFFSET			0
 +
-+/*
-+ * Test is the DMA channel is valid channel
-+ */
-+int mxs_dma_validate_chan(int channel)
-+{
-+	struct mxs_dma_chan *pchan;
++#define GPMI_CTRL1					0x00000060
++#define	GPMI_CTRL1_DECOUPLE_CS				(1 << 24)
++#define	GPMI_CTRL1_WRN_DLY_SEL_MASK			(0x3 << 22)
++#define	GPMI_CTRL1_WRN_DLY_SEL_OFFSET			22
++#define	GPMI_CTRL1_TIMEOUT_IRQ_EN			(1 << 20)
++#define	GPMI_CTRL1_GANGED_RDYBUSY			(1 << 19)
++#define	GPMI_CTRL1_BCH_MODE				(1 << 18)
++#define	GPMI_CTRL1_DLL_ENABLE				(1 << 17)
++#define	GPMI_CTRL1_HALF_PERIOD				(1 << 16)
++#define	GPMI_CTRL1_RDN_DELAY_MASK			(0xf << 12)
++#define	GPMI_CTRL1_RDN_DELAY_OFFSET			12
++#define	GPMI_CTRL1_DMA2ECC_MODE				(1 << 11)
++#define	GPMI_CTRL1_DEV_IRQ				(1 << 10)
++#define	GPMI_CTRL1_TIMEOUT_IRQ				(1 << 9)
++#define	GPMI_CTRL1_BURST_EN				(1 << 8)
++#define	GPMI_CTRL1_ABORT_WAIT_REQUEST			(1 << 7)
++#define	GPMI_CTRL1_ABORT_WAIT_FOR_READY_CHANNEL_MASK	(0x7 << 4)
++#define	GPMI_CTRL1_ABORT_WAIT_FOR_READY_CHANNEL_OFFSET	4
++#define	GPMI_CTRL1_DEV_RESET				(1 << 3)
++#define	GPMI_CTRL1_ATA_IRQRDY_POLARITY			(1 << 2)
++#define	GPMI_CTRL1_CAMERA_MODE				(1 << 1)
++#define	GPMI_CTRL1_GPMI_MODE				(1 << 0)
 +
-+	if ((channel < 0) || (channel >= MXS_MAX_DMA_CHANNELS))
-+		return -EINVAL;
++#define	GPMI_ECCCTRL_HANDLE_MASK			(0xffff << 16)
++#define	GPMI_ECCCTRL_HANDLE_OFFSET			16
++#define	GPMI_ECCCTRL_ECC_CMD_MASK			(0x3 << 13)
++#define	GPMI_ECCCTRL_ECC_CMD_OFFSET			13
++#define	GPMI_ECCCTRL_ECC_CMD_DECODE			(0x0 << 13)
++#define	GPMI_ECCCTRL_ECC_CMD_ENCODE			(0x1 << 13)
++#define	GPMI_ECCCTRL_ENABLE_ECC				(1 << 12)
++#define	GPMI_ECCCTRL_BUFFER_MASK_MASK			0x1ff
++#define	GPMI_ECCCTRL_BUFFER_MASK_OFFSET			0
++#define	GPMI_ECCCTRL_BUFFER_MASK_BCH_AUXONLY		0x100
++#define	GPMI_ECCCTRL_BUFFER_MASK_BCH_PAGE		0x1ff
 +
-+	pchan = mxs_dma_channels + channel;
-+	if (!(pchan->flags & MXS_DMA_FLAGS_ALLOCATED))
-+		return -EINVAL;
++#define GPMI_STAT				0x000000b0
++#define	GPMI_STAT_READY_BUSY_OFFSET			24
 +
-+	return 0;
-+}
++#define GPMI_DEBUG				0x000000c0
++#define GPMI_DEBUG_READY0_OFFSET			28
 +
-+/*
-+ * Return the address of the command within a descriptor.
-+ */
-+static unsigned int mxs_dma_cmd_address(struct mxs_dma_desc *desc)
-+{
-+	return desc->address + offsetof(struct mxs_dma_desc, cmd);
-+}
++#define GPMI_VERSION				0x000000d0
++#define GPMI_VERSION_MINOR_OFFSET			16
++#define GPMI_VERSION_TYPE_MX23			0x0300
 +
-+/*
-+ * Read a DMA channel's hardware semaphore.
-+ *
-+ * As used by the MXS platform's DMA software, the DMA channel's hardware
-+ * semaphore reflects the number of DMA commands the hardware will process, but
-+ * has not yet finished. This is a volatile value read directly from hardware,
-+ * so it must be be viewed as immediately stale.
-+ *
-+ * If the channel is not marked busy, or has finished processing all its
-+ * commands, this value should be zero.
-+ *
-+ * See mxs_dma_append() for details on how DMA command blocks must be configured
-+ * to maintain the expected behavior of the semaphore's value.
-+ */
-+static int mxs_dma_read_semaphore(int channel)
-+{
-+	void __iomem *apbh_regs = (void *)MXS_APBH_BASE;
-+	uint32_t tmp;
-+	int ret;
++#define BCH_CTRL				0x00000000
++#define	BCH_CTRL_COMPLETE_IRQ			(1 << 0)
++#define	BCH_CTRL_COMPLETE_IRQ_EN		(1 << 8)
 +
-+	ret = mxs_dma_validate_chan(channel);
-+	if (ret)
-+		return ret;
++#define BCH_LAYOUTSELECT			0x00000070
 +
-+	tmp = readl(apbh_regs + HW_APBHX_CHn_SEMA(channel));
++#define BCH_FLASH0LAYOUT0			0x00000080
++#define	BCH_FLASHLAYOUT0_NBLOCKS_MASK			(0xff << 24)
++#define	BCH_FLASHLAYOUT0_NBLOCKS_OFFSET			24
++#define	BCH_FLASHLAYOUT0_META_SIZE_MASK			(0xff << 16)
++#define	BCH_FLASHLAYOUT0_META_SIZE_OFFSET		16
++#define	BCH_FLASHLAYOUT0_ECC0_MASK			(0xf << 12)
++#define	BCH_FLASHLAYOUT0_ECC0_OFFSET			12
 +
-+	tmp &= BM_APBHX_CHn_SEMA_PHORE;
-+	tmp >>= BP_APBHX_CHn_SEMA_PHORE;
++#define BCH_FLASH0LAYOUT1			0x00000090
++#define	BCH_FLASHLAYOUT1_PAGE_SIZE_MASK			(0xffff << 16)
++#define	BCH_FLASHLAYOUT1_PAGE_SIZE_OFFSET		16
++#define	BCH_FLASHLAYOUT1_ECCN_MASK			(0xf << 12)
++#define	BCH_FLASHLAYOUT1_ECCN_OFFSET			12
 +
-+	return tmp;
-+}
++#define	MXS_NAND_DMA_DESCRIPTOR_COUNT		4
 +
-+/*
-+ * Enable a DMA channel.
-+ *
-+ * If the given channel has any DMA descriptors on its active list, this
-+ * function causes the DMA hardware to begin processing them.
-+ *
-+ * This function marks the DMA channel as "busy," whether or not there are any
-+ * descriptors to process.
-+ */
-+static int mxs_dma_enable(int channel)
-+{
-+	void __iomem *apbh_regs = (void *)MXS_APBH_BASE;
-+	unsigned int sem;
-+	struct mxs_dma_chan *pchan;
-+	struct mxs_dma_desc *pdesc;
-+	int channel_bit, ret;
++#define	MXS_NAND_CHUNK_DATA_CHUNK_SIZE		512
++#define	MXS_NAND_METADATA_SIZE			10
 +
-+	ret = mxs_dma_validate_chan(channel);
-+	if (ret)
-+		return ret;
++#define	MXS_NAND_COMMAND_BUFFER_SIZE		32
 +
-+	pchan = mxs_dma_channels + channel;
++#define	MXS_NAND_BCH_TIMEOUT			10000
 +
-+	if (pchan->pending_num == 0) {
-+		pchan->flags |= MXS_DMA_FLAGS_BUSY;
-+		return 0;
-+	}
++struct mxs_nand_info {
++	struct nand_chip	nand_chip;
++	void __iomem		*io_base;
++	struct mtd_info		mtd;
++	u32		version;
 +
-+	pdesc = list_first_entry(&pchan->active, struct mxs_dma_desc, node);
-+	if (pdesc == NULL)
-+		return -EFAULT;
++	int		cur_chip;
 +
-+	if (pchan->flags & MXS_DMA_FLAGS_BUSY) {
-+		if (!(pdesc->cmd.data & MXS_DMA_DESC_CHAIN))
-+			return 0;
++	uint32_t	cmd_queue_len;
 +
-+		sem = mxs_dma_read_semaphore(channel);
-+		if (sem == 0)
-+			return 0;
++	uint8_t		*cmd_buf;
++	uint8_t		*data_buf;
++	uint8_t		*oob_buf;
 +
-+		if (sem == 1) {
-+			pdesc = list_entry(pdesc->node.next,
-+					   struct mxs_dma_desc, node);
-+			writel(mxs_dma_cmd_address(pdesc),
-+				apbh_regs + HW_APBHX_CHn_NXTCMDAR(channel));
-+		}
-+		writel(pchan->pending_num,
-+			apbh_regs + HW_APBHX_CHn_SEMA(channel));
-+		pchan->active_num += pchan->pending_num;
-+		pchan->pending_num = 0;
-+	} else {
-+		pchan->active_num += pchan->pending_num;
-+		pchan->pending_num = 0;
-+		writel(mxs_dma_cmd_address(pdesc),
-+			apbh_regs + HW_APBHX_CHn_NXTCMDAR(channel));
-+		writel(pchan->active_num,
-+			apbh_regs + HW_APBHX_CHn_SEMA(channel));
-+		channel_bit = channel + (apbh_is_old ? BP_APBH_CTRL0_CLKGATE_CHANNEL : 0);
-+		writel(1 << channel_bit, apbh_regs + HW_APBHX_CTRL0 + BIT_CLR);
-+	}
++	uint8_t		marking_block_bad;
++	uint8_t		raw_oob_mode;
 +
-+	pchan->flags |= MXS_DMA_FLAGS_BUSY;
-+	return 0;
-+}
++	/* Functions with altered behaviour */
++	int		(*hooked_read_oob)(struct mtd_info *mtd,
++				loff_t from, struct mtd_oob_ops *ops);
++	int		(*hooked_write_oob)(struct mtd_info *mtd,
++				loff_t to, struct mtd_oob_ops *ops);
++	int		(*hooked_block_markbad)(struct mtd_info *mtd,
++				loff_t ofs);
 +
-+/*
-+ * Disable a DMA channel.
-+ *
-+ * This function shuts down a DMA channel and marks it as "not busy." Any
-+ * descriptors on the active list are immediately moved to the head of the
-+ * "done" list, whether or not they have actually been processed by the
-+ * hardware. The "ready" flags of these descriptors are NOT cleared, so they
-+ * still appear to be active.
-+ *
-+ * This function immediately shuts down a DMA channel's hardware, aborting any
-+ * I/O that may be in progress, potentially leaving I/O hardware in an undefined
-+ * state. It is unwise to call this function if there is ANY chance the hardware
-+ * is still processing a command.
-+ */
-+static int mxs_dma_disable(int channel)
-+{
-+	struct mxs_dma_chan *pchan;
-+	void __iomem *apbh_regs = (void *)MXS_APBH_BASE;
-+	int channel_bit, ret;
-+
-+	ret = mxs_dma_validate_chan(channel);
-+	if (ret)
-+		return ret;
-+
-+	pchan = mxs_dma_channels + channel;
-+
-+	if (!(pchan->flags & MXS_DMA_FLAGS_BUSY))
-+		return -EINVAL;
-+
-+	channel_bit = channel + (apbh_is_old ? BP_APBH_CTRL0_CLKGATE_CHANNEL : 0);
-+	writel(1 << channel_bit, apbh_regs + HW_APBHX_CTRL0 + BIT_SET);
-+
-+	pchan->flags &= ~MXS_DMA_FLAGS_BUSY;
-+	pchan->active_num = 0;
-+	pchan->pending_num = 0;
-+	list_splice_init(&pchan->active, &pchan->done);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Resets the DMA channel hardware.
-+ */
-+static int mxs_dma_reset(int channel)
-+{
-+	void __iomem *apbh_regs = (void *)MXS_APBH_BASE;
-+	int ret;
-+
-+	ret = mxs_dma_validate_chan(channel);
-+	if (ret)
-+		return ret;
-+
-+	if (apbh_is_old)
-+		writel(1 << (channel + BP_APBH_CTRL0_RESET_CHANNEL),
-+			apbh_regs + HW_APBHX_CTRL0 + BIT_SET);
-+	else
-+		writel(1 << (channel + BP_APBHX_CHANNEL_CTRL_RESET_CHANNEL),
-+			apbh_regs + HW_APBHX_CHANNEL_CTRL + BIT_SET);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Enable or disable DMA interrupt.
-+ *
-+ * This function enables the given DMA channel to interrupt the CPU.
-+ */
-+static int mxs_dma_enable_irq(int channel, int enable)
-+{
-+	void __iomem *apbh_regs = (void *)MXS_APBH_BASE;
-+	int ret;
-+
-+	ret = mxs_dma_validate_chan(channel);
-+	if (ret)
-+		return ret;
-+
-+	if (enable)
-+		writel(1 << (channel + BP_APBHX_CTRL1_CH_CMDCMPLT_IRQ_EN),
-+			apbh_regs + HW_APBHX_CTRL1 + BIT_SET);
-+	else
-+		writel(1 << (channel + BP_APBHX_CTRL1_CH_CMDCMPLT_IRQ_EN),
-+			apbh_regs + HW_APBHX_CTRL1 + BIT_CLR);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Clear DMA interrupt.
-+ *
-+ * The software that is using the DMA channel must register to receive its
-+ * interrupts and, when they arrive, must call this function to clear them.
-+ */
-+static int mxs_dma_ack_irq(int channel)
-+{
-+	void __iomem *apbh_regs = (void *)MXS_APBH_BASE;
-+	int ret;
-+
-+	ret = mxs_dma_validate_chan(channel);
-+	if (ret)
-+		return ret;
-+
-+	writel(1 << channel, apbh_regs + HW_APBHX_CTRL1 + BIT_CLR);
-+	writel(1 << channel, apbh_regs + HW_APBHX_CTRL2 + BIT_CLR);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Request to reserve a DMA channel
-+ */
-+static int mxs_dma_request(int channel)
-+{
-+	struct mxs_dma_chan *pchan;
-+
-+	if ((channel < 0) || (channel >= MXS_MAX_DMA_CHANNELS))
-+		return -EINVAL;
-+
-+	pchan = mxs_dma_channels + channel;
-+	if ((pchan->flags & MXS_DMA_FLAGS_VALID) != MXS_DMA_FLAGS_VALID)
-+		return -ENODEV;
-+
-+	if (pchan->flags & MXS_DMA_FLAGS_ALLOCATED)
-+		return -EBUSY;
-+
-+	pchan->flags |= MXS_DMA_FLAGS_ALLOCATED;
-+	pchan->active_num = 0;
-+	pchan->pending_num = 0;
-+
-+	INIT_LIST_HEAD(&pchan->active);
-+	INIT_LIST_HEAD(&pchan->done);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Release a DMA channel.
-+ *
-+ * This function releases a DMA channel from its current owner.
-+ *
-+ * The channel will NOT be released if it's marked "busy" (see
-+ * mxs_dma_enable()).
-+ */
-+static int mxs_dma_release(int channel)
-+{
-+	struct mxs_dma_chan *pchan;
-+	int ret;
-+
-+	ret = mxs_dma_validate_chan(channel);
-+	if (ret)
-+		return ret;
-+
-+	pchan = mxs_dma_channels + channel;
-+
-+	if (pchan->flags & MXS_DMA_FLAGS_BUSY)
-+		return -EBUSY;
-+
-+	pchan->dev = 0;
-+	pchan->active_num = 0;
-+	pchan->pending_num = 0;
-+	pchan->flags &= ~MXS_DMA_FLAGS_ALLOCATED;
-+
-+	return 0;
-+}
-+
-+/*
-+ * Allocate DMA descriptor
-+ */
-+struct mxs_dma_desc *mxs_dma_desc_alloc(void)
-+{
-+	struct mxs_dma_desc *pdesc;
-+
-+	pdesc = dma_alloc_coherent(sizeof(struct mxs_dma_desc));
-+
-+	if (pdesc == NULL)
-+		return NULL;
-+
-+	memset(pdesc, 0, sizeof(*pdesc));
-+	pdesc->address = (dma_addr_t)pdesc;
-+
-+	return pdesc;
++	/* DMA descriptors */
++	struct mxs_dma_desc	**desc;
++	uint32_t		desc_index;
 +};
 +
-+/*
-+ * Free DMA descriptor
-+ */
-+void mxs_dma_desc_free(struct mxs_dma_desc *pdesc)
++struct nand_ecclayout fake_ecc_layout;
++
++static struct mxs_dma_desc *mxs_nand_get_dma_desc(struct mxs_nand_info *info)
 +{
-+	if (pdesc == NULL)
-+		return;
++	struct mxs_dma_desc *desc;
 +
-+	free(pdesc);
-+}
-+
-+/*
-+ * Add a DMA descriptor to a channel.
-+ *
-+ * If the descriptor list for this channel is not empty, this function sets the
-+ * CHAIN bit and the NEXTCMD_ADDR fields in the last descriptor's DMA command so
-+ * it will chain to the new descriptor's command.
-+ *
-+ * Then, this function marks the new descriptor as "ready," adds it to the end
-+ * of the active descriptor list, and increments the count of pending
-+ * descriptors.
-+ *
-+ * The MXS platform DMA software imposes some rules on DMA commands to maintain
-+ * important invariants. These rules are NOT checked, but they must be carefully
-+ * applied by software that uses MXS DMA channels.
-+ *
-+ * Invariant:
-+ *     The DMA channel's hardware semaphore must reflect the number of DMA
-+ *     commands the hardware will process, but has not yet finished.
-+ *
-+ * Explanation:
-+ *     A DMA channel begins processing commands when its hardware semaphore is
-+ *     written with a value greater than zero, and it stops processing commands
-+ *     when the semaphore returns to zero.
-+ *
-+ *     When a channel finishes a DMA command, it will decrement its semaphore if
-+ *     the DECREMENT_SEMAPHORE bit is set in that command's flags bits.
-+ *
-+ *     In principle, it's not necessary for the DECREMENT_SEMAPHORE to be set,
-+ *     unless it suits the purposes of the software. For example, one could
-+ *     construct a series of five DMA commands, with the DECREMENT_SEMAPHORE
-+ *     bit set only in the last one. Then, setting the DMA channel's hardware
-+ *     semaphore to one would cause the entire series of five commands to be
-+ *     processed. However, this example would violate the invariant given above.
-+ *
-+ * Rule:
-+ *    ALL DMA commands MUST have the DECREMENT_SEMAPHORE bit set so that the DMA
-+ *    channel's hardware semaphore will be decremented EVERY time a command is
-+ *    processed.
-+ */
-+int mxs_dma_desc_append(int channel, struct mxs_dma_desc *pdesc)
-+{
-+	struct mxs_dma_chan *pchan;
-+	struct mxs_dma_desc *last;
-+	int ret;
-+
-+	ret = mxs_dma_validate_chan(channel);
-+	if (ret)
-+		return ret;
-+
-+	pchan = mxs_dma_channels + channel;
-+
-+	pdesc->cmd.next = mxs_dma_cmd_address(pdesc);
-+	pdesc->flags |= MXS_DMA_DESC_FIRST | MXS_DMA_DESC_LAST;
-+
-+	if (!list_empty(&pchan->active)) {
-+		last = list_entry(pchan->active.prev, struct mxs_dma_desc,
-+					node);
-+
-+		pdesc->flags &= ~MXS_DMA_DESC_FIRST;
-+		last->flags &= ~MXS_DMA_DESC_LAST;
-+
-+		last->cmd.next = mxs_dma_cmd_address(pdesc);
-+		last->cmd.data |= MXS_DMA_DESC_CHAIN;
-+	}
-+	pdesc->flags |= MXS_DMA_DESC_READY;
-+	if (pdesc->flags & MXS_DMA_DESC_FIRST)
-+		pchan->pending_num++;
-+	list_add_tail(&pdesc->node, &pchan->active);
-+
-+	return ret;
-+}
-+
-+/*
-+ * Clean up processed DMA descriptors.
-+ *
-+ * This function removes processed DMA descriptors from the "active" list. Pass
-+ * in a non-NULL list head to get the descriptors moved to your list. Pass NULL
-+ * to get the descriptors moved to the channel's "done" list. Descriptors on
-+ * the "done" list can be retrieved with mxs_dma_get_finished().
-+ *
-+ * This function marks the DMA channel as "not busy" if no unprocessed
-+ * descriptors remain on the "active" list.
-+ */
-+static int mxs_dma_finish(int channel, struct list_head *head)
-+{
-+	int sem;
-+	struct mxs_dma_chan *pchan;
-+	struct list_head *p, *q;
-+	struct mxs_dma_desc *pdesc;
-+	int ret;
-+
-+	ret = mxs_dma_validate_chan(channel);
-+	if (ret)
-+		return ret;
-+
-+	pchan = mxs_dma_channels + channel;
-+
-+	sem = mxs_dma_read_semaphore(channel);
-+	if (sem < 0)
-+		return sem;
-+
-+	if (sem == pchan->active_num)
-+		return 0;
-+
-+	list_for_each_safe(p, q, &pchan->active) {
-+		if ((pchan->active_num) <= sem)
-+			break;
-+
-+		pdesc = list_entry(p, struct mxs_dma_desc, node);
-+		pdesc->flags &= ~MXS_DMA_DESC_READY;
-+
-+		if (head)
-+			list_move_tail(p, head);
-+		else
-+			list_move_tail(p, &pchan->done);
-+
-+		if (pdesc->flags & MXS_DMA_DESC_LAST)
-+			pchan->active_num--;
++	if (info->desc_index >= MXS_NAND_DMA_DESCRIPTOR_COUNT) {
++		printf("MXS NAND: Too many DMA descriptors requested\n");
++		return NULL;
 +	}
 +
-+	if (sem == 0)
-+		pchan->flags &= ~MXS_DMA_FLAGS_BUSY;
++	desc = info->desc[info->desc_index];
++	info->desc_index++;
++
++	return desc;
++}
++
++static void mxs_nand_return_dma_descs(struct mxs_nand_info *info)
++{
++	int i;
++	struct mxs_dma_desc *desc;
++
++	for (i = 0; i < info->desc_index; i++) {
++		desc = info->desc[i];
++		memset(desc, 0, sizeof(struct mxs_dma_desc));
++		desc->address = (dma_addr_t)desc;
++	}
++
++	info->desc_index = 0;
++}
++
++static uint32_t mxs_nand_ecc_chunk_cnt(uint32_t page_data_size)
++{
++	return page_data_size / MXS_NAND_CHUNK_DATA_CHUNK_SIZE;
++}
++
++static uint32_t mxs_nand_ecc_size_in_bits(uint32_t ecc_strength)
++{
++	return ecc_strength * 13;
++}
++
++static uint32_t mxs_nand_aux_status_offset(void)
++{
++	return (MXS_NAND_METADATA_SIZE + 0x3) & ~0x3;
++}
++
++static inline uint32_t mxs_nand_get_ecc_strength(uint32_t page_data_size,
++						uint32_t page_oob_size)
++{
++	if (page_data_size == 2048)
++		return 8;
++
++	if (page_data_size == 4096) {
++		if (page_oob_size == 128)
++			return 8;
++
++		if (page_oob_size == 218)
++			return 16;
++	}
 +
 +	return 0;
 +}
 +
-+/*
-+ * Wait for DMA channel to complete
-+ */
-+static int mxs_dma_wait_complete(uint32_t timeout, unsigned int chan)
++static inline uint32_t mxs_nand_get_mark_offset(uint32_t page_data_size,
++						uint32_t ecc_strength)
 +{
-+	void __iomem *apbh_regs = (void *)MXS_APBH_BASE;
++	uint32_t chunk_data_size_in_bits;
++	uint32_t chunk_ecc_size_in_bits;
++	uint32_t chunk_total_size_in_bits;
++	uint32_t block_mark_chunk_number;
++	uint32_t block_mark_chunk_bit_offset;
++	uint32_t block_mark_bit_offset;
++
++	chunk_data_size_in_bits = MXS_NAND_CHUNK_DATA_CHUNK_SIZE * 8;
++	chunk_ecc_size_in_bits  = mxs_nand_ecc_size_in_bits(ecc_strength);
++
++	chunk_total_size_in_bits =
++			chunk_data_size_in_bits + chunk_ecc_size_in_bits;
++
++	/* Compute the bit offset of the block mark within the physical page. */
++	block_mark_bit_offset = page_data_size * 8;
++
++	/* Subtract the metadata bits. */
++	block_mark_bit_offset -= MXS_NAND_METADATA_SIZE * 8;
++
++	/*
++	 * Compute the chunk number (starting at zero) in which the block mark
++	 * appears.
++	 */
++	block_mark_chunk_number =
++			block_mark_bit_offset / chunk_total_size_in_bits;
++
++	/*
++	 * Compute the bit offset of the block mark within its chunk, and
++	 * validate it.
++	 */
++	block_mark_chunk_bit_offset = block_mark_bit_offset -
++			(block_mark_chunk_number * chunk_total_size_in_bits);
++
++	if (block_mark_chunk_bit_offset > chunk_data_size_in_bits)
++		return 1;
++
++	/*
++	 * Now that we know the chunk number in which the block mark appears,
++	 * we can subtract all the ECC bits that appear before it.
++	 */
++	block_mark_bit_offset -=
++		block_mark_chunk_number * chunk_ecc_size_in_bits;
++
++	return block_mark_bit_offset;
++}
++
++static uint32_t mxs_nand_mark_byte_offset(struct mtd_info *mtd)
++{
++	uint32_t ecc_strength;
++	ecc_strength = mxs_nand_get_ecc_strength(mtd->writesize, mtd->oobsize);
++	return mxs_nand_get_mark_offset(mtd->writesize, ecc_strength) >> 3;
++}
++
++static uint32_t mxs_nand_mark_bit_offset(struct mtd_info *mtd)
++{
++	uint32_t ecc_strength;
++	ecc_strength = mxs_nand_get_ecc_strength(mtd->writesize, mtd->oobsize);
++	return mxs_nand_get_mark_offset(mtd->writesize, ecc_strength) & 0x7;
++}
++
++/*
++ * Wait for BCH complete IRQ and clear the IRQ
++ */
++static int mxs_nand_wait_for_bch_complete(void)
++{
++	void __iomem *bch_regs = (void __iomem *)MXS_BCH_BASE;
++	int timeout = MXS_NAND_BCH_TIMEOUT;
 +	int ret;
 +
-+	ret = mxs_dma_validate_chan(chan);
-+	if (ret)
-+		return ret;
-+
 +	while (--timeout) {
-+		if (readl(apbh_regs + HW_APBHX_CTRL1) & (1 << chan))
++		if (readl(bch_regs + BCH_CTRL) & BCH_CTRL_COMPLETE_IRQ)
 +			break;
 +		udelay(1);
 +	}
 +
-+	if (timeout == 0) {
-+		ret = -ETIMEDOUT;
-+		mxs_dma_reset(chan);
-+	}
++	ret = (timeout == 0) ? -ETIMEDOUT : 0;
++
++	writel(BCH_CTRL_COMPLETE_IRQ, bch_regs + BCH_CTRL + BIT_CLR);
 +
 +	return ret;
 +}
 +
 +/*
-+ * Execute the DMA channel
++ * This is the function that we install in the cmd_ctrl function pointer of the
++ * owning struct nand_chip. The only functions in the reference implementation
++ * that use these functions pointers are cmdfunc and select_chip.
++ *
++ * In this driver, we implement our own select_chip, so this function will only
++ * be called by the reference implementation's cmdfunc. For this reason, we can
++ * ignore the chip enable bit and concentrate only on sending bytes to the NAND
++ * Flash.
 + */
-+int mxs_dma_go(int chan)
++static void mxs_nand_cmd_ctrl(struct mtd_info *mtd, int data, unsigned int ctrl)
 +{
-+	uint32_t timeout = 10000;
++	struct nand_chip *nand = mtd->priv;
++	struct mxs_nand_info *nand_info = nand->priv;
++	struct mxs_dma_desc *d;
++	uint32_t channel = MXS_DMA_CHANNEL_AHB_APBH_GPMI0 + nand_info->cur_chip;
 +	int ret;
 +
-+	LIST_HEAD(tmp_desc_list);
++	/*
++	 * If this condition is true, something is _VERY_ wrong in MTD
++	 * subsystem!
++	 */
++	if (nand_info->cmd_queue_len == MXS_NAND_COMMAND_BUFFER_SIZE) {
++		printf("MXS NAND: Command queue too long\n");
++		return;
++	}
 +
-+	mxs_dma_enable_irq(chan, 1);
-+	mxs_dma_enable(chan);
++	/*
++	 * Every operation begins with a command byte and a series of zero or
++	 * more address bytes. These are distinguished by either the Address
++	 * Latch Enable (ALE) or Command Latch Enable (CLE) signals being
++	 * asserted. When MTD is ready to execute the command, it will
++	 * deasert both latch enables.
++	 *
++	 * Rather than run a separate DMA operation for every single byte, we
++	 * queue them up and run a single DMA operation for the entire series
++	 * of command and data bytes.
++	 */
++	if (ctrl & (NAND_ALE | NAND_CLE)) {
++		if (data != NAND_CMD_NONE)
++			nand_info->cmd_buf[nand_info->cmd_queue_len++] = data;
++		return;
++	}
 +
-+	/* Wait for DMA to finish. */
-+	ret = mxs_dma_wait_complete(timeout, chan);
++	/*
++	 * If control arrives here, MTD has deasserted both the ALE and CLE,
++	 * which means it's ready to run an operation. Check if we have any
++	 * bytes to send.
++	 */
++	if (nand_info->cmd_queue_len == 0)
++		return;
 +
-+	/* Clear out the descriptors we just ran. */
-+	mxs_dma_finish(chan, &tmp_desc_list);
++	/* Compile the DMA descriptor -- a descriptor that sends command. */
++	d = mxs_nand_get_dma_desc(nand_info);
++	d->cmd.data =
++		MXS_DMA_DESC_COMMAND_DMA_READ | MXS_DMA_DESC_IRQ |
++		MXS_DMA_DESC_CHAIN | MXS_DMA_DESC_DEC_SEM |
++		MXS_DMA_DESC_WAIT4END | (3 << MXS_DMA_DESC_PIO_WORDS_OFFSET) |
++		(nand_info->cmd_queue_len << MXS_DMA_DESC_BYTES_OFFSET);
 +
-+	/* Shut the DMA channel down. */
-+	mxs_dma_ack_irq(chan);
-+	mxs_dma_reset(chan);
-+	mxs_dma_enable_irq(chan, 0);
-+	mxs_dma_disable(chan);
++	d->cmd.address = (dma_addr_t)nand_info->cmd_buf;
++
++	d->cmd.pio_words[0] =
++		GPMI_CTRL0_COMMAND_MODE_WRITE |
++		GPMI_CTRL0_WORD_LENGTH |
++		(nand_info->cur_chip << GPMI_CTRL0_CS_OFFSET) |
++		GPMI_CTRL0_ADDRESS_NAND_CLE |
++		GPMI_CTRL0_ADDRESS_INCREMENT |
++		nand_info->cmd_queue_len;
++
++	mxs_dma_desc_append(channel, d);
++
++	/* Execute the DMA chain. */
++	ret = mxs_dma_go(channel);
++	if (ret)
++		printf("MXS NAND: Error sending command\n");
++
++	mxs_nand_return_dma_descs(nand_info);
++
++	/* Reset the command queue. */
++	nand_info->cmd_queue_len = 0;
++}
++
++/*
++ * Test if the NAND flash is ready.
++ */
++static int mxs_nand_device_ready(struct mtd_info *mtd)
++{
++	struct nand_chip *chip = mtd->priv;
++	struct mxs_nand_info *nand_info = chip->priv;
++	void __iomem *gpmi_regs = (void *)MXS_GPMI_BASE;
++	uint32_t tmp;
++
++	if (nand_info->version > GPMI_VERSION_TYPE_MX23) {
++		tmp = readl(gpmi_regs + GPMI_STAT);
++		tmp >>= (GPMI_STAT_READY_BUSY_OFFSET + nand_info->cur_chip);
++	} else {
++		tmp = readl(gpmi_regs + GPMI_DEBUG);
++		tmp >>= (GPMI_DEBUG_READY0_OFFSET + nand_info->cur_chip);
++	}
++	return tmp & 1;
++}
++
++/*
++ * Select the NAND chip.
++ */
++static void mxs_nand_select_chip(struct mtd_info *mtd, int chip)
++{
++	struct nand_chip *nand = mtd->priv;
++	struct mxs_nand_info *nand_info = nand->priv;
++
++	nand_info->cur_chip = chip;
++}
++
++/*
++ * Handle block mark swapping.
++ *
++ * Note that, when this function is called, it doesn't know whether it's
++ * swapping the block mark, or swapping it *back* -- but it doesn't matter
++ * because the the operation is the same.
++ */
++static void mxs_nand_swap_block_mark(struct mtd_info *mtd,
++					uint8_t *data_buf, uint8_t *oob_buf)
++{
++	struct nand_chip *chip = mtd->priv;
++	struct mxs_nand_info *nand_info = chip->priv;
++
++	uint32_t bit_offset;
++	uint32_t buf_offset;
++
++	uint32_t src;
++	uint32_t dst;
++
++	/* Don't do swapping on MX23 */
++	if (nand_info->version == GPMI_VERSION_TYPE_MX23)
++		return;
++
++	bit_offset = mxs_nand_mark_bit_offset(mtd);
++	buf_offset = mxs_nand_mark_byte_offset(mtd);
++
++	/*
++	 * Get the byte from the data area that overlays the block mark. Since
++	 * the ECC engine applies its own view to the bits in the page, the
++	 * physical block mark won't (in general) appear on a byte boundary in
++	 * the data.
++	 */
++	src = data_buf[buf_offset] >> bit_offset;
++	src |= data_buf[buf_offset + 1] << (8 - bit_offset);
++
++	dst = oob_buf[0];
++
++	oob_buf[0] = src;
++
++	data_buf[buf_offset] &= ~(0xff << bit_offset);
++	data_buf[buf_offset + 1] &= 0xff << bit_offset;
++
++	data_buf[buf_offset] |= dst << bit_offset;
++	data_buf[buf_offset + 1] |= dst >> (8 - bit_offset);
++}
++
++/*
++ * Read data from NAND.
++ */
++static void mxs_nand_read_buf(struct mtd_info *mtd, uint8_t *buf, int length)
++{
++	struct nand_chip *nand = mtd->priv;
++	struct mxs_nand_info *nand_info = nand->priv;
++	struct mxs_dma_desc *d;
++	uint32_t channel = MXS_DMA_CHANNEL_AHB_APBH_GPMI0 + nand_info->cur_chip;
++	int ret;
++
++	if (length > NAND_MAX_PAGESIZE) {
++		printf("MXS NAND: DMA buffer too big\n");
++		return;
++	}
++
++	if (!buf) {
++		printf("MXS NAND: DMA buffer is NULL\n");
++		return;
++	}
++
++	/* Compile the DMA descriptor - a descriptor that reads data. */
++	d = mxs_nand_get_dma_desc(nand_info);
++	d->cmd.data =
++		MXS_DMA_DESC_COMMAND_DMA_WRITE | MXS_DMA_DESC_IRQ |
++		MXS_DMA_DESC_DEC_SEM | MXS_DMA_DESC_WAIT4END |
++		(1 << MXS_DMA_DESC_PIO_WORDS_OFFSET) |
++		(length << MXS_DMA_DESC_BYTES_OFFSET);
++
++	d->cmd.address = (dma_addr_t)nand_info->data_buf;
++
++	d->cmd.pio_words[0] =
++		GPMI_CTRL0_COMMAND_MODE_READ |
++		GPMI_CTRL0_WORD_LENGTH |
++		(nand_info->cur_chip << GPMI_CTRL0_CS_OFFSET) |
++		GPMI_CTRL0_ADDRESS_NAND_DATA |
++		length;
++
++	mxs_dma_desc_append(channel, d);
++
++	/*
++	 * A DMA descriptor that waits for the command to end and the chip to
++	 * become ready.
++	 *
++	 * I think we actually should *not* be waiting for the chip to become
++	 * ready because, after all, we don't care. I think the original code
++	 * did that and no one has re-thought it yet.
++	 */
++	d = mxs_nand_get_dma_desc(nand_info);
++	d->cmd.data =
++		MXS_DMA_DESC_COMMAND_NO_DMAXFER | MXS_DMA_DESC_IRQ |
++		MXS_DMA_DESC_NAND_WAIT_4_READY | MXS_DMA_DESC_DEC_SEM |
++		MXS_DMA_DESC_WAIT4END | (4 << MXS_DMA_DESC_PIO_WORDS_OFFSET);
++
++	d->cmd.address = 0;
++
++	d->cmd.pio_words[0] =
++		GPMI_CTRL0_COMMAND_MODE_WAIT_FOR_READY |
++		GPMI_CTRL0_WORD_LENGTH |
++		(nand_info->cur_chip << GPMI_CTRL0_CS_OFFSET) |
++		GPMI_CTRL0_ADDRESS_NAND_DATA;
++
++	mxs_dma_desc_append(channel, d);
++
++	/* Execute the DMA chain. */
++	ret = mxs_dma_go(channel);
++	if (ret) {
++		printf("MXS NAND: DMA read error\n");
++		goto rtn;
++	}
++
++	memcpy(buf, nand_info->data_buf, length);
++
++rtn:
++	mxs_nand_return_dma_descs(nand_info);
++}
++
++/*
++ * Write data to NAND.
++ */
++static void mxs_nand_write_buf(struct mtd_info *mtd, const uint8_t *buf,
++				int length)
++{
++	struct nand_chip *nand = mtd->priv;
++	struct mxs_nand_info *nand_info = nand->priv;
++	struct mxs_dma_desc *d;
++	uint32_t channel = MXS_DMA_CHANNEL_AHB_APBH_GPMI0 + nand_info->cur_chip;
++	int ret;
++
++	if (length > NAND_MAX_PAGESIZE) {
++		printf("MXS NAND: DMA buffer too big\n");
++		return;
++	}
++
++	if (!buf) {
++		printf("MXS NAND: DMA buffer is NULL\n");
++		return;
++	}
++
++	memcpy(nand_info->data_buf, buf, length);
++
++	/* Compile the DMA descriptor - a descriptor that writes data. */
++	d = mxs_nand_get_dma_desc(nand_info);
++	d->cmd.data =
++		MXS_DMA_DESC_COMMAND_DMA_READ | MXS_DMA_DESC_IRQ |
++		MXS_DMA_DESC_DEC_SEM | MXS_DMA_DESC_WAIT4END |
++		(4 << MXS_DMA_DESC_PIO_WORDS_OFFSET) |
++		(length << MXS_DMA_DESC_BYTES_OFFSET);
++
++	d->cmd.address = (dma_addr_t)nand_info->data_buf;
++
++	d->cmd.pio_words[0] =
++		GPMI_CTRL0_COMMAND_MODE_WRITE |
++		GPMI_CTRL0_WORD_LENGTH |
++		(nand_info->cur_chip << GPMI_CTRL0_CS_OFFSET) |
++		GPMI_CTRL0_ADDRESS_NAND_DATA |
++		length;
++
++	mxs_dma_desc_append(channel, d);
++
++	/* Execute the DMA chain. */
++	ret = mxs_dma_go(channel);
++	if (ret)
++		printf("MXS NAND: DMA write error\n");
++
++	mxs_nand_return_dma_descs(nand_info);
++}
++
++/*
++ * Read a single byte from NAND.
++ */
++static uint8_t mxs_nand_read_byte(struct mtd_info *mtd)
++{
++	uint8_t buf;
++	mxs_nand_read_buf(mtd, &buf, 1);
++	return buf;
++}
++
++/*
++ * Read a page from NAND.
++ */
++static int mxs_nand_ecc_read_page(struct mtd_info *mtd, struct nand_chip *nand,
++					uint8_t *buf)
++{
++	struct mxs_nand_info *nand_info = nand->priv;
++	struct mxs_dma_desc *d;
++	uint32_t channel = MXS_DMA_CHANNEL_AHB_APBH_GPMI0 + nand_info->cur_chip;
++	uint32_t corrected = 0, failed = 0;
++	uint8_t	*status;
++	int i, ret;
++
++	/* Compile the DMA descriptor - wait for ready. */
++	d = mxs_nand_get_dma_desc(nand_info);
++	d->cmd.data =
++		MXS_DMA_DESC_COMMAND_NO_DMAXFER | MXS_DMA_DESC_CHAIN |
++		MXS_DMA_DESC_NAND_WAIT_4_READY | MXS_DMA_DESC_WAIT4END |
++		(1 << MXS_DMA_DESC_PIO_WORDS_OFFSET);
++
++	d->cmd.address = 0;
++
++	d->cmd.pio_words[0] =
++		GPMI_CTRL0_COMMAND_MODE_WAIT_FOR_READY |
++		GPMI_CTRL0_WORD_LENGTH |
++		(nand_info->cur_chip << GPMI_CTRL0_CS_OFFSET) |
++		GPMI_CTRL0_ADDRESS_NAND_DATA;
++
++	mxs_dma_desc_append(channel, d);
++
++	/* Compile the DMA descriptor - enable the BCH block and read. */
++	d = mxs_nand_get_dma_desc(nand_info);
++	d->cmd.data =
++		MXS_DMA_DESC_COMMAND_NO_DMAXFER | MXS_DMA_DESC_CHAIN |
++		MXS_DMA_DESC_WAIT4END |	(6 << MXS_DMA_DESC_PIO_WORDS_OFFSET);
++
++	d->cmd.address = 0;
++
++	d->cmd.pio_words[0] =
++		GPMI_CTRL0_COMMAND_MODE_READ |
++		GPMI_CTRL0_WORD_LENGTH |
++		(nand_info->cur_chip << GPMI_CTRL0_CS_OFFSET) |
++		GPMI_CTRL0_ADDRESS_NAND_DATA |
++		(mtd->writesize + mtd->oobsize);
++	d->cmd.pio_words[1] = 0;
++	d->cmd.pio_words[2] =
++		GPMI_ECCCTRL_ENABLE_ECC |
++		GPMI_ECCCTRL_ECC_CMD_DECODE |
++		GPMI_ECCCTRL_BUFFER_MASK_BCH_PAGE;
++	d->cmd.pio_words[3] = mtd->writesize + mtd->oobsize;
++	d->cmd.pio_words[4] = (dma_addr_t)nand_info->data_buf;
++	d->cmd.pio_words[5] = (dma_addr_t)nand_info->oob_buf;
++
++	mxs_dma_desc_append(channel, d);
++
++	/* Compile the DMA descriptor - disable the BCH block. */
++	d = mxs_nand_get_dma_desc(nand_info);
++	d->cmd.data =
++		MXS_DMA_DESC_COMMAND_NO_DMAXFER | MXS_DMA_DESC_CHAIN |
++		MXS_DMA_DESC_NAND_WAIT_4_READY | MXS_DMA_DESC_WAIT4END |
++		(3 << MXS_DMA_DESC_PIO_WORDS_OFFSET);
++
++	d->cmd.address = 0;
++
++	d->cmd.pio_words[0] =
++		GPMI_CTRL0_COMMAND_MODE_WAIT_FOR_READY |
++		GPMI_CTRL0_WORD_LENGTH |
++		(nand_info->cur_chip << GPMI_CTRL0_CS_OFFSET) |
++		GPMI_CTRL0_ADDRESS_NAND_DATA |
++		(mtd->writesize + mtd->oobsize);
++	d->cmd.pio_words[1] = 0;
++	d->cmd.pio_words[2] = 0;
++
++	mxs_dma_desc_append(channel, d);
++
++	/* Compile the DMA descriptor - deassert the NAND lock and interrupt. */
++	d = mxs_nand_get_dma_desc(nand_info);
++	d->cmd.data =
++		MXS_DMA_DESC_COMMAND_NO_DMAXFER | MXS_DMA_DESC_IRQ |
++		MXS_DMA_DESC_DEC_SEM;
++
++	d->cmd.address = 0;
++
++	mxs_dma_desc_append(channel, d);
++
++	/* Execute the DMA chain. */
++	ret = mxs_dma_go(channel);
++	if (ret) {
++		printf("MXS NAND: DMA read error\n");
++		goto rtn;
++	}
++
++	ret = mxs_nand_wait_for_bch_complete();
++	if (ret) {
++		printf("MXS NAND: BCH read timeout\n");
++		goto rtn;
++	}
++
++	/* Read DMA completed, now do the mark swapping. */
++	mxs_nand_swap_block_mark(mtd, nand_info->data_buf, nand_info->oob_buf);
++
++	/* Loop over status bytes, accumulating ECC status. */
++	status = nand_info->oob_buf + mxs_nand_aux_status_offset();
++	for (i = 0; i < mxs_nand_ecc_chunk_cnt(mtd->writesize); i++) {
++		if (status[i] == 0x00)
++			continue;
++
++		if (status[i] == 0xff)
++			continue;
++
++		if (status[i] == 0xfe) {
++			failed++;
++			continue;
++		}
++
++		corrected += status[i];
++	}
++
++	/* Propagate ECC status to the owning MTD. */
++	mtd->ecc_stats.failed += failed;
++	mtd->ecc_stats.corrected += corrected;
++
++	/*
++	 * It's time to deliver the OOB bytes. See mxs_nand_ecc_read_oob() for
++	 * details about our policy for delivering the OOB.
++	 *
++	 * We fill the caller's buffer with set bits, and then copy the block
++	 * mark to the caller's buffer. Note that, if block mark swapping was
++	 * necessary, it has already been done, so we can rely on the first
++	 * byte of the auxiliary buffer to contain the block mark.
++	 */
++	memset(nand->oob_poi, 0xff, mtd->oobsize);
++
++	nand->oob_poi[0] = nand_info->oob_buf[0];
++
++	memcpy(buf, nand_info->data_buf, mtd->writesize);
++
++rtn:
++	mxs_nand_return_dma_descs(nand_info);
 +
 +	return ret;
 +}
 +
 +/*
-+ * Initialize the DMA hardware
++ * Write a page to NAND.
 + */
-+int mxs_dma_init(void)
++static void mxs_nand_ecc_write_page(struct mtd_info *mtd,
++				struct nand_chip *nand, const uint8_t *buf)
 +{
-+	void __iomem *apbh_regs = (void *)MXS_APBH_BASE;
-+	struct mxs_dma_chan *pchan;
-+	int ret, channel;
-+	u32 val, reg;
++	struct mxs_nand_info *nand_info = nand->priv;
++	struct mxs_dma_desc *d;
++	uint32_t channel = MXS_DMA_CHANNEL_AHB_APBH_GPMI0 + nand_info->cur_chip;
++	int ret;
 +
-+	mxs_reset_block(apbh_regs, 0);
++	memcpy(nand_info->data_buf, buf, mtd->writesize);
++	memcpy(nand_info->oob_buf, nand->oob_poi, mtd->oobsize);
 +
-+	/* HACK: Get CPUID and determine APBH version */
-+	val = readl(0x8001c310) >> 16;
-+	if (val == 0x2800)
-+		reg = MXS_APBH_BASE + 0x0800;
++	/* Handle block mark swapping. */
++	mxs_nand_swap_block_mark(mtd, nand_info->data_buf, nand_info->oob_buf);
++
++	/* Compile the DMA descriptor - write data. */
++	d = mxs_nand_get_dma_desc(nand_info);
++	d->cmd.data =
++		MXS_DMA_DESC_COMMAND_NO_DMAXFER | MXS_DMA_DESC_IRQ |
++		MXS_DMA_DESC_DEC_SEM | MXS_DMA_DESC_WAIT4END |
++		(6 << MXS_DMA_DESC_PIO_WORDS_OFFSET);
++
++	d->cmd.address = 0;
++
++	d->cmd.pio_words[0] =
++		GPMI_CTRL0_COMMAND_MODE_WRITE |
++		GPMI_CTRL0_WORD_LENGTH |
++		(nand_info->cur_chip << GPMI_CTRL0_CS_OFFSET) |
++		GPMI_CTRL0_ADDRESS_NAND_DATA;
++	d->cmd.pio_words[1] = 0;
++	d->cmd.pio_words[2] =
++		GPMI_ECCCTRL_ENABLE_ECC |
++		GPMI_ECCCTRL_ECC_CMD_ENCODE |
++		GPMI_ECCCTRL_BUFFER_MASK_BCH_PAGE;
++	d->cmd.pio_words[3] = (mtd->writesize + mtd->oobsize);
++	d->cmd.pio_words[4] = (dma_addr_t)nand_info->data_buf;
++	d->cmd.pio_words[5] = (dma_addr_t)nand_info->oob_buf;
++
++	mxs_dma_desc_append(channel, d);
++
++	/* Execute the DMA chain. */
++	ret = mxs_dma_go(channel);
++	if (ret) {
++		printf("MXS NAND: DMA write error\n");
++		goto rtn;
++	}
++
++	ret = mxs_nand_wait_for_bch_complete();
++	if (ret) {
++		printf("MXS NAND: BCH write timeout\n");
++		goto rtn;
++	}
++
++rtn:
++	mxs_nand_return_dma_descs(nand_info);
++}
++
++/*
++ * Read OOB from NAND.
++ *
++ * This function is a veneer that replaces the function originally installed by
++ * the NAND Flash MTD code.
++ */
++static int mxs_nand_hook_read_oob(struct mtd_info *mtd, loff_t from,
++					struct mtd_oob_ops *ops)
++{
++	struct nand_chip *chip = mtd->priv;
++	struct mxs_nand_info *nand_info = chip->priv;
++	int ret;
++
++	if (ops->mode == MTD_OOB_RAW)
++		nand_info->raw_oob_mode = 1;
 +	else
-+		reg = MXS_APBH_BASE + 0x03f0;
++		nand_info->raw_oob_mode = 0;
 +
-+	apbh_is_old = (readl((void *)reg) >> 24) < 3;
++	ret = nand_info->hooked_read_oob(mtd, from, ops);
 +
-+	writel(BM_APBH_CTRL0_APB_BURST8_EN,
-+		apbh_regs + HW_APBHX_CTRL0 + BIT_SET);
++	nand_info->raw_oob_mode = 0;
 +
-+	writel(BM_APBH_CTRL0_APB_BURST_EN,
-+		apbh_regs + HW_APBHX_CTRL0 + BIT_SET);
++	return ret;
++}
 +
-+	for (channel = 0; channel < MXS_MAX_DMA_CHANNELS; channel++) {
-+		pchan = mxs_dma_channels + channel;
-+		pchan->flags = MXS_DMA_FLAGS_VALID;
++/*
++ * Write OOB to NAND.
++ *
++ * This function is a veneer that replaces the function originally installed by
++ * the NAND Flash MTD code.
++ */
++static int mxs_nand_hook_write_oob(struct mtd_info *mtd, loff_t to,
++					struct mtd_oob_ops *ops)
++{
++	struct nand_chip *chip = mtd->priv;
++	struct mxs_nand_info *nand_info = chip->priv;
++	int ret;
 +
-+		ret = mxs_dma_request(channel);
++	if (ops->mode == MTD_OOB_RAW)
++		nand_info->raw_oob_mode = 1;
++	else
++		nand_info->raw_oob_mode = 0;
 +
-+		if (ret) {
-+			printf("MXS DMA: Can't acquire DMA channel %i\n",
-+				channel);
++	ret = nand_info->hooked_write_oob(mtd, to, ops);
 +
-+			goto err;
-+		}
++	nand_info->raw_oob_mode = 0;
 +
-+		mxs_dma_reset(channel);
-+		mxs_dma_ack_irq(channel);
++	return ret;
++}
++
++/*
++ * Mark a block bad in NAND.
++ *
++ * This function is a veneer that replaces the function originally installed by
++ * the NAND Flash MTD code.
++ */
++static int mxs_nand_hook_block_markbad(struct mtd_info *mtd, loff_t ofs)
++{
++	struct nand_chip *chip = mtd->priv;
++	struct mxs_nand_info *nand_info = chip->priv;
++	int ret;
++
++	nand_info->marking_block_bad = 1;
++
++	ret = nand_info->hooked_block_markbad(mtd, ofs);
++
++	nand_info->marking_block_bad = 0;
++
++	return ret;
++}
++
++/*
++ * There are several places in this driver where we have to handle the OOB and
++ * block marks. This is the function where things are the most complicated, so
++ * this is where we try to explain it all. All the other places refer back to
++ * here.
++ *
++ * These are the rules, in order of decreasing importance:
++ *
++ * 1) Nothing the caller does can be allowed to imperil the block mark, so all
++ *    write operations take measures to protect it.
++ *
++ * 2) In read operations, the first byte of the OOB we return must reflect the
++ *    true state of the block mark, no matter where that block mark appears in
++ *    the physical page.
++ *
++ * 3) ECC-based read operations return an OOB full of set bits (since we never
++ *    allow ECC-based writes to the OOB, it doesn't matter what ECC-based reads
++ *    return).
++ *
++ * 4) "Raw" read operations return a direct view of the physical bytes in the
++ *    page, using the conventional definition of which bytes are data and which
++ *    are OOB. This gives the caller a way to see the actual, physical bytes
++ *    in the page, without the distortions applied by our ECC engine.
++ *
++ * What we do for this specific read operation depends on whether we're doing
++ * "raw" read, or an ECC-based read.
++ *
++ * It turns out that knowing whether we want an "ECC-based" or "raw" read is not
++ * easy. When reading a page, for example, the NAND Flash MTD code calls our
++ * ecc.read_page or ecc.read_page_raw function. Thus, the fact that MTD wants an
++ * ECC-based or raw view of the page is implicit in which function it calls
++ * (there is a similar pair of ECC-based/raw functions for writing).
++ *
++ * Since MTD assumes the OOB is not covered by ECC, there is no pair of
++ * ECC-based/raw functions for reading or or writing the OOB. The fact that the
++ * caller wants an ECC-based or raw view of the page is not propagated down to
++ * this driver.
++ *
++ * Since our OOB *is* covered by ECC, we need this information. So, we hook the
++ * ecc.read_oob and ecc.write_oob function pointers in the owning
++ * struct mtd_info with our own functions. These hook functions set the
++ * raw_oob_mode field so that, when control finally arrives here, we'll know
++ * what to do.
++ */
++static int mxs_nand_ecc_read_oob(struct mtd_info *mtd, struct nand_chip *nand,
++				int page, int cmd)
++{
++	struct mxs_nand_info *nand_info = nand->priv;
++	int column;
++
++	/*
++	 * First, fill in the OOB buffer. If we're doing a raw read, we need to
++	 * get the bytes from the physical page. If we're not doing a raw read,
++	 * we need to fill the buffer with set bits.
++	 */
++	if (nand_info->raw_oob_mode && nand_info->version > GPMI_VERSION_TYPE_MX23) {
++		/*
++		 * If control arrives here, we're doing a "raw" read. Send the
++		 * command to read the conventional OOB and read it.
++		 */
++		nand->cmdfunc(mtd, NAND_CMD_READ0, mtd->writesize, page);
++		nand->read_buf(mtd, nand->oob_poi, mtd->oobsize);
++	} else {
++		/*
++		 * If control arrives here, we're not doing a "raw" read. Fill
++		 * the OOB buffer with set bits and correct the block mark.
++		 */
++		memset(nand->oob_poi, 0xff, mtd->oobsize);
++
++		column = nand_info->version == GPMI_VERSION_TYPE_MX23 ? 0 : mtd->writesize;
++		nand->cmdfunc(mtd, NAND_CMD_READ0, column, page);
++		mxs_nand_read_buf(mtd, nand->oob_poi, 1);
 +	}
 +
 +	return 0;
 +
-+err:
-+	while (--channel >= 0)
-+		mxs_dma_release(channel);
-+	return ret;
 +}
++
++/*
++ * Write OOB data to NAND.
++ */
++static int mxs_nand_ecc_write_oob(struct mtd_info *mtd, struct nand_chip *nand,
++					int page)
++{
++	struct mxs_nand_info *nand_info = nand->priv;
++	int column;
++	uint8_t block_mark = 0;
++
++	/*
++	 * There are fundamental incompatibilities between the i.MX GPMI NFC and
++	 * the NAND Flash MTD model that make it essentially impossible to write
++	 * the out-of-band bytes.
++	 *
++	 * We permit *ONE* exception. If the *intent* of writing the OOB is to
++	 * mark a block bad, we can do that.
++	 */
++
++	if (!nand_info->marking_block_bad) {
++		printf("NXS NAND: Writing OOB isn't supported\n");
++		return -EIO;
++	}
++
++	column = nand_info->version == GPMI_VERSION_TYPE_MX23 ? 0 : mtd->writesize;
++	/* Write the block mark. */
++	nand->cmdfunc(mtd, NAND_CMD_SEQIN, column, page);
++	nand->write_buf(mtd, &block_mark, 1);
++	nand->cmdfunc(mtd, NAND_CMD_PAGEPROG, -1, -1);
++
++	/* Check if it worked. */
++	if (nand->waitfunc(mtd, nand) & NAND_STATUS_FAIL)
++		return -EIO;
++
++	return 0;
++}
++
++/*
++ * Claims all blocks are good.
++ *
++ * In principle, this function is *only* called when the NAND Flash MTD system
++ * isn't allowed to keep an in-memory bad block table, so it is forced to ask
++ * the driver for bad block information.
++ *
++ * In fact, we permit the NAND Flash MTD system to have an in-memory BBT, so
++ * this function is *only* called when we take it away.
++ *
++ * Thus, this function is only called when we want *all* blocks to look good,
++ * so it *always* return success.
++ */
++static int mxs_nand_block_bad(struct mtd_info *mtd, loff_t ofs, int getchip)
++{
++	return 0;
++}
++
++/*
++ * Nominally, the purpose of this function is to look for or create the bad
++ * block table. In fact, since the we call this function at the very end of
++ * the initialization process started by nand_scan(), and we doesn't have a
++ * more formal mechanism, we "hook" this function to continue init process.
++ *
++ * At this point, the physical NAND Flash chips have been identified and
++ * counted, so we know the physical geometry. This enables us to make some
++ * important configuration decisions.
++ *
++ * The return value of this function propogates directly back to this driver's
++ * call to nand_scan(). Anything other than zero will cause this driver to
++ * tear everything down and declare failure.
++ */
++static int mxs_nand_scan_bbt(struct mtd_info *mtd)
++{
++	struct nand_chip *nand = mtd->priv;
++	struct mxs_nand_info *nand_info = nand->priv;
++	void __iomem *bch_regs = (void __iomem *)MXS_BCH_BASE;
++	uint32_t tmp;
++
++	/* Reset BCH. Don't use SFTRST on MX23 due to Errata #2847 */
++	mxs_reset_block(bch_regs + BCH_CTRL, nand_info->version == GPMI_VERSION_TYPE_MX23);
++
++	/* Configure layout 0 */
++	tmp = (mxs_nand_ecc_chunk_cnt(mtd->writesize) - 1)
++		<< BCH_FLASHLAYOUT0_NBLOCKS_OFFSET;
++	tmp |= MXS_NAND_METADATA_SIZE << BCH_FLASHLAYOUT0_META_SIZE_OFFSET;
++	tmp |= (mxs_nand_get_ecc_strength(mtd->writesize, mtd->oobsize) >> 1)
++		<< BCH_FLASHLAYOUT0_ECC0_OFFSET;
++	tmp |= MXS_NAND_CHUNK_DATA_CHUNK_SIZE;
++	writel(tmp, bch_regs + BCH_FLASH0LAYOUT0);
++
++	tmp = (mtd->writesize + mtd->oobsize)
++		<< BCH_FLASHLAYOUT1_PAGE_SIZE_OFFSET;
++	tmp |= (mxs_nand_get_ecc_strength(mtd->writesize, mtd->oobsize) >> 1)
++		<< BCH_FLASHLAYOUT1_ECCN_OFFSET;
++	tmp |= MXS_NAND_CHUNK_DATA_CHUNK_SIZE;
++	writel(tmp, bch_regs + BCH_FLASH0LAYOUT1);
++
++	/* Set *all* chip selects to use layout 0 */
++	writel(0, bch_regs + BCH_LAYOUTSELECT);
++
++	/* Enable BCH complete interrupt */
++	writel(BCH_CTRL_COMPLETE_IRQ_EN, bch_regs + BCH_CTRL + BIT_SET);
++
++	/* Hook some operations at the MTD level. */
++	if (mtd->read_oob != mxs_nand_hook_read_oob) {
++		nand_info->hooked_read_oob = mtd->read_oob;
++		mtd->read_oob = mxs_nand_hook_read_oob;
++	}
++
++	if (mtd->write_oob != mxs_nand_hook_write_oob) {
++		nand_info->hooked_write_oob = mtd->write_oob;
++		mtd->write_oob = mxs_nand_hook_write_oob;
++	}
++
++	if (mtd->block_markbad != mxs_nand_hook_block_markbad) {
++		nand_info->hooked_block_markbad = mtd->block_markbad;
++		mtd->block_markbad = mxs_nand_hook_block_markbad;
++	}
++
++	/* We use the reference implementation for bad block management. */
++	return nand_default_bbt(mtd);
++}
++
++/*
++ * Allocate DMA buffers
++ */
++int mxs_nand_alloc_buffers(struct mxs_nand_info *nand_info)
++{
++	uint8_t *buf;
++	const int size = NAND_MAX_PAGESIZE + NAND_MAX_OOBSIZE;
++
++	/* DMA buffers */
++	buf = dma_alloc_coherent(size);
++	if (!buf) {
++		printf("MXS NAND: Error allocating DMA buffers\n");
++		return -ENOMEM;
++	}
++
++	memset(buf, 0, size);
++
++	nand_info->data_buf = buf;
++	nand_info->oob_buf = buf + NAND_MAX_PAGESIZE;
++
++	/* Command buffers */
++	nand_info->cmd_buf = dma_alloc_coherent(MXS_NAND_COMMAND_BUFFER_SIZE);
++	if (!nand_info->cmd_buf) {
++		free(buf);
++		printf("MXS NAND: Error allocating command buffers\n");
++		return -ENOMEM;
++	}
++	memset(nand_info->cmd_buf, 0, MXS_NAND_COMMAND_BUFFER_SIZE);
++	nand_info->cmd_queue_len = 0;
++
++	return 0;
++}
++
++/*
++ * Initializes the NFC hardware.
++ */
++int mxs_nand_hw_init(struct mxs_nand_info *info)
++{
++	void __iomem *gpmi_regs = (void *)MXS_GPMI_BASE;
++	int i = 0;
++	u32 val;
++
++	info->desc = malloc(sizeof(struct mxs_dma_desc *) *
++				MXS_NAND_DMA_DESCRIPTOR_COUNT);
++	if (!info->desc)
++		goto err1;
++
++	/* Allocate the DMA descriptors. */
++	for (i = 0; i < MXS_NAND_DMA_DESCRIPTOR_COUNT; i++) {
++		info->desc[i] = mxs_dma_desc_alloc();
++		if (!info->desc[i])
++			goto err2;
++	}
++
++	/* Init the DMA controller. */
++	mxs_dma_init();
++
++	imx_enable_nandclk();
++
++	/* Reset the GPMI block. */
++	mxs_reset_block(gpmi_regs + GPMI_CTRL0, 0);
++
++	/*
++	 * Choose NAND mode, set IRQ polarity, disable write protection and
++	 * select BCH ECC.
++	 */
++	val = readl(gpmi_regs + GPMI_CTRL1);
++	val &= ~GPMI_CTRL1_GPMI_MODE;
++	val |= GPMI_CTRL1_ATA_IRQRDY_POLARITY | GPMI_CTRL1_DEV_RESET |
++		GPMI_CTRL1_BCH_MODE;
++	writel(val, gpmi_regs + GPMI_CTRL1);
++
++	val = readl(gpmi_regs + GPMI_VERSION);
++	info->version = val >> GPMI_VERSION_MINOR_OFFSET;
++
++	return 0;
++
++err2:
++	free(info->desc);
++err1:
++	for (--i; i >= 0; i--)
++		mxs_dma_desc_free(info->desc[i]);
++	printf("MXS NAND: Unable to allocate DMA descriptors\n");
++	return -ENOMEM;
++}
++
++static int mxs_nand_probe(struct device_d *dev)
++{
++	struct mxs_nand_info *nand_info;
++	struct nand_chip *nand;
++	struct mtd_info *mtd;
++	int err;
++
++	nand_info = kzalloc(sizeof(struct mxs_nand_info), GFP_KERNEL);
++	if (!nand_info) {
++		printf("MXS NAND: Failed to allocate private data\n");
++		return -ENOMEM;
++	}
++
++	/* XXX: Remove u-boot specific access pointers and use io_base instead? */
++	nand_info->io_base = dev_request_mem_region(dev, 0);
++
++	err = mxs_nand_alloc_buffers(nand_info);
++	if (err)
++		goto err1;
++
++	err = mxs_nand_hw_init(nand_info);
++	if (err)
++		goto err2;
++
++	memset(&fake_ecc_layout, 0, sizeof(fake_ecc_layout));
++
++	/* structures must be linked */
++	nand = &nand_info->nand_chip;
++	mtd = &nand_info->mtd;
++	mtd->priv = nand;
++
++	nand->priv = nand_info;
++	nand->options |= NAND_NO_SUBPAGE_WRITE;
++
++	nand->cmd_ctrl		= mxs_nand_cmd_ctrl;
++
++	nand->dev_ready		= mxs_nand_device_ready;
++	nand->select_chip	= mxs_nand_select_chip;
++	nand->block_bad		= mxs_nand_block_bad;
++	nand->scan_bbt		= mxs_nand_scan_bbt;
++
++	nand->read_byte		= mxs_nand_read_byte;
++
++	nand->read_buf		= mxs_nand_read_buf;
++	nand->write_buf		= mxs_nand_write_buf;
++
++	nand->ecc.read_page	= mxs_nand_ecc_read_page;
++	nand->ecc.write_page	= mxs_nand_ecc_write_page;
++	nand->ecc.read_oob	= mxs_nand_ecc_read_oob;
++	nand->ecc.write_oob	= mxs_nand_ecc_write_oob;
++
++	nand->ecc.layout	= &fake_ecc_layout;
++	nand->ecc.mode		= NAND_ECC_HW;
++	nand->ecc.bytes		= 9;
++	nand->ecc.size		= 512;
++
++	/* Scan to find existence of the device */
++	err = nand_scan(mtd, 1);
++	if (err)
++		goto err2;
++
++	return add_mtd_device(mtd, "nand");
++err2:
++	free(nand_info->data_buf);
++	free(nand_info->cmd_buf);
++err1:
++	free(nand_info);
++	return err;
++}
++
++static struct driver_d mxs_nand_driver = {
++	.name  = "mxs_nand",
++	.probe = mxs_nand_probe,
++};
++
++static int __init mxs_nand_init(void)
++{
++	return register_driver(&mxs_nand_driver);
++}
++
++device_initcall(mxs_nand_init);
++
++MODULE_AUTHOR("Denx Software Engeneering and Wolfram Sang");
++MODULE_DESCRIPTION("MXS NAND MTD driver");
++MODULE_LICENSE("GPL");
 -- 
 1.7.10
 
