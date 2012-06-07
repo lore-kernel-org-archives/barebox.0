@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ScjSe-0005jW-J5
+ id 1ScjSe-0005jX-J9
  for barebox@lists.infradead.org; Thu, 07 Jun 2012 20:37:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  7 Jun 2012 22:37:35 +0200
-Message-Id: <1339101456-8116-3-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  7 Jun 2012 22:37:36 +0200
+Message-Id: <1339101456-8116-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1339101456-8116-1-git-send-email-s.hauer@pengutronix.de>
 References: <1339101456-8116-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,61 +21,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] defaultenv-2: mount tftp server specified in
- $eth0.serverip
+Subject: [PATCH 3/3] defaultenv-2: remove global.tftp.path
 To: barebox@lists.infradead.org
 
-This is always the tftp server specified in /env/network/eth0,
-this could be either the one returned from a dhcp request or
-a manually specified one, but in the end it's always the right
-one.
+This variable is set in /env/init/general and then used
+in /env/boot/* which is a bit confusing. Also it does not
+necessarily have to be a tftp path (could be nfs aswell).
+Use a local variable in the scripts using it instead to make
+the meaning a bit more clear.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- defaultenv-2/base/init/automount |   11 +++--------
- defaultenv-2/base/init/general   |    2 +-
- 2 files changed, 4 insertions(+), 9 deletions(-)
+ defaultenv-2/base/bin/init     |    2 --
+ defaultenv-2/base/boot/initrd  |    5 +++--
+ defaultenv-2/base/boot/net     |    6 ++++--
+ defaultenv-2/base/init/general |    3 ---
+ 4 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/defaultenv-2/base/init/automount b/defaultenv-2/base/init/automount
-index 63099f9..7b53309 100644
---- a/defaultenv-2/base/init/automount
-+++ b/defaultenv-2/base/init/automount
-@@ -5,10 +5,10 @@ if [ "$1" = menu ]; then
+diff --git a/defaultenv-2/base/bin/init b/defaultenv-2/base/bin/init
+index e293c62..9d7eb2e 100644
+--- a/defaultenv-2/base/bin/init
++++ b/defaultenv-2/base/bin/init
+@@ -4,8 +4,6 @@ export PATH=/env/bin
+ 
+ global hostname=generic
+ global user=none
+-global tftp.server
+-global tftp.path=/mnt/tftp-dhcp
+ global autoboot_timeout=3
+ global boot.default=net
+ global allow_color=true
+diff --git a/defaultenv-2/base/boot/initrd b/defaultenv-2/base/boot/initrd
+index 1a1e629..79a353a 100644
+--- a/defaultenv-2/base/boot/initrd
++++ b/defaultenv-2/base/boot/initrd
+@@ -5,8 +5,9 @@ if [ "$1" = menu ]; then
  	exit
  fi
  
--# automount server returned from dhcp server
-+# automount tftp server based on $eth0.serverip
+-global.bootm.image="${global.tftp.path}/${global.user}-linux-${global.hostname}"
+-global.bootm.initrd="${global.tftp.path}/initramfs"
++path="/mnt/tftp"
++global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
++global.bootm.initrd="${path}/initramfs"
+ bootargs-root-initrd
+ #global.bootm.oftree=<path to oftree>
  
--mkdir -p /mnt/tftp-dhcp
--automount /mnt/tftp-dhcp 'ifup eth0 && mount $eth0.serverip tftp /mnt/tftp-dhcp'
-+mkdir -p /mnt/tftp
-+automount /mnt/tftp 'ifup eth0 && mount $eth0.serverip tftp /mnt/tftp'
+diff --git a/defaultenv-2/base/boot/net b/defaultenv-2/base/boot/net
+index 2684c20..922bef1 100644
+--- a/defaultenv-2/base/boot/net
++++ b/defaultenv-2/base/boot/net
+@@ -5,8 +5,10 @@ if [ "$1" = menu ]; then
+ 	exit
+ fi
  
- # automount nfs server example
- 
-@@ -16,11 +16,6 @@ automount /mnt/tftp-dhcp 'ifup eth0 && mount $eth0.serverip tftp /mnt/tftp-dhcp'
- #mkdir -p /mnt/${nfshost}
- #automount /mnt/$nfshost "ifup eth0 && mount ${nfshost}:/tftpboot nfs /mnt/${nfshost}"
- 
--# static tftp server example
--
--#mkdir -p /mnt/tftp
--#automount -d /mnt/tftp 'ifup eth0 && mount $serverip tftp /mnt/tftp'
--
- # FAT on usb disk example
- 
- #mkdir -p /mnt/fat
+-global.bootm.image="${global.tftp.path}/${global.user}-linux-${global.hostname}"
+-#global.bootm.oftree="${global.tftp.path}/${global.user}-oftree-${global.hostname}"
++path="/mnt/tftp"
++
++global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
++#global.bootm.oftree="${path}/${global.user}-oftree-${global.hostname}"
+ nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
+ bootargs-ip
+ bootargs-root-nfs -n "$nfsroot"
 diff --git a/defaultenv-2/base/init/general b/defaultenv-2/base/init/general
-index ad6c860..2fea03d 100644
+index 2fea03d..98a92d1 100644
 --- a/defaultenv-2/base/init/general
 +++ b/defaultenv-2/base/init/general
-@@ -15,4 +15,4 @@ global.autoboot_timeout=3
- global.boot.default=net
+@@ -13,6 +13,3 @@ global.autoboot_timeout=3
  
- # default tftp path
--global.tftp.path=/mnt/tftp-dhcp
-+global.tftp.path=/mnt/tftp
+ # default boot entry (one of /env/boot/*)
+ global.boot.default=net
+-
+-# default tftp path
+-global.tftp.path=/mnt/tftp
 -- 
 1.7.10
 
