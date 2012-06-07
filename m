@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from bar.sig21.net ([80.81.252.164])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ScIju-0006mS-NO
- for barebox@lists.infradead.org; Wed, 06 Jun 2012 16:05:44 +0000
-Received: from p5099b351.dip0.t-ipconnect.de ([80.153.179.81] helo=zzz.local)
- by bar.sig21.net with esmtpsa (TLS1.0:RSA_ARCFOUR_SHA1:16)
- (Exim 4.72) (envelope-from <js@sig21.net>) id 1ScIjO-00080T-8p
- for barebox@lists.infradead.org; Wed, 06 Jun 2012 18:05:19 +0200
-Received: from js by zzz.local with local (Exim 4.80)
- (envelope-from <js@sig21.net>) id 1ScIjN-00060M-Ob
- for barebox@lists.infradead.org; Wed, 06 Jun 2012 18:05:09 +0200
-From: Johannes Stezenbach <js@sig21.net>
-Date: Wed,  6 Jun 2012 18:04:59 +0200
-Message-Id: <1338998700-23012-5-git-send-email-js@sig21.net>
-In-Reply-To: <1338998700-23012-1-git-send-email-js@sig21.net>
-References: <1338998700-23012-1-git-send-email-js@sig21.net>
+ id 1ScZE2-0004qS-Hw
+ for barebox@lists.infradead.org; Thu, 07 Jun 2012 09:41:55 +0000
+Date: Thu, 7 Jun 2012 11:41:51 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120607094151.GF30400@pengutronix.de>
+References: <1338919119-22581-1-git-send-email-shc_work@mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1338919119-22581-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,39 +18,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] devfs: don't erase past the end of the partition
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] PCM038: Added support for boot from NOR-flash
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-"erase /dev/myflash0.mypart 0xf0000+0xf0000" could erase past
-the end of the partition.
+On Tue, Jun 05, 2012 at 09:58:39PM +0400, Alexander Shiyan wrote:
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  arch/arm/boards/pcm038/env/boot/nor |    9 +++++++++
+>  1 files changed, 9 insertions(+), 0 deletions(-)
+>  create mode 100644 arch/arm/boards/pcm038/env/boot/nor
+> 
+> diff --git a/arch/arm/boards/pcm038/env/boot/nor b/arch/arm/boards/pcm038/env/boot/nor
+> new file mode 100644
+> index 0000000..5dfca6f
+> --- /dev/null
+> +++ b/arch/arm/boards/pcm038/env/boot/nor
+> @@ -0,0 +1,9 @@
+> +#!/bin/sh
+> +
+> +if [ "$1" = menu ]; then
+> +	boot-menu-add-entry "$0" "nor"
+> +	exit
+> +fi
+> +
+> +global.bootm.image="/dev/nor0.kernel"
+> +global.linux.bootargs.root="root=/dev/mtdblock3"
 
-Signed-off-by: Johannes Stezenbach <js@sig21.net>
----
- fs/devfs.c |    3 +++
- 1 file changed, 3 insertions(+)
+This should be nor0.root instead. The raw mtdblock number depends on the
+initialization order in the kernel and whether or not the Kernel has
+nand support.
 
-diff --git a/fs/devfs.c b/fs/devfs.c
-index e3a21ae..ae48451 100644
---- a/fs/devfs.c
-+++ b/fs/devfs.c
-@@ -73,6 +73,9 @@ static int devfs_erase(struct device_d *_dev, FILE *f, size_t count, unsigned lo
- 	if (!cdev->ops->erase)
- 		return -ENOSYS;
- 
-+	if (count + offset > cdev->size)
-+		count = cdev->size - offset;
-+
- 	return cdev->ops->erase(cdev, count, offset + cdev->offset);
- }
- 
+Sascha
+
 -- 
-1.7.10
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
