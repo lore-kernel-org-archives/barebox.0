@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SchCh-0000zy-6V
- for barebox@lists.infradead.org; Thu, 07 Jun 2012 18:13:03 +0000
-Date: Thu, 7 Jun 2012 20:13:01 +0200
+ id 1ScjSe-0005jV-J6
+ for barebox@lists.infradead.org; Thu, 07 Jun 2012 20:37:41 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120607181301.GN30400@pengutronix.de>
-References: <1338984002.2874.12.camel@andre>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1338984002.2874.12.camel@andre>
+Date: Thu,  7 Jun 2012 22:37:34 +0200
+Message-Id: <1339101456-8116-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1339101456-8116-1-git-send-email-s.hauer@pengutronix.de>
+References: <1339101456-8116-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,54 +16,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: NOR boot support for barebox on the mini2440
-To: =?iso-8859-15?Q?Andr=E9?= Lochotzke <Andre.Lochotzke@stud.fh-erfurt.de>
-Cc: oselas@community.pengutronix.de, barebox@lists.infradead.org
+Subject: [PATCH 1/3] defaultenv-2 ifup: Always overwrite eth0.serverip
+To: barebox@lists.infradead.org
 
-Hi Andr=E9,
+if serverip is specified, also overwrite eth0.serverip in dhcp
+case. This makes it possible to specify a different serverip
+when the dhcp server returns the wrong ip (because the DHCP
+might be a DSL router which does not provide tftp).
 
-On Wed, Jun 06, 2012 at 02:00:02PM +0200, Andr=E9 Lochotzke wrote:
-> Hello,
-> =
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ defaultenv-2/base/bin/ifup |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-> for a small student project I want to add support to barebox for booting
-> from the NOR flash on the mini2440. I hope that it will not be too
-> difficult since barebox can already boot from NOR on different boards.
-> =
+diff --git a/defaultenv-2/base/bin/ifup b/defaultenv-2/base/bin/ifup
+index 9f6fd6b..ed33b06 100644
+--- a/defaultenv-2/base/bin/ifup
++++ b/defaultenv-2/base/bin/ifup
+@@ -53,7 +53,12 @@ if [ "$ip" = static ]; then
+ 	${interface}.gateway=$gateway
+ elif [ "$ip" = dhcp ]; then
+ 	dhcp
+-	exit $?
++	ret=$?
++	if [ $ret = 0 -a -n "$serverip" ]; then
++		${interface}.serverip=$serverip
++	fi
++
++	exit $ret
+ fi
+ 
+ echo -o /tmp/network/$interface up
+-- 
+1.7.10
 
-> Did somebody already do some work to enable NOR boot on the mini2440?
-> =
-
-> Do you have any suggestion of where I should start?
-> =
-
-> There is already an u-boot version since 2010 [1] that supports it. The
-> code can be found here [2].
-> =
-
-> Are the u-boot and barebox NOR subsystems very different? How much time
-> do you think would it take to get this done?
-
-Starting barebox itself from NOR has nothing to do with the NOR
-subsystem. I'm not familiar with the mini2440, so I can't tell what you
-have to do to start barebox from NOR. However, adding a NOR device to
-barebox (so that you can access NOR flash from within babreox) is
-trivial, just add the following:
-
-add_cfi_flash_device(-1, base_address, size, 0);
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
