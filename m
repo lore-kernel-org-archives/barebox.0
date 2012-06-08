@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sd10d-0008MP-Iw
- for barebox@lists.infradead.org; Fri, 08 Jun 2012 15:21:57 +0000
-Date: Fri, 8 Jun 2012 17:21:52 +0200
+ id 1Sd16J-0001Qr-7N
+ for barebox@lists.infradead.org; Fri, 08 Jun 2012 15:27:47 +0000
+Date: Fri, 8 Jun 2012 17:27:45 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120608152152.GX30400@pengutronix.de>
-References: <1339103098-32102-1-git-send-email-s.hauer@pengutronix.de>
- <1339103098-32102-4-git-send-email-s.hauer@pengutronix.de>
- <201206081706.13549.marex@denx.de>
+Message-ID: <20120608152745.GZ30400@pengutronix.de>
+References: <003601cd4580$b388cd70$1a9a6850$@fqingenieria.es>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <201206081706.13549.marex@denx.de>
+In-Reply-To: <003601cd4580$b388cd70$1a9a6850$@fqingenieria.es>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,40 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] mtd nand: add mxs-nand driver
-To: Marek Vasut <marex@denx.de>
-Cc: barebox@lists.infradead.org, wsa@pengutronix.de, Wolfram Sang <w.sang@pengutronix.de>
+Subject: Re: make fails with barebox
+To: FQ | Joan Carles Abelaira <joancarles@fqingenieria.es>
+Cc: barebox@lists.infradead.org
 
-Hi Marek,
+Hi,
 
-Sorry to bother you with barebox patches, I realized after the fact
-that the Cc list gets expanded with the Signed-off-bys. Anyway
-congratulations for your first barebox patch ;)
-
-On Fri, Jun 08, 2012 at 05:06:13PM +0200, Marek Vasut wrote:
-> Dear Sascha Hauer,
+On Fri, Jun 08, 2012 at 04:12:12PM +0200, FQ | Joan Carles Abelaira wrote:
+> Hello,
 > 
-> > From: Wolfram Sang <w.sang@pengutronix.de>
-> > 
-> > Based on the U-Boot version. Changed to kernel style register layout, added
-> > MX23 support (WIP!), made MMU aware and adapted to barebox.
+> I was working with previous release of barebox, and now I happily got the 2012.06 release.
+> I managed to add my board to the menuconfig, apparently ok, then after a 'make' I get this complain:
 > 
-> Can you split the changes so it's not such a block of code, hard to review ?
+> arch/arm/cpu/built-in.o: In function `reset':
+> /home/develop/SID1/dev/dev_sources/barebox-2012.06.0/arch/arm/include/asm/system.h:70: undefined reference to `board_init_lowlevel'
+> 
+> Any clues about what's missing to not to suffer all weekend because of this?
 
-Sorry, I don't have the history of this patches.
-
-> Possibly to "kernel style register layout" (which I believe is stupid anyway, 
-> using struct based access is less error prone and more clear),
-
-That's your mileage, others may vary.
-
->  "mx23 support" 
-> and "mmu awareness" (whatever that is).
-
-Basically cache flushing/invalidating.
+Appearantly you do not have a board_init_lowlevel function. This is ok,
+but then you have to disable CONFIG_MACH_DO_LOWLEVEL_INIT
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
