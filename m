@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp21.mail.ru ([94.100.176.174])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SdGBx-0006JU-3j
+ id 1SdGBx-0006JV-3l
  for barebox@lists.infradead.org; Sat, 09 Jun 2012 07:34:38 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat,  9 Jun 2012 11:34:25 +0400
-Message-Id: <1339227266-9398-1-git-send-email-shc_work@mail.ru>
+Date: Sat,  9 Jun 2012 11:34:26 +0400
+Message-Id: <1339227266-9398-2-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1339227266-9398-1-git-send-email-shc_work@mail.ru>
+References: <1339227266-9398-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,124 +21,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] Move /dev/zero to separate unit
+Subject: [PATCH 2/2] Added "/dev/full" and "/dev/null" devices
 To: barebox@lists.infradead.org
 
-This patch allows to present "/dev/zero" always in system and not
-depending  of mem-command. Standard files allow to test other memory
-devices, not only "mem", such as NOR, NAND, MCI-devices e.t.c.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- commands/Makefile |    1 +
- commands/mem.c    |   29 -----------------------------
- commands/stddev.c |   51 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 52 insertions(+), 29 deletions(-)
- create mode 100644 commands/stddev.c
+ commands/stddev.c |   55 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 55 insertions(+), 0 deletions(-)
 
-diff --git a/commands/Makefile b/commands/Makefile
-index 4c8a0a9..d39c466 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -1,3 +1,4 @@
-+obj-y				+= stddev.o
- obj-$(CONFIG_CMD_BOOTM)		+= bootm.o
- obj-$(CONFIG_CMD_UIMAGE)	+= uimage.o
- obj-$(CONFIG_CMD_LINUX16)	+= linux16.o
-diff --git a/commands/mem.c b/commands/mem.c
-index 080bfde..9a67cf3 100644
---- a/commands/mem.c
-+++ b/commands/mem.c
-@@ -623,32 +623,3 @@ static int mem_init(void)
+diff --git a/commands/stddev.c b/commands/stddev.c
+index 18fea94..8995fad 100644
+--- a/commands/stddev.c
++++ b/commands/stddev.c
+@@ -49,3 +49,58 @@ static int zero_init(void)
  }
  
- device_initcall(mem_init);
--
--static ssize_t zero_read(struct cdev *cdev, void *buf, size_t count, ulong offset, ulong flags)
--{
--	memset(buf, 0, count);
--	return count;
--}
--
--static struct file_operations zeroops = {
--	.read  = zero_read,
--	.lseek = dev_lseek_default,
--};
--
--static int zero_init(void)
--{
--	struct cdev *cdev;
--
--	cdev = xzalloc(sizeof (*cdev));
--
--	cdev->name = "zero";
--	cdev->size = ~0;
--	cdev->ops = &zeroops;
--
--	devfs_create(cdev);
--
--	return 0;
--}
--
--device_initcall(zero_init);
--
-diff --git a/commands/stddev.c b/commands/stddev.c
-new file mode 100644
-index 0000000..18fea94
---- /dev/null
-+++ b/commands/stddev.c
-@@ -0,0 +1,51 @@
-+/*
-+ * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ * MA 02111-1307 USA
-+ */
+ device_initcall(zero_init);
 +
-+#include <common.h>
-+#include <init.h>
-+
-+static ssize_t zero_read(struct cdev *cdev, void *buf, size_t count, ulong offset, ulong flags)
++static ssize_t full_read(struct cdev *cdev, void *buf, size_t count, ulong offset, ulong flags)
 +{
-+	memset(buf, 0, count);
++	memset(buf, 0xff, count);
 +	return count;
 +}
 +
-+static struct file_operations zeroops = {
-+	.read  = zero_read,
++static struct file_operations fullops = {
++	.read  = full_read,
 +	.lseek = dev_lseek_default,
 +};
 +
-+static int zero_init(void)
++static int full_init(void)
 +{
 +	struct cdev *cdev;
 +
 +	cdev = xzalloc(sizeof (*cdev));
 +
-+	cdev->name = "zero";
++	cdev->name = "full";
 +	cdev->size = ~0;
-+	cdev->ops = &zeroops;
++	cdev->ops = &fullops;
 +
 +	devfs_create(cdev);
 +
 +	return 0;
 +}
 +
-+device_initcall(zero_init);
++device_initcall(full_init);
++
++static ssize_t null_write(struct cdev *cdev, const void *buf, size_t count, ulong offset, ulong flags)
++{
++	return count;
++}
++
++static struct file_operations nullops = {
++	.write = null_write,
++	.lseek = dev_lseek_default,
++};
++
++static int null_init(void)
++{
++	struct cdev *cdev;
++
++	cdev = xzalloc(sizeof (*cdev));
++
++	cdev->name = "null";
++	cdev->size = 0;
++	cdev->ops = &nullops;
++
++	devfs_create(cdev);
++
++	return 0;
++}
++
++device_initcall(null_init);
 -- 
 1.7.3.4
 
