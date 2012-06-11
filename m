@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from f230.mail.ru ([217.69.128.160])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Se3FN-0000tb-JL
- for barebox@lists.infradead.org; Mon, 11 Jun 2012 11:57:26 +0000
-Date: Mon, 11 Jun 2012 13:57:19 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120611115719.GO30400@pengutronix.de>
+ id 1Se3GL-0000w6-UR
+ for barebox@lists.infradead.org; Mon, 11 Jun 2012 11:58:27 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Mon, 11 Jun 2012 15:58:22 +0400
 References: <CAHvDM_feUegqzvhH9oN19ooDvMkcKNrrx6sKP54txFBMD0oJqg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
 In-Reply-To: <CAHvDM_feUegqzvhH9oN19ooDvMkcKNrrx6sKP54txFBMD0oJqg@mail.gmail.com>
+Message-ID: <1339415901.262796345@f230.mail.ru>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,59 +18,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============1198375653674087947=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Problem with loadenv from /dev/env0
-To: Benoit RAT <benoit@sevensols.com>
+Subject: =?UTF-8?B?UmU6IFByb2JsZW0gd2l0aCBsb2FkZW52IGZyb20gL2Rldi9lbnYw?=
+To: =?UTF-8?B?QmVub2l0IFJBVA==?= <benoit@sevensols.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jun 11, 2012 at 01:53:13PM +0200, Benoit RAT wrote:
-> Hello,
-> 
-> I want to recover some parameters from my NAND flash by using saveenv and
-> loadenv but It does not work:
-> 
-> First I have used a big env0 partition to be sure bad blocks don't bother
-> me.
-> 
->  devfs_add_partition("nand0", 0x00000, 0xF0000, PARTITION_FIXED, "env_raw");
-> > dev_add_bb_dev("env_raw", "env0");
-> 
-> 
-> Then I try to edit,save & load /env/config
-> 
-> wrs-02:0B:AD:C0:FF:EE# edit /env/config
-> 
-> Then I change the eth0.addr
-> 
-> eth0.ethaddr=72:0B:AD:C0:FF:EE
-> > PS1="wrs-$eth0.ethaddr# "
-> 
-> 
-> Ctrl+D
-> 
-> wrs-02:0B:AD:C0:FF:EE# . /env/config
-> wrs-72:0B:AD:C0:FF:EE# saveenv
-> saving environment
-> wrs-72:0B:AD:C0:FF:EE# loadenv
-> loading environment from /dev/env0
-> err -74
-> err -74
-> wrong crc on env
 
-What hardware was this again?
+--===============1198375653674087947==
+Content-Type: multipart/alternative;
+	boundary="--ALT--cEruCa9m1339415902"
 
-Sascha
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+----ALT--cEruCa9m1339415902
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
+
+SGVsbG8uCgpNb24sIDExIEp1biAyMDEyIDEzOjUzOjEzICswMjAwINC+0YIgQmVub2l0IFJBVCA8
+YmVub2l0QHNldmVuc29scy5jb20+OgouLi4KSSB3YW50IHRvIHJlY292ZXIgc29tZSBwYXJhbWV0
+ZXJzIGZyb20gbXkgTkFORCBmbGFzaCBieSB1c2luZyBzYXZlZW52IGFuZCBsb2FkZW52IGJ1dCBJ
+dCBkb2VzIG5vdCB3b3JrCkZpcnN0IEkgaGF2ZSB1c2VkIGEgYmlnIGVudjAgcGFydGl0aW9uIHRv
+IGJlIHN1cmUgYmFkIGJsb2NrcyBkb24ndCBib3RoZXIgbWUuCgogZGV2ZnNfYWRkX3BhcnRpdGlv
+bigibmFuZDAiLCAweDAwMDAwLCAweEYwMDAwLCBQQVJUSVRJT05fRklYRUQsICJlbnZfcmF3Iik7
+CiBkZXZfYWRkX2JiX2RldigiZW52X3JhdyIsICJlbnYwIik7CgpUaGVuIEkgdHJ5IHRvIGVkaXQs
+c2F2ZSAmIGxvYWQgL2Vudi9jb25maWcKCndycy0wMjowQjpBRDpDMDpGRjpFRSMgZWRpdCAvZW52
+L2NvbmZpZ0FuZCBpZiBJIHJlYm9vdCBiYXJlYm94IEkgc3RpbGwgbG9hZCB0aGUgZGVmYXVsdCBl
+bnZpcm9ubWVudENhbiB5b3UgZG8gc2F2ZWVudiBiZWZvcmU/Cg==
+
+----ALT--cEruCa9m1339415902
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: base64
+
+CjxIVE1MPjxCT0RZPkhlbGxvLjxicj48YnI+TW9uLCAxMSBKdW4gMjAxMiAxMzo1MzoxMyArMDIw
+MCDQvtGCIEJlbm9pdCBSQVQgJmx0O2Jlbm9pdEBzZXZlbnNvbHMuY29tJmd0Ozo8YnI+CjxibG9j
+a3F1b3RlIHN0eWxlPSJib3JkZXItbGVmdDogMXB4IHNvbGlkIHJnYig4LCA4NywgMTY2KTsgbWFy
+Z2luOiAxMHB4OyBwYWRkaW5nOiAwcHQgMHB0IDBwdCAxMHB4OyIgY2xhc3M9Im1haWxydS1ibG9j
+a3F1b3RlIj48ZGl2IGlkPSIiPi4uLjxkaXY+SSB3YW50IHRvIHJlY292ZXIgc29tZSBwYXJhbWV0
+ZXJzIGZyb20gbXkgTkFORCBmbGFzaCBieSB1c2luZyBzYXZlZW52IGFuZCBsb2FkZW52IGJ1dCBJ
+dCBkb2VzIG5vdCB3b3JrPC9kaXY+PGRpdj5GaXJzdCBJIGhhdmUgdXNlZCBhIGJpZyBlbnYwIHBh
+cnRpdGlvbiB0byBiZSBzdXJlIGJhZCBibG9ja3MgZG9uJ3QgYm90aGVyIG1lLjwvZGl2PjxkaXY+
+PGJyPjwvZGl2PjxkaXY+PGJsb2NrcXVvdGUgc3R5bGU9Im1hcmdpbi10b3A6MHB4O21hcmdpbi1y
+aWdodDowcHg7bWFyZ2luLWJvdHRvbTowcHg7bWFyZ2luLWxlZnQ6MC44ZXg7Ym9yZGVyLWxlZnQt
+d2lkdGg6MXB4O2JvcmRlci1sZWZ0LWNvbG9yOnJnYigyMDQsMjA0LDIwNCk7Ym9yZGVyLWxlZnQt
+c3R5bGU6c29saWQ7cGFkZGluZy1sZWZ0OjFleCIgY2xhc3M9InN0eWxlX2FfMTMzOTQxNTcxNTAw
+MDAwMDAyMTdnbWFpbF9xdW90ZSI+PHNwYW4gc3R5bGU9IndoaXRlLXNwYWNlOnByZSIgY2xhc3M9
+InN0eWxlX2FfMTMzOTQxNTcxNTAwMDAwMDAyMTdBcHBsZS10YWItc3BhbiI+CTwvc3Bhbj5kZXZm
+c19hZGRfcGFydGl0aW9uKCJuYW5kMCIsIDB4MDAwMDAsIDB4RjAwMDAsIFBBUlRJVElPTl9GSVhF
+RCwgImVudl9yYXciKTs8YnI+PHNwYW4gc3R5bGU9IndoaXRlLXNwYWNlOnByZSIgY2xhc3M9InN0
+eWxlX2FfMTMzOTQxNTcxNTAwMDAwMDAyMTdBcHBsZS10YWItc3BhbiI+CTwvc3Bhbj5kZXZfYWRk
+X2JiX2RldigiZW52X3JhdyIsICJlbnYwIik7PC9ibG9ja3F1b3RlPjwvZGl2PjxkaXY+PGJyPjwv
+ZGl2PjxkaXY+VGhlbiBJIHRyeSB0byBlZGl0LHNhdmUgJmFtcDsgbG9hZCAvZW52L2NvbmZpZzwv
+ZGl2PjxkaXY+PGJyPjwvZGl2PjxkaXY+PGRpdiBzdHlsZT0iMSI+d3JzLTAyOjBCOkFEOkMwOkZG
+OkVFIyBlZGl0IC88c3BhbiBzdHlsZT0iYmFja2dyb3VuZC1pbWFnZTppbml0aWFsO2JhY2tncm91
+bmQtY29sb3I6cmdiKDI1NSwyNTUsMjA0KSIgY2xhc3M9InN0eWxlX2FfMTMzOTQxNTcxNTAwMDAw
+MDAyMTdpbCI+ZW52PC9zcGFuPi9jb25maWc8L2Rpdj5BbmQgaWYgSSByZWJvb3QgYmFyZWJveCBJ
+IHN0aWxsIGxvYWQgdGhlIGRlZmF1bHQgZW52aXJvbm1lbnQ8L2Rpdj48L2Rpdj48L2Jsb2NrcXVv
+dGU+Q2FuIHlvdSBkbyBzYXZlZW52IGJlZm9yZT88YnI+PC9CT0RZPjwvSFRNTD4K
+
+----ALT--cEruCa9m1339415902--
+
+
+--===============1198375653674087947==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============1198375653674087947==--
