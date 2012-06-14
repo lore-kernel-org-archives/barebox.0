@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sf9z5-0003ku-Os
- for barebox@lists.infradead.org; Thu, 14 Jun 2012 13:21:13 +0000
+ id 1Sf9z6-0003lC-35
+ for barebox@lists.infradead.org; Thu, 14 Jun 2012 13:21:15 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Thu, 14 Jun 2012 15:21:02 +0200
-Message-Id: <1339680065-12169-6-git-send-email-w.sang@pengutronix.de>
+Date: Thu, 14 Jun 2012 15:21:03 +0200
+Message-Id: <1339680065-12169-7-git-send-email-w.sang@pengutronix.de>
 In-Reply-To: <1339680065-12169-1-git-send-email-w.sang@pengutronix.de>
 References: <1339680065-12169-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,91 +21,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH V2 5/8] arm: mxs: add functions to get/set vddio
+Subject: [PATCH V2 6/8] arm: mxs: refactor timeout routine for ocotp
 To: barebox@lists.infradead.org
 Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-Needed for ocotp write.
+Let's keep the timeout routine in a central place. We will need it more
+often when we add write support.
 
 Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 ---
- arch/arm/mach-mxs/include/mach/power.h |    2 ++
- arch/arm/mach-mxs/power.c              |   38 ++++++++++++++++++++++++++++++++
- 2 files changed, 40 insertions(+)
+ arch/arm/mach-mxs/ocotp.c |   26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/mach-mxs/include/mach/power.h b/arch/arm/mach-mxs/include/mach/power.h
-index 859a717..f429b3c 100644
---- a/arch/arm/mach-mxs/include/mach/power.h
-+++ b/arch/arm/mach-mxs/include/mach/power.h
-@@ -2,5 +2,7 @@
- #define __MACH_POWER_H
+diff --git a/arch/arm/mach-mxs/ocotp.c b/arch/arm/mach-mxs/ocotp.c
+index 38f9ffd..7f9107a 100644
+--- a/arch/arm/mach-mxs/ocotp.c
++++ b/arch/arm/mach-mxs/ocotp.c
+@@ -39,13 +39,24 @@ struct ocotp_priv {
+ 	void __iomem *base;
+ };
  
- void imx_power_prepare_usbphy(void);
-+int imx_get_vddio(void);
-+int imx_set_vddio(int);
- 
- #endif /* __MACH_POWER_H */
-diff --git a/arch/arm/mach-mxs/power.c b/arch/arm/mach-mxs/power.c
-index 4645f52..f4d0b9e 100644
---- a/arch/arm/mach-mxs/power.c
-+++ b/arch/arm/mach-mxs/power.c
-@@ -11,11 +11,14 @@
-  */
- #include <common.h>
- #include <io.h>
-+#include <errno.h>
- #include <mach/imx-regs.h>
- 
- #define POWER_CTRL			(IMX_POWER_BASE + 0x0)
- #define POWER_CTRL_CLKGATE		0x40000000
- 
-+#define POWER_VDDIOCTRL			(IMX_POWER_BASE + 0x60)
-+
- #define POWER_STS			(IMX_POWER_BASE + 0xc0)
- #define POWER_STS_VBUSVALID		0x00000002
- #define POWER_STS_BVALID		0x00000004
-@@ -26,6 +29,41 @@
- #define POWER_DEBUG_AVALIDPIOLOCK	0x00000004
- #define POWER_DEBUG_VBUSVALIDPIOLOCK	0x00000008
- 
-+#define TRG_MASK	0x1f
-+
-+int imx_get_vddio(void)
++static int mxs_ocotp_wait_busy(struct ocotp_priv *priv)
 +{
-+	u32 val;
++	uint64_t start = get_time_ns();
 +
-+	val = readl(POWER_VDDIOCTRL) & TRG_MASK;
-+	if (val > 0x10)
-+		val = 0x10;
++	/* check both BUSY and ERROR cleared */
++	while (readl(priv->base) & (BM_OCOTP_CTRL_BUSY | BM_OCOTP_CTRL_ERROR))
++		if (is_timeout(start, MSECOND))
++			return -ETIMEDOUT;
 +
-+	return 2800000 + val * 50000;
++	return 0;
 +}
 +
-+int imx_set_vddio(int new_voltage_uV)
-+{
-+	u32 reg, val;
-+
-+	if (new_voltage_uV < 2800000 || new_voltage_uV > 3600000)
-+		return -EINVAL;
-+
-+	val = (new_voltage_uV - 2800000) / 50000;
-+	reg = readl(POWER_VDDIOCTRL) & ~TRG_MASK;
-+	writel(reg | val, POWER_VDDIOCTRL);
-+
-+	/*
-+	 * Wait for power to become stable. We just wait, because DC_OK can
-+	 * only detect rising voltages for DCDC. For all other cases, bootlets
-+	 * also do simple waiting, although horribly nested. We just take the
-+	 * maximum value of all cases from the bootlets and then add some.
-+	 */
-+	mdelay(30);
-+
-+	return 2800000 + val * 50000;
-+}
-+
- void imx_power_prepare_usbphy(void)
+ static ssize_t mxs_ocotp_cdev_read(struct cdev *cdev, void *buf, size_t count,
+ 		ulong offset, ulong flags)
  {
- 	u32 reg;
+ 	struct ocotp_priv *priv = cdev->priv;
+ 	void __iomem *base = priv->base;
+ 	size_t size = min((ulong)count, cdev->size - offset);
+-	uint64_t start;
+ 	int i;
+ 
+ 	/*
+@@ -56,11 +67,8 @@ static ssize_t mxs_ocotp_cdev_read(struct cdev *cdev, void *buf, size_t count,
+ 	/* try to clear ERROR bit */
+ 	writel(BM_OCOTP_CTRL_ERROR, base + BIT_CLR);
+ 
+-	/* check both BUSY and ERROR cleared */
+-	start = get_time_ns();
+-	while (readl(base) & (BM_OCOTP_CTRL_BUSY | BM_OCOTP_CTRL_ERROR))
+-		if (is_timeout(start, MSECOND))
+-			return -ETIMEDOUT;
++	if (mxs_ocotp_wait_busy(priv))
++		return -ETIMEDOUT;
+ 
+ 	/* open OCOTP banks for read */
+ 	writel(BM_OCOTP_CTRL_RD_BANK_OPEN, base + BIT_SET);
+@@ -69,10 +77,8 @@ static ssize_t mxs_ocotp_cdev_read(struct cdev *cdev, void *buf, size_t count,
+ 	udelay(1);
+ 
+ 	/* poll BUSY bit becoming cleared */
+-	start = get_time_ns();
+-	while (readl(base) & BM_OCOTP_CTRL_BUSY)
+-		if (is_timeout(start, MSECOND))
+-			return -ETIMEDOUT;
++	if (mxs_ocotp_wait_busy(priv))
++		return -ETIMEDOUT;
+ 
+ 	for (i = 0; i < size; i++)
+ 		/* When reading bytewise, we need to hop over the SET/CLR/TGL regs */
 -- 
 1.7.10
 
