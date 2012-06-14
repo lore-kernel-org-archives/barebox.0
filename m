@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sf9z6-0003ld-PL
- for barebox@lists.infradead.org; Thu, 14 Jun 2012 13:21:16 +0000
-From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Thu, 14 Jun 2012 15:21:05 +0200
-Message-Id: <1339680065-12169-9-git-send-email-w.sang@pengutronix.de>
-In-Reply-To: <1339680065-12169-1-git-send-email-w.sang@pengutronix.de>
-References: <1339680065-12169-1-git-send-email-w.sang@pengutronix.de>
+ id 1SfAkd-0003GQ-DD
+ for barebox@lists.infradead.org; Thu, 14 Jun 2012 14:10:21 +0000
+Date: Thu, 14 Jun 2012 16:10:16 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120614141016.GU30400@pengutronix.de>
+References: <1339679583-8725-1-git-send-email-w.sang@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1339679583-8725-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,197 +18,115 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH V2 8/8] arm: mxs: add write support for ocotp
-To: barebox@lists.infradead.org
-Cc: Wolfram Sang <w.sang@pengutronix.de>
+Subject: Re: [PATCH V2] arm: mxs: get MAC from OCOTP for MX28EVK
+To: Wolfram Sang <w.sang@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Since we now can change HCLK and VDDIO, we can now support writing to
-OCOTP. Writing is done via a special data register. This is u32, so we
-need to fill a temporary buffer when offset or count is not aligned. The
-write is also protected by a special device variable.
+On Thu, Jun 14, 2012 at 03:13:03PM +0200, Wolfram Sang wrote:
+> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+> ---
+> 
+> V2: rewrote code according to Sascha's style guide ;)
+> 
+>  arch/arm/boards/freescale-mx28-evk/mx28-evk.c |   30 +++++++++++++++++++++++--
+>  arch/arm/mach-mxs/Kconfig                     |    1 +
+>  2 files changed, 29 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/boards/freescale-mx28-evk/mx28-evk.c b/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
+> index 9168ed8..fc395a0 100644
+> --- a/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
+> +++ b/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
+> @@ -22,17 +22,18 @@
+>  #include <init.h>
+>  #include <mci.h>
+>  #include <io.h>
+> +#include <net.h>
+>  
+>  #include <mach/clock.h>
+>  #include <mach/imx-regs.h>
+>  #include <mach/iomux-imx28.h>
+>  #include <mach/mci.h>
+> +#include <mach/fb.h>
+> +#include <mach/ocotp.h>
+>  
+>  #include <asm/armlinux.h>
+>  #include <asm/mmu.h>
+>  
+> -#include <mach/fb.h>
+> -
+>  #include <generated/mach-types.h>
+>  
+>  #define MX28EVK_FEC_PHY_RESET_GPIO	141
+> @@ -118,6 +119,27 @@ static struct mxs_mci_platform_data mci_pdata = {
+>  };
+>  
+>  /* fec */
+> +void mx28_evk_get_ethaddr(void)
 
-Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
----
- arch/arm/mach-mxs/Kconfig |   11 +++++
- arch/arm/mach-mxs/ocotp.c |  109 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 120 insertions(+)
+static?
 
-diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
-index 57bd556..9ce7c7a 100644
---- a/arch/arm/mach-mxs/Kconfig
-+++ b/arch/arm/mach-mxs/Kconfig
-@@ -81,6 +81,17 @@ config MXS_OCOTP
- 	  internal view). Don't use register offsets here, the SET, CLR and
- 	  TGL registers are not mapped!
- 
-+config MXS_OCOTP_WRITABLE
-+	bool "OCOTP write support"
-+	depends on MXS_OCOTP
-+	help
-+	  Enable this option to add writing to OCOTP.
-+	  Warning: blown bits can not be unblown. Use with care.
-+
-+	  Before being actually able to blow the bits, you need to explicitely
-+	  enable writing:
-+		 ocotp0.permanent_write_enable=1
-+
- endmenu
- 
- menu "Board specific settings       "
-diff --git a/arch/arm/mach-mxs/ocotp.c b/arch/arm/mach-mxs/ocotp.c
-index f18d066..92a287f 100644
---- a/arch/arm/mach-mxs/ocotp.c
-+++ b/arch/arm/mach-mxs/ocotp.c
-@@ -25,13 +25,19 @@
- #include <mach/generic.h>
- #include <mach/ocotp.h>
- #include <mach/imx-regs.h>
-+#include <mach/clock-imx28.h>
-+#include <mach/power.h>
- 
- #define DRIVERNAME "ocotp"
- 
- #define OCOTP_CTRL			0x0
-+#  define OCOTP_CTRL_ADDR_MASK		0x3f
- #  define OCOTP_CTRL_BUSY		(1 << 8)
- #  define OCOTP_CTRL_ERROR		(1 << 9)
- #  define OCOTP_CTRL_RD_BANK_OPEN	(1 << 12)
-+#  define OCOTP_CTRL_WR_UNLOCK		0x3e770000
-+
-+#define OCOTP_DATA			0x10
- 
- #define OCOTP_WORD_OFFSET		0x20
- 
-@@ -92,11 +98,102 @@ static ssize_t mxs_ocotp_cdev_read(struct cdev *cdev, void *buf, size_t count,
- 	return size;
- }
- 
-+static ssize_t mxs_ocotp_cdev_write(struct cdev *cdev, const void *buf, size_t count,
-+		ulong offset, ulong flags)
-+{
-+	struct ocotp_priv *priv = cdev->priv;
-+	void __iomem *base = priv->base;
-+	const char *write_param;
-+	unsigned int write_enabled = 0;
-+	unsigned long old_hclk, aligned_offset;
-+	int old_vddio, num_words, num_bytes, i, ret = 0;
-+	u8 *work_buf;
-+	u32 reg;
-+
-+	write_param = dev_get_param(cdev->dev, "permanent_write_enable");
-+	if (write_param)
-+		write_enabled = simple_strtoul(write_param, NULL, 0);
-+
-+	if (!write_param || !write_enabled)
-+		return -EPERM;
-+
-+	/* we can only work on u32, so calc some helpers */
-+	aligned_offset = offset & ~3UL;
-+	num_words = DIV_ROUND_UP(offset - aligned_offset + count, 4);
-+	num_bytes = num_words << 2;
-+
-+	/* read in all words which will be modified */
-+	work_buf = xmalloc(num_bytes);
-+
-+	i = mxs_ocotp_cdev_read(cdev, work_buf, num_bytes, aligned_offset, 0);
-+	if (i != num_bytes) {
-+		ret = -ENXIO;
-+		goto free_mem;
-+	}
-+
-+	/* modify read words with to be written data */
-+	for (i = 0; i < count; i++)
-+		work_buf[offset - aligned_offset + i] |= ((u8 *)buf)[i];
-+
-+	/* prepare system for OTP write */
-+	old_hclk = imx_get_hclk();
-+	old_vddio = imx_get_vddio();
-+
-+	imx_set_hclk(24000000);
-+	imx_set_vddio(2800000);
-+
-+	writel(OCOTP_CTRL_RD_BANK_OPEN, base + OCOTP_CTRL + BIT_CLR);
-+
-+	if (mxs_ocotp_wait_busy(priv)) {
-+		ret = -ETIMEDOUT;
-+		goto restore_system;
-+	}
-+
-+	/* write word for word via data register */
-+	for (i = 0; i < num_words; i++) {
-+		reg = readl(base + OCOTP_CTRL) & ~OCOTP_CTRL_ADDR_MASK;
-+		reg |= OCOTP_CTRL_WR_UNLOCK | ((aligned_offset >> 2) + i);
-+		writel(reg, base + OCOTP_CTRL);
-+
-+		writel(((u32 *)work_buf)[i], base + OCOTP_DATA);
-+
-+		if (mxs_ocotp_wait_busy(priv)) {
-+			ret = -ETIMEDOUT;
-+			goto restore_system;
-+		}
-+
-+		mdelay(2);
-+	}
-+
-+restore_system:
-+	imx_set_vddio(old_vddio);
-+	imx_set_hclk(old_hclk);
-+free_mem:
-+	free(work_buf);
-+
-+	return ret;
-+}
-+
- static struct file_operations mxs_ocotp_ops = {
- 	.read	= mxs_ocotp_cdev_read,
- 	.lseek	= dev_lseek_default,
- };
- 
-+static int mxs_ocotp_write_enable_set(struct device_d *dev, struct param_d *param,
-+		const char *val)
-+{
-+	unsigned long write_enable;
-+
-+	if (!val)
-+		return -EINVAL;
-+
-+	write_enable = simple_strtoul(val, NULL, 0);
-+	if (write_enable > 1)
-+		return -EINVAL;
-+
-+	return dev_param_set_generic(dev, param, write_enable ? "1" : "0");
-+}
-+
- static int mxs_ocotp_probe(struct device_d *dev)
- {
- 	int err;
-@@ -113,6 +210,18 @@ static int mxs_ocotp_probe(struct device_d *dev)
- 	if (err < 0)
- 		return err;
- 
-+	if (IS_ENABLED(CONFIG_MXS_OCOTP_WRITABLE)) {
-+		mxs_ocotp_ops.write = mxs_ocotp_cdev_write;
-+
-+		err = dev_add_param(dev, "permanent_write_enable",
-+				mxs_ocotp_write_enable_set, NULL, 0);
-+		if (err < 0)
-+			return err;
-+		err = dev_set_param(dev, "permanent_write_enable", "0");
-+		if (err < 0)
-+			return err;
-+	}
-+
- 	return 0;
- }
- 
+Sascha
+
+> +{
+> +	u8 mac_ocotp[3], mac[6];
+> +	int ret;
+> +
+> +	ret = mxs_ocotp_read(mac_ocotp, 3, 0);
+> +	if (ret != 3) {
+> +		pr_err("Reading MAC from OCOTP failed!\n");
+> +		return;
+> +	}
+> +
+> +	mac[0] = 0x00;
+> +	mac[1] = 0x04;
+> +	mac[2] = 0x9f;
+> +	mac[3] = mac_ocotp[2];
+> +	mac[4] = mac_ocotp[1];
+> +	mac[5] = mac_ocotp[0];
+> +
+> +	eth_register_ethaddr(0, mac);
+> +}
+> +
+>  static void __init mx28_evk_fec_reset(void)
+>  {
+>  	mdelay(1);
+> @@ -208,6 +230,10 @@ static int mx28_evk_devices_init(void)
+>  	add_generic_device("stmfb", 0, NULL, IMX_FB_BASE, 4096,
+>  			   IORESOURCE_MEM, &mx28_evk_fb_pdata);
+>  
+> +	add_generic_device("ocotp", 0, NULL, IMX_OCOTP_BASE, 0,
+> +			IORESOURCE_MEM, NULL);
+> +	mx28_evk_get_ethaddr(); /* must be after registering ocotp */
+> +
+>  	imx_enable_enetclk();
+>  	mx28_evk_fec_reset();
+>  	add_generic_device("fec_imx", 0, NULL, IMX_FEC0_BASE, 0,
+> diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
+> index 3348a3c..57bd556 100644
+> --- a/arch/arm/mach-mxs/Kconfig
+> +++ b/arch/arm/mach-mxs/Kconfig
+> @@ -61,6 +61,7 @@ config MACH_TX28
+>  
+>  config MACH_MX28EVK
+>  	bool "mx28-evk"
+> +	select MXS_OCOTP
+>  	help
+>  	  Say Y here if you are using the Freescale i.MX28-EVK board
+>  
+> -- 
+> 1.7.10
+> 
+> 
+
 -- 
-1.7.10
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
