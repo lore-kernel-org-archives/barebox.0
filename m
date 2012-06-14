@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sf9z6-0003lL-E6
- for barebox@lists.infradead.org; Thu, 14 Jun 2012 13:21:15 +0000
+ id 1Sf9z6-0003ld-PL
+ for barebox@lists.infradead.org; Thu, 14 Jun 2012 13:21:16 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Thu, 14 Jun 2012 15:21:04 +0200
-Message-Id: <1339680065-12169-8-git-send-email-w.sang@pengutronix.de>
+Date: Thu, 14 Jun 2012 15:21:05 +0200
+Message-Id: <1339680065-12169-9-git-send-email-w.sang@pengutronix.de>
 In-Reply-To: <1339680065-12169-1-git-send-email-w.sang@pengutronix.de>
 References: <1339680065-12169-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,73 +21,189 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH V2 7/8] arm: mxs: use consistent naming for #defines for ocotp
+Subject: [PATCH V2 8/8] arm: mxs: add write support for ocotp
 To: barebox@lists.infradead.org
 Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-Will the code more readable, especially since future additions are
-planned.
+Since we now can change HCLK and VDDIO, we can now support writing to
+OCOTP. Writing is done via a special data register. This is u32, so we
+need to fill a temporary buffer when offset or count is not aligned. The
+write is also protected by a special device variable.
 
 Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 ---
- arch/arm/mach-mxs/ocotp.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ arch/arm/mach-mxs/Kconfig |   11 +++++
+ arch/arm/mach-mxs/ocotp.c |  109 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 120 insertions(+)
 
+diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
+index 57bd556..9ce7c7a 100644
+--- a/arch/arm/mach-mxs/Kconfig
++++ b/arch/arm/mach-mxs/Kconfig
+@@ -81,6 +81,17 @@ config MXS_OCOTP
+ 	  internal view). Don't use register offsets here, the SET, CLR and
+ 	  TGL registers are not mapped!
+ 
++config MXS_OCOTP_WRITABLE
++	bool "OCOTP write support"
++	depends on MXS_OCOTP
++	help
++	  Enable this option to add writing to OCOTP.
++	  Warning: blown bits can not be unblown. Use with care.
++
++	  Before being actually able to blow the bits, you need to explicitely
++	  enable writing:
++		 ocotp0.permanent_write_enable=1
++
+ endmenu
+ 
+ menu "Board specific settings       "
 diff --git a/arch/arm/mach-mxs/ocotp.c b/arch/arm/mach-mxs/ocotp.c
-index 7f9107a..f18d066 100644
+index f18d066..92a287f 100644
 --- a/arch/arm/mach-mxs/ocotp.c
 +++ b/arch/arm/mach-mxs/ocotp.c
-@@ -28,11 +28,12 @@
+@@ -25,13 +25,19 @@
+ #include <mach/generic.h>
+ #include <mach/ocotp.h>
+ #include <mach/imx-regs.h>
++#include <mach/clock-imx28.h>
++#include <mach/power.h>
  
  #define DRIVERNAME "ocotp"
  
--#define OCOTP_WORD_OFFSET		0x20
-+#define OCOTP_CTRL			0x0
-+#  define OCOTP_CTRL_BUSY		(1 << 8)
-+#  define OCOTP_CTRL_ERROR		(1 << 9)
-+#  define OCOTP_CTRL_RD_BANK_OPEN	(1 << 12)
+ #define OCOTP_CTRL			0x0
++#  define OCOTP_CTRL_ADDR_MASK		0x3f
+ #  define OCOTP_CTRL_BUSY		(1 << 8)
+ #  define OCOTP_CTRL_ERROR		(1 << 9)
+ #  define OCOTP_CTRL_RD_BANK_OPEN	(1 << 12)
++#  define OCOTP_CTRL_WR_UNLOCK		0x3e770000
++
++#define OCOTP_DATA			0x10
  
--#define BM_OCOTP_CTRL_BUSY		(1 << 8)
--#define BM_OCOTP_CTRL_ERROR		(1 << 9)
--#define BM_OCOTP_CTRL_RD_BANK_OPEN	(1 << 12)
-+#define OCOTP_WORD_OFFSET		0x20
+ #define OCOTP_WORD_OFFSET		0x20
  
- struct ocotp_priv {
- 	struct cdev cdev;
-@@ -44,7 +45,7 @@ static int mxs_ocotp_wait_busy(struct ocotp_priv *priv)
- 	uint64_t start = get_time_ns();
- 
- 	/* check both BUSY and ERROR cleared */
--	while (readl(priv->base) & (BM_OCOTP_CTRL_BUSY | BM_OCOTP_CTRL_ERROR))
-+	while (readl(priv->base + OCOTP_CTRL) & (OCOTP_CTRL_BUSY | OCOTP_CTRL_ERROR))
- 		if (is_timeout(start, MSECOND))
- 			return -ETIMEDOUT;
- 
-@@ -65,13 +66,13 @@ static ssize_t mxs_ocotp_cdev_read(struct cdev *cdev, void *buf, size_t count,
- 	 */
- 
- 	/* try to clear ERROR bit */
--	writel(BM_OCOTP_CTRL_ERROR, base + BIT_CLR);
-+	writel(OCOTP_CTRL_ERROR, base + OCOTP_CTRL + BIT_CLR);
- 
- 	if (mxs_ocotp_wait_busy(priv))
- 		return -ETIMEDOUT;
- 
- 	/* open OCOTP banks for read */
--	writel(BM_OCOTP_CTRL_RD_BANK_OPEN, base + BIT_SET);
-+	writel(OCOTP_CTRL_RD_BANK_OPEN, base + OCOTP_CTRL + BIT_SET);
- 
- 	/* approximately wait 32 hclk cycles */
- 	udelay(1);
-@@ -86,7 +87,7 @@ static ssize_t mxs_ocotp_cdev_read(struct cdev *cdev, void *buf, size_t count,
- 				(((i + offset) & 0xfc) << 2) + ((i + offset) & 3));
- 
- 	/* close banks for power saving */
--	writel(BM_OCOTP_CTRL_RD_BANK_OPEN, base + BIT_CLR);
-+	writel(OCOTP_CTRL_RD_BANK_OPEN, base + OCOTP_CTRL + BIT_CLR);
- 
+@@ -92,11 +98,102 @@ static ssize_t mxs_ocotp_cdev_read(struct cdev *cdev, void *buf, size_t count,
  	return size;
  }
+ 
++static ssize_t mxs_ocotp_cdev_write(struct cdev *cdev, const void *buf, size_t count,
++		ulong offset, ulong flags)
++{
++	struct ocotp_priv *priv = cdev->priv;
++	void __iomem *base = priv->base;
++	const char *write_param;
++	unsigned int write_enabled = 0;
++	unsigned long old_hclk, aligned_offset;
++	int old_vddio, num_words, num_bytes, i, ret = 0;
++	u8 *work_buf;
++	u32 reg;
++
++	write_param = dev_get_param(cdev->dev, "permanent_write_enable");
++	if (write_param)
++		write_enabled = simple_strtoul(write_param, NULL, 0);
++
++	if (!write_param || !write_enabled)
++		return -EPERM;
++
++	/* we can only work on u32, so calc some helpers */
++	aligned_offset = offset & ~3UL;
++	num_words = DIV_ROUND_UP(offset - aligned_offset + count, 4);
++	num_bytes = num_words << 2;
++
++	/* read in all words which will be modified */
++	work_buf = xmalloc(num_bytes);
++
++	i = mxs_ocotp_cdev_read(cdev, work_buf, num_bytes, aligned_offset, 0);
++	if (i != num_bytes) {
++		ret = -ENXIO;
++		goto free_mem;
++	}
++
++	/* modify read words with to be written data */
++	for (i = 0; i < count; i++)
++		work_buf[offset - aligned_offset + i] |= ((u8 *)buf)[i];
++
++	/* prepare system for OTP write */
++	old_hclk = imx_get_hclk();
++	old_vddio = imx_get_vddio();
++
++	imx_set_hclk(24000000);
++	imx_set_vddio(2800000);
++
++	writel(OCOTP_CTRL_RD_BANK_OPEN, base + OCOTP_CTRL + BIT_CLR);
++
++	if (mxs_ocotp_wait_busy(priv)) {
++		ret = -ETIMEDOUT;
++		goto restore_system;
++	}
++
++	/* write word for word via data register */
++	for (i = 0; i < num_words; i++) {
++		reg = readl(base + OCOTP_CTRL) & ~OCOTP_CTRL_ADDR_MASK;
++		reg |= OCOTP_CTRL_WR_UNLOCK | ((aligned_offset >> 2) + i);
++		writel(reg, base + OCOTP_CTRL);
++
++		writel(((u32 *)work_buf)[i], base + OCOTP_DATA);
++
++		if (mxs_ocotp_wait_busy(priv)) {
++			ret = -ETIMEDOUT;
++			goto restore_system;
++		}
++
++		mdelay(2);
++	}
++
++restore_system:
++	imx_set_vddio(old_vddio);
++	imx_set_hclk(old_hclk);
++free_mem:
++	free(work_buf);
++
++	return ret;
++}
++
+ static struct file_operations mxs_ocotp_ops = {
+ 	.read	= mxs_ocotp_cdev_read,
+ 	.lseek	= dev_lseek_default,
+ };
+ 
++static int mxs_ocotp_write_enable_set(struct device_d *dev, struct param_d *param,
++		const char *val)
++{
++	unsigned long write_enable;
++
++	if (!val)
++		return -EINVAL;
++
++	write_enable = simple_strtoul(val, NULL, 0);
++	if (write_enable > 1)
++		return -EINVAL;
++
++	return dev_param_set_generic(dev, param, write_enable ? "1" : "0");
++}
++
+ static int mxs_ocotp_probe(struct device_d *dev)
+ {
+ 	int err;
+@@ -113,6 +210,18 @@ static int mxs_ocotp_probe(struct device_d *dev)
+ 	if (err < 0)
+ 		return err;
+ 
++	if (IS_ENABLED(CONFIG_MXS_OCOTP_WRITABLE)) {
++		mxs_ocotp_ops.write = mxs_ocotp_cdev_write;
++
++		err = dev_add_param(dev, "permanent_write_enable",
++				mxs_ocotp_write_enable_set, NULL, 0);
++		if (err < 0)
++			return err;
++		err = dev_set_param(dev, "permanent_write_enable", "0");
++		if (err < 0)
++			return err;
++	}
++
+ 	return 0;
+ }
+ 
 -- 
 1.7.10
 
