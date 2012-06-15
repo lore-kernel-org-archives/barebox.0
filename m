@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f49.google.com ([74.125.82.49])
+Received: from mail-we0-f177.google.com ([74.125.82.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SfTS6-0001XC-VQ
- for barebox@lists.infradead.org; Fri, 15 Jun 2012 10:08:27 +0000
-Received: by wgbds1 with SMTP id ds1so1934652wgb.18
- for <barebox@lists.infradead.org>; Fri, 15 Jun 2012 03:08:25 -0700 (PDT)
+ id 1SfTS8-0001XZ-Ex
+ for barebox@lists.infradead.org; Fri, 15 Jun 2012 10:08:29 +0000
+Received: by werc12 with SMTP id c12so2181334wer.36
+ for <barebox@lists.infradead.org>; Fri, 15 Jun 2012 03:08:26 -0700 (PDT)
 From: Roberto Nibali <rnibali@gmail.com>
-Date: Fri, 15 Jun 2012 12:08:14 +0200
-Message-Id: <1339754895-5129-2-git-send-email-rnibali@gmail.com>
+Date: Fri, 15 Jun 2012 12:08:15 +0200
+Message-Id: <1339754895-5129-3-git-send-email-rnibali@gmail.com>
 In-Reply-To: <1339754895-5129-1-git-send-email-rnibali@gmail.com>
 References: <1339754895-5129-1-git-send-email-rnibali@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,26 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] Remove superfluous SYSCTL_RSTA
+Subject: [PATCH 2/2] Deal properly with scripts/bareboxenv-target
 To: barebox@lists.infradead.org
+
+The bareboxenv-target binary is automatically created but never
+deleted nor is it excluded from git tracking. This patch remedies
+the situation by adding scripts/bareboxenv-target to .gitignnore
+and adjusting the list of to be deleted files of the 'clean' target
+in the core Makefile.
 
 Signed-off-by: Roberto Nibali <rnibali@gmail.com>
 ---
- drivers/mci/imx-esdhc.h |    1 -
- 1 file changed, 1 deletion(-)
+ .gitignore |    1 +
+ Makefile   |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/mci/imx-esdhc.h b/drivers/mci/imx-esdhc.h
-index e5cf884..d9be69e 100644
---- a/drivers/mci/imx-esdhc.h
-+++ b/drivers/mci/imx-esdhc.h
-@@ -39,7 +39,6 @@
- #define SYSCTL_PEREN		0x00000004
- #define SYSCTL_HCKEN		0x00000002
- #define SYSCTL_IPGEN		0x00000001
--#define SYSCTL_RSTA		0x01000000
+diff --git a/.gitignore b/.gitignore
+index df0ed2c..fd429fa 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -65,3 +65,4 @@ cscope.*
+ *.patch
+ scripts/gen_netx_image
+ scripts/s5p_cksum
++scripts/bareboxenv-target
+diff --git a/Makefile b/Makefile
+index 9294049..3756eac 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1003,6 +1003,7 @@ CLEAN_DIRS  += $(MODVERDIR)
+ CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
+                 .tmp_version .tmp_barebox* barebox.bin barebox.map barebox.S \
+ 		.tmp_kallsyms* barebox_default_env* barebox.ldr \
++		scripts/bareboxenv-target \
+ 		Doxyfile.version barebox.srec barebox.s5p
  
- #define IRQSTAT			0x0002e030
- #define IRQSTAT_DMAE		(0x10000000)
+ # Directories & files removed with 'make mrproper'
 -- 
 1.7.9.5
 
