@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-f177.google.com ([74.125.82.177])
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SfTS8-0001XZ-Ex
- for barebox@lists.infradead.org; Fri, 15 Jun 2012 10:08:29 +0000
-Received: by werc12 with SMTP id c12so2181334wer.36
- for <barebox@lists.infradead.org>; Fri, 15 Jun 2012 03:08:26 -0700 (PDT)
-From: Roberto Nibali <rnibali@gmail.com>
-Date: Fri, 15 Jun 2012 12:08:15 +0200
-Message-Id: <1339754895-5129-3-git-send-email-rnibali@gmail.com>
-In-Reply-To: <1339754895-5129-1-git-send-email-rnibali@gmail.com>
-References: <1339754895-5129-1-git-send-email-rnibali@gmail.com>
+ id 1SfTlW-0002vj-Bo
+ for barebox@lists.infradead.org; Fri, 15 Jun 2012 10:28:31 +0000
+Received: by laap9 with SMTP id p9so2011687laa.36
+ for <barebox@lists.infradead.org>; Fri, 15 Jun 2012 03:28:27 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri, 15 Jun 2012 14:28:19 +0400
+Message-Id: <1339756099-17774-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] Deal properly with scripts/bareboxenv-target
+Subject: [PATCH] poweroff: fix cmd_poweroff() arguments type
 To: barebox@lists.infradead.org
 
-The bareboxenv-target binary is automatically created but never
-deleted nor is it excluded from git tracking. This patch remedies
-the situation by adding scripts/bareboxenv-target to .gitignnore
-and adjusting the list of to be deleted files of the 'clean' target
-in the core Makefile.
+This fixes a bug introduced with:
 
-Signed-off-by: Roberto Nibali <rnibali@gmail.com>
+commit d5efef69b6449edcf44f45372c42dba861c35537
+Author: Antony Pavlov <antonynpavlov@gmail.com>
+Date:   Wed Jun 13 23:43:07 2012 +0400
+
+    add 'poweroff' command
+
+    Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- .gitignore |    1 +
- Makefile   |    1 +
- 2 files changed, 2 insertions(+)
+ commands/poweroff.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/.gitignore b/.gitignore
-index df0ed2c..fd429fa 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -65,3 +65,4 @@ cscope.*
- *.patch
- scripts/gen_netx_image
- scripts/s5p_cksum
-+scripts/bareboxenv-target
-diff --git a/Makefile b/Makefile
-index 9294049..3756eac 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1003,6 +1003,7 @@ CLEAN_DIRS  += $(MODVERDIR)
- CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
-                 .tmp_version .tmp_barebox* barebox.bin barebox.map barebox.S \
- 		.tmp_kallsyms* barebox_default_env* barebox.ldr \
-+		scripts/bareboxenv-target \
- 		Doxyfile.version barebox.srec barebox.s5p
+diff --git a/commands/poweroff.c b/commands/poweroff.c
+index cd5542b..ebb146c 100644
+--- a/commands/poweroff.c
++++ b/commands/poweroff.c
+@@ -23,7 +23,7 @@
+ #include <common.h>
+ #include <command.h>
  
- # Directories & files removed with 'make mrproper'
+-static int cmd_poweroff(struct command *cmdtp, int argc, char *argv[])
++static int cmd_poweroff(int argc, char *argv[])
+ {
+ 	poweroff();
+ 
 -- 
-1.7.9.5
+1.7.10
 
 
 _______________________________________________
