@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-f49.google.com ([209.85.213.49])
+Received: from mail-yx0-f177.google.com ([209.85.213.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sgg8R-0006e8-O5
- for barebox@lists.infradead.org; Mon, 18 Jun 2012 17:53:08 +0000
-Received: by yhjj52 with SMTP id j52so4422787yhj.36
- for <barebox@lists.infradead.org>; Mon, 18 Jun 2012 10:53:05 -0700 (PDT)
+ id 1Sggfi-0000OA-8m
+ for barebox@lists.infradead.org; Mon, 18 Jun 2012 18:27:30 +0000
+Received: by yenr9 with SMTP id r9so4409586yen.36
+ for <barebox@lists.infradead.org>; Mon, 18 Jun 2012 11:27:29 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1340030880-10062-2-git-send-email-js@sig21.net>
+In-Reply-To: <1340030880-10062-3-git-send-email-js@sig21.net>
 References: <1340030880-10062-1-git-send-email-js@sig21.net>
- <1340030880-10062-2-git-send-email-js@sig21.net>
+ <1340030880-10062-3-git-send-email-js@sig21.net>
 From: Roberto Nibali <rnibali@gmail.com>
-Date: Mon, 18 Jun 2012 19:52:44 +0200
-Message-ID: <CAONxwYONy=A6pFp2hdupr6vsO4+Me4wuSe1i+YPKQsK6rkRs3Q@mail.gmail.com>
+Date: Mon, 18 Jun 2012 20:27:08 +0200
+Message-ID: <CAONxwYPRvOL0FL1PfuQ7MjCr+vY7g6OnR_m8v38y+71EvsHmhw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,71 +20,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============7204043577796299369=="
+Content-Type: multipart/mixed; boundary="===============3613286128819704691=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] miidev: fix auto negotiation
+Subject: Re: [PATCH 2/6] miidev: actually probe the PHY
 To: Johannes Stezenbach <js@sig21.net>
 Cc: barebox@lists.infradead.org
 
---===============7204043577796299369==
-Content-Type: multipart/alternative; boundary=14dae93408ab7f0f4204c2c2d69d
+--===============3613286128819704691==
+Content-Type: multipart/alternative; boundary=bcaec539650c86155504c2c35141
 
---14dae93408ab7f0f4204c2c2d69d
+--bcaec539650c86155504c2c35141
 Content-Type: text/plain; charset=ISO-8859-1
 
 Hi
 
 On Mon, Jun 18, 2012 at 4:47 PM, Johannes Stezenbach <js@sig21.net> wrote:
 
-> The auto negotiation result is the intersect
-> of the advertised abilities and the link partner abilities.
+> Check if the PHY is really accessible (e.g. the
+> PHY address is correct) during probe.
 >
 > Signed-off-by: Johannes Stezenbach <js@sig21.net>
 > ---
->  drivers/net/miidev.c |   16 ++++++++++------
->  1 file changed, 10 insertions(+), 6 deletions(-)
+>  drivers/net/miidev.c |   12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 >
 > diff --git a/drivers/net/miidev.c b/drivers/net/miidev.c
-> index f47fc9e..272234e 100644
+> index 272234e..3545889 100644
 > --- a/drivers/net/miidev.c
 > +++ b/drivers/net/miidev.c
-> @@ -123,6 +123,7 @@ int miidev_wait_aneg(struct mii_device *mdev)
->
->  int miidev_get_status(struct mii_device *mdev)
+> @@ -225,6 +225,14 @@ static struct file_operations miidev_ops = {
+>  static int miidev_probe(struct device_d *dev)
 >  {
-> +       int ret, status, adv, lpa;
->        int ret, status;
+>        struct mii_device *mdev = dev->priv;
+> +       int val;
+> +
+> +       val = mii_read(mdev, mdev->address, MII_PHYSID1);
+> +       if (val < 0 || val == 0xffff)
+> +               goto err_out;
+> +       val = mii_read(mdev, mdev->address, MII_PHYSID2);
+> +       if (val < 0 || val == 0xffff)
+> +               goto err_out;
 >
->        ret = mii_read(mdev, mdev->address, MII_BMSR);
-> @@ -136,13 +137,16 @@ int miidev_get_status(struct mii_device *mdev)
->                goto err_out;
 >
->        if (ret & BMCR_ANENABLE) {
-> -               ret = mii_read(mdev, mdev->address, MII_LPA);
-> -               if (ret < 0)
-> +               lpa = mii_read(mdev, mdev->address, MII_LPA);
-> +               if (lpa < 0)
->                        goto err_out;
-> -
-> -               status |= ret & LPA_DUPLEX ? MIIDEV_STATUS_IS_FULL_DUPLEX
-> : 0;
-> -               status |= ret & LPA_100 ? MIIDEV_STATUS_IS_100MBIT :
-> -                               MIIDEV_STATUS_IS_10MBIT;
-> +               adv = mii_read(mdev, mdev->address, MII_ADVERTISE);
-> +               if (adv < 0)
-> +                       goto err_out;
-> +               lpa &= adv;
->
+Suppose this has no influence on drivers/net/fec_imx.c:fec_set_hwaddr()
+returning -1?
 
-Good catch and obviously correct. I reckon since nowadays most PHY's
-advertise ADVERTISE_FULL or ADVERTISE_ALL, this has never been an issue for
-anybody so far.
+Otherwise I believe this is fine.
 
-Best regards
+Cheers
 Roberto
 
---14dae93408ab7f0f4204c2c2d69d
+--bcaec539650c86155504c2c35141
 Content-Type: text/html; charset=ISO-8859-1
 Content-Transfer-Encoding: quoted-printable
 
@@ -94,61 +81,42 @@ nes Stezenbach <span dir=3D"ltr">&lt;<a href=3D"mailto:js@sig21.net" target=
 l_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left=
 :1ex">
 
-The auto negotiation result is the intersect<br>
-of the advertised abilities and the link partner abilities.<br>
+Check if the PHY is really accessible (e.g. the<br>
+PHY address is correct) during probe.<br>
 <br>
 Signed-off-by: Johannes Stezenbach &lt;<a href=3D"mailto:js@sig21.net">js@s=
 ig21.net</a>&gt;<br>
 ---<br>
-=A0drivers/net/miidev.c | =A0 16 ++++++++++------<br>
-=A01 file changed, 10 insertions(+), 6 deletions(-)<br>
+=A0drivers/net/miidev.c | =A0 12 ++++++++++++<br>
+=A01 file changed, 12 insertions(+)<br>
 <br>
 diff --git a/drivers/net/miidev.c b/drivers/net/miidev.c<br>
-index f47fc9e..272234e 100644<br>
+index 272234e..3545889 100644<br>
 --- a/drivers/net/miidev.c<br>
 +++ b/drivers/net/miidev.c<br>
-@@ -123,6 +123,7 @@ int miidev_wait_aneg(struct mii_device *mdev)<br>
-<br>
-=A0int miidev_get_status(struct mii_device *mdev)<br>
+@@ -225,6 +225,14 @@ static struct file_operations miidev_ops =3D {<br>
+=A0static int miidev_probe(struct device_d *dev)<br>
 =A0{<br>
-+ =A0 =A0 =A0 int ret, status, adv, lpa;<br>
- =A0 =A0 =A0 =A0int ret, status;<br>
-<br>
- =A0 =A0 =A0 =A0ret =3D mii_read(mdev, mdev-&gt;address, MII_BMSR);<br>
-@@ -136,13 +137,16 @@ int miidev_get_status(struct mii_device *mdev)<br>
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto err_out;<br>
-<br>
- =A0 =A0 =A0 =A0if (ret &amp; BMCR_ANENABLE) {<br>
-- =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D mii_read(mdev, mdev-&gt;address, MII_=
-LPA);<br>
-- =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (ret &lt; 0)<br>
-+ =A0 =A0 =A0 =A0 =A0 =A0 =A0 lpa =3D mii_read(mdev, mdev-&gt;address, MII_=
-LPA);<br>
-+ =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (lpa &lt; 0)<br>
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto err_out;<br>
--<br>
-- =A0 =A0 =A0 =A0 =A0 =A0 =A0 status |=3D ret &amp; LPA_DUPLEX ? MIIDEV_STA=
-TUS_IS_FULL_DUPLEX : 0;<br>
-- =A0 =A0 =A0 =A0 =A0 =A0 =A0 status |=3D ret &amp; LPA_100 ? MIIDEV_STATUS=
-_IS_100MBIT :<br>
-- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 MIIDEV_STATUS=
-_IS_10MBIT;<br>
-+ =A0 =A0 =A0 =A0 =A0 =A0 =A0 adv =3D mii_read(mdev, mdev-&gt;address, MII_=
-ADVERTISE);<br>
-+ =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (adv &lt; 0)<br>
-+ =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_out;<br>
-+ =A0 =A0 =A0 =A0 =A0 =A0 =A0 lpa &amp;=3D adv;<br>
-</blockquote><div><br></div><div>Good catch and obviously correct. I reckon=
- since nowadays most PHY&#39;s advertise=A0ADVERTISE_FULL or=A0ADVERTISE_AL=
-L, this has never been an issue for anybody so far.</div><div><br></div><di=
-v>
+ =A0 =A0 =A0 =A0struct mii_device *mdev =3D dev-&gt;priv;<br>
++ =A0 =A0 =A0 int val;<br>
++<br>
++ =A0 =A0 =A0 val =3D mii_read(mdev, mdev-&gt;address, MII_PHYSID1);<br>
++ =A0 =A0 =A0 if (val &lt; 0 || val =3D=3D 0xffff)<br>
++ =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_out;<br>
++ =A0 =A0 =A0 val =3D mii_read(mdev, mdev-&gt;address, MII_PHYSID2);<br>
++ =A0 =A0 =A0 if (val &lt; 0 || val =3D=3D 0xffff)<br>
++ =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_out;<br>
+<br></blockquote><div><br></div><div>Suppose this has no influence on=A0dri=
+vers/net/fec_imx.c:fec_set_hwaddr() returning -1?</div><div><br></div><div>=
+Otherwise I believe this is fine.</div><div><br></div><div>Cheers</div><div=
+>
 
-Best regards</div><div>Roberto</div></div>
+Roberto</div></div>
 
---14dae93408ab7f0f4204c2c2d69d--
+--bcaec539650c86155504c2c35141--
 
 
---===============7204043577796299369==
+--===============3613286128819704691==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -159,4 +127,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============7204043577796299369==--
+--===============3613286128819704691==--
