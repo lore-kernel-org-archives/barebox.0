@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2a02:8b8:656::164] (helo=bar.sig21.net)
+Received: from mail-yw0-f49.google.com ([209.85.213.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SgdY4-0001BF-Qs
- for barebox@lists.infradead.org; Mon, 18 Jun 2012 15:07:25 +0000
-Received: from p5099b351.dip0.t-ipconnect.de ([80.153.179.81] helo=zzz.local)
- by bar.sig21.net with esmtpsa (TLS1.0:RSA_ARCFOUR_SHA1:16)
- (Exim 4.72) (envelope-from <js@sig21.net>) id 1SgdXe-0008Ii-HE
- for barebox@lists.infradead.org; Mon, 18 Jun 2012 17:07:03 +0200
-Received: from js by zzz.local with local (Exim 4.80)
- (envelope-from <js@sig21.net>) id 1SgdXd-0002mE-I9
- for barebox@lists.infradead.org; Mon, 18 Jun 2012 17:06:57 +0200
-Date: Mon, 18 Jun 2012 17:06:57 +0200
-From: Johannes Stezenbach <js@sig21.net>
-Message-ID: <20120618150656.GA10624@sig21.net>
+ id 1Sgg8R-0006e8-O5
+ for barebox@lists.infradead.org; Mon, 18 Jun 2012 17:53:08 +0000
+Received: by yhjj52 with SMTP id j52so4422787yhj.36
+ for <barebox@lists.infradead.org>; Mon, 18 Jun 2012 10:53:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
+In-Reply-To: <1340030880-10062-2-git-send-email-js@sig21.net>
+References: <1340030880-10062-1-git-send-email-js@sig21.net>
+ <1340030880-10062-2-git-send-email-js@sig21.net>
+From: Roberto Nibali <rnibali@gmail.com>
+Date: Mon, 18 Jun 2012 19:52:44 +0200
+Message-ID: <CAONxwYONy=A6pFp2hdupr6vsO4+Me4wuSe1i+YPKQsK6rkRs3Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,211 +20,143 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============7204043577796299369=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RFC] spi: add support for dual and quad IO modes
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/6] miidev: fix auto negotiation
+To: Johannes Stezenbach <js@sig21.net>
+Cc: barebox@lists.infradead.org
 
-Some flashes and SPI masters support dual and quad IO modes
-where data is transferred in parallel using two or four pins.
-For now add this capability for mx25l25635e.
+--===============7204043577796299369==
+Content-Type: multipart/alternative; boundary=14dae93408ab7f0f4204c2c2d69d
 
-Signed-off-by: Johannes Stezenbach <js@sig21.net>
----
+--14dae93408ab7f0f4204c2c2d69d
+Content-Type: text/plain; charset=ISO-8859-1
 
-I'm planning to submit a similar patch for Linux sometime
-within the next month or so.  Maybe you want to wait
-for the review comments there before including it in barebox,
-but I'm posting this anyway in case someone wants to comment.
-At the moment I'm not able to post the SPI master driver
-which implements it.  I'm not sure which if any of the SPI
-masters already included in barebox have the dual and
-quad mode capability, but it's important for boot time.
-BTW, I have checked all users of struct spi_transfer
-properly initialize it to zero so adding the
-multi_io field should not cause problems.
+Hi
+
+On Mon, Jun 18, 2012 at 4:47 PM, Johannes Stezenbach <js@sig21.net> wrote:
+
+> The auto negotiation result is the intersect
+> of the advertised abilities and the link partner abilities.
+>
+> Signed-off-by: Johannes Stezenbach <js@sig21.net>
+> ---
+>  drivers/net/miidev.c |   16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/net/miidev.c b/drivers/net/miidev.c
+> index f47fc9e..272234e 100644
+> --- a/drivers/net/miidev.c
+> +++ b/drivers/net/miidev.c
+> @@ -123,6 +123,7 @@ int miidev_wait_aneg(struct mii_device *mdev)
+>
+>  int miidev_get_status(struct mii_device *mdev)
+>  {
+> +       int ret, status, adv, lpa;
+>        int ret, status;
+>
+>        ret = mii_read(mdev, mdev->address, MII_BMSR);
+> @@ -136,13 +137,16 @@ int miidev_get_status(struct mii_device *mdev)
+>                goto err_out;
+>
+>        if (ret & BMCR_ANENABLE) {
+> -               ret = mii_read(mdev, mdev->address, MII_LPA);
+> -               if (ret < 0)
+> +               lpa = mii_read(mdev, mdev->address, MII_LPA);
+> +               if (lpa < 0)
+>                        goto err_out;
+> -
+> -               status |= ret & LPA_DUPLEX ? MIIDEV_STATUS_IS_FULL_DUPLEX
+> : 0;
+> -               status |= ret & LPA_100 ? MIIDEV_STATUS_IS_100MBIT :
+> -                               MIIDEV_STATUS_IS_10MBIT;
+> +               adv = mii_read(mdev, mdev->address, MII_ADVERTISE);
+> +               if (adv < 0)
+> +                       goto err_out;
+> +               lpa &= adv;
+>
+
+Good catch and obviously correct. I reckon since nowadays most PHY's
+advertise ADVERTISE_FULL or ADVERTISE_ALL, this has never been an issue for
+anybody so far.
+
+Best regards
+Roberto
+
+--14dae93408ab7f0f4204c2c2d69d
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hi<br><br><div class=3D"gmail_quote">On Mon, Jun 18, 2012 at 4:47 PM, Johan=
+nes Stezenbach <span dir=3D"ltr">&lt;<a href=3D"mailto:js@sig21.net" target=
+=3D"_blank">js@sig21.net</a>&gt;</span> wrote:<br><blockquote class=3D"gmai=
+l_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left=
+:1ex">
+
+The auto negotiation result is the intersect<br>
+of the advertised abilities and the link partner abilities.<br>
+<br>
+Signed-off-by: Johannes Stezenbach &lt;<a href=3D"mailto:js@sig21.net">js@s=
+ig21.net</a>&gt;<br>
+---<br>
+=A0drivers/net/miidev.c | =A0 16 ++++++++++------<br>
+=A01 file changed, 10 insertions(+), 6 deletions(-)<br>
+<br>
+diff --git a/drivers/net/miidev.c b/drivers/net/miidev.c<br>
+index f47fc9e..272234e 100644<br>
+--- a/drivers/net/miidev.c<br>
++++ b/drivers/net/miidev.c<br>
+@@ -123,6 +123,7 @@ int miidev_wait_aneg(struct mii_device *mdev)<br>
+<br>
+=A0int miidev_get_status(struct mii_device *mdev)<br>
+=A0{<br>
++ =A0 =A0 =A0 int ret, status, adv, lpa;<br>
+ =A0 =A0 =A0 =A0int ret, status;<br>
+<br>
+ =A0 =A0 =A0 =A0ret =3D mii_read(mdev, mdev-&gt;address, MII_BMSR);<br>
+@@ -136,13 +137,16 @@ int miidev_get_status(struct mii_device *mdev)<br>
+ =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto err_out;<br>
+<br>
+ =A0 =A0 =A0 =A0if (ret &amp; BMCR_ANENABLE) {<br>
+- =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D mii_read(mdev, mdev-&gt;address, MII_=
+LPA);<br>
+- =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (ret &lt; 0)<br>
++ =A0 =A0 =A0 =A0 =A0 =A0 =A0 lpa =3D mii_read(mdev, mdev-&gt;address, MII_=
+LPA);<br>
++ =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (lpa &lt; 0)<br>
+ =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto err_out;<br>
+-<br>
+- =A0 =A0 =A0 =A0 =A0 =A0 =A0 status |=3D ret &amp; LPA_DUPLEX ? MIIDEV_STA=
+TUS_IS_FULL_DUPLEX : 0;<br>
+- =A0 =A0 =A0 =A0 =A0 =A0 =A0 status |=3D ret &amp; LPA_100 ? MIIDEV_STATUS=
+_IS_100MBIT :<br>
+- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 MIIDEV_STATUS=
+_IS_10MBIT;<br>
++ =A0 =A0 =A0 =A0 =A0 =A0 =A0 adv =3D mii_read(mdev, mdev-&gt;address, MII_=
+ADVERTISE);<br>
++ =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (adv &lt; 0)<br>
++ =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_out;<br>
++ =A0 =A0 =A0 =A0 =A0 =A0 =A0 lpa &amp;=3D adv;<br>
+</blockquote><div><br></div><div>Good catch and obviously correct. I reckon=
+ since nowadays most PHY&#39;s advertise=A0ADVERTISE_FULL or=A0ADVERTISE_AL=
+L, this has never been an issue for anybody so far.</div><div><br></div><di=
+v>
+
+Best regards</div><div>Roberto</div></div>
+
+--14dae93408ab7f0f4204c2c2d69d--
 
 
- drivers/nor/m25p80.c |   33 +++++++++++++++++++++++++++------
- drivers/nor/m25p80.h |    6 ++++++
- drivers/spi/spi.c    |   10 ++++++++++
- include/spi/spi.h    |    9 +++++++++
- 4 files changed, 52 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/nor/m25p80.c b/drivers/nor/m25p80.c
-index 77669c2..7b28a1b 100644
---- a/drivers/nor/m25p80.c
-+++ b/drivers/nor/m25p80.c
-@@ -255,7 +255,7 @@ ssize_t m25p80_read(struct cdev *cdev, void *buf, size_t count, ulong offset, ul
- 	struct m25p *flash = cdev->priv;
- 	struct spi_transfer t[2];
- 	struct spi_message m;
--	ssize_t retlen;
-+	ssize_t retlen, cmdlen;
- 
- 	/* sanity checks */
- 	if (!count)
-@@ -271,12 +271,21 @@ ssize_t m25p80_read(struct cdev *cdev, void *buf, size_t count, ulong offset, ul
- 	 * OPCODE_FAST_READ (if available) is faster.
- 	 * Should add 1 byte DUMMY_BYTE.
- 	 */
-+	cmdlen = m25p_cmdsz(flash);
-+	if (flash->dual_io || flash->quad_io)
-+		cmdlen++;
-+	else
-+		cmdlen += FAST_READ_DUMMY_BYTE;
- 	t[0].tx_buf = flash->command;
--	t[0].len = m25p_cmdsz(flash) + FAST_READ_DUMMY_BYTE;
-+	t[0].len = cmdlen;
- 	spi_message_add_tail(&t[0], &m);
- 
- 	t[1].rx_buf = buf;
- 	t[1].len = count;
-+	if (flash->quad_io)
-+		t[1].multi_io = SPI_QUAD_IO;
-+	else if (flash->dual_io)
-+		t[1].multi_io = SPI_DUAL_IO;
- 	spi_message_add_tail(&t[1], &m);
- 
- 	/* Byte count starts at zero. */
-@@ -292,12 +301,17 @@ ssize_t m25p80_read(struct cdev *cdev, void *buf, size_t count, ulong offset, ul
- 	 */
- 
- 	/* Set up the write data buffer. */
--	flash->command[0] = OPCODE_READ;
-+	if (flash->quad_io)
-+		flash->command[0] = OPCODE_QUAD_READ;
-+	else if (flash->dual_io)
-+		flash->command[0] = OPCODE_DUAL_READ;
-+	else
-+		flash->command[0] = OPCODE_READ;
- 	m25p_addr2cmd(flash, offset, flash->command);
- 
- 	spi_sync(flash->spi, &m);
- 
--	retlen = m.actual_length - m25p_cmdsz(flash) - FAST_READ_DUMMY_BYTE;
-+	retlen = m.actual_length - cmdlen;
- 
- 	return retlen;
- }
-@@ -552,7 +566,7 @@ static const struct spi_device_id m25p_ids[] = {
- 	{ "mx25l6405d",  INFO(0xc22017, 0, 64 * 1024, 128, 0) },
- 	{ "mx25l12805d", INFO(0xc22018, 0, 64 * 1024, 256, 0) },
- 	{ "mx25l12855e", INFO(0xc22618, 0, 64 * 1024, 256, 0) },
--	{ "mx25l25635e", INFO(0xc22019, 0, 64 * 1024, 512, 0) },
-+	{ "mx25l25635e", INFO(0xc22019, 0, 64 * 1024, 512, DUAL_IO | QUAD_IO) },
- 	{ "mx25l25655e", INFO(0xc22619, 0, 64 * 1024, 512, 0) },
- 
- 	/* Spansion -- single (large) sector size only, at least
-@@ -788,6 +802,10 @@ static int m25p_probe(struct device_d *dev)
- 	} else {
- 		flash->erase_opcode = OPCODE_SE;
- 	}
-+	if ((info->flags & DUAL_IO) && (spi->master->flags & SPI_MASTER_DUAL_IO))
-+		flash->dual_io = 1;
-+	if ((info->flags & QUAD_IO) && (spi->master->flags & SPI_MASTER_QUAD_IO))
-+		flash->quad_io = 1;
- 
- 	flash->page_size = info->page_size;
- 
-@@ -802,7 +820,10 @@ static int m25p_probe(struct device_d *dev)
- 			flash->addr_width = 3;
- 	}
- 
--	dev_info(dev, "%s (%lld Kbytes)\n", id->name, (long long)flash->size >> 10);
-+	dev_info(dev, "%s (%lld Kbytes%s%s)\n", id->name,
-+		 (long long)flash->size >> 10,
-+		 flash->dual_io ? ", 2x" : "",
-+		 flash->quad_io ? ", 4x" : "");
- 
- 	devfs_create(&flash->cdev);
- 
-diff --git a/drivers/nor/m25p80.h b/drivers/nor/m25p80.h
-index 3f9dd9c..333cac2 100644
---- a/drivers/nor/m25p80.h
-+++ b/drivers/nor/m25p80.h
-@@ -7,6 +7,8 @@
- #define	OPCODE_WRSR		0x01	/* Write status register 1 byte */
- #define	OPCODE_NORM_READ	0x03	/* Read data bytes (low frequency) */
- #define	OPCODE_FAST_READ	0x0b	/* Read data bytes (high frequency) */
-+#define	OPCODE_DUAL_READ	0x3b	/* Read data bytes (2 IO lanes) */
-+#define	OPCODE_QUAD_READ	0x6b	/* Read data bytes (4 IO lanes) */
- #define	OPCODE_PP		0x02	/* Page program (up to 256 bytes) */
- #define	OPCODE_BE_4K		0x20	/* Erase 4KiB block */
- #define	OPCODE_BE_32K		0x52	/* Erase 32KiB block */
-@@ -61,6 +63,8 @@ struct m25p {
- 	u16			page_size;
- 	u16			addr_width;
- 	u8			erase_opcode;
-+	u8			dual_io:1;
-+	u8			quad_io:1;
- 	u8			*command;
- 	u32			size;
- };
-@@ -85,6 +89,8 @@ struct flash_info {
- 	u16		flags;
- #define	SECT_4K		0x01		/* OPCODE_BE_4K works uniformly */
- #define	M25P_NO_ERASE	0x02		/* No erase command needed */
-+#define DUAL_IO		0x04		/* can do 2 lane data transfers */
-+#define QUAD_IO		0x08		/* can do 4 lane data transfers */
- };
- 
- #endif
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index a7fe10c..d5b521b 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -196,6 +196,16 @@ EXPORT_SYMBOL(spi_register_master);
- 
- int spi_sync(struct spi_device *spi, struct spi_message *message)
- {
-+	struct spi_transfer *t;
-+
-+	list_for_each_entry(t, &message->transfers, transfer_list) {
-+		if ((t->multi_io == SPI_DUAL_IO) &&
-+		    !(spi->master->flags & SPI_MASTER_DUAL_IO))
-+			return -EINVAL;
-+		if ((t->multi_io == SPI_QUAD_IO) &&
-+		    !(spi->master->flags & SPI_MASTER_QUAD_IO))
-+			return -EINVAL;
-+	}
- 	return spi->master->transfer(spi, message);
- }
- 
-diff --git a/include/spi/spi.h b/include/spi/spi.h
-index 9d01d06..7ff444d 100644
---- a/include/spi/spi.h
-+++ b/include/spi/spi.h
-@@ -136,6 +136,10 @@ struct spi_master {
- 	 */
- 	u16			num_chipselect;
- 
-+	u16			flags;
-+#define SPI_MASTER_DUAL_IO	BIT(0)	/* can do 2 lane data transfers */
-+#define SPI_MASTER_QUAD_IO	BIT(1)	/* can do 4 lane data transfers */
-+
- 	/* setup mode and clock, etc (spi driver may call many times) */
- 	int			(*setup)(struct spi_device *spi);
- 
-@@ -256,6 +260,11 @@ struct spi_transfer {
- 	unsigned	len;
- 
- 	unsigned	cs_change:1;
-+#define SPI_SINGLE_IO 0
-+#define SPI_DUAL_IO 1
-+#define SPI_QUAD_IO 2
-+	unsigned	multi_io:2;
-+
- 	u8		bits_per_word;
- 	u16		delay_usecs;
- 	u32		speed_hz;
--- 
-1.7.10.4
-
+--===============7204043577796299369==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============7204043577796299369==--
