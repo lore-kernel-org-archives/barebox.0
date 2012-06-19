@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SgviC-0006B6-QJ
- for barebox@lists.infradead.org; Tue, 19 Jun 2012 10:31:06 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1Sgvi8-0001Zx-T9
- for barebox@lists.infradead.org; Tue, 19 Jun 2012 12:31:01 +0200
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Tue, 19 Jun 2012 12:29:28 +0200
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201206191229.29035.jbe@pengutronix.de>
+ id 1Sgxff-00056E-76
+ for barebox@lists.infradead.org; Tue, 19 Jun 2012 12:36:36 +0000
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Tue, 19 Jun 2012 14:36:27 +0200
+Message-Id: <1340109391-22794-3-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1340109391-22794-1-git-send-email-mkl@pengutronix.de>
+References: <1340109391-22794-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,37 +16,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: i.MX23/i.MX28, software reset feature
-To: barebox@lists.infradead.org
+Subject: [PATCH 2/6] ARM mmu: introduce dma_alloc, dma_free
+To: sha@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-Hi list,
+dma_alloc() allocates memory aligned to cache lines. We have to use
+cache line aligned buffers if a driver calls dma_inv_range on the
+buffer. Add dma_free() for documentation reasons, too.
 
-currently we use the watchdog to make the "reset" command work on the 
-i.XM23/i.MX28 CPUs. This collides if someone wants to use the watchdog in a 
-regular manner, as Barebox cannot distinguish if the reset was a result of 
-the "reset" command (or "reboot" from Linux) or if something strange happens 
-and the watchdog has barked to reboot and try again (maybe in a different 
-manner).
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ arch/arm/include/asm/dma.h |    8 ++++++++
+ arch/arm/include/asm/mmu.h |   10 ++++++++++
+ 2 files changed, 18 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/include/asm/dma.h
 
-The i.XM23/i.MX28 CPUs are coming with a bit in a special register in 
-the "clock generation and control" unit to hard reset the whole SoC. This 
-could be used instead to make the "reset" command work. But the register 
-offsets are different in both SoCs. So:
-
- - using ifdefs to distinguish both SoCs in "arch/arm/mach-mxs/reset-imx.c"
- - or moving the reset_cpu() function into "arch/arm/mach-mxs/speed-imx*.c"
-   where all the required symbols and correct offset are already defined on a
-   per SoC base?
-
-jbe
-
+diff --git a/arch/arm/include/asm/dma.h b/arch/arm/include/asm/dma.h
+new file mode 100644
+index 0000000..cb9cd1b
+--- /dev/null
++++ b/arch/arm/include/asm/dma.h
+@@ -0,0 +1,8 @@
++/*
++ * Copyright (C) 2012 by Marc Kleine-Budde <mkl@pengutronix.de>
++ *
++ * This file is released under the GPLv2
++ *
++ */
++
++#include <asm/mmu.h>
+diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
+index f5ae7a8..cc3529f 100644
+--- a/arch/arm/include/asm/mmu.h
++++ b/arch/arm/include/asm/mmu.h
+@@ -23,6 +23,16 @@ static inline void setup_dma_coherent(unsigned long offset)
+ {
+ }
+ 
++static inline void *dma_alloc(size_t size)
++{
++	return xmemalign(64, size);
++}
++
++static inline void dma_free(void *mem)
++{
++	free(mem);
++}
++
+ #ifdef CONFIG_MMU
+ void *dma_alloc_coherent(size_t size);
+ void dma_free_coherent(void *mem, size_t size);
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
+1.7.4.1
+
 
 _______________________________________________
 barebox mailing list
