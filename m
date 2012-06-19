@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2a02:8b8:656::164] (helo=bar.sig21.net)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sghnk-00045W-MC
- for barebox@lists.infradead.org; Mon, 18 Jun 2012 19:39:53 +0000
-Date: Mon, 18 Jun 2012 21:39:28 +0200
-From: Johannes Stezenbach <js@sig21.net>
-Message-ID: <20120618193928.GB4166@sig21.net>
-References: <1340030880-10062-1-git-send-email-js@sig21.net>
- <1340030880-10062-3-git-send-email-js@sig21.net>
- <CAONxwYPRvOL0FL1PfuQ7MjCr+vY7g6OnR_m8v38y+71EvsHmhw@mail.gmail.com>
+ id 1SgviC-0006B6-QJ
+ for barebox@lists.infradead.org; Tue, 19 Jun 2012 10:31:06 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jbe@pengutronix.de>) id 1Sgvi8-0001Zx-T9
+ for barebox@lists.infradead.org; Tue, 19 Jun 2012 12:31:01 +0200
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Tue, 19 Jun 2012 12:29:28 +0200
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAONxwYPRvOL0FL1PfuQ7MjCr+vY7g6OnR_m8v38y+71EvsHmhw@mail.gmail.com>
+Message-Id: <201206191229.29035.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,54 +25,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/6] miidev: actually probe the PHY
-To: Roberto Nibali <rnibali@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: i.MX23/i.MX28, software reset feature
+To: barebox@lists.infradead.org
 
-Hi,
+Hi list,
 
-On Mon, Jun 18, 2012 at 08:27:08PM +0200, Roberto Nibali wrote:
-> On Mon, Jun 18, 2012 at 4:47 PM, Johannes Stezenbach <js@sig21.net> wrote:
-> 
-> > Check if the PHY is really accessible (e.g. the
-> > PHY address is correct) during probe.
-> >
-> > Signed-off-by: Johannes Stezenbach <js@sig21.net>
-> > ---
-> >  drivers/net/miidev.c |   12 ++++++++++++
-> >  1 file changed, 12 insertions(+)
-> >
-> > diff --git a/drivers/net/miidev.c b/drivers/net/miidev.c
-> > index 272234e..3545889 100644
-> > --- a/drivers/net/miidev.c
-> > +++ b/drivers/net/miidev.c
-> > @@ -225,6 +225,14 @@ static struct file_operations miidev_ops = {
-> >  static int miidev_probe(struct device_d *dev)
-> >  {
-> >        struct mii_device *mdev = dev->priv;
-> > +       int val;
-> > +
-> > +       val = mii_read(mdev, mdev->address, MII_PHYSID1);
-> > +       if (val < 0 || val == 0xffff)
-> > +               goto err_out;
-> > +       val = mii_read(mdev, mdev->address, MII_PHYSID2);
-> > +       if (val < 0 || val == 0xffff)
-> > +               goto err_out;
-> >
-> >
-> Suppose this has no influence on drivers/net/fec_imx.c:fec_set_hwaddr()
-> returning -1?
+currently we use the watchdog to make the "reset" command work on the 
+i.XM23/i.MX28 CPUs. This collides if someone wants to use the watchdog in a 
+regular manner, as Barebox cannot distinguish if the reset was a result of 
+the "reset" command (or "reboot" from Linux) or if something strange happens 
+and the watchdog has barked to reboot and try again (maybe in a different 
+manner).
 
-Well, the MAC address goes to the MAC not the PHY... so it
-shouldn't have any adverse effect on that.
+The i.XM23/i.MX28 CPUs are coming with a bit in a special register in 
+the "clock generation and control" unit to hard reset the whole SoC. This 
+could be used instead to make the "reset" command work. But the register 
+offsets are different in both SoCs. So:
 
-Besides checking that the PHY address is correct this also
-catches cases where the PHY is broken or not soldered correctly,
-or when the MDIO clock divisor is wrong etc. 
-Can save time in trouble shooting.
+ - using ifdefs to distinguish both SoCs in "arch/arm/mach-mxs/reset-imx.c"
+ - or moving the reset_cpu() function into "arch/arm/mach-mxs/speed-imx*.c"
+   where all the required symbols and correct offset are already defined on a
+   per SoC base?
 
+jbe
 
-Johannes
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
