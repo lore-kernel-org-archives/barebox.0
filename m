@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sgxff-00056C-6y
- for barebox@lists.infradead.org; Tue, 19 Jun 2012 12:36:35 +0000
+ id 1Sgxff-00056D-74
+ for barebox@lists.infradead.org; Tue, 19 Jun 2012 12:36:36 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 19 Jun 2012 14:36:25 +0200
-Message-Id: <1340109391-22794-1-git-send-email-mkl@pengutronix.de>
+Date: Tue, 19 Jun 2012 14:36:26 +0200
+Message-Id: <1340109391-22794-2-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1340109391-22794-1-git-send-email-mkl@pengutronix.de>
+References: <1340109391-22794-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,23 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/6] fix dma memory allocations, add dma_alloc/dma_free
+Subject: [PATCH 1/6] ARM mmu: don't use CONFIG_MMU to disable mmu code,
+ there are static inline versions
 To: sha@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-Hello,
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ arch/arm/cpu/mmu.c |    4 ----
+ 1 files changed, 0 insertions(+), 4 deletions(-)
 
-on ARM using dfu mode we've seen problems with dma memory allocations.
-Some drivers use dma_inv_range on allocated buffers, which corrupts memory
-around the buffer, it it's not aligned to cache lines. This series
-introduces: dma_alloc() and dma_free() that allocate memory aligned to
-cache lines. This is 64 bytes on ARM (just to be sure) and
-DCACHE_LINE_SIZE on nios2. All other arch do a transparent xmalloc.
-
-Feel free to add the appropriate alignment for your architecture to
-"include/asm/dma.h"
-
-regards, Marc
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index c19f931..55b07a4 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -299,11 +299,9 @@ void *dma_alloc_coherent(size_t size)
+ 	size = PAGE_ALIGN(size);
+ 	ret = xmemalign(4096, size);
+ 
+-#ifdef CONFIG_MMU
+ 	dma_inv_range((unsigned long)ret, (unsigned long)ret + size);
+ 
+ 	remap_range(ret, size, PTE_FLAGS_UNCACHED);
+-#endif
+ 
+ 	return ret;
+ }
+@@ -320,9 +318,7 @@ void *phys_to_virt(unsigned long phys)
+ 
+ void dma_free_coherent(void *mem, size_t size)
+ {
+-#ifdef CONFIG_MMU
+ 	remap_range(mem, size, PTE_FLAGS_CACHED);
+-#endif
+ 
+ 	free(mem);
+ }
+-- 
+1.7.4.1
 
 
 _______________________________________________
