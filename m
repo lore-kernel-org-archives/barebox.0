@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sgxfg-00056H-1z
+ id 1Sgxff-00056F-Dm
  for barebox@lists.infradead.org; Tue, 19 Jun 2012 12:36:37 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 19 Jun 2012 14:36:30 +0200
-Message-Id: <1340109391-22794-6-git-send-email-mkl@pengutronix.de>
+Date: Tue, 19 Jun 2012 14:36:28 +0200
+Message-Id: <1340109391-22794-4-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1340109391-22794-1-git-send-email-mkl@pengutronix.de>
 References: <1340109391-22794-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,47 +21,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/6] USB gadget fsl: request cacheline aligned buffer
+Subject: [PATCH 3/6] nios: add dma_alloc, dma_free and asm/dma.h
 To: sha@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+Some drivers call dma_inv_range() on buffers, on arm these buffers must
+be cache line aligned.  This patch add dma_alloc, dma_free to existing
+dma-mapping.h. On nios the mem is aligned to DCACHE_LINE_SIZE.
 
-The fsl udc driver allocates a buffer for small requests. The
-driver then calls dma_inv_range later on it. This buffer happens
-to be not cacheline aligned which means that a dma_inv_range can
-corrupt other memory around the buffer.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-[mkl: use dma_alloc]
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/usb/gadget/fsl_udc.c |    5 +++--
- 1 files changed, 3 insertions(+), 2 deletions(-)
+ arch/nios2/include/asm/dma-mapping.h |   10 ++++++++++
+ arch/nios2/include/asm/dma.h         |    8 ++++++++
+ 2 files changed, 18 insertions(+), 0 deletions(-)
+ create mode 100644 arch/nios2/include/asm/dma.h
 
-diff --git a/drivers/usb/gadget/fsl_udc.c b/drivers/usb/gadget/fsl_udc.c
-index 5b64ec2..2765b41 100644
---- a/drivers/usb/gadget/fsl_udc.c
-+++ b/drivers/usb/gadget/fsl_udc.c
-@@ -8,7 +8,7 @@
- #include <io.h>
- #include <poller.h>
- #include <asm/byteorder.h>
--#include <asm/mmu.h>
-+#include <asm/dma.h>
+diff --git a/arch/nios2/include/asm/dma-mapping.h b/arch/nios2/include/asm/dma-mapping.h
+index 5b70f4c..0ec9c89 100644
+--- a/arch/nios2/include/asm/dma-mapping.h
++++ b/arch/nios2/include/asm/dma-mapping.h
+@@ -22,4 +22,14 @@ static inline void *dma_alloc_coherent(size_t len, unsigned long *handle)
+ 	return (void *)(*handle | IO_REGION_BASE);
+ }
  
- /* ### define USB registers here
-  */
-@@ -2109,7 +2109,8 @@ static int struct_udc_setup(struct fsl_udc *udc,
- 	udc->status_req = container_of(fsl_alloc_request(NULL),
- 			struct fsl_req, req);
- 	/* allocate a small amount of memory to get valid address */
--	udc->status_req->req.buf = xmalloc(8);
-+	udc->status_req->req.buf = dma_alloc(8);
-+	udc->status_req->req.length = 8;
- 	udc->resume_state = USB_STATE_NOTATTACHED;
- 	udc->usb_state = USB_STATE_POWERED;
- 	udc->ep0_dir = 0;
++static inline void *dma_alloc(size_t size)
++{
++	return xmemalign(DCACHE_LINE_SIZE, size);
++}
++
++static inline void dma_free(void *mem)
++{
++	free(mem);
++}
++
+ #endif /* __ASM_NIOS2_DMA_MAPPING_H */
+diff --git a/arch/nios2/include/asm/dma.h b/arch/nios2/include/asm/dma.h
+new file mode 100644
+index 0000000..8f709d2
+--- /dev/null
++++ b/arch/nios2/include/asm/dma.h
+@@ -0,0 +1,8 @@
++/*
++ * Copyright (C) 2012 by Marc Kleine-Budde <mkl@pengutronix.de>
++ *
++ * This file is released under the GPLv2
++ *
++ */
++
++#include <asm/dma-mapping.h>
 -- 
 1.7.4.1
 
