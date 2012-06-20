@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ShPzZ-0004Rn-PR
- for barebox@lists.infradead.org; Wed, 20 Jun 2012 18:51:02 +0000
-Date: Wed, 20 Jun 2012 20:50:59 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20120620185059.GC5642@pengutronix.de>
+ id 1ShR5b-0000QY-EP
+ for barebox@lists.infradead.org; Wed, 20 Jun 2012 20:01:20 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Wed, 20 Jun 2012 21:59:14 +0200
 References: <1340202731-30831-1-git-send-email-jbe@pengutronix.de>
- <1340202731-30831-2-git-send-email-jbe@pengutronix.de>
- <4FE1E3CE.8050908@pengutronix.de>
- <201206201708.52673.jbe@pengutronix.de>
+ <201206202109.54078.jbe@pengutronix.de>
+ <20120620192740.GD5642@pengutronix.de>
+In-Reply-To: <20120620192740.GD5642@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <201206201708.52673.jbe@pengutronix.de>
+Message-Id: <201206202159.14835.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,69 +20,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] Enable a way to provide the reason for "being here"
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
+Cc: Uwe =?utf-8?q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 
-On Wed, Jun 20, 2012 at 05:08:52PM +0200, Juergen Beisert wrote:
-> Marc Kleine-Budde wrote:
-> > [...]
-> > > +
-> > > +#include <common.h>
-> > > +#include <init.h>
-> > > +#include <environment.h>
-> > > +#include <globalvar.h>
-> > > +#include <reset_source.h>
-> > > +
-> > > +static const char name[] =3D "global.system.reset";
-> > > +static const char unknown_reset[] =3D "unknown";
-> > > +static const char power_on_reset[] =3D "POR";
-> > > +static const char manual_reset[] =3D "RST";
-> > > +static const char watchdog[] =3D "WDG";
-> > > +static const char wake[] =3D "WKE";
-> > > +static const char jtag[] =3D "JTAG";
-> >
-> > what about using an array
-> >
-> > static cost char *reset_reason_array[] =3D {
-> > 	[RESET_UKWN] =3D "unknown",
-> > 	...
-> > };
-> =
-
-> The result is not the same. The strings are no longer "const". But it sho=
-uld =
-
-<kidding>Of course they are not "const" if you write "cost".</kidding>
-Using
-
-	static const char * const reset_reason_array[] =3D {
-
-should do the trick.
-Having said that, I wonder what is the difference between
-
-	static const char wake[] =3D "WKE";
-	... use wake here ...
-
-and
-
-	... just use "WKE" ...
-
-.
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VXdlIEtsZWluZS1Lw7ZuaWcgd3JvdGU6Cj4gT24gV2VkLCBKdW4gMjAsIDIwMTIgYXQgMDk6MDk6
+NTNQTSArMDIwMCwgSnVlcmdlbiBCZWlzZXJ0IHdyb3RlOgo+ID4gSGkgVXdlLAo+ID4KPiA+IFV3
+ZSBLbGVpbmUtS8O2bmlnIHdyb3RlOgo+ID4gPiBPbiBXZWQsIEp1biAyMCwgMjAxMiBhdCAwNTow
+ODo1MlBNICswMjAwLCBKdWVyZ2VuIEJlaXNlcnQgd3JvdGU6Cj4gPiA+ID4gTWFyYyBLbGVpbmUt
+QnVkZGUgd3JvdGU6Cj4gPiA+ID4gPiBbLi4uXQo+ID4gPiA+ID4KPiA+ID4gPiA+ID4gKwo+ID4g
+PiA+ID4gPiArI2luY2x1ZGUgPGNvbW1vbi5oPgo+ID4gPiA+ID4gPiArI2luY2x1ZGUgPGluaXQu
+aD4KPiA+ID4gPiA+ID4gKyNpbmNsdWRlIDxlbnZpcm9ubWVudC5oPgo+ID4gPiA+ID4gPiArI2lu
+Y2x1ZGUgPGdsb2JhbHZhci5oPgo+ID4gPiA+ID4gPiArI2luY2x1ZGUgPHJlc2V0X3NvdXJjZS5o
+Pgo+ID4gPiA+ID4gPiArCj4gPiA+ID4gPiA+ICtzdGF0aWMgY29uc3QgY2hhciBuYW1lW10gPSAi
+Z2xvYmFsLnN5c3RlbS5yZXNldCI7Cj4gPiA+ID4gPiA+ICtzdGF0aWMgY29uc3QgY2hhciB1bmtu
+b3duX3Jlc2V0W10gPSAidW5rbm93biI7Cj4gPiA+ID4gPiA+ICtzdGF0aWMgY29uc3QgY2hhciBw
+b3dlcl9vbl9yZXNldFtdID0gIlBPUiI7Cj4gPiA+ID4gPiA+ICtzdGF0aWMgY29uc3QgY2hhciBt
+YW51YWxfcmVzZXRbXSA9ICJSU1QiOwo+ID4gPiA+ID4gPiArc3RhdGljIGNvbnN0IGNoYXIgd2F0
+Y2hkb2dbXSA9ICJXREciOwo+ID4gPiA+ID4gPiArc3RhdGljIGNvbnN0IGNoYXIgd2FrZVtdID0g
+IldLRSI7Cj4gPiA+ID4gPiA+ICtzdGF0aWMgY29uc3QgY2hhciBqdGFnW10gPSAiSlRBRyI7Cj4g
+PiA+ID4gPgo+ID4gPiA+ID4gd2hhdCBhYm91dCB1c2luZyBhbiBhcnJheQo+ID4gPiA+ID4KPiA+
+ID4gPiA+IHN0YXRpYyBjb3N0IGNoYXIgKnJlc2V0X3JlYXNvbl9hcnJheVtdID0gewo+ID4gPiA+
+ID4gCVtSRVNFVF9VS1dOXSA9ICJ1bmtub3duIiwKPiA+ID4gPiA+IAkuLi4KPiA+ID4gPiA+IH07
+Cj4gPiA+ID4KPiA+ID4gPiBUaGUgcmVzdWx0IGlzIG5vdCB0aGUgc2FtZS4gVGhlIHN0cmluZ3Mg
+YXJlIG5vIGxvbmdlciAiY29uc3QiLiBCdXQgaXQKPiA+ID4gPiBzaG91bGQKPiA+ID4KPiA+ID4g
+PGtpZGRpbmc+T2YgY291cnNlIHRoZXkgYXJlIG5vdCAiY29uc3QiIGlmIHlvdSB3cml0ZSAiY29z
+dCIuPC9raWRkaW5nPgo+ID4gPiBVc2luZwo+ID4gPgo+ID4gPiAJc3RhdGljIGNvbnN0IGNoYXIg
+KiBjb25zdCByZXNldF9yZWFzb25fYXJyYXlbXSA9IHsKPiA+ID4KPiA+ID4gc2hvdWxkIGRvIHRo
+ZSB0cmljay4KPiA+Cj4gPiBObywgaXQgZG9lc24ndC4gT25seSB0aGlzIHdvdWxkOgo+ID4KPiA+
+IHN0YXRpYyBjb25zdCBibGFbXSA9ICJ0aGlzIGlzIGEgcmVhbGx5IGNvbnN0YW50IHN0cmluZyI7
+Cj4gPiBzdGF0aWMgY29uc3QgY2hhciAqIGNvbnN0IHJlc2V0X3JlYXNvbl9hcnJheVtdID0gewo+
+ID4gCVswXSA9IGJsYSwKPiA+IFsuLi5dCj4gPiB9Owo+Cj4gV2hhdCBtYWtlcyB5b3UgdGhpbmsg
+aXQncyBub3QgY29uc3QuIEkgdGhpbmsgaXQgaXMsIGxvb2s6Cj4KPiAJdWtsZWluZWtAcGVyc2V1
+czp+L3RtcCQgY2F0IHRlc3QuYwo+IAlzdGF0aWMgY29uc3QgY2hhciAqIGNvbnN0IGNvbnN0X3Jl
+c2V0X3JlYXNvbl9hcnJheVtdID0gewo+IAkJImp0YWciLAo+IAkJInBvciIsCj4gCX07Cj4KPiAJ
+c3RhdGljIGNvbnN0IGNoYXIgKnJlc2V0X3JlYXNvbl9hcnJheVtdID0gewo+IAkJImp0YWciLAo+
+IAkJInBvciIsCj4gCX07Cj4KPiAJdm9pZCBzb21lZnVuYyh2b2lkKQo+IAl7Cj4gCQljaGFyICpy
+ZWFzb24gPSBjb25zdF9yZXNldF9yZWFzb25fYXJyYXlbMF07Cj4gCX0KPiAJdWtsZWluZWtAcGVy
+c2V1czp+L3RtcCQgZ2NjIC1XYWxsIC1jIHRlc3QuYwo+IAl0ZXN0LmM6IEluIGZ1bmN0aW9uIOKA
+mHNvbWVmdW5j4oCZOgo+IAl0ZXN0LmM6MTM6MTc6IHdhcm5pbmc6IGluaXRpYWxpemF0aW9uIGRp
+c2NhcmRzIOKAmGNvbnN04oCZIHF1YWxpZmllciBmcm9tCj4gcG9pbnRlciB0YXJnZXQgdHlwZSBb
+ZW5hYmxlZCBieSBkZWZhdWx0XSB0ZXN0LmM6MTM6ODogd2FybmluZzogdW51c2VkCj4gdmFyaWFi
+bGUg4oCYcmVhc29u4oCZIFstV3VudXNlZC12YXJpYWJsZV0gdGVzdC5jOiBBdCB0b3AgbGV2ZWw6
+Cj4gCXRlc3QuYzo2OjIwOiB3YXJuaW5nOiDigJhyZXNldF9yZWFzb25fYXJyYXnigJkgZGVmaW5l
+ZCBidXQgbm90IHVzZWQKPiBbLVd1bnVzZWQtdmFyaWFibGVdCj4KPiAJdWtsZWluZWtAcGVyc2V1
+czp+L3RtcCQgb2JqZHVtcCAtRCAtaiAucm9kYXRhIC1qIC5kYXRhIHRlc3Qubwo+Cj4gCXRlc3Qu
+bzogICAgIGZpbGUgZm9ybWF0IGVsZjY0LXg4Ni02NAo+Cj4KPiAJRGlzYXNzZW1ibHkgb2Ygc2Vj
+dGlvbiAuZGF0YToKPgo+IAkwMDAwMDAwMDAwMDAwMDAwIDxyZXNldF9yZWFzb25fYXJyYXk+Ogo+
+IAkJLi4uCj4KPiAJRGlzYXNzZW1ibHkgb2Ygc2VjdGlvbiAucm9kYXRhOgo+Cj4gCTAwMDAwMDAw
+MDAwMDAwMDAgPGNvbnN0X3Jlc2V0X3JlYXNvbl9hcnJheS0weDEwPjoKPiAJICAgMDoJNmEgNzQg
+ICAgICAgICAgICAgICAgCXB1c2hxICAkMHg3NAo+IAkgICAyOgk2MSAgICAgICAgICAgICAgICAg
+ICAJKGJhZCkKPiAJICAgMzoJNjcgMDAgNzAgNmYgICAgICAgICAgCWFkZCAgICAlZGgsMHg2Zigl
+ZWF4KQo+IAkgICA3Ogk3MiAwMCAgICAgICAgICAgICAgICAJamIgICAgIDkgPGNvbnN0X3Jlc2V0
+X3JlYXNvbl9hcnJheS0weDc+Cj4gCSAgIDk6CTAwIDAwICAgICAgICAgICAgICAgIAlhZGQgICAg
+JWFsLCglcmF4KQo+IAkgICBiOgkwMCAwMCAgICAgICAgICAgICAgICAJYWRkICAgICVhbCwoJXJh
+eCkKPiAJICAgZDoJMDAgMDAgICAgICAgICAgICAgICAgCWFkZCAgICAlYWwsKCVyYXgpCj4gCQku
+Li4KPgo+IAkwMDAwMDAwMDAwMDAwMDEwIDxjb25zdF9yZXNldF9yZWFzb25fYXJyYXk+Ogo+IAkJ
+Li4uCj4KPiBzbyBjb25zdF9yZXNldF9yZWFzb25fYXJyYXkgbGl2ZXMgaW4gLnJvZGF0YSBhbmQg
+YXNzaW5naW5nCj4gY29uc3RfcmVzZXRfcmVhc29uX2FycmF5WzBdIHRvIGEgY2hhciAqIHJlc3Vs
+dHMgaW4gYSB3YXJuaW5nLgo+Cj4gV2hhdCBhbSBJIG1pc3Npbmc/Cgpjb25zdCBjaGFyIGZyaWVz
+ZWxbXSA9ICJ0aGlzIGlzIHJlYWxseSBhIGNvbnN0YW50IHN0cmluZyI7CmNvbnN0IGNoYXIgKmZy
+YXNlbCA9ICJ0aGlzIGlzIG5vdCByZWFsbHkgYSBjb25zdGFudCBzdHJpbmciOwoKVGhlIGNvbXBp
+bGVyIHdpbGwgcGxhY2UgdGhlICJ0aGlzIGlzIHJlYWxseSBhIGNvbnN0YW50IHN0cmluZyIgaW50
+byAKdGhlIC5yb2RhdGEsIGJ1dCAidGhpcyBpcyBub3QgcmVhbGx5IGEgY29uc3RhbnQgc3RyaW5n
+IiB3aWxsIGJlIHN0aWxsIAppbiAuZGF0YSAod3JpdGVhYmxlKS4gVGhpcyBkaWZmZXJlbmNlIGlz
+IHZlcnkgaW1wb3J0YW50IHRvIGtub3csIGlmIHlvdSB3YW50IAp0aGUgY29tcGlsZXIgdG8gcGxh
+Y2UgdGhlIHN0cmluZ3MgaW50byB0aGUgZmxhc2ggb2YgYSBtaWNyb2NvbnRyb2xsZXIgaW5zdGVh
+ZCAKb2YgdGhlIFJBTSAod2hpY2ggaXMgbW9zdCBvZiB0aGUgdGltZSB2ZXJ5IHNtYWxsKS4KClJl
+ZmVyIGFsc28gc2VjdGlvbiAiMi40IENob29zaW5nIHRoZSBSaWdodCBUeXBlIiBpbiBVbHJpY2gg
+RHJlcHBlcidzICJIb3cgVG8gCldyaXRlIFNoYXJlZCBMaWJyYXJpZXMiLgoKQnV0IGZvciBCYXJl
+Ym94IHRoaXMgZGlmZmVyZW5jZSBpcyBub3QgdmVyeSBpbXBvcnRhbnQuCgpqYmUKCi0tIApQZW5n
+dXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCBKdWVyZ2VuIEJlaXNl
+cnQgICAgICAgICAgICAgfApMaW51eCBTb2x1dGlvbnMgZm9yIFNjaWVuY2UgYW5kIEluZHVzdHJ5
+ICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTUxMjggfApWZXJ0cmV0dW5nIFN1ZWQvTXVl
+bmNoZW4sIEdlcm1hbnkgICAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUg
+fApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgICAgfCBodHRwOi8v
+d3d3LnBlbmd1dHJvbml4LmRlLyAgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
+YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
+eAo=
