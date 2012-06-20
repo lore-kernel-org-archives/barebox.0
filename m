@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from m171-177.vip.163.com ([123.58.177.171])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1ShGEv-0005zw-81
- for barebox@lists.infradead.org; Wed, 20 Jun 2012 08:26:14 +0000
-Date: Wed, 20 Jun 2012 16:25:32 +0800 (CST)
-From: "Yao yunjie" <kmaqbyaoyunjie@vip.163.com>
+Received: from [2a02:8b8:656::164] (helo=bar.sig21.net)
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1ShGN0-00072b-TV
+ for barebox@lists.infradead.org; Wed, 20 Jun 2012 08:34:35 +0000
+Date: Wed, 20 Jun 2012 10:34:06 +0200
+From: Johannes Stezenbach <js@sig21.net>
+Message-ID: <20120620083406.GB25946@sig21.net>
+References: <20120618150656.GA10624@sig21.net>
+ <20120620072446.GI28394@pengutronix.de>
 MIME-Version: 1.0
-Message-ID: <11002039.11351.13808ff19fc.Coremail.kmaqbyaoyunjie@vip.163.com>
+Content-Disposition: inline
+In-Reply-To: <20120620072446.GI28394@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,183 +19,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============8533307250815002049=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Enquiry
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH RFC] spi: add support for dual and quad IO modes
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
---===============8533307250815002049==
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_194275_1424015956.1340180732412"
+On Wed, Jun 20, 2012 at 09:24:46AM +0200, Sascha Hauer wrote:
+> On Mon, Jun 18, 2012 at 05:06:57PM +0200, Johannes Stezenbach wrote:
+> > Some flashes and SPI masters support dual and quad IO modes
+> > where data is transferred in parallel using two or four pins.
+> > For now add this capability for mx25l25635e.
+> > 
+> > Signed-off-by: Johannes Stezenbach <js@sig21.net>
+> > ---
+> > 
+> > I'm planning to submit a similar patch for Linux sometime
+> > within the next month or so.  Maybe you want to wait
+> > for the review comments there before including it in barebox,
+> > but I'm posting this anyway in case someone wants to comment.
+> > At the moment I'm not able to post the SPI master driver
+> > which implements it.  I'm not sure which if any of the SPI
+> > masters already included in barebox have the dual and
+> > quad mode capability, but it's important for boot time.
+> > BTW, I have checked all users of struct spi_transfer
+> > properly initialize it to zero so adding the
+> > multi_io field should not cause problems.
+> 
+> As long as we don't have a SPI master driver supporting multi io I think
+> we should wait for the corresponding Linux code before applying this
+> one.
 
-------=_Part_194275_1424015956.1340180732412
-Content-Type: text/plain; charset=GBK
-Content-Transfer-Encoding: base64
+Yes, I agree.  But it is also a hen/egg problem, with
+no infrastructure support people either don't implement it
+even when the hw supports it, or they just hack it into
+their local tree and never tell anyone about it.
+So I'm hoping someone interested will find this posting
+and send a patch to support it in their SPI master. :-)
 
-RGVhciAobWFuYWdlciksCgpPdXIgY29tcGFueSBpcyBsb2NhdGVkIGluIEt1bm1pbmcgY2l0eSBv
-ZiBZdW5uYW4gUHJvdmluY2UsIENoaW5hLiBXZSBhcmUgb25lIG9mIHRoZSBtYWpvciBpbXBvcnQg
-YW5kIGV4cG9ydCBjb21wYW55IGluIHRoZSBzb3V0aHdlc3Qgb2YgQ2hpbmEgLkluIG9yZGVyIHRv
-IHByb21vdGUgdGhlIENoaW5lc2UgY3VsdHVyZSBhbmQgbGV0IG1vcmUgYW5kIG1vcmUgZm9yZWln
-biBwZW9wbGUgdW5kZXJzdGFuaW5nIHRoZSBDaGluZXNlIGN1bHR1cmUgLndlIG5lZWQgdG8gcHJp
-bnQgZm91ciBmYW1vdXMgYm9va3MsIFRoZXkgYXJlobZEcmVhbSBvZiB0aGUgUmVkIE1hbnNvbqG3
-obZXYXRlciBNYXJnaW6ht6G2Um9tYW5jZSBvZiBUaHJlZSBLaW5nZG9tc6G3obZKb3VybmV5IHRv
-IHRoZSBXZXN0obcsVGhlIGNvdmVyIGlzIGRlc2lnbmVkIGFuZCBwcmludGVkIGJ5IHlvdXIgY29t
-cGFueSAuU28gY2FuIHlvdSBwcmludCA/P0lmIHlvdSBjYW4gLFBsZWFzZSBjYWxjdWxhdGUgdGhl
-IHByaWNlIGJ5IFVTRCBvciBFdXJvIC4gSSBhbSBMb29raW5nIGZvcndhcmQgdG8gaGVhcmluZyBm
-cm9tIHlvdXIgYXMgc29vbiBhcyBwb3NzaWJsZS5UaGFuayB5b3UhIFdlIGhvcGUgdG8gZXN0YWJs
-aXNoIGEgbG9uZy0gdGVybSBjb29wZXJhdGlvbiByZWxhdGlvbnNoaXAgd2l0aCB5b3UuIEhvcGlu
-ZyB0byBoYXZlIGEgcGxlYXNhbnQgY29vcGVyYXRpb24gd2l0aCB5b3VyIGVzdGVlbWVkIGNvbXBh
-bnkKCk1heSBldmVyeXRoaW5nIGdvZXMgd2VsbCAuCgpZb3VyIHJlcGx5IHdvdWxkIGJlIHZlcnkg
-YXBwcmVjaWF0ZWQgaWYgaW4gRW5nbGlzaC4KCiAKCiAKCkt1bm1pbmcgQW8gUWlhbyBCYW8gSW1w
-b3J0ICYgRXhwb3J0IENvLiwgTHRkLCBZdW5uYW4sIENoaW5hCgpQbGVhc2UgQ29udGFjdCA6WWFv
-IFl1bmppZQoKVGVsOis4Nis4NzErIDM5MzY1MjkKCkZheDorIDg2Kzg3MSszOTM2MDYyCgpNb2Jp
-bGU6ICs4NisxMzk4NzEwNDI0MQoKWmlwIGNvZGU6IDY1MDAwMA==
-------=_Part_194275_1424015956.1340180732412
-Content-Type: text/html; charset=GBK
-Content-Transfer-Encoding: base64
+> > @@ -552,7 +566,7 @@ static const struct spi_device_id m25p_ids[] = {
+> >  	{ "mx25l6405d",  INFO(0xc22017, 0, 64 * 1024, 128, 0) },
+> >  	{ "mx25l12805d", INFO(0xc22018, 0, 64 * 1024, 256, 0) },
+> >  	{ "mx25l12855e", INFO(0xc22618, 0, 64 * 1024, 256, 0) },
+> > -	{ "mx25l25635e", INFO(0xc22019, 0, 64 * 1024, 512, 0) },
+> > +	{ "mx25l25635e", INFO(0xc22019, 0, 64 * 1024, 512, DUAL_IO | QUAD_IO) },
+> >  	{ "mx25l25655e", INFO(0xc22619, 0, 64 * 1024, 512, 0) },
+> >  
+> >  	/* Spansion -- single (large) sector size only, at least
+> > @@ -788,6 +802,10 @@ static int m25p_probe(struct device_d *dev)
+> >  	} else {
+> >  		flash->erase_opcode = OPCODE_SE;
+> >  	}
+> > +	if ((info->flags & DUAL_IO) && (spi->master->flags & SPI_MASTER_DUAL_IO))
+> > +		flash->dual_io = 1;
+> > +	if ((info->flags & QUAD_IO) && (spi->master->flags & SPI_MASTER_QUAD_IO))
+> > +		flash->quad_io = 1;
+> 
+> You enable dual/quad io when both the EEPROM and the master are capable
+> of doing so. Should we ask the PCB designer aswell if the board actually
+> has 2/4 lines connected (that is, add a flag to platform data)?
 
-PGRpdiBzdHlsZT0ibGluZS1oZWlnaHQ6MS43O2NvbG9yOiMwMDAwMDA7Zm9udC1zaXplOjE0cHg7
-Zm9udC1mYW1pbHk6YXJpYWwiPjxkaXYgc3R5bGU9ImNvbG9yOiByZ2IoMCwgMCwgMCk7IGxpbmUt
-aGVpZ2h0OiAxLjc7IGZvbnQtZmFtaWx5OiBhcmlhbDsgZm9udC1zaXplOiAxNHB4OyI+PGRpdiBz
-dHlsZT0iY29sb3I6IHJnYigwLCAwLCAwKTsgbGluZS1oZWlnaHQ6IDEuNzsgZm9udC1mYW1pbHk6
-IGFyaWFsOyBmb250LXNpemU6IDE0cHg7Ij48ZGl2IHN0eWxlPSJjb2xvcjogcmdiKDAsIDAsIDAp
-OyBsaW5lLWhlaWdodDogMS43OyBmb250LWZhbWlseTogYXJpYWw7IGZvbnQtc2l6ZTogMTRweDsi
-PjxkaXY+PGZvbnQgc2l6ZT0iMyIgZmFjZT0iy87M5SI+Cgo8L2ZvbnQ+PHAgc3R5bGU9Im1hcmdp
-bjogMGNtIDBjbSAwcHQ7IiBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0ibGV0dGVyLXNw
-YWNpbmc6IC0wLjVwdDsgZm9udC1zaXplOiAxMnB0OyIgbGFuZz0iRU4tVVMiPjxmb250IGZhY2U9
-IlRpbWVzIE5ldyBSb21hbiI+RGVhciAobWFuYWdlciksPG86cD48L286cD48L2ZvbnQ+PC9zcGFu
-PjwvcD48Zm9udCBzaXplPSIzIiBmYWNlPSLLzszlIj4KCjwvZm9udD48cCBzdHlsZT0ibWFyZ2lu
-OiAwY20gMGNtIDBwdDsiIGNsYXNzPSJNc29Ob3JtYWwiPjxzcGFuIHN0eWxlPSJsZXR0ZXItc3Bh
-Y2luZzogLTAuNXB0OyBmb250LXNpemU6IDEycHQ7IiBsYW5nPSJFTi1VUyI+PGZvbnQgZmFjZT0i
-VGltZXMgTmV3IFJvbWFuIj5PdXIgY29tcGFueSBpcyBsb2NhdGVkIGluIEt1bm1pbmcgY2l0eSBv
-ZiBZdW5uYW4gUHJvdmluY2UsIENoaW5hLiBXZSBhcmUKb25lIG9mIHRoZSBtYWpvciBpbXBvcnQg
-YW5kIGV4cG9ydCBjb21wYW55IGluIHRoZSBzb3V0aHdlc3Qgb2YgQ2hpbmEgLkluIG9yZGVyCnRv
-IHByb21vdGUgdGhlIENoaW5lc2UgY3VsdHVyZSBhbmQgbGV0IG1vcmUgYW5kIG1vcmUgZm9yZWln
-biBwZW9wbGUKdW5kZXJzdGFuaW5nIHRoZSBDaGluZXNlIGN1bHR1cmUgLndlIDwvZm9udD48YSBu
-YW1lPSJPTEVfTElOSzQ2Ij48Zm9udCBmYWNlPSJUaW1lcyBOZXcgUm9tYW4iPm5lZWQgdG8gcHJp
-bnQgZm91ciBmYW1vdXMKYm9va3MsIFRoZXkgYXJlPC9mb250PjwvYT48L3NwYW4+PHNwYW4gc3R5
-bGU9Im1zby1ib29rbWFyazogT0xFX0xJTks0NjsiPjxzcGFuIHN0eWxlPSJsZXR0ZXItc3BhY2lu
-ZzogLTAuNXB0OyBmb250LWZhbWlseTogy87M5TsgZm9udC1zaXplOiAxMnB0OyBtc28tYXNjaWkt
-Zm9udC1mYW1pbHk6ICZxdW90O1RpbWVzIE5ldyBSb21hbiZxdW90OzsgbXNvLWhhbnNpLWZvbnQt
-ZmFtaWx5OiAmcXVvdDtUaW1lcyBOZXcgUm9tYW4mcXVvdDs7Ij6htjwvc3Bhbj48L3NwYW4+PHNw
-YW4gc3R5bGU9Im1zby1ib29rbWFyazogT0xFX0xJTks0NjsiPjxzcGFuIHN0eWxlPSJsZXR0ZXIt
-c3BhY2luZzogLTAuNXB0OyBmb250LXNpemU6IDEycHQ7IG1zby1mb250LWtlcm5pbmc6IDBwdDsi
-IGxhbmc9IkVOLVVTIj48Zm9udCBmYWNlPSJUaW1lcyBOZXcgUm9tYW4iPkRyZWFtIG9mJm5ic3A7
-dGhlJm5ic3A7UmVkJm5ic3A7TWFuc29uPC9mb250Pjwvc3Bhbj48L3NwYW4+PHNwYW4gc3R5bGU9
-Im1zby1ib29rbWFyazogT0xFX0xJTks0NjsiPjxzcGFuIHN0eWxlPSJsZXR0ZXItc3BhY2luZzog
-LTAuNXB0OyBmb250LWZhbWlseTogy87M5TsgZm9udC1zaXplOiAxMnB0OyBtc28tYXNjaWktZm9u
-dC1mYW1pbHk6ICZxdW90O1RpbWVzIE5ldyBSb21hbiZxdW90OzsgbXNvLWhhbnNpLWZvbnQtZmFt
-aWx5OiAmcXVvdDtUaW1lcyBOZXcgUm9tYW4mcXVvdDs7Ij6ht6G2PC9zcGFuPjwvc3Bhbj48c3Bh
-biBzdHlsZT0ibXNvLWJvb2ttYXJrOiBPTEVfTElOSzQ2OyI+PHNwYW4gc3R5bGU9ImxldHRlci1z
-cGFjaW5nOiAtMC41cHQ7IGZvbnQtc2l6ZTogMTJwdDsgbXNvLWZvbnQta2VybmluZzogMHB0OyIg
-bGFuZz0iRU4tVVMiPjxmb250IGZhY2U9IlRpbWVzIE5ldyBSb21hbiI+V2F0ZXImbmJzcDtNYXJn
-aW48L2ZvbnQ+PC9zcGFuPjwvc3Bhbj48c3BhbiBzdHlsZT0ibXNvLWJvb2ttYXJrOiBPTEVfTElO
-SzQ2OyI+PHNwYW4gc3R5bGU9ImxldHRlci1zcGFjaW5nOiAtMC41cHQ7IGZvbnQtZmFtaWx5OiDL
-zszlOyBmb250LXNpemU6IDEycHQ7IG1zby1hc2NpaS1mb250LWZhbWlseTogJnF1b3Q7VGltZXMg
-TmV3IFJvbWFuJnF1b3Q7OyBtc28taGFuc2ktZm9udC1mYW1pbHk6ICZxdW90O1RpbWVzIE5ldyBS
-b21hbiZxdW90OzsiPqG3obY8L3NwYW4+PC9zcGFuPjxzcGFuIHN0eWxlPSJtc28tYm9va21hcms6
-IE9MRV9MSU5LNDY7Ij48c3BhbiBzdHlsZT0ibGV0dGVyLXNwYWNpbmc6IC0wLjVwdDsgZm9udC1z
-aXplOiAxMnB0OyBtc28tZm9udC1rZXJuaW5nOiAwcHQ7IiBsYW5nPSJFTi1VUyI+PGZvbnQgZmFj
-ZT0iVGltZXMgTmV3IFJvbWFuIj5Sb21hbmNlJm5ic3A7b2YmbmJzcDtUaHJlZSZuYnNwO0tpbmdk
-b21zPC9mb250Pjwvc3Bhbj48L3NwYW4+PHNwYW4gc3R5bGU9Im1zby1ib29rbWFyazogT0xFX0xJ
-Tks0NjsiPjxzcGFuIHN0eWxlPSJsZXR0ZXItc3BhY2luZzogLTAuNXB0OyBmb250LWZhbWlseTog
-y87M5TsgZm9udC1zaXplOiAxMnB0OyBtc28tYXNjaWktZm9udC1mYW1pbHk6ICZxdW90O1RpbWVz
-IE5ldyBSb21hbiZxdW90OzsgbXNvLWhhbnNpLWZvbnQtZmFtaWx5OiAmcXVvdDtUaW1lcyBOZXcg
-Um9tYW4mcXVvdDs7Ij6ht6G2PC9zcGFuPjwvc3Bhbj48c3BhbiBzdHlsZT0ibXNvLWJvb2ttYXJr
-OiBPTEVfTElOSzQ2OyI+PHNwYW4gc3R5bGU9ImxldHRlci1zcGFjaW5nOiAtMC41cHQ7IGZvbnQt
-c2l6ZTogMTJwdDsgbXNvLWZvbnQta2VybmluZzogMHB0OyIgbGFuZz0iRU4tVVMiPjxmb250IGZh
-Y2U9IlRpbWVzIE5ldyBSb21hbiI+Sm91cm5leSZuYnNwO3RvJm5ic3A7dGhlJm5ic3A7V2VzdDwv
-Zm9udD48L3NwYW4+PC9zcGFuPjxzcGFuIHN0eWxlPSJtc28tYm9va21hcms6IE9MRV9MSU5LNDY7
-Ij48c3BhbiBzdHlsZT0ibGV0dGVyLXNwYWNpbmc6IC0wLjVwdDsgZm9udC1mYW1pbHk6IMvOzOU7
-IGZvbnQtc2l6ZTogMTJwdDsgbXNvLWFzY2lpLWZvbnQtZmFtaWx5OiAmcXVvdDtUaW1lcyBOZXcg
-Um9tYW4mcXVvdDs7IG1zby1oYW5zaS1mb250LWZhbWlseTogJnF1b3Q7VGltZXMgTmV3IFJvbWFu
-JnF1b3Q7OyI+obc8L3NwYW4+PC9zcGFuPjxmb250IGZhY2U9IlRpbWVzIE5ldyBSb21hbiI+PHNw
-YW4gc3R5bGU9Im1zby1ib29rbWFyazogT0xFX0xJTks0NjsiPjxzcGFuIHN0eWxlPSJsZXR0ZXIt
-c3BhY2luZzogLTAuNXB0OyBmb250LXNpemU6IDEycHQ7IiBsYW5nPSJFTi1VUyI+LFRoZSBjb3Zl
-ciBpcyBkZXNpZ25lZAphbmQgcHJpbnRlZCBieSB5b3VyIGNvbXBhbnkgLlNvIGNhbiB5b3UgcHJp
-bnQgPz9JZiB5b3UgY2FuICxQbGVhc2UgY2FsY3VsYXRlCnRoZSBwcmljZSBieSBVU0Qgb3IgRXVy
-byAuIDwvc3Bhbj48L3NwYW4+PHNwYW4gc3R5bGU9ImxldHRlci1zcGFjaW5nOiAtMC41cHQ7IGZv
-bnQtc2l6ZTogMTJwdDsiIGxhbmc9IkVOLVVTIj5JIGFtIExvb2tpbmcgZm9yd2FyZCB0byBoZWFy
-aW5nIGZyb20geW91ciBhcyBzb29uCmFzIHBvc3NpYmxlLlRoYW5rIHlvdSEgV2UgaG9wZSB0byBl
-c3RhYmxpc2ggYSBsb25nLSB0ZXJtIGNvb3BlcmF0aW9uCnJlbGF0aW9uc2hpcCB3aXRoIHlvdS4g
-SG9waW5nIHRvIGhhdmUgYSBwbGVhc2FudCBjb29wZXJhdGlvbiB3aXRoIHlvdXIgZXN0ZWVtZWQK
-Y29tcGFueTxvOnA+PC9vOnA+PC9zcGFuPjwvZm9udD48L3A+PGZvbnQgc2l6ZT0iMyIgZmFjZT0i
-y87M5SI+Cgo8L2ZvbnQ+PHAgc3R5bGU9Im1hcmdpbjogMGNtIDBjbSAwcHQ7IiBjbGFzcz0iTXNv
-Tm9ybWFsIj48c3BhbiBzdHlsZT0ibGV0dGVyLXNwYWNpbmc6IC0wLjVwdDsgZm9udC1zaXplOiAx
-MnB0OyIgbGFuZz0iRU4tVVMiPjxmb250IGZhY2U9IlRpbWVzIE5ldyBSb21hbiI+TWF5IGV2ZXJ5
-dGhpbmcgZ29lcyB3ZWxsIC48bzpwPjwvbzpwPjwvZm9udD48L3NwYW4+PC9wPjxmb250IHNpemU9
-IjMiIGZhY2U9IsvOzOUiPgoKPC9mb250PjxwIHN0eWxlPSJtYXJnaW46IDBjbSAwY20gMHB0OyIg
-Y2xhc3M9Ik1zb05vcm1hbCI+PHNwYW4gc3R5bGU9ImxldHRlci1zcGFjaW5nOiAtMC41cHQ7IGZv
-bnQtc2l6ZTogMTJwdDsiIGxhbmc9IkVOLVVTIj48Zm9udCBmYWNlPSJUaW1lcyBOZXcgUm9tYW4i
-PllvdXIgcmVwbHkgd291bGQgYmUgdmVyeSBhcHByZWNpYXRlZCBpZiBpbiBFbmdsaXNoLiA8bzpw
-PjwvbzpwPjwvZm9udD48L3NwYW4+PC9wPjxmb250IHNpemU9IjMiIGZhY2U9IsvOzOUiPgoKPC9m
-b250PjxwIHN0eWxlPSJtYXJnaW46IDBjbSAwY20gMHB0OyIgY2xhc3M9Ik1zb05vcm1hbCI+PHNw
-YW4gc3R5bGU9ImxldHRlci1zcGFjaW5nOiAtMC41cHQ7IGZvbnQtc2l6ZTogMTJwdDsiIGxhbmc9
-IkVOLVVTIj48bzpwPjxmb250IGZhY2U9IlRpbWVzIE5ldyBSb21hbiI+Jm5ic3A7PC9mb250Pjwv
-bzpwPjwvc3Bhbj48L3A+PGZvbnQgc2l6ZT0iMyIgZmFjZT0iy87M5SI+Cgo8L2ZvbnQ+PHAgc3R5
-bGU9Im1hcmdpbjogMGNtIDBjbSAwcHQ7IiBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0i
-bGV0dGVyLXNwYWNpbmc6IC0wLjVwdDsgZm9udC1zaXplOiAxMnB0OyIgbGFuZz0iRU4tVVMiPjxv
-OnA+PGZvbnQgZmFjZT0iVGltZXMgTmV3IFJvbWFuIj4mbmJzcDs8L2ZvbnQ+PC9vOnA+PC9zcGFu
-PjwvcD48Zm9udCBzaXplPSIzIiBmYWNlPSLLzszlIj4KCjwvZm9udD48cCBzdHlsZT0ibWFyZ2lu
-OiAwY20gMGNtIDBwdDsgdGV4dC1pbmRlbnQ6IDY0LjM1cHQ7IG1zby1jaGFyLWluZGVudC1jb3Vu
-dDogNS44NTsiIGNsYXNzPSJNc29Ob3JtYWwiPjxhIG5hbWU9Ik9MRV9MSU5LMjIiPjxzcGFuIGNs
-YXNzPSJhcHBsZS1zdHlsZS1zcGFuIj48c3BhbiBzdHlsZT0ibGV0dGVyLXNwYWNpbmc6IC0wLjVw
-dDsgZm9udC1mYW1pbHk6ICZxdW90O1NpbXN1biZxdW90OywmcXVvdDtzZXJpZiZxdW90OzsgZm9u
-dC1zaXplOiAxMnB0OyIgbGFuZz0iRU4tVVMiPkt1bm1pbmcKQW8gUWlhbyBCYW8gSW1wb3J0ICZh
-bXA7IEV4cG9ydCBDby4sIEx0ZCwgWXVubmFuLCBDaGluYTwvc3Bhbj48L3NwYW4+PC9hPjxzcGFu
-IHN0eWxlPSJtc28tYm9va21hcms6IE9MRV9MSU5LMjI7Ij48c3BhbiBzdHlsZT0ibGV0dGVyLXNw
-YWNpbmc6IC0wLjVwdDsgZm9udC1zaXplOiAxMnB0OyIgbGFuZz0iRU4tVVMiPjxvOnA+PC9vOnA+
-PC9zcGFuPjwvc3Bhbj48L3A+PGZvbnQgc2l6ZT0iMyIgZmFjZT0iy87M5SI+Cgo8c3BhbiBzdHls
-ZT0ibXNvLWJvb2ttYXJrOiBPTEVfTElOSzIyOyI+PC9zcGFuPgoKPC9mb250PjxwIHN0eWxlPSJt
-YXJnaW46IDBjbSAwY20gMHB0OyB0ZXh0LWluZGVudDogMjIxcHQ7IG1zby1jaGFyLWluZGVudC1j
-b3VudDogMjAuMDk7IiBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0ibGV0dGVyLXNwYWNp
-bmc6IC0wLjVwdDsgZm9udC1zaXplOiAxMnB0OyIgbGFuZz0iRU4tVVMiPjxmb250IGZhY2U9IlRp
-bWVzIE5ldyBSb21hbiI+UGxlYXNlIENvbnRhY3QgOllhbwpZdW5qaWU8L2ZvbnQ+PGEgbmFtZT0i
-T0xFX0xJTks0NCI+PC9hPjxhIG5hbWU9Ik9MRV9MSU5LNDUiPjxzcGFuIHN0eWxlPSJtc28tYm9v
-a21hcms6IE9MRV9MSU5LNDQ7Ij48bzpwPjwvbzpwPjwvc3Bhbj48L2E+PC9zcGFuPjwvcD48Zm9u
-dCBzaXplPSIzIiBmYWNlPSLLzszlIj4KCjwvZm9udD48cCBzdHlsZT0ibWFyZ2luOiAwY20gMGNt
-IDBwdDsgdGV4dC1pbmRlbnQ6IDIyMi4xcHQ7IG1zby1jaGFyLWluZGVudC1jb3VudDogMjAuMTk7
-IiBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0ibXNvLWJvb2ttYXJrOiBPTEVfTElOSzQ1
-OyI+PHNwYW4gc3R5bGU9Im1zby1ib29rbWFyazogT0xFX0xJTks0NDsiPjxzcGFuIHN0eWxlPSJs
-ZXR0ZXItc3BhY2luZzogLTAuNXB0OyBmb250LXNpemU6IDEycHQ7IiBsYW5nPSJFTi1VUyI+PGZv
-bnQgZmFjZT0iVGltZXMgTmV3IFJvbWFuIj5UZWw6Kzg2Kzg3MSsgMzkzNjUyOTxvOnA+PC9vOnA+
-PC9mb250Pjwvc3Bhbj48L3NwYW4+PC9zcGFuPjwvcD48Zm9udCBzaXplPSIzIiBmYWNlPSLLzszl
-Ij4KCjwvZm9udD48cCBzdHlsZT0ibWFyZ2luOiAwY20gMGNtIDBwdDsgdGV4dC1pbmRlbnQ6IDIy
-MS42NXB0OyBtc28tY2hhci1pbmRlbnQtY291bnQ6IDIwLjE1OyIgY2xhc3M9Ik1zb05vcm1hbCI+
-PGZvbnQgZmFjZT0iVGltZXMgTmV3IFJvbWFuIj48c3BhbiBzdHlsZT0ibXNvLWJvb2ttYXJrOiBP
-TEVfTElOSzQ1OyI+PHNwYW4gc3R5bGU9Im1zby1ib29rbWFyazogT0xFX0xJTks0NDsiPjxzcGFu
-IHN0eWxlPSJsZXR0ZXItc3BhY2luZzogLTAuNXB0OyBmb250LXNpemU6IDEycHQ7IiBsYW5nPSJF
-Ti1VUyI+RmF4OisgODY8L3NwYW4+PC9zcGFuPjwvc3Bhbj48c3BhbiBzdHlsZT0ibGV0dGVyLXNw
-YWNpbmc6IC0wLjVwdDsgZm9udC1zaXplOiAxMnB0OyIgbGFuZz0iRU4tVVMiPis4NzErMzkzNjA2
-Mjwvc3Bhbj48c3BhbiBjbGFzcz0iYXBwbGUtc3R5bGUtc3BhbiI+PHNwYW4gc3R5bGU9ImxldHRl
-ci1zcGFjaW5nOiAtMC41cHQ7IiBsYW5nPSJFTi1VUyI+PG86cD48L286cD48L3NwYW4+PC9zcGFu
-PjwvZm9udD48L3A+PGZvbnQgc2l6ZT0iMyIgZmFjZT0iy87M5SI+Cgo8L2ZvbnQ+PHAgc3R5bGU9
-Im1hcmdpbjogMGNtIDBjbSAwcHQ7IHRleHQtaW5kZW50OiAyMjFwdDsgbXNvLWNoYXItaW5kZW50
-LWNvdW50OiAyMC4wOTsiIGNsYXNzPSJNc29Ob3JtYWwiPjxmb250IGZhY2U9IlRpbWVzIE5ldyBS
-b21hbiI+PHNwYW4gc3R5bGU9ImxldHRlci1zcGFjaW5nOiAtMC41cHQ7IGZvbnQtc2l6ZTogMTJw
-dDsiIGxhbmc9IkVOLVVTIj5Nb2JpbGU6Cis4NisxMzk4NzEwNDI0MTwvc3Bhbj48c3BhbiBzdHls
-ZT0ibGV0dGVyLXNwYWNpbmc6IC0wLjVwdDsiIGxhbmc9IkVOLVVTIj48bzpwPjwvbzpwPjwvc3Bh
-bj48L2ZvbnQ+PC9wPjxmb250IHNpemU9IjMiIGZhY2U9IsvOzOUiPgoKPC9mb250PjxwIHN0eWxl
-PSJtYXJnaW46IDBjbSAwY20gMHB0OyB0ZXh0LWluZGVudDogMjIxcHQ7IG1zby1jaGFyLWluZGVu
-dC1jb3VudDogMjAuMDk7IiBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0ibGV0dGVyLXNw
-YWNpbmc6IC0wLjVwdDsgZm9udC1zaXplOiAxMnB0OyIgbGFuZz0iRU4tVVMiPjxmb250IGZhY2U9
-IlRpbWVzIE5ldyBSb21hbiI+WmlwIGNvZGU6IDY1MDAwMDxvOnA+PC9vOnA+PC9mb250Pjwvc3Bh
-bj48L3A+PGZvbnQgc2l6ZT0iMyIgZmFjZT0iy87M5SI+Cgo8L2ZvbnQ+PC9kaXY+PC9kaXY+PC9k
-aXY+PC9kaXY+PC9kaXY+
-------=_Part_194275_1424015956.1340180732412--
+Dual mode uses the normal SI/SO lines, these should always be connected.
+For quad mode a platform flag might be needed.
 
 
-
---===============8533307250815002049==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Thanks
+Johannes
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============8533307250815002049==--
