@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ShFPA-0002AY-NU
- for barebox@lists.infradead.org; Wed, 20 Jun 2012 07:32:45 +0000
-Date: Wed, 20 Jun 2012 09:32:41 +0200
+ id 1ShFlW-0003Ol-5E
+ for barebox@lists.infradead.org; Wed, 20 Jun 2012 07:55:50 +0000
+Date: Wed, 20 Jun 2012 09:55:46 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120620073241.GK28394@pengutronix.de>
-References: <201206191229.29035.jbe@pengutronix.de>
+Message-ID: <20120620075546.GL28394@pengutronix.de>
+References: <1339754895-5129-1-git-send-email-rnibali@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <201206191229.29035.jbe@pengutronix.de>
+In-Reply-To: <1339754895-5129-1-git-send-email-rnibali@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,34 +22,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: i.MX23/i.MX28, software reset feature
-To: Juergen Beisert <jbe@pengutronix.de>
+Subject: Re: [PATCH 0/2] Small fixes
+To: Roberto Nibali <rnibali@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 19, 2012 at 12:29:28PM +0200, Juergen Beisert wrote:
-> Hi list,
+On Fri, Jun 15, 2012 at 12:08:13PM +0200, Roberto Nibali wrote:
+> While going through my current git tree, I have found two minor things I
+> wanted to offload to master. Please review and consider applying.
 > 
-> currently we use the watchdog to make the "reset" command work on the 
-> i.XM23/i.MX28 CPUs. This collides if someone wants to use the watchdog in a 
-> regular manner, as Barebox cannot distinguish if the reset was a result of 
-> the "reset" command (or "reboot" from Linux) or if something strange happens 
-> and the watchdog has barked to reboot and try again (maybe in a different 
-> manner).
-> 
-> The i.XM23/i.MX28 CPUs are coming with a bit in a special register in 
-> the "clock generation and control" unit to hard reset the whole SoC. This 
-> could be used instead to make the "reset" command work. But the register 
-> offsets are different in both SoCs. So:
-> 
->  - using ifdefs to distinguish both SoCs in "arch/arm/mach-mxs/reset-imx.c"
->  - or moving the reset_cpu() function into "arch/arm/mach-mxs/speed-imx*.c"
->    where all the required symbols and correct offset are already defined on a
->    per SoC base?
+> Roberto Nibali (2):
+>   Remove superfluous SYSCTL_RSTA
+>   Deal properly with scripts/bareboxenv-target
 
-Or add a imx23.c and imx28.c where we could collect the SoC specific
-code.
+Applied, thanks
 
 Sascha
+
+> 
+>  .gitignore              |    1 +
+>  Makefile                |    1 +
+>  drivers/mci/imx-esdhc.h |    1 -
+>  3 files changed, 2 insertions(+), 1 deletion(-)
+> 
+> -- 
+> 1.7.9.5
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
