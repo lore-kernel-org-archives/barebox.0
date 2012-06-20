@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2a02:8b8:656::164] (helo=bar.sig21.net)
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ShG1a-0003qW-CC
- for barebox@lists.infradead.org; Wed, 20 Jun 2012 08:12:27 +0000
-Date: Wed, 20 Jun 2012 10:11:58 +0200
-From: Johannes Stezenbach <js@sig21.net>
-Message-ID: <20120620081158.GA25946@sig21.net>
-References: <1340030880-10062-1-git-send-email-js@sig21.net>
- <1340030880-10062-7-git-send-email-js@sig21.net>
- <20120620071301.GG28394@pengutronix.de>
+Received: from m171-177.vip.163.com ([123.58.177.171])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1ShGEv-0005zw-81
+ for barebox@lists.infradead.org; Wed, 20 Jun 2012 08:26:14 +0000
+Date: Wed, 20 Jun 2012 16:25:32 +0800 (CST)
+From: "Yao yunjie" <kmaqbyaoyunjie@vip.163.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120620071301.GG28394@pengutronix.de>
+Message-ID: <11002039.11351.13808ff19fc.Coremail.kmaqbyaoyunjie@vip.163.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,82 +15,183 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============8533307250815002049=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/6] drivers/net: add designware driver
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Enquiry
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+--===============8533307250815002049==
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_194275_1424015956.1340180732412"
 
-On Wed, Jun 20, 2012 at 09:13:01AM +0200, Sascha Hauer wrote:
-> On Mon, Jun 18, 2012 at 04:48:00PM +0200, Johannes Stezenbach wrote:
-> > Straight forward port of Synopsys Designware ethernet
-> > driver from u-boot v2012.04.01.
-...
-> > +config DRIVER_NET_DESIGNWARE
-> > +	bool "Designware Universal MAC ethernet driver"
-> > +	select MIIDEV
-> > +	depends on HAS_DESIGNWARE_ETH
-> > +	help
-> > +	  This option enables support for the Synopsys
-> > +	  Designware Core Univesal MAC 10M/100M/1G ethernet IP.
-> 
-> This driver uses DMA, but it has no cache flush/invalidation. At least
-> on ARM this means that it won't work with MMU enabled, so we should
-> either add the following to Kconfig:
-> 
-> 	depends on !ARM || !MMU
-> 
-> Or add the dma_* functions. I added hints where to add these functions
-> inline, but I can't test this.
+------=_Part_194275_1424015956.1340180732412
+Content-Type: text/plain; charset=GBK
+Content-Transfer-Encoding: base64
 
-Well, the driver was tested on a platform with ARM926EJ-S CPU
-and works -- because it uses dma_alloc_coherent().  That
-might not be optimal wrt performance, but it matches what
-the u-boot driver is doing.  Do you want me to convert it
-to use cachable memory and dma flush/inv?
+RGVhciAobWFuYWdlciksCgpPdXIgY29tcGFueSBpcyBsb2NhdGVkIGluIEt1bm1pbmcgY2l0eSBv
+ZiBZdW5uYW4gUHJvdmluY2UsIENoaW5hLiBXZSBhcmUgb25lIG9mIHRoZSBtYWpvciBpbXBvcnQg
+YW5kIGV4cG9ydCBjb21wYW55IGluIHRoZSBzb3V0aHdlc3Qgb2YgQ2hpbmEgLkluIG9yZGVyIHRv
+IHByb21vdGUgdGhlIENoaW5lc2UgY3VsdHVyZSBhbmQgbGV0IG1vcmUgYW5kIG1vcmUgZm9yZWln
+biBwZW9wbGUgdW5kZXJzdGFuaW5nIHRoZSBDaGluZXNlIGN1bHR1cmUgLndlIG5lZWQgdG8gcHJp
+bnQgZm91ciBmYW1vdXMgYm9va3MsIFRoZXkgYXJlobZEcmVhbSBvZiB0aGUgUmVkIE1hbnNvbqG3
+obZXYXRlciBNYXJnaW6ht6G2Um9tYW5jZSBvZiBUaHJlZSBLaW5nZG9tc6G3obZKb3VybmV5IHRv
+IHRoZSBXZXN0obcsVGhlIGNvdmVyIGlzIGRlc2lnbmVkIGFuZCBwcmludGVkIGJ5IHlvdXIgY29t
+cGFueSAuU28gY2FuIHlvdSBwcmludCA/P0lmIHlvdSBjYW4gLFBsZWFzZSBjYWxjdWxhdGUgdGhl
+IHByaWNlIGJ5IFVTRCBvciBFdXJvIC4gSSBhbSBMb29raW5nIGZvcndhcmQgdG8gaGVhcmluZyBm
+cm9tIHlvdXIgYXMgc29vbiBhcyBwb3NzaWJsZS5UaGFuayB5b3UhIFdlIGhvcGUgdG8gZXN0YWJs
+aXNoIGEgbG9uZy0gdGVybSBjb29wZXJhdGlvbiByZWxhdGlvbnNoaXAgd2l0aCB5b3UuIEhvcGlu
+ZyB0byBoYXZlIGEgcGxlYXNhbnQgY29vcGVyYXRpb24gd2l0aCB5b3VyIGVzdGVlbWVkIGNvbXBh
+bnkKCk1heSBldmVyeXRoaW5nIGdvZXMgd2VsbCAuCgpZb3VyIHJlcGx5IHdvdWxkIGJlIHZlcnkg
+YXBwcmVjaWF0ZWQgaWYgaW4gRW5nbGlzaC4KCiAKCiAKCkt1bm1pbmcgQW8gUWlhbyBCYW8gSW1w
+b3J0ICYgRXhwb3J0IENvLiwgTHRkLCBZdW5uYW4sIENoaW5hCgpQbGVhc2UgQ29udGFjdCA6WWFv
+IFl1bmppZQoKVGVsOis4Nis4NzErIDM5MzY1MjkKCkZheDorIDg2Kzg3MSszOTM2MDYyCgpNb2Jp
+bGU6ICs4NisxMzk4NzEwNDI0MQoKWmlwIGNvZGU6IDY1MDAwMA==
+------=_Part_194275_1424015956.1340180732412
+Content-Type: text/html; charset=GBK
+Content-Transfer-Encoding: base64
+
+PGRpdiBzdHlsZT0ibGluZS1oZWlnaHQ6MS43O2NvbG9yOiMwMDAwMDA7Zm9udC1zaXplOjE0cHg7
+Zm9udC1mYW1pbHk6YXJpYWwiPjxkaXYgc3R5bGU9ImNvbG9yOiByZ2IoMCwgMCwgMCk7IGxpbmUt
+aGVpZ2h0OiAxLjc7IGZvbnQtZmFtaWx5OiBhcmlhbDsgZm9udC1zaXplOiAxNHB4OyI+PGRpdiBz
+dHlsZT0iY29sb3I6IHJnYigwLCAwLCAwKTsgbGluZS1oZWlnaHQ6IDEuNzsgZm9udC1mYW1pbHk6
+IGFyaWFsOyBmb250LXNpemU6IDE0cHg7Ij48ZGl2IHN0eWxlPSJjb2xvcjogcmdiKDAsIDAsIDAp
+OyBsaW5lLWhlaWdodDogMS43OyBmb250LWZhbWlseTogYXJpYWw7IGZvbnQtc2l6ZTogMTRweDsi
+PjxkaXY+PGZvbnQgc2l6ZT0iMyIgZmFjZT0iy87M5SI+Cgo8L2ZvbnQ+PHAgc3R5bGU9Im1hcmdp
+bjogMGNtIDBjbSAwcHQ7IiBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0ibGV0dGVyLXNw
+YWNpbmc6IC0wLjVwdDsgZm9udC1zaXplOiAxMnB0OyIgbGFuZz0iRU4tVVMiPjxmb250IGZhY2U9
+IlRpbWVzIE5ldyBSb21hbiI+RGVhciAobWFuYWdlciksPG86cD48L286cD48L2ZvbnQ+PC9zcGFu
+PjwvcD48Zm9udCBzaXplPSIzIiBmYWNlPSLLzszlIj4KCjwvZm9udD48cCBzdHlsZT0ibWFyZ2lu
+OiAwY20gMGNtIDBwdDsiIGNsYXNzPSJNc29Ob3JtYWwiPjxzcGFuIHN0eWxlPSJsZXR0ZXItc3Bh
+Y2luZzogLTAuNXB0OyBmb250LXNpemU6IDEycHQ7IiBsYW5nPSJFTi1VUyI+PGZvbnQgZmFjZT0i
+VGltZXMgTmV3IFJvbWFuIj5PdXIgY29tcGFueSBpcyBsb2NhdGVkIGluIEt1bm1pbmcgY2l0eSBv
+ZiBZdW5uYW4gUHJvdmluY2UsIENoaW5hLiBXZSBhcmUKb25lIG9mIHRoZSBtYWpvciBpbXBvcnQg
+YW5kIGV4cG9ydCBjb21wYW55IGluIHRoZSBzb3V0aHdlc3Qgb2YgQ2hpbmEgLkluIG9yZGVyCnRv
+IHByb21vdGUgdGhlIENoaW5lc2UgY3VsdHVyZSBhbmQgbGV0IG1vcmUgYW5kIG1vcmUgZm9yZWln
+biBwZW9wbGUKdW5kZXJzdGFuaW5nIHRoZSBDaGluZXNlIGN1bHR1cmUgLndlIDwvZm9udD48YSBu
+YW1lPSJPTEVfTElOSzQ2Ij48Zm9udCBmYWNlPSJUaW1lcyBOZXcgUm9tYW4iPm5lZWQgdG8gcHJp
+bnQgZm91ciBmYW1vdXMKYm9va3MsIFRoZXkgYXJlPC9mb250PjwvYT48L3NwYW4+PHNwYW4gc3R5
+bGU9Im1zby1ib29rbWFyazogT0xFX0xJTks0NjsiPjxzcGFuIHN0eWxlPSJsZXR0ZXItc3BhY2lu
+ZzogLTAuNXB0OyBmb250LWZhbWlseTogy87M5TsgZm9udC1zaXplOiAxMnB0OyBtc28tYXNjaWkt
+Zm9udC1mYW1pbHk6ICZxdW90O1RpbWVzIE5ldyBSb21hbiZxdW90OzsgbXNvLWhhbnNpLWZvbnQt
+ZmFtaWx5OiAmcXVvdDtUaW1lcyBOZXcgUm9tYW4mcXVvdDs7Ij6htjwvc3Bhbj48L3NwYW4+PHNw
+YW4gc3R5bGU9Im1zby1ib29rbWFyazogT0xFX0xJTks0NjsiPjxzcGFuIHN0eWxlPSJsZXR0ZXIt
+c3BhY2luZzogLTAuNXB0OyBmb250LXNpemU6IDEycHQ7IG1zby1mb250LWtlcm5pbmc6IDBwdDsi
+IGxhbmc9IkVOLVVTIj48Zm9udCBmYWNlPSJUaW1lcyBOZXcgUm9tYW4iPkRyZWFtIG9mJm5ic3A7
+dGhlJm5ic3A7UmVkJm5ic3A7TWFuc29uPC9mb250Pjwvc3Bhbj48L3NwYW4+PHNwYW4gc3R5bGU9
+Im1zby1ib29rbWFyazogT0xFX0xJTks0NjsiPjxzcGFuIHN0eWxlPSJsZXR0ZXItc3BhY2luZzog
+LTAuNXB0OyBmb250LWZhbWlseTogy87M5TsgZm9udC1zaXplOiAxMnB0OyBtc28tYXNjaWktZm9u
+dC1mYW1pbHk6ICZxdW90O1RpbWVzIE5ldyBSb21hbiZxdW90OzsgbXNvLWhhbnNpLWZvbnQtZmFt
+aWx5OiAmcXVvdDtUaW1lcyBOZXcgUm9tYW4mcXVvdDs7Ij6ht6G2PC9zcGFuPjwvc3Bhbj48c3Bh
+biBzdHlsZT0ibXNvLWJvb2ttYXJrOiBPTEVfTElOSzQ2OyI+PHNwYW4gc3R5bGU9ImxldHRlci1z
+cGFjaW5nOiAtMC41cHQ7IGZvbnQtc2l6ZTogMTJwdDsgbXNvLWZvbnQta2VybmluZzogMHB0OyIg
+bGFuZz0iRU4tVVMiPjxmb250IGZhY2U9IlRpbWVzIE5ldyBSb21hbiI+V2F0ZXImbmJzcDtNYXJn
+aW48L2ZvbnQ+PC9zcGFuPjwvc3Bhbj48c3BhbiBzdHlsZT0ibXNvLWJvb2ttYXJrOiBPTEVfTElO
+SzQ2OyI+PHNwYW4gc3R5bGU9ImxldHRlci1zcGFjaW5nOiAtMC41cHQ7IGZvbnQtZmFtaWx5OiDL
+zszlOyBmb250LXNpemU6IDEycHQ7IG1zby1hc2NpaS1mb250LWZhbWlseTogJnF1b3Q7VGltZXMg
+TmV3IFJvbWFuJnF1b3Q7OyBtc28taGFuc2ktZm9udC1mYW1pbHk6ICZxdW90O1RpbWVzIE5ldyBS
+b21hbiZxdW90OzsiPqG3obY8L3NwYW4+PC9zcGFuPjxzcGFuIHN0eWxlPSJtc28tYm9va21hcms6
+IE9MRV9MSU5LNDY7Ij48c3BhbiBzdHlsZT0ibGV0dGVyLXNwYWNpbmc6IC0wLjVwdDsgZm9udC1z
+aXplOiAxMnB0OyBtc28tZm9udC1rZXJuaW5nOiAwcHQ7IiBsYW5nPSJFTi1VUyI+PGZvbnQgZmFj
+ZT0iVGltZXMgTmV3IFJvbWFuIj5Sb21hbmNlJm5ic3A7b2YmbmJzcDtUaHJlZSZuYnNwO0tpbmdk
+b21zPC9mb250Pjwvc3Bhbj48L3NwYW4+PHNwYW4gc3R5bGU9Im1zby1ib29rbWFyazogT0xFX0xJ
+Tks0NjsiPjxzcGFuIHN0eWxlPSJsZXR0ZXItc3BhY2luZzogLTAuNXB0OyBmb250LWZhbWlseTog
+y87M5TsgZm9udC1zaXplOiAxMnB0OyBtc28tYXNjaWktZm9udC1mYW1pbHk6ICZxdW90O1RpbWVz
+IE5ldyBSb21hbiZxdW90OzsgbXNvLWhhbnNpLWZvbnQtZmFtaWx5OiAmcXVvdDtUaW1lcyBOZXcg
+Um9tYW4mcXVvdDs7Ij6ht6G2PC9zcGFuPjwvc3Bhbj48c3BhbiBzdHlsZT0ibXNvLWJvb2ttYXJr
+OiBPTEVfTElOSzQ2OyI+PHNwYW4gc3R5bGU9ImxldHRlci1zcGFjaW5nOiAtMC41cHQ7IGZvbnQt
+c2l6ZTogMTJwdDsgbXNvLWZvbnQta2VybmluZzogMHB0OyIgbGFuZz0iRU4tVVMiPjxmb250IGZh
+Y2U9IlRpbWVzIE5ldyBSb21hbiI+Sm91cm5leSZuYnNwO3RvJm5ic3A7dGhlJm5ic3A7V2VzdDwv
+Zm9udD48L3NwYW4+PC9zcGFuPjxzcGFuIHN0eWxlPSJtc28tYm9va21hcms6IE9MRV9MSU5LNDY7
+Ij48c3BhbiBzdHlsZT0ibGV0dGVyLXNwYWNpbmc6IC0wLjVwdDsgZm9udC1mYW1pbHk6IMvOzOU7
+IGZvbnQtc2l6ZTogMTJwdDsgbXNvLWFzY2lpLWZvbnQtZmFtaWx5OiAmcXVvdDtUaW1lcyBOZXcg
+Um9tYW4mcXVvdDs7IG1zby1oYW5zaS1mb250LWZhbWlseTogJnF1b3Q7VGltZXMgTmV3IFJvbWFu
+JnF1b3Q7OyI+obc8L3NwYW4+PC9zcGFuPjxmb250IGZhY2U9IlRpbWVzIE5ldyBSb21hbiI+PHNw
+YW4gc3R5bGU9Im1zby1ib29rbWFyazogT0xFX0xJTks0NjsiPjxzcGFuIHN0eWxlPSJsZXR0ZXIt
+c3BhY2luZzogLTAuNXB0OyBmb250LXNpemU6IDEycHQ7IiBsYW5nPSJFTi1VUyI+LFRoZSBjb3Zl
+ciBpcyBkZXNpZ25lZAphbmQgcHJpbnRlZCBieSB5b3VyIGNvbXBhbnkgLlNvIGNhbiB5b3UgcHJp
+bnQgPz9JZiB5b3UgY2FuICxQbGVhc2UgY2FsY3VsYXRlCnRoZSBwcmljZSBieSBVU0Qgb3IgRXVy
+byAuIDwvc3Bhbj48L3NwYW4+PHNwYW4gc3R5bGU9ImxldHRlci1zcGFjaW5nOiAtMC41cHQ7IGZv
+bnQtc2l6ZTogMTJwdDsiIGxhbmc9IkVOLVVTIj5JIGFtIExvb2tpbmcgZm9yd2FyZCB0byBoZWFy
+aW5nIGZyb20geW91ciBhcyBzb29uCmFzIHBvc3NpYmxlLlRoYW5rIHlvdSEgV2UgaG9wZSB0byBl
+c3RhYmxpc2ggYSBsb25nLSB0ZXJtIGNvb3BlcmF0aW9uCnJlbGF0aW9uc2hpcCB3aXRoIHlvdS4g
+SG9waW5nIHRvIGhhdmUgYSBwbGVhc2FudCBjb29wZXJhdGlvbiB3aXRoIHlvdXIgZXN0ZWVtZWQK
+Y29tcGFueTxvOnA+PC9vOnA+PC9zcGFuPjwvZm9udD48L3A+PGZvbnQgc2l6ZT0iMyIgZmFjZT0i
+y87M5SI+Cgo8L2ZvbnQ+PHAgc3R5bGU9Im1hcmdpbjogMGNtIDBjbSAwcHQ7IiBjbGFzcz0iTXNv
+Tm9ybWFsIj48c3BhbiBzdHlsZT0ibGV0dGVyLXNwYWNpbmc6IC0wLjVwdDsgZm9udC1zaXplOiAx
+MnB0OyIgbGFuZz0iRU4tVVMiPjxmb250IGZhY2U9IlRpbWVzIE5ldyBSb21hbiI+TWF5IGV2ZXJ5
+dGhpbmcgZ29lcyB3ZWxsIC48bzpwPjwvbzpwPjwvZm9udD48L3NwYW4+PC9wPjxmb250IHNpemU9
+IjMiIGZhY2U9IsvOzOUiPgoKPC9mb250PjxwIHN0eWxlPSJtYXJnaW46IDBjbSAwY20gMHB0OyIg
+Y2xhc3M9Ik1zb05vcm1hbCI+PHNwYW4gc3R5bGU9ImxldHRlci1zcGFjaW5nOiAtMC41cHQ7IGZv
+bnQtc2l6ZTogMTJwdDsiIGxhbmc9IkVOLVVTIj48Zm9udCBmYWNlPSJUaW1lcyBOZXcgUm9tYW4i
+PllvdXIgcmVwbHkgd291bGQgYmUgdmVyeSBhcHByZWNpYXRlZCBpZiBpbiBFbmdsaXNoLiA8bzpw
+PjwvbzpwPjwvZm9udD48L3NwYW4+PC9wPjxmb250IHNpemU9IjMiIGZhY2U9IsvOzOUiPgoKPC9m
+b250PjxwIHN0eWxlPSJtYXJnaW46IDBjbSAwY20gMHB0OyIgY2xhc3M9Ik1zb05vcm1hbCI+PHNw
+YW4gc3R5bGU9ImxldHRlci1zcGFjaW5nOiAtMC41cHQ7IGZvbnQtc2l6ZTogMTJwdDsiIGxhbmc9
+IkVOLVVTIj48bzpwPjxmb250IGZhY2U9IlRpbWVzIE5ldyBSb21hbiI+Jm5ic3A7PC9mb250Pjwv
+bzpwPjwvc3Bhbj48L3A+PGZvbnQgc2l6ZT0iMyIgZmFjZT0iy87M5SI+Cgo8L2ZvbnQ+PHAgc3R5
+bGU9Im1hcmdpbjogMGNtIDBjbSAwcHQ7IiBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0i
+bGV0dGVyLXNwYWNpbmc6IC0wLjVwdDsgZm9udC1zaXplOiAxMnB0OyIgbGFuZz0iRU4tVVMiPjxv
+OnA+PGZvbnQgZmFjZT0iVGltZXMgTmV3IFJvbWFuIj4mbmJzcDs8L2ZvbnQ+PC9vOnA+PC9zcGFu
+PjwvcD48Zm9udCBzaXplPSIzIiBmYWNlPSLLzszlIj4KCjwvZm9udD48cCBzdHlsZT0ibWFyZ2lu
+OiAwY20gMGNtIDBwdDsgdGV4dC1pbmRlbnQ6IDY0LjM1cHQ7IG1zby1jaGFyLWluZGVudC1jb3Vu
+dDogNS44NTsiIGNsYXNzPSJNc29Ob3JtYWwiPjxhIG5hbWU9Ik9MRV9MSU5LMjIiPjxzcGFuIGNs
+YXNzPSJhcHBsZS1zdHlsZS1zcGFuIj48c3BhbiBzdHlsZT0ibGV0dGVyLXNwYWNpbmc6IC0wLjVw
+dDsgZm9udC1mYW1pbHk6ICZxdW90O1NpbXN1biZxdW90OywmcXVvdDtzZXJpZiZxdW90OzsgZm9u
+dC1zaXplOiAxMnB0OyIgbGFuZz0iRU4tVVMiPkt1bm1pbmcKQW8gUWlhbyBCYW8gSW1wb3J0ICZh
+bXA7IEV4cG9ydCBDby4sIEx0ZCwgWXVubmFuLCBDaGluYTwvc3Bhbj48L3NwYW4+PC9hPjxzcGFu
+IHN0eWxlPSJtc28tYm9va21hcms6IE9MRV9MSU5LMjI7Ij48c3BhbiBzdHlsZT0ibGV0dGVyLXNw
+YWNpbmc6IC0wLjVwdDsgZm9udC1zaXplOiAxMnB0OyIgbGFuZz0iRU4tVVMiPjxvOnA+PC9vOnA+
+PC9zcGFuPjwvc3Bhbj48L3A+PGZvbnQgc2l6ZT0iMyIgZmFjZT0iy87M5SI+Cgo8c3BhbiBzdHls
+ZT0ibXNvLWJvb2ttYXJrOiBPTEVfTElOSzIyOyI+PC9zcGFuPgoKPC9mb250PjxwIHN0eWxlPSJt
+YXJnaW46IDBjbSAwY20gMHB0OyB0ZXh0LWluZGVudDogMjIxcHQ7IG1zby1jaGFyLWluZGVudC1j
+b3VudDogMjAuMDk7IiBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0ibGV0dGVyLXNwYWNp
+bmc6IC0wLjVwdDsgZm9udC1zaXplOiAxMnB0OyIgbGFuZz0iRU4tVVMiPjxmb250IGZhY2U9IlRp
+bWVzIE5ldyBSb21hbiI+UGxlYXNlIENvbnRhY3QgOllhbwpZdW5qaWU8L2ZvbnQ+PGEgbmFtZT0i
+T0xFX0xJTks0NCI+PC9hPjxhIG5hbWU9Ik9MRV9MSU5LNDUiPjxzcGFuIHN0eWxlPSJtc28tYm9v
+a21hcms6IE9MRV9MSU5LNDQ7Ij48bzpwPjwvbzpwPjwvc3Bhbj48L2E+PC9zcGFuPjwvcD48Zm9u
+dCBzaXplPSIzIiBmYWNlPSLLzszlIj4KCjwvZm9udD48cCBzdHlsZT0ibWFyZ2luOiAwY20gMGNt
+IDBwdDsgdGV4dC1pbmRlbnQ6IDIyMi4xcHQ7IG1zby1jaGFyLWluZGVudC1jb3VudDogMjAuMTk7
+IiBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0ibXNvLWJvb2ttYXJrOiBPTEVfTElOSzQ1
+OyI+PHNwYW4gc3R5bGU9Im1zby1ib29rbWFyazogT0xFX0xJTks0NDsiPjxzcGFuIHN0eWxlPSJs
+ZXR0ZXItc3BhY2luZzogLTAuNXB0OyBmb250LXNpemU6IDEycHQ7IiBsYW5nPSJFTi1VUyI+PGZv
+bnQgZmFjZT0iVGltZXMgTmV3IFJvbWFuIj5UZWw6Kzg2Kzg3MSsgMzkzNjUyOTxvOnA+PC9vOnA+
+PC9mb250Pjwvc3Bhbj48L3NwYW4+PC9zcGFuPjwvcD48Zm9udCBzaXplPSIzIiBmYWNlPSLLzszl
+Ij4KCjwvZm9udD48cCBzdHlsZT0ibWFyZ2luOiAwY20gMGNtIDBwdDsgdGV4dC1pbmRlbnQ6IDIy
+MS42NXB0OyBtc28tY2hhci1pbmRlbnQtY291bnQ6IDIwLjE1OyIgY2xhc3M9Ik1zb05vcm1hbCI+
+PGZvbnQgZmFjZT0iVGltZXMgTmV3IFJvbWFuIj48c3BhbiBzdHlsZT0ibXNvLWJvb2ttYXJrOiBP
+TEVfTElOSzQ1OyI+PHNwYW4gc3R5bGU9Im1zby1ib29rbWFyazogT0xFX0xJTks0NDsiPjxzcGFu
+IHN0eWxlPSJsZXR0ZXItc3BhY2luZzogLTAuNXB0OyBmb250LXNpemU6IDEycHQ7IiBsYW5nPSJF
+Ti1VUyI+RmF4OisgODY8L3NwYW4+PC9zcGFuPjwvc3Bhbj48c3BhbiBzdHlsZT0ibGV0dGVyLXNw
+YWNpbmc6IC0wLjVwdDsgZm9udC1zaXplOiAxMnB0OyIgbGFuZz0iRU4tVVMiPis4NzErMzkzNjA2
+Mjwvc3Bhbj48c3BhbiBjbGFzcz0iYXBwbGUtc3R5bGUtc3BhbiI+PHNwYW4gc3R5bGU9ImxldHRl
+ci1zcGFjaW5nOiAtMC41cHQ7IiBsYW5nPSJFTi1VUyI+PG86cD48L286cD48L3NwYW4+PC9zcGFu
+PjwvZm9udD48L3A+PGZvbnQgc2l6ZT0iMyIgZmFjZT0iy87M5SI+Cgo8L2ZvbnQ+PHAgc3R5bGU9
+Im1hcmdpbjogMGNtIDBjbSAwcHQ7IHRleHQtaW5kZW50OiAyMjFwdDsgbXNvLWNoYXItaW5kZW50
+LWNvdW50OiAyMC4wOTsiIGNsYXNzPSJNc29Ob3JtYWwiPjxmb250IGZhY2U9IlRpbWVzIE5ldyBS
+b21hbiI+PHNwYW4gc3R5bGU9ImxldHRlci1zcGFjaW5nOiAtMC41cHQ7IGZvbnQtc2l6ZTogMTJw
+dDsiIGxhbmc9IkVOLVVTIj5Nb2JpbGU6Cis4NisxMzk4NzEwNDI0MTwvc3Bhbj48c3BhbiBzdHls
+ZT0ibGV0dGVyLXNwYWNpbmc6IC0wLjVwdDsiIGxhbmc9IkVOLVVTIj48bzpwPjwvbzpwPjwvc3Bh
+bj48L2ZvbnQ+PC9wPjxmb250IHNpemU9IjMiIGZhY2U9IsvOzOUiPgoKPC9mb250PjxwIHN0eWxl
+PSJtYXJnaW46IDBjbSAwY20gMHB0OyB0ZXh0LWluZGVudDogMjIxcHQ7IG1zby1jaGFyLWluZGVu
+dC1jb3VudDogMjAuMDk7IiBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0ibGV0dGVyLXNw
+YWNpbmc6IC0wLjVwdDsgZm9udC1zaXplOiAxMnB0OyIgbGFuZz0iRU4tVVMiPjxmb250IGZhY2U9
+IlRpbWVzIE5ldyBSb21hbiI+WmlwIGNvZGU6IDY1MDAwMDxvOnA+PC9vOnA+PC9mb250Pjwvc3Bh
+bj48L3A+PGZvbnQgc2l6ZT0iMyIgZmFjZT0iy87M5SI+Cgo8L2ZvbnQ+PC9kaXY+PC9kaXY+PC9k
+aXY+PC9kaXY+PC9kaXY+
+------=_Part_194275_1424015956.1340180732412--
 
 
-> > +	start = get_time_ns();
-> > +	while (readl(&mac_p->miiaddr) & MII_BUSY) {
-> > +		if (is_timeout(start, 10 * MSECOND)) {
-> > +			dev_err(&priv->netdev.dev, "MDIO timeout\n");
-> > +			return -EIO;
-> > +		}
-> > +		udelay(10);
-> 
-> We do not need udelay in timeout loops as we are polling anyway.
 
-OK, will fix
-
-> > +#if defined(CONFIG_DW_ALTDESCRIPTOR)
-> 
-> Do we need this? If yes, we should add an (invisible, board selectable)
-> option to Kconfig.
-> 
-> In U-Boot this is described with:
-> 
-> 1. CONFIG_DW_ALTDESCRIPTOR
-> 	Define this to use the Alternate/Enhanced Descriptor configurations.
-> 
-> Does this mean this is an alternative way to use this hardware or does
-> this mean it's another version (or IP core configuration) of this hardware?
-
-This depends on IP core configuration.  (The major difference of the
-alternate descriptor is that it has a larger length field
-with can support jumbo packets.)
-
-I wasn't sure about Kconfig because of the arch/arm/board/*/config.h.
-To me it looked like config.h is a good place for this?
-
-
-Thanks,
-Johannes
+--===============8533307250815002049==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============8533307250815002049==--
