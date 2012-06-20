@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ShJXZ-0002Fh-1L
- for barebox@lists.infradead.org; Wed, 20 Jun 2012 11:57:44 +0000
+ id 1ShJXZ-0002Fl-B1
+ for barebox@lists.infradead.org; Wed, 20 Jun 2012 11:57:43 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Wed, 20 Jun 2012 13:57:33 +0200
-Message-Id: <1340193455-2229-5-git-send-email-mkl@pengutronix.de>
+Date: Wed, 20 Jun 2012 13:57:34 +0200
+Message-Id: <1340193455-2229-6-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1340193455-2229-1-git-send-email-mkl@pengutronix.de>
 References: <1340193455-2229-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,67 +21,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/6] ARM mmu: add dma_alloc
+Subject: [PATCH v2 5/6] USB gadget fsl: request cacheline aligned buffer
 To: sha@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-dma_alloc() allocates memory aligned to cache lines. We have to use
-cache line aligned buffers if a driver calls dma_inv_range on the
-buffer.
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
+The fsl udc driver allocates a buffer for small requests. The
+driver then calls dma_inv_range later on it. This buffer happens
+to be not cacheline aligned which means that a dma_inv_range can
+corrupt other memory around the buffer.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+[mkl: use dma_alloc]
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/arm/include/asm/dma.h |    8 ++++++++
- arch/arm/include/asm/mmu.h |   13 +++++++++++--
- 2 files changed, 19 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/include/asm/dma.h
+ drivers/usb/gadget/fsl_udc.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/include/asm/dma.h b/arch/arm/include/asm/dma.h
-new file mode 100644
-index 0000000..cb9cd1b
---- /dev/null
-+++ b/arch/arm/include/asm/dma.h
-@@ -0,0 +1,8 @@
-+/*
-+ * Copyright (C) 2012 by Marc Kleine-Budde <mkl@pengutronix.de>
-+ *
-+ * This file is released under the GPLv2
-+ *
-+ */
-+
-+#include <asm/mmu.h>
-diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
-index f5ae7a8..a66da8c 100644
---- a/arch/arm/include/asm/mmu.h
-+++ b/arch/arm/include/asm/mmu.h
-@@ -1,9 +1,12 @@
- #ifndef __ASM_MMU_H
- #define __ASM_MMU_H
- 
--#include <asm/pgtable.h>
--#include <malloc.h>
-+#include <common.h>
+diff --git a/drivers/usb/gadget/fsl_udc.c b/drivers/usb/gadget/fsl_udc.c
+index 5b64ec2..627e417 100644
+--- a/drivers/usb/gadget/fsl_udc.c
++++ b/drivers/usb/gadget/fsl_udc.c
+@@ -1,5 +1,6 @@
+ #include <common.h>
  #include <errno.h>
-+#include <malloc.h>
-+#include <xfuncs.h>
-+
-+#include <asm/pgtable.h>
++#include <dma.h>
+ #include <init.h>
+ #include <clock.h>
+ #include <usb/ch9.h>
+@@ -8,7 +9,6 @@
+ #include <io.h>
+ #include <poller.h>
+ #include <asm/byteorder.h>
+-#include <asm/mmu.h>
  
- #define PMD_SECT_DEF_UNCACHED (PMD_SECT_AP_WRITE | PMD_SECT_AP_READ | PMD_TYPE_SECT)
- #define PMD_SECT_DEF_CACHED (PMD_SECT_WB | PMD_SECT_DEF_UNCACHED)
-@@ -23,6 +26,12 @@ static inline void setup_dma_coherent(unsigned long offset)
- {
- }
- 
-+#define dma_alloc dma_alloc
-+static inline void *dma_alloc(size_t size)
-+{
-+	return xmemalign(64, ALIGN(size, 64));
-+}
-+
- #ifdef CONFIG_MMU
- void *dma_alloc_coherent(size_t size);
- void dma_free_coherent(void *mem, size_t size);
+ /* ### define USB registers here
+  */
+@@ -2109,7 +2109,8 @@ static int struct_udc_setup(struct fsl_udc *udc,
+ 	udc->status_req = container_of(fsl_alloc_request(NULL),
+ 			struct fsl_req, req);
+ 	/* allocate a small amount of memory to get valid address */
+-	udc->status_req->req.buf = xmalloc(8);
++	udc->status_req->req.buf = dma_alloc(8);
++	udc->status_req->req.length = 8;
+ 	udc->resume_state = USB_STATE_NOTATTACHED;
+ 	udc->usb_state = USB_STATE_POWERED;
+ 	udc->ep0_dir = 0;
 -- 
 1.7.10
 
