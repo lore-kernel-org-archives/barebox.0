@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp22.mail.ru ([94.100.176.175])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ShRyk-0001Qh-2b
- for barebox@lists.infradead.org; Wed, 20 Jun 2012 20:58:19 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 20 Jun 2012 22:57:00 +0200
-References: <1340202731-30831-1-git-send-email-jbe@pengutronix.de>
- <201206202159.14835.jbe@pengutronix.de>
- <20120620200958.GF5642@pengutronix.de>
-In-Reply-To: <20120620200958.GF5642@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201206202257.00849.jbe@pengutronix.de>
+ id 1ShcO7-0002a7-Iy
+ for barebox@lists.infradead.org; Thu, 21 Jun 2012 08:05:12 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Thu, 21 Jun 2012 12:05:03 +0400
+Message-Id: <1340265903-16017-2-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1340265903-16017-1-git-send-email-shc_work@mail.ru>
+References: <1340265903-16017-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,96 +16,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] Enable a way to provide the reason for "being here"
+Subject: [PATCH 2/2] mx51-pdk: Move lowlevel_init before UART initialization
 To: barebox@lists.infradead.org
-Cc: Uwe =?utf-8?q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 
-VXdlIEtsZWluZS1Lw7ZuaWcgd3JvdGU6Cj4gT24gV2VkLCBKdW4gMjAsIDIwMTIgYXQgMDk6NTk6
-MTRQTSArMDIwMCwgSnVlcmdlbiBCZWlzZXJ0IHdyb3RlOgo+ID4gVXdlIEtsZWluZS1Lw7ZuaWcg
-d3JvdGU6Cj4gPiA+IE9uIFdlZCwgSnVuIDIwLCAyMDEyIGF0IDA5OjA5OjUzUE0gKzAyMDAsIEp1
-ZXJnZW4gQmVpc2VydCB3cm90ZToKPiA+ID4gPiBIaSBVd2UsCj4gPiA+ID4KPiA+ID4gPiBVd2Ug
-S2xlaW5lLUvDtm5pZyB3cm90ZToKPiA+ID4gPiA+IE9uIFdlZCwgSnVuIDIwLCAyMDEyIGF0IDA1
-OjA4OjUyUE0gKzAyMDAsIEp1ZXJnZW4gQmVpc2VydCB3cm90ZToKPiA+ID4gPiA+ID4gTWFyYyBL
-bGVpbmUtQnVkZGUgd3JvdGU6Cj4gPiA+ID4gPiA+ID4gWy4uLl0KPiA+ID4gPiA+ID4gPgo+ID4g
-PiA+ID4gPiA+ID4gKwo+ID4gPiA+ID4gPiA+ID4gKyNpbmNsdWRlIDxjb21tb24uaD4KPiA+ID4g
-PiA+ID4gPiA+ICsjaW5jbHVkZSA8aW5pdC5oPgo+ID4gPiA+ID4gPiA+ID4gKyNpbmNsdWRlIDxl
-bnZpcm9ubWVudC5oPgo+ID4gPiA+ID4gPiA+ID4gKyNpbmNsdWRlIDxnbG9iYWx2YXIuaD4KPiA+
-ID4gPiA+ID4gPiA+ICsjaW5jbHVkZSA8cmVzZXRfc291cmNlLmg+Cj4gPiA+ID4gPiA+ID4gPiAr
-Cj4gPiA+ID4gPiA+ID4gPiArc3RhdGljIGNvbnN0IGNoYXIgbmFtZVtdID0gImdsb2JhbC5zeXN0
-ZW0ucmVzZXQiOwo+ID4gPiA+ID4gPiA+ID4gK3N0YXRpYyBjb25zdCBjaGFyIHVua25vd25fcmVz
-ZXRbXSA9ICJ1bmtub3duIjsKPiA+ID4gPiA+ID4gPiA+ICtzdGF0aWMgY29uc3QgY2hhciBwb3dl
-cl9vbl9yZXNldFtdID0gIlBPUiI7Cj4gPiA+ID4gPiA+ID4gPiArc3RhdGljIGNvbnN0IGNoYXIg
-bWFudWFsX3Jlc2V0W10gPSAiUlNUIjsKPiA+ID4gPiA+ID4gPiA+ICtzdGF0aWMgY29uc3QgY2hh
-ciB3YXRjaGRvZ1tdID0gIldERyI7Cj4gPiA+ID4gPiA+ID4gPiArc3RhdGljIGNvbnN0IGNoYXIg
-d2FrZVtdID0gIldLRSI7Cj4gPiA+ID4gPiA+ID4gPiArc3RhdGljIGNvbnN0IGNoYXIganRhZ1td
-ID0gIkpUQUciOwo+ID4gPiA+ID4gPiA+Cj4gPiA+ID4gPiA+ID4gd2hhdCBhYm91dCB1c2luZyBh
-biBhcnJheQo+ID4gPiA+ID4gPiA+Cj4gPiA+ID4gPiA+ID4gc3RhdGljIGNvc3QgY2hhciAqcmVz
-ZXRfcmVhc29uX2FycmF5W10gPSB7Cj4gPiA+ID4gPiA+ID4gCVtSRVNFVF9VS1dOXSA9ICJ1bmtu
-b3duIiwKPiA+ID4gPiA+ID4gPiAJLi4uCj4gPiA+ID4gPiA+ID4gfTsKPiA+ID4gPiA+ID4KPiA+
-ID4gPiA+ID4gVGhlIHJlc3VsdCBpcyBub3QgdGhlIHNhbWUuIFRoZSBzdHJpbmdzIGFyZSBubyBs
-b25nZXIgImNvbnN0Ii4KPiA+ID4gPiA+ID4gQnV0IGl0IHNob3VsZAo+ID4gPiA+ID4KPiA+ID4g
-PiA+IDxraWRkaW5nPk9mIGNvdXJzZSB0aGV5IGFyZSBub3QgImNvbnN0IiBpZiB5b3Ugd3JpdGUK
-PiA+ID4gPiA+ICJjb3N0Ii48L2tpZGRpbmc+IFVzaW5nCj4gPiA+ID4gPgo+ID4gPiA+ID4gCXN0
-YXRpYyBjb25zdCBjaGFyICogY29uc3QgcmVzZXRfcmVhc29uX2FycmF5W10gPSB7Cj4gPiA+ID4g
-Pgo+ID4gPiA+ID4gc2hvdWxkIGRvIHRoZSB0cmljay4KPiA+ID4gPgo+ID4gPiA+IE5vLCBpdCBk
-b2Vzbid0LiBPbmx5IHRoaXMgd291bGQ6Cj4gPiA+ID4KPiA+ID4gPiBzdGF0aWMgY29uc3QgYmxh
-W10gPSAidGhpcyBpcyBhIHJlYWxseSBjb25zdGFudCBzdHJpbmciOwo+ID4gPiA+IHN0YXRpYyBj
-b25zdCBjaGFyICogY29uc3QgcmVzZXRfcmVhc29uX2FycmF5W10gPSB7Cj4gPiA+ID4gCVswXSA9
-IGJsYSwKPiA+ID4gPiBbLi4uXQo+ID4gPiA+IH07Cj4gPiA+Cj4gPiA+IFdoYXQgbWFrZXMgeW91
-IHRoaW5rIGl0J3Mgbm90IGNvbnN0LiBJIHRoaW5rIGl0IGlzLCBsb29rOgo+ID4gPgo+ID4gPiAJ
-dWtsZWluZWtAcGVyc2V1czp+L3RtcCQgY2F0IHRlc3QuYwo+ID4gPiAJc3RhdGljIGNvbnN0IGNo
-YXIgKiBjb25zdCBjb25zdF9yZXNldF9yZWFzb25fYXJyYXlbXSA9IHsKPiA+ID4gCQkianRhZyIs
-Cj4gPiA+IAkJInBvciIsCj4gPiA+IAl9Owo+ID4gPgo+ID4gPiAJc3RhdGljIGNvbnN0IGNoYXIg
-KnJlc2V0X3JlYXNvbl9hcnJheVtdID0gewo+ID4gPiAJCSJqdGFnIiwKPiA+ID4gCQkicG9yIiwK
-PiA+ID4gCX07Cj4gPiA+Cj4gPiA+IAl2b2lkIHNvbWVmdW5jKHZvaWQpCj4gPiA+IAl7Cj4gPiA+
-IAkJY2hhciAqcmVhc29uID0gY29uc3RfcmVzZXRfcmVhc29uX2FycmF5WzBdOwo+ID4gPiAJfQo+
-ID4gPiAJdWtsZWluZWtAcGVyc2V1czp+L3RtcCQgZ2NjIC1XYWxsIC1jIHRlc3QuYwo+ID4gPiAJ
-dGVzdC5jOiBJbiBmdW5jdGlvbiDigJhzb21lZnVuY+KAmToKPiA+ID4gCXRlc3QuYzoxMzoxNzog
-d2FybmluZzogaW5pdGlhbGl6YXRpb24gZGlzY2FyZHMg4oCYY29uc3TigJkgcXVhbGlmaWVyIGZy
-b20KPiA+ID4gcG9pbnRlciB0YXJnZXQgdHlwZSBbZW5hYmxlZCBieSBkZWZhdWx0XSB0ZXN0LmM6
-MTM6ODogd2FybmluZzogdW51c2VkCj4gPiA+IHZhcmlhYmxlIOKAmHJlYXNvbuKAmSBbLVd1bnVz
-ZWQtdmFyaWFibGVdIHRlc3QuYzogQXQgdG9wIGxldmVsOgo+ID4gPiAJdGVzdC5jOjY6MjA6IHdh
-cm5pbmc6IOKAmHJlc2V0X3JlYXNvbl9hcnJheeKAmSBkZWZpbmVkIGJ1dCBub3QgdXNlZAo+ID4g
-PiBbLVd1bnVzZWQtdmFyaWFibGVdCj4gPiA+Cj4gPiA+IAl1a2xlaW5la0BwZXJzZXVzOn4vdG1w
-JCBvYmpkdW1wIC1EIC1qIC5yb2RhdGEgLWogLmRhdGEgdGVzdC5vCj4gPiA+Cj4gPiA+IAl0ZXN0
-Lm86ICAgICBmaWxlIGZvcm1hdCBlbGY2NC14ODYtNjQKPiA+ID4KPiA+ID4KPiA+ID4gCURpc2Fz
-c2VtYmx5IG9mIHNlY3Rpb24gLmRhdGE6Cj4gPiA+Cj4gPiA+IAkwMDAwMDAwMDAwMDAwMDAwIDxy
-ZXNldF9yZWFzb25fYXJyYXk+Ogo+ID4gPiAJCS4uLgo+ID4gPgo+ID4gPiAJRGlzYXNzZW1ibHkg
-b2Ygc2VjdGlvbiAucm9kYXRhOgo+ID4gPgo+ID4gPiAJMDAwMDAwMDAwMDAwMDAwMCA8Y29uc3Rf
-cmVzZXRfcmVhc29uX2FycmF5LTB4MTA+Ogo+ID4gPiAJICAgMDoJNmEgNzQgICAgICAgICAgICAg
-ICAgCXB1c2hxICAkMHg3NAo+ID4gPiAJICAgMjoJNjEgICAgICAgICAgICAgICAgICAgCShiYWQp
-Cj4gPiA+IAkgICAzOgk2NyAwMCA3MCA2ZiAgICAgICAgICAJYWRkICAgICVkaCwweDZmKCVlYXgp
-Cj4gPiA+IAkgICA3Ogk3MiAwMCAgICAgICAgICAgICAgICAJamIgICAgIDkgPGNvbnN0X3Jlc2V0
-X3JlYXNvbl9hcnJheS0weDc+Cj4gPiA+IAkgICA5OgkwMCAwMCAgICAgICAgICAgICAgICAJYWRk
-ICAgICVhbCwoJXJheCkKPiA+ID4gCSAgIGI6CTAwIDAwICAgICAgICAgICAgICAgIAlhZGQgICAg
-JWFsLCglcmF4KQo+ID4gPiAJICAgZDoJMDAgMDAgICAgICAgICAgICAgICAgCWFkZCAgICAlYWws
-KCVyYXgpCj4gPiA+IAkJLi4uCj4gPiA+Cj4gPiA+IAkwMDAwMDAwMDAwMDAwMDEwIDxjb25zdF9y
-ZXNldF9yZWFzb25fYXJyYXk+Ogo+ID4gPiAJCS4uLgo+ID4gPgo+ID4gPiBzbyBjb25zdF9yZXNl
-dF9yZWFzb25fYXJyYXkgbGl2ZXMgaW4gLnJvZGF0YSBhbmQgYXNzaW5naW5nCj4gPiA+IGNvbnN0
-X3Jlc2V0X3JlYXNvbl9hcnJheVswXSB0byBhIGNoYXIgKiByZXN1bHRzIGluIGEgd2FybmluZy4K
-PiA+ID4KPiA+ID4gV2hhdCBhbSBJIG1pc3Npbmc/Cj4gPgo+ID4gY29uc3QgY2hhciBmcmllc2Vs
-W10gPSAidGhpcyBpcyByZWFsbHkgYSBjb25zdGFudCBzdHJpbmciOwo+ID4gY29uc3QgY2hhciAq
-ZnJhc2VsID0gInRoaXMgaXMgbm90IHJlYWxseSBhIGNvbnN0YW50IHN0cmluZyI7Cj4gPgo+ID4g
-VGhlIGNvbXBpbGVyIHdpbGwgcGxhY2UgdGhlICJ0aGlzIGlzIHJlYWxseSBhIGNvbnN0YW50IHN0
-cmluZyIgaW50bwo+ID4gdGhlIC5yb2RhdGEsIGJ1dCAidGhpcyBpcyBub3QgcmVhbGx5IGEgY29u
-c3RhbnQgc3RyaW5nIiB3aWxsIGJlIHN0aWxsCj4gPiBpbiAuZGF0YSAod3JpdGVhYmxlKS4gVGhp
-cyBkaWZmZXJlbmNlIGlzIHZlcnkgaW1wb3J0YW50IHRvIGtub3csIGlmIHlvdQo+ID4gd2FudCB0
-aGUgY29tcGlsZXIgdG8gcGxhY2UgdGhlIHN0cmluZ3MgaW50byB0aGUgZmxhc2ggb2YgYQo+ID4g
-bWljcm9jb250cm9sbGVyIGluc3RlYWQgb2YgdGhlIFJBTSAod2hpY2ggaXMgbW9zdCBvZiB0aGUg
-dGltZSB2ZXJ5Cj4gPiBzbWFsbCkuCj4KPiBSaWdodCwgYW5kIGlmIHlvdSBzYXk6Cj4KPiAJY29u
-c3QgY2hhciAqY29uc3QgZnJvc2VsID0gInRoaXMgaXMgcmVhbGx5IGEgY29uc3RhbnQgc3RyaW5n
-LCB0b28iOwo+Cj4gaXQgd2lsbCBlbmQgaW4gLnJvZGF0YSwgdG9vLiBBbmQgdGhhdCBpcyB0aGUg
-Y29uc3RydWN0IEkgc3VnZ2VzdGVkIHRvCj4gdXNlLgoKT2theSwgeW91IGFyZSByaWdodC4KCmpi
-ZQoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8IEp1
-ZXJnZW4gQmVpc2VydCAgICAgICAgICAgICB8CkxpbnV4IFNvbHV0aW9ucyBmb3IgU2NpZW5jZSBh
-bmQgSW5kdXN0cnkgICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctNTEyOCB8ClZlcnRyZXR1
-bmcgU3VlZC9NdWVuY2hlbiwgR2VybWFueSAgICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0y
-MDY5MTctNTU1NSB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICAg
-ICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8CgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
-c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9iYXJlYm94Cg==
+
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/boards/freescale-mx51-pdk/board.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
+index 9ec331a..18c21ce 100644
+--- a/arch/arm/boards/freescale-mx51-pdk/board.c
++++ b/arch/arm/boards/freescale-mx51-pdk/board.c
+@@ -246,7 +246,6 @@ static int f3s_devices_init(void)
+ 	babbage_power_init();
+ 
+ 	console_flush();
+-	imx51_init_lowlevel(800);
+ 	clock_notifier_call_chain();
+ 
+ 	imx51_iim_register_fec_ethaddr();
+@@ -274,6 +273,8 @@ static int f3s_console_init(void)
+ {
+ 	mxc_iomux_v3_setup_multiple_pads(f3s_pads, ARRAY_SIZE(f3s_pads));
+ 
++	imx51_init_lowlevel(800);
++
+ 	imx51_add_uart0();
+ 
+ 	return 0;
+-- 
+1.7.3.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
