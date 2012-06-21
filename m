@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1She6j-0002rH-KH
- for barebox@lists.infradead.org; Thu, 21 Jun 2012 09:55:23 +0000
+ id 1She6j-0002rB-KB
+ for barebox@lists.infradead.org; Thu, 21 Jun 2012 09:55:24 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1She6g-00006R-UF
+ for barebox@lists.infradead.org; Thu, 21 Jun 2012 11:55:18 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1She6g-0002Us-Sv
+ for barebox@lists.infradead.org; Thu, 21 Jun 2012 11:55:18 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 21 Jun 2012 11:55:12 +0200
-Message-Id: <1340272517-8972-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1340272517-8972-1-git-send-email-s.hauer@pengutronix.de>
-References: <1340272517-8972-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 21 Jun 2012 11:55:08 +0200
+Message-Id: <1340272517-8972-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,45 +26,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/9] USB ehci: Use dma coherent buffers for qh/qtd
+Subject: [PATCH] more dma fixes
 To: barebox@lists.infradead.org
 
-There's no point in syncing them manually. Instead, use
-dma_alloc_coherent and skip the manual flushing/invalidating.
+Hi All,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/usb/host/ehci-hcd.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+Based on Marcs series here are some more fixes to the cache handling for
+USB/ehci. As Marc already mentioned we have to make sure that buffers which
+are used for DMA are cacheline aligned, otherwise we risk corrupting data
+around the buffers.
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index a2473a9..425406d 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -148,9 +148,6 @@ static void cache_qh(struct ehci_priv *ehci, int flush)
- {
- 	int i;
- 
--	flush_invalidate(ehci->qh_list, sizeof(struct QH) * NUM_QH, flush);
--	flush_invalidate(ehci->td, sizeof(struct qTD) * NUM_TD, flush);
--
- 	for (i = 0; i < NUM_TD; i ++)
- 		cache_qtd(&ehci->td[i], flush);
- }
-@@ -878,8 +875,8 @@ static int ehci_probe(struct device_d *dev)
- 	ehci->hccr = dev_request_mem_region(dev, 0);
- 	ehci->hcor = dev_request_mem_region(dev, 1);
- 
--	ehci->qh_list = xmemalign(32, sizeof(struct QH) * NUM_QH);
--	ehci->td = xmemalign(32, sizeof(struct qTD) * NUM_TD);
-+	ehci->qh_list = dma_alloc_coherent(sizeof(struct QH) * NUM_TD);
-+	ehci->td = dma_alloc_coherent(sizeof(struct qTD) * NUM_TD);
- 
- 	host->init = ehci_init;
- 	host->submit_int_msg = submit_int_msg;
--- 
-1.7.10
+Sascha
 
+----------------------------------------------------------------
+Sascha Hauer (9):
+      USB core: allocate setup_packet using dma_alloc
+      USB core: device descriptor using dma_alloc
+      USB core: Allocate tmpbuf using dma_alloc
+      USB ehci: Use dma coherent buffers for qh/qtd
+      USB ehci: put fields of struct qTD directly into struct QH
+      USB storage: use dma_alloc where appropriate
+      block: use dma_alloc to allocate buffers
+      partition: Use dma_alloc for allocating buffers
+      USB ehci: rework cache handling
+
+ common/block.c                  |    7 +--
+ common/partitions.c             |    5 +-
+ drivers/usb/core/usb.c          |  100 ++++++++++++++++++++----------------
+ drivers/usb/host/ehci-hcd.c     |  108 ++++++++++++---------------------------
+ drivers/usb/host/ehci.h         |   10 +++-
+ drivers/usb/storage/transport.c |   11 ++--
+ include/usb/usb.h               |    3 +-
+ 7 files changed, 115 insertions(+), 129 deletions(-)
 
 _______________________________________________
 barebox mailing list
