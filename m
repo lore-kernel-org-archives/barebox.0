@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1She6j-0002rJ-KO
+ id 1She6j-0002rK-K4
  for barebox@lists.infradead.org; Thu, 21 Jun 2012 09:55:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 21 Jun 2012 11:55:14 +0200
-Message-Id: <1340272517-8972-7-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 21 Jun 2012 11:55:15 +0200
+Message-Id: <1340272517-8972-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1340272517-8972-1-git-send-email-s.hauer@pengutronix.de>
 References: <1340272517-8972-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,57 +21,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/9] USB storage: use dma_alloc where appropriate
+Subject: [PATCH 7/9] block: use dma_alloc to allocate buffers
 To: barebox@lists.infradead.org
+
+Drivers may use dma to transfer blocks, so put them into
+dma save memory.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/storage/transport.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ common/block.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/storage/transport.c b/drivers/usb/storage/transport.c
-index e7a5972..68170b6 100644
---- a/drivers/usb/storage/transport.c
-+++ b/drivers/usb/storage/transport.c
-@@ -26,6 +26,7 @@
- #include <clock.h>
- #include <scsi.h>
- #include <errno.h>
+diff --git a/common/block.c b/common/block.c
+index 71ecfd5..f3bcdc8 100644
+--- a/common/block.c
++++ b/common/block.c
+@@ -24,6 +24,7 @@
+ #include <malloc.h>
+ #include <linux/err.h>
+ #include <linux/list.h>
 +#include <dma.h>
  
- #undef USB_STOR_DEBUG
+ #define BLOCKSIZE(blk)	(1 << blk->blockbits)
  
-@@ -65,8 +66,8 @@ int usb_stor_Bulk_clear_endpt_stall(struct us_data *us, unsigned int pipe)
- /* Determine what the maximum LUN supported is */
- int usb_stor_Bulk_max_lun(struct us_data *us)
- {
--	int len;
--	unsigned char iobuf[1];
-+	int len, ret = 0;
-+	unsigned char *iobuf = dma_alloc(1);
+@@ -357,7 +358,7 @@ int blockdevice_register(struct block_device *blk)
  
- 	/* issue the command */
- 	iobuf[0] = 0;
-@@ -81,7 +82,9 @@ int usb_stor_Bulk_max_lun(struct us_data *us)
+ 	for (i = 0; i < 8; i++) {
+ 		struct chunk *chunk = xzalloc(sizeof(*chunk));
+-		chunk->data = xmalloc(BUFSIZE);
++		chunk->data = dma_alloc(BUFSIZE);
+ 		chunk->num = i;
+ 		list_add_tail(&chunk->list, &blk->idle_blocks);
+ 	}
+@@ -376,12 +377,12 @@ int blockdevice_unregister(struct block_device *blk)
+ 	writebuffer_flush(blk);
  
- 	/* if we have a successful request, return the result */
- 	if (len > 0)
--		return (int)iobuf[0];
-+		ret = iobuf[0];
-+
-+	dma_free(iobuf);
+ 	list_for_each_entry_safe(chunk, tmp, &blk->buffered_blocks, list) {
+-		free(chunk->data);
++		dma_free(chunk->data);
+ 		free(chunk);
+ 	}
  
- 	/*
- 	 * Some devices don't like GetMaxLUN.  They may STALL the control
-@@ -90,7 +93,7 @@ int usb_stor_Bulk_max_lun(struct us_data *us)
- 	 * ways.  In these cases the best approach is to use the default
- 	 * value: only one LUN.
- 	 */
--	return 0;
-+	return ret;
- }
+ 	list_for_each_entry_safe(chunk, tmp, &blk->idle_blocks, list) {
+-		free(chunk->data);
++		dma_free(chunk->data);
+ 		free(chunk);
+ 	}
  
- int usb_stor_Bulk_transport(ccb *srb, struct us_data *us)
 -- 
 1.7.10
 
