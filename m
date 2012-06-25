@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sj834-00052A-UW
- for barebox@lists.infradead.org; Mon, 25 Jun 2012 12:05:47 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 Jun 2012 14:05:37 +0200
-Message-Id: <1340625937-10609-1-git-send-email-s.hauer@pengutronix.de>
+ id 1Sj83P-00052s-PO
+ for barebox@lists.infradead.org; Mon, 25 Jun 2012 12:06:08 +0000
+From: Jan Luebbe <jlu@pengutronix.de>
+Date: Mon, 25 Jun 2012 14:06:00 +0200
+Message-Id: <1340625960-18234-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,28 +19,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM i.MX51 babbage: add mci1
+Subject: [PATCH] defaultenv/bin/init: skip autoboot if $autoboot_timeout is
+ unset
 To: barebox@lists.infradead.org
 
-The iomuxer is already initialized, only need to add the device.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx51-pdk/board.c |    1 +
- 1 file changed, 1 insertion(+)
+ defaultenv/bin/init |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
-index 0bb2ffe..dc0d003 100644
---- a/arch/arm/boards/freescale-mx51-pdk/board.c
-+++ b/arch/arm/boards/freescale-mx51-pdk/board.c
-@@ -246,6 +246,7 @@ static int f3s_devices_init(void)
- 	imx51_iim_register_fec_ethaddr();
- 	imx51_add_fec(&fec_info);
- 	imx51_add_mmc0(NULL);
-+	imx51_add_mmc1(NULL);
+diff --git a/defaultenv/bin/init b/defaultenv/bin/init
+index 6e85a82..f535e37 100644
+--- a/defaultenv/bin/init
++++ b/defaultenv/bin/init
+@@ -23,7 +23,7 @@ fi
  
- 	armlinux_set_bootparams((void *)0x90000100);
- 	armlinux_set_architecture(MACH_TYPE_MX51_BABBAGE);
+ if [ -f /env/bin/boot_board ]; then
+ 	. /env/bin/boot_board
+-else
++elif [ -n $autoboot_timeout ]; then
+ 	echo
+ 	echo -n "Hit any key to stop autoboot: "
+ 	timeout -a $autoboot_timeout
 -- 
 1.7.10
 
