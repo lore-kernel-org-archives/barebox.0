@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SjDFB-0002O1-QQ
+ id 1SjDFB-0002O0-Qk
  for barebox@lists.infradead.org; Mon, 25 Jun 2012 17:38:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 Jun 2012 19:38:22 +0200
-Message-Id: <1340645910-15668-5-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 25 Jun 2012 19:38:21 +0200
+Message-Id: <1340645910-15668-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1340645910-15668-1-git-send-email-s.hauer@pengutronix.de>
 References: <1340645910-15668-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,53 +21,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/12] Do not use iomem space for dev_get_mem_region
+Subject: [PATCH 03/12] qsort: declare strcmp_compar publically
 To: barebox@lists.infradead.org
-
-It is mostly used for mmapping sdram which is no iomem.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/base/driver.c |    6 +++---
- include/driver.h      |    2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ include/qsort.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 547d684..cb876fa 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -241,15 +241,15 @@ static struct resource *dev_get_resource(struct device_d *dev, int num)
- 	return NULL;
- }
+diff --git a/include/qsort.h b/include/qsort.h
+index bbb2359..d279dc2 100644
+--- a/include/qsort.h
++++ b/include/qsort.h
+@@ -4,4 +4,6 @@
+ void qsort(void  *base, size_t nel, size_t width,
+ 	   int (*comp)(const void *, const void *));
  
--void __iomem *dev_get_mem_region(struct device_d *dev, int num)
-+void *dev_get_mem_region(struct device_d *dev, int num)
- {
- 	struct resource *res;
- 
- 	res = dev_get_resource(dev, num);
- 	if (!res)
--		return res;
-+		return NULL;
- 
--	return (void __force __iomem *)res->start;
-+	return (void __force *)res->start;
- }
- EXPORT_SYMBOL(dev_get_mem_region);
- 
-diff --git a/include/driver.h b/include/driver.h
-index 09dd1e4..470ae2d 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -183,7 +183,7 @@ static inline const char *dev_name(const struct device_d *dev)
- /*
-  * get register base 'num' for a device
-  */
--void __iomem *dev_get_mem_region(struct device_d *dev, int num);
-+void *dev_get_mem_region(struct device_d *dev, int num);
- 
- /*
-  * exlusively request register base 'num' for a device
++int strcmp_compar(const void *p1, const void *p2);
++
+ #endif /* __QSORT_H */
 -- 
 1.7.10
 
