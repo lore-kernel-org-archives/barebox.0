@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sj8Du-0005Cv-9L
- for barebox@lists.infradead.org; Mon, 25 Jun 2012 12:16:59 +0000
-Date: Mon, 25 Jun 2012 14:16:51 +0200
+ id 1Sj8Ig-0005Hf-JZ
+ for barebox@lists.infradead.org; Mon, 25 Jun 2012 12:21:56 +0000
+Date: Mon, 25 Jun 2012 14:21:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120625121651.GC14321@pengutronix.de>
-References: <1340621891-4826-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20120625122148.GD14321@pengutronix.de>
+References: <20120625072641.GB24458@pengutronix.de>
+ <1340614498-8596-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1340621891-4826-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1340614498-8596-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +23,151 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: XBurst: fix compiler warnings in reset-jz4750.c
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] i.MX clko: Checking for clko-line properly
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jun 25, 2012 at 02:58:11PM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+On Mon, Jun 25, 2012 at 12:54:58PM +0400, Alexander Shiyan wrote:
+> This patch adds a check for the correct number of CLKO-line.
 
-Squashed into the original commit causing the warnings.
+Squashed into the original commit causing the failure
 
 Thanks
  Sascha
 
-> ---
->  arch/mips/mach-xburst/reset-jz4750.c |    6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/arch/mips/mach-xburst/reset-jz4750.c b/arch/mips/mach-xburst/reset-jz4750.c
-> index 4bda56c..765c033 100644
-> --- a/arch/mips/mach-xburst/reset-jz4750.c
-> +++ b/arch/mips/mach-xburst/reset-jz4750.c
-> @@ -29,7 +29,7 @@
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  arch/arm/mach-imx/clko.c        |    6 ++++--
+>  arch/arm/mach-imx/speed-imx21.c |    3 ++-
+>  arch/arm/mach-imx/speed-imx25.c |    3 ++-
+>  arch/arm/mach-imx/speed-imx27.c |    3 ++-
+>  arch/arm/mach-imx/speed-imx35.c |    3 ++-
+>  arch/arm/mach-imx/speed-imx51.c |    3 ++-
+>  6 files changed, 14 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/clko.c b/arch/arm/mach-imx/clko.c
+> index 4c5df71..aeafaa9 100644
+> --- a/arch/arm/mach-imx/clko.c
+> +++ b/arch/arm/mach-imx/clko.c
+> @@ -35,8 +35,10 @@ static int do_clko(int argc, char *argv[])
 >  
->  #define JZ_EXTAL 24000000
+>  	if (div != 0) {
+>  		ret = imx_clko_set_div(num, div);
+> -		if (ret != div)
+> -			printf("limited divider to %d\n", ret);
+> +		if (ret < 0)
+> +			printf("CLKO-line %i not supported.\n", num);
+> +		else if (ret != div)
+> +			printf("Divider limited to %d.\n", ret);
+>  	}
 >  
-> -static void jz4750d_halt(void)
-> +static void __noreturn jz4750d_halt(void)
->  {
->  	while (1) {
->  		__asm__(".set push;\n"
-> @@ -65,10 +65,10 @@ void __noreturn poweroff()
->  	shutdown_barebox();
+>  	return 0;
+> diff --git a/arch/arm/mach-imx/speed-imx21.c b/arch/arm/mach-imx/speed-imx21.c
+> index 6b44efa..4729583 100644
+> --- a/arch/arm/mach-imx/speed-imx21.c
+> +++ b/arch/arm/mach-imx/speed-imx21.c
+> @@ -16,6 +16,7 @@
+>   */
 >  
->  	do {
-> -		ctrl = readl(RTC_RCR);
-> +		ctrl = readl((u32 *)RTC_RCR);
->  	} while (!(ctrl & RTC_RCR_WRDY));
+>  #include <common.h>
+> +#include <asm-generic/errno.h>
+>  #include <mach/imx-regs.h>
+>  #include <mach/generic.h>
+>  #include <mach/clock.h>
+> @@ -167,7 +168,7 @@ int imx_clko_set_div(int num, int div)
+>  	ulong pcdr;
 >  
-> -	writel(RTC_HCR_PD, RTC_HCR);
-> +	writel(RTC_HCR_PD, (u32 *)RTC_HCR);
->  	jz4750d_halt();
->  }
->  EXPORT_SYMBOL(poweroff);
+>  	if (num != 1)
+> -		return;
+> +		return -ENODEV;
+>  
+>  	div--;
+>  	div &= 0x7;
+> diff --git a/arch/arm/mach-imx/speed-imx25.c b/arch/arm/mach-imx/speed-imx25.c
+> index b5c9822..ed14113 100644
+> --- a/arch/arm/mach-imx/speed-imx25.c
+> +++ b/arch/arm/mach-imx/speed-imx25.c
+> @@ -1,4 +1,5 @@
+>  #include <common.h>
+> +#include <asm-generic/errno.h>
+>  #include <mach/imx-regs.h>
+>  #include <io.h>
+>  #include <mach/clock.h>
+> @@ -116,7 +117,7 @@ int imx_clko_set_div(int num, int div)
+>  	unsigned long mcr = readl(IMX_CCM_BASE + 0x64);
+>  
+>  	if (num != 1)
+> -		return;
+> +		return -ENODEV;
+>  
+>  	div -= 1;
+>  	div &= 0x3f;
+> diff --git a/arch/arm/mach-imx/speed-imx27.c b/arch/arm/mach-imx/speed-imx27.c
+> index 6c66344..644fd04 100644
+> --- a/arch/arm/mach-imx/speed-imx27.c
+> +++ b/arch/arm/mach-imx/speed-imx27.c
+> @@ -16,6 +16,7 @@
+>   */
+>  
+>  #include <common.h>
+> +#include <asm-generic/errno.h>
+>  #include <mach/imx-regs.h>
+>  #include <mach/generic.h>
+>  #include <mach/clock.h>
+> @@ -194,7 +195,7 @@ int imx_clko_set_div(int num, int div)
+>  	ulong pcdr;
+>  
+>  	if (num != 1)
+> -		return;
+> +		return -ENODEV;
+>  
+>  	div--;
+>  	div &= 0x7;
+> diff --git a/arch/arm/mach-imx/speed-imx35.c b/arch/arm/mach-imx/speed-imx35.c
+> index 28cd1b1..2b707aa 100644
+> --- a/arch/arm/mach-imx/speed-imx35.c
+> +++ b/arch/arm/mach-imx/speed-imx35.c
+> @@ -16,6 +16,7 @@
+>   */
+>  
+>  #include <common.h>
+> +#include <asm-generic/errno.h>
+>  #include <mach/imx-regs.h>
+>  #include <io.h>
+>  #include <mach/clock.h>
+> @@ -208,7 +209,7 @@ int imx_clko_set_div(int num, int div)
+>  	unsigned long cosr = readl(IMX_CCM_BASE + CCM_COSR);
+>  
+>  	if (num != 1)
+> -		return;
+> +		return -ENODEV;
+>  
+>  	div -= 1;
+>  	div &= 0x3f;
+> diff --git a/arch/arm/mach-imx/speed-imx51.c b/arch/arm/mach-imx/speed-imx51.c
+> index f716346..63d4932 100644
+> --- a/arch/arm/mach-imx/speed-imx51.c
+> +++ b/arch/arm/mach-imx/speed-imx51.c
+> @@ -1,6 +1,7 @@
+>  #include <common.h>
+>  #include <io.h>
+>  #include <asm-generic/div64.h>
+> +#include <asm-generic/errno.h>
+>  #include <mach/imx51-regs.h>
+>  #include <mach/clock-imx51_53.h>
+>  
+> @@ -251,7 +252,7 @@ int imx_clko_set_div(int num, int div)
+>  		ccm_writel(ccosr, MX5_CCM_CCOSR);
+>  		break;
+>  	default:
+> -		break;
+> +		return -ENODEV;
+>  	}
+>  
+>  	return div + 1;
 > -- 
-> 1.7.10
+> 1.7.3.4
 > 
 > 
 > _______________________________________________
