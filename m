@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sj8hP-00088H-LC
- for barebox@lists.infradead.org; Mon, 25 Jun 2012 12:47:28 +0000
+ id 1Sj8my-0008Bx-Hk
+ for barebox@lists.infradead.org; Mon, 25 Jun 2012 12:53:13 +0000
+Date: Mon, 25 Jun 2012 14:53:05 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 Jun 2012 14:47:19 +0200
-Message-Id: <1340628439-18605-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20120625125305.GF14321@pengutronix.de>
+References: <1340358843-30614-1-git-send-email-jbe@pengutronix.de>
+ <1340358843-30614-2-git-send-email-jbe@pengutronix.de>
+ <20120625122831.GE14321@pengutronix.de>
+ <201206251445.43408.jbe@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <201206251445.43408.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,72 +21,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] print out resource_size_t correctly
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] Add a simple watchdog framework
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-resource_size_t can be 32bit or 64bit depending on the architecture.
-Add a define for it to be able to printf a resource_size_t correctly
+On Mon, Jun 25, 2012 at 02:45:43PM +0200, Juergen Beisert wrote:
+> Sascha Hauer wrote:
+> > On Fri, Jun 22, 2012 at 11:54:02AM +0200, Juergen Beisert wrote:
+> > > This patch adds a simple wd command which can setup, trigger and stop a
+> > > watchdog on the platform.
+> > >
+> > > +static int do_wd(int argc, char *argv[])
+> > > +{
+> > > +	int rc;
+> > > +
+> > > +	if (argc > 1) {
+> > > +		if (isdigit(*argv[1])) {
+> > > +			timeout = simple_strtoul(argv[1], NULL, 0);
+> > > +		} else {
+> > > +			printf("numerical parameter expected\n");
+> > > +			return 1;
+> > > +		}
+> > > +	}
+> > > +
+> > > +	rc = watchdog_set_timeout(timeout);
+> > > +	if (rc == -EINVAL) {
+> >
+> > Why do you check for -EINVAL only? This way all other errors will be
+> > silently ignored.
+> 
+> Are you sure we must handle other failure codes than -EINVAL here? The called 
+> function is very simple and only must distinguish "timeout != 0" and "timeout 
+> == 0". So, timeout can be "out of range" or - as you mentioned - some 
+> platforms cannot disable the watchdog anymore once it is enabled. Both 
+> results into -EINVAL, because the called function cannot use the given value. 
+> What else can happen?
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/iomem.c       |    3 ++-
- drivers/base/driver.c  |    3 ++-
- include/linux/ioport.h |    6 ++++++
- 3 files changed, 10 insertions(+), 2 deletions(-)
+Why should we only test for errors that we know and silently drop all others?
 
-diff --git a/commands/iomem.c b/commands/iomem.c
-index 96b03ba..70355fd 100644
---- a/commands/iomem.c
-+++ b/commands/iomem.c
-@@ -30,7 +30,8 @@ static void __print_resources(struct resource *res, int indent)
- 	for (i = 0; i < indent; i++)
- 		printf("  ");
- 
--	printf("0x%08x - 0x%08x (size 0x%08x) %s\n", res->start,
-+	printf(PRINTF_CONVERSION_RESOURCE " - " PRINTF_CONVERSION_RESOURCE
-+			" (size " PRINTF_CONVERSION_RESOURCE ") %s\n", res->start,
- 			res->start + res->size - 1,
- 			res->size, res->name);
- 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 547d684..3be4b99 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -388,7 +388,8 @@ static int do_devinfo(int argc, char *argv[])
- 			printf("num   : %d\n", i);
- 			if (res->name)
- 				printf("name  : %s\n", res->name);
--			printf("start : 0x%08x\nsize  : 0x%08x\n",
-+			printf("start : " PRINTF_CONVERSION_RESOURCE "\nsize  : "
-+					PRINTF_CONVERSION_RESOURCE "\n",
- 			       res->start, res->size);
- 		}
- 
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index c837b53..3f95ddd 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -25,6 +25,12 @@ struct resource {
- 	struct list_head sibling;
- };
- 
-+#ifdef CONFIG_PHYS_ADDR_T_64BIT
-+#define PRINTF_CONVERSION_RESOURCE	"0x%016llx"
-+#else
-+#define PRINTF_CONVERSION_RESOURCE	"0x%08x"
-+#endif
-+
- /*
-  * IO resources have these defined flags.
-  */
+Somebody might think that -ENOSYS is the appropriate return value if the
+watchdog can't be disabled. When such a patch is added nobody will
+remember that our error handling only checks for a special error value.
+
+Sascha
+
+
 -- 
-1.7.10
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
