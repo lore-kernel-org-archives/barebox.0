@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sj8ey-0007kN-Q0
- for barebox@lists.infradead.org; Mon, 25 Jun 2012 12:44:57 +0000
+ id 1Sj8eq-0007is-R3
+ for barebox@lists.infradead.org; Mon, 25 Jun 2012 12:44:51 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 Jun 2012 14:44:40 +0200
-Message-Id: <1340628281-8774-5-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 25 Jun 2012 14:44:41 +0200
+Message-Id: <1340628281-8774-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1340628281-8774-1-git-send-email-s.hauer@pengutronix.de>
 References: <1340628281-8774-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,26 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] nios2: Add missing ffs include
+Subject: [PATCH 5/5] x86: Add missing ffs include
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/nios2/include/asm/bitops.h |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/include/asm/bitops.h |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/nios2/include/asm/bitops.h b/arch/nios2/include/asm/bitops.h
-index ab0e3d5..87bfaa1 100644
---- a/arch/nios2/include/asm/bitops.h
-+++ b/arch/nios2/include/asm/bitops.h
-@@ -1,4 +1,7 @@
- #ifndef _ASM_BITOPS_H
- #define _ASM_BITOPS_H
+diff --git a/arch/x86/include/asm/bitops.h b/arch/x86/include/asm/bitops.h
+index b43afa3..685c15f 100644
+--- a/arch/x86/include/asm/bitops.h
++++ b/arch/x86/include/asm/bitops.h
+@@ -27,6 +27,9 @@
+ #ifndef _ASM_X86_BITOPS_H_
+ #define _ASM_X86_BITOPS_H_
  
+-/* nothing special yet */
++#define BITS_PER_LONG 32
++
 +#include <asm-generic/bitops/__ffs.h>
 +#include <asm-generic/bitops/ffs.h>
-+
- #endif /* _ASM_BITOPS_H */
+ 
+ #endif /* _ASM_X86_BITOPS_H_ */
 -- 
 1.7.10
 
