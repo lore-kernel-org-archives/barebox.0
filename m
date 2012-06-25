@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sj9kO-0003Tu-0d
- for barebox@lists.infradead.org; Mon, 25 Jun 2012 13:54:37 +0000
+ id 1Sj9m1-0003Zx-FG
+ for barebox@lists.infradead.org; Mon, 25 Jun 2012 13:56:18 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Mon, 25 Jun 2012 15:54:28 +0200
-Message-Id: <1340632468-9972-1-git-send-email-jlu@pengutronix.de>
+Date: Mon, 25 Jun 2012 15:56:10 +0200
+Message-Id: <1340632570-10034-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,100 +19,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] drivers/video: support three ways to select default video mode
+Subject: [PATCH] drivers/nor/m25p80.c: fix erase loop for unaligned addresses
 To: barebox@lists.infradead.org
 
-Currently the first entry in the board's mode list is the default.
-In cases where the connected panel is not fixed, it is better to
-configure it at runtime via the fb0.mode_name variable.
+In some cases with unaligned addresses the loop would not abort.
+Instead, use the calculated sector numbers in a for-loop.
 
-This patch allows choosing between:
- - First mode in the board's list (old behavior)
- - No default mode
- - Default mode selection by mode name (from string config variable)
+Based on a patch by Sascha Hauer <s.hauer@pengutronix.de>.
 
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- drivers/video/Kconfig |   23 +++++++++++++++++++++++
- drivers/video/fb.c    |   17 ++++++++++++++++-
- 2 files changed, 39 insertions(+), 1 deletion(-)
+ drivers/nor/m25p80.c |   12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index 519cdbf..baadb54 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -51,4 +51,27 @@ config DRIVER_VIDEO_PXA
- 	  Add support for the frame buffer device found on the PXA270
- 	  CPU.
+diff --git a/drivers/nor/m25p80.c b/drivers/nor/m25p80.c
+index 1440227..b4dfbfa 100644
+--- a/drivers/nor/m25p80.c
++++ b/drivers/nor/m25p80.c
+@@ -200,7 +200,7 @@ static ssize_t m25p80_erase(struct cdev *cdev, size_t count, loff_t offset)
+ 	u32 addr, len;
+ 	u32 start_sector;
+ 	u32 end_sector;
+-	u32 progress = 0;
++	u32 cur_sector;
+ 	int eraseshift = ffs(flash->erasesize) - 1;
  
-+choice
-+	prompt "Default mode selection"
-+	default VIDEO_DEFAULT_FIRST
-+
-+	config VIDEO_DEFAULT_FIRST
-+		bool "First mode from the board's list"
-+
-+	config VIDEO_DEFAULT_NONE
-+		bool "Do not activate a mode by default"
-+
-+	config VIDEO_DEFAULT_NAME
-+		bool "Select the default mode by name"
-+
-+endchoice
-+
-+if VIDEO_DEFAULT_NAME
-+
-+config VIDEO_DEFAULT_MODE
-+	string
-+	prompt "Default mode name (as defined by the board)"
-+
-+endif
-+
- endif
-diff --git a/drivers/video/fb.c b/drivers/video/fb.c
-index 0be465f..4b39eac 100644
---- a/drivers/video/fb.c
-+++ b/drivers/video/fb.c
-@@ -40,6 +40,11 @@ static int fb_enable_set(struct device_d *dev, struct param_d *param,
+ 	dev_dbg(&flash->spi->dev, "%s %s 0x%llx, len %lld\n",
+@@ -232,17 +232,13 @@ static ssize_t m25p80_erase(struct cdev *cdev, size_t count, loff_t offset)
  
- 	enable = simple_strtoul(val, NULL, 0);
+ 	/* "sector"-at-a-time erase */
+ 	} else {
+-		while (len) {
++		for (cur_sector = start_sector; cur_sector <= end_sector; cur_sector++) {
+ 			if (ctrlc())
+ 				return -EINTR;
+-			if (erase_sector(flash, addr))
++			if (erase_sector(flash, cur_sector << eraseshift))
+ 				return -EIO;
  
-+	if (enable && info->mode == NULL) {
-+		dev_err(dev, "cannot enable unconfigured framebuffer\n");
-+		return -EPERM;
-+	}
-+
- 	if (enable) {
- 		if (!info->enabled)
- 			info->fbops->fb_enable(info);
-@@ -66,8 +71,10 @@ static int fb_setup_mode(struct device_d *dev, struct param_d *param,
- 	if (info->enabled != 0)
- 		return -EPERM;
- 
--	if (!val)
-+	if (!val) {
-+		info->mode = NULL;
- 		return dev_param_set_generic(dev, param, NULL);
-+	}
- 
- 	for (mode = 0; mode < info->num_modes; mode++) {
- 		if (!strcmp(info->mode_list[mode].name, val))
-@@ -132,7 +139,15 @@ int register_framebuffer(struct fb_info *info)
- 	if (info->num_modes && (info->mode_list != NULL) &&
- 			(info->fbops->fb_activate_var != NULL)) {
- 		dev_add_param(dev, "mode_name", fb_setup_mode, NULL, 0);
-+#ifdef CONFIG_VIDEO_DEFAULT_FIRST
- 		dev_set_param(dev, "mode_name", info->mode_list[0].name);
-+#endif
-+#ifdef CONFIG_VIDEO_DEFAULT_NONE
-+		dev_set_param(dev, "mode_name", NULL);
-+#endif
-+#ifdef CONFIG_VIDEO_DEFAULT_NAME
-+		dev_set_param(dev, "mode_name", CONFIG_VIDEO_DEFAULT_MODE);
-+#endif
+-			show_progress(++progress);
+-			if (len <= flash->erasesize)
+-				break;
+-			addr += flash->erasesize;
+-			len -= flash->erasesize;
++			show_progress(cur_sector - start_sector + 1);
+ 		}
  	}
  
- 	devfs_create(&info->cdev);
 -- 
 1.7.10
 
