@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2a02:8b8:656::164] (helo=bar.sig21.net)
+Received: from smtp27.mail.ru ([94.100.176.180])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sj53Q-00070a-6Q
- for barebox@lists.infradead.org; Mon, 25 Jun 2012 08:53:53 +0000
-Date: Mon, 25 Jun 2012 10:53:23 +0200
-From: Johannes Stezenbach <js@sig21.net>
-Message-ID: <20120625085323.GA10406@sig21.net>
-References: <CAA4bVAHvo6i3uOoEao=q8RCP+i3NZ+9XnmvA=mKjEYZztrmB2g@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAA4bVAHvo6i3uOoEao=q8RCP+i3NZ+9XnmvA=mKjEYZztrmB2g@mail.gmail.com>
+ id 1Sj54a-0007CW-Pj
+ for barebox@lists.infradead.org; Mon, 25 Jun 2012 08:55:09 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Mon, 25 Jun 2012 12:54:58 +0400
+Message-Id: <1340614498-8596-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <20120625072641.GB24458@pengutronix.de>
+References: <20120625072641.GB24458@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,61 +16,149 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: SPI chip select problem
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH] i.MX clko: Checking for clko-line properly
+To: barebox@lists.infradead.org
 
-Hi,
+This patch adds a check for the correct number of CLKO-line.
 
-On Mon, Jun 25, 2012 at 11:45:06AM +0400, Antony Pavlov wrote:
-> I have added spi controller driver for one of my MIPS boards and
-> found, that there is a problem with chip select.
-> 
-> During initialisation we call *_spi_setup() method. It switch chip
-> select and frequency for every probing spi slave chip.
-> But after initialisation __we never__ call this method. So if I have
-> more than 1 spi slave chip, I can use only last of them.
-> 
-> There is the 'cs_change' flag for *_spi_transfer() method, but this
-> flag does not used at all!
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/mach-imx/clko.c        |    6 ++++--
+ arch/arm/mach-imx/speed-imx21.c |    3 ++-
+ arch/arm/mach-imx/speed-imx25.c |    3 ++-
+ arch/arm/mach-imx/speed-imx27.c |    3 ++-
+ arch/arm/mach-imx/speed-imx35.c |    3 ++-
+ arch/arm/mach-imx/speed-imx51.c |    3 ++-
+ 6 files changed, 14 insertions(+), 7 deletions(-)
 
-altera_spi.c and mic_spi.c use it, but often this is not needed (e.g. for
-SPI flashes) so to keep the code simple and small it might be better
-to not implement cs_change handling.
+diff --git a/arch/arm/mach-imx/clko.c b/arch/arm/mach-imx/clko.c
+index 4c5df71..aeafaa9 100644
+--- a/arch/arm/mach-imx/clko.c
++++ b/arch/arm/mach-imx/clko.c
+@@ -35,8 +35,10 @@ static int do_clko(int argc, char *argv[])
+ 
+ 	if (div != 0) {
+ 		ret = imx_clko_set_div(num, div);
+-		if (ret != div)
+-			printf("limited divider to %d\n", ret);
++		if (ret < 0)
++			printf("CLKO-line %i not supported.\n", num);
++		else if (ret != div)
++			printf("Divider limited to %d.\n", ret);
+ 	}
+ 
+ 	return 0;
+diff --git a/arch/arm/mach-imx/speed-imx21.c b/arch/arm/mach-imx/speed-imx21.c
+index 6b44efa..4729583 100644
+--- a/arch/arm/mach-imx/speed-imx21.c
++++ b/arch/arm/mach-imx/speed-imx21.c
+@@ -16,6 +16,7 @@
+  */
+ 
+ #include <common.h>
++#include <asm-generic/errno.h>
+ #include <mach/imx-regs.h>
+ #include <mach/generic.h>
+ #include <mach/clock.h>
+@@ -167,7 +168,7 @@ int imx_clko_set_div(int num, int div)
+ 	ulong pcdr;
+ 
+ 	if (num != 1)
+-		return;
++		return -ENODEV;
+ 
+ 	div--;
+ 	div &= 0x7;
+diff --git a/arch/arm/mach-imx/speed-imx25.c b/arch/arm/mach-imx/speed-imx25.c
+index b5c9822..ed14113 100644
+--- a/arch/arm/mach-imx/speed-imx25.c
++++ b/arch/arm/mach-imx/speed-imx25.c
+@@ -1,4 +1,5 @@
+ #include <common.h>
++#include <asm-generic/errno.h>
+ #include <mach/imx-regs.h>
+ #include <io.h>
+ #include <mach/clock.h>
+@@ -116,7 +117,7 @@ int imx_clko_set_div(int num, int div)
+ 	unsigned long mcr = readl(IMX_CCM_BASE + 0x64);
+ 
+ 	if (num != 1)
+-		return;
++		return -ENODEV;
+ 
+ 	div -= 1;
+ 	div &= 0x3f;
+diff --git a/arch/arm/mach-imx/speed-imx27.c b/arch/arm/mach-imx/speed-imx27.c
+index 6c66344..644fd04 100644
+--- a/arch/arm/mach-imx/speed-imx27.c
++++ b/arch/arm/mach-imx/speed-imx27.c
+@@ -16,6 +16,7 @@
+  */
+ 
+ #include <common.h>
++#include <asm-generic/errno.h>
+ #include <mach/imx-regs.h>
+ #include <mach/generic.h>
+ #include <mach/clock.h>
+@@ -194,7 +195,7 @@ int imx_clko_set_div(int num, int div)
+ 	ulong pcdr;
+ 
+ 	if (num != 1)
+-		return;
++		return -ENODEV;
+ 
+ 	div--;
+ 	div &= 0x7;
+diff --git a/arch/arm/mach-imx/speed-imx35.c b/arch/arm/mach-imx/speed-imx35.c
+index 28cd1b1..2b707aa 100644
+--- a/arch/arm/mach-imx/speed-imx35.c
++++ b/arch/arm/mach-imx/speed-imx35.c
+@@ -16,6 +16,7 @@
+  */
+ 
+ #include <common.h>
++#include <asm-generic/errno.h>
+ #include <mach/imx-regs.h>
+ #include <io.h>
+ #include <mach/clock.h>
+@@ -208,7 +209,7 @@ int imx_clko_set_div(int num, int div)
+ 	unsigned long cosr = readl(IMX_CCM_BASE + CCM_COSR);
+ 
+ 	if (num != 1)
+-		return;
++		return -ENODEV;
+ 
+ 	div -= 1;
+ 	div &= 0x3f;
+diff --git a/arch/arm/mach-imx/speed-imx51.c b/arch/arm/mach-imx/speed-imx51.c
+index f716346..63d4932 100644
+--- a/arch/arm/mach-imx/speed-imx51.c
++++ b/arch/arm/mach-imx/speed-imx51.c
+@@ -1,6 +1,7 @@
+ #include <common.h>
+ #include <io.h>
+ #include <asm-generic/div64.h>
++#include <asm-generic/errno.h>
+ #include <mach/imx51-regs.h>
+ #include <mach/clock-imx51_53.h>
+ 
+@@ -251,7 +252,7 @@ int imx_clko_set_div(int num, int div)
+ 		ccm_writel(ccosr, MX5_CCM_CCOSR);
+ 		break;
+ 	default:
+-		break;
++		return -ENODEV;
+ 	}
+ 
+ 	return div + 1;
+-- 
+1.7.3.4
 
-> I have made quick-and-dirty patch:
-> 
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -196,6 +196,8 @@ EXPORT_SYMBOL(spi_register_master);
-> 
->  int spi_sync(struct spi_device *spi, struct spi_message *message)
->  {
-> +       spi->master->setup(spi);
-> +
->         return spi->master->transfer(spi, message);
->  }
-
-I noticed this issue, too, but since barebox spi code is similar
-to linux code I'd like to point out linux drivers must not modify the
-chip select in ->setup().  Since bare box only does synchronous transfers
-it isn't an issue, but in linux ->setup() is called when
-a new message is queued, at this time the previous message
-might still be transferring.  Thus the only purpose of ->setup()
-is to do error checking on the provided parameters.
-Chip select, frequency etc. must be set in ->transfer().
-In the interest of portability/similarity barebox drivers should
-do the same as linux.
-
-That said, your proposed patch still looks OK.
-BTW, ->cleanup() is also never called, but so far no driver needs it...
-
-
-Johannes
 
 _______________________________________________
 barebox mailing list
