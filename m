@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2a02:8b8:656::164] (helo=bar.sig21.net)
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sj6rK-0005dG-92
- for barebox@lists.infradead.org; Mon, 25 Jun 2012 10:49:34 +0000
-Date: Mon, 25 Jun 2012 12:48:59 +0200
-From: Johannes Stezenbach <js@sig21.net>
-Message-ID: <20120625104859.GA10844@sig21.net>
-References: <CAA4bVAHvo6i3uOoEao=q8RCP+i3NZ+9XnmvA=mKjEYZztrmB2g@mail.gmail.com>
- <20120625085323.GA10406@sig21.net>
- <CAA4bVAHqT37AuMbBUia4FGSdayQXvSYJ63hok_fYSaZpZHQK6A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAA4bVAHqT37AuMbBUia4FGSdayQXvSYJ63hok_fYSaZpZHQK6A@mail.gmail.com>
+ id 1Sj6zt-0006Vy-3s
+ for barebox@lists.infradead.org; Mon, 25 Jun 2012 10:58:21 +0000
+Received: by lbbgg6 with SMTP id gg6so6433119lbb.36
+ for <barebox@lists.infradead.org>; Mon, 25 Jun 2012 03:58:18 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon, 25 Jun 2012 14:58:11 +0400
+Message-Id: <1340621891-4826-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,37 +16,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: SPI chip select problem
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH] MIPS: XBurst: fix compiler warnings in reset-jz4750.c
+To: barebox@lists.infradead.org
 
-On Mon, Jun 25, 2012 at 02:07:34PM +0400, Antony Pavlov wrote:
-> On 25 June 2012 12:53, Johannes Stezenbach <js@sig21.net> wrote:
-> > On Mon, Jun 25, 2012 at 11:45:06AM +0400, Antony Pavlov wrote:
-> >>
-> >> There is the 'cs_change' flag for *_spi_transfer() method, but this
-> >> flag does not used at all!
-> >
-> > altera_spi.c and mic_spi.c use it, but often this is not needed (e.g. for
-> > SPI flashes) so to keep the code simple and small it might be better
-> > to not implement cs_change handling.
-> 
-> But I have not found any common code where cs_change is managed.
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/mach-xburst/reset-jz4750.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-It doesn't need to be handled in common code, the spi_device
-driver requests a cs_change if it needs one, the spi_master driver
-programs the hardware to do it.  Common code in drivers/spi/spi.c
-doesn't need to care.  (To clarify: cs_change does not mean
-to switch from one CS to another, it means to pulse the
-CS line between spi_transfers of a spi_message.  Some devices
-need that in some cases.)
+diff --git a/arch/mips/mach-xburst/reset-jz4750.c b/arch/mips/mach-xburst/reset-jz4750.c
+index 4bda56c..765c033 100644
+--- a/arch/mips/mach-xburst/reset-jz4750.c
++++ b/arch/mips/mach-xburst/reset-jz4750.c
+@@ -29,7 +29,7 @@
+ 
+ #define JZ_EXTAL 24000000
+ 
+-static void jz4750d_halt(void)
++static void __noreturn jz4750d_halt(void)
+ {
+ 	while (1) {
+ 		__asm__(".set push;\n"
+@@ -65,10 +65,10 @@ void __noreturn poweroff()
+ 	shutdown_barebox();
+ 
+ 	do {
+-		ctrl = readl(RTC_RCR);
++		ctrl = readl((u32 *)RTC_RCR);
+ 	} while (!(ctrl & RTC_RCR_WRDY));
+ 
+-	writel(RTC_HCR_PD, RTC_HCR);
++	writel(RTC_HCR_PD, (u32 *)RTC_HCR);
+ 	jz4750d_halt();
+ }
+ EXPORT_SYMBOL(poweroff);
+-- 
+1.7.10
 
-
-Johannes
 
 _______________________________________________
 barebox mailing list
