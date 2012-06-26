@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sjbqt-0006N2-Lu
- for barebox@lists.infradead.org; Tue, 26 Jun 2012 19:55:13 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1Sjbqq-000266-Vc
- for barebox@lists.infradead.org; Tue, 26 Jun 2012 21:55:04 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1Sjbqq-0006Im-UB
- for barebox@lists.infradead.org; Tue, 26 Jun 2012 21:55:04 +0200
+ id 1SjbrA-0006QW-4I
+ for barebox@lists.infradead.org; Tue, 26 Jun 2012 19:55:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Jun 2012 21:54:53 +0200
-Message-Id: <1340740503-7003-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Jun 2012 21:55:03 +0200
+Message-Id: <1340740503-7003-11-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1340740503-7003-1-git-send-email-s.hauer@pengutronix.de>
+References: <1340740503-7003-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,72 +21,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] 64bit file support
+Subject: [PATCH 10/10] partitions: Make 64bit capable
 To: barebox@lists.infradead.org
 
-Hi All,
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/partitions.c |   29 -----------------------------
+ fs/devfs-core.c     |    2 +-
+ include/driver.h    |    2 +-
+ include/partition.h |    2 +-
+ 4 files changed, 3 insertions(+), 32 deletions(-)
 
-The following adds 64bit file support for barebox. It has been runtime
-tested on a babbage board with a 8G SD card and on a pcm038 board with a
-8G USB stick. Compile tested with all defconfigs.
+diff --git a/common/partitions.c b/common/partitions.c
+index 74b4f12..a8c9625 100644
+--- a/common/partitions.c
++++ b/common/partitions.c
+@@ -43,23 +43,6 @@ struct partition_desc {
+ };
+ 
+ /**
+- * Reject values which cannot be used in Barebox
+- * @param val Value to be check
+- * @return 0 if value can be used in Barebox, -EINVAL if not
+- *
+- * @note this routine can be removed when Barebox uses file offsets larger
+- * than 32 bit
+- */
+-static int check_offset_value(uint64_t val)
+-{
+-#if 1	/* until Barebox can handle 64 bit offsets */
+-	if (val > (__INT_MAX__ / SECTOR_SIZE))
+-		return -EINVAL;
+-#endif
+-	return 0;
+-}
+-
+-/**
+  * Guess the size of the disk, based on the partition table entries
+  * @param dev device to create partitions for
+  * @param table partition table
+@@ -76,12 +59,6 @@ static int disk_guess_size(struct device_d *dev, struct partition_entry *table)
+ 			size += get_unaligned(&table[i].partition_size);
+ 		}
+ 	}
+-	/* limit disk sector counts we can't handle due to 32 bit limits */
+-	if (check_offset_value(size) != 0) {
+-		dev_warn(dev, "Warning: Sector count limited due to 31 bit"
+-				"contraints\n");
+-		size = __INT_MAX__ / SECTOR_SIZE;
+-	}
+ 
+ 	return (int)size;
+ }
+@@ -126,12 +103,6 @@ static void __maybe_unused try_dos_partition(struct block_device *blk,
+ 		pentry.first_sec = get_unaligned(&table[i].partition_start);
+ 		pentry.size = get_unaligned(&table[i].partition_size);
+ 
+-		/* do we have to ignore this partition due to limitations? */
+-		if (check_offset_value(pentry.first_sec) != 0)
+-			continue;
+-		if (check_offset_value(pentry.size) != 0)
+-			continue;
+-
+ 		if (pentry.first_sec != 0) {
+ 			pd->parts[pd->used_entries].first_sec = pentry.first_sec;
+ 			pd->parts[pd->used_entries].size = pentry.size;
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index b66965e..cdb8f79 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -227,7 +227,7 @@ int devfs_remove(struct cdev *cdev)
+ 	return 0;
+ }
+ 
+-int devfs_add_partition(const char *devname, unsigned long offset, size_t size,
++int devfs_add_partition(const char *devname, loff_t offset, loff_t size,
+ 		int flags, const char *name)
+ {
+ 	struct cdev *cdev, *new;
+diff --git a/include/driver.h b/include/driver.h
+index 0b6d1b3..eacd8e6 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -418,7 +418,7 @@ int cdev_erase(struct cdev *cdev, size_t count, loff_t offset);
+ #define DEVFS_PARTITION_READONLY	(1 << 1)
+ #define DEVFS_IS_PARTITION		(1 << 2)
+ 
+-int devfs_add_partition(const char *devname, unsigned long offset, size_t size,
++int devfs_add_partition(const char *devname, loff_t offset, loff_t size,
+ 		int flags, const char *name);
+ int devfs_del_partition(const char *name);
+ 
+diff --git a/include/partition.h b/include/partition.h
+index 0827bb4..8ad7490 100644
+--- a/include/partition.h
++++ b/include/partition.h
+@@ -8,7 +8,7 @@ struct partition {
+ 
+ 	int flags;
+ 
+-        unsigned long offset;
++        loff_t offset;
+ 
+         struct device_d *physdev;
+         struct device_d device;
+-- 
+1.7.10
 
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (10):
-      mtd: fix arguments to bad block ioctls
-      nand-bb: bb->offset may become a 64bit type
-      use loff_t for file offsets
-      introduce strtoull_suffix function
-      make parse_area_spec arguments loff_t
-      make memory display 64bit capable
-      make st_size in struct stat 64 bit
-      make cdev 64bit capable
-      memory commands: Make 64bit capable
-      partitions: Make 64bit capable
-
- arch/arm/mach-imx/iim.c       |    8 +++----
- arch/arm/mach-mxs/ocotp.c     |    4 ++--
- arch/sandbox/board/hostfile.c |    4 ++--
- commands/crc.c                |    4 ++--
- commands/digest.c             |    4 ++--
- commands/flash.c              |    4 ++--
- commands/ls.c                 |    2 +-
- commands/mem.c                |   49 ++++++++++++++++++++---------------------
- common/block.c                |    6 ++---
- common/partitions.c           |   29 ------------------------
- drivers/base/driver.c         |    2 +-
- drivers/eeprom/at25.c         |    8 +++----
- drivers/mfd/lp3972.c          |    2 +-
- drivers/mfd/mc13xxx.c         |    4 ++--
- drivers/mfd/mc34704.c         |    4 ++--
- drivers/mfd/mc34708.c         |    6 +++--
- drivers/mfd/mc9sdz60.c        |    4 ++--
- drivers/mfd/twl-core.c        |    4 ++--
- drivers/mtd/core.c            |   20 ++++++++++-------
- drivers/mtd/mtdoob.c          |    3 ++-
- drivers/mtd/mtdraw.c          |    9 +++++---
- drivers/mtd/nand/nand-bb.c    |   30 ++++++++++++-------------
- drivers/mtd/ubi/cdev.c        |    8 +++----
- drivers/net/miidev.c          |    4 ++--
- drivers/nor/cfi_flash.c       |    8 +++----
- drivers/nor/m25p80.c          |   16 +++++++++-----
- fs/cramfs/cramfs.c            |    2 +-
- fs/devfs-core.c               |   17 +++++++-------
- fs/devfs.c                    |   10 ++++-----
- fs/fat/fat.c                  |    6 ++---
- fs/fs.c                       |   12 +++++-----
- fs/nfs.c                      |    2 +-
- fs/ramfs.c                    |    2 +-
- fs/tftp.c                     |    2 +-
- include/common.h              |    5 +++--
- include/driver.h              |   28 +++++++++++------------
- include/fs.h                  |   12 +++++-----
- include/linux/stat.h          |    2 +-
- include/partition.h           |    2 +-
- lib/misc.c                    |   24 ++++++++++++--------
- lib/vsprintf.c                |    1 +
- 41 files changed, 183 insertions(+), 190 deletions(-)
 
 _______________________________________________
 barebox mailing list
