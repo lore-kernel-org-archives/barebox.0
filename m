@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sjbqt-0006N3-Ly
- for barebox@lists.infradead.org; Tue, 26 Jun 2012 19:55:10 +0000
+ id 1Sjbqt-0006N9-Pz
+ for barebox@lists.infradead.org; Tue, 26 Jun 2012 19:55:13 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Jun 2012 21:54:54 +0200
-Message-Id: <1340740503-7003-2-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Jun 2012 21:54:58 +0200
+Message-Id: <1340740503-7003-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1340740503-7003-1-git-send-email-s.hauer@pengutronix.de>
 References: <1340740503-7003-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,127 +21,154 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/10] mtd: fix arguments to bad block ioctls
+Subject: [PATCH 05/10] make parse_area_spec arguments loff_t
 To: barebox@lists.infradead.org
-
-In the Kernel the mtd ioctls expect a pointer to the offset, whereas
-barebox interprets the pointer itself as an offset. Since we want
-to add 64bit support for file sizes a pointer may not be sufficient,
-so align with the kernel and convert it to a pointer to the offset.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/core.c         |    5 +++--
- drivers/mtd/nand/nand-bb.c |   18 +++++++++---------
- fs/devfs-core.c            |    6 +++---
- 3 files changed, 15 insertions(+), 14 deletions(-)
+ commands/crc.c    |    4 ++--
+ commands/digest.c |    4 ++--
+ commands/flash.c  |    4 ++--
+ commands/mem.c    |    4 ++--
+ include/common.h  |    2 +-
+ lib/misc.c        |   10 +++++-----
+ 6 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 87dcba6..2ce08a6 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -123,16 +123,17 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
- 	struct mtd_ecc_stats *ecc = buf;
- #endif
- 	struct region_info_user *reg = buf;
-+	off_t *offset = buf;
+diff --git a/commands/crc.c b/commands/crc.c
+index df22941..09af6aa 100644
+--- a/commands/crc.c
++++ b/commands/crc.c
+@@ -84,8 +84,8 @@ out:
  
- 	switch (request) {
- 	case MEMGETBADBLOCK:
- 		dev_dbg(cdev->dev, "MEMGETBADBLOCK: 0x%08lx\n", (off_t)buf);
--		ret = mtd->block_isbad(mtd, (off_t)buf);
-+		ret = mtd->block_isbad(mtd, *offset);
- 		break;
- #ifdef CONFIG_MTD_WRITE
- 	case MEMSETBADBLOCK:
- 		dev_dbg(cdev->dev, "MEMSETBADBLOCK: 0x%08lx\n", (off_t)buf);
--		ret = mtd->block_markbad(mtd, (off_t)buf);
-+		ret = mtd->block_markbad(mtd, *offset);
- 		break;
- #endif
- 	case MEMGETINFO:
-diff --git a/drivers/mtd/nand/nand-bb.c b/drivers/mtd/nand/nand-bb.c
-index bd30438..fcc4821 100644
---- a/drivers/mtd/nand/nand-bb.c
-+++ b/drivers/mtd/nand/nand-bb.c
-@@ -42,9 +42,9 @@ struct nand_bb {
- 
- 	struct mtd_info_user info;
- 
--	size_t raw_size;
--	size_t size;
--	off_t offset;
-+	loff_t raw_size;
-+	loff_t size;
-+	loff_t offset;
- 	unsigned long flags;
- 	void *writebuf;
- 
-@@ -63,12 +63,12 @@ static ssize_t nand_bb_read(struct cdev *cdev, void *buf, size_t count,
- 	debug("%s %d %d\n", __func__, offset, count);
- 
- 	while(count) {
--		ret = cdev_ioctl(parent, MEMGETBADBLOCK, (void *)bb->offset);
-+		ret = cdev_ioctl(parent, MEMGETBADBLOCK, &bb->offset);
- 		if (ret < 0)
- 			return ret;
- 
- 		if (ret) {
--			printf("skipping bad block at 0x%08lx\n", bb->offset);
-+			printf("skipping bad block at 0x%08llx\n", bb->offset);
- 			bb->offset += bb->info.erasesize;
- 			continue;
- 		}
-@@ -96,10 +96,10 @@ static int nand_bb_write_buf(struct nand_bb *bb, size_t count)
- 	int ret, now;
- 	struct cdev *parent = bb->cdev_parent;
- 	void *buf = bb->writebuf;
--	int cur_ofs = bb->offset & ~(BB_WRITEBUF_SIZE - 1);
-+	off_t cur_ofs = bb->offset & ~(BB_WRITEBUF_SIZE - 1);
- 
- 	while (count) {
--		ret = cdev_ioctl(parent, MEMGETBADBLOCK, (void *)cur_ofs);
-+		ret = cdev_ioctl(parent, MEMGETBADBLOCK, &cur_ofs);
- 		if (ret < 0)
- 			return ret;
- 
-@@ -197,11 +197,11 @@ static int nand_bb_close(struct cdev *cdev)
- 
- static int nand_bb_calc_size(struct nand_bb *bb)
+ static int do_crc(int argc, char *argv[])
  {
--	ulong pos = 0;
-+	loff_t pos = 0;
- 	int ret;
+-	ulong start = 0, size = ~0, total = 0;
+-	ulong crc = 0, vcrc = 0;
++	loff_t start = 0, size = ~0;
++	ulong crc = 0, vcrc = 0, total = 0;
+ 	char *filename = "/dev/mem";
+ #ifdef CONFIG_CMD_CRC_CMP
+ 	char *vfilename = NULL;
+diff --git a/commands/digest.c b/commands/digest.c
+index 8432914..07cbec9 100644
+--- a/commands/digest.c
++++ b/commands/digest.c
+@@ -51,7 +51,7 @@ static int do_digest(char *algorithm, int argc, char *argv[])
+ 	argv++;
+ 	while (*argv) {
+ 		char *filename = "/dev/mem";
+-		ulong start = 0, size = ~0;
++		loff_t start = 0, size = ~0;
  
- 	while (pos < bb->raw_size) {
--		ret = cdev_ioctl(bb->cdev_parent, MEMGETBADBLOCK, (void *)pos);
-+		ret = cdev_ioctl(bb->cdev_parent, MEMGETBADBLOCK, &pos);
- 		if (ret < 0)
- 			return ret;
- 		if (!ret)
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index ff6a976..6a56d34 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -123,15 +123,15 @@ int cdev_flush(struct cdev *cdev)
- static int partition_ioctl(struct cdev *cdev, int request, void *buf)
- {
+ 		/* arguments are either file, file+area or area */
+ 		if (parse_area_spec(*argv, &start, &size)) {
+@@ -66,7 +66,7 @@ static int do_digest(char *algorithm, int argc, char *argv[])
+ 		for (i = 0; i < d->length; i++)
+ 			printf("%02x", hash[i]);
+ 
+-		printf("  %s\t0x%08lx ... 0x%08lx\n", filename, start, start + size);
++		printf("  %s\t0x%08llx ... 0x%08llx\n", filename, start, start + size);
+ 
+ 		argv++;
+ 	}
+diff --git a/commands/flash.c b/commands/flash.c
+index 1fcb1cf..d71349a 100644
+--- a/commands/flash.c
++++ b/commands/flash.c
+@@ -41,7 +41,7 @@ static int do_flerase(int argc, char *argv[])
+ 	int fd;
+ 	char *filename = NULL;
+ 	struct stat s;
+-	unsigned long start = 0, size = ~0;
++	loff_t start = 0, size = ~0;
  	int ret = 0;
--	size_t offset;
-+	loff_t offset, *_buf = buf;
- 	struct mtd_info_user *user = buf;
  
- 	switch (request) {
- 	case MEMSETBADBLOCK:
- 	case MEMGETBADBLOCK:
--		offset = (off_t)buf;
-+		offset = *_buf;
- 		offset += cdev->offset;
--		ret = cdev->ops->ioctl(cdev, request, (void *)offset);
-+		ret = cdev->ops->ioctl(cdev, request, &offset);
- 		break;
- 	case MEMGETINFO:
- 		if (cdev->mtd) {
+ 	if (argc == 1)
+@@ -109,7 +109,7 @@ static int do_protect(int argc, char *argv[])
+ 	char *filename = NULL;
+ 	struct stat s;
+ 	int prot = 1;
+-	unsigned long start = 0, size = ~0;
++	loff_t start = 0, size = ~0;
+ 	int ret = 0, err;
+ 
+ 	if (argc == 1)
+diff --git a/commands/mem.c b/commands/mem.c
+index 649d5bf..0719700 100644
+--- a/commands/mem.c
++++ b/commands/mem.c
+@@ -163,7 +163,7 @@ static int mem_parse_options(int argc, char *argv[], char *optstr, int *mode,
+ 
+ static int do_mem_md(int argc, char *argv[])
+ {
+-	ulong	start = 0, size = 0x100;
++	loff_t	start = 0, size = 0x100;
+ 	int	r, now;
+ 	int	ret = 0;
+ 	int fd;
+@@ -187,7 +187,7 @@ static int do_mem_md(int argc, char *argv[])
+ 		return 1;
+ 
+ 	do {
+-		now = min(size, RW_BUF_SIZE);
++		now = min(size, (loff_t)RW_BUF_SIZE);
+ 		r = read(fd, rw_buf, now);
+ 		if (r < 0) {
+ 			perror("read");
+diff --git a/include/common.h b/include/common.h
+index 328aa30..08ff0f3 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -138,7 +138,7 @@ struct memarea_info {
+         unsigned long flags;
+ };
+ 
+-int parse_area_spec(const char *str, ulong *start, ulong *size);
++int parse_area_spec(const char *str, loff_t *start, loff_t *size);
+ 
+ /* Just like simple_strtoul(), but this one honors a K/M/G suffix */
+ unsigned long strtoul_suffix(const char *str, char **endp, int base);
+diff --git a/lib/misc.c b/lib/misc.c
+index cdf0185..8a95396 100644
+--- a/lib/misc.c
++++ b/lib/misc.c
+@@ -75,15 +75,15 @@ EXPORT_SYMBOL(strtoul_suffix);
+  * 0x1000        -> start = 0x1000, size = ~0
+  * 1M+1k         -> start = 0x100000, size = 0x400
+  */
+-int parse_area_spec(const char *str, ulong *start, ulong *size)
++int parse_area_spec(const char *str, loff_t *start, loff_t *size)
+ {
+ 	char *endp;
+-	ulong end;
++	loff_t end;
+ 
+ 	if (!isdigit(*str))
+ 		return -1;
+ 
+-	*start = strtoul_suffix(str, &endp, 0);
++	*start = strtoull_suffix(str, &endp, 0);
+ 
+ 	str = endp;
+ 
+@@ -95,7 +95,7 @@ int parse_area_spec(const char *str, ulong *start, ulong *size)
+ 
+ 	if (*str == '-') {
+ 		/* beginning and end given */
+-		end = strtoul_suffix(str + 1, NULL, 0);
++		end = strtoull_suffix(str + 1, NULL, 0);
+ 		if (end < *start) {
+ 			printf("end < start\n");
+ 			return -1;
+@@ -106,7 +106,7 @@ int parse_area_spec(const char *str, ulong *start, ulong *size)
+ 
+ 	if (*str == '+') {
+ 		/* beginning and size given */
+-		*size = strtoul_suffix(str + 1, NULL, 0);
++		*size = strtoull_suffix(str + 1, NULL, 0);
+ 		return 0;
+ 	}
+ 
 -- 
 1.7.10
 
