@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sjayr-00051u-QJ
- for barebox@lists.infradead.org; Tue, 26 Jun 2012 18:59:19 +0000
-Date: Tue, 26 Jun 2012 20:59:15 +0200
+ id 1Sjb0K-00055L-O0
+ for barebox@lists.infradead.org; Tue, 26 Jun 2012 19:00:49 +0000
+Date: Tue, 26 Jun 2012 21:00:46 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120626185915.GN14321@pengutronix.de>
+Message-ID: <20120626190046.GO14321@pengutronix.de>
 References: <1340704314-12593-1-git-send-email-jlu@pengutronix.de>
- <1340704314-12593-4-git-send-email-jlu@pengutronix.de>
+ <1340704314-12593-5-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1340704314-12593-4-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1340704314-12593-5-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,81 +23,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 03/12] mach-davinci: add pin mux support
+Subject: Re: [PATCH 04/12] mach-davinci: setup pin mux for da850
 To: Jan Luebbe <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 26, 2012 at 11:51:45AM +0200, Jan Luebbe wrote:
+On Tue, Jun 26, 2012 at 11:51:46AM +0200, Jan Luebbe wrote:
 > Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 > ---
-> +++ b/arch/arm/mach-davinci/mux.c
-> @@ -0,0 +1,78 @@
-> +/*
-> + * Utility to set the DAVINCI MUX register from a table in mux.h
-> + *
-> + * Author: Vladimir Barinov, MontaVista Software, Inc. <source@mvista.com>
-> + *
-> + * Based on linux/arch/arm/plat-omap/mux.c:
-> + * Copyright (C) 2003 - 2005 Nokia Corporation
-> + *
-> + * Written by Tony Lindgren
-> + *
-> + * 2007 (c) MontaVista Software, Inc. This file is licensed under
-> + * the terms of the GNU General Public License version 2. This program
-> + * is licensed "as is" without any warranty of any kind, whether express
-> + * or implied.
-> + *
-> + * Copyright (C) 2008 Texas Instruments.
-> + */
+>  arch/arm/mach-davinci/Makefile |    1 +
+>  arch/arm/mach-davinci/da850.c  |  279 ++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 280 insertions(+)
+>  create mode 100644 arch/arm/mach-davinci/da850.c
+> 
+> diff --git a/arch/arm/mach-davinci/Makefile b/arch/arm/mach-davinci/Makefile
+> index 936566e..d617d9e 100644
+> --- a/arch/arm/mach-davinci/Makefile
+> +++ b/arch/arm/mach-davinci/Makefile
+> @@ -1,4 +1,5 @@
+>  obj-y += clock.o
+>  obj-y += clocksource.o
+> +obj-y += da850.o
+>  obj-y += gpio.o
+>  obj-y += mux.o
+> diff --git a/arch/arm/mach-davinci/da850.c b/arch/arm/mach-davinci/da850.c
+> new file mode 100644
+> index 0000000..5d89a87
+> --- /dev/null
+> +++ b/arch/arm/mach-davinci/da850.c
 > +
-> +#include <config.h>
-> +#include <common.h>
-> +#include <errno.h>
-> +#include <io.h>
-> +
-> +#include <mach/da8xx.h>
-> +#include <mach/mux.h>
-> +
-> +static void *pinmux_base = (void*)DA8XX_SYSCFG0_BASE + 0x120;
-> +
-> +/*
-> + * Sets the DAVINCI MUX register
-> + */
-> +int davinci_cfg_reg(const struct mux_config *cfg)
+> +static int da8xx_mux_init(void)
 > +{
-> +	unsigned int reg_orig = 0, reg = 0;
-> +	unsigned int mask, warn = 0;
+> +	if (davinci_cfg_reg_list(da850_uart2_pins))
+> +		printf("mux failed for da850_uart2_pins\n");
 > +
-> +	/* Update the mux register in question */
-> +	if (cfg->mask) {
-> +		unsigned	tmp1, tmp2;
+> +	if (davinci_cfg_reg_list(da850_gpio_pins))
+> +		printf("mux failed for da850_gpio_pins\n");
 > +
-> +		reg_orig = readl(pinmux_base + cfg->mux_reg);
+> +	if (davinci_cfg_reg_list(da850_emifa_pins))
+> +		printf("mux failed for da850_emifa_pins\n");
 > +
-> +		mask = (cfg->mask << cfg->mask_offset);
-> +		tmp1 = reg_orig & mask;
-> +		reg = reg_orig & ~mask;
+> +	if (davinci_cfg_reg_list(da850_spi0_pins))
+> +		printf("mux failed for da850_spi0_pins\n");
 > +
-> +		tmp2 = (cfg->mode << cfg->mask_offset);
-> +		reg |= tmp2;
+> +	if (davinci_cfg_reg_list(da850_spi1_pins))
+> +		printf("mux failed for da850_spi1_pins\n");
 > +
-> +		if (tmp1 != tmp2)
-> +			warn = 1;
+> +	if (davinci_cfg_reg_list(da850_emac_pins))
+> +		printf("mux failed for da850_emac_pins\n");
+> +
+> +	return 0;
+> +}
+> +postconsole_initcall(da8xx_mux_init);
 
-Does this 'warn' mean that this function actually changes something? If
-yes, the variable should better be named 'changed'.
-
-> +
-> +		writel(reg, pinmux_base + cfg->mux_reg);
-> +	}
-> +
-> +	if (warn) {
-> +#ifdef DEBUG
-> +		printk("MUX: setting register %s in %s (0x%08x) = 0x%08x -> 0x%08x\n", cfg->name,
-> +		       cfg->mux_reg_name, (unsigned int)pinmux_base + cfg->mux_reg, reg_orig, reg);
-> +#endif
-
-You can just use the debug() function without ifdefs.
+Is this really common to all da8xx boards?
 
 Sascha
 
