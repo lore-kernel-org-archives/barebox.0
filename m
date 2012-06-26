@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sjb2P-0005AK-DH
- for barebox@lists.infradead.org; Tue, 26 Jun 2012 19:02:58 +0000
-Date: Tue, 26 Jun 2012 21:02:50 +0200
+ id 1Sjb4y-0005Sc-Cu
+ for barebox@lists.infradead.org; Tue, 26 Jun 2012 19:05:37 +0000
+Date: Tue, 26 Jun 2012 21:05:34 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120626190250.GP14321@pengutronix.de>
+Message-ID: <20120626190534.GQ14321@pengutronix.de>
 References: <1340704314-12593-1-git-send-email-jlu@pengutronix.de>
- <1340704314-12593-6-git-send-email-jlu@pengutronix.de>
+ <1340704314-12593-7-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1340704314-12593-6-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1340704314-12593-7-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,27 +23,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 05/12] mach-davinci: add support for the PSC (Power and
- Sleep Controller)
+Subject: Re: [PATCH 06/12] mach-davinci: support the USB 1.1 host controller
+ (based on OHCI)
 To: Jan Luebbe <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 26, 2012 at 11:51:47AM +0200, Jan Luebbe wrote:
+On Tue, Jun 26, 2012 at 11:51:48AM +0200, Jan Luebbe wrote:
 > Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 > ---
->  arch/arm/mach-davinci/Makefile |    1 +
->  arch/arm/mach-davinci/psc.c    |   85 ++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 86 insertions(+)
->  create mode 100644 arch/arm/mach-davinci/psc.c
+>  arch/arm/mach-davinci/Makefile           |    1 +
+>  arch/arm/mach-davinci/include/mach/usb.h |   37 +++++++++++++++++
+>  arch/arm/mach-davinci/usb.c              |   66 ++++++++++++++++++++++++++++++
+>  3 files changed, 104 insertions(+)
+>  create mode 100644 arch/arm/mach-davinci/include/mach/usb.h
+>  create mode 100644 arch/arm/mach-davinci/usb.c
 > 
+> diff --git a/arch/arm/mach-davinci/Makefile b/arch/arm/mach-davinci/Makefile
+> index 0ac8f9b..0df1e92 100644
+> --- a/arch/arm/mach-davinci/Makefile
+> +++ b/arch/arm/mach-davinci/Makefile
+> @@ -4,3 +4,4 @@ obj-y += da850.o
+>  obj-y += gpio.o
+>  obj-y += mux.o
+>  obj-y += psc.o
+> +obj-y += usb.o
 > +
-> +/* Works on Always On power domain only (no PD argument) */
-> +void lpsc_on(unsigned int id)
+> +static int da8xx_usb11_init(void)
+> +{
 
-better give global functions a clear prefix like davinci_*
+[...]
+
+> +
+> +	add_generic_device("ohci", 0, NULL, DA8XX_USB1_BASE, 0x100,
+> +			   IORESOURCE_MEM, NULL);
+> +	return 0;
+> +}
+> +
+> +device_initcall(da8xx_usb11_init);
+
+Probably not all boards have this USB port populated. You should
+probably call this function from board code.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
