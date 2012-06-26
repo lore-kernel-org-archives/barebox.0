@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sjbqt-0006N8-Ow
+ id 1Sjbqt-0006NA-Qj
  for barebox@lists.infradead.org; Tue, 26 Jun 2012 19:55:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Jun 2012 21:54:59 +0200
-Message-Id: <1340740503-7003-7-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Jun 2012 21:55:00 +0200
+Message-Id: <1340740503-7003-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1340740503-7003-1-git-send-email-s.hauer@pengutronix.de>
 References: <1340740503-7003-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,50 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/10] make memory display 64bit capable
+Subject: [PATCH 07/10] make st_size in struct stat 64 bit
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/mem.c   |    4 ++--
- include/common.h |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ commands/ls.c        |    2 +-
+ include/linux/stat.h |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/commands/mem.c b/commands/mem.c
-index 0719700..2b85f82 100644
---- a/commands/mem.c
-+++ b/commands/mem.c
-@@ -55,7 +55,7 @@ static char *DEVMEM = "/dev/mem";
-  */
- #define DISP_LINE_LEN	16
+diff --git a/commands/ls.c b/commands/ls.c
+index ad609f3..fbcbadc 100644
+--- a/commands/ls.c
++++ b/commands/ls.c
+@@ -35,7 +35,7 @@ static void ls_one(const char *path, struct stat *s)
+ 	unsigned int namelen = strlen(path);
  
--int memory_display(char *addr, ulong offs, ulong nbytes, int size)
-+int memory_display(char *addr, loff_t offs, ulong nbytes, int size)
- {
- 	ulong linebytes, i;
- 	u_char	*cp;
-@@ -72,7 +72,7 @@ int memory_display(char *addr, ulong offs, ulong nbytes, int size)
- 		u_char	*ucp = (u_char *)linebuf;
- 		uint	count = 52;
+ 	mkmodestr(s->st_mode, modestr);
+-	printf("%s %10lu %*.*s\n", modestr, s->st_size, namelen, namelen, path);
++	printf("%s %10llu %*.*s\n", modestr, s->st_size, namelen, namelen, path);
+ }
  
--		printf("%08lx:", offs);
-+		printf("%08llx:", offs);
- 		linebytes = (nbytes > DISP_LINE_LEN) ? DISP_LINE_LEN : nbytes;
- 
- 		for (i = 0; i < linebytes; i += size) {
-diff --git a/include/common.h b/include/common.h
-index 08ff0f3..799941d 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -211,7 +211,7 @@ int run_shell(void);
- #define PAGE_SIZE	4096
- #define PAGE_SHIFT	12
- 
--int memory_display(char *addr, ulong offs, ulong nbytes, int size);
-+int memory_display(char *addr, loff_t offs, ulong nbytes, int size);
- 
- extern const char version_string[];
- #ifdef CONFIG_BANNER
+ int ls(const char *path, ulong flags)
+diff --git a/include/linux/stat.h b/include/linux/stat.h
+index bc7dce4..af022c5 100644
+--- a/include/linux/stat.h
++++ b/include/linux/stat.h
+@@ -52,7 +52,7 @@ struct stat {
+ 	unsigned short st_gid;
+ 	unsigned short st_rdev;
+ 	unsigned short __pad2;
+-	unsigned long  st_size;
++	loff_t  st_size;
+ 	unsigned long  st_blksize;
+ 	unsigned long  st_blocks;
+ 	unsigned long  st_atime;
 -- 
 1.7.10
 
