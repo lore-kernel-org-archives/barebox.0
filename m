@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SjSRL-0007nK-VW
- for barebox@lists.infradead.org; Tue, 26 Jun 2012 09:52:11 +0000
+ id 1SjSRM-0007nS-Fu
+ for barebox@lists.infradead.org; Tue, 26 Jun 2012 09:52:15 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Tue, 26 Jun 2012 11:51:45 +0200
-Message-Id: <1340704314-12593-4-git-send-email-jlu@pengutronix.de>
+Date: Tue, 26 Jun 2012 11:51:48 +0200
+Message-Id: <1340704314-12593-7-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1340704314-12593-1-git-send-email-jlu@pengutronix.de>
 References: <1340704314-12593-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,191 +21,143 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/12] mach-davinci: add pin mux support
+Subject: [PATCH 06/12] mach-davinci: support the USB 1.1 host controller
+ (based on OHCI)
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
  arch/arm/mach-davinci/Makefile           |    1 +
- arch/arm/mach-davinci/include/mach/mux.h |   74 ++++++++++++++++++++++++++++
- arch/arm/mach-davinci/mux.c              |   78 ++++++++++++++++++++++++++++++
- 3 files changed, 153 insertions(+)
- create mode 100644 arch/arm/mach-davinci/include/mach/mux.h
- create mode 100644 arch/arm/mach-davinci/mux.c
+ arch/arm/mach-davinci/include/mach/usb.h |   37 +++++++++++++++++
+ arch/arm/mach-davinci/usb.c              |   66 ++++++++++++++++++++++++++++++
+ 3 files changed, 104 insertions(+)
+ create mode 100644 arch/arm/mach-davinci/include/mach/usb.h
+ create mode 100644 arch/arm/mach-davinci/usb.c
 
 diff --git a/arch/arm/mach-davinci/Makefile b/arch/arm/mach-davinci/Makefile
-index 0a4e2dc..936566e 100644
+index 0ac8f9b..0df1e92 100644
 --- a/arch/arm/mach-davinci/Makefile
 +++ b/arch/arm/mach-davinci/Makefile
-@@ -1,3 +1,4 @@
- obj-y += clock.o
- obj-y += clocksource.o
+@@ -4,3 +4,4 @@ obj-y += da850.o
  obj-y += gpio.o
-+obj-y += mux.o
-diff --git a/arch/arm/mach-davinci/include/mach/mux.h b/arch/arm/mach-davinci/include/mach/mux.h
+ obj-y += mux.o
+ obj-y += psc.o
++obj-y += usb.o
+diff --git a/arch/arm/mach-davinci/include/mach/usb.h b/arch/arm/mach-davinci/include/mach/usb.h
 new file mode 100644
-index 0000000..c73a5c0
+index 0000000..d0fb412
 --- /dev/null
-+++ b/arch/arm/mach-davinci/include/mach/mux.h
-@@ -0,0 +1,74 @@
++++ b/arch/arm/mach-davinci/include/mach/usb.h
+@@ -0,0 +1,37 @@
 +/*
-+ * Table of the DAVINCI register configurations for the PINMUX combinations
++ * USB related definitions
 + *
-+ * Author: Vladimir Barinov, MontaVista Software, Inc. <source@mvista.com>
++ * Copyright (C) 2009 MontaVista Software, Inc. <source@mvista.com>
 + *
-+ * Based on linux/include/asm-arm/arch-omap/mux.h:
-+ * Copyright (C) 2003 - 2005 Nokia Corporation
-+ *
-+ * Written by Tony Lindgren
-+ *
-+ * 2007 (c) MontaVista Software, Inc. This file is licensed under
-+ * the terms of the GNU General Public License version 2. This program
-+ * is licensed "as is" without any warranty of any kind, whether express
-+ * or implied.
-+ *
-+ * Copyright (C) 2008 Texas Instruments.
++ * This file is licensed under the terms of the GNU General Public License
++ * version 2. This program is licensed "as is" without any warranty of any
++ * kind, whether express or implied.
 + */
 +
-+#ifndef __INC_MACH_MUX_H
-+#define __INC_MACH_MUX_H
++#ifndef __ASM_ARCH_USB_H
++#define __ASM_ARCH_USB_H
 +
-+struct mux_config {
-+	const char *name;
-+	const char *mux_reg_name;
-+	const unsigned char mux_reg;
-+	const unsigned char mask_offset;
-+	const unsigned char mask;
-+	const unsigned char mode;
-+	int debug;
-+};
++/* DA8xx CFGCHIP2 (USB 2.0 PHY Control) register bits */
++#define CFGCHIP2_PHYCLKGD	(1 << 17)
++#define CFGCHIP2_VBUSSENSE	(1 << 16)
++#define CFGCHIP2_RESET		(1 << 15)
++#define CFGCHIP2_OTGMODE	(3 << 13)
++#define CFGCHIP2_NO_OVERRIDE	(0 << 13)
++#define CFGCHIP2_FORCE_HOST	(1 << 13)
++#define CFGCHIP2_FORCE_DEVICE 	(2 << 13)
++#define CFGCHIP2_FORCE_HOST_VBUS_LOW (3 << 13)
++#define CFGCHIP2_USB1PHYCLKMUX	(1 << 12)
++#define CFGCHIP2_USB2PHYCLKMUX	(1 << 11)
++#define CFGCHIP2_PHYPWRDN	(1 << 10)
++#define CFGCHIP2_OTGPWRDN	(1 << 9)
++#define CFGCHIP2_DATPOL 	(1 << 8)
++#define CFGCHIP2_USB1SUSPENDM	(1 << 7)
++#define CFGCHIP2_PHY_PLLON	(1 << 6)	/* override PLL suspend */
++#define CFGCHIP2_SESENDEN	(1 << 5)	/* Vsess_end comparator */
++#define CFGCHIP2_VBDTCTEN	(1 << 4)	/* Vbus comparator */
++#define CFGCHIP2_REFFREQ	(0xf << 0)
++#define CFGCHIP2_REFFREQ_12MHZ	(1 << 0)
++#define CFGCHIP2_REFFREQ_24MHZ	(2 << 0)
++#define CFGCHIP2_REFFREQ_48MHZ	(3 << 0)
 +
-+#define PINMUX(x)		(4 * (x))
-+
-+#define MUX_CFG(soc, desc, muxreg, mode_offset, mode_mask, mux_mode, dbg)\
-+		{							\
-+			.name = #desc,					\
-+			.debug = dbg,					\
-+			.mux_reg_name = "PINMUX"#muxreg,		\
-+			.mux_reg = PINMUX(muxreg),			\
-+			.mask_offset = mode_offset,			\
-+			.mask = mode_mask,				\
-+			.mode = mux_mode,				\
-+		},
-+
-+#define INT_CFG(soc, desc, mode_offset, mode_mask, mux_mode, dbg)	\
-+		{							\
-+			.name = #desc,					\
-+			.debug = dbg,					\
-+			.mux_reg_name = "INTMUX",			\
-+			.mux_reg = INTMUX,				\
-+			.mask_offset = mode_offset,			\
-+			.mask = mode_mask,				\
-+			.mode = mux_mode,				\
-+		},
-+
-+#define EVT_CFG(soc, desc, mode_offset, mode_mask, mux_mode, dbg)	\
-+		{							\
-+			.name = #desc,					\
-+			.debug = dbg,					\
-+			.mux_reg_name = "EVTMUX",			\
-+			.mux_reg = EVTMUX,				\
-+			.mask_offset = mode_offset,			\
-+			.mask = mode_mask,				\
-+			.mode = mux_mode,				\
-+		},
-+
-+#define END_CFG()\
-+		{							\
-+			.name = NULL,					\
-+		},
-+
-+extern int davinci_cfg_reg_list(const struct mux_config pins[]);
-+
-+#endif /* __INC_MACH_MUX_H */
-diff --git a/arch/arm/mach-davinci/mux.c b/arch/arm/mach-davinci/mux.c
++#endif	/* ifndef __ASM_ARCH_USB_H */
+diff --git a/arch/arm/mach-davinci/usb.c b/arch/arm/mach-davinci/usb.c
 new file mode 100644
-index 0000000..40e12f5
+index 0000000..43dcd37
 --- /dev/null
-+++ b/arch/arm/mach-davinci/mux.c
-@@ -0,0 +1,78 @@
-+/*
-+ * Utility to set the DAVINCI MUX register from a table in mux.h
-+ *
-+ * Author: Vladimir Barinov, MontaVista Software, Inc. <source@mvista.com>
-+ *
-+ * Based on linux/arch/arm/plat-omap/mux.c:
-+ * Copyright (C) 2003 - 2005 Nokia Corporation
-+ *
-+ * Written by Tony Lindgren
-+ *
-+ * 2007 (c) MontaVista Software, Inc. This file is licensed under
-+ * the terms of the GNU General Public License version 2. This program
-+ * is licensed "as is" without any warranty of any kind, whether express
-+ * or implied.
-+ *
-+ * Copyright (C) 2008 Texas Instruments.
-+ */
-+
-+#include <config.h>
++++ b/arch/arm/mach-davinci/usb.c
+@@ -0,0 +1,66 @@
 +#include <common.h>
-+#include <errno.h>
++#include <console.h>
++#include <driver.h>
++#include <init.h>
 +#include <io.h>
-+
++#include <mach/hardware.h>
++#include <mach/usb.h>
 +#include <mach/da8xx.h>
-+#include <mach/mux.h>
 +
-+static void *pinmux_base = (void*)DA8XX_SYSCFG0_BASE + 0x120;
++#define DA8XX_USB0_BASE 	0x01e00000
++#define DA8XX_USB1_BASE 	0x01e25000
 +
-+/*
-+ * Sets the DAVINCI MUX register
-+ */
-+int davinci_cfg_reg(const struct mux_config *cfg)
++static int da8xx_usb11_init(void)
 +{
-+	unsigned int reg_orig = 0, reg = 0;
-+	unsigned int mask, warn = 0;
++	u32 cfgchip2;
 +
-+	/* Update the mux register in question */
-+	if (cfg->mask) {
-+		unsigned	tmp1, tmp2;
++	lpsc_on(DAVINCI_LPSC_USB20);
++	lpsc_on(DAVINCI_LPSC_USB11);
 +
-+		reg_orig = readl(pinmux_base + cfg->mux_reg);
++	/*
++	 * Set up USB clock/mode in the CFGCHIP2 register.
++	 * FYI:  CFGCHIP2 is 0x0000ef00 initially.
++	*/
++	cfgchip2 = readl(DA8XX_SYSCFG0_BASE + DA8XX_CFGCHIP2_REG);
 +
-+		mask = (cfg->mask << cfg->mask_offset);
-+		tmp1 = reg_orig & mask;
-+		reg = reg_orig & ~mask;
++	/* USB2.0 PHY reference clock is 24 MHz */
++	cfgchip2 &= ~CFGCHIP2_REFFREQ;
++	cfgchip2 |=  CFGCHIP2_REFFREQ_24MHZ;
 +
-+		tmp2 = (cfg->mode << cfg->mask_offset);
-+		reg |= tmp2;
++	/*
++	 * Select internal reference clock for USB 2.0 PHY
++	 * and use it as a clock source for USB 1.1 PHY
++	 * (this is the default setting anyway).
++	*/
++	cfgchip2 &= ~CFGCHIP2_USB1PHYCLKMUX;
++	cfgchip2 |=  CFGCHIP2_USB2PHYCLKMUX;
 +
-+		if (tmp1 != tmp2)
-+			warn = 1;
++	/*
++	 * We have to override VBUS/ID signals when MUSB is configured into the
++	 * host-only mode -- ID pin will float if no cable is connected, so the
++	 * controller won't be able to drive VBUS thinking that it's a B-device.
++	 * Otherwise, we want to use the OTG mode and enable VBUS comparators.
++	 */
++	cfgchip2 &= ~CFGCHIP2_OTGMODE;
++	cfgchip2 |=  CFGCHIP2_FORCE_HOST;
 +
-+		writel(reg, pinmux_base + cfg->mux_reg);
-+	}
++	cfgchip2 &= ~(CFGCHIP2_RESET | CFGCHIP2_PHYPWRDN);
++	cfgchip2 |= CFGCHIP2_PHY_PLLON;
 +
-+	if (warn) {
-+#ifdef DEBUG
-+		printk("MUX: setting register %s in %s (0x%08x) = 0x%08x -> 0x%08x\n", cfg->name,
-+		       cfg->mux_reg_name, (unsigned int)pinmux_base + cfg->mux_reg, reg_orig, reg);
-+#endif
-+	}
++	/*
++	 * Enable USB 1.1 PHY
++	 */
++	cfgchip2 |= CFGCHIP2_USB1SUSPENDM;
 +
++	writel(cfgchip2, DA8XX_SYSCFG0_BASE + DA8XX_CFGCHIP2_REG);
++
++	printf("waiting for USB PHY clock...\n");
++	while (!(readl(DA8XX_SYSCFG0_BASE + DA8XX_CFGCHIP2_REG) & CFGCHIP2_PHYCLKGD))
++		continue;
++
++	add_generic_device("ohci", 0, NULL, DA8XX_USB1_BASE, 0x100,
++			   IORESOURCE_MEM, NULL);
 +	return 0;
 +}
 +
-+int davinci_cfg_reg_list(const struct mux_config pins[])
-+{
-+	int i, error = -EINVAL;
-+
-+	if (pins)
-+		for (i = 0; pins[i].name != NULL; i++) {
-+			error = davinci_cfg_reg(&pins[i]);
-+			if (error)
-+				break;
-+		}
-+
-+	return error;
-+}
++device_initcall(da8xx_usb11_init);
 -- 
 1.7.10
 
