@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SjDlC-0003Nt-0i
- for barebox@lists.infradead.org; Mon, 25 Jun 2012 18:11:39 +0000
-Date: Mon, 25 Jun 2012 20:11:34 +0200
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Message-ID: <20120625181134.GX3199@pengutronix.de>
-References: <1340625937-10609-1-git-send-email-s.hauer@pengutronix.de>
- <20120625163929.GW3199@pengutronix.de>
- <20120625173041.GJ14321@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120625173041.GJ14321@pengutronix.de>
+ id 1SjRNC-0000jD-GD
+ for barebox@lists.infradead.org; Tue, 26 Jun 2012 08:43:47 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jbe@pengutronix.de>) id 1SjRN9-0007HA-Pc
+ for barebox@lists.infradead.org; Tue, 26 Jun 2012 10:43:43 +0200
+Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <jbe@pengutronix.de>) id 1SjRN9-0004RF-Mj
+ for barebox@lists.infradead.org; Tue, 26 Jun 2012 10:43:43 +0200
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Tue, 26 Jun 2012 10:43:40 +0200
+Message-Id: <1340700222-16999-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,46 +21,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM i.MX51 babbage: add mci1
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCHv3] Add a simple watchdog 'framework' to Barebox
+To: barebox@lists.infradead.org
 
-On Mon, Jun 25, 2012 at 07:30:41PM +0200, Sascha Hauer wrote:
-> On Mon, Jun 25, 2012 at 06:39:30PM +0200, Robert Schwebel wrote:
-> > On Mon, Jun 25, 2012 at 02:05:37PM +0200, Sascha Hauer wrote:
-> > > The iomuxer is already initialized, only need to add the device.
-> > > 
-> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > ---
-> > >  arch/arm/boards/freescale-mx51-pdk/board.c |    1 +
-> > >  1 file changed, 1 insertion(+)
-> > > 
-> > > diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
-> > > index 0bb2ffe..dc0d003 100644
-> > > --- a/arch/arm/boards/freescale-mx51-pdk/board.c
-> > > +++ b/arch/arm/boards/freescale-mx51-pdk/board.c
-> > > @@ -246,6 +246,7 @@ static int f3s_devices_init(void)
-> > >  	imx51_iim_register_fec_ethaddr();
-> > >  	imx51_add_fec(&fec_info);
-> > >  	imx51_add_mmc0(NULL);
-> > > +	imx51_add_mmc1(NULL);
-> > 
-> > Subject says mci1, this says mmc1...?
-> 
-> Yeah, because barebox names the mmc/sd framework mci.
+This patch series add a very simple watchdog command and also a user of it
+for the i.MX28 SoC. The watchdog driver might also work on i.MX23, but this
+is not tested yet.
 
-Ah, ok.
+This version again adds some error check and reporting, if the watchdog does
+not work as expected.
 
-rsc
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+The following changes since commit 075ea63a322b70d9a7a27fe0bad5f36e8e3c8bdc:
+
+  Merge branch 'for-next/resource-size' into next (2012-06-25 14:39:10 +0200)
+
+are available in the git repository at:
+
+  git://git.pengutronix.de/git/jbe/barebox.git next_add_watchdog_frameworkV3
+
+for you to fetch changes up to 4710576c2851d53529b02ac9342134672698837d:
+
+  ARM/MXS: add a watchdog driver for i.MX28 (2012-06-26 10:37:35 +0200)
+
+----------------------------------------------------------------
+Juergen Beisert (2):
+      Add a simple watchdog framework
+      ARM/MXS: add a watchdog driver for i.MX28
+
+ drivers/Kconfig            |    1 +
+ drivers/Makefile           |    1 +
+ drivers/watchdog/Kconfig   |   17 +++++++
+ drivers/watchdog/Makefile  |    2 +
+ drivers/watchdog/im28wd.c  |  121 ++++++++++++++++++++++++++++++++++++++++++++
+ drivers/watchdog/wd_core.c |   67 ++++++++++++++++++++++++
+ include/watchdog.h         |   18 +++++++
+ 7 files changed, 227 insertions(+)
+ create mode 100644 drivers/watchdog/Kconfig
+ create mode 100644 drivers/watchdog/Makefile
+ create mode 100644 drivers/watchdog/im28wd.c
+ create mode 100644 drivers/watchdog/wd_core.c
+ create mode 100644 include/watchdog.h
 
 _______________________________________________
 barebox mailing list
