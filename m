@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SjSRL-0007n8-OV
+ id 1SjSRM-0007nV-JI
  for barebox@lists.infradead.org; Tue, 26 Jun 2012 09:52:26 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Tue, 26 Jun 2012 11:51:43 +0200
-Message-Id: <1340704314-12593-2-git-send-email-jlu@pengutronix.de>
+Date: Tue, 26 Jun 2012 11:51:50 +0200
+Message-Id: <1340704314-12593-9-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1340704314-12593-1-git-send-email-jlu@pengutronix.de>
 References: <1340704314-12593-1-git-send-email-jlu@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,1155 +17,481 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/12] mach-davinci: add platform and minimal board file for
- HMI10
+Subject: =?UTF-8?q?=5BPATCH=2008/12=5D=20drivers/mtd/nand=3A=20add=20driver=20for=20the=20davinci=20NAND=20flash=20controller?=
 To: barebox@lists.infradead.org
 
-This supports the serial console.
-
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
----
- arch/arm/Kconfig                              |    4 +
- arch/arm/Makefile                             |    2 +
- arch/arm/boards/hmi10/Makefile                |    1 +
- arch/arm/boards/hmi10/board.c                 |   92 +++++
- arch/arm/boards/hmi10/config.h                |   24 ++
- arch/arm/boards/hmi10/env/config              |   60 +++
- arch/arm/mach-davinci/Kconfig                 |   36 ++
- arch/arm/mach-davinci/Makefile                |    2 +
- arch/arm/mach-davinci/clock.c                 |   94 +++++
- arch/arm/mach-davinci/clocksource.c           |  164 +++++++++
- arch/arm/mach-davinci/include/mach/da8xx.h    |   40 ++
- arch/arm/mach-davinci/include/mach/hardware.h |  492 +++++++++++++++++++++++++
- 12 files changed, 1011 insertions(+)
- create mode 100644 arch/arm/boards/hmi10/Makefile
- create mode 100644 arch/arm/boards/hmi10/board.c
- create mode 100644 arch/arm/boards/hmi10/config.h
- create mode 100644 arch/arm/boards/hmi10/env/config
- create mode 100644 arch/arm/mach-davinci/Kconfig
- create mode 100644 arch/arm/mach-davinci/Makefile
- create mode 100644 arch/arm/mach-davinci/clock.c
- create mode 100644 arch/arm/mach-davinci/clocksource.c
- create mode 100644 arch/arm/mach-davinci/include/mach/da8xx.h
- create mode 100644 arch/arm/mach-davinci/include/mach/hardware.h
-
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 3eada5b..336fc24 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -36,6 +36,9 @@ config ARCH_AT91
- 	select GENERIC_GPIO
- 	select CLKDEV_LOOKUP
- 
-+config ARCH_DAVINCI
-+	bool "TI Davinci"
-+
- config ARCH_EP93XX
- 	bool "Cirrus Logic EP93xx"
- 	select CPU_ARM920T
-@@ -92,6 +95,7 @@ endchoice
- 
- source arch/arm/cpu/Kconfig
- source arch/arm/mach-at91/Kconfig
-+source arch/arm/mach-davinci/Kconfig
- source arch/arm/mach-ep93xx/Kconfig
- source arch/arm/mach-imx/Kconfig
- source arch/arm/mach-mxs/Kconfig
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index bd684dc..e890efb 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -52,6 +52,7 @@ AFLAGS   += -include asm/unified.h -msoft-float $(AFLAGS_THUMB2)
- # Machine directory name.  This list is sorted alphanumerically
- # by CONFIG_* macro name.
- machine-$(CONFIG_ARCH_AT91)		:= at91
-+machine-$(CONFIG_ARCH_DAVINCI)		:= davinci
- machine-$(CONFIG_ARCH_EP93XX)		:= ep93xx
- machine-$(CONFIG_ARCH_IMX)		:= imx
- machine-$(CONFIG_ARCH_MXS)		:= mxs
-@@ -90,6 +91,7 @@ board-$(CONFIG_MACH_EUKREA_CPUIMX35)		:= eukrea_cpuimx35
- board-$(CONFIG_MACH_EUKREA_CPUIMX51SD)		:= eukrea_cpuimx51
- board-$(CONFIG_MACH_FREESCALE_MX25_3STACK)	:= freescale-mx25-3-stack
- board-$(CONFIG_MACH_FREESCALE_MX35_3STACK)	:= freescale-mx35-3-stack
-+board-$(CONFIG_MACH_HMI10)			:= hmi10
- board-$(CONFIG_MACH_IMX21ADS)			:= imx21ads
- board-$(CONFIG_MACH_IMX27ADS)			:= imx27ads
- board-$(CONFIG_MACH_MIOA701)			:= mioa701
-diff --git a/arch/arm/boards/hmi10/Makefile b/arch/arm/boards/hmi10/Makefile
-new file mode 100644
-index 0000000..dcfc293
---- /dev/null
-+++ b/arch/arm/boards/hmi10/Makefile
-@@ -0,0 +1 @@
-+obj-y += board.o
-diff --git a/arch/arm/boards/hmi10/board.c b/arch/arm/boards/hmi10/board.c
-new file mode 100644
-index 0000000..be4d920
---- /dev/null
-+++ b/arch/arm/boards/hmi10/board.c
-@@ -0,0 +1,92 @@
-+/*
-+ * Copyright (C) 2012 Jan Luebbe <j.luebbe@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along
-+ * with this program; if not, write to the Free Software Foundation, Inc.,
-+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-+ */
-+
-+#include <common.h>
-+#include <console.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <sizes.h>
-+#include <io.h>
-+#include <ns16550.h>
-+#include <partition.h>
-+#include <spi/spi.h>
-+#include <spi/flash.h>
-+#include <asm/armlinux.h>
-+#include <generated/mach-types.h>
-+#include <linux/err.h>
-+#include <linux/mtd/nand.h>
-+
-+#include <mach/hardware.h>
-+#include <mach/da8xx.h>
-+
-+#ifdef CONFIG_DRIVER_SERIAL_NS16550
-+static struct NS16550_plat serial_plat = {
-+	//.clock is calculated in hmi10_console_init
-+	.shift = 2,
-+};
-+
-+/**
-+ * @brief UART serial port initialization - remember to enable COM clocks in
-+ * arch
-+ *
-+ * @return result of device registration
-+ */
-+static int hmi10_console_init(void)
-+{
-+	/* Register the serial port */
-+	writel(0x44440000, &davinci_uart2_ctrl_regs->mdr);
-+	serial_plat.clock = da8xx_clk_get(DAVINCI_UART2_CLKID);
-+	add_ns16550_device(-1, DAVINCI_UART2_BASE, 1024, IORESOURCE_MEM_32BIT,
-+			   &serial_plat);
-+	/* bring TX (bit 14) and TX (bit 13) out of reset */
-+	writel((1<<14) | (1<<13), &davinci_uart2_ctrl_regs->pwremu_mgmt);
-+
-+	return 0;
-+}
-+console_initcall(hmi10_console_init);
-+#endif /* CONFIG_DRIVER_SERIAL_NS16550 */
-+
-+static int hmi10_postconsole_init(void)
-+{
-+	printf("ARM Clock: %d Hz\n", da8xx_clk_get(DAVINCI_ARM_CLKID));
-+	//printf("DDR Clock: %d Hz\n", da8xx_clk_get(DAVINCI_DDR_CLKID)/2);
-+	//printf("AUX Clock: %d Hz\n", da8xx_clk_get(DAVINCI_AUXCLK_CLKID));
-+	//printf("UART2 Clock: %d Hz\n", da8xx_clk_get(DAVINCI_UART2_CLKID));
-+	//printf("EMIFA Clock: %d Hz\n", da8xx_clk_get(DAVINCI_EMIFA_CLKID));
-+
-+	return 0;
-+}
-+postconsole_initcall(hmi10_postconsole_init);
-+
-+static int hmi10_mem_init(void)
-+{
-+	arm_add_mem_device("ram0", 0xc0000000, SZ_32M);
-+	arm_add_mem_device("ram1", 0xc4000000, SZ_64M);
-+
-+	return 0;
-+}
-+mem_initcall(hmi10_mem_init);
-+
-+static int hmi10_devices_init(void)
-+{
-+	armlinux_set_bootparams((void *)0xc0000100);
-+	armlinux_set_architecture(MACH_TYPE_DAVINCI_HE_HMI10);
-+
-+	return 0;
-+}
-+device_initcall(hmi10_devices_init);
-diff --git a/arch/arm/boards/hmi10/config.h b/arch/arm/boards/hmi10/config.h
-new file mode 100644
-index 0000000..d430e2c
---- /dev/null
-+++ b/arch/arm/boards/hmi10/config.h
-@@ -0,0 +1,24 @@
-+/*
-+ * Copyright (C) 2012 Jan Luebbe <j.luebbe@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along
-+ * with this program; if not, write to the Free Software Foundation, Inc.,
-+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-+ */
-+
-+#ifndef __CONFIG_H
-+#define __CONFIG_H
-+
-+#define CONFIG_SYS_OSCIN_FREQ           24000000
-+
-+#endif	/* __CONFIG_H */
-diff --git a/arch/arm/boards/hmi10/env/config b/arch/arm/boards/hmi10/env/config
-new file mode 100644
-index 0000000..de146f3
---- /dev/null
-+++ b/arch/arm/boards/hmi10/env/config
-@@ -0,0 +1,60 @@
-+#!/bin/sh
-+
-+machine=hmi10
-+user=
-+
-+# Enter MAC address here if not retrieved automatically
-+#eth0.ethaddr=de:ad:be:ef:00:00
-+
-+# use 'dhcp' to do dhcp in barebox and in kernel
-+# use 'none' if you want to skip kernel ip autoconfiguration
-+ip=dhcp
-+dhcp_vendor_id=barebox
-+
-+# or set your networking parameters here
-+#eth0.ipaddr=a.b.c.d
-+#eth0.netmask=a.b.c.d
-+#eth0.serverip=a.b.c.d
-+#eth0.gateway=a.b.c.d
-+
-+# can be either 'tftp', 'nfs', 'nand', 'nor' or 'disk'
-+kernel_loc=tftp
-+#kernel_loc=nand
-+# can be either 'net', 'nand', 'nor', 'disk' or 'initrd'
-+rootfs_loc=net
-+#rootfs_loc=nand
-+
-+# for flash based rootfs: 'jffs2' or 'ubifs'
-+# in case of disk any regular filesystem like 'ext2', 'ext3', 'reiserfs'
-+rootfs_type=ubifs
-+# where is the rootfs in case of 'rootfs_loc=disk' (linux name)
-+#rootfs_part_linux_dev=mmcblk0p4
-+rootfsimage=rootfs-${machine}.$rootfs_type
-+
-+# where is the kernel image in case of 'kernel_loc=disk'
-+#kernel_part=disk0.2
-+
-+#kernelimage=zImage-$machine
-+kernelimage=uImage-$machine
-+#kernelimage=Image-$machine
-+#kernelimage=Image-$machine.lzo
-+
-+bareboximage=barebox-${machine}.bin
-+bareboxenvimage=barebox-${machine}.bin
-+
-+if [ -n $user ]; then
-+	bareboximage="$user"-"$bareboximage"
-+	bareboxenvimage="$user"-"$bareboxenvimage"
-+	kernelimage="$user"-"$kernelimage"
-+	rootfsimage="$user"-"$rootfsimage"
-+	nfsroot="/home/$user/nfsroot/$machine"
-+else
-+	nfsroot="/path/to/nfs/root"
-+fi
-+
-+autoboot_timeout=1
-+
-+bootargs="console=ttyS2,115200 ro"
-+
-+# set a fancy prompt (if support is compiled in)
-+PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
-diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
-new file mode 100644
-index 0000000..4109763
---- /dev/null
-+++ b/arch/arm/mach-davinci/Kconfig
-@@ -0,0 +1,36 @@
-+menu "Davinci features"
-+	depends on ARCH_DAVINCI
-+
-+config MACH_OMAP
-+	bool
-+
-+config SOC_DA8XX
-+	bool
-+
-+choice
-+	prompt "Select Davinci variant"
-+
-+config ARCH_DAVINCI_DA850
-+        bool "DA850/OMAP-L138/AM18x"
-+	select CPU_ARM926T
-+	select SOC_DA8XX
-+
-+endchoice
-+
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0xc1e00000 if MACH_HMI10
-+
-+config BOARDINFO
-+	default "Hesch HMI10" if MACH_HMI10
-+
-+choice
-+	prompt "Select Davinci board"
-+
-+config MACH_HMI10
-+	bool "Hesch HMI10"
-+	depends on ARCH_DAVINCI_DA850
-+
-+endchoice
-+
-+endmenu
-diff --git a/arch/arm/mach-davinci/Makefile b/arch/arm/mach-davinci/Makefile
-new file mode 100644
-index 0000000..5f1e545
---- /dev/null
-+++ b/arch/arm/mach-davinci/Makefile
-@@ -0,0 +1,2 @@
-+obj-y += clock.o
-+obj-y += clocksource.o
-diff --git a/arch/arm/mach-davinci/clock.c b/arch/arm/mach-davinci/clock.c
-new file mode 100644
-index 0000000..cd53a98
---- /dev/null
-+++ b/arch/arm/mach-davinci/clock.c
-@@ -0,0 +1,94 @@
-+/*
-+ * Copyright (C) 2004 Texas Instruments.
-+ * Copyright (C) 2009 David Brownell
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-+ */
-+
-+#include <config.h>
-+#include <common.h>
-+#include <io.h>
-+#include <mach/hardware.h>
-+
-+/* offsets from PLL controller base */
-+#define PLLC_PLLCTL	0x100
-+#define PLLC_PLLM	0x110
-+#define PLLC_PREDIV	0x114
-+#define PLLC_PLLDIV1	0x118
-+#define PLLC_PLLDIV2	0x11c
-+#define PLLC_PLLDIV3	0x120
-+#define PLLC_POSTDIV	0x128
-+#define PLLC_BPDIV	0x12c
-+#define PLLC_PLLDIV4	0x160
-+#define PLLC_PLLDIV5	0x164
-+#define PLLC_PLLDIV6	0x168
-+#define PLLC_PLLDIV7	0x16c
-+#define PLLC_PLLDIV8	0x170
-+#define PLLC_PLLDIV9	0x174
-+
-+/* SOC-specific pll info */
-+unsigned int sysdiv[9] = {
-+	PLLC_PLLDIV1, PLLC_PLLDIV2, PLLC_PLLDIV3, PLLC_PLLDIV4, PLLC_PLLDIV5,
-+	PLLC_PLLDIV6, PLLC_PLLDIV7, PLLC_PLLDIV8, PLLC_PLLDIV9
-+};
-+
-+int da8xx_clk_get(enum davinci_clk_ids id)
-+{
-+	int pre_div;
-+	int pllm;
-+	int post_div;
-+	int pll_out;
-+	unsigned int pll_base;
-+
-+	pll_out = CONFIG_SYS_OSCIN_FREQ;
-+
-+	if (id == DAVINCI_AUXCLK_CLKID)
-+		goto out;
-+
-+	if ((id >> 16) == 1)
-+		pll_base = DAVINCI_PLL_CNTRL1_BASE;
-+	else
-+		pll_base = DAVINCI_PLL_CNTRL0_BASE;
-+
-+	id &= 0xFFFF;
-+
-+	/*
-+	 * Lets keep this simple. Combining operations can result in
-+	 * unexpected approximations
-+	 */
-+	pre_div = (readl(pll_base + PLLC_PREDIV) & 0xff) + 1;
-+	pllm = readl(pll_base + PLLC_PLLM) + 1;
-+
-+	pll_out /= pre_div;
-+	pll_out *= pllm;
-+
-+	if (id == DAVINCI_PLLM_CLKID)
-+		goto out;
-+
-+	post_div = (readl(pll_base + PLLC_POSTDIV) & 0xff) + 1;
-+
-+	pll_out /= post_div;
-+
-+	if (id == DAVINCI_PLLC_CLKID)
-+		goto out;
-+
-+	pll_out /= (readl(pll_base + sysdiv[id - 1]) & 0xff) + 1;
-+
-+out:
-+	return pll_out;
-+}
-diff --git a/arch/arm/mach-davinci/clocksource.c b/arch/arm/mach-davinci/clocksource.c
-new file mode 100644
-index 0000000..1d0920b
---- /dev/null
-+++ b/arch/arm/mach-davinci/clocksource.c
-@@ -0,0 +1,164 @@
-+/*
-+ * (C) Copyright 2012 Jan Luebbe <j.luebbe@pengutronix.de>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * Based on code from the linux kernel:
-+ *  arch/arm/mach-davinci/time.c
-+ *   Copyright 2007 (c) MontaVista Software, Inc.
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <clock.h>
-+#include <asm/io.h>
-+
-+#include <mach/da8xx.h>
-+#include <mach/hardware.h>
-+
-+/* Timer register offsets */
-+#define PID12                   0x0
-+#define TIM12                   0x10
-+#define TIM34                   0x14
-+#define PRD12                   0x18
-+#define PRD34                   0x1c
-+#define TCR                     0x20
-+#define TGCR                    0x24
-+#define WDTCR                   0x28
-+
-+/* Timer register bitfields */
-+#define TCR_ENAMODE12_SHIFT          6
-+#define TCR_ENAMODE34_SHIFT          22
-+#define TCR_ENAMODE_DISABLE          0x0
-+#define TCR_ENAMODE_ONESHOT          0x1
-+#define TCR_ENAMODE_PERIODIC         0x2
-+#define TCR_ENAMODE_MASK             0x3
-+
-+#define TGCR_TIMMODE_SHIFT           2
-+#define TGCR_TIMMODE_64BIT_GP        0x0
-+#define TGCR_TIMMODE_32BIT_UNCHAINED 0x1
-+#define TGCR_TIMMODE_64BIT_WDOG      0x2
-+#define TGCR_TIMMODE_32BIT_CHAINED   0x3
-+
-+#define TGCR_TIM12RS_SHIFT           0
-+#define TGCR_TIM34RS_SHIFT           1
-+#define TGCR_RESET                   0x0
-+#define TGCR_UNRESET                 0x1
-+#define TGCR_RESET_MASK              0x3
-+
-+#define WDTCR_WDEN_SHIFT             14
-+#define WDTCR_WDEN_DISABLE           0x0
-+#define WDTCR_WDEN_ENABLE            0x1
-+#define WDTCR_WDKEY_SHIFT            16
-+#define WDTCR_WDKEY_SEQ0             0xa5c6
-+#define WDTCR_WDKEY_SEQ1             0xda7e
-+
-+uint64_t davinci_clocksource_read(void)
-+{
-+	/* When reading TIM12, TIM34 is copied into a shadow register */
-+	uint32_t tim12, tim34;
-+	tim12 = readl(DA8XX_TIMER64P0_BASE + TIM12);
-+	tim34 = readl(DA8XX_TIMER64P0_BASE + TIM34);
-+	return tim12; // FIXME
-+}
-+
-+static struct clocksource cs = {
-+	.read	= davinci_clocksource_read,
-+	.mask	= 0xffffffff,
-+	.shift	= 20,
-+};
-+
-+static int clocksource_init(void)
-+{
-+	uint32_t tcr, tgcr;
-+	/* Disabled, Internal clock source */
-+	writel(0, DA8XX_TIMER64P0_BASE + TCR);
-+
-+	/* reset both timers, no pre-scaler for timer34 */
-+	tgcr = 0;
-+	writel(tgcr, DA8XX_TIMER64P0_BASE + TGCR);
-+
-+	/* Set both timers to unchained 32-bit */
-+	tgcr = TGCR_TIMMODE_64BIT_GP << TGCR_TIMMODE_SHIFT;
-+	writel(tgcr, DA8XX_TIMER64P0_BASE + TGCR);
-+
-+	/* Unreset timers */
-+	tgcr |= (TGCR_UNRESET << TGCR_TIM12RS_SHIFT) |
-+		(TGCR_UNRESET << TGCR_TIM34RS_SHIFT);
-+	writel(tgcr, DA8XX_TIMER64P0_BASE + TGCR);
-+
-+	/* Init both counters to zero */
-+	writel(0, DA8XX_TIMER64P0_BASE + TIM12);
-+	writel(0, DA8XX_TIMER64P0_BASE + TIM34);
-+	writel(~0, DA8XX_TIMER64P0_BASE + PRD12);
-+	writel(~0, DA8XX_TIMER64P0_BASE + PRD34);
-+
-+	tcr = TCR_ENAMODE_PERIODIC << TCR_ENAMODE12_SHIFT;
-+	writel(tcr, DA8XX_TIMER64P0_BASE + TCR);
-+
-+	cs.mult = clocksource_hz2mult(da8xx_clk_get(DAVINCI_AUXCLK_CLKID), cs.shift);
-+
-+	init_clock(&cs);
-+
-+	return 0;
-+}
-+
-+core_initcall(clocksource_init);
-+
-+/* reset board using watchdog timer (TIMER64P1) */
-+void davinci_watchdog_reset(void)
-+{
-+	uint32_t tgcr, wdtcr;
-+
-+	/* disable, internal clock source */
-+	writel(0, DA8XX_TIMER64P1_BASE + TCR);
-+
-+	/* reset timer, set mode to 64-bit watchdog, and unreset */
-+	tgcr = 0;
-+	writel(tgcr, DA8XX_TIMER64P1_BASE + TGCR);
-+	tgcr = TGCR_TIMMODE_64BIT_WDOG << TGCR_TIMMODE_SHIFT;
-+	tgcr |= (TGCR_UNRESET << TGCR_TIM12RS_SHIFT) |
-+		(TGCR_UNRESET << TGCR_TIM34RS_SHIFT);
-+	writel(tgcr, DA8XX_TIMER64P1_BASE + TGCR);
-+
-+	/* clear counter and period regs */
-+	writel(0, DA8XX_TIMER64P1_BASE + TIM12);
-+	writel(0, DA8XX_TIMER64P1_BASE + TIM34);
-+	writel(0, DA8XX_TIMER64P1_BASE + PRD12);
-+	writel(0, DA8XX_TIMER64P1_BASE + PRD34);
-+
-+	/* put watchdog in pre-active state */
-+	wdtcr = readl(DA8XX_TIMER64P1_BASE + WDTCR);
-+	wdtcr = (WDTCR_WDKEY_SEQ0 << WDTCR_WDKEY_SHIFT) |
-+		(WDTCR_WDEN_ENABLE << WDTCR_WDEN_SHIFT);
-+	writel(wdtcr, DA8XX_TIMER64P1_BASE + WDTCR);
-+
-+	/* put watchdog in active state */
-+	wdtcr = (WDTCR_WDKEY_SEQ1 << WDTCR_WDKEY_SHIFT) |
-+		(WDTCR_WDEN_ENABLE << WDTCR_WDEN_SHIFT);
-+	writel(wdtcr, DA8XX_TIMER64P1_BASE + WDTCR);
-+
-+	/* write an invalid value to the WDKEY field to trigger
-+	 * a watchdog reset */
-+	wdtcr = 0x00004000;
-+	writel(wdtcr, DA8XX_TIMER64P1_BASE + WDTCR);
-+}
-+
-+void __noreturn reset_cpu(unsigned long addr)
-+{
-+	davinci_watchdog_reset();
-+
-+	while (1);
-+}
-+EXPORT_SYMBOL(reset_cpu);
-diff --git a/arch/arm/mach-davinci/include/mach/da8xx.h b/arch/arm/mach-davinci/include/mach/da8xx.h
-new file mode 100644
-index 0000000..1efcaad
---- /dev/null
-+++ b/arch/arm/mach-davinci/include/mach/da8xx.h
-@@ -0,0 +1,40 @@
-+/*
-+ * Chip specific defines for DA8XX/OMAP L1XX SoC
-+ *
-+ * Author: Mark A. Greer <mgreer@mvista.com>
-+ *
-+ * 2007, 2009-2010 (c) MontaVista Software, Inc. This file is licensed under
-+ * the terms of the GNU General Public License version 2. This program
-+ * is licensed "as is" without any warranty of any kind, whether express
-+ * or implied.
-+ */
-+#ifndef __ASM_ARCH_DAVINCI_DA8XX_H
-+#define __ASM_ARCH_DAVINCI_DA8XX_H
-+
-+#define IO_PHYS				0x01c00000UL
-+
-+#define DA8XX_SYSCFG0_BASE	(IO_PHYS + 0x14000)
-+#define DA8XX_JTAG_ID_REG	0x18
-+#define DA8XX_MSTPRI0_REG	0x110
-+#define DA8XX_MSTPRI1_REG	0x114
-+#define DA8XX_MSTPRI2_REG	0x118
-+#define DA8XX_CFGCHIP0_REG	0x17c
-+#define DA8XX_CFGCHIP2_REG	0x184
-+#define DA8XX_CFGCHIP3_REG	0x188
-+
-+#define DA8XX_SYSCFG1_BASE	(IO_PHYS + 0x22C000)
-+#define DA8XX_DEEPSLEEP_REG	0x8
-+#define DA8XX_PWRDN_REG		0x18
-+
-+#define DA8XX_PSC0_BASE		0x01c10000
-+#define DA8XX_PLL0_BASE		0x01c11000
-+#define DA8XX_TIMER64P0_BASE	0x01c20000
-+#define DA8XX_TIMER64P1_BASE	0x01c21000
-+#define DA8XX_GPIO_BASE		0x01e26000
-+#define DA8XX_PSC1_BASE		0x01e27000
-+#define DA8XX_AEMIF_CS2_BASE	0x60000000
-+#define DA8XX_AEMIF_CS3_BASE	0x62000000
-+#define DA8XX_AEMIF_CTL_BASE	0x68000000
-+#define DA8XX_ARM_RAM_BASE	0xffff0000
-+
-+#endif /* __ASM_ARCH_DAVINCI_DA8XX_H */
-diff --git a/arch/arm/mach-davinci/include/mach/hardware.h b/arch/arm/mach-davinci/include/mach/hardware.h
-new file mode 100644
-index 0000000..098ed22
---- /dev/null
-+++ b/arch/arm/mach-davinci/include/mach/hardware.h
-@@ -0,0 +1,492 @@
-+/*
-+ * Copyright (C) 2007 Sergey Kubushyn <ksi@koi8.net>
-+ *
-+ * Based on:
-+ *
-+ * -------------------------------------------------------------------------
-+ *
-+ *  linux/include/asm-arm/arch-davinci/hardware.h
-+ *
-+ *  Copyright (C) 2006 Texas Instruments.
-+ *
-+ *  This program is free software; you can redistribute  it and/or modify it
-+ *  under  the terms of  the GNU General  Public License as published by the
-+ *  Free Software Foundation;  either version 2 of the  License, or (at your
-+ *  option) any later version.
-+ *
-+ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-+ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-+ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-+ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-+ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-+ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ *
-+ *  You should have received a copy of the  GNU General Public License along
-+ *  with this program; if not, write  to the Free Software Foundation, Inc.,
-+ *  675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ */
-+#ifndef __ASM_ARCH_HARDWARE_H
-+#define __ASM_ARCH_HARDWARE_H
-+
-+#include <sizes.h>
-+#include <asm-generic/io.h>
-+
-+typedef volatile unsigned int	dv_reg;
-+typedef volatile unsigned int *	dv_reg_p;
-+
-+/*
-+ * Base register addresses
-+ *
-+ * NOTE:  some of these DM6446-specific addresses DO NOT WORK
-+ * on other DaVinci chips.  Double check them before you try
-+ * using the addresses ... or PSC module identifiers, etc.
-+ */
-+#ifndef CONFIG_SOC_DA8XX
-+
-+#define DAVINCI_DMA_3PCC_BASE			(0x01c00000)
-+#define DAVINCI_DMA_3PTC0_BASE			(0x01c10000)
-+#define DAVINCI_DMA_3PTC1_BASE			(0x01c10400)
-+#define DAVINCI_UART0_BASE			(0x01c20000)
-+#define DAVINCI_UART1_BASE			(0x01c20400)
-+#define DAVINCI_I2C_BASE			(0x01c21000)
-+#define DAVINCI_TIMER0_BASE			(0x01c21400)
-+#define DAVINCI_TIMER1_BASE			(0x01c21800)
-+#define DAVINCI_WDOG_BASE			(0x01c21c00)
-+#define DAVINCI_PWM0_BASE			(0x01c22000)
-+#define DAVINCI_PWM1_BASE			(0x01c22400)
-+#define DAVINCI_PWM2_BASE			(0x01c22800)
-+#define DAVINCI_SYSTEM_MODULE_BASE		(0x01c40000)
-+#define DAVINCI_PLL_CNTRL0_BASE			(0x01c40800)
-+#define DAVINCI_PLL_CNTRL1_BASE			(0x01c40c00)
-+#define DAVINCI_PWR_SLEEP_CNTRL_BASE		(0x01c41000)
-+#define DAVINCI_ARM_INTC_BASE			(0x01c48000)
-+#define DAVINCI_USB_OTG_BASE			(0x01c64000)
-+#define DAVINCI_CFC_ATA_BASE			(0x01c66000)
-+#define DAVINCI_SPI_BASE			(0x01c66800)
-+#define DAVINCI_GPIO_BASE			(0x01c67000)
-+#define DAVINCI_VPSS_REGS_BASE			(0x01c70000)
-+#if !defined(CONFIG_SOC_DM646X)
-+#define DAVINCI_ASYNC_EMIF_DATA_CE0_BASE	(0x02000000)
-+#define DAVINCI_ASYNC_EMIF_DATA_CE1_BASE	(0x04000000)
-+#define DAVINCI_ASYNC_EMIF_DATA_CE2_BASE	(0x06000000)
-+#define DAVINCI_ASYNC_EMIF_DATA_CE3_BASE	(0x08000000)
-+#endif
-+#define DAVINCI_DDR_BASE			(0x80000000)
-+
-+#ifdef CONFIG_SOC_DM644X
-+#define DAVINCI_UART2_BASE			0x01c20800
-+#define DAVINCI_UHPI_BASE			0x01c67800
-+#define DAVINCI_EMAC_CNTRL_REGS_BASE		0x01c80000
-+#define DAVINCI_EMAC_WRAPPER_CNTRL_REGS_BASE	0x01c81000
-+#define DAVINCI_EMAC_WRAPPER_RAM_BASE		0x01c82000
-+#define DAVINCI_MDIO_CNTRL_REGS_BASE		0x01c84000
-+#define DAVINCI_IMCOP_BASE			0x01cc0000
-+#define DAVINCI_ASYNC_EMIF_CNTRL_BASE		0x01e00000
-+#define DAVINCI_VLYNQ_BASE			0x01e01000
-+#define DAVINCI_ASP_BASE			0x01e02000
-+#define DAVINCI_MMC_SD_BASE			0x01e10000
-+#define DAVINCI_MS_BASE				0x01e20000
-+#define DAVINCI_VLYNQ_REMOTE_BASE		0x0c000000
-+
-+#elif defined(CONFIG_SOC_DM355)
-+#define DAVINCI_MMC_SD1_BASE			0x01e00000
-+#define DAVINCI_ASP0_BASE			0x01e02000
-+#define DAVINCI_ASP1_BASE			0x01e04000
-+#define DAVINCI_UART2_BASE			0x01e06000
-+#define DAVINCI_ASYNC_EMIF_CNTRL_BASE		0x01e10000
-+#define DAVINCI_MMC_SD0_BASE			0x01e11000
-+
-+#elif defined(CONFIG_SOC_DM365)
-+#define DAVINCI_MMC_SD1_BASE			0x01d00000
-+#define DAVINCI_ASYNC_EMIF_CNTRL_BASE		0x01d10000
-+#define DAVINCI_MMC_SD0_BASE			0x01d11000
-+
-+#elif defined(CONFIG_SOC_DM646X)
-+#define DAVINCI_ASYNC_EMIF_CNTRL_BASE		0x20008000
-+#define DAVINCI_ASYNC_EMIF_DATA_CE0_BASE	0x42000000
-+#define DAVINCI_ASYNC_EMIF_DATA_CE1_BASE	0x44000000
-+#define DAVINCI_ASYNC_EMIF_DATA_CE2_BASE	0x46000000
-+#define DAVINCI_ASYNC_EMIF_DATA_CE3_BASE	0x48000000
-+
-+#endif
-+
-+#else /* CONFIG_SOC_DA8XX */
-+
-+#define DAVINCI_MMC_SD0_BASE			0x01c40000
-+#define DAVINCI_UART0_BASE			0x01c42000
-+#define DAVINCI_UART1_BASE			0x01d0c000
-+#define DAVINCI_UART2_BASE			0x01d0d000
-+#define DAVINCI_I2C0_BASE			0x01c22000
-+#define DAVINCI_I2C1_BASE			0x01e28000
-+#define DAVINCI_TIMER0_BASE			0x01c20000
-+#define DAVINCI_TIMER1_BASE			0x01c21000
-+#define DAVINCI_WDOG_BASE			0x01c21000
-+#define DAVINCI_PLL_CNTRL0_BASE			0x01c11000
-+#define DAVINCI_PLL_CNTRL1_BASE			0x01e1a000
-+#define DAVINCI_PSC0_BASE			0x01c10000
-+#define DAVINCI_PSC1_BASE			0x01e27000
-+#define DAVINCI_SPI0_BASE			0x01c41000
-+#define DAVINCI_USB_OTG_BASE			0x01e00000
-+#define DAVINCI_SPI1_BASE			(cpu_is_da830() ? 0x01e12000 : 0x01f0e000)
-+#define DAVINCI_GPIO_BASE			0x01e26000
-+#define DAVINCI_EMAC_CNTRL_REGS_BASE		0x01e23000
-+#define DAVINCI_EMAC_WRAPPER_CNTRL_REGS_BASE	0x01e22000
-+#define DAVINCI_EMAC_WRAPPER_RAM_BASE		0x01e20000
-+#define DAVINCI_MDIO_CNTRL_REGS_BASE		0x01e24000
-+#define DAVINCI_ASYNC_EMIF_CNTRL_BASE		0x68000000
-+#define DAVINCI_ASYNC_EMIF_DATA_CE0_BASE	0x40000000
-+#define DAVINCI_ASYNC_EMIF_DATA_CE2_BASE	0x60000000
-+#define DAVINCI_ASYNC_EMIF_DATA_CE3_BASE	0x62000000
-+#define DAVINCI_ASYNC_EMIF_DATA_CE4_BASE	0x64000000
-+#define DAVINCI_ASYNC_EMIF_DATA_CE5_BASE	0x66000000
-+#define DAVINCI_DDR_EMIF_CTRL_BASE		0xb0000000
-+#define DAVINCI_DDR_EMIF_DATA_BASE		0xc0000000
-+#define DAVINCI_INTC_BASE			0xfffee000
-+#define DAVINCI_BOOTCFG_BASE			0x01c14000
-+#define DAVINCI_L3CBARAM_BASE			0x80000000
-+#define JTAG_ID_REG				(DAVINCI_BOOTCFG_BASE + 0x18)
-+#define CHIP_REV_ID_REG				(DAVINCI_BOOTCFG_BASE + 0x24)
-+#define HOST1CFG				(DAVINCI_BOOTCFG_BASE + 0x44)
-+#define CFGCHIP3				(DAVINCI_BOOTCFG_BASE + 0x188)
-+#define PSC0_MDCTL				(DAVINCI_PSC0_BASE + 0xa00)
-+#define GPIO_BANK0_REG_DIR_ADDR			(DAVINCI_GPIO_BASE + 0x10)
-+#define GPIO_BANK0_REG_OPDATA_ADDR		(DAVINCI_GPIO_BASE + 0x14)
-+#define GPIO_BANK0_REG_SET_ADDR			(DAVINCI_GPIO_BASE + 0x18)
-+#define GPIO_BANK0_REG_CLR_ADDR			(DAVINCI_GPIO_BASE + 0x1c)
-+#define GPIO_BANK2_REG_DIR_ADDR			(DAVINCI_GPIO_BASE + 0x38)
-+#define GPIO_BANK2_REG_OPDATA_ADDR		(DAVINCI_GPIO_BASE + 0x3c)
-+#define GPIO_BANK2_REG_SET_ADDR			(DAVINCI_GPIO_BASE + 0x40)
-+#define GPIO_BANK2_REG_CLR_ADDR			(DAVINCI_GPIO_BASE + 0x44)
-+
-+#endif /* CONFIG_SOC_DA8XX */
-+
-+/* Power and Sleep Controller (PSC) Domains */
-+#define DAVINCI_GPSC_ARMDOMAIN		0
-+#define DAVINCI_GPSC_DSPDOMAIN		1
-+
-+#ifndef CONFIG_SOC_DA8XX
-+
-+#define DAVINCI_LPSC_VPSSMSTR		0
-+#define DAVINCI_LPSC_VPSSSLV		1
-+#define DAVINCI_LPSC_TPCC		2
-+#define DAVINCI_LPSC_TPTC0		3
-+#define DAVINCI_LPSC_TPTC1		4
-+#define DAVINCI_LPSC_EMAC		5
-+#define DAVINCI_LPSC_EMAC_WRAPPER	6
-+#define DAVINCI_LPSC_MDIO		7
-+#define DAVINCI_LPSC_IEEE1394		8
-+#define DAVINCI_LPSC_USB		9
-+#define DAVINCI_LPSC_ATA		10
-+#define DAVINCI_LPSC_VLYNQ		11
-+#define DAVINCI_LPSC_UHPI		12
-+#define DAVINCI_LPSC_DDR_EMIF		13
-+#define DAVINCI_LPSC_AEMIF		14
-+#define DAVINCI_LPSC_MMC_SD		15
-+#define DAVINCI_LPSC_MEMSTICK		16
-+#define DAVINCI_LPSC_McBSP		17
-+#define DAVINCI_LPSC_I2C		18
-+#define DAVINCI_LPSC_UART0		19
-+#define DAVINCI_LPSC_UART1		20
-+#define DAVINCI_LPSC_UART2		21
-+#define DAVINCI_LPSC_SPI		22
-+#define DAVINCI_LPSC_PWM0		23
-+#define DAVINCI_LPSC_PWM1		24
-+#define DAVINCI_LPSC_PWM2		25
-+#define DAVINCI_LPSC_GPIO		26
-+#define DAVINCI_LPSC_TIMER0		27
-+#define DAVINCI_LPSC_TIMER1		28
-+#define DAVINCI_LPSC_TIMER2		29
-+#define DAVINCI_LPSC_SYSTEM_SUBSYS	30
-+#define DAVINCI_LPSC_ARM		31
-+#define DAVINCI_LPSC_SCR2		32
-+#define DAVINCI_LPSC_SCR3		33
-+#define DAVINCI_LPSC_SCR4		34
-+#define DAVINCI_LPSC_CROSSBAR		35
-+#define DAVINCI_LPSC_CFG27		36
-+#define DAVINCI_LPSC_CFG3		37
-+#define DAVINCI_LPSC_CFG5		38
-+#define DAVINCI_LPSC_GEM		39
-+#define DAVINCI_LPSC_IMCOP		40
-+
-+#define DAVINCI_DM646X_LPSC_EMAC	14
-+#define DAVINCI_DM646X_LPSC_UART0	26
-+#define DAVINCI_DM646X_LPSC_I2C		31
-+
-+#else /* CONFIG_SOC_DA8XX */
-+
-+enum davinci_lpsc_ids {
-+	DAVINCI_LPSC_TPCC = 0,
-+	DAVINCI_LPSC_TPTC0,
-+	DAVINCI_LPSC_TPTC1,
-+	DAVINCI_LPSC_AEMIF,
-+	DAVINCI_LPSC_SPI0,
-+	DAVINCI_LPSC_MMC_SD,
-+	DAVINCI_LPSC_AINTC,
-+	DAVINCI_LPSC_ARM_RAM_ROM,
-+	DAVINCI_LPSC_SECCTL_KEYMGR,
-+	DAVINCI_LPSC_UART0,
-+	DAVINCI_LPSC_SCR0,
-+	DAVINCI_LPSC_SCR1,
-+	DAVINCI_LPSC_SCR2,
-+	DAVINCI_LPSC_DMAX,
-+	DAVINCI_LPSC_ARM,
-+	DAVINCI_LPSC_GEM,
-+	/* for LPSCs in PSC1, offset from 32 for differentiation */
-+	DAVINCI_LPSC_PSC1_BASE = 32,	// 1- 0
-+	DAVINCI_LPSC_USB11,		// 1- 1
-+	DAVINCI_LPSC_USB20,		// 1- 2
-+	DAVINCI_LPSC_GPIO,		// 1- 3
-+	DAVINCI_LPSC_UHPI,		// 1- 4
-+	DAVINCI_LPSC_EMAC,		// 1- 5
-+	DAVINCI_LPSC_DDR_EMIF,		// 1- 6
-+	DAVINCI_LPSC_McASP0,		// 1- 7
-+	DAVINCI_LPSC_McASP1,		// 1- 8
-+	DAVINCI_LPSC_McASP2,		// 1- 9
-+	DAVINCI_LPSC_SPI1,		// 1-10
-+	DAVINCI_LPSC_I2C1,		// 1-11
-+	DAVINCI_LPSC_UART1,		// 1-12
-+	DAVINCI_LPSC_UART2,		// 1-13
-+	DAVINCI_LPSC_McBSP0,		// 1-14
-+	DAVINCI_LPSC_McBSP1,		// 1-15
-+	DAVINCI_LPSC_LCDC,		// 1-16
-+};
-+
-+#endif /* CONFIG_SOC_DA8XX */
-+
-+void lpsc_on(unsigned int id);
-+void dsp_on(void);
-+
-+void davinci_enable_uart0(void);
-+void davinci_enable_emac(void);
-+void davinci_enable_i2c(void);
-+void davinci_errata_workarounds(void);
-+
-+#ifndef CONFIG_SOC_DA8XX
-+
-+/* Some PSC defines */
-+#define PSC_CHP_SHRTSW			(0x01c40038)
-+#define PSC_GBLCTL			(0x01c41010)
-+#define PSC_EPCPR			(0x01c41070)
-+#define PSC_EPCCR			(0x01c41078)
-+#define PSC_PTCMD			(0x01c41120)
-+#define PSC_PTSTAT			(0x01c41128)
-+#define PSC_PDSTAT			(0x01c41200)
-+#define PSC_PDSTAT1			(0x01c41204)
-+#define PSC_PDCTL			(0x01c41300)
-+#define PSC_PDCTL1			(0x01c41304)
-+
-+#define PSC_MDCTL_BASE			(0x01c41a00)
-+#define PSC_MDSTAT_BASE			(0x01c41800)
-+
-+#define VDD3P3V_PWDN			(0x01c40048)
-+#define UART0_PWREMU_MGMT		(0x01c20030)
-+
-+#define PSC_SILVER_BULLET		(0x01c41a20)
-+
-+#else /* CONFIG_SOC_DA8XX */
-+
-+#define PSC_PSC0_MODULE_ID_CNT		16
-+#define PSC_PSC1_MODULE_ID_CNT		32
-+
-+struct davinci_psc_regs {
-+	dv_reg	revid;
-+	dv_reg	rsvd0[71];
-+	dv_reg	ptcmd;
-+	dv_reg	rsvd1;
-+	dv_reg	ptstat;
-+	dv_reg	rsvd2[437];
-+	union {
-+		struct {
-+			dv_reg	mdstat[PSC_PSC0_MODULE_ID_CNT];
-+			dv_reg	rsvd3[112];
-+			dv_reg	mdctl[PSC_PSC0_MODULE_ID_CNT];
-+		} psc0;
-+		struct {
-+			dv_reg	mdstat[PSC_PSC1_MODULE_ID_CNT];
-+			dv_reg	rsvd3[96];
-+			dv_reg	mdctl[PSC_PSC1_MODULE_ID_CNT];
-+		} psc1;
-+	};
-+};
-+
-+#define davinci_psc0_regs ((struct davinci_psc_regs *)DAVINCI_PSC0_BASE)
-+#define davinci_psc1_regs ((struct davinci_psc_regs *)DAVINCI_PSC1_BASE)
-+
-+#endif /* CONFIG_SOC_DA8XX */
-+
-+#ifndef CONFIG_SOC_DA8XX
-+
-+/* Miscellania... */
-+#define VBPR				(0x20000020)
-+
-+/* NOTE:  system control modules are *highly* chip-specific, both
-+ * as to register content (e.g. for muxing) and which registers exist.
-+ */
-+#define PINMUX0				0x01c40000
-+#define PINMUX1				0x01c40004
-+#define PINMUX2				0x01c40008
-+#define PINMUX3				0x01c4000c
-+#define PINMUX4				0x01c40010
-+
-+#else /* CONFIG_SOC_DA8XX */
-+
-+struct davinci_pllc_regs {
-+	dv_reg	revid;
-+	dv_reg	rsvd1[56];
-+	dv_reg	rstype;
-+	dv_reg	rsvd2[6];
-+	dv_reg	pllctl;
-+	dv_reg	ocsel;
-+	dv_reg	rsvd3[2];
-+	dv_reg	pllm;
-+	dv_reg	prediv;
-+	dv_reg	plldiv1;
-+	dv_reg	plldiv2;
-+	dv_reg	plldiv3;
-+	dv_reg	oscdiv;
-+	dv_reg	postdiv;
-+	dv_reg	rsvd4[3];
-+	dv_reg	pllcmd;
-+	dv_reg	pllstat;
-+	dv_reg	alnctl;
-+	dv_reg	dchange;
-+	dv_reg	cken;
-+	dv_reg	ckstat;
-+	dv_reg	systat;
-+	dv_reg	rsvd5[3];
-+	dv_reg	plldiv4;
-+	dv_reg	plldiv5;
-+	dv_reg	plldiv6;
-+	dv_reg	plldiv7;
-+	dv_reg	rsvd6[32];
-+	dv_reg	emucnt0;
-+	dv_reg	emucnt1;
-+};
-+
-+#define davinci_pllc_regs ((struct davinci_pllc_regs *)DAVINCI_PLL_CNTRL0_BASE)
-+#define DAVINCI_PLLC_DIV_MASK	0x1f
-+
-+#define ASYNC3			get_async3_src()
-+#define EMIFB			get_emifb_src()
-+#define PLL1_PLLM		((1 << 16) | DAVINCI_PLLM_CLKID)
-+#define PLL1_SYSCLK1		((1 << 16) | 0x1)
-+#define PLL1_SYSCLK2		((1 << 16) | 0x2)
-+
-+#define DAVINCI_SPI1_CLKID	(cpu_is_da830() ? 2 : ASYNC3)
-+#define DAVINCI_DDR_CLKID	EMIFB
-+
-+/* Clock IDs */
-+enum davinci_clk_ids {
-+	DAVINCI_MMCSD_CLKID = 2,
-+	DAVINCI_SPI0_CLKID = 2,
-+	DAVINCI_UART2_CLKID = 2,
-+	DAVINCI_LCDC_CLKID = 2,
-+	DAVINCI_EMIFA_CLKID = 3,
-+	DAVINCI_MDIO_CLKID = 4,
-+	DAVINCI_ARM_CLKID = 6,
-+	DAVINCI_PLLM_CLKID = 0xff,
-+	DAVINCI_PLLC_CLKID = 0x100,
-+	DAVINCI_AUXCLK_CLKID = 0x101
-+};
-+
-+int da8xx_clk_get(enum davinci_clk_ids id);
-+
-+/* Boot config */
-+struct davinci_syscfg_regs {
-+	dv_reg	revid;
-+	dv_reg	rsvd[71];
-+	dv_reg	pinmux[20];
-+	dv_reg	suspsrc;
-+	dv_reg	chipsig;
-+	dv_reg	chipsig_clr;
-+	dv_reg	cfgchip0;
-+	dv_reg	cfgchip1;
-+	dv_reg	cfgchip2;
-+	dv_reg	cfgchip3;
-+	dv_reg	cfgchip4;
-+};
-+
-+#define davinci_syscfg_regs \
-+	((struct davinci_syscfg_regs *)DAVINCI_BOOTCFG_BASE)
-+
-+/* Emulation suspend bits */
-+#define DAVINCI_SYSCFG_SUSPSRC_EMAC		(1 << 5)
-+#define DAVINCI_SYSCFG_SUSPSRC_I2C		(1 << 16)
-+#define DAVINCI_SYSCFG_SUSPSRC_SPI0		(1 << 21)
-+#define DAVINCI_SYSCFG_SUSPSRC_SPI1		(1 << 22)
-+#define DAVINCI_SYSCFG_SUSPSRC_UART2		(1 << 20)
-+#define DAVINCI_SYSCFG_SUSPSRC_TIMER0		(1 << 27)
-+
-+/* Interrupt controller */
-+struct davinci_aintc_regs {
-+	dv_reg	revid;
-+	dv_reg	cr;
-+	dv_reg	dummy0[2];
-+	dv_reg	ger;
-+	dv_reg	dummy1[219];
-+	dv_reg	ecr1;
-+	dv_reg	ecr2;
-+	dv_reg	ecr3;
-+	dv_reg	dummy2[1117];
-+	dv_reg	hier;
-+};
-+
-+#define davinci_aintc_regs ((struct davinci_aintc_regs *)DAVINCI_INTC_BASE)
-+
-+struct davinci_uart_ctrl_regs {
-+	dv_reg	revid1;
-+	dv_reg	revid2;
-+	dv_reg	pwremu_mgmt;
-+	dv_reg	mdr;
-+};
-+
-+#define DAVINCI_UART_CTRL_BASE 0x28
-+#define DAVINCI_UART0_CTRL_ADDR (DAVINCI_UART0_BASE + DAVINCI_UART_CTRL_BASE)
-+#define DAVINCI_UART1_CTRL_ADDR (DAVINCI_UART1_BASE + DAVINCI_UART_CTRL_BASE)
-+#define DAVINCI_UART2_CTRL_ADDR (DAVINCI_UART2_BASE + DAVINCI_UART_CTRL_BASE)
-+
-+#define davinci_uart0_ctrl_regs \
-+	((struct davinci_uart_ctrl_regs *)DAVINCI_UART0_CTRL_ADDR)
-+#define davinci_uart1_ctrl_regs \
-+	((struct davinci_uart_ctrl_regs *)DAVINCI_UART1_CTRL_ADDR)
-+#define davinci_uart2_ctrl_regs \
-+	((struct davinci_uart_ctrl_regs *)DAVINCI_UART2_CTRL_ADDR)
-+
-+/* UART PWREMU_MGMT definitions */
-+#define DAVINCI_UART_PWREMU_MGMT_FREE	(1 << 0)
-+#define DAVINCI_UART_PWREMU_MGMT_URRST	(1 << 13)
-+#define DAVINCI_UART_PWREMU_MGMT_UTRST	(1 << 14)
-+
-+static inline int cpu_is_da830(void)
-+{
-+	unsigned int jtag_id	= readl(JTAG_ID_REG);
-+	unsigned short part_no	= (jtag_id >> 12) & 0xffff;
-+
-+	return ((part_no == 0xb7df) ? 1 : 0);
-+}
-+static inline int cpu_is_da850(void)
-+{
-+	unsigned int jtag_id	= readl(JTAG_ID_REG);
-+	unsigned short part_no	= (jtag_id >> 12) & 0xffff;
-+
-+	return ((part_no == 0xb7d1) ? 1 : 0);
-+}
-+
-+static inline int get_async3_src(void)
-+{
-+	return ((readl(CFGCHIP3) & 0x10) ? PLL1_SYSCLK2 : 2);
-+}
-+
-+static inline int get_emifb_src(void)
-+{
-+	return ((readl(CFGCHIP3) & 0x80) ? PLL1_PLLM : PLL1_SYSCLK1);
-+}
-+
-+#endif /* CONFIG_SOC_DA8XX */
-+
-+#endif /* __ASM_ARCH_HARDWARE_H */
--- 
-1.7.10
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogSmFuIEx1ZWJiZSA8amx1QHBlbmd1dHJvbml4LmRlPgotLS0KIGFyY2gv
+YXJtL21hY2gtZGF2aW5jaS9pbmNsdWRlL21hY2gvZW1pZl9kZWZzLmggfCAgIDc2ICsrKwogYXJj
+aC9hcm0vbWFjaC1kYXZpbmNpL2luY2x1ZGUvbWFjaC9uYW5kLmggICAgICB8ICAgNDYgKysKIGFy
+Y2gvYXJtL21hY2gtZGF2aW5jaS9pbmNsdWRlL21hY2gvbmFuZF9kZWZzLmggfCAgIDQzICsrCiBk
+cml2ZXJzL210ZC9uYW5kL0tjb25maWcgICAgICAgICAgICAgICAgICAgICAgIHwgICAgNSArCiBk
+cml2ZXJzL210ZC9uYW5kL01ha2VmaWxlICAgICAgICAgICAgICAgICAgICAgIHwgICAgMSArCiBk
+cml2ZXJzL210ZC9uYW5kL2RhdmluY2lfbmFuZC5jICAgICAgICAgICAgICAgIHwgIDY3MCArKysr
+KysrKysrKysrKysrKysrKysrKysKIGRyaXZlcnMvbXRkL25hbmQvbmFuZF9iYXNlLmMgICAgICAg
+ICAgICAgICAgICAgfCAgICA0ICsKIGluY2x1ZGUvbGludXgvbXRkL25hbmQuaCAgICAgICAgICAg
+ICAgICAgICAgICAgfCAgICAxICsKIDggZmlsZXMgY2hhbmdlZCwgODQ2IGluc2VydGlvbnMoKykK
+IGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9tYWNoLWRhdmluY2kvaW5jbHVkZS9tYWNoL2Vt
+aWZfZGVmcy5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1kYXZpbmNpL2luY2x1
+ZGUvbWFjaC9uYW5kLmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9tYWNoLWRhdmluY2kv
+aW5jbHVkZS9tYWNoL25hbmRfZGVmcy5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9tdGQv
+bmFuZC9kYXZpbmNpX25hbmQuYwoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtZGF2aW5jaS9p
+bmNsdWRlL21hY2gvZW1pZl9kZWZzLmggYi9hcmNoL2FybS9tYWNoLWRhdmluY2kvaW5jbHVkZS9t
+YWNoL2VtaWZfZGVmcy5oCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAuLjNhZDBk
+MGYKLS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9tYWNoLWRhdmluY2kvaW5jbHVkZS9tYWNo
+L2VtaWZfZGVmcy5oCkBAIC0wLDAgKzEsNzYgQEAKKy8qCisgKiBDb3B5cmlnaHQgKEMpIDIwMDcg
+U2VyZ2V5IEt1YnVzaHluIDxrc2lAa29pOC5uZXQ+CisgKgorICogU2VlIGZpbGUgQ1JFRElUUyBm
+b3IgbGlzdCBvZiBwZW9wbGUgd2hvIGNvbnRyaWJ1dGVkIHRvIHRoaXMKKyAqIHByb2plY3QuCisg
+KgorICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRl
+IGl0IGFuZC9vcgorICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVy
+YWwgUHVibGljIExpY2Vuc2UgYXMKKyAqIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBG
+b3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mCisgKiB0aGUgTGljZW5zZSwgb3IgKGF0IHlv
+dXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KKyAqCisgKiBUaGlzIHByb2dyYW0gaXMgZGlz
+dHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKKyAqIGJ1dCBXSVRI
+T1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCisg
+KiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBT
+ZWUgdGhlCisgKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgor
+ICoKKyAqIFlvdSBzaG91bGQgaGF2ZSByZWNlaXZlZCBhIGNvcHkgb2YgdGhlIEdOVSBHZW5lcmFs
+IFB1YmxpYyBMaWNlbnNlCisgKiBhbG9uZyB3aXRoIHRoaXMgcHJvZ3JhbTsgaWYgbm90LCB3cml0
+ZSB0byB0aGUgRnJlZSBTb2Z0d2FyZQorICogRm91bmRhdGlvbiwgSW5jLiwgNTkgVGVtcGxlIFBs
+YWNlLCBTdWl0ZSAzMzAsIEJvc3RvbiwKKyAqIE1BIDAyMTExLTEzMDcgVVNBCisgKi8KKyNpZm5k
+ZWYgX0VNSUZfREVGU19IXworI2RlZmluZSBfRU1JRl9ERUZTX0hfCisKKyNpbmNsdWRlIDxtYWNo
+L2hhcmR3YXJlLmg+CisKK3R5cGVkZWYgc3RydWN0IHsKKwlkdl9yZWcJCUVSQ1NSOworCWR2X3Jl
+ZwkJQVdDQ1I7CisJZHZfcmVnCQlTREJDUjsKKwlkdl9yZWcJCVNEUkNSOworCWR2X3JlZwkJQUIx
+Q1I7CisJZHZfcmVnCQlBQjJDUjsKKwlkdl9yZWcJCUFCM0NSOworCWR2X3JlZwkJQUI0Q1I7CisJ
+ZHZfcmVnCQlTRFRJTVI7CisJZHZfcmVnCQlERFJTUjsKKwlkdl9yZWcJCUREUlBIWUNSOworCWR2
+X3JlZwkJRERSUEhZU1I7CisJZHZfcmVnCQlUT1RBUjsKKwlkdl9yZWcJCVRPVEFDVFI7CisJZHZf
+cmVnCQlERFJQSFlJRF9SRVY7CisJZHZfcmVnCQlTRFNSRVRSOworCWR2X3JlZwkJRUlSUjsKKwlk
+dl9yZWcJCUVJTVI7CisJZHZfcmVnCQlFSU1TUjsKKwlkdl9yZWcJCUVJTUNSOworCWR2X3JlZwkJ
+SU9DVFJMUjsKKwlkdl9yZWcJCUlPU1RBVFI7CisJdV9pbnQ4X3QJUlNWRDBbOF07CisJZHZfcmVn
+CQlOQU5ERkNSOworCWR2X3JlZwkJTkFOREZTUjsKKwl1X2ludDhfdAlSU1ZEMVs4XTsKKwlkdl9y
+ZWcJCU5BTkRGRUNDWzRdOworCXVfaW50OF90CVJTVkQyWzYwXTsKKwlkdl9yZWcJCU5BTkQ0QklU
+RUNDTE9BRDsKKwlkdl9yZWcJCU5BTkQ0QklURUNDMTsKKwlkdl9yZWcJCU5BTkQ0QklURUNDMjsK
+Kwlkdl9yZWcJCU5BTkQ0QklURUNDMzsKKwlkdl9yZWcJCU5BTkQ0QklURUNDNDsKKwlkdl9yZWcJ
+CU5BTkRFUlJBREQxOworCWR2X3JlZwkJTkFOREVSUkFERDI7CisJZHZfcmVnCQlOQU5ERVJSVkFM
+MTsKKwlkdl9yZWcJCU5BTkRFUlJWQUwyOworfSBlbWlmX3JlZ2lzdGVyczsKKwordHlwZWRlZiBl
+bWlmX3JlZ2lzdGVycwkqZW1pZnJlZ3M7CisKKyNkZWZpbmUgREFWSU5DSV9OQU5ERkNSX05BTkRf
+RU5BQkxFKG4pCQkJKDEgPDwgKG4tMikpCisjZGVmaW5lIERBVklOQ0lfTkFOREZDUl80QklUX0VD
+Q19TRUxfTUFTSwkJKDMgPDwgNCkKKyNkZWZpbmUgREFWSU5DSV9OQU5ERkNSXzRCSVRfRUNDX1NF
+TChuKQkJCSgobi0yKSA8PCA0KQorI2RlZmluZSBEQVZJTkNJX05BTkRGQ1JfMUJJVF9FQ0NfU1RB
+UlQobikJCSgxIDw8ICg4ICsgKG4tMikpKQorI2RlZmluZSBEQVZJTkNJX05BTkRGQ1JfNEJJVF9F
+Q0NfU1RBUlQJCQkoMSA8PCAxMikKKyNkZWZpbmUgREFWSU5DSV9OQU5ERkNSXzRCSVRfQ0FMQ19T
+VEFSVAkJCSgxIDw8IDEzKQorCisjZW5kaWYKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtZGF2
+aW5jaS9pbmNsdWRlL21hY2gvbmFuZC5oIGIvYXJjaC9hcm0vbWFjaC1kYXZpbmNpL2luY2x1ZGUv
+bWFjaC9uYW5kLmgKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uM2VmNjUyYgot
+LS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL21hY2gtZGF2aW5jaS9pbmNsdWRlL21hY2gvbmFu
+ZC5oCkBAIC0wLDAgKzEsNDYgQEAKKy8qCisgKiBtYWNoLWRhdmluY2kvbmFuZC5oCisgKgorICog
+Q29weXJpZ2h0IMKpIDIwMDYgVGV4YXMgSW5zdHJ1bWVudHMuCisgKgorICogUG9ydGVkIHRvIDIu
+Ni4yMyBDb3B5cmlnaHQgwqkgMjAwOCBieQorICogICBTYW5kZXIgSHVpanNlbiA8U2h1aWpzZW5A
+b3B0ZWxlY29tLW5rZi5jb20+CisgKiAgIFRyb3kgS2lza3kgPHRyb3kua2lza3lAYm91bmRhcnlk
+ZXZpY2VzLmNvbT4KKyAqICAgRGlyayBCZWhtZSA8RGlyay5CZWhtZUBnbWFpbC5jb20+CisgKgor
+ICogLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0KKyAqCisgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2Fy
+ZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29yIG1vZGlmeQorICogaXQgdW5kZXIgdGhl
+IHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcyBwdWJsaXNoZWQgYnkK
+KyAqIHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIgb2YgdGhl
+IExpY2Vuc2UsIG9yCisgKiAoYXQgeW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgorICoK
+KyAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwg
+YmUgdXNlZnVsLAorICogYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhl
+IGltcGxpZWQgd2FycmFudHkgb2YKKyAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBB
+IFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGUKKyAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNl
+bnNlIGZvciBtb3JlIGRldGFpbHMuCisgKgorICogWW91IHNob3VsZCBoYXZlIHJlY2VpdmVkIGEg
+Y29weSBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UKKyAqIGFsb25nIHdpdGggdGhp
+cyBwcm9ncmFtOyBpZiBub3QsIHdyaXRlIHRvIHRoZSBGcmVlIFNvZnR3YXJlCisgKiBGb3VuZGF0
+aW9uLCBJbmMuLCA2NzUgTWFzcyBBdmUsIENhbWJyaWRnZSwgTUEgMDIxMzksIFVTQS4KKyAqLwor
+CisjaWZuZGVmIF9fQVJDSF9BUk1fREFWSU5DSV9OQU5EX0gKKyNkZWZpbmUgX19BUkNIX0FSTV9E
+QVZJTkNJX05BTkRfSAorCisjaW5jbHVkZSA8bGludXgvbXRkL25hbmQuaD4KKworI2luY2x1ZGUg
+PG1hY2gvYWVtaWYuaD4KKworc3RydWN0IGRhdmluY2lfbmFuZF9wZGF0YSB7CQkvKiBwbGF0Zm9y
+bV9kYXRhICovCisJbmFuZF9lY2NfbW9kZXNfdAllY2NfbW9kZTsKKwl1OAkJCWVjY19iaXRzOwor
+CisJLyogZS5nLiBOQU5EX0JVU1dJRFRIXzE2IG9yIE5BTkRfVVNFX0ZMQVNIX0JCVCAqLworCXVu
+c2lnbmVkCQlvcHRpb25zOworCisJLyogQWNjZXNzIHRpbWluZ3MgKi8KKwlzdHJ1Y3QgZGF2aW5j
+aV9hZW1pZl90aW1pbmcJKnRpbWluZzsKK307CisKKyNlbmRpZgkvKiBfX0FSQ0hfQVJNX0RBVklO
+Q0lfTkFORF9IICovCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWRhdmluY2kvaW5jbHVkZS9t
+YWNoL25hbmRfZGVmcy5oIGIvYXJjaC9hcm0vbWFjaC1kYXZpbmNpL2luY2x1ZGUvbWFjaC9uYW5k
+X2RlZnMuaApuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwLi5lOTE3YWE5Ci0tLSAv
+ZGV2L251bGwKKysrIGIvYXJjaC9hcm0vbWFjaC1kYXZpbmNpL2luY2x1ZGUvbWFjaC9uYW5kX2Rl
+ZnMuaApAQCAtMCwwICsxLDQzIEBACisvKgorICogQ29weXJpZ2h0IChDKSAyMDA3IFNlcmdleSBL
+dWJ1c2h5biA8a3NpQGtvaTgubmV0PgorICoKKyAqIFBhcnRzIHNoYW1lbGVzbHkgc3RvbGVuIGZy
+b20gTGludXggS2VybmVsIHNvdXJjZSB0cmVlLgorICoKKyAqIC0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQorICoKKyAqIFNlZSBmaWxl
+IENSRURJVFMgZm9yIGxpc3Qgb2YgcGVvcGxlIHdobyBjb250cmlidXRlZCB0byB0aGlzCisgKiBw
+cm9qZWN0LgorICoKKyAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJl
+ZGlzdHJpYnV0ZSBpdCBhbmQvb3IKKyAqIG1vZGlmeSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhl
+IEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzCisgKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUg
+U29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgorICogdGhlIExpY2Vuc2Us
+IG9yIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCisgKgorICogVGhpcyBwcm9n
+cmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCisg
+KiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJy
+YW50eSBvZgorICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQ
+VVJQT1NFLiAgU2VlIHRoZQorICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUg
+ZGV0YWlscy4KKyAqCisgKiBZb3Ugc2hvdWxkIGhhdmUgcmVjZWl2ZWQgYSBjb3B5IG9mIHRoZSBH
+TlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZQorICogYWxvbmcgd2l0aCB0aGlzIHByb2dyYW07IGlm
+IG5vdCwgd3JpdGUgdG8gdGhlIEZyZWUgU29mdHdhcmUKKyAqIEZvdW5kYXRpb24sIEluYy4sIDU5
+IFRlbXBsZSBQbGFjZSwgU3VpdGUgMzMwLCBCb3N0b24sCisgKiBNQSAwMjExMS0xMzA3IFVTQQor
+ICovCisjaWZuZGVmIF9OQU5EX0RFRlNfSF8KKyNkZWZpbmUgX05BTkRfREVGU19IXworCisjaW5j
+bHVkZSA8bWFjaC9oYXJkd2FyZS5oPgorCisjaWZkZWYgQ09ORklHX1NPQ19ETTY0NlgKKyNkZWZp
+bmUJTUFTS19DTEUJMHg4MDAwMAorI2RlZmluZQlNQVNLX0FMRQkweDQwMDAwCisjZWxzZQorI2Rl
+ZmluZQlNQVNLX0NMRQkweDEwCisjZGVmaW5lCU1BU0tfQUxFCTB4MDgKKyNlbmRpZgorCisjZGVm
+aW5lIE5BTkRfUkVBRF9TVEFSVAkJMHgwMAorI2RlZmluZSBOQU5EX1JFQURfRU5ECQkweDMwCisj
+ZGVmaW5lIE5BTkRfU1RBVFVTCQkweDcwCisKKyNlbmRpZgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9t
+dGQvbmFuZC9LY29uZmlnIGIvZHJpdmVycy9tdGQvbmFuZC9LY29uZmlnCmluZGV4IDkyNmE2NGIu
+LmI1M2NmZWIgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbXRkL25hbmQvS2NvbmZpZworKysgYi9kcml2
+ZXJzL210ZC9uYW5kL0tjb25maWcKQEAgLTY1LDYgKzY1LDExIEBAIGNvbmZpZyBOQU5EX0FUTUVM
+CiAJcHJvbXB0ICJBdG1lbCAoQVQ5MVNBTTl4eHgpIE5BTkQgZHJpdmVyIgogCWRlcGVuZHMgb24g
+QVJDSF9BVDkxCiAKK2NvbmZpZyBOQU5EX0RBVklOQ0kKKwlib29sCisJcHJvbXB0ICJUSSBEYXZp
+bmNpIE5BTkQgZHJpdmVyIgorCWRlcGVuZHMgb24gQVJDSF9EQVZJTkNJCisKIGNvbmZpZyBOQU5E
+X1MzQzI0WFgKIAlib29sCiAJcHJvbXB0ICJTYW1zdW5nIFMzQzI0WFggTkFORCBkcml2ZXIiCmRp
+ZmYgLS1naXQgYS9kcml2ZXJzL210ZC9uYW5kL01ha2VmaWxlIGIvZHJpdmVycy9tdGQvbmFuZC9N
+YWtlZmlsZQppbmRleCA1YzZkOGIzLi4zOWE4NTUxIDEwMDY0NAotLS0gYS9kcml2ZXJzL210ZC9u
+YW5kL01ha2VmaWxlCisrKyBiL2RyaXZlcnMvbXRkL25hbmQvTWFrZWZpbGUKQEAgLTE0LDQgKzE0
+LDUgQEAgb2JqLSQoQ09ORklHX01URF9OQU5EX05PTUFESUspCQkrPSBub21hZGlrX25hbmQubwog
+b2JqLSQoQ09ORklHX05BTkRfSU1YKQkJCSs9IG5hbmRfaW14Lm8KIG9iai0kKENPTkZJR19OQU5E
+X09NQVBfR1BNQykJCSs9IG5hbmRfb21hcF9ncG1jLm8gbmFuZF9vbWFwX2JjaF9kZWNvZGVyLm8K
+IG9iai0kKENPTkZJR19OQU5EX0FUTUVMKQkJKz0gYXRtZWxfbmFuZC5vCitvYmotJChDT05GSUdf
+TkFORF9EQVZJTkNJKQkJKz0gZGF2aW5jaV9uYW5kLm8KIG9iai0kKENPTkZJR19OQU5EX1MzQzI0
+WFgpCQkrPSBuYW5kX3MzYzI0eHgubwpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvbmFuZC9kYXZp
+bmNpX25hbmQuYyBiL2RyaXZlcnMvbXRkL25hbmQvZGF2aW5jaV9uYW5kLmMKbmV3IGZpbGUgbW9k
+ZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uNmRkNWI0OAotLS0gL2Rldi9udWxsCisrKyBiL2RyaXZl
+cnMvbXRkL25hbmQvZGF2aW5jaV9uYW5kLmMKQEAgLTAsMCArMSw2NzAgQEAKKy8qCisgKiBOQU5E
+IGRyaXZlciBmb3IgVEkgRGFWaW5jaSBiYXNlZCBib2FyZHMuCisgKgorICogQ29weXJpZ2h0IChD
+KSAyMDA3IFNlcmdleSBLdWJ1c2h5biA8a3NpQGtvaTgubmV0PgorICoKKyAqIEJhc2VkIG9uIExp
+bnV4IERhVmluY2kgTkFORCBkcml2ZXIgYnkgVEkuIE9yaWdpbmFsIGNvcHlyaWdodCBmb2xsb3dz
+OgorICovCisKKy8qCisgKgorICogbGludXgvZHJpdmVycy9tdGQvbmFuZC9uYW5kX2RhdmluY2ku
+YworICoKKyAqIE5BTkQgRmxhc2ggRHJpdmVyCisgKgorICogQ29weXJpZ2h0IChDKSAyMDA2IFRl
+eGFzIEluc3RydW1lbnRzLgorICoKKyAqIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KKyAqCisgKiBUaGlz
+IHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29y
+IG1vZGlmeQorICogaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMg
+TGljZW5zZSBhcyBwdWJsaXNoZWQgYnkKKyAqIHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb247
+IGVpdGhlciB2ZXJzaW9uIDIgb2YgdGhlIExpY2Vuc2UsIG9yCisgKiAoYXQgeW91ciBvcHRpb24p
+IGFueSBsYXRlciB2ZXJzaW9uLgorICoKKyAqIFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBp
+biB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAorICogYnV0IFdJVEhPVVQgQU5ZIFdB
+UlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YKKyAqIE1FUkNIQU5U
+QUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4gIFNlZSB0aGUKKyAq
+IEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBtb3JlIGRldGFpbHMuCisgKgorICogIFlv
+dSBzaG91bGQgaGF2ZSByZWNlaXZlZCBhIGNvcHkgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBM
+aWNlbnNlCisgKiAgYWxvbmcgd2l0aCB0aGlzIHByb2dyYW07IGlmIG5vdCwgd3JpdGUgdG8gdGhl
+IEZyZWUgU29mdHdhcmUKKyAqICBGb3VuZGF0aW9uLCBJbmMuLCA2NzUgTWFzcyBBdmUsIENhbWJy
+aWRnZSwgTUEgMDIxMzksIFVTQS4KKyAqIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KKyAqCisgKiAgT3Zl
+cnZpZXc6CisgKiAgIFRoaXMgaXMgYSBkZXZpY2UgZHJpdmVyIGZvciB0aGUgTkFORCBmbGFzaCBk
+ZXZpY2UgZm91bmQgb24gdGhlCisgKiAgIERhVmluY2kgYm9hcmQgd2hpY2ggdXRpbGl6ZXMgdGhl
+IFNhbXN1bmcgazlrMmcwOCBwYXJ0LgorICoKKyBNb2RpZmljYXRpb25zOgorIHZlci4gMS4wOiBG
+ZWIgMjAwNSwgVmlub2QvU3VkaGFrYXIKKyAtCisgKgorICovCisKKyNkZWZpbmUgQ09ORklHX1NZ
+U19OQU5EX0NTIDMKKyNkZWZpbmUgQ09ORklHX1NZU19OQU5EX1VTRV9GTEFTSF9CQlQKKyNkZWZp
+bmUgQ09ORklHX1NZU19OQU5EXzRCSVRfSFdfRUNDX09PQkZJUlNUCisjZGVmaW5lIENPTkZJR19T
+WVNfTkFORF9QQUdFXzJLCisKKyNpbmNsdWRlIDxjb25maWcuaD4KKyNpbmNsdWRlIDxjb21tb24u
+aD4KKyNpbmNsdWRlIDxkcml2ZXIuaD4KKyNpbmNsdWRlIDxtYWxsb2MuaD4KKyNpbmNsdWRlIDxp
+bml0Lmg+CisjaW5jbHVkZSA8bGludXgvbXRkL210ZC5oPgorI2luY2x1ZGUgPGxpbnV4L210ZC9u
+YW5kLmg+CisjaW5jbHVkZSA8aW8uaD4KKyNpbmNsdWRlIDxhc20tZ2VuZXJpYy9lcnJuby5oPgor
+I2luY2x1ZGUgPG1hY2gvYWVtaWYuaD4KKyNpbmNsdWRlIDxtYWNoL25hbmQuaD4KKyNpbmNsdWRl
+IDxtYWNoL25hbmRfZGVmcy5oPgorI2luY2x1ZGUgPG1hY2gvZW1pZl9kZWZzLmg+CisKKy8qIERl
+ZmluaXRpb25zIGZvciA0LWJpdCBoYXJkd2FyZSBFQ0MgKi8KKyNkZWZpbmUgTkFORF9USU1FT1VU
+CQkJMTAyNDAKKyNkZWZpbmUgTkFORF9FQ0NfQlVTWQkJCTB4QworI2RlZmluZSBOQU5EXzRCSVRF
+Q0NfTUFTSwkJMHgwM0ZGMDNGRgorI2RlZmluZSBFTUlGX05BTkRGU1JfRUNDX1NUQVRFX01BU0sg
+IAkweDAwMDAwRjAwCisjZGVmaW5lIEVDQ19TVEFURV9OT19FUlIJCTB4MAorI2RlZmluZSBFQ0Nf
+U1RBVEVfVE9PX01BTllfRVJSUwkJMHgxCisjZGVmaW5lIEVDQ19TVEFURV9FUlJfQ09SUl9DT01Q
+X1AJMHgyCisjZGVmaW5lIEVDQ19TVEFURV9FUlJfQ09SUl9DT01QX04JMHgzCisKK3N0YXRpYyBl
+bWlmX3JlZ2lzdGVycyAqY29uc3QgZW1pZl9yZWdzID0gKHZvaWQgKikgREFWSU5DSV9BU1lOQ19F
+TUlGX0NOVFJMX0JBU0U7CisKK3N0cnVjdCBkYXZpbmNpX25hbmRfaG9zdCB7CisJc3RydWN0IG10
+ZF9pbmZvICAgICAgICAgbXRkOworCXN0cnVjdCBuYW5kX2NoaXAgICAgICAgIG5hbmQ7CisJc3Ry
+dWN0IG10ZF9wYXJ0aXRpb24gICAgKnBhcnRzOworCXN0cnVjdCBkZXZpY2VfZCAgICAgICAgICpk
+ZXY7CisKKwl2b2lkIF9faW9tZW0gICAgICAgICAgICAqYmFzZTsKK307CisKKy8qCisgKiBFeHBs
+b2l0IHRoZSBsaXR0bGUgZW5kaWFubmVzcyBvZiB0aGUgQVJNIHRvIGRvIG11bHRpLWJ5dGUgdHJh
+bnNmZXJzCisgKiBwZXIgZGV2aWNlIHJlYWQuIFRoaXMgY2FuIHBlcmZvcm0gb3ZlciB0d2ljZSBh
+cyBxdWlja2x5IGFzIGluZGl2aWR1YWwKKyAqIGJ5dGUgdHJhbnNmZXJzIHdoZW4gYnVmZmVyIGFs
+aWdubWVudCBpcyBjb25kdWNpdmUuCisgKgorICogTk9URTogVGhpcyBvbmx5IHdvcmtzIGlmIHRo
+ZSBOQU5EIGlzIG5vdCBjb25uZWN0ZWQgdG8gdGhlIDIgTFNCcyBvZgorICogdGhlIGFkZHJlc3Mg
+YnVzLiBPbiBEYXZpbmNpIEVWTSBwbGF0Zm9ybXMgdGhpcyBoYXMgYWx3YXlzIGJlZW4gdHJ1ZS4K
+KyAqLworc3RhdGljIHZvaWQgbmFuZF9kYXZpbmNpX3JlYWRfYnVmKHN0cnVjdCBtdGRfaW5mbyAq
+bXRkLCB1aW50OF90ICpidWYsIGludCBsZW4pCit7CisJc3RydWN0IG5hbmRfY2hpcCAqY2hpcCA9
+IG10ZC0+cHJpdjsKKwljb25zdCB1MzIgKm5hbmQgPSBjaGlwLT5JT19BRERSX1I7CisKKwkvKiBN
+YWtlIHN1cmUgdGhhdCBidWYgaXMgMzIgYml0IGFsaWduZWQgKi8KKwlpZiAoKChpbnQpYnVmICYg
+MHgzKSAhPSAwKSB7CisJCWlmICgoKGludClidWYgJiAweDEpICE9IDApIHsKKwkJCWlmIChsZW4p
+IHsKKwkJCQkqYnVmID0gcmVhZGIobmFuZCk7CisJCQkJYnVmICs9IDE7CisJCQkJbGVuLS07CisJ
+CQl9CisJCX0KKworCQlpZiAoKChpbnQpYnVmICYgMHgzKSAhPSAwKSB7CisJCQlpZiAobGVuID49
+IDIpIHsKKwkJCQkqKHUxNiAqKWJ1ZiA9IHJlYWR3KG5hbmQpOworCQkJCWJ1ZiArPSAyOworCQkJ
+CWxlbiAtPSAyOworCQkJfQorCQl9CisJfQorCisJLyogY29weSBhbGlnbmVkIGRhdGEgKi8KKwl3
+aGlsZSAobGVuID49IDQpIHsKKwkJKih1MzIgKilidWYgPSByZWFkbChuYW5kKTsKKwkJYnVmICs9
+IDQ7CisJCWxlbiAtPSA0OworCX0KKworCS8qIG1vcCB1cCBhbnkgcmVtYWluaW5nIGJ5dGVzICov
+CisJaWYgKGxlbikgeworCQlpZiAobGVuID49IDIpIHsKKwkJCSoodTE2ICopYnVmID0gcmVhZHco
+bmFuZCk7CisJCQlidWYgKz0gMjsKKwkJCWxlbiAtPSAyOworCQl9CisKKwkJaWYgKGxlbikKKwkJ
+CSpidWYgPSByZWFkYihuYW5kKTsKKwl9Cit9CisKK3N0YXRpYyB2b2lkIG5hbmRfZGF2aW5jaV93
+cml0ZV9idWYoc3RydWN0IG10ZF9pbmZvICptdGQsIGNvbnN0IHVpbnQ4X3QgKmJ1ZiwKKwkJCQkg
+ICBpbnQgbGVuKQoreworCXN0cnVjdCBuYW5kX2NoaXAgKmNoaXAgPSBtdGQtPnByaXY7CisJY29u
+c3QgdTMyICpuYW5kID0gY2hpcC0+SU9fQUREUl9XOworCisJLyogTWFrZSBzdXJlIHRoYXQgYnVm
+IGlzIDMyIGJpdCBhbGlnbmVkICovCisJaWYgKCgoaW50KWJ1ZiAmIDB4MykgIT0gMCkgeworCQlp
+ZiAoKChpbnQpYnVmICYgMHgxKSAhPSAwKSB7CisJCQlpZiAobGVuKSB7CisJCQkJd3JpdGViKCpi
+dWYsIG5hbmQpOworCQkJCWJ1ZiArPSAxOworCQkJCWxlbi0tOworCQkJfQorCQl9CisKKwkJaWYg
+KCgoaW50KWJ1ZiAmIDB4MykgIT0gMCkgeworCQkJaWYgKGxlbiA+PSAyKSB7CisJCQkJd3JpdGV3
+KCoodTE2ICopYnVmLCBuYW5kKTsKKwkJCQlidWYgKz0gMjsKKwkJCQlsZW4gLT0gMjsKKwkJCX0K
+KwkJfQorCX0KKworCS8qIGNvcHkgYWxpZ25lZCBkYXRhICovCisJd2hpbGUgKGxlbiA+PSA0KSB7
+CisJCXdyaXRlbCgqKHUzMiAqKWJ1ZiwgbmFuZCk7CisJCWJ1ZiArPSA0OworCQlsZW4gLT0gNDsK
+Kwl9CisKKwkvKiBtb3AgdXAgYW55IHJlbWFpbmluZyBieXRlcyAqLworCWlmIChsZW4pIHsKKwkJ
+aWYgKGxlbiA+PSAyKSB7CisJCQl3cml0ZXcoKih1MTYgKilidWYsIG5hbmQpOworCQkJYnVmICs9
+IDI7CisJCQlsZW4gLT0gMjsKKwkJfQorCisJCWlmIChsZW4pCisJCQl3cml0ZWIoKmJ1ZiwgbmFu
+ZCk7CisJfQorfQorCitzdGF0aWMgdm9pZCBuYW5kX2RhdmluY2lfaHdjb250cm9sKHN0cnVjdCBt
+dGRfaW5mbyAqbXRkLCBpbnQgY21kLCB1bnNpZ25lZCBpbnQgY3RybCkKK3sKKwlzdHJ1Y3QJCW5h
+bmRfY2hpcCAqdGhpcyA9IG10ZC0+cHJpdjsKKwl1X2ludDMyX3QJSU9fQUREUl9XID0gKHVfaW50
+MzJfdCl0aGlzLT5JT19BRERSX1c7CisKKwlpZiAoY3RybCAmIE5BTkRfQ1RSTF9DSEFOR0UpIHsK
+KwkJSU9fQUREUl9XICY9IH4oTUFTS19BTEV8TUFTS19DTEUpOworCisJCWlmICggY3RybCAmIE5B
+TkRfQ0xFICkKKwkJCUlPX0FERFJfVyB8PSBNQVNLX0NMRTsKKwkJaWYgKCBjdHJsICYgTkFORF9B
+TEUgKQorCQkJSU9fQUREUl9XIHw9IE1BU0tfQUxFOworCQl0aGlzLT5JT19BRERSX1cgPSAodm9p
+ZCBfX2lvbWVtICopIElPX0FERFJfVzsKKwl9CisKKwkvL3ByaW50ZigibmFuZF9kYXZpbmNpX2h3
+Y29udHJvbCBjbWQgMHglMDJ4IC0+IGFkZHIgMHglMDh4XG4iLCBjbWQsIElPX0FERFJfVyk7CisJ
+aWYgKGNtZCAhPSBOQU5EX0NNRF9OT05FKQorCQl3cml0ZWIoY21kLCBJT19BRERSX1cpOworfQor
+CisjaWZkZWYgQ09ORklHX1NZU19OQU5EX0hXX0VDQworCitzdGF0aWMgdm9pZCBuYW5kX2Rhdmlu
+Y2lfZW5hYmxlX2h3ZWNjKHN0cnVjdCBtdGRfaW5mbyAqbXRkLCBpbnQgbW9kZSkKK3sKKwl1X2lu
+dDMyX3QJdmFsOworCisJcHJpbnRmKCJuYW5kX2RhdmluY2lfZW5hYmxlX2h3ZWNjXG4iKTsKKwor
+CSh2b2lkKXJlYWRsKCYoZW1pZl9yZWdzLT5OQU5ERkVDQ1tDT05GSUdfU1lTX05BTkRfQ1MgLSAy
+XSkpOworCisJdmFsID0gcmVhZGwoJmVtaWZfcmVncy0+TkFOREZDUik7CisJdmFsIHw9IERBVklO
+Q0lfTkFOREZDUl9OQU5EX0VOQUJMRShDT05GSUdfU1lTX05BTkRfQ1MpOworCXZhbCB8PSBEQVZJ
+TkNJX05BTkRGQ1JfMUJJVF9FQ0NfU1RBUlQoQ09ORklHX1NZU19OQU5EX0NTKTsKKwl3cml0ZWwo
+dmFsLCAmZW1pZl9yZWdzLT5OQU5ERkNSKTsKK30KKworc3RhdGljIHVfaW50MzJfdCBuYW5kX2Rh
+dmluY2lfcmVhZGVjYyhzdHJ1Y3QgbXRkX2luZm8gKm10ZCwgdV9pbnQzMl90IHJlZ2lvbikKK3sK
+Kwl1X2ludDMyX3QJZWNjID0gMDsKKworCWVjYyA9IHJlYWRsKCYoZW1pZl9yZWdzLT5OQU5ERkVD
+Q1tyZWdpb24gLSAxXSkpOworCisJcmV0dXJuKGVjYyk7Cit9CisKK3N0YXRpYyBpbnQgbmFuZF9k
+YXZpbmNpX2NhbGN1bGF0ZV9lY2Moc3RydWN0IG10ZF9pbmZvICptdGQsIGNvbnN0IHVfY2hhciAq
+ZGF0LCB1X2NoYXIgKmVjY19jb2RlKQoreworCXVfaW50MzJfdAkJdG1wOworCWNvbnN0IGludCBy
+ZWdpb24gPSAxOworCisJdG1wID0gbmFuZF9kYXZpbmNpX3JlYWRlY2MobXRkLCByZWdpb24pOwor
+CisJLyogU3F1ZWV6ZSA0IGJ5dGVzIEVDQyBpbnRvIDMgYnl0ZXMgYnkgcmVtb3ZpbmcgUkVTRVJW
+RUQgYml0cworCSAqIGFuZCBzaGlmdGluZy4gUkVTRVJWRUQgYml0cyBhcmUgMzEgdG8gMjggYW5k
+IDE1IHRvIDEyLiAqLworCXRtcCA9ICh0bXAgJiAweDAwMDAwZmZmKSB8ICgodG1wICYgMHgwZmZm
+MDAwMCkgPj4gNCk7CisKKwkvKiBJbnZlcnQgc28gdGhhdCBlcmFzZWQgYmxvY2sgRUNDIGlzIGNv
+cnJlY3QgKi8KKwl0bXAgPSB+dG1wOworCisJKmVjY19jb2RlKysgPSB0bXA7CisJKmVjY19jb2Rl
+KysgPSB0bXAgPj4gIDg7CisJKmVjY19jb2RlKysgPSB0bXAgPj4gMTY7CisKKwkvKiBOT1RFOiAg
+dGhlIGFib3ZlIGNvZGUgbWF0Y2hlcyBtYWlubGluZSBMaW51eDoKKwkgKgkuUFFSLnN0dSA9PT4g
+flBRUnN0dQorCSAqCisJICogTW9udGFWaXN0YS9USSBrZXJuZWxzIGVuY29kZSB0aG9zZSBieXRl
+cyBkaWZmZXJlbnRseSwgdXNlCisJICogY29tcGxpY2F0ZWQgKGFuZCBhbGxlZ2VkbHkgc29tZXRp
+bWVzLXdyb25nKSBjb3JyZWN0aW9uIGNvZGUsCisJICogYW5kIHVzdWFsbHkgc2hpcHBlZCB3aXRo
+IFUtQm9vdCB0aGF0IHVzZXMgc29mdHdhcmUgRUNDOgorCSAqCS5QUVIuc3R1ID09PiBQc1FSdHUK
+KwkgKgorCSAqIElmIHlvdSBuZWVkIE1WL1RJIGNvbXBhdGlibGUgTkFORCBJL08gaW4gVS1Cb290
+LCBpdCBzaG91bGQKKwkgKiBiZSBwb3NzaWJsZSB0byAoYSkgY2hhbmdlIHRoZSBtYW5nbGluZyBh
+Ym92ZSwgKGIpIHJldmVyc2UKKwkgKiB0aGF0IG1hbmdsaW5nIGluIG5hbmRfZGF2aW5jaV9jb3Jy
+ZWN0X2RhdGEoKSBiZWxvdy4KKwkgKi8KKworCXJldHVybiAwOworfQorCitzdGF0aWMgaW50IG5h
+bmRfZGF2aW5jaV9jb3JyZWN0X2RhdGEoc3RydWN0IG10ZF9pbmZvICptdGQsIHVfY2hhciAqZGF0
+LCB1X2NoYXIgKnJlYWRfZWNjLCB1X2NoYXIgKmNhbGNfZWNjKQoreworCXN0cnVjdCBuYW5kX2No
+aXAgKnRoaXMgPSBtdGQtPnByaXY7CisJdV9pbnQzMl90IGVjY19uYW5kID0gcmVhZF9lY2NbMF0g
+fCAocmVhZF9lY2NbMV0gPDwgOCkgfAorCQkJCQkgIChyZWFkX2VjY1syXSA8PCAxNik7CisJdV9p
+bnQzMl90IGVjY19jYWxjID0gY2FsY19lY2NbMF0gfCAoY2FsY19lY2NbMV0gPDwgOCkgfAorCQkJ
+CQkgIChjYWxjX2VjY1syXSA8PCAxNik7CisJdV9pbnQzMl90IGRpZmYgPSBlY2NfY2FsYyBeIGVj
+Y19uYW5kOworCisJaWYgKGRpZmYpIHsKKwkJaWYgKCgoKGRpZmYgPj4gMTIpIF4gZGlmZikgJiAw
+eGZmZikgPT0gMHhmZmYpIHsKKwkJCS8qIENvcnJlY3RhYmxlIGVycm9yICovCisJCQlpZiAoKGRp
+ZmYgPj4gKDEyICsgMykpIDwgdGhpcy0+ZWNjLnNpemUpIHsKKwkJCQl1aW50OF90IGZpbmRfYml0
+ID0gMSA8PCAoKGRpZmYgPj4gMTIpICYgNyk7CisJCQkJdWludDMyX3QgZmluZF9ieXRlID0gZGlm
+ZiA+PiAoMTIgKyAzKTsKKworCQkJCWRhdFtmaW5kX2J5dGVdIF49IGZpbmRfYml0OworCQkJCU1U
+RERFQlVHKE1URF9ERUJVR19MRVZFTDAsICJDb3JyZWN0aW5nIHNpbmdsZSAiCisJCQkJCSAiYml0
+IEVDQyBlcnJvciBhdCBvZmZzZXQ6ICVkLCBiaXQ6ICIKKwkJCQkJICIlZFxuIiwgZmluZF9ieXRl
+LCBmaW5kX2JpdCk7CisJCQkJcmV0dXJuIDE7CisJCQl9IGVsc2UgeworCQkJCXJldHVybiAtMTsK
+KwkJCX0KKwkJfSBlbHNlIGlmICghKGRpZmYgJiAoZGlmZiAtIDEpKSkgeworCQkJLyogU2luZ2xl
+IGJpdCBFQ0MgZXJyb3IgaW4gdGhlIEVDQyBpdHNlbGYsCisJCQkgICBub3RoaW5nIHRvIGZpeCAq
+LworCQkJTVREREVCVUcoTVREX0RFQlVHX0xFVkVMMCwgIlNpbmdsZSBiaXQgRUNDIGVycm9yIGlu
+ICIKKwkJCQkgIkVDQy5cbiIpOworCQkJcmV0dXJuIDE7CisJCX0gZWxzZSB7CisJCQkvKiBVbmNv
+cnJlY3RhYmxlIGVycm9yICovCisJCQlNVERERUJVRyhNVERfREVCVUdfTEVWRUwwLCAiRUNDIFVO
+Q09SUkVDVEVEX0VSUk9SIDFcbiIpOworCQkJcmV0dXJuIC0xOworCQl9CisJfQorCXJldHVybigw
+KTsKK30KKyNlbmRpZiAvKiBDT05GSUdfU1lTX05BTkRfSFdfRUNDICovCisKKyNpZmRlZiBDT05G
+SUdfU1lTX05BTkRfNEJJVF9IV19FQ0NfT09CRklSU1QKK3N0YXRpYyBzdHJ1Y3QgbmFuZF9lY2Ns
+YXlvdXQgbmFuZF9kYXZpbmNpXzRiaXRfbGF5b3V0X29vYmZpcnN0ID0geworI2lmIGRlZmluZWQo
+Q09ORklHX1NZU19OQU5EX1BBR0VfMkspCisJLmVjY2J5dGVzID0gNDAsCisJLmVjY3BvcyA9IHs2
+LCA3LCA4LCA5LCAxMCwgMTEsIDEyLCAxMywgMTQsIDE1LAorCQkgICAyMiwgMjMsIDI0LCAyNSwg
+MjYsIDI3LCAyOCwgMjksIDMwLCAzMSwKKwkJICAgMzgsIDM5LCA0MCwgNDEsIDQyLCA0MywgNDQs
+IDQ1LCA0NiwgNDcsCisJCSAgIDU0LCA1NSwgNTYsIDU3LCA1OCwgNTksIDYwLCA2MSwgNjIsIDYz
+LAorCQkgICB9LAorCS5vb2JmcmVlID0ge3syLCA0fSwgezE2LCA2fSwgezMyLCA2fSwgezQ4LCA2
+fSwKKy8qCisJLmVjY3BvcyA9IHsKKwkJMjQsIDI1LCAyNiwgMjcsIDI4LAorCQkyOSwgMzAsIDMx
+LCAzMiwgMzMsIDM0LCAzNSwgMzYsIDM3LCAzOCwKKwkJMzksIDQwLCA0MSwgNDIsIDQzLCA0NCwg
+NDUsIDQ2LCA0NywgNDgsCisJCTQ5LCA1MCwgNTEsIDUyLCA1MywgNTQsIDU1LCA1NiwgNTcsIDU4
+LAorCQk1OSwgNjAsIDYxLCA2MiwgNjMsCisJCX0sCisJLm9vYmZyZWUgPSB7CisJCXsub2Zmc2V0
+ID0gMiwgLmxlbmd0aCA9IDIyLCB9LAorKi8KKwl9LAorI2VsaWYgZGVmaW5lZChDT05GSUdfU1lT
+X05BTkRfUEFHRV80SykKKwkuZWNjYnl0ZXMgPSA4MCwKKwkuZWNjcG9zID0geworCQk0OCwgNDks
+IDUwLCA1MSwgNTIsIDUzLCA1NCwgNTUsIDU2LCA1NywKKwkJNTgsIDU5LCA2MCwgNjEsIDYyLCA2
+MywJNjQsIDY1LCA2NiwgNjcsCisJCTY4LCA2OSwgNzAsIDcxLCA3MiwgNzMsIDc0LCA3NSwgNzYs
+IDc3LAorCQk3OCwgNzksCTgwLCA4MSwgODIsIDgzLAk4NCwgODUsIDg2LCA4NywKKwkJODgsIDg5
+LCA5MCwgOTEsIDkyLCA5MywJOTQsIDk1LCA5NiwgOTcsCisJCTk4LCA5OSwgMTAwLCAxMDEsIDEw
+MiwgMTAzLCAxMDQsIDEwNSwgMTA2LCAxMDcsCisJCTEwOCwgMTA5LCAxMTAsIDExMSwgMTEyLCAx
+MTMsIDExNCwgMTE1LCAxMTYsIDExNywKKwkJMTE4LCAxMTksIDEyMCwgMTIxLCAxMjIsIDEyMywg
+MTI0LCAxMjUsIDEyNiwgMTI3LAorCQl9LAorCS5vb2JmcmVlID0geworCQl7Lm9mZnNldCA9IDIs
+IC5sZW5ndGggPSA0NiwgfSwKKwl9LAorI2VuZGlmCit9OworCitzdGF0aWMgdm9pZCBuYW5kX2Rh
+dmluY2lfNGJpdF9lbmFibGVfaHdlY2Moc3RydWN0IG10ZF9pbmZvICptdGQsIGludCBtb2RlKQor
+eworCXUzMiB2YWw7CisKKwkvL3ByaW50ZigibmFuZF9kYXZpbmNpXzRiaXRfZW5hYmxlX2h3ZWNj
+XG4iKTsKKworCXN3aXRjaCAobW9kZSkgeworCWNhc2UgTkFORF9FQ0NfV1JJVEU6CisJY2FzZSBO
+QU5EX0VDQ19SRUFEOgorCQkvKgorCQkgKiBTdGFydCBhIG5ldyBFQ0MgY2FsY3VsYXRpb24gZm9y
+IHJlYWRpbmcgb3Igd3JpdGluZyA1MTIgYnl0ZXMKKwkJICogb2YgZGF0YS4KKwkJICovCisJCXZh
+bCA9IHJlYWRsKCZlbWlmX3JlZ3MtPk5BTkRGQ1IpOworCQl2YWwgJj0gfkRBVklOQ0lfTkFOREZD
+Ul80QklUX0VDQ19TRUxfTUFTSzsKKwkJdmFsIHw9IERBVklOQ0lfTkFOREZDUl9OQU5EX0VOQUJM
+RShDT05GSUdfU1lTX05BTkRfQ1MpOworCQl2YWwgfD0gREFWSU5DSV9OQU5ERkNSXzRCSVRfRUND
+X1NFTChDT05GSUdfU1lTX05BTkRfQ1MpOworCQl2YWwgfD0gREFWSU5DSV9OQU5ERkNSXzRCSVRf
+RUNDX1NUQVJUOworCQl3cml0ZWwodmFsLCAmZW1pZl9yZWdzLT5OQU5ERkNSKTsKKwkJYnJlYWs7
+CisJY2FzZSBOQU5EX0VDQ19SRUFEU1lOOgorCQl2YWwgPSBlbWlmX3JlZ3MtPk5BTkQ0QklURUND
+MTsKKwkJYnJlYWs7CisJZGVmYXVsdDoKKwkJYnJlYWs7CisJfQorfQorCitzdGF0aWMgdTMyIG5h
+bmRfZGF2aW5jaV80Yml0X3JlYWRlY2Moc3RydWN0IG10ZF9pbmZvICptdGQsIHVuc2lnbmVkIGlu
+dCBlY2NbNF0pCit7CisJZWNjWzBdID0gZW1pZl9yZWdzLT5OQU5ENEJJVEVDQzEgJiBOQU5EXzRC
+SVRFQ0NfTUFTSzsKKwllY2NbMV0gPSBlbWlmX3JlZ3MtPk5BTkQ0QklURUNDMiAmIE5BTkRfNEJJ
+VEVDQ19NQVNLOworCWVjY1syXSA9IGVtaWZfcmVncy0+TkFORDRCSVRFQ0MzICYgTkFORF80QklU
+RUNDX01BU0s7CisJZWNjWzNdID0gZW1pZl9yZWdzLT5OQU5ENEJJVEVDQzQgJiBOQU5EXzRCSVRF
+Q0NfTUFTSzsKKworCXJldHVybiAwOworfQorCitzdGF0aWMgaW50IG5hbmRfZGF2aW5jaV80Yml0
+X2NhbGN1bGF0ZV9lY2Moc3RydWN0IG10ZF9pbmZvICptdGQsCisJCQkJCSAgIGNvbnN0IHVpbnQ4
+X3QgKmRhdCwKKwkJCQkJICAgdWludDhfdCAqZWNjX2NvZGUpCit7CisJdW5zaWduZWQgaW50IGh3
+XzRlY2NbNF07CisJdW5zaWduZWQgaW50IGk7CisKKwluYW5kX2RhdmluY2lfNGJpdF9yZWFkZWNj
+KG10ZCwgaHdfNGVjYyk7CisKKwkvKkNvbnZlcnQgMTAgYml0IGVjYyB2YWx1ZSB0byA4IGJpdCAq
+LworCWZvciAoaSA9IDA7IGkgPCAyOyBpKyspIHsKKwkJdW5zaWduZWQgaW50IGh3X2VjY19sb3cg
+PSBod180ZWNjW2kgKiAyXTsKKwkJdW5zaWduZWQgaW50IGh3X2VjY19oaSA9IGh3XzRlY2NbKGkg
+KiAyKSArIDFdOworCisJCS8qIFRha2UgZmlyc3QgOCBiaXRzIGZyb20gdmFsMSAoY291bnQxPTAp
+IG9yIHZhbDUgKGNvdW50MT0xKSAqLworCQkqZWNjX2NvZGUrKyA9IGh3X2VjY19sb3cgJiAweEZG
+OworCisJCS8qCisJCSAqIFRha2UgMiBiaXRzIGFzIExTQiBiaXRzIGZyb20gdmFsMSAoY291bnQx
+PTApIG9yIHZhbDUKKwkJICogKGNvdW50MT0xKSBhbmQgNiBiaXRzIGZyb20gdmFsMiAoY291bnQx
+PTApIG9yCisJCSAqIHZhbDUgKGNvdW50MT0xKQorCQkgKi8KKwkJKmVjY19jb2RlKysgPQorCQkg
+ICAgKChod19lY2NfbG93ID4+IDgpICYgMHgzKSB8ICgoaHdfZWNjX2xvdyA+PiAxNCkgJiAweEZD
+KTsKKworCQkvKgorCQkgKiBUYWtlIDQgYml0cyBmcm9tIHZhbDIgKGNvdW50MT0wKSBvciB2YWw1
+IChjb3VudDE9MSkgYW5kCisJCSAqIDQgYml0cyBmcm9tIHZhbDMgKGNvdW50MT0wKSBvciB2YWw2
+IChjb3VudDE9MSkKKwkJICovCisJCSplY2NfY29kZSsrID0KKwkJICAgICgoaHdfZWNjX2xvdyA+
+PiAyMikgJiAweEYpIHwgKChod19lY2NfaGkgPDwgNCkgJiAweEYwKTsKKworCQkvKgorCQkgKiBU
+YWtlIDYgYml0cyBmcm9tIHZhbDMoY291bnQxPTApIG9yIHZhbDYgKGNvdW50MT0xKSBhbmQKKwkJ
+ICogMiBiaXRzIGZyb20gdmFsNCAoY291bnQxPTApIG9yICB2YWw3IChjb3VudDE9MSkKKwkJICov
+CisJCSplY2NfY29kZSsrID0KKwkJICAgICgoaHdfZWNjX2hpID4+IDQpICYgMHgzRikgfCAoKGh3
+X2VjY19oaSA+PiAxMCkgJiAweEMwKTsKKworCQkvKiBUYWtlIDggYml0cyBmcm9tIHZhbDQgKGNv
+dW50MT0wKSBvciB2YWw3IChjb3VudDE9MSkgKi8KKwkJKmVjY19jb2RlKysgPSAoaHdfZWNjX2hp
+ID4+IDE4KSAmIDB4RkY7CisJfQorCisJcmV0dXJuIDA7Cit9CisKK3N0YXRpYyBpbnQgbmFuZF9k
+YXZpbmNpXzRiaXRfY29ycmVjdF9kYXRhKHN0cnVjdCBtdGRfaW5mbyAqbXRkLCB1aW50OF90ICpk
+YXQsCisJCQkJCSAgdWludDhfdCAqcmVhZF9lY2MsIHVpbnQ4X3QgKmNhbGNfZWNjKQoreworCWlu
+dCBpOworCXVuc2lnbmVkIGludCBod180ZWNjWzRdOworCXVuc2lnbmVkIGludCBpc2Vycm9yOwor
+CXVuc2lnbmVkIHNob3J0ICplY2MxNjsKKwl1bnNpZ25lZCBpbnQgbnVtZXJyb3JzLCBlcnJvcmFk
+ZHJlc3MsIGVycm9ydmFsdWU7CisJdTMyIHZhbDsKKworCS8qCisJICogQ2hlY2sgZm9yIGFuIEVD
+QyB3aGVyZSBhbGwgYnl0ZXMgYXJlIDB4RkYuICBJZiB0aGlzIGlzIHRoZSBjYXNlLCB3ZQorCSAq
+IHdpbGwgYXNzdW1lIHdlIGFyZSBsb29raW5nIGF0IGFuIGVyYXNlZCBwYWdlIGFuZCB3ZSBzaG91
+bGQgaWdub3JlCisJICogdGhlIEVDQy4KKwkgKi8KKwlmb3IgKGkgPSAwOyBpIDwgMTA7IGkrKykg
+eworCQlpZiAocmVhZF9lY2NbaV0gIT0gMHhGRikKKwkJCWJyZWFrOworCX0KKwlpZiAoaSA9PSAx
+MCkKKwkJcmV0dXJuIDA7CisKKwkvKiBDb252ZXJ0IDggYml0IGluIHRvIDEwIGJpdCAqLworCWVj
+YzE2ID0gKHVuc2lnbmVkIHNob3J0ICopJnJlYWRfZWNjWzBdOworCisJLyoKKwkgKiBXcml0ZSB0
+aGUgcGFyaXR5IHZhbHVlcyBpbiB0aGUgTkFORCBGbGFzaCA0LWJpdCBFQ0MgTG9hZCByZWdpc3Rl
+ci4KKwkgKiBXcml0ZSBlYWNoIHBhcml0eSB2YWx1ZSBvbmUgYXQgYSB0aW1lIHN0YXJ0aW5nIGZy
+b20gNGJpdF9lY2NfdmFsOAorCSAqIHRvIDRiaXRfZWNjX3ZhbDEuCisJICovCisKKwkvKlRha2Ug
+MiBiaXRzIGZyb20gOHRoIGJ5dGUgYW5kIDggYml0cyBmcm9tIDl0aCBieXRlICovCisJd3JpdGVs
+KCgoZWNjMTZbNF0pID4+IDYpICYgMHgzRkYsICZlbWlmX3JlZ3MtPk5BTkQ0QklURUNDTE9BRCk7
+CisKKwkvKiBUYWtlIDQgYml0cyBmcm9tIDd0aCBieXRlIGFuZCA2IGJpdHMgZnJvbSA4dGggYnl0
+ZSAqLworCXdyaXRlbCgoKChlY2MxNlszXSkgPj4gMTIpICYgMHhGKSB8ICgoKChlY2MxNls0XSkp
+IDw8IDQpICYgMHgzRjApLAorCSAgICAgICAmZW1pZl9yZWdzLT5OQU5ENEJJVEVDQ0xPQUQpOwor
+CisJLyogVGFrZSA2IGJpdHMgZnJvbSA2dGggYnl0ZSBhbmQgNCBiaXRzIGZyb20gN3RoIGJ5dGUg
+Ki8KKwl3cml0ZWwoKGVjYzE2WzNdID4+IDIpICYgMHgzRkYsICZlbWlmX3JlZ3MtPk5BTkQ0QklU
+RUNDTE9BRCk7CisKKwkvKiBUYWtlIDggYml0cyBmcm9tIDV0aCBieXRlIGFuZCAyIGJpdHMgZnJv
+bSA2dGggYnl0ZSAqLworCXdyaXRlbCgoKGVjYzE2WzJdKSA+PiA4KSB8ICgoKChlY2MxNlszXSkp
+IDw8IDgpICYgMHgzMDApLAorCSAgICAgICAmZW1pZl9yZWdzLT5OQU5ENEJJVEVDQ0xPQUQpOwor
+CisJLypUYWtlIDIgYml0cyBmcm9tIDNyZCBieXRlIGFuZCA4IGJpdHMgZnJvbSA0dGggYnl0ZSAq
+LworCXdyaXRlbCgoKChlY2MxNlsxXSkgPj4gMTQpICYgMHgzKSB8ICgoKChlY2MxNlsyXSkpIDw8
+IDIpICYgMHgzRkMpLAorCSAgICAgICAmZW1pZl9yZWdzLT5OQU5ENEJJVEVDQ0xPQUQpOworCisJ
+LyogVGFrZSA0IGJpdHMgZm9ybSAybmQgYnl0ZXMgYW5kIDYgYml0cyBmcm9tIDNyZCBieXRlcyAq
+LworCXdyaXRlbCgoKGVjYzE2WzFdKSA+PiA0KSAmIDB4M0ZGLCAmZW1pZl9yZWdzLT5OQU5ENEJJ
+VEVDQ0xPQUQpOworCisJLyogVGFrZSA2IGJpdHMgZnJvbSAxc3QgYnl0ZSBhbmQgNCBiaXRzIGZy
+b20gMm5kIGJ5dGUgKi8KKwl3cml0ZWwoKCgoZWNjMTZbMF0pID4+IDEwKSAmIDB4M0YpIHwgKCgo
+ZWNjMTZbMV0pIDw8IDYpICYgMHgzQzApLAorCSAgICAgICAmZW1pZl9yZWdzLT5OQU5ENEJJVEVD
+Q0xPQUQpOworCisJLyogVGFrZSAxMCBiaXRzIGZyb20gMHRoIGFuZCAxc3QgYnl0ZXMgKi8KKwl3
+cml0ZWwoKGVjYzE2WzBdKSAmIDB4M0ZGLCAmZW1pZl9yZWdzLT5OQU5ENEJJVEVDQ0xPQUQpOwor
+CisJLyoKKwkgKiBQZXJmb3JtIGEgZHVtbXkgcmVhZCB0byB0aGUgRU1JRiBSZXZpc2lvbiBDb2Rl
+IGFuZCBTdGF0dXMgcmVnaXN0ZXIuCisJICogVGhpcyBpcyByZXF1aXJlZCB0byBlbnN1cmUgdGlt
+ZSBmb3Igc3luZHJvbWUgY2FsY3VsYXRpb24gYWZ0ZXIKKwkgKiB3cml0aW5nIHRoZSBFQ0MgdmFs
+dWVzIGluIHByZXZpb3VzIHN0ZXAuCisJICovCisKKwl2YWwgPSBlbWlmX3JlZ3MtPk5BTkRGU1I7
+CisKKwkvKgorCSAqIFJlYWQgdGhlIHN5bmRyb21lIGZyb20gdGhlIE5BTkQgRmxhc2ggNC1CaXQg
+RUNDIDEtNCByZWdpc3RlcnMuCisJICogQSBzeW5kcm9tZSB2YWx1ZSBvZiAwIG1lYW5zIG5vIGJp
+dCBlcnJvcnMuIElmIHRoZSBzeW5kcm9tZSBpcworCSAqIG5vbi16ZXJvIHRoZW4gZ28gZnVydGhl
+ciBvdGhlcndpc2UgcmV0dXJuLgorCSAqLworCW5hbmRfZGF2aW5jaV80Yml0X3JlYWRlY2MobXRk
+LCBod180ZWNjKTsKKworCWlmICghKGh3XzRlY2NbMF0gfCBod180ZWNjWzFdIHwgaHdfNGVjY1sy
+XSB8IGh3XzRlY2NbM10pKQorCQlyZXR1cm4gMDsKKworCS8qCisJICogQ2xlYXIgYW55IHByZXZp
+b3VzIGFkZHJlc3MgY2FsY3VsYXRpb24gYnkgZG9pbmcgYSBkdW1teSByZWFkIG9mIGFuCisJICog
+ZXJyb3IgYWRkcmVzcyByZWdpc3Rlci4KKwkgKi8KKwl2YWwgPSBlbWlmX3JlZ3MtPk5BTkRFUlJB
+REQxOworCisJLyoKKwkgKiBTZXQgdGhlIGFkZHJfY2FsY19zdCBiaXQoYml0IG5vIDEzKSBpbiB0
+aGUgTkFORCBGbGFzaCBDb250cm9sCisJICogcmVnaXN0ZXIgdG8gMS4KKwkgKi8KKwllbWlmX3Jl
+Z3MtPk5BTkRGQ1IgfD0gMSA8PCAxMzsKKworCS8qCisJICogV2FpdCBmb3IgdGhlIGNvcnJfc3Rh
+dGUgZmllbGQgKGJpdHMgOCB0byAxMSlpbiB0aGUKKwkgKiBOQU5EIEZsYXNoIFN0YXR1cyByZWdp
+c3RlciB0byBiZSBlcXVhbCB0byAweDAsIDB4MSwgMHgyLCBvciAweDMuCisJICovCisJaSA9IE5B
+TkRfVElNRU9VVDsKKwlkbyB7CisJCXZhbCA9IGVtaWZfcmVncy0+TkFOREZTUjsKKwkJdmFsICY9
+IDB4YzAwOworCQlpLS07CisJfSB3aGlsZSAoKGkgPiAwKSAmJiB2YWwpOworCisJaXNlcnJvciA9
+IGVtaWZfcmVncy0+TkFOREZTUjsKKwlpc2Vycm9yICY9IEVNSUZfTkFOREZTUl9FQ0NfU1RBVEVf
+TUFTSzsKKwlpc2Vycm9yID0gaXNlcnJvciA+PiA4OworCisJLyoKKwkgKiBFQ0NfU1RBVEVfVE9P
+X01BTllfRVJSUyAoMHgxKSBtZWFucyBlcnJvcnMgY2Fubm90IGJlCisJICogY29ycmVjdGVkIChm
+aXZlIG9yIG1vcmUgZXJyb3JzKS4gIFRoZSBudW1iZXIgb2YgZXJyb3JzCisJICogY2FsY3VsYXRl
+ZCAoZXJyX251bSBmaWVsZCkgZGlmZmVycyBmcm9tIHRoZSBudW1iZXIgb2YgZXJyb3JzCisJICog
+c2VhcmNoZWQuICBFQ0NfU1RBVEVfRVJSX0NPUlJfQ09NUF9QICgweDIpIG1lYW5zIGVycm9yCisJ
+ICogY29ycmVjdGlvbiBjb21wbGV0ZSAoZXJyb3JzIG9uIGJpdCA4IG9yIDkpLgorCSAqIEVDQ19T
+VEFURV9FUlJfQ09SUl9DT01QX04gKDB4MykgbWVhbnMgZXJyb3IgY29ycmVjdGlvbgorCSAqIGNv
+bXBsZXRlIChlcnJvciBleGlzdHMpLgorCSAqLworCisJaWYgKGlzZXJyb3IgPT0gRUNDX1NUQVRF
+X05PX0VSUikgeworCQl2YWwgPSBlbWlmX3JlZ3MtPk5BTkRFUlJWQUwxOworCQlyZXR1cm4gMDsK
+Kwl9IGVsc2UgaWYgKGlzZXJyb3IgPT0gRUNDX1NUQVRFX1RPT19NQU5ZX0VSUlMpIHsKKwkJdmFs
+ID0gZW1pZl9yZWdzLT5OQU5ERVJSVkFMMTsKKwkJcmV0dXJuIC0xOworCX0KKworCW51bWVycm9y
+cyA9ICgoZW1pZl9yZWdzLT5OQU5ERlNSID4+IDE2KSAmIDB4MykgKyAxOworCisJLyogUmVhZCB0
+aGUgZXJyb3IgYWRkcmVzcywgZXJyb3IgdmFsdWUgYW5kIGNvcnJlY3QgKi8KKwlmb3IgKGkgPSAw
+OyBpIDwgbnVtZXJyb3JzOyBpKyspIHsKKwkJaWYgKGkgPiAxKSB7CisJCQllcnJvcmFkZHJlc3Mg
+PQorCQkJICAgICgoZW1pZl9yZWdzLT5OQU5ERVJSQUREMiA+PgorCQkJICAgICAgKDE2ICogKGkg
+JiAxKSkpICYgMHgzRkYpOworCQkJZXJyb3JhZGRyZXNzID0gKCg1MTIgKyA3KSAtIGVycm9yYWRk
+cmVzcyk7CisJCQllcnJvcnZhbHVlID0KKwkJCSAgICAoKGVtaWZfcmVncy0+TkFOREVSUlZBTDIg
+Pj4KKwkJCSAgICAgICgxNiAqIChpICYgMSkpKSAmIDB4RkYpOworCQl9IGVsc2UgeworCQkJZXJy
+b3JhZGRyZXNzID0KKwkJCSAgICAoKGVtaWZfcmVncy0+TkFOREVSUkFERDEgPj4KKwkJCSAgICAg
+ICgxNiAqIChpICYgMSkpKSAmIDB4M0ZGKTsKKwkJCWVycm9yYWRkcmVzcyA9ICgoNTEyICsgNykg
+LSBlcnJvcmFkZHJlc3MpOworCQkJZXJyb3J2YWx1ZSA9CisJCQkgICAgKChlbWlmX3JlZ3MtPk5B
+TkRFUlJWQUwxID4+CisJCQkgICAgICAoMTYgKiAoaSAmIDEpKSkgJiAweEZGKTsKKwkJfQorCQkv
+KiB4b3IgdGhlIGNvcnJ1cHQgZGF0YSB3aXRoIGVycm9yIHZhbHVlICovCisJCWlmIChlcnJvcmFk
+ZHJlc3MgPCA1MTIpCisJCQlkYXRbZXJyb3JhZGRyZXNzXSBePSBlcnJvcnZhbHVlOworCX0KKwor
+CXJldHVybiBudW1lcnJvcnM7Cit9CisjZW5kaWYgLyogQ09ORklHX1NZU19OQU5EXzRCSVRfSFdf
+RUNDX09PQkZJUlNUICovCisKK3N0YXRpYyBpbnQgbmFuZF9kYXZpbmNpX2Rldl9yZWFkeShzdHJ1
+Y3QgbXRkX2luZm8gKm10ZCkKK3sKKwlyZXR1cm4gZW1pZl9yZWdzLT5OQU5ERlNSICYgMHgxOwor
+fQorCitzdGF0aWMgaW50IGRhdmluY2lfbmFuZF9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikK
+K3sKKwlzdHJ1Y3QgbmFuZF9jaGlwICpjaGlwOworCXN0cnVjdCBkYXZpbmNpX25hbmRfcGRhdGEg
+KnBkYXRhID0gZGV2LT5wbGF0Zm9ybV9kYXRhOworCXN0cnVjdCBtdGRfaW5mbyAqbXRkOworCXN0
+cnVjdCBkYXZpbmNpX25hbmRfaG9zdCAqaG9zdDsKKwl1MzIgdmFsOworCWludCByZXQ7CisKKwkv
+KiBBbGxvY2F0ZSBtZW1vcnkgZm9yIE1URCBkZXZpY2Ugc3RydWN0dXJlIGFuZCBwcml2YXRlIGRh
+dGEgKi8KKwlob3N0ID0ga3phbGxvYyhzaXplb2Yoc3RydWN0IGRhdmluY2lfbmFuZF9ob3N0KSwg
+R0ZQX0tFUk5FTCk7CisJaWYgKCFob3N0KQorCQlyZXR1cm4gLUVOT01FTTsKKworCWhvc3QtPmRl
+diA9IGRldjsKKwlob3N0LT5iYXNlID0gZGV2X3JlcXVlc3RfbWVtX3JlZ2lvbihkZXYsIDApOwor
+CisJLyogc3RydWN0dXJlcyBtdXN0IGJlIGxpbmtlZCAqLworCWNoaXAgPSAmaG9zdC0+bmFuZDsK
+KwljaGlwLT5wcml2ID0gaG9zdDsKKwltdGQgPSAmaG9zdC0+bXRkOworCW10ZC0+cHJpdiA9IGNo
+aXA7CisKKwljaGlwLT5jaGlwX2RlbGF5ICA9IDA7CisJY2hpcC0+SU9fQUREUl9SID0gKHZvaWQg
+KilEQVZJTkNJX0FTWU5DX0VNSUZfREFUQV9DRTNfQkFTRTsKKwljaGlwLT5JT19BRERSX1cgPSAo
+dm9pZCAqKURBVklOQ0lfQVNZTkNfRU1JRl9EQVRBX0NFM19CQVNFOworCisjaWZkZWYgQ09ORklH
+X1NZU19OQU5EX1VTRV9GTEFTSF9CQlQKKwljaGlwLT5vcHRpb25zCSAgfD0gTkFORF9VU0VfRkxB
+U0hfQkJUOworI2VuZGlmCisjaWZkZWYgQ09ORklHX1NZU19OQU5EX0hXX0VDQworCWNoaXAtPmVj
+Yy5tb2RlID0gTkFORF9FQ0NfSFc7CisJY2hpcC0+ZWNjLnNpemUgPSA1MTI7CisJY2hpcC0+ZWNj
+LmJ5dGVzID0gMzsKKwljaGlwLT5lY2MuY2FsY3VsYXRlID0gbmFuZF9kYXZpbmNpX2NhbGN1bGF0
+ZV9lY2M7CisJY2hpcC0+ZWNjLmNvcnJlY3QgID0gbmFuZF9kYXZpbmNpX2NvcnJlY3RfZGF0YTsK
+KwljaGlwLT5lY2MuaHdjdGwgID0gbmFuZF9kYXZpbmNpX2VuYWJsZV9od2VjYzsKKyNlbHNlCisJ
+Y2hpcC0+ZWNjLm1vZGUgPSBOQU5EX0VDQ19TT0ZUOworI2VuZGlmIC8qIENPTkZJR19TWVNfTkFO
+RF9IV19FQ0MgKi8KKyNpZmRlZiBDT05GSUdfU1lTX05BTkRfNEJJVF9IV19FQ0NfT09CRklSU1QK
+KwlkZXZfZGJnKGRldiwgInVzaW5nIG9iYmZpcnN0XG4iKTsKKwljaGlwLT5lY2MubW9kZSA9IE5B
+TkRfRUNDX0hXX09PQl9GSVJTVDsKKwljaGlwLT5lY2Muc2l6ZSA9IDUxMjsKKwljaGlwLT5lY2Mu
+Ynl0ZXMgPSAxMDsKKwljaGlwLT5lY2MuY2FsY3VsYXRlID0gbmFuZF9kYXZpbmNpXzRiaXRfY2Fs
+Y3VsYXRlX2VjYzsKKwljaGlwLT5lY2MuY29ycmVjdCA9IG5hbmRfZGF2aW5jaV80Yml0X2NvcnJl
+Y3RfZGF0YTsKKwljaGlwLT5lY2MuaHdjdGwgPSBuYW5kX2RhdmluY2lfNGJpdF9lbmFibGVfaHdl
+Y2M7CisJY2hpcC0+ZWNjLmxheW91dCA9ICZuYW5kX2RhdmluY2lfNGJpdF9sYXlvdXRfb29iZmly
+c3Q7CisjZW5kaWYKKwkvKiBTZXQgYWRkcmVzcyBvZiBoYXJkd2FyZSBjb250cm9sIGZ1bmN0aW9u
+ICovCisJY2hpcC0+Y21kX2N0cmwgPSBuYW5kX2RhdmluY2lfaHdjb250cm9sOworCisJY2hpcC0+
+cmVhZF9idWYgPSBuYW5kX2RhdmluY2lfcmVhZF9idWY7CisJY2hpcC0+d3JpdGVfYnVmID0gbmFu
+ZF9kYXZpbmNpX3dyaXRlX2J1ZjsKKworCWNoaXAtPmRldl9yZWFkeSA9IG5hbmRfZGF2aW5jaV9k
+ZXZfcmVhZHk7CisKKwlkYXZpbmNpX2FlbWlmX3NldHVwX3RpbWluZyhwZGF0YS0+dGltaW5nLCAo
+dm9pZCAqKSBEQVZJTkNJX0FTWU5DX0VNSUZfQ05UUkxfQkFTRSwgMy0yKTsKKworCS8vLyogcHV0
+IENTeE5BTkQgaW50byBOQU5EIG1vZGUgKi8KKwl2YWwgPSByZWFkbCgmZW1pZl9yZWdzLT5OQU5E
+RkNSKTsKKwl2YWwgfD0gQklUKDMtMik7CisJd3JpdGVsKHZhbCwgJmVtaWZfcmVncy0+TkFOREZD
+Uik7CisKKwkvKiBTY2FuIHRvIGZpbmQgZXhpc3RlbmNlIG9mIHRoZSBkZXZpY2UgKi8KKwlyZXQg
+PSBuYW5kX3NjYW4obXRkLCAxKTsKKwlpZiAocmV0ICE9IDApIHsKKwkJcmV0ID0gLUVOWElPOwor
+CQlnb3RvIG9uX2Vycm9yOworCX0KKworCXJldHVybiBhZGRfbXRkX2RldmljZShtdGQsICJuYW5k
+Iik7CisKK29uX2Vycm9yOgorCWZyZWUoaG9zdCk7CisJcmV0dXJuIHJldDsKK30KKworc3RhdGlj
+IHN0cnVjdCBkcml2ZXJfZCBkYXZpbmNpX25hbmRfZHJpdmVyID0geworCS5uYW1lICA9ICJkYXZp
+bmNpX25hbmQiLAorCS5wcm9iZSA9IGRhdmluY2lfbmFuZF9wcm9iZSwKK307CisKK3N0YXRpYyBp
+bnQgX19pbml0IGRhdmluY2lfbmFuZF9pbml0KHZvaWQpCit7CisJcmV0dXJuIHJlZ2lzdGVyX2Ry
+aXZlcigmZGF2aW5jaV9uYW5kX2RyaXZlcik7Cit9CisKK2RldmljZV9pbml0Y2FsbChkYXZpbmNp
+X25hbmRfaW5pdCk7CmRpZmYgLS1naXQgYS9kcml2ZXJzL210ZC9uYW5kL25hbmRfYmFzZS5jIGIv
+ZHJpdmVycy9tdGQvbmFuZC9uYW5kX2Jhc2UuYwppbmRleCBjNGVjYTBkLi42NWJhMWU2IDEwMDY0
+NAotLS0gYS9kcml2ZXJzL210ZC9uYW5kL25hbmRfYmFzZS5jCisrKyBiL2RyaXZlcnMvbXRkL25h
+bmQvbmFuZF9iYXNlLmMKQEAgLTEzNDQsNiArMTM0NCwxMCBAQCBpbnQgbmFuZF9zY2FuX3RhaWwo
+c3RydWN0IG10ZF9pbmZvICptdGQpCiAJCWNoaXAtPmVjYy5ieXRlcyA9IDA7CiAJCWJyZWFrOwog
+I2VuZGlmCisJY2FzZSBOQU5EX0VDQ19IV19PT0JfRklSU1Q6CisJCW5hbmRfY2hlY2tfaHdlY2Mo
+bXRkLCBjaGlwKTsKKwkJbmFuZF9pbml0X2VjY19od19zeW5kcm9tZShjaGlwKTsKKwkJYnJlYWs7
+CiAJZGVmYXVsdDoKIAkJcHJpbnRrKEtFUk5fV0FSTklORyAiSW52YWxpZCBOQU5EX0VDQ19NT0RF
+ICVkXG4iLAogCQkgICAgICAgY2hpcC0+ZWNjLm1vZGUpOwpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9s
+aW51eC9tdGQvbmFuZC5oIGIvaW5jbHVkZS9saW51eC9tdGQvbmFuZC5oCmluZGV4IDJhMWM0ZmYu
+LmM4MzU4MzIgMTAwNjQ0Ci0tLSBhL2luY2x1ZGUvbGludXgvbXRkL25hbmQuaAorKysgYi9pbmNs
+dWRlL2xpbnV4L210ZC9uYW5kLmgKQEAgLTEyMyw2ICsxMjMsNyBAQCB0eXBlZGVmIGVudW0gewog
+CU5BTkRfRUNDX1NPRlQsCiAJTkFORF9FQ0NfSFcsCiAJTkFORF9FQ0NfSFdfU1lORFJPTUUsCisJ
+TkFORF9FQ0NfSFdfT09CX0ZJUlNULAogfSBuYW5kX2VjY19tb2Rlc190OwogCiAvKgotLSAKMS43
+LjEwCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
+ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
+cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
