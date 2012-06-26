@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SjbrA-0006QW-4I
- for barebox@lists.infradead.org; Tue, 26 Jun 2012 19:55:24 +0000
+ id 1Sjbr1-0006PF-Qk
+ for barebox@lists.infradead.org; Tue, 26 Jun 2012 19:55:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Jun 2012 21:55:03 +0200
-Message-Id: <1340740503-7003-11-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Jun 2012 21:55:01 +0200
+Message-Id: <1340740503-7003-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1340740503-7003-1-git-send-email-s.hauer@pengutronix.de>
 References: <1340740503-7003-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,110 +21,155 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/10] partitions: Make 64bit capable
+Subject: [PATCH 08/10] make cdev 64bit capable
 To: barebox@lists.infradead.org
+
+Next step to 64bit support: Make cdev size a 64bit type.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/partitions.c |   29 -----------------------------
- fs/devfs-core.c     |    2 +-
- include/driver.h    |    2 +-
- include/partition.h |    2 +-
- 4 files changed, 3 insertions(+), 32 deletions(-)
+ common/block.c        |    2 +-
+ drivers/base/driver.c |    2 +-
+ fs/devfs-core.c       |    9 +++++----
+ fs/devfs.c            |    4 ++--
+ fs/fs.c               |    2 +-
+ include/driver.h      |   10 +++++-----
+ 6 files changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/common/partitions.c b/common/partitions.c
-index 74b4f12..a8c9625 100644
---- a/common/partitions.c
-+++ b/common/partitions.c
-@@ -43,23 +43,6 @@ struct partition_desc {
- };
+diff --git a/common/block.c b/common/block.c
+index 1db06cc..e40374f 100644
+--- a/common/block.c
++++ b/common/block.c
+@@ -338,7 +338,7 @@ static struct file_operations block_ops = {
  
- /**
-- * Reject values which cannot be used in Barebox
-- * @param val Value to be check
-- * @return 0 if value can be used in Barebox, -EINVAL if not
-- *
-- * @note this routine can be removed when Barebox uses file offsets larger
-- * than 32 bit
-- */
--static int check_offset_value(uint64_t val)
--{
--#if 1	/* until Barebox can handle 64 bit offsets */
--	if (val > (__INT_MAX__ / SECTOR_SIZE))
--		return -EINVAL;
--#endif
--	return 0;
--}
--
--/**
-  * Guess the size of the disk, based on the partition table entries
-  * @param dev device to create partitions for
-  * @param table partition table
-@@ -76,12 +59,6 @@ static int disk_guess_size(struct device_d *dev, struct partition_entry *table)
- 			size += get_unaligned(&table[i].partition_size);
- 		}
- 	}
--	/* limit disk sector counts we can't handle due to 32 bit limits */
--	if (check_offset_value(size) != 0) {
--		dev_warn(dev, "Warning: Sector count limited due to 31 bit"
--				"contraints\n");
--		size = __INT_MAX__ / SECTOR_SIZE;
--	}
+ int blockdevice_register(struct block_device *blk)
+ {
+-	size_t size = blk->num_blocks * BLOCKSIZE(blk);
++	loff_t size = (loff_t)blk->num_blocks * BLOCKSIZE(blk);
+ 	int ret;
+ 	int i;
  
- 	return (int)size;
- }
-@@ -126,12 +103,6 @@ static void __maybe_unused try_dos_partition(struct block_device *blk,
- 		pentry.first_sec = get_unaligned(&table[i].partition_start);
- 		pentry.size = get_unaligned(&table[i].partition_size);
- 
--		/* do we have to ignore this partition due to limitations? */
--		if (check_offset_value(pentry.first_sec) != 0)
--			continue;
--		if (check_offset_value(pentry.size) != 0)
--			continue;
--
- 		if (pentry.first_sec != 0) {
- 			pd->parts[pd->used_entries].first_sec = pentry.first_sec;
- 			pd->parts[pd->used_entries].size = pentry.size;
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 547d684..29b0010 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -337,7 +337,7 @@ static int do_devinfo_subtree(struct device_d *dev, int depth)
+ 		list_for_each_entry(cdev, &dev->cdevs, devices_list) {
+ 			for (i = 0; i < depth + 1; i++)
+ 				printf("     ");
+-			printf("`---- 0x%08lx-0x%08lx: /dev/%s\n",
++			printf("`---- 0x%08llx-0x%08llx: /dev/%s\n",
+ 					cdev->offset,
+ 					cdev->offset + cdev->size - 1,
+ 					cdev->name);
 diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index b66965e..cdb8f79 100644
+index 6a56d34..b66965e 100644
 --- a/fs/devfs-core.c
 +++ b/fs/devfs-core.c
-@@ -227,7 +227,7 @@ int devfs_remove(struct cdev *cdev)
- 	return 0;
+@@ -96,7 +96,7 @@ void cdev_close(struct cdev *cdev)
+ 		cdev->ops->close(cdev);
  }
  
--int devfs_add_partition(const char *devname, unsigned long offset, size_t size,
-+int devfs_add_partition(const char *devname, loff_t offset, loff_t size,
- 		int flags, const char *name)
+-ssize_t cdev_read(struct cdev *cdev, void *buf, size_t count, ulong offset, ulong flags)
++ssize_t cdev_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
  {
- 	struct cdev *cdev, *new;
+ 	if (!cdev->ops->read)
+ 		return -ENOSYS;
+@@ -104,7 +104,7 @@ ssize_t cdev_read(struct cdev *cdev, void *buf, size_t count, ulong offset, ulon
+ 	return cdev->ops->read(cdev, buf, count, cdev->offset +offset, flags);
+ }
+ 
+-ssize_t cdev_write(struct cdev *cdev, const void *buf, size_t count, ulong offset, ulong flags)
++ssize_t cdev_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags)
+ {
+ 	if (!cdev->ops->write)
+ 		return -ENOSYS;
+@@ -165,10 +165,11 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
+ 	case MEMGETREGIONINFO:
+ 		if (cdev->mtd) {
+ 			struct region_info_user *reg = buf;
++			int erasesize_shift = ffs(cdev->mtd->erasesize) - 1;
+ 
+ 			reg->offset = cdev->offset;
+ 			reg->erasesize = cdev->mtd->erasesize;
+-			reg->numblocks = cdev->size/reg->erasesize;
++			reg->numblocks = cdev->size >> erasesize_shift;
+ 			reg->regionindex = cdev->mtd->index;
+ 		}
+ 	break;
+@@ -191,7 +192,7 @@ int cdev_ioctl(struct cdev *cdev, int request, void *buf)
+ 	return cdev->ops->ioctl(cdev, request, buf);
+ }
+ 
+-int cdev_erase(struct cdev *cdev, size_t count, unsigned long offset)
++int cdev_erase(struct cdev *cdev, size_t count, loff_t offset)
+ {
+ 	if (!cdev->ops->erase)
+ 		return -ENOSYS;
+diff --git a/fs/devfs.c b/fs/devfs.c
+index 863f4ec..5aace36 100644
+--- a/fs/devfs.c
++++ b/fs/devfs.c
+@@ -55,7 +55,7 @@ static int devfs_write(struct device_d *_dev, FILE *f, const void *buf, size_t s
+ static loff_t devfs_lseek(struct device_d *_dev, FILE *f, loff_t pos)
+ {
+ 	struct cdev *cdev = f->inode;
+-	off_t ret = -1;
++	loff_t ret = -1;
+ 
+ 	if (cdev->ops->lseek)
+ 		ret = cdev->ops->lseek(cdev, pos + cdev->offset);
+@@ -100,7 +100,7 @@ static int devfs_memmap(struct device_d *_dev, FILE *f, void **map, int flags)
+ 	ret = cdev->ops->memmap(cdev, map, flags);
+ 
+ 	if (!ret)
+-		*map = (void *)((unsigned long)*map + cdev->offset);
++		*map = (void *)((unsigned long)*map + (unsigned long)cdev->offset);
+ 
+ 	return ret;
+ }
+diff --git a/fs/fs.c b/fs/fs.c
+index 6d1d703..7dd6c03 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -697,7 +697,7 @@ loff_t lseek(int fildes, loff_t offset, int whence)
+ 	struct device_d *dev;
+ 	struct fs_driver_d *fsdrv;
+ 	FILE *f = &files[fildes];
+-	off_t pos;
++	loff_t pos;
+ 	int ret;
+ 
+ 	if (check_fd(fildes))
 diff --git a/include/driver.h b/include/driver.h
-index 0b6d1b3..eacd8e6 100644
+index 4a8d48a..0b6d1b3 100644
 --- a/include/driver.h
 +++ b/include/driver.h
-@@ -418,7 +418,7 @@ int cdev_erase(struct cdev *cdev, size_t count, loff_t offset);
+@@ -395,8 +395,8 @@ struct cdev {
+ 	struct list_head list;
+ 	struct list_head devices_list;
+ 	char *name;
+-	unsigned long offset;
+-	size_t size;
++	loff_t offset;
++	loff_t size;
+ 	unsigned int flags;
+ 	int open;
+ 	struct mtd_info *mtd;
+@@ -409,10 +409,10 @@ struct cdev *cdev_by_name(const char *filename);
+ struct cdev *cdev_open(const char *name, unsigned long flags);
+ void cdev_close(struct cdev *cdev);
+ int cdev_flush(struct cdev *cdev);
+-ssize_t cdev_read(struct cdev *cdev, void *buf, size_t count, ulong offset, ulong flags);
+-ssize_t cdev_write(struct cdev *cdev, const void *buf, size_t count, ulong offset, ulong flags);
++ssize_t cdev_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags);
++ssize_t cdev_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags);
+ int cdev_ioctl(struct cdev *cdev, int cmd, void *buf);
+-int cdev_erase(struct cdev *cdev, size_t count, unsigned long offset);
++int cdev_erase(struct cdev *cdev, size_t count, loff_t offset);
+ 
+ #define DEVFS_PARTITION_FIXED		(1 << 0)
  #define DEVFS_PARTITION_READONLY	(1 << 1)
- #define DEVFS_IS_PARTITION		(1 << 2)
- 
--int devfs_add_partition(const char *devname, unsigned long offset, size_t size,
-+int devfs_add_partition(const char *devname, loff_t offset, loff_t size,
- 		int flags, const char *name);
- int devfs_del_partition(const char *name);
- 
-diff --git a/include/partition.h b/include/partition.h
-index 0827bb4..8ad7490 100644
---- a/include/partition.h
-+++ b/include/partition.h
-@@ -8,7 +8,7 @@ struct partition {
- 
- 	int flags;
- 
--        unsigned long offset;
-+        loff_t offset;
- 
-         struct device_d *physdev;
-         struct device_d device;
 -- 
 1.7.10
 
