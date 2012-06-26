@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sjb0K-00055L-O0
- for barebox@lists.infradead.org; Tue, 26 Jun 2012 19:00:49 +0000
-Date: Tue, 26 Jun 2012 21:00:46 +0200
+ id 1Sjb2P-0005AK-DH
+ for barebox@lists.infradead.org; Tue, 26 Jun 2012 19:02:58 +0000
+Date: Tue, 26 Jun 2012 21:02:50 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120626190046.GO14321@pengutronix.de>
+Message-ID: <20120626190250.GP14321@pengutronix.de>
 References: <1340704314-12593-1-git-send-email-jlu@pengutronix.de>
- <1340704314-12593-5-git-send-email-jlu@pengutronix.de>
+ <1340704314-12593-6-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1340704314-12593-5-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1340704314-12593-6-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,61 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/12] mach-davinci: setup pin mux for da850
+Subject: Re: [PATCH 05/12] mach-davinci: add support for the PSC (Power and
+ Sleep Controller)
 To: Jan Luebbe <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 26, 2012 at 11:51:46AM +0200, Jan Luebbe wrote:
+On Tue, Jun 26, 2012 at 11:51:47AM +0200, Jan Luebbe wrote:
 > Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 > ---
 >  arch/arm/mach-davinci/Makefile |    1 +
->  arch/arm/mach-davinci/da850.c  |  279 ++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 280 insertions(+)
->  create mode 100644 arch/arm/mach-davinci/da850.c
+>  arch/arm/mach-davinci/psc.c    |   85 ++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 86 insertions(+)
+>  create mode 100644 arch/arm/mach-davinci/psc.c
 > 
-> diff --git a/arch/arm/mach-davinci/Makefile b/arch/arm/mach-davinci/Makefile
-> index 936566e..d617d9e 100644
-> --- a/arch/arm/mach-davinci/Makefile
-> +++ b/arch/arm/mach-davinci/Makefile
-> @@ -1,4 +1,5 @@
->  obj-y += clock.o
->  obj-y += clocksource.o
-> +obj-y += da850.o
->  obj-y += gpio.o
->  obj-y += mux.o
-> diff --git a/arch/arm/mach-davinci/da850.c b/arch/arm/mach-davinci/da850.c
-> new file mode 100644
-> index 0000000..5d89a87
-> --- /dev/null
-> +++ b/arch/arm/mach-davinci/da850.c
 > +
-> +static int da8xx_mux_init(void)
-> +{
-> +	if (davinci_cfg_reg_list(da850_uart2_pins))
-> +		printf("mux failed for da850_uart2_pins\n");
-> +
-> +	if (davinci_cfg_reg_list(da850_gpio_pins))
-> +		printf("mux failed for da850_gpio_pins\n");
-> +
-> +	if (davinci_cfg_reg_list(da850_emifa_pins))
-> +		printf("mux failed for da850_emifa_pins\n");
-> +
-> +	if (davinci_cfg_reg_list(da850_spi0_pins))
-> +		printf("mux failed for da850_spi0_pins\n");
-> +
-> +	if (davinci_cfg_reg_list(da850_spi1_pins))
-> +		printf("mux failed for da850_spi1_pins\n");
-> +
-> +	if (davinci_cfg_reg_list(da850_emac_pins))
-> +		printf("mux failed for da850_emac_pins\n");
-> +
-> +	return 0;
-> +}
-> +postconsole_initcall(da8xx_mux_init);
+> +/* Works on Always On power domain only (no PD argument) */
+> +void lpsc_on(unsigned int id)
 
-Is this really common to all da8xx boards?
+better give global functions a clear prefix like davinci_*
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
