@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SjtGX-0000IP-Ij
+ id 1SjtGX-0000IR-Il
  for barebox@lists.infradead.org; Wed, 27 Jun 2012 14:30:46 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1SjtGV-00087G-AB
+ (envelope-from <jbe@pengutronix.de>) id 1SjtGV-00087J-BH
  for barebox@lists.infradead.org; Wed, 27 Jun 2012 16:30:43 +0200
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <jbe@pengutronix.de>) id 1SjtGV-000343-9K
+ (envelope-from <jbe@pengutronix.de>) id 1SjtGV-00034C-A3
  for barebox@lists.infradead.org; Wed, 27 Jun 2012 16:30:43 +0200
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 27 Jun 2012 16:30:40 +0200
-Message-Id: <1340807442-5440-1-git-send-email-jbe@pengutronix.de>
+Date: Wed, 27 Jun 2012 16:30:42 +0200
+Message-Id: <1340807442-5440-3-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1340807442-5440-1-git-send-email-jbe@pengutronix.de>
+References: <1340807442-5440-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,50 +28,172 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv4] Add a simple watchdog 'framework' to Barebox
+Subject: [PATCH 2/2] ARM/MXS: add a watchdog driver for i.MX28
 To: barebox@lists.infradead.org
 
-This patch series add a less simple watchdog command and also a user of it
-for the i.MX28 SoC. The watchdog driver might also work on i.MX23, but this
-is not tested yet.
-
-This version has reorganized additions. And it is more or less prepared to add
-support for more than one watchdog at runtime at a time later on.
-
-The following changes since commit 7eccba9c44dc69c9727a14b3e7a82c31b874327e:
-
-  Merge branch 'for-next/sparse' into next (2012-06-26 21:30:22 +0200)
-
-are available in the git repository at:
-
-  git://git.pengutronix.de/git/jbe/barebox.git next_add_watchdog_frameworkV4
-
-for you to fetch changes up to b75764cbf2bbdbc63c38f85690a39d647a5a7bda:
-
-  ARM/MXS: add a watchdog driver for i.MX28 (2012-06-27 12:25:49 +0200)
-
-----------------------------------------------------------------
-Juergen Beisert (2):
-      Add a simple watchdog framework
-      ARM/MXS: add a watchdog driver for i.MX28
-
- commands/Kconfig           |   19 +++++++
- commands/Makefile          |    1 +
- commands/wd.c              |   68 ++++++++++++++++++++++++
- drivers/Kconfig            |    1 +
- drivers/Makefile           |    1 +
- drivers/watchdog/Kconfig   |   15 ++++++
- drivers/watchdog/Makefile  |    2 +
- drivers/watchdog/im28wd.c  |  124 ++++++++++++++++++++++++++++++++++++++++++++
- drivers/watchdog/wd_core.c |   61 ++++++++++++++++++++++
- include/watchdog.h         |   24 +++++++++
- 10 files changed, 316 insertions(+)
- create mode 100644 commands/wd.c
- create mode 100644 drivers/watchdog/Kconfig
- create mode 100644 drivers/watchdog/Makefile
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+---
+ drivers/watchdog/Kconfig  |    6 +++
+ drivers/watchdog/Makefile |    1 +
+ drivers/watchdog/im28wd.c |  124 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 131 insertions(+)
  create mode 100644 drivers/watchdog/im28wd.c
- create mode 100644 drivers/watchdog/wd_core.c
- create mode 100644 include/watchdog.h
+
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index c734dfe..8fdc7a5 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -6,4 +6,10 @@ menuconfig WATCHDOG
+ 
+ if WATCHDOG
+ 
++config WATCHDOG_MXS28
++	bool "i.MX28"
++	depends on ARCH_IMX28
++	help
++	  Add support for watchdog management for the i.MX28 SoC.
++
+ endif
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index 630f1b6..b29103b 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -1 +1,2 @@
+ obj-$(CONFIG_WATCHDOG) += wd_core.o
++obj-$(CONFIG_WATCHDOG_MXS28) += im28wd.o
+diff --git a/drivers/watchdog/im28wd.c b/drivers/watchdog/im28wd.c
+new file mode 100644
+index 0000000..b016910
+--- /dev/null
++++ b/drivers/watchdog/im28wd.c
+@@ -0,0 +1,124 @@
++/*
++ * (c) 2012 Juergen Beisert <kernel@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * Note: this driver works for the i.MX28 SoC. It might work for the
++ * i.MX23 Soc as well, but is not tested yet.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <io.h>
++#include <errno.h>
++#include <malloc.h>
++#include <watchdog.h>
++
++#define MXS_RTC_CTRL 0x0
++#define MXS_RTC_SET_ADDR 0x4
++#define MXS_RTC_CLR_ADDR 0x8
++# define MXS_RTC_CTRL_WATCHDOGEN (1 << 4)
++
++#define MXS_RTC_STAT 0x10
++# define MXS_RTC_STAT_WD_PRESENT (1 << 29)
++
++#define MXS_RTC_WATCHDOG 0x50
++
++#define MXS_RTC_PERSISTENT0 0x60
++/* dubious meaning from inside the SoC's firmware ROM */
++# define MXS_RTC_PERSISTENT0_EXT_RST (1 << 21)
++/* dubious meaning from inside the SoC's firmware ROM */
++# define MXS_RTC_PERSISTENT0_THM_RST (1 << 20)
++
++#define MXS_RTC_PERSISTENT1 0x70
++/* dubious meaning from inside the SoC's firmware ROM */
++# define MXS_RTC_PERSISTENT1_FORCE_UPDATER (1 << 31)
++
++#define MXS_RTC_DEBUG 0xc0
++
++#define WDOG_TICK_RATE 1000 /* the watchdog uses a 1 kHz clock rate */
++
++struct imx28_wd {
++	struct watchdog wd;
++	void __iomem *regs;
++};
++
++#define to_imx28_wd(h) container_of(h, struct imx28_wd, wd)
++
++static int imx28_watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
++{
++	struct imx28_wd *pwd = (struct imx28_wd *)to_imx28_wd(wd);
++	void __iomem *base;
++
++	if (timeout > (ULONG_MAX / WDOG_TICK_RATE))
++		return -EINVAL;
++
++	if (timeout) {
++		writel(timeout * WDOG_TICK_RATE, pwd->regs + MXS_RTC_WATCHDOG);
++		base = pwd->regs + MXS_RTC_SET_ADDR;
++	} else {
++		base = pwd->regs + MXS_RTC_CLR_ADDR;
++	}
++	writel(MXS_RTC_CTRL_WATCHDOGEN, base + MXS_RTC_CTRL);
++	writel(MXS_RTC_PERSISTENT1_FORCE_UPDATER, base + MXS_RTC_PERSISTENT1);
++
++	return 0;
++}
++
++static int imx28_wd_probe(struct device_d *dev)
++{
++	struct imx28_wd *priv;
++	int rc;
++
++	priv = xzalloc(sizeof(struct imx28_wd));
++	priv->regs = dev_request_mem_region(dev, 0);
++	priv->wd.set_timeout = imx28_watchdog_set_timeout;
++
++	if (!(readl(priv->regs + MXS_RTC_STAT) & MXS_RTC_STAT_WD_PRESENT)) {
++		rc = -ENODEV;
++		goto on_error;
++	}
++
++	/* disable the debug feature to ensure a working WD */
++	writel(0x00000000, priv->regs + MXS_RTC_DEBUG);
++
++	rc = watchdog_register(&priv->wd);
++	if (rc != 0)
++		goto on_error;
++
++	dev->priv = priv;
++	return 0;
++
++on_error:
++	free(priv);
++	return rc;
++}
++
++static void imx28_wd_remove(struct device_d *dev)
++{
++	struct imx28_wd *priv= dev->priv;
++	watchdog_deregister(&priv->wd);
++	free(priv);
++}
++
++static struct driver_d imx28_wd_driver = {
++	.name   = "im28wd",
++	.probe  = imx28_wd_probe,
++	.remove = imx28_wd_remove,
++};
++
++static int imx28_wd_init(void)
++{
++	register_driver(&imx28_wd_driver);
++	return 0;
++}
++
++device_initcall(imx28_wd_init);
+-- 
+1.7.10
+
 
 _______________________________________________
 barebox mailing list
