@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pb0-f49.google.com ([209.85.160.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1STMB7-00075c-I3
- for barebox@lists.infradead.org; Sat, 12 May 2012 23:56:50 +0000
-Received: by pbbrq13 with SMTP id rq13so5323371pbb.36
- for <barebox@lists.infradead.org>; Sat, 12 May 2012 16:56:48 -0700 (PDT)
+ id 1SjnZH-0002C0-1J
+ for barebox@lists.infradead.org; Wed, 27 Jun 2012 08:25:43 +0000
+Date: Wed, 27 Jun 2012 10:25:37 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120627082537.GE1623@pengutronix.de>
+References: <1340784793-22100-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20120512213845.GA22395@pengutronix.de>
-References: <m3397emhaw.fsf@intrepid.localdomain>
- <20120512213845.GA22395@pengutronix.de>
-Date: Sun, 13 May 2012 03:56:48 +0400
-Message-ID: <CAA4bVAG8Hf6hDKk2=UXh5_TxXSSG+1c15=ER8LNKM-omtOnorw@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1340784793-22100-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,64 +18,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-2"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: put a valid "barebox" signature in the header on
- big-endian systems.
-To: =?ISO-8859-1?Q?Uwe_Kleine=2DK=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org, Krzysztof Halasa <khc@pm.waw.pl>
+Subject: Re: [PATCH] commands/crc: add a trailing newline after output of
+ checksum
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org, kernel@pengutronix.de
 
-On 13 May 2012 01:38, Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de> w=
-rote:
-> Hello Krzysztof,
->
-> On Sat, May 05, 2012 at 11:47:19PM +0200, Krzysztof Halasa wrote:
->> Signed-off-by: Krzysztof Ha=B3asa <khc@pm.waw.pl>
->>
->> diff --git a/arch/arm/include/asm/barebox-arm-head.h b/arch/arm/include/=
-asm/barebox-arm-head.h
->> index 0dc3074..2c250e9 100644
->> --- a/arch/arm/include/asm/barebox-arm-head.h
->> +++ b/arch/arm/include/asm/barebox-arm-head.h
->> @@ -24,8 +24,7 @@ static inline void barebox_arm_head(void)
->> =A0 =A0 =A0 =A0 =A0 =A0 =A0 "1: b 1b\n"
->> =A0 =A0 =A0 =A0 =A0 =A0 =A0 "1: b 1b\n"
->> =A0#endif
->> - =A0 =A0 =A0 =A0 =A0 =A0 ".word 0x65726162\n" =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0 =A0/* 'bare' */
->> - =A0 =A0 =A0 =A0 =A0 =A0 ".word 0x00786f62\n" =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0 =A0/* 'box' */
->> + =A0 =A0 =A0 =A0 =A0 =A0 ".asciz \"barebox\"\n"
->> =A0 =A0 =A0 =A0 =A0 =A0 =A0 ".word _text\n" =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0 =A0 =A0 /* text base. If copied there,
->> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0* barebox can skip relocation
->> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0*/
-> Another downside of this patch (apart from the file type detection that
-> still needs adaption?) is that the magic is different depending on
-> endianess.
+On Wed, Jun 27, 2012 at 10:13:13AM +0200, Uwe Kleine-K=F6nig wrote:
+> Without this patch the next command prompt starts directly after the
+> calculated check sum. While at it also fix the coding style.
 
-Can this addition to the patch fix the endianess issue?
+Under which conditions does this happen? The newline should be appended in
+do_crc()
 
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -56,7 +56,7 @@ enum filetype file_detect_type(void *_buf)
+Sascha
 
-        if (strncmp(buf8, "#!/bin/sh", 9) =3D=3D 0)
-                return filetype_sh;
--       if (buf[8] =3D=3D 0x65726162 && buf[9] =3D=3D 0x00786f62)
-+       if (strncmp(buf8 + 0x20, "barebox", 7) =3D=3D 0)
-                return filetype_arm_barebox;
-        if (buf[9] =3D=3D 0x016f2818 || buf[9] =3D=3D 0x18286f01)
-                return filetype_arm_zimage;
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  commands/crc.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> =
+
+> diff --git a/commands/crc.c b/commands/crc.c
+> index df22941..81aa340 100644
+> --- a/commands/crc.c
+> +++ b/commands/crc.c
+> @@ -71,7 +71,7 @@ static int file_crc(char* filename, ulong start, ulong =
+size, ulong *crc,
+>  		*total +=3D now;
+>  	}
+>  =
+
+> -	printf ("CRC32 for %s 0x%08lx ... 0x%08lx =3D=3D> 0x%08lx",
+> +	printf("CRC32 for %s 0x%08lx ... 0x%08lx =3D=3D> 0x%08lx\n",
+>  			filename, start, start + *total - 1, *crc);
+>  =
+
+>  out_free:
+> -- =
+
+> 1.7.10
+> =
+
+> =
+
 
 -- =
 
-Best regards,
-=A0 Antony Pavlov
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
