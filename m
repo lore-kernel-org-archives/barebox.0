@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SjoEq-0000O8-Vq
- for barebox@lists.infradead.org; Wed, 27 Jun 2012 09:08:41 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Wed, 27 Jun 2012 11:08:33 +0200
-Message-Id: <1340788113-3171-1-git-send-email-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20120627082537.GE1623@pengutronix.de>
-References: <20120627082537.GE1623@pengutronix.de>
+ id 1SjofC-0004a5-CC
+ for barebox@lists.infradead.org; Wed, 27 Jun 2012 09:35:55 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <ukl@pengutronix.de>) id 1Sjof9-00030J-Jj
+ for barebox@lists.infradead.org; Wed, 27 Jun 2012 11:35:51 +0200
+Received: from ukl by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <ukl@pengutronix.de>) id 1Sjof9-0006pV-Ie
+ for barebox@lists.infradead.org; Wed, 27 Jun 2012 11:35:51 +0200
+Date: Wed, 27 Jun 2012 11:35:51 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20120627093551.GC18096@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,43 +23,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands/crc: assert newline after output with big offsets
+Subject: is errno supposed to be positive or negative?
 To: barebox@lists.infradead.org
-Cc: kernel@pengutronix.de
 
-VGhpcyBmaXhlcwoKCWJhcmVib3hAVmVyeSBsb25nIGJvYXJkIG5hbWU6LyBjcmMzMiAtZiAvZGV2
-L21lbSAweDgzZjAwMDAwKzB4ZmZmCglDUkMzMiBmb3IgL2Rldi9tZW0gMHg4M2ZmZjAwMCAuLi4g
-MHg4M2ZmZmZmZSA9PT4gMHhhMDgwNTg0YmJhcmVib3hAVmVyeSBsb25nIGJvYXJkIG5hbWU6LwoK
-VGhlIHByb2JsZW0gaGVyZSB3YXMgdGhhdCB0aGUgcmV0dXJuIHZhbHVlIG9mCmxzZWVrKGZkLCAw
-eDgzZjAwMDAwLCBTRUVLX1NFVCkgKHdoaWNoIGlzIDB4ODNmMDAwMDApIHdhcyBjYXN0ZWQgdG8g
-YW4KaW50ICh3aGljaCBpcyAtMjA4MTQyMzM2MCksIHJldHVybmVkIHRvIGRvX2NyYyBhbmQgaW50
-ZXJwcmV0ZWQgYXMKZXJyb3IgdGhlcmUgd2l0aG91dCB5aWVsZGluZyBhbm90aGVyIGVycm9yIG1l
-c3NhZ2UuCgpUaGlzIGFsc28gbWFrZXMKCgljcmMzMiAtZiAvZGV2L21lbSAweGZmZmZmZmZmKzB4
-MQoKZGllIG9uIGEgTlVMTCBwb2ludGVyIGV4Y2VwdGlvbiBpbnN0ZWFkIG9mIHJlcG9ydGluZzoK
-Cglsc2VlazogTm8gZXJyb3IKCjotKQoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcg
-PHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCk9uIFdlZCwgSnVuIDI3LCAyMDEy
-IGF0IDEwOjI1OjM3QU0gKzAyMDAsIFNhc2NoYSBIYXVlciB3cm90ZToKPiBPbiBXZWQsIEp1biAy
-NywgMjAxMiBhdCAxMDoxMzoxM0FNICswMjAwLCBVd2UgS2xlaW5lLUvDtm5pZyB3cm90ZToKPiA+
-IFdpdGhvdXQgdGhpcyBwYXRjaCB0aGUgbmV4dCBjb21tYW5kIHByb21wdCBzdGFydHMgZGlyZWN0
-bHkgYWZ0ZXIgdGhlCj4gPiBjYWxjdWxhdGVkIGNoZWNrIHN1bS4gV2hpbGUgYXQgaXQgYWxzbyBm
-aXggdGhlIGNvZGluZyBzdHlsZS4KPiAKPiBVbmRlciB3aGljaCBjb25kaXRpb25zIGRvZXMgdGhp
-cyBoYXBwZW4/IFRoZSBuZXdsaW5lIHNob3VsZCBiZSBhcHBlbmRlZCBpbgo+IGRvX2NyYygpCllv
-dSdyZSByaWdodCwgbXkgcGF0Y2ggd2FzIG5vdCBjb3JyZWN0LiBUaGlzIHZlcnNpb24gc2hvdWxk
-IGRvIHRoZSByaWdodAp0aGluZyBub3cuCgpCZXN0IHJlZ2FyZHMKVXdlCgogY29tbWFuZHMvY3Jj
-LmMgfCAgICA3ICsrKysrLS0KIDEgZmlsZSBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKyksIDIgZGVs
-ZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvY29tbWFuZHMvY3JjLmMgYi9jb21tYW5kcy9jcmMuYwpp
-bmRleCBkZjIyOTQxLi4xMGEyOTAwIDEwMDY0NAotLS0gYS9jb21tYW5kcy9jcmMuYworKysgYi9j
-b21tYW5kcy9jcmMuYwpAQCAtNDcsOSArNDcsMTIgQEAgc3RhdGljIGludCBmaWxlX2NyYyhjaGFy
-KiBmaWxlbmFtZSwgdWxvbmcgc3RhcnQsIHVsb25nIHNpemUsIHVsb25nICpjcmMsCiAJfQogCiAJ
-aWYgKHN0YXJ0ID4gMCkgewotCQlyZXQgPSBsc2VlayhmZCwgc3RhcnQsIFNFRUtfU0VUKTsKLQkJ
-aWYgKHJldCA9PSAtMSkgeworCQlvZmZfdCBsc2Vla19yZXQ7CisJCWVycm5vID0gMDsKKwkJbHNl
-ZWtfcmV0ID0gbHNlZWsoZmQsIHN0YXJ0LCBTRUVLX1NFVCk7CisJCWlmIChsc2Vla19yZXQgPT0g
-KG9mZl90KS0xICYmIGVycm5vKSB7CiAJCQlwZXJyb3IoImxzZWVrIik7CisJCQlyZXQgPSAtMTsK
-IAkJCWdvdG8gb3V0OwogCQl9CiAJfQotLSAKMS43LjEwCgoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+Hello,
+
+Well, ok, errno is supposed to be zero, but in the rare cases where it's
+not, what is intended?
+
+Assuming ESOMETHING is always positive, in userspace errno is
+positive, e.g. you test for errno =3D=3D EBADF.
+
+In barebox however most assignments use
+
+	errno =3D -ESOMETHING
+
+but there are also some tests and assignments without minus. barebox'
+perror expects a negative errno which is also different from POSIX'
+perror. strerror uses positive semantics in both barebox and POSIX.
+
+I'd vote to fix barebox to use the same semantic for errno (and perror)
+as POSIX.
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
