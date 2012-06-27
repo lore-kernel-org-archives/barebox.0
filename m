@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ShQJN-0004cV-FH
- for barebox@lists.infradead.org; Wed, 20 Jun 2012 19:11:31 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 20 Jun 2012 21:09:53 +0200
-References: <1340202731-30831-1-git-send-email-jbe@pengutronix.de>
- <201206201708.52673.jbe@pengutronix.de>
- <20120620185059.GC5642@pengutronix.de>
-In-Reply-To: <20120620185059.GC5642@pengutronix.de>
+ id 1SjouI-0006eF-9l
+ for barebox@lists.infradead.org; Wed, 27 Jun 2012 09:51:31 +0000
+Date: Wed, 27 Jun 2012 11:51:28 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120627095128.GF1623@pengutronix.de>
+References: <20120627093551.GC18096@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201206202109.54078.jbe@pengutronix.de>
+In-Reply-To: <20120627093551.GC18096@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,86 +18,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] Enable a way to provide the reason for "being here"
-To: barebox@lists.infradead.org
-Cc: Uwe =?iso-8859-1?q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: is errno supposed to be positive or negative?
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Uwe,
+On Wed, Jun 27, 2012 at 11:35:51AM +0200, Uwe Kleine-K=F6nig wrote:
+> Hello,
+> =
 
-Uwe Kleine-K=F6nig wrote:
-> On Wed, Jun 20, 2012 at 05:08:52PM +0200, Juergen Beisert wrote:
-> > Marc Kleine-Budde wrote:
-> > > [...]
-> > >
-> > > > +
-> > > > +#include <common.h>
-> > > > +#include <init.h>
-> > > > +#include <environment.h>
-> > > > +#include <globalvar.h>
-> > > > +#include <reset_source.h>
-> > > > +
-> > > > +static const char name[] =3D "global.system.reset";
-> > > > +static const char unknown_reset[] =3D "unknown";
-> > > > +static const char power_on_reset[] =3D "POR";
-> > > > +static const char manual_reset[] =3D "RST";
-> > > > +static const char watchdog[] =3D "WDG";
-> > > > +static const char wake[] =3D "WKE";
-> > > > +static const char jtag[] =3D "JTAG";
-> > >
-> > > what about using an array
-> > >
-> > > static cost char *reset_reason_array[] =3D {
-> > > 	[RESET_UKWN] =3D "unknown",
-> > > 	...
-> > > };
-> >
-> > The result is not the same. The strings are no longer "const". But it
-> > should
->
-> <kidding>Of course they are not "const" if you write "cost".</kidding>
-> Using
->
-> 	static const char * const reset_reason_array[] =3D {
->
-> should do the trick.
+> Well, ok, errno is supposed to be zero, but in the rare cases where it's
+> not, what is intended?
+> =
 
-No, it doesn't. Only this would:
+> Assuming ESOMETHING is always positive, in userspace errno is
+> positive, e.g. you test for errno =3D=3D EBADF.
+> =
 
-static const bla[] =3D "this is a really constant string";
-static const char * const reset_reason_array[] =3D {
-	[0] =3D bla,
-[...]
-};
+> In barebox however most assignments use
+> =
 
-But its ugly. So I will prefer Marc's suggestion.
+> 	errno =3D -ESOMETHING
+> =
 
-> Having said that, I wonder what is the difference between
->
-> 	static const char wake[] =3D "WKE";
-> 	... use wake here ...
->
-> and
->
-> 	... just use "WKE" ...
+> but there are also some tests and assignments without minus. barebox'
+> perror expects a negative errno which is also different from POSIX'
+> perror. strerror uses positive semantics in both barebox and POSIX.
 
-Just based on how U-Boot does it.
+Your tree is not up to date.
 
-jbe
+see:
+
+commit 6188685091c58c9772b990cf0ca6ac522f97a9d0
+Author: Sascha Hauer <s.hauer@pengutronix.de>
+Date:   Sun May 13 12:43:58 2012 +0200
+
+    Make errno a positive value
+    =
+
+    Normally errno contains a positive error value. A certain unnamed devel=
+oper
+    mixed this up while implementing U-Boot-v2. Also, normally errno is nev=
+er
+    set to zero by any library function. This patch fixes this.
+    =
+
+    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+Sascha
 
 -- =
 
-Pengutronix e.K.                              | Juergen Beisert            =
- |
-Linux Solutions for Science and Industry      | Phone: +49-5121-206917-5128=
- |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555=
- |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/ =
- |
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
