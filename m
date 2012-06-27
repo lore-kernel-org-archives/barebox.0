@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sjsjj-0000k0-2g
- for barebox@lists.infradead.org; Wed, 27 Jun 2012 13:56:52 +0000
+ id 1Sjskw-0001YD-21
+ for barebox@lists.infradead.org; Wed, 27 Jun 2012 13:58:07 +0000
+Date: Wed, 27 Jun 2012 15:58:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 27 Jun 2012 15:56:44 +0200
-Message-Id: <1340805404-29071-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20120627135804.GP1623@pengutronix.de>
+References: <1340632570-10034-1-git-send-email-jlu@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1340632570-10034-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,38 +18,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] drivers/base: bail out if request_iomem_region fails
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] drivers/nor/m25p80.c: fix erase loop for unaligned
+ addresses
+To: Jan Luebbe <jlu@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-When request_iomem_region fails we have to bail out instead of
-dereferencing res->start.
+On Mon, Jun 25, 2012 at 03:56:10PM +0200, Jan Luebbe wrote:
+> In some cases with unaligned addresses the loop would not abort.
+> Instead, use the calculated sector numbers in a for-loop.
+> 
+> Based on a patch by Sascha Hauer <s.hauer@pengutronix.de>.
+> 
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+> ---
+>  drivers/nor/m25p80.c |   12 ++++--------
+>  1 file changed, 4 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/nor/m25p80.c b/drivers/nor/m25p80.c
+> index 1440227..b4dfbfa 100644
+> --- a/drivers/nor/m25p80.c
+> +++ b/drivers/nor/m25p80.c
+> @@ -200,7 +200,7 @@ static ssize_t m25p80_erase(struct cdev *cdev, size_t count, loff_t offset)
+>  	u32 addr, len;
+>  	u32 start_sector;
+>  	u32 end_sector;
+> -	u32 progress = 0;
+> +	u32 cur_sector;
+>  	int eraseshift = ffs(flash->erasesize) - 1;
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/base/driver.c |    2 ++
- 1 file changed, 2 insertions(+)
+eraseshift does only exist in the 64bit branch. can you rebase this onto
+master?
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 3be4b99..81cedca 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -262,6 +262,8 @@ void __iomem *dev_request_mem_region(struct device_d *dev, int num)
- 		return NULL;
- 
- 	res = request_iomem_region(dev_name(dev), res->start, res->size);
-+	if (!res)
-+		return NULL;
- 
- 	return (void __force __iomem *)res->start;
- }
+Sascha
+
+>  
+>  	dev_dbg(&flash->spi->dev, "%s %s 0x%llx, len %lld\n",
+> @@ -232,17 +232,13 @@ static ssize_t m25p80_erase(struct cdev *cdev, size_t count, loff_t offset)
+>  
+>  	/* "sector"-at-a-time erase */
+>  	} else {
+> -		while (len) {
+> +		for (cur_sector = start_sector; cur_sector <= end_sector; cur_sector++) {
+>  			if (ctrlc())
+>  				return -EINTR;
+> -			if (erase_sector(flash, addr))
+> +			if (erase_sector(flash, cur_sector << eraseshift))
+>  				return -EIO;
+>  
+> -			show_progress(++progress);
+> -			if (len <= flash->erasesize)
+> -				break;
+> -			addr += flash->erasesize;
+> -			len -= flash->erasesize;
+> +			show_progress(cur_sector - start_sector + 1);
+>  		}
+>  	}
+>  
+> -- 
+> 1.7.10
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.7.10
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
