@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SkC2D-0005kc-1N
- for barebox@lists.infradead.org; Thu, 28 Jun 2012 10:33:13 +0000
-Date: Thu, 28 Jun 2012 12:33:11 +0200
+ id 1SkCCN-0000du-WF
+ for barebox@lists.infradead.org; Thu, 28 Jun 2012 10:43:45 +0000
+Date: Thu, 28 Jun 2012 12:43:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120628103311.GV1623@pengutronix.de>
-References: <1340876689-26303-1-git-send-email-antonynpavlov@gmail.com>
- <1340876689-26303-4-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20120628104341.GW1623@pengutronix.de>
+References: <4FBD05B8.40001@crane-soft.de>
+ <20120524195543.GB30400@pengutronix.de>
+ <4FBF5268.1040900@crane-soft.de>
+ <20120531182724.GA30400@pengutronix.de>
+ <4FEBFF6C.6010304@crane-soft.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1340876689-26303-4-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <4FEBFF6C.6010304@crane-soft.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,25 +26,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] MIPS: XBurst: fix the JZ4755's clocksource input
- frequency value
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: Booting PhyTec PCM043/IMX35  from USB/SD-Card
+To: "Peter Kuennemann@Crane-Soft" <pkue@crane-soft.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jun 28, 2012 at 01:44:48PM +0400, Antony Pavlov wrote:
-> The 40 KHz frequency value was used to parry
-> __lshrdi3() error on little-endian MIPS because
-> the __lshrdi3() function is used in clocksource code.
+On Thu, Jun 28, 2012 at 08:53:32AM +0200, Peter Kuennemann@Crane-Soft wrote:
+> > 
+> > Has this been solved in the mean time? The above looks correct, I have
+> > no idea what's wrong.
 > 
-> The true value of the JZ4755's external clock frequency is 12 MHz.
+> The case has been partly solved now. I am able to boot from NAND and NOR but I cannot
+> access the MMC. Reason for the kernel messages ...(driver?) above was a missing device
+> "mxc_nand" in the kernel parms for mtdparts:
+> 
+>     mtdparts=physmap-flash.0:256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root); \
+>     mxc_nand:256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)
+> 
+> However, I still cannot access the mmc from barebox. It would be enough to be able to
+> read the mmc. I want to be able to store kernel or rootfs image updates on the mmc
+> and flash them to either NAND or NOR after reboot to enable remote update services.
+> 
+> Question: "How can I access the MMC from barebox (read only may be sufficient)
 
-12MHz...
+The pcm043 currently does not have mmc support. You have to add this to
+the board file:
 
->  
-> -#define JZ_TIMER_CLOCK 40000
-> +#define JZ_TIMER_CLOCK 24000000
+imx35_add_mmc0(NULL);
 
-or 24MHz?
+or
+
+imx35_add_mmc1(NULL);
+
+depending on which port is routed to the slot. Also you have to setup
+the iomuxer (you can probably copy the pin settings from the kernel). Of
+course you also have to enable MMC support in the config.
 
 Sascha
 
