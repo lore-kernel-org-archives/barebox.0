@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SkG51-0003RH-O4
- for barebox@lists.infradead.org; Thu, 28 Jun 2012 14:52:26 +0000
-From: Jan Luebbe <jlu@pengutronix.de>
-Date: Thu, 28 Jun 2012 16:52:17 +0200
-Message-Id: <1340895137-19689-1-git-send-email-jlu@pengutronix.de>
+ id 1SkJWL-0007nd-Vx
+ for barebox@lists.infradead.org; Thu, 28 Jun 2012 18:32:50 +0000
+Received: by mail-lb0-f177.google.com with SMTP id gg6so3506438lbb.36
+ for <barebox@lists.infradead.org>; Thu, 28 Jun 2012 11:32:49 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 28 Jun 2012 22:32:32 +0400
+Message-Id: <1340908354-17895-4-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1340908354-17895-1-git-send-email-antonynpavlov@gmail.com>
+References: <1340908354-17895-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,186 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] scripts/mkublheader: add program to produce an UBL image
+Subject: [PATCH v2 3/5] clocksource: move the NSEC_PER_SEC constant to common
  header
 To: barebox@lists.infradead.org
 
-This image header is used for booting from SPI using the TI User
-Boot Loader (UBL).
-
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- .gitignore            |    1 +
- arch/arm/Makefile     |    9 +++++
- scripts/.gitignore    |    5 ++-
- scripts/Makefile      |    1 +
- scripts/mkublheader.c |   99 +++++++++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 113 insertions(+), 2 deletions(-)
- create mode 100644 scripts/mkublheader.c
+ arch/ppc/mach-mpc85xx/include/mach/clocks.h |    2 --
+ include/clock.h                             |    2 ++
+ include/linux/time.h                        |    1 +
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/.gitignore b/.gitignore
-index df0ed2c..c75b9ce 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -34,6 +34,7 @@ barebox.bin
- barebox.srec
- barebox.netx
- barebox.s5p
-+barebox.ubl
- barebox.map
- System.map
- Module.symvers
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index bd684dc..53fbd0c 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -183,6 +183,15 @@ ifeq ($(CONFIG_OMAP_BUILD_IFT),y)
- KBUILD_IMAGE := MLO
- endif
+diff --git a/arch/ppc/mach-mpc85xx/include/mach/clocks.h b/arch/ppc/mach-mpc85xx/include/mach/clocks.h
+index 9477168..2ab367b 100644
+--- a/arch/ppc/mach-mpc85xx/include/mach/clocks.h
++++ b/arch/ppc/mach-mpc85xx/include/mach/clocks.h
+@@ -10,8 +10,6 @@ struct sys_info {
+ 	unsigned long freqLocalBus;
+ };
  
-+barebox.ubl: barebox.bin
-+	@echo "  UBL    " $@
-+	$(Q)scripts/mkublheader barebox.bin > barebox.ubl
-+	$(Q)cat barebox.bin >> barebox.ubl
-+
-+ifeq ($(CONFIG_ARCH_DAVINCI),y)
-+KBUILD_IMAGE := barebox.ubl
-+endif
-+
- all: $(KBUILD_IMAGE)
+-#define NSEC_PER_SEC	1000000000L
+-
+ unsigned long fsl_get_bus_freq(ulong dummy);
+ unsigned long fsl_get_timebase_clock(void);
+ void fsl_get_sys_info(struct sys_info *sysInfo);
+diff --git a/include/clock.h b/include/clock.h
+index 123f874..c01a8d0 100644
+--- a/include/clock.h
++++ b/include/clock.h
+@@ -3,6 +3,8 @@
+ #ifndef CLOCK_H
+ #define CLOCK_H
  
- archprepare: maketools
-diff --git a/scripts/.gitignore b/scripts/.gitignore
-index 11fd2df..6e63f85 100644
---- a/scripts/.gitignore
-+++ b/scripts/.gitignore
-@@ -1,6 +1,7 @@
- bareboxenv
- bin2c
--mkimage
--kallsyms
- gen_netx_image
-+kallsyms
-+mkimage
-+mkublheader
- omap_signGP
-diff --git a/scripts/Makefile b/scripts/Makefile
-index 784d205..7ca5e29 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -11,6 +11,7 @@ hostprogs-y                      += bareboxenv
- hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
- hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP
- hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
-+hostprogs-$(CONFIG_ARCH_DAVINCI) += mkublheader
++#include <linux/time.h>
++
+ #define CLOCKSOURCE_MASK(bits) (uint64_t)((bits) < 64 ? ((1ULL<<(bits))-1) : -1)
  
- always		:= $(hostprogs-y) $(hostprogs-m)
+ struct clocksource {
+diff --git a/include/linux/time.h b/include/linux/time.h
+index bf12b99..a1be8fe 100644
+--- a/include/linux/time.h
++++ b/include/linux/time.h
+@@ -9,6 +9,7 @@
  
-diff --git a/scripts/mkublheader.c b/scripts/mkublheader.c
-new file mode 100644
-index 0000000..b61630a
---- /dev/null
-+++ b/scripts/mkublheader.c
-@@ -0,0 +1,99 @@
-+/*
-+ * mkublheader.c - produce the header needed to load barebox on OMAP-L138
-+ *
-+ * Copyright (C) 2012 Jan Luebbe <j.luebbe@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along
-+ * with this program; if not, write to the Free Software Foundation, Inc.,
-+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-+ */
-+
-+#define _BSD_SOURCE
-+
-+#include <stdio.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <fcntl.h>
-+#include <unistd.h>
-+#include <stdint.h>
-+#include <limits.h>
-+#include <errno.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <getopt.h>
-+#include <endian.h>
-+
-+#define MAGICNUM 0xa1aced00
-+
-+struct ubl_header
-+{
-+  uint32_t magicNum; /* Expected magic number */
-+  uint32_t epAddr;   /* Entry point of the user application */
-+  uint32_t imgSize;  /* Number of bytes of the application image */
-+  uint32_t imgAddr;  /* SPI memory offset where application image is located */
-+  uint32_t ldAddr;   /* Address where image is copied to */
-+};
-+
-+void usage(char *prgname)
-+{
-+	printf( "Usage : %s [OPTION] FILE > HEADER\n"
-+		"\n"
-+		"options:\n"
-+		"  -a <address> image flash address\n"
-+		"  -e <address> entry point memory address\n"
-+		"  -l <address> load memory address\n",
-+		prgname);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	struct stat sb;
-+	struct ubl_header uh;
-+	int opt;
-+	uint32_t imgAddr = 0x00040000 + sizeof(uh);
-+	uint32_t epAddr = 0xc1080000, ldAddr = 0xc1080000;
-+
-+	while((opt = getopt(argc, argv, "ael:")) != -1) {
-+		switch (opt) {
-+		case 'a':
-+			imgAddr = strtoul(optarg, NULL, 0);
-+			break;
-+		case 'e':
-+			epAddr = strtoul(optarg, NULL, 0);
-+			break;
-+		case 'l':
-+			ldAddr = strtoul(optarg, NULL, 0);
-+			break;
-+		}
-+	}
-+
-+	if (optind >= argc) {
-+		usage(argv[0]);
-+		exit(1);
-+	}
-+
-+	if (stat(argv[optind], &sb) == -1) {
-+		perror("stat");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	uh.magicNum = htole32(MAGICNUM);
-+	uh.epAddr = htole32(epAddr);
-+	uh.imgSize = htole32((uint32_t)sb.st_size);
-+	uh.imgAddr = htole32(imgAddr);
-+	uh.ldAddr = htole32(ldAddr);
-+
-+	fwrite(&uh, sizeof(uh), 1, stdout);
-+
-+	exit(EXIT_SUCCESS);
-+}
+ #define _REENT_ONLY
+ 
++#define NSEC_PER_SEC	1000000000L
+ #define SECSPERMIN	60L
+ #define MINSPERHOUR	60L
+ #define HOURSPERDAY	24L
 -- 
 1.7.10
 
