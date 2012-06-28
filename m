@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ud04.udmedia.de ([194.117.254.44] helo=mail.ud04.udmedia.de)
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sk8bp-0007XK-JP
- for barebox@lists.infradead.org; Thu, 28 Jun 2012 06:53:47 +0000
-Message-ID: <4FEBFF6C.6010304@crane-soft.de>
-Date: Thu, 28 Jun 2012 08:53:32 +0200
-From: "Peter Kuennemann@Crane-Soft" <pkue@crane-soft.de>
-MIME-Version: 1.0
-References: <4FBD05B8.40001@crane-soft.de>
- <20120524195543.GB30400@pengutronix.de> <4FBF5268.1040900@crane-soft.de>
- <20120531182724.GA30400@pengutronix.de>
-In-Reply-To: <20120531182724.GA30400@pengutronix.de>
-Reply-To: pkue@crane-soft.de
+ id 1SkBHa-0002Zx-GJ
+ for barebox@lists.infradead.org; Thu, 28 Jun 2012 09:45:02 +0000
+Received: by mail-lb0-f177.google.com with SMTP id gg6so2896721lbb.36
+ for <barebox@lists.infradead.org>; Thu, 28 Jun 2012 02:45:02 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 28 Jun 2012 13:44:47 +0400
+Message-Id: <1340876689-26303-3-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1340876689-26303-1-git-send-email-antonynpavlov@gmail.com>
+References: <1340876689-26303-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,129 +18,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Booting PhyTec PCM043/IMX35  from USB/SD-Card
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/4] clocksource: move the NSEC_PER_SEC constant to common
+ header
+To: barebox@lists.infradead.org
 
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/ppc/mach-mpc85xx/include/mach/clocks.h |    2 --
+ include/clock.h                             |    2 ++
+ include/linux/time.h                        |    1 +
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
-  mit freundlichen Gr=FC=DFen,
-  sincerely yours
-  sinc=E8res salutations
-
-Peter K=FCnnemann
-Kappeler Strasse 207
-D-40599 D=FCsseldorf
-
-Mobil: +49 151 40511525
-       +49 211 1663157
-
-http://www.crane-soft.de
-
-Am 31.05.2012 20:27, schrieb Sascha Hauer:
-> Hi Peter,
-> =
-
-> On Fri, May 25, 2012 at 11:35:36AM +0200, Peter Kuennemann@Crane-Soft wro=
-te:
->>
->>
->> To have kernel in flash and rootfs on MMC i tried bootargs as:
->>
->> ... root=3D/dev/mmcblk0p1 rootfstype=3Dext2 rootflags=3Dnoatime rw noini=
-trd rootwait ..
->>
->> and it boots the kernel properly from flash up to:
->> ...
->> mmcblk0: mmc0:a95c SD01G 968 MiB     <=3D=3D Recognized the sd card
->>  mmcblk0: p1                         <=3D=3D and partion 1
->> ...
->> 1f00             256 mtdblock0 (driver?)
->> 1f01             128 mtdblock1 (driver?)
->> 1f02            2048 mtdblock2 (driver?)
->> 1f03           30336 mtdblock3 (driver?)
->> 1f04         1048576 mtdblock4 (driver?)
->> b300          992000 mmcblk0 driver: mmcblk
->>   b301          991585 mmcblk0p1                    <=3D=3D=3D Something=
- missing here?
->> No filesystem could mount root, tried:  ext2        <=3D=3D=3D
->> Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-bloc=
-k(179,1) <=3D=3D=3D
->>
->> The mmc does contain a ext2 filesystem with the proper rootfs copied from
->> the jffs2.image that I mounted under Ubuntu as loop device. The kernel h=
-as ext2 fs
->> support compiled in.
->>
->> The rootfs on the mmc is properly accessible when booting kernel and fla=
-sh footfs
->> on the very same platform.
-> =
-
-> Has this been solved in the mean time? The above looks correct, I have
-> no idea what's wrong.
-
-The case has been partly solved now. I am able to boot from NAND and NOR bu=
-t I cannot
-access the MMC. Reason for the kernel messages ...(driver?) above was a mis=
-sing device
-"mxc_nand" in the kernel parms for mtdparts:
-
-    mtdparts=3Dphysmap-flash.0:256k(barebox)ro,128k(bareboxenv),2M(kernel),=
--(root); \
-    mxc_nand:256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)
-
-However, I still cannot access the mmc from barebox. It would be enough to =
-be able to
-read the mmc. I want to be able to store kernel or rootfs image updates on =
-the mmc
-and flash them to either NAND or NOR after reboot to enable remote update s=
-ervices.
-
-Question: "How can I access the MMC from barebox (read only may be sufficie=
-nt)
-
-Regards, Peter
-
--- =
-
-Barebox device list:
-
-barebox@MKT.i357-CPU:/ ls -l /dev
-crw-------         32 imx_iim_bank0
-crw-------         32 imx_iim_bank1
-crw-------         32 imx_iim_bank2
-crw-------         32 imx_iim_bank3
-crw-------         32 imx_iim_bank4
-crw-------         32 imx_iim_bank5
-crw-------         32 imx_iim_bank6
-crw-------         32 imx_iim_bank7
-cr-------- 4294967295 zero
-crw-------  134217728 ram0
-crw-------       8281 defaultenv
-crw------- 4294967295 mem
-crw-------         64 phy0
-crw------- 1073741824 nand0
-cr--------   33554432 nand_oob0
-crw-------   33554432 nor0
-crw-------     262144 self0
-crw-------     131072 env0
-crw-------     262144 nor0.barebox
-crw-------     131072 nor0.bareboxenv
-crw-------    2097152 nor0.kernel
-crw-------   31064064 nor0.root
-crw-------     262144 nand0.barebox
-crw-------     131072 nand0.bareboxenv
-crw-------    2097152 nand0.kernel
-crw------- 1071251456 nand0.root
-crw------- 1070071808 nand0.root.bb
-crw-------    2097152 nand0.kernel.bb
-crw-------     131072 nand0.bareboxenv.bb
-crw-------     262144 nand0.barebox.bb
-
+diff --git a/arch/ppc/mach-mpc85xx/include/mach/clocks.h b/arch/ppc/mach-mpc85xx/include/mach/clocks.h
+index 9477168..2ab367b 100644
+--- a/arch/ppc/mach-mpc85xx/include/mach/clocks.h
++++ b/arch/ppc/mach-mpc85xx/include/mach/clocks.h
+@@ -10,8 +10,6 @@ struct sys_info {
+ 	unsigned long freqLocalBus;
+ };
+ 
+-#define NSEC_PER_SEC	1000000000L
+-
+ unsigned long fsl_get_bus_freq(ulong dummy);
+ unsigned long fsl_get_timebase_clock(void);
+ void fsl_get_sys_info(struct sys_info *sysInfo);
+diff --git a/include/clock.h b/include/clock.h
+index 123f874..c01a8d0 100644
+--- a/include/clock.h
++++ b/include/clock.h
+@@ -3,6 +3,8 @@
+ #ifndef CLOCK_H
+ #define CLOCK_H
+ 
++#include <linux/time.h>
++
+ #define CLOCKSOURCE_MASK(bits) (uint64_t)((bits) < 64 ? ((1ULL<<(bits))-1) : -1)
+ 
+ struct clocksource {
+diff --git a/include/linux/time.h b/include/linux/time.h
+index bf12b99..a1be8fe 100644
+--- a/include/linux/time.h
++++ b/include/linux/time.h
+@@ -9,6 +9,7 @@
+ 
+ #define _REENT_ONLY
+ 
++#define NSEC_PER_SEC	1000000000L
+ #define SECSPERMIN	60L
+ #define MINSPERHOUR	60L
+ #define HOURSPERDAY	24L
+-- 
+1.7.10
 
 
 _______________________________________________
