@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-gg0-f177.google.com ([209.85.161.177])
+Received: from ud04.udmedia.de ([194.117.254.44] helo=mail.ud04.udmedia.de)
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sk0fH-0003uh-JT
- for barebox@lists.infradead.org; Wed, 27 Jun 2012 22:24:48 +0000
-Received: by ggcs5 with SMTP id s5so1456493ggc.36
- for <barebox@lists.infradead.org>; Wed, 27 Jun 2012 15:24:44 -0700 (PDT)
+ id 1Sk8bp-0007XK-JP
+ for barebox@lists.infradead.org; Thu, 28 Jun 2012 06:53:47 +0000
+Message-ID: <4FEBFF6C.6010304@crane-soft.de>
+Date: Thu, 28 Jun 2012 08:53:32 +0200
+From: "Peter Kuennemann@Crane-Soft" <pkue@crane-soft.de>
 MIME-Version: 1.0
-Date: Thu, 28 Jun 2012 02:24:44 +0400
-Message-ID: <CAA4bVAE5A5jgk=zwV1PfNcQVyXydDmXLL_VhwAqiYpYOdawLmQ@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+References: <4FBD05B8.40001@crane-soft.de>
+ <20120524195543.GB30400@pengutronix.de> <4FBF5268.1040900@crane-soft.de>
+ <20120531182724.GA30400@pengutronix.de>
+In-Reply-To: <20120531182724.GA30400@pengutronix.de>
+Reply-To: pkue@crane-soft.de
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,94 +24,126 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: byteorder problem
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: Booting PhyTec PCM043/IMX35  from USB/SD-Card
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi!
 
-Yesterday I have investigated strange clocksource behaviour of JZ4755
-MIPS CPU: the function cyc2ns() works wrong.
+  mit freundlichen Gr=FC=DFen,
+  sincerely yours
+  sinc=E8res salutations
 
-The problem was in realisation of the '>>' u64 operation (see __lshrdi3()).
+Peter K=FCnnemann
+Kappeler Strasse 207
+D-40599 D=FCsseldorf
 
-In include/linux/byteorder/generic.h we have
+Mobil: +49 151 40511525
+       +49 211 1663157
 
-#ifndef __LITTLE_ENDIAN
-#define __LITTLE_ENDIAN        1234
-#endif
-#ifndef __BIG_ENDIAN
-#define __BIG_ENDIAN   4321
-#endif
+http://www.crane-soft.de
 
-so after including this file we will have __BIG_ENDIAN and
-__LITTLE_ENDIAN both defined.
+Am 31.05.2012 20:27, schrieb Sascha Hauer:
+> Hi Peter,
+> =
 
-On the other hand in arch/mips/lib/libgcc.h we have
+> On Fri, May 25, 2012 at 11:35:36AM +0200, Peter Kuennemann@Crane-Soft wro=
+te:
+>>
+>>
+>> To have kernel in flash and rootfs on MMC i tried bootargs as:
+>>
+>> ... root=3D/dev/mmcblk0p1 rootfstype=3Dext2 rootflags=3Dnoatime rw noini=
+trd rootwait ..
+>>
+>> and it boots the kernel properly from flash up to:
+>> ...
+>> mmcblk0: mmc0:a95c SD01G 968 MiB     <=3D=3D Recognized the sd card
+>>  mmcblk0: p1                         <=3D=3D and partion 1
+>> ...
+>> 1f00             256 mtdblock0 (driver?)
+>> 1f01             128 mtdblock1 (driver?)
+>> 1f02            2048 mtdblock2 (driver?)
+>> 1f03           30336 mtdblock3 (driver?)
+>> 1f04         1048576 mtdblock4 (driver?)
+>> b300          992000 mmcblk0 driver: mmcblk
+>>   b301          991585 mmcblk0p1                    <=3D=3D=3D Something=
+ missing here?
+>> No filesystem could mount root, tried:  ext2        <=3D=3D=3D
+>> Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-bloc=
+k(179,1) <=3D=3D=3D
+>>
+>> The mmc does contain a ext2 filesystem with the proper rootfs copied from
+>> the jffs2.image that I mounted under Ubuntu as loop device. The kernel h=
+as ext2 fs
+>> support compiled in.
+>>
+>> The rootfs on the mmc is properly accessible when booting kernel and fla=
+sh footfs
+>> on the very same platform.
+> =
 
-#ifdef __BIG_ENDIAN
-struct DWstruct {
-        int high, low;
-};
-#elif defined(__LITTLE_ENDIAN)
-struct DWstruct {
-        int low, high;
-};
-#else
-#error I feel sick.
-#endif
+> Has this been solved in the mean time? The above looks correct, I have
+> no idea what's wrong.
 
-In any case we will got big-endian DWstruct, so on little-endian MIPS
-machines we will have wrong result of the '>>' u64 operation (the low
-and high parts of 64-bit word will be swapped).
+The case has been partly solved now. I am able to boot from NAND and NOR bu=
+t I cannot
+access the MMC. Reason for the kernel messages ...(driver?) above was a mis=
+sing device
+"mxc_nand" in the kernel parms for mtdparts:
 
-The problem can be solved by this patch:
+    mtdparts=3Dphysmap-flash.0:256k(barebox)ro,128k(bareboxenv),2M(kernel),=
+-(root); \
+    mxc_nand:256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)
 
---- a/include/linux/byteorder/generic.h
-+++ b/include/linux/byteorder/generic.h
-@@ -78,13 +78,6 @@
-  *
-  */
+However, I still cannot access the mmc from barebox. It would be enough to =
+be able to
+read the mmc. I want to be able to store kernel or rootfs image updates on =
+the mmc
+and flash them to either NAND or NOR after reboot to enable remote update s=
+ervices.
 
--#ifndef __LITTLE_ENDIAN
--#define __LITTLE_ENDIAN        1234
--#endif
--#ifndef __BIG_ENDIAN
--#define __BIG_ENDIAN   4321
--#endif
--
+Question: "How can I access the MMC from barebox (read only may be sufficie=
+nt)
 
-But in several places we have something like this:
-
-#if __BYTE_ORDER =3D=3D __LITTLE_ENDIAN
-...
-#elif __BYTE_ORDER =3D=3D __BIG_ENDIAN
-
-and we will get the warnings from compiler (e.g. warning:
-"__BIG_ENDIAN" is not defined). So we need addition changes like this
-
--#if __BYTE_ORDER =3D=3D __LITTLE_ENDIAN
-+#ifdef __LITTLE_ENDIAN
-...
--#elif __BYTE_ORDER =3D=3D __BIG_ENDIAN
-+#elif defined(__BIG_ENDIAN)
-
-There is another solution. We can change arch/mips/lib/libgcc.h:
-
--#ifdef __LITTLE_ENDIAN
-+#if __BYTE_ORDER =3D=3D __LITTLE_ENDIAN
-...
--#elif defined(__BIG_ENDIAN)
-+#elif __BYTE_ORDER =3D=3D __BIG_ENDIAN
-
-But this solution is not linux-compatible because __LITTLE_ENDIAN and
-__BIG_ENDIAN can be defined simultaneously.
-
-Please comment this message.
+Regards, Peter
 
 -- =
 
-Best regards,
-=A0 Antony Pavlov
+Barebox device list:
+
+barebox@MKT.i357-CPU:/ ls -l /dev
+crw-------         32 imx_iim_bank0
+crw-------         32 imx_iim_bank1
+crw-------         32 imx_iim_bank2
+crw-------         32 imx_iim_bank3
+crw-------         32 imx_iim_bank4
+crw-------         32 imx_iim_bank5
+crw-------         32 imx_iim_bank6
+crw-------         32 imx_iim_bank7
+cr-------- 4294967295 zero
+crw-------  134217728 ram0
+crw-------       8281 defaultenv
+crw------- 4294967295 mem
+crw-------         64 phy0
+crw------- 1073741824 nand0
+cr--------   33554432 nand_oob0
+crw-------   33554432 nor0
+crw-------     262144 self0
+crw-------     131072 env0
+crw-------     262144 nor0.barebox
+crw-------     131072 nor0.bareboxenv
+crw-------    2097152 nor0.kernel
+crw-------   31064064 nor0.root
+crw-------     262144 nand0.barebox
+crw-------     131072 nand0.bareboxenv
+crw-------    2097152 nand0.kernel
+crw------- 1071251456 nand0.root
+crw------- 1070071808 nand0.root.bb
+crw-------    2097152 nand0.kernel.bb
+crw-------     131072 nand0.bareboxenv.bb
+crw-------     262144 nand0.barebox.bb
+
+
 
 _______________________________________________
 barebox mailing list
