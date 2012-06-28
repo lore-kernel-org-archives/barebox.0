@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SkCHK-0001Jj-8F
- for barebox@lists.infradead.org; Thu, 28 Jun 2012 10:48:50 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1SkCHI-0007ez-0R
- for barebox@lists.infradead.org; Thu, 28 Jun 2012 12:48:48 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1SkCHH-0002GB-VD
- for barebox@lists.infradead.org; Thu, 28 Jun 2012 12:48:47 +0200
+ id 1SkCHK-0001Jm-8L
+ for barebox@lists.infradead.org; Thu, 28 Jun 2012 10:48:52 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 28 Jun 2012 12:48:44 +0200
-Message-Id: <1340880527-6895-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 28 Jun 2012 12:48:47 +0200
+Message-Id: <1340880527-6895-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1340880527-6895-1-git-send-email-s.hauer@pengutronix.de>
+References: <1340880527-6895-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,24 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] some small binary size improvement patches
+Subject: [PATCH 3/3] dos partitions: enable disk size guessing only for bios
+ disks
 To: barebox@lists.infradead.org
 
-Not much, but at least a few hundred bytes.
-
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (3):
-      menu: factor out a function to print an entry
-      net: Use dev_name directly
-      dos partitions: enable disk size guessing only for bios disks
-
- common/menu.c       |   70 +++++++++++----------------------------------------
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
  common/partitions.c |    2 +-
- include/menu.h      |    3 ---
- net/eth.c           |    4 +--
- 4 files changed, 17 insertions(+), 62 deletions(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/common/partitions.c b/common/partitions.c
+index 74b4f12..c5bce6e 100644
+--- a/common/partitions.c
++++ b/common/partitions.c
+@@ -119,7 +119,7 @@ static void __maybe_unused try_dos_partition(struct block_device *blk,
+ 	table = (struct partition_entry *)&buffer[446];
+ 
+ 	/* valid for x86 BIOS based disks only */
+-	if (blk->num_blocks == 0)
++	if (IS_ENABLED(CONFIG_DISK_BIOS) && blk->num_blocks == 0)
+ 		blk->num_blocks = disk_guess_size(blk->dev, table);
+ 
+ 	for (i = 0; i < 4; i++) {
+-- 
+1.7.10
+
 
 _______________________________________________
 barebox mailing list
