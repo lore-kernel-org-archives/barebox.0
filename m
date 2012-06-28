@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SkJWL-0007nd-Vx
- for barebox@lists.infradead.org; Thu, 28 Jun 2012 18:32:50 +0000
+ id 1SkJWN-0007nd-P2
+ for barebox@lists.infradead.org; Thu, 28 Jun 2012 18:32:52 +0000
 Received: by mail-lb0-f177.google.com with SMTP id gg6so3506438lbb.36
- for <barebox@lists.infradead.org>; Thu, 28 Jun 2012 11:32:49 -0700 (PDT)
+ for <barebox@lists.infradead.org>; Thu, 28 Jun 2012 11:32:51 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 28 Jun 2012 22:32:32 +0400
-Message-Id: <1340908354-17895-4-git-send-email-antonynpavlov@gmail.com>
+Date: Thu, 28 Jun 2012 22:32:33 +0400
+Message-Id: <1340908354-17895-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1340908354-17895-1-git-send-email-antonynpavlov@gmail.com>
 References: <1340908354-17895-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,55 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/5] clocksource: move the NSEC_PER_SEC constant to common
- header
+Subject: [PATCH v2 4/5] MIPS: XBurst: fix the JZ4755's clocksource input
+ frequency value
 To: barebox@lists.infradead.org
+
+The 40 KHz frequency value was used to parry
+__lshrdi3() error on little-endian MIPS because
+the __lshrdi3() function is used in clocksource code.
+
+The true value of the JZ4755's external clock frequency is 24 MHz.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/ppc/mach-mpc85xx/include/mach/clocks.h |    2 --
- include/clock.h                             |    2 ++
- include/linux/time.h                        |    1 +
- 3 files changed, 3 insertions(+), 2 deletions(-)
+ arch/mips/mach-xburst/csrc-jz4750.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/ppc/mach-mpc85xx/include/mach/clocks.h b/arch/ppc/mach-mpc85xx/include/mach/clocks.h
-index 9477168..2ab367b 100644
---- a/arch/ppc/mach-mpc85xx/include/mach/clocks.h
-+++ b/arch/ppc/mach-mpc85xx/include/mach/clocks.h
-@@ -10,8 +10,6 @@ struct sys_info {
- 	unsigned long freqLocalBus;
- };
+diff --git a/arch/mips/mach-xburst/csrc-jz4750.c b/arch/mips/mach-xburst/csrc-jz4750.c
+index f625b70..dc7135a 100644
+--- a/arch/mips/mach-xburst/csrc-jz4750.c
++++ b/arch/mips/mach-xburst/csrc-jz4750.c
+@@ -28,7 +28,7 @@
+ #include <io.h>
+ #include <mach/jz4750d_regs.h>
  
--#define NSEC_PER_SEC	1000000000L
--
- unsigned long fsl_get_bus_freq(ulong dummy);
- unsigned long fsl_get_timebase_clock(void);
- void fsl_get_sys_info(struct sys_info *sysInfo);
-diff --git a/include/clock.h b/include/clock.h
-index 123f874..c01a8d0 100644
---- a/include/clock.h
-+++ b/include/clock.h
-@@ -3,6 +3,8 @@
- #ifndef CLOCK_H
- #define CLOCK_H
+-#define JZ_TIMER_CLOCK 40000
++#define JZ_TIMER_CLOCK 24000000
  
-+#include <linux/time.h>
-+
- #define CLOCKSOURCE_MASK(bits) (uint64_t)((bits) < 64 ? ((1ULL<<(bits))-1) : -1)
- 
- struct clocksource {
-diff --git a/include/linux/time.h b/include/linux/time.h
-index bf12b99..a1be8fe 100644
---- a/include/linux/time.h
-+++ b/include/linux/time.h
-@@ -9,6 +9,7 @@
- 
- #define _REENT_ONLY
- 
-+#define NSEC_PER_SEC	1000000000L
- #define SECSPERMIN	60L
- #define MINSPERHOUR	60L
- #define HOURSPERDAY	24L
+ static uint64_t jz4750_cs_read(void)
+ {
 -- 
 1.7.10
 
