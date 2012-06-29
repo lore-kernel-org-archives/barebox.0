@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp15.mail.ru ([94.100.176.133])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SkavF-0000z6-UB
- for barebox@lists.infradead.org; Fri, 29 Jun 2012 13:07:43 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 29 Jun 2012 15:07:37 +0200
-References: <1340974442-1687-1-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1340974442-1687-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201206291507.37250.jbe@pengutronix.de>
+ id 1SkeqD-0005nm-GU
+ for barebox@lists.infradead.org; Fri, 29 Jun 2012 17:18:47 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Fri, 29 Jun 2012 21:19:20 +0400
+Message-Id: <1340990360-5716-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,29 +14,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM mxs: Clear USB boot mode during startup
+Subject: [PATCH] Unused files removed
 To: barebox@lists.infradead.org
-Cc: wsa@pengutronix.de
 
-Sascha Hauer wrote:
-> When the i.MX28 boots from USB, the ROM code sets this bit. When
-> after a reset the ROM code detects that this bit is set it will
-> boot from USB again. This means that if we boot once from USB the
-> chip will continue to boot from USB until the next power cycle.
+Files "modules.builtin" probably have been copied from kernel tree.
+This files not used by barebox and can be removed safely.
 
-And if the RTC has a battery it will boot from USB forever...
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ lib/lzo/modules.builtin          |    2 --
+ lib/zlib_inflate/modules.builtin |    1 -
+ 2 files changed, 0 insertions(+), 3 deletions(-)
+ delete mode 100644 lib/lzo/modules.builtin
+ delete mode 100644 lib/zlib_inflate/modules.builtin
 
-> [...]
-
-jbe
-
+diff --git a/lib/lzo/modules.builtin b/lib/lzo/modules.builtin
+deleted file mode 100644
+index d860562..0000000
+--- a/lib/lzo/modules.builtin
++++ /dev/null
+@@ -1,2 +0,0 @@
+-kernel/lib/lzo/lzo_compress.ko
+-kernel/lib/lzo/lzo_decompress.ko
+diff --git a/lib/zlib_inflate/modules.builtin b/lib/zlib_inflate/modules.builtin
+deleted file mode 100644
+index 7206225..0000000
+--- a/lib/zlib_inflate/modules.builtin
++++ /dev/null
+@@ -1 +0,0 @@
+-kernel/lib/zlib_inflate/zlib_inflate.ko
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
+1.7.3.4
+
 
 _______________________________________________
 barebox mailing list
