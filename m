@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([88.190.12.23])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SkXFM-00047r-4f
- for barebox@lists.infradead.org; Fri, 29 Jun 2012 09:12:12 +0000
-Received: from [192.168.0.42] (col31-4-88-188-83-94.fbx.proxad.net
- [88.188.83.94])
- by mail.free-electrons.com (Postfix) with ESMTPSA id 6BD51148
- for <barebox@lists.infradead.org>; Fri, 29 Jun 2012 11:11:59 +0200 (CEST)
-Message-ID: <4FED715F.5050906@free-electrons.com>
-Date: Fri, 29 Jun 2012 11:11:59 +0200
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SkXGx-0004UD-UI
+ for barebox@lists.infradead.org; Fri, 29 Jun 2012 09:13:52 +0000
+Date: Fri, 29 Jun 2012 11:13:49 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120629091349.GB2698@pengutronix.de>
+References: <1340908354-17895-1-git-send-email-antonynpavlov@gmail.com>
+ <1340908354-17895-2-git-send-email-antonynpavlov@gmail.com>
+ <20120629072517.GZ1623@pengutronix.de>
+ <CAA4bVAFvVWiGq6vC=ay_UrNbxe8cCwu=_gCC7roZ7oxF_UQWRA@mail.gmail.com>
 MIME-Version: 1.0
-References: <4FDF27F8.7010105@free-electrons.com>
-In-Reply-To: <4FDF27F8.7010105@free-electrons.com>
+Content-Disposition: inline
+In-Reply-To: <CAA4bVAFvVWiGq6vC=ay_UrNbxe8cCwu=_gCC7roZ7oxF_UQWRA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,89 +21,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: How to start barebox on Freescale iMX28 EVK
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 1/5] byteorder: fix {BIG,LITTLE}_ENDIAN defines
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Anyone ?
+On Fri, Jun 29, 2012 at 12:48:23PM +0400, Antony Pavlov wrote:
+> On 29 June 2012 11:25, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> >
+> > In file included from common/environment.c:37:
+> > include/envfs.h:41:21: warning: "__LITTLE_ENDIAN" is not defined
+> 
+> You are right.
+> 
+> >> +
+> >> +#ifdef __LITTLE_ENDIAN
+> >
+> > As said, this file is included from scripts/bareboxenv.c which is
+> > compiled for userspace. __LITTLE_ENDIAN will always be defined in
+> > userspace.
+> 
+> But it included from common/environment.c too!
 
-Le 18/06/2012 15:07, Maxime Ripard a =E9crit :
-> Hi everyone,
-> =
+That's why I have the following:
 
-> I'm trying barebox on the imx28 evk evaluation board from freescale, and
-> I can't get barebox to boot yet.
-> =
+#ifdef __BAREBOX__
+#  ifdef __LITTLE_ENDIAN
+#    define ENVFS_ORDER_LITTLE
+#  elif defined __BIG_ENDIAN
+#    define ENVFS_ORDER_BIG
+#  else
+#    error "could not determine byte order"
+#  endif
+#else
+#  if __BYTE_ORDER == __LITTLE_ENDIAN
+#    define ENVFS_ORDER_LITTLE
+#  elif __BYTE_ORDER == __BIG_ENDIAN
+#    define ENVFS_ORDER_BIG
+#  else
+#    error "could not determine byte order"
+#  endif
+#endif
 
-> I think I might have a problem with the bootlets used, but I'm not sure.
-> =
+This should work as expected. Maybe the name ENVFS_ORDER_LITTLE and
+ENVFS_ORDER_BIG are a bit confusing, should probably better ENVFS_ORDER_NATIVE
+and ENVFS_ORDER_SWAP.
 
-> So, to compile barebox, I did:
-> ARCH=3Darm CROSS_COMPILE=3Darm-linux-gnueabi- make imx28evk_defconfig
-> ARCH=3Darm CROSS_COMPILE=3Darm-none-linux-gnueabi- make
-> =
+Sascha
 
-> Using codebench 2011.09 toolchain.
-> =
-
-> Then, I used U-boot IVT bootlet from freescale bootlet tarball as a base
-> for the one I created [1].
-> =
-
-> After that, I created the bootstream using
-> elftosb -z -f imx28 -c  ./barebox_ivt.bd -o imx28_ivt_barebox.sb
-> =
-
-> Finally, I pushed on a properly formatted SD Card (with a 0x53 partition
-> flag on the first partition) using Freescale mk_hdr script[2] to
-> generate the proper headers:
-> =
-
-> ./mk_hdr.sh `sudo fdisk -lu /dev/sdb | awk '$5=3D=3D53 {print $2}'` 1  >
-> temp.bin
-> =
-
-> sudo dd if=3Dtemp.bin of=3D/dev/sdb1 ibs=3D512 conv=3Dsync
-> sudo dd if=3Dimx28_ivt_barebox.sb of=3D/dev/sdb1 ibs=3D512 obs=3D512 seek=
-=3D1
-> conv=3Dsync
-> =
-
-> When I finally plug the card in and boot the card, the two first
-> bootlets are properly executed, and then, it hangs, displaying nothing
-> but what is looking like an address: 0x8050100f
-> =
-
-> When flashing it in the exact same way with freescale's precompiled
-> u-boot bootstream, it works fine though, so my guess is that it is more
-> a problem regarding the barebox binary/the bootstream than the sd card
-> generation process...
-> =
-
-> Do you have an idea on what could be wrong with what I'm doing ?
-> =
-
-> Thanks,
-> Maxime
-> =
-
-> [1] http://code.bulix.org/eavngs-81672
-> [2] http://code.bulix.org/vzqsiy-81673
-> =
-
-
-
--- =
-
-Maxime Ripard, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
-
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
