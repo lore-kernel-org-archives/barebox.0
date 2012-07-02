@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SlixL-0005y5-Tp
- for barebox@lists.infradead.org; Mon, 02 Jul 2012 15:54:38 +0000
-Received: by lbbgg6 with SMTP id gg6so8119104lbb.36
- for <barebox@lists.infradead.org>; Mon, 02 Jul 2012 08:53:55 -0700 (PDT)
+ id 1SlixL-0005y4-Rc
+ for barebox@lists.infradead.org; Mon, 02 Jul 2012 15:54:39 +0000
+Received: by lbbgg6 with SMTP id gg6so8119040lbb.36
+ for <barebox@lists.infradead.org>; Mon, 02 Jul 2012 08:53:52 -0700 (PDT)
 From: Alexey Galakhov <agalakhov@gmail.com>
-Date: Mon,  2 Jul 2012 21:53:40 +0600
-Message-Id: <1341244420-15338-3-git-send-email-agalakhov@gmail.com>
+Date: Mon,  2 Jul 2012 21:53:39 +0600
+Message-Id: <1341244420-15338-2-git-send-email-agalakhov@gmail.com>
 In-Reply-To: <1341244420-15338-1-git-send-email-agalakhov@gmail.com>
 References: <1341244420-15338-1-git-send-email-agalakhov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,168 +23,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] Add FriendlyArm Tiny210 board (S5PV210)
+Subject: [PATCH 1/2] S5P DRAM support
 To: barebox@lists.infradead.org
 Cc: Alexey Galakhov <agalakhov@gmail.com>
 
 Signed-off-by: Alexey Galakhov <agalakhov@gmail.com>
 ---
- arch/arm/Makefile                  |    1 +
- arch/arm/boards/tiny210/Makefile   |    1 +
- arch/arm/boards/tiny210/config.h   |   19 ++++++
- arch/arm/boards/tiny210/lowlevel.c |   72 +++++++++++++++++++++++
- arch/arm/boards/tiny210/tiny210.c  |  113 ++++++++++++++++++++++++++++++++++++
- arch/arm/configs/tiny210_defconfig |   17 ++++++
- arch/arm/mach-samsung/Kconfig      |   20 +++++--
- 7 files changed, 237 insertions(+), 6 deletions(-)
- create mode 100644 arch/arm/boards/tiny210/Makefile
- create mode 100644 arch/arm/boards/tiny210/config.h
- create mode 100644 arch/arm/boards/tiny210/lowlevel.c
- create mode 100644 arch/arm/boards/tiny210/tiny210.c
- create mode 100644 arch/arm/configs/tiny210_defconfig
+ arch/arm/mach-samsung/Makefile                    |    2 +-
+ arch/arm/mach-samsung/include/mach/s3c-generic.h  |    6 +
+ arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h |    3 +
+ arch/arm/mach-samsung/mem-s5pcxx.c                |  320 +++++++++++++++++++++
+ 4 files changed, 330 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/mach-samsung/mem-s5pcxx.c
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 1225df7..89cd1cb 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -137,6 +137,7 @@ board-$(CONFIG_MACH_TX51)			:= karo-tx51
- board-$(CONFIG_MACH_MX6Q_ARM2)			:= freescale-mx6-arm2
- board-$(CONFIG_MACH_TOSHIBA_AC100)		:= toshiba-ac100
- board-$(CONFIG_MACH_CCMX51)			:= ccxmx51
-+board-$(CONFIG_MACH_TINY210)			:= tiny210
+diff --git a/arch/arm/mach-samsung/Makefile b/arch/arm/mach-samsung/Makefile
+index d7344c8..6020587 100644
+--- a/arch/arm/mach-samsung/Makefile
++++ b/arch/arm/mach-samsung/Makefile
+@@ -2,5 +2,5 @@ obj-y += s3c-timer.o generic.o
+ obj-lowlevel-$(CONFIG_ARCH_S3C24xx) += lowlevel-s3c24x0.o
+ obj-lowlevel-$(CONFIG_ARCH_S5PCxx) += lowlevel-s5pcxx.o
+ obj-$(CONFIG_ARCH_S3C24xx) += gpio-s3c24x0.o s3c24xx-clocks.o mem-s3c24x0.o
+-obj-$(CONFIG_ARCH_S5PCxx) += gpio-s5pcxx.o clocks-s5pcxx.o
++obj-$(CONFIG_ARCH_S5PCxx) += gpio-s5pcxx.o clocks-s5pcxx.o mem-s5pcxx.o
+ obj-$(CONFIG_S3C_LOWLEVEL_INIT) += $(obj-lowlevel-y)
+diff --git a/arch/arm/mach-samsung/include/mach/s3c-generic.h b/arch/arm/mach-samsung/include/mach/s3c-generic.h
+index 11b083d..329c2b4 100644
+--- a/arch/arm/mach-samsung/include/mach/s3c-generic.h
++++ b/arch/arm/mach-samsung/include/mach/s3c-generic.h
+@@ -24,6 +24,8 @@
+  * MA 02111-1307 USA
+  */
  
- machdirs := $(patsubst %,arch/arm/mach-%/,$(machine-y))
- 
-diff --git a/arch/arm/boards/tiny210/Makefile b/arch/arm/boards/tiny210/Makefile
-new file mode 100644
-index 0000000..9c38e60
---- /dev/null
-+++ b/arch/arm/boards/tiny210/Makefile
-@@ -0,0 +1 @@
-+obj-y += tiny210.o lowlevel.o
-diff --git a/arch/arm/boards/tiny210/config.h b/arch/arm/boards/tiny210/config.h
-new file mode 100644
-index 0000000..86aedf0
---- /dev/null
-+++ b/arch/arm/boards/tiny210/config.h
-@@ -0,0 +1,19 @@
-+#define S5PCXX_CLOCK_REFERENCE 24000000
-+
-+#define set_pll(mdiv, pdiv, sdiv)	(1<<31 | mdiv<<16 | pdiv<<8 | sdiv)
-+
-+#define BOARD_APLL_VAL	set_pll(0x7d, 0x3, 0x1)
-+#define BOARD_MPLL_VAL	set_pll(0x29b, 0xc, 0x1)
-+#define BOARD_EPLL_VAL	set_pll(0x60, 0x6, 0x2)
-+#define BOARD_VPLL_VAL	set_pll(0x6c, 0x6, 0x3)
-+
-+#define BOARD_CLK_DIV0_MASK	0xFFFFFFFF
-+#define BOARD_CLK_DIV0_VAL	0x14131440
-+#define BOARD_APLL_LOCKTIME	0x2cf
-+
-+#define S5P_DRAM_WR	3
-+#define S5P_DRAM_CAS	4
-+#define DMC_TIMING_AREF	0x00000618
-+#define DMC_TIMING_ROW	0x2B34438A
-+#define DMC_TIMING_DATA	0x24240000
-+#define DMC_TIMING_PWR	0x0BDC0343
-diff --git a/arch/arm/boards/tiny210/lowlevel.c b/arch/arm/boards/tiny210/lowlevel.c
-new file mode 100644
-index 0000000..19739d8
---- /dev/null
-+++ b/arch/arm/boards/tiny210/lowlevel.c
-@@ -0,0 +1,72 @@
-+/*
-+ * Copyright (C) 2012 Alexey Galakhov
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * version 2 as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ */
-+
-+#include <config.h>
 +#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/sections.h>
-+#include <mach/s3c-iomap.h>
-+#include <mach/s3c-clocks.h>
-+#include <mach/s3c-generic.h>
 +
-+/*
-+ * iROM boot from MMC
-+ * TODO: replace this by native boot
-+ */
+ uint32_t s3c_get_mpllclk(void);
+ uint32_t s3c_get_upllclk(void);
+ uint32_t s3c_get_fclk(void);
+@@ -40,4 +42,8 @@ void s3c24xx_disable_second_sdram_bank(void);
+ 
+ #ifdef CONFIG_ARCH_S5PCxx
+ void s5p_init_pll(void);
++void s5p_init_dram_bank_lpddr(phys_addr_t base, uint32_t mc0, uint32_t mc1, int bus16);
++void s5p_init_dram_bank_lpddr2(phys_addr_t base, uint32_t mc0, uint32_t mc1, int bus16);
++void s5p_init_dram_bank_ddr2(phys_addr_t base, uint32_t mc0, uint32_t mc1, int bus16);
++uint32_t s5p_get_memory_size(void);
+ #endif
+diff --git a/arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h b/arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h
+index cb05527..248f868 100644
+--- a/arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h
++++ b/arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h
+@@ -47,3 +47,6 @@
+ #define S3C_UART3_SIZE 0x400
+ #define S3C_UART_HAS_UBRDIVSLOT
+ #define S3C_UART_HAS_UINTM
 +
-+#define ADDR_V210_SDMMC_BASE	0xD0037488
-+#define ADDR_CopySDMMCtoMem	0xD0037F98
-+
-+int __bare_init s5p_irom_load_mmc(void *dest, uint32_t start_block, uint16_t block_count)
-+{
-+	typedef uint32_t (*func_t) (int32_t, uint32_t, uint16_t, uint32_t*, int8_t);
-+	uint32_t chbase = readl(ADDR_V210_SDMMC_BASE);
-+	func_t func = (func_t)readl(ADDR_CopySDMMCtoMem);
-+	int chan = (chbase - 0xEB000000) >> 20;
-+	if (chan != 0 && chan != 2)
-+		return 0;
-+	return func(chan, start_block, block_count, (uint32_t*)dest, 0) ? 1 : 0;
-+}
-+
-+
-+void __bare_init board_init_lowlevel(void)
-+{
-+	uint32_t r;
-+
-+#ifdef CONFIG_S3C_PLL_INIT
-+	s5p_init_pll();
-+#endif
-+
-+	if (get_pc() < 0xD0000000) /* Are we running from iRAM? */
-+		return; /* No, we don't. */
-+
-+	s5p_init_dram_bank_ddr2(S5P_DMC0_BASE, 0x20E00323, 0, 0);
-+
-+	if (! s5p_irom_load_mmc((void*)TEXT_BASE - 16, 1, (barebox_image_size + 16 + 511) / 512))
-+		while (1) { } /* hang */
-+
-+	/* Jump to SDRAM */
-+	r = (unsigned)TEXT_BASE;
-+	__asm__ __volatile__("mov pc, %0" : : "r"(r));
-+	while (1) { } /* hang */
-+}
-diff --git a/arch/arm/boards/tiny210/tiny210.c b/arch/arm/boards/tiny210/tiny210.c
++#define S5P_DMC0_BASE 0xF0000000
++#define S5P_DMC1_BASE 0xF1400000
+diff --git a/arch/arm/mach-samsung/mem-s5pcxx.c b/arch/arm/mach-samsung/mem-s5pcxx.c
 new file mode 100644
-index 0000000..1277649
+index 0000000..943f691
 --- /dev/null
-+++ b/arch/arm/boards/tiny210/tiny210.c
-@@ -0,0 +1,113 @@
++++ b/arch/arm/mach-samsung/mem-s5pcxx.c
+@@ -0,0 +1,320 @@
 +/*
 + * Copyright (C) 2012 Alexey Galakhov
-+ * Based on Mini6410 code by Juergen Beisert
 + *
-+ * Copyright (C) 2012 Juergen Beisert, Pengutronix
-+ *
-+ * In some ways inspired by code
-+ *
-+ * (C) Copyright 2002
-+ * Sysgo Real-Time Solutions, GmbH <www.elinos.com>
-+ * Marius Groeger <mgroeger@sysgo.de>
-+ *
-+ * (C) Copyright 2002
-+ * David Mueller, ELSOFT AG, <d.mueller@elsoft.ch>
++ * Based on code from u-boot found somewhere on the web
++ * that seems to originate from Samsung
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -197,159 +103,309 @@ index 0000000..1277649
 + * GNU General Public License for more details.
 + */
 +
++#include <config.h>
 +#include <common.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <sizes.h>
-+#include <generated/mach-types.h>
-+#include <dm9000.h>
-+#include <gpio.h>
-+#include <led.h>
 +#include <io.h>
-+#include <nand.h>
-+#include <asm/armlinux.h>
-+#include <mach/s3c-iomap.h>
-+#include <mach/s3c-clocks.h>
++#include <init.h>
 +#include <mach/s3c-generic.h>
++#include <mach/s3c-iomap.h>
++
++#define S5P_DMC_CONCONTROL	0x00
++#define S5P_DMC_MEMCONTROL	0x04
++#define S5P_DMC_MEMCONFIG0	0x08
++#define S5P_DMC_MEMCONFIG1	0x0C
++#define S5P_DMC_DIRECTCMD	0x10
++#define S5P_DMC_PRECHCONFIG	0x14
++#define S5P_DMC_PHYCONTROL0	0x18
++#define S5P_DMC_PHYCONTROL1	0x1C
++#define S5P_DMC_PWRDNCONFIG	0x28
++#define S5P_DMC_TIMINGAREF	0x30
++#define S5P_DMC_TIMINGROW	0x34
++#define S5P_DMC_TIMINGDATA	0x38
++#define S5P_DMC_TIMINGPOWER	0x3C
++#define S5P_DMC_PHYSTATUS	0x40
++#define S5P_DMC_MRSTATUS	0x54
++
++/* DRAM commands */
++#define CMD(x)  ((x) << 24)
++#define BANK(x) ((x) << 16)
++#define CHIP(x) ((x) << 20)
++#define ADDR(x) (x)
++
++/**
++ *  MR definition:
++ *  1 11
++ *  2 1098 7654 3210
++ *      |     |  ^^^- burst length, 010=4, 011=8
++ *      |     | ^- burst type 0=sequnential, 1=interleaved
++ *      |   ^^^-- CAS latency
++ *      |  ^----- test, 0=normal, 1=test
++ *      |^---- DLL reset, 1=yes
++ *    ^^^----- WR, 1=2, 2=3 etc.
++ *  ^------- PD, 0=fast exit, 1=low power
++ *
++ *  EMR1 definition:
++ *  1 11
++ *  2 1098 7654 3210
++ *         |       ^- DLL, 0=enable
++ *         |      ^-- output strength, 0=full, 1=reduced
++ *         |^.. .^--- Rtt, 00=off, 01=75, 10=150, 11=50 Ohm
++ *         | ^^ ^-- Posted CAS# AL, 0-6
++ *      ^^ ^------ OCD: 000=OCD exit, 111=enable defaults
++ *     ^------ DQS#, 0=enable, 1=disable
++ *    ^------- RDQS enable, 0=no, 1=yes
++ *  ^-------- outputs, 0=enabled, 1=disabled
++ *
++ *  EMR2 definition:
++ *  bit 7
++ *  1 1
++ *  2 1098 7654 3210
++ *         ^-- SRT, 0=1x (0-85 deg.C), 1=2x (>85 deg.C)
++ *  all other bits = 0
++ *
++ *  EMR3 definition: all bits 0
++ */
++
++#define MRS	CMD(0x0)
++#define PALL	CMD(0x1)
++#define PRE	CMD(0x2)
++#define DPD	CMD(0x3)
++#define REFS	CMD(0x4)
++#define REFA	CMD(0x5)
++#define CKEL	CMD(0x6)
++#define NOP	CMD(0x7)
++#define REFSX	CMD(0x8)
++#define MRR	CMD(0x9)
++
++#define EMRS1 (MRS | BANK(1))
++#define EMRS2 (MRS | BANK(2))
++#define EMRS3 (MRS | BANK(3))
++
++/* Burst is (1 << S5P_DRAM_BURST), i.e. S5P_DRAM_BURST=2 for burst 4 */
++#ifndef S5P_DRAM_BURST
++/* (LP)DDR2 supports burst 4 only, make it default */
++# define S5P_DRAM_BURST 2
++#endif
++
++/**
++ * Initialization sequences for different kinds of DRAM
++ */
++#define dcmd(x) writel((x) | CHIP(chip), base + S5P_DMC_DIRECTCMD)
++
++static void __bare_init s5p_dram_init_seq_lpddr(phys_addr_t base, unsigned chip)
++{
++	const uint32_t emr = 0x400; /* DQS disable */
++	const uint32_t mr = (((S5P_DRAM_WR) - 1) << 9)
++			  | ((S5P_DRAM_CAS) << 4)
++			  | (S5P_DRAM_BURST);
++	/* TODO this sequence is untested */
++	dcmd(PALL); dcmd(REFA); dcmd(REFA);
++	dcmd(MRS   | ADDR(mr));
++	dcmd(EMRS1 | ADDR(emr));
++}
++
++static void __bare_init s5p_dram_init_seq_lpddr2(phys_addr_t base, unsigned chip)
++{
++	const uint32_t mr = (((S5P_DRAM_WR) - 1) << 9)
++			  | ((S5P_DRAM_CAS) << 4)
++			  | (S5P_DRAM_BURST);
++	/* TODO this sequence is untested */
++	dcmd(NOP);
++	dcmd(MRS | ADDR(mr));
++	do {
++		dcmd(MRR);
++	} while (readl(base + S5P_DMC_MRSTATUS) & 0x01); /* poll DAI */
++}
++
++static void __bare_init s5p_dram_init_seq_ddr2(phys_addr_t base, unsigned chip)
++{
++	const uint32_t emr = 0x400; /* DQS disable */
++	const uint32_t mr = (((S5P_DRAM_WR) - 1) << 9)
++			  | ((S5P_DRAM_CAS) << 4)
++			  | (S5P_DRAM_BURST);
++	dcmd(NOP);
++	/* FIXME wait here? JEDEC recommends but nobody does */
++	dcmd(PALL); dcmd(EMRS2); dcmd(EMRS3);
++	dcmd(EMRS1 | ADDR(emr));         /* DQS disable */
++	dcmd(MRS   | ADDR(mr | 0x100));  /* DLL reset */
++	dcmd(PALL); dcmd(REFA); dcmd(REFA);
++	dcmd(MRS   | ADDR(mr));          /* DLL no reset */
++	dcmd(EMRS1 | ADDR(emr | 0x380)); /* OCD defaults */
++	dcmd(EMRS1 | ADDR(emr));         /* OCD exit */
++}
++
++#undef dcmd
++
++static inline void __bare_init s5p_dram_start_dll(phys_addr_t base, uint32_t phycon1)
++{
++	uint32_t pc0 = 0x00101000; /* the only legal initial value */
++	uint32_t lv;
++
++	/* Init DLL */
++	writel(pc0, base + S5P_DMC_PHYCONTROL0);
++	writel(phycon1, base + S5P_DMC_PHYCONTROL1);
++
++	/* DLL on */
++	pc0 |= 0x2;
++	writel(pc0, base + S5P_DMC_PHYCONTROL0);
++
++	/* DLL start */
++	pc0 |= 0x1;
++	writel(pc0, base + S5P_DMC_PHYCONTROL0);
++
++	/* Find lock val */
++	do {
++		lv = readl(base + S5P_DMC_PHYSTATUS);
++	} while ((lv & 0x7) != 0x7);
++
++	lv >>= 6;
++	lv &= 0xff; /* ctrl_lock_value[9:2] - coarse */
++	pc0 |= (lv << 24); /* ctrl_force */
++	writel(pc0, base + S5P_DMC_PHYCONTROL0); /* force value locking */
++}
++
++static inline void __bare_init s5p_dram_setup(phys_addr_t base, uint32_t mc0, uint32_t mc1,
++				       int bus16, uint32_t mcon)
++{
++	mcon |= (S5P_DRAM_BURST) << 20;
++	/* 16 or 32-bit bus ? */
++	mcon |= bus16 ? 0x1000 : 0x2000;
++	if (mc1)
++		mcon |= 0x10000; /* two chips */
++
++	writel(mcon, base + S5P_DMC_MEMCONTROL);
++
++	/* Set up memory layout */
++	writel(mc0, base + S5P_DMC_MEMCONFIG0);
++	if (mc1)
++		writel(mc1, base + S5P_DMC_MEMCONFIG1);
++
++	/* Open page precharge policy - reasonable defaults */
++	writel(0xFF000000, base + S5P_DMC_PRECHCONFIG);
++
++	/* Set up timings */
++	writel(DMC_TIMING_AREF, base + S5P_DMC_TIMINGAREF);
++	writel(DMC_TIMING_ROW,  base + S5P_DMC_TIMINGROW);
++	writel(DMC_TIMING_DATA, base + S5P_DMC_TIMINGDATA);
++	writel(DMC_TIMING_PWR,  base + S5P_DMC_TIMINGPOWER);
++}
++
++static inline void __bare_init s5p_dram_start(phys_addr_t base)
++{
++	/* Reasonable defaults and auto-refresh on */
++	writel(0x0FFF1070, base + S5P_DMC_CONCONTROL);
++	/* Reasonable defaults */
++	writel(0xFFFF00FF, base + S5P_DMC_PWRDNCONFIG);
++}
++
++/*
++ * Initialize LPDDR memory bank
++ * TODO: this function is untested, see also init_seq function
++ */
++void __bare_init s5p_init_dram_bank_lpddr(phys_addr_t base, uint32_t mc0, uint32_t mc1, int bus16)
++{
++	/* refcount 8, 90 deg. shift */
++	s5p_dram_start_dll(base, 0x00000085);
++	/* LPDDR type */
++	s5p_dram_setup(base, mc0, mc1, bus16, 0x100);
++
++	/* Start-Up Commands */
++	s5p_dram_init_seq_lpddr(base, 0);
++	if (mc1)
++		s5p_dram_init_seq_lpddr(base, 1);
++
++	s5p_dram_start(base);
++}
++
++/*
++ * Initialize LPDDR2 memory bank
++ * TODO: this function is untested, see also init_seq function
++ */
++void __bare_init s5p_init_dram_bank_lpddr2(phys_addr_t base, uint32_t mc0, uint32_t mc1, int bus16)
++{
++	/* refcount 8, 90 deg. shift */
++	s5p_dram_start_dll(base, 0x00000085);
++	/* LPDDR2 type */
++	s5p_dram_setup(base, mc0, mc1, bus16, 0x200);
++
++	/* Start-Up Commands */
++	s5p_dram_init_seq_lpddr2(base, 0);
++	if (mc1)
++		s5p_dram_init_seq_lpddr2(base, 1);
++
++	s5p_dram_start(base);
++}
++
++/*
++ * Initialize DDR2 memory bank
++ */
++void __bare_init s5p_init_dram_bank_ddr2(phys_addr_t base, uint32_t mc0, uint32_t mc1, int bus16)
++{
++	/* refcount 8, 180 deg. shift */
++	s5p_dram_start_dll(base, 0x00000086);
++	/* DDR2 type */
++	s5p_dram_setup(base, mc0, mc1, bus16, 0x400);
++
++	/* Start-Up Commands */
++	s5p_dram_init_seq_ddr2(base, 0);
++	if (mc1)
++		s5p_dram_init_seq_ddr2(base, 1);
++
++	s5p_dram_start(base);
++}
 +
 +
-+static const unsigned pin_usage[] = {
-+	/* TODO */
-+};
++#define BANK_ENABLED(base) (readl((base) + S5P_DMC_PHYCONTROL0) & 1)
++#define NUM_EXTRA_CHIPS(base) ((readl((base) + S5P_DMC_MEMCONTROL) >> 16) & 0xF)
 +
-+static struct gpio_led leds[] = {
-+	{
-+		.gpio = GPJ20,
-+		.led = {
-+			.name = "led1",
-+		}
-+	}, {
-+		.gpio = GPJ21,
-+		.led = {
-+			.name = "led2",
-+		}
-+	}, {
-+		.gpio = GPJ22,
-+		.led = {
-+			.name = "led3",
-+		}
-+	}, {
-+		.gpio = GPJ23,
-+		.led = {
-+			.name = "led4",
-+		}
++#define BANK_START(x) ((x) & 0xFF000000)
++#define BANK_END(x) (BANK_START(x) | ~(((x) & 0x00FF0000) << 8))
++#define BANK_LEN(x) (BANK_END(x) - BANK_START(x) + 1)
++
++static inline void sortswap(uint32_t *x, uint32_t *y)
++{
++	if (*y < *x) {
++		*x ^= *y;
++		*y ^= *x;
++		*x ^= *y;
 +	}
-+};
-+
-+static int tiny210_mem_init(void)
-+{
-+	arm_add_mem_device("ram0", S3C_SDRAM_BASE, s5p_get_memory_size());
-+	return 0;
 +}
-+mem_initcall(tiny210_mem_init);
 +
-+static int tiny210_console_init(void)
-+{
-+	/*
-+	 * configure the UART1 right now, as barebox will
-+	 * start to send data immediately
-+	 */
-+	s3c_gpio_mode(GPA00_RXD0 | ENABLE_PU);
-+	s3c_gpio_mode(GPA01_TXD0);
-+	s3c_gpio_mode(GPA02_NCTS0 | ENABLE_PU);
-+	s3c_gpio_mode(GPA03_NRTS0);
-+
-+	add_generic_device("s3c_serial", -1, NULL,
-+			   S3C_UART1_BASE, S3C_UART1_SIZE,
-+			   IORESOURCE_MEM, NULL);
-+	return 0;
-+}
-+console_initcall(tiny210_console_init);
-+
-+static int tiny210_devices_init(void)
++uint32_t s5p_get_memory_size(void)
 +{
 +	int i;
-+	for (i = 0; i < ARRAY_SIZE(pin_usage); i++)
-+		s3c_gpio_mode(pin_usage[i]);
-+
-+	for (i = 0; i < ARRAY_SIZE(leds); i++) {
-+		leds[i].active_low = 1;
-+		gpio_direction_output(leds[i].gpio, leds[i].active_low);
-+		led_gpio_register(&leds[i]);
++	uint32_t len;
++	uint32_t mc[4] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
++	/* Read MEMCONFIG registers */
++	if (BANK_ENABLED(S5P_DMC0_BASE)) {
++		mc[0] = readl(S5P_DMC0_BASE + S5P_DMC_MEMCONFIG0);
++		if (NUM_EXTRA_CHIPS(S5P_DMC0_BASE) > 0)
++			mc[1] = readl(S5P_DMC0_BASE + S5P_DMC_MEMCONFIG1);
 +	}
-+
-+	armlinux_set_bootparams((void*)S3C_SDRAM_BASE + 0x100);
-+	armlinux_set_architecture(MACH_TYPE_MINI210);
-+
-+	return 0;
++	if (BANK_ENABLED(S5P_DMC1_BASE)) {
++		mc[2] = readl(S5P_DMC1_BASE + S5P_DMC_MEMCONFIG0);
++		if (NUM_EXTRA_CHIPS(S5P_DMC1_BASE) > 0)
++			mc[3] = readl(S5P_DMC1_BASE + S5P_DMC_MEMCONFIG1);
++	}
++	/* Sort using a sorting network */
++	sortswap(mc + 0, mc + 2);
++	sortswap(mc + 1, mc + 3);
++	sortswap(mc + 0, mc + 1);
++	sortswap(mc + 2, mc + 3);
++	sortswap(mc + 1, mc + 2);
++	/* Is at least one chip enabled? */
++	if (mc[0] == 0xFFFFFFFF)
++		return 0;
++	/* Determine maximum continuous region at start */
++	len = BANK_LEN(mc[0]);
++	for (i = 1; i < 4; ++i) {
++		if (BANK_START(mc[i]) == BANK_END(mc[i - 1]) + 1)
++			len += BANK_LEN(mc[i]);
++		else
++			break;
++	}
++	return len;
 +}
-+device_initcall(tiny210_devices_init);
-diff --git a/arch/arm/configs/tiny210_defconfig b/arch/arm/configs/tiny210_defconfig
-new file mode 100644
-index 0000000..e9708bf
---- /dev/null
-+++ b/arch/arm/configs/tiny210_defconfig
-@@ -0,0 +1,17 @@
-+CONFIG_ARCH_S5PCxx=y
-+CONFIG_CPU_V7=y
-+CONFIG_CPU_32v7=y
-+CONFIG_BOARDINFO="Tiny 210"
-+CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE=0x1ff0
-+CONFIG_ARCH_SAMSUNG=y
-+CONFIG_CPU_S5PV210=y
-+CONFIG_MACH_TINY210=y
-+CONFIG_S3C_LOWLEVEL_INIT=y
-+CONFIG_S3C_PLL_INIT=y
-+CONFIG_S3C_SDRAM_INIT=y
-+CONFIG_CMD_LED=y
-+CONFIG_CMD_LED_TRIGGER=y
-+CONFIG_DRIVER_SERIAL_S3C=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_LED_TRIGGERS=y
-diff --git a/arch/arm/mach-samsung/Kconfig b/arch/arm/mach-samsung/Kconfig
-index c60f5ed..90cda30 100644
---- a/arch/arm/mach-samsung/Kconfig
-+++ b/arch/arm/mach-samsung/Kconfig
-@@ -8,11 +8,13 @@ config ARCH_TEXT_BASE
- 	default 0x31fc0000 if MACH_MINI2440
- 	default 0x31fc0000 if MACH_A9M2440
- 	default 0x31fc0000 if MACH_A9M2410
-+	default 0x23e00000 if MACH_TINY210
- 
- config BOARDINFO
- 	default "Mini 2440"    if MACH_MINI2440
- 	default "Digi A9M2440" if MACH_A9M2440
- 	default "Digi A9M2410" if MACH_A9M2410
-+	default "Tiny 210"     if MACH_TINY210
- 
- config ARCH_BAREBOX_MAX_BARE_INIT_SIZE
- 	hex
-@@ -92,12 +94,18 @@ config CPU_S5PC110
- config CPU_S5PV210
- 	bool
- 
--#choice
--#
--#	prompt "S5PCxx board type"
--#
--#
--#endchoice
-+choice
-+
-+	prompt "S5PCxx board type"
-+
-+config MACH_TINY210
-+	bool "Tiny 210"
-+	select CPU_S5PV210
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select MACH_DO_LOWLEVEL_INIT
-+	select S3C_SDRAM_INIT
-+
-+endchoice
- 
- endif
- 
 -- 
 1.7.10
 
