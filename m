@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SlcuU-0002HI-Eg
- for barebox@lists.infradead.org; Mon, 02 Jul 2012 09:27:11 +0000
-Date: Mon, 2 Jul 2012 11:27:05 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120702092705.GL2698@pengutronix.de>
-References: <1340990360-5716-1-git-send-email-shc_work@mail.ru>
+Received: from smtp-2h.backboneservers.com ([66.6.63.231])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SlgNQ-0007Tw-Uv
+ for barebox@lists.infradead.org; Mon, 02 Jul 2012 13:09:18 +0000
+Received: from Debian-exim by smtp-2h.backboneservers.com with spam-scanned
+ (Exim 4.72) (envelope-from <steve@scheftech.com>) id 1SlgN9-0002vt-Hb
+ for barebox@lists.infradead.org; Mon, 02 Jul 2012 13:09:05 +0000
+Received: from [208.80.102.28] (helo=[192.168.0.200])
+ by smtp-2h.backboneservers.com with esmtpa (Exim 4.72)
+ (envelope-from <steve@scheftech.com>) id 1SlgN9-0002vc-CF
+ for barebox@lists.infradead.org; Mon, 02 Jul 2012 13:08:59 +0000
+Message-ID: <4FF19D53.5030708@scheftech.com>
+Date: Mon, 02 Jul 2012 09:08:35 -0400
+From: Steve Schefter <steve@scheftech.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1340990360-5716-1-git-send-email-shc_work@mail.ru>
+Content-Type: multipart/mixed; boundary="------------000606080305090807070505"
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,63 +23,88 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Unused files removed
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: patch for SDRAM remap bug
+To: barebox@lists.infradead.org
 
-On Fri, Jun 29, 2012 at 09:19:20PM +0400, Alexander Shiyan wrote:
-> Files "modules.builtin" probably have been copied from kernel tree.
-> This files not used by barebox and can be removed safely.
-> 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+This is a multi-part message in MIME format.
+--------------000606080305090807070505
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Applied, thanks
 
-Sascha
+--------------000606080305090807070505
+Content-Type: text/plain;
+ name="0014-When-remapping-the-SDRAM-with-the-MMU-enabled-we-nee.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename*0="0014-When-remapping-the-SDRAM-with-the-MMU-enabled-we-nee.pa";
+ filename*1="tch"
 
-> ---
->  lib/lzo/modules.builtin          |    2 --
->  lib/zlib_inflate/modules.builtin |    1 -
->  2 files changed, 0 insertions(+), 3 deletions(-)
->  delete mode 100644 lib/lzo/modules.builtin
->  delete mode 100644 lib/zlib_inflate/modules.builtin
-> 
-> diff --git a/lib/lzo/modules.builtin b/lib/lzo/modules.builtin
-> deleted file mode 100644
-> index d860562..0000000
-> --- a/lib/lzo/modules.builtin
-> +++ /dev/null
-> @@ -1,2 +0,0 @@
-> -kernel/lib/lzo/lzo_compress.ko
-> -kernel/lib/lzo/lzo_decompress.ko
-> diff --git a/lib/zlib_inflate/modules.builtin b/lib/zlib_inflate/modules.builtin
-> deleted file mode 100644
-> index 7206225..0000000
-> --- a/lib/zlib_inflate/modules.builtin
-> +++ /dev/null
-> @@ -1 +0,0 @@
-> -kernel/lib/zlib_inflate/zlib_inflate.ko
-> -- 
-> 1.7.3.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+From d8a687de95b57962e85913b41086f2f24a2ef6ea Mon Sep 17 00:00:00 2001
+From: Steve Schefter <steve@scheftech.com>
+Date: Wed, 27 Jun 2012 09:23:04 -0400
+Subject: Avoid SDRAM access crash
+ When remapping the SDRAM with the MMU enabled, we need to ensure
+ that the translation tables are not still in cache before
+ invalidating the TLB.  Failure to do so will result in the following
+ crash approximately 50% of the time:
 
+booting kernel from /dev/nand0.kernel.bb
+   Image Name:   Linux-3.3.0PD12.0.0
+   OS:           Linux
+   Architecture: ARM
+   Type:         Kernel Image
+   Compression:  uncompressed
+   Data Size:    3384824 Bytes =  3.2 MB
+   Load Address: 80008000
+   Entry Point:  80008000
+unable to handle paging request at address 0x80028000
+pc : [<8f01f280>]    lr : [<8f005330>]
+sp : 8cfff9b0  ip : 0000003f  fp : 00000000
+r10: 00001000  r9 : 00000000  r8 : 8d2a8f70
+r7 : 8f043818  r6 : 0033a5f8  r5 : 8f04381c  r4 : 00001000
+r3 : 80028000  r2 : 00000fff  r1 : 8d2a8f71  r0 : 80028000
+Flags: nzCv  IRQs off  FIQs off  Mode SVC_32
+[<8f01f280>] (memcpy+0x18/0x20) from [<8f005330>] (uimage_sdram_flush+0x90/0xb8)
+[<8f005330>] (uimage_sdram_flush+0x90/0xb8) from [<8f0053a4>] (uncompress_copy+0x4c/0x74)
+
+Signed-off-by: Steve Schefter <steve@scheftech.com>
+---
+ arch/arm/cpu/mmu.c |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index c19f931..4ff0430 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -165,6 +165,12 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
+ 		pte += 256;
+ 	}
+ 
++	asm volatile (
++		"bl __mmu_cache_flush;"
++		:
++		:
++		: "r0", "r1", "r2", "r3", "r6", "r10", "r12", "lr", "cc", "memory"
++	);
+ 	tlb_invalidate();
+ 
+ 	return 0;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.4.1
+
+
+--------------000606080305090807070505
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--------------000606080305090807070505--
