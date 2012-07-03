@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SlyMS-0004uA-A5
- for barebox@lists.infradead.org; Tue, 03 Jul 2012 08:21:30 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  3 Jul 2012 10:21:17 +0200
-Message-Id: <1341303677-4498-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail.free-electrons.com ([88.190.12.23])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Sm18V-0006ai-8S
+ for barebox@lists.infradead.org; Tue, 03 Jul 2012 11:19:17 +0000
+Message-ID: <4FF2D519.60305@free-electrons.com>
+Date: Tue, 03 Jul 2012 13:18:49 +0200
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+MIME-Version: 1.0
+References: <1341238494-30914-1-git-send-email-maxime.ripard@free-electrons.com>
+ <20120703073926.GU2698@pengutronix.de>
+In-Reply-To: <20120703073926.GU2698@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,143 +18,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fs: fix standard zero, full devices
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] Add support for kernel and device tree images stored
+ in a partition
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Brian Lilly <brian@crystalfontz.com>
 
-The standard devices are currently broken since they have
-the size ~0. As now files use loff_t as file size which is a signed
-type the read implementation gets confused and now returns -1.
+Hi Sascha,
 
-The current implementation also has the (somewhat theorical) problem
-that we do not have real streaming devices, so /dev/zero went out
-of zeroes after reading 4GB (or now LLONG_MAX).
+Le 03/07/2012 09:39, Sascha Hauer a =E9crit :
+> On Mon, Jul 02, 2012 at 04:14:53PM +0200, Maxime Ripard wrote:
+>> It is a quite common setup to have a partition with all you need to boot
+>> from the bootloader, ie the kernel image, the device tree blob, etc.
+>>
+>> This patch introduces a new "file" location for these two images, which
+>> uses in turn the *_part and the new *_part_type variable specifying the
+>> fs type used by mount.
+> =
 
-This patch introduces a new cdev flag DEVFS_IS_CHARACTER_DEV and a new
-file size flag FILE_SIZE_STREAM which makes it possible to create
-real stream devices instead.
+> That was one of the major shortcomings of the default environment and
+> one of the main reasons I created a new environment template. Have you
+> considered using it?
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/stddev.c |    6 +++---
- fs/devfs.c        |    3 ++-
- fs/fs.c           |    8 ++++----
- include/driver.h  |    1 +
- include/fs.h      |    1 +
- 5 files changed, 11 insertions(+), 8 deletions(-)
+Ha, I think I missed it :)
+It looks quite useful indeed.
+I will drop this patch then and send an updated version once I'll be
+able to use it properly.
 
-diff --git a/commands/stddev.c b/commands/stddev.c
-index 97080eb..098aea8 100644
---- a/commands/stddev.c
-+++ b/commands/stddev.c
-@@ -40,7 +40,7 @@ static int zero_init(void)
- 	cdev = xzalloc(sizeof (*cdev));
- 
- 	cdev->name = "zero";
--	cdev->size = ~0;
-+	cdev->flags = DEVFS_IS_CHARACTER_DEV;
- 	cdev->ops = &zeroops;
- 
- 	devfs_create(cdev);
-@@ -68,7 +68,7 @@ static int full_init(void)
- 	cdev = xzalloc(sizeof (*cdev));
- 
- 	cdev->name = "full";
--	cdev->size = ~0;
-+	cdev->flags = DEVFS_IS_CHARACTER_DEV;
- 	cdev->ops = &fullops;
- 
- 	devfs_create(cdev);
-@@ -95,7 +95,7 @@ static int null_init(void)
- 	cdev = xzalloc(sizeof (*cdev));
- 
- 	cdev->name = "null";
--	cdev->size = 0;
-+	cdev->flags = DEVFS_IS_CHARACTER_DEV;
- 	cdev->ops = &nullops;
- 
- 	devfs_create(cdev);
-diff --git a/fs/devfs.c b/fs/devfs.c
-index ea8b250..fccf25a 100644
---- a/fs/devfs.c
-+++ b/fs/devfs.c
-@@ -121,7 +121,8 @@ static int devfs_open(struct device_d *_dev, FILE *f, const char *filename)
- 	if (!cdev)
- 		return -ENOENT;
- 
--	f->size = cdev->size;
-+	f->size = cdev->flags & DEVFS_IS_CHARACTER_DEV ?
-+			FILE_SIZE_STREAM : cdev->size;
- 	f->inode = cdev;
- 
- 	if (cdev->ops->open) {
-diff --git a/fs/fs.c b/fs/fs.c
-index 1774fb7..0b376a5 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -643,7 +643,7 @@ int read(int fd, void *buf, size_t count)
- 
- 	fsdrv = dev_to_fs_driver(dev);
- 
--	if (f->pos + count > f->size)
-+	if (f->size != FILE_SIZE_STREAM && f->pos + count > f->size)
- 		count = f->size - f->pos;
- 
- 	if (!count)
-@@ -672,7 +672,7 @@ ssize_t write(int fd, const void *buf, size_t count)
- 	dev = f->dev;
- 
- 	fsdrv = dev_to_fs_driver(dev);
--	if (f->pos + count > f->size) {
-+	if (f->size != FILE_SIZE_STREAM && f->pos + count > f->size) {
- 		ret = fsdrv->truncate(dev, f, f->pos + count);
- 		if (ret) {
- 			if (ret != -ENOSPC)
-@@ -740,12 +740,12 @@ loff_t lseek(int fildes, loff_t offset, int whence)
- 
- 	switch (whence) {
- 	case SEEK_SET:
--		if (offset > f->size)
-+		if (f->size != FILE_SIZE_STREAM && offset > f->size)
- 			goto out;
- 		pos = offset;
- 		break;
- 	case SEEK_CUR:
--		if (offset + f->pos > f->size)
-+		if (f->size != FILE_SIZE_STREAM && offset + f->pos > f->size)
- 			goto out;
- 		pos = f->pos + offset;
- 		break;
-diff --git a/include/driver.h b/include/driver.h
-index a5e3f44..7d597b4 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -417,6 +417,7 @@ int cdev_erase(struct cdev *cdev, size_t count, loff_t offset);
- #define DEVFS_PARTITION_FIXED		(1 << 0)
- #define DEVFS_PARTITION_READONLY	(1 << 1)
- #define DEVFS_IS_PARTITION		(1 << 2)
-+#define DEVFS_IS_CHARACTER_DEV		(1 << 3)
- 
- int devfs_add_partition(const char *devname, loff_t offset, loff_t size,
- 		int flags, const char *name);
-diff --git a/include/fs.h b/include/fs.h
-index 2b1023e..c0b9f71 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -24,6 +24,7 @@ typedef struct dir {
- typedef struct filep {
- 	struct device_d *dev; /* The device this FILE belongs to              */
- 	loff_t pos;            /* current position in stream                   */
-+#define FILE_SIZE_STREAM	((loff_t) -1)
- 	loff_t size;           /* The size of this inode                       */
- 	ulong flags;          /* the O_* flags from open                      */
- 
--- 
-1.7.10
+Thanks!
+Maxime
+
+
+-- =
+
+Maxime Ripard, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
+
 
 
 _______________________________________________
