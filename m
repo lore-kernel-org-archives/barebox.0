@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ip2.televic.com ([81.82.194.222])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SmOFK-0002CP-Lh
- for barebox@lists.infradead.org; Wed, 04 Jul 2012 11:59:53 +0000
-From: Vanalme Filip <F.Vanalme@TELEVIC.com>
-Date: Wed, 4 Jul 2012 13:53:39 +0200
-Message-ID: <6EE7D1502C48E44E92DCADF9DD3E0DB9019FCE5B1DAE@SRV-VS06.TELEVIC.COM>
-Content-Language: en-US
+Received: from mail.free-electrons.com ([88.190.12.23])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SmOho-0005iR-Ff
+ for barebox@lists.infradead.org; Wed, 04 Jul 2012 12:29:18 +0000
+Message-ID: <4FF43709.8000400@free-electrons.com>
+Date: Wed, 04 Jul 2012 14:28:57 +0200
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
 MIME-Version: 1.0
+References: <1341238494-30914-1-git-send-email-maxime.ripard@free-electrons.com>
+ <1341238494-30914-2-git-send-email-maxime.ripard@free-electrons.com>
+ <20120703181204.GX2698@pengutronix.de>
+In-Reply-To: <20120703181204.GX2698@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,300 +19,383 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1420034425605346260=="
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: starting ethernet switch in SMI mode
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 2/2] Add support for the Crystalfontz CFA-10036 board
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Brian Lilly <brian@crystalfontz.com>
 
---===============1420034425605346260==
-Content-Language: en-US
-Content-Type: multipart/related;
-	boundary="_004_6EE7D1502C48E44E92DCADF9DD3E0DB9019FCE5B1DAESRVVS06TELE_";
-	type="multipart/alternative"
+Hi Sascha,
 
---_004_6EE7D1502C48E44E92DCADF9DD3E0DB9019FCE5B1DAESRVVS06TELE_
-Content-Type: multipart/alternative;
-	boundary="_000_6EE7D1502C48E44E92DCADF9DD3E0DB9019FCE5B1DAESRVVS06TELE_"
+Le 03/07/2012 20:12, Sascha Hauer a =E9crit :
+> Hi Maxime,
+> =
 
---_000_6EE7D1502C48E44E92DCADF9DD3E0DB9019FCE5B1DAESRVVS06TELE_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+> The patch looks good. I can apply it as is if you wish to or wait until
+> you had a look at the new defenv.
 
-Hi,
+I began to work on the new defenv. It definitely looks more flexible :)
+I'll resend a new version of this patch using it once I'll be done, so I
+guess you'll have to wait a little :)
 
-On our board with i.MX27 processor, we have a Micrel 5-port Managed Etherne=
-t switch (ksz8895mq). When starting in normal MII mode, from the Barebox pr=
-ompt, I can get an IP address by executing the dhcp command.
-When I change the switch's mode to SPI (via hardware strapping), I'm not ab=
-le to get an IP address anymore via DHCP. In this mode, one has to write to=
- a register in the switch to make the switch start. So, within our startup =
-code, I added some code to start the switch. Reading back the register, I s=
-ee that the bit is set, so I assume the switch sould be running at that mom=
-ent. However, when executing the dhcp command, I get "phy0: Autonegotiation=
- timeout".
-That's strange, because, when I boot to Linux kernel, the kernel starts up =
-without any problem and gets an IP address via DHCP. So in Linux, it's doin=
-g OK.
-Because it is working in Linux, I'm quite sure the switch was started in a =
-correct way.
-I don't understand why Barebox is unable to contact the switch while there'=
-s no problem in Linux to do the same. Anyone any idea on this problem ?
+Thanks,
+Maxime
 
-Thanks in advance !
+> On Mon, Jul 02, 2012 at 04:14:54PM +0200, Maxime Ripard wrote:
+>> This patch adds initial support for the CFA-10036 module.
+>>
+>> The module basically has a iMX28 SoC, plus a micro-SD slot, 3 pins to
+>> access the DUART, a USB OTG port, a OLED screen using the Solomon
+>> SSD1307 controller over I2C and a 200-pins SODIMM port to plug an
+>> expansion board.
+>>
+>> Support for this board and the additional devices will come
+>> eventually.
+>>
+>> For now, only the DUART and the MMC controller are used.
+>>
+>> Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+>> Cc: Brian Lilly <brian@crystalfontz.com>
+>> ---
+>>  arch/arm/Makefile                                |    1 +
+>>  arch/arm/boards/crystalfontz-cfa10036/Makefile   |    1 +
+>>  arch/arm/boards/crystalfontz-cfa10036/cfa10036.c |  106 +++++++++++++++=
++++++++
+>>  arch/arm/boards/crystalfontz-cfa10036/config.h   |   16 ++++
+>>  arch/arm/boards/crystalfontz-cfa10036/env/config |   47 ++++++++++
+>>  arch/arm/configs/cfa10036_defconfig              |   40 ++++++++
+>>  arch/arm/mach-mxs/Kconfig                        |    7 ++
+>>  7 files changed, 218 insertions(+)
+>>  create mode 100644 arch/arm/boards/crystalfontz-cfa10036/Makefile
+>>  create mode 100644 arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+>>  create mode 100644 arch/arm/boards/crystalfontz-cfa10036/config.h
+>>  create mode 100644 arch/arm/boards/crystalfontz-cfa10036/env/config
+>>  create mode 100644 arch/arm/configs/cfa10036_defconfig
+>>
+>> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+>> index bd684dc..b8280fe 100644
+>> --- a/arch/arm/Makefile
+>> +++ b/arch/arm/Makefile
+>> @@ -118,6 +118,7 @@ board-$(CONFIG_MACH_MX23EVK)			:=3D freescale-mx23-e=
+vk
+>>  board-$(CONFIG_MACH_CHUMBY)			:=3D chumby_falconwing
+>>  board-$(CONFIG_MACH_TX28)			:=3D karo-tx28
+>>  board-$(CONFIG_MACH_MX28EVK)			:=3D freescale-mx28-evk
+>> +board-$(CONFIG_MACH_CFA10036)			:=3D crystalfontz-cfa10036
+>>  board-$(CONFIG_MACH_FREESCALE_MX51_PDK)		:=3D freescale-mx51-pdk
+>>  board-$(CONFIG_MACH_FREESCALE_MX53_LOCO)	:=3D freescale-mx53-loco
+>>  board-$(CONFIG_MACH_FREESCALE_MX53_SMD)		:=3D freescale-mx53-smd
+>> diff --git a/arch/arm/boards/crystalfontz-cfa10036/Makefile b/arch/arm/b=
+oards/crystalfontz-cfa10036/Makefile
+>> new file mode 100644
+>> index 0000000..75f0020
+>> --- /dev/null
+>> +++ b/arch/arm/boards/crystalfontz-cfa10036/Makefile
+>> @@ -0,0 +1 @@
+>> +obj-y +=3D cfa10036.o
+>> diff --git a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c b/arch/arm=
+/boards/crystalfontz-cfa10036/cfa10036.c
+>> new file mode 100644
+>> index 0000000..e454afd
+>> --- /dev/null
+>> +++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+>> @@ -0,0 +1,106 @@
+>> +/*
+>> + * Copyright (C) 2010 Juergen Beisert, Pengutronix <kernel@pengutronix.=
+de>
+>> + * Copyright (C) 2011 Marc Kleine-Budde, Pengutronix <mkl@pengutronix.d=
+e>
+>> + * Copyright (C) 2011 Wolfram Sang, Pengutronix <w.sang@pengutronix.de>
+>> + * Copyright (C) 2012 Maxime Ripard, Free Electrons <maxime.ripard@free=
+-electrons.com>
+>> + *
+>> + * This program is free software; you can redistribute it and/or
+>> + * modify it under the terms of the GNU General Public License as
+>> + * published by the Free Software Foundation; either version 2 of
+>> + * the License, or (at your option) any later version.
+>> + *
+>> + * This program is distributed in the hope that it will be useful,
+>> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+>> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+>> + * GNU General Public License for more details.
+>> + */
+>> +
+>> +#include <common.h>
+>> +#include <environment.h>
+>> +#include <errno.h>
+>> +#include <fec.h>
+>> +#include <gpio.h>
+>> +#include <init.h>
+>> +#include <mci.h>
+>> +#include <io.h>
+>> +
+>> +#include <mach/clock.h>
+>> +#include <mach/imx-regs.h>
+>> +#include <mach/iomux-imx28.h>
+>> +#include <mach/mci.h>
+>> +
+>> +#include <asm/armlinux.h>
+>> +#include <asm/mmu.h>
+>> +
+>> +#include <mach/fb.h>
+>> +
+>> +#include <generated/mach-types.h>
+>> +
+>> +/* setup the CPU card internal signals */
+>> +static const uint32_t cfa10036_pads[] =3D {
+>> +	/* duart */
+>> +	FUNC(2) | PORTF(3, 2) | VE_3_3V,
+>> +	FUNC(2) | PORTF(3, 3) | VE_3_3V,
+>> +
+>> +	/* mmc0 */
+>> +	SSP0_D0 | VE_3_3V | PULLUP(1),
+>> +	SSP0_D1 | VE_3_3V | PULLUP(1),
+>> +	SSP0_D2 | VE_3_3V | PULLUP(1),
+>> +	SSP0_D3 | VE_3_3V | PULLUP(1),
+>> +	SSP0_D4 | VE_3_3V | PULLUP(1),
+>> +	SSP0_D5 | VE_3_3V | PULLUP(1),
+>> +	SSP0_D6 | VE_3_3V | PULLUP(1),
+>> +	SSP0_D7 | VE_3_3V | PULLUP(1),
+>> +	SSP0_CMD | VE_3_3V | PULLUP(1),
+>> +	SSP0_CD | VE_3_3V | PULLUP(1),
+>> +	SSP0_SCK | VE_3_3V | BITKEEPER(0),
+>> +	/* MCI slot power control 1 =3D off */
+>> +	PWM3_GPIO | VE_3_3V | GPIO_OUT | GPIO_VALUE(0),
+>> +};
+>> +
+>> +static struct mxs_mci_platform_data mci_pdata =3D {
+>> +	.caps =3D MMC_MODE_8BIT,
+>> +	.voltages =3D MMC_VDD_32_33 | MMC_VDD_33_34,	/* fixed to 3.3 V */
+>> +	.f_min =3D 400 * 1000,
+>> +	.f_max =3D 25000000,
+>> +};
+>> +
+>> +static int cfa10036_mem_init(void)
+>> +{
+>> +	arm_add_mem_device("ram0", IMX_MEMORY_BASE, 128 * 1024 * 1024);
+>> +
+>> +	return 0;
+>> +}
+>> +mem_initcall(cfa10036_mem_init);
+>> +
+>> +static int cfa10036_devices_init(void)
+>> +{
+>> +	int i;
+>> +
+>> +	/* initizalize muxing */
+>> +	for (i =3D 0; i < ARRAY_SIZE(cfa10036_pads); i++)
+>> +		imx_gpio_mode(cfa10036_pads[i]);
+>> +
+>> +	/* enable IOCLK0 to run at the PLL frequency */
+>> +	imx_set_ioclk(0, 480000000);
+>> +	/* run the SSP unit clock at 100 MHz */
+>> +	imx_set_sspclk(0, 100000000, 1);
+>> +
+>> +	armlinux_set_bootparams((void *)IMX_MEMORY_BASE + 0x100);
+>> +	armlinux_set_architecture(MACH_TYPE_CFA10036);
+>> +
+>> +	add_generic_device("mxs_mci", 0, NULL, IMX_SSP0_BASE, 0,
+>> +			   IORESOURCE_MEM, &mci_pdata);
+>> +
+>> +	return 0;
+>> +}
+>> +device_initcall(cfa10036_devices_init);
+>> +
+>> +static int cfa10036_console_init(void)
+>> +{
+>> +	add_generic_device("stm_serial", 0, NULL, IMX_DBGUART_BASE, 8192,
+>> +			   IORESOURCE_MEM, NULL);
+>> +
+>> +	return 0;
+>> +}
+>> +console_initcall(cfa10036_console_init);
+>> diff --git a/arch/arm/boards/crystalfontz-cfa10036/config.h b/arch/arm/b=
+oards/crystalfontz-cfa10036/config.h
+>> new file mode 100644
+>> index 0000000..8f18fda
+>> --- /dev/null
+>> +++ b/arch/arm/boards/crystalfontz-cfa10036/config.h
+>> @@ -0,0 +1,16 @@
+>> +/*
+>> + * This program is free software; you can redistribute it and/or
+>> + * modify it under the terms of the GNU General Public License as
+>> + * published by the Free Software Foundation; either version 2 of
+>> + * the License, or (at your option) any later version.
+>> + *
+>> + * This program is distributed in the hope that it will be useful,
+>> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+>> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+>> + * GNU General Public License for more details.
+>> + */
+>> +
+>> +#ifndef _CONFIG_H_
+>> +# define _CONFIG_H_
+>> +
+>> +#endif /* _CONFIG_H_ */
+>> diff --git a/arch/arm/boards/crystalfontz-cfa10036/env/config b/arch/arm=
+/boards/crystalfontz-cfa10036/env/config
+>> new file mode 100644
+>> index 0000000..5d1bd48
+>> --- /dev/null
+>> +++ b/arch/arm/boards/crystalfontz-cfa10036/env/config
+>> @@ -0,0 +1,47 @@
+>> +#!/bin/sh
+>> +
+>> +hostname=3Dcfa10036
+>> +#user=3D
+>> +
+>> +# use 'dhcp' to do dhcp in barebox and in kernel
+>> +# use 'none' if you want to skip kernel ip autoconfiguration
+>> +ip=3Dnone
+>> +
+>> +# or set your networking parameters here
+>> +#eth0.ipaddr=3Da.b.c.d
+>> +#eth0.netmask=3Da.b.c.d
+>> +#eth0.serverip=3Da.b.c.d
+>> +#eth0.gateway=3Da.b.c.d
+>> +#eth0.ethaddr=3Dde:ad:be:ef:00:00
+>> +
+>> +# can be either 'tftp', 'nfs', 'nand', 'nor', 'file' or 'disk'
+>> +kernel_loc=3Dfile
+>> +# can be either 'net', 'nand', 'nor', 'file', 'disk' or 'initrd'
+>> +rootfs_loc=3Ddisk
+>> +# can be either 'nand', 'nor', 'nfs', 'tftp', 'disk', 'file' or 'empty'
+>> +oftree_loc=3Dfile
+>> +
+>> +# for flash based rootfs: 'jffs2' or 'ubifs'
+>> +# in case of disk any regular filesystem like 'ext2', 'ext3', 'reiserfs'
+>> +rootfs_type=3Dext3
+>> +# where is the rootfs in case of 'rootfs_loc=3Ddisk' (linux name)
+>> +rootfs_part_linux_dev=3Dmmcblk0p3
+>> +rootfsimage=3Drootfs-${hostname}.$rootfs_type
+>> +
+>> +# where is the kernel image in case of 'kernel_loc=3Ddisk'
+>> +kernel_part=3Ddisk0.1
+>> +oftree_part=3Ddisk0.1
+>> +kernel_part_type=3Dfat
+>> +kernel_part_type=3Dfat
+>> +
+>> +kernelimage=3DzImage-$hostname
+>> +oftreeimage=3Doftree-$hostname
+>> +
+>> +bareboxenvimage=3Dbarebox-${hostname}.bin
+>> +
+>> +autoboot_timeout=3D3
+>> +
+>> +bootargs=3D"console=3DttyAMA0,115200"
+>> +
+>> +# set a fancy prompt (if support is compiled in)
+>> +PS1=3D"\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
+>> diff --git a/arch/arm/configs/cfa10036_defconfig b/arch/arm/configs/cfa1=
+0036_defconfig
+>> new file mode 100644
+>> index 0000000..4c35c6b
+>> --- /dev/null
+>> +++ b/arch/arm/configs/cfa10036_defconfig
+>> @@ -0,0 +1,40 @@
+>> +CONFIG_ARCH_MXS=3Dy
+>> +CONFIG_ARCH_IMX28=3Dy
+>> +CONFIG_MACH_CFA10036=3Dy
+>> +CONFIG_AEABI=3Dy
+>> +CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=3Dy
+>> +CONFIG_MMU=3Dy
+>> +CONFIG_TEXT_BASE=3D0x43000000
+>> +CONFIG_MALLOC_SIZE=3D0x800000
+>> +CONFIG_BROKEN=3Dy
+>> +CONFIG_LONGHELP=3Dy
+>> +CONFIG_GLOB=3Dy
+>> +CONFIG_HUSH_FANCY_PROMPT=3Dy
+>> +CONFIG_CMDLINE_EDITING=3Dy
+>> +CONFIG_AUTO_COMPLETE=3Dy
+>> +CONFIG_DEFAULT_ENVIRONMENT_GENERIC=3Dy
+>> +CONFIG_DEFAULT_ENVIRONMENT_PATH=3D"arch/arm/boards/crystalfontz-cfa1003=
+6/env"
+>> +CONFIG_DEBUG_INFO=3Dy
+>> +CONFIG_CMD_EDIT=3Dy
+>> +CONFIG_CMD_SLEEP=3Dy
+>> +CONFIG_CMD_SAVEENV=3Dy
+>> +CONFIG_CMD_EXPORT=3Dy
+>> +CONFIG_CMD_PRINTENV=3Dy
+>> +CONFIG_CMD_READLINE=3Dy
+>> +CONFIG_CMD_ECHO_E=3Dy
+>> +CONFIG_CMD_MTEST=3Dy
+>> +CONFIG_CMD_MTEST_ALTERNATIVE=3Dy
+>> +CONFIG_CMD_BOOTM_SHOW_TYPE=3Dy
+>> +CONFIG_CMD_BOOTM_OFTREE=3Dy
+>> +CONFIG_CMD_RESET=3Dy
+>> +CONFIG_CMD_GO=3Dy
+>> +CONFIG_CMD_OFTREE=3Dy
+>> +CONFIG_CMD_TIMEOUT=3Dy
+>> +CONFIG_CMD_PARTITION=3Dy
+>> +CONFIG_CMD_GPIO=3Dy
+>> +# CONFIG_SPI is not set
+>> +CONFIG_MCI=3Dy
+>> +CONFIG_MCI_STARTUP=3Dy
+>> +CONFIG_MCI_MXS=3Dy
+>> +CONFIG_FS_FAT=3Dy
+>> +CONFIG_FS_FAT_LFN=3Dy
+>> diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
+>> index 3348a3c..7502a01 100644
+>> --- a/arch/arm/mach-mxs/Kconfig
+>> +++ b/arch/arm/mach-mxs/Kconfig
+>> @@ -6,12 +6,14 @@ config ARCH_TEXT_BASE
+>>  	default 0x42000000 if MACH_CHUMBY
+>>  	default 0x47000000 if MACH_TX28
+>>  	default 0x47000000 if MACH_MX28EVK
+>> +	default 0x47000000 if MACH_CFA10036
+>>  =
 
-Filip
+>>  config BOARDINFO
+>>  	default "Freescale i.MX23-EVK" if MACH_MX23EVK
+>>  	default "Chumby Falconwing" if MACH_CHUMBY
+>>  	default "Karo TX28" if MACH_TX28
+>>  	default "Freescale i.MX28-EVK" if MACH_MX28EVK
+>> +	default "Crystalfontz CFA-10036" if MACH_CFA10036
+>>  =
 
-[cid:image003.png@01CD59EC.6A109D00]
+>>  comment "Freescale i.MX System-on-Chip"
+>>  =
 
-Filip Vanalme
+>> @@ -64,6 +66,11 @@ config MACH_MX28EVK
+>>  	help
+>>  	  Say Y here if you are using the Freescale i.MX28-EVK board
+>>  =
 
-Senior Development Engineer
+>> +config MACH_CFA10036
+>> +	bool "cfa-10036"
+>> +	help
+>> +	  Say Y here if you are using the Crystalfontz CFA-10036 module
+>> +
+>>  endchoice
+>>  =
 
+>>  endif
+>> -- =
 
-
-
-
-Tel. +32 51 30.30.45
-
-Fax +32 51 33.18.86
-
-www.televic.com
-
-
-
-
-
-Televic NV * Leo Bekaertlaan 1 * 8870 Izegem * Belgium
-Company number 0402.757.955 * RPR Kortrijk
-
-
-
-
---_000_6EE7D1502C48E44E92DCADF9DD3E0DB9019FCE5B1DAESRVVS06TELE_
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
-osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
-//www.w3.org/TR/REC-html40"><head><meta http-equiv=3DContent-Type content=
-=3D"text/html; charset=3Dus-ascii"><meta name=3DGenerator content=3D"Micros=
-oft Word 12 (filtered medium)"><!--[if !mso]><style>v\:* {behavior:url(#def=
-ault#VML);}
-o\:* {behavior:url(#default#VML);}
-w\:* {behavior:url(#default#VML);}
-.shape {behavior:url(#default#VML);}
-</style><![endif]--><style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-@font-face
-	{font-family:Tahoma;
-	panose-1:2 11 6 4 3 5 4 4 2 4;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0cm;
-	margin-bottom:.0001pt;
-	font-size:11.0pt;
-	font-family:"Calibri","sans-serif";}
-a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:blue;
-	text-decoration:underline;}
-a:visited, span.MsoHyperlinkFollowed
-	{mso-style-priority:99;
-	color:purple;
-	text-decoration:underline;}
-p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
-	{mso-style-priority:99;
-	mso-style-link:"Balloon Text Char";
-	margin:0cm;
-	margin-bottom:.0001pt;
-	font-size:8.0pt;
-	font-family:"Tahoma","sans-serif";}
-span.EmailStyle17
-	{mso-style-type:personal-compose;
-	font-family:"Arial","sans-serif";
-	color:windowtext;}
-span.BalloonTextChar
-	{mso-style-name:"Balloon Text Char";
-	mso-style-priority:99;
-	mso-style-link:"Balloon Text";
-	font-family:"Tahoma","sans-serif";}
-.MsoChpDefault
-	{mso-style-type:export-only;}
-@page WordSection1
-	{size:612.0pt 792.0pt;
-	margin:70.85pt 70.85pt 70.85pt 70.85pt;}
-div.WordSection1
-	{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext=3D"edit" spidmax=3D"2050" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext=3D"edit">
-<o:idmap v:ext=3D"edit" data=3D"1" />
-</o:shapelayout></xml><![endif]--></head><body lang=3DNL link=3Dblue vlink=
-=3Dpurple><div class=3DWordSection1><p class=3DMsoNormal><span style=3D'fon=
-t-size:10.0pt;font-family:"Arial","sans-serif"'>Hi,<o:p></o:p></span></p><p=
- class=3DMsoNormal><span style=3D'font-size:10.0pt;font-family:"Arial","san=
-s-serif"'><o:p>&nbsp;</o:p></span></p><p class=3DMsoNormal><span lang=3DEN-=
-US style=3D'font-size:10.0pt;font-family:"Arial","sans-serif"'>On our board=
- with i.MX27 processor, we have a Micrel 5-port Managed Ethernet switch (ks=
-z8895mq). When starting in normal MII mode, from the Barebox prompt, I can =
-get an IP address by executing the dhcp command.<o:p></o:p></span></p><p cl=
-ass=3DMsoNormal><span lang=3DEN-US style=3D'font-size:10.0pt;font-family:"A=
-rial","sans-serif"'>When I change the switch&#8217;s mode to SPI (via hardw=
-are strapping), I&#8217;m not able to get an IP address anymore via DHCP. I=
-n this mode, one has to write to a register in the switch to make the switc=
-h start. So, within our startup code, I added some code to start the switch=
-. Reading back the register, I see that the bit is set, so I assume the swi=
-tch sould be running at that moment. However, when executing the dhcp comma=
-nd, I get &#8220;<i>phy0: Autonegotiation timeout</i>&#8221;. <o:p></o:p></=
-span></p><p class=3DMsoNormal><span lang=3DEN-US style=3D'font-size:10.0pt;=
-font-family:"Arial","sans-serif"'>That&#8217;s strange, because, when I boo=
-t to Linux kernel, the kernel starts up without any problem and <u>gets an =
-IP address via DHCP</u>. So in Linux, it&#8217;s doing OK. <o:p></o:p></spa=
-n></p><p class=3DMsoNormal><span lang=3DEN-US style=3D'font-size:10.0pt;fon=
-t-family:"Arial","sans-serif"'>Because it is working in Linux, I&#8217;m qu=
-ite sure the switch was started in a correct way. <o:p></o:p></span></p><p =
-class=3DMsoNormal><span lang=3DEN-US style=3D'font-size:10.0pt;font-family:=
-"Arial","sans-serif"'>I don&#8217;t understand why Barebox is unable to con=
-tact the switch while there&#8217;s no problem in Linux to do the same. Any=
-one any idea on this problem ?<o:p></o:p></span></p><p class=3DMsoNormal><s=
-pan lang=3DEN-US style=3D'font-size:10.0pt;font-family:"Arial","sans-serif"=
-'><o:p>&nbsp;</o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US style=
-=3D'font-size:10.0pt;font-family:"Arial","sans-serif"'>Thanks in advance !<=
-o:p></o:p></span></p><p class=3DMsoNormal><span lang=3DEN-US style=3D'font-=
-size:10.0pt;font-family:"Arial","sans-serif"'><o:p>&nbsp;</o:p></span></p><=
-p class=3DMsoNormal><span lang=3DEN-US style=3D'font-size:10.0pt;font-famil=
-y:"Arial","sans-serif"'>Filip<o:p></o:p></span></p><p class=3DMsoNormal><sp=
-an lang=3DEN-US style=3D'font-size:10.0pt;font-family:"Arial","sans-serif"'=
-><o:p>&nbsp;</o:p></span></p><p class=3DMsoNormal><span style=3D'font-size:=
-12.0pt;font-family:"Times New Roman","serif"'><img width=3D261 height=3D66 =
-id=3D"Picture_x0020_1" src=3D"cid:image003.png@01CD59EC.6A109D00" alt=3D"te=
-levic healthcare"><o:p></o:p></span></p><table class=3DMsoNormalTable borde=
-r=3D0 cellspacing=3D0 cellpadding=3D0 width=3D500 style=3D'width:375.0pt'><=
-tr><td colspan=3D2 style=3D'padding:0cm 0cm 0cm 0cm'><p class=3DMsoNormal><=
-b><span style=3D'font-size:8.0pt;font-family:"Arial","sans-serif"'><o:p>&nb=
-sp;</o:p></span></b></p><p class=3DMsoNormal><b><span style=3D'font-size:8.=
-0pt;font-family:"Arial","sans-serif"'>Filip Vanalme</span></b><span style=
-=3D'font-size:12.0pt;font-family:"Times New Roman","serif"'><o:p></o:p></sp=
-an></p></td></tr><tr><td colspan=3D2 style=3D'padding:0cm 0cm 0cm 0cm'><p c=
-lass=3DMsoNormal><span style=3D'font-size:8.0pt;font-family:"Arial","sans-s=
-erif"'>Senior Development Engineer</span><span style=3D'font-size:12.0pt;fo=
-nt-family:"Times New Roman","serif"'><o:p></o:p></span></p></td></tr><tr st=
-yle=3D'height:9.0pt'><td width=3D150 style=3D'width:112.5pt;padding:0cm 0cm=
- 0cm 0cm;height:9.0pt'><p class=3DMsoNormal><span style=3D'font-size:9.0pt;=
-font-family:"Times New Roman","serif"'><o:p>&nbsp;</o:p></span></p></td><td=
- style=3D'padding:0cm 0cm 0cm 0cm;height:9.0pt'><p class=3DMsoNormal><span =
-style=3D'font-size:9.0pt;font-family:"Times New Roman","serif"'><o:p>&nbsp;=
-</o:p></span></p></td></tr><tr><td width=3D144 style=3D'width:108.0pt;paddi=
-ng:0cm 0cm 0cm 0cm'><p class=3DMsoNormal><span style=3D'font-size:8.0pt;fon=
-t-family:"Arial","sans-serif"'>Tel. +32 51 30.30.45</span><span style=3D'fo=
-nt-size:12.0pt;font-family:"Times New Roman","serif"'><o:p></o:p></span></p=
-></td><td width=3D356 style=3D'width:267.0pt;padding:0cm 0cm 0cm 0cm'><p cl=
-ass=3DMsoNormal><span style=3D'font-size:8.0pt;font-family:"Arial","sans-se=
-rif"'>Fax +32 51 33.18.86</span><span style=3D'font-size:12.0pt;font-family=
-:"Times New Roman","serif"'><o:p></o:p></span></p></td></tr><tr><td width=
-=3D144 style=3D'width:108.0pt;padding:0cm 0cm 0cm 0cm'><p class=3DMsoNormal=
-><span style=3D'font-size:8.0pt;font-family:"Arial","sans-serif"'><a href=
-=3D"www.televic.com"><span style=3D'color:blue'>www.televic.com</span></a><=
-/span><span style=3D'font-size:12.0pt;font-family:"Times New Roman","serif"=
-'><o:p></o:p></span></p></td><td width=3D356 style=3D'width:267.0pt;padding=
-:0cm 0cm 0cm 0cm'></td></tr><tr style=3D'height:9.0pt'><td width=3D144 styl=
-e=3D'width:108.0pt;padding:0cm 0cm 0cm 0cm;height:9.0pt'><p class=3DMsoNorm=
-al><span style=3D'font-size:9.0pt;font-family:"Times New Roman","serif"'><o=
-:p>&nbsp;</o:p></span></p></td><td style=3D'padding:0cm 0cm 0cm 0cm;height:=
-9.0pt'><p class=3DMsoNormal><span style=3D'font-size:9.0pt;font-family:"Tim=
-es New Roman","serif"'><o:p>&nbsp;</o:p></span></p></td></tr><tr><td colspa=
-n=3D2 style=3D'padding:0cm 0cm 0cm 0cm'><p class=3DMsoNormal><span style=3D=
-'font-size:8.0pt;font-family:"Arial","sans-serif"'>Televic NV &#8226; Leo B=
-ekaertlaan 1 &#8226; 8870 Izegem &#8226; Belgium<br></span><span lang=3DEN-=
-GB style=3D'font-size:8.0pt;font-family:"Arial","sans-serif"'>Company numbe=
-r 0402.757.955 &#8226; RPR Kortrijk</span><span style=3D'font-size:12.0pt;f=
-ont-family:"Times New Roman","serif"'><o:p></o:p></span></p></td></tr></tab=
-le><p class=3DMsoNormal><span style=3D'font-size:12.0pt;font-family:"Times =
-New Roman","serif"'><o:p>&nbsp;</o:p></span></p><p class=3DMsoNormal><o:p>&=
-nbsp;</o:p></p></div></body></html>=
-
---_000_6EE7D1502C48E44E92DCADF9DD3E0DB9019FCE5B1DAESRVVS06TELE_--
-
---_004_6EE7D1502C48E44E92DCADF9DD3E0DB9019FCE5B1DAESRVVS06TELE_
-Content-Type: image/png; name="image003.png"
-Content-Description: image003.png
-Content-Disposition: inline; filename="image003.png"; size=2780;
-	creation-date="Wed, 04 Jul 2012 13:53:39 GMT";
-	modification-date="Wed, 04 Jul 2012 13:53:39 GMT"
-Content-ID: <image003.png@01CD59EC.6A109D00>
-Content-Transfer-Encoding: base64
-
-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
-
---_004_6EE7D1502C48E44E92DCADF9DD3E0DB9019FCE5B1DAESRVVS06TELE_--
+>> 1.7.9.5
+>>
+>>
+>> _______________________________________________
+>> barebox mailing list
+>> barebox@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/barebox
+>>
+> =
 
 
---===============1420034425605346260==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+
+-- =
+
+Maxime Ripard, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
+
+
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============1420034425605346260==--
