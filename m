@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Smrra-0002DU-RB
- for barebox@lists.infradead.org; Thu, 05 Jul 2012 19:37:29 +0000
+ id 1Smrra-0002Dc-R9
+ for barebox@lists.infradead.org; Thu, 05 Jul 2012 19:37:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Jul 2012 21:36:37 +0200
-Message-Id: <1341517020-5581-7-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  5 Jul 2012 21:36:52 +0200
+Message-Id: <1341517020-5581-22-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1341517020-5581-1-git-send-email-s.hauer@pengutronix.de>
 References: <1341517020-5581-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,34 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/30] exec command: Fix compilation
+Subject: [PATCH 22/30] ARM i.MX: No external NAND boot on i.MX1
 To: barebox@lists.infradead.org
-
-read_file and run_command take an additional argument now.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/exec.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-imx/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/commands/exec.c b/commands/exec.c
-index a25e8cf..e2509ff 100644
---- a/commands/exec.c
-+++ b/commands/exec.c
-@@ -38,11 +38,11 @@ static int do_exec(int argc, char *argv[])
- 		return COMMAND_ERROR_USAGE;
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index aa4ab7b..9afd615 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -109,6 +109,7 @@ config NAND_IMX_BOOT
  
- 	for (i=1; i<argc; ++i) {
--		script = read_file(argv[i]);
-+		script = read_file(argv[i], NULL);
- 		if (!script)
- 			return 1;
+ config ARCH_IMX_EXTERNAL_BOOT_NAND
+ 	bool
++	depends on !ARCH_IMX1
+ 	prompt "Support Starting barebox from NAND"
+ 	depends on ARCH_IMX_EXTERNAL_BOOT
  
--		if (run_command (script, flag) == -1)
-+		if (run_command (script, 0) == -1)
- 			goto out;
- 		free(script);
- 	}
 -- 
 1.7.10
 
