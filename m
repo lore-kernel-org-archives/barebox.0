@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SmX90-0000Gw-6Z
- for barebox@lists.infradead.org; Wed, 04 Jul 2012 21:29:57 +0000
-Date: Wed, 4 Jul 2012 23:28:45 +0200
+ id 1SmgHG-0007g1-0p
+ for barebox@lists.infradead.org; Thu, 05 Jul 2012 07:15:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120704212845.GH30009@pengutronix.de>
-References: <1341407274-11848-1-git-send-email-maxime.ripard@free-electrons.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1341407274-11848-1-git-send-email-maxime.ripard@free-electrons.com>
+Date: Thu,  5 Jul 2012 09:14:57 +0200
+Message-Id: <1341472497-2356-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,78 +14,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv2 0/2] Add support for the Crystalfontz CFA-10036 module
-To: Maxime Ripard <maxime.ripard@free-electrons.com>
-Cc: barebox@lists.infradead.org, brian@crystalfontz.com
+Subject: [PATCH] mem md: bail out without arguments
+To: barebox@lists.infradead.org
+Cc: rsc@pengutronix.de
 
-On Wed, Jul 04, 2012 at 03:07:51PM +0200, Maxime Ripard wrote:
-> Hi everyone,
-> 
-> This is the second version of the initial support of the CFA-10036 module.
-> 
-> The module basically has a iMX28 SoC, plus a micro-SD slot, 3 pins to
-> access the DUART, a USB OTG port, a OLED screen using the Solomon
-> SSD1307 controller over I2C and a 200-pins SODIMM port to plug an
-> expansion board.
-> 
-> Support for this board and the additional devices will come
-> eventually.
-> 
-> Changes from v1:
->   * Switched to the new default environment
-> 
-> Maxime Ripard (2):
->   Add bootargs script to boot on ext filesystems
->   Add support for the Crystalfontz CFA-10036 board
-> 
+Without arguments the 'md' command defaults to show address 0 which
+likely results in a NULL pointer exception, so only three keystrokes
+are necessary to crash barebox. Show usage instead if 'md' is invoked
+without arguments, so that it at least requires an address to be given
+to crash barebox. This increases the stability of barebox by 66%. Hurray!
 
-Applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/mem.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-Sascha
-
->  arch/arm/Makefile                                  |    1 +
->  arch/arm/boards/crystalfontz-cfa10036/Makefile     |    1 +
->  arch/arm/boards/crystalfontz-cfa10036/cfa10036.c   |  106 ++++++++++++++++++++
->  arch/arm/boards/crystalfontz-cfa10036/config.h     |   16 +++
->  .../boards/crystalfontz-cfa10036/env/boot/mmc-ext3 |   10 ++
->  .../crystalfontz-cfa10036/env/init/automount       |    9 ++
->  .../crystalfontz-cfa10036/env/init/bootargs-base   |    8 ++
->  .../boards/crystalfontz-cfa10036/env/init/general  |   12 +++
->  .../boards/crystalfontz-cfa10036/env/init/hostname |    8 ++
->  arch/arm/configs/cfa10036_defconfig                |   42 ++++++++
->  arch/arm/mach-mxs/Kconfig                          |    8 ++
->  defaultenv-2/base/bin/bootargs-root-ext            |   12 +++
->  12 files changed, 233 insertions(+)
->  create mode 100644 arch/arm/boards/crystalfontz-cfa10036/Makefile
->  create mode 100644 arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
->  create mode 100644 arch/arm/boards/crystalfontz-cfa10036/config.h
->  create mode 100644 arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3
->  create mode 100644 arch/arm/boards/crystalfontz-cfa10036/env/init/automount
->  create mode 100644 arch/arm/boards/crystalfontz-cfa10036/env/init/bootargs-base
->  create mode 100644 arch/arm/boards/crystalfontz-cfa10036/env/init/general
->  create mode 100644 arch/arm/boards/crystalfontz-cfa10036/env/init/hostname
->  create mode 100644 arch/arm/configs/cfa10036_defconfig
->  create mode 100644 defaultenv-2/base/bin/bootargs-root-ext
-> 
-> -- 
-> 1.7.9.5
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/commands/mem.c b/commands/mem.c
+index c1a3a54..5322def 100644
+--- a/commands/mem.c
++++ b/commands/mem.c
+@@ -180,6 +180,8 @@ static int do_mem_md(int argc, char *argv[])
+ 		}
+ 		if (size == ~0)
+ 			size = 0x100;
++	} else {
++		return COMMAND_ERROR_USAGE;
+ 	}
+ 
+ 	fd = open_and_lseek(filename, mode | O_RDONLY, start);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10
+
 
 _______________________________________________
 barebox mailing list
