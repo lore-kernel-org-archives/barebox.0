@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Smrra-0002Dd-Rt
+ id 1Smrra-0002De-S5
  for barebox@lists.infradead.org; Thu, 05 Jul 2012 19:37:28 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Jul 2012 21:36:48 +0200
-Message-Id: <1341517020-5581-18-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  5 Jul 2012 21:36:49 +0200
+Message-Id: <1341517020-5581-19-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1341517020-5581-1-git-send-email-s.hauer@pengutronix.de>
 References: <1341517020-5581-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,55 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/30] ARM: remove mx1ads leftovers
+Subject: [PATCH 19/30] usb gadget at91: Use correct include
 To: barebox@lists.infradead.org
 
-We have no mx1ads support in the tree, so remove the remaining bits from
-Kconfig.
+include gpio.h instead of mach/gpio.h
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Makefile         |    1 -
- arch/arm/mach-imx/Kconfig |    7 -------
- 2 files changed, 8 deletions(-)
+ drivers/usb/gadget/at91_udc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 1225df7..b2f4ce6 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -94,7 +94,6 @@ board-$(CONFIG_MACH_IMX21ADS)			:= imx21ads
- board-$(CONFIG_MACH_IMX27ADS)			:= imx27ads
- board-$(CONFIG_MACH_MIOA701)			:= mioa701
- board-$(CONFIG_MACH_MMCCPU)			:= mmccpu
--board-$(CONFIG_MACH_MX1ADS)			:= mx1ads
- board-$(CONFIG_MACH_NOMADIK_8815NHK)		:= nhk8815
- board-$(CONFIG_MACH_NXDB500)			:= netx
- board-$(CONFIG_MACH_OMAP343xSDP)		:= omap343xdsp
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 5b77245..aa4ab7b 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -6,7 +6,6 @@ config ARCH_TEXT_BASE
- 	default 0xa0000000 if MACH_EUKREA_CPUIMX27
- 	default 0x87f00000 if MACH_EUKREA_CPUIMX35
- 	default 0x97f00000 if MACH_EUKREA_CPUIMX51SD
--	default 0x08f00000 if MACH_MX1ADS
- 	default 0xc0000000 if MACH_IMX21ADS
- 	default 0xa0000000 if MACH_IMX27ADS
- 	default 0x83f00000 if MACH_FREESCALE_MX25_3STACK && FREESCALE_MX25_3STACK_SDRAM_64MB_DDR2
-@@ -186,12 +185,6 @@ choice
+diff --git a/drivers/usb/gadget/at91_udc.c b/drivers/usb/gadget/at91_udc.c
+index bb0d614..abd96c7 100644
+--- a/drivers/usb/gadget/at91_udc.c
++++ b/drivers/usb/gadget/at91_udc.c
+@@ -17,6 +17,7 @@
+ #include <common.h>
+ #include <errno.h>
+ #include <init.h>
++#include <gpio.h>
+ #include <clock.h>
+ #include <usb/ch9.h>
+ #include <usb/gadget.h>
+@@ -32,7 +33,6 @@
+ #include <mach/io.h>
+ #include <mach/board.h>
+ #include <mach/cpu.h>
+-#include <mach/gpio.h>
+ #include <mach/at91sam9261_matrix.h>
  
- 	prompt "i.MX1 Board Type"
- 
--config MACH_MX1ADS
--	bool "mx1ads"
--	select HAS_CS8900
--	help
--	  Say Y here if you are using the Motorola MX1ADS board
--
- config MACH_SCB9328
- 	bool "Synertronixx scb9328"
- 	select HAS_DM9000
+ #include "at91_udc.h"
 -- 
 1.7.10
 
