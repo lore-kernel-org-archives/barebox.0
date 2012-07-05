@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Smgao-0001wk-3s
- for barebox@lists.infradead.org; Thu, 05 Jul 2012 07:35:18 +0000
-Date: Thu, 5 Jul 2012 09:35:05 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120705073505.GP30009@pengutronix.de>
-References: <1341472720-3248-1-git-send-email-s.hauer@pengutronix.de>
- <1341472720-3248-3-git-send-email-s.hauer@pengutronix.de>
- <20120705092247.00cebe79@eb-e6520>
+Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SmjDH-0008JR-Sy
+ for barebox@lists.infradead.org; Thu, 05 Jul 2012 10:23:14 +0000
+Received: from localhost.localdomain (unknown [82.240.38.71])
+ by smtp2-g21.free.fr (Postfix) with ESMTP id 5E6284B002C
+ for <barebox@lists.infradead.org>; Thu,  5 Jul 2012 12:22:48 +0200 (CEST)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Thu,  5 Jul 2012 12:22:45 +0200
+Message-Id: <1341483767-20487-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120705092247.00cebe79@eb-e6520>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,52 +18,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] defenv-2: Add usage information for bootargs scripts
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] string: add strim for ONFI code
+To: barebox@lists.infradead.org
 
-Hi Eric,
-
-On Thu, Jul 05, 2012 at 09:22:47AM +0200, Eric B=E9nard wrote:
-> Hi Sascha,
-> =
-
-> Le Thu,  5 Jul 2012 09:18:39 +0200,
-> Sascha Hauer <s.hauer@pengutronix.de> a =E9crit :
-> =
-
-> > +while getopt "m:h" opt; do
-> >  	if [ ${opt} =3D m ]; then
-> >  		mtd=3D${OPTARG}
-> > +	elif [ ${opt} =3D h ]; then
-> > +		echo -e "$usage"
-> > +		exit 0
-> >  	fi
-> >  done
-> >  =
-
-> > +echo "huhu; $1"
-> =
-
-> is that huhu expected here ? ;-)
-
-Just to check if someone actually reads my patches ;)
-
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogaW5jbHVk
+ZS9saW51eC9zdHJpbmcuaCB8ICAgIDMgKysrCiBsaWIvc3RyaW5nLmMgICAgICAgICAgIHwgICAz
+OSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKIDIgZmlsZXMgY2hhbmdl
+ZCwgNDIgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9pbmNsdWRl
+L2xpbnV4L3N0cmluZy5oIGIvaW5jbHVkZS9saW51eC9zdHJpbmcuaAppbmRleCA2MmQ3NDNlLi5h
+ZmQwYWE2IDEwMDY0NAotLS0gYS9pbmNsdWRlL2xpbnV4L3N0cmluZy5oCisrKyBiL2luY2x1ZGUv
+bGludXgvc3RyaW5nLmgKQEAgLTkzLDYgKzkzLDkgQEAgZXh0ZXJuIGludCBtZW1jbXAoY29uc3Qg
+dm9pZCAqLGNvbnN0IHZvaWQgKixfX2tlcm5lbF9zaXplX3QpOwogI2lmbmRlZiBfX0hBVkVfQVJD
+SF9NRU1DSFIKIGV4dGVybiB2b2lkICogbWVtY2hyKGNvbnN0IHZvaWQgKixpbnQsX19rZXJuZWxf
+c2l6ZV90KTsKICNlbmRpZgorZXh0ZXJuIGNoYXIgKiBza2lwX3NwYWNlcyhjb25zdCBjaGFyICop
+OworCitleHRlcm4gY2hhciAqc3RyaW0oY2hhciAqKTsKIAogI2lmZGVmIF9fY3BsdXNwbHVzCiB9
+CmRpZmYgLS1naXQgYS9saWIvc3RyaW5nLmMgYi9saWIvc3RyaW5nLmMKaW5kZXggMjg2NTA4OC4u
+ZGI0ZjJhZSAxMDA2NDQKLS0tIGEvbGliL3N0cmluZy5jCisrKyBiL2xpYi9zdHJpbmcuYwpAQCAt
+NTY3LDMgKzU2Nyw0MiBAQCB2b2lkICptZW1jaHIoY29uc3Qgdm9pZCAqcywgaW50IGMsIHNpemVf
+dCBuKQogI2VuZGlmCiBFWFBPUlRfU1lNQk9MKG1lbWNocik7CiAKKy8qKgorICogc2tpcF9zcGFj
+ZXMgLSBSZW1vdmVzIGxlYWRpbmcgd2hpdGVzcGFjZSBmcm9tIEBzdHIuCisgKiBAc3RyOiBUaGUg
+c3RyaW5nIHRvIGJlIHN0cmlwcGVkLgorICoKKyAqIFJldHVybnMgYSBwb2ludGVyIHRvIHRoZSBm
+aXJzdCBub24td2hpdGVzcGFjZSBjaGFyYWN0ZXIgaW4gQHN0ci4KKyAqLworY2hhciAqc2tpcF9z
+cGFjZXMoY29uc3QgY2hhciAqc3RyKQoreworCXdoaWxlIChpc3NwYWNlKCpzdHIpKQorCQkrK3N0
+cjsKKwlyZXR1cm4gKGNoYXIgKilzdHI7Cit9CisKKy8qKgorICogc3RyaW0gLSBSZW1vdmVzIGxl
+YWRpbmcgYW5kIHRyYWlsaW5nIHdoaXRlc3BhY2UgZnJvbSBAcy4KKyAqIEBzOiBUaGUgc3RyaW5n
+IHRvIGJlIHN0cmlwcGVkLgorICoKKyAqIE5vdGUgdGhhdCB0aGUgZmlyc3QgdHJhaWxpbmcgd2hp
+dGVzcGFjZSBpcyByZXBsYWNlZCB3aXRoIGEgJU5VTC10ZXJtaW5hdG9yCisgKiBpbiB0aGUgZ2l2
+ZW4gc3RyaW5nIEBzLiBSZXR1cm5zIGEgcG9pbnRlciB0byB0aGUgZmlyc3Qgbm9uLXdoaXRlc3Bh
+Y2UKKyAqIGNoYXJhY3RlciBpbiBAcy4KKyAqLworY2hhciAqc3RyaW0oY2hhciAqcykKK3sKKwlz
+aXplX3Qgc2l6ZTsKKwljaGFyICplbmQ7CisKKwlzID0gc2tpcF9zcGFjZXMocyk7CisJc2l6ZSA9
+IHN0cmxlbihzKTsKKwlpZiAoIXNpemUpCisJCXJldHVybiBzOworCisJZW5kID0gcyArIHNpemUg
+LSAxOworCXdoaWxlIChlbmQgPj0gcyAmJiBpc3NwYWNlKCplbmQpKQorCQllbmQtLTsKKwkqKGVu
+ZCArIDEpID0gJ1wwJzsKKworCXJldHVybiBzOworfQorRVhQT1JUX1NZTUJPTChzdHJpbSk7Ci0t
+IAoxLjcuNy42CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
