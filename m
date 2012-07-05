@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SmrPE-00013Z-7Z
+ id 1SmrPE-00013a-7b
  for barebox@lists.infradead.org; Thu, 05 Jul 2012 19:08:01 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Jul 2012 21:07:53 +0200
-Message-Id: <1341515275-3464-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  5 Jul 2012 21:07:54 +0200
+Message-Id: <1341515275-3464-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1341515275-3464-1-git-send-email-s.hauer@pengutronix.de>
+References: <1341515275-3464-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] USB: Fix typo tranceiver -> transceiver
+Subject: [PATCH 2/3] ARM: remove mx1ads leftovers
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-Conflicts:
-
-	drivers/usb/otg/Kconfig
+We have no mx1ads support in the tree, so remove the remaining bits from
+Kconfig.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/otg/Kconfig |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/Makefile         |    1 -
+ arch/arm/mach-imx/Kconfig |    7 -------
+ 2 files changed, 8 deletions(-)
 
-diff --git a/drivers/usb/otg/Kconfig b/drivers/usb/otg/Kconfig
-index 2c5b789..d871677 100644
---- a/drivers/usb/otg/Kconfig
-+++ b/drivers/usb/otg/Kconfig
-@@ -1,7 +1,7 @@
- config USB_ULPI
--	bool "ULPI Tranceiver support"
-+	bool "ULPI Transceiver support"
- 	help
--	  Support for tranceivers that conforms ULPI specification.
-+	  Support for transceivers that conforms ULPI specification.
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 1225df7..b2f4ce6 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -94,7 +94,6 @@ board-$(CONFIG_MACH_IMX21ADS)			:= imx21ads
+ board-$(CONFIG_MACH_IMX27ADS)			:= imx27ads
+ board-$(CONFIG_MACH_MIOA701)			:= mioa701
+ board-$(CONFIG_MACH_MMCCPU)			:= mmccpu
+-board-$(CONFIG_MACH_MX1ADS)			:= mx1ads
+ board-$(CONFIG_MACH_NOMADIK_8815NHK)		:= nhk8815
+ board-$(CONFIG_MACH_NXDB500)			:= netx
+ board-$(CONFIG_MACH_OMAP343xSDP)		:= omap343xdsp
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 5b77245..aa4ab7b 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -6,7 +6,6 @@ config ARCH_TEXT_BASE
+ 	default 0xa0000000 if MACH_EUKREA_CPUIMX27
+ 	default 0x87f00000 if MACH_EUKREA_CPUIMX35
+ 	default 0x97f00000 if MACH_EUKREA_CPUIMX51SD
+-	default 0x08f00000 if MACH_MX1ADS
+ 	default 0xc0000000 if MACH_IMX21ADS
+ 	default 0xa0000000 if MACH_IMX27ADS
+ 	default 0x83f00000 if MACH_FREESCALE_MX25_3STACK && FREESCALE_MX25_3STACK_SDRAM_64MB_DDR2
+@@ -186,12 +185,6 @@ choice
  
- config USB_TWL4030
--	bool "TWL4030 Tranceiver support"
-+	bool "TWL4030 Transceiver support"
+ 	prompt "i.MX1 Board Type"
+ 
+-config MACH_MX1ADS
+-	bool "mx1ads"
+-	select HAS_CS8900
+-	help
+-	  Say Y here if you are using the Motorola MX1ADS board
+-
+ config MACH_SCB9328
+ 	bool "Synertronixx scb9328"
+ 	select HAS_DM9000
 -- 
 1.7.10
 
