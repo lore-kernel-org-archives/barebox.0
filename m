@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SmgKr-0000E9-5i
+ id 1SmgKr-0000E8-5g
  for barebox@lists.infradead.org; Thu, 05 Jul 2012 07:18:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Jul 2012 09:18:40 +0200
-Message-Id: <1341472720-3248-4-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  5 Jul 2012 09:18:38 +0200
+Message-Id: <1341472720-3248-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1341472720-3248-1-git-send-email-s.hauer@pengutronix.de>
 References: <1341472720-3248-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,48 +16,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] defenv-2: improve boot script
+Subject: [PATCH 1/3] hush getopt: shift argv arguments
 To: barebox@lists.infradead.org
 
-LSBhZGQgdXNhZ2UgaW5mb3JtYXRpb24KLSBhZGQgb3B0aW9uIHBhcnNpbmc6CiAgLXYgdmVyYm9z
-ZQogIC12IC12IG1vcmUgdmVyYm9zZQogIC1sIGxpc3QgYsK0cG9zc2libGUgYm9vdCBzb3VyY2Vz
-CiAgLWQgZHJ5cnVuCgpUaGUgZHJ5cnVuIG9wdGlvbiBzZXRzIHRoZSBnbG9iYWwgdmFyaWFibGVz
-IG5lY2Vzc2FyeSBmb3IgYm9vdGluZwpidXQgZG9lcyBub3QgYWN0dWFsbHkgYm9vdCB0aGUgc3lz
-dGVtLiBUaGlzIHdheSBpdCBpcyBwb3NzaWJsZSB0bwptYWtlIGFkZGl0aW9uYWwgYWRqdXN0bWVu
-dHMgdG8gdGhlIGJvb3QgdmFyaWFibGVzIGFuZCB0aGVuIGludm9rZQpib290bSBtYW51YWxseS4K
-ClNpZ25lZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KLS0t
-CiBjb21tb24vS2NvbmZpZyAgICAgICAgICAgICB8ICAgIDEgKwogZGVmYXVsdGVudi0yL2Jhc2Uv
-YmluL2Jvb3QgfCAgIDQyICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0t
-LQogMiBmaWxlcyBjaGFuZ2VkLCA0MCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlm
-ZiAtLWdpdCBhL2NvbW1vbi9LY29uZmlnIGIvY29tbW9uL0tjb25maWcKaW5kZXggYjc3NjAzMS4u
-NzYzOTgzZSAxMDA2NDQKLS0tIGEvY29tbW9uL0tjb25maWcKKysrIGIvY29tbW9uL0tjb25maWcK
-QEAgLTUwOCw2ICs1MDgsNyBAQCBjb25maWcgREVGQVVMVF9FTlZJUk9OTUVOVF9HRU5FUklDX05F
-VwogCXNlbGVjdCBHTE9CX1NPUlQKIAlzZWxlY3QgQ01EX0dMT0JBTAogCXNlbGVjdCBDTURfQVVU
-T01PVU5UCisJc2VsZWN0IENNRF9CQVNFTkFNRQogCXNlbGVjdCBGTEVYSUJMRV9CT09UQVJHUwog
-CXByb21wdCAiR2VuZXJpYyBlbnZpcm9ubWVudCB0ZW1wbGF0ZSIKIApkaWZmIC0tZ2l0IGEvZGVm
-YXVsdGVudi0yL2Jhc2UvYmluL2Jvb3QgYi9kZWZhdWx0ZW52LTIvYmFzZS9iaW4vYm9vdAppbmRl
-eCBjNWFkNzNkLi40ZWJkYTNmIDEwMDY0NAotLS0gYS9kZWZhdWx0ZW52LTIvYmFzZS9iaW4vYm9v
-dAorKysgYi9kZWZhdWx0ZW52LTIvYmFzZS9iaW4vYm9vdApAQCAtMSw1ICsxLDM4IEBACiAjIS9i
-aW4vc2gKIAordmVyYm9zZT0KK2RyeXJ1bj0KKwordXNhZ2U9IgorJDAgW09QVElPTlNdIFtzb3Vy
-Y2VdXG4KKyAtdiAgdmVyYm9zZVxuCisgLWQgIGRyeXJ1blxuCisgLWwgIGxpc3QgYm9vdCBzb3Vy
-Y2VzXG4KKyAtaCAgaGVscCIKKworZm9yIGkgaW4gL2Vudi9ib290Lyo7IGRvCisJYmFzZW5hbWUg
-JGkgcworCXNvdXJjZXM9IiRzb3VyY2VzJHMgIgorZG9uZQorCit3aGlsZSBnZXRvcHQgInZkaGwi
-IG9wdDsgZG8KKwlpZiBbICR7b3B0fSA9IHYgXTsgdGhlbgorCQlpZiBbIC1uICIkdmVyYm9zZSIg
-XTsgdGhlbgorCQkJdmVyYm9zZT0iLXYgLXYiCisJCWVsc2UKKwkJCXZlcmJvc2U9Ii12IgorCQlm
-aQorCWVsaWYgWyAke29wdH0gPSBkIF07IHRoZW4KKwkJZHJ5cnVuPTEKKwllbGlmIFsgJHtvcHR9
-ID0gbCBdOyB0aGVuCisJCWVjaG8gLWUgImJvb3Qgc291cmNlczpcbiRzb3VyY2VzIgorCQlleGl0
-IDAKKwllbGlmIFsgJHtvcHR9ID0gaCBdOyB0aGVuCisJCWVjaG8gLWUgIiR1c2FnZSIKKwkJZXhp
-dCAwCisJZmkKK2RvbmUKKwogaWYgWyAkIyA9IDAgXTsgdGhlbgogCXNjcj0iJGdsb2JhbC5ib290
-LmRlZmF1bHQiCiBlbHNlCkBAIC04LDExICs0MSwxNCBAQCBmaQogCiBpZiBbIC1uICIkc2NyIiBd
-OyB0aGVuCiAJaWYgWyAhIC1mIC9lbnYvYm9vdC8kc2NyIF07IHRoZW4KLQkJZWNobyAtZSAiL2Vu
-di9ib290LyRzY3IgZG9lcyBub3QgZXhpc3QuXG5WYWxpZCBjaG9pY2VzOiIKLQkJbHMgL2Vudi9i
-b290CisJCWVjaG8gLWUgIi9lbnYvYm9vdC8kc2NyIGRvZXMgbm90IGV4aXN0LlZhbGlkIGNob2lj
-ZXM6XG4kc291cmNlcyIKIAkJZXhpdAogCWZpCiAJL2Vudi9ib290LyRzY3IKIGZpCiAKLWJvb3Rt
-CitpZiBbIC1uICIkZHJ5cnVuIiBdOyB0aGVuCisJZXhpdCAwCitmaQorCitib290bSAkdmVyYm9z
-ZQotLSAKMS43LjEwCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
-dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Make the nonopt arguments to a script available starting from $1
+after running getopt. This allows for scripts which use option
+parsing but also have nonopts.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/hush.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/common/hush.c b/common/hush.c
+index 3ac1d10..8200931 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -521,6 +521,8 @@ static int builtin_getopt(struct p_context *ctx, struct child_prog *child,
+ 			o->optarg = xstrdup(optarg);
+ 			list_add_tail(&o->list, &ctx->options);
+ 		}
++		ctx->global_argv += optind - 1;
++		ctx->global_argc -= optind - 1;
+ 	}
+ 
+ 	ctx->options_parsed = 1;
+@@ -1899,7 +1901,8 @@ static const __maybe_unused char cmd_getopt_help[] =
+ "hush option parser. <optstring> is a string with valid options. Add\n"
+ "a colon to an options if this option has a required argument or two\n"
+ "colons for an optional argument. The current option is saved in <var>,\n"
+-"arguments are saved in OPTARG.\n";
++"arguments are saved in OPTARG. After this command additional nonopts\n"
++"can be accessed starting from $1\n";
+ 
+ BAREBOX_CMD_START(getopt)
+ 	.cmd		= do_getopt,
+-- 
+1.7.10
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
