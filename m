@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SmrrU-0006bP-D8
+ id 1SmrrU-0006bV-CW
  for barebox@lists.infradead.org; Thu, 05 Jul 2012 19:37:14 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Jul 2012 21:36:59 +0200
-Message-Id: <1341517020-5581-29-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  5 Jul 2012 21:36:55 +0200
+Message-Id: <1341517020-5581-25-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1341517020-5581-1-git-send-email-s.hauer@pengutronix.de>
 References: <1341517020-5581-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,35 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 29/30] mtd: scan_write_bbt is only needed with mtd write
- support
+Subject: [PATCH 25/30] ARM at91: remove const
 To: barebox@lists.infradead.org
+
+Although the spi chipselects should really be const, there is no
+good way to fix the compiler warning, so remove the const.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand_bbt.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/mach-at91/at91rm9200_devices.c  |    2 +-
+ arch/arm/mach-at91/at91sam9261_devices.c |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_bbt.c b/drivers/mtd/nand/nand_bbt.c
-index c1696ee..3cbf886 100644
---- a/drivers/mtd/nand/nand_bbt.c
-+++ b/drivers/mtd/nand/nand_bbt.c
-@@ -254,6 +254,7 @@ static int scan_read_raw(struct mtd_info *mtd, uint8_t *buf, loff_t offs,
- /*
-  * Scan write data with oob to flash
-  */
-+#ifdef CONFIG_MTD_WRITE
- static int scan_write_bbt(struct mtd_info *mtd, loff_t offs, size_t len,
- 			  uint8_t *buf, uint8_t *oob)
- {
-@@ -268,6 +269,7 @@ static int scan_write_bbt(struct mtd_info *mtd, loff_t offs, size_t len,
+diff --git a/arch/arm/mach-at91/at91rm9200_devices.c b/arch/arm/mach-at91/at91rm9200_devices.c
+index 3bfa08e..8cb2f57 100644
+--- a/arch/arm/mach-at91/at91rm9200_devices.c
++++ b/arch/arm/mach-at91/at91rm9200_devices.c
+@@ -159,7 +159,7 @@ void __init at91_add_device_nand(struct atmel_nand_data *data) {}
+  * -------------------------------------------------------------------- */
  
- 	return mtd->write_oob(mtd, offs, &ops);
- }
-+#endif
+ #if defined(CONFIG_DRIVER_SPI_ATMEL)
+-static const unsigned spi_standard_cs[4] = { AT91_PIN_PA3, AT91_PIN_PA4, AT91_PIN_PA5, AT91_PIN_PA6 };
++static unsigned spi_standard_cs[4] = { AT91_PIN_PA3, AT91_PIN_PA4, AT91_PIN_PA5, AT91_PIN_PA6 };
  
- /**
-  * read_abs_bbts - [GENERIC] Read the bad block table(s) for all chips starting at a given page
+ static struct at91_spi_platform_data spi_pdata[] = {
+ 	[0] = {
+diff --git a/arch/arm/mach-at91/at91sam9261_devices.c b/arch/arm/mach-at91/at91sam9261_devices.c
+index 41eeeae..7acab0c 100644
+--- a/arch/arm/mach-at91/at91sam9261_devices.c
++++ b/arch/arm/mach-at91/at91sam9261_devices.c
+@@ -107,9 +107,9 @@ void at91_add_device_nand(struct atmel_nand_data *data) {}
+  * -------------------------------------------------------------------- */
+ 
+ #if defined(CONFIG_DRIVER_SPI_ATMEL)
+-static const unsigned spi0_standard_cs[4] = { AT91_PIN_PA3, AT91_PIN_PA4, AT91_PIN_PA5, AT91_PIN_PA6 };
++static unsigned spi0_standard_cs[4] = { AT91_PIN_PA3, AT91_PIN_PA4, AT91_PIN_PA5, AT91_PIN_PA6 };
+ 
+-static const unsigned spi1_standard_cs[4] = { AT91_PIN_PB28, AT91_PIN_PA24, AT91_PIN_PA25, AT91_PIN_PA26 };
++static unsigned spi1_standard_cs[4] = { AT91_PIN_PB28, AT91_PIN_PA24, AT91_PIN_PA25, AT91_PIN_PA26 };
+ 
+ static struct at91_spi_platform_data spi_pdata[] = {
+ 	[0] = {
 -- 
 1.7.10
 
