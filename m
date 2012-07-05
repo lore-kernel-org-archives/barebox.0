@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SmgKr-0000E8-5g
- for barebox@lists.infradead.org; Thu, 05 Jul 2012 07:18:50 +0000
+ id 1SmgKy-0000Fs-0W
+ for barebox@lists.infradead.org; Thu, 05 Jul 2012 07:18:54 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Jul 2012 09:18:38 +0200
-Message-Id: <1341472720-3248-2-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  5 Jul 2012 09:18:39 +0200
+Message-Id: <1341472720-3248-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1341472720-3248-1-git-send-email-s.hauer@pengutronix.de>
 References: <1341472720-3248-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,41 +21,117 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] hush getopt: shift argv arguments
+Subject: [PATCH 2/3] defenv-2: Add usage information for bootargs scripts
 To: barebox@lists.infradead.org
-
-Make the nonopt arguments to a script available starting from $1
-after running getopt. This allows for scripts which use option
-parsing but also have nonopts.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/hush.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ defaultenv-2/base/bin/bootargs-root-initrd |    7 ++++++-
+ defaultenv-2/base/bin/bootargs-root-jffs2  |   16 +++++++++++++++-
+ defaultenv-2/base/bin/bootargs-root-nfs    |    7 ++++++-
+ defaultenv-2/base/bin/bootargs-root-ubi    |   13 ++++++++++++-
+ 4 files changed, 39 insertions(+), 4 deletions(-)
 
-diff --git a/common/hush.c b/common/hush.c
-index 3ac1d10..8200931 100644
---- a/common/hush.c
-+++ b/common/hush.c
-@@ -521,6 +521,8 @@ static int builtin_getopt(struct p_context *ctx, struct child_prog *child,
- 			o->optarg = xstrdup(optarg);
- 			list_add_tail(&o->list, &ctx->options);
- 		}
-+		ctx->global_argv += optind - 1;
-+		ctx->global_argc -= optind - 1;
- 	}
+diff --git a/defaultenv-2/base/bin/bootargs-root-initrd b/defaultenv-2/base/bin/bootargs-root-initrd
+index 4c59625..7072cea 100644
+--- a/defaultenv-2/base/bin/bootargs-root-initrd
++++ b/defaultenv-2/base/bin/bootargs-root-initrd
+@@ -2,9 +2,14 @@
  
- 	ctx->options_parsed = 1;
-@@ -1899,7 +1901,8 @@ static const __maybe_unused char cmd_getopt_help[] =
- "hush option parser. <optstring> is a string with valid options. Add\n"
- "a colon to an options if this option has a required argument or two\n"
- "colons for an optional argument. The current option is saved in <var>,\n"
--"arguments are saved in OPTARG.\n";
-+"arguments are saved in OPTARG. After this command additional nonopts\n"
-+"can be accessed starting from $1\n";
+ rdinit="/sbin/init"
  
- BAREBOX_CMD_START(getopt)
- 	.cmd		= do_getopt,
+-while getopt "i:" opt; do
++usage="$0 [OPTIONS]\n -i <rdinitpath> (/sbin/init)"
++
++while getopt "i:h" opt; do
+ 	if [ ${opt} = i ]; then
+ 		rdinit=${OPTARG}
++	elif [ ${opt} = h ]; then
++		echo -e "$usage"
++		exit 0
+ 	fi
+ done
+ 
+diff --git a/defaultenv-2/base/bin/bootargs-root-jffs2 b/defaultenv-2/base/bin/bootargs-root-jffs2
+index db036da..ac9a4bd 100644
+--- a/defaultenv-2/base/bin/bootargs-root-jffs2
++++ b/defaultenv-2/base/bin/bootargs-root-jffs2
+@@ -1,9 +1,23 @@
+ #!/bin/sh
+ 
+-while getopt "m:" opt; do
++mtd=
++
++usage="$0 [OPTIONS]\n -m <mtd>"
++
++while getopt "m:h" opt; do
+ 	if [ ${opt} = m ]; then
+ 		mtd=${OPTARG}
++	elif [ ${opt} = h ]; then
++		echo -e "$usage"
++		exit 0
+ 	fi
+ done
+ 
++echo "huhu; $1"
++
++if [ -z "$mtd" ]; then
++	echo -e "$usage"
++	exit 1
++fi
++
+ global.linux.bootargs.root="root=$mtd rootfstype=jffs2"
+diff --git a/defaultenv-2/base/bin/bootargs-root-nfs b/defaultenv-2/base/bin/bootargs-root-nfs
+index bf97555..27bb6c4 100644
+--- a/defaultenv-2/base/bin/bootargs-root-nfs
++++ b/defaultenv-2/base/bin/bootargs-root-nfs
+@@ -1,10 +1,15 @@
+ #!/bin/sh
+ 
+-while getopt "n:s:" opt; do
++usage="$0 [OPTIONS]\n -n <nfspath>\n -s <serverip>"
++
++while getopt "n:s:h" opt; do
+ 	if [ ${opt} = n ]; then
+ 		nfsroot=${OPTARG}
+ 	elif [ ${opt} = s ]; then
+ 		serverip=${OPTARG}
++	elif [ ${opt} = h ]; then
++		echo -e "$usage"
++		exit 0
+ 	fi
+ done
+ 
+diff --git a/defaultenv-2/base/bin/bootargs-root-ubi b/defaultenv-2/base/bin/bootargs-root-ubi
+index ef89104..fb7f328 100644
+--- a/defaultenv-2/base/bin/bootargs-root-ubi
++++ b/defaultenv-2/base/bin/bootargs-root-ubi
+@@ -1,13 +1,24 @@
+ #!/bin/sh
+ 
+ ubiroot=root
++mtd=
+ 
+-while getopt "m:r:" opt; do
++usage="$0 [OPTIONS]\n -r <ubiroot> (root)\n -m <mtd>"
++
++while getopt "m:r:h" opt; do
+ 	if [ ${opt} = r ]; then
+ 		ubiroot=${OPTARG}
+ 	elif [ ${opt} = m ]; then
+ 		mtd=${OPTARG}
++	elif [ ${opt} = h ]; then
++		echo -e "$usage"
++		exit 0
+ 	fi
+ done
+ 
++if [ -z "$mtd" ]; then
++	echo -e "$usage"
++	exit 1
++fi
++
+ global.linux.bootargs.root="root=ubi0:$ubiroot ubi.mtd=$mtd rootfstype=ubifs"
 -- 
 1.7.10
 
