@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Smrra-0002Da-PE
- for barebox@lists.infradead.org; Thu, 05 Jul 2012 19:37:33 +0000
+ id 1Smrra-0002DO-On
+ for barebox@lists.infradead.org; Thu, 05 Jul 2012 19:37:57 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Jul 2012 21:36:46 +0200
-Message-Id: <1341517020-5581-16-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1341517020-5581-1-git-send-email-s.hauer@pengutronix.de>
-References: <1341517020-5581-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  5 Jul 2012 21:36:31 +0200
+Message-Id: <1341517020-5581-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,39 +19,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 16/30] ARM Samsung S5P: Disable support until we have a board
+Subject: [PATCH 01/30] USB: Fix typo tranceiver -> transceiver
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/Kconfig |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index af4cb59..9590db9 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -72,12 +72,14 @@ config ARCH_S3C24xx
- 	select ARCH_SAMSUNG
- 	select CPU_ARM920T
- 	select GENERIC_GPIO
--
--config ARCH_S5PCxx
--	bool "Samsung S5PC110, S5PV210"
--	select ARCH_SAMSUNG
--	select CPU_V7
--	select GENERIC_GPIO
-+#
-+# Currently no board support
-+#
-+#config ARCH_S5PCxx
-+#	bool "Samsung S5PC110, S5PV210"
-+#	select ARCH_SAMSUNG
-+#	select CPU_V7
-+#	select GENERIC_GPIO
+Conflicts:
+
+	drivers/usb/otg/Kconfig
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/otg/Kconfig |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/usb/otg/Kconfig b/drivers/usb/otg/Kconfig
+index 2c5b789..d871677 100644
+--- a/drivers/usb/otg/Kconfig
++++ b/drivers/usb/otg/Kconfig
+@@ -1,7 +1,7 @@
+ config USB_ULPI
+-	bool "ULPI Tranceiver support"
++	bool "ULPI Transceiver support"
+ 	help
+-	  Support for tranceivers that conforms ULPI specification.
++	  Support for transceivers that conforms ULPI specification.
  
- config ARCH_VERSATILE
- 	bool "ARM Versatile boards (ARM926EJ-S)"
+ config USB_TWL4030
+-	bool "TWL4030 Tranceiver support"
++	bool "TWL4030 Transceiver support"
 -- 
 1.7.10
 
