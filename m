@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sn57C-0000zR-75
- for barebox@lists.infradead.org; Fri, 06 Jul 2012 09:46:37 +0000
-From: Jan Luebbe <jlu@pengutronix.de>
-Date: Fri,  6 Jul 2012 11:45:58 +0200
-Message-Id: <1341567958-8543-1-git-send-email-jlu@pengutronix.de>
+ id 1Sn5sC-00021I-Tf
+ for barebox@lists.infradead.org; Fri, 06 Jul 2012 10:35:00 +0000
+Received: by mail-lb0-f177.google.com with SMTP id gg6so13752252lbb.36
+ for <barebox@lists.infradead.org>; Fri, 06 Jul 2012 03:34:35 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri,  6 Jul 2012 14:34:28 +0400
+Message-Id: <1341570868-12989-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,232 +21,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] drivers/net/ksz8864rmn: add driver for Micrel KSZ8864RMN
- Ethernet Switch
+Subject: [PATCH] MIPS: remove unused processor-specific constants and macros
 To: barebox@lists.infradead.org
 
-It start the switch and provides basic access to the registers.
-
-This driver could also work with some other Micrel switches, possibly
-with some small changes.
-
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/net/Kconfig      |    7 ++
- drivers/net/Makefile     |    1 +
- drivers/net/ksz8864rmn.c |  177 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 185 insertions(+)
- create mode 100644 drivers/net/ksz8864rmn.c
+ arch/mips/include/asm/asm.h      |    8 --------
+ arch/mips/include/asm/mipsregs.h |   32 --------------------------------
+ 2 files changed, 40 deletions(-)
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 172cc39..2abea9b 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -110,5 +110,12 @@ config DRIVER_NET_KS8851_MLL
+diff --git a/arch/mips/include/asm/asm.h b/arch/mips/include/asm/asm.h
+index 608cfcf..12e1758 100644
+--- a/arch/mips/include/asm/asm.h
++++ b/arch/mips/include/asm/asm.h
+@@ -398,12 +398,4 @@ symbol		=	value
  
- source "drivers/net/usb/Kconfig"
+ #define SSNOP		sll zero, zero, 1
  
-+config DRIVER_NET_MICREL
-+	depends on SPI
-+	bool "Micrel KSZ8864RMN Ethernet Switch driver"
-+	help
-+	  This option enables support for enabling the Micrel
-+	  KSZ8864RMN Ethernet Switch over SPI.
-+
- endmenu
+-#ifdef CONFIG_SGI_IP28
+-/* Inhibit speculative stores to volatile (e.g.DMA) or invalid addresses. */
+-#include <asm/cacheops.h>
+-#define R10KCBARRIER(addr)  cache   Cache_Barrier, addr;
+-#else
+-#define R10KCBARRIER(addr)
+-#endif
+-
+ #endif /* __ASM_ASM_H */
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index befccbb..16ba38e 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -102,11 +102,6 @@
+ #define CP0_S3_SRSMAP	  $12	/* MIPSR2 */
  
-diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-index 34dbee9..e7b1e2d 100644
---- a/drivers/net/Makefile
-+++ b/drivers/net/Makefile
-@@ -13,3 +13,4 @@ obj-$(CONFIG_MIIDEV)			+= miidev.o
- obj-$(CONFIG_NET_USB)			+= usb/
- obj-$(CONFIG_DRIVER_NET_TSE)		+= altera_tse.o
- obj-$(CONFIG_DRIVER_NET_KS8851_MLL)	+= ks8851_mll.o
-+obj-$(CONFIG_DRIVER_NET_MICREL)		+= ksz8864rmn.o
-diff --git a/drivers/net/ksz8864rmn.c b/drivers/net/ksz8864rmn.c
-new file mode 100644
-index 0000000..2f86c77
---- /dev/null
-+++ b/drivers/net/ksz8864rmn.c
-@@ -0,0 +1,177 @@
-+/*
-+ * Copyright (C) 2012 Jan Luebbe, Pengutronix
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <spi/spi.h>
-+#include <errno.h>
-+
-+#define REG_ID0			0x00
-+#define REG_ID1			0x01
-+
-+#define REG_GC00		0x02
-+#define REG_GC01		0x03
-+#define REG_GC02		0x04
-+#define REG_GC03		0x05
-+#define REG_GC04		0x06
-+#define REG_GC05		0x07
-+#define REG_GC06		0x08
-+#define REG_GC07		0x09
-+#define REG_GC08		0x0a
-+#define REG_GC09		0x0b
-+#define REG_GC10		0x0c
-+#define REG_GC11		0x0d
-+
-+#define REG_PSTAT1(p)		(0x10 * p + 0xe)
-+#define REG_PSTAT2(p)		(0x10 * p + 0xf)
-+
-+#define CMD_WRITE		0x02
-+#define CMD_READ		0x03
-+
-+static int micrel_switch_read_reg(struct spi_device *spi, uint8_t reg)
-+{
-+	uint8_t tx[2];
-+	uint8_t rx[1];
-+	int ret;
-+
-+	tx[0] = CMD_READ;
-+	tx[1] = reg;
-+
-+	ret = spi_write_then_read(spi, tx, 2, rx, 1);
-+	if (ret < 0)
-+		return ret;
-+
-+	return rx[0];
-+}
-+
-+static void micrel_switch_write_reg(struct spi_device *spi, uint8_t reg, uint8_t val)
-+{
-+	uint8_t tx[3];
-+
-+	tx[0] = CMD_WRITE;
-+	tx[1] = reg;
-+	tx[2] = val;
-+
-+	spi_write_then_read(spi, tx, 3, NULL, 0);
-+}
-+
-+static int micrel_switch_enable_set(struct device_d *dev, struct param_d *param,
-+		const char *val)
-+{
-+	struct spi_device *spi = (struct spi_device *)dev->type_data;
-+	int enable;
-+	char *new;
-+
-+	if (!val)
-+		return dev_param_set_generic(dev, param, NULL);
-+
-+	enable = simple_strtoul(val, NULL, 0);
-+
-+	if (enable) {
-+		micrel_switch_write_reg(spi, REG_ID1, 1);
-+		new = "1";
-+	} else {
-+		micrel_switch_write_reg(spi, REG_ID1, 0);
-+		new = "0";
-+	}
-+
-+	dev_param_set_generic(dev, param, new);
-+
-+	return 0;
-+}
-+
-+static void micrel_switch_print_reg(struct spi_device *spi, const char *name, uint8_t reg)
-+{
-+	uint8_t tx[2];
-+	uint8_t rx[1];
-+	int ret;
-+
-+	tx[0] = CMD_READ;
-+	tx[1] = reg;
-+
-+	ret = spi_write_then_read(spi, tx, 2, rx, 1);
-+	if (ret < 0)
-+		printf("%s@0x%02x: SPI error\n", name, reg);
-+
-+	printf("%s@0x%02x: 0x%02x\n", name, reg, rx[0]);
-+}
-+
-+static void micrel_switch_info(struct device_d *dev)
-+{
-+	struct spi_device *spi = (struct spi_device *)dev->type_data;
-+
-+	printf("Registers:\n");
-+	micrel_switch_print_reg(spi, " Chip ID 0", REG_ID0);
-+	micrel_switch_print_reg(spi, " Chip ID 1", REG_ID1);
-+	micrel_switch_print_reg(spi, " Global Control  0", REG_GC00);
-+	micrel_switch_print_reg(spi, " Global Control  1", REG_GC01);
-+	micrel_switch_print_reg(spi, " Global Control  2", REG_GC02);
-+	micrel_switch_print_reg(spi, " Global Control  3", REG_GC03);
-+	micrel_switch_print_reg(spi, " Global Control  4", REG_GC04);
-+	micrel_switch_print_reg(spi, " Global Control  5", REG_GC05);
-+	micrel_switch_print_reg(spi, " Global Control  6", REG_GC06);
-+	micrel_switch_print_reg(spi, " Global Control  7", REG_GC07);
-+	micrel_switch_print_reg(spi, " Global Control  8", REG_GC08);
-+	micrel_switch_print_reg(spi, " Global Control  9", REG_GC09);
-+	micrel_switch_print_reg(spi, " Global Control 10", REG_GC10);
-+	micrel_switch_print_reg(spi, " Global Control 11", REG_GC11);
-+	micrel_switch_print_reg(spi, " Port 1 Status 1", REG_PSTAT1(1));
-+	micrel_switch_print_reg(spi, " Port 1 Status 2", REG_PSTAT2(1));
-+	micrel_switch_print_reg(spi, " Port 2 Status 1", REG_PSTAT1(2));
-+	micrel_switch_print_reg(spi, " Port 2 Status 2", REG_PSTAT2(2));
-+}
-+
-+static int micrel_switch_probe(struct device_d *dev)
-+{
-+	struct spi_device *spi = (struct spi_device *)dev->type_data;
-+	int ret = 0;
-+
-+	spi->mode = SPI_MODE_0;
-+	spi->bits_per_word = 8;
-+
-+	ret = micrel_switch_read_reg(spi, REG_ID0);
-+	if (ret < 0) {
-+		dev_err(&spi->dev, "failed to read device id\n");
-+		return ret;
-+	}
-+	if (ret != 0x95) {
-+		dev_err(&spi->dev, "unknown device id: %02x\n", ret);
-+		return -1;
-+	}
-+
-+	dev_add_param(dev, "enable", micrel_switch_enable_set, NULL, 0);
-+	dev_set_param(dev, "enable", "1");
-+
-+	return 0;
-+}
-+
-+static struct driver_d micrel_switch_driver = {
-+	.name  = "ksz8864rmn",
-+	.probe = micrel_switch_probe,
-+	.info  = micrel_switch_info,
-+};
-+
-+static int micrel_switch_init(void)
-+{
-+	register_driver(&micrel_switch_driver);
-+	return 0;
-+}
-+device_initcall(micrel_switch_init);
+ /*
+- *  TX39 Series
+- */
+-#define CP0_TX39_CACHE	$7
+-
+-/*
+  * Coprocessor 1 (FPU) register names
+  */
+ #define CP1_REVISION   $0
+@@ -387,27 +382,6 @@
+ #define R5K_CONF_SE		(_ULCAST_(1) << 12)
+ #define R5K_CONF_SS		(_ULCAST_(3) << 20)
+ 
+-/* Bits specific to the RM7000.  */
+-#define RM7K_CONF_SE		(_ULCAST_(1) <<  3)
+-#define RM7K_CONF_TE		(_ULCAST_(1) << 12)
+-#define RM7K_CONF_CLK		(_ULCAST_(1) << 16)
+-#define RM7K_CONF_TC		(_ULCAST_(1) << 17)
+-#define RM7K_CONF_SI		(_ULCAST_(3) << 20)
+-#define RM7K_CONF_SC		(_ULCAST_(1) << 31)
+-
+-/* Bits specific to the R10000.  */
+-#define R10K_CONF_DN		(_ULCAST_(3) <<  3)
+-#define R10K_CONF_CT		(_ULCAST_(1) <<  5)
+-#define R10K_CONF_PE		(_ULCAST_(1) <<  6)
+-#define R10K_CONF_PM		(_ULCAST_(3) <<  7)
+-#define R10K_CONF_EC		(_ULCAST_(15)<<  9)
+-#define R10K_CONF_SB		(_ULCAST_(1) << 13)
+-#define R10K_CONF_SK		(_ULCAST_(1) << 14)
+-#define R10K_CONF_SS		(_ULCAST_(7) << 16)
+-#define R10K_CONF_SC		(_ULCAST_(7) << 19)
+-#define R10K_CONF_DC		(_ULCAST_(7) << 26)
+-#define R10K_CONF_IC		(_ULCAST_(7) << 29)
+-
+ /* Bits specific to the R30xx.  */
+ #define R30XX_CONF_FDM		(_ULCAST_(1) << 19)
+ #define R30XX_CONF_REV		(_ULCAST_(1) << 22)
+@@ -419,12 +393,6 @@
+ #define R30XX_CONF_SB		(_ULCAST_(1) << 30)
+ #define R30XX_CONF_LOCK		(_ULCAST_(1) << 31)
+ 
+-/* Bits specific to the TX49.  */
+-#define TX49_CONF_DC		(_ULCAST_(1) << 16)
+-#define TX49_CONF_IC		(_ULCAST_(1) << 17)  /* conflict with CONF_SC */
+-#define TX49_CONF_HALT		(_ULCAST_(1) << 18)
+-#define TX49_CONF_CWFON		(_ULCAST_(1) << 27)
+-
+ /* Bits specific to the MIPS32/64 PRA.  */
+ #define MIPS_CONF_MT		(_ULCAST_(7) <<  7)
+ #define MIPS_CONF_AR		(_ULCAST_(7) << 10)
 -- 
 1.7.10
 
