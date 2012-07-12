@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SpJjm-0005Mm-Nd
- for barebox@lists.infradead.org; Thu, 12 Jul 2012 13:47:33 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1SpJjg-0001No-Pw
- for barebox@lists.infradead.org; Thu, 12 Jul 2012 15:47:16 +0200
-Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <jbe@pengutronix.de>) id 1SpJjg-0003jR-Np
- for barebox@lists.infradead.org; Thu, 12 Jul 2012 15:47:16 +0200
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 12 Jul 2012 15:47:14 +0200
-Message-Id: <1342100835-9870-4-git-send-email-jbe@pengutronix.de>
-In-Reply-To: <1342100835-9870-1-git-send-email-jbe@pengutronix.de>
+ id 1SpPVV-0006Cb-73
+ for barebox@lists.infradead.org; Thu, 12 Jul 2012 19:57:04 +0000
+Message-ID: <4FFF2BE9.1030802@pengutronix.de>
+Date: Thu, 12 Jul 2012 21:56:25 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+MIME-Version: 1.0
 References: <1342100835-9870-1-git-send-email-jbe@pengutronix.de>
+ <1342100835-9870-5-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1342100835-9870-5-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,114 +18,121 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============9125499045145035392=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] ARM/i.MX: add support to detect the reset source
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/4] ARM/MXS: add reset cause detection
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
----
- arch/arm/mach-imx/Makefile       |    1 +
- arch/arm/mach-imx/reset_source.c |   72 ++++++++++++++++++++++++++++++++++++++
- 2 files changed, 73 insertions(+)
- create mode 100644 arch/arm/mach-imx/reset_source.c
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--===============9125499045145035392==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enigCA268BB798CA556F1CD71D5D"
 
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index 89a8946..d6380ba 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -1,4 +1,5 @@
- obj-y += clocksource.o gpio.o
-+obj-$(CONFIG_GLOBALVAR) += reset_source.o
- obj-$(CONFIG_ARCH_IMX1)  += speed-imx1.o  imx1.o  iomux-v1.o
- obj-$(CONFIG_ARCH_IMX25) += speed-imx25.o imx25.o iomux-v3.o
- obj-$(CONFIG_ARCH_IMX21) += speed-imx21.o imx21.o iomux-v1.o
-diff --git a/arch/arm/mach-imx/reset_source.c b/arch/arm/mach-imx/reset_source.c
-new file mode 100644
-index 0000000..e7b2a90
---- /dev/null
-+++ b/arch/arm/mach-imx/reset_source.c
-@@ -0,0 +1,72 @@
-+/*
-+ * (C) Copyright 2012 Juergen Beisert - <kernel@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <reset_source.h>
-+#include <mach/imx-regs.h>
-+
-+#ifdef CONFIG_ARCH_IMX1
-+#  define IMX_RESET_SRC_WDOG (1 << 1)
-+#  define IMX_RESET_SRC_HRDRESET (1 << 0)
-+/* let the compiler sort out useless code on this arch */
-+#  define IMX_RESET_SRC_WARMSTART 0
-+#  define IMX_RESET_SRC_COLDSTART 0
-+#else
-+  /* WRSR checked for i.MX25, i.MX27, i.MX31, i.MX35 and i.MX51 */
-+# define WDOG_WRSR 0x04
-+  /* valid for i.MX25, i.MX27, i.MX31, i.MX35, i.MX51 */
-+#  define IMX_RESET_SRC_WARMSTART (1 << 0)
-+  /* valid for i.MX25, i.MX27, i.MX31, i.MX35, i.MX51 */
-+#  define IMX_RESET_SRC_WDOG (1 << 1)
-+  /* valid for i.MX27, i.MX31, always '0' on i.MX25, i.MX35, i.MX51 */
-+#  define IMX_RESET_SRC_HRDRESET (1 << 3)
-+  /* valid for i.MX27, i.MX31, always '0' on i.MX25, i.MX35, i.MX51 */
-+#  define IMX_RESET_SRC_COLDSTART (1 << 4)
-+#endif
-+
-+static unsigned read_detection_register(void)
-+{
-+#ifdef CONFIG_ARCH_IMX1
-+	return readl(IMX_SYSCTRL_BASE);
-+#else
-+	return readw(IMX_WDT_BASE + WDOG_WRSR);
-+#endif
-+}
-+
-+static int imx_detect_reset_source(void)
-+{
-+	unsigned reg = read_detection_register();
-+
-+	if (reg & IMX_RESET_SRC_COLDSTART) {
-+		set_reset_source(RESET_POR);
-+		return 0;
-+	}
-+
-+	if (reg & (IMX_RESET_SRC_HRDRESET | IMX_RESET_SRC_WARMSTART)) {
-+		set_reset_source(RESET_RST);
-+		return 0;
-+	}
-+
-+	if (reg & IMX_RESET_SRC_WDOG) {
-+		set_reset_source(RESET_WDG);
-+		return 0;
-+	}
-+
-+	/* else keep the default 'unknown' state */
-+	return 0;
-+}
-+
-+device_initcall(imx_detect_reset_source);
--- 
-1.7.10.4
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enigCA268BB798CA556F1CD71D5D
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
+On 07/12/2012 03:47 PM, Juergen Beisert wrote:
+> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+> ---
+>  drivers/watchdog/im28wd.c |   25 +++++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
+>=20
+> diff --git a/drivers/watchdog/im28wd.c b/drivers/watchdog/im28wd.c
+> index b016910..c465f87 100644
+> --- a/drivers/watchdog/im28wd.c
+> +++ b/drivers/watchdog/im28wd.c
+> @@ -21,6 +21,7 @@
+>  #include <errno.h>
+>  #include <malloc.h>
+>  #include <watchdog.h>
+> +#include <reset_source.h>
+> =20
+>  #define MXS_RTC_CTRL 0x0
+>  #define MXS_RTC_SET_ADDR 0x4
+> @@ -73,6 +74,27 @@ static int imx28_watchdog_set_timeout(struct watchdo=
+g *wd, unsigned timeout)
+>  	return 0;
+>  }
+> =20
+> +static void __maybe_unused imx28_detect_reset_source(const struct imx2=
+8_wd *p)
+> +{
+> +	u32 reg;
+> +
+> +	reg =3D readl(p->regs + MXS_RTC_PERSISTENT0);
+> +	if (reg & MXS_RTC_PERSISTENT0_EXT_RST) {
+> +		writel(MXS_RTC_PERSISTENT0_EXT_RST,
+> +			p->regs + MXS_RTC_PERSISTENT0 + MXS_RTC_CLR_ADDR);
+> +		set_reset_source(RESET_POR);
+> +		return;
+> +	}
+> +	if (reg & MXS_RTC_PERSISTENT0_THM_RST) {
+> +		writel(MXS_RTC_PERSISTENT0_THM_RST,
+> +			p->regs + MXS_RTC_PERSISTENT0 + MXS_RTC_CLR_ADDR);
+> +		set_reset_source(RESET_RST);
+> +		return;
+> +	}
+> +
+> +	set_reset_source(RESET_RST);
+> +}
+> +
+>  static int imx28_wd_probe(struct device_d *dev)
+>  {
+>  	struct imx28_wd *priv;
+> @@ -94,6 +116,9 @@ static int imx28_wd_probe(struct device_d *dev)
+>  	if (rc !=3D 0)
+>  		goto on_error;
+> =20
+> +#ifdef CONFIG_GLOBALVAR
+What about:
+
+	if (IS_ENABLED(CONFIG_GLOBALVAR))
+
+> +	imx28_detect_reset_source(priv);
+> +#endif
+>  	dev->priv =3D priv;
+>  	return 0;
+> =20
+
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+
+--------------enigCA268BB798CA556F1CD71D5D
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+
+iEYEARECAAYFAk//K+wACgkQjTAFq1RaXHNouACfU/HDetmHS1Ej1de7EUDAxahB
+vRwAnRXIETxsStRbltl5k9iktVPY25gg
+=MtbK
+-----END PGP SIGNATURE-----
+
+--------------enigCA268BB798CA556F1CD71D5D--
+
+
+--===============9125499045145035392==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============9125499045145035392==--
