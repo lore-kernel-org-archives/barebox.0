@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2a01:e0c:1:1599::11] (helo=smtp2-g21.free.fr)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SpFwr-0005vs-Cz
- for barebox@lists.infradead.org; Thu, 12 Jul 2012 09:45:05 +0000
-Received: from eb-e6520 (unknown [82.240.38.71])
- by smtp2-g21.free.fr (Postfix) with ESMTP id 5303F4B0042
- for <barebox@lists.infradead.org>; Thu, 12 Jul 2012 11:43:53 +0200 (CEST)
-Date: Thu, 12 Jul 2012 11:43:52 +0200
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120712114352.51e3de9b@eb-e6520>
-In-Reply-To: <1341817779-29531-1-git-send-email-s.hauer@pengutronix.de>
-References: <1341817779-29531-1-git-send-email-s.hauer@pengutronix.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SpFyJ-00066G-OI
+ for barebox@lists.infradead.org; Thu, 12 Jul 2012 09:46:10 +0000
+From: Jan Luebbe <jlu@pengutronix.de>
+Date: Thu, 12 Jul 2012 11:46:02 +0200
+Message-Id: <1342086362-2129-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,94 +14,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: Enable unaligned accesses on armv6 and later
+Subject: [PATCH v2] mtd: fix 'write: Invalid argument' while writing to
+ nand-bb devices
 To: barebox@lists.infradead.org
 
-Hi Sascha,
+The 'off_t cur_ofs' variable was missed during the 64 bit conversion.
+For the MEMGETBADBLOCK ioctl, a pointer to a loff_t is needed.
 
-Le Mon,  9 Jul 2012 09:09:39 +0200,
-Sascha Hauer <s.hauer@pengutronix.de> a =E9crit :
+Also adjust the debug format strings.
 
-> We have the following in the tree:
-> =
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+---
+ drivers/mtd/nand/nand-bb.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> |commit af42feb9d255bc3ea3b514180f265479ea8834f9
-> |Author: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-> |Date:   Mon Jan 2 11:49:17 2012 +0100
-> |
-> |    ARM: set SCTRL[A] only when architecture does not support unaligned =
-access
-> |
-> |    Recent gcc generates code with unaligned access when architecture
-> |    supports it. Setting A bit unconditionally causes data-aborts on such
-> |    code rendering barebox unusable.
-> |
-> |    Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-> |    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> =
+diff --git a/drivers/mtd/nand/nand-bb.c b/drivers/mtd/nand/nand-bb.c
+index 5b06a9e..519337e 100644
+--- a/drivers/mtd/nand/nand-bb.c
++++ b/drivers/mtd/nand/nand-bb.c
+@@ -60,7 +60,7 @@ static ssize_t nand_bb_read(struct cdev *cdev, void *buf, size_t count,
+ 	struct cdev *parent = bb->cdev_parent;
+ 	int ret, bytes = 0, now;
+ 
+-	debug("%s %d %d\n", __func__, offset, count);
++	debug("%s 0x%08llx %d\n", __func__, offset, count);
+ 
+ 	while(count) {
+ 		ret = cdev_ioctl(parent, MEMGETBADBLOCK, &bb->offset);
+@@ -96,7 +96,7 @@ static int nand_bb_write_buf(struct nand_bb *bb, size_t count)
+ 	int ret, now;
+ 	struct cdev *parent = bb->cdev_parent;
+ 	void *buf = bb->writebuf;
+-	off_t cur_ofs = bb->offset & ~(BB_WRITEBUF_SIZE - 1);
++	loff_t cur_ofs = bb->offset & ~(BB_WRITEBUF_SIZE - 1);
+ 
+ 	while (count) {
+ 		ret = cdev_ioctl(parent, MEMGETBADBLOCK, &cur_ofs);
+@@ -104,7 +104,7 @@ static int nand_bb_write_buf(struct nand_bb *bb, size_t count)
+ 			return ret;
+ 
+ 		if (ret) {
+-			debug("skipping bad block at 0x%08x\n", cur_ofs);
++			debug("skipping bad block at 0x%08llx\n", cur_ofs);
+ 			bb->offset += bb->info.erasesize;
+ 			cur_ofs += bb->info.erasesize;
+ 			continue;
+-- 
+1.7.10.4
 
-> What the patch tried is correct: We should set the A bit only when the ar=
-chitecture
-> does not support unaligned accesses. To figure out whether the architectu=
-re supports
-> unaligned accesses the patch tested for the U bit which is wrong. The U b=
-it may be
-> 0 after a reset, so instead of testing for the U bit we have to set it. T=
-his can
-> be done on armv6 and later. All others have the A bit set to trap unalign=
-ed accesses.
-> =
-
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
-> =
-
-> Enrico, can you confirm this is correct?
-> =
-
-> Thanks
->  Sascha
-> =
-
->  arch/arm/cpu/start.c |   12 +++++-------
->  1 file changed, 5 insertions(+), 7 deletions(-)
-> =
-
-> diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-> index 3c282ee..523179d 100644
-> --- a/arch/arm/cpu/start.c
-> +++ b/arch/arm/cpu/start.c
-> @@ -81,13 +81,11 @@ void __naked __bare_init reset(void)
->  	r &=3D ~(CR_M | CR_C | CR_B | CR_S | CR_R | CR_V);
->  	r |=3D CR_I;
->  =
-
-> -	if (!(r & CR_U))
-> -		/* catch unaligned access on architectures which do not
-> -		 * support unaligned access */
-> -		r |=3D CR_A;
-> -	else
-> -		r &=3D ~CR_A;
-> -
-> +#if __LINUX_ARM_ARCH__ >=3D 6
-> +	r |=3D CR_U;
-> +#else
-> +	r |=3D CR_A;
-> +#endif
->  =
-
->  #ifdef __ARMEB__
->  	r |=3D CR_B;
-
-Tested-by: Eric B=E9nard <eric@eukrea.com>
-
-this patch fix the crash we had in show_progress.
-
-Eric
 
 _______________________________________________
 barebox mailing list
