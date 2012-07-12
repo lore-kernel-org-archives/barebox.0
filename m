@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sot1p-0003jV-Nc
- for barebox@lists.infradead.org; Wed, 11 Jul 2012 09:16:17 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1Sot1i-00057x-QP
- for barebox@lists.infradead.org; Wed, 11 Jul 2012 11:16:06 +0200
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 11 Jul 2012 11:15:58 +0200
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201207111115.58627.jbe@pengutronix.de>
+ id 1SpFZ8-0000et-2O
+ for barebox@lists.infradead.org; Thu, 12 Jul 2012 09:20:21 +0000
+From: Jan Luebbe <jlu@pengutronix.de>
+Date: Thu, 12 Jul 2012 11:19:44 +0200
+Message-Id: <1342084784-8534-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,37 +14,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH/Master] ARM/MXS: the GPIO bitkeeper enable logic is inverse to
- the pullup enable logic
+Subject: [PATCH] mtd: fix 'write: Invalid argument' while writing to nand-bb
+ devices
 To: barebox@lists.infradead.org
 
-While a set bit enables the pullup (if exists) it disables the bitkeeper (if
-exists). Both features are using the same register bit and only one of this
-feature is present on a per pin base.
-    
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+It seems the 'off_t cur_ofs' variable was missed during the 64 bit
+conversion.
 
-diff --git a/arch/arm/mach-mxs/iomux-imx.c b/arch/arm/mach-mxs/iomux-imx.c
-index 9203588..784c506 100644
---- a/arch/arm/mach-mxs/iomux-imx.c
-+++ b/arch/arm/mach-mxs/iomux-imx.c
-@@ -125,7 +125,7 @@ void imx_gpio_mode(uint32_t m)
- 	if (BK_PRESENT(m)) {
- 		reg_offset = calc_pullup_reg(gpio_pin);
- 		writel(0x1 << (gpio_pin % 32), IMX_IOMUXC_BASE + reg_offset +
--				(GET_BITKEEPER(m) == 1 ? BIT_SET : BIT_CLR));
-+				(GET_BITKEEPER(m) == 1 ? BIT_CLR : BIT_SET));
- 	}
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+---
+ drivers/mtd/nand/nand-bb.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/mtd/nand/nand-bb.c b/drivers/mtd/nand/nand-bb.c
+index 5b06a9e..519337e 100644
+--- a/drivers/mtd/nand/nand-bb.c
++++ b/drivers/mtd/nand/nand-bb.c
+@@ -60,7 +60,7 @@ static ssize_t nand_bb_read(struct cdev *cdev, void *buf, size_t count,
+ 	struct cdev *parent = bb->cdev_parent;
+ 	int ret, bytes = 0, now;
  
- 	if (GET_FUNC(m) == IS_GPIO) {
-
+-	debug("%s %d %d\n", __func__, offset, count);
++	debug("%s 0x%08llx %d\n", __func__, offset, count);
+ 
+ 	while(count) {
+ 		ret = cdev_ioctl(parent, MEMGETBADBLOCK, &bb->offset);
+@@ -96,7 +96,7 @@ static int nand_bb_write_buf(struct nand_bb *bb, size_t count)
+ 	int ret, now;
+ 	struct cdev *parent = bb->cdev_parent;
+ 	void *buf = bb->writebuf;
+-	off_t cur_ofs = bb->offset & ~(BB_WRITEBUF_SIZE - 1);
++	loff_t cur_ofs = bb->offset & ~(BB_WRITEBUF_SIZE - 1);
+ 
+ 	while (count) {
+ 		ret = cdev_ioctl(parent, MEMGETBADBLOCK, &cur_ofs);
+@@ -104,7 +104,7 @@ static int nand_bb_write_buf(struct nand_bb *bb, size_t count)
+ 			return ret;
+ 
+ 		if (ret) {
+-			debug("skipping bad block at 0x%08x\n", cur_ofs);
++			debug("skipping bad block at 0x%08llx\n", cur_ofs);
+ 			bb->offset += bb->info.erasesize;
+ 			cur_ofs += bb->info.erasesize;
+ 			continue;
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
