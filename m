@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SpQW0-000721-5S
- for barebox@lists.infradead.org; Thu, 12 Jul 2012 21:01:37 +0000
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Thu, 12 Jul 2012 23:01:29 +0200
-Message-Id: <1342126889-8693-1-git-send-email-mkl@pengutronix.de>
+ id 1SpYTm-0001ee-21
+ for barebox@lists.infradead.org; Fri, 13 Jul 2012 05:31:51 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Fri, 13 Jul 2012 07:31:29 +0200
+References: <1342100835-9870-1-git-send-email-jbe@pengutronix.de>
+ <1342100835-9870-5-git-send-email-jbe@pengutronix.de>
+ <4FFF2BE9.1030802@pengutronix.de>
+In-Reply-To: <4FFF2BE9.1030802@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201207130731.29367.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,36 +20,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usb: gadget: enable for MXS
+Subject: Re: [PATCH 4/4] ARM/MXS: add reset cause detection
 To: barebox@lists.infradead.org
-Cc: sha@pengutronix.de
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/usb/gadget/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Marc Kleine-Budde wrote:
+> [...]
+> >
+> > +#ifdef CONFIG_GLOBALVAR
+>
+> What about:
+>
+> 	if (IS_ENABLED(CONFIG_GLOBALVAR))
 
-diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
-index f7f2697..df1d970 100644
---- a/drivers/usb/gadget/Kconfig
-+++ b/drivers/usb/gadget/Kconfig
-@@ -4,7 +4,7 @@ menuconfig USB_GADGET
- 
- config USB_HAVE_GADGET_DRIVER
- 	bool
--	default y if ARCH_IMX || ARCH_AT91 || ARCH_PXA
-+	default y if ARCH_IMX || ARCH_MXS || ARCH_AT91 || ARCH_PXA
- 
- if USB_GADGET
- 
+Sure. Looks much better. Will resend this series.
+
+> [...]
+
+jbe
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
