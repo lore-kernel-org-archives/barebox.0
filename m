@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Spl7A-0002ei-VG
- for barebox@lists.infradead.org; Fri, 13 Jul 2012 19:01:44 +0000
+ id 1Spl7A-0002en-VO
+ for barebox@lists.infradead.org; Fri, 13 Jul 2012 19:01:46 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1Spl72-0008El-Ok
+ (envelope-from <jbe@pengutronix.de>) id 1Spl72-0008Er-RL
  for barebox@lists.infradead.org; Fri, 13 Jul 2012 21:01:12 +0200
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <jbe@pengutronix.de>) id 1Spl72-0005JB-Kw
+ (envelope-from <jbe@pengutronix.de>) id 1Spl72-0005L3-N9
  for barebox@lists.infradead.org; Fri, 13 Jul 2012 21:01:12 +0200
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 13 Jul 2012 21:01:01 +0200
-Message-Id: <1342206070-29698-10-git-send-email-jbe@pengutronix.de>
+Date: Fri, 13 Jul 2012 21:01:04 +0200
+Message-Id: <1342206070-29698-13-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1342206070-29698-1-git-send-email-jbe@pengutronix.de>
 References: <1342206070-29698-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,92 +28,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/18] Samsung/serial: move the decision about an improved
- UART into Kconfig
+Subject: [PATCH 12/18] ARM/Samsung: add S3C6410 SoC iomap
 To: barebox@lists.infradead.org
-
-More or less just cosmetic (removing ifdefs!).
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/mach-samsung/Kconfig                     |    5 +++++
- arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h |    2 --
- drivers/serial/serial_s3c.c                       |   16 ++++++++--------
- 3 files changed, 13 insertions(+), 10 deletions(-)
+ arch/arm/mach-samsung/include/mach/s3c-iomap.h     |    3 ++
+ arch/arm/mach-samsung/include/mach/s3c64xx-iomap.h |   44 ++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
+ create mode 100644 arch/arm/mach-samsung/include/mach/s3c64xx-iomap.h
 
-diff --git a/arch/arm/mach-samsung/Kconfig b/arch/arm/mach-samsung/Kconfig
-index 90cda30..28bbc97 100644
---- a/arch/arm/mach-samsung/Kconfig
-+++ b/arch/arm/mach-samsung/Kconfig
-@@ -20,6 +20,9 @@ config ARCH_BAREBOX_MAX_BARE_INIT_SIZE
- 	hex
- 	default 0x1ff0 if ARCH_S5PCxx
- 
-+config SAMSUNG_IMPROVED_UART
-+	bool
+diff --git a/arch/arm/mach-samsung/include/mach/s3c-iomap.h b/arch/arm/mach-samsung/include/mach/s3c-iomap.h
+index d34ace4..09a6891 100644
+--- a/arch/arm/mach-samsung/include/mach/s3c-iomap.h
++++ b/arch/arm/mach-samsung/include/mach/s3c-iomap.h
+@@ -22,6 +22,9 @@
+ #ifdef CONFIG_ARCH_S3C24xx
+ # include <mach/s3c24xx-iomap.h>
+ #endif
++#ifdef CONFIG_ARCH_S3C64xx
++# include <mach/s3c64xx-iomap.h>
++#endif
+ #ifdef CONFIG_ARCH_S5PCxx
+ # include <mach/s5pcxx-iomap.h>
+ #endif
+diff --git a/arch/arm/mach-samsung/include/mach/s3c64xx-iomap.h b/arch/arm/mach-samsung/include/mach/s3c64xx-iomap.h
+new file mode 100644
+index 0000000..267cd4f
+--- /dev/null
++++ b/arch/arm/mach-samsung/include/mach/s3c64xx-iomap.h
+@@ -0,0 +1,44 @@
++/*
++ * Copyright (C) 2012 Juergen Beisert
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
 +
- if ARCH_S3C24xx
- 
- config CPU_S3C2410
-@@ -89,9 +92,11 @@ endif
- if ARCH_S5PCxx
- 
- config CPU_S5PC110
-+	select SAMSUNG_IMPROVED_UART
- 	bool
- 
- config CPU_S5PV210
-+	select SAMSUNG_IMPROVED_UART
- 	bool
- 
- choice
-diff --git a/arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h b/arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h
-index 248f868..448e3b8 100644
---- a/arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h
-+++ b/arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h
-@@ -45,8 +45,6 @@
- #define S3C_UART2_SIZE 0x400
- #define S3C_UART3_BASE (S3C_UART_BASE + 0x800)
- #define S3C_UART3_SIZE 0x400
--#define S3C_UART_HAS_UBRDIVSLOT
--#define S3C_UART_HAS_UINTM
- 
- #define S5P_DMC0_BASE 0xF0000000
- #define S5P_DMC1_BASE 0xF1400000
-diff --git a/drivers/serial/serial_s3c.c b/drivers/serial/serial_s3c.c
-index a2b8e56..8736f0b 100644
---- a/drivers/serial/serial_s3c.c
-+++ b/drivers/serial/serial_s3c.c
-@@ -74,10 +74,11 @@ static int s3c_serial_setbaudrate(struct console_device *cdev, int baudrate)
- 	void __iomem *base = priv->regs;
- 	unsigned val;
- 
--#ifdef S3C_UART_HAS_UBRDIVSLOT
--	val = s3c_get_arch_uart_input_clock(base) / baudrate;
--	writew(udivslot_table[val & 15], base + UBRDIVSLOT);
--#endif
-+	if (IS_ENABLED(CONFIG_SAMSUNG_IMPROVED_UART)) {
-+		val = s3c_get_arch_uart_input_clock(base) / baudrate;
-+		writew(udivslot_table[val & 15], base + UBRDIVSLOT);
-+	}
++/* S3C64xx device base addresses */
++# define S3C_SROM_SFR			0x70000000
++# define S3C_DRAMC			0x7e001000
++# define S3C_WATCHDOG_BASE		0x7e004000
++# define S3C_CLOCK_POWER_BASE		0x7e00f000
++# define S3C_UART_BASE			0x7f005000
++# define S3C_TIMER_BASE			0x7f006000
++# define S3C_GPIO_BASE			0x7f008000
 +
- 	val = s3c_get_arch_uart_input_clock(base) / (16 * baudrate) - 1;
- 	writew(val, base + UBRDIV);
- 
-@@ -101,10 +102,9 @@ static int s3c_serial_init_port(struct console_device *cdev)
- 	writew(0x0245 | UCON_SET_CLK_SRC(CONFIG_DRIVER_SERIAL_S3C_CLK),
- 						base + UCON);
- 
--#ifdef S3C_UART_HAS_UINTM
--	/* 'interrupt or polling mode' for both directions */
--	writeb(0xf, base + UINTM);
--#endif
-+	if (IS_ENABLED(CONFIG_SAMSUNG_IMPROVED_UART))
-+		/* 'interrupt or polling mode' for both directions */
-+		writeb(0xf, base + UINTM);
- 
- 	if (IS_ENABLED(CONFIG_DRIVER_SERIAL_S3C_AUTOSYNC))
- 		writeb(0x10, base + UMCON); /* enable auto flow control */
++# define S3C_UART1_BASE (S3C_UART_BASE)
++# define S3C_UART1_SIZE 0x400
++# define S3C_UART2_BASE (S3C_UART_BASE + 0x400)
++# define S3C_UART2_SIZE 0x400
++# define S3C_UART3_BASE (S3C_UART_BASE + 0x800)
++# define S3C_UART3_SIZE 0x400
++# define S3C_UART4_BASE (S3C_UART_BASE + 0xc00)
++# define S3C_UART4_SIZE 0x400
++
++# define S3C_SDRAM_BASE 0x50000000
++# define S3C_SDRAM_END (S3C_SDRAM_BASE + 0x10000000)
++
++# define S3C_SROM_BW (S3C_SROM_SFR)
++# define S3C_SROM_BC0 (S3C_SROM_SFR + 4)
++
++# define S3C_CS0_BASE 0x10000000
++# define S3C_CS1_BASE 0x18000000
++# define S3C_CS2_BASE 0x20000000
++# define S3C_CS3_BASE 0x28000000
++# define S3C_CS4_BASE 0x30000000
++# define S3C_CS5_BASE 0x38000000
 -- 
 1.7.10.4
 
