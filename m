@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from c60.cesmail.net ([216.154.195.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sqf9n-0001cr-T0
- for barebox@lists.infradead.org; Mon, 16 Jul 2012 06:51:53 +0000
-Message-ID: <20120716025032.0fj3voz8vc480scw-tcbagvf@webmail.spamcop.net>
-Date: Mon, 16 Jul 2012 02:50:32 -0400
-From: gpontis@spamcop.net
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SqfTg-00039v-7y
+ for barebox@lists.infradead.org; Mon, 16 Jul 2012 07:12:22 +0000
+Date: Mon, 16 Jul 2012 09:10:35 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120716071035.GT30009@pengutronix.de>
+References: <1342086362-2129-1-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <1342086362-2129-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,21 +18,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"; DelSp="Yes"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Atmel SD/MMC info error (report only)
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] mtd: fix 'write: Invalid argument' while writing to
+ nand-bb devices
+To: Jan Luebbe <jlu@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-If CONFIG_MCI_ATMEL=y and CONFIG_MCI_INFO=y, some useful info about  
-the SD/MMC card can be displayed with "devinfo atmel_mci0". However,  
-the parameter showing the number of bits used for transfers is  
-incorrect. A SD card supporting 4 bit transfers is reported as using 2  
-bits. A logic analyzer shows that in fact all 4 bits are actually  
-being used.
+On Thu, Jul 12, 2012 at 11:46:02AM +0200, Jan Luebbe wrote:
+> The 'off_t cur_ofs' variable was missed during the 64 bit conversion.
+> For the MEMGETBADBLOCK ioctl, a pointer to a loff_t is needed.
+> 
+> Also adjust the debug format strings.
 
-GP
+Applied, thanks
+
+Sascha
+
+> 
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+> ---
+>  drivers/mtd/nand/nand-bb.c |    6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/mtd/nand/nand-bb.c b/drivers/mtd/nand/nand-bb.c
+> index 5b06a9e..519337e 100644
+> --- a/drivers/mtd/nand/nand-bb.c
+> +++ b/drivers/mtd/nand/nand-bb.c
+> @@ -60,7 +60,7 @@ static ssize_t nand_bb_read(struct cdev *cdev, void *buf, size_t count,
+>  	struct cdev *parent = bb->cdev_parent;
+>  	int ret, bytes = 0, now;
+>  
+> -	debug("%s %d %d\n", __func__, offset, count);
+> +	debug("%s 0x%08llx %d\n", __func__, offset, count);
+>  
+>  	while(count) {
+>  		ret = cdev_ioctl(parent, MEMGETBADBLOCK, &bb->offset);
+> @@ -96,7 +96,7 @@ static int nand_bb_write_buf(struct nand_bb *bb, size_t count)
+>  	int ret, now;
+>  	struct cdev *parent = bb->cdev_parent;
+>  	void *buf = bb->writebuf;
+> -	off_t cur_ofs = bb->offset & ~(BB_WRITEBUF_SIZE - 1);
+> +	loff_t cur_ofs = bb->offset & ~(BB_WRITEBUF_SIZE - 1);
+>  
+>  	while (count) {
+>  		ret = cdev_ioctl(parent, MEMGETBADBLOCK, &cur_ofs);
+> @@ -104,7 +104,7 @@ static int nand_bb_write_buf(struct nand_bb *bb, size_t count)
+>  			return ret;
+>  
+>  		if (ret) {
+> -			debug("skipping bad block at 0x%08x\n", cur_ofs);
+> +			debug("skipping bad block at 0x%08llx\n", cur_ofs);
+>  			bb->offset += bb->info.erasesize;
+>  			cur_ofs += bb->info.erasesize;
+>  			continue;
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
