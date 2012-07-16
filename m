@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-pb0-f49.google.com ([209.85.160.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SqstX-0007Ok-PZ
- for barebox@lists.infradead.org; Mon, 16 Jul 2012 21:31:56 +0000
-Date: Mon, 16 Jul 2012 23:31:31 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120716213131.GW30009@pengutronix.de>
-References: <201207111115.58627.jbe@pengutronix.de>
+ id 1Sqts3-0005Hc-Cq
+ for barebox@lists.infradead.org; Mon, 16 Jul 2012 22:34:28 +0000
+Received: by pbbrq13 with SMTP id rq13so12104779pbb.36
+ for <barebox@lists.infradead.org>; Mon, 16 Jul 2012 15:34:24 -0700 (PDT)
+From: Marc Reilly <marc@cpdesign.com.au>
+Date: Tue, 17 Jul 2012 08:29:26 +1000
+Message-ID: <2711184.rUQpv2fWDx@dev1>
+In-Reply-To: <OFEB4CC2A7.F85A0448-ONC1257A3D.0042AC6D-C1257A3D.00438D25@o0802.rafi.inhouse>
+References: <OFBC23BC86.8730299C-ONC1257A3D.002F1072-C1257A3D.002F655C@o0802.rafi.inhouse>
+ <20120716103054.GJ30009@pengutronix.de>
+ <OFEB4CC2A7.F85A0448-ONC1257A3D.0042AC6D-C1257A3D.00438D25@o0802.rafi.inhouse>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <201207111115.58627.jbe@pengutronix.de>
+Reply-To: Marc Reilly <marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,52 +26,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH/Master] ARM/MXS: the GPIO bitkeeper enable logic is
- inverse to the pullup enable logic
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: Antwort: Re: Antwort: Re: Antwort: Re: barebox image size
+To: barebox@lists.infradead.org
+Cc: christian.buettner@rafi.de
 
-On Wed, Jul 11, 2012 at 11:15:58AM +0200, Juergen Beisert wrote:
-> While a set bit enables the pullup (if exists) it disables the bitkeeper (if
-> exists). Both features are using the same register bit and only one of this
-> feature is present on a per pin base.
->     
-> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+Hi,
 
-Applied, thanks
+> I flashed from 0x0 to 0x7FFFF (image size: 479K).
+> I flashed the environment image (image size: 3K) from 0x80000 to 0xFFFFF
+Her you write 512k for env
 
-Sascha
-
+> and changed the config code from barebox/environs/common/config to:
 > 
-> diff --git a/arch/arm/mach-mxs/iomux-imx.c b/arch/arm/mach-mxs/iomux-imx.c
-> index 9203588..784c506 100644
-> --- a/arch/arm/mach-mxs/iomux-imx.c
-> +++ b/arch/arm/mach-mxs/iomux-imx.c
-> @@ -125,7 +125,7 @@ void imx_gpio_mode(uint32_t m)
->  	if (BK_PRESENT(m)) {
->  		reg_offset = calc_pullup_reg(gpio_pin);
->  		writel(0x1 << (gpio_pin % 32), IMX_IOMUXC_BASE + reg_offset +
-> -				(GET_BITKEEPER(m) == 1 ? BIT_SET : BIT_CLR));
-> +				(GET_BITKEEPER(m) == 1 ? BIT_CLR : BIT_SET));
->  	}
->  
->  	if (GET_FUNC(m) == IS_GPIO) {
-> 
-> -- 
-> Pengutronix e.K.                              | Juergen Beisert             |
-> Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+> ...
+> nand_parts="512k(barebox)ro,768k(bareboxenv),4M(kernel),120M(root)"
+And here you say its 786k.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Cheers,
+Marc
+
 
 _______________________________________________
 barebox mailing list
