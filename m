@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SqfyN-00020Q-Si
- for barebox@lists.infradead.org; Mon, 16 Jul 2012 07:44:05 +0000
-Date: Mon, 16 Jul 2012 09:43:30 +0200
+ id 1Sqg40-0003FZ-3G
+ for barebox@lists.infradead.org; Mon, 16 Jul 2012 07:50:18 +0000
+Date: Mon, 16 Jul 2012 09:49:37 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120716074330.GZ30009@pengutronix.de>
+Message-ID: <20120716074937.GA30009@pengutronix.de>
 References: <1342400699-6753-1-git-send-email-marc@cpdesign.com.au>
- <1342400699-6753-2-git-send-email-marc@cpdesign.com.au>
+ <1342400699-6753-5-git-send-email-marc@cpdesign.com.au>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1342400699-6753-2-git-send-email-marc@cpdesign.com.au>
+In-Reply-To: <1342400699-6753-5-git-send-email-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,78 +23,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] imx_fec: Allow driver clients to supply MAC address
+Subject: Re: [PATCH 4/5] at24: add I2C eeprom for 24cl02
 To: Marc Reilly <marc@cpdesign.com.au>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jul 16, 2012 at 11:04:55AM +1000, Marc Reilly wrote:
-> This patch adds a handler to the fec platform data to get MAC address.
-> If a handler is not specified the driver uses the existing one.
-
-We already have a generic mechanism for that. See eth_register_ethaddr.
-If you pass a MAC address to this function this one will be used instead
-of the default one from the driver.
-
-Sascha
-
+On Mon, Jul 16, 2012 at 11:04:58AM +1000, Marc Reilly wrote:
+> This series adds a driver for at24 eeproms. Much of the guts of the code
+> is taken from the at24 driver in the linux kernel.
 > 
 > Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
 > ---
->  drivers/net/fec_imx.c |    6 +++++-
->  include/fec.h         |    4 ++++
->  2 files changed, 9 insertions(+), 1 deletions(-)
+>  drivers/eeprom/Kconfig  |    7 +++
+>  drivers/eeprom/Makefile |    1 +
+>  drivers/eeprom/at24.c   |  134 +++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 142 insertions(+), 0 deletions(-)
+>  create mode 100644 drivers/eeprom/at24.c
 > 
-> diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-> index 599a9b4..5084758 100644
-> --- a/drivers/net/fec_imx.c
-> +++ b/drivers/net/fec_imx.c
-> @@ -629,10 +629,14 @@ static int fec_probe(struct device_d *dev)
->  	edev->send = fec_send;
->  	edev->recv = fec_recv;
->  	edev->halt = fec_halt;
-> -	edev->get_ethaddr = fec_get_hwaddr;
->  	edev->set_ethaddr = fec_set_hwaddr;
->  	edev->parent = dev;
+> diff --git a/drivers/eeprom/Kconfig b/drivers/eeprom/Kconfig
+> index a0b5489..56dfd1a 100644
+> --- a/drivers/eeprom/Kconfig
+> +++ b/drivers/eeprom/Kconfig
+> @@ -8,4 +8,11 @@ config EEPROM_AT25
+>  	  after you configure the board init code to know about each eeprom
+>  	  on your target board.
 >  
-> +	if (pdata->get_hwaddr)
-> +		edev->get_ethaddr = pdata->get_hwaddr;
-> +	else
-> +		edev->get_ethaddr = fec_get_hwaddr;
+> +config EEPROM_AT24
+> +	bool "at24 based eeprom"
+> +	depends on I2C
+> +	help
+> +	  Provides read/write for the at24 family of I2C EEPROMS.
+> +	  Currently only the 2K bit versions are supported.
+> +	  
+
+Trailing whitespace here.
+
+> +{
+> +	struct at24 *priv = to_at24(cdev);
+> +	const u8 *buf = _buf;
+> +	const int maxwrite = 8;
+> +	int numtowrite;
+> +	ssize_t numwritten = 0;
 > +
->  	fec->regs = dev_request_mem_region(dev, 0);
->  
->  	/* Reset chip. */
-> diff --git a/include/fec.h b/include/fec.h
-> index f56b023..5072bbf 100644
-> --- a/include/fec.h
-> +++ b/include/fec.h
-> @@ -36,6 +36,8 @@ typedef enum {
->  	RGMII,
->  } xceiver_type;
->  
-> +struct eth_device;
+> +	while (count) {
+> +		int ret;
 > +
->  /*
->   * Define the phy connected externally for FEC drivers
->   * (like MPC52xx and i.MX27)
-> @@ -43,6 +45,8 @@ typedef enum {
->  struct fec_platform_data {
->          xceiver_type	xcv_type;
->  	int		phy_addr;
+> +		numtowrite = count;
+> +		if (numtowrite > maxwrite)
+> +			numtowrite = maxwrite;
 > +
-> +	int (*get_hwaddr)(struct eth_device *dev, unsigned char *mac);
->  };
->  
->  #endif /* __INCLUDE_NETWORK_FEC_H */
-> -- 
-> 1.7.7
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+> +		ret = i2c_write_reg(priv->client, offset, buf, numtowrite);
+> +		if (ret < 0)
+> +			return (ssize_t)ret;
+> +
+> +		mdelay(10);
+
+Do we need this? This makes the driver veeery slow. If we could poll
+this somehow it would be much better.
+
+> +
+> +static int at24_init(void)
+> +{
+> +	register_driver(&at24_driver);
+> +	return 0;
+
+We can safely return the result of register_driver here. There was a
+time when barebox paniced on a failed initcall, but this is not the case
+anymore. Instead we have some debug output for failed initcalls which
+seems more useful
+
+Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
