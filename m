@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sqgnw-0006TV-SO
- for barebox@lists.infradead.org; Mon, 16 Jul 2012 08:37:21 +0000
-Date: Mon, 16 Jul 2012 10:37:16 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120716083716.GE30009@pengutronix.de>
-References: <1342159489-1474-1-git-send-email-jbe@pengutronix.de>
- <1342159489-1474-2-git-send-email-jbe@pengutronix.de>
+Received: from mx2.rafi.de ([178.15.151.13])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SqgoM-00028o-Hl
+ for barebox@lists.infradead.org; Mon, 16 Jul 2012 08:38:01 +0000
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1342159489-1474-2-git-send-email-jbe@pengutronix.de>
+Message-ID: <OFBC23BC86.8730299C-ONC1257A3D.002F1072-C1257A3D.002F655C@o0802.rafi.inhouse>
+From: christian.buettner@rafi.de
+Date: Mon, 16 Jul 2012 10:37:41 +0200
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,60 +15,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============0119620744095387358=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] Enable a way to provide the reason for "being here"
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: barebox image size
+To: barebox@lists.infradead.org
 
-On Fri, Jul 13, 2012 at 08:04:46AM +0200, Juergen Beisert wrote:
-> Many architectures support a way to detect why the bootloader is running.
-> This patch adds a global variable to be able to use the cause in some kind of
-> shell code to do special things on demand. For example to do an emergency boot,
-> when the last boot fails and the watchdog reactivate the hanging system.
-> 
-> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-> ---
->  common/Makefile        |    2 +-
->  common/reset_source.c  |   44 ++++++++++++++++++++++++++++++++++++++++++++
->  include/reset_source.h |   27 +++++++++++++++++++++++++++
->  3 files changed, 72 insertions(+), 1 deletion(-)
->  create mode 100644 common/reset_source.c
->  create mode 100644 include/reset_source.h
-> 
-> diff --git a/common/Makefile b/common/Makefile
-> index d99dfa2..baf4539 100644
-> --- a/common/Makefile
-> +++ b/common/Makefile
-> @@ -29,7 +29,7 @@ obj-$(CONFIG_UIMAGE) += uimage.o
->  obj-y += startup.o
->  obj-y += misc.o
->  obj-y += memsize.o
-> -obj-$(CONFIG_GLOBALVAR) += globalvar.o
-> +obj-$(CONFIG_GLOBALVAR) += globalvar.o reset_source.o
+Dies ist eine mehrteilige Nachricht im MIME-Format.
+--===============0119620744095387358==
+Content-Type: multipart/alternative; boundary="=_alternative 002F655CC1257A3D_="
 
-This should be a separate config option which depends on GLOBALVAR.
+Dies ist eine mehrteilige Nachricht im MIME-Format.
+--=_alternative 002F655CC1257A3D_=
+Content-Type: text/plain; charset="US-ASCII"
+
+hi,
+
+we need to implement a lot of features into the barebox. Finally the size 
+of the image will be bigger than the standard max of 256K.
+When i flash an image, bigger than 256K to nand, barebox does not boot 
+anymore - if i reduce it to 256K or smaller, everthing works fine.
+
+What do i have to do to use a bigger barebox image size?
+
+- christian
+--=_alternative 002F655CC1257A3D_=
+Content-Type: text/html; charset="US-ASCII"
+
+<font size=2 face="sans-serif">hi,</font>
+<br>
+<br><font size=2 face="sans-serif">we need to implement a lot of features
+into the barebox. Finally the size of the image will be bigger than the
+standard max of 256K.</font>
+<br><font size=2 face="sans-serif">When i flash an image, bigger than 256K
+to nand, barebox does not boot anymore - if i reduce it to 256K or smaller,
+everthing works fine.</font>
+<br>
+<br><font size=2 face="sans-serif">What do i have to do to use a bigger
+barebox image size?</font>
+<br>
+<br><font size=2 face="sans-serif">- christian</font>
+--=_alternative 002F655CC1257A3D_=--
 
 
-> +	RESET_WKE,	/* wake-up (some SoCs can handle this) */
-> +	RESET_JTAG,	/* JTAG reset */
-> +};
-> +
-> +extern void set_reset_source(enum reset_src_type);
-
-'extern' is not needed in function declarations.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--===============0119620744095387358==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============0119620744095387358==--
