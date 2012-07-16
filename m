@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SqfTg-00039v-7y
- for barebox@lists.infradead.org; Mon, 16 Jul 2012 07:12:22 +0000
-Date: Mon, 16 Jul 2012 09:10:35 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120716071035.GT30009@pengutronix.de>
-References: <1342086362-2129-1-git-send-email-jlu@pengutronix.de>
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SqfUq-0004PA-GP
+ for barebox@lists.infradead.org; Mon, 16 Jul 2012 07:13:34 +0000
+Date: Mon, 16 Jul 2012 09:13:24 +0200
+From: Sascha Hauer <sha@pengutronix.de>
+Message-ID: <20120716071324.GU30009@pengutronix.de>
+References: <1342126889-8693-1-git-send-email-mkl@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1342086362-2129-1-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1342126889-8693-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,67 +22,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] mtd: fix 'write: Invalid argument' while writing to
- nand-bb devices
-To: Jan Luebbe <jlu@pengutronix.de>
+Subject: Re: [PATCH] usb: gadget: enable for MXS
+To: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jul 12, 2012 at 11:46:02AM +0200, Jan Luebbe wrote:
-> The 'off_t cur_ofs' variable was missed during the 64 bit conversion.
-> For the MEMGETBADBLOCK ioctl, a pointer to a loff_t is needed.
-> 
-> Also adjust the debug format strings.
+Hi Marc,
 
-Applied, thanks
+On Thu, Jul 12, 2012 at 11:01:29PM +0200, Marc Kleine-Budde wrote:
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> ---
+>  drivers/usb/gadget/Kconfig |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
+> index f7f2697..df1d970 100644
+> --- a/drivers/usb/gadget/Kconfig
+> +++ b/drivers/usb/gadget/Kconfig
+> @@ -4,7 +4,7 @@ menuconfig USB_GADGET
+>  
+>  config USB_HAVE_GADGET_DRIVER
+>  	bool
+> -	default y if ARCH_IMX || ARCH_AT91 || ARCH_PXA
+> +	default y if ARCH_IMX || ARCH_MXS || ARCH_AT91 || ARCH_PXA
+
+This does not seem to be enough. At least in my tree the driver itself
+depends on ARCH_IMX, so there is a ARCH_MXS missing there aswell.
 
 Sascha
 
-> 
-> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
-> ---
->  drivers/mtd/nand/nand-bb.c |    6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/mtd/nand/nand-bb.c b/drivers/mtd/nand/nand-bb.c
-> index 5b06a9e..519337e 100644
-> --- a/drivers/mtd/nand/nand-bb.c
-> +++ b/drivers/mtd/nand/nand-bb.c
-> @@ -60,7 +60,7 @@ static ssize_t nand_bb_read(struct cdev *cdev, void *buf, size_t count,
->  	struct cdev *parent = bb->cdev_parent;
->  	int ret, bytes = 0, now;
->  
-> -	debug("%s %d %d\n", __func__, offset, count);
-> +	debug("%s 0x%08llx %d\n", __func__, offset, count);
->  
->  	while(count) {
->  		ret = cdev_ioctl(parent, MEMGETBADBLOCK, &bb->offset);
-> @@ -96,7 +96,7 @@ static int nand_bb_write_buf(struct nand_bb *bb, size_t count)
->  	int ret, now;
->  	struct cdev *parent = bb->cdev_parent;
->  	void *buf = bb->writebuf;
-> -	off_t cur_ofs = bb->offset & ~(BB_WRITEBUF_SIZE - 1);
-> +	loff_t cur_ofs = bb->offset & ~(BB_WRITEBUF_SIZE - 1);
->  
->  	while (count) {
->  		ret = cdev_ioctl(parent, MEMGETBADBLOCK, &cur_ofs);
-> @@ -104,7 +104,7 @@ static int nand_bb_write_buf(struct nand_bb *bb, size_t count)
->  			return ret;
->  
->  		if (ret) {
-> -			debug("skipping bad block at 0x%08x\n", cur_ofs);
-> +			debug("skipping bad block at 0x%08llx\n", cur_ofs);
->  			bb->offset += bb->info.erasesize;
->  			cur_ofs += bb->info.erasesize;
->  			continue;
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
