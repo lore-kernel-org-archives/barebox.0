@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SqfuF-00010X-V9
- for barebox@lists.infradead.org; Mon, 16 Jul 2012 07:39:50 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 16 Jul 2012 09:37:46 +0200
-References: <1342206070-29698-1-git-send-email-jbe@pengutronix.de>
- <1342206070-29698-3-git-send-email-jbe@pengutronix.de>
- <20120716072131.GX30009@pengutronix.de>
-In-Reply-To: <20120716072131.GX30009@pengutronix.de>
+ id 1SqfyN-00020Q-Si
+ for barebox@lists.infradead.org; Mon, 16 Jul 2012 07:44:05 +0000
+Date: Mon, 16 Jul 2012 09:43:30 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120716074330.GZ30009@pengutronix.de>
+References: <1342400699-6753-1-git-send-email-marc@cpdesign.com.au>
+ <1342400699-6753-2-git-send-email-marc@cpdesign.com.au>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201207160937.46303.jbe@pengutronix.de>
+In-Reply-To: <1342400699-6753-2-git-send-email-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,31 +23,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 02/18] ARM/Samsung: unify device registration for the
- S3C24XX SoCs
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/5] imx_fec: Allow driver clients to supply MAC address
+To: Marc Reilly <marc@cpdesign.com.au>
+Cc: barebox@lists.infradead.org
 
-Sascha Hauer wrote:
-> On Fri, Jul 13, 2012 at 09:00:54PM +0200, Juergen Beisert wrote:
-> > Barebox crashes since it has trouble with a resource size of 0. Most of
-> > the S3C24XX based platforms crashes at runtime and can't use devices with
-> > resource sizes of 0 anymore. This patch fix it by unifying the device
-> > registration for all current Barebox's S3C24XX based platforms.
-> >
-> > - A9M2410 and A9M2440 compile time tested only.
-> > - Mini2440 also runtime tested.
->
-> So this is stuff for master, right?
+On Mon, Jul 16, 2012 at 11:04:55AM +1000, Marc Reilly wrote:
+> This patch adds a handler to the fec platform data to get MAC address.
+> If a handler is not specified the driver uses the existing one.
 
-Hmm, yes. :)
+We already have a generic mechanism for that. See eth_register_ethaddr.
+If you pass a MAC address to this function this one will be used instead
+of the default one from the driver.
 
-jbe
+Sascha
+
+> 
+> Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
+> ---
+>  drivers/net/fec_imx.c |    6 +++++-
+>  include/fec.h         |    4 ++++
+>  2 files changed, 9 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+> index 599a9b4..5084758 100644
+> --- a/drivers/net/fec_imx.c
+> +++ b/drivers/net/fec_imx.c
+> @@ -629,10 +629,14 @@ static int fec_probe(struct device_d *dev)
+>  	edev->send = fec_send;
+>  	edev->recv = fec_recv;
+>  	edev->halt = fec_halt;
+> -	edev->get_ethaddr = fec_get_hwaddr;
+>  	edev->set_ethaddr = fec_set_hwaddr;
+>  	edev->parent = dev;
+>  
+> +	if (pdata->get_hwaddr)
+> +		edev->get_ethaddr = pdata->get_hwaddr;
+> +	else
+> +		edev->get_ethaddr = fec_get_hwaddr;
+> +
+>  	fec->regs = dev_request_mem_region(dev, 0);
+>  
+>  	/* Reset chip. */
+> diff --git a/include/fec.h b/include/fec.h
+> index f56b023..5072bbf 100644
+> --- a/include/fec.h
+> +++ b/include/fec.h
+> @@ -36,6 +36,8 @@ typedef enum {
+>  	RGMII,
+>  } xceiver_type;
+>  
+> +struct eth_device;
+> +
+>  /*
+>   * Define the phy connected externally for FEC drivers
+>   * (like MPC52xx and i.MX27)
+> @@ -43,6 +45,8 @@ typedef enum {
+>  struct fec_platform_data {
+>          xceiver_type	xcv_type;
+>  	int		phy_addr;
+> +
+> +	int (*get_hwaddr)(struct eth_device *dev, unsigned char *mac);
+>  };
+>  
+>  #endif /* __INCLUDE_NETWORK_FEC_H */
+> -- 
+> 1.7.7
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-5121-206917-5128 |
-Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
