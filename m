@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sqfdn-0004X0-Ra
- for barebox@lists.infradead.org; Mon, 16 Jul 2012 07:22:48 +0000
-Date: Mon, 16 Jul 2012 09:22:43 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120716072243.GY30009@pengutronix.de>
-References: <1342206070-29698-1-git-send-email-jbe@pengutronix.de>
- <1342206070-29698-12-git-send-email-jbe@pengutronix.de>
+Received: from mail.z9.com ([64.142.101.243])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Sqfe2-0003mR-1A
+ for barebox@lists.infradead.org; Mon, 16 Jul 2012 07:23:27 +0000
+Received: from GPontisPC by z9.com (MDaemon PRO v12.5.4)
+ with ESMTP id md50000218181.msg
+ for <barebox@lists.infradead.org>; Mon, 16 Jul 2012 00:22:43 -0700
+From: "George Pontis" <GPontis@z9.com>
+Date: Mon, 16 Jul 2012 00:22:13 -0700
+Message-ID: <025c01cd6323$b85f2220$291d6660$@com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1342206070-29698-12-git-send-email-jbe@pengutronix.de>
+Content-Language: en-us
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,69 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 11/18] ARM/Samsung: add generic lowlevel init
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Atmel AT91 SD/MMC clock too fast
+To: barebox@lists.infradead.org
 
-On Fri, Jul 13, 2012 at 09:01:03PM +0200, Juergen Beisert wrote:
-> Just a placeholder for some required low level routines
-> ---
->  arch/arm/mach-samsung/Makefile           |    1 +
->  arch/arm/mach-samsung/lowlevel-s3c64xx.c |   14 ++++++++++++++
->  2 files changed, 15 insertions(+)
->  create mode 100644 arch/arm/mach-samsung/lowlevel-s3c64xx.c
+Due to integer truncation, the calculated divisor for the SD/MMC clock may
+be too low, resulting in a clock that is too fast. For example, the
+at91sam9g45 is typically run with a master clock at 133 MHz. There is no
+divisor possible that will result in a 25 or 50 MHz clock as is typically
+used for a SD card. The existing code will set the clock at 33 MHz or 66 MHz
+when 25 or 50 MHz is requested. A Kingston class 10 8G SDHC was found to not
+work properly at 33 MHz, but did after patching. The patch, in this case,
+generated a 22.1 MHz clock ( 133/6 ). This is the same frequency that this
+card sees after booting Linux. If a perfect integer division is possible,
+the patch will provide an exact clock rate. If not, the frequency will be
+the closest possible without exceeding the target.
 
-Please just drop this one.
+The following was based on barebox 2012-07:
 
-Sascha
+--- a/drivers/mci/atmel_mci.c   2012-07-02 01:31:52.000000000 -0700
++++ b/drivers/mci/atmel_mci.c   2012-07-15 23:14:02.203872596 -0700
+@@ -76,7 +76,8 @@
+        unsigned int clk_in = clk_get_rate(host->clk);
 
-> 
-> diff --git a/arch/arm/mach-samsung/Makefile b/arch/arm/mach-samsung/Makefile
-> index 091b600..ac34d86 100644
-> --- a/arch/arm/mach-samsung/Makefile
-> +++ b/arch/arm/mach-samsung/Makefile
-> @@ -1,5 +1,6 @@
->  obj-y += s3c-timer.o generic.o
->  obj-lowlevel-$(CONFIG_ARCH_S3C24xx) += lowlevel-s3c24x0.o
-> +obj-lowlevel-$(CONFIG_ARCH_S3C64xx) += lowlevel-s3c64x0.o
->  obj-lowlevel-$(CONFIG_ARCH_S5PCxx) += lowlevel-s5pcxx.o
->  obj-$(CONFIG_ARCH_S3C24xx) += gpio-s3c24x0.o clocks-s3c24xx.o mem-s3c24x0.o
->  obj-$(CONFIG_ARCH_S5PCxx) += gpio-s5pcxx.o clocks-s5pcxx.o mem-s5pcxx.o
-> diff --git a/arch/arm/mach-samsung/lowlevel-s3c64xx.c b/arch/arm/mach-samsung/lowlevel-s3c64xx.c
-> new file mode 100644
-> index 0000000..b1ba719
-> --- /dev/null
-> +++ b/arch/arm/mach-samsung/lowlevel-s3c64xx.c
-> @@ -0,0 +1,14 @@
-> +/*
-> + * Copyright (C) 2012 Juergen Beisert
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + */
-> +
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+        if (clk_ios > 0) {
+-               divider = (clk_in / clk_ios) / 2;
++               /* don't allow integer truncation to result in too small a
+divider */
++               divider = (clk_in + 2 * clk_ios - 1) / (2 * clk_ios);
+                if (divider > 0)
+                        divider -= 1;
+        }
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 _______________________________________________
 barebox mailing list
