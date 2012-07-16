@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sqh4c-0001P9-PB
- for barebox@lists.infradead.org; Mon, 16 Jul 2012 08:54:36 +0000
-Date: Mon, 16 Jul 2012 10:54:18 +0200
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SqhKL-0006Sv-SF
+ for barebox@lists.infradead.org; Mon, 16 Jul 2012 09:10:57 +0000
+Date: Mon, 16 Jul 2012 11:10:21 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120716085418.GG30009@pengutronix.de>
-References: <OFBC23BC86.8730299C-ONC1257A3D.002F1072-C1257A3D.002F655C@o0802.rafi.inhouse>
+Message-ID: <20120716091021.GH30009@pengutronix.de>
+References: <4FFFEBEB.40605@web.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <OFBC23BC86.8730299C-ONC1257A3D.002F1072-C1257A3D.002F655C@o0802.rafi.inhouse>
+In-Reply-To: <4FFFEBEB.40605@web.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +22,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox image size
-To: christian.buettner@rafi.de
+Subject: Re: AT91SAM9263-EK
+To: Stutz Sven <stutzsven@web.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jul 16, 2012 at 10:37:41AM +0200, christian.buettner@rafi.de wrote:
-> hi,
+On Fri, Jul 13, 2012 at 11:35:39AM +0200, Stutz Sven wrote:
+> Hello everybody,
 > 
-> we need to implement a lot of features into the barebox. Finally the size 
-> of the image will be bigger than the standard max of 256K.
-> When i flash an image, bigger than 256K to nand, barebox does not boot 
-> anymore - if i reduce it to 256K or smaller, everthing works fine.
 > 
-> What do i have to do to use a bigger barebox image size?
+> But everything without success. It's a little bit strange because
+> when I execute the command
+>     bootm -v /dev/nand0.kernel.bb
+> First I get the following output
+>         Barebox:/ bootm -v /dev/nand0.kernel.bb
+>             Image Name:     Linux-3.4.0
+>             OS:                      Linux
+>             Architecture:     ARM
+>             Type:                   Kernel Image
+>             Compression:    uncompressed
+>             Data Size:           2034784 Bytes = 1.9 MB
+>             Load Address:    20008000
+>             Entry Point:        20008000
+>         err -74
+>         loading os image failed with Out of memory
+> 
+> and if I try again the same command
+>         Barebox:/ bootm -v /dev/nand0.kernel.bb
+>         err -74
+>         Unknown OS filetype (try -f)
+> 
+> also if I try to memcpy or uimage I always get this err 74.
+> 
+> What is this Error 74 (-- Reset level 3)?
 
-Just a guess:
+-74 is EBADMSG, see include/asm-generic/errno.h. The nand driver throws
+this when it can't read due to ecc errors. Something seems wrong with
+your nand driver. I remember Jean-Christophe mentioned that the atmel
+nand support is currently broken. Could you please try if either:
 
-You are using imx_nand_load_image() with a fixed size of 256k. grep for
-this function in the current tree and see how the correct image size is
-calculated.
+- barebox v2012.07.0 or
+- current master
+
+works for you?
 
 Sascha
 
