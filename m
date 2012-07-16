@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.z9.com ([64.142.101.243])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sqfe2-0003mR-1A
- for barebox@lists.infradead.org; Mon, 16 Jul 2012 07:23:27 +0000
-Received: from GPontisPC by z9.com (MDaemon PRO v12.5.4)
- with ESMTP id md50000218181.msg
- for <barebox@lists.infradead.org>; Mon, 16 Jul 2012 00:22:43 -0700
-From: "George Pontis" <GPontis@z9.com>
-Date: Mon, 16 Jul 2012 00:22:13 -0700
-Message-ID: <025c01cd6323$b85f2220$291d6660$@com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SqfuF-00010X-V9
+ for barebox@lists.infradead.org; Mon, 16 Jul 2012 07:39:50 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Mon, 16 Jul 2012 09:37:46 +0200
+References: <1342206070-29698-1-git-send-email-jbe@pengutronix.de>
+ <1342206070-29698-3-git-send-email-jbe@pengutronix.de>
+ <20120716072131.GX30009@pengutronix.de>
+In-Reply-To: <20120716072131.GX30009@pengutronix.de>
 MIME-Version: 1.0
-Content-Language: en-us
+Content-Disposition: inline
+Message-Id: <201207160937.46303.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,38 +24,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Atmel AT91 SD/MMC clock too fast
+Subject: Re: [PATCH 02/18] ARM/Samsung: unify device registration for the
+ S3C24XX SoCs
 To: barebox@lists.infradead.org
 
-Due to integer truncation, the calculated divisor for the SD/MMC clock may
-be too low, resulting in a clock that is too fast. For example, the
-at91sam9g45 is typically run with a master clock at 133 MHz. There is no
-divisor possible that will result in a 25 or 50 MHz clock as is typically
-used for a SD card. The existing code will set the clock at 33 MHz or 66 MHz
-when 25 or 50 MHz is requested. A Kingston class 10 8G SDHC was found to not
-work properly at 33 MHz, but did after patching. The patch, in this case,
-generated a 22.1 MHz clock ( 133/6 ). This is the same frequency that this
-card sees after booting Linux. If a perfect integer division is possible,
-the patch will provide an exact clock rate. If not, the frequency will be
-the closest possible without exceeding the target.
+Sascha Hauer wrote:
+> On Fri, Jul 13, 2012 at 09:00:54PM +0200, Juergen Beisert wrote:
+> > Barebox crashes since it has trouble with a resource size of 0. Most of
+> > the S3C24XX based platforms crashes at runtime and can't use devices with
+> > resource sizes of 0 anymore. This patch fix it by unifying the device
+> > registration for all current Barebox's S3C24XX based platforms.
+> >
+> > - A9M2410 and A9M2440 compile time tested only.
+> > - Mini2440 also runtime tested.
+>
+> So this is stuff for master, right?
 
-The following was based on barebox 2012-07:
+Hmm, yes. :)
 
---- a/drivers/mci/atmel_mci.c   2012-07-02 01:31:52.000000000 -0700
-+++ b/drivers/mci/atmel_mci.c   2012-07-15 23:14:02.203872596 -0700
-@@ -76,7 +76,8 @@
-        unsigned int clk_in = clk_get_rate(host->clk);
+jbe
 
-        if (clk_ios > 0) {
--               divider = (clk_in / clk_ios) / 2;
-+               /* don't allow integer truncation to result in too small a
-divider */
-+               divider = (clk_in + 2 * clk_ios - 1) / (2 * clk_ios);
-                if (divider > 0)
-                        divider -= 1;
-        }
-
-
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | Phone: +49-5121-206917-5128 |
+Vertretung Sued/Muenchen, Germany             | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
