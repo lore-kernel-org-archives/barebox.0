@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from moutng.kundenserver.de ([212.227.126.186])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SqkpF-0003Cl-VC
- for barebox@lists.infradead.org; Mon, 16 Jul 2012 12:55:05 +0000
-Message-ID: <50040E86.60602@cmotion.eu>
-Date: Mon, 16 Jul 2012 14:52:22 +0200
+ id 1SqleP-0007cO-Kc
+ for barebox@lists.infradead.org; Mon, 16 Jul 2012 13:47:52 +0000
+Message-ID: <50041B84.9080707@cmotion.eu>
+Date: Mon, 16 Jul 2012 15:47:48 +0200
 From: Christian Kapeller <christian.kapeller@cmotion.eu>
 MIME-Version: 1.0
-References: <5003FACD.80400@cmotion.eu> <20120716134406.57843f19@eb-e6520>
-In-Reply-To: <20120716134406.57843f19@eb-e6520>
+References: <OFBC23BC86.8730299C-ONC1257A3D.002F1072-C1257A3D.002F655C@o0802.rafi.inhouse>
+ <20120716085418.GG30009@pengutronix.de>
+ <OFCC857403.C150E96B-ONC1257A3D.003283FD-C1257A3D.0032D943@o0802.rafi.inhouse>
+ <20120716092101.GI30009@pengutronix.de>
+ <OF1A7E21F3.CEBD2AB0-ONC1257A3D.0034CA43-C1257A3D.0034EAA0@o0802.rafi.inhouse>
+ <20120716103054.GJ30009@pengutronix.de>
+ <OFEB4CC2A7.F85A0448-ONC1257A3D.0042AC6D-C1257A3D.00438D25@o0802.rafi.inhouse>
+In-Reply-To: <OFEB4CC2A7.F85A0448-ONC1257A3D.0042AC6D-C1257A3D.00438D25@o0802.rafi.inhouse>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,110 +23,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: tx51 ethernet regression
-To: =?ISO-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
+Subject: Re: Antwort: Re: Antwort: Re: Antwort: Re: barebox image size
+To: christian.buettner@rafi.de
 Cc: barebox@lists.infradead.org
 
-Hi Eric,
+> I flashed from 0x0 to 0x7FFFF (image size: 479K).
+> I flashed the environment image (image size: 3K) from 0x80000 to 0xFFFFF
+> and changed the config code from barebox/environs/common/config to:
+> 
+> ...
+> nand_parts="512k(barebox)ro,768k(bareboxenv),4M(kernel),120M(root)"
+> ...
+> 
+> Barebox can boot now but the startup log says:
+> barebox 2012.03.0-dirty (Jul 16 2012 - 09:01:01)
+> 
+> Board: i.MX53
+> eth@eth0: got MAC address from EEPROM: *********************
+> nand_get_flash_type: second ID read did not match ef,ef against c0,c0
+> No NAND device found (-19)!
+> Malloc space: 0x7df00000 -> 0x7fefffff (size 32 MB)
+> Stack space : 0x7def8000 -> 0x7df00000 (size 32 kB)
+> Open /dev/env0 No such file or directory
+> running /env/bin/init...
+> not found
+> barebox:/
+> 
+> How can i get the environment loaded?
 
-thanks for the prompt reply.
-> Le Mon, 16 Jul 2012 13:28:13 +0200,
-> Christian Kapeller <christian.kapeller@cmotion.eu> a =E9crit :
->> I recently came to update my barebox port based on the karo tx51 imx
->> module from v2012.03.0 to v2012.07.0.
->>
->> I discovered, that, when trying to use the ethernet connection, I more
->> often than not get frame errors reported by the FEC.
->>
->> --snip--
->> barebox@Ka-Ro tx51:/ dhcp
->> phy0: Link is up - 1000/Full
->> error frame: 0x97b961c0 0x00000890
->> error frame: 0x97b96188 0x00000882
->> DHCP client bound to address 10.41.14.147
->> --snap--
->>
->> The errors range from 'non octet aligned frame' over 'Fifo overrun' to
->> timeouts. It renders the ethernet support unusable. Small images may
->> work but, require the one and other retry.
->>
->> One thing that catches my eye is that the auto negotioation resulted in
->> a 1000MBit link. The imx fec does only support 100MBit. I forced the
->> link to be set to 10MBit by declaring xcv_type=3DMII10 in the
->> fec_platform_data structure. Interestingly the link is now reported as
->> 100MBit, and shows the same behaviour.
->>
->> Another thing I checked was the changed pad definitions in commit
->> 2bdc9f57a86dff41cfc1f87b644a2e53fdcce2b6. Not only the type of the pad
->> data structure changed, but also some of their configuration as well.
->> For example, pads that were configured with FEC_PAD_CTL, now have other
->> settings enabled.
->>
->> I'reverted the pad changes, but still no luck. Auto negtiation starts,
->> but I don't seem to get any packets.
->>
->> So my question is: What change since v2012.03.0 could cause this kind of
->> behaviour?
->>
-> same problem here. the problem comes from :
-> 68b32be4926d3ab5b72036c0ceecef2f82aa0625 "i.MX51: Synchronize iomux
-> header file from kernel"
-> as now most pins have NO_PAD_CTRL which means the pad doesn't get
-> reconfigured and thus some pads to communicate with the FEC are no more
-> working.
-> =
+Normally you would issue 'saveenv' which writes the environment to the
+environment partition. On subsequent boots the environment will be loaded.
 
-> A dirty workaround to default PAD config is :
-> diff --git a/arch/arm/mach-imx/iomux-v3.c b/arch/arm/mach-imx/iomux-v3.c
-> index 680d260..c21d8a2 100644
-> --- a/arch/arm/mach-imx/iomux-v3.c
-> +++ b/arch/arm/mach-imx/iomux-v3.c
-> @@ -45,6 +45,8 @@ int mxc_iomux_v3_setup_pad(iomux_v3_cfg_t pad)
->  =
+But the flash device on your board isn't detected by barebox, so you
+will have to fix the detection first.
 
->         if (!(pad_ctrl & NO_PAD_CTRL) && pad_ctrl_ofs)
->                 __raw_writel(pad_ctrl, base + pad_ctrl_ofs);
-> +       else if ((pad_ctrl & NO_PAD_CTRL) && pad_ctrl_ofs)
-> +               __raw_writel(0, base + pad_ctrl_ofs);
->  =
+> nand_get_flash_type: second ID read did not match ef,ef against c0,c0
 
->         return 0;
->  }
+This line suggests, that the nand flash isn't working property. The line
+is generated in drivers/mtd/nand/nand_base.c, after reading manufacturer
+id and chip id two times, and checking them for equality.
 
-I see your problem, and why this patch has solved it. My board also uses
-some pads, that are declared with NO_PAD_CTRL. I've applied your
-solution as well, but no luck. I see the same behaviour as before.
+Not only does your board different values for manufacturer and flash id
+on first and second read, but they are also the same. manuf id=ef and
+chip id=ef isn't plausible. Maybe you should check your hardware.
 
-The fact, that I am, able to do dhcp (even without your change), and
-sometimes transfer files from some other host, makes me think, that my
-pad config isn't that broken. May be the problem is in the pad configs,
-some changed to PAD_CTRL_[2,4,5], some are NO_PAD_CTRL.
-
-I don't know how the pad configuration influences pads, that are
-assigned to some imx peripheral, like the FEC. For example the PAD
-definition for the pads used for reception is inconsistent:
-
-from iomux-mx51.h:
-
-#define MX51_PAD_NANDF_D9__FEC_RDATA0		IOMUX_PAD(0x554, 0x16c, 0x12,
-0x958, 0, MX51_PAD_CTRL_4)
-#define MX51_PAD_EIM_EB3__FEC_RDATA1		IOMUX_PAD(0x46c, 0x0d8, 3, 0x95c,
-0, NO_PAD_CTRL)
-#define MX51_PAD_EIM_CS2__FEC_RDATA2		IOMUX_PAD(0x47c, 0x0e8, 3, 0x960,
-0, NO_PAD_CTRL)
-#define MX51_PAD_EIM_CS3__FEC_RDATA3		IOMUX_PAD(0x480, 0x0ec, 3, 0x964,
-0, NO_PAD_CTRL)
-
-I'd expect all RDATA signals all having the same pad control settings.
-They don't have, and I't doesn't make a difference, when I set them all
-to PAD_CTRL_4 as the first one.
-
-
-Regards,
+Regards
 Christian
 
 _______________________________________________
