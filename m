@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sqgkb-0005PX-Ea
- for barebox@lists.infradead.org; Mon, 16 Jul 2012 08:33:54 +0000
-Date: Mon, 16 Jul 2012 10:33:21 +0200
+ id 1Sqgnw-0006TV-SO
+ for barebox@lists.infradead.org; Mon, 16 Jul 2012 08:37:21 +0000
+Date: Mon, 16 Jul 2012 10:37:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120716083321.GC30009@pengutronix.de>
-References: <025c01cd6323$b85f2220$291d6660$@com>
+Message-ID: <20120716083716.GE30009@pengutronix.de>
+References: <1342159489-1474-1-git-send-email-jbe@pengutronix.de>
+ <1342159489-1474-2-git-send-email-jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <025c01cd6323$b85f2220$291d6660$@com>
+In-Reply-To: <1342159489-1474-2-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Atmel AT91 SD/MMC clock too fast
-To: George Pontis <GPontis@z9.com>
+Subject: Re: [PATCH 1/4] Enable a way to provide the reason for "being here"
+To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi George,
+On Fri, Jul 13, 2012 at 08:04:46AM +0200, Juergen Beisert wrote:
+> Many architectures support a way to detect why the bootloader is running.
+> This patch adds a global variable to be able to use the cause in some kind of
+> shell code to do special things on demand. For example to do an emergency boot,
+> when the last boot fails and the watchdog reactivate the hanging system.
+> 
+> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+> ---
+>  common/Makefile        |    2 +-
+>  common/reset_source.c  |   44 ++++++++++++++++++++++++++++++++++++++++++++
+>  include/reset_source.h |   27 +++++++++++++++++++++++++++
+>  3 files changed, 72 insertions(+), 1 deletion(-)
+>  create mode 100644 common/reset_source.c
+>  create mode 100644 include/reset_source.h
+> 
+> diff --git a/common/Makefile b/common/Makefile
+> index d99dfa2..baf4539 100644
+> --- a/common/Makefile
+> +++ b/common/Makefile
+> @@ -29,7 +29,7 @@ obj-$(CONFIG_UIMAGE) += uimage.o
+>  obj-y += startup.o
+>  obj-y += misc.o
+>  obj-y += memsize.o
+> -obj-$(CONFIG_GLOBALVAR) += globalvar.o
+> +obj-$(CONFIG_GLOBALVAR) += globalvar.o reset_source.o
 
-On Mon, Jul 16, 2012 at 12:22:13AM -0700, George Pontis wrote:
-> Due to integer truncation, the calculated divisor for the SD/MMC clock may
-> be too low, resulting in a clock that is too fast. For example, the
-> at91sam9g45 is typically run with a master clock at 133 MHz. There is no
-> divisor possible that will result in a 25 or 50 MHz clock as is typically
-> used for a SD card. The existing code will set the clock at 33 MHz or 66 MHz
-> when 25 or 50 MHz is requested. A Kingston class 10 8G SDHC was found to not
-> work properly at 33 MHz, but did after patching. The patch, in this case,
-> generated a 22.1 MHz clock ( 133/6 ). This is the same frequency that this
-> card sees after booting Linux. If a perfect integer division is possible,
-> the patch will provide an exact clock rate. If not, the frequency will be
-> the closest possible without exceeding the target.
-> 
-> The following was based on barebox 2012-07:
-> 
-> --- a/drivers/mci/atmel_mci.c   2012-07-02 01:31:52.000000000 -0700
-> +++ b/drivers/mci/atmel_mci.c   2012-07-15 23:14:02.203872596 -0700
-> @@ -76,7 +76,8 @@
->         unsigned int clk_in = clk_get_rate(host->clk);
-> 
->         if (clk_ios > 0) {
-> -               divider = (clk_in / clk_ios) / 2;
-> +               /* don't allow integer truncation to result in too small a
-> divider */
-> +               divider = (clk_in + 2 * clk_ios - 1) / (2 * clk_ios);
+This should be a separate config option which depends on GLOBALVAR.
 
-DIV_ROUND_UP(clk_in, clk_ios / 2) instead?
+
+> +	RESET_WKE,	/* wake-up (some SoCs can handle this) */
+> +	RESET_JTAG,	/* JTAG reset */
+> +};
+> +
+> +extern void set_reset_source(enum reset_src_type);
+
+'extern' is not needed in function declarations.
 
 Sascha
 
