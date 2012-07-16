@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SqfUq-0004PA-GP
- for barebox@lists.infradead.org; Mon, 16 Jul 2012 07:13:34 +0000
-Date: Mon, 16 Jul 2012 09:13:24 +0200
-From: Sascha Hauer <sha@pengutronix.de>
-Message-ID: <20120716071324.GU30009@pengutronix.de>
-References: <1342126889-8693-1-git-send-email-mkl@pengutronix.de>
+ id 1SqfZ9-0004TS-KQ
+ for barebox@lists.infradead.org; Mon, 16 Jul 2012 07:18:00 +0000
+Date: Mon, 16 Jul 2012 09:17:52 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120716071752.GV30009@pengutronix.de>
+References: <1342354917-14742-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1342126889-8693-1-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1342354917-14742-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,34 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb: gadget: enable for MXS
-To: Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: Re: [PATCH] filetype: add forgotten mips barebox filetype_str
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Marc,
+On Sun, Jul 15, 2012 at 04:21:57PM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
-On Thu, Jul 12, 2012 at 11:01:29PM +0200, Marc Kleine-Budde wrote:
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> ---
->  drivers/usb/gadget/Kconfig |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
-> index f7f2697..df1d970 100644
-> --- a/drivers/usb/gadget/Kconfig
-> +++ b/drivers/usb/gadget/Kconfig
-> @@ -4,7 +4,7 @@ menuconfig USB_GADGET
->  
->  config USB_HAVE_GADGET_DRIVER
->  	bool
-> -	default y if ARCH_IMX || ARCH_AT91 || ARCH_PXA
-> +	default y if ARCH_IMX || ARCH_MXS || ARCH_AT91 || ARCH_PXA
-
-This does not seem to be enough. At least in my tree the driver itself
-depends on ARCH_IMX, so there is a ARCH_MXS missing there aswell.
+Applied, thanks
 
 Sascha
 
+> ---
+>  common/filetype.c |    1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/common/filetype.c b/common/filetype.c
+> index 39c2098..1a5b82d 100644
+> --- a/common/filetype.c
+> +++ b/common/filetype.c
+> @@ -39,6 +39,7 @@ static const char *filetype_str[] = {
+>  	[filetype_oftree] = "open firmware flat device tree",
+>  	[filetype_aimage] = "Android boot image",
+>  	[filetype_sh] = "Bourne Shell",
+> +	[filetype_mips_barebox] = "MIPS barebox image",
+>  };
+>  
+>  const char *file_type_to_string(enum filetype f)
+> -- 
+> 1.7.10
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
