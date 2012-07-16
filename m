@@ -1,16 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SqmEn-0003ay-PM
- for barebox@lists.infradead.org; Mon, 16 Jul 2012 14:25:38 +0000
-Date: Mon, 16 Jul 2012 16:25:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120716142524.GN30009@pengutronix.de>
-References: <1342432439-27455-1-git-send-email-christian.kapeller@cmotion.eu>
- <1342432439-27455-2-git-send-email-christian.kapeller@cmotion.eu>
+Received: from moutng.kundenserver.de ([212.227.17.9])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SqmFM-0003iy-5D
+ for barebox@lists.infradead.org; Mon, 16 Jul 2012 14:26:02 +0000
+Message-ID: <50042475.3000604@cmotion.eu>
+Date: Mon, 16 Jul 2012 16:25:57 +0200
+From: Christian Kapeller <christian.kapeller@cmotion.eu>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1342432439-27455-2-git-send-email-christian.kapeller@cmotion.eu>
+References: <OFBC23BC86.8730299C-ONC1257A3D.002F1072-C1257A3D.002F655C@o0802.rafi.inhouse>
+ <20120716085418.GG30009@pengutronix.de>
+ <OFCC857403.C150E96B-ONC1257A3D.003283FD-C1257A3D.0032D943@o0802.rafi.inhouse>
+ <20120716092101.GI30009@pengutronix.de>
+ <OF1A7E21F3.CEBD2AB0-ONC1257A3D.0034CA43-C1257A3D.0034EAA0@o0802.rafi.inhouse>
+ <20120716103054.GJ30009@pengutronix.de>
+ <OFEB4CC2A7.F85A0448-ONC1257A3D.0042AC6D-C1257A3D.00438D25@o0802.rafi.inhouse>
+ <50041B84.9080707@cmotion.eu>
+ <OF4671681E.10E4C59C-ONC1257A3D.004BF387-C1257A3D.004C38C5@o0802.rafi.inhouse>
+In-Reply-To: <OF4671681E.10E4C59C-ONC1257A3D.004BF387-C1257A3D.004C38C5@o0802.rafi.inhouse>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,37 +29,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] tx51: ensure eth phy resets properly by driving
- reset pin explicitly.
-To: Christian Kapeller <christian.kapeller@cmotion.eu>
+Subject: Re: Antwort: Re: Antwort: Re: Antwort: Re: Antwort: Re: barebox image
+ size
+To: christian.buettner@rafi.de
 Cc: barebox@lists.infradead.org
 
-On Mon, Jul 16, 2012 at 11:53:58AM +0200, Christian Kapeller wrote:
+On 07/16/2012 03:52 PM, christian.buettner@rafi.de wrote:
+> Thx for the hint.
+> What i don't understand is that barebox boots from nand but the
+> environement can't..
+
+Good point. In any case the driver isn't able to recognize your nand
+device. I see from you supplied code snipplets, that your barebox is
+at least two weeks old. Maybe you use the upstream tree, as maybe there
+are already fixes for imx53 nand flash.
+
+Also you may want to activate mtd debugging:
+
+#define CONFIG_MTD_DEBUG
+#define CONFIG_MTD_DEBUG_VERBOSE 3
+
+for example to  your include/linux/mtd/mtd.h file. (Those are config
+settings, but they don't appear in any Kconfig file, hence supply them
+manually)
+
+good luck.
+
 > 
-> diff --git a/arch/arm/boards/karo-tx51/tx51.c b/arch/arm/boards/karo-tx51/tx51.c
-> index 096683a..d862a68 100644
-> --- a/arch/arm/boards/karo-tx51/tx51.c
-> +++ b/arch/arm/boards/karo-tx51/tx51.c
-> @@ -205,6 +205,12 @@ static inline void tx51_fec_init(void)
->  	}
->  
->  	/*
-> +	 *Turn off phy power, be cautious and wait
-> +	 */
-> +	gpio_set_value(TX51_FEC_PHY_PWR, 0);
-> +	mdelay(20);
-
-Does this fix the mentioned regression due to iomuxing or is this
-another issue?
-
-Sascha
+> 
+>> I flashed from 0x0 to 0x7FFFF (image size: 479K).
+>> I flashed the environment image (image size: 3K) from 0x80000 to 0xFFFFF
+>> and changed the config code from barebox/environs/common/config to:
+>>
+>> ...
+>> nand_parts="512k(barebox)ro,768k(bareboxenv),4M(kernel),120M(root)"
+>> ...
+>>
+>> Barebox can boot now but the startup log says:
+>> barebox 2012.03.0-dirty (Jul 16 2012 - 09:01:01)
+>>
+>> Board: i.MX53
+>> eth@eth0: got MAC address from EEPROM: *********************
+>> nand_get_flash_type: second ID read did not match ef,ef against c0,c0
+>> No NAND device found (-19)!
+>> Malloc space: 0x7df00000 -> 0x7fefffff (size 32 MB)
+>> Stack space : 0x7def8000 -> 0x7df00000 (size 32 kB)
+>> Open /dev/env0 No such file or directory
+>> running /env/bin/init...
+>> not found
+>> barebox:/
+>>
+>> How can i get the environment loaded?
+> 
+> Normally you would issue 'saveenv' which writes the environment to the
+> environment partition. On subsequent boots the environment will be loaded.
+> 
+> But the flash device on your board isn't detected by barebox, so you
+> will have to fix the detection first.
+> 
+>> nand_get_flash_type: second ID read did not match ef,ef against c0,c0
+> 
+> This line suggests, that the nand flash isn't working property. The line
+> is generated in drivers/mtd/nand/nand_base.c, after reading manufacturer
+> id and chip id two times, and checking them for equality.
+> 
+> Not only does your board different values for manufacturer and flash id
+> on first and second read, but they are also the same. manuf id=ef and
+> chip id=ef isn't plausible. Maybe you should check your hardware.
+> 
+> Regards
+> Christian
+> 
 
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Christian Kapeller
+cmotion GmbH
+Kriehubergasse 16
+1050 Wien / Austria
+http://www.cmotion.eu
+
+christian.kapeller@cmotion.eu
+Phone: +43 1 789 1096 38
+
+
 
 _______________________________________________
 barebox mailing list
