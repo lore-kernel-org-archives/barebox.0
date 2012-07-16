@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
+Received: from mail-pb0-f49.google.com ([209.85.160.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SqNr0-0007Lk-J0
- for barebox@lists.infradead.org; Sun, 15 Jul 2012 12:23:18 +0000
-Received: by lbbgg6 with SMTP id gg6so6683712lbb.36
- for <barebox@lists.infradead.org>; Sun, 15 Jul 2012 05:22:05 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 15 Jul 2012 16:21:57 +0400
-Message-Id: <1342354917-14742-1-git-send-email-antonynpavlov@gmail.com>
+ id 1SqZqZ-0004wq-E5
+ for barebox@lists.infradead.org; Mon, 16 Jul 2012 01:11:41 +0000
+Received: by pbbrq13 with SMTP id rq13so10398101pbb.36
+ for <barebox@lists.infradead.org>; Sun, 15 Jul 2012 18:10:08 -0700 (PDT)
+From: Marc Reilly <marc@cpdesign.com.au>
+Date: Mon, 16 Jul 2012 11:04:54 +1000
+Message-Id: <1342400699-6753-1-git-send-email-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,28 +21,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] filetype: add forgotten mips barebox filetype_str
+Subject: Various patches for imx35, fec, at24 driver and misc
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- common/filetype.c |    1 +
- 1 file changed, 1 insertion(+)
+Hi,
 
-diff --git a/common/filetype.c b/common/filetype.c
-index 39c2098..1a5b82d 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -39,6 +39,7 @@ static const char *filetype_str[] = {
- 	[filetype_oftree] = "open firmware flat device tree",
- 	[filetype_aimage] = "Android boot image",
- 	[filetype_sh] = "Bourne Shell",
-+	[filetype_mips_barebox] = "MIPS barebox image",
- };
- 
- const char *file_type_to_string(enum filetype f)
--- 
-1.7.10
+I've been meaning to submit these for quite a while.
+
+Patch 1 allows setting eth MAC address from alternate source, eg, eeprom
+Patch 2 & 3 correct clock divider for mmc
+Patch 4 adds an at24 eeprom driver alongside existing at25 driver.
+Patch 5 adds a misc driver for a digital potentiometer.
+
+Patches were generated against next.
+
+Cheers,
+Marc
 
 
 _______________________________________________
