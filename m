@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SjouI-0006eF-9l
- for barebox@lists.infradead.org; Wed, 27 Jun 2012 09:51:31 +0000
-Date: Wed, 27 Jun 2012 11:51:28 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120627095128.GF1623@pengutronix.de>
-References: <20120627093551.GC18096@pengutronix.de>
+ id 1Sr34a-0000vW-5c
+ for barebox@lists.infradead.org; Tue, 17 Jul 2012 08:24:05 +0000
+Date: Tue, 17 Jul 2012 10:23:53 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20120717082353.GD592@pengutronix.de>
+References: <20120627082537.GE1623@pengutronix.de>
+ <1340788113-3171-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120627093551.GC18096@pengutronix.de>
+In-Reply-To: <1340788113-3171-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,64 +19,102 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: is errno supposed to be positive or negative?
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] commands/crc: assert newline after output with big offsets
+To: barebox@lists.infradead.org
+Cc: kernel@pengutronix.de
 
-On Wed, Jun 27, 2012 at 11:35:51AM +0200, Uwe Kleine-K=F6nig wrote:
-> Hello,
+Hello Sascha,
+
+On Wed, Jun 27, 2012 at 11:08:33AM +0200, Uwe Kleine-K=F6nig wrote:
+> This fixes
 > =
 
-> Well, ok, errno is supposed to be zero, but in the rare cases where it's
-> not, what is intended?
+> 	barebox@Very long board name:/ crc32 -f /dev/mem 0x83f00000+0xfff
+> 	CRC32 for /dev/mem 0x83fff000 ... 0x83fffffe =3D=3D> 0xa080584bbarebox@V=
+ery long board name:/
 > =
 
-> Assuming ESOMETHING is always positive, in userspace errno is
-> positive, e.g. you test for errno =3D=3D EBADF.
+> The problem here was that the return value of
+> lseek(fd, 0x83f00000, SEEK_SET) (which is 0x83f00000) was casted to an
+> int (which is -2081423360), returned to do_crc and interpreted as
+> error there without yielding another error message.
 > =
 
-> In barebox however most assignments use
+> This also makes
 > =
 
-> 	errno =3D -ESOMETHING
+> 	crc32 -f /dev/mem 0xffffffff+0x1
 > =
 
-> but there are also some tests and assignments without minus. barebox'
-> perror expects a negative errno which is also different from POSIX'
-> perror. strerror uses positive semantics in both barebox and POSIX.
+> die on a NULL pointer exception instead of reporting:
+> =
 
-Your tree is not up to date.
+> 	lseek: No error
+> =
 
-see:
+> :-)
+> =
 
-commit 6188685091c58c9772b990cf0ca6ac522f97a9d0
-Author: Sascha Hauer <s.hauer@pengutronix.de>
-Date:   Sun May 13 12:43:58 2012 +0200
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+> On Wed, Jun 27, 2012 at 10:25:37AM +0200, Sascha Hauer wrote:
+> > On Wed, Jun 27, 2012 at 10:13:13AM +0200, Uwe Kleine-K=F6nig wrote:
+> > > Without this patch the next command prompt starts directly after the
+> > > calculated check sum. While at it also fix the coding style.
+> > =
 
-    Make errno a positive value
-    =
+> > Under which conditions does this happen? The newline should be appended=
+ in
+> > do_crc()
+> You're right, my patch was not correct. This version should do the right
+> thing now.
+ping
 
-    Normally errno contains a positive error value. A certain unnamed devel=
-oper
-    mixed this up while implementing U-Boot-v2. Also, normally errno is nev=
-er
-    set to zero by any library function. This patch fixes this.
-    =
+>  commands/crc.c |    7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> =
 
-    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> diff --git a/commands/crc.c b/commands/crc.c
+> index df22941..10a2900 100644
+> --- a/commands/crc.c
+> +++ b/commands/crc.c
+> @@ -47,9 +47,12 @@ static int file_crc(char* filename, ulong start, ulong=
+ size, ulong *crc,
+>  	}
+>  =
 
-Sascha
+>  	if (start > 0) {
+> -		ret =3D lseek(fd, start, SEEK_SET);
+> -		if (ret =3D=3D -1) {
+> +		off_t lseek_ret;
+> +		errno =3D 0;
+> +		lseek_ret =3D lseek(fd, start, SEEK_SET);
+> +		if (lseek_ret =3D=3D (off_t)-1 && errno) {
+>  			perror("lseek");
+> +			ret =3D -1;
+>  			goto out;
+>  		}
+>  	}
+> -- =
+
+> 1.7.10
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 -- =
 
-Pengutronix e.K.                           |                             |
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
