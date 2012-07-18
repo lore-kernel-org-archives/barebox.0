@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SrTVY-0001Ri-N9
- for barebox@lists.infradead.org; Wed, 18 Jul 2012 12:37:43 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 93BCDBF0EB
- for <barebox@lists.infradead.org>; Wed, 18 Jul 2012 14:37:20 +0200 (CEST)
-From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Wed, 18 Jul 2012 14:37:11 +0200
-Message-Id: <1342615033-3232-2-git-send-email-j.weitzel@phytec.de>
-In-Reply-To: <1342615033-3232-1-git-send-email-j.weitzel@phytec.de>
-References: <1342615033-3232-1-git-send-email-j.weitzel@phytec.de>
+ id 1SrTrN-0003op-Oj
+ for barebox@lists.infradead.org; Wed, 18 Jul 2012 13:00:23 +0000
+From: Juergen Kilb <J.Kilb@phytec.de>
+Date: Wed, 18 Jul 2012 14:58:44 +0200
+Message-Id: <1342616327-2765-1-git-send-email-J.Kilb@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,139 +19,216 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] OMAP GPMC NAND: use buswidth from GPMC
+Subject: [PATCH] Added SDR-size auto detection.
 To: barebox@lists.infradead.org
+Cc: Juergen Kilb <J.Kilb@phytec.de>
 
-GPMC could be already configured by xloader or rom bootloader
-Use the configured buswidth (width == 0) or set it explicit in the board file.
 
-Use autodetect on pcm049
-
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+Signed-off-by: Juergen Kilb <J.Kilb@phytec.de>
 ---
- arch/arm/boards/pcm049/board.c         |    4 ++--
- arch/arm/mach-omap/devices-gpmc-nand.c |   23 ++++++++++++++++++-----
- arch/arm/mach-omap/gpmc.c              |   19 +++++++++++++++++++
- arch/arm/mach-omap/include/mach/gpmc.h |    8 ++++++++
- 4 files changed, 47 insertions(+), 7 deletions(-)
+ arch/arm/boards/phycard-a-l1/pca-a-l1.c |  169 +++++++++++++++++++++++--------
+ 1 files changed, 125 insertions(+), 44 deletions(-)
 
-diff --git a/arch/arm/boards/pcm049/board.c b/arch/arm/boards/pcm049/board.c
-index 3a2b574..4f056e0 100644
---- a/arch/arm/boards/pcm049/board.c
-+++ b/arch/arm/boards/pcm049/board.c
-@@ -112,9 +112,9 @@ static int pcm049_devices_init(void)
+diff --git a/arch/arm/boards/phycard-a-l1/pca-a-l1.c b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+index a388f63..1dc7678 100644
+--- a/arch/arm/boards/phycard-a-l1/pca-a-l1.c
++++ b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+@@ -73,10 +73,82 @@
  
- 	pcm049_network_init();
+ #define SMC911X_BASE 0x2c000000
  
--	gpmc_generic_nand_devices_init(0, 8,
-+	/* Autodetect buswidth*/
-+	gpmc_generic_nand_devices_init(0, 0,
- 			OMAP_ECC_BCH8_CODE_HW, &omap4_nand_cfg);
--
- #ifdef CONFIG_PARTITION
- 	devfs_add_partition("nand0", 0x00000, SZ_128K,
- 			DEVFS_PARTITION_FIXED, "xload_raw");
-diff --git a/arch/arm/mach-omap/devices-gpmc-nand.c b/arch/arm/mach-omap/devices-gpmc-nand.c
-index cf87b57..06f9576 100644
---- a/arch/arm/mach-omap/devices-gpmc-nand.c
-+++ b/arch/arm/mach-omap/devices-gpmc-nand.c
-@@ -35,9 +35,7 @@
- #include <mach/silicon.h>
- #include <mach/gpmc.h>
- #include <mach/gpmc_nand.h>
--
--#define GPMC_CONF1_VALx8	0x00000800
--#define GPMC_CONF1_VALx16	0x00001800
-+#include <mach/xload.h>
- 
- /** NAND platform specific settings settings */
- static struct gpmc_nand_platform_data nand_plat = {
-@@ -51,15 +49,30 @@ static struct gpmc_nand_platform_data nand_plat = {
-  *
-  * @return success/fail based on device function
++/* Slower full frequency range default timings for x32 operation */
++#define SDP_SDRC_SHARING	0x00000100
++/* Diabling power down mode using CKE pin */
++#define SDP_SDRC_POWER_POP	0x00000081
++/* rkw - need to find of 90/72 degree recommendation for speed like before. */
++#define SDP_SDRC_DLLAB_CTRL ((DLL_ENADLL << 3) | \
++	(DLL_LOCKDLL << 2) | (DLL_DLLPHASE_90 << 1))
++
++/* used to create an array of memory configuartions. */
++struct sdrc_config {
++	u32	cs_cfg;
++	u32	mcfg;
++	u32	mr;
++	u32	actim_ctrla;
++	u32	actim_ctrlb;
++	u32	rfr_ctrl;
++} const sdrc_config[] = {
++/* max cs_size for autodetection, common timing */
++/* 2x256MByte, 14 Rows, 10 Columns , RBC (BAL=2) */
++{ 0x00000004, 0x03590099, 0x00000032, 0x9A9DB4C6, 0x00011216, 0x0004e201},
++/* MT46H32M32LF 2x128MByte, 13 Rows, 10 Columns */
++{ 0x00000001, 0x02584099, 0x00000032, 0x9A9DB4C6, 0x00011216, 0x0004e201},
++/* MT46H64M32LF 1x256MByte, 14 Rows, 10 Columns */
++{ 0x00000002, 0x03588099, 0x00000032, 0x629DB4C6, 0x00011113, 0x0004e201},
++/* MT64H128M32L2 2x256MByte, 14 Rows, 10 Columns */
++{ 0x00000002, 0x03588099, 0x00000032, 0x629DB4C6, 0x00011113, 0x0004e201},
++};
++
+ /*
+  * Boot-time initialization(s)
   */
-+
- int gpmc_generic_nand_devices_init(int cs, int width,
- 		enum gpmc_ecc_mode eccmode, struct gpmc_config *nand_cfg)
- {
- 	nand_plat.cs = cs;
  
-+	if (width == 0) {
-+		struct gpmc_config cfg;
-+		/* try to get buswidth from gpmc */
-+		gpmc_get_config(cs, &cfg);
-+		width = (cfg.cfg[0] & GPMC_CONFIG1_DEVICETYPE_NAND) ? 16 : 8;
-+
-+		if (!(cfg.cfg[0] & GPMC_CONFIG1_DEVICETYPE_NAND))
-+			debug("GPMC not configured for NAND, "
-+					"try width %d bit\n", width);
-+
-+		debug("%s cfg0 %x width %d\n", __func__, cfg.cfg[0], width);
-+	}
-+
- 	if (width == 16)
--		nand_cfg->cfg[0] = GPMC_CONF1_VALx16;
-+		nand_cfg->cfg[0] = GPMC_CONFIG1_DEVICETYPE_NAND |
-+					GPMC_CONFIG1_DEVICESIZE_16;
- 	else
--		nand_cfg->cfg[0] = GPMC_CONF1_VALx8;
-+		nand_cfg->cfg[0] = GPMC_CONFIG1_DEVICETYPE_NAND;
- 
- 	nand_plat.device_width = width;
- 	nand_plat.ecc_mode = eccmode;
-diff --git a/arch/arm/mach-omap/gpmc.c b/arch/arm/mach-omap/gpmc.c
-index e8946d7..399f68a 100644
---- a/arch/arm/mach-omap/gpmc.c
-+++ b/arch/arm/mach-omap/gpmc.c
-@@ -115,3 +115,22 @@ void gpmc_cs_config(char cs, struct gpmc_config *config)
- 	mdelay(1);		/* Settling time */
- }
- EXPORT_SYMBOL(gpmc_cs_config);
-+
-+void gpmc_get_config(char cs, struct gpmc_config *config)
++/*********************************************************************
++ * init_sdram_ddr() - Init DDR controller.
++ *********************************************************************/
++void init_sdram_ddr(void)
 +{
-+	unsigned int reg = GPMC_REG(CONFIG1_0) + (cs * GPMC_CONFIG_CS_SIZE);
-+	unsigned int cfg7;
-+	unsigned char i;
++	/* reset sdrc controller */
++	writel(SOFTRESET, SDRC_REG(SYSCONFIG));
++	wait_on_value(1<<0, 1<<0, SDRC_REG(STATUS), 12000000);
++	writel(0, SDRC_REG(SYSCONFIG));
 +
-+	/* Read the CFG1-6 regs */
-+	for (i = 0; i < 6; i++) {
-+		config->cfg[i] = readl(reg);
-+		reg += GPMC_CONFIG_REG_OFF;
++	/* setup sdrc to ball mux */
++	writel(SDP_SDRC_SHARING, SDRC_REG(SHARING));
++	writel(SDP_SDRC_POWER_POP, SDRC_REG(POWER));
++
++	/* set up dll */
++	writel(SDP_SDRC_DLLAB_CTRL, SDRC_REG(DLLA_CTRL));
++	sdelay(0x2000);	/* give time to lock */
++
++}
++/*********************************************************************
++ * config_sdram_ddr() - Init DDR on dev board.
++ *********************************************************************/
++void config_sdram_ddr(u8 cs, u8 cfg)
++{
++
++	writel(sdrc_config[cfg].mcfg, SDRC_REG(MCFG_0) + (0x30 * cs));
++	writel(sdrc_config[cfg].actim_ctrla, SDRC_REG(ACTIM_CTRLA_0) + (0x28 * cs));
++	writel(sdrc_config[cfg].actim_ctrlb, SDRC_REG(ACTIM_CTRLB_0) + (0x28 * cs));
++	writel(sdrc_config[cfg].rfr_ctrl, SDRC_REG(RFR_CTRL_0) + (0x30 * cs));
++
++	writel(CMD_NOP, SDRC_REG(MANUAL_0) + (0x30 * cs));
++
++	sdelay(5000);
++
++	writel(CMD_PRECHARGE, SDRC_REG(MANUAL_0) + (0x30 * cs));
++	writel(CMD_AUTOREFRESH, SDRC_REG(MANUAL_0) + (0x30 * cs));
++	writel(CMD_AUTOREFRESH, SDRC_REG(MANUAL_0) + (0x30 * cs));
++
++	/* set mr0 */
++	writel(sdrc_config[cfg].mr, SDRC_REG(MR_0) + (0x30 * cs));
++
++	sdelay(2000);
++}
++
+ /**
+  * @brief Initialize the SDRC module
+  * Initialisation for 1x256MByte but normally
+@@ -85,49 +157,55 @@
+  */
+ static void pcaal1_sdrc_init(void)
+ {
+-	/* SDRAM software reset */
+-	/* No idle ack and RESET enable */
+-	writel(0x1A, SDRC_REG(SYSCONFIG));
+-	sdelay(100);
+-	/* No idle ack and RESET disable */
+-	writel(0x18, SDRC_REG(SYSCONFIG));
+-
+-	/* SDRC Sharing register */
+-	/* 32-bit SDRAM on data lane [31:0] - CS0 */
+-	/* pin tri-stated = 1 */
+-	writel(0x00000100, SDRC_REG(SHARING));
+-
+-	/* ----- SDRC Registers Configuration --------- */
+-	/* SDRC_MCFG0 register */
+-	writel(0x03588099, SDRC_REG(MCFG_0));
+-
+-	/* SDRC_RFR_CTRL0 register */
+-	writel(0x0004e201, SDRC_REG(RFR_CTRL_0));
+-
+-	/* SDRC_ACTIM_CTRLA0 register */
+-	writel(0x629DB4C6, SDRC_REG(ACTIM_CTRLA_0));
+-
+-	/* SDRC_ACTIM_CTRLB0 register */
+-	writel(0x00011113, SDRC_REG(ACTIM_CTRLB_0));
+-
+-	/* Disble Power Down of CKE due to 1 CKE on combo part */
+-	writel(0x00000081, SDRC_REG(POWER));
+-
+-	/* SDRC_MANUAL command register */
+-	/* NOP command */
+-	writel(0x00000000, SDRC_REG(MANUAL_0));
+-	/* Precharge command */
+-	writel(0x00000001, SDRC_REG(MANUAL_0));
+-	/* Auto-refresh command */
+-	writel(0x00000002, SDRC_REG(MANUAL_0));
+-	/* Auto-refresh command */
+-	writel(0x00000002, SDRC_REG(MANUAL_0));
+-
+-	/* SDRC MR0 register Burst length=4 */
+-	writel(0x00000032, SDRC_REG(MR_0));
+-
+-	/* SDRC DLLA control register */
+-	writel(0x0000000A, SDRC_REG(DLLA_CTRL));
++	u32 test0, test1;
++	char cfg;
++
++	init_sdram_ddr();
++
++	config_sdram_ddr(0, 0); /* 256MByte at CS0 */
++	config_sdram_ddr(1, 0); /* 256MByte at CS1 */
++
++	test0 = get_ram_size((long *) 0x80000000, SZ_256M);
++	test1 = get_ram_size((long *) 0xA0000000, SZ_256M);
++
++	/* mask out lower nible, its not tested with
++	in common/memsize.c */
++	test1 &= 0xfffffff0;
++
++	if ((test1 > 0) && (test1 != test0))
++		hang();
++
++	cfg = -1; /* illegal configuration found */
++
++	if (test1 == 0) {
++		init_sdram_ddr();
++		writel((sdrc_config[(uchar) cfg].mcfg & 0xfffc00ff), SDRC_REG(MCFG_1));
++
++		/* 1 x 256MByte */
++		if (test0 == SZ_256M)
++			cfg = 2;
++
++		if (cfg != -1) {
++			config_sdram_ddr(0, cfg);
++			writel(sdrc_config[(uchar) cfg].cs_cfg, SDRC_REG(CS_CFG));
++		}
++		return;
 +	}
 +
-+	cfg7 = readl(reg);
++	/* reinit both cs with correct size */
++	/* 2 x 128MByte */
++	if (test0 == SZ_128M)
++		cfg = 1;
++	/* 2 x 256MByte */
++	if (test0 == SZ_256M)
++		cfg = 3;
 +
-+	config->size = (cfg7 >> 8) & 0xf;
-+	config->base = (cfg7 & 0x3F) << 24;
-+}
-+EXPORT_SYMBOL(gpmc_get_config);
-diff --git a/arch/arm/mach-omap/include/mach/gpmc.h b/arch/arm/mach-omap/include/mach/gpmc.h
-index 3ddc5f5..84260fc 100644
---- a/arch/arm/mach-omap/include/mach/gpmc.h
-+++ b/arch/arm/mach-omap/include/mach/gpmc.h
-@@ -140,6 +140,11 @@
++	if (cfg != -1) {
++		init_sdram_ddr();
++		writel(sdrc_config[(uchar) cfg].cs_cfg, SDRC_REG(CS_CFG));
++		config_sdram_ddr(0, cfg);
++		config_sdram_ddr(1, cfg);
++	}
+ }
  
- #define NAND_WP_BIT		0x00000010
+ /**
+@@ -296,9 +374,12 @@ static int pcaal1_mem_init(void)
+ 				   IORESOURCE_MEM_WRITEABLE);
  
-+#define GPMC_CONFIG1_DEVICESIZE(val)	((val & 3) << 12)
-+#define GPMC_CONFIG1_DEVICESIZE_16	GPMC_CONFIG1_DEVICESIZE(1)
-+#define GPMC_CONFIG1_DEVICETYPE(val)	((val & 3) << 10)
-+#define GPMC_CONFIG1_DEVICETYPE_NAND	GPMC_CONFIG1_DEVICETYPE(2)
-+
- #ifndef __ASSEMBLY__
+ 	arm_add_mem_device("ram0", OMAP_SDRC_CS0, get_sdr_cs_size(SDRC_CS0_OSET));
++	printf("found %s at SDCS0\n", size_human_readable(get_sdr_cs_size(SDRC_CS0_OSET)));
  
- /** Generic GPMC configuration structure to be used to configure a
-@@ -157,6 +162,9 @@ void gpmc_generic_init(unsigned int cfg);
- /** Configuration for a specific chip select */
- void gpmc_cs_config(char cs, struct gpmc_config *config);
+-	if ((get_sdr_cs_size(SDRC_CS1_OSET) != 0) && (get_sdr_cs1_base() != OMAP_SDRC_CS0))
++	if ((get_sdr_cs_size(SDRC_CS1_OSET) != 0) && (get_sdr_cs1_base() != OMAP_SDRC_CS0)) {
+ 		arm_add_mem_device("ram1", get_sdr_cs1_base(), get_sdr_cs_size(SDRC_CS1_OSET));
++		printf("found %s at SDCS1\n", size_human_readable(get_sdr_cs_size(SDRC_CS1_OSET)));
++	}
  
-+/** Get Configuration for a specific chip select */
-+void gpmc_get_config(char cs, struct gpmc_config *config);
-+
- #endif
- 
- #endif /* __ASM_ARCH_OMAP_GPMC_H */
+ 	return 0;
+ }
 -- 
 1.7.0.4
 
