@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SrQ8N-0006qa-Hz
- for barebox@lists.infradead.org; Wed, 18 Jul 2012 09:01:29 +0000
-Date: Wed, 18 Jul 2012 11:01:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120718090125.GE30009@pengutronix.de>
-References: <201207181053.29925.jbe@pengutronix.de>
+Received: from mout.web.de ([212.227.15.4])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SrQoD-0004O4-Df
+ for barebox@lists.infradead.org; Wed, 18 Jul 2012 09:44:47 +0000
+Received: from [10.0.2.15] ([109.43.0.14]) by smtp.web.de (mrweb002) with
+ ESMTPSA (Nemesis) id 0LyUy6-1Ttl393r0w-016Agg for
+ <barebox@lists.infradead.org>; Wed, 18 Jul 2012 11:44:35 +0200
+Message-ID: <5006857D.4020505@web.de>
+Date: Wed, 18 Jul 2012 11:44:29 +0200
+From: Stutz Sven <stutzsven@web.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <201207181053.29925.jbe@pengutronix.de>
+References: <50065575.4090808@web.de>
+In-Reply-To: <50065575.4090808@web.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,38 +20,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Board's naming style
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: AT91SAM9263-EK
+To: barebox@lists.infradead.org
 
-On Wed, Jul 18, 2012 at 10:53:29AM +0200, Juergen Beisert wrote:
-> Hi,
-> 
-> a look into "arch/arm/boards/" offers various boards starting with the 
-> vendor's name in their directory name (eukrea/freescale).
-> I would like to have the same for the FriendlyARM boards. Currently the 
-> Mini2440 and Tiny210 are part of the tree and I'm still working on the 
-> Mini6410 and Tiny6410 inclusion. Can we rename the currently existing 
-> Mini2440 and Tiny210 to friendlyarm-mini2440 and friendlyarm-tiny210?
 
-Good idea.
+Hello Sascha,
 
-> 
-> @Sascha: Do you need a patch for this?
+thanks a lot for your help.
 
-Yes. Please generate the patches with -M to make the patches reviewable.
+When I completely switch off the ecc, Barebox is loading the Linux kernel.
+But I guess that the ecc is necessary especially for NAND-Flash devices.
 
-Sascha
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+The AT91SAM9263 controller has a ecc unit implemented. There are three 
+registers and the error calculation is done automatically, only the 
+error correction must be done in software.
+Or is it better to you use the software ecc and I should try to fix the 
+software problem?
+Can you give me some hints to fix this problem?
+
+Btw. I have found the description table for the NAND devices. But what 
+would happen if I change the connections between the controller and the 
+NAND-Flash, where are those port description stored or the timings to 
+access the data bus?
+
+
+best regards Sven
+
+
 
 _______________________________________________
 barebox mailing list
