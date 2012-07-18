@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SrPuJ-0004G6-67
- for barebox@lists.infradead.org; Wed, 18 Jul 2012 08:46:57 +0000
+ id 1SrPuJ-0004G3-7T
+ for barebox@lists.infradead.org; Wed, 18 Jul 2012 08:47:42 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1SrPuG-0003IX-C3
+ (envelope-from <jbe@pengutronix.de>) id 1SrPuG-0003IS-A2
  for barebox@lists.infradead.org; Wed, 18 Jul 2012 10:46:52 +0200
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <jbe@pengutronix.de>) id 1SrPuG-0004gc-9u
+ (envelope-from <jbe@pengutronix.de>) id 1SrPuG-0004gL-8m
  for barebox@lists.infradead.org; Wed, 18 Jul 2012 10:46:52 +0200
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 18 Jul 2012 10:46:50 +0200
-Message-Id: <1342601210-17849-5-git-send-email-jbe@pengutronix.de>
+Date: Wed, 18 Jul 2012 10:46:47 +0200
+Message-Id: <1342601210-17849-2-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1342601210-17849-1-git-send-email-jbe@pengutronix.de>
 References: <1342601210-17849-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,64 +28,138 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] ARM/MXS: add reset cause detection
+Subject: [PATCH 1/4] Enable a way to provide the reason for "being here"
 To: barebox@lists.infradead.org
+
+Many architectures support a way to detect why the bootloader is running.
+This patch adds a global variable to be able to use the cause in some kind of
+shell code to do special things on demand. For example to do an emergency boot,
+when the last boot fails and the watchdog reactivate the hanging system.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- drivers/watchdog/im28wd.c |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ common/Kconfig         |    8 ++++++++
+ common/Makefile        |    1 +
+ common/reset_source.c  |   44 ++++++++++++++++++++++++++++++++++++++++++++
+ include/reset_source.h |   27 +++++++++++++++++++++++++++
+ 4 files changed, 80 insertions(+)
+ create mode 100644 common/reset_source.c
+ create mode 100644 include/reset_source.h
 
-diff --git a/drivers/watchdog/im28wd.c b/drivers/watchdog/im28wd.c
-index b016910..1f987de 100644
---- a/drivers/watchdog/im28wd.c
-+++ b/drivers/watchdog/im28wd.c
-@@ -21,6 +21,7 @@
- #include <errno.h>
- #include <malloc.h>
- #include <watchdog.h>
+diff --git a/common/Kconfig b/common/Kconfig
+index 5fe997d..9652e5d 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -554,6 +554,14 @@ config BAREBOXENV_TARGET
+ config POLLER
+ 	bool "generic polling infrastructure"
+ 
++config RESET_SOURCE
++	bool "detect Reset cause"
++	depends on GLOBALVAR
++	help
++	  Provide a global variable at runtine which reflects the possible cause
++	  of the reset and why the bootloader is currently running. It can be
++	  useful for any kind of system recovery or repair.
++
+ endmenu
+ 
+ menu "Debugging                     "
+diff --git a/common/Makefile b/common/Makefile
+index d99dfa2..d74dffb 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -30,6 +30,7 @@ obj-y += startup.o
+ obj-y += misc.o
+ obj-y += memsize.o
+ obj-$(CONFIG_GLOBALVAR) += globalvar.o
++obj-$(CONFIG_RESET_SOURCE) += reset_source.o
+ obj-$(CONFIG_FILETYPE) += filetype.o
+ obj-y += resource.o
+ obj-$(CONFIG_MENU) += menu.o
+diff --git a/common/reset_source.c b/common/reset_source.c
+new file mode 100644
+index 0000000..2a7f9ff
+--- /dev/null
++++ b/common/reset_source.c
+@@ -0,0 +1,44 @@
++/*
++ * (C) Copyright 2012 Juergen Beisert - <kernel@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <environment.h>
++#include <globalvar.h>
 +#include <reset_source.h>
- 
- #define MXS_RTC_CTRL 0x0
- #define MXS_RTC_SET_ADDR 0x4
-@@ -73,6 +74,27 @@ static int imx28_watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
- 	return 0;
- }
- 
-+static void __maybe_unused imx28_detect_reset_source(const struct imx28_wd *p)
++
++static const char * const reset_src_names[] = {
++	[RESET_UKWN] = "unknown",
++	[RESET_POR] = "POR",
++	[RESET_RST] = "RST",
++	[RESET_WDG] = "WDG",
++	[RESET_WKE] = "WKE",
++	[RESET_JTAG] = "JTAG",
++};
++
++void set_reset_source(enum reset_src_type st)
 +{
-+	u32 reg;
++	setenv("global.system.reset", reset_src_names[st]);
++}
++EXPORT_SYMBOL(set_reset_source);
 +
-+	reg = readl(p->regs + MXS_RTC_PERSISTENT0);
-+	if (reg & MXS_RTC_PERSISTENT0_EXT_RST) {
-+		writel(MXS_RTC_PERSISTENT0_EXT_RST,
-+			p->regs + MXS_RTC_PERSISTENT0 + MXS_RTC_CLR_ADDR);
-+		set_reset_source(RESET_POR);
-+		return;
-+	}
-+	if (reg & MXS_RTC_PERSISTENT0_THM_RST) {
-+		writel(MXS_RTC_PERSISTENT0_THM_RST,
-+			p->regs + MXS_RTC_PERSISTENT0 + MXS_RTC_CLR_ADDR);
-+		set_reset_source(RESET_RST);
-+		return;
-+	}
-+
-+	set_reset_source(RESET_RST);
++/* ensure this runs after the 'global' device is already registerd */
++static int init_reset_source(void)
++{
++	globalvar_add_simple("system.reset");
++	set_reset_source(RESET_UKWN);
++	return 0;
 +}
 +
- static int imx28_wd_probe(struct device_d *dev)
- {
- 	struct imx28_wd *priv;
-@@ -94,6 +116,9 @@ static int imx28_wd_probe(struct device_d *dev)
- 	if (rc != 0)
- 		goto on_error;
- 
-+	if (IS_ENABLED(CONFIG_RESET_SOURCE))
-+		imx28_detect_reset_source(priv);
++coredevice_initcall(init_reset_source);
+diff --git a/include/reset_source.h b/include/reset_source.h
+new file mode 100644
+index 0000000..6734fbde
+--- /dev/null
++++ b/include/reset_source.h
+@@ -0,0 +1,27 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
 +
- 	dev->priv = priv;
- 	return 0;
- 
++#ifndef __INCLUDE_RESET_SOURCE_H
++# define __INCLUDE_RESET_SOURCE_H
++
++enum reset_src_type {
++	RESET_UKWN,	/* maybe the SoC cannot detect the reset source */
++	RESET_POR,	/* Power On Reset (cold start) */
++	RESET_RST,	/* generic ReSeT (warm start) */
++	RESET_WDG,	/* watchdog */
++	RESET_WKE,	/* wake-up (some SoCs can handle this) */
++	RESET_JTAG,	/* JTAG reset */
++};
++
++void set_reset_source(enum reset_src_type);
++
++#endif /* __INCLUDE_RESET_SOURCE_H */
 -- 
 1.7.10.4
 
