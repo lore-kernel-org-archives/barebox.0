@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo1.mail-out.ovh.net ([178.32.96.102]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SrsKu-0008WT-Pl
- for barebox@lists.infradead.org; Thu, 19 Jul 2012 15:08:18 +0000
-Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 89F90FFA9FE
- for <barebox@lists.infradead.org>; Thu, 19 Jul 2012 17:13:29 +0200 (CEST)
-Date: Thu, 19 Jul 2012 17:08:32 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120719150832.GG22657@game.jcrosoft.org>
-References: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
+Received: from smtp1.mail.ru ([94.100.176.129])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Srsgb-0004q0-ST
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 15:30:46 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Thu, 19 Jul 2012 19:30:12 +0400
+Message-Id: <1342711817-866-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,54 +14,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Compressed barebox image support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/6] mc13xxx: Define maximum SPI clock frequency global to
+ driver
+To: barebox@lists.infradead.org
 
-On 10:12 Thu 19 Jul     , Sascha Hauer wrote:
-> The following series allows to create a self extracting barebox image.
-> This is done by linking barebox twice, once for the actual binary, but
-> without lowlevel initstuff and once for the lowlevel init stuff, the
-> decompressor and the compressed image.
-> 
-> Using lzo compression the pcm038 image shrinks from 252k to 155k. The
-> series has been tested on the pcm038 second stage, first stage NAND and
-> first stage NOR and also on an i.MX53 LOCO board (also in thumb2 mode)
-> 
-> Using compressed images currently adds to the boot time, at least on
-> my slower arm9 systems. Using the MMU during decompression would help,
-> but this currently isn't implemented.
-> 
-> I think the preparation patches should be ready for merging. The last
-> patch in this series adding compression support I am not that confident
-> with. Currently I am not very happy with the Makefile changes which
-> somehow look like bypassing the kbuild mechanism and handcrufting
-> something that looks like kbuild. If someone has ideas how to improve
-> this, let me know. Nevertheless I would be happy about Tested-by
-> (and does-not-work-for) tags.
-> 
-> Sascha
-> 
-> ----------------------------------------------------------------
-> Sascha Hauer (9):
->       lzo: Allow for static inlining
->       ARM lds: remove unused got
->       ARM: remove board linker script option
->       ARM: remove exception vectors from boards
->       ARM startup: calculate offset instead of runtime address
->       ARM ep93xx: Get rid of special handling in linker file
->       ARM boards: Use _text rather than TEXT_BASE
->       ARM: Separate assembler functions into their own section
->       Add compressed image support
+This patch provide setup for SPI clk frequency global to driver.
+For MC13783 maximum clock frequency is 20 MHz,
+for MC13892 maximum clock frequency is 26 MHz,
+so we define 20 MHz as a maximum SPI clk.
 
-can you push it on a git?
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/boards/ccxmx51/ccxmx51.c          |    1 -
+ arch/arm/boards/freescale-mx51-pdk/board.c |    1 -
+ arch/arm/boards/pcm038/pcm038.c            |    1 -
+ drivers/mfd/mc13xxx.c                      |    1 +
+ 4 files changed, 1 insertions(+), 3 deletions(-)
 
-Best Regards,
-J.
+diff --git a/arch/arm/boards/ccxmx51/ccxmx51.c b/arch/arm/boards/ccxmx51/ccxmx51.c
+index f494174..f309e0c 100644
+--- a/arch/arm/boards/ccxmx51/ccxmx51.c
++++ b/arch/arm/boards/ccxmx51/ccxmx51.c
+@@ -191,7 +191,6 @@ static struct spi_imx_master ecspi_0_data = {
+ static const struct spi_board_info ccxmx51_spi_board_info[] = {
+ 	{
+ 		.name		= "mc13xxx-spi",
+-		.max_speed_hz	= 6000000,
+ 		.bus_num	= 0,
+ 		.chip_select	= 0,
+ 	},
+diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
+index 3a568d0..7c2c8fe 100644
+--- a/arch/arm/boards/freescale-mx51-pdk/board.c
++++ b/arch/arm/boards/freescale-mx51-pdk/board.c
+@@ -117,7 +117,6 @@ static struct spi_imx_master spi_0_data = {
+ static const struct spi_board_info mx51_babbage_spi_board_info[] = {
+ 	{
+ 		.name = "mc13xxx-spi",
+-		.max_speed_hz = 300000,
+ 		.bus_num = 0,
+ 		.chip_select = 0,
+ 	},
+diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+index badc978..fa82b02 100644
+--- a/arch/arm/boards/pcm038/pcm038.c
++++ b/arch/arm/boards/pcm038/pcm038.c
+@@ -59,7 +59,6 @@ static struct spi_imx_master pcm038_spi_0_data = {
+ static struct spi_board_info pcm038_spi_board_info[] = {
+ 	{
+ 		.name = "mc13xxx-spi",
+-		.max_speed_hz = 3000000,
+ 		.bus_num = 0,
+ 		.chip_select = 0,
+ 	}
+diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
+index 2934e9d..8bb0d00 100644
+--- a/drivers/mfd/mc13xxx.c
++++ b/drivers/mfd/mc13xxx.c
+@@ -297,6 +297,7 @@ static int mc_probe(struct device_d *dev, enum mc13xxx_mode mode)
+ 		mc_dev->spi = dev->type_data;
+ 		mc_dev->spi->mode = SPI_MODE_0 | SPI_CS_HIGH;
+ 		mc_dev->spi->bits_per_word = 32;
++		mc_dev->spi->max_speed_hz = 20000000;
+ 	}
+ 	mc_dev->cdev.size = 256;
+ 	mc_dev->cdev.dev = dev;
+-- 
+1.7.3.4
+
 
 _______________________________________________
 barebox mailing list
