@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp1.mail.ru ([94.100.176.129])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Srsgb-0004pz-SO
+ id 1Srsgb-0004q4-Sj
  for barebox@lists.infradead.org; Thu, 19 Jul 2012 15:30:46 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Thu, 19 Jul 2012 19:30:13 +0400
-Message-Id: <1342711817-866-2-git-send-email-shc_work@mail.ru>
+Date: Thu, 19 Jul 2012 19:30:17 +0400
+Message-Id: <1342711817-866-6-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1342711817-866-1-git-send-email-shc_work@mail.ru>
 References: <1342711817-866-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,28 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] i.MX: Removed unused declaration for imx_iim_get_mac
+Subject: [PATCH 6/6] PCM038: Read UID from fuses and pass this value to kernel
+ as serial number
 To: barebox@lists.infradead.org
 
-Procedure is missing, so remove its declaration.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/mach-imx/include/mach/iim.h |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+ arch/arm/boards/pcm038/pcm038.c |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/iim.h b/arch/arm/mach-imx/include/mach/iim.h
-index b97c742..ef7b25d 100644
---- a/arch/arm/mach-imx/include/mach/iim.h
-+++ b/arch/arm/mach-imx/include/mach/iim.h
-@@ -48,7 +48,6 @@ struct imx_iim_platform_data {
+diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+index 5b0afc3..1bdb93c 100644
+--- a/arch/arm/boards/pcm038/pcm038.c
++++ b/arch/arm/boards/pcm038/pcm038.c
+@@ -40,6 +40,7 @@
+ #include <mach/spi.h>
+ #include <mach/iomux-mx27.h>
+ #include <mach/devices-imx27.h>
++#include <mach/iim.h>
+ #include <mfd/mc13xxx.h>
  
- #ifdef CONFIG_IMX_IIM
- int imx_iim_read(unsigned int bank, int offset, void *buf, int count);
--int imx_iim_get_mac(unsigned char *mac);
- #else
- static inline int imx_iim_read(unsigned int bank, int offset, void *buf,
- 		int count)
+ #include "pll.h"
+@@ -193,6 +194,7 @@ mem_initcall(pcm038_mem_init);
+ static int pcm038_devices_init(void)
+ {
+ 	int i;
++	u64 uid;
+ 	char *envdev;
+ 
+ 	unsigned int mode[] = {
+@@ -316,6 +318,8 @@ static int pcm038_devices_init(void)
+ 
+ 	printf("Using environment in %s Flash\n", envdev);
+ 
++	if (imx_iim_read(1, 1, &uid, 6) == 6)
++		armlinux_set_serial(uid);
+ 	armlinux_set_bootparams((void *)0xa0000100);
+ 	armlinux_set_architecture(MACH_TYPE_PCM038);
+ 
 -- 
 1.7.3.4
 
