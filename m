@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sruj9-0008Hj-Sn
- for barebox@lists.infradead.org; Thu, 19 Jul 2012 17:41:29 +0000
-Date: Thu, 19 Jul 2012 19:41:25 +0200
+ id 1SruwW-0008LP-D9
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 17:55:20 +0000
+Date: Thu, 19 Jul 2012 19:55:12 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120719174125.GC30009@pengutronix.de>
-References: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
- <1342685582-13244-10-git-send-email-s.hauer@pengutronix.de>
- <20120719170845.GA3303@sig21.net>
+Message-ID: <20120719175512.GD30009@pengutronix.de>
+References: <1342711817-866-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120719170845.GA3303@sig21.net>
+In-Reply-To: <1342711817-866-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,54 +22,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 9/9] Add compressed image support
-To: Johannes Stezenbach <js@sig21.net>
+Subject: Re: [PATCH 1/6] mc13xxx: Define maximum SPI clock frequency global
+ to driver
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jul 19, 2012 at 07:08:45PM +0200, Johannes Stezenbach wrote:
-> Hi,
+On Thu, Jul 19, 2012 at 07:30:12PM +0400, Alexander Shiyan wrote:
+> This patch provide setup for SPI clk frequency global to driver.
+> For MC13783 maximum clock frequency is 20 MHz,
+> for MC13892 maximum clock frequency is 26 MHz,
+> so we define 20 MHz as a maximum SPI clk.
 > 
-> On Thu, Jul 19, 2012 at 10:13:02AM +0200, Sascha Hauer wrote:
-> > --- a/Makefile
-> > +++ b/Makefile
-> ...
-> > +ifdef CONFIG_IMAGE_COMPRESSION_LZO
-> > +barebox: piggy.lzo.o
-> > +	@echo "  LD     " $@
-> > +	$(Q)$(LD) $(LDFLAGS) $(LDFLAGS_barebox) -o $@ \
-> > +		-T $(barebox-compressed-lds) $(barebox-compressed) \
-> > +		--start-group $(barebox-common) piggy.lzo.o --end-group
-> > +else
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  arch/arm/boards/ccxmx51/ccxmx51.c          |    1 -
+>  arch/arm/boards/freescale-mx51-pdk/board.c |    1 -
+>  arch/arm/boards/pcm038/pcm038.c            |    1 -
+>  drivers/mfd/mc13xxx.c                      |    1 +
+>  4 files changed, 1 insertions(+), 3 deletions(-)
 > 
-> Where is barebox-compressed set?
-> 
-> I tried it and it fails to link:
-> 
->   LD      arch/arm/lib/built-in.o
->   LD      barebox-uncompressed
->   SYSMAP  System.map
->   OBJCOPY barebox-uncompressed.bin
->   LZO     barebox-uncompressed.bin.lzo
->   CC      piggy.lzo.o
->   LD      barebox
-> common/built-in.o: In function `start_barebox':
-> .../barebox/common/startup.c:154: undefined reference to `__barebox_initcalls_start'
-> .../barebox/common/startup.c:154: undefined reference to `__barebox_initcalls_end'
-> 
-> $ make V=1
-> ...
->   LD      barebox
-> arm-linux-ld -EL  -Map barebox.map -static --gc-sections -o barebox \
->                 -T arch/arm/lib/barebox-compressed.lds  \
->                 --start-group  common/built-in.o  drivers/built-in.o  commands/built-in.o  lib/built-in.o  crypto/built-in.o  net/built-in.o  fs/built-in.o  arch/arm/boards/foo/built-in.o  arch/arm/mach-foo/built-in.o  arch/arm/lib/built-in.o  arch/arm/cpu/built-in.o piggy.lzo.o --end-group
-> 
-> 
-> It shouldn't link all the -built-in.o into the uncompressor, should it?
-> Or is it supposed to work via --gc-sections trick?
+> diff --git a/arch/arm/boards/ccxmx51/ccxmx51.c b/arch/arm/boards/ccxmx51/ccxmx51.c
+> index f494174..f309e0c 100644
+> --- a/arch/arm/boards/ccxmx51/ccxmx51.c
+> +++ b/arch/arm/boards/ccxmx51/ccxmx51.c
+> @@ -191,7 +191,6 @@ static struct spi_imx_master ecspi_0_data = {
+>  static const struct spi_board_info ccxmx51_spi_board_info[] = {
+>  	{
+>  		.name		= "mc13xxx-spi",
+> -		.max_speed_hz	= 6000000,
+>  		.bus_num	= 0,
+>  		.chip_select	= 0,
+>  	},
+> diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
+> index 3a568d0..7c2c8fe 100644
+> --- a/arch/arm/boards/freescale-mx51-pdk/board.c
+> +++ b/arch/arm/boards/freescale-mx51-pdk/board.c
+> @@ -117,7 +117,6 @@ static struct spi_imx_master spi_0_data = {
+>  static const struct spi_board_info mx51_babbage_spi_board_info[] = {
+>  	{
+>  		.name = "mc13xxx-spi",
+> -		.max_speed_hz = 300000,
+>  		.bus_num = 0,
+>  		.chip_select = 0,
+>  	},
+> diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+> index badc978..fa82b02 100644
+> --- a/arch/arm/boards/pcm038/pcm038.c
+> +++ b/arch/arm/boards/pcm038/pcm038.c
+> @@ -59,7 +59,6 @@ static struct spi_imx_master pcm038_spi_0_data = {
+>  static struct spi_board_info pcm038_spi_board_info[] = {
+>  	{
+>  		.name = "mc13xxx-spi",
+> -		.max_speed_hz = 3000000,
+>  		.bus_num = 0,
+>  		.chip_select = 0,
+>  	}
+> diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
+> index 2934e9d..8bb0d00 100644
+> --- a/drivers/mfd/mc13xxx.c
+> +++ b/drivers/mfd/mc13xxx.c
+> @@ -297,6 +297,7 @@ static int mc_probe(struct device_d *dev, enum mc13xxx_mode mode)
+>  		mc_dev->spi = dev->type_data;
+>  		mc_dev->spi->mode = SPI_MODE_0 | SPI_CS_HIGH;
+>  		mc_dev->spi->bits_per_word = 32;
+> +		mc_dev->spi->max_speed_hz = 20000000;
 
-Yes, it works using --gc-sections. Are you building a defconfig or a
-custom one? If the error above is correct start_barebox is referenced
-from the decompressor code. This should not happen.
+The values indeed look quite arbitrary, but it may be that a hardware
+design does not support such high frequencies. Maybe better
+
+		if (!mc_dev->spi->max_speed_hz)
+			mc_dev->spi->max_speed_hz = 20000000
+
+?
 
 Sascha
 
