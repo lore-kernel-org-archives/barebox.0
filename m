@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Srlr9-0005KK-HZ
+ id 1Srlr9-0005KD-I0
  for barebox@lists.infradead.org; Thu, 19 Jul 2012 08:13:13 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 19 Jul 2012 10:12:56 +0200
-Message-Id: <1342685582-13244-4-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 19 Jul 2012 10:12:55 +0200
+Message-Id: <1342685582-13244-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
 References: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,60 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/9] ARM: remove board linker script option
+Subject: [PATCH 2/9] ARM lds: remove unused got
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig      |   12 ------------
- arch/arm/Makefile     |    3 +--
- arch/arm/lib/Makefile |    3 +--
- 3 files changed, 2 insertions(+), 16 deletions(-)
+ arch/arm/lib/barebox.lds.S |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index af4cb59..d988455 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -1,15 +1,3 @@
--#
--#
--#
--config BOARD_LINKER_SCRIPT
--	bool
--	default n
--
--config GENERIC_LINKER_SCRIPT
--	bool
--	default y
--	depends on !BOARD_LINKER_SCRIPT
--
- config ARM
- 	bool
- 	select HAS_KALLSYMS
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 1225df7..cbbc0a0 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -207,7 +207,6 @@ endif
- common-y += $(BOARD) $(MACH)
- common-y += arch/arm/lib/ arch/arm/cpu/
+diff --git a/arch/arm/lib/barebox.lds.S b/arch/arm/lib/barebox.lds.S
+index 3fd271b..736e5f0 100644
+--- a/arch/arm/lib/barebox.lds.S
++++ b/arch/arm/lib/barebox.lds.S
+@@ -80,9 +80,6 @@ SECTIONS
+ 	. = ALIGN(4);
+ 	.data : { *(.data*) }
  
--lds-$(CONFIG_GENERIC_LINKER_SCRIPT)	:= arch/arm/lib/barebox.lds
--lds-$(CONFIG_BOARD_LINKER_SCRIPT)	:= $(BOARD)/barebox.lds
-+lds-y	:= arch/arm/lib/barebox.lds
- 
- CLEAN_FILES += include/generated/mach-types.h arch/arm/lib/barebox.lds
-diff --git a/arch/arm/lib/Makefile b/arch/arm/lib/Makefile
-index 27a4b88..1eaf474 100644
---- a/arch/arm/lib/Makefile
-+++ b/arch/arm/lib/Makefile
-@@ -20,5 +20,4 @@ obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memcpy.o
- obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memset.o
- obj-$(CONFIG_ARM_UNWIND) += unwind.o
- obj-$(CONFIG_MODULES) += module.o
--extra-$(CONFIG_GENERIC_LINKER_SCRIPT) += barebox.lds
+-	. = ALIGN(4);
+-	.got : { *(.got*) }
 -
-+extra-y += barebox.lds
+ 	. = .;
+ 	__barebox_cmd_start = .;
+ 	.barebox_cmd : { BAREBOX_CMDS }
 -- 
 1.7.10.4
 
