@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Srx4R-0004S6-DE
- for barebox@lists.infradead.org; Thu, 19 Jul 2012 20:11:37 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SrxY6-0007B8-Ow
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 20:42:15 +0000
+Date: Thu, 19 Jul 2012 22:42:12 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120719204212.GH30009@pengutronix.de>
 References: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
-Date: Thu, 19 Jul 2012 22:11:06 +0200
-In-Reply-To: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
- (Sascha Hauer's message of "Thu, 19 Jul 2012 10:12:53 +0200")
-Message-ID: <87fw8nv7dx.fsf@free.fr>
+ <1342685582-13244-10-git-send-email-s.hauer@pengutronix.de>
+ <20120719170845.GA3303@sig21.net>
+ <20120719174125.GC30009@pengutronix.de>
+ <20120719183238.GA3721@sig21.net>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20120719183238.GA3721@sig21.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +26,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Compressed barebox image support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 9/9] Add compressed image support
+To: Johannes Stezenbach <js@sig21.net>
 Cc: barebox@lists.infradead.org
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
-> Nevertheless I would be happy about Tested-by (and does-not-work-for) tags.
->
-> Sascha
+On Thu, Jul 19, 2012 at 08:32:38PM +0200, Johannes Stezenbach wrote:
+> > > ...
+> > >   LD      barebox
+> > > arm-linux-ld -EL  -Map barebox.map -static --gc-sections -o barebox \
+> > >                 -T arch/arm/lib/barebox-compressed.lds  \
+> > >                 --start-group  common/built-in.o  drivers/built-in.o  commands/built-in.o  lib/built-in.o  crypto/built-in.o  net/built-in.o  fs/built-in.o  arch/arm/boards/foo/built-in.o  arch/arm/mach-foo/built-in.o  arch/arm/lib/built-in.o  arch/arm/cpu/built-in.o piggy.lzo.o --end-group
+> > > 
+> > > 
+> > > It shouldn't link all the -built-in.o into the uncompressor, should it?
+> > > Or is it supposed to work via --gc-sections trick?
+> > 
+> > Yes, it works using --gc-sections. Are you building a defconfig or a
+> > custom one? If the error above is correct start_barebox is referenced
+> > from the decompressor code. This should not happen.
+> 
+> I'm building a custom one (unpublished code).  It has some SPI flash
+> boot assembly code, I guess that might cause the issue wrt the new section
+> annotations.  I'll look at it tomorrow.  However, I still wonder
+> about the empty $(barebox-compressed)?
 
-I tried on Xscale PXA (mioa701 board, armv5te).
-It works like a charm.
+It's empty here aswell, so this shouldn't be a problem. Though I should
+probably simpy remove it.
 
-Therefore, feel free to add my :
-Tested-by: Robert Jarzmik <robert.jarzmik@free.fr>
+Sascha
 
 -- 
-Robert
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
