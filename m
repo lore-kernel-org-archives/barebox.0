@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f161.mail.ru ([94.100.178.81])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SrvmT-0001Ww-JC
- for barebox@lists.infradead.org; Thu, 19 Jul 2012 18:49:01 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Thu, 19 Jul 2012 22:48:53 +0400
-References: <1342711817-866-1-git-send-email-shc_work@mail.ru>
- <1342711817-866-6-git-send-email-shc_work@mail.ru>
- <20120719181252.GF30009@pengutronix.de>
-In-Reply-To: <20120719181252.GF30009@pengutronix.de>
-Message-ID: <1342723733.758551739@f161.mail.ru>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1Srx1u-0004KO-OM
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 20:09:00 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jbe@pengutronix.de>) id 1Srx1r-0007Bc-6z
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 22:08:55 +0200
+Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <jbe@pengutronix.de>) id 1Srx1r-00010W-5t
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 22:08:55 +0200
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Thu, 19 Jul 2012 22:08:52 +0200
+Message-Id: <1342728533-3750-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,45 +21,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCA2LzZdIFBDTTAzODogUmVhZCBVSUQgZnJvbSBmdXNl?=
- =?UTF-8?B?cyBhbmQgcGFzcyB0aGlzIHZhbHVlIHRvIGtlcm5lbCBhcyBzZXJpYWwgbnVt?=
- =?UTF-8?B?YmVy?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: add the vendor 'FriendlyARM' to its board's directory
+ names
+To: barebox@lists.infradead.org
 
-SGVsbG8uCgpUaHUsIDE5IEp1bCAyMDEyIDIwOjEyOjUyICswMjAwINC+0YIgU2FzY2hhIEhhdWVy
-IDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiBPbiBUaHUsIEp1bCAxOSwgMjAxMiBhdCAwNzoz
-MDoxN1BNICswNDAwLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+ID4gCj4gPiBTaWduZWQtb2Zm
-LWJ5OiBBbGV4YW5kZXIgU2hpeWFuIDxzaGNfd29ya0BtYWlsLnJ1Pgo+ID4gLS0tCj4gPiAgYXJj
-aC9hcm0vYm9hcmRzL3BjbTAzOC9wY20wMzguYyB8ICAgIDQgKysrKwo+ID4gIDEgZmlsZXMgY2hh
-bmdlZCwgNCBpbnNlcnRpb25zKCspLCAwIGRlbGV0aW9ucygtKQo+ID4gCj4gPiBkaWZmIC0tZ2l0
-IGEvYXJjaC9hcm0vYm9hcmRzL3BjbTAzOC9wY20wMzguYyBiL2FyY2gvYXJtL2JvYXJkcy9wY20w
-MzgvcGNtMDM4LmMKPiA+IGluZGV4IDViMGFmYzMuLjFiZGI5M2MgMTAwNjQ0Cj4gPiAtLS0gYS9h
-cmNoL2FybS9ib2FyZHMvcGNtMDM4L3BjbTAzOC5jCj4gPiArKysgYi9hcmNoL2FybS9ib2FyZHMv
-cGNtMDM4L3BjbTAzOC5jCj4gPiBAQCAtNDAsNiArNDAsNyBAQAo+ID4gICNpbmNsdWRlIDxtYWNo
-L3NwaS5oPgo+ID4gICNpbmNsdWRlIDxtYWNoL2lvbXV4LW14MjcuaD4KPiA+ICAjaW5jbHVkZSA8
-bWFjaC9kZXZpY2VzLWlteDI3Lmg+Cj4gPiArI2luY2x1ZGUgPG1hY2gvaWltLmg+Cj4gPiAgI2lu
-Y2x1ZGUgPG1mZC9tYzEzeHh4Lmg+Cj4gPiAgCj4gPiAgI2luY2x1ZGUgInBsbC5oIgo+ID4gQEAg
-LTE5Myw2ICsxOTQsNyBAQCBtZW1faW5pdGNhbGwocGNtMDM4X21lbV9pbml0KTsKPiA+ICBzdGF0
-aWMgaW50IHBjbTAzOF9kZXZpY2VzX2luaXQodm9pZCkKPiA+ICB7Cj4gPiAgCWludCBpOwo+ID4g
-Kwl1NjQgdWlkOwo+IAo+IFRoZSB1cHBlciB0d28gYnl0ZXMgb2YgdWlkIGFyZSB1c2VkIHVuaXRp
-YWxpemVkLgpZb3UgYXJlIHJpZ2h0LiBJJ2xsIHNlbmQgdXBkYXRlZCB2ZXJzaW9uIGZvciB0aGlz
-IG9uZSBwYXRjaC4KCj4gPiAgCWNoYXIgKmVudmRldjsKPiA+ICAKPiA+ICAJdW5zaWduZWQgaW50
-IG1vZGVbXSA9IHsKPiA+IEBAIC0zMTYsNiArMzE4LDggQEAgc3RhdGljIGludCBwY20wMzhfZGV2
-aWNlc19pbml0KHZvaWQpCj4gPiAgCj4gPiAgCXByaW50ZigiVXNpbmcgZW52aXJvbm1lbnQgaW4g
-JXMgRmxhc2hcbiIsIGVudmRldik7Cj4gPiAgCj4gPiArCWlmIChpbXhfaWltX3JlYWQoMSwgMSwg
-JnVpZCwgNikgPT0gNikKPiA+ICsJCWFybWxpbnV4X3NldF9zZXJpYWwodWlkKTsKPiAKPiBXaXRo
-IHRoaXMgcGF0Y2ggSSBqdXN0IHJlYWxpemVkIHRoYXQgbXkgc2VyaWFsIGJlY29tZXM6Cj4gCj4g
-LTYzNDUwMDg5MjUwMTE2MDc1NTIKPiAKPiBIYXZpbmcgbmVnYXRpdmUgbnVtYmVycyBoZXJlIGlz
-IGEgYml0IG9kZC4gTG9va2luZyBhdCBpdCBleHBvcnRfZW52X3VsbAo+IGRvZXM6Cj4gCj4gICAg
-ICAgICBjaGFyICp2YWxzdHIgPSBhc3ByaW50ZigiJWxsZCIsIHZhbCk7Cj4gCj4gV2hpY2ggY2xl
-YXJseSBpcyBhIHNpZ25lZCBudW1iZXIuIE1heWJlIHRoaXMgc2hvdWxkIGJlIGNoYW5nZWQgdG8g
-IjB4JTAxNmxseCIKPiAod2hpY2ggb2YgY291cnNlIGlzIG5vdCB5b3VyIGZhdWx0KQpJIHRoaW5r
-IHRoaXMgd2lsbCBzb2x2ZSB0aGUgcHJvYmxlbS4gQnV0IGl0J3MgY2VydGFpbmx5IGEgam9iIGZv
-ciBhbm90aGVyIHBhdGNoLgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Since a look into "arch/arm/boards/" offers various boards starting with the
+vendor's name in their directory name (like 'eukrea' and 'freescale').
+This patch does the same with the currently existing FriendlyARM boards
+Mini2440 and Tiny210.
+
+Note: I hope I have used the '-M' parameter in a correct manner ;)
+
+Juergen
+
+The following changes since commit a7953f6e56b1e7e4b6973bf44b016169886f5430:
+
+  Merge branch 'for-next/reset-source' into next (2012-07-18 16:21:48 +0200)
+
+are available in the git repository at:
+
+  git://git.pengutronix.de/git/jbe/barebox.git next_rename_fa_boardsV1
+
+for you to fetch changes up to 7061e9e4337e70972923c3b967494ffb7fe20f5e:
+
+  ARM/Samsung: add the vendor FriendlyARM to the board's directory name (2012-07-19 21:52:12 +0200)
+
+----------------------------------------------------------------
+Juergen Beisert (1):
+      ARM/Samsung: add the vendor FriendlyARM to the board's directory name
+
+ arch/arm/Makefile                                                  |    4 ++--
+ arch/arm/boards/{mini2440 => friendlyarm-mini2440}/Kconfig         |    0
+ arch/arm/boards/{mini2440 => friendlyarm-mini2440}/Makefile        |    0
+ arch/arm/boards/{mini2440 => friendlyarm-mini2440}/config.h        |    0
+ arch/arm/boards/{mini2440 => friendlyarm-mini2440}/env/config      |    0
+ arch/arm/boards/{mini2440 => friendlyarm-mini2440}/lowlevel_init.S |    0
+ arch/arm/boards/{mini2440 => friendlyarm-mini2440}/mini2440.c      |    0
+ arch/arm/boards/{tiny210 => friendlyarm-tiny210}/Makefile          |    0
+ arch/arm/boards/{tiny210 => friendlyarm-tiny210}/config.h          |    0
+ arch/arm/boards/{tiny210 => friendlyarm-tiny210}/lowlevel.c        |    0
+ arch/arm/boards/{tiny210 => friendlyarm-tiny210}/tiny210.c         |    0
+ .../configs/{mini2440_defconfig => friendlyarm_mini2440_defconfig} |    2 +-
+ .../configs/{tiny210_defconfig => friendlyarm_tiny210_defconfig}   |    0
+ arch/arm/mach-samsung/Kconfig                                      |    2 +-
+ 14 files changed, 4 insertions(+), 4 deletions(-)
+ rename arch/arm/boards/{mini2440 => friendlyarm-mini2440}/Kconfig (100%)
+ rename arch/arm/boards/{mini2440 => friendlyarm-mini2440}/Makefile (100%)
+ rename arch/arm/boards/{mini2440 => friendlyarm-mini2440}/config.h (100%)
+ rename arch/arm/boards/{mini2440 => friendlyarm-mini2440}/env/config (100%)
+ rename arch/arm/boards/{mini2440 => friendlyarm-mini2440}/lowlevel_init.S (100%)
+ rename arch/arm/boards/{mini2440 => friendlyarm-mini2440}/mini2440.c (100%)
+ rename arch/arm/boards/{tiny210 => friendlyarm-tiny210}/Makefile (100%)
+ rename arch/arm/boards/{tiny210 => friendlyarm-tiny210}/config.h (100%)
+ rename arch/arm/boards/{tiny210 => friendlyarm-tiny210}/lowlevel.c (100%)
+ rename arch/arm/boards/{tiny210 => friendlyarm-tiny210}/tiny210.c (100%)
+ rename arch/arm/configs/{mini2440_defconfig => friendlyarm_mini2440_defconfig} (92%)
+ rename arch/arm/configs/{tiny210_defconfig => friendlyarm_tiny210_defconfig} (100%)
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
