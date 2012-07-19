@@ -1,18 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Srxbq-0007FR-EG
- for barebox@lists.infradead.org; Thu, 19 Jul 2012 20:46:10 +0000
-Date: Thu, 19 Jul 2012 22:45:48 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120719204548.GI30009@pengutronix.de>
-References: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
- <1342685582-13244-9-git-send-email-s.hauer@pengutronix.de>
- <5007E38B.8040106@pengutronix.de>
- <20120719140834.GY30009@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120719140834.GY30009@pengutronix.de>
+Received: from plane.gmane.org ([80.91.229.3])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SrxmF-0007T9-WF
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 20:56:52 +0000
+Received: from list by plane.gmane.org with local (Exim 4.69)
+ (envelope-from <gcbb-barebox@m.gmane.org>) id 1Srxm9-00012d-2v
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 22:56:45 +0200
+Received: from h96-60-251-119.cncrtn.dsl.dynamic.tds.net ([96.60.251.119])
+ by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+ id 1AlnuQ-0007hv-00
+ for <barebox@lists.infradead.org>; Thu, 19 Jul 2012 22:56:45 +0200
+Received: from jkirk865 by h96-60-251-119.cncrtn.dsl.dynamic.tds.net with
+ local (Gmexim 0.1 (Debian)) id 1AlnuQ-0007hv-00
+ for <barebox@lists.infradead.org>; Thu, 19 Jul 2012 22:56:45 +0200
+From: Jerry Kirk <jkirk865@gmail.com>
+Date: Thu, 19 Jul 2012 20:56:35 +0000 (UTC)
+Message-ID: <loom.20120719T224910-551@post.gmane.org>
+References: <loom.20120719T173418-826@post.gmane.org>
+ <20120719161139.GB30009@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,60 +31,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 8/9] ARM: Separate assembler functions into their own
- section
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: USB On PCM043?
+To: barebox@lists.infradead.org
 
-On Thu, Jul 19, 2012 at 04:08:34PM +0200, Sascha Hauer wrote:
-> On Thu, Jul 19, 2012 at 12:38:03PM +0200, Marc Kleine-Budde wrote:
-> > On 07/19/2012 10:13 AM, Sascha Hauer wrote:
-> > > To let the linker remove unused functions.
-> > > 
-> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > ---
-> > >  arch/arm/cpu/cache-armv4.S      |    7 ++++++-
-> > >  arch/arm/cpu/cache-armv5.S      |    7 ++++++-
-> > >  arch/arm/cpu/cache-armv6.S      |   11 +++++++++--
-> > >  arch/arm/cpu/cache-armv7.S      |    8 ++++++--
-> > >  arch/arm/lib/ashldi3.S          |    1 +
-> > >  arch/arm/lib/ashrdi3.S          |    1 +
-> > >  arch/arm/lib/findbit.S          |    9 +++++++++
-> > >  arch/arm/lib/io-writesw-armv4.S |    2 ++
-> > >  arch/arm/lib/lib1funcs.S        |    7 +++++++
-> > >  arch/arm/lib/lshrdi3.S          |    1 +
-> > >  10 files changed, 48 insertions(+), 6 deletions(-)
-> > > 
-> > > diff --git a/arch/arm/cpu/cache-armv4.S b/arch/arm/cpu/cache-armv4.S
-> > > index 6d03565..2231eee 100644
-> > > --- a/arch/arm/cpu/cache-armv4.S
-> > > +++ b/arch/arm/cpu/cache-armv4.S
-> > > @@ -3,6 +3,7 @@
-> > >  
-> > >  #define CACHE_DLINESIZE 32
-> > >  
-> > > +.section .text.__mmu_cache_on
-> > >  ENTRY(__mmu_cache_on)
-> > 
-> > Is it possible to add the section to the ENTRY macro?
+> > We have been attempting to get USB Host mode working under Barebox(2012-07-0)
+> > a PCM043 platform (i.mx35), but we are having a bit of trouble.
 > 
-> I'm not sure. I was pretty sure that some assembly functions fall
-> through to the next function. I cannot find any examples though.
+> Could it be that the USB clock operates at the wrong rate? I think it
+> should be 60MHz.
 
-For example we have this:
+We're not certain how to verify the clock setting for USB in Barebox.
+We have used "dump_clocks" but are not certain which of these clocks
+the USB clock is derived from. We think we have it set to the same
+settings as the Eukrea board.
 
-.section .text.__divsi3
-ENTRY(__divsi3)
-ENTRY(__aeabi_idiv)
-	...
+Do you know of anyone that has used USB on the pcm043 board?
 
-Sascha
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
 
 _______________________________________________
 barebox mailing list
