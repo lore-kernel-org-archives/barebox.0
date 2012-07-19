@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SrxY6-0007B8-Ow
- for barebox@lists.infradead.org; Thu, 19 Jul 2012 20:42:15 +0000
-Date: Thu, 19 Jul 2012 22:42:12 +0200
+ id 1Srxbq-0007FR-EG
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 20:46:10 +0000
+Date: Thu, 19 Jul 2012 22:45:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120719204212.GH30009@pengutronix.de>
+Message-ID: <20120719204548.GI30009@pengutronix.de>
 References: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
- <1342685582-13244-10-git-send-email-s.hauer@pengutronix.de>
- <20120719170845.GA3303@sig21.net>
- <20120719174125.GC30009@pengutronix.de>
- <20120719183238.GA3721@sig21.net>
+ <1342685582-13244-9-git-send-email-s.hauer@pengutronix.de>
+ <5007E38B.8040106@pengutronix.de>
+ <20120719140834.GY30009@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120719183238.GA3721@sig21.net>
+In-Reply-To: <20120719140834.GY30009@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,32 +25,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 9/9] Add compressed image support
-To: Johannes Stezenbach <js@sig21.net>
+Subject: Re: [PATCH 8/9] ARM: Separate assembler functions into their own
+ section
+To: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jul 19, 2012 at 08:32:38PM +0200, Johannes Stezenbach wrote:
-> > > ...
-> > >   LD      barebox
-> > > arm-linux-ld -EL  -Map barebox.map -static --gc-sections -o barebox \
-> > >                 -T arch/arm/lib/barebox-compressed.lds  \
-> > >                 --start-group  common/built-in.o  drivers/built-in.o  commands/built-in.o  lib/built-in.o  crypto/built-in.o  net/built-in.o  fs/built-in.o  arch/arm/boards/foo/built-in.o  arch/arm/mach-foo/built-in.o  arch/arm/lib/built-in.o  arch/arm/cpu/built-in.o piggy.lzo.o --end-group
+On Thu, Jul 19, 2012 at 04:08:34PM +0200, Sascha Hauer wrote:
+> On Thu, Jul 19, 2012 at 12:38:03PM +0200, Marc Kleine-Budde wrote:
+> > On 07/19/2012 10:13 AM, Sascha Hauer wrote:
+> > > To let the linker remove unused functions.
 > > > 
+> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > ---
+> > >  arch/arm/cpu/cache-armv4.S      |    7 ++++++-
+> > >  arch/arm/cpu/cache-armv5.S      |    7 ++++++-
+> > >  arch/arm/cpu/cache-armv6.S      |   11 +++++++++--
+> > >  arch/arm/cpu/cache-armv7.S      |    8 ++++++--
+> > >  arch/arm/lib/ashldi3.S          |    1 +
+> > >  arch/arm/lib/ashrdi3.S          |    1 +
+> > >  arch/arm/lib/findbit.S          |    9 +++++++++
+> > >  arch/arm/lib/io-writesw-armv4.S |    2 ++
+> > >  arch/arm/lib/lib1funcs.S        |    7 +++++++
+> > >  arch/arm/lib/lshrdi3.S          |    1 +
+> > >  10 files changed, 48 insertions(+), 6 deletions(-)
 > > > 
-> > > It shouldn't link all the -built-in.o into the uncompressor, should it?
-> > > Or is it supposed to work via --gc-sections trick?
+> > > diff --git a/arch/arm/cpu/cache-armv4.S b/arch/arm/cpu/cache-armv4.S
+> > > index 6d03565..2231eee 100644
+> > > --- a/arch/arm/cpu/cache-armv4.S
+> > > +++ b/arch/arm/cpu/cache-armv4.S
+> > > @@ -3,6 +3,7 @@
+> > >  
+> > >  #define CACHE_DLINESIZE 32
+> > >  
+> > > +.section .text.__mmu_cache_on
+> > >  ENTRY(__mmu_cache_on)
 > > 
-> > Yes, it works using --gc-sections. Are you building a defconfig or a
-> > custom one? If the error above is correct start_barebox is referenced
-> > from the decompressor code. This should not happen.
+> > Is it possible to add the section to the ENTRY macro?
 > 
-> I'm building a custom one (unpublished code).  It has some SPI flash
-> boot assembly code, I guess that might cause the issue wrt the new section
-> annotations.  I'll look at it tomorrow.  However, I still wonder
-> about the empty $(barebox-compressed)?
+> I'm not sure. I was pretty sure that some assembly functions fall
+> through to the next function. I cannot find any examples though.
 
-It's empty here aswell, so this shouldn't be a problem. Though I should
-probably simpy remove it.
+For example we have this:
+
+.section .text.__divsi3
+ENTRY(__divsi3)
+ENTRY(__aeabi_idiv)
+	...
 
 Sascha
 
