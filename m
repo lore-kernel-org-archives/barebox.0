@@ -1,22 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from plane.gmane.org ([80.91.229.3])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SrsoC-0000G5-Sm
- for barebox@lists.infradead.org; Thu, 19 Jul 2012 15:38:33 +0000
-Received: from list by plane.gmane.org with local (Exim 4.69)
- (envelope-from <gcbb-barebox@m.gmane.org>) id 1Srsnf-0007xn-B1
- for barebox@lists.infradead.org; Thu, 19 Jul 2012 17:38:01 +0200
-Received: from h96-60-251-119.cncrtn.dsl.dynamic.tds.net ([96.60.251.119])
- by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
- id 1AlnuQ-0007hv-00
- for <barebox@lists.infradead.org>; Thu, 19 Jul 2012 17:37:59 +0200
-Received: from jkirk865 by h96-60-251-119.cncrtn.dsl.dynamic.tds.net with
- local (Gmexim 0.1 (Debian)) id 1AlnuQ-0007hv-00
- for <barebox@lists.infradead.org>; Thu, 19 Jul 2012 17:37:59 +0200
-From: Jerry Kirk <jkirk865@gmail.com>
-Date: Thu, 19 Jul 2012 15:37:47 +0000 (UTC)
-Message-ID: <loom.20120719T173418-826@post.gmane.org>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SrtEj-00030h-Hf
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 16:06:03 +0000
+Date: Thu, 19 Jul 2012 18:05:52 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120719160552.GA30009@pengutronix.de>
+References: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
+ <20120719150832.GG22657@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20120719150832.GG22657@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,42 +23,146 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: USB On PCM043?
-To: barebox@lists.infradead.org
+Subject: Re: Compressed barebox image support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-We have been attempting to get USB Host mode working under Barebox(2012-07-0) on 
-a PCM043 platform (i.mx35), but we are having a bit of trouble.
+On Thu, Jul 19, 2012 at 05:08:32PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 10:12 Thu 19 Jul     , Sascha Hauer wrote:
+> > The following series allows to create a self extracting barebox image.
+> > This is done by linking barebox twice, once for the actual binary, but
+> > without lowlevel initstuff and once for the lowlevel init stuff, the
+> > decompressor and the compressed image.
+> > 
+> > Using lzo compression the pcm038 image shrinks from 252k to 155k. The
+> > series has been tested on the pcm038 second stage, first stage NAND and
+> > first stage NOR and also on an i.MX53 LOCO board (also in thumb2 mode)
+> > 
+> > Using compressed images currently adds to the boot time, at least on
+> > my slower arm9 systems. Using the MMU during decompression would help,
+> > but this currently isn't implemented.
+> > 
+> > I think the preparation patches should be ready for merging. The last
+> > patch in this series adding compression support I am not that confident
+> > with. Currently I am not very happy with the Makefile changes which
+> > somehow look like bypassing the kbuild mechanism and handcrufting
+> > something that looks like kbuild. If someone has ideas how to improve
+> > this, let me know. Nevertheless I would be happy about Tested-by
+> > (and does-not-work-for) tags.
+> > 
+> > Sascha
+> > 
+> > ----------------------------------------------------------------
+> > Sascha Hauer (9):
+> >       lzo: Allow for static inlining
+> >       ARM lds: remove unused got
+> >       ARM: remove board linker script option
+> >       ARM: remove exception vectors from boards
+> >       ARM startup: calculate offset instead of runtime address
+> >       ARM ep93xx: Get rid of special handling in linker file
+> >       ARM boards: Use _text rather than TEXT_BASE
+> >       ARM: Separate assembler functions into their own section
+> >       Add compressed image support
+> 
+> can you push it on a git?
 
-We have  merged the CONFIG_USB specific code for "imx35_devices_init" and 
-"imx35_usb_init" from the Eukrea platform into pcm043.c, added the 
-"MX35_PAD_I2C2_CLK__USB_TOP_USBH2_PWR" and "MX35_PAD_I2C2_DAT__USB_TOP_USBH2_OC" 
-pad definitions (as per the main kernel pcm043.c file), added the "tmp |= 0x3 << 
-CCM_CGR2_USB_SHIFT" to enable the USB clock to "pcm043_core_setup", built 
-everything with the "usb" command enabled, and then loaded the new Barebox image 
-into our pcm043 board. We have USB_EHCI and USB_STORAGE enabled in the Barebox 
-config.
+Here you are. I partly integrated your comments already.
 
-If I execute the "usb" command then it returns that it has found 1 EHCI 
-controller. If I plug in any device, the only one it has EVER detected has been 
-a USB mouse. It will be detected most of the time following a reset and after 
-unplugging/replugging the mouse -- but will never be detected again after this 
-unless I do a reset/replug operation (and never on a "usb -f" forced redetect).
+Sascha
 
-Basically, our goal is to get USB flash drives working for use as a means of 
-upgrading our Linux kernel in the field -- but right now it won't even EVER 
-recognize a USB flash drive when it is plugged into the unit. We also know it is 
-not a hardware problem as all USB devices work just fine once the full kernel 
-finishes booting.
+The following changes since commit 2f6b1f7690640f571f8e72fc2f2564acb2e13778:
 
-From what we have read, it looks like the Eukrea platform had USB working in it, 
-and we have attempted to use it as a guide, but we still aren't having any luck.
+  ARM/MXS: the GPIO bitkeeper enable logic is inverse to the pullup enable logic (2012-07-16 23:30:14 +0200)
 
-Does anyone know of any steps we might be missing? Or of anyone who has gotten 
-USB host mode working on a pcm043 under Barebox before?
+are available in the git repository at:
 
-I think we are close, but something (obviously) still isn't right.
+  git://git.pengutronix.de/git/barebox.git work/compressed-image
 
+for you to fetch changes up to af1de0f86036ab8cb8f4a434708a31db21b33de2:
 
+  Add compressed image support (2012-07-19 18:02:02 +0200)
+
+----------------------------------------------------------------
+Sascha Hauer (9):
+      lzo: Allow for static inlining
+      ARM lds: remove unused got
+      ARM: remove board linker script option
+      ARM: remove exception vectors from boards
+      ARM startup: calculate offset instead of runtime address
+      ARM ep93xx: Get rid of special handling in linker file
+      ARM boards: Use _text rather than TEXT_BASE
+      ARM: Separate assembler functions into their own section
+      Add compressed image support
+
+ Makefile                                           |   31 ++++++-
+ arch/arm/Kconfig                                   |   13 +--
+ arch/arm/Makefile                                  |    4 +-
+ arch/arm/boards/a9m2410/a9m2410.c                  |    3 +-
+ arch/arm/boards/a9m2440/a9m2440.c                  |    3 +-
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c  |    7 +-
+ arch/arm/boards/eukrea_cpuimx25/lowlevel.c         |    4 +-
+ arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c  |    4 +-
+ arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S    |   11 +--
+ arch/arm/boards/eukrea_cpuimx35/flash_header.c     |    2 -
+ arch/arm/boards/eukrea_cpuimx35/lowlevel.c         |    4 +-
+ arch/arm/boards/freescale-mx25-3-stack/3stack.c    |    8 +-
+ .../boards/freescale-mx25-3-stack/lowlevel_init.S  |   11 +--
+ arch/arm/boards/freescale-mx35-3-stack/3stack.c    |    4 +-
+ .../boards/freescale-mx35-3-stack/flash_header.c   |    4 +-
+ .../boards/freescale-mx35-3-stack/lowlevel_init.S  |   11 +--
+ arch/arm/boards/freescale-mx53-loco/flash_header.c |    2 +-
+ arch/arm/boards/freescale-mx53-smd/flash_header.c  |    2 +-
+ arch/arm/boards/freescale-mx6-arm2/flash_header.c  |    5 +-
+ arch/arm/boards/guf-cupid/lowlevel.c               |    4 +-
+ arch/arm/boards/guf-neso/lowlevel.c                |    4 +-
+ arch/arm/boards/imx21ads/imx21ads.c                |    4 +-
+ arch/arm/boards/imx21ads/lowlevel_init.S           |   10 +--
+ arch/arm/boards/karo-tx25/board.c                  |    3 +-
+ arch/arm/boards/karo-tx25/lowlevel.c               |    4 +-
+ arch/arm/boards/karo-tx51/flash_header.c           |    2 +-
+ arch/arm/boards/mini2440/mini2440.c                |    3 +-
+ arch/arm/boards/pcm037/lowlevel_init.S             |    7 +-
+ arch/arm/boards/pcm037/pcm037.c                    |    4 +-
+ arch/arm/boards/pcm038/lowlevel.c                  |    4 +-
+ arch/arm/boards/pcm043/lowlevel.c                  |    4 +-
+ arch/arm/boards/phycard-i.MX27/lowlevel_init.S     |    8 +-
+ arch/arm/boards/phycard-i.MX27/pca100.c            |    2 +-
+ arch/arm/boards/tqma53/flash_header.c              |    5 +-
+ arch/arm/cpu/cache-armv4.S                         |    7 +-
+ arch/arm/cpu/cache-armv5.S                         |    7 +-
+ arch/arm/cpu/cache-armv6.S                         |   11 ++-
+ arch/arm/cpu/cache-armv7.S                         |    8 +-
+ arch/arm/cpu/start.c                               |   87 +++++++++++++++++---
+ arch/arm/lib/Makefile                              |    4 +-
+ arch/arm/lib/ashldi3.S                             |    1 +
+ arch/arm/lib/ashrdi3.S                             |    1 +
+ arch/arm/lib/barebox-compressed.lds.S              |   70 ++++++++++++++++
+ arch/arm/lib/barebox.lds.S                         |   11 +--
+ arch/arm/lib/findbit.S                             |    9 ++
+ arch/arm/lib/io-writesw-armv4.S                    |    2 +
+ arch/arm/lib/lib1funcs.S                           |    7 ++
+ arch/arm/lib/lshrdi3.S                             |    1 +
+ arch/arm/mach-ep93xx/Makefile                      |    2 +-
+ arch/arm/mach-ep93xx/header.c                      |    8 ++
+ arch/arm/mach-ep93xx/include/mach/barebox.lds.h    |    9 ++
+ common/Kconfig                                     |   12 +++
+ include/asm-generic/barebox.lds.h                  |    3 +-
+ include/asm-generic/memory_layout.h                |    2 +
+ include/lzo.h                                      |    8 +-
+ lib/decompress_unlzo.c                             |    9 +-
+ lib/lzo/lzo1x_decompress.c                         |    2 +-
+ lib/vsprintf.c                                     |    2 +-
+ piggy.lzo.S                                        |    6 ++
+ 59 files changed, 358 insertions(+), 132 deletions(-)
+ create mode 100644 arch/arm/lib/barebox-compressed.lds.S
+ create mode 100644 arch/arm/mach-ep93xx/header.c
+ create mode 100644 arch/arm/mach-ep93xx/include/mach/barebox.lds.h
+ create mode 100644 piggy.lzo.S
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
