@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Srlr9-0005KQ-Hf
+ id 1Srlr9-0005KT-Hq
  for barebox@lists.infradead.org; Thu, 19 Jul 2012 08:13:38 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 19 Jul 2012 10:13:00 +0200
-Message-Id: <1342685582-13244-8-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 19 Jul 2012 10:13:02 +0200
+Message-Id: <1342685582-13244-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
 References: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,714 +21,449 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/9] ARM boards: Use _text rather than TEXT_BASE
+Subject: [PATCH 9/9] Add compressed image support
 To: barebox@lists.infradead.org
 
-With compressed image support TEXT_BASE will become the base
-address of the uncompressed image. What the boards want instead
-is the base address of the decompressor code or, if not compressed,
-the base address of the uncompressed image. Use _text which is
-the correct one for both cases.
+This allows for creating a lzo compressed binary. This is done by
+linking barebox twice using two linker scripts. One is the regular
+uncompressed binary but without the lowlevel init stuff. The
+other contains the lowlevel init stuff, the decompressor and the
+compressed binary.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/a9m2410/a9m2410.c                      |    3 ++-
- arch/arm/boards/a9m2440/a9m2440.c                      |    3 ++-
- arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c      |    3 ++-
- arch/arm/boards/eukrea_cpuimx25/lowlevel.c             |    4 ++--
- arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c      |    4 +++-
- arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S        |   11 ++++-------
- arch/arm/boards/eukrea_cpuimx35/lowlevel.c             |    4 ++--
- arch/arm/boards/freescale-mx25-3-stack/3stack.c        |    4 +++-
- arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S |   11 ++++-------
- arch/arm/boards/freescale-mx35-3-stack/3stack.c        |    4 +++-
- arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S |   11 ++++-------
- arch/arm/boards/freescale-mx53-loco/flash_header.c     |    2 +-
- arch/arm/boards/freescale-mx53-smd/flash_header.c      |    2 +-
- arch/arm/boards/freescale-mx6-arm2/flash_header.c      |    2 +-
- arch/arm/boards/guf-cupid/lowlevel.c                   |    4 ++--
- arch/arm/boards/guf-neso/lowlevel.c                    |    4 ++--
- arch/arm/boards/imx21ads/imx21ads.c                    |    4 +++-
- arch/arm/boards/imx21ads/lowlevel_init.S               |   10 ++++------
- arch/arm/boards/karo-tx25/board.c                      |    3 ++-
- arch/arm/boards/karo-tx25/lowlevel.c                   |    4 ++--
- arch/arm/boards/karo-tx51/flash_header.c               |    2 +-
- arch/arm/boards/mini2440/mini2440.c                    |    3 ++-
- arch/arm/boards/pcm037/lowlevel_init.S                 |    7 ++-----
- arch/arm/boards/pcm037/pcm037.c                        |    4 +++-
- arch/arm/boards/pcm038/lowlevel.c                      |    4 ++--
- arch/arm/boards/pcm043/lowlevel.c                      |    4 ++--
- arch/arm/boards/phycard-i.MX27/lowlevel_init.S         |    8 ++------
- arch/arm/boards/phycard-i.MX27/pca100.c                |    2 +-
- arch/arm/boards/tqma53/flash_header.c                  |    2 +-
- 29 files changed, 65 insertions(+), 68 deletions(-)
+ Makefile                              |   31 +++++++++++++-
+ arch/arm/Kconfig                      |    1 +
+ arch/arm/Makefile                     |    1 +
+ arch/arm/cpu/start.c                  |   73 +++++++++++++++++++++++++++++++--
+ arch/arm/lib/Makefile                 |    1 +
+ arch/arm/lib/barebox-compressed.lds.S |   71 ++++++++++++++++++++++++++++++++
+ arch/arm/lib/barebox.lds.S            |    3 +-
+ common/Kconfig                        |   12 ++++++
+ include/asm-generic/memory_layout.h   |    2 +
+ lib/vsprintf.c                        |   25 ++++++++++-
+ piggy.lzo.S                           |    6 +++
+ 11 files changed, 220 insertions(+), 6 deletions(-)
+ create mode 100644 arch/arm/lib/barebox-compressed.lds.S
+ create mode 100644 piggy.lzo.S
 
-diff --git a/arch/arm/boards/a9m2410/a9m2410.c b/arch/arm/boards/a9m2410/a9m2410.c
-index eaafdbd..3e4572f 100644
---- a/arch/arm/boards/a9m2410/a9m2410.c
-+++ b/arch/arm/boards/a9m2410/a9m2410.c
-@@ -29,6 +29,7 @@
- #include <init.h>
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
-+#include <asm-generic/sections.h>
- #include <partition.h>
- #include <nand.h>
- #include <io.h>
-@@ -139,7 +140,7 @@ device_initcall(a9m2410_devices_init);
- #ifdef CONFIG_S3C_NAND_BOOT
- void __bare_init nand_boot(void)
+diff --git a/Makefile b/Makefile
+index ebcf9bf..3ade6cc 100644
+--- a/Makefile
++++ b/Makefile
+@@ -512,6 +512,7 @@ common-y	:= $(patsubst %/, %/built-in.o, $(common-y))
+ barebox-common := $(common-y)
+ barebox-all    := $(barebox-common)
+ barebox-lds    := $(lds-y)
++barebox-compressed-lds    := $(lds-compressed-y)
+ 
+ # Rule to link barebox
+ # May be overridden by arch/$(ARCH)/Makefile
+@@ -667,6 +668,7 @@ quiet_cmd_objcopy = OBJCOPY $@
+       cmd_objcopy = $(OBJCOPY) $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $< $@
+ 
+ OBJCOPYFLAGS_barebox.bin = -O binary
++OBJCOPYFLAGS_barebox-uncompressed.bin = -O binary
+ 
+ barebox.bin: barebox FORCE
+ 	$(call if_changed,objcopy)
+@@ -700,13 +702,39 @@ quiet_cmd_disasm = DISASM  $@
+ 
+ barebox.S: barebox FORCE
+ 	$(call if_changed,disasm)
++barebox-uncompressed.S: barebox-uncompressed FORCE
++	$(call if_changed,disasm)
+ endif
+ 
+ # barebox image
++barebox-uncompressed: $(barebox-lds) $(barebox-head) $(barebox-common) $(kallsyms.o)
++	$(call barebox-modpost)
++	$(call if_changed_rule,barebox__)
++	$(Q)rm -f .old_version
++
++barebox-uncompressed.bin: barebox-uncompressed
++	$(call if_changed,objcopy)
++
++barebox-uncompressed.bin.lzo: barebox-uncompressed.bin
++	@echo "  LZO    " $@
++	$(Q)lzop -f -9 -o $@ barebox-uncompressed.bin
++
++piggy.lzo.o: barebox-uncompressed.bin.lzo piggy.lzo.S
++	@echo "  CC     " $@
++	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -c piggy.lzo.S -o $@
++
++ifdef CONFIG_IMAGE_COMPRESSION_LZO
++barebox: piggy.lzo.o
++	@echo "  LD     " $@
++	$(Q)$(LD) $(LDFLAGS) $(LDFLAGS_barebox) -o $@ \
++		-T $(barebox-compressed-lds) $(barebox-compressed) \
++		--start-group $(barebox-common) piggy.lzo.o --end-group
++else
+ barebox: $(barebox-lds) $(barebox-head) $(barebox-common) $(kallsyms.o) FORCE
+ 	$(call barebox-modpost)
+ 	$(call if_changed_rule,barebox__)
+ 	$(Q)rm -f .old_version
++endif
+ 
+ barebox.srec: barebox
+ 	$(OBJCOPY) -O srec $< $@
+@@ -1004,7 +1032,8 @@ CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
+                 .tmp_version .tmp_barebox* barebox.bin barebox.map barebox.S \
+ 		.tmp_kallsyms* barebox_default_env* barebox.ldr \
+ 		scripts/bareboxenv-target \
+-		Doxyfile.version barebox.srec barebox.s5p
++		Doxyfile.version barebox.srec barebox.s5p \
++		barebox-uncompressed barebox-uncompressed.bin barebox-uncompressed.bin.lzo
+ 
+ # Directories & files removed with 'make mrproper'
+ MRPROPER_DIRS  += include/config include2 usr/include
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index d988455..2396bae 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -4,6 +4,7 @@ config ARM
+ 	select HAS_MODULES
+ 	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
+ 	select HAVE_CONFIGURABLE_TEXT_BASE
++	select HAVE_IMAGE_COMPRESSION
+ 	default y
+ 
+ config ARM_AMBA
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index cbbc0a0..a93c4d5 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -208,5 +208,6 @@ common-y += $(BOARD) $(MACH)
+ common-y += arch/arm/lib/ arch/arm/cpu/
+ 
+ lds-y	:= arch/arm/lib/barebox.lds
++lds-compressed-y := arch/arm/lib/barebox-compressed.lds
+ 
+ CLEAN_FILES += include/generated/mach-types.h arch/arm/lib/barebox.lds
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index cabe4d2..f4aeefe 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -28,16 +28,36 @@
+ #include <asm-generic/memory_layout.h>
+ #include <asm/sections.h>
+ 
++#ifdef CONFIG_IMAGE_COMPRESSION_LZO
++void __naked __section(.text_head_entry) compressed_start(void)
++{
++	barebox_arm_head();
++}
++
++void __naked __section(.text_entry) start(void)
++{
++	u32 r;
++
++	/* Setup the stack */
++	r = STACK_BASE + STACK_SIZE - 16;
++	__asm__ __volatile__("mov sp, %0" : : "r"(r));
++	/* clear bss */
++	memset(__bss_start, 0, __bss_stop - __bss_start);
++
++	start_barebox();
++}
++#else
+ void __naked __section(.text_entry) start(void)
  {
--	s3c24x0_nand_load_image((void *)TEXT_BASE, 256 * 1024, 0);
-+	s3c24x0_nand_load_image(_text, 256 * 1024, 0);
+ 	barebox_arm_head();
  }
- #endif
++#endif
  
-diff --git a/arch/arm/boards/a9m2440/a9m2440.c b/arch/arm/boards/a9m2440/a9m2440.c
-index 1d20248..6d71aef 100644
---- a/arch/arm/boards/a9m2440/a9m2440.c
-+++ b/arch/arm/boards/a9m2440/a9m2440.c
-@@ -28,6 +28,7 @@
- #include <driver.h>
- #include <init.h>
- #include <asm/armlinux.h>
-+#include <asm-generic/sections.h>
- #include <generated/mach-types.h>
- #include <partition.h>
- #include <nand.h>
-@@ -158,7 +159,7 @@ device_initcall(a9m2440_devices_init);
- #ifdef CONFIG_S3C_NAND_BOOT
- void __bare_init nand_boot(void)
+ void __naked __section(.text_exceptions) exception_vectors(void)
  {
--	s3c24x0_nand_load_image((void *)TEXT_BASE, 256 * 1024, 0);
-+	s3c24x0_nand_load_image(_text, 256 * 1024, 0);
- }
- #endif
- 
-diff --git a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-index b3b0838..0aac13c 100644
---- a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-+++ b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-@@ -28,6 +28,7 @@
- #include <environment.h>
- #include <mach/imx-regs.h>
- #include <asm/armlinux.h>
-+#include <asm/barebox-arm.h>
- #include <asm-generic/sections.h>
- #include <mach/gpio.h>
- #include <io.h>
-@@ -284,7 +285,7 @@ console_initcall(eukrea_cpuimx25_console_init);
- #ifdef CONFIG_NAND_IMX_BOOT
- void __bare_init nand_boot(void)
- {
--	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
-+	imx_nand_load_image(_text, barebox_image_size);
- }
- #endif
- 
-diff --git a/arch/arm/boards/eukrea_cpuimx25/lowlevel.c b/arch/arm/boards/eukrea_cpuimx25/lowlevel.c
-index ff66e92..89066e9 100644
---- a/arch/arm/boards/eukrea_cpuimx25/lowlevel.c
-+++ b/arch/arm/boards/eukrea_cpuimx25/lowlevel.c
-@@ -42,7 +42,7 @@ static void __bare_init __naked insdram(void)
- 	r = STACK_BASE + STACK_SIZE - 12;
- 	__asm__ __volatile__("mov sp, %0" : : "r"(r));
- 
--	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
-+	imx_nand_load_image(_text, barebox_image_size);
- 
+ 	__asm__ __volatile__ (
+ 		".arm\n"
+-		"b reset\n"				/* reset */
++		"1: b 1b\n"					/* reset */
+ #ifdef CONFIG_ARM_EXCEPTIONS
+ 		"ldr pc, =undefined_instruction\n"	/* undefined instruction */
+ 		"ldr pc, =software_interrupt\n"		/* software interrupt (SWI) */
+@@ -98,6 +118,34 @@ void __naked __bare_init reset(void)
  	board_init_lowlevel_return();
  }
-@@ -154,7 +154,7 @@ void __bare_init __naked board_init_lowlevel(void)
- 		board_init_lowlevel_return();
  
- 	src = (unsigned int *)IMX_NFC_BASE;
--	trg = (unsigned int *)TEXT_BASE;
-+	trg = (unsigned int *)_text;
- 
- 	/* Move ourselves out of NFC SRAM */
- 	for (i = 0; i < 0x800 / sizeof(int); i++)
-diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-index 63e87c9..193c277 100644
---- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-+++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-@@ -31,6 +31,7 @@
- #include <mach/gpio.h>
- #include <asm/armlinux.h>
- #include <asm-generic/sections.h>
-+#include <asm/barebox-arm.h>
- #include <generated/mach-types.h>
- #include <partition.h>
- #include <fs.h>
-@@ -264,7 +265,8 @@ late_initcall(eukrea_cpuimx27_late_init);
- #ifdef CONFIG_NAND_IMX_BOOT
- void __bare_init nand_boot(void)
++extern void *input_data;
++extern void *input_data_end;
++
++#define STATIC static
++#include "../../../lib/decompress_unlzo.c"
++
++void barebox_uncompress(void *compressed_start, unsigned int len)
++{
++	void (*barebox)(void);
++
++#ifdef CONFIG_THUMB2_BAREBOX
++	barebox = (void *)(TEXT_BASE + 1);
++#else
++	barebox = (void *)TEXT_BASE;
++#endif
++
++	decompress_unlzo((void *)compressed_start,
++			len,
++			NULL, NULL,
++			(void *)TEXT_BASE, NULL, NULL);
++
++	/* flush I-cache before jumping to the uncompressed binary */
++	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
++
++	barebox();
++}
++
++
+ /*
+  * Board code can jump here by either returning from board_init_lowlevel
+  * or by calling this function directly.
+@@ -105,7 +153,10 @@ void __naked __bare_init reset(void)
+ void __naked __section(.text_ll_return) board_init_lowlevel_return(void)
  {
--	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
-+	imx_nand_load_image(_text, barebox_image_size);
-+	board_init_lowlevel_return();
- }
- #endif
+ 	uint32_t r, addr, offset;
+-
++#ifdef CONFIG_IMAGE_COMPRESSION_LZO
++	uint32_t compressed_start, compressed_end, len;
++	void (*uncompress)(void *compressed_start, unsigned int len);
++#endif
+ 	/*
+ 	 * Get runtime address of this function. Do not
+ 	 * put any code above this.
+@@ -130,8 +181,24 @@ void __naked __section(.text_ll_return) board_init_lowlevel_return(void)
+ 	/* flush I-cache before jumping to the copied binary */
+ 	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
  
-diff --git a/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S b/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S
-index e318546..0dae3ec 100644
---- a/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S
-+++ b/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S
-@@ -1,4 +1,5 @@
- #include <config.h>
++#ifdef CONFIG_IMAGE_COMPRESSION_LZO
++	compressed_start = (uint32_t)&input_data - offset;
++	compressed_end = (uint32_t)&input_data_end - offset;
++	len = compressed_end - compressed_start;
++
++	uncompress = barebox_uncompress;
++
++	/* call start_barebox with its absolute address */
++	__asm__ __volatile__(
++			"mov r0, %1\n"
++			"mov r1, %2\n"
++			"mov pc, %0\n"
++			:
++			: "r"(uncompress), "r"(compressed_start), "r"(len)
++			: "r0", "r1");
++#else
+ 	/* call start_barebox with its absolute address */
+ 	r = (unsigned int)&start_barebox;
+ 	__asm__ __volatile__("mov pc, %0" : : "r"(r));
++#endif
+ }
+-
+diff --git a/arch/arm/lib/Makefile b/arch/arm/lib/Makefile
+index 1eaf474..044d3e6 100644
+--- a/arch/arm/lib/Makefile
++++ b/arch/arm/lib/Makefile
+@@ -21,3 +21,4 @@ obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memset.o
+ obj-$(CONFIG_ARM_UNWIND) += unwind.o
+ obj-$(CONFIG_MODULES) += module.o
+ extra-y += barebox.lds
++extra-$(CONFIG_IMAGE_COMPRESSION_LZO) += barebox-compressed.lds
+diff --git a/arch/arm/lib/barebox-compressed.lds.S b/arch/arm/lib/barebox-compressed.lds.S
+new file mode 100644
+index 0000000..f267da9
+--- /dev/null
++++ b/arch/arm/lib/barebox-compressed.lds.S
+@@ -0,0 +1,71 @@
++/*
++ * (C) Copyright 2000-2004
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
++ */
++
++#include <asm-generic/barebox.lds.h>
 +#include <asm-generic/memory_layout.h>
- #include <mach/imx-regs.h>
- 
- #define writel(val, reg) \
-@@ -107,7 +108,7 @@ board_init_lowlevel:
- 	sdram_init
- 
- #ifdef CONFIG_NAND_IMX_BOOT
--	ldr	sp, =0xa0f00000		/* Setup a temporary stack in SDRAM */
-+	ldr	sp, =STACK_BASE + STACK_SIZE - 12	/* Setup a temporary stack in SDRAM */
- 
- 	ldr	r0, =IMX_NFC_BASE		/* start of NFC SRAM                */
- 	ldr	r2, =IMX_NFC_BASE + 0x1000	/* end of NFC SRAM                  */
-@@ -119,7 +120,7 @@ board_init_lowlevel:
- 	bhi	ret
- 
- 	/* Move ourselves out of NFC SRAM */
--	ldr	r1, =TEXT_BASE
-+	ldr	r1, =_text
- 
- copy_loop:
- 	ldmia	r0!, {r3-r9}		/* copy from source address [r0]    */
-@@ -129,12 +130,8 @@ copy_loop:
- 
- 	ldr	pc, =1f			/* Jump to SDRAM                    */
- 1:
--	bl	nand_boot		/* Load barebox from NAND Flash      */
--
--	ldr	r1, =IMX_NFC_BASE - TEXT_BASE
--	sub	r10, r10, r1		/* adjust return address from NFC SRAM */
-+	b	nand_boot		/* Load barebox from NAND Flash      */
- 					/* to SDRAM                            */
--
- #endif /* CONFIG_NAND_IMX_BOOT */
- 
- ret:
-diff --git a/arch/arm/boards/eukrea_cpuimx35/lowlevel.c b/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
-index 552b0cf..57867dc 100644
---- a/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
-+++ b/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
-@@ -53,7 +53,7 @@ static void __bare_init __naked insdram(void)
- 	r = STACK_BASE + STACK_SIZE - 12;
- 	__asm__ __volatile__("mov sp, %0" : : "r"(r));
- 
--	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
-+	imx_nand_load_image(_text, barebox_image_size);
- 
- 	board_init_lowlevel_return();
- }
-@@ -163,7 +163,7 @@ void __bare_init __naked board_init_lowlevel(void)
- 		board_init_lowlevel_return();
- 
- 	src = (unsigned int *)IMX_NFC_BASE;
--	trg = (unsigned int *)TEXT_BASE;
-+	trg = (unsigned int *)_text;
- 
- 	/* Move ourselves out of NFC SRAM */
- 	for (i = 0; i < 0x800 / sizeof(int); i++)
-diff --git a/arch/arm/boards/freescale-mx25-3-stack/3stack.c b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
-index 6b6146d..97c1fd9 100644
---- a/arch/arm/boards/freescale-mx25-3-stack/3stack.c
-+++ b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
-@@ -28,6 +28,7 @@
- #include <mach/imx-regs.h>
- #include <asm/armlinux.h>
- #include <asm-generic/sections.h>
-+#include <asm/barebox-arm.h>
- #include <mach/gpio.h>
- #include <io.h>
- #include <partition.h>
-@@ -294,7 +295,8 @@ console_initcall(imx25_console_init);
- #ifdef CONFIG_NAND_IMX_BOOT
- void __bare_init nand_boot(void)
++
++OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
++OUTPUT_ARCH(arm)
++ENTRY(compressed_start)
++SECTIONS
++{
++	. = HEAD_TEXT_BASE;
++
++	PRE_IMAGE
++
++	. = ALIGN(4);
++	.text      :
++	{
++		_stext = .;
++		_text = .;
++		*(.text_head_entry*)
++		__ll_return = .;
++		*(.text_ll_return*)
++		__bare_init_start = .;
++		*(.text_bare_init*)
++		__bare_init_end = .;
++		*(.text*)
++	}
++	BAREBOX_BARE_INIT_SIZE
++
++	. = ALIGN(4);
++	.rodata : { *(.rodata*) }
++
++	_etext = .;			/* End of text and rodata section */
++
++	. = ALIGN(4);
++	.piggydata : {
++		*(.piggydata)
++	}
++
++	. = ALIGN(4);
++	.data : { *(.data*) }
++
++	. = ALIGN(4);
++	__bss_start = .;
++	.bss : { *(.bss*) }
++	__bss_stop = .;
++	_end = .;
++	_barebox_image_size = __bss_start - HEAD_TEXT_BASE;
++}
+diff --git a/arch/arm/lib/barebox.lds.S b/arch/arm/lib/barebox.lds.S
+index e0bae70..b415830 100644
+--- a/arch/arm/lib/barebox.lds.S
++++ b/arch/arm/lib/barebox.lds.S
+@@ -31,8 +31,9 @@ SECTIONS
  {
--	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
-+	imx_nand_load_image(_text, barebox_image_size);
-+	board_init_lowlevel_return();
- }
- #endif
+ 	. = TEXT_BASE;
  
-diff --git a/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S b/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S
-index 7b75233..fa0f957 100644
---- a/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S
-+++ b/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S
-@@ -21,6 +21,7 @@
-  * MA 02111-1307 USA
-  */
- 
-+#include <asm-generic/memory_layout.h>
- #include <mach/imx-regs.h>
- #include <mach/imx-pll.h>
- #include <mach/esdctl.h>
-@@ -100,7 +101,7 @@ board_init_lowlevel:
- 	str r3, [r0, #0x30]
- 
- #ifdef CONFIG_NAND_IMX_BOOT
--	ldr	sp, =0xa0f00000		/* Setup a temporary stack in SDRAM */
-+	ldr	sp, =STACK_BASE + STACK_SIZE - 12 /* Setup a temporary stack in SDRAM */
- 
- 	ldr	r0, =IMX_NFC_BASE		/* start of NFC SRAM                */
- 	ldr	r2, =IMX_NFC_BASE + 0x1000	/* end of NFC SRAM                  */
-@@ -112,7 +113,7 @@ board_init_lowlevel:
- 	bhi	ret
- 
- 	/* Move ourselves out of NFC SRAM */
--	ldr	r1, =TEXT_BASE
-+	ldr	r1, =_text
- 
- copy_loop:
- 	ldmia	r0!, {r3-r9}		/* copy from source address [r0]    */
-@@ -122,11 +123,7 @@ copy_loop:
- 
- 	ldr	pc, =1f			/* Jump to SDRAM                    */
- 1:
--	bl	nand_boot		/* Load barebox from NAND Flash      */
++#ifndef CONFIG_IMAGE_COMPRESSION_LZO
+ 	PRE_IMAGE
 -
--	ldr	r1, =IMX_NFC_BASE - TEXT_BASE
--	sub	r10, r10, r1		/* adjust return address from NFC SRAM */
--					/* to SDRAM                            */
-+	b	nand_boot		/* Load barebox from NAND Flash      */
++#endif
+ 	. = ALIGN(4);
+ 	.text      :
+ 	{
+diff --git a/common/Kconfig b/common/Kconfig
+index b776031..0e81b57 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -93,6 +93,13 @@ config ENVIRONMENT_VARIABLES
  
- #endif /* CONFIG_NAND_IMX_BOOT */
+ menu "memory layout                 "
  
-diff --git a/arch/arm/boards/freescale-mx35-3-stack/3stack.c b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
-index cb1280d..9b255a5 100644
---- a/arch/arm/boards/freescale-mx35-3-stack/3stack.c
-+++ b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
-@@ -38,6 +38,7 @@
++config HAVE_IMAGE_COMPRESSION
++	bool
++
++config IMAGE_COMPRESSION_LZO
++	depends on HAVE_IMAGE_COMPRESSION
++	bool "lzo compressed image"
++
+ config MMU
+ 	bool "Enable MMU"
+ 	help
+@@ -173,6 +180,11 @@ config MALLOC_SIZE
+ 	hex
+ 	default 0x400000
+ 	prompt "malloc area size"
++
++config HEAD_TEXT_BASE
++	depends on MEMORY_LAYOUT_FIXED && IMAGE_COMPRESSION_LZO
++	hex
++	prompt "HEAD_TEXT_BASE"
+ endmenu
  
- #include <asm/armlinux.h>
- #include <asm-generic/sections.h>
-+#include <asm/barebox-arm.h>
- #include <io.h>
- #include <generated/mach-types.h>
+ config BROKEN
+diff --git a/include/asm-generic/memory_layout.h b/include/asm-generic/memory_layout.h
+index 941cd42..a5efaf0 100644
+--- a/include/asm-generic/memory_layout.h
++++ b/include/asm-generic/memory_layout.h
+@@ -5,11 +5,13 @@
  
-@@ -450,6 +451,7 @@ void __bare_init nand_boot(void)
- 	 * The driver is able to detect NAND's pagesize by CPU internal
- 	 * fuses or external pull ups. But not the blocksize...
- 	 */
--	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
-+	imx_nand_load_image(_text, barebox_image_size);
-+	board_init_lowlevel_return();
- }
- #endif
-diff --git a/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S b/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
-index 30dbcc0..837d2ff 100644
---- a/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
-+++ b/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
-@@ -25,6 +25,7 @@
- #include <mach/imx-pll.h>
- #include <mach/esdctl.h>
- #include <asm/cache-l2x0.h>
-+#include <asm-generic/memory_layout.h>
- #include "board-mx35_3stack.h"
+ #define MALLOC_BASE (TEXT_BASE - CONFIG_MALLOC_SIZE)
+ #define STACK_BASE (TEXT_BASE - CONFIG_MALLOC_SIZE - CONFIG_STACK_SIZE)
++#define HEAD_TEXT_BASE (TEXT_BASE - 0x100000)
  
- #define CSD0_BASE_ADDR		0x80000000
-@@ -156,7 +157,7 @@ board_init_lowlevel:
- 	str	r3, [r0, #0x30]
+ #else
  
- #ifdef CONFIG_NAND_IMX_BOOT
--	ldr	sp, =TEXT_BASE - 4		/* Setup a temporary stack in SDRAM */
-+	ldr	sp, =STACK_BASE + STACK_SIZE - 12		/* Setup a temporary stack in SDRAM */
+ #define STACK_BASE CONFIG_STACK_BASE
+ #define MALLOC_BASE CONFIG_MALLOC_BASE
++#define HEAD_TEXT_BASE CONFIG_HEAD_TEXT_BASE
  
- 	ldr	r0, =IMX_NFC_BASE		/* start of NFC SRAM */
- 	ldr	r2, =IMX_NFC_BASE + 0x800	/* end of NFC SRAM */
-@@ -168,7 +169,7 @@ board_init_lowlevel:
- 	bhs	ret
- 
- 	/* Move ourselves out of NFC SRAM */
--	ldr r1, =TEXT_BASE
-+	ldr r1, =_text
- 
- copy_loop:
- 	ldmia	r0!, {r3-r9}			/* copy from source address [r0] */
-@@ -178,11 +179,7 @@ copy_loop:
- 
- 	ldr	pc, =1f				/* Jump to SDRAM */
- 1:
--	bl	nand_boot			/* Load barebox from NAND Flash */
--
--	/* rebase the return address */
--	ldr	r1, =IMX_NFC_BASE - TEXT_BASE
--	sub	r10, r10, r1			/* adjust return address from NFC SRAM */
-+	b	nand_boot			/* Load barebox from NAND Flash */
- ret:
- #endif /* CONFIG_NAND_IMX_BOOT */
- 
-diff --git a/arch/arm/boards/freescale-mx53-loco/flash_header.c b/arch/arm/boards/freescale-mx53-loco/flash_header.c
-index 52e6eee..c2ab255 100644
---- a/arch/arm/boards/freescale-mx53-loco/flash_header.c
-+++ b/arch/arm/boards/freescale-mx53-loco/flash_header.c
-@@ -77,7 +77,7 @@ struct imx_dcd_v2_entry __dcd_entry_section dcd_entry[] = {
- 	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00000000), },
- };
- 
--#define APP_DEST	CONFIG_TEXT_BASE
-+#define APP_DEST	0x70000000
- 
- struct imx_flash_header_v2 __flash_header_section flash_header = {
- 	.header.tag		= IVT_HEADER_TAG,
-diff --git a/arch/arm/boards/freescale-mx53-smd/flash_header.c b/arch/arm/boards/freescale-mx53-smd/flash_header.c
-index 52e6eee..c2ab255 100644
---- a/arch/arm/boards/freescale-mx53-smd/flash_header.c
-+++ b/arch/arm/boards/freescale-mx53-smd/flash_header.c
-@@ -77,7 +77,7 @@ struct imx_dcd_v2_entry __dcd_entry_section dcd_entry[] = {
- 	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00000000), },
- };
- 
--#define APP_DEST	CONFIG_TEXT_BASE
-+#define APP_DEST	0x70000000
- 
- struct imx_flash_header_v2 __flash_header_section flash_header = {
- 	.header.tag		= IVT_HEADER_TAG,
-diff --git a/arch/arm/boards/freescale-mx6-arm2/flash_header.c b/arch/arm/boards/freescale-mx6-arm2/flash_header.c
-index 69d9cfa..60cf9cd 100644
---- a/arch/arm/boards/freescale-mx6-arm2/flash_header.c
-+++ b/arch/arm/boards/freescale-mx6-arm2/flash_header.c
-@@ -146,7 +146,7 @@ struct imx_dcd_v2_entry __dcd_entry_section dcd_entry[] = {
- 	DCD(MX6_IOMUXC_BASE_ADDR + 0x01c, 0x007f007f),
- };
- 
--#define APP_DEST	CONFIG_TEXT_BASE
-+#define APP_DEST	0x10000000
- 
- struct imx_flash_header_v2 __flash_header_section flash_header = {
- 	.header.tag		= IVT_HEADER_TAG,
-diff --git a/arch/arm/boards/guf-cupid/lowlevel.c b/arch/arm/boards/guf-cupid/lowlevel.c
-index bcaa199..8fa9152 100644
---- a/arch/arm/boards/guf-cupid/lowlevel.c
-+++ b/arch/arm/boards/guf-cupid/lowlevel.c
-@@ -60,7 +60,7 @@ static void __bare_init __naked insdram(void)
- 	r = STACK_BASE + STACK_SIZE - 12;
- 	__asm__ __volatile__("mov sp, %0" : : "r"(r));
- 
--	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
-+	imx_nand_load_image(_text, barebox_image_size);
- 
- 	board_init_lowlevel_return();
- }
-@@ -334,7 +334,7 @@ void __bare_init __naked board_init_lowlevel(void)
- 		board_init_lowlevel_return();
- 
- 	src = (unsigned int *)IMX_NFC_BASE;
--	trg = (unsigned int *)TEXT_BASE;
-+	trg = (unsigned int *)_text;
- 
- 	/* Move ourselves out of NFC SRAM */
- 	for (i = 0; i < 0x800 / sizeof(int); i++)
-diff --git a/arch/arm/boards/guf-neso/lowlevel.c b/arch/arm/boards/guf-neso/lowlevel.c
-index a8718e7..9b206be 100644
---- a/arch/arm/boards/guf-neso/lowlevel.c
-+++ b/arch/arm/boards/guf-neso/lowlevel.c
-@@ -44,7 +44,7 @@ static void __bare_init __naked insdram(void)
- 	r = STACK_BASE + STACK_SIZE - 12;
- 	__asm__ __volatile__("mov sp, %0" : : "r"(r));
- 
--	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
-+	imx_nand_load_image(_text, barebox_image_size);
- 
- 	board_init_lowlevel_return();
- }
-@@ -105,7 +105,7 @@ void __bare_init __naked board_init_lowlevel(void)
- 		board_init_lowlevel_return();
- 
- 	src = (unsigned int *)IMX_NFC_BASE;
--	trg = (unsigned int *)TEXT_BASE;
-+	trg = (unsigned int *)_text;
- 
- 	/* Move ourselves out of NFC SRAM */
- 	for (i = 0; i < 0x800 / sizeof(int); i++)
-diff --git a/arch/arm/boards/imx21ads/imx21ads.c b/arch/arm/boards/imx21ads/imx21ads.c
-index e394417..2bbd5ed 100644
---- a/arch/arm/boards/imx21ads/imx21ads.c
-+++ b/arch/arm/boards/imx21ads/imx21ads.c
-@@ -28,6 +28,7 @@
- #include <mach/imx-regs.h>
- #include <asm/armlinux.h>
- #include <asm-generic/sections.h>
-+#include <asm/barebox-arm.h>
- #include <io.h>
- #include <mach/gpio.h>
- #include <partition.h>
-@@ -204,7 +205,8 @@ console_initcall(mx21ads_console_init);
- void __bare_init nand_boot(void)
- {
- 	PCCR0 |= PCCR0_NFC_EN;
--	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
-+	imx_nand_load_image(_text, barebox_image_size);
-+	board_init_lowlevel_return();
- }
  #endif
  
-diff --git a/arch/arm/boards/imx21ads/lowlevel_init.S b/arch/arm/boards/imx21ads/lowlevel_init.S
-index 7926e28..1aeea57 100644
---- a/arch/arm/boards/imx21ads/lowlevel_init.S
-+++ b/arch/arm/boards/imx21ads/lowlevel_init.S
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index 17c1973..3f23bf1 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
 @@ -18,6 +18,7 @@
-  */
+ #include <kallsyms.h>
  
- #include <config.h>
-+#include <asm-generic/memory_layout.h>
- #include <mach/imx-regs.h>
+ #include <common.h>
++#include <init.h>
+ #include <led.h>
  
- 	.section ".text_bare_init","ax"
-@@ -121,7 +122,7 @@ board_init_lowlevel:
- 	str	r1, [r0]
+ unsigned long simple_strtoul(const char *cp,char **endp,unsigned int base)
+@@ -618,7 +619,7 @@ char *asprintf(const char *fmt, ...)
+ }
+ EXPORT_SYMBOL(asprintf);
  
- #ifdef CONFIG_NAND_IMX_BOOT
--	ldr	sp, =TEXT_BASE - 4	/* Setup a temporary stack in SDRAM */
-+	ldr	sp, =STACK_BASE + STACK_SIZE - 12	/* Setup a temporary stack in SDRAM */
- 
- 	ldr	r0, =IMX_NFC_BASE		/* start of NFC SRAM        */
- 	ldr	r2, =IMX_NFC_BASE + 0x800	/* end of NFC SRAM          */
-@@ -133,7 +134,7 @@ board_init_lowlevel:
- 	bhi	ret
- 
- 	/* Move ourselves out of NFC SRAM */
--	ldr	r1, =TEXT_BASE
-+	ldr	r1, =_text
- 
- copy_loop:
- 	ldmia	r0!, {r3-r9}		/* copy from source address [r0]    */
-@@ -143,10 +144,7 @@ copy_loop:
- 
- 	ldr	pc, =1f			/* Jump to SDRAM                    */
- 1:
--	bl	nand_boot		/* Load barebox from NAND Flash     */
--
--	ldr	r1, =IMX_NFC_BASE - TEXT_BASE
--	sub	r10, r10, r1		/* adjust return address from NFC   */
-+	b	nand_boot		/* Load barebox from NAND Flash     */
- 					/* SRAM to SDRAM                    */
- #endif /* CONFIG_NAND_IMX_BOOT */
- 
-diff --git a/arch/arm/boards/karo-tx25/board.c b/arch/arm/boards/karo-tx25/board.c
-index 040c75b..c089935 100644
---- a/arch/arm/boards/karo-tx25/board.c
-+++ b/arch/arm/boards/karo-tx25/board.c
-@@ -28,6 +28,7 @@
- #include <mach/imx-regs.h>
- #include <asm/armlinux.h>
- #include <asm-generic/sections.h>
-+#include <asm/barebox-arm.h>
- #include <mach/gpio.h>
- #include <io.h>
- #include <partition.h>
-@@ -168,7 +169,7 @@ console_initcall(tx25_console_init);
- #ifdef CONFIG_NAND_IMX_BOOT
- void __bare_init nand_boot(void)
+-void __noreturn panic(const char *fmt, ...)
++static void __noreturn __panic(const char *fmt, ...)
  {
--	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
-+	imx_nand_load_image(_text, barebox_image_size);
- }
+ 	va_list	args;
+ 	va_start(args, fmt);
+@@ -637,4 +638,26 @@ void __noreturn panic(const char *fmt, ...)
+ 	reset_cpu(0);
  #endif
- 
-diff --git a/arch/arm/boards/karo-tx25/lowlevel.c b/arch/arm/boards/karo-tx25/lowlevel.c
-index 35dfe9f..9f1c5d6 100644
---- a/arch/arm/boards/karo-tx25/lowlevel.c
-+++ b/arch/arm/boards/karo-tx25/lowlevel.c
-@@ -40,7 +40,7 @@ static void __bare_init __naked insdram(void)
- 	r = STACK_BASE + STACK_SIZE - 12;
- 	__asm__ __volatile__("mov sp, %0" : : "r"(r));
- 
--	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
-+	imx_nand_load_image(_text, barebox_image_size);
- 
- 	board_init_lowlevel_return();
  }
-@@ -158,7 +158,7 @@ void __bare_init __naked board_init_lowlevel(void)
- 		board_init_lowlevel_return();
- 
- 	src = (unsigned int *)IMX_NFC_BASE;
--	trg = (unsigned int *)TEXT_BASE;
-+	trg = (unsigned int *)_text;
- 
- 	/* Move ourselves out of NFC SRAM */
- 	for (i = 0; i < 0x800 / sizeof(int); i++)
-diff --git a/arch/arm/boards/karo-tx51/flash_header.c b/arch/arm/boards/karo-tx51/flash_header.c
-index 7d2f97e..f570348 100644
---- a/arch/arm/boards/karo-tx51/flash_header.c
-+++ b/arch/arm/boards/karo-tx51/flash_header.c
-@@ -39,7 +39,7 @@ struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
-     { .ptr_type = 4, .addr = 0x83fd9014, .val = 0x00000000, },
- };
- 
--#define APP_DEST	CONFIG_ARCH_TEXT_BASE
-+#define APP_DEST	0x90000000
- 
- struct imx_flash_header __flash_header_section flash_header = {
- 	.app_code_jump_vector	= APP_DEST + 0x1000,
-diff --git a/arch/arm/boards/mini2440/mini2440.c b/arch/arm/boards/mini2440/mini2440.c
-index 3d3b820..6408bc8 100644
---- a/arch/arm/boards/mini2440/mini2440.c
-+++ b/arch/arm/boards/mini2440/mini2440.c
-@@ -36,6 +36,7 @@
- #include <mci.h>
- #include <fb.h>
- #include <asm/armlinux.h>
-+#include <asm-generic/sections.h>
- #include <io.h>
- #include <mach/gpio.h>
- #include <mach/s3c-iomap.h>
-@@ -329,7 +330,7 @@ device_initcall(mini2440_devices_init);
- #ifdef CONFIG_S3C_NAND_BOOT
- void __bare_init nand_boot(void)
- {
--	s3c24x0_nand_load_image((void *)TEXT_BASE, 256 * 1024, 0);
-+	s3c24x0_nand_load_image(_text, 256 * 1024, 0);
- }
- #endif
- 
-diff --git a/arch/arm/boards/pcm037/lowlevel_init.S b/arch/arm/boards/pcm037/lowlevel_init.S
-index cc4674d..1f8d38f 100644
---- a/arch/arm/boards/pcm037/lowlevel_init.S
-+++ b/arch/arm/boards/pcm037/lowlevel_init.S
-@@ -146,7 +146,7 @@ clear_iomux:
- 	bhs	ret
- 
- 	/* Move ourselves out of NFC SRAM */
--	ldr	r1, =TEXT_BASE
-+	ldr	r1, =_text
- 
- copy_loop:
- 	ldmia	r0!, {r3-r9}		/* copy from source address [r0]    */
-@@ -156,10 +156,7 @@ copy_loop:
- 
- 	ldr	pc, =1f			/* Jump to SDRAM                    */
- 1:
--	bl	nand_boot		/* Load barebox from NAND Flash      */
--
--	ldr	r1, =IMX_NFC_BASE - TEXT_BASE
--	sub	r10, r10, r1		/* adjust return address from NFC SRAM */
-+	b	nand_boot		/* Load barebox from NAND Flash      */
- ret:
- #endif /* CONFIG_NAND_IMX_BOOT */
- 
-diff --git a/arch/arm/boards/pcm037/pcm037.c b/arch/arm/boards/pcm037/pcm037.c
-index d789b28..9cb082b 100644
---- a/arch/arm/boards/pcm037/pcm037.c
-+++ b/arch/arm/boards/pcm037/pcm037.c
-@@ -37,6 +37,7 @@
- #include <asm/mmu.h>
- #include <partition.h>
- #include <generated/mach-types.h>
-+#include <asm/barebox-arm.h>
- #include <mach/imx-nand.h>
- #include <mach/devices-imx31.h>
- 
-@@ -246,6 +247,7 @@ console_initcall(imx31_console_init);
- #ifdef CONFIG_NAND_IMX_BOOT
- void __bare_init nand_boot(void)
- {
--	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
-+	imx_nand_load_image(_text, barebox_image_size);
-+	board_init_lowlevel_return();
- }
- #endif
-diff --git a/arch/arm/boards/pcm038/lowlevel.c b/arch/arm/boards/pcm038/lowlevel.c
-index 2bc89a0..3f29a83 100644
---- a/arch/arm/boards/pcm038/lowlevel.c
-+++ b/arch/arm/boards/pcm038/lowlevel.c
-@@ -45,7 +45,7 @@ static void __bare_init __naked insdram(void)
- 	r = STACK_BASE + STACK_SIZE - 12;
- 	__asm__ __volatile__("mov sp, %0" : : "r"(r));
- 
--	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
-+	imx_nand_load_image(_text, barebox_image_size);
- 
- 	board_init_lowlevel_return();
- }
-@@ -111,7 +111,7 @@ void __bare_init __naked board_init_lowlevel(void)
- 		board_init_lowlevel_return();
- 
- 	src = (unsigned int *)IMX_NFC_BASE;
--	trg = (unsigned int *)TEXT_BASE;
-+	trg = (unsigned int *)_text;
- 
- 	/* Move ourselves out of NFC SRAM */
- 	for (i = 0; i < 0x800 / sizeof(int); i++)
-diff --git a/arch/arm/boards/pcm043/lowlevel.c b/arch/arm/boards/pcm043/lowlevel.c
-index 69cc4f1..fd6787f 100644
---- a/arch/arm/boards/pcm043/lowlevel.c
-+++ b/arch/arm/boards/pcm043/lowlevel.c
-@@ -58,7 +58,7 @@ static void __bare_init __naked insdram(void)
- 	r = STACK_BASE + STACK_SIZE - 12;
- 	__asm__ __volatile__("mov sp, %0" : : "r"(r));
- 
--	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
-+	imx_nand_load_image(_text, barebox_image_size);
- 
- 	board_init_lowlevel_return();
- }
-@@ -213,7 +213,7 @@ void __bare_init __naked board_init_lowlevel(void)
- 		board_init_lowlevel_return();
- 
- 	src = (unsigned int *)IMX_NFC_BASE;
--	trg = (unsigned int *)TEXT_BASE;
-+	trg = (unsigned int *)_text;
- 
- 	/* Move ourselves out of NFC SRAM */
- 	for (i = 0; i < 0x800 / sizeof(int); i++)
-diff --git a/arch/arm/boards/phycard-i.MX27/lowlevel_init.S b/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
-index 3ef2c54..c24edd4 100644
---- a/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
-+++ b/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
-@@ -106,7 +106,7 @@ board_init_lowlevel:
- 	bhi	ret
- 
- 	/* Move ourselves out of NFC SRAM */
--	ldr	r1, =TEXT_BASE
-+	ldr	r1, =_text
- 
- copy_loop:
- 	ldmia	r0!, {r3-r9}		/* copy from source address [r0]    */
-@@ -116,11 +116,7 @@ copy_loop:
- 
- 	ldr	pc, =1f			/* Jump to SDRAM                    */
- 1:
--	bl	nand_boot		/* Load barebox from NAND Flash      */
--
--	ldr	r1, =IMX_NFC_BASE - TEXT_BASE
--	sub	r10, r10, r1		/* adjust return address from NFC SRAM */
--					/* to SDRAM                            */
-+	b	nand_boot		/* Load barebox from NAND Flash      */
- 
- #endif /* CONFIG_NAND_IMX_BOOT */
- 
-diff --git a/arch/arm/boards/phycard-i.MX27/pca100.c b/arch/arm/boards/phycard-i.MX27/pca100.c
-index 6fdcf6e..126f9ef 100644
---- a/arch/arm/boards/phycard-i.MX27/pca100.c
-+++ b/arch/arm/boards/phycard-i.MX27/pca100.c
-@@ -328,7 +328,7 @@ console_initcall(pca100_console_init);
- #ifdef CONFIG_NAND_IMX_BOOT
- void __bare_init nand_boot(void)
- {
--	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
-+	imx_nand_load_image(_text, barebox_image_size);
- }
- #endif
- 
-diff --git a/arch/arm/boards/tqma53/flash_header.c b/arch/arm/boards/tqma53/flash_header.c
-index d912b38..a6bcdad 100644
---- a/arch/arm/boards/tqma53/flash_header.c
-+++ b/arch/arm/boards/tqma53/flash_header.c
-@@ -85,7 +85,7 @@ struct imx_dcd_v2_entry __dcd_entry_section dcd_entry[] = {
- 	{ .addr = cpu_to_be32(0x63fd901C), .val = cpu_to_be32(0x00000000), },
- };
- 
--#define APP_DEST	CONFIG_TEXT_BASE
-+#define APP_DEST	0x70000000
- 
- struct imx_flash_header_v2 __flash_header_section flash_header = {
- 	.header.tag		= IVT_HEADER_TAG,
++
++static void (*panic_fn)(const char *fmt, ...);
++
++static int panic_init(void)
++{
++	panic_fn = __panic;
++
++	return 0;
++}
++core_initcall(panic_init);
++
++void __noreturn panic(const char *fmt, ...)
++{
++	if (panic_fn) {
++		va_list	args;
++		va_start(args, fmt);
++		panic_fn(fmt, args);
++		va_end(args);
++	}
++
++	while(1);
++}
+ EXPORT_SYMBOL(panic);
+diff --git a/piggy.lzo.S b/piggy.lzo.S
+new file mode 100644
+index 0000000..6cc618d
+--- /dev/null
++++ b/piggy.lzo.S
+@@ -0,0 +1,6 @@
++	.section .piggydata,#alloc
++	.globl  input_data
++input_data:
++	.incbin "barebox-uncompressed.bin.lzo"
++	.globl  input_data_end
++input_data_end:
 -- 
 1.7.10.4
 
