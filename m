@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.mo1.mail-out.ovh.net ([178.33.253.128]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SrrUA-0000dt-P1
- for barebox@lists.infradead.org; Thu, 19 Jul 2012 14:13:47 +0000
-Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id A44C5FFAA67
- for <barebox@lists.infradead.org>; Thu, 19 Jul 2012 16:19:16 +0200 (CEST)
-Date: Thu, 19 Jul 2012 16:14:17 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120719141417.GF22657@game.jcrosoft.org>
-References: <1342686830-30950-1-git-send-email-J.Kilb@phytec.de>
- <1342686830-30950-2-git-send-email-J.Kilb@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SrrqT-0003vX-F0
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 14:36:50 +0000
+Date: Thu, 19 Jul 2012 16:36:45 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120719143645.GZ30009@pengutronix.de>
+References: <1342698019-21374-1-git-send-email-christian.kapeller@cmotion.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1342686830-30950-2-git-send-email-J.Kilb@phytec.de>
+In-Reply-To: <1342698019-21374-1-git-send-email-christian.kapeller@cmotion.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,18 +22,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] add possibility to mark blocks as bad during write
-To: Juergen Kilb <J.Kilb@phytec.de>
+Subject: Re: [PATCH] Fix compile error loady command, without loadb.
+To: Christian Kapeller <christian.kapeller@cmotion.eu>
 Cc: barebox@lists.infradead.org
 
-On 10:33 Thu 19 Jul     , Juergen Kilb wrote:
-> and update phyCARD-A-L1 defaultconfig to use this
-> feature.
-> 
-need to be 2 patches
+Hi Christian,
 
-Best Regards,
-J.
+This is already fixed in -next.
+
+On Thu, Jul 19, 2012 at 01:40:19PM +0200, Christian Kapeller wrote:
+> The global variable ofd is needed by both loady and loadb.
+
+btw please sign-off your patches.
+
+Sascha
+
+> ---
+>  commands/loadb.c |    4 ++--
+>  1 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/commands/loadb.c b/commands/loadb.c
+> index 9a697dd..50f323e 100644
+> --- a/commands/loadb.c
+> +++ b/commands/loadb.c
+> @@ -61,10 +61,10 @@
+>  #define untochar(x)	((int) (((x) - SPACE) & 0xff))
+>  #define DEF_FILE	"image.bin"
+>  
+> -#ifdef CONFIG_CMD_LOADB
+> -
+>  static int ofd;			/* output file descriptor */
+>  
+> +#ifdef CONFIG_CMD_LOADB
+> +
+>  /* Size of my buffer to write to o/p file */
+>  #define MAX_WRITE_BUFFER 4096	/* Write size to o/p file */
+>  static char *write_buffer;	/* buffer for finalized data to write */
+> -- 
+> 1.7.5.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
