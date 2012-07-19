@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Srlr9-0005KM-Hu
- for barebox@lists.infradead.org; Thu, 19 Jul 2012 08:13:22 +0000
+ id 1Srlr9-0005KF-Hh
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 08:13:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 19 Jul 2012 10:12:57 +0200
-Message-Id: <1342685582-13244-5-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 19 Jul 2012 10:12:54 +0200
+Message-Id: <1342685582-13244-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
 References: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,138 +21,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/9] ARM: remove exception vectors from boards
+Subject: [PATCH 1/9] lzo: Allow for static inlining
 To: barebox@lists.infradead.org
-
-The exception vector table will become part of the uncompressed image,
-so we can't reference them from the lowlevel init stuff anymore.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c     |    4 +---
- arch/arm/boards/eukrea_cpuimx35/flash_header.c        |    2 --
- arch/arm/boards/freescale-mx25-3-stack/3stack.c       |    4 +---
- arch/arm/boards/freescale-mx35-3-stack/flash_header.c |    4 +---
- arch/arm/boards/freescale-mx6-arm2/flash_header.c     |    3 ++-
- arch/arm/boards/tqma53/flash_header.c                 |    3 ++-
- 6 files changed, 7 insertions(+), 13 deletions(-)
+ include/lzo.h              |    8 ++++++--
+ lib/decompress_unlzo.c     |    9 +++++++--
+ lib/lzo/lzo1x_decompress.c |    2 +-
+ 3 files changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-index 1b8f618..b3b0838 100644
---- a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-+++ b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
-@@ -49,8 +49,6 @@
- #include <mach/devices-imx25.h>
- #include <asm/barebox-arm-head.h>
+diff --git a/include/lzo.h b/include/lzo.h
+index 0530a68..ceacfba 100644
+--- a/include/lzo.h
++++ b/include/lzo.h
+@@ -19,12 +19,16 @@
  
--extern void exception_vectors(void);
--
- void __naked __flash_header_start go(void)
- {
- 	barebox_arm_head();
-@@ -72,7 +70,7 @@ struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
- };
+ #define lzo1x_worst_compress(x) ((x) + ((x) / 16) + 64 + 3)
  
- struct imx_flash_header __flash_header_section flash_header = {
--	.app_code_jump_vector	= DEST_BASE + ((unsigned int)&exception_vectors - TEXT_BASE),
-+	.app_code_jump_vector	= DEST_BASE + 0x1000,
- 	.app_code_barker	= APP_CODE_BARKER,
- 	.app_code_csf		= 0,
- 	.dcd_ptr_ptr		= FLASH_HEADER_BASE + offsetof(struct imx_flash_header, dcd),
-diff --git a/arch/arm/boards/eukrea_cpuimx35/flash_header.c b/arch/arm/boards/eukrea_cpuimx35/flash_header.c
-index a745442..26752d1 100644
---- a/arch/arm/boards/eukrea_cpuimx35/flash_header.c
-+++ b/arch/arm/boards/eukrea_cpuimx35/flash_header.c
-@@ -3,8 +3,6 @@
- #include <mach/imx-regs.h>
- #include <asm/barebox-arm-head.h>
++#ifndef STATIC
++#define STATIC
++#endif
++
+ /* This requires 'workmem' of size LZO1X_1_MEM_COMPRESS */
+ int lzo1x_1_compress(const unsigned char *src, size_t src_len,
+ 			unsigned char *dst, size_t *dst_len, void *wrkmem);
  
--extern void exception_vectors(void);
--
- void __naked __flash_header_start go(void)
- {
- 	barebox_arm_head();
-diff --git a/arch/arm/boards/freescale-mx25-3-stack/3stack.c b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
-index 323cd11..6b6146d 100644
---- a/arch/arm/boards/freescale-mx25-3-stack/3stack.c
-+++ b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
-@@ -45,8 +45,6 @@
- #include <mach/devices-imx25.h>
- #include <asm/barebox-arm-head.h>
+ /* safe decompression with overrun testing */
+-int lzo1x_decompress_safe(const unsigned char *src, size_t src_len,
++STATIC int lzo1x_decompress_safe(const unsigned char *src, size_t src_len,
+ 			unsigned char *dst, size_t *dst_len);
  
--extern void exception_vectors(void);
--
- void __naked __flash_header_start go(void)
- {
- 	barebox_arm_head();
-@@ -95,7 +93,7 @@ struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
- };
+ /*
+@@ -41,7 +45,7 @@ int lzo1x_decompress_safe(const unsigned char *src, size_t src_len,
+ #define LZO_E_INPUT_NOT_CONSUMED	(-8)
+ #define LZO_E_NOT_YET_IMPLEMENTED	(-9)
  
- struct imx_flash_header __flash_header_section flash_header = {
--	.app_code_jump_vector	= DEST_BASE + ((unsigned int)&exception_vectors - TEXT_BASE),
-+	.app_code_jump_vector	= DEST_BASE + 0x1000,
- 	.app_code_barker	= APP_CODE_BARKER,
- 	.app_code_csf		= 0,
- 	.dcd_ptr_ptr		= FLASH_HEADER_BASE + offsetof(struct imx_flash_header, dcd),
-diff --git a/arch/arm/boards/freescale-mx35-3-stack/flash_header.c b/arch/arm/boards/freescale-mx35-3-stack/flash_header.c
-index 0786836..66763db 100644
---- a/arch/arm/boards/freescale-mx35-3-stack/flash_header.c
-+++ b/arch/arm/boards/freescale-mx35-3-stack/flash_header.c
-@@ -3,8 +3,6 @@
- #include <mach/imx-regs.h>
- #include <asm/barebox-arm-head.h>
- 
--extern void exception_vectors(void);
--
- void __naked __flash_header_start go(void)
- {
- 	barebox_arm_head();
-@@ -59,7 +57,7 @@ struct imx_dcd_entry __dcd_entry_section dcd_entry[] = {
- 
- 
- struct imx_flash_header __flash_header_section flash_header = {
--	.app_code_jump_vector	= DEST_BASE + ((unsigned int)&exception_vectors - TEXT_BASE),
-+	.app_code_jump_vector	= DEST_BASE + 0x1000,
- 	.app_code_barker	= APP_CODE_BARKER,
- 	.app_code_csf		= 0,
- 	.dcd_ptr_ptr		= FLASH_HEADER_BASE + offsetof(struct imx_flash_header, dcd),
-diff --git a/arch/arm/boards/freescale-mx6-arm2/flash_header.c b/arch/arm/boards/freescale-mx6-arm2/flash_header.c
-index 79f3113..69d9cfa 100644
---- a/arch/arm/boards/freescale-mx6-arm2/flash_header.c
-+++ b/arch/arm/boards/freescale-mx6-arm2/flash_header.c
-@@ -15,12 +15,13 @@
- 
+-int decompress_unlzo(u8 *input, int in_len,
++STATIC int decompress_unlzo(u8 *input, int in_len,
+ 		int (*fill) (void *, unsigned int),
+ 		int (*flush) (void *, unsigned int),
+ 		u8 *output, int *posp,
+diff --git a/lib/decompress_unlzo.c b/lib/decompress_unlzo.c
+index 000bd70..0e6a7ad 100644
+--- a/lib/decompress_unlzo.c
++++ b/lib/decompress_unlzo.c
+@@ -33,11 +33,16 @@
  #include <common.h>
- #include <asm/byteorder.h>
-+#include <asm/barebox-arm-head.h>
- #include <mach/imx-flash-header.h>
- #include <mach/imx6-regs.h>
+ #include <malloc.h>
+ #include <linux/types.h>
+-#include <lzo.h>
+ #include <errno.h>
+ #include <fs.h>
+ #include <xfuncs.h>
  
- void __naked __flash_header_start go(void)
- {
--	__asm__ __volatile__("b exception_vectors\n");
-+	barebox_arm_head();
++#ifdef STATIC
++#include "lzo/lzo1x_decompress.c"
++#endif
++
++#include <lzo.h>
++
+ #include <linux/compiler.h>
+ #include <asm/unaligned.h>
+ 
+@@ -106,7 +111,7 @@ static inline int parse_header(u8 *input, int *skip, int in_len)
+ 	return 1;
  }
  
- #define DCD(a, v) { .addr = cpu_to_be32(a), .val = cpu_to_be32(v), }
-diff --git a/arch/arm/boards/tqma53/flash_header.c b/arch/arm/boards/tqma53/flash_header.c
-index f5e817c..d912b38 100644
---- a/arch/arm/boards/tqma53/flash_header.c
-+++ b/arch/arm/boards/tqma53/flash_header.c
-@@ -15,11 +15,12 @@
+-int decompress_unlzo(u8 *input, int in_len,
++STATIC int decompress_unlzo(u8 *input, int in_len,
+ 				int (*fill) (void *, unsigned int),
+ 				int (*flush) (void *, unsigned int),
+ 				u8 *output, int *posp,
+diff --git a/lib/lzo/lzo1x_decompress.c b/lib/lzo/lzo1x_decompress.c
+index af94382..7f1451f 100644
+--- a/lib/lzo/lzo1x_decompress.c
++++ b/lib/lzo/lzo1x_decompress.c
+@@ -23,7 +23,7 @@
+ #define COPY4(dst, src)	\
+ 		put_unaligned(get_unaligned((const u32 *)(src)), (u32 *)(dst))
  
- #include <common.h>
- #include <asm/byteorder.h>
-+#include <asm/barebox-arm-head.h>
- #include <mach/imx-flash-header.h>
- 
- void __naked __flash_header_start go(void)
+-int lzo1x_decompress_safe(const unsigned char *in, size_t in_len,
++STATIC int lzo1x_decompress_safe(const unsigned char *in, size_t in_len,
+ 			unsigned char *out, size_t *out_len)
  {
--	__asm__ __volatile__("b exception_vectors\n");
-+	barebox_arm_head();
- }
- 
- struct imx_dcd_v2_entry __dcd_entry_section dcd_entry[] = {
+ 	const unsigned char * const ip_end = in + in_len;
 -- 
 1.7.10.4
 
