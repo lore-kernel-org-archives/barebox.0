@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo1.mail-out.ovh.net ([178.33.45.107]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SrrKq-0000HD-Kn
- for barebox@lists.infradead.org; Thu, 19 Jul 2012 14:04:13 +0000
-Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 8F5BAFFAA85
- for <barebox@lists.infradead.org>; Thu, 19 Jul 2012 16:09:36 +0200 (CEST)
-Date: Thu, 19 Jul 2012 16:04:37 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120719140437.GC22657@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SrrPD-0000Oc-9Q
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 14:08:40 +0000
+Date: Thu, 19 Jul 2012 16:08:34 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120719140834.GY30009@pengutronix.de>
 References: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
  <1342685582-13244-9-git-send-email-s.hauer@pengutronix.de>
  <5007E38B.8040106@pengutronix.de>
@@ -33,7 +29,7 @@ Subject: Re: [PATCH 8/9] ARM: Separate assembler functions into their own
 To: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 12:38 Thu 19 Jul     , Marc Kleine-Budde wrote:
+On Thu, Jul 19, 2012 at 12:38:03PM +0200, Marc Kleine-Budde wrote:
 > On 07/19/2012 10:13 AM, Sascha Hauer wrote:
 > > To let the linker remove unused functions.
 > > 
@@ -63,10 +59,17 @@ On 12:38 Thu 19 Jul     , Marc Kleine-Budde wrote:
 > >  ENTRY(__mmu_cache_on)
 > 
 > Is it possible to add the section to the ENTRY macro?
-Agreed
 
-Best Regards,
-J.
+I'm not sure. I was pretty sure that some assembly functions fall
+through to the next function. I cannot find any examples though.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
