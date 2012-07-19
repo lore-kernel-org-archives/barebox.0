@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Srlr9-0005KO-IB
- for barebox@lists.infradead.org; Thu, 19 Jul 2012 08:13:30 +0000
+ id 1Srlr9-0005K9-I4
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 08:13:32 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1Srlr5-00031s-NL
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 10:13:03 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1Srlr5-0002c8-MD
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 10:13:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 19 Jul 2012 10:12:59 +0200
-Message-Id: <1342685582-13244-7-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
-References: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 19 Jul 2012 10:12:53 +0200
+Message-Id: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,94 +26,108 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/9] ARM ep93xx: Get rid of special handling in linker file
+Subject: Compressed barebox image support
 To: barebox@lists.infradead.org
 
-The ep93xx needs a special value at offset 0x1000. Rather than
-do special handling in the linker file add aa header section
-as done on i.MX.
+The following series allows to create a self extracting barebox image.
+This is done by linking barebox twice, once for the actual binary, but
+without lowlevel initstuff and once for the lowlevel init stuff, the
+decompressor and the compressed image.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/lib/barebox.lds.S                      |    5 -----
- arch/arm/mach-ep93xx/Makefile                   |    2 +-
- arch/arm/mach-ep93xx/header.c                   |    8 ++++++++
- arch/arm/mach-ep93xx/include/mach/barebox.lds.h |    9 +++++++++
- include/asm-generic/barebox.lds.h               |    3 ++-
- 5 files changed, 20 insertions(+), 7 deletions(-)
+Using lzo compression the pcm038 image shrinks from 252k to 155k. The
+series has been tested on the pcm038 second stage, first stage NAND and
+first stage NOR and also on an i.MX53 LOCO board (also in thumb2 mode)
+
+Using compressed images currently adds to the boot time, at least on
+my slower arm9 systems. Using the MMU during decompression would help,
+but this currently isn't implemented.
+
+I think the preparation patches should be ready for merging. The last
+patch in this series adding compression support I am not that confident
+with. Currently I am not very happy with the Makefile changes which
+somehow look like bypassing the kbuild mechanism and handcrufting
+something that looks like kbuild. If someone has ideas how to improve
+this, let me know. Nevertheless I would be happy about Tested-by
+(and does-not-work-for) tags.
+
+Sascha
+
+----------------------------------------------------------------
+Sascha Hauer (9):
+      lzo: Allow for static inlining
+      ARM lds: remove unused got
+      ARM: remove board linker script option
+      ARM: remove exception vectors from boards
+      ARM startup: calculate offset instead of runtime address
+      ARM ep93xx: Get rid of special handling in linker file
+      ARM boards: Use _text rather than TEXT_BASE
+      ARM: Separate assembler functions into their own section
+      Add compressed image support
+
+ Makefile                                           |   31 ++++++-
+ arch/arm/Kconfig                                   |   13 +--
+ arch/arm/Makefile                                  |    4 +-
+ arch/arm/boards/a9m2410/a9m2410.c                  |    3 +-
+ arch/arm/boards/a9m2440/a9m2440.c                  |    3 +-
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c  |    7 +-
+ arch/arm/boards/eukrea_cpuimx25/lowlevel.c         |    4 +-
+ arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c  |    4 +-
+ arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S    |   11 +--
+ arch/arm/boards/eukrea_cpuimx35/flash_header.c     |    2 -
+ arch/arm/boards/eukrea_cpuimx35/lowlevel.c         |    4 +-
+ arch/arm/boards/freescale-mx25-3-stack/3stack.c    |    8 +-
+ .../boards/freescale-mx25-3-stack/lowlevel_init.S  |   11 +--
+ arch/arm/boards/freescale-mx35-3-stack/3stack.c    |    4 +-
+ .../boards/freescale-mx35-3-stack/flash_header.c   |    4 +-
+ .../boards/freescale-mx35-3-stack/lowlevel_init.S  |   11 +--
+ arch/arm/boards/freescale-mx53-loco/flash_header.c |    2 +-
+ arch/arm/boards/freescale-mx53-smd/flash_header.c  |    2 +-
+ arch/arm/boards/freescale-mx6-arm2/flash_header.c  |    5 +-
+ arch/arm/boards/guf-cupid/lowlevel.c               |    4 +-
+ arch/arm/boards/guf-neso/lowlevel.c                |    4 +-
+ arch/arm/boards/imx21ads/imx21ads.c                |    4 +-
+ arch/arm/boards/imx21ads/lowlevel_init.S           |   10 +--
+ arch/arm/boards/karo-tx25/board.c                  |    3 +-
+ arch/arm/boards/karo-tx25/lowlevel.c               |    4 +-
+ arch/arm/boards/karo-tx51/flash_header.c           |    2 +-
+ arch/arm/boards/mini2440/mini2440.c                |    3 +-
+ arch/arm/boards/pcm037/lowlevel_init.S             |    7 +-
+ arch/arm/boards/pcm037/pcm037.c                    |    4 +-
+ arch/arm/boards/pcm038/lowlevel.c                  |    4 +-
+ arch/arm/boards/pcm043/lowlevel.c                  |    4 +-
+ arch/arm/boards/phycard-i.MX27/lowlevel_init.S     |    8 +-
+ arch/arm/boards/phycard-i.MX27/pca100.c            |    2 +-
+ arch/arm/boards/tqma53/flash_header.c              |    5 +-
+ arch/arm/cpu/cache-armv4.S                         |    7 +-
+ arch/arm/cpu/cache-armv5.S                         |    7 +-
+ arch/arm/cpu/cache-armv6.S                         |   11 ++-
+ arch/arm/cpu/cache-armv7.S                         |    8 +-
+ arch/arm/cpu/start.c                               |   85 +++++++++++++++++---
+ arch/arm/lib/Makefile                              |    4 +-
+ arch/arm/lib/ashldi3.S                             |    1 +
+ arch/arm/lib/ashrdi3.S                             |    1 +
+ arch/arm/lib/barebox-compressed.lds.S              |   71 ++++++++++++++++
+ arch/arm/lib/barebox.lds.S                         |   11 +--
+ arch/arm/lib/findbit.S                             |    9 +++
+ arch/arm/lib/io-writesw-armv4.S                    |    2 +
+ arch/arm/lib/lib1funcs.S                           |    7 ++
+ arch/arm/lib/lshrdi3.S                             |    1 +
+ arch/arm/mach-ep93xx/Makefile                      |    2 +-
+ arch/arm/mach-ep93xx/header.c                      |    8 ++
+ arch/arm/mach-ep93xx/include/mach/barebox.lds.h    |    9 +++
+ common/Kconfig                                     |   12 +++
+ include/asm-generic/barebox.lds.h                  |    3 +-
+ include/asm-generic/memory_layout.h                |    2 +
+ include/lzo.h                                      |    8 +-
+ lib/decompress_unlzo.c                             |    9 ++-
+ lib/lzo/lzo1x_decompress.c                         |    2 +-
+ lib/vsprintf.c                                     |   25 +++++-
+ piggy.lzo.S                                        |    6 ++
+ 59 files changed, 382 insertions(+), 130 deletions(-)
+ create mode 100644 arch/arm/lib/barebox-compressed.lds.S
  create mode 100644 arch/arm/mach-ep93xx/header.c
  create mode 100644 arch/arm/mach-ep93xx/include/mach/barebox.lds.h
-
-diff --git a/arch/arm/lib/barebox.lds.S b/arch/arm/lib/barebox.lds.S
-index 736e5f0..e0bae70 100644
---- a/arch/arm/lib/barebox.lds.S
-+++ b/arch/arm/lib/barebox.lds.S
-@@ -41,11 +41,6 @@ SECTIONS
- 		*(.text_entry*)
- 		__ll_return = .;
- 		*(.text_ll_return*)
--#ifdef CONFIG_ARCH_EP93XX
--		/* the EP93xx expects to find the pattern 'CRUS' at 0x1000 */
--	  . = 0x1000;
--	  LONG(0x53555243) /* 'CRUS' */
--#endif
- 		__bare_init_start = .;
- 		*(.text_bare_init*)
- 		__bare_init_end = .;
-diff --git a/arch/arm/mach-ep93xx/Makefile b/arch/arm/mach-ep93xx/Makefile
-index dac6571..d401164 100644
---- a/arch/arm/mach-ep93xx/Makefile
-+++ b/arch/arm/mach-ep93xx/Makefile
-@@ -1,3 +1,3 @@
--obj-y += clocksource.o gpio.o led.o
-+obj-y += clocksource.o gpio.o led.o header.o
- 
- obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-diff --git a/arch/arm/mach-ep93xx/header.c b/arch/arm/mach-ep93xx/header.c
-new file mode 100644
-index 0000000..4e6a2e5
---- /dev/null
-+++ b/arch/arm/mach-ep93xx/header.c
-@@ -0,0 +1,8 @@
-+#include <common.h>
-+#include <linux/compiler.h>
-+#include <asm/barebox-arm-head.h>
-+
-+void __naked __section(.flash_header_start) go(void)
-+{
-+        barebox_arm_head();
-+}
-diff --git a/arch/arm/mach-ep93xx/include/mach/barebox.lds.h b/arch/arm/mach-ep93xx/include/mach/barebox.lds.h
-new file mode 100644
-index 0000000..74c4662
---- /dev/null
-+++ b/arch/arm/mach-ep93xx/include/mach/barebox.lds.h
-@@ -0,0 +1,9 @@
-+
-+/* the EP93xx expects to find the pattern 'CRUS' at 0x1000 */
-+
-+#define PRE_IMAGE				\
-+	.pre_image : {				\
-+		KEEP(*(.flash_header_start*))	\
-+		. = 0x1000;			\
-+		LONG(0x53555243) /* 'CRUS' */	\
-+	}
-diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-index e853ca1..b2bd19e 100644
---- a/include/asm-generic/barebox.lds.h
-+++ b/include/asm-generic/barebox.lds.h
-@@ -4,7 +4,8 @@
- 	defined CONFIG_ARCH_IMX51 || \
- 	defined CONFIG_ARCH_IMX53 || \
- 	defined CONFIG_ARCH_IMX6 || \
--	defined CONFIG_X86
-+	defined CONFIG_X86 || \
-+	defined CONFIG_ARCH_EP93XX
- #include <mach/barebox.lds.h>
- #endif
- 
--- 
-1.7.10.4
+ create mode 100644 piggy.lzo.S
 
 
 _______________________________________________
