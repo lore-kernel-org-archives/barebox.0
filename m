@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Srlr9-0005KF-Hh
- for barebox@lists.infradead.org; Thu, 19 Jul 2012 08:13:25 +0000
+ id 1Srlr9-0005KO-IB
+ for barebox@lists.infradead.org; Thu, 19 Jul 2012 08:13:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 19 Jul 2012 10:12:54 +0200
-Message-Id: <1342685582-13244-2-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 19 Jul 2012 10:12:59 +0200
+Message-Id: <1342685582-13244-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
 References: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,91 +21,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] lzo: Allow for static inlining
+Subject: [PATCH 6/9] ARM ep93xx: Get rid of special handling in linker file
 To: barebox@lists.infradead.org
+
+The ep93xx needs a special value at offset 0x1000. Rather than
+do special handling in the linker file add aa header section
+as done on i.MX.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/lzo.h              |    8 ++++++--
- lib/decompress_unlzo.c     |    9 +++++++--
- lib/lzo/lzo1x_decompress.c |    2 +-
- 3 files changed, 14 insertions(+), 5 deletions(-)
+ arch/arm/lib/barebox.lds.S                      |    5 -----
+ arch/arm/mach-ep93xx/Makefile                   |    2 +-
+ arch/arm/mach-ep93xx/header.c                   |    8 ++++++++
+ arch/arm/mach-ep93xx/include/mach/barebox.lds.h |    9 +++++++++
+ include/asm-generic/barebox.lds.h               |    3 ++-
+ 5 files changed, 20 insertions(+), 7 deletions(-)
+ create mode 100644 arch/arm/mach-ep93xx/header.c
+ create mode 100644 arch/arm/mach-ep93xx/include/mach/barebox.lds.h
 
-diff --git a/include/lzo.h b/include/lzo.h
-index 0530a68..ceacfba 100644
---- a/include/lzo.h
-+++ b/include/lzo.h
-@@ -19,12 +19,16 @@
+diff --git a/arch/arm/lib/barebox.lds.S b/arch/arm/lib/barebox.lds.S
+index 736e5f0..e0bae70 100644
+--- a/arch/arm/lib/barebox.lds.S
++++ b/arch/arm/lib/barebox.lds.S
+@@ -41,11 +41,6 @@ SECTIONS
+ 		*(.text_entry*)
+ 		__ll_return = .;
+ 		*(.text_ll_return*)
+-#ifdef CONFIG_ARCH_EP93XX
+-		/* the EP93xx expects to find the pattern 'CRUS' at 0x1000 */
+-	  . = 0x1000;
+-	  LONG(0x53555243) /* 'CRUS' */
+-#endif
+ 		__bare_init_start = .;
+ 		*(.text_bare_init*)
+ 		__bare_init_end = .;
+diff --git a/arch/arm/mach-ep93xx/Makefile b/arch/arm/mach-ep93xx/Makefile
+index dac6571..d401164 100644
+--- a/arch/arm/mach-ep93xx/Makefile
++++ b/arch/arm/mach-ep93xx/Makefile
+@@ -1,3 +1,3 @@
+-obj-y += clocksource.o gpio.o led.o
++obj-y += clocksource.o gpio.o led.o header.o
  
- #define lzo1x_worst_compress(x) ((x) + ((x) / 16) + 64 + 3)
- 
-+#ifndef STATIC
-+#define STATIC
-+#endif
+ obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
+diff --git a/arch/arm/mach-ep93xx/header.c b/arch/arm/mach-ep93xx/header.c
+new file mode 100644
+index 0000000..4e6a2e5
+--- /dev/null
++++ b/arch/arm/mach-ep93xx/header.c
+@@ -0,0 +1,8 @@
++#include <common.h>
++#include <linux/compiler.h>
++#include <asm/barebox-arm-head.h>
 +
- /* This requires 'workmem' of size LZO1X_1_MEM_COMPRESS */
- int lzo1x_1_compress(const unsigned char *src, size_t src_len,
- 			unsigned char *dst, size_t *dst_len, void *wrkmem);
- 
- /* safe decompression with overrun testing */
--int lzo1x_decompress_safe(const unsigned char *src, size_t src_len,
-+STATIC int lzo1x_decompress_safe(const unsigned char *src, size_t src_len,
- 			unsigned char *dst, size_t *dst_len);
- 
- /*
-@@ -41,7 +45,7 @@ int lzo1x_decompress_safe(const unsigned char *src, size_t src_len,
- #define LZO_E_INPUT_NOT_CONSUMED	(-8)
- #define LZO_E_NOT_YET_IMPLEMENTED	(-9)
- 
--int decompress_unlzo(u8 *input, int in_len,
-+STATIC int decompress_unlzo(u8 *input, int in_len,
- 		int (*fill) (void *, unsigned int),
- 		int (*flush) (void *, unsigned int),
- 		u8 *output, int *posp,
-diff --git a/lib/decompress_unlzo.c b/lib/decompress_unlzo.c
-index 000bd70..0e6a7ad 100644
---- a/lib/decompress_unlzo.c
-+++ b/lib/decompress_unlzo.c
-@@ -33,11 +33,16 @@
- #include <common.h>
- #include <malloc.h>
- #include <linux/types.h>
--#include <lzo.h>
- #include <errno.h>
- #include <fs.h>
- #include <xfuncs.h>
- 
-+#ifdef STATIC
-+#include "lzo/lzo1x_decompress.c"
-+#endif
++void __naked __section(.flash_header_start) go(void)
++{
++        barebox_arm_head();
++}
+diff --git a/arch/arm/mach-ep93xx/include/mach/barebox.lds.h b/arch/arm/mach-ep93xx/include/mach/barebox.lds.h
+new file mode 100644
+index 0000000..74c4662
+--- /dev/null
++++ b/arch/arm/mach-ep93xx/include/mach/barebox.lds.h
+@@ -0,0 +1,9 @@
 +
-+#include <lzo.h>
++/* the EP93xx expects to find the pattern 'CRUS' at 0x1000 */
 +
- #include <linux/compiler.h>
- #include <asm/unaligned.h>
++#define PRE_IMAGE				\
++	.pre_image : {				\
++		KEEP(*(.flash_header_start*))	\
++		. = 0x1000;			\
++		LONG(0x53555243) /* 'CRUS' */	\
++	}
+diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
+index e853ca1..b2bd19e 100644
+--- a/include/asm-generic/barebox.lds.h
++++ b/include/asm-generic/barebox.lds.h
+@@ -4,7 +4,8 @@
+ 	defined CONFIG_ARCH_IMX51 || \
+ 	defined CONFIG_ARCH_IMX53 || \
+ 	defined CONFIG_ARCH_IMX6 || \
+-	defined CONFIG_X86
++	defined CONFIG_X86 || \
++	defined CONFIG_ARCH_EP93XX
+ #include <mach/barebox.lds.h>
+ #endif
  
-@@ -106,7 +111,7 @@ static inline int parse_header(u8 *input, int *skip, int in_len)
- 	return 1;
- }
- 
--int decompress_unlzo(u8 *input, int in_len,
-+STATIC int decompress_unlzo(u8 *input, int in_len,
- 				int (*fill) (void *, unsigned int),
- 				int (*flush) (void *, unsigned int),
- 				u8 *output, int *posp,
-diff --git a/lib/lzo/lzo1x_decompress.c b/lib/lzo/lzo1x_decompress.c
-index af94382..7f1451f 100644
---- a/lib/lzo/lzo1x_decompress.c
-+++ b/lib/lzo/lzo1x_decompress.c
-@@ -23,7 +23,7 @@
- #define COPY4(dst, src)	\
- 		put_unaligned(get_unaligned((const u32 *)(src)), (u32 *)(dst))
- 
--int lzo1x_decompress_safe(const unsigned char *in, size_t in_len,
-+STATIC int lzo1x_decompress_safe(const unsigned char *in, size_t in_len,
- 			unsigned char *out, size_t *out_len)
- {
- 	const unsigned char * const ip_end = in + in_len;
 -- 
 1.7.10.4
 
