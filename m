@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SsItc-00068v-OG
- for barebox@lists.infradead.org; Fri, 20 Jul 2012 19:29:54 +0000
+ id 1SsItc-000691-O9
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 19:29:58 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1SsItY-0005bz-Bp
+ (envelope-from <jbe@pengutronix.de>) id 1SsItY-0005bx-C2
  for barebox@lists.infradead.org; Fri, 20 Jul 2012 21:29:48 +0200
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <jbe@pengutronix.de>) id 1SsItX-0007gM-Cr
+ (envelope-from <jbe@pengutronix.de>) id 1SsItX-0007gE-Bd
  for barebox@lists.infradead.org; Fri, 20 Jul 2012 21:29:47 +0200
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 20 Jul 2012 21:29:38 +0200
-Message-Id: <1342812585-22017-3-git-send-email-jbe@pengutronix.de>
-In-Reply-To: <1342812585-22017-1-git-send-email-jbe@pengutronix.de>
-References: <1342812585-22017-1-git-send-email-jbe@pengutronix.de>
+Date: Fri, 20 Jul 2012 21:29:36 +0200
+Message-Id: <1342812585-22017-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,35 +26,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/9] ARM/Samsung: follow the name style of the other source
- files in this directory
+Subject: [PATCH] ARM/Samsung: more clean up...
 To: barebox@lists.infradead.org
 
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
----
- arch/arm/mach-samsung/Makefile                               |    3 +--
- arch/arm/mach-samsung/{s3c24xx-clocks.c => clocks-s3c24xx.c} |    0
- 2 files changed, 1 insertion(+), 2 deletions(-)
- rename arch/arm/mach-samsung/{s3c24xx-clocks.c => clocks-s3c24xx.c} (100%)
+...in preparation to add the S3C6410 SoC support.
 
-diff --git a/arch/arm/mach-samsung/Makefile b/arch/arm/mach-samsung/Makefile
-index d7344c8..40180d7 100644
---- a/arch/arm/mach-samsung/Makefile
-+++ b/arch/arm/mach-samsung/Makefile
-@@ -1,6 +1,5 @@
- obj-y += s3c-timer.o generic.o
- obj-lowlevel-$(CONFIG_ARCH_S3C24xx) += lowlevel-s3c24x0.o
- obj-lowlevel-$(CONFIG_ARCH_S5PCxx) += lowlevel-s5pcxx.o
--obj-$(CONFIG_ARCH_S3C24xx) += gpio-s3c24x0.o s3c24xx-clocks.o mem-s3c24x0.o
--obj-$(CONFIG_ARCH_S5PCxx) += gpio-s5pcxx.o clocks-s5pcxx.o
-+obj-$(CONFIG_ARCH_S3C24xx) += gpio-s3c24x0.o clocks-s3c24xx.o mem-s3c24x0.o
- obj-$(CONFIG_S3C_LOWLEVEL_INIT) += $(obj-lowlevel-y)
-diff --git a/arch/arm/mach-samsung/s3c24xx-clocks.c b/arch/arm/mach-samsung/clocks-s3c24xx.c
-similarity index 100%
-rename from arch/arm/mach-samsung/s3c24xx-clocks.c
-rename to arch/arm/mach-samsung/clocks-s3c24xx.c
--- 
-1.7.10.4
+Mostly simplifying the Samsung serial driver and some more cosmetic.
+
+Comments are welcome.
+
+Regards,
+Juergen
+
+The following changes since commit b47220d7f70df9191fc456dbcaeaa6ead72c6c02:
+
+  NAND/Samsung: remove a leftover from architeture clean ups (2012-07-20 08:41:35 +0200)
+
+are available in the git repository at:
+
+  git://git.pengutronix.de/git/jbe/barebox.git master_samsung_clean_up
+
+for you to fetch changes up to fc361ff7de449f9bb8a7653a5705621320d84560:
+
+  Samsung/serial: make the clock source configureable (2012-07-20 21:16:02 +0200)
+
+----------------------------------------------------------------
+Juergen Beisert (9):
+      ARM/Samsung: List only really supported S3C24xx SoCs
+      ARM/Samsung: follow the name style of the other source files in this directory
+      Samsung/serial: remove more ugly ifdef lines
+      Samsung/serial: make the code more readable
+      Samsung/serial: there is no need to ifdef these register defines
+      Samsung/serial: there is no need to ifdef the slot table
+      Samsung/serial: move the decision about an improved UART into Kconfig
+      Samsung/serial: unify UCON register settings
+      Samsung/serial: make the clock source configureable
+
+ arch/arm/Kconfig                                   |    2 +-
+ arch/arm/mach-samsung/Kconfig                      |    5 ++
+ arch/arm/mach-samsung/Makefile                     |    3 +-
+ .../{s3c24xx-clocks.c => clocks-s3c24xx.c}         |    0
+ arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h  |    5 +-
+ drivers/serial/serial_s3c.c                        |   71 +++++++++++---------
+ 6 files changed, 48 insertions(+), 38 deletions(-)
+ rename arch/arm/mach-samsung/{s3c24xx-clocks.c => clocks-s3c24xx.c} (100%)
 
 
 _______________________________________________
