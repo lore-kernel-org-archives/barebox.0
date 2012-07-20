@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Ss8lQ-0000BO-JO
- for barebox@lists.infradead.org; Fri, 20 Jul 2012 08:40:46 +0000
-Date: Fri, 20 Jul 2012 10:40:37 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120720084037.GR30009@pengutronix.de>
-References: <1342728533-3750-1-git-send-email-jbe@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1342728533-3750-1-git-send-email-jbe@pengutronix.de>
+ id 1Ss8sg-0001ZS-N8
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 08:48:15 +0000
+Received: by lbbgg6 with SMTP id gg6so4936620lbb.36
+ for <barebox@lists.infradead.org>; Fri, 20 Jul 2012 01:48:12 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri, 20 Jul 2012 12:47:33 +0400
+Message-Id: <1342774059-2169-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1342774059-2169-1-git-send-email-antonynpavlov@gmail.com>
+References: <1342774059-2169-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,39 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: add the vendor 'FriendlyARM' to its board's
- directory names
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [RFC 1/7] MIPS: move start.S code to .text_entry section
+To: barebox@lists.infradead.org
 
-On Thu, Jul 19, 2012 at 10:08:52PM +0200, Juergen Beisert wrote:
-> Since a look into "arch/arm/boards/" offers various boards starting with the
-> vendor's name in their directory name (like 'eukrea' and 'freescale').
-> This patch does the same with the currently existing FriendlyARM boards
-> Mini2440 and Tiny210.
-> 
-> Note: I hope I have used the '-M' parameter in a correct manner ;)
+This commit make possible lowlevel initialisation code
+in the text_bare_init section.
 
-Yes, you did ;)
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/boot/start.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-There is another problem though: Please do not send pull requests based
-on next. next is not stable and gets remerged from the topic branches.
-In this case the tiny210 is sitting in next, so you can send a rename
-patch for this board. I'll squash it into the original patch adding this
-board. The rename for the mini2440 should be a separate patch based on
-master.
-
-Sascha
-
+diff --git a/arch/mips/boot/start.S b/arch/mips/boot/start.S
+index dd302fc..10f7691 100644
+--- a/arch/mips/boot/start.S
++++ b/arch/mips/boot/start.S
+@@ -50,7 +50,7 @@ _pc:	addiu	\rd, ra, \label - _pc		# label is assumed to be
+ 
+ 	.set noreorder
+ 	.text
+-	.section ".text_bare_init"
++	.section ".text_entry"
+ 	.align 4
+ 
+ EXPORT(_start)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10
+
 
 _______________________________________________
 barebox mailing list
