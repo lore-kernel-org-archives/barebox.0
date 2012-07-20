@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Ss8si-0001Zq-Eh
- for barebox@lists.infradead.org; Fri, 20 Jul 2012 08:48:21 +0000
-Received: by lbbgg6 with SMTP id gg6so4936640lbb.36
- for <barebox@lists.infradead.org>; Fri, 20 Jul 2012 01:48:14 -0700 (PDT)
+ id 1Ss8si-0001ZS-OK
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 08:48:25 +0000
+Received: by mail-lb0-f177.google.com with SMTP id gg6so4936620lbb.36
+ for <barebox@lists.infradead.org>; Fri, 20 Jul 2012 01:48:16 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 20 Jul 2012 12:47:34 +0400
-Message-Id: <1342774059-2169-3-git-send-email-antonynpavlov@gmail.com>
+Date: Fri, 20 Jul 2012 12:47:35 +0400
+Message-Id: <1342774059-2169-4-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1342774059-2169-1-git-send-email-antonynpavlov@gmail.com>
 References: <1342774059-2169-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,41 +23,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 2/7] MIPS: add the initial support for lowlevel init
+Subject: [RFC 3/7] MIPS: malta: add bogus lowlevel init
 To: barebox@lists.infradead.org
-
-This commit introduce the initial support for
-machine specific lowlevel initialization
-(e.g. RAM controller or cache memory).
-
-To return from mach_init_lowlevel() it uses
-explicit mach_init_lowlevel_return label.
-This saves ra register for using inside mach_init_lowlevel()
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/boot/start.S |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/mips/Kconfig                    |    1 +
+ arch/mips/mach-malta/Makefile        |    1 +
+ arch/mips/mach-malta/lowlevel_init.S |   37 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 39 insertions(+)
+ create mode 100644 arch/mips/mach-malta/lowlevel_init.S
 
-diff --git a/arch/mips/boot/start.S b/arch/mips/boot/start.S
-index 10f7691..238e2c4 100644
---- a/arch/mips/boot/start.S
-+++ b/arch/mips/boot/start.S
-@@ -74,6 +74,14 @@ __start:
- 	and	k0, k1
- 	mtc0	k0, CP0_STATUS
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 7a1eeac..92dad9f 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -36,6 +36,7 @@ config MACH_MIPS_MALTA
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select HAS_DEBUG_LL
++	select MACH_HAS_LOWLEVEL_INIT
  
-+#ifdef CONFIG_MACH_DO_LOWLEVEL_INIT
-+	b	mach_init_lowlevel
+ config MACH_MIPS_BCM47XX
+ 	bool "Broadcom BCM47xx-based boards"
+diff --git a/arch/mips/mach-malta/Makefile b/arch/mips/mach-malta/Makefile
+index f3cc668..f4cb8f2 100644
+--- a/arch/mips/mach-malta/Makefile
++++ b/arch/mips/mach-malta/Makefile
+@@ -1 +1,2 @@
+ obj-y += reset.o
++obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
+diff --git a/arch/mips/mach-malta/lowlevel_init.S b/arch/mips/mach-malta/lowlevel_init.S
+new file mode 100644
+index 0000000..a34de74
+--- /dev/null
++++ b/arch/mips/mach-malta/lowlevel_init.S
+@@ -0,0 +1,37 @@
++/*
++ * Lowlevel init code for MIPS malta
++ *
++ * Copyright (C) 2012 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#include <config.h>
++#include <asm/asm.h>
++#include <asm/regdef.h>
++#include <asm/mipsregs.h>
++
++	.section ".text_bare_init"
++
++LEAF(mach_init_lowlevel)
++
++	/* nothing special yet */
++
++	/* return */
++	b	mach_init_lowlevel_return
 +	 nop
-+
-+mach_init_lowlevel_return:
-+EXPORT(mach_init_lowlevel_return)
-+#endif
-+
- 	/* copy barebox to link location */
- 	ADR	a0, _start, t1	/* a0 <- pc-relative position of _start */
- 
++END(mach_init_lowlevel)
 -- 
 1.7.10
 
