@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Ss8si-0001ZS-OK
- for barebox@lists.infradead.org; Fri, 20 Jul 2012 08:48:25 +0000
-Received: by mail-lb0-f177.google.com with SMTP id gg6so4936620lbb.36
- for <barebox@lists.infradead.org>; Fri, 20 Jul 2012 01:48:16 -0700 (PDT)
+ id 1Ss8sr-0001bV-RD
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 08:48:29 +0000
+Received: by lbbgg6 with SMTP id gg6so4936742lbb.36
+ for <barebox@lists.infradead.org>; Fri, 20 Jul 2012 01:48:20 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 20 Jul 2012 12:47:35 +0400
-Message-Id: <1342774059-2169-4-git-send-email-antonynpavlov@gmail.com>
+Date: Fri, 20 Jul 2012 12:47:37 +0400
+Message-Id: <1342774059-2169-6-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1342774059-2169-1-git-send-email-antonynpavlov@gmail.com>
 References: <1342774059-2169-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,79 +23,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 3/7] MIPS: malta: add bogus lowlevel init
+Subject: [RFC 5/7] MIPS: malta: make KSEG0 uncached
 To: barebox@lists.infradead.org
+
+On MIPS as usual KSEG0 segment used for cached memory access,
+and Linux kernel linked to KSEG0.
+
+As just now we don't have cache memory support on MIPS,
+we can change the KSEG0 mode (make it uncached) and
+use it without any danger.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/Kconfig                    |    1 +
- arch/mips/mach-malta/Makefile        |    1 +
- arch/mips/mach-malta/lowlevel_init.S |   37 ++++++++++++++++++++++++++++++++++
- 3 files changed, 39 insertions(+)
- create mode 100644 arch/mips/mach-malta/lowlevel_init.S
+ arch/mips/mach-malta/lowlevel_init.S |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 7a1eeac..92dad9f 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -36,6 +36,7 @@ config MACH_MIPS_MALTA
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select HAS_DEBUG_LL
-+	select MACH_HAS_LOWLEVEL_INIT
- 
- config MACH_MIPS_BCM47XX
- 	bool "Broadcom BCM47xx-based boards"
-diff --git a/arch/mips/mach-malta/Makefile b/arch/mips/mach-malta/Makefile
-index f3cc668..f4cb8f2 100644
---- a/arch/mips/mach-malta/Makefile
-+++ b/arch/mips/mach-malta/Makefile
-@@ -1 +1,2 @@
- obj-y += reset.o
-+obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
 diff --git a/arch/mips/mach-malta/lowlevel_init.S b/arch/mips/mach-malta/lowlevel_init.S
-new file mode 100644
-index 0000000..a34de74
---- /dev/null
+index a0134f8..368c2fe 100644
+--- a/arch/mips/mach-malta/lowlevel_init.S
 +++ b/arch/mips/mach-malta/lowlevel_init.S
-@@ -0,0 +1,37 @@
-+/*
-+ * Lowlevel init code for MIPS malta
-+ *
-+ * Copyright (C) 2012 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
+@@ -62,6 +62,10 @@ LEAF(mach_init_lowlevel)
+ 	lui	t0, 0x5e00
+ 	sw	t0, 136(t1) /* GT_PCI0M1HD */
+ 
++	/* make KSEG0 uncached */
++	li	t0, CONF_CM_UNCACHED
++	mtc0	t0, CP0_CONFIG
 +
-+#include <config.h>
-+#include <asm/asm.h>
-+#include <asm/regdef.h>
-+#include <asm/mipsregs.h>
-+
-+	.section ".text_bare_init"
-+
-+LEAF(mach_init_lowlevel)
-+
-+	/* nothing special yet */
-+
-+	/* return */
-+	b	mach_init_lowlevel_return
-+	 nop
-+END(mach_init_lowlevel)
+ 	/* return */
+ 	b	mach_init_lowlevel_return
+ 	 nop
 -- 
 1.7.10
 
