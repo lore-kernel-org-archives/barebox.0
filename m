@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Ss81m-0005iI-T1
- for barebox@lists.infradead.org; Fri, 20 Jul 2012 07:53:35 +0000
-Date: Fri, 20 Jul 2012 09:53:32 +0200
+ id 1Ss880-0005qU-3S
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 08:00:02 +0000
+Date: Fri, 20 Jul 2012 09:59:57 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120720075332.GM30009@pengutronix.de>
-References: <1342767377-24735-1-git-send-email-jbe@pengutronix.de>
+Message-ID: <20120720075957.GN30009@pengutronix.de>
+References: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
+ <87fw8nv7dx.fsf@free.fr>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1342767377-24735-1-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <87fw8nv7dx.fsf@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH/master] ARM/Samsung: A required fix and a cleanup
-To: Juergen Beisert <jbe@pengutronix.de>
+Subject: Re: Compressed barebox image support
+To: Robert Jarzmik <robert.jarzmik@free.fr>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jul 20, 2012 at 08:56:14AM +0200, Juergen Beisert wrote:
-> Some fixes and cleanups for master related to boards based on the Samsung
-> S3C24XX CPU.
-> 
-> The following changes since commit b78e5fe9f3ce155065831d3aa8a480656a8f53c5:
-> 
->   commands/crc: assert newline after output with big offsets (2012-07-17 20:41:17 +0200)
-> 
-> are available in the git repository at:
-> 
->   git://git.pengutronix.de/git/jbe/barebox.git for_master_s3c24xx_runtime_fix_and_cleanup
+Hi Robert,
 
-Pulled, thanks
+On Thu, Jul 19, 2012 at 10:11:06PM +0200, Robert Jarzmik wrote:
+> Sascha Hauer <s.hauer@pengutronix.de> writes:
+> > Nevertheless I would be happy about Tested-by (and does-not-work-for) tags.
+> >
+> > Sascha
+> 
+> I tried on Xscale PXA (mioa701 board, armv5te).
+> It works like a charm.
+> 
+> Therefore, feel free to add my :
+> Tested-by: Robert Jarzmik <robert.jarzmik@free.fr>
+
+Thanks for testing.
 
 Sascha
-
-> 
-> for you to fetch changes up to b47220d7f70df9191fc456dbcaeaa6ead72c6c02:
-> 
->   NAND/Samsung: remove a leftover from architeture clean ups (2012-07-20 08:41:35 +0200)
-> 
-> ----------------------------------------------------------------
-> Juergen Beisert (3):
->       ARM/Samsung: be able to include the nand header multiple times
->       ARM/Samsung: unify device registration for the S3C24XX SoCs
->       NAND/Samsung: remove a leftover from architeture clean ups
-> 
->  arch/arm/boards/a9m2410/a9m2410.c                  |    7 ++-
->  arch/arm/boards/a9m2440/a9m2440.c                  |    7 ++-
->  arch/arm/boards/mini2440/mini2440.c                |   16 +++---
->  .../mach-samsung/include/mach/devices-s3c24xx.h    |   55 ++++++++++++++++++++
->  arch/arm/mach-samsung/include/mach/s3c24xx-nand.h  |    5 ++
->  drivers/mtd/nand/Makefile                          |    1 -
->  6 files changed, 72 insertions(+), 19 deletions(-)
->  create mode 100644 arch/arm/mach-samsung/include/mach/devices-s3c24xx.h
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
