@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SsCGJ-0008Md-P3
- for barebox@lists.infradead.org; Fri, 20 Jul 2012 12:24:53 +0000
-Date: Fri, 20 Jul 2012 14:24:46 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120720122446.GS30009@pengutronix.de>
-References: <1342782994-21728-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1SsDMM-0006E7-Cp
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 13:35:12 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jbe@pengutronix.de>) id 1SsDMH-0008Ex-0D
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 15:35:05 +0200
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Fri, 20 Jul 2012 15:34:49 +0200
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1342782994-21728-1-git-send-email-plagnioj@jcrosoft.com>
+Message-Id: <201207201534.50481.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,61 +25,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] piggy.lzo.S: fix out of tree build
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH/master] ARM/MXS: pull-up and bitkeeper must be handled
+ differently
+To: barebox@lists.infradead.org
 
-On Fri, Jul 20, 2012 at 01:16:34PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  Makefile |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+Since commit 2f6b1f7690640f571f8e72fc2f2564acb2e13778 the pull-up and
+bitkeeper handling for i.MX23/28 is correct. But now it is important to
+distinguish these pin features as their programmed bit values are different.
+With this patch the bitkeeper and pull-up enable/disable bits are now handled
+separately.
 
-Squashed into the original commit. BTW please update
-work/compressed-image, I made some changes and added another two cleanup
-patches.
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 
-Also I want to drop HEAD_TEXT_BASE (the address where the decompressor
-is linked to) and use MALLOC_BASE instead, which by definition defaults
-to some (at that time) unused valid memory. With this also the omap
-xload configs should be compressable. This is not yet implemented
-though.
-
-Sascha
-
-
-> 
-> diff --git a/Makefile b/Makefile
-> index 3ade6cc..4696789 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -719,9 +719,9 @@ barebox-uncompressed.bin.lzo: barebox-uncompressed.bin
->  	@echo "  LZO    " $@
->  	$(Q)lzop -f -9 -o $@ barebox-uncompressed.bin
->  
-> -piggy.lzo.o: barebox-uncompressed.bin.lzo piggy.lzo.S
-> +piggy.lzo.o: barebox-uncompressed.bin.lzo $(src)/piggy.lzo.S
->  	@echo "  CC     " $@
-> -	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -c piggy.lzo.S -o $@
-> +	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -c $(src)/piggy.lzo.S -o $@
->  
->  ifdef CONFIG_IMAGE_COMPRESSION_LZO
->  barebox: piggy.lzo.o
-> -- 
-> 1.7.10
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+diff --git a/arch/arm/mach-mxs/include/mach/iomux-imx23.h b/arch/arm/mach-mxs/include/mach/iomux-imx23.h
+index 7b2883c..82362d7 100644
+--- a/arch/arm/mach-mxs/include/mach/iomux-imx23.h
++++ b/arch/arm/mach-mxs/include/mach/iomux-imx23.h
+@@ -22,13 +22,14 @@
+  *                          ^^^^____ Bit offset
+  *                        ^^________ Function
+  *                       ^__________ Drive strength feature present
+- *                      ^___________ Pull up / bit keeper present
++ *                      ^___________ Pull up present
+  *                    ^^____________ Drive strength setting
+  *                   ^______________ Pull up / bit keeper setting
+  *                  ^_______________ Voltage select present
+  *                 ^________________ Voltage selection
+  *             ^____________________ direction if enabled as GPIO (1 = output)
+  *            ^_____________________ initial output value if enabled as GPIO and configured as output
++ *           ^______________________ Bit keeper present
+  */
+ #ifndef __ASM_MACH_IOMUX_H
+ #define __ASM_MACH_IOMUX_H
+@@ -63,7 +64,7 @@
+ 
+ /* control pad's pull up / bit keeper feature */
+ #define PE (1 << 10)
+-#define BK (1 << 11)	/* FIXME useful to distinguish? */
++#define BK (1 << 21)
+ #define PE_PRESENT(x) (!!((x) & PE))
+ #define BK_PRESENT(x) (!!((x) & BK))
+ #define PULLUP(x) ((x) << 13)
+diff --git a/arch/arm/mach-mxs/include/mach/iomux-imx28.h b/arch/arm/mach-mxs/include/mach/iomux-imx28.h
+index ea1c3d8..82918cf 100644
+--- a/arch/arm/mach-mxs/include/mach/iomux-imx28.h
++++ b/arch/arm/mach-mxs/include/mach/iomux-imx28.h
+@@ -16,7 +16,7 @@
+  *                         ^^^______ Register Number
+  *                       ^^_________ Function
+  *                      ^___________ Drive strength feature present
+- *                     ^____________ Pull up / bit keeper present
++ *                     ^____________ Pull up present
+  *                   ^^_____________ Drive strength setting
+  *                  ^_______________ Pull up / bit keeper setting
+  *                 ^________________ Voltage select present
+@@ -24,6 +24,7 @@
+  *            ^_____________________ direction if enabled as GPIO (1 = output)
+  *           ^______________________ initial output value if enabled as GPIO
+  *                                   and configured as output
++ *          ^_______________________ Bit keeper present
+  */
+ #ifndef __MACH_IOMUX_IMX28_H
+ #define __MACH_IOMUX_IMX28_H
+@@ -57,7 +58,7 @@
+ 
+ /* control pad's pull up / bit keeper feature */
+ #define PE (1 << 11)
+-#define BK (1 << 11)	/* FIXME useful to distinguish? */
++#define BK (1 << 22)
+ #define PE_PRESENT(x) (!!((x) & PE))
+ #define BK_PRESENT(x) (!!((x) & BK))
+ #define PULLUP(x) ((x) << 14)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
