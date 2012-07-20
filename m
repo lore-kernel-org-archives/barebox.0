@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2a02:8b8:656::164] (helo=bar.sig21.net)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SsFwO-0001Rw-09
- for barebox@lists.infradead.org; Fri, 20 Jul 2012 16:20:32 +0000
-Date: Fri, 20 Jul 2012 18:20:07 +0200
-From: Johannes Stezenbach <js@sig21.net>
-Message-ID: <20120720162007.GA22374@sig21.net>
-References: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
- <1342685582-13244-9-git-send-email-s.hauer@pengutronix.de>
- <5007E38B.8040106@pengutronix.de>
- <20120719140834.GY30009@pengutronix.de>
- <20120719204548.GI30009@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120719204548.GI30009@pengutronix.de>
+ id 1SsItc-00068x-OC
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 19:29:58 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jbe@pengutronix.de>) id 1SsItY-0005c1-Bq
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 21:29:48 +0200
+Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <jbe@pengutronix.de>) id 1SsItX-0007gW-Dv
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 21:29:47 +0200
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Fri, 20 Jul 2012 21:29:40 +0200
+Message-Id: <1342812585-22017-5-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1342812585-22017-1-git-send-email-jbe@pengutronix.de>
+References: <1342812585-22017-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +23,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 8/9] ARM: Separate assembler functions into their own
- section
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 4/9] Samsung/serial: make the code more readable
+To: barebox@lists.infradead.org
 
-On Thu, Jul 19, 2012 at 10:45:48PM +0200, Sascha Hauer wrote:
-> On Thu, Jul 19, 2012 at 04:08:34PM +0200, Sascha Hauer wrote:
-> > On Thu, Jul 19, 2012 at 12:38:03PM +0200, Marc Kleine-Budde wrote:
-> > > On 07/19/2012 10:13 AM, Sascha Hauer wrote:
-> > > >  
-> > > > +.section .text.__mmu_cache_on
-> > > >  ENTRY(__mmu_cache_on)
-> > > 
-> > > Is it possible to add the section to the ENTRY macro?
-> > 
-> > I'm not sure. I was pretty sure that some assembly functions fall
-> > through to the next function. I cannot find any examples though.
-> 
-> For example we have this:
-> 
-> .section .text.__divsi3
-> ENTRY(__divsi3)
-> ENTRY(__aeabi_idiv)
-> 	...
+This bit magic is just setting and reading the UART's selected clock source.
 
-and also:
-ENTRY(__lshrdi3)
-ENTRY(__aeabi_llsr)
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+---
+ drivers/serial/serial_s3c.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-However, this is the rare exception.  How about
-adding __ENTRY for these cases?
+diff --git a/drivers/serial/serial_s3c.c b/drivers/serial/serial_s3c.c
+index ff3792b..c537bc0 100644
+--- a/drivers/serial/serial_s3c.c
++++ b/drivers/serial/serial_s3c.c
+@@ -31,6 +31,8 @@
+ /* Note: Offsets are for little endian access */
+ #define ULCON 0x00		/* line control */
+ #define UCON 0x04		/* UART control */
++# define UCON_SET_CLK_SRC(x) (((x) & 0x03) << 10)
++# define UCON_GET_CLK_SRC(x) (((x) >> 10) & 0x03)
+ #define UFCON 0x08		/* FIFO control */
+ #define UMCON 0x0c		/* modem control */
+ #define UTRSTAT 0x10		/* Rx/Tx status */
+@@ -62,8 +64,7 @@ struct s3c_uart {
+ static unsigned s3c_get_arch_uart_input_clock(void __iomem *base)
+ {
+ 	unsigned reg = readw(base + UCON);
+-	reg = (reg >> 10) & 0x3;
+-	return s3c_get_uart_clk(reg);
++	return s3c_get_uart_clk(UCON_GET_CLK_SRC(reg));
+ }
+ 
+ #ifdef S3C_UART_HAS_UBRDIVSLOT
+@@ -108,7 +109,8 @@ static int s3c_serial_init_port(struct console_device *cdev)
+ 
+ 	/* tx=level,rx=edge,disable timeout int.,enable rx error int.,
+ 	 * normal, interrupt or polling, no pre-divider */
+-	writew(0x0245 | ((S3C_UART_CLKSEL) << 10), base + UCON);
++	writew(0x0245 | UCON_SET_CLK_SRC(S3C_UART_CLKSEL),
++						base + UCON);
+ 
+ #ifdef S3C_UART_HAS_UINTM
+ 	/* 'interrupt or polling mode' for both directions */
+-- 
+1.7.10.4
 
-
-Johannes
 
 _______________________________________________
 barebox mailing list
