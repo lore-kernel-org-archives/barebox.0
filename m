@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Ss8sr-0001bV-RD
+ id 1Ss8sr-0001Zq-RE
  for barebox@lists.infradead.org; Fri, 20 Jul 2012 08:48:29 +0000
-Received: by lbbgg6 with SMTP id gg6so4936742lbb.36
- for <barebox@lists.infradead.org>; Fri, 20 Jul 2012 01:48:20 -0700 (PDT)
+Received: by mail-lb0-f177.google.com with SMTP id gg6so4936640lbb.36
+ for <barebox@lists.infradead.org>; Fri, 20 Jul 2012 01:48:22 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 20 Jul 2012 12:47:37 +0400
-Message-Id: <1342774059-2169-6-git-send-email-antonynpavlov@gmail.com>
+Date: Fri, 20 Jul 2012 12:47:38 +0400
+Message-Id: <1342774059-2169-7-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1342774059-2169-1-git-send-email-antonynpavlov@gmail.com>
 References: <1342774059-2169-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,36 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 5/7] MIPS: malta: make KSEG0 uncached
+Subject: [RFC 6/7] MIPS: qemu-malta: add KSEG0 memory region
 To: barebox@lists.infradead.org
 
-On MIPS as usual KSEG0 segment used for cached memory access,
-and Linux kernel linked to KSEG0.
-
-As just now we don't have cache memory support on MIPS,
-we can change the KSEG0 mode (make it uncached) and
-use it without any danger.
+As most of ELF files are linked to KSEG0,
+we need declaration for memory region (KSEG0)
+for loading ELF files.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/mach-malta/lowlevel_init.S |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/boards/qemu-malta/init.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/mach-malta/lowlevel_init.S b/arch/mips/mach-malta/lowlevel_init.S
-index a0134f8..368c2fe 100644
---- a/arch/mips/mach-malta/lowlevel_init.S
-+++ b/arch/mips/mach-malta/lowlevel_init.S
-@@ -62,6 +62,10 @@ LEAF(mach_init_lowlevel)
- 	lui	t0, 0x5e00
- 	sw	t0, 136(t1) /* GT_PCI0M1HD */
+diff --git a/arch/mips/boards/qemu-malta/init.c b/arch/mips/boards/qemu-malta/init.c
+index 0efc92a..1dd268f 100644
+--- a/arch/mips/boards/qemu-malta/init.c
++++ b/arch/mips/boards/qemu-malta/init.c
+@@ -34,6 +34,7 @@
+ static int malta_mem_init(void)
+ {
+ 	barebox_add_memory_bank("ram0", 0xa0000000, SZ_256M);
++	barebox_add_memory_bank("cram0", 0x80000000, SZ_256M);
  
-+	/* make KSEG0 uncached */
-+	li	t0, CONF_CM_UNCACHED
-+	mtc0	t0, CP0_CONFIG
-+
- 	/* return */
- 	b	mach_init_lowlevel_return
- 	 nop
+ 	return 0;
+ }
 -- 
 1.7.10
 
