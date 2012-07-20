@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Ss8A4-00065g-B8
- for barebox@lists.infradead.org; Fri, 20 Jul 2012 08:02:09 +0000
-Date: Fri, 20 Jul 2012 10:02:04 +0200
+ id 1Ss8CT-0006JC-DT
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 08:04:38 +0000
+Date: Fri, 20 Jul 2012 10:04:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120720080204.GO30009@pengutronix.de>
-References: <1342763209-28029-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20120720080435.GP30009@pengutronix.de>
+References: <loom.20120719T173418-826@post.gmane.org>
+ <20120719161139.GB30009@pengutronix.de>
+ <loom.20120719T224910-551@post.gmane.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1342763209-28029-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <loom.20120719T224910-551@post.gmane.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,77 +24,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] serial_ns16550: change the driver's name
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: USB On PCM043?
+To: Jerry Kirk <jkirk865@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jul 20, 2012 at 09:46:49AM +0400, Antony Pavlov wrote:
-> The name "serial_ns16550" is not handy because the devices
-> will have the names like "serial_ns165500", "serial_ns165501",
-> "serial_ns165502" etc.
+On Thu, Jul 19, 2012 at 08:56:35PM +0000, Jerry Kirk wrote:
+> > > We have been attempting to get USB Host mode working under Barebox(2012-07-0)
+> > > a PCM043 platform (i.mx35), but we are having a bit of trouble.
+> > 
+> > Could it be that the USB clock operates at the wrong rate? I think it
+> > should be 60MHz.
 > 
-> The names like "ns16550_serial0" and "ns16550_serial1" look
-> much better.
-> 
-> Also it is reasonable to make serial driver's names unification.
-> E.g. see the names for drivers in drivers/serial directory:
->  "netx_serial",
->  "mpc5xxx_serial",
->  "altera_serial",
->  "s3c_serial",
->  "imx_serial",
->  "pxa_serial",
->  "blackfin_serial",
->  "stm_serial",
->  "pl010_serial",
-> and even "g_serial" in ./drivers/usb/gadget/serial.c
+> We're not certain how to verify the clock setting for USB in Barebox.
+> We have used "dump_clocks" but are not certain which of these clocks
+> the USB clock is derived from. We think we have it set to the same
+> settings as the Eukrea board.
 
-Good idea. Applied.
+The i.MX SoCs have a clko pin which can be muxed to different clocks. I
+don't know if this is accessible on the pcm043, but if yes, you could
+switch it to the USB clock and measure the clock.
+Otherwise it might be good to run a current -rc kernel, you can then
+see the complete clock tree in debugfs
 
 Sascha
-
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  drivers/serial/serial_ns16550.c |    2 +-
->  include/driver.h                |    2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-> index 820aac5..1248bd6 100644
-> --- a/drivers/serial/serial_ns16550.c
-> +++ b/drivers/serial/serial_ns16550.c
-> @@ -263,7 +263,7 @@ static int ns16550_probe(struct device_d *dev)
->   * @brief Driver registration structure
->   */
->  static struct driver_d ns16550_serial_driver = {
-> -	.name = "serial_ns16550",
-> +	.name = "ns16550_serial",
->  	.probe = ns16550_probe,
->  };
->  
-> diff --git a/include/driver.h b/include/driver.h
-> index 7d597b4..0a8dc8e 100644
-> --- a/include/driver.h
-> +++ b/include/driver.h
-> @@ -226,7 +226,7 @@ struct NS16550_plat;
->  static inline struct device_d *add_ns16550_device(int id, resource_size_t start,
->  		resource_size_t size, int flags, struct NS16550_plat *pdata)
->  {
-> -	return add_generic_device("serial_ns16550", id, NULL, start, size,
-> +	return add_generic_device("ns16550_serial", id, NULL, start, size,
->  				  IORESOURCE_MEM | flags, pdata);
->  }
->  
-> -- 
-> 1.7.10
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
