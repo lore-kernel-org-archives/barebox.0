@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-f49.google.com ([209.85.213.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SsA31-0002SA-AJ
- for barebox@lists.infradead.org; Fri, 20 Jul 2012 10:03:00 +0000
-Received: by yhjj52 with SMTP id j52so4062571yhj.36
- for <barebox@lists.infradead.org>; Fri, 20 Jul 2012 03:01:35 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <1342774059-2169-5-git-send-email-antonynpavlov@gmail.com>
-References: <1342774059-2169-1-git-send-email-antonynpavlov@gmail.com>
- <1342774059-2169-5-git-send-email-antonynpavlov@gmail.com>
-Date: Fri, 20 Jul 2012 14:01:35 +0400
-Message-ID: <CAA4bVAH9dkYq9QGeS59ftkuC98OUMW-KS5iXC+75Ys9vN0o8fA@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Received: from 20.mo1.mail-out.ovh.net ([188.165.45.168]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SsBBj-0007l9-K9
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 11:16:08 +0000
+Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 263ACFFA666
+ for <barebox@lists.infradead.org>; Fri, 20 Jul 2012 13:21:35 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Fri, 20 Jul 2012 13:16:34 +0200
+Message-Id: <1342782994-21728-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,111 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 4/7] MIPS: malta: add YAMON-style GT64120 memory map
+Subject: [PATCH 1/1] piggy.lzo.S: fix out of tree build
 To: barebox@lists.infradead.org
 
-Sorry, this patch can't be applied!
-It cites diff-formatted text in the comment.
-adding extra spaces to this cited text fixes the problem.
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ Makefile |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-On 20 July 2012 12:47, Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> YAMON-style GT64120 memory map make move UART to the new position.
->
-> We need YAMON-style GT64120 memory for running Linux kernel from
-> barebox.
->
-> WARNING! WIP! We need add some more effor for compartability
-> with qemu embedded YAMON.
->
-> E.g. we need put special Board ID at the start of bootrom:
->
-> --- a/arch/mips/boot/start.S
-> +++ b/arch/mips/boot/start.S
-> @@ -59,6 +59,10 @@ EXPORT(_start)
->          nop
->
->         .org    0x10
-> +#if 1
-> +       /* Board ID = 0x420 (Malta Board with CoreLV) */
-> +       .word   0x00000420
-> +#endif
->
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  arch/mips/mach-malta/include/mach/hardware.h |    2 +-
->  arch/mips/mach-malta/lowlevel_init.S         |   33 +++++++++++++++++++++++++-
->  2 files changed, 33 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/mips/mach-malta/include/mach/hardware.h b/arch/mips/mach-malta/include/mach/hardware.h
-> index ddeb1b7..fde8f22 100644
-> --- a/arch/mips/mach-malta/include/mach/hardware.h
-> +++ b/arch/mips/mach-malta/include/mach/hardware.h
-> @@ -21,7 +21,7 @@
->  #ifndef __INCLUDE_ARCH_HARDWARE_H__
->  #define   __INCLUDE_ARCH_HARDWARE_H__
->
-> -#define DEBUG_LL_UART_ADDR     0xb00003f8
-> +#define DEBUG_LL_UART_ADDR     0xb80003f8
->  #define DEBUG_LL_UART_SHIFT    0
->
->  /*
-> diff --git a/arch/mips/mach-malta/lowlevel_init.S b/arch/mips/mach-malta/lowlevel_init.S
-> index a34de74..a0134f8 100644
-> --- a/arch/mips/mach-malta/lowlevel_init.S
-> +++ b/arch/mips/mach-malta/lowlevel_init.S
-> @@ -29,7 +29,38 @@
->
->  LEAF(mach_init_lowlevel)
->
-> -       /* nothing special yet */
-> +       /*
-> +        * Load BAR registers of GT64120 as done by YAMON
-> +        *
-> +        * based on write_bootloader() in qemu.git/hw/mips_malta.c
-> +        * see GT64120 manual and qemu.git/hw/gt64xxx.c for details
-> +        *
-> +        * This is big-endian version of code!
-> +        */
-> +
-> +       /* move GT64120 registers to 0x1be00000 */
-> +       lui     t1, 0xb400
-> +       lui     t0, 0xdf00
-> +       sw      t0, 104(t1)
-> +
-> +       /* setup MEM-to-PCI0 mapping */
-> +       lui     t1, 0xbbe0
-> +
-> +       /* setup PCI0 io window to 18000000-181fffff */
-> +       lui     t0, 0xc000
-> +       sw      t0, 72(t1) /* GT_PCI0IOLD */
-> +       lui     t0, 0x4000
-> +       sw      t0, 80(t1) /* GT_PCI0IOHD */
-> +
-> +       /* setup PCI0 mem windows */
-> +       lui     t0, 0x8000
-> +       sw      t0, 88(t1) /* GT_PCI0M0LD */
-> +       lui     t0, 0x3f00
-> +       sw      t0, 96(t1) /* GT_PCI0M0HD */
-> +       lui     t0, 0xc100
-> +       sw      t0, 128(t1) /* GT_PCI0M1LD */
-> +       lui     t0, 0x5e00
-> +       sw      t0, 136(t1) /* GT_PCI0M1HD */
->
->         /* return */
->         b       mach_init_lowlevel_return
-> --
-> 1.7.10
->
-
-
-
+diff --git a/Makefile b/Makefile
+index 3ade6cc..4696789 100644
+--- a/Makefile
++++ b/Makefile
+@@ -719,9 +719,9 @@ barebox-uncompressed.bin.lzo: barebox-uncompressed.bin
+ 	@echo "  LZO    " $@
+ 	$(Q)lzop -f -9 -o $@ barebox-uncompressed.bin
+ 
+-piggy.lzo.o: barebox-uncompressed.bin.lzo piggy.lzo.S
++piggy.lzo.o: barebox-uncompressed.bin.lzo $(src)/piggy.lzo.S
+ 	@echo "  CC     " $@
+-	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -c piggy.lzo.S -o $@
++	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -c $(src)/piggy.lzo.S -o $@
+ 
+ ifdef CONFIG_IMAGE_COMPRESSION_LZO
+ barebox: piggy.lzo.o
 -- 
-Best regards,
-  Antony Pavlov
+1.7.10
+
 
 _______________________________________________
 barebox mailing list
