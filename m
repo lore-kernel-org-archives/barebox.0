@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SsItc-00068w-O7
+ id 1SsItc-000694-OO
  for barebox@lists.infradead.org; Fri, 20 Jul 2012 19:30:00 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1SsItY-0005c0-C3
+ (envelope-from <jbe@pengutronix.de>) id 1SsItY-0005by-Bn
  for barebox@lists.infradead.org; Fri, 20 Jul 2012 21:29:48 +0200
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <jbe@pengutronix.de>) id 1SsItX-0007gR-DW
+ (envelope-from <jbe@pengutronix.de>) id 1SsItX-0007gH-CK
  for barebox@lists.infradead.org; Fri, 20 Jul 2012 21:29:47 +0200
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 20 Jul 2012 21:29:39 +0200
-Message-Id: <1342812585-22017-4-git-send-email-jbe@pengutronix.de>
+Date: Fri, 20 Jul 2012 21:29:37 +0200
+Message-Id: <1342812585-22017-2-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1342812585-22017-1-git-send-email-jbe@pengutronix.de>
 References: <1342812585-22017-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,37 +28,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/9] Samsung/serial: remove more ugly ifdef lines
+Subject: [PATCH 1/9] ARM/Samsung: List only really supported S3C24xx SoCs
 To: barebox@lists.infradead.org
 
-More or less just cosmetic. Easier to read, and lets the compiler remove unused
-code.
+The other SoCs differs in many ways from the currently supported S3C2410 and
+S3C2440, so remove them.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- drivers/serial/serial_s3c.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/arm/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/serial/serial_s3c.c b/drivers/serial/serial_s3c.c
-index 7a9b355..ff3792b 100644
---- a/drivers/serial/serial_s3c.c
-+++ b/drivers/serial/serial_s3c.c
-@@ -115,11 +115,10 @@ static int s3c_serial_init_port(struct console_device *cdev)
- 	writeb(0xf, base + UINTM);
- #endif
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index af4cb59..2dbac66 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -68,7 +68,7 @@ config ARCH_PXA
+ 	select GENERIC_GPIO
  
--#ifdef CONFIG_DRIVER_SERIAL_S3C_AUTOSYNC
--	writeb(0x10, base + UMCON); /* enable auto flow control */
--#else
--	writeb(0x01, base + UMCON); /* RTS up */
--#endif
-+	if (IS_ENABLED(CONFIG_DRIVER_SERIAL_S3C_AUTOSYNC))
-+		writeb(0x10, base + UMCON); /* enable auto flow control */
-+	else
-+		writeb(0x01, base + UMCON); /* RTS up */
- 
- 	return 0;
- }
+ config ARCH_S3C24xx
+-	bool "Samsung S3C2410, S3C2412, S3C2413, S3C2440, S3C2442, S3C2443"
++	bool "Samsung S3C2410, S3C2440"
+ 	select ARCH_SAMSUNG
+ 	select CPU_ARM920T
+ 	select GENERIC_GPIO
 -- 
 1.7.10.4
 
