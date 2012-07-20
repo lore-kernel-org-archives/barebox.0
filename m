@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo1.mail-out.ovh.net ([46.105.35.72]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SsF3O-0006cD-Sb
- for barebox@lists.infradead.org; Fri, 20 Jul 2012 15:23:45 +0000
-Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 1B607FFA8A1
- for <barebox@lists.infradead.org>; Fri, 20 Jul 2012 17:29:15 +0200 (CEST)
-Date: Fri, 20 Jul 2012 17:24:17 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120720152417.GH22657@game.jcrosoft.org>
+Received: from [2a02:8b8:656::164] (helo=bar.sig21.net)
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SsFwO-0001Rw-09
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 16:20:32 +0000
+Date: Fri, 20 Jul 2012 18:20:07 +0200
+From: Johannes Stezenbach <js@sig21.net>
+Message-ID: <20120720162007.GA22374@sig21.net>
 References: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
- <1342685582-13244-10-git-send-email-s.hauer@pengutronix.de>
+ <1342685582-13244-9-git-send-email-s.hauer@pengutronix.de>
+ <5007E38B.8040106@pengutronix.de>
+ <20120719140834.GY30009@pengutronix.de>
+ <20120719204548.GI30009@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1342685582-13244-10-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <20120719204548.GI30009@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,67 +26,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 9/9] Add compressed image support
+Subject: Re: [PATCH 8/9] ARM: Separate assembler functions into their own
+ section
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-> +{
-> +	u32 r;
-> +
-> +	/* Setup the stack */
-> +	r = STACK_BASE + STACK_SIZE - 16;
-> +	__asm__ __volatile__("mov sp, %0" : : "r"(r));
-> +	/* clear bss */
-> +	memset(__bss_start, 0, __bss_stop - __bss_start);
-> +
-> +	start_barebox();
-> +}
-> +#else
->  void __naked __section(.text_entry) start(void)
->  {
->  	barebox_arm_head();
->  }
-> +#endif
->  
->  void __naked __section(.text_exceptions) exception_vectors(void)
->  {
->  	__asm__ __volatile__ (
->  		".arm\n"
-> -		"b reset\n"				/* reset */
-> +		"1: b 1b\n"					/* reset */
->  #ifdef CONFIG_ARM_EXCEPTIONS
->  		"ldr pc, =undefined_instruction\n"	/* undefined instruction */
->  		"ldr pc, =software_interrupt\n"		/* software interrupt (SWI) */
-> @@ -98,6 +118,34 @@ void __naked __bare_init reset(void)
->  	board_init_lowlevel_return();
->  }
->  
-> +extern void *input_data;
-> +extern void *input_data_end;
-> +
-> +#define STATIC static
-> +#include "../../../lib/decompress_unlzo.c"
-> +
-> +void barebox_uncompress(void *compressed_start, unsigned int len)
-> +{
-> +	void (*barebox)(void);
-need to check here if we are at TEXT_BASE (I mean if the code run where we are
-supposed to uncompress
+On Thu, Jul 19, 2012 at 10:45:48PM +0200, Sascha Hauer wrote:
+> On Thu, Jul 19, 2012 at 04:08:34PM +0200, Sascha Hauer wrote:
+> > On Thu, Jul 19, 2012 at 12:38:03PM +0200, Marc Kleine-Budde wrote:
+> > > On 07/19/2012 10:13 AM, Sascha Hauer wrote:
+> > > >  
+> > > > +.section .text.__mmu_cache_on
+> > > >  ENTRY(__mmu_cache_on)
+> > > 
+> > > Is it possible to add the section to the ENTRY macro?
+> > 
+> > I'm not sure. I was pretty sure that some assembly functions fall
+> > through to the next function. I cannot find any examples though.
+> 
+> For example we have this:
+> 
+> .section .text.__divsi3
+> ENTRY(__divsi3)
+> ENTRY(__aeabi_idiv)
+> 	...
 
-otherwise on at91 it will not work as the bootstrap put use at TEXT_BASE
+and also:
+ENTRY(__lshrdi3)
+ENTRY(__aeabi_llsr)
 
-so we have need to link at an other address
-
-but the decompressor need work anyway by copying itself with the data before
-of after the TEXT_BASE
-and we should take the uncompress size about 4 times the compressed one.
-There is nearly no change to compress more than 75%
+However, this is the rare exception.  How about
+adding __ENTRY for these cases?
 
 
-otherwise Tested by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-
-Best Regards,
-J.
+Johannes
 
 _______________________________________________
 barebox mailing list
