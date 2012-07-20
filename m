@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from f31.mail.ru ([94.100.178.225])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Ss8CT-0006JC-DT
- for barebox@lists.infradead.org; Fri, 20 Jul 2012 08:04:38 +0000
-Date: Fri, 20 Jul 2012 10:04:35 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120720080435.GP30009@pengutronix.de>
-References: <loom.20120719T173418-826@post.gmane.org>
- <20120719161139.GB30009@pengutronix.de>
- <loom.20120719T224910-551@post.gmane.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <loom.20120719T224910-551@post.gmane.org>
+ id 1Ss8DN-0006Mm-WA
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 08:05:38 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Fri, 20 Jul 2012 12:05:21 +0400
+References: <1342711817-866-1-git-send-email-shc_work@mail.ru>
+ <20120719175512.GD30009@pengutronix.de>
+In-Reply-To: <20120719175512.GD30009@pengutronix.de>
+Message-ID: <1342771521.408579760@f31.mail.ru>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,41 +19,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: USB On PCM043?
-To: Jerry Kirk <jkirk865@gmail.com>
+Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCAxLzZdIG1jMTN4eHg6IERlZmluZSBtYXhpbXVtIFNQ?=
+ =?UTF-8?B?SSBjbG9jayBmcmVxdWVuY3kgZ2xvYmFsIHRvIGRyaXZlcg==?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jul 19, 2012 at 08:56:35PM +0000, Jerry Kirk wrote:
-> > > We have been attempting to get USB Host mode working under Barebox(2012-07-0)
-> > > a PCM043 platform (i.mx35), but we are having a bit of trouble.
-> > 
-> > Could it be that the USB clock operates at the wrong rate? I think it
-> > should be 60MHz.
-> 
-> We're not certain how to verify the clock setting for USB in Barebox.
-> We have used "dump_clocks" but are not certain which of these clocks
-> the USB clock is derived from. We think we have it set to the same
-> settings as the Eukrea board.
-
-The i.MX SoCs have a clko pin which can be muxed to different clocks. I
-don't know if this is accessible on the pcm043, but if yes, you could
-switch it to the USB clock and measure the clock.
-Otherwise it might be good to run a current -rc kernel, you can then
-see the complete clock tree in debugfs
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8uCgpUaHUsIDE5IEp1bCAyMDEyIDE5OjU1OjEyICswMjAwINC+0YIgU2FzY2hhIEhhdWVy
+IDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiBPbiBUaHUsIEp1bCAxOSwgMjAxMiBhdCAwNzoz
+MDoxMlBNICswNDAwLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+ICA+IFRoaXMgcGF0Y2ggcHJv
+dmlkZSBzZXR1cCBmb3IgU1BJIGNsayBmcmVxdWVuY3kgZ2xvYmFsIHRvIGRyaXZlci4KPiAgPiBG
+b3IgTUMxMzc4MyBtYXhpbXVtIGNsb2NrIGZyZXF1ZW5jeSBpcyAyMCBNSHosCj4gID4gZm9yIE1D
+MTM4OTIgbWF4aW11bSBjbG9jayBmcmVxdWVuY3kgaXMgMjYgTUh6LAo+ICA+IHNvIHdlIGRlZmlu
+ZSAyMCBNSHogYXMgYSBtYXhpbXVtIFNQSSBjbGsuCj4gID4gCj4gID4gU2lnbmVkLW9mZi1ieTog
+QWxleGFuZGVyIFNoaXlhbiA8c2hjX3dvcmtAbWFpbC5ydT4KPiAgPiAtLS0KPiAgPiBhcmNoL2Fy
+bS9ib2FyZHMvY2N4bXg1MS9jY3hteDUxLmMgfCAxIC0KPiAgPiBhcmNoL2FybS9ib2FyZHMvZnJl
+ZXNjYWxlLW14NTEtcGRrL2JvYXJkLmMgfCAxIC0KPiAgPiBhcmNoL2FybS9ib2FyZHMvcGNtMDM4
+L3BjbTAzOC5jIHwgMSAtCj4gID4gZHJpdmVycy9tZmQvbWMxM3h4eC5jIHwgMSArCj4gID4gNCBm
+aWxlcyBjaGFuZ2VkLCAxIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCj4gID4gCj4gID4g
+ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9jY3hteDUxL2NjeG14NTEuYyBiL2FyY2gvYXJt
+L2JvYXJkcy9jY3hteDUxL2NjeG14NTEuYwo+ICA+IGluZGV4IGY0OTQxNzQuLmYzMDllMGMgMTAw
+NjQ0Cj4gID4gLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2NjeG14NTEvY2N4bXg1MS5jCj4gID4gKysr
+IGIvYXJjaC9hcm0vYm9hcmRzL2NjeG14NTEvY2N4bXg1MS5jCj4gID4gQEAgLTE5MSw3ICsxOTEs
+NiBAQCBzdGF0aWMgc3RydWN0IHNwaV9pbXhfbWFzdGVyIGVjc3BpXzBfZGF0YSA9IHsKPiAgPiBz
+dGF0aWMgY29uc3Qgc3RydWN0IHNwaV9ib2FyZF9pbmZvIGNjeG14NTFfc3BpX2JvYXJkX2luZm9b
+XSA9IHsKPiAgPiB7Cj4gID4gLm5hbWUgPSAibWMxM3h4eC1zcGkiLAo+ICA+IC0gLm1heF9zcGVl
+ZF9oeiA9IDYwMDAwMDAsCj4gID4gLmJ1c19udW0gPSAwLAo+ICA+IC5jaGlwX3NlbGVjdCA9IDAs
+Cj4gID4gfSwKPiAgPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDUx
+LXBkay9ib2FyZC5jIGIvYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDUxLXBkay9ib2FyZC5j
+Cj4gID4gaW5kZXggM2E1NjhkMC4uN2MyYzhmZSAxMDA2NDQKPiAgPiAtLS0gYS9hcmNoL2FybS9i
+b2FyZHMvZnJlZXNjYWxlLW14NTEtcGRrL2JvYXJkLmMKPiAgPiArKysgYi9hcmNoL2FybS9ib2Fy
+ZHMvZnJlZXNjYWxlLW14NTEtcGRrL2JvYXJkLmMKPiAgPiBAQCAtMTE3LDcgKzExNyw2IEBAIHN0
+YXRpYyBzdHJ1Y3Qgc3BpX2lteF9tYXN0ZXIgc3BpXzBfZGF0YSA9IHsKPiAgPiBzdGF0aWMgY29u
+c3Qgc3RydWN0IHNwaV9ib2FyZF9pbmZvIG14NTFfYmFiYmFnZV9zcGlfYm9hcmRfaW5mb1tdID0g
+ewo+ICA+IHsKPiAgPiAubmFtZSA9ICJtYzEzeHh4LXNwaSIsCj4gID4gLSAubWF4X3NwZWVkX2h6
+ID0gMzAwMDAwLAo+ICA+IC5idXNfbnVtID0gMCwKPiAgPiAuY2hpcF9zZWxlY3QgPSAwLAo+ICA+
+IH0sCj4gID4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9wY20wMzgvcGNtMDM4LmMgYi9h
+cmNoL2FybS9ib2FyZHMvcGNtMDM4L3BjbTAzOC5jCj4gID4gaW5kZXggYmFkYzk3OC4uZmE4MmIw
+MiAxMDA2NDQKPiAgPiAtLS0gYS9hcmNoL2FybS9ib2FyZHMvcGNtMDM4L3BjbTAzOC5jCj4gID4g
+KysrIGIvYXJjaC9hcm0vYm9hcmRzL3BjbTAzOC9wY20wMzguYwo+ICA+IEBAIC01OSw3ICs1OSw2
+IEBAIHN0YXRpYyBzdHJ1Y3Qgc3BpX2lteF9tYXN0ZXIgcGNtMDM4X3NwaV8wX2RhdGEgPSB7Cj4g
+ID4gc3RhdGljIHN0cnVjdCBzcGlfYm9hcmRfaW5mbyBwY20wMzhfc3BpX2JvYXJkX2luZm9bXSA9
+IHsKPiAgPiB7Cj4gID4gLm5hbWUgPSAibWMxM3h4eC1zcGkiLAo+ICA+IC0gLm1heF9zcGVlZF9o
+eiA9IDMwMDAwMDAsCj4gID4gLmJ1c19udW0gPSAwLAo+ICA+IC5jaGlwX3NlbGVjdCA9IDAsCj4g
+ID4gfQo+ICA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL21mZC9tYzEzeHh4LmMgYi9kcml2ZXJzL21m
+ZC9tYzEzeHh4LmMKPiAgPiBpbmRleCAyOTM0ZTlkLi44YmIwZDAwIDEwMDY0NAo+ICA+IC0tLSBh
+L2RyaXZlcnMvbWZkL21jMTN4eHguYwo+ICA+ICsrKyBiL2RyaXZlcnMvbWZkL21jMTN4eHguYwo+
+ICA+IEBAIC0yOTcsNiArMjk3LDcgQEAgc3RhdGljIGludCBtY19wcm9iZShzdHJ1Y3QgZGV2aWNl
+X2QgKmRldiwgZW51bSBtYzEzeHh4X21vZGUgbW9kZSkKPiAgPiBtY19kZXYtPnNwaSA9IGRldi0+
+dHlwZV9kYXRhOwo+ICA+IG1jX2Rldi0+c3BpLT5tb2RlID0gU1BJX01PREVfMCB8IFNQSV9DU19I
+SUdIOwo+ICA+IG1jX2Rldi0+c3BpLT5iaXRzX3Blcl93b3JkID0gMzI7Cj4gID4gKyBtY19kZXYt
+PnNwaS0+bWF4X3NwZWVkX2h6ID0gMjAwMDAwMDA7Cj4gCj4gIFRoZSB2YWx1ZXMgaW5kZWVkIGxv
+b2sgcXVpdGUgYXJiaXRyYXJ5LCBidXQgaXQgbWF5IGJlIHRoYXQgYSBoYXJkd2FyZQo+ICBkZXNp
+Z24gZG9lcyBub3Qgc3VwcG9ydCBzdWNoIGhpZ2ggZnJlcXVlbmNpZXMuIE1heWJlIGJldHRlcgo+
+IAo+ICBpZiAoIW1jX2Rldi0+c3BpLT5tYXhfc3BlZWRfaHopCj4gIG1jX2Rldi0+c3BpLT5tYXhf
+c3BlZWRfaHogPSAyMDAwMDAwMAo+IAo+ICA/Ck9uIG15IG9waW5pb24sIHRlc3RzIGZvciBzdXBw
+b3J0ZWQgc3BlZWQsIGlzIHdvcmsgZm9yIFNQSS1kcml2ZXIsIG5vdCBmb3IgZGV2aWNlIGRyaXZl
+ci4KSXMgbm90IGl0PwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
