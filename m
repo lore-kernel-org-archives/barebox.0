@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2a02:8b8:656::164] (helo=bar.sig21.net)
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SsEhw-0005yz-It
- for barebox@lists.infradead.org; Fri, 20 Jul 2012 15:01:55 +0000
-Date: Fri, 20 Jul 2012 17:01:06 +0200
-From: Johannes Stezenbach <js@sig21.net>
-Message-ID: <20120720150106.GA20593@sig21.net>
+Received: from 18.mo1.mail-out.ovh.net ([46.105.35.72]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SsF3O-0006cD-Sb
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 15:23:45 +0000
+Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 1B607FFA8A1
+ for <barebox@lists.infradead.org>; Fri, 20 Jul 2012 17:29:15 +0200 (CEST)
+Date: Fri, 20 Jul 2012 17:24:17 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120720152417.GH22657@game.jcrosoft.org>
 References: <1342685582-13244-1-git-send-email-s.hauer@pengutronix.de>
  <1342685582-13244-10-git-send-email-s.hauer@pengutronix.de>
- <20120719170845.GA3303@sig21.net>
- <20120719174125.GC30009@pengutronix.de>
- <20120719183238.GA3721@sig21.net>
- <20120719204212.GH30009@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120719204212.GH30009@pengutronix.de>
+In-Reply-To: <1342685582-13244-10-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,47 +31,63 @@ Subject: Re: [PATCH 9/9] Add compressed image support
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jul 19, 2012 at 10:42:12PM +0200, Sascha Hauer wrote:
-> On Thu, Jul 19, 2012 at 08:32:38PM +0200, Johannes Stezenbach wrote:
-> > > > ...
-> > > >   LD      barebox
-> > > > arm-linux-ld -EL  -Map barebox.map -static --gc-sections -o barebox \
-> > > >                 -T arch/arm/lib/barebox-compressed.lds  \
-> > > >                 --start-group  common/built-in.o  drivers/built-in.o  commands/built-in.o  lib/built-in.o  crypto/built-in.o  net/built-in.o  fs/built-in.o  arch/arm/boards/foo/built-in.o  arch/arm/mach-foo/built-in.o  arch/arm/lib/built-in.o  arch/arm/cpu/built-in.o piggy.lzo.o --end-group
-> > > > 
-> > > > 
-> > > > It shouldn't link all the -built-in.o into the uncompressor, should it?
-> > > > Or is it supposed to work via --gc-sections trick?
-> > > 
-> > > Yes, it works using --gc-sections. Are you building a defconfig or a
-> > > custom one? If the error above is correct start_barebox is referenced
-> > > from the decompressor code. This should not happen.
-> > 
-> > I'm building a custom one (unpublished code).  It has some SPI flash
-> > boot assembly code, I guess that might cause the issue wrt the new section
-> > annotations.  I'll look at it tomorrow.  However, I still wonder
-> > about the empty $(barebox-compressed)?
-> 
-> It's empty here aswell, so this shouldn't be a problem. Though I should
-> probably simpy remove it.
+> +{
+> +	u32 r;
+> +
+> +	/* Setup the stack */
+> +	r = STACK_BASE + STACK_SIZE - 16;
+> +	__asm__ __volatile__("mov sp, %0" : : "r"(r));
+> +	/* clear bss */
+> +	memset(__bss_start, 0, __bss_stop - __bss_start);
+> +
+> +	start_barebox();
+> +}
+> +#else
+>  void __naked __section(.text_entry) start(void)
+>  {
+>  	barebox_arm_head();
+>  }
+> +#endif
+>  
+>  void __naked __section(.text_exceptions) exception_vectors(void)
+>  {
+>  	__asm__ __volatile__ (
+>  		".arm\n"
+> -		"b reset\n"				/* reset */
+> +		"1: b 1b\n"					/* reset */
+>  #ifdef CONFIG_ARM_EXCEPTIONS
+>  		"ldr pc, =undefined_instruction\n"	/* undefined instruction */
+>  		"ldr pc, =software_interrupt\n"		/* software interrupt (SWI) */
+> @@ -98,6 +118,34 @@ void __naked __bare_init reset(void)
+>  	board_init_lowlevel_return();
+>  }
+>  
+> +extern void *input_data;
+> +extern void *input_data_end;
+> +
+> +#define STATIC static
+> +#include "../../../lib/decompress_unlzo.c"
+> +
+> +void barebox_uncompress(void *compressed_start, unsigned int len)
+> +{
+> +	void (*barebox)(void);
+need to check here if we are at TEXT_BASE (I mean if the code run where we are
+supposed to uncompress
 
-OK, got it to work now.  I had a "b start" in my SPI flash boot code
-to skip low level init when it was loaded into RAM via JTAG.
-That needed to be changed to "b compressed_start".  It seems
-there is no real support in ld to debug this, I added --cref
-to LDFLAGS_barebox but I still couldn't see why stuff from
-common/built-in.o gets pulled into the uncompressor.
+otherwise on at91 it will not work as the bootstrap put use at TEXT_BASE
 
-BTW, I briefly tried the lzo update from
-http://lkml.org/lkml/2012/7/16/355
-(don't have much time to do real benchmarks, just tried
-"time uncompress somefile.lzo somefile"),
-but it seems to be slower on ARM926 than the old version
-(504ms vs 362ms).
+so we have need to link at an other address
+
+but the decompressor need work anyway by copying itself with the data before
+of after the TEXT_BASE
+and we should take the uncompress size about 4 times the compressed one.
+There is nearly no change to compress more than 75%
 
 
-Thanks,
-Johannes
+otherwise Tested by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
