@@ -1,13 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Ss63J-0005X5-RN
- for barebox@lists.infradead.org; Fri, 20 Jul 2012 05:47:21 +0000
-Received: by lbbgg6 with SMTP id gg6so4766248lbb.36
- for <barebox@lists.infradead.org>; Thu, 19 Jul 2012 22:46:58 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 20 Jul 2012 09:46:49 +0400
-Message-Id: <1342763209-28029-1-git-send-email-antonynpavlov@gmail.com>
+ id 1Ss78V-0007wj-TH
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 06:56:31 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jbe@pengutronix.de>) id 1Ss78M-0007k1-73
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 08:56:18 +0200
+Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <jbe@pengutronix.de>) id 1Ss78M-0006Ze-5x
+ for barebox@lists.infradead.org; Fri, 20 Jul 2012 08:56:18 +0200
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Fri, 20 Jul 2012 08:56:15 +0200
+Message-Id: <1342767377-24735-2-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1342767377-24735-1-git-send-email-jbe@pengutronix.de>
+References: <1342767377-24735-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,63 +28,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] serial_ns16550: change the driver's name
+Subject: [PATCH 1/3] ARM/Samsung: be able to include the nand header multiple
+ times
 To: barebox@lists.infradead.org
 
-The name "serial_ns16550" is not handy because the devices
-will have the names like "serial_ns165500", "serial_ns165501",
-"serial_ns165502" etc.
+This is required in preparation for the following patches.
 
-The names like "ns16550_serial0" and "ns16550_serial1" look
-much better.
-
-Also it is reasonable to make serial driver's names unification.
-E.g. see the names for drivers in drivers/serial directory:
- "netx_serial",
- "mpc5xxx_serial",
- "altera_serial",
- "s3c_serial",
- "imx_serial",
- "pxa_serial",
- "blackfin_serial",
- "stm_serial",
- "pl010_serial",
-and even "g_serial" in ./drivers/usb/gadget/serial.c
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- drivers/serial/serial_ns16550.c |    2 +-
- include/driver.h                |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-samsung/include/mach/s3c24xx-nand.h |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-index 820aac5..1248bd6 100644
---- a/drivers/serial/serial_ns16550.c
-+++ b/drivers/serial/serial_ns16550.c
-@@ -263,7 +263,7 @@ static int ns16550_probe(struct device_d *dev)
-  * @brief Driver registration structure
+diff --git a/arch/arm/mach-samsung/include/mach/s3c24xx-nand.h b/arch/arm/mach-samsung/include/mach/s3c24xx-nand.h
+index acd78b8..fa88da1 100644
+--- a/arch/arm/mach-samsung/include/mach/s3c24xx-nand.h
++++ b/arch/arm/mach-samsung/include/mach/s3c24xx-nand.h
+@@ -18,6 +18,9 @@
+  *
   */
- static struct driver_d ns16550_serial_driver = {
--	.name = "serial_ns16550",
-+	.name = "ns16550_serial",
- 	.probe = ns16550_probe,
- };
  
-diff --git a/include/driver.h b/include/driver.h
-index 7d597b4..0a8dc8e 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -226,7 +226,7 @@ struct NS16550_plat;
- static inline struct device_d *add_ns16550_device(int id, resource_size_t start,
- 		resource_size_t size, int flags, struct NS16550_plat *pdata)
- {
--	return add_generic_device("serial_ns16550", id, NULL, start, size,
-+	return add_generic_device("ns16550_serial", id, NULL, start, size,
- 				  IORESOURCE_MEM | flags, pdata);
- }
- 
++#ifndef MACH_S3C24XX_NAND_H
++# define MACH_S3C24XX_NAND_H
++
+ #ifdef CONFIG_S3C_NAND_BOOT
+ extern void s3c24x0_nand_load_image(void*, int, int);
+ #endif
+@@ -52,3 +55,5 @@ struct s3c24x0_nand_platform_data {
+  * @file
+  * @brief Basic declaration to use the s3c24x0 NAND driver
+  */
++
++#endif /* MACH_S3C24XX_NAND_H */
 -- 
-1.7.10
+1.7.10.4
 
 
 _______________________________________________
