@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp5.mail.ru ([94.100.176.132])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SsRdh-0005eW-TR
+ id 1SsRdi-0005eg-O1
  for barebox@lists.infradead.org; Sat, 21 Jul 2012 04:50:04 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 21 Jul 2012 08:50:07 +0400
-Message-Id: <1342846209-10461-1-git-send-email-shc_work@mail.ru>
+Date: Sat, 21 Jul 2012 08:50:08 +0400
+Message-Id: <1342846209-10461-2-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1342846209-10461-1-git-send-email-shc_work@mail.ru>
+References: <1342846209-10461-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,74 +21,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] mc13xxx: Added dummy definitions if CONFIG_MFD_MC13XXX is
- not set
+Subject: [PATCH 2/3] mc13xxx: Hide struct mc13xxx from board support code
 To: barebox@lists.infradead.org
 
+Board support units should use only provided functions.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/boards/pcm038/pcm038.c |    2 --
- include/mfd/mc13xxx.h           |   23 ++++++++++++++++++++++-
- 2 files changed, 22 insertions(+), 3 deletions(-)
+ drivers/mfd/mc13xxx.c |   13 +++++++++++++
+ include/mfd/mc13xxx.h |   13 +------------
+ 2 files changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
-index badc978..ffd8d87 100644
---- a/arch/arm/boards/pcm038/pcm038.c
-+++ b/arch/arm/boards/pcm038/pcm038.c
-@@ -125,7 +125,6 @@ static inline uint32_t get_pll_spctl10(void)
-  */
- static int pcm038_power_init(void)
- {
--#ifdef CONFIG_MFD_MC13XXX
- 	uint32_t spctl0 = get_pll_spctl10();
- 	struct mc13xxx *mc13xxx = mc13xxx_get();
+diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
+index 2934e9d..b1417c8 100644
+--- a/drivers/mfd/mc13xxx.c
++++ b/drivers/mfd/mc13xxx.c
+@@ -32,6 +32,19 @@
  
-@@ -159,7 +158,6 @@ static int pcm038_power_init(void)
- 			printf("Failed to initialize PMIC. Will continue with low CPU speed\n");
- 		}
- 	}
--#endif
+ #define DRIVERNAME		"mc13xxx"
  
- 	/* clock gating enable */
- 	GPCR = 0x00050f08;
++enum mc13xxx_mode {
++	MC13XXX_MODE_I2C,
++	MC13XXX_MODE_SPI,
++};
++
++struct mc13xxx {
++	struct cdev		cdev;
++	struct i2c_client	*client;
++	struct spi_device	*spi;
++	enum mc13xxx_mode	mode;
++	int			revision;
++};
++
+ #define to_mc13xxx(a)		container_of(a, struct mc13xxx, cdev)
+ 
+ static struct mc13xxx *mc_dev;
 diff --git a/include/mfd/mc13xxx.h b/include/mfd/mc13xxx.h
-index 2880307..632c9fb 100644
+index 632c9fb..f4e3302 100644
 --- a/include/mfd/mc13xxx.h
 +++ b/include/mfd/mc13xxx.h
-@@ -163,10 +163,31 @@ struct mc13xxx {
- 	int			revision;
- };
+@@ -150,18 +150,7 @@
+ #define MC13783_SW1B_SOFTSTART		(1 << 17)
+ #define MC13783_SW_PLL_FACTOR(x)	(((x) - 28) << 19)
  
-+#ifdef CONFIG_MFD_MC13XXX
- extern struct mc13xxx *mc13xxx_get(void);
+-enum mc13xxx_mode {
+-	MC13XXX_MODE_I2C,
+-	MC13XXX_MODE_SPI,
+-};
 -
- extern int mc13xxx_reg_read(struct mc13xxx *mc13xxx, u8 reg, u32 *val);
- extern int mc13xxx_reg_write(struct mc13xxx *mc13xxx, u8 reg, u32 val);
- extern int mc13xxx_set_bits(struct mc13xxx *mc13xxx, u8 reg, u32 mask, u32 val);
-+#else
-+static inline struct mc13xxx *mc13xxx_get(void)
-+{
-+	return NULL;
-+}
-+
-+static inline int mc13xxx_reg_read(struct mc13xxx *mc13xxx, u8 reg, u32 *val)
-+{
-+	return -ENODEV;
-+}
-+
-+static inline int mc13xxx_reg_write(struct mc13xxx *mc13xxx, u8 reg, u32 val)
-+{
-+	return -ENODEV;
-+}
-+
-+static inline int mc13xxx_set_bits(struct mc13xxx *mc13xxx, u8 reg, u32 mask, u32 val)
-+{
-+	return -ENODEV;
-+}
-+#endif
+-struct mc13xxx {
+-	struct cdev		cdev;
+-	struct i2c_client	*client;
+-	struct spi_device	*spi;
+-	enum mc13xxx_mode	mode;
+-	int			revision;
+-};
++struct mc13xxx;
  
- #endif /* __MFD_MC13XXX_H */
+ #ifdef CONFIG_MFD_MC13XXX
+ extern struct mc13xxx *mc13xxx_get(void);
 -- 
 1.7.3.4
 
