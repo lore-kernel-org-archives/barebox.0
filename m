@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SsWYE-0002hk-KX
- for barebox@lists.infradead.org; Sat, 21 Jul 2012 10:05:09 +0000
+ id 1SsWYE-0002ho-Iv
+ for barebox@lists.infradead.org; Sat, 21 Jul 2012 10:05:13 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1SsWY7-0003ve-H2
+ (envelope-from <jbe@pengutronix.de>) id 1SsWY7-0003va-H1
  for barebox@lists.infradead.org; Sat, 21 Jul 2012 12:04:35 +0200
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <jbe@pengutronix.de>) id 1SsWY6-0001Vg-Io
+ (envelope-from <jbe@pengutronix.de>) id 1SsWY6-0001VM-HA
  for barebox@lists.infradead.org; Sat, 21 Jul 2012 12:04:34 +0200
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sat, 21 Jul 2012 12:04:32 +0200
-Message-Id: <1342865073-5209-8-git-send-email-jbe@pengutronix.de>
+Date: Sat, 21 Jul 2012 12:04:28 +0200
+Message-Id: <1342865073-5209-4-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1342865073-5209-1-git-send-email-jbe@pengutronix.de>
 References: <1342865073-5209-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,127 +28,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] ARM/Samsung: add the Mini6410 platform as the first user
- of the S3C6410 SoC
+Subject: [PATCH 3/8] ARM/Samsung: add the clock tree support for the S3C6410
+ SoC
 To: barebox@lists.infradead.org
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/Makefile                               |    1 +
- arch/arm/boards/friendlyarm-mini6410/Makefile   |    1 +
- arch/arm/boards/friendlyarm-mini6410/config.h   |    8 +
- arch/arm/boards/friendlyarm-mini6410/env/config |   56 +++++
- arch/arm/boards/friendlyarm-mini6410/mini6410.c |  305 +++++++++++++++++++++++
- arch/arm/configs/friendlyarm_mini6410_defconfig |   40 +++
- arch/arm/mach-samsung/Kconfig                   |   10 +
- 7 files changed, 421 insertions(+)
- create mode 100644 arch/arm/boards/friendlyarm-mini6410/Makefile
- create mode 100644 arch/arm/boards/friendlyarm-mini6410/config.h
- create mode 100644 arch/arm/boards/friendlyarm-mini6410/env/config
- create mode 100644 arch/arm/boards/friendlyarm-mini6410/mini6410.c
- create mode 100644 arch/arm/configs/friendlyarm_mini6410_defconfig
+ arch/arm/mach-samsung/Makefile                     |    1 +
+ arch/arm/mach-samsung/clocks-s3c64xx.c             |  296 ++++++++++++++++++++
+ arch/arm/mach-samsung/include/mach/s3c-clocks.h    |    3 +
+ .../arm/mach-samsung/include/mach/s3c64xx-clocks.h |   58 ++++
+ drivers/serial/serial_s3c.c                        |    3 +
+ 5 files changed, 361 insertions(+)
+ create mode 100644 arch/arm/mach-samsung/clocks-s3c64xx.c
+ create mode 100644 arch/arm/mach-samsung/include/mach/s3c64xx-clocks.h
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 1225df7..bd03fe6 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -123,6 +123,7 @@ board-$(CONFIG_MACH_FREESCALE_MX53_LOCO)	:= freescale-mx53-loco
- board-$(CONFIG_MACH_FREESCALE_MX53_SMD)		:= freescale-mx53-smd
- board-$(CONFIG_MACH_GUF_CUPID)			:= guf-cupid
- board-$(CONFIG_MACH_MINI2440)			:= mini2440
-+board-$(CONFIG_MACH_MINI6410)			:= friendlyarm-mini6410
- board-$(CONFIG_MACH_QIL_A9260)			:= qil-a9260
- board-$(CONFIG_MACH_TNY_A9260)			:= tny-a926x
- board-$(CONFIG_MACH_TNY_A9263)			:= tny-a926x
-diff --git a/arch/arm/boards/friendlyarm-mini6410/Makefile b/arch/arm/boards/friendlyarm-mini6410/Makefile
+diff --git a/arch/arm/mach-samsung/Makefile b/arch/arm/mach-samsung/Makefile
+index 40180d7..807e91b 100644
+--- a/arch/arm/mach-samsung/Makefile
++++ b/arch/arm/mach-samsung/Makefile
+@@ -2,4 +2,5 @@ obj-y += s3c-timer.o generic.o
+ obj-lowlevel-$(CONFIG_ARCH_S3C24xx) += lowlevel-s3c24x0.o
+ obj-lowlevel-$(CONFIG_ARCH_S5PCxx) += lowlevel-s5pcxx.o
+ obj-$(CONFIG_ARCH_S3C24xx) += gpio-s3c24x0.o clocks-s3c24xx.o mem-s3c24x0.o
++obj-$(CONFIG_ARCH_S3C64xx) += clocks-s3c64xx.o
+ obj-$(CONFIG_S3C_LOWLEVEL_INIT) += $(obj-lowlevel-y)
+diff --git a/arch/arm/mach-samsung/clocks-s3c64xx.c b/arch/arm/mach-samsung/clocks-s3c64xx.c
 new file mode 100644
-index 0000000..cd7a427
+index 0000000..a4beaf7
 --- /dev/null
-+++ b/arch/arm/boards/friendlyarm-mini6410/Makefile
-@@ -0,0 +1 @@
-+obj-y += mini6410.o
-diff --git a/arch/arm/boards/friendlyarm-mini6410/config.h b/arch/arm/boards/friendlyarm-mini6410/config.h
-new file mode 100644
-index 0000000..ee38192
---- /dev/null
-+++ b/arch/arm/boards/friendlyarm-mini6410/config.h
-@@ -0,0 +1,8 @@
-+/* FriendlyARM Mini6410 specific global settings */
-+
-+#ifndef _MINI6410_CONFIG_H_
-+# define _MINI6410_CONFIG_H_
-+
-+#define S3C64XX_CLOCK_REFERENCE 12000000
-+
-+#endif /* _MINI6410_CONFIG_H_ */
-diff --git a/arch/arm/boards/friendlyarm-mini6410/env/config b/arch/arm/boards/friendlyarm-mini6410/env/config
-new file mode 100644
-index 0000000..a1c86e1
---- /dev/null
-+++ b/arch/arm/boards/friendlyarm-mini6410/env/config
-@@ -0,0 +1,56 @@
-+#!/bin/sh
-+
-+machine=mini6410
-+eth0.serverip=a.b.c.d.e
-+user=
-+
-+# use 'dhcp' to do dhcp in barebox and in kernel
-+# use 'none' if you want to skip kernel ip autoconfiguration
-+ip=dhcp
-+
-+# or set your networking parameters here
-+#eth0.ipaddr=a.b.c.d.e
-+#eth0.netmask=a.b.c.d.e
-+#eth0.gateway=a.b.c.d.e
-+eth0.ethaddr=08:90:90:90:90:90
-+
-+# can be either 'nfs', 'tftp' or 'nand'
-+kernel_loc=tftp
-+# can be either 'net', 'nand' or 'initrd'
-+rootfs_loc=net
-+
-+# can be either 'jffs2' or 'ubifs'
-+rootfs_type=ubifs
-+rootfsimage=root-${machine}.${rootfs_type}
-+
-+# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
-+kernelimage_type=zimage
-+kernelimage=zImage-${machine}
-+#kernelimage_type=uimage
-+#kernelimage=uImage-$machine
-+#kernelimage_type=raw
-+#kernelimage=Image-$machine
-+#kernelimage_type=raw_lzo
-+#kernelimage=Image-$machine.lzo
-+
-+if [ -n $user ]; then
-+	kernelimage="${user}"-"${kernelimage}"
-+	nfsroot="${eth0.serverip}:/home/${user}/nfsroot/${machine}"
-+	rootfsimage="${user}"-"${rootfsimage}"
-+else
-+	nfsroot="${eth0.serverip}:/path/to/nfs/root"
-+fi
-+
-+autoboot_timeout=3
-+
-+#
-+# "mini6410" kernel parameter
-+# 0 .. 9 = screen type
-+# i = touchscreen with propritary FriendlyARM protocol
-+# Note: can be "minit6410= " if nothing of these components are connected
-+#
-+bootargs="console=ttySAC0,115200 mini6410=0"
-+
-+nand_device="nand"
-+nand_parts="256k(barebox),128k(bareboxenv),1536k(kernel),-(root)"
-+rootfs_mtdblock_nand=3
-diff --git a/arch/arm/boards/friendlyarm-mini6410/mini6410.c b/arch/arm/boards/friendlyarm-mini6410/mini6410.c
-new file mode 100644
-index 0000000..01437ac
---- /dev/null
-+++ b/arch/arm/boards/friendlyarm-mini6410/mini6410.c
-@@ -0,0 +1,305 @@
++++ b/arch/arm/mach-samsung/clocks-s3c64xx.c
+@@ -0,0 +1,296 @@
 +/*
 + * Copyright (C) 2012 Juergen Beisert
 + *
@@ -162,377 +72,381 @@ index 0000000..01437ac
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
 + */
++
++#include <config.h>
 +#include <common.h>
-+#include <driver.h>
 +#include <init.h>
-+#include <dm9000.h>
-+#include <gpio.h>
-+#include <generated/mach-types.h>
-+#include <asm/armlinux.h>
++#include <clock.h>
++#include <io.h>
++#include <asm-generic/div64.h>
 +#include <mach/s3c-iomap.h>
-+#include <mach/devices-s3c64xx.h>
 +#include <mach/s3c-generic.h>
++#include <mach/s3c-clocks.h>
 +
 +/*
-+ * dm9000 network controller onboard
-+ * Connected to CS line 1 and interrupt line EINT7,
-+ * data width is 16 bit
-+ * Area 1: Offset 0x300...0x301
-+ * Area 2: Offset 0x304...0x305
++ * The main clock tree:
++ *
++ *  ref_in ----o-----------\
++ *             |            MUX -o------------\
++ *             |           / ^   |             MUX --- DIV_APLL ------- ARMCLK -> CPU core
++ *             o--- APLL --  |   |            / |
++ *             |             |   o--/2 -------  |
++ *             |       APLL_SEL  |              |<-MISC_CON_SYN667
++ *             |                 \              |
++ *             o-----------\      MUX-o-------\ |
++ *             |            MUX--/ ^  |        MUX --- DIV -o--------- HCLKx2 -> SDRAM (max. 266 MHz)
++ *             |           / ^     |  |       /             |
++ *             o---- MPLL--  |     |  o--/5 --              o-- DIV -- HCLK -> AXI / AHB (max. 133 MHz)
++ *             |             |     |                        |
++ *             |       MPLL_SEL  OTHERS_CLK_SELECT          o-- DIV -- PCLK -> APB (max. 66 MHz)
++ *             |
++ *             o-----------\
++ *             |            MUX---- to various hardware
++ *             |           / ^
++ *             o---- EPLL--  EPLL_SEL
++ *
 + */
-+static struct dm9000_platform_data dm9000_data = {
-+	.srom = 0,	/* no serial ROM for the ethernet address */
-+};
 +
-+static const unsigned pin_usage[] = {
-+	/* UART2 (spare, 3,3 V TTL level only) */
-+	GPA4_RXD1 | ENABLE_PU,
-+	GPA5_TXD1,
-+	GPA6_NCTS1 | ENABLE_PU,
-+	GPA7_NRTS1,
-+	/* UART3 (spare, 3,3 V TTL level only) */
-+	GPB0_RXD2 | ENABLE_PU,
-+	GPB1_TXD2,
-+	/* UART4 (spare, 3,3 V TTL level only) */
-+	GPB2_RXD3 | ENABLE_PU,
-+	GPB3_TXD3,
++static unsigned s3c_get_apllclk(void)
++{
++	uint32_t m, p, s, reg_val;
 +
-+	GPB4_GPIO | GPIO_IN | ENABLE_PU,
++	if (!(readl(S3C_CLK_SRC) & S3C_CLK_SRC_FOUTAPLL))
++		return S3C64XX_CLOCK_REFERENCE;
 +
-+	/* I2C bus */
-+	GPB5_IIC0_SCL,	/* external PU */
-+	GPB6_IIC0_SDA,	/* external PU */
++	reg_val = readl(S3C_APLLCON);
++	m = S3C_APLLCON_GET_MDIV(reg_val);
++	p = S3C_APLLCON_GET_PDIV(reg_val);
++	s = S3C_APLLCON_GET_SDIV(reg_val);
 +
-+	GPC0_SPI0_MISO | ENABLE_PU,
-+	GPC1_SPI0_CLK,
-+	GPC2_SPI0_MOSI,
-+	GPC3_SPI0_NCS,
++	return (S3C64XX_CLOCK_REFERENCE * m) / (p << s);
++}
 +
-+	GPC4_SPI1_MISO | ENABLE_PU,
-+	GPC5_SPI1_CLK,
-+	GPC6_SPI1_MOSI,
-+	GPC7_SPI1_NCS,
++uint32_t s3c_get_mpllclk(void)
++{
++	uint32_t m, p, s, reg_val;
 +
-+	GPD0_AC97_BITCLK,
-+	GPD1_AC97_NRST,
-+	GPD2_AC97_SYNC,
-+	GPD3_AC97_SDI | ENABLE_PU,
-+	GPD4_AC97_SDO,
++	if (!(readl(S3C_CLK_SRC) & S3C_CLK_SRC_FOUTMPLL))
++		return S3C64XX_CLOCK_REFERENCE;
 +
-+	GPE0_GPIO | GPIO_OUT | GPIO_VAL(0), /* LCD backlight off */
-+	GPE1_GPIO | GPIO_IN | ENABLE_PU,
-+	GPE2_GPIO | GPIO_IN | ENABLE_PU,
-+	GPE3_GPIO | GPIO_IN | ENABLE_PU,
-+	GPE4_GPIO | GPIO_IN | ENABLE_PU,
++	reg_val = readl(S3C_MPLLCON);
++	m = S3C_MPLLCON_GET_MDIV(reg_val);
++	p = S3C_MPLLCON_GET_PDIV(reg_val);
++	s = S3C_MPLLCON_GET_SDIV(reg_val);
 +
-+	/* keep all camera signals at reasonable values */
-+	GPF0_GPIO | GPIO_IN | ENABLE_PU,
-+	GPF1_GPIO | GPIO_IN | ENABLE_PU,
-+	GPF2_GPIO | GPIO_IN | ENABLE_PU,
-+	GPF3_GPIO | GPIO_IN | ENABLE_PU,
-+	GPF4_GPIO | GPIO_IN | ENABLE_PU,
-+	GPF5_GPIO | GPIO_IN | ENABLE_PU,
-+	GPF6_GPIO | GPIO_IN | ENABLE_PU,
-+	GPF7_GPIO | GPIO_IN | ENABLE_PU,
-+	GPF8_GPIO | GPIO_IN | ENABLE_PU,
-+	GPF9_GPIO | GPIO_IN | ENABLE_PU,
-+	GPF10_GPIO | GPIO_IN | ENABLE_PU,
-+	GPF11_GPIO | GPIO_IN | ENABLE_PU,
-+	GPF12_GPIO | GPIO_IN | ENABLE_PU,
-+	GPF13_GPIO | GPIO_OUT | GPIO_VAL(0), /* USB power off */
-+#if 0
-+	GPF14_CLKOUT, /* for testing purposes, but very noisy */
-+#else
-+	GPF14_GPIO | GPIO_OUT | GPIO_VAL(0), /* Buzzer off */
++	return (S3C64XX_CLOCK_REFERENCE * m) / (p << s);
++}
++
++unsigned s3c_get_epllclk(void)
++{
++	u32 m, p, s, k, reg0_val, reg1_val;
++	u64 tmp;
++
++	if (!(readl(S3C_CLK_SRC) & S3C_CLK_SRC_FOUTEPLL))
++		return S3C64XX_CLOCK_REFERENCE;
++
++	reg0_val = readl(S3C_EPLLCON0);
++	reg1_val = readl(S3C_EPLLCON1);
++	m = S3C_EPLLCON0_GET_MDIV(reg0_val);
++	p = S3C_EPLLCON0_GET_PDIV(reg0_val);
++	s = S3C_EPLLCON0_GET_SDIV(reg0_val);
++	k = S3C_EPLLCON1_GET_KDIV(reg1_val);
++
++	tmp = S3C64XX_CLOCK_REFERENCE;
++	tmp *= (m << 16) + k;
++	do_div(tmp, (p << s));
++
++	return (unsigned)tmp >> 16;
++}
++
++uint32_t s3c_get_fclk(void)
++{
++	unsigned clk;
++
++	clk = s3c_get_apllclk();
++	if (readl(S3C_MISC_CON) & S3C_MISC_CON_SYN667)
++		clk /= 2;
++
++	return clk / (S3C_CLK_DIV0_GET_ADIV(readl(S3C_CLK_DIV0)) + 1);
++}
++
++static unsigned s3c_get_hclk_in(void)
++{
++	unsigned clk;
++
++	if (readl(S3C_OTHERS) & S3C_OTHERS_CLK_SELECT)
++		clk = s3c_get_apllclk();
++	else
++		clk = s3c_get_mpllclk();
++
++	if (readl(S3C_MISC_CON) & S3C_MISC_CON_SYN667)
++		clk /= 5;
++
++	return clk;
++}
++
++static unsigned s3c_get_hclkx2(void)
++{
++	return s3c_get_hclk_in() /
++			(S3C_CLK_DIV0_GET_HCLK2(readl(S3C_CLK_DIV0)) + 1);
++}
++
++uint32_t s3c_get_hclk(void)
++{
++	return s3c_get_hclkx2() /
++			(S3C_CLK_DIV0_GET_HCLK(readl(S3C_CLK_DIV0)) + 1);
++}
++
++uint32_t s3c_get_pclk(void)
++{
++	return s3c_get_hclkx2() /
++			(S3C_CLK_DIV0_GET_PCLK(readl(S3C_CLK_DIV0)) + 1);
++}
++
++static void s3c_init_mpll_dout(void)
++{
++	unsigned reg;
++
++	/* keep it at the same frequency as HCLKx2 */
++	reg = readl(S3C_CLK_DIV0) | S3C_CLK_DIV0_SET_MPLL_DIV(1); /* e.g. / 2 */
++	writel(reg, S3C_CLK_DIV0);
++}
++
++/* configure and enable UCLK1 */
++static int s3c_init_uart_clock(void)
++{
++	unsigned reg;
++
++	s3c_init_mpll_dout();	/* to have a reliable clock source */
++
++	/* source the UART clock from the MPLL, currently *not* from EPLL */
++	reg = readl(S3C_CLK_SRC) | S3C_CLK_SRC_UARTMPLL;
++	writel(reg, S3C_CLK_SRC);
++
++	/* keep UART clock at the same frequency than the PCLK */
++	reg = readl(S3C_CLK_DIV2) & ~S3C_CLK_DIV2_UART_MASK;
++	reg |= S3C_CLK_DIV2_SET_UART(0x3);	/* / 4 */
++	writel(reg, S3C_CLK_DIV2);
++
++	/* ensure this very special clock is running */
++	reg = readl(S3C_SCLK_GATE) | S3C_SCLK_GATE_UART;
++	writel(reg, S3C_SCLK_GATE);
++
++	return 0;
++}
++core_initcall(s3c_init_uart_clock);
++
++/*
++ * The UART related clock path:
++ *
++ * PCLK --------------------------------------o-----0-\
++ * ???? -------------------------------UCLK0--|-----1--\MUX----- UART
++ * MPLL -----DIV0------\                      +-----2--/ ^
++ *                     MUX---DIV2------UCLK1--------3-/  UART setting (source)
++ * EPLL ---------------/
++ *                      ^SRC_UARTMPLL
++ */
++unsigned s3c_get_uart_clk(unsigned source)
++{
++	u32 reg;
++	unsigned clk, pdiv, uartpdiv;
++
++	switch (source) {
++	default: /* PCLK */
++		clk = s3c_get_pclk();
++		pdiv = uartpdiv = 1;
++		break;
++	case 1: /* UCLK0 */
++		clk = 0;
++		pdiv = uartpdiv = 1;	/* TODO */
++		break;
++	case 3: /* UCLK1 */
++		reg = readl(S3C_CLK_SRC);
++		if (reg & S3C_CLK_SRC_UARTMPLL) {
++			clk = s3c_get_mpllclk();
++			pdiv = S3C_CLK_DIV0_GET_MPLL_DIV(readl(S3C_CLK_DIV0)) + 1;
++		} else {
++			clk = s3c_get_epllclk();
++			pdiv = 1;
++		}
++		uartpdiv = S3C_CLK_DIV2_GET_UART(readl(S3C_CLK_DIV2)) + 1;
++		break;
++	}
++
++	return clk / pdiv / uartpdiv;
++}
++
++/*
++ * The MMC related clock path:
++ *
++ *             MMCx_SEL
++ *                |
++ * EPLLout --0-\  v
++ * MPLLout --1--\MUX----SCLK_MMCx----DIV_MMCx------>HSMMCx
++ * EPLLin  --2--/       on/off     / 1..16
++ * 27 MHz  --3-/
++ *
++ * The datasheet is not very precise here, so the schematic shown above was
++ * made by checking various bits in the SYSCON.
++ */
++unsigned s3c_get_hsmmc_clk(int id)
++{
++	u32 sel, div, sclk = readl(S3C_SCLK_GATE);
++	unsigned bclk;
++
++	if (!(sclk & S3C_SCLK_GATE_MMC(id)))
++		return 0; /* disabled */
++
++	sel = S3C_CLK_SRC_GET_MMC_SEL(id, readl(S3C_CLK_SRC));
++	switch (sel) {
++	case 0:
++		bclk = s3c_get_epllclk();
++		break;
++	case 1:
++		bclk = s3c_get_mpllclk();
++		break;
++	case 2:
++		bclk = S3C64XX_CLOCK_REFERENCE;
++		break;
++	case 3:
++		bclk = 27000000;
++		break;
++	}
++
++	div = S3C_CLK_DIV0_GET_MMC(id, readl(S3C_CLK_DIV0)) + 1;
++
++	return bclk / div;
++}
++
++void s3c_set_hsmmc_clk(int id, int src, unsigned div)
++{
++	u32 reg;
++
++	if (!div)
++		div = 1;
++
++	writel(readl(S3C_SCLK_GATE) & ~S3C_SCLK_GATE_MMC(id), S3C_SCLK_GATE);
++
++	/* select the new clock source */
++	reg = readl(S3C_CLK_SRC) & ~S3C_CLK_SRC_SET_MMC_SEL(id, ~0);
++	reg |= S3C_CLK_SRC_SET_MMC_SEL(id, src);
++	writel(reg, S3C_CLK_SRC);
++
++	/* select the new pre-divider */
++	reg = readl(S3C_CLK_DIV0) & ~ S3C_CLK_DIV0_SET_MMC(id, ~0);
++	reg |= S3C_CLK_DIV0_SET_MMC(id, div - 1);
++	writel(reg, S3C_CLK_DIV0);
++
++	/* calling this function implies enabling of the clock */
++	writel(readl(S3C_SCLK_GATE) | S3C_SCLK_GATE_MMC(id), S3C_SCLK_GATE);
++}
++
++int s3c64xx_dump_clocks(void)
++{
++	printf("refclk:  %7d kHz\n", S3C64XX_CLOCK_REFERENCE / 1000);
++	printf("apll:    %7d kHz\n", s3c_get_apllclk() / 1000);
++	printf("mpll:    %7d kHz\n", s3c_get_mpllclk() / 1000);
++	printf("epll:    %7d kHz\n", s3c_get_epllclk() / 1000);
++	printf("CPU:     %7d kHz\n", s3c_get_fclk() / 1000);
++	printf("hclkx2:  %7d kHz\n", s3c_get_hclkx2() / 1000);
++	printf("hclk:    %7d kHz\n", s3c_get_hclk() / 1000);
++	printf("pclk:    %7d kHz\n", s3c_get_pclk() / 1000);
++	return 0;
++}
++
++late_initcall(s3c64xx_dump_clocks);
+diff --git a/arch/arm/mach-samsung/include/mach/s3c-clocks.h b/arch/arm/mach-samsung/include/mach/s3c-clocks.h
+index f577306..6920ca9 100644
+--- a/arch/arm/mach-samsung/include/mach/s3c-clocks.h
++++ b/arch/arm/mach-samsung/include/mach/s3c-clocks.h
+@@ -25,6 +25,9 @@
+ #ifdef CONFIG_ARCH_S3C24xx
+ # include <mach/s3c24xx-clocks.h>
+ #endif
++#ifdef CONFIG_ARCH_S3C64xx
++# include <mach/s3c64xx-clocks.h>
 +#endif
-+	GPF15_GPIO | GPIO_OUT | GPIO_VAL(0), /* Backlight PWM inactive */
-+
-+	/* SD card slot (all signals have external 10k PU) */
-+	GPG0_MMC0_CLK,
-+	GPG1_MMC0_CMD,
-+	GPG2_MMC0_DAT0,
-+	GPG3_MMC0_DAT1,
-+	GPG4_MMC0_DAT2,
-+	GPG5_MMC0_DAT3,
-+	GPG6_MMC0_NCD,
-+
-+	/* SDIO slot (all used signals have external PU) */
-+	GPH0_GPIO | GPIO_IN,	/* CLK */
-+	GPH1_GPIO | GPIO_IN,	/* CMD */
-+	GPH2_GPIO | GPIO_IN,	/* DAT0 */
-+	GPH3_GPIO | GPIO_IN,	/* DAT1 */
-+	GPH4_GPIO | GPIO_IN,	/* DAT2 */
-+	GPH5_GPIO | GPIO_IN,	/* DAT3 */
-+	GPH6_GPIO | GPIO_IN | ENABLE_PU, /* nowhere connected */
-+	GPH7_GPIO | GPIO_IN | ENABLE_PU, /* nowhere connected */
-+	GPH8_GPIO | GPIO_IN | ENABLE_PU, /* nowhere connected */
-+	GPH9_GPIO | GPIO_IN | ENABLE_PU, /* nowhere connected */
-+
-+	/* as long as we are not using the LCD controller, disable the pins */
-+	GPI0_GPIO | GPIO_IN | ENABLE_PD,
-+	GPI1_GPIO | GPIO_IN | ENABLE_PD,
-+	GPI2_GPIO | GPIO_IN | ENABLE_PD,
-+	GPI3_GPIO | GPIO_IN | ENABLE_PD,
-+	GPI4_GPIO | GPIO_IN | ENABLE_PD,
-+	GPI5_GPIO | GPIO_IN | ENABLE_PD,
-+	GPI6_GPIO | GPIO_IN | ENABLE_PD,
-+	GPI7_GPIO | GPIO_IN | ENABLE_PD,
-+	GPI8_GPIO | GPIO_IN | ENABLE_PD,
-+	GPI9_GPIO | GPIO_IN | ENABLE_PD,
-+	GPI10_GPIO | GPIO_IN | ENABLE_PD,
-+	GPI11_GPIO | GPIO_IN | ENABLE_PD,
-+	GPI12_GPIO | GPIO_IN | ENABLE_PD,
-+	GPI13_GPIO | GPIO_IN | ENABLE_PD,
-+	GPI14_GPIO | GPIO_IN | ENABLE_PD,
-+	GPI15_GPIO | GPIO_IN | ENABLE_PD,
-+	GPJ0_GPIO | GPIO_IN | ENABLE_PD,
-+	GPJ1_GPIO | GPIO_IN | ENABLE_PD,
-+	GPJ2_GPIO | GPIO_IN | ENABLE_PD,
-+	GPJ3_GPIO | GPIO_IN | ENABLE_PD,
-+	GPJ4_GPIO | GPIO_IN | ENABLE_PD,
-+	GPJ5_GPIO | GPIO_IN | ENABLE_PD,
-+	GPJ6_GPIO | GPIO_IN | ENABLE_PD,
-+	GPJ7_GPIO | GPIO_IN | ENABLE_PD,
-+	GPJ8_GPIO | GPIO_IN | ENABLE_PD,
-+	GPJ9_GPIO | GPIO_IN | ENABLE_PD,
-+	GPJ10_GPIO | GPIO_IN | ENABLE_PD,
-+	GPJ11_GPIO | GPIO_IN | ENABLE_PD,
-+
-+	GPK0_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPK1_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPK2_GPIO | GPIO_IN,
-+	GPK3_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPK4_GPIO | GPIO_OUT | GPIO_VAL(1),	/* LED #1 (high = LED off) */
-+	GPK5_GPIO | GPIO_OUT | GPIO_VAL(1),	/* LED #2 (high = LED off) */
-+	GPK6_GPIO | GPIO_OUT | GPIO_VAL(1),	/* LED #3 (high = LED off) */
-+	GPK7_GPIO | GPIO_OUT | GPIO_VAL(1),	/* LED #4 (high = LED off) */
-+	GPK8_GPIO | GPIO_IN, 			/* (external PU) */
-+	GPK9_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPK10_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPK11_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPK12_GPIO | GPIO_IN,			/* OCT_DET */
-+	GPK13_GPIO | GPIO_IN,			/* WIFI power (external PU) */
-+	GPK14_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPK15_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+
-+	GPL0_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPL1_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPL2_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPL3_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPL4_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPL5_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPL6_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPL7_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPL8_GPIO | GPIO_IN,			/* EINT16 (external PU) */
-+	GPL9_GPIO | GPIO_IN | ENABLE_PU,	/* EINT17 */
-+	GPL10_GPIO | GPIO_IN | ENABLE_PU,	/* EINT18 */
-+	GPL11_GPIO | GPIO_IN,			/* EINT19 + K7 (external PU) */
-+	GPL12_GPIO | GPIO_IN,			/* EINT20 + K6 (external PU) */
-+	GPL13_GPIO | GPIO_IN,			/* SD0 WP (external PU) */
-+	GPL14_GPIO | GPIO_IN,			/* SD1 WP (external PU) */
-+
-+	GPM0_GPIO | GPIO_IN,			/* (external PU) */
-+	GPM1_GPIO | GPIO_IN,			/* (external PU) */
-+	GPM2_GPIO | GPIO_IN,			/* (external PU) */
-+	GPM3_GPIO | GPIO_IN,			/* (external PU) */
-+	GPM4_GPIO | GPIO_IN,			/* (external PU) */
-+	GPM5_GPIO | GPIO_IN,			/* (external PU) */
-+
-+	GPN0_GPIO | GPIO_IN,			/* EINT0 (external PU) */
-+	GPN1_GPIO | GPIO_IN,			/* EINT1 (external PU) */
-+	GPN2_GPIO | GPIO_IN,			/* EINT2 (external PU) */
-+	GPN3_GPIO | GPIO_IN,			/* EINT3 (external PU) */
-+	GPN4_GPIO | GPIO_IN,			/* EINT4 (external PU) */
-+	GPN5_GPIO | GPIO_IN,			/* EINT5 (external PU) */
-+	GPN6_GPIO | GPIO_IN,			/* EINT6 (external PU) */
-+	GPN7_GPIO | GPIO_IN | ENABLE_PU,	/* EINT7 DM9000 interrupt */
-+	GPN8_GPIO | GPIO_IN,			/* EINT8 USB detect (external PU) */
-+	GPN9_GPIO | GPIO_IN,			/* EINT9 (external PU) */
-+	GPN10_GPIO | GPIO_IN,			/* SD1 CD (external PU) */
-+	GPN11_GPIO | GPIO_IN,			/* EINT11 (external PU) */
-+	GPN12_GPIO | GPIO_IN,			/* EINT12 IR in (external PU) */
-+	GPN13_GPIO | GPIO_IN,			/* BOOT0/EINT13 (externally fixed) */
-+	GPN14_GPIO | GPIO_IN,			/* BOOT1/EINT14 (externally fixed) */
-+	GPN15_GPIO | GPIO_IN,			/* BOOT2/EINT15 (externally fixed) */
-+
-+	GPO0_NCS2,				/* NAND */
-+	GPO1_NCS3,				/* NAND */
-+	GPO2_NCS4,				/* CON5 */
-+	GPO3_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPO4_GPIO | GPIO_IN | ENABLE_PU,	/* CON5 pin 8 */
-+	GPO5_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPO6_ADDR6,				/* CON5 */
-+	GPO7_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPO8_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPO9_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPO10_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPO11_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPO12_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPO13_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPO14_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPO15_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+
-+	GPP0_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPP1_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPP2_NWAIT | ENABLE_PU,			/* CON5 */
-+	GPP3_FALE,				/* NAND */
-+	GPP4_FCLE,				/* NAND */
-+	GPP5_FWE,				/* NAND */
-+	GPP6_FRE,				/* NAND */
-+	GPP7_RNB,				/* NAND (external PU) */
-+	GPP8_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPP9_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPP10_GPIO | GPIO_IN,			/* (external PU) */
-+	GPP11_GPIO | GPIO_IN,			/* (external PU) */
-+	GPP12_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPP13_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+	GPP14_GPIO | GPIO_IN | ENABLE_PU,	/* not used */
-+
-+	GPQ0_GPIO | GPIO_IN | ENABLE_PU,	/* not used as LADDR18 */
-+	GPQ1_GPIO | GPIO_IN,			/* (external PU) */
-+	GPQ2_GPIO | GPIO_IN,			/* (external PU) */
-+	GPQ3_GPIO | GPIO_IN,			/* (external PU) */
-+	GPQ4_GPIO | GPIO_IN,			/* (external PU) */
-+	GPQ5_GPIO | GPIO_IN,			/* (external PU) */
-+	GPQ6_GPIO | GPIO_IN,			/* (external PU) */
-+	GPQ7_GPIO | GPIO_IN | ENABLE_PU,	/* not used as LADDR17 */
-+	GPQ8_GPIO | GPIO_IN | ENABLE_PU,	/* not used as LADDR16 */
-+};
-+
-+static int mini6410_mem_init(void)
-+{
-+	arm_add_mem_device("ram0", S3C_SDRAM_BASE, s3c6410_get_memory_size());
-+
-+	return 0;
-+}
-+mem_initcall(mini6410_mem_init);
-+
-+static const struct s3c6410_chipselect dm900_cs = {
-+	.adr_setup_t = 0,
-+	.access_setup_t = 0,
-+	.access_t = 20,
-+	.cs_hold_t = 3,
-+	.adr_hold_t = 20, /* CS must be de-asserted for at least 20 ns */
-+	.width = 16,
-+};
-+
-+static void mini6410_setup_dm9000_cs(void)
-+{
-+	s3c6410_setup_chipselect(1, &dm900_cs);
-+}
-+
-+static int mini6410_devices_init(void)
-+{
-+	int i;
-+
-+	/* ----------- configure the access to the outer space ---------- */
-+	for (i = 0; i < ARRAY_SIZE(pin_usage); i++)
-+		s3c_gpio_mode(pin_usage[i]);
-+
-+	mini6410_setup_dm9000_cs();
-+	add_dm9000_device(0, S3C_CS1_BASE + 0x300, S3C_CS1_BASE + 0x304,
-+				IORESOURCE_MEM_16BIT, &dm9000_data);
-+
-+	armlinux_set_bootparams((void *)S3C_SDRAM_BASE + 0x100);
-+	armlinux_set_architecture(MACH_TYPE_MINI6410);
-+
-+	return 0;
-+}
-+
-+device_initcall(mini6410_devices_init);
-+
-+static int mini6410_console_init(void)
-+{
-+	s3c_gpio_mode(GPA0_RXD0 | ENABLE_PU);
-+	s3c_gpio_mode(GPA1_TXD0);
-+	s3c_gpio_mode(GPA2_NCTS0 | ENABLE_PU);
-+	s3c_gpio_mode(GPA3_NRTS0);
-+
-+	s3c64xx_add_uart1();
-+
-+	return 0;
-+}
-+
-+console_initcall(mini6410_console_init);
-diff --git a/arch/arm/configs/friendlyarm_mini6410_defconfig b/arch/arm/configs/friendlyarm_mini6410_defconfig
+ #ifdef CONFIG_ARCH_S5PCxx
+ # include <mach/s5pcxx-clocks.h>
+ #endif
+diff --git a/arch/arm/mach-samsung/include/mach/s3c64xx-clocks.h b/arch/arm/mach-samsung/include/mach/s3c64xx-clocks.h
 new file mode 100644
-index 0000000..b80f8fb
+index 0000000..9646705
 --- /dev/null
-+++ b/arch/arm/configs/friendlyarm_mini6410_defconfig
-@@ -0,0 +1,40 @@
-+CONFIG_ARCH_S3C64xx=y
-+CONFIG_AEABI=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_BROKEN=y
-+CONFIG_PROMPT="mini6410:"
-+CONFIG_LONGHELP=y
-+CONFIG_GLOB=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_PARTITION=y
-+CONFIG_PARTITION_DISK=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/friendlyarm-mini6410/env"
-+CONFIG_DEBUG_INFO=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_MTEST=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_PING=y
-+CONFIG_NET_TFTP=y
-+CONFIG_DRIVER_NET_DM9K=y
-+# CONFIG_SPI is not set
-+CONFIG_ZLIB=y
-+CONFIG_BZLIB=y
-+CONFIG_LZO_DECOMPRESS=y
-diff --git a/arch/arm/mach-samsung/Kconfig b/arch/arm/mach-samsung/Kconfig
-index 8f63963..e621259 100644
---- a/arch/arm/mach-samsung/Kconfig
-+++ b/arch/arm/mach-samsung/Kconfig
-@@ -6,11 +6,13 @@ if ARCH_SAMSUNG
- config ARCH_TEXT_BASE
- 	hex
- 	default 0x31fc0000 if MACH_MINI2440
-+	default 0x57fc0000 if MACH_MINI6410
- 	default 0x31fc0000 if MACH_A9M2440
- 	default 0x31fc0000 if MACH_A9M2410
- 
- config BOARDINFO
- 	default "Mini 2440"    if MACH_MINI2440
-+	default "Mini 6410"    if MACH_MINI6410
- 	default "Digi A9M2440" if MACH_A9M2440
- 	default "Digi A9M2410" if MACH_A9M2410
- 
-@@ -99,6 +101,14 @@ choice
- 
- 	prompt "S3C64xx Board Type"
- 
-+config MACH_MINI6410
-+	bool "Mini 6410"
-+	select CPU_S3C6410
-+	select HAS_DM9000
-+	help
-+	  Say Y here if you are using FriendlyARM Mini6410 board equipped
-+	  with a Samsung S3C6410 Processor
++++ b/arch/arm/mach-samsung/include/mach/s3c64xx-clocks.h
+@@ -0,0 +1,58 @@
++/*
++ * Copyright (C) 2012 Juergen Beisert
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
 +
- endchoice
- 
- menu "Board specific settings       "
++#define S3C_APLLCON (S3C_CLOCK_POWER_BASE + 0x0c)
++# define S3C_APLLCON_GET_MDIV(x) (((x) >> 16) & 0x3ff)
++# define S3C_APLLCON_GET_PDIV(x) (((x) >> 8) & 0x3f)
++# define S3C_APLLCON_GET_SDIV(x) ((x) & 0x7)
++#define S3C_MPLLCON (S3C_CLOCK_POWER_BASE + 0x10)
++# define S3C_MPLLCON_GET_MDIV(x) (((x) >> 16) & 0x3ff)
++# define S3C_MPLLCON_GET_PDIV(x) (((x) >> 8) & 0x3f)
++# define S3C_MPLLCON_GET_SDIV(x) ((x) & 0x7)
++#define S3C_EPLLCON0 (S3C_CLOCK_POWER_BASE + 0x14)
++# define S3C_EPLLCON0_GET_MDIV(x) (((x) >> 16) & 0x3ff)
++# define S3C_EPLLCON0_GET_PDIV(x) (((x) >> 8) & 0x3f)
++# define S3C_EPLLCON0_GET_SDIV(x) ((x) & 0x7)
++#define S3C_EPLLCON1 (S3C_CLOCK_POWER_BASE + 0x18)
++# define S3C_EPLLCON1_GET_KDIV(x) ((x) & 0xffff)
++#define S3C_CLKCON (S3C_CLOCK_POWER_BASE + 0xc)
++#define S3C_CLKSLOW (S3C_CLOCK_POWER_BASE + 0x10)
++#define S3C_CLKDIVN (S3C_CLOCK_POWER_BASE + 0x14)
++#define S3C_CLK_SRC (S3C_CLOCK_POWER_BASE + 0x01c)
++# define S3C_CLK_SRC_GET_MMC_SEL(x, v) (((v) >> (18 + (x * 2))) & 0x3)
++# define S3C_CLK_SRC_SET_MMC_SEL(x, v) (((v) & 0x3) << (18 + (x * 2)))
++# define S3C_CLK_SRC_UARTMPLL (1 << 13)
++# define S3C_CLK_SRC_FOUTEPLL (1 << 2)
++# define S3C_CLK_SRC_FOUTMPLL (1 << 1)
++# define S3C_CLK_SRC_FOUTAPLL (1 << 0)
++#define S3C_CLK_DIV0 (S3C_CLOCK_POWER_BASE + 0x020)
++# define S3C_CLK_DIV0_GET_ADIV(x) ((x) & 0xf)
++# define S3C_CLK_DIV0_GET_HCLK2(x) (((x) >> 9) & 0x7)
++# define S3C_CLK_DIV0_GET_HCLK(x) (((x) >> 8) & 0x1)
++# define S3C_CLK_DIV0_GET_PCLK(x) (((x) >> 12) & 0xf)
++# define S3C_CLK_DIV0_SET_MPLL_DIV(x) (((x) & 0x1) << 4)
++# define S3C_CLK_DIV0_GET_MPLL_DIV(x) (((x) >> 4) & 0x1)
++# define S3C_CLK_DIV0_GET_MMC(x, v) (((v) >> (4 * x)) & 0xf)
++# define S3C_CLK_DIV0_SET_MMC(x, v) (((v) & 0xf) << (4 * x))
++#define S3C_CLK_DIV2 (S3C_CLOCK_POWER_BASE + 0x028)
++# define S3C_CLK_DIV2_UART_MASK (0xf << 16)
++# define S3C_CLK_DIV2_SET_UART(x) ((x) << 16)
++# define S3C_CLK_DIV2_GET_UART(x) (((x) >> 16) & 0xf)
++#define S3C_SCLK_GATE (S3C_CLOCK_POWER_BASE + 0x038)
++# define S3C_SCLK_GATE_UART (1 << 5)
++# define S3C_SCLK_GATE_MMC(x) (1 << (24 + x))
++#define S3C_MISC_CON (S3C_CLOCK_POWER_BASE + 0x838)
++# define S3C_MISC_CON_SYN667 (1 << 19)
++#define S3C_OTHERS (S3C_CLOCK_POWER_BASE + 0x900)
++# define S3C_OTHERS_CLK_SELECT (1 << 6)
+diff --git a/drivers/serial/serial_s3c.c b/drivers/serial/serial_s3c.c
+index 53ac77f..0611f24 100644
+--- a/drivers/serial/serial_s3c.c
++++ b/drivers/serial/serial_s3c.c
+@@ -58,6 +58,9 @@ static unsigned s3c_select_arch_input_clock(void)
+ 	/* S3C24xx: 0=2=PCLK, 1=UEXTCLK, 3=FCLK/n */
+ 	if (IS_ENABLED(CONFIG_ARCH_S3C24xx))
+ 		return 0;	/* use the internal PCLK */
++	/* S3C64xx: 0=2=PCLK, 1=UCLK0, 3=UCLK1 */
++	if (IS_ENABLED(CONFIG_ARCH_S3C64xx))
++		return 3;	/* use the internal UCLK1 */
+ 	/* S5PCxx: 0=PCLK, 1=SCLK_UART */
+ 	if (IS_ENABLED(CONFIG_ARCH_S5PCxx))
+ 		return 0;	/* use the internal PCLK */
 -- 
 1.7.10.4
 
