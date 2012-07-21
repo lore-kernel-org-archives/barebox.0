@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SsWYE-0002hp-Nj
- for barebox@lists.infradead.org; Sat, 21 Jul 2012 10:05:16 +0000
+ id 1SsWYE-0002hj-MP
+ for barebox@lists.infradead.org; Sat, 21 Jul 2012 10:05:18 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1SsWY7-0003vf-HY
+ (envelope-from <jbe@pengutronix.de>) id 1SsWY7-0003vb-Gq
  for barebox@lists.infradead.org; Sat, 21 Jul 2012 12:04:35 +0200
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <jbe@pengutronix.de>) id 1SsWY6-0001Vl-JB
+ (envelope-from <jbe@pengutronix.de>) id 1SsWY6-0001VR-HY
  for barebox@lists.infradead.org; Sat, 21 Jul 2012 12:04:34 +0200
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sat, 21 Jul 2012 12:04:33 +0200
-Message-Id: <1342865073-5209-9-git-send-email-jbe@pengutronix.de>
+Date: Sat, 21 Jul 2012 12:04:29 +0200
+Message-Id: <1342865073-5209-5-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1342865073-5209-1-git-send-email-jbe@pengutronix.de>
 References: <1342865073-5209-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,272 +28,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] ARM/Samsung: add the Tiny6410 platform as the second user
- of the S3C6410 SoC
+Subject: [PATCH 4/8] ARM/Samsung: add GPIO handling support for the S3C6410 SoC
 To: barebox@lists.infradead.org
-
-The Tiny6410 and its base board is a pure development platform.
 
 Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 ---
- arch/arm/Makefile                                  |    1 +
- arch/arm/boards/friendlyarm-tiny6410/Kconfig       |   19 ++++
- arch/arm/boards/friendlyarm-tiny6410/Makefile      |    3 +
- arch/arm/boards/friendlyarm-tiny6410/config.h      |    8 ++
- .../friendlyarm-tiny6410/development-board.c       |  100 ++++++++++++++++++++
- arch/arm/boards/friendlyarm-tiny6410/env/config    |   56 +++++++++++
- arch/arm/boards/friendlyarm-tiny6410/tiny6410.c    |   80 ++++++++++++++++
- arch/arm/boards/friendlyarm-tiny6410/tiny6410.h    |   14 +++
- arch/arm/configs/friendlyarm_tiny6410_defconfig    |   41 ++++++++
- arch/arm/configs/tiny6410_defconfig                |   41 ++++++++
- arch/arm/mach-samsung/Kconfig                      |   11 +++
- 11 files changed, 374 insertions(+)
- create mode 100644 arch/arm/boards/friendlyarm-tiny6410/Kconfig
- create mode 100644 arch/arm/boards/friendlyarm-tiny6410/Makefile
- create mode 100644 arch/arm/boards/friendlyarm-tiny6410/config.h
- create mode 100644 arch/arm/boards/friendlyarm-tiny6410/development-board.c
- create mode 100644 arch/arm/boards/friendlyarm-tiny6410/env/config
- create mode 100644 arch/arm/boards/friendlyarm-tiny6410/tiny6410.c
- create mode 100644 arch/arm/boards/friendlyarm-tiny6410/tiny6410.h
- create mode 100644 arch/arm/configs/friendlyarm_tiny6410_defconfig
- create mode 100644 arch/arm/configs/tiny6410_defconfig
+ arch/arm/mach-samsung/Makefile                     |    2 +-
+ arch/arm/mach-samsung/gpio-s3c64xx.c               |  301 +++++++++++
+ arch/arm/mach-samsung/include/mach/gpio.h          |    3 +
+ arch/arm/mach-samsung/include/mach/iomux-s3c64xx.h |  542 ++++++++++++++++++++
+ 4 files changed, 847 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/mach-samsung/gpio-s3c64xx.c
+ create mode 100644 arch/arm/mach-samsung/include/mach/iomux-s3c64xx.h
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index bd03fe6..ab3f730 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -124,6 +124,7 @@ board-$(CONFIG_MACH_FREESCALE_MX53_SMD)		:= freescale-mx53-smd
- board-$(CONFIG_MACH_GUF_CUPID)			:= guf-cupid
- board-$(CONFIG_MACH_MINI2440)			:= mini2440
- board-$(CONFIG_MACH_MINI6410)			:= friendlyarm-mini6410
-+board-$(CONFIG_MACH_TINY6410)			:= friendlyarm-tiny6410
- board-$(CONFIG_MACH_QIL_A9260)			:= qil-a9260
- board-$(CONFIG_MACH_TNY_A9260)			:= tny-a926x
- board-$(CONFIG_MACH_TNY_A9263)			:= tny-a926x
-diff --git a/arch/arm/boards/friendlyarm-tiny6410/Kconfig b/arch/arm/boards/friendlyarm-tiny6410/Kconfig
+diff --git a/arch/arm/mach-samsung/Makefile b/arch/arm/mach-samsung/Makefile
+index 807e91b..9a2484f 100644
+--- a/arch/arm/mach-samsung/Makefile
++++ b/arch/arm/mach-samsung/Makefile
+@@ -2,5 +2,5 @@ obj-y += s3c-timer.o generic.o
+ obj-lowlevel-$(CONFIG_ARCH_S3C24xx) += lowlevel-s3c24x0.o
+ obj-lowlevel-$(CONFIG_ARCH_S5PCxx) += lowlevel-s5pcxx.o
+ obj-$(CONFIG_ARCH_S3C24xx) += gpio-s3c24x0.o clocks-s3c24xx.o mem-s3c24x0.o
+-obj-$(CONFIG_ARCH_S3C64xx) += clocks-s3c64xx.o
++obj-$(CONFIG_ARCH_S3C64xx) += gpio-s3c64xx.o clocks-s3c64xx.o
+ obj-$(CONFIG_S3C_LOWLEVEL_INIT) += $(obj-lowlevel-y)
+diff --git a/arch/arm/mach-samsung/gpio-s3c64xx.c b/arch/arm/mach-samsung/gpio-s3c64xx.c
 new file mode 100644
-index 0000000..374820f
+index 0000000..bb3ac52
 --- /dev/null
-+++ b/arch/arm/boards/friendlyarm-tiny6410/Kconfig
-@@ -0,0 +1,19 @@
-+if MACH_TINY6410
-+
-+choice
-+	prompt "FriendlyARM Tiny6410 baseboard"
-+	help
-+	  Since the Tiny6410 is a CPU card only, it requires a basebord to make
-+	  it work. Select here the baseboard Barebox should expect and
-+	  configure.
-+
-+config MACH_TINY6410_FA
-+	bool
-+	select HAS_DM9000
-+	prompt "FA development platform"
-+	help
-+	  FriendlyARM's Tiny6410 evaluation board.
-+
-+endchoice
-+
-+endif
-diff --git a/arch/arm/boards/friendlyarm-tiny6410/Makefile b/arch/arm/boards/friendlyarm-tiny6410/Makefile
-new file mode 100644
-index 0000000..b3ab12e
---- /dev/null
-+++ b/arch/arm/boards/friendlyarm-tiny6410/Makefile
-@@ -0,0 +1,3 @@
-+obj-y += tiny6410.o
-+
-+obj-$(CONFIG_MACH_TINY6410_FA) += development-board.o
-diff --git a/arch/arm/boards/friendlyarm-tiny6410/config.h b/arch/arm/boards/friendlyarm-tiny6410/config.h
-new file mode 100644
-index 0000000..04f6857
---- /dev/null
-+++ b/arch/arm/boards/friendlyarm-tiny6410/config.h
-@@ -0,0 +1,8 @@
-+/* FriendlyARM Tiny6410 specific global settings */
-+
-+#ifndef _TINY6410_CONFIG_H_
-+# define _TINY6410_CONFIG_H_
-+
-+#define S3C64XX_CLOCK_REFERENCE 12000000
-+
-+#endif /* _TINY6410_CONFIG_H_ */
-diff --git a/arch/arm/boards/friendlyarm-tiny6410/development-board.c b/arch/arm/boards/friendlyarm-tiny6410/development-board.c
-new file mode 100644
-index 0000000..5595900
---- /dev/null
-+++ b/arch/arm/boards/friendlyarm-tiny6410/development-board.c
-@@ -0,0 +1,100 @@
++++ b/arch/arm/mach-samsung/gpio-s3c64xx.c
+@@ -0,0 +1,301 @@
 +/*
 + * Copyright (C) 2012 Juergen Beisert
 + *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
++ * This codes bases partially on code from the Linux kernel:
 + *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * The FriendlyARM's Tiny6410 evaluation board comes with all connectors and
-+ * devices to make the Tiny6410 CPU card work. This includes:
-+ *
-+ * - the DM9000 network controller
-+ * - USB/MCI connectors
-+ * - display connector
-+ *
-+ */
-+#include <common.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <gpio.h>
-+#include <dm9000.h>
-+#include <mach/devices-s3c64xx.h>
-+#include <mach/s3c-generic.h>
-+
-+#include "tiny6410.h"
-+
-+/*
-+ * dm9000 network controller onboard
-+ * Connected to CS line 1 and interrupt line EINT7,
-+ * data width is 16 bit
-+ * Area 1: Offset 0x300...0x301
-+ * Area 2: Offset 0x304...0x305
-+ */
-+static struct dm9000_platform_data dm9000_data = {
-+	.srom = 0,	/* no serial ROM for the ethernet address */
-+};
-+
-+static const struct s3c6410_chipselect dm900_cs = {
-+	.adr_setup_t = 0,
-+	.access_setup_t = 0,
-+	.access_t = 20,
-+	.cs_hold_t = 3,
-+	.adr_hold_t = 20, /* CS must be de-asserted for at least 20 ns */
-+	.width = 16,
-+};
-+
-+static void tiny6410evk_setup_dm9000_cs(void)
-+{
-+	s3c6410_setup_chipselect(1, &dm900_cs);
-+}
-+
-+static const unsigned tiny6410evk_pin_usage[] = {
-+	/* UART1 (V24) */
-+	GPA4_RXD1 | ENABLE_PU,
-+	GPA5_TXD1,
-+	GPA6_NCTS1 | ENABLE_PU,
-+	GPA7_NRTS1,
-+	/* UART2 (V24) */
-+	GPB0_RXD2 | ENABLE_PU,
-+	GPB1_TXD2,
-+	/* UART3 (spare, 3,3 V TTL level only) */
-+	GPB2_RXD3 | ENABLE_PU,
-+	GPB3_TXD3,
-+};
-+
-+static int tiny6410evk_devices_init(void)
-+{
-+	int i;
-+
-+	/* init CPU card specific devices first */
-+	tiny6410_init("FA EVK");
-+
-+	/* ----------- configure the access to the outer space ---------- */
-+	for (i = 0; i < ARRAY_SIZE(tiny6410evk_pin_usage); i++)
-+		s3c_gpio_mode(tiny6410evk_pin_usage[i]);
-+
-+	tiny6410evk_setup_dm9000_cs();
-+	add_dm9000_device(0, S3C_CS1_BASE + 0x300, S3C_CS1_BASE + 0x304,
-+				IORESOURCE_MEM_16BIT, &dm9000_data);
-+	return 0;
-+}
-+device_initcall(tiny6410evk_devices_init);
-+
-+static int tiny6410evk_console_init(void)
-+{
-+	/* note: UART0 has no RTS/CTS connected */
-+	s3c_gpio_mode(GPA0_RXD0 | ENABLE_PU);
-+	s3c_gpio_mode(GPA1_TXD0);
-+
-+	s3c64xx_add_uart1();
-+
-+	return 0;
-+}
-+console_initcall(tiny6410evk_console_init);
-+
-diff --git a/arch/arm/boards/friendlyarm-tiny6410/env/config b/arch/arm/boards/friendlyarm-tiny6410/env/config
-new file mode 100644
-index 0000000..35d0fac
---- /dev/null
-+++ b/arch/arm/boards/friendlyarm-tiny6410/env/config
-@@ -0,0 +1,56 @@
-+#!/bin/sh
-+
-+machine=tiny6410
-+eth0.serverip=a.b.c.d.e
-+user=
-+
-+# use 'dhcp' to do dhcp in barebox and in kernel
-+# use 'none' if you want to skip kernel ip autoconfiguration
-+ip=dhcp
-+
-+# or set your networking parameters here
-+#eth0.ipaddr=a.b.c.d.e
-+#eth0.netmask=a.b.c.d.e
-+#eth0.gateway=a.b.c.d.e
-+eth0.ethaddr=08:90:90:90:90:90
-+
-+# can be either 'nfs', 'tftp' or 'nand'
-+kernel_loc=tftp
-+# can be either 'net', 'nand' or 'initrd'
-+rootfs_loc=net
-+
-+# can be either 'jffs2' or 'ubifs'
-+rootfs_type=ubifs
-+rootfsimage=root-${machine}.${rootfs_type}
-+
-+# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
-+kernelimage_type=zimage
-+kernelimage=zImage-${machine}
-+#kernelimage_type=uimage
-+#kernelimage=uImage-$machine
-+#kernelimage_type=raw
-+#kernelimage=Image-$machine
-+#kernelimage_type=raw_lzo
-+#kernelimage=Image-$machine.lzo
-+
-+if [ -n $user ]; then
-+	kernelimage="${user}"-"${kernelimage}"
-+	nfsroot="${eth0.serverip}:/home/${user}/nfsroot/${machine}"
-+	rootfsimage="${user}"-"${rootfsimage}"
-+else
-+	nfsroot="${eth0.serverip}:/path/to/nfs/root"
-+fi
-+
-+autoboot_timeout=3
-+
-+#
-+# "tiny6410" kernel parameter
-+# 0 .. 9 = screen type
-+# i = touchscreen with propritary FriendlyARM protocol
-+# Note: can be "tiny6410= " if nothing of these components are connected
-+#
-+bootargs="console=ttySAC0,115200 tiny6410=0"
-+
-+nand_device="nand"
-+nand_parts="256k(barebox),128k(bareboxenv),1536k(kernel),-(root)"
-+rootfs_mtdblock_nand=3
-diff --git a/arch/arm/boards/friendlyarm-tiny6410/tiny6410.c b/arch/arm/boards/friendlyarm-tiny6410/tiny6410.c
-new file mode 100644
-index 0000000..db13c06
---- /dev/null
-+++ b/arch/arm/boards/friendlyarm-tiny6410/tiny6410.c
-@@ -0,0 +1,80 @@
-+/*
-+ * Copyright (C) 2012 Juergen Beisert
++ * Copyright 2008 Openmoko, Inc.
++ * Copyright 2008 Simtec Electronics
++ *	http://armlinux.simtec.co.uk/
++ *	Ben Dooks <ben@simtec.co.uk>
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -305,80 +78,310 @@ index 0000000..db13c06
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
 + */
++
 +#include <common.h>
-+#include <driver.h>
-+#include <init.h>
++#include <errno.h>
++#include <io.h>
 +#include <gpio.h>
-+#include <generated/mach-types.h>
-+#include <asm/armlinux.h>
 +#include <mach/s3c-iomap.h>
-+#include <mach/s3c-generic.h>
 +
-+static const unsigned tiny6410_pin_usage[] = {
-+	/* UART0 */
-+	GPA2_GPIO | GPIO_IN | ENABLE_PU, /* CTS not connected */
-+	GPA3_GPIO | GPIO_IN | ENABLE_PU, /* RTS not connected */
++#define S3C_GPACON (S3C_GPIO_BASE)
++#define S3C_GPADAT (S3C_GPIO_BASE + 0x04)
++#define S3C_GPAPUD (S3C_GPIO_BASE + 0x08)
 +
-+	/* local bus' D0 ... D15 are always active */
-+	/* local bus' A0...A5 are always active */
-+
-+	/* internal NAND memory */
-+	GPO0_NCS2,	/* NAND's first chip select line */
-+	/* NAND's second chip select line, not used */
-+	GPO1_GPIO | GPIO_OUT | GPIO_VAL(1),
-+	GPP3_FALE,
-+	GPP4_FCLE,
-+	GPP5_FWE,
-+	GPP6_FRE,
-+	GPP7_RNB, /* external pull-up */
-+
-+	GPF13_GPIO  | GPIO_OUT | GPIO_VAL(0), /* OTG power supply, 0 = off */
-+
-+	/* nowhere connected */
-+	GPO2_GPIO | GPIO_IN | ENABLE_PU,
-+	GPO3_GPIO | GPIO_IN | ENABLE_PU,
-+	GPO4_GPIO | GPIO_IN | ENABLE_PU,
-+	GPO5_GPIO | GPIO_IN | ENABLE_PU,
-+
-+	/* local bus address lines 6...15 are nowhere connected */
-+	GPO6_GPIO | GPIO_IN | ENABLE_PU,
-+	GPO7_GPIO | GPIO_IN | ENABLE_PU,
-+	GPO8_GPIO | GPIO_IN | ENABLE_PU,
-+	GPO9_GPIO | GPIO_IN | ENABLE_PU,
-+	GPO10_GPIO | GPIO_IN | ENABLE_PU,
-+	GPO11_GPIO | GPIO_IN | ENABLE_PU,
-+	GPO12_GPIO | GPIO_IN | ENABLE_PU,
-+	GPO13_GPIO | GPIO_IN | ENABLE_PU,
-+	GPO14_GPIO | GPIO_IN | ENABLE_PU,
-+	GPO15_GPIO | GPIO_IN | ENABLE_PU,
++static const unsigned short group_offset[] = {
++	0x000,	/* GPA */ /* 8 pins, 4 bit each */
++	0x020,	/* GPB */ /* 7 pins, 4 bit each */
++	0x040,	/* GPC */ /* 8 pins, 4 bit each */
++	0x060,	/* GPD */ /* 5 pins, 4 bit each */
++	0x080,	/* GPE */ /* 5 pins, 4 bit each */
++	0x0a0,	/* GPF */ /* 16 pins, 2 bit each */
++	0x0c0,	/* GPG */ /* 7 pins, 4 bit each */
++	0x0e0,	/* GPH */ /* two registers, 8 + 2 pins, 4 bit each */
++	0x100,	/* GPI */ /* 16 pins, 2 bit each */
++	0x120,	/* GPJ */ /* 12 pins, 2 bit each */
++	0x800,	/* GPK */ /* two registers, 8 + 8 pins, 4 bit each */
++	0x810,	/* GPL */ /* two registers, 8 + 8 pins, 4 bit each */
++	0x820,	/* GPM */ /* 6 pins, 4 bit each */
++	0x830,	/* GPN */ /* 16 pins, 2 bit each */
++	0x140,	/* GPO */ /* 16 pins, 2 bit each */
++	0x160,	/* GPP */ /* 15 pins, 2 bit each */
++	0x180,	/* GPQ */ /* 9 pins, 2 bit each */
 +};
 +
-+static int tiny6410_mem_init(void)
++void gpio_set_value(unsigned gpio, int value)
 +{
-+	arm_add_mem_device("ram0", S3C_SDRAM_BASE, s3c6410_get_memory_size());
++	unsigned group = GET_GROUP(gpio);
++	unsigned bit = GET_BIT(gpio);
++	unsigned offset;
++	uint32_t reg;
++
++	offset = group_offset[group];
++
++	switch (group) {
++	case 7:		/* GPH */
++	case 10:	/* GPK */
++	case 11:	/* GPL */
++		offset += 4;
++		break;
++	}
++
++	reg = readl(S3C_GPADAT + offset);
++	reg &= ~(1 << bit);
++	reg |= (!!value) << bit;
++	writel(reg, S3C_GPADAT + offset);
++}
++
++int gpio_get_value(unsigned gpio)
++{
++	unsigned group = GET_GROUP(gpio);
++	unsigned bit = GET_BIT(gpio);
++	unsigned offset;
++	uint32_t reg;
++
++	offset = group_offset[group];
++
++	switch (group) {
++	case 7:		/* GPH */
++	case 10:	/* GPK */
++	case 11:	/* GPL */
++		offset += 4;
++		break;
++	}
++
++	/* value */
++	reg = readl(S3C_GPADAT + offset);
++
++	return !!(reg & (1 << bit));
++}
++
++static void gpio_direction_input_4b(unsigned offset, unsigned bit)
++{
++	uint32_t reg;
++
++	if (bit > 31) {
++		offset += 4;
++		bit -= 32;
++	}
++
++	reg = readl(S3C_GPACON + offset) & ~(0xf << bit);
++	writel(reg, S3C_GPACON + offset); /* b0000 means 'GPIO input' */
++}
++
++static void gpio_direction_input_2b(unsigned offset, unsigned bit)
++{
++	uint32_t reg;
++
++	reg = readl(S3C_GPACON + offset) & ~(0x3 << bit);
++	writel(reg, S3C_GPACON + offset); /* b00 means 'GPIO input' */
++}
++
++int gpio_direction_input(unsigned gpio)
++{
++	unsigned group = GET_GROUP(gpio);
++	unsigned bit = GET_BIT(gpio);
++	unsigned offset;
++
++	offset = group_offset[group];
++
++	switch (group) {
++	case 5:		/* GPF */
++	case 8:		/* GPI */
++	case 9:		/* GPJ */
++	case 13:	/* GPN */
++	case 14:	/* GPO */
++	case 15:	/* GPP */
++	case 16:	/* GPQ */
++		gpio_direction_input_2b(offset, bit << 1);
++		break;
++	default:
++		gpio_direction_input_4b(offset, bit << 2);
++	}
 +
 +	return 0;
 +}
-+mem_initcall(tiny6410_mem_init);
 +
-+void tiny6410_init(const char *bb_name)
++static void gpio_direction_output_4b(unsigned offset, unsigned bit)
 +{
-+	int i;
++	uint32_t reg;
 +
-+	/* ----------- configure the access to the outer space ---------- */
-+	for (i = 0; i < ARRAY_SIZE(tiny6410_pin_usage); i++)
-+		s3c_gpio_mode(tiny6410_pin_usage[i]);
++	if (bit > 31) {
++		offset += 4;
++		bit -= 32;
++	}
 +
-+	armlinux_set_bootparams((void *)S3C_SDRAM_BASE + 0x100);
-+	armlinux_set_architecture(MACH_TYPE_TINY6410);
++	reg = readl(S3C_GPACON + offset) & ~(0xf << bit);
++	reg |= 0x1 << bit;
++	writel(reg, S3C_GPACON + offset); /* b0001 means 'GPIO output' */
 +}
-diff --git a/arch/arm/boards/friendlyarm-tiny6410/tiny6410.h b/arch/arm/boards/friendlyarm-tiny6410/tiny6410.h
++
++static void gpio_direction_output_2b(unsigned offset, unsigned bit)
++{
++	uint32_t reg;
++
++	/* direction */
++	reg = readl(S3C_GPACON + offset) & ~(0x3 << bit);
++	reg |= 0x1 << bit;
++	writel(reg, S3C_GPACON + offset);
++}
++
++int gpio_direction_output(unsigned gpio, int value)
++{
++	unsigned group = GET_GROUP(gpio);
++	unsigned bit = GET_BIT(gpio);
++	unsigned offset;
++
++	gpio_set_value(gpio, value);
++
++	offset = group_offset[group];
++	switch (group) {
++	case 5:		/* GPF */
++	case 8:		/* GPI */
++	case 9:		/* GPJ */
++	case 13:	/* GPN */
++	case 14:	/* GPO */
++	case 15:	/* GPP */
++	case 16:	/* GPQ */
++		gpio_direction_output_2b(offset, bit << 1);
++		break;
++	default:
++		gpio_direction_output_4b(offset, bit << 2);
++	}
++
++	return 0;
++}
++
++/* one register, 2 bits per function -> GPF, GPI, GPJ, GPN, GPO, GPP, GPQ */
++static void s3c_d2pins(unsigned offset, unsigned pin_mode)
++{
++	unsigned bit = GET_BIT(pin_mode);
++	unsigned func = GET_FUNC(pin_mode);
++	unsigned reg;
++
++	if (PUD_PRESENT(pin_mode)) {
++		reg = readl(S3C_GPAPUD + offset);
++		reg &= ~(PUD_MASK << bit);
++		reg |= GET_PUD(pin_mode) << bit;
++		writel(reg, S3C_GPAPUD + offset);
++	}
++
++	/* in the case of pin's function is GPIO it also sets up the direction */
++	reg = readl(S3C_GPACON + offset) & ~(0x3 << bit);
++	writel(reg | (func << bit), S3C_GPACON + offset);
++
++	if (func == 1) { /* output? if yes, also set the initial value */
++		reg = readl(S3C_GPADAT + offset) & ~(1 << (bit >> 1));
++		reg |= GET_GPIOVAL(pin_mode) << (bit >> 1);
++		writel(reg, S3C_GPADAT + offset);
++	}
++}
++
++/* one register, 4 bits per function -> GPA, GPB, GPC, GPD, GPE, GPG, GPM */
++static void s3c_d4pins(unsigned offset, unsigned pin_mode)
++{
++	unsigned bit = GET_BIT(pin_mode);
++	unsigned func = GET_FUNC(pin_mode);
++	unsigned reg;
++
++	if (PUD_PRESENT(pin_mode)) {
++		reg = readl(S3C_GPAPUD + offset);
++		reg &= ~(PUD_MASK << (bit >> 1));
++		reg |= GET_PUD(pin_mode) << (bit >> 1);
++		writel(reg, S3C_GPAPUD + offset);
++	}
++
++	/* in the case of pin's function is GPIO it also sets up the direction */
++	reg = readl(S3C_GPACON + offset) & ~(0xf << bit);
++	writel(reg | (func << bit), S3C_GPACON + offset);
++
++	if (func == 1) { /* output? if yes, also set the initial value */
++		reg = readl(S3C_GPADAT + offset) & ~(1 << (bit >> 2));
++		reg |= GET_GPIOVAL(pin_mode) << (bit >> 2);
++		writel(reg, S3C_GPADAT + offset);
++	}
++}
++
++/* two registers, 4 bits per pin -> GPH, GPK, GPL */
++static void s3c_d42pins(unsigned offset, unsigned pin_mode)
++{
++	unsigned bit = GET_BIT(pin_mode);
++	unsigned func = GET_FUNC(pin_mode);
++	uint32_t reg;
++	unsigned reg_offs = 0;
++
++	if (PUD_PRESENT(pin_mode)) {
++		reg = readl(S3C_GPAPUD + 4 + offset);
++		reg &= ~(PUD_MASK << (bit >> 1));
++		reg |= GET_PUD(pin_mode) << (bit >> 1);
++		writel(reg, S3C_GPACON + 4 + offset);
++	}
++
++	if (bit > 31) {
++		reg_offs = 4;
++		bit -= 32;
++	}
++
++	/* in the case of pin's function is GPIO it also sets up the direction */
++	reg = readl(S3C_GPACON + offset + reg_offs) & ~(0xf << bit);
++	writel(reg | (func << bit), S3C_GPACON + offset + reg_offs);
++
++	if (func == 1) { /* output? if yes, also set the initial value */
++		reg = readl(S3C_GPADAT + 4 + offset) & ~(1 << (bit >> 2));
++		reg |= GET_GPIOVAL(pin_mode) << (bit >> 2);
++		writel(reg, S3C_GPADAT + 4 + offset);
++	}
++}
++
++/* 'gpio_mode' must be one of the 'GP?_*' macros */
++void s3c_gpio_mode(unsigned gpio_mode)
++{
++	unsigned group, offset;
++
++	group = GET_GROUP(gpio_mode);
++	offset = group_offset[group];
++
++	switch (group) {
++	case 5:		/* GPF */
++	case 8:		/* GPI */
++	case 9:		/* GPJ */
++	case 13:	/* GPN */
++	case 14:	/* GPO */
++	case 15:	/* GPP */
++	case 16:	/* GPQ */
++		s3c_d2pins(offset, gpio_mode);
++		break;
++	case 7:		/* GPH */
++	case 10:	/* GPK */
++	case 11:	/* GPL */
++		s3c_d42pins(offset, gpio_mode);
++		break;
++	default:
++		s3c_d4pins(offset, gpio_mode);
++	}
++}
+diff --git a/arch/arm/mach-samsung/include/mach/gpio.h b/arch/arm/mach-samsung/include/mach/gpio.h
+index 4d7d217..2b45695 100644
+--- a/arch/arm/mach-samsung/include/mach/gpio.h
++++ b/arch/arm/mach-samsung/include/mach/gpio.h
+@@ -16,6 +16,9 @@
+ #ifdef CONFIG_ARCH_S3C24xx
+ # include <mach/iomux-s3c24x0.h>
+ #endif
++#ifdef CONFIG_ARCH_S3C64xx
++# include <mach/iomux-s3c64xx.h>
++#endif
+ #ifdef CONFIG_ARCH_S5PCxx
+ # include <mach/iomux-s5pcxx.h>
+ #endif
+diff --git a/arch/arm/mach-samsung/include/mach/iomux-s3c64xx.h b/arch/arm/mach-samsung/include/mach/iomux-s3c64xx.h
 new file mode 100644
-index 0000000..98db422
+index 0000000..5d68b71
 --- /dev/null
-+++ b/arch/arm/boards/friendlyarm-tiny6410/tiny6410.h
-@@ -0,0 +1,14 @@
++++ b/arch/arm/mach-samsung/include/mach/iomux-s3c64xx.h
+@@ -0,0 +1,542 @@
 +/*
++ * Copyright (C) 2012 Juergen Beisert
++ *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
 + * published by the Free Software Foundation; either version 2 of
@@ -390,141 +393,534 @@ index 0000000..98db422
 + * GNU General Public License for more details.
 + */
 +
-+/* to be called by the base board */
-+void tiny6410_init(const char*);
-diff --git a/arch/arm/configs/friendlyarm_tiny6410_defconfig b/arch/arm/configs/friendlyarm_tiny6410_defconfig
-new file mode 100644
-index 0000000..3af5e04
---- /dev/null
-+++ b/arch/arm/configs/friendlyarm_tiny6410_defconfig
-@@ -0,0 +1,41 @@
-+CONFIG_ARCH_S3C64xx=y
-+CONFIG_MACH_TINY6410=y
-+CONFIG_AEABI=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_BROKEN=y
-+CONFIG_PROMPT="mini6410:"
-+CONFIG_LONGHELP=y
-+CONFIG_GLOB=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_PARTITION=y
-+CONFIG_PARTITION_DISK=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/friendlyarm-mini6410/env"
-+CONFIG_DEBUG_INFO=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_MTEST=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_PING=y
-+CONFIG_NET_TFTP=y
-+CONFIG_DRIVER_NET_DM9K=y
-+# CONFIG_SPI is not set
-+CONFIG_ZLIB=y
-+CONFIG_BZLIB=y
-+CONFIG_LZO_DECOMPRESS=y
-diff --git a/arch/arm/configs/tiny6410_defconfig b/arch/arm/configs/tiny6410_defconfig
-new file mode 100644
-index 0000000..5246196
---- /dev/null
-+++ b/arch/arm/configs/tiny6410_defconfig
-@@ -0,0 +1,41 @@
-+CONFIG_ARCH_S3C64xx=y
-+CONFIG_MACH_TINY6410=y
-+CONFIG_AEABI=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_BROKEN=y
-+CONFIG_PROMPT="tiny6410:"
-+CONFIG_LONGHELP=y
-+CONFIG_GLOB=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_PARTITION=y
-+CONFIG_PARTITION_DISK=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/friendlyarm-tiny6410/env"
-+CONFIG_DEBUG_INFO=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_MTEST=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_PING=y
-+CONFIG_NET_TFTP=y
-+CONFIG_DRIVER_NET_DM9K=y
-+# CONFIG_SPI is not set
-+CONFIG_ZLIB=y
-+CONFIG_BZLIB=y
-+CONFIG_LZO_DECOMPRESS=y
-diff --git a/arch/arm/mach-samsung/Kconfig b/arch/arm/mach-samsung/Kconfig
-index e621259..51253db 100644
---- a/arch/arm/mach-samsung/Kconfig
-+++ b/arch/arm/mach-samsung/Kconfig
-@@ -7,12 +7,14 @@ config ARCH_TEXT_BASE
- 	hex
- 	default 0x31fc0000 if MACH_MINI2440
- 	default 0x57fc0000 if MACH_MINI6410
-+	default 0x57fc0000 if MACH_TINY6410
- 	default 0x31fc0000 if MACH_A9M2440
- 	default 0x31fc0000 if MACH_A9M2410
- 
- config BOARDINFO
- 	default "Mini 2440"    if MACH_MINI2440
- 	default "Mini 6410"    if MACH_MINI6410
-+	default "Tiny 6410"    if MACH_TINY6410
- 	default "Digi A9M2440" if MACH_A9M2440
- 	default "Digi A9M2410" if MACH_A9M2410
- 
-@@ -109,10 +111,19 @@ config MACH_MINI6410
- 	  Say Y here if you are using FriendlyARM Mini6410 board equipped
- 	  with a Samsung S3C6410 Processor
- 
-+config MACH_TINY6410
-+	bool "Tiny 6410"
-+	select CPU_S3C6410
-+	help
-+	  Say Y here if you are using FriendlyARM Tiny6410 CPU card equipped
-+	  with a Samsung S3C6410 Processor
++#ifndef __MACH_IOMUX_S3C64XX_H
++# define __MACH_IOMUX_S3C64XX_H
 +
- endchoice
- 
- menu "Board specific settings       "
- 
-+source arch/arm/boards/friendlyarm-tiny6410/Kconfig
++/* 3322222222221111111111
++ * 10987654321098765432109876543210
++ *                           ^^^^^^_ Bit offset
++ *                      ^^^^^_______ Group Number
++ *                  ^^^^____________ Function
++ *                 ^________________ initial GPIO out value
++ *                ^_________________ Pull up/down feature present
++ *              ^^__________________ initial pull up/down setting
++ */
 +
- endmenu
- 
- endif
++#define PIN(group,bit) ((group << 6) + bit)
++#define FUNC(x) (((x) & 0xf) << 11)
++#define GET_FUNC(x) (((x) >> 11) & 0xf)
++#define GET_GROUP(x) (((x) >> 6) & 0x1f)
++#define GET_BIT(x) ((x) & 0x3f)
++#define GET_GPIOVAL(x) (!!((x) & (1 << 15)))
++#define GPIO_OUT (1 << 11)
++#define GPIO_IN (0 << 11)
++#define GPIO_VAL(x) ((!!(x)) << 15)
++#define PUD_MASK 0x3
++#define PUD (1 << 16)
++#define PUD_PRESENT(x) (!!((x) & (1 << 16)))
++#define DISABLE_PUD (0 << 17)
++#define ENABLE_PU (2 << 17)
++#define ENABLE_PD (1 << 17)
++#define GET_PUD(x) (((x) >> 17) & PUD_MASK)
++
++/*
++ * To have a chance for simple GPIO manipulation routines
++ * define the GPIO numbers with a real simple scheme.
++ *
++ * Keep in mind: The 'GPIO_2_NO' creates a value to be used with the real gpio
++ * routines and *not* for the multiplexer routines!
++ */
++#define GPIO_2_NO(x,y) (PIN(x,y))
++
++/*
++ * Group A: GPIO 0...7
++ * Used GPIO: 0...7
++ * These pins can also act as GPIO outputs
++ */
++#define GPA0		(PIN(0,0) | PUD)
++#define GPA0_GPIO	(GPA0 | FUNC(0))
++#define GPA0_RXD0	(GPA0 | FUNC(2))
++#define GPA1		(PIN(0,4) | PUD)
++#define GPA1_GPIO	(GPA1 | FUNC(0))
++#define GPA1_TXD0	(GPA1 | FUNC(2))
++#define GPA2		(PIN(0,8) | PUD)
++#define GPA2_GPIO	(GPA2 | FUNC(0))
++#define GPA2_NCTS0	(GPA2 | FUNC(2))
++#define GPA3		(PIN(0,12) | PUD)
++#define GPA3_GPIO	(GPA3 | FUNC(0))
++#define GPA3_NRTS0	(GPA3 | FUNC(2))
++#define GPA4		(PIN(0,16) | PUD)
++#define GPA4_GPIO	(GPA4 | FUNC(0))
++#define GPA4_RXD1	(GPA4 | FUNC(2))
++#define GPA5		(PIN(0,20) | PUD)
++#define GPA5_GPIO	(GPA5 | FUNC(0))
++#define GPA5_TXD1	(GPA5 | FUNC(2))
++#define GPA6		(PIN(0,24) | PUD)
++#define GPA6_GPIO	(GPA6 | FUNC(0))
++#define GPA6_NCTS1	(GPA6 | FUNC(2))
++#define GPA7		(PIN(0,28) | PUD)
++#define GPA7_GPIO	(GPA7 | FUNC(0))
++#define GPA7_NRTS1	(GPA7 | FUNC(2))
++
++/*
++ * Group B: GPIO 0...7
++ * Used GPIO: 8...15
++ * These pins can also act as GPIO outputs
++ */
++#define GPB0		(PIN(1,0) | PUD)
++#define GPB0_GPIO	(GPB0 | FUNC(0))
++#define GPB0_RXD2	(GPB0 | FUNC(2))
++#define GPB0_DMAREQ	(GPB0 | FUNC(3))
++#define GPB0_IRDA_RXD	(GPB0 | FUNC(4))
++#define GPB0_ADDR_CF0	(GPB0 | FUNC(5))
++#define GPB1		(PIN(1,4) | PUD)
++#define GPB1_GPIO	(GPB1 | FUNC(0))
++#define GPB1_TXD2	(GPB1 | FUNC(2))
++#define GPB1_DMAREQ	(GPB1 | FUNC(3))
++#define GPB1_IRDA_TXD	(GPB1 | FUNC(4))
++#define GPB1_ADDR_CF1	(GPB1 | FUNC(5))
++#define GPB2		(PIN(1,8) | PUD)
++#define GPB2_GPIO	(GPB2 | FUNC(0))
++#define GPB2_RXD3	(GPB2 | FUNC(2))
++#define GPB2_IRDA_RXD	(GPB2 | FUNC(3))
++#define GPB2_DMAREQ	(GPB2 | FUNC(4))
++#define GPB2_ADDR_CF2	(GPB2 | FUNC(5))
++#define GPB2_IIC1_SCL	(GPB2 | FUNC(6))
++#define GPB3		(PIN(1,12) | PUD)
++#define GPB3_GPIO	(GPB3 | FUNC(0))
++#define GPB3_TXD3	(GPB3 | FUNC(2))
++#define GPB3_IRDA_TXD	(GPB3 | FUNC(3))
++#define GPB3_DMAREQ	(GPB3 | FUNC(4))
++#define GPB3_IIC1_SDA	(GPB3 | FUNC(6))
++#define GPB4		(PIN(1,16) | PUD)
++#define GPB4_GPIO	(GPB4 | FUNC(0))
++#define GPB4_SDBW	(GPB4 | FUNC(2))
++#define GPB4_CAM_FLD	(GPB4 | FUNC(3))
++#define GPB4_CF_DIR	(GPB4 | FUNC(4))
++#define GPB5		(PIN(1,20) | PUD)
++#define GPB5_GPIO	(GPB5 | FUNC(0))
++#define GPB5_IIC0_SCL	(GPB5 | FUNC(2))
++#define GPB6		(PIN(1,24) | PUD)
++#define GPB6_GPIO	(GPB6 | FUNC(0))
++#define GPB6_IIC0_SDA	(GPB6 | FUNC(2))
++
++#define GPC0		(PIN(2,0) | PUD)
++#define GPC0_GPIO	(GPC0 | FUNC(0))
++#define GPC0_SPI0_MISO	(GPC0 | FUNC(2))
++#define GPC1		(PIN(2,4) | PUD)
++#define GPC1_GPIO	(GPC1 | FUNC(0))
++#define GPC1_SPI0_CLK	(GPC1 | FUNC(2))
++#define GPC2		(PIN(2,8) | PUD)
++#define GPC2_GPIO	(GPC2 | FUNC(0))
++#define GPC2_SPI0_MOSI	(GPC2 | FUNC(2))
++#define GPC3		(PIN(2,12) | PUD)
++#define GPC3_GPIO	(GPC3 | FUNC(0))
++#define GPC3_SPI0_NCS	(GPC3 | FUNC(2))
++#define GPC4		(PIN(2,16) | PUD)
++#define GPC4_GPIO	(GPC4 | FUNC(0))
++#define GPC4_SPI1_MISO	(GPC4 | FUNC(2))
++#define GPC5		(PIN(2,20) | PUD)
++#define GPC5_GPIO	(GPC5 | FUNC(0))
++#define GPC5_SPI1_CLK	(GPC5 | FUNC(2))
++#define GPC6		(PIN(2,24) | PUD)
++#define GPC6_GPIO	(GPC6 | FUNC(0))
++#define GPC6_SPI1_MOSI	(GPC6 | FUNC(2))
++#define GPC7		(PIN(2,28) | PUD)
++#define GPC7_GPIO	(GPC7 | FUNC(0))
++#define GPC7_SPI1_NCS	(GPC7 | FUNC(2))
++
++#define GPD0		(PIN(3,0) | PUD)
++#define GPD0_AC97_BITCLK (GPD0 | FUNC(4))
++#define GPD1		(PIN(3,4) | PUD)
++#define GPD1_AC97_NRST	(GPD1 | FUNC(4))
++#define GPD2		(PIN(3,8) | PUD)
++#define GPD2_AC97_SYNC	(GPD2 | FUNC(4))
++#define GPD3		(PIN(3,12) | PUD)
++#define GPD3_AC97_SDI	(GPD3 | FUNC(4))
++#define GPD4		(PIN(3,16) | PUD)
++#define GPD4_AC97_SDO	(GPD4 | FUNC(4))
++
++#define GPE0		(PIN(4,0) | PUD)
++#define GPE0_GPIO	(GPE0 | FUNC(0))
++#define GPE1		(PIN(4,4) | PUD)
++#define GPE1_GPIO	(GPE1 | FUNC(0))
++#define GPE2		(PIN(4,8) | PUD)
++#define GPE2_GPIO	(GPE2 | FUNC(0))
++#define GPE3		(PIN(4,12) | PUD)
++#define GPE3_GPIO	(GPE3 | FUNC(0))
++#define GPE4		(PIN(4,16) | PUD)
++#define GPE4_GPIO	(GPE4 | FUNC(0))
++
++#define GPF0		(PIN(5,0) | PUD)
++#define GPF0_GPIO	(GPF0 | FUNC(0))
++#define GPF1		(PIN(5,2) | PUD)
++#define GPF1_GPIO	(GPF1 | FUNC(0))
++#define GPF2		(PIN(5,4) | PUD)
++#define GPF2_GPIO	(GPF2 | FUNC(0))
++#define GPF3		(PIN(5,6) | PUD)
++#define GPF3_GPIO	(GPF3 | FUNC(0))
++#define GPF4		(PIN(5,8) | PUD)
++#define GPF4_GPIO	(GPF4 | FUNC(0))
++#define GPF5		(PIN(5,10) | PUD)
++#define GPF5_GPIO	(GPF5 | FUNC(0))
++#define GPF6		(PIN(5,12) | PUD)
++#define GPF6_GPIO	(GPF6 | FUNC(0))
++#define GPF7		(PIN(5,14) | PUD)
++#define GPF7_GPIO	(GPF7 | FUNC(0))
++#define GPF8		(PIN(5,16) | PUD)
++#define GPF8_GPIO	(GPF8 | FUNC(0))
++#define GPF9		(PIN(5,18) | PUD)
++#define GPF9_GPIO	(GPF9 | FUNC(0))
++#define GPF10		(PIN(5,20) | PUD)
++#define GPF10_GPIO	(GPF10 | FUNC(0))
++#define GPF11		(PIN(5,22) | PUD)
++#define GPF11_GPIO	(GPF11 | FUNC(0))
++#define GPF12		(PIN(5,24) | PUD)
++#define GPF12_GPIO	(GPF12 | FUNC(0))
++#define GPF13		(PIN(5,26) | PUD)
++#define GPF13_GPIO	(GPF13 | FUNC(0))
++#define GPF14		(PIN(5,28) | PUD)
++#define GPF14_GPIO	(GPF14 | FUNC(0))
++#define GPF14_PWM0	(GPF14 | FUNC(2))
++#define GPF14_CLKOUT	(GPF14 | FUNC(3))
++#define GPF15		(PIN(5,30) | PUD)
++#define GPF15_GPIO	(GPF15 | FUNC(0))
++#define GPF15_PWM1	(GPF15 | FUNC(2))
++
++#define GPG0		(PIN(6,0) | PUD)
++#define GPG0_MMC0_CLK	(GPG0 | FUNC(2))
++#define GPG1		(PIN(6,4) | PUD)
++#define GPG1_MMC0_CMD	(GPG1 | FUNC(2))
++#define GPG2		(PIN(6,8) | PUD)
++#define GPG2_MMC0_DAT0	(GPG2 | FUNC(2))
++#define GPG3		(PIN(6,12) | PUD)
++#define GPG3_MMC0_DAT1	(GPG3 | FUNC(2))
++#define GPG4		(PIN(6,16) | PUD)
++#define GPG4_MMC0_DAT2	(GPG4 | FUNC(2))
++#define GPG5		(PIN(6,20) | PUD)
++#define GPG5_MMC0_DAT3	(GPG5 | FUNC(2))
++#define GPG6		(PIN(6,24) | PUD)
++#define GPG6_MMC0_NCD	(GPG6 | FUNC(2))
++
++#define GPH0		(PIN(7,0) | PUD)
++#define GPH0_GPIO	(GPH0 | FUNC(0))
++#define GPH1		(PIN(7,4) | PUD)
++#define GPH1_GPIO	(GPH1 | FUNC(0))
++#define GPH2		(PIN(7,8) | PUD)
++#define GPH2_GPIO	(GPH2 | FUNC(0))
++#define GPH3		(PIN(7,12) | PUD)
++#define GPH3_GPIO	(GPH3 | FUNC(0))
++#define GPH4		(PIN(7,16) | PUD)
++#define GPH4_GPIO	(GPH4 | FUNC(0))
++#define GPH5		(PIN(7,20) | PUD)
++#define GPH5_GPIO	(GPH5 | FUNC(0))
++#define GPH6		(PIN(7,24) | PUD)
++#define GPH6_GPIO	(GPH6 | FUNC(0))
++#define GPH7		(PIN(7,28) | PUD)
++#define GPH7_GPIO	(GPH7 | FUNC(0))
++#define GPH8		(PIN(7,32) | PUD)
++#define GPH8_GPIO	(GPH8 | FUNC(0))
++#define GPH9		(PIN(7,36) | PUD)
++#define GPH9_GPIO	(GPH9 | FUNC(0))
++
++#define GPI0		(PIN(8,0) | PUD)
++#define GPI0_GPIO	(GPI0 | FUNC(0))
++#define GPI1		(PIN(8,2) | PUD)
++#define GPI1_GPIO	(GPI1 | FUNC(0))
++#define GPI2		(PIN(8,4) | PUD)
++#define GPI2_GPIO	(GPI2 | FUNC(0))
++#define GPI3		(PIN(8,6) | PUD)
++#define GPI3_GPIO	(GPI3 | FUNC(0))
++#define GPI4		(PIN(8,8) | PUD)
++#define GPI4_GPIO	(GPI4 | FUNC(0))
++#define GPI5		(PIN(8,10) | PUD)
++#define GPI5_GPIO	(GPI5 | FUNC(0))
++#define GPI6		(PIN(8,12) | PUD)
++#define GPI6_GPIO	(GPI6 | FUNC(0))
++#define GPI7		(PIN(8,14) | PUD)
++#define GPI7_GPIO	(GPI7 | FUNC(0))
++#define GPI8		(PIN(8,16) | PUD)
++#define GPI8_GPIO	(GPI8 | FUNC(0))
++#define GPI9		(PIN(8,18) | PUD)
++#define GPI9_GPIO	(GPI9 | FUNC(0))
++#define GPI10		(PIN(8,20) | PUD)
++#define GPI10_GPIO	(GPI10 | FUNC(0))
++#define GPI11		(PIN(8,22) | PUD)
++#define GPI11_GPIO	(GPI11 | FUNC(0))
++#define GPI12		(PIN(8,24) | PUD)
++#define GPI12_GPIO	(GPI12 | FUNC(0))
++#define GPI13		(PIN(8,26) | PUD)
++#define GPI13_GPIO	(GPI13 | FUNC(0))
++#define GPI14		(PIN(8,28) | PUD)
++#define GPI14_GPIO	(GPI14 | FUNC(0))
++#define GPI15		(PIN(8,30) | PUD)
++#define GPI15_GPIO	(GPI15 | FUNC(0))
++
++#define GPJ0		(PIN(9,0) | PUD)
++#define GPJ0_GPIO	(GPJ0 | FUNC(0))
++#define GPJ1		(PIN(9,2) | PUD)
++#define GPJ1_GPIO	(GPJ1 | FUNC(0))
++#define GPJ2		(PIN(9,4) | PUD)
++#define GPJ2_GPIO	(GPJ2 | FUNC(0))
++#define GPJ3		(PIN(9,6) | PUD)
++#define GPJ3_GPIO	(GPJ3 | FUNC(0))
++#define GPJ4		(PIN(9,8) | PUD)
++#define GPJ4_GPIO	(GPJ4 | FUNC(0))
++#define GPJ5		(PIN(9,10) | PUD)
++#define GPJ5_GPIO	(GPJ5 | FUNC(0))
++#define GPJ6		(PIN(9,12) | PUD)
++#define GPJ6_GPIO	(GPJ6 | FUNC(0))
++#define GPJ7		(PIN(9,14) | PUD)
++#define GPJ7_GPIO	(GPJ7 | FUNC(0))
++#define GPJ8		(PIN(9,16) | PUD)
++#define GPJ8_GPIO	(GPJ8 | FUNC(0))
++#define GPJ9		(PIN(9,18) | PUD)
++#define GPJ9_GPIO	(GPJ9 | FUNC(0))
++#define GPJ10		(PIN(9,20) | PUD)
++#define GPJ10_GPIO	(GPJ10 | FUNC(0))
++#define GPJ11		(PIN(9,22) | PUD)
++#define GPJ11_GPIO	(GPJ11 | FUNC(0))
++
++#define GPK0		(PIN(10,0) | PUD)
++#define GPK0_DATA0	(GPK0 | FUNC(2))
++#define GPK0_GPIO	(GPK0 | FUNC(0))
++#define GPK1		(PIN(10,4) | PUD)
++#define GPK1_DATA1	(GPK1 | FUNC(2))
++#define GPK1_GPIO	(GPK1 | FUNC(0))
++#define GPK2		(PIN(10,8) | PUD)
++#define GPK2_DATA2	(GPK2 | FUNC(2))
++#define GPK2_GPIO	(GPK2 | FUNC(0))
++#define GPK3		(PIN(10,12) | PUD)
++#define GPK3_DATA3	(GPK3 | FUNC(2))
++#define GPK3_GPIO	(GPK3 | FUNC(0))
++#define GPK4		(PIN(10,16) | PUD)
++#define GPK4_DATA4	(GPK4 | FUNC(2))
++#define GPK4_GPIO	(GPK4 | FUNC(0))
++#define GPK5		(PIN(10,20) | PUD)
++#define GPK5_DATA5	(GPK5 | FUNC(2))
++#define GPK5_GPIO	(GPK5 | FUNC(0))
++#define GPK6		(PIN(10,24) | PUD)
++#define GPK6_DATA6	(GPK6 | FUNC(2))
++#define GPK6_GPIO	(GPK6 | FUNC(0))
++#define GPK7		(PIN(10,28) | PUD)
++#define GPK7_DATA7	(GPK7 | FUNC(2))
++#define GPK7_GPIO	(GPK7 | FUNC(0))
++#define GPK8		(PIN(10,32) | PUD)
++#define GPK8_DATA8	(GPK8 | FUNC(2))
++#define GPK8_GPIO	(GPK8 | FUNC(0))
++#define GPK9		(PIN(10,36) | PUD)
++#define GPK9_DATA9	(GPK9 | FUNC(2))
++#define GPK9_GPIO	(GPK9 | FUNC(0))
++#define GPK10		(PIN(10,40) | PUD)
++#define GPK10_DATA10	(GPK10 | FUNC(2))
++#define GPK10_GPIO	(GPK10 | FUNC(0))
++#define GPK11		(PIN(10,44) | PUD)
++#define GPK11_DATA11	(GPK11 | FUNC(2))
++#define GPK11_GPIO	(GPK11 | FUNC(0))
++#define GPK12		(PIN(10,48) | PUD)
++#define GPK12_DATA12	(GPK12 | FUNC(2))
++#define GPK12_GPIO	(GPK12 | FUNC(0))
++#define GPK13		(PIN(10,52) | PUD)
++#define GPK13_DATA13	(GPK13 | FUNC(2))
++#define GPK13_GPIO	(GPK13 | FUNC(0))
++#define GPK14		(PIN(10,56) | PUD)
++#define GPK14_DATA14	(GPK14 | FUNC(2))
++#define GPK14_GPIO	(GPK14 | FUNC(0))
++#define GPK15		(PIN(10,60) | PUD)
++#define GPK15_DATA15	(GPK15 | FUNC(2))
++#define GPK15_GPIO	(GPK15 | FUNC(0))
++
++#define GPL0		(PIN(11,0) | PUD)
++#define GPL0_ADDR0	(GPL0 | FUNC(2))
++#define GPL0_GPIO	(GPL0 | FUNC(0))
++#define GPL1		(PIN(11,4) | PUD)
++#define GPL1_ADDR1	(GPL1 | FUNC(2))
++#define GPL1_GPIO	(GPL1 | FUNC(0))
++#define GPL2		(PIN(11,8) | PUD)
++#define GPL2_ADDR2	(GPL2 | FUNC(2))
++#define GPL2_GPIO	(GPL2 | FUNC(0))
++#define GPL3		(PIN(11,12) | PUD)
++#define GPL3_ADDR3	(GPL3 | FUNC(2))
++#define GPL3_GPIO	(GPL3 | FUNC(0))
++#define GPL4		(PIN(11,16) | PUD)
++#define GPL4_ADDR3	(GPL4 | FUNC(2))
++#define GPL4_GPIO	(GPL4 | FUNC(0))
++#define GPL5		(PIN(11,20) | PUD)
++#define GPL5_ADDR3	(GPL5 | FUNC(2))
++#define GPL5_GPIO	(GPL5 | FUNC(0))
++#define GPL6		(PIN(11,24) | PUD)
++#define GPL6_ADDR3	(GPL6 | FUNC(2))
++#define GPL6_GPIO	(GPL6 | FUNC(0))
++#define GPL7		(PIN(11,28) | PUD)
++#define GPL7_ADDR3	(GPL7 | FUNC(2))
++#define GPL7_GPIO	(GPL7 | FUNC(0))
++#define GPL8		(PIN(11,32) | PUD)
++#define GPL8_ADDR3	(GPL8 | FUNC(2))
++#define GPL8_GPIO	(GPL8 | FUNC(0))
++#define GPL9		(PIN(11,36) | PUD)
++#define GPL9_ADDR3	(GPL9 | FUNC(2))
++#define GPL9_GPIO	(GPL9 | FUNC(0))
++#define GPL10		(PIN(11,40) | PUD)
++#define GPL10_ADDR3	(GPL10 | FUNC(2))
++#define GPL10_GPIO	(GPL10 | FUNC(0))
++#define GPL11		(PIN(11,44) | PUD)
++#define GPL11_ADDR3	(GPL11 | FUNC(2))
++#define GPL11_GPIO	(GPL11 | FUNC(0))
++#define GPL12		(PIN(11,48) | PUD)
++#define GPL12_ADDR3	(GPL12 | FUNC(2))
++#define GPL12_GPIO	(GPL12 | FUNC(0))
++#define GPL13		(PIN(11,52) | PUD)
++#define GPL13_ADDR16	(GPL13 | FUNC(2))
++#define GPL13_GPIO	(GPL13 | FUNC(0))
++#define GPL14		(PIN(11,65) | PUD)
++#define GPL14_ADDR17	(GPL14 | FUNC(2))
++#define GPL14_GPIO	(GPL14 | FUNC(0))
++
++#define GPM0		(PIN(12,0) | PUD)
++#define GPM0_GPIO	(GPM0 | FUNC(0))
++#define GPM1		(PIN(12,4) | PUD)
++#define GPM1_GPIO	(GPM1 | FUNC(0))
++#define GPM2		(PIN(12,8) | PUD)
++#define GPM2_GPIO	(GPM2 | FUNC(0))
++#define GPM3		(PIN(12,12) | PUD)
++#define GPM3_GPIO	(GPM3 | FUNC(0))
++#define GPM4		(PIN(12,16) | PUD)
++#define GPM4_GPIO	(GPM4 | FUNC(0))
++#define GPM5		(PIN(12,20) | PUD)
++#define GPM5_GPIO	(GPM5 | FUNC(0))
++
++#define GPN0		(PIN(13,0) | PUD)
++#define GPN0_GPIO	(GPN0 | FUNC(0))
++#define GPN1		(PIN(13,0) | PUD)
++#define GPN1_GPIO	(GPN1 | FUNC(0))
++#define GPN2		(PIN(13,0) | PUD)
++#define GPN2_GPIO	(GPN2 | FUNC(0))
++#define GPN3		(PIN(13,0) | PUD)
++#define GPN3_GPIO	(GPN3 | FUNC(0))
++#define GPN4		(PIN(13,0) | PUD)
++#define GPN4_GPIO	(GPN4 | FUNC(0))
++#define GPN5		(PIN(13,0) | PUD)
++#define GPN5_GPIO	(GPN5 | FUNC(0))
++#define GPN6		(PIN(13,0) | PUD)
++#define GPN6_GPIO	(GPN6 | FUNC(0))
++#define GPN7		(PIN(13,0) | PUD)
++#define GPN7_GPIO	(GPN7 | FUNC(0))
++#define GPN8		(PIN(13,0) | PUD)
++#define GPN8_GPIO	(GPN8 | FUNC(0))
++#define GPN9		(PIN(13,0) | PUD)
++#define GPN9_GPIO	(GPN9 | FUNC(0))
++#define GPN10		(PIN(13,20) | PUD)
++#define GPN10_GPIO	(GPN10 | FUNC(0))
++#define GPN11		(PIN(13,20) | PUD)
++#define GPN11_GPIO	(GPN11 | FUNC(0))
++#define GPN12		(PIN(13,20) | PUD)
++#define GPN12_GPIO	(GPN12 | FUNC(0))
++#define GPN13		(PIN(13,20) | PUD)
++#define GPN13_GPIO	(GPN13 | FUNC(0))
++#define GPN14		(PIN(13,20) | PUD)
++#define GPN14_GPIO	(GPN14 | FUNC(0))
++#define GPN15		(PIN(13,20) | PUD)
++#define GPN15_GPIO	(GPN15 | FUNC(0))
++
++#define GPO0		(PIN(14,0) | PUD)
++#define GPO0_GPIO	(GPO0 | FUNC(0))
++#define GPO0_NCS2	(GPO0 | FUNC(2))
++#define GPO1		(PIN(14,2) | PUD)
++#define GPO1_GPIO	(GPO1 | FUNC(0))
++#define GPO1_NCS3	(GPO1 | FUNC(2))
++#define GPO2		(PIN(14,4) | PUD)
++#define GPO2_GPIO	(GPO2 | FUNC(0))
++#define GPO2_NCS4	(GPO2 | FUNC(2))
++#define GPO3		(PIN(14,6) | PUD)
++#define GPO3_GPIO	(GPO3 | FUNC(0))
++#define GPO3_NCS5	(GPO3 | FUNC(2))
++#define GPO4		(PIN(14,8) | PUD)
++#define GPO4_GPIO	(GPO4 | FUNC(0))
++#define GPO5		(PIN(14,10) | PUD)
++#define GPO5_GPIO	(GPO5 | FUNC(0))
++#define GPO6		(PIN(14,12) | PUD)
++#define GPO6_GPIO	(GPO6 | FUNC(0))
++#define GPO6_ADDR6	(GPO6 | FUNC(2))
++#define GPO7		(PIN(14,14) | PUD)
++#define GPO7_GPIO	(GPO7 | FUNC(0))
++#define GPO7_ADDR7	(GPO7 | FUNC(2))
++#define GPO8		(PIN(14,16) | PUD)
++#define GPO8_GPIO	(GPO8 | FUNC(0))
++#define GPO8_ADDR8	(GPO8 | FUNC(2))
++#define GPO9		(PIN(14,18) | PUD)
++#define GPO9_GPIO	(GPO9 | FUNC(0))
++#define GPO9_ADDR9	(GPO9 | FUNC(2))
++#define GPO10		(PIN(14,20) | PUD)
++#define GPO10_GPIO	(GPO10 | FUNC(2))
++#define GPO10_ADDR10	(GPO10 | FUNC(2))
++#define GPO11		(PIN(14,22) | PUD)
++#define GPO11_GPIO	(GPO11 | FUNC(0))
++#define GPO11_ADDR11	(GPO11 | FUNC(2))
++#define GPO12		(PIN(14,24) | PUD)
++#define GPO12_GPIO	(GPO12 | FUNC(0))
++#define GPO12_ADDR12	(GPO12 | FUNC(2))
++#define GPO13		(PIN(14,26) | PUD)
++#define GPO13_GPIO	(GPO13 | FUNC(0))
++#define GPO13_ADDR13	(GPO13 | FUNC(2))
++#define GPO14		(PIN(14,28) | PUD)
++#define GPO14_GPIO	(GPO14 | FUNC(0))
++#define GPO14_ADDR14	(GPO14 | FUNC(2))
++#define GPO15		(PIN(14,30) | PUD)
++#define GPO15_GPIO	(GPO15 | FUNC(0))
++#define GPO15_ADDR15	(GPO15 | FUNC(2))
++
++#define GPP0		(PIN(15,0) | PUD)
++#define GPP0_GPIO	(GPP0 | FUNC(0))
++#define GPP1		(PIN(15,2) | PUD)
++#define GPP1_GPIO	(GPP1 | FUNC(0))
++#define GPP2		(PIN(15,4) | PUD)
++#define GPP2_NWAIT	(GPP2 | FUNC(2))
++#define GPP3		(PIN(15,6) | PUD)
++#define GPP3_FALE	(GPP3 | FUNC(2))
++#define GPP4		(PIN(15,8) | PUD)
++#define GPP4_FCLE	(GPP4 | FUNC(2))
++#define GPP5		(PIN(15,10) | PUD)
++#define GPP5_FWE	(GPP5 | FUNC(2))
++#define GPP6		(PIN(15,12) | PUD)
++#define GPP6_FRE	(GPP6 | FUNC(2))
++#define GPP7		(PIN(15,14) | PUD)
++#define GPP7_RNB	(GPP7 | FUNC(2))
++#define GPP8		(PIN(15,16) | PUD)
++#define GPP8_GPIO	(GPP8 | FUNC(0))
++#define GPP9		(PIN(15,18) | PUD)
++#define GPP9_GPIO	(GPP9 | FUNC(0))
++#define GPP10		(PIN(15,20) | PUD)
++#define GPP10_GPIO	(GPP10 | FUNC(0))
++#define GPP11		(PIN(15,22) | PUD)
++#define GPP11_GPIO	(GPP11 | FUNC(0))
++#define GPP12		(PIN(15,24) | PUD)
++#define GPP12_GPIO	(GPP12 | FUNC(0))
++#define GPP13		(PIN(15,26) | PUD)
++#define GPP13_GPIO	(GPP13 | FUNC(0))
++#define GPP14		(PIN(15,28) | PUD)
++#define GPP14_GPIO	(GPP14 | FUNC(0))
++
++#define GPQ0		(PIN(16,0) | PUD)
++#define GPQ0_GPIO	(GPQ0 | FUNC(0))
++#define GPQ1		(PIN(16,2) | PUD)
++#define GPQ1_GPIO	(GPQ1 | FUNC(0))
++#define GPQ2		(PIN(16,4) | PUD)
++#define GPQ2_GPIO	(GPQ2 | FUNC(0))
++#define GPQ3		(PIN(16,8) | PUD)
++#define GPQ3_GPIO	(GPQ3 | FUNC(0))
++#define GPQ4		(PIN(16,8) | PUD)
++#define GPQ4_GPIO	(GPQ4 | FUNC(0))
++#define GPQ5		(PIN(16,10) | PUD)
++#define GPQ5_GPIO	(GPQ5 | FUNC(0))
++#define GPQ6		(PIN(16,12) | PUD)
++#define GPQ6_GPIO	(GPQ6 | FUNC(0))
++#define GPQ7		(PIN(16,14) | PUD)
++#define GPQ7_GPIO	(GPQ7 | FUNC(0))
++#define GPQ8		(PIN(16,16) | PUD)
++#define GPQ8_GPIO	(GPQ7 | FUNC(0))
++
++
++#endif /* __MACH_IOMUX_S3C64XX_H */
 -- 
 1.7.10.4
 
