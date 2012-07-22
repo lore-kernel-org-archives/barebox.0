@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo1.mail-out.ovh.net ([178.32.228.1])
+Received: from smtprelay01.ispgateway.de ([80.67.18.43])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Ssw0p-0005ee-Od
- for barebox@lists.infradead.org; Sun, 22 Jul 2012 13:15:56 +0000
-Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 943FFFF9352
- for <barebox@lists.infradead.org>; Sun, 22 Jul 2012 15:21:29 +0200 (CEST)
-Date: Sun, 22 Jul 2012 15:16:28 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120722131628.GJ22657@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+ id 1Ssw6G-0005pp-Gj
+ for barebox@lists.infradead.org; Sun, 22 Jul 2012 13:21:36 +0000
+Received: from [88.217.108.95] (helo=localhost)
+ by smtprelay01.ispgateway.de with esmtpsa (TLSv1:AES128-SHA:128)
+ (Exim 4.68) (envelope-from <bernhard@bwalle.de>) id 1Ssw69-0007rE-4L
+ for barebox@lists.infradead.org; Sun, 22 Jul 2012 15:21:25 +0200
+From: Bernhard Walle <bernhard@bwalle.de>
+Date: Sun, 22 Jul 2012 15:21:20 +0200
+Message-Id: <1342963280-4297-1-git-send-email-bernhard@bwalle.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,81 +18,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/7] compressed inmage update
+Subject: [PATCH] lib/Kconfig: Fix alignment of arrows in label
 To: barebox@lists.infradead.org
 
-HI,
+Signed-off-by: Bernhard Walle <bernhard@bwalle.de>
+---
+ lib/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The following changes since commit 63ac9c743b1304b0b4b792643e4704394f6f8aeb:
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 3bcde5c..32634df 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -1,4 +1,4 @@
+-menu "Library routines"
++menu "Library routines              "
+ config PARAMETER
+ 	bool
+ 
+-- 
+1.7.9.5
 
-  only compress default env in uncompressed images (2012-07-20 14:20:15 +0200)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git tags/compressed-gzip
-
-for you to fetch changes up to 5c808702b4235a39d78042f9ad4f99647c9b8c54:
-
-  compressed image: add gzip support (2012-07-22 20:35:48 +0800)
-
-----------------------------------------------------------------
-compressed: gzip support and cleanup
-
-The follwing patch series add the support of GZIP
-
-And allow now to link only what is need in the decompressor
-
-This is needed if you want to compile a barebox with modules support
-
-as we current rely on gcc and it's garbage colector to clean the non
-needed object.
-
-With modules support gcc will not do this.
-
-This will allow to have a version of barebox shrink to the first
-128KiB so it can fit in the first page of nand which is garanty
-badblock free and then if we need more feature we will use modules
-store in an other partitions.
-
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (7):
-      stddev: make it selectable via Kconfig
-      decompress_unlzo: define decompress_unlzo as decompress
-      compressed image: factorise compressor type
-      decompressor: import malloc/free implementation for linux 3.4
-      ARM: add early malloc support needed by the decompressor
-      compressed: allow to link only what is needed
-      compressed image: add gzip support
-
- Makefile                      |   31 +++++++++++++++++++++----------
- arch/arm/Makefile             |    7 +++++++
- arch/arm/cpu/start.c          |   20 +++++++++++++++++---
- arch/arm/lib/Makefile         |    2 +-
- arch/arm/lib/barebox.lds.S    |    2 +-
- commands/Makefile             |    2 +-
- common/Kconfig                |   25 ++++++++++++++++++++++---
- compressed/Makefile           |    5 +++++
- compressed/misc.c             |   10 ++++++++++
- compressed/string.c           |  127 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/decompress/mm.h |   68 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/decompress_inflate.c      |    1 +
- lib/decompress_unlzo.c        |    1 +
- piggy.gzip.S                  |    6 ++++++
- 14 files changed, 288 insertions(+), 19 deletions(-)
- create mode 100644 compressed/Makefile
- create mode 100644 compressed/misc.c
- create mode 100644 compressed/string.c
- create mode 100644 include/linux/decompress/mm.h
- create mode 100644 piggy.gzip.S
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
