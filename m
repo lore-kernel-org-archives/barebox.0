@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo1.mail-out.ovh.net ([178.32.96.102]
- helo=mo1.mail-out.ovh.net)
+Received: from mo1.mail-out.ovh.net ([178.32.228.1])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Ssvut-0005GN-1n
- for barebox@lists.infradead.org; Sun, 22 Jul 2012 13:09:49 +0000
+ id 1Ssw0p-0005ee-Od
+ for barebox@lists.infradead.org; Sun, 22 Jul 2012 13:15:56 +0000
 Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 81F2FFF9104
- for <barebox@lists.infradead.org>; Sun, 22 Jul 2012 15:08:04 +0200 (CEST)
-Date: Sun, 22 Jul 2012 15:03:01 +0200
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 943FFFF9352
+ for <barebox@lists.infradead.org>; Sun, 22 Jul 2012 15:21:29 +0200 (CEST)
+Date: Sun, 22 Jul 2012 15:16:28 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120722130301.GI22657@game.jcrosoft.org>
+Message-ID: <20120722131628.GJ22657@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
@@ -24,10 +23,10 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/7] compressed image update
+Subject: [PATCH 0/7] compressed inmage update
 To: barebox@lists.infradead.org
 
-Hi,
+HI,
 
 The following changes since commit 63ac9c743b1304b0b4b792643e4704394f6f8aeb:
 
