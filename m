@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1StOzX-0000Xn-Hd
- for barebox@lists.infradead.org; Mon, 23 Jul 2012 20:12:32 +0000
-Date: Mon, 23 Jul 2012 22:10:12 +0200
+ id 1StP1E-0000gs-Sk
+ for barebox@lists.infradead.org; Mon, 23 Jul 2012 20:14:17 +0000
+Date: Mon, 23 Jul 2012 22:13:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120723201012.GC30009@pengutronix.de>
-References: <1343050608-2091-1-git-send-email-sv.khafizova@gmail.com>
+Message-ID: <20120723201348.GE30009@pengutronix.de>
+References: <1342846209-10461-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1343050608-2091-1-git-send-email-sv.khafizova@gmail.com>
+In-Reply-To: <1342846209-10461-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +22,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Makefile: update barebox version if CONFIG_KALLSYMS is
- not set
-To: Svetlana Khafizova <sv.khafizova@gmail.com>
-Cc: barebox@lists.infradead.org, Aleksey Kuleshov <rndfax@yandex.ru>
+Subject: Re: [PATCH 1/3] mc13xxx: Added dummy definitions if
+ CONFIG_MFD_MC13XXX is not set
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-On Mon, Jul 23, 2012 at 05:36:48PM +0400, Svetlana Khafizova wrote:
-> If CONFIG_KALLSYMS is not set then barebox version is always "#0".
-> By-default on mips boards CONFIG_KALLSYMS don't set, so barebox
-> version does not increase after every build.
-> This patch fixes the problem.
+On Sat, Jul 21, 2012 at 08:50:07AM +0400, Alexander Shiyan wrote:
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-Same here. Applied.
+Applied 1/3 and 3/3. Thanks
 
-Thanks,
  Sascha
 
-> 
-> Signed-off-by: Svetlana Khafizova <sv.khafizova@gmail.com>
-> Signed-off-by: Aleksey Kuleshov <rndfax@yandex.ru>
-> Acked-by:: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  Makefile |    3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  arch/arm/boards/pcm038/pcm038.c |    2 --
+>  include/mfd/mc13xxx.h           |   23 ++++++++++++++++++++++-
+>  2 files changed, 22 insertions(+), 3 deletions(-)
 > 
-> diff --git a/Makefile b/Makefile
-> index ebcf9bf..ac5eaaf 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -549,12 +549,13 @@ quiet_cmd_sysmap = SYSMAP
->        cmd_sysmap = $(CONFIG_SHELL) $(srctree)/scripts/mksysmap
+> diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+> index badc978..ffd8d87 100644
+> --- a/arch/arm/boards/pcm038/pcm038.c
+> +++ b/arch/arm/boards/pcm038/pcm038.c
+> @@ -125,7 +125,6 @@ static inline uint32_t get_pll_spctl10(void)
+>   */
+>  static int pcm038_power_init(void)
+>  {
+> -#ifdef CONFIG_MFD_MC13XXX
+>  	uint32_t spctl0 = get_pll_spctl10();
+>  	struct mc13xxx *mc13xxx = mc13xxx_get();
 >  
->  # Link of barebox
-> +# If CONFIG_KALLSYMS is set .version is already updated
->  # Generate System.map and verify that the content is consistent
->  # Use + in front of the barebox_version rule to silent warning with make -j2
->  # First command is ':' to allow us to use + in front of the rule
->  define rule_barebox__
->  	:
+> @@ -159,7 +158,6 @@ static int pcm038_power_init(void)
+>  			printf("Failed to initialize PMIC. Will continue with low CPU speed\n");
+>  		}
+>  	}
+> -#endif
+>  
+>  	/* clock gating enable */
+>  	GPCR = 0x00050f08;
+> diff --git a/include/mfd/mc13xxx.h b/include/mfd/mc13xxx.h
+> index 2880307..632c9fb 100644
+> --- a/include/mfd/mc13xxx.h
+> +++ b/include/mfd/mc13xxx.h
+> @@ -163,10 +163,31 @@ struct mc13xxx {
+>  	int			revision;
+>  };
+>  
+> +#ifdef CONFIG_MFD_MC13XXX
+>  extern struct mc13xxx *mc13xxx_get(void);
 > -
-> +	$(if $(CONFIG_KALLSYMS),,+$(call cmd,barebox_version))
->  	$(call cmd,barebox__)
+>  extern int mc13xxx_reg_read(struct mc13xxx *mc13xxx, u8 reg, u32 *val);
+>  extern int mc13xxx_reg_write(struct mc13xxx *mc13xxx, u8 reg, u32 val);
+>  extern int mc13xxx_set_bits(struct mc13xxx *mc13xxx, u8 reg, u32 mask, u32 val);
+> +#else
+> +static inline struct mc13xxx *mc13xxx_get(void)
+> +{
+> +	return NULL;
+> +}
+> +
+> +static inline int mc13xxx_reg_read(struct mc13xxx *mc13xxx, u8 reg, u32 *val)
+> +{
+> +	return -ENODEV;
+> +}
+> +
+> +static inline int mc13xxx_reg_write(struct mc13xxx *mc13xxx, u8 reg, u32 val)
+> +{
+> +	return -ENODEV;
+> +}
+> +
+> +static inline int mc13xxx_set_bits(struct mc13xxx *mc13xxx, u8 reg, u32 mask, u32 val)
+> +{
+> +	return -ENODEV;
+> +}
+> +#endif
 >  
->  	$(Q)echo 'cmd_$@ := $(cmd_barebox__)' > $(@D)/.$(@F).cmd
+>  #endif /* __MFD_MC13XXX_H */
 > -- 
-> 1.7.10.4
+> 1.7.3.4
 > 
 > 
 > _______________________________________________
