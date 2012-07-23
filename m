@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1StQpo-0007cX-4N
- for barebox@lists.infradead.org; Mon, 23 Jul 2012 22:10:37 +0000
-Date: Tue, 24 Jul 2012 00:10:29 +0200
+ id 1StQt9-0007gq-Tg
+ for barebox@lists.infradead.org; Mon, 23 Jul 2012 22:14:06 +0000
+Date: Tue, 24 Jul 2012 00:14:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120723221029.GQ24458@pengutronix.de>
-References: <1342812585-22017-1-git-send-email-jbe@pengutronix.de>
+Message-ID: <20120723221401.GF30009@pengutronix.de>
+References: <500D3E7D.8040006@kiwigrid.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1342812585-22017-1-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <500D3E7D.8040006@kiwigrid.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,95 +18,88 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM/Samsung: more clean up...
-To: Juergen Beisert <jbe@pengutronix.de>
+Subject: Re: [PATCH] i.MX53 boards: notify clocksource after init_lowlevel
+To: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
 Cc: barebox@lists.infradead.org
 
-Hi J=FCrgen,
+Hi Wjatscheslaw,
 
-On Fri, Jul 20, 2012 at 09:29:36PM +0200, Juergen Beisert wrote:
-> ...in preparation to add the S3C6410 SoC support.
-> =
+On Mon, Jul 23, 2012 at 02:07:25PM +0200, Wjatscheslaw Stoljarski (Slawa) wrote:
+> 
 
-> Mostly simplifying the Samsung serial driver and some more cosmetic.
-> =
+> From 4d9a8e960654c02205cf4a8e47b4e86cac4b2a95 Mon Sep 17 00:00:00 2001
+> From: "Wjatscheslaw Stoljarski" <wjatscheslaw.stoljarski@kiwigrid.com>
+> Date: Mon, 23 Jul 2012 13:48:07 +0200
+> Subject: [PATCH] i.MX53 boards: notify clocksource after init_lowlevel
+> 
+> @@ -215,6 +216,7 @@ static int loco_console_init(void)
+>  	mxc_iomux_v3_setup_multiple_pads(loco_pads, ARRAY_SIZE(loco_pads));
+>  
+>  	imx53_init_lowlevel(1000);
+> +	clock_notifier_call_chain();
+>  
 
-> Comments are welcome.
+Maybe better add it to imx53_init_lowlevel?
 
-Applied up to 6/9
+Sascha
 
-Thanks
- Sascha
-
-> =
-
-> Regards,
-> Juergen
-> =
-
-> The following changes since commit b47220d7f70df9191fc456dbcaeaa6ead72c6c=
-02:
-> =
-
->   NAND/Samsung: remove a leftover from architeture clean ups (2012-07-20 =
-08:41:35 +0200)
-> =
-
-> are available in the git repository at:
-> =
-
->   git://git.pengutronix.de/git/jbe/barebox.git master_samsung_clean_up
-> =
-
-> for you to fetch changes up to fc361ff7de449f9bb8a7653a5705621320d84560:
-> =
-
->   Samsung/serial: make the clock source configureable (2012-07-20 21:16:0=
-2 +0200)
-> =
-
-> ----------------------------------------------------------------
-> Juergen Beisert (9):
->       ARM/Samsung: List only really supported S3C24xx SoCs
->       ARM/Samsung: follow the name style of the other source files in thi=
-s directory
->       Samsung/serial: remove more ugly ifdef lines
->       Samsung/serial: make the code more readable
->       Samsung/serial: there is no need to ifdef these register defines
->       Samsung/serial: there is no need to ifdef the slot table
->       Samsung/serial: move the decision about an improved UART into Kconf=
-ig
->       Samsung/serial: unify UCON register settings
->       Samsung/serial: make the clock source configureable
-> =
-
->  arch/arm/Kconfig                                   |    2 +-
->  arch/arm/mach-samsung/Kconfig                      |    5 ++
->  arch/arm/mach-samsung/Makefile                     |    3 +-
->  .../{s3c24xx-clocks.c =3D> clocks-s3c24xx.c}         |    0
->  arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h  |    5 +-
->  drivers/serial/serial_s3c.c                        |   71 +++++++++++---=
-------
->  6 files changed, 48 insertions(+), 38 deletions(-)
->  rename arch/arm/mach-samsung/{s3c24xx-clocks.c =3D> clocks-s3c24xx.c} (1=
-00%)
-> =
-
-> =
+>  	imx53_add_uart0();
+>  	return 0;
+> diff --git a/arch/arm/boards/freescale-mx53-smd/board.c b/arch/arm/boards/freescale-mx53-smd/board.c
+> index 0483103..74b38bd 100644
+> --- a/arch/arm/boards/freescale-mx53-smd/board.c
+> +++ b/arch/arm/boards/freescale-mx53-smd/board.c
+> @@ -22,6 +22,7 @@
+>  #include <init.h>
+>  #include <nand.h>
+>  #include <net.h>
+> +#include <notifier.h>
+>  #include <partition.h>
+>  #include <sizes.h>
+>  
+> @@ -161,6 +162,7 @@ static int smd_console_init(void)
+>  	mxc_iomux_v3_setup_multiple_pads(smd_pads, ARRAY_SIZE(smd_pads));
+>  
+>  	imx53_init_lowlevel(1000);
+> +	clock_notifier_call_chain();
+>  
+>  	imx53_add_uart0();
+>  	imx53_add_uart1();
+> diff --git a/arch/arm/boards/tqma53/board.c b/arch/arm/boards/tqma53/board.c
+> index 8c3d855..c4837cb 100644
+> --- a/arch/arm/boards/tqma53/board.c
+> +++ b/arch/arm/boards/tqma53/board.c
+> @@ -21,6 +21,7 @@
+>  #include <init.h>
+>  #include <nand.h>
+>  #include <net.h>
+> +#include <notifier.h>
+>  #include <partition.h>
+>  #include <sizes.h>
+>  #include <mci.h>
+> @@ -265,6 +266,7 @@ static int tqma53_console_init(void)
+>  {
+>  	mxc_iomux_v3_setup_multiple_pads(tqma53_pads, ARRAY_SIZE(tqma53_pads));
+>  	imx53_init_lowlevel(800);
+> +	clock_notifier_call_chain();
+>  	imx53_add_uart0();
+>  
+>  	return 0;
+> -- 
+> 1.7.9.5
+> 
 
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-> =
 
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
