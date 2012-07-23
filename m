@@ -1,21 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo1.mail-out.ovh.net ([178.32.108.172]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1StC9a-0001is-Kx
- for barebox@lists.infradead.org; Mon, 23 Jul 2012 06:30:03 +0000
-Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 7172EFF9503
- for <barebox@lists.infradead.org>; Mon, 23 Jul 2012 08:35:40 +0200 (CEST)
-Date: Mon, 23 Jul 2012 08:30:36 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120723063036.GN22657@game.jcrosoft.org>
-References: <1342985496-18182-1-git-send-email-plagnioj@jcrosoft.com>
- <20120723062440.GT30009@pengutronix.de>
- <20120723062648.GU30009@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1StCEo-00025C-9S
+ for barebox@lists.infradead.org; Mon, 23 Jul 2012 06:35:27 +0000
+Date: Mon, 23 Jul 2012 08:35:23 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120723063523.GV30009@pengutronix.de>
+References: <20120723042052.GK22657@game.jcrosoft.org>
+ <1343017563-27932-1-git-send-email-plagnioj@jcrosoft.com>
+ <1343017563-27932-6-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120723062648.GU30009@pengutronix.de>
+In-Reply-To: <1343017563-27932-6-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,28 +24,118 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] compressed: rename barebox target to zbarebox and
+Subject: Re: [PATCH 6/7] compressed: rename barebox target to zbarebox and
  zbarebox.bin
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 08:26 Mon 23 Jul     , Sascha Hauer wrote:
-> On Mon, Jul 23, 2012 at 08:24:40AM +0200, Sascha Hauer wrote:
-> > Hi Jean-Christophe,
-> > 
-> > On Sun, Jul 22, 2012 at 09:31:36PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > Keep the previous target untouched.
-> > > This will allow to do not brake the modules support.
-> > 
-> > This breaks images which use barebox.bin as an input for their SoC
-> > specific image, like MLO (Omap xload), barebox.netx, barebox.s5p
+On Mon, Jul 23, 2012 at 06:26:02AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Today we link to whole barebox and rely on gcc to cleanup via it's garbage
+> collector.
+> Now we specify only what is needed and introduce a new directory with source
+> only related to the compressed target.
 > 
-> If you want to do this, you have to add a make variable for the target
-> which can be used for these SoC images.
-so we can do this in arch/arm/compressed/Makefile
+> Build it in arch/<arm>/compressed
+> Rebuild all the needed object.
+> 
+> Keep the previous target untouched.
+> This fix the modules support and allow custom flags for each file.
+> 
+> Import string functions from linux 3.4 (arch/arm/boot/compressed/string.c) and
+> implement a dummy panic.
 
-Best Regards,
-J.
+This does not work on all targets having a lowlevel init:
+
+arch/arm/compressed/start.o: In function `reset':
+start.c:(.text_bare_init.text+0x28): undefined reference to `board_init_lowlevel'
+
+Why don't we simply do this:
+
+
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 647c536..12869b3 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -150,11 +150,9 @@ TEXT_BASE = $(CONFIG_TEXT_BASE)
+ 
+ CPPFLAGS += -DTEXT_BASE=$(TEXT_BASE)
+ 
+-ifndef CONFIG_MODULES
+ # Add cleanup flags
+ CPPFLAGS += -fdata-sections -ffunction-sections
+ LDFLAGS_barebox += -static --gc-sections
+-endif
+ 
+ barebox.netx: barebox.bin
+ 	$(Q)scripts/gen_netx_image -i barebox.bin -o barebox.netx		\
+
+>  
+> +void barebox_decompress(uint32_t offset)
+> +{
+> +	uint32_t compressed_start, compressed_end, len;
+> +	void (*uncompress)(void *compressed_start, unsigned int len);
+> +
+> +	compressed_start = (uint32_t)&input_data - offset;
+> +	compressed_end = (uint32_t)&input_data_end - offset;
+> +	len = compressed_end - compressed_start;
+> +
+> +	uncompress = barebox_uncompress;
+> +
+> +	/* call barebox_uncompress with its absolute address */
+> +	__asm__ __volatile__(
+> +		"mov r0, %1\n"
+> +		"mov r1, %2\n"
+> +		"mov pc, %0\n"
+> +		:
+> +		: "r"(uncompress), "r"(compressed_start), "r"(len)
+> +		: "r0", "r1");
+> +}
+> +#else
+> +void barebox_decompress(uint32_t offset) {}
+> +#endif
+>  
+>  /*
+>   * Board code can jump here by either returning from board_init_lowlevel
+> @@ -137,8 +161,6 @@ void barebox_uncompress(void *compressed_start, unsigned int len)
+>  void __naked __section(.text_ll_return) board_init_lowlevel_return(void)
+>  {
+>  	uint32_t r, addr, offset;
+> -	uint32_t compressed_start, compressed_end, len;
+> -	void (*uncompress)(void *compressed_start, unsigned int len);
+>  
+>  	/*
+>  	 * Get runtime address of this function. Do not
+> @@ -169,20 +191,7 @@ void __naked __section(.text_ll_return) board_init_lowlevel_return(void)
+>  	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
+>  
+>  	if (IS_ENABLED(CONFIG_IMAGE_COMPRESSION)) {
+> -		compressed_start = (uint32_t)&input_data - offset;
+> -		compressed_end = (uint32_t)&input_data_end - offset;
+> -		len = compressed_end - compressed_start;
+> -
+> -		uncompress = barebox_uncompress;
+> -
+> -		/* call barebox_uncompress with its absolute address */
+> -		__asm__ __volatile__(
+> -			"mov r0, %1\n"
+> -			"mov r1, %2\n"
+> -			"mov pc, %0\n"
+> -			:
+> -			: "r"(uncompress), "r"(compressed_start), "r"(len)
+> -			: "r0", "r1");
+> +		barebox_decompress(offset);
+
+With this you don't call the decompressor with it's absolute address
+anymore, which means that the decompressor won't run at the address it's
+linked at.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
