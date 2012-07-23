@@ -1,28 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo1.mail-out.ovh.net ([188.165.45.168]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1StEc4-0001w0-Nl
- for barebox@lists.infradead.org; Mon, 23 Jul 2012 09:07:37 +0000
-Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 60505FF99F8
- for <barebox@lists.infradead.org>; Mon, 23 Jul 2012 11:13:15 +0200 (CEST)
-Date: Mon, 23 Jul 2012 11:08:11 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120723090811.GS22657@game.jcrosoft.org>
-References: <20120723042052.GK22657@game.jcrosoft.org>
- <1343017563-27932-1-git-send-email-plagnioj@jcrosoft.com>
- <1343017563-27932-6-git-send-email-plagnioj@jcrosoft.com>
- <20120723063523.GV30009@pengutronix.de>
- <20120723064134.GO22657@game.jcrosoft.org>
- <20120723071622.GX30009@pengutronix.de>
- <20120723080208.GP22657@game.jcrosoft.org>
- <20120723080507.GY30009@pengutronix.de>
- <20120723081807.GQ22657@game.jcrosoft.org>
- <20120723082231.GZ30009@pengutronix.de>
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1StHQH-0003ia-RD
+ for barebox@lists.infradead.org; Mon, 23 Jul 2012 12:07:39 +0000
+Received: by lbbgg6 with SMTP id gg6so8281267lbb.36
+ for <barebox@lists.infradead.org>; Mon, 23 Jul 2012 05:07:32 -0700 (PDT)
+Message-ID: <500D3E7D.8040006@kiwigrid.com>
+Date: Mon, 23 Jul 2012 14:07:25 +0200
+From: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120723082231.GZ30009@pengutronix.de>
+Content-Type: multipart/mixed; boundary="------------000807060503060106010704"
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,61 +18,113 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/7] compressed: rename barebox target to zbarebox and
- zbarebox.bin
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] i.MX53 boards: notify clocksource after init_lowlevel
+To: barebox@lists.infradead.org
 
-On 10:22 Mon 23 Jul     , Sascha Hauer wrote:
-> On Mon, Jul 23, 2012 at 10:18:07AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 10:05 Mon 23 Jul     , Sascha Hauer wrote:
-> > > On Mon, Jul 23, 2012 at 10:02:08AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > On 09:16 Mon 23 Jul     , Sascha Hauer wrote:
-> > > > > 
-> > > > > Does it really?
-> > > > > 
-> > > > > I see this goes back to:
-> > > > > 
-> > > > > commit 8a03bff03ebf36b7460e6ec43259bc8b40731ece
-> > > > > Author: Sascha Hauer <s.hauer@pengutronix.de>
-> > > > > Date:   Thu Jul 3 10:30:44 2008 +0200
-> > > > > 
-> > > > >     [arm] Add cleanup flags only when modules are disabled. Otherwise
-> > > > >           we remove functions from the binary which are needed for
-> > > > >           modules
-> > > > > 
-> > > > > I can't see though why this should happen. What is needed for modules
-> > > > > is defined by EXPORT_SYMBOL.
-> > > > > 
-> > > > > Unfortunately modules are quite broken atm for me anyway, so I can't
-> > > > > test.
-> > > > except you need to use the barebox file to link the ko
-> > > > 
-> > > > and that is one of the reason we do need to call the compressed barebox
-> > > > zbarebox
-> > > > 
-> > > > and I'd like to be able to detect when it's a normal barebox and a zbarebox
-> > > > so need to have start.c compiled 2 times
-> > > > 
-> > > > I really do not like this link with the whole barebox in the zbarebox
-> > > > 
-> > > > keep stuff clean and seperated is really better
-> > > 
-> > > Well, send patches ;)
-> > THis is what this patch do
-> 
-> But it breaks the build
-For this we need some help because one of the way would be to have a new
-target comp-y so we can specify it accross the source
+This is a multi-part message in MIME format.
+--------------000807060503060106010704
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Best Regards,
-J.
+
+
+--------------000807060503060106010704
+Content-Type: text/x-patch;
+ name="0001-i.MX53-boards-notify-clocksource-after-init_lowlevel.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename*0="0001-i.MX53-boards-notify-clocksource-after-init_lowlevel.pa";
+ filename*1="tch"
+
+From 4d9a8e960654c02205cf4a8e47b4e86cac4b2a95 Mon Sep 17 00:00:00 2001
+From: "Wjatscheslaw Stoljarski" <wjatscheslaw.stoljarski@kiwigrid.com>
+Date: Mon, 23 Jul 2012 13:48:07 +0200
+Subject: [PATCH] i.MX53 boards: notify clocksource after init_lowlevel
+
+This fix a clock inaccuracy in get_time_ns (used by sleep, time, etc).
+
+Signed-off-by: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
+---
+ arch/arm/boards/freescale-mx53-loco/board.c |    2 ++
+ arch/arm/boards/freescale-mx53-smd/board.c  |    2 ++
+ arch/arm/boards/tqma53/board.c              |    2 ++
+ 3 files changed, 6 insertions(+)
+
+diff --git a/arch/arm/boards/freescale-mx53-loco/board.c b/arch/arm/boards/freescale-mx53-loco/board.c
+index 0d71555..b8e8d24 100644
+--- a/arch/arm/boards/freescale-mx53-loco/board.c
++++ b/arch/arm/boards/freescale-mx53-loco/board.c
+@@ -22,6 +22,7 @@
+ #include <init.h>
+ #include <nand.h>
+ #include <net.h>
++#include <notifier.h>
+ #include <partition.h>
+ #include <sizes.h>
+ 
+@@ -215,6 +216,7 @@ static int loco_console_init(void)
+ 	mxc_iomux_v3_setup_multiple_pads(loco_pads, ARRAY_SIZE(loco_pads));
+ 
+ 	imx53_init_lowlevel(1000);
++	clock_notifier_call_chain();
+ 
+ 	imx53_add_uart0();
+ 	return 0;
+diff --git a/arch/arm/boards/freescale-mx53-smd/board.c b/arch/arm/boards/freescale-mx53-smd/board.c
+index 0483103..74b38bd 100644
+--- a/arch/arm/boards/freescale-mx53-smd/board.c
++++ b/arch/arm/boards/freescale-mx53-smd/board.c
+@@ -22,6 +22,7 @@
+ #include <init.h>
+ #include <nand.h>
+ #include <net.h>
++#include <notifier.h>
+ #include <partition.h>
+ #include <sizes.h>
+ 
+@@ -161,6 +162,7 @@ static int smd_console_init(void)
+ 	mxc_iomux_v3_setup_multiple_pads(smd_pads, ARRAY_SIZE(smd_pads));
+ 
+ 	imx53_init_lowlevel(1000);
++	clock_notifier_call_chain();
+ 
+ 	imx53_add_uart0();
+ 	imx53_add_uart1();
+diff --git a/arch/arm/boards/tqma53/board.c b/arch/arm/boards/tqma53/board.c
+index 8c3d855..c4837cb 100644
+--- a/arch/arm/boards/tqma53/board.c
++++ b/arch/arm/boards/tqma53/board.c
+@@ -21,6 +21,7 @@
+ #include <init.h>
+ #include <nand.h>
+ #include <net.h>
++#include <notifier.h>
+ #include <partition.h>
+ #include <sizes.h>
+ #include <mci.h>
+@@ -265,6 +266,7 @@ static int tqma53_console_init(void)
+ {
+ 	mxc_iomux_v3_setup_multiple_pads(tqma53_pads, ARRAY_SIZE(tqma53_pads));
+ 	imx53_init_lowlevel(800);
++	clock_notifier_call_chain();
+ 	imx53_add_uart0();
+ 
+ 	return 0;
+-- 
+1.7.9.5
+
+
+--------------000807060503060106010704
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--------------000807060503060106010704--
