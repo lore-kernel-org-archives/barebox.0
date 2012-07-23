@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1StOsw-00009a-N1
- for barebox@lists.infradead.org; Mon, 23 Jul 2012 20:05:51 +0000
-Date: Mon, 23 Jul 2012 22:05:26 +0200
+ id 1StOzX-0000Ya-Ko
+ for barebox@lists.infradead.org; Mon, 23 Jul 2012 20:12:32 +0000
+Date: Mon, 23 Jul 2012 22:11:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120723200526.GB30009@pengutronix.de>
-References: <juh698$uj7$1@dough.gmane.org>
+Message-ID: <20120723201120.GD30009@pengutronix.de>
+References: <201207201534.50481.jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <juh698$uj7$1@dough.gmane.org>
+In-Reply-To: <201207201534.50481.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,36 +22,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Booting kernel from FAT partition on beagle board
-To: Bernhard Walle <bernhard@bwalle.de>
+Subject: Re: [PATCH/master] ARM/MXS: pull-up and bitkeeper must be handled
+ differently
+To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sun, Jul 22, 2012 at 05:29:44PM +0200, Bernhard Walle wrote:
-> Hi,
+On Fri, Jul 20, 2012 at 03:34:49PM +0200, Juergen Beisert wrote:
+> Since commit 2f6b1f7690640f571f8e72fc2f2564acb2e13778 the pull-up and
+> bitkeeper handling for i.MX23/28 is correct. But now it is important to
+> distinguish these pin features as their programmed bit values are different.
+> With this patch the bitkeeper and pull-up enable/disable bits are now handled
+> separately.
 > 
-> Passing control to ARM Linux uImage handler
-> 
-> Starting kernel at 0x80008000...
-> commandline: console=ttyO2,115200 vram=12M
-> omapfb.mode=dvi:1024x768MR-16@60 omapfb.debug=y omapdss.def_disp=dvi
-> root=/dev/mmcblk0p2 ro rootfstype=ext3 rootwait earlyprintk=ttyO2,115200
 
-earlyprintk does not take options.
+Applied, thanks
 
-Have you enabled earlyprintk support in your config? At least you
-should something then.
-
-> arch_number: 1546
-> ------------------------------------------------------------
-> 
-> The same kernel boots fine using u-boot. I'm using Barebox 2012.07.0 and
-> u-boot 2012.07-rc1.
-> 
-> Did I do something wrong? Or is that just a bug?
-
-What you tried should work, I can't see something obviously wrong.
-
-Sascha
+ Sascha
 
 
 -- 
