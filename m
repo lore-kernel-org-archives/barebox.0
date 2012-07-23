@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo1.mail-out.ovh.net ([188.165.38.232]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1StBVA-000105-0s
- for barebox@lists.infradead.org; Mon, 23 Jul 2012 05:48:17 +0000
-Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 69402FF94AB
- for <barebox@lists.infradead.org>; Mon, 23 Jul 2012 07:53:54 +0200 (CEST)
-Date: Mon, 23 Jul 2012 07:48:50 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120723054850.GL22657@game.jcrosoft.org>
-References: <500C4933.8050202@web.de>
- <500C6C5E.2020604@web.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1StC4U-0001NT-Bt
+ for barebox@lists.infradead.org; Mon, 23 Jul 2012 06:24:48 +0000
+Date: Mon, 23 Jul 2012 08:24:40 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120723062440.GT30009@pengutronix.de>
+References: <1342985496-18182-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <500C6C5E.2020604@web.de>
+In-Reply-To: <1342985496-18182-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,70 +22,189 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: AT91SAM9263-ek - Kernel panic
-To: Stutz Sven <stutzsven@web.de>
+Subject: Re: [PATCH 1/1] compressed: rename barebox target to zbarebox and
+ zbarebox.bin
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 23:10 Sun 22 Jul     , Stutz Sven wrote:
->    Hello to everybody,
-> 
->    previously I have had some doubts to run a Linux kernel on this evalboard.
->    Especially to find a BSP for my board ....
-> 
->    In the meantime I have had some problems which I was able to solve by
->    myself or reading through different forums.
-the mainline kernel work perfectly on it
-> 
->    I still have some problems with Barebox and it's ECC for the NAND-Flash
->    and also the asterix * in this nand -a /dev/nand0.* is not working. (It is
->    working when I am doing it manually).
-> 
->    But in total I am able to load and start Barebox and then again loading
->    and starting the kernel.
-> 
->    First I have seen nothing until I switch on the special function
->    earlyprintk=serial,ttyS0,115200n8
->    After that I saw that I have mounting/partitioning problem, so I changed
->    the board specific init.c
->    in that way that the first three partitions match exactly to the
->    definition in the configuration file for the init script of Barebox.
-> 
->        init.c > devfs_add_partition("nand0", 0x00000, SZ_128K,
->    DEVFS_PARTITION_FIXED,"at91bootstrap_raw");
->                    dev_add_bb_dev("at91bootstrap_raw", "at91bootstrap");
->                    devfs_add_partition("nand0", SZ_128K, SZ_256K,
->    DEVFS_PARTITION_FIXED, "self_raw");
->                    dev_add_bb_dev("self_raw", "self0");
->                    devfs_add_partition("nand0", SZ_256K + SZ_128K, SZ_128K,
->    DEVFS_PARTITION_FIXED, "env_raw");
->                    dev_add_bb_dev("env_raw", "env0");
-> 
->        env/config >
->    nand_parts="128k(at91bootstrap),256k(barebox),128k(bareboxenv),4M(kernel),80M(rootfs),-(data)"
->                    rootfs_mtdblock_nand=4
->                    rootfs_mtdblock_type=jffs2
-> 
->    After that I was really happy that the kernel is prompting "VFS: Mounted
->    root (jffs2 filesystem)"
->    But the next kernel panic is near
->    It cannot find a init script.
->    I tried init=/bin/init, init=/sbin/init init=linuxrc everything with out
->    success each time the same failure occur. I also tried to execute a simple
->    command like init=/bin/ls ...
-> 
->    But I see in sysroot-target a softlink linuxrc -> /bin/busybox and also
->    in the root-folder root/sbin/ init-> ../bin/busybox
->    Waht is the difference of those directories? (I thought the root folder is
->    the result for the target, so everything in there will be contained in the
->    root.jffs2)
-> 
->    I have also changed in busybox between soft and hard links ...
->    How can I solve this problem?
->    Has anyone a hint for me, pls?
-it seems you use the wrong ABI to complie your rootfs
+Hi Jean-Christophe,
 
-Best Regards,
-J.
+On Sun, Jul 22, 2012 at 09:31:36PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Keep the previous target untouched.
+> This will allow to do not brake the modules support.
+
+This breaks images which use barebox.bin as an input for their SoC
+specific image, like MLO (Omap xload), barebox.netx, barebox.s5p
+
+Sascha
+
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+> This patch apply over my previous patch series that add gzip support
+> 
+> Best Regards,
+> J.
+>  Makefile     |   49 ++++++++++++++++++++++++++-----------------------
+>  piggy.gzip.S |    2 +-
+>  piggy.lzo.S  |    2 +-
+>  3 files changed, 28 insertions(+), 25 deletions(-)
+> 
+> diff --git a/Makefile b/Makefile
+> index 1003786..16a81d3 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -300,6 +300,7 @@ CFLAGS          := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+>  AFLAGS          := -D__ASSEMBLY__
+>  
+>  LDFLAGS_barebox	:= -Map barebox.map
+> +LDFLAGS_zbarebox	:= -Map zbarebox.map
+>  
+>  # Read KERNELRELEASE from include/config/kernel.release (if it exists)
+>  KERNELRELEASE = $(shell cat include/config/kernel.release 2> /dev/null)
+> @@ -441,7 +442,10 @@ endif # $(dot-config)
+>  # command line.
+>  # This allow a user to issue only 'make' to build a kernel
+>  # Defaults barebox but it is usually overridden in the arch makefile
+> -all: barebox.bin
+> +
+> +zbarebox.bin-$(CONFIG_IMAGE_COMPRESSION) := zbarebox.bin
+> +
+> +all: barebox.bin $(zbarebox.bin-y)
+>  
+>  include $(srctree)/arch/$(ARCH)/Makefile
+>  
+> @@ -672,11 +676,13 @@ quiet_cmd_objcopy = OBJCOPY $@
+>        cmd_objcopy = $(OBJCOPY) $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $< $@
+>  
+>  OBJCOPYFLAGS_barebox.bin = -O binary
+> -OBJCOPYFLAGS_barebox-uncompressed.bin = -O binary
+> +OBJCOPYFLAGS_zbarebox.bin = -O binary
+>  
+>  barebox.bin: barebox FORCE
+>  	$(call if_changed,objcopy)
+> +ifndef CONFIG_IMAGE_COMPRESSION
+>  	$(call cmd,check_file_size,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
+> +endif
+>  
+>  ifdef CONFIG_X86
+>  barebox.S: barebox
+> @@ -706,46 +712,43 @@ quiet_cmd_disasm = DISASM  $@
+>  
+>  barebox.S: barebox FORCE
+>  	$(call if_changed,disasm)
+> -barebox-uncompressed.S: barebox-uncompressed FORCE
+> +zbarebox.S: zbarebox FORCE
+>  	$(call if_changed,disasm)
+>  endif
+>  
+>  # barebox image
+> -barebox-uncompressed: $(barebox-lds) $(barebox-head) $(barebox-common) $(kallsyms.o)
+> +barebox: $(barebox-lds) $(barebox-head) $(barebox-common) $(kallsyms.o) FORCE
+>  	$(call barebox-modpost)
+>  	$(call if_changed_rule,barebox__)
+>  	$(Q)rm -f .old_version
+>  
+> -barebox-uncompressed.bin: barebox-uncompressed
+> -	$(call if_changed,objcopy)
+> -
+>  suffix_$(CONFIG_IMAGE_COMPRESSION_GZIP) = gzip
+>  suffix_$(CONFIG_IMAGE_COMPRESSION_LZO)	= lzo
+>  
+> -barebox-uncompressed.bin.gzip: barebox-uncompressed.bin
+> +barebox.bin.gzip: barebox.bin
+>  	@echo "  GZIP   " $@
+> -	$(Q)gzip -n -9 -c barebox-uncompressed.bin > $@
+> +	$(Q)gzip -n -9 -c barebox.bin > $@
+>  
+> -barebox-uncompressed.bin.lzo: barebox-uncompressed.bin
+> +barebox.bin.lzo: barebox.bin
+>  	@echo "  LZO    " $@
+> -	$(Q)lzop -f -9 -o $@ barebox-uncompressed.bin
+> +	$(Q)lzop -f -9 -o $@ barebox.bin
+>  
+> -piggy.$(suffix_y).o: barebox-uncompressed.bin.$(suffix_y) $(src)/piggy.$(suffix_y).S
+> +piggy.$(suffix_y).o:  barebox.bin.$(suffix_y) FORCE
+>  	@echo "  CC     " $@
+>  	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -c $(src)/piggy.$(suffix_y).S -o $@
+>  
+> -ifdef CONFIG_IMAGE_COMPRESSION
+> -barebox: piggy.$(suffix_y).o $(barebox-comp)
+> +zbarebox: piggy.$(suffix_y).o $(barebox-comp) FORCE
+>  	@echo "  LD     " $@ $(barebox-comp)
+> -	$(Q)$(LD) $(LDFLAGS) $(LDFLAGS_barebox) -o $@ \
+> +	$(Q)$(LD) $(LDFLAGS) $(LDFLAGS_zbarebox) -o $@ \
+>  		-T $(barebox-compressed-lds) \
+>  		--start-group $(barebox-comp) $(comp-arch-y) piggy.$(suffix_y).o --end-group
+> -else
+> -barebox: $(barebox-lds) $(barebox-head) $(barebox-common) $(kallsyms.o) FORCE
+> -	$(call barebox-modpost)
+> -	$(call if_changed_rule,barebox__)
+> -	$(Q)rm -f .old_version
+> -endif
+> +
+> +zbarebox.bin: zbarebox 
+> +	$(call if_changed,objcopy)
+> +	$(call cmd,check_file_size,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
+> +
+> +zbarebox.srec: zbarebox
+> +	$(OBJCOPY) -O srec $< $@
+>  
+>  barebox.srec: barebox
+>  	$(OBJCOPY) -O srec $< $@
+> @@ -1040,11 +1043,11 @@ endif # CONFIG_MODULES
+>  # Directories & files removed with 'make clean'
+>  CLEAN_DIRS  += $(MODVERDIR)
+>  CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
+> -                .tmp_version .tmp_barebox* barebox.bin barebox.map barebox.S \
+> +                .tmp_version .tmp_barebox* barebox.* \
+>  		.tmp_kallsyms* barebox_default_env* barebox.ldr \
+>  		scripts/bareboxenv-target \
+>  		Doxyfile.version barebox.srec barebox.s5p \
+> -		barebox-uncompressed barebox-uncompressed.bin*
+> +		zbarebox*
+>  
+>  # Directories & files removed with 'make mrproper'
+>  MRPROPER_DIRS  += include/config include2 usr/include
+> diff --git a/piggy.gzip.S b/piggy.gzip.S
+> index 2ca7d78..ffd85cb 100644
+> --- a/piggy.gzip.S
+> +++ b/piggy.gzip.S
+> @@ -1,6 +1,6 @@
+>  	.section .piggydata,#alloc
+>  	.globl  input_data
+>  input_data:
+> -	.incbin "barebox-uncompressed.bin.gzip"
+> +	.incbin "barebox.bin.gzip"
+>  	.globl  input_data_end
+>  input_data_end:
+> diff --git a/piggy.lzo.S b/piggy.lzo.S
+> index 6cc618d..ae5b2db 100644
+> --- a/piggy.lzo.S
+> +++ b/piggy.lzo.S
+> @@ -1,6 +1,6 @@
+>  	.section .piggydata,#alloc
+>  	.globl  input_data
+>  input_data:
+> -	.incbin "barebox-uncompressed.bin.lzo"
+> +	.incbin "barebox.bin.lzo"
+>  	.globl  input_data_end
+>  input_data_end:
+> -- 
+> 1.7.10
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
