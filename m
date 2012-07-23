@@ -1,22 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo1.mail-out.ovh.net ([46.105.43.205]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1StCKY-0002ZN-2A
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1StCKZ-0002ZX-7j
  for barebox@lists.infradead.org; Mon, 23 Jul 2012 06:41:24 +0000
-Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 8EC8CFF9556
- for <barebox@lists.infradead.org>; Mon, 23 Jul 2012 08:46:38 +0200 (CEST)
-Date: Mon, 23 Jul 2012 08:41:34 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120723064134.GO22657@game.jcrosoft.org>
-References: <20120723042052.GK22657@game.jcrosoft.org>
- <1343017563-27932-1-git-send-email-plagnioj@jcrosoft.com>
- <1343017563-27932-6-git-send-email-plagnioj@jcrosoft.com>
- <20120723063523.GV30009@pengutronix.de>
+Date: Mon, 23 Jul 2012 08:41:21 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120723064121.GW30009@pengutronix.de>
+References: <1342812585-22017-1-git-send-email-jbe@pengutronix.de>
+ <1342812585-22017-8-git-send-email-jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120723063523.GV30009@pengutronix.de>
+In-Reply-To: <1342812585-22017-8-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,54 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/7] compressed: rename barebox target to zbarebox and
- zbarebox.bin
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 7/9] Samsung/serial: move the decision about an improved
+ UART into Kconfig
+To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 08:35 Mon 23 Jul     , Sascha Hauer wrote:
-> On Mon, Jul 23, 2012 at 06:26:02AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Today we link to whole barebox and rely on gcc to cleanup via it's garbage
-> > collector.
-> > Now we specify only what is needed and introduce a new directory with source
-> > only related to the compressed target.
-> > 
-> > Build it in arch/<arm>/compressed
-> > Rebuild all the needed object.
-> > 
-> > Keep the previous target untouched.
-> > This fix the modules support and allow custom flags for each file.
-> > 
-> > Import string functions from linux 3.4 (arch/arm/boot/compressed/string.c) and
-> > implement a dummy panic.
+On Fri, Jul 20, 2012 at 09:29:43PM +0200, Juergen Beisert wrote:
+> More or less just cosmetic (removing ifdefs!).
 > 
-> This does not work on all targets having a lowlevel init:
+> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+> ---
+>  arch/arm/mach-samsung/Kconfig                     |    5 +++++
+>  arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h |    5 +++--
+>  drivers/serial/serial_s3c.c                       |   16 ++++++++--------
+>  3 files changed, 16 insertions(+), 10 deletions(-)
 > 
-> arch/arm/compressed/start.o: In function `reset':
-> start.c:(.text_bare_init.text+0x28): undefined reference to `board_init_lowlevel'
-> 
-> Why don't we simply do this:
-> 
-> 
-> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> index 647c536..12869b3 100644
-> --- a/arch/arm/Makefile
-> +++ b/arch/arm/Makefile
-> @@ -150,11 +150,9 @@ TEXT_BASE = $(CONFIG_TEXT_BASE)
+> diff --git a/arch/arm/mach-samsung/Kconfig b/arch/arm/mach-samsung/Kconfig
+> index c60f5ed..37d1aa3 100644
+> --- a/arch/arm/mach-samsung/Kconfig
+> +++ b/arch/arm/mach-samsung/Kconfig
+> @@ -18,6 +18,9 @@ config ARCH_BAREBOX_MAX_BARE_INIT_SIZE
+>  	hex
+>  	default 0x1ff0 if ARCH_S5PCxx
 >  
->  CPPFLAGS += -DTEXT_BASE=$(TEXT_BASE)
->  
-> -ifndef CONFIG_MODULES
->  # Add cleanup flags
->  CPPFLAGS += -fdata-sections -ffunction-sections
->  LDFLAGS_barebox += -static --gc-sections
-> -endif
-you can not do this as this break modules
+> +config SAMSUNG_IMPROVED_UART
+> +	bool
 
-for board_init_lowlevel we need to add it to the decompressor
+This is a Samsung UART specific define, so it should be in
+drivers/serial/Kconfig and be renamed to
+DRIVER_SERIAL_S3C_IMPROVED.
 
-Best Regards,
-J.
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
