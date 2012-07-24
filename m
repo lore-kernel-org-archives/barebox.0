@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yw0-f49.google.com ([209.85.213.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1StbS9-0007wu-EL
- for barebox@lists.infradead.org; Tue, 24 Jul 2012 09:30:54 +0000
-Received: by yhjj52 with SMTP id j52so6848420yhj.36
- for <barebox@lists.infradead.org>; Tue, 24 Jul 2012 02:30:51 -0700 (PDT)
+Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1StdYI-0006RH-Fa
+ for barebox@lists.infradead.org; Tue, 24 Jul 2012 11:45:25 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 132AABF0E9
+ for <barebox@lists.infradead.org>; Tue, 24 Jul 2012 13:45:04 +0200 (CEST)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Tue, 24 Jul 2012 13:45:03 +0200
+Message-Id: <1343130303-32201-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <500E66D7.5030002@kiwigrid.com>
-References: <500E66D7.5030002@kiwigrid.com>
-Date: Tue, 24 Jul 2012 13:30:51 +0400
-Message-ID: <CAA4bVAGDrLTazTqHd9t=K2dPB50ONX0sk3LRVv2Mgv_d+Ah5YA@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +18,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add JTAG bitbang driver
-To: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] OMAP4: small header cleanup
+To: barebox@lists.infradead.org
 
-Hi, Slawa!
-
-Use 'git-send-email' for submiting patches to this maillist!
-
-Please, do not send attached patches!
-
-On 24 July 2012 13:11, Wjatscheslaw Stoljarski (Slawa)
-<wjatscheslaw.stoljarski@kiwigrid.com> wrote:
->
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
->
-
--- 
-Best regards,
-  Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VXNlIDxtYWNoL2Nsb2Nrcy5oPiBmb3IgT01BUDQuCgpTaWduZWQtb2ZmLWJ5OiBUZXJlc2EgR8Oh
+bWV6IDx0LmdhbWV6QHBoeXRlYy5kZT4KLS0tCiBhcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9t
+YWNoL2Nsb2Nrcy5oIHwgICAgMyArKysKIGFyY2gvYXJtL21hY2gtb21hcC9vbWFwNF9jbG9jay5j
+ICAgICAgICAgfCAgICA0ICsrLS0KIGFyY2gvYXJtL21hY2gtb21hcC9vbWFwNF9nZW5lcmljLmMg
+ICAgICAgfCAgICA1ICsrLS0tCiAzIGZpbGVzIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKSwgNSBk
+ZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNo
+L2Nsb2Nrcy5oIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9jbG9ja3MuaAppbmRl
+eCAxMjIxMjM4Li4zZWZhMDU3IDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVk
+ZS9tYWNoL2Nsb2Nrcy5oCisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvY2xv
+Y2tzLmgKQEAgLTQ0LDUgKzQ0LDggQEAKICNpZmRlZiBDT05GSUdfQVJDSF9PTUFQMwogI2luY2x1
+ZGUgPG1hY2gvb21hcDMtY2xvY2suaD4KICNlbmRpZgorI2lmZGVmIENPTkZJR19BUkNIX09NQVA0
+CisjaW5jbHVkZSA8bWFjaC9vbWFwNC1jbG9jay5oPgorI2VuZGlmCiAKICNlbmRpZiAvKiBfX09N
+QVBfQ0xPQ0tTX0hfICovCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvb21hcDRfY2xv
+Y2suYyBiL2FyY2gvYXJtL21hY2gtb21hcC9vbWFwNF9jbG9jay5jCmluZGV4IGY4YmFiNWYuLjNh
+YjAxZjAgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtb21hcC9vbWFwNF9jbG9jay5jCisrKyBi
+L2FyY2gvYXJtL21hY2gtb21hcC9vbWFwNF9jbG9jay5jCkBAIC0xLDcgKzEsNyBAQAogI2luY2x1
+ZGUgPGNvbW1vbi5oPgotI2luY2x1ZGUgPG1hY2gvc3lzbGliLmg+CiAjaW5jbHVkZSA8aW8uaD4K
+LSNpbmNsdWRlIDxtYWNoL29tYXA0LWNsb2NrLmg+CisjaW5jbHVkZSA8bWFjaC9zeXNsaWIuaD4K
+KyNpbmNsdWRlIDxtYWNoL2Nsb2Nrcy5oPgogCiAjZGVmaW5lIExERUxBWQkxMjAwMDAwMAogCmRp
+ZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvb21hcDRfZ2VuZXJpYy5jIGIvYXJjaC9hcm0v
+bWFjaC1vbWFwL29tYXA0X2dlbmVyaWMuYwppbmRleCA1MDkyMjQyLi5kZTY5OTM0IDEwMDY0NAot
+LS0gYS9hcmNoL2FybS9tYWNoLW9tYXAvb21hcDRfZ2VuZXJpYy5jCisrKyBiL2FyY2gvYXJtL21h
+Y2gtb21hcC9vbWFwNF9nZW5lcmljLmMKQEAgLTEsMTAgKzEsOSBAQAogI2luY2x1ZGUgPGNvbW1v
+bi5oPgogI2luY2x1ZGUgPGluaXQuaD4KLSNpbmNsdWRlIDxtYWNoL3NpbGljb24uaD4KICNpbmNs
+dWRlIDxpby5oPgotI2luY2x1ZGUgPG1hY2gvb21hcDQtc2lsaWNvbi5oPgorI2luY2x1ZGUgPG1h
+Y2gvY2xvY2tzLmg+CisjaW5jbHVkZSA8bWFjaC9zaWxpY29uLmg+CiAjaW5jbHVkZSA8bWFjaC9v
+bWFwNC1tdXguaD4KLSNpbmNsdWRlIDxtYWNoL29tYXA0LWNsb2NrLmg+CiAjaW5jbHVkZSA8bWFj
+aC9zeXNsaWIuaD4KICNpbmNsdWRlIDxtYWNoL3hsb2FkLmg+CiAjaW5jbHVkZSA8bWFjaC9ncG1j
+Lmg+Ci0tIAoxLjcuMC40CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
