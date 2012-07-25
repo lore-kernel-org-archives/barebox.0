@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo1.mail-out.ovh.net ([188.165.38.232]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1StwJA-0002Gt-DT
- for barebox@lists.infradead.org; Wed, 25 Jul 2012 07:47:22 +0000
-Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 2C229FF96EE
- for <barebox@lists.infradead.org>; Wed, 25 Jul 2012 09:52:43 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 25 Jul 2012 09:47:31 +0200
-Message-Id: <1343202453-16279-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1343202453-16279-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1StwPd-0002mU-78
+ for barebox@lists.infradead.org; Wed, 25 Jul 2012 07:53:42 +0000
+Date: Wed, 25 Jul 2012 09:53:37 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120725075337.GM30009@pengutronix.de>
 References: <1343202453-16279-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1343202453-16279-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,57 +18,91 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] complete: add missing EXPORT_SYMBOL for {command, device,
- empty, command}_var_complete
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/4] vsprintf: fix EXPORT_SYMBOL typo on simple_strtoull
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+On Wed, Jul 25, 2012 at 09:47:30AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
+I had the same patches locally already, but didn't come along posting
+them. Applied all.
+
+btw you'll need the following for using modules with data cache enabled.
+I haven't posted it yet because using dma_* functions doesn't look right.
+Maybe we need some flush_dcache_range and flush_icache_range functions
+
+Sascha
+
+
+From 23fda4644ca033f001f96eef86bd6a7c4349d18e Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 23 Jul 2012 23:54:39 +0200
+Subject: [PATCH] ARM module: flush caches
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/complete.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ commands/insmod.c |    2 ++
+ common/module.c   |    7 ++++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/common/complete.c b/common/complete.c
-index a8bde8d..6a871ef 100644
---- a/common/complete.c
-+++ b/common/complete.c
-@@ -149,6 +149,7 @@ int command_complete(struct string_list *sl, char *instr)
+diff --git a/commands/insmod.c b/commands/insmod.c
+index f547e9d..da0bb47 100644
+--- a/commands/insmod.c
++++ b/commands/insmod.c
+@@ -21,6 +21,8 @@ static int do_insmod(int argc, char *argv[])
+ 	}
  
- 	return 0;
- }
-+EXPORT_SYMBOL(command_complete);
+ 	module = load_module(buf, len);
++	/* flush I-cache before jumping to the copied binary */
++	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
  
- int device_complete(struct string_list *sl, char *instr)
- {
-@@ -169,6 +170,7 @@ int device_complete(struct string_list *sl, char *instr)
+ 	free(buf);
  
- 	return COMPLETE_CONTINUE;
- }
-+EXPORT_SYMBOL(device_complete);
+diff --git a/common/module.c b/common/module.c
+index c0ff0f2..af98422 100644
+--- a/common/module.c
++++ b/common/module.c
+@@ -25,6 +25,7 @@
+ #include <xfuncs.h>
+ #include <command.h>
+ #include <fs.h>
++#include <dma.h>
+ #include <kallsyms.h>
+ #include <linux/list.h>
  
- static int device_param_complete(char *begin, struct device_d *dev,
- 				 struct string_list *sl, char *instr)
-@@ -197,11 +199,13 @@ int empty_complete(struct string_list *sl, char *instr)
- {
- 	return COMPLETE_END;
- }
-+EXPORT_SYMBOL(empty_complete);
+@@ -257,7 +258,7 @@ struct module * load_module(void *mod_image, unsigned long len)
+ 	   special cases for the architectures. */
+ 	layout_sections(module, ehdr, sechdrs, secstrings);
  
- int command_var_complete(struct string_list *sl, char *instr)
- {
- 	return COMPLETE_CONTINUE;
- }
-+EXPORT_SYMBOL(command_var_complete);
+-	ptr = xzalloc(module->core_size);
++	ptr = dma_alloc(module->core_size);
+ 	module->module_core = ptr;
  
- static int env_param_complete(struct string_list *sl, char *instr, int eval)
- {
+ 	/* Transfer each section which specifies SHF_ALLOC */
+@@ -310,6 +311,10 @@ struct module * load_module(void *mod_image, unsigned long len)
+ 		}
+ 	}
+ 
++#ifdef CONFIG_MMU
++	dma_flush_range((unsigned long)ptr,
++			(unsigned long)ptr + module->core_size);
++#endif
+ 	list_add_tail(&module->list, &module_list);
+ 
+ 	return module;
 -- 
 1.7.10.4
 
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
