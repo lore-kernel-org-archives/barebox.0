@@ -1,25 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from plane.gmane.org ([80.91.229.3])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Stl55-0007Pv-7b
- for barebox@lists.infradead.org; Tue, 24 Jul 2012 19:47:44 +0000
-Received: from list by plane.gmane.org with local (Exim 4.69)
- (envelope-from <gcbb-barebox@m.gmane.org>) id 1Stl4t-0004UM-9h
- for barebox@lists.infradead.org; Tue, 24 Jul 2012 21:47:31 +0200
-Received: from ppp-62-216-192-135.dynamic.mnet-online.de ([62.216.192.135])
- by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
- id 1AlnuQ-0007hv-00
- for <barebox@lists.infradead.org>; Tue, 24 Jul 2012 21:47:31 +0200
-Received: from bernhard by ppp-62-216-192-135.dynamic.mnet-online.de with
- local (Gmexim 0.1 (Debian)) id 1AlnuQ-0007hv-00
- for <barebox@lists.infradead.org>; Tue, 24 Jul 2012 21:47:31 +0200
-From: Bernhard Walle <bernhard@bwalle.de>
-Date: Tue, 24 Jul 2012 21:47:22 +0200
-Message-ID: <jumu48$on5$1@dough.gmane.org>
-References: <juh698$uj7$1@dough.gmane.org>
- <20120723200526.GB30009@pengutronix.de>
-Mime-Version: 1.0
-In-Reply-To: <20120723200526.GB30009@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Stv8g-0005BF-FH
+ for barebox@lists.infradead.org; Wed, 25 Jul 2012 06:32:08 +0000
+Date: Wed, 25 Jul 2012 08:31:07 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120725063107.GG30009@pengutronix.de>
+References: <20120723064121.GW30009@pengutronix.de>
+ <1343121891-1643-1-git-send-email-jbe@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1343121891-1643-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -32,31 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Booting kernel from FAT partition on beagle board
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM/Samsung: remaining clean up...
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Am 23.07.12 22:05, schrieb Sascha Hauer:
-> On Sun, Jul 22, 2012 at 05:29:44PM +0200, Bernhard Walle wrote:
->
-> earlyprintk does not take options.
+On Tue, Jul 24, 2012 at 11:24:48AM +0200, Juergen Beisert wrote:
+> ...in preparation to add the S3C6410 SoC support.
+> 
+> Mostly simplifying the Samsung serial driver and some more cosmetic. These
+> patches are a re-work and re-send of the remaining ones not yet included from
+> the previous "ARM/Samsung: more clean up..." series.
+> 
+> The patches 1/3 and 3/3 base on the current "next", because they touch code
+> for the new S5Pxx SoCs.
 
-Ok, but IIRC it doesn't harm. However, I tried without that options and
-it does't work.
+Applied, thanks
 
-> Have you enabled earlyprintk support in your config? At least you
-> should something then.
-
-Sure,
-
-bwalle@kopernikus % grep EARLY_PR configs/beagle/kernelconfig-3.5
-CONFIG_EARLY_PRINTK=y
-
-Any ideas? How to debug (without JTAG)?
+Sascha
 
 
-Regards,
-Bernhard
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
