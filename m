@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 11.mo1.mail-out.ovh.net ([188.165.48.29]
+Received: from 15.mo1.mail-out.ovh.net ([188.165.38.232]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1StwJA-0002Gv-Bd
+ id 1StwJA-0002Gu-CQ
  for barebox@lists.infradead.org; Wed, 25 Jul 2012 07:47:19 +0000
 Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 75922FF9725
- for <barebox@lists.infradead.org>; Wed, 25 Jul 2012 09:52:43 +0200 (CEST)
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id F1785FF9708
+ for <barebox@lists.infradead.org>; Wed, 25 Jul 2012 09:52:42 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 25 Jul 2012 09:47:32 +0200
-Message-Id: <1343202453-16279-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1343202453-16279-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1343202453-16279-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 25 Jul 2012 09:47:30 +0200
+Message-Id: <1343202453-16279-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,27 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] version: add missing EXPORT_SYMBOL for version_string
+Subject: [PATCH 1/4] vsprintf: fix EXPORT_SYMBOL typo on simple_strtoull
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/version.c |    2 +-
+ lib/vsprintf.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/version.c b/common/version.c
-index 51a8e7c..a557904 100644
---- a/common/version.c
-+++ b/common/version.c
-@@ -4,7 +4,7 @@
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index 0607db3..d3bd1d3 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -84,7 +84,7 @@ unsigned long long simple_strtoull (const char *cp, char **endp, unsigned int ba
+ 		*endp = (char *) cp;
+ 	return result;
+ }
+-EXPORT_SYMBOL(simple_strtoll);
++EXPORT_SYMBOL(simple_strtoull);
  
- const char version_string[] =
- 	"barebox " UTS_RELEASE " " UTS_VERSION "\n";
--
-+EXPORT_SYMBOL(version_string);
- 
- void barebox_banner (void)
- {
+ /* we use this so that we can do without the ctype library */
+ #define is_digit(c)	((c) >= '0' && (c) <= '9')
 -- 
 1.7.10.4
 
