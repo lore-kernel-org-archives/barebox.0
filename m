@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.web.de ([212.227.15.3])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Su8N1-0006oU-95
- for barebox@lists.infradead.org; Wed, 25 Jul 2012 20:39:49 +0000
-Message-ID: <50105986.5040300@web.de>
-Date: Wed, 25 Jul 2012 22:39:34 +0200
-From: Stutz Sven <stutzsven@web.de>
-MIME-Version: 1.0
-References: <500C4933.8050202@web.de> <500C6C5E.2020604@web.de>
- <20120723054850.GL22657@game.jcrosoft.org>
-In-Reply-To: <20120723054850.GL22657@game.jcrosoft.org>
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Su9dh-000879-To
+ for barebox@lists.infradead.org; Wed, 25 Jul 2012 22:01:25 +0000
+Received: by laap9 with SMTP id p9so897329laa.36
+ for <barebox@lists.infradead.org>; Wed, 25 Jul 2012 15:00:35 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 26 Jul 2012 02:00:27 +0400
+Message-Id: <1343253627-5247-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,328 +16,397 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: AT91SAM9263-ek - Kernel panic
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
-
-Hello,
-
-I am sorry for my late message.
-
-But
-Am 23.07.2012 07:48, schrieb Jean-Christophe PLAGNIOL-VILLARD:
-
-> On 23:10 Sun 22 Jul     , Stutz Sven wrote:
->>     Hello to everybody,
->>
->>     previously I have had some doubts to run a Linux kernel on this eval=
-board.
->>     Especially to find a BSP for my board ....
->>
->>     In the meantime I have had some problems which I was able to solve by
->>     myself or reading through different forums.
-> the mainline kernel work perfectly on it
-
-I guess it should so and with ptxdist it is also more or less easy to adjus=
-t the correct settings.
-(I hope so :-) )
-
->>     But in total I am able to load and start Barebox and then again load=
-ing
->>     and starting the kernel.
->>
->>     First I have seen nothing until I switch on the special function
->>     earlyprintk=3Dserial,ttyS0,115200n8
->>     After that I saw that I have mounting/partitioning problem, so I cha=
-nged
->>     the board specific init.c
->>     in that way that the first three partitions match exactly to the
->>     definition in the configuration file for the init script of Barebox.
->>
->>         init.c > devfs_add_partition("nand0", 0x00000, SZ_128K,
->>     DEVFS_PARTITION_FIXED,"at91bootstrap_raw");
->>                     dev_add_bb_dev("at91bootstrap_raw", "at91bootstrap");
->>                     devfs_add_partition("nand0", SZ_128K, SZ_256K,
->>     DEVFS_PARTITION_FIXED, "self_raw");
->>                     dev_add_bb_dev("self_raw", "self0");
->>                     devfs_add_partition("nand0", SZ_256K + SZ_128K, SZ_1=
-28K,
->>     DEVFS_PARTITION_FIXED, "env_raw");
->>                     dev_add_bb_dev("env_raw", "env0");
->>
->>         env/config >
->>     nand_parts=3D"128k(at91bootstrap),256k(barebox),128k(bareboxenv),4M(=
-kernel),80M(rootfs),-(data)"
->>                     rootfs_mtdblock_nand=3D4
->>                     rootfs_mtdblock_type=3Djffs2
->>
->>     After that I was really happy that the kernel is prompting "VFS: Mou=
-nted
->>     root (jffs2 filesystem)"
->>     But the next kernel panic is near
->>     It cannot find a init script.
->>     I tried init=3D/bin/init, init=3D/sbin/init init=3Dlinuxrc everythin=
-g with out
->>     success each time the same failure occur. I also tried to execute a =
-simple
->>     command like init=3D/bin/ls ...
->>
->>     But I see in sysroot-target a softlink linuxrc -> /bin/busybox and a=
-lso
->>     in the root-folder root/sbin/ init-> ../bin/busybox
->>     Waht is the difference of those directories? (I thought the root fol=
-der is
->>     the result for the target, so everything in there will be contained =
-in the
->>     root.jffs2)
->>
->>     I have also changed in busybox between soft and hard links ...
->>     How can I solve this problem?
->>     Has anyone a hint for me, pls?
-> it seems you use the wrong ABI to complie your rootfs
-
-But when I mount the rootfs.jffs2 on my Pc I see all directories (bin/, sbi=
-n/, etc/ , ....) and all the commands are build in and linked to busybox.
-
-file test/bin/busybox
-
-test/bin/busybox: setuid ELF 32-bit LSB shared object, ARM, version 1 (SYSV=
-), dynamically linked (uses shared libs), for GNU/Linux 2.6.23, stripped
-
->
-> Best Regards,
-> J.
-
-Unfortunately I have done some bad changes that the rootfs is no longer bee=
-n mounted on startup :-(
-
-see ..
-
-> barebox 2012.07.0 #53 Mon Jul 23 11:14:05 CEST 2012 Board: Atmel =
-
-> at91sam9263-ek Just for test 21 Clocks: CPU 199 MHz, master 99 MHz, =
-
-> main 16.367 MHz atmel_nand: Use On Flash BBT NAND device: Manufacturer =
-
-> ID: 0x2c, Chip ID: 0xda (Micron NaND 256MiB 3,3V 8-bit) NAND_ECC_NONE =
-
-> selected by board driver. This is not recommended !! =
-
-I now I try to fix this later ...
-> Bad block table found at page 131008, version 0x01 Bad block table =
-
-> found at page 130944, version 0x01 cfi_flash@cfi_flash0: found cfi =
-
-> flash at 10000000, size 4194304 Malloc space: 0x23b00000 -> 0x23efffff =
-
-> (size 4 MB) Stack space : 0x23af8000 -> 0x23b00000 (size 32 kB) Hit =
-
-> any key to stop autoboot: 0 booting kernel from /dev/nand0.kernel.bb =
-
-> Image Name: Linux-3.4.0 Created: 2012-07-25 15:30:15 UTC OS: Linux =
-
-> Architecture: ARM Type: Kernel Image Compression: uncompressed Data =
-
-> Size: 1683440 Bytes =3D 1.6 MB Load Address: 20008000 Entry Point: =
-
-> 20008000 ***************************************** *** LOADING IMAGE =
-
-> TO SDRAM! *** ***************************************** commandline: =
-
-> console=3DttyS0,115200n8 mem=3D64M earlyprintk=3Dserial,ttyS0,115200n8, =
-
-> init=3D/bin/ls root=3D/dev/mtdblock4 rootfstype=3Djffs2 noinitrd =
-
-> mtdparts=3Datmel_nand:128k(at91bootstrap),256k(barebox),128k(bareboxenv),=
-4M(kernel)ro,20M(root)ro,-(data) =
-
-> arch_number: 1202 Uncompressing Linux... done, booting the kernel. [ =
-
-> 0.000000] Booting Linux on physical CPU 0 [ 0.000000] Linux version =
-
-> 3.4.0 (user@ubuntu) (gcc version 4.6.2 (OSELAS.Toolchain-2011.11.1) ) =
-
-> #14 Wed Jul 25 17:29:36 CEST 2012 [ 0.000000] bootconsole [earlycon0] =
-
-> enabled [ 0.000000] AT91: Detected soc type: at91sam9263 [ 0.000000] =
-
-> AT91: Detected soc subtype: Unknown [ 0.000000] AT91: sram at 0x300000 =
-
-> of 0x14000 mapped at 0xfef64000 [ 0.000000] AT91: sram at 0x500000 of =
-
-> 0x4000 mapped at 0xfef60000 [ 0.000000] gpiochip_add: registered GPIOs =
-
-> 0 to 31 on device: pioA [ 0.000000] gpiochip_add: registered GPIOs 32 =
-
-> to 63 on device: pioB [ 0.000000] gpiochip_add: registered GPIOs 64 to =
-
-> 95 on device: pioC [ 0.000000] gpiochip_add: registered GPIOs 96 to =
-
-> 127 on device: pioD [ 0.000000] gpiochip_add: registered GPIOs 128 to =
-
-> 159 on device: pioE [ 0.000000] Kernel command line: =
-
-> console=3DttyS0,115200n8 mem=3D64M earlyprintk=3Dserial,ttyS0,115200n8, =
-
-> init=3D/bin/ls root=3D/dev/mtdblock4 rootfstype=3Djffs2 noinitrd =
-
-> mtdparts=3Datmel_nand:128k(at91bootstrap),256k(barebox),128k(bareboxenv),=
-4M(kernel)ro,20M(root)ro,-(data) =
-
-> [ 0.000000] PID hash table entries: 256 (order: -2, 1024 bytes) [ =
-
-> 0.000000] Dentry cache hash table entries: 8192 (order: 3, 32768 =
-
-> bytes) [ 0.000000] Inode-cache hash table entries: 4096 (order: 2, =
-
-> 16384 bytes) [ 0.000000] Memory: 64MB =3D 64MB total [ 0.000000] Memory: =
-
-> 60964k/60964k available, 4572k reserved, 0K highmem [ 0.000000] =
-
-> Virtual kernel memory layout: [ 0.000000] vector : 0xffff0000 - =
-
-> 0xffff1000 ( 4 kB) [ 0.000000] fixmap : 0xfff00000 - 0xfffe0000 ( 896 =
-
-> kB) [ 0.000000] vmalloc : 0xc4800000 - 0xff000000 ( 936 MB) [ =
-
-> 0.000000] lowmem : 0xc0000000 - 0xc4000000 ( 64 MB) [ 0.000000] =
-
-> modules : 0xbf000000 - 0xc0000000 ( 16 MB) [ 0.000000] .text : =
-
-> 0xc0008000 - 0xc032da1c (3223 kB) [ 0.000000] .init : 0xc032e000 - =
-
-> 0xc0354000 ( 152 kB) [ 0.000000] .data : 0xc0354000 - 0xc0381b40 ( 183 =
-
-> kB) [ 0.000000] .bss : 0xc0381b64 - 0xc03ceafc ( 308 kB) [ 0.000000] =
-
-> NR_IRQS:192 [ 0.000000] AT91: 160 gpio irqs in 5 banks [ 0.000000] =
-
-> sched_clock: 32 bits at 100 Hz, resolution 10000000ns, wraps every =
-
-> 4294967286ms [ 0.010000] Calibrating delay loop... 99.22 BogoMIPS =
-
-> (lpj=3D496128) [ 0.100000] pid_max: default: 32768 minimum: 301 [ =
-
-> 0.110000] Mount-cache hash table entries: 512 [ 0.130000] CPU: Testing =
-
-> write buffer coherency: ok [ 0.140000] ftrace: allocating 9496 entries =
-
-> in 28 pages [ 0.250000] Setting up static identity map for 0x20231900 =
-
-> - 0x2023193c [ 0.270000] devtmpfs: initialized [ 0.410000] NET: =
-
-> Registered protocol family 16 [ 0.420000] AT91: Power Management [ =
-
-> 0.430000] AT91: Starting after software reset [ 0.960000] DMA-API: =
-
-> preallocated 4096 debug entries [ 0.970000] DMA-API: debugging enabled =
-
-> by kernel config [ 0.980000] Switching to clocksource tcb_clksrc [ =
-
-> 1.250000] NET: Registered protocol family 2 [ 1.250000] IP route cache =
-
-> hash table entries: 1024 (order: 0, 4096 bytes) [ 1.270000] TCP =
-
-> established hash table entries: 2048 (order: 2, 16384 bytes) [ =
-
-> 1.280000] TCP bind hash table entries: 2048 (order: 1, 8192 bytes) [ =
-
-> 1.290000] TCP: Hash tables configured (established 2048 bind 2048) [ =
-
-> 1.290000] TCP: reno registered [ 1.300000] UDP hash table entries: 256 =
-
-> (order: 0, 4096 bytes) [ 1.310000] UDP-Lite hash table entries: 256 =
-
-> (order: 0, 4096 bytes) [ 1.320000] NET: Registered protocol family 1 [ =
-
-> 1.350000] VFS: Disk quotas dquot_6.5.2 [ 1.360000] jffs2: version 2.2. =
-
-> (NAND) =A9 2001-2006 Red Hat, Inc. [ 1.380000] fuse init (API version =
-
-> 7.18) [ 1.390000] msgmni has been set to 119 [ 1.420000] crc32: =
-
-> CRC_LE_BITS =3D 64, CRC_BE BITS =3D 64 [ 1.430000] crc32: self tests =
-
-> passed, processed 225944 bytes in 10137617 nsec [ 1.450000] crc32c: =
-
-> CRC_LE_BITS =3D 64 [ 1.450000] crc32c: self tests passed, processed =
-
-> 225944 bytes in 4237472 nsec [ 1.480000] atmel_usart.0: ttyS0 at MMIO =
-
-> 0xffffee00 (irq =3D 1) is a ATMEL_SERIAL [ 1.490000] console [ttyS0] =
-
-> enabled, bootconsole disabled [ 1.490000] console [ttyS0] enabled, =
-
-> bootconsole disabled [ 1.500000] atmel_usart.1: ttyS1 at MMIO =
-
-> 0xfff8c000 (irq =3D 7) is a ATMEL_SERIAL [ 1.540000] atmel_nand: Use On =
-
-> Flash BBT [ 1.550000] atmel_nand atmel_nand: No DMA support for NAND =
-
-> access. =
-
-Is this a problem that I have no DMA support?
-> [ 1.550000] NAND device: Manufacturer ID: 0x2c, Chip ID: 0xda (Micron =
-
-> NAND 256MiB 3,3V 8-bit) [ 1.560000] Bad block table found at page =
-
-> 131008, version 0x01 [ 1.570000] Bad block table found at page 130944, =
-
-> version 0x01 [ 1.580000] 6 cmdlinepart partitions found on MTD device =
-
-> atmel_nand [ 1.580000] Creating 6 MTD partitions on "atmel_nand": [ =
-
-> 1.590000] 0x000000000000-0x000000020000 : "at91bootstrap" [ 1.600000] =
-
-> 0x000000020000-0x000000060000 : "barebox" [ 1.610000] =
-
-> 0x000000060000-0x000000080000 : "bareboxenv" [ 1.620000] =
-
-> 0x000000080000-0x000000480000 : "kernel" [ 1.630000] =
-
-> 0x000000480000-0x000001880000 : "root" [ 1.630000] =
-
-> 0x000001880000-0x000010000000 : "data" [ 1.650000] GPIO NAND driver, =A9 =
-
-> 2004 Simtec Electronics [ 1.650000] atmel_spi atmel_spi.0: Atmel SPI =
-
-> Controller at 0xfffa4000 (irq 14) [ 1.660000] atmel_spi atmel_spi.0: =
-
-> master is unqueued, this is deprecated [ 1.680000] TCP: cubic registered =
-
-here I miss mount rootfs
-> [ 1.680000] NET: Registered protocol family 17 [ 1.700000] devtmpfs: =
-
-> mounted [ 1.700000] Freeing init memory: 152K [ 1.710000] Failed to =
-
-> execute /bin/ls. Attempting defaults... [ 1.720000] Kernel panic - not =
-
-> syncing: No init found. Try passing init=3D option to kernel. See Linux =
-
-> Documentation/init.txt for guidance. [ 1.730000] [<c000e254>] =
-
-> (unwind_backtrace+0x0/0x128) from [<c02292e0>] (dump_stack+0x20/0x24) =
-
-> [ 1.740000] [<c02292e0>] (dump_stack+0x20/0x24) from [<c02293e8>] =
-
-> (panic+0x80/0x1c8) [ 1.750000] [<c02293e8>] (panic+0x80/0x1c8) from =
-
-> [<c02290a8>] (init_post+0xb0/0xd4) [ 1.750000] [<c02290a8>] =
-
-> (init_post+0xb0/0xd4) from [<c032e998>] (kernel_init+0xcc/0xf0) =
-
-
-
-
-I will report my results ....
-
-
-best regards
-Sven
+Subject: [PATCH] MIPS: add initial exceptions handling
+To: barebox@lists.infradead.org
+
+Checking exception handling:
+
+    $ make qemu-malta_defconfig
+    $ make
+
+    ...
+
+    $ qemu-system-mips -nodefaults -M malta -m 256 \
+       -nographic -serial stdio -bios ./barebox.bin
+
+    ...
+
+    barebox:/ md -l 0x03
+
+    Ooops, address error on load or ifetch!
+    EPC = 0xa082783c
+    CP0_STATUS = 0x00000006
+    CP0_CAUSE = 0x00000410
+    CP0_CONFIG = 0x80008482
+
+    ### ERROR ### Please RESET the board ###
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/boot/main_entry.c       |   47 ++++++++++++++++
+ arch/mips/include/asm/addrspace.h |  109 +++++++++++++++++++++++++++++++++++++
+ arch/mips/lib/Makefile            |    2 +
+ arch/mips/lib/genex.S             |   31 +++++++++++
+ arch/mips/lib/traps.c             |  107 ++++++++++++++++++++++++++++++++++++
+ 5 files changed, 296 insertions(+)
+ create mode 100644 arch/mips/include/asm/addrspace.h
+ create mode 100644 arch/mips/lib/genex.S
+ create mode 100644 arch/mips/lib/traps.c
+
+diff --git a/arch/mips/boot/main_entry.c b/arch/mips/boot/main_entry.c
+index 8f5f6fc..a38ad31 100644
+--- a/arch/mips/boot/main_entry.c
++++ b/arch/mips/boot/main_entry.c
+@@ -25,11 +25,56 @@
+ #include <string.h>
+ #include <asm/sections.h>
+ #include <asm/cpu-features.h>
++#include <asm/mipsregs.h>
++#include <asm/addrspace.h>
+ 
+ extern void start_barebox(void);
++extern void handle_reserved(void);
+ 
+ void main_entry(void);
+ 
++unsigned long exception_handlers[32];
++
++static void set_except_vector(int n, void *addr)
++{
++	unsigned handler = (unsigned long) addr;
++
++	exception_handlers[n] = handler;
++}
++
++static void trap_init(void)
++{
++	extern char except_vec3_generic;
++	int i;
++
++	unsigned long ebase;
++
++	ebase = CKSEG1;
++
++	/*
++	 * Copy the generic exception handlers to their final destination.
++	 * This will be overriden later as suitable for a particular
++	 * configuration.
++	 */
++	memcpy((void *)(ebase + 0x180), &except_vec3_generic, 0x80);
++
++	/*
++	 * Setup default vectors
++	 */
++	for (i = 0; i <= 31; i++) {
++		set_except_vector(i, &handle_reserved);
++	}
++
++	if (!cpu_has_4kex)
++		memcpy((void *)(ebase + 0x080), &except_vec3_generic, 0x80);
++
++	/* FIXME: handle tlb */
++	memcpy((void *)(ebase), &except_vec3_generic, 0x80);
++
++	/* unset BOOT EXCEPTION VECTOR bit */
++	write_c0_status(read_c0_status() & ~ST0_BEV);
++}
++
+ /**
+  * Called plainly from assembler code
+  *
+@@ -48,5 +93,7 @@ void main_entry(void)
+ 		r4k_cache_init();
+ 	}
+ 
++	trap_init();
++
+ 	start_barebox();
+ }
+diff --git a/arch/mips/include/asm/addrspace.h b/arch/mips/include/asm/addrspace.h
+new file mode 100644
+index 0000000..17d480d
+--- /dev/null
++++ b/arch/mips/include/asm/addrspace.h
+@@ -0,0 +1,109 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 1996, 99 Ralf Baechle
++ * Copyright (C) 2000, 2002  Maciej W. Rozycki
++ * Copyright (C) 1990, 1999 by Silicon Graphics, Inc.
++ */
++#ifndef _ASM_ADDRSPACE_H
++#define _ASM_ADDRSPACE_H
++
++/*
++ *  Configure language
++ */
++#ifdef __ASSEMBLY__
++#define _ATYPE_
++#define _ATYPE32_
++#define _ATYPE64_
++#define _CONST64_(x)	x
++#else
++#define _ATYPE_		__PTRDIFF_TYPE__
++#define _ATYPE32_	int
++#define _ATYPE64_	__s64
++#ifdef CONFIG_64BIT
++#define _CONST64_(x)	x ## L
++#else
++#define _CONST64_(x)	x ## LL
++#endif
++#endif
++
++/*
++ *  32-bit MIPS address spaces
++ */
++#ifdef __ASSEMBLY__
++#define _ACAST32_
++#define _ACAST64_
++#else
++#define _ACAST32_		(_ATYPE_)(_ATYPE32_)	/* widen if necessary */
++#define _ACAST64_		(_ATYPE64_)		/* do _not_ narrow */
++#endif
++
++/*
++ * Returns the kernel segment base of a given address
++ */
++#define KSEGX(a)		((_ACAST32_(a)) & 0xe0000000)
++
++/*
++ * Returns the physical address of a CKSEGx / XKPHYS address
++ */
++#define CPHYSADDR(a)		((_ACAST32_(a)) & 0x1fffffff)
++#define XPHYSADDR(a)            ((_ACAST64_(a)) &			\
++				 _CONST64_(0x000000ffffffffff))
++
++#ifdef CONFIG_64BIT
++
++/*
++ * Memory segments (64bit kernel mode addresses)
++ * The compatibility segments use the full 64-bit sign extended value.  Note
++ * the R8000 doesn't have them so don't reference these in generic MIPS code.
++ */
++#define XKUSEG			_CONST64_(0x0000000000000000)
++#define XKSSEG			_CONST64_(0x4000000000000000)
++#define XKPHYS			_CONST64_(0x8000000000000000)
++#define XKSEG			_CONST64_(0xc000000000000000)
++#define CKSEG0			_CONST64_(0xffffffff80000000)
++#define CKSEG1			_CONST64_(0xffffffffa0000000)
++#define CKSSEG			_CONST64_(0xffffffffc0000000)
++#define CKSEG3			_CONST64_(0xffffffffe0000000)
++
++#define CKSEG0ADDR(a)		(CPHYSADDR(a) | CKSEG0)
++#define CKSEG1ADDR(a)		(CPHYSADDR(a) | CKSEG1)
++#define CKSEG2ADDR(a)		(CPHYSADDR(a) | CKSEG2)
++#define CKSEG3ADDR(a)		(CPHYSADDR(a) | CKSEG3)
++
++#else
++
++#define CKSEG0ADDR(a)		(CPHYSADDR(a) | KSEG0)
++#define CKSEG1ADDR(a)		(CPHYSADDR(a) | KSEG1)
++#define CKSEG2ADDR(a)		(CPHYSADDR(a) | KSEG2)
++#define CKSEG3ADDR(a)		(CPHYSADDR(a) | KSEG3)
++
++/*
++ * Map an address to a certain kernel segment
++ */
++#define KSEG0ADDR(a)		(CPHYSADDR(a) | KSEG0)
++#define KSEG1ADDR(a)		(CPHYSADDR(a) | KSEG1)
++#define KSEG2ADDR(a)		(CPHYSADDR(a) | KSEG2)
++#define KSEG3ADDR(a)		(CPHYSADDR(a) | KSEG3)
++
++/*
++ * Memory segments (32bit kernel mode addresses)
++ * These are the traditional names used in the 32-bit universe.
++ */
++#define KUSEG			0x00000000
++#define KSEG0			0x80000000
++#define KSEG1			0xa0000000
++#define KSEG2			0xc0000000
++#define KSEG3			0xe0000000
++
++#define CKUSEG			0x00000000
++#define CKSEG0			0x80000000
++#define CKSEG1			0xa0000000
++#define CKSEG2			0xc0000000
++#define CKSEG3			0xe0000000
++
++#endif
++
++#endif /* _ASM_ADDRSPACE_H */
+diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
+index b99bb71..a31046b 100644
+--- a/arch/mips/lib/Makefile
++++ b/arch/mips/lib/Makefile
+@@ -5,6 +5,8 @@ obj-y += ashldi3.o
+ obj-y += ashrdi3.o
+ obj-y += memory.o
+ obj-y += cpu-probe.o
++obj-y += traps.o
++obj-y += genex.o
+ 
+ obj-$(CONFIG_CPU_MIPS32) += c-r4k.o
+ obj-$(CONFIG_CPU_MIPS64) += c-r4k.o
+diff --git a/arch/mips/lib/genex.S b/arch/mips/lib/genex.S
+new file mode 100644
+index 0000000..d6f65a2
+--- /dev/null
++++ b/arch/mips/lib/genex.S
+@@ -0,0 +1,31 @@
++#include <asm/asm.h>
++#include <asm/regdef.h>
++#include <asm/mipsregs.h>
++
++	.text
++	.set	macro
++	.set	noat
++	.set	noreorder
++	.align	5
++
++/* Exception vector */
++NESTED(handle_reserved, 0, sp)
++	la	k0, barebox_exc_handler
++	jal	k0
++	 move	a0, sp
++	/* will never return here */
++	END(handle_reserved)
++
++/* General exception vector */
++NESTED(except_vec3_generic, 0, sp)
++	.set	noat
++	mfc0	k1, CP0_CAUSE
++	la	k0, exception_handlers
++	andi	k1, k1, 0x7c
++	addu	k0, k0, k1
++	lw	k0, (k0)
++	nop
++	jr	k0
++	 nop
++	END(except_vec3_generic)
++	.set	at
+diff --git a/arch/mips/lib/traps.c b/arch/mips/lib/traps.c
+new file mode 100644
+index 0000000..4e167cc
+--- /dev/null
++++ b/arch/mips/lib/traps.c
+@@ -0,0 +1,107 @@
++#include <common.h>
++
++#include <asm/mipsregs.h>
++
++void barebox_exc_handler(void *regs);
++
++/*
++ * Trap codes from OpenBSD trap.h
++ */
++#define T_INT			0	/* Interrupt pending */
++#define T_TLB_MOD		1	/* TLB modified fault */
++#define T_TLB_LD_MISS		2	/* TLB miss on load or ifetch */
++#define T_TLB_ST_MISS		3	/* TLB miss on a store */
++#define T_ADDR_ERR_LD		4	/* Address error on a load or ifetch */
++#define T_ADDR_ERR_ST		5	/* Address error on a store */
++#define T_BUS_ERR_IFETCH	6	/* Bus error on an ifetch */
++#define T_BUS_ERR_LD_ST		7	/* Bus error on a load or store */
++#define T_SYSCALL		8	/* System call */
++#define T_BREAK			9	/* Breakpoint */
++#define T_RES_INST		10	/* Reserved instruction exception */
++#define T_COP_UNUSABLE		11	/* Coprocessor unusable */
++#define T_OVFLOW		12	/* Arithmetic overflow */
++#define T_TRAP			13	/* Trap instruction */
++#define T_VCEI			14	/* Virtual coherency instruction */
++#define T_FPE			15	/* Floating point exception */
++#define T_IWATCH		16	/* Inst. Watch address reference */
++#define T_DWATCH		23	/* Data Watch address reference */
++#define T_VCED			31	/* Virtual coherency data */
++
++#define CR_EXC_CODE             0x0000007c
++#define CR_EXC_CODE_SHIFT       2
++
++static char *get_exc_name(u32 cause)
++{
++	switch ((cause & CR_EXC_CODE) >> CR_EXC_CODE_SHIFT) {
++
++	case T_INT:
++		return "interrupt pending";
++
++	case T_TLB_MOD:
++		return "TLB modified";
++
++	case T_TLB_LD_MISS:
++		return "TLB miss on load or ifetch";
++
++	case T_TLB_ST_MISS:
++		return "TLB miss on store";
++
++	case T_ADDR_ERR_LD:
++		return "address error on load or ifetch";
++
++	case T_ADDR_ERR_ST:
++		return "address error on store";
++
++	case T_BUS_ERR_IFETCH:
++		return "bus error on ifetch";
++
++	case T_BUS_ERR_LD_ST:
++		return "bus error on load or store";
++
++	case T_SYSCALL:
++		return "system call";
++
++	case T_BREAK:
++		return "breakpoint";
++
++	case T_RES_INST:
++		return "reserved instruction";
++
++	case T_COP_UNUSABLE:
++		return "coprocessor unusable";
++
++	case T_OVFLOW:
++		return "arithmetic overflow";
++
++	case T_TRAP:
++		return "trap instruction";
++
++	case T_VCEI:
++		return "virtual coherency instruction";
++
++	case T_FPE:
++		return "floating point";
++
++	case T_IWATCH:
++		return "iwatch";
++
++	case T_DWATCH:
++		return "dwatch";
++
++	case T_VCED:
++		return "virtual coherency data";
++	}
++
++	return "unknown exception";
++}
++
++void barebox_exc_handler(void *regs)
++{
++	printf("\nOoops, %s!\n", get_exc_name(read_c0_cause()));
++	printf("EPC = 0x%08x\n", read_c0_epc());
++	printf("CP0_STATUS = 0x%08x\n", read_c0_status());
++	printf("CP0_CAUSE = 0x%08x\n", read_c0_cause());
++	printf("CP0_CONFIG = 0x%08x\n\n", read_c0_config());
++
++	hang();
++}
+-- 
+1.7.10
 
 
 _______________________________________________
