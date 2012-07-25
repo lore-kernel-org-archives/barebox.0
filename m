@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo1.mail-out.ovh.net ([178.32.108.172]
+Received: from 7.mo1.mail-out.ovh.net ([87.98.158.110]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1StwXz-0003qO-NT
- for barebox@lists.infradead.org; Wed, 25 Jul 2012 08:02:22 +0000
+ id 1StwY1-0003r2-MJ
+ for barebox@lists.infradead.org; Wed, 25 Jul 2012 08:02:28 +0000
 Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 8D47AFF97F0
- for <barebox@lists.infradead.org>; Wed, 25 Jul 2012 10:08:05 +0200 (CEST)
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 5D4AFFF9809
+ for <barebox@lists.infradead.org>; Wed, 25 Jul 2012 10:08:06 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 25 Jul 2012 10:02:46 +0200
-Message-Id: <1343203373-18641-4-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 25 Jul 2012 10:02:50 +0200
+Message-Id: <1343203373-18641-8-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1343203373-18641-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120725075730.GT22657@game.jcrosoft.org>
  <1343203373-18641-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,92 +26,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/11] decompressor: import malloc/free implementation for
- linux 3.4
+Subject: [PATCH 08/11] kbuild: Init all relevant variables used in kbuild
+ files so
 To: barebox@lists.infradead.org
 
-This is need for gunzip support
+import from linux 3.5-rc5
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/linux/decompress/mm.h |   68 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
- create mode 100644 include/linux/decompress/mm.h
+ scripts/Makefile.build |   25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/decompress/mm.h b/include/linux/decompress/mm.h
-new file mode 100644
-index 0000000..0c35411
---- /dev/null
-+++ b/include/linux/decompress/mm.h
-@@ -0,0 +1,68 @@
-+/*
-+ * linux/compr_mm.h
-+ *
-+ * Memory management for pre-boot and ramdisk uncompressors
-+ *
-+ * Authors: Alain Knaff <alain@knaff.lu>
-+ *
-+ */
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index f70e2b9..1a82c44 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -7,7 +7,30 @@ src := $(obj)
+ PHONY := __build
+ __build:
+ 
+-# Read .config if it exist, otherwise ignore
++# Init all relevant variables used in kbuild files so
++# 1) they have correct type
++# 2) they do not inherit any value from the environment
++obj-y :=
++obj-m :=
++lib-y :=
++lib-m :=
++always :=
++targets :=
++subdir-y :=
++subdir-m :=
++EXTRA_AFLAGS   :=
++EXTRA_CFLAGS   :=
++EXTRA_CPPFLAGS :=
++EXTRA_LDFLAGS  :=
++asflags-y  :=
++ccflags-y  :=
++cppflags-y :=
++ldflags-y  :=
 +
-+#ifndef DECOMPR_MM_H
-+#define DECOMPR_MM_H
++subdir-asflags-y :=
++subdir-ccflags-y :=
 +
-+#ifdef STATIC
-+
-+/* Code active when included from pre-boot environment: */
-+
-+/*
-+ * Some architectures want to ensure there is no local data in their
-+ * pre-boot environment, so that data can arbitrarily relocated (via
-+ * GOT references).  This is achieved by defining STATIC_RW_DATA to
-+ * be null.
-+ */
-+#ifndef STATIC_RW_DATA
-+#define STATIC_RW_DATA static
-+#endif
-+
-+/* A trivial malloc implementation, adapted from
-+ *  malloc by Hannu Savolainen 1993 and Matthias Urlichs 1994
-+ */
-+STATIC_RW_DATA unsigned long malloc_ptr;
-+STATIC_RW_DATA int malloc_count;
-+
-+static void *malloc(int size)
-+{
-+	void *p;
-+
-+	if (size < 0)
-+		return NULL;
-+	if (!malloc_ptr)
-+		malloc_ptr = free_mem_ptr;
-+
-+	malloc_ptr = (malloc_ptr + 3) & ~3;     /* Align */
-+
-+	p = (void *)malloc_ptr;
-+	malloc_ptr += size;
-+
-+	if (free_mem_end_ptr && malloc_ptr >= free_mem_end_ptr)
-+		return NULL;
-+
-+	malloc_count++;
-+	return p;
-+}
-+
-+static void free(void *where)
-+{
-+	malloc_count--;
-+	if (!malloc_count)
-+		malloc_ptr = free_mem_ptr;
-+}
-+
-+#define large_malloc(a) malloc(a)
-+#define large_free(a) free(a)
-+
-+#define INIT
-+
-+#endif /* STATIC */
-+
-+#endif /* DECOMPR_MM_H */
++# Read auto.conf if it exists, otherwise ignore
+ -include include/config/auto.conf
+ 
+ include scripts/Kbuild.include
 -- 
 1.7.10.4
 
