@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og102.obsmtp.com ([64.18.0.143])
+Received: from exprod5og105.obsmtp.com ([64.18.0.180])
  by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Su41c-0001LE-Qr
- for barebox@lists.infradead.org; Wed, 25 Jul 2012 16:01:28 +0000
+ id 1Su41h-0001LH-Bc
+ for barebox@lists.infradead.org; Wed, 25 Jul 2012 16:01:30 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Wed, 25 Jul 2012 17:00:59 +0100
-Message-Id: <1343232061-1789-2-git-send-email-renaud.barbier@ge.com>
-In-Reply-To: <1343232061-1789-1-git-send-email-renaud.barbier@ge.com>
-References: <1343232061-1789-1-git-send-email-renaud.barbier@ge.com>
+Date: Wed, 25 Jul 2012 17:00:58 +0100
+Message-Id: <1343232061-1789-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,42 +19,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] ppc: GIANFAR base address definition
+Subject: [PATCH 0/3] ppc: Freescale TSEC driver.
 To: barebox@lists.infradead.org
 
-In view of the introduction of the GIANFAR Ethernet driver,
-the mdio and gianfar base address are defined.
+This patchset adds support for the Freescale Ethernet driver(TSEC).
+It is tested on a P2020RDB board using the eTSEC3 interface(RGMII)
+only.
 
-Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
----
- arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h |    7 +++++++
- 1 files changed, 7 insertions(+), 0 deletions(-)
+Renaud Barbier (3):
+  ppc: GIANFAR base address definition
+  net: GIANFAR driver
+  ppc: P2020RDB Ethernet configuration
 
-diff --git a/arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h b/arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h
-index b802249..bf0f7f5 100644
---- a/arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h
-+++ b/arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h
-@@ -39,6 +39,11 @@
- 
- #define MPC85xx_GPIO_OFFSET	0xf000
- #define MPC85xx_L2_OFFSET	0x20000
-+#ifdef CONFIG_TSECV2
-+#define TSEC1_OFFSET		0xB0000
-+#else
-+#define TSEC1_OFFSET		0x24000
-+#endif
- 
- #define MPC85xx_PIC_OFFSET	0x40000
- #define MPC85xx_GUTS_OFFSET	0xe0000
-@@ -129,4 +134,6 @@
- #define		MPC85xx_DEVDISR_TB1	0x00001000
- #define MPC85xx_GUTS_RSTCR_OFFSET	0xb0
- 
-+#define GFAR_BASE_ADDR		(CFG_IMMR + TSEC1_OFFSET)
-+#define MDIO_BASE_ADDR		(CFG_IMMR + 0x24000)
- #endif /*__IMMAP_85xx__*/
--- 
-1.7.1
+ arch/ppc/boards/freescale-p2020rdb/p2020rdb.c   |   38 ++
+ arch/ppc/configs/p2020rdb_defconfig             |    6 +
+ arch/ppc/mach-mpc85xx/include/mach/gianfar.h    |   31 ++
+ arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h |    7 +
+ drivers/net/Kconfig                             |    5 +
+ drivers/net/Makefile                            |    1 +
+ drivers/net/gianfar.c                           |  558 +++++++++++++++++++++++
+ drivers/net/gianfar.h                           |  288 ++++++++++++
+ 8 files changed, 934 insertions(+), 0 deletions(-)
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/gianfar.h
+ create mode 100644 drivers/net/gianfar.c
+ create mode 100644 drivers/net/gianfar.h
 
 
 _______________________________________________
