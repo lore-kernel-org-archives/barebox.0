@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Su2nd-0004qu-DV
- for barebox@lists.infradead.org; Wed, 25 Jul 2012 14:43:33 +0000
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Wed, 25 Jul 2012 16:42:05 +0200
-Message-Id: <1343227325-28925-1-git-send-email-t.gamez@phytec.de>
-MIME-Version: 1.0
+Received: from exprod5og102.obsmtp.com ([64.18.0.143])
+ by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Su41X-0001Jr-QL
+ for barebox@lists.infradead.org; Wed, 25 Jul 2012 16:01:22 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Wed, 25 Jul 2012 17:01:01 +0100
+Message-Id: <1343232061-1789-4-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1343232061-1789-1-git-send-email-renaud.barbier@ge.com>
+References: <1343232061-1789-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,32 +16,102 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv2] defaultenv-2: Add bootargs for booting from disk
+Subject: [PATCH 3/3] ppc: P2020RDB Ethernet configuration
 To: barebox@lists.infradead.org
 
-QWRkIHN1cHBvcnQgaW4gZGVmYXVsdGVudi0yIGZvciBib290aW5nIGZyb20gZGlzayAoU0QtQ2Fy
-ZCwgVVNCLVN0aWNrKS4KClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5
-dGVjLmRlPgotLS0KRml4ZWQgc2luY2UgdjE6CgktIHNwZWxsIGZpeAoJLSBhZGRlZCByZXR1cm4g
-dmFsdWUgb24gZmFpbHVyZQoKIGRlZmF1bHRlbnYtMi9iYXNlL2Jpbi9ib290YXJncy1yb290LWRp
-c2sgfCAgIDI2ICsrKysrKysrKysrKysrKysrKysrKysrKysrCiAxIGZpbGVzIGNoYW5nZWQsIDI2
-IGluc2VydGlvbnMoKyksIDAgZGVsZXRpb25zKC0pCiBjcmVhdGUgbW9kZSAxMDA2NDQgZGVmYXVs
-dGVudi0yL2Jhc2UvYmluL2Jvb3RhcmdzLXJvb3QtZGlzawoKZGlmZiAtLWdpdCBhL2RlZmF1bHRl
-bnYtMi9iYXNlL2Jpbi9ib290YXJncy1yb290LWRpc2sgYi9kZWZhdWx0ZW52LTIvYmFzZS9iaW4v
-Ym9vdGFyZ3Mtcm9vdC1kaXNrCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAuLmRm
-ODc1MGUKLS0tIC9kZXYvbnVsbAorKysgYi9kZWZhdWx0ZW52LTIvYmFzZS9iaW4vYm9vdGFyZ3Mt
-cm9vdC1kaXNrCkBAIC0wLDAgKzEsMjYgQEAKKyMhL2Jpbi9zaAorCit1c2FnZT0iJDAgW09QVElP
-TlNdXG4gLXAgPHBhcnRpdGlvbj5cbiAtdCA8ZnN0eXBlPiIKKword2hpbGUgZ2V0b3B0ICJwOnQ6
-aCIgb3B0OyBkbworCWlmIFsgJHtvcHR9ID0gcCBdOyB0aGVuCisJCXBhcnQ9JHtPUFRBUkd9CisJ
-ZWxpZiBbICR7b3B0fSA9IHQgXTsgdGhlbgorCQlmc3R5cGU9JHtPUFRBUkd9CisJZWxpZiBbICR7
-b3B0fSA9IGggXTsgdGhlbgorCQllY2hvIC1lICIkdXNhZ2UiCisJCWV4aXQgMAorCWZpCitkb25l
-CisKK2lmIFsgLXogIiR7cGFydH0iIF07IHRoZW4KKwllY2hvICIkMDogbm8gcGFydGl0aW9uIGdp
-dmVuIgorCWV4aXQgMQorZmkKKworaWYgWyAteiAiJHtmc3R5cGV9IiBdOyB0aGVuCisJZWNobyAi
-JDA6IG5vIGZpbGVzeXN0ZW0gdHlwZSBnaXZlbiIKKwlleGl0IDEKK2ZpCisKK2dsb2JhbC5saW51
-eC5ib290YXJncy5yb290PSJyb290PS9kZXYvJHBhcnQgcm9vdGZzdHlwZT0kZnN0eXBlIHJvb3R3
-YWl0IgotLSAKMS43LjAuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
-ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Minimal support of the Ethernet interface on the P2020RDB board. Only
+the eTSEC3 interface is supported.
+
+Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+---
+ arch/ppc/boards/freescale-p2020rdb/p2020rdb.c |   38 +++++++++++++++++++++++++
+ arch/ppc/configs/p2020rdb_defconfig           |    6 ++++
+ 2 files changed, 44 insertions(+), 0 deletions(-)
+
+diff --git a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+index 20897cb..201220f 100644
+--- a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
++++ b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+@@ -35,6 +35,7 @@
+ #include <mach/mmu.h>
+ #include <mach/immap_85xx.h>
+ #include <mach/clocks.h>
++#include <mach/gianfar.h>
+ #include <mach/early_udelay.h>
+ 
+ #define VSC7385_RST_SET		0x00080000
+@@ -61,10 +62,47 @@
+ #define SYSCLK_50	50000000
+ #define SYSCLK_100	100000000
+ 
++/* Ethernet. Use eTSEC3 */
++static struct gfar_info_struct gfar_info[] = {
++	{
++	.phyaddr = 1,
++	.tbiana = 0,
++	.tbicr = 0,
++	.flags = 0,
++	},
++};
++
++static int board_eth_init(int num, int idx)
++{
++	struct resource *res;
++
++	res = xzalloc(3 * sizeof(struct resource));
++	/* TSEC interface registers */
++	res[0].start = GFAR_BASE_ADDR + ((num - 1) * 0x1000);
++	res[0].end = res[0].start + 0x1000;
++	res[0].flags = IORESOURCE_MEM;
++	/* External PHY access always through eTSEC1 */
++	res[1].start = MDIO_BASE_ADDR;
++	res[1].end = res[1].start + 0x1000;
++	res[1].flags = IORESOURCE_MEM;
++	/* Access to TBI/RTBI interface. */
++	res[2].start = MDIO_BASE_ADDR + ((num - 1) * 0x1000);
++	res[2].end = res[2].start + 0x1000;
++	res[2].flags = IORESOURCE_MEM;
++
++	add_generic_device_res("gfar", DEVICE_ID_DYNAMIC, res, 3,
++				&gfar_info[idx]);
++
++	return 0;
++}
++
+ static int devices_init(void)
+ {
+ 	add_cfi_flash_device(-1, CFG_FLASH_BASE, 16 << 20, 0);
+ 
++	/* eTSEC3 */
++	board_eth_init(3, 0);
++
+ 	devfs_add_partition("nor0", 0xf80000, 0x80000, DEVFS_PARTITION_FIXED,
+ 			    "self0");
+ 	return 0;
+diff --git a/arch/ppc/configs/p2020rdb_defconfig b/arch/ppc/configs/p2020rdb_defconfig
+index f8a0687..d025a40 100644
+--- a/arch/ppc/configs/p2020rdb_defconfig
++++ b/arch/ppc/configs/p2020rdb_defconfig
+@@ -21,3 +21,9 @@ CONFIG_MALLOC_SIZE=0x200000
+ CONFIG_BAUDRATE=115200
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_RELOCATABLE=y
++CONFIG_DRIVER_NET_GIANFAR=y
++CONFIG_NET=y
++CONFIG_NET_PING=y
++CONFIG_NET_TFTP=y
++CONFIG_PING=y
++CONFIG_TFTP=y
+-- 
+1.7.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
