@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
- (helo=metis.ext.pengutronix.de)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SuKNQ-0004Od-Vj
- for barebox@lists.infradead.org; Thu, 26 Jul 2012 09:29:11 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 26 Jul 2012 11:27:48 +0200
-References: <002601cd6b08$37498d50$a5dca7f0$@cpdesign.com.au>
-In-Reply-To: <002601cd6b08$37498d50$a5dca7f0$@cpdesign.com.au>
+ id 1SuKlZ-0006hh-0d
+ for barebox@lists.infradead.org; Thu, 26 Jul 2012 09:53:58 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu, 26 Jul 2012 11:53:40 +0200
+Message-Id: <1343296420-25857-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201207261127.48919.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,48 +15,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Way to clear nand bad block table
-To: barebox@lists.infradead.org, marc@cpdesign.com.au
+Subject: [PATCH RFC] arm/imx: provide command to add ram device with
+ autodetected size
+To: barebox@lists.infradead.org
 
-HI Marc,
-
-Marc Reilly wrote:
-> Is there a way to clear the nand bad block table?
->
-> I'm not sure what happened, but I was playing around with barebox init and
-> didn't register the nand device - then when I booted the kernel there were
-> a stack of UBI errors.
-> I assume this also did something to the bbt as subsequent barebox startups
-> give a heap of bad block messages. Note not all blocks are bad - tested
-> with nandtest and there's still some R/W going on.
-> All the code I looked at seemed to indicate that once a block is marked bad
-> you can't go back.
->
-> Any ideas much appreciated.
-
-The flash blocks which contains the "bad block table" are protected by 
-the "bad block table" aware MTD layer.
-
-So, the ugly way: run a bootloader which does not use the in-flash bad block 
-table. Then the tables are regular blocks in the flash and can be erased. 
-After that run again the bad block table aware bootloader and it will 
-re-create the in-flash table. But be careful: In this case the generic 
-functions scans all blocks in the NAND to collect the bad block markers in 
-each NAND block's OOB. If this information is already destroyed somehow, this 
-solution does not help.
-
-Regards,
-Juergen
-
--- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGFtb3VudCBvZiBhdmFpbGFibGUgcmFtIGlzIGRldGVybWluZWQgYnkgdGhlIEVTRENUTCBy
+ZWdpc3Rlciwgc28KYmV0dGVyIGRvbid0IGhhcmRjb2RlIHRoZSB2YWx1ZS4KClRoaXMgY29tbWl0
+IHByb3ZpZGVzIGEgY29tbWFuZCB0aGF0IGNhbiBiZSB1c2VkIGluc3RlYWQgb2YKYXJtX2FkZF9t
+ZW1fZGV2aWNlIGFuZCBjb252ZXJ0ZXMgcGNtMDQzIChvbiB3aGljaCB0aGlzIHBhdGNoIHdhcyB0
+ZXN0ZWQpCnRvIGl0LgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5l
+LWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCkhlbGxvLAoKbWF5YmUgYmV0dGVyIG1vdmUgdGhl
+IG5ldyBmdW5jdGlvbiBpbnRvIGEgbmV3IGZpbGUKYXJjaC9hcm0vbWFjaC1pbXgvZXNkY3RsLmMg
+YW5kIHRoZSBwcm90b3R5cGUgaW50byA8bWFjaC9lc2RjdGwuaD4/CgpBbHNvIGlteF9hZGRfcmFt
+MSgpIGlzIHN0aWxsIG1pc3NpbmcuIEkgd2lsbCBpbXBsZW1lbnQgdGhhdCB3aGVuIHdlCmFncmVl
+IHRoZSBwYXRjaCdzIGlkZWEgaXMgdXNlZnVsLgoKQmVzdCByZWdhcmRzClV3ZQoKIGFyY2gvYXJt
+L2JvYXJkcy9wY20wNDMvcGNtMDQzLmMgICAgICAgICAgfCAgICAyICstCiBhcmNoL2FybS9tYWNo
+LWlteC9kZXZpY2VzLmMgICAgICAgICAgICAgIHwgICAzNCArKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysKIGFyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9kZXZpY2VzLmggfCAgICAx
+ICsKIGFyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9lc2RjdGwuaCAgfCAgICAxICsKIDQg
+ZmlsZXMgY2hhbmdlZCwgMzcgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdp
+dCBhL2FyY2gvYXJtL2JvYXJkcy9wY20wNDMvcGNtMDQzLmMgYi9hcmNoL2FybS9ib2FyZHMvcGNt
+MDQzL3BjbTA0My5jCmluZGV4IDE1MmI0N2MuLmIxYmY4ZWYgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJt
+L2JvYXJkcy9wY20wNDMvcGNtMDQzLmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BjbTA0My9wY20w
+NDMuYwpAQCAtMTAzLDcgKzEwMyw3IEBAIHN0YXRpYyBzdHJ1Y3QgaW14X2lwdV9mYl9wbGF0Zm9y
+bV9kYXRhIGlwdV9mYl9kYXRhID0gewogCiBzdGF0aWMgaW50IHBjbTA0M19tZW1faW5pdCh2b2lk
+KQogewotCWFybV9hZGRfbWVtX2RldmljZSgicmFtMCIsIElNWF9TRFJBTV9DUzAsIFNaXzEyOE0p
+OworCWlteF9hZGRfcmFtMCgpOwogCiAJcmV0dXJuIDA7CiB9CmRpZmYgLS1naXQgYS9hcmNoL2Fy
+bS9tYWNoLWlteC9kZXZpY2VzLmMgYi9hcmNoL2FybS9tYWNoLWlteC9kZXZpY2VzLmMKaW5kZXgg
+NmNkNTBmMy4uY2E5OGE4MCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvZGV2aWNlcy5j
+CisrKyBiL2FyY2gvYXJtL21hY2gtaW14L2RldmljZXMuYwpAQCAtMSw2ICsxLDEwIEBACiAjaW5j
+bHVkZSA8Y29tbW9uLmg+CiAjaW5jbHVkZSA8ZHJpdmVyLmg+CiAjaW5jbHVkZSA8bWFjaC9kZXZp
+Y2VzLmg+CisjaW5jbHVkZSA8bWFjaC9lc2RjdGwuaD4KKyNpbmNsdWRlIDxtYWNoL2lteC1yZWdz
+Lmg+CisjaW5jbHVkZSA8YXNtL2lvLmg+CisjaW5jbHVkZSA8YXNtL21lbW9yeS5oPgogCiBzdGF0
+aWMgaW5saW5lIHN0cnVjdCBkZXZpY2VfZCAqaW14X2FkZF9kZXZpY2UoY2hhciAqbmFtZSwgaW50
+IGlkLCB2b2lkICpiYXNlLCBpbnQgc2l6ZSwgdm9pZCAqcGRhdGEpCiB7CkBAIC01MiwzICs1Niwz
+MyBAQCBzdHJ1Y3QgZGV2aWNlX2QgKmlteF9hZGRfZXNkaGModm9pZCAqYmFzZSwgaW50IGlkLCBz
+dHJ1Y3QgZXNkaGNfcGxhdGZvcm1fZGF0YSAqcAogewogCXJldHVybiBpbXhfYWRkX2RldmljZSgi
+aW14LWVzZGhjIiwgaWQsIGJhc2UsIDB4MTAwMCwgcGRhdGEpOwogfQorCitzdGF0aWMgdm9pZCBp
+bXhfYWRkX3JhbShjb25zdCBjaGFyKiBuYW1lLCByZXNvdXJjZV9zaXplX3QgYmFzZSwKKwkJdm9p
+ZCBfX2lvbWVtICplc2RjdGxhZGRyKQoreworCXUzMiBlc2RjdGwgPSByZWFkbChlc2RjdGxhZGRy
+KTsKKwkvKgorCSAqIHdpdGggdGhlIGZpZWxkcyBST1csIENPTCBhbmQgRFNJWiBhbGwgemVybyB3
+ZSBoYXZlIDExIHJvd3MsIDggY29scworCSAqIGFuZCAyIGJ5dGVzIGJ1cyB3aWR0aCBvbiA0IGJh
+bmtzLgorCSAqLworCXJlc291cmNlX3NpemVfdCBzaXplID0gNCA8PCAoMTEgKyA4ICsgMSk7CisK
+KwlpZiAoIShlc2RjdGwgJiBFU0RDVEwwX1NERSkpCisJCS8qIFNEUkFNIGNvbnRyb2xsZXIgZGlz
+YWJsZWQsIHNvIG5vIFJBTSBoZXJlICovCisJCXJldHVybjsKKworCS8qIGNhbGN1bGF0ZSBtZW1v
+cnkgc2l6ZTogNCBiYW5rcyAqIDJeI3Jvd3MgKiAyXiNjb2xzICogYnl0ZXMvd29yZCAqLworCXNp
+emUgPDw9IChlc2RjdGwgJiBFU0RDVEwwX1JPV19NQVNLKSA+PiAyNDsKKwlzaXplIDw8PSAoZXNk
+Y3RsICYgRVNEQ1RMMF9DT0xfTUFTSykgPj4gMjA7CisKKwlpZiAoKGVzZGN0bCAmIEVTRENUTDBf
+RFNJWl9NQVNLKSA9PSBFU0RDVEwwX0RTSVpfMzFfMCkKKwkJLyogNCBieXRlcyBidXMgd2lkdGgg
+Ki8KKwkJc2l6ZSA8PD0gMTsKKworCWFybV9hZGRfbWVtX2RldmljZShuYW1lLCBiYXNlLCBzaXpl
+KTsKK30KKwordm9pZCBpbXhfYWRkX3JhbTAodm9pZCkKK3sKKwlpbXhfYWRkX3JhbSgicmFtMCIs
+IChyZXNvdXJjZV9zaXplX3QpSU1YX1NEUkFNX0NTMCwgKHZvaWQgX19pb21lbSAqKUVTRENUTDAp
+OworfQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2RldmljZXMu
+aCBiL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9kZXZpY2VzLmgKaW5kZXggZjBmNzMw
+YS4uMzE3YWQxNyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2Rl
+dmljZXMuaAorKysgYi9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvZGV2aWNlcy5oCkBA
+IC0xNywzICsxNyw0IEBAIHN0cnVjdCBkZXZpY2VfZCAqaW14X2FkZF9pcHVmYih2b2lkICpiYXNl
+LCBzdHJ1Y3QgaW14X2lwdV9mYl9wbGF0Zm9ybV9kYXRhICpwZGF0CiBzdHJ1Y3QgZGV2aWNlX2Qg
+KmlteF9hZGRfbW1jKHZvaWQgKmJhc2UsIGludCBpZCwgdm9pZCAqcGRhdGEpOwogc3RydWN0IGRl
+dmljZV9kICppbXhfYWRkX2VzZGhjKHZvaWQgKmJhc2UsIGludCBpZCwgc3RydWN0IGVzZGhjX3Bs
+YXRmb3JtX2RhdGEgKnBkYXRhKTsKIAordm9pZCBpbXhfYWRkX3JhbTAodm9pZCk7CmRpZmYgLS1n
+aXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvZXNkY3RsLmggYi9hcmNoL2FybS9t
+YWNoLWlteC9pbmNsdWRlL21hY2gvZXNkY3RsLmgKaW5kZXggMTBjOGI5Yi4uOTFkNDE0MSAxMDA2
+NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2VzZGN0bC5oCisrKyBiL2Fy
+Y2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9lc2RjdGwuaApAQCAtMjYsNiArMjYsNyBAQAog
+I2RlZmluZSBFU0RDVEwwX0RTSVpfMzFfMTYJCQkoMCA8PCAxNikKICNkZWZpbmUgRVNEQ1RMMF9E
+U0laXzE1XzAJCQkoMSA8PCAxNikKICNkZWZpbmUgRVNEQ1RMMF9EU0laXzMxXzAJCQkoMiA8PCAx
+NikKKyNkZWZpbmUgRVNEQ1RMMF9EU0laX01BU0sJCQkoMyA8PCAxNikKICNkZWZpbmUgRVNEQ1RM
+MF9SRUYxCQkJCSgxIDw8IDEzKQogI2RlZmluZSBFU0RDVEwwX1JFRjIJCQkJKDIgPDwgMTMpCiAj
+ZGVmaW5lIEVTRENUTDBfUkVGNAkJCQkoMyA8PCAxMykKLS0gCjEuNy4xMC40CgoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
+c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
