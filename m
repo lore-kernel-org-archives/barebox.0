@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SuL8h-0007UU-TQ
- for barebox@lists.infradead.org; Thu, 26 Jul 2012 10:17:59 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 26 Jul 2012 12:17:17 +0200
-References: <1343296420-25857-1-git-send-email-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <1343296420-25857-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ id 1SuLXm-00028h-7B
+ for barebox@lists.infradead.org; Thu, 26 Jul 2012 10:43:48 +0000
+Date: Thu, 26 Jul 2012 12:43:43 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120726104343.GQ30009@pengutronix.de>
+References: <1343227325-28925-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201207261217.17308.jbe@pengutronix.de>
+In-Reply-To: <1343227325-28925-1-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,32 +18,90 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH RFC] arm/imx: provide command to add ram device with
- autodetected size
-To: barebox@lists.infradead.org
-Cc: Uwe =?utf-8?q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCHv2] defaultenv-2: Add bootargs for booting from disk
+To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
+Cc: barebox@lists.infradead.org
 
-VXdlIEtsZWluZS1Lw7ZuaWcgd3JvdGU6Cj4gVGhlIGFtb3VudCBvZiBhdmFpbGFibGUgcmFtIGlz
-IGRldGVybWluZWQgYnkgdGhlIEVTRENUTCByZWdpc3Rlciwgc28KPiBiZXR0ZXIgZG9uJ3QgaGFy
-ZGNvZGUgdGhlIHZhbHVlLgo+Cj4gVGhpcyBjb21taXQgcHJvdmlkZXMgYSBjb21tYW5kIHRoYXQg
-Y2FuIGJlIHVzZWQgaW5zdGVhZCBvZgo+IGFybV9hZGRfbWVtX2RldmljZSBhbmQgY29udmVydGVz
-IHBjbTA0MyAob24gd2hpY2ggdGhpcyBwYXRjaCB3YXMgdGVzdGVkKQo+IHRvIGl0Lgo+Cj4gU2ln
-bmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25p
-eC5kZT4KPiAtLS0KPiBIZWxsbywKPgo+IG1heWJlIGJldHRlciBtb3ZlIHRoZSBuZXcgZnVuY3Rp
-b24gaW50byBhIG5ldyBmaWxlCj4gYXJjaC9hcm0vbWFjaC1pbXgvZXNkY3RsLmMgYW5kIHRoZSBw
-cm90b3R5cGUgaW50byA8bWFjaC9lc2RjdGwuaD4/Cj4KPiBBbHNvIGlteF9hZGRfcmFtMSgpIGlz
-IHN0aWxsIG1pc3NpbmcuIEkgd2lsbCBpbXBsZW1lbnQgdGhhdCB3aGVuIHdlCj4gYWdyZWUgdGhl
-IHBhdGNoJ3MgaWRlYSBpcyB1c2VmdWwuCgpJdCBpcyBhIHJlYWxseSBnb29kIGlkZWEuIEkgaXMg
-dXNlZnVsIGZvciBhbGwgbXkgU2Ftc3VuZyB0YXJnZXRzLCB0b28uCk1heWJlIGl0IHNob3VsZCBi
-ZSBhIGdlbmVyaWMgZmVhdHVyZSwgYmVjYXVzZSAqbW9zdCogb2YgdGhlIHN1cHBvcnRlZCBTb0Nz
-IGFyZSAKYWJsZSB0byBkZXRlY3QgdGhlIGF2YWlsYWJsZSBSQU0gc2l6ZSBpbiBzdWNoIGEgd2F5
-LgoKamJlCgoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICB8IEp1ZXJnZW4gQmVpc2VydCAgICAgICAgICAgICB8CkxpbnV4IFNvbHV0aW9ucyBmb3IgU2Np
-ZW5jZSBhbmQgSW5kdXN0cnkgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8Cgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Wed, Jul 25, 2012 at 04:42:05PM +0200, Teresa G=E1mez wrote:
+> Add support in defaultenv-2 for booting from disk (SD-Card, USB-Stick).
+> =
+
+> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
+
+Applied, thanks
+
+  Sascha
+
+> ---
+> Fixed since v1:
+> 	- spell fix
+> 	- added return value on failure
+> =
+
+>  defaultenv-2/base/bin/bootargs-root-disk |   26 ++++++++++++++++++++++++=
+++
+>  1 files changed, 26 insertions(+), 0 deletions(-)
+>  create mode 100644 defaultenv-2/base/bin/bootargs-root-disk
+> =
+
+> diff --git a/defaultenv-2/base/bin/bootargs-root-disk b/defaultenv-2/base=
+/bin/bootargs-root-disk
+> new file mode 100644
+> index 0000000..df8750e
+> --- /dev/null
+> +++ b/defaultenv-2/base/bin/bootargs-root-disk
+> @@ -0,0 +1,26 @@
+> +#!/bin/sh
+> +
+> +usage=3D"$0 [OPTIONS]\n -p <partition>\n -t <fstype>"
+> +
+> +while getopt "p:t:h" opt; do
+> +	if [ ${opt} =3D p ]; then
+> +		part=3D${OPTARG}
+> +	elif [ ${opt} =3D t ]; then
+> +		fstype=3D${OPTARG}
+> +	elif [ ${opt} =3D h ]; then
+> +		echo -e "$usage"
+> +		exit 0
+> +	fi
+> +done
+> +
+> +if [ -z "${part}" ]; then
+> +	echo "$0: no partition given"
+> +	exit 1
+> +fi
+> +
+> +if [ -z "${fstype}" ]; then
+> +	echo "$0: no filesystem type given"
+> +	exit 1
+> +fi
+> +
+> +global.linux.bootargs.root=3D"root=3D/dev/$part rootfstype=3D$fstype roo=
+twait"
+> -- =
+
+> 1.7.0.4
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
