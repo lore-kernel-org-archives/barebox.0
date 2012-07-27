@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sufgg-0006bC-0Z
- for barebox@lists.infradead.org; Fri, 27 Jul 2012 08:14:19 +0000
-Date: Fri, 27 Jul 2012 10:14:14 +0200
+ id 1SufuI-0007eJ-QR
+ for barebox@lists.infradead.org; Fri, 27 Jul 2012 08:28:23 +0000
+Date: Fri, 27 Jul 2012 10:28:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120727081414.GX30009@pengutronix.de>
-References: <1343296420-25857-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Message-ID: <20120727082820.GA30009@pengutronix.de>
+References: <1342963280-4297-1-git-send-email-bernhard@bwalle.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1343296420-25857-1-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1342963280-4297-1-git-send-email-bernhard@bwalle.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,43 +18,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH RFC] arm/imx: provide command to add ram device with
- autodetected size
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] lib/Kconfig: Fix alignment of arrows in label
+To: Bernhard Walle <bernhard@bwalle.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jul 26, 2012 at 11:53:40AM +0200, Uwe Kleine-K=F6nig wrote:
-> The amount of available ram is determined by the ESDCTL register, so
-> better don't hardcode the value.
-> =
+On Sun, Jul 22, 2012 at 03:21:20PM +0200, Bernhard Walle wrote:
+> Signed-off-by: Bernhard Walle <bernhard@bwalle.de>
 
-> This commit provides a command that can be used instead of
-> arm_add_mem_device and convertes pcm043 (on which this patch was tested)
-> to it.
-> =
-
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
-> Hello,
-> =
-
-> maybe better move the new function into a new file
-> arch/arm/mach-imx/esdctl.c and the prototype into <mach/esdctl.h>?
-> =
-
-> Also imx_add_ram1() is still missing. I will implement that when we
-> agree the patch's idea is useful.
-
-I agree it's useful
+Applied, thanks
 
 Sascha
 
--- =
+> ---
+>  lib/Kconfig |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/lib/Kconfig b/lib/Kconfig
+> index 3bcde5c..32634df 100644
+> --- a/lib/Kconfig
+> +++ b/lib/Kconfig
+> @@ -1,4 +1,4 @@
+> -menu "Library routines"
+> +menu "Library routines              "
+>  config PARAMETER
+>  	bool
+>  
+> -- 
+> 1.7.9.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
