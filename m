@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo1.mail-out.ovh.net ([46.105.60.232]
+Received: from 10.mo1.mail-out.ovh.net ([178.32.96.102]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SupLo-0002hV-CM
+ id 1SupLo-0002hS-SJ
  for barebox@lists.infradead.org; Fri, 27 Jul 2012 18:33:25 +0000
 Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 7B05BFF98C5
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 05371FF9883
  for <barebox@lists.infradead.org>; Fri, 27 Jul 2012 20:39:14 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 27 Jul 2012 20:33:07 +0200
-Message-Id: <1343413990-31891-9-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 27 Jul 2012 20:33:04 +0200
+Message-Id: <1343413990-31891-6-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1343413990-31891-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120727183103.GX22657@game.jcrosoft.org>
  <1343413990-31891-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,92 +26,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/12] decompressor: import malloc/free implementation for
- linux 3.4
+Subject: [PATCH 06/12] only compress default env in uncompressed images
 To: barebox@lists.infradead.org
 
-This is need for gunzip support
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/linux/decompress/mm.h |   68 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
- create mode 100644 include/linux/decompress/mm.h
+ common/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/decompress/mm.h b/include/linux/decompress/mm.h
-new file mode 100644
-index 0000000..0c35411
---- /dev/null
-+++ b/include/linux/decompress/mm.h
-@@ -0,0 +1,68 @@
-+/*
-+ * linux/compr_mm.h
-+ *
-+ * Memory management for pre-boot and ramdisk uncompressors
-+ *
-+ * Authors: Alain Knaff <alain@knaff.lu>
-+ *
-+ */
-+
-+#ifndef DECOMPR_MM_H
-+#define DECOMPR_MM_H
-+
-+#ifdef STATIC
-+
-+/* Code active when included from pre-boot environment: */
-+
-+/*
-+ * Some architectures want to ensure there is no local data in their
-+ * pre-boot environment, so that data can arbitrarily relocated (via
-+ * GOT references).  This is achieved by defining STATIC_RW_DATA to
-+ * be null.
-+ */
-+#ifndef STATIC_RW_DATA
-+#define STATIC_RW_DATA static
-+#endif
-+
-+/* A trivial malloc implementation, adapted from
-+ *  malloc by Hannu Savolainen 1993 and Matthias Urlichs 1994
-+ */
-+STATIC_RW_DATA unsigned long malloc_ptr;
-+STATIC_RW_DATA int malloc_count;
-+
-+static void *malloc(int size)
-+{
-+	void *p;
-+
-+	if (size < 0)
-+		return NULL;
-+	if (!malloc_ptr)
-+		malloc_ptr = free_mem_ptr;
-+
-+	malloc_ptr = (malloc_ptr + 3) & ~3;     /* Align */
-+
-+	p = (void *)malloc_ptr;
-+	malloc_ptr += size;
-+
-+	if (free_mem_end_ptr && malloc_ptr >= free_mem_end_ptr)
-+		return NULL;
-+
-+	malloc_count++;
-+	return p;
-+}
-+
-+static void free(void *where)
-+{
-+	malloc_count--;
-+	if (!malloc_count)
-+		malloc_ptr = free_mem_ptr;
-+}
-+
-+#define large_malloc(a) malloc(a)
-+#define large_free(a) free(a)
-+
-+#define INIT
-+
-+#endif /* STATIC */
-+
-+#endif /* DECOMPR_MM_H */
+diff --git a/common/Kconfig b/common/Kconfig
+index 7b5a307..40f0c71 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -511,6 +511,7 @@ config DEFAULT_ENVIRONMENT
+ config DEFAULT_ENVIRONMENT_COMPRESSED
+ 	bool
+ 	depends on DEFAULT_ENVIRONMENT
++	depends on !IMAGE_COMPRESSION_LZO
+ 	default y if ZLIB
+ 	default y if BZLIB
+ 	default y if LZO_DECOMPRESS
 -- 
 1.7.10.4
 
