@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo1.mail-out.ovh.net ([178.32.127.22]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SulND-0004bf-0L
- for barebox@lists.infradead.org; Fri, 27 Jul 2012 14:18:36 +0000
-Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 50E76FF9FCB
- for <barebox@lists.infradead.org>; Fri, 27 Jul 2012 16:24:25 +0200 (CEST)
-Date: Fri, 27 Jul 2012 16:18:30 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120727141830.GW22657@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SumDR-0000fP-BV
+ for barebox@lists.infradead.org; Fri, 27 Jul 2012 15:12:34 +0000
+Date: Fri, 27 Jul 2012 17:12:29 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120727151229.GE30009@pengutronix.de>
 References: <1343396404-10288-1-git-send-email-j.weitzel@phytec.de>
- <1343396404-10288-4-git-send-email-j.weitzel@phytec.de>
+ <1343396404-10288-3-git-send-email-j.weitzel@phytec.de>
+ <20120727141346.GV22657@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1343396404-10288-4-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <20120727141346.GV22657@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,74 +24,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] OMAP4460: clock init
-To: Jan Weitzel <j.weitzel@phytec.de>
+Subject: Re: [PATCH 2/3] OMAP4460: ram init changes
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 15:40 Fri 27 Jul     , Jan Weitzel wrote:
-> Change clock init to allow early gpio access. Add support for 4460 clocks.
-> 
-> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
-> ---
->  arch/arm/boards/panda/lowlevel.c              |    4 ++-
->  arch/arm/boards/panda/mux.c                   |    8 +++++
->  arch/arm/boards/pcm049/lowlevel.c             |   15 +++++++--
->  arch/arm/boards/pcm049/mux.c                  |    8 +++++
->  arch/arm/boards/phycard-a-xl2/lowlevel.c      |    9 ++++-
->  arch/arm/boards/phycard-a-xl2/mux.c           |    8 +++++
->  arch/arm/mach-omap/include/mach/omap4-clock.h |    4 ++
->  arch/arm/mach-omap/omap4_clock.c              |   39 +++++++++++++++++-------
->  8 files changed, 76 insertions(+), 19 deletions(-)
-> 
-> diff --git a/arch/arm/boards/panda/lowlevel.c b/arch/arm/boards/panda/lowlevel.c
-> index 8591fff..0b4b199 100644
-> --- a/arch/arm/boards/panda/lowlevel.c
-> +++ b/arch/arm/boards/panda/lowlevel.c
-> @@ -28,6 +28,8 @@
->  #include <mach/syslib.h>
->  #include <asm/barebox-arm.h>
->  
-> +#define TPS62361_VSEL0_GPIO    7
-> +
->  void set_muxconf_regs(void);
->  
->  static const struct ddr_regs ddr_regs_400_mhz_2cs = {
-> @@ -70,7 +72,7 @@ static void noinline panda_init_lowlevel(void)
->  	omap4_ddr_init(&ddr_regs_400_mhz_2cs, &core);
->  
->  	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
-> -	omap4_scale_vcores();
-> +	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
->  
->  	board_init_lowlevel_return();
->  }
-> diff --git a/arch/arm/boards/panda/mux.c b/arch/arm/boards/panda/mux.c
-> index 310e433..3783006 100644
-> --- a/arch/arm/boards/panda/mux.c
-> +++ b/arch/arm/boards/panda/mux.c
-> @@ -3,6 +3,7 @@
->  #include <io.h>
->  #include <mach/omap4-silicon.h>
->  #include <mach/omap4-mux.h>
-> +#include <mach/omap4-clock.h>
->  
->  static const struct pad_conf_entry core_padconf_array[] = {
->  	{ GPMC_AD0, PTU | IEN | OFF_EN | OFF_PD | OFF_IN | M1  /* sdmmc2_dat0 */ },
-> @@ -245,4 +246,11 @@ void set_muxconf_regs(void)
->  
->  	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
->  			ARRAY_SIZE(wkup_padconf_array));
-> +
-> +	/* gpio_wk7 is used for controlling TPS on 4460 */
-> +	if (omap4_revision() >= OMAP4460_ES1_0) {
-> +		writew(M3, OMAP44XX_CONTROL_PADCONF_WKUP + PAD1_FREF_CLK4_REQ);
-> +		/* Enable GPIO-1 clocks before TPS initialization */
-> +		omap4_enable_gpio1_wup_clocks();
-> +	}
-can we factorize this?
+On Fri, Jul 27, 2012 at 04:13:46PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 15:40 Fri 27 Jul     , Jan Weitzel wrote:
+> > configure  Memory Adapter for 4460
+> > 
+> > Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+> > ---
+> >  arch/arm/mach-omap/include/mach/omap4-silicon.h |    4 ++++
+> >  arch/arm/mach-omap/omap4_generic.c              |   21 +++++++++++++++++++--
+> >  2 files changed, 23 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+> > index d5517c5..4082bac 100644
+> > --- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
+> > +++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+> > @@ -101,6 +101,10 @@
+> >  #define DMM_LISA_MAP_SYS_SIZE_MASK	(7 << 20)
+> >  #define DMM_LISA_MAP_SYS_SIZE_SHIFT	20
+> >  #define DMM_LISA_MAP_SYS_ADDR_MASK	(0xFF << 24)
+> > +
+> > +/* Memory Adapter (4460 onwards) */
+> > +#define OMAP44XX_MA_BASE		0x482AF000
+> > +
+> >  /*
+> >   * Hardware Register Details
+> >   */
+> > diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+> > index 07aa2b4..a368759 100644
+> > --- a/arch/arm/mach-omap/omap4_generic.c
+> > +++ b/arch/arm/mach-omap/omap4_generic.c
+> > @@ -29,6 +29,10 @@
+> >  #define OMAP4460_CONTROL_ID_CODE_ES1_0  0x0B94E02F
+> >  #define OMAP4460_CONTROL_ID_CODE_ES1_1  0x2B94E02F
+> >  
+> > +/* EMIF_L3_CONFIG register value */
+> > +#define EMIF_L3_CONFIG_VAL_SYS_10_LL_0		0x0A0000FF
+> > +#define EMIF_L3_CONFIG_VAL_SYS_10_MPU_3_LL_0	0x0A300000
+> > +
+> >  void __noreturn reset_cpu(unsigned long addr)
+> >  {
+> >  	writel(PRM_RSTCTRL_RESET, PRM_RSTCTRL);
+> > @@ -270,8 +274,7 @@ static void reset_phy(unsigned int base)
+> >  void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+> >  		const struct dpll_param *core)
+> >  {
+> > -	unsigned int rev;
+> > -	rev = omap4_revision();
+> > +	unsigned int rev = omap4_revision();
+> >  
+> >  	if (rev == OMAP4430_ES2_0) {
+> >  		writel(0x9e9e9e9e, 0x4A100638);
+> > @@ -294,6 +297,13 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+> >  	*(volatile int*)(OMAP44XX_DMM_BASE + DMM_LISA_MAP_2) = 0x00000000;
+> >  	*(volatile int*)(OMAP44XX_DMM_BASE + DMM_LISA_MAP_3) = 0xFF020100;
+> >  
+> > +	if (rev >= OMAP4460_ES1_0) {
+> > +		writel(0x80640300, OMAP44XX_MA_BASE + DMM_LISA_MAP_0);
+> > +
+> > +		*(volatile int*)(OMAP44XX_MA_BASE + DMM_LISA_MAP_2) = 0x00000000;
+> > +		*(volatile int*)(OMAP44XX_MA_BASE + DMM_LISA_MAP_3) = 0xFF020100;
+> ??
 
-Best Regards,
-J.
+There are bad examples in this file already, see the context of this
+patch. Should be fixed before we add more stuff.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
