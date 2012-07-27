@@ -2,16 +2,15 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
  (helo=metis.ext.pengutronix.de)
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SufEr-0003z1-Jr
- for barebox@lists.infradead.org; Fri, 27 Jul 2012 07:45:36 +0000
-Date: Fri, 27 Jul 2012 09:43:49 +0200
+ id 1SufHN-00044W-Nd
+ for barebox@lists.infradead.org; Fri, 27 Jul 2012 07:48:10 +0000
+Date: Fri, 27 Jul 2012 09:48:05 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120727074349.GS30009@pengutronix.de>
-References: <1343232061-1789-1-git-send-email-renaud.barbier@ge.com>
- <1343232061-1789-3-git-send-email-renaud.barbier@ge.com>
+Message-ID: <20120727074805.GU30009@pengutronix.de>
+References: <1343253627-5247-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1343232061-1789-3-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1343253627-5247-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,621 +23,407 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] net: GIANFAR driver
-To: Renaud Barbier <renaud.barbier@ge.com>
+Subject: Re: [PATCH] MIPS: add initial exceptions handling
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Renaud,
+Hi Antony,
 
-comments inline.
-
-
-> + * those we don't care about (unless zero is bad, in which case,
-> + * choose a more appropriate value)
-> + */
-> +static void init_registers(void __iomem *regs)
-
-Not really important, but could you add a gfar_ prefix consistently to
-all functions?
-
-> +{
-> +	out_be32(regs + GFAR_IEVENT_OFFSET, GFAR_IEVENT_INIT_CLEAR);
-> +
-> +	out_be32(regs + GFAR_IMASK_OFFSET, GFAR_IMASK_INIT_CLEAR);
-> +
-> +	out_be32(regs + GFAR_IADDR(0), 0);
-> +	out_be32(regs + GFAR_IADDR(1), 0);
-> +	out_be32(regs + GFAR_IADDR(2), 0);
-> +	out_be32(regs + GFAR_IADDR(3), 0);
-> +	out_be32(regs + GFAR_IADDR(4), 0);
-> +	out_be32(regs + GFAR_IADDR(5), 0);
-> +	out_be32(regs + GFAR_IADDR(6), 0);
-> +	out_be32(regs + GFAR_IADDR(7), 0);
-> +
-> +	out_be32(regs + GFAR_GADDR(0), 0);
-> +	out_be32(regs + GFAR_GADDR(1), 0);
-> +	out_be32(regs + GFAR_GADDR(2), 0);
-> +	out_be32(regs + GFAR_GADDR(3), 0);
-> +	out_be32(regs + GFAR_GADDR(4), 0);
-> +	out_be32(regs + GFAR_GADDR(5), 0);
-> +	out_be32(regs + GFAR_GADDR(6), 0);
-> +	out_be32(regs + GFAR_GADDR(7), 0);
-> +
-> +	out_be32(regs + GFAR_RCTRL_OFFSET, 0x00000000);
-> +
-> +	memset((void *)(regs + GFAR_TR64_OFFSET), 0,
-> +			GFAR_CAM2_OFFSET - GFAR_TR64_OFFSET);
-> +
-> +	out_be32(regs + GFAR_CAM1_OFFSET, 0xffffffff);
-> +	out_be32(regs + GFAR_CAM2_OFFSET, 0xffffffff);
-> +
-> +	out_be32(regs + GFAR_MRBLR_OFFSET, MRBLR_INIT_SETTINGS);
-> +
-> +	out_be32(regs + GFAR_MINFLR_OFFSET, MINFLR_INIT_SETTINGS);
-> +
-> +	out_be32(regs + GFAR_ATTR_OFFSET, ATTR_INIT_SETTINGS);
-> +	out_be32(regs + GFAR_ATTRELI_OFFSET, ATTRELI_INIT_SETTINGS);
-> +}
-> +
-> +/*
-> + * Configure maccfg2 based on negotiated speed and duplex
-> + * reported by PHY handling code
-> + */
-> +static void adjust_link(struct eth_device *dev)
-> +{
-> +	struct gfar_private *priv = (struct gfar_private *)dev->priv;
-> +	void __iomem *regs = priv->regs;
-> +	u32 ecntrl, maccfg2;
-> +	uint32_t status;
-> +
-> +	status = miidev_get_status(&priv->miidev);
-> +
-> +	priv->link = status & MIIDEV_STATUS_IS_UP;
-> +	if (status & MIIDEV_STATUS_IS_FULL_DUPLEX)
-> +		priv->duplexity = 1;
-> +	else
-> +		priv->duplexity = 0;
-> +
-> +	if (status & MIIDEV_STATUS_IS_1000MBIT)
-> +		priv->speed = 1000;
-> +	else if (status & MIIDEV_STATUS_IS_100MBIT)
-> +		priv->speed = 100;
-> +	else
-> +		priv->speed = 10;
-> +
-> +	if (priv->link) {
-> +		/* clear all bits relative with interface mode */
-> +		ecntrl = in_be32(regs + GFAR_ECNTRL_OFFSET);
-> +		ecntrl &= ~GFAR_ECNTRL_R100;
-> +
-> +		maccfg2 = in_be32(regs + GFAR_MACCFG2_OFFSET);
-> +		maccfg2 &= ~(GFAR_MACCFG2_IF | GFAR_MACCFG2_FULL_DUPLEX);
-> +
-> +		if (priv->duplexity != 0)
-> +			maccfg2 |= GFAR_MACCFG2_FULL_DUPLEX;
-> +		else
-> +			maccfg2 &= ~(GFAR_MACCFG2_FULL_DUPLEX);
-> +
-> +		switch (priv->speed) {
-> +		case 1000:
-> +			maccfg2 |= GFAR_MACCFG2_GMII;
-> +			break;
-> +		case 100:
-> +		case 10:
-> +			maccfg2 |= GFAR_MACCFG2_MII;
-> +			/*
-> +			 * Set R100 bit in all modes although
-> +			 * it is only used in RGMII mode
-> +			 */
-> +			if (priv->speed == 100)
-> +				ecntrl |= GFAR_ECNTRL_R100;
-> +			break;
-> +		default:
-> +			printf("%s: Speed was bad\n", dev->dev.name);
-> +			break;
-> +		}
-> +
-> +		out_be32(regs + GFAR_ECNTRL_OFFSET, ecntrl);
-> +		out_be32(regs + GFAR_MACCFG2_OFFSET, maccfg2);
-> +
-> +		printf("Speed: %d, %s duplex\n", priv->speed,
-> +		       (priv->duplexity) ? "full" : "half");
-> +
-> +	} else {
-> +		printf("%s: No link.\n", dev->dev.name);
-> +	}
-> +}
-> +
-> +/* Stop the interface */
-> +static void gfar_halt(struct eth_device *dev)
-> +{
-> +	struct gfar_private *priv = (struct gfar_private *)dev->priv;
-> +	void __iomem *regs = priv->regs;
-> +	int value;
-> +
-> +	clrbits_be32(regs + GFAR_DMACTRL_OFFSET, GFAR_DMACTRL_GRS |
-> +			GFAR_DMACTRL_GTS);
-> +	setbits_be32(regs + GFAR_DMACTRL_OFFSET, GFAR_DMACTRL_GRS |
-> +			GFAR_DMACTRL_GTS);
-> +
-> +	value = in_be32(regs + GFAR_IEVENT_OFFSET);
-> +	value &= (GFAR_IEVENT_GRSC | GFAR_IEVENT_GTSC);
-> +
-> +	while (value != (GFAR_IEVENT_GRSC | GFAR_IEVENT_GTSC)) {
-> +		value = in_be32(regs + GFAR_IEVENT_OFFSET);
-> +		value &= (GFAR_IEVENT_GRSC | GFAR_IEVENT_GTSC);
-> +	}
-> +
-> +	clrbits_be32(regs + GFAR_MACCFG1_OFFSET,
-> +			GFAR_MACCFG1_TX_EN | GFAR_MACCFG1_RX_EN);
-> +}
-> +
-> +/* Initializes registers for the controller. */
-> +static int gfar_init(struct eth_device *dev)
-> +{
-> +	struct gfar_private *priv = (struct gfar_private *)dev->priv;
-> +	void __iomem *regs = priv->regs;
-> +
-> +	gfar_halt(dev);
-> +
-> +	/* Init MACCFG2. Default to GMII */
-> +	out_be32(regs + GFAR_MACCFG2_OFFSET, MACCFG2_INIT_SETTINGS);
-> +	out_be32(regs + GFAR_ECNTRL_OFFSET, ECNTRL_INIT_SETTINGS);
-> +
-> +	priv->rxIdx = 0;
-> +	priv->txIdx = 0;
-
-No camel case variable names please.
-
-> +
-> +	init_registers(regs);
-> +
-> +	miidev_restart_aneg(&priv->miidev);
-> +
-> +	return  0;
-> +}
-> +
-> +static int gfar_open(struct eth_device *dev)
-> +{
-> +	int ix;
-> +	struct gfar_private *priv = (struct gfar_private *)dev->priv;
-
-unnecessary cast.
-
-> +	void __iomem *regs = priv->regs;
-> +
-> +	/* Point to the buffer descriptors */
-> +	out_be32(regs + GFAR_TBASE0_OFFSET, (unsigned int)priv->txbd);
-> +	out_be32(regs + GFAR_RBASE0_OFFSET, (unsigned int)priv->rxbd);
-> +
-> +	/* Initialize the Rx Buffer descriptors */
-> +	for (ix = 0; ix < RX_BUF_CNT; ix++) {
-> +		priv->rxbd[ix].status = RXBD_EMPTY;
-> +		priv->rxbd[ix].length = 0;
-> +		priv->rxbd[ix].bufPtr = (uint) NetRxPackets[ix];
-> +	}
-> +	priv->rxbd[RX_BUF_CNT - 1].status |= RXBD_WRAP;
-> +
-> +	/* Initialize the TX Buffer Descriptors */
-> +	for (ix = 0; ix < TX_BUF_CNT; ix++) {
-> +		priv->txbd[ix].status = 0;
-> +		priv->txbd[ix].length = 0;
-> +		priv->txbd[ix].bufPtr = 0;
-> +	}
-> +	priv->txbd[TX_BUF_CNT - 1].status |= TXBD_WRAP;
-> +
-> +	miidev_wait_aneg(&priv->miidev);
-> +	adjust_link(dev);
-> +
-> +	/* Enable Transmit and Receive */
-> +	setbits_be32(regs + GFAR_MACCFG1_OFFSET, GFAR_MACCFG1_RX_EN |
-> +			GFAR_MACCFG1_TX_EN);
-> +
-> +	/* Tell the DMA it is clear to go */
-> +	setbits_be32(regs + GFAR_DMACTRL_OFFSET, DMACTRL_INIT_SETTINGS);
-> +	out_be32(regs + GFAR_TSTAT_OFFSET, GFAR_TSTAT_CLEAR_THALT);
-> +	out_be32(regs + GFAR_RSTAT_OFFSET, GFAR_RSTAT_CLEAR_RHALT);
-> +	clrbits_be32(regs + GFAR_DMACTRL_OFFSET, GFAR_DMACTRL_GRS |
-> +			GFAR_DMACTRL_GTS);
-> +
-> +	return 0;
-> +}
-> +
-> +static int gfar_get_ethaddr(struct eth_device *dev, unsigned char *mac)
-> +{
-> +	struct device_d *edev = dev->parent;
-> +	struct gfar_info_struct *gfar_info =
-> +		(struct gfar_info_struct *)edev->platform_data;
-> +	int (*get_mac)(struct gfar_info_struct *, unsigned char *) =
-> +		gfar_info->get_mac;
-> +
-> +	if (get_mac)
-> +		get_mac(gfar_info, mac);
-> +	else
-> +		return -ENODEV;
-> +
-> +	return 0;
-> +}
-> +
-> +static int gfar_set_ethaddr(struct eth_device *dev, unsigned char *mac)
-> +{
-> +	struct gfar_private *priv = (struct gfar_private *)dev->priv;
-> +	void __iomem *regs = priv->regs;
-> +	char tmpbuf[MAC_ADDR_LEN];
-> +	uint tempval;
-> +	int ix;
-> +
-> +	for (ix = 0; ix < MAC_ADDR_LEN; ix++)
-> +		tmpbuf[MAC_ADDR_LEN - 1 - ix] = mac[ix];
-> +
-> +	tempval = (tmpbuf[0] << 24) | (tmpbuf[1] << 16) | (tmpbuf[2] << 8) |
-> +		  tmpbuf[3];
-> +
-> +	out_be32(regs + GFAR_MACSTRADDR1_OFFSET, tempval);
-> +
-> +	tempval = *((uint *)(tmpbuf + 4));
-> +
-> +	out_be32(regs + GFAR_MACSTRADDR2_OFFSET, tempval);
-> +
-> +	return 0;
-> +}
-> +
-> +/* Writes the given phy's reg with value, using the specified MDIO regs */
-> +static int gfar_local_mdio_write(void __iomem *phyregs, uint addr, uint reg,
-> +				uint value)
-> +{
-> +	uint64_t start;
-> +
-> +	out_be32(phyregs + GFAR_MIIMADD_OFFSET, (addr << 8) | (reg & 0x1f));
-> +	out_be32(phyregs + GFAR_MIIMCON_OFFSET, value);
-> +
-> +	start = get_time_ns();
-> +
-> +	while (!is_timeout(start, 10 * MSECOND)) {
-> +		if (!(in_be32(phyregs + GFAR_MIIMMIND_OFFSET) &
-> +					GFAR_MIIMIND_BUSY))
-> +			return 0;
-> +	}
-> +
-> +	return -EIO;
-> +}
-> +
-> +/*
-> + * Reads register regnum on the device's PHY through the
-> + * specified registers. It lowers and raises the read
-> + * command, and waits for the data to become valid (miimind
-> + * notvalid bit cleared), and the bus to cease activity (miimind
-> + * busy bit cleared), and then returns the value
-> + */
-> +static uint gfar_local_mdio_read(void __iomem *phyregs, uint phyid, uint regnum)
-> +{
-> +	uint64_t start;
-> +
-> +	/* Put the address of the phy, and the register number into MIIMADD */
-> +	out_be32(phyregs + GFAR_MIIMADD_OFFSET, (phyid << 8) | (regnum & 0x1f));
-> +
-> +	/* Clear the command register, and wait */
-> +	out_be32(phyregs + GFAR_MIIMCOM_OFFSET, 0);
-> +
-> +	/* Initiate a read command, and wait */
-> +	out_be32(phyregs + GFAR_MIIMCOM_OFFSET, GFAR_MIIM_READ_COMMAND);
-> +
-> +	start = get_time_ns();
-> +
-> +	while (!is_timeout(start, 10 * MSECOND)) {
-> +		if (!(in_be32(phyregs + GFAR_MIIMMIND_OFFSET) &
-> +			(GFAR_MIIMIND_NOTVALID | GFAR_MIIMIND_BUSY)))
-> +			return in_be32(phyregs + GFAR_MIIMSTAT_OFFSET);
-> +	}
-> +	return -EIO;
-> +}
-> +
-> +static void gfar_configure_serdes(struct gfar_private *priv)
-> +{
-> +	gfar_local_mdio_write(priv->phyregs_sgmii,
-> +			in_be32(priv->regs + GFAR_TBIPA_OFFSET), GFAR_TBI_ANA,
-> +			priv->tbiana);
-> +	gfar_local_mdio_write(priv->phyregs_sgmii,
-> +			in_be32(priv->regs + GFAR_TBIPA_OFFSET),
-> +			GFAR_TBI_TBICON, GFAR_TBICON_CLK_SELECT);
-> +	gfar_local_mdio_write(priv->phyregs_sgmii,
-> +			in_be32(priv->regs + GFAR_TBIPA_OFFSET), GFAR_TBI_CR,
-> +			priv->tbicr);
-> +}
-> +
-> +/* Reset the internal and external PHYs. */
-> +static void init_phy(struct eth_device *dev)
-> +{
-> +	struct gfar_private *priv = (struct gfar_private *)dev->priv;
-> +	void __iomem *regs = priv->regs;
-> +	uint64_t start;
-> +
-> +	/* Assign a Physical address to the TBI */
-> +	out_be32(regs + GFAR_TBIPA_OFFSET, GFAR_TBIPA_VALUE);
-> +
-> +	/* Reset MII (due to new addresses) */
-> +	out_be32(priv->phyregs + GFAR_MIIMCFG_OFFSET, GFAR_MIIMCFG_RESET);
-> +	out_be32(priv->phyregs + GFAR_MIIMCFG_OFFSET, GFAR_MIIMCFG_INIT_VALUE);
-> +
-> +	start = get_time_ns();
-> +	while (!is_timeout(start, 10 * MSECOND)) {
-> +		if (!(in_be32(priv->phyregs + GFAR_MIIMMIND_OFFSET) &
-> +			GFAR_MIIMIND_BUSY))
-> +			break;
-> +	}
-> +
-> +	gfar_local_mdio_write(priv->phyregs, priv->phyaddr, GFAR_MIIM_CR,
-> +			GFAR_MIIM_CR_RST);
-> +
-> +	start = get_time_ns();
-> +	while (!is_timeout(start, 10 * MSECOND)) {
-> +		if (!(gfar_local_mdio_read(priv->phyregs, priv->phyaddr,
-> +					GFAR_MIIM_CR) & GFAR_MIIM_CR_RST))
-> +			break;
-> +	}
-> +
-> +	if (in_be32(regs + GFAR_ECNTRL_OFFSET) & GFAR_ECNTRL_SGMII_MODE)
-> +		gfar_configure_serdes(priv);
-> +}
-> +
-> +static int gfar_send(struct eth_device *dev, void *packet, int length)
-> +{
-> +	int ix;
-> +	struct gfar_private *priv = (struct gfar_private *)dev->priv;
-> +	void __iomem *regs = priv->regs;
-> +
-> +	/* Find an empty buffer descriptor */
-> +	for (ix = 0; priv->txbd[priv->txIdx].status & TXBD_READY; ix++) {
-> +		if (ix >= TOUT_LOOP) {
-> +			debug("gfar: tx buffers full\n");
-> +			return -EBUSY;
-> +		}
-> +	}
-
-This seems unnecessary. After initialization the tx buffer is ready. The
-second time you get here the tx buffer is also ready, because you waited
-for it to become ready below.
-
-> +
-> +	priv->txbd[priv->txIdx].bufPtr = (uint) packet;
-> +	priv->txbd[priv->txIdx].length = length;
-> +	priv->txbd[priv->txIdx].status |= (TXBD_READY | TXBD_LAST | TXBD_CRC);
-> +
-> +	/* Tell the DMA to go */
-> +	out_be32(regs + GFAR_TSTAT_OFFSET, GFAR_TSTAT_CLEAR_THALT);
-> +
-> +	/* Wait for buffer to be transmitted */
-> +	for (ix = 0; priv->txbd[priv->txIdx].status & TXBD_READY; ix++) {
-> +		if (ix >= TOUT_LOOP) {
-> +			debug("gfar: tx error: 0x%x\n",
-> +				priv->txbd[priv->txIdx].status);
-> +			return -EBUSY;
-> +		}
-
-Add a proper timeout loop here.
-
-> +	}
-> +
-> +	if (priv->txbd[priv->txIdx].status & TXBD_STATS) {
-> +		printf("TX error: 0x%x\n", priv->txbd[priv->txIdx].status);
-> +		return -EIO;
-> +	}
-> +
-> +	priv->txIdx = (priv->txIdx + 1) % TX_BUF_CNT;
-
-Remove this and use a single tx buffer only. The driver doesn't make use
-of more buffers anyway, since it polls for a buffer to be ready before
-queuing another one.
-
-> +
-> +	return 0;
-> +}
-> +
-> +static int gfar_recv(struct eth_device *dev)
-> +{
-> +	int length;
-> +	struct gfar_private *priv = (struct gfar_private *)dev->priv;
-> +	void __iomem *regs = priv->regs;
-> +
-> +	while (!(priv->rxbd[priv->rxIdx].status & RXBD_EMPTY)) {
-> +		length = priv->rxbd[priv->rxIdx].length;
-> +
-> +		/* Send the packet up if there were no errors */
-> +		if (!(priv->rxbd[priv->rxIdx].status & RXBD_STATS)) {
-> +			net_receive(NetRxPackets[priv->rxIdx], length - 4);
-> +		} else {
-> +			printf("Got error %x\n",
-> +			       (priv->rxbd[priv->rxIdx].status & RXBD_STATS));
-
-Please use dev_dbg/dev_info and friends inside drivers.
-
-> +		}
-> +
-> +		priv->rxbd[priv->rxIdx].length = 0;
-> +
-> +		/* Set the wrap bit if this is the last element in the list */
-> +		if ((priv->rxIdx + 1) == RX_BUF_CNT)
-> +			priv->rxbd[priv->rxIdx].status = RXBD_WRAP;
-> +		else
-> +			priv->rxbd[priv->rxIdx].status = 0;
-> +
-> +		priv->rxbd[priv->rxIdx].status |= RXBD_EMPTY;
-> +		priv->rxIdx = (priv->rxIdx + 1) % RX_BUF_CNT;
-> +	}
-
-Don't loop here until you receive packets. The caller will do this for
-you (which also handles the ctrl-c case).
-
-> +
-> +	if (in_be32(regs + GFAR_IEVENT_OFFSET) & GFAR_IEVENT_BSY) {
-> +		out_be32(regs + GFAR_IEVENT_OFFSET, GFAR_IEVENT_BSY);
-> +		out_be32(regs + GFAR_RSTAT_OFFSET, GFAR_RSTAT_CLEAR_RHALT);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/* Read a MII PHY register. */
-> +static int gfar_miiphy_read(struct mii_device *mdev, int addr, int reg)
-> +{
-> +	unsigned short ret;
-> +	struct eth_device *edev = mdev->edev;
-> +	struct gfar_private *priv = (struct gfar_private *)edev->priv;
-> +
-> +	if (NULL == priv) {
-> +		printf("Can't read PHY at address %d\n", addr);
-> +		return -1;
-> +	}
-
-This should never happen. You can drop this test.
-
-> +
-> +	return gfar_local_mdio_read(priv->phyregs, addr, reg);
-> +}
-> +
-> +/* Write a MII PHY register.  */
-> +static int gfar_miiphy_write(struct mii_device *mdev, int addr,
-> +			     int reg, int value)
-> +{
-> +	struct eth_device *edev = mdev->edev;
-> +	struct gfar_private *priv = (struct gfar_private *)edev->priv;
-> +	unsigned short val = value;
-> +
-> +	if (NULL == priv) {
-> +		printf("Can't write PHY at address %d\n", addr);
-> +		return -1;
-> +	}
-> +
-> +	gfar_local_mdio_write(priv->phyregs, addr, reg, val);
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Initialize device structure. Returns success if
-> + * initialization succeeded.
-> + */
-> +static int gfar_probe(struct device_d *dev)
-> +{
-> +	struct gfar_info_struct *gfar_info =
-> +		(struct gfar_info_struct *)dev->platform_data;
-> +	struct eth_device *edev;
-> +	struct gfar_private *priv;
-> +	size_t size;
-> +	char *p;
-> +
-> +	edev = (struct eth_device *)xzalloc(sizeof(struct eth_device) +
-> +					    sizeof(struct gfar_private));
-> +
-> +	if (NULL == edev)
-> +		return -ENODEV;
-> +
-> +	priv = (struct gfar_private *)(edev + 1);
-
-You should embed a struct eth_device in struct gfar_private instead,
-it's cleaner.
-
-> +
-> +	priv->regs = dev_request_mem_region(dev, 0);
-> +	priv->phyregs = dev_request_mem_region(dev, 1);
-> +	priv->phyregs_sgmii = dev_request_mem_region(dev, 2);
-> +
-> +	priv->phyaddr = gfar_info->phyaddr;
-> +	priv->flags = gfar_info->flags;
-> +	priv->tbicr = gfar_info->tbicr;
-> +	priv->tbiana = gfar_info->tbiana;
-> +
-> +	/* Allocate descriptors. 64-byte aligned. */
-> +	size = (TX_BUF_CNT * (sizeof(struct txbd8) +
-> +		(RX_BUF_CNT * sizeof(struct rxbd8)))) + BUF_ALIGN;
-> +	p = (char *)xzalloc(size);
-> +	p += BUF_ALIGN;
-> +	p = (char *)((ulong)p & (~(BUF_ALIGN - 1)));
-
-Use memalign instead.
-
-> +
-> +	priv->txbd = (struct txbd8 *)p;
-> +	priv->rxbd = (struct rxbd8 *)(p +
-> +			(TX_BUF_CNT * sizeof(struct txbd8)));
-> +
-> +	edev->priv = priv;
-> +	edev->init = gfar_init;
-> +	edev->open = gfar_open;
-> +	edev->halt = gfar_halt;
-> +	edev->send = gfar_send;
-> +	edev->recv = gfar_recv;
-> +	edev->get_ethaddr = gfar_get_ethaddr;
-> +	edev->set_ethaddr = gfar_set_ethaddr;
-> +	edev->parent = dev;
-> +
-> +	setbits_be32(priv->regs + GFAR_MACCFG1_OFFSET, GFAR_MACCFG1_SOFT_RESET);
-> +	udelay(2);
-> +	clrbits_be32(priv->regs + GFAR_MACCFG1_OFFSET, GFAR_MACCFG1_SOFT_RESET);
-> +
-> +	priv->miidev.read = gfar_miiphy_read;
-> +	priv->miidev.write = gfar_miiphy_write;
-> +	priv->miidev.address = priv->phyaddr;
-> +	priv->miidev.flags = 0;
-> +	priv->miidev.edev = edev;
-> +	priv->miidev.parent = dev;
-> +
-> +	init_phy(edev);
-> +
-> +	mii_register(&priv->miidev);
-> +
-> +	return eth_register(edev);
-> +}
-> +
-> +static struct driver_d gfar_eth_driver = {
-> +	.name  = "gfar",
-> +	.probe = gfar_probe,
-> +};
-> +
-> +static int gfar_eth_init(void)
-> +{
-> +	register_driver(&gfar_eth_driver);
-> +	return 0;
-> +}
-> +
-> +device_initcall(gfar_eth_init);
-> diff --git a/drivers/net/gianfar.h b/drivers/net/gianfar.h
-> new file mode 100644
-> index 0000000..9edbd12
-> --- /dev/null
-> +++ b/drivers/net/gianfar.h
-> @@ -0,0 +1,288 @@
-> +/*
-> + *  gianfar.h
-> + *
-> + *  Driver for the Motorola Triple Speed Ethernet Controller
-> + *
-> + *  This software may be used and distributed according to the
-> + *  terms of the GNU Public License, Version 2, incorporated
-> + *  herein by reference.
-> + *
-> + * Copyright 2012 GE Intelligent Platforms, Inc.
-> + * Copyright 2004, 2007, 2009  Freescale Semiconductor, Inc.
-> + * (C) Copyright 2003, Motorola, Inc.
-> + * based on tsec.h by Xianghua Xiao and Andy Fleming 2003-2009
-> + */
-> +
-> +#ifndef __GIANFAR_H
-> +#define __GIANFAR_H
-> +
-> +#include <net.h>
-> +#include <config.h>
-> +#include <mach/gianfar.h>
-> +
-> +#define MAC_ADDR_LEN 6
-> +
-> +#define TOUT_LOOP	1000000
-> +
-> +#define PHY_AUTONEGOTIATE_TIMEOUT	5000 /* in ms */
-
-Unused define
+Looks fine from my perspective. Should I apply this one?
 
 Sascha
+
+On Thu, Jul 26, 2012 at 02:00:27AM +0400, Antony Pavlov wrote:
+> Checking exception handling:
+> 
+>     $ make qemu-malta_defconfig
+>     $ make
+> 
+>     ...
+> 
+>     $ qemu-system-mips -nodefaults -M malta -m 256 \
+>        -nographic -serial stdio -bios ./barebox.bin
+> 
+>     ...
+> 
+>     barebox:/ md -l 0x03
+> 
+>     Ooops, address error on load or ifetch!
+>     EPC = 0xa082783c
+>     CP0_STATUS = 0x00000006
+>     CP0_CAUSE = 0x00000410
+>     CP0_CONFIG = 0x80008482
+> 
+>     ### ERROR ### Please RESET the board ###
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/mips/boot/main_entry.c       |   47 ++++++++++++++++
+>  arch/mips/include/asm/addrspace.h |  109 +++++++++++++++++++++++++++++++++++++
+>  arch/mips/lib/Makefile            |    2 +
+>  arch/mips/lib/genex.S             |   31 +++++++++++
+>  arch/mips/lib/traps.c             |  107 ++++++++++++++++++++++++++++++++++++
+>  5 files changed, 296 insertions(+)
+>  create mode 100644 arch/mips/include/asm/addrspace.h
+>  create mode 100644 arch/mips/lib/genex.S
+>  create mode 100644 arch/mips/lib/traps.c
+> 
+> diff --git a/arch/mips/boot/main_entry.c b/arch/mips/boot/main_entry.c
+> index 8f5f6fc..a38ad31 100644
+> --- a/arch/mips/boot/main_entry.c
+> +++ b/arch/mips/boot/main_entry.c
+> @@ -25,11 +25,56 @@
+>  #include <string.h>
+>  #include <asm/sections.h>
+>  #include <asm/cpu-features.h>
+> +#include <asm/mipsregs.h>
+> +#include <asm/addrspace.h>
+>  
+>  extern void start_barebox(void);
+> +extern void handle_reserved(void);
+>  
+>  void main_entry(void);
+>  
+> +unsigned long exception_handlers[32];
+> +
+> +static void set_except_vector(int n, void *addr)
+> +{
+> +	unsigned handler = (unsigned long) addr;
+> +
+> +	exception_handlers[n] = handler;
+> +}
+> +
+> +static void trap_init(void)
+> +{
+> +	extern char except_vec3_generic;
+> +	int i;
+> +
+> +	unsigned long ebase;
+> +
+> +	ebase = CKSEG1;
+> +
+> +	/*
+> +	 * Copy the generic exception handlers to their final destination.
+> +	 * This will be overriden later as suitable for a particular
+> +	 * configuration.
+> +	 */
+> +	memcpy((void *)(ebase + 0x180), &except_vec3_generic, 0x80);
+> +
+> +	/*
+> +	 * Setup default vectors
+> +	 */
+> +	for (i = 0; i <= 31; i++) {
+> +		set_except_vector(i, &handle_reserved);
+> +	}
+> +
+> +	if (!cpu_has_4kex)
+> +		memcpy((void *)(ebase + 0x080), &except_vec3_generic, 0x80);
+> +
+> +	/* FIXME: handle tlb */
+> +	memcpy((void *)(ebase), &except_vec3_generic, 0x80);
+> +
+> +	/* unset BOOT EXCEPTION VECTOR bit */
+> +	write_c0_status(read_c0_status() & ~ST0_BEV);
+> +}
+> +
+>  /**
+>   * Called plainly from assembler code
+>   *
+> @@ -48,5 +93,7 @@ void main_entry(void)
+>  		r4k_cache_init();
+>  	}
+>  
+> +	trap_init();
+> +
+>  	start_barebox();
+>  }
+> diff --git a/arch/mips/include/asm/addrspace.h b/arch/mips/include/asm/addrspace.h
+> new file mode 100644
+> index 0000000..17d480d
+> --- /dev/null
+> +++ b/arch/mips/include/asm/addrspace.h
+> @@ -0,0 +1,109 @@
+> +/*
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + *
+> + * Copyright (C) 1996, 99 Ralf Baechle
+> + * Copyright (C) 2000, 2002  Maciej W. Rozycki
+> + * Copyright (C) 1990, 1999 by Silicon Graphics, Inc.
+> + */
+> +#ifndef _ASM_ADDRSPACE_H
+> +#define _ASM_ADDRSPACE_H
+> +
+> +/*
+> + *  Configure language
+> + */
+> +#ifdef __ASSEMBLY__
+> +#define _ATYPE_
+> +#define _ATYPE32_
+> +#define _ATYPE64_
+> +#define _CONST64_(x)	x
+> +#else
+> +#define _ATYPE_		__PTRDIFF_TYPE__
+> +#define _ATYPE32_	int
+> +#define _ATYPE64_	__s64
+> +#ifdef CONFIG_64BIT
+> +#define _CONST64_(x)	x ## L
+> +#else
+> +#define _CONST64_(x)	x ## LL
+> +#endif
+> +#endif
+> +
+> +/*
+> + *  32-bit MIPS address spaces
+> + */
+> +#ifdef __ASSEMBLY__
+> +#define _ACAST32_
+> +#define _ACAST64_
+> +#else
+> +#define _ACAST32_		(_ATYPE_)(_ATYPE32_)	/* widen if necessary */
+> +#define _ACAST64_		(_ATYPE64_)		/* do _not_ narrow */
+> +#endif
+> +
+> +/*
+> + * Returns the kernel segment base of a given address
+> + */
+> +#define KSEGX(a)		((_ACAST32_(a)) & 0xe0000000)
+> +
+> +/*
+> + * Returns the physical address of a CKSEGx / XKPHYS address
+> + */
+> +#define CPHYSADDR(a)		((_ACAST32_(a)) & 0x1fffffff)
+> +#define XPHYSADDR(a)            ((_ACAST64_(a)) &			\
+> +				 _CONST64_(0x000000ffffffffff))
+> +
+> +#ifdef CONFIG_64BIT
+> +
+> +/*
+> + * Memory segments (64bit kernel mode addresses)
+> + * The compatibility segments use the full 64-bit sign extended value.  Note
+> + * the R8000 doesn't have them so don't reference these in generic MIPS code.
+> + */
+> +#define XKUSEG			_CONST64_(0x0000000000000000)
+> +#define XKSSEG			_CONST64_(0x4000000000000000)
+> +#define XKPHYS			_CONST64_(0x8000000000000000)
+> +#define XKSEG			_CONST64_(0xc000000000000000)
+> +#define CKSEG0			_CONST64_(0xffffffff80000000)
+> +#define CKSEG1			_CONST64_(0xffffffffa0000000)
+> +#define CKSSEG			_CONST64_(0xffffffffc0000000)
+> +#define CKSEG3			_CONST64_(0xffffffffe0000000)
+> +
+> +#define CKSEG0ADDR(a)		(CPHYSADDR(a) | CKSEG0)
+> +#define CKSEG1ADDR(a)		(CPHYSADDR(a) | CKSEG1)
+> +#define CKSEG2ADDR(a)		(CPHYSADDR(a) | CKSEG2)
+> +#define CKSEG3ADDR(a)		(CPHYSADDR(a) | CKSEG3)
+> +
+> +#else
+> +
+> +#define CKSEG0ADDR(a)		(CPHYSADDR(a) | KSEG0)
+> +#define CKSEG1ADDR(a)		(CPHYSADDR(a) | KSEG1)
+> +#define CKSEG2ADDR(a)		(CPHYSADDR(a) | KSEG2)
+> +#define CKSEG3ADDR(a)		(CPHYSADDR(a) | KSEG3)
+> +
+> +/*
+> + * Map an address to a certain kernel segment
+> + */
+> +#define KSEG0ADDR(a)		(CPHYSADDR(a) | KSEG0)
+> +#define KSEG1ADDR(a)		(CPHYSADDR(a) | KSEG1)
+> +#define KSEG2ADDR(a)		(CPHYSADDR(a) | KSEG2)
+> +#define KSEG3ADDR(a)		(CPHYSADDR(a) | KSEG3)
+> +
+> +/*
+> + * Memory segments (32bit kernel mode addresses)
+> + * These are the traditional names used in the 32-bit universe.
+> + */
+> +#define KUSEG			0x00000000
+> +#define KSEG0			0x80000000
+> +#define KSEG1			0xa0000000
+> +#define KSEG2			0xc0000000
+> +#define KSEG3			0xe0000000
+> +
+> +#define CKUSEG			0x00000000
+> +#define CKSEG0			0x80000000
+> +#define CKSEG1			0xa0000000
+> +#define CKSEG2			0xc0000000
+> +#define CKSEG3			0xe0000000
+> +
+> +#endif
+> +
+> +#endif /* _ASM_ADDRSPACE_H */
+> diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
+> index b99bb71..a31046b 100644
+> --- a/arch/mips/lib/Makefile
+> +++ b/arch/mips/lib/Makefile
+> @@ -5,6 +5,8 @@ obj-y += ashldi3.o
+>  obj-y += ashrdi3.o
+>  obj-y += memory.o
+>  obj-y += cpu-probe.o
+> +obj-y += traps.o
+> +obj-y += genex.o
+>  
+>  obj-$(CONFIG_CPU_MIPS32) += c-r4k.o
+>  obj-$(CONFIG_CPU_MIPS64) += c-r4k.o
+> diff --git a/arch/mips/lib/genex.S b/arch/mips/lib/genex.S
+> new file mode 100644
+> index 0000000..d6f65a2
+> --- /dev/null
+> +++ b/arch/mips/lib/genex.S
+> @@ -0,0 +1,31 @@
+> +#include <asm/asm.h>
+> +#include <asm/regdef.h>
+> +#include <asm/mipsregs.h>
+> +
+> +	.text
+> +	.set	macro
+> +	.set	noat
+> +	.set	noreorder
+> +	.align	5
+> +
+> +/* Exception vector */
+> +NESTED(handle_reserved, 0, sp)
+> +	la	k0, barebox_exc_handler
+> +	jal	k0
+> +	 move	a0, sp
+> +	/* will never return here */
+> +	END(handle_reserved)
+> +
+> +/* General exception vector */
+> +NESTED(except_vec3_generic, 0, sp)
+> +	.set	noat
+> +	mfc0	k1, CP0_CAUSE
+> +	la	k0, exception_handlers
+> +	andi	k1, k1, 0x7c
+> +	addu	k0, k0, k1
+> +	lw	k0, (k0)
+> +	nop
+> +	jr	k0
+> +	 nop
+> +	END(except_vec3_generic)
+> +	.set	at
+> diff --git a/arch/mips/lib/traps.c b/arch/mips/lib/traps.c
+> new file mode 100644
+> index 0000000..4e167cc
+> --- /dev/null
+> +++ b/arch/mips/lib/traps.c
+> @@ -0,0 +1,107 @@
+> +#include <common.h>
+> +
+> +#include <asm/mipsregs.h>
+> +
+> +void barebox_exc_handler(void *regs);
+> +
+> +/*
+> + * Trap codes from OpenBSD trap.h
+> + */
+> +#define T_INT			0	/* Interrupt pending */
+> +#define T_TLB_MOD		1	/* TLB modified fault */
+> +#define T_TLB_LD_MISS		2	/* TLB miss on load or ifetch */
+> +#define T_TLB_ST_MISS		3	/* TLB miss on a store */
+> +#define T_ADDR_ERR_LD		4	/* Address error on a load or ifetch */
+> +#define T_ADDR_ERR_ST		5	/* Address error on a store */
+> +#define T_BUS_ERR_IFETCH	6	/* Bus error on an ifetch */
+> +#define T_BUS_ERR_LD_ST		7	/* Bus error on a load or store */
+> +#define T_SYSCALL		8	/* System call */
+> +#define T_BREAK			9	/* Breakpoint */
+> +#define T_RES_INST		10	/* Reserved instruction exception */
+> +#define T_COP_UNUSABLE		11	/* Coprocessor unusable */
+> +#define T_OVFLOW		12	/* Arithmetic overflow */
+> +#define T_TRAP			13	/* Trap instruction */
+> +#define T_VCEI			14	/* Virtual coherency instruction */
+> +#define T_FPE			15	/* Floating point exception */
+> +#define T_IWATCH		16	/* Inst. Watch address reference */
+> +#define T_DWATCH		23	/* Data Watch address reference */
+> +#define T_VCED			31	/* Virtual coherency data */
+> +
+> +#define CR_EXC_CODE             0x0000007c
+> +#define CR_EXC_CODE_SHIFT       2
+> +
+> +static char *get_exc_name(u32 cause)
+> +{
+> +	switch ((cause & CR_EXC_CODE) >> CR_EXC_CODE_SHIFT) {
+> +
+> +	case T_INT:
+> +		return "interrupt pending";
+> +
+> +	case T_TLB_MOD:
+> +		return "TLB modified";
+> +
+> +	case T_TLB_LD_MISS:
+> +		return "TLB miss on load or ifetch";
+> +
+> +	case T_TLB_ST_MISS:
+> +		return "TLB miss on store";
+> +
+> +	case T_ADDR_ERR_LD:
+> +		return "address error on load or ifetch";
+> +
+> +	case T_ADDR_ERR_ST:
+> +		return "address error on store";
+> +
+> +	case T_BUS_ERR_IFETCH:
+> +		return "bus error on ifetch";
+> +
+> +	case T_BUS_ERR_LD_ST:
+> +		return "bus error on load or store";
+> +
+> +	case T_SYSCALL:
+> +		return "system call";
+> +
+> +	case T_BREAK:
+> +		return "breakpoint";
+> +
+> +	case T_RES_INST:
+> +		return "reserved instruction";
+> +
+> +	case T_COP_UNUSABLE:
+> +		return "coprocessor unusable";
+> +
+> +	case T_OVFLOW:
+> +		return "arithmetic overflow";
+> +
+> +	case T_TRAP:
+> +		return "trap instruction";
+> +
+> +	case T_VCEI:
+> +		return "virtual coherency instruction";
+> +
+> +	case T_FPE:
+> +		return "floating point";
+> +
+> +	case T_IWATCH:
+> +		return "iwatch";
+> +
+> +	case T_DWATCH:
+> +		return "dwatch";
+> +
+> +	case T_VCED:
+> +		return "virtual coherency data";
+> +	}
+> +
+> +	return "unknown exception";
+> +}
+> +
+> +void barebox_exc_handler(void *regs)
+> +{
+> +	printf("\nOoops, %s!\n", get_exc_name(read_c0_cause()));
+> +	printf("EPC = 0x%08x\n", read_c0_epc());
+> +	printf("CP0_STATUS = 0x%08x\n", read_c0_status());
+> +	printf("CP0_CAUSE = 0x%08x\n", read_c0_cause());
+> +	printf("CP0_CONFIG = 0x%08x\n\n", read_c0_config());
+> +
+> +	hang();
+> +}
+> -- 
+> 1.7.10
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
