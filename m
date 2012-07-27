@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo1.mail-out.ovh.net ([46.105.60.232]
+Received: from 17.mo1.mail-out.ovh.net ([87.98.179.142]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SupLo-0002hW-Cp
- for barebox@lists.infradead.org; Fri, 27 Jul 2012 18:33:25 +0000
+ id 1SupLn-0002hO-PV
+ for barebox@lists.infradead.org; Fri, 27 Jul 2012 18:33:24 +0000
 Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id B5DBFFF98CC
- for <barebox@lists.infradead.org>; Fri, 27 Jul 2012 20:39:14 +0200 (CEST)
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 2CBE2FF97B0
+ for <barebox@lists.infradead.org>; Fri, 27 Jul 2012 20:39:13 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 27 Jul 2012 20:33:08 +0200
-Message-Id: <1343413990-31891-10-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 27 Jul 2012 20:33:00 +0200
+Message-Id: <1343413990-31891-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1343413990-31891-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120727183103.GX22657@game.jcrosoft.org>
  <1343413990-31891-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,41 +26,199 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/12] ARM: add early malloc support needed by the decompressor
+Subject: [PATCH 02/12] kbuild: add pre-bootloader (pbl) target
 To: barebox@lists.infradead.org
 
-This is not needed by lzo but by gunzip, xz and others.
+This will allow to link compiled object to the built-in-pbl.o across the source
+tree that will be finally link to the pbl.
+
+Now we compile the source %.c in pbl-%.o and provide -D__PBL__
+so we can known in the source when it's compile for barebox or the pbl.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/cpu/start.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ Makefile               |    5 ++++-
+ scripts/Makefile.build |   48 +++++++++++++++++++++++++++++++++++++++++++++---
+ scripts/Makefile.lib   |   14 ++++++++++++++
+ 3 files changed, 63 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index a54f5fd..f500ca8 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -28,6 +28,9 @@
- #include <asm-generic/memory_layout.h>
- #include <asm/sections.h>
+diff --git a/Makefile b/Makefile
+index ac5eaaf..168381d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -481,6 +481,7 @@ barebox-alldirs	:= $(sort $(barebox-dirs) $(patsubst %/,%,$(filter %/, \
+ 		     $(core-n) $(core-) $(drivers-n) $(drivers-) \
+ 		     $(net-n)  $(net-)  $(libs-n)    $(libs-))))
  
-+unsigned long free_mem_ptr;
-+unsigned long free_mem_end_ptr;
++pbl-common-y	:= $(patsubst %/, %/built-in-pbl.o, $(common-y))
+ common-y	:= $(patsubst %/, %/built-in.o, $(common-y))
+ 
+ # Build barebox
+@@ -510,6 +511,8 @@ common-y	:= $(patsubst %/, %/built-in.o, $(common-y))
+ # System.map is generated to document addresses of all kernel symbols
+ 
+ barebox-common := $(common-y)
++barebox-pbl-common := $(pbl-common-y)
++export barebox-pbl-common
+ barebox-all    := $(barebox-common)
+ barebox-lds    := $(lds-y)
+ 
+@@ -714,7 +717,7 @@ barebox.srec: barebox
+ 
+ # The actual objects are generated when descending,
+ # make sure no implicit rule kicks in
+-$(sort $(barebox-head) $(barebox-common) ) $(barebox-lds): $(barebox-dirs) ;
++$(sort $(barebox-head) $(barebox-common) ) $(barebox-lds) $(barebox-pbl-common): $(barebox-dirs) ;
+ 
+ # Handle descending into subdirectories listed in $(barebox-dirs)
+ # Preset locale variables to speed up the build process. Limit locale
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 1a82c44..e5b7779 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -14,6 +14,7 @@ obj-y :=
+ obj-m :=
+ lib-y :=
+ lib-m :=
++pbl-y :=
+ always :=
+ targets :=
+ subdir-y :=
+@@ -97,13 +98,19 @@ ifneq ($(strip $(lib-y) $(lib-m) $(lib-n) $(lib-)),)
+ lib-target := $(obj)/lib.a
+ endif
+ 
+-ifneq ($(strip $(obj-y) $(obj-m) $(obj-n) $(obj-) $(lib-target)),)
++ifneq ($(strip $(obj-y) $(obj-m) $(obj-n) $(obj-) $(lib-target) $(pbl-y)),)
+ builtin-target := $(obj)/built-in.o
+ endif
+ 
++ifeq ($(CONFIG_PBL_IMAGE), y)
++ifneq ($(strip $(pbl-y) $(builtin-target)),)
++pbl-target := $(obj)/built-in-pbl.o
++endif
++endif
 +
- #ifdef CONFIG_PBL_IMAGE
- void __naked __section(.text_head_entry) pbl_start(void)
- {
-@@ -193,6 +196,10 @@ void __naked __section(.text_ll_return) board_init_lowlevel_return(void)
- 	/* clear bss */
- 	memset(__bss_start, 0, __bss_stop - __bss_start);
+ # We keep a list of all modules in $(MODVERDIR)
  
-+	/* set 128 KiB before the STACK_BASE - 16 address for early malloc */
-+	free_mem_ptr = STACK_BASE - 0x20000 - 16;
-+	free_mem_end_ptr = STACK_BASE - 16;
+-__build: $(if $(KBUILD_BUILTIN),$(builtin-target) $(lib-target) $(extra-y)) \
++__build: $(if $(KBUILD_BUILTIN),$(builtin-target) $(lib-target) $(pbl-target) $(extra-y)) \
+ 	 $(if $(KBUILD_MODULES),$(obj-m)) \
+ 	 $(subdir-ym) $(always)
+ 	@:
+@@ -177,9 +184,11 @@ cmd_cc_symtypes_c	   = \
+ # (See cmd_cc_o_c + relevant part of rule_cc_o_c)
+ 
+ quiet_cmd_cc_o_c = CC $(quiet_modtag)  $@
++quiet_cmd_pbl_cc_o_c = PBLCC   $@
+ 
+ ifndef CONFIG_MODVERSIONS
+ cmd_cc_o_c = $(CC) $(c_flags) -c -o $@ $<
++cmd_pbl_cc_o_c = $(CC) -D__PBL__ $(c_flags) -c -o $@ $<
+ 
+ else
+ # When module versioning is enabled the following steps are executed:
+@@ -220,8 +229,22 @@ define rule_cc_o_c
+ 	mv -f $(dot-target).tmp $(dot-target).cmd
+ endef
+ 
++define rule_pbl_cc_o_c
++	$(call echo-cmd,checksrc) $(cmd_checksrc)			  \
++	$(call echo-cmd,pbl_cc_o_c) $(cmd_pbl_cc_o_c);			  \
++	$(cmd_modversions)						  \
++	scripts/basic/fixdep $(depfile) $@ '$(call make-cmd,pbl_cc__o_c)' >    \
++	                                              $(dot-target).tmp;  \
++	rm -f $(depfile);						  \
++	mv -f $(dot-target).tmp $(dot-target).cmd
++endef
 +
- 	/* flush I-cache before jumping to the copied binary */
- 	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
+ # Built-in and composite module parts
  
++pbl-%.o: %.c
++	$(call cmd,force_checksrc)
++	$(call if_changed_rule,pbl_cc_o_c)
++
+ %.o: %.c FORCE
+ 	$(call cmd,force_checksrc)
+ 	$(call if_changed_rule,cc_o_c)
+@@ -258,10 +281,16 @@ cmd_as_s_S       = $(CPP) $(a_flags)   -o $@ $<
+ quiet_cmd_as_o_S = AS $(quiet_modtag)  $@
+ cmd_as_o_S       = $(CC) $(a_flags) -c -o $@ $<
+ 
++quiet_cmd_pbl_as_o_S = PBLAS   $@
++cmd_pbl_as_o_S       = $(CC) -D__PBL__ $(a_flags) -c -o $@ $<
++
++pbl-%.o: %.S
++	$(call if_changed_dep,pbl_as_o_S)
++
+ %.o: %.S FORCE
+ 	$(call if_changed_dep,as_o_S)
+ 
+-targets += $(real-objs-y) $(real-objs-m) $(lib-y)
++targets += $(real-objs-y) $(real-objs-m) $(lib-y) $(pbl-y)
+ targets += $(extra-y) $(MAKECMDGOALS) $(always)
+ 
+ # Linker scripts preprocessor (.lds.S -> .lds)
+@@ -294,6 +323,19 @@ $(builtin-target): $(obj-y) FORCE
+ targets += $(builtin-target)
+ endif # builtin-target
+ 
++ifdef pbl-target
++quiet_cmd_pbl_link_o_target = PBLLD   $@
++# If the list of objects to link is empty, just create an empty built-in-pbl.o
++cmd_pbl_link_o_target = $(if $(strip $(pbl-y)),\
++		      $(LD) $(ld_flags) -r -o $@ $(filter $(pbl-y), $^),\
++		      rm -f $@; $(AR) rcs $@)
++
++$(pbl-target): $(pbl-y) FORCE
++	$(call if_changed,pbl_link_o_target)
++
++targets += $(pbl-target)
++endif # pbl-target
++
+ #
+ # Rule to compile a set of .o files into one .a file
+ #
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index b842c48..1a5b2b5 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -21,6 +21,17 @@ lib-y := $(filter-out $(obj-y), $(sort $(lib-y) $(lib-m)))
+ # o if we encounter foo/ in $(obj-m), remove it from $(obj-m)
+ #   and add the directory to the list of dirs to descend into: $(subdir-m)
+ 
++# for non dirs add pbl- prefix to the target
++# so we recompile the source with custom flags and custom quiet
++__pbl-y		:= $(notdir $(pbl-y))
++pbl-y		:= $(patsubst %.o,pbl-%.o,$(__pbl-y))
++# add subdir from $(obj-y) too so we do not need to have the dir define in
++# both $(obj-y) and $(pbl-y)
++__pbl-y		:= $(filter-out $(pbl-y), $(filter %/, $(obj-y)))
++pbl-y		+= $(__pbl-y)
++
++pbl-y		:= $(sort $(patsubst %/, %/built-in-pbl.o, $(pbl-y)))
++
+ __subdir-y	:= $(patsubst %/,%,$(filter %/, $(obj-y)))
+ subdir-y	+= $(__subdir-y)
+ __subdir-m	:= $(patsubst %/,%,$(filter %/, $(obj-m)))
+@@ -46,7 +57,9 @@ multi-objs   := $(multi-objs-y) $(multi-objs-m)
+ 
+ # $(subdir-obj-y) is the list of objects in $(obj-y) which do not live
+ # in the local directory
++__subdir-obj-y := $(foreach o,$(pbl-y),$(if $(filter-out $(o),$(notdir $(o))),$(o)))
+ subdir-obj-y := $(foreach o,$(obj-y),$(if $(filter-out $(o),$(notdir $(o))),$(o)))
++subdir-obj-y += $(__subdir-obj-y)
+ 
+ # $(obj-dirs) is a list of directories that contain object files
+ obj-dirs := $(dir $(multi-objs) $(subdir-obj-y))
+@@ -63,6 +76,7 @@ targets		:= $(addprefix $(obj)/,$(targets))
+ obj-y		:= $(addprefix $(obj)/,$(obj-y))
+ obj-m		:= $(addprefix $(obj)/,$(obj-m))
+ lib-y		:= $(addprefix $(obj)/,$(lib-y))
++pbl-y		:= $(addprefix $(obj)/,$(pbl-y))
+ subdir-obj-y	:= $(addprefix $(obj)/,$(subdir-obj-y))
+ real-objs-y	:= $(addprefix $(obj)/,$(real-objs-y))
+ real-objs-m	:= $(addprefix $(obj)/,$(real-objs-m))
 -- 
 1.7.10.4
 
