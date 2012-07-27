@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Sukm0-00069d-W6
- for barebox@lists.infradead.org; Fri, 27 Jul 2012 13:40:11 +0000
+ id 1Sukm3-00069f-39
+ for barebox@lists.infradead.org; Fri, 27 Jul 2012 13:40:13 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 1F15BBF0E0
+ by root.phytec.de (Postfix) with ESMTP id 4B861A30A2
  for <barebox@lists.infradead.org>; Fri, 27 Jul 2012 15:40:05 +0200 (CEST)
 From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Fri, 27 Jul 2012 15:40:01 +0200
-Message-Id: <1343396404-10288-1-git-send-email-j.weitzel@phytec.de>
+Date: Fri, 27 Jul 2012 15:40:04 +0200
+Message-Id: <1343396404-10288-4-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <1343396404-10288-1-git-send-email-j.weitzel@phytec.de>
+References: <1343396404-10288-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +24,290 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] omap: 4460 support
+Subject: [PATCH 3/3] OMAP4460: clock init
 To: barebox@lists.infradead.org
 
-Add support for OMAP4460 cpu
-on top off 7b0de0e6 (next)
+Change clock init to allow early gpio access. Add support for 4460 clocks.
 
-Jan Weitzel (3):
-  Add support for OMAP4460 TPS62361
-  OMAP4460: ram init changes
-  OMAP4460: clock init
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+ arch/arm/boards/panda/lowlevel.c              |    4 ++-
+ arch/arm/boards/panda/mux.c                   |    8 +++++
+ arch/arm/boards/pcm049/lowlevel.c             |   15 +++++++--
+ arch/arm/boards/pcm049/mux.c                  |    8 +++++
+ arch/arm/boards/phycard-a-xl2/lowlevel.c      |    9 ++++-
+ arch/arm/boards/phycard-a-xl2/mux.c           |    8 +++++
+ arch/arm/mach-omap/include/mach/omap4-clock.h |    4 ++
+ arch/arm/mach-omap/omap4_clock.c              |   39 +++++++++++++++++-------
+ 8 files changed, 76 insertions(+), 19 deletions(-)
 
- arch/arm/boards/panda/lowlevel.c                |    4 +-
- arch/arm/boards/panda/mux.c                     |    8 +++
- arch/arm/boards/pcm049/lowlevel.c               |   15 ++++--
- arch/arm/boards/pcm049/mux.c                    |    8 +++
- arch/arm/boards/phycard-a-xl2/lowlevel.c        |    9 +++-
- arch/arm/boards/phycard-a-xl2/mux.c             |    8 +++
- arch/arm/mach-omap/include/mach/omap4-clock.h   |   19 +++++++
- arch/arm/mach-omap/include/mach/omap4-silicon.h |   13 +++++-
- arch/arm/mach-omap/omap4_clock.c                |   58 +++++++++++++++++-----
- arch/arm/mach-omap/omap4_generic.c              |   60 +++++++++++++++++++++--
- 10 files changed, 178 insertions(+), 24 deletions(-)
+diff --git a/arch/arm/boards/panda/lowlevel.c b/arch/arm/boards/panda/lowlevel.c
+index 8591fff..0b4b199 100644
+--- a/arch/arm/boards/panda/lowlevel.c
++++ b/arch/arm/boards/panda/lowlevel.c
+@@ -28,6 +28,8 @@
+ #include <mach/syslib.h>
+ #include <asm/barebox-arm.h>
+ 
++#define TPS62361_VSEL0_GPIO    7
++
+ void set_muxconf_regs(void);
+ 
+ static const struct ddr_regs ddr_regs_400_mhz_2cs = {
+@@ -70,7 +72,7 @@ static void noinline panda_init_lowlevel(void)
+ 	omap4_ddr_init(&ddr_regs_400_mhz_2cs, &core);
+ 
+ 	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+-	omap4_scale_vcores();
++	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
+ 
+ 	board_init_lowlevel_return();
+ }
+diff --git a/arch/arm/boards/panda/mux.c b/arch/arm/boards/panda/mux.c
+index 310e433..3783006 100644
+--- a/arch/arm/boards/panda/mux.c
++++ b/arch/arm/boards/panda/mux.c
+@@ -3,6 +3,7 @@
+ #include <io.h>
+ #include <mach/omap4-silicon.h>
+ #include <mach/omap4-mux.h>
++#include <mach/omap4-clock.h>
+ 
+ static const struct pad_conf_entry core_padconf_array[] = {
+ 	{ GPMC_AD0, PTU | IEN | OFF_EN | OFF_PD | OFF_IN | M1  /* sdmmc2_dat0 */ },
+@@ -245,4 +246,11 @@ void set_muxconf_regs(void)
+ 
+ 	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
+ 			ARRAY_SIZE(wkup_padconf_array));
++
++	/* gpio_wk7 is used for controlling TPS on 4460 */
++	if (omap4_revision() >= OMAP4460_ES1_0) {
++		writew(M3, OMAP44XX_CONTROL_PADCONF_WKUP + PAD1_FREF_CLK4_REQ);
++		/* Enable GPIO-1 clocks before TPS initialization */
++		omap4_enable_gpio1_wup_clocks();
++	}
+ }
+diff --git a/arch/arm/boards/pcm049/lowlevel.c b/arch/arm/boards/pcm049/lowlevel.c
+index 5b91098..65a29ec 100644
+--- a/arch/arm/boards/pcm049/lowlevel.c
++++ b/arch/arm/boards/pcm049/lowlevel.c
+@@ -28,6 +28,8 @@
+ #include <mach/syslib.h>
+ #include <asm/barebox-arm.h>
+ 
++#define TPS62361_VSEL0_GPIO    182
++
+ void set_muxconf_regs(void);
+ 
+ static const struct ddr_regs ddr_regs_mt42L64M64_25_400_mhz = {
+@@ -46,7 +48,8 @@ static const struct ddr_regs ddr_regs_mt42L64M64_25_400_mhz = {
+ static void noinline pcm049_init_lowlevel(void)
+ {
+ 	struct dpll_param core = OMAP4_CORE_DPLL_PARAM_19M2_DDR400;
+-	struct dpll_param mpu = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
++	struct dpll_param mpu44xx = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
++	struct dpll_param mpu4460 = OMAP4_MPU_DPLL_PARAM_19M2_MPU920;
+ 	struct dpll_param iva = OMAP4_IVA_DPLL_PARAM_19M2;
+ 	struct dpll_param per = OMAP4_PER_DPLL_PARAM_19M2;
+ 	struct dpll_param abe = OMAP4_ABE_DPLL_PARAM_19M2;
+@@ -57,12 +60,16 @@ static void noinline pcm049_init_lowlevel(void)
+ 	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
+ 
+ 	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+-	omap4_scale_vcores();
++	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
+ 
+ 	writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
+ 
+ 	/* Configure all DPLL's at 100% OPP */
+-	omap4_configure_mpu_dpll(&mpu);
++	if (omap4_revision() < OMAP4460_ES1_0)
++		omap4_configure_mpu_dpll(&mpu44xx);
++	else
++		omap4_configure_mpu_dpll(&mpu4460);
++
+ 	omap4_configure_iva_dpll(&iva);
+ 	omap4_configure_per_dpll(&per);
+ 	omap4_configure_abe_dpll(&abe);
+@@ -88,7 +95,7 @@ void board_init_lowlevel(void)
+ 		return;
+ 
+ 	r = 0x4030d000;
+-        __asm__ __volatile__("mov sp, %0" : : "r"(r));
++	__asm__ __volatile__("mov sp, %0" : : "r"(r));
+ 
+ 	pcm049_init_lowlevel();
+ }
+diff --git a/arch/arm/boards/pcm049/mux.c b/arch/arm/boards/pcm049/mux.c
+index a7a77b5..04e1d67 100644
+--- a/arch/arm/boards/pcm049/mux.c
++++ b/arch/arm/boards/pcm049/mux.c
+@@ -3,6 +3,7 @@
+ #include <io.h>
+ #include <mach/omap4-silicon.h>
+ #include <mach/omap4-mux.h>
++#include <mach/omap4-clock.h>
+ 
+ static const struct pad_conf_entry core_padconf_array[] = {
+ 	{GPMC_AD0, (IEN | PTD | DIS | M0)},				/* gpmc_ad0 */
+@@ -242,4 +243,11 @@ void set_muxconf_regs(void)
+ 
+ 	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
+ 			ARRAY_SIZE(wkup_padconf_array));
++
++	/* gpio_182 is used for controlling TPS on 4460 */
++	if (omap4_revision() >= OMAP4460_ES1_0) {
++		writew(M3, OMAP44XX_CONTROL_PADCONF_CORE + FREF_CLK2_OUT);
++		/* Enable GPIO-1 clocks before TPS initialization */
++		omap4_enable_gpio_clocks();
++	}
+ }
+diff --git a/arch/arm/boards/phycard-a-xl2/lowlevel.c b/arch/arm/boards/phycard-a-xl2/lowlevel.c
+index b8de2aa..fc599d8 100644
+--- a/arch/arm/boards/phycard-a-xl2/lowlevel.c
++++ b/arch/arm/boards/phycard-a-xl2/lowlevel.c
+@@ -46,7 +46,8 @@ static const struct ddr_regs ddr_regs_mt42L64M64_25_400_mhz = {
+ static noinline void pcaaxl2_init_lowlevel(void)
+ {
+ 	struct dpll_param core = OMAP4_CORE_DPLL_PARAM_19M2_DDR400;
+-	struct dpll_param mpu = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
++	struct dpll_param mpu44xx = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
++	struct dpll_param mpu4460 = OMAP4_MPU_DPLL_PARAM_19M2_MPU920;
+ 	struct dpll_param iva = OMAP4_IVA_DPLL_PARAM_19M2;
+ 	struct dpll_param per = OMAP4_PER_DPLL_PARAM_19M2;
+ 	struct dpll_param abe = OMAP4_ABE_DPLL_PARAM_19M2;
+@@ -62,7 +63,11 @@ static noinline void pcaaxl2_init_lowlevel(void)
+ 	writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
+ 
+ 	/* Configure all DPLL's at 100% OPP */
+-	omap4_configure_mpu_dpll(&mpu);
++	if (omap4_revision() < OMAP4460_ES1_0)
++		omap4_configure_mpu_dpll(&mpu44xx);
++	else
++		omap4_configure_mpu_dpll(&mpu4460);
++
+ 	omap4_configure_iva_dpll(&iva);
+ 	omap4_configure_per_dpll(&per);
+ 	omap4_configure_abe_dpll(&abe);
+diff --git a/arch/arm/boards/phycard-a-xl2/mux.c b/arch/arm/boards/phycard-a-xl2/mux.c
+index 179e6b6..dc605e3 100644
+--- a/arch/arm/boards/phycard-a-xl2/mux.c
++++ b/arch/arm/boards/phycard-a-xl2/mux.c
+@@ -3,6 +3,7 @@
+ #include <io.h>
+ #include <mach/omap4-silicon.h>
+ #include <mach/omap4-mux.h>
++#include <mach/omap4-clock.h>
+ 
+ static const struct pad_conf_entry core_padconf_array[] = {
+ 	{GPMC_AD0, (IEN | PTD | DIS | M0)},				/* gpmc_ad0 */
+@@ -242,4 +243,11 @@ void set_muxconf_regs(void)
+ 
+ 	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
+ 			ARRAY_SIZE(wkup_padconf_array));
++
++	/* gpio_wk7 is used for controlling TPS on 4460 */
++	if (omap4_revision() >= OMAP4460_ES1_0) {
++		writew(M3, OMAP44XX_CONTROL_PADCONF_WKUP + PAD1_FREF_CLK4_REQ);
++		/* Enable GPIO-1 clocks before TPS initialization */
++		omap4_enable_gpio1_wup_clocks();
++	}
+ }
+diff --git a/arch/arm/mach-omap/include/mach/omap4-clock.h b/arch/arm/mach-omap/include/mach/omap4-clock.h
+index 391ee63..e5302d6 100644
+--- a/arch/arm/mach-omap/include/mach/omap4-clock.h
++++ b/arch/arm/mach-omap/include/mach/omap4-clock.h
+@@ -303,6 +303,8 @@ struct dpll_param {
+ #define OMAP4_MPU_DPLL_PARAM_38M4		{0x1a, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00}
+ #define OMAP4_MPU_DPLL_PARAM_38M4_MPU600	{0x7d, 0x07, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00}
+ #define OMAP4_MPU_DPLL_PARAM_38M4_MPU1000	{0x69, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00}
++/* dpll locked at 1840 MHz MPU clk at 920 MHz(OPP Turbo 4460) - DCC OFF */
++#define OMAP4_MPU_DPLL_PARAM_19M2_MPU920	{0x23F, 0x11, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00}
+ 
+ #define OMAP4_IVA_DPLL_PARAM_19M2		{0x61, 0x01, 0x00, 0x00, 0x04, 0x07, 0x00, 0x00}
+ #define OMAP4_IVA_DPLL_PARAM_38M4		{0x61, 0x03, 0x00, 0x00, 0x04, 0x07, 0x00, 0x00}
+@@ -330,6 +332,8 @@ void omap4_configure_usb_dpll(const struct dpll_param *dpll_param);
+ void omap4_configure_core_dpll_no_lock(const struct dpll_param *param);
+ void omap4_lock_core_dpll(void);
+ void omap4_lock_core_dpll_shadow(const struct dpll_param *param);
++void omap4_enable_gpio1_wup_clocks(void);
++void omap4_enable_gpio_clocks(void);
+ void omap4_enable_all_clocks(void);
+ void omap4_do_scale_tps62361(u32 reg, u32 volt_mv);
+ 
+diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
+index 564a748..1481f16 100644
+--- a/arch/arm/mach-omap/omap4_clock.c
++++ b/arch/arm/mach-omap/omap4_clock.c
+@@ -14,6 +14,10 @@ void omap4_configure_mpu_dpll(const struct dpll_param *dpll_param)
+ 
+ 	sr32(CM_AUTOIDLE_DPLL_MPU, 0, 3, 0x0); /* Disable DPLL autoidle */
+ 
++	/* Errata ID: i700, clear CM_CLKSEL_DPLL_MPU[22] : DCC_EN */
++	if (omap4_revision() >= OMAP4460_ES1_0)
++		sr32(CM_CLKSEL_DPLL_MPU, 0, 22, 0);
++
+ 	/* Set M,N,M2 values */
+ 	sr32(CM_CLKSEL_DPLL_MPU, 8, 11, dpll_param->m);
+ 	sr32(CM_CLKSEL_DPLL_MPU, 0, 6, dpll_param->n);
+@@ -198,6 +202,27 @@ void omap4_lock_core_dpll_shadow(const struct dpll_param *param)
+ 	wait_on_value((1 << 0), 1, CM_IDLEST_DPLL_CORE, LDELAY);
+ }
+ 
++void omap4_enable_gpio_clocks(void)
++{
++	sr32(CM_L4PER_GPIO2_CLKCTRL, 0, 32, 0x1);
++	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO2_CLKCTRL, LDELAY);
++	sr32(CM_L4PER_GPIO3_CLKCTRL, 0, 32, 0x1);
++	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO3_CLKCTRL, LDELAY);
++	sr32(CM_L4PER_GPIO4_CLKCTRL, 0, 32, 0x1);
++	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO4_CLKCTRL, LDELAY);
++	sr32(CM_L4PER_GPIO5_CLKCTRL, 0, 32, 0x1);
++	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO5_CLKCTRL, LDELAY);
++	sr32(CM_L4PER_GPIO6_CLKCTRL, 0, 32, 0x1);
++	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO6_CLKCTRL, LDELAY);
++}
++
++void omap4_enable_gpio1_wup_clocks(void)
++{
++	/* WKUP clocks */
++	sr32(CM_WKUP_GPIO1_CLKCTRL, 0, 32, 0x1);
++	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_GPIO1_CLKCTRL, LDELAY);
++}
++
+ void omap4_enable_all_clocks(void)
+ {
+ 	/* Enable Ducati clocks */
+@@ -255,16 +280,7 @@ void omap4_enable_all_clocks(void)
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_DMTIMER9_CLKCTRL, LDELAY);
+ 
+ 	/* GPIO clocks */
+-	sr32(CM_L4PER_GPIO2_CLKCTRL, 0, 32, 0x1);
+-	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO2_CLKCTRL, LDELAY);
+-	sr32(CM_L4PER_GPIO3_CLKCTRL, 0, 32, 0x1);
+-	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO3_CLKCTRL, LDELAY);
+-	sr32(CM_L4PER_GPIO4_CLKCTRL, 0, 32, 0x1);
+-	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO4_CLKCTRL, LDELAY);
+-	sr32(CM_L4PER_GPIO5_CLKCTRL, 0, 32, 0x1);
+-	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO5_CLKCTRL, LDELAY);
+-	sr32(CM_L4PER_GPIO6_CLKCTRL, 0, 32, 0x1);
+-	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO6_CLKCTRL, LDELAY);
++	omap4_enable_gpio_clocks();
+ 
+ 	sr32(CM_L4PER_HDQ1W_CLKCTRL, 0, 32, 0x2);
+ 
+@@ -314,8 +330,7 @@ void omap4_enable_all_clocks(void)
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_UART4_CLKCTRL, LDELAY);
+ 
+ 	/* WKUP clocks */
+-	sr32(CM_WKUP_GPIO1_CLKCTRL, 0, 32, 0x1);
+-	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_GPIO1_CLKCTRL, LDELAY);
++	omap4_enable_gpio1_wup_clocks();
+ 	sr32(CM_WKUP_TIMER1_CLKCTRL, 0, 32, 0x01000002);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_TIMER1_CLKCTRL, LDELAY);
+ 
+-- 
+1.7.0.4
 
 
 _______________________________________________
