@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [209.85.216.177] (helo=mail-qc0-f177.google.com)
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SuioM-0003p4-R0
- for barebox@lists.infradead.org; Fri, 27 Jul 2012 11:34:34 +0000
-Received: by qcsu28 with SMTP id u28so1713842qcs.36
- for <barebox@lists.infradead.org>; Fri, 27 Jul 2012 04:33:31 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <OFEAC6280E.37553221-ONC1257A46.004F6310-C1257A46.004FD422@o0802.rafi.inhouse>
-References: <OFEAC6280E.37553221-ONC1257A46.004F6310-C1257A46.004FD422@o0802.rafi.inhouse>
-Date: Fri, 27 Jul 2012 13:33:31 +0200
-Message-ID: <CAJfOKBzrkLQBtFWFJ7AbVgiud_EwMA+XEY8BWRgV73iAkOZH-Q@mail.gmail.com>
-From: Franck Jullien <franck.jullien@gmail.com>
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Sukm0-00069g-W9
+ for barebox@lists.infradead.org; Fri, 27 Jul 2012 13:40:11 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 2AA6ABF0E9
+ for <barebox@lists.infradead.org>; Fri, 27 Jul 2012 15:40:05 +0200 (CEST)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Fri, 27 Jul 2012 15:40:03 +0200
+Message-Id: <1343396404-10288-3-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <1343396404-10288-1-git-send-email-j.weitzel@phytec.de>
+References: <1343396404-10288-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,71 +19,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: nor flash board init code
-To: christian.buettner@rafi.de
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/3] OMAP4460: ram init changes
+To: barebox@lists.infradead.org
 
-2012/7/25 <christian.buettner@rafi.de>
->
-> hi all,
-> is there any example board init code to load the mx25l8005 spi nor-flash through the imx53 (TX53 from KARO)?
-> I want to use the m25p80 driver to read and write.
->
-> christian
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
->
+configure  Memory Adapter for 4460
 
-Hi Christian,
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+ arch/arm/mach-omap/include/mach/omap4-silicon.h |    4 ++++
+ arch/arm/mach-omap/omap4_generic.c              |   21 +++++++++++++++++++--
+ 2 files changed, 23 insertions(+), 2 deletions(-)
 
-This is what I use with the Altera SPI controller + an SPI flash device:
+diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+index d5517c5..4082bac 100644
+--- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
++++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+@@ -101,6 +101,10 @@
+ #define DMM_LISA_MAP_SYS_SIZE_MASK	(7 << 20)
+ #define DMM_LISA_MAP_SYS_SIZE_SHIFT	20
+ #define DMM_LISA_MAP_SYS_ADDR_MASK	(0xFF << 24)
++
++/* Memory Adapter (4460 onwards) */
++#define OMAP44XX_MA_BASE		0x482AF000
++
+ /*
+  * Hardware Register Details
+  */
+diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+index 07aa2b4..a368759 100644
+--- a/arch/arm/mach-omap/omap4_generic.c
++++ b/arch/arm/mach-omap/omap4_generic.c
+@@ -29,6 +29,10 @@
+ #define OMAP4460_CONTROL_ID_CODE_ES1_0  0x0B94E02F
+ #define OMAP4460_CONTROL_ID_CODE_ES1_1  0x2B94E02F
+ 
++/* EMIF_L3_CONFIG register value */
++#define EMIF_L3_CONFIG_VAL_SYS_10_LL_0		0x0A0000FF
++#define EMIF_L3_CONFIG_VAL_SYS_10_MPU_3_LL_0	0x0A300000
++
+ void __noreturn reset_cpu(unsigned long addr)
+ {
+ 	writel(PRM_RSTCTRL_RESET, PRM_RSTCTRL);
+@@ -270,8 +274,7 @@ static void reset_phy(unsigned int base)
+ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+ 		const struct dpll_param *core)
+ {
+-	unsigned int rev;
+-	rev = omap4_revision();
++	unsigned int rev = omap4_revision();
+ 
+ 	if (rev == OMAP4430_ES2_0) {
+ 		writel(0x9e9e9e9e, 0x4A100638);
+@@ -294,6 +297,13 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+ 	*(volatile int*)(OMAP44XX_DMM_BASE + DMM_LISA_MAP_2) = 0x00000000;
+ 	*(volatile int*)(OMAP44XX_DMM_BASE + DMM_LISA_MAP_3) = 0xFF020100;
+ 
++	if (rev >= OMAP4460_ES1_0) {
++		writel(0x80640300, OMAP44XX_MA_BASE + DMM_LISA_MAP_0);
++
++		*(volatile int*)(OMAP44XX_MA_BASE + DMM_LISA_MAP_2) = 0x00000000;
++		*(volatile int*)(OMAP44XX_MA_BASE + DMM_LISA_MAP_3) = 0xFF020100;
++	}
++
+ 	/* DDR needs to be initialised @ 19.2 MHz
+ 	 * So put core DPLL in bypass mode
+ 	 * Configure the Core DPLL but don't lock it
+@@ -336,6 +346,13 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+ 	*(volatile int*)(OMAP44XX_EMIF1_BASE + EMIF_PWR_MGMT_CTRL) = 0x80000000;
+ 	*(volatile int*)(OMAP44XX_EMIF2_BASE + EMIF_PWR_MGMT_CTRL) = 0x80000000;
+ 
++	if (rev >= OMAP4460_ES1_0) {
++		writel(EMIF_L3_CONFIG_VAL_SYS_10_MPU_3_LL_0,
++				OMAP44XX_EMIF1_BASE + EMIF_L3_CONFIG);
++		writel(EMIF_L3_CONFIG_VAL_SYS_10_MPU_3_LL_0,
++				OMAP44XX_EMIF2_BASE + EMIF_L3_CONFIG);
++	}
++
+ 	/*
+ 	 * DMM : DMM_LISA_MAP_0(Section_0)
+ 	 * [31:24] SYS_ADDR 		0x80
+-- 
+1.7.0.4
 
-http://www.elec4fun.fr/index.php?option=com_content&view=article&id=10&Itemid=153
-
-static struct spi_altera_master altera_spi_0_data = {
-      .num_chipselect = 1,
-      .spi_mode = 0,      /* SPI mode of the EPCS flash controller */
-      .databits = 8,      /* Data length of the EPCS flash controller */
-      .speed = 20000000,  /* EPCS flash controller speed */
-};
-
-
-static struct flash_platform_data epcs_flash = {
-      .name = "epcs",    /* Cdev name, optional */
-      .type = "m25p40",  /* Device type, required for non JEDEC chips */
-};
-
-static struct spi_board_info generic_spi_board_info[] = {
-      {
-            .name = "m25p",
-            .max_speed_hz = 20000000,
-            .bus_num = 0,
-            .chip_select = 0,
-            .bits_per_word = 8,
-            .mode = SPI_MODE_0,
-            .platform_data = &epcs_flash,
-      }
-};
-
-static int myboard_devices_init(void) {
-
-...
-
-spi_register_board_info(myboard_spi_board_info,
-ARRAY_SIZE(myboard_spi_board_info));
-
-add_generic_device("altera_spi", -1, NULL, NIOS_SOPC_EPCS_BASE, 0x18,
-                    IORESOURCE_MEM, &altera_spi_0_data);
-
-...
-
-Franck.
 
 _______________________________________________
 barebox mailing list
