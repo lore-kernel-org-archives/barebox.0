@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+Received: from 9.mo1.mail-out.ovh.net ([178.32.108.172]
+ helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Sukm3-00069e-10
- for barebox@lists.infradead.org; Fri, 27 Jul 2012 13:40:12 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 396D3BF0EB
- for <barebox@lists.infradead.org>; Fri, 27 Jul 2012 15:40:05 +0200 (CEST)
-From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Fri, 27 Jul 2012 15:40:02 +0200
-Message-Id: <1343396404-10288-2-git-send-email-j.weitzel@phytec.de>
-In-Reply-To: <1343396404-10288-1-git-send-email-j.weitzel@phytec.de>
+ id 1SulIx-0003MW-0P
+ for barebox@lists.infradead.org; Fri, 27 Jul 2012 14:14:11 +0000
+Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 1E021FFA277
+ for <barebox@lists.infradead.org>; Fri, 27 Jul 2012 16:19:41 +0200 (CEST)
+Date: Fri, 27 Jul 2012 16:13:46 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120727141346.GV22657@game.jcrosoft.org>
 References: <1343396404-10288-1-git-send-email-j.weitzel@phytec.de>
+ <1343396404-10288-3-git-send-email-j.weitzel@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1343396404-10288-3-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,196 +23,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] Add support for OMAP4460 TPS62361
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/3] OMAP4460: ram init changes
+To: Jan Weitzel <j.weitzel@phytec.de>
+Cc: barebox@lists.infradead.org
 
-based on: [U-Boot] [PATCH v 4/5] omap4: support TPS programming
-TPS62361 is the new power supply used in OMAP4460 that
-supplies vdd_mpu.
+On 15:40 Fri 27 Jul     , Jan Weitzel wrote:
+> configure  Memory Adapter for 4460
+> 
+> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+> ---
+>  arch/arm/mach-omap/include/mach/omap4-silicon.h |    4 ++++
+>  arch/arm/mach-omap/omap4_generic.c              |   21 +++++++++++++++++++--
+>  2 files changed, 23 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+> index d5517c5..4082bac 100644
+> --- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
+> +++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+> @@ -101,6 +101,10 @@
+>  #define DMM_LISA_MAP_SYS_SIZE_MASK	(7 << 20)
+>  #define DMM_LISA_MAP_SYS_SIZE_SHIFT	20
+>  #define DMM_LISA_MAP_SYS_ADDR_MASK	(0xFF << 24)
+> +
+> +/* Memory Adapter (4460 onwards) */
+> +#define OMAP44XX_MA_BASE		0x482AF000
+> +
+>  /*
+>   * Hardware Register Details
+>   */
+> diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+> index 07aa2b4..a368759 100644
+> --- a/arch/arm/mach-omap/omap4_generic.c
+> +++ b/arch/arm/mach-omap/omap4_generic.c
+> @@ -29,6 +29,10 @@
+>  #define OMAP4460_CONTROL_ID_CODE_ES1_0  0x0B94E02F
+>  #define OMAP4460_CONTROL_ID_CODE_ES1_1  0x2B94E02F
+>  
+> +/* EMIF_L3_CONFIG register value */
+> +#define EMIF_L3_CONFIG_VAL_SYS_10_LL_0		0x0A0000FF
+> +#define EMIF_L3_CONFIG_VAL_SYS_10_MPU_3_LL_0	0x0A300000
+> +
+>  void __noreturn reset_cpu(unsigned long addr)
+>  {
+>  	writel(PRM_RSTCTRL_RESET, PRM_RSTCTRL);
+> @@ -270,8 +274,7 @@ static void reset_phy(unsigned int base)
+>  void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+>  		const struct dpll_param *core)
+>  {
+> -	unsigned int rev;
+> -	rev = omap4_revision();
+> +	unsigned int rev = omap4_revision();
+>  
+>  	if (rev == OMAP4430_ES2_0) {
+>  		writel(0x9e9e9e9e, 0x4A100638);
+> @@ -294,6 +297,13 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+>  	*(volatile int*)(OMAP44XX_DMM_BASE + DMM_LISA_MAP_2) = 0x00000000;
+>  	*(volatile int*)(OMAP44XX_DMM_BASE + DMM_LISA_MAP_3) = 0xFF020100;
+>  
+> +	if (rev >= OMAP4460_ES1_0) {
+> +		writel(0x80640300, OMAP44XX_MA_BASE + DMM_LISA_MAP_0);
+> +
+> +		*(volatile int*)(OMAP44XX_MA_BASE + DMM_LISA_MAP_2) = 0x00000000;
+> +		*(volatile int*)(OMAP44XX_MA_BASE + DMM_LISA_MAP_3) = 0xFF020100;
+??
 
-VCORE1 from Phoenix supplies vdd_core and VCORE2 supplies
-vdd_iva. VCORE3 is not used in OMAP4460.
-
-Signed-off-by: F. Gasnier fabrice.gasnier@cenosys.com
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
----
- arch/arm/mach-omap/include/mach/omap4-clock.h   |   15 +++++++++
- arch/arm/mach-omap/include/mach/omap4-silicon.h |    9 +++++-
- arch/arm/mach-omap/omap4_clock.c                |   19 +++++++++++
- arch/arm/mach-omap/omap4_generic.c              |   39 +++++++++++++++++++++-
- 4 files changed, 79 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm/mach-omap/include/mach/omap4-clock.h b/arch/arm/mach-omap/include/mach/omap4-clock.h
-index 0a31d09..391ee63 100644
---- a/arch/arm/mach-omap/include/mach/omap4-clock.h
-+++ b/arch/arm/mach-omap/include/mach/omap4-clock.h
-@@ -271,6 +271,20 @@
- #define PLL_FAST_RELOCK_BYPASS	6 /* CORE */
- #define PLL_LOCK		7 /* MPU, IVA, CORE & PER */
- 
-+/* TPS */
-+#define TPS62361_I2C_SLAVE_ADDR		0x60
-+#define TPS62361_REG_ADDR_SET0		0x0
-+#define TPS62361_REG_ADDR_SET1		0x1
-+#define TPS62361_REG_ADDR_SET2		0x2
-+#define TPS62361_REG_ADDR_SET3		0x3
-+#define TPS62361_REG_ADDR_CTRL		0x4
-+#define TPS62361_REG_ADDR_TEMP		0x5
-+#define TPS62361_REG_ADDR_RMP_CTRL	0x6
-+#define TPS62361_REG_ADDR_CHIP_ID	0x8
-+#define TPS62361_REG_ADDR_CHIP_ID_2	0x9
-+
-+#define TPS62361_BASE_VOLT_MV	500
-+
- /* Used to index into DPLL parameter tables */
- struct dpll_param {
- 	unsigned int m;
-@@ -317,4 +331,5 @@ void omap4_configure_core_dpll_no_lock(const struct dpll_param *param);
- void omap4_lock_core_dpll(void);
- void omap4_lock_core_dpll_shadow(const struct dpll_param *param);
- void omap4_enable_all_clocks(void);
-+void omap4_do_scale_tps62361(u32 reg, u32 volt_mv);
- 
-diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
-index c785475..d5517c5 100644
---- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
-+++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
-@@ -60,6 +60,13 @@
- #define OMAP44XX_PRM_VC_VAL_BYPASS	(OMAP44XX_WAKEUP_L4_IO_BASE + 0x7ba0)
- #define OMAP44XX_PRM_VC_CFG_I2C_MODE	(OMAP44XX_WAKEUP_L4_IO_BASE + 0x7ba8)
- #define OMAP44XX_PRM_VC_CFG_I2C_CLK	(OMAP44XX_WAKEUP_L4_IO_BASE + 0x7bac)
-+#define OMAP44XX_PRM_VC_VAL_BYPASS_VALID_BIT		0x1000000
-+#define OMAP44XX_PRM_VC_VAL_BYPASS_SLAVEADDR_SHIFT	0
-+#define OMAP44XX_PRM_VC_VAL_BYPASS_SLAVEADDR_MASK	0x7F
-+#define OMAP44XX_PRM_VC_VAL_BYPASS_REGADDR_SHIFT	8
-+#define OMAP44XX_PRM_VC_VAL_BYPASS_REGADDR_MASK		0xFF
-+#define OMAP44XX_PRM_VC_VAL_BYPASS_DATA_SHIFT		16
-+#define OMAP44XX_PRM_VC_VAL_BYPASS_DATA_MASK		0xFF
- 
- /* IRQ */
- #define OMAP44XX_PRM_IRQSTATUS_MPU_A9	(OMAP44XX_WAKEUP_L4_IO_BASE + 0x6010)
-@@ -178,6 +185,6 @@ struct dpll_param;
- void omap4_ddr_init(const struct ddr_regs *, const struct dpll_param *);
- void omap4_power_i2c_send(u32);
- unsigned int omap4_revision(void);
--noinline int omap4_scale_vcores(void);
-+noinline int omap4_scale_vcores(unsigned vsel0_pin);
- 
- #endif
-diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
-index 3ab01f0..564a748 100644
---- a/arch/arm/mach-omap/omap4_clock.c
-+++ b/arch/arm/mach-omap/omap4_clock.c
-@@ -1,6 +1,7 @@
- #include <common.h>
- #include <io.h>
- #include <mach/syslib.h>
-+#include <mach/silicon.h>
- #include <mach/clocks.h>
- 
- #define LDELAY	12000000
-@@ -378,3 +379,21 @@ void omap4_enable_all_clocks(void)
- 	sr32(CM_L3INIT_USBPHY_CLKCTRL, 0, 32, 0x301);
- }
- 
-+void omap4_do_scale_tps62361(u32 reg, u32 volt_mv)
-+{
-+	u32 temp, step;
-+
-+	step = volt_mv - TPS62361_BASE_VOLT_MV;
-+	step /= 10;
-+
-+	temp = TPS62361_I2C_SLAVE_ADDR |
-+	    (reg << OMAP44XX_PRM_VC_VAL_BYPASS_REGADDR_SHIFT) |
-+	    (step << OMAP44XX_PRM_VC_VAL_BYPASS_DATA_SHIFT) |
-+	    OMAP44XX_PRM_VC_VAL_BYPASS_VALID_BIT;
-+	debug("do_scale_tps62361: volt - %d step - 0x%x\n", volt_mv, step);
-+
-+	writel(temp, OMAP44XX_PRM_VC_VAL_BYPASS);
-+	if (!wait_on_value(OMAP44XX_PRM_VC_VAL_BYPASS_VALID_BIT, 0,
-+				OMAP44XX_PRM_VC_VAL_BYPASS, LDELAY))
-+		puts("Scaling voltage failed for vdd_mpu from TPS\n");
-+}
-diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
-index de69934..07aa2b4 100644
---- a/arch/arm/mach-omap/omap4_generic.c
-+++ b/arch/arm/mach-omap/omap4_generic.c
-@@ -7,6 +7,7 @@
- #include <mach/syslib.h>
- #include <mach/xload.h>
- #include <mach/gpmc.h>
-+#include <mach/gpio.h>
- 
- /*
-  *  The following several lines are taken from U-Boot to support
-@@ -466,7 +467,7 @@ enum omap_boot_src omap4_bootsrc(void)
- 
- #define I2C_SLAVE 0x12
- 
--noinline int omap4_scale_vcores(void)
-+noinline int omap4_scale_vcores(unsigned vsel0_pin)
- {
- 	unsigned int rev = omap4_revision();
- 
-@@ -476,8 +477,41 @@ noinline int omap4_scale_vcores(void)
- 	writel(0, OMAP44XX_PRM_VC_CFG_I2C_MODE);
- 	writel(0x6026, OMAP44XX_PRM_VC_CFG_I2C_CLK);
- 
-+	/* TPS - supplies vdd_mpu on 4460 */
-+	if (rev >= OMAP4460_ES1_0) {
-+		/*
-+		 * Setup SET1 and SET0 with right values so that kernel
-+		 * can use either of them based on its needs.
-+		 */
-+		omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET0, 1430);
-+		omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET1, 1430);
-+
-+		/*
-+		 * Select SET1 in TPS62361:
-+		 * VSEL1 is grounded on board. So the following selects
-+		 * VSEL1 = 0 and VSEL0 = 1
-+		 */
-+		gpio_direction_output(vsel0_pin, 0);
-+		gpio_set_value(vsel0_pin, 1);
-+	}
-+
- 	/* set VCORE1 force VSEL */
--	omap4_power_i2c_send((0x3A55 << 8) | I2C_SLAVE);
-+	/*
-+	 * 4430 : supplies vdd_mpu
-+	 * Setting a high voltage for Nitro mode as smart reflex is not enabled.
-+	 * We use the maximum possible value in the AVS range because the next
-+	 * higher voltage in the discrete range (code >= 0b111010) is way too
-+	 * high
-+	 *
-+	 * 4460 : supplies vdd_core
-+	 *
-+	 */
-+	if (rev < OMAP4460_ES1_0)
-+		/* 0x55: i2c addr, 3A: ~ 1430 mvolts*/
-+		omap4_power_i2c_send((0x3A55 << 8) | I2C_SLAVE);
-+	else
-+		/* 0x55: i2c addr, 28: ~ 1200 mvolts*/
-+		omap4_power_i2c_send((0x2855 << 8) | I2C_SLAVE);
- 
- 	/* FIXME: set VCORE2 force VSEL, Check the reset value */
- 	omap4_power_i2c_send((0x295B << 8) | I2C_SLAVE);
-@@ -490,6 +524,7 @@ noinline int omap4_scale_vcores(void)
- 	case OMAP4430_ES2_1:
- 		omap4_power_i2c_send((0x2A61 << 8) | I2C_SLAVE);
- 		break;
-+	/* > OMAP4460_ES1_0 : VCORE3 not connected */
- 	}
- 
- 	return 0;
--- 
-1.7.0.4
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
