@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sv8fc-0003Fk-S3
+ id 1Sv8fc-0003Fo-Rf
  for barebox@lists.infradead.org; Sat, 28 Jul 2012 15:11:10 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1Sv8fL-00034x-0N
+ (envelope-from <jbe@pengutronix.de>) id 1Sv8fL-000355-51
  for barebox@lists.infradead.org; Sat, 28 Jul 2012 17:10:51 +0200
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <jbe@pengutronix.de>) id 1Sv8fK-0003Xx-VO
- for barebox@lists.infradead.org; Sat, 28 Jul 2012 17:10:50 +0200
+ (envelope-from <jbe@pengutronix.de>) id 1Sv8fL-0003YK-1p
+ for barebox@lists.infradead.org; Sat, 28 Jul 2012 17:10:51 +0200
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sat, 28 Jul 2012 17:10:42 +0200
-Message-Id: <1343488250-12570-1-git-send-email-jbe@pengutronix.de>
+Date: Sat, 28 Jul 2012 17:10:47 +0200
+Message-Id: <1343488250-12570-6-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1343488250-12570-1-git-send-email-jbe@pengutronix.de>
+References: <1343488250-12570-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,98 +28,176 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv2] Add the Samsung S3C6410 SoC to Barebox
+Subject: [PATCH 5/8] ARM/Samsung: add generic S3C6410 SoC specific functions
 To: barebox@lists.infradead.org
 
-This patch series adds support for the Samsung's S3C6410 ARMv11 SoC
-and with this main support also two popular platforms which are using this
-SoC: FriendlyARM's Mini6410 and Tiny6410.
-
-These patches are based on the 'master' branch and thus suffer on a missing
-adpation in the Samsung serial driver, which is part of the 'next' branch.
-
-I would wait until the 'next' branch gets merged into 'master' while the next
-release and then re-send the required changes for the serial driver to make
-the serial console work with this new SoC.
-
-Comments are still welcome.
-
-Regards,
-Juergen
-
-The following changes since commit e8bbacab05d8a8e7e86e31e9208457409bcbb1b0:
-
-  i2c: fix printf format specifier (2012-07-26 12:41:55 +0200)
-
-are available in the git repository at:
-
-  git://git.pengutronix.de/git/jbe/barebox.git s3c6410_2nd_try_for_inclusion
-
-for you to fetch changes up to 4043fe98bb117399ca9e64c64e38e3bfe64212e2:
-
-  ARM/Samsung: add the Tiny6410 platform as a user of the S3C6410 SoC (2012-07-28 16:31:26 +0200)
-
-----------------------------------------------------------------
-Juergen Beisert (8):
-      ARM/Samsung: add S3C6410 SoC iomap
-      ARM/Samsung: adapt the generic timer driver to support the S3C6410 SoC
-      ARM/Samsung: add the clock tree support for the S3C6410 SoC
-      ARM/Samsung: add GPIO handling support for the S3C6410 SoC
-      ARM/Samsung: add generic S3C6410 SoC specific functions
-      ARM/Samsung: add the S3C6410 SoC
-      ARM/Samsung: add the Mini6410 platform as a user of the S3C6410 SoC
-      ARM/Samsung: add the Tiny6410 platform as a user of the S3C6410 SoC
-
- arch/arm/Kconfig                                   |    6 +
- arch/arm/Makefile                                  |    2 +
- arch/arm/boards/friendlyarm-mini6410/Makefile      |    1 +
- arch/arm/boards/friendlyarm-mini6410/config.h      |    8 +
- arch/arm/boards/friendlyarm-mini6410/env/config    |   56 ++
- arch/arm/boards/friendlyarm-mini6410/mini6410.c    |  305 +++++++++++
- arch/arm/boards/friendlyarm-tiny6410/Kconfig       |   19 +
- arch/arm/boards/friendlyarm-tiny6410/Makefile      |    3 +
- arch/arm/boards/friendlyarm-tiny6410/config.h      |    8 +
- .../friendlyarm-tiny6410/development-board.c       |  100 ++++
- arch/arm/boards/friendlyarm-tiny6410/env/config    |   56 ++
- arch/arm/boards/friendlyarm-tiny6410/tiny6410.c    |   80 +++
- arch/arm/boards/friendlyarm-tiny6410/tiny6410.h    |   14 +
- arch/arm/configs/friendlyarm_mini6410_defconfig    |   40 ++
- arch/arm/configs/friendlyarm_tiny6410_defconfig    |   41 ++
- arch/arm/mach-samsung/Kconfig                      |   40 ++
- arch/arm/mach-samsung/Makefile                     |    1 +
- arch/arm/mach-samsung/clocks-s3c64xx.c             |  338 ++++++++++++
- arch/arm/mach-samsung/gpio-s3c64xx.c               |  301 +++++++++++
- .../mach-samsung/include/mach/devices-s3c64xx.h    |   40 ++
- arch/arm/mach-samsung/include/mach/gpio.h          |    3 +
- arch/arm/mach-samsung/include/mach/iomux-s3c64xx.h |  542 ++++++++++++++++++++
- arch/arm/mach-samsung/include/mach/s3c-clocks.h    |    3 +
- arch/arm/mach-samsung/include/mach/s3c-generic.h   |   17 +
- arch/arm/mach-samsung/include/mach/s3c-iomap.h     |    3 +
- .../arm/mach-samsung/include/mach/s3c64xx-clocks.h |   67 +++
- arch/arm/mach-samsung/include/mach/s3c64xx-iomap.h |   51 ++
- arch/arm/mach-samsung/mem-s3c64xx.c                |   66 +++
- arch/arm/mach-samsung/s3c-timer.c                  |   17 +-
- 29 files changed, 2224 insertions(+), 4 deletions(-)
- create mode 100644 arch/arm/boards/friendlyarm-mini6410/Makefile
- create mode 100644 arch/arm/boards/friendlyarm-mini6410/config.h
- create mode 100644 arch/arm/boards/friendlyarm-mini6410/env/config
- create mode 100644 arch/arm/boards/friendlyarm-mini6410/mini6410.c
- create mode 100644 arch/arm/boards/friendlyarm-tiny6410/Kconfig
- create mode 100644 arch/arm/boards/friendlyarm-tiny6410/Makefile
- create mode 100644 arch/arm/boards/friendlyarm-tiny6410/config.h
- create mode 100644 arch/arm/boards/friendlyarm-tiny6410/development-board.c
- create mode 100644 arch/arm/boards/friendlyarm-tiny6410/env/config
- create mode 100644 arch/arm/boards/friendlyarm-tiny6410/tiny6410.c
- create mode 100644 arch/arm/boards/friendlyarm-tiny6410/tiny6410.h
- create mode 100644 arch/arm/configs/friendlyarm_mini6410_defconfig
- create mode 100644 arch/arm/configs/friendlyarm_tiny6410_defconfig
- create mode 100644 arch/arm/mach-samsung/clocks-s3c64xx.c
- create mode 100644 arch/arm/mach-samsung/gpio-s3c64xx.c
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+---
+ arch/arm/mach-samsung/Makefile                     |    2 +-
+ .../mach-samsung/include/mach/devices-s3c64xx.h    |   40 ++++++++++++
+ arch/arm/mach-samsung/include/mach/s3c-generic.h   |   17 +++++
+ arch/arm/mach-samsung/mem-s3c64xx.c                |   66 ++++++++++++++++++++
+ 4 files changed, 124 insertions(+), 1 deletion(-)
  create mode 100644 arch/arm/mach-samsung/include/mach/devices-s3c64xx.h
- create mode 100644 arch/arm/mach-samsung/include/mach/iomux-s3c64xx.h
- create mode 100644 arch/arm/mach-samsung/include/mach/s3c64xx-clocks.h
- create mode 100644 arch/arm/mach-samsung/include/mach/s3c64xx-iomap.h
  create mode 100644 arch/arm/mach-samsung/mem-s3c64xx.c
+
+diff --git a/arch/arm/mach-samsung/Makefile b/arch/arm/mach-samsung/Makefile
+index 70489da..4df1887 100644
+--- a/arch/arm/mach-samsung/Makefile
++++ b/arch/arm/mach-samsung/Makefile
+@@ -2,6 +2,6 @@ obj-y += s3c-timer.o generic.o
+ obj-lowlevel-$(CONFIG_ARCH_S3C24xx) += lowlevel-s3c24x0.o
+ obj-lowlevel-$(CONFIG_ARCH_S5PCxx) += lowlevel-s5pcxx.o
+ obj-$(CONFIG_ARCH_S3C24xx) += gpio-s3c24x0.o s3c24xx-clocks.o mem-s3c24x0.o
+-obj-$(CONFIG_ARCH_S3C64xx) += gpio-s3c64xx.o clocks-s3c64xx.o
++obj-$(CONFIG_ARCH_S3C64xx) += gpio-s3c64xx.o clocks-s3c64xx.o mem-s3c64xx.o
+ obj-$(CONFIG_ARCH_S5PCxx) += gpio-s5pcxx.o clocks-s5pcxx.o
+ obj-$(CONFIG_S3C_LOWLEVEL_INIT) += $(obj-lowlevel-y)
+diff --git a/arch/arm/mach-samsung/include/mach/devices-s3c64xx.h b/arch/arm/mach-samsung/include/mach/devices-s3c64xx.h
+new file mode 100644
+index 0000000..bcbee97
+--- /dev/null
++++ b/arch/arm/mach-samsung/include/mach/devices-s3c64xx.h
+@@ -0,0 +1,40 @@
++/*
++ * Copyright 2012 Juergen Beisert
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#ifndef INCLUDE_MACH_DEVICES_S3C64XX_H
++# define INCLUDE_MACH_DEVICES_S3C64XX_H
++
++#include <driver.h>
++#include <mach/s3c64xx-iomap.h>
++
++static inline void s3c64xx_add_uart1(void)
++{
++	add_generic_device("s3c_serial", DEVICE_ID_DYNAMIC, NULL, S3C_UART1_BASE,
++			S3C_UART1_SIZE, IORESOURCE_MEM, NULL);
++}
++
++static inline void s3c64xx_add_uart2(void)
++{
++	add_generic_device("s3c_serial", DEVICE_ID_DYNAMIC, NULL, S3C_UART2_BASE,
++			S3C_UART2_SIZE, IORESOURCE_MEM, NULL);
++}
++
++static inline void s3c64xx_add_uart3(void)
++{
++	add_generic_device("s3c_serial", DEVICE_ID_DYNAMIC, NULL, S3C_UART3_BASE,
++			S3C_UART3_SIZE, IORESOURCE_MEM, NULL);
++}
++
++#endif /* INCLUDE_MACH_DEVICES_S3C64XX_H */
+diff --git a/arch/arm/mach-samsung/include/mach/s3c-generic.h b/arch/arm/mach-samsung/include/mach/s3c-generic.h
+index 11b083d..b11e8e3 100644
+--- a/arch/arm/mach-samsung/include/mach/s3c-generic.h
++++ b/arch/arm/mach-samsung/include/mach/s3c-generic.h
+@@ -41,3 +41,20 @@ void s3c24xx_disable_second_sdram_bank(void);
+ #ifdef CONFIG_ARCH_S5PCxx
+ void s5p_init_pll(void);
+ #endif
++
++#ifdef CONFIG_ARCH_S3C64xx
++unsigned s3c_set_epllclk(unsigned, unsigned, unsigned, unsigned);
++uint32_t s3c_get_epllclk(void);
++unsigned s3c_get_hsmmc_clk(int);
++void s3c_set_hsmmc_clk(int, int, unsigned);
++unsigned s3c6410_get_memory_size(void);
++struct s3c6410_chipselect {
++	unsigned adr_setup_t; /* in [ns] */
++	unsigned access_setup_t; /* in [ns] */
++	unsigned access_t; /* in [ns] */
++	unsigned cs_hold_t; /* in [ns] */
++	unsigned adr_hold_t; /* in [ns] */
++	unsigned char width; /* 8 or 16 */
++};
++int s3c6410_setup_chipselect(int, const struct s3c6410_chipselect*);
++#endif
+diff --git a/arch/arm/mach-samsung/mem-s3c64xx.c b/arch/arm/mach-samsung/mem-s3c64xx.c
+new file mode 100644
+index 0000000..aca2cf5
+--- /dev/null
++++ b/arch/arm/mach-samsung/mem-s3c64xx.c
+@@ -0,0 +1,66 @@
++/*
++ * Copyright (C) 2012 Juergen Beisert
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
++#include <errno.h>
++#include <io.h>
++#include <mach/s3c-iomap.h>
++#include <mach/s3c-generic.h>
++
++#define S3C_DRAMC_CHIP_0_CFG (S3C_DRAMC + 0x200)
++
++/* note: this routine honors the first memory bank only */
++unsigned s3c6410_get_memory_size(void)
++{
++	unsigned reg = readl(S3C_DRAMC_CHIP_0_CFG) & 0xff;
++
++	return ~(reg << 24) + 1;
++}
++
++/* configure the timing of one of the available external chip select lines */
++int s3c6410_setup_chipselect(int no, const struct s3c6410_chipselect *c)
++{
++	unsigned per_t = 1000000000 / s3c_get_hclk();
++	unsigned tacs, tcos, tacc, tcoh, tcah, shift;
++	uint32_t reg;
++
++	/* start of cycle to chip select assertion (= address/data setup) */
++	tacs = DIV_ROUND_UP(c->adr_setup_t, per_t);
++	/* start of CS to read/write assertion (= access setup) */
++	tcos = DIV_ROUND_UP(c->access_setup_t, per_t);
++	/* length of read/write assertion (= access lenght) */
++	tacc = DIV_ROUND_UP(c->access_t, per_t) - 1;
++	/* CS hold after access is finished */
++	tcoh = DIV_ROUND_UP(c->cs_hold_t, per_t);
++	/* adress/data hold after CS is deasserted */
++	tcah = DIV_ROUND_UP(c->adr_hold_t, per_t);
++
++	shift = no * 4;
++	reg = readl(S3C_SROM_BW) & ~(0xf << shift);
++	if (c->width == 16)
++		reg |= 0x1 << shift;
++	writel(reg, S3C_SROM_BW);
++#ifdef DEBUG
++	if (tacs > 15 || tcos > 15 || tacc > 31 || tcoh > 15 || tcah > 15) {
++		pr_err("At least one of the timings are invalid\n");
++		return -EINVAL;
++	}
++	pr_info("Will write 0x%08X\n", tacs << 28 | tcos << 24 | tacc << 16 |
++					tcoh << 12 | tcah << 8);
++#endif
++	writel(tacs << 28 | tcos << 24 | tacc << 16 | tcoh << 12 | tcah << 8,
++						S3C_SROM_BC0 + shift);
++
++	return 0;
++}
+-- 
+1.7.10.4
 
 
 _______________________________________________
