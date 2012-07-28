@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo1.mail-out.ovh.net ([46.105.43.205]
+Received: from 9.mo1.mail-out.ovh.net ([178.32.108.172]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Sv64B-0006wf-99
- for barebox@lists.infradead.org; Sat, 28 Jul 2012 12:24:19 +0000
+ id 1Sv682-00070B-Pi
+ for barebox@lists.infradead.org; Sat, 28 Jul 2012 12:28:19 +0000
 Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id E267EFF93A2
- for <barebox@lists.infradead.org>; Sat, 28 Jul 2012 14:30:12 +0200 (CEST)
-Date: Sat, 28 Jul 2012 14:24:16 +0200
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 6CDB0FF93E6
+ for <barebox@lists.infradead.org>; Sat, 28 Jul 2012 14:34:13 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120728122416.GA26655@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Sat, 28 Jul 2012 14:27:51 +0200
+Message-Id: <1343478472-19041-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20120728122416.GA26655@game.jcrosoft.org>
+References: <20120728122416.GA26655@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,106 +20,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/12] Add Pre-Bootloader support
+Subject: [PATCH 14/15] kbuild: allow to have custom cppflags for pbl
 To: barebox@lists.infradead.org
 
-Hi,
-
-
-v2:
-
-	add custom cppflags to pbl 
-	on arm always the garbage collector
-
-please pull
-The following changes since commit 9ab50e0b9cb6400a4442acd36c3d4b315685fa6a:
-
-  Merge branch 'for-next/tqma53' into next (2012-07-27 10:05:03 +0200)
-
-are available in the git repository at:
-
-
-  git://git.jcrosoft.org/barebox.git tags/pbl
-
-for you to fetch changes up to 218db83678fa1602ac7ad7fe6946692d67976895:
-
-  arm: allays enable the garbage collector for pbl (2012-07-28 20:14:45 +0800)
-
-----------------------------------------------------------------
-Add pre-bootloader (pbl) image support
-
-This allows for creating a pre-bootloader binary for
- - nand boot
- - mmc boot
- - compressed image
-
-Currently on the compressed image is implemented the boot really on current lowlevel
-init support. In a second step this could be move to the pbl c code with generic framework.
-
-The pbl will be incharge of the lowlevel init if needed.
-The barebox will skip it.
-
-The decompressor support lzo and gzip and allow to add easly more.
-
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ scripts/Makefile.build |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (11):
-      kbuild: Init all relevant variables used in kbuild files so
-      kbuild: add pre-bootloader (pbl) target
-      Add pre-bootloader (pbl) image support
-      pbl: discard unwind symbol if enable in barebox
-      decompress_unlzo: define decompress_unlzo as decompress
-      decompressor: import malloc/free implementation for linux 3.4
-      ARM: add early malloc support needed by the decompressor
-      compressed image: add gzip support
-      at91: add lowlevel init to the pbl
-      kbuild: allow to have custom cppflags for pbl
-      arm: allays enable the garbage collector for pbl
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index e5b7779..0471a46 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -188,7 +188,7 @@ quiet_cmd_pbl_cc_o_c = PBLCC   $@
+ 
+ ifndef CONFIG_MODVERSIONS
+ cmd_cc_o_c = $(CC) $(c_flags) -c -o $@ $<
+-cmd_pbl_cc_o_c = $(CC) -D__PBL__ $(c_flags) -c -o $@ $<
++cmd_pbl_cc_o_c = $(CC) -D__PBL__ $(c_flags) $(PBL_CPPFLAGS) -c -o $@ $<
+ 
+ else
+ # When module versioning is enabled the following steps are executed:
+@@ -279,7 +279,7 @@ cmd_as_s_S       = $(CPP) $(a_flags)   -o $@ $<
+ 	$(call if_changed_dep,as_s_S)
+ 
+ quiet_cmd_as_o_S = AS $(quiet_modtag)  $@
+-cmd_as_o_S       = $(CC) $(a_flags) -c -o $@ $<
++cmd_as_o_S       = $(CC) $(a_flags) $(PBL_CPPFLAGS) -c -o $@ $<
+ 
+ quiet_cmd_pbl_as_o_S = PBLAS   $@
+ cmd_pbl_as_o_S       = $(CC) -D__PBL__ $(a_flags) -c -o $@ $<
+-- 
+1.7.10.4
 
-Sascha Hauer (3):
-      Add compressed image support
-      only compress default env in uncompressed images
-      ARM: Separate assembler functions into their own section
-
- Makefile                            |   11 ++++--
- arch/arm/Kconfig                    |    2 ++
- arch/arm/Makefile                   |    8 +++++
- arch/arm/cpu/Makefile               |    1 +
- arch/arm/cpu/start.c                |  113 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---
- arch/arm/lib/Makefile               |    4 +++
- arch/arm/lib/barebox.lds.S          |    3 +-
- arch/arm/lib/findbit.S              |    9 +++++
- arch/arm/mach-at91/Makefile         |    2 ++
- arch/arm/pbl/Makefile               |   40 ++++++++++++++++++++++
- arch/arm/pbl/piggy.gzip.S           |    6 ++++
- arch/arm/pbl/piggy.lzo.S            |    6 ++++
- arch/arm/pbl/zbarebox.lds.S         |   74 ++++++++++++++++++++++++++++++++++++++++
- common/Kconfig                      |   34 +++++++++++++++++++
- include/asm-generic/memory_layout.h |    1 +
- include/linux/decompress/mm.h       |   68 +++++++++++++++++++++++++++++++++++++
- lib/decompress_inflate.c            |    1 +
- lib/decompress_unlzo.c              |    1 +
- pbl/Makefile                        |    5 +++
- pbl/misc.c                          |   14 ++++++++
- pbl/string.c                        |  127 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- scripts/Makefile.build              |   75 ++++++++++++++++++++++++++++++++++++++---
- scripts/Makefile.lib                |   14 ++++++++
- 23 files changed, 607 insertions(+), 12 deletions(-)
- create mode 100644 arch/arm/pbl/Makefile
- create mode 100644 arch/arm/pbl/piggy.gzip.S
- create mode 100644 arch/arm/pbl/piggy.lzo.S
- create mode 100644 arch/arm/pbl/zbarebox.lds.S
- create mode 100644 include/linux/decompress/mm.h
- create mode 100644 pbl/Makefile
- create mode 100644 pbl/misc.c
- create mode 100644 pbl/string.c
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
