@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pb0-f49.google.com ([209.85.160.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SvODz-0004nj-Nt
- for barebox@lists.infradead.org; Sun, 29 Jul 2012 07:47:40 +0000
-Received: by pbbrq13 with SMTP id rq13so8523321pbb.36
- for <barebox@lists.infradead.org>; Sun, 29 Jul 2012 00:47:38 -0700 (PDT)
-From: Marc Reilly <marc@cpdesign.com.au>
-Date: Sun, 29 Jul 2012 17:41:48 +1000
-Message-Id: <1343547714-32740-2-git-send-email-marc@cpdesign.com.au>
-In-Reply-To: <1343547714-32740-1-git-send-email-marc@cpdesign.com.au>
+Received: from 15.mo1.mail-out.ovh.net ([188.165.38.232]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SvQH0-0006H5-Jd
+ for barebox@lists.infradead.org; Sun, 29 Jul 2012 09:58:55 +0000
+Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 5EF0EFF9241
+ for <barebox@lists.infradead.org>; Sun, 29 Jul 2012 12:04:15 +0200 (CEST)
+Date: Sun, 29 Jul 2012 11:58:16 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120729095816.GB26655@game.jcrosoft.org>
 References: <1343547714-32740-1-git-send-email-marc@cpdesign.com.au>
+ <1343547714-32740-6-git-send-email-marc@cpdesign.com.au>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1343547714-32740-6-git-send-email-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,38 +23,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] imx35: 6-bit divider helper
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 5/7] nand: fix build error when BBT not enabled.
+To: Marc Reilly <marc@cpdesign.com.au>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
----
- arch/arm/mach-imx/speed-imx35.c |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
+On 17:41 Sun 29 Jul     , Marc Reilly wrote:
+> This fixes following error when bad blocks config option is not enabled:
+> 
+> drivers/built-in.o: In function `nand_erase_nand':
+> drivers/mtd/nand/nand_write.c:721: undefined reference to `nand_update_bbt'
+> drivers/built-in.o: In function `nand_default_block_markbad':
+> drivers/mtd/nand/nand_write.c:76: undefined reference to `nand_update_bbt'
+> make: *** [barebox] Error 1
+> 
+> Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
+> ---
+>  drivers/mtd/nand/nand_write.c |   12 ++++++++++--
+>  1 files changed, 10 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/mtd/nand/nand_write.c b/drivers/mtd/nand/nand_write.c
+> index 13b6c89..0fd49d6 100644
+> --- a/drivers/mtd/nand/nand_write.c
+> +++ b/drivers/mtd/nand/nand_write.c
+> @@ -72,9 +72,15 @@ int nand_default_block_markbad(struct mtd_info *mtd, loff_t ofs)
+>  		chip->bbt[block >> 2] |= 0x01 << ((block & 0x03) << 1);
+>  
+>  	/* Do we have a flash based bad block table ? */
+> -	if (chip->options & NAND_USE_FLASH_BBT)
+> +	if (chip->options & NAND_USE_FLASH_BBT) {
+> +#if defined(CONFIG_NAND_BBT)
+use if (IS_ENABLED())
 
-diff --git a/arch/arm/mach-imx/speed-imx35.c b/arch/arm/mach-imx/speed-imx35.c
-index 684dc14..905ab47 100644
---- a/arch/arm/mach-imx/speed-imx35.c
-+++ b/arch/arm/mach-imx/speed-imx35.c
-@@ -97,6 +97,11 @@ static unsigned long get_3_3_div(unsigned long in)
- 	return (((in >> 3) & 0x7) + 1) * ((in & 0x7) + 1);
- }
- 
-+static unsigned long get_6_div(unsigned long in)
-+{
-+	return ((in & 0x3f) + 1);
-+}
-+
- static unsigned long imx_get_ipg_perclk(void)
- {
- 	ulong pdr0 = readl(IMX_CCM_BASE + CCM_PDR0);
--- 
-1.7.7
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
