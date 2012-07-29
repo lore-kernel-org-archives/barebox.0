@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-pb0-f49.google.com ([209.85.160.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sv8yB-0003zH-VU
- for barebox@lists.infradead.org; Sat, 28 Jul 2012 15:30:20 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sat, 28 Jul 2012 17:29:47 +0200
-References: <1343488250-12570-1-git-send-email-jbe@pengutronix.de>
- <1343488250-12570-3-git-send-email-jbe@pengutronix.de>
-In-Reply-To: <1343488250-12570-3-git-send-email-jbe@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201207281729.48097.jbe@pengutronix.de>
+ id 1SvOEE-0004ni-L4
+ for barebox@lists.infradead.org; Sun, 29 Jul 2012 07:47:54 +0000
+Received: by mail-pb0-f49.google.com with SMTP id rq13so8523245pbb.36
+ for <barebox@lists.infradead.org>; Sun, 29 Jul 2012 00:47:52 -0700 (PDT)
+From: Marc Reilly <marc@cpdesign.com.au>
+Date: Sun, 29 Jul 2012 17:41:53 +1000
+Message-Id: <1343547714-32740-7-git-send-email-marc@cpdesign.com.au>
+In-Reply-To: <1343547714-32740-1-git-send-email-marc@cpdesign.com.au>
+References: <1343547714-32740-1-git-send-email-marc@cpdesign.com.au>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,68 +18,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/8] ARM/Samsung: adapt the generic timer driver to
- support the S3C6410 SoC
-To: Alexey Galakhov <agalakhov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 6/7] nand: Prevent drivers setting NAND_USE_FLASH_BBT if BBT
+ config not enabled.
+To: barebox@lists.infradead.org
 
-Hi Alexey,
+This prevents drivers from setting the options flags to use the flash
+bab block table when the BBT is not enabled in config.
 
-Juergen Beisert wrote:
-> The S3C64XX SoC has a real 32 bit counter, but almost the same style of
-> registers. It's enough to change the parameters, to get the routines work
-> on this SoC.
->
-> TODO: what about the S5P SoCs?
->
-> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-> ---
->  arch/arm/mach-samsung/s3c-timer.c |   17 +++++++++++++----
->  1 file changed, 13 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/arm/mach-samsung/s3c-timer.c b/arch/arm/mach-samsung/s3c-timer.c
-> index 6665c8c..271f97d 100644 
-> --- a/arch/arm/mach-samsung/s3c-timer.c
-> +++ b/arch/arm/mach-samsung/s3c-timer.c
-> @@ -37,11 +37,20 @@
->  #define S3C_TCNTB4 (S3C_TIMER_BASE + 0x3c)
->  #define S3C_TCNTO4 (S3C_TIMER_BASE + 0x40)
->
-> -#define TIMER_WIDTH 16
-> -#define TIMER_SHIFT 10
-> -#define PRE_MUX 3
-> -#define PRE_MUX_ADD 1
-> +#ifdef CONFIG_ARCH_S3C24xx
-> +# define TIMER_WIDTH 16
-> +# define TIMER_SHIFT 10
-> +# define PRE_MUX 3
-> +# define PRE_MUX_ADD 1
->  static const uint32_t max = 0x0000ffff;
-> +#endif
-> +#ifdef CONFIG_ARCH_S3C64xx
-> +# define TIMER_WIDTH 32
-> +# define TIMER_SHIFT 10
-> +# define PRE_MUX 4
-> +# define PRE_MUX_ADD 0
-> +static const uint32_t max = ~0;
-> +#endif
->
->  static void s3c_init_t4_clk_source(void)
->  {
+Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
+---
+ drivers/mtd/nand/atmel_nand.c   |    2 +-
+ drivers/mtd/nand/nand_imx.c     |    2 +-
+ drivers/mtd/nand/nand_s3c24xx.c |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-Can you please check this patch on your S5P-SoC? I guess your SoC should work
-like the S3C64xx variant, but I'm not sure.
-
-Regards,
-Juergen
-
+diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
+index 96624a1..cc62df9 100644
+--- a/drivers/mtd/nand/atmel_nand.c
++++ b/drivers/mtd/nand/atmel_nand.c
+@@ -407,7 +407,7 @@ static int __init atmel_nand_probe(struct device_d *dev)
+ 		}
+ 	}
+ 
+-	if (host->board->on_flash_bbt) {
++	if (IS_ENABLED(CONFIG_NAND_BBT) && host->board->on_flash_bbt) {
+ 		printk(KERN_INFO "atmel_nand: Use On Flash BBT\n");
+ 		nand_chip->options |= NAND_USE_FLASH_BBT;
+ 	}
+diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/nand_imx.c
+index e75ffbc..67b056b 100644
+--- a/drivers/mtd/nand/nand_imx.c
++++ b/drivers/mtd/nand/nand_imx.c
+@@ -1142,7 +1142,7 @@ static int __init imxnd_probe(struct device_d *dev)
+ 		imx_nand_set_layout(0, 16);
+ 	}
+ 
+-	if (pdata->flash_bbt) {
++	if (IS_ENABLED(CONFIG_NAND_BBT) && pdata->flash_bbt) {
+ 		this->bbt_td = &bbt_main_descr;
+ 		this->bbt_md = &bbt_mirror_descr;
+ 		/* update flash based bbt */
+diff --git a/drivers/mtd/nand/nand_s3c24xx.c b/drivers/mtd/nand/nand_s3c24xx.c
+index c629701..63a3aac 100644
+--- a/drivers/mtd/nand/nand_s3c24xx.c
++++ b/drivers/mtd/nand/nand_s3c24xx.c
+@@ -469,7 +469,7 @@ static int s3c24x0_nand_probe(struct device_d *dev)
+ 		chip->ecc.layout = &nand_hw_eccoob;
+ 	}
+ 
+-	if (pdata->flash_bbt) {
++	if (IS_ENABLED(CONFIG_NAND_BBT) && pdata->flash_bbt) {
+ 		/* use a flash based bbt */
+ 		chip->options |= NAND_USE_FLASH_BBT;
+ 	}
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
+1.7.7
+
 
 _______________________________________________
 barebox mailing list
