@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo1.mail-out.ovh.net ([178.33.45.107]
+Received: from 17.mo1.mail-out.ovh.net ([87.98.179.142]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SvmoU-0001fr-OE
- for barebox@lists.infradead.org; Mon, 30 Jul 2012 10:02:59 +0000
+ id 1SvmoV-0001gA-A4
+ for barebox@lists.infradead.org; Mon, 30 Jul 2012 10:03:01 +0000
 Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 6C64DFF9B14
- for <barebox@lists.infradead.org>; Mon, 30 Jul 2012 12:08:48 +0200 (CEST)
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id E244BFF9AE2
+ for <barebox@lists.infradead.org>; Mon, 30 Jul 2012 12:08:53 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 30 Jul 2012 12:02:34 +0200
-Message-Id: <1343642565-32257-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20120730100022.GD19759@game.jcrosoft.org>
+Date: Mon, 30 Jul 2012 12:02:40 +0200
+Message-Id: <1343642565-32257-7-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1343642565-32257-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120730100022.GD19759@game.jcrosoft.org>
+ <1343642565-32257-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,53 +26,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/12] kbuild: Init all relevant variables used in kbuild
- files so
+Subject: [PATCH 07/12] decompressor: import malloc/free implementation for
+ linux 3.4
 To: barebox@lists.infradead.org
 
-import from linux 3.5-rc5
+This is need for gunzip support
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- scripts/Makefile.build |   25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ include/linux/decompress/mm.h |   68 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 68 insertions(+)
+ create mode 100644 include/linux/decompress/mm.h
 
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index f70e2b9..1a82c44 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -7,7 +7,30 @@ src := $(obj)
- PHONY := __build
- __build:
- 
--# Read .config if it exist, otherwise ignore
-+# Init all relevant variables used in kbuild files so
-+# 1) they have correct type
-+# 2) they do not inherit any value from the environment
-+obj-y :=
-+obj-m :=
-+lib-y :=
-+lib-m :=
-+always :=
-+targets :=
-+subdir-y :=
-+subdir-m :=
-+EXTRA_AFLAGS   :=
-+EXTRA_CFLAGS   :=
-+EXTRA_CPPFLAGS :=
-+EXTRA_LDFLAGS  :=
-+asflags-y  :=
-+ccflags-y  :=
-+cppflags-y :=
-+ldflags-y  :=
+diff --git a/include/linux/decompress/mm.h b/include/linux/decompress/mm.h
+new file mode 100644
+index 0000000..0c35411
+--- /dev/null
++++ b/include/linux/decompress/mm.h
+@@ -0,0 +1,68 @@
++/*
++ * linux/compr_mm.h
++ *
++ * Memory management for pre-boot and ramdisk uncompressors
++ *
++ * Authors: Alain Knaff <alain@knaff.lu>
++ *
++ */
 +
-+subdir-asflags-y :=
-+subdir-ccflags-y :=
++#ifndef DECOMPR_MM_H
++#define DECOMPR_MM_H
 +
-+# Read auto.conf if it exists, otherwise ignore
- -include include/config/auto.conf
- 
- include scripts/Kbuild.include
++#ifdef STATIC
++
++/* Code active when included from pre-boot environment: */
++
++/*
++ * Some architectures want to ensure there is no local data in their
++ * pre-boot environment, so that data can arbitrarily relocated (via
++ * GOT references).  This is achieved by defining STATIC_RW_DATA to
++ * be null.
++ */
++#ifndef STATIC_RW_DATA
++#define STATIC_RW_DATA static
++#endif
++
++/* A trivial malloc implementation, adapted from
++ *  malloc by Hannu Savolainen 1993 and Matthias Urlichs 1994
++ */
++STATIC_RW_DATA unsigned long malloc_ptr;
++STATIC_RW_DATA int malloc_count;
++
++static void *malloc(int size)
++{
++	void *p;
++
++	if (size < 0)
++		return NULL;
++	if (!malloc_ptr)
++		malloc_ptr = free_mem_ptr;
++
++	malloc_ptr = (malloc_ptr + 3) & ~3;     /* Align */
++
++	p = (void *)malloc_ptr;
++	malloc_ptr += size;
++
++	if (free_mem_end_ptr && malloc_ptr >= free_mem_end_ptr)
++		return NULL;
++
++	malloc_count++;
++	return p;
++}
++
++static void free(void *where)
++{
++	malloc_count--;
++	if (!malloc_count)
++		malloc_ptr = free_mem_ptr;
++}
++
++#define large_malloc(a) malloc(a)
++#define large_free(a) free(a)
++
++#define INIT
++
++#endif /* STATIC */
++
++#endif /* DECOMPR_MM_H */
 -- 
 1.7.10.4
 
