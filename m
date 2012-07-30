@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 17.mo1.mail-out.ovh.net ([87.98.179.142]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SvmoV-0001fs-A1
+ id 1SvmoV-0001gC-A6
  for barebox@lists.infradead.org; Mon, 30 Jul 2012 10:03:01 +0000
 Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 61373FF9B12
- for <barebox@lists.infradead.org>; Mon, 30 Jul 2012 12:08:49 +0200 (CEST)
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 091F6FF9B1B
+ for <barebox@lists.infradead.org>; Mon, 30 Jul 2012 12:08:54 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 30 Jul 2012 12:02:35 +0200
-Message-Id: <1343642565-32257-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 30 Jul 2012 12:02:42 +0200
+Message-Id: <1343642565-32257-9-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1343642565-32257-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120730100022.GD19759@game.jcrosoft.org>
  <1343642565-32257-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,199 +26,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/12] kbuild: add pre-bootloader (pbl) target
+Subject: [PATCH 09/12] compressed image: add gzip support
 To: barebox@lists.infradead.org
-
-This will allow to link compiled object to the built-in-pbl.o across the source
-tree that will be finally link to the pbl.
-
-Now we compile the source %.c in pbl-%.o and provide -D__PBL__
-so we can known in the source when it's compile for barebox or the pbl.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- Makefile               |    5 ++++-
- scripts/Makefile.build |   48 +++++++++++++++++++++++++++++++++++++++++++++---
- scripts/Makefile.lib   |   14 ++++++++++++++
- 3 files changed, 63 insertions(+), 4 deletions(-)
+ arch/arm/cpu/start.c      |    4 ++++
+ arch/arm/pbl/Makefile     |    1 +
+ arch/arm/pbl/piggy.gzip.S |    6 ++++++
+ common/Kconfig            |    3 +++
+ lib/decompress_inflate.c  |    1 +
+ 5 files changed, 15 insertions(+)
+ create mode 100644 arch/arm/pbl/piggy.gzip.S
 
-diff --git a/Makefile b/Makefile
-index ac5eaaf..168381d 100644
---- a/Makefile
-+++ b/Makefile
-@@ -481,6 +481,7 @@ barebox-alldirs	:= $(sort $(barebox-dirs) $(patsubst %/,%,$(filter %/, \
- 		     $(core-n) $(core-) $(drivers-n) $(drivers-) \
- 		     $(net-n)  $(net-)  $(libs-n)    $(libs-))))
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index f61c326..f570f32 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -110,6 +110,10 @@ extern void *input_data_end;
+ #include "../../../lib/decompress_unlzo.c"
+ #endif
  
-+pbl-common-y	:= $(patsubst %/, %/built-in-pbl.o, $(common-y))
- common-y	:= $(patsubst %/, %/built-in.o, $(common-y))
++#ifdef CONFIG_IMAGE_COMPRESSION_GZIP
++#include "../../../../lib/decompress_inflate.c"
++#endif
++
+ void barebox_uncompress(void *compressed_start, unsigned int len)
+ {
+ 	void (*barebox)(void);
+diff --git a/arch/arm/pbl/Makefile b/arch/arm/pbl/Makefile
+index 4135911..04fdffb 100644
+--- a/arch/arm/pbl/Makefile
++++ b/arch/arm/pbl/Makefile
+@@ -1,4 +1,5 @@
  
- # Build barebox
-@@ -510,6 +511,8 @@ common-y	:= $(patsubst %/, %/built-in.o, $(common-y))
- # System.map is generated to document addresses of all kernel symbols
++suffix_$(CONFIG_IMAGE_COMPRESSION_GZIP) = gzip
+ suffix_$(CONFIG_IMAGE_COMPRESSION_LZO)	= lzo
  
- barebox-common := $(common-y)
-+barebox-pbl-common := $(pbl-common-y)
-+export barebox-pbl-common
- barebox-all    := $(barebox-common)
- barebox-lds    := $(lds-y)
+ OBJCOPYFLAGS_zbarebox.bin = -O binary
+diff --git a/arch/arm/pbl/piggy.gzip.S b/arch/arm/pbl/piggy.gzip.S
+new file mode 100644
+index 0000000..4a623c0
+--- /dev/null
++++ b/arch/arm/pbl/piggy.gzip.S
+@@ -0,0 +1,6 @@
++	.section .piggydata,#alloc
++	.globl  input_data
++input_data:
++	.incbin "arch/arm/pbl/piggy.gzip"
++	.globl  input_data_end
++input_data_end:
+diff --git a/common/Kconfig b/common/Kconfig
+index 40f0c71..6fee9ae 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -125,6 +125,9 @@ choice
+ config IMAGE_COMPRESSION_LZO
+ 	bool "lzo"
  
-@@ -714,7 +717,7 @@ barebox.srec: barebox
++config IMAGE_COMPRESSION_GZIP
++	bool "gzip"
++
+ endchoice
  
- # The actual objects are generated when descending,
- # make sure no implicit rule kicks in
--$(sort $(barebox-head) $(barebox-common) ) $(barebox-lds): $(barebox-dirs) ;
-+$(sort $(barebox-head) $(barebox-common) ) $(barebox-lds) $(barebox-pbl-common): $(barebox-dirs) ;
- 
- # Handle descending into subdirectories listed in $(barebox-dirs)
- # Preset locale variables to speed up the build process. Limit locale
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 1a82c44..e5b7779 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -14,6 +14,7 @@ obj-y :=
- obj-m :=
- lib-y :=
- lib-m :=
-+pbl-y :=
- always :=
- targets :=
- subdir-y :=
-@@ -97,13 +98,19 @@ ifneq ($(strip $(lib-y) $(lib-m) $(lib-n) $(lib-)),)
- lib-target := $(obj)/lib.a
  endif
+diff --git a/lib/decompress_inflate.c b/lib/decompress_inflate.c
+index 526d6a1..5c1ebb6 100644
+--- a/lib/decompress_inflate.c
++++ b/lib/decompress_inflate.c
+@@ -4,6 +4,7 @@
+ /* prevent inclusion of _LINUX_KERNEL_H in pre-boot environment: lots
+  * errors about console_printk etc... on ARM */
+ #define _LINUX_KERNEL_H
++#include <linux/decompress/mm.h>
  
--ifneq ($(strip $(obj-y) $(obj-m) $(obj-n) $(obj-) $(lib-target)),)
-+ifneq ($(strip $(obj-y) $(obj-m) $(obj-n) $(obj-) $(lib-target) $(pbl-y)),)
- builtin-target := $(obj)/built-in.o
- endif
- 
-+ifeq ($(CONFIG_PBL_IMAGE), y)
-+ifneq ($(strip $(pbl-y) $(builtin-target)),)
-+pbl-target := $(obj)/built-in-pbl.o
-+endif
-+endif
-+
- # We keep a list of all modules in $(MODVERDIR)
- 
--__build: $(if $(KBUILD_BUILTIN),$(builtin-target) $(lib-target) $(extra-y)) \
-+__build: $(if $(KBUILD_BUILTIN),$(builtin-target) $(lib-target) $(pbl-target) $(extra-y)) \
- 	 $(if $(KBUILD_MODULES),$(obj-m)) \
- 	 $(subdir-ym) $(always)
- 	@:
-@@ -177,9 +184,11 @@ cmd_cc_symtypes_c	   = \
- # (See cmd_cc_o_c + relevant part of rule_cc_o_c)
- 
- quiet_cmd_cc_o_c = CC $(quiet_modtag)  $@
-+quiet_cmd_pbl_cc_o_c = PBLCC   $@
- 
- ifndef CONFIG_MODVERSIONS
- cmd_cc_o_c = $(CC) $(c_flags) -c -o $@ $<
-+cmd_pbl_cc_o_c = $(CC) -D__PBL__ $(c_flags) -c -o $@ $<
- 
- else
- # When module versioning is enabled the following steps are executed:
-@@ -220,8 +229,22 @@ define rule_cc_o_c
- 	mv -f $(dot-target).tmp $(dot-target).cmd
- endef
- 
-+define rule_pbl_cc_o_c
-+	$(call echo-cmd,checksrc) $(cmd_checksrc)			  \
-+	$(call echo-cmd,pbl_cc_o_c) $(cmd_pbl_cc_o_c);			  \
-+	$(cmd_modversions)						  \
-+	scripts/basic/fixdep $(depfile) $@ '$(call make-cmd,pbl_cc__o_c)' >    \
-+	                                              $(dot-target).tmp;  \
-+	rm -f $(depfile);						  \
-+	mv -f $(dot-target).tmp $(dot-target).cmd
-+endef
-+
- # Built-in and composite module parts
- 
-+pbl-%.o: %.c
-+	$(call cmd,force_checksrc)
-+	$(call if_changed_rule,pbl_cc_o_c)
-+
- %.o: %.c FORCE
- 	$(call cmd,force_checksrc)
- 	$(call if_changed_rule,cc_o_c)
-@@ -258,10 +281,16 @@ cmd_as_s_S       = $(CPP) $(a_flags)   -o $@ $<
- quiet_cmd_as_o_S = AS $(quiet_modtag)  $@
- cmd_as_o_S       = $(CC) $(a_flags) -c -o $@ $<
- 
-+quiet_cmd_pbl_as_o_S = PBLAS   $@
-+cmd_pbl_as_o_S       = $(CC) -D__PBL__ $(a_flags) -c -o $@ $<
-+
-+pbl-%.o: %.S
-+	$(call if_changed_dep,pbl_as_o_S)
-+
- %.o: %.S FORCE
- 	$(call if_changed_dep,as_o_S)
- 
--targets += $(real-objs-y) $(real-objs-m) $(lib-y)
-+targets += $(real-objs-y) $(real-objs-m) $(lib-y) $(pbl-y)
- targets += $(extra-y) $(MAKECMDGOALS) $(always)
- 
- # Linker scripts preprocessor (.lds.S -> .lds)
-@@ -294,6 +323,19 @@ $(builtin-target): $(obj-y) FORCE
- targets += $(builtin-target)
- endif # builtin-target
- 
-+ifdef pbl-target
-+quiet_cmd_pbl_link_o_target = PBLLD   $@
-+# If the list of objects to link is empty, just create an empty built-in-pbl.o
-+cmd_pbl_link_o_target = $(if $(strip $(pbl-y)),\
-+		      $(LD) $(ld_flags) -r -o $@ $(filter $(pbl-y), $^),\
-+		      rm -f $@; $(AR) rcs $@)
-+
-+$(pbl-target): $(pbl-y) FORCE
-+	$(call if_changed,pbl_link_o_target)
-+
-+targets += $(pbl-target)
-+endif # pbl-target
-+
- #
- # Rule to compile a set of .o files into one .a file
- #
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index b842c48..1a5b2b5 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -21,6 +21,17 @@ lib-y := $(filter-out $(obj-y), $(sort $(lib-y) $(lib-m)))
- # o if we encounter foo/ in $(obj-m), remove it from $(obj-m)
- #   and add the directory to the list of dirs to descend into: $(subdir-m)
- 
-+# for non dirs add pbl- prefix to the target
-+# so we recompile the source with custom flags and custom quiet
-+__pbl-y		:= $(notdir $(pbl-y))
-+pbl-y		:= $(patsubst %.o,pbl-%.o,$(__pbl-y))
-+# add subdir from $(obj-y) too so we do not need to have the dir define in
-+# both $(obj-y) and $(pbl-y)
-+__pbl-y		:= $(filter-out $(pbl-y), $(filter %/, $(obj-y)))
-+pbl-y		+= $(__pbl-y)
-+
-+pbl-y		:= $(sort $(patsubst %/, %/built-in-pbl.o, $(pbl-y)))
-+
- __subdir-y	:= $(patsubst %/,%,$(filter %/, $(obj-y)))
- subdir-y	+= $(__subdir-y)
- __subdir-m	:= $(patsubst %/,%,$(filter %/, $(obj-m)))
-@@ -46,7 +57,9 @@ multi-objs   := $(multi-objs-y) $(multi-objs-m)
- 
- # $(subdir-obj-y) is the list of objects in $(obj-y) which do not live
- # in the local directory
-+__subdir-obj-y := $(foreach o,$(pbl-y),$(if $(filter-out $(o),$(notdir $(o))),$(o)))
- subdir-obj-y := $(foreach o,$(obj-y),$(if $(filter-out $(o),$(notdir $(o))),$(o)))
-+subdir-obj-y += $(__subdir-obj-y)
- 
- # $(obj-dirs) is a list of directories that contain object files
- obj-dirs := $(dir $(multi-objs) $(subdir-obj-y))
-@@ -63,6 +76,7 @@ targets		:= $(addprefix $(obj)/,$(targets))
- obj-y		:= $(addprefix $(obj)/,$(obj-y))
- obj-m		:= $(addprefix $(obj)/,$(obj-m))
- lib-y		:= $(addprefix $(obj)/,$(lib-y))
-+pbl-y		:= $(addprefix $(obj)/,$(pbl-y))
- subdir-obj-y	:= $(addprefix $(obj)/,$(subdir-obj-y))
- real-objs-y	:= $(addprefix $(obj)/,$(real-objs-y))
- real-objs-m	:= $(addprefix $(obj)/,$(real-objs-m))
+ #include "zlib_inflate/inftrees.c"
+ #include "zlib_inflate/inffast.c"
 -- 
 1.7.10.4
 
