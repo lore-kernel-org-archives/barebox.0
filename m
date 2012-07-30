@@ -1,18 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SvliM-0002FN-8q
- for barebox@lists.infradead.org; Mon, 30 Jul 2012 08:52:34 +0000
-Date: Mon, 30 Jul 2012 10:52:24 +0200
+ id 1SvlpC-00045c-Mh
+ for barebox@lists.infradead.org; Mon, 30 Jul 2012 08:59:40 +0000
+Date: Mon, 30 Jul 2012 10:59:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120730085224.GN30009@pengutronix.de>
-References: <1343387347-24504-1-git-send-email-j.weitzel@phytec.de>
- <201207271854.16758.jbe@pengutronix.de>
- <20120730074040.GG30009@pengutronix.de>
- <201207301011.32695.jbe@pengutronix.de>
+Message-ID: <20120730085935.GO30009@pengutronix.de>
+References: <20120727183103.GX22657@game.jcrosoft.org>
+ <1343413990-31891-1-git-send-email-plagnioj@jcrosoft.com>
+ <1343413990-31891-10-git-send-email-plagnioj@jcrosoft.com>
+ <20120730080227.GK30009@pengutronix.de>
+ <20120730081942.GE26655@game.jcrosoft.org>
+ <20120730083048.GM30009@pengutronix.de>
+ <20120730084943.GA19759@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <201207301011.32695.jbe@pengutronix.de>
+In-Reply-To: <20120730084943.GA19759@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,58 +28,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] omap: use 512k barebox partition
-To: Juergen Beisert <jbe@pengutronix.de>
+Subject: Re: [PATCH 10/12] ARM: add early malloc support needed by the
+ decompressor
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jul 30, 2012 at 10:11:32AM +0200, Juergen Beisert wrote:
-> Hi Sascha,
+On Mon, Jul 30, 2012 at 10:49:43AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 10:30 Mon 30 Jul     , Sascha Hauer wrote:
+> > On Mon, Jul 30, 2012 at 10:19:42AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > On 10:02 Mon 30 Jul     , Sascha Hauer wrote:
+> > > > On Fri, Jul 27, 2012 at 08:33:08PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > > This is not needed by lzo but by gunzip, xz and others.
+> > > > > 
+> > > > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > > > ---
+> > > > >  arch/arm/cpu/start.c |    7 +++++++
+> > > > >  1 file changed, 7 insertions(+)
+> > > > > 
+> > > > > diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+> > > > > index a54f5fd..f500ca8 100644
+> > > > > --- a/arch/arm/cpu/start.c
+> > > > > +++ b/arch/arm/cpu/start.c
+> > > > > @@ -28,6 +28,9 @@
+> > > > >  #include <asm-generic/memory_layout.h>
+> > > > >  #include <asm/sections.h>
+> > > > >  
+> > > > > +unsigned long free_mem_ptr;
+> > > > > +unsigned long free_mem_end_ptr;
+> > > > > +
+> > > > >  #ifdef CONFIG_PBL_IMAGE
+> > > > >  void __naked __section(.text_head_entry) pbl_start(void)
+> > > > >  {
+> > > > > @@ -193,6 +196,10 @@ void __naked __section(.text_ll_return) board_init_lowlevel_return(void)
+> > > > >  	/* clear bss */
+> > > > >  	memset(__bss_start, 0, __bss_stop - __bss_start);
+> > > > >  
+> > > > > +	/* set 128 KiB before the STACK_BASE - 16 address for early malloc */
+> > > > > +	free_mem_ptr = STACK_BASE - 0x20000 - 16;
+> > > > > +	free_mem_end_ptr = STACK_BASE - 16;
+> > > > > +
+> > > > 
+> > > > This assumes that the malloc area is directly before the stack. How
+> > > > about using __bss_stop or _end instead?
+> > > 
+> > > it's just for early alloc and __bss_stop no so maybe we can use the same as
+> > > Malloc but we already use this for HEAD_TEXT_BASE
+> > 
+> > _end is HEAD_TEXT_BASE + the space needed for the compressed
+> > image, so what's wrong with it?
+> the pbl image can be stored in a sram and link to fit there so _end could be
+> at the end of the sram
 > 
-> Sascha Hauer wrote:
-> > On Fri, Jul 27, 2012 at 06:54:16PM +0200, Juergen Beisert wrote:
-> > > Sascha Hauer wrote:
-> > > > On Fri, Jul 27, 2012 at 01:09:07PM +0200, Jan Weitzel wrote:
-> > > > > Use 512k NAND Partion for barebox. Problem is we don't know the size
-> > > > > of the barebox inside xload. Set it also to 512k
-> > > > > Fix enviroment for boards with size in config
-> > > >
-> > > > The barebox binary has the size encoded into it at offset 0x2c. We
-> > > > could use this to transfer the correct size.
-> > >
-> > > Will this be a reliable "API" to the outerworld? Also in future versions
-> > > of Barebox?
-> >
-> > Yes, definitely.
-> >
-> > That said, it is not a feature you can generally rely upon, because some
-> > SoCs may require some special image layout conflicting with this.
+> so we can not use it.
 > 
-> This would require a "movable marker" inside the binary image.
-> 
-> > If your SoC can support this header, barebox will support it in the future
-> > aswell.
-> 
-> Okay.
-> 
-> > The header is in arch/arm/include/asm/barebox-arm-head.h. As you can see
-> > it also contains the ascii string 'barebox' which means that you can
-> > test for it, and if you find it, the next word will contain the address
-> > this binary should be copied to (only used to skip copying the binary to
-> > the correct place, it's not mandatory to start the image there). The
-> > word after it will contain the image size.
-> >
-> > This means, what you can do is:
-> >
-> > - Test if the image contains 'barebox'
-> 
-> This might be very dangerous, as this kind of string can be part of the binary 
-> more than one times, if it is used as part of an output string for example 
-> ("Hi, barebox here").
+> We need to put the early malloc in the sdram
 
-Should have said: 'contains the string 'barebox' at offset 0x20'
+HEAD_TEXT_BASE is in sdram, because it's the same as MALLOC_BASE, so
+_end by definition also is in sdram.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
