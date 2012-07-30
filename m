@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo1.mail-out.ovh.net ([188.165.38.232]
+Received: from 7.mo1.mail-out.ovh.net ([87.98.158.110]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SvmoQ-0001g9-7v
- for barebox@lists.infradead.org; Mon, 30 Jul 2012 10:02:54 +0000
+ id 1SvmoQ-0001gM-Rd
+ for barebox@lists.infradead.org; Mon, 30 Jul 2012 10:02:55 +0000
 Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id D1F20FF9B27
- for <barebox@lists.infradead.org>; Mon, 30 Jul 2012 12:08:51 +0200 (CEST)
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 6C9D0FF9B32
+ for <barebox@lists.infradead.org>; Mon, 30 Jul 2012 12:08:54 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 30 Jul 2012 12:02:39 +0200
-Message-Id: <1343642565-32257-6-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 30 Jul 2012 12:02:44 +0200
+Message-Id: <1343642565-32257-11-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1343642565-32257-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120730100022.GD19759@game.jcrosoft.org>
  <1343642565-32257-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,28 +26,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/12] only compress default env in uncompressed images
+Subject: [PATCH 11/12] kbuild: allow to have custom cppflags for pbl
 To: barebox@lists.infradead.org
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ scripts/Makefile.build |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 7b5a307..40f0c71 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -511,6 +511,7 @@ config DEFAULT_ENVIRONMENT
- config DEFAULT_ENVIRONMENT_COMPRESSED
- 	bool
- 	depends on DEFAULT_ENVIRONMENT
-+	depends on !IMAGE_COMPRESSION_LZO
- 	default y if ZLIB
- 	default y if BZLIB
- 	default y if LZO_DECOMPRESS
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index e5b7779..383d73f 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -188,7 +188,7 @@ quiet_cmd_pbl_cc_o_c = PBLCC   $@
+ 
+ ifndef CONFIG_MODVERSIONS
+ cmd_cc_o_c = $(CC) $(c_flags) -c -o $@ $<
+-cmd_pbl_cc_o_c = $(CC) -D__PBL__ $(c_flags) -c -o $@ $<
++cmd_pbl_cc_o_c = $(CC) -D__PBL__ $(c_flags) $(PBL_CPPFLAGS) -c -o $@ $<
+ 
+ else
+ # When module versioning is enabled the following steps are executed:
+@@ -282,7 +282,7 @@ quiet_cmd_as_o_S = AS $(quiet_modtag)  $@
+ cmd_as_o_S       = $(CC) $(a_flags) -c -o $@ $<
+ 
+ quiet_cmd_pbl_as_o_S = PBLAS   $@
+-cmd_pbl_as_o_S       = $(CC) -D__PBL__ $(a_flags) -c -o $@ $<
++cmd_pbl_as_o_S       = $(CC) -D__PBL__ $(a_flags) $(PBL_CPPFLAGS) -c -o $@ $<
+ 
+ pbl-%.o: %.S
+ 	$(call if_changed_dep,pbl_as_o_S)
 -- 
 1.7.10.4
 
