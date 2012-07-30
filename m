@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Svkax-0006Ef-0b
- for barebox@lists.infradead.org; Mon, 30 Jul 2012 07:40:52 +0000
-Date: Mon, 30 Jul 2012 09:40:40 +0200
+ id 1Svkhu-0007wN-IJ
+ for barebox@lists.infradead.org; Mon, 30 Jul 2012 07:48:03 +0000
+Date: Mon, 30 Jul 2012 09:47:47 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120730074040.GG30009@pengutronix.de>
-References: <1343387347-24504-1-git-send-email-j.weitzel@phytec.de>
- <20120727151936.GF30009@pengutronix.de>
- <201207271854.16758.jbe@pengutronix.de>
+Message-ID: <20120730074747.GH30009@pengutronix.de>
+References: <1343450217-17073-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <201207271854.16758.jbe@pengutronix.de>
+In-Reply-To: <1343450217-17073-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,47 +22,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] omap: use 512k barebox partition
-To: Juergen Beisert <jbe@pengutronix.de>, g@pengutronix.de
+Subject: Re: [PATCH 1/1] arm: add debug_ll support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jul 27, 2012 at 06:54:16PM +0200, Juergen Beisert wrote:
-> Hi Sascha,
-> 
-> Sascha Hauer wrote:
-> > On Fri, Jul 27, 2012 at 01:09:07PM +0200, Jan Weitzel wrote:
-> > > Use 512k NAND Partion for barebox. Problem is we don't know the size of
-> > > the barebox inside xload. Set it also to 512k
-> > > Fix enviroment for boards with size in config
-> >
-> > The barebox binary has the size encoded into it at offset 0x2c. We could
-> > use this to transfer the correct size.
-> 
-> Will this be a reliable "API" to the outerworld? Also in future versions of 
-> Barebox?
 
-Yes, definitely.
-
-That said, it is not a feature you can generally rely upon, because some
-SoCs may require some special image layout conflicting with this. If
-your SoC can support this header, barebox will support it in the future
-aswell.
-
-The header is in arch/arm/include/asm/barebox-arm-head.h. As you can see
-it also contains the ascii string 'barebox' which means that you can
-test for it, and if you find it, the next word will contain the address
-this binary should be copied to (only used to skip copying the binary to
-the correct place, it's not mandatory to start the image there). The
-word after it will contain the image size.
-
-This means, what you can do is:
-
-- Test if the image contains 'barebox'
-- if yes, use the encoded image size
-- if no, fall back to whatever suitable size (It could be a U-Boot image
-  for example)
+The subject is wrong, it's not 'arm:', but 'ARM at91:'
 
 Sascha
+
+On Sat, Jul 28, 2012 at 06:36:57AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Today we only use the DBGU port
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/Kconfig                           |    1 +
+>  arch/arm/mach-at91/include/mach/debug_ll.h |   37 ++++++++++++++++++++++++++++
+>  2 files changed, 38 insertions(+)
+>  create mode 100644 arch/arm/mach-at91/include/mach/debug_ll.h
+> 
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 245bec8..a7f1bfb 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -25,6 +25,7 @@ config ARCH_AT91
+>  	bool "Atmel AT91"
+>  	select GENERIC_GPIO
+>  	select CLKDEV_LOOKUP
+> +	select HAS_DEBUG_LL
+>  
+>  config ARCH_EP93XX
+>  	bool "Cirrus Logic EP93xx"
+> diff --git a/arch/arm/mach-at91/include/mach/debug_ll.h b/arch/arm/mach-at91/include/mach/debug_ll.h
+> new file mode 100644
+> index 0000000..ee824cb
+> --- /dev/null
+> +++ b/arch/arm/mach-at91/include/mach/debug_ll.h
+> @@ -0,0 +1,37 @@
+> +/*
+> + * Copyright (C) 2012
+> + * Jean-Christophe PLAGNIOL-VILLARD <planioj@jcrosoft.com>
+> + *
+> + * Under GPLv2
+> + */
+> +
+> +#ifndef __MACH_DEBUG_LL_H__
+> +#define __MACH_DEBUG_LL_H__
+> +
+> +#include <asm/io.h>
+> +#include <mach/hardware.h>
+> +
+> +#define UART_BASE	(AT91_BASE_SYS + AT91_DBGU)
+> +
+> +#define ATMEL_US_CSR		0x0014
+> +#define ATMEL_US_THR		0x001c
+> +#define ATMEL_US_TXRDY		(1 << 1)
+> +#define ATMEL_US_TXEMPTY	(1 << 9)
+> +
+> +/*
+> + * The following code assumes the serial port has already been
+> + * initialized by the bootloader.  If you didn't setup a port in
+> + * your bootloader then nothing will appear (which might be desired).
+> + *
+> + * This does not append a newline
+> + */
+> +static void putc(int c)
+> +{
+> +	while (!(__raw_readl(UART_BASE + ATMEL_US_CSR) & ATMEL_US_TXRDY))
+> +		barrier();
+> +	__raw_writel(c, UART_BASE + ATMEL_US_THR);
+> +
+> +	while (!(__raw_readl(UART_BASE + ATMEL_US_CSR) & ATMEL_US_TXEMPTY))
+> +		barrier();
+> +}
+> +#endif
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
