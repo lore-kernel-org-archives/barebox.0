@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-vc0-f177.google.com ([209.85.220.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SvsGa-0008Gj-2r
- for barebox@lists.infradead.org; Mon, 30 Jul 2012 15:52:20 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 30 Jul 2012 17:51:48 +0200
-References: <20120730100022.GD19759@game.jcrosoft.org>
- <20120730164457.6c7e5ea7@skate> <20120730150231.GF19759@game.jcrosoft.org>
-In-Reply-To: <20120730150231.GF19759@game.jcrosoft.org>
+ id 1SvsL6-0008QB-I2
+ for barebox@lists.infradead.org; Mon, 30 Jul 2012 15:57:03 +0000
+Received: by vcbfl13 with SMTP id fl13so4828893vcb.36
+ for <barebox@lists.infradead.org>; Mon, 30 Jul 2012 08:56:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201207301751.48196.jbe@pengutronix.de>
+In-Reply-To: <20120730154525.GP1528@pengutronix.de>
+References: <20120730145916.GE19759@game.jcrosoft.org>
+ <20120730170548.00b874d4@eb-e6520>
+ <20120730153827.GG19759@game.jcrosoft.org>
+ <20120730154525.GP1528@pengutronix.de>
+From: Igor Trevisan <igt1972@gmail.com>
+Date: Mon, 30 Jul 2012 17:56:27 +0200
+Message-ID: <CALQ+5admPYu-AZ8NN9dHm=pNEx=eYxKgB3Dy6BdjE9TGn+Xv-w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,51 +22,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/12 v3] Add Pre-Bootloader support
+Subject: Re: [ANNOUNCE] Barebox Logo
 To: barebox@lists.infradead.org
 
-Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 16:44 Mon 30 Jul     , Thomas Petazzoni wrote:
-> > Le Mon, 30 Jul 2012 12:38:43 +0200,
-> >
-> > Juergen Beisert <jbe@pengutronix.de> a =E9crit :
-> > > Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > [...]
-> > > > Currently on the compressed image is implemented the boot really on
-> > > > current lowlevel init support.
-> > >
-> > > ^ Does this sentence makes any sense?
-> > >
-> > > This patch set seems an important addition, so I think it needs a
-> > > little bit more of documentation. But wait...I know...nobody reads
-> > > documentation...
-> >
-> > I agree. I also very interested by this feature and it sounds a great
-> > feature, but the patch set lacks a little of explanations on what it
-> > does and how it works.
+> I don't see an attachment to neither this mail nor the annoucement. And
+> I guess it's not just me but at least also Eric who has this problem.
 >
-> simple does like the ARM linux kernel
->
-> I've not time to do the DoC those days
 
-e: lame excuse
-d: faule Ausrede
-f: mauvaise excuse
+I think Jean-Christophe solved the problem...
+I could see the logo attached to his last email.
+Anyway...
+Nice bootloader... nice Logo! :-)
+I.
 
-;)
-
-jbe
-
--- =
-
-Pengutronix e.K.                              | Juergen Beisert            =
- |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/ =
- |
+-- 
+"Don't find fault, find a remedy."
+(Henry Ford)
 
 _______________________________________________
 barebox mailing list
