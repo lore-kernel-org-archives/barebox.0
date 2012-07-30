@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Svs9y-0007gq-EN
- for barebox@lists.infradead.org; Mon, 30 Jul 2012 15:45:30 +0000
-Date: Mon, 30 Jul 2012 17:45:25 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20120730154525.GP1528@pengutronix.de>
-References: <20120730145916.GE19759@game.jcrosoft.org>
- <20120730170548.00b874d4@eb-e6520>
- <20120730153827.GG19759@game.jcrosoft.org>
+ id 1SvsGa-0008Gj-2r
+ for barebox@lists.infradead.org; Mon, 30 Jul 2012 15:52:20 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Mon, 30 Jul 2012 17:51:48 +0200
+References: <20120730100022.GD19759@game.jcrosoft.org>
+ <20120730164457.6c7e5ea7@skate> <20120730150231.GF19759@game.jcrosoft.org>
+In-Reply-To: <20120730150231.GF19759@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120730153827.GG19759@game.jcrosoft.org>
+Message-Id: <201207301751.48196.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,36 +23,47 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [ANNOUNCE] Barebox Logo
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Valery VILLARD <valery@jcrosoft.com>
+Subject: Re: [PATCH 00/12 v3] Add Pre-Bootloader support
+To: barebox@lists.infradead.org
 
-On Mon, Jul 30, 2012 at 05:38:27PM +0200, Jean-Christophe PLAGNIOL-VILLARD =
-wrote:
-> On 17:05 Mon 30 Jul     , Eric B=E9nard wrote:
-> > Hi,
-> > =
+Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 16:44 Mon 30 Jul     , Thomas Petazzoni wrote:
+> > Le Mon, 30 Jul 2012 12:38:43 +0200,
+> >
+> > Juergen Beisert <jbe@pengutronix.de> a =E9crit :
+> > > Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > [...]
+> > > > Currently on the compressed image is implemented the boot really on
+> > > > current lowlevel init support.
+> > >
+> > > ^ Does this sentence makes any sense?
+> > >
+> > > This patch set seems an important addition, so I think it needs a
+> > > little bit more of documentation. But wait...I know...nobody reads
+> > > documentation...
+> >
+> > I agree. I also very interested by this feature and it sounds a great
+> > feature, but the patch set lacks a little of explanations on what it
+> > does and how it works.
+>
+> simple does like the ARM linux kernel
+>
+> I've not time to do the DoC those days
 
-> > Le Mon, 30 Jul 2012 16:59:16 +0200,
-> > Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
-> > > 	Today is a special day, Sascha and I are plese to
-> > > 	we welcome our new moscot via it's logo
-> > > =
+e: lame excuse
+d: faule Ausrede
+f: mauvaise excuse
 
-> > > 	This logo is designed by our designer Valery VILLARD
-> > > =
+;)
 
-> > where can we see it ?
-> Attached to the e-mail and Sascha will upload on the webserver
-I don't see an attachment to neither this mail nor the annoucement. And
-I guess it's not just me but at least also Eric who has this problem.
-
-Uwe
+jbe
 
 -- =
 
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Pengutronix e.K.                              | Juergen Beisert            =
+ |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/ =
+ |
 
 _______________________________________________
 barebox mailing list
