@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SvntI-0004At-Fa
- for barebox@lists.infradead.org; Mon, 30 Jul 2012 11:12:01 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Mon, 30 Jul 2012 13:11:53 +0200
-Message-Id: <1343646714-18888-1-git-send-email-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <1343378484-19963-1-git-send-email-u.kleine-koenig@pengutronix.de>
-References: <1343378484-19963-1-git-send-email-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+Received: from 12.mo1.mail-out.ovh.net ([87.98.162.229]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1SvonI-0007mk-3C
+ for barebox@lists.infradead.org; Mon, 30 Jul 2012 12:09:52 +0000
+Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 4A48CFF9518
+ for <barebox@lists.infradead.org>; Mon, 30 Jul 2012 14:15:51 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Mon, 30 Jul 2012 14:09:48 +0200
+Message-Id: <1343650188-17578-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,56 +18,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] ARM/imx/pcm043: increase size of "self" partition
+Subject: [PATCH 1/1] gadget: fix Kconfig: move config under if
 To: barebox@lists.infradead.org
 
-QSBiYXJlYm94IGltYWdlIGdlbmVyYXRlZCBmcm9tIHBjbTA0M19kZWZjb25maWcgZG9lc24ndCBm
-aXQgaW50byB0aGUKMHg0MDAwMCBieXRlIHNpemVkIHNlbGYgcGFydGl0aW9uIGFzIG9mCgoJdjIw
-MTIuMDcuMC0xNTMtZzE0YzhjNjAgKGNvbW1hbmQ6IGFkZCBtaXNzaW5nIEVYUE9SVF9TWU1CT0wg
-Zm9yIGZpbmRfY21kKQoKLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xl
-aW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvcGNtMDQzL2Vu
-di9jb25maWcgfCAgICA0ICsrLS0KIGFyY2gvYXJtL2JvYXJkcy9wY20wNDMvcGNtMDQzLmMgICB8
-ICAgIDggKysrKy0tLS0KIDIgZmlsZXMgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspLCA2IGRlbGV0
-aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9wY20wNDMvZW52L2NvbmZpZyBi
-L2FyY2gvYXJtL2JvYXJkcy9wY20wNDMvZW52L2NvbmZpZwppbmRleCA2NDRjN2ZiLi5jNDhmODdj
-IDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcGNtMDQzL2Vudi9jb25maWcKKysrIGIvYXJj
-aC9hcm0vYm9hcmRzL3BjbTA0My9lbnYvY29uZmlnCkBAIC00MiwxMCArNDIsMTAgQEAgYm9vdGFy
-Z3M9ImNvbnNvbGU9dHR5bXhjMCwxMTUyMDAiCiAKIGJvb3RhcmdzPSIkYm9vdGFyZ3MgdmlkZW89
-bXgzZmI6Q1RQLUNMQUEwNzBMQzBBQ1ciCiAKLW5vcl9wYXJ0cz0iMjU2ayhiYXJlYm94KXJvLDEy
-OGsoYmFyZWJveGVudiksMk0oa2VybmVsKSwtKHJvb3QpIgorbm9yX3BhcnRzPSIzODRrKGJhcmVi
-b3gpcm8sMTI4ayhiYXJlYm94ZW52KSwyTShrZXJuZWwpLC0ocm9vdCkiCiByb290ZnNfbXRkYmxv
-Y2tfbm9yPTMKIAotbmFuZF9wYXJ0cz0iMjU2ayhiYXJlYm94KXJvLDEyOGsoYmFyZWJveGVudiks
-Mk0oa2VybmVsKSwtKHJvb3QpIgorbmFuZF9wYXJ0cz0iMzg0ayhiYXJlYm94KXJvLDEyOGsoYmFy
-ZWJveGVudiksMk0oa2VybmVsKSwtKHJvb3QpIgogcm9vdGZzX210ZGJsb2NrX25hbmQ9NwogCiAj
-IHNldCBhIGZhbmN5IHByb21wdCAoaWYgc3VwcG9ydCBpcyBjb21waWxlZCBpbikKZGlmZiAtLWdp
-dCBhL2FyY2gvYXJtL2JvYXJkcy9wY20wNDMvcGNtMDQzLmMgYi9hcmNoL2FybS9ib2FyZHMvcGNt
-MDQzL3BjbTA0My5jCmluZGV4IGIxYmY4ZWYuLjdjY2Q5NzMgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJt
-L2JvYXJkcy9wY20wNDMvcGNtMDQzLmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BjbTA0My9wY20w
-NDMuYwpAQCAtMTUzLDE1ICsxNTMsMTUgQEAgc3RhdGljIGludCBpbXgzNV9kZXZpY2VzX2luaXQo
-dm9pZCkKIAlpZiAoKHJlZyAmIDB4YzAwKSA9PSAweDgwMCkgeyAgIC8qIHJlc2V0IG1vZGU6IGV4
-dGVybmFsIGJvb3QgKi8KIAkJc3dpdGNoICggKHJlZyA+PiAyNSkgJiAweDMpIHsKIAkJY2FzZSAw
-eDAxOiAgICAgICAgICAgICAgLyogTkFORCBpcyB0aGUgc291cmNlICovCi0JCQlkZXZmc19hZGRf
-cGFydGl0aW9uKCJuYW5kMCIsIDB4MDAwMDAsIDB4NDAwMDAsIERFVkZTX1BBUlRJVElPTl9GSVhF
-RCwgInNlbGZfcmF3Iik7CisJCQlkZXZmc19hZGRfcGFydGl0aW9uKCJuYW5kMCIsIDB4MDAwMDAs
-IDB4NjAwMDAsIERFVkZTX1BBUlRJVElPTl9GSVhFRCwgInNlbGZfcmF3Iik7CiAJCQlkZXZfYWRk
-X2JiX2Rldigic2VsZl9yYXciLCAic2VsZjAiKTsKLQkJCWRldmZzX2FkZF9wYXJ0aXRpb24oIm5h
-bmQwIiwgMHg0MDAwMCwgMHgyMDAwMCwgREVWRlNfUEFSVElUSU9OX0ZJWEVELCAiZW52X3JhdyIp
-OworCQkJZGV2ZnNfYWRkX3BhcnRpdGlvbigibmFuZDAiLCAweDYwMDAwLCAweDIwMDAwLCBERVZG
-U19QQVJUSVRJT05fRklYRUQsICJlbnZfcmF3Iik7CiAJCQlkZXZfYWRkX2JiX2RldigiZW52X3Jh
-dyIsICJlbnYwIik7CiAJCQlicmVhazsKIAogCQljYXNlIDB4MDA6ICAgICAgICAgICAgICAvKiBO
-T1IgaXMgdGhlIHNvdXJjZSAqLwotCQkJZGV2ZnNfYWRkX3BhcnRpdGlvbigibm9yMCIsIDB4MDAw
-MDAsIDB4NDAwMDAsIERFVkZTX1BBUlRJVElPTl9GSVhFRCwgInNlbGYwIik7IC8qIG91cnNlbGYg
-Ki8KLQkJCWRldmZzX2FkZF9wYXJ0aXRpb24oIm5vcjAiLCAweDQwMDAwLCAweDIwMDAwLCBERVZG
-U19QQVJUSVRJT05fRklYRUQsICJlbnYwIik7ICAvKiBlbnZpcm9ubWVudCAqLworCQkJZGV2ZnNf
-YWRkX3BhcnRpdGlvbigibm9yMCIsIDB4MDAwMDAsIDB4NjAwMDAsIERFVkZTX1BBUlRJVElPTl9G
-SVhFRCwgInNlbGYwIik7IC8qIG91cnNlbGYgKi8KKwkJCWRldmZzX2FkZF9wYXJ0aXRpb24oIm5v
-cjAiLCAweDYwMDAwLCAweDIwMDAwLCBERVZGU19QQVJUSVRJT05fRklYRUQsICJlbnYwIik7ICAv
-KiBlbnZpcm9ubWVudCAqLwogCQkJcHJvdGVjdF9maWxlKCIvZGV2L2VudjAiLCAxKTsKIAkJCWJy
-ZWFrOwogCQl9Ci0tIAoxLjcuMTAuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+so the submenu display correctly
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/usb/gadget/Kconfig |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
+index 465121c..6935408 100644
+--- a/drivers/usb/gadget/Kconfig
++++ b/drivers/usb/gadget/Kconfig
+@@ -2,12 +2,12 @@ menuconfig USB_GADGET
+ 	depends on USB_HAVE_GADGET_DRIVER
+ 	bool "USB gadget support            "
+ 
++if USB_GADGET
++
+ config USB_HAVE_GADGET_DRIVER
+ 	bool
+ 	default y if ARCH_IMX || ARCH_MXS || ARCH_AT91 || ARCH_PXA
+ 
+-if USB_GADGET
+-
+ config USB_GADGET_DUALSPEED
+ 	bool
+ 
+-- 
+1.7.10.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
