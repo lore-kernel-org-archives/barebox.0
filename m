@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SwGlW-0005vE-SL
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SwGlX-0002pK-Px
  for barebox@lists.infradead.org; Tue, 31 Jul 2012 18:01:56 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1SwGlT-00082C-1b
- for barebox@lists.infradead.org; Tue, 31 Jul 2012 20:01:51 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1SwGlT-0003ko-0Z
- for barebox@lists.infradead.org; Tue, 31 Jul 2012 20:01:51 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 31 Jul 2012 20:01:46 +0200
-Message-Id: <1343757710-12659-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 31 Jul 2012 20:01:48 +0200
+Message-Id: <1343757710-12659-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1343757710-12659-1-git-send-email-s.hauer@pengutronix.de>
+References: <1343757710-12659-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,47 +21,96 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Freescale sabrelite support
+Subject: [PATCH 2/4] ARM i.MX: Add support for internal serial boot mode
 To: barebox@lists.infradead.org
 
-The following series adds support for the Freescale i.MX6 sabrelite board.
-As preparation SPI support for i.MX6 and support for the serial internal
-boot mode is added.
+This mode is needed for bootstrapping a board via USB serial.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/Kconfig                         |   10 ++++++++++
+ arch/arm/mach-imx/include/mach/barebox.lds.h      |   12 +++++++++++-
+ arch/arm/mach-imx/include/mach/imx-flash-header.h |    9 +++++++++
+ 3 files changed, 30 insertions(+), 1 deletion(-)
 
-----------------------------------------------------------------
-Sascha Hauer (4):
-      SPI i.MX: Add support for i.MX6
-      ARM i.MX: Add support for internal serial boot mode
-      ARM i.MX: Add support for the Freescale i.MX6 sabrelite board
-      ARM i.MX: Add defconfig for Freescale i.MX6 Sabre Lite board
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 5b77245..e54d498 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -101,6 +101,16 @@ config ARCH_IMX_INTERNAL_BOOT_NOR
+ config ARCH_IMX_INTERNAL_BOOT_ONENAND
+ 	bool "OneNAND"
+ 
++config ARCH_IMX_INTERNAL_BOOT_SERIAL
++	bool "Serial (read help)"
++	help
++	  Normally the first instruction of the barebox image contains a jump
++	  to the real start of the image which means that you can start it by
++	  jumping to the load address. With serial boot images this is not
++	  possible because the first instruction is occupied by a magic for the
++	  ROM boot code. You can still start this image as a second stage loader,
++	  but you have to add 0x400 to the entry point.
++
+ endchoice
+ 
+ config NAND_IMX_BOOT
+diff --git a/arch/arm/mach-imx/include/mach/barebox.lds.h b/arch/arm/mach-imx/include/mach/barebox.lds.h
+index a2932bd..2e60282 100644
+--- a/arch/arm/mach-imx/include/mach/barebox.lds.h
++++ b/arch/arm/mach-imx/include/mach/barebox.lds.h
+@@ -1,6 +1,16 @@
+ 
+ #ifdef CONFIG_ARCH_IMX_INTERNAL_BOOT
+ 
++#ifdef CONFIG_ARCH_IMX_INTERNAL_BOOT_SERIAL
++#define PRE_IMAGE \
++	.pre_image : {					\
++		KEEP(*(.flash_header_0x0*))		\
++		KEEP(*(.dcd_entry_0x0*))		\
++		KEEP(*(.image_len_0x0*))		\
++		. = 0x400;				\
++	}
++#else
++
+ #define PRE_IMAGE \
+ 	.pre_image : {					\
+ 		KEEP(*(.flash_header_start*))		\
+@@ -19,4 +29,4 @@
+ 		. = 0x2000;				\
+ 	}
+ #endif
+-
++#endif
+diff --git a/arch/arm/mach-imx/include/mach/imx-flash-header.h b/arch/arm/mach-imx/include/mach/imx-flash-header.h
+index ca2fe9f..a51d473 100644
+--- a/arch/arm/mach-imx/include/mach/imx-flash-header.h
++++ b/arch/arm/mach-imx/include/mach/imx-flash-header.h
+@@ -15,6 +15,11 @@
+ 	#define __dcd_entry_section		__section(.dcd_entry_0x0100)
+ 	#define __image_len_section		__section(.image_len_0x0100)
+ 	#define FLASH_HEADER_OFFSET 0x0100
++#elif defined(CONFIG_ARCH_IMX_INTERNAL_BOOT_SERIAL)
++	#define __flash_header_section		__section(.flash_header_0x0)
++	#define __dcd_entry_section		__section(.dcd_entry_0x0)
++	#define __image_len_section		__section(.image_len_0x0)
++	#define FLASH_HEADER_OFFSET 0x0
+ #else
+ 	#define __flash_header_section		__section(.flash_header_0x0400)
+ 	#define __dcd_entry_section		__section(.dcd_entry_0x0400)
+@@ -34,6 +39,10 @@
+ #define __dcd_entry_0x0400	__section(.dcd_entry_0x0400)
+ #define __image_len_0x0400	__section(.image_len_0x0400)
+ 
++#define __flash_header_0x0	__section(.flash_header_0x0)
++#define __dcd_entry_0x0		__section(.dcd_entry_0x0)
++#define __image_len_0x0		__section(.image_len_0x0)
++
+ /*
+  * NOR is not automatically copied anywhere by the boot ROM
+  */
+-- 
+1.7.10.4
 
- arch/arm/Makefile                                  |    1 +
- arch/arm/boards/freescale-mx6-sabrelite/Makefile   |    1 +
- arch/arm/boards/freescale-mx6-sabrelite/board.c    |  265 ++++++++++++++++++++
- arch/arm/boards/freescale-mx6-sabrelite/config.h   |    4 +
- .../freescale-mx6-sabrelite/env/init/bootargs-base |    8 +
- .../freescale-mx6-sabrelite/env/init/hostname      |    8 +
- .../boards/freescale-mx6-sabrelite/flash_header.c  |  178 +++++++++++++
- arch/arm/configs/freescale-mx6-sabrelite_defconfig |   71 ++++++
- arch/arm/mach-imx/Kconfig                          |   15 ++
- arch/arm/mach-imx/include/mach/barebox.lds.h       |   12 +-
- arch/arm/mach-imx/include/mach/devices-imx6.h      |    5 +
- arch/arm/mach-imx/include/mach/imx-flash-header.h  |    9 +
- arch/arm/mach-imx/speed-imx51.c                    |    5 +
- arch/arm/mach-imx/speed-imx53.c                    |    5 +
- arch/arm/mach-imx/speed-imx6.c                     |    5 +
- drivers/spi/Kconfig                                |    2 +-
- drivers/spi/imx_spi.c                              |    6 +-
- 17 files changed, 595 insertions(+), 5 deletions(-)
- create mode 100644 arch/arm/boards/freescale-mx6-sabrelite/Makefile
- create mode 100644 arch/arm/boards/freescale-mx6-sabrelite/board.c
- create mode 100644 arch/arm/boards/freescale-mx6-sabrelite/config.h
- create mode 100644 arch/arm/boards/freescale-mx6-sabrelite/env/init/bootargs-base
- create mode 100644 arch/arm/boards/freescale-mx6-sabrelite/env/init/hostname
- create mode 100644 arch/arm/boards/freescale-mx6-sabrelite/flash_header.c
- create mode 100644 arch/arm/configs/freescale-mx6-sabrelite_defconfig
 
 _______________________________________________
 barebox mailing list
