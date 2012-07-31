@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SwGj5-0001g3-Ou
- for barebox@lists.infradead.org; Tue, 31 Jul 2012 17:59:24 +0000
+ id 1SwGj5-0001g2-Ow
+ for barebox@lists.infradead.org; Tue, 31 Jul 2012 17:59:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 31 Jul 2012 19:59:11 +0200
-Message-Id: <1343757556-11897-2-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 31 Jul 2012 19:59:16 +0200
+Message-Id: <1343757556-11897-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1343757556-11897-1-git-send-email-s.hauer@pengutronix.de>
 References: <1343757556-11897-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,68 +21,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] nor m25p80: remove progression bar
+Subject: [PATCH 6/6] nor m25p80: implement fast read
 To: barebox@lists.infradead.org
 
-Drivers should not print a progression bar.
+The fast read command is needed for spi speeds > 25MHz, so use it for
+higher speeds.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/nor/m25p80.c |    8 --------
- 1 file changed, 8 deletions(-)
+ drivers/nor/m25p80.c |   12 ++++++++----
+ drivers/nor/m25p80.h |   10 +---------
+ 2 files changed, 9 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/nor/m25p80.c b/drivers/nor/m25p80.c
-index 1440227..594e9d2 100644
+index 4b62e93..daaf60c 100644
 --- a/drivers/nor/m25p80.c
 +++ b/drivers/nor/m25p80.c
-@@ -28,7 +28,6 @@
- #include <linux/err.h>
- #include <clock.h>
- #include <linux/mtd/mtd.h>
--#include <progress.h>
- #include "m25p80.h"
+@@ -267,6 +267,7 @@ ssize_t m25p80_read(struct cdev *cdev, void *buf, size_t count, loff_t offset,
+ 	struct spi_transfer t[2];
+ 	struct spi_message m;
+ 	ssize_t retlen;
++	int fast_read = 0;
  
- /****************************************************************************/
-@@ -200,7 +199,6 @@ static ssize_t m25p80_erase(struct cdev *cdev, size_t count, loff_t offset)
- 	u32 addr, len;
- 	u32 start_sector;
- 	u32 end_sector;
--	u32 progress = 0;
- 	int eraseshift = ffs(flash->erasesize) - 1;
+ 	/* sanity checks */
+ 	if (!count)
+@@ -275,6 +276,9 @@ ssize_t m25p80_read(struct cdev *cdev, void *buf, size_t count, loff_t offset,
+ 	if (offset + count > flash->size)
+ 		return -EINVAL;
  
- 	dev_dbg(&flash->spi->dev, "%s %s 0x%llx, len %lld\n",
-@@ -215,15 +213,12 @@ static ssize_t m25p80_erase(struct cdev *cdev, size_t count, loff_t offset)
++	if (flash->spi->max_speed_hz >= 25000000)
++		fast_read = 1;
++
+ 	spi_message_init(&m);
+ 	memset(t, 0, (sizeof t));
  
- 	start_sector = offset >> eraseshift;
- 	end_sector = (offset + count - 1) >> eraseshift;
--	init_progression_bar(end_sector - start_sector + 1);
+@@ -283,7 +287,7 @@ ssize_t m25p80_read(struct cdev *cdev, void *buf, size_t count, loff_t offset,
+ 	 * Should add 1 byte DUMMY_BYTE.
+ 	 */
+ 	t[0].tx_buf = flash->command;
+-	t[0].len = m25p_cmdsz(flash) + FAST_READ_DUMMY_BYTE;
++	t[0].len = m25p_cmdsz(flash) + fast_read;
+ 	spi_message_add_tail(&t[0], &m);
  
- 	/* whole-chip erase? */
- 	if (len == flash->size) {
+ 	t[1].rx_buf = buf;
+@@ -303,12 +307,12 @@ ssize_t m25p80_read(struct cdev *cdev, void *buf, size_t count, loff_t offset,
+ 	 */
  
--		show_progress(start_sector);
- 		if (erase_chip(flash))
- 			return -EIO;
--		show_progress(end_sector);
+ 	/* Set up the write data buffer. */
+-	flash->command[0] = OPCODE_READ;
++	flash->command[0] = fast_read ? OPCODE_FAST_READ : OPCODE_NORM_READ;
+ 	m25p_addr2cmd(flash, offset, flash->command);
  
- 	/* REVISIT in some cases we could speed up erasing large regions
- 	 * by using OPCODE_SE instead of OPCODE_BE_4K.  We may have set up
-@@ -238,7 +233,6 @@ static ssize_t m25p80_erase(struct cdev *cdev, size_t count, loff_t offset)
- 			if (erase_sector(flash, addr))
- 				return -EIO;
+ 	spi_sync(flash->spi, &m);
  
--			show_progress(++progress);
- 			if (len <= flash->erasesize)
- 				break;
- 			addr += flash->erasesize;
-@@ -246,8 +240,6 @@ static ssize_t m25p80_erase(struct cdev *cdev, size_t count, loff_t offset)
- 		}
+-	retlen = m.actual_length - m25p_cmdsz(flash) - FAST_READ_DUMMY_BYTE;
++	retlen = m.actual_length - m25p_cmdsz(flash) - fast_read;
+ 
+ 	return retlen;
+ }
+@@ -756,7 +760,7 @@ static int m25p_probe(struct device_d *dev)
  	}
  
--	printf("\n");
+ 	flash = xzalloc(sizeof *flash);
+-	flash->command = xmalloc(MAX_CMD_SIZE + FAST_READ_DUMMY_BYTE);
++	flash->command = xmalloc(MAX_CMD_SIZE);
+ 
+ 	flash->spi = spi;
+ 	dev->priv = (void *)flash;
+diff --git a/drivers/nor/m25p80.h b/drivers/nor/m25p80.h
+index ce48ba7..34bf2e2 100644
+--- a/drivers/nor/m25p80.h
++++ b/drivers/nor/m25p80.h
+@@ -34,15 +34,7 @@
+ 
+ /* Define max times to check status register before we give up. */
+ #define	MAX_READY_WAIT		40	/* M25P16 specs 40s max chip erase */
+-#define MAX_CMD_SIZE		5
 -
- 	return 0;
- }
+-#ifdef CONFIG_M25PXX_USE_FAST_READ
+-#define OPCODE_READ		OPCODE_FAST_READ
+-#define FAST_READ_DUMMY_BYTE	1
+-#else
+-#define OPCODE_READ		OPCODE_NORM_READ
+-#define FAST_READ_DUMMY_BYTE	0
+-#endif
++#define MAX_CMD_SIZE		6
+ 
+ #define SPI_NAME_SIZE   32
  
 -- 
 1.7.10.4
