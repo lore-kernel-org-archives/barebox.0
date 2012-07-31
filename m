@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SwGle-0005vi-W5
- for barebox@lists.infradead.org; Tue, 31 Jul 2012 18:02:03 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SwGlf-0002qe-HG
+ for barebox@lists.infradead.org; Tue, 31 Jul 2012 18:02:04 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 31 Jul 2012 20:01:50 +0200
-Message-Id: <1343757710-12659-5-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 31 Jul 2012 20:01:47 +0200
+Message-Id: <1343757710-12659-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1343757710-12659-1-git-send-email-s.hauer@pengutronix.de>
 References: <1343757710-12659-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,93 +21,129 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] ARM i.MX: Add defconfig for Freescale i.MX6 Sabre Lite
- board
+Subject: [PATCH 1/4] SPI i.MX: Add support for i.MX6
 To: barebox@lists.infradead.org
+
+The i.MX5 does not have a valid function to get the spi clock. This
+patch introduces a function for i.MX6, and moves the bogus spi clock
+speed to the speed-imx5*.c. Not nice, but preserves the current status
+quo for i.MX5
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/configs/freescale-mx6-sabrelite_defconfig |   71 ++++++++++++++++++++
- 1 file changed, 71 insertions(+)
- create mode 100644 arch/arm/configs/freescale-mx6-sabrelite_defconfig
+ arch/arm/mach-imx/include/mach/devices-imx6.h |    5 +++++
+ arch/arm/mach-imx/speed-imx51.c               |    5 +++++
+ arch/arm/mach-imx/speed-imx53.c               |    5 +++++
+ arch/arm/mach-imx/speed-imx6.c                |    5 +++++
+ drivers/spi/Kconfig                           |    2 +-
+ drivers/spi/imx_spi.c                         |    6 +++---
+ 6 files changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/configs/freescale-mx6-sabrelite_defconfig b/arch/arm/configs/freescale-mx6-sabrelite_defconfig
-new file mode 100644
-index 0000000..7e6cfa1
---- /dev/null
-+++ b/arch/arm/configs/freescale-mx6-sabrelite_defconfig
-@@ -0,0 +1,71 @@
-+CONFIG_ARCH_IMX=y
-+CONFIG_ARCH_IMX6=y
-+CONFIG_MACH_SABRELITE=y
-+CONFIG_IMX_IIM=y
-+CONFIG_IMX_IIM_FUSE_BLOW=y
-+CONFIG_AEABI=y
-+CONFIG_THUMB2_BAREBOX=y
-+CONFIG_CMD_ARM_MMUINFO=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_ARM_UNWIND=y
-+CONFIG_MMU=y
-+CONFIG_MALLOC_SIZE=0x4000000
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_KALLSYMS=y
-+CONFIG_LONGHELP=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/freescale-mx6-sabrelite/env"
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_MENU=y
-+CONFIG_CMD_MENU_MANAGEMENT=y
-+CONFIG_CMD_TIME=y
-+CONFIG_CMD_BASENAME=y
-+CONFIG_CMD_DIRNAME=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_VERBOSE=y
-+CONFIG_CMD_BOOTM_INITRD=y
-+CONFIG_CMD_BOOTM_OFTREE=y
-+CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
-+CONFIG_CMD_BOOTM_AIMAGE=y
-+# CONFIG_CMD_BOOTZ is not set
-+# CONFIG_CMD_BOOTU is not set
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_RESOLV=y
-+CONFIG_DRIVER_NET_FEC_IMX=y
-+CONFIG_DRIVER_SPI_IMX=y
-+CONFIG_MTD_M25P80=y
-+CONFIG_MTD_SST25L=y
-+CONFIG_MTD=y
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+CONFIG_MCI_IMX_ESDHC=y
-+CONFIG_FS_TFTP=y
-+CONFIG_FS_NFS=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_LFN=y
-+CONFIG_LZO_DECOMPRESS=y
+diff --git a/arch/arm/mach-imx/include/mach/devices-imx6.h b/arch/arm/mach-imx/include/mach/devices-imx6.h
+index e4a72ac..ca063c5 100644
+--- a/arch/arm/mach-imx/include/mach/devices-imx6.h
++++ b/arch/arm/mach-imx/include/mach/devices-imx6.h
+@@ -44,3 +44,8 @@ static inline struct device_d *imx6_add_fec(struct fec_platform_data *pdata)
+ {
+ 	return imx_add_fec((void *)MX6_ENET_BASE_ADDR, pdata);
+ }
++
++static inline struct device_d *imx6_add_spi0(struct spi_imx_master *pdata)
++{
++	return imx_add_spi((void *)MX6_ECSPI1_BASE_ADDR, 0, pdata);
++}
+diff --git a/arch/arm/mach-imx/speed-imx51.c b/arch/arm/mach-imx/speed-imx51.c
+index 87fbc75..288fe1a 100644
+--- a/arch/arm/mach-imx/speed-imx51.c
++++ b/arch/arm/mach-imx/speed-imx51.c
+@@ -228,6 +228,11 @@ unsigned long imx_get_usbclk(void)
+ 	return rate / (prediv * podf);
+ }
+ 
++unsigned long imx_get_cspiclk(void)
++{
++	return 166000000; /* FIXME: bogus value */
++}
++
+ /*
+  * Set the divider of the CLKO pin. Returns
+  * the new divider (which may be smaller
+diff --git a/arch/arm/mach-imx/speed-imx53.c b/arch/arm/mach-imx/speed-imx53.c
+index 653dae3..ede5ffd 100644
+--- a/arch/arm/mach-imx/speed-imx53.c
++++ b/arch/arm/mach-imx/speed-imx53.c
+@@ -217,6 +217,11 @@ unsigned long imx_get_mmcclk(void)
+ 	return rate / (prediv * podf);
+ }
+ 
++unsigned long imx_get_cspiclk(void)
++{
++	return 166000000; /* FIXME: bogus value */
++}
++
+ void imx_dump_clocks(void)
+ {
+ 	printf("pll1: %ld\n", pll1_main_get_rate());
+diff --git a/arch/arm/mach-imx/speed-imx6.c b/arch/arm/mach-imx/speed-imx6.c
+index 4cc9fdb..df24545 100644
+--- a/arch/arm/mach-imx/speed-imx6.c
++++ b/arch/arm/mach-imx/speed-imx6.c
+@@ -332,6 +332,11 @@ u32 imx_get_fecclk(void)
+ 	return __get_ipg_clk();
+ }
+ 
++u32 imx_get_cspiclk(void)
++{
++	return __get_cspi_clk();
++}
++
+ void imx_dump_clocks(void)
+ {
+ 	u32 freq;
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 609bafd..a249b81 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -21,7 +21,7 @@ config DRIVER_SPI_IMX_0_7
+ 
+ config DRIVER_SPI_IMX_2_3
+ 	bool
+-	depends on ARCH_IMX51 || ARCH_IMX53
++	depends on ARCH_IMX51 || ARCH_IMX53 || ARCH_IMX6
+ 	default y
+ 
+ config DRIVER_SPI_ALTERA
+diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+index 42358f2..2e59b3c 100644
+--- a/drivers/spi/imx_spi.c
++++ b/drivers/spi/imx_spi.c
+@@ -374,7 +374,7 @@ static void cspi_2_3_chipselect(struct spi_device *spi, int is_active)
+ 
+ 	if (!is_active) {
+ 		if (gpio >= 0)
+-			gpio_set_value(gpio, !gpio_cs);
++			gpio_direction_output(gpio, !gpio_cs);
+ 		return;
+ 	}
+ 
+@@ -384,7 +384,7 @@ static void cspi_2_3_chipselect(struct spi_device *spi, int is_active)
+ 	ctrl |= CSPI_2_3_CTRL_MODE(cs);
+ 
+ 	/* set clock speed */
+-	ctrl |= cspi_2_3_clkdiv(166000000, spi->max_speed_hz);
++	ctrl |= cspi_2_3_clkdiv(imx_get_cspiclk(), spi->max_speed_hz);
+ 
+ 	/* set chip select to use */
+ 	ctrl |= CSPI_2_3_CTRL_CS(cs);
+@@ -521,7 +521,7 @@ static int imx_spi_probe(struct device_d *dev)
+ 		version = SPI_IMX_VER_0_7;
+ #endif
+ #ifdef CONFIG_DRIVER_SPI_IMX_2_3
+-	if (cpu_is_mx51() || cpu_is_mx53())
++	if (cpu_is_mx51() || cpu_is_mx53() || cpu_is_mx6())
+ 		version = SPI_IMX_VER_2_3;
+ #endif
+ 	imx->chipselect = spi_imx_devtype_data[version].chipselect;
 -- 
 1.7.10.4
 
