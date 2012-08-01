@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SwTJ4-0008Gz-8t
- for barebox@lists.infradead.org; Wed, 01 Aug 2012 07:25:23 +0000
-Date: Wed, 1 Aug 2012 09:25:14 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20120801072514.GD10670@pengutronix.de>
-References: <1343547714-32740-1-git-send-email-marc@cpdesign.com.au>
- <1343547714-32740-8-git-send-email-marc@cpdesign.com.au>
- <20120730082505.GN1528@pengutronix.de> <3749450.lP8xDhAWsE@dev1>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <3749450.lP8xDhAWsE@dev1>
+Received: from mail-ey0-f177.google.com ([209.85.215.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SwZ33-0006Q2-Qu
+ for barebox@lists.infradead.org; Wed, 01 Aug 2012 13:33:14 +0000
+Received: by eaaq12 with SMTP id q12so1765177eaa.36
+ for <barebox@lists.infradead.org>; Wed, 01 Aug 2012 06:33:11 -0700 (PDT)
+From: Christoph Fritz <chf.fritz@googlemail.com>
+In-Reply-To: <20120720080435.GP30009@pengutronix.de>
+References: <loom.20120719T173418-826@post.gmane.org>
+ <20120719161139.GB30009@pengutronix.de>
+ <loom.20120719T224910-551@post.gmane.org>
+ <20120720080435.GP30009@pengutronix.de>
+Date: Wed, 01 Aug 2012 15:33:08 +0200
+Message-ID: <1343827988.3466.76.camel@mars>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,147 +22,135 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/7] drivers/eeprom: at24: add I2C eeprom driver for
- 24c01/02
-To: Marc Reilly <marc@cpdesign.com.au>
-Cc: barebox@lists.infradead.org
+Subject: [RFC][PATCH] pcm043: usb support --not working--
+To: Sascha Hauer <s.hauer@pengutronix.de>, Eric =?ISO-8859-1?Q?B=E9nard?= <eric@eukrea.com>
+Cc: barebox@lists.infradead.org, Jerry Kirk <jkirk865@gmail.com>
 
-Hi Marc,
+Hi,
 
-On Mon, Jul 30, 2012 at 08:36:46PM +1000, Marc Reilly wrote:
-> Thanks for comments. You are very thorough, and I mean that in a nice way.
-> I gather you also have an at24 driver, did you support addressing offsets=
- > =
+ with the patch below I get the same behavior as Jerry: Only once after
+reset command "usb" shows HI-Devices (Joystick, Mouse, ...). Jerry, do
+you have made any progress on this?
 
-> 256?
-yes, our driver does. But it hardcodes two address bytes similar to your
-driver hardcoding a single byte :-)
+The clock settings seems to be the same as for eukrea_cpuimx35. Eric:
+Does USB work for you on your board?
 
-> > > +#define DRIVERNAME		"at24"
-> > > +#define DEVICENAME		"eeprom"
-> > =
+Sascha, I currently have no working config for kernel >=3.5 to check for
+clocks in debugfs.
 
-> > why not DEVICENAME =3D=3D DRIVERNAME?
-> =
+Any thoughts on this?
 
-> Originally I'd started with DRIVENAME as eeprom, but changed it later as =
-that =
+ Thanks
+  -- Christoph
 
-> seemed too generic. I wanted to keep the device name as eeprom so that th=
-e =
+From 2cec5266d1ae9ea141c6743accab9d1cb0ced7fc Mon Sep 17 00:00:00 2001
+From: Christoph Fritz <chf.fritz@googlemail.com>
+Date: Wed, 1 Aug 2012 11:32:17 +0200
+Subject: [PATCH] pcm043: usb support --not working--
 
-> device would be "/dev/eepromX", both for compatibilty with existing board =
+---
+ arch/arm/boards/pcm043/lowlevel.c |    6 ++++++
+ arch/arm/boards/pcm043/pcm043.c   |   33 +++++++++++++++++++++++++++++++++
+ 2 files changed, 39 insertions(+), 0 deletions(-)
 
-> setup and as a conceptual abstraction to regard the device as a more gene=
-ric =
+diff --git a/arch/arm/boards/pcm043/lowlevel.c b/arch/arm/boards/pcm043/lowlevel.c
+index efb5441..cec25b2 100644
+--- a/arch/arm/boards/pcm043/lowlevel.c
++++ b/arch/arm/boards/pcm043/lowlevel.c
+@@ -196,6 +196,12 @@ void __bare_init __naked board_init_lowlevel(void)
+ 	r |= 0x00000003;
+ 	writel(r, ccm_base + CCM_CGR1);
+ 
++	/* enable USBOTG clock */
++	r = readl(ccm_base + CCM_CGR2);
++	r |= 0x3 << CCM_CGR2_USB_SHIFT;
++	r |= 0x3 << 26;
++	writel(r, ccm_base + CCM_CGR2);
++
+ 	r = readl(IMX_L2CC_BASE + L2X0_AUX_CTRL);
+ 	r |= 0x1000;
+ 	writel(r, IMX_L2CC_BASE + L2X0_AUX_CTRL);
+diff --git a/arch/arm/boards/pcm043/pcm043.c b/arch/arm/boards/pcm043/pcm043.c
+index 9136bb3..06bf36b 100644
+--- a/arch/arm/boards/pcm043/pcm043.c
++++ b/arch/arm/boards/pcm043/pcm043.c
+@@ -46,6 +46,7 @@
+ #include <mach/imx-pll.h>
+ #include <mach/iomux-mx35.h>
+ #include <mach/devices-imx35.h>
++#include <mach/usb.h>
+ 
+ static struct fec_platform_data fec_info = {
+ 	.xcv_type = MII100,
+@@ -94,6 +95,30 @@ static struct fb_videomode pcm043_fb_mode[] = {
+ 	}
+ };
+ 
++#ifdef CONFIG_USB
++static void imx35_usb_init(void)
++{
++	unsigned int tmp;
++
++	/* Host 1 */
++	tmp = readl(IMX_OTG_BASE + 0x600);
++	tmp &= ~(MX35_H1_SIC_MASK | MX35_H1_PM_BIT | MX35_H1_TLL_BIT |
++		MX35_H1_USBTE_BIT | MX35_H1_IPPUE_DOWN_BIT | MX35_H1_IPPUE_UP_BIT);
++	tmp |= (MXC_EHCI_INTERFACE_SINGLE_UNI) << MX35_H1_SIC_SHIFT;
++	tmp |= MX35_H1_USBTE_BIT;
++	tmp |= MX35_H1_IPPUE_DOWN_BIT;
++	writel(tmp, IMX_OTG_BASE + 0x600);
++
++	tmp = readl(IMX_OTG_BASE + 0x584);
++	tmp |= 3 << 30;
++	writel(tmp, IMX_OTG_BASE + 0x584);
++
++	/* Set to Host mode */
++	tmp = readl(IMX_OTG_BASE + 0x5a8);
++	writel(tmp | 0x3, IMX_OTG_BASE + 0x5a8);
++}
++#endif
++
+ static struct imx_ipu_fb_platform_data ipu_fb_data = {
+ 	.mode			= pcm043_fb_mode,
+ 	.num_modes		= ARRAY_SIZE(pcm043_fb_mode),
+@@ -101,6 +126,7 @@ static struct imx_ipu_fb_platform_data ipu_fb_data = {
+ 	.bpp			= 16,
+ };
+ 
++
+ static int pcm043_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", IMX_SDRAM_CS0, SZ_128M);
+@@ -173,6 +199,11 @@ static int imx35_devices_init(void)
+ 
+ 	imx35_add_fb(&ipu_fb_data);
+ 
++#ifdef CONFIG_USB
++	imx35_usb_init();
++	add_generic_usb_ehci_device(DEVICE_ID_DYNAMIC, IMX_OTG_BASE + 0x400, NULL);
++#endif
++
+ 	armlinux_set_bootparams((void *)0x80000100);
+ 	armlinux_set_architecture(MACH_TYPE_PCM043);
+ 
+@@ -209,6 +240,8 @@ static iomux_v3_cfg_t pcm043_pads[] = {
+ 	MX35_PAD_I2C1_CLK__I2C1_SCL,
+ 	MX35_PAD_I2C1_DAT__I2C1_SDA,
+ 	MX35_PAD_ATA_CS0__GPIO2_6, /* LED */
++	MX35_PAD_I2C2_CLK__USB_TOP_USBH2_PWR,
++	MX35_PAD_I2C2_DAT__USB_TOP_USBH2_OC,
+ };
+ 
+ static int imx35_console_init(void)
+-- 
+1.7.2.5
 
-> "eeprom" device, rather than a more specific "at24".
-> (Hope that makes sense).
-Ah, I missed that your devices have a number included after eeprom. Then
-I'm ok with your approach.
- =
 
-> > > +	while (i && retries) {
-> > > +		ret =3D i2c_read_reg(priv->client, offset, buf, i);
-> > > +		if (ret < 0)
-> > > +			return (ssize_t)ret;
-> > =
 
-> > This cast is also done implicitly.
-> > =
-
-> > > +		else if (ret =3D=3D 0)
-> > > +			--retries;
-> > > +
-> > > +		numwritten +=3D ret;
-> > > +		i -=3D ret;
-> > > +		offset +=3D ret;
-> > > +		buf +=3D ret;
-> > > +	}
-> > =
-
-> > IMHO this loop should be in a more generic place once instead of
-> > repeating it for each driver. Also I wonder if you saw the eeprom
-> > yielding some but not all requested bytes on a read request.
-> =
-
-> Not that I can remember, but this code is old, and I think was copied fro=
-m a =
-
-> kernel driver and I just left as is.
-> I considered doing a generic loop, but in my head anything I thought of w=
-asn't =
-
-> much better than having similar code 2 or 3 times.
-I think it would be worth to have it in generic code. (For our driver I
-did it in the command that implements the custom eeprom layout. So I
-don't have anything to share.)
-
-> > > +static int at24_poll_device(struct i2c_client *client)
-> > > +{
-> > > +	uint64_t start;
-> > > +	u8 dummy;
-> > > +	int ret;
-> > > +
-> > > +	/*
-> > > +	 * eeprom can take 5-10ms to write, during which time it
-> > > +	 * will not respond. Poll it by attempting reads.
-> > > +	 */
-> > > +	start =3D get_time_ns();
-> > > +	while (1) {
-> > > +		ret =3D i2c_master_recv(client, &dummy, 1);
-> > =
-
-> > I implemented a write of length 0 here. IMHO this is better.
-> =
-
-> I'm not clear whether you are saying that your way is better :)
-> This way reads just one byte after device responds. I'm thinking that you=
-r way
-> would write a byte for the address...
-/me rechecks ... Hm, our driver uses:
-
-	i2c_write_reg(at24->client, I2C_ADDR_16_BIT, buf, 0);
-
-so it even transfers two bytes for the address, so regarding the
-generated overhead, you're right. But "my" datasheet[1] says:
-
-	ACKNOWLEDGE POLLING: Once the internally-timed write cycle has
-	started and the EEPROM inputs are disabled, acknowledge polling
-	can be initiated. This involves sending a start condition
-	followed by the device address word. The read/write bit is
-	representative of the operation desired. Only if the internal
-	write cycle has completed will the EEPROM respond with a zero,
-	allowing the read or write sequence to continue.
-
-So I think you must not do a read operation to check if a write is
-possible. That might be a theoretical problem now, but still I prefer
-being aligned to the datasheet.
-
-[1] http://www.atmel.com/Images/doc0670.pdf
-
-> > I think conceptually you don't need the erase callback for this eeprom.
-> =
-
-> While it is possible to write 0xff through the device, this was more =
-
-> convenient. I'd prefer to keep it, unless theres a reason otherwise. =
-
-I don't care much, but IMHO the erase callback is for devices that need
-the erase before writing.
- =
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
