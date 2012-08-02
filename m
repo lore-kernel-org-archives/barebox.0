@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SwslV-0003F8-Lo
- for barebox@lists.infradead.org; Thu, 02 Aug 2012 10:36:26 +0000
-From: Jan Weitzel <J.Weitzel@phytec.de>
-In-Reply-To: <20120727141830.GW22657@game.jcrosoft.org>
-References: <1343396404-10288-1-git-send-email-j.weitzel@phytec.de>
- <1343396404-10288-4-git-send-email-j.weitzel@phytec.de>
- <20120727141830.GW22657@game.jcrosoft.org>
-Date: Thu, 02 Aug 2012 12:36:19 +0200
-Message-ID: <1343903779.3476.2.camel@lws-weitzel>
-Mime-Version: 1.0
-Reply-To: J.Weitzel@phytec.de
+ id 1Swt4U-0003LV-Sm
+ for barebox@lists.infradead.org; Thu, 02 Aug 2012 10:56:03 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 0E32DBF0E7
+ for <barebox@lists.infradead.org>; Thu,  2 Aug 2012 12:56:01 +0200 (CEST)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Thu, 2 Aug 2012 12:55:59 +0200
+Message-Id: <1343904959-27645-1-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <20120727151229.GE30009@pengutronix.de>
+References: <20120727151229.GE30009@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,82 +19,112 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] OMAP4460: clock init
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] OMAP4: use writel and readl
+To: barebox@lists.infradead.org
 
-Am Freitag, den 27.07.2012, 16:18 +0200 schrieb Jean-Christophe
-PLAGNIOL-VILLARD:
-> On 15:40 Fri 27 Jul     , Jan Weitzel wrote:
-> > Change clock init to allow early gpio access. Add support for 4460 clocks.
-> > 
-> > Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
-> > ---
-> >  arch/arm/boards/panda/lowlevel.c              |    4 ++-
-> >  arch/arm/boards/panda/mux.c                   |    8 +++++
-> >  arch/arm/boards/pcm049/lowlevel.c             |   15 +++++++--
-> >  arch/arm/boards/pcm049/mux.c                  |    8 +++++
-> >  arch/arm/boards/phycard-a-xl2/lowlevel.c      |    9 ++++-
-> >  arch/arm/boards/phycard-a-xl2/mux.c           |    8 +++++
-> >  arch/arm/mach-omap/include/mach/omap4-clock.h |    4 ++
-> >  arch/arm/mach-omap/omap4_clock.c              |   39 +++++++++++++++++-------
-> >  8 files changed, 76 insertions(+), 19 deletions(-)
-> > 
-> > diff --git a/arch/arm/boards/panda/lowlevel.c b/arch/arm/boards/panda/lowlevel.c
-> > index 8591fff..0b4b199 100644
-> > --- a/arch/arm/boards/panda/lowlevel.c
-> > +++ b/arch/arm/boards/panda/lowlevel.c
-> > @@ -28,6 +28,8 @@
-> >  #include <mach/syslib.h>
-> >  #include <asm/barebox-arm.h>
-> >  
-> > +#define TPS62361_VSEL0_GPIO    7
-> > +
-> >  void set_muxconf_regs(void);
-> >  
-> >  static const struct ddr_regs ddr_regs_400_mhz_2cs = {
-> > @@ -70,7 +72,7 @@ static void noinline panda_init_lowlevel(void)
-> >  	omap4_ddr_init(&ddr_regs_400_mhz_2cs, &core);
-> >  
-> >  	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
-> > -	omap4_scale_vcores();
-> > +	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
-> >  
-> >  	board_init_lowlevel_return();
-> >  }
-> > diff --git a/arch/arm/boards/panda/mux.c b/arch/arm/boards/panda/mux.c
-> > index 310e433..3783006 100644
-> > --- a/arch/arm/boards/panda/mux.c
-> > +++ b/arch/arm/boards/panda/mux.c
-> > @@ -3,6 +3,7 @@
-> >  #include <io.h>
-> >  #include <mach/omap4-silicon.h>
-> >  #include <mach/omap4-mux.h>
-> > +#include <mach/omap4-clock.h>
-> >  
-> >  static const struct pad_conf_entry core_padconf_array[] = {
-> >  	{ GPMC_AD0, PTU | IEN | OFF_EN | OFF_PD | OFF_IN | M1  /* sdmmc2_dat0 */ },
-> > @@ -245,4 +246,11 @@ void set_muxconf_regs(void)
-> >  
-> >  	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
-> >  			ARRAY_SIZE(wkup_padconf_array));
-> > +
-> > +	/* gpio_wk7 is used for controlling TPS on 4460 */
-> > +	if (omap4_revision() >= OMAP4460_ES1_0) {
-> > +		writew(M3, OMAP44XX_CONTROL_PADCONF_WKUP + PAD1_FREF_CLK4_REQ);
-> > +		/* Enable GPIO-1 clocks before TPS initialization */
-> > +		omap4_enable_gpio1_wup_clocks();
-> > +	}
-> can we factorize this?
-Sorry, I didn't catch this.
-Jan
-> Best Regards,
-> J.
+replace *(volatile int*) bei writel and readl
 
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+ arch/arm/mach-omap/omap4_generic.c |   34 ++++++++++++++++++----------------
+ 1 files changed, 18 insertions(+), 16 deletions(-)
+
+diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+index a368759..617d786 100644
+--- a/arch/arm/mach-omap/omap4_generic.c
++++ b/arch/arm/mach-omap/omap4_generic.c
+@@ -268,7 +268,9 @@ int omap4_emif_config(unsigned int base, const struct ddr_regs *ddr_regs)
+ 
+ static void reset_phy(unsigned int base)
+ {
+-	*(volatile int*)(base + IODFT_TLGC) |= (1 << 10);
++	unsigned int val = readl(base + IODFT_TLGC);
++	val |= (1 << 10);
++	writel(val, base + IODFT_TLGC);
+ }
+ 
+ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+@@ -294,14 +296,14 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+ 	/* Both EMIFs 128 byte interleaved */
+ 	writel(0x80640300, OMAP44XX_DMM_BASE + DMM_LISA_MAP_0);
+ 
+-	*(volatile int*)(OMAP44XX_DMM_BASE + DMM_LISA_MAP_2) = 0x00000000;
+-	*(volatile int*)(OMAP44XX_DMM_BASE + DMM_LISA_MAP_3) = 0xFF020100;
++	writel(0x00000000, OMAP44XX_DMM_BASE + DMM_LISA_MAP_2);
++	writel(0xFF020100, OMAP44XX_DMM_BASE + DMM_LISA_MAP_3);
+ 
+ 	if (rev >= OMAP4460_ES1_0) {
+ 		writel(0x80640300, OMAP44XX_MA_BASE + DMM_LISA_MAP_0);
+ 
+-		*(volatile int*)(OMAP44XX_MA_BASE + DMM_LISA_MAP_2) = 0x00000000;
+-		*(volatile int*)(OMAP44XX_MA_BASE + DMM_LISA_MAP_3) = 0xFF020100;
++		writel(0x00000000, OMAP44XX_MA_BASE + DMM_LISA_MAP_2);
++		writel(0xFF020100, OMAP44XX_MA_BASE + DMM_LISA_MAP_3);
+ 	}
+ 
+ 	/* DDR needs to be initialised @ 19.2 MHz
+@@ -312,10 +314,10 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+ 
+ 	/* No IDLE: BUG in SDC */
+ 	sr32(CM_MEMIF_CLKSTCTRL, 0, 32, 0x2);
+-	while(((*(volatile int*)CM_MEMIF_CLKSTCTRL) & 0x700) != 0x700);
++	while ((readl(CM_MEMIF_CLKSTCTRL) & 0x700) != 0x700);
+ 
+-	*(volatile int*)(OMAP44XX_EMIF1_BASE + EMIF_PWR_MGMT_CTRL) = 0x0;
+-	*(volatile int*)(OMAP44XX_EMIF2_BASE + EMIF_PWR_MGMT_CTRL) = 0x0;
++	writel(0x0, OMAP44XX_EMIF1_BASE + EMIF_PWR_MGMT_CTRL);
++	writel(0x0, OMAP44XX_EMIF2_BASE + EMIF_PWR_MGMT_CTRL);
+ 
+ 	omap4_emif_config(OMAP44XX_EMIF1_BASE, ddr_regs);
+ 	omap4_emif_config(OMAP44XX_EMIF2_BASE, ddr_regs);
+@@ -324,13 +326,13 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+ 	omap4_lock_core_dpll_shadow(core);
+ 
+ 	/* Set DLL_OVERRIDE = 0 */
+-	*(volatile int*)CM_DLL_CTRL = 0x0;
++	writel(0x0, CM_DLL_CTRL);
+ 
+ 	delay(200);
+ 
+ 	/* Check for DDR PHY ready for EMIF1 & EMIF2 */
+-	while((((*(volatile int*)(OMAP44XX_EMIF1_BASE + EMIF_STATUS))&(0x04)) != 0x04) \
+-	|| (((*(volatile int*)(OMAP44XX_EMIF2_BASE + EMIF_STATUS))&(0x04)) != 0x04));
++	while (((readl(OMAP44XX_EMIF1_BASE + EMIF_STATUS) & 0x04) != 0x04) \
++		|| ((readl(OMAP44XX_EMIF2_BASE + EMIF_STATUS) & 0x04) != 0x04));
+ 
+ 	/* Reprogram the DDR PYHY Control register */
+ 	/* PHY control values */
+@@ -342,9 +344,9 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+ 
+ 	/* No IDLE: BUG in SDC */
+ 	//sr32(CM_MEMIF_CLKSTCTRL, 0, 32, 0x2);
+-	//while(((*(volatile int*)CM_MEMIF_CLKSTCTRL) & 0x700) != 0x700);
+-	*(volatile int*)(OMAP44XX_EMIF1_BASE + EMIF_PWR_MGMT_CTRL) = 0x80000000;
+-	*(volatile int*)(OMAP44XX_EMIF2_BASE + EMIF_PWR_MGMT_CTRL) = 0x80000000;
++	//while ((readl(CM_MEMIF_CLKSTCTRL) & 0x700) != 0x700);
++	writel(0x80000000, OMAP44XX_EMIF1_BASE + EMIF_PWR_MGMT_CTRL);
++	writel(0x80000000, OMAP44XX_EMIF2_BASE + EMIF_PWR_MGMT_CTRL);
+ 
+ 	if (rev >= OMAP4460_ES1_0) {
+ 		writel(EMIF_L3_CONFIG_VAL_SYS_10_MPU_3_LL_0,
+@@ -365,8 +367,8 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+ 	reset_phy(OMAP44XX_EMIF1_BASE);
+ 	reset_phy(OMAP44XX_EMIF2_BASE);
+ 
+-	*((volatile int *)0x80000000) = 0;
+-	*((volatile int *)0x80000080) = 0;
++	writel(0, 0x80000000);
++	writel(0, 0x80000080);
+ }
+ 
+ void omap4_power_i2c_send(u32 r)
+-- 
+1.7.0.4
 
 
 _______________________________________________
