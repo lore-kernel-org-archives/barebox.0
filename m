@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SwrJS-0000Ta-FE
- for barebox@lists.infradead.org; Thu, 02 Aug 2012 09:03:23 +0000
-Date: Thu, 2 Aug 2012 11:03:18 +0200
+ id 1SwsMq-0002Og-Eo
+ for barebox@lists.infradead.org; Thu, 02 Aug 2012 10:10:57 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1SwsMn-0002wX-Tj
+ for barebox@lists.infradead.org; Thu, 02 Aug 2012 12:10:53 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1SwsMn-0003cc-Sm
+ for barebox@lists.infradead.org; Thu, 02 Aug 2012 12:10:53 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120802090317.GK30009@pengutronix.de>
-References: <1343840077-2425-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1343840077-2425-1-git-send-email-eric@eukrea.com>
+Date: Thu,  2 Aug 2012 12:10:11 +0200
+Message-Id: <1343902216-13262-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,58 +21,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] eukrea_cpuimx35: fix USB host
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] OMAP nand
+To: barebox@lists.infradead.org
 
-On Wed, Aug 01, 2012 at 06:54:37PM +0200, Eric B=E9nard wrote:
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-
-Applied, thanks. Sorry, I should have done this before the release, but
-I missed this one.
-
-Sometimes I wish we had a concept for stable releases.
+The following series has some general OMAP nand cleanups and greatly
+improves the nand performance. Also we add a possibility to autodetect
+the NAND buswidth.
 
 Sascha
 
-> ---
->  arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> =
+----------------------------------------------------------------
+Sascha Hauer (5):
+      mtd OMAP NAND: Fix dev_ready handling
+      ARM OMAP gpmc nand: specify platform data in boards
+      mtd OMAP NAND: Use prefetch engine
+      mtd nand: implement buswidth detection
+      mtd OMAP NAND: implement buswidth autodetection support
 
-> diff --git a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c b/arch/arm=
-/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
-> index 93d5ac9..49dbabc 100644
-> --- a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
-> +++ b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
-> @@ -105,7 +105,7 @@ static void imx35_usb_init(void)
->  	tmp &=3D ~(MX35_H1_SIC_MASK | MX35_H1_PM_BIT | MX35_H1_TLL_BIT |
->  		MX35_H1_USBTE_BIT | MX35_H1_IPPUE_DOWN_BIT | MX35_H1_IPPUE_UP_BIT);
->  	tmp |=3D (MXC_EHCI_INTERFACE_SINGLE_UNI) << MX35_H1_SIC_SHIFT;
-> -	tmp |=3D MX35_H1_USBTE_BIT;
-> +	tmp |=3D MX35_H1_USBTE_BIT | MX35_H1_PM_BIT | MX35_H1_TLL_BIT ;
->  	tmp |=3D MX35_H1_IPPUE_DOWN_BIT;
->  	writel(tmp, IMX_OTG_BASE + 0x600);
->  =
+ arch/arm/boards/beagle/board.c              |    9 +-
+ arch/arm/boards/pcm049/board.c              |   10 +-
+ arch/arm/boards/phycard-a-xl2/pca-a-xl2.c   |    9 +-
+ arch/arm/mach-omap/devices-gpmc-nand.c      |   26 +---
+ arch/arm/mach-omap/gpmc.c                   |   61 +++++++++
+ arch/arm/mach-omap/include/mach/gpmc.h      |   16 ++-
+ arch/arm/mach-omap/include/mach/gpmc_nand.h |   20 +--
+ drivers/mtd/nand/nand_base.c                |   20 ++-
+ drivers/mtd/nand/nand_omap_gpmc.c           |  177 +++++++++++++++++++++------
+ include/linux/mtd/nand.h                    |    3 +
+ 10 files changed, 261 insertions(+), 90 deletions(-)
 
-> -- =
-
-> 1.7.7.6
-> =
-
-> =
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
