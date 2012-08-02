@@ -1,22 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 11.mo1.mail-out.ovh.net ([188.165.48.29]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SwxPp-0000Z0-P5
- for barebox@lists.infradead.org; Thu, 02 Aug 2012 15:34:23 +0000
-Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 91728FFABA0
- for <barebox@lists.infradead.org>; Thu,  2 Aug 2012 17:40:29 +0200 (CEST)
-Date: Thu, 2 Aug 2012 17:34:22 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120802153422.GL19759@game.jcrosoft.org>
-References: <20120730100022.GD19759@game.jcrosoft.org>
- <1343642565-32257-1-git-send-email-plagnioj@jcrosoft.com>
- <1343642565-32257-5-git-send-email-plagnioj@jcrosoft.com>
- <20120802153032.GE1451@pengutronix.de>
+Received: from mail2.gnudd.com ([213.203.150.91] helo=mail.gnudd.com)
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Swxgq-0008Rr-HJ
+ for barebox@lists.infradead.org; Thu, 02 Aug 2012 15:51:58 +0000
+Received: from mail.gnudd.com (localhost [127.0.0.1])
+ by mail.gnudd.com (8.14.3/8.14.3/Debian-9.4) with ESMTP id q72Fpjsw028434
+ for <barebox@lists.infradead.org>; Thu, 2 Aug 2012 17:51:45 +0200
+Received: (from rubini@localhost)
+ by mail.gnudd.com (8.14.3/8.14.3/Submit) id q72Fpj4E028433
+ for barebox@lists.infradead.org; Thu, 2 Aug 2012 17:51:45 +0200
+Date: Thu, 2 Aug 2012 17:51:45 +0200
+From: Alessandro Rubini <rubini-list@gnudd.com>
+Message-ID: <20120802155145.GA28426@mail.gnudd.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120802153032.GE1451@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,59 +26,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 05/12] Add compressed image support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: changing environment at build time
+To: barebox@lists.infradead.org
 
-On 17:30 Thu 02 Aug     , Sascha Hauer wrote:
-> On Mon, Jul 30, 2012 at 12:02:38PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > +
-> >  void barebox_pbl(uint32_t offset)
-> >  {
-> > +	uint32_t compressed_start, compressed_end, len;
-> > +	void (*uncompress)(void *compressed_start, unsigned int len);
-> > +
-> > +	compressed_start = (uint32_t)&input_data - offset;
-> > +	compressed_end = (uint32_t)&input_data_end - offset;
-> > +	len = compressed_end - compressed_start;
-> > +
-> > +	/*
-> > +	 * Check if the compressed binary will be overwritten
-> > +	 * by the uncompressed binary
-> > +	 */
-> > +	if (compressed_start >= TEXT_BASE &&
-> > +			compressed_start < TEXT_BASE + len * 4 ) {
-> > +		/*
-> > +		 * copy compressed binary to its link address
-> > +		 */
-> > +		memcpy(&input_data, (void *)compressed_start, len);
-> > +		compressed_start = (uint32_t)&input_data;
-> > +	}
-> > +
-> > +	uncompress = barebox_uncompress;
-> > +
-> > +	/* call barebox_uncompress with its absolute address */
-> > +	__asm__ __volatile__(
-> > +		"mov r0, %1\n"
-> > +		"mov r1, %2\n"
-> > +		"mov pc, %0\n"
-> > +		:
-> > +		: "r"(uncompress), "r"(compressed_start), "r"(len)
-> > +		: "r0", "r1");
-> 
-> When the pbl code runs at its correct address, then we can simply do a
-> barebox_uncompress() here.
-> 
-> Fixed this before applying.
-the code in start does not do this
+Hello.
 
-we just do a call to barebox_pbl
+I'm using barebox on a machine where I wasnt to change the mac address
+at flashing time (i.e., not at build time: I'd better not relink
+barebox every time I flash a new machine).
 
-are you really sure about this?
+I did it lazily with a sed script when the environment was not
+compressed, but now a mate updated to a newer version, and the simple
+trick is not working.
 
-Best Regards,
-J.
+Since uncompressed environent areas are not supported any more, what is
+the preferred method to change the default environment variables?
+
+Thanks
+/alessandro, really on deadline, so apologizing for the dumb question
 
 _______________________________________________
 barebox mailing list
