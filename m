@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail2.gnudd.com ([213.203.150.91] helo=mail.gnudd.com)
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Sx1uR-0006m3-Nb
- for barebox@lists.infradead.org; Thu, 02 Aug 2012 20:22:45 +0000
-Date: Thu, 2 Aug 2012 22:22:02 +0200
-From: Alessandro Rubini <rubini-list@gnudd.com>
-Message-ID: <20120802202202.GA22646@mail.gnudd.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120802155145.GA28426@mail.gnudd.com>
-References: <20120802155145.GA28426@mail.gnudd.com> 
+Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Sx4SI-0008Uf-GI
+ for barebox@lists.infradead.org; Thu, 02 Aug 2012 23:05:23 +0000
+Date: Fri, 3 Aug 2012 01:05:10 +0200
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20120803010510.1fa75c9a@eb-e6520>
+In-Reply-To: <20120802090317.GK30009@pengutronix.de>
+References: <1343840077-2425-1-git-send-email-eric@eukrea.com>
+ <20120802090317.GK30009@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,26 +18,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: changing environment at build time
-To: rubini-list@gnudd.com
+Subject: Re: [PATCH] eukrea_cpuimx35: fix USB host
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-I wrote:
-> Since uncompressed environent areas are not supported any more, what is
-> the preferred method to change the default environment variables?
+Hi Sascha,
 
-Actually, by removing compressing code the environment is uncompressed
-itself, but it looks like I have other problems that are not yet
-completely clear to me.
+Le Thu, 2 Aug 2012 11:03:18 +0200,
+Sascha Hauer <s.hauer@pengutronix.de> a =E9crit :
 
-I'm still curious about how to change mac address at flash time, but
-the question is not urgent any more. Sorry for disturbing
+> On Wed, Aug 01, 2012 at 06:54:37PM +0200, Eric B=E9nard wrote:
+> > Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> =
 
-/alessandro
+> Applied, thanks. Sorry, I should have done this before the release, but
+> I missed this one.
+> =
+
+not a big issue that will be for 2012.09 ;-)
+
+Eric
 
 _______________________________________________
 barebox mailing list
