@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail2.gnudd.com ([213.203.150.91] helo=mail.gnudd.com)
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Swxgq-0008Rr-HJ
- for barebox@lists.infradead.org; Thu, 02 Aug 2012 15:51:58 +0000
-Received: from mail.gnudd.com (localhost [127.0.0.1])
- by mail.gnudd.com (8.14.3/8.14.3/Debian-9.4) with ESMTP id q72Fpjsw028434
- for <barebox@lists.infradead.org>; Thu, 2 Aug 2012 17:51:45 +0200
-Received: (from rubini@localhost)
- by mail.gnudd.com (8.14.3/8.14.3/Submit) id q72Fpj4E028433
- for barebox@lists.infradead.org; Thu, 2 Aug 2012 17:51:45 +0200
-Date: Thu, 2 Aug 2012 17:51:45 +0200
-From: Alessandro Rubini <rubini-list@gnudd.com>
-Message-ID: <20120802155145.GA28426@mail.gnudd.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SwyKW-0004sc-JW
+ for barebox@lists.infradead.org; Thu, 02 Aug 2012 16:32:57 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu,  2 Aug 2012 18:32:42 +0200
+Message-Id: <1343925162-18040-1-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1343296420-25857-1-git-send-email-u.kleine-koenig@pengutronix.de>
+References: <1343296420-25857-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +17,80 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: changing environment at build time
+Subject: [PATCH v2] arm/imx: provide command to add ram device with
+ autodetected size
 To: barebox@lists.infradead.org
 
-Hello.
-
-I'm using barebox on a machine where I wasnt to change the mac address
-at flashing time (i.e., not at build time: I'd better not relink
-barebox every time I flash a new machine).
-
-I did it lazily with a sed script when the environment was not
-compressed, but now a mate updated to a newer version, and the simple
-trick is not working.
-
-Since uncompressed environent areas are not supported any more, what is
-the preferred method to change the default environment variables?
-
-Thanks
-/alessandro, really on deadline, so apologizing for the dumb question
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGFtb3VudCBvZiBhdmFpbGFibGUgcmFtIGlzIGRldGVybWluZWQgYnkgdGhlIEVTRENUTCBy
+ZWdpc3Rlciwgc28KYmV0dGVyIGRvbid0IGhhcmRjb2RlIHRoZSB2YWx1ZS4KClRoaXMgY29tbWl0
+IHByb3ZpZGVzIGEgY29tbWFuZCB0aGF0IGNhbiBiZSB1c2VkIGluc3RlYWQgb2YKYXJtX2FkZF9t
+ZW1fZGV2aWNlIGFuZCBjb252ZXJ0ZXMgcGNtMDQzIChvbiB3aGljaCB0aGlzIHBhdGNoIHdhcyB0
+ZXN0ZWQpCnRvIGl0LgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5l
+LWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCmNoYW5nZXMgc2luY2UgaW1wbGljaXQgdjE6CiAt
+IHN1cHBvcnQgMm5kIHNkcmFtIGNoaXAgc2VsZWN0CiAtIG1vdmUgaW1wbGVtZW50YXRpb24gdG8g
+YXJjaC9hcm0vbWFjaC1pbXgvZXNkY3RsLmMKCiBhcmNoL2FybS9ib2FyZHMvcGNtMDQzL3BjbTA0
+My5jICAgICAgICAgfCAgICAzICsrLQogYXJjaC9hcm0vbWFjaC1pbXgvTWFrZWZpbGUgICAgICAg
+ICAgICAgIHwgICAgMiArLQogYXJjaC9hcm0vbWFjaC1pbXgvZXNkY3RsLmMgICAgICAgICAgICAg
+IHwgICA0NSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCiBhcmNoL2FybS9tYWNoLWlt
+eC9pbmNsdWRlL21hY2gvZXNkY3RsLmggfCAgICAzICsrKwogNCBmaWxlcyBjaGFuZ2VkLCA1MSBp
+bnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJt
+L21hY2gtaW14L2VzZGN0bC5jCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BjbTA0My9w
+Y20wNDMuYyBiL2FyY2gvYXJtL2JvYXJkcy9wY20wNDMvcGNtMDQzLmMKaW5kZXggNjVlMDU4Ni4u
+M2EzMDljNCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BjbTA0My9wY20wNDMuYworKysg
+Yi9hcmNoL2FybS9ib2FyZHMvcGNtMDQzL3BjbTA0My5jCkBAIC00Niw2ICs0Niw3IEBACiAjaW5j
+bHVkZSA8bWFjaC9pbXgtcGxsLmg+CiAjaW5jbHVkZSA8bWFjaC9pb211eC1teDM1Lmg+CiAjaW5j
+bHVkZSA8bWFjaC9kZXZpY2VzLWlteDM1Lmg+CisjaW5jbHVkZSA8bWFjaC9lc2RjdGwuaD4KIAog
+c3RhdGljIHN0cnVjdCBmZWNfcGxhdGZvcm1fZGF0YSBmZWNfaW5mbyA9IHsKIAkueGN2X3R5cGUg
+PSBNSUkxMDAsCkBAIC0xMDMsNyArMTA0LDcgQEAgc3RhdGljIHN0cnVjdCBpbXhfaXB1X2ZiX3Bs
+YXRmb3JtX2RhdGEgaXB1X2ZiX2RhdGEgPSB7CiAKIHN0YXRpYyBpbnQgcGNtMDQzX21lbV9pbml0
+KHZvaWQpCiB7Ci0JYXJtX2FkZF9tZW1fZGV2aWNlKCJyYW0wIiwgSU1YX1NEUkFNX0NTMCwgU1pf
+MTI4TSk7CisJaW14X2FkZF9yYW0wKCk7CiAKIAlyZXR1cm4gMDsKIH0KZGlmZiAtLWdpdCBhL2Fy
+Y2gvYXJtL21hY2gtaW14L01ha2VmaWxlIGIvYXJjaC9hcm0vbWFjaC1pbXgvTWFrZWZpbGUKaW5k
+ZXggMDNlMjQyMS4uY2M2ZmE1ZSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvTWFrZWZp
+bGUKKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvTWFrZWZpbGUKQEAgLTEsNCArMSw0IEBACi1vYmot
+eSArPSBjbG9ja3NvdXJjZS5vIGdwaW8ubworb2JqLXkgKz0gY2xvY2tzb3VyY2UubyBncGlvLm8g
+ZXNkY3RsLm8KIG9iai0kKENPTkZJR19BUkNIX0lNWDEpICArPSBzcGVlZC1pbXgxLm8gIGlteDEu
+byAgaW9tdXgtdjEubwogb2JqLSQoQ09ORklHX0FSQ0hfSU1YMjUpICs9IHNwZWVkLWlteDI1Lm8g
+aW14MjUubyBpb211eC12My5vCiBvYmotJChDT05GSUdfQVJDSF9JTVgyMSkgKz0gc3BlZWQtaW14
+MjEubyBpbXgyMS5vIGlvbXV4LXYxLm8KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtaW14L2Vz
+ZGN0bC5jIGIvYXJjaC9hcm0vbWFjaC1pbXgvZXNkY3RsLmMKbmV3IGZpbGUgbW9kZSAxMDA2NDQK
+aW5kZXggMDAwMDAwMC4uODY5NWMxMgotLS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL21hY2gt
+aW14L2VzZGN0bC5jCkBAIC0wLDAgKzEsNDUgQEAKKyNpbmNsdWRlIDxtYWNoL2VzZGN0bC5oPgor
+I2luY2x1ZGUgPG1hY2gvaW14LXJlZ3MuaD4KKyNpbmNsdWRlIDxhc20vaW8uaD4KKyNpbmNsdWRl
+IDxhc20vbWVtb3J5Lmg+CisKK3N0YXRpYyB2b2lkIGlteF9hZGRfcmFtKGNvbnN0IGNoYXIqIG5h
+bWUsIHJlc291cmNlX3NpemVfdCBiYXNlLAorCQl2b2lkIF9faW9tZW0gKmVzZGN0bGFkZHIpCit7
+CisJdTMyIGVzZGN0bCA9IHJlYWRsKGVzZGN0bGFkZHIpOworCS8qCisJICogd2l0aCB0aGUgZmll
+bGRzIFJPVywgQ09MIGFuZCBEU0laIGFsbCB6ZXJvIHdlIGhhdmUgMTEgcm93cywgOCBjb2xzCisJ
+ICogYW5kIDIgYnl0ZXMgYnVzIHdpZHRoIG9uIDQgYmFua3MuCisJICovCisJcmVzb3VyY2Vfc2l6
+ZV90IHNpemUgPSA0IDw8ICgxMSArIDggKyAxKTsKKworCWlmICghKGVzZGN0bCAmIEVTRENUTDBf
+U0RFKSkKKwkJLyogU0RSQU0gY29udHJvbGxlciBkaXNhYmxlZCwgc28gbm8gUkFNIGhlcmUgKi8K
+KwkJcmV0dXJuOworCisJLyogY2FsY3VsYXRlIG1lbW9yeSBzaXplOiA0IGJhbmtzICogMl4jcm93
+cyAqIDJeI2NvbHMgKiBieXRlcy93b3JkICovCisJc2l6ZSA8PD0gKGVzZGN0bCAmIEVTRENUTDBf
+Uk9XX01BU0spID4+IDI0OworCXNpemUgPDw9IChlc2RjdGwgJiBFU0RDVEwwX0NPTF9NQVNLKSA+
+PiAyMDsKKworCWlmICgoZXNkY3RsICYgRVNEQ1RMMF9EU0laX01BU0spID09IEVTRENUTDBfRFNJ
+Wl8zMV8wKQorCQkvKiA0IGJ5dGVzIGJ1cyB3aWR0aCAqLworCQlzaXplIDw8PSAxOworCisJYXJt
+X2FkZF9tZW1fZGV2aWNlKG5hbWUsIGJhc2UsIHNpemUpOworfQorCit2b2lkIGlteF9hZGRfcmFt
+MCh2b2lkKQoreworCWlteF9hZGRfcmFtKCJyYW0wIiwgKHJlc291cmNlX3NpemVfdClJTVhfU0RS
+QU1fQ1MwLCAodm9pZCBfX2lvbWVtICopRVNEQ1RMMCk7Cit9CisKK3ZvaWQgaW14X2FkZF9yYW0x
+KHZvaWQpCit7CisJaW14X2FkZF9yYW0oInJhbTEiLCAocmVzb3VyY2Vfc2l6ZV90KUlNWF9TRFJB
+TV9DUzEsICh2b2lkIF9faW9tZW0gKilFU0RDVEwxKTsKK30KKwordm9pZCBpbXhfYWRkX3JhbV9h
+dXRvKHZvaWQpCit7CisJaW14X2FkZF9yYW0wKCk7CisJaW14X2FkZF9yYW0xKCk7Cit9CmRpZmYg
+LS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvZXNkY3RsLmggYi9hcmNoL2Fy
+bS9tYWNoLWlteC9pbmNsdWRlL21hY2gvZXNkY3RsLmgKaW5kZXggMTBjOGI5Yi4uNjg4Zjc5OSAx
+MDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2VzZGN0bC5oCisrKyBi
+L2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9lc2RjdGwuaApAQCAtMjYsNiArMjYsNyBA
+QAogI2RlZmluZSBFU0RDVEwwX0RTSVpfMzFfMTYJCQkoMCA8PCAxNikKICNkZWZpbmUgRVNEQ1RM
+MF9EU0laXzE1XzAJCQkoMSA8PCAxNikKICNkZWZpbmUgRVNEQ1RMMF9EU0laXzMxXzAJCQkoMiA8
+PCAxNikKKyNkZWZpbmUgRVNEQ1RMMF9EU0laX01BU0sJCQkoMyA8PCAxNikKICNkZWZpbmUgRVNE
+Q1RMMF9SRUYxCQkJCSgxIDw8IDEzKQogI2RlZmluZSBFU0RDVEwwX1JFRjIJCQkJKDIgPDwgMTMp
+CiAjZGVmaW5lIEVTRENUTDBfUkVGNAkJCQkoMyA8PCAxMykKQEAgLTEyNCwzICsxMjUsNSBAQAog
+Ly8jZGVmaW5lIEVTRENGR3hfdFJDXzE0CQkweDAwMDAwMDBlCS8vIDE1IHNlZW1zIHRvIG5vdCBl
+eGlzdAogI2RlZmluZSBFU0RDRkd4X3RSQ18xNgkJCTB4MDAwMDAwMGYKIAordm9pZCBpbXhfYWRk
+X3JhbTAodm9pZCk7Cit2b2lkIGlteF9hZGRfcmFtMSh2b2lkKTsKLS0gCjEuNy4xMC40CgoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
+aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
