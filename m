@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yx0-f177.google.com ([209.85.213.177])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SxGsL-0004li-6e
- for barebox@lists.infradead.org; Fri, 03 Aug 2012 12:21:05 +0000
-Received: by yenr9 with SMTP id r9so822854yen.36
- for <barebox@lists.infradead.org>; Fri, 03 Aug 2012 05:21:02 -0700 (PDT)
-From: "Marc Reilly" <marc@cpdesign.com.au>
-References: <OF95E0712B.359A103D-ONC1257A4F.002B3A1C-C1257A4F.002C899A@o0802.rafi.inhouse>
-In-Reply-To: <OF95E0712B.359A103D-ONC1257A4F.002B3A1C-C1257A4F.002C899A@o0802.rafi.inhouse>
-Date: Fri, 3 Aug 2012 22:20:58 +1000
-Message-ID: <000001cd7172$744769a0$5cd63ce0$@cpdesign.com.au>
+ id 1SxHRK-0000Tj-UO
+ for barebox@lists.infradead.org; Fri, 03 Aug 2012 12:57:16 +0000
+Date: Fri, 3 Aug 2012 14:57:12 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120803125712.GN1451@pengutronix.de>
+References: <20120802155145.GA28426@mail.gnudd.com>
+ <20120802202202.GA22646@mail.gnudd.com>
 MIME-Version: 1.0
-Content-Language: en-au
-Reply-To: marc@cpdesign.com.au
+Content-Disposition: inline
+In-Reply-To: <20120802202202.GA22646@mail.gnudd.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,29 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: boot init code depending on i2c eeprom value
-To: christian.buettner@rafi.de, barebox@lists.infradead.org
+Subject: Re: changing environment at build time
+To: Alessandro Rubini <rubini-list@gnudd.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
+Hi Alessandro,
 
->i need to set the pin-mux of the board init code depending on an ID coming
-from 
->an i2C EEPROM of the board. 
->Is it possible to do something like this: 
+On Thu, Aug 02, 2012 at 10:22:02PM +0200, Alessandro Rubini wrote:
+> I wrote:
+> > Since uncompressed environent areas are not supported any more, what is
+> > the preferred method to change the default environment variables?
+> 
+> Actually, by removing compressing code the environment is uncompressed
+> itself, but it looks like I have other problems that are not yet
+> completely clear to me.
+> 
+> I'm still curious about how to change mac address at flash time, but
+> the question is not urgent any more. Sorry for disturbing
 
->postcore_initcall(ecuv6_postcore_init); 
-> console_initcall(ecuv6_console_init); 
->Actually this is not working. The i2c_imx:i2c_imx_probe(..) function gets
-called later. 
->Is there a way or concept to do something like this? 
+You didn't disturb, this is a valid question (to which unfortunately I
+do not have an answer)
 
-Do it (all) in a device_initcall() function?
+Sascha
 
-Cheers,
-Marc
-
-
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
