@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo1.mail-out.ovh.net ([178.32.228.1])
+Received: from 20.mo1.mail-out.ovh.net ([188.165.45.168]
+ helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SxF4O-0000cR-S7
- for barebox@lists.infradead.org; Fri, 03 Aug 2012 10:25:28 +0000
+ id 1SxF4R-0000cU-7H
+ for barebox@lists.infradead.org; Fri, 03 Aug 2012 10:25:32 +0000
 Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 626F4FFA357
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id C41C2FFAF48
  for <barebox@lists.infradead.org>; Fri,  3 Aug 2012 12:31:35 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  3 Aug 2012 12:25:13 +0200
-Message-Id: <1343989522-8807-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri,  3 Aug 2012 12:25:15 +0200
+Message-Id: <1343989522-8807-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1343989522-8807-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120803102300.GB23597@game.jcrosoft.org>
  <1343989522-8807-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,760 +26,185 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/12] Add pre-bootloader (pbl) image support
+Subject: [PATCH 05/12] Add compressed image support
 To: barebox@lists.infradead.org
 
-This allows for creating a pre-bootloader binary for
- - nand boot
- - mmc boot
- - compressed image
+This allows for creating a lzo compressed binary unsing the pbl.
 
-The pbl will be incharge of the lowlevel init if needed.
-The barebox will skip it.
+Only copy the piggydata if needed.
 
-Import string functions from linux 3.4 (arch/arm/boot/compressed/string.c) and
-implement a dummy panic.
+Add CONFIG_PBL_FORCE_PIGGYDATA_COPY option
+In some case we need to copy the PIGGYDATA as the link address
+as example we run from SRAM and shutdown the SDRAM/DDR for
+reconfiguration but most of the time we just need to copy the
+executable code.
 
-For now on introduce dummy zbarebox* targets and c code that will contain later
-the decompressor. This only implemeted on ARM.
+based on Sascha Hauer
+Add compressed image support
 
-This patch is based on Sascha Hauer <s.hauer@pengutronix.de>
-Add compressed image support patch
-
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- Makefile                                           |    6 +-
- arch/arm/Kconfig                                   |    1 +
- arch/arm/Makefile                                  |    7 ++
- arch/arm/cpu/Makefile                              |    3 +-
- arch/arm/cpu/{start.c => start-pbl.c}              |   58 ++-------
- arch/arm/cpu/{start.c => start-reset.c}            |   49 +-------
- arch/arm/cpu/start.c                               |   54 +++------
- arch/arm/lib/Makefile                              |    4 +
- arch/arm/lib/barebox.lds.S                         |    3 +-
- arch/arm/pbl/Makefile                              |   25 ++++
- arch/arm/{lib/barebox.lds.S => pbl/zbarebox.lds.S} |   56 +++------
- common/Kconfig                                     |   30 +++++
- include/asm-generic/memory_layout.h                |    1 +
- pbl/Makefile                                       |    5 +
- pbl/misc.c                                         |   14 +++
- pbl/string.c                                       |  127 ++++++++++++++++++++
- 16 files changed, 268 insertions(+), 175 deletions(-)
- copy arch/arm/cpu/{start.c => start-pbl.c} (64%)
- copy arch/arm/cpu/{start.c => start-reset.c} (58%)
- create mode 100644 arch/arm/pbl/Makefile
- copy arch/arm/{lib/barebox.lds.S => pbl/zbarebox.lds.S} (60%)
- create mode 100644 pbl/Makefile
- create mode 100644 pbl/misc.c
- create mode 100644 pbl/string.c
+ arch/arm/cpu/start-pbl.c       |   59 +++++++++++++++++++++++++++++++++++++---
+ arch/arm/pbl/zbarebox.lds.S    |    1 +
+ common/Kconfig                 |   12 +++++++-
+ include/asm-generic/sections.h |    2 ++
+ 4 files changed, 69 insertions(+), 5 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index ca47cb1..ce1506c 100644
---- a/Makefile
-+++ b/Makefile
-@@ -474,6 +474,8 @@ CFLAGS += $(call cc-option,-Wno-pointer-sign,)
- # this default value
- export KBUILD_IMAGE ?= barebox
- 
-+common-$(CONFIG_PBL_IMAGE)	+= pbl/
-+
- barebox-dirs	:= $(patsubst %/,%,$(filter %/, $(common-y)))
- 
- barebox-alldirs	:= $(sort $(barebox-dirs) $(patsubst %/,%,$(filter %/, \
-@@ -520,7 +522,7 @@ barebox-lds    := $(lds-y)
- # May be overridden by arch/$(ARCH)/Makefile
- quiet_cmd_barebox__ ?= LD      $@
-       cmd_barebox__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_barebox) -o $@ \
--      -T $(barebox-lds) $(barebox-head)                         \
-+      -T $(barebox-lds)                         \
-       --start-group $(barebox-common) --end-group                  \
-       $(filter-out $(barebox-lds) $(barebox-common) FORCE ,$^)
- 
-@@ -674,7 +676,9 @@ OBJCOPYFLAGS_barebox.bin = -O binary
- 
- barebox.bin: barebox FORCE
- 	$(call if_changed,objcopy)
-+ifndef CONFIG_PBL_IMAGE
- 	$(call cmd,check_file_size,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
-+endif
- 
- ifdef CONFIG_X86
- barebox.S: barebox
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 08c742b..7932afc 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -4,6 +4,7 @@ config ARM
- 	select HAS_MODULES
- 	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
- 	select HAVE_CONFIGURABLE_TEXT_BASE
-+	select HAVE_PBL_IMAGE
- 	default y
- 
- config ARM_AMBA
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 1b60261..0ea050e 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -197,6 +197,13 @@ ifeq ($(CONFIG_ARCH_DAVINCI),y)
- KBUILD_IMAGE := barebox.ubl
- endif
- 
-+pbl := arch/arm/pbl
-+zbarebox.S zbarebox.bin zbarebox: barebox.bin
-+	$(Q)$(MAKE) $(build)=$(pbl) $(pbl)/$@
-+
-+archclean:
-+	$(MAKE) $(clean)=$(pbl)
-+
- all: $(KBUILD_IMAGE)
- 
- archprepare: maketools
-diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-index 93a34a9..78d300d 100644
---- a/arch/arm/cpu/Makefile
-+++ b/arch/arm/cpu/Makefile
-@@ -1,7 +1,7 @@
- obj-y += cpu.o
- obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions.o
- obj-$(CONFIG_ARM_EXCEPTIONS) += interrupts.o
--obj-y += start.o
-+obj-y += start.o start-reset.o
- 
- #
- # Any variants can be called as start-armxyz.S
-@@ -15,3 +15,4 @@ obj-$(CONFIG_CPU_32v6) += cache-armv6.o
- obj-$(CONFIG_CPU_32v7) += cache-armv7.o
- obj-$(CONFIG_CACHE_L2X0) += cache-l2x0.o
- 
-+pbl-y += start-pbl.o start-reset.o
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start-pbl.c
-similarity index 64%
-copy from arch/arm/cpu/start.c
-copy to arch/arm/cpu/start-pbl.c
-index 112403e..28d6f34 100644
---- a/arch/arm/cpu/start.c
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index 28d6f34..17e0829 100644
+--- a/arch/arm/cpu/start-pbl.c
 +++ b/arch/arm/cpu/start-pbl.c
-@@ -1,7 +1,8 @@
- /*
-- * start-arm.c
-+ * start-pbl.c
-  *
-- * Copyright (c) 2010 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ * Copyright (c) 2010-2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-  *
-  * See file CREDITS for list of people who contributed to this
-  * project.
-@@ -24,53 +25,16 @@
- #include <init.h>
- #include <asm/barebox-arm.h>
- #include <asm/barebox-arm-head.h>
--#include <asm/system.h>
- #include <asm-generic/memory_layout.h>
- #include <asm/sections.h>
- 
--void __naked __section(.text_entry) start(void)
-+void __naked __section(.text_head_entry) pbl_start(void)
- {
+@@ -33,8 +33,33 @@ void __naked __section(.text_head_entry) pbl_start(void)
  	barebox_arm_head();
  }
  
--/*
-- * The actual reset vector. This code is position independent and usually
-- * does not run at the address it's linked at.
-- */
--void __naked __bare_init reset(void)
-+void barebox_pbl(uint32_t offset)
+-void barebox_pbl(uint32_t offset)
++extern void *input_data;
++extern void *input_data_end;
++
++#define STATIC static
++
++#ifdef CONFIG_IMAGE_COMPRESSION_LZO
++#include "../../../lib/decompress_unlzo.c"
++#endif
++
++static void barebox_uncompress(void *compressed_start, unsigned int len)
  {
--	uint32_t r;
--
--	/* set the cpu to SVC32 mode */
--	__asm__ __volatile__("mrs %0, cpsr":"=r"(r));
--	r &= ~0x1f;
--	r |= 0xd3;
--	__asm__ __volatile__("msr cpsr, %0" : : "r"(r));
--
--#ifdef CONFIG_ARCH_HAS_LOWLEVEL_INIT
--	arch_init_lowlevel();
--#endif
--
--	/* disable MMU stuff and caches */
--	r = get_cr();
--	r &= ~(CR_M | CR_C | CR_B | CR_S | CR_R | CR_V);
--	r |= CR_I;
--
--#if __LINUX_ARM_ARCH__ >= 6
--	r |= CR_U;
--#else
--	r |= CR_A;
--#endif
--
--#ifdef __ARMEB__
--	r |= CR_B;
--#endif
--	set_cr(r);
--
--#ifdef CONFIG_MACH_DO_LOWLEVEL_INIT
--	board_init_lowlevel();
--#endif
--	board_init_lowlevel_return();
++	void (*barebox)(void);
++
++	if (IS_ENABLED(CONFIG_THUMB2_BAREBOX))
++		barebox = (void *)(TEXT_BASE + 1);
++	else
++		barebox = (void *)TEXT_BASE;
++
++	decompress((void *)compressed_start,
++			len,
++			NULL, NULL,
++			(void *)TEXT_BASE, NULL, NULL);
++
++	/* flush I-cache before jumping to the uncompressed binary */
++	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
++
++	barebox();
  }
  
  /*
-@@ -105,8 +69,12 @@ void __naked __section(.text_ll_return) board_init_lowlevel_return(void)
+@@ -44,6 +69,7 @@ void barebox_pbl(uint32_t offset)
+ void __naked __section(.text_ll_return) board_init_lowlevel_return(void)
+ {
+ 	uint32_t r, addr, offset;
++	uint32_t pg_start, pg_end, pg_len;
+ 
+ 	/*
+ 	 * Get runtime address of this function. Do not
+@@ -58,6 +84,30 @@ void __naked __section(.text_ll_return) board_init_lowlevel_return(void)
+ 	/* Get offset between linked address and runtime address */
+ 	offset = (uint32_t)__ll_return - addr;
+ 
++	pg_start = (uint32_t)&input_data - offset;
++	pg_end = (uint32_t)&input_data_end - offset;
++	pg_len = pg_end - pg_start;
++
++	if (IS_ENABLED(CONFIG_PBL_FORCE_PIGGYDATA_COPY))
++		goto copy_piggy_link;
++
++	/*
++	 * Check if the piggydata binary will be overwritten
++	 * by the uncompressed binary or by the pbl relocation
++	 */
++	if (!offset ||
++	    !((pg_start >= TEXT_BASE && pg_start < TEXT_BASE + pg_len * 4) ||
++	      ((uint32_t)_text >= pg_start && (uint32_t)_text <= pg_end)))
++		goto copy_link;
++
++copy_piggy_link:
++	/*
++	 * copy piggydata binary to its link address
++	 */
++	memcpy(&input_data, (void *)pg_start, pg_len);
++	pg_start = (uint32_t)&input_data;
++
++copy_link:
+ 	/* relocate to link address if necessary */
+ 	if (offset)
+ 		memcpy((void *)_text, (void *)(_text - offset),
+@@ -69,12 +119,13 @@ void __naked __section(.text_ll_return) board_init_lowlevel_return(void)
  	/* flush I-cache before jumping to the copied binary */
  	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
  
--	/* call start_barebox with its absolute address */
--	r = (unsigned int)&start_barebox;
--	__asm__ __volatile__("mov pc, %0" : : "r"(r));
-+	r = (unsigned int)&barebox_pbl;
-+	/* call barebox_uncompress with its absolute address */
-+	__asm__ __volatile__(
-+		"mov r0, %1\n"
-+		"mov pc, %0\n"
-+		:
-+		: "r"(r), "r"(offset),
-+		: "r0");
+-	r = (unsigned int)&barebox_pbl;
++	r = (unsigned int)&barebox_uncompress;
+ 	/* call barebox_uncompress with its absolute address */
+ 	__asm__ __volatile__(
+ 		"mov r0, %1\n"
++		"mov r1, %2\n"
+ 		"mov pc, %0\n"
+ 		:
+-		: "r"(r), "r"(offset),
+-		: "r0");
++		: "r"(r), "r"(pg_start), "r"(pg_len)
++		: "r0", "r1");
  }
--
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start-reset.c
-similarity index 58%
-copy from arch/arm/cpu/start.c
-copy to arch/arm/cpu/start-reset.c
-index 112403e..e0df676 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start-reset.c
-@@ -1,5 +1,5 @@
- /*
-- * start-arm.c
-+ * start-reset.c
-  *
-  * Copyright (c) 2010 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-  *
-@@ -22,17 +22,10 @@
- 
- #include <common.h>
- #include <init.h>
--#include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
- #include <asm/system.h>
--#include <asm-generic/memory_layout.h>
-+#include <asm/barebox-arm.h>
- #include <asm/sections.h>
- 
--void __naked __section(.text_entry) start(void)
--{
--	barebox_arm_head();
--}
--
- /*
-  * The actual reset vector. This code is position independent and usually
-  * does not run at the address it's linked at.
-@@ -72,41 +65,3 @@ void __naked __bare_init reset(void)
- #endif
- 	board_init_lowlevel_return();
- }
--
--/*
-- * Board code can jump here by either returning from board_init_lowlevel
-- * or by calling this function directly.
-- */
--void __naked __section(.text_ll_return) board_init_lowlevel_return(void)
--{
--	uint32_t r, addr, offset;
--
--	/*
--	 * Get runtime address of this function. Do not
--	 * put any code above this.
--	 */
--	__asm__ __volatile__("1: adr %0, 1b":"=r"(addr));
--
--	/* Setup the stack */
--	r = STACK_BASE + STACK_SIZE - 16;
--	__asm__ __volatile__("mov sp, %0" : : "r"(r));
--
--	/* Get offset between linked address and runtime address */
--	offset = (uint32_t)__ll_return - addr;
--
--	/* relocate to link address if necessary */
--	if (offset)
--		memcpy((void *)_text, (void *)(_text - offset),
--				__bss_start - _text);
--
--	/* clear bss */
--	memset(__bss_start, 0, __bss_stop - __bss_start);
--
--	/* flush I-cache before jumping to the copied binary */
--	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
--
--	/* call start_barebox with its absolute address */
--	r = (unsigned int)&start_barebox;
--	__asm__ __volatile__("mov pc, %0" : : "r"(r));
--}
--
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 112403e..8365a75 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -24,53 +24,31 @@
- #include <init.h>
- #include <asm/barebox-arm.h>
- #include <asm/barebox-arm-head.h>
--#include <asm/system.h>
- #include <asm-generic/memory_layout.h>
- #include <asm/sections.h>
- 
--void __naked __section(.text_entry) start(void)
--{
--	barebox_arm_head();
--}
--
-+#ifdef CONFIG_PBL_IMAGE
- /*
-- * The actual reset vector. This code is position independent and usually
-- * does not run at the address it's linked at.
-+ * First function in the pbl image. We get here from
-+ * the pbl.
-  */
--void __naked __bare_init reset(void)
-+void __naked __section(.text_entry) start(void)
- {
--	uint32_t r;
-+	u32 r;
- 
--	/* set the cpu to SVC32 mode */
--	__asm__ __volatile__("mrs %0, cpsr":"=r"(r));
--	r &= ~0x1f;
--	r |= 0xd3;
--	__asm__ __volatile__("msr cpsr, %0" : : "r"(r));
--
--#ifdef CONFIG_ARCH_HAS_LOWLEVEL_INIT
--	arch_init_lowlevel();
--#endif
--
--	/* disable MMU stuff and caches */
--	r = get_cr();
--	r &= ~(CR_M | CR_C | CR_B | CR_S | CR_R | CR_V);
--	r |= CR_I;
-+	/* Setup the stack */
-+	r = STACK_BASE + STACK_SIZE - 16;
-+	__asm__ __volatile__("mov sp, %0" : : "r"(r));
-+	/* clear bss */
-+	memset(__bss_start, 0, __bss_stop - __bss_start);
- 
--#if __LINUX_ARM_ARCH__ >= 6
--	r |= CR_U;
-+	start_barebox();
-+}
- #else
--	r |= CR_A;
--#endif
--
--#ifdef __ARMEB__
--	r |= CR_B;
--#endif
--	set_cr(r);
- 
--#ifdef CONFIG_MACH_DO_LOWLEVEL_INIT
--	board_init_lowlevel();
--#endif
--	board_init_lowlevel_return();
-+void __naked __section(.text_entry) start(void)
-+{
-+	barebox_arm_head();
- }
- 
- /*
-@@ -109,4 +87,4 @@ void __naked __section(.text_ll_return) board_init_lowlevel_return(void)
- 	r = (unsigned int)&start_barebox;
- 	__asm__ __volatile__("mov pc, %0" : : "r"(r));
- }
--
-+#endif
-diff --git a/arch/arm/lib/Makefile b/arch/arm/lib/Makefile
-index 1eaf474..9d0ff7a 100644
---- a/arch/arm/lib/Makefile
-+++ b/arch/arm/lib/Makefile
-@@ -21,3 +21,7 @@ obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memset.o
- obj-$(CONFIG_ARM_UNWIND) += unwind.o
- obj-$(CONFIG_MODULES) += module.o
- extra-y += barebox.lds
-+
-+pbl-y	+= lib1funcs.o
-+pbl-y	+= ashldi3.o
-+pbl-y	+= div0.o
-diff --git a/arch/arm/lib/barebox.lds.S b/arch/arm/lib/barebox.lds.S
-index e0bae70..a69013f 100644
---- a/arch/arm/lib/barebox.lds.S
-+++ b/arch/arm/lib/barebox.lds.S
-@@ -31,8 +31,9 @@ SECTIONS
- {
- 	. = TEXT_BASE;
- 
-+#ifndef CONFIG_PBL_IMAGE
- 	PRE_IMAGE
--
-+#endif
- 	. = ALIGN(4);
- 	.text      :
- 	{
-diff --git a/arch/arm/pbl/Makefile b/arch/arm/pbl/Makefile
-new file mode 100644
-index 0000000..9b364bb
---- /dev/null
-+++ b/arch/arm/pbl/Makefile
-@@ -0,0 +1,25 @@
-+
-+OBJCOPYFLAGS_zbarebox.bin = -O binary
-+
-+targets := zbarebox.lds zbarebox zbarebox.bin zbarebox.S
-+
-+$(obj)/zbarebox.bin:	$(obj)/zbarebox FORCE
-+	$(call if_changed,objcopy)
-+	$(call cmd,check_file_size,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
-+	@echo '  Barebox: $@ is ready'
-+
-+$(obj)/zbarebox.S: $(obj)/zbarebox FORCE
-+	$(call if_changed,disasm)
-+
-+LDFLAGS_zbarebox	:= -Map zbarebox.map
-+zbarebox-common := $(barebox-pbl-common)
-+zbarebox-lds := $(obj)/zbarebox.lds
-+
-+quiet_cmd_zbarebox__ ?= LD      $@
-+      cmd_zbarebox__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_zbarebox) -o $@ \
-+      -T $(zbarebox-lds)                                           \
-+      --start-group $(zbarebox-common) --end-group                 \
-+      $(filter-out $(zbarebox-lds) $(zbarebox-common) FORCE ,$^)
-+
-+$(obj)/zbarebox: $(zbarebox-lds) $(zbarebox-common) FORCE
-+	$(call if_changed,zbarebox__)
-diff --git a/arch/arm/lib/barebox.lds.S b/arch/arm/pbl/zbarebox.lds.S
-similarity index 60%
-copy from arch/arm/lib/barebox.lds.S
-copy to arch/arm/pbl/zbarebox.lds.S
-index e0bae70..b6e8028 100644
---- a/arch/arm/lib/barebox.lds.S
+diff --git a/arch/arm/pbl/zbarebox.lds.S b/arch/arm/pbl/zbarebox.lds.S
+index d587090..2dca278 100644
+--- a/arch/arm/pbl/zbarebox.lds.S
 +++ b/arch/arm/pbl/zbarebox.lds.S
-@@ -1,6 +1,5 @@
- /*
-- * (C) Copyright 2000-2004
-- * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
-+ * (C) Copyright 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-  *
-  * See file CREDITS for list of people who contributed to this
-  * project.
-@@ -23,13 +22,14 @@
-  */
+@@ -74,4 +74,5 @@ SECTIONS
+ 	__piggydata_end = .;
  
- #include <asm-generic/barebox.lds.h>
-+#include <asm-generic/memory_layout.h>
- 
- OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
- OUTPUT_ARCH(arm)
--ENTRY(start)
-+ENTRY(pbl_start)
- SECTIONS
- {
--	. = TEXT_BASE;
-+	. = HEAD_TEXT_BASE;
- 
- 	PRE_IMAGE
- 
-@@ -38,15 +38,12 @@ SECTIONS
- 	{
- 		_stext = .;
- 		_text = .;
--		*(.text_entry*)
-+		*(.text_head_entry*)
- 		__ll_return = .;
- 		*(.text_ll_return*)
- 		__bare_init_start = .;
- 		*(.text_bare_init*)
- 		__bare_init_end = .;
--		__exceptions_start = .;
--		KEEP(*(.text_exceptions*))
--		__exceptions_stop = .;
- 		*(.text*)
- 	}
- 	BAREBOX_BARE_INIT_SIZE
-@@ -54,48 +51,23 @@ SECTIONS
- 	. = ALIGN(4);
- 	.rodata : { *(.rodata*) }
- 
--#ifdef CONFIG_ARM_UNWIND
--	/*
--	 * Stack unwinding tables
--	 */
--	. = ALIGN(8);
--	.ARM.unwind_idx : {
--		__start_unwind_idx = .;
--		*(.ARM.exidx*)
--		__stop_unwind_idx = .;
--	}
--	.ARM.unwind_tab : {
--		__start_unwind_tab = .;
--		*(.ARM.extab*)
--		__stop_unwind_tab = .;
--	}
--#endif
- 	_etext = .;			/* End of text and rodata section */
- 
- 	. = ALIGN(4);
- 	.data : { *(.data*) }
- 
--	. = .;
--	__barebox_cmd_start = .;
--	.barebox_cmd : { BAREBOX_CMDS }
--	__barebox_cmd_end = .;
--
--	__barebox_magicvar_start = .;
--	.barebox_magicvar : { BAREBOX_MAGICVARS }
--	__barebox_magicvar_end = .;
--
--	__barebox_initcalls_start = .;
--	.barebox_initcalls : { INITCALLS }
--	__barebox_initcalls_end = .;
--
--	__usymtab_start = .;
--	__usymtab : { BAREBOX_SYMS }
--	__usymtab_end = .;
--
- 	. = ALIGN(4);
- 	__bss_start = .;
- 	.bss : { *(.bss*) }
- 	__bss_stop = .;
- 	_end = .;
--	_barebox_image_size = __bss_start - TEXT_BASE;
-+
-+	. = ALIGN(4);
-+	__piggydata_start = .;
-+	.piggydata : {
-+		*(.piggydata)
-+	}
-+	__piggydata_end = .;
-+
-+	_barebox_image_size = __piggydata_end - HEAD_TEXT_BASE;
+ 	_barebox_image_size = __piggydata_end - HEAD_TEXT_BASE;
++	_barebox_pbl_size = __bss_start - HEAD_TEXT_BASE;
  }
 diff --git a/common/Kconfig b/common/Kconfig
-index 7eb5b49..7b5a307 100644
+index 7b5a307..828fc05 100644
 --- a/common/Kconfig
 +++ b/common/Kconfig
-@@ -101,6 +101,36 @@ config ENVIRONMENT_VARIABLES
+@@ -111,11 +111,20 @@ config PBL_IMAGE
+ 	bool "Pre-Bootloader image"
+ 	depends on HAVE_PBL_IMAGE
  
- menu "memory layout                 "
- 
-+config HAVE_PBL_IMAGE
++config PBL_FORCE_PIGGYDATA_COPY
 +	bool
++	help
++	  In some case we need to copy the PIGGYDATA as the link address
++	  as example we run from SRAM and shutdown the SDRAM/DDR for
++	  reconfiguration but most of the time we just need to copy the
++	  executable code.
 +
-+config HAVE_IMAGE_COMPRESSION
+ if PBL_IMAGE
+ 
+ config IMAGE_COMPRESSION
+-	bool "Compressed image"
 +	bool
-+
-+config PBL_IMAGE
-+	bool "Pre-Bootloader image"
-+	depends on HAVE_PBL_IMAGE
-+
-+if PBL_IMAGE
-+
-+config IMAGE_COMPRESSION
-+	bool "Compressed image"
-+	depends on HAVE_IMAGE_COMPRESSION
-+
-+if IMAGE_COMPRESSION
-+
-+choice
-+	prompt "Compression"
-+
-+config IMAGE_COMPRESSION_LZO
-+	bool "lzo"
-+
-+endchoice
-+
-+endif
-+
-+endif
-+
- config MMU
- 	bool "Enable MMU"
- 	help
-diff --git a/include/asm-generic/memory_layout.h b/include/asm-generic/memory_layout.h
-index 941cd42..eb1607f 100644
---- a/include/asm-generic/memory_layout.h
-+++ b/include/asm-generic/memory_layout.h
-@@ -13,6 +13,7 @@
+ 	depends on HAVE_IMAGE_COMPRESSION
++	default y
  
- #endif
+ if IMAGE_COMPRESSION
  
-+#define HEAD_TEXT_BASE MALLOC_BASE
- #define MALLOC_SIZE CONFIG_MALLOC_SIZE
- #define STACK_SIZE  CONFIG_STACK_SIZE
+@@ -511,6 +520,7 @@ config DEFAULT_ENVIRONMENT
+ config DEFAULT_ENVIRONMENT_COMPRESSED
+ 	bool
+ 	depends on DEFAULT_ENVIRONMENT
++	depends on !IMAGE_COMPRESSION_LZO
+ 	default y if ZLIB
+ 	default y if BZLIB
+ 	default y if LZO_DECOMPRESS
+diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
+index 5484b6f..17d5fd1 100644
+--- a/include/asm-generic/sections.h
++++ b/include/asm-generic/sections.h
+@@ -7,8 +7,10 @@ extern char __bare_init_start[], __bare_init_end[];
+ extern char _end[];
+ extern void *_barebox_image_size;
+ extern void *_barebox_bare_init_size;
++extern void *_barebox_pbl_size;
  
-diff --git a/pbl/Makefile b/pbl/Makefile
-new file mode 100644
-index 0000000..7169c6c
---- /dev/null
-+++ b/pbl/Makefile
-@@ -0,0 +1,5 @@
-+#
-+# only unsed by the pbl
-+#
-+pbl-y += misc.o
-+pbl-y += string.o
-diff --git a/pbl/misc.c b/pbl/misc.c
-new file mode 100644
-index 0000000..47e9cea
---- /dev/null
-+++ b/pbl/misc.c
-@@ -0,0 +1,14 @@
-+#include <common.h>
-+#include <init.h>
-+#include <linux/types.h>
-+#include <linux/string.h>
-+#include <linux/ctype.h>
-+
-+void __noreturn panic(const char *fmt, ...)
-+{
-+	while(1);
-+}
-+
-+void start_barebox(void)
-+{
-+}
-diff --git a/pbl/string.c b/pbl/string.c
-new file mode 100644
-index 0000000..6787e82
---- /dev/null
-+++ b/pbl/string.c
-@@ -0,0 +1,127 @@
-+/*
-+ * arch/arm/boot/compressed/string.c
-+ *
-+ * Small subset of simple string routines
-+ */
-+
-+#include <linux/types.h>
-+
-+void *memcpy(void *__dest, __const void *__src, size_t __n)
-+{
-+	int i = 0;
-+	unsigned char *d = (unsigned char *)__dest, *s = (unsigned char *)__src;
-+
-+	for (i = __n >> 3; i > 0; i--) {
-+		*d++ = *s++;
-+		*d++ = *s++;
-+		*d++ = *s++;
-+		*d++ = *s++;
-+		*d++ = *s++;
-+		*d++ = *s++;
-+		*d++ = *s++;
-+		*d++ = *s++;
-+	}
-+
-+	if (__n & 1 << 2) {
-+		*d++ = *s++;
-+		*d++ = *s++;
-+		*d++ = *s++;
-+		*d++ = *s++;
-+	}
-+
-+	if (__n & 1 << 1) {
-+		*d++ = *s++;
-+		*d++ = *s++;
-+	}
-+
-+	if (__n & 1)
-+		*d++ = *s++;
-+
-+	return __dest;
-+}
-+
-+void *memmove(void *__dest, __const void *__src, size_t count)
-+{
-+	unsigned char *d = __dest;
-+	const unsigned char *s = __src;
-+
-+	if (__dest == __src)
-+		return __dest;
-+
-+	if (__dest < __src)
-+		return memcpy(__dest, __src, count);
-+
-+	while (count--)
-+		d[count] = s[count];
-+	return __dest;
-+}
-+
-+size_t strlen(const char *s)
-+{
-+	const char *sc = s;
-+
-+	while (*sc != '\0')
-+		sc++;
-+	return sc - s;
-+}
-+
-+int memcmp(const void *cs, const void *ct, size_t count)
-+{
-+	const unsigned char *su1 = cs, *su2 = ct, *end = su1 + count;
-+	int res = 0;
-+
-+	while (su1 < end) {
-+		res = *su1++ - *su2++;
-+		if (res)
-+			break;
-+	}
-+	return res;
-+}
-+
-+int strcmp(const char *cs, const char *ct)
-+{
-+	unsigned char c1, c2;
-+	int res = 0;
-+
-+	do {
-+		c1 = *cs++;
-+		c2 = *ct++;
-+		res = c1 - c2;
-+		if (res)
-+			break;
-+	} while (c1);
-+	return res;
-+}
-+
-+void *memchr(const void *s, int c, size_t count)
-+{
-+	const unsigned char *p = s;
-+
-+	while (count--)
-+		if ((unsigned char)c == *p++)
-+			return (void *)(p - 1);
-+	return NULL;
-+}
-+
-+char *strchr(const char *s, int c)
-+{
-+	while (*s != (char)c)
-+		if (*s++ == '\0')
-+			return NULL;
-+	return (char *)s;
-+}
-+
-+#undef memset
-+
-+void *memset(void *s, int c, size_t count)
-+{
-+	char *xs = s;
-+	while (count--)
-+		*xs++ = c;
-+	return s;
-+}
-+
-+void __memzero(void *s, size_t count)
-+{
-+	memset(s, 0, count);
-+}
+ #define barebox_image_size	(unsigned int)&_barebox_image_size
+ #define barebox_bare_init_size	(unsigned int)&_barebox_bare_init_size
++#define barebox_pbl_size	(unsigned int)&_barebox_pbl_size
+ 
+ #endif /* _ASM_GENERIC_SECTIONS_H_ */
 -- 
 1.7.10.4
 
