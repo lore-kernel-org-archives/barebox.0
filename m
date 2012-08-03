@@ -1,15 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo1.mail-out.ovh.net ([178.33.45.107]
+Received: from 9.mo1.mail-out.ovh.net ([178.32.108.172]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SxBkY-0008T0-NN
- for barebox@lists.infradead.org; Fri, 03 Aug 2012 06:52:44 +0000
+ id 1SxBxk-0000xb-Bs
+ for barebox@lists.infradead.org; Fri, 03 Aug 2012 07:06:21 +0000
 Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id F0568FFACF1
- for <barebox@lists.infradead.org>; Fri,  3 Aug 2012 08:58:51 +0200 (CEST)
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 3EAF0FFAD11
+ for <barebox@lists.infradead.org>; Fri,  3 Aug 2012 09:12:29 +0200 (CEST)
+Date: Fri, 3 Aug 2012 09:06:19 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  3 Aug 2012 08:52:39 +0200
-Message-Id: <1343976760-2400-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20120803070619.GA23597@game.jcrosoft.org>
+References: <20120730100022.GD19759@game.jcrosoft.org>
+ <1343642565-32257-1-git-send-email-plagnioj@jcrosoft.com>
+ <1343642565-32257-3-git-send-email-plagnioj@jcrosoft.com>
+ <20120803065053.GJ1451@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20120803065053.GJ1451@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,134 +25,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] at91: sam9260/sam9g20/sam9261/sam9g10/sam9263 add
- autodetect sdram size
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 03/12] Add pre-bootloader (pbl) image support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-if 0 is passed to at91_add_device_sdram autodetect the sdram size
+On 08:50 Fri 03 Aug     , Sascha Hauer wrote:
+> On Mon, Jul 30, 2012 at 12:02:36PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > This allows for creating a pre-bootloader binary for
+> >  - nand boot
+> >  - mmc boot
+> >  - compressed image
+> > 
+> > The pbl will be incharge of the lowlevel init if needed.
+> > The barebox will skip it.
+> > 
+> > Import string functions from linux 3.4 (arch/arm/boot/compressed/string.c) and
+> > implement a dummy panic.
+> > 
+> > For now on introduce dummy zbarebox* targets and c code that will contain later
+> > the decompressor. This only implemeted on ARM.
+> > 
+> > This patch is based on Sascha Hauer <s.hauer@pengutronix.de>
+> > Add compressed image support patch
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  Makefile                                           |    6 +-
+> >  arch/arm/Kconfig                                   |    1 +
+> >  arch/arm/Makefile                                  |    4 +
+> >  arch/arm/cpu/Makefile                              |    1 +
+> 
+> In this file the following must be added to make 'make clean' work in
+> the pbl directory:
+> 
+> archclean:
+> 	$(MAKE) $(clean)=$(pbl)
 
-The amount of available ram is determined by the SDRAMC_CR register.
+yeap forget this one
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/mach-at91/at91sam9260_devices.c          |    4 +++
- arch/arm/mach-at91/at91sam9261_devices.c          |    4 +++
- arch/arm/mach-at91/at91sam9263_devices.c          |    4 +++
- arch/arm/mach-at91/include/mach/at91sam9_sdramc.h |   28 +++++++++++++++++++++
- 4 files changed, 40 insertions(+)
-
-diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
-index b56ca14..9c9534e 100644
---- a/arch/arm/mach-at91/at91sam9260_devices.c
-+++ b/arch/arm/mach-at91/at91sam9260_devices.c
-@@ -16,6 +16,7 @@
- #include <mach/board.h>
- #include <mach/at91_pmc.h>
- #include <mach/at91sam9260_matrix.h>
-+#include <mach/at91sam9_sdramc.h>
- #include <mach/gpio.h>
- #include <mach/io.h>
- #include <mach/cpu.h>
-@@ -24,6 +25,9 @@
- 
- void at91_add_device_sdram(u32 size)
- {
-+	if (!size)
-+		size = at91_get_sdram_size();
-+
- 	arm_add_mem_device("ram0", AT91_CHIPSELECT_1, size);
- 	if (cpu_is_at91sam9g20()) {
- 		add_mem_device("sram0", AT91SAM9G20_SRAM_BASE,
-diff --git a/arch/arm/mach-at91/at91sam9261_devices.c b/arch/arm/mach-at91/at91sam9261_devices.c
-index a109804..0091e2d 100644
---- a/arch/arm/mach-at91/at91sam9261_devices.c
-+++ b/arch/arm/mach-at91/at91sam9261_devices.c
-@@ -15,6 +15,7 @@
- #include <asm/hardware.h>
- #include <mach/at91_pmc.h>
- #include <mach/at91sam9261_matrix.h>
-+#include <mach/at91sam9_sdramc.h>
- #include <mach/board.h>
- #include <mach/gpio.h>
- #include <mach/io.h>
-@@ -24,6 +25,9 @@
- 
- void at91_add_device_sdram(u32 size)
- {
-+	if (!size)
-+		size = at91_get_sdram_size();
-+
- 	arm_add_mem_device("ram0", AT91_CHIPSELECT_1, size);
- 	if (cpu_is_at91sam9g10())
- 		add_mem_device("sram0", AT91SAM9G10_SRAM_BASE,
-diff --git a/arch/arm/mach-at91/at91sam9263_devices.c b/arch/arm/mach-at91/at91sam9263_devices.c
-index 7f916d2..e686480 100644
---- a/arch/arm/mach-at91/at91sam9263_devices.c
-+++ b/arch/arm/mach-at91/at91sam9263_devices.c
-@@ -15,6 +15,7 @@
- #include <asm/hardware.h>
- #include <mach/at91_pmc.h>
- #include <mach/at91sam9263_matrix.h>
-+#include <mach/at91sam9_sdramc.h>
- #include <mach/board.h>
- #include <mach/gpio.h>
- #include <mach/io.h>
-@@ -23,6 +24,9 @@
- 
- void at91_add_device_sdram(u32 size)
- {
-+	if (!size)
-+		size = at91_get_sdram_size();
-+
- 	arm_add_mem_device("ram0", AT91_CHIPSELECT_1, size);
- 	add_mem_device("sram0", AT91SAM9263_SRAM0_BASE,
- 			AT91SAM9263_SRAM0_SIZE, IORESOURCE_MEM_WRITEABLE);
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9_sdramc.h b/arch/arm/mach-at91/include/mach/at91sam9_sdramc.h
-index 5af2b54..1ab61e9 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9_sdramc.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9_sdramc.h
-@@ -83,5 +83,33 @@
- #define			AT91_SDRAMC_MD_SDRAM		0
- #define			AT91_SDRAMC_MD_LOW_POWER_SDRAM	1
- 
-+#ifndef __ASSEMBLY__
-+#include <mach/io.h>
-+static inline u32 at91_get_sdram_size(void)
-+{
-+	u32 val;
-+	u32 size;
-+
-+	val = at91_sys_read(AT91_SDRAMC_CR);
-+
-+	/* Formula:
-+	 * size = bank << (col + row + 1);
-+	 * if (bandwidth == 32 bits)
-+	 *	size <<= 1;
-+	 */
-+	size = 1;
-+	/* COL */
-+	size += (val & AT91_SDRAMC_NC) + 8;
-+	/* ROW */
-+	size += ((val & AT91_SDRAMC_NR) >> 2) + 11;
-+	/* BANK */
-+	size = ((val & AT91_SDRAMC_NB) ? 4 : 2) << size;
-+	/* bandwidth */
-+	if (!(val & AT91_SDRAMC_DBW))
-+		size <<= 1;
-+
-+	return size;
-+}
-+#endif
- 
- #endif
--- 
-1.7.10.4
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
