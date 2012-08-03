@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo1.mail-out.ovh.net ([178.33.104.224]
+Received: from 15.mo1.mail-out.ovh.net ([188.165.38.232]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SxF4R-0000ce-K2
- for barebox@lists.infradead.org; Fri, 03 Aug 2012 10:25:33 +0000
+ id 1SxF4S-0000d9-Ao
+ for barebox@lists.infradead.org; Fri, 03 Aug 2012 10:25:32 +0000
 Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 451A7FFAF94
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id F2DE3FFAFB5
  for <barebox@lists.infradead.org>; Fri,  3 Aug 2012 12:31:36 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  3 Aug 2012 12:25:17 +0200
-Message-Id: <1343989522-8807-7-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri,  3 Aug 2012 12:25:20 +0200
+Message-Id: <1343989522-8807-10-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1343989522-8807-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120803102300.GB23597@game.jcrosoft.org>
  <1343989522-8807-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,47 +26,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/12] ARM: add early malloc support needed by the decompressor
+Subject: [PATCH 10/12] at91: add lowlevel init to the pbl
 To: barebox@lists.infradead.org
-
-This is not needed by lzo but by gunzip, xz and others.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/cpu/start-pbl.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm/mach-at91/Makefile |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index 17e0829..dd5c483 100644
---- a/arch/arm/cpu/start-pbl.c
-+++ b/arch/arm/cpu/start-pbl.c
-@@ -23,11 +23,15 @@
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 491c454..3ade725 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -4,6 +4,8 @@ lowlevel_init-y = at91sam926x_lowlevel_init.o
+ lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
+ obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
  
- #include <common.h>
- #include <init.h>
-+#include <sizes.h>
- #include <asm/barebox-arm.h>
- #include <asm/barebox-arm-head.h>
- #include <asm-generic/memory_layout.h>
- #include <asm/sections.h>
- 
-+unsigned long free_mem_ptr;
-+unsigned long free_mem_end_ptr;
++pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
 +
- void __naked __section(.text_head_entry) pbl_start(void)
- {
- 	barebox_arm_head();
-@@ -46,6 +50,10 @@ static void barebox_uncompress(void *compressed_start, unsigned int len)
- {
- 	void (*barebox)(void);
+ obj-$(CONFIG_AT91SAM9_RESET) += at91sam9_reset.o
+ obj-$(CONFIG_AT91SAM9G45_RESET) += at91sam9g45_reset.o
  
-+	/* set 128 KiB at the end of the MALLOC_BASE for early malloc */
-+	free_mem_ptr = MALLOC_BASE + MALLOC_SIZE - SZ_128K;
-+	free_mem_end_ptr = free_mem_ptr + SZ_128K;
-+
- 	if (IS_ENABLED(CONFIG_THUMB2_BAREBOX))
- 		barebox = (void *)(TEXT_BASE + 1);
- 	else
 -- 
 1.7.10.4
 
