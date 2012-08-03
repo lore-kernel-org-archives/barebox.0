@@ -1,22 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo1.mail-out.ovh.net ([178.32.108.172]
- helo=mo1.mail-out.ovh.net)
+Received: from mx2.rafi.de ([178.15.151.13])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SxBxk-0000xb-Bs
- for barebox@lists.infradead.org; Fri, 03 Aug 2012 07:06:21 +0000
-Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 3EAF0FFAD11
- for <barebox@lists.infradead.org>; Fri,  3 Aug 2012 09:12:29 +0200 (CEST)
-Date: Fri, 3 Aug 2012 09:06:19 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120803070619.GA23597@game.jcrosoft.org>
-References: <20120730100022.GD19759@game.jcrosoft.org>
- <1343642565-32257-1-git-send-email-plagnioj@jcrosoft.com>
- <1343642565-32257-3-git-send-email-plagnioj@jcrosoft.com>
- <20120803065053.GJ1451@pengutronix.de>
+ id 1SxCtz-0002tS-OS
+ for barebox@lists.infradead.org; Fri, 03 Aug 2012 08:06:32 +0000
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120803065053.GJ1451@pengutronix.de>
+Message-ID: <OF95E0712B.359A103D-ONC1257A4F.002B3A1C-C1257A4F.002C899A@o0802.rafi.inhouse>
+From: christian.buettner@rafi.de
+Date: Fri, 3 Aug 2012 10:06:28 +0200
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,52 +15,168 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============0772411946653200073=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 03/12] Add pre-bootloader (pbl) image support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: boot init code depending on i2c eeprom value
+To: barebox@lists.infradead.org
 
-On 08:50 Fri 03 Aug     , Sascha Hauer wrote:
-> On Mon, Jul 30, 2012 at 12:02:36PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > This allows for creating a pre-bootloader binary for
-> >  - nand boot
-> >  - mmc boot
-> >  - compressed image
-> > 
-> > The pbl will be incharge of the lowlevel init if needed.
-> > The barebox will skip it.
-> > 
-> > Import string functions from linux 3.4 (arch/arm/boot/compressed/string.c) and
-> > implement a dummy panic.
-> > 
-> > For now on introduce dummy zbarebox* targets and c code that will contain later
-> > the decompressor. This only implemeted on ARM.
-> > 
-> > This patch is based on Sascha Hauer <s.hauer@pengutronix.de>
-> > Add compressed image support patch
-> > 
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  Makefile                                           |    6 +-
-> >  arch/arm/Kconfig                                   |    1 +
-> >  arch/arm/Makefile                                  |    4 +
-> >  arch/arm/cpu/Makefile                              |    1 +
-> 
-> In this file the following must be added to make 'make clean' work in
-> the pbl directory:
-> 
-> archclean:
-> 	$(MAKE) $(clean)=$(pbl)
+Dies ist eine mehrteilige Nachricht im MIME-Format.
+--===============0772411946653200073==
+Content-Type: multipart/alternative; boundary="=_alternative 002C8997C1257A4F_="
 
-yeap forget this one
+Dies ist eine mehrteilige Nachricht im MIME-Format.
+--=_alternative 002C8997C1257A4F_=
+Content-Type: text/plain; charset="US-ASCII"
 
-Best Regards,
-J.
+Hi all,
+
+i need to set the pin-mux of the board init code depending on an ID coming 
+from 
+an i2C EEPROM of the board.
+Is it possible to do something like this:
+
+
+...
+
+//Using the e.g. the postcore_initcall phase to init i2C
+static int
+ecuv6_postcore_init(void)
+{
+        //Set I2C EEPROM (24C32R) PIN MUX
+        mxc_iomux_v3_setup_multiple_pads(i2c_eeprom_pads, 
+ARRAY_SIZE(i2c_eeprom_pads));
+        imx53_add_i2c2(NULL);
+        return 0;
+}
+postcore_initcall(ecuv6_postcore_init);
+
+//In the console_initcall phase, i2C should be probed to read ID
+static int
+ecuv6_console_init(void)
+{
+        imx53_init_lowlevel(0);
+        ecuv6_set_system_serial();
+ 
+        //get_bb_pcb_number reads data from 
+        char bb_ID;
+        bb_ID = get_i2c_ID();
+
+        //Set Pinmux depending on i2C result
+        if(bb_ID = 0xAB) {
+                mxc_iomux_v3_setup_multiple_pads(AB_pads, ARRAY_SIZE(
+AB_pads));
+        }
+        else if(bb_ID = 0xCD) {
+                mxc_iomux_v3_setup_multiple_pads(CD_pads, ARRAY_SIZE(
+CD_pads));
+        }
+ 
+        imx53_add_uart0();
+
+        return 0;
+}
+console_initcall(ecuv6_console_init);
+
+...
+
+
+Actually this is not working. The i2c_imx:i2c_imx_probe(..) function gets 
+called later.
+Is there a way or concept to do something like this?
+
+christian
+--=_alternative 002C8997C1257A4F_=
+Content-Type: text/html; charset="US-ASCII"
+
+<font size=2 face="sans-serif">Hi all,</font>
+<br>
+<br><font size=2 face="sans-serif">i need to set the pin-mux of the board
+init code depending on an ID coming from </font>
+<br><font size=2 face="sans-serif">an i2C EEPROM of the board.</font>
+<br><font size=2 face="sans-serif">Is it possible to do something like
+this:</font>
+<br>
+<br>
+<br><font size=2 face="Sans">...</font>
+<br>
+<br><font size=2 color=#820040 face="Sans"><b>//Using the e.g. the </b></font><font size=2 face="Sans"><b>postcore_initcall</b></font><font size=2 color=#820040 face="Sans"><b>
+phase to init i2C</b></font>
+<br><font size=2 color=#820040 face="Sans"><b>static</b></font><font size=2 face="Sans">
+</font><font size=2 color=#820040 face="Sans"><b>int</b></font>
+<br><font size=2 face="Sans"><b>ecuv6_postcore_init</b>(</font><font size=2 color=#820040 face="Sans"><b>void</b></font><font size=2 face="Sans">)</font>
+<br><font size=2 face="Sans">{</font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; </font><font size=2 color=#3f8080 face="Sans">//Set
+I2C EEPROM (24C32R) PIN MUX</font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; mxc_iomux_v3_setup_multiple_pads(i2c_eeprom_pads,
+ARRAY_SIZE(i2c_eeprom_pads));</font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; imx53_add_i2c2(NULL);</font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; </font><font size=2 color=#820040 face="Sans"><b>return</b></font><font size=2 face="Sans">
+0;</font>
+<br><font size=2 face="Sans">}</font>
+<br><font size=2 face="Sans"><b>postcore_initcall</b>(ecuv6_postcore_init);</font>
+<br>
+<br><font size=2 color=#820040 face="Sans"><b>//In the </b></font><font size=2 face="Sans"><b>console_initcall</b></font><font size=2 color=#820040 face="Sans"><b>
+phase, i2C should be probed to read ID</b></font>
+<br><font size=2 color=#820040 face="Sans"><b>static</b></font><font size=2 face="Sans">
+</font><font size=2 color=#820040 face="Sans"><b>int</b></font>
+<br><font size=2 face="Sans"><b>ecuv6_console_init</b>(</font><font size=2 color=#820040 face="Sans"><b>void</b></font><font size=2 face="Sans">)</font>
+<br><font size=2 face="Sans">{</font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; imx53_init_lowlevel(0);</font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; ecuv6_set_system_serial();</font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+</font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; //get_bb_pcb_number
+reads data from </font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; </font><font size=2 color=#820040 face="Sans"><b>char</b></font><font size=2 face="Sans">
+bb_ID;</font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; bb_ID
+= get_i2c_ID();</font>
+<br>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; //Set
+Pinmux depending on i2C result</font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; </font><font size=2 color=#820040 face="Sans"><b>if</b></font><font size=2 face="Sans">(bb_ID
+= 0xAB) {</font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; mxc_iomux_v3_setup_multiple_pads(AB_pads,
+ARRAY_SIZE(AB_pads));</font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; }</font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; </font><font size=2 color=#820040 face="Sans"><b>else</b></font><font size=2 face="Sans">
+</font><font size=2 color=#820040 face="Sans"><b>if</b></font><font size=2 face="Sans">(bb_ID
+= 0xCD) {</font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; mxc_iomux_v3_setup_multiple_pads(CD_pads,
+ARRAY_SIZE(CD_pads));</font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; }</font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; </font>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; imx53_add_uart0();</font>
+<br>
+<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; </font><font size=2 color=#820040 face="Sans"><b>return</b></font><font size=2 face="Sans">
+0;</font>
+<br><font size=2 face="Sans">}</font>
+<br><font size=2 face="Sans"><b>console_initcall</b>(ecuv6_console_init);</font>
+<br>
+<br><font size=2 face="Sans">...</font>
+<br>
+<br>
+<br><font size=2 face="sans-serif">Actually this is not working. The i2c_imx:i2c_imx_probe(..)
+function gets called later.</font>
+<br><font size=2 face="sans-serif">Is there a way or concept to do something
+like this?</font>
+<br>
+<br><font size=2 face="sans-serif">christian</font>
+--=_alternative 002C8997C1257A4F_=--
+
+
+--===============0772411946653200073==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============0772411946653200073==--
