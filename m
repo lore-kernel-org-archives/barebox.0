@@ -1,12 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx2.rafi.de ([178.15.151.13])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SxCtz-0002tS-OS
- for barebox@lists.infradead.org; Fri, 03 Aug 2012 08:06:32 +0000
+Received: from mo6-p00-ob.rzone.de ([2a01:238:20a:202:5300::1])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SxEgJ-00044J-S8
+ for barebox@lists.infradead.org; Fri, 03 Aug 2012 10:00:32 +0000
+Received: from [192.168.1.10]
+ (ALyon-754-1-18-135.w90-53.abo.wanadoo.fr [90.53.125.135])
+ by smtp.strato.de (josoe mo99) (RZmta 30.4 DYNA|AUTH)
+ with ESMTPA id i01619o738YHfD for <barebox@lists.infradead.org>;
+ Fri, 3 Aug 2012 12:00:28 +0200 (CEST)
+Message-ID: <501BA13A.30605@calao-systems.com>
+Date: Fri, 03 Aug 2012 12:00:26 +0200
+From: gregory hermant <gregory.hermant@calao-systems.com>
 MIME-Version: 1.0
-Message-ID: <OF95E0712B.359A103D-ONC1257A4F.002B3A1C-C1257A4F.002C899A@o0802.rafi.inhouse>
-From: christian.buettner@rafi.de
-Date: Fri, 3 Aug 2012 10:06:28 +0200
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,168 +20,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0772411946653200073=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: boot init code depending on i2c eeprom value
+Subject: [PATCH] Enable pull-up on Rx serial ports for the CALAO MB-QIL-A9260
 To: barebox@lists.infradead.org
 
-Dies ist eine mehrteilige Nachricht im MIME-Format.
---===============0772411946653200073==
-Content-Type: multipart/alternative; boundary="=_alternative 002C8997C1257A4F_="
+This patch prevents to stop the autoboot randomly for the CALAO MB-QIL-A9260.
+Indeed on this board, there's no pull-up on the RX inputs for the DBGU, COM1 & COM2 serial port.
+With pull-up enabled, there's no longer unwanted character received from these console (CONFIG_CONSOLE_ACTIVATE_ALL=y). 
+  
+Signed-off-by: Gregory Hermant <gregory.hermant@calao-systems.com>
+---
+ arch/arm/boards/qil-a9260/init.c |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
 
-Dies ist eine mehrteilige Nachricht im MIME-Format.
---=_alternative 002C8997C1257A4F_=
-Content-Type: text/plain; charset="US-ASCII"
-
-Hi all,
-
-i need to set the pin-mux of the board init code depending on an ID coming 
-from 
-an i2C EEPROM of the board.
-Is it possible to do something like this:
-
-
-...
-
-//Using the e.g. the postcore_initcall phase to init i2C
-static int
-ecuv6_postcore_init(void)
-{
-        //Set I2C EEPROM (24C32R) PIN MUX
-        mxc_iomux_v3_setup_multiple_pads(i2c_eeprom_pads, 
-ARRAY_SIZE(i2c_eeprom_pads));
-        imx53_add_i2c2(NULL);
-        return 0;
-}
-postcore_initcall(ecuv6_postcore_init);
-
-//In the console_initcall phase, i2C should be probed to read ID
-static int
-ecuv6_console_init(void)
-{
-        imx53_init_lowlevel(0);
-        ecuv6_set_system_serial();
+diff --git a/arch/arm/boards/qil-a9260/init.c b/arch/arm/boards/qil-a9260/init.c
+index 305d733..b43cace 100644
+--- a/arch/arm/boards/qil-a9260/init.c
++++ b/arch/arm/boards/qil-a9260/init.c
+@@ -196,11 +196,17 @@ device_initcall(qil_a9260_devices_init);
+ static int qil_a9260_console_init(void)
+ {
+ 	at91_register_uart(0, 0);
++	at91_set_A_periph(AT91_PIN_PB14, 1);    /* Enable pull-up on DRXD */
++
+ 	at91_register_uart(1, ATMEL_UART_CTS | ATMEL_UART_RTS
+ 			   | ATMEL_UART_DTR | ATMEL_UART_DSR | ATMEL_UART_DCD
+ 			   | ATMEL_UART_RI);
++
+ 	at91_register_uart(2, ATMEL_UART_CTS | ATMEL_UART_RTS);
++	at91_set_A_periph(AT91_PIN_PB7, 1);	/* Enable pull-up on RXD1 */
++
+ 	at91_register_uart(3, ATMEL_UART_CTS | ATMEL_UART_RTS);
++	at91_set_A_periph(AT91_PIN_PB9, 1);	/* Enable pull-up on RXD2 */
  
-        //get_bb_pcb_number reads data from 
-        char bb_ID;
-        bb_ID = get_i2c_ID();
-
-        //Set Pinmux depending on i2C result
-        if(bb_ID = 0xAB) {
-                mxc_iomux_v3_setup_multiple_pads(AB_pads, ARRAY_SIZE(
-AB_pads));
-        }
-        else if(bb_ID = 0xCD) {
-                mxc_iomux_v3_setup_multiple_pads(CD_pads, ARRAY_SIZE(
-CD_pads));
-        }
- 
-        imx53_add_uart0();
-
-        return 0;
-}
-console_initcall(ecuv6_console_init);
-
-...
+ 	return 0;
+ }
+-- 
+1.5.6.3
 
 
-Actually this is not working. The i2c_imx:i2c_imx_probe(..) function gets 
-called later.
-Is there a way or concept to do something like this?
-
-christian
---=_alternative 002C8997C1257A4F_=
-Content-Type: text/html; charset="US-ASCII"
-
-<font size=2 face="sans-serif">Hi all,</font>
-<br>
-<br><font size=2 face="sans-serif">i need to set the pin-mux of the board
-init code depending on an ID coming from </font>
-<br><font size=2 face="sans-serif">an i2C EEPROM of the board.</font>
-<br><font size=2 face="sans-serif">Is it possible to do something like
-this:</font>
-<br>
-<br>
-<br><font size=2 face="Sans">...</font>
-<br>
-<br><font size=2 color=#820040 face="Sans"><b>//Using the e.g. the </b></font><font size=2 face="Sans"><b>postcore_initcall</b></font><font size=2 color=#820040 face="Sans"><b>
-phase to init i2C</b></font>
-<br><font size=2 color=#820040 face="Sans"><b>static</b></font><font size=2 face="Sans">
-</font><font size=2 color=#820040 face="Sans"><b>int</b></font>
-<br><font size=2 face="Sans"><b>ecuv6_postcore_init</b>(</font><font size=2 color=#820040 face="Sans"><b>void</b></font><font size=2 face="Sans">)</font>
-<br><font size=2 face="Sans">{</font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; </font><font size=2 color=#3f8080 face="Sans">//Set
-I2C EEPROM (24C32R) PIN MUX</font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; mxc_iomux_v3_setup_multiple_pads(i2c_eeprom_pads,
-ARRAY_SIZE(i2c_eeprom_pads));</font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; imx53_add_i2c2(NULL);</font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; </font><font size=2 color=#820040 face="Sans"><b>return</b></font><font size=2 face="Sans">
-0;</font>
-<br><font size=2 face="Sans">}</font>
-<br><font size=2 face="Sans"><b>postcore_initcall</b>(ecuv6_postcore_init);</font>
-<br>
-<br><font size=2 color=#820040 face="Sans"><b>//In the </b></font><font size=2 face="Sans"><b>console_initcall</b></font><font size=2 color=#820040 face="Sans"><b>
-phase, i2C should be probed to read ID</b></font>
-<br><font size=2 color=#820040 face="Sans"><b>static</b></font><font size=2 face="Sans">
-</font><font size=2 color=#820040 face="Sans"><b>int</b></font>
-<br><font size=2 face="Sans"><b>ecuv6_console_init</b>(</font><font size=2 color=#820040 face="Sans"><b>void</b></font><font size=2 face="Sans">)</font>
-<br><font size=2 face="Sans">{</font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; imx53_init_lowlevel(0);</font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; ecuv6_set_system_serial();</font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-</font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; //get_bb_pcb_number
-reads data from </font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; </font><font size=2 color=#820040 face="Sans"><b>char</b></font><font size=2 face="Sans">
-bb_ID;</font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; bb_ID
-= get_i2c_ID();</font>
-<br>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; //Set
-Pinmux depending on i2C result</font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; </font><font size=2 color=#820040 face="Sans"><b>if</b></font><font size=2 face="Sans">(bb_ID
-= 0xAB) {</font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-&nbsp; &nbsp; &nbsp; mxc_iomux_v3_setup_multiple_pads(AB_pads,
-ARRAY_SIZE(AB_pads));</font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; }</font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; </font><font size=2 color=#820040 face="Sans"><b>else</b></font><font size=2 face="Sans">
-</font><font size=2 color=#820040 face="Sans"><b>if</b></font><font size=2 face="Sans">(bb_ID
-= 0xCD) {</font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-&nbsp; &nbsp; &nbsp; mxc_iomux_v3_setup_multiple_pads(CD_pads,
-ARRAY_SIZE(CD_pads));</font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; }</font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; </font>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; imx53_add_uart0();</font>
-<br>
-<br><font size=2 face="Sans">&nbsp; &nbsp; &nbsp; &nbsp; </font><font size=2 color=#820040 face="Sans"><b>return</b></font><font size=2 face="Sans">
-0;</font>
-<br><font size=2 face="Sans">}</font>
-<br><font size=2 face="Sans"><b>console_initcall</b>(ecuv6_console_init);</font>
-<br>
-<br><font size=2 face="Sans">...</font>
-<br>
-<br>
-<br><font size=2 face="sans-serif">Actually this is not working. The i2c_imx:i2c_imx_probe(..)
-function gets called later.</font>
-<br><font size=2 face="sans-serif">Is there a way or concept to do something
-like this?</font>
-<br>
-<br><font size=2 face="sans-serif">christian</font>
---=_alternative 002C8997C1257A4F_=--
-
-
---===============0772411946653200073==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============0772411946653200073==--
