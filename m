@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo1.mail-out.ovh.net ([188.165.38.232]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1SxF4S-0000d9-Ao
- for barebox@lists.infradead.org; Fri, 03 Aug 2012 10:25:32 +0000
-Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id F2DE3FFAFB5
- for <barebox@lists.infradead.org>; Fri,  3 Aug 2012 12:31:36 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  3 Aug 2012 12:25:20 +0200
-Message-Id: <1343989522-8807-10-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1343989522-8807-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20120803102300.GB23597@game.jcrosoft.org>
- <1343989522-8807-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-yx0-f177.google.com ([209.85.213.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SxGsL-0004li-6e
+ for barebox@lists.infradead.org; Fri, 03 Aug 2012 12:21:05 +0000
+Received: by yenr9 with SMTP id r9so822854yen.36
+ for <barebox@lists.infradead.org>; Fri, 03 Aug 2012 05:21:02 -0700 (PDT)
+From: "Marc Reilly" <marc@cpdesign.com.au>
+References: <OF95E0712B.359A103D-ONC1257A4F.002B3A1C-C1257A4F.002C899A@o0802.rafi.inhouse>
+In-Reply-To: <OF95E0712B.359A103D-ONC1257A4F.002B3A1C-C1257A4F.002C899A@o0802.rafi.inhouse>
+Date: Fri, 3 Aug 2012 22:20:58 +1000
+Message-ID: <000001cd7172$744769a0$5cd63ce0$@cpdesign.com.au>
+MIME-Version: 1.0
+Content-Language: en-au
+Reply-To: marc@cpdesign.com.au
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +21,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/12] at91: add lowlevel init to the pbl
-To: barebox@lists.infradead.org
+Subject: RE: boot init code depending on i2c eeprom value
+To: christian.buettner@rafi.de, barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/mach-at91/Makefile |    2 ++
- 1 file changed, 2 insertions(+)
+Hi,
 
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 491c454..3ade725 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -4,6 +4,8 @@ lowlevel_init-y = at91sam926x_lowlevel_init.o
- lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
- obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
- 
-+pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-+
- obj-$(CONFIG_AT91SAM9_RESET) += at91sam9_reset.o
- obj-$(CONFIG_AT91SAM9G45_RESET) += at91sam9g45_reset.o
- 
--- 
-1.7.10.4
+>i need to set the pin-mux of the board init code depending on an ID coming
+from 
+>an i2C EEPROM of the board. 
+>Is it possible to do something like this: 
+
+>postcore_initcall(ecuv6_postcore_init); 
+> console_initcall(ecuv6_console_init); 
+>Actually this is not working. The i2c_imx:i2c_imx_probe(..) function gets
+called later. 
+>Is there a way or concept to do something like this? 
+
+Do it (all) in a device_initcall() function?
+
+Cheers,
+Marc
+
+
 
 
 _______________________________________________
