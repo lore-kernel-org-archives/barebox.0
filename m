@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SxBPN-0007n4-I1
- for barebox@lists.infradead.org; Fri, 03 Aug 2012 06:30:49 +0000
+ id 1SxBT1-0008Fo-42
+ for barebox@lists.infradead.org; Fri, 03 Aug 2012 06:34:35 +0000
+Date: Fri, 3 Aug 2012 08:34:33 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  3 Aug 2012 08:30:35 +0200
-Message-Id: <1343975435-5948-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1343975435-5948-1-git-send-email-s.hauer@pengutronix.de>
-References: <1343975435-5948-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20120803063433.GH1451@pengutronix.de>
+References: <20120730100022.GD19759@game.jcrosoft.org>
+ <1343642565-32257-1-git-send-email-plagnioj@jcrosoft.com>
+ <1343642565-32257-5-git-send-email-plagnioj@jcrosoft.com>
+ <20120802153032.GE1451@pengutronix.de>
+ <20120802153422.GL19759@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20120802153422.GL19759@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,41 +22,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] glob: fix GLOB_SORT
-To: barebox@lists.infradead.org
-Cc: jbe@pengutronix.de
+Subject: Re: [PATCH 05/12] Add compressed image support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-The arguments to collated_compare are actually pointers to
-pointers to char, not pointers to char.
+On Thu, Aug 02, 2012 at 05:34:22PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 17:30 Thu 02 Aug     , Sascha Hauer wrote:
+> > On Mon, Jul 30, 2012 at 12:02:38PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > > +
+> > >  void barebox_pbl(uint32_t offset)
+> > >  {
+> > > +	uint32_t compressed_start, compressed_end, len;
+> > > +	void (*uncompress)(void *compressed_start, unsigned int len);
+> > > +
+> > > +	compressed_start = (uint32_t)&input_data - offset;
+> > > +	compressed_end = (uint32_t)&input_data_end - offset;
+> > > +	len = compressed_end - compressed_start;
+> > > +
+> > > +	/*
+> > > +	 * Check if the compressed binary will be overwritten
+> > > +	 * by the uncompressed binary
+> > > +	 */
+> > > +	if (compressed_start >= TEXT_BASE &&
+> > > +			compressed_start < TEXT_BASE + len * 4 ) {
+> > > +		/*
+> > > +		 * copy compressed binary to its link address
+> > > +		 */
+> > > +		memcpy(&input_data, (void *)compressed_start, len);
+> > > +		compressed_start = (uint32_t)&input_data;
+> > > +	}
+> > > +
+> > > +	uncompress = barebox_uncompress;
+> > > +
+> > > +	/* call barebox_uncompress with its absolute address */
+> > > +	__asm__ __volatile__(
+> > > +		"mov r0, %1\n"
+> > > +		"mov r1, %2\n"
+> > > +		"mov pc, %0\n"
+> > > +		:
+> > > +		: "r"(uncompress), "r"(compressed_start), "r"(len)
+> > > +		: "r0", "r1");
+> > 
+> > When the pbl code runs at its correct address, then we can simply do a
+> > barebox_uncompress() here.
+> > 
+> > Fixed this before applying.
+> the code in start does not do this
+> 
+> we just do a call to barebox_pbl
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- lib/glob.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+See my other mails to the other patches.
 
-diff --git a/lib/glob.c b/lib/glob.c
-index c4c6067..1b0137b 100644
---- a/lib/glob.c
-+++ b/lib/glob.c
-@@ -78,8 +78,8 @@ int glob_pattern_p(const char *pattern, int quote)
- /* Do a collated comparison of A and B.  */
- static int collated_compare(const void *a, const void *b)
- {
--	const char *s1 = a;
--	const char *s2 = b;
-+	const char *const s1 = *(const char *const *)a;
-+	const char *const s2 = *(const char *const *)b;
- 
- 	if (s1 == s2)
- 		return 0;
+Sascha
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
