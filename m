@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp15.mail.ru ([94.100.176.133])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SxaSt-0005vD-0j
- for barebox@lists.infradead.org; Sat, 04 Aug 2012 09:16:07 +0000
+ id 1SxaSy-0005vj-N9
+ for barebox@lists.infradead.org; Sat, 04 Aug 2012 09:16:13 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat,  4 Aug 2012 13:15:54 +0400
-Message-Id: <1344071755-6733-2-git-send-email-shc_work@mail.ru>
+Date: Sat,  4 Aug 2012 13:15:55 +0400
+Message-Id: <1344071755-6733-3-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1344071755-6733-1-git-send-email-shc_work@mail.ru>
 References: <1344071755-6733-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,67 +21,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] mc13xxx: Hide private struct mc13xxx from other units
+Subject: [PATCH 3/3] mc13xxx: Fixed memory leak
 To: barebox@lists.infradead.org
 
-Board support units must use only the provided functions.
+A string allocated by asprintf is not freed, so change it to a sprintf
+with the preallocated buffer.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/mfd/mc13xxx.c |   15 +++++++++++++++
- include/mfd/mc13xxx.h |   13 +------------
- 2 files changed, 16 insertions(+), 12 deletions(-)
+ drivers/mfd/mc13xxx.c |   12 ++++++------
+ 1 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
-index 53d9b7c..8e3c0b0 100644
+index 8e3c0b0..2373254 100644
 --- a/drivers/mfd/mc13xxx.c
 +++ b/drivers/mfd/mc13xxx.c
-@@ -32,6 +32,21 @@
+@@ -252,7 +252,7 @@ static struct mc13892_rev mc13892_revisions[] = {
+ static int mc13xxx_query_revision(struct mc13xxx *mc13xxx)
+ {
+ 	unsigned int rev_id;
+-	char *chipname, *revstr;
++	char *chipname, revstr[5];
+ 	int rev, i;
  
- #define DRIVERNAME		"mc13xxx"
+ 	mc13xxx_reg_read(mc13xxx, MC13XXX_REG_IDENTIFICATION, &rev_id);
+@@ -265,9 +265,9 @@ static int mc13xxx_query_revision(struct mc13xxx *mc13xxx)
+ 		/* Ver 0.2 is actually 3.2a. Report as 3.2 */
+ 		if (rev == 0x02) {
+ 			rev = 0x32;
+-			revstr = "3.2a";
++			strcpy(&revstr[0], "3.2a");
+ 		} else
+-			revstr = asprintf("%d.%d", rev / 0x10, rev % 10);
++			sprintf(&revstr[0], "%d.%d", rev / 0x10, rev % 10);
+ 		break;
+ 	case 7:
+ 		chipname = "MC13892";
+@@ -279,12 +279,12 @@ static int mc13xxx_query_revision(struct mc13xxx *mc13xxx)
+ 			return -EINVAL;
  
-+enum mc13xxx_mode {
-+	MC13XXX_MODE_I2C,
-+	MC13XXX_MODE_SPI,
-+};
-+
-+struct mc13xxx {
-+	struct cdev			cdev;
-+	union {
-+		struct i2c_client	*client;
-+		struct spi_device	*spi;
-+	};
-+	enum mc13xxx_mode		mode;
-+	int				revision;
-+};
-+
- #define to_mc13xxx(a)		container_of(a, struct mc13xxx, cdev)
+ 		rev = mc13892_revisions[i].rev;
+-		revstr = mc13892_revisions[i].revstr;
++		strcpy(&revstr[0], mc13892_revisions[i].revstr);
  
- static struct mc13xxx *mc_dev;
-diff --git a/include/mfd/mc13xxx.h b/include/mfd/mc13xxx.h
-index 3770789..59042eb 100644
---- a/include/mfd/mc13xxx.h
-+++ b/include/mfd/mc13xxx.h
-@@ -150,18 +150,7 @@
- #define MC13783_SW1B_SOFTSTART		(1 << 17)
- #define MC13783_SW_PLL_FACTOR(x)	(((x) - 28) << 19)
+ 		if (rev == MC13892_REVISION_2_0) {
+ 			if ((rev_id >> 9) & 0x3) {
+ 				rev = MC13892_REVISION_2_0a;
+-				revstr = "2.0a";
++				strcpy(&revstr[0], "2.0a");
+ 			}
+ 		}
+ 		break;
+@@ -294,7 +294,7 @@ static int mc13xxx_query_revision(struct mc13xxx *mc13xxx)
+ 	}
  
--enum mc13xxx_mode {
--	MC13XXX_MODE_I2C,
--	MC13XXX_MODE_SPI,
--};
--
--struct mc13xxx {
--	struct cdev		cdev;
--	struct i2c_client	*client;
--	struct spi_device	*spi;
--	enum mc13xxx_mode	mode;
--	int			revision;
--};
-+struct mc13xxx;
+ 	dev_info(mc_dev->cdev.dev, "Found %s ID: 0x%06x [Rev: %s]\n",
+-			chipname, rev_id, revstr);
++			chipname, rev_id, &revstr[0]);
  
- #ifdef CONFIG_MFD_MC13XXX
- extern struct mc13xxx *mc13xxx_get(void);
+ 	mc13xxx->revision = rev;
+ 
 -- 
 1.7.3.4
 
