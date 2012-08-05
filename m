@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp15.mail.ru ([94.100.176.133])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SxaSy-0005vj-N9
- for barebox@lists.infradead.org; Sat, 04 Aug 2012 09:16:13 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat,  4 Aug 2012 13:15:55 +0400
-Message-Id: <1344071755-6733-3-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1344071755-6733-1-git-send-email-shc_work@mail.ru>
-References: <1344071755-6733-1-git-send-email-shc_work@mail.ru>
+Received: from 12.mo1.mail-out.ovh.net ([87.98.162.229]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Sxt2P-0001QW-Os
+ for barebox@lists.infradead.org; Sun, 05 Aug 2012 05:06:03 +0000
+Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id EEF8CFF9782
+ for <barebox@lists.infradead.org>; Sun,  5 Aug 2012 07:12:14 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Sun,  5 Aug 2012 07:06:00 +0200
+Message-Id: <1344143160-14103-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,68 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] mc13xxx: Fixed memory leak
+Subject: [PATCH 1/1] menu: add number key support
 To: barebox@lists.infradead.org
 
-A string allocated by asprintf is not freed, so change it to a sprintf
-with the preallocated buffer.
+Allow to use the number key to jump to entry.
+if already on a entry % number_key jump to the next +10 one if exit
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/mfd/mc13xxx.c |   12 ++++++------
- 1 files changed, 6 insertions(+), 6 deletions(-)
+ common/menu.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
-index 8e3c0b0..2373254 100644
---- a/drivers/mfd/mc13xxx.c
-+++ b/drivers/mfd/mc13xxx.c
-@@ -252,7 +252,7 @@ static struct mc13892_rev mc13892_revisions[] = {
- static int mc13xxx_query_revision(struct mc13xxx *mc13xxx)
- {
- 	unsigned int rev_id;
--	char *chipname, *revstr;
-+	char *chipname, revstr[5];
- 	int rev, i;
+diff --git a/common/menu.c b/common/menu.c
+index 9f536d6..97c6b18 100644
+--- a/common/menu.c
++++ b/common/menu.c
+@@ -314,6 +314,23 @@ int menu_show(struct menu *m)
+ 		m->auto_select = -1;
  
- 	mc13xxx_reg_read(mc13xxx, MC13XXX_REG_IDENTIFICATION, &rev_id);
-@@ -265,9 +265,9 @@ static int mc13xxx_query_revision(struct mc13xxx *mc13xxx)
- 		/* Ver 0.2 is actually 3.2a. Report as 3.2 */
- 		if (rev == 0x02) {
- 			rev = 0x32;
--			revstr = "3.2a";
-+			strcpy(&revstr[0], "3.2a");
- 		} else
--			revstr = asprintf("%d.%d", rev / 0x10, rev % 10);
-+			sprintf(&revstr[0], "%d.%d", rev / 0x10, rev % 10);
- 		break;
- 	case 7:
- 		chipname = "MC13892";
-@@ -279,12 +279,12 @@ static int mc13xxx_query_revision(struct mc13xxx *mc13xxx)
- 			return -EINVAL;
- 
- 		rev = mc13892_revisions[i].rev;
--		revstr = mc13892_revisions[i].revstr;
-+		strcpy(&revstr[0], mc13892_revisions[i].revstr);
- 
- 		if (rev == MC13892_REVISION_2_0) {
- 			if ((rev_id >> 9) & 0x3) {
- 				rev = MC13892_REVISION_2_0a;
--				revstr = "2.0a";
-+				strcpy(&revstr[0], "2.0a");
- 			}
- 		}
- 		break;
-@@ -294,7 +294,7 @@ static int mc13xxx_query_revision(struct mc13xxx *mc13xxx)
- 	}
- 
- 	dev_info(mc_dev->cdev.dev, "Found %s ID: 0x%06x [Rev: %s]\n",
--			chipname, rev_id, revstr);
-+			chipname, rev_id, &revstr[0]);
- 
- 	mc13xxx->revision = rev;
- 
+ 		switch (ch) {
++		case '0' ... '9': {
++			struct menu_entry *me;
++			int num = ch - '0';
++			int next_num = m->selected->num + 10;
++			if (!num)
++				num = 10;
++
++			if (ch_previous == ch && next_num <= m->nb_entries)
++				num = next_num;
++
++			me = menu_entry_get_by_num(m, num);
++			if (me) {
++				m->selected = me;
++				repaint = 1;
++			}
++			break;
++		}
+ 		case KEY_UP:
+ 			m->selected = list_entry(m->selected->list.prev, struct menu_entry,
+ 						 list);
 -- 
-1.7.3.4
+1.7.10.4
 
 
 _______________________________________________
