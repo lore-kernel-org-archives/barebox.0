@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo1.mail-out.ovh.net ([87.98.162.229]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Sxt2P-0001QW-Os
- for barebox@lists.infradead.org; Sun, 05 Aug 2012 05:06:03 +0000
-Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id EEF8CFF9782
- for <barebox@lists.infradead.org>; Sun,  5 Aug 2012 07:12:14 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun,  5 Aug 2012 07:06:00 +0200
-Message-Id: <1344143160-14103-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1SyHfO-000771-Oc
+ for barebox@lists.infradead.org; Mon, 06 Aug 2012 07:23:56 +0000
+Date: Mon, 6 Aug 2012 09:23:49 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120806072348.GB1451@pengutronix.de>
+References: <20120803102300.GB23597@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20120803102300.GB23597@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,53 +18,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] menu: add number key support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 00/12 v4] Add Pre-Bootloader support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Allow to use the number key to jump to entry.
-if already on a entry % number_key jump to the next +10 one if exit
+On Fri, Aug 03, 2012 at 12:23:00PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> are available in the git repository at:
+> 
+>   git://git.jcrosoft.org/barebox.git tags/pbl
+> 
+> for you to fetch changes up to 1d861eb2a6384495261122f183842fcd8a8e059e:
+> 
+>   arm: always enable the garbage collector for pbl (2012-08-03 18:09:16 +0800)
+> 
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- common/menu.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+I applied this series for next. This is not complete yet, so before this
+series hits any release, the following should happen:
 
-diff --git a/common/menu.c b/common/menu.c
-index 9f536d6..97c6b18 100644
---- a/common/menu.c
-+++ b/common/menu.c
-@@ -314,6 +314,23 @@ int menu_show(struct menu *m)
- 		m->auto_select = -1;
- 
- 		switch (ch) {
-+		case '0' ... '9': {
-+			struct menu_entry *me;
-+			int num = ch - '0';
-+			int next_num = m->selected->num + 10;
-+			if (!num)
-+				num = 10;
-+
-+			if (ch_previous == ch && next_num <= m->nb_entries)
-+				num = next_num;
-+
-+			me = menu_entry_get_by_num(m, num);
-+			if (me) {
-+				m->selected = me;
-+				repaint = 1;
-+			}
-+			break;
-+		}
- 		case KEY_UP:
- 			m->selected = list_entry(m->selected->list.prev, struct menu_entry,
- 						 list);
+- Currently most boards do not compile with compression enabled. This is
+  because the pbl needs the lowlevel init functions. Most boards fail
+  with 'undefined reference to board_init_lowlevel'. To fix this a
+  pbl-y += lowlevel.o is needed.
+  Unfortunately there is a class of boards which silently fail with
+  image compression, namely all i.MX boards which compile with internal
+  boot mode. Here the flash header is just missing when not explicitly
+  enabled for pbl.
+- The SoCs which generate some SoC specific image (OMAP -> MLO, Netx ->
+  barebox.netx) only generate the compressed binary, but not the SoC
+  specific file.
+- Documentation to be written.
+
+I have a patch in preparation to fix the first two topics.
+
+Sascha
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
