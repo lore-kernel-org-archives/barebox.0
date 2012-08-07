@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og110.obsmtp.com ([64.18.0.20])
- by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SykoY-0005ZA-Vn
- for barebox@lists.infradead.org; Tue, 07 Aug 2012 14:31:19 +0000
-From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Tue,  7 Aug 2012 15:30:58 +0100
-Message-Id: <1344349858-6068-5-git-send-email-renaud.barbier@ge.com>
-In-Reply-To: <1343232061-1789-1-git-send-email-renaud.barbier@ge.com>
-References: <1343232061-1789-1-git-send-email-renaud.barbier@ge.com>
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Syos9-0005Rf-5i
+ for barebox@lists.infradead.org; Tue, 07 Aug 2012 18:51:18 +0000
+Received: by lagu2 with SMTP id u2so1072727lag.36
+ for <barebox@lists.infradead.org>; Tue, 07 Aug 2012 11:51:14 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue,  7 Aug 2012 22:51:06 +0400
+Message-Id: <1344365466-17944-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,70 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] ppc: P2020RDB Ethernet configuration
+Subject: [PATCH] commands: memset: fix help message
 To: barebox@lists.infradead.org
 
-Minimal support of the Ethernet interface on the P2020RDB board. Only
-the eTSEC3 interface is supported.
+memset has no '-s' option so remove related help string.
+Also this patch makes the command's description more clear.
 
-Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/ppc/boards/freescale-p2020rdb/p2020rdb.c |   14 ++++++++++++++
- arch/ppc/configs/p2020rdb_defconfig           |    6 ++++++
- 2 files changed, 20 insertions(+), 0 deletions(-)
+ commands/mem.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
-index 20897cb..4cebf79 100644
---- a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
-+++ b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
-@@ -35,6 +35,7 @@
- #include <mach/mmu.h>
- #include <mach/immap_85xx.h>
- #include <mach/clocks.h>
-+#include <mach/gianfar.h>
- #include <mach/early_udelay.h>
+diff --git a/commands/mem.c b/commands/mem.c
+index cc94062..ec46a48 100644
+--- a/commands/mem.c
++++ b/commands/mem.c
+@@ -566,14 +566,13 @@ out:
+ }
  
- #define VSC7385_RST_SET		0x00080000
-@@ -61,10 +62,23 @@
- #define SYSCLK_50	50000000
- #define SYSCLK_100	100000000
+ static const __maybe_unused char cmd_memset_help[] =
+-"Usage: memset [OPTIONS] <src> <c> <n>\n"
++"Usage: memset [OPTIONS] <addr> <c> <n>\n"
+ "\n"
+ "options:\n"
+ "  -b, -w, -l   use byte, halfword, or word accesses\n"
+-"  -s <file>    source file (default /dev/mem)\n"
+ "  -d <file>    destination file (default /dev/mem)\n"
+ "\n"
+-"Fill the first n bytes of area with byte c\n";
++"Fill the first <n> bytes at offset <addr> with byte <c>\n";
  
-+/* Ethernet. Use eTSEC3 */
-+static struct gfar_info_struct gfar_info[] = {
-+	{
-+		.phyaddr = 1,
-+		.tbiana = 0,
-+		.tbicr = 0,
-+	},
-+};
-+
-+
- static int devices_init(void)
- {
- 	add_cfi_flash_device(-1, CFG_FLASH_BASE, 16 << 20, 0);
- 
-+	/* eTSEC3 */
-+	fsl_eth_init(3, &gfar_info[0]);
-+
- 	devfs_add_partition("nor0", 0xf80000, 0x80000, DEVFS_PARTITION_FIXED,
- 			    "self0");
- 	return 0;
-diff --git a/arch/ppc/configs/p2020rdb_defconfig b/arch/ppc/configs/p2020rdb_defconfig
-index f8a0687..d025a40 100644
---- a/arch/ppc/configs/p2020rdb_defconfig
-+++ b/arch/ppc/configs/p2020rdb_defconfig
-@@ -21,3 +21,9 @@ CONFIG_MALLOC_SIZE=0x200000
- CONFIG_BAUDRATE=115200
- CONFIG_DRIVER_SERIAL_NS16550=y
- CONFIG_RELOCATABLE=y
-+CONFIG_DRIVER_NET_GIANFAR=y
-+CONFIG_NET=y
-+CONFIG_NET_PING=y
-+CONFIG_NET_TFTP=y
-+CONFIG_PING=y
-+CONFIG_TFTP=y
+ BAREBOX_CMD_START(memset)
+ 	.cmd		= do_memset,
 -- 
-1.7.1
+1.7.10.4
 
 
 _______________________________________________
