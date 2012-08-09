@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f49.google.com ([209.85.214.49])
+Received: from smtp19.mail.ru ([94.100.176.156])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SzSKx-00074e-Kt
- for barebox@lists.infradead.org; Thu, 09 Aug 2012 12:59:40 +0000
-Received: by bkcji2 with SMTP id ji2so188084bkc.36
- for <barebox@lists.infradead.org>; Thu, 09 Aug 2012 05:59:37 -0700 (PDT)
-Message-ID: <5023B430.4060205@kiwigrid.com>
-Date: Thu, 09 Aug 2012 14:59:28 +0200
-From: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
-MIME-Version: 1.0
-References: <500EA7A8.4020603@kiwigrid.com>
- <20120725071947.GK30009@pengutronix.de>
-In-Reply-To: <20120725071947.GK30009@pengutronix.de>
+ id 1SzUj6-0001cO-Sg
+ for barebox@lists.infradead.org; Thu, 09 Aug 2012 15:32:46 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Thu,  9 Aug 2012 19:33:08 +0400
+Message-Id: <1344526388-3797-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <20120809063801.GO1451@pengutronix.de>
+References: <20120809063801.GO1451@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,27 +16,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add JTAG bitbang driver
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/3] mc13xxx: Fixed memory leak
+To: barebox@lists.infradead.org
 
-Hi, Sascha!
+A string allocated by asprintf is not freed, so change it to a sprintf
+with the preallocated buffer.
 
-On 07/25/2012 09:19 AM, Sascha Hauer wrote:
-> How do you use this driver? From C code, or is there some command
-> planned?
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ drivers/mfd/mc13xxx.c |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
 
-I implement PSoC3 update, but with JTAG I have some trouble, what I 
-haven't with SWD. Therefore much possible, that I will not use JTAG 
-driver. But maybe somebody find it useful.
+diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
+index 8e3c0b0..704446d 100644
+--- a/drivers/mfd/mc13xxx.c
++++ b/drivers/mfd/mc13xxx.c
+@@ -252,7 +252,7 @@ static struct mc13892_rev mc13892_revisions[] = {
+ static int mc13xxx_query_revision(struct mc13xxx *mc13xxx)
+ {
+ 	unsigned int rev_id;
+-	char *chipname, *revstr;
++	char *chipname, revstr[5];
+ 	int rev, i;
+ 
+ 	mc13xxx_reg_read(mc13xxx, MC13XXX_REG_IDENTIFICATION, &rev_id);
+@@ -265,9 +265,9 @@ static int mc13xxx_query_revision(struct mc13xxx *mc13xxx)
+ 		/* Ver 0.2 is actually 3.2a. Report as 3.2 */
+ 		if (rev == 0x02) {
+ 			rev = 0x32;
+-			revstr = "3.2a";
++			strcpy(revstr, "3.2a");
+ 		} else
+-			revstr = asprintf("%d.%d", rev / 0x10, rev % 10);
++			sprintf(revstr, "%d.%d", rev / 0x10, rev % 10);
+ 		break;
+ 	case 7:
+ 		chipname = "MC13892";
+@@ -279,12 +279,12 @@ static int mc13xxx_query_revision(struct mc13xxx *mc13xxx)
+ 			return -EINVAL;
+ 
+ 		rev = mc13892_revisions[i].rev;
+-		revstr = mc13892_revisions[i].revstr;
++		strcpy(revstr, mc13892_revisions[i].revstr);
+ 
+ 		if (rev == MC13892_REVISION_2_0) {
+ 			if ((rev_id >> 9) & 0x3) {
+ 				rev = MC13892_REVISION_2_0a;
+-				revstr = "2.0a";
++				strcpy(revstr, "2.0a");
+ 			}
+ 		}
+ 		break;
+-- 
+1.7.3.4
 
-Thank you for tips!
-
-Wjatscheslaw
 
 _______________________________________________
 barebox mailing list
