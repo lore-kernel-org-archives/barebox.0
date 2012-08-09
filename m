@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1SzMUJ-00020M-LS
- for barebox@lists.infradead.org; Thu, 09 Aug 2012 06:44:56 +0000
-Date: Thu, 9 Aug 2012 08:44:53 +0200
+ id 1SzNH5-0006aV-EJ
+ for barebox@lists.infradead.org; Thu, 09 Aug 2012 07:35:20 +0000
+Date: Thu, 9 Aug 2012 09:35:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120809064453.GR1451@pengutronix.de>
-References: <1344365466-17944-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20120809073515.GT1451@pengutronix.de>
+References: <1344329099-8528-1-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1344365466-17944-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1344329099-8528-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +22,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: memset: fix help message
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] ARM i.MX: Add support for i2c on imx6
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Aug 07, 2012 at 10:51:06PM +0400, Antony Pavlov wrote:
-> memset has no '-s' option so remove related help string.
-> Also this patch makes the command's description more clear.
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+On Tue, Aug 07, 2012 at 10:44:59AM +0200, Steffen Trumtrar wrote:
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 Applied, thanks
 
 Sascha
 
 > ---
->  commands/mem.c |    5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+> Hi all,
 > 
-> diff --git a/commands/mem.c b/commands/mem.c
-> index cc94062..ec46a48 100644
-> --- a/commands/mem.c
-> +++ b/commands/mem.c
-> @@ -566,14 +566,13 @@ out:
+> this patch adds support for i2c on imx6. The patch was tested on a sabrelite
+> board, where I measured SCL and SDATA, as there are no devices connected (apart
+> from an sgtl5000).
+> 
+>  arch/arm/mach-imx/include/mach/devices-imx6.h |   15 +++++++++++++++
+>  arch/arm/mach-imx/speed-imx6.c                |    6 ++++++
+>  2 files changed, 21 insertions(+)
+> 
+> diff --git a/arch/arm/mach-imx/include/mach/devices-imx6.h b/arch/arm/mach-imx/include/mach/devices-imx6.h
+> index ca063c5..c73e488 100644
+> --- a/arch/arm/mach-imx/include/mach/devices-imx6.h
+> +++ b/arch/arm/mach-imx/include/mach/devices-imx6.h
+> @@ -49,3 +49,18 @@ static inline struct device_d *imx6_add_spi0(struct spi_imx_master *pdata)
+>  {
+>  	return imx_add_spi((void *)MX6_ECSPI1_BASE_ADDR, 0, pdata);
+>  }
+> +
+> +static inline struct device_d *imx6_add_i2c0(struct i2c_platform_data *pdata)
+> +{
+> +	return imx_add_i2c((void *)MX6_I2C1_BASE_ADDR, 0, pdata);
+> +}
+> +
+> +static inline struct device_d *imx6_add_i2c1(struct i2c_platform_data *pdata)
+> +{
+> +	return imx_add_i2c((void *)MX6_I2C2_BASE_ADDR, 1, pdata);
+> +}
+> +
+> +static inline struct device_d *imx6_add_i2c2(struct i2c_platform_data *pdata)
+> +{
+> +	return imx_add_i2c((void *)MX6_I2C3_BASE_ADDR, 2, pdata);
+> +}
+> diff --git a/arch/arm/mach-imx/speed-imx6.c b/arch/arm/mach-imx/speed-imx6.c
+> index df24545..645b2c9 100644
+> --- a/arch/arm/mach-imx/speed-imx6.c
+> +++ b/arch/arm/mach-imx/speed-imx6.c
+> @@ -332,6 +332,11 @@ u32 imx_get_fecclk(void)
+>  	return __get_ipg_clk();
 >  }
 >  
->  static const __maybe_unused char cmd_memset_help[] =
-> -"Usage: memset [OPTIONS] <src> <c> <n>\n"
-> +"Usage: memset [OPTIONS] <addr> <c> <n>\n"
->  "\n"
->  "options:\n"
->  "  -b, -w, -l   use byte, halfword, or word accesses\n"
-> -"  -s <file>    source file (default /dev/mem)\n"
->  "  -d <file>    destination file (default /dev/mem)\n"
->  "\n"
-> -"Fill the first n bytes of area with byte c\n";
-> +"Fill the first <n> bytes at offset <addr> with byte <c>\n";
->  
->  BAREBOX_CMD_START(memset)
->  	.cmd		= do_memset,
+> +u32 imx_get_i2cclk(void)
+> +{
+> +	return __get_ipg_per_clk();
+> +}
+> +
+>  u32 imx_get_cspiclk(void)
+>  {
+>  	return __get_cspi_clk();
+> @@ -351,6 +356,7 @@ void imx_dump_clocks(void)
+>  	printf("mx6q pll8: %d\n", freq);
+>  	printf("mcu main:  %d\n", __get_mcu_main_clk());
+>  	printf("periph:    %d\n", __get_periph_clk());
+> +	printf("i2c:	   %d\n", __get_ipg_per_clk());
+>  	printf("ipg:       %d\n", __get_ipg_clk());
+>  	printf("ipg per:   %d\n", __get_ipg_per_clk());
+>  	printf("cspi:      %d\n", __get_cspi_clk());
 > -- 
 > 1.7.10.4
 > 
