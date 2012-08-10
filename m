@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-yx0-f177.google.com ([209.85.213.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Szkq2-0007dO-7P
- for barebox@lists.infradead.org; Fri, 10 Aug 2012 08:44:59 +0000
-Date: Fri, 10 Aug 2012 10:44:53 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120810084453.GV1451@pengutronix.de>
-References: <20120809063801.GO1451@pengutronix.de>
- <1344526388-3797-1-git-send-email-shc_work@mail.ru>
+ id 1SzlG3-0002ng-H8
+ for barebox@lists.infradead.org; Fri, 10 Aug 2012 09:11:52 +0000
+Received: by yenq9 with SMTP id q9so1342944yen.36
+ for <barebox@lists.infradead.org>; Fri, 10 Aug 2012 02:11:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1344526388-3797-1-git-send-email-shc_work@mail.ru>
+Date: Fri, 10 Aug 2012 11:11:49 +0200
+Message-ID: <CAD9ZU8BDoYe9WA11i1PjuU=AkZW3QzKActY4SuCxEfKoVwLZGw@mail.gmail.com>
+From: Gabriel Tisan <gabriel.tisan@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,79 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] mc13xxx: Fixed memory leak
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: issue with imx35 external boot from Micron 4k flash
+To: barebox@lists.infradead.org
 
-On Thu, Aug 09, 2012 at 07:33:08PM +0400, Alexander Shiyan wrote:
-> A string allocated by asprintf is not freed, so change it to a sprintf
-> with the preallocated buffer.
-> 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+Hi !
 
-Applied, thanks.
+I try to boot a custom board(based on imx35)  from a Micron NAND
+flash(4K pagesize, 224 bytes OOB, 256K writesize).
+Using a JTAG debugger, I found that the internal Freescale firmware
+copied the first 4K from flash
+without errors to NFC internal buffer, but then it does not jump to
+this buffer how is specified in specs.
+So the barebox code is never called.
+If I jump manually via JTAG debugger, barebox boot up without any
+problems. I use external boot and write/dump to/from flash works well.
+Of course for imx35 I used just the supported 218 bytes of OOB.
 
-Sascha
+Freescale support told me that there is a boot problem with imx35 when
+is used with flashes that need more time after RESET command.
+On the same board I used before also a Micron flash(2K pagesize, 64
+bytes OOB, 128K writesize) that has the same hardware timing for
+RESET.
+However I suppose that the flash is out of RESET, because otherwise
+could not copy without any ECC error the first 4K data.
 
-> ---
->  drivers/mfd/mc13xxx.c |   10 +++++-----
->  1 files changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
-> index 8e3c0b0..704446d 100644
-> --- a/drivers/mfd/mc13xxx.c
-> +++ b/drivers/mfd/mc13xxx.c
-> @@ -252,7 +252,7 @@ static struct mc13892_rev mc13892_revisions[] = {
->  static int mc13xxx_query_revision(struct mc13xxx *mc13xxx)
->  {
->  	unsigned int rev_id;
-> -	char *chipname, *revstr;
-> +	char *chipname, revstr[5];
->  	int rev, i;
->  
->  	mc13xxx_reg_read(mc13xxx, MC13XXX_REG_IDENTIFICATION, &rev_id);
-> @@ -265,9 +265,9 @@ static int mc13xxx_query_revision(struct mc13xxx *mc13xxx)
->  		/* Ver 0.2 is actually 3.2a. Report as 3.2 */
->  		if (rev == 0x02) {
->  			rev = 0x32;
-> -			revstr = "3.2a";
-> +			strcpy(revstr, "3.2a");
->  		} else
-> -			revstr = asprintf("%d.%d", rev / 0x10, rev % 10);
-> +			sprintf(revstr, "%d.%d", rev / 0x10, rev % 10);
->  		break;
->  	case 7:
->  		chipname = "MC13892";
-> @@ -279,12 +279,12 @@ static int mc13xxx_query_revision(struct mc13xxx *mc13xxx)
->  			return -EINVAL;
->  
->  		rev = mc13892_revisions[i].rev;
-> -		revstr = mc13892_revisions[i].revstr;
-> +		strcpy(revstr, mc13892_revisions[i].revstr);
->  
->  		if (rev == MC13892_REVISION_2_0) {
->  			if ((rev_id >> 9) & 0x3) {
->  				rev = MC13892_REVISION_2_0a;
-> -				revstr = "2.0a";
-> +				strcpy(revstr, "2.0a");
->  			}
->  		}
->  		break;
-> -- 
-> 1.7.3.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Has anybody experienced some kind of problems ? Do you see a workaround ?
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards,
+Gabriel
 
 _______________________________________________
 barebox mailing list
