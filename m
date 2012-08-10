@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Szmv6-00073G-TD
- for barebox@lists.infradead.org; Fri, 10 Aug 2012 10:58:21 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1Szmv4-0007Af-Mm
- for barebox@lists.infradead.org; Fri, 10 Aug 2012 12:58:18 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1Szmv4-0004O1-Lj
- for barebox@lists.infradead.org; Fri, 10 Aug 2012 12:58:18 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 10 Aug 2012 12:58:15 +0200
-Message-Id: <1344596297-10781-1-git-send-email-s.hauer@pengutronix.de>
+Received: from 4.mo4.mail-out.ovh.net ([178.32.98.131]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Szq1o-0000Zv-Oo
+ for barebox@lists.infradead.org; Fri, 10 Aug 2012 14:17:30 +0000
+Received: from mail628.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id DC3A8105003B
+ for <barebox@lists.infradead.org>; Fri, 10 Aug 2012 16:21:59 +0200 (CEST)
+Date: Fri, 10 Aug 2012 16:17:33 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120810141733.GA6271@game.jcrosoft.org>
+References: <1343976760-2400-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1343976760-2400-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,24 +22,24 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fix hush 'exit'
+Subject: Re: [PATCH 1/2] at91: sam9260/sam9g20/sam9261/sam9g10/sam9263 add
+ autodetect sdram size
 To: barebox@lists.infradead.org
 
-This series turns the exit command into a shell builtin. This for
-example prevents hush from exiting when a nonexisting script executed.
+On 08:52 Fri 03 Aug     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> if 0 is passed to at91_add_device_sdram autodetect the sdram size
+> 
+> The amount of available ram is determined by the SDRAMC_CR register.
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+ping
 
-Sascha Hauer (2):
-      hush: Make exit a shell builtin
-      hush: catch errors from execute_binfmt
-
- common/command.c |   20 --------------------
- common/hush.c    |   45 ++++++++++++++++++++++++++++++++++++++-------
- 2 files changed, 38 insertions(+), 27 deletions(-)
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
