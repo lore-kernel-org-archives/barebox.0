@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Szugw-0006Bg-OJ
- for barebox@lists.infradead.org; Fri, 10 Aug 2012 19:16:15 +0000
-Date: Fri, 10 Aug 2012 21:16:12 +0200
+ id 1SzvOP-0000Jn-P0
+ for barebox@lists.infradead.org; Fri, 10 Aug 2012 20:01:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120810191612.GD1451@pengutronix.de>
-References: <1343232061-1789-1-git-send-email-renaud.barbier@ge.com>
- <1344349858-6068-1-git-send-email-renaud.barbier@ge.com>
+Date: Fri, 10 Aug 2012 22:00:57 +0200
+Message-Id: <1344628865-32574-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1344628865-32574-1-git-send-email-s.hauer@pengutronix.de>
+References: <1344628865-32574-1-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1344349858-6068-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,64 +17,107 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V2 0/4] ppc: Freescale TSEC driver
-To: Renaud Barbier <renaud.barbier@ge.com>
-Cc: barebox@lists.infradead.org
+Subject: =?UTF-8?q?=5BPATCH=201/9=5D=20ARM=20eukrea=20cpuimx25=3A=20Move=20flash=5Fheader=20to=20seperate=20file?=
+To: barebox@lists.infradead.org
 
-On Tue, Aug 07, 2012 at 03:30:54PM +0100, Renaud Barbier wrote:
-> The patchset v2 addresses the comments from version 1. 'printf' in the
-> Ethernet driver are replaced by dev_dbg, dev_err or dev_info and excessive
-> NULL checkings are removed. The platform Ethernet initialization is a
-> generic architecture function (moved to mach-mpc85xx).
-> Finally, the send function uses 'is_timeout' to wait for packet 
-> transmission but the send function still uses 2 descriptors as using only
-> one fails.
-> 
-> Renaud Barbier (4):
->   ppc: GIANFAR base address definition
->   net: GIANFAR driver
->   fsl: Freescale TSEC specific initialization.
->   ppc: P2020RDB Ethernet configuration
-
-Applied, thanks
-
-Sascha
-
-> 
->  arch/ppc/boards/freescale-p2020rdb/p2020rdb.c   |   14 +
->  arch/ppc/configs/p2020rdb_defconfig             |    6 +
->  arch/ppc/mach-mpc85xx/Makefile                  |    1 +
->  arch/ppc/mach-mpc85xx/eth-devices.c             |   49 ++
->  arch/ppc/mach-mpc85xx/include/mach/gianfar.h    |   31 ++
->  arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h |    7 +
->  drivers/net/Kconfig                             |    5 +
->  drivers/net/Makefile                            |    1 +
->  drivers/net/gianfar.c                           |  548 +++++++++++++++++++++++
->  drivers/net/gianfar.h                           |  284 ++++++++++++
->  10 files changed, 946 insertions(+), 0 deletions(-)
->  create mode 100644 arch/ppc/mach-mpc85xx/eth-devices.c
->  create mode 100644 arch/ppc/mach-mpc85xx/include/mach/gianfar.h
->  create mode 100644 drivers/net/gianfar.c
->  create mode 100644 drivers/net/gianfar.h
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGZsYXNoIGhlYWRlciBpcyBuZWVkZWQgZm9yIHBibCBzdXBwb3J0LCBzbyBtb3ZlIGl0IHRv
+CnNlcGFyYXRlIGZpbGUgdG8gYmUgYWJsZSB0byBhZGQgaXQgdG8gcGJsLXkKClNpZ25lZC1vZmYt
+Ynk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KLS0tCiBhcmNoL2FybS9i
+b2FyZHMvZXVrcmVhX2NwdWlteDI1L01ha2VmaWxlICAgICAgICAgIHwgICAgMSArCiBhcmNoL2Fy
+bS9ib2FyZHMvZXVrcmVhX2NwdWlteDI1L2V1a3JlYV9jcHVpbXgyNS5jIHwgICAzNCAtLS0tLS0t
+LS0tLS0KIGFyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MjUvZmxhc2hfaGVhZGVyLmMgICAg
+fCAgIDYxICsrKysrKysrKysrKysrKysrKysrKwogMyBmaWxlcyBjaGFuZ2VkLCA2MiBpbnNlcnRp
+b25zKCspLCAzNCBkZWxldGlvbnMoLSkKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2Fy
+ZHMvZXVrcmVhX2NwdWlteDI1L2ZsYXNoX2hlYWRlci5jCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
+Ym9hcmRzL2V1a3JlYV9jcHVpbXgyNS9NYWtlZmlsZSBiL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFf
+Y3B1aW14MjUvTWFrZWZpbGUKaW5kZXggNDA2YzZmMy4uZWRkMDlhNiAxMDA2NDQKLS0tIGEvYXJj
+aC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNS9NYWtlZmlsZQorKysgYi9hcmNoL2FybS9ib2Fy
+ZHMvZXVrcmVhX2NwdWlteDI1L01ha2VmaWxlCkBAIC0yMiwzICsyMiw0IEBACiAKIG9iai15ICs9
+IGxvd2xldmVsLm8KIG9iai15ICs9IGV1a3JlYV9jcHVpbXgyNS5vCitvYmotJChDT05GSUdfQVJD
+SF9JTVhfSU5URVJOQUxfQk9PVCkgKz0gZmxhc2hfaGVhZGVyLm8KZGlmZiAtLWdpdCBhL2FyY2gv
+YXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MjUvZXVrcmVhX2NwdWlteDI1LmMgYi9hcmNoL2FybS9i
+b2FyZHMvZXVrcmVhX2NwdWlteDI1L2V1a3JlYV9jcHVpbXgyNS5jCmluZGV4IDBhYWMxM2MuLmE4
+NDI4OGMgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MjUvZXVrcmVh
+X2NwdWlteDI1LmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNS9ldWtyZWFf
+Y3B1aW14MjUuYwpAQCAtNTAsNDAgKzUwLDYgQEAKICNpbmNsdWRlIDxtYWNoL2RldmljZXMtaW14
+MjUuaD4KICNpbmNsdWRlIDxhc20vYmFyZWJveC1hcm0taGVhZC5oPgogCi12b2lkIF9fbmFrZWQg
+X19mbGFzaF9oZWFkZXJfc3RhcnQgZ28odm9pZCkKLXsKLQliYXJlYm94X2FybV9oZWFkKCk7Ci19
+Ci0KLXN0cnVjdCBpbXhfZGNkX2VudHJ5IF9fZGNkX2VudHJ5X3NlY3Rpb24gZGNkX2VudHJ5W10g
+PSB7Ci0JeyAucHRyX3R5cGUgPSA0LCAuYWRkciA9IDB4YjgwMDEwMTAsIC52YWwgPSAweDAwMDAw
+MDA0LCB9LAotCXsgLnB0cl90eXBlID0gNCwgLmFkZHIgPSAweGI4MDAxMDAwLCAudmFsID0gMHg5
+MjEwMDAwMCwgfSwKLQl7IC5wdHJfdHlwZSA9IDEsIC5hZGRyID0gMHg4MDAwMDQwMCwgLnZhbCA9
+IDB4MTIzNDQzMjEsIH0sCi0JeyAucHRyX3R5cGUgPSA0LCAuYWRkciA9IDB4YjgwMDEwMDAsIC52
+YWwgPSAweGEyMTAwMDAwLCB9LAotCXsgLnB0cl90eXBlID0gNCwgLmFkZHIgPSAweDgwMDAwMDAw
+LCAudmFsID0gMHgxMjM0NDMyMSwgfSwKLQl7IC5wdHJfdHlwZSA9IDQsIC5hZGRyID0gMHg4MDAw
+MDAwMCwgLnZhbCA9IDB4MTIzNDQzMjEsIH0sCi0JeyAucHRyX3R5cGUgPSA0LCAuYWRkciA9IDB4
+YjgwMDEwMDAsIC52YWwgPSAweGIyMTAwMDAwLCB9LAotCXsgLnB0cl90eXBlID0gMSwgLmFkZHIg
+PSAweDgwMDAwMDMzLCAudmFsID0gMHhkYSwgfSwKLQl7IC5wdHJfdHlwZSA9IDEsIC5hZGRyID0g
+MHg4MTAwMDAwMCwgLnZhbCA9IDB4ZmYsIH0sCi0JeyAucHRyX3R5cGUgPSA0LCAuYWRkciA9IDB4
+YjgwMDEwMDAsIC52YWwgPSAweDgyMjE2MDgwLCB9LAotCXsgLnB0cl90eXBlID0gNCwgLmFkZHIg
+PSAweGI4MDAxMDA0LCAudmFsID0gMHgwMDI5NTcyOSwgfSwKLQl7IC5wdHJfdHlwZSA9IDQsIC5h
+ZGRyID0gMHg1M2Y4MDAwOCwgLnZhbCA9IDB4MjAwMzQwMDAsIH0sCi19OwotCi1zdHJ1Y3QgaW14
+X2ZsYXNoX2hlYWRlciBfX2ZsYXNoX2hlYWRlcl9zZWN0aW9uIGZsYXNoX2hlYWRlciA9IHsKLQku
+YXBwX2NvZGVfanVtcF92ZWN0b3IJPSBERVNUX0JBU0UgKyAweDEwMDAsCi0JLmFwcF9jb2RlX2Jh
+cmtlcgk9IEFQUF9DT0RFX0JBUktFUiwKLQkuYXBwX2NvZGVfY3NmCQk9IDAsCi0JLmRjZF9wdHJf
+cHRyCQk9IEZMQVNIX0hFQURFUl9CQVNFICsgb2Zmc2V0b2Yoc3RydWN0IGlteF9mbGFzaF9oZWFk
+ZXIsIGRjZCksCi0JLnN1cGVyX3Jvb3Rfa2V5CQk9IDAsCi0JLmRjZAkJCT0gRkxBU0hfSEVBREVS
+X0JBU0UgKyBvZmZzZXRvZihzdHJ1Y3QgaW14X2ZsYXNoX2hlYWRlciwgZGNkX2JhcmtlciksCi0J
+LmFwcF9kZXN0CQk9IERFU1RfQkFTRSwKLQkuZGNkX2JhcmtlcgkJPSBEQ0RfQkFSS0VSLAotCS5k
+Y2RfYmxvY2tfbGVuCQk9IHNpemVvZihkY2RfZW50cnkpLAotfTsKLQotdW5zaWduZWQgbG9uZyBf
+X2ltYWdlX2xlbl9zZWN0aW9uIGJhcmVib3hfbGVuID0gRENEX0JBUkVCT1hfU0laRTsKLQogc3Rh
+dGljIHN0cnVjdCBmZWNfcGxhdGZvcm1fZGF0YSBmZWNfaW5mbyA9IHsKIAkueGN2X3R5cGUJPSBS
+TUlJLAogCS5waHlfYWRkcgk9IDAsCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvZXVrcmVh
+X2NwdWlteDI1L2ZsYXNoX2hlYWRlci5jIGIvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgy
+NS9mbGFzaF9oZWFkZXIuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwLi4zNDRj
+N2ZmCi0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNS9m
+bGFzaF9oZWFkZXIuYwpAQCAtMCwwICsxLDYxIEBACisvKgorICogKEMpIDIwMDkgUGVuZ3V0cm9u
+aXgsIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KKyAqIChjKSAyMDEwIEV1
+a3JlYSBFbGVjdHJvbWF0aXF1ZSwgRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+CisgKgor
+ICogU2VlIGZpbGUgQ1JFRElUUyBmb3IgbGlzdCBvZiBwZW9wbGUgd2hvIGNvbnRyaWJ1dGVkIHRv
+IHRoaXMKKyAqIHByb2plY3QuCisgKgorICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7
+IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vcgorICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0
+ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMKKyAqIHB1Ymxpc2hlZCBi
+eSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mCisgKiB0
+aGUgTGljZW5zZSwgb3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KKyAqCisg
+KiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJl
+IHVzZWZ1bCwKKyAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBp
+bXBsaWVkIHdhcnJhbnR5IG9mCisgKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQ
+QVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCisgKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5z
+ZSBmb3IgbW9yZSBkZXRhaWxzLgorICoKKyAqIFlvdSBzaG91bGQgaGF2ZSByZWNlaXZlZCBhIGNv
+cHkgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlCisgKiBhbG9uZyB3aXRoIHRoaXMg
+cHJvZ3JhbTsgaWYgbm90LCB3cml0ZSB0byB0aGUgRnJlZSBTb2Z0d2FyZQorICogRm91bmRhdGlv
+biwgSW5jLiwgNTkgVGVtcGxlIFBsYWNlLCBTdWl0ZSAzMzAsIEJvc3RvbiwKKyAqIE1BIDAyMTEx
+LTEzMDcgVVNBCisgKgorICovCisjaW5jbHVkZSA8Y29tbW9uLmg+CisjaW5jbHVkZSA8bWFjaC9p
+bXgtZmxhc2gtaGVhZGVyLmg+CisjaW5jbHVkZSA8bWFjaC9pbXgtcmVncy5oPgorI2luY2x1ZGUg
+PGFzbS9iYXJlYm94LWFybS1oZWFkLmg+CisKK3ZvaWQgX19uYWtlZCBfX2ZsYXNoX2hlYWRlcl9z
+dGFydCBnbyh2b2lkKQoreworCWJhcmVib3hfYXJtX2hlYWQoKTsKK30KKworc3RydWN0IGlteF9k
+Y2RfZW50cnkgX19kY2RfZW50cnlfc2VjdGlvbiBkY2RfZW50cnlbXSA9IHsKKwl7IC5wdHJfdHlw
+ZSA9IDQsIC5hZGRyID0gMHhiODAwMTAxMCwgLnZhbCA9IDB4MDAwMDAwMDQsIH0sCisJeyAucHRy
+X3R5cGUgPSA0LCAuYWRkciA9IDB4YjgwMDEwMDAsIC52YWwgPSAweDkyMTAwMDAwLCB9LAorCXsg
+LnB0cl90eXBlID0gMSwgLmFkZHIgPSAweDgwMDAwNDAwLCAudmFsID0gMHgxMjM0NDMyMSwgfSwK
+Kwl7IC5wdHJfdHlwZSA9IDQsIC5hZGRyID0gMHhiODAwMTAwMCwgLnZhbCA9IDB4YTIxMDAwMDAs
+IH0sCisJeyAucHRyX3R5cGUgPSA0LCAuYWRkciA9IDB4ODAwMDAwMDAsIC52YWwgPSAweDEyMzQ0
+MzIxLCB9LAorCXsgLnB0cl90eXBlID0gNCwgLmFkZHIgPSAweDgwMDAwMDAwLCAudmFsID0gMHgx
+MjM0NDMyMSwgfSwKKwl7IC5wdHJfdHlwZSA9IDQsIC5hZGRyID0gMHhiODAwMTAwMCwgLnZhbCA9
+IDB4YjIxMDAwMDAsIH0sCisJeyAucHRyX3R5cGUgPSAxLCAuYWRkciA9IDB4ODAwMDAwMzMsIC52
+YWwgPSAweGRhLCB9LAorCXsgLnB0cl90eXBlID0gMSwgLmFkZHIgPSAweDgxMDAwMDAwLCAudmFs
+ID0gMHhmZiwgfSwKKwl7IC5wdHJfdHlwZSA9IDQsIC5hZGRyID0gMHhiODAwMTAwMCwgLnZhbCA9
+IDB4ODIyMTYwODAsIH0sCisJeyAucHRyX3R5cGUgPSA0LCAuYWRkciA9IDB4YjgwMDEwMDQsIC52
+YWwgPSAweDAwMjk1NzI5LCB9LAorCXsgLnB0cl90eXBlID0gNCwgLmFkZHIgPSAweDUzZjgwMDA4
+LCAudmFsID0gMHgyMDAzNDAwMCwgfSwKK307CisKK3N0cnVjdCBpbXhfZmxhc2hfaGVhZGVyIF9f
+Zmxhc2hfaGVhZGVyX3NlY3Rpb24gZmxhc2hfaGVhZGVyID0geworCS5hcHBfY29kZV9qdW1wX3Zl
+Y3Rvcgk9IERFU1RfQkFTRSArIDB4MTAwMCwKKwkuYXBwX2NvZGVfYmFya2VyCT0gQVBQX0NPREVf
+QkFSS0VSLAorCS5hcHBfY29kZV9jc2YJCT0gMCwKKwkuZGNkX3B0cl9wdHIJCT0gRkxBU0hfSEVB
+REVSX0JBU0UgKyBvZmZzZXRvZihzdHJ1Y3QgaW14X2ZsYXNoX2hlYWRlciwgZGNkKSwKKwkuc3Vw
+ZXJfcm9vdF9rZXkJCT0gMCwKKwkuZGNkCQkJPSBGTEFTSF9IRUFERVJfQkFTRSArIG9mZnNldG9m
+KHN0cnVjdCBpbXhfZmxhc2hfaGVhZGVyLCBkY2RfYmFya2VyKSwKKwkuYXBwX2Rlc3QJCT0gREVT
+VF9CQVNFLAorCS5kY2RfYmFya2VyCQk9IERDRF9CQVJLRVIsCisJLmRjZF9ibG9ja19sZW4JCT0g
+c2l6ZW9mKGRjZF9lbnRyeSksCit9OworCit1bnNpZ25lZCBsb25nIF9faW1hZ2VfbGVuX3NlY3Rp
+b24gYmFyZWJveF9sZW4gPSBEQ0RfQkFSRUJPWF9TSVpFOwotLSAKMS43LjEwLjQKCgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
+bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
