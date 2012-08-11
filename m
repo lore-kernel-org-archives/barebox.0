@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo4.mail-out.ovh.net ([178.33.104.253]
+Received: from 2.mo4.mail-out.ovh.net ([46.105.72.36]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T08AH-0003OF-2W
- for barebox@lists.infradead.org; Sat, 11 Aug 2012 09:39:25 +0000
+ id 1T0CX7-0007wW-Dc
+ for barebox@lists.infradead.org; Sat, 11 Aug 2012 14:19:18 +0000
 Received: from mail628.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 1660F1050826
- for <barebox@lists.infradead.org>; Sat, 11 Aug 2012 11:43:58 +0200 (CEST)
-Date: Sat, 11 Aug 2012 11:39:31 +0200
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id C217910507DB
+ for <barebox@lists.infradead.org>; Sat, 11 Aug 2012 16:23:49 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120811093931.GE6271@game.jcrosoft.org>
-References: <1344628865-32574-1-git-send-email-s.hauer@pengutronix.de>
- <1344628865-32574-9-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1344628865-32574-9-git-send-email-s.hauer@pengutronix.de>
+Date: Sat, 11 Aug 2012 16:19:20 +0200
+Message-Id: <1344694760-17468-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1344694760-17468-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1344694760-17468-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,40 +20,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 8/9] ARM pbl: remove unnecessary FORCE
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] driver: set DEVICE_ID_DYNAMIC to -2 and DEVICE_ID_SINGLE
+ to -1
+To: barebox@lists.infradead.org
 
-On 22:01 Fri 10 Aug     , Sascha Hauer wrote:
-> With this FORCE the compressed image is rebuilt even if it is
-> unchanged, so remove it.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/arm/pbl/Makefile |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/pbl/Makefile b/arch/arm/pbl/Makefile
-> index dc6ae7e..b1cdd85 100644
-> --- a/arch/arm/pbl/Makefile
-> +++ b/arch/arm/pbl/Makefile
-> @@ -37,7 +37,7 @@ quiet_cmd_zbarebox__ ?= LD      $@
->  $(obj)/zbarebox: $(zbarebox-lds) $(zbarebox-common) FORCE
->  	$(call if_changed,zbarebox__)
->  
-> -$(obj)/piggy.$(suffix_y): $(obj)/../../../barebox.bin FORCE
-> +$(obj)/piggy.$(suffix_y): $(obj)/../../../barebox.bin
->  	$(call if_changed,$(suffix_y))
-no sure about this one
+so we can have the same behaviour as in the kernel for id = -1
 
-IIRC we need it I saw issue without it
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ include/driver.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Best Regards,
-J.
+diff --git a/include/driver.h b/include/driver.h
+index 0a8dc8e..0fecc7a 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -127,9 +127,9 @@ struct driver_d {
+ #define RW_SIZE_MASK    0x7
+ 
+ /* dynamically assign the next free id */
+-#define DEVICE_ID_DYNAMIC	-1
++#define DEVICE_ID_DYNAMIC	-2
+ /* do not use an id (only one device available */
+-#define DEVICE_ID_SINGLE	-2
++#define DEVICE_ID_SINGLE	-1
+ 
+ /* Register devices and drivers.
+  */
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
