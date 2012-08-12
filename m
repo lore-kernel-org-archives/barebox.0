@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T0WzL-0001yp-6u
- for barebox@lists.infradead.org; Sun, 12 Aug 2012 12:09:47 +0000
-Date: Sun, 12 Aug 2012 14:09:45 +0200
+ id 1T0XPd-0002Md-59
+ for barebox@lists.infradead.org; Sun, 12 Aug 2012 12:36:58 +0000
+Date: Sun, 12 Aug 2012 14:36:55 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120812120945.GI1451@pengutronix.de>
+Message-ID: <20120812123655.GJ1451@pengutronix.de>
 References: <1344628865-32574-1-git-send-email-s.hauer@pengutronix.de>
- <1344628865-32574-6-git-send-email-s.hauer@pengutronix.de>
- <20120811093702.GB6271@game.jcrosoft.org>
+ <1344628865-32574-9-git-send-email-s.hauer@pengutronix.de>
+ <20120811093931.GE6271@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120811093702.GB6271@game.jcrosoft.org>
+In-Reply-To: <20120811093931.GE6271@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,114 +24,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/9] ARM: fix netx/MLO/s5p image build for pbl
+Subject: Re: [PATCH 8/9] ARM pbl: remove unnecessary FORCE
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Aug 11, 2012 at 11:37:02AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Sat, Aug 11, 2012 at 11:39:31AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > On 22:01 Fri 10 Aug     , Sascha Hauer wrote:
-> > If pbl support is enabled only zbarebox.bin was built, but
-> > not the SoC specific images. Fix this.
-> yeah it does the trick but I do not like the makefile target
-> we need to create cmd and use the $(call xxx,ifchanged) mecanism
-
-Can do, but this would be subject to another patch. This patch only changes
-the dependencies, but not what is done.
-
-Sascha
-
-> 
-> Best Regards,
-> J.
+> > With this FORCE the compressed image is rebuilt even if it is
+> > unchanged, so remove it.
 > > 
 > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > > ---
-> >  arch/arm/Makefile |   35 ++++++++++++++++++++++-------------
-> >  1 file changed, 22 insertions(+), 13 deletions(-)
+> >  arch/arm/pbl/Makefile |    2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
 > > 
-> > diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> > index 89f645b..63bc9be 100644
-> > --- a/arch/arm/Makefile
-> > +++ b/arch/arm/Makefile
-> > @@ -160,7 +160,16 @@ CPPFLAGS += -fdata-sections -ffunction-sections
-> >  LDFLAGS_barebox += -static --gc-sections
-> >  endif
+> > diff --git a/arch/arm/pbl/Makefile b/arch/arm/pbl/Makefile
+> > index dc6ae7e..b1cdd85 100644
+> > --- a/arch/arm/pbl/Makefile
+> > +++ b/arch/arm/pbl/Makefile
+> > @@ -37,7 +37,7 @@ quiet_cmd_zbarebox__ ?= LD      $@
+> >  $(obj)/zbarebox: $(zbarebox-lds) $(zbarebox-common) FORCE
+> >  	$(call if_changed,zbarebox__)
 > >  
-> > -barebox.netx: barebox.bin
-> > +ifdef CONFIG_IMAGE_COMPRESSION
-> > +KBUILD_BINARY := arch/arm/pbl/zbarebox.bin
-> > +KBUILD_TARGET := zbarebox.bin
-> > +$(KBUILD_BINARY): $(KBUILD_TARGET)
-> > +else
-> > +KBUILD_BINARY := barebox.bin
-> > +KBUILD_TARGET := barebox.bin
-> > +endif
-> > +
-> > +barebox.netx: $(KBUILD_BINARY)
-> >  	$(Q)scripts/gen_netx_image -i $< -o barebox.netx		\
-> >  		--sdramctrl=$(CONFIG_NETX_SDRAM_CTRL)			\
-> >  		--sdramtimctrl=$(CONFIG_NETX_SDRAM_TIMING_CTRL)		\
-> > @@ -169,36 +178,36 @@ barebox.netx: barebox.bin
-> >  		--cookie=$(CONFIG_NETX_COOKIE);
-> >  
-> >  ifeq ($(machine-y),netx)
-> > -KBUILD_IMAGE := barebox.netx
-> > +KBUILD_TARGET := barebox.netx
-> > +KBUILD_BINARY := $(KBUILD_TARGET)
-> >  endif
-> >  
-> > -barebox.s5p: barebox.bin
-> > +barebox.s5p: $(KBUILD_BINARY)
-> >  	$(Q)scripts/s5p_cksum $< barebox.s5p
-> >  
-> >  ifeq ($(CONFIG_ARCH_S5PCxx),y)
-> > -KBUILD_IMAGE := barebox.s5p
-> > +KBUILD_TARGET := barebox.s5p
-> > +KBUILD_BINARY := $(KBUILD_TARGET)
-> >  endif
-> >  
-> > -MLO: barebox.bin
-> > +MLO: $(KBUILD_BINARY)
-> >  	@echo "  IFT    " $@
-> >  	$(Q)scripts/omap_signGP $< $(TEXT_BASE) 1
-> >  	$(Q)test -e $<.ift && mv $<.ift MLO
-> >  
-> >  ifeq ($(CONFIG_OMAP_BUILD_IFT),y)
-> > -KBUILD_IMAGE := MLO
-> > +KBUILD_TARGET := MLO
-> > +KBUILD_BINARY := $(KBUILD_TARGET)
-> >  endif
-> >  
-> > -barebox.ubl: barebox.bin
-> > +barebox.ubl: $(KBUILD_BINARY)
-> >  	@echo "  UBL    " $@
-> >  	$(Q)scripts/mkublheader $< > barebox.ubl
-> >  	$(Q)cat $< >> barebox.ubl
-> >  
-> >  ifeq ($(CONFIG_ARCH_DAVINCI),y)
-> > -KBUILD_IMAGE := barebox.ubl
-> > -endif
-> > -
-> > -ifdef CONFIG_IMAGE_COMPRESSION
-> > -KBUILD_IMAGE := zbarebox.bin
-> > +KBUILD_TARGET := barebox.ubl
-> > +KBUILD_BINARY := $(KBUILD_TARGET)
-> >  endif
-> >  
-> >  pbl := arch/arm/pbl
-> > @@ -208,7 +217,7 @@ zbarebox.S zbarebox.bin zbarebox: barebox.bin
-> >  archclean:
-> >  	$(MAKE) $(clean)=$(pbl)
-> >  
-> > -all: $(KBUILD_IMAGE)
-> > +all: $(KBUILD_BINARY)
-> >  
-> >  archprepare: maketools
-> >  maketools:
-> > -- 
-> > 1.7.10.4
-> > 
+> > -$(obj)/piggy.$(suffix_y): $(obj)/../../../barebox.bin FORCE
+> > +$(obj)/piggy.$(suffix_y): $(obj)/../../../barebox.bin
+> >  	$(call if_changed,$(suffix_y))
+> no sure about this one
 > 
+> IIRC we need it I saw issue without it
+
+Can you check what issues there are?
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
