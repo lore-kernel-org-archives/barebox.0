@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T0ZBd-0004KX-Df
- for barebox@lists.infradead.org; Sun, 12 Aug 2012 14:30:39 +0000
+ id 1T0ZBd-0004KY-Dd
+ for barebox@lists.infradead.org; Sun, 12 Aug 2012 14:30:38 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 12 Aug 2012 16:30:28 +0200
-Message-Id: <1344781832-17978-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 12 Aug 2012 16:30:30 +0200
+Message-Id: <1344781832-17978-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1344781832-17978-1-git-send-email-s.hauer@pengutronix.de>
+References: <1344781832-17978-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +21,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: enable MMU in pbl
+Subject: [PATCH 2/4] ARM MMU: call __mmu_cache_* as regular C functions
 To: barebox@lists.infradead.org
 
-The following enables the MMU during decompression which speeds up
-things significantly.
+Now that __mmu_cache_* restore the registers they can be called
+as regular C functions. Create a header file for them and use
+C functions rather than inline assembly.
 
-Sascha
-
-The following changes since commit 8711d5914ebd002f9be9f40a94864e0d3328235a:
-
-  ARM pbl: generate zbarebox.map in $(obj) (2012-08-12 16:18:29 +0200)
-
-are available in the git repository at:
-
-  git://git.pengutronix.de/git/barebox.git work/mmu
-
-for you to fetch changes up to 7f57c5388cdfe7ffb88cb91e2150ecd8422f6841:
-
-  create a common ARM flush_icache function (2012-08-12 16:28:56 +0200)
-
-----------------------------------------------------------------
-Sascha Hauer (4):
-      ARM __mmu_cache_*: Do not clobber registers
-      ARM MMU: call __mmu_cache_* as regular C functions
-      ARM pbl: enable MMU during decompression
-      create a common ARM flush_icache function
-
- arch/arm/cpu/Makefile        |    4 ++++
- arch/arm/cpu/cache-armv4.S   |    3 ++-
- arch/arm/cpu/cache-armv7.S   |    6 +++--
- arch/arm/cpu/mmu.c           |   25 +++++---------------
- arch/arm/cpu/mmu.h           |    8 +++++++
- arch/arm/cpu/start-pbl.c     |   52 ++++++++++++++++++++++++++++++++++++++----
- arch/arm/cpu/start.c         |    4 ++--
- arch/arm/include/asm/cache.h |    9 ++++++++
- 8 files changed, 83 insertions(+), 28 deletions(-)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/cpu/mmu.c |   25 ++++++-------------------
+ arch/arm/cpu/mmu.h |    8 ++++++++
+ 2 files changed, 14 insertions(+), 19 deletions(-)
  create mode 100644 arch/arm/cpu/mmu.h
- create mode 100644 arch/arm/include/asm/cache.h
+
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index 607f357..dad8092 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -8,6 +8,8 @@
+ #include <asm/system.h>
+ #include <memory.h>
+ 
++#include "mmu.h"
++
+ static unsigned long *ttb;
+ 
+ static void create_sections(unsigned long virt, unsigned long phys, int size_m,
+@@ -21,12 +23,7 @@ static void create_sections(unsigned long virt, unsigned long phys, int size_m,
+ 	for (i = size_m; i > 0; i--, virt++, phys++)
+ 		ttb[virt] = (phys << 20) | flags;
+ 
+-	asm volatile (
+-		"bl __mmu_cache_flush;"
+-		:
+-		:
+-		: "r0", "r1", "r2", "r3", "r6", "r10", "r12", "lr", "cc", "memory"
+-	);
++	__mmu_cache_flush();
+ }
+ 
+ /*
+@@ -255,12 +252,7 @@ static int mmu_init(void)
+ 		create_sections(bank->start, bank->start, bank->size >> 20,
+ 				PMD_SECT_DEF_CACHED);
+ 
+-	asm volatile (
+-		"bl __mmu_cache_on;"
+-		:
+-		:
+-		: "r0", "r1", "r2", "r3", "r6", "r10", "r12", "lr", "cc", "memory"
+-        );
++	__mmu_cache_on();
+ 
+ 	/*
+ 	 * Now that we have the MMU and caches on remap sdram again using
+@@ -284,13 +276,8 @@ void mmu_disable(void)
+ 	if (outer_cache.disable)
+ 		outer_cache.disable();
+ 
+-	asm volatile (
+-		"bl __mmu_cache_flush;"
+-		"bl __mmu_cache_off;"
+-		:
+-		:
+-		: "r0", "r1", "r2", "r3", "r6", "r10", "r12", "lr", "cc", "memory"
+-	);
++	__mmu_cache_flush();
++	__mmu_cache_off();
+ }
+ 
+ #define PAGE_ALIGN(s) ((s) + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1);
+diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
+new file mode 100644
+index 0000000..618968b
+--- /dev/null
++++ b/arch/arm/cpu/mmu.h
+@@ -0,0 +1,8 @@
++#ifndef __ARM_MMU_H
++#define __ARM_MMU_H
++
++void __mmu_cache_on(void);
++void __mmu_cache_off(void);
++void __mmu_cache_flush(void);
++
++#endif /* __ARM_MMU_H */
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
