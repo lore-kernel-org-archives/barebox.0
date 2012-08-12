@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T0ZBd-0004Kb-Dc
- for barebox@lists.infradead.org; Sun, 12 Aug 2012 14:30:39 +0000
+ id 1T0ZBd-0004KZ-Dg
+ for barebox@lists.infradead.org; Sun, 12 Aug 2012 14:30:38 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 12 Aug 2012 16:30:32 +0200
-Message-Id: <1344781832-17978-5-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 12 Aug 2012 16:30:29 +0200
+Message-Id: <1344781832-17978-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1344781832-17978-1-git-send-email-s.hauer@pengutronix.de>
 References: <1344781832-17978-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,86 +21,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] create a common ARM flush_icache function
+Subject: [PATCH 1/4] ARM __mmu_cache_*: Do not clobber registers
 To: barebox@lists.infradead.org
+
+Save/restore the registers used in __mmu_cache_* so that they can
+be called as regular C functions.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start-pbl.c     |    7 +++----
- arch/arm/cpu/start.c         |    4 ++--
- arch/arm/include/asm/cache.h |    9 +++++++++
- 3 files changed, 14 insertions(+), 6 deletions(-)
- create mode 100644 arch/arm/include/asm/cache.h
+ arch/arm/cpu/cache-armv4.S |    3 ++-
+ arch/arm/cpu/cache-armv7.S |    6 ++++--
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index 1b67e2a..3f2eb07 100644
---- a/arch/arm/cpu/start-pbl.c
-+++ b/arch/arm/cpu/start-pbl.c
-@@ -29,6 +29,7 @@
- #include <asm-generic/memory_layout.h>
- #include <asm/sections.h>
- #include <asm/pgtable.h>
-+#include <asm/cache.h>
+diff --git a/arch/arm/cpu/cache-armv4.S b/arch/arm/cpu/cache-armv4.S
+index 2231eee..22fab14 100644
+--- a/arch/arm/cpu/cache-armv4.S
++++ b/arch/arm/cpu/cache-armv4.S
+@@ -46,6 +46,7 @@ ENDPROC(__mmu_cache_off)
  
- #include "mmu.h"
+ .section .text.__mmu_cache_flush
+ ENTRY(__mmu_cache_flush)
++		stmfd	sp!, {r6, r11, lr}
+ 		mrc	p15, 0, r6, c0, c0	@ get processor ID
+ 		mov	r2, #64*1024		@ default: 32K dcache size (*2)
+ 		mov	r11, #32		@ default: 32 byte line size
+@@ -74,7 +75,7 @@ no_cache_id:
+ 		mcr	p15, 0, r1, c7, c5, 0	@ flush I cache
+ 		mcr	p15, 0, r1, c7, c6, 0	@ flush D cache
+ 		mcr	p15, 0, r1, c7, c10, 4	@ drain WB
+-		mov	pc, lr
++		ldmfd	sp!, {r6, r11, pc}
+ ENDPROC(__mmu_cache_flush)
  
-@@ -113,8 +114,7 @@ static void barebox_uncompress(void *compressed_start, unsigned int len)
- 	if (use_mmu)
- 		mmu_disable();
- 
--	/* flush I-cache before jumping to the uncompressed binary */
--	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
-+	flush_icache();
- 
- 	barebox();
- }
-@@ -173,8 +173,7 @@ copy_link:
- 	/* clear bss */
- 	memset(__bss_start, 0, __bss_stop - __bss_start);
- 
--	/* flush I-cache before jumping to the copied binary */
--	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
-+	flush_icache();
- 
- 	r = (unsigned int)&barebox_uncompress;
- 	/* call barebox_uncompress with its absolute address */
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 8365a75..07e7dfe 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -26,6 +26,7 @@
- #include <asm/barebox-arm-head.h>
- #include <asm-generic/memory_layout.h>
- #include <asm/sections.h>
-+#include <asm/cache.h>
- 
- #ifdef CONFIG_PBL_IMAGE
  /*
-@@ -80,8 +81,7 @@ void __naked __section(.text_ll_return) board_init_lowlevel_return(void)
- 	/* clear bss */
- 	memset(__bss_start, 0, __bss_stop - __bss_start);
+diff --git a/arch/arm/cpu/cache-armv7.S b/arch/arm/cpu/cache-armv7.S
+index 9bd7425..2eba959 100644
+--- a/arch/arm/cpu/cache-armv7.S
++++ b/arch/arm/cpu/cache-armv7.S
+@@ -3,6 +3,7 @@
  
--	/* flush I-cache before jumping to the copied binary */
--	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
-+	flush_icache();
+ .section .text.__mmu_cache_on
+ ENTRY(__mmu_cache_on)
++		stmfd	sp!, {r11, lr}
+ 		mov	r12, lr
+ #ifdef CONFIG_MMU
+ 		mrc	p15, 0, r11, c0, c1, 4	@ read ID_MMFR0
+@@ -28,7 +29,7 @@ ENTRY(__mmu_cache_on)
+ 		mrc	p15, 0, r0, c1, c0, 0	@ and read it back
+ 		mov	r0, #0
+ 		mcr	p15, 0, r0, c7, c5, 4	@ ISB
+-		mov	pc, r12
++		ldmfd	sp!, {r11, pc}
+ ENDPROC(__mmu_cache_on)
  
- 	/* call start_barebox with its absolute address */
- 	r = (unsigned int)&start_barebox;
-diff --git a/arch/arm/include/asm/cache.h b/arch/arm/include/asm/cache.h
-new file mode 100644
-index 0000000..ff79749
---- /dev/null
-+++ b/arch/arm/include/asm/cache.h
-@@ -0,0 +1,9 @@
-+#ifndef __ASM_CACHE_H
-+#define __ASM_CACHE_H
-+
-+static inline void flush_icache(void)
-+{
-+	asm volatile("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
-+}
-+
-+#endif
+ .section .text.__mmu_cache_off
+@@ -54,6 +55,7 @@ ENDPROC(__mmu_cache_off)
+ 
+ .section .text.__mmu_cache_flush
+ ENTRY(__mmu_cache_flush)
++		stmfd	sp!, {r10, lr}
+ 		mrc	p15, 0, r10, c0, c1, 5	@ read ID_MMFR1
+ 		tst	r10, #0xf << 16		@ hierarchical cache (ARMv7)
+ 		mov	r10, #0
+@@ -111,7 +113,7 @@ iflush:
+ 		mcr	p15, 0, r10, c7, c5, 0	@ invalidate I+BTB
+ 		mcr	p15, 0, r10, c7, c10, 4	@ DSB
+ 		mcr	p15, 0, r10, c7, c5, 4	@ ISB
+-		mov	pc, lr
++		ldmfd	sp!, {r10, pc}
+ ENDPROC(__mmu_cache_flush)
+ 
+ /*
 -- 
 1.7.10.4
 
