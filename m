@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T0ZBd-0004KZ-Dg
- for barebox@lists.infradead.org; Sun, 12 Aug 2012 14:30:38 +0000
+ id 1T0ZBd-0004Ka-Db
+ for barebox@lists.infradead.org; Sun, 12 Aug 2012 14:30:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 12 Aug 2012 16:30:29 +0200
-Message-Id: <1344781832-17978-2-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 12 Aug 2012 16:30:31 +0200
+Message-Id: <1344781832-17978-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1344781832-17978-1-git-send-email-s.hauer@pengutronix.de>
 References: <1344781832-17978-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,77 +21,111 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] ARM __mmu_cache_*: Do not clobber registers
+Subject: [PATCH 3/4] ARM pbl: enable MMU during decompression
 To: barebox@lists.infradead.org
-
-Save/restore the registers used in __mmu_cache_* so that they can
-be called as regular C functions.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/cache-armv4.S |    3 ++-
- arch/arm/cpu/cache-armv7.S |    6 ++++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ arch/arm/cpu/Makefile    |    4 ++++
+ arch/arm/cpu/start-pbl.c |   45 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 49 insertions(+)
 
-diff --git a/arch/arm/cpu/cache-armv4.S b/arch/arm/cpu/cache-armv4.S
-index 2231eee..22fab14 100644
---- a/arch/arm/cpu/cache-armv4.S
-+++ b/arch/arm/cpu/cache-armv4.S
-@@ -46,6 +46,7 @@ ENDPROC(__mmu_cache_off)
+diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
+index 78d300d..0ecc72e 100644
+--- a/arch/arm/cpu/Makefile
++++ b/arch/arm/cpu/Makefile
+@@ -10,9 +10,13 @@ obj-$(CONFIG_CMD_ARM_CPUINFO) += cpuinfo.o
+ obj-$(CONFIG_CMD_ARM_MMUINFO) += mmuinfo.o
+ obj-$(CONFIG_MMU) += mmu.o
+ obj-$(CONFIG_CPU_32v4T) += cache-armv4.o
++pbl-$(CONFIG_CPU_32v4T) += cache-armv4.o
+ obj-$(CONFIG_CPU_32v5) += cache-armv5.o
++pbl-$(CONFIG_CPU_32v5) += cache-armv5.o
+ obj-$(CONFIG_CPU_32v6) += cache-armv6.o
++pbl-$(CONFIG_CPU_32v6) += cache-armv6.o
+ obj-$(CONFIG_CPU_32v7) += cache-armv7.o
++pbl-$(CONFIG_CPU_32v7) += cache-armv7.o
+ obj-$(CONFIG_CACHE_L2X0) += cache-l2x0.o
  
- .section .text.__mmu_cache_flush
- ENTRY(__mmu_cache_flush)
-+		stmfd	sp!, {r6, r11, lr}
- 		mrc	p15, 0, r6, c0, c0	@ get processor ID
- 		mov	r2, #64*1024		@ default: 32K dcache size (*2)
- 		mov	r11, #32		@ default: 32 byte line size
-@@ -74,7 +75,7 @@ no_cache_id:
- 		mcr	p15, 0, r1, c7, c5, 0	@ flush I cache
- 		mcr	p15, 0, r1, c7, c6, 0	@ flush D cache
- 		mcr	p15, 0, r1, c7, c10, 4	@ drain WB
--		mov	pc, lr
-+		ldmfd	sp!, {r6, r11, pc}
- ENDPROC(__mmu_cache_flush)
+ pbl-y += start-pbl.o start-reset.o
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index 004ba6a..1b67e2a 100644
+--- a/arch/arm/cpu/start-pbl.c
++++ b/arch/arm/cpu/start-pbl.c
+@@ -28,6 +28,9 @@
+ #include <asm/barebox-arm-head.h>
+ #include <asm-generic/memory_layout.h>
+ #include <asm/sections.h>
++#include <asm/pgtable.h>
++
++#include "mmu.h"
  
- /*
-diff --git a/arch/arm/cpu/cache-armv7.S b/arch/arm/cpu/cache-armv7.S
-index 9bd7425..2eba959 100644
---- a/arch/arm/cpu/cache-armv7.S
-+++ b/arch/arm/cpu/cache-armv7.S
-@@ -3,6 +3,7 @@
+ unsigned long free_mem_ptr;
+ unsigned long free_mem_end_ptr;
+@@ -50,14 +53,53 @@ extern void *input_data_end;
+ #include "../../../../lib/decompress_inflate.c"
+ #endif
  
- .section .text.__mmu_cache_on
- ENTRY(__mmu_cache_on)
-+		stmfd	sp!, {r11, lr}
- 		mov	r12, lr
- #ifdef CONFIG_MMU
- 		mrc	p15, 0, r11, c0, c1, 4	@ read ID_MMFR0
-@@ -28,7 +29,7 @@ ENTRY(__mmu_cache_on)
- 		mrc	p15, 0, r0, c1, c0, 0	@ and read it back
- 		mov	r0, #0
- 		mcr	p15, 0, r0, c7, c5, 4	@ ISB
--		mov	pc, r12
-+		ldmfd	sp!, {r11, pc}
- ENDPROC(__mmu_cache_on)
++static void mmu_enable(unsigned long *ttb)
++{
++	int i;
++
++	/* Set the ttb register */
++	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
++
++	/* Set the Domain Access Control Register */
++	i = 0x3;
++	asm volatile ("mcr  p15,0,%0,c3,c0,0" : : "r"(i) /*:*/);
++
++	/* create a flat mapping using 1MiB sections */
++	for (i = 0; i < 4096; i++)
++		ttb[i] = (i << 20) | PMD_SECT_AP_WRITE |
++			PMD_SECT_AP_READ | PMD_TYPE_SECT |
++			PMD_SECT_WB;
++
++	__mmu_cache_on();
++}
++
++static void mmu_disable(void)
++{
++	__mmu_cache_flush();
++	__mmu_cache_off();
++}
++
+ static void barebox_uncompress(void *compressed_start, unsigned int len)
+ {
+ 	void (*barebox)(void);
++	unsigned long *ttb;
++	/*
++	 * We create a flat mapping for the whole address space
++	 * and enable the MMU here. This means that you cannot use
++	 * any hardware like UARTs while the MMU is on. If you want
++	 * to debug this code disable MMU support below.
++	 */
++	int use_mmu = IS_ENABLED(CONFIG_MMU);
  
- .section .text.__mmu_cache_off
-@@ -54,6 +55,7 @@ ENDPROC(__mmu_cache_off)
+ 	/* set 128 KiB at the end of the MALLOC_BASE for early malloc */
+ 	free_mem_ptr = MALLOC_BASE + MALLOC_SIZE - SZ_128K;
+ 	free_mem_end_ptr = free_mem_ptr + SZ_128K;
  
- .section .text.__mmu_cache_flush
- ENTRY(__mmu_cache_flush)
-+		stmfd	sp!, {r10, lr}
- 		mrc	p15, 0, r10, c0, c1, 5	@ read ID_MMFR1
- 		tst	r10, #0xf << 16		@ hierarchical cache (ARMv7)
- 		mov	r10, #0
-@@ -111,7 +113,7 @@ iflush:
- 		mcr	p15, 0, r10, c7, c5, 0	@ invalidate I+BTB
- 		mcr	p15, 0, r10, c7, c10, 4	@ DSB
- 		mcr	p15, 0, r10, c7, c5, 4	@ ISB
--		mov	pc, lr
-+		ldmfd	sp!, {r10, pc}
- ENDPROC(__mmu_cache_flush)
++	ttb = (void *)((free_mem_ptr - 0x4000) & ~0x3fff);
++
++	if (use_mmu)
++		mmu_enable(ttb);
++
+ 	if (IS_ENABLED(CONFIG_THUMB2_BAREBOX))
+ 		barebox = (void *)(TEXT_BASE + 1);
+ 	else
+@@ -68,6 +110,9 @@ static void barebox_uncompress(void *compressed_start, unsigned int len)
+ 			NULL, NULL,
+ 			(void *)TEXT_BASE, NULL, NULL);
  
- /*
++	if (use_mmu)
++		mmu_disable();
++
+ 	/* flush I-cache before jumping to the uncompressed binary */
+ 	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
+ 
 -- 
 1.7.10.4
 
