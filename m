@@ -1,22 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo4.mail-out.ovh.net ([46.105.72.36]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T0Y9Y-0003Ar-5D
- for barebox@lists.infradead.org; Sun, 12 Aug 2012 13:24:24 +0000
-Received: from mail628.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 3D4F61050FA7
- for <barebox@lists.infradead.org>; Sun, 12 Aug 2012 15:29:00 +0200 (CEST)
-Date: Sun, 12 Aug 2012 15:24:31 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120812132431.GI6271@game.jcrosoft.org>
-References: <1344628865-32574-1-git-send-email-s.hauer@pengutronix.de>
- <1344628865-32574-9-git-send-email-s.hauer@pengutronix.de>
- <20120811093931.GE6271@game.jcrosoft.org>
- <20120812123655.GJ1451@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120812123655.GJ1451@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1T0Z4F-0003R7-Lr
+ for barebox@lists.infradead.org; Sun, 12 Aug 2012 14:23:02 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Sun, 12 Aug 2012 16:22:42 +0200
+Message-Id: <1344781367-13547-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1344781367-13547-1-git-send-email-s.hauer@pengutronix.de>
+References: <1344781367-13547-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,55 +16,106 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 8/9] ARM pbl: remove unnecessary FORCE
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 4/8] ARM s3c boards: Do not hardcode image sizes
+To: barebox@lists.infradead.org
+Cc: Juergen Beisert <jbe@pengutronix.de>
 
-On 14:36 Sun 12 Aug     , Sascha Hauer wrote:
-> On Sat, Aug 11, 2012 at 11:39:31AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 22:01 Fri 10 Aug     , Sascha Hauer wrote:
-> > > With this FORCE the compressed image is rebuilt even if it is
-> > > unchanged, so remove it.
-> > > 
-> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > ---
-> > >  arch/arm/pbl/Makefile |    2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/arch/arm/pbl/Makefile b/arch/arm/pbl/Makefile
-> > > index dc6ae7e..b1cdd85 100644
-> > > --- a/arch/arm/pbl/Makefile
-> > > +++ b/arch/arm/pbl/Makefile
-> > > @@ -37,7 +37,7 @@ quiet_cmd_zbarebox__ ?= LD      $@
-> > >  $(obj)/zbarebox: $(zbarebox-lds) $(zbarebox-common) FORCE
-> > >  	$(call if_changed,zbarebox__)
-> > >  
-> > > -$(obj)/piggy.$(suffix_y): $(obj)/../../../barebox.bin FORCE
-> > > +$(obj)/piggy.$(suffix_y): $(obj)/../../../barebox.bin
-> > >  	$(call if_changed,$(suffix_y))
-> > no sure about this one
-> > 
-> > IIRC we need it I saw issue without it
-> 
-> Can you check what issues there are?
-will do next week
+The existing nand_boot functions all do the same, so move it to
+a common place. To be flexible enough for future boards the real
+image size is used instead of hardcoded 256k.
 
-if we can apply it after will be nice
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Juergen Beisert <jbe@pengutronix.de>
+---
+ arch/arm/boards/a9m2410/a9m2410.c               |    7 -------
+ arch/arm/boards/a9m2440/a9m2440.c               |    7 -------
+ arch/arm/boards/friendlyarm-mini2440/mini2440.c |    7 -------
+ drivers/mtd/nand/nand_s3c24xx.c                 |   10 ++++++++++
+ 4 files changed, 10 insertions(+), 21 deletions(-)
 
-Best Regards,
-J.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+diff --git a/arch/arm/boards/a9m2410/a9m2410.c b/arch/arm/boards/a9m2410/a9m2410.c
+index fb3f1ba..8d97282 100644
+--- a/arch/arm/boards/a9m2410/a9m2410.c
++++ b/arch/arm/boards/a9m2410/a9m2410.c
+@@ -137,13 +137,6 @@ static int a9m2410_devices_init(void)
+ 
+ device_initcall(a9m2410_devices_init);
+ 
+-#ifdef CONFIG_S3C_NAND_BOOT
+-void __bare_init nand_boot(void)
+-{
+-	s3c24x0_nand_load_image(_text, 256 * 1024, 0);
+-}
+-#endif
+-
+ static int a9m2410_console_init(void)
+ {
+ 	s3c24xx_add_uart1();
+diff --git a/arch/arm/boards/a9m2440/a9m2440.c b/arch/arm/boards/a9m2440/a9m2440.c
+index 6beb72e..ac1c7a4 100644
+--- a/arch/arm/boards/a9m2440/a9m2440.c
++++ b/arch/arm/boards/a9m2440/a9m2440.c
+@@ -156,13 +156,6 @@ static int a9m2440_devices_init(void)
+ 
+ device_initcall(a9m2440_devices_init);
+ 
+-#ifdef CONFIG_S3C_NAND_BOOT
+-void __bare_init nand_boot(void)
+-{
+-	s3c24x0_nand_load_image(_text, 256 * 1024, 0);
+-}
+-#endif
+-
+ static int a9m2440_console_init(void)
+ {
+ 	s3c24xx_add_uart1();
+diff --git a/arch/arm/boards/friendlyarm-mini2440/mini2440.c b/arch/arm/boards/friendlyarm-mini2440/mini2440.c
+index a032fbc..251287e 100644
+--- a/arch/arm/boards/friendlyarm-mini2440/mini2440.c
++++ b/arch/arm/boards/friendlyarm-mini2440/mini2440.c
+@@ -324,13 +324,6 @@ static int mini2440_devices_init(void)
+ 
+ device_initcall(mini2440_devices_init);
+ 
+-#ifdef CONFIG_S3C_NAND_BOOT
+-void __bare_init nand_boot(void)
+-{
+-	s3c24x0_nand_load_image(_text, 256 * 1024, 0);
+-}
+-#endif
+-
+ static int mini2440_console_init(void)
+ {
+ 	/*
+diff --git a/drivers/mtd/nand/nand_s3c24xx.c b/drivers/mtd/nand/nand_s3c24xx.c
+index c629701..3d5732e 100644
+--- a/drivers/mtd/nand/nand_s3c24xx.c
++++ b/drivers/mtd/nand/nand_s3c24xx.c
+@@ -603,6 +603,16 @@ void __nand_boot_init s3c24x0_nand_load_image(void *dest, int size, int page)
+ 	disable_nand_controller(host);
+ }
+ 
++#include <asm-generic/sections.h>
++
++void __nand_boot_init nand_boot(void)
++{
++	void *dest = _text;
++	int size = barebox_image_size;
++	int page = 0;
++
++	s3c24x0_nand_load_image(dest, size, page);
++}
+ #ifdef CONFIG_NAND_S3C_BOOT_DEBUG
+ #include <command.h>
+ 
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
