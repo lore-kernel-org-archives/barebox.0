@@ -2,20 +2,21 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 2.mo4.mail-out.ovh.net ([46.105.72.36]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T0Y8B-000376-Lu
- for barebox@lists.infradead.org; Sun, 12 Aug 2012 13:23:00 +0000
+ id 1T0Y9Y-0003Ar-5D
+ for barebox@lists.infradead.org; Sun, 12 Aug 2012 13:24:24 +0000
 Received: from mail628.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id DA2621050E04
- for <barebox@lists.infradead.org>; Sun, 12 Aug 2012 15:27:34 +0200 (CEST)
-Date: Sun, 12 Aug 2012 15:23:06 +0200
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 3D4F61050FA7
+ for <barebox@lists.infradead.org>; Sun, 12 Aug 2012 15:29:00 +0200 (CEST)
+Date: Sun, 12 Aug 2012 15:24:31 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120812132306.GH6271@game.jcrosoft.org>
+Message-ID: <20120812132431.GI6271@game.jcrosoft.org>
 References: <1344628865-32574-1-git-send-email-s.hauer@pengutronix.de>
- <1344628865-32574-7-git-send-email-s.hauer@pengutronix.de>
- <20120811093740.GC6271@game.jcrosoft.org>
+ <1344628865-32574-9-git-send-email-s.hauer@pengutronix.de>
+ <20120811093931.GE6271@game.jcrosoft.org>
+ <20120812123655.GJ1451@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120811093740.GC6271@game.jcrosoft.org>
+In-Reply-To: <20120812123655.GJ1451@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,41 +29,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/9] ARM Makefile: generate a barebox-flash-image link
+Subject: Re: [PATCH 8/9] ARM pbl: remove unnecessary FORCE
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 11:37 Sat 11 Aug     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 22:01 Fri 10 Aug     , Sascha Hauer wrote:
-> > Depending on the SoC a barebox.bin, barebox.netx, barebox.s5p, MLO image
-> > is generated. With pbl support there now is an additional
-> > arch/arm/pbl/zbarebox.bin image.
+On 14:36 Sun 12 Aug     , Sascha Hauer wrote:
+> On Sat, Aug 11, 2012 at 11:39:31AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 22:01 Fri 10 Aug     , Sascha Hauer wrote:
+> > > With this FORCE the compressed image is rebuilt even if it is
+> > > unchanged, so remove it.
+> > > 
+> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > ---
+> > >  arch/arm/pbl/Makefile |    2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/arch/arm/pbl/Makefile b/arch/arm/pbl/Makefile
+> > > index dc6ae7e..b1cdd85 100644
+> > > --- a/arch/arm/pbl/Makefile
+> > > +++ b/arch/arm/pbl/Makefile
+> > > @@ -37,7 +37,7 @@ quiet_cmd_zbarebox__ ?= LD      $@
+> > >  $(obj)/zbarebox: $(zbarebox-lds) $(zbarebox-common) FORCE
+> > >  	$(call if_changed,zbarebox__)
+> > >  
+> > > -$(obj)/piggy.$(suffix_y): $(obj)/../../../barebox.bin FORCE
+> > > +$(obj)/piggy.$(suffix_y): $(obj)/../../../barebox.bin
+> > >  	$(call if_changed,$(suffix_y))
+> > no sure about this one
 > > 
-> > To help the user to determine which image should be flashed to his device,
-> > generate a barebox-flash-image link.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/Makefile |    7 +++++--
-> >  1 file changed, 5 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> > index 63bc9be..9d9247f 100644
-> > --- a/arch/arm/Makefile
-> > +++ b/arch/arm/Makefile
-> > @@ -217,7 +217,10 @@ zbarebox.S zbarebox.bin zbarebox: barebox.bin
-> >  archclean:
-> >  	$(MAKE) $(clean)=$(pbl)
-> >  
-> > -all: $(KBUILD_BINARY)
-> > +barebox-flash-image: $(KBUILD_BINARY)
-> > +	$(Q)ln -sf $(KBUILD_BINARY) barebox-flash-image
-I re-think about it and I think we need a common ways acrosse arch
+> > IIRC we need it I saw issue without it
+> 
+> Can you check what issues there are?
+will do next week
 
-othersize it will be confusing
+if we can apply it after will be nice
 
 Best Regards,
 J.
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
