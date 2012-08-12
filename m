@@ -2,16 +2,17 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 17.mo4.mail-out.ovh.net ([46.105.41.16]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T0ccY-0006mo-3E
- for barebox@lists.infradead.org; Sun, 12 Aug 2012 18:10:39 +0000
+ id 1T0ccY-0006mp-3G
+ for barebox@lists.infradead.org; Sun, 12 Aug 2012 18:10:38 +0000
 Received: from mail628.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 99A6010544DF
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id B335310544F3
  for <barebox@lists.infradead.org>; Sun, 12 Aug 2012 20:15:13 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 12 Aug 2012 20:10:40 +0200
-Message-Id: <1344795043-13815-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20120812180535.GK6271@game.jcrosoft.org>
+Date: Sun, 12 Aug 2012 20:10:41 +0200
+Message-Id: <1344795043-13815-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1344795043-13815-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120812180535.GK6271@game.jcrosoft.org>
+ <1344795043-13815-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,110 +26,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] fs/mount: add autodetection type support
+Subject: [PATCH 2/4] filetype: add fat filesystem support
 To: barebox@lists.infradead.org
-
-if NULL is pass as type mount will try to autodetect the filesystem type
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- fs/Kconfig   |    5 +++++
- fs/fs.c      |   28 ++++++++++++++++++++++++++++
- include/fs.h |    5 +++++
- 3 files changed, 38 insertions(+)
+ common/filetype.c  |   20 ++++++++++++++++++++
+ include/filetype.h |    1 +
+ 2 files changed, 21 insertions(+)
 
-diff --git a/fs/Kconfig b/fs/Kconfig
-index b75820f..4c66543 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -1,6 +1,11 @@
+diff --git a/common/filetype.c b/common/filetype.c
+index 1a5b82d..e736d43 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -22,6 +22,7 @@
+ #include <common.h>
+ #include <filetype.h>
+ #include <asm/byteorder.h>
++#include <asm/unaligned.h>
+ #include <fcntl.h>
+ #include <fs.h>
+ #include <malloc.h>
+@@ -40,6 +41,7 @@ static const char *filetype_str[] = {
+ 	[filetype_aimage] = "Android boot image",
+ 	[filetype_sh] = "Bourne Shell",
+ 	[filetype_mips_barebox] = "MIPS barebox image",
++	[filetype_fat] = "FAT filesytem",
+ };
  
- menu "Filesystem support            "
- 
-+config FS
-+	bool
-+	default y
-+	select FILETYPE
-+
- config FS_AUTOMOUNT
- 	bool
- 
-diff --git a/fs/fs.c b/fs/fs.c
-index 0b376a5..e80d907 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -954,6 +954,28 @@ int register_fs_driver(struct fs_driver_d *fsdrv)
+ const char *file_type_to_string(enum filetype f)
+@@ -50,6 +52,22 @@ const char *file_type_to_string(enum filetype f)
+ 	return NULL;
  }
- EXPORT_SYMBOL(register_fs_driver);
  
-+static const char * detect_fs(const char *filename)
++static int is_fat(u8 *buf)
 +{
-+	enum filetype type = file_name_detect_type(filename);
-+	struct driver_d *drv;
-+	struct fs_driver_d *fdrv;
++	if (get_unaligned_le16(&buf[510]) != 0xAA55)
++		return 0;
 +
-+	if (type == filetype_unknown)
-+		return NULL;
++	/* FAT */
++	if ((get_unaligned_le32(&buf[54]) & 0xFFFFFF) == 0x544146)
++		return 1;
 +
-+	for_each_driver(drv) {
-+		if (drv->bus != &fs_bus)
-+			continue;
++	/* FAT32 */
++	if ((get_unaligned_le32(&buf[82]) & 0xFFFFFF) == 0x544146)
++		return 1;
 +
-+		fdrv = drv_to_fs_driver(drv);
-+
-+		if(type == fdrv->type)
-+			return drv->name;
-+	}
-+
-+	return NULL;
++	return 0;
 +}
 +
- /*
-  * Mount a device to a directory.
-  * We do this by registering a new device on which the filesystem
-@@ -985,6 +1007,12 @@ int mount(const char *device, const char *fsname, const char *_path)
- 		}
- 	}
+ enum filetype file_detect_type(void *_buf)
+ {
+ 	u32 *buf = _buf;
+@@ -81,6 +99,8 @@ enum filetype file_detect_type(void *_buf)
+ 		return filetype_aimage;
+ 	if (strncmp(buf8 + 0x10, "barebox", 7) == 0)
+ 		return filetype_mips_barebox;
++	if (is_fat(buf8))
++		return filetype_fat;
  
-+	if (!fsname)
-+		fsname = detect_fs(device);
-+
-+	if (!fsname)
-+		return -ENOENT;
-+
- 	fsdev = xzalloc(sizeof(struct fs_device_d));
- 	fsdev->backingstore = xstrdup(device);
- 	safe_strncpy(fsdev->dev.name, fsname, MAX_DRIVER_NAME);
-diff --git a/include/fs.h b/include/fs.h
-index c0b9f71..22470e6 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -2,6 +2,7 @@
- #define __FS_H
- 
- #include <driver.h>
-+#include <filetype.h>
- 
- #define PATH_MAX       1024        /* include/linux/limits.h */
- 
-@@ -72,6 +73,8 @@ struct fs_driver_d {
- 
- 	struct driver_d drv;
- 
-+	enum filetype type;
-+
- 	unsigned long flags;
+ 	return filetype_unknown;
+ }
+diff --git a/include/filetype.h b/include/filetype.h
+index f5de8ed..179ec0f 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -18,6 +18,7 @@ enum filetype {
+ 	filetype_aimage,
+ 	filetype_sh,
+ 	filetype_mips_barebox,
++	filetype_fat,
  };
  
-@@ -93,6 +96,8 @@ struct fs_device_d {
- 	struct list_head list;
- };
- 
-+#define drv_to_fs_driver(d) container_of(d, struct fs_driver_d, drv)
-+
- /*
-  * standard posix file functions
-  */
+ const char *file_type_to_string(enum filetype f);
 -- 
 1.7.10.4
 
