@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T0Z4N-0003Sm-Bb
- for barebox@lists.infradead.org; Sun, 12 Aug 2012 14:23:08 +0000
+ id 1T0ZBd-0004Kb-Dc
+ for barebox@lists.infradead.org; Sun, 12 Aug 2012 14:30:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 12 Aug 2012 16:22:40 +0200
-Message-Id: <1344781367-13547-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1344781367-13547-1-git-send-email-s.hauer@pengutronix.de>
-References: <1344781367-13547-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 12 Aug 2012 16:30:32 +0200
+Message-Id: <1344781832-17978-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1344781832-17978-1-git-send-email-s.hauer@pengutronix.de>
+References: <1344781832-17978-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,120 +21,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/8] Makefile: generate a barebox-flash-image link
+Subject: [PATCH 4/4] create a common ARM flush_icache function
 To: barebox@lists.infradead.org
-
-Depending on the SoC a barebox.bin, barebox.netx, barebox.s5p, MLO image
-is generated. With pbl support there now is an additional
-arch/arm/pbl/zbarebox.bin image.
-
-To help the user to determine which image should be flashed to his device,
-generate a barebox-flash-image link.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Makefile               |   15 +++++++--------
- arch/arm/Makefile      |    2 --
- arch/blackfin/Makefile |    2 +-
- arch/mips/Makefile     |    2 --
- arch/x86/Makefile      |    5 -----
- 5 files changed, 8 insertions(+), 18 deletions(-)
+ arch/arm/cpu/start-pbl.c     |    7 +++----
+ arch/arm/cpu/start.c         |    4 ++--
+ arch/arm/include/asm/cache.h |    9 +++++++++
+ 3 files changed, 14 insertions(+), 6 deletions(-)
+ create mode 100644 arch/arm/include/asm/cache.h
 
-diff --git a/Makefile b/Makefile
-index 06a94c3..a084db3 100644
---- a/Makefile
-+++ b/Makefile
-@@ -437,12 +437,6 @@ else
- include/config/auto.conf: ;
- endif # $(dot-config)
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index 1b67e2a..3f2eb07 100644
+--- a/arch/arm/cpu/start-pbl.c
++++ b/arch/arm/cpu/start-pbl.c
+@@ -29,6 +29,7 @@
+ #include <asm-generic/memory_layout.h>
+ #include <asm/sections.h>
+ #include <asm/pgtable.h>
++#include <asm/cache.h>
  
--# The all: target is the default when no target is given on the
--# command line.
--# This allow a user to issue only 'make' to build a kernel
--# Defaults barebox but it is usually overridden in the arch makefile
--all: barebox.bin
--
- include $(srctree)/arch/$(ARCH)/Makefile
+ #include "mmu.h"
  
- ifdef CONFIG_DEBUG_INFO
-@@ -473,7 +467,12 @@ CFLAGS += $(call cc-option,-Wno-pointer-sign,)
- # set in the environment
- # Also any assignments in arch/$(ARCH)/Makefile take precedence over
- # this default value
--export KBUILD_IMAGE ?= barebox
-+export KBUILD_IMAGE ?= barebox.bin
+@@ -113,8 +114,7 @@ static void barebox_uncompress(void *compressed_start, unsigned int len)
+ 	if (use_mmu)
+ 		mmu_disable();
+ 
+-	/* flush I-cache before jumping to the uncompressed binary */
+-	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
++	flush_icache();
+ 
+ 	barebox();
+ }
+@@ -173,8 +173,7 @@ copy_link:
+ 	/* clear bss */
+ 	memset(__bss_start, 0, __bss_stop - __bss_start);
+ 
+-	/* flush I-cache before jumping to the copied binary */
+-	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
++	flush_icache();
+ 
+ 	r = (unsigned int)&barebox_uncompress;
+ 	/* call barebox_uncompress with its absolute address */
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 8365a75..07e7dfe 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -26,6 +26,7 @@
+ #include <asm/barebox-arm-head.h>
+ #include <asm-generic/memory_layout.h>
+ #include <asm/sections.h>
++#include <asm/cache.h>
+ 
+ #ifdef CONFIG_PBL_IMAGE
+ /*
+@@ -80,8 +81,7 @@ void __naked __section(.text_ll_return) board_init_lowlevel_return(void)
+ 	/* clear bss */
+ 	memset(__bss_start, 0, __bss_stop - __bss_start);
+ 
+-	/* flush I-cache before jumping to the copied binary */
+-	__asm__ __volatile__("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
++	flush_icache();
+ 
+ 	/* call start_barebox with its absolute address */
+ 	r = (unsigned int)&start_barebox;
+diff --git a/arch/arm/include/asm/cache.h b/arch/arm/include/asm/cache.h
+new file mode 100644
+index 0000000..ff79749
+--- /dev/null
++++ b/arch/arm/include/asm/cache.h
+@@ -0,0 +1,9 @@
++#ifndef __ASM_CACHE_H
++#define __ASM_CACHE_H
 +
-+barebox-flash-image: $(KBUILD_IMAGE)
-+	$(call if_changed,ln)
++static inline void flush_icache(void)
++{
++	asm volatile("mcr p15, 0, %0, c7, c5, 0" : : "r" (0));
++}
 +
-+all: barebox-flash-image
- 
- common-$(CONFIG_PBL_IMAGE)	+= pbl/
- 
-@@ -1009,7 +1008,7 @@ CLEAN_DIRS  += $(MODVERDIR)
- CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
-                 .tmp_version .tmp_barebox* barebox.bin barebox.map barebox.S \
- 		.tmp_kallsyms* barebox_default_env* barebox.ldr \
--		scripts/bareboxenv-target \
-+		scripts/bareboxenv-target barebox-flash-image \
- 		Doxyfile.version barebox.srec barebox.s5p
- 
- # Directories & files removed with 'make mrproper'
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index be4ef30..1362b31 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -208,8 +208,6 @@ zbarebox.S zbarebox.bin zbarebox: barebox.bin
- archclean:
- 	$(MAKE) $(clean)=$(pbl)
- 
--all: $(KBUILD_IMAGE)
--
- archprepare: maketools
- maketools:
- 	$(Q)$(MAKE) $(build)=arch/arm/tools include/generated/mach-types.h
-diff --git a/arch/blackfin/Makefile b/arch/blackfin/Makefile
-index a0b87f7..381c6a9 100644
---- a/arch/blackfin/Makefile
-+++ b/arch/blackfin/Makefile
-@@ -13,7 +13,7 @@ CFLAGS += -D__blackfin__
- KALLSYMS         += --symbol-prefix=_
- 
- ifndef CONFIG_BFIN_BOOT_BYPASS
--all: barebox.ldr
-+KBUILD_IMAGE := barebox.ldr
- endif
- 
- archprepare: maketools
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 6b7dae9..5e40de7 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -82,8 +82,6 @@ incdir-y := $(machine-y)
- endif
- INCDIR   := arch-$(incdir-y)
- 
--all: $(KBUILD_IMAGE)
--
- ifneq ($(board-y),)
- BOARD := arch/mips/boards/$(board-y)/
- else
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index db4180b..518b37f 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -14,11 +14,6 @@ CPPFLAGS += -fdata-sections -ffunction-sections
- LDFLAGS_uboot += -static --gc-sections
- endif
- 
--all: $(KBUILD_IMAGE)
--
--
--
--
- machdirs := $(patsubst %,arch/x86/mach-%/,$(machine-y))
- 
- ifeq ($(KBUILD_SRC),)
++#endif
 -- 
 1.7.10.4
 
