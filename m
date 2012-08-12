@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T0Z4F-0003R3-Ll
- for barebox@lists.infradead.org; Sun, 12 Aug 2012 14:23:01 +0000
+ id 1T0Z4F-0003R5-Lm
+ for barebox@lists.infradead.org; Sun, 12 Aug 2012 14:23:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 12 Aug 2012 16:22:45 +0200
-Message-Id: <1344781367-13547-8-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 12 Aug 2012 16:22:39 +0200
+Message-Id: <1344781367-13547-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1344781367-13547-1-git-send-email-s.hauer@pengutronix.de>
 References: <1344781367-13547-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,107 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] ARM: fix netx/MLO/s5p image build for pbl
+Subject: [PATCH 1/8] Makefile.lib: add disasm and ln commands
 To: barebox@lists.infradead.org
 
-If pbl support is enabled only zbarebox.bin was built, but
-not the SoC specific images. Fix this.
+disasm: For generating an disasssembly of an ELF file
+ln: For creating a softlink
+
+Use the disasm command for generating barebox.S
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Makefile |   45 +++++++++++++++++++++++++++++----------------
- 1 file changed, 29 insertions(+), 16 deletions(-)
+ Makefile             |    4 +---
+ scripts/Makefile.lib |    6 ++++++
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 948eb4e..8e660be 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -160,7 +160,16 @@ CPPFLAGS += -fdata-sections -ffunction-sections
- LDFLAGS_barebox += -static --gc-sections
- endif
+diff --git a/Makefile b/Makefile
+index ce1506c..06a94c3 100644
+--- a/Makefile
++++ b/Makefile
+@@ -254,6 +254,7 @@ MAKEFLAGS += --include-dir=$(srctree)
  
--barebox.netx: barebox.bin
-+ifdef CONFIG_IMAGE_COMPRESSION
-+KBUILD_BINARY := arch/arm/pbl/zbarebox.bin
-+KBUILD_TARGET := zbarebox.bin
-+$(KBUILD_BINARY): $(KBUILD_TARGET)
-+else
-+KBUILD_BINARY := barebox.bin
-+KBUILD_TARGET := barebox.bin
-+endif
-+
-+barebox.netx: $(KBUILD_BINARY)
- 	$(Q)scripts/gen_netx_image -i $< -o barebox.netx		\
- 		--sdramctrl=$(CONFIG_NETX_SDRAM_CTRL)			\
- 		--sdramtimctrl=$(CONFIG_NETX_SDRAM_TIMING_CTRL)		\
-@@ -169,36 +178,38 @@ barebox.netx: barebox.bin
- 		--cookie=$(CONFIG_NETX_COOKIE);
+ # We need some generic definitions.
+ include $(srctree)/scripts/Kbuild.include
++include $(srctree)/scripts/Makefile.lib
  
- ifeq ($(machine-y),netx)
--KBUILD_IMAGE := barebox.netx
-+KBUILD_TARGET := barebox.netx
-+KBUILD_BINARY := $(KBUILD_TARGET)
- endif
+ # Make variables (CC, etc...)
  
--barebox.s5p: barebox.bin
-+barebox.s5p: $(KBUILD_BINARY)
- 	$(Q)scripts/s5p_cksum $< barebox.s5p
- 
- ifeq ($(CONFIG_ARCH_S5PCxx),y)
--KBUILD_IMAGE := barebox.s5p
-+KBUILD_TARGET := barebox.s5p
-+KBUILD_BINARY := $(KBUILD_TARGET)
- endif
- 
--MLO: barebox.bin
--	@echo "  IFT    " $@
--	$(Q)scripts/omap_signGP $< $(TEXT_BASE) 1
--	$(Q)test -e $<.ift && mv $<.ift MLO
-+quiet_cmd_mlo ?= IFT     $@
-+	cmd_mlo ?= scripts/omap_signGP $< $(TEXT_BASE) 1; \
-+		     test -e $<.ift && mv $<.ift MLO
-+
-+MLO: $(KBUILD_BINARY)
-+	$(call if_changed,mlo)
- 
- ifeq ($(CONFIG_OMAP_BUILD_IFT),y)
--KBUILD_IMAGE := MLO
-+KBUILD_TARGET := MLO
-+KBUILD_BINARY := $(KBUILD_TARGET)
- endif
- 
--barebox.ubl: barebox.bin
-+barebox.ubl: $(KBUILD_BINARY)
- 	@echo "  UBL    " $@
- 	$(Q)scripts/mkublheader $< > barebox.ubl
- 	$(Q)cat $< >> barebox.ubl
- 
- ifeq ($(CONFIG_ARCH_DAVINCI),y)
--KBUILD_IMAGE := barebox.ubl
--endif
+@@ -703,9 +704,6 @@ endif
+ 	@echo " * Init Calls content" >> barebox.S
+ 	$(Q)$(OBJDUMP) -j .barebox_initcalls -d barebox >> barebox.S
+ else
+-quiet_cmd_disasm = DISASM  $@
+-      cmd_disasm = $(OBJDUMP) -d $< > $@
 -
--ifdef CONFIG_IMAGE_COMPRESSION
--KBUILD_IMAGE := zbarebox.bin
-+KBUILD_TARGET := barebox.ubl
-+KBUILD_BINARY := $(KBUILD_TARGET)
+ barebox.S: barebox FORCE
+ 	$(call if_changed,disasm)
  endif
- 
- pbl := arch/arm/pbl
-@@ -208,6 +219,8 @@ zbarebox.S zbarebox.bin zbarebox: barebox.bin
- archclean:
- 	$(MAKE) $(clean)=$(pbl)
- 
-+KBUILD_IMAGE := $(KBUILD_BINARY)
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 1a5b2b5..cb46db2 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -242,3 +242,9 @@ quiet_cmd_xzmisc = XZMISC  $@
+ cmd_xzmisc = (cat $(filter-out FORCE,$^) | \
+ 	xz --check=crc32 --lzma2=dict=1MiB) > $@ || \
+ 	(rm -f $@ ; false)
 +
- archprepare: maketools
- maketools:
- 	$(Q)$(MAKE) $(build)=arch/arm/tools include/generated/mach-types.h
-@@ -231,4 +244,4 @@ common-y += arch/arm/lib/ arch/arm/cpu/
- 
- lds-y	:= arch/arm/lib/barebox.lds
- 
--CLEAN_FILES += include/generated/mach-types.h arch/arm/lib/barebox.lds
-+CLEAN_FILES += include/generated/mach-types.h arch/arm/lib/barebox.lds barebox-flash-image
++quiet_cmd_disasm = DISASM  $@
++cmd_disasm = $(OBJDUMP) -d $< > $@
++
++quiet_cmd_ln = LN      $@
++cmd_ln = ln -sf $< $@
 -- 
 1.7.10.4
 
