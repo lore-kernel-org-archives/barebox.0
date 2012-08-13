@@ -2,16 +2,17 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 12.mo4.mail-out.ovh.net ([178.33.104.253]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T0oaN-0007ym-9q
+ id 1T0oaN-0007yo-9s
  for barebox@lists.infradead.org; Mon, 13 Aug 2012 06:57:12 +0000
 Received: from mail628.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id BBD5B1054AE6
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id DAA9D1054AFC
  for <barebox@lists.infradead.org>; Mon, 13 Aug 2012 09:01:47 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 13 Aug 2012 08:57:11 +0200
-Message-Id: <1344841034-10068-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20120813065448.GM6271@game.jcrosoft.org>
+Date: Mon, 13 Aug 2012 08:57:13 +0200
+Message-Id: <1344841034-10068-3-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1344841034-10068-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120813065448.GM6271@game.jcrosoft.org>
+ <1344841034-10068-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,32 +26,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] arm/bootm: fix initrd_start init
+Subject: [PATCH 3/4] uimage_sdram_flush: fix resource start
 To: barebox@lists.infradead.org
 
-initrd_start need to be init to data->initrd_address and updated only if the
-addr is invalid.
+The start is the start of the previous resource nor the size of it.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/lib/bootm.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ common/uimage.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index a8840fe..c5b76ea 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -58,7 +58,9 @@ static int __do_bootm_linux(struct image_data *data, int swap)
- 
- 	kernel = data->os_res->start + data->os_entry;
- 
--	if (data->initrd_file && data->initrd_address == UIMAGE_INVALID_ADDRESS) {
-+	initrd_start = data->initrd_address;
+diff --git a/common/uimage.c b/common/uimage.c
+index 43878b5..735b64e 100644
+--- a/common/uimage.c
++++ b/common/uimage.c
+@@ -355,8 +355,9 @@ static struct resource *uimage_resource;
+ static int uimage_sdram_flush(void *buf, unsigned int len)
+ {
+ 	if (uimage_size + len > resource_size(uimage_resource)) {
+-		resource_size_t start = resource_size(uimage_resource);
++		resource_size_t start = uimage_resource->start;
+ 		resource_size_t size = resource_size(uimage_resource) + len;
 +
-+	if (data->initrd_file && initrd_start == UIMAGE_INVALID_ADDRESS) {
- 		initrd_start = data->os_res->start + SZ_8M;
+ 		release_sdram_region(uimage_resource);
  
- 		if (bootm_verbose(data)) {
+ 		uimage_resource = request_sdram_region("uimage",
 -- 
 1.7.10.4
 
