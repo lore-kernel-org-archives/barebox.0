@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T100G-0007TU-F3
- for barebox@lists.infradead.org; Mon, 13 Aug 2012 19:08:42 +0000
-Date: Mon, 13 Aug 2012 21:08:38 +0200
+ id 1T10XV-0000Xp-LT
+ for barebox@lists.infradead.org; Mon, 13 Aug 2012 19:43:03 +0000
+Date: Mon, 13 Aug 2012 21:42:59 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120813190838.GT1451@pengutronix.de>
-References: <20120803165744.GE24458@pengutronix.de>
- <1344838047-19069-1-git-send-email-j.weitzel@phytec.de>
+Message-ID: <20120813194259.GV1451@pengutronix.de>
+References: <1344516289-32524-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1344838047-19069-1-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <1344516289-32524-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,320 +22,610 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] OMAP4460: clock init
-To: Jan Weitzel <j.weitzel@phytec.de>
+Subject: Re: [PATCH v2] Add JTAG bitbang driver
+To: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
 Cc: barebox@lists.infradead.org
 
-Hi Jan,
+Hi Wjatscheslaw,
 
-On Mon, Aug 13, 2012 at 08:07:27AM +0200, Jan Weitzel wrote:
-> Change clock init to allow early gpio access. Add support for 4460 clocks.
+Sorry for the delay. I was not sure whether I should apply this patch
+or just keep it here for reference. The problem is that it's not very
+useful without some code actually using this driver. I decided to apply
+it, because the 'devinfo' information makes it kind of self contained.
+
+Thanks for the patch
+
+Sascha
+
+On Thu, Aug 09, 2012 at 02:44:49PM +0200, Wjatscheslaw Stoljarski wrote:
+> From: "Wjatscheslaw Stoljarski" <wjatscheslaw.stoljarski@kiwigrid.com>
 > 
-> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+> Signed-off-by: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
 > ---
-> v2: fix omap4_scale_vcores for phycard-a-xl2
-
-This changes the users of omap4_scale_vcores, but not the function
-itself. Probably this should be merged with the earlier patch you sent.
-
-Can you resend the whole series please when you have fixed this?
-
-Thanks
- Sascha
-
+>  drivers/Kconfig       |    1 +
+>  drivers/Makefile      |    1 +
+>  drivers/misc/Kconfig  |   17 +++
+>  drivers/misc/Makefile |    5 +
+>  drivers/misc/jtag.c   |  392 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  include/jtag.h        |  109 ++++++++++++++
+>  6 files changed, 525 insertions(+)
+>  create mode 100644 drivers/misc/Kconfig
+>  create mode 100644 drivers/misc/Makefile
+>  create mode 100644 drivers/misc/jtag.c
+>  create mode 100644 include/jtag.h
 > 
->  arch/arm/boards/panda/lowlevel.c              |    4 ++-
->  arch/arm/boards/panda/mux.c                   |    8 +++++
->  arch/arm/boards/pcm049/lowlevel.c             |   15 +++++++--
->  arch/arm/boards/pcm049/mux.c                  |    8 +++++
->  arch/arm/boards/phycard-a-xl2/lowlevel.c      |   13 ++++++--
->  arch/arm/boards/phycard-a-xl2/mux.c           |    8 +++++
->  arch/arm/mach-omap/include/mach/omap4-clock.h |    4 ++
->  arch/arm/mach-omap/omap4_clock.c              |   39 +++++++++++++++++-------
->  8 files changed, 79 insertions(+), 20 deletions(-)
-> 
-> diff --git a/arch/arm/boards/panda/lowlevel.c b/arch/arm/boards/panda/lowlevel.c
-> index 8591fff..0b4b199 100644
-> --- a/arch/arm/boards/panda/lowlevel.c
-> +++ b/arch/arm/boards/panda/lowlevel.c
-> @@ -28,6 +28,8 @@
->  #include <mach/syslib.h>
->  #include <asm/barebox-arm.h>
->  
-> +#define TPS62361_VSEL0_GPIO    7
+> diff --git a/drivers/Kconfig b/drivers/Kconfig
+> index 883b0e7..e596c50 100644
+> --- a/drivers/Kconfig
+> +++ b/drivers/Kconfig
+> @@ -12,6 +12,7 @@ source "drivers/video/Kconfig"
+>  source "drivers/mci/Kconfig"
+>  source "drivers/clk/Kconfig"
+>  source "drivers/mfd/Kconfig"
+> +source "drivers/misc/Kconfig"
+>  source "drivers/led/Kconfig"
+>  source "drivers/eeprom/Kconfig"
+>  source "drivers/input/Kconfig"
+> diff --git a/drivers/Makefile b/drivers/Makefile
+> index ea3263f..005ab24 100644
+> --- a/drivers/Makefile
+> +++ b/drivers/Makefile
+> @@ -15,5 +15,6 @@ obj-$(CONFIG_LED) += led/
+>  obj-y	+= eeprom/
+>  obj-$(CONFIG_PWM) += pwm/
+>  obj-y	+= input/
+> +obj-y	+= misc/
+>  obj-y	+= dma/
+>  obj-y  += watchdog/
+> diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+> new file mode 100644
+> index 0000000..c3d31ec
+> --- /dev/null
+> +++ b/drivers/misc/Kconfig
+> @@ -0,0 +1,17 @@
+> +#
+> +# Misc strange devices
+> +#
 > +
->  void set_muxconf_regs(void);
->  
->  static const struct ddr_regs ddr_regs_400_mhz_2cs = {
-> @@ -70,7 +72,7 @@ static void noinline panda_init_lowlevel(void)
->  	omap4_ddr_init(&ddr_regs_400_mhz_2cs, &core);
->  
->  	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
-> -	omap4_scale_vcores();
-> +	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
->  
->  	board_init_lowlevel_return();
->  }
-> diff --git a/arch/arm/boards/panda/mux.c b/arch/arm/boards/panda/mux.c
-> index 310e433..3783006 100644
-> --- a/arch/arm/boards/panda/mux.c
-> +++ b/arch/arm/boards/panda/mux.c
-> @@ -3,6 +3,7 @@
->  #include <io.h>
->  #include <mach/omap4-silicon.h>
->  #include <mach/omap4-mux.h>
-> +#include <mach/omap4-clock.h>
->  
->  static const struct pad_conf_entry core_padconf_array[] = {
->  	{ GPMC_AD0, PTU | IEN | OFF_EN | OFF_PD | OFF_IN | M1  /* sdmmc2_dat0 */ },
-> @@ -245,4 +246,11 @@ void set_muxconf_regs(void)
->  
->  	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
->  			ARRAY_SIZE(wkup_padconf_array));
+> +menuconfig MISC_DEVICES
+> +	bool "Misc devices                  "
+> +	help
+> +	  Add support for misc strange devices
 > +
-> +	/* gpio_wk7 is used for controlling TPS on 4460 */
-> +	if (omap4_revision() >= OMAP4460_ES1_0) {
-> +		writew(M3, OMAP44XX_CONTROL_PADCONF_WKUP + PAD1_FREF_CLK4_REQ);
-> +		/* Enable GPIO-1 clocks before TPS initialization */
-> +		omap4_enable_gpio1_wup_clocks();
-> +	}
->  }
-> diff --git a/arch/arm/boards/pcm049/lowlevel.c b/arch/arm/boards/pcm049/lowlevel.c
-> index 5b91098..65a29ec 100644
-> --- a/arch/arm/boards/pcm049/lowlevel.c
-> +++ b/arch/arm/boards/pcm049/lowlevel.c
-> @@ -28,6 +28,8 @@
->  #include <mach/syslib.h>
->  #include <asm/barebox-arm.h>
->  
-> +#define TPS62361_VSEL0_GPIO    182
+> +if MISC_DEVICES
 > +
->  void set_muxconf_regs(void);
->  
->  static const struct ddr_regs ddr_regs_mt42L64M64_25_400_mhz = {
-> @@ -46,7 +48,8 @@ static const struct ddr_regs ddr_regs_mt42L64M64_25_400_mhz = {
->  static void noinline pcm049_init_lowlevel(void)
->  {
->  	struct dpll_param core = OMAP4_CORE_DPLL_PARAM_19M2_DDR400;
-> -	struct dpll_param mpu = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
-> +	struct dpll_param mpu44xx = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
-> +	struct dpll_param mpu4460 = OMAP4_MPU_DPLL_PARAM_19M2_MPU920;
->  	struct dpll_param iva = OMAP4_IVA_DPLL_PARAM_19M2;
->  	struct dpll_param per = OMAP4_PER_DPLL_PARAM_19M2;
->  	struct dpll_param abe = OMAP4_ABE_DPLL_PARAM_19M2;
-> @@ -57,12 +60,16 @@ static void noinline pcm049_init_lowlevel(void)
->  	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
->  
->  	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
-> -	omap4_scale_vcores();
-> +	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
->  
->  	writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
->  
->  	/* Configure all DPLL's at 100% OPP */
-> -	omap4_configure_mpu_dpll(&mpu);
-> +	if (omap4_revision() < OMAP4460_ES1_0)
-> +		omap4_configure_mpu_dpll(&mpu44xx);
-> +	else
-> +		omap4_configure_mpu_dpll(&mpu4460);
+> +config JTAG
+> +	tristate "JTAG Bitbang driver"
+> +	help
+> +	  Controls JTAG chains connected to I/O pins
 > +
->  	omap4_configure_iva_dpll(&iva);
->  	omap4_configure_per_dpll(&per);
->  	omap4_configure_abe_dpll(&abe);
-> @@ -88,7 +95,7 @@ void board_init_lowlevel(void)
->  		return;
->  
->  	r = 0x4030d000;
-> -        __asm__ __volatile__("mov sp, %0" : : "r"(r));
-> +	__asm__ __volatile__("mov sp, %0" : : "r"(r));
->  
->  	pcm049_init_lowlevel();
->  }
-> diff --git a/arch/arm/boards/pcm049/mux.c b/arch/arm/boards/pcm049/mux.c
-> index a7a77b5..04e1d67 100644
-> --- a/arch/arm/boards/pcm049/mux.c
-> +++ b/arch/arm/boards/pcm049/mux.c
-> @@ -3,6 +3,7 @@
->  #include <io.h>
->  #include <mach/omap4-silicon.h>
->  #include <mach/omap4-mux.h>
-> +#include <mach/omap4-clock.h>
->  
->  static const struct pad_conf_entry core_padconf_array[] = {
->  	{GPMC_AD0, (IEN | PTD | DIS | M0)},				/* gpmc_ad0 */
-> @@ -242,4 +243,11 @@ void set_muxconf_regs(void)
->  
->  	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
->  			ARRAY_SIZE(wkup_padconf_array));
+> +endif # MISC_DEVICES
+> diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
+> new file mode 100644
+> index 0000000..b085577
+> --- /dev/null
+> +++ b/drivers/misc/Makefile
+> @@ -0,0 +1,5 @@
+> +#
+> +# Makefile for misc devices that really don't fit anywhere else.
+> +#
 > +
-> +	/* gpio_182 is used for controlling TPS on 4460 */
-> +	if (omap4_revision() >= OMAP4460_ES1_0) {
-> +		writew(M3, OMAP44XX_CONTROL_PADCONF_CORE + FREF_CLK2_OUT);
-> +		/* Enable GPIO-1 clocks before TPS initialization */
-> +		omap4_enable_gpio_clocks();
-> +	}
->  }
-> diff --git a/arch/arm/boards/phycard-a-xl2/lowlevel.c b/arch/arm/boards/phycard-a-xl2/lowlevel.c
-> index b8de2aa..38f80c9 100644
-> --- a/arch/arm/boards/phycard-a-xl2/lowlevel.c
-> +++ b/arch/arm/boards/phycard-a-xl2/lowlevel.c
-> @@ -28,6 +28,8 @@
->  #include <mach/syslib.h>
->  #include <asm/barebox-arm.h>
->  
-> +#define TPS62361_VSEL0_GPIO    7
+> +obj-$(CONFIG_JTAG)		+= jtag.o
+> diff --git a/drivers/misc/jtag.c b/drivers/misc/jtag.c
+> new file mode 100644
+> index 0000000..99fd081
+> --- /dev/null
+> +++ b/drivers/misc/jtag.c
+> @@ -0,0 +1,392 @@
+> +/*
+> + * drivers/misc/jtag.c - More infos in include/jtag.h
+> + *
+> + * Written Aug 2009 by Davide Rizzo <elpa.rizzo@gmail.com>
+> + *
+> + * Ported to barebox Jul 2012 by
+> + *       Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; either version 2 of the License, or
+> + * (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+> + */
 > +
->  void set_muxconf_regs(void);
->  
->  static const struct ddr_regs ddr_regs_mt42L64M64_25_400_mhz = {
-> @@ -46,7 +48,8 @@ static const struct ddr_regs ddr_regs_mt42L64M64_25_400_mhz = {
->  static noinline void pcaaxl2_init_lowlevel(void)
->  {
->  	struct dpll_param core = OMAP4_CORE_DPLL_PARAM_19M2_DDR400;
-> -	struct dpll_param mpu = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
-> +	struct dpll_param mpu44xx = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
-> +	struct dpll_param mpu4460 = OMAP4_MPU_DPLL_PARAM_19M2_MPU920;
->  	struct dpll_param iva = OMAP4_IVA_DPLL_PARAM_19M2;
->  	struct dpll_param per = OMAP4_PER_DPLL_PARAM_19M2;
->  	struct dpll_param abe = OMAP4_ABE_DPLL_PARAM_19M2;
-> @@ -57,12 +60,16 @@ static noinline void pcaaxl2_init_lowlevel(void)
->  	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
->  
->  	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
-> -	omap4_scale_vcores();
-> +	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
->  
->  	writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
->  
->  	/* Configure all DPLL's at 100% OPP */
-> -	omap4_configure_mpu_dpll(&mpu);
-> +	if (omap4_revision() < OMAP4460_ES1_0)
-> +		omap4_configure_mpu_dpll(&mpu44xx);
-> +	else
-> +		omap4_configure_mpu_dpll(&mpu4460);
+> +#include <fs.h>
+> +#include <errno.h>
+> +//#include <linux/list.h>
+> +#include <jtag.h>
+> +#include <gpio.h>
+> +#include <driver.h>
+> +#include <malloc.h>
+> +#include <common.h>
+> +#include <init.h>
+> +#include <ioctl.h>
 > +
->  	omap4_configure_iva_dpll(&iva);
->  	omap4_configure_per_dpll(&per);
->  	omap4_configure_abe_dpll(&abe);
-> diff --git a/arch/arm/boards/phycard-a-xl2/mux.c b/arch/arm/boards/phycard-a-xl2/mux.c
-> index 179e6b6..dc605e3 100644
-> --- a/arch/arm/boards/phycard-a-xl2/mux.c
-> +++ b/arch/arm/boards/phycard-a-xl2/mux.c
-> @@ -3,6 +3,7 @@
->  #include <io.h>
->  #include <mach/omap4-silicon.h>
->  #include <mach/omap4-mux.h>
-> +#include <mach/omap4-clock.h>
->  
->  static const struct pad_conf_entry core_padconf_array[] = {
->  	{GPMC_AD0, (IEN | PTD | DIS | M0)},				/* gpmc_ad0 */
-> @@ -242,4 +243,11 @@ void set_muxconf_regs(void)
->  
->  	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
->  			ARRAY_SIZE(wkup_padconf_array));
+> +#define VERSION_MAJ 1
+> +#define VERSION_MIN 0
 > +
-> +	/* gpio_wk7 is used for controlling TPS on 4460 */
-> +	if (omap4_revision() >= OMAP4460_ES1_0) {
-> +		writew(M3, OMAP44XX_CONTROL_PADCONF_WKUP + PAD1_FREF_CLK4_REQ);
-> +		/* Enable GPIO-1 clocks before TPS initialization */
-> +		omap4_enable_gpio1_wup_clocks();
-> +	}
->  }
-> diff --git a/arch/arm/mach-omap/include/mach/omap4-clock.h b/arch/arm/mach-omap/include/mach/omap4-clock.h
-> index 391ee63..e5302d6 100644
-> --- a/arch/arm/mach-omap/include/mach/omap4-clock.h
-> +++ b/arch/arm/mach-omap/include/mach/omap4-clock.h
-> @@ -303,6 +303,8 @@ struct dpll_param {
->  #define OMAP4_MPU_DPLL_PARAM_38M4		{0x1a, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00}
->  #define OMAP4_MPU_DPLL_PARAM_38M4_MPU600	{0x7d, 0x07, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00}
->  #define OMAP4_MPU_DPLL_PARAM_38M4_MPU1000	{0x69, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00}
-> +/* dpll locked at 1840 MHz MPU clk at 920 MHz(OPP Turbo 4460) - DCC OFF */
-> +#define OMAP4_MPU_DPLL_PARAM_19M2_MPU920	{0x23F, 0x11, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00}
->  
->  #define OMAP4_IVA_DPLL_PARAM_19M2		{0x61, 0x01, 0x00, 0x00, 0x04, 0x07, 0x00, 0x00}
->  #define OMAP4_IVA_DPLL_PARAM_38M4		{0x61, 0x03, 0x00, 0x00, 0x04, 0x07, 0x00, 0x00}
-> @@ -330,6 +332,8 @@ void omap4_configure_usb_dpll(const struct dpll_param *dpll_param);
->  void omap4_configure_core_dpll_no_lock(const struct dpll_param *param);
->  void omap4_lock_core_dpll(void);
->  void omap4_lock_core_dpll_shadow(const struct dpll_param *param);
-> +void omap4_enable_gpio1_wup_clocks(void);
-> +void omap4_enable_gpio_clocks(void);
->  void omap4_enable_all_clocks(void);
->  void omap4_do_scale_tps62361(u32 reg, u32 volt_mv);
->  
-> diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
-> index 564a748..1481f16 100644
-> --- a/arch/arm/mach-omap/omap4_clock.c
-> +++ b/arch/arm/mach-omap/omap4_clock.c
-> @@ -14,6 +14,10 @@ void omap4_configure_mpu_dpll(const struct dpll_param *dpll_param)
->  
->  	sr32(CM_AUTOIDLE_DPLL_MPU, 0, 3, 0x0); /* Disable DPLL autoidle */
->  
-> +	/* Errata ID: i700, clear CM_CLKSEL_DPLL_MPU[22] : DCC_EN */
-> +	if (omap4_revision() >= OMAP4460_ES1_0)
-> +		sr32(CM_CLKSEL_DPLL_MPU, 0, 22, 0);
+> +/* Max devices in the jtag chain */
+> +#define MAX_DEVICES 16
 > +
->  	/* Set M,N,M2 values */
->  	sr32(CM_CLKSEL_DPLL_MPU, 8, 11, dpll_param->m);
->  	sr32(CM_CLKSEL_DPLL_MPU, 0, 6, dpll_param->n);
-> @@ -198,6 +202,27 @@ void omap4_lock_core_dpll_shadow(const struct dpll_param *param)
->  	wait_on_value((1 << 0), 1, CM_IDLEST_DPLL_CORE, LDELAY);
->  }
->  
-> +void omap4_enable_gpio_clocks(void)
+> +struct jtag_info {
+> +	struct jtag_platdata *pdata;
+> +	struct cdev cdev;
+> +	unsigned int devices; /* Number of devices found in the jtag chain */
+> +	/* Instruction register length of every device in the chain */
+> +	unsigned int ir_len[MAX_DEVICES];	/* [devices] */
+> +};
+> +
+> +static const unsigned long bypass = 0xFFFFFFFF;
+> +
+> +static void pulse_tms0(const struct jtag_platdata *pdata)
 > +{
-> +	sr32(CM_L4PER_GPIO2_CLKCTRL, 0, 32, 0x1);
-> +	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO2_CLKCTRL, LDELAY);
-> +	sr32(CM_L4PER_GPIO3_CLKCTRL, 0, 32, 0x1);
-> +	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO3_CLKCTRL, LDELAY);
-> +	sr32(CM_L4PER_GPIO4_CLKCTRL, 0, 32, 0x1);
-> +	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO4_CLKCTRL, LDELAY);
-> +	sr32(CM_L4PER_GPIO5_CLKCTRL, 0, 32, 0x1);
-> +	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO5_CLKCTRL, LDELAY);
-> +	sr32(CM_L4PER_GPIO6_CLKCTRL, 0, 32, 0x1);
-> +	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO6_CLKCTRL, LDELAY);
+> +	gpio_set_value(pdata->gpio_tms, 0);
+> +	gpio_set_value(pdata->gpio_tclk, 0);
+> +	gpio_set_value(pdata->gpio_tclk, 1);
 > +}
 > +
-> +void omap4_enable_gpio1_wup_clocks(void)
+> +static void pulse_tms1(const struct jtag_platdata *pdata)
 > +{
-> +	/* WKUP clocks */
-> +	sr32(CM_WKUP_GPIO1_CLKCTRL, 0, 32, 0x1);
-> +	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_GPIO1_CLKCTRL, LDELAY);
+> +	gpio_set_value(pdata->gpio_tms, 1);
+> +	gpio_set_value(pdata->gpio_tclk, 0);
+> +	gpio_set_value(pdata->gpio_tclk, 1);
 > +}
 > +
->  void omap4_enable_all_clocks(void)
->  {
->  	/* Enable Ducati clocks */
-> @@ -255,16 +280,7 @@ void omap4_enable_all_clocks(void)
->  	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_DMTIMER9_CLKCTRL, LDELAY);
->  
->  	/* GPIO clocks */
-> -	sr32(CM_L4PER_GPIO2_CLKCTRL, 0, 32, 0x1);
-> -	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO2_CLKCTRL, LDELAY);
-> -	sr32(CM_L4PER_GPIO3_CLKCTRL, 0, 32, 0x1);
-> -	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO3_CLKCTRL, LDELAY);
-> -	sr32(CM_L4PER_GPIO4_CLKCTRL, 0, 32, 0x1);
-> -	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO4_CLKCTRL, LDELAY);
-> -	sr32(CM_L4PER_GPIO5_CLKCTRL, 0, 32, 0x1);
-> -	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO5_CLKCTRL, LDELAY);
-> -	sr32(CM_L4PER_GPIO6_CLKCTRL, 0, 32, 0x1);
-> -	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO6_CLKCTRL, LDELAY);
-> +	omap4_enable_gpio_clocks();
->  
->  	sr32(CM_L4PER_HDQ1W_CLKCTRL, 0, 32, 0x2);
->  
-> @@ -314,8 +330,7 @@ void omap4_enable_all_clocks(void)
->  	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_UART4_CLKCTRL, LDELAY);
->  
->  	/* WKUP clocks */
-> -	sr32(CM_WKUP_GPIO1_CLKCTRL, 0, 32, 0x1);
-> -	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_GPIO1_CLKCTRL, LDELAY);
-> +	omap4_enable_gpio1_wup_clocks();
->  	sr32(CM_WKUP_TIMER1_CLKCTRL, 0, 32, 0x01000002);
->  	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_TIMER1_CLKCTRL, LDELAY);
->  
+> +static void jtag_reset(const struct jtag_platdata *pdata)
+> +{
+> +	gpio_set_value(pdata->gpio_tms, 1);
+> +	gpio_set_value(pdata->gpio_tclk, 0);
+> +	gpio_set_value(pdata->gpio_tclk, 1);
+> +	gpio_set_value(pdata->gpio_tclk, 0);
+> +	gpio_set_value(pdata->gpio_tclk, 1);
+> +	gpio_set_value(pdata->gpio_tclk, 0);
+> +	gpio_set_value(pdata->gpio_tclk, 1);
+> +	gpio_set_value(pdata->gpio_tclk, 0);
+> +	gpio_set_value(pdata->gpio_tclk, 1);
+> +	gpio_set_value(pdata->gpio_tclk, 0);
+> +	gpio_set_value(pdata->gpio_tclk, 1);
+> +}
+> +
+> +static void jtag_output(const struct jtag_platdata *pdata,
+> +	const unsigned long *data, unsigned int bitlen, int notlast)
+> +{
+> +	unsigned int a;
+> +	unsigned long mask;
+> +	gpio_set_value(pdata->gpio_tms, 0);
+> +	while (bitlen > 0) {
+> +		for (a = *data++, mask = 0x00000001; mask != 0 && bitlen > 0;
+> +		      mask <<= 1, bitlen--) {
+> +			gpio_set_value(pdata->gpio_tdo, (a & mask) ? 1 : 0);
+> +			if ((bitlen == 1) && !notlast)
+> +				gpio_set_value(pdata->gpio_tms, 1);
+> +			gpio_set_value(pdata->gpio_tclk, 0);
+> +			gpio_set_value(pdata->gpio_tclk, 1);
+> +		}
+> +	}
+> +}
+> +
+> +static int jtag_ioctl(struct cdev *inode, int cmd, void *arg)
+> +{
+> +	int ret = 0;
+> +	struct jtag_info *info = (struct jtag_info *)inode->priv;
+> +	int devices = info->devices;
+> +	struct jtag_cmd *jcmd = (struct jtag_cmd *)arg;
+> +	struct jtag_platdata *pdata = info->pdata;
+> +
+> +	if (_IOC_TYPE(cmd) != JTAG_IOC_MAGIC) return -ENOTTY;
+> +	if (_IOC_NR(cmd) > JTAG_IOC_MAXNR) return -ENOTTY;
+> +
+> +	switch (cmd) {
+> +
+> +	case JTAG_GET_DEVICES:
+> +		/* Returns how many devices found in the chain */
+> +		ret = info->devices;
+> +		break;
+> +
+> +	case JTAG_GET_ID:
+> +		/* Returns ID register of selected device */
+> +		if ((((struct jtag_rd_id *)arg)->device < 0) ||
+> +			(((struct jtag_rd_id *)arg)->device >= devices)) {
+> +			ret = -EINVAL;
+> +			break;
+> +		}
+> +		jtag_reset(pdata);
+> +		pulse_tms0(pdata);
+> +		pulse_tms1(pdata);
+> +		pulse_tms0(pdata);
+> +		pulse_tms0(pdata);
+> +		while (devices-- > 0) {
+> +			unsigned long id = 0;
+> +			pulse_tms0(pdata);
+> +			if (gpio_get_value(pdata->gpio_tdi)) {
+> +				unsigned long mask;
+> +				for (id = 1, mask = 0x00000002; (mask != 0);
+> +				      mask <<= 1) {
+> +					pulse_tms0(pdata);
+> +					if (gpio_get_value(pdata->gpio_tdi))
+> +						id |= mask;
+> +				}
+> +			}
+> +			if (devices == ((struct jtag_rd_id *)arg)->device) {
+> +				((struct jtag_rd_id *)arg)->id = id;
+> +				ret = 0;
+> +				break;
+> +			}
+> +		}
+> +		jtag_reset(pdata);
+> +		break;
+> +
+> +	case JTAG_SET_IR_LENGTH:
+> +		/* Sets up IR length of one device */
+> +		if ((jcmd->device >= 0) && (jcmd->device < devices))
+> +			info->ir_len[jcmd->device] = jcmd->bitlen;
+> +		else
+> +			ret = -EINVAL;
+> +		break;
+> +
+> +	case JTAG_RESET:
+> +		/* Resets all JTAG states */
+> +		jtag_reset(pdata);
+> +		break;
+> +
+> +	case JTAG_IR_WR:
+> +		/*
+> +		 * Writes Instruction Register
+> +		 * If device == -1 writes same Instruction Register in
+> +		 * all devices.
+> +		 * If device >= 0 writes Instruction Register in selected
+> +		 * device and loads BYPASS instruction in all others.
+> +		 */
+> +		if ((jcmd->device < -1) || (jcmd->device >= devices)) {
+> +			ret = -EINVAL;
+> +			break;
+> +		}
+> +		pulse_tms0(pdata);
+> +		pulse_tms1(pdata);
+> +		pulse_tms1(pdata);
+> +		pulse_tms0(pdata);
+> +		pulse_tms0(pdata);
+> +		while (devices-- > 0) {
+> +			if ((jcmd->device == -1) || (jcmd->device == devices))
+> +				/* Loads desired instruction */
+> +				jtag_output(pdata, jcmd->data,
+> +					info->ir_len[devices], devices);
+> +			else
+> +				/* Loads BYPASS instruction */
+> +				jtag_output(pdata, &bypass,
+> +					info->ir_len[devices], devices);
+> +		}
+> +		pulse_tms1(pdata);
+> +		pulse_tms0(pdata);
+> +		break;
+> +
+> +	case JTAG_DR_WR:
+> +		/*
+> +		 * Writes Data Register of all devices
+> +		 * If device == -1 writes same Data Register in all devices.
+> +		 * If device >= 0 writes Data Register in selected device
+> +		 * and loads BYPASS instruction in all others.
+> +		 */
+> +		if ((jcmd->device < -1) || (jcmd->device >= devices)) {
+> +			ret = -EINVAL;
+> +			break;
+> +		}
+> +		pulse_tms0(pdata);
+> +		pulse_tms1(pdata);
+> +		pulse_tms0(pdata);
+> +		pulse_tms0(pdata);
+> +		while (devices-- > 0) {
+> +			if ((jcmd->device == -1) || (devices == jcmd->device))
+> +				/* Loads desired data */
+> +				jtag_output(pdata, jcmd->data, jcmd->bitlen,
+> +					devices);
+> +			else
+> +				/* Loads 1 dummy bit in BYPASS data register */
+> +				jtag_output(pdata, &bypass, 1, devices);
+> +		}
+> +		pulse_tms1(pdata);
+> +		pulse_tms0(pdata);
+> +		break;
+> +
+> +	case JTAG_DR_RD:
+> +		/* Reads data register of selected device */
+> +		if ((jcmd->device < 0) || (jcmd->device >= devices))
+> +			ret = -EINVAL;
+> +		else {
+> +			unsigned long mask;
+> +			int bitlen = jcmd->bitlen;
+> +			unsigned long *data = jcmd->data;
+> +			pulse_tms0(pdata);
+> +			pulse_tms1(pdata);
+> +			pulse_tms0(pdata);
+> +			pulse_tms0(pdata);
+> +			devices -= (jcmd->device + 1);
+> +			while (devices-- > 0)
+> +				pulse_tms0(pdata);
+> +			while (bitlen > 0) {
+> +				for (*data = 0, mask = 0x00000001;
+> +				      (mask != 0) && (bitlen > 0);
+> +				      mask <<= 1, bitlen--) {
+> +					if (bitlen == 1)
+> +						pulse_tms1(pdata);
+> +					else
+> +						pulse_tms0(pdata);
+> +					if (gpio_get_value(pdata->gpio_tdi))
+> +						*data |= mask;
+> +				}
+> +				data++;
+> +			}
+> +			pulse_tms1(pdata);
+> +			pulse_tms0(pdata);
+> +		}
+> +		break;
+> +
+> +	case JTAG_CLK:
+> +		/* Generates arg clock pulses */
+> +		gpio_set_value(pdata->gpio_tms, 0);
+> +		while ((*(unsigned int *) arg)--) {
+> +			gpio_set_value(pdata->gpio_tclk, 0);
+> +			gpio_set_value(pdata->gpio_tclk, 1);
+> +		}
+> +		break;
+> +
+> +	default:
+> +		ret = -EFAULT;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static struct file_operations jtag_operations = {
+> +	.ioctl = jtag_ioctl,
+> +};
+> +
+> +static int jtag_probe(struct device_d *pdev)
+> +{
+> +	int i, ret;
+> +	struct jtag_info *info;
+> +	struct jtag_platdata *pdata = pdev->platform_data;
+> +
+> +	/* Setup gpio pins */
+> +	gpio_direction_output(pdata->gpio_tms, 0);
+> +	gpio_direction_output(pdata->gpio_tclk, 1);
+> +	gpio_direction_output(pdata->gpio_tdo, 0);
+> +	gpio_direction_input(pdata->gpio_tdi);
+> +	if (pdata->use_gpio_trst) {
+> +		/*
+> +		 * Keep fixed at 1 because some devices in the chain could
+> +		 * not use it, to reset chain use jtag_reset()
+> +		 */
+> +		gpio_direction_output(pdata->gpio_trst, 1);
+> +	}
+> +
+> +	/* Find how many devices in chain */
+> +	jtag_reset(pdata);
+> +	pulse_tms0(pdata);
+> +	pulse_tms1(pdata);
+> +	pulse_tms1(pdata);
+> +	pulse_tms0(pdata);
+> +	pulse_tms0(pdata);
+> +	gpio_set_value(pdata->gpio_tdo, 1);
+> +	/* Fills all IR with bypass instruction */
+> +	for (i = 0; i < 32 * MAX_DEVICES; i++)
+> +		pulse_tms0(pdata);
+> +	pulse_tms1(pdata);
+> +	pulse_tms1(pdata);
+> +	pulse_tms1(pdata);
+> +	pulse_tms0(pdata);
+> +	pulse_tms0(pdata);
+> +	gpio_set_value(pdata->gpio_tdo, 0);
+> +	/* Fills all 1-bit bypass register with 0 */
+> +	for (i = 0; i < MAX_DEVICES + 2; i++)
+> +		pulse_tms0(pdata);
+> +	gpio_set_value(pdata->gpio_tdo, 1);
+> +	/* Counts chain's bit length */
+> +	for (i = 0; i < MAX_DEVICES + 1; i++) {
+> +		pulse_tms0(pdata);
+> +		if (gpio_get_value(pdata->gpio_tdi))
+> +			break;
+> +	}
+> +	dev_notice(pdev, "%d devices found in chain\n", i);
+> +
+> +	/* Allocate structure with chain specific infos */
+> +	info = xzalloc(sizeof(struct jtag_info) + sizeof(info->ir_len[0]) * i);
+> +
+> +	info->devices = i;
+> +	info->pdata = pdata;
+> +	pdev->priv = info;
+> +
+> +	info->cdev.name = JTAG_NAME;
+> +	info->cdev.dev = pdev;
+> +	info->cdev.ops = &jtag_operations;
+> +	info->cdev.priv = info;
+> +	ret = devfs_create(&info->cdev);
+> +
+> +	if (ret)
+> +		goto fail_devfs_create;
+> +
+> +	return 0;
+> +
+> +fail_devfs_create:
+> +	pdev->priv = NULL;
+> +	free(info);
+> +	return ret;
+> +}
+> +
+> +static void jtag_info(struct device_d *pdev)
+> +{
+> +	int dn, ret;
+> +	struct jtag_rd_id jid;
+> +	struct jtag_info *info = pdev->priv;
+> +
+> +	printf(" JTAG:\n");
+> +	printf("  Devices found: %d\n", info->devices);
+> +	for (dn = 0; dn < info->devices; dn++) {
+> +		jid.device = dn;
+> +		ret = jtag_ioctl(&info->cdev, JTAG_GET_ID, &jid);
+> +		printf("  Device number: %d\n", dn);
+> +		if (ret == -1)
+> +			printf("   JTAG_GET_ID failed: %s\n", strerror(errno));
+> +		else
+> +			printf("   ID: 0x%lX\n", jid.id);
+> +	}
+> +}
+> +
+> +static void jtag_remove(struct device_d *pdev)
+> +{
+> +	struct jtag_info *info = (struct jtag_info *) pdev->priv;
+> +
+> +	devfs_remove(&info->cdev);
+> +	pdev->priv = NULL;
+> +	free(info);
+> +	dev_notice(pdev, "Device removed\n");
+> +}
+> +
+> +static struct driver_d jtag_driver = {
+> +	.name = JTAG_NAME,
+> +	.probe = jtag_probe,
+> +	.remove = jtag_remove,
+> +	.info = jtag_info,
+> +};
+> +
+> +static int jtag_module_init(void)
+> +{
+> +	return register_driver(&jtag_driver);
+> +}
+> +
+> +device_initcall(jtag_module_init);
+> +
+> +MODULE_AUTHOR("Davide Rizzo <elpa.rizzo@gmail.com>");
+> +MODULE_AUTHOR("Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>");
+> +MODULE_DESCRIPTION("JTAG bitbang driver");
+> +MODULE_LICENSE("GPL");
+> diff --git a/include/jtag.h b/include/jtag.h
+> new file mode 100644
+> index 0000000..26c95fb
+> --- /dev/null
+> +++ b/include/jtag.h
+> @@ -0,0 +1,109 @@
+> +/*
+> + * include/linux/jtag.h
+> + *
+> + * Written Aug 2009 by Davide Rizzo <elpa.rizzo@gmail.com>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; either version 2 of the License, or
+> + * (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+> + */
+> +
+> +/*
+> + * This driver manages one or more jtag chains controlled by host pins.
+> + * Jtag chains must be defined during setup using jtag_platdata structs.
+> + * All operations must be done from user programs using ioctls to /dev/jtag
+> + * Typical operation sequence is:
+> + * - open() the device (normally /dev/jtag)
+> + * - ioctl JTAG_GET_DEVICES reads how many devices in the chain
+> + * (repeat for each chip in the chain)
+> + * - ioctl JTAG_GET_ID identifies the chip
+> + * - ioctl JTAG_SET_IR_LENGTH sets the instruction register length
+> + * Before accessing the data registers, instruction registers' lenghtes
+> + *  MUST be programmed for all chips.
+> + * After this initialization, you can execute JTAG_IR_WR, JTAG_DR_RD, JTAG_DR_WR
+> + *  commands in any sequence.
+> + */
+> +
+> +#ifndef __JTAG_H__
+> +#define __JTAG_H__
+> +
+> +/* Controller's gpio_tdi must be connected to last device's gpio_tdo */
+> +/* Controller's gpio_tdo must be connected to first device's gpio_tdi */
+> +struct jtag_platdata {
+> +	unsigned int gpio_tclk;
+> +	unsigned int gpio_tms;
+> +	unsigned int gpio_tdi;
+> +	unsigned int gpio_tdo;
+> +	unsigned int gpio_trst;
+> +	int use_gpio_trst;
+> +};
+> +
+> +#define JTAG_NAME "jtag"
+> +
+> +/* structures used for passing arguments to ioctl */
+> +
+> +struct jtag_rd_id {
+> +	int device; /* Device in the chain */
+> +	unsigned long id;
+> +};
+> +
+> +struct jtag_cmd {
+> +	int device; /* Device in the chain (-1 = all devices) */
+> +	unsigned int bitlen; /* Bit length of the register to be transfered */
+> +	unsigned long *data; /* Data to be transfered */
+> +};
+> +
+> +/* Use 'j' as magic number */
+> +#define JTAG_IOC_MAGIC		'j'
+> +
+> +/* ioctl commands */
+> +
+> +/* Resets jtag chain status, arg is ignored */
+> +#define JTAG_RESET		_IO(JTAG_IOC_MAGIC, 0)
+> +
+> +/* Returns the number of devices in the jtag chain, arg is ignored. */
+> +#define JTAG_GET_DEVICES	_IO(JTAG_IOC_MAGIC, 1)
+> +
+> +/* arg must point to a jtag_rd_id structure.
+> +   Fills up the id field with ID of selected device */
+> +#define JTAG_GET_ID		_IOR(JTAG_IOC_MAGIC, 2, struct jtag_rd_id)
+> +
+> +/* arg must point to a struct jtag_cmd.
+> +   Programs the Instruction Register length of specified device at bitlen value.
+> +   *data is ignored. */
+> +#define JTAG_SET_IR_LENGTH	_IOW(JTAG_IOC_MAGIC, 3, struct jtag_rd_id)
+> +
+> +/* arg must point to a struct jtag_cmd.
+> +   Writes *data in the Instruction Register of selected device, and BYPASS
+> +    instruction into Instruction Registers of all other devices in the chain.
+> +   If device == -1, the Instruction Registers of all devices are programmed
+> +    to the same value.
+> +   bitlen is always ignored, before using this command you have to program all
+> +    Instruction Register's lengthes with JTAG_SET_IR_LENGTH command. */
+> +#define JTAG_IR_WR		_IOW(JTAG_IOC_MAGIC, 4, struct jtag_cmd)
+> +
+> +/* arg must point to a struct jtag_cmd.
+> +   Reads data register of selected device, with length bitlen */
+> +#define JTAG_DR_RD		_IOR(JTAG_IOC_MAGIC, 5, struct jtag_cmd)
+> +
+> +/* arg must point to a struct jtag_cmd.
+> +   Writes data register of selected device, with length bitlen.
+> +   If device == -1, writes same data on all devices. */
+> +#define JTAG_DR_WR		_IOW(JTAG_IOC_MAGIC, 6, struct jtag_cmd)
+> +
+> +/* Generates arg pulses on TCLK pin */
+> +#define JTAG_CLK		_IOW(JTAG_IOC_MAGIC, 7, unsigned int *)
+> +
+> +#define JTAG_IOC_MAXNR		9
+> +
+> +#endif /* __JTAG_H__ */
 > -- 
-> 1.7.0.4
+> 1.7.9.5
 > 
 > 
 > _______________________________________________
