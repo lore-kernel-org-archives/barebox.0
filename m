@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T0zWp-0005r3-EC
- for barebox@lists.infradead.org; Mon, 13 Aug 2012 18:38:16 +0000
-Date: Mon, 13 Aug 2012 20:38:13 +0200
+ id 1T0zaW-0005xI-94
+ for barebox@lists.infradead.org; Mon, 13 Aug 2012 18:42:05 +0000
+Date: Mon, 13 Aug 2012 20:42:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120813183813.GO1451@pengutronix.de>
-References: <20120813065448.GM6271@game.jcrosoft.org>
+Message-ID: <20120813184201.GP1451@pengutronix.de>
+References: <1343904959-27645-1-git-send-email-j.weitzel@phytec.de>
+ <1344861135-15306-1-git-send-email-j.weitzel@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120813065448.GM6271@game.jcrosoft.org>
+In-Reply-To: <1344861135-15306-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +23,117 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [for master PATCH 0/4] Bootm uImage initrd fix
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH v2] OMAP4: use writel and readl
+To: Jan Weitzel <j.weitzel@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Aug 13, 2012 at 08:54:48AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,
+On Mon, Aug 13, 2012 at 02:32:15PM +0200, Jan Weitzel wrote:
+> replace *(volatile int*) by writel and readl
 > 
-> please pull
-> The following changes since commit 58713d32746d49ad39ba17658fe82f1b98b80b2e:
-> 
->   commands: memset: fix help message (2012-08-09 08:44:38 +0200)
-> 
-> are available in the git repository at:
-> 
->   git://git.jcrosoft.org/barebox.git tags/bootm_fix
+> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+> ---
+> v2 reword commit message
 
-Pulled, thanks
+Updated, thanks. I also added a ARM prefix to the subject.
 
 Sascha
 
 > 
-> for you to fetch changes up to d9cefaed51917da5121443715cb9a14c237f9b9b:
+>  arch/arm/mach-omap/omap4_generic.c |   34 ++++++++++++++++++----------------
+>  1 files changed, 18 insertions(+), 16 deletions(-)
 > 
->   uimage_laod: fix ramdisk support (2012-08-13 14:48:16 +0800)
+> diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+> index a368759..617d786 100644
+> --- a/arch/arm/mach-omap/omap4_generic.c
+> +++ b/arch/arm/mach-omap/omap4_generic.c
+> @@ -268,7 +268,9 @@ int omap4_emif_config(unsigned int base, const struct ddr_regs *ddr_regs)
+>  
+>  static void reset_phy(unsigned int base)
+>  {
+> -	*(volatile int*)(base + IODFT_TLGC) |= (1 << 10);
+> +	unsigned int val = readl(base + IODFT_TLGC);
+> +	val |= (1 << 10);
+> +	writel(val, base + IODFT_TLGC);
+>  }
+>  
+>  void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+> @@ -294,14 +296,14 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+>  	/* Both EMIFs 128 byte interleaved */
+>  	writel(0x80640300, OMAP44XX_DMM_BASE + DMM_LISA_MAP_0);
+>  
+> -	*(volatile int*)(OMAP44XX_DMM_BASE + DMM_LISA_MAP_2) = 0x00000000;
+> -	*(volatile int*)(OMAP44XX_DMM_BASE + DMM_LISA_MAP_3) = 0xFF020100;
+> +	writel(0x00000000, OMAP44XX_DMM_BASE + DMM_LISA_MAP_2);
+> +	writel(0xFF020100, OMAP44XX_DMM_BASE + DMM_LISA_MAP_3);
+>  
+>  	if (rev >= OMAP4460_ES1_0) {
+>  		writel(0x80640300, OMAP44XX_MA_BASE + DMM_LISA_MAP_0);
+>  
+> -		*(volatile int*)(OMAP44XX_MA_BASE + DMM_LISA_MAP_2) = 0x00000000;
+> -		*(volatile int*)(OMAP44XX_MA_BASE + DMM_LISA_MAP_3) = 0xFF020100;
+> +		writel(0x00000000, OMAP44XX_MA_BASE + DMM_LISA_MAP_2);
+> +		writel(0xFF020100, OMAP44XX_MA_BASE + DMM_LISA_MAP_3);
+>  	}
+>  
+>  	/* DDR needs to be initialised @ 19.2 MHz
+> @@ -312,10 +314,10 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+>  
+>  	/* No IDLE: BUG in SDC */
+>  	sr32(CM_MEMIF_CLKSTCTRL, 0, 32, 0x2);
+> -	while(((*(volatile int*)CM_MEMIF_CLKSTCTRL) & 0x700) != 0x700);
+> +	while ((readl(CM_MEMIF_CLKSTCTRL) & 0x700) != 0x700);
+>  
+> -	*(volatile int*)(OMAP44XX_EMIF1_BASE + EMIF_PWR_MGMT_CTRL) = 0x0;
+> -	*(volatile int*)(OMAP44XX_EMIF2_BASE + EMIF_PWR_MGMT_CTRL) = 0x0;
+> +	writel(0x0, OMAP44XX_EMIF1_BASE + EMIF_PWR_MGMT_CTRL);
+> +	writel(0x0, OMAP44XX_EMIF2_BASE + EMIF_PWR_MGMT_CTRL);
+>  
+>  	omap4_emif_config(OMAP44XX_EMIF1_BASE, ddr_regs);
+>  	omap4_emif_config(OMAP44XX_EMIF2_BASE, ddr_regs);
+> @@ -324,13 +326,13 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+>  	omap4_lock_core_dpll_shadow(core);
+>  
+>  	/* Set DLL_OVERRIDE = 0 */
+> -	*(volatile int*)CM_DLL_CTRL = 0x0;
+> +	writel(0x0, CM_DLL_CTRL);
+>  
+>  	delay(200);
+>  
+>  	/* Check for DDR PHY ready for EMIF1 & EMIF2 */
+> -	while((((*(volatile int*)(OMAP44XX_EMIF1_BASE + EMIF_STATUS))&(0x04)) != 0x04) \
+> -	|| (((*(volatile int*)(OMAP44XX_EMIF2_BASE + EMIF_STATUS))&(0x04)) != 0x04));
+> +	while (((readl(OMAP44XX_EMIF1_BASE + EMIF_STATUS) & 0x04) != 0x04) \
+> +		|| ((readl(OMAP44XX_EMIF2_BASE + EMIF_STATUS) & 0x04) != 0x04));
+>  
+>  	/* Reprogram the DDR PYHY Control register */
+>  	/* PHY control values */
+> @@ -342,9 +344,9 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+>  
+>  	/* No IDLE: BUG in SDC */
+>  	//sr32(CM_MEMIF_CLKSTCTRL, 0, 32, 0x2);
+> -	//while(((*(volatile int*)CM_MEMIF_CLKSTCTRL) & 0x700) != 0x700);
+> -	*(volatile int*)(OMAP44XX_EMIF1_BASE + EMIF_PWR_MGMT_CTRL) = 0x80000000;
+> -	*(volatile int*)(OMAP44XX_EMIF2_BASE + EMIF_PWR_MGMT_CTRL) = 0x80000000;
+> +	//while ((readl(CM_MEMIF_CLKSTCTRL) & 0x700) != 0x700);
+> +	writel(0x80000000, OMAP44XX_EMIF1_BASE + EMIF_PWR_MGMT_CTRL);
+> +	writel(0x80000000, OMAP44XX_EMIF2_BASE + EMIF_PWR_MGMT_CTRL);
+>  
+>  	if (rev >= OMAP4460_ES1_0) {
+>  		writel(EMIF_L3_CONFIG_VAL_SYS_10_MPU_3_LL_0,
+> @@ -365,8 +367,8 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+>  	reset_phy(OMAP44XX_EMIF1_BASE);
+>  	reset_phy(OMAP44XX_EMIF2_BASE);
+>  
+> -	*((volatile int *)0x80000000) = 0;
+> -	*((volatile int *)0x80000080) = 0;
+> +	writel(0, 0x80000000);
+> +	writel(0, 0x80000080);
+>  }
+>  
+>  void omap4_power_i2c_send(u32 r)
+> -- 
+> 1.7.0.4
 > 
-> ----------------------------------------------------------------
-> bootm: uImage initrd fix support
-> 
-> Fix multiple issues:
->  - arm: loadaddr hardcode to 0x0 if valid
->  - uncompress the ramdisk (U-Boot do not do so)
->  - image_sdram_flush: wrong start address when expending the resource
->  - bootm: load the initrd to ram where this is done at arch level
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (4):
->       arm/bootm: fix initrd_start init
->       bootm: do not load the initrd in the common code
->       uimage_sdram_flush: fix resource start
->       uimage_laod: fix ramdisk support
-> 
->  arch/arm/lib/bootm.c |    4 +++-
->  commands/bootm.c     |    8 --------
->  common/uimage.c      |    6 ++++--
->  3 files changed, 7 insertions(+), 11 deletions(-)
-> 
-> Best Regards,
-> J.
 > 
 > _______________________________________________
 > barebox mailing list
