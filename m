@@ -1,22 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo4.mail-out.ovh.net ([178.32.228.4])
+Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T0sJg-0001wN-Cd
- for barebox@lists.infradead.org; Mon, 13 Aug 2012 10:56:13 +0000
-Received: from mail628.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id C00D91054DE2
- for <barebox@lists.infradead.org>; Mon, 13 Aug 2012 13:00:47 +0200 (CEST)
-Date: Mon, 13 Aug 2012 12:56:18 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120813105618.GO6271@game.jcrosoft.org>
-References: <20120812114647.GF6271@game.jcrosoft.org>
- <1344772179-13591-1-git-send-email-plagnioj@jcrosoft.com>
- <20120813070850.GM25520@pengutronix.de>
- <20120813073001.GN6271@game.jcrosoft.org>
- <20120813081657.GO25520@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120813081657.GO25520@pengutronix.de>
+ id 1T0toh-00083w-Sg
+ for barebox@lists.infradead.org; Mon, 13 Aug 2012 12:32:21 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 9D218BF0E6
+ for <barebox@lists.infradead.org>; Mon, 13 Aug 2012 14:32:16 +0200 (CEST)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Mon, 13 Aug 2012 14:32:15 +0200
+Message-Id: <1344861135-15306-1-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <1343904959-27645-1-git-send-email-j.weitzel@phytec.de>
+References: <1343904959-27645-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,69 +19,115 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] fs/mount: add autodetection type support
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] OMAP4: use writel and readl
+To: barebox@lists.infradead.org
 
-On 10:16 Mon 13 Aug     , Uwe Kleine-K=F6nig wrote:
-> On Mon, Aug 13, 2012 at 09:30:01AM +0200, Jean-Christophe PLAGNIOL-VILLAR=
-D wrote:
-> > On 09:08 Mon 13 Aug     , Uwe Kleine-K=F6nig wrote:
-> > > Hello,
-> > > =
+replace *(volatile int*) by writel and readl
 
-> > > On Sun, Aug 12, 2012 at 01:49:36PM +0200, Jean-Christophe PLAGNIOL-VI=
-LLARD wrote:
-> > > > +static const char * detect_fs(const char *filename)
-> > > > +{
-> > > > +	enum filetype type =3D file_name_detect_type(filename);
-> > > > +	struct driver_d *drv;
-> > > > +	struct fs_driver_d *fdrv;
-> > > > +
-> > > > +	if (type =3D=3D filetype_unknown)
-> > > > +		return NULL;
-> > > > +
-> > > > +	for_each_driver(drv) {
-> > > > +		fdrv =3D drv_to_fs_driver(drv);
-> > > > +
-> > > > +		if (drv->bus !=3D &fs_bus)
-> > > > +			continue;
-> > > > +
-> > > > +		if(type =3D=3D fdrv->type)
-> > > > +			return drv->name;
-> > > fdrv could be local to this loop only.
-> > I never declare a var in a loop
-> reading over
-> =
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+v2 reword commit message
 
-> 	git log --grep=3Dscope
-> =
+ arch/arm/mach-omap/omap4_generic.c |   34 ++++++++++++++++++----------------
+ 1 files changed, 18 insertions(+), 16 deletions(-)
 
-> in the kernel suggests that at least there it's considered good style.
-> With some false hits the list includes:
-> =
+diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+index a368759..617d786 100644
+--- a/arch/arm/mach-omap/omap4_generic.c
++++ b/arch/arm/mach-omap/omap4_generic.c
+@@ -268,7 +268,9 @@ int omap4_emif_config(unsigned int base, const struct ddr_regs *ddr_regs)
+ 
+ static void reset_phy(unsigned int base)
+ {
+-	*(volatile int*)(base + IODFT_TLGC) |= (1 << 10);
++	unsigned int val = readl(base + IODFT_TLGC);
++	val |= (1 << 10);
++	writel(val, base + IODFT_TLGC);
+ }
+ 
+ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+@@ -294,14 +296,14 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+ 	/* Both EMIFs 128 byte interleaved */
+ 	writel(0x80640300, OMAP44XX_DMM_BASE + DMM_LISA_MAP_0);
+ 
+-	*(volatile int*)(OMAP44XX_DMM_BASE + DMM_LISA_MAP_2) = 0x00000000;
+-	*(volatile int*)(OMAP44XX_DMM_BASE + DMM_LISA_MAP_3) = 0xFF020100;
++	writel(0x00000000, OMAP44XX_DMM_BASE + DMM_LISA_MAP_2);
++	writel(0xFF020100, OMAP44XX_DMM_BASE + DMM_LISA_MAP_3);
+ 
+ 	if (rev >= OMAP4460_ES1_0) {
+ 		writel(0x80640300, OMAP44XX_MA_BASE + DMM_LISA_MAP_0);
+ 
+-		*(volatile int*)(OMAP44XX_MA_BASE + DMM_LISA_MAP_2) = 0x00000000;
+-		*(volatile int*)(OMAP44XX_MA_BASE + DMM_LISA_MAP_3) = 0xFF020100;
++		writel(0x00000000, OMAP44XX_MA_BASE + DMM_LISA_MAP_2);
++		writel(0xFF020100, OMAP44XX_MA_BASE + DMM_LISA_MAP_3);
+ 	}
+ 
+ 	/* DDR needs to be initialised @ 19.2 MHz
+@@ -312,10 +314,10 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+ 
+ 	/* No IDLE: BUG in SDC */
+ 	sr32(CM_MEMIF_CLKSTCTRL, 0, 32, 0x2);
+-	while(((*(volatile int*)CM_MEMIF_CLKSTCTRL) & 0x700) != 0x700);
++	while ((readl(CM_MEMIF_CLKSTCTRL) & 0x700) != 0x700);
+ 
+-	*(volatile int*)(OMAP44XX_EMIF1_BASE + EMIF_PWR_MGMT_CTRL) = 0x0;
+-	*(volatile int*)(OMAP44XX_EMIF2_BASE + EMIF_PWR_MGMT_CTRL) = 0x0;
++	writel(0x0, OMAP44XX_EMIF1_BASE + EMIF_PWR_MGMT_CTRL);
++	writel(0x0, OMAP44XX_EMIF2_BASE + EMIF_PWR_MGMT_CTRL);
+ 
+ 	omap4_emif_config(OMAP44XX_EMIF1_BASE, ddr_regs);
+ 	omap4_emif_config(OMAP44XX_EMIF2_BASE, ddr_regs);
+@@ -324,13 +326,13 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+ 	omap4_lock_core_dpll_shadow(core);
+ 
+ 	/* Set DLL_OVERRIDE = 0 */
+-	*(volatile int*)CM_DLL_CTRL = 0x0;
++	writel(0x0, CM_DLL_CTRL);
+ 
+ 	delay(200);
+ 
+ 	/* Check for DDR PHY ready for EMIF1 & EMIF2 */
+-	while((((*(volatile int*)(OMAP44XX_EMIF1_BASE + EMIF_STATUS))&(0x04)) != 0x04) \
+-	|| (((*(volatile int*)(OMAP44XX_EMIF2_BASE + EMIF_STATUS))&(0x04)) != 0x04));
++	while (((readl(OMAP44XX_EMIF1_BASE + EMIF_STATUS) & 0x04) != 0x04) \
++		|| ((readl(OMAP44XX_EMIF2_BASE + EMIF_STATUS) & 0x04) != 0x04));
+ 
+ 	/* Reprogram the DDR PYHY Control register */
+ 	/* PHY control values */
+@@ -342,9 +344,9 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+ 
+ 	/* No IDLE: BUG in SDC */
+ 	//sr32(CM_MEMIF_CLKSTCTRL, 0, 32, 0x2);
+-	//while(((*(volatile int*)CM_MEMIF_CLKSTCTRL) & 0x700) != 0x700);
+-	*(volatile int*)(OMAP44XX_EMIF1_BASE + EMIF_PWR_MGMT_CTRL) = 0x80000000;
+-	*(volatile int*)(OMAP44XX_EMIF2_BASE + EMIF_PWR_MGMT_CTRL) = 0x80000000;
++	//while ((readl(CM_MEMIF_CLKSTCTRL) & 0x700) != 0x700);
++	writel(0x80000000, OMAP44XX_EMIF1_BASE + EMIF_PWR_MGMT_CTRL);
++	writel(0x80000000, OMAP44XX_EMIF2_BASE + EMIF_PWR_MGMT_CTRL);
+ 
+ 	if (rev >= OMAP4460_ES1_0) {
+ 		writel(EMIF_L3_CONFIG_VAL_SYS_10_MPU_3_LL_0,
+@@ -365,8 +367,8 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
+ 	reset_phy(OMAP44XX_EMIF1_BASE);
+ 	reset_phy(OMAP44XX_EMIF2_BASE);
+ 
+-	*((volatile int *)0x80000000) = 0;
+-	*((volatile int *)0x80000080) = 0;
++	writel(0, 0x80000000);
++	writel(0, 0x80000080);
+ }
+ 
+ void omap4_power_i2c_send(u32 r)
+-- 
+1.7.0.4
 
-> 	ccece235d3737221e7a1118fdbd8474112adac84:
-> 		Finally, move the definition of the local variable "i"
-> 		to the innermost scope in which it's needed.
-> 	22a4cca2f4c2d60c703cdc42158c907570f508e6:
-> 		Reduced the scope of the loop variable in
-> 		e1000e_write_itr().
-> 	2c2453f3e46139b86c1e5b0fbd821823b04e4ada:
-> 		Patch shortens locals scope ...
-> 	74ad8fdaefe6ccb8ef1918394a9d04a036658346:
-> 		Shorten scope for iobase
-> =
-
-> which all got in after v3.6-rc1.
-no sorry I really do not like this
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
