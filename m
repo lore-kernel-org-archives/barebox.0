@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T0ziB-0006G6-Ae
- for barebox@lists.infradead.org; Mon, 13 Aug 2012 18:49:59 +0000
-Date: Mon, 13 Aug 2012 20:49:57 +0200
+ id 1T100G-0007TU-F3
+ for barebox@lists.infradead.org; Mon, 13 Aug 2012 19:08:42 +0000
+Date: Mon, 13 Aug 2012 21:08:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120813184957.GR1451@pengutronix.de>
-References: <20120812180535.GK6271@game.jcrosoft.org>
- <1344795043-13815-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20120813190838.GT1451@pengutronix.de>
+References: <20120803165744.GE24458@pengutronix.de>
+ <1344838047-19069-1-git-send-email-j.weitzel@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1344795043-13815-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1344838047-19069-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,92 +23,327 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] fs/mount: add autodetection type support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 3/3] OMAP4460: clock init
+To: Jan Weitzel <j.weitzel@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Sun, Aug 12, 2012 at 08:10:40PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> if NULL is pass as type mount will try to autodetect the filesystem type
+Hi Jan,
+
+On Mon, Aug 13, 2012 at 08:07:27AM +0200, Jan Weitzel wrote:
+> Change clock init to allow early gpio access. Add support for 4460 clocks.
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 > ---
->  fs/Kconfig   |    5 +++++
->  fs/fs.c      |   28 ++++++++++++++++++++++++++++
->  include/fs.h |    5 +++++
->  3 files changed, 38 insertions(+)
+> v2: fix omap4_scale_vcores for phycard-a-xl2
+
+This changes the users of omap4_scale_vcores, but not the function
+itself. Probably this should be merged with the earlier patch you sent.
+
+Can you resend the whole series please when you have fixed this?
+
+Thanks
+ Sascha
+
 > 
-> diff --git a/fs/Kconfig b/fs/Kconfig
-> index b75820f..4c66543 100644
-> --- a/fs/Kconfig
-> +++ b/fs/Kconfig
-> @@ -1,6 +1,11 @@
+>  arch/arm/boards/panda/lowlevel.c              |    4 ++-
+>  arch/arm/boards/panda/mux.c                   |    8 +++++
+>  arch/arm/boards/pcm049/lowlevel.c             |   15 +++++++--
+>  arch/arm/boards/pcm049/mux.c                  |    8 +++++
+>  arch/arm/boards/phycard-a-xl2/lowlevel.c      |   13 ++++++--
+>  arch/arm/boards/phycard-a-xl2/mux.c           |    8 +++++
+>  arch/arm/mach-omap/include/mach/omap4-clock.h |    4 ++
+>  arch/arm/mach-omap/omap4_clock.c              |   39 +++++++++++++++++-------
+>  8 files changed, 79 insertions(+), 20 deletions(-)
+> 
+> diff --git a/arch/arm/boards/panda/lowlevel.c b/arch/arm/boards/panda/lowlevel.c
+> index 8591fff..0b4b199 100644
+> --- a/arch/arm/boards/panda/lowlevel.c
+> +++ b/arch/arm/boards/panda/lowlevel.c
+> @@ -28,6 +28,8 @@
+>  #include <mach/syslib.h>
+>  #include <asm/barebox-arm.h>
 >  
->  menu "Filesystem support            "
->  
-> +config FS
-> +	bool
-> +	default y
-> +	select FILETYPE
+> +#define TPS62361_VSEL0_GPIO    7
 > +
->  config FS_AUTOMOUNT
->  	bool
+>  void set_muxconf_regs(void);
 >  
-> diff --git a/fs/fs.c b/fs/fs.c
-> index 0b376a5..e80d907 100644
-> --- a/fs/fs.c
-> +++ b/fs/fs.c
-> @@ -954,6 +954,28 @@ int register_fs_driver(struct fs_driver_d *fsdrv)
+>  static const struct ddr_regs ddr_regs_400_mhz_2cs = {
+> @@ -70,7 +72,7 @@ static void noinline panda_init_lowlevel(void)
+>  	omap4_ddr_init(&ddr_regs_400_mhz_2cs, &core);
+>  
+>  	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+> -	omap4_scale_vcores();
+> +	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
+>  
+>  	board_init_lowlevel_return();
 >  }
->  EXPORT_SYMBOL(register_fs_driver);
+> diff --git a/arch/arm/boards/panda/mux.c b/arch/arm/boards/panda/mux.c
+> index 310e433..3783006 100644
+> --- a/arch/arm/boards/panda/mux.c
+> +++ b/arch/arm/boards/panda/mux.c
+> @@ -3,6 +3,7 @@
+>  #include <io.h>
+>  #include <mach/omap4-silicon.h>
+>  #include <mach/omap4-mux.h>
+> +#include <mach/omap4-clock.h>
 >  
-> +static const char * detect_fs(const char *filename)
-
-static const char *detect_fs(const char *filename)
-
-please
-
-> +{
-> +	enum filetype type = file_name_detect_type(filename);
-> +	struct driver_d *drv;
-> +	struct fs_driver_d *fdrv;
+>  static const struct pad_conf_entry core_padconf_array[] = {
+>  	{ GPMC_AD0, PTU | IEN | OFF_EN | OFF_PD | OFF_IN | M1  /* sdmmc2_dat0 */ },
+> @@ -245,4 +246,11 @@ void set_muxconf_regs(void)
+>  
+>  	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
+>  			ARRAY_SIZE(wkup_padconf_array));
 > +
-> +	if (type == filetype_unknown)
-> +		return NULL;
-> +
-> +	for_each_driver(drv) {
-> +		if (drv->bus != &fs_bus)
-> +			continue;
-> +
-> +		fdrv = drv_to_fs_driver(drv);
-> +
-> +		if(type == fdrv->type)
-
-if (
-
-> +			return drv->name;
+> +	/* gpio_wk7 is used for controlling TPS on 4460 */
+> +	if (omap4_revision() >= OMAP4460_ES1_0) {
+> +		writew(M3, OMAP44XX_CONTROL_PADCONF_WKUP + PAD1_FREF_CLK4_REQ);
+> +		/* Enable GPIO-1 clocks before TPS initialization */
+> +		omap4_enable_gpio1_wup_clocks();
 > +	}
+>  }
+> diff --git a/arch/arm/boards/pcm049/lowlevel.c b/arch/arm/boards/pcm049/lowlevel.c
+> index 5b91098..65a29ec 100644
+> --- a/arch/arm/boards/pcm049/lowlevel.c
+> +++ b/arch/arm/boards/pcm049/lowlevel.c
+> @@ -28,6 +28,8 @@
+>  #include <mach/syslib.h>
+>  #include <asm/barebox-arm.h>
+>  
+> +#define TPS62361_VSEL0_GPIO    182
 > +
-> +	return NULL;
+>  void set_muxconf_regs(void);
+>  
+>  static const struct ddr_regs ddr_regs_mt42L64M64_25_400_mhz = {
+> @@ -46,7 +48,8 @@ static const struct ddr_regs ddr_regs_mt42L64M64_25_400_mhz = {
+>  static void noinline pcm049_init_lowlevel(void)
+>  {
+>  	struct dpll_param core = OMAP4_CORE_DPLL_PARAM_19M2_DDR400;
+> -	struct dpll_param mpu = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
+> +	struct dpll_param mpu44xx = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
+> +	struct dpll_param mpu4460 = OMAP4_MPU_DPLL_PARAM_19M2_MPU920;
+>  	struct dpll_param iva = OMAP4_IVA_DPLL_PARAM_19M2;
+>  	struct dpll_param per = OMAP4_PER_DPLL_PARAM_19M2;
+>  	struct dpll_param abe = OMAP4_ABE_DPLL_PARAM_19M2;
+> @@ -57,12 +60,16 @@ static void noinline pcm049_init_lowlevel(void)
+>  	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
+>  
+>  	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+> -	omap4_scale_vcores();
+> +	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
+>  
+>  	writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
+>  
+>  	/* Configure all DPLL's at 100% OPP */
+> -	omap4_configure_mpu_dpll(&mpu);
+> +	if (omap4_revision() < OMAP4460_ES1_0)
+> +		omap4_configure_mpu_dpll(&mpu44xx);
+> +	else
+> +		omap4_configure_mpu_dpll(&mpu4460);
+> +
+>  	omap4_configure_iva_dpll(&iva);
+>  	omap4_configure_per_dpll(&per);
+>  	omap4_configure_abe_dpll(&abe);
+> @@ -88,7 +95,7 @@ void board_init_lowlevel(void)
+>  		return;
+>  
+>  	r = 0x4030d000;
+> -        __asm__ __volatile__("mov sp, %0" : : "r"(r));
+> +	__asm__ __volatile__("mov sp, %0" : : "r"(r));
+>  
+>  	pcm049_init_lowlevel();
+>  }
+> diff --git a/arch/arm/boards/pcm049/mux.c b/arch/arm/boards/pcm049/mux.c
+> index a7a77b5..04e1d67 100644
+> --- a/arch/arm/boards/pcm049/mux.c
+> +++ b/arch/arm/boards/pcm049/mux.c
+> @@ -3,6 +3,7 @@
+>  #include <io.h>
+>  #include <mach/omap4-silicon.h>
+>  #include <mach/omap4-mux.h>
+> +#include <mach/omap4-clock.h>
+>  
+>  static const struct pad_conf_entry core_padconf_array[] = {
+>  	{GPMC_AD0, (IEN | PTD | DIS | M0)},				/* gpmc_ad0 */
+> @@ -242,4 +243,11 @@ void set_muxconf_regs(void)
+>  
+>  	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
+>  			ARRAY_SIZE(wkup_padconf_array));
+> +
+> +	/* gpio_182 is used for controlling TPS on 4460 */
+> +	if (omap4_revision() >= OMAP4460_ES1_0) {
+> +		writew(M3, OMAP44XX_CONTROL_PADCONF_CORE + FREF_CLK2_OUT);
+> +		/* Enable GPIO-1 clocks before TPS initialization */
+> +		omap4_enable_gpio_clocks();
+> +	}
+>  }
+> diff --git a/arch/arm/boards/phycard-a-xl2/lowlevel.c b/arch/arm/boards/phycard-a-xl2/lowlevel.c
+> index b8de2aa..38f80c9 100644
+> --- a/arch/arm/boards/phycard-a-xl2/lowlevel.c
+> +++ b/arch/arm/boards/phycard-a-xl2/lowlevel.c
+> @@ -28,6 +28,8 @@
+>  #include <mach/syslib.h>
+>  #include <asm/barebox-arm.h>
+>  
+> +#define TPS62361_VSEL0_GPIO    7
+> +
+>  void set_muxconf_regs(void);
+>  
+>  static const struct ddr_regs ddr_regs_mt42L64M64_25_400_mhz = {
+> @@ -46,7 +48,8 @@ static const struct ddr_regs ddr_regs_mt42L64M64_25_400_mhz = {
+>  static noinline void pcaaxl2_init_lowlevel(void)
+>  {
+>  	struct dpll_param core = OMAP4_CORE_DPLL_PARAM_19M2_DDR400;
+> -	struct dpll_param mpu = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
+> +	struct dpll_param mpu44xx = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
+> +	struct dpll_param mpu4460 = OMAP4_MPU_DPLL_PARAM_19M2_MPU920;
+>  	struct dpll_param iva = OMAP4_IVA_DPLL_PARAM_19M2;
+>  	struct dpll_param per = OMAP4_PER_DPLL_PARAM_19M2;
+>  	struct dpll_param abe = OMAP4_ABE_DPLL_PARAM_19M2;
+> @@ -57,12 +60,16 @@ static noinline void pcaaxl2_init_lowlevel(void)
+>  	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
+>  
+>  	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+> -	omap4_scale_vcores();
+> +	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
+>  
+>  	writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
+>  
+>  	/* Configure all DPLL's at 100% OPP */
+> -	omap4_configure_mpu_dpll(&mpu);
+> +	if (omap4_revision() < OMAP4460_ES1_0)
+> +		omap4_configure_mpu_dpll(&mpu44xx);
+> +	else
+> +		omap4_configure_mpu_dpll(&mpu4460);
+> +
+>  	omap4_configure_iva_dpll(&iva);
+>  	omap4_configure_per_dpll(&per);
+>  	omap4_configure_abe_dpll(&abe);
+> diff --git a/arch/arm/boards/phycard-a-xl2/mux.c b/arch/arm/boards/phycard-a-xl2/mux.c
+> index 179e6b6..dc605e3 100644
+> --- a/arch/arm/boards/phycard-a-xl2/mux.c
+> +++ b/arch/arm/boards/phycard-a-xl2/mux.c
+> @@ -3,6 +3,7 @@
+>  #include <io.h>
+>  #include <mach/omap4-silicon.h>
+>  #include <mach/omap4-mux.h>
+> +#include <mach/omap4-clock.h>
+>  
+>  static const struct pad_conf_entry core_padconf_array[] = {
+>  	{GPMC_AD0, (IEN | PTD | DIS | M0)},				/* gpmc_ad0 */
+> @@ -242,4 +243,11 @@ void set_muxconf_regs(void)
+>  
+>  	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
+>  			ARRAY_SIZE(wkup_padconf_array));
+> +
+> +	/* gpio_wk7 is used for controlling TPS on 4460 */
+> +	if (omap4_revision() >= OMAP4460_ES1_0) {
+> +		writew(M3, OMAP44XX_CONTROL_PADCONF_WKUP + PAD1_FREF_CLK4_REQ);
+> +		/* Enable GPIO-1 clocks before TPS initialization */
+> +		omap4_enable_gpio1_wup_clocks();
+> +	}
+>  }
+> diff --git a/arch/arm/mach-omap/include/mach/omap4-clock.h b/arch/arm/mach-omap/include/mach/omap4-clock.h
+> index 391ee63..e5302d6 100644
+> --- a/arch/arm/mach-omap/include/mach/omap4-clock.h
+> +++ b/arch/arm/mach-omap/include/mach/omap4-clock.h
+> @@ -303,6 +303,8 @@ struct dpll_param {
+>  #define OMAP4_MPU_DPLL_PARAM_38M4		{0x1a, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00}
+>  #define OMAP4_MPU_DPLL_PARAM_38M4_MPU600	{0x7d, 0x07, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00}
+>  #define OMAP4_MPU_DPLL_PARAM_38M4_MPU1000	{0x69, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00}
+> +/* dpll locked at 1840 MHz MPU clk at 920 MHz(OPP Turbo 4460) - DCC OFF */
+> +#define OMAP4_MPU_DPLL_PARAM_19M2_MPU920	{0x23F, 0x11, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00}
+>  
+>  #define OMAP4_IVA_DPLL_PARAM_19M2		{0x61, 0x01, 0x00, 0x00, 0x04, 0x07, 0x00, 0x00}
+>  #define OMAP4_IVA_DPLL_PARAM_38M4		{0x61, 0x03, 0x00, 0x00, 0x04, 0x07, 0x00, 0x00}
+> @@ -330,6 +332,8 @@ void omap4_configure_usb_dpll(const struct dpll_param *dpll_param);
+>  void omap4_configure_core_dpll_no_lock(const struct dpll_param *param);
+>  void omap4_lock_core_dpll(void);
+>  void omap4_lock_core_dpll_shadow(const struct dpll_param *param);
+> +void omap4_enable_gpio1_wup_clocks(void);
+> +void omap4_enable_gpio_clocks(void);
+>  void omap4_enable_all_clocks(void);
+>  void omap4_do_scale_tps62361(u32 reg, u32 volt_mv);
+>  
+> diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
+> index 564a748..1481f16 100644
+> --- a/arch/arm/mach-omap/omap4_clock.c
+> +++ b/arch/arm/mach-omap/omap4_clock.c
+> @@ -14,6 +14,10 @@ void omap4_configure_mpu_dpll(const struct dpll_param *dpll_param)
+>  
+>  	sr32(CM_AUTOIDLE_DPLL_MPU, 0, 3, 0x0); /* Disable DPLL autoidle */
+>  
+> +	/* Errata ID: i700, clear CM_CLKSEL_DPLL_MPU[22] : DCC_EN */
+> +	if (omap4_revision() >= OMAP4460_ES1_0)
+> +		sr32(CM_CLKSEL_DPLL_MPU, 0, 22, 0);
+> +
+>  	/* Set M,N,M2 values */
+>  	sr32(CM_CLKSEL_DPLL_MPU, 8, 11, dpll_param->m);
+>  	sr32(CM_CLKSEL_DPLL_MPU, 0, 6, dpll_param->n);
+> @@ -198,6 +202,27 @@ void omap4_lock_core_dpll_shadow(const struct dpll_param *param)
+>  	wait_on_value((1 << 0), 1, CM_IDLEST_DPLL_CORE, LDELAY);
+>  }
+>  
+> +void omap4_enable_gpio_clocks(void)
+> +{
+> +	sr32(CM_L4PER_GPIO2_CLKCTRL, 0, 32, 0x1);
+> +	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO2_CLKCTRL, LDELAY);
+> +	sr32(CM_L4PER_GPIO3_CLKCTRL, 0, 32, 0x1);
+> +	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO3_CLKCTRL, LDELAY);
+> +	sr32(CM_L4PER_GPIO4_CLKCTRL, 0, 32, 0x1);
+> +	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO4_CLKCTRL, LDELAY);
+> +	sr32(CM_L4PER_GPIO5_CLKCTRL, 0, 32, 0x1);
+> +	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO5_CLKCTRL, LDELAY);
+> +	sr32(CM_L4PER_GPIO6_CLKCTRL, 0, 32, 0x1);
+> +	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO6_CLKCTRL, LDELAY);
 > +}
 > +
->  /*
->   * Mount a device to a directory.
->   * We do this by registering a new device on which the filesystem
-> @@ -985,6 +1007,12 @@ int mount(const char *device, const char *fsname, const char *_path)
->  		}
->  	}
->  
-> +	if (!fsname)
-> +		fsname = detect_fs(device);
+> +void omap4_enable_gpio1_wup_clocks(void)
+> +{
+> +	/* WKUP clocks */
+> +	sr32(CM_WKUP_GPIO1_CLKCTRL, 0, 32, 0x1);
+> +	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_GPIO1_CLKCTRL, LDELAY);
+> +}
 > +
-> +	if (!fsname)
-> +		return -ENOENT;
-
-Should be -ENODEV I think. At least that's what Linux mount returns in
-this case.
-
-Sascha
-
+>  void omap4_enable_all_clocks(void)
+>  {
+>  	/* Enable Ducati clocks */
+> @@ -255,16 +280,7 @@ void omap4_enable_all_clocks(void)
+>  	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_DMTIMER9_CLKCTRL, LDELAY);
+>  
+>  	/* GPIO clocks */
+> -	sr32(CM_L4PER_GPIO2_CLKCTRL, 0, 32, 0x1);
+> -	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO2_CLKCTRL, LDELAY);
+> -	sr32(CM_L4PER_GPIO3_CLKCTRL, 0, 32, 0x1);
+> -	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO3_CLKCTRL, LDELAY);
+> -	sr32(CM_L4PER_GPIO4_CLKCTRL, 0, 32, 0x1);
+> -	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO4_CLKCTRL, LDELAY);
+> -	sr32(CM_L4PER_GPIO5_CLKCTRL, 0, 32, 0x1);
+> -	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO5_CLKCTRL, LDELAY);
+> -	sr32(CM_L4PER_GPIO6_CLKCTRL, 0, 32, 0x1);
+> -	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO6_CLKCTRL, LDELAY);
+> +	omap4_enable_gpio_clocks();
+>  
+>  	sr32(CM_L4PER_HDQ1W_CLKCTRL, 0, 32, 0x2);
+>  
+> @@ -314,8 +330,7 @@ void omap4_enable_all_clocks(void)
+>  	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_UART4_CLKCTRL, LDELAY);
+>  
+>  	/* WKUP clocks */
+> -	sr32(CM_WKUP_GPIO1_CLKCTRL, 0, 32, 0x1);
+> -	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_GPIO1_CLKCTRL, LDELAY);
+> +	omap4_enable_gpio1_wup_clocks();
+>  	sr32(CM_WKUP_TIMER1_CLKCTRL, 0, 32, 0x01000002);
+>  	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_TIMER1_CLKCTRL, LDELAY);
+>  
+> -- 
+> 1.7.0.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
