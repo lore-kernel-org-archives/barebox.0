@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from 20.mo4.mail-out.ovh.net ([46.105.33.73]
+ helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T1BB8-0007Gy-Uq
- for barebox@lists.infradead.org; Tue, 14 Aug 2012 07:04:42 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 5C3E4BF0EB
- for <barebox@lists.infradead.org>; Tue, 14 Aug 2012 09:04:34 +0200 (CEST)
-From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Tue, 14 Aug 2012 09:04:33 +0200
-Message-Id: <1344927873-19506-4-git-send-email-j.weitzel@phytec.de>
-In-Reply-To: <1344927873-19506-1-git-send-email-j.weitzel@phytec.de>
-References: <1344927873-19506-1-git-send-email-j.weitzel@phytec.de>
+ id 1T1JMS-0000OX-Fm
+ for barebox@lists.infradead.org; Tue, 14 Aug 2012 15:48:53 +0000
+Received: from mail628.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 6720410586C2
+ for <barebox@lists.infradead.org>; Tue, 14 Aug 2012 17:53:30 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Tue, 14 Aug 2012 17:48:55 +0200
+Message-Id: <1344959336-18562-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,252 +23,132 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] OMAP4460: clock init
+Subject: [for master PATCH 1/2] miidev: add phy_addr detection support
 To: barebox@lists.infradead.org
 
-Change clock init to allow early gpio access. Add support for 4460 clocks.
+export via param the phy_addr and the phy_id detected
 
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/panda/mux.c                   |    8 +++++
- arch/arm/boards/pcm049/lowlevel.c             |   11 +++++--
- arch/arm/boards/pcm049/mux.c                  |    8 +++++
- arch/arm/boards/phycard-a-xl2/lowlevel.c      |    9 ++++-
- arch/arm/boards/phycard-a-xl2/mux.c           |    8 +++++
- arch/arm/mach-omap/include/mach/omap4-clock.h |    4 ++
- arch/arm/mach-omap/omap4_clock.c              |   39 +++++++++++++++++-------
- 7 files changed, 70 insertions(+), 17 deletions(-)
+Hi,
 
-diff --git a/arch/arm/boards/panda/mux.c b/arch/arm/boards/panda/mux.c
-index 310e433..3783006 100644
---- a/arch/arm/boards/panda/mux.c
-+++ b/arch/arm/boards/panda/mux.c
-@@ -3,6 +3,7 @@
- #include <io.h>
- #include <mach/omap4-silicon.h>
- #include <mach/omap4-mux.h>
-+#include <mach/omap4-clock.h>
+	this is need to fix the calao board support since the introduction of
+	the gigabit phy detection support
+
+Best Regards,
+J.
+ drivers/net/miidev.c |   76 ++++++++++++++++++++++++++++++++++++++++++++++----
+ include/miidev.h     |    2 ++
+ 2 files changed, 72 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/miidev.c b/drivers/net/miidev.c
+index b49944b..ab1811d 100644
+--- a/drivers/net/miidev.c
++++ b/drivers/net/miidev.c
+@@ -236,18 +236,82 @@ static struct file_operations miidev_ops = {
+ 	.lseek = dev_lseek_default,
+ };
  
- static const struct pad_conf_entry core_padconf_array[] = {
- 	{ GPMC_AD0, PTU | IEN | OFF_EN | OFF_PD | OFF_IN | M1  /* sdmmc2_dat0 */ },
-@@ -245,4 +246,11 @@ void set_muxconf_regs(void)
- 
- 	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
- 			ARRAY_SIZE(wkup_padconf_array));
-+
-+	/* gpio_wk7 is used for controlling TPS on 4460 */
-+	if (omap4_revision() >= OMAP4460_ES1_0) {
-+		writew(M3, OMAP44XX_CONTROL_PADCONF_WKUP + PAD1_FREF_CLK4_REQ);
-+		/* Enable GPIO-1 clocks before TPS initialization */
-+		omap4_enable_gpio1_wup_clocks();
-+	}
- }
-diff --git a/arch/arm/boards/pcm049/lowlevel.c b/arch/arm/boards/pcm049/lowlevel.c
-index 5e591fa..65a29ec 100644
---- a/arch/arm/boards/pcm049/lowlevel.c
-+++ b/arch/arm/boards/pcm049/lowlevel.c
-@@ -48,7 +48,8 @@ static const struct ddr_regs ddr_regs_mt42L64M64_25_400_mhz = {
- static void noinline pcm049_init_lowlevel(void)
- {
- 	struct dpll_param core = OMAP4_CORE_DPLL_PARAM_19M2_DDR400;
--	struct dpll_param mpu = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
-+	struct dpll_param mpu44xx = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
-+	struct dpll_param mpu4460 = OMAP4_MPU_DPLL_PARAM_19M2_MPU920;
- 	struct dpll_param iva = OMAP4_IVA_DPLL_PARAM_19M2;
- 	struct dpll_param per = OMAP4_PER_DPLL_PARAM_19M2;
- 	struct dpll_param abe = OMAP4_ABE_DPLL_PARAM_19M2;
-@@ -64,7 +65,11 @@ static void noinline pcm049_init_lowlevel(void)
- 	writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
- 
- 	/* Configure all DPLL's at 100% OPP */
--	omap4_configure_mpu_dpll(&mpu);
-+	if (omap4_revision() < OMAP4460_ES1_0)
-+		omap4_configure_mpu_dpll(&mpu44xx);
-+	else
-+		omap4_configure_mpu_dpll(&mpu4460);
-+
- 	omap4_configure_iva_dpll(&iva);
- 	omap4_configure_per_dpll(&per);
- 	omap4_configure_abe_dpll(&abe);
-@@ -90,7 +95,7 @@ void board_init_lowlevel(void)
- 		return;
- 
- 	r = 0x4030d000;
--        __asm__ __volatile__("mov sp, %0" : : "r"(r));
-+	__asm__ __volatile__("mov sp, %0" : : "r"(r));
- 
- 	pcm049_init_lowlevel();
- }
-diff --git a/arch/arm/boards/pcm049/mux.c b/arch/arm/boards/pcm049/mux.c
-index a7a77b5..04e1d67 100644
---- a/arch/arm/boards/pcm049/mux.c
-+++ b/arch/arm/boards/pcm049/mux.c
-@@ -3,6 +3,7 @@
- #include <io.h>
- #include <mach/omap4-silicon.h>
- #include <mach/omap4-mux.h>
-+#include <mach/omap4-clock.h>
- 
- static const struct pad_conf_entry core_padconf_array[] = {
- 	{GPMC_AD0, (IEN | PTD | DIS | M0)},				/* gpmc_ad0 */
-@@ -242,4 +243,11 @@ void set_muxconf_regs(void)
- 
- 	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
- 			ARRAY_SIZE(wkup_padconf_array));
-+
-+	/* gpio_182 is used for controlling TPS on 4460 */
-+	if (omap4_revision() >= OMAP4460_ES1_0) {
-+		writew(M3, OMAP44XX_CONTROL_PADCONF_CORE + FREF_CLK2_OUT);
-+		/* Enable GPIO-1 clocks before TPS initialization */
-+		omap4_enable_gpio_clocks();
-+	}
- }
-diff --git a/arch/arm/boards/phycard-a-xl2/lowlevel.c b/arch/arm/boards/phycard-a-xl2/lowlevel.c
-index 2aa79a8..38f80c9 100644
---- a/arch/arm/boards/phycard-a-xl2/lowlevel.c
-+++ b/arch/arm/boards/phycard-a-xl2/lowlevel.c
-@@ -48,7 +48,8 @@ static const struct ddr_regs ddr_regs_mt42L64M64_25_400_mhz = {
- static noinline void pcaaxl2_init_lowlevel(void)
- {
- 	struct dpll_param core = OMAP4_CORE_DPLL_PARAM_19M2_DDR400;
--	struct dpll_param mpu = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
-+	struct dpll_param mpu44xx = OMAP4_MPU_DPLL_PARAM_19M2_MPU1000;
-+	struct dpll_param mpu4460 = OMAP4_MPU_DPLL_PARAM_19M2_MPU920;
- 	struct dpll_param iva = OMAP4_IVA_DPLL_PARAM_19M2;
- 	struct dpll_param per = OMAP4_PER_DPLL_PARAM_19M2;
- 	struct dpll_param abe = OMAP4_ABE_DPLL_PARAM_19M2;
-@@ -64,7 +65,11 @@ static noinline void pcaaxl2_init_lowlevel(void)
- 	writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
- 
- 	/* Configure all DPLL's at 100% OPP */
--	omap4_configure_mpu_dpll(&mpu);
-+	if (omap4_revision() < OMAP4460_ES1_0)
-+		omap4_configure_mpu_dpll(&mpu44xx);
-+	else
-+		omap4_configure_mpu_dpll(&mpu4460);
-+
- 	omap4_configure_iva_dpll(&iva);
- 	omap4_configure_per_dpll(&per);
- 	omap4_configure_abe_dpll(&abe);
-diff --git a/arch/arm/boards/phycard-a-xl2/mux.c b/arch/arm/boards/phycard-a-xl2/mux.c
-index 179e6b6..dc605e3 100644
---- a/arch/arm/boards/phycard-a-xl2/mux.c
-+++ b/arch/arm/boards/phycard-a-xl2/mux.c
-@@ -3,6 +3,7 @@
- #include <io.h>
- #include <mach/omap4-silicon.h>
- #include <mach/omap4-mux.h>
-+#include <mach/omap4-clock.h>
- 
- static const struct pad_conf_entry core_padconf_array[] = {
- 	{GPMC_AD0, (IEN | PTD | DIS | M0)},				/* gpmc_ad0 */
-@@ -242,4 +243,11 @@ void set_muxconf_regs(void)
- 
- 	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP, wkup_padconf_array,
- 			ARRAY_SIZE(wkup_padconf_array));
-+
-+	/* gpio_wk7 is used for controlling TPS on 4460 */
-+	if (omap4_revision() >= OMAP4460_ES1_0) {
-+		writew(M3, OMAP44XX_CONTROL_PADCONF_WKUP + PAD1_FREF_CLK4_REQ);
-+		/* Enable GPIO-1 clocks before TPS initialization */
-+		omap4_enable_gpio1_wup_clocks();
-+	}
- }
-diff --git a/arch/arm/mach-omap/include/mach/omap4-clock.h b/arch/arm/mach-omap/include/mach/omap4-clock.h
-index 391ee63..e5302d6 100644
---- a/arch/arm/mach-omap/include/mach/omap4-clock.h
-+++ b/arch/arm/mach-omap/include/mach/omap4-clock.h
-@@ -303,6 +303,8 @@ struct dpll_param {
- #define OMAP4_MPU_DPLL_PARAM_38M4		{0x1a, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00}
- #define OMAP4_MPU_DPLL_PARAM_38M4_MPU600	{0x7d, 0x07, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00}
- #define OMAP4_MPU_DPLL_PARAM_38M4_MPU1000	{0x69, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00}
-+/* dpll locked at 1840 MHz MPU clk at 920 MHz(OPP Turbo 4460) - DCC OFF */
-+#define OMAP4_MPU_DPLL_PARAM_19M2_MPU920	{0x23F, 0x11, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00}
- 
- #define OMAP4_IVA_DPLL_PARAM_19M2		{0x61, 0x01, 0x00, 0x00, 0x04, 0x07, 0x00, 0x00}
- #define OMAP4_IVA_DPLL_PARAM_38M4		{0x61, 0x03, 0x00, 0x00, 0x04, 0x07, 0x00, 0x00}
-@@ -330,6 +332,8 @@ void omap4_configure_usb_dpll(const struct dpll_param *dpll_param);
- void omap4_configure_core_dpll_no_lock(const struct dpll_param *param);
- void omap4_lock_core_dpll(void);
- void omap4_lock_core_dpll_shadow(const struct dpll_param *param);
-+void omap4_enable_gpio1_wup_clocks(void);
-+void omap4_enable_gpio_clocks(void);
- void omap4_enable_all_clocks(void);
- void omap4_do_scale_tps62361(u32 reg, u32 volt_mv);
- 
-diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
-index 564a748..1481f16 100644
---- a/arch/arm/mach-omap/omap4_clock.c
-+++ b/arch/arm/mach-omap/omap4_clock.c
-@@ -14,6 +14,10 @@ void omap4_configure_mpu_dpll(const struct dpll_param *dpll_param)
- 
- 	sr32(CM_AUTOIDLE_DPLL_MPU, 0, 3, 0x0); /* Disable DPLL autoidle */
- 
-+	/* Errata ID: i700, clear CM_CLKSEL_DPLL_MPU[22] : DCC_EN */
-+	if (omap4_revision() >= OMAP4460_ES1_0)
-+		sr32(CM_CLKSEL_DPLL_MPU, 0, 22, 0);
-+
- 	/* Set M,N,M2 values */
- 	sr32(CM_CLKSEL_DPLL_MPU, 8, 11, dpll_param->m);
- 	sr32(CM_CLKSEL_DPLL_MPU, 0, 6, dpll_param->n);
-@@ -198,6 +202,27 @@ void omap4_lock_core_dpll_shadow(const struct dpll_param *param)
- 	wait_on_value((1 << 0), 1, CM_IDLEST_DPLL_CORE, LDELAY);
- }
- 
-+void omap4_enable_gpio_clocks(void)
++static int get_phy_id(struct mii_device *mdev, int phy_addr,
++			  uint32_t *phy_id)
 +{
-+	sr32(CM_L4PER_GPIO2_CLKCTRL, 0, 32, 0x1);
-+	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO2_CLKCTRL, LDELAY);
-+	sr32(CM_L4PER_GPIO3_CLKCTRL, 0, 32, 0x1);
-+	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO3_CLKCTRL, LDELAY);
-+	sr32(CM_L4PER_GPIO4_CLKCTRL, 0, 32, 0x1);
-+	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO4_CLKCTRL, LDELAY);
-+	sr32(CM_L4PER_GPIO5_CLKCTRL, 0, 32, 0x1);
-+	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO5_CLKCTRL, LDELAY);
-+	sr32(CM_L4PER_GPIO6_CLKCTRL, 0, 32, 0x1);
-+	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO6_CLKCTRL, LDELAY);
++	int val;
++
++	val = mii_read(mdev, phy_addr, MII_PHYSID1);
++	if (val < 0)
++		return -EIO;
++	*phy_id = (val & 0xffff) << 16;
++	val = mii_read(mdev, phy_addr, MII_PHYSID2);
++	if (val < 0)
++		return -EIO;
++	*phy_id |= (val & 0xffff);
++
++	return 0;
 +}
 +
-+void omap4_enable_gpio1_wup_clocks(void)
++static int phy_detect_one(struct mii_device *mdev, int phy_addr,
++			  uint32_t *phy_id)
 +{
-+	/* WKUP clocks */
-+	sr32(CM_WKUP_GPIO1_CLKCTRL, 0, 32, 0x1);
-+	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_GPIO1_CLKCTRL, LDELAY);
++	uint32_t _phy_id;
++	int ret;
++
++	ret = get_phy_id(mdev, phy_addr, &_phy_id);
++
++	if (ret)
++		return ret;
++
++	/* If the phy_id is mostly Fs, there is no device there */
++	if ((_phy_id & 0x1fffffff) == 0x1fffffff)
++		return -EIO;
++
++	*phy_id = _phy_id;
++
++	return 0;
 +}
 +
- void omap4_enable_all_clocks(void)
++static int phy_detect(struct mii_device *mdev)
++{
++	int phy_addr;
++
++	for (phy_addr = 0; phy_addr <= 0x1f; phy_addr++) {
++		if (!phy_detect_one(mdev, phy_addr, &mdev->phy_id))
++			return phy_addr;
++	}
++
++	return -EIO;
++}
++
+ static int miidev_probe(struct device_d *dev)
  {
- 	/* Enable Ducati clocks */
-@@ -255,16 +280,7 @@ void omap4_enable_all_clocks(void)
- 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_DMTIMER9_CLKCTRL, LDELAY);
+ 	struct mii_device *mdev = dev->priv;
+ 	int val;
+ 	int caps = 0;
++	char str[11];
++
++	if (mdev->address < 0) {
++		int phy_addr;
++
++		phy_addr = phy_detect(mdev);
++
++		if (phy_addr < 0) {
++			dev_err(dev, "cannot detect PHY\n");
++			return -ENODEV;
++		}
++		mdev->address = phy_addr;
++	} else {
++		if (phy_detect_one(mdev, mdev->address, &mdev->phy_id) < 0)
++			goto err_out;
++	}
++
++	sprintf(str, "%u", mdev->address);
++	dev_add_param_fixed(dev, "phy_addr", str);
++	sprintf(str, "0x%08x", mdev->phy_id);
++	dev_add_param_fixed(dev, "phy_id", str);
  
- 	/* GPIO clocks */
--	sr32(CM_L4PER_GPIO2_CLKCTRL, 0, 32, 0x1);
--	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO2_CLKCTRL, LDELAY);
--	sr32(CM_L4PER_GPIO3_CLKCTRL, 0, 32, 0x1);
--	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO3_CLKCTRL, LDELAY);
--	sr32(CM_L4PER_GPIO4_CLKCTRL, 0, 32, 0x1);
--	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO4_CLKCTRL, LDELAY);
--	sr32(CM_L4PER_GPIO5_CLKCTRL, 0, 32, 0x1);
--	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO5_CLKCTRL, LDELAY);
--	sr32(CM_L4PER_GPIO6_CLKCTRL, 0, 32, 0x1);
--	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO6_CLKCTRL, LDELAY);
-+	omap4_enable_gpio_clocks();
+-	val = mii_read(mdev, mdev->address, MII_PHYSID1);
+-	if (val < 0 || val == 0xffff)
+-		goto err_out;
+-	val = mii_read(mdev, mdev->address, MII_PHYSID2);
+-	if (val < 0 || val == 0xffff)
+-		goto err_out;
+ 	val = mii_read(mdev, mdev->address, MII_BMSR);
+ 	if (val < 0)
+ 		goto err_out;
+diff --git a/include/miidev.h b/include/miidev.h
+index 4bbf94c..2f39234 100644
+--- a/include/miidev.h
++++ b/include/miidev.h
+@@ -38,6 +38,8 @@ struct mii_device {
+ 	struct device_d *parent;
  
- 	sr32(CM_L4PER_HDQ1W_CLKCTRL, 0, 32, 0x2);
- 
-@@ -314,8 +330,7 @@ void omap4_enable_all_clocks(void)
- 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_UART4_CLKCTRL, LDELAY);
- 
- 	/* WKUP clocks */
--	sr32(CM_WKUP_GPIO1_CLKCTRL, 0, 32, 0x1);
--	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_GPIO1_CLKCTRL, LDELAY);
-+	omap4_enable_gpio1_wup_clocks();
- 	sr32(CM_WKUP_TIMER1_CLKCTRL, 0, 32, 0x01000002);
- 	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_TIMER1_CLKCTRL, LDELAY);
+ 	int address;	/* The address the phy has on the bus */
++	uint32_t phy_id;	/* The phy id */
++
+ 	int	(*read) (struct mii_device *dev, int addr, int reg);
+ 	int	(*write) (struct mii_device *dev, int addr, int reg, int value);
  
 -- 
-1.7.0.4
+1.7.10.4
 
 
 _______________________________________________
