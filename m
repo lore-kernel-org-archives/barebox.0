@@ -2,17 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 7.mo4.mail-out.ovh.net ([178.33.253.54]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T1KyV-0004ll-KL
- for barebox@lists.infradead.org; Tue, 14 Aug 2012 17:32:20 +0000
+ id 1T1KyV-0004li-KP
+ for barebox@lists.infradead.org; Tue, 14 Aug 2012 17:32:22 +0000
 Received: from mail628.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id F2A2B10582F7
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 94CC31058103
  for <barebox@lists.infradead.org>; Tue, 14 Aug 2012 19:36:54 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 14 Aug 2012 19:32:17 +0200
-Message-Id: <1344965540-31534-4-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1344965540-31534-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 14 Aug 2012 19:32:14 +0200
+Message-Id: <1344965540-31534-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20120814172555.GP6271@game.jcrosoft.org>
 References: <20120814172555.GP6271@game.jcrosoft.org>
- <1344965540-31534-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,375 +25,784 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] smc911x: add support to pass the shift via platform data
+Subject: [PATCH 1/7] smc911x: move register define to smc911x.h
 To: barebox@lists.infradead.org
 
-switch ipe337: to it at the same time to do not brake it
+this make the driver more readable
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/blackfin/boards/ipe337/ipe337.c |    7 +++-
- drivers/net/Kconfig                  |    6 ----
- drivers/net/smc911x.c                |   44 +++++++++++++++++++++---
- drivers/net/smc911x.h                |   61 +++++++++++++++++-----------------
- include/smc911x.h                    |   18 ++++++++++
- 5 files changed, 95 insertions(+), 41 deletions(-)
- create mode 100644 include/smc911x.h
+ drivers/net/smc911x.c                |  329 +--------------------------
+ drivers/net/{smc911x.c => smc911x.h} |  406 ----------------------------------
+ 2 files changed, 2 insertions(+), 733 deletions(-)
+ copy drivers/net/{smc911x.c => smc911x.h} (60%)
 
-diff --git a/arch/blackfin/boards/ipe337/ipe337.c b/arch/blackfin/boards/ipe337/ipe337.c
-index b3f07bb..9c1de2c 100644
---- a/arch/blackfin/boards/ipe337/ipe337.c
-+++ b/arch/blackfin/boards/ipe337/ipe337.c
-@@ -4,6 +4,11 @@
- #include <asm/cpu/cdefBF561.h>
- #include <partition.h>
- #include <fs.h>
-+#include <smc911x.h>
-+
-+struct smc911x_plat smcplat = {
-+	.shift = 1,
-+};
- 
- static int ipe337_devices_init(void) {
- 	add_cfi_flash_device(DEVICE_ID_DYNAMIC, 0x20000000, 32 * 1024 * 1024, 0);
-@@ -17,7 +22,7 @@ static int ipe337_devices_init(void) {
- 	*pFIO0_FLAG_S = (1<<12);
- 
- 	add_generic_device("smc911x", DEVICE_ID_DYNAMIC, NULL, 0x24000000, 4096,
--			   IORESOURCE_MEM, NULL);
-+			   IORESOURCE_MEM, &smcplat);
- 
- 	devfs_add_partition("nor0", 0x00000, 0x20000, DEVFS_PARTITION_FIXED, "self0");
- 	devfs_add_partition("nor0", 0x20000, 0x20000, DEVFS_PARTITION_FIXED, "env0");
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 749ea6a..340839d 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -36,12 +36,6 @@ config DRIVER_NET_SMC911X
- 	  This option enables support for the SMSC LAN9[12]1[567]
- 	  ethernet chip.
- 
--config DRIVER_NET_SMC911X_ADDRESS_SHIFT
--	int
--	depends on DRIVER_NET_SMC911X
--	default 1 if MACH_IPE337
--	default 0
--
- config DRIVER_NET_SMC91111
- 	bool "smc91111 ethernet driver"
- 	select MIIDEV
 diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
-index c74ed52..de2f388 100644
+index 7dddbbc..9c488c7 100644
 --- a/drivers/net/smc911x.c
 +++ b/drivers/net/smc911x.c
-@@ -37,9 +37,8 @@
- #include <errno.h>
+@@ -38,334 +38,9 @@
  #include <clock.h>
  #include <io.h>
-+#include <smc911x.h>
  
--
 -#define AS CONFIG_DRIVER_NET_SMC911X_ADDRESS_SHIFT
- #include "smc911x.h"
  
- struct smc911x_priv {
-@@ -48,6 +47,7 @@ struct smc911x_priv {
- 	void __iomem *base;
- 
- 	u32 width;
-+	int shift;
- 
- 	u32 (*reg_read)(struct smc911x_priv *priv, u32 reg);
- 	void (*reg_write)(struct smc911x_priv *priv, u32 reg, u32 val);
-@@ -73,6 +73,8 @@ static const struct chip_id chip_ids[] =  {
- 
- #define DRIVERNAME "smc911x"
- 
-+#define __smc_shift(priv, reg) ((reg) << ((priv)->shift))
-+
- static inline u32 smc911x_reg_read(struct smc911x_priv *priv, u32 reg)
- {
- 	return priv->reg_read(priv, reg);
-@@ -87,6 +89,19 @@ static inline u32 __smc911x_reg_read(struct smc911x_priv *priv, u32 reg)
- 			((readw(priv->base + reg + 2) & 0xFFFF) << 16));
- }
- 
-+static inline u32
-+__smc911x_reg_read_shift(struct smc911x_priv *priv, u32 reg)
-+{
-+	if (priv->width)
-+		return readl(priv->base + __smc_shift(priv, reg));
-+	else
-+		return (readw(priv->base +
-+				__smc_shift(priv, reg)) & 0xFFFF) |
-+			((readw(priv->base +
-+			__smc_shift(priv, reg + 2)) & 0xFFFF) << 16);
-+
-+}
-+
- static inline void smc911x_reg_write(struct smc911x_priv *priv, u32 reg,
- 					u32 val)
- {
-@@ -104,6 +119,19 @@ static inline void __smc911x_reg_write(struct smc911x_priv *priv, u32 reg,
- 	}
- }
- 
-+static inline void
-+__smc911x_reg_write_shift(struct smc911x_priv *priv, u32 reg, u32 val)
-+{
-+	if (priv->width) {
-+		writel(val, priv->base + __smc_shift(priv, reg));
-+	} else {
-+		writew(val & 0xFFFF,
-+			priv->base + __smc_shift(priv, reg));
-+		writew((val >> 16) & 0xFFFF,
-+			priv->base + __smc_shift(priv, reg + 2));
-+	}
-+}
-+
- static int smc911x_mac_wait_busy(struct smc911x_priv *priv)
- {
- 	uint64_t start = get_time_ns();
-@@ -402,6 +430,7 @@ static int smc911x_probe(struct device_d *dev)
- 	struct smc911x_priv *priv;
- 	uint32_t val;
- 	int i;
-+	struct smc911x_plat *pdata = dev->platform_data;
- 
- 	priv = xzalloc(sizeof(*priv));
- 	priv->width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
-@@ -410,8 +439,15 @@ static int smc911x_probe(struct device_d *dev)
- 	else
- 		priv->width = priv->width == IORESOURCE_MEM_32BIT;
- 	priv->base = dev_request_mem_region(dev, 0);
--	priv->reg_read = __smc911x_reg_read;
--	priv->reg_write = __smc911x_reg_write;
-+
-+	if (pdata && pdata->shift) {
-+		priv->shift = pdata->shift;
-+		priv->reg_read = __smc911x_reg_read_shift;
-+		priv->reg_write = __smc911x_reg_write_shift;
-+	} else {
-+		priv->reg_read = __smc911x_reg_read;
-+		priv->reg_write = __smc911x_reg_write;
-+	}
- 
- 	val = smc911x_reg_read(priv, BYTE_TEST);
- 	if(val != 0x87654321) {
-diff --git a/drivers/net/smc911x.h b/drivers/net/smc911x.h
-index 68f6590..baf3598 100644
---- a/drivers/net/smc911x.h
-+++ b/drivers/net/smc911x.h
-@@ -25,9 +25,10 @@
- /* Below are the register offsets and bit definitions
-  * of the Lan911x memory space
-  */
+-/* Below are the register offsets and bit definitions
+- * of the Lan911x memory space
+- */
 -#define RX_DATA_FIFO		 (0x00 << AS)
- 
+-
 -#define TX_DATA_FIFO		 (0x20 << AS)
-+#define RX_DATA_FIFO		 0x00
-+
-+#define TX_DATA_FIFO		 0x20
- #define	TX_CMD_A_INT_ON_COMP			0x80000000
- #define	TX_CMD_A_INT_BUF_END_ALGN		0x03000000
- #define	TX_CMD_A_INT_4_BYTE_ALGN		0x00000000
-@@ -42,7 +43,7 @@
- #define	TX_CMD_B_DISABLE_PADDING		0x00001000
- #define	TX_CMD_B_PKT_BYTE_LENGTH		0x000007FF
- 
+-#define	TX_CMD_A_INT_ON_COMP			0x80000000
+-#define	TX_CMD_A_INT_BUF_END_ALGN		0x03000000
+-#define	TX_CMD_A_INT_4_BYTE_ALGN		0x00000000
+-#define	TX_CMD_A_INT_16_BYTE_ALGN		0x01000000
+-#define	TX_CMD_A_INT_32_BYTE_ALGN		0x02000000
+-#define	TX_CMD_A_INT_DATA_OFFSET		0x001F0000
+-#define	TX_CMD_A_INT_FIRST_SEG			0x00002000
+-#define	TX_CMD_A_INT_LAST_SEG			0x00001000
+-#define	TX_CMD_A_BUF_SIZE			0x000007FF
+-#define	TX_CMD_B_PKT_TAG			0xFFFF0000
+-#define	TX_CMD_B_ADD_CRC_DISABLE		0x00002000
+-#define	TX_CMD_B_DISABLE_PADDING		0x00001000
+-#define	TX_CMD_B_PKT_BYTE_LENGTH		0x000007FF
+-
 -#define RX_STATUS_FIFO		(0x40 << AS)
-+#define RX_STATUS_FIFO		0x40
- #define	RX_STS_PKT_LEN				0x3FFF0000
- #define	RX_STS_ES				0x00008000
- #define	RX_STS_BCST				0x00002000
-@@ -56,8 +57,8 @@
- #define	RX_STS_MII_ERR				0x00000008
- #define	RX_STS_DRIBBLING			0x00000004
- #define	RX_STS_CRC_ERR				0x00000002
+-#define	RX_STS_PKT_LEN				0x3FFF0000
+-#define	RX_STS_ES				0x00008000
+-#define	RX_STS_BCST				0x00002000
+-#define	RX_STS_LEN_ERR				0x00001000
+-#define	RX_STS_RUNT_ERR				0x00000800
+-#define	RX_STS_MCAST				0x00000400
+-#define	RX_STS_TOO_LONG				0x00000080
+-#define	RX_STS_COLL				0x00000040
+-#define	RX_STS_ETH_TYPE				0x00000020
+-#define	RX_STS_WDOG_TMT				0x00000010
+-#define	RX_STS_MII_ERR				0x00000008
+-#define	RX_STS_DRIBBLING			0x00000004
+-#define	RX_STS_CRC_ERR				0x00000002
 -#define RX_STATUS_FIFO_PEEK 	(0x44 << AS)
 -#define TX_STATUS_FIFO		(0x48 << AS)
-+#define RX_STATUS_FIFO_PEEK 	0x44
-+#define TX_STATUS_FIFO		0x48
- #define	TX_STS_TAG				0xFFFF0000
- #define	TX_STS_ES				0x00008000
- #define	TX_STS_LOC				0x00000800
-@@ -68,12 +69,12 @@
- #define	TX_STS_MANY_DEFER			0x00000004
- #define	TX_STS_UNDERRUN				0x00000002
- #define	TX_STS_DEFERRED				0x00000001
+-#define	TX_STS_TAG				0xFFFF0000
+-#define	TX_STS_ES				0x00008000
+-#define	TX_STS_LOC				0x00000800
+-#define	TX_STS_NO_CARR				0x00000400
+-#define	TX_STS_LATE_COLL			0x00000200
+-#define	TX_STS_MANY_COLL			0x00000100
+-#define	TX_STS_COLL_CNT				0x00000078
+-#define	TX_STS_MANY_DEFER			0x00000004
+-#define	TX_STS_UNDERRUN				0x00000002
+-#define	TX_STS_DEFERRED				0x00000001
 -#define TX_STATUS_FIFO_PEEK	(0x4C << AS)
 -#define ID_REV			(0x50 << AS)
-+#define TX_STATUS_FIFO_PEEK	0x4C
-+#define ID_REV			0x50
- #define	ID_REV_CHIP_ID				0xFFFF0000  /* RO */
- #define	ID_REV_REV_ID				0x0000FFFF  /* RO */
- 
+-#define	ID_REV_CHIP_ID				0xFFFF0000  /* RO */
+-#define	ID_REV_REV_ID				0x0000FFFF  /* RO */
+-
 -#define INT_CFG			(0x54 << AS)
-+#define INT_CFG			0x54
- #define	INT_CFG_INT_DEAS			0xFF000000  /* R/W */
- #define	INT_CFG_INT_DEAS_CLR			0x00004000
- #define	INT_CFG_INT_DEAS_STS			0x00002000
-@@ -82,7 +83,7 @@
- #define	INT_CFG_IRQ_POL				0x00000010  /* R/W Not Affected by SW Reset */
- #define	INT_CFG_IRQ_TYPE			0x00000001  /* R/W Not Affected by SW Reset */
- 
+-#define	INT_CFG_INT_DEAS			0xFF000000  /* R/W */
+-#define	INT_CFG_INT_DEAS_CLR			0x00004000
+-#define	INT_CFG_INT_DEAS_STS			0x00002000
+-#define	INT_CFG_IRQ_INT				0x00001000  /* RO */
+-#define	INT_CFG_IRQ_EN				0x00000100  /* R/W */
+-#define	INT_CFG_IRQ_POL				0x00000010  /* R/W Not Affected by SW Reset */
+-#define	INT_CFG_IRQ_TYPE			0x00000001  /* R/W Not Affected by SW Reset */
+-
 -#define INT_STS			(0x58 << AS)
-+#define INT_STS			0x58
- #define	INT_STS_SW_INT				0x80000000  /* R/WC */
- #define	INT_STS_TXSTOP_INT			0x02000000  /* R/WC */
- #define	INT_STS_RXSTOP_INT			0x01000000  /* R/WC */
-@@ -111,7 +112,7 @@
- #define	INT_STS_GPIO2_INT			0x00000004  /* R/WC */
- #define	INT_STS_GPIO1_INT			0x00000002  /* R/WC */
- #define	INT_STS_GPIO0_INT			0x00000001  /* R/WC */
+-#define	INT_STS_SW_INT				0x80000000  /* R/WC */
+-#define	INT_STS_TXSTOP_INT			0x02000000  /* R/WC */
+-#define	INT_STS_RXSTOP_INT			0x01000000  /* R/WC */
+-#define	INT_STS_RXDFH_INT			0x00800000  /* R/WC */
+-#define	INT_STS_RXDF_INT			0x00400000  /* R/WC */
+-#define	INT_STS_TX_IOC				0x00200000  /* R/WC */
+-#define	INT_STS_RXD_INT				0x00100000  /* R/WC */
+-#define	INT_STS_GPT_INT				0x00080000  /* R/WC */
+-#define	INT_STS_PHY_INT				0x00040000  /* RO */
+-#define	INT_STS_PME_INT				0x00020000  /* R/WC */
+-#define	INT_STS_TXSO				0x00010000  /* R/WC */
+-#define	INT_STS_RWT				0x00008000  /* R/WC */
+-#define	INT_STS_RXE				0x00004000  /* R/WC */
+-#define	INT_STS_TXE				0x00002000  /* R/WC */
+-//#define	INT_STS_ERX		0x00001000  /* R/WC */
+-#define	INT_STS_TDFU				0x00000800  /* R/WC */
+-#define	INT_STS_TDFO				0x00000400  /* R/WC */
+-#define	INT_STS_TDFA				0x00000200  /* R/WC */
+-#define	INT_STS_TSFF				0x00000100  /* R/WC */
+-#define	INT_STS_TSFL				0x00000080  /* R/WC */
+-//#define	INT_STS_RXDF		0x00000040  /* R/WC */
+-#define	INT_STS_RDFO				0x00000040  /* R/WC */
+-#define	INT_STS_RDFL				0x00000020  /* R/WC */
+-#define	INT_STS_RSFF				0x00000010  /* R/WC */
+-#define	INT_STS_RSFL				0x00000008  /* R/WC */
+-#define	INT_STS_GPIO2_INT			0x00000004  /* R/WC */
+-#define	INT_STS_GPIO1_INT			0x00000002  /* R/WC */
+-#define	INT_STS_GPIO0_INT			0x00000001  /* R/WC */
 -#define INT_EN			(0x5C << AS)
-+#define INT_EN			0x5C
- #define	INT_EN_SW_INT_EN			0x80000000  /* R/W */
- #define	INT_EN_TXSTOP_INT_EN			0x02000000  /* R/W */
- #define	INT_EN_RXSTOP_INT_EN			0x01000000  /* R/W */
-@@ -141,14 +142,14 @@
- #define	INT_EN_GPIO1_INT			0x00000002  /* R/W */
- #define	INT_EN_GPIO0_INT			0x00000001  /* R/W */
- 
+-#define	INT_EN_SW_INT_EN			0x80000000  /* R/W */
+-#define	INT_EN_TXSTOP_INT_EN			0x02000000  /* R/W */
+-#define	INT_EN_RXSTOP_INT_EN			0x01000000  /* R/W */
+-#define	INT_EN_RXDFH_INT_EN			0x00800000  /* R/W */
+-//#define	INT_EN_RXDF_INT_EN		0x00400000  /* R/W */
+-#define	INT_EN_TIOC_INT_EN			0x00200000  /* R/W */
+-#define	INT_EN_RXD_INT_EN			0x00100000  /* R/W */
+-#define	INT_EN_GPT_INT_EN			0x00080000  /* R/W */
+-#define	INT_EN_PHY_INT_EN			0x00040000  /* R/W */
+-#define	INT_EN_PME_INT_EN			0x00020000  /* R/W */
+-#define	INT_EN_TXSO_EN				0x00010000  /* R/W */
+-#define	INT_EN_RWT_EN				0x00008000  /* R/W */
+-#define	INT_EN_RXE_EN				0x00004000  /* R/W */
+-#define	INT_EN_TXE_EN				0x00002000  /* R/W */
+-//#define	INT_EN_ERX_EN			0x00001000  /* R/W */
+-#define	INT_EN_TDFU_EN				0x00000800  /* R/W */
+-#define	INT_EN_TDFO_EN				0x00000400  /* R/W */
+-#define	INT_EN_TDFA_EN				0x00000200  /* R/W */
+-#define	INT_EN_TSFF_EN				0x00000100  /* R/W */
+-#define	INT_EN_TSFL_EN				0x00000080  /* R/W */
+-//#define	INT_EN_RXDF_EN			0x00000040  /* R/W */
+-#define	INT_EN_RDFO_EN				0x00000040  /* R/W */
+-#define	INT_EN_RDFL_EN				0x00000020  /* R/W */
+-#define	INT_EN_RSFF_EN				0x00000010  /* R/W */
+-#define	INT_EN_RSFL_EN				0x00000008  /* R/W */
+-#define	INT_EN_GPIO2_INT			0x00000004  /* R/W */
+-#define	INT_EN_GPIO1_INT			0x00000002  /* R/W */
+-#define	INT_EN_GPIO0_INT			0x00000001  /* R/W */
+-
 -#define BYTE_TEST		(0x64 << AS)
 -#define FIFO_INT		(0x68 << AS)
-+#define BYTE_TEST		0x64
-+#define FIFO_INT		0x68
- #define	FIFO_INT_TX_AVAIL_LEVEL			0xFF000000  /* R/W */
- #define	FIFO_INT_TX_STS_LEVEL			0x00FF0000  /* R/W */
- #define	FIFO_INT_RX_AVAIL_LEVEL			0x0000FF00  /* R/W */
- #define	FIFO_INT_RX_STS_LEVEL			0x000000FF  /* R/W */
- 
+-#define	FIFO_INT_TX_AVAIL_LEVEL			0xFF000000  /* R/W */
+-#define	FIFO_INT_TX_STS_LEVEL			0x00FF0000  /* R/W */
+-#define	FIFO_INT_RX_AVAIL_LEVEL			0x0000FF00  /* R/W */
+-#define	FIFO_INT_RX_STS_LEVEL			0x000000FF  /* R/W */
+-
 -#define RX_CFG			(0x6C << AS)
-+#define RX_CFG			0x6C
- #define	RX_CFG_RX_END_ALGN			0xC0000000  /* R/W */
- #define		RX_CFG_RX_END_ALGN4		0x00000000  /* R/W */
- #define		RX_CFG_RX_END_ALGN16		0x40000000  /* R/W */
-@@ -158,7 +159,7 @@
- #define	RX_CFG_RXDOFF				0x00001F00  /* R/W */
- //#define	RX_CFG_RXBAD			0x00000001  /* R/W */
- 
+-#define	RX_CFG_RX_END_ALGN			0xC0000000  /* R/W */
+-#define		RX_CFG_RX_END_ALGN4		0x00000000  /* R/W */
+-#define		RX_CFG_RX_END_ALGN16		0x40000000  /* R/W */
+-#define		RX_CFG_RX_END_ALGN32		0x80000000  /* R/W */
+-#define	RX_CFG_RX_DMA_CNT			0x0FFF0000  /* R/W */
+-#define	RX_CFG_RX_DUMP				0x00008000  /* R/W */
+-#define	RX_CFG_RXDOFF				0x00001F00  /* R/W */
+-//#define	RX_CFG_RXBAD			0x00000001  /* R/W */
+-
 -#define TX_CFG			(0x70 << AS)
-+#define TX_CFG			0x70
- //#define	TX_CFG_TX_DMA_LVL		0xE0000000	 /* R/W */
- //#define	TX_CFG_TX_DMA_CNT		0x0FFF0000	 /* R/W Self Clearing */
- #define	TX_CFG_TXS_DUMP				0x00008000  /* Self Clearing */
-@@ -167,7 +168,7 @@
- #define	TX_CFG_TX_ON				0x00000002  /* R/W */
- #define	TX_CFG_STOP_TX				0x00000001  /* Self Clearing */
- 
+-//#define	TX_CFG_TX_DMA_LVL		0xE0000000	 /* R/W */
+-//#define	TX_CFG_TX_DMA_CNT		0x0FFF0000	 /* R/W Self Clearing */
+-#define	TX_CFG_TXS_DUMP				0x00008000  /* Self Clearing */
+-#define	TX_CFG_TXD_DUMP				0x00004000  /* Self Clearing */
+-#define	TX_CFG_TXSAO				0x00000004  /* R/W */
+-#define	TX_CFG_TX_ON				0x00000002  /* R/W */
+-#define	TX_CFG_STOP_TX				0x00000001  /* Self Clearing */
+-
 -#define HW_CFG			(0x74 << AS)
-+#define HW_CFG			0x74
- #define	HW_CFG_TTM				0x00200000  /* R/W */
- #define	HW_CFG_SF				0x00100000  /* R/W */
- #define	HW_CFG_TX_FIF_SZ			0x000F0000  /* R/W */
-@@ -183,19 +184,19 @@
- #define	HW_CFG_SRST_TO				0x00000002  /* RO */
- #define	HW_CFG_SRST				0x00000001  /* Self Clearing */
- 
+-#define	HW_CFG_TTM				0x00200000  /* R/W */
+-#define	HW_CFG_SF				0x00100000  /* R/W */
+-#define	HW_CFG_TX_FIF_SZ			0x000F0000  /* R/W */
+-#define	HW_CFG_TR				0x00003000  /* R/W */
+-#define	HW_CFG_PHY_CLK_SEL			0x00000060  /* R/W */
+-#define	HW_CFG_PHY_CLK_SEL_INT_PHY 		0x00000000  /* R/W */
+-#define	HW_CFG_PHY_CLK_SEL_EXT_PHY 		0x00000020  /* R/W */
+-#define	HW_CFG_PHY_CLK_SEL_CLK_DIS 		0x00000040  /* R/W */
+-#define	HW_CFG_SMI_SEL				0x00000010  /* R/W */
+-#define	HW_CFG_EXT_PHY_DET			0x00000008  /* RO */
+-#define	HW_CFG_EXT_PHY_EN			0x00000004  /* R/W */
+-#define	HW_CFG_32_16_BIT_MODE			0x00000004  /* RO */
+-#define	HW_CFG_SRST_TO				0x00000002  /* RO */
+-#define	HW_CFG_SRST				0x00000001  /* Self Clearing */
+-
 -#define RX_DP_CTRL		(0x78 << AS)
-+#define RX_DP_CTRL		0x78
- #define	RX_DP_CTRL_RX_FFWD			0x80000000  /* R/W */
- #define	RX_DP_CTRL_FFWD_BUSY			0x80000000  /* RO */
- 
+-#define	RX_DP_CTRL_RX_FFWD			0x80000000  /* R/W */
+-#define	RX_DP_CTRL_FFWD_BUSY			0x80000000  /* RO */
+-
 -#define RX_FIFO_INF		(0x7C << AS)
-+#define RX_FIFO_INF		0x7C 
- #define	 RX_FIFO_INF_RXSUSED			0x00FF0000  /* RO */
- #define	 RX_FIFO_INF_RXDUSED			0x0000FFFF  /* RO */
- 
+-#define	 RX_FIFO_INF_RXSUSED			0x00FF0000  /* RO */
+-#define	 RX_FIFO_INF_RXDUSED			0x0000FFFF  /* RO */
+-
 -#define TX_FIFO_INF		(0x80 << AS)
-+#define TX_FIFO_INF		0x80
- #define	TX_FIFO_INF_TSUSED			0x00FF0000  /* RO */
- #define	TX_FIFO_INF_TDFREE			0x0000FFFF  /* RO */
- 
+-#define	TX_FIFO_INF_TSUSED			0x00FF0000  /* RO */
+-#define	TX_FIFO_INF_TDFREE			0x0000FFFF  /* RO */
+-
 -#define PMT_CTRL		(0x84 << AS)
-+#define PMT_CTRL		0x84
- #define	PMT_CTRL_PM_MODE			0x00003000  /* Self Clearing */
- #define	PMT_CTRL_PHY_RST			0x00000400  /* Self Clearing */
- #define	PMT_CTRL_WOL_EN				0x00000200  /* R/W */
-@@ -211,7 +212,7 @@
- #define	PMT_CTRL_PME_EN				0x00000002  /* R/W Not Affected by SW Reset */
- #define	PMT_CTRL_READY				0x00000001  /* RO */
- 
+-#define	PMT_CTRL_PM_MODE			0x00003000  /* Self Clearing */
+-#define	PMT_CTRL_PHY_RST			0x00000400  /* Self Clearing */
+-#define	PMT_CTRL_WOL_EN				0x00000200  /* R/W */
+-#define	PMT_CTRL_ED_EN				0x00000100  /* R/W */
+-#define	PMT_CTRL_PME_TYPE			0x00000040  /* R/W Not Affected by SW Reset */
+-#define	PMT_CTRL_WUPS				0x00000030  /* R/WC */
+-#define	PMT_CTRL_WUPS_NOWAKE			0x00000000  /* R/WC */
+-#define	PMT_CTRL_WUPS_ED			0x00000010  /* R/WC */
+-#define	PMT_CTRL_WUPS_WOL			0x00000020  /* R/WC */
+-#define	PMT_CTRL_WUPS_MULTI			0x00000030  /* R/WC */
+-#define	PMT_CTRL_PME_IND			0x00000008  /* R/W */
+-#define	PMT_CTRL_PME_POL			0x00000004  /* R/W */
+-#define	PMT_CTRL_PME_EN				0x00000002  /* R/W Not Affected by SW Reset */
+-#define	PMT_CTRL_READY				0x00000001  /* RO */
+-
 -#define GPIO_CFG		(0x88 << AS)
-+#define GPIO_CFG		0x88
- #define	GPIO_CFG_LED3_EN			0x40000000  /* R/W */
- #define	GPIO_CFG_LED2_EN			0x20000000  /* R/W */
- #define	GPIO_CFG_LED1_EN			0x10000000  /* R/W */
-@@ -231,23 +232,23 @@
- #define	GPIO_CFG_GPIOD1				0x00000002  /* R/W */
- #define	GPIO_CFG_GPIOD0				0x00000001  /* R/W */
- 
+-#define	GPIO_CFG_LED3_EN			0x40000000  /* R/W */
+-#define	GPIO_CFG_LED2_EN			0x20000000  /* R/W */
+-#define	GPIO_CFG_LED1_EN			0x10000000  /* R/W */
+-#define	GPIO_CFG_GPIO2_INT_POL			0x04000000  /* R/W */
+-#define	GPIO_CFG_GPIO1_INT_POL			0x02000000  /* R/W */
+-#define	GPIO_CFG_GPIO0_INT_POL			0x01000000  /* R/W */
+-#define	GPIO_CFG_EEPR_EN			0x00700000  /* R/W */
+-#define	GPIO_CFG_GPIOBUF2			0x00040000  /* R/W */
+-#define	GPIO_CFG_GPIOBUF1			0x00020000  /* R/W */
+-#define	GPIO_CFG_GPIOBUF0			0x00010000  /* R/W */
+-#define	GPIO_CFG_GPIODIR2			0x00000400  /* R/W */
+-#define	GPIO_CFG_GPIODIR1			0x00000200  /* R/W */
+-#define	GPIO_CFG_GPIODIR0			0x00000100  /* R/W */
+-#define	GPIO_CFG_GPIOD4				0x00000010  /* R/W */
+-#define	GPIO_CFG_GPIOD3				0x00000008  /* R/W */
+-#define	GPIO_CFG_GPIOD2				0x00000004  /* R/W */
+-#define	GPIO_CFG_GPIOD1				0x00000002  /* R/W */
+-#define	GPIO_CFG_GPIOD0				0x00000001  /* R/W */
+-
 -#define GPT_CFG			(0x8C << AS)
-+#define GPT_CFG			0x8C
- #define	GPT_CFG_TIMER_EN			0x20000000  /* R/W */
- #define	GPT_CFG_GPT_LOAD			0x0000FFFF  /* R/W */
- 
+-#define	GPT_CFG_TIMER_EN			0x20000000  /* R/W */
+-#define	GPT_CFG_GPT_LOAD			0x0000FFFF  /* R/W */
+-
 -#define GPT_CNT			(0x90 << AS)
-+#define GPT_CNT			0x90
- #define	GPT_CNT_GPT_CNT				0x0000FFFF  /* RO */
- 
+-#define	GPT_CNT_GPT_CNT				0x0000FFFF  /* RO */
+-
 -#define ENDIAN			(0x98 << AS)
 -#define FREE_RUN		(0x9C << AS)
 -#define RX_DROP			(0xA0 << AS)
 -#define MAC_CSR_CMD		(0xA4 << AS)
-+#define ENDIAN			0x98
-+#define FREE_RUN		0x9C
-+#define RX_DROP			0xA0
-+#define MAC_CSR_CMD		0xA4
- #define	 MAC_CSR_CMD_CSR_BUSY			0x80000000  /* Self Clearing */
- #define	 MAC_CSR_CMD_R_NOT_W			0x40000000  /* R/W */
- #define	 MAC_CSR_CMD_CSR_ADDR			0x000000FF  /* R/W */
- 
+-#define	 MAC_CSR_CMD_CSR_BUSY			0x80000000  /* Self Clearing */
+-#define	 MAC_CSR_CMD_R_NOT_W			0x40000000  /* R/W */
+-#define	 MAC_CSR_CMD_CSR_ADDR			0x000000FF  /* R/W */
+-
 -#define MAC_CSR_DATA		(0xA8 << AS)
 -#define AFC_CFG			(0xAC << AS)
-+#define MAC_CSR_DATA		0xA8
-+#define AFC_CFG			0xAC
- #define		AFC_CFG_AFC_HI			0x00FF0000  /* R/W */
- #define		AFC_CFG_AFC_LO			0x0000FF00  /* R/W */
- #define		AFC_CFG_BACK_DUR		0x000000F0  /* R/W */
-@@ -256,7 +257,7 @@
- #define		AFC_CFG_FCADD			0x00000002  /* R/W */
- #define		AFC_CFG_FCANY			0x00000001  /* R/W */
- 
+-#define		AFC_CFG_AFC_HI			0x00FF0000  /* R/W */
+-#define		AFC_CFG_AFC_LO			0x0000FF00  /* R/W */
+-#define		AFC_CFG_BACK_DUR		0x000000F0  /* R/W */
+-#define		AFC_CFG_FCMULT			0x00000008  /* R/W */
+-#define		AFC_CFG_FCBRD			0x00000004  /* R/W */
+-#define		AFC_CFG_FCADD			0x00000002  /* R/W */
+-#define		AFC_CFG_FCANY			0x00000001  /* R/W */
+-
 -#define E2P_CMD			(0xB0 << AS)
-+#define E2P_CMD			0xB0
- #define		E2P_CMD_EPC_BUSY		0x80000000  /* Self Clearing */
- #define		E2P_CMD_EPC_CMD			0x70000000  /* R/W */
- #define		E2P_CMD_EPC_CMD_READ		0x00000000  /* R/W */
-@@ -271,7 +272,7 @@
- #define		E2P_CMD_MAC_ADDR_LOADED		0x00000100  /* RO */
- #define		E2P_CMD_EPC_ADDR		0x000000FF  /* R/W */
- 
+-#define		E2P_CMD_EPC_BUSY		0x80000000  /* Self Clearing */
+-#define		E2P_CMD_EPC_CMD			0x70000000  /* R/W */
+-#define		E2P_CMD_EPC_CMD_READ		0x00000000  /* R/W */
+-#define		E2P_CMD_EPC_CMD_EWDS		0x10000000  /* R/W */
+-#define		E2P_CMD_EPC_CMD_EWEN		0x20000000  /* R/W */
+-#define		E2P_CMD_EPC_CMD_WRITE		0x30000000  /* R/W */
+-#define		E2P_CMD_EPC_CMD_WRAL		0x40000000  /* R/W */
+-#define		E2P_CMD_EPC_CMD_ERASE		0x50000000  /* R/W */
+-#define		E2P_CMD_EPC_CMD_ERAL		0x60000000  /* R/W */
+-#define		E2P_CMD_EPC_CMD_RELOAD		0x70000000  /* R/W */
+-#define		E2P_CMD_EPC_TIMEOUT		0x00000200  /* RO */
+-#define		E2P_CMD_MAC_ADDR_LOADED		0x00000100  /* RO */
+-#define		E2P_CMD_EPC_ADDR		0x000000FF  /* R/W */
+-
 -#define E2P_DATA		(0xB4 << AS)
-+#define E2P_DATA		0xB4
- #define	E2P_DATA_EEPROM_DATA			0x000000FF  /* R/W */
- /* end of LAN register offsets and bit definitions */
+-#define	E2P_DATA_EEPROM_DATA			0x000000FF  /* R/W */
+-/* end of LAN register offsets and bit definitions */
+-
+-/* MAC Control and Status registers */
+-#define MAC_CR			0x01  /* R/W */
+-
+-/* MAC_CR - MAC Control Register */
+-#define MAC_CR_RXALL			0x80000000
+-// TODO: delete this bit? It is not described in the data sheet.
+-#define MAC_CR_HBDIS			0x10000000
+-#define MAC_CR_RCVOWN			0x00800000
+-#define MAC_CR_LOOPBK			0x00200000
+-#define MAC_CR_FDPX			0x00100000
+-#define MAC_CR_MCPAS			0x00080000
+-#define MAC_CR_PRMS			0x00040000
+-#define MAC_CR_INVFILT			0x00020000
+-#define MAC_CR_PASSBAD			0x00010000
+-#define MAC_CR_HFILT			0x00008000
+-#define MAC_CR_HPFILT			0x00002000
+-#define MAC_CR_LCOLL			0x00001000
+-#define MAC_CR_BCAST			0x00000800
+-#define MAC_CR_DISRTY			0x00000400
+-#define MAC_CR_PADSTR			0x00000100
+-#define MAC_CR_BOLMT_MASK		0x000000C0
+-#define MAC_CR_DFCHK			0x00000020
+-#define MAC_CR_TXEN			0x00000008
+-#define MAC_CR_RXEN			0x00000004
+-
+-#define ADDRH			0x02	  /* R/W mask 0x0000FFFFUL */
+-#define ADDRL			0x03	  /* R/W mask 0xFFFFFFFFUL */
+-#define HASHH			0x04	  /* R/W */
+-#define HASHL			0x05	  /* R/W */
+-
+-#define MII_ACC			0x06	  /* R/W */
+-#define MII_ACC_PHY_ADDR		0x0000F800
+-#define MII_ACC_MIIRINDA		0x000007C0
+-#define MII_ACC_MII_WRITE		0x00000002
+-#define MII_ACC_MII_BUSY		0x00000001
+-
+-#define MII_DATA		0x07	  /* R/W mask 0x0000FFFFUL */
+-
+-#ifdef FLOW
+-#undef FLOW	/* clashed with include/asm/cpu/defBF561.h:1654 */
+-#endif
+-
+-#define FLOW			0x08	  /* R/W */
+-#define FLOW_FCPT			0xFFFF0000
+-#define FLOW_FCPASS			0x00000004
+-#define FLOW_FCEN			0x00000002
+-#define FLOW_FCBSY			0x00000001
+-
+-#define VLAN1			0x09	  /* R/W mask 0x0000FFFFUL */
+-#define VLAN1_VTI1			0x0000ffff
+-
+-#define VLAN2			0x0A	  /* R/W mask 0x0000FFFFUL */
+-#define VLAN2_VTI2			0x0000ffff
+-
+-#define WUFF			0x0B	  /* WO */
+-
+-#define WUCSR			0x0C	  /* R/W */
+-#define WUCSR_GUE			0x00000200
+-#define WUCSR_WUFR			0x00000040
+-#define WUCSR_MPR			0x00000020
+-#define WUCSR_WAKE_EN			0x00000004
+-#define WUCSR_MPEN			0x00000002
+-
+-/* Chip ID values */
+-#define CHIP_9115	0x115
+-#define CHIP_9116	0x116
+-#define CHIP_9117	0x117
+-#define CHIP_9118	0x118
+-#define CHIP_9215	0x115a
+-#define CHIP_9216	0x116a
+-#define CHIP_9217	0x117a
+-#define CHIP_9218	0x118a
+-#define CHIP_9221	0x9221
++#define AS CONFIG_DRIVER_NET_SMC911X_ADDRESS_SHIFT
++#include "smc911x.h"
  
-diff --git a/include/smc911x.h b/include/smc911x.h
-new file mode 100644
-index 0000000..148906b
---- /dev/null
-+++ b/include/smc911x.h
-@@ -0,0 +1,18 @@
-+/*
-+ * (C) Copyright 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+ */
-+
-+#ifndef __SMC911X_PLATFORM_H_
-+#define __SMC911X_PLATFORM_H_
-+
-+/**
-+ * @brief Platform dependent feature:
-+ * Pass pointer to this structure as part of device_d -> platform_data
-+ */
-+struct smc911x_plat {
-+	int shift;
-+};
-+
-+#endif /* __SMC911X_PLATFORM_H_ */
+ struct smc911x_priv {
+ 	struct eth_device edev;
+diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.h
+similarity index 60%
+copy from drivers/net/smc911x.c
+copy to drivers/net/smc911x.h
+index 7dddbbc..68f6590 100644
+--- a/drivers/net/smc911x.c
++++ b/drivers/net/smc911x.h
+@@ -22,24 +22,6 @@
+  * MA 02111-1307 USA
+  */
+ 
+-#ifdef CONFIG_ENABLE_DEVICE_NOISE
+-# define DEBUG
+-#endif
+-
+-#include <common.h>
+-
+-#include <command.h>
+-#include <net.h>
+-#include <miidev.h>
+-#include <malloc.h>
+-#include <init.h>
+-#include <xfuncs.h>
+-#include <errno.h>
+-#include <clock.h>
+-#include <io.h>
+-
+-#define AS CONFIG_DRIVER_NET_SMC911X_ADDRESS_SHIFT
+-
+ /* Below are the register offsets and bit definitions
+  * of the Lan911x memory space
+  */
+@@ -367,392 +349,4 @@
+ #define CHIP_9218	0x118a
+ #define CHIP_9221	0x9221
+ 
+-struct smc911x_priv {
+-	struct eth_device edev;
+-	struct mii_device miidev;
+-	void __iomem *base;
+-};
+-
+-struct chip_id {
+-	u16 id;
+-	char *name;
+-};
+-
+-static const struct chip_id chip_ids[] =  {
+-	{ CHIP_9115, "LAN9115" },
+-	{ CHIP_9116, "LAN9116" },
+-	{ CHIP_9117, "LAN9117" },
+-	{ CHIP_9118, "LAN9118" },
+-	{ CHIP_9215, "LAN9215" },
+-	{ CHIP_9216, "LAN9216" },
+-	{ CHIP_9217, "LAN9217" },
+-	{ CHIP_9218, "LAN9218" },
+-	{ CHIP_9221, "LAN9221" },
+-	{ 0, NULL },
+-};
+-
+-#define DRIVERNAME "smc911x"
+-
+-static int smc911x_mac_wait_busy(struct smc911x_priv *priv)
+-{
+-	uint64_t start = get_time_ns();
+-
+-	while (!is_timeout(start, MSECOND)) {
+-		if (!(readl(priv->base + MAC_CSR_CMD) & MAC_CSR_CMD_CSR_BUSY))
+-			return 0;
+-	}
+-
+-	printf("%s: mac timeout\n", __FUNCTION__);
+-	return -1;
+-}
+-
+-static u32 smc911x_get_mac_csr(struct eth_device *edev, u8 reg)
+-{
+-	struct smc911x_priv *priv = edev->priv;
+-	ulong val;
+-
+-	smc911x_mac_wait_busy(priv);
+-
+-	writel(MAC_CSR_CMD_CSR_BUSY | MAC_CSR_CMD_R_NOT_W | reg,
+-			priv->base + MAC_CSR_CMD);
+-
+-	smc911x_mac_wait_busy(priv);
+-
+-	val = readl(priv->base + MAC_CSR_DATA);
+-
+-	return val;
+-}
+-
+-static void smc911x_set_mac_csr(struct eth_device *edev, u8 reg, u32 data)
+-{
+-	struct smc911x_priv *priv = edev->priv;
+-
+-	smc911x_mac_wait_busy(priv);
+-
+-	writel(data, priv->base + MAC_CSR_DATA);
+-	writel(MAC_CSR_CMD_CSR_BUSY | reg, priv->base + MAC_CSR_CMD);
+-
+-	smc911x_mac_wait_busy(priv);
+-}
+-
+-static int smc911x_get_ethaddr(struct eth_device *edev, unsigned char *m)
+-{
+-	unsigned long addrh, addrl;
+-
+-	addrh = smc911x_get_mac_csr(edev, ADDRH);
+-	addrl = smc911x_get_mac_csr(edev, ADDRL);
+-
+-	m[0] = (addrl       ) & 0xff;
+-	m[1] = (addrl >>  8 ) & 0xff;
+-	m[2] = (addrl >> 16 ) & 0xff;
+-	m[3] = (addrl >> 24 ) & 0xff;
+-	m[4] = (addrh       ) & 0xff;
+-	m[5] = (addrh >>  8 ) & 0xff;
+-
+-	/* we get 0xff when there is no eeprom connected */
+-	if ((m[0] & m[1] & m[2] & m[3] & m[4] & m[5]) == 0xff)
+-		return -1;
+-
+-	return 0;
+-}
+-
+-static int smc911x_set_ethaddr(struct eth_device *edev, unsigned char *m)
+-{
+-	unsigned long addrh, addrl;
+-
+-	addrl = m[0] | m[1] << 8 | m[2] << 16 | m[3] << 24;
+-	addrh = m[4] | m[5] << 8;
+-	smc911x_set_mac_csr(edev, ADDRH, addrh);
+-	smc911x_set_mac_csr(edev, ADDRL, addrl);
+-
+-	return 0;
+-}
+-
+-static int smc911x_phy_read(struct mii_device *mdev, int phy_addr, int reg)
+-{
+-	struct eth_device *edev = mdev->edev;
+-
+-	while (smc911x_get_mac_csr(edev, MII_ACC) & MII_ACC_MII_BUSY);
+-
+-	smc911x_set_mac_csr(edev, MII_ACC, phy_addr << 11 | reg << 6 |
+-			MII_ACC_MII_BUSY);
+-
+-	while (smc911x_get_mac_csr(edev, MII_ACC) & MII_ACC_MII_BUSY);
+-
+-	return smc911x_get_mac_csr(edev, MII_DATA);
+-}
+-
+-static int smc911x_phy_write(struct mii_device *mdev, int phy_addr,
+-	int reg, int val)
+-{
+-	struct eth_device *edev = mdev->edev;
+-
+-	while (smc911x_get_mac_csr(edev, MII_ACC) & MII_ACC_MII_BUSY);
+-
+-	smc911x_set_mac_csr(edev, MII_DATA, val);
+-	smc911x_set_mac_csr(edev, MII_ACC,
+-		phy_addr << 11 | reg << 6 | MII_ACC_MII_BUSY |
+-		MII_ACC_MII_WRITE);
+-
+-	while (smc911x_get_mac_csr(edev, MII_ACC) & MII_ACC_MII_BUSY);
+-
+-	return 0;
+-}
+-
+-static int smc911x_phy_reset(struct eth_device *edev)
+-{
+-	struct smc911x_priv *priv = edev->priv;
+-	u32 reg;
+-
+-	reg = readl(priv->base + PMT_CTRL);
+-	reg &= 0xfcf;
+-	reg |= PMT_CTRL_PHY_RST;
+-	writel(reg, priv->base + PMT_CTRL);
+-
+-	mdelay(100);
+-
+-	return 0;
+-}
+-
+-static void smc911x_reset(struct eth_device *edev)
+-{
+-	struct smc911x_priv *priv = edev->priv;
+-	uint64_t start;
+-
+-	/* Take out of PM setting first */
+-	if (readl(priv->base + PMT_CTRL) & PMT_CTRL_READY) {
+-		/* Write to the bytetest will take out of powerdown */
+-		writel(0, priv->base + BYTE_TEST);
+-
+-		start = get_time_ns();
+-		while(1) {
+-			if ((readl(priv->base + PMT_CTRL) & PMT_CTRL_READY))
+-				break;
+-			if (is_timeout(start, 100 * USECOND)) {
+-				dev_err(&edev->dev,
+-						"timeout waiting for PM restore\n");
+-				return;
+-			}
+-		}
+-	}
+-
+-	/* Disable interrupts */
+-	writel(0, priv->base + INT_EN);
+-
+-	writel(HW_CFG_SRST, priv->base + HW_CFG);
+-
+-	start = get_time_ns();
+-	while(1) {
+-		if (!(readl(priv->base + E2P_CMD) & E2P_CMD_EPC_BUSY))
+-			break;
+-		if (is_timeout(start, 10 * MSECOND)) {
+-			dev_err(&edev->dev, "reset timeout\n");
+-			return;
+-		}
+-	}
+-
+-	/* Reset the FIFO level and flow control settings */
+-	smc911x_set_mac_csr(edev, FLOW, FLOW_FCPT | FLOW_FCEN);
+-
+-	writel(0x0050287F, priv->base + AFC_CFG);
+-
+-	/* Set to LED outputs */
+-	writel(0x70070000, priv->base + GPIO_CFG);
+-}
+-
+-static void smc911x_enable(struct eth_device *edev)
+-{
+-	struct smc911x_priv *priv = edev->priv;
+-
+-	/* Enable TX */
+-	writel(8 << 16 | HW_CFG_SF, priv->base + HW_CFG);
+-
+-	writel(GPT_CFG_TIMER_EN | 10000, priv->base + GPT_CFG);
+-
+-	writel(TX_CFG_TX_ON, priv->base + TX_CFG);
+-
+-	/* no padding to start of packets */
+-	writel(RX_CFG_RX_DUMP, priv->base + RX_CFG);
+-}
+-
+-static int smc911x_eth_open(struct eth_device *edev)
+-{
+-	struct smc911x_priv *priv = (struct smc911x_priv *)edev->priv;
+-
+-	miidev_wait_aneg(&priv->miidev);
+-	miidev_print_status(&priv->miidev);
+-
+-	/* Turn on Tx + Rx */
+-	smc911x_enable(edev);
+-	return 0;
+-}
+-
+-static int smc911x_eth_send(struct eth_device *edev, void *packet, int length)
+-{
+-	struct smc911x_priv *priv = (struct smc911x_priv *)edev->priv;
+-	u32 *data = (u32*)packet;
+-	u32 tmplen;
+-	u32 status;
+-	uint64_t start;
+-
+-	writel(TX_CMD_A_INT_FIRST_SEG | TX_CMD_A_INT_LAST_SEG | length,
+-			priv->base + TX_DATA_FIFO);
+-	writel(length, priv->base + TX_DATA_FIFO);
+-
+-	tmplen = (length + 3) / 4;
+-
+-	while(tmplen--)
+-		writel(*data++, priv->base + TX_DATA_FIFO);
+-
+-	/* wait for transmission */
+-	start = get_time_ns();
+-	while (1) {
+-		if ((readl(priv->base + TX_FIFO_INF) &
+-					TX_FIFO_INF_TSUSED) >> 16)
+-			break;
+-		if (is_timeout(start, 100 * MSECOND)) {
+-			dev_err(&edev->dev, "TX timeout\n");
+-			return -1;
+-		}
+-	}
+-
+-	/* get status. Ignore 'no carrier' error, it has no meaning for
+-	 * full duplex operation
+-	 */
+-	status = readl(priv->base + TX_STATUS_FIFO) & (TX_STS_LOC |
+-		TX_STS_LATE_COLL | TX_STS_MANY_COLL | TX_STS_MANY_DEFER |
+-		TX_STS_UNDERRUN);
+-
+-	if(!status)
+-		return 0;
+-
+-	dev_err(&edev->dev, "failed to send packet: %s%s%s%s%s\n",
+-		status & TX_STS_LOC ? "TX_STS_LOC " : "",
+-		status & TX_STS_LATE_COLL ? "TX_STS_LATE_COLL " : "",
+-		status & TX_STS_MANY_COLL ? "TX_STS_MANY_COLL " : "",
+-		status & TX_STS_MANY_DEFER ? "TX_STS_MANY_DEFER " : "",
+-		status & TX_STS_UNDERRUN ? "TX_STS_UNDERRUN" : "");
+-
+-	return -1;
+-}
+-
+-static void smc911x_eth_halt(struct eth_device *edev)
+-{
+-	struct smc911x_priv *priv = (struct smc911x_priv *)edev->priv;
+-
+-	/* Disable TX */
+-	writel(TX_CFG_STOP_TX, priv->base + TX_CFG);
+-
+-//	smc911x_reset(edev);
+-}
+-
+-static int smc911x_eth_rx(struct eth_device *edev)
+-{
+-	struct smc911x_priv *priv = (struct smc911x_priv *)edev->priv;
+-	u32 *data = (u32 *)NetRxPackets[0];
+-	u32 pktlen, tmplen;
+-	u32 status;
+-
+-	if((readl(priv->base + RX_FIFO_INF) & RX_FIFO_INF_RXSUSED) >> 16) {
+-		status = readl(priv->base + RX_STATUS_FIFO);
+-		pktlen = (status & RX_STS_PKT_LEN) >> 16;
+-
+-		writel(0, priv->base + RX_CFG);
+-
+-		tmplen = (pktlen + 2 + 3) / 4;
+-		while(tmplen--)
+-			*data++ = readl(priv->base + RX_DATA_FIFO);
+-
+-		if(status & RX_STS_ES)
+-			dev_err(&edev->dev, "dropped bad packet. Status: 0x%08x\n",
+-				status);
+-		else
+-			net_receive(NetRxPackets[0], pktlen);
+-	}
+-
+-	return 0;
+-}
+-
+-static int smc911x_init_dev(struct eth_device *edev)
+-{
+-	struct smc911x_priv *priv = (struct smc911x_priv *)edev->priv;
+-
+-	smc911x_set_mac_csr(edev, MAC_CR, MAC_CR_TXEN | MAC_CR_RXEN |
+-			MAC_CR_HBDIS);
+-
+-	miidev_restart_aneg(&priv->miidev);
+-
+-	return 0;
+-}
+-
+-static int smc911x_probe(struct device_d *dev)
+-{
+-	struct eth_device *edev;
+-	struct smc911x_priv *priv;
+-	uint32_t val;
+-	int i;
+-	void __iomem *base;
+-
+-	base = dev_request_mem_region(dev, 0);
+-
+-	val = readl(base + BYTE_TEST);
+-	if(val != 0x87654321) {
+-		dev_err(dev, "no smc911x found on 0x%p (byte_test=0x%08x)\n",
+-			base, val);
+-		return -ENODEV;
+-	}
+-
+-	val = readl(base + ID_REV) >> 16;
+-	for(i = 0; chip_ids[i].id != 0; i++) {
+-		if (chip_ids[i].id == val) break;
+-	}
+-	if (!chip_ids[i].id) {
+-		dev_err(dev, "Unknown chip ID %04x\n", val);
+-		return -ENODEV;
+-	}
+-
+-	dev_info(dev, "detected %s controller\n", chip_ids[i].name);
+-
+-	priv = xzalloc(sizeof(*priv));
+-	edev = &priv->edev;
+-	edev->priv = priv;
+-
+-	edev->init = smc911x_init_dev;
+-	edev->open = smc911x_eth_open;
+-	edev->send = smc911x_eth_send;
+-	edev->recv = smc911x_eth_rx;
+-	edev->halt = smc911x_eth_halt;
+-	edev->get_ethaddr = smc911x_get_ethaddr;
+-	edev->set_ethaddr = smc911x_set_ethaddr;
+-	edev->parent = dev;
+-
+-	priv->miidev.read = smc911x_phy_read;
+-	priv->miidev.write = smc911x_phy_write;
+-	priv->miidev.address = 1;
+-	priv->miidev.flags = 0;
+-	priv->miidev.edev = edev;
+-	priv->miidev.parent = dev;
+-	priv->base = base;
+-
+-	smc911x_reset(edev);
+-	smc911x_phy_reset(edev);
+-
+-	mii_register(&priv->miidev);
+-	eth_register(edev);
+-
+-        return 0;
+-}
+-
+-static struct driver_d smc911x_driver = {
+-        .name  = "smc911x",
+-        .probe = smc911x_probe,
+-};
+-
+-static int smc911x_init(void)
+-{
+-        register_driver(&smc911x_driver);
+-        return 0;
+-}
+-
+-device_initcall(smc911x_init);
+ 
 -- 
 1.7.10.4
 
