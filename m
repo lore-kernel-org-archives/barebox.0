@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo4.mail-out.ovh.net ([46.105.40.176]
+Received: from 7.mo4.mail-out.ovh.net ([178.33.253.54]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T1KsH-0004hv-8B
- for barebox@lists.infradead.org; Tue, 14 Aug 2012 17:25:50 +0000
+ id 1T1KyV-0004lk-KO
+ for barebox@lists.infradead.org; Tue, 14 Aug 2012 17:32:16 +0000
 Received: from mail628.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 391361054BD7
- for <barebox@lists.infradead.org>; Tue, 14 Aug 2012 19:30:28 +0200 (CEST)
-Date: Tue, 14 Aug 2012 19:25:55 +0200
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id BF92B105826C
+ for <barebox@lists.infradead.org>; Tue, 14 Aug 2012 19:36:54 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120814172555.GP6271@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Tue, 14 Aug 2012 19:32:16 +0200
+Message-Id: <1344965540-31534-3-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1344965540-31534-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20120814172555.GP6271@game.jcrosoft.org>
+ <1344965540-31534-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,65 +21,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/7] smsc911x: runtime configuration improvement
+Subject: [PATCH 3/7] smc911x: add 16bit bus width support
 To: barebox@lists.infradead.org
 
-Hi,
-
-please pull
-The following changes since commit 3f96b4938c4046590be8a38fb114148c4bf1ca8e:
-
-  Merge tag 'bootm_fix' of git://git.jcrosoft.org/barebox (2012-08-13 20:37:53 +0200)
-
-are available in the git repository at:
-
-
-  git://git.jcrosoft.org/barebox.git tags/smc911x_improve
-
-for you to fetch changes up to 865ba468b906292c0158b8734dee5a31688e332b:
-
-  smm911x: check if the device is ready before using it (2012-08-15 01:19:54 +0800)
-
-----------------------------------------------------------------
-smsc911x: runtime configuration improvement
-
- This patch series allow to detect and configure the drivers at the runtime
-
- - Check if the device is ready before using it
- - Update chip detection (take from the kernel 3.5)
- - improve detection handle to detect bus configuration and swap
- - add support to pass the shift via platform data
- - add 16bit bus width support
- - introduce read/write ops
- - move register define to smc911x.h
-
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/net/smc911x.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (7):
-      smc911x: move register define to smc911x.h
-      smc911x: introduce read/write ops
-      smc911x: add 16bit bus width support
-      smc911x: add support to pass the shift via platform data
-      smc911x: improve detection handle
-      smc911x: update chip detection
-      smm911x: check if the device is ready before using it
+diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
+index 2583235..c74ed52 100644
+--- a/drivers/net/smc911x.c
++++ b/drivers/net/smc911x.c
+@@ -47,6 +47,8 @@ struct smc911x_priv {
+ 	struct mii_device miidev;
+ 	void __iomem *base;
+ 
++	u32 width;
++
+ 	u32 (*reg_read)(struct smc911x_priv *priv, u32 reg);
+ 	void (*reg_write)(struct smc911x_priv *priv, u32 reg, u32 val);
+ };
+@@ -78,7 +80,11 @@ static inline u32 smc911x_reg_read(struct smc911x_priv *priv, u32 reg)
+ 
+ static inline u32 __smc911x_reg_read(struct smc911x_priv *priv, u32 reg)
+ {
+-	return readl(priv->base + reg);
++	if (priv->width)
++		return readl(priv->base + reg);
++	else
++		return ((readw(priv->base + reg) & 0xFFFF) |
++			((readw(priv->base + reg + 2) & 0xFFFF) << 16));
+ }
+ 
+ static inline void smc911x_reg_write(struct smc911x_priv *priv, u32 reg,
+@@ -90,7 +96,12 @@ static inline void smc911x_reg_write(struct smc911x_priv *priv, u32 reg,
+ static inline void __smc911x_reg_write(struct smc911x_priv *priv, u32 reg,
+ 					u32 val)
+ {
+-	writel(val, priv->base + reg);
++	if (priv->width) {
++		writel(val, priv->base + reg);
++	} else {
++		writew(val & 0xFFFF, priv->base + reg);
++		writew((val >> 16) & 0xFFFF, priv->base + reg + 2);
++	}
+ }
+ 
+ static int smc911x_mac_wait_busy(struct smc911x_priv *priv)
+@@ -393,6 +404,11 @@ static int smc911x_probe(struct device_d *dev)
+ 	int i;
+ 
+ 	priv = xzalloc(sizeof(*priv));
++	priv->width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
++	if (!priv->width)
++		priv->width = 1;
++	else
++		priv->width = priv->width == IORESOURCE_MEM_32BIT;
+ 	priv->base = dev_request_mem_region(dev, 0);
+ 	priv->reg_read = __smc911x_reg_read;
+ 	priv->reg_write = __smc911x_reg_write;
+-- 
+1.7.10.4
 
- arch/blackfin/boards/ipe337/ipe337.c |    7 +-
- drivers/net/Kconfig                  |    6 --
- drivers/net/smc911x.c                |  569 ++++++++++++++++++++++++++++++++++++++++++++++++---------------------------------------------------------------------------------------------------------
- drivers/net/smc911x.h                |  364 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/smc911x.h                    |   18 +++++
- 5 files changed, 567 insertions(+), 397 deletions(-)
- create mode 100644 drivers/net/smc911x.h
- create mode 100644 include/smc911x.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
