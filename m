@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo4.mail-out.ovh.net ([87.98.179.66]
+Received: from 10.mo4.mail-out.ovh.net ([188.165.33.109]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T2f1g-0004yw-9P
- for barebox@lists.infradead.org; Sat, 18 Aug 2012 09:09:01 +0000
+ id 1T2f4P-00054U-PH
+ for barebox@lists.infradead.org; Sat, 18 Aug 2012 09:11:50 +0000
 Received: from mail628.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 517451051035
- for <barebox@lists.infradead.org>; Sat, 18 Aug 2012 11:13:46 +0200 (CEST)
-Date: Sat, 18 Aug 2012 11:09:09 +0200
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 42FEC1054217
+ for <barebox@lists.infradead.org>; Sat, 18 Aug 2012 11:10:01 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120818090909.GV6271@game.jcrosoft.org>
-References: <OF8136B6E4.D5217264-ONC1257A5D.004703C5-C1257A5D.00481ACB@o0802.rafi.inhouse>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <OF8136B6E4.D5217264-ONC1257A5D.004703C5-C1257A5D.00481ACB@o0802.rafi.inhouse>
+Date: Sat, 18 Aug 2012 11:05:23 +0200
+Message-Id: <1345280723-27113-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +18,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: tftp server
-To: christian.buettner@rafi.de
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] spi: allow to dynamically allocate bus number
+To: barebox@lists.infradead.org
 
-On 15:07 Fri 17 Aug     , christian.buettner@rafi.de wrote:
->    Hi all,
-> 
->    i implemented an tftp_server for the barebox. My code uses the same
->    interfaces like the existing tftp client to
->    receive and send data per UDP like net_poll() and net_udp_send(..) from
->    net.c.
->    I use atftp tool from a debian host to connect and upload a file to my
->    tftp server.
-we can not see the code so we can not help
+For this keep track of the master list and the max bus_num.
+If a master already use the same bus_num use an other number and emit a
+warning.
 
-btw for the n time DO NOT SEND IN HTML
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/spi/spi.c |   28 ++++++++++++++++++++++++++++
+ include/spi/spi.h |    2 ++
+ 2 files changed, 30 insertions(+)
 
-Best Regards,
-J.
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index a7fe10c..90908b0 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -41,6 +41,8 @@ struct boardinfo {
+ };
+ 
+ static LIST_HEAD(board_list);
++static LIST_HEAD(master_list);
++static int spi_master_max_bus_num = -1;
+ 
+ /**
+  * spi_new_device - instantiate one new SPI device
+@@ -154,6 +156,18 @@ static void scan_boardinfo(struct spi_master *master)
+ 	}
+ }
+ 
++static struct spi_master *master spi_get_master_by_num(int num)
++{
++	struct spi_master *master;
++
++	list_for_each_entry(master, &master_list, list) {
++		if (master->bus_num == num)
++			return master;
++	}
++
++	return NULL;
++}
++
+ /**
+  * spi_register_master - register SPI master controller
+  * @master: initialized master, originally from spi_alloc_master()
+@@ -177,6 +191,7 @@ static void scan_boardinfo(struct spi_master *master)
+ int spi_register_master(struct spi_master *master)
+ {
+ 	int			status = -ENODEV;
++	struct spi_master	*tmp = NULL;
+ 
+ 	debug("%s: %s:%d\n", __func__, master->dev->name, master->dev->id);
+ 
+@@ -186,6 +201,19 @@ int spi_register_master(struct spi_master *master)
+ 	if (master->num_chipselect == 0)
+ 		return -EINVAL;
+ 
++	if (master->bus_num < 0 ||
++		(tmp = spi_get_master_by_num(master->bus_num))) {
++		spi_master_max_bus_num++;
++		if (tmp)
++			dev_warn(master->dev, "spi%d already exist\n", master->bus_num);
++		master->bus_num = spi_master_max_bus_num;
++	} else {
++		spi_master_max_bus_num = max(master->bus_num, spi_master_max_bus_num);
++	}
++	dev_info(master->dev, "register as spi%d\n", master->bus_num);
++
++	list_add_tail(&master->list, &master_list);
++
+ 	/* populate children from any spi device tables */
+ 	scan_boardinfo(master);
+ 	status = 0;
+diff --git a/include/spi/spi.h b/include/spi/spi.h
+index 9d01d06..7281c17 100644
+--- a/include/spi/spi.h
++++ b/include/spi/spi.h
+@@ -163,6 +163,8 @@ struct spi_master {
+ 
+ 	/* called on release() to free memory provided by spi_master */
+ 	void			(*cleanup)(struct spi_device *spi);
++
++	struct list_head	list;
+ };
+ 
+ /*---------------------------------------------------------------------------*/
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
