@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T2oRP-0005ps-Ey
- for barebox@lists.infradead.org; Sat, 18 Aug 2012 19:12:12 +0000
-Date: Sat, 18 Aug 2012 21:12:06 +0200
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Message-ID: <20120818191206.GN31821@pengutronix.de>
-References: <OF8136B6E4.D5217264-ONC1257A5D.004703C5-C1257A5D.00481ACB@o0802.rafi.inhouse>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <OF8136B6E4.D5217264-ONC1257A5D.004703C5-C1257A5D.00481ACB@o0802.rafi.inhouse>
+Received: from 16.mo1.mail-out.ovh.net ([178.33.104.224]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1T3Qnm-0007JK-EW
+ for barebox@lists.infradead.org; Mon, 20 Aug 2012 12:09:51 +0000
+Received: from mail31.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 1BB7EFF8E5E
+ for <barebox@lists.infradead.org>; Mon, 20 Aug 2012 14:16:46 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Mon, 20 Aug 2012 14:09:55 +0200
+Message-Id: <1345464595-14688-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,26 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: tftp server
-To: christian.buettner@rafi.de
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] arm: do not enable the previous bootz command
+To: barebox@lists.infradead.org
 
-On Fri, Aug 17, 2012 at 03:07:34PM +0200, christian.buettner@rafi.de wrote:
-> i implemented an tftp_server for the barebox.
+as we now support via bootm
 
-Please post an RFC patch here on the list in order to make a review
-possible.
+on ixp4xx we still need it so keep it so far.
 
-rsc
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ commands/Kconfig |    1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 92a8152..9e1c957 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -406,7 +406,6 @@ config CMD_UIMAGE
+ 
+ config CMD_BOOTZ
+ 	tristate
+-	default y
+ 	depends on ARM
+ 	prompt "bootz"
+ 	help
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
