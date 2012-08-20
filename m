@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T3Sqb-0006QK-Vp
- for barebox@lists.infradead.org; Mon, 20 Aug 2012 14:20:58 +0000
+ id 1T3Sqc-0006QL-Ev
+ for barebox@lists.infradead.org; Mon, 20 Aug 2012 14:21:00 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Mon, 20 Aug 2012 16:20:18 +0200
-Message-Id: <1345472428-17417-4-git-send-email-jlu@pengutronix.de>
+Date: Mon, 20 Aug 2012 16:20:19 +0200
+Message-Id: <1345472428-17417-5-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1345472428-17417-1-git-send-email-jlu@pengutronix.de>
 References: <1345472428-17417-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,143 +21,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/13] common: split out meminfo output and make it optional
+Subject: [PATCH 04/13] omap: add SPI as a boot mode for xload
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- common/Kconfig   |    4 ++++
- common/Makefile  |    1 +
- common/meminfo.c |   21 +++++++++++++++++++++
- common/startup.c |   19 -------------------
- include/common.h |   10 ++++++++--
- 5 files changed, 34 insertions(+), 21 deletions(-)
- create mode 100644 common/meminfo.c
+ arch/arm/mach-omap/include/mach/xload.h |    1 +
+ arch/arm/mach-omap/xload.c              |   27 +++++++++++++++++++++++++++
+ 2 files changed, 28 insertions(+)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index b776031..7d33c2e 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -88,6 +88,10 @@ config BANNER
- 	bool "display banner"
- 	default y
- 
-+config MEMINFO
-+	bool "display memory info"
-+	default y
-+
- config ENVIRONMENT_VARIABLES
- 	bool "environment variables support"
- 
-diff --git a/common/Makefile b/common/Makefile
-index a1926d3..69ff5df 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -19,6 +19,7 @@ obj-$(CONFIG_MALLOC_TLSF) += tlsf.o
- obj-$(CONFIG_MALLOC_DUMMY) += dummy_malloc.o
- obj-y += clock.o
- obj-$(CONFIG_BANNER) += version.o
-+obj-$(CONFIG_MEMINFO) += meminfo.o
- obj-$(CONFIG_COMMAND_SUPPORT) += command.o
- obj-$(CONFIG_CONSOLE_FULL) += console.o
- obj-$(CONFIG_CONSOLE_SIMPLE) += console_simple.o
-diff --git a/common/meminfo.c b/common/meminfo.c
-new file mode 100644
-index 0000000..30b5bef
---- /dev/null
-+++ b/common/meminfo.c
-@@ -0,0 +1,21 @@
-+#include <common.h>
-+#include <memory.h>
-+#include <asm-generic/memory_layout.h>
-+
-+void display_meminfo(void)
-+{
-+	ulong mstart = mem_malloc_start();
-+	ulong mend   = mem_malloc_end();
-+	ulong msize  = mend - mstart + 1;
-+
-+	debug("barebox code: 0x%p -> 0x%p\n", _stext, _etext);
-+	debug("bss segment:  0x%p -> 0x%p\n", __bss_start, __bss_stop);
-+	printf("Malloc space: 0x%08lx -> 0x%08lx (size %s)\n",
-+		mstart, mend, size_human_readable(msize));
-+#ifdef CONFIG_ARM
-+	printf("Stack space : 0x%08x -> 0x%08x (size %s)\n",
-+		STACK_BASE, STACK_BASE + STACK_SIZE,
-+		size_human_readable(STACK_SIZE));
-+#endif
-+}
-+
-diff --git a/common/startup.c b/common/startup.c
-index abd1b77..686568d 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -33,34 +33,15 @@
- #include <init.h>
- #include <command.h>
- #include <malloc.h>
--#include <memory.h>
- #include <debug_ll.h>
- #include <fs.h>
- #include <linux/stat.h>
- #include <environment.h>
--#include <asm-generic/memory_layout.h>
- #include <asm/sections.h>
- 
- extern initcall_t __barebox_initcalls_start[], __barebox_early_initcalls_end[],
- 		  __barebox_initcalls_end[];
- 
--static void display_meminfo(void)
--{
--	ulong mstart = mem_malloc_start();
--	ulong mend   = mem_malloc_end();
--	ulong msize  = mend - mstart + 1;
--
--	debug("barebox code: 0x%p -> 0x%p\n", _stext, _etext);
--	debug("bss segment:  0x%p -> 0x%p\n", __bss_start, __bss_stop);
--	printf("Malloc space: 0x%08lx -> 0x%08lx (size %s)\n",
--		mstart, mend, size_human_readable(msize));
--#ifdef CONFIG_ARM
--	printf("Stack space : 0x%08x -> 0x%08x (size %s)\n",
--		STACK_BASE, STACK_BASE + STACK_SIZE,
--		size_human_readable(STACK_SIZE));
--#endif
--}
--
- #ifdef CONFIG_DEFAULT_ENVIRONMENT
- #include <generated/barebox_default_env.h>
- 
-diff --git a/include/common.h b/include/common.h
-index df12083..d9eb677 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -150,11 +150,11 @@ static inline void dump_stack(void)
- #define MEMAREA_SIZE_SPECIFIED 1
- 
- struct memarea_info {
--        struct device_d *device;
-+	struct device_d *device;
- 	unsigned long start;
- 	unsigned long end;
- 	unsigned long size;
--        unsigned long flags;
-+	unsigned long flags;
+diff --git a/arch/arm/mach-omap/include/mach/xload.h b/arch/arm/mach-omap/include/mach/xload.h
+index 844b57f..c62912a 100644
+--- a/arch/arm/mach-omap/include/mach/xload.h
++++ b/arch/arm/mach-omap/include/mach/xload.h
+@@ -8,6 +8,7 @@ enum omap_boot_src {
+ 	OMAP_BOOTSRC_UNKNOWN,
+ 	OMAP_BOOTSRC_MMC1,
+ 	OMAP_BOOTSRC_NAND,
++	OMAP_BOOTSRC_SPI1,
  };
  
- int parse_area_spec(const char *str, loff_t *start, loff_t *size);
-@@ -239,6 +239,12 @@ void barebox_banner(void);
- static inline void barebox_banner(void) {}
- #endif
+ enum omap_boot_src omap3_bootsrc(void);
+diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
+index 13024ab..1daa827 100644
+--- a/arch/arm/mach-omap/xload.c
++++ b/arch/arm/mach-omap/xload.c
+@@ -54,6 +54,29 @@ void *omap_xload_boot_mmc(void)
+ 	return buf;
+ }
  
-+#ifdef CONFIG_MEMINFO
-+void display_meminfo(void);
-+#else
-+static inline void display_meminfo(void) {}
-+#endif
++void *omap_xload_boot_spi(int offset, int size)
++{
++	int ret;
++	void *to = xmalloc(size);
++	struct cdev *cdev;
 +
- #define IOMEM(addr)	((void __force __iomem *)(addr))
++	devfs_add_partition("m25p0", offset, size, DEVFS_PARTITION_FIXED, "x");
++
++	cdev = cdev_open("x", O_RDONLY);
++	if (!cdev) {
++		printf("failed to open spi flash\n");
++		return NULL;
++	}
++
++	ret = cdev_read(cdev, to, size, 0, 0);
++	if (ret != size) {
++		printf("failed to read from spi flash\n");
++		return NULL;
++	}
++
++	return to;
++}
++
+ enum omap_boot_src omap_bootsrc(void)
+ {
+ #if defined(CONFIG_ARCH_OMAP3)
+@@ -82,6 +105,10 @@ int run_shell(void)
+ 		printf("booting from NAND\n");
+ 		func = omap_xload_boot_nand(SZ_128K, SZ_256K);
+ 		break;
++	case OMAP_BOOTSRC_SPI1:
++		printf("booting from SPI1\n");
++		func = omap_xload_boot_spi(SZ_128K, SZ_512K);
++		break;
+ 	}
  
- #define DIV_ROUND_UP(n,d)	(((n) + (d) - 1) / (d))
+ 	if (!func) {
 -- 
 1.7.10.4
 
