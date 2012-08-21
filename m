@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T3iRN-0007KN-Vj
- for barebox@lists.infradead.org; Tue, 21 Aug 2012 06:59:54 +0000
-Date: Tue, 21 Aug 2012 08:59:50 +0200
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1T3iZw-0003ny-SI
+ for barebox@lists.infradead.org; Tue, 21 Aug 2012 07:08:45 +0000
+Date: Tue, 21 Aug 2012 09:08:41 +0200
 From: Jan Luebbe <jlu@pengutronix.de>
-Message-ID: <20120821065950.GC15318@pengutronix.de>
+Message-ID: <20120821070841.GD15318@pengutronix.de>
 References: <1345472428-17417-1-git-send-email-jlu@pengutronix.de>
- <1345472428-17417-7-git-send-email-jlu@pengutronix.de>
- <20120820144700.GY6271@game.jcrosoft.org>
+ <1345472428-17417-8-git-send-email-jlu@pengutronix.de>
+ <20120820144755.GZ6271@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120820144700.GY6271@game.jcrosoft.org>
+In-Reply-To: <20120820144755.GZ6271@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,27 +24,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 06/13] drivers/net: add driver for the EMAC device found
- in some TI SoCs
+Subject: Re: [PATCH 07/13] omap3: allow enabling clocks for UART3, MMC1 and SPI
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Aug 20, 2012 at 04:47:00PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Mon, Aug 20, 2012 at 04:47:55PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > On 16:20 Mon 20 Aug     , Jan Luebbe wrote:
-> > +	/* EMAC Addresses */
-> > +	emac_regs	*adap_emac; /* = (emac_regs *)EMAC_BASE_ADDR; */
-> > +	ewrap_regs	*adap_ewrap; /* = (ewrap_regs *)EMAC_WRAPPER_BASE_ADDR; */
-> > +	mdio_regs	*adap_mdio; /* = (mdio_regs *)EMAC_MDIO_BASE_ADDR; */
-> please use linux and not the struct for regs
+> > --- a/arch/arm/mach-omap/omap3_clock.c
+> > +++ b/arch/arm/mach-omap/omap3_clock.c
+> > @@ -679,11 +679,26 @@ static void per_clocks_enable(void)
+> >  	sr32(CM_REG(FCLKEN1_CORE), 13, 1, 0x1);
+> >  	sr32(CM_REG(ICLKEN1_CORE), 13, 1, 0x1);
+> >  #endif
+> > +#ifdef CONFIG_OMAP_CLOCK_UART3
+> > +	/* Enable UART3 clocks */
+> > +	sr32(CM_REG(FCLKEN_PER), 11, 1, 0x1);
+> > +	sr32(CM_REG(ICLKEN_PER), 11, 1, 0x1);
+> > +#endif
+> >  #ifdef CONFIG_OMAP_CLOCK_I2C
+> >  	/* Turn on all 3 I2C clocks */
+> >  	sr32(CM_REG(FCLKEN1_CORE), 15, 3, 0x7);
+> >  	sr32(CM_REG(ICLKEN1_CORE), 15, 3, 0x7);	/* I2C1,2,3 = on */
+> >  #endif
+> > +#ifdef CONFIG_OMAP_CLOCK_MMC1
+> no ifdef anymore
+> 
+> please use if (IS_ENABLE())
 
-The structs are only used for addresses, all accesses use readl/writel.
+Ok. I thought IS_ENABLE was only available in next. I need this stack to work
+on v2012.09, so I avoided it.
 
-> and did you test it with mmu?
+Will change it for the next version.
 
-Yes, the whole series is used with MMU.
-
-Regards,
+Thanks,
 Jan
+
 -- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
