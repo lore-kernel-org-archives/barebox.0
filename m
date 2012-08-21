@@ -1,22 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo1.mail-out.ovh.net ([46.105.35.72]
+Received: from 8.mo1.mail-out.ovh.net ([178.33.110.239]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T3nNW-0003VH-N6
- for barebox@lists.infradead.org; Tue, 21 Aug 2012 12:16:16 +0000
+ id 1T3o8T-0003PV-0g
+ for barebox@lists.infradead.org; Tue, 21 Aug 2012 13:04:46 +0000
 Received: from mail31.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 6A44CFF9142
- for <barebox@lists.infradead.org>; Tue, 21 Aug 2012 14:23:14 +0200 (CEST)
-Date: Tue, 21 Aug 2012 14:16:25 +0200
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 1249DFF9175
+ for <barebox@lists.infradead.org>; Tue, 21 Aug 2012 15:11:45 +0200 (CEST)
+Date: Tue, 21 Aug 2012 15:04:56 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120821121625.GG6271@game.jcrosoft.org>
+Message-ID: <20120821130456.GH6271@game.jcrosoft.org>
 References: <1345472428-17417-1-git-send-email-jlu@pengutronix.de>
- <1345472428-17417-7-git-send-email-jlu@pengutronix.de>
- <20120820144700.GY6271@game.jcrosoft.org>
- <20120821065950.GC15318@pengutronix.de>
+ <1345472428-17417-3-git-send-email-jlu@pengutronix.de>
+ <20120820144048.GW6271@game.jcrosoft.org>
+ <20120821065134.GA15318@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120821065950.GC15318@pengutronix.de>
+In-Reply-To: <20120821065134.GA15318@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,22 +29,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 06/13] drivers/net: add driver for the EMAC device
- found in some TI SoCs
+Subject: Re: [PATCH 02/13] scripts: add tool to create image for SPI boot
+ on AM35xx
 To: Jan Luebbe <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 08:59 Tue 21 Aug     , Jan Luebbe wrote:
-> On Mon, Aug 20, 2012 at 04:47:00PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On 08:51 Tue 21 Aug     , Jan Luebbe wrote:
+> On Mon, Aug 20, 2012 at 04:40:48PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > > On 16:20 Mon 20 Aug     , Jan Luebbe wrote:
-> > > +	/* EMAC Addresses */
-> > > +	emac_regs	*adap_emac; /* = (emac_regs *)EMAC_BASE_ADDR; */
-> > > +	ewrap_regs	*adap_ewrap; /* = (ewrap_regs *)EMAC_WRAPPER_BASE_ADDR; */
-> > > +	mdio_regs	*adap_mdio; /* = (mdio_regs *)EMAC_MDIO_BASE_ADDR; */
-> > please use linux and not the struct for regs
+> > > --- a/arch/arm/Makefile
+> > > +++ b/arch/arm/Makefile
+> > > @@ -186,6 +186,14 @@ endif
+> > >  
+> > >  all: $(KBUILD_IMAGE)
+> > >  
+> > > +barebox.spi: barebox.bin
+> > > +	@echo "  SPI    " $@
+> > > +	$(Q)scripts/mk-am35xx-spi-image barebox.bin > barebox.spi
+> > you need to use cmd_ style and be in sync wtih the next branch
 > 
-> The structs are only used for addresses, all accesses use readl/writel.
-use offset not struct stuff wish are a meessup to maintain
+> Ok.
+> 
+> > > +
+> > > +	/* image size */
+> > > +	temp = htobe32((uint32_t)pos);
+> > > +	fwrite(&temp, sizeof(uint32_t), 1, stdout);
+> > > +
+> > > +	/* memory address */
+> > > +	temp = htobe32(addr);
+> > > +	fwrite(&temp, sizeof(uint32_t), 1, stdout);
+> > why this??
+> > 
+> > you just need to create a PRE_IMAGE
+> > 
+> > so no need ot this
+> 
+> What do you mean by PRE_IMAGE?
+> 
+> The image needs to be endian-swapped. Is that possible with the linker?
+you need to check the ld manual
+
+but I guess you can can via c macro
 
 Best Regards,
 J.
