@@ -2,21 +2,21 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 8.mo1.mail-out.ovh.net ([178.33.110.239]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T3nLi-00033G-IG
- for barebox@lists.infradead.org; Tue, 21 Aug 2012 12:14:23 +0000
+ id 1T3nMX-00033G-Ta
+ for barebox@lists.infradead.org; Tue, 21 Aug 2012 12:15:14 +0000
 Received: from mail31.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 74CDFFF8E20
- for <barebox@lists.infradead.org>; Tue, 21 Aug 2012 14:21:21 +0200 (CEST)
-Date: Tue, 21 Aug 2012 14:14:30 +0200
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id B8520FF8FB7
+ for <barebox@lists.infradead.org>; Tue, 21 Aug 2012 14:22:14 +0200 (CEST)
+Date: Tue, 21 Aug 2012 14:15:26 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120821121430.GE6271@game.jcrosoft.org>
+Message-ID: <20120821121526.GF6271@game.jcrosoft.org>
 References: <1345472428-17417-1-git-send-email-jlu@pengutronix.de>
- <1345472428-17417-9-git-send-email-jlu@pengutronix.de>
- <20120820145831.GA6271@game.jcrosoft.org>
- <20120821071623.GE15318@pengutronix.de>
+ <1345472428-17417-8-git-send-email-jlu@pengutronix.de>
+ <20120820144755.GZ6271@game.jcrosoft.org>
+ <20120821070841.GD15318@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120821071623.GE15318@pengutronix.de>
+In-Reply-To: <20120821070841.GD15318@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,49 +29,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 08/13] drivers/spi: add driver for the Multichannel SPI
- controller found in TI SoCs
+Subject: Re: [PATCH 07/13] omap3: allow enabling clocks for UART3, MMC1 and SPI
 To: Jan Luebbe <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 09:16 Tue 21 Aug     , Jan Luebbe wrote:
-> On Mon, Aug 20, 2012 at 04:58:31PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On 09:08 Tue 21 Aug     , Jan Luebbe wrote:
+> On Mon, Aug 20, 2012 at 04:47:55PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > > On 16:20 Mon 20 Aug     , Jan Luebbe wrote:
-> > > +int mcspi_devices_init()
-> > > +{
-> > > +	add_generic_device("omap3_spi", 1, NULL, OMAP3_MCSPI1_BASE, SZ_4K,
-> > > +			   IORESOURCE_MEM, NULL);
-> > > +	add_generic_device("omap3_spi", 2, NULL, OMAP3_MCSPI2_BASE, SZ_4K,
-> > > +			   IORESOURCE_MEM, NULL);
-> > > +	add_generic_device("omap3_spi", 3, NULL, OMAP3_MCSPI3_BASE, SZ_4K,
-> > > +			   IORESOURCE_MEM, NULL);
-> > > +	add_generic_device("omap3_spi", 4, NULL, OMAP3_MCSPI4_BASE, SZ_4K,
-> > > +			   IORESOURCE_MEM, NULL);
-> > why do you register all of them??
+> > > --- a/arch/arm/mach-omap/omap3_clock.c
+> > > +++ b/arch/arm/mach-omap/omap3_clock.c
+> > > @@ -679,11 +679,26 @@ static void per_clocks_enable(void)
+> > >  	sr32(CM_REG(FCLKEN1_CORE), 13, 1, 0x1);
+> > >  	sr32(CM_REG(ICLKEN1_CORE), 13, 1, 0x1);
+> > >  #endif
+> > > +#ifdef CONFIG_OMAP_CLOCK_UART3
+> > > +	/* Enable UART3 clocks */
+> > > +	sr32(CM_REG(FCLKEN_PER), 11, 1, 0x1);
+> > > +	sr32(CM_REG(ICLKEN_PER), 11, 1, 0x1);
+> > > +#endif
+> > >  #ifdef CONFIG_OMAP_CLOCK_I2C
+> > >  	/* Turn on all 3 I2C clocks */
+> > >  	sr32(CM_REG(FCLKEN1_CORE), 15, 3, 0x7);
+> > >  	sr32(CM_REG(ICLKEN1_CORE), 15, 3, 0x7);	/* I2C1,2,3 = on */
+> > >  #endif
+> > > +#ifdef CONFIG_OMAP_CLOCK_MMC1
+> > no ifdef anymore
 > > 
-> > you need to register only what the board need
+> > please use if (IS_ENABLE())
 > 
-> Would you prefer having separeate mcspc1-4_device_init functions? Or simply
-> call add_generic_device in the board code?
-as on imx an inluine for each
+> Ok. I thought IS_ENABLE was only available in next. I need this stack to work
+> on v2012.09, so I avoided it.
 > 
-> > > +
-> > > +	return 0;
-> > > +}
-> > > diff --git a/arch/arm/mach-omap/include/mach/mcspi.h b/arch/arm/mach-omap/include/mach/mcspi.h
-> > > new file mode 100644
-> > > index 0000000..40ee622
-> > > --- /dev/null
-> > > +++ b/arch/arm/mach-omap/include/mach/mcspi.h
-> > > @@ -0,0 +1,11 @@
-> > > +#ifndef __OMAP_MCSPI_H
-> > > +#define  __OMAP_MCSPI_H
-> > > +
-> > > +#define OMAP3_MCSPI1_BASE       0x48098000
-> > > +#define OMAP3_MCSPI2_BASE       0x4809A000
-> > > +#define OMAP3_MCSPI3_BASE       0x480B8000
-> > > +#define OMAP3_MCSPI4_BASE       0x480BA000
-please use tab for indent
+> Will change it for the next version.
+for mainline must
 
 Best Regards,
 J.
