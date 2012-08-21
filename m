@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T3iOg-0003Ur-VP
- for barebox@lists.infradead.org; Tue, 21 Aug 2012 06:57:08 +0000
-Date: Tue, 21 Aug 2012 08:55:59 +0200
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1T3iRN-0007KN-Vj
+ for barebox@lists.infradead.org; Tue, 21 Aug 2012 06:59:54 +0000
+Date: Tue, 21 Aug 2012 08:59:50 +0200
 From: Jan Luebbe <jlu@pengutronix.de>
-Message-ID: <20120821065559.GB15318@pengutronix.de>
+Message-ID: <20120821065950.GC15318@pengutronix.de>
 References: <1345472428-17417-1-git-send-email-jlu@pengutronix.de>
- <1345472428-17417-4-git-send-email-jlu@pengutronix.de>
- <20120820144225.GX6271@game.jcrosoft.org>
+ <1345472428-17417-7-git-send-email-jlu@pengutronix.de>
+ <20120820144700.GY6271@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120820144225.GX6271@game.jcrosoft.org>
+In-Reply-To: <20120820144700.GY6271@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,42 +24,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 03/13] common: split out meminfo output and make it
- optional
+Subject: Re: [PATCH 06/13] drivers/net: add driver for the EMAC device found
+ in some TI SoCs
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Aug 20, 2012 at 04:42:25PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Mon, Aug 20, 2012 at 04:47:00PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > On 16:20 Mon 20 Aug     , Jan Luebbe wrote:
-> > --- /dev/null
-> > +++ b/common/meminfo.c
-> > @@ -0,0 +1,21 @@
-> > +#include <common.h>
-> > +#include <memory.h>
-> > +#include <asm-generic/memory_layout.h>
-> > +
-> > +void display_meminfo(void)
-> > +{
-> > +	ulong mstart = mem_malloc_start();
-> > +	ulong mend   = mem_malloc_end();
-> > +	ulong msize  = mend - mstart + 1;
-> > +
-> > +	debug("barebox code: 0x%p -> 0x%p\n", _stext, _etext);
-> > +	debug("bss segment:  0x%p -> 0x%p\n", __bss_start, __bss_stop);
-> > +	printf("Malloc space: 0x%08lx -> 0x%08lx (size %s)\n",
-> > +		mstart, mend, size_human_readable(msize));
-> > +#ifdef CONFIG_ARM
-> > +	printf("Stack space : 0x%08x -> 0x%08x (size %s)\n",
-> > +		STACK_BASE, STACK_BASE + STACK_SIZE,
-> > +		size_human_readable(STACK_SIZE));
-> > +#endif
-> > +}
-> 
-> so move it as a late_initcall
+> > +	/* EMAC Addresses */
+> > +	emac_regs	*adap_emac; /* = (emac_regs *)EMAC_BASE_ADDR; */
+> > +	ewrap_regs	*adap_ewrap; /* = (ewrap_regs *)EMAC_WRAPPER_BASE_ADDR; */
+> > +	mdio_regs	*adap_mdio; /* = (mdio_regs *)EMAC_MDIO_BASE_ADDR; */
+> please use linux and not the struct for regs
 
-Ok. Then I'll remove the call from startup.c completely.
+The structs are only used for addresses, all accesses use readl/writel.
 
-Thanks,
+> and did you test it with mmu?
+
+Yes, the whole series is used with MMU.
+
+Regards,
 Jan
 -- 
 Pengutronix e.K.                           |                             |
