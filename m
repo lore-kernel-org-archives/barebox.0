@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T4m6Y-0007Kq-Pz
- for barebox@lists.infradead.org; Fri, 24 Aug 2012 05:06:47 +0000
+ id 1T4m6a-0007LM-AB
+ for barebox@lists.infradead.org; Fri, 24 Aug 2012 05:06:50 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 31088DC0F68
- for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 07:11:44 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 5F52FDC0FC4
+ for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 07:11:45 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 24 Aug 2012 07:06:51 +0200
-Message-Id: <1345784816-31344-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 24 Aug 2012 07:06:56 +0200
+Message-Id: <1345784816-31344-7-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1345784816-31344-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120824050332.GK6271@game.jcrosoft.org>
  <1345784816-31344-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,86 +26,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] dhcp: add alternative var support
+Subject: [PATCH 7/7] defaultenv-2: add symbolic link support to boot/nfs
 To: barebox@lists.infradead.org
-
-This is need for the defaultenv-2 to add the bootp suppport.
-As now the hostname is store in global.hostname not hostname.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- net/dhcp.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ defaultenv-2/base/boot/nfs |   55 +++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 52 insertions(+), 3 deletions(-)
 
-diff --git a/net/dhcp.c b/net/dhcp.c
-index 51c4283..b32af6a 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -110,6 +110,7 @@ struct dhcp_opt {
- 	unsigned char option;
- 	/* request automatically the option when creating the DHCP request */
- 	bool optional;
-+	bool copy_only_if_valid;
- 	const char *barebox_var_name;
- 	const char *barebox_var_alt_name;
- 	const char *barebox_dhcp_global;
-@@ -153,7 +154,13 @@ static void env_str_handle(struct dhcp_opt *opt, unsigned char *popt, int optlen
+diff --git a/defaultenv-2/base/boot/nfs b/defaultenv-2/base/boot/nfs
+index 248f975..a33a21c 100644
+--- a/defaultenv-2/base/boot/nfs
++++ b/defaultenv-2/base/boot/nfs
+@@ -43,6 +43,18 @@ if [ -n "${global.dhcp.bootfile}" ]; then
+ 	mount -t nfs "${eth0.serverip}:${mnt}" "${path}"
  
- 	memcpy(tmp, popt, optlen);
- 	tmp[optlen] = 0;
+ 	global.bootm.image="${path}/${bootfile}"
 +
-+	if (opt->copy_only_if_valid && !strlen(tmp))
-+		return;
++	if [ -L "${global.bootm.image}" ]; then
++		readlink -f "${global.bootm.image}" bootfile_symlink
 +
- 	setenv(opt->barebox_var_name, tmp);
-+	if (opt->barebox_var_alt_name)
-+		setenv(opt->barebox_var_alt_name, tmp);
- 	if (opt->barebox_dhcp_global)
- 		dhcp_set_barebox_global(opt->barebox_dhcp_global, tmp);
- 
-@@ -207,8 +214,10 @@ struct dhcp_opt dhcp_options[] = {
- 		.barebox_var_name = "net.nameserver",
- 	}, {
- 		.option = 12,
-+		.copy_only_if_valid = 1,
- 		.handle = env_str_handle,
- 		.barebox_var_name = "hostname",
-+		.barebox_var_alt_name = "global.hostname",
- 	}, {
- 		.option = 15,
- 		.handle = env_str_handle,
-@@ -263,6 +272,9 @@ static int dhcp_set_string_options(struct dhcp_param *param, u8 *e)
- 	if (!str && param->barebox_var_name)
- 		str = (char*)getenv(param->barebox_var_name);
- 
-+	if (!str && param->barebox_var_alt_name)
-+		str = (char*)getenv(param->barebox_var_alt_name);
++		dirname -V "${bootfile_symlink}" mnt
++		basename "${bootfile_symlink}" bootfile
 +
- 	if (!str && param->barebox_dhcp_global)
- 		str = (char*)dhcp_get_barebox_global(param->barebox_dhcp_global);
++		umount "${path}"
++		mount -t nfs "${eth0.serverip}:${mnt}" "${path}"
++
++		global.bootm.image="${path}/${bootfile}"
++	fi
+ fi
  
-@@ -291,6 +303,7 @@ struct dhcp_param dhcp_params[] = {
- 		.option = DHCP_HOSTNAME,
- 		.handle = dhcp_set_string_options,
- 		.barebox_var_name = "hostname",
-+		.barebox_var_alt_name = "global.hostname",
- 	}, {
- 		.option = DHCP_VENDOR_ID,
- 		.handle = dhcp_set_string_options,
-@@ -655,10 +668,12 @@ static void dhcp_reset_env(void)
+ if [ -n "${global.dhcp.oftree_file}" ]; then
+@@ -61,13 +73,50 @@ if [ -n "${global.dhcp.oftree_file}" ]; then
+ 	mount -t nfs "${eth0.serverip}:${mnt}" "${path}"
  
- 	for (i = 0; i < ARRAY_SIZE(dhcp_options); i++) {
- 		opt = &dhcp_options[i];
--		if (!opt->barebox_var_name)
-+		if (!opt->barebox_var_name || opt->copy_only_if_valid)
- 			continue;
+ 	global.bootm.oftree="${path}/${bootfile}"
++
++	if [ -L "${global.bootm.oftree}" ]; then
++		readlink -f "${global.bootm.oftree}" oftree_symlink
++
++		dirname -V "${oftree_symlink}" mnt
++		basename "${oftree_symlink}" bootfile
++
++		umount "${path}"
++		mount -t nfs "${eth0.serverip}:${mnt}" "${path}"
++
++		global.bootm.oftree="${path}/${bootfile}"
++	fi
++fi
++
++if [ ${global.allow_color} = "true" ]; then
++	blue="\e[1;36m"
++	normal="\e[0m"
+ fi
  
- 		setenv(opt->barebox_var_name,"");
-+		if (opt->barebox_var_alt_name)
-+			setenv(opt->barebox_var_alt_name,"");
- 		if (opt->barebox_dhcp_global)
- 			dhcp_set_barebox_global(opt->barebox_dhcp_global,"");
- 	}
+ if [ x${bootp} = x1 ]; then
+ 	echo "Boot via bootp/dhcp on server ${eth0.serverip}"
+-	[ -n "${global.dhcp.bootfile}" ] && echo "bootm.image => ${global.dhcp.bootfile}"
+-	[ -n "${global.dhcp.oftree_file}" ] && echo "bootm.oftree => ${global.dhcp.oftree_file}"
+-	[ -n "${global.dhcp.rootpath}" ] && echo "nfsroot => ${global.dhcp.rootpath}"
++	if [ -n "${global.dhcp.bootfile}" ]; then
++		echo -n "bootm.image => "
++		if [ "x${bootfile_symlink}" != x ]; then
++			echo -e -n "${blue}${global.dhcp.bootfile}${normal}"
++			echo -n " -> ${bootfile_symlink}"
++		else
++			echo -n "${global.dhcp.bootfile}"
++		fi
++		echo ""
++	fi
++
++	if [ -n "${global.dhcp.oftree_file}" ]; then
++		echo "bootm.oftree => "
++		if [ "x${oftree_symlink}" != x ]; then
++			echo -e -n "${blue}${global.dhcp.oftree_file}${normal}"
++			echo -n " -> ${oftree_symlink}"
++		else
++			echo -n "${global.dhcp.oftree_file}"
++		fi
++		echo ""
++	fi
++
++	[ -n "${global.dhcp.rootpath}" ] && echo "nfsroot -> ${global.dhcp.rootpath}"
+ fi
+ 
+ bootargs-ip
 -- 
 1.7.10.4
 
