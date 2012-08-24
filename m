@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
+Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T4lmW-0005lB-VT
- for barebox@lists.infradead.org; Fri, 24 Aug 2012 04:46:07 +0000
+ id 1T4lqT-0005oy-VD
+ for barebox@lists.infradead.org; Fri, 24 Aug 2012 04:50:11 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 1425ADC0F8C
- for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 06:50:59 +0200 (CEST)
-Date: Fri, 24 Aug 2012 06:46:13 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 91D91DC0FA3
+ for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 06:55:06 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120824044613.GI6271@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Fri, 24 Aug 2012 06:50:05 +0200
+Message-Id: <1345783818-28784-5-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20120824044613.GI6271@game.jcrosoft.org>
+ <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,94 +21,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/18] fs: add symlink and readlink support
+Subject: [PATCH 05/18] fs: open: add symlink support
 To: barebox@lists.infradead.org
 
-HI,
-
-please pull
-The following changes since commit b77300ac6c6bbbc7eac774ff0076c7c05d39735f:
-
-  command/mount: add autodetection support (2012-08-21 18:53:00 +0800)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git tags/fs-symlink
-
-for you to fetch changes up to 64adf688f4f8cc6c0b7e1f3c4da29e881524c5f0:
-
-  defautenv: add support of symlink (2012-08-23 21:31:57 +0800)
-
-----------------------------------------------------------------
-fs: add symlink and readlink support
-
-This patch series introduce the support of symlink and readlink at
-
-1) vfs level
-
-2) libc API
- - symlink
- - readlink
-
-3) commands
- - ln
- - readlink
-
-3) filesystem
- - ramfs
- - nfs
- - envfs
-
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ fs/fs.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (18):
-      fs: add readlink support
-      fs: rename stat to lstat as we implement lstat
-      fs: add symlink support
-      fs: implement stat
-      fs: open: add symlink support
-      fs: introduce get_mounted_path to get the path where a file is mounted
-      ramfs: add symlink and readlink support
-      nfs: add readlink support
-      test: add -L support to test if it's a symbolic link
-      commands: add readlink support
-      command: add ln support
-      ls: add symlink support to -l
-      dirname: add -V option to return only path related to the mountpoint
-      recursive_action: add ACTION_FOLLOWLINKS support
-      evnfs: introduce major and minor
-      envfs: add support of variable inode size
-      envfs: add support of symlink
-      defautenv: add support of symlink
+diff --git a/fs/fs.c b/fs/fs.c
+index 9f2e82c..ca6340c 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -606,13 +606,20 @@ int open(const char *pathname, int flags, ...)
+ 	struct fs_device_d *fsdev;
+ 	struct fs_driver_d *fsdrv;
+ 	FILE *f;
+-	int exist_err;
++	int exist_err = 0;
+ 	struct stat s;
+-	char *path = normalise_path(pathname);
+-	char *freep = path;
++	char *path;
++	char *freep;
+ 	int ret;
+ 
+-	exist_err = lstat(path, &s);
++	path = realfile(pathname, &s);
++
++	if (IS_ERR(path)) {
++		exist_err = PTR_ERR(path);
++		path = normalise_path(pathname);
++	}
++
++	freep = path;
+ 
+ 	if (!exist_err && S_ISDIR(s.st_mode)) {
+ 		ret = -EISDIR;
+-- 
+1.7.10.4
 
- commands/Kconfig       |   10 ++++++++
- commands/Makefile      |    2 ++
- commands/dirname.c     |   24 +++++++++++++++---
- commands/ln.c          |   51 +++++++++++++++++++++++++++++++++++++
- commands/ls.c          |   29 +++++++++++++--------
- commands/readlink.c    |   78 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- commands/test.c        |   11 ++++++--
- common/Makefile        |    2 +-
- common/environment.c   |  150 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------------
- fs/fs.c                |  234 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
- fs/nfs.c               |   93 +++++++++++++++++++++++++++++++++++++++++++++++--------------------
- fs/ramfs.c             |   53 +++++++++++++++++++++++++++++++++-----
- include/envfs.h        |   15 +++++++++--
- include/fs.h           |   13 ++++++++++
- include/libbb.h        |    2 +-
- lib/recursive_action.c |    7 ++++-
- scripts/bareboxenv.c   |    2 +-
- 17 files changed, 675 insertions(+), 101 deletions(-)
- create mode 100644 commands/ln.c
- create mode 100644 commands/readlink.c
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
