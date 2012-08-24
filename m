@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T4lqX-0005qk-P6
- for barebox@lists.infradead.org; Fri, 24 Aug 2012 04:50:19 +0000
+ id 1T4lqV-0005pm-8x
+ for barebox@lists.infradead.org; Fri, 24 Aug 2012 04:50:13 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id EC544DC0FC1
- for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 06:55:09 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id C4FA4DC0FA7
+ for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 06:55:06 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 24 Aug 2012 06:50:12 +0200
-Message-Id: <1345783818-28784-12-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 24 Aug 2012 06:50:06 +0200
+Message-Id: <1345783818-28784-6-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120824044613.GI6271@game.jcrosoft.org>
  <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,116 +26,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/18] ls: add symlink support to -l
+Subject: [PATCH 06/18] fs: introduce get_mounted_path to get the path where a
+ file is mounted
 To: barebox@lists.infradead.org
-
-barebox:/ ls -l /env/init.d/
-drwxrwxrwx          0 .
-drwxrwxrwx          0 ..
-lrwxrwxrwx         11 net -> ../boot/net
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/ls.c |   29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ fs/fs.c      |    9 +++++++++
+ include/fs.h |    2 ++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/commands/ls.c b/commands/ls.c
-index fbcbadc..8c14cd1 100644
---- a/commands/ls.c
-+++ b/commands/ls.c
-@@ -29,13 +29,22 @@
- #include <getopt.h>
- #include <stringlist.h>
- 
--static void ls_one(const char *path, struct stat *s)
-+static void ls_one(const char *path, const char* fullname, struct stat *s)
- {
- 	char modestr[11];
- 	unsigned int namelen = strlen(path);
- 
- 	mkmodestr(s->st_mode, modestr);
--	printf("%s %10llu %*.*s\n", modestr, s->st_size, namelen, namelen, path);
-+	printf("%s %10llu %*.*s", modestr, s->st_size, namelen, namelen, path);
-+
-+	if (S_ISLNK(s->st_mode)) {
-+		char realname[PATH_MAX];
-+
-+		if (readlink(fullname, realname, PATH_MAX) >= 0)
-+			printf(" -> %s", realname);
-+	}
-+
-+	puts("\n");
+diff --git a/fs/fs.c b/fs/fs.c
+index ca6340c..8ec368c 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -242,6 +242,15 @@ static struct fs_device_d *get_fsdevice_by_path(const char *path)
+ 	return fs_dev_root;
  }
  
- int ls(const char *path, ulong flags)
-@@ -48,14 +57,14 @@ int ls(const char *path, ulong flags)
++char* get_mounted_path(const char *path)
++{
++	struct fs_device_d *fdev;
++
++	fdev = get_fsdevice_by_path(path);
++
++	return fdev->path;
++}
++
+ static FILE files[MAX_FILES];
  
- 	string_list_init(&sl);
+ static FILE *get_file(void)
+diff --git a/include/fs.h b/include/fs.h
+index 263823a..19b4418 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -174,6 +174,8 @@ void *read_file(const char *filename, size_t *size);
+ char *normalise_path(const char *path);
+ char *normalise_link(const char *pathname, const char* symlink);
  
--	if (stat(path, &s))
-+	if (lstat(path, &s))
- 		return -errno;
++char* get_mounted_path(const char *path);
++
+ /* Register a new filesystem driver */
+ int register_fs_driver(struct fs_driver_d *fsdrv);
  
- 	if (flags & LS_SHOWARG && s.st_mode & S_IFDIR)
- 		printf("%s:\n", path);
- 
- 	if (!(s.st_mode & S_IFDIR)) {
--		ls_one(path, &s);
-+		ls_one(path, path, &s);
- 		return 0;
- 	}
- 
-@@ -65,12 +74,12 @@ int ls(const char *path, ulong flags)
- 
- 	while ((d = readdir(dir))) {
- 		sprintf(tmp, "%s/%s", path, d->d_name);
--		if (stat(tmp, &s))
-+		if (lstat(tmp, &s))
- 			goto out;
- 		if (flags & LS_COLUMN)
- 			string_list_add_sorted(&sl, d->d_name);
- 		else
--			ls_one(d->d_name, &s);
-+			ls_one(d->d_name, tmp, &s);
- 	}
- 
- 	closedir(dir);
-@@ -97,7 +106,7 @@ int ls(const char *path, ulong flags)
- 			continue;
- 		sprintf(tmp, "%s/%s", path, d->d_name);
- 
--		if (stat(tmp, &s))
-+		if (lstat(tmp, &s))
- 			goto out;
- 		if (s.st_mode & S_IFDIR) {
- 			char *norm = normalise_path(tmp);
-@@ -146,7 +155,7 @@ static int do_ls(int argc, char *argv[])
- 
- 	/* first pass: all files */
- 	while (o < argc) {
--		ret = stat(argv[o], &s);
-+		ret = lstat(argv[o], &s);
- 		if (ret) {
- 			printf("%s: %s: %s\n", argv[0],
- 					argv[o], errno_str());
-@@ -158,7 +167,7 @@ static int do_ls(int argc, char *argv[])
- 			if (flags & LS_COLUMN)
- 				string_list_add_sorted(&sl, argv[o]);
- 			else
--				ls_one(argv[o], &s);
-+				ls_one(argv[o], argv[o], &s);
- 		}
- 
- 		o++;
-@@ -173,7 +182,7 @@ static int do_ls(int argc, char *argv[])
- 
- 	/* second pass: directories */
- 	while (o < argc) {
--		ret = stat(argv[o], &s);
-+		ret = lstat(argv[o], &s);
- 		if (ret) {
- 			o++;
- 			continue;
 -- 
 1.7.10.4
 
