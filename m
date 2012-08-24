@@ -2,16 +2,17 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T4lqT-0005ou-VA
- for barebox@lists.infradead.org; Fri, 24 Aug 2012 04:50:12 +0000
+ id 1T4lqW-0005qC-Dq
+ for barebox@lists.infradead.org; Fri, 24 Aug 2012 04:50:16 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 94F63DC0F28
- for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 06:55:05 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 4B660DC0FAF
+ for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 06:55:07 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 24 Aug 2012 06:50:01 +0200
-Message-Id: <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20120824044613.GI6271@game.jcrosoft.org>
+Date: Fri, 24 Aug 2012 06:50:08 +0200
+Message-Id: <1345783818-28784-8-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120824044613.GI6271@game.jcrosoft.org>
+ <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,108 +26,132 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/18] fs: add readlink support
+Subject: [PATCH 08/18] nfs: add readlink support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- fs/fs.c      |   59 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/fs.h |    5 +++++
- 2 files changed, 64 insertions(+)
+ fs/nfs.c |   93 +++++++++++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 65 insertions(+), 28 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 8ab1a3a..64a0d94 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -890,6 +890,65 @@ int close(int fd)
+diff --git a/fs/nfs.c b/fs/nfs.c
+index 79e667f..a4e1f91 100644
+--- a/fs/nfs.c
++++ b/fs/nfs.c
+@@ -605,34 +605,6 @@ static int nfs_read_req(struct file_priv *priv, int offset, int readlen)
+ 	return 0;
  }
- EXPORT_SYMBOL(close);
  
-+ssize_t readlink(const char *pathname, char *buf, size_t bufsiz)
-+{
-+	struct fs_driver_d *fsdrv;
-+	struct fs_device_d *fsdev;
-+	char *p = normalise_path(pathname);
-+	char *freep = p;
-+	int ret;
-+	size_t len = 0;
-+	char tmp[PATH_MAX];
-+
-+	tmp[0] = 0;
-+	buf[0] = 0;
-+
-+	ret = path_check_prereq(pathname, S_IFLNK);
-+	if (ret)
-+		goto out;
-+
-+	fsdev = get_fs_device_and_root_path(&p);
-+	if (!fsdev) {
-+		ret = -ENODEV;
-+		goto out;
-+	}
-+	fsdrv = fsdev->driver;
-+
-+	len = min(bufsiz, (size_t)PATH_MAX);
-+	if (fsdrv->readlink) {
-+		ret = fsdrv->readlink(&fsdev->dev, p, tmp, len);
-+	} else {
-+		ret = -EROFS;
-+		goto out;
-+	}
-+
-+	if (ret)
-+		goto out;
-+
-+	if (tmp[0] == '/') {
-+		int l = strlen(fsdev->path);
-+
-+		if (fsdev->path[l - 1] == '/')
-+			l--;
-+
-+		if (l) {
-+			len -= l;
-+			strncat(buf, fsdev->path, l);
-+		}
-+	}
-+
-+	strncat(buf, tmp, len);
-+
-+out:
-+	free(freep);
-+
-+	if (ret)
-+		errno = -ret;
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL(readlink);
-+
- static int fs_match(struct device_d *dev, struct driver_d *drv)
+-#if 0
+-static int nfs_readlink_reply(unsigned char *pkt, unsigned len)
+-{
+-	uint32_t *data;
+-	char *path;
+-	int rlen;
+-//	int ret;
+-
+-	data = (uint32_t *)(pkt + sizeof(struct rpc_reply));
+-
+-	data++;
+-
+-	rlen = ntohl(net_read_uint32(data)); /* new path length */
+-
+-	data++;
+-	path = (char *)data;
+-
+-	if (*path != '/') {
+-		strcat(nfs_path, "/");
+-		strncat(nfs_path, path, rlen);
+-	} else {
+-		memcpy(nfs_path, path, rlen);
+-		nfs_path[rlen] = 0;
+-	}
+-	return 0;
+-}
+-#endif
+-
+ static void nfs_handler(void *ctx, char *packet, unsigned len)
  {
- 	return strcmp(dev->name, drv->name) ? -1 : 0;
-diff --git a/include/fs.h b/include/fs.h
-index 22470e6..4c5a444 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -51,6 +51,9 @@ struct fs_driver_d {
- 	/* Truncate a file to given size */
- 	int (*truncate)(struct device_d *dev, FILE *f, ulong size);
+ 	char *pkt = net_eth_to_udp_payload(packet);
+@@ -742,6 +714,70 @@ static struct file_priv *nfs_do_stat(struct device_d *dev, const char *filename,
+ 	return priv;
+ }
  
-+	int (*readlink)(struct device_d *dev, const char *pathname, char *name,
-+			size_t size);
++static int nfs_readlink_req(struct file_priv *priv, char* buf, size_t size)
++{
++	uint32_t data[1024];
++	uint32_t *p;
++	int len;
++	int ret;
++	char *path;
++	uint32_t *filedata;
 +
- 	int (*open)(struct device_d *dev, FILE *f, const char *pathname);
- 	int (*close)(struct device_d *dev, FILE *f);
- 	int (*read)(struct device_d *dev, FILE *f, void *buf, size_t size);
-@@ -129,6 +132,8 @@ DIR *opendir(const char *pathname);
- struct dirent *readdir(DIR *dir);
- int closedir(DIR *dir);
- 
-+ssize_t readlink(const char *path, char *buf, size_t bufsiz);
++	p = &(data[0]);
++	p = rpc_add_credentials(p);
 +
- int mount (const char *device, const char *fsname, const char *path);
- int umount(const char *pathname);
- 
++	memcpy(p, priv->filefh, NFS_FHSIZE);
++	p += (NFS_FHSIZE / 4);
++
++	len = p - &(data[0]);
++
++	ret = rpc_req(priv->npriv, PROG_NFS, NFS_READLINK, data, len);
++	if (ret)
++		return ret;
++
++	filedata = nfs_packet + sizeof(struct rpc_reply);
++	filedata++;
++
++	len = ntohl(net_read_uint32(filedata)); /* new path length */
++	filedata++;
++
++	path = (char *)filedata;
++
++	if (len > size)
++		len = size;
++
++	memcpy(buf, path, len);
++	buf[len] = 0;
++
++	return 0;
++}
++
++static int nfs_readlink(struct device_d *dev, const char *filename,
++			char *realname, size_t size)
++{
++	struct file_priv *priv;
++	int ret;
++	struct stat s;
++
++	priv = nfs_do_stat(dev, filename, &s);
++	if (IS_ERR(priv))
++		return PTR_ERR(priv);
++
++
++	if (S_ISDIR(s.st_mode))
++		strcat(realname, filename);
++	else
++		strcat(realname, dirname((char*)filename));
++
++	ret = nfs_readlink_req(priv, realname, size);
++	if (ret) {
++		nfs_do_close(priv);
++		return ret;
++	}
++
++	return 0;
++}
++
+ static int nfs_open(struct device_d *dev, FILE *file, const char *filename)
+ {
+ 	struct file_priv *priv;
+@@ -1039,6 +1075,7 @@ static struct fs_driver_d nfs_driver = {
+ 	.rmdir     = nfs_rmdir,
+ 	.write     = nfs_write,
+ 	.truncate  = nfs_truncate,
++	.readlink  = nfs_readlink,
+ 	.flags     = 0,
+ 	.drv = {
+ 		.probe  = nfs_probe,
 -- 
 1.7.10.4
 
