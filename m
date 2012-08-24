@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-iy0-f177.google.com ([209.85.210.177])
+Received: from mail-pz0-f49.google.com ([209.85.210.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T4qFY-0004eL-Fw
- for barebox@lists.infradead.org; Fri, 24 Aug 2012 09:32:21 +0000
-Received: by iaai1 with SMTP id i1so3118562iaa.36
- for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 02:32:19 -0700 (PDT)
+ id 1T4ujJ-0006yy-SP
+ for barebox@lists.infradead.org; Fri, 24 Aug 2012 14:19:22 +0000
+Received: by dajq27 with SMTP id q27so1006112daj.36
+ for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 07:19:19 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1345783818-28784-10-git-send-email-plagnioj@jcrosoft.com>
-References: <20120824044613.GI6271@game.jcrosoft.org>
- <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
- <1345783818-28784-10-git-send-email-plagnioj@jcrosoft.com>
-From: Roberto Nibali <rnibali@gmail.com>
-Date: Fri, 24 Aug 2012 11:31:59 +0200
-Message-ID: <CAONxwYO0RAf+3S3N1pXoB7VEgEsj30FOfyTHYkLYoNXMn798oA@mail.gmail.com>
+Date: Fri, 24 Aug 2012 19:49:18 +0530
+Message-ID: <CAEhpT-XD0M3hrmxANPKt2BsgFhEtdFfA4HXenqty1QGLdaeS5w@mail.gmail.com>
+From: Calvin Johnson <linux.cj@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,42 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 10/18] commands: add readlink support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Is there any way to dump more than 0x100 bytes from nand flash?
+To: barebox@lists.infradead.org
 
-Hi Jean-Christophe
+Hi,
 
-Btw, congrats on such a good and lean work on the symlink implementation!
+In U-Boot there is "nand dump <address>" command which is very useful
+to check the contents of the NAND page and OOB area.
 
-> ---
->  commands/Kconfig    |    6 ++++
->  commands/Makefile   |    1 +
->  commands/readlink.c |   78 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 85 insertions(+)
->  create mode 100644 commands/readlink.c
->
-> diff --git a/commands/Kconfig b/commands/Kconfig
-> index 92a8152..876f2f8 100644
-> --- a/commands/Kconfig
-> +++ b/commands/Kconfig
-> @@ -220,6 +220,12 @@ config CMD_DIRNAME
->           Strip last component of file name and store the result in a
->           environment variable
->
-> +config CMD_READLINK
-> +       tristate
-> +       prompt "readlink"
-> +       help
-> +         read value of a symbolic link
-> +
+I tried searching for an alternative in Barebox, and found that we can
+use some thing like "md -b -s /dev/nand0.barebox.bb". But this will
+dump only 0x100 bytes. In order to increase the size, I need to
+compile again.
 
-Just a general two cents comment: how about generally rephrasing the
-"read value of a symbolic link" to "display file status of a symbolic
-link"?
+Is there any way to dump more bytes from the NAND flash and from
+different blocks/pages?
 
-Cheers
-Roberto
+How are the experts working with this?
+
+Thanks for your help,
+Calvin
 
 _______________________________________________
 barebox mailing list
