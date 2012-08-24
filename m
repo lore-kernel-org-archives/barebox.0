@@ -2,17 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T4lqX-0005qR-C0
- for barebox@lists.infradead.org; Fri, 24 Aug 2012 04:50:16 +0000
+ id 1T4lqT-0005ou-VA
+ for barebox@lists.infradead.org; Fri, 24 Aug 2012 04:50:12 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 2E72DDC0F8C
- for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 06:55:10 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 94F63DC0F28
+ for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 06:55:05 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 24 Aug 2012 06:50:13 +0200
-Message-Id: <1345783818-28784-13-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 24 Aug 2012 06:50:01 +0200
+Message-Id: <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20120824044613.GI6271@game.jcrosoft.org>
 References: <20120824044613.GI6271@game.jcrosoft.org>
- <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,61 +25,108 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/18] dirname: add -V option to return only path related to
- the mountpoint
+Subject: [PATCH 01/18] fs: add readlink support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/dirname.c |   24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ fs/fs.c      |   59 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/fs.h |    5 +++++
+ 2 files changed, 64 insertions(+)
 
-diff --git a/commands/dirname.c b/commands/dirname.c
-index cf1d0a0..f34d88d 100644
---- a/commands/dirname.c
-+++ b/commands/dirname.c
-@@ -24,20 +24,38 @@
- #include <command.h>
- #include <libgen.h>
- #include <environment.h>
-+#include <fs.h>
-+#include <getopt.h>
+diff --git a/fs/fs.c b/fs/fs.c
+index 8ab1a3a..64a0d94 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -890,6 +890,65 @@ int close(int fd)
+ }
+ EXPORT_SYMBOL(close);
  
- static int do_dirname(int argc, char *argv[])
- {
--	if (argc != 3)
-+	int opt;
-+	int path_fs = 0;
-+	int len = 0;
++ssize_t readlink(const char *pathname, char *buf, size_t bufsiz)
++{
++	struct fs_driver_d *fsdrv;
++	struct fs_device_d *fsdev;
++	char *p = normalise_path(pathname);
++	char *freep = p;
++	int ret;
++	size_t len = 0;
++	char tmp[PATH_MAX];
 +
-+	while ((opt = getopt(argc, argv, "V")) > 0) {
-+		switch (opt) {
-+		case 'V':
-+			path_fs = 1;
-+			break;
++	tmp[0] = 0;
++	buf[0] = 0;
++
++	ret = path_check_prereq(pathname, S_IFLNK);
++	if (ret)
++		goto out;
++
++	fsdev = get_fs_device_and_root_path(&p);
++	if (!fsdev) {
++		ret = -ENODEV;
++		goto out;
++	}
++	fsdrv = fsdev->driver;
++
++	len = min(bufsiz, (size_t)PATH_MAX);
++	if (fsdrv->readlink) {
++		ret = fsdrv->readlink(&fsdev->dev, p, tmp, len);
++	} else {
++		ret = -EROFS;
++		goto out;
++	}
++
++	if (ret)
++		goto out;
++
++	if (tmp[0] == '/') {
++		int l = strlen(fsdev->path);
++
++		if (fsdev->path[l - 1] == '/')
++			l--;
++
++		if (l) {
++			len -= l;
++			strncat(buf, fsdev->path, l);
 +		}
 +	}
 +
-+	if (argc < optind + 2)
- 		return COMMAND_ERROR_USAGE;
- 
--	setenv(argv[2], dirname(argv[1]));
-+	if (path_fs)
-+		len = strlen(get_mounted_path(argv[optind]));
++	strncat(buf, tmp, len);
 +
-+	setenv(argv[optind + 1], dirname(argv[optind]) + len);
++out:
++	free(freep);
++
++	if (ret)
++		errno = -ret;
++
++	return ret;
++}
++EXPORT_SYMBOL(readlink);
++
+ static int fs_match(struct device_d *dev, struct driver_d *drv)
+ {
+ 	return strcmp(dev->name, drv->name) ? -1 : 0;
+diff --git a/include/fs.h b/include/fs.h
+index 22470e6..4c5a444 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -51,6 +51,9 @@ struct fs_driver_d {
+ 	/* Truncate a file to given size */
+ 	int (*truncate)(struct device_d *dev, FILE *f, ulong size);
  
- 	return 0;
- }
++	int (*readlink)(struct device_d *dev, const char *pathname, char *name,
++			size_t size);
++
+ 	int (*open)(struct device_d *dev, FILE *f, const char *pathname);
+ 	int (*close)(struct device_d *dev, FILE *f);
+ 	int (*read)(struct device_d *dev, FILE *f, void *buf, size_t size);
+@@ -129,6 +132,8 @@ DIR *opendir(const char *pathname);
+ struct dirent *readdir(DIR *dir);
+ int closedir(DIR *dir);
  
- BAREBOX_CMD_HELP_START(dirname)
--BAREBOX_CMD_HELP_USAGE("dirname NAME DIRNAME\n")
-+BAREBOX_CMD_HELP_USAGE("dirname [-V] NAME DIRNAME\n")
- BAREBOX_CMD_HELP_SHORT("strip last componext of NAME and store into $DIRNAME\n")
-+BAREBOX_CMD_HELP_SHORT("-V return the path relative to the mountpoint.\n")
- BAREBOX_CMD_HELP_END
++ssize_t readlink(const char *path, char *buf, size_t bufsiz);
++
+ int mount (const char *device, const char *fsname, const char *path);
+ int umount(const char *pathname);
  
- BAREBOX_CMD_START(dirname)
 -- 
 1.7.10.4
 
