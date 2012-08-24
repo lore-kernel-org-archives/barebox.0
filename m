@@ -1,24 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-iy0-f177.google.com ([209.85.210.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T4pXE-0006Bi-Ev
- for barebox@lists.infradead.org; Fri, 24 Aug 2012 08:46:33 +0000
-Received: from coredoba.hi.pengutronix.de ([2001:6f8:1178:2:219:99ff:fe56:8d7])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jlu@pengutronix.de>) id 1T4pX7-0006Dv-94
- for barebox@lists.infradead.org; Fri, 24 Aug 2012 10:46:25 +0200
-Received: from jlu by coredoba.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <jlu@pengutronix.de>) id 1T4pX8-00017F-E5
- for barebox@lists.infradead.org; Fri, 24 Aug 2012 10:46:26 +0200
-Message-ID: <1345797986.3519.4.camel@coredoba.hi.pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Fri, 24 Aug 2012 10:46:26 +0200
-In-Reply-To: <50366F9B.2080007@crane-soft.de>
-References: <4FBD05B8.40001@crane-soft.de>
- <20120524195543.GB30400@pengutronix.de> <4FBF5268.1040900@crane-soft.de>
- <20120531182724.GA30400@pengutronix.de> <4FEBFF6C.6010304@crane-soft.de>
- <20120628104341.GW1623@pengutronix.de> <50366F9B.2080007@crane-soft.de>
-Mime-Version: 1.0
+ id 1T4pst-0006ht-5V
+ for barebox@lists.infradead.org; Fri, 24 Aug 2012 09:08:55 +0000
+Received: by iaai1 with SMTP id i1so3083790iaa.36
+ for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 02:08:53 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <1345784113-29643-2-git-send-email-plagnioj@jcrosoft.com>
+References: <20120824045246.GJ6271@game.jcrosoft.org>
+ <1345784113-29643-1-git-send-email-plagnioj@jcrosoft.com>
+ <1345784113-29643-2-git-send-email-plagnioj@jcrosoft.com>
+From: Roberto Nibali <rnibali@gmail.com>
+Date: Fri, 24 Aug 2012 11:08:33 +0200
+Message-ID: <CAONxwYM8=WMNH+gYV-bUZUmpUo0jhPxY0954wbvPdF7Avif0Qw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,50 +25,175 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Booting PhyTec PCM043/IMX35  from USB/SD-Card
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/5] globalvar: add support to set a value to of all
+ globalvars beginning with 'match'
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Hi!
+Hi
 
-On Thu, 2012-08-23 at 19:59 +0200, Peter wrote:
-> I am able to boot the kernel from NOR flash and use the mmc as rootfs. However
-> I did not yet find a way to boot the kernel from the MMC. I set up the MMC
-> with 255 heads, 63 sectors/track, 245 cylinders and formated partition 1 as
-> VFAT and made it bootable. I then copied uImage to it. Partition 2 contains
-> the rootfs which can be used when booting the kernel from flash.
-> 
-> Barebox /env/config contains: (besides others)
-> ...
->  kernel_loc=disk
->  rootfs_loc=disk
->  rootfs_type=ext2
->  rootfs_part_linux_dev=mmcblk0p2
->  kernel_part=disk0.0
-> ...
-> 
-> Trying to boot results in:
-> booting kernel from /dev/disk0.0
-> 
-> and then followed by the barebox prompt.
+>  commands/global.c   |   58 ++++++++++++++++++++++++++++++++++++++++++++-------
+>  common/globalvar.c  |   10 +++++++++
+>  include/globalvar.h |    3 +++
+>  3 files changed, 64 insertions(+), 7 deletions(-)
+>
+> diff --git a/commands/global.c b/commands/global.c
+> index de6b13e..cb22e63 100644
+> --- a/commands/global.c
+> +++ b/commands/global.c
+> @@ -24,25 +24,26 @@
+>  #include <command.h>
+>  #include <globalvar.h>
+>  #include <environment.h>
+> +#include <getopt.h>
+>
+> -static int do_global(int argc, char *argv[])
+> +static int do_global_add(int argc, char *argv[])
+>  {
+>         int ret;
+>         char *value;
+>
+> -       if (argc != 2)
+> +       if (argc != 1)
+>                 return COMMAND_ERROR_USAGE;
+>
+> -       value = strchr(argv[1], '=');
+> +       value = strchr(argv[0], '=');
+>         if (value) {
+>                 *value = 0;
+>                 value++;
+>         }
+>
+> -       ret = globalvar_add_simple(argv[1]);
+> +       ret = globalvar_add_simple(argv[0]);
+>
+>         if (value) {
+> -               char *name = asprintf("global.%s", argv[1]);
+> +               char *name = asprintf("global.%s", argv[0]);
+>                 ret = setenv(name, value);
+>                 free(name);
+>         }
+> @@ -50,13 +51,56 @@ static int do_global(int argc, char *argv[])
+>         return ret ? 1 : 0;
+>  }
+>
+> +static int do_global_reset(int argc, char *argv[])
+> +{
+> +       char *value;
+> +
+> +       if (argc != 1)
+> +               return COMMAND_ERROR_USAGE;
+> +
+> +       value = strchr(argv[0], '=');
+> +       if (value) {
+> +               *value = 0;
+> +               value++;
+> +       } else {
+> +               value = "";
+> +       }
+> +
+> +       globalvar_reset_match(argv[0], value);
+> +
+> +       return 0;
+> +}
+> +
+> +static int do_global(int argc, char *argv[])
+> +{
+> +       int opt;
+> +       int do_reset = 0;
+> +
+> +       while ((opt = getopt(argc, argv, "r")) > 0) {
+> +               switch (opt) {
+> +               case 'r':
+> +                       do_reset = 1;
+> +                       break;
+> +               }
+> +       }
+> +
+> +       argc -= optind;
+> +       argv += optind;
+> +
+> +       if (do_reset)
+> +               return do_global_reset(argc, argv);
 
-You're using the old default-env which does not support uImage on FAT
-(only a kernel directly in a partition). Either switch to default-env-2
-and mount the FAT ('mount /dev/disk0.0 fat /mnt') before loading the
-kernel from /mnt/uImage.
+Since I just read the diff, I might fail to see the big picture,
+however, where's the call to globalvar_reset_match(), is it inside
+do_global_reset()?
 
-Otherwise for the old default-env take a look at
-<1345472428-17417-13-git-send-email-jlu@pengutronix.de>. Note that for
-that to work, the FAT must be mounted by the board code or you need to
-setup an automount.
+> +       return do_global_add(argc, argv);
+> +}
+> +
+>  BAREBOX_CMD_HELP_START(global)
+> -BAREBOX_CMD_HELP_USAGE("global <var>[=<value]\n")
+> +BAREBOX_CMD_HELP_USAGE("global [-r] <var>[=<value]\n")
+>  BAREBOX_CMD_HELP_SHORT("add a new global variable named <var>, optionally set to <value>\n")
+> +BAREBOX_CMD_HELP_SHORT("-r to set a value to of all globalvars beginning with 'match'")
 
-Regards,
-Jan
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Shouldn't this be REset instead of set? How about:
 
+"-r to reset all matching global variables to a value."
+
+Maybe giving an example could shed some light on the exact syntax of
+the exact kind of matching you had in mind.
+
+>  BAREBOX_CMD_HELP_END
+>
+>  BAREBOX_CMD_START(global)
+>         .cmd            = do_global,
+> -       .usage          = "create global variables",
+> +       .usage          = "create or reset global variables",
+>         BAREBOX_CMD_HELP(cmd_global_help)
+>  BAREBOX_CMD_END
+> diff --git a/common/globalvar.c b/common/globalvar.c
+> index 71296ff..99f055e 100644
+> --- a/common/globalvar.c
+> +++ b/common/globalvar.c
+> @@ -46,6 +46,16 @@ char *globalvar_get_match(const char *match, const char *seperator)
+>         return val;
+>  }
+>
+> +void globalvar_reset_match(const char *match, const char *val)
+> +{
+> +       struct param_d *param;
+> +
+> +       list_for_each_entry(param, &global_device.parameters, list) {
+> +               if (!strncmp(match, param->name, strlen(match)))
+> +                       dev_set_param(&global_device, param->name, val);
+> +       }
+> +}
+> +
+>  /*
+>   * globalvar_add_simple
+>   *
+> diff --git a/include/globalvar.h b/include/globalvar.h
+> index a127a05..1935f83 100644
+> --- a/include/globalvar.h
+> +++ b/include/globalvar.h
+> @@ -9,6 +9,7 @@ int globalvar_add(const char *name,
+>                 const char *(*get)(struct device_d *, struct param_d *p),
+>                 unsigned long flags);
+>  char *globalvar_get_match(const char *match, const char *seperator);
+> +void globalvar_reset_match(const char *match, const char *val);
+>  #else
+>  static inline int globalvar_add_simple(const char *name)
+>  {
+> @@ -27,6 +28,8 @@ static inline char *globalvar_get_match(const char *match, const char *seperator
+>  {
+>         return NULL;
+>  }
+> +
+> +static inline void globalvar_reset_match(const char *match, const char *val) {}
+>  #endif
+>
+>  #endif /* __GLOBALVAR_H */
+> --
+> 1.7.10.4
+>
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
