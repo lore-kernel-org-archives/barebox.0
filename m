@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T4cy3-0003Nz-9h
- for barebox@lists.infradead.org; Thu, 23 Aug 2012 19:21:24 +0000
-Received: by lagu2 with SMTP id u2so633318lag.36
- for <barebox@lists.infradead.org>; Thu, 23 Aug 2012 12:21:20 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 23 Aug 2012 23:21:11 +0400
-Message-Id: <1345749671-9045-1-git-send-email-antonynpavlov@gmail.com>
+Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1T4lmW-0005lB-VT
+ for barebox@lists.infradead.org; Fri, 24 Aug 2012 04:46:07 +0000
+Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 1425ADC0F8C
+ for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 06:50:59 +0200 (CEST)
+Date: Fri, 24 Aug 2012 06:46:13 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120824044613.GI6271@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,51 +20,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands/digest: don't print checksum for non-existing files
+Subject: [PATCH 00/18] fs: add symlink and readlink support
 To: barebox@lists.infradead.org
 
-This fixes the case:
+HI,
 
-  barebox:/ md5sum non-existing-file
-  non-existing-file: No such file or directory
-  00000000000000000000000000000000  non-existing-file     0x00000000 ... 0xffffffffffffffff
-  barebox:/
+please pull
+The following changes since commit b77300ac6c6bbbc7eac774ff0076c7c05d39735f:
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- commands/digest.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+  command/mount: add autodetection support (2012-08-21 18:53:00 +0800)
 
-diff --git a/commands/digest.c b/commands/digest.c
-index 07cbec9..e334a40 100644
---- a/commands/digest.c
-+++ b/commands/digest.c
-@@ -62,11 +62,13 @@ static int do_digest(char *algorithm, int argc, char *argv[])
- 
- 		if (digest_file_window(d, filename, hash, start, size) < 0)
- 			ret = 1;
-+		else {
-+			for (i = 0; i < d->length; i++)
-+				printf("%02x", hash[i]);
- 
--		for (i = 0; i < d->length; i++)
--			printf("%02x", hash[i]);
--
--		printf("  %s\t0x%08llx ... 0x%08llx\n", filename, start, start + size);
-+			printf("  %s\t0x%08llx ... 0x%08llx\n",
-+				filename, start, start + size);
-+		}
- 
- 		argv++;
- 	}
--- 
-1.7.10.4
+are available in the git repository at:
 
+  git://git.jcrosoft.org/barebox.git tags/fs-symlink
+
+for you to fetch changes up to 64adf688f4f8cc6c0b7e1f3c4da29e881524c5f0:
+
+  defautenv: add support of symlink (2012-08-23 21:31:57 +0800)
+
+----------------------------------------------------------------
+fs: add symlink and readlink support
+
+This patch series introduce the support of symlink and readlink at
+
+1) vfs level
+
+2) libc API
+ - symlink
+ - readlink
+
+3) commands
+ - ln
+ - readlink
+
+3) filesystem
+ - ramfs
+ - nfs
+ - envfs
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (18):
+      fs: add readlink support
+      fs: rename stat to lstat as we implement lstat
+      fs: add symlink support
+      fs: implement stat
+      fs: open: add symlink support
+      fs: introduce get_mounted_path to get the path where a file is mounted
+      ramfs: add symlink and readlink support
+      nfs: add readlink support
+      test: add -L support to test if it's a symbolic link
+      commands: add readlink support
+      command: add ln support
+      ls: add symlink support to -l
+      dirname: add -V option to return only path related to the mountpoint
+      recursive_action: add ACTION_FOLLOWLINKS support
+      evnfs: introduce major and minor
+      envfs: add support of variable inode size
+      envfs: add support of symlink
+      defautenv: add support of symlink
+
+ commands/Kconfig       |   10 ++++++++
+ commands/Makefile      |    2 ++
+ commands/dirname.c     |   24 +++++++++++++++---
+ commands/ln.c          |   51 +++++++++++++++++++++++++++++++++++++
+ commands/ls.c          |   29 +++++++++++++--------
+ commands/readlink.c    |   78 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ commands/test.c        |   11 ++++++--
+ common/Makefile        |    2 +-
+ common/environment.c   |  150 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------------
+ fs/fs.c                |  234 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
+ fs/nfs.c               |   93 +++++++++++++++++++++++++++++++++++++++++++++++--------------------
+ fs/ramfs.c             |   53 +++++++++++++++++++++++++++++++++-----
+ include/envfs.h        |   15 +++++++++--
+ include/fs.h           |   13 ++++++++++
+ include/libbb.h        |    2 +-
+ lib/recursive_action.c |    7 ++++-
+ scripts/bareboxenv.c   |    2 +-
+ 17 files changed, 675 insertions(+), 101 deletions(-)
+ create mode 100644 commands/ln.c
+ create mode 100644 commands/readlink.c
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
