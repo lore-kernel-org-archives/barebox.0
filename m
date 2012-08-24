@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T4lqW-0005qC-Dq
- for barebox@lists.infradead.org; Fri, 24 Aug 2012 04:50:16 +0000
+ id 1T4lqW-0005qF-OQ
+ for barebox@lists.infradead.org; Fri, 24 Aug 2012 04:50:17 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 4B660DC0FAF
- for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 06:55:07 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id C0239DC0FC0
+ for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 06:55:09 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 24 Aug 2012 06:50:08 +0200
-Message-Id: <1345783818-28784-8-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 24 Aug 2012 06:50:11 +0200
+Message-Id: <1345783818-28784-11-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120824044613.GI6271@game.jcrosoft.org>
  <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,132 +26,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/18] nfs: add readlink support
+Subject: [PATCH 11/18] command: add ln support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- fs/nfs.c |   93 +++++++++++++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 65 insertions(+), 28 deletions(-)
+ commands/Kconfig  |    4 ++++
+ commands/Makefile |    1 +
+ commands/ln.c     |   51 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 56 insertions(+)
+ create mode 100644 commands/ln.c
 
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 79e667f..a4e1f91 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -605,34 +605,6 @@ static int nfs_read_req(struct file_priv *priv, int offset, int readlen)
- 	return 0;
- }
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 876f2f8..337f545 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -57,6 +57,10 @@ config CMD_READLINE
+ 	tristate
+ 	prompt "readline"
  
--#if 0
--static int nfs_readlink_reply(unsigned char *pkt, unsigned len)
--{
--	uint32_t *data;
--	char *path;
--	int rlen;
--//	int ret;
--
--	data = (uint32_t *)(pkt + sizeof(struct rpc_reply));
--
--	data++;
--
--	rlen = ntohl(net_read_uint32(data)); /* new path length */
--
--	data++;
--	path = (char *)data;
--
--	if (*path != '/') {
--		strcat(nfs_path, "/");
--		strncat(nfs_path, path, rlen);
--	} else {
--		memcpy(nfs_path, path, rlen);
--		nfs_path[rlen] = 0;
--	}
--	return 0;
--}
--#endif
--
- static void nfs_handler(void *ctx, char *packet, unsigned len)
- {
- 	char *pkt = net_eth_to_udp_payload(packet);
-@@ -742,6 +714,70 @@ static struct file_priv *nfs_do_stat(struct device_d *dev, const char *filename,
- 	return priv;
- }
- 
-+static int nfs_readlink_req(struct file_priv *priv, char* buf, size_t size)
++config CMD_LN
++	tristate
++	prompt "ln"
++
+ config CMD_TRUE
+ 	tristate
+ 	default y
+diff --git a/commands/Makefile b/commands/Makefile
+index ab6c7ea..ccebd7f 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -73,3 +73,4 @@ obj-$(CONFIG_CMD_GLOBAL)	+= global.o
+ obj-$(CONFIG_CMD_BASENAME)	+= basename.o
+ obj-$(CONFIG_CMD_DIRNAME)	+= dirname.o
+ obj-$(CONFIG_CMD_READLINK)	+= readlink.o
++obj-$(CONFIG_CMD_LN)		+= ln.o
+diff --git a/commands/ln.c b/commands/ln.c
+new file mode 100644
+index 0000000..0237447
+--- /dev/null
++++ b/commands/ln.c
+@@ -0,0 +1,51 @@
++/*
++ * ln.c - make links between files
++ *
++ * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#include <common.h>
++#include <command.h>
++#include <libgen.h>
++#include <environment.h>
++#include <fs.h>
++#include <errno.h>
++
++static int do_ln(int argc, char *argv[])
 +{
-+	uint32_t data[1024];
-+	uint32_t *p;
-+	int len;
-+	int ret;
-+	char *path;
-+	uint32_t *filedata;
++	if (argc != 3)
++		return COMMAND_ERROR_USAGE;
 +
-+	p = &(data[0]);
-+	p = rpc_add_credentials(p);
-+
-+	memcpy(p, priv->filefh, NFS_FHSIZE);
-+	p += (NFS_FHSIZE / 4);
-+
-+	len = p - &(data[0]);
-+
-+	ret = rpc_req(priv->npriv, PROG_NFS, NFS_READLINK, data, len);
-+	if (ret)
-+		return ret;
-+
-+	filedata = nfs_packet + sizeof(struct rpc_reply);
-+	filedata++;
-+
-+	len = ntohl(net_read_uint32(filedata)); /* new path length */
-+	filedata++;
-+
-+	path = (char *)filedata;
-+
-+	if (len > size)
-+		len = size;
-+
-+	memcpy(buf, path, len);
-+	buf[len] = 0;
-+
-+	return 0;
-+}
-+
-+static int nfs_readlink(struct device_d *dev, const char *filename,
-+			char *realname, size_t size)
-+{
-+	struct file_priv *priv;
-+	int ret;
-+	struct stat s;
-+
-+	priv = nfs_do_stat(dev, filename, &s);
-+	if (IS_ERR(priv))
-+		return PTR_ERR(priv);
-+
-+
-+	if (S_ISDIR(s.st_mode))
-+		strcat(realname, filename);
-+	else
-+		strcat(realname, dirname((char*)filename));
-+
-+	ret = nfs_readlink_req(priv, realname, size);
-+	if (ret) {
-+		nfs_do_close(priv);
-+		return ret;
++	if (symlink(argv[1], argv[2]) < 0) {
++		perror("ln");
++		return 1;
 +	}
-+
 +	return 0;
 +}
 +
- static int nfs_open(struct device_d *dev, FILE *file, const char *filename)
- {
- 	struct file_priv *priv;
-@@ -1039,6 +1075,7 @@ static struct fs_driver_d nfs_driver = {
- 	.rmdir     = nfs_rmdir,
- 	.write     = nfs_write,
- 	.truncate  = nfs_truncate,
-+	.readlink  = nfs_readlink,
- 	.flags     = 0,
- 	.drv = {
- 		.probe  = nfs_probe,
++BAREBOX_CMD_HELP_START(ln)
++BAREBOX_CMD_HELP_USAGE("ln SRC DEST\n")
++BAREBOX_CMD_HELP_SHORT("symlink - make a new name for a file\n")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(ln)
++	.cmd		= do_ln,
++	.usage		= "symlink - make a new name for a file",
++	BAREBOX_CMD_HELP(cmd_ln_help)
++BAREBOX_CMD_END
 -- 
 1.7.10.4
 
