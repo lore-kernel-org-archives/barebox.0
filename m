@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T4lqY-0005rG-8J
- for barebox@lists.infradead.org; Fri, 24 Aug 2012 04:50:21 +0000
+ id 1T4lqX-0005qk-P6
+ for barebox@lists.infradead.org; Fri, 24 Aug 2012 04:50:19 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id EE651DC0FCD
- for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 06:55:10 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id EC544DC0FC1
+ for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 06:55:09 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 24 Aug 2012 06:50:17 +0200
-Message-Id: <1345783818-28784-17-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 24 Aug 2012 06:50:12 +0200
+Message-Id: <1345783818-28784-12-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120824044613.GI6271@game.jcrosoft.org>
  <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,156 +26,116 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/18] envfs: add support of symlink
+Subject: [PATCH 12/18] ls: add symlink support to -l
 To: barebox@lists.infradead.org
+
+barebox:/ ls -l /env/init.d/
+drwxrwxrwx          0 .
+drwxrwxrwx          0 ..
+lrwxrwxrwx         11 net -> ../boot/net
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/environment.c |  103 +++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 73 insertions(+), 30 deletions(-)
+ commands/ls.c |   29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/common/environment.c b/common/environment.c
-index 7cdb83a..5b9ed15 100644
---- a/common/environment.c
-+++ b/common/environment.c
-@@ -54,7 +54,20 @@ int file_size_action(const char *filename, struct stat *statbuf,
- 	data->writep += sizeof(struct envfs_inode);
- 	data->writep += PAD4(strlen(filename) + 1 - strlen(data->base));
- 	data->writep += sizeof(struct envfs_inode_end);
--	data->writep += PAD4(statbuf->st_size);
-+	if (S_ISLNK(statbuf->st_mode)) {
-+		char path[PATH_MAX];
+diff --git a/commands/ls.c b/commands/ls.c
+index fbcbadc..8c14cd1 100644
+--- a/commands/ls.c
++++ b/commands/ls.c
+@@ -29,13 +29,22 @@
+ #include <getopt.h>
+ #include <stringlist.h>
+ 
+-static void ls_one(const char *path, struct stat *s)
++static void ls_one(const char *path, const char* fullname, struct stat *s)
+ {
+ 	char modestr[11];
+ 	unsigned int namelen = strlen(path);
+ 
+ 	mkmodestr(s->st_mode, modestr);
+-	printf("%s %10llu %*.*s\n", modestr, s->st_size, namelen, namelen, path);
++	printf("%s %10llu %*.*s", modestr, s->st_size, namelen, namelen, path);
 +
-+		memset(path, 0, PATH_MAX);
++	if (S_ISLNK(s->st_mode)) {
++		char realname[PATH_MAX];
 +
-+		if (readlink(filename, path, PATH_MAX) < 0) {
-+			perror("read");
-+			return 0;
-+		}
-+		data->writep += PAD4(strlen(path) + 1);
-+	} else {
-+		data->writep += PAD4(statbuf->st_size);
++		if (readlink(fullname, realname, PATH_MAX) >= 0)
++			printf(" -> %s", realname);
 +	}
 +
- 	return 1;
++	puts("\n");
  }
  
-@@ -67,13 +80,9 @@ int file_save_action(const char *filename, struct stat *statbuf,
- 	int fd;
- 	int namelen = strlen(filename) + 1 - strlen(data->base);
+ int ls(const char *path, ulong flags)
+@@ -48,14 +57,14 @@ int ls(const char *path, ulong flags)
  
--	debug("handling file %s size %ld namelen %d\n", filename + strlen(data->base),
--		statbuf->st_size, namelen);
--
- 	inode = (struct envfs_inode*)data->writep;
- 	inode->magic = ENVFS_32(ENVFS_INODE_MAGIC);
- 	inode->headerlen = ENVFS_32(PAD4(namelen + sizeof(struct envfs_inode_end)));
--	inode->size = ENVFS_32(statbuf->st_size);
- 	data->writep += sizeof(struct envfs_inode);
+ 	string_list_init(&sl);
  
- 	strcpy(data->writep, filename + strlen(data->base));
-@@ -83,19 +92,44 @@ int file_save_action(const char *filename, struct stat *statbuf,
- 	inode_end->magic = ENVFS_32(ENVFS_INODE_END_MAGIC);
- 	inode_end->mode = ENVFS_32(S_IRWXU | S_IRWXG | S_IRWXO);
+-	if (stat(path, &s))
++	if (lstat(path, &s))
+ 		return -errno;
  
--	fd = open(filename, O_RDONLY);
--	if (fd < 0) {
--		printf("Open %s %s\n", filename, errno_str());
--		goto out;
--	}
-+	if (S_ISLNK(statbuf->st_mode)) {
-+		char path[PATH_MAX];
-+		int len;
+ 	if (flags & LS_SHOWARG && s.st_mode & S_IFDIR)
+ 		printf("%s:\n", path);
  
--	if (read(fd, data->writep, statbuf->st_size) < statbuf->st_size) {
--		perror("read");
--		goto out;
--	}
--	close(fd);
-+		memset(path, 0, PATH_MAX);
-+
-+		if (readlink(filename, path, PATH_MAX) < 0) {
-+			perror("read");
-+			goto out;
-+		}
-+		len = strlen(path) + 1;
-+
-+		inode_end->mode |= ENVFS_32(S_IFLNK);
+ 	if (!(s.st_mode & S_IFDIR)) {
+-		ls_one(path, &s);
++		ls_one(path, path, &s);
+ 		return 0;
+ 	}
  
--	data->writep += PAD4(statbuf->st_size);
-+		memcpy(data->writep, path, len);
-+		inode->size = ENVFS_32(len);
-+		data->writep += PAD4(len);
-+		debug("handling symlink %s size %ld namelen %d headerlen %d\n", filename + strlen(data->base),
-+			len, namelen, ENVFS_32(inode->headerlen));
-+	} else {
-+		debug("handling file %s size %ld namelen %d headerlen %d\n", filename + strlen(data->base),
-+			statbuf->st_size, namelen, ENVFS_32(inode->headerlen));
-+
-+		inode->size = ENVFS_32(statbuf->st_size);
-+		fd = open(filename, O_RDONLY);
-+		if (fd < 0) {
-+			printf("Open %s %s\n", filename, errno_str());
-+			goto out;
-+		}
-+
-+		if (read(fd, data->writep, statbuf->st_size) < statbuf->st_size) {
-+			perror("read");
-+			goto out;
-+		}
-+		close(fd);
-+
-+		data->writep += PAD4(statbuf->st_size);
-+	}
+@@ -65,12 +74,12 @@ int ls(const char *path, ulong flags)
  
- out:
- 	return 1;
-@@ -277,22 +311,31 @@ int envfs_load(char *filename, char *dir)
+ 	while ((d = readdir(dir))) {
+ 		sprintf(tmp, "%s/%s", path, d->d_name);
+-		if (stat(tmp, &s))
++		if (lstat(tmp, &s))
  			goto out;
+ 		if (flags & LS_COLUMN)
+ 			string_list_add_sorted(&sl, d->d_name);
+ 		else
+-			ls_one(d->d_name, &s);
++			ls_one(d->d_name, tmp, &s);
+ 	}
+ 
+ 	closedir(dir);
+@@ -97,7 +106,7 @@ int ls(const char *path, ulong flags)
+ 			continue;
+ 		sprintf(tmp, "%s/%s", path, d->d_name);
+ 
+-		if (stat(tmp, &s))
++		if (lstat(tmp, &s))
+ 			goto out;
+ 		if (s.st_mode & S_IFDIR) {
+ 			char *norm = normalise_path(tmp);
+@@ -146,7 +155,7 @@ static int do_ls(int argc, char *argv[])
+ 
+ 	/* first pass: all files */
+ 	while (o < argc) {
+-		ret = stat(argv[o], &s);
++		ret = lstat(argv[o], &s);
+ 		if (ret) {
+ 			printf("%s: %s: %s\n", argv[0],
+ 					argv[o], errno_str());
+@@ -158,7 +167,7 @@ static int do_ls(int argc, char *argv[])
+ 			if (flags & LS_COLUMN)
+ 				string_list_add_sorted(&sl, argv[o]);
+ 			else
+-				ls_one(argv[o], &s);
++				ls_one(argv[o], argv[o], &s);
  		}
  
--		fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
--		free(str);
--		if (fd < 0) {
--			printf("Open %s\n", errno_str());
--			ret = fd;
--			goto out;
--		}
--
--		ret = write(fd, buf, inode_size);
--		if (ret < inode_size) {
--			perror("write");
--			ret = -errno;
-+		if (S_ISLNK(ENVFS_32(inode_end->mode))) {
-+			debug("symlink: %s -> %s\n", str, (char*)buf);
-+			if (symlink((char*)buf, str) < 0) {
-+				printf("symlink: %s -> %s :", str, (char*)buf);
-+				perror("");
-+			}
-+			free(str);
-+		} else {
-+			fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-+			free(str);
-+			if (fd < 0) {
-+				printf("Open %s\n", errno_str());
-+				ret = fd;
-+				goto out;
-+			}
-+
-+			ret = write(fd, buf, inode_size);
-+			if (ret < inode_size) {
-+				perror("write");
-+				ret = -errno;
-+				close(fd);
-+				goto out;
-+			}
- 			close(fd);
--			goto out;
- 		}
--		close(fd);
+ 		o++;
+@@ -173,7 +182,7 @@ static int do_ls(int argc, char *argv[])
  
- 		buf += PAD4(inode_size);
- 		size -= headerlen_full + PAD4(inode_size) +
+ 	/* second pass: directories */
+ 	while (o < argc) {
+-		ret = stat(argv[o], &s);
++		ret = lstat(argv[o], &s);
+ 		if (ret) {
+ 			o++;
+ 			continue;
 -- 
 1.7.10.4
 
