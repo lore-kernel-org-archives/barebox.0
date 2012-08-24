@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T4lqT-0005ox-VC
- for barebox@lists.infradead.org; Fri, 24 Aug 2012 04:50:12 +0000
+ id 1T4lqY-0005r3-3Q
+ for barebox@lists.infradead.org; Fri, 24 Aug 2012 04:50:19 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 20C3DDC0F71
- for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 06:55:06 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 5F567DC0FA3
+ for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 06:55:10 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 24 Aug 2012 06:50:03 +0200
-Message-Id: <1345783818-28784-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 24 Aug 2012 06:50:14 +0200
+Message-Id: <1345783818-28784-14-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120824044613.GI6271@game.jcrosoft.org>
  <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,93 +26,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/18] fs: add symlink support
+Subject: [PATCH 14/18] recursive_action: add ACTION_FOLLOWLINKS support
 To: barebox@lists.infradead.org
 
-Limit it's support to existing file only
+this is need to support symlink in envfs
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- fs/fs.c      |   43 +++++++++++++++++++++++++++++++++++++++++++
- include/fs.h |    4 ++++
- 2 files changed, 47 insertions(+)
+ include/libbb.h        |    2 +-
+ lib/recursive_action.c |    7 ++++++-
+ scripts/bareboxenv.c   |    2 +-
+ 3 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index c950054..a19e1f4 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -949,6 +949,49 @@ out:
- }
- EXPORT_SYMBOL(readlink);
+diff --git a/include/libbb.h b/include/libbb.h
+index 110e8ec..47b2e08 100644
+--- a/include/libbb.h
++++ b/include/libbb.h
+@@ -14,7 +14,7 @@ char* last_char_is(const char *s, int c);
  
-+int symlink(const char *pathname, const char *newpath)
-+{
-+	struct fs_driver_d *fsdrv;
-+	struct fs_device_d *fsdev;
-+	char *p = normalise_path(pathname);
-+	int ret;
-+	struct stat s;
-+
-+	if (!stat(p, &s) && S_ISDIR(s.st_mode)) {
-+		ret = -ENOSYS;
-+		goto out;
-+	}
-+
-+	free(p);
-+	p = normalise_path(newpath);
-+
-+	ret = stat(p, &s);
-+	if (!ret) {
-+		ret = -EEXIST;
-+		goto out;
-+	}
-+
-+	fsdev = get_fs_device_and_root_path(&p);
-+	if (!fsdev) {
-+		ret = -ENODEV;
-+		goto out;
-+	}
-+	fsdrv = fsdev->driver;
-+
-+	if (fsdrv->symlink) {
-+		ret = fsdrv->symlink(&fsdev->dev, pathname, p);
-+	} else {
-+		ret = -EROFS;
-+	}
-+
-+out:
-+	if (ret)
-+		errno = -ret;
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL(symlink);
-+
- static int fs_match(struct device_d *dev, struct driver_d *drv)
+ enum {
+ 	ACTION_RECURSE     = (1 << 0),
+-	/* ACTION_FOLLOWLINKS = (1 << 1), - unused */
++	ACTION_FOLLOWLINKS    = (1 << 1),
+ 	ACTION_DEPTHFIRST  = (1 << 2),
+ 	/*ACTION_REVERSE   = (1 << 3), - unused */
+ };
+diff --git a/lib/recursive_action.c b/lib/recursive_action.c
+index 1ef758d..5bc2595 100644
+--- a/lib/recursive_action.c
++++ b/lib/recursive_action.c
+@@ -54,14 +54,19 @@ int recursive_action(const char *fileName,
+ 		const unsigned depth)
  {
- 	return strcmp(dev->name, drv->name) ? -1 : 0;
-diff --git a/include/fs.h b/include/fs.h
-index 52e0f4f..d652ade 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -51,6 +51,8 @@ struct fs_driver_d {
- 	/* Truncate a file to given size */
- 	int (*truncate)(struct device_d *dev, FILE *f, ulong size);
+ 	struct stat statbuf;
++	unsigned follow;
+ 	int status;
+ 	DIR *dir;
+ 	struct dirent *next;
  
-+	int (*symlink)(struct device_d *dev, const char *pathname,
-+		       const char *newpath);
- 	int (*readlink)(struct device_d *dev, const char *pathname, char *name,
- 			size_t size);
+ 	if (!fileAction) fileAction = true_action;
+ 	if (!dirAction) dirAction = true_action;
+-	status = stat(fileName, &statbuf);
  
-@@ -136,6 +138,8 @@ DIR *opendir(const char *pathname);
- struct dirent *readdir(DIR *dir);
- int closedir(DIR *dir);
++	follow = ACTION_FOLLOWLINKS;
++	if (depth == 0)
++		follow = ACTION_FOLLOWLINKS;
++	follow &= flags;
++	status = (follow ? stat : lstat)(fileName, &statbuf);
+ 	if (status < 0) {
+ #ifdef DEBUG_RECURS_ACTION
+ 		bb_error_msg("status=%d followLinks=%d TRUE=%d",
+diff --git a/scripts/bareboxenv.c b/scripts/bareboxenv.c
+index 866e345..f7f5351 100644
+--- a/scripts/bareboxenv.c
++++ b/scripts/bareboxenv.c
+@@ -73,7 +73,7 @@ char* last_char_is(const char *s, int c)
  
-+
-+int symlink(const char *pathname, const char *newpath);
- ssize_t readlink(const char *path, char *buf, size_t bufsiz);
- 
- int mount (const char *device, const char *fsname, const char *path);
+ enum {
+ 	ACTION_RECURSE     = (1 << 0),
+-	/* ACTION_FOLLOWLINKS = (1 << 1), - unused */
++	ACTION_FOLLOWLINKS = (1 << 1),
+ 	ACTION_DEPTHFIRST  = (1 << 2),
+ 	/*ACTION_REVERSE   = (1 << 3), - unused */
+ };
 -- 
 1.7.10.4
 
