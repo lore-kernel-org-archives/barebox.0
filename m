@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T4m6a-0007LN-8l
- for barebox@lists.infradead.org; Fri, 24 Aug 2012 05:06:49 +0000
+ id 1T4m6Y-0007Kr-Uw
+ for barebox@lists.infradead.org; Fri, 24 Aug 2012 05:06:48 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id E1A70DC0FC0
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 6B605DC0FA9
  for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 07:11:44 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 24 Aug 2012 07:06:54 +0200
-Message-Id: <1345784816-31344-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 24 Aug 2012 07:06:52 +0200
+Message-Id: <1345784816-31344-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1345784816-31344-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120824050332.GK6271@game.jcrosoft.org>
  <1345784816-31344-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,60 +26,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] defaultenv-2: boot/net add bootp support
+Subject: [PATCH 3/7] dhcp: add retries limit support
 To: barebox@lists.infradead.org
+
+via -r opt, global.dhcp.retries or dhcp_retries
+
+set the priority order;
+
+This will allow to do not stay infinite loop if no dhcp availlable
+for boot sequence as example
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- defaultenv-2/base/boot/net |   34 +++++++++++++++++++++++++++++++++-
- 1 file changed, 33 insertions(+), 1 deletion(-)
+ net/dhcp.c |   35 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 33 insertions(+), 2 deletions(-)
 
-diff --git a/defaultenv-2/base/boot/net b/defaultenv-2/base/boot/net
-index 922bef1..a232e8c 100644
---- a/defaultenv-2/base/boot/net
-+++ b/defaultenv-2/base/boot/net
-@@ -7,8 +7,40 @@ fi
+diff --git a/net/dhcp.c b/net/dhcp.c
+index b32af6a..40709e5 100644
+--- a/net/dhcp.c
++++ b/net/dhcp.c
+@@ -718,13 +718,27 @@ static int dhcp_global_init(void)
+ }
+ late_initcall(dhcp_global_init);
  
- path="/mnt/tftp"
++static void dhcp_getenv_int(const char *name, int *i)
++{
++	const char* str = getenv(name);
++
++	if (!str)
++		return;
++
++	*i = simple_strtoul(str, NULL, 10);
++}
++
+ static int do_dhcp(int argc, char *argv[])
+ {
+ 	int ret, opt;
++	int retries = -1;
  
-+# to get the dhcp info (global.dhcp.rootpath, global.dhcp.bootfile, global.dhcp.oftree_file)
-+ifup eth0
+ 	dhcp_reset_env();
+ 
+-	while((opt = getopt(argc, argv, "H:v:c:u:U:")) > 0) {
++	dhcp_getenv_int("dhcp_retries", &retries);
++	dhcp_getenv_int("global.dhcp.retries", &retries);
 +
- global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
- #global.bootm.oftree="${path}/${global.user}-oftree-${global.hostname}"
--nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
++	while((opt = getopt(argc, argv, "H:v:c:u:U:r:")) > 0) {
+ 		switch(opt) {
+ 		case 'H':
+ 			dhcp_set_param_data(DHCP_HOSTNAME, optarg);
+@@ -741,9 +755,17 @@ static int do_dhcp(int argc, char *argv[])
+ 		case 'U':
+ 			dhcp_set_param_data(DHCP_USER_CLASS, optarg);
+ 			break;
++		case 'r':
++			retries = simple_strtoul(optarg, NULL, 10);
++			break;
+ 		}
+ 	}
+ 
++	if (!retries) {
++		printf("retries is set to zero, set it to -1\n");
++		retries = -1;
++	}
 +
-+if [ -n "${global.dhcp.rootpath}" ]; then
-+	bootp=1
-+	nfsroot="${global.dhcp.rootpath}"
-+else
-+	nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
-+fi
-+
-+if [ -n "${global.dhcp.bootfile}" -o -n "${global.dhcp.oftree_file}" ]; then
-+	bootp=1
-+	path="/mnt/dhcp"
-+
-+	if [ -d "${path}" ]; then
-+		umount "${path}"
-+	else
-+		mkdir "${path}"
-+	fi
-+	mount -t tftp $eth0.serverip "${path}"
-+
-+	[ -n "${global.dhcp.bootfile}" ] && global.bootm.image="${path}/${global.dhcp.bootfile}"
-+	[ -n "${global.dhcp.oftree_file}" ] && global.bootm.oftree="${path}/${global.dhcp.oftree_file}"
-+fi
-+
-+if [ x${bootp} = x1 ]; then
-+	echo "Boot via bootp/dhcp on server ${eth0.serverip}"
-+	[ -n "${global.dhcp.bootfile}" ] && echo "bootm.image => ${global.dhcp.bootfile}"
-+	[ -n "${global.dhcp.oftree_file}" ] && echo "bootm.oftree => ${global.dhcp.oftree_file}"
-+	[ -n "${global.dhcp.rootpath}" ] && echo "nfsroot => ${global.dhcp.rootpath}"
-+fi
-+
- bootargs-ip
- bootargs-root-nfs -n "$nfsroot"
+ 	dhcp_con = net_udp_new(0xffffffff, PORT_BOOTPS, dhcp_handler, NULL);
+ 	if (IS_ERR(dhcp_con)) {
+ 		ret = PTR_ERR(dhcp_con);
+@@ -764,11 +786,17 @@ static int do_dhcp(int argc, char *argv[])
+ 	while (dhcp_state != BOUND) {
+ 		if (ctrlc())
+ 			break;
++		if (!retries) {
++			ret = ETIMEDOUT;
++			goto out1;
++		}
+ 		net_poll();
+ 		if (is_timeout(dhcp_start, 3 * SECOND)) {
+ 			dhcp_start = get_time_ns();
+ 			printf("T ");
+ 			ret = bootp_request();
++			/* no need to check if retries > 0 as we check if != 0 */
++			retries--;
+ 			if (ret)
+ 				goto out1;
+ 		}
+@@ -803,7 +831,8 @@ BAREBOX_CMD_HELP_OPT  ("-u <client_uuid>",
+ BAREBOX_CMD_HELP_OPT  ("-U <user_class>",
+ "DHCP User class (code 77) submitted in DHCP requests. It can\n"
+ "be used in the DHCP server's configuration to select options\n"
+-"(e.g. bootfile or server) which are valid for barebox clients only.\n");
++"(e.g. bootfile or server) which are valid for barebox clients only.\n")
++BAREBOX_CMD_HELP_OPT  ("-r <retry>", "retry limi\n");
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(dhcp)
+@@ -822,6 +851,7 @@ BAREBOX_MAGICVAR(dhcp_client_id, "cliend id to send to the DHCP server");
+ BAREBOX_MAGICVAR(dhcp_user_class, "user class to send to the DHCP server");
+ BAREBOX_MAGICVAR(dhcp_tftp_server_name, "TFTP server Name returned from DHCP request");
+ BAREBOX_MAGICVAR(dhcp_oftree_file, "OF tree returned from DHCP request (option 224)");
++BAREBOX_MAGICVAR(dhcp_retries, "retry limit");
+ 
+ BAREBOX_MAGICVAR_NAMED(global_dhcp_bootfile, global.dhcp.bootfile, "bootfile returned from DHCP request");
+ BAREBOX_MAGICVAR_NAMED(global_dhcp_rootpath, global.dhcp.rootpath, "rootpath returned from DHCP request");
+@@ -831,3 +861,4 @@ BAREBOX_MAGICVAR_NAMED(global_dhcp_client_id, global.dhcp.client_id, "cliend id
+ BAREBOX_MAGICVAR_NAMED(global_dhcp_user_class, global.dhcp.user_class, "user class to send to the DHCP server");
+ BAREBOX_MAGICVAR_NAMED(global_dhcp_tftp_server_name, global.dhcp.tftp_server_name, "TFTP server Name returned from DHCP request");
+ BAREBOX_MAGICVAR_NAMED(global_dhcp_oftree_file, global.dhcp.oftree_file, "OF tree returned from DHCP request (option 224)");
++BAREBOX_MAGICVAR_NAMED(global_dhcp_retries, global.dhcp.retries, "retry limit");
 -- 
 1.7.10.4
 
