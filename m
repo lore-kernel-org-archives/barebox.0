@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T4m6a-0007LM-AB
- for barebox@lists.infradead.org; Fri, 24 Aug 2012 05:06:50 +0000
-Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 5F52FDC0FC4
- for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 07:11:45 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 24 Aug 2012 07:06:56 +0200
-Message-Id: <1345784816-31344-7-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1345784816-31344-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-iy0-f177.google.com ([209.85.210.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1T4o6q-00041I-4e
+ for barebox@lists.infradead.org; Fri, 24 Aug 2012 07:15:13 +0000
+Received: by iaai1 with SMTP id i1so2914615iaa.36
+ for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 00:15:11 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <1345784816-31344-3-git-send-email-plagnioj@jcrosoft.com>
 References: <20120824050332.GK6271@game.jcrosoft.org>
  <1345784816-31344-1-git-send-email-plagnioj@jcrosoft.com>
+ <1345784816-31344-3-git-send-email-plagnioj@jcrosoft.com>
+From: Roberto Nibali <rnibali@gmail.com>
+Date: Fri, 24 Aug 2012 09:14:50 +0200
+Message-ID: <CAONxwYMTy06HN3_ixBGkTEkrTDEemUDtkUjypFhhxMqwx_EweA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,99 +21,115 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] defaultenv-2: add symbolic link support to boot/nfs
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/7] dhcp: add retries limit support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- defaultenv-2/base/boot/nfs |   55 +++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 52 insertions(+), 3 deletions(-)
+Hi
 
-diff --git a/defaultenv-2/base/boot/nfs b/defaultenv-2/base/boot/nfs
-index 248f975..a33a21c 100644
---- a/defaultenv-2/base/boot/nfs
-+++ b/defaultenv-2/base/boot/nfs
-@@ -43,6 +43,18 @@ if [ -n "${global.dhcp.bootfile}" ]; then
- 	mount -t nfs "${eth0.serverip}:${mnt}" "${path}"
- 
- 	global.bootm.image="${path}/${bootfile}"
-+
-+	if [ -L "${global.bootm.image}" ]; then
-+		readlink -f "${global.bootm.image}" bootfile_symlink
-+
-+		dirname -V "${bootfile_symlink}" mnt
-+		basename "${bootfile_symlink}" bootfile
-+
-+		umount "${path}"
-+		mount -t nfs "${eth0.serverip}:${mnt}" "${path}"
-+
-+		global.bootm.image="${path}/${bootfile}"
-+	fi
- fi
- 
- if [ -n "${global.dhcp.oftree_file}" ]; then
-@@ -61,13 +73,50 @@ if [ -n "${global.dhcp.oftree_file}" ]; then
- 	mount -t nfs "${eth0.serverip}:${mnt}" "${path}"
- 
- 	global.bootm.oftree="${path}/${bootfile}"
-+
-+	if [ -L "${global.bootm.oftree}" ]; then
-+		readlink -f "${global.bootm.oftree}" oftree_symlink
-+
-+		dirname -V "${oftree_symlink}" mnt
-+		basename "${oftree_symlink}" bootfile
-+
-+		umount "${path}"
-+		mount -t nfs "${eth0.serverip}:${mnt}" "${path}"
-+
-+		global.bootm.oftree="${path}/${bootfile}"
-+	fi
-+fi
-+
-+if [ ${global.allow_color} = "true" ]; then
-+	blue="\e[1;36m"
-+	normal="\e[0m"
- fi
- 
- if [ x${bootp} = x1 ]; then
- 	echo "Boot via bootp/dhcp on server ${eth0.serverip}"
--	[ -n "${global.dhcp.bootfile}" ] && echo "bootm.image => ${global.dhcp.bootfile}"
--	[ -n "${global.dhcp.oftree_file}" ] && echo "bootm.oftree => ${global.dhcp.oftree_file}"
--	[ -n "${global.dhcp.rootpath}" ] && echo "nfsroot => ${global.dhcp.rootpath}"
-+	if [ -n "${global.dhcp.bootfile}" ]; then
-+		echo -n "bootm.image => "
-+		if [ "x${bootfile_symlink}" != x ]; then
-+			echo -e -n "${blue}${global.dhcp.bootfile}${normal}"
-+			echo -n " -> ${bootfile_symlink}"
-+		else
-+			echo -n "${global.dhcp.bootfile}"
-+		fi
-+		echo ""
-+	fi
-+
-+	if [ -n "${global.dhcp.oftree_file}" ]; then
-+		echo "bootm.oftree => "
-+		if [ "x${oftree_symlink}" != x ]; then
-+			echo -e -n "${blue}${global.dhcp.oftree_file}${normal}"
-+			echo -n " -> ${oftree_symlink}"
-+		else
-+			echo -n "${global.dhcp.oftree_file}"
-+		fi
-+		echo ""
-+	fi
-+
-+	[ -n "${global.dhcp.rootpath}" ] && echo "nfsroot -> ${global.dhcp.rootpath}"
- fi
- 
- bootargs-ip
--- 
-1.7.10.4
+On Fri, Aug 24, 2012 at 7:06 AM, Jean-Christophe PLAGNIOL-VILLARD
+<plagnioj@jcrosoft.com> wrote:
+> via -r opt, global.dhcp.retries or dhcp_retries
+>
+> set the priority order;
+>
+> This will allow to do not stay infinite loop if no dhcp availlable
+> for boot sequence as example
+>
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  net/dhcp.c |   35 +++++++++++++++++++++++++++++++++--
+>  1 file changed, 33 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/dhcp.c b/net/dhcp.c
+> index b32af6a..40709e5 100644
+> --- a/net/dhcp.c
+> +++ b/net/dhcp.c
+> @@ -718,13 +718,27 @@ static int dhcp_global_init(void)
+>  }
+>  late_initcall(dhcp_global_init);
+>
+> +static void dhcp_getenv_int(const char *name, int *i)
+> +{
+> +       const char* str = getenv(name);
+> +
+> +       if (!str)
+> +               return;
+> +
+> +       *i = simple_strtoul(str, NULL, 10);
+> +}
+> +
+>  static int do_dhcp(int argc, char *argv[])
+>  {
+>         int ret, opt;
+> +       int retries = -1;
+>
+>         dhcp_reset_env();
+>
+> -       while((opt = getopt(argc, argv, "H:v:c:u:U:")) > 0) {
+> +       dhcp_getenv_int("dhcp_retries", &retries);
+> +       dhcp_getenv_int("global.dhcp.retries", &retries);
+> +
+> +       while((opt = getopt(argc, argv, "H:v:c:u:U:r:")) > 0) {
+>                 switch(opt) {
+>                 case 'H':
+>                         dhcp_set_param_data(DHCP_HOSTNAME, optarg);
+> @@ -741,9 +755,17 @@ static int do_dhcp(int argc, char *argv[])
+>                 case 'U':
+>                         dhcp_set_param_data(DHCP_USER_CLASS, optarg);
+>                         break;
+> +               case 'r':
+> +                       retries = simple_strtoul(optarg, NULL, 10);
+> +                       break;
+>                 }
+>         }
+>
+> +       if (!retries) {
+> +               printf("retries is set to zero, set it to -1\n");
 
+I don't think the user needs to know that in the background you're
+using -1 to express zero retries. I suppose a comment would suffice.
+
+> +               retries = -1;
+> +       }
+> +
+>         dhcp_con = net_udp_new(0xffffffff, PORT_BOOTPS, dhcp_handler, NULL);
+>         if (IS_ERR(dhcp_con)) {
+>                 ret = PTR_ERR(dhcp_con);
+> @@ -764,11 +786,17 @@ static int do_dhcp(int argc, char *argv[])
+>         while (dhcp_state != BOUND) {
+>                 if (ctrlc())
+>                         break;
+> +               if (!retries) {
+> +                       ret = ETIMEDOUT;
+> +                       goto out1;
+> +               }
+>                 net_poll();
+>                 if (is_timeout(dhcp_start, 3 * SECOND)) {
+>                         dhcp_start = get_time_ns();
+>                         printf("T ");
+>                         ret = bootp_request();
+> +                       /* no need to check if retries > 0 as we check if != 0 */
+> +                       retries--;
+>                         if (ret)
+>                                 goto out1;
+>                 }
+> @@ -803,7 +831,8 @@ BAREBOX_CMD_HELP_OPT  ("-u <client_uuid>",
+>  BAREBOX_CMD_HELP_OPT  ("-U <user_class>",
+>  "DHCP User class (code 77) submitted in DHCP requests. It can\n"
+>  "be used in the DHCP server's configuration to select options\n"
+> -"(e.g. bootfile or server) which are valid for barebox clients only.\n");
+> +"(e.g. bootfile or server) which are valid for barebox clients only.\n")
+> +BAREBOX_CMD_HELP_OPT  ("-r <retry>", "retry limi\n");
+
+s/limi/limit/
+
+Regards
+Roberto Nibali
 
 _______________________________________________
 barebox mailing list
