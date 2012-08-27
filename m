@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T5zU3-00086R-St
- for barebox@lists.infradead.org; Mon, 27 Aug 2012 13:36:04 +0000
-Date: Mon, 27 Aug 2012 15:35:56 +0200
+ id 1T5zkE-0005kN-1B
+ for barebox@lists.infradead.org; Mon, 27 Aug 2012 13:52:47 +0000
+Date: Mon, 27 Aug 2012 15:52:44 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120827133556.GF26594@pengutronix.de>
+Message-ID: <20120827135244.GG26594@pengutronix.de>
 References: <20120824044613.GI6271@game.jcrosoft.org>
  <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
- <1345783818-28784-3-git-send-email-plagnioj@jcrosoft.com>
+ <1345783818-28784-4-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1345783818-28784-3-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1345783818-28784-4-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,72 +24,140 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 03/18] fs: add symlink support
+Subject: Re: [PATCH 04/18] fs: implement stat
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Aug 24, 2012 at 06:50:03AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Limit it's support to existing file only
+On Fri, Aug 24, 2012 at 06:50:04AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> stat() stats the file pointed to by path and fills in buf.
 > 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  fs/fs.c      |   43 +++++++++++++++++++++++++++++++++++++++++++
->  include/fs.h |    4 ++++
->  2 files changed, 47 insertions(+)
+>  fs/fs.c      |  102 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  include/fs.h |    6 ++--
+>  2 files changed, 104 insertions(+), 4 deletions(-)
 > 
 > diff --git a/fs/fs.c b/fs/fs.c
-> index c950054..a19e1f4 100644
+> index a19e1f4..9f2e82c 100644
 > --- a/fs/fs.c
 > +++ b/fs/fs.c
-> @@ -949,6 +949,49 @@ out:
->  }
->  EXPORT_SYMBOL(readlink);
+> @@ -26,6 +26,7 @@
+>  #include <errno.h>
+>  #include <malloc.h>
+>  #include <linux/stat.h>
+> +#include <linux/err.h>
+>  #include <fcntl.h>
+>  #include <xfuncs.h>
+>  #include <init.h>
+> @@ -111,6 +112,60 @@ static int init_cwd(void)
 >  
-> +int symlink(const char *pathname, const char *newpath)
+>  postcore_initcall(init_cwd);
+>  
+> +char *normalise_link(const char *pathname, const char* symlink)
+
+like this instead: const char *symlink
+
 > +{
-> +	struct fs_driver_d *fsdrv;
-> +	struct fs_device_d *fsdev;
-> +	char *p = normalise_path(pathname);
+> +	const char *buf = symlink;
+> +	char *path_free, *path;
+> +	char *absolute_path;
+> +	int point = 0;
+> +	int dir = 1;
+> +	int len;
+> +
+> +	if (symlink[0] == '/')
+> +		return strdup(symlink);
+> +
+> +	path = path_free = strdup(pathname);
+> +
+> +	while (*buf == '.' || *buf == '/') {
+> +		if (*buf == '.') {
+> +			point++;
+> +		} else if (*buf == '/') {
+> +			point = 0;
+> +			dir++;
+> +		}
+> +		if (point > 2) {
+> +			buf -= 2;
+> +			break;
+> +		}
+> +		buf++;
+> +	}
+> +
+> +	if (dir) {
+
+This is always true. Even if not, this would be covered by while (dir)
+below.
+
+> +		while(dir) {
+> +			path = dirname(path);
+> +			dir--;
+> +		}
+> +	}
+> +
+> +	len = strlen(buf) + strlen(path) + 1;
+> +	if (buf[0] != '/')
+> +		len++;
+> +
+> +	absolute_path = calloc(sizeof(char), len);
+> +
+> +	if(!absolute_path)
+
+if (
+
+> +		return NULL;
+> +
+> +	strcat(absolute_path, path);
+> +	if (buf[0] != '/')
+> +		strcat(absolute_path, "/");
+> +	strcat(absolute_path, buf);
+> +
+> +	free(path_free);
+> +
+> +	return absolute_path;
+> +}
+> +
+>  char *normalise_path(const char *pathname)
+>  {
+>  	char *path = xzalloc(strlen(pathname) + strlen(cwd) + 2);
+> @@ -512,6 +567,40 @@ out:
+>  }
+>  EXPORT_SYMBOL(unlink);
+>  
+> +static char* realfile(const char *pathname, struct stat *s)
+
+static char *realfile
+
+> +{
+> +	char *path = normalise_path(pathname);
 > +	int ret;
-> +	struct stat s;
 > +
-> +	if (!stat(p, &s) && S_ISDIR(s.st_mode)) {
-> +		ret = -ENOSYS;
+> +	ret = lstat(path, s);
+> +	if (ret)
 > +		goto out;
-
-You lose the memory allocated in normalise_path here.
-
+> +
+> +	if (S_ISLNK(s->st_mode)) {
+> +		char tmp[PATH_MAX];
+> +		char *new_path;
+> +
+> +		ret = readlink(path, tmp, PATH_MAX);
+> +		if (ret < 0)
+> +			goto out;
+> +
+> +		new_path = normalise_link(path, tmp);
+> +		free(path);
+> +		if (!new_path)
+> +			return ERR_PTR(-ENOMEM);
+> +		path = new_path;
+> +
+> +		ret = lstat(path, s);
 > +	}
-> +
-> +	free(p);
-> +	p = normalise_path(newpath);
 
-p is never freed again.
-
-> +
-> +	ret = stat(p, &s);
-> +	if (!ret) {
-> +		ret = -EEXIST;
-> +		goto out;
-> +	}
-> +
-> +	fsdev = get_fs_device_and_root_path(&p);
-> +	if (!fsdev) {
-> +		ret = -ENODEV;
-> +		goto out;
-> +	}
-> +	fsdrv = fsdev->driver;
-> +
-> +	if (fsdrv->symlink) {
-> +		ret = fsdrv->symlink(&fsdev->dev, pathname, p);
-> +	} else {
-> +		ret = -EROFS;
-
-Better:
-
-EPERM  The file system containing newpath does not support the creation of symbolic links.
+I see no code handling multiple link levels. I think this should be
+here?
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
