@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T602y-0007hV-Pa
- for barebox@lists.infradead.org; Mon, 27 Aug 2012 14:12:09 +0000
-Date: Mon, 27 Aug 2012 16:12:06 +0200
+ id 1T60BL-0007vK-De
+ for barebox@lists.infradead.org; Mon, 27 Aug 2012 14:20:49 +0000
+Date: Mon, 27 Aug 2012 16:20:43 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120827141206.GK26594@pengutronix.de>
-References: <20120824044613.GI6271@game.jcrosoft.org>
- <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
- <1345783818-28784-15-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20120827142043.GL26594@pengutronix.de>
+References: <20120814172555.GP6271@game.jcrosoft.org>
+ <1344965540-31534-1-git-send-email-plagnioj@jcrosoft.com>
+ <1344965540-31534-3-git-send-email-plagnioj@jcrosoft.com>
+ <20120814202136.GE1451@pengutronix.de>
+ <20120815043055.GQ6271@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1345783818-28784-15-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20120815043055.GQ6271@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,66 +26,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 15/18] evnfs: introduce major and minor
+Subject: Re: [PATCH 3/7] smc911x: add 16bit bus width support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Aug 24, 2012 at 06:50:15AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> they are store in the super block at byte 16th and 17th.
-> 
-> set the verison at 0.1
+On Wed, Aug 15, 2012 at 06:30:55AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 22:21 Tue 14 Aug     , Sascha Hauer wrote:
+> > On Tue, Aug 14, 2012 at 07:32:16PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > ---
+> > >  drivers/net/smc911x.c |   20 ++++++++++++++++++--
+> > >  1 file changed, 18 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
+> > > index 2583235..c74ed52 100644
+> > > --- a/drivers/net/smc911x.c
+> > > +++ b/drivers/net/smc911x.c
+> > > @@ -47,6 +47,8 @@ struct smc911x_priv {
+> > >  	struct mii_device miidev;
+> > >  	void __iomem *base;
+> > >  
+> > > +	u32 width;
+> > > +
+> > >  	u32 (*reg_read)(struct smc911x_priv *priv, u32 reg);
+> > >  	void (*reg_write)(struct smc911x_priv *priv, u32 reg, u32 val);
+> > >  };
+> > > @@ -78,7 +80,11 @@ static inline u32 smc911x_reg_read(struct smc911x_priv *priv, u32 reg)
+> > >  
+> > >  static inline u32 __smc911x_reg_read(struct smc911x_priv *priv, u32 reg)
+> > >  {
+> > > -	return readl(priv->base + reg);
+> > > +	if (priv->width)
+> > > +		return readl(priv->base + reg);
+> > > +	else
+> > > +		return ((readw(priv->base + reg) & 0xFFFF) |
+> > > +			((readw(priv->base + reg + 2) & 0xFFFF) << 16));
+> > >  }
+> > 
+> > If you introduce function pointers for the read/write functions, then
+> > please use them to implement 16bit support.
+> this what this patch do
 
-Only this little comment makes clear that with major and minor you mean
-a version. I first thought about device nodes...
-
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  common/environment.c |    2 ++
->  include/envfs.h      |    7 ++++++-
->  2 files changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/common/environment.c b/common/environment.c
-> index 52ce0de..257f35f 100644
-> --- a/common/environment.c
-> +++ b/common/environment.c
-> @@ -125,6 +125,8 @@ int envfs_save(char *filename, char *dirname)
->  
->  	super = (struct envfs_super *)buf;
->  	super->magic = ENVFS_32(ENVFS_MAGIC);
-> +	super->major = ENVFS_32(ENVFS_MAJOR);
-> +	super->minor = ENVFS_32(ENVFS_MINOR);
-
-major and minor are 8bit wide but you read 32?
-
->  	super->size = ENVFS_32(size);
->  
->  	/* second pass: copy files to buffer */
-> diff --git a/include/envfs.h b/include/envfs.h
-> index ba976d6..c6df8c5 100644
-> --- a/include/envfs.h
-> +++ b/include/envfs.h
-> @@ -5,6 +5,9 @@
->  #include <asm/byteorder.h>
->  #endif
->  
-> +#define ENVFS_MAJOR		0
-> +#define ENVFS_MINOR		1
-> +
->  #define ENVFS_MAGIC		    0x798fba79	/* some random number */
->  #define ENVFS_INODE_MAGIC	0x67a8c78d
->  #define ENVFS_END_MAGIC		0x6a87d6cd
-> @@ -29,8 +32,10 @@ struct envfs_super {
->  	uint32_t priority;
->  	uint32_t crc;			/* crc for the data */
->  	uint32_t size;			/* size of data */
-> +	uint8_t major;			/* major */
-> +	uint8_t minor;			/* minor */
-> +	uint16_t future;		/* reserved for future use */
->  	uint32_t flags;			/* feature flags */
-> -	uint32_t future;		/* reserved for future use */
-
-Why do you move the position of the flags field in envfs_super?
+No, it doesn't. If it would, there would be a function for 16bit access
+and another one for 32bit access.
 
 Sascha
 
