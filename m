@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-iy0-f177.google.com ([209.85.210.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T60BL-0007vK-De
- for barebox@lists.infradead.org; Mon, 27 Aug 2012 14:20:49 +0000
-Date: Mon, 27 Aug 2012 16:20:43 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120827142043.GL26594@pengutronix.de>
-References: <20120814172555.GP6271@game.jcrosoft.org>
- <1344965540-31534-1-git-send-email-plagnioj@jcrosoft.com>
- <1344965540-31534-3-git-send-email-plagnioj@jcrosoft.com>
- <20120814202136.GE1451@pengutronix.de>
- <20120815043055.GQ6271@game.jcrosoft.org>
+ id 1T61NO-0001wz-5y
+ for barebox@lists.infradead.org; Mon, 27 Aug 2012 15:37:18 +0000
+Received: by iaai1 with SMTP id i1so8784558iaa.36
+ for <barebox@lists.infradead.org>; Mon, 27 Aug 2012 08:37:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120815043055.GQ6271@game.jcrosoft.org>
+Date: Mon, 27 Aug 2012 11:37:16 -0400
+Message-ID: <CACO6GO7pfavefJa_wTcR7ifHwWVS8up7-TRW8ArQzXoeL1JHCA@mail.gmail.com>
+From: Fadil Berisha <f.koliqi@gmail.com>
+Reply-To: f.koliqi@gmail.com
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,57 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/7] smc911x: add 16bit bus width support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: barebox on imx23-olinuxino
+To: barebox@lists.infradead.org
 
-On Wed, Aug 15, 2012 at 06:30:55AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 22:21 Tue 14 Aug     , Sascha Hauer wrote:
-> > On Tue, Aug 14, 2012 at 07:32:16PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > ---
-> > >  drivers/net/smc911x.c |   20 ++++++++++++++++++--
-> > >  1 file changed, 18 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
-> > > index 2583235..c74ed52 100644
-> > > --- a/drivers/net/smc911x.c
-> > > +++ b/drivers/net/smc911x.c
-> > > @@ -47,6 +47,8 @@ struct smc911x_priv {
-> > >  	struct mii_device miidev;
-> > >  	void __iomem *base;
-> > >  
-> > > +	u32 width;
-> > > +
-> > >  	u32 (*reg_read)(struct smc911x_priv *priv, u32 reg);
-> > >  	void (*reg_write)(struct smc911x_priv *priv, u32 reg, u32 val);
-> > >  };
-> > > @@ -78,7 +80,11 @@ static inline u32 smc911x_reg_read(struct smc911x_priv *priv, u32 reg)
-> > >  
-> > >  static inline u32 __smc911x_reg_read(struct smc911x_priv *priv, u32 reg)
-> > >  {
-> > > -	return readl(priv->base + reg);
-> > > +	if (priv->width)
-> > > +		return readl(priv->base + reg);
-> > > +	else
-> > > +		return ((readw(priv->base + reg) & 0xFFFF) |
-> > > +			((readw(priv->base + reg + 2) & 0xFFFF) << 16));
-> > >  }
-> > 
-> > If you introduce function pointers for the read/write functions, then
-> > please use them to implement 16bit support.
-> this what this patch do
+Based on falconfing and mx23-evk, I did barebox port on
+imx23-olinuxino board.  Here is barebox boot:
 
-No, it doesn't. If it would, there would be a function for 16bit access
-and another one for 32bit access.
+Board: Olimex.ltd imx23-olinuxino
+registered netconsole as cs1
+Min. frequency is 1476 Hz
+Max. frequency is 48000000 Hz
+mxs_mci@mci0: registered as mci0
+ehci@ehci0: USB EHCI 1.00
+No MCI card preset
+Cannot create the 'env0' persistant environment storage (-19)
+Malloc space: 0x40c00000 -> 0x40ffffff (size  4 MB)
+Stack space : 0x40bf8000 -> 0x40c00000 (size 32 kB)
+Open /dev/env0 No such file or directory
+no valid environment found on /dev/env0. Using default environment
+running /env/bin/init...
 
-Sascha
+I can't get activated SD card.
+When compile with CONFIG_MCI_STARTUP, system hang after mxs_mci@mci0:
+registered as mci0.
+If compile without  CONFIG_MCI_STARTUP, after probe mci0.probe=1
+system hang again.
+Looking at code mci-core.c found  following note:
+ /*
+		 * If it fails, add the 'probe' parameter to give the user
+		 * a chance to insert a card and try again. Note: This may fail
+		 * systems that rely on the MCI card for startup (for the
+		 * persistant environment for example)
+		 */
+imx23-olinuxino board rely on the MCI for startup. Any input to do
+probe in this case is greatly appreciated.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Fadil Berisha
 
 _______________________________________________
 barebox mailing list
