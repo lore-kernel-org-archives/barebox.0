@@ -1,22 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T4yy1-0005C9-IA
- for barebox@lists.infradead.org; Fri, 24 Aug 2012 18:50:50 +0000
-Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 701C0DC1253
- for <barebox@lists.infradead.org>; Fri, 24 Aug 2012 20:55:47 +0200 (CEST)
-Date: Fri, 24 Aug 2012 20:51:02 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120824185102.GN6271@game.jcrosoft.org>
-References: <20120824045246.GJ6271@game.jcrosoft.org>
- <1345784113-29643-1-git-send-email-plagnioj@jcrosoft.com>
- <1345784113-29643-2-git-send-email-plagnioj@jcrosoft.com>
- <CAONxwYM8=WMNH+gYV-bUZUmpUo0jhPxY0954wbvPdF7Avif0Qw@mail.gmail.com>
+Received: from mail-pb0-f49.google.com ([209.85.160.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1T5qxd-0000nj-P1
+ for barebox@lists.infradead.org; Mon, 27 Aug 2012 04:30:03 +0000
+Received: by pbbrq8 with SMTP id rq8so6972576pbb.36
+ for <barebox@lists.infradead.org>; Sun, 26 Aug 2012 21:29:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAONxwYM8=WMNH+gYV-bUZUmpUo0jhPxY0954wbvPdF7Avif0Qw@mail.gmail.com>
+In-Reply-To: <CAA4bVAHSMjQDgxHngj_2EGwfg2Me8_LVW0CwMkR-vjmZcoqfVQ@mail.gmail.com>
+References: <CAEhpT-XD0M3hrmxANPKt2BsgFhEtdFfA4HXenqty1QGLdaeS5w@mail.gmail.com>
+ <CAA4bVAHSMjQDgxHngj_2EGwfg2Me8_LVW0CwMkR-vjmZcoqfVQ@mail.gmail.com>
+Date: Mon, 27 Aug 2012 09:59:59 +0530
+Message-ID: <CAEhpT-UoCsSncnEe8TGHQRzF1rzdDE0hBB1KhAu4fCiMxhRykg@mail.gmail.com>
+From: Calvin Johnson <linux.cj@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,141 +24,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] globalvar: add support to set a value to of all
- globalvars beginning with 'match'
-To: Roberto Nibali <rnibali@gmail.com>
+Subject: Re: Is there any way to dump more than 0x100 bytes from nand flash?
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 11:08 Fri 24 Aug     , Roberto Nibali wrote:
-> Hi
-> 
-> >  commands/global.c   |   58 ++++++++++++++++++++++++++++++++++++++++++++-------
-> >  common/globalvar.c  |   10 +++++++++
-> >  include/globalvar.h |    3 +++
-> >  3 files changed, 64 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/commands/global.c b/commands/global.c
-> > index de6b13e..cb22e63 100644
-> > --- a/commands/global.c
-> > +++ b/commands/global.c
-> > @@ -24,25 +24,26 @@
-> >  #include <command.h>
-> >  #include <globalvar.h>
-> >  #include <environment.h>
-> > +#include <getopt.h>
-> >
-> > -static int do_global(int argc, char *argv[])
-> > +static int do_global_add(int argc, char *argv[])
-> >  {
-> >         int ret;
-> >         char *value;
-> >
-> > -       if (argc != 2)
-> > +       if (argc != 1)
-> >                 return COMMAND_ERROR_USAGE;
-> >
-> > -       value = strchr(argv[1], '=');
-> > +       value = strchr(argv[0], '=');
-> >         if (value) {
-> >                 *value = 0;
-> >                 value++;
-> >         }
-> >
-> > -       ret = globalvar_add_simple(argv[1]);
-> > +       ret = globalvar_add_simple(argv[0]);
-> >
-> >         if (value) {
-> > -               char *name = asprintf("global.%s", argv[1]);
-> > +               char *name = asprintf("global.%s", argv[0]);
-> >                 ret = setenv(name, value);
-> >                 free(name);
-> >         }
-> > @@ -50,13 +51,56 @@ static int do_global(int argc, char *argv[])
-> >         return ret ? 1 : 0;
-> >  }
-> >
-> > +static int do_global_reset(int argc, char *argv[])
-> > +{
-> > +       char *value;
-> > +
-> > +       if (argc != 1)
-> > +               return COMMAND_ERROR_USAGE;
-> > +
-> > +       value = strchr(argv[0], '=');
-> > +       if (value) {
-> > +               *value = 0;
-> > +               value++;
-> > +       } else {
-> > +               value = "";
-> > +       }
-> > +
-> > +       globalvar_reset_match(argv[0], value);
-> > +
-> > +       return 0;
-> > +}
-> > +
-> > +static int do_global(int argc, char *argv[])
-> > +{
-> > +       int opt;
-> > +       int do_reset = 0;
-> > +
-> > +       while ((opt = getopt(argc, argv, "r")) > 0) {
-> > +               switch (opt) {
-> > +               case 'r':
-> > +                       do_reset = 1;
-> > +                       break;
-> > +               }
-> > +       }
-> > +
-> > +       argc -= optind;
-> > +       argv += optind;
-> > +
-> > +       if (do_reset)
-> > +               return do_global_reset(argc, argv);
-> 
-> Since I just read the diff, I might fail to see the big picture,
-> however, where's the call to globalvar_reset_match(), is it inside
-> do_global_reset()?
-no can not
+On Fri, Aug 24, 2012 at 9:32 PM, Antony Pavlov <antonynpavlov@gmail.com> wrote:
+> On 24 August 2012 18:19, Calvin Johnson <linux.cj@gmail.com> wrote:
+>> Hi,
+>>
+>> In U-Boot there is "nand dump <address>" command which is very useful
+>> to check the contents of the NAND page and OOB area.
+>>
+>> I tried searching for an alternative in Barebox, and found that we can
+>> use some thing like "md -b -s /dev/nand0.barebox.bb". But this will
+>> dump only 0x100 bytes. In order to increase the size, I need to
+>> compile again.
+>> Is there any way to dump more bytes from the NAND flash and from
+>> different blocks/pages?
+>>
+>
+> please try "md -b -s /dev/nand0.barebox.bb <dump offset>+<dump size>",
+> e.g.
+>   md -b -s /dev/nand0.barebox.bb 0+0x200
 
-you do this
+Thanks a lot Antony. It worked out. :)-
 
-globalvar toto.l=t
-globalvar toto=a
+>
+>> How are the experts working with this?
+>>
+>
+> Sorry, I'm not an expert :)))
 
-so you expect 
+:)- For me you are an expert.
 
-global.toto.l=t
-global.toto=a
-
-and if we you the reset_match
-
-you will have 
-global.toto.l=a
-global.toto=a
-
-> 
-> > +       return do_global_add(argc, argv);
-> > +}
-> > +
-> >  BAREBOX_CMD_HELP_START(global)
-> > -BAREBOX_CMD_HELP_USAGE("global <var>[=<value]\n")
-> > +BAREBOX_CMD_HELP_USAGE("global [-r] <var>[=<value]\n")
-> >  BAREBOX_CMD_HELP_SHORT("add a new global variable named <var>, optionally set to <value>\n")
-> > +BAREBOX_CMD_HELP_SHORT("-r to set a value to of all globalvars beginning with 'match'")
-> 
-> Shouldn't this be REset instead of set? How about:
-> 
-> "-r to reset all matching global variables to a value."
-> 
-> Maybe giving an example could shed some light on the exact syntax of
-> the exact kind of matching you had in mind.
-it's realy set a value to a list of params
-
-the text in english is clear
-
-Best Regards,
-J.
+> --
+> Best regards,
+>   Antony Pavlov
 
 _______________________________________________
 barebox mailing list
