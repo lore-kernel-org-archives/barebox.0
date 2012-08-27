@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T5zrA-0006gE-CB
- for barebox@lists.infradead.org; Mon, 27 Aug 2012 13:59:57 +0000
-Date: Mon, 27 Aug 2012 15:59:26 +0200
+ id 1T5zvM-0007Nk-3I
+ for barebox@lists.infradead.org; Mon, 27 Aug 2012 14:04:17 +0000
+Date: Mon, 27 Aug 2012 16:04:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120827135926.GI26594@pengutronix.de>
+Message-ID: <20120827140413.GJ26594@pengutronix.de>
 References: <20120824044613.GI6271@game.jcrosoft.org>
  <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
- <1345783818-28784-7-git-send-email-plagnioj@jcrosoft.com>
+ <1345783818-28784-8-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1345783818-28784-7-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1345783818-28784-8-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,111 +24,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 07/18] ramfs: add symlink and readlink support
+Subject: Re: [PATCH 08/18] nfs: add readlink support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Aug 24, 2012 at 06:50:07AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Fri, Aug 24, 2012 at 06:50:08AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  fs/ramfs.c |   53 ++++++++++++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 46 insertions(+), 7 deletions(-)
+>  fs/nfs.c |   93 +++++++++++++++++++++++++++++++++++++++++++-------------------
+>  1 file changed, 65 insertions(+), 28 deletions(-)
 > 
-> diff --git a/fs/ramfs.c b/fs/ramfs.c
-> index 91d06b8..38da593 100644
-> --- a/fs/ramfs.c
-> +++ b/fs/ramfs.c
-> @@ -42,6 +42,7 @@ struct ramfs_inode {
->  	struct ramfs_inode *parent;
->  	struct ramfs_inode *next;
->  	struct ramfs_inode *child;
-> +	char *symlink;
->  	ulong mode;
->  
->  	struct handle_d *handle;
-> @@ -176,6 +177,7 @@ static void ramfs_put_inode(struct ramfs_inode *node)
->  		data = tmp;
->  	}
->  
-> +	free(node->symlink);
->  	free(node->name);
->  	free(node);
+> diff --git a/fs/nfs.c b/fs/nfs.c
+> index 79e667f..a4e1f91 100644
+> --- a/fs/nfs.c
+> +++ b/fs/nfs.c
+> @@ -605,34 +605,6 @@ static int nfs_read_req(struct file_priv *priv, int offset, int readlen)
+>  	return 0;
 >  }
-> @@ -212,18 +214,28 @@ static struct ramfs_inode* node_insert(struct ramfs_inode *parent_node, const ch
 >  
->  /* ---------------------------------------------------------------*/
+> @@ -742,6 +714,70 @@ static struct file_priv *nfs_do_stat(struct device_d *dev, const char *filename,
+>  	return priv;
+>  }
 >  
-> -static int ramfs_create(struct device_d *dev, const char *pathname, mode_t mode)
-> +static int __ramfs_create(struct device_d *dev, const char *pathname,
-> +			  mode_t mode, const char *symlink)
->  {
->  	struct ramfs_priv *priv = dev->priv;
->  	struct ramfs_inode *node;
->  	char *file;
->  
->  	node = rlookup_parent(priv, pathname, &file);
-> -	if (node) {
-> -		node_insert(node, file, mode);
-> -		return 0;
-> -	}
-> -	return -ENOENT;
-> +	if (!node)
-> +		return -ENOENT;
+> +static int nfs_readlink_req(struct file_priv *priv, char* buf, size_t size)
+> +{
+> +	uint32_t data[1024];
+> +	uint32_t *p;
+> +	int len;
+> +	int ret;
+> +	char *path;
+> +	uint32_t *filedata;
 > +
-> +	node = node_insert(node, file, mode);
-> +	if (!node)
-> +		return -ENOMEM;
-> +	node->symlink = strdup(symlink);
+> +	p = &(data[0]);
+> +	p = rpc_add_credentials(p);
+> +
+> +	memcpy(p, priv->filefh, NFS_FHSIZE);
+> +	p += (NFS_FHSIZE / 4);
+> +
+> +	len = p - &(data[0]);
+> +
+> +	ret = rpc_req(priv->npriv, PROG_NFS, NFS_READLINK, data, len);
+> +	if (ret)
+> +		return ret;
+> +
+> +	filedata = nfs_packet + sizeof(struct rpc_reply);
+> +	filedata++;
+> +
+> +	len = ntohl(net_read_uint32(filedata)); /* new path length */
+> +	filedata++;
+> +
+> +	path = (char *)filedata;
+> +
+> +	if (len > size)
+> +		len = size;
+> +
+> +	memcpy(buf, path, len);
+> +	buf[len] = 0;
 
-Either check for errors or use xstrdup.
+You write past the buffer here.
 
 > +
 > +	return 0;
 > +}
 > +
-> +static int ramfs_create(struct device_d *dev, const char *pathname, mode_t mode)
+> +static int nfs_readlink(struct device_d *dev, const char *filename,
+> +			char *realname, size_t size)
 > +{
-> +	return __ramfs_create(dev, pathname, mode, NULL);
->  }
->  
->  static int ramfs_unlink(struct device_d *dev, const char *pathname)
-> @@ -532,12 +544,37 @@ static int ramfs_stat(struct device_d *dev, const char *filename, struct stat *s
->  	if (!node)
->  		return -ENOENT;
->  
-> -	s->st_size = node->size;
-> +	s->st_size = node->symlink ? strlen(node->symlink) : node->size;
->  	s->st_mode = node->mode;
->  
->  	return 0;
->  }
->  
-> +static int ramfs_symlink(struct device_d *dev, const char *pathname,
-> +		       const char *newpath)
-> +{
-> +	mode_t mode = S_IFLNK | S_IRWXU | S_IRWXG | S_IRWXO;
+> +	struct file_priv *priv;
+> +	int ret;
+> +	struct stat s;
 > +
-> +	return __ramfs_create(dev, newpath, mode, pathname);
-> +}
+> +	priv = nfs_do_stat(dev, filename, &s);
+> +	if (IS_ERR(priv))
+> +		return PTR_ERR(priv);
 > +
-> +static int ramfs_readlink(struct device_d *dev, const char *pathname,
-> +			char *buf, size_t bufsiz)
-> +{
-> +	struct ramfs_priv *priv = dev->priv;
-> +	struct ramfs_inode *node = rlookup(priv, pathname);
-> +	int len;
 > +
-> +	if (!node || !node->symlink)
-> +		return -ENOENT;
-> +
-> +	len = min(bufsiz, strlen(node->symlink));
-> +
-> +	strncat(buf, node->symlink, len);
 
-You append to buf? What do you expect to be in there? I think memcpy
-would be more appropriate here.
+unnecessary blank line.
 
-I see no code freeing node->symlink in this patch.
+> +	if (S_ISDIR(s.st_mode))
+> +		strcat(realname, filename);
+> +	else
+> +		strcat(realname, dirname((char*)filename));
+
+What do you expect to be in realname?
 
 Sascha
 
