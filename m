@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T5zJe-0006W9-97
- for barebox@lists.infradead.org; Mon, 27 Aug 2012 13:25:19 +0000
-Date: Mon, 27 Aug 2012 15:25:15 +0200
+ id 1T5zU3-00086R-St
+ for barebox@lists.infradead.org; Mon, 27 Aug 2012 13:36:04 +0000
+Date: Mon, 27 Aug 2012 15:35:56 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120827132515.GE26594@pengutronix.de>
+Message-ID: <20120827133556.GF26594@pengutronix.de>
 References: <20120824044613.GI6271@game.jcrosoft.org>
  <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
+ <1345783818-28784-3-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1345783818-28784-3-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,53 +24,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/18] fs: add readlink support
+Subject: Re: [PATCH 03/18] fs: add symlink support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Aug 24, 2012 at 06:50:01AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Fri, Aug 24, 2012 at 06:50:03AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Limit it's support to existing file only
+> 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  fs/fs.c      |   59 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  include/fs.h |    5 +++++
->  2 files changed, 64 insertions(+)
+>  fs/fs.c      |   43 +++++++++++++++++++++++++++++++++++++++++++
+>  include/fs.h |    4 ++++
+>  2 files changed, 47 insertions(+)
 > 
 > diff --git a/fs/fs.c b/fs/fs.c
-> index 8ab1a3a..64a0d94 100644
+> index c950054..a19e1f4 100644
 > --- a/fs/fs.c
 > +++ b/fs/fs.c
-> @@ -890,6 +890,65 @@ int close(int fd)
+> @@ -949,6 +949,49 @@ out:
 >  }
->  EXPORT_SYMBOL(close);
+>  EXPORT_SYMBOL(readlink);
 >  
-> +ssize_t readlink(const char *pathname, char *buf, size_t bufsiz)
-
-man 2 readlink says:
-
-> On  success,  readlink()  returns  the number of bytes placed in buf.
-> On error, -1 is returned and errno is set to indicate the error.
-
-This function instead returns 0 for success and a negative error value.
-This is ok, but if the meaning of the return value is different, then it
-does not make sense to try to match the function prototype with the libc
-function.
-Make the return type int.
-
+> +int symlink(const char *pathname, const char *newpath)
 > +{
 > +	struct fs_driver_d *fsdrv;
 > +	struct fs_device_d *fsdev;
 > +	char *p = normalise_path(pathname);
-> +	char *freep = p;
 > +	int ret;
-> +	size_t len = 0;
-> +	char tmp[PATH_MAX];
+> +	struct stat s;
 > +
-> +	tmp[0] = 0;
-> +	buf[0] = 0;
-> +
-> +	ret = path_check_prereq(pathname, S_IFLNK);
-> +	if (ret)
+> +	if (!stat(p, &s) && S_ISDIR(s.st_mode)) {
+> +		ret = -ENOSYS;
 > +		goto out;
+
+You lose the memory allocated in normalise_path here.
+
+> +	}
+> +
+> +	free(p);
+> +	p = normalise_path(newpath);
+
+p is never freed again.
+
+> +
+> +	ret = stat(p, &s);
+> +	if (!ret) {
+> +		ret = -EEXIST;
+> +		goto out;
+> +	}
 > +
 > +	fsdev = get_fs_device_and_root_path(&p);
 > +	if (!fsdev) {
@@ -78,45 +80,16 @@ Make the return type int.
 > +	}
 > +	fsdrv = fsdev->driver;
 > +
-> +	len = min(bufsiz, (size_t)PATH_MAX);
-> +	if (fsdrv->readlink) {
-> +		ret = fsdrv->readlink(&fsdev->dev, p, tmp, len);
+> +	if (fsdrv->symlink) {
+> +		ret = fsdrv->symlink(&fsdev->dev, pathname, p);
 > +	} else {
 > +		ret = -EROFS;
 
-EROFS is a strange error code here.
+Better:
 
-> +		goto out;
-
-This is not needed
-
-> +	}
-> +
-> +	if (ret)
-> +		goto out;
-> +
-> +	if (tmp[0] == '/') {
-> +		int l = strlen(fsdev->path);
-> +
-> +		if (fsdev->path[l - 1] == '/')
-> +			l--;
-> +
-> +		if (l) {
-> +			len -= l;
-> +			strncat(buf, fsdev->path, l);
-> +		}
-> +	}
-
-I don't understand why you manipulate the link target when the link target
-is an absolute path. This means that if mount a fatfs to fat and put a
-link there:
-
-/fat/somelink -> /env/bla
-
-Then readlink will return /fat/env/bla, which is not what you want.
+EPERM  The file system containing newpath does not support the creation of symbolic links.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
