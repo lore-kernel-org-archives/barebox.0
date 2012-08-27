@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T5zvM-0007Nk-3I
- for barebox@lists.infradead.org; Mon, 27 Aug 2012 14:04:17 +0000
-Date: Mon, 27 Aug 2012 16:04:13 +0200
+ id 1T602y-0007hV-Pa
+ for barebox@lists.infradead.org; Mon, 27 Aug 2012 14:12:09 +0000
+Date: Mon, 27 Aug 2012 16:12:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120827140413.GJ26594@pengutronix.de>
+Message-ID: <20120827141206.GK26594@pengutronix.de>
 References: <20120824044613.GI6271@game.jcrosoft.org>
  <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
- <1345783818-28784-8-git-send-email-plagnioj@jcrosoft.com>
+ <1345783818-28784-15-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1345783818-28784-8-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1345783818-28784-15-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,90 +24,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 08/18] nfs: add readlink support
+Subject: Re: [PATCH 15/18] evnfs: introduce major and minor
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Aug 24, 2012 at 06:50:08AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Fri, Aug 24, 2012 at 06:50:15AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> they are store in the super block at byte 16th and 17th.
+> 
+> set the verison at 0.1
+
+Only this little comment makes clear that with major and minor you mean
+a version. I first thought about device nodes...
+
+> 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  fs/nfs.c |   93 +++++++++++++++++++++++++++++++++++++++++++-------------------
->  1 file changed, 65 insertions(+), 28 deletions(-)
+>  common/environment.c |    2 ++
+>  include/envfs.h      |    7 ++++++-
+>  2 files changed, 8 insertions(+), 1 deletion(-)
 > 
-> diff --git a/fs/nfs.c b/fs/nfs.c
-> index 79e667f..a4e1f91 100644
-> --- a/fs/nfs.c
-> +++ b/fs/nfs.c
-> @@ -605,34 +605,6 @@ static int nfs_read_req(struct file_priv *priv, int offset, int readlen)
->  	return 0;
->  }
+> diff --git a/common/environment.c b/common/environment.c
+> index 52ce0de..257f35f 100644
+> --- a/common/environment.c
+> +++ b/common/environment.c
+> @@ -125,6 +125,8 @@ int envfs_save(char *filename, char *dirname)
 >  
-> @@ -742,6 +714,70 @@ static struct file_priv *nfs_do_stat(struct device_d *dev, const char *filename,
->  	return priv;
->  }
+>  	super = (struct envfs_super *)buf;
+>  	super->magic = ENVFS_32(ENVFS_MAGIC);
+> +	super->major = ENVFS_32(ENVFS_MAJOR);
+> +	super->minor = ENVFS_32(ENVFS_MINOR);
+
+major and minor are 8bit wide but you read 32?
+
+>  	super->size = ENVFS_32(size);
 >  
-> +static int nfs_readlink_req(struct file_priv *priv, char* buf, size_t size)
-> +{
-> +	uint32_t data[1024];
-> +	uint32_t *p;
-> +	int len;
-> +	int ret;
-> +	char *path;
-> +	uint32_t *filedata;
+>  	/* second pass: copy files to buffer */
+> diff --git a/include/envfs.h b/include/envfs.h
+> index ba976d6..c6df8c5 100644
+> --- a/include/envfs.h
+> +++ b/include/envfs.h
+> @@ -5,6 +5,9 @@
+>  #include <asm/byteorder.h>
+>  #endif
+>  
+> +#define ENVFS_MAJOR		0
+> +#define ENVFS_MINOR		1
 > +
-> +	p = &(data[0]);
-> +	p = rpc_add_credentials(p);
-> +
-> +	memcpy(p, priv->filefh, NFS_FHSIZE);
-> +	p += (NFS_FHSIZE / 4);
-> +
-> +	len = p - &(data[0]);
-> +
-> +	ret = rpc_req(priv->npriv, PROG_NFS, NFS_READLINK, data, len);
-> +	if (ret)
-> +		return ret;
-> +
-> +	filedata = nfs_packet + sizeof(struct rpc_reply);
-> +	filedata++;
-> +
-> +	len = ntohl(net_read_uint32(filedata)); /* new path length */
-> +	filedata++;
-> +
-> +	path = (char *)filedata;
-> +
-> +	if (len > size)
-> +		len = size;
-> +
-> +	memcpy(buf, path, len);
-> +	buf[len] = 0;
+>  #define ENVFS_MAGIC		    0x798fba79	/* some random number */
+>  #define ENVFS_INODE_MAGIC	0x67a8c78d
+>  #define ENVFS_END_MAGIC		0x6a87d6cd
+> @@ -29,8 +32,10 @@ struct envfs_super {
+>  	uint32_t priority;
+>  	uint32_t crc;			/* crc for the data */
+>  	uint32_t size;			/* size of data */
+> +	uint8_t major;			/* major */
+> +	uint8_t minor;			/* minor */
+> +	uint16_t future;		/* reserved for future use */
+>  	uint32_t flags;			/* feature flags */
+> -	uint32_t future;		/* reserved for future use */
 
-You write past the buffer here.
-
-> +
-> +	return 0;
-> +}
-> +
-> +static int nfs_readlink(struct device_d *dev, const char *filename,
-> +			char *realname, size_t size)
-> +{
-> +	struct file_priv *priv;
-> +	int ret;
-> +	struct stat s;
-> +
-> +	priv = nfs_do_stat(dev, filename, &s);
-> +	if (IS_ERR(priv))
-> +		return PTR_ERR(priv);
-> +
-> +
-
-unnecessary blank line.
-
-> +	if (S_ISDIR(s.st_mode))
-> +		strcat(realname, filename);
-> +	else
-> +		strcat(realname, dirname((char*)filename));
-
-What do you expect to be in realname?
+Why do you move the position of the flags field in envfs_super?
 
 Sascha
 
