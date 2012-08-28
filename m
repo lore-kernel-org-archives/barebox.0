@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T6Hx5-0002yD-74
- for barebox@lists.infradead.org; Tue, 28 Aug 2012 09:19:16 +0000
-Date: Tue, 28 Aug 2012 11:19:13 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120828091913.GF26594@pengutronix.de>
-References: <1345648133-31721-1-git-send-email-renaud.barbier@ge.com>
- <1345648133-31721-3-git-send-email-renaud.barbier@ge.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1345648133-31721-3-git-send-email-renaud.barbier@ge.com>
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1T6L1v-0003vE-Cc
+ for barebox@lists.infradead.org; Tue, 28 Aug 2012 12:36:29 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id DB59BBF0E8
+ for <barebox@lists.infradead.org>; Tue, 28 Aug 2012 14:36:22 +0200 (CEST)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Tue, 28 Aug 2012 14:36:21 +0200
+Message-Id: <1346157381-16420-1-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <20120828090828.GE26594@pengutronix.de>
+References: <20120828090828.GE26594@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,92 +19,141 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] Freescale I2C driver
-To: Renaud Barbier <renaud.barbier@ge.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] xload: get barebox size from barebox_arm_head
+To: barebox@lists.infradead.org
 
-On Wed, Aug 22, 2012 at 04:08:52PM +0100, Renaud Barbier wrote:
-> This patch introduces the Freescale I2C driver along with its configuration
-> and build files.
-> The header file asm/fsl_i2c.h is updated with register offsets and the
-> structure mapping the i2c registers is removed.
-> 
-> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
-> ---
->  arch/ppc/include/asm/fsl_i2c.h |   80 ++++------
->  drivers/i2c/busses/Kconfig     |    4 +
->  drivers/i2c/busses/Makefile    |    1 +
->  drivers/i2c/busses/i2c-fsl.c   |  356 ++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 393 insertions(+), 48 deletions(-)
->  create mode 100644 drivers/i2c/busses/i2c-fsl.c
-> 
-> diff --git a/arch/ppc/include/asm/fsl_i2c.h b/arch/ppc/include/asm/fsl_i2c.h
+Add functions to read the barebox_arm_head, check barebox magicword
+and read out the barebox image size.
+Create a inital partion of 1Mb to access the barebox image on nand.
 
-Please remove this file completely. The i2c registers should be defined in the
-driver.
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+v2: remove fall back if header read fail 
 
+ arch/arm/include/asm/barebox-arm-head.h |    4 ++
+ arch/arm/mach-omap/include/mach/xload.h |    2 +-
+ arch/arm/mach-omap/xload.c              |   58 ++++++++++++++++++++++++++++--
+ 3 files changed, 59 insertions(+), 5 deletions(-)
 
-> index 4f71341..62b077d 100644
-> --- a/arch/ppc/include/asm/fsl_i2c.h
-> +++ b/arch/ppc/include/asm/fsl_i2c.h
-> @@ -1,6 +1,7 @@
->  /*
->   * Freescale I2C Controller
->   *
-> + * Copyright 2012 GE Intelligent Platform, Inc.
->   * Copyright 2006 Freescale Semiconductor, Inc.
->   *
->   * Based on earlier versions by Gleb Natapov <gnatapov@mrv.com>,
-> @@ -32,55 +33,38 @@
->  
->  #include <asm/types.h>
->  
-> -typedef struct fsl_i2c {
-> +#define I2C1_BASE_ADDR (CFG_IMMR + 0x3000)
-> +#define I2C2_BASE_ADDR (CFG_IMMR + 0x3100)
->  
-> -	u8 adr;		/* I2C slave address */
-> -	u8 res0[3];
-> -#define I2C_ADR		0xFE
-> -#define I2C_ADR_SHIFT	1
-> -#define I2C_ADR_RES	~(I2C_ADR)
-> +#define FSL_I2C_ADR		0x00
-> +#define FSL_I2C_FDR		0x04
-> +#define FSL_I2C_CR		0x08
-> +#define		I2C_CR_MEN	0x80
-> +#define		I2C_CR_MIEN	0x40
-> +#define		I2C_CR_MSTA	0x20
-> +#define		I2C_CR_MTX	0x10
-> +#define		I2C_CR_TXAK	0x08
-> +#define		I2C_CR_RSTA	0x04
-> +#define		I2C_CR_BCST	0x01
-> +#define FSL_I2C_SR		0x0C
-> +#define		I2C_SR_MCF	0x80
-> +#define		I2C_SR_MAAS	0x40
-> +#define		I2C_SR_MBB	0x20
-> +#define		I2C_SR_MAL	0x10
-> +#define		I2C_SR_BCSTM	0x08
-> +#define		I2C_SR_SRW	0x04
-> +#define		I2C_SR_MIF	0x02
-> +#define		I2C_SR_RXAK	0x01
-> +#define FSL_I2C_DR		0x10
-> +#define FSL_I2C_DFSRR		0x14
-
-These defines look awfully familiar. Can we use
-drivers/i2c/busses/i2c-imx.c instead of adding a new driver?
-
-Sascha
-
-
+diff --git a/arch/arm/include/asm/barebox-arm-head.h b/arch/arm/include/asm/barebox-arm-head.h
+index 0dc3074..521bcf6 100644
+--- a/arch/arm/include/asm/barebox-arm-head.h
++++ b/arch/arm/include/asm/barebox-arm-head.h
+@@ -1,6 +1,10 @@
+ #ifndef __ASM_ARM_HEAD_H
+ #define __ASM_ARM_HEAD_H
+ 
++#define ARM_HEAD_SIZE		0x30
++#define HEAD_MAGICWORD_OFFSET	0x20
++#define HEAD_SIZE_OFFSET	0x2C
++
+ static inline void barebox_arm_head(void)
+ {
+ 	__asm__ __volatile__ (
+diff --git a/arch/arm/mach-omap/include/mach/xload.h b/arch/arm/mach-omap/include/mach/xload.h
+index 844b57f..26f1b68 100644
+--- a/arch/arm/mach-omap/include/mach/xload.h
++++ b/arch/arm/mach-omap/include/mach/xload.h
+@@ -1,7 +1,7 @@
+ #ifndef _MACH_XLOAD_H
+ #define _MACH_XLOAD_H
+ 
+-void *omap_xload_boot_nand(int offset, int size);
++void *omap_xload_boot_nand(int offset);
+ void *omap_xload_boot_mmc(void);
+ 
+ enum omap_boot_src {
+diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
+index 9a6b0b4..0be0c50 100644
+--- a/arch/arm/mach-omap/xload.c
++++ b/arch/arm/mach-omap/xload.c
+@@ -7,16 +7,66 @@
+ #include <fcntl.h>
+ #include <mach/xload.h>
+ #include <sizes.h>
++#include <asm/barebox-arm-head.h>
+ 
+-void *omap_xload_boot_nand(int offset, int size)
++void *read_image_head(const char *name)
+ {
++	void *header = xmalloc(ARM_HEAD_SIZE);
++	struct cdev *cdev;
+ 	int ret;
+-	void *to = xmalloc(size);
++
++	cdev = cdev_open(name, O_RDONLY);
++	if (!cdev) {
++		printf("failed to open partition\n");
++		return NULL;
++	}
++
++	ret = cdev_read(cdev, header, ARM_HEAD_SIZE, 0, 0);
++	cdev_close(cdev);
++
++	if (ret != ARM_HEAD_SIZE) {
++		printf("failed to read from partition\n");
++		return NULL;
++	}
++
++	return header;
++}
++
++unsigned int get_image_size(void *head)
++{
++	unsigned int ret = 0;
++	unsigned int *psize = head + HEAD_SIZE_OFFSET;
++	const char *pmagic = head + HEAD_MAGICWORD_OFFSET;
++
++	if (!strcmp(pmagic, "barebox"))
++		ret = *psize;
++	debug("Detected barebox image size %u\n", ret);
++
++	return ret;
++}
++
++void *omap_xload_boot_nand(int offset)
++{
++	int ret;
++	int size;
++	void *to, *header;
+ 	struct cdev *cdev;
+ 
+-	devfs_add_partition("nand0", offset, size, PARTITION_FIXED, "x");
++	devfs_add_partition("nand0", offset, SZ_1M, PARTITION_FIXED, "x");
+ 	dev_add_bb_dev("x", "bbx");
+ 
++	header = get_image_size(read_image_head("bbx"));
++	if (header == NULL)
++		return NULL;
++
++	size = get_image_size(header);
++	if (!size) {
++		printf("failed to get image size\n");
++		return NULL;
++	}
++
++	to = xmalloc(size);
++
+ 	cdev = cdev_open("bbx", O_RDONLY);
+ 	if (!cdev) {
+ 		printf("failed to open nand\n");
+@@ -80,7 +130,7 @@ int run_shell(void)
+ 		printf("unknown boot source. Fall back to nand\n");
+ 	case OMAP_BOOTSRC_NAND:
+ 		printf("booting from NAND\n");
+-		func = omap_xload_boot_nand(SZ_128K, SZ_512K);
++		func = omap_xload_boot_nand(SZ_128K);
+ 		break;
+ 	}
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.0.4
+
 
 _______________________________________________
 barebox mailing list
