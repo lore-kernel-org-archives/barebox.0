@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
+Received: from 9.mo4.mail-out.ovh.net ([46.105.40.176]
+ helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T6Nec-0003Nd-Iz
- for barebox@lists.infradead.org; Tue, 28 Aug 2012 15:24:37 +0000
-Received: from eb-e6520.local.eukrea.com (unknown [82.240.38.71])
- by smtp2-g21.free.fr (Postfix) with ESMTP id 7E7DB4B0064
- for <barebox@lists.infradead.org>; Tue, 28 Aug 2012 17:24:27 +0200 (CEST)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Tue, 28 Aug 2012 17:24:25 +0200
-Message-Id: <1346167466-10098-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
+ id 1T6NkC-0003sP-Ev
+ for barebox@lists.infradead.org; Tue, 28 Aug 2012 15:30:21 +0000
+Received: from mail423.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 7E17A1050E08
+ for <barebox@lists.infradead.org>; Tue, 28 Aug 2012 17:35:24 +0200 (CEST)
+Date: Tue, 28 Aug 2012 17:30:16 +0200
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20120828173016.35ee0219@eb-e6520>
+In-Reply-To: <1346167466-10098-1-git-send-email-eric@eukrea.com>
+References: <1346167466-10098-1-git-send-email-eric@eukrea.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,25 +21,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] usb_hub_power_on: wait for the power to be stable
+Subject: Re: [PATCH 1/2] usb_hub_power_on: wait for the power to be stable
 To: barebox@lists.infradead.org
 
-LSB0aGUgMTAwbXMgdmFsdWUgaXMgdGFrZW4gZnJvbSBMaW51eCAmIHUtYm9vdAotIHdpdGhvdXQg
-dGhpcywgSSBkb24ndCBzZWUgcGVyaXBoZXJhbHMgY29ubmVjdGVkIHRvIGEgaHViCmNvbm5lY3Rl
-ZCB0byBhbiBpLk1YMzUncyBob3N0IHBvcnQuCgpTaWduZWQtb2ZmLWJ5OiBFcmljIELDqW5hcmQg
-PGVyaWNAZXVrcmVhLmNvbT4KLS0tCiBkcml2ZXJzL3VzYi9jb3JlL3VzYi5jIHwgICAgMiArLQog
-MSBmaWxlcyBjaGFuZ2VkLCAxIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb25zKC0pCgpkaWZmIC0t
-Z2l0IGEvZHJpdmVycy91c2IvY29yZS91c2IuYyBiL2RyaXZlcnMvdXNiL2NvcmUvdXNiLmMKaW5k
-ZXggYTUwNzVkNS4uYWUzZWI4OCAxMDA2NDQKLS0tIGEvZHJpdmVycy91c2IvY29yZS91c2IuYwor
-KysgYi9kcml2ZXJzL3VzYi9jb3JlL3VzYi5jCkBAIC05NDgsNyArOTQ4LDcgQEAgc3RhdGljIHZv
-aWQgdXNiX2h1Yl9wb3dlcl9vbihzdHJ1Y3QgdXNiX2h1Yl9kZXZpY2UgKmh1YikKIAkJdXNiX3Nl
-dF9wb3J0X2ZlYXR1cmUoZGV2LCBpICsgMSwgVVNCX1BPUlRfRkVBVF9QT1dFUik7CiAJCVVTQl9I
-VUJfUFJJTlRGKCJwb3J0ICVkIHJldHVybnMgJWxYXG4iLCBpICsgMSwgZGV2LT5zdGF0dXMpOwog
-CX0KLQltZGVsYXkoMjApOworCW1kZWxheSgxMDApOwogfQogCiAjZGVmaW5lIE1BWF9UUklFUyA1
-Ci0tIAoxLjcuNy42CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
-dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Hi Sascha,
+
+Le Tue, 28 Aug 2012 17:24:25 +0200,
+Eric B=E9nard <eric@eukrea.com> a =E9crit :
+
+> - the 100ms value is taken from Linux & u-boot
+
+and in fact after a few more tests without debug enabled, it seems that
+a 200 ms value would be needed to get it working reliable with several
+peripherals  so please wait for v2 before applying thyis patch.
+
+Thanks,
+Eric
+> - without this, I don't see peripherals connected to a hub
+> connected to an i.MX35's host port.
+> =
+
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> ---
+>  drivers/usb/core/usb.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> =
+
+> diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+> index a5075d5..ae3eb88 100644
+> --- a/drivers/usb/core/usb.c
+> +++ b/drivers/usb/core/usb.c
+> @@ -948,7 +948,7 @@ static void usb_hub_power_on(struct usb_hub_device *h=
+ub)
+>  		usb_set_port_feature(dev, i + 1, USB_PORT_FEAT_POWER);
+>  		USB_HUB_PRINTF("port %d returns %lX\n", i + 1, dev->status);
+>  	}
+> -	mdelay(20);
+> +	mdelay(100);
+>  }
+>  =
+
+>  #define MAX_TRIES 5
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
