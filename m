@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo4.mail-out.ovh.net ([46.105.40.176]
- helo=mo4.mail-out.ovh.net)
+Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T6NkC-0003sP-Ev
- for barebox@lists.infradead.org; Tue, 28 Aug 2012 15:30:21 +0000
-Received: from mail423.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 7E17A1050E08
- for <barebox@lists.infradead.org>; Tue, 28 Aug 2012 17:35:24 +0200 (CEST)
-Date: Tue, 28 Aug 2012 17:30:16 +0200
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120828173016.35ee0219@eb-e6520>
-In-Reply-To: <1346167466-10098-1-git-send-email-eric@eukrea.com>
-References: <1346167466-10098-1-git-send-email-eric@eukrea.com>
-Mime-Version: 1.0
+ id 1T6TRW-0000SN-Rm
+ for barebox@lists.infradead.org; Tue, 28 Aug 2012 21:35:28 +0000
+Received: from localhost.localdomain (unknown [82.233.81.124])
+ by smtp3-g21.free.fr (Postfix) with ESMTP id 8CFC6A61F3
+ for <barebox@lists.infradead.org>; Tue, 28 Aug 2012 23:35:19 +0200 (CEST)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Tue, 28 Aug 2012 23:35:17 +0200
+Message-Id: <1346189717-10476-1-git-send-email-eric@eukrea.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,54 +18,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] usb_hub_power_on: wait for the power to be stable
+Subject: [PATCH] i.MX35: add cspi1 support
 To: barebox@lists.infradead.org
 
-Hi Sascha,
-
-Le Tue, 28 Aug 2012 17:24:25 +0200,
-Eric B=E9nard <eric@eukrea.com> a =E9crit :
-
-> - the 100ms value is taken from Linux & u-boot
-
-and in fact after a few more tests without debug enabled, it seems that
-a 200 ms value would be needed to get it working reliable with several
-peripherals  so please wait for v2 before applying thyis patch.
-
-Thanks,
-Eric
-> - without this, I don't see peripherals connected to a hub
-> connected to an i.MX35's host port.
-> =
-
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> ---
->  drivers/usb/core/usb.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> =
-
-> diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-> index a5075d5..ae3eb88 100644
-> --- a/drivers/usb/core/usb.c
-> +++ b/drivers/usb/core/usb.c
-> @@ -948,7 +948,7 @@ static void usb_hub_power_on(struct usb_hub_device *h=
-ub)
->  		usb_set_port_feature(dev, i + 1, USB_PORT_FEAT_POWER);
->  		USB_HUB_PRINTF("port %d returns %lX\n", i + 1, dev->status);
->  	}
-> -	mdelay(20);
-> +	mdelay(100);
->  }
->  =
-
->  #define MAX_TRIES 5
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+dGVzdGVkIHdpdGggYSBtMjVwMTI4IGZsYXNoIGJvdGggaW4gbmFuZCBib290ICYgc3BpIGJvb3Qu
+CgpTaWduZWQtb2ZmLWJ5OiBFcmljIELDqW5hcmQgPGVyaWNAZXVrcmVhLmNvbT4KLS0tCiBhcmNo
+L2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvZGV2aWNlcy1pbXgzNS5oIHwgICAgNSArKysrKwog
+YXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteDM1LXJlZ3MuaCAgICB8ICAgIDIgKysK
+IGFyY2gvYXJtL21hY2gtaW14L3NwZWVkLWlteDM1LmMgICAgICAgICAgICAgICAgfCAgICA1ICsr
+KysrCiBkcml2ZXJzL3NwaS9LY29uZmlnICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAg
+MiArLQogZHJpdmVycy9zcGkvaW14X3NwaS5jICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAg
+IDIgKy0KIDUgZmlsZXMgY2hhbmdlZCwgMTQgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkK
+CmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvZGV2aWNlcy1pbXgz
+NS5oIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2RldmljZXMtaW14MzUuaAppbmRl
+eCA2YzBkNzUwLi45ZWNhYTM1IDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRl
+L21hY2gvZGV2aWNlcy1pbXgzNS5oCisrKyBiL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFj
+aC9kZXZpY2VzLWlteDM1LmgKQEAgLTE2LDYgKzE2LDExIEBAIHN0YXRpYyBpbmxpbmUgc3RydWN0
+IGRldmljZV9kICppbXgzNV9hZGRfaTJjMihzdHJ1Y3QgaTJjX3BsYXRmb3JtX2RhdGEgKnBkYXRh
+KQogCXJldHVybiBpbXhfYWRkX2kyYygodm9pZCAqKUlNWF9JMkMzX0JBU0UsIDIsIHBkYXRhKTsK
+IH0KIAorc3RhdGljIGlubGluZSBzdHJ1Y3QgZGV2aWNlX2QgKmlteDM1X2FkZF9zcGkwKHN0cnVj
+dCBzcGlfaW14X21hc3RlciAqcGRhdGEpCit7CisJcmV0dXJuIGlteF9hZGRfc3BpKCh2b2lkICop
+SU1YX0NTUEkxX0JBU0UsIDAsIHBkYXRhKTsKK30KKwogc3RhdGljIGlubGluZSBzdHJ1Y3QgZGV2
+aWNlX2QgKmlteDM1X2FkZF91YXJ0MCh2b2lkKQogewogCXJldHVybiBpbXhfYWRkX3VhcnQoKHZv
+aWQgKilJTVhfVUFSVDFfQkFTRSwgMCk7CmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9p
+bmNsdWRlL21hY2gvaW14MzUtcmVncy5oIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNo
+L2lteDM1LXJlZ3MuaAppbmRleCBmYWZjZDYxLi45MWQ0YjliIDEwMDY0NAotLS0gYS9hcmNoL2Fy
+bS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14MzUtcmVncy5oCisrKyBiL2FyY2gvYXJtL21hY2gt
+aW14L2luY2x1ZGUvbWFjaC9pbXgzNS1yZWdzLmgKQEAgLTQ5LDYgKzQ5LDcgQEAKICNkZWZpbmUg
+SU1YX0kyQzFfQkFTRQkJMHg0M0Y4MDAwMAogI2RlZmluZSBJTVhfSTJDMl9CQVNFCQkweDQzRjk4
+MDAwCiAjZGVmaW5lIElNWF9JMkMzX0JBU0UJCTB4NDNGODQwMDAKKyNkZWZpbmUgSU1YX0NTUEkx
+X0JBU0UJCTB4NDNGQTQwMDAKICNkZWZpbmUgSU1YX1NESEMxX0JBU0UJCTB4NTNGQjQwMDAKICNk
+ZWZpbmUgSU1YX1NESEMyX0JBU0UJCTB4NTNGQjgwMDAKICNkZWZpbmUgSU1YX1NESEMzX0JBU0UJ
+CTB4NTNGQkMwMDAKQEAgLTc1LDYgKzc2LDcgQEAKICNkZWZpbmUgQ0NNX0NHUjIJMHgzNAogI2Rl
+ZmluZSBDQ01fQ0dSMwkweDM4CiAKKyNkZWZpbmUgQ0NNX0NHUjBfQ1NQSTFfU0hJRlQJMTAKICNk
+ZWZpbmUgQ0NNX0NHUjFfRkVDX1NISUZUCTAKICNkZWZpbmUgQ0NNX0NHUjFfSTJDMV9TSElGVAkx
+MAogI2RlZmluZSBDQ01fQ0dSMV9TREhDMV9TSElGVAkyNgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
+bWFjaC1pbXgvc3BlZWQtaW14MzUuYyBiL2FyY2gvYXJtL21hY2gtaW14L3NwZWVkLWlteDM1LmMK
+aW5kZXggNjg0ZGMxNC4uNWYwZTIyOSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvc3Bl
+ZWQtaW14MzUuYworKysgYi9hcmNoL2FybS9tYWNoLWlteC9zcGVlZC1pbXgzNS5jCkBAIC0xODYs
+NiArMTg2LDExIEBAIHVsb25nIGlteF9nZXRfaTJjY2xrKHZvaWQpCiAJcmV0dXJuIGlteF9nZXRf
+aXBnX3BlcmNsaygpOwogfQogCit1bnNpZ25lZCBsb25nIGlteF9nZXRfY3NwaWNsayh2b2lkKQor
+eworCXJldHVybiBpbXhfZ2V0X2lwZ2NsaygpOworfQorCiB2b2lkIGlteF9kdW1wX2Nsb2Nrcyh2
+b2lkKQogewogCXByaW50ZigibXBsbDogICAgJTEwbGQgSHpcbiIsIGlteF9nZXRfbXBsbGNsaygp
+KTsKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL0tjb25maWcgYi9kcml2ZXJzL3NwaS9LY29uZmln
+CmluZGV4IDYwOWJhZmQuLjdhMmY1NGEgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc3BpL0tjb25maWcK
+KysrIGIvZHJpdmVycy9zcGkvS2NvbmZpZwpAQCAtMTYsNyArMTYsNyBAQCBjb25maWcgRFJJVkVS
+X1NQSV9JTVhfMF8wCiAKIGNvbmZpZyBEUklWRVJfU1BJX0lNWF8wXzcKIAlib29sCi0JZGVwZW5k
+cyBvbiBBUkNIX0lNWDI1CisJZGVwZW5kcyBvbiBBUkNIX0lNWDI1IHx8IEFSQ0hfSU1YMzUKIAlk
+ZWZhdWx0IHkKIAogY29uZmlnIERSSVZFUl9TUElfSU1YXzJfMwpkaWZmIC0tZ2l0IGEvZHJpdmVy
+cy9zcGkvaW14X3NwaS5jIGIvZHJpdmVycy9zcGkvaW14X3NwaS5jCmluZGV4IDQyMzU4ZjIuLjA2
+Y2VlODYgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc3BpL2lteF9zcGkuYworKysgYi9kcml2ZXJzL3Nw
+aS9pbXhfc3BpLmMKQEAgLTUxNyw3ICs1MTcsNyBAQCBzdGF0aWMgaW50IGlteF9zcGlfcHJvYmUo
+c3RydWN0IGRldmljZV9kICpkZXYpCiAJCXZlcnNpb24gPSBTUElfSU1YX1ZFUl8wXzA7CiAjZW5k
+aWYKICNpZmRlZiBDT05GSUdfRFJJVkVSX1NQSV9JTVhfMF83Ci0JaWYgKGNwdV9pc19teDI1KCkp
+CisJaWYgKGNwdV9pc19teDI1KCkgfHwgY3B1X2lzX214MzUoKSkKIAkJdmVyc2lvbiA9IFNQSV9J
+TVhfVkVSXzBfNzsKICNlbmRpZgogI2lmZGVmIENPTkZJR19EUklWRVJfU1BJX0lNWF8yXzMKLS0g
+CjEuNy43LjYKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
+L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
