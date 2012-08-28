@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T6Fbh-0008H8-NC
- for barebox@lists.infradead.org; Tue, 28 Aug 2012 06:49:02 +0000
-Date: Tue, 28 Aug 2012 08:49:00 +0200
+ id 1T6FcH-0008Lf-Su
+ for barebox@lists.infradead.org; Tue, 28 Aug 2012 06:49:38 +0000
+Date: Tue, 28 Aug 2012 08:49:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120828064900.GQ26594@pengutronix.de>
-References: <1345749671-9045-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20120828064935.GR26594@pengutronix.de>
+References: <1346064964-7734-1-git-send-email-j.weitzel@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1345749671-9045-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1346064964-7734-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,53 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands/digest: don't print checksum for non-existing
- files
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] pcm049: use NAND_BUSWIDTH_AUTO
+To: Jan Weitzel <j.weitzel@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Aug 23, 2012 at 11:21:11PM +0400, Antony Pavlov wrote:
-> This fixes the case:
+On Mon, Aug 27, 2012 at 12:56:04PM +0200, Jan Weitzel wrote:
+> autodetect bus width
 > 
->   barebox:/ md5sum non-existing-file
->   non-existing-file: No such file or directory
->   00000000000000000000000000000000  non-existing-file     0x00000000 ... 0xffffffffffffffff
->   barebox:/
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 
 Applied, thanks
 
 Sascha
 
 > ---
->  commands/digest.c |   10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
+>  arch/arm/boards/pcm049/board.c |    1 -
+>  1 files changed, 0 insertions(+), 1 deletions(-)
 > 
-> diff --git a/commands/digest.c b/commands/digest.c
-> index 07cbec9..e334a40 100644
-> --- a/commands/digest.c
-> +++ b/commands/digest.c
-> @@ -62,11 +62,13 @@ static int do_digest(char *algorithm, int argc, char *argv[])
+> diff --git a/arch/arm/boards/pcm049/board.c b/arch/arm/boards/pcm049/board.c
+> index 456c9a7..57b24af 100644
+> --- a/arch/arm/boards/pcm049/board.c
+> +++ b/arch/arm/boards/pcm049/board.c
+> @@ -101,7 +101,6 @@ static struct i2c_board_info i2c_devices[] = {
 >  
->  		if (digest_file_window(d, filename, hash, start, size) < 0)
->  			ret = 1;
-> +		else {
-> +			for (i = 0; i < d->length; i++)
-> +				printf("%02x", hash[i]);
->  
-> -		for (i = 0; i < d->length; i++)
-> -			printf("%02x", hash[i]);
-> -
-> -		printf("  %s\t0x%08llx ... 0x%08llx\n", filename, start, start + size);
-> +			printf("  %s\t0x%08llx ... 0x%08llx\n",
-> +				filename, start, start + size);
-> +		}
->  
->  		argv++;
->  	}
+>  static struct gpmc_nand_platform_data nand_plat = {
+>  	.wait_mon_pin = 1,
+> -	.device_width = 8,
+>  	.ecc_mode = OMAP_ECC_BCH8_CODE_HW,
+>  	.nand_cfg = &omap4_nand_cfg,
+>  };
 > -- 
-> 1.7.10.4
+> 1.7.0.4
 > 
 > 
 > _______________________________________________
