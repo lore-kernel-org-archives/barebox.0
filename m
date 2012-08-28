@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mo6-p00-ob.rzone.de ([2a01:238:20a:202:5300::1])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T63eR-0006FP-NY
- for barebox@lists.infradead.org; Mon, 27 Aug 2012 18:03:05 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 27 Aug 2012 20:01:50 +0200
-References: <CACO6GO7pfavefJa_wTcR7ifHwWVS8up7-TRW8ArQzXoeL1JHCA@mail.gmail.com>
-In-Reply-To: <CACO6GO7pfavefJa_wTcR7ifHwWVS8up7-TRW8ArQzXoeL1JHCA@mail.gmail.com>
+ id 1T6FTx-0007FB-Ty
+ for barebox@lists.infradead.org; Tue, 28 Aug 2012 06:41:03 +0000
+Received: from [192.168.1.10]
+ (ALyon-754-1-1-147.w90-15.abo.wanadoo.fr [90.15.40.147])
+ by smtp.strato.de (jored mo49) (RZmta 30.12 DYNA|AUTH)
+ with ESMTPA id Y01647o7S5SqJ4 for <barebox@lists.infradead.org>;
+ Tue, 28 Aug 2012 08:40:58 +0200 (CEST)
+Message-ID: <503C67F9.7090703@calao-systems.com>
+Date: Tue, 28 Aug 2012 08:40:57 +0200
+From: gregory hermant <gregory.hermant@calao-systems.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201208272001.50503.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +24,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox on imx23-olinuxino
-To: barebox@lists.infradead.org, f.koliqi@gmail.com
+Subject: [PATCH] NAND Flash SMC timings update (nwe_pulse) for calao board
+ based on AT91SAM9G20 SoC
+To: barebox@lists.infradead.org
 
-Hi Fadil,
+Signed-off-by: Gregory Hermant <gregory.hermant@calao-systems.com>
+---
+ arch/arm/boards/tny-a926x/init.c |    2 +-
+ arch/arm/boards/usb-a926x/init.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Fadil Berisha wrote:
-> Based on falconfing and mx23-evk, I did barebox port on
-> imx23-olinuxino board.  Here is barebox boot:
->
-> Board: Olimex.ltd imx23-olinuxino
-> registered netconsole as cs1
-> Min. frequency is 1476 Hz
-> Max. frequency is 48000000 Hz
-> mxs_mci@mci0: registered as mci0
-> ehci@ehci0: USB EHCI 1.00
-> No MCI card preset
-
-In the mci-core.c source file you can enable the DEBUG macro to include more 
-debug output. This will print more information about the MCI card detection. 
-Maybe it helps.
-
-Check also:
- - pin multiplexing
- - power supply to the SD card
- - GPIOs for detecting the SD card (some kind of inserting signal)
- - increase the min frequency to about 400 kHz. Maybe 1476 Hz are too slow and
-   conflict with some timeout values
-
-Regards,
-Juergen
-
+diff --git a/arch/arm/boards/tny-a926x/init.c b/arch/arm/boards/tny-a926x/init.c
+index d58132a..5538a44 100644
+--- a/arch/arm/boards/tny-a926x/init.c
++++ b/arch/arm/boards/tny-a926x/init.c
+@@ -89,7 +89,7 @@ static struct sam9_smc_config tny_a9g20_nand_smc_config = {
+ 	.ncs_read_pulse		= 4,
+ 	.nrd_pulse		= 4,
+ 	.ncs_write_pulse	= 4,
+-	.nwe_pulse		= 2,
++	.nwe_pulse		= 4,
+ 
+ 	.read_cycle		= 7,
+ 	.write_cycle		= 7,
+diff --git a/arch/arm/boards/usb-a926x/init.c b/arch/arm/boards/usb-a926x/init.c
+index 7e63876..00a215d 100644
+--- a/arch/arm/boards/usb-a926x/init.c
++++ b/arch/arm/boards/usb-a926x/init.c
+@@ -90,7 +90,7 @@ static struct sam9_smc_config usb_a9g20_nand_smc_config = {
+ 	.ncs_read_pulse		= 4,
+ 	.nrd_pulse		= 4,
+ 	.ncs_write_pulse	= 4,
+-	.nwe_pulse		= 2,
++	.nwe_pulse		= 4,
+ 
+ 	.read_cycle		= 7,
+ 	.write_cycle		= 7,
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
+1.5.6.3
+
+
 
 _______________________________________________
 barebox mailing list
