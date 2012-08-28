@@ -1,21 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from www.webware-experts.de ([80.78.166.106])
- by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T6LyX-0007hC-8r
- for barebox@lists.infradead.org; Tue, 28 Aug 2012 13:37:02 +0000
-Received: from localhost (localhost [127.0.0.1])
- by www.webware-experts.de (Postfix) with ESMTP id 8A0861B2B74A
- for <barebox@lists.infradead.org>; Tue, 28 Aug 2012 15:36:55 +0200 (CEST)
-Received: from www.webware-experts.de ([127.0.0.1])
- by localhost (webwarexs.private [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id F1Ut4yexnWNi for <barebox@lists.infradead.org>;
- Tue, 28 Aug 2012 15:36:55 +0200 (CEST)
-Received: from [192.168.3.131] (p57bb9020.dip0.t-ipconnect.de [87.187.144.32])
- by www.webware-experts.de (Postfix) with ESMTPSA id 3E58A1B2B73F
- for <barebox@lists.infradead.org>; Tue, 28 Aug 2012 15:36:55 +0200 (CEST)
-Message-ID: <503CC976.6090006@webware-experts.de>
-Date: Tue, 28 Aug 2012 15:36:54 +0200
-From: Norbert Roos <nroos@webware-experts.de>
+Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1T6Ned-0003Nf-J7
+ for barebox@lists.infradead.org; Tue, 28 Aug 2012 15:24:37 +0000
+Received: from eb-e6520.local.eukrea.com (unknown [82.240.38.71])
+ by smtp2-g21.free.fr (Postfix) with ESMTP id 850FE4B0015
+ for <barebox@lists.infradead.org>; Tue, 28 Aug 2012 17:24:30 +0200 (CEST)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Tue, 28 Aug 2012 17:24:26 +0200
+Message-Id: <1346167466-10098-2-git-send-email-eric@eukrea.com>
+In-Reply-To: <1346167466-10098-1-git-send-email-eric@eukrea.com>
+References: <1346167466-10098-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,27 +20,24 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: What is TEXT_BASE?
+Subject: [PATCH 2/2] stringlist: fix division by zero
 To: barebox@lists.infradead.org
 
-Hello,
-
-I'm just trying to build barebox for the first time, for processor OMAP4 
-and board Phytec phycore pcm049.
-
-Now i have to enter something for "TEXT_BASE", what should i select?
-
-And in general, are there some important settings beside selecting the 
-processor and board, or are the default values good for the first try?
-
-bye
-Norbert
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+bGVuIGlzIGNoZWNrZWQgaW5zdGVhZCBvZiBudW0gc28gd2hlbiBudW0gaXMgemVybywgd2UgZ2V0
+IGEKZGl2aXNpb24gYnkgemVybyBhIGZldyBsaW5lcyBsYXRlcgoKU2lnbmVkLW9mZi1ieTogRXJp
+YyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogbGliL3N0cmluZ2xpc3QuYyB8ICAgIDQg
+KystLQogMSBmaWxlcyBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpk
+aWZmIC0tZ2l0IGEvbGliL3N0cmluZ2xpc3QuYyBiL2xpYi9zdHJpbmdsaXN0LmMKaW5kZXggYjk2
+NWFhMC4uYThhZjE1ZCAxMDA2NDQKLS0tIGEvbGliL3N0cmluZ2xpc3QuYworKysgYi9saWIvc3Ry
+aW5nbGlzdC5jCkBAIC04Nyw4ICs4Nyw4IEBAIHZvaWQgc3RyaW5nX2xpc3RfcHJpbnRfYnlfY29s
+dW1uKHN0cnVjdCBzdHJpbmdfbGlzdCAqc2wpCiAJCXJldHVybjsKIAogCW51bSA9IDgwIC8gKGxl
+biArIDEpOwotCWlmIChsZW4gPT0gMCkKLQkJbGVuID0gMTsKKwlpZiAobnVtID09IDApCisJCW51
+bSA9IDE7CiAKIAlpID0gMDsKIAlsaXN0X2Zvcl9lYWNoX2VudHJ5KGVudHJ5LCAmc2wtPmxpc3Qs
+IGxpc3QpIHsKLS0gCjEuNy43LjYKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
+ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
+Cg==
