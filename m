@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T6Hmh-0001O2-Mp
- for barebox@lists.infradead.org; Tue, 28 Aug 2012 09:08:33 +0000
-Date: Tue, 28 Aug 2012 11:08:28 +0200
+ id 1T6Hx5-0002yD-74
+ for barebox@lists.infradead.org; Tue, 28 Aug 2012 09:19:16 +0000
+Date: Tue, 28 Aug 2012 11:19:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120828090828.GE26594@pengutronix.de>
-References: <1346064980-7769-1-git-send-email-j.weitzel@phytec.de>
- <20120828065445.GS26594@pengutronix.de>
- <1346143263.3364.0.camel@lws-weitzel>
+Message-ID: <20120828091913.GF26594@pengutronix.de>
+References: <1345648133-31721-1-git-send-email-renaud.barbier@ge.com>
+ <1345648133-31721-3-git-send-email-renaud.barbier@ge.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1346143263.3364.0.camel@lws-weitzel>
+In-Reply-To: <1345648133-31721-3-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,126 +23,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] xload: get barebox size from barebox_arm_head
-To: Jan Weitzel <J.Weitzel@phytec.de>
+Subject: Re: [PATCH 2/3] Freescale I2C driver
+To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Aug 28, 2012 at 10:41:03AM +0200, Jan Weitzel wrote:
-> Am Dienstag, den 28.08.2012, 08:54 +0200 schrieb Sascha Hauer:
-> > Hi Jan,
-> > 
-> > Looks mostly good.
-> Is there a better place than arch/arm/mach-omap/xload.c for the helper functions?
-> Didn't find one for common arm related code.
+On Wed, Aug 22, 2012 at 04:08:52PM +0100, Renaud Barbier wrote:
+> This patch introduces the Freescale I2C driver along with its configuration
+> and build files.
+> The header file asm/fsl_i2c.h is updated with register offsets and the
+> structure mapping the i2c registers is removed.
+> 
+> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+> ---
+>  arch/ppc/include/asm/fsl_i2c.h |   80 ++++------
+>  drivers/i2c/busses/Kconfig     |    4 +
+>  drivers/i2c/busses/Makefile    |    1 +
+>  drivers/i2c/busses/i2c-fsl.c   |  356 ++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 393 insertions(+), 48 deletions(-)
+>  create mode 100644 drivers/i2c/busses/i2c-fsl.c
+> 
+> diff --git a/arch/ppc/include/asm/fsl_i2c.h b/arch/ppc/include/asm/fsl_i2c.h
 
-You mean read_image_head and get_image_size? I think it's ok for now to
-have them in xload.c.
+Please remove this file completely. The i2c registers should be defined in the
+driver.
+
+
+> index 4f71341..62b077d 100644
+> --- a/arch/ppc/include/asm/fsl_i2c.h
+> +++ b/arch/ppc/include/asm/fsl_i2c.h
+> @@ -1,6 +1,7 @@
+>  /*
+>   * Freescale I2C Controller
+>   *
+> + * Copyright 2012 GE Intelligent Platform, Inc.
+>   * Copyright 2006 Freescale Semiconductor, Inc.
+>   *
+>   * Based on earlier versions by Gleb Natapov <gnatapov@mrv.com>,
+> @@ -32,55 +33,38 @@
+>  
+>  #include <asm/types.h>
+>  
+> -typedef struct fsl_i2c {
+> +#define I2C1_BASE_ADDR (CFG_IMMR + 0x3000)
+> +#define I2C2_BASE_ADDR (CFG_IMMR + 0x3100)
+>  
+> -	u8 adr;		/* I2C slave address */
+> -	u8 res0[3];
+> -#define I2C_ADR		0xFE
+> -#define I2C_ADR_SHIFT	1
+> -#define I2C_ADR_RES	~(I2C_ADR)
+> +#define FSL_I2C_ADR		0x00
+> +#define FSL_I2C_FDR		0x04
+> +#define FSL_I2C_CR		0x08
+> +#define		I2C_CR_MEN	0x80
+> +#define		I2C_CR_MIEN	0x40
+> +#define		I2C_CR_MSTA	0x20
+> +#define		I2C_CR_MTX	0x10
+> +#define		I2C_CR_TXAK	0x08
+> +#define		I2C_CR_RSTA	0x04
+> +#define		I2C_CR_BCST	0x01
+> +#define FSL_I2C_SR		0x0C
+> +#define		I2C_SR_MCF	0x80
+> +#define		I2C_SR_MAAS	0x40
+> +#define		I2C_SR_MBB	0x20
+> +#define		I2C_SR_MAL	0x10
+> +#define		I2C_SR_BCSTM	0x08
+> +#define		I2C_SR_SRW	0x04
+> +#define		I2C_SR_MIF	0x02
+> +#define		I2C_SR_RXAK	0x01
+> +#define FSL_I2C_DR		0x10
+> +#define FSL_I2C_DFSRR		0x14
+
+These defines look awfully familiar. Can we use
+drivers/i2c/busses/i2c-imx.c instead of adding a new driver?
 
 Sascha
 
-> 
-> Jan
-> 
-> > On Mon, Aug 27, 2012 at 12:56:20PM +0200, Jan Weitzel wrote:
-> > >  #include <fcntl.h>
-> > >  #include <mach/xload.h>
-> > >  #include <sizes.h>
-> > > +#include <asm/barebox-arm-head.h>
-> > >  
-> > > -void *omap_xload_boot_nand(int offset, int size)
-> > > +void *read_image_head(const char *name)
-> > > +{
-> > > +	void *header = xmalloc(ARM_HEAD_SIZE);
-> > > +	struct cdev *cdev;
-> > > +	int ret;
-> > > +
-> > > +	cdev = cdev_open(name, O_RDONLY);
-> > > +	if (!cdev) {
-> > > +		printf("failed to open partition\n");
-> > > +		return NULL;
-> > > +	}
-> > > +
-> > > +	ret = cdev_read(cdev, header, ARM_HEAD_SIZE, 0, 0);
-> > > +	cdev_close(cdev);
-> > > +
-> > > +	if (ret != ARM_HEAD_SIZE) {
-> > > +		printf("failed to read from partition\n");
-> > > +		return NULL;
-> > > +	}
-> > > +
-> > > +	return header;
-> > > +}
-> > > +
-> > > +unsigned int get_image_size(void *head)
-> > > +{
-> > > +	unsigned int ret = 0;
-> > > +	unsigned int *psize = head + HEAD_SIZE_OFFSET;
-> > > +	const char *pmagic = head + HEAD_MAGICWORD_OFFSET;
-> > > +
-> > > +	if (!head)
-> > > +		return 0;
-> > 
-> > Please drop this check...
-> > 
-> > > +
-> > > +	if (!strcmp(pmagic, "barebox"))
-> > > +		ret = *psize;
-> > > +	debug("Detected barebox image size %u\n", ret);
-> > > +
-> > > +	return ret;
-> > > +}
-> > > +
-> > > +void *omap_xload_boot_nand(int offset)
-> > >  {
-> > >  	int ret;
-> > > -	void *to = xmalloc(size);
-> > > +	int size;
-> > > +	void *to;
-> > >  	struct cdev *cdev;
-> > >  
-> > > -	devfs_add_partition("nand0", offset, size, PARTITION_FIXED, "x");
-> > > +	devfs_add_partition("nand0", offset, SZ_1M, PARTITION_FIXED, "x");
-> > >  	dev_add_bb_dev("x", "bbx");
-> > >  
-> > > +	size = get_image_size(read_image_head("bbx"));
-> > 
-> > ...and instead bail out directly here if you are unable to read the
-> > image head. If you are unable to read even the head of the image there
-> > is no point in trying to continue.
-> > 
-> > Sascha
-> > 
-> > 
-> > > +	if (!size)
-> > > +		size = SZ_512K;
-> > > +
-> > > +	to = xmalloc(size);
-> > > +
-> > >  	cdev = cdev_open("bbx", O_RDONLY);
-> > >  	if (!cdev) {
-> > >  		printf("failed to open nand\n");
-> > > @@ -80,7 +127,7 @@ int run_shell(void)
-> > >  		printf("unknown boot source. Fall back to nand\n");
-> > >  	case OMAP_BOOTSRC_NAND:
-> > >  		printf("booting from NAND\n");
-> > > -		func = omap_xload_boot_nand(SZ_128K, SZ_512K);
-> > > +		func = omap_xload_boot_nand(SZ_128K);
-> > >  		break;
-> > >  	}
-> > >  
-> > > -- 
-> > > 1.7.0.4
-> > > 
-> > > 
-> > > _______________________________________________
-> > > barebox mailing list
-> > > barebox@lists.infradead.org
-> > > http://lists.infradead.org/mailman/listinfo/barebox
-> > > 
-> > 
-> 
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
