@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T6aTs-0008E1-JH
- for barebox@lists.infradead.org; Wed, 29 Aug 2012 05:06:23 +0000
+ id 1T6aTt-0008Dz-Ul
+ for barebox@lists.infradead.org; Wed, 29 Aug 2012 05:06:24 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id B040EDC44B3
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 12188DC44AF
  for <barebox@lists.infradead.org>; Wed, 29 Aug 2012 07:11:13 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 29 Aug 2012 07:06:15 +0200
-Message-Id: <1346216778-14100-4-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 29 Aug 2012 07:06:13 +0200
+Message-Id: <1346216778-14100-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346216778-14100-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120829042727.GA18708@game.jcrosoft.org>
  <1346216778-14100-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,393 +26,278 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] smc911x: add support to pass the shift via platform data
+Subject: [PATCH 2/7] smc911x: introduce read/write ops
 To: barebox@lists.infradead.org
 
-switch ipe337: to it at the same time to do not brake it
+This will allow to replace them depending on the platform data.
+So we can specify shift and reg io witdh (16bit/32bit)
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/blackfin/boards/ipe337/ipe337.c |    7 +++-
- drivers/net/Kconfig                  |    6 ----
- drivers/net/smc911x.c                |   60 +++++++++++++++++++++++++++++----
- drivers/net/smc911x.h                |   61 +++++++++++++++++-----------------
- include/smc911x.h                    |   18 ++++++++++
- 5 files changed, 109 insertions(+), 43 deletions(-)
- create mode 100644 include/smc911x.h
+ drivers/net/smc911x.c |  101 ++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 63 insertions(+), 38 deletions(-)
 
-diff --git a/arch/blackfin/boards/ipe337/ipe337.c b/arch/blackfin/boards/ipe337/ipe337.c
-index b3f07bb..9c1de2c 100644
---- a/arch/blackfin/boards/ipe337/ipe337.c
-+++ b/arch/blackfin/boards/ipe337/ipe337.c
-@@ -4,6 +4,11 @@
- #include <asm/cpu/cdefBF561.h>
- #include <partition.h>
- #include <fs.h>
-+#include <smc911x.h>
-+
-+struct smc911x_plat smcplat = {
-+	.shift = 1,
-+};
- 
- static int ipe337_devices_init(void) {
- 	add_cfi_flash_device(DEVICE_ID_DYNAMIC, 0x20000000, 32 * 1024 * 1024, 0);
-@@ -17,7 +22,7 @@ static int ipe337_devices_init(void) {
- 	*pFIO0_FLAG_S = (1<<12);
- 
- 	add_generic_device("smc911x", DEVICE_ID_DYNAMIC, NULL, 0x24000000, 4096,
--			   IORESOURCE_MEM, NULL);
-+			   IORESOURCE_MEM, &smcplat);
- 
- 	devfs_add_partition("nor0", 0x00000, 0x20000, DEVFS_PARTITION_FIXED, "self0");
- 	devfs_add_partition("nor0", 0x20000, 0x20000, DEVFS_PARTITION_FIXED, "env0");
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 749ea6a..340839d 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -36,12 +36,6 @@ config DRIVER_NET_SMC911X
- 	  This option enables support for the SMSC LAN9[12]1[567]
- 	  ethernet chip.
- 
--config DRIVER_NET_SMC911X_ADDRESS_SHIFT
--	int
--	depends on DRIVER_NET_SMC911X
--	default 1 if MACH_IPE337
--	default 0
--
- config DRIVER_NET_SMC91111
- 	bool "smc91111 ethernet driver"
- 	select MIIDEV
 diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
-index 917f994..75a332e 100644
+index 9c488c7..2583235 100644
 --- a/drivers/net/smc911x.c
 +++ b/drivers/net/smc911x.c
-@@ -37,9 +37,8 @@
- #include <errno.h>
- #include <clock.h>
- #include <io.h>
-+#include <smc911x.h>
- 
--
--#define AS CONFIG_DRIVER_NET_SMC911X_ADDRESS_SHIFT
- #include "smc911x.h"
- 
- struct smc911x_priv {
-@@ -47,6 +46,8 @@ struct smc911x_priv {
+@@ -46,6 +46,9 @@ struct smc911x_priv {
+ 	struct eth_device edev;
  	struct mii_device miidev;
  	void __iomem *base;
- 
-+	int shift;
 +
- 	u32 (*reg_read)(struct smc911x_priv *priv, u32 reg);
- 	void (*reg_write)(struct smc911x_priv *priv, u32 reg, u32 val);
++	u32 (*reg_read)(struct smc911x_priv *priv, u32 reg);
++	void (*reg_write)(struct smc911x_priv *priv, u32 reg, u32 val);
  };
-@@ -71,6 +72,8 @@ static const struct chip_id chip_ids[] =  {
+ 
+ struct chip_id {
+@@ -68,12 +71,34 @@ static const struct chip_id chip_ids[] =  {
  
  #define DRIVERNAME "smc911x"
  
-+#define __smc_shift(priv, reg) ((reg) << ((priv)->shift))
-+
- static inline u32 smc911x_reg_read(struct smc911x_priv *priv, u32 reg)
- {
- 	return priv->reg_read(priv, reg);
-@@ -87,6 +90,22 @@ static inline u32 __smc911x_reg_readl(struct smc911x_priv *priv, u32 reg)
- 	return readl(priv->base + reg);
- }
- 
-+static inline u32
-+__smc911x_reg_readw_shift(struct smc911x_priv *priv, u32 reg)
++static inline u32 smc911x_reg_read(struct smc911x_priv *priv, u32 reg)
 +{
-+	return (readw(priv->base +
-+			__smc_shift(priv, reg)) & 0xFFFF) |
-+		((readw(priv->base +
-+		__smc_shift(priv, reg + 2)) & 0xFFFF) << 16);
-+
++	return priv->reg_read(priv, reg);
 +}
 +
-+static inline u32
-+__smc911x_reg_readl_shift(struct smc911x_priv *priv, u32 reg)
++static inline u32 __smc911x_reg_read(struct smc911x_priv *priv, u32 reg)
 +{
-+	return readl(priv->base + __smc_shift(priv, reg));
++	return readl(priv->base + reg);
 +}
 +
- static inline void smc911x_reg_write(struct smc911x_priv *priv, u32 reg,
- 					u32 val)
- {
-@@ -106,6 +125,21 @@ static inline void __smc911x_reg_writel(struct smc911x_priv *priv, u32 reg,
- 	writel(val, priv->base + reg);
- }
- 
-+static inline void
-+__smc911x_reg_writew_shift(struct smc911x_priv *priv, u32 reg, u32 val)
++static inline void smc911x_reg_write(struct smc911x_priv *priv, u32 reg,
++					u32 val)
 +{
-+	writew(val & 0xFFFF,
-+		priv->base + __smc_shift(priv, reg));
-+	writew((val >> 16) & 0xFFFF,
-+		priv->base + __smc_shift(priv, reg + 2));
++	priv->reg_write(priv, reg, val);
 +}
 +
-+static inline void
-+__smc911x_reg_writel_shift(struct smc911x_priv *priv, u32 reg, u32 val)
++static inline void __smc911x_reg_write(struct smc911x_priv *priv, u32 reg,
++					u32 val)
 +{
-+	writel(val, priv->base + __smc_shift(priv, reg));
++	writel(val, priv->base + reg);
 +}
 +
  static int smc911x_mac_wait_busy(struct smc911x_priv *priv)
  {
  	uint64_t start = get_time_ns();
-@@ -404,6 +438,7 @@ static int smc911x_probe(struct device_d *dev)
- 	struct smc911x_priv *priv;
- 	uint32_t val;
- 	int i, is_32bit;
-+	struct smc911x_plat *pdata = dev->platform_data;
  
- 	priv = xzalloc(sizeof(*priv));
- 	is_32bit = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
-@@ -413,12 +448,25 @@ static int smc911x_probe(struct device_d *dev)
- 		is_32bit = is_32bit == IORESOURCE_MEM_32BIT;
- 	priv->base = dev_request_mem_region(dev, 0);
- 
-+	if (pdata && pdata->shift)
-+		priv->shift = pdata->shift;
-+
- 	if (is_32bit) {
--		priv->reg_read = __smc911x_reg_readl;
--		priv->reg_write = __smc911x_reg_writel;
-+		if (pdata->shift) {
-+			priv->reg_read = __smc911x_reg_readl_shift;
-+			priv->reg_write = __smc911x_reg_writel_shift;
-+		} else {
-+			priv->reg_read = __smc911x_reg_readl;
-+			priv->reg_write = __smc911x_reg_writel;
-+		}
- 	} else {
--		priv->reg_read = __smc911x_reg_readw;
--		priv->reg_write = __smc911x_reg_writew;
-+		if (pdata->shift) {
-+			priv->reg_read = __smc911x_reg_readw_shift;
-+			priv->reg_write = __smc911x_reg_writew_shift;
-+		} else {
-+			priv->reg_read = __smc911x_reg_readw;
-+			priv->reg_write = __smc911x_reg_writew;
-+		}
+ 	while (!is_timeout(start, MSECOND)) {
+-		if (!(readl(priv->base + MAC_CSR_CMD) & MAC_CSR_CMD_CSR_BUSY))
++		if (!(smc911x_reg_read(priv, MAC_CSR_CMD) & MAC_CSR_CMD_CSR_BUSY))
+ 			return 0;
  	}
  
- 	val = smc911x_reg_read(priv, BYTE_TEST);
-diff --git a/drivers/net/smc911x.h b/drivers/net/smc911x.h
-index 68f6590..baf3598 100644
---- a/drivers/net/smc911x.h
-+++ b/drivers/net/smc911x.h
-@@ -25,9 +25,10 @@
- /* Below are the register offsets and bit definitions
-  * of the Lan911x memory space
-  */
--#define RX_DATA_FIFO		 (0x00 << AS)
+@@ -88,12 +113,12 @@ static u32 smc911x_get_mac_csr(struct eth_device *edev, u8 reg)
  
--#define TX_DATA_FIFO		 (0x20 << AS)
-+#define RX_DATA_FIFO		 0x00
-+
-+#define TX_DATA_FIFO		 0x20
- #define	TX_CMD_A_INT_ON_COMP			0x80000000
- #define	TX_CMD_A_INT_BUF_END_ALGN		0x03000000
- #define	TX_CMD_A_INT_4_BYTE_ALGN		0x00000000
-@@ -42,7 +43,7 @@
- #define	TX_CMD_B_DISABLE_PADDING		0x00001000
- #define	TX_CMD_B_PKT_BYTE_LENGTH		0x000007FF
+ 	smc911x_mac_wait_busy(priv);
  
--#define RX_STATUS_FIFO		(0x40 << AS)
-+#define RX_STATUS_FIFO		0x40
- #define	RX_STS_PKT_LEN				0x3FFF0000
- #define	RX_STS_ES				0x00008000
- #define	RX_STS_BCST				0x00002000
-@@ -56,8 +57,8 @@
- #define	RX_STS_MII_ERR				0x00000008
- #define	RX_STS_DRIBBLING			0x00000004
- #define	RX_STS_CRC_ERR				0x00000002
--#define RX_STATUS_FIFO_PEEK 	(0x44 << AS)
--#define TX_STATUS_FIFO		(0x48 << AS)
-+#define RX_STATUS_FIFO_PEEK 	0x44
-+#define TX_STATUS_FIFO		0x48
- #define	TX_STS_TAG				0xFFFF0000
- #define	TX_STS_ES				0x00008000
- #define	TX_STS_LOC				0x00000800
-@@ -68,12 +69,12 @@
- #define	TX_STS_MANY_DEFER			0x00000004
- #define	TX_STS_UNDERRUN				0x00000002
- #define	TX_STS_DEFERRED				0x00000001
--#define TX_STATUS_FIFO_PEEK	(0x4C << AS)
--#define ID_REV			(0x50 << AS)
-+#define TX_STATUS_FIFO_PEEK	0x4C
-+#define ID_REV			0x50
- #define	ID_REV_CHIP_ID				0xFFFF0000  /* RO */
- #define	ID_REV_REV_ID				0x0000FFFF  /* RO */
+-	writel(MAC_CSR_CMD_CSR_BUSY | MAC_CSR_CMD_R_NOT_W | reg,
+-			priv->base + MAC_CSR_CMD);
++	smc911x_reg_write(priv, MAC_CSR_CMD, MAC_CSR_CMD_CSR_BUSY |
++			  MAC_CSR_CMD_R_NOT_W | reg);
  
--#define INT_CFG			(0x54 << AS)
-+#define INT_CFG			0x54
- #define	INT_CFG_INT_DEAS			0xFF000000  /* R/W */
- #define	INT_CFG_INT_DEAS_CLR			0x00004000
- #define	INT_CFG_INT_DEAS_STS			0x00002000
-@@ -82,7 +83,7 @@
- #define	INT_CFG_IRQ_POL				0x00000010  /* R/W Not Affected by SW Reset */
- #define	INT_CFG_IRQ_TYPE			0x00000001  /* R/W Not Affected by SW Reset */
+ 	smc911x_mac_wait_busy(priv);
  
--#define INT_STS			(0x58 << AS)
-+#define INT_STS			0x58
- #define	INT_STS_SW_INT				0x80000000  /* R/WC */
- #define	INT_STS_TXSTOP_INT			0x02000000  /* R/WC */
- #define	INT_STS_RXSTOP_INT			0x01000000  /* R/WC */
-@@ -111,7 +112,7 @@
- #define	INT_STS_GPIO2_INT			0x00000004  /* R/WC */
- #define	INT_STS_GPIO1_INT			0x00000002  /* R/WC */
- #define	INT_STS_GPIO0_INT			0x00000001  /* R/WC */
--#define INT_EN			(0x5C << AS)
-+#define INT_EN			0x5C
- #define	INT_EN_SW_INT_EN			0x80000000  /* R/W */
- #define	INT_EN_TXSTOP_INT_EN			0x02000000  /* R/W */
- #define	INT_EN_RXSTOP_INT_EN			0x01000000  /* R/W */
-@@ -141,14 +142,14 @@
- #define	INT_EN_GPIO1_INT			0x00000002  /* R/W */
- #define	INT_EN_GPIO0_INT			0x00000001  /* R/W */
+-	val = readl(priv->base + MAC_CSR_DATA);
++	val = smc911x_reg_read(priv, MAC_CSR_DATA);
  
--#define BYTE_TEST		(0x64 << AS)
--#define FIFO_INT		(0x68 << AS)
-+#define BYTE_TEST		0x64
-+#define FIFO_INT		0x68
- #define	FIFO_INT_TX_AVAIL_LEVEL			0xFF000000  /* R/W */
- #define	FIFO_INT_TX_STS_LEVEL			0x00FF0000  /* R/W */
- #define	FIFO_INT_RX_AVAIL_LEVEL			0x0000FF00  /* R/W */
- #define	FIFO_INT_RX_STS_LEVEL			0x000000FF  /* R/W */
+ 	return val;
+ }
+@@ -104,8 +129,8 @@ static void smc911x_set_mac_csr(struct eth_device *edev, u8 reg, u32 data)
  
--#define RX_CFG			(0x6C << AS)
-+#define RX_CFG			0x6C
- #define	RX_CFG_RX_END_ALGN			0xC0000000  /* R/W */
- #define		RX_CFG_RX_END_ALGN4		0x00000000  /* R/W */
- #define		RX_CFG_RX_END_ALGN16		0x40000000  /* R/W */
-@@ -158,7 +159,7 @@
- #define	RX_CFG_RXDOFF				0x00001F00  /* R/W */
- //#define	RX_CFG_RXBAD			0x00000001  /* R/W */
+ 	smc911x_mac_wait_busy(priv);
  
--#define TX_CFG			(0x70 << AS)
-+#define TX_CFG			0x70
- //#define	TX_CFG_TX_DMA_LVL		0xE0000000	 /* R/W */
- //#define	TX_CFG_TX_DMA_CNT		0x0FFF0000	 /* R/W Self Clearing */
- #define	TX_CFG_TXS_DUMP				0x00008000  /* Self Clearing */
-@@ -167,7 +168,7 @@
- #define	TX_CFG_TX_ON				0x00000002  /* R/W */
- #define	TX_CFG_STOP_TX				0x00000001  /* Self Clearing */
+-	writel(data, priv->base + MAC_CSR_DATA);
+-	writel(MAC_CSR_CMD_CSR_BUSY | reg, priv->base + MAC_CSR_CMD);
++	smc911x_reg_write(priv, MAC_CSR_DATA, data);
++	smc911x_reg_write(priv, MAC_CSR_CMD, MAC_CSR_CMD_CSR_BUSY | reg);
  
--#define HW_CFG			(0x74 << AS)
-+#define HW_CFG			0x74
- #define	HW_CFG_TTM				0x00200000  /* R/W */
- #define	HW_CFG_SF				0x00100000  /* R/W */
- #define	HW_CFG_TX_FIF_SZ			0x000F0000  /* R/W */
-@@ -183,19 +184,19 @@
- #define	HW_CFG_SRST_TO				0x00000002  /* RO */
- #define	HW_CFG_SRST				0x00000001  /* Self Clearing */
+ 	smc911x_mac_wait_busy(priv);
+ }
+@@ -179,10 +204,10 @@ static int smc911x_phy_reset(struct eth_device *edev)
+ 	struct smc911x_priv *priv = edev->priv;
+ 	u32 reg;
  
--#define RX_DP_CTRL		(0x78 << AS)
-+#define RX_DP_CTRL		0x78
- #define	RX_DP_CTRL_RX_FFWD			0x80000000  /* R/W */
- #define	RX_DP_CTRL_FFWD_BUSY			0x80000000  /* RO */
+-	reg = readl(priv->base + PMT_CTRL);
++	reg = smc911x_reg_read(priv, PMT_CTRL);
+ 	reg &= 0xfcf;
+ 	reg |= PMT_CTRL_PHY_RST;
+-	writel(reg, priv->base + PMT_CTRL);
++	smc911x_reg_write(priv, PMT_CTRL, reg);
  
--#define RX_FIFO_INF		(0x7C << AS)
-+#define RX_FIFO_INF		0x7C 
- #define	 RX_FIFO_INF_RXSUSED			0x00FF0000  /* RO */
- #define	 RX_FIFO_INF_RXDUSED			0x0000FFFF  /* RO */
+ 	mdelay(100);
  
--#define TX_FIFO_INF		(0x80 << AS)
-+#define TX_FIFO_INF		0x80
- #define	TX_FIFO_INF_TSUSED			0x00FF0000  /* RO */
- #define	TX_FIFO_INF_TDFREE			0x0000FFFF  /* RO */
+@@ -195,13 +220,13 @@ static void smc911x_reset(struct eth_device *edev)
+ 	uint64_t start;
  
--#define PMT_CTRL		(0x84 << AS)
-+#define PMT_CTRL		0x84
- #define	PMT_CTRL_PM_MODE			0x00003000  /* Self Clearing */
- #define	PMT_CTRL_PHY_RST			0x00000400  /* Self Clearing */
- #define	PMT_CTRL_WOL_EN				0x00000200  /* R/W */
-@@ -211,7 +212,7 @@
- #define	PMT_CTRL_PME_EN				0x00000002  /* R/W Not Affected by SW Reset */
- #define	PMT_CTRL_READY				0x00000001  /* RO */
+ 	/* Take out of PM setting first */
+-	if (readl(priv->base + PMT_CTRL) & PMT_CTRL_READY) {
++	if (smc911x_reg_read(priv, PMT_CTRL) & PMT_CTRL_READY) {
+ 		/* Write to the bytetest will take out of powerdown */
+-		writel(0, priv->base + BYTE_TEST);
++		smc911x_reg_write(priv, BYTE_TEST, 0);
  
--#define GPIO_CFG		(0x88 << AS)
-+#define GPIO_CFG		0x88
- #define	GPIO_CFG_LED3_EN			0x40000000  /* R/W */
- #define	GPIO_CFG_LED2_EN			0x20000000  /* R/W */
- #define	GPIO_CFG_LED1_EN			0x10000000  /* R/W */
-@@ -231,23 +232,23 @@
- #define	GPIO_CFG_GPIOD1				0x00000002  /* R/W */
- #define	GPIO_CFG_GPIOD0				0x00000001  /* R/W */
+ 		start = get_time_ns();
+ 		while(1) {
+-			if ((readl(priv->base + PMT_CTRL) & PMT_CTRL_READY))
++			if ((smc911x_reg_read(priv, PMT_CTRL) & PMT_CTRL_READY))
+ 				break;
+ 			if (is_timeout(start, 100 * USECOND)) {
+ 				dev_err(&edev->dev,
+@@ -212,13 +237,13 @@ static void smc911x_reset(struct eth_device *edev)
+ 	}
  
--#define GPT_CFG			(0x8C << AS)
-+#define GPT_CFG			0x8C
- #define	GPT_CFG_TIMER_EN			0x20000000  /* R/W */
- #define	GPT_CFG_GPT_LOAD			0x0000FFFF  /* R/W */
+ 	/* Disable interrupts */
+-	writel(0, priv->base + INT_EN);
++	smc911x_reg_write(priv, INT_EN, 0);
  
--#define GPT_CNT			(0x90 << AS)
-+#define GPT_CNT			0x90
- #define	GPT_CNT_GPT_CNT				0x0000FFFF  /* RO */
+-	writel(HW_CFG_SRST, priv->base + HW_CFG);
++	smc911x_reg_write(priv, HW_CFG, HW_CFG_SRST);
  
--#define ENDIAN			(0x98 << AS)
--#define FREE_RUN		(0x9C << AS)
--#define RX_DROP			(0xA0 << AS)
--#define MAC_CSR_CMD		(0xA4 << AS)
-+#define ENDIAN			0x98
-+#define FREE_RUN		0x9C
-+#define RX_DROP			0xA0
-+#define MAC_CSR_CMD		0xA4
- #define	 MAC_CSR_CMD_CSR_BUSY			0x80000000  /* Self Clearing */
- #define	 MAC_CSR_CMD_R_NOT_W			0x40000000  /* R/W */
- #define	 MAC_CSR_CMD_CSR_ADDR			0x000000FF  /* R/W */
+ 	start = get_time_ns();
+ 	while(1) {
+-		if (!(readl(priv->base + E2P_CMD) & E2P_CMD_EPC_BUSY))
++		if (!(smc911x_reg_read(priv, E2P_CMD) & E2P_CMD_EPC_BUSY))
+ 			break;
+ 		if (is_timeout(start, 10 * MSECOND)) {
+ 			dev_err(&edev->dev, "reset timeout\n");
+@@ -229,10 +254,10 @@ static void smc911x_reset(struct eth_device *edev)
+ 	/* Reset the FIFO level and flow control settings */
+ 	smc911x_set_mac_csr(edev, FLOW, FLOW_FCPT | FLOW_FCEN);
  
--#define MAC_CSR_DATA		(0xA8 << AS)
--#define AFC_CFG			(0xAC << AS)
-+#define MAC_CSR_DATA		0xA8
-+#define AFC_CFG			0xAC
- #define		AFC_CFG_AFC_HI			0x00FF0000  /* R/W */
- #define		AFC_CFG_AFC_LO			0x0000FF00  /* R/W */
- #define		AFC_CFG_BACK_DUR		0x000000F0  /* R/W */
-@@ -256,7 +257,7 @@
- #define		AFC_CFG_FCADD			0x00000002  /* R/W */
- #define		AFC_CFG_FCANY			0x00000001  /* R/W */
+-	writel(0x0050287F, priv->base + AFC_CFG);
++	smc911x_reg_write(priv, AFC_CFG, 0x0050287F);
  
--#define E2P_CMD			(0xB0 << AS)
-+#define E2P_CMD			0xB0
- #define		E2P_CMD_EPC_BUSY		0x80000000  /* Self Clearing */
- #define		E2P_CMD_EPC_CMD			0x70000000  /* R/W */
- #define		E2P_CMD_EPC_CMD_READ		0x00000000  /* R/W */
-@@ -271,7 +272,7 @@
- #define		E2P_CMD_MAC_ADDR_LOADED		0x00000100  /* RO */
- #define		E2P_CMD_EPC_ADDR		0x000000FF  /* R/W */
+ 	/* Set to LED outputs */
+-	writel(0x70070000, priv->base + GPIO_CFG);
++	smc911x_reg_write(priv, GPIO_CFG, 0x70070000);
+ }
  
--#define E2P_DATA		(0xB4 << AS)
-+#define E2P_DATA		0xB4
- #define	E2P_DATA_EEPROM_DATA			0x000000FF  /* R/W */
- /* end of LAN register offsets and bit definitions */
+ static void smc911x_enable(struct eth_device *edev)
+@@ -240,14 +265,14 @@ static void smc911x_enable(struct eth_device *edev)
+ 	struct smc911x_priv *priv = edev->priv;
  
-diff --git a/include/smc911x.h b/include/smc911x.h
-new file mode 100644
-index 0000000..148906b
---- /dev/null
-+++ b/include/smc911x.h
-@@ -0,0 +1,18 @@
-+/*
-+ * (C) Copyright 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+ */
-+
-+#ifndef __SMC911X_PLATFORM_H_
-+#define __SMC911X_PLATFORM_H_
-+
-+/**
-+ * @brief Platform dependent feature:
-+ * Pass pointer to this structure as part of device_d -> platform_data
-+ */
-+struct smc911x_plat {
-+	int shift;
-+};
-+
-+#endif /* __SMC911X_PLATFORM_H_ */
+ 	/* Enable TX */
+-	writel(8 << 16 | HW_CFG_SF, priv->base + HW_CFG);
++	smc911x_reg_write(priv, HW_CFG, 8 << 16 | HW_CFG_SF);
+ 
+-	writel(GPT_CFG_TIMER_EN | 10000, priv->base + GPT_CFG);
++	smc911x_reg_write(priv, GPT_CFG, GPT_CFG_TIMER_EN | 10000);
+ 
+-	writel(TX_CFG_TX_ON, priv->base + TX_CFG);
++	smc911x_reg_write(priv, TX_CFG, TX_CFG_TX_ON);
+ 
+ 	/* no padding to start of packets */
+-	writel(RX_CFG_RX_DUMP, priv->base + RX_CFG);
++	smc911x_reg_write(priv, RX_CFG, RX_CFG_RX_DUMP);
+ }
+ 
+ static int smc911x_eth_open(struct eth_device *edev)
+@@ -270,19 +295,19 @@ static int smc911x_eth_send(struct eth_device *edev, void *packet, int length)
+ 	u32 status;
+ 	uint64_t start;
+ 
+-	writel(TX_CMD_A_INT_FIRST_SEG | TX_CMD_A_INT_LAST_SEG | length,
+-			priv->base + TX_DATA_FIFO);
+-	writel(length, priv->base + TX_DATA_FIFO);
++	smc911x_reg_write(priv, TX_DATA_FIFO,
++		  TX_CMD_A_INT_FIRST_SEG | TX_CMD_A_INT_LAST_SEG | length);
++	smc911x_reg_write(priv, TX_DATA_FIFO, length);
+ 
+ 	tmplen = (length + 3) / 4;
+ 
+ 	while(tmplen--)
+-		writel(*data++, priv->base + TX_DATA_FIFO);
++		smc911x_reg_write(priv, TX_DATA_FIFO, *data++);
+ 
+ 	/* wait for transmission */
+ 	start = get_time_ns();
+ 	while (1) {
+-		if ((readl(priv->base + TX_FIFO_INF) &
++		if ((smc911x_reg_read(priv, TX_FIFO_INF) &
+ 					TX_FIFO_INF_TSUSED) >> 16)
+ 			break;
+ 		if (is_timeout(start, 100 * MSECOND)) {
+@@ -294,7 +319,7 @@ static int smc911x_eth_send(struct eth_device *edev, void *packet, int length)
+ 	/* get status. Ignore 'no carrier' error, it has no meaning for
+ 	 * full duplex operation
+ 	 */
+-	status = readl(priv->base + TX_STATUS_FIFO) & (TX_STS_LOC |
++	status = smc911x_reg_read(priv, TX_STATUS_FIFO) & (TX_STS_LOC |
+ 		TX_STS_LATE_COLL | TX_STS_MANY_COLL | TX_STS_MANY_DEFER |
+ 		TX_STS_UNDERRUN);
+ 
+@@ -316,7 +341,7 @@ static void smc911x_eth_halt(struct eth_device *edev)
+ 	struct smc911x_priv *priv = (struct smc911x_priv *)edev->priv;
+ 
+ 	/* Disable TX */
+-	writel(TX_CFG_STOP_TX, priv->base + TX_CFG);
++	smc911x_reg_write(priv, TX_CFG, TX_CFG_STOP_TX);
+ 
+ //	smc911x_reset(edev);
+ }
+@@ -328,15 +353,15 @@ static int smc911x_eth_rx(struct eth_device *edev)
+ 	u32 pktlen, tmplen;
+ 	u32 status;
+ 
+-	if((readl(priv->base + RX_FIFO_INF) & RX_FIFO_INF_RXSUSED) >> 16) {
+-		status = readl(priv->base + RX_STATUS_FIFO);
++	if((smc911x_reg_read(priv, RX_FIFO_INF) & RX_FIFO_INF_RXSUSED) >> 16) {
++		status = smc911x_reg_read(priv, RX_STATUS_FIFO);
+ 		pktlen = (status & RX_STS_PKT_LEN) >> 16;
+ 
+-		writel(0, priv->base + RX_CFG);
++		smc911x_reg_write(priv, RX_CFG, 0);
+ 
+ 		tmplen = (pktlen + 2 + 3) / 4;
+ 		while(tmplen--)
+-			*data++ = readl(priv->base + RX_DATA_FIFO);
++			*data++ = smc911x_reg_read(priv, RX_DATA_FIFO);
+ 
+ 		if(status & RX_STS_ES)
+ 			dev_err(&edev->dev, "dropped bad packet. Status: 0x%08x\n",
+@@ -366,18 +391,20 @@ static int smc911x_probe(struct device_d *dev)
+ 	struct smc911x_priv *priv;
+ 	uint32_t val;
+ 	int i;
+-	void __iomem *base;
+ 
+-	base = dev_request_mem_region(dev, 0);
++	priv = xzalloc(sizeof(*priv));
++	priv->base = dev_request_mem_region(dev, 0);
++	priv->reg_read = __smc911x_reg_read;
++	priv->reg_write = __smc911x_reg_write;
+ 
+-	val = readl(base + BYTE_TEST);
++	val = smc911x_reg_read(priv, BYTE_TEST);
+ 	if(val != 0x87654321) {
+ 		dev_err(dev, "no smc911x found on 0x%p (byte_test=0x%08x)\n",
+-			base, val);
++			priv->base, val);
+ 		return -ENODEV;
+ 	}
+ 
+-	val = readl(base + ID_REV) >> 16;
++	val = smc911x_reg_read(priv, ID_REV) >> 16;
+ 	for(i = 0; chip_ids[i].id != 0; i++) {
+ 		if (chip_ids[i].id == val) break;
+ 	}
+@@ -388,7 +415,6 @@ static int smc911x_probe(struct device_d *dev)
+ 
+ 	dev_info(dev, "detected %s controller\n", chip_ids[i].name);
+ 
+-	priv = xzalloc(sizeof(*priv));
+ 	edev = &priv->edev;
+ 	edev->priv = priv;
+ 
+@@ -407,7 +433,6 @@ static int smc911x_probe(struct device_d *dev)
+ 	priv->miidev.flags = 0;
+ 	priv->miidev.edev = edev;
+ 	priv->miidev.parent = dev;
+-	priv->base = base;
+ 
+ 	smc911x_reset(edev);
+ 	smc911x_phy_reset(edev);
 -- 
 1.7.10.4
 
