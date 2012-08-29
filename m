@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T6cJR-0003Ti-Kp
- for barebox@lists.infradead.org; Wed, 29 Aug 2012 07:03:42 +0000
-Date: Wed, 29 Aug 2012 09:03:39 +0200
+ id 1T6cP3-0003hz-MK
+ for barebox@lists.infradead.org; Wed, 29 Aug 2012 07:09:30 +0000
+Date: Wed, 29 Aug 2012 09:09:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120829070339.GQ26594@pengutronix.de>
-References: <1346191088-12657-1-git-send-email-eric@eukrea.com>
+Message-ID: <20120829070927.GR26594@pengutronix.de>
+References: <1344959336-18562-1-git-send-email-plagnioj@jcrosoft.com>
+ <20120814195854.GB1451@pengutronix.de>
+ <20120815043249.GR6271@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1346191088-12657-1-git-send-email-eric@eukrea.com>
+In-Reply-To: <20120815043249.GR6271@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,72 +20,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] m25p80: wait for flash before returning after erase
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
+Subject: Re: [for master PATCH 1/2] miidev: add phy_addr detection support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Aug 28, 2012 at 11:58:08PM +0200, Eric B=E9nard wrote:
-> else when we do "erase /dev/m25p0.rootfs; reset", the board
-> will never reboot as the flash is busy to finish the erase
-> command.
+On Wed, Aug 15, 2012 at 06:32:49AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 21:58 Tue 14 Aug     , Sascha Hauer wrote:
+> > On Tue, Aug 14, 2012 at 05:48:55PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > export via param the phy_addr and the phy_id detected
+> > > 
+> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > ---
+> > > Hi,
+> > > 
+> > > 	this is need to fix the calao board support since the introduction of
+> > > 	the gigabit phy detection support
+> > 
+> > Can you explain what this has to do with gigabit support?
+> before we do not check the error on the phy detection
+> 
+> now we do and do not register the miidev if we can not detect it
 
-Applied, thanks
+Anyway, I won't introduce a new feature into master. If you want to have
+it there, find another solution.
 
 Sascha
 
-> =
-
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> ---
->  drivers/nor/m25p80.c |    4 +++-
->  1 files changed, 3 insertions(+), 1 deletions(-)
-> =
-
-> diff --git a/drivers/nor/m25p80.c b/drivers/nor/m25p80.c
-> index daaf60c..5713ad5 100644
-> --- a/drivers/nor/m25p80.c
-> +++ b/drivers/nor/m25p80.c
-> @@ -257,6 +257,9 @@ static ssize_t m25p80_erase(struct cdev *cdev, size_t=
- count, loff_t offset)
->  		}
->  	}
->  =
-
-> +	if (wait_till_ready(flash))
-> +		return -ETIMEDOUT;
-> +
->  	return 0;
->  }
->  =
-
-> @@ -684,7 +687,6 @@ static const struct spi_device_id *jedec_probe(struct=
- spi_device *spi)
->  	return NULL;
->  }
->  =
-
-> -
->  static struct file_operations m25p80_ops =3D {
->  	.read   =3D m25p80_read,
->  	.write  =3D m25p80_write,
-> -- =
-
-> 1.7.7.6
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
