@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T6c9t-0002nw-SK
- for barebox@lists.infradead.org; Wed, 29 Aug 2012 06:53:50 +0000
-Date: Wed, 29 Aug 2012 08:53:48 +0200
+ id 1T6cFO-0003Bv-Ru
+ for barebox@lists.infradead.org; Wed, 29 Aug 2012 06:59:31 +0000
+Date: Wed, 29 Aug 2012 08:59:29 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120829065348.GN26594@pengutronix.de>
-References: <20120829042727.GA18708@game.jcrosoft.org>
- <1346216778-14100-1-git-send-email-plagnioj@jcrosoft.com>
- <1346216778-14100-7-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20120829065929.GO26594@pengutronix.de>
+References: <20120828090828.GE26594@pengutronix.de>
+ <1346157381-16420-1-git-send-email-j.weitzel@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1346216778-14100-7-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1346157381-16420-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,46 +23,150 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/7] smm911x: check if the device is ready before using it
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH v2] xload: get barebox size from barebox_arm_head
+To: Jan Weitzel <j.weitzel@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Aug 29, 2012 at 07:06:18AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> poll the READY bit in PMT_CTRL. Any other access to the device is
-> forbidden while this bit isn't set. Try for 100ms
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  drivers/net/smc911x.c |   12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
-> index cfcd83f..3695d32 100644
-> --- a/drivers/net/smc911x.c
-> +++ b/drivers/net/smc911x.c
-> @@ -422,6 +422,7 @@ static int smc911x_probe(struct device_d *dev)
->  	uint32_t val;
->  	int is_32bit;
->  	struct smc911x_plat *pdata = dev->platform_data;
-> +	unsigned int to = 100;
->  
->  	priv = xzalloc(sizeof(*priv));
->  	is_32bit = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
-> @@ -452,6 +453,17 @@ static int smc911x_probe(struct device_d *dev)
->  		}
->  	}
->  
-> +	/*
-> +	 * poll the READY bit in PMT_CTRL. Any other access to the device is
-> +	 * forbidden while this bit isn't set. Try for 100ms
-> +	 */
-> +	while (!(smc911x_reg_read(priv, PMT_CTRL) & PMT_CTRL_READY) && --to)
-> +		udelay(1000);
+On Tue, Aug 28, 2012 at 02:36:21PM +0200, Jan Weitzel wrote:
+> Add functions to read the barebox_arm_head, check barebox magicword
+> and read out the barebox image size.
+> Create a inital partion of 1Mb to access the barebox image on nand.
 
-please use a regular timeout loop
+The patch neither applies on next or on master. On which branch did you
+apply this?
 
 Sascha
 
+> 
+> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+> ---
+> v2: remove fall back if header read fail 
+> 
+>  arch/arm/include/asm/barebox-arm-head.h |    4 ++
+>  arch/arm/mach-omap/include/mach/xload.h |    2 +-
+>  arch/arm/mach-omap/xload.c              |   58 ++++++++++++++++++++++++++++--
+>  3 files changed, 59 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/arm/include/asm/barebox-arm-head.h b/arch/arm/include/asm/barebox-arm-head.h
+> index 0dc3074..521bcf6 100644
+> --- a/arch/arm/include/asm/barebox-arm-head.h
+> +++ b/arch/arm/include/asm/barebox-arm-head.h
+> @@ -1,6 +1,10 @@
+>  #ifndef __ASM_ARM_HEAD_H
+>  #define __ASM_ARM_HEAD_H
+>  
+> +#define ARM_HEAD_SIZE		0x30
+> +#define HEAD_MAGICWORD_OFFSET	0x20
+> +#define HEAD_SIZE_OFFSET	0x2C
+> +
+>  static inline void barebox_arm_head(void)
+>  {
+>  	__asm__ __volatile__ (
+> diff --git a/arch/arm/mach-omap/include/mach/xload.h b/arch/arm/mach-omap/include/mach/xload.h
+> index 844b57f..26f1b68 100644
+> --- a/arch/arm/mach-omap/include/mach/xload.h
+> +++ b/arch/arm/mach-omap/include/mach/xload.h
+> @@ -1,7 +1,7 @@
+>  #ifndef _MACH_XLOAD_H
+>  #define _MACH_XLOAD_H
+>  
+> -void *omap_xload_boot_nand(int offset, int size);
+> +void *omap_xload_boot_nand(int offset);
+>  void *omap_xload_boot_mmc(void);
+>  
+>  enum omap_boot_src {
+> diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
+> index 9a6b0b4..0be0c50 100644
+> --- a/arch/arm/mach-omap/xload.c
+> +++ b/arch/arm/mach-omap/xload.c
+> @@ -7,16 +7,66 @@
+>  #include <fcntl.h>
+>  #include <mach/xload.h>
+>  #include <sizes.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+> -void *omap_xload_boot_nand(int offset, int size)
+> +void *read_image_head(const char *name)
+>  {
+> +	void *header = xmalloc(ARM_HEAD_SIZE);
+> +	struct cdev *cdev;
+>  	int ret;
+> -	void *to = xmalloc(size);
+> +
+> +	cdev = cdev_open(name, O_RDONLY);
+> +	if (!cdev) {
+> +		printf("failed to open partition\n");
+> +		return NULL;
+> +	}
+> +
+> +	ret = cdev_read(cdev, header, ARM_HEAD_SIZE, 0, 0);
+> +	cdev_close(cdev);
+> +
+> +	if (ret != ARM_HEAD_SIZE) {
+> +		printf("failed to read from partition\n");
+> +		return NULL;
+> +	}
+> +
+> +	return header;
+> +}
+> +
+> +unsigned int get_image_size(void *head)
+> +{
+> +	unsigned int ret = 0;
+> +	unsigned int *psize = head + HEAD_SIZE_OFFSET;
+> +	const char *pmagic = head + HEAD_MAGICWORD_OFFSET;
+> +
+> +	if (!strcmp(pmagic, "barebox"))
+> +		ret = *psize;
+> +	debug("Detected barebox image size %u\n", ret);
+> +
+> +	return ret;
+> +}
+> +
+> +void *omap_xload_boot_nand(int offset)
+> +{
+> +	int ret;
+> +	int size;
+> +	void *to, *header;
+>  	struct cdev *cdev;
+>  
+> -	devfs_add_partition("nand0", offset, size, PARTITION_FIXED, "x");
+> +	devfs_add_partition("nand0", offset, SZ_1M, PARTITION_FIXED, "x");
+>  	dev_add_bb_dev("x", "bbx");
+>  
+> +	header = get_image_size(read_image_head("bbx"));
+> +	if (header == NULL)
+> +		return NULL;
+> +
+> +	size = get_image_size(header);
+> +	if (!size) {
+> +		printf("failed to get image size\n");
+> +		return NULL;
+> +	}
+> +
+> +	to = xmalloc(size);
+> +
+>  	cdev = cdev_open("bbx", O_RDONLY);
+>  	if (!cdev) {
+>  		printf("failed to open nand\n");
+> @@ -80,7 +130,7 @@ int run_shell(void)
+>  		printf("unknown boot source. Fall back to nand\n");
+>  	case OMAP_BOOTSRC_NAND:
+>  		printf("booting from NAND\n");
+> -		func = omap_xload_boot_nand(SZ_128K, SZ_512K);
+> +		func = omap_xload_boot_nand(SZ_128K);
+>  		break;
+>  	}
+>  
+> -- 
+> 1.7.0.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
