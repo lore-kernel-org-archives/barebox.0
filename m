@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2a02:8b8:656::164] (helo=bar.sig21.net)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T71cC-0000Ck-GX
- for barebox@lists.infradead.org; Thu, 30 Aug 2012 10:04:45 +0000
-Date: Thu, 30 Aug 2012 12:04:18 +0200
-From: Johannes Stezenbach <js@sig21.net>
-Message-ID: <20120830100418.GA7632@sig21.net>
-References: <201208292317.03322.jbe@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <201208292317.03322.jbe@pengutronix.de>
+ id 1T72hl-0000eh-5o
+ for barebox@lists.infradead.org; Thu, 30 Aug 2012 11:14:34 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Thu, 30 Aug 2012 13:13:59 +0200
+Message-Id: <1346325240-6037-2-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1346325240-6037-1-git-send-email-s.trumtrar@pengutronix.de>
+References: <1346325240-6037-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,80 +16,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: SD card experts wanted
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] trivial: fix spelling in usb code
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Hi,
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ commands/usb.c         |    2 +-
+ drivers/usb/core/usb.c |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-On Wed, Aug 29, 2012 at 11:17:03PM +0200, Juergen Beisert wrote:
-> any SD/MMC card experts here? I have trouble with the current SD/MMC detection 
-> code in Barebox.
-> The function sd_change_freq() in the file 'drivers/mci/mci-core.c' tries to 
-> detect the max. transfer frequency the attached card can handle. Nothing 
-> special here, but the following line in this routine fails on my system:
-> 
->   if ((__be32_to_cpu(switch_status[4]) & 0x0f000000) == 0x01000000)
-> 
-> It checks the clock speed capabilities returned from the card. As far as I 
-> understand the "simplified SD card spec" the "0x01000000" means SDR25 speed, 
+diff --git a/commands/usb.c b/commands/usb.c
+index d02ea4b..729a402 100644
+--- a/commands/usb.c
++++ b/commands/usb.c
+@@ -50,7 +50,7 @@ static int do_usb(int argc, char *argv[])
+ BAREBOX_CMD_HELP_START(usb)
+ BAREBOX_CMD_HELP_USAGE("usb [-f]\n")
+ BAREBOX_CMD_HELP_SHORT("Scan for USB devices.\n")
+-BAREBOX_CMD_HELP_OPT("-f", "force. Rescan if if if have scanned once\n")
++BAREBOX_CMD_HELP_OPT("-f", "force. Rescan although scanned already\n")
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(usb)
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index a5075d5..81ae9f1 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -528,10 +528,10 @@ int usb_submit_int_msg(struct usb_device *dev, unsigned long pipe,
+ }
+ 
+ /*
+- * submits a control message and waits for comletion (at least timeout * 1ms)
++ * submits a control message and waits for completion (at least timeout * 1ms)
+  * If timeout is 0, we don't wait for completion (used as example to set and
+  * clear keyboards LEDs). For data transfers, (storage transfers) we don't
+- * allow control messages with 0 timeout, by previousely resetting the flag
++ * allow control messages with 0 timeout, by previously resetting the flag
+  * asynch_allowed (usb_disable_asynch(1)).
+  * returns the transfered length if OK or -1 if error. The transfered length
+  * and the current status are stored in the dev->act_len and dev->status.
+-- 
+1.7.10.4
 
-I think your analysis is correct.
-
-> which means still "single transfer per clock at 25 MHz clock rate". But the 
-> sd_change_freq() routine sets the MMC_MODE_HS bit for this case in the card's 
-> capabilities variable. The remaining routines in 'drivers/mci/mci-core.c' 
-> then use 50 MHz for the transfer speed.
-
-IMHO mci_startup_sd() is buggy.
-
-> This behaviour became an issue here, as my SDHC supports 50 MHz, but the 
-> attached card only up to 25 MHz. After switching to 50 MHz, the card wasn't 
-> able to respond anymore.
-> For SDHCs which supports only up to 25 MHz this misinterpretation is no issue, 
-> as the routines still use the 25 MHz, and the SD card can still respond.
-> 
-> "simplified SD card spec" talks about the bit's meaning: seems the regular 
-> speed was SDR12 which means 12.5 MHz. Then SDR25 cards appear, which are also 
-> called "high speed card". Could the MMC_MODE_HS just mean this "high speed" 
-> and using it at 50 MHz is just some kind of typo? Or do MMCs act differently 
-> and the code mixes SD and MMC features?
-> 
-> Any pointers would help.
-
-MMC has the following speed modes:
-
-- legacy 0-26MHz
-- high speed SDR 0-52MHz
-- high speed DDR 0-52MHz
-- HS200 SDR 0-200MHz
-
-while SD has:
-
-- SDR12
-- SDR25
-- SDR50
-- SDR104
-- DDR50
-
-So my guess is that MMC_MODE_HS maps to SDR25 for SD-only,
-and MMC_MODE_HS_52MHz maps to SDR50 for SD and MMC.
-
-(Apparently mmc_change_freq always sets MMC_MODE_HS, it is
-meaningless for MMC.)
-
-Thus, mci_startup_sd() should do:
-	if (mci->card_caps & MMC_MODE_HS)
-		mci_set_clock(mci, 25000000);
-	else
-		mci_set_clock(mci, 12500000);
-
-
-Johannes
 
 _______________________________________________
 barebox mailing list
