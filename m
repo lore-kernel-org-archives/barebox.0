@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og111.obsmtp.com ([64.18.0.22])
+Received: from exprod5og113.obsmtp.com ([64.18.0.26])
  by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T75IL-0004k5-IY
- for barebox@lists.infradead.org; Thu, 30 Aug 2012 14:00:30 +0000
+ id 1T75IN-0004km-Rn
+ for barebox@lists.infradead.org; Thu, 30 Aug 2012 14:00:33 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Thu, 30 Aug 2012 15:00:15 +0100
-Message-Id: <1346335217-9686-4-git-send-email-renaud.barbier@ge.com>
+Date: Thu, 30 Aug 2012 15:00:17 +0100
+Message-Id: <1346335217-9686-6-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1346335217-9686-1-git-send-email-renaud.barbier@ge.com>
 References: <1346335217-9686-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,110 +21,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] mpc85xx: header update
+Subject: [PATCH 5/5] ppc: p2020rdb i2c support
 To: barebox@lists.infradead.org
 
-In order to use the IMX i2c driver on the mpc85xx SOC, the file
-mach/clocks.h is renamed mach/clock.h. Files using this header are updated
-accordingly. The file mach/generic.h is also added to accommodate the driver.
-
-Finally, there is a clean up of a line too long.
+Support for both i2c busses on the p2020rdb board is added and the
+configuration file is updated to add the I2C driver and commands.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- arch/ppc/boards/freescale-p2020rdb/p2020rdb.c      |    6 ++--
- .../include/mach/{clocks.h => clock.h}             |    0
- arch/ppc/mach-mpc85xx/include/mach/generic.h       |   24 ++++++++++++++++++++
- arch/ppc/mach-mpc85xx/speed.c                      |    2 +-
- arch/ppc/mach-mpc85xx/time.c                       |    2 +-
- 5 files changed, 29 insertions(+), 5 deletions(-)
- rename arch/ppc/mach-mpc85xx/include/mach/{clocks.h => clock.h} (100%)
- create mode 100644 arch/ppc/mach-mpc85xx/include/mach/generic.h
+ arch/ppc/boards/freescale-p2020rdb/p2020rdb.c |   12 +++++++++++-
+ arch/ppc/configs/p2020rdb_defconfig           |    3 +++
+ 2 files changed, 14 insertions(+), 1 deletions(-)
 
 diff --git a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
-index 734fef9..2de6cc4 100644
+index 2de6cc4..59a9d12 100644
 --- a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
 +++ b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
-@@ -34,7 +34,7 @@
- #include <mach/mpc85xx.h>
- #include <mach/mmu.h>
- #include <mach/immap_85xx.h>
--#include <mach/clocks.h>
-+#include <mach/clock.h>
- #include <mach/gianfar.h>
- #include <mach/early_udelay.h>
+@@ -26,6 +26,7 @@
+ #include <driver.h>
+ #include <ns16550.h>
+ #include <types.h>
++#include <i2c/i2c.h>
+ #include <partition.h>
+ #include <memory.h>
+ #include <asm/cache.h>
+@@ -62,6 +63,11 @@
+ #define SYSCLK_50	50000000
+ #define SYSCLK_100	100000000
  
-@@ -95,8 +95,8 @@ static int p2020_console_init(void)
- {
- 	serial_plat.clock = fsl_get_bus_freq(0);
- 
--	add_ns16550_device(DEVICE_ID_DYNAMIC, 0xffe04500, 16, IORESOURCE_MEM_8BIT,
--			   &serial_plat);
-+	add_ns16550_device(DEVICE_ID_DYNAMIC, 0xffe04500, 16,
-+			IORESOURCE_MEM_8BIT, &serial_plat);
- 	return 0;
- }
- 
-diff --git a/arch/ppc/mach-mpc85xx/include/mach/clocks.h b/arch/ppc/mach-mpc85xx/include/mach/clock.h
-similarity index 100%
-rename from arch/ppc/mach-mpc85xx/include/mach/clocks.h
-rename to arch/ppc/mach-mpc85xx/include/mach/clock.h
-diff --git a/arch/ppc/mach-mpc85xx/include/mach/generic.h b/arch/ppc/mach-mpc85xx/include/mach/generic.h
-new file mode 100644
-index 0000000..02f589b
---- /dev/null
-+++ b/arch/ppc/mach-mpc85xx/include/mach/generic.h
-@@ -0,0 +1,24 @@
-+/*
-+ * Copyright 2012 GE Intelligent Platforms, Inc.
-+ * (C) Copyright 2010 Juergen Beisert - Pengutronix
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
-+ * File derived from ARM architecture. Added so that the imx i2c driver
-+ * can be used.
-+ */
++/* I2C busses. */
++struct i2c_platform_data i2cplat = {
++	.bitrate = 400000,
++};
 +
-+#define cpu_is_mx1()	(0)
-diff --git a/arch/ppc/mach-mpc85xx/speed.c b/arch/ppc/mach-mpc85xx/speed.c
-index fff2d22..6778d57 100644
---- a/arch/ppc/mach-mpc85xx/speed.c
-+++ b/arch/ppc/mach-mpc85xx/speed.c
-@@ -30,7 +30,7 @@
+ /* Ethernet. Use eTSEC3 */
+ static struct gfar_info_struct gfar_info[] = {
+ 	{
+@@ -71,11 +77,15 @@ static struct gfar_info_struct gfar_info[] = {
+ 	},
+ };
  
- #include <common.h>
- #include <asm/processor.h>
--#include <mach/clocks.h>
-+#include <mach/clock.h>
- #include <mach/immap_85xx.h>
- #include <mach/mpc85xx.h>
- 
-diff --git a/arch/ppc/mach-mpc85xx/time.c b/arch/ppc/mach-mpc85xx/time.c
-index 408a28a..c50591c 100644
---- a/arch/ppc/mach-mpc85xx/time.c
-+++ b/arch/ppc/mach-mpc85xx/time.c
-@@ -25,7 +25,7 @@
- #include <common.h>
- #include <clock.h>
- #include <init.h>
--#include <mach/clocks.h>
-+#include <mach/clock.h>
- 
- uint64_t ppc_clocksource_read(void)
+-
+ static int devices_init(void)
  {
+ 	add_cfi_flash_device(DEVICE_ID_DYNAMIC, CFG_FLASH_BASE, 16 << 20, 0);
+ 
++	add_generic_device("i2c-mpc", 0, NULL, I2C1_BASE_ADDR,
++			0x100, IORESOURCE_MEM, &i2cplat);
++	add_generic_device("i2c-mpc", 1, NULL, I2C2_BASE_ADDR,
++			0x100, IORESOURCE_MEM, &i2cplat);
++
+ 	/* eTSEC3 */
+ 	fsl_eth_init(3, &gfar_info[0]);
+ 
+diff --git a/arch/ppc/configs/p2020rdb_defconfig b/arch/ppc/configs/p2020rdb_defconfig
+index d025a40..7690327 100644
+--- a/arch/ppc/configs/p2020rdb_defconfig
++++ b/arch/ppc/configs/p2020rdb_defconfig
+@@ -27,3 +27,6 @@ CONFIG_NET_PING=y
+ CONFIG_NET_TFTP=y
+ CONFIG_PING=y
+ CONFIG_TFTP=y
++CONFIG_I2C=y
++CONFIG_I2C_IMX=y
++CONFIG_CMD_I2C=y
 -- 
 1.7.1
 
