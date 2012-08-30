@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mo6-p00-ob.rzone.de ([2a01:238:20a:202:5300::1])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T6yNo-0003lQ-CP
- for barebox@lists.infradead.org; Thu, 30 Aug 2012 06:37:41 +0000
-Date: Thu, 30 Aug 2012 08:37:38 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120830063738.GE26594@pengutronix.de>
-References: <1346260386-19901-1-git-send-email-renaud.barbier@ge.com>
+ id 1T6ypV-0005W7-8q
+ for barebox@lists.infradead.org; Thu, 30 Aug 2012 07:06:18 +0000
+Message-ID: <503F10DE.7020500@calao-systems.com>
+Date: Thu, 30 Aug 2012 09:06:06 +0200
+From: gregory hermant <gregory.hermant@calao-systems.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1346260386-19901-1-git-send-email-renaud.barbier@ge.com>
+References: <503C67F9.7090703@calao-systems.com>
+ <20120829071210.GT26594@pengutronix.de>
+In-Reply-To: <20120829071210.GT26594@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,62 +22,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ppc: add unaligned support
-To: Renaud Barbier <renaud.barbier@ge.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] NAND Flash SMC timings update (nwe_pulse) for calao board
+ based on AT91SAM9G20 SoC
+To: barebox@lists.infradead.org
 
-On Wed, Aug 29, 2012 at 06:13:06PM +0100, Renaud Barbier wrote:
-> This file is copied from Linux 2.6.39. It is added so that the P2020RDB
-> can still build.
-> 
-> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+Hello sascha,
+It's just a typo.
+gregory
 
-Applied, thanks
-
-Sascha
-
-> ---
->  arch/ppc/include/asm/unaligned.h |   16 ++++++++++++++++
->  1 files changed, 16 insertions(+), 0 deletions(-)
->  create mode 100644 arch/ppc/include/asm/unaligned.h
+Sascha Hauer wrote:
+> On Tue, Aug 28, 2012 at 08:40:57AM +0200, gregory hermant wrote:
+>> Signed-off-by: Gregory Hermant <gregory.hermant@calao-systems.com>
 > 
-> diff --git a/arch/ppc/include/asm/unaligned.h b/arch/ppc/include/asm/unaligned.h
-> new file mode 100644
-> index 0000000..a41fa8c
-> --- /dev/null
-> +++ b/arch/ppc/include/asm/unaligned.h
-> @@ -0,0 +1,16 @@
-> +#ifndef _ASM_PPC_UNALIGNED_H
-> +#define _ASM_PPC_UNALIGNED_H
-> +
-> +#ifdef __KERNEL__
-> +
-> +/*
-> + * The PowerPC can do unaligned accesses itself in big endian mode.
-> + */
-> +#include <linux/unaligned/access_ok.h>
-> +#include <linux/unaligned/generic.h>
-> +
-> +#define get_unaligned   __get_unaligned_be
-> +#define put_unaligned   __put_unaligned_be
-> +
-> +#endif  /* __KERNEL__ */
-> +#endif  /* _ASM_PPC_UNALIGNED_H */
-> -- 
-> 1.7.1
+> The commmit log is a bit sparse. It would be interesting if this is an
+> enhancement, fixes a problem, is needed on newer board revisions...
 > 
+> Sascha
 > 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+>> ---
+>>  arch/arm/boards/tny-a926x/init.c |    2 +-
+>>  arch/arm/boards/usb-a926x/init.c |    2 +-
+>>  2 files changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/arm/boards/tny-a926x/init.c b/arch/arm/boards/tny-a926x/init.c
+>> index d58132a..5538a44 100644
+>> --- a/arch/arm/boards/tny-a926x/init.c
+>> +++ b/arch/arm/boards/tny-a926x/init.c
+>> @@ -89,7 +89,7 @@ static struct sam9_smc_config tny_a9g20_nand_smc_config = {
+>>  	.ncs_read_pulse		= 4,
+>>  	.nrd_pulse		= 4,
+>>  	.ncs_write_pulse	= 4,
+>> -	.nwe_pulse		= 2,
+>> +	.nwe_pulse		= 4,
+>>  
+>>  	.read_cycle		= 7,
+>>  	.write_cycle		= 7,
+>> diff --git a/arch/arm/boards/usb-a926x/init.c b/arch/arm/boards/usb-a926x/init.c
+>> index 7e63876..00a215d 100644
+>> --- a/arch/arm/boards/usb-a926x/init.c
+>> +++ b/arch/arm/boards/usb-a926x/init.c
+>> @@ -90,7 +90,7 @@ static struct sam9_smc_config usb_a9g20_nand_smc_config = {
+>>  	.ncs_read_pulse		= 4,
+>>  	.nrd_pulse		= 4,
+>>  	.ncs_write_pulse	= 4,
+>> -	.nwe_pulse		= 2,
+>> +	.nwe_pulse		= 4,
+>>  
+>>  	.read_cycle		= 7,
+>>  	.write_cycle		= 7,
+>> -- 
+>> 1.5.6.3
+>>
+>>
+>>
+>> _______________________________________________
+>> barebox mailing list
+>> barebox@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/barebox
+>>
 > 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
