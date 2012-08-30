@@ -1,21 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo4.mail-out.ovh.net ([188.165.33.112]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T75HU-0004hs-Ql
- for barebox@lists.infradead.org; Thu, 30 Aug 2012 13:59:38 +0000
-Received: from mail403.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 1AD8D10546DA
- for <barebox@lists.infradead.org>; Thu, 30 Aug 2012 16:04:45 +0200 (CEST)
-Date: Thu, 30 Aug 2012 15:59:32 +0200
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120830155932.7f57c80d@eb-e6520>
-In-Reply-To: <20120830132631.GA20930@pengutronix.de>
-References: <1346329850-3866-1-git-send-email-s.trumtrar@pengutronix.de>
- <1346329850-3866-4-git-send-email-s.trumtrar@pengutronix.de>
- <20120830150350.4ba00098@eb-e6520>
- <20120830132631.GA20930@pengutronix.de>
-Mime-Version: 1.0
+Received: from exprod5og111.obsmtp.com ([64.18.0.22])
+ by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1T75II-0004jX-98
+ for barebox@lists.infradead.org; Thu, 30 Aug 2012 14:00:27 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Thu, 30 Aug 2012 15:00:13 +0100
+Message-Id: <1346335217-9686-2-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1346335217-9686-1-git-send-email-renaud.barbier@ge.com>
+References: <1346335217-9686-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,38 +16,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] usb: use ep-specific pwrgood delay
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/5] mpc85xx: i2c frequency
+To: barebox@lists.infradead.org
 
-Hi Steffen,
+A function that returns the system bus frequency used to compute the i2c bus
+frequency is added for future use.
 
-Le Thu, 30 Aug 2012 15:26:31 +0200,
-Steffen Trumtrar <s.trumtrar@pengutronix.de> a =E9crit :
-> Where does your 50ms come from? From the debug messages of the usb-tool?
-from a printf of bPwrOn2PwrGood
+Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+---
+ arch/ppc/mach-mpc85xx/include/mach/clocks.h |    1 +
+ arch/ppc/mach-mpc85xx/speed.c               |    9 +++++++++
+ 2 files changed, 10 insertions(+), 0 deletions(-)
 
-> It has the same factor of times 2.
-yes, so in the end the hub is supposed to need 100ms to enable power.
+diff --git a/arch/ppc/mach-mpc85xx/include/mach/clocks.h b/arch/ppc/mach-mpc85xx/include/mach/clocks.h
+index 2ab367b..e20d685 100644
+--- a/arch/ppc/mach-mpc85xx/include/mach/clocks.h
++++ b/arch/ppc/mach-mpc85xx/include/mach/clocks.h
+@@ -12,5 +12,6 @@ struct sys_info {
+ 
+ unsigned long fsl_get_bus_freq(ulong dummy);
+ unsigned long fsl_get_timebase_clock(void);
++unsigned long fsl_get_i2c_freq(void);
+ void fsl_get_sys_info(struct sys_info *sysInfo);
+ #endif /* __ASM_ARCH_CLOCKS_H */
+diff --git a/arch/ppc/mach-mpc85xx/speed.c b/arch/ppc/mach-mpc85xx/speed.c
+index 40d3664..fff2d22 100644
+--- a/arch/ppc/mach-mpc85xx/speed.c
++++ b/arch/ppc/mach-mpc85xx/speed.c
+@@ -102,3 +102,12 @@ unsigned long fsl_get_timebase_clock(void)
+ 
+ 	return (sysinfo.freqSystemBus + 4UL)/8UL;
+ }
++
++unsigned long fsl_get_i2c_freq(void)
++{
++	struct sys_info sysinfo;
++
++	fsl_get_sys_info(&sysinfo);
++
++	return sysinfo.freqSystemBus / 2;
++}
+-- 
+1.7.1
 
-> Have you tried hardcoding mdelay(100)?
-yes -> doesn't work (see previous patch I sent 2 days ago on the same
-subject).
-
-> I first thought about doing it the same way linux does it and use
-> max(pwrgood, 100). But 100ms minimum wouldn't help you either.
-> I don't really like the idea of just guessing a value. But if necessary,
-> I'm surely willing to change this patch.
-
-with Linux's 100ms that works fine on the same board (under Linux). So
-I'll check the if the mdelay(100) in barebox is really a 100ms timing
-because the problem's root may be here !
-
-Eric
 
 _______________________________________________
 barebox mailing list
