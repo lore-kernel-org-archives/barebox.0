@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og113.obsmtp.com ([64.18.0.26])
+Received: from exprod5og108.obsmtp.com ([64.18.0.186])
  by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T75IN-0004km-Rn
- for barebox@lists.infradead.org; Thu, 30 Aug 2012 14:00:33 +0000
+ id 1T75IH-0004jV-DX
+ for barebox@lists.infradead.org; Thu, 30 Aug 2012 14:00:26 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Thu, 30 Aug 2012 15:00:17 +0100
-Message-Id: <1346335217-9686-6-git-send-email-renaud.barbier@ge.com>
-In-Reply-To: <1346335217-9686-1-git-send-email-renaud.barbier@ge.com>
-References: <1346335217-9686-1-git-send-email-renaud.barbier@ge.com>
+Date: Thu, 30 Aug 2012 15:00:12 +0100
+Message-Id: <1346335217-9686-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,72 +19,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] ppc: p2020rdb i2c support
+Subject: [PATCH 0/5] IMX i2c driver update for the PPC 85xx
 To: barebox@lists.infradead.org
 
-Support for both i2c busses on the p2020rdb board is added and the
-configuration file is updated to add the I2C driver and commands.
+This patch replaces the patch "ppc: Freescale TSEC driver".
+This patch set prepares the PPC 85xx SOC to use the IMX i2c driver and updates
+the driver with specific clock settings.
+The patch also introduces a function returning the system clock to calculate
+the i2c frequency bus divider. Finally, the P2020RDB board support is updated
+to test the driver on 8-bit and 16-bit I2C.
 
-Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
----
- arch/ppc/boards/freescale-p2020rdb/p2020rdb.c |   12 +++++++++++-
- arch/ppc/configs/p2020rdb_defconfig           |    3 +++
- 2 files changed, 14 insertions(+), 1 deletions(-)
+This patch has not been tested on a IMX board.
 
-diff --git a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
-index 2de6cc4..59a9d12 100644
---- a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
-+++ b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
-@@ -26,6 +26,7 @@
- #include <driver.h>
- #include <ns16550.h>
- #include <types.h>
-+#include <i2c/i2c.h>
- #include <partition.h>
- #include <memory.h>
- #include <asm/cache.h>
-@@ -62,6 +63,11 @@
- #define SYSCLK_50	50000000
- #define SYSCLK_100	100000000
- 
-+/* I2C busses. */
-+struct i2c_platform_data i2cplat = {
-+	.bitrate = 400000,
-+};
-+
- /* Ethernet. Use eTSEC3 */
- static struct gfar_info_struct gfar_info[] = {
- 	{
-@@ -71,11 +77,15 @@ static struct gfar_info_struct gfar_info[] = {
- 	},
- };
- 
--
- static int devices_init(void)
- {
- 	add_cfi_flash_device(DEVICE_ID_DYNAMIC, CFG_FLASH_BASE, 16 << 20, 0);
- 
-+	add_generic_device("i2c-mpc", 0, NULL, I2C1_BASE_ADDR,
-+			0x100, IORESOURCE_MEM, &i2cplat);
-+	add_generic_device("i2c-mpc", 1, NULL, I2C2_BASE_ADDR,
-+			0x100, IORESOURCE_MEM, &i2cplat);
-+
- 	/* eTSEC3 */
- 	fsl_eth_init(3, &gfar_info[0]);
- 
-diff --git a/arch/ppc/configs/p2020rdb_defconfig b/arch/ppc/configs/p2020rdb_defconfig
-index d025a40..7690327 100644
---- a/arch/ppc/configs/p2020rdb_defconfig
-+++ b/arch/ppc/configs/p2020rdb_defconfig
-@@ -27,3 +27,6 @@ CONFIG_NET_PING=y
- CONFIG_NET_TFTP=y
- CONFIG_PING=y
- CONFIG_TFTP=y
-+CONFIG_I2C=y
-+CONFIG_I2C_IMX=y
-+CONFIG_CMD_I2C=y
--- 
-1.7.1
+Renaud Barbier (5):
+  mpc85xx: i2c frequency
+  ppc/asm/fsl_i2c.h is removed
+  mpc85xx: header update
+  i2c: adapt the i2c-imx driver to mpc85xx machines.
+  ppc: p2020rdb i2c support
+
+ arch/ppc/boards/freescale-p2020rdb/p2020rdb.c      |   18 +++-
+ arch/ppc/configs/p2020rdb_defconfig                |    3 +
+ arch/ppc/include/asm/fsl_i2c.h                     |   86 -------------------
+ .../include/mach/{clocks.h => clock.h}             |    1 +
+ arch/ppc/mach-mpc85xx/include/mach/generic.h       |   24 ++++++
+ arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h    |    3 +
+ arch/ppc/mach-mpc85xx/speed.c                      |   11 ++-
+ arch/ppc/mach-mpc85xx/time.c                       |    2 +-
+ drivers/i2c/busses/Kconfig                         |    4 +-
+ drivers/i2c/busses/i2c-imx.c                       |   87 +++++++++++++++++++-
+ 10 files changed, 143 insertions(+), 96 deletions(-)
+ delete mode 100644 arch/ppc/include/asm/fsl_i2c.h
+ rename arch/ppc/mach-mpc85xx/include/mach/{clocks.h => clock.h} (91%)
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/generic.h
 
 
 _______________________________________________
