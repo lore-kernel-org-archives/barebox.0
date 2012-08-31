@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T7M52-0006kc-RR
- for barebox@lists.infradead.org; Fri, 31 Aug 2012 07:55:53 +0000
-Date: Fri, 31 Aug 2012 09:55:51 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120831075551.GQ26594@pengutronix.de>
-References: <1346322594-21167-1-git-send-email-a.aring@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1346322594-21167-1-git-send-email-a.aring@phytec.de>
+ id 1T7N01-0001Z4-3l
+ for barebox@lists.infradead.org; Fri, 31 Aug 2012 08:54:47 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Fri, 31 Aug 2012 10:54:27 +0200
+Message-Id: <1346403272-24446-6-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1346403272-24446-1-git-send-email-s.trumtrar@pengutronix.de>
+References: <1346403272-24446-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,68 +16,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 0/5] rewritten memtest command
-To: Alexander Aring <a.aring@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 05/10] ARM i.MX53: add imx-gpio devices
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Hi Alexander,
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ arch/arm/mach-imx/imx53.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Apart from the comment I made the series looks good to me.
-
-Sascha
-
-On Thu, Aug 30, 2012 at 12:29:49PM +0200, Alexander Aring wrote:
-> Rewritten memtest command.
-> Added new section data which is between text and bss.
-> Only tested on arm architecture.
-> 
-> Alexander Aring (5):
->   mmu: make remap_range global accessable
->   memory: add function address_in_sdram_regions
->   barebox-data: add barebox-data sections
->   memtest: remove memtest command
->   memtest: add rewritten memtest command
-> 
->  arch/arm/cpu/mmu.c                               |    4 +-
->  arch/arm/include/asm/mmu.h                       |   13 +
->  arch/arm/lib/barebox.lds.S                       |    6 +-
->  arch/blackfin/boards/ipe337/barebox.lds.S        |    6 +-
->  arch/blackfin/include/asm/mmu.h                  |   15 +
->  arch/mips/include/asm/mmu.h                      |   15 +
->  arch/mips/lib/barebox.lds.S                      |    5 +-
->  arch/nios2/cpu/barebox.lds.S                     |    5 +-
->  arch/nios2/include/asm/mmu.h                     |   15 +
->  arch/openrisc/include/asm/mmu.h                  |   15 +
->  arch/ppc/boards/freescale-p2020rdb/barebox.lds.S |    6 +-
->  arch/ppc/boards/pcm030/barebox.lds.S             |    5 +-
->  arch/ppc/include/asm/mmu.h                       |   10 +
->  arch/x86/include/asm/mmu.h                       |   15 +
->  arch/x86/lib/barebox.lds.S                       |    5 +-
->  commands/Kconfig                                 |   11 +-
->  commands/Makefile                                |    2 +-
->  commands/memtest.c                               |  850 +++++++++++++++-------
->  common/memory.c                                  |   17 +
->  include/asm-generic/sections.h                   |    1 +
->  include/common.h                                 |    3 +
->  include/memory.h                                 |    6 +
->  22 files changed, 732 insertions(+), 298 deletions(-)
->  create mode 100644 arch/blackfin/include/asm/mmu.h
->  create mode 100644 arch/mips/include/asm/mmu.h
->  create mode 100644 arch/nios2/include/asm/mmu.h
->  create mode 100644 arch/openrisc/include/asm/mmu.h
->  create mode 100644 arch/x86/include/asm/mmu.h
-> 
-> 
-
+diff --git a/arch/arm/mach-imx/imx53.c b/arch/arm/mach-imx/imx53.c
+index 7c679bb..4071dce 100644
+--- a/arch/arm/mach-imx/imx53.c
++++ b/arch/arm/mach-imx/imx53.c
+@@ -88,6 +88,13 @@ static int imx53_init(void)
+ 	add_generic_device("imx_iim", 0, NULL, MX53_IIM_BASE_ADDR, SZ_4K,
+ 			IORESOURCE_MEM, NULL);
+ 
++	add_generic_device("imx-gpio", 0, NULL, MX53_GPIO1_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx-gpio", 1, NULL, MX53_GPIO2_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx-gpio", 2, NULL, MX53_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx-gpio", 3, NULL, MX53_GPIO4_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx-gpio", 4, NULL, MX53_GPIO5_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx-gpio", 5, NULL, MX53_GPIO6_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx-gpio", 6, NULL, MX53_GPIO7_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	return 0;
+ }
+ coredevice_initcall(imx53_init);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
