@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T7Rgo-0003AT-9N
- for barebox@lists.infradead.org; Fri, 31 Aug 2012 13:55:15 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri, 31 Aug 2012 15:55:08 +0200
-Message-Id: <1346421308-24669-1-git-send-email-s.trumtrar@pengutronix.de>
+Received: from exprod5og108.obsmtp.com ([64.18.0.186])
+ by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1T7Rvn-0005At-Ll
+ for barebox@lists.infradead.org; Fri, 31 Aug 2012 14:10:44 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Fri, 31 Aug 2012 15:10:31 +0100
+Message-Id: <1346422235-3949-3-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1346335217-9686-1-git-send-email-renaud.barbier@ge.com>
+References: <1346335217-9686-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,77 +21,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM i.MX6: query silicon revision
+Subject: [PATCH 2/6] ppc/asm/fsl_i2c.h is removed
 To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Read silicon revision from ???-register.
-This is based on a7683867463481bfea84af4d60af832ddfb3da7f from u-boot.
-The address 0x020c8260 is used and decoded. I haven't found that in my
-datasheet, so I must trust the code to be correct.
-At least on a SabreLite v1.0 I get the correct version though.
+The i2c-imx driver is able to support the I2C bus on the 85xx machines
+with minor modifications. It already defines register offsets. Therefore,
+this header file is no longer needed.
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- arch/arm/mach-imx/imx6.c |   36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ arch/ppc/include/asm/fsl_i2c.h |   86 ----------------------------------------
+ 1 files changed, 0 insertions(+), 86 deletions(-)
+ delete mode 100644 arch/ppc/include/asm/fsl_i2c.h
 
-diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-index b6067d7..9c90444 100644
---- a/arch/arm/mach-imx/imx6.c
-+++ b/arch/arm/mach-imx/imx6.c
-@@ -19,7 +19,7 @@
- #include <common.h>
- #include <io.h>
- #include <sizes.h>
--#include <mach/imx6-regs.h>
-+#include <mach/imx-regs.h>
- 
- #include "gpio.h"
- 
-@@ -35,6 +35,40 @@ void *imx_gpio_base[] = {
- 
- int imx_gpio_count = ARRAY_SIZE(imx_gpio_base) * 32;
- 
-+static u32 mx6_silicon_revision;
-+static char *mx6_rev_string = "unknown";
-+
-+int imx_silicon_revision(void)
-+{
-+	return mx6_silicon_revision;
-+}
-+
-+static int query_silicon_revision(void)
-+{
-+	void __iomem *anatop = (void *) MX6_ANATOP_BASE_ADDR;
-+	u32 rev, reg;
-+
-+	reg = readl(anatop + 0x260);
-+	/* read mx6 variant: quad, dual, solo */
-+	//rev = (reg >> 4) & 0xff000;
-+	rev = (reg & 0xff) + 0x10;
-+	switch (rev) {
-+	case 0x10:
-+		mx6_silicon_revision = IMX_CHIP_REV_1_0;
-+		mx6_rev_string = "1.0";
-+		break;
-+	case 0x11:
-+		mx6_silicon_revision = IMX_CHIP_REV_1_1;
-+		mx6_rev_string = "1.1";
-+		break;
-+	default:
-+		mx6_silicon_revision = 0;
-+	}
-+
-+	return 0;
-+}
-+core_initcall(query_silicon_revision);
-+
- void imx6_init_lowlevel(void)
- {
- 	void __iomem *aips1 = (void *)MX6_AIPS1_ON_BASE_ADDR;
+diff --git a/arch/ppc/include/asm/fsl_i2c.h b/arch/ppc/include/asm/fsl_i2c.h
+deleted file mode 100644
+index 4f71341..0000000
+--- a/arch/ppc/include/asm/fsl_i2c.h
++++ /dev/null
+@@ -1,86 +0,0 @@
+-/*
+- * Freescale I2C Controller
+- *
+- * Copyright 2006 Freescale Semiconductor, Inc.
+- *
+- * Based on earlier versions by Gleb Natapov <gnatapov@mrv.com>,
+- * Xianghua Xiao <x.xiao@motorola.com>, Eran Liberty (liberty@freescale.com),
+- * and Jeff Brown.
+- * Some bits are taken from linux driver writen by adrian@humboldt.co.uk.
+- *
+- * This software may be used and distributed according to the
+- * terms of the GNU Public License, Version 2, incorporated
+- * herein by reference.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * Version 2 as published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- */
+-
+-#ifndef _ASM_FSL_I2C_H_
+-#define _ASM_FSL_I2C_H_
+-
+-#include <asm/types.h>
+-
+-typedef struct fsl_i2c {
+-
+-	u8 adr;		/* I2C slave address */
+-	u8 res0[3];
+-#define I2C_ADR		0xFE
+-#define I2C_ADR_SHIFT	1
+-#define I2C_ADR_RES	~(I2C_ADR)
+-
+-	u8 fdr;		/* I2C frequency divider register */
+-	u8 res1[3];
+-#define IC2_FDR		0x3F
+-#define IC2_FDR_SHIFT	0
+-#define IC2_FDR_RES	~(IC2_FDR)
+-
+-	u8 cr;		/* I2C control redister	*/
+-	u8 res2[3];
+-#define I2C_CR_MEN	0x80
+-#define I2C_CR_MIEN	0x40
+-#define I2C_CR_MSTA	0x20
+-#define I2C_CR_MTX	0x10
+-#define I2C_CR_TXAK	0x08
+-#define I2C_CR_RSTA	0x04
+-#define I2C_CR_BCST	0x01
+-
+-	u8 sr;		/* I2C status register */
+-	u8 res3[3];
+-#define I2C_SR_MCF	0x80
+-#define I2C_SR_MAAS	0x40
+-#define I2C_SR_MBB	0x20
+-#define I2C_SR_MAL	0x10
+-#define I2C_SR_BCSTM	0x08
+-#define I2C_SR_SRW	0x04
+-#define I2C_SR_MIF	0x02
+-#define I2C_SR_RXAK	0x01
+-
+-	u8 dr;		/* I2C data register */
+-	u8 res4[3];
+-#define I2C_DR		0xFF
+-#define I2C_DR_SHIFT	0
+-#define I2C_DR_RES	~(I2C_DR)
+-
+-	u8 dfsrr;	/* I2C digital filter sampling rate register */
+-	u8 res5[3];
+-#define I2C_DFSRR	0x3F
+-#define I2C_DFSRR_SHIFT	0
+-#define I2C_DFSRR_RES	~(I2C_DR)
+-
+-	/* Fill out the reserved block */
+-	u8 res6[0xE8];
+-} fsl_i2c_t;
+-
+-#endif	/* _ASM_I2C_H_ */
 -- 
-1.7.10.4
+1.7.1
 
 
 _______________________________________________
