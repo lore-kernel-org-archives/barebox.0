@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T7NIo-0003mY-JM
- for barebox@lists.infradead.org; Fri, 31 Aug 2012 09:14:11 +0000
+ id 1T7NIo-0003mZ-JO
+ for barebox@lists.infradead.org; Fri, 31 Aug 2012 09:14:13 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri, 31 Aug 2012 11:14:06 +0200
-Message-Id: <1346404447-31961-2-git-send-email-s.trumtrar@pengutronix.de>
+Date: Fri, 31 Aug 2012 11:14:07 +0200
+Message-Id: <1346404447-31961-3-git-send-email-s.trumtrar@pengutronix.de>
 In-Reply-To: <1346404447-31961-1-git-send-email-s.trumtrar@pengutronix.de>
 References: <1346404447-31961-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,53 +21,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] mfd: add stmpe-i2c driver
+Subject: [PATCH 2/2] gpio: add driver for stmpe io-expander
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-The stmpe mfds can be connected via i2c and spi. This driver provides the basic
-infrastructure for the i2c kind. It can be added as a normal i2c-device in the
-board code. To enable functions a platform_data struct has to be provided, that
-describes what parts of the chip are to be used.
+Add a driver for the stmpe1601 gpio block. The stmpe io-expanders have multiple
+blocks (keypad, gpio...) that can be enabled and used. Only gpio is supported atm.
+
+This was only tested on a stmpe connected via i2c. It is also possible to connect
+via spi.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/mfd/Kconfig     |    4 ++
- drivers/mfd/Makefile    |    1 +
- drivers/mfd/stmpe-i2c.c |  166 +++++++++++++++++++++++++++++++++++++++++++++++
- include/mfd/stmpe-i2c.h |   55 ++++++++++++++++
- 4 files changed, 226 insertions(+)
- create mode 100644 drivers/mfd/stmpe-i2c.c
- create mode 100644 include/mfd/stmpe-i2c.h
+ drivers/Kconfig           |    1 +
+ drivers/gpio/Kconfig      |    8 +++
+ drivers/gpio/Makefile     |    1 +
+ drivers/gpio/gpio-stmpe.c |  155 +++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 165 insertions(+)
+ create mode 100644 drivers/gpio/Kconfig
+ create mode 100644 drivers/gpio/gpio-stmpe.c
 
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index af67935..20eef86 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -33,4 +33,8 @@ config I2C_TWL6030
- 	select I2C_TWLCORE
- 	bool "TWL6030 driver"
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index 883b0e7..adf8fcd 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -18,5 +18,6 @@ source "drivers/input/Kconfig"
+ source "drivers/watchdog/Kconfig"
+ source "drivers/pwm/Kconfig"
+ source "drivers/dma/Kconfig"
++source "drivers/gpio/Kconfig"
  
-+config I2C_STMPE
-+	depends on I2C
-+	bool "STMPE-i2c driver"
-+
  endmenu
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index e11223b..792ae2d 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -6,3 +6,4 @@ obj-$(CONFIG_I2C_LP3972) += lp3972.o
- obj-$(CONFIG_I2C_TWLCORE) += twl-core.o
- obj-$(CONFIG_I2C_TWL4030) += twl4030.o
- obj-$(CONFIG_I2C_TWL6030) += twl6030.o
-+obj-$(CONFIG_I2C_STMPE) += stmpe-i2c.o
-diff --git a/drivers/mfd/stmpe-i2c.c b/drivers/mfd/stmpe-i2c.c
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
 new file mode 100644
-index 0000000..a0cfa75
+index 0000000..939cda8
 --- /dev/null
-+++ b/drivers/mfd/stmpe-i2c.c
-@@ -0,0 +1,166 @@
++++ b/drivers/gpio/Kconfig
+@@ -0,0 +1,8 @@
++menu "GPIO                          "
++
++config STMPE_GPIO
++	depends on I2C
++	select I2C_STMPE
++	bool "STMPE GPIO Expander"
++
++endmenu
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index 7837966..da1bc21 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -1 +1,2 @@
+ obj-y += gpio.o
++obj-$(CONFIG_STMPE_GPIO) += gpio-stmpe.o
+diff --git a/drivers/gpio/gpio-stmpe.c b/drivers/gpio/gpio-stmpe.c
+new file mode 100644
+index 0000000..44e7ae6
+--- /dev/null
++++ b/drivers/gpio/gpio-stmpe.c
+@@ -0,0 +1,155 @@
 +/*
 + * Copyright (C) 2012 Pengutronix
 + * Steffen Trumtrar <s.trumtrar@pengutronix.de>
@@ -85,216 +96,144 @@ index 0000000..a0cfa75
 + */
 +
 +#include <common.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <xfuncs.h>
 +#include <errno.h>
-+
-+#include <i2c/i2c.h>
++#include <io.h>
++#include <gpio.h>
++#include <init.h>
 +#include <mfd/stmpe-i2c.h>
 +
-+#define DRIVERNAME		"stmpe-i2c"
++#define GPIO_BASE	0x80
++#define GPIO_SET	(GPIO_BASE + 0x02)
++#define GPIO_CLR	(GPIO_BASE + 0x04)
++#define GPIO_MP		(GPIO_BASE + 0x06)
++#define GPIO_SET_DIR	(GPIO_BASE + 0x08)
++#define GPIO_ED		(GPIO_BASE + 0x0a)
++#define GPIO_RE		(GPIO_BASE + 0x0c)
++#define GPIO_FE		(GPIO_BASE + 0x0e)
++#define GPIO_PULL_UP	(GPIO_BASE + 0x10)
++#define GPIO_AF		(GPIO_BASE + 0x12)
++#define GPIO_LT		(GPIO_BASE + 0x16)
 +
-+#define to_stmpe(a)		container_of(a, struct stmpe, cdev)
++#define OFFSET(gpio)	(0xff & (1 << (gpio)) ? 1 : 0)
 +
-+static struct stmpe *stmpe_dev;
++extern void __iomem *stmpe_gpio_base[];
++extern int stmpe_gpio_count;
 +
-+struct stmpe *stmpe_get(void)
-+{
-+	if (!stmpe_dev)
-+		return NULL;
-+
-+	return stmpe_dev;
-+}
-+EXPORT_SYMBOL(stmpe_get);
-+
-+int stmpe_reg_read(struct stmpe *stmpe, u32 reg, u8 *val)
-+{
-+	int ret;
-+
-+	ret = i2c_read_reg(stmpe->client, reg, val, 1);
-+
-+	return ret == 1 ? 0 : ret;
-+}
-+EXPORT_SYMBOL(stmpe_reg_read)
-+
-+int stmpe_reg_write(struct stmpe *stmpe, u32 reg, u8 val)
-+{
-+	int ret;
-+
-+	ret = i2c_write_reg(stmpe->client, reg, &val, 1);
-+
-+	return ret == 1 ? 0 : ret;
-+}
-+EXPORT_SYMBOL(stmpe_reg_write)
-+
-+int stmpe_set_bits(struct stmpe *stmpe, u32 reg, u8 mask, u8 val)
-+{
-+	u8 tmp;
-+	int err;
-+
-+	err = stmpe_reg_read(stmpe, reg, &tmp);
-+	tmp = (tmp & ~mask) | val;
-+
-+	if (!err)
-+		err = stmpe_reg_write(stmpe, reg, tmp);
-+
-+	return err;
-+}
-+EXPORT_SYMBOL(stmpe_set_bits);
-+
-+static ssize_t stmpe_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
-+{
-+	struct stmpe *stmpe = to_stmpe(cdev);
-+	u8 *buf = _buf;
-+	size_t i = count;
-+	int err;
-+
-+	while (i) {
-+		err = stmpe_reg_read(stmpe, offset, buf);
-+		if (err)
-+			return (ssize_t)err;
-+		buf++;
-+		i--;
-+		offset++;
-+	}
-+
-+	return count;
-+}
-+
-+static ssize_t stmpe_write(struct cdev *cdev, const void *_buf, size_t count, loff_t offset, ulong flags)
-+{
-+	struct stmpe *stmpe = to_stmpe(cdev);
-+	const u8 *buf = _buf;
-+	size_t i = count;
-+	int err;
-+
-+	while (i) {
-+		err = stmpe_reg_write(stmpe, offset, *buf);
-+		if (err)
-+			return (ssize_t)err;
-+		buf++;
-+		i--;
-+		offset++;
-+	}
-+
-+	return count;
-+}
-+
-+static struct file_operations stmpe_fops = {
-+	.lseek	= dev_lseek_default,
-+	.read	= stmpe_read,
-+	.write	= stmpe_write,
++struct stmpe_gpio_chip {
++	void __iomem *base;
++	struct gpio_chip chip;
++	void *ci;
 +};
 +
-+static struct stmpe_client_info i2c_ci = {
-+	.read_reg = stmpe_reg_read,
-+	.write_reg = stmpe_reg_write,
-+};
-+
-+static int stmpe_probe(struct device_d *dev)
++static void stmpe_gpio_set_value(struct gpio_chip *chip, unsigned gpio, int value)
 +{
-+	struct stmpe_platform_data *pdata = dev->platform_data;
++	struct stmpe_gpio_chip *stmpegpio = container_of(chip, struct stmpe_gpio_chip, chip);
++	struct stmpe_client_info *ci = (struct stmpe_client_info *)stmpegpio->ci;
++	int ret;
++	u8 val;
 +
-+	if (!pdata) {
-+		dev_dbg(dev, "no platform data\n");
-+		return -ENODEV;
-+	}
++	ci->read_reg(ci->stmpe, GPIO_MP + OFFSET(gpio), &val);
 +
-+	if (stmpe_dev)
-+		return -EBUSY;
++	val |= 1 << (gpio % 8);
 +
-+	stmpe_dev = xzalloc(sizeof(struct stmpe));
-+	stmpe_dev->cdev.name = DRIVERNAME;
-+	stmpe_dev->client = to_i2c_client(dev);
-+	stmpe_dev->cdev.size = 191;		/* 191 known registers */
-+	stmpe_dev->cdev.dev = dev;
-+	stmpe_dev->cdev.ops = &stmpe_fops;
-+	stmpe_dev->pdata = pdata;
-+	dev->priv = stmpe_dev;
-+	i2c_ci.stmpe = stmpe_dev;
++	if (value)
++		ret = ci->write_reg(ci->stmpe, GPIO_SET + OFFSET(gpio), val);
++	else
++		ret = ci->write_reg(ci->stmpe, GPIO_CLR + OFFSET(gpio), val);
 +
-+	if (pdata->blocks &= STMPE_BLOCK_GPIO)
-+		add_generic_device("stmpe-gpio", 0, NULL, (void __iomem *)pdata->base, 0x10, IORESOURCE_MEM, &i2c_ci);
++	if (ret)
++		dev_err(chip->dev, "write failed!\n");
++}
 +
-+	devfs_create(&stmpe_dev->cdev);
++static int stmpe_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
++{
++	struct stmpe_gpio_chip *stmpegpio = container_of(chip, struct stmpe_gpio_chip, chip);
++	struct stmpe_client_info *ci = (struct stmpe_client_info *)stmpegpio->ci;
++	int ret;
++	u8 val;
++
++	ci->read_reg(ci->stmpe, GPIO_SET_DIR + OFFSET(gpio), &val);
++	val &= ~(1 << (gpio % 8));
++	ret = ci->write_reg(ci->stmpe, GPIO_SET_DIR + OFFSET(gpio), val);
++
++	if (ret)
++		dev_err(chip->dev, "couldn't change direction. Write failed!\n");
 +
 +	return 0;
 +}
 +
-+static struct driver_d stmpe_driver = {
-+	.name  = DRIVERNAME,
-+	.probe = stmpe_probe,
-+};
-+
-+static int stmpe_init(void)
++static int stmpe_gpio_direction_output(struct gpio_chip *chip, unsigned gpio, int value)
 +{
-+        register_driver(&stmpe_driver);
-+        return 0;
++	struct stmpe_gpio_chip *stmpegpio = container_of(chip, struct stmpe_gpio_chip, chip);
++	struct stmpe_client_info *ci = (struct stmpe_client_info *)stmpegpio->ci;
++	int ret;
++	u8 val;
++
++	ci->read_reg(ci->stmpe, GPIO_SET_DIR + OFFSET(gpio), &val);
++	val |= 1 << (gpio % 8);
++	ret = ci->write_reg(ci->stmpe, GPIO_SET_DIR + OFFSET(gpio), val);
++
++	stmpe_gpio_set_value(chip, gpio, value);
++
++	if (ret)
++		dev_err(chip->dev, "couldn't change direction. Write failed!\n");
++
++	return 0;
 +}
 +
-+device_initcall(stmpe_init);
-diff --git a/include/mfd/stmpe-i2c.h b/include/mfd/stmpe-i2c.h
-new file mode 100644
-index 0000000..2ccb6ca
---- /dev/null
-+++ b/include/mfd/stmpe-i2c.h
-@@ -0,0 +1,55 @@
-+/*
-+ * Copyright (C) 2012 Pengutronix
-+ * Steffen Trumtrar <s.trumtrar@pengutronix.de>
-+ *
-+ * This file is released under the GPLv2
-+ *
-+ */
++static int stmpe_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
++{
++	struct stmpe_gpio_chip *stmpegpio = container_of(chip, struct stmpe_gpio_chip, chip);
++	struct stmpe_client_info *ci = (struct stmpe_client_info *)stmpegpio->ci;
++	u8 val;
++	int ret;
 +
-+#ifndef __ASM_ARCH_STMPE_H
-+#define __ASM_ARCH_STMPE_H
++	ret = ci->read_reg(ci->stmpe, GPIO_MP + OFFSET(gpio), &val);
 +
-+enum stmpe_revision {
-+	STMPE610,
-+	STMPE801,
-+	STMPE811,
-+	STMPE1601,
-+	STMPE2401,
-+	STMPE2403,
-+	STMPE_NBR_PARTS
++	if (ret)
++		dev_err(chip->dev, "read failed\n");
++
++	return val & (1 << (gpio % 8)) ? 1 : 0;
++}
++
++static struct gpio_ops stmpe_gpio_ops = {
++	.direction_input = stmpe_gpio_direction_input,
++	.direction_output = stmpe_gpio_direction_output,
++	.get = stmpe_gpio_get_value,
++	.set = stmpe_gpio_set_value,
 +};
 +
-+enum stmpe_blocks {
-+	STMPE_BLOCK_GPIO	= 1 << 0,
-+	STMPE_BLOCK_KEYPAD      = 1 << 1,
-+	STMPE_BLOCK_TOUCHSCREEN = 1 << 2,
-+	STMPE_BLOCK_ADC         = 1 << 3,
-+	STMPE_BLOCK_PWM         = 1 << 4,
-+	STMPE_BLOCK_ROTATOR     = 1 << 5,
++static int stmpe_gpio_probe(struct device_d *dev)
++{
++	struct stmpe_gpio_chip *stmpegpio;
++
++	stmpegpio = xzalloc(sizeof(*stmpegpio));
++
++	stmpegpio->base = dev_request_mem_region(dev, 0);
++	stmpegpio->chip.ops = &stmpe_gpio_ops;
++	stmpegpio->chip.base = 224;
++	stmpegpio->chip.ngpio = 16;
++	stmpegpio->chip.dev = dev;
++
++	stmpegpio->ci = dev->platform_data;
++
++	gpiochip_add(&stmpegpio->chip);
++
++	dev_info(dev, "probed stmpe gpiochip%d with base %d\n", dev->id, stmpegpio->chip.base);
++	return 0;
++}
++
++static struct driver_d stmpe_gpio_driver = {
++	.name = "stmpe-gpio",
++	.probe = stmpe_gpio_probe,
 +};
 +
-+struct stmpe_platform_data {
-+	enum	stmpe_revision	revision;
-+	enum	stmpe_blocks	blocks;
-+	void	__iomem		*base;
-+};
-+
-+struct stmpe {
-+	struct cdev		cdev;
-+	struct i2c_client	*client;
-+	struct stmpe_platform_data *pdata;
-+};
-+
-+struct stmpe_client_info {
-+	struct stmpe *stmpe;
-+	int (*read_reg)(struct stmpe *stmpe, u32 reg, u8 *val);
-+	int (*write_reg)(struct stmpe *stmpe, u32 reg, u8 val);
-+};
-+
-+extern struct stmpe *stmpe_get(void);
-+
-+extern int stmpe_reg_read(struct stmpe *priv, u32 reg, u8 *val);
-+extern int stmpe_reg_write(struct stmpe *priv, u32 reg, u8 val);
-+extern int stmpe_set_bits(struct stmpe *priv, u32 reg, u8 mask, u8 val);
-+
-+#endif /* __ASM_ARCH_STMPE_H */
++static int stmpe_gpio_add(void)
++{
++	register_driver(&stmpe_gpio_driver);
++	return 0;
++}
++coredevice_initcall(stmpe_gpio_add);
 -- 
 1.7.10.4
 
