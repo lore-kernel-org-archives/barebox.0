@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T798x-0003Z2-P1
- for barebox@lists.infradead.org; Thu, 30 Aug 2012 18:07:05 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 30 Aug 2012 20:05:56 +0200
-References: <201208292317.03322.jbe@pengutronix.de>
- <201208301508.19646.jbe@pengutronix.de> <20120830164720.GA22722@sig21.net>
-In-Reply-To: <20120830164720.GA22722@sig21.net>
+ id 1T7LTJ-0004aB-BM
+ for barebox@lists.infradead.org; Fri, 31 Aug 2012 07:16:54 +0000
+Date: Fri, 31 Aug 2012 09:16:47 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120831071647.GJ26594@pengutronix.de>
+References: <1346335217-9686-1-git-send-email-renaud.barbier@ge.com>
+ <1346335217-9686-4-git-send-email-renaud.barbier@ge.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201208302005.56531.jbe@pengutronix.de>
+In-Reply-To: <1346335217-9686-4-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,88 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: SD card experts wanted
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/5] mpc85xx: header update
+To: Renaud Barbier <renaud.barbier@ge.com>
+Cc: barebox@lists.infradead.org
 
-Hi Johannes,
+Hi Renaud,
 
-Johannes Stezenbach wrote:
-> On Thu, Aug 30, 2012 at 03:08:19PM +0200, Juergen Beisert wrote:
-> > Johannes Stezenbach wrote:
-> > > MMC has the following speed modes:
-> > >
-> > > - legacy 0-26MHz
-> > > - high speed SDR 0-52MHz
-> > > - high speed DDR 0-52MHz
-> > > - HS200 SDR 0-200MHz
-> >
-> > Ahh, here come the curious 26 MHz and 52 MHz into the game. Its related
-> > to MMC only.
-> >
-> > > while SD has:
-> > >
-> > > - SDR12
-> > > - SDR25
-> > > - SDR50
-> > > - SDR104
-> > > - DDR50
-> > >
-> > > So my guess is that MMC_MODE_HS maps to SDR25 for SD-only,
-> > > and MMC_MODE_HS_52MHz maps to SDR50 for SD and MMC.
-> > >
-> > > (Apparently mmc_change_freq always sets MMC_MODE_HS, it is
-> > > meaningless for MMC.)
-> > >
-> > > Thus, mci_startup_sd() should do:
-> > > 	if (mci->card_caps & MMC_MODE_HS)
-> > > 		mci_set_clock(mci, 25000000);
-> > > 	else
-> > > 		mci_set_clock(mci, 12500000);
-> >
-> > As far as I understand the spec, there is a max. speed field in the CSD
-> > which tells us the regular max. speed of this card. And the fields from
-> > the CSR can overwrite the CSD settings. So, a card which reports 25 MHz
-> > in the CSD can still enable 50 MHz (SDR50) in the CSR and the SDHC then
-> > can use 50 MHz for the clock. But maybe I'm wrong here.
->
-> What I wrote is not even correct ;-/
->
-> SD has legacy Default Mode and legacy High Speed mode,
-> and "Ultra High Speed" modes.  SDR12, SDR25, SDR50, SDR104 and DDR50
-> are all UHS modes.  And Default Mode and SDR12 support up to 12.5MB/s,
-> but the bus clock is up to 25MHz (4 bit parallel).
-> So the code in mci_startup_sd() is correct as is.
+On Thu, Aug 30, 2012 at 03:00:15PM +0100, Renaud Barbier wrote:
+> In order to use the IMX i2c driver on the mpc85xx SOC, the file
+> mach/clocks.h is renamed mach/clock.h. Files using this header are updated
+> accordingly. The file mach/generic.h is also added to accommodate the driver.
+> 
+> Finally, there is a clean up of a line too long.
 
-Now I found the Abbreviations in the spec:
+Please drop this. If you are really interested in the line wrap, you can
+send a separate patch, but having this in an unrelated patch is not
+good.
 
-UHS    Ultra High Speed
-SDR12  One of UHS modes with single data rate. Up to 12.5MB/sec at 25MHz
-SDR25  One of UHS modes with single data rate. Up to 25MB/sec at 50MHz
-SDR50  One of UHS modes with single data rate. Up to 50MB/sec at 100MHz
-SDR104 One of UHS modes with single data rate. Up to 104MB/sec at 208MHz
 
-So they mean the transfer capacity in "bytes per second" and not the clock 
-speed with their SDR<number>. Thanks for this hint.
+>  	return 0;
+>  }
+>  
+> +
+> +#define cpu_is_mx1()	(0)
 
-Reading further discovers:
+Rather than adding a cpu_is_mx1() for ppc you can simply drop the code
+in the i2c driver. i.MX1 is quite old, noone uses i2c on i.MX1 and it's
+unlikely that someone ever will.
 
- * all these UHS modes are _not_ valid for SDSC type of SD cards (up to 2 GiB
-   capacity)
-
-This information should help to get the code right.
-
-> Regarding CSD, my understanding is that TRAN_SPEED only
-> applies to legacy Default Mode.  If the card supports HS mode
-> or UHS modes then it must be able to use 50MHz clock.
-
-Ack.
-
-Regards,
-Juergen
+Sascha
 
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
