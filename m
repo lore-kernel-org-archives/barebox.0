@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og116.obsmtp.com ([64.18.0.147])
+Received: from exprod5og108.obsmtp.com ([64.18.0.186])
  by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T7Rvt-0005Aq-P2
- for barebox@lists.infradead.org; Fri, 31 Aug 2012 14:10:50 +0000
+ id 1T7Rvs-0005B9-2w
+ for barebox@lists.infradead.org; Fri, 31 Aug 2012 14:10:48 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Fri, 31 Aug 2012 15:10:30 +0100
-Message-Id: <1346422235-3949-2-git-send-email-renaud.barbier@ge.com>
+Date: Fri, 31 Aug 2012 15:10:32 +0100
+Message-Id: <1346422235-3949-4-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1346335217-9686-1-git-send-email-renaud.barbier@ge.com>
 References: <1346335217-9686-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,46 +21,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] mpc85xx: i2c frequency
+Subject: [PATCH 3/6] mpc85xx: header update
 To: barebox@lists.infradead.org
 
-A function that returns the system bus frequency used to compute the i2c bus
-frequency is added for future use.
+In order to use the IMX i2c driver on the mpc85xx SOC, the file mach/clocks.h
+is renamed mach/clock.h. Files using this header are updated accordingly.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- arch/ppc/mach-mpc85xx/include/mach/clocks.h |    1 +
- arch/ppc/mach-mpc85xx/speed.c               |    9 +++++++++
- 2 files changed, 10 insertions(+), 0 deletions(-)
+ arch/ppc/boards/freescale-p2020rdb/p2020rdb.c      |    2 +-
+ .../include/mach/{clocks.h => clock.h}             |    0
+ arch/ppc/mach-mpc85xx/speed.c                      |    2 +-
+ arch/ppc/mach-mpc85xx/time.c                       |    2 +-
+ 4 files changed, 3 insertions(+), 3 deletions(-)
+ rename arch/ppc/mach-mpc85xx/include/mach/{clocks.h => clock.h} (100%)
 
-diff --git a/arch/ppc/mach-mpc85xx/include/mach/clocks.h b/arch/ppc/mach-mpc85xx/include/mach/clocks.h
-index 2ab367b..e20d685 100644
---- a/arch/ppc/mach-mpc85xx/include/mach/clocks.h
-+++ b/arch/ppc/mach-mpc85xx/include/mach/clocks.h
-@@ -12,5 +12,6 @@ struct sys_info {
+diff --git a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+index 734fef9..23d752d 100644
+--- a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
++++ b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+@@ -34,7 +34,7 @@
+ #include <mach/mpc85xx.h>
+ #include <mach/mmu.h>
+ #include <mach/immap_85xx.h>
+-#include <mach/clocks.h>
++#include <mach/clock.h>
+ #include <mach/gianfar.h>
+ #include <mach/early_udelay.h>
  
- unsigned long fsl_get_bus_freq(ulong dummy);
- unsigned long fsl_get_timebase_clock(void);
-+unsigned long fsl_get_i2c_freq(void);
- void fsl_get_sys_info(struct sys_info *sysInfo);
- #endif /* __ASM_ARCH_CLOCKS_H */
+diff --git a/arch/ppc/mach-mpc85xx/include/mach/clocks.h b/arch/ppc/mach-mpc85xx/include/mach/clock.h
+similarity index 100%
+rename from arch/ppc/mach-mpc85xx/include/mach/clocks.h
+rename to arch/ppc/mach-mpc85xx/include/mach/clock.h
 diff --git a/arch/ppc/mach-mpc85xx/speed.c b/arch/ppc/mach-mpc85xx/speed.c
-index 40d3664..fff2d22 100644
+index fff2d22..6778d57 100644
 --- a/arch/ppc/mach-mpc85xx/speed.c
 +++ b/arch/ppc/mach-mpc85xx/speed.c
-@@ -102,3 +102,12 @@ unsigned long fsl_get_timebase_clock(void)
+@@ -30,7 +30,7 @@
  
- 	return (sysinfo.freqSystemBus + 4UL)/8UL;
- }
-+
-+unsigned long fsl_get_i2c_freq(void)
-+{
-+	struct sys_info sysinfo;
-+
-+	fsl_get_sys_info(&sysinfo);
-+
-+	return sysinfo.freqSystemBus / 2;
-+}
+ #include <common.h>
+ #include <asm/processor.h>
+-#include <mach/clocks.h>
++#include <mach/clock.h>
+ #include <mach/immap_85xx.h>
+ #include <mach/mpc85xx.h>
+ 
+diff --git a/arch/ppc/mach-mpc85xx/time.c b/arch/ppc/mach-mpc85xx/time.c
+index 408a28a..c50591c 100644
+--- a/arch/ppc/mach-mpc85xx/time.c
++++ b/arch/ppc/mach-mpc85xx/time.c
+@@ -25,7 +25,7 @@
+ #include <common.h>
+ #include <clock.h>
+ #include <init.h>
+-#include <mach/clocks.h>
++#include <mach/clock.h>
+ 
+ uint64_t ppc_clocksource_read(void)
+ {
 -- 
 1.7.1
 
