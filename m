@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T7LlE-0005Xt-Q0
- for barebox@lists.infradead.org; Fri, 31 Aug 2012 07:35:25 +0000
-Date: Fri, 31 Aug 2012 09:35:23 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120831073523.GO26594@pengutronix.de>
-References: <503C67F9.7090703@calao-systems.com>
- <20120829071210.GT26594@pengutronix.de>
- <503F10DE.7020500@calao-systems.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <503F10DE.7020500@calao-systems.com>
+Received: from 3.mo4.mail-out.ovh.net ([46.105.57.129]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1T7LtH-0005qT-Lo
+ for barebox@lists.infradead.org; Fri, 31 Aug 2012 07:43:44 +0000
+Received: from mail247.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id CAF8210583CF
+ for <barebox@lists.infradead.org>; Fri, 31 Aug 2012 09:48:43 +0200 (CEST)
+Date: Fri, 31 Aug 2012 09:43:30 +0200
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20120831094330.16a0ad99@eb-e6520>
+In-Reply-To: <20120831073306.GM26594@pengutronix.de>
+References: <1346329850-3866-1-git-send-email-s.trumtrar@pengutronix.de>
+ <20120831073306.GM26594@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,83 +22,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] NAND Flash SMC timings update (nwe_pulse) for calao
- board based on AT91SAM9G20 SoC
-To: gregory hermant <gregory.hermant@calao-systems.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/3] ARM i.MX6: basic USB H1 support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-On Thu, Aug 30, 2012 at 09:06:06AM +0200, gregory hermant wrote:
-> Hello sascha,
-> It's just a typo.
-> gregory
+Le Fri, 31 Aug 2012 09:33:06 +0200,
+Sascha Hauer <s.hauer@pengutronix.de> a =E9crit :
+> I also applied 3/3 from which I know that it currently does not help
+> Eric. It's a step in the right direction and I hope that there might
+> be something else wrong on his hardware.
+> =
 
-Applied now, thanks
+> BTW, Eric, does the hub work under Linux? It also should not work there
+> when Linux also uses 100ms.
+> =
 
-Sascha
+yes it works fine under Linux
 
-> 
-> Sascha Hauer wrote:
-> > On Tue, Aug 28, 2012 at 08:40:57AM +0200, gregory hermant wrote:
-> >> Signed-off-by: Gregory Hermant <gregory.hermant@calao-systems.com>
-> > 
-> > The commmit log is a bit sparse. It would be interesting if this is an
-> > enhancement, fixes a problem, is needed on newer board revisions...
-> > 
-> > Sascha
-> > 
-> >> ---
-> >>  arch/arm/boards/tny-a926x/init.c |    2 +-
-> >>  arch/arm/boards/usb-a926x/init.c |    2 +-
-> >>  2 files changed, 2 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/arch/arm/boards/tny-a926x/init.c b/arch/arm/boards/tny-a926x/init.c
-> >> index d58132a..5538a44 100644
-> >> --- a/arch/arm/boards/tny-a926x/init.c
-> >> +++ b/arch/arm/boards/tny-a926x/init.c
-> >> @@ -89,7 +89,7 @@ static struct sam9_smc_config tny_a9g20_nand_smc_config = {
-> >>  	.ncs_read_pulse		= 4,
-> >>  	.nrd_pulse		= 4,
-> >>  	.ncs_write_pulse	= 4,
-> >> -	.nwe_pulse		= 2,
-> >> +	.nwe_pulse		= 4,
-> >>  
-> >>  	.read_cycle		= 7,
-> >>  	.write_cycle		= 7,
-> >> diff --git a/arch/arm/boards/usb-a926x/init.c b/arch/arm/boards/usb-a926x/init.c
-> >> index 7e63876..00a215d 100644
-> >> --- a/arch/arm/boards/usb-a926x/init.c
-> >> +++ b/arch/arm/boards/usb-a926x/init.c
-> >> @@ -90,7 +90,7 @@ static struct sam9_smc_config usb_a9g20_nand_smc_config = {
-> >>  	.ncs_read_pulse		= 4,
-> >>  	.nrd_pulse		= 4,
-> >>  	.ncs_write_pulse	= 4,
-> >> -	.nwe_pulse		= 2,
-> >> +	.nwe_pulse		= 4,
-> >>  
-> >>  	.read_cycle		= 7,
-> >>  	.write_cycle		= 7,
-> >> -- 
-> >> 1.5.6.3
-> >>
-> >>
-> >>
-> >> _______________________________________________
-> >> barebox mailing list
-> >> barebox@lists.infradead.org
-> >> http://lists.infradead.org/mailman/listinfo/barebox
-> >>
-> > 
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Eric
 
 _______________________________________________
 barebox mailing list
