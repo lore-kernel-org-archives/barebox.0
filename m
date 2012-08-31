@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T7LjN-0005Hj-6O
- for barebox@lists.infradead.org; Fri, 31 Aug 2012 07:33:29 +0000
-Date: Fri, 31 Aug 2012 09:33:27 +0200
+ id 1T7LlE-0005Xt-Q0
+ for barebox@lists.infradead.org; Fri, 31 Aug 2012 07:35:25 +0000
+Date: Fri, 31 Aug 2012 09:35:23 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120831073327.GN26594@pengutronix.de>
-References: <1346331518-28175-1-git-send-email-s.trumtrar@pengutronix.de>
+Message-ID: <20120831073523.GO26594@pengutronix.de>
+References: <503C67F9.7090703@calao-systems.com>
+ <20120829071210.GT26594@pengutronix.de>
+ <503F10DE.7020500@calao-systems.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1346331518-28175-1-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <503F10DE.7020500@calao-systems.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,21 +24,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] ARM i.MX6: Add sabrelite features
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH] NAND Flash SMC timings update (nwe_pulse) for calao
+ board based on AT91SAM9G20 SoC
+To: gregory hermant <gregory.hermant@calao-systems.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Aug 30, 2012 at 02:58:36PM +0200, Steffen Trumtrar wrote:
-> This adds usb h1 and the i2c iomux to the sabrelite board.
-> 
-> Steffen Trumtrar (2):
->   ARM i.MX6: Add usb-ehci to sabrelite
->   ARM i.MX6: Add i2c iomux to sabrelite
+On Thu, Aug 30, 2012 at 09:06:06AM +0200, gregory hermant wrote:
+> Hello sascha,
+> It's just a typo.
+> gregory
 
-Applied, thanks
+Applied now, thanks
 
 Sascha
 
+> 
+> Sascha Hauer wrote:
+> > On Tue, Aug 28, 2012 at 08:40:57AM +0200, gregory hermant wrote:
+> >> Signed-off-by: Gregory Hermant <gregory.hermant@calao-systems.com>
+> > 
+> > The commmit log is a bit sparse. It would be interesting if this is an
+> > enhancement, fixes a problem, is needed on newer board revisions...
+> > 
+> > Sascha
+> > 
+> >> ---
+> >>  arch/arm/boards/tny-a926x/init.c |    2 +-
+> >>  arch/arm/boards/usb-a926x/init.c |    2 +-
+> >>  2 files changed, 2 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/arch/arm/boards/tny-a926x/init.c b/arch/arm/boards/tny-a926x/init.c
+> >> index d58132a..5538a44 100644
+> >> --- a/arch/arm/boards/tny-a926x/init.c
+> >> +++ b/arch/arm/boards/tny-a926x/init.c
+> >> @@ -89,7 +89,7 @@ static struct sam9_smc_config tny_a9g20_nand_smc_config = {
+> >>  	.ncs_read_pulse		= 4,
+> >>  	.nrd_pulse		= 4,
+> >>  	.ncs_write_pulse	= 4,
+> >> -	.nwe_pulse		= 2,
+> >> +	.nwe_pulse		= 4,
+> >>  
+> >>  	.read_cycle		= 7,
+> >>  	.write_cycle		= 7,
+> >> diff --git a/arch/arm/boards/usb-a926x/init.c b/arch/arm/boards/usb-a926x/init.c
+> >> index 7e63876..00a215d 100644
+> >> --- a/arch/arm/boards/usb-a926x/init.c
+> >> +++ b/arch/arm/boards/usb-a926x/init.c
+> >> @@ -90,7 +90,7 @@ static struct sam9_smc_config usb_a9g20_nand_smc_config = {
+> >>  	.ncs_read_pulse		= 4,
+> >>  	.nrd_pulse		= 4,
+> >>  	.ncs_write_pulse	= 4,
+> >> -	.nwe_pulse		= 2,
+> >> +	.nwe_pulse		= 4,
+> >>  
+> >>  	.read_cycle		= 7,
+> >>  	.write_cycle		= 7,
+> >> -- 
+> >> 1.5.6.3
+> >>
+> >>
+> >>
+> >> _______________________________________________
+> >> barebox mailing list
+> >> barebox@lists.infradead.org
+> >> http://lists.infradead.org/mailman/listinfo/barebox
+> >>
+> > 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
