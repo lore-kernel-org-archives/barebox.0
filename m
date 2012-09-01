@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T7mwy-0006QL-38
- for barebox@lists.infradead.org; Sat, 01 Sep 2012 12:37:23 +0000
+ id 1T7mwy-0006QP-Dw
+ for barebox@lists.infradead.org; Sat, 01 Sep 2012 12:37:24 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 8B773DC7054
- for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 14:42:32 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id F06B8DC7050
+ for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 14:42:33 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat,  1 Sep 2012 14:37:21 +0200
-Message-Id: <1346503053-21862-6-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat,  1 Sep 2012 14:37:24 +0200
+Message-Id: <1346503053-21862-9-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346503053-21862-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120901123511.GA19233@game.jcrosoft.org>
  <1346503053-21862-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,49 +26,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/18] fs: introduce get_mounted_path to get the path where a
- file is mounted
+Subject: [PATCH 09/18] test: add -L support to test if it's a symbolic link
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- fs/fs.c      |    9 +++++++++
- include/fs.h |    2 ++
- 2 files changed, 11 insertions(+)
+ commands/test.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 6da2ef8..0f49993 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -240,6 +240,15 @@ static struct fs_device_d *get_fsdevice_by_path(const char *path)
- 	return fs_dev_root;
- }
+diff --git a/commands/test.c b/commands/test.c
+index 9ffa892..56e8c52 100644
+--- a/commands/test.c
++++ b/commands/test.c
+@@ -44,6 +44,7 @@ typedef enum {
+ 	OPT_FILE,
+ 	OPT_EXISTS,
+ 	OPT_MAX,
++	OPT_SYMBOLIC_LINK,
+ } test_opts;
  
-+char *get_mounted_path(const char *path)
-+{
-+	struct fs_device_d *fdev;
-+
-+	fdev = get_fsdevice_by_path(path);
-+
-+	return fdev->path;
-+}
-+
- static FILE files[MAX_FILES];
+ static char *test_options[] = {
+@@ -62,6 +63,7 @@ static char *test_options[] = {
+ 	[OPT_FILE]			= "-f",
+ 	[OPT_DIRECTORY]			= "-d",
+ 	[OPT_EXISTS]			= "-e",
++	[OPT_SYMBOLIC_LINK]		= "-L",
+ };
  
- static FILE *get_file(void)
-diff --git a/include/fs.h b/include/fs.h
-index ae6c464..3d5714c 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -173,6 +173,8 @@ void *read_file(const char *filename, size_t *size);
- char *normalise_path(const char *path);
- char *normalise_link(const char *pathname, const char* symlink);
+ static int parse_opt(const char *opt)
+@@ -140,9 +142,10 @@ static int do_test(int argc, char *argv[])
+ 		case OPT_FILE:
+ 		case OPT_DIRECTORY:
+ 		case OPT_EXISTS:
++		case OPT_SYMBOLIC_LINK:
+ 			adv = 2;
+ 			if (ap[1] && *ap[1] != ']' && strlen(ap[1])) {
+-				expr = stat(ap[1], &statbuf);
++				expr = (opt == OPT_SYMBOLIC_LINK ? lstat : stat)(ap[1], &statbuf);
+ 				if (expr < 0) {
+ 					expr = 0;
+ 					break;
+@@ -160,6 +163,10 @@ static int do_test(int argc, char *argv[])
+ 					expr = 1;
+ 					break;
+ 				}
++				if (opt == OPT_SYMBOLIC_LINK && S_ISLNK(statbuf.st_mode)) {
++					expr = 1;
++					break;
++				}
+ 			}
+ 			break;
  
-+char *get_mounted_path(const char *path);
-+
- /* Register a new filesystem driver */
- int register_fs_driver(struct fs_driver_d *fsdrv);
+@@ -224,7 +231,7 @@ static const char *test_aliases[] = { "[", NULL};
  
+ static const __maybe_unused char cmd_test_help[] =
+ "Usage: test [OPTIONS]\n"
+-"options: !, =, !=, -eq, -ne, -ge, -gt, -le, -lt, -o, -a, -z, -n, -d, -e, -f\n"
++"options: !, =, !=, -eq, -ne, -ge, -gt, -le, -lt, -o, -a, -z, -n, -d, -e, -f, -L\n"
+ "see 'man test' on your PC for more information.\n";
+ 
+ static const __maybe_unused char cmd_test_usage[] = "minimal test like /bin/sh";
 -- 
 1.7.10.4
 
