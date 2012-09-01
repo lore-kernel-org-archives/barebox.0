@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mo2.mail-out.ovh.net ([178.32.228.2])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T7mvy-0006G6-Hj
+ id 1T7mvy-0006G5-Hk
  for barebox@lists.infradead.org; Sat, 01 Sep 2012 12:36:19 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id D952EDC7045
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 9CF66DC704B
  for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 14:41:28 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat,  1 Sep 2012 14:36:30 +0200
-Message-Id: <1346502990-21603-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat,  1 Sep 2012 14:36:29 +0200
+Message-Id: <1346502990-21603-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346502990-21603-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120901102248.GJ18708@game.jcrosoft.org>
  <1346502990-21603-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,171 +25,184 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] amba-pl011: add st specific init
+Subject: [PATCH 2/3] amba-pl011: switch to amba bus
 To: barebox@lists.infradead.org
 
-This is need on the new IP for ux500
+switch as the same time the nomadik and versatile arch that use the driver.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/serial/amba-pl011.c |   40 ++++++++++++++++++++++++++++++++++++++--
- include/linux/amba/serial.h |   29 +++++++++++++++++++++++++++++
- 2 files changed, 67 insertions(+), 2 deletions(-)
+ arch/arm/mach-nomadik/8815.c   |    9 +++++----
+ arch/arm/mach-versatile/core.c |    7 +++++--
+ drivers/serial/amba-pl011.c    |   34 ++++++++++++++++++++++++----------
+ 3 files changed, 34 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/serial/amba-pl011.c b/drivers/serial/amba-pl011.c
-index 77f8c8a..b62dc9f 100644
---- a/drivers/serial/amba-pl011.c
-+++ b/drivers/serial/amba-pl011.c
-@@ -45,6 +45,23 @@ struct amba_uart_port {
- 	struct console_device	uart;		/* uart */
- 	struct clk		*clk;		/* uart clock */
- 	u32			uartclk;
-+	struct vendor_data	*vendor;
-+};
-+
-+/* There is by now at least one vendor with differing details, so handle it */
-+struct vendor_data {
-+	unsigned int		lcrh_tx;
-+	unsigned int		lcrh_rx;
-+};
-+
-+static struct vendor_data vendor_arm = {
-+	.lcrh_tx		= UART011_LCRH,
-+	.lcrh_rx		= UART011_LCRH,
-+};
-+
-+static struct vendor_data vendor_st = {
-+	.lcrh_tx		= ST_UART011_LCRH_TX,
-+	.lcrh_rx		= ST_UART011_LCRH_RX,
+diff --git a/arch/arm/mach-nomadik/8815.c b/arch/arm/mach-nomadik/8815.c
+index e385598..aecd9e0 100644
+--- a/arch/arm/mach-nomadik/8815.c
++++ b/arch/arm/mach-nomadik/8815.c
+@@ -25,6 +25,7 @@
+ #include <mach/hardware.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
++#include <linux/amba/bus.h>
+ 
+ #include "clock.h"
+ 
+@@ -32,12 +33,15 @@ static struct clk st8815_clk_48 = {
+        .rate = 48 * 1000 * 1000,
  };
  
- static inline struct amba_uart_port *
-@@ -117,6 +134,23 @@ static int pl011_tstc(struct console_device *cdev)
- 	return !(readl(uart->base + UART01x_FR) & UART01x_FR_RXFE);
++static struct clk st8815_dummy;
++
+ void st8815_add_device_sdram(u32 size)
+ {
+ 	arm_add_mem_device("ram0", 0x00000000, size);
  }
  
-+static void pl011_rlcr(struct amba_uart_port *uart, u32 lcr)
-+{
-+	struct vendor_data	*vendor = uart->vendor;
+ static struct clk_lookup clocks_lookups[] = {
++	CLKDEV_CON_ID("apb_pclk", &st8815_dummy),
+ 	CLKDEV_DEV_ID("uart-pl0110", &st8815_clk_48),
+ 	CLKDEV_DEV_ID("uart-pl0111", &st8815_clk_48),
+ };
+@@ -53,7 +57,6 @@ postcore_initcall(st8815_clkdev_init);
+ void st8815_register_uart(unsigned id)
+ {
+ 	resource_size_t start;
+-	struct device_d *dev;
+ 
+ 	switch (id) {
+ 	case 0:
+@@ -63,7 +66,5 @@ void st8815_register_uart(unsigned id)
+ 		start = NOMADIK_UART1_BASE;
+ 		break;
+ 	}
+-	dev = add_generic_device("uart-pl011", id, NULL, start, 4096,
+-			   IORESOURCE_MEM, NULL);
+-	nmdk_clk_create(&st8815_clk_48, dev_name(dev));
++	amba_apb_device_add(NULL, "uart-pl011", id, start, 4096, NULL, 0);
+ }
+diff --git a/arch/arm/mach-versatile/core.c b/arch/arm/mach-versatile/core.c
+index bdf48f9..86cc755 100644
+--- a/arch/arm/mach-versatile/core.c
++++ b/arch/arm/mach-versatile/core.c
+@@ -34,6 +34,7 @@
+ #include <linux/clkdev.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
++#include <linux/amba/bus.h>
+ 
+ #include <io.h>
+ #include <asm/hardware/arm_timer.h>
+@@ -51,6 +52,8 @@ struct clk {
+ 	unsigned long rate;
+ };
+ 
++static struct clk ref_clk_dummy;
 +
-+	writew(lcr, uart->base + vendor->lcrh_rx);
-+	if (vendor->lcrh_tx != vendor->lcrh_rx) {
-+		int i;
-+		/*
-+		 * Wait 10 PCLKs before writing LCRH_TX register,
-+		 * to get this delay write read only register 10 times
-+		 */
-+		for (i = 0; i < 10; ++i)
-+			writew(0xff, uart->base + UART011_MIS);
-+		writew(lcr, uart->base +  vendor->lcrh_tx);
-+	}
-+}
-+
+ static struct clk ref_clk_24 = {
+ 	.rate = 24000000,
+ };
+@@ -145,6 +148,7 @@ static int vpb_clocksource_init(void)
+ core_initcall(vpb_clocksource_init);
+ 
+ static struct clk_lookup clocks_lookups[] = {
++	CLKDEV_CON_ID("apb_pclk", &ref_clk_dummy),
+ 	CLKDEV_DEV_ID("uart-pl0110", &ref_clk_24),
+ 	CLKDEV_DEV_ID("uart-pl0111", &ref_clk_24),
+ 	CLKDEV_DEV_ID("uart-pl0112", &ref_clk_24),
+@@ -179,8 +183,7 @@ void versatile_register_uart(unsigned id)
+ 	default:
+ 		return;
+ 	}
+-	add_generic_device("uart-pl011", id, NULL, start, 4096,
+-			   IORESOURCE_MEM, NULL);
++	amba_apb_device_add(NULL, "uart-pl011", id, start, 4096, NULL, 0);
+ }
+ 
+ void __noreturn reset_cpu (unsigned long ignored)
+diff --git a/drivers/serial/amba-pl011.c b/drivers/serial/amba-pl011.c
+index f8c55c4..77f8c8a 100644
+--- a/drivers/serial/amba-pl011.c
++++ b/drivers/serial/amba-pl011.c
+@@ -35,6 +35,7 @@
+ #include <linux/amba/serial.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
++#include <linux/amba/bus.h>
+ 
+ /*
+  * We wrap our port structure around the generic console_device.
+@@ -118,11 +119,8 @@ static int pl011_tstc(struct console_device *cdev)
+ 
  int pl011_init_port (struct console_device *cdev)
  {
+-	struct device_d *dev = cdev->dev;
  	struct amba_uart_port *uart = to_amba_uart_port(cdev);
-@@ -140,8 +174,7 @@ int pl011_init_port (struct console_device *cdev)
- 	/*
- 	 ** Set the UART to be 8 bits, 1 stop bit, no parity, fifo enabled.
- 	 */
--	writel((UART01x_LCRH_WLEN_8 | UART01x_LCRH_FEN),
--	       uart->base + UART011_LCRH);
-+	pl011_rlcr(uart, UART01x_LCRH_WLEN_8 | UART01x_LCRH_FEN);
  
+-	uart->base = dev_request_mem_region(dev, 0);
+-
  	/*
- 	 ** Finally, enable the UART
-@@ -160,6 +193,7 @@ static int pl011_probe(struct amba_device *dev, const struct amba_id *id)
+ 	 ** First, disable everything.
+ 	 */
+@@ -154,19 +152,20 @@ int pl011_init_port (struct console_device *cdev)
+ 	return 0;
+ }
+ 
+-static int pl011_probe(struct device_d *dev)
++static int pl011_probe(struct amba_device *dev, const struct amba_id *id)
+ {
+ 	struct amba_uart_port *uart;
+ 	struct console_device *cdev;
+ 
  	uart = xzalloc(sizeof(struct amba_uart_port));
- 	uart->clk = clk_get(&dev->dev, NULL);
- 	uart->base = amba_get_mem_region(dev);
-+	uart->vendor = (void*)id->data;
+-	uart->clk = clk_get(dev, NULL);
++	uart->clk = clk_get(&dev->dev, NULL);
++	uart->base = amba_get_mem_region(dev);
  
  	if (IS_ERR(uart->clk))
  		return PTR_ERR(uart->clk);
-@@ -185,10 +219,12 @@ static struct amba_id pl011_ids[] = {
- 	{
- 		.id	= 0x00041011,
- 		.mask	= 0x000fffff,
-+		.data	= &vendor_arm,
- 	},
- 	{
- 		.id	= 0x00380802,
- 		.mask	= 0x00ffffff,
-+		.data	= &vendor_st,
- 	},
- 	{ 0, 0 },
- };
-diff --git a/include/linux/amba/serial.h b/include/linux/amba/serial.h
-index f4d7bf8..6670f1f 100644
---- a/include/linux/amba/serial.h
-+++ b/include/linux/amba/serial.h
-@@ -32,16 +32,20 @@
- #define UART01x_RSR		0x04	/* Receive status register (Read). */
- #define UART01x_ECR		0x04	/* Error clear register (Write). */
- #define UART010_LCRH		0x08	/* Line control register, high byte. */
-+#define ST_UART011_DMAWM	0x08    /* DMA watermark configure register. */
- #define UART010_LCRM		0x0C	/* Line control register, middle byte. */
-+#define ST_UART011_TIMEOUT	0x0C    /* Timeout period register. */
- #define UART010_LCRL		0x10	/* Line control register, low byte. */
- #define UART010_CR		0x14	/* Control register. */
- #define UART01x_FR		0x18	/* Flag register (Read only). */
- #define UART010_IIR		0x1C	/* Interrupt indentification register (Read). */
- #define UART010_ICR		0x1C	/* Interrupt clear register (Write). */
-+#define ST_UART011_LCRH_RX	0x1C    /* Rx line control register. */
- #define UART01x_ILPR		0x20	/* IrDA low power counter register. */
- #define UART011_IBRD		0x24	/* Integer baud rate divisor register. */
- #define UART011_FBRD		0x28	/* Fractional baud rate divisor register. */
- #define UART011_LCRH		0x2c	/* Line control register. */
-+#define ST_UART011_LCRH_TX	0x2c    /* Tx Line control register. */
- #define UART011_CR		0x30	/* Control register. */
- #define UART011_IFLS		0x34	/* Interrupt fifo level select. */
- #define UART011_IMSC		0x38	/* Interrupt mask. */
-@@ -49,6 +53,15 @@
- #define UART011_MIS		0x40	/* Masked interrupt status. */
- #define UART011_ICR		0x44	/* Interrupt clear register. */
- #define UART011_DMACR		0x48	/* DMA control register. */
-+#define ST_UART011_XFCR		0x50	/* XON/XOFF control register. */
-+#define ST_UART011_XON1		0x54	/* XON1 register. */
-+#define ST_UART011_XON2		0x58	/* XON2 register. */
-+#define ST_UART011_XOFF1	0x5C	/* XON1 register. */
-+#define ST_UART011_XOFF2	0x60	/* XON2 register. */
-+#define ST_UART011_ITCR		0x80	/* Integration test control register. */
-+#define ST_UART011_ITIP		0x84	/* Integration test input register. */
-+#define ST_UART011_ABCR		0x100	/* Autobaud control register. */
-+#define ST_UART011_ABIMSC	0x15C	/* Autobaud interrupt mask/clear register. */
  
- #define UART011_DR_OE		(1 << 11)
- #define UART011_DR_BE		(1 << 10)
-@@ -84,6 +97,7 @@
- #define UART010_CR_TIE		0x0020
- #define UART010_CR_RIE		0x0010
- #define UART010_CR_MSIE		0x0008
-+#define ST_UART011_CR_OVSFACT	0x0008	/* Oversampling factor */
- #define UART01x_CR_IIRLP	0x0004	/* SIR low power mode */
- #define UART01x_CR_SIREN	0x0002	/* SIR enable */
- #define UART01x_CR_UARTEN	0x0001	/* UART enable */
-@@ -99,6 +113,21 @@
- #define UART01x_LCRH_PEN	0x02
- #define UART01x_LCRH_BRK	0x01
+ 	cdev = &uart->uart;
+-	cdev->dev = dev;
++	cdev->dev = &dev->dev;
+ 	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
+ 	cdev->tstc = pl011_tstc;
+ 	cdev->putc = pl011_putc;
+@@ -182,14 +181,29 @@ static int pl011_probe(struct device_d *dev)
+ 	return 0;
+ }
  
-+#define ST_UART011_DMAWM_RX_1	(0 << 3)
-+#define ST_UART011_DMAWM_RX_2	(1 << 3)
-+#define ST_UART011_DMAWM_RX_4	(2 << 3)
-+#define ST_UART011_DMAWM_RX_8	(3 << 3)
-+#define ST_UART011_DMAWM_RX_16	(4 << 3)
-+#define ST_UART011_DMAWM_RX_32	(5 << 3)
-+#define ST_UART011_DMAWM_RX_48	(6 << 3)
-+#define ST_UART011_DMAWM_TX_1	0
-+#define ST_UART011_DMAWM_TX_2	1
-+#define ST_UART011_DMAWM_TX_4	2
-+#define ST_UART011_DMAWM_TX_8	3
-+#define ST_UART011_DMAWM_TX_16	4
-+#define ST_UART011_DMAWM_TX_32	5
-+#define ST_UART011_DMAWM_TX_48	6
+-static struct driver_d pl011_driver = {
+-	.name = "uart-pl011",
+-	.probe = pl011_probe,
++static struct amba_id pl011_ids[] = {
++	{
++		.id	= 0x00041011,
++		.mask	= 0x000fffff,
++	},
++	{
++		.id	= 0x00380802,
++		.mask	= 0x00ffffff,
++	},
++	{ 0, 0 },
++};
 +
- #define UART010_IIR_RTIS	0x08
- #define UART010_IIR_TIS		0x04
- #define UART010_IIR_RIS		0x02
++struct amba_driver pl011_driver = {
++	.drv = {
++		.name = "uart-pl011",
++	},
++	.probe		= pl011_probe,
++	.id_table	= pl011_ids,
+ };
+ 
+ static int pl011_init(void)
+ {
+-	register_driver(&pl011_driver);
++	amba_driver_register(&pl011_driver);
+ 	return 0;
+ }
+ 
 -- 
 1.7.10.4
 
