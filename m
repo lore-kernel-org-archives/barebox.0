@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T7mx1-0006RW-BD
- for barebox@lists.infradead.org; Sat, 01 Sep 2012 12:37:28 +0000
+ id 1T7mx2-0006SL-DT
+ for barebox@lists.infradead.org; Sat, 01 Sep 2012 12:37:29 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 07A02DC7059
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 9CE6FDC705C
  for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 14:42:35 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat,  1 Sep 2012 14:37:28 +0200
-Message-Id: <1346503053-21862-13-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat,  1 Sep 2012 14:37:30 +0200
+Message-Id: <1346503053-21862-15-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346503053-21862-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120901123511.GA19233@game.jcrosoft.org>
  <1346503053-21862-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,61 +26,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/18] dirname: add -V option to return only path related to
- the mountpoint
+Subject: [PATCH 15/18] envfs: introduce version major and minor
 To: barebox@lists.infradead.org
+
+they are store in the super block at byte 16th and 17th.
+
+set the verison at 0.1
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/dirname.c |   24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ common/environment.c |    2 ++
+ include/envfs.h      |    7 ++++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/commands/dirname.c b/commands/dirname.c
-index cf1d0a0..f34d88d 100644
---- a/commands/dirname.c
-+++ b/commands/dirname.c
-@@ -24,20 +24,38 @@
- #include <command.h>
- #include <libgen.h>
- #include <environment.h>
-+#include <fs.h>
-+#include <getopt.h>
+diff --git a/common/environment.c b/common/environment.c
+index 52ce0de..8efed97 100644
+--- a/common/environment.c
++++ b/common/environment.c
+@@ -125,6 +125,8 @@ int envfs_save(char *filename, char *dirname)
  
- static int do_dirname(int argc, char *argv[])
- {
--	if (argc != 3)
-+	int opt;
-+	int path_fs = 0;
-+	int len = 0;
+ 	super = (struct envfs_super *)buf;
+ 	super->magic = ENVFS_32(ENVFS_MAGIC);
++	super->major = ENVFS_MAJOR;
++	super->minor = ENVFS_MINOR;
+ 	super->size = ENVFS_32(size);
+ 
+ 	/* second pass: copy files to buffer */
+diff --git a/include/envfs.h b/include/envfs.h
+index ba976d6..c6df8c5 100644
+--- a/include/envfs.h
++++ b/include/envfs.h
+@@ -5,6 +5,9 @@
+ #include <asm/byteorder.h>
+ #endif
+ 
++#define ENVFS_MAJOR		0
++#define ENVFS_MINOR		1
 +
-+	while ((opt = getopt(argc, argv, "V")) > 0) {
-+		switch (opt) {
-+		case 'V':
-+			path_fs = 1;
-+			break;
-+		}
-+	}
-+
-+	if (argc < optind + 2)
- 		return COMMAND_ERROR_USAGE;
+ #define ENVFS_MAGIC		    0x798fba79	/* some random number */
+ #define ENVFS_INODE_MAGIC	0x67a8c78d
+ #define ENVFS_END_MAGIC		0x6a87d6cd
+@@ -29,8 +32,10 @@ struct envfs_super {
+ 	uint32_t priority;
+ 	uint32_t crc;			/* crc for the data */
+ 	uint32_t size;			/* size of data */
++	uint8_t major;			/* major */
++	uint8_t minor;			/* minor */
++	uint16_t future;		/* reserved for future use */
+ 	uint32_t flags;			/* feature flags */
+-	uint32_t future;		/* reserved for future use */
+ 	uint32_t sb_crc;		/* crc for the superblock */
+ };
  
--	setenv(argv[2], dirname(argv[1]));
-+	if (path_fs)
-+		len = strlen(get_mounted_path(argv[optind]));
-+
-+	setenv(argv[optind + 1], dirname(argv[optind]) + len);
- 
- 	return 0;
- }
- 
- BAREBOX_CMD_HELP_START(dirname)
--BAREBOX_CMD_HELP_USAGE("dirname NAME DIRNAME\n")
-+BAREBOX_CMD_HELP_USAGE("dirname [-V] NAME DIRNAME\n")
- BAREBOX_CMD_HELP_SHORT("strip last componext of NAME and store into $DIRNAME\n")
-+BAREBOX_CMD_HELP_SHORT("-V return the path relative to the mountpoint.\n")
- BAREBOX_CMD_HELP_END
- 
- BAREBOX_CMD_START(dirname)
 -- 
 1.7.10.4
 
