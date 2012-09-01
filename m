@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
+Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T7n4N-0007bu-0M
- for barebox@lists.infradead.org; Sat, 01 Sep 2012 12:45:00 +0000
+ id 1T7mx2-0006SJ-DU
+ for barebox@lists.infradead.org; Sat, 01 Sep 2012 12:37:32 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id A5400DC67E0
- for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 14:50:10 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 6FEDFDC7053
+ for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 14:42:36 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat,  1 Sep 2012 14:45:13 +0200
-Message-Id: <1346503513-23046-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1346503513-23046-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1346503513-23046-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat,  1 Sep 2012 14:37:32 +0200
+Message-Id: <1346503053-21862-17-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1346503053-21862-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20120901123511.GA19233@game.jcrosoft.org>
+ <1346503053-21862-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,106 +26,156 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] Atmel sam9x boards: enable the pbl
+Subject: [PATCH 17/18] envfs: add support of symlink
 To: barebox@lists.infradead.org
-
-so we are smaller than the 256KiB reserved for barebox
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/configs/at91sam9260ek_defconfig    |    1 +
- arch/arm/configs/at91sam9261ek_defconfig    |    1 +
- arch/arm/configs/at91sam9263ek_defconfig    |    1 +
- arch/arm/configs/at91sam9g10ek_defconfig    |    1 +
- arch/arm/configs/at91sam9g20ek_defconfig    |    1 +
- arch/arm/configs/at91sam9m10g45ek_defconfig |    1 +
- arch/arm/configs/at91sam9x5ek_defconfig     |    1 +
- 7 files changed, 7 insertions(+)
+ common/environment.c |  103 +++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 73 insertions(+), 30 deletions(-)
 
-diff --git a/arch/arm/configs/at91sam9260ek_defconfig b/arch/arm/configs/at91sam9260ek_defconfig
-index e6b5d1f..9466c07 100644
---- a/arch/arm/configs/at91sam9260ek_defconfig
-+++ b/arch/arm/configs/at91sam9260ek_defconfig
-@@ -2,6 +2,7 @@ CONFIG_ARCH_AT91SAM9260=y
- CONFIG_AEABI=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_PBL_IMAGE=y
- CONFIG_MMU=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
- CONFIG_EXPERIMENTAL=y
-diff --git a/arch/arm/configs/at91sam9261ek_defconfig b/arch/arm/configs/at91sam9261ek_defconfig
-index 137226f..0fd31d6 100644
---- a/arch/arm/configs/at91sam9261ek_defconfig
-+++ b/arch/arm/configs/at91sam9261ek_defconfig
-@@ -2,6 +2,7 @@ CONFIG_ARCH_AT91SAM9261=y
- CONFIG_AEABI=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_PBL_IMAGE=y
- CONFIG_MMU=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
- CONFIG_EXPERIMENTAL=y
-diff --git a/arch/arm/configs/at91sam9263ek_defconfig b/arch/arm/configs/at91sam9263ek_defconfig
-index 3b5c8b0..b91d2e2 100644
---- a/arch/arm/configs/at91sam9263ek_defconfig
-+++ b/arch/arm/configs/at91sam9263ek_defconfig
-@@ -1,6 +1,7 @@
- CONFIG_ARCH_AT91SAM9263=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_PBL_IMAGE=y
- CONFIG_MMU=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
- CONFIG_EXPERIMENTAL=y
-diff --git a/arch/arm/configs/at91sam9g10ek_defconfig b/arch/arm/configs/at91sam9g10ek_defconfig
-index dbae4bd..0cc37ac 100644
---- a/arch/arm/configs/at91sam9g10ek_defconfig
-+++ b/arch/arm/configs/at91sam9g10ek_defconfig
-@@ -2,6 +2,7 @@ CONFIG_ARCH_AT91SAM9G10=y
- CONFIG_AEABI=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_PBL_IMAGE=y
- CONFIG_MMU=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
- CONFIG_EXPERIMENTAL=y
-diff --git a/arch/arm/configs/at91sam9g20ek_defconfig b/arch/arm/configs/at91sam9g20ek_defconfig
-index 3ecba68..c1c1ff7 100644
---- a/arch/arm/configs/at91sam9g20ek_defconfig
-+++ b/arch/arm/configs/at91sam9g20ek_defconfig
-@@ -3,6 +3,7 @@ CONFIG_AT91_HAVE_2MMC=y
- CONFIG_AEABI=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_PBL_IMAGE=y
- CONFIG_MMU=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
- CONFIG_EXPERIMENTAL=y
-diff --git a/arch/arm/configs/at91sam9m10g45ek_defconfig b/arch/arm/configs/at91sam9m10g45ek_defconfig
-index e22f80a..1fa37d6 100644
---- a/arch/arm/configs/at91sam9m10g45ek_defconfig
-+++ b/arch/arm/configs/at91sam9m10g45ek_defconfig
-@@ -2,6 +2,7 @@ CONFIG_ARCH_AT91SAM9G45=y
- CONFIG_AEABI=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_PBL_IMAGE=y
- CONFIG_MMU=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
- CONFIG_MALLOC_TLSF=y
-diff --git a/arch/arm/configs/at91sam9x5ek_defconfig b/arch/arm/configs/at91sam9x5ek_defconfig
-index aee21fd..e67ebc9 100644
---- a/arch/arm/configs/at91sam9x5ek_defconfig
-+++ b/arch/arm/configs/at91sam9x5ek_defconfig
-@@ -2,6 +2,7 @@ CONFIG_ARCH_AT91SAM9X5=y
- CONFIG_AEABI=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_PBL_IMAGE=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
- CONFIG_EXPERIMENTAL=y
- CONFIG_MALLOC_TLSF=y
+diff --git a/common/environment.c b/common/environment.c
+index fc5c57e..ce46f4a 100644
+--- a/common/environment.c
++++ b/common/environment.c
+@@ -54,7 +54,20 @@ int file_size_action(const char *filename, struct stat *statbuf,
+ 	data->writep += sizeof(struct envfs_inode);
+ 	data->writep += PAD4(strlen(filename) + 1 - strlen(data->base));
+ 	data->writep += sizeof(struct envfs_inode_end);
+-	data->writep += PAD4(statbuf->st_size);
++	if (S_ISLNK(statbuf->st_mode)) {
++		char path[PATH_MAX];
++
++		memset(path, 0, PATH_MAX);
++
++		if (readlink(filename, path, PATH_MAX - 1) < 0) {
++			perror("read");
++			return 0;
++		}
++		data->writep += PAD4(strlen(path) + 1);
++	} else {
++		data->writep += PAD4(statbuf->st_size);
++	}
++
+ 	return 1;
+ }
+ 
+@@ -67,13 +80,9 @@ int file_save_action(const char *filename, struct stat *statbuf,
+ 	int fd;
+ 	int namelen = strlen(filename) + 1 - strlen(data->base);
+ 
+-	debug("handling file %s size %ld namelen %d\n", filename + strlen(data->base),
+-		statbuf->st_size, namelen);
+-
+ 	inode = (struct envfs_inode*)data->writep;
+ 	inode->magic = ENVFS_32(ENVFS_INODE_MAGIC);
+ 	inode->headerlen = ENVFS_32(PAD4(namelen + sizeof(struct envfs_inode_end)));
+-	inode->size = ENVFS_32(statbuf->st_size);
+ 	data->writep += sizeof(struct envfs_inode);
+ 
+ 	strcpy(data->writep, filename + strlen(data->base));
+@@ -83,19 +92,44 @@ int file_save_action(const char *filename, struct stat *statbuf,
+ 	inode_end->magic = ENVFS_32(ENVFS_INODE_END_MAGIC);
+ 	inode_end->mode = ENVFS_32(S_IRWXU | S_IRWXG | S_IRWXO);
+ 
+-	fd = open(filename, O_RDONLY);
+-	if (fd < 0) {
+-		printf("Open %s %s\n", filename, errno_str());
+-		goto out;
+-	}
++	if (S_ISLNK(statbuf->st_mode)) {
++		char path[PATH_MAX];
++		int len;
+ 
+-	if (read(fd, data->writep, statbuf->st_size) < statbuf->st_size) {
+-		perror("read");
+-		goto out;
+-	}
+-	close(fd);
++		memset(path, 0, PATH_MAX);
++
++		if (readlink(filename, path, PATH_MAX - 1) < 0) {
++			perror("read");
++			goto out;
++		}
++		len = strlen(path) + 1;
++
++		inode_end->mode |= ENVFS_32(S_IFLNK);
+ 
+-	data->writep += PAD4(statbuf->st_size);
++		memcpy(data->writep, path, len);
++		inode->size = ENVFS_32(len);
++		data->writep += PAD4(len);
++		debug("handling symlink %s size %ld namelen %d headerlen %d\n", filename + strlen(data->base),
++			len, namelen, ENVFS_32(inode->headerlen));
++	} else {
++		debug("handling file %s size %ld namelen %d headerlen %d\n", filename + strlen(data->base),
++			statbuf->st_size, namelen, ENVFS_32(inode->headerlen));
++
++		inode->size = ENVFS_32(statbuf->st_size);
++		fd = open(filename, O_RDONLY);
++		if (fd < 0) {
++			printf("Open %s %s\n", filename, errno_str());
++			goto out;
++		}
++
++		if (read(fd, data->writep, statbuf->st_size) < statbuf->st_size) {
++			perror("read");
++			goto out;
++		}
++		close(fd);
++
++		data->writep += PAD4(statbuf->st_size);
++	}
+ 
+ out:
+ 	return 1;
+@@ -277,22 +311,31 @@ int envfs_load(char *filename, char *dir)
+ 			goto out;
+ 		}
+ 
+-		fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+-		free(str);
+-		if (fd < 0) {
+-			printf("Open %s\n", errno_str());
+-			ret = fd;
+-			goto out;
+-		}
+-
+-		ret = write(fd, buf, inode_size);
+-		if (ret < inode_size) {
+-			perror("write");
+-			ret = -errno;
++		if (S_ISLNK(ENVFS_32(inode_end->mode))) {
++			debug("symlink: %s -> %s\n", str, (char*)buf);
++			if (symlink((char*)buf, str) < 0) {
++				printf("symlink: %s -> %s :", str, (char*)buf);
++				perror("");
++			}
++			free(str);
++		} else {
++			fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
++			free(str);
++			if (fd < 0) {
++				printf("Open %s\n", errno_str());
++				ret = fd;
++				goto out;
++			}
++
++			ret = write(fd, buf, inode_size);
++			if (ret < inode_size) {
++				perror("write");
++				ret = -errno;
++				close(fd);
++				goto out;
++			}
+ 			close(fd);
+-			goto out;
+ 		}
+-		close(fd);
+ 
+ 		buf += PAD4(inode_size);
+ 		size -= headerlen_full + PAD4(inode_size) +
 -- 
 1.7.10.4
 
