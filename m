@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TBLNp-0002Ei-9k
- for barebox@lists.infradead.org; Tue, 11 Sep 2012 07:59:46 +0000
-Date: Tue, 11 Sep 2012 09:59:42 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120911075942.GL18243@pengutronix.de>
-References: <1347269467-20854-1-git-send-email-w.sang@pengutronix.de>
- <20120910093948.GZ28643@pengutronix.de>
+Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1T7jMJ-00065P-OG
+ for barebox@lists.infradead.org; Sat, 01 Sep 2012 08:47:17 +0000
+Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 6FBA5DC6AE3
+ for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 10:52:25 +0200 (CEST)
+Date: Sat, 1 Sep 2012 10:47:28 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120901084728.GH18708@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120910093948.GZ28643@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +20,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: mxs: add proper resource length
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org, Wolfram Sang <w.sang@pengutronix.de>
+Subject: [PATCH 0/7 v3] smsc911x: runtime configuration improvement
+To: barebox@lists.infradead.org
 
-On Mon, Sep 10, 2012 at 11:39:48AM +0200, Uwe Kleine-K=F6nig wrote:
-> On Mon, Sep 10, 2012 at 11:31:07AM +0200, Wolfram Sang wrote:
-> > For some reason, the mxs-boards missed some length paramters when adding
-> > devices. This made reading from ocotp crash in the current version.
-> > Provide missing lenghts, use a consistent format and fix the length for
-> s/lenghts/length/
+Hi,
 
-He meant the plural of 'length'
+	v3:
+	  update commnets
 
-Fixed 'paramters' instead ;)
+	v2:
+	  update 16/32bit callback
 
-Applied, thanks
+please pull
+The following changes since commit 3f96b4938c4046590be8a38fb114148c4bf1ca8e:
 
-Sascha
+  Merge tag 'bootm_fix' of git://git.jcrosoft.org/barebox (2012-08-13 20:37:53 +0200)
 
--- =
+are available in the git repository at:
 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+  git://git.jcrosoft.org/barebox.git tags/smc911x_improve
+
+for you to fetch changes up to f3cbf3104561580a2edc46aa6ad2c8167141709d:
+
+  smc911x: check if the device is ready before using it (2012-09-01 16:37:01 +0800)
+
+----------------------------------------------------------------
+smsc911x: runtime configuration improvement
+
+ This patch series allow to detect and configure the drivers at the runtime
+
+ - Check if the device is ready before using it
+ - Update chip detection (take from the kernel 3.5)
+ - improve detection handle to detect bus configuration and swap
+ - add support to pass the shift via platform data
+ - add 16bit bus width support
+ - introduce read/write ops
+ - move register define to smc911x.h
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (7):
+      smc911x: move register define to smc911x.h
+      smc911x: introduce read/write ops
+      smc911x: add 16bit bus width support
+      smc911x: add support to pass the shift via platform data
+      smc911x: improve detection handle
+      smc911x: update chip detection
+      smc911x: check if the device is ready before using it
+
+ arch/blackfin/boards/ipe337/ipe337.c |    7 +-
+ drivers/net/Kconfig                  |    6 -
+ drivers/net/smc911x.c                |  589 ++++++++++++++++++++++++++++++++-------------------------------------------------------------
+ drivers/net/smc911x.h                |  342 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/smc911x.h                    |   18 +++
+ 5 files changed, 565 insertions(+), 397 deletions(-)
+ create mode 100644 drivers/net/smc911x.h
+ create mode 100644 include/smc911x.h
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
