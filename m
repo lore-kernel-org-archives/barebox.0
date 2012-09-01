@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
+ helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T7n8M-0007nh-Lu
- for barebox@lists.infradead.org; Sat, 01 Sep 2012 12:49:07 +0000
+ id 1T7n4N-0007bs-0K
+ for barebox@lists.infradead.org; Sat, 01 Sep 2012 12:45:00 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id D8B17DC677D
- for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 14:54:19 +0200 (CEST)
-Date: Sat, 1 Sep 2012 14:49:22 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 76A6ADC67DB
+ for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 14:50:10 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120901124922.GC19233@game.jcrosoft.org>
-References: <20120824050332.GK6271@game.jcrosoft.org>
- <1345784816-31344-1-git-send-email-plagnioj@jcrosoft.com>
- <20120828084038.GD26594@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120828084038.GD26594@pengutronix.de>
+Date: Sat,  1 Sep 2012 14:45:12 +0200
+Message-Id: <1346503513-23046-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,65 +18,153 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] dhcp: add global var support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] Calao boards: enable the pbl
+To: barebox@lists.infradead.org
 
-On 10:40 Tue 28 Aug     , Sascha Hauer wrote:
-> On Fri, Aug 24, 2012 at 07:06:50AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > This way you can specify as previously set the dhcp parameter via global.dhcp.xxx
-> > and get the result via global.dhcp.xxx
-> > 
-> > This is need for the defaultenv-2 to add the bootp suppport.
-> > 
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  net/dhcp.c |  100 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 99 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/net/dhcp.c b/net/dhcp.c
-> > index 79efa3e..51c4283 100644
-> > --- a/net/dhcp.c
-> > +++ b/net/dhcp.c
-> > @@ -19,6 +19,8 @@
-> >  #include <magicvar.h>
-> >  #include <linux/err.h>
-> >  #include <getopt.h>
-> > +#include <globalvar.h>
-> > +#include <init.h>
-> >  
-> >  #define OPT_SIZE 312	/* Minimum DHCP Options size per RFC2131 - results in 576 byte pkt */
-> >  
-> > @@ -78,11 +80,39 @@ static IPaddr_t net_dhcp_server_ip;
-> >  static uint64_t dhcp_start;
-> >  static char dhcp_tftpname[256];
-> >  
-> > +static const char* dhcp_get_barebox_global(const char * var)
-> 
-> static const char *dhcp_get_barebox_global
-> 
-> > +{
-> > +	char * var_global = asprintf("global.dhcp.%s", var);
-> 
-> char *var_global =
-> 
-> Generally I don't think we should introduce a second set of variables.
-> Drop The other ones instead.
-I'm ok with it as I 'm going to switch all my board to the defaultenv-2
+so we are smaller than the 256KiB reserved for barebox
 
-but other people may not so the only to keep this feature on both env are
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/configs/qil_a9260_128mib_defconfig |    1 +
+ arch/arm/configs/qil_a9260_defconfig        |    1 +
+ arch/arm/configs/tny_a9260_defconfig        |    1 +
+ arch/arm/configs/tny_a9263_defconfig        |    1 +
+ arch/arm/configs/tny_a9g20_defconfig        |    1 +
+ arch/arm/configs/usb_a9260_defconfig        |    1 +
+ arch/arm/configs/usb_a9263_128mib_defconfig |    1 +
+ arch/arm/configs/usb_a9263_defconfig        |    1 +
+ arch/arm/configs/usb_a9g20_128mib_defconfig |    1 +
+ arch/arm/configs/usb_a9g20_defconfig        |    1 +
+ 10 files changed, 10 insertions(+)
 
-1) 2 set of var
-2) use glovalbar on defaultenv
+diff --git a/arch/arm/configs/qil_a9260_128mib_defconfig b/arch/arm/configs/qil_a9260_128mib_defconfig
+index 555d94f..cc2c6ac 100644
+--- a/arch/arm/configs/qil_a9260_128mib_defconfig
++++ b/arch/arm/configs/qil_a9260_128mib_defconfig
+@@ -5,6 +5,7 @@ CONFIG_CALAO_MB_QIL_A9260=y
+ CONFIG_AEABI=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
+ CONFIG_MMU=y
+ CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
+ CONFIG_EXPERIMENTAL=y
+diff --git a/arch/arm/configs/qil_a9260_defconfig b/arch/arm/configs/qil_a9260_defconfig
+index 9e54a14..225f785 100644
+--- a/arch/arm/configs/qil_a9260_defconfig
++++ b/arch/arm/configs/qil_a9260_defconfig
+@@ -4,6 +4,7 @@ CONFIG_CALAO_MB_QIL_A9260=y
+ CONFIG_AEABI=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
+ CONFIG_MMU=y
+ CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
+ CONFIG_EXPERIMENTAL=y
+diff --git a/arch/arm/configs/tny_a9260_defconfig b/arch/arm/configs/tny_a9260_defconfig
+index 83293fb..e525966 100644
+--- a/arch/arm/configs/tny_a9260_defconfig
++++ b/arch/arm/configs/tny_a9260_defconfig
+@@ -4,6 +4,7 @@ CONFIG_CALAO_MOB_TNY_MD2=y
+ CONFIG_AEABI=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
+ CONFIG_MMU=y
+ CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
+ CONFIG_EXPERIMENTAL=y
+diff --git a/arch/arm/configs/tny_a9263_defconfig b/arch/arm/configs/tny_a9263_defconfig
+index dd68ba4..0a83b05 100644
+--- a/arch/arm/configs/tny_a9263_defconfig
++++ b/arch/arm/configs/tny_a9263_defconfig
+@@ -4,6 +4,7 @@ CONFIG_CALAO_MOB_TNY_MD2=y
+ CONFIG_AEABI=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
+ CONFIG_MMU=y
+ CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
+ CONFIG_EXPERIMENTAL=y
+diff --git a/arch/arm/configs/tny_a9g20_defconfig b/arch/arm/configs/tny_a9g20_defconfig
+index 62250cb..8d606d1 100644
+--- a/arch/arm/configs/tny_a9g20_defconfig
++++ b/arch/arm/configs/tny_a9g20_defconfig
+@@ -4,6 +4,7 @@ CONFIG_CALAO_MOB_TNY_MD2=y
+ CONFIG_AEABI=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
+ CONFIG_MMU=y
+ CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
+ CONFIG_EXPERIMENTAL=y
+diff --git a/arch/arm/configs/usb_a9260_defconfig b/arch/arm/configs/usb_a9260_defconfig
+index a9574c4..8fd2a18 100644
+--- a/arch/arm/configs/usb_a9260_defconfig
++++ b/arch/arm/configs/usb_a9260_defconfig
+@@ -3,6 +3,7 @@ CONFIG_MACH_USB_A9260=y
+ CONFIG_AEABI=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
+ CONFIG_MMU=y
+ CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
+ CONFIG_EXPERIMENTAL=y
+diff --git a/arch/arm/configs/usb_a9263_128mib_defconfig b/arch/arm/configs/usb_a9263_128mib_defconfig
+index d31057f..efd68a8 100644
+--- a/arch/arm/configs/usb_a9263_128mib_defconfig
++++ b/arch/arm/configs/usb_a9263_128mib_defconfig
+@@ -4,6 +4,7 @@ CONFIG_AT91_HAVE_SRAM_128M=y
+ CONFIG_AEABI=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
+ CONFIG_MMU=y
+ CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
+ CONFIG_EXPERIMENTAL=y
+diff --git a/arch/arm/configs/usb_a9263_defconfig b/arch/arm/configs/usb_a9263_defconfig
+index b57c300..9706d65 100644
+--- a/arch/arm/configs/usb_a9263_defconfig
++++ b/arch/arm/configs/usb_a9263_defconfig
+@@ -3,6 +3,7 @@ CONFIG_MACH_USB_A9263=y
+ CONFIG_AEABI=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
+ CONFIG_MMU=y
+ CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
+ CONFIG_EXPERIMENTAL=y
+diff --git a/arch/arm/configs/usb_a9g20_128mib_defconfig b/arch/arm/configs/usb_a9g20_128mib_defconfig
+index 6b02342..026cbcc 100644
+--- a/arch/arm/configs/usb_a9g20_128mib_defconfig
++++ b/arch/arm/configs/usb_a9g20_128mib_defconfig
+@@ -4,6 +4,7 @@ CONFIG_AT91_HAVE_SRAM_128M=y
+ CONFIG_AEABI=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
+ CONFIG_MMU=y
+ CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
+ CONFIG_EXPERIMENTAL=y
+diff --git a/arch/arm/configs/usb_a9g20_defconfig b/arch/arm/configs/usb_a9g20_defconfig
+index 30bf380..f32593f 100644
+--- a/arch/arm/configs/usb_a9g20_defconfig
++++ b/arch/arm/configs/usb_a9g20_defconfig
+@@ -3,6 +3,7 @@ CONFIG_MACH_USB_A9G20=y
+ CONFIG_AEABI=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
+ CONFIG_MMU=y
+ CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
+ CONFIG_EXPERIMENTAL=y
+-- 
+1.7.10.4
 
-I've no preference
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
