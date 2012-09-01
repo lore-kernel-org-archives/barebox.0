@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
+Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T7jMJ-00065P-OG
- for barebox@lists.infradead.org; Sat, 01 Sep 2012 08:47:17 +0000
+ id 1T7jRO-00069k-IB
+ for barebox@lists.infradead.org; Sat, 01 Sep 2012 08:52:37 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 6FBA5DC6AE3
- for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 10:52:25 +0200 (CEST)
-Date: Sat, 1 Sep 2012 10:47:28 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id D4CE8DC6FD2
+ for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 10:57:43 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120901084728.GH18708@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Sat,  1 Sep 2012 10:52:44 +0200
+Message-Id: <1346489564-16176-7-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1346489564-16176-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20120901084728.GH18708@game.jcrosoft.org>
+ <1346489564-16176-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,71 +21,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/7 v3] smsc911x: runtime configuration improvement
+Subject: [PATCH 7/7] smc911x: check if the device is ready before using it
 To: barebox@lists.infradead.org
 
-Hi,
-
-	v3:
-	  update commnets
-
-	v2:
-	  update 16/32bit callback
-
-please pull
-The following changes since commit 3f96b4938c4046590be8a38fb114148c4bf1ca8e:
-
-  Merge tag 'bootm_fix' of git://git.jcrosoft.org/barebox (2012-08-13 20:37:53 +0200)
-
-are available in the git repository at:
-
-
-  git://git.jcrosoft.org/barebox.git tags/smc911x_improve
-
-for you to fetch changes up to f3cbf3104561580a2edc46aa6ad2c8167141709d:
-
-  smc911x: check if the device is ready before using it (2012-09-01 16:37:01 +0800)
-
-----------------------------------------------------------------
-smsc911x: runtime configuration improvement
-
- This patch series allow to detect and configure the drivers at the runtime
-
- - Check if the device is ready before using it
- - Update chip detection (take from the kernel 3.5)
- - improve detection handle to detect bus configuration and swap
- - add support to pass the shift via platform data
- - add 16bit bus width support
- - introduce read/write ops
- - move register define to smc911x.h
+poll the READY bit in PMT_CTRL. Any other access to the device is
+forbidden while this bit isn't set. Try for 100ms
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/net/smc911x.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (7):
-      smc911x: move register define to smc911x.h
-      smc911x: introduce read/write ops
-      smc911x: add 16bit bus width support
-      smc911x: add support to pass the shift via platform data
-      smc911x: improve detection handle
-      smc911x: update chip detection
-      smc911x: check if the device is ready before using it
+diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
+index 7639a92..3ccb0ef 100644
+--- a/drivers/net/smc911x.c
++++ b/drivers/net/smc911x.c
+@@ -420,7 +420,7 @@ static int smc911x_probe(struct device_d *dev)
+ 	struct eth_device *edev;
+ 	struct smc911x_priv *priv;
+ 	uint32_t val;
+-	int is_32bit;
++	int is_32bit, ret;
+ 	struct smc911x_plat *pdata = dev->platform_data;
+ 
+ 	priv = xzalloc(sizeof(*priv));
+@@ -452,6 +452,16 @@ static int smc911x_probe(struct device_d *dev)
+ 		}
+ 	}
+ 
++	/*
++	 * poll the READY bit in PMT_CTRL. Any other access to the device is
++	 * forbidden while this bit isn't set. Try for 100ms
++	 */
++	ret = wait_on_timeout(100 * MSECOND, smc911x_reg_read(priv, PMT_CTRL) & PMT_CTRL_READY);
++	if (!ret) {
++		dev_err(dev, "Device not READY in 100ms aborting\n");
++		return -ENODEV;
++	}
++
+ 	val = smc911x_reg_read(priv, BYTE_TEST);
+ 	if (val == 0x43218765) {
+ 		dev_dbg(dev, "BYTE_TEST looks swapped, "
+-- 
+1.7.10.4
 
- arch/blackfin/boards/ipe337/ipe337.c |    7 +-
- drivers/net/Kconfig                  |    6 -
- drivers/net/smc911x.c                |  589 ++++++++++++++++++++++++++++++++-------------------------------------------------------------
- drivers/net/smc911x.h                |  342 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/smc911x.h                    |   18 +++
- 5 files changed, 565 insertions(+), 397 deletions(-)
- create mode 100644 drivers/net/smc911x.h
- create mode 100644 include/smc911x.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
