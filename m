@@ -1,21 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
+Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T7lHZ-00054K-IP
- for barebox@lists.infradead.org; Sat, 01 Sep 2012 10:50:30 +0000
+ id 1T7muf-0006DO-NE
+ for barebox@lists.infradead.org; Sat, 01 Sep 2012 12:34:59 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id EA87EDC6794
- for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 12:55:41 +0200 (CEST)
-Date: Sat, 1 Sep 2012 12:50:45 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id C43CADC6ABB
+ for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 14:40:08 +0200 (CEST)
+Date: Sat, 1 Sep 2012 14:35:11 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120901105045.GN18708@game.jcrosoft.org>
-References: <20120824044613.GI6271@game.jcrosoft.org>
- <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
- <20120827132515.GE26594@pengutronix.de>
+Message-ID: <20120901123511.GA19233@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120827132515.GE26594@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,105 +24,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/18] fs: add readlink support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 00/18 v2] fs: add symlink and readlink support
+To: barebox@lists.infradead.org
 
-On 15:25 Mon 27 Aug     , Sascha Hauer wrote:
-> On Fri, Aug 24, 2012 at 06:50:01AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  fs/fs.c      |   59 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-> >  include/fs.h |    5 +++++
-> >  2 files changed, 64 insertions(+)
-> > 
-> > diff --git a/fs/fs.c b/fs/fs.c
-> > index 8ab1a3a..64a0d94 100644
-> > --- a/fs/fs.c
-> > +++ b/fs/fs.c
-> > @@ -890,6 +890,65 @@ int close(int fd)
-> >  }
-> >  EXPORT_SYMBOL(close);
-> >  
-> > +ssize_t readlink(const char *pathname, char *buf, size_t bufsiz)
-> 
-> man 2 readlink says:
-> 
-> > On  success,  readlink()  returns  the number of bytes placed in buf.
-> > On error, -1 is returned and errno is set to indicate the error.
-> 
-> This function instead returns 0 for success and a negative error value.
-> This is ok, but if the meaning of the return value is different, then it
-> does not make sense to try to match the function prototype with the libc
-> function.
-> Make the return type int.
-> 
-> > +{
-> > +	struct fs_driver_d *fsdrv;
-> > +	struct fs_device_d *fsdev;
-> > +	char *p = normalise_path(pathname);
-> > +	char *freep = p;
-> > +	int ret;
-> > +	size_t len = 0;
-> > +	char tmp[PATH_MAX];
-> > +
-> > +	tmp[0] = 0;
-> > +	buf[0] = 0;
-> > +
-> > +	ret = path_check_prereq(pathname, S_IFLNK);
-> > +	if (ret)
-> > +		goto out;
-> > +
-> > +	fsdev = get_fs_device_and_root_path(&p);
-> > +	if (!fsdev) {
-> > +		ret = -ENODEV;
-> > +		goto out;
-> > +	}
-> > +	fsdrv = fsdev->driver;
-> > +
-> > +	len = min(bufsiz, (size_t)PATH_MAX);
-> > +	if (fsdrv->readlink) {
-> > +		ret = fsdrv->readlink(&fsdev->dev, p, tmp, len);
-> > +	} else {
-> > +		ret = -EROFS;
-> 
-> EROFS is a strange error code here.
-ENOSYS maybe better
-> 
-> > +		goto out;
-> 
-> This is not needed
-> 
-> > +	}
-> > +
-> > +	if (ret)
-> > +		goto out;
-> > +
-> > +	if (tmp[0] == '/') {
-> > +		int l = strlen(fsdev->path);
-> > +
-> > +		if (fsdev->path[l - 1] == '/')
-> > +			l--;
-> > +
-> > +		if (l) {
-> > +			len -= l;
-> > +			strncat(buf, fsdev->path, l);
-> > +		}
-> > +	}
-> 
-> I don't understand why you manipulate the link target when the link target
-> is an absolute path. This means that if mount a fatfs to fat and put a
-> link there:
-> 
-> /fat/somelink -> /env/bla
-this is not how linux work
+HI,
 
-an absolute path is related to the mounted path that why I did so
-> 
-> Then readlink will return /fat/env/bla, which is not what you want.
-it's in fact
+	v2:
+	 addres comments
 
-I try on nfs
+please pull
+The following changes since commit b77300ac6c6bbbc7eac774ff0076c7c05d39735f:
+
+  command/mount: add autodetection support (2012-08-21 18:53:00 +0800)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git tags/fs-symlink
+
+for you to fetch changes up to 4c04f687dc845afc9797d58885ab746f92ff7170:
+
+  defautenv: add support of symlink (2012-09-01 20:26:18 +0800)
+
+----------------------------------------------------------------
+fs: add symlink and readlink support
+
+This patch series introduce the support of symlink and readlink at
+
+1) vfs level
+
+2) libc API
+ - symlink
+ - readlink
+
+3) commands
+ - ln
+ - readlink
+
+3) filesystem
+ - ramfs
+ - nfs
+ - envfs
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (18):
+      fs: add readlink support
+      fs: rename stat to lstat as we implement lstat
+      fs: add symlink support
+      fs: implement stat
+      fs: open: add symlink support
+      fs: introduce get_mounted_path to get the path where a file is mounted
+      ramfs: add symlink and readlink support
+      nfs: add readlink support
+      test: add -L support to test if it's a symbolic link
+      command: add readlink support
+      command: add ln support
+      ls: add symlink support to -l
+      dirname: add -V option to return only path related to the mountpoint
+      recursive_action: add ACTION_FOLLOWLINKS support
+      envfs: introduce version major and minor
+      envfs: add support of variable inode size
+      envfs: add support of symlink
+      defautenv: add support of symlink
+
+ MAKEALL                |    1 +
+ commands/Kconfig       |   10 +++
+ commands/Makefile      |    2 +
+ commands/dirname.c     |   24 ++++++-
+ commands/ln.c          |   51 +++++++++++++++
+ commands/ls.c          |   31 ++++++---
+ commands/readlink.c    |   80 +++++++++++++++++++++++
+ commands/test.c        |   11 +++-
+ common/Makefile        |    2 +-
+ common/environment.c   |  150 +++++++++++++++++++++++++++++++-----------
+ fs/fs.c                |  234 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ fs/nfs.c               |   86 ++++++++++++++++--------
+ fs/ramfs.c             |   57 ++++++++++++++--
+ include/envfs.h        |   15 ++++-
+ include/fs.h           |   12 ++++
+ include/libbb.h        |    2 +-
+ lib/recursive_action.c |    7 +-
+ scripts/bareboxenv.c   |    2 +-
+ 18 files changed, 678 insertions(+), 99 deletions(-)
+ create mode 100644 commands/ln.c
+ create mode 100644 commands/readlink.c
 
 Best Regards,
 J.
