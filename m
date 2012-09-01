@@ -1,22 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
+Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T7l4L-0004l0-Ox
- for barebox@lists.infradead.org; Sat, 01 Sep 2012 10:36:50 +0000
+ id 1T7l6d-0004of-7L
+ for barebox@lists.infradead.org; Sat, 01 Sep 2012 10:39:11 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id DD36DDC7028
- for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 12:42:01 +0200 (CEST)
-Date: Sat, 1 Sep 2012 12:37:04 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 38057DC6488
+ for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 12:44:23 +0200 (CEST)
+Date: Sat, 1 Sep 2012 12:39:26 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120901103704.GK18708@game.jcrosoft.org>
+Message-ID: <20120901103926.GL18708@game.jcrosoft.org>
 References: <20120824044613.GI6271@game.jcrosoft.org>
  <1345783818-28784-1-git-send-email-plagnioj@jcrosoft.com>
- <1345783818-28784-6-git-send-email-plagnioj@jcrosoft.com>
- <20120827135349.GH26594@pengutronix.de>
+ <1345783818-28784-4-git-send-email-plagnioj@jcrosoft.com>
+ <20120827135244.GG26594@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120827135349.GH26594@pengutronix.de>
+In-Reply-To: <20120827135244.GG26594@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,31 +29,140 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 06/18] fs: introduce get_mounted_path to get the path
- where a file is mounted
+Subject: Re: [PATCH 04/18] fs: implement stat
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 15:53 Mon 27 Aug     , Sascha Hauer wrote:
-> On Fri, Aug 24, 2012 at 06:50:06AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On 15:52 Mon 27 Aug     , Sascha Hauer wrote:
+> On Fri, Aug 24, 2012 at 06:50:04AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > stat() stats the file pointed to by path and fills in buf.
+> > 
 > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > > ---
-> >  fs/fs.c      |    9 +++++++++
-> >  include/fs.h |    2 ++
-> >  2 files changed, 11 insertions(+)
+> >  fs/fs.c      |  102 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+> >  include/fs.h |    6 ++--
+> >  2 files changed, 104 insertions(+), 4 deletions(-)
 > > 
 > > diff --git a/fs/fs.c b/fs/fs.c
-> > index ca6340c..8ec368c 100644
+> > index a19e1f4..9f2e82c 100644
 > > --- a/fs/fs.c
 > > +++ b/fs/fs.c
-> > @@ -242,6 +242,15 @@ static struct fs_device_d *get_fsdevice_by_path(const char *path)
-> >  	return fs_dev_root;
-> >  }
+> > @@ -26,6 +26,7 @@
+> >  #include <errno.h>
+> >  #include <malloc.h>
+> >  #include <linux/stat.h>
+> > +#include <linux/err.h>
+> >  #include <fcntl.h>
+> >  #include <xfuncs.h>
+> >  #include <init.h>
+> > @@ -111,6 +112,60 @@ static int init_cwd(void)
 > >  
-> > +char* get_mounted_path(const char *path)
+> >  postcore_initcall(init_cwd);
+> >  
+> > +char *normalise_link(const char *pathname, const char* symlink)
 > 
-> char *get_mounted_path
-yeap
+> like this instead: const char *symlink
+> 
+> > +{
+> > +	const char *buf = symlink;
+> > +	char *path_free, *path;
+> > +	char *absolute_path;
+> > +	int point = 0;
+> > +	int dir = 1;
+> > +	int len;
+> > +
+> > +	if (symlink[0] == '/')
+> > +		return strdup(symlink);
+> > +
+> > +	path = path_free = strdup(pathname);
+> > +
+> > +	while (*buf == '.' || *buf == '/') {
+> > +		if (*buf == '.') {
+> > +			point++;
+> > +		} else if (*buf == '/') {
+> > +			point = 0;
+> > +			dir++;
+> > +		}
+> > +		if (point > 2) {
+> > +			buf -= 2;
+> > +			break;
+> > +		}
+> > +		buf++;
+> > +	}
+> > +
+> > +	if (dir) {
+> 
+> This is always true. Even if not, this would be covered by while (dir)
+> below.
+> 
+> > +		while(dir) {
+> > +			path = dirname(path);
+> > +			dir--;
+> > +		}
+> > +	}
+> > +
+> > +	len = strlen(buf) + strlen(path) + 1;
+> > +	if (buf[0] != '/')
+> > +		len++;
+> > +
+> > +	absolute_path = calloc(sizeof(char), len);
+> > +
+> > +	if(!absolute_path)
+> 
+> if (
+> 
+> > +		return NULL;
+> > +
+> > +	strcat(absolute_path, path);
+> > +	if (buf[0] != '/')
+> > +		strcat(absolute_path, "/");
+> > +	strcat(absolute_path, buf);
+> > +
+> > +	free(path_free);
+> > +
+> > +	return absolute_path;
+> > +}
+> > +
+> >  char *normalise_path(const char *pathname)
+> >  {
+> >  	char *path = xzalloc(strlen(pathname) + strlen(cwd) + 2);
+> > @@ -512,6 +567,40 @@ out:
+> >  }
+> >  EXPORT_SYMBOL(unlink);
+> >  
+> > +static char* realfile(const char *pathname, struct stat *s)
+> 
+> static char *realfile
+> 
+> > +{
+> > +	char *path = normalise_path(pathname);
+> > +	int ret;
+> > +
+> > +	ret = lstat(path, s);
+> > +	if (ret)
+> > +		goto out;
+> > +
+> > +	if (S_ISLNK(s->st_mode)) {
+> > +		char tmp[PATH_MAX];
+> > +		char *new_path;
+> > +
+> > +		ret = readlink(path, tmp, PATH_MAX);
+> > +		if (ret < 0)
+> > +			goto out;
+> > +
+> > +		new_path = normalise_link(path, tmp);
+> > +		free(path);
+> > +		if (!new_path)
+> > +			return ERR_PTR(-ENOMEM);
+> > +		path = new_path;
+> > +
+> > +		ret = lstat(path, s);
+> > +	}
+> 
+> I see no code handling multiple link levels. I think this should be
+> here?
+yeap I did not add it so far I plan to add it in a second step if we need it
+so far I'm not really sure
 
 Best Regards,
 J.
