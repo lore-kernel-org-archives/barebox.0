@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T7mwy-0006QP-Dw
- for barebox@lists.infradead.org; Sat, 01 Sep 2012 12:37:24 +0000
+ id 1T7mwy-0006QM-3E
+ for barebox@lists.infradead.org; Sat, 01 Sep 2012 12:37:25 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id F06B8DC7050
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 796B4DC7055
  for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 14:42:33 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat,  1 Sep 2012 14:37:24 +0200
-Message-Id: <1346503053-21862-9-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat,  1 Sep 2012 14:37:22 +0200
+Message-Id: <1346503053-21862-7-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346503053-21862-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120901123511.GA19233@game.jcrosoft.org>
  <1346503053-21862-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,66 +26,123 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/18] test: add -L support to test if it's a symbolic link
+Subject: [PATCH 07/18] ramfs: add symlink and readlink support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/test.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/ramfs.c |   57 ++++++++++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 52 insertions(+), 5 deletions(-)
 
-diff --git a/commands/test.c b/commands/test.c
-index 9ffa892..56e8c52 100644
---- a/commands/test.c
-+++ b/commands/test.c
-@@ -44,6 +44,7 @@ typedef enum {
- 	OPT_FILE,
- 	OPT_EXISTS,
- 	OPT_MAX,
-+	OPT_SYMBOLIC_LINK,
- } test_opts;
+diff --git a/fs/ramfs.c b/fs/ramfs.c
+index 91d06b8..beea564 100644
+--- a/fs/ramfs.c
++++ b/fs/ramfs.c
+@@ -42,6 +42,7 @@ struct ramfs_inode {
+ 	struct ramfs_inode *parent;
+ 	struct ramfs_inode *next;
+ 	struct ramfs_inode *child;
++	char *symlink;
+ 	ulong mode;
  
- static char *test_options[] = {
-@@ -62,6 +63,7 @@ static char *test_options[] = {
- 	[OPT_FILE]			= "-f",
- 	[OPT_DIRECTORY]			= "-d",
- 	[OPT_EXISTS]			= "-e",
-+	[OPT_SYMBOLIC_LINK]		= "-L",
- };
+ 	struct handle_d *handle;
+@@ -176,6 +177,7 @@ static void ramfs_put_inode(struct ramfs_inode *node)
+ 		data = tmp;
+ 	}
  
- static int parse_opt(const char *opt)
-@@ -140,9 +142,10 @@ static int do_test(int argc, char *argv[])
- 		case OPT_FILE:
- 		case OPT_DIRECTORY:
- 		case OPT_EXISTS:
-+		case OPT_SYMBOLIC_LINK:
- 			adv = 2;
- 			if (ap[1] && *ap[1] != ']' && strlen(ap[1])) {
--				expr = stat(ap[1], &statbuf);
-+				expr = (opt == OPT_SYMBOLIC_LINK ? lstat : stat)(ap[1], &statbuf);
- 				if (expr < 0) {
- 					expr = 0;
- 					break;
-@@ -160,6 +163,10 @@ static int do_test(int argc, char *argv[])
- 					expr = 1;
- 					break;
- 				}
-+				if (opt == OPT_SYMBOLIC_LINK && S_ISLNK(statbuf.st_mode)) {
-+					expr = 1;
-+					break;
-+				}
- 			}
- 			break;
++	free(node->symlink);
+ 	free(node->name);
+ 	free(node);
+ }
+@@ -212,18 +214,36 @@ static struct ramfs_inode* node_insert(struct ramfs_inode *parent_node, const ch
  
-@@ -224,7 +231,7 @@ static const char *test_aliases[] = { "[", NULL};
+ /* ---------------------------------------------------------------*/
  
- static const __maybe_unused char cmd_test_help[] =
- "Usage: test [OPTIONS]\n"
--"options: !, =, !=, -eq, -ne, -ge, -gt, -le, -lt, -o, -a, -z, -n, -d, -e, -f\n"
-+"options: !, =, !=, -eq, -ne, -ge, -gt, -le, -lt, -o, -a, -z, -n, -d, -e, -f, -L\n"
- "see 'man test' on your PC for more information.\n";
+-static int ramfs_create(struct device_d *dev, const char *pathname, mode_t mode)
++static int __ramfs_create(struct device_d *dev, const char *pathname,
++			  mode_t mode, const char *symlink)
+ {
+ 	struct ramfs_priv *priv = dev->priv;
+ 	struct ramfs_inode *node;
+ 	char *file;
  
- static const __maybe_unused char cmd_test_usage[] = "minimal test like /bin/sh";
+ 	node = rlookup_parent(priv, pathname, &file);
+-	if (node) {
+-		node_insert(node, file, mode);
++	if (!node)
++		return -ENOENT;
++
++	node = node_insert(node, file, mode);
++	if (!node)
++		return -ENOMEM;
++
++	if (!symlink)
+ 		return 0;
++
++	node->symlink = strdup(symlink);
++	if (!node->symlink) {
++		ramfs_put_inode(node);
++		return -ENOMEM;
+ 	}
+-	return -ENOENT;
++
++	return 0;
++}
++
++static int ramfs_create(struct device_d *dev, const char *pathname, mode_t mode)
++{
++	return __ramfs_create(dev, pathname, mode, NULL);
+ }
+ 
+ static int ramfs_unlink(struct device_d *dev, const char *pathname)
+@@ -532,12 +552,37 @@ static int ramfs_stat(struct device_d *dev, const char *filename, struct stat *s
+ 	if (!node)
+ 		return -ENOENT;
+ 
+-	s->st_size = node->size;
++	s->st_size = node->symlink ? strlen(node->symlink) : node->size;
+ 	s->st_mode = node->mode;
+ 
+ 	return 0;
+ }
+ 
++static int ramfs_symlink(struct device_d *dev, const char *pathname,
++		       const char *newpath)
++{
++	mode_t mode = S_IFLNK | S_IRWXU | S_IRWXG | S_IRWXO;
++
++	return __ramfs_create(dev, newpath, mode, pathname);
++}
++
++static int ramfs_readlink(struct device_d *dev, const char *pathname,
++			char *buf, size_t bufsiz)
++{
++	struct ramfs_priv *priv = dev->priv;
++	struct ramfs_inode *node = rlookup(priv, pathname);
++	int len;
++
++	if (!node || !node->symlink)
++		return -ENOENT;
++
++	len = min(bufsiz, strlen(node->symlink));
++
++	memcpy(buf, node->symlink, len);
++
++	return 0;
++}
++
+ static int ramfs_probe(struct device_d *dev)
+ {
+ 	struct ramfs_inode *n;
+@@ -584,6 +629,8 @@ static struct fs_driver_d ramfs_driver = {
+ 	.readdir   = ramfs_readdir,
+ 	.closedir  = ramfs_closedir,
+ 	.stat      = ramfs_stat,
++	.symlink   = ramfs_symlink,
++	.readlink  = ramfs_readlink,
+ 	.flags     = FS_DRIVER_NO_DEV,
+ 	.drv = {
+ 		.probe  = ramfs_probe,
 -- 
 1.7.10.4
 
