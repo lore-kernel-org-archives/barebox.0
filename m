@@ -1,22 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
- helo=mo2.mail-out.ovh.net)
+Received: from mo2.mail-out.ovh.net ([178.32.228.2])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T7n6Q-0007jO-GS
- for barebox@lists.infradead.org; Sat, 01 Sep 2012 12:47:06 +0000
+ id 1T7n8M-0007nh-Lu
+ for barebox@lists.infradead.org; Sat, 01 Sep 2012 12:49:07 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 044B8DC6839
- for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 14:52:19 +0200 (CEST)
-Date: Sat, 1 Sep 2012 14:47:21 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id D8B17DC677D
+ for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 14:54:19 +0200 (CEST)
+Date: Sat, 1 Sep 2012 14:49:22 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120901124721.GB19233@game.jcrosoft.org>
+Message-ID: <20120901124922.GC19233@game.jcrosoft.org>
 References: <20120824050332.GK6271@game.jcrosoft.org>
  <1345784816-31344-1-git-send-email-plagnioj@jcrosoft.com>
- <1345784816-31344-7-git-send-email-plagnioj@jcrosoft.com>
- <20120828084741.GK24458@pengutronix.de>
+ <20120828084038.GD26594@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120828084741.GK24458@pengutronix.de>
+In-Reply-To: <20120828084038.GD26594@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,45 +27,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/7] defaultenv-2: add symbolic link support to boot/nfs
+Subject: Re: [PATCH 1/7] dhcp: add global var support
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 10:47 Tue 28 Aug     , Sascha Hauer wrote:
-> On Fri, Aug 24, 2012 at 07:06:56AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On 10:40 Tue 28 Aug     , Sascha Hauer wrote:
+> On Fri, Aug 24, 2012 at 07:06:50AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > This way you can specify as previously set the dhcp parameter via global.dhcp.xxx
+> > and get the result via global.dhcp.xxx
+> > 
+> > This is need for the defaultenv-2 to add the bootp suppport.
+> > 
 > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > > ---
-> >  defaultenv-2/base/boot/nfs |   55 +++++++++++++++++++++++++++++++++++++++++---
-> >  1 file changed, 52 insertions(+), 3 deletions(-)
+> >  net/dhcp.c |  100 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+> >  1 file changed, 99 insertions(+), 1 deletion(-)
 > > 
-> > diff --git a/defaultenv-2/base/boot/nfs b/defaultenv-2/base/boot/nfs
-> > index 248f975..a33a21c 100644
-> > --- a/defaultenv-2/base/boot/nfs
-> > +++ b/defaultenv-2/base/boot/nfs
-> > @@ -43,6 +43,18 @@ if [ -n "${global.dhcp.bootfile}" ]; then
-> >  	mount -t nfs "${eth0.serverip}:${mnt}" "${path}"
+> > diff --git a/net/dhcp.c b/net/dhcp.c
+> > index 79efa3e..51c4283 100644
+> > --- a/net/dhcp.c
+> > +++ b/net/dhcp.c
+> > @@ -19,6 +19,8 @@
+> >  #include <magicvar.h>
+> >  #include <linux/err.h>
+> >  #include <getopt.h>
+> > +#include <globalvar.h>
+> > +#include <init.h>
 > >  
-> >  	global.bootm.image="${path}/${bootfile}"
-> > +
-> > +	if [ -L "${global.bootm.image}" ]; then
-> > +		readlink -f "${global.bootm.image}" bootfile_symlink
-> > +
-> > +		dirname -V "${bootfile_symlink}" mnt
-> > +		basename "${bootfile_symlink}" bootfile
-> > +
-> > +		umount "${path}"
-> > +		mount -t nfs "${eth0.serverip}:${mnt}" "${path}"
-> > +
-> > +		global.bootm.image="${path}/${bootfile}"
-> > +	fi
+> >  #define OPT_SIZE 312	/* Minimum DHCP Options size per RFC2131 - results in 576 byte pkt */
+> >  
+> > @@ -78,11 +80,39 @@ static IPaddr_t net_dhcp_server_ip;
+> >  static uint64_t dhcp_start;
+> >  static char dhcp_tftpname[256];
+> >  
+> > +static const char* dhcp_get_barebox_global(const char * var)
 > 
-> There is something wrong here. I do not understand what you do here, but
-> symlinks are not supposed to bash on them with dirname/basename until
-> you get something which fits your needs.
-here the issue is that on nfs you need to mount the correct path otherwise you
-can not get the real file
+> static const char *dhcp_get_barebox_global
+> 
+> > +{
+> > +	char * var_global = asprintf("global.dhcp.%s", var);
+> 
+> char *var_global =
+> 
+> Generally I don't think we should introduce a second set of variables.
+> Drop The other ones instead.
+I'm ok with it as I 'm going to switch all my board to the defaultenv-2
 
-so we need to detect it and mount the correct path
+but other people may not so the only to keep this feature on both env are
+
+1) 2 set of var
+2) use glovalbar on defaultenv
+
+I've no preference
 
 Best Regards,
 J.
