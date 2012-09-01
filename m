@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T7mx0-0006RQ-Rs
- for barebox@lists.infradead.org; Sat, 01 Sep 2012 12:37:28 +0000
+ id 1T7mx1-0006RV-BT
+ for barebox@lists.infradead.org; Sat, 01 Sep 2012 12:37:29 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 3942BDC7056
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id C8772DC7058
  for <barebox@lists.infradead.org>; Sat,  1 Sep 2012 14:42:34 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat,  1 Sep 2012 14:37:25 +0200
-Message-Id: <1346503053-21862-10-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat,  1 Sep 2012 14:37:27 +0200
+Message-Id: <1346503053-21862-12-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346503053-21862-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120901123511.GA19233@game.jcrosoft.org>
  <1346503053-21862-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,129 +26,118 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/18] command: add readlink support
+Subject: [PATCH 12/18] ls: add symlink support to -l
 To: barebox@lists.infradead.org
+
+barebox:/ ls -l /env/init.d/
+drwxrwxrwx          0 .
+drwxrwxrwx          0 ..
+lrwxrwxrwx         11 net -> ../boot/net
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/Kconfig    |    6 ++++
- commands/Makefile   |    1 +
- commands/readlink.c |   80 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 87 insertions(+)
- create mode 100644 commands/readlink.c
+ commands/ls.c |   31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 92a8152..876f2f8 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -220,6 +220,12 @@ config CMD_DIRNAME
- 	  Strip last component of file name and store the result in a
- 	  environment variable
+diff --git a/commands/ls.c b/commands/ls.c
+index fbcbadc..d36ef57 100644
+--- a/commands/ls.c
++++ b/commands/ls.c
+@@ -29,13 +29,24 @@
+ #include <getopt.h>
+ #include <stringlist.h>
  
-+config CMD_READLINK
-+	tristate
-+	prompt "readlink"
-+	help
-+	  read value of a symbolic link
-+
- endmenu
+-static void ls_one(const char *path, struct stat *s)
++static void ls_one(const char *path, const char* fullname, struct stat *s)
+ {
+ 	char modestr[11];
+ 	unsigned int namelen = strlen(path);
  
- menu "console                       "
-diff --git a/commands/Makefile b/commands/Makefile
-index e9157bf..ab6c7ea 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -72,3 +72,4 @@ obj-$(CONFIG_CMD_AUTOMOUNT)	+= automount.o
- obj-$(CONFIG_CMD_GLOBAL)	+= global.o
- obj-$(CONFIG_CMD_BASENAME)	+= basename.o
- obj-$(CONFIG_CMD_DIRNAME)	+= dirname.o
-+obj-$(CONFIG_CMD_READLINK)	+= readlink.o
-diff --git a/commands/readlink.c b/commands/readlink.c
-new file mode 100644
-index 0000000..d2671e0
---- /dev/null
-+++ b/commands/readlink.c
-@@ -0,0 +1,80 @@
-+/*
-+ * readlink.c - read value of a symbolic link
-+ *
-+ * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
+ 	mkmodestr(s->st_mode, modestr);
+-	printf("%s %10llu %*.*s\n", modestr, s->st_size, namelen, namelen, path);
++	printf("%s %10llu %*.*s", modestr, s->st_size, namelen, namelen, path);
 +
-+#include <common.h>
-+#include <command.h>
-+#include <libgen.h>
-+#include <environment.h>
-+#include <fs.h>
-+#include <malloc.h>
-+#include <getopt.h>
++	if (S_ISLNK(s->st_mode)) {
++		char realname[PATH_MAX];
 +
-+static int do_readlink(int argc, char *argv[])
-+{
-+	char realname[PATH_MAX];
-+	int canonicalize = 0;
-+	int opt;
++		memset(realname, 0, PATH_MAX);
 +
-+	memset(realname, 0, PATH_MAX);
-+
-+	while ((opt = getopt(argc, argv, "f")) > 0) {
-+		switch (opt) {
-+		case 'f':
-+			canonicalize = 1;
-+			break;
-+		}
++		if (readlink(fullname, realname, PATH_MAX - 1) >= 0)
++			printf(" -> %s", realname);
 +	}
 +
-+	if (argc < optind + 2)
-+		return COMMAND_ERROR_USAGE;
-+
-+	if (readlink(argv[optind], realname, PATH_MAX - 1) < 0)
-+		goto err;
-+
-+	if (canonicalize) {
-+		char *buf = normalise_link(argv[optind], realname);
-+
-+		if (!buf)
-+			goto err;
-+		setenv(argv[optind + 1], buf);
-+		free(buf);
-+	} else {
-+		setenv(argv[optind + 1], realname);
-+	}
-+
-+	return 0;
-+err:
-+	setenv(argv[optind + 1], "");
-+	return 1;
-+}
-+
-+BAREBOX_CMD_HELP_START(readlink)
-+BAREBOX_CMD_HELP_USAGE("readlink [-f] FILE REALNAME\n")
-+BAREBOX_CMD_HELP_SHORT("read value of a symbolic link and store into $REALNAME\n")
-+BAREBOX_CMD_HELP_SHORT("-f canonicalize by following first symlink");
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(readlink)
-+	.cmd		= do_readlink,
-+	.usage		= "read value of a symbolic link",
-+	BAREBOX_CMD_HELP(cmd_readlink_help)
-+BAREBOX_CMD_END
++	puts("\n");
+ }
+ 
+ int ls(const char *path, ulong flags)
+@@ -48,14 +59,14 @@ int ls(const char *path, ulong flags)
+ 
+ 	string_list_init(&sl);
+ 
+-	if (stat(path, &s))
++	if (lstat(path, &s))
+ 		return -errno;
+ 
+ 	if (flags & LS_SHOWARG && s.st_mode & S_IFDIR)
+ 		printf("%s:\n", path);
+ 
+ 	if (!(s.st_mode & S_IFDIR)) {
+-		ls_one(path, &s);
++		ls_one(path, path, &s);
+ 		return 0;
+ 	}
+ 
+@@ -65,12 +76,12 @@ int ls(const char *path, ulong flags)
+ 
+ 	while ((d = readdir(dir))) {
+ 		sprintf(tmp, "%s/%s", path, d->d_name);
+-		if (stat(tmp, &s))
++		if (lstat(tmp, &s))
+ 			goto out;
+ 		if (flags & LS_COLUMN)
+ 			string_list_add_sorted(&sl, d->d_name);
+ 		else
+-			ls_one(d->d_name, &s);
++			ls_one(d->d_name, tmp, &s);
+ 	}
+ 
+ 	closedir(dir);
+@@ -97,7 +108,7 @@ int ls(const char *path, ulong flags)
+ 			continue;
+ 		sprintf(tmp, "%s/%s", path, d->d_name);
+ 
+-		if (stat(tmp, &s))
++		if (lstat(tmp, &s))
+ 			goto out;
+ 		if (s.st_mode & S_IFDIR) {
+ 			char *norm = normalise_path(tmp);
+@@ -146,7 +157,7 @@ static int do_ls(int argc, char *argv[])
+ 
+ 	/* first pass: all files */
+ 	while (o < argc) {
+-		ret = stat(argv[o], &s);
++		ret = lstat(argv[o], &s);
+ 		if (ret) {
+ 			printf("%s: %s: %s\n", argv[0],
+ 					argv[o], errno_str());
+@@ -158,7 +169,7 @@ static int do_ls(int argc, char *argv[])
+ 			if (flags & LS_COLUMN)
+ 				string_list_add_sorted(&sl, argv[o]);
+ 			else
+-				ls_one(argv[o], &s);
++				ls_one(argv[o], argv[o], &s);
+ 		}
+ 
+ 		o++;
+@@ -173,7 +184,7 @@ static int do_ls(int argc, char *argv[])
+ 
+ 	/* second pass: directories */
+ 	while (o < argc) {
+-		ret = stat(argv[o], &s);
++		ret = lstat(argv[o], &s);
+ 		if (ret) {
+ 			o++;
+ 			continue;
 -- 
 1.7.10.4
 
