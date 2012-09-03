@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f49.google.com ([74.125.82.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T8PyO-0001qq-3o
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 06:17:24 +0000
-Received: by wgbdt14 with SMTP id dt14so2766230wgb.18
- for <barebox@lists.infradead.org>; Sun, 02 Sep 2012 23:17:22 -0700 (PDT)
-From: Alexander Aring <alex.aring@googlemail.com>
-Date: Mon,  3 Sep 2012 08:18:06 +0200
-Message-Id: <1346653088-7576-1-git-send-email-alex.aring@gmail.com>
+Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1T8Q5Q-0002os-RR
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 06:24:42 +0000
+Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 638B0DC3DFD
+ for <barebox@lists.infradead.org>; Mon,  3 Sep 2012 08:29:54 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Mon,  3 Sep 2012 08:24:54 +0200
+Message-Id: <1346653494-24187-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] sandbox: add asm-generic/io.h
+Subject: [PATCH 1/1] nhk8815: fix nand IO_DATA end resource
 To: barebox@lists.infradead.org
 
-Add in sandbox asm/io.h the asm-generic/io.h header file.
-Needed by NAND support.
+introduce in commit
+5f03074ea98b64b55c133b35ee144fdc909e6d69
+resource: store 'end' instead of 'size' in struct resource
 
-Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/sandbox/include/asm/io.h | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/arm/boards/nhk8815/setup.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sandbox/include/asm/io.h b/arch/sandbox/include/asm/io.h
-index da84fa5..fbc23bf 100644
---- a/arch/sandbox/include/asm/io.h
-+++ b/arch/sandbox/include/asm/io.h
-@@ -1 +1,7 @@
--/* nothing */
-+#ifndef __ASM_SANDBOX_IO_H
-+#define __ASM_SANDBOX_IO_H
-+
-+#include <asm-generic/io.h>
-+
-+#endif /* __ASM_SANDBOX_IO_H */
-+
+diff --git a/arch/arm/boards/nhk8815/setup.c b/arch/arm/boards/nhk8815/setup.c
+index ccc0510..5820114 100644
+--- a/arch/arm/boards/nhk8815/setup.c
++++ b/arch/arm/boards/nhk8815/setup.c
+@@ -63,7 +63,7 @@ static struct resource nhk8815_nand_resources[] = {
+ 		.flags	= IORESOURCE_MEM,
+ 	}, {
+ 		.start	= NAND_IO_DATA,
+-		.end	= NAND_IO_CMD + 0xfff,
++		.end	= NAND_IO_DATA + 0xfff,
+ 		.flags	= IORESOURCE_MEM,
+ 	}
+ };
 -- 
-1.7.12
+1.7.10.4
 
 
 _______________________________________________
