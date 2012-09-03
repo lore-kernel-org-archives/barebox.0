@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T8Qea-0003fs-SL
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 07:01:01 +0000
-Date: Mon, 3 Sep 2012 09:00:54 +0200
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20120903070054.GA30402@pengutronix.de>
-References: <1346421308-24669-1-git-send-email-s.trumtrar@pengutronix.de>
- <20120901085341.GI18708@game.jcrosoft.org>
+ id 1T8Qez-0003mQ-Su
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 07:01:26 +0000
+Date: Mon, 3 Sep 2012 09:01:24 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120903070124.GU26594@pengutronix.de>
+References: <1346403272-24446-1-git-send-email-s.trumtrar@pengutronix.de>
+ <1346403272-24446-4-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120901085341.GI18708@game.jcrosoft.org>
+In-Reply-To: <1346403272-24446-4-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,63 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM i.MX6: query silicon revision
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 03/10] ARM i.MX5: add imx-gpio devices
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, Sep 01, 2012 at 10:53:41AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 15:55 Fri 31 Aug     , Steffen Trumtrar wrote:
-> > Read silicon revision from ???-register.
-> > This is based on a7683867463481bfea84af4d60af832ddfb3da7f from u-boot.
-> > The address 0x020c8260 is used and decoded. I haven't found that in my
-> > datasheet, so I must trust the code to be correct.
-> > At least on a SabreLite v1.0 I get the correct version though.
-> > 
-> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > ---
-> >  arch/arm/mach-imx/imx6.c |   36 +++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 35 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-> > index b6067d7..9c90444 100644
-> > --- a/arch/arm/mach-imx/imx6.c
-> > +++ b/arch/arm/mach-imx/imx6.c
-> > @@ -19,7 +19,7 @@
-> >  #include <common.h>
-> >  #include <io.h>
-> >  #include <sizes.h>
-> > -#include <mach/imx6-regs.h>
-> > +#include <mach/imx-regs.h>
-> >  
-> >  #include "gpio.h"
-> >  
-> > @@ -35,6 +35,40 @@ void *imx_gpio_base[] = {
-> >  
-> >  int imx_gpio_count = ARRAY_SIZE(imx_gpio_base) * 32;
-> >  
-> > +static u32 mx6_silicon_revision;
-> > +static char *mx6_rev_string = "unknown";
-> > +
-> > +int imx_silicon_revision(void)
-> > +{
-> > +	return mx6_silicon_revision;
-> > +}
-> > +
-> > +static int query_silicon_revision(void)
-> > +{
-> > +	void __iomem *anatop = (void *) MX6_ANATOP_BASE_ADDR;
-> > +	u32 rev, reg;
-> > +
-> > +	reg = readl(anatop + 0x260);
-> > +	/* read mx6 variant: quad, dual, solo */
-> > +	//rev = (reg >> 4) & 0xff000;
-> ??
+On Fri, Aug 31, 2012 at 10:54:25AM +0200, Steffen Trumtrar wrote:
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  arch/arm/mach-imx/imx51.c |    5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
+> index 53205a9..506a7d9 100644
+> --- a/arch/arm/mach-imx/imx51.c
+> +++ b/arch/arm/mach-imx/imx51.c
+> @@ -89,6 +89,11 @@ static int imx51_init(void)
+>  	add_generic_device("imx_iim", 0, NULL, MX51_IIM_BASE_ADDR, SZ_4K,
+>  			IORESOURCE_MEM, NULL);
+>  
+> +	add_generic_device("imx-gpio", 0, NULL, 0x73f84000, 0x1000, IORESOURCE_MEM, NULL);
+> +	add_generic_device("imx-gpio", 1, NULL, 0x73f88000, 0x1000, IORESOURCE_MEM, NULL);
+> +	add_generic_device("imx-gpio", 2, NULL, 0x73f8c000, 0x1000, IORESOURCE_MEM, NULL);
+> +	add_generic_device("imx-gpio", 3, NULL, 0x73f90000, 0x1000, IORESOURCE_MEM, NULL);
 
-Tnx. I will fix that.
+I am missing the removal of imx_gpio_base[] here. Also in the patches
+for the other i.MXs
 
-Regards,
-
-Steffen
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
