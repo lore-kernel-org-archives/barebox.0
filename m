@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T8V6h-0001IT-Ph
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 11:46:25 +0000
+ id 1T8V6i-0001IX-47
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 11:46:27 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Mon,  3 Sep 2012 13:45:59 +0200
-Message-Id: <1346672765-16162-5-git-send-email-jlu@pengutronix.de>
+Date: Mon,  3 Sep 2012 13:46:02 +0200
+Message-Id: <1346672765-16162-8-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1346672765-16162-1-git-send-email-jlu@pengutronix.de>
 References: <1346672765-16162-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,223 +21,288 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/10] scripts: add tool to create image for SPI boot on AM35xx
+Subject: [PATCH 07/10] drivers/net/ksz8864rmn: add driver for Micrel
+ KSZ8864RMN Ethernet Switch
 To: barebox@lists.infradead.org
 
-Booting from SPI on an AM35xx (and possibly other TI SOCs) requires
-a special format:
+It start the switch and provides basic access to the registers.
 
-- 32 bit image size in big-endian
-- 32 bit load address in big-endian
-- binary image converted from little- to big-endian
-
-The mk-am35xx-spi-image tool converts barebox.bin to
-this format.
+This driver could also work with some other Micrel switches, possibly
+with some small changes.
 
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- arch/arm/Makefile             |    8 +++
- arch/arm/mach-omap/Kconfig    |    7 +++
- scripts/.gitignore            |    1 +
- scripts/Makefile              |    2 +-
- scripts/mk-am35xx-spi-image.c |  126 +++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 143 insertions(+), 1 deletion(-)
- create mode 100644 scripts/mk-am35xx-spi-image.c
+ drivers/net/Kconfig      |    7 ++
+ drivers/net/Makefile     |    1 +
+ drivers/net/ksz8864rmn.c |  233 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 241 insertions(+)
+ create mode 100644 drivers/net/ksz8864rmn.c
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 1b60261..ff96299 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -199,6 +199,14 @@ endif
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 749ea6a..0fa4f14 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -126,5 +126,12 @@ config DRIVER_NET_DESIGNWARE_ALTDESCRIPTOR
  
- all: $(KBUILD_IMAGE)
+ source "drivers/net/usb/Kconfig"
  
-+barebox.spi: barebox.bin
-+	@echo "  SPI    " $@
-+	$(Q)scripts/mk-am35xx-spi-image barebox.bin > barebox.spi
-+
-+ifeq ($(CONFIG_OMAP_BUILD_SPI),y)
-+all: barebox.spi
-+endif
-+
- archprepare: maketools
- maketools:
- 	$(Q)$(MAKE) $(build)=arch/arm/tools include/generated/mach-types.h
-diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-index d735284..a781287 100644
---- a/arch/arm/mach-omap/Kconfig
-+++ b/arch/arm/mach-omap/Kconfig
-@@ -91,6 +91,13 @@ config OMAP_BUILD_IFT
- 	prompt "build ift binary"
- 	bool
- 
-+config OMAP_BUILD_SPI
-+	prompt "build SPI binary"
-+	bool
++config DRIVER_NET_MICREL
++	depends on SPI
++	bool "Micrel KSZ8864RMN Ethernet Switch driver"
 +	help
-+	  Say Y here if you want to build an barebox.spi image as used
-+	  on the AM35xx chips when booting form SPI NOR flash.
++	  This option enables support for enabling the Micrel
++	  KSZ8864RMN Ethernet Switch over SPI.
 +
- config ARCH_TEXT_BASE
- 	hex
- 	default 0x80e80000 if MACH_OMAP343xSDP
-diff --git a/scripts/.gitignore b/scripts/.gitignore
-index 6e63f85..3f1cbdb 100644
---- a/scripts/.gitignore
-+++ b/scripts/.gitignore
-@@ -2,6 +2,7 @@ bareboxenv
- bin2c
- gen_netx_image
- kallsyms
-+mk-am35xx-spi-image
- mkimage
- mkublheader
- omap_signGP
-diff --git a/scripts/Makefile b/scripts/Makefile
-index 7ca5e29..55ccdac 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -9,7 +9,7 @@ hostprogs-y                      += bin2c
- hostprogs-y                      += mkimage
- hostprogs-y                      += bareboxenv
- hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
--hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP
-+hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP mk-am35xx-spi-image
- hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
- hostprogs-$(CONFIG_ARCH_DAVINCI) += mkublheader
+ endmenu
  
-diff --git a/scripts/mk-am35xx-spi-image.c b/scripts/mk-am35xx-spi-image.c
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index 29727b7..b589240 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -14,3 +14,4 @@ obj-$(CONFIG_NET_USB)			+= usb/
+ obj-$(CONFIG_DRIVER_NET_TSE)		+= altera_tse.o
+ obj-$(CONFIG_DRIVER_NET_KS8851_MLL)	+= ks8851_mll.o
+ obj-$(CONFIG_DRIVER_NET_DESIGNWARE)	+= designware.o
++obj-$(CONFIG_DRIVER_NET_MICREL)		+= ksz8864rmn.o
+diff --git a/drivers/net/ksz8864rmn.c b/drivers/net/ksz8864rmn.c
 new file mode 100644
-index 0000000..133f2b7
+index 0000000..5851463
 --- /dev/null
-+++ b/scripts/mk-am35xx-spi-image.c
-@@ -0,0 +1,126 @@
++++ b/drivers/net/ksz8864rmn.c
+@@ -0,0 +1,233 @@
 +/*
-+ * mkublheader.c - produce the header needed to load barebox on OMAP-L138
++ * Copyright (C) 2012 Jan Luebbe, Pengutronix
 + *
-+ * Copyright (C) 2012 Jan Luebbe <j.luebbe@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
 + *
-+ * You should have received a copy of the GNU General Public License along
-+ * with this program; if not, write to the Free Software Foundation, Inc.,
-+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
 + */
 +
-+#define _BSD_SOURCE
-+
-+#include <stdio.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <fcntl.h>
-+#include <unistd.h>
-+#include <stdint.h>
-+#include <limits.h>
++#include <common.h>
++#include <init.h>
++#include <driver.h>
++#include <spi/spi.h>
 +#include <errno.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <getopt.h>
-+#include <endian.h>
 +
-+void usage(char *prgname)
++#define REG_ID0			0x00
++#define REG_ID1			0x01
++
++#define REG_GC00		0x02
++#define REG_GC01		0x03
++#define REG_GC02		0x04
++#define REG_GC03		0x05
++#define REG_GC04		0x06
++#define REG_GC05		0x07
++#define REG_GC06		0x08
++#define REG_GC07		0x09
++#define REG_GC08		0x0a
++#define REG_GC09		0x0b
++#define REG_GC10		0x0c
++#define REG_GC11		0x0d
++
++#define REG_PSTAT1(p)		(0x10 * p + 0xe)
++#define REG_PSTAT2(p)		(0x10 * p + 0xf)
++
++#define CMD_WRITE		0x02
++#define CMD_READ		0x03
++
++struct micrel_switch_priv {
++	struct cdev             cdev;
++	struct spi_device       *spi;
++};
++
++static int micrel_switch_read_reg(struct spi_device *spi, uint8_t reg)
 +{
-+	printf("usage: %s [OPTION] FILE > IMAGE\n"
-+	       "\n"
-+	       "options:\n"
-+	       "  -a <address> memory address for the loaded image in SRAM\n",
-+	       prgname);
++	uint8_t tx[2];
++	uint8_t rx[1];
++	int ret;
++
++	tx[0] = CMD_READ;
++	tx[1] = reg;
++
++	ret = spi_write_then_read(spi, tx, 2, rx, 1);
++	if (ret < 0)
++		return ret;
++
++	return rx[0];
 +}
 +
-+int main(int argc, char *argv[])
++static void micrel_switch_write_reg(struct spi_device *spi, uint8_t reg, uint8_t val)
 +{
-+	FILE *input;
-+	int opt;
-+	off_t pos;
-+	size_t size;
-+	uint32_t addr = 0x40200000;
-+	uint32_t temp;
++	uint8_t tx[3];
 +
-+	while((opt = getopt(argc, argv, "a:")) != -1) {
-+		switch (opt) {
-+		case 'a':
-+			addr = strtoul(optarg, NULL, 0);
-+			break;
-+		}
-+	}
++	tx[0] = CMD_WRITE;
++	tx[1] = reg;
++	tx[2] = val;
 +
-+	if (optind >= argc) {
-+		usage(argv[0]);
-+		exit(1);
-+	}
-+
-+	input = fopen(argv[optind], "r");
-+	if (input == NULL) {
-+		perror("fopen");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	if (fseeko(input, 0, SEEK_END) == -1) {
-+		perror("fseeko");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	pos = ftello(input);
-+	if (pos == -1) {
-+		perror("ftello");
-+		exit(EXIT_FAILURE);
-+	}
-+	if (pos % 4) {
-+		printf("error: image size must be a multiple of 4 bytes\n");
-+		exit(EXIT_FAILURE);
-+	}
-+	if (pos > 0x100000) {
-+		printf("error: image should be smaller than 1 MiB\n");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	if (fseeko(input, 0, SEEK_SET) == -1) {
-+		perror("fseeko");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	/* image size */
-+	temp = htobe32((uint32_t)pos);
-+	fwrite(&temp, sizeof(uint32_t), 1, stdout);
-+
-+	/* memory address */
-+	temp = htobe32(addr);
-+	fwrite(&temp, sizeof(uint32_t), 1, stdout);
-+
-+	for (;;) {
-+		size = fread(&temp, 1, sizeof(uint32_t), input);
-+		if (!size)
-+			break;
-+		if (size != 4) {
-+			perror("fread");
-+			exit(EXIT_FAILURE);
-+		}
-+		temp = htobe32(le32toh(temp));
-+		if (fwrite(&temp, 1, sizeof(uint32_t), stdout) != 4) {
-+			perror("fwrite");
-+			exit(EXIT_FAILURE);
-+		}
-+	}
-+
-+	if (fclose(input) != 0) {
-+		perror("fclose");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	exit(EXIT_SUCCESS);
++	spi_write_then_read(spi, tx, 3, NULL, 0);
 +}
++
++static int micrel_switch_enable_set(struct device_d *dev, struct param_d *param,
++		const char *val)
++{
++	struct spi_device *spi = (struct spi_device *)dev->type_data;
++	int enable;
++	char *new;
++
++	if (!val)
++		return dev_param_set_generic(dev, param, NULL);
++
++	enable = simple_strtoul(val, NULL, 0);
++
++	if (enable) {
++		micrel_switch_write_reg(spi, REG_ID1, 1);
++		new = "1";
++	} else {
++		micrel_switch_write_reg(spi, REG_ID1, 0);
++		new = "0";
++	}
++
++	dev_param_set_generic(dev, param, new);
++
++	return 0;
++}
++
++static void micrel_switch_print_reg(struct spi_device *spi, const char *name, uint8_t reg)
++{
++	uint8_t tx[2];
++	uint8_t rx[1];
++	int ret;
++
++	tx[0] = CMD_READ;
++	tx[1] = reg;
++
++	ret = spi_write_then_read(spi, tx, 2, rx, 1);
++	if (ret < 0)
++		printf("%s@0x%02x: SPI error\n", name, reg);
++
++	printf("%s@0x%02x: 0x%02x\n", name, reg, rx[0]);
++}
++
++static void micrel_switch_info(struct device_d *dev)
++{
++	struct spi_device *spi = (struct spi_device *)dev->type_data;
++
++	printf("Registers:\n");
++	micrel_switch_print_reg(spi, " Chip ID 0", REG_ID0);
++	micrel_switch_print_reg(spi, " Chip ID 1", REG_ID1);
++	micrel_switch_print_reg(spi, " Global Control  0", REG_GC00);
++	micrel_switch_print_reg(spi, " Global Control  1", REG_GC01);
++	micrel_switch_print_reg(spi, " Global Control  2", REG_GC02);
++	micrel_switch_print_reg(spi, " Global Control  3", REG_GC03);
++	micrel_switch_print_reg(spi, " Global Control  4", REG_GC04);
++	micrel_switch_print_reg(spi, " Global Control  5", REG_GC05);
++	micrel_switch_print_reg(spi, " Global Control  6", REG_GC06);
++	micrel_switch_print_reg(spi, " Global Control  7", REG_GC07);
++	micrel_switch_print_reg(spi, " Global Control  8", REG_GC08);
++	micrel_switch_print_reg(spi, " Global Control  9", REG_GC09);
++	micrel_switch_print_reg(spi, " Global Control 10", REG_GC10);
++	micrel_switch_print_reg(spi, " Global Control 11", REG_GC11);
++	micrel_switch_print_reg(spi, " Port 1 Status 1", REG_PSTAT1(1));
++	micrel_switch_print_reg(spi, " Port 1 Status 2", REG_PSTAT2(1));
++	micrel_switch_print_reg(spi, " Port 2 Status 1", REG_PSTAT1(2));
++	micrel_switch_print_reg(spi, " Port 2 Status 2", REG_PSTAT2(2));
++}
++
++static ssize_t micel_switch_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
++{
++	int i, ret;
++	uint8_t *buf = _buf;
++	struct micrel_switch_priv *priv = cdev->priv;
++
++	for (i = 0; i < count; i++) {
++		ret = micrel_switch_read_reg(priv->spi, offset);
++		if (ret < 0)
++			return ret;
++		*buf = ret;
++		buf++;
++		offset++;
++	}
++
++	return count;
++}
++
++static ssize_t micel_switch_write(struct cdev *cdev, const void *_buf, size_t count, loff_t offset, ulong flags)
++{
++	int i;
++	const uint8_t *buf = _buf;
++	struct micrel_switch_priv *priv = cdev->priv;
++
++	for (i = 0; i < count; i++) {
++		micrel_switch_write_reg(priv->spi, offset, *buf);
++		buf++;
++		offset++;
++	}
++
++	return count;
++}
++
++static struct file_operations micrel_switch_ops = {
++	.read  = micel_switch_read,
++	.write = micel_switch_write,
++	.lseek = dev_lseek_default,
++};
++
++static int micrel_switch_probe(struct device_d *dev)
++{
++	struct micrel_switch_priv *priv;
++	int ret = 0;
++
++	priv = xzalloc(sizeof(*priv));
++
++	dev->priv = priv;
++
++	priv->spi = (struct spi_device *)dev->type_data;
++	priv->spi->mode = SPI_MODE_0;
++	priv->spi->bits_per_word = 8;
++
++	ret = micrel_switch_read_reg(priv->spi, REG_ID0);
++	if (ret < 0) {
++		dev_err(&priv->spi->dev, "failed to read device id\n");
++		return ret;
++	}
++	if (ret != 0x95) {
++		dev_err(&priv->spi->dev, "unknown device id: %02x\n", ret);
++		return -ENODEV;
++	}
++
++	priv->cdev.name = asprintf("switch%d", dev->id);
++	priv->cdev.size = 256;
++	priv->cdev.ops = &micrel_switch_ops;
++	priv->cdev.priv = priv;
++	priv->cdev.dev = dev;
++	devfs_create(&priv->cdev);
++
++	dev_add_param(dev, "enable", micrel_switch_enable_set, NULL, 0);
++	dev_set_param(dev, "enable", "1");
++
++	return 0;
++}
++
++static struct driver_d micrel_switch_driver = {
++	.name  = "ksz8864rmn",
++	.probe = micrel_switch_probe,
++	.info  = micrel_switch_info,
++};
++
++static int micrel_switch_init(void)
++{
++	register_driver(&micrel_switch_driver);
++	return 0;
++}
++device_initcall(micrel_switch_init);
 -- 
 1.7.10.4
 
