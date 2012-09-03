@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
+Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T8TZd-0001qc-GQ
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 10:08:07 +0000
+ id 1T8TZe-0001r1-Cr
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 10:08:09 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id B63B9DC358C
- for <barebox@lists.infradead.org>; Mon,  3 Sep 2012 12:13:20 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 04E92DC356F
+ for <barebox@lists.infradead.org>; Mon,  3 Sep 2012 12:13:21 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  3 Sep 2012 12:08:03 +0200
-Message-Id: <1346666898-19347-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon,  3 Sep 2012 12:08:04 +0200
+Message-Id: <1346666898-19347-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346666898-19347-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120903100409.GC24296@game.jcrosoft.org>
  <1346666898-19347-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,100 +26,178 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/18] fs: add symlink support
+Subject: [PATCH 04/18] fs: implement stat
 To: barebox@lists.infradead.org
 
-Limit it's support to existing file only
+stat() stats the file pointed to by path and fills in buf.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- fs/fs.c      |   51 +++++++++++++++++++++++++++++++++++++++++++++++++++
- include/fs.h |    3 +++
- 2 files changed, 54 insertions(+)
+ fs/fs.c      |  105 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/fs.h |    6 ++--
+ 2 files changed, 107 insertions(+), 4 deletions(-)
 
 diff --git a/fs/fs.c b/fs/fs.c
-index f357a98..8b7d652 100644
+index 8b7d652..935d516 100644
 --- a/fs/fs.c
 +++ b/fs/fs.c
-@@ -948,6 +948,57 @@ out:
- }
- EXPORT_SYMBOL(readlink);
+@@ -26,6 +26,7 @@
+ #include <errno.h>
+ #include <malloc.h>
+ #include <linux/stat.h>
++#include <linux/err.h>
+ #include <fcntl.h>
+ #include <xfuncs.h>
+ #include <init.h>
+@@ -111,6 +112,61 @@ static int init_cwd(void)
  
-+int symlink(const char *pathname, const char *newpath)
+ postcore_initcall(init_cwd);
+ 
++char *normalise_link(const char *pathname, const char *symlink)
 +{
-+	struct fs_driver_d *fsdrv;
-+	struct fs_device_d *fsdev;
-+	char *p;
-+	char *freep = normalise_path(pathname);
-+	int ret;
-+	struct stat s;
++	const char *buf = symlink;
++	char *path_free, *path;
++	char *absolute_path;
++	int point = 0;
++	int dir = 1;
++	int len;
 +
-+	if (!freep)
-+		return -ENOMEM;
++	if (symlink[0] == '/')
++		return strdup(symlink);
 +
-+	if (!stat(freep, &s) && S_ISDIR(s.st_mode)) {
-+		ret = -ENOSYS;
++	while (*buf == '.' || *buf == '/') {
++		if (*buf == '.') {
++			point++;
++		} else if (*buf == '/') {
++			point = 0;
++			dir++;
++		}
++		if (point > 2) {
++			buf -= 2;
++			break;
++		}
++		buf++;
++	}
++
++	path = path_free = strdup(pathname);
++	if (!path)
++		return NULL;
++
++	while(dir) {
++		path = dirname(path);
++		dir--;
++	}
++
++	len = strlen(buf) + strlen(path) + 1;
++	if (buf[0] != '/')
++		len++;
++
++	absolute_path = calloc(sizeof(char), len);
++
++	if (!absolute_path)
 +		goto out;
-+	}
 +
-+	free(freep);
-+	freep = p = normalise_path(newpath);
-+
-+	if (!p)
-+		return -ENOMEM;
-+
-+	ret = stat(p, &s);
-+	if (!ret) {
-+		ret = -EEXIST;
-+		goto out;
-+	}
-+
-+	fsdev = get_fs_device_and_root_path(&p);
-+	if (!fsdev) {
-+		ret = -ENODEV;
-+		goto out;
-+	}
-+	fsdrv = fsdev->driver;
-+
-+	if (fsdrv->symlink) {
-+		ret = fsdrv->symlink(&fsdev->dev, pathname, p);
-+	} else {
-+		ret = -EPERM;
-+	}
++	strcat(absolute_path, path);
++	if (buf[0] != '/')
++		strcat(absolute_path, "/");
++	strcat(absolute_path, buf);
 +
 +out:
-+	free(freep);
-+	if (ret)
-+		errno = -ret;
++	free(path_free);
 +
-+	return ret;
++	return absolute_path;
 +}
-+EXPORT_SYMBOL(symlink);
 +
- static int fs_match(struct device_d *dev, struct driver_d *drv)
+ char *normalise_path(const char *pathname)
  {
- 	return strcmp(dev->name, drv->name) ? -1 : 0;
+ 	char *path = xzalloc(strlen(pathname) + strlen(cwd) + 2);
+@@ -512,6 +568,42 @@ out:
+ }
+ EXPORT_SYMBOL(unlink);
+ 
++static char *realfile(const char *pathname, struct stat *s)
++{
++	char *path = normalise_path(pathname);
++	int ret;
++
++	ret = lstat(path, s);
++	if (ret)
++		goto out;
++
++	if (S_ISLNK(s->st_mode)) {
++		char tmp[PATH_MAX];
++		char *new_path;
++
++		memset(tmp, 0, PATH_MAX);
++
++		ret = readlink(path, tmp, PATH_MAX - 1);
++		if (ret < 0)
++			goto out;
++
++		new_path = normalise_link(path, tmp);
++		free(path);
++		if (!new_path)
++			return ERR_PTR(-ENOMEM);
++		path = new_path;
++
++		ret = lstat(path, s);
++	}
++
++	if (!ret)
++		return path;
++
++out:
++	free(path);
++	return ERR_PTR(ret);
++}
++
+ int open(const char *pathname, int flags, ...)
+ {
+ 	struct fs_device_d *fsdev;
+@@ -1267,6 +1359,19 @@ int closedir(DIR *dir)
+ }
+ EXPORT_SYMBOL(closedir);
+ 
++int stat(const char *filename, struct stat *s)
++{
++	char *f;
++
++	f = realfile(filename, s);
++	if (IS_ERR(f))
++		return PTR_ERR(f);
++
++	free(f);
++	return 0;
++}
++EXPORT_SYMBOL(stat);
++
+ int lstat(const char *filename, struct stat *s)
+ {
+ 	struct device_d *dev;
 diff --git a/include/fs.h b/include/fs.h
-index 4316d68..4f7a158 100644
+index 4f7a158..ae6c464 100644
 --- a/include/fs.h
 +++ b/include/fs.h
-@@ -51,6 +51,8 @@ struct fs_driver_d {
- 	/* Truncate a file to given size */
- 	int (*truncate)(struct device_d *dev, FILE *f, ulong size);
+@@ -112,10 +112,7 @@ int unlink(const char *pathname);
+ int close(int fd);
+ int flush(int fd);
+ int lstat(const char *filename, struct stat *s);
+-static inline int stat(const char *filename, struct stat *s)
+-{
+-	return lstat(filename, s);
+-}
++int stat(const char *filename, struct stat *s);
+ int read(int fd, void *buf, size_t count);
+ int ioctl(int fd, int request, void *buf);
+ ssize_t write(int fd, const void *buf, size_t count);
+@@ -174,6 +171,7 @@ void *read_file(const char *filename, size_t *size);
+  * of "..", "." and double slashes. The returned string must be freed wit free().
+  */
+ char *normalise_path(const char *path);
++char *normalise_link(const char *pathname, const char* symlink);
  
-+	int (*symlink)(struct device_d *dev, const char *pathname,
-+		       const char *newpath);
- 	int (*readlink)(struct device_d *dev, const char *pathname, char *name,
- 			size_t size);
- 
-@@ -136,6 +138,7 @@ DIR *opendir(const char *pathname);
- struct dirent *readdir(DIR *dir);
- int closedir(DIR *dir);
- 
-+int symlink(const char *pathname, const char *newpath);
- int readlink(const char *path, char *buf, size_t bufsiz);
- 
- int mount (const char *device, const char *fsname, const char *path);
+ /* Register a new filesystem driver */
+ int register_fs_driver(struct fs_driver_d *fsdrv);
 -- 
 1.7.10.4
 
