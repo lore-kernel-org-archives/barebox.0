@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T8ScY-0003R9-53
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 09:07:06 +0000
-Date: Mon, 3 Sep 2012 11:07:00 +0200
+ id 1T8Ser-0003Zn-Fs
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 09:09:26 +0000
+Date: Mon, 3 Sep 2012 11:09:23 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120903090700.GG26594@pengutronix.de>
-References: <1346653494-24187-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20120903090923.GH26594@pengutronix.de>
+References: <1346653088-7576-1-git-send-email-alex.aring@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1346653494-24187-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1346653088-7576-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +22,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] nhk8815: fix nand IO_DATA end resource
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 1/3] sandbox: add asm-generic/io.h
+To: Alexander Aring <alex.aring@googlemail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Sep 03, 2012 at 08:24:54AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> introduce in commit
-> 5f03074ea98b64b55c133b35ee144fdc909e6d69
-> resource: store 'end' instead of 'size' in struct resource
+On Mon, Sep 03, 2012 at 08:18:06AM +0200, Alexander Aring wrote:
+> Add in sandbox asm/io.h the asm-generic/io.h header file.
+> Needed by NAND support.
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 
 Applied, thanks
 
 Sascha
 
 > ---
->  arch/arm/boards/nhk8815/setup.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/sandbox/include/asm/io.h | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/arm/boards/nhk8815/setup.c b/arch/arm/boards/nhk8815/setup.c
-> index ccc0510..5820114 100644
-> --- a/arch/arm/boards/nhk8815/setup.c
-> +++ b/arch/arm/boards/nhk8815/setup.c
-> @@ -63,7 +63,7 @@ static struct resource nhk8815_nand_resources[] = {
->  		.flags	= IORESOURCE_MEM,
->  	}, {
->  		.start	= NAND_IO_DATA,
-> -		.end	= NAND_IO_CMD + 0xfff,
-> +		.end	= NAND_IO_DATA + 0xfff,
->  		.flags	= IORESOURCE_MEM,
->  	}
->  };
+> diff --git a/arch/sandbox/include/asm/io.h b/arch/sandbox/include/asm/io.h
+> index da84fa5..fbc23bf 100644
+> --- a/arch/sandbox/include/asm/io.h
+> +++ b/arch/sandbox/include/asm/io.h
+> @@ -1 +1,7 @@
+> -/* nothing */
+> +#ifndef __ASM_SANDBOX_IO_H
+> +#define __ASM_SANDBOX_IO_H
+> +
+> +#include <asm-generic/io.h>
+> +
+> +#endif /* __ASM_SANDBOX_IO_H */
+> +
 > -- 
-> 1.7.10.4
+> 1.7.12
 > 
 > 
 > _______________________________________________
