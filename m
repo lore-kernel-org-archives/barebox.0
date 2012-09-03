@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T8V6i-0001IX-47
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 11:46:27 +0000
+ id 1T8V6i-0001Ia-DS
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 11:46:32 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Mon,  3 Sep 2012 13:46:02 +0200
-Message-Id: <1346672765-16162-8-git-send-email-jlu@pengutronix.de>
+Date: Mon,  3 Sep 2012 13:46:05 +0200
+Message-Id: <1346672765-16162-11-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1346672765-16162-1-git-send-email-jlu@pengutronix.de>
 References: <1346672765-16162-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,57 +21,130 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/10] drivers/net/ksz8864rmn: add driver for Micrel
- KSZ8864RMN Ethernet Switch
+Subject: [PATCH 10/10] drivers/spi: add driver for the Multichannel SPI
+ controller found in TI SoCs
 To: barebox@lists.infradead.org
 
-It start the switch and provides basic access to the registers.
-
-This driver could also work with some other Micrel switches, possibly
-with some small changes.
+Also create devices for OMAP3.
 
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- drivers/net/Kconfig      |    7 ++
- drivers/net/Makefile     |    1 +
- drivers/net/ksz8864rmn.c |  233 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 241 insertions(+)
- create mode 100644 drivers/net/ksz8864rmn.c
+ arch/arm/mach-omap/include/mach/mcspi.h         |   11 +
+ arch/arm/mach-omap/include/mach/omap3-devices.h |   34 ++
+ drivers/spi/Kconfig                             |    6 +
+ drivers/spi/Makefile                            |    1 +
+ drivers/spi/omap3_spi.c                         |  403 +++++++++++++++++++++++
+ drivers/spi/omap3_spi.h                         |  100 ++++++
+ 6 files changed, 555 insertions(+)
+ create mode 100644 arch/arm/mach-omap/include/mach/mcspi.h
+ create mode 100644 arch/arm/mach-omap/include/mach/omap3-devices.h
+ create mode 100644 drivers/spi/omap3_spi.c
+ create mode 100644 drivers/spi/omap3_spi.h
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 749ea6a..0fa4f14 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -126,5 +126,12 @@ config DRIVER_NET_DESIGNWARE_ALTDESCRIPTOR
+diff --git a/arch/arm/mach-omap/include/mach/mcspi.h b/arch/arm/mach-omap/include/mach/mcspi.h
+new file mode 100644
+index 0000000..dbde67a
+--- /dev/null
++++ b/arch/arm/mach-omap/include/mach/mcspi.h
+@@ -0,0 +1,11 @@
++#ifndef __OMAP_MCSPI_H
++#define  __OMAP_MCSPI_H
++
++#define OMAP3_MCSPI1_BASE	0x48098000
++#define OMAP3_MCSPI2_BASE	0x4809A000
++#define OMAP3_MCSPI3_BASE	0x480B8000
++#define OMAP3_MCSPI4_BASE	0x480BA000
++
++int mcspi_devices_init(void);
++
++#endif /* __OMAP_MCSPI_H */
+diff --git a/arch/arm/mach-omap/include/mach/omap3-devices.h b/arch/arm/mach-omap/include/mach/omap3-devices.h
+new file mode 100644
+index 0000000..2db8583
+--- /dev/null
++++ b/arch/arm/mach-omap/include/mach/omap3-devices.h
+@@ -0,0 +1,34 @@
++#include <driver.h>
++#include <sizes.h>
++
++#include <mach/mcspi.h>
++
++/* the device numbering is the same as in the device tree */
++
++static inline struct device_d *omap3_add_spi1(void)
++{
++	return add_generic_device("omap3_spi", 1, NULL,
++				   OMAP3_MCSPI1_BASE, SZ_4K,
++				   IORESOURCE_MEM, NULL);
++}
++
++static inline struct device_d *omap3_add_spi2(void)
++{
++	return add_generic_device("omap3_spi", 2, NULL,
++				   OMAP3_MCSPI2_BASE, SZ_4K,
++				   IORESOURCE_MEM, NULL);
++}
++
++static inline struct device_d *omap3_add_spi3(void)
++{
++	return add_generic_device("omap3_spi", 3, NULL,
++				   OMAP3_MCSPI3_BASE, SZ_4K,
++				   IORESOURCE_MEM, NULL);
++}
++
++static inline struct device_d *omap3_add_spi4(void)
++{
++	return add_generic_device("omap3_spi", 4, NULL,
++				   OMAP3_MCSPI4_BASE, SZ_4K,
++				   IORESOURCE_MEM, NULL);
++}
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index a249b81..ba1b948 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -34,4 +34,10 @@ config DRIVER_SPI_ATMEL
+ 	depends on ARCH_AT91
+ 	depends on SPI
  
- source "drivers/net/usb/Kconfig"
- 
-+config DRIVER_NET_MICREL
++
++config DRIVER_SPI_OMAP3
++	bool "OMAP3 McSPI Master driver"
++	depends on ARCH_OMAP3
 +	depends on SPI
-+	bool "Micrel KSZ8864RMN Ethernet Switch driver"
-+	help
-+	  This option enables support for enabling the Micrel
-+	  KSZ8864RMN Ethernet Switch over SPI.
 +
  endmenu
- 
-diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-index 29727b7..b589240 100644
---- a/drivers/net/Makefile
-+++ b/drivers/net/Makefile
-@@ -14,3 +14,4 @@ obj-$(CONFIG_NET_USB)			+= usb/
- obj-$(CONFIG_DRIVER_NET_TSE)		+= altera_tse.o
- obj-$(CONFIG_DRIVER_NET_KS8851_MLL)	+= ks8851_mll.o
- obj-$(CONFIG_DRIVER_NET_DESIGNWARE)	+= designware.o
-+obj-$(CONFIG_DRIVER_NET_MICREL)		+= ksz8864rmn.o
-diff --git a/drivers/net/ksz8864rmn.c b/drivers/net/ksz8864rmn.c
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 101652f..b53061e 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -2,3 +2,4 @@ obj-$(CONFIG_SPI) += spi.o
+ obj-$(CONFIG_DRIVER_SPI_IMX) += imx_spi.o
+ obj-$(CONFIG_DRIVER_SPI_ALTERA) += altera_spi.o
+ obj-$(CONFIG_DRIVER_SPI_ATMEL) += atmel_spi.o
++obj-$(CONFIG_DRIVER_SPI_OMAP3) += omap3_spi.o
+diff --git a/drivers/spi/omap3_spi.c b/drivers/spi/omap3_spi.c
 new file mode 100644
-index 0000000..5851463
+index 0000000..eadb78d
 --- /dev/null
-+++ b/drivers/net/ksz8864rmn.c
-@@ -0,0 +1,233 @@
++++ b/drivers/spi/omap3_spi.c
+@@ -0,0 +1,403 @@
 +/*
-+ * Copyright (C) 2012 Jan Luebbe, Pengutronix
++ * Copyright (C) 2012 Jan Luebbe <j.luebbe@pengutronix.de>
++ *
++ * Copyright (C) 2010 Dirk Behme <dirk.behme@googlemail.com>
++ *
++ * Driver for McSPI controller on OMAP3. Based on davinci_spi.c
++ * Copyright (C) 2009 Texas Instruments Incorporated - http://www.ti.com/
++ *
++ * Copyright (C) 2007 Atmel Corporation
++ *
++ * Parts taken from linux/drivers/spi/omap2_mcspi.c
++ * Copyright (C) 2005, 2006 Nokia Corporation
++ *
++ * Modified by Ruslan Araslanov <ruslan.araslanov@vitecmm.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -93,216 +166,477 @@ index 0000000..5851463
 +#include <common.h>
 +#include <init.h>
 +#include <driver.h>
-+#include <spi/spi.h>
 +#include <errno.h>
++#include <spi/spi.h>
++#include <malloc.h>
++#include <io.h>
++#include "omap3_spi.h"
 +
-+#define REG_ID0			0x00
-+#define REG_ID1			0x01
++#define WORD_LEN	8
++#define SPI_WAIT_TIMEOUT 30000000
 +
-+#define REG_GC00		0x02
-+#define REG_GC01		0x03
-+#define REG_GC02		0x04
-+#define REG_GC03		0x05
-+#define REG_GC04		0x06
-+#define REG_GC05		0x07
-+#define REG_GC06		0x08
-+#define REG_GC07		0x09
-+#define REG_GC08		0x0a
-+#define REG_GC09		0x0b
-+#define REG_GC10		0x0c
-+#define REG_GC11		0x0d
++#define SPI_XFER_BEGIN  0x01                    /* Assert CS before transfer */
++#define SPI_XFER_END    0x02                    /* Deassert CS after transfer */
 +
-+#define REG_PSTAT1(p)		(0x10 * p + 0xe)
-+#define REG_PSTAT2(p)		(0x10 * p + 0xf)
-+
-+#define CMD_WRITE		0x02
-+#define CMD_READ		0x03
-+
-+struct micrel_switch_priv {
-+	struct cdev             cdev;
-+	struct spi_device       *spi;
-+};
-+
-+static int micrel_switch_read_reg(struct spi_device *spi, uint8_t reg)
++static void spi_reset(struct spi_master *master)
 +{
-+	uint8_t tx[2];
-+	uint8_t rx[1];
-+	int ret;
++	struct omap3_spi_master *omap3_master = container_of(master, struct omap3_spi_master, master);
++	struct mcspi __iomem *regs = omap3_master->regs;
++	unsigned int tmp;
 +
-+	tx[0] = CMD_READ;
-+	tx[1] = reg;
++	writel(OMAP3_MCSPI_SYSCONFIG_SOFTRESET, &regs->sysconfig);
++	do {
++		tmp = readl(&regs->sysstatus);
++	} while (!(tmp & OMAP3_MCSPI_SYSSTATUS_RESETDONE));
 +
-+	ret = spi_write_then_read(spi, tx, 2, rx, 1);
-+	if (ret < 0)
-+		return ret;
++	writel(OMAP3_MCSPI_SYSCONFIG_AUTOIDLE |
++				 OMAP3_MCSPI_SYSCONFIG_ENAWAKEUP |
++				 OMAP3_MCSPI_SYSCONFIG_SMARTIDLE,
++				 &regs->sysconfig);
 +
-+	return rx[0];
++	writel(OMAP3_MCSPI_WAKEUPENABLE_WKEN, &regs->wakeupenable);
 +}
 +
-+static void micrel_switch_write_reg(struct spi_device *spi, uint8_t reg, uint8_t val)
++int spi_claim_bus(struct spi_device *spi)
 +{
-+	uint8_t tx[3];
++	struct spi_master *master = spi->master;
++	struct omap3_spi_master *omap3_master = container_of(master, struct omap3_spi_master, master);
++	struct mcspi __iomem *regs = omap3_master->regs;
++	unsigned int conf, div = 0;
 +
-+	tx[0] = CMD_WRITE;
-+	tx[1] = reg;
-+	tx[2] = val;
++	/* McSPI global module configuration */
 +
-+	spi_write_then_read(spi, tx, 3, NULL, 0);
-+}
++	/*
++	 * setup when switching from (reset default) slave mode
++	 * to single-channel master mode
++	 */
++	conf = readl(&regs->modulctrl);
++	conf &= ~(OMAP3_MCSPI_MODULCTRL_STEST | OMAP3_MCSPI_MODULCTRL_MS);
++	conf |= OMAP3_MCSPI_MODULCTRL_SINGLE;
++	writel(conf, &regs->modulctrl);
 +
-+static int micrel_switch_enable_set(struct device_d *dev, struct param_d *param,
-+		const char *val)
-+{
-+	struct spi_device *spi = (struct spi_device *)dev->type_data;
-+	int enable;
-+	char *new;
++	/* McSPI individual channel configuration */
 +
-+	if (!val)
-+		return dev_param_set_generic(dev, param, NULL);
++	/* Calculate clock divisor. Valid range: 0x0 - 0xC ( /1 - /4096 ) */
++	if (spi->max_speed_hz) {
++		while (div <= 0xC && (OMAP3_MCSPI_MAX_FREQ / (1 << div))
++					 > spi->max_speed_hz)
++			div++;
++	} else
++		div = 0xC;
 +
-+	enable = simple_strtoul(val, NULL, 0);
++	conf = readl(&regs->channel[spi->chip_select].chconf);
 +
-+	if (enable) {
-+		micrel_switch_write_reg(spi, REG_ID1, 1);
-+		new = "1";
-+	} else {
-+		micrel_switch_write_reg(spi, REG_ID1, 0);
-+		new = "0";
-+	}
++	/* standard 4-wire master mode:	SCK, MOSI/out, MISO/in, nCS
++	 * REVISIT: this controller could support SPI_3WIRE mode.
++	 */
++	conf &= ~(OMAP3_MCSPI_CHCONF_IS|OMAP3_MCSPI_CHCONF_DPE1);
++	conf |= OMAP3_MCSPI_CHCONF_DPE0;
 +
-+	dev_param_set_generic(dev, param, new);
++	/* wordlength */
++	conf &= ~OMAP3_MCSPI_CHCONF_WL_MASK;
++	conf |= (WORD_LEN - 1) << 7;
++
++	/* set chipselect polarity; manage with FORCE */
++	if (!(spi->mode & SPI_CS_HIGH))
++		conf |= OMAP3_MCSPI_CHCONF_EPOL; /* active-low; normal */
++	else
++		conf &= ~OMAP3_MCSPI_CHCONF_EPOL;
++
++	/* set clock divisor */
++	conf &= ~OMAP3_MCSPI_CHCONF_CLKD_MASK;
++	conf |= div << 2;
++
++	/* set SPI mode 0..3 */
++	if (spi->mode & SPI_CPOL)
++		conf |= OMAP3_MCSPI_CHCONF_POL;
++	else
++		conf &= ~OMAP3_MCSPI_CHCONF_POL;
++	if (spi->mode & SPI_CPHA)
++		conf |= OMAP3_MCSPI_CHCONF_PHA;
++	else
++		conf &= ~OMAP3_MCSPI_CHCONF_PHA;
++
++	/* Transmit & receive mode */
++	conf &= ~OMAP3_MCSPI_CHCONF_TRM_MASK;
++
++	writel(conf, &regs->channel[spi->chip_select].chconf);
++	readl(&regs->channel[spi->chip_select].chconf);
 +
 +	return 0;
 +}
 +
-+static void micrel_switch_print_reg(struct spi_device *spi, const char *name, uint8_t reg)
++int omap3_spi_write(struct spi_device *spi, unsigned int len, const u8 *txp,
++		    unsigned long flags)
 +{
-+	uint8_t tx[2];
-+	uint8_t rx[1];
-+	int ret;
-+
-+	tx[0] = CMD_READ;
-+	tx[1] = reg;
-+
-+	ret = spi_write_then_read(spi, tx, 2, rx, 1);
-+	if (ret < 0)
-+		printf("%s@0x%02x: SPI error\n", name, reg);
-+
-+	printf("%s@0x%02x: 0x%02x\n", name, reg, rx[0]);
-+}
-+
-+static void micrel_switch_info(struct device_d *dev)
-+{
-+	struct spi_device *spi = (struct spi_device *)dev->type_data;
-+
-+	printf("Registers:\n");
-+	micrel_switch_print_reg(spi, " Chip ID 0", REG_ID0);
-+	micrel_switch_print_reg(spi, " Chip ID 1", REG_ID1);
-+	micrel_switch_print_reg(spi, " Global Control  0", REG_GC00);
-+	micrel_switch_print_reg(spi, " Global Control  1", REG_GC01);
-+	micrel_switch_print_reg(spi, " Global Control  2", REG_GC02);
-+	micrel_switch_print_reg(spi, " Global Control  3", REG_GC03);
-+	micrel_switch_print_reg(spi, " Global Control  4", REG_GC04);
-+	micrel_switch_print_reg(spi, " Global Control  5", REG_GC05);
-+	micrel_switch_print_reg(spi, " Global Control  6", REG_GC06);
-+	micrel_switch_print_reg(spi, " Global Control  7", REG_GC07);
-+	micrel_switch_print_reg(spi, " Global Control  8", REG_GC08);
-+	micrel_switch_print_reg(spi, " Global Control  9", REG_GC09);
-+	micrel_switch_print_reg(spi, " Global Control 10", REG_GC10);
-+	micrel_switch_print_reg(spi, " Global Control 11", REG_GC11);
-+	micrel_switch_print_reg(spi, " Port 1 Status 1", REG_PSTAT1(1));
-+	micrel_switch_print_reg(spi, " Port 1 Status 2", REG_PSTAT2(1));
-+	micrel_switch_print_reg(spi, " Port 2 Status 1", REG_PSTAT1(2));
-+	micrel_switch_print_reg(spi, " Port 2 Status 2", REG_PSTAT2(2));
-+}
-+
-+static ssize_t micel_switch_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
-+{
-+	int i, ret;
-+	uint8_t *buf = _buf;
-+	struct micrel_switch_priv *priv = cdev->priv;
-+
-+	for (i = 0; i < count; i++) {
-+		ret = micrel_switch_read_reg(priv->spi, offset);
-+		if (ret < 0)
-+			return ret;
-+		*buf = ret;
-+		buf++;
-+		offset++;
-+	}
-+
-+	return count;
-+}
-+
-+static ssize_t micel_switch_write(struct cdev *cdev, const void *_buf, size_t count, loff_t offset, ulong flags)
-+{
++	struct spi_master *master = spi->master;
++	struct omap3_spi_master *omap3_master = container_of(master, struct omap3_spi_master, master);
++	struct mcspi __iomem *regs = omap3_master->regs;
 +	int i;
-+	const uint8_t *buf = _buf;
-+	struct micrel_switch_priv *priv = cdev->priv;
++	int timeout = SPI_WAIT_TIMEOUT;
++	int chconf = readl(&regs->channel[spi->chip_select].chconf);
 +
-+	for (i = 0; i < count; i++) {
-+		micrel_switch_write_reg(priv->spi, offset, *buf);
-+		buf++;
-+		offset++;
++	if (flags & SPI_XFER_BEGIN)
++		writel(OMAP3_MCSPI_CHCTRL_EN,
++		       &regs->channel[spi->chip_select].chctrl);
++
++	chconf &= ~OMAP3_MCSPI_CHCONF_TRM_MASK;
++	chconf |= OMAP3_MCSPI_CHCONF_TRM_TX_ONLY;
++	chconf |= OMAP3_MCSPI_CHCONF_FORCE;
++	writel(chconf, &regs->channel[spi->chip_select].chconf);
++	readl(&regs->channel[spi->chip_select].chconf);
++
++	for (i = 0; i < len; i++) {
++		/* wait till TX register is empty (TXS == 1) */
++		while (!(readl(&regs->channel[spi->chip_select].chstat) &
++			 OMAP3_MCSPI_CHSTAT_TXS)) {
++			if (--timeout <= 0) {
++				printf("SPI TXS timed out, status=0x%08x\n",
++				       readl(&regs->channel[spi->chip_select].chstat));
++				return -1;
++			}
++		}
++		/* Write the data */
++		writel(txp[i], &regs->channel[spi->chip_select].tx);
 +	}
 +
-+	return count;
++	if (flags & SPI_XFER_END) {
++		/* wait to finish of transfer */
++		while (!(readl(&regs->channel[spi->chip_select].chstat) &
++			 OMAP3_MCSPI_CHSTAT_EOT));
++
++		chconf &= ~OMAP3_MCSPI_CHCONF_FORCE;
++		writel(chconf, &regs->channel[spi->chip_select].chconf);
++
++		writel(0, &regs->channel[spi->chip_select].chctrl);
++	}
++
++	while (!(readl(&regs->channel[spi->chip_select].chstat) &
++			 OMAP3_MCSPI_CHSTAT_TXS));
++	while (!(readl(&regs->channel[spi->chip_select].chstat) &
++			 OMAP3_MCSPI_CHSTAT_EOT));
++
++	return 0;
 +}
 +
-+static struct file_operations micrel_switch_ops = {
-+	.read  = micel_switch_read,
-+	.write = micel_switch_write,
-+	.lseek = dev_lseek_default,
-+};
-+
-+static int micrel_switch_probe(struct device_d *dev)
++int omap3_spi_read(struct spi_device *spi, unsigned int len, u8 *rxp,
++		   unsigned long flags)
 +{
-+	struct micrel_switch_priv *priv;
++	struct spi_master *master = spi->master;
++	struct omap3_spi_master *omap3_master = container_of(master, struct omap3_spi_master, master);
++	struct mcspi __iomem *regs = omap3_master->regs;
++	int i;
++	int timeout = SPI_WAIT_TIMEOUT;
++	int chconf = readl(&regs->channel[spi->chip_select].chconf);
++
++	if (flags & SPI_XFER_BEGIN)
++		writel(OMAP3_MCSPI_CHCTRL_EN,
++		       &regs->channel[spi->chip_select].chctrl);
++
++	chconf &= ~OMAP3_MCSPI_CHCONF_TRM_MASK;
++	chconf |= OMAP3_MCSPI_CHCONF_TRM_RX_ONLY;
++	chconf |= OMAP3_MCSPI_CHCONF_FORCE;
++	writel(chconf, &regs->channel[spi->chip_select].chconf);
++	readl(&regs->channel[spi->chip_select].chconf);
++	writel(0, &regs->channel[spi->chip_select].tx);
++
++	for (i = 0; i < len; i++) {
++		/* Wait till RX register contains data (RXS == 1) */
++		while (!(readl(&regs->channel[spi->chip_select].chstat) &
++			 OMAP3_MCSPI_CHSTAT_RXS)) {
++			if (--timeout <= 0) {
++				printf("SPI RXS timed out, status=0x%08x\n",
++				       readl(&regs->channel[spi->chip_select].chstat));
++				return -1;
++			}
++		}
++		/* Read the data */
++		rxp[i] = readl(&regs->channel[spi->chip_select].rx);
++	}
++
++	if (flags & SPI_XFER_END) {
++		chconf &= ~OMAP3_MCSPI_CHCONF_FORCE;
++		writel(chconf, &regs->channel[spi->chip_select].chconf);
++		readl(&regs->channel[spi->chip_select].chconf);
++
++		writel(0, &regs->channel[spi->chip_select].chctrl);
++	}
++
++	return 0;
++}
++
++int spi_xfer(struct spi_device *spi, struct spi_transfer *t, unsigned long flags)
++{
++	struct spi_master *master = spi->master;
++	struct omap3_spi_master *omap3_master = container_of(master, struct omap3_spi_master, master);
++	struct mcspi __iomem *regs = omap3_master->regs;
++	unsigned int    len = t->len;
++	int             ret = -1;
++	const u8        *txp = t->tx_buf; /* can be NULL for read operation */
++	u8              *rxp = t->rx_buf; /* can be NULL for write operation */
++
++	if (len == 0) {	 /* only change CS */
++		int chconf = readl(&regs->channel[spi->chip_select].chconf);
++
++		if (flags & SPI_XFER_BEGIN) {
++			writel(OMAP3_MCSPI_CHCTRL_EN,
++			       &regs->channel[spi->chip_select].chctrl);
++			chconf |= OMAP3_MCSPI_CHCONF_FORCE;
++			writel(chconf,
++			       &regs->channel[spi->chip_select].chconf);
++			readl(&regs->channel[spi->chip_select].chconf);
++		}
++
++		if (flags & SPI_XFER_END) {
++			chconf &= ~OMAP3_MCSPI_CHCONF_FORCE;
++			writel(chconf,
++			       &regs->channel[spi->chip_select].chconf);
++			writel(0, &regs->channel[spi->chip_select].chctrl);
++			readl(&regs->channel[spi->chip_select].chconf);
++		}
++
++		ret = 0;
++	} else {
++		if (t->tx_buf != NULL)
++			ret = omap3_spi_write(spi, len, txp, flags);
++
++		if (t->rx_buf != NULL)
++			ret = omap3_spi_read(spi, len, rxp, flags);
++	}
++	return ret;
++}
++
++static int omap3_spi_transfer(struct spi_device *spi, struct spi_message *mesg)
++{
++	struct spi_master *master = spi->master;
++	struct spi_transfer *t, *t_first, *t_last = NULL;
++	unsigned long flags;
 +	int ret = 0;
 +
-+	priv = xzalloc(sizeof(*priv));
-+
-+	dev->priv = priv;
-+
-+	priv->spi = (struct spi_device *)dev->type_data;
-+	priv->spi->mode = SPI_MODE_0;
-+	priv->spi->bits_per_word = 8;
-+
-+	ret = micrel_switch_read_reg(priv->spi, REG_ID0);
-+	if (ret < 0) {
-+		dev_err(&priv->spi->dev, "failed to read device id\n");
++	ret = spi_claim_bus(spi);
++	if (ret)
 +		return ret;
++
++	if (list_empty(&mesg->transfers))
++		return 0;
++
++	t_first = list_first_entry(&mesg->transfers, struct spi_transfer, transfer_list);
++	t_last = list_last_entry(&mesg->transfers, struct spi_transfer, transfer_list);
++
++	mesg->actual_length = 0;
++
++	dev_dbg(master->dev, "transfer start actual_length=%i\n", mesg->actual_length);
++	list_for_each_entry(t, &mesg->transfers, transfer_list) {
++		dev_dbg(master->dev,
++			"  xfer %p: len %u tx %p rx %p\n",
++			t, t->len, t->tx_buf, t->rx_buf);
++		flags = 0;
++		if (t == t_first)
++			flags |= SPI_XFER_BEGIN;
++		if (t == t_last)
++			flags |= SPI_XFER_END;
++		spi_xfer(spi, t, flags);
++		mesg->actual_length += t->len;
 +	}
-+	if (ret != 0x95) {
-+		dev_err(&priv->spi->dev, "unknown device id: %02x\n", ret);
++	dev_dbg(master->dev, "transfer done actual_length=%i\n", mesg->actual_length);
++
++	return ret;
++}
++
++static int omap3_spi_setup(struct spi_device *spi)
++{
++	struct spi_master *master = spi->master;
++
++	if (((master->bus_num == 0) && (spi->chip_select > 3)) ||
++			((master->bus_num == 1) && (spi->chip_select > 1)) ||
++			((master->bus_num == 2) && (spi->chip_select > 1)) ||
++			((master->bus_num == 3) && (spi->chip_select > 0))) {
++		printf("SPI error: unsupported chip select %i \
++			on bus %i\n", spi->chip_select, master->bus_num);
++		return -1;
++	}
++
++	if (spi->max_speed_hz > OMAP3_MCSPI_MAX_FREQ) {
++		printf("SPI error: unsupported frequency %i Hz. \
++			Max frequency is 48 Mhz\n", spi->max_speed_hz);
++		return -1;
++	}
++
++	if (spi->mode > SPI_MODE_3) {
++		printf("SPI error: unsupported SPI mode %i\n", spi->mode);
++		return -1;
++	}
++
++	return 0;
++}
++
++static int omap3_spi_probe(struct device_d *dev)
++{
++	struct spi_master *master;
++	struct omap3_spi_master *omap3_master;
++
++	omap3_master = xzalloc(sizeof(*omap3_master));
++
++	master = &omap3_master->master;
++	master->dev = dev;
++
++	/*
++	 * OMAP3 McSPI (MultiChannel SPI) has 4 busses (modules)
++	 * with different number of chip selects (CS, channels):
++	 * McSPI1 has 4 CS (bus 0, cs 0 - 3)
++	 * McSPI2 has 2 CS (bus 1, cs 0 - 1)
++	 * McSPI3 has 2 CS (bus 2, cs 0 - 1)
++	 * McSPI4 has 1 CS (bus 3, cs 0)
++	 */
++
++	master->bus_num = dev->id;
++	switch (master->bus_num) {
++	case 1:
++		master->num_chipselect = 4;
++		break;
++	case 2:
++		master->num_chipselect = 2;
++		break;
++	case 3:
++		master->num_chipselect = 2;
++		break;
++	case 4:
++		master->num_chipselect = 1;
++		break;
++	default:
++		printf("SPI error: unsupported bus %i. \
++			Supported busses 1 - 4\n", master->bus_num);
 +		return -ENODEV;
 +	}
++	master->setup = omap3_spi_setup;
++	master->transfer = omap3_spi_transfer;
 +
-+	priv->cdev.name = asprintf("switch%d", dev->id);
-+	priv->cdev.size = 256;
-+	priv->cdev.ops = &micrel_switch_ops;
-+	priv->cdev.priv = priv;
-+	priv->cdev.dev = dev;
-+	devfs_create(&priv->cdev);
++	omap3_master->regs = (struct mcspi *)dev_request_mem_region(dev, 0);;
 +
-+	dev_add_param(dev, "enable", micrel_switch_enable_set, NULL, 0);
-+	dev_set_param(dev, "enable", "1");
++	spi_reset(master);
++
++	spi_register_master(master);
 +
 +	return 0;
 +}
 +
-+static struct driver_d micrel_switch_driver = {
-+	.name  = "ksz8864rmn",
-+	.probe = micrel_switch_probe,
-+	.info  = micrel_switch_info,
++static struct driver_d omap3_spi_driver = {
++	.name = "omap3_spi",
++	.probe = omap3_spi_probe,
 +};
 +
-+static int micrel_switch_init(void)
++static int omap3_spi_init(void)
 +{
-+	register_driver(&micrel_switch_driver);
-+	return 0;
++	return register_driver(&omap3_spi_driver);
 +}
-+device_initcall(micrel_switch_init);
++
++device_initcall(omap3_spi_init);
+diff --git a/drivers/spi/omap3_spi.h b/drivers/spi/omap3_spi.h
+new file mode 100644
+index 0000000..2ad8ef7
+--- /dev/null
++++ b/drivers/spi/omap3_spi.h
+@@ -0,0 +1,100 @@
++/*
++ * Register definitions for the OMAP3 McSPI Controller
++ *
++ * Copyright (C) 2010 Dirk Behme <dirk.behme@googlemail.com>
++ *
++ * Parts taken from linux/drivers/spi/omap2_mcspi.c
++ * Copyright (C) 2005, 2006 Nokia Corporation
++ *
++ * Modified by Ruslan Araslanov <ruslan.araslanov@vitecmm.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#ifndef _OMAP3_SPI_H_
++#define _OMAP3_SPI_H_
++
++#define OMAP3_MCSPI_MAX_FREQ	48000000
++
++/* OMAP3 McSPI registers */
++struct mcspi_channel {
++	unsigned int chconf;		/* 0x2C, 0x40, 0x54, 0x68 */
++	unsigned int chstat;		/* 0x30, 0x44, 0x58, 0x6C */
++	unsigned int chctrl;		/* 0x34, 0x48, 0x5C, 0x70 */
++	unsigned int tx;		/* 0x38, 0x4C, 0x60, 0x74 */
++	unsigned int rx;		/* 0x3C, 0x50, 0x64, 0x78 */
++};
++
++struct mcspi {
++	unsigned char res1[0x10];
++	unsigned int sysconfig;		/* 0x10 */
++	unsigned int sysstatus;		/* 0x14 */
++	unsigned int irqstatus;		/* 0x18 */
++	unsigned int irqenable;		/* 0x1C */
++	unsigned int wakeupenable;	/* 0x20 */
++	unsigned int syst;		/* 0x24 */
++	unsigned int modulctrl;		/* 0x28 */
++	struct mcspi_channel channel[4]; /* channel0: 0x2C - 0x3C, bus 0 & 1 & 2 & 3 */
++					/* channel1: 0x40 - 0x50, bus 0 & 1 */
++					/* channel2: 0x54 - 0x64, bus 0 & 1 */
++					/* channel3: 0x68 - 0x78, bus 0 */
++};
++
++/* per-register bitmasks */
++#define OMAP3_MCSPI_SYSCONFIG_SMARTIDLE (2 << 3)
++#define OMAP3_MCSPI_SYSCONFIG_ENAWAKEUP (1 << 2)
++#define OMAP3_MCSPI_SYSCONFIG_AUTOIDLE	(1 << 0)
++#define OMAP3_MCSPI_SYSCONFIG_SOFTRESET (1 << 1)
++
++#define OMAP3_MCSPI_SYSSTATUS_RESETDONE (1 << 0)
++
++#define OMAP3_MCSPI_MODULCTRL_SINGLE	(1 << 0)
++#define OMAP3_MCSPI_MODULCTRL_MS	(1 << 2)
++#define OMAP3_MCSPI_MODULCTRL_STEST	(1 << 3)
++
++#define OMAP3_MCSPI_CHCONF_PHA		(1 << 0)
++#define OMAP3_MCSPI_CHCONF_POL		(1 << 1)
++#define OMAP3_MCSPI_CHCONF_CLKD_MASK	(0x0f << 2)
++#define OMAP3_MCSPI_CHCONF_EPOL		(1 << 6)
++#define OMAP3_MCSPI_CHCONF_WL_MASK	(0x1f << 7)
++#define OMAP3_MCSPI_CHCONF_TRM_RX_ONLY	(0x01 << 12)
++#define OMAP3_MCSPI_CHCONF_TRM_TX_ONLY	(0x02 << 12)
++#define OMAP3_MCSPI_CHCONF_TRM_MASK	(0x03 << 12)
++#define OMAP3_MCSPI_CHCONF_DMAW		(1 << 14)
++#define OMAP3_MCSPI_CHCONF_DMAR		(1 << 15)
++#define OMAP3_MCSPI_CHCONF_DPE0		(1 << 16)
++#define OMAP3_MCSPI_CHCONF_DPE1		(1 << 17)
++#define OMAP3_MCSPI_CHCONF_IS		(1 << 18)
++#define OMAP3_MCSPI_CHCONF_TURBO	(1 << 19)
++#define OMAP3_MCSPI_CHCONF_FORCE	(1 << 20)
++
++#define OMAP3_MCSPI_CHSTAT_RXS		(1 << 0)
++#define OMAP3_MCSPI_CHSTAT_TXS		(1 << 1)
++#define OMAP3_MCSPI_CHSTAT_EOT		(1 << 2)
++
++#define OMAP3_MCSPI_CHCTRL_EN		(1 << 0)
++
++#define OMAP3_MCSPI_WAKEUPENABLE_WKEN	(1 << 0)
++
++struct omap3_spi_master {
++	struct spi_master master;
++	struct mcspi __iomem *regs;
++};
++
++#endif /* _OMAP3_SPI_H_ */
 -- 
 1.7.10.4
 
