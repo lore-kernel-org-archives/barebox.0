@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T8V6h-0001IV-S0
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 11:46:24 +0000
+ id 1T8V6h-0001IT-Ph
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 11:46:25 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Mon,  3 Sep 2012 13:46:00 +0200
-Message-Id: <1346672765-16162-6-git-send-email-jlu@pengutronix.de>
+Date: Mon,  3 Sep 2012 13:45:59 +0200
+Message-Id: <1346672765-16162-5-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1346672765-16162-1-git-send-email-jlu@pengutronix.de>
 References: <1346672765-16162-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,141 +21,223 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/10] common: split out meminfo output and make it optional
+Subject: [PATCH 04/10] scripts: add tool to create image for SPI boot on AM35xx
 To: barebox@lists.infradead.org
+
+Booting from SPI on an AM35xx (and possibly other TI SOCs) requires
+a special format:
+
+- 32 bit image size in big-endian
+- 32 bit load address in big-endian
+- binary image converted from little- to big-endian
+
+The mk-am35xx-spi-image tool converts barebox.bin to
+this format.
 
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- common/Kconfig   |    4 ++++
- common/Makefile  |    1 +
- common/meminfo.c |   23 +++++++++++++++++++++++
- common/startup.c |   21 ---------------------
- include/common.h |    4 ++--
- 5 files changed, 30 insertions(+), 23 deletions(-)
- create mode 100644 common/meminfo.c
+ arch/arm/Makefile             |    8 +++
+ arch/arm/mach-omap/Kconfig    |    7 +++
+ scripts/.gitignore            |    1 +
+ scripts/Makefile              |    2 +-
+ scripts/mk-am35xx-spi-image.c |  126 +++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 143 insertions(+), 1 deletion(-)
+ create mode 100644 scripts/mk-am35xx-spi-image.c
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 7eb5b49..ba8ccf5 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -96,6 +96,10 @@ config BANNER
- 	bool "display banner"
- 	default y
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 1b60261..ff96299 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -199,6 +199,14 @@ endif
  
-+config MEMINFO
-+	bool "display memory info"
-+	default y
+ all: $(KBUILD_IMAGE)
+ 
++barebox.spi: barebox.bin
++	@echo "  SPI    " $@
++	$(Q)scripts/mk-am35xx-spi-image barebox.bin > barebox.spi
 +
- config ENVIRONMENT_VARIABLES
- 	bool "environment variables support"
++ifeq ($(CONFIG_OMAP_BUILD_SPI),y)
++all: barebox.spi
++endif
++
+ archprepare: maketools
+ maketools:
+ 	$(Q)$(MAKE) $(build)=arch/arm/tools include/generated/mach-types.h
+diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+index d735284..a781287 100644
+--- a/arch/arm/mach-omap/Kconfig
++++ b/arch/arm/mach-omap/Kconfig
+@@ -91,6 +91,13 @@ config OMAP_BUILD_IFT
+ 	prompt "build ift binary"
+ 	bool
  
-diff --git a/common/Makefile b/common/Makefile
-index d74dffb..5d3ef4b 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -19,6 +19,7 @@ obj-$(CONFIG_MALLOC_TLSF) += tlsf.o
- obj-$(CONFIG_MALLOC_DUMMY) += dummy_malloc.o
- obj-y += clock.o
- obj-$(CONFIG_BANNER) += version.o
-+obj-$(CONFIG_MEMINFO) += meminfo.o
- obj-$(CONFIG_COMMAND_SUPPORT) += command.o
- obj-$(CONFIG_CONSOLE_FULL) += console.o
- obj-$(CONFIG_CONSOLE_SIMPLE) += console_simple.o
-diff --git a/common/meminfo.c b/common/meminfo.c
++config OMAP_BUILD_SPI
++	prompt "build SPI binary"
++	bool
++	help
++	  Say Y here if you want to build an barebox.spi image as used
++	  on the AM35xx chips when booting form SPI NOR flash.
++
+ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0x80e80000 if MACH_OMAP343xSDP
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index 6e63f85..3f1cbdb 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -2,6 +2,7 @@ bareboxenv
+ bin2c
+ gen_netx_image
+ kallsyms
++mk-am35xx-spi-image
+ mkimage
+ mkublheader
+ omap_signGP
+diff --git a/scripts/Makefile b/scripts/Makefile
+index 7ca5e29..55ccdac 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -9,7 +9,7 @@ hostprogs-y                      += bin2c
+ hostprogs-y                      += mkimage
+ hostprogs-y                      += bareboxenv
+ hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
+-hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP
++hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP mk-am35xx-spi-image
+ hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
+ hostprogs-$(CONFIG_ARCH_DAVINCI) += mkublheader
+ 
+diff --git a/scripts/mk-am35xx-spi-image.c b/scripts/mk-am35xx-spi-image.c
 new file mode 100644
-index 0000000..06fce5a
+index 0000000..133f2b7
 --- /dev/null
-+++ b/common/meminfo.c
-@@ -0,0 +1,23 @@
-+#include <common.h>
-+#include <init.h>
-+#include <memory.h>
-+#include <asm-generic/memory_layout.h>
++++ b/scripts/mk-am35xx-spi-image.c
+@@ -0,0 +1,126 @@
++/*
++ * mkublheader.c - produce the header needed to load barebox on OMAP-L138
++ *
++ * Copyright (C) 2012 Jan Luebbe <j.luebbe@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, write to the Free Software Foundation, Inc.,
++ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ */
 +
-+static int display_meminfo(void)
++#define _BSD_SOURCE
++
++#include <stdio.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <fcntl.h>
++#include <unistd.h>
++#include <stdint.h>
++#include <limits.h>
++#include <errno.h>
++#include <stdlib.h>
++#include <string.h>
++#include <getopt.h>
++#include <endian.h>
++
++void usage(char *prgname)
 +{
-+	ulong mstart = mem_malloc_start();
-+	ulong mend   = mem_malloc_end();
-+	ulong msize  = mend - mstart + 1;
-+
-+	debug("barebox code: 0x%p -> 0x%p\n", _stext, _etext);
-+	debug("bss segment:  0x%p -> 0x%p\n", __bss_start, __bss_stop);
-+	printf("malloc space: 0x%08lx -> 0x%08lx (size %s)\n",
-+		mstart, mend, size_human_readable(msize));
-+#ifdef CONFIG_ARM
-+	printf("stack space:  0x%08x -> 0x%08x (size %s)\n",
-+		STACK_BASE, STACK_BASE + STACK_SIZE,
-+		size_human_readable(STACK_SIZE));
-+#endif
-+	return 0;
++	printf("usage: %s [OPTION] FILE > IMAGE\n"
++	       "\n"
++	       "options:\n"
++	       "  -a <address> memory address for the loaded image in SRAM\n",
++	       prgname);
 +}
-+late_initcall(display_meminfo);
-diff --git a/common/startup.c b/common/startup.c
-index abd1b77..e639d05 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -33,34 +33,15 @@
- #include <init.h>
- #include <command.h>
- #include <malloc.h>
--#include <memory.h>
- #include <debug_ll.h>
- #include <fs.h>
- #include <linux/stat.h>
- #include <environment.h>
--#include <asm-generic/memory_layout.h>
- #include <asm/sections.h>
- 
- extern initcall_t __barebox_initcalls_start[], __barebox_early_initcalls_end[],
- 		  __barebox_initcalls_end[];
- 
--static void display_meminfo(void)
--{
--	ulong mstart = mem_malloc_start();
--	ulong mend   = mem_malloc_end();
--	ulong msize  = mend - mstart + 1;
--
--	debug("barebox code: 0x%p -> 0x%p\n", _stext, _etext);
--	debug("bss segment:  0x%p -> 0x%p\n", __bss_start, __bss_stop);
--	printf("Malloc space: 0x%08lx -> 0x%08lx (size %s)\n",
--		mstart, mend, size_human_readable(msize));
--#ifdef CONFIG_ARM
--	printf("Stack space : 0x%08x -> 0x%08x (size %s)\n",
--		STACK_BASE, STACK_BASE + STACK_SIZE,
--		size_human_readable(STACK_SIZE));
--#endif
--}
--
- #ifdef CONFIG_DEFAULT_ENVIRONMENT
- #include <generated/barebox_default_env.h>
- 
-@@ -128,8 +109,6 @@ void start_barebox (void)
- 
- 	debug("initcalls done\n");
- 
--	display_meminfo();
--
- #ifdef CONFIG_ENV_HANDLING
- 	if (envfs_load(default_environment_path, "/env")) {
- #ifdef CONFIG_DEFAULT_ENVIRONMENT
-diff --git a/include/common.h b/include/common.h
-index df12083..30c1dc6 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -150,11 +150,11 @@ static inline void dump_stack(void)
- #define MEMAREA_SIZE_SPECIFIED 1
- 
- struct memarea_info {
--        struct device_d *device;
-+	struct device_d *device;
- 	unsigned long start;
- 	unsigned long end;
- 	unsigned long size;
--        unsigned long flags;
-+	unsigned long flags;
- };
- 
- int parse_area_spec(const char *str, loff_t *start, loff_t *size);
++
++int main(int argc, char *argv[])
++{
++	FILE *input;
++	int opt;
++	off_t pos;
++	size_t size;
++	uint32_t addr = 0x40200000;
++	uint32_t temp;
++
++	while((opt = getopt(argc, argv, "a:")) != -1) {
++		switch (opt) {
++		case 'a':
++			addr = strtoul(optarg, NULL, 0);
++			break;
++		}
++	}
++
++	if (optind >= argc) {
++		usage(argv[0]);
++		exit(1);
++	}
++
++	input = fopen(argv[optind], "r");
++	if (input == NULL) {
++		perror("fopen");
++		exit(EXIT_FAILURE);
++	}
++
++	if (fseeko(input, 0, SEEK_END) == -1) {
++		perror("fseeko");
++		exit(EXIT_FAILURE);
++	}
++
++	pos = ftello(input);
++	if (pos == -1) {
++		perror("ftello");
++		exit(EXIT_FAILURE);
++	}
++	if (pos % 4) {
++		printf("error: image size must be a multiple of 4 bytes\n");
++		exit(EXIT_FAILURE);
++	}
++	if (pos > 0x100000) {
++		printf("error: image should be smaller than 1 MiB\n");
++		exit(EXIT_FAILURE);
++	}
++
++	if (fseeko(input, 0, SEEK_SET) == -1) {
++		perror("fseeko");
++		exit(EXIT_FAILURE);
++	}
++
++	/* image size */
++	temp = htobe32((uint32_t)pos);
++	fwrite(&temp, sizeof(uint32_t), 1, stdout);
++
++	/* memory address */
++	temp = htobe32(addr);
++	fwrite(&temp, sizeof(uint32_t), 1, stdout);
++
++	for (;;) {
++		size = fread(&temp, 1, sizeof(uint32_t), input);
++		if (!size)
++			break;
++		if (size != 4) {
++			perror("fread");
++			exit(EXIT_FAILURE);
++		}
++		temp = htobe32(le32toh(temp));
++		if (fwrite(&temp, 1, sizeof(uint32_t), stdout) != 4) {
++			perror("fwrite");
++			exit(EXIT_FAILURE);
++		}
++	}
++
++	if (fclose(input) != 0) {
++		perror("fclose");
++		exit(EXIT_FAILURE);
++	}
++
++	exit(EXIT_SUCCESS);
++}
 -- 
 1.7.10.4
 
