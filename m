@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T8QhH-00046K-J6
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 07:03:48 +0000
-Date: Mon, 3 Sep 2012 09:03:45 +0200
+ id 1T8Qlm-0004Cm-M1
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 07:08:28 +0000
+Date: Mon, 3 Sep 2012 09:08:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120903070345.GV26594@pengutronix.de>
-References: <1346403272-24446-1-git-send-email-s.trumtrar@pengutronix.de>
- <1346403272-24446-2-git-send-email-s.trumtrar@pengutronix.de>
+Message-ID: <20120903070824.GW26594@pengutronix.de>
+References: <1346404447-31961-1-git-send-email-s.trumtrar@pengutronix.de>
+ <1346404447-31961-3-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1346403272-24446-2-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1346404447-31961-3-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,30 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/10] add gpiolib support
+Subject: Re: [PATCH 2/2] gpio: add driver for stmpe io-expander
 To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Aug 31, 2012 at 10:54:23AM +0200, Steffen Trumtrar wrote:
-> From: Sascha Hauer <s.hauer@pengutronix.de>
+On Fri, Aug 31, 2012 at 11:14:07AM +0200, Steffen Trumtrar wrote:
+> Add a driver for the stmpe1601 gpio block. The stmpe io-expanders have multiple
+> blocks (keypad, gpio...) that can be enabled and used. Only gpio is supported atm.
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> This was only tested on a stmpe connected via i2c. It is also possible to connect
+> via spi.
+> 
 > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > ---
->  drivers/Makefile      |    1 +
->  drivers/gpio/Makefile |    1 +
->  drivers/gpio/gpio.c   |  134 +++++++++++++++++++++++++++++++++++++++++++++++++
->  include/gpio.h        |   32 +++++++++---
+> +
+> +static int stmpe_gpio_probe(struct device_d *dev)
+> +{
+> +	struct stmpe_gpio_chip *stmpegpio;
+> +
+> +	stmpegpio = xzalloc(sizeof(*stmpegpio));
+> +
+> +	stmpegpio->base = dev_request_mem_region(dev, 0);
+> +	stmpegpio->chip.ops = &stmpe_gpio_ops;
+> +	stmpegpio->chip.base = 224;
 
-Please add drivers/gpio/Kconfig with:
-
-config GPIOLIB
-	bool
-
-Then you can add a 'select GPIOLIB' to the i.MXs already converted to
-make this series bisectable.
+This is not a good idea. Configure the base from platform_data instead.
+Maybe we can add an optional -1 for dynamic base, but having hardcoded
+bases so that board code knows the correct gpio numbers seems more
+important for now.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
