@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T8TZh-0001vv-PZ
+ id 1T8TZh-0001vq-P4
  for barebox@lists.infradead.org; Mon, 03 Sep 2012 10:08:18 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id CC6A1DC36ED
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 7B8B3DC36B4
  for <barebox@lists.infradead.org>; Mon,  3 Sep 2012 12:13:26 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  3 Sep 2012 12:08:17 +0200
-Message-Id: <1346666898-19347-17-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon,  3 Sep 2012 12:08:16 +0200
+Message-Id: <1346666898-19347-16-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346666898-19347-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120903100409.GC24296@game.jcrosoft.org>
  <1346666898-19347-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,156 +26,194 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/18] envfs: add support of symlink
+Subject: [PATCH 16/18] envfs: add support of variable inode size
 To: barebox@lists.infradead.org
+
+Introduce a struct envfs_inode_end with more data.
+Today this will just containt the file mode to be able to add the symlink
+support.
+
+But this is compatible with the previous envfs version as they will do not
+care about the extra as the previous version is just reading the filename and
+then consume the extra data without using them.
+
+Increase the envfs version to 1.0
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/environment.c |  103 +++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 73 insertions(+), 30 deletions(-)
+ common/environment.c |   53 ++++++++++++++++++++++++++++++++++++++------------
+ include/envfs.h      |   12 +++++++++---
+ 2 files changed, 50 insertions(+), 15 deletions(-)
 
 diff --git a/common/environment.c b/common/environment.c
-index fc5c57e..ce46f4a 100644
+index 8efed97..fc5c57e 100644
 --- a/common/environment.c
 +++ b/common/environment.c
-@@ -54,7 +54,20 @@ int file_size_action(const char *filename, struct stat *statbuf,
+@@ -53,6 +53,7 @@ int file_size_action(const char *filename, struct stat *statbuf,
+ 
  	data->writep += sizeof(struct envfs_inode);
  	data->writep += PAD4(strlen(filename) + 1 - strlen(data->base));
- 	data->writep += sizeof(struct envfs_inode_end);
--	data->writep += PAD4(statbuf->st_size);
-+	if (S_ISLNK(statbuf->st_mode)) {
-+		char path[PATH_MAX];
-+
-+		memset(path, 0, PATH_MAX);
-+
-+		if (readlink(filename, path, PATH_MAX - 1) < 0) {
-+			perror("read");
-+			return 0;
-+		}
-+		data->writep += PAD4(strlen(path) + 1);
-+	} else {
-+		data->writep += PAD4(statbuf->st_size);
-+	}
-+
++	data->writep += sizeof(struct envfs_inode_end);
+ 	data->writep += PAD4(statbuf->st_size);
  	return 1;
  }
- 
-@@ -67,13 +80,9 @@ int file_save_action(const char *filename, struct stat *statbuf,
+@@ -62,6 +63,7 @@ int file_save_action(const char *filename, struct stat *statbuf,
+ {
+ 	struct action_data *data = userdata;
+ 	struct envfs_inode *inode;
++	struct envfs_inode_end *inode_end;
  	int fd;
  	int namelen = strlen(filename) + 1 - strlen(data->base);
  
--	debug("handling file %s size %ld namelen %d\n", filename + strlen(data->base),
--		statbuf->st_size, namelen);
--
+@@ -70,12 +72,16 @@ int file_save_action(const char *filename, struct stat *statbuf,
+ 
  	inode = (struct envfs_inode*)data->writep;
  	inode->magic = ENVFS_32(ENVFS_INODE_MAGIC);
- 	inode->headerlen = ENVFS_32(PAD4(namelen + sizeof(struct envfs_inode_end)));
--	inode->size = ENVFS_32(statbuf->st_size);
+-	inode->namelen = ENVFS_32(namelen);
++	inode->headerlen = ENVFS_32(PAD4(namelen + sizeof(struct envfs_inode_end)));
+ 	inode->size = ENVFS_32(statbuf->st_size);
  	data->writep += sizeof(struct envfs_inode);
  
  	strcpy(data->writep, filename + strlen(data->base));
-@@ -83,19 +92,44 @@ int file_save_action(const char *filename, struct stat *statbuf,
- 	inode_end->magic = ENVFS_32(ENVFS_INODE_END_MAGIC);
- 	inode_end->mode = ENVFS_32(S_IRWXU | S_IRWXG | S_IRWXO);
+ 	data->writep += PAD4(namelen);
++	inode_end = (struct envfs_inode_end*)data->writep;
++	data->writep += sizeof(struct envfs_inode_end);
++	inode_end->magic = ENVFS_32(ENVFS_INODE_END_MAGIC);
++	inode_end->mode = ENVFS_32(S_IRWXU | S_IRWXG | S_IRWXO);
  
--	fd = open(filename, O_RDONLY);
--	if (fd < 0) {
--		printf("Open %s %s\n", filename, errno_str());
--		goto out;
--	}
-+	if (S_ISLNK(statbuf->st_mode)) {
-+		char path[PATH_MAX];
-+		int len;
- 
--	if (read(fd, data->writep, statbuf->st_size) < statbuf->st_size) {
--		perror("read");
--		goto out;
--	}
--	close(fd);
-+		memset(path, 0, PATH_MAX);
+ 	fd = open(filename, O_RDONLY);
+ 	if (fd < 0) {
+@@ -176,8 +182,13 @@ int envfs_load(char *filename, char *dir)
+ 	int envfd;
+ 	int fd, ret = 0;
+ 	char *str, *tmp;
+-	int namelen_full;
++	int headerlen_full;
+ 	unsigned long size;
++	/* for envfs < 1.0 */
++	struct envfs_inode_end inode_end_dummy;
 +
-+		if (readlink(filename, path, PATH_MAX - 1) < 0) {
-+			perror("read");
++	inode_end_dummy.mode = ENVFS_32(S_IRWXU | S_IRWXG | S_IRWXO);
++	inode_end_dummy.magic = ENVFS_32(ENVFS_INODE_END_MAGIC);
+ 
+ 	envfd = open(filename, O_RDONLY);
+ 	if (envfd < 0) {
+@@ -223,11 +234,18 @@ int envfs_load(char *filename, char *dir)
+ 		goto out;
+ 	}
+ 
++	if (super.major < ENVFS_MAJOR)
++		printf("envfs version %d.%d loaded into %d.%d\n",
++			super.major, super.minor,
++			ENVFS_MAJOR, ENVFS_MINOR);
++
+ 	while (size) {
+ 		struct envfs_inode *inode;
+-		uint32_t inode_size, inode_namelen;
++		struct envfs_inode_end *inode_end;
++		uint32_t inode_size, inode_headerlen, namelen;
+ 
+ 		inode = (struct envfs_inode *)buf;
++		buf += sizeof(struct envfs_inode);
+ 
+ 		if (ENVFS_32(inode->magic) != ENVFS_INODE_MAGIC) {
+ 			printf("envfs: wrong magic on %s\n", filename);
+@@ -235,16 +253,30 @@ int envfs_load(char *filename, char *dir)
+ 			goto out;
+ 		}
+ 		inode_size = ENVFS_32(inode->size);
+-		inode_namelen = ENVFS_32(inode->namelen);
++		inode_headerlen = ENVFS_32(inode->headerlen);
++		namelen = strlen(inode->data) + 1;
++		if (super.major < 1)
++			inode_end = &inode_end_dummy;
++		else
++			inode_end = (struct envfs_inode_end *)(buf + PAD4(namelen));
+ 
+-		debug("loading %s size %d namelen %d\n", inode->data,
+-			inode_size, inode_namelen);
++		debug("loading %s size %d namelen %d headerlen %d\n", inode->data,
++			inode_size, namelen, inode_headerlen);
+ 
+ 		str = concat_path_file(dir, inode->data);
+ 		tmp = strdup(str);
+ 		make_directory(dirname(tmp));
+ 		free(tmp);
+ 
++		headerlen_full = PAD4(inode_headerlen);
++		buf += headerlen_full;
++
++		if (ENVFS_32(inode_end->magic) != ENVFS_INODE_END_MAGIC) {
++			printf("envfs: wrong inode_end_magic on %s\n", filename);
++			ret = -EIO;
 +			goto out;
 +		}
-+		len = strlen(path) + 1;
 +
-+		inode_end->mode |= ENVFS_32(S_IFLNK);
- 
--	data->writep += PAD4(statbuf->st_size);
-+		memcpy(data->writep, path, len);
-+		inode->size = ENVFS_32(len);
-+		data->writep += PAD4(len);
-+		debug("handling symlink %s size %ld namelen %d headerlen %d\n", filename + strlen(data->base),
-+			len, namelen, ENVFS_32(inode->headerlen));
-+	} else {
-+		debug("handling file %s size %ld namelen %d headerlen %d\n", filename + strlen(data->base),
-+			statbuf->st_size, namelen, ENVFS_32(inode->headerlen));
-+
-+		inode->size = ENVFS_32(statbuf->st_size);
-+		fd = open(filename, O_RDONLY);
-+		if (fd < 0) {
-+			printf("Open %s %s\n", filename, errno_str());
-+			goto out;
-+		}
-+
-+		if (read(fd, data->writep, statbuf->st_size) < statbuf->st_size) {
-+			perror("read");
-+			goto out;
-+		}
-+		close(fd);
-+
-+		data->writep += PAD4(statbuf->st_size);
-+	}
- 
- out:
- 	return 1;
-@@ -277,22 +311,31 @@ int envfs_load(char *filename, char *dir)
+ 		fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+ 		free(str);
+ 		if (fd < 0) {
+@@ -253,9 +285,7 @@ int envfs_load(char *filename, char *dir)
  			goto out;
  		}
  
--		fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
--		free(str);
--		if (fd < 0) {
--			printf("Open %s\n", errno_str());
--			ret = fd;
--			goto out;
--		}
--
--		ret = write(fd, buf, inode_size);
--		if (ret < inode_size) {
--			perror("write");
--			ret = -errno;
-+		if (S_ISLNK(ENVFS_32(inode_end->mode))) {
-+			debug("symlink: %s -> %s\n", str, (char*)buf);
-+			if (symlink((char*)buf, str) < 0) {
-+				printf("symlink: %s -> %s :", str, (char*)buf);
-+				perror("");
-+			}
-+			free(str);
-+		} else {
-+			fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-+			free(str);
-+			if (fd < 0) {
-+				printf("Open %s\n", errno_str());
-+				ret = fd;
-+				goto out;
-+			}
-+
-+			ret = write(fd, buf, inode_size);
-+			if (ret < inode_size) {
-+				perror("write");
-+				ret = -errno;
-+				close(fd);
-+				goto out;
-+			}
- 			close(fd);
--			goto out;
+-		namelen_full = PAD4(inode_namelen);
+-		ret = write(fd, buf + namelen_full + sizeof(struct envfs_inode),
+-				inode_size);
++		ret = write(fd, buf, inode_size);
+ 		if (ret < inode_size) {
+ 			perror("write");
+ 			ret = -errno;
+@@ -264,9 +294,8 @@ int envfs_load(char *filename, char *dir)
  		}
--		close(fd);
+ 		close(fd);
  
- 		buf += PAD4(inode_size);
- 		size -= headerlen_full + PAD4(inode_size) +
+-		buf += PAD4(inode_namelen) + PAD4(inode_size) +
+-				sizeof(struct envfs_inode);
+-		size -= PAD4(inode_namelen) + PAD4(inode_size) +
++		buf += PAD4(inode_size);
++		size -= headerlen_full + PAD4(inode_size) +
+ 				sizeof(struct envfs_inode);
+ 	}
+ 
+diff --git a/include/envfs.h b/include/envfs.h
+index c6df8c5..3d14fcb 100644
+--- a/include/envfs.h
++++ b/include/envfs.h
+@@ -5,18 +5,19 @@
+ #include <asm/byteorder.h>
+ #endif
+ 
+-#define ENVFS_MAJOR		0
+-#define ENVFS_MINOR		1
++#define ENVFS_MAJOR		1
++#define ENVFS_MINOR		0
+ 
+ #define ENVFS_MAGIC		    0x798fba79	/* some random number */
+ #define ENVFS_INODE_MAGIC	0x67a8c78d
++#define ENVFS_INODE_END_MAGIC	0x68a8c78d
+ #define ENVFS_END_MAGIC		0x6a87d6cd
+ #define ENVFS_SIGNATURE	"barebox envfs"
+ 
+ struct envfs_inode {
+ 	uint32_t magic;	/* ENVFS_INODE_MAGIC */
+ 	uint32_t size;	/* data size in bytes  */
+-	uint32_t namelen; /* The length of the filename _including_ a trailing 0 */
++	uint32_t headerlen; /* The length of the filename _including_ a trailing 0 */
+ 	char data[0];	/* The filename (zero terminated) + padding to 4 byte boundary
+ 			 * followed by the data for this inode.
+ 			 * The next inode follows after the data + padding to 4 byte
+@@ -24,6 +25,11 @@ struct envfs_inode {
+ 			 */
+ };
+ 
++struct envfs_inode_end {
++	uint32_t magic;	/* ENVFS_INODE_END_MAGIC */
++	uint32_t mode;	/* file mode */
++};
++
+ /*
+  * Superblock information at the beginning of the FS.
+  */
 -- 
 1.7.10.4
 
