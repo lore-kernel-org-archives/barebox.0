@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T8Qnn-0004Gw-Rv
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 07:10:32 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon,  3 Sep 2012 09:10:28 +0200
-Message-Id: <1346656228-301-1-git-send-email-s.trumtrar@pengutronix.de>
+ id 1T8RFs-0005rZ-Qa
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 07:39:33 +0000
+Date: Mon, 3 Sep 2012 09:39:29 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120903073929.GX26594@pengutronix.de>
+References: <1346335217-9686-1-git-send-email-renaud.barbier@ge.com>
+ <1346422235-3949-1-git-send-email-renaud.barbier@ge.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1346422235-3949-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,81 +19,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] ARM i.MX6: query silicon revision
-To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH V2 0/6 ] IMX i2c driver update for the PPC 85xx
+To: Renaud Barbier <renaud.barbier@ge.com>
+Cc: barebox@lists.infradead.org
 
-Read silicon revision from ???-register.
-This is based on a7683867463481bfea84af4d60af832ddfb3da7f from u-boot.
-The address 0x020c8260 is used and decoded. I haven't found that in my
-datasheet, so I must trust the code to be correct.
-At least on a SabreLite v1.0 I get the correct version though.
+On Fri, Aug 31, 2012 at 03:10:29PM +0100, Renaud Barbier wrote:
+> This patch set prepares the PPC 85xx SOC to use the IMX i2c driver and updates
+> the driver with specific clock settings. The driver name is renamed "i2c-fsl".
+> The patch also introduces a function returning the system clock to calculate
+> the i2c frequency bus divider. Finally, the P2020RDB board support is updated
+> to test the driver on 8-bit and 16-bit I2C devices.
+> 
+> This patch has NOT been tested on a IMX board.
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- arch/arm/mach-imx/imx6.c |   34 +++++++++++++++++++++++++++++++++-
- 1 file changed, 33 insertions(+), 1 deletion(-)
+Applied, thanks.
 
-diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-index b6067d7..fef0a00 100644
---- a/arch/arm/mach-imx/imx6.c
-+++ b/arch/arm/mach-imx/imx6.c
-@@ -19,7 +19,7 @@
- #include <common.h>
- #include <io.h>
- #include <sizes.h>
--#include <mach/imx6-regs.h>
-+#include <mach/imx-regs.h>
- 
- #include "gpio.h"
- 
-@@ -35,6 +35,38 @@ void *imx_gpio_base[] = {
- 
- int imx_gpio_count = ARRAY_SIZE(imx_gpio_base) * 32;
- 
-+static u32 mx6_silicon_revision;
-+static char *mx6_rev_string = "unknown";
-+
-+int imx_silicon_revision(void)
-+{
-+	return mx6_silicon_revision;
-+}
-+
-+static int query_silicon_revision(void)
-+{
-+	void __iomem *anatop = (void *) MX6_ANATOP_BASE_ADDR;
-+	u32 rev, reg;
-+
-+	reg = readl(anatop + 0x260);
-+	rev = (reg & 0xff) + 0x10;
-+	switch (rev) {
-+	case 0x10:
-+		mx6_silicon_revision = IMX_CHIP_REV_1_0;
-+		mx6_rev_string = "1.0";
-+		break;
-+	case 0x11:
-+		mx6_silicon_revision = IMX_CHIP_REV_1_1;
-+		mx6_rev_string = "1.1";
-+		break;
-+	default:
-+		mx6_silicon_revision = 0;
-+	}
-+
-+	return 0;
-+}
-+core_initcall(query_silicon_revision);
-+
- void imx6_init_lowlevel(void)
- {
- 	void __iomem *aips1 = (void *)MX6_AIPS1_ON_BASE_ADDR;
+I added the missing conversion of the device name from i2c-imx to
+i2c-fsl to the i.MX SoC part.
+
+Sascha
+
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
