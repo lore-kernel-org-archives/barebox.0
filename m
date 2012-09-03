@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T8S7u-000178-Q6
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 08:35:23 +0000
-Date: Mon, 3 Sep 2012 10:35:20 +0200
+ id 1T8Sbs-0003Ox-2C
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 09:06:21 +0000
+Date: Mon, 3 Sep 2012 11:06:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120903083520.GD26594@pengutronix.de>
-References: <20120901123511.GA19233@game.jcrosoft.org>
+Message-ID: <20120903090617.GF26594@pengutronix.de>
+References: <1346651881-3765-1-git-send-email-alex.aring@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120901123511.GA19233@game.jcrosoft.org>
+In-Reply-To: <1346651881-3765-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,55 +22,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/18 v2] fs: add symlink and readlink support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 1/2] mtd: fix compiler warnings
+To: Alexander Aring <alex.aring@googlemail.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Sep 01, 2012 at 02:35:11PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> HI,
+On Mon, Sep 03, 2012 at 07:58:00AM +0200, Alexander Aring wrote:
+> Fix some compiler warnings.
 > 
-> 	v2:
-> 	 addres comments
-> 
-> please pull
-> The following changes since commit b77300ac6c6bbbc7eac774ff0076c7c05d39735f:
-> 
->   command/mount: add autodetection support (2012-08-21 18:53:00 +0800)
-> 
-> are available in the git repository at:
-> 
->   git://git.jcrosoft.org/barebox.git tags/fs-symlink
-> 
+> Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 
-The following results in a crash here:
+Applied, thanks
 
-# mkdir mymount
-# mount -t ramfs none mymount/
-# ln /env/boot/net /mymount/link
-unable to handle paging request at address 0x1b5f655c
-pc : [<a7f044f0>]    lr : [<a7f04b10>]
-sp : a6eff908  ip : 00000003  fp : 00000000
-r10: a6f0efe4  r9 : 00000000  r8 : 00000003
-r7 : 00000000  r6 : a6f00000  r5 : a6f0eff4  r4 : a6f0efec
-r3 : 1b5f6560  r2 : a6f0eff4  r1 : a6f0eff4  r0 : a6f0efec
-Flags: NzCv  IRQs off  FIQs off  Mode SVC_32
-[<a7f044f0>] (block_link_next+0x18/0x1c) from [<a7f04b10>] (tlsf_free+0x1c/0x88)
-[<a7f04b10>] (tlsf_free+0x1c/0x88) from [<a7f2828c>] (symlink+0xd0/0xfc)
-[<a7f2828c>] (symlink+0xd0/0xfc) from [<a7f1ac8c>] (do_ln+0x14/0x3c)
-[<a7f1ac8c>] (do_ln+0x14/0x3c) from [<a7f050b4>] (execute_command+0x38/0x7c)
-[<a7f050b4>] (execute_command+0x38/0x7c) from [<a7f01efc>] (run_list_real+0x8dc/0x9dc)
-[<a7f01efc>] (run_list_real+0x8dc/0x9dc) from [<a7f02144>] (parse_stream_outer+0x148/0x238)
-[<a7f02144>] (parse_stream_outer+0x148/0x238) from [<a7f024cc>] (run_shell+0x3c/0x7c)
-[<a7f024cc>] (run_shell+0x3c/0x7c) from [<a7f050b4>] (execute_command+0x38/0x7c)
-[<a7f050b4>] (execute_command+0x38/0x7c) from [<a7f01efc>] (run_list_real+0x8dc/0x9dc)
-[<a7f01efc>] (run_list_real+0x8dc/0x9dc) from [<a7f01a58>] (run_list_real+0x438/0x9dc)
+Sascha
 
-[<a7f2c5e4>] (unwind_backtrace+0x0/0x9c) from [<a7f1bce0>] (panic+0x28/0x3c)
-[<a7f1bce0>] (panic+0x28/0x3c) from [<a7f2ca3c>] (do_exception+0x10/0x14)
-[<a7f2ca3c>] (do_exception+0x10/0x14) from [<a7f2cac8>] (do_data_abort+0x2c/0x38)
-[<a7f2cac8>] (do_data_abort+0x2c/0x38) from [<a7f2c810>] (data_abort+0x50/0x60)
-
-
+> ---
+>  drivers/mtd/core.c   | 6 +++---
+>  drivers/mtd/mtdraw.c | 4 ++--
+>  2 files changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+> index 5510439..3dcc908 100644
+> --- a/drivers/mtd/core.c
+> +++ b/drivers/mtd/core.c
+> @@ -79,7 +79,7 @@ static ssize_t mtd_write(struct cdev* cdev, const void *buf, size_t _count,
+>  		return -EINVAL;
+>  	}
+>  
+> -	dev_dbg(cdev->dev, "write: 0x%08lx 0x%08x\n", offset, count);
+> +	dev_dbg(cdev->dev, "write: 0x%08lx 0x%08lx\n", offset, count);
+>  	while (count) {
+>  		now = count > mtd->writesize ? mtd->writesize : count;
+>  
+> @@ -100,7 +100,7 @@ static ssize_t mtd_write(struct cdev* cdev, const void *buf, size_t _count,
+>  				ret = mtd->write(mtd, offset, now, &retlen,
+>  						  buf);
+>  			dev_dbg(cdev->dev,
+> -				"offset: 0x%08lx now: 0x%08x retlen: 0x%08x\n",
+> +				"offset: 0x%08lx now: 0x%08lx retlen: 0x%08lx\n",
+>  				offset, now, retlen);
+>  		}
+>  		if (ret)
+> @@ -174,7 +174,7 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+>  }
+>  
+>  #ifdef CONFIG_MTD_WRITE
+> -static ssize_t mtd_erase(struct cdev *cdev, size_t count, loff_t offset)
+> +static int mtd_erase(struct cdev *cdev, size_t count, loff_t offset)
+>  {
+>  	struct mtd_info *mtd = cdev->priv;
+>  	struct erase_info erase;
+> diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
+> index 24f7358..9961a75 100644
+> --- a/drivers/mtd/mtdraw.c
+> +++ b/drivers/mtd/mtdraw.c
+> @@ -137,7 +137,7 @@ static ssize_t mtdraw_read(struct cdev *cdev, void *buf, size_t count,
+>  		retlen += ret;
+>  	}
+>  	if (ret < 0)
+> -		printf("err %d\n", ret);
+> +		printf("err %lu\n", ret);
+>  	else
+>  		ret = retlen;
+>  	return ret;
+> @@ -222,7 +222,7 @@ static ssize_t mtdraw_write(struct cdev *cdev, const void *buf, size_t count,
+>  	}
+>  }
+>  
+> -static ssize_t mtdraw_erase(struct cdev *cdev, size_t count, loff_t _offset)
+> +static int mtdraw_erase(struct cdev *cdev, size_t count, loff_t _offset)
+>  {
+>  	struct mtd_info *mtd = to_mtd(cdev);
+>  	struct erase_info erase;
+> -- 
+> 1.7.12
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
