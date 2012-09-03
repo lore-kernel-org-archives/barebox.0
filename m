@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
- helo=mo2.mail-out.ovh.net)
+Received: from mo2.mail-out.ovh.net ([178.32.228.2])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T8T8S-0007UC-LF
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 09:40:02 +0000
+ id 1T8TVa-0000vS-Rx
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 10:03:56 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 971C1DC430E
- for <barebox@lists.infradead.org>; Mon,  3 Sep 2012 11:45:16 +0200 (CEST)
-Date: Mon, 3 Sep 2012 11:40:16 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id AABADDC3F5B
+ for <barebox@lists.infradead.org>; Mon,  3 Sep 2012 12:09:09 +0200 (CEST)
+Date: Mon, 3 Sep 2012 12:04:09 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120903094016.GB24296@game.jcrosoft.org>
-References: <20120901123511.GA19233@game.jcrosoft.org>
- <20120903083520.GD26594@pengutronix.de>
+Message-ID: <20120903100409.GC24296@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120903083520.GD26594@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,80 +23,99 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/18 v2] fs: add symlink and readlink support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 00/18 v3] fs: add symlink and readlink support
+To: barebox@lists.infradead.org
 
-On 10:35 Mon 03 Sep     , Sascha Hauer wrote:
-> On Sat, Sep 01, 2012 at 02:35:11PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > HI,
-> > 
-> > 	v2:
-> > 	 addres comments
-> > 
-> > please pull
-> > The following changes since commit b77300ac6c6bbbc7eac774ff0076c7c05d39735f:
-> > 
-> >   command/mount: add autodetection support (2012-08-21 18:53:00 +0800)
-> > 
-> > are available in the git repository at:
-> > 
-> >   git://git.jcrosoft.org/barebox.git tags/fs-symlink
-> > 
-> 
-> The following results in a crash here:
-> 
-> # mkdir mymount
-> # mount -t ramfs none mymount/
-> # ln /env/boot/net /mymount/link
+HI,
 
-found
+	v3:
+	 - fix support
+	   mkdir mymount
+	   mount -t ramfs none mymount/
+	   ln /env/boot/net /mymount/link
 
-this will fix it
+	 - addres comments
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 05a1b85..53d8316 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -1060,17 +1060,24 @@ int symlink(const char *pathname, const char *newpath)
- {
- 	struct fs_driver_d *fsdrv;
- 	struct fs_device_d *fsdev;
--	char *p = normalise_path(pathname);
-+	char *p;
-+	char *freep = normalise_path(pathname);
- 	int ret;
- 	struct stat s;
- 
--	if (!stat(p, &s) && S_ISDIR(s.st_mode)) {
-+	if (!freep)
-+		return -ENOMEM;
-+
-+	if (!stat(freep, &s) && S_ISDIR(s.st_mode)) {
- 		ret = -ENOSYS;
- 		goto out;
- 	}
- 
--	free(p);
--	p = normalise_path(newpath);
-+	free(freep);
-+	freep = p = normalise_path(newpath);
-+
-+	if (!p)
-+		return -ENOMEM;
- 
- 	ret = stat(p, &s);
- 	if (!ret) {
-@@ -1092,7 +1099,7 @@ int symlink(const char *pathname, const char *newpath)
- 	}
- 
- out:
--	free(p);
-+	free(freep);
- 	if (ret)
- 		errno = -ret;
- 
+	v2:
+	 addres comments
 
+please pull
+The following changes since commit b77300ac6c6bbbc7eac774ff0076c7c05d39735f:
+
+  command/mount: add autodetection support (2012-08-21 18:53:00 +0800)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git tags/fs-symlink
+
+for you to fetch changes up to dbae117ee78df0e4110db3a3acf4f9a8bee658d0:
+
+  defautenv: add support of symlink (2012-09-03 17:57:23 +0800)
+
+----------------------------------------------------------------
+fs: add symlink and readlink support
+
+This patch series introduce the support of symlink and readlink at
+
+1) vfs level
+
+2) libc API
+ - symlink
+ - readlink
+
+3) commands
+ - ln
+ - readlink
+
+3) filesystem
+ - ramfs
+ - nfs
+ - envfs
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (18):
+      fs: add readlink support
+      fs: rename stat to lstat as we implement lstat
+      fs: add symlink support
+      fs: implement stat
+      fs: open: add symlink support
+      fs: introduce get_mounted_path to get the path where a file is mounted
+      ramfs: add symlink and readlink support
+      nfs: add readlink support
+      test: add -L support to test if it's a symbolic link
+      command: add readlink support
+      command: add ln support
+      ls: add symlink support to -l
+      dirname: add -V option to return only path related to the mountpoint
+      recursive_action: add ACTION_FOLLOWLINKS support
+      envfs: introduce version major and minor
+      envfs: add support of variable inode size
+      envfs: add support of symlink
+      defautenv: add support of symlink
+
+ MAKEALL                |    1 +
+ commands/Kconfig       |   10 +++++++
+ commands/Makefile      |    2 ++
+ commands/dirname.c     |   24 ++++++++++++++---
+ commands/ln.c          |   51 +++++++++++++++++++++++++++++++++++
+ commands/ls.c          |   31 +++++++++++++++-------
+ commands/readlink.c    |   80 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ commands/test.c        |   11 ++++++--
+ common/Makefile        |    2 +-
+ common/environment.c   |  150 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------------------
+ fs/fs.c                |  244 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
+ fs/nfs.c               |   86 +++++++++++++++++++++++++++++++++++++++--------------------
+ fs/ramfs.c             |   61 +++++++++++++++++++++++++++++++++++++-----
+ include/envfs.h        |   15 +++++++++--
+ include/fs.h           |   12 +++++++++
+ include/libbb.h        |    2 +-
+ lib/recursive_action.c |    7 ++++-
+ scripts/bareboxenv.c   |    2 +-
+ 18 files changed, 691 insertions(+), 100 deletions(-)
+ create mode 100644 commands/ln.c
+ create mode 100644 commands/readlink.c
 
 Best Regards,
 J.
