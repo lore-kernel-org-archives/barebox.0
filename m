@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T8TZh-0001v1-0R
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 10:08:14 +0000
+ id 1T8TZf-0001uH-S1
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 10:08:15 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id B7CD3DC3569
- for <barebox@lists.infradead.org>; Mon,  3 Sep 2012 12:13:25 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id E253FDC37DB
+ for <barebox@lists.infradead.org>; Mon,  3 Sep 2012 12:13:24 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  3 Sep 2012 12:08:14 +0200
-Message-Id: <1346666898-19347-14-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon,  3 Sep 2012 12:08:11 +0200
+Message-Id: <1346666898-19347-11-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346666898-19347-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120903100409.GC24296@game.jcrosoft.org>
  <1346666898-19347-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,69 +26,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/18] recursive_action: add ACTION_FOLLOWLINKS support
+Subject: [PATCH 11/18] command: add ln support
 To: barebox@lists.infradead.org
-
-this is need to support symlink in envfs
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/libbb.h        |    2 +-
- lib/recursive_action.c |    7 ++++++-
- scripts/bareboxenv.c   |    2 +-
- 3 files changed, 8 insertions(+), 3 deletions(-)
+ commands/Kconfig  |    4 ++++
+ commands/Makefile |    1 +
+ commands/ln.c     |   51 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 56 insertions(+)
+ create mode 100644 commands/ln.c
 
-diff --git a/include/libbb.h b/include/libbb.h
-index 110e8ec..47b2e08 100644
---- a/include/libbb.h
-+++ b/include/libbb.h
-@@ -14,7 +14,7 @@ char* last_char_is(const char *s, int c);
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 876f2f8..337f545 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -57,6 +57,10 @@ config CMD_READLINE
+ 	tristate
+ 	prompt "readline"
  
- enum {
- 	ACTION_RECURSE     = (1 << 0),
--	/* ACTION_FOLLOWLINKS = (1 << 1), - unused */
-+	ACTION_FOLLOWLINKS    = (1 << 1),
- 	ACTION_DEPTHFIRST  = (1 << 2),
- 	/*ACTION_REVERSE   = (1 << 3), - unused */
- };
-diff --git a/lib/recursive_action.c b/lib/recursive_action.c
-index 1ef758d..5bc2595 100644
---- a/lib/recursive_action.c
-+++ b/lib/recursive_action.c
-@@ -54,14 +54,19 @@ int recursive_action(const char *fileName,
- 		const unsigned depth)
- {
- 	struct stat statbuf;
-+	unsigned follow;
- 	int status;
- 	DIR *dir;
- 	struct dirent *next;
- 
- 	if (!fileAction) fileAction = true_action;
- 	if (!dirAction) dirAction = true_action;
--	status = stat(fileName, &statbuf);
- 
-+	follow = ACTION_FOLLOWLINKS;
-+	if (depth == 0)
-+		follow = ACTION_FOLLOWLINKS;
-+	follow &= flags;
-+	status = (follow ? stat : lstat)(fileName, &statbuf);
- 	if (status < 0) {
- #ifdef DEBUG_RECURS_ACTION
- 		bb_error_msg("status=%d followLinks=%d TRUE=%d",
-diff --git a/scripts/bareboxenv.c b/scripts/bareboxenv.c
-index 866e345..f7f5351 100644
---- a/scripts/bareboxenv.c
-+++ b/scripts/bareboxenv.c
-@@ -73,7 +73,7 @@ char* last_char_is(const char *s, int c)
- 
- enum {
- 	ACTION_RECURSE     = (1 << 0),
--	/* ACTION_FOLLOWLINKS = (1 << 1), - unused */
-+	ACTION_FOLLOWLINKS = (1 << 1),
- 	ACTION_DEPTHFIRST  = (1 << 2),
- 	/*ACTION_REVERSE   = (1 << 3), - unused */
- };
++config CMD_LN
++	tristate
++	prompt "ln"
++
+ config CMD_TRUE
+ 	tristate
+ 	default y
+diff --git a/commands/Makefile b/commands/Makefile
+index ab6c7ea..ccebd7f 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -73,3 +73,4 @@ obj-$(CONFIG_CMD_GLOBAL)	+= global.o
+ obj-$(CONFIG_CMD_BASENAME)	+= basename.o
+ obj-$(CONFIG_CMD_DIRNAME)	+= dirname.o
+ obj-$(CONFIG_CMD_READLINK)	+= readlink.o
++obj-$(CONFIG_CMD_LN)		+= ln.o
+diff --git a/commands/ln.c b/commands/ln.c
+new file mode 100644
+index 0000000..0237447
+--- /dev/null
++++ b/commands/ln.c
+@@ -0,0 +1,51 @@
++/*
++ * ln.c - make links between files
++ *
++ * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#include <common.h>
++#include <command.h>
++#include <libgen.h>
++#include <environment.h>
++#include <fs.h>
++#include <errno.h>
++
++static int do_ln(int argc, char *argv[])
++{
++	if (argc != 3)
++		return COMMAND_ERROR_USAGE;
++
++	if (symlink(argv[1], argv[2]) < 0) {
++		perror("ln");
++		return 1;
++	}
++	return 0;
++}
++
++BAREBOX_CMD_HELP_START(ln)
++BAREBOX_CMD_HELP_USAGE("ln SRC DEST\n")
++BAREBOX_CMD_HELP_SHORT("symlink - make a new name for a file\n")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(ln)
++	.cmd		= do_ln,
++	.usage		= "symlink - make a new name for a file",
++	BAREBOX_CMD_HELP(cmd_ln_help)
++BAREBOX_CMD_END
 -- 
 1.7.10.4
 
