@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T8RPs-0006BJ-5N
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 07:49:52 +0000
-Date: Mon, 3 Sep 2012 09:49:49 +0200
+ id 1T8Rqw-0007oU-C9
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 08:17:51 +0000
+Date: Mon, 3 Sep 2012 10:17:44 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120903074949.GA26594@pengutronix.de>
-References: <20120901084728.GH18708@game.jcrosoft.org>
+Message-ID: <20120903081744.GB26594@pengutronix.de>
+References: <20120901123511.GA19233@game.jcrosoft.org>
+ <1346503053-21862-1-git-send-email-plagnioj@jcrosoft.com>
+ <1346503053-21862-3-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120901084728.GH18708@game.jcrosoft.org>
+In-Reply-To: <1346503053-21862-3-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +24,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/7 v3] smsc911x: runtime configuration improvement
+Subject: Re: [PATCH 03/18] fs: add symlink support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Sep 01, 2012 at 10:47:28AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,
+On Sat, Sep 01, 2012 at 02:37:18PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Limit it's support to existing file only
 > 
-> 	v3:
-> 	  update commnets
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  fs/fs.c      |   44 ++++++++++++++++++++++++++++++++++++++++++++
+>  include/fs.h |    3 +++
+>  2 files changed, 47 insertions(+)
 > 
-> 	v2:
-> 	  update 16/32bit callback
-> 
-> please pull
-> The following changes since commit 3f96b4938c4046590be8a38fb114148c4bf1ca8e:
-> 
->   Merge tag 'bootm_fix' of git://git.jcrosoft.org/barebox (2012-08-13 20:37:53 +0200)
-> 
-> are available in the git repository at:#
+> diff --git a/fs/fs.c b/fs/fs.c
+> index f357a98..291e879 100644
+> --- a/fs/fs.c
+> +++ b/fs/fs.c
+> @@ -948,6 +948,50 @@ out:
+>  }
+>  EXPORT_SYMBOL(readlink);
+>  
+> +int symlink(const char *pathname, const char *newpath)
+> +{
+> +	struct fs_driver_d *fsdrv;
+> +	struct fs_device_d *fsdev;
+> +	char *p = normalise_path(pathname);
+> +	int ret;
+> +	struct stat s;
+> +
+> +	if (!stat(p, &s) && S_ISDIR(s.st_mode)) {
+> +		ret = -ENOSYS;
+> +		goto out;
+> +	}
 
-Applied, thanks
+newpath has to be checked for existence, not pathname.
+
+Also I noticed that links to directories do not work.
 
 Sascha
 
