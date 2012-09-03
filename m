@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T8TZe-0001s9-HE
+ id 1T8TZe-0001rQ-Ml
  for barebox@lists.infradead.org; Mon, 03 Sep 2012 10:08:11 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 96BEDDC35EA
- for <barebox@lists.infradead.org>; Mon,  3 Sep 2012 12:13:22 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 3CAD8DC3593
+ for <barebox@lists.infradead.org>; Mon,  3 Sep 2012 12:13:21 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  3 Sep 2012 12:08:09 +0200
-Message-Id: <1346666898-19347-9-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon,  3 Sep 2012 12:08:05 +0200
+Message-Id: <1346666898-19347-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346666898-19347-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120903100409.GC24296@game.jcrosoft.org>
  <1346666898-19347-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,66 +26,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/18] test: add -L support to test if it's a symbolic link
+Subject: [PATCH 05/18] fs: open: add symlink support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/test.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/fs.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/commands/test.c b/commands/test.c
-index 9ffa892..56e8c52 100644
---- a/commands/test.c
-+++ b/commands/test.c
-@@ -44,6 +44,7 @@ typedef enum {
- 	OPT_FILE,
- 	OPT_EXISTS,
- 	OPT_MAX,
-+	OPT_SYMBOLIC_LINK,
- } test_opts;
+diff --git a/fs/fs.c b/fs/fs.c
+index 935d516..5b7e641 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -609,13 +609,20 @@ int open(const char *pathname, int flags, ...)
+ 	struct fs_device_d *fsdev;
+ 	struct fs_driver_d *fsdrv;
+ 	FILE *f;
+-	int exist_err;
++	int exist_err = 0;
+ 	struct stat s;
+-	char *path = normalise_path(pathname);
+-	char *freep = path;
++	char *path;
++	char *freep;
+ 	int ret;
  
- static char *test_options[] = {
-@@ -62,6 +63,7 @@ static char *test_options[] = {
- 	[OPT_FILE]			= "-f",
- 	[OPT_DIRECTORY]			= "-d",
- 	[OPT_EXISTS]			= "-e",
-+	[OPT_SYMBOLIC_LINK]		= "-L",
- };
+-	exist_err = lstat(path, &s);
++	path = realfile(pathname, &s);
++
++	if (IS_ERR(path)) {
++		exist_err = PTR_ERR(path);
++		path = normalise_path(pathname);
++	}
++
++	freep = path;
  
- static int parse_opt(const char *opt)
-@@ -140,9 +142,10 @@ static int do_test(int argc, char *argv[])
- 		case OPT_FILE:
- 		case OPT_DIRECTORY:
- 		case OPT_EXISTS:
-+		case OPT_SYMBOLIC_LINK:
- 			adv = 2;
- 			if (ap[1] && *ap[1] != ']' && strlen(ap[1])) {
--				expr = stat(ap[1], &statbuf);
-+				expr = (opt == OPT_SYMBOLIC_LINK ? lstat : stat)(ap[1], &statbuf);
- 				if (expr < 0) {
- 					expr = 0;
- 					break;
-@@ -160,6 +163,10 @@ static int do_test(int argc, char *argv[])
- 					expr = 1;
- 					break;
- 				}
-+				if (opt == OPT_SYMBOLIC_LINK && S_ISLNK(statbuf.st_mode)) {
-+					expr = 1;
-+					break;
-+				}
- 			}
- 			break;
- 
-@@ -224,7 +231,7 @@ static const char *test_aliases[] = { "[", NULL};
- 
- static const __maybe_unused char cmd_test_help[] =
- "Usage: test [OPTIONS]\n"
--"options: !, =, !=, -eq, -ne, -ge, -gt, -le, -lt, -o, -a, -z, -n, -d, -e, -f\n"
-+"options: !, =, !=, -eq, -ne, -ge, -gt, -le, -lt, -o, -a, -z, -n, -d, -e, -f, -L\n"
- "see 'man test' on your PC for more information.\n";
- 
- static const __maybe_unused char cmd_test_usage[] = "minimal test like /bin/sh";
+ 	if (!exist_err && S_ISDIR(s.st_mode)) {
+ 		ret = -EISDIR;
 -- 
 1.7.10.4
 
