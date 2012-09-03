@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T8Rrg-0007py-Sl
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 08:18:37 +0000
+ id 1T8Rrh-0007q1-1l
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 08:18:38 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon,  3 Sep 2012 10:18:07 +0200
-Message-Id: <1346660298-18148-1-git-send-email-s.trumtrar@pengutronix.de>
+Date: Mon,  3 Sep 2012 10:18:11 +0200
+Message-Id: <1346660298-18148-5-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1346660298-18148-1-git-send-email-s.trumtrar@pengutronix.de>
+References: <1346660298-18148-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,58 +21,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 00/11] ARM i.MX: add gpiolib support
+Subject: [PATCH v2 04/11] ARM i.MX21: add imx-gpio devices
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Hi,
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ arch/arm/mach-imx/Kconfig |    1 +
+ arch/arm/mach-imx/imx21.c |   22 +++++++++++++---------
+ 2 files changed, 14 insertions(+), 9 deletions(-)
 
-this includes some fixes from v1:
-	- remove imx_gpio_base[] and imx_gpio_count
-	- regain two functions in include/gpio.h
-	- add "config GPIOLIB" to drivers/gpio/Kconfig
-	- select GPIOLIB in all converted i.MXs
-
-Regards,
-Steffen
-
-
-Sascha Hauer (2):
-  add gpiolib support
-  ARM i.MX: switch to gpiolib support
-
-Steffen Trumtrar (9):
-  ARM i.MX1: add imx-gpio devices
-  ARM i.MX21: add imx-gpio devices
-  ARM i.MX25: add imx-gpio devices
-  ARM i.MX27: add imx-gpio devices
-  ARM i.MX31: add imx-gpio devices
-  ARM i.MX35: add imx-gpio devices
-  ARM i.MX51: add imx-gpio devices
-  ARM i.MX53: add imx-gpio devices
-  ARM i.MX6: add imx-gpio devices
-
- arch/arm/mach-imx/Kconfig |    9 +++
- arch/arm/mach-imx/gpio.c  |   94 +++++++++++++++++++------------
- arch/arm/mach-imx/imx1.c  |   18 +++---
- arch/arm/mach-imx/imx21.c |   22 +++++---
- arch/arm/mach-imx/imx25.c |   13 ++---
- arch/arm/mach-imx/imx27.c |   17 ++----
- arch/arm/mach-imx/imx31.c |   12 ++--
- arch/arm/mach-imx/imx35.c |   12 ++--
- arch/arm/mach-imx/imx51.c |   14 ++---
- arch/arm/mach-imx/imx53.c |   19 +++----
- arch/arm/mach-imx/imx6.c  |   26 +++++----
- drivers/Makefile          |    1 +
- drivers/gpio/Kconfig      |    2 +
- drivers/gpio/Makefile     |    1 +
- drivers/gpio/gpio.c       |  134 +++++++++++++++++++++++++++++++++++++++++++++
- include/gpio.h            |   27 ++++++++-
- 16 files changed, 298 insertions(+), 123 deletions(-)
- create mode 100644 drivers/gpio/Kconfig
- create mode 100644 drivers/gpio/Makefile
- create mode 100644 drivers/gpio/gpio.c
-
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 112dcb1..c069ae8 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -153,6 +153,7 @@ config ARCH_IMX1
+ 
+ config ARCH_IMX21
+ 	bool "i.MX21"
++	select GPIOLIB
+ 	select CPU_ARM926T
+ 
+ config ARCH_IMX25
+diff --git a/arch/arm/mach-imx/imx21.c b/arch/arm/mach-imx/imx21.c
+index bbef33d..264477a 100644
+--- a/arch/arm/mach-imx/imx21.c
++++ b/arch/arm/mach-imx/imx21.c
+@@ -28,14 +28,18 @@ int imx_silicon_revision(void)
+ 	return CID;
+ }
+ 
+-void *imx_gpio_base[] = {
+-	(void *)0x10015000,
+-	(void *)0x10015100,
+-	(void *)0x10015200,
+-	(void *)0x10015300,
+-	(void *)0x10015400,
+-	(void *)0x10015500,
+-};
++static int imx21_init(void)
++{
++	add_generic_device("imx_iim", 0, NULL, MX51_IIM_BASE_ADDR, SZ_4K,
++			IORESOURCE_MEM, NULL);
+ 
+-int imx_gpio_count = ARRAY_SIZE(imx_gpio_base) * 32;
++	add_generic_device("imx-gpio", 0, NULL, 0x10015000, 0x100, IORESOURCE_MEM, NULL);
++	add_generic_device("imx-gpio", 1, NULL, 0x10015100, 0x100, IORESOURCE_MEM, NULL);
++	add_generic_device("imx-gpio", 2, NULL, 0x10015200, 0x100, IORESOURCE_MEM, NULL);
++	add_generic_device("imx-gpio", 3, NULL, 0x10015300, 0x100, IORESOURCE_MEM, NULL);
++	add_generic_device("imx-gpio", 4, NULL, 0x10015400, 0x100, IORESOURCE_MEM, NULL);
++	add_generic_device("imx-gpio", 5, NULL, 0x10015500, 0x100, IORESOURCE_MEM, NULL);
+ 
++	return 0;
++}
++coredevice_initcall(imx21_init);
 -- 
 1.7.10.4
 
