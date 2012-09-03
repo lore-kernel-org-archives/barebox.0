@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T8S1Y-0000XL-3q
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 08:28:49 +0000
-Date: Mon, 3 Sep 2012 10:28:46 +0200
+ id 1T8S7u-000178-Q6
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 08:35:23 +0000
+Date: Mon, 3 Sep 2012 10:35:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120903082846.GC26594@pengutronix.de>
+Message-ID: <20120903083520.GD26594@pengutronix.de>
 References: <20120901123511.GA19233@game.jcrosoft.org>
- <1346503053-21862-1-git-send-email-plagnioj@jcrosoft.com>
- <1346503053-21862-4-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1346503053-21862-4-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20120901123511.GA19233@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,149 +22,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/18] fs: implement stat
+Subject: Re: [PATCH 00/18 v2] fs: add symlink and readlink support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Sep 01, 2012 at 02:37:19PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> stat() stats the file pointed to by path and fills in buf.
+On Sat, Sep 01, 2012 at 02:35:11PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> HI,
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  fs/fs.c      |  102 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  include/fs.h |    6 ++--
->  2 files changed, 104 insertions(+), 4 deletions(-)
+> 	v2:
+> 	 addres comments
 > 
-> diff --git a/fs/fs.c b/fs/fs.c
-> index 291e879..e31065f 100644
-> --- a/fs/fs.c
-> +++ b/fs/fs.c
-> @@ -26,6 +26,7 @@
->  #include <errno.h>
->  #include <malloc.h>
->  #include <linux/stat.h>
-> +#include <linux/err.h>
->  #include <fcntl.h>
->  #include <xfuncs.h>
->  #include <init.h>
-> @@ -111,6 +112,58 @@ static int init_cwd(void)
->  
->  postcore_initcall(init_cwd);
->  
-> +char *normalise_link(const char *pathname, const char *symlink)
-> +{
-> +	const char *buf = symlink;
-> +	char *path_free, *path;
-> +	char *absolute_path;
-> +	int point = 0;
-> +	int dir = 1;
-> +	int len;
-> +
-> +	if (symlink[0] == '/')
-> +		return strdup(symlink);
-> +
-> +	path = path_free = strdup(pathname);
+> please pull
+> The following changes since commit b77300ac6c6bbbc7eac774ff0076c7c05d39735f:
+> 
+>   command/mount: add autodetection support (2012-08-21 18:53:00 +0800)
+> 
+> are available in the git repository at:
+> 
+>   git://git.jcrosoft.org/barebox.git tags/fs-symlink
+> 
 
-This is not used...
+The following results in a crash here:
 
-> +
-> +	while (*buf == '.' || *buf == '/') {
-> +		if (*buf == '.') {
-> +			point++;
-> +		} else if (*buf == '/') {
-> +			point = 0;
-> +			dir++;
-> +		}
-> +		if (point > 2) {
-> +			buf -= 2;
-> +			break;
-> +		}
-> +		buf++;
-> +	}
-> +
+# mkdir mymount
+# mount -t ramfs none mymount/
+# ln /env/boot/net /mymount/link
+unable to handle paging request at address 0x1b5f655c
+pc : [<a7f044f0>]    lr : [<a7f04b10>]
+sp : a6eff908  ip : 00000003  fp : 00000000
+r10: a6f0efe4  r9 : 00000000  r8 : 00000003
+r7 : 00000000  r6 : a6f00000  r5 : a6f0eff4  r4 : a6f0efec
+r3 : 1b5f6560  r2 : a6f0eff4  r1 : a6f0eff4  r0 : a6f0efec
+Flags: NzCv  IRQs off  FIQs off  Mode SVC_32
+[<a7f044f0>] (block_link_next+0x18/0x1c) from [<a7f04b10>] (tlsf_free+0x1c/0x88)
+[<a7f04b10>] (tlsf_free+0x1c/0x88) from [<a7f2828c>] (symlink+0xd0/0xfc)
+[<a7f2828c>] (symlink+0xd0/0xfc) from [<a7f1ac8c>] (do_ln+0x14/0x3c)
+[<a7f1ac8c>] (do_ln+0x14/0x3c) from [<a7f050b4>] (execute_command+0x38/0x7c)
+[<a7f050b4>] (execute_command+0x38/0x7c) from [<a7f01efc>] (run_list_real+0x8dc/0x9dc)
+[<a7f01efc>] (run_list_real+0x8dc/0x9dc) from [<a7f02144>] (parse_stream_outer+0x148/0x238)
+[<a7f02144>] (parse_stream_outer+0x148/0x238) from [<a7f024cc>] (run_shell+0x3c/0x7c)
+[<a7f024cc>] (run_shell+0x3c/0x7c) from [<a7f050b4>] (execute_command+0x38/0x7c)
+[<a7f050b4>] (execute_command+0x38/0x7c) from [<a7f01efc>] (run_list_real+0x8dc/0x9dc)
+[<a7f01efc>] (run_list_real+0x8dc/0x9dc) from [<a7f01a58>] (run_list_real+0x438/0x9dc)
 
-...until here, so please move the allocation to here.
+[<a7f2c5e4>] (unwind_backtrace+0x0/0x9c) from [<a7f1bce0>] (panic+0x28/0x3c)
+[<a7f1bce0>] (panic+0x28/0x3c) from [<a7f2ca3c>] (do_exception+0x10/0x14)
+[<a7f2ca3c>] (do_exception+0x10/0x14) from [<a7f2cac8>] (do_data_abort+0x2c/0x38)
+[<a7f2cac8>] (do_data_abort+0x2c/0x38) from [<a7f2c810>] (data_abort+0x50/0x60)
 
-And as said before, either use xstrdup or check the return value.
 
-> +	while(dir) {
-> +		path = dirname(path);
-> +		dir--;
-> +	}
-> +
-> +	len = strlen(buf) + strlen(path) + 1;
-> +	if (buf[0] != '/')
-> +		len++;
-> +
-> +	absolute_path = calloc(sizeof(char), len);
-> +
-> +	if (!absolute_path)
-> +		return NULL;
-
-You lose the allocation of strdup(pathname) here.
-
-> +
-> +	strcat(absolute_path, path);
-> +	if (buf[0] != '/')
-> +		strcat(absolute_path, "/");
-> +	strcat(absolute_path, buf);
-> +
-> +	free(path_free);
-> +
-> +	return absolute_path;
-> +}
-> +
->  char *normalise_path(const char *pathname)
->  {
->  	char *path = xzalloc(strlen(pathname) + strlen(cwd) + 2);
-> @@ -512,6 +565,42 @@ out:
->  }
->  EXPORT_SYMBOL(unlink);
->  
-> +static char* realfile(const char *pathname, struct stat *s)
-
-static char *realfile
-
-> +{
-> +	char *path = normalise_path(pathname);
-> +	int ret;
-> +
-> +	ret = lstat(path, s);
-> +	if (ret)
-> +		goto out;
-> +
-> +	if (S_ISLNK(s->st_mode)) {
-> +		char tmp[PATH_MAX];
-> +		char *new_path;
-> +
-> +		memset(tmp, 0, PATH_MAX);
-> +
-> +		ret = readlink(path, tmp, PATH_MAX - 1);
-> +		if (ret < 0)
-> +			goto out;
-> +
-> +		new_path = normalise_link(path, tmp);
-> +		free(path);
-> +		if (!new_path)
-> +			return ERR_PTR(-ENOMEM);
-> +		path = new_path;
-> +
-> +		ret = lstat(path, s);
-> +	}
-> +
-> +	if (!ret)
-> +		return path;
-> +
-> +out:
-> +	free(path);
-> +	return ERR_PTR(ret);
-> +}
-> +
->  int open(const char *pathname, int flags, ...)
->  {
->  	struct fs_device_d *fsdev;
-
-Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
