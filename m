@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T8TZe-0001rm-HA
+ id 1T8TZe-0001rV-Mn
  for barebox@lists.infradead.org; Mon, 03 Sep 2012 10:08:11 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id DA6AEDC3437
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 77E1EDC3594
  for <barebox@lists.infradead.org>; Mon,  3 Sep 2012 12:13:21 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  3 Sep 2012 12:08:07 +0200
-Message-Id: <1346666898-19347-7-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon,  3 Sep 2012 12:08:06 +0200
+Message-Id: <1346666898-19347-6-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346666898-19347-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120903100409.GC24296@game.jcrosoft.org>
  <1346666898-19347-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,126 +26,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/18] ramfs: add symlink and readlink support
+Subject: [PATCH 06/18] fs: introduce get_mounted_path to get the path where a
+ file is mounted
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- fs/ramfs.c |   61 ++++++++++++++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 55 insertions(+), 6 deletions(-)
+ fs/fs.c      |    9 +++++++++
+ include/fs.h |    2 ++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/fs/ramfs.c b/fs/ramfs.c
-index 91d06b8..8f3b936 100644
---- a/fs/ramfs.c
-+++ b/fs/ramfs.c
-@@ -42,6 +42,7 @@ struct ramfs_inode {
- 	struct ramfs_inode *parent;
- 	struct ramfs_inode *next;
- 	struct ramfs_inode *child;
-+	char *symlink;
- 	ulong mode;
- 
- 	struct handle_d *handle;
-@@ -176,6 +177,7 @@ static void ramfs_put_inode(struct ramfs_inode *node)
- 		data = tmp;
- 	}
- 
-+	free(node->symlink);
- 	free(node->name);
- 	free(node);
- }
-@@ -212,18 +214,38 @@ static struct ramfs_inode* node_insert(struct ramfs_inode *parent_node, const ch
- 
- /* ---------------------------------------------------------------*/
- 
--static int ramfs_create(struct device_d *dev, const char *pathname, mode_t mode)
-+static int __ramfs_create(struct device_d *dev, const char *pathname,
-+			  mode_t mode, const char *symlink)
- {
- 	struct ramfs_priv *priv = dev->priv;
- 	struct ramfs_inode *node;
- 	char *file;
-+	char *__symlink = NULL;
- 
- 	node = rlookup_parent(priv, pathname, &file);
--	if (node) {
--		node_insert(node, file, mode);
--		return 0;
-+	if (!node)
-+		return -ENOENT;
-+
-+	if (symlink) {
-+		__symlink = strdup(symlink);
-+		if (!__symlink)
-+			return -ENOMEM;
- 	}
--	return -ENOENT;
-+
-+	node = node_insert(node, file, mode);
-+	if (!node) {
-+		free(__symlink);
-+		return -ENOMEM;
-+	}
-+
-+	node->symlink = __symlink;
-+
-+	return 0;
-+}
-+
-+static int ramfs_create(struct device_d *dev, const char *pathname, mode_t mode)
-+{
-+	return __ramfs_create(dev, pathname, mode, NULL);
+diff --git a/fs/fs.c b/fs/fs.c
+index 5b7e641..53d8316 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -243,6 +243,15 @@ static struct fs_device_d *get_fsdevice_by_path(const char *path)
+ 	return fs_dev_root;
  }
  
- static int ramfs_unlink(struct device_d *dev, const char *pathname)
-@@ -532,12 +554,37 @@ static int ramfs_stat(struct device_d *dev, const char *filename, struct stat *s
- 	if (!node)
- 		return -ENOENT;
- 
--	s->st_size = node->size;
-+	s->st_size = node->symlink ? strlen(node->symlink) : node->size;
- 	s->st_mode = node->mode;
- 
- 	return 0;
- }
- 
-+static int ramfs_symlink(struct device_d *dev, const char *pathname,
-+		       const char *newpath)
++char *get_mounted_path(const char *path)
 +{
-+	mode_t mode = S_IFLNK | S_IRWXU | S_IRWXG | S_IRWXO;
++	struct fs_device_d *fdev;
 +
-+	return __ramfs_create(dev, newpath, mode, pathname);
++	fdev = get_fsdevice_by_path(path);
++
++	return fdev->path;
 +}
 +
-+static int ramfs_readlink(struct device_d *dev, const char *pathname,
-+			char *buf, size_t bufsiz)
-+{
-+	struct ramfs_priv *priv = dev->priv;
-+	struct ramfs_inode *node = rlookup(priv, pathname);
-+	int len;
+ static FILE files[MAX_FILES];
+ 
+ static FILE *get_file(void)
+diff --git a/include/fs.h b/include/fs.h
+index ae6c464..3d5714c 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -173,6 +173,8 @@ void *read_file(const char *filename, size_t *size);
+ char *normalise_path(const char *path);
+ char *normalise_link(const char *pathname, const char* symlink);
+ 
++char *get_mounted_path(const char *path);
 +
-+	if (!node || !node->symlink)
-+		return -ENOENT;
-+
-+	len = min(bufsiz, strlen(node->symlink));
-+
-+	memcpy(buf, node->symlink, len);
-+
-+	return 0;
-+}
-+
- static int ramfs_probe(struct device_d *dev)
- {
- 	struct ramfs_inode *n;
-@@ -584,6 +631,8 @@ static struct fs_driver_d ramfs_driver = {
- 	.readdir   = ramfs_readdir,
- 	.closedir  = ramfs_closedir,
- 	.stat      = ramfs_stat,
-+	.symlink   = ramfs_symlink,
-+	.readlink  = ramfs_readlink,
- 	.flags     = FS_DRIVER_NO_DEV,
- 	.drv = {
- 		.probe  = ramfs_probe,
+ /* Register a new filesystem driver */
+ int register_fs_driver(struct fs_driver_d *fsdrv);
+ 
 -- 
 1.7.10.4
 
