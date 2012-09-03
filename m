@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T8RKQ-00065z-3f
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 07:44:14 +0000
-Date: Mon, 3 Sep 2012 09:44:12 +0200
+ id 1T8RPs-0006BJ-5N
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 07:49:52 +0000
+Date: Mon, 3 Sep 2012 09:49:49 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120903074412.GZ26594@pengutronix.de>
-References: <1346428837-20422-1-git-send-email-w.sang@pengutronix.de>
+Message-ID: <20120903074949.GA26594@pengutronix.de>
+References: <20120901084728.GH18708@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1346428837-20422-1-git-send-email-w.sang@pengutronix.de>
+In-Reply-To: <20120901084728.GH18708@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: miidev: really wait for auto negotiation
-To: Wolfram Sang <w.sang@pengutronix.de>
+Subject: Re: [PATCH 0/7 v3] smsc911x: runtime configuration improvement
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Aug 31, 2012 at 06:00:37PM +0200, Wolfram Sang wrote:
-> miidev_wait_aneg() polled the wrong bit, so link detection did fail on
-> boards where the PHY had to come out of a powerdown mode.
+On Sat, Sep 01, 2012 at 10:47:28AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
 > 
-> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+> 	v3:
+> 	  update commnets
+> 
+> 	v2:
+> 	  update 16/32bit callback
+> 
+> please pull
+> The following changes since commit 3f96b4938c4046590be8a38fb114148c4bf1ca8e:
+> 
+>   Merge tag 'bootm_fix' of git://git.jcrosoft.org/barebox (2012-08-13 20:37:53 +0200)
+> 
+> are available in the git repository at:#
 
 Applied, thanks
 
 Sascha
-
-> ---
->  drivers/net/miidev.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/miidev.c b/drivers/net/miidev.c
-> index b49944b..75b53e3 100644
-> --- a/drivers/net/miidev.c
-> +++ b/drivers/net/miidev.c
-> @@ -116,7 +116,7 @@ int miidev_wait_aneg(struct mii_device *mdev)
->  			return -ETIMEDOUT;
->  		}
->  
-> -	} while (!(status & BMSR_LSTATUS));
-> +	} while (!(status & BMSR_ANEGCOMPLETE));
->  
->  	return 0;
->  }
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
