@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-iy0-f177.google.com ([209.85.210.177])
+Received: from mail-wi0-f177.google.com ([209.85.212.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T82gD-0006Tz-Fr
- for barebox@lists.infradead.org; Sun, 02 Sep 2012 05:25:06 +0000
-Received: by iaai1 with SMTP id i1so7101968iaa.36
- for <barebox@lists.infradead.org>; Sat, 01 Sep 2012 22:25:01 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <201208272001.50503.jbe@pengutronix.de>
-References: <CACO6GO7pfavefJa_wTcR7ifHwWVS8up7-TRW8ArQzXoeL1JHCA@mail.gmail.com>
- <201208272001.50503.jbe@pengutronix.de>
-Date: Sun, 2 Sep 2012 01:25:01 -0400
-Message-ID: <CACO6GO68_8oLS2caknd=+j1C5ewdWtR65tTfwa_gviPYEjuSsQ@mail.gmail.com>
-From: Fadil Berisha <f.koliqi@gmail.com>
-Reply-To: f.koliqi@gmail.com
+ id 1T8Pet-0007un-3n
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 05:57:15 +0000
+Received: by wibhn17 with SMTP id hn17so2523342wib.0
+ for <barebox@lists.infradead.org>; Sun, 02 Sep 2012 22:57:13 -0700 (PDT)
+From: Alexander Aring <alex.aring@googlemail.com>
+Date: Mon,  3 Sep 2012 07:58:01 +0200
+Message-Id: <1346651881-3765-2-git-send-email-alex.aring@gmail.com>
+In-Reply-To: <1346651881-3765-1-git-send-email-alex.aring@gmail.com>
+References: <1346651881-3765-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,103 +18,149 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox on imx23-olinuxino
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] mtd: add private data to mtddev-hook
+To: barebox@lists.infradead.org
 
-Juergen,
+The mtdoob and mtdraw device don't clean up correctly.
+Added a private data element to hold allocated memory.
+Fix remove of mtdoob and mtdraw device.
 
-Sorry, for replying so late, but took me time to identify problem.
- I am using function:
+Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+---
+ drivers/mtd/core.c   |  6 ++++--
+ drivers/mtd/mtd.h    |  5 +++--
+ drivers/mtd/mtdoob.c | 15 ++++++++++++++-
+ drivers/mtd/mtdraw.c | 15 ++++++++++++++-
+ 4 files changed, 35 insertions(+), 6 deletions(-)
 
-add_generic_device("mxs_mci", DEVICE_ID_DYNAMIC, NULL, IMX_SSP1_BASE, 0,
-			       IORESOURCE_MEM, &mci_pdata);
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index 3dcc908..a6132e8 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -248,7 +248,7 @@ int add_mtd_device(struct mtd_info *mtd, char *devname)
+ 
+ 	list_for_each_entry(hook, &mtd_register_hooks, hook)
+ 		if (hook->add_mtd_device)
+-			hook->add_mtd_device(mtd, devname);
++			hook->add_mtd_device(mtd, devname, &hook->priv);
+ 
+ 	return 0;
+ }
+@@ -259,7 +259,9 @@ int del_mtd_device (struct mtd_info *mtd)
+ 
+ 	list_for_each_entry(hook, &mtd_register_hooks, hook)
+ 		if (hook->del_mtd_device)
+-			hook->del_mtd_device(mtd);
++			hook->del_mtd_device(mtd, &hook->priv);
++
++	devfs_remove(&mtd->cdev);
+ 	unregister_device(&mtd->class_dev);
+ 	free(mtd->param_size.value);
+ 	free(mtd->cdev.name);
+diff --git a/drivers/mtd/mtd.h b/drivers/mtd/mtd.h
+index c8af6e3..414bd6c 100644
+--- a/drivers/mtd/mtd.h
++++ b/drivers/mtd/mtd.h
+@@ -25,8 +25,9 @@
+  */
+ struct mtddev_hook {
+ 	struct list_head hook;
+-	int (*add_mtd_device)(struct mtd_info *mtd, char *devname);
+-	int (*del_mtd_device)(struct mtd_info *mtd);
++	int (*add_mtd_device)(struct mtd_info *mtd, char *devname, void **priv);
++	int (*del_mtd_device)(struct mtd_info *mtd, void **priv);
++	void *priv;
+ };
+ struct cdev;
+ 
+diff --git a/drivers/mtd/mtdoob.c b/drivers/mtd/mtdoob.c
+index e4dd1a0..c7bf40c 100644
+--- a/drivers/mtd/mtdoob.c
++++ b/drivers/mtd/mtdoob.c
+@@ -69,7 +69,7 @@ static struct file_operations mtd_ops_oob = {
+ 	.lseek  = dev_lseek_default,
+ };
+ 
+-static int add_mtdoob_device(struct mtd_info *mtd, char *devname)
++static int add_mtdoob_device(struct mtd_info *mtd, char *devname, void **priv)
+ {
+ 	struct mtdoob *mtdoob;
+ 
+@@ -80,13 +80,26 @@ static int add_mtdoob_device(struct mtd_info *mtd, char *devname)
+ 	mtdoob->cdev.priv = mtdoob;
+ 	mtdoob->cdev.dev = &mtd->class_dev;
+ 	mtdoob->mtd = mtd;
++	*priv = mtdoob;
+ 	devfs_create(&mtdoob->cdev);
+ 
+ 	return 0;
+ }
+ 
++static int del_mtdoob_device(struct mtd_info *mtd, void **priv)
++{
++	struct mtdoob *mtdoob;
++
++	mtdoob = *priv;
++	devfs_remove(&mtdoob->cdev);
++	free(mtdoob);
++
++	return 0;
++}
++
+ static struct mtddev_hook mtdoob_hook = {
+ 	.add_mtd_device = add_mtdoob_device,
++	.del_mtd_device = del_mtdoob_device,
+ };
+ 
+ static int __init register_mtdoob(void)
+diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
+index 9961a75..16157e9 100644
+--- a/drivers/mtd/mtdraw.c
++++ b/drivers/mtd/mtdraw.c
+@@ -275,7 +275,7 @@ static const struct file_operations mtd_raw_fops = {
+ 	.lseek		= dev_lseek_default,
+ };
+ 
+-static int add_mtdraw_device(struct mtd_info *mtd, char *devname)
++static int add_mtdraw_device(struct mtd_info *mtd, char *devname, void **priv)
+ {
+ 	struct mtdraw *mtdraw;
+ 
+@@ -290,13 +290,26 @@ static int add_mtdraw_device(struct mtd_info *mtd, char *devname)
+ 	mtdraw->cdev.priv = mtdraw;
+ 	mtdraw->cdev.dev = &mtd->class_dev;
+ 	mtdraw->cdev.mtd = mtd;
++	*priv = mtdraw;
+ 	devfs_create(&mtdraw->cdev);
+ 
+ 	return 0;
+ }
+ 
++static int del_mtdraw_device(struct mtd_info *mtd, void **priv)
++{
++	struct mtdraw *mtdraw;
++
++	mtdraw = *priv;
++	devfs_remove(&mtdraw->cdev);
++	free(mtdraw);
++
++	return 0;
++}
++
+ static struct mtddev_hook mtdraw_hook = {
+ 	.add_mtd_device = add_mtdraw_device,
++	.del_mtd_device = del_mtdraw_device,
+ };
+ 
+ static int __init register_mtdraw(void)
+-- 
+1.7.12
 
-It is supposed during initialisation to pass parameter  IMX_SSP1_BASE,
-but in  function
- mxs_mci_initialize register base  mxs_mci->regs is initialised with
-zero. As result mxs_mci_initialize writing in wrong memory area and
-system hangs.
-My workaround is:
-
-static int mxs_mci_initialize(struct mci_host *host, struct device_d *mci_dev)
-{
-	struct mxs_mci_host *mxs_mci = to_mxs_mci(host);
-
-+	mxs_mci->regs = IMX_SSP1_BASE;
-
- Bellow is response with SD Card successfully added.
-
-Regards
-
-Fadil Berisha
-
-mci@mci0: SD Card Rev. 2.00 or later detected
-mci@mci0: Put the Card in Identify Mode
-mci@mci0: Card's identification data is:
-03534453-55303247-8071997F-BE00BC97
-mci@mci0: Get/Set relative address
-mci@mci0: Get card's specific data
-mci@mci0: Card's specific data is: 00260032-5F5A83AE-FEFBCFFF-928040DF
-mci@mci0: Transfer speed: 25000000
-mci@mci0: Max. block length are: Write=1024, Read=1024 Bytes
-mci@mci0: Capacity: 1886 MiB
-mci@mci0: Limiting max. read block size down to 512
-mci@mci0: Limiting max. write block size down to 512
-mci@mci0: Read block length: 512, Write block length: 512
-mci@mci0: Select the card, and put it into Transfer Mode
-mci@mci0: Changing transfer frequency
-mci@mci0: Trying to read the SCR (try 1 of 3)
-mci@mci0: Prepare for bus width change
-mci@mci0: Set SD bus width to 4 bit
-IO settings: bus width=4, frequency=400000 Hz
-mci@mci0: Card is up and running now, registering as a disk
-mci@mci0: registered disk0
-mci@mci0: mci_sd_read: Read 1 block(s), starting at 0
-mci@mci0: SD Card successfully added
-barebox:/ ls dev
-defaultenv    disk0         disk0.0       disk0.1       disk0.2
-disk0.3       full          mem           null          ram0
-zero
-barebox:/
-
-
-On Mon, Aug 27, 2012 at 2:01 PM, Juergen Beisert <jbe@pengutronix.de> wrote:
-> Hi Fadil,
->
-> Fadil Berisha wrote:
->> Based on falconfing and mx23-evk, I did barebox port on
->> imx23-olinuxino board.  Here is barebox boot:
->>
->> Board: Olimex.ltd imx23-olinuxino
->> registered netconsole as cs1
->> Min. frequency is 1476 Hz
->> Max. frequency is 48000000 Hz
->> mxs_mci@mci0: registered as mci0
->> ehci@ehci0: USB EHCI 1.00
->> No MCI card preset
->
-> In the mci-core.c source file you can enable the DEBUG macro to include more
-> debug output. This will print more information about the MCI card detection.
-> Maybe it helps.
->
-> Check also:
->  - pin multiplexing
->  - power supply to the SD card
->  - GPIOs for detecting the SD card (some kind of inserting signal)
->  - increase the min frequency to about 400 kHz. Maybe 1476 Hz are too slow and
->    conflict with some timeout values
->
-> Regards,
-> Juergen
->
-> --
-> Pengutronix e.K.                              | Juergen Beisert             |
-> Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
