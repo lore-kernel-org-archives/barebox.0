@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T8TZh-0001vC-FK
+ id 1T8TZi-0001w6-50
  for barebox@lists.infradead.org; Mon, 03 Sep 2012 10:08:17 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 16651DC35DC
- for <barebox@lists.infradead.org>; Mon,  3 Sep 2012 12:13:26 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 1B74DDC38DA
+ for <barebox@lists.infradead.org>; Mon,  3 Sep 2012 12:13:27 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  3 Sep 2012 12:08:15 +0200
-Message-Id: <1346666898-19347-15-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon,  3 Sep 2012 12:08:18 +0200
+Message-Id: <1346666898-19347-18-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346666898-19347-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120903100409.GC24296@game.jcrosoft.org>
  <1346666898-19347-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,57 +26,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/18] envfs: introduce version major and minor
+Subject: [PATCH 18/18] defautenv: add support of symlink
 To: barebox@lists.infradead.org
-
-they are store in the super block at byte 16th and 17th.
-
-set the verison at 0.1
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/environment.c |    2 ++
- include/envfs.h      |    7 ++++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ common/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/environment.c b/common/environment.c
-index 52ce0de..8efed97 100644
---- a/common/environment.c
-+++ b/common/environment.c
-@@ -125,6 +125,8 @@ int envfs_save(char *filename, char *dirname)
+diff --git a/common/Makefile b/common/Makefile
+index d74dffb..df9f301 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -58,7 +58,7 @@ ifneq ($(CONFIG_DEFAULT_ENVIRONMENT_PATH),"")
+ DEFAULT_ENVIRONMENT_PATH += $(CONFIG_DEFAULT_ENVIRONMENT_PATH)
+ endif
  
- 	super = (struct envfs_super *)buf;
- 	super->magic = ENVFS_32(ENVFS_MAGIC);
-+	super->major = ENVFS_MAJOR;
-+	super->minor = ENVFS_MINOR;
- 	super->size = ENVFS_32(size);
+-ENV_FILES := $(shell cd $(srctree); for i in $(DEFAULT_ENVIRONMENT_PATH); do find $${i} -type f -exec readlink -f '{}' \;; done)
++ENV_FILES := $(shell cd $(srctree); for i in $(DEFAULT_ENVIRONMENT_PATH); do find $${i} -type f ; done)
  
- 	/* second pass: copy files to buffer */
-diff --git a/include/envfs.h b/include/envfs.h
-index ba976d6..c6df8c5 100644
---- a/include/envfs.h
-+++ b/include/envfs.h
-@@ -5,6 +5,9 @@
- #include <asm/byteorder.h>
- #endif
- 
-+#define ENVFS_MAJOR		0
-+#define ENVFS_MINOR		1
-+
- #define ENVFS_MAGIC		    0x798fba79	/* some random number */
- #define ENVFS_INODE_MAGIC	0x67a8c78d
- #define ENVFS_END_MAGIC		0x6a87d6cd
-@@ -29,8 +32,10 @@ struct envfs_super {
- 	uint32_t priority;
- 	uint32_t crc;			/* crc for the data */
- 	uint32_t size;			/* size of data */
-+	uint8_t major;			/* major */
-+	uint8_t minor;			/* minor */
-+	uint16_t future;		/* reserved for future use */
- 	uint32_t flags;			/* feature flags */
--	uint32_t future;		/* reserved for future use */
- 	uint32_t sb_crc;		/* crc for the superblock */
- };
+ endif # ifdef CONFIG_DEFAULT_ENVIRONMENT
  
 -- 
 1.7.10.4
