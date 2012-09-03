@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T8Rrh-0007q8-6w
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 08:18:43 +0000
+ id 1T8Rrh-0007q7-7m
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 08:18:40 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon,  3 Sep 2012 10:18:18 +0200
-Message-Id: <1346660298-18148-12-git-send-email-s.trumtrar@pengutronix.de>
+Date: Mon,  3 Sep 2012 10:18:15 +0200
+Message-Id: <1346660298-18148-9-git-send-email-s.trumtrar@pengutronix.de>
 In-Reply-To: <1346660298-18148-1-git-send-email-s.trumtrar@pengutronix.de>
 References: <1346660298-18148-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,69 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 11/11] ARM i.MX6: add imx-gpio devices
+Subject: [PATCH v2 08/11] ARM i.MX35: add imx-gpio devices
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
  arch/arm/mach-imx/Kconfig |    1 +
- arch/arm/mach-imx/imx6.c  |   26 ++++++++++++++------------
- 2 files changed, 15 insertions(+), 12 deletions(-)
+ arch/arm/mach-imx/imx35.c |   12 ++++--------
+ 2 files changed, 5 insertions(+), 8 deletions(-)
 
 diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 0c09b57..eb4c2ae 100644
+index 129960f..f06788d 100644
 --- a/arch/arm/mach-imx/Kconfig
 +++ b/arch/arm/mach-imx/Kconfig
-@@ -194,6 +194,7 @@ config ARCH_IMX53
- config ARCH_IMX6
- 	bool "i.MX6"
- 	select ARCH_HAS_FEC_IMX
+@@ -176,6 +176,7 @@ config ARCH_IMX31
+ config ARCH_IMX35
+ 	bool "i.MX35"
+ 	select CPU_V6
 +	select GPIOLIB
- 	select CPU_V7
+ 	select ARCH_HAS_FEC_IMX
  
- endchoice
-diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-index a443343..80f558e 100644
---- a/arch/arm/mach-imx/imx6.c
-+++ b/arch/arm/mach-imx/imx6.c
-@@ -23,18 +23,6 @@
+ config ARCH_IMX51
+diff --git a/arch/arm/mach-imx/imx35.c b/arch/arm/mach-imx/imx35.c
+index fe0c99e..7bc5401 100644
+--- a/arch/arm/mach-imx/imx35.c
++++ b/arch/arm/mach-imx/imx35.c
+@@ -25,14 +25,6 @@
  
  #include "gpio.h"
  
 -void *imx_gpio_base[] = {
--	(void *)MX6_GPIO1_BASE_ADDR,
--	(void *)MX6_GPIO2_BASE_ADDR,
--	(void *)MX6_GPIO3_BASE_ADDR,
--	(void *)MX6_GPIO4_BASE_ADDR,
--	(void *)MX6_GPIO5_BASE_ADDR,
--	(void *)MX6_GPIO6_BASE_ADDR,
--	(void *)MX6_GPIO7_BASE_ADDR,
+-	(void *)0x53fcc000,
+-	(void *)0x53fd0000,
+-	(void *)0x53fa4000,
 -};
 -
 -int imx_gpio_count = ARRAY_SIZE(imx_gpio_base) * 32;
 -
- void imx6_init_lowlevel(void)
+ int imx_silicon_revision()
  {
- 	void __iomem *aips1 = (void *)MX6_AIPS1_ON_BASE_ADDR;
-@@ -69,3 +57,17 @@ void imx6_init_lowlevel(void)
- 	writel(0xffffffff, 0x020c407c);
- 	writel(0xffffffff, 0x020c4080);
+ 	uint32_t reg;
+@@ -66,6 +58,10 @@ static int imx35_init(void)
+ 	add_generic_device("imx_iim", 0, NULL, IMX_IIM_BASE, SZ_4K,
+ 			IORESOURCE_MEM, NULL);
+ 
++	add_generic_device("imx-gpio", 0, NULL, 0x53fcc000, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx-gpio", 1, NULL, 0x53fd0000, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx-gpio", 2, NULL, 0x53fa4000, 0x1000, IORESOURCE_MEM, NULL);
++
+ 	return 0;
  }
-+
-+static int imx6_init(void)
-+{
-+	add_generic_device("imx-gpio", 0, NULL, MX6_GPIO1_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
-+	add_generic_device("imx-gpio", 1, NULL, MX6_GPIO2_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
-+	add_generic_device("imx-gpio", 2, NULL, MX6_GPIO3_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
-+	add_generic_device("imx-gpio", 3, NULL, MX6_GPIO4_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
-+	add_generic_device("imx-gpio", 4, NULL, MX6_GPIO5_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
-+	add_generic_device("imx-gpio", 5, NULL, MX6_GPIO6_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
-+	add_generic_device("imx-gpio", 6, NULL, MX6_GPIO7_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
-+
-+	return 0;
-+}
-+coredevice_initcall(imx6_init);
+ coredevice_initcall(imx35_init);
 -- 
 1.7.10.4
 
