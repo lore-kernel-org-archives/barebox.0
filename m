@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
+Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T8TZe-0001r1-Cr
- for barebox@lists.infradead.org; Mon, 03 Sep 2012 10:08:09 +0000
+ id 1T8TZe-0001s9-HE
+ for barebox@lists.infradead.org; Mon, 03 Sep 2012 10:08:11 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 04E92DC356F
- for <barebox@lists.infradead.org>; Mon,  3 Sep 2012 12:13:21 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 96BEDDC35EA
+ for <barebox@lists.infradead.org>; Mon,  3 Sep 2012 12:13:22 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  3 Sep 2012 12:08:04 +0200
-Message-Id: <1346666898-19347-4-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon,  3 Sep 2012 12:08:09 +0200
+Message-Id: <1346666898-19347-9-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346666898-19347-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120903100409.GC24296@game.jcrosoft.org>
  <1346666898-19347-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,178 +26,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/18] fs: implement stat
+Subject: [PATCH 09/18] test: add -L support to test if it's a symbolic link
 To: barebox@lists.infradead.org
-
-stat() stats the file pointed to by path and fills in buf.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- fs/fs.c      |  105 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/fs.h |    6 ++--
- 2 files changed, 107 insertions(+), 4 deletions(-)
+ commands/test.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 8b7d652..935d516 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -26,6 +26,7 @@
- #include <errno.h>
- #include <malloc.h>
- #include <linux/stat.h>
-+#include <linux/err.h>
- #include <fcntl.h>
- #include <xfuncs.h>
- #include <init.h>
-@@ -111,6 +112,61 @@ static int init_cwd(void)
+diff --git a/commands/test.c b/commands/test.c
+index 9ffa892..56e8c52 100644
+--- a/commands/test.c
++++ b/commands/test.c
+@@ -44,6 +44,7 @@ typedef enum {
+ 	OPT_FILE,
+ 	OPT_EXISTS,
+ 	OPT_MAX,
++	OPT_SYMBOLIC_LINK,
+ } test_opts;
  
- postcore_initcall(init_cwd);
+ static char *test_options[] = {
+@@ -62,6 +63,7 @@ static char *test_options[] = {
+ 	[OPT_FILE]			= "-f",
+ 	[OPT_DIRECTORY]			= "-d",
+ 	[OPT_EXISTS]			= "-e",
++	[OPT_SYMBOLIC_LINK]		= "-L",
+ };
  
-+char *normalise_link(const char *pathname, const char *symlink)
-+{
-+	const char *buf = symlink;
-+	char *path_free, *path;
-+	char *absolute_path;
-+	int point = 0;
-+	int dir = 1;
-+	int len;
-+
-+	if (symlink[0] == '/')
-+		return strdup(symlink);
-+
-+	while (*buf == '.' || *buf == '/') {
-+		if (*buf == '.') {
-+			point++;
-+		} else if (*buf == '/') {
-+			point = 0;
-+			dir++;
-+		}
-+		if (point > 2) {
-+			buf -= 2;
-+			break;
-+		}
-+		buf++;
-+	}
-+
-+	path = path_free = strdup(pathname);
-+	if (!path)
-+		return NULL;
-+
-+	while(dir) {
-+		path = dirname(path);
-+		dir--;
-+	}
-+
-+	len = strlen(buf) + strlen(path) + 1;
-+	if (buf[0] != '/')
-+		len++;
-+
-+	absolute_path = calloc(sizeof(char), len);
-+
-+	if (!absolute_path)
-+		goto out;
-+
-+	strcat(absolute_path, path);
-+	if (buf[0] != '/')
-+		strcat(absolute_path, "/");
-+	strcat(absolute_path, buf);
-+
-+out:
-+	free(path_free);
-+
-+	return absolute_path;
-+}
-+
- char *normalise_path(const char *pathname)
- {
- 	char *path = xzalloc(strlen(pathname) + strlen(cwd) + 2);
-@@ -512,6 +568,42 @@ out:
- }
- EXPORT_SYMBOL(unlink);
+ static int parse_opt(const char *opt)
+@@ -140,9 +142,10 @@ static int do_test(int argc, char *argv[])
+ 		case OPT_FILE:
+ 		case OPT_DIRECTORY:
+ 		case OPT_EXISTS:
++		case OPT_SYMBOLIC_LINK:
+ 			adv = 2;
+ 			if (ap[1] && *ap[1] != ']' && strlen(ap[1])) {
+-				expr = stat(ap[1], &statbuf);
++				expr = (opt == OPT_SYMBOLIC_LINK ? lstat : stat)(ap[1], &statbuf);
+ 				if (expr < 0) {
+ 					expr = 0;
+ 					break;
+@@ -160,6 +163,10 @@ static int do_test(int argc, char *argv[])
+ 					expr = 1;
+ 					break;
+ 				}
++				if (opt == OPT_SYMBOLIC_LINK && S_ISLNK(statbuf.st_mode)) {
++					expr = 1;
++					break;
++				}
+ 			}
+ 			break;
  
-+static char *realfile(const char *pathname, struct stat *s)
-+{
-+	char *path = normalise_path(pathname);
-+	int ret;
-+
-+	ret = lstat(path, s);
-+	if (ret)
-+		goto out;
-+
-+	if (S_ISLNK(s->st_mode)) {
-+		char tmp[PATH_MAX];
-+		char *new_path;
-+
-+		memset(tmp, 0, PATH_MAX);
-+
-+		ret = readlink(path, tmp, PATH_MAX - 1);
-+		if (ret < 0)
-+			goto out;
-+
-+		new_path = normalise_link(path, tmp);
-+		free(path);
-+		if (!new_path)
-+			return ERR_PTR(-ENOMEM);
-+		path = new_path;
-+
-+		ret = lstat(path, s);
-+	}
-+
-+	if (!ret)
-+		return path;
-+
-+out:
-+	free(path);
-+	return ERR_PTR(ret);
-+}
-+
- int open(const char *pathname, int flags, ...)
- {
- 	struct fs_device_d *fsdev;
-@@ -1267,6 +1359,19 @@ int closedir(DIR *dir)
- }
- EXPORT_SYMBOL(closedir);
+@@ -224,7 +231,7 @@ static const char *test_aliases[] = { "[", NULL};
  
-+int stat(const char *filename, struct stat *s)
-+{
-+	char *f;
-+
-+	f = realfile(filename, s);
-+	if (IS_ERR(f))
-+		return PTR_ERR(f);
-+
-+	free(f);
-+	return 0;
-+}
-+EXPORT_SYMBOL(stat);
-+
- int lstat(const char *filename, struct stat *s)
- {
- 	struct device_d *dev;
-diff --git a/include/fs.h b/include/fs.h
-index 4f7a158..ae6c464 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -112,10 +112,7 @@ int unlink(const char *pathname);
- int close(int fd);
- int flush(int fd);
- int lstat(const char *filename, struct stat *s);
--static inline int stat(const char *filename, struct stat *s)
--{
--	return lstat(filename, s);
--}
-+int stat(const char *filename, struct stat *s);
- int read(int fd, void *buf, size_t count);
- int ioctl(int fd, int request, void *buf);
- ssize_t write(int fd, const void *buf, size_t count);
-@@ -174,6 +171,7 @@ void *read_file(const char *filename, size_t *size);
-  * of "..", "." and double slashes. The returned string must be freed wit free().
-  */
- char *normalise_path(const char *path);
-+char *normalise_link(const char *pathname, const char* symlink);
+ static const __maybe_unused char cmd_test_help[] =
+ "Usage: test [OPTIONS]\n"
+-"options: !, =, !=, -eq, -ne, -ge, -gt, -le, -lt, -o, -a, -z, -n, -d, -e, -f\n"
++"options: !, =, !=, -eq, -ne, -ge, -gt, -le, -lt, -o, -a, -z, -n, -d, -e, -f, -L\n"
+ "see 'man test' on your PC for more information.\n";
  
- /* Register a new filesystem driver */
- int register_fs_driver(struct fs_driver_d *fsdrv);
+ static const __maybe_unused char cmd_test_usage[] = "minimal test like /bin/sh";
 -- 
 1.7.10.4
 
