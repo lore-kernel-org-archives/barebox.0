@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T8z8Q-000844-MJ
- for barebox@lists.infradead.org; Tue, 04 Sep 2012 19:50:17 +0000
-Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 039F6DC5B15
- for <barebox@lists.infradead.org>; Tue,  4 Sep 2012 21:55:24 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue,  4 Sep 2012 21:50:11 +0200
-Message-Id: <1346788217-16042-13-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1346788217-16042-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20120904194720.GB32603@game.jcrosoft.org>
- <1346788217-16042-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1T8zul-0002Jl-S1
+ for barebox@lists.infradead.org; Tue, 04 Sep 2012 20:40:05 +0000
+Date: Tue, 4 Sep 2012 22:39:59 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120904203959.GZ26594@pengutronix.de>
+References: <1346745947-7199-1-git-send-email-a.aring@phytec.de>
+ <1346745947-7199-3-git-send-email-a.aring@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1346745947-7199-3-git-send-email-a.aring@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,126 +19,114 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/19] ls: add symlink support to -l
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/6] memory: fix regions calculation
+To: Alexander Aring <a.aring@phytec.de>
+Cc: barebox@lists.infradead.org
 
-barebox:/ ls -l /env/init.d/
-drwxrwxrwx          0 .
-drwxrwxrwx          0 ..
-lrwxrwxrwx         11 net -> ../boot/net
+On Tue, Sep 04, 2012 at 10:05:43AM +0200, Alexander Aring wrote:
+> Fix calculation of regions.
+> 
+> Previous end address and next start address of two chained regions are
+> the same in a linkerscript.
+> We need the same behaviour for mem_malloc_init.
+> 
+> When we add the region to the regions tree we calculate -1 to the end
+> address.
+> 
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- commands/ls.c |   31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+Most of this patch is wrong. The following is always true:
 
-diff --git a/commands/ls.c b/commands/ls.c
-index fbcbadc..d36ef57 100644
---- a/commands/ls.c
-+++ b/commands/ls.c
-@@ -29,13 +29,24 @@
- #include <getopt.h>
- #include <stringlist.h>
- 
--static void ls_one(const char *path, struct stat *s)
-+static void ls_one(const char *path, const char* fullname, struct stat *s)
- {
- 	char modestr[11];
- 	unsigned int namelen = strlen(path);
- 
- 	mkmodestr(s->st_mode, modestr);
--	printf("%s %10llu %*.*s\n", modestr, s->st_size, namelen, namelen, path);
-+	printf("%s %10llu %*.*s", modestr, s->st_size, namelen, namelen, path);
-+
-+	if (S_ISLNK(s->st_mode)) {
-+		char realname[PATH_MAX];
-+
-+		memset(realname, 0, PATH_MAX);
-+
-+		if (readlink(fullname, realname, PATH_MAX - 1) >= 0)
-+			printf(" -> %s", realname);
-+	}
-+
-+	puts("\n");
- }
- 
- int ls(const char *path, ulong flags)
-@@ -48,14 +59,14 @@ int ls(const char *path, ulong flags)
- 
- 	string_list_init(&sl);
- 
--	if (stat(path, &s))
-+	if (lstat(path, &s))
- 		return -errno;
- 
- 	if (flags & LS_SHOWARG && s.st_mode & S_IFDIR)
- 		printf("%s:\n", path);
- 
- 	if (!(s.st_mode & S_IFDIR)) {
--		ls_one(path, &s);
-+		ls_one(path, path, &s);
- 		return 0;
- 	}
- 
-@@ -65,12 +76,12 @@ int ls(const char *path, ulong flags)
- 
- 	while ((d = readdir(dir))) {
- 		sprintf(tmp, "%s/%s", path, d->d_name);
--		if (stat(tmp, &s))
-+		if (lstat(tmp, &s))
- 			goto out;
- 		if (flags & LS_COLUMN)
- 			string_list_add_sorted(&sl, d->d_name);
- 		else
--			ls_one(d->d_name, &s);
-+			ls_one(d->d_name, tmp, &s);
- 	}
- 
- 	closedir(dir);
-@@ -97,7 +108,7 @@ int ls(const char *path, ulong flags)
- 			continue;
- 		sprintf(tmp, "%s/%s", path, d->d_name);
- 
--		if (stat(tmp, &s))
-+		if (lstat(tmp, &s))
- 			goto out;
- 		if (s.st_mode & S_IFDIR) {
- 			char *norm = normalise_path(tmp);
-@@ -146,7 +157,7 @@ static int do_ls(int argc, char *argv[])
- 
- 	/* first pass: all files */
- 	while (o < argc) {
--		ret = stat(argv[o], &s);
-+		ret = lstat(argv[o], &s);
- 		if (ret) {
- 			printf("%s: %s: %s\n", argv[0],
- 					argv[o], errno_str());
-@@ -158,7 +169,7 @@ static int do_ls(int argc, char *argv[])
- 			if (flags & LS_COLUMN)
- 				string_list_add_sorted(&sl, argv[o]);
- 			else
--				ls_one(argv[o], &s);
-+				ls_one(argv[o], argv[o], &s);
- 		}
- 
- 		o++;
-@@ -173,7 +184,7 @@ static int do_ls(int argc, char *argv[])
- 
- 	/* second pass: directories */
- 	while (o < argc) {
--		ret = stat(argv[o], &s);
-+		ret = lstat(argv[o], &s);
- 		if (ret) {
- 			o++;
- 			continue;
+end = start + size - 1
+
+The problem we have is that in the linker scripts we have
+
+_text = .;
+*(.text*)
+_etext = .;
+
+Here _etext is *not* the end but the next free address.
+
+So we have to calculate text size for the above example as:
+
+text_size = _etext - _text;
+
+
+> index 80b62e9..c85aae1 100644
+> --- a/arch/arm/lib/arm.c
+> +++ b/arch/arm/lib/arm.c
+> @@ -7,7 +7,7 @@
+>  static int arm_mem_malloc_init(void)
+>  {
+>  	mem_malloc_init((void *)MALLOC_BASE,
+> -			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
+> +			(void *)(MALLOC_BASE + MALLOC_SIZE));
+
+So this patch is wrong.
+
+>  	request_sdram_region("malloc space",
+>  			malloc_start,
+> -			malloc_end - malloc_start + 1);
+> +			malloc_end - malloc_start);
+
+This is also wrong (and also all changes above this)
+
+>  	request_sdram_region("barebox",
+>  			(unsigned long)&_stext,
+>  			(unsigned long)&_etext -
+> -			(unsigned long)&_stext + 1);
+> +			(unsigned long)&_stext);
+
+This change is correct.
+
+>  	request_sdram_region("bss",
+>  			(unsigned long)&__bss_start,
+>  			(unsigned long)&__bss_stop -
+> -			(unsigned long)&__bss_start + 1);
+> +			(unsigned long)&__bss_start);
+
+This change is also correct.
+
+>  #ifdef STACK_BASE
+>  	request_sdram_region("stack", STACK_BASE, STACK_SIZE);
+>  #endif
+> diff --git a/common/startup.c b/common/startup.c
+> index abd1b77..0fa2dab 100644
+> --- a/common/startup.c
+> +++ b/common/startup.c
+> @@ -47,8 +47,8 @@ extern initcall_t __barebox_initcalls_start[], __barebox_early_initcalls_end[],
+>  static void display_meminfo(void)
+>  {
+>  	ulong mstart = mem_malloc_start();
+> -	ulong mend   = mem_malloc_end();
+> -	ulong msize  = mend - mstart + 1;
+> +	ulong mend   = mem_malloc_end() - 1;
+> +	ulong msize  = mend - mstart;
+
+This change is wrong.
+
+>  
+>  	debug("barebox code: 0x%p -> 0x%p\n", _stext, _etext);
+>  	debug("bss segment:  0x%p -> 0x%p\n", __bss_start, __bss_stop);
+> @@ -56,7 +56,7 @@ static void display_meminfo(void)
+>  		mstart, mend, size_human_readable(msize));
+>  #ifdef CONFIG_ARM
+>  	printf("Stack space : 0x%08x -> 0x%08x (size %s)\n",
+> -		STACK_BASE, STACK_BASE + STACK_SIZE,
+> +		STACK_BASE, STACK_BASE + STACK_SIZE - 1,
+
+This change is correct.
+
+Sascha
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
