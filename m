@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T8z8O-00082a-E1
- for barebox@lists.infradead.org; Tue, 04 Sep 2012 19:50:06 +0000
+ id 1T8z8L-00080v-R1
+ for barebox@lists.infradead.org; Tue, 04 Sep 2012 19:50:05 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 21C59DC5B07
- for <barebox@lists.infradead.org>; Tue,  4 Sep 2012 21:55:21 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 62BF4DC5AFC
+ for <barebox@lists.infradead.org>; Tue,  4 Sep 2012 21:55:20 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue,  4 Sep 2012 21:50:05 +0200
-Message-Id: <1346788217-16042-7-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue,  4 Sep 2012 21:50:02 +0200
+Message-Id: <1346788217-16042-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346788217-16042-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120904194720.GB32603@game.jcrosoft.org>
  <1346788217-16042-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,49 +26,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/19] fs: introduce get_mounted_path to get the path where a
- file is mounted
+Subject: [PATCH 04/19] fs: add symlink support
 To: barebox@lists.infradead.org
+
+Limit it's support to existing file only
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- fs/fs.c      |    9 +++++++++
- include/fs.h |    2 ++
- 2 files changed, 11 insertions(+)
+ fs/fs.c      |   51 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/fs.h |    3 +++
+ 2 files changed, 54 insertions(+)
 
 diff --git a/fs/fs.c b/fs/fs.c
-index 5bfd713..7e670ec 100644
+index 323b6c2..f46c606 100644
 --- a/fs/fs.c
 +++ b/fs/fs.c
-@@ -243,6 +243,15 @@ static struct fs_device_d *get_fsdevice_by_path(const char *path)
- 	return fs_dev_root;
+@@ -927,6 +927,57 @@ out:
  }
+ EXPORT_SYMBOL(readlink);
  
-+char *get_mounted_path(const char *path)
++int symlink(const char *pathname, const char *newpath)
 +{
-+	struct fs_device_d *fdev;
++	struct fs_driver_d *fsdrv;
++	struct fs_device_d *fsdev;
++	char *p;
++	char *freep = normalise_path(pathname);
++	int ret;
++	struct stat s;
 +
-+	fdev = get_fsdevice_by_path(path);
++	if (!freep)
++		return -ENOMEM;
 +
-+	return fdev->path;
++	if (!stat(freep, &s) && S_ISDIR(s.st_mode)) {
++		ret = -ENOSYS;
++		goto out;
++	}
++
++	free(freep);
++	freep = p = normalise_path(newpath);
++
++	if (!p)
++		return -ENOMEM;
++
++	ret = lstat(p, &s);
++	if (!ret) {
++		ret = -EEXIST;
++		goto out;
++	}
++
++	fsdev = get_fs_device_and_root_path(&p);
++	if (!fsdev) {
++		ret = -ENODEV;
++		goto out;
++	}
++	fsdrv = fsdev->driver;
++
++	if (fsdrv->symlink) {
++		ret = fsdrv->symlink(&fsdev->dev, pathname, p);
++	} else {
++		ret = -EPERM;
++	}
++
++out:
++	free(freep);
++	if (ret)
++		errno = -ret;
++
++	return ret;
 +}
++EXPORT_SYMBOL(symlink);
 +
- static FILE files[MAX_FILES];
- 
- static FILE *get_file(void)
+ static int fs_match(struct device_d *dev, struct driver_d *drv)
+ {
+ 	return strcmp(dev->name, drv->name) ? -1 : 0;
 diff --git a/include/fs.h b/include/fs.h
-index 07976d2..2c8b13b 100644
+index 98210cf..d96de0e 100644
 --- a/include/fs.h
 +++ b/include/fs.h
-@@ -168,6 +168,8 @@ void *read_file(const char *filename, size_t *size);
- char *normalise_path(const char *path);
- char *normalise_link(const char *pathname, const char* symlink);
+@@ -50,6 +50,8 @@ struct fs_driver_d {
+ 	/* Truncate a file to given size */
+ 	int (*truncate)(struct device_d *dev, FILE *f, ulong size);
  
-+char *get_mounted_path(const char *path);
-+
- /* Register a new filesystem driver */
- int register_fs_driver(struct fs_driver_d *fsdrv);
++	int (*symlink)(struct device_d *dev, const char *pathname,
++		       const char *newpath);
+ 	int (*readlink)(struct device_d *dev, const char *pathname, char *name,
+ 			size_t size);
  
+@@ -131,6 +133,7 @@ DIR *opendir(const char *pathname);
+ struct dirent *readdir(DIR *dir);
+ int closedir(DIR *dir);
+ 
++int symlink(const char *pathname, const char *newpath);
+ int readlink(const char *path, char *buf, size_t bufsiz);
+ 
+ int mount (const char *device, const char *fsname, const char *path);
 -- 
 1.7.10.4
 
