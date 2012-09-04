@@ -1,24 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T8uJc-0002fQ-Rh
- for barebox@lists.infradead.org; Tue, 04 Sep 2012 14:41:22 +0000
-Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 7D6B0DC0EC6
- for <barebox@lists.infradead.org>; Tue,  4 Sep 2012 16:46:36 +0200 (CEST)
-Date: Tue, 4 Sep 2012 16:41:36 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120904143553.GA32603@game.jcrosoft.org>
-References: <1346227318.3280.1.camel@lws-weitzel>
- <1346231416-28541-1-git-send-email-j.weitzel@phytec.de>
- <20120829122125.GF18708@game.jcrosoft.org>
- <1346744062.4672.3.camel@lws-weitzel>
- <20120904092831.GV26594@pengutronix.de>
- <1346761644.6779.0.camel@lws-weitzel>
+Received: from www.webware-experts.de ([80.78.166.106])
+ by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1T8w2R-0002sG-Q9
+ for barebox@lists.infradead.org; Tue, 04 Sep 2012 16:31:44 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by www.webware-experts.de (Postfix) with ESMTP id 988C61B630A0
+ for <barebox@lists.infradead.org>; Tue,  4 Sep 2012 18:31:35 +0200 (CEST)
+Received: from www.webware-experts.de ([127.0.0.1])
+ by localhost (webwarexs.private [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id Xjr13Ix2mvI5 for <barebox@lists.infradead.org>;
+ Tue,  4 Sep 2012 18:31:35 +0200 (CEST)
+Received: from [192.168.3.131] (p57bb9164.dip0.t-ipconnect.de [87.187.145.100])
+ by www.webware-experts.de (Postfix) with ESMTPSA id 44B341B63095
+ for <barebox@lists.infradead.org>; Tue,  4 Sep 2012 18:31:35 +0200 (CEST)
+Message-ID: <50462CE6.10607@webware-experts.de>
+Date: Tue, 04 Sep 2012 18:31:34 +0200
+From: Norbert Roos <nroos@webware-experts.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1346761644.6779.0.camel@lws-weitzel>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,43 +25,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] xload: get barebox size from barebox_arm_head
-To: Jan Weitzel <J.Weitzel@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: MLO doesn't work, rest is ok
+To: barebox@lists.infradead.org
 
-On 14:27 Tue 04 Sep     , Jan Weitzel wrote:
-> Am Dienstag, den 04.09.2012, 11:28 +0200 schrieb Sascha Hauer:
-> > On Tue, Sep 04, 2012 at 09:34:22AM +0200, Jan Weitzel wrote:
-> > > Am Mittwoch, den 29.08.2012, 14:21 +0200 schrieb Jean-Christophe
-> > > > > +unsigned int get_image_size(void *head)
-> > > > > +{
-> > > > > +	unsigned int ret = 0;
-> > > > > +	unsigned int *psize = head + HEAD_SIZE_OFFSET;
-> > > > > +	const char *pmagic = head + HEAD_MAGICWORD_OFFSET;
-> > > > > +
-> > > > > +	if (!strcmp(pmagic, "barebox"))
-> > > > > +		ret = *psize;
-> > > > > +	debug("Detected barebox image size %u\n", ret);
-> > > > factorise the code with filetype
-> > > What exactly do you mean? I could factorise it by boot source (mmc / nand) with complete omap_xload_boot_nand.
-> > 
-> > He means that you should use file_detect_type() To detect whether it's a
-> > barebox image.
-> > I'm unsure I share this opinion. After detecting that it's a barebox
-> > file you have to look into the header anyway to get the actual size.
-> I wasn't aware of this function. I would like to avoid adding
-> CONFIG_FILETYPE to MLO config.
+Hello,
 
-so factorize the detection of the barebox-arm in a header share by both
+I just wanted to try the freshly generated MLO and barebox.bin on my 
+Phytec PCM049 board (OMAP4 based). Copied both files to the FAT 
+partition on the SD card.
 
-duplication of the code NACK
+Unfortunately it doesn't boot, after trying to boot from SD card the ROM 
+boot loader oviously skips to booting from UART.
 
-Best Regards,
-J.
+When i replace the MLO with a different one (downloaded a compiled one), 
+my generated barebox.bin gets loaded and everything's fine.
+
+Is there a simple way for debugging it? It seems like the MLO does not 
+get executed, as the ROM boot skips to UART boot...
+
+bye
+Norbert
 
 _______________________________________________
 barebox mailing list
