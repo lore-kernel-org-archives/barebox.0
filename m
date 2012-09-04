@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T8z8L-00080z-R0
- for barebox@lists.infradead.org; Tue, 04 Sep 2012 19:50:07 +0000
+ id 1T8z8Q-00083x-LF
+ for barebox@lists.infradead.org; Tue, 04 Sep 2012 19:50:17 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id A501CDC5B05
- for <barebox@lists.infradead.org>; Tue,  4 Sep 2012 21:55:20 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id C732DDC5B11
+ for <barebox@lists.infradead.org>; Tue,  4 Sep 2012 21:55:22 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue,  4 Sep 2012 21:50:03 +0200
-Message-Id: <1346788217-16042-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue,  4 Sep 2012 21:50:09 +0200
+Message-Id: <1346788217-16042-11-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346788217-16042-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120904194720.GB32603@game.jcrosoft.org>
  <1346788217-16042-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,178 +26,129 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/19] fs: implement stat
+Subject: [PATCH 11/19] command: add readlink support
 To: barebox@lists.infradead.org
-
-stat() stats the file pointed to by path and fills in buf.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- fs/fs.c      |  105 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/fs.h |    6 ++--
- 2 files changed, 107 insertions(+), 4 deletions(-)
+ commands/Kconfig    |    6 ++++
+ commands/Makefile   |    1 +
+ commands/readlink.c |   80 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 87 insertions(+)
+ create mode 100644 commands/readlink.c
 
-diff --git a/fs/fs.c b/fs/fs.c
-index f46c606..dfe571a 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -26,6 +26,7 @@
- #include <errno.h>
- #include <malloc.h>
- #include <linux/stat.h>
-+#include <linux/err.h>
- #include <fcntl.h>
- #include <xfuncs.h>
- #include <init.h>
-@@ -111,6 +112,61 @@ static int init_cwd(void)
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 92a8152..876f2f8 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -220,6 +220,12 @@ config CMD_DIRNAME
+ 	  Strip last component of file name and store the result in a
+ 	  environment variable
  
- postcore_initcall(init_cwd);
++config CMD_READLINK
++	tristate
++	prompt "readlink"
++	help
++	  read value of a symbolic link
++
+ endmenu
  
-+char *normalise_link(const char *pathname, const char *symlink)
+ menu "console                       "
+diff --git a/commands/Makefile b/commands/Makefile
+index e9157bf..ab6c7ea 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -72,3 +72,4 @@ obj-$(CONFIG_CMD_AUTOMOUNT)	+= automount.o
+ obj-$(CONFIG_CMD_GLOBAL)	+= global.o
+ obj-$(CONFIG_CMD_BASENAME)	+= basename.o
+ obj-$(CONFIG_CMD_DIRNAME)	+= dirname.o
++obj-$(CONFIG_CMD_READLINK)	+= readlink.o
+diff --git a/commands/readlink.c b/commands/readlink.c
+new file mode 100644
+index 0000000..d2671e0
+--- /dev/null
++++ b/commands/readlink.c
+@@ -0,0 +1,80 @@
++/*
++ * readlink.c - read value of a symbolic link
++ *
++ * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#include <common.h>
++#include <command.h>
++#include <libgen.h>
++#include <environment.h>
++#include <fs.h>
++#include <malloc.h>
++#include <getopt.h>
++
++static int do_readlink(int argc, char *argv[])
 +{
-+	const char *buf = symlink;
-+	char *path_free, *path;
-+	char *absolute_path;
-+	int point = 0;
-+	int dir = 1;
-+	int len;
++	char realname[PATH_MAX];
++	int canonicalize = 0;
++	int opt;
 +
-+	if (symlink[0] == '/')
-+		return strdup(symlink);
++	memset(realname, 0, PATH_MAX);
 +
-+	while (*buf == '.' || *buf == '/') {
-+		if (*buf == '.') {
-+			point++;
-+		} else if (*buf == '/') {
-+			point = 0;
-+			dir++;
-+		}
-+		if (point > 2) {
-+			buf -= 2;
++	while ((opt = getopt(argc, argv, "f")) > 0) {
++		switch (opt) {
++		case 'f':
++			canonicalize = 1;
 +			break;
 +		}
-+		buf++;
 +	}
 +
-+	path = path_free = strdup(pathname);
-+	if (!path)
-+		return NULL;
++	if (argc < optind + 2)
++		return COMMAND_ERROR_USAGE;
 +
-+	while(dir) {
-+		path = dirname(path);
-+		dir--;
++	if (readlink(argv[optind], realname, PATH_MAX - 1) < 0)
++		goto err;
++
++	if (canonicalize) {
++		char *buf = normalise_link(argv[optind], realname);
++
++		if (!buf)
++			goto err;
++		setenv(argv[optind + 1], buf);
++		free(buf);
++	} else {
++		setenv(argv[optind + 1], realname);
 +	}
 +
-+	len = strlen(buf) + strlen(path) + 1;
-+	if (buf[0] != '/')
-+		len++;
-+
-+	absolute_path = calloc(sizeof(char), len);
-+
-+	if (!absolute_path)
-+		goto out;
-+
-+	strcat(absolute_path, path);
-+	if (buf[0] != '/')
-+		strcat(absolute_path, "/");
-+	strcat(absolute_path, buf);
-+
-+out:
-+	free(path_free);
-+
-+	return absolute_path;
-+}
-+
- char *normalise_path(const char *pathname)
- {
- 	char *path = xzalloc(strlen(pathname) + strlen(cwd) + 2);
-@@ -512,6 +568,42 @@ out:
- }
- EXPORT_SYMBOL(unlink);
- 
-+static char *realfile(const char *pathname, struct stat *s)
-+{
-+	char *path = normalise_path(pathname);
-+	int ret;
-+
-+	ret = lstat(path, s);
-+	if (ret)
-+		goto out;
-+
-+	if (S_ISLNK(s->st_mode)) {
-+		char tmp[PATH_MAX];
-+		char *new_path;
-+
-+		memset(tmp, 0, PATH_MAX);
-+
-+		ret = readlink(path, tmp, PATH_MAX - 1);
-+		if (ret < 0)
-+			goto out;
-+
-+		new_path = normalise_link(path, tmp);
-+		free(path);
-+		if (!new_path)
-+			return ERR_PTR(-ENOMEM);
-+		path = new_path;
-+
-+		ret = lstat(path, s);
-+	}
-+
-+	if (!ret)
-+		return path;
-+
-+out:
-+	free(path);
-+	return ERR_PTR(ret);
-+}
-+
- int open(const char *pathname, int flags, ...)
- {
- 	struct fs_device_d *fsdev;
-@@ -1218,6 +1310,19 @@ int closedir(DIR *dir)
- }
- EXPORT_SYMBOL(closedir);
- 
-+int stat(const char *filename, struct stat *s)
-+{
-+	char *f;
-+
-+	f = realfile(filename, s);
-+	if (IS_ERR(f))
-+		return PTR_ERR(f);
-+
-+	free(f);
 +	return 0;
++err:
++	setenv(argv[optind + 1], "");
++	return 1;
 +}
-+EXPORT_SYMBOL(stat);
 +
- int lstat(const char *filename, struct stat *s)
- {
- 	struct device_d *dev;
-diff --git a/include/fs.h b/include/fs.h
-index d96de0e..07976d2 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -107,10 +107,7 @@ int unlink(const char *pathname);
- int close(int fd);
- int flush(int fd);
- int lstat(const char *filename, struct stat *s);
--static inline int stat(const char *filename, struct stat *s)
--{
--	return lstat(filename, s);
--}
-+int stat(const char *filename, struct stat *s);
- int read(int fd, void *buf, size_t count);
- int ioctl(int fd, int request, void *buf);
- ssize_t write(int fd, const void *buf, size_t count);
-@@ -169,6 +166,7 @@ void *read_file(const char *filename, size_t *size);
-  * of "..", "." and double slashes. The returned string must be freed wit free().
-  */
- char *normalise_path(const char *path);
-+char *normalise_link(const char *pathname, const char* symlink);
- 
- /* Register a new filesystem driver */
- int register_fs_driver(struct fs_driver_d *fsdrv);
++BAREBOX_CMD_HELP_START(readlink)
++BAREBOX_CMD_HELP_USAGE("readlink [-f] FILE REALNAME\n")
++BAREBOX_CMD_HELP_SHORT("read value of a symbolic link and store into $REALNAME\n")
++BAREBOX_CMD_HELP_SHORT("-f canonicalize by following first symlink");
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(readlink)
++	.cmd		= do_readlink,
++	.usage		= "read value of a symbolic link",
++	BAREBOX_CMD_HELP(cmd_readlink_help)
++BAREBOX_CMD_END
 -- 
 1.7.10.4
 
