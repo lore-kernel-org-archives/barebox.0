@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T8oEB-0007cV-Fr
- for barebox@lists.infradead.org; Tue, 04 Sep 2012 08:11:20 +0000
-Date: Tue, 4 Sep 2012 10:11:17 +0200
+ id 1T8oG6-0007xf-Mt
+ for barebox@lists.infradead.org; Tue, 04 Sep 2012 08:13:19 +0000
+Date: Tue, 4 Sep 2012 10:13:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120904081117.GN26594@pengutronix.de>
+Message-ID: <20120904081316.GO26594@pengutronix.de>
 References: <1346670227-1840-1-git-send-email-s.trumtrar@pengutronix.de>
- <1346670227-1840-2-git-send-email-s.trumtrar@pengutronix.de>
+ <1346670227-1840-3-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1346670227-1840-2-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1346670227-1840-3-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,40 +23,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] mfd: add stmpe-i2c driver
+Subject: Re: [PATCH v2 2/2] gpio: add driver for stmpe io-expander
 To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Sep 03, 2012 at 01:03:46PM +0200, Steffen Trumtrar wrote:
-> The stmpe mfds can be connected via i2c and spi. This driver provides the basic
-> infrastructure for the i2c kind. It can be added as a normal i2c-device in the
-> board code. To enable functions a platform_data struct has to be provided, that
-> describes what parts of the chip are to be used.
-> 
+On Mon, Sep 03, 2012 at 01:03:47PM +0200, Steffen Trumtrar wrote:
 > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> +
-> +struct stmpe *stmpe_get(void)
+> ---
+> +static int stmpe_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
 > +{
-> +	if (!stmpe_dev)
-> +		return NULL;
+> +	struct stmpe_gpio_chip *stmpegpio = container_of(chip, struct stmpe_gpio_chip, chip);
+> +	struct stmpe_client_info *ci = (struct stmpe_client_info *)stmpegpio->ci;
+> +	int ret;
+> +	u8 val;
 > +
-> +	return stmpe_dev;
+> +	ci->read_reg(ci->stmpe, GPIO_SET_DIR + OFFSET(gpio), &val);
+> +	val &= ~(1 << (gpio % 8));
+> +	ret = ci->write_reg(ci->stmpe, GPIO_SET_DIR + OFFSET(gpio), val);
+> +
+> +	if (ret)
+> +		dev_err(chip->dev, "couldn't change direction. Write failed!\n");
+> +
+> +	return 0;
+
+Please propagate the error value.
+
 > +}
-> +EXPORT_SYMBOL(stmpe_get);
+> +
+> +static int stmpe_gpio_direction_output(struct gpio_chip *chip, unsigned gpio, int value)
+> +{
+> +	struct stmpe_gpio_chip *stmpegpio = container_of(chip, struct stmpe_gpio_chip, chip);
+> +	struct stmpe_client_info *ci = (struct stmpe_client_info *)stmpegpio->ci;
+> +	int ret;
+> +	u8 val;
+> +
+> +	ci->read_reg(ci->stmpe, GPIO_SET_DIR + OFFSET(gpio), &val);
+> +	val |= 1 << (gpio % 8);
+> +	ret = ci->write_reg(ci->stmpe, GPIO_SET_DIR + OFFSET(gpio), val);
+> +
+> +	stmpe_gpio_set_value(chip, gpio, value);
+> +
+> +	if (ret)
+> +		dev_err(chip->dev, "couldn't change direction. Write failed!\n");
+> +
+> +	return 0;
 
-For the pmic devices the assumption that there is only one in the system
-is not nice, but reasonable. For this driver it is an unnecessary
-limitation.
+ditto
 
-How about this:
+> +
+> +static int stmpe_gpio_probe(struct device_d *dev)
+> +{
+> +	struct stmpe_gpio_chip *stmpegpio;
+> +	struct stmpe_client_info *ci;
+> +
+> +	stmpegpio = xzalloc(sizeof(*stmpegpio));
+> +
+> +	stmpegpio->base = dev_request_mem_region(dev, 0);
+> +	stmpegpio->chip.ops = &stmpe_gpio_ops;
+> +	stmpegpio->ci = dev->platform_data;
+> +
+> +	ci = (struct stmpe_client_info *)stmpegpio->ci;
+> +
+> +	if (ci->stmpe->pdata->gpio_base)
+> +		stmpegpio->chip.base = ci->stmpe->pdata->gpio_base;
+> +	else
+> +		stmpegpio->chip.base = -1;
+> +
+> +	stmpegpio->chip.ngpio = 16;
+> +	stmpegpio->chip.dev = dev;
+> +
+> +	gpiochip_add(&stmpegpio->chip);
 
-add a 'static struct stmpe stmpe_dev' just like you did, but instead
-of returning -EBUSY for the second one, do
-
-	if (!stmpe_dev)
-		stmpe_dev = newdev;
-
-This way the at least the gpio support works for multiple instances.
+It's worth checking the return value of gpiochip_add. It could indicate
+that the selected chip.base is busy.
 
 Sascha
 
