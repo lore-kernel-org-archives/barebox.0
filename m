@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T8z8P-00082k-35
- for barebox@lists.infradead.org; Tue, 04 Sep 2012 19:50:10 +0000
+ id 1T8z8O-00082e-Fh
+ for barebox@lists.infradead.org; Tue, 04 Sep 2012 19:50:12 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 35345DC5B0D
- for <barebox@lists.infradead.org>; Tue,  4 Sep 2012 21:55:22 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 80CA0DC5B0A
+ for <barebox@lists.infradead.org>; Tue,  4 Sep 2012 21:55:21 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue,  4 Sep 2012 21:50:12 +0200
-Message-Id: <1346788217-16042-14-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue,  4 Sep 2012 21:50:07 +0200
+Message-Id: <1346788217-16042-9-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346788217-16042-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120904194720.GB32603@game.jcrosoft.org>
  <1346788217-16042-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,61 +26,135 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/19] dirname: add -V option to return only path related to
- the mountpoint
+Subject: [PATCH 09/19] nfs: add readlink support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/dirname.c |   24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ MAKEALL  |    1 +
+ fs/nfs.c |   86 ++++++++++++++++++++++++++++++++++++++++++--------------------
+ 2 files changed, 59 insertions(+), 28 deletions(-)
 
-diff --git a/commands/dirname.c b/commands/dirname.c
-index cf1d0a0..f34d88d 100644
---- a/commands/dirname.c
-+++ b/commands/dirname.c
-@@ -24,20 +24,38 @@
- #include <command.h>
- #include <libgen.h>
- #include <environment.h>
-+#include <fs.h>
-+#include <getopt.h>
- 
- static int do_dirname(int argc, char *argv[])
- {
--	if (argc != 3)
-+	int opt;
-+	int path_fs = 0;
-+	int len = 0;
-+
-+	while ((opt = getopt(argc, argv, "V")) > 0) {
-+		switch (opt) {
-+		case 'V':
-+			path_fs = 1;
-+			break;
-+		}
-+	}
-+
-+	if (argc < optind + 2)
- 		return COMMAND_ERROR_USAGE;
- 
--	setenv(argv[2], dirname(argv[1]));
-+	if (path_fs)
-+		len = strlen(get_mounted_path(argv[optind]));
-+
-+	setenv(argv[optind + 1], dirname(argv[optind]) + len);
- 
+diff --git a/MAKEALL b/MAKEALL
+index 1ba4710..056a4d0 100755
+--- a/MAKEALL
++++ b/MAKEALL
+@@ -264,3 +264,4 @@ then
+ else
+ 	do_build_target ${ARCH} $1
+ fi
++exit $nb_errors
+diff --git a/fs/nfs.c b/fs/nfs.c
+index 79e667f..4a880cd 100644
+--- a/fs/nfs.c
++++ b/fs/nfs.c
+@@ -605,34 +605,6 @@ static int nfs_read_req(struct file_priv *priv, int offset, int readlen)
  	return 0;
  }
  
- BAREBOX_CMD_HELP_START(dirname)
--BAREBOX_CMD_HELP_USAGE("dirname NAME DIRNAME\n")
-+BAREBOX_CMD_HELP_USAGE("dirname [-V] NAME DIRNAME\n")
- BAREBOX_CMD_HELP_SHORT("strip last componext of NAME and store into $DIRNAME\n")
-+BAREBOX_CMD_HELP_SHORT("-V return the path relative to the mountpoint.\n")
- BAREBOX_CMD_HELP_END
+-#if 0
+-static int nfs_readlink_reply(unsigned char *pkt, unsigned len)
+-{
+-	uint32_t *data;
+-	char *path;
+-	int rlen;
+-//	int ret;
+-
+-	data = (uint32_t *)(pkt + sizeof(struct rpc_reply));
+-
+-	data++;
+-
+-	rlen = ntohl(net_read_uint32(data)); /* new path length */
+-
+-	data++;
+-	path = (char *)data;
+-
+-	if (*path != '/') {
+-		strcat(nfs_path, "/");
+-		strncat(nfs_path, path, rlen);
+-	} else {
+-		memcpy(nfs_path, path, rlen);
+-		nfs_path[rlen] = 0;
+-	}
+-	return 0;
+-}
+-#endif
+-
+ static void nfs_handler(void *ctx, char *packet, unsigned len)
+ {
+ 	char *pkt = net_eth_to_udp_payload(packet);
+@@ -742,6 +714,63 @@ static struct file_priv *nfs_do_stat(struct device_d *dev, const char *filename,
+ 	return priv;
+ }
  
- BAREBOX_CMD_START(dirname)
++static int nfs_readlink_req(struct file_priv *priv, char* buf, size_t size)
++{
++	uint32_t data[1024];
++	uint32_t *p;
++	int len;
++	int ret;
++	char *path;
++	uint32_t *filedata;
++
++	p = &(data[0]);
++	p = rpc_add_credentials(p);
++
++	memcpy(p, priv->filefh, NFS_FHSIZE);
++	p += (NFS_FHSIZE / 4);
++
++	len = p - &(data[0]);
++
++	ret = rpc_req(priv->npriv, PROG_NFS, NFS_READLINK, data, len);
++	if (ret)
++		return ret;
++
++	filedata = nfs_packet + sizeof(struct rpc_reply);
++	filedata++;
++
++	len = ntohl(net_read_uint32(filedata)); /* new path length */
++	filedata++;
++
++	path = (char *)filedata;
++
++	if (len > size)
++		len = size;
++
++	memcpy(buf, path, len);
++
++	return 0;
++}
++
++static int nfs_readlink(struct device_d *dev, const char *filename,
++			char *realname, size_t size)
++{
++	struct file_priv *priv;
++	int ret;
++	struct stat s;
++
++	priv = nfs_do_stat(dev, filename, &s);
++	if (IS_ERR(priv))
++		return PTR_ERR(priv);
++
++	ret = nfs_readlink_req(priv, realname, size);
++	if (ret) {
++		nfs_do_close(priv);
++		return ret;
++	}
++
++	return 0;
++}
++
+ static int nfs_open(struct device_d *dev, FILE *file, const char *filename)
+ {
+ 	struct file_priv *priv;
+@@ -1039,6 +1068,7 @@ static struct fs_driver_d nfs_driver = {
+ 	.rmdir     = nfs_rmdir,
+ 	.write     = nfs_write,
+ 	.truncate  = nfs_truncate,
++	.readlink  = nfs_readlink,
+ 	.flags     = 0,
+ 	.drv = {
+ 		.probe  = nfs_probe,
 -- 
 1.7.10.4
 
