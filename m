@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T8z8O-00082e-Fh
- for barebox@lists.infradead.org; Tue, 04 Sep 2012 19:50:12 +0000
+ id 1T8z8L-00080z-R0
+ for barebox@lists.infradead.org; Tue, 04 Sep 2012 19:50:07 +0000
 Received: from mail21.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 80CA0DC5B0A
- for <barebox@lists.infradead.org>; Tue,  4 Sep 2012 21:55:21 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id A501CDC5B05
+ for <barebox@lists.infradead.org>; Tue,  4 Sep 2012 21:55:20 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue,  4 Sep 2012 21:50:07 +0200
-Message-Id: <1346788217-16042-9-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue,  4 Sep 2012 21:50:03 +0200
+Message-Id: <1346788217-16042-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1346788217-16042-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120904194720.GB32603@game.jcrosoft.org>
  <1346788217-16042-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,135 +26,178 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/19] nfs: add readlink support
+Subject: [PATCH 05/19] fs: implement stat
 To: barebox@lists.infradead.org
+
+stat() stats the file pointed to by path and fills in buf.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- MAKEALL  |    1 +
- fs/nfs.c |   86 ++++++++++++++++++++++++++++++++++++++++++--------------------
- 2 files changed, 59 insertions(+), 28 deletions(-)
+ fs/fs.c      |  105 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/fs.h |    6 ++--
+ 2 files changed, 107 insertions(+), 4 deletions(-)
 
-diff --git a/MAKEALL b/MAKEALL
-index 1ba4710..056a4d0 100755
---- a/MAKEALL
-+++ b/MAKEALL
-@@ -264,3 +264,4 @@ then
- else
- 	do_build_target ${ARCH} $1
- fi
-+exit $nb_errors
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 79e667f..4a880cd 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -605,34 +605,6 @@ static int nfs_read_req(struct file_priv *priv, int offset, int readlen)
- 	return 0;
- }
+diff --git a/fs/fs.c b/fs/fs.c
+index f46c606..dfe571a 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -26,6 +26,7 @@
+ #include <errno.h>
+ #include <malloc.h>
+ #include <linux/stat.h>
++#include <linux/err.h>
+ #include <fcntl.h>
+ #include <xfuncs.h>
+ #include <init.h>
+@@ -111,6 +112,61 @@ static int init_cwd(void)
  
--#if 0
--static int nfs_readlink_reply(unsigned char *pkt, unsigned len)
--{
--	uint32_t *data;
--	char *path;
--	int rlen;
--//	int ret;
--
--	data = (uint32_t *)(pkt + sizeof(struct rpc_reply));
--
--	data++;
--
--	rlen = ntohl(net_read_uint32(data)); /* new path length */
--
--	data++;
--	path = (char *)data;
--
--	if (*path != '/') {
--		strcat(nfs_path, "/");
--		strncat(nfs_path, path, rlen);
--	} else {
--		memcpy(nfs_path, path, rlen);
--		nfs_path[rlen] = 0;
--	}
--	return 0;
--}
--#endif
--
- static void nfs_handler(void *ctx, char *packet, unsigned len)
- {
- 	char *pkt = net_eth_to_udp_payload(packet);
-@@ -742,6 +714,63 @@ static struct file_priv *nfs_do_stat(struct device_d *dev, const char *filename,
- 	return priv;
- }
+ postcore_initcall(init_cwd);
  
-+static int nfs_readlink_req(struct file_priv *priv, char* buf, size_t size)
++char *normalise_link(const char *pathname, const char *symlink)
 +{
-+	uint32_t data[1024];
-+	uint32_t *p;
++	const char *buf = symlink;
++	char *path_free, *path;
++	char *absolute_path;
++	int point = 0;
++	int dir = 1;
 +	int len;
-+	int ret;
-+	char *path;
-+	uint32_t *filedata;
 +
-+	p = &(data[0]);
-+	p = rpc_add_credentials(p);
++	if (symlink[0] == '/')
++		return strdup(symlink);
 +
-+	memcpy(p, priv->filefh, NFS_FHSIZE);
-+	p += (NFS_FHSIZE / 4);
-+
-+	len = p - &(data[0]);
-+
-+	ret = rpc_req(priv->npriv, PROG_NFS, NFS_READLINK, data, len);
-+	if (ret)
-+		return ret;
-+
-+	filedata = nfs_packet + sizeof(struct rpc_reply);
-+	filedata++;
-+
-+	len = ntohl(net_read_uint32(filedata)); /* new path length */
-+	filedata++;
-+
-+	path = (char *)filedata;
-+
-+	if (len > size)
-+		len = size;
-+
-+	memcpy(buf, path, len);
-+
-+	return 0;
-+}
-+
-+static int nfs_readlink(struct device_d *dev, const char *filename,
-+			char *realname, size_t size)
-+{
-+	struct file_priv *priv;
-+	int ret;
-+	struct stat s;
-+
-+	priv = nfs_do_stat(dev, filename, &s);
-+	if (IS_ERR(priv))
-+		return PTR_ERR(priv);
-+
-+	ret = nfs_readlink_req(priv, realname, size);
-+	if (ret) {
-+		nfs_do_close(priv);
-+		return ret;
++	while (*buf == '.' || *buf == '/') {
++		if (*buf == '.') {
++			point++;
++		} else if (*buf == '/') {
++			point = 0;
++			dir++;
++		}
++		if (point > 2) {
++			buf -= 2;
++			break;
++		}
++		buf++;
 +	}
 +
-+	return 0;
++	path = path_free = strdup(pathname);
++	if (!path)
++		return NULL;
++
++	while(dir) {
++		path = dirname(path);
++		dir--;
++	}
++
++	len = strlen(buf) + strlen(path) + 1;
++	if (buf[0] != '/')
++		len++;
++
++	absolute_path = calloc(sizeof(char), len);
++
++	if (!absolute_path)
++		goto out;
++
++	strcat(absolute_path, path);
++	if (buf[0] != '/')
++		strcat(absolute_path, "/");
++	strcat(absolute_path, buf);
++
++out:
++	free(path_free);
++
++	return absolute_path;
 +}
 +
- static int nfs_open(struct device_d *dev, FILE *file, const char *filename)
+ char *normalise_path(const char *pathname)
  {
- 	struct file_priv *priv;
-@@ -1039,6 +1068,7 @@ static struct fs_driver_d nfs_driver = {
- 	.rmdir     = nfs_rmdir,
- 	.write     = nfs_write,
- 	.truncate  = nfs_truncate,
-+	.readlink  = nfs_readlink,
- 	.flags     = 0,
- 	.drv = {
- 		.probe  = nfs_probe,
+ 	char *path = xzalloc(strlen(pathname) + strlen(cwd) + 2);
+@@ -512,6 +568,42 @@ out:
+ }
+ EXPORT_SYMBOL(unlink);
+ 
++static char *realfile(const char *pathname, struct stat *s)
++{
++	char *path = normalise_path(pathname);
++	int ret;
++
++	ret = lstat(path, s);
++	if (ret)
++		goto out;
++
++	if (S_ISLNK(s->st_mode)) {
++		char tmp[PATH_MAX];
++		char *new_path;
++
++		memset(tmp, 0, PATH_MAX);
++
++		ret = readlink(path, tmp, PATH_MAX - 1);
++		if (ret < 0)
++			goto out;
++
++		new_path = normalise_link(path, tmp);
++		free(path);
++		if (!new_path)
++			return ERR_PTR(-ENOMEM);
++		path = new_path;
++
++		ret = lstat(path, s);
++	}
++
++	if (!ret)
++		return path;
++
++out:
++	free(path);
++	return ERR_PTR(ret);
++}
++
+ int open(const char *pathname, int flags, ...)
+ {
+ 	struct fs_device_d *fsdev;
+@@ -1218,6 +1310,19 @@ int closedir(DIR *dir)
+ }
+ EXPORT_SYMBOL(closedir);
+ 
++int stat(const char *filename, struct stat *s)
++{
++	char *f;
++
++	f = realfile(filename, s);
++	if (IS_ERR(f))
++		return PTR_ERR(f);
++
++	free(f);
++	return 0;
++}
++EXPORT_SYMBOL(stat);
++
+ int lstat(const char *filename, struct stat *s)
+ {
+ 	struct device_d *dev;
+diff --git a/include/fs.h b/include/fs.h
+index d96de0e..07976d2 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -107,10 +107,7 @@ int unlink(const char *pathname);
+ int close(int fd);
+ int flush(int fd);
+ int lstat(const char *filename, struct stat *s);
+-static inline int stat(const char *filename, struct stat *s)
+-{
+-	return lstat(filename, s);
+-}
++int stat(const char *filename, struct stat *s);
+ int read(int fd, void *buf, size_t count);
+ int ioctl(int fd, int request, void *buf);
+ ssize_t write(int fd, const void *buf, size_t count);
+@@ -169,6 +166,7 @@ void *read_file(const char *filename, size_t *size);
+  * of "..", "." and double slashes. The returned string must be freed wit free().
+  */
+ char *normalise_path(const char *path);
++char *normalise_link(const char *pathname, const char* symlink);
+ 
+ /* Register a new filesystem driver */
+ int register_fs_driver(struct fs_driver_d *fsdrv);
 -- 
 1.7.10.4
 
