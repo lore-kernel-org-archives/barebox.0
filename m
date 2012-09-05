@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T9Htv-0007FG-V3
- for barebox@lists.infradead.org; Wed, 05 Sep 2012 15:52:25 +0000
+ id 1T9Htv-0007FF-Ie
+ for barebox@lists.infradead.org; Wed, 05 Sep 2012 15:52:24 +0000
+Received: from coredoba.hi.pengutronix.de ([2001:6f8:1178:2:219:99ff:fe56:8d7])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jlu@pengutronix.de>) id 1T9Htt-0002o2-Fw
+ for barebox@lists.infradead.org; Wed, 05 Sep 2012 17:52:21 +0200
+Received: from jlu by coredoba.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <jlu@pengutronix.de>) id 1T9Htt-0000DS-Bi
+ for barebox@lists.infradead.org; Wed, 05 Sep 2012 17:52:21 +0200
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Wed,  5 Sep 2012 17:52:09 +0200
-Message-Id: <1346860337-777-2-git-send-email-jlu@pengutronix.de>
-In-Reply-To: <1346860337-777-1-git-send-email-jlu@pengutronix.de>
-References: <1346860337-777-1-git-send-email-jlu@pengutronix.de>
+Date: Wed,  5 Sep 2012 17:52:08 +0200
+Message-Id: <1346860337-777-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +26,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] drivers/nor/m25p80: add JEDEC ID for Micron/Numonyx SPI
- NOR flash
+Subject: Prepare support for TI AM35xx
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
----
- drivers/nor/m25p80.c |    3 +++
- 1 file changed, 3 insertions(+)
+Hi all,
 
-diff --git a/drivers/nor/m25p80.c b/drivers/nor/m25p80.c
-index 5713ad5..61f2195 100644
---- a/drivers/nor/m25p80.c
-+++ b/drivers/nor/m25p80.c
-@@ -648,6 +648,9 @@ static const struct spi_device_id m25p_ids[] = {
- 	{ "cat25c09", CAT25_INFO( 128, 8, 32, 2) },
- 	{ "cat25c17", CAT25_INFO( 256, 8, 32, 2) },
- 	{ "cat25128", CAT25_INFO(2048, 8, 64, 2) },
-+
-+	/* Micron */
-+	{ "n25q128", INFO(0x20ba18, 0, 64 * 1024, 256, 0) },
- 	{ },
- };
- 
--- 
-1.7.10.4
+these patches prepare for TI AM35xx support and have have been tested
+together with the board code.
+
+The patches should apply individually to the current master (=next).
+
+Thanks again to Jean-Christophe Plagniol-Villard and Sacha Hauer for
+their reviews.
+
+Best regards,
+Jan
 
 
 _______________________________________________
