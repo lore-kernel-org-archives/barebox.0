@@ -1,25 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from www.webware-experts.de ([80.78.166.106])
- by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T9BrS-00024Z-9E
- for barebox@lists.infradead.org; Wed, 05 Sep 2012 09:25:27 +0000
-Received: from localhost (localhost [127.0.0.1])
- by www.webware-experts.de (Postfix) with ESMTP id 522221B68898
- for <barebox@lists.infradead.org>; Wed,  5 Sep 2012 11:25:17 +0200 (CEST)
-Received: from www.webware-experts.de ([127.0.0.1])
- by localhost (webwarexs.private [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id tyw3yKgeOu2L for <barebox@lists.infradead.org>;
- Wed,  5 Sep 2012 11:25:17 +0200 (CEST)
-Received: from [192.168.3.131] (p57bb9106.dip0.t-ipconnect.de [87.187.145.6])
- by www.webware-experts.de (Postfix) with ESMTPSA id F12B41B6888D
- for <barebox@lists.infradead.org>; Wed,  5 Sep 2012 11:25:16 +0200 (CEST)
-Message-ID: <50471A79.6070707@webware-experts.de>
-Date: Wed, 05 Sep 2012 11:25:13 +0200
-From: Norbert Roos <nroos@webware-experts.de>
-MIME-Version: 1.0
-References: <50462CE6.10607@webware-experts.de>
- <1346825557.3625.4.camel@lws-weitzel>
-In-Reply-To: <1346825557.3625.4.camel@lws-weitzel>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1T9Bup-0001Lk-Qo
+ for barebox@lists.infradead.org; Wed, 05 Sep 2012 09:28:56 +0000
+Message-ID: <1346837333.3388.8.camel@coredoba.hi.pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Wed, 05 Sep 2012 11:28:53 +0200
+In-Reply-To: <20120904084855.GS26594@pengutronix.de>
+References: <1346672765-16162-1-git-send-email-jlu@pengutronix.de>
+ <1346672765-16162-10-git-send-email-jlu@pengutronix.de>
+ <20120904084855.GS26594@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,29 +19,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: MLO doesn't work, rest is ok
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 09/10] omap3: allow enabling clocks for UART3, MMC1 and SPI
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox-request <barebox@lists.infradead.org>
 
-On 09/05/2012 08:12 AM, Jan Weitzel wrote:
+On Tue, 2012-09-04 at 10:48 +0200, Sascha Hauer wrote:
+> On Mon, Sep 03, 2012 at 01:46:04PM +0200, Jan Luebbe wrote:
+> > Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+> > ---
+> >  arch/arm/mach-omap/Kconfig       |    4 ++++
+> >  arch/arm/mach-omap/omap3_clock.c |   35 +++++++++++++++++++++++++----------
+> >  2 files changed, 29 insertions(+), 10 deletions(-)
+> > 
+> > diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+> > index a781287..82fa46b 100644
+> > --- a/arch/arm/mach-omap/Kconfig
+> > +++ b/arch/arm/mach-omap/Kconfig
+> > @@ -61,6 +61,10 @@ config OMAP_CLOCK_UART3
+> >  	bool
+> >  config OMAP_CLOCK_I2C
+> >  	bool
+> > +config OMAP_CLOCK_MMC1
+> > +	bool
+> > +config OMAP_CLOCK_SPI
+> > +	bool
+> 
+> A Kconfig entry for enabling a clock is overkill. Please do not continue
+> this.
+> 
+> Right now we have:
+> 
+> config OMAP_CLOCK_UART
+> 	bool
+> config OMAP_CLOCK_UART2
+> 	bool
+> config OMAP_CLOCK_UART3
+> 	bool
+> config OMAP_CLOCK_I2C
+> 	bool
+> 
+> And it's completely unused, so can be simply removed.
 
->> I just wanted to try the freshly generated MLO and barebox.bin on my
->> Phytec PCM049 board (OMAP4 based). Copied both files to the FAT
->> partition on the SD card.
->>
->> Unfortunately it doesn't boot, after trying to boot from SD card the ROM
->> boot loader oviously skips to booting from UART.
->
-> Hi,
-> which barebox version? Is the board with OMAP4460?
+What should I do instead? Enable all clocks? Or enable just the clocks
+for which drivers have been enabled in Kconfig?
 
-barebox is 2012.08.0, OMAP4430.
-
-bye
-Norbert
+Thanks,
+Jan
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 _______________________________________________
