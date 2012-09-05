@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-f177.google.com ([209.85.223.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T90aR-0002We-OS
- for barebox@lists.infradead.org; Tue, 04 Sep 2012 21:23:09 +0000
-Received: by ieje10 with SMTP id e10so6272612iej.36
- for <barebox@lists.infradead.org>; Tue, 04 Sep 2012 14:23:03 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20120904204725.GA26594@pengutronix.de>
-References: <CACO6GO7pfavefJa_wTcR7ifHwWVS8up7-TRW8ArQzXoeL1JHCA@mail.gmail.com>
- <201208272001.50503.jbe@pengutronix.de>
- <CACO6GO68_8oLS2caknd=+j1C5ewdWtR65tTfwa_gviPYEjuSsQ@mail.gmail.com>
- <20120904204725.GA26594@pengutronix.de>
-Date: Tue, 4 Sep 2012 17:23:03 -0400
-Message-ID: <CACO6GO7BKCPaaK6EU2=6m1uOV7+WJVPNsOjSpwivcFwz6AZdBA@mail.gmail.com>
-From: Fadil Berisha <f.koliqi@gmail.com>
-Reply-To: f.koliqi@gmail.com
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1T98qx-0001q4-TG
+ for barebox@lists.infradead.org; Wed, 05 Sep 2012 06:12:45 +0000
+Message-ID: <1346825557.3625.4.camel@lws-weitzel>
+From: Jan Weitzel <J.Weitzel@phytec.de>
+Date: Wed, 05 Sep 2012 08:12:37 +0200
+In-Reply-To: <50462CE6.10607@webware-experts.de>
+References: <50462CE6.10607@webware-experts.de>
+Mime-Version: 1.0
+Reply-To: J.Weitzel@phytec.de
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,25 +22,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox on imx23-olinuxino
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Juergen Beisert <jbe@pengutronix.de>
+Subject: Re: MLO doesn't work, rest is ok
+To: Norbert Roos <nroos@webware-experts.de>
+Cc: barebox@lists.infradead.org
 
-Sascha
+Am Dienstag, den 04.09.2012, 18:31 +0200 schrieb Norbert Roos:
+> Hello,
+> 
+> I just wanted to try the freshly generated MLO and barebox.bin on my 
+> Phytec PCM049 board (OMAP4 based). Copied both files to the FAT 
+> partition on the SD card.
+> 
+> Unfortunately it doesn't boot, after trying to boot from SD card the ROM 
+> boot loader oviously skips to booting from UART.
+> 
+> When i replace the MLO with a different one (downloaded a compiled one), 
+> my generated barebox.bin gets loaded and everything's fine.
+> 
+> Is there a simple way for debugging it? It seems like the MLO does not 
+> get executed, as the ROM boot skips to UART boot...
+> 
+> bye
+> Norbert
 
-On Tue, Sep 4, 2012 at 4:47 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Hi,
+which barebox version? Is the board with OMAP4460?
+Jan
 
-> The problem is the 5th parameter. It is the size of the memory resource.
-> When speicified as 0 you will not be able to request it. It seems we
-> still have not catched all of these. We should probably add a warning
-> if someone tries to register a device with a valid resource but size =
-> 0.
-Thank you for your help. I will clean-up my workaround and define size
-as needed. Barebox booting good in olinuxino. At this stage, I am
-doing testing and adjusting env parameters.
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
-Regards,
-Fadil Berisha
+
 
 _______________________________________________
 barebox mailing list
