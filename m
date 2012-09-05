@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo3.mail-out.ovh.net ([87.98.172.249]
+Received: from 19.mo3.mail-out.ovh.net ([178.32.98.231]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T9Efq-0002uN-91
- for barebox@lists.infradead.org; Wed, 05 Sep 2012 12:25:39 +0000
+ id 1T9EiH-0003Ag-3D
+ for barebox@lists.infradead.org; Wed, 05 Sep 2012 12:28:09 +0000
 Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 964CBFF965A
- for <barebox@lists.infradead.org>; Wed,  5 Sep 2012 14:33:11 +0200 (CEST)
-Date: Wed, 5 Sep 2012 14:25:56 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 7F097FF85AA
+ for <barebox@lists.infradead.org>; Wed,  5 Sep 2012 14:35:43 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120905122556.GF32603@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Wed,  5 Sep 2012 14:28:21 +0200
+Message-Id: <1346848107-4664-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20120905122556.GF32603@game.jcrosoft.org>
+References: <20120905122556.GF32603@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,102 +20,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/7 v2] defaultenv-2: add boot sequence
+Subject: [PATCH 1/7] globalbar: add inline when not enabled
 To: barebox@lists.infradead.org
 
-HI,
-
-	v2:
-
-	  drop global.boot.default as we start the boot sequence by default
-	  update ansi-colors
-	  allow to always pass -e to echo
-
-	this patch series depends on fs-symlink send previously
-
-please pull
-The following changes since commit b65e60792376bb209adfa128e1783cf67af9f13b:
-
-  defautenv: add support of symlink (2012-09-05 03:22:14 +0800)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git tags/defaultenv-2-boot-sequence
-
-for you to fetch changes up to 15dd5521e4aeb6061ae258251967e2f89b237f5f:
-
-  defaultenv-2: add boot sequence (2012-09-05 20:16:01 +0800)
-
-----------------------------------------------------------------
-defaultenv-2: add boot sequence
-
-Boot will boot run sequentially the script in /env/boot.d
-We store symlink in /env/boot.d on /env/boot
-
-drop global.boot.default
-start the boot sequence by default
-
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ include/globalvar.h |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (7):
-      globalbar: add inline when not enabled
-      globalvar: add support to set a value to of all globalvars beginning with 'match'
-      defaultenv-2: boot use global.linux.bootargs.dyn for dynamic globarvar
-      defaultenv-2: boot reset linux.bootargs.dyn. and bootm. globarvar
-      echo: always allow to pass -e option
-      defaultenv-2/ansi-colors: export color only if enable
-      defaultenv-2: add boot sequence
+diff --git a/include/globalvar.h b/include/globalvar.h
+index 7cc3976..a127a05 100644
+--- a/include/globalvar.h
++++ b/include/globalvar.h
+@@ -1,6 +1,7 @@
+ #ifndef __GLOBALVAR_H
+ #define __GLOBALVAR_H
+ 
++#ifdef CONFIG_GLOBALVAR
+ int globalvar_add_simple(const char *name);
+ 
+ int globalvar_add(const char *name,
+@@ -8,5 +9,24 @@ int globalvar_add(const char *name,
+ 		const char *(*get)(struct device_d *, struct param_d *p),
+ 		unsigned long flags);
+ char *globalvar_get_match(const char *match, const char *seperator);
++#else
++static inline int globalvar_add_simple(const char *name)
++{
++	return 0;
++}
++
++static inline int globalvar_add(const char *name,
++		int (*set)(struct device_d *dev, struct param_d *p, const char *val),
++		const char *(*get)(struct device_d *, struct param_d *p),
++		unsigned long flags)
++{
++	return 0;
++}
++
++static inline char *globalvar_get_match(const char *match, const char *seperator)
++{
++	return NULL;
++}
++#endif
+ 
+ #endif /* __GLOBALVAR_H */
+-- 
+1.7.10.4
 
- arch/arm/boards/crystalfontz-cfa10036/env/boot.d/01    |    1 +
- arch/arm/boards/crystalfontz-cfa10036/env/boot.d/02    |    1 +
- arch/arm/boards/crystalfontz-cfa10036/env/boot.d/03    |    1 +
- arch/arm/boards/crystalfontz-cfa10036/env/init/general |    3 ---
- arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/01  |    1 +
- arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/02  |    1 +
- arch/arm/boards/pcm038/env/boot.d/01                   |    1 +
- arch/arm/boards/pcm038/env/boot.d/02                   |    1 +
- arch/arm/boards/pcm038/env/boot.d/03                   |    1 +
- arch/arm/boards/tqma53/env/boot.d/01                   |    1 +
- arch/arm/boards/tqma53/env/boot.d/02                   |    1 +
- commands/echo.c                                        |    4 ++--
- commands/global.c                                      |   58 +++++++++++++++++++++++++++++++++++++++++++++++++++-------
- common/globalvar.c                                     |   10 ++++++++++
- defaultenv-2/base/bin/boot                             |   55 +++++++++++++++++++++++++++++++++++++++++++++++++------
- defaultenv-2/base/bin/bootargs-ip                      |    4 ++--
- defaultenv-2/base/bin/bootargs-ip-barebox              |    2 +-
- defaultenv-2/base/bin/bootargs-ip-dhcp                 |    2 +-
- defaultenv-2/base/bin/bootargs-ip-none                 |    2 +-
- defaultenv-2/base/bin/bootargs-root-disk               |    2 +-
- defaultenv-2/base/bin/bootargs-root-ext                |    2 +-
- defaultenv-2/base/bin/bootargs-root-initrd             |    2 +-
- defaultenv-2/base/bin/bootargs-root-jffs2              |    2 +-
- defaultenv-2/base/bin/bootargs-root-nfs                |    2 +-
- defaultenv-2/base/bin/bootargs-root-ubi                |    2 +-
- defaultenv-2/base/bin/init                             |    5 +++--
- defaultenv-2/base/boot/initrd                          |    2 +-
- defaultenv-2/base/data/ansi-colors                     |    4 ++++
- defaultenv-2/base/init/general                         |    3 ---
- defaultenv-2/menu/menu/mainmenu                        |    4 +---
- include/globalvar.h                                    |   23 +++++++++++++++++++++++
- 31 files changed, 165 insertions(+), 38 deletions(-)
- create mode 120000 arch/arm/boards/crystalfontz-cfa10036/env/boot.d/01
- create mode 120000 arch/arm/boards/crystalfontz-cfa10036/env/boot.d/02
- create mode 120000 arch/arm/boards/crystalfontz-cfa10036/env/boot.d/03
- create mode 120000 arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/01
- create mode 120000 arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/02
- create mode 120000 arch/arm/boards/pcm038/env/boot.d/01
- create mode 120000 arch/arm/boards/pcm038/env/boot.d/02
- create mode 120000 arch/arm/boards/pcm038/env/boot.d/03
- create mode 120000 arch/arm/boards/tqma53/env/boot.d/01
- create mode 120000 arch/arm/boards/tqma53/env/boot.d/02
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
