@@ -1,22 +1,26 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo3.mail-out.ovh.net ([87.98.184.141]
+Received: from 19.mo3.mail-out.ovh.net ([178.32.98.231]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T9EJ7-0006GC-6W
- for barebox@lists.infradead.org; Wed, 05 Sep 2012 12:02:11 +0000
+ id 1T9EKs-0007QV-Dz
+ for barebox@lists.infradead.org; Wed, 05 Sep 2012 12:03:59 +0000
 Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 1424AFF9AAA
- for <barebox@lists.infradead.org>; Wed,  5 Sep 2012 14:09:43 +0200 (CEST)
-Date: Wed, 5 Sep 2012 14:02:24 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 33A8AFF931F
+ for <barebox@lists.infradead.org>; Wed,  5 Sep 2012 14:11:32 +0200 (CEST)
+Date: Wed, 5 Sep 2012 14:04:15 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120905120224.GD32603@game.jcrosoft.org>
-References: <20120904143553.GA32603@game.jcrosoft.org>
- <1346833350-9396-1-git-send-email-j.weitzel@phytec.de>
- <20120905103400.GC32603@game.jcrosoft.org>
- <1346845030.3625.16.camel@lws-weitzel>
+Message-ID: <20120905120415.GE32603@game.jcrosoft.org>
+References: <50462CE6.10607@webware-experts.de>
+ <1346825557.3625.4.camel@lws-weitzel>
+ <50471A79.6070707@webware-experts.de>
+ <1346838098.3625.10.camel@lws-weitzel>
+ <504722D8.1050409@webware-experts.de>
+ <20120905105323.GE26594@pengutronix.de>
+ <50473122.90906@webware-experts.de>
+ <20120905111549.GG26594@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1346845030.3625.16.camel@lws-weitzel>
+In-Reply-To: <20120905111549.GG26594@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,62 +33,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Suspected ##SPAM## -:Re: [PATCH v4] xload: get barebox size
- from barebox_arm_head
-To: Jan Weitzel <J.Weitzel@phytec.de>
+Subject: Re: MLO doesn't work, rest is ok
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 13:37 Wed 05 Sep     , Jan Weitzel wrote:
-> Am Mittwoch, den 05.09.2012, 12:34 +0200 schrieb Jean-Christophe
-> PLAGNIOL-VILLARD:
-> > On 10:22 Wed 05 Sep     , Jan Weitzel wrote:
-> > > Add functions to read the barebox_arm_head, check barebox magicword
-> > > and read out the barebox image size.
-> > > Create a inital partion of 1Mb to access the barebox image on nand.
-> > > 
-> > > Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
-> > > ---
-> > > v2: remove fall back if header read fail 
-> > > v3: fix header check, rebase master 
-> > > v4: factorize barebox detection
-> > > 
-> > >  arch/arm/include/asm/barebox-arm-head.h |    9 +++++
-> > >  arch/arm/mach-omap/include/mach/xload.h |    2 +-
-> > >  arch/arm/mach-omap/xload.c              |   57 ++++++++++++++++++++++++++++--
-> > >  common/filetype.c                       |    3 +-
-> > this con not work
+On 13:15 Wed 05 Sep     , Sascha Hauer wrote:
+> On Wed, Sep 05, 2012 at 01:01:54PM +0200, Norbert Roos wrote:
+> > On 09/05/2012 12:53 PM, Sascha Hauer wrote:
 > > 
-> > common/filetype is use accross ARCH
+> > >What gcc version do you have?
 > > 
-> > is_barebox_arm_head need to be a inline returning false if not arm
-> this is why I use the ugly #include
-> "../arch/arm/include/asm/barebox-arm-head.h". By now we can detect
-> filetype_arm_barebox even on non arm architectures. Is breaking this OK?
-no it's not
-
-> Jan
+> > gcc version 4.6.3 (Ubuntu/Linaro 4.6.3-1ubuntu5)
+> 
+> Maybe you could try an older toolchain. There are some dark memories in
+> my mind, but it could also be that my mind is fooling me...
+> 
 > > 
-> > Best Regards,
-> > J.
-> > >  4 files changed, 65 insertions(+), 6 deletions(-)
-> > > 
-> > > diff --git a/arch/arm/include/asm/barebox-arm-head.h b/arch/arm/include/asm/barebox-arm-head.h
-> > > index 2c250e9..42bd239 100644
-> > > --- a/arch/arm/include/asm/barebox-arm-head.h
-> > > +++ b/arch/arm/include/asm/barebox-arm-head.h
-> > > @@ -1,6 +1,15 @@
-> > >  #ifndef __ASM_ARM_HEAD_H
-> > >  #define __ASM_ARM_HEAD_H
-> > >  
-> > > +#define ARM_HEAD_SIZE		0x30
-> > > +#define HEAD_MAGICWORD_OFFSET	0x20
-> > > +#define HEAD_SIZE_OFFSET	0x2C
-> > > +
-> > > +static inline int is_barebox_arm_head(const char *head)
-> > > +{
-> > > +	return !strcmp(head + HEAD_MAGICWORD_OFFSET, "barebox");
-> > > +}
-put this in flietype.h
+> > Is there something which i could quickly check in the MLO, a
+> > checksum for example? Only if you know something, otherwise i can
+> > look it up in the OMAP manual, what he is doing to accept the MLO.
+> > 
+> > As i said, it seems he doesn't like the MLO, because he's skipping
+> > to the next boot source..
+> 
+> The MLO is generated from barebox.bin with the omap_signGP tool. It
+> seems the header is 520byte in size. You could compare these between
+> both images. I don't know though if this is enough for the OMAP ROM code
+> to detect a valid image.
+maybe too big we need to set the BAREBOX_MAX_IMAGE_SIZE
+IIRC it's 54KiB
 
 Best Regards,
 J.
