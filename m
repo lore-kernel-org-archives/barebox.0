@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qc0-f177.google.com ([209.85.216.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T9WVU-00014h-Fq
- for barebox@lists.infradead.org; Thu, 06 Sep 2012 07:28:09 +0000
-Received: by qcsu28 with SMTP id u28so630050qcs.36
- for <barebox@lists.infradead.org>; Thu, 06 Sep 2012 00:28:05 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20120906065544.GK26594@pengutronix.de>
-References: <1340628281-8774-1-git-send-email-s.hauer@pengutronix.de>
- <1346877446-13368-1-git-send-email-franck.jullien@gmail.com>
- <20120906065544.GK26594@pengutronix.de>
-Date: Thu, 6 Sep 2012 09:28:05 +0200
-Message-ID: <CAJfOKBxOs5oaj5-_LHiZprTf383YLd9H2sddgCiW43FFrUsXRA@mail.gmail.com>
-From: Franck Jullien <franck.jullien@gmail.com>
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1T9Weo-0002Gx-L7
+ for barebox@lists.infradead.org; Thu, 06 Sep 2012 07:37:48 +0000
+Received: from mail626.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 4DE7ADC6A20
+ for <barebox@lists.infradead.org>; Thu,  6 Sep 2012 09:43:05 +0200 (CEST)
+Date: Thu, 6 Sep 2012 09:37:39 +0200
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20120906093739.3ed5fd4b@eb-e6520>
+In-Reply-To: <20120906060058.GE4761@game.jcrosoft.org>
+References: <20120906060058.GE4761@game.jcrosoft.org>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,71 +25,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] [OpenRISC] Add __ashrdi3 and remove link to libgcc
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 00/12] add PNG support
+To: barebox@lists.infradead.org
 
-2012/9/6 Sascha Hauer <s.hauer@pengutronix.de>:
-> Hi Franck,
->
-> On Wed, Sep 05, 2012 at 10:37:26PM +0200, Franck Jullien wrote:
->> In a previous patch, Sascha needed to add __ashrdi3 and then linked to
->> libgcc. This patch add the ashrdi3 function in the arch/openrisc/lib
->> directory and remove the libgcc link.
->
-> Does this fix any regressions or is it just a do-the-right-thing patch?
->
+Hi Jean-Christophe,
 
-No, it doesn't fix anything. I just did the same thing I did for
-others libgcc functions.
+$ LANG=en grep -rn Adobe .
+Binary file ./png8/600x600/while/blackbg/barebox.png matches
+Binary file ./png8/600x600/color/blackbg/barebox.png matches
+Binary file ./png8/400x400/white/blackbg/barebox.png matches
+Binary file ./png8/400x400/color/blackbg/barebox.png matches
+Binary file ./png8/900x900/white/blackbg/barebox.png matches
+Binary file ./png8/900x900/color/blackbg/barebox.png matches
+Binary file ./png8/100x100/white/blackbg/barebox.png matches
+Binary file ./png8/100x100/color/blackbg/barebox.png matches
+Binary file ./png8/800x800/white/blackbg/barebox.png matches
+Binary file ./png8/800x800/color/blackbg/barebox.png matches
+Binary file ./png8/200x200/white/blackbg/barebox.png matches
+Binary file ./png8/200x200/color/blackbg/barebox.png matches
+Binary file ./png24/600x600/while/blackbg/barebox.png matches
+Binary file ./png24/600x600/while/barebox.png matches
+Binary file ./png24/600x600/color/blackbg/barebox.png matches
+Binary file ./png24/600x600/color/barebox.png matches
+Binary file ./png24/400x400/white/blackbg/barebox.png matches
+Binary file ./png24/400x400/white/barebox.png matches
+Binary file ./png24/400x400/color/blackbg/barebox.png matches
+Binary file ./png24/400x400/color/barebox.png matches
+Binary file ./png24/900x900/white/blackbg/barebox.png matches
+Binary file ./png24/900x900/white/barebox.png matches
+Binary file ./png24/900x900/color/blackbg/barebox.png matches
+Binary file ./png24/900x900/color/barebox.png matches
+Binary file ./png24/100x100/white/blackbg/barebox.png matches
+Binary file ./png24/100x100/white/barebox.png matches
+Binary file ./png24/100x100/color/blackbg/barebox.png matches
+Binary file ./png24/100x100/color/barebox.png matches
+Binary file ./png24/800x800/white/blackbg/barebox.png matches
+Binary file ./png24/800x800/white/barebox.png matches
+Binary file ./png24/800x800/color/blackbg/barebox.png matches
+Binary file ./png24/800x800/color/barebox.png matches
+Binary file ./png24/200x200/white/blackbg/barebox.png matches
+Binary file ./png24/200x200/white/barebox.png matches
+Binary file ./png24/200x200/color/blackbg/barebox.png matches
+Binary file ./png24/200x200/color/barebox.png matches
 
->>
->> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
->> ---
->>  arch/openrisc/Makefile      |    4 +-
->>  arch/openrisc/lib/Makefile  |    1 +
->>  arch/openrisc/lib/ashrdi3.S |   59 +++++++++++++++++++++++++++++++++++++++++++
->>  3 files changed, 62 insertions(+), 2 deletions(-)
->>  create mode 100644 arch/openrisc/lib/ashrdi3.S
->>
->> diff --git a/arch/openrisc/Makefile b/arch/openrisc/Makefile
->> index 1f4b175..9e88a51 100644
->> --- a/arch/openrisc/Makefile
->> +++ b/arch/openrisc/Makefile
->> @@ -1,6 +1,6 @@
->>  CPPFLAGS += -D__OR1K__ -ffixed-r10 -mhard-mul -mhard-div
->>
->> -LIBGCC          := $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
->> +#LIBGCC := $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
->
-> Can we remove the line instead?
+$ strings  ./png8/600x600/while/blackbg/barebox.png  | grep Adobe
+Adobe ImageReadyq
+" id="W5M0MpCehiHzreSzNTczkc9d"?> <x:xmpmeta xmlns:x="adobe:ns:meta/"
+x:xmptk="Adobe XMP Core 5.0-c060 61.134777, 2010/02/12-17:32:00
+"> <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:Description rdf:about=""
+xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/"
+xmlns:stRef="http://ns.adobe.com/xap/1.0/sType/ResourceRef#"
+xmlns:xmp="http://ns.adobe.com/xap/1.0/"
+xmpMM:OriginalDocumentID="xmp.did:F77F117407206811920897BEAF1A9456"
+xmpMM:DocumentID="xmp.did:436D3B36EFAB11E19F07FD358A90E3D4"
+xmpMM:InstanceID="xmp.iid:436D3B35EFAB11E19F07FD358A90E3D4"
+xmp:CreatorTool="Adobe Photoshop CS4 Macintosh"> <xmpMM:DerivedFrom
+stRef:instanceID="xmp.iid:048011740720681195FEE0F8D2792B70"
+stRef:documentID="xmp.did:F77F117407206811920897BEAF1A9456"/>
+</rdf:Description> </rdf:RDF> </x:xmpmeta> <?xpacket end="r"?>5
 
-I wanted to keep it in case we have the problem again (need to link to
-libgcc).....
+Barebox being an OpenSource project, is it possible to have these
+images created by a free tool and not including "Adobe Photoshop CS5
+Macintosh" tags (proprietary software on a proprietary OS on a
+proprietary platform ;-) ?
 
->
->>
->>  board-$(CONFIG_GENERIC) := generic
->>
->> @@ -20,6 +20,6 @@ common-y += $(BOARD)
->>  common-y += arch/openrisc/lib/
->>  common-y += arch/openrisc/cpu/
->>
->> -common-y          += $(LIBGCC)
->> +#common-y += $(LIBGCC)
->
-> ditto.
-
-But I could remove it of course.
-
->
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+thanks !
+Eric
 
 _______________________________________________
 barebox mailing list
