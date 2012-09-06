@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo3.mail-out.ovh.net ([87.98.172.249]
- helo=mo3.mail-out.ovh.net)
+Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
+ helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T9c3P-0004Xj-NS
- for barebox@lists.infradead.org; Thu, 06 Sep 2012 13:23:33 +0000
-Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 5D7F2FF8BF0
- for <barebox@lists.infradead.org>; Thu,  6 Sep 2012 15:31:07 +0200 (CEST)
-Date: Thu, 6 Sep 2012 15:23:49 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120906132349.GI20330@game.jcrosoft.org>
-References: <1346926816-6695-2-git-send-email-jlu@pengutronix.de>
- <1346935271-15317-1-git-send-email-j.weitzel@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1346935271-15317-1-git-send-email-j.weitzel@phytec.de>
+ id 1T9c7k-0005WT-A0
+ for barebox@lists.infradead.org; Thu, 06 Sep 2012 13:28:01 +0000
+Received: from mail626.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 17ED9DC6E6C
+ for <barebox@lists.infradead.org>; Thu,  6 Sep 2012 15:33:20 +0200 (CEST)
+Date: Thu, 6 Sep 2012 15:27:54 +0200
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20120906152754.355b7078@eb-e6520>
+In-Reply-To: <1346935710-23360-1-git-send-email-alexg@meprolight.com>
+References: <1346935710-23360-1-git-send-email-alexg@meprolight.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,106 +21,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v5] xload: get barebox size from barebox_arm_head
-To: Jan Weitzel <j.weitzel@phytec.de>
+Subject: Re: [PATCH] i.mx35pdk add nand identification
+To: Alex Gershgorin <alexg@meprolight.com>
 Cc: barebox@lists.infradead.org
 
-On 14:41 Thu 06 Sep     , Jan Weitzel wrote:
-> Add functions to read the barebox_arm_head, check barebox magicword
-> and read out the barebox image size.
-> Create a inital partion of 1Mb to access the barebox image on nand.
-> 
-> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
-> ---
-> v2: remove fall back if header read fail 
-> v3: fix header check, rebase master 
-> v4: factorize barebox detection
-> v5: mv devines to include/filetype.h
-> 
->  arch/arm/include/asm/barebox-arm-head.h |    9 +++++
->  arch/arm/mach-omap/include/mach/xload.h |    2 +-
->  arch/arm/mach-omap/xload.c              |   57 ++++++++++++++++++++++++++++--
->  common/filetype.c                       |    2 +-
->  include/filetype.h                      |   16 +++++++++
->  4 files changed, 71 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/arm/mach-omap/include/mach/xload.h b/arch/arm/mach-omap/include/mach/xload.h
-> index 844b57f..26f1b68 100644
-> --- a/arch/arm/mach-omap/include/mach/xload.h
-> +++ b/arch/arm/mach-omap/include/mach/xload.h
-> @@ -1,7 +1,7 @@
->  #ifndef _MACH_XLOAD_H
->  #define _MACH_XLOAD_H
->  
-> -void *omap_xload_boot_nand(int offset, int size);
-> +void *omap_xload_boot_nand(int offset);
->  void *omap_xload_boot_mmc(void);
->  
->  enum omap_boot_src {
-> diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
-> index 13024ab..0afeea9 100644
-> --- a/arch/arm/mach-omap/xload.c
-> +++ b/arch/arm/mach-omap/xload.c
-> @@ -7,16 +7,65 @@
->  #include <fcntl.h>
->  #include <mach/xload.h>
->  #include <sizes.h>
-> +#include <filetype.h>
->  
-> -void *omap_xload_boot_nand(int offset, int size)
-> +void *read_image_head(const char *name)
->  {
-> +	void *header = xmalloc(ARM_HEAD_SIZE);
-> +	struct cdev *cdev;
->  	int ret;
-> -	void *to = xmalloc(size);
-> +
-> +	cdev = cdev_open(name, O_RDONLY);
-> +	if (!cdev) {
-> +		printf("failed to open partition\n");
-> +		return NULL;
-> +	}
-> +
-> +	ret = cdev_read(cdev, header, ARM_HEAD_SIZE, 0, 0);
-> +	cdev_close(cdev);
-> +
-> +	if (ret != ARM_HEAD_SIZE) {
-> +		printf("failed to read from partition\n");
-> +		return NULL;
-> +	}
-> +
-> +	return header;
-> +}
-> +
-> +unsigned int get_image_size(void *head)
-> +{
-> +	unsigned int ret = 0;
-> +	unsigned int *psize = head + ARM_HEAD_SIZE_OFFSET;
-> +
-> +	if (is_barebox_arm_head(head))
-> +		ret = *psize;
-> +	debug("Detected barebox image size %u\n", ret);
-> +
-> +	return ret;
-> +}
-> +
-> +void *omap_xload_boot_nand(int offset)
-> +{
-> +	int ret;
-> +	int size;
-> +	void *to, *header;
->  	struct cdev *cdev;
->  
-> -	devfs_add_partition("nand0", offset, size, DEVFS_PARTITION_FIXED, "x");
-> +	devfs_add_partition("nand0", offset, SZ_1M, DEVFS_PARTITION_FIXED, "x");
-I'd map 8M so can boot a kernel directly too
+Le Thu, 6 Sep 2012 15:48:30 +0300,
+Alex Gershgorin <alexg@meprolight.com> a =E9crit :
 
-Best Regards,
-J.
+> Without this patch I get following messages
+> =
+
+> Board: Freescale MX35 3Stack   =
+
+> NAND type unknown: ec,d7
+> No NAND device found (-19)!
+> =
+
+what is the part number of the NAND ?
+
+Eric
 
 _______________________________________________
 barebox mailing list
