@@ -1,22 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo3.mail-out.ovh.net ([87.98.172.162]
+Received: from 12.mo3.mail-out.ovh.net ([188.165.41.191]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T9Xun-0007Sc-58
- for barebox@lists.infradead.org; Thu, 06 Sep 2012 08:58:22 +0000
+ id 1T9Y5Q-0001fD-KE
+ for barebox@lists.infradead.org; Thu, 06 Sep 2012 09:09:22 +0000
 Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id A3595FF8823
- for <barebox@lists.infradead.org>; Thu,  6 Sep 2012 11:05:57 +0200 (CEST)
-Date: Thu, 6 Sep 2012 10:58:38 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id F3F05FF926E
+ for <barebox@lists.infradead.org>; Thu,  6 Sep 2012 11:16:56 +0200 (CEST)
+Date: Thu, 6 Sep 2012 11:09:38 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120906085838.GB20330@game.jcrosoft.org>
-References: <1346860337-777-1-git-send-email-jlu@pengutronix.de>
- <1346860337-777-7-git-send-email-jlu@pengutronix.de>
- <20120905180320.GA4761@game.jcrosoft.org>
- <20120906072012.GN26594@pengutronix.de>
+Message-ID: <20120906090938.GC20330@game.jcrosoft.org>
+References: <1346917995-28683-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120906072012.GN26594@pengutronix.de>
+In-Reply-To: <1346917995-28683-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,46 +26,397 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/8] drivers/net: add driver for the EMAC device found
- in some TI SoCs
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [RFC] spi: add demo bitbang driver based on code from linux
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 09:20 Thu 06 Sep     , Sascha Hauer wrote:
-> On Wed, Sep 05, 2012 at 08:03:20PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 17:52 Wed 05 Sep     , Jan Luebbe wrote:
-> > > Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
-> > Again NACK
-> > 
-> > drop the struct XXXX on hte reg
+On 11:53 Thu 06 Sep     , Antony Pavlov wrote:
+> It not the real driver but demonstration of the conception.
+> The code was tested on real hardware, but the code for
+> this hardware can't be published just now.
 > 
-> I also don't like it, but let's not be religious about it.
-> Wolfgang currently forces all people to use structs for registers.
-> Forcing exactly the opposite is counterproductive I think. The original
-> drivers uses the structs and at some point it can be useful to compare
-> to this driver.
-this is really a shit to read the code is horible
+> Usage of bitbang framework is very easy.
+> You must declare the functions for setting CLK and MOSI signals,
+> and the function for reading MISO signal:
+> 
+>  * void setsck(struct spi_device *, int is_on);
+>  * void setmosi(struct spi_device *, int is_on);
+>  * int getmiso(struct spi_device *);
+> 
+> Next include the "spi-bitbang-txrx.h" header. The header
+> will give you the functions for reading/writing u32 words from/to spi.
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+can you implement the gpio driver base on it
 
-So at the point we need to sync with the kernel
+so we can test it and ack it
 
-I'm working on the amba pl180 driver currently if I use the u-boot one my
-board boot in 11s (just U-Boot), I re-write basing on linux I'm booting in arround
-2s.
-
-So I do not see the point to share the driver with u-boot, I prefer to have a
-well writted one and optimised
+and does this work owith mmc-spi?
 
 Best Regards,
 J.
+> ---
+>  arch/mips/boards/qemu-malta/init.c |   31 +++++++
+>  drivers/spi/Kconfig                |    4 +
+>  drivers/spi/Makefile               |    1 +
+>  drivers/spi/bitbang_demo_spi.c     |  176 ++++++++++++++++++++++++++++++++++++
+>  drivers/spi/spi-bitbang-txrx.h     |   93 +++++++++++++++++++
+>  5 files changed, 305 insertions(+)
+>  create mode 100644 drivers/spi/bitbang_demo_spi.c
+>  create mode 100644 drivers/spi/spi-bitbang-txrx.h
 > 
-> Sascha
-> 
-> 
+> diff --git a/arch/mips/boards/qemu-malta/init.c b/arch/mips/boards/qemu-malta/init.c
+> index 45f66f2..314ca88 100644
+> --- a/arch/mips/boards/qemu-malta/init.c
+> +++ b/arch/mips/boards/qemu-malta/init.c
+> @@ -30,6 +30,8 @@
+>  #include <partition.h>
+>  #include <sizes.h>
+>  #include <asm/common.h>
+> +#include <spi/spi.h>
+> +#include <spi/flash.h>
+>  
+>  static int malta_mem_init(void)
+>  {
+> @@ -64,3 +66,32 @@ static int malta_console_init(void)
+>  	return 0;
+>  }
+>  console_initcall(malta_console_init);
+> +
+> +static struct flash_platform_data malta_spi_demo_flash_data = {
+> +	.name		= "spi",
+> +	.type		= "s25sl004a",
+> +};
+> +
+> +static struct spi_board_info malta_spi_demo_devs[] __initdata = {
+> +	{
+> +		/* Spansion S25FL004A SPI flash */
+> +		.name		= "m25p",
+> +		.max_speed_hz	= 50000000,
+> +		.bus_num	= 0,
+> +		.chip_select	= 0,
+> +		.mode		= SPI_MODE_3,
+> +		.platform_data	= &malta_spi_demo_flash_data,
+> +	},
+> +};
+> +
+> +static int malta_spi_demo_init(void)
+> +{
+> +
+> +	spi_register_board_info(malta_spi_demo_devs,
+> +		ARRAY_SIZE(malta_spi_demo_devs));
+> +	add_generic_device("bitbang_demo_spi", -1, NULL,
+> +		0, 0, IORESOURCE_MEM, NULL);
+> +
+> +	return 0;
+> +}
+> +device_initcall(malta_spi_demo_init);
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index b5c55a4..d883cd4 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -34,4 +34,8 @@ config DRIVER_SPI_ATMEL
+>  	depends on ARCH_AT91
+>  	depends on SPI
+>  
+> +config DRIVER_SPI_BITBANG_DEMO
+> +	bool "BITBANG DEMO SPI controller"
+> +	depends on SPI
+> +
+>  endmenu
+> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+> index 101652f..087a982 100644
+> --- a/drivers/spi/Makefile
+> +++ b/drivers/spi/Makefile
+> @@ -2,3 +2,4 @@ obj-$(CONFIG_SPI) += spi.o
+>  obj-$(CONFIG_DRIVER_SPI_IMX) += imx_spi.o
+>  obj-$(CONFIG_DRIVER_SPI_ALTERA) += altera_spi.o
+>  obj-$(CONFIG_DRIVER_SPI_ATMEL) += atmel_spi.o
+> +obj-$(CONFIG_DRIVER_SPI_BITBANG_DEMO) += bitbang_demo_spi.o
+> diff --git a/drivers/spi/bitbang_demo_spi.c b/drivers/spi/bitbang_demo_spi.c
+> new file mode 100644
+> index 0000000..76abf98
+> --- /dev/null
+> +++ b/drivers/spi/bitbang_demo_spi.c
+> @@ -0,0 +1,176 @@
+> +/*
+> + * Copyright (C) 2012 Antony Pavlov <antonynpavlov@gmail.com>
+> + *
+> + * This file is part of barebox.
+> + * See file CREDITS for list of people who contributed to this project.
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> + * MA 02111-1307 USA
+> + *
+> + */
+> +
+> +#define DEBUG
+> +
+> +#include <common.h>
+> +#include <init.h>
+> +#include <driver.h>
+> +#include <spi/spi.h>
+> +#include <io.h>
+> +#include <clock.h>
+> +
+> +struct spi_bitbang_demo_master {
+> +	int	num_chipselect;
+> +	int	spi_mode;
+> +	int	databits;
+> +	int	speed;
+> +	int	bus_num;
+> +};
+> +
+> +struct bitbang_demo_spi {
+> +	struct spi_master	master;
+> +	int			databits;
+> +	int			speed;
+> +	int			mode;
+> +};
+> +
+> +static inline void setsck(struct spi_device *spi, int on)
+> +{
+> +	struct bitbang_demo_spi *sc = container_of(spi->master, struct bitbang_demo_spi, master);
+> +
+> +	/* do something ... */
+> +	(void)sc;
+> +}
+> +
+> +static inline void setmosi(struct spi_device *spi, int on)
+> +{
+> +	struct bitbang_demo_spi *sc = container_of(spi->master, struct bitbang_demo_spi, master);
+> +
+> +	/* do something ... */
+> +	(void)sc;
+> +}
+> +
+> +static inline u32 getmiso(struct spi_device *spi)
+> +{
+> +	struct bitbang_demo_spi *sc = container_of(spi->master, struct bitbang_demo_spi, master);
+> +
+> +	/* do something ... */
+> +	(void)sc;
+> +
+> +	return 0;
+> +}
+> +
+> +#include "spi-bitbang-txrx.h"
+> +
+> +static int bitbang_demo_spi_setup(struct spi_device *spi)
+> +{
+> +	struct spi_master *master = spi->master;
+> +	struct bitbang_demo_spi *sc = container_of(master, struct bitbang_demo_spi, master);
+> +
+> +	dev_dbg(master->dev, "%s\n", __func__);
+> +	printf("%s chipsel %d mode 0x%08x bits_per_word: %d speed: %d\n",
+> +			__FUNCTION__, spi->chip_select, spi->mode, spi->bits_per_word,
+> +			spi->max_speed_hz);
+> +
+> +	/* do something ... */
+> +	(void) sc;
+> +
+> +	return 0;
+> +}
+> +
+> +static int bitbang_demo_read(struct spi_device *spi, void *buf, size_t nbyte)
+> +{
+> +	ssize_t cnt = 0;
+> +	volatile u8 *rxf_buf = buf;
+> +
+> +	/* SPI_MODE_3 only */
+> +	while (cnt < nbyte) {
+> +		*rxf_buf = bitbang_txrx_be_cpha1(spi, 1000, 1, 0, 8);
+> +		rxf_buf++;
+> +		cnt++;
+> +	}
+> +
+> +	return cnt;
+> +}
+> +
+> +static int bitbang_demo_write(struct spi_device *spi, const void *buf, size_t nbyte)
+> +{
+> +	ssize_t cnt = 0;
+> +	const u8 *txf_buf = buf;
+> +
+> +	/* SPI_MODE_3 only */
+> +	while (cnt < nbyte) {
+> +		bitbang_txrx_be_cpha1(spi, 1000, 1, (u32)*txf_buf, 8);
+> +		txf_buf++;
+> +		cnt++;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int bitbang_demo_spi_transfer(struct spi_device *spi, struct spi_message *mesg)
+> +{
+> +	struct spi_master *master = spi->master;
+> +	struct spi_transfer *t;
+> +
+> +	dev_dbg(master->dev, "%s\n", __func__);
+> +
+> +	mesg->actual_length = 0;
+> +
+> +	/* chip select and mode select stuff skipped */
+> +
+> +	list_for_each_entry(t, &mesg->transfers, transfer_list) {
+> +
+> +		if (t->tx_buf)
+> +			bitbang_demo_write(spi, t->tx_buf, t->len);
+> +
+> +		if (t->rx_buf)
+> +			bitbang_demo_read(spi, t->rx_buf, t->len);
+> +
+> +		mesg->actual_length += t->len;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int bitbang_demo_spi_probe(struct device_d *dev)
+> +{
+> +	struct spi_master *master;
+> +	struct bitbang_demo_spi *bitbang_demo_spi;
+> +
+> +	bitbang_demo_spi = xzalloc(sizeof(*bitbang_demo_spi));
+> +
+> +	master = &bitbang_demo_spi->master;
+> +	master->dev = dev;
+> +
+> +	master->setup = bitbang_demo_spi_setup;
+> +	master->transfer = bitbang_demo_spi_transfer;
+> +	master->num_chipselect = 1;
+> +	master->bus_num = 0;
+> +
+> +	spi_register_master(master);
+> +
+> +	return 0;
+> +}
+> +
+> +static struct driver_d bitbang_demo_spi_driver = {
+> +	.name  = "bitbang_demo_spi",
+> +	.probe = bitbang_demo_spi_probe,
+> +};
+> +
+> +static int bitbang_demo_spi_driver_init(void)
+> +{
+> +	return register_driver(&bitbang_demo_spi_driver);
+> +}
+> +device_initcall(bitbang_demo_spi_driver_init);
+> diff --git a/drivers/spi/spi-bitbang-txrx.h b/drivers/spi/spi-bitbang-txrx.h
+> new file mode 100644
+> index 0000000..e86eec2
+> --- /dev/null
+> +++ b/drivers/spi/spi-bitbang-txrx.h
+> @@ -0,0 +1,93 @@
+> +/*
+> + * Mix this utility code with some glue code to get one of several types of
+> + * simple SPI master driver.  Two do polled word-at-a-time I/O:
+> + *
+> + *   -	GPIO/parport bitbangers.  Provide chipselect() and txrx_word[](),
+> + *	expanding the per-word routines from the inline templates below.
+> + *
+> + *   -	Drivers for controllers resembling bare shift registers.  Provide
+> + *	chipselect() and txrx_word[](), with custom setup()/cleanup() methods
+> + *	that use your controller's clock and chipselect registers.
+> + *
+> + * Some hardware works well with requests at spi_transfer scope:
+> + *
+> + *   -	Drivers leveraging smarter hardware, with fifos or DMA; or for half
+> + *	duplex (MicroWire) controllers.  Provide chipselect() and txrx_bufs(),
+> + *	and custom setup()/cleanup() methods.
+> + */
+> +
+> +/*
+> + * The code that knows what GPIO pins do what should have declared four
+> + * functions, ideally as inlines, before including this header:
+> + *
+> + *  void setsck(struct spi_device *, int is_on);
+> + *  void setmosi(struct spi_device *, int is_on);
+> + *  int getmiso(struct spi_device *);
+> + *  void spidelay(unsigned);
+> + *
+> + * setsck()'s is_on parameter is a zero/nonzero boolean.
+> + *
+> + * setmosi()'s is_on parameter is a zero/nonzero boolean.
+> + *
+> + * getmiso() is required to return 0 or 1 only. Any other value is invalid
+> + * and will result in improper operation.
+> + *
+> + * A non-inlined routine would call bitbang_txrx_*() routines.  The
+> + * main loop could easily compile down to a handful of instructions,
+> + * especially if the delay is a NOP (to run at peak speed).
+> + *
+> + * Since this is software, the timings may not be exactly what your board's
+> + * chips need ... there may be several reasons you'd need to tweak timings
+> + * in these routines, not just make to make it faster or slower to match a
+> + * particular CPU clock rate.
+> + */
+> +
+> +#define spidelay(nsecs) udelay(nsecs/1000)
+> +
+> +static inline u32
+> +bitbang_txrx_be_cpha0(struct spi_device *spi,
+> +		unsigned nsecs, unsigned cpol, u32 word, u8 bits)
+> +{
+> +	/* if (cpol == 0) this is SPI_MODE_0; else this is SPI_MODE_2 */
+> +
+> +	/* clock starts at inactive polarity */
+> +	for (word <<= (32 - bits); likely(bits); bits--) {
+> +
+> +		/* setup MSB (to slave) on trailing edge */
+> +		setmosi(spi, word & (1 << 31));
+> +		spidelay(nsecs);	/* T(setup) */
+> +
+> +		setsck(spi, !cpol);
+> +		spidelay(nsecs);
+> +
+> +		/* sample MSB (from slave) on leading edge */
+> +		word <<= 1;
+> +		word |= getmiso(spi);
+> +		setsck(spi, cpol);
+> +	}
+> +	return word;
+> +}
+> +
+> +static inline u32
+> +bitbang_txrx_be_cpha1(struct spi_device *spi, unsigned nsecs, unsigned cpol,
+> +		u32 word, u8 bits)
+> +{
+> +	/* if (cpol == 0) this is SPI_MODE_1; else this is SPI_MODE_3 */
+> +
+> +	/* clock starts at inactive polarity */
+> +	for (word <<= (32 - bits); likely(bits); bits--) {
+> +
+> +		/* setup MSB (to slave) on leading edge */
+> +		setsck(spi, !cpol);
+> +		setmosi(spi, word & (1 << 31));
+> +		spidelay(nsecs); /* T(setup) */
+> +
+> +		setsck(spi, cpol);
+> +		spidelay(nsecs);
+> +
+> +		/* sample MSB (from slave) on trailing edge */
+> +		word <<= 1;
+> +		word |= getmiso(spi);
+> +	}
+> +	return word;
+> +}
 > -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 1.7.10.4
+> 
 
 _______________________________________________
 barebox mailing list
