@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
+Received: from 2.mo3.mail-out.ovh.net ([46.105.75.36]
+ helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T9hvV-0001Ha-7r
- for barebox@lists.infradead.org; Thu, 06 Sep 2012 19:39:46 +0000
-Received: from localhost.localdomain (unknown [82.233.81.124])
- by smtp3-g21.free.fr (Postfix) with ESMTP id 12B6AA6168
- for <barebox@lists.infradead.org>; Thu,  6 Sep 2012 21:39:39 +0200 (CEST)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Thu,  6 Sep 2012 21:39:31 +0200
-Message-Id: <1346960371-4129-3-git-send-email-eric@eukrea.com>
-In-Reply-To: <1346960371-4129-1-git-send-email-eric@eukrea.com>
-References: <1346960371-4129-1-git-send-email-eric@eukrea.com>
+ id 1T9jy5-0002DB-JU
+ for barebox@lists.infradead.org; Thu, 06 Sep 2012 21:50:34 +0000
+Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id B9EDDFF88B4
+ for <barebox@lists.infradead.org>; Thu,  6 Sep 2012 23:58:09 +0200 (CEST)
+Date: Thu, 6 Sep 2012 23:50:50 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120906215050.GK20330@game.jcrosoft.org>
+References: <20120906060058.GE4761@game.jcrosoft.org>
+ <20120906160308.GA26594@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20120906160308.GA26594@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,50 +23,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] miidev: fix 1G wrong detection
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 00/12] add PNG support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-c2luY2UgOTllNzJjOGJiZGJkYzY5MDAyNWE1ODY4ZDgzMWYxZmU3OWFkNTZmYyBvbiBhbiBpLk1Y
-NTEgYmFzZWQgYm9hcmQsCkkgZ2V0IDogInBoeTA6IExpbmsgaXMgdXAgLSAxMDAwL0Z1bGwiLiBJ
-dCBzZWVtcyBtaWlkZXYgdHJpZXMgdG8gcHJvYmUKdGhlIFBIWSB0byBlYXJseSBhbmQgZ2V0cyAw
-eDNmZmZmIHdoaWNoIGxlYWRzIHRvIHRoZSB3cm9uZyBjYXBhYmlsaXRpZXMKc2V0dGluZy4KClNp
-Z25lZC1vZmYtYnk6IEVyaWMgQsOpbmFyZCA8ZXJpY0BldWtyZWEuY29tPgotLS0KIGRyaXZlcnMv
-bmV0L21paWRldi5jIHwgICAzMyArKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIDEg
-ZmlsZXMgY2hhbmdlZCwgOSBpbnNlcnRpb25zKCspLCAyNCBkZWxldGlvbnMoLSkKCmRpZmYgLS1n
-aXQgYS9kcml2ZXJzL25ldC9taWlkZXYuYyBiL2RyaXZlcnMvbmV0L21paWRldi5jCmluZGV4IDc1
-YjUzZTMuLmUwZjlkNjcgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbmV0L21paWRldi5jCisrKyBiL2Ry
-aXZlcnMvbmV0L21paWRldi5jCkBAIC0xMzEsNiArMTMxLDE0IEBAIGludCBtaWlkZXZfZ2V0X3N0
-YXR1cyhzdHJ1Y3QgbWlpX2RldmljZSAqbWRldikKIAogCXN0YXR1cyA9IHJldCAmIEJNU1JfTFNU
-QVRVUyA/IE1JSURFVl9TVEFUVVNfSVNfVVAgOiAwOwogCisJaWYgKHJldCAmIEJNU1JfRVNUQVRF
-TikgeworCQlyZXQgPSBtaWlfcmVhZChtZGV2LCBtZGV2LT5hZGRyZXNzLCBNSUlfRVNUQVRVUyk7
-CisJCWlmIChyZXQgPCAwKQorCQkJZ290byBlcnJfb3V0OworCQlpZiAocmV0ICYgKEVTVEFUVVNf
-MTAwMF9URlVMTCB8IEVTVEFUVVNfMTAwMF9USEFMRikpCisJCQltZGV2LT5jYXBhYmlsaXRpZXMg
-PSBNSUlERVZfQ0FQQUJMRV8xMDAwTTsKKwl9CisKIAlyZXQgPSBtaWlfcmVhZChtZGV2LCBtZGV2
-LT5hZGRyZXNzLCBNSUlfQk1DUik7CiAJaWYgKHJldCA8IDApCiAJCWdvdG8gZXJyX291dDsKQEAg
-LTIzOSwyNyArMjQ3LDggQEAgc3RhdGljIHN0cnVjdCBmaWxlX29wZXJhdGlvbnMgbWlpZGV2X29w
-cyA9IHsKIHN0YXRpYyBpbnQgbWlpZGV2X3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQogewog
-CXN0cnVjdCBtaWlfZGV2aWNlICptZGV2ID0gZGV2LT5wcml2OwotCWludCB2YWw7Ci0JaW50IGNh
-cHMgPSAwOwogCi0JdmFsID0gbWlpX3JlYWQobWRldiwgbWRldi0+YWRkcmVzcywgTUlJX1BIWVNJ
-RDEpOwotCWlmICh2YWwgPCAwIHx8IHZhbCA9PSAweGZmZmYpCi0JCWdvdG8gZXJyX291dDsKLQl2
-YWwgPSBtaWlfcmVhZChtZGV2LCBtZGV2LT5hZGRyZXNzLCBNSUlfUEhZU0lEMik7Ci0JaWYgKHZh
-bCA8IDAgfHwgdmFsID09IDB4ZmZmZikKLQkJZ290byBlcnJfb3V0OwotCXZhbCA9IG1paV9yZWFk
-KG1kZXYsIG1kZXYtPmFkZHJlc3MsIE1JSV9CTVNSKTsKLQlpZiAodmFsIDwgMCkKLQkJZ290byBl
-cnJfb3V0OwotCWlmICh2YWwgJiBCTVNSX0VTVEFURU4pIHsKLQkJdmFsID0gbWlpX3JlYWQobWRl
-diwgbWRldi0+YWRkcmVzcywgTUlJX0VTVEFUVVMpOwotCQlpZiAodmFsIDwgMCkKLQkJCWdvdG8g
-ZXJyX291dDsKLQkJaWYgKHZhbCAmIChFU1RBVFVTXzEwMDBfVEZVTEwgfCBFU1RBVFVTXzEwMDBf
-VEhBTEYpKQotCQkJY2FwcyA9IE1JSURFVl9DQVBBQkxFXzEwMDBNOwotCX0KLQotCW1kZXYtPmNh
-cGFiaWxpdGllcyA9IGNhcHM7CisJbWRldi0+Y2FwYWJpbGl0aWVzID0gMDsKIAltZGV2LT5jZGV2
-Lm5hbWUgPSBhc3ByaW50ZigicGh5JWQiLCBkZXYtPmlkKTsKIAltZGV2LT5jZGV2LnNpemUgPSA2
-NDsKIAltZGV2LT5jZGV2Lm9wcyA9ICZtaWlkZXZfb3BzOwpAQCAtMjY4LDEwICsyNTcsNiBAQCBz
-dGF0aWMgaW50IG1paWRldl9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKIAlkZXZmc19jcmVh
-dGUoJm1kZXYtPmNkZXYpOwogCWxpc3RfYWRkX3RhaWwoJm1kZXYtPmxpc3QsICZtaWlkZXZfbGlz
-dCk7CiAJcmV0dXJuIDA7Ci0KLWVycl9vdXQ6Ci0JZGV2X2VycihkZXYsICJjYW5ub3QgcmVhZCBQ
-SFkgcmVnaXN0ZXJzIChhZGRyICVkKVxuIiwgbWRldi0+YWRkcmVzcyk7Ci0JcmV0dXJuIC1FTk9E
-RVY7CiB9CiAKIHN0YXRpYyB2b2lkIG1paWRldl9yZW1vdmUoc3RydWN0IGRldmljZV9kICpkZXYp
-Ci0tIAoxLjcuNy42CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
-dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On 18:03 Thu 06 Sep     , Sascha Hauer wrote:
+> The discussion in this thread makes it clear that there are two problems
+> with this logo, one technical and one political.
+> 
+> The technical problem:
+> 
+> From a technical pov it makes no sense to put big image binaries into
+> the repository when a small svg image would be sufficient to generate
+> all other images.
+> 
+> The political problem:
+> 
+> For an open source project a closed image is a no go. We (and by we I
+> mean we as the community, not we as Pengutronix) must for example be
+> able to:
+> 
+> - generate versions with different colors, sizes, dimensions
+> - generate a logo without text
+> - modify the image and to redistribute without limitations
+> - add a journal to the logo and use it for bwn.org (barebox weekly news) ;)
+As on Linux, Meego , Mozilla, Coreboot and others Logo are copyrighted and protected
+
+This is a standard for project image protection
+
+Modify the image means the image is not Barebox Logo
+(Modify in the limit of the Licence)
+
+This is the full meaning of the Copyright.
+
+The redistribution are without limitation
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
