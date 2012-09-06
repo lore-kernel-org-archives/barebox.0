@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T9eXy-0005qQ-Ma
- for barebox@lists.infradead.org; Thu, 06 Sep 2012 16:03:19 +0000
-Date: Thu, 6 Sep 2012 18:03:08 +0200
+ id 1T9ftZ-0002Jv-Vx
+ for barebox@lists.infradead.org; Thu, 06 Sep 2012 17:29:39 +0000
+Date: Thu, 6 Sep 2012 19:29:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120906160308.GA26594@pengutronix.de>
-References: <20120906060058.GE4761@game.jcrosoft.org>
+Message-ID: <20120906172935.GC26594@pengutronix.de>
+References: <1346938629-17752-1-git-send-email-j.weitzel@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120906060058.GE4761@game.jcrosoft.org>
+In-Reply-To: <1346938629-17752-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/12] add PNG support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] PCM049: nand_bootstrap add shebang
+To: Jan Weitzel <j.weitzel@phytec.de>
 Cc: barebox@lists.infradead.org
 
-The discussion in this thread makes it clear that there are two problems
-with this logo, one technical and one political.
+On Thu, Sep 06, 2012 at 03:37:09PM +0200, Jan Weitzel wrote:
+> 
+> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 
-The technical problem:
+Applied to master
 
-From a technical pov it makes no sense to put big image binaries into
-the repository when a small svg image would be sufficient to generate
-all other images.
+Thanks
+ Sascha
 
-The political problem:
-
-For an open source project a closed image is a no go. We (and by we I
-mean we as the community, not we as Pengutronix) must for example be
-able to:
-
-- generate versions with different colors, sizes, dimensions
-- generate a logo without text
-- modify the image and to redistribute without limitations
-- add a journal to the logo and use it for bwn.org (barebox weekly news) ;)
-
-Sascha
+> ---
+>  arch/arm/boards/pcm049/env/bin/nand_bootstrap |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/arch/arm/boards/pcm049/env/bin/nand_bootstrap b/arch/arm/boards/pcm049/env/bin/nand_bootstrap
+> index f8873fa..49e38dc 100644
+> --- a/arch/arm/boards/pcm049/env/bin/nand_bootstrap
+> +++ b/arch/arm/boards/pcm049/env/bin/nand_bootstrap
+> @@ -1,4 +1,4 @@
+> -
+> +#!/bin/sh
+>  echo "copying barebox to nand..."
+>  
+>  mci0.probe=1
+> -- 
+> 1.7.0.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
