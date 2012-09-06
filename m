@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T9cGc-0007NM-PH
- for barebox@lists.infradead.org; Thu, 06 Sep 2012 13:37:15 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id F0507BF0EB
- for <barebox@lists.infradead.org>; Thu,  6 Sep 2012 15:37:09 +0200 (CEST)
-From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Thu, 6 Sep 2012 15:37:09 +0200
-Message-Id: <1346938629-17752-1-git-send-email-j.weitzel@phytec.de>
+Received: from ftp.meprolight.com ([194.90.149.17] helo=meprolight.com)
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1T9cKo-0008QU-Ut
+ for barebox@lists.infradead.org; Thu, 06 Sep 2012 13:41:31 +0000
+From: Alex Gershgorin <alexg@meprolight.com>
+Date: Thu, 6 Sep 2012 16:39:33 +0300
+Message-ID: <4875438356E7CA4A8F2145FCD3E61C0B3074AA38F2@MEP-EXCH.meprolight.com>
+References: <1346935710-23360-1-git-send-email-alexg@meprolight.com>,
+ <20120906152754.355b7078@eb-e6520>
+In-Reply-To: <20120906152754.355b7078@eb-e6520>
+Content-Language: en-US
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,34 +19,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] PCM049: nand_bootstrap add shebang
-To: barebox@lists.infradead.org
+Subject: RE: [PATCH] i.mx35pdk add nand identification
+To: =?iso-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
+Hi Eric,
 
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
----
- arch/arm/boards/pcm049/env/bin/nand_bootstrap |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+> Without this patch I get following messages
+>
+> Board: Freescale MX35 3Stack
+> NAND type unknown: ec,d7
+> No NAND device found (-19)!
+>
+what is the part number of the NAND ?
 
-diff --git a/arch/arm/boards/pcm049/env/bin/nand_bootstrap b/arch/arm/boards/pcm049/env/bin/nand_bootstrap
-index f8873fa..49e38dc 100644
---- a/arch/arm/boards/pcm049/env/bin/nand_bootstrap
-+++ b/arch/arm/boards/pcm049/env/bin/nand_bootstrap
-@@ -1,4 +1,4 @@
--
-+#!/bin/sh
- echo "copying barebox to nand..."
+If I'm not mistaken
+ K9LBG08U0D-PCB0
  
- mci0.probe=1
--- 
-1.7.0.4
-
-
+Regards,
+Alex
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
