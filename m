@@ -1,12 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T9cTD-00015L-Ok
- for barebox@lists.infradead.org; Thu, 06 Sep 2012 13:50:12 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu,  6 Sep 2012 15:50:01 +0200
-Message-Id: <1346939401-25611-1-git-send-email-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1T9cXR-0001Jt-QN
+ for barebox@lists.infradead.org; Thu, 06 Sep 2012 13:54:34 +0000
+Received: from mail626.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 1D63FDC6ECE
+ for <barebox@lists.infradead.org>; Thu,  6 Sep 2012 15:59:50 +0200 (CEST)
+Date: Thu, 6 Sep 2012 15:54:25 +0200
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20120906155425.027ab55f@eb-e6520>
+In-Reply-To: <4875438356E7CA4A8F2145FCD3E61C0B3074AA38F2@MEP-EXCH.meprolight.com>
+References: <1346935710-23360-1-git-send-email-alexg@meprolight.com>
+ <20120906152754.355b7078@eb-e6520>
+ <4875438356E7CA4A8F2145FCD3E61C0B3074AA38F2@MEP-EXCH.meprolight.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,77 +23,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] [RFC] fec: fix calculation of mii bus speed on mxs
-To: barebox@lists.infradead.org
-Cc: kernel@pengutronix.de
+Subject: Re: [PATCH] i.mx35pdk add nand identification
+To: Alex Gershgorin <alexg@meprolight.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-QWNjb3JkaW5nIHRvIGEgY29tbWVudCBpbiBMaW51eCcgZmVjIGRyaXZlciwgaS5NWDI4IHVzZXMg
-dGhlIHNhbWUKZm9ybXVsYSBmb3IgZGV0ZXJtaW5hdGlvbiBvZiB0aGUgZnJlcXVlbmN5IGRpdmlk
-ZXIgYXMgaS5NWDYsIHRoYXQgaXMKKGRpZmZlcmVudCBmcm9tIHRoZSBpLk1YMjggbWFudWFsKToK
-CglwYXJlbnQgY2xvY2sgLyAoKE1JSV9TUEVFRCArIDEpICogMikKCmluc3RlYWQgb2YKCglwYXJl
-bnQgY2xvY2sgLyAoTUlJX1NQRUVEICogMikKCm9uIHRoZSBvbGRlciBpLk1YIFNvQ3MuIEZpeCB0
-aGUgY2FsY3VsYXRpb24gYWNjb3JkaW5nbHkuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvD
-tm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLQpCdXQgbm90ZSB0aGF0IHRo
-aXMgZG9lc24ndCBmaXggYWNjZXNzaW5nIHRoZSBwaHkgb24gbXkgbWFjaGluZS4gVGhlCmNhbGN1
-bGF0ZWQgdmFsdWUgaXMgOSAod2l0aCBhbmQgd2l0aG91dCB0aGlzIHBhdGNoIGJ0dykgYnV0IGFj
-Y2Vzc2luZwp0aGUgcGh5IG9ubHkgZ2V0cyByZWxpYWJsZSB3aXRoIGEgdmFsdWUgb2YgPj0yMCBv
-ciBhbHRlcm5hdGl2ZWx5IGRvbid0CnNldCB0aGUgU1BFRUQgdmFsdWUgYmVmb3JlIHJlYWRpbmcg
-YW5kIHdyaXRpbmcgYSBtaWkgcmVnaXN0ZXIgYnV0IG9ubHkKb24gcHJvYmUuCgpUaGUgRnJlZXNj
-YWxlIGtlcm5lbCAyLjYuMzVfMTAuMTIuMDEgZG9lcyB0aGUgZm9sbG93aW5nIGluc3RlYWQgKGlu
-CmZlY19zd2l0Y2guYyk6CgoJZmVwLT5waHlfc3BlZWQgPSBESVZfUk9VTkRfVVAoY2xrX2dldF9y
-YXRlKGZlcC0+Y2xrKSwgNTAwMDAwMCkgPDwgMTsKI2lmZGVmIENPTkZJR19BUkNIX01YUwoJLyog
-Q2FuJ3QgZ2V0IHBoeSg4NzIwKSBJRCB3aGVuIHNldCB0byAyLjVNIG9uIE1YMjgsIGxvd2VyIGl0
-ICovCglmZXAtPnBoeV9zcGVlZCA8PD0gMjsKI2VuZGlmCgp3aGljaCB3b3VsZCByZXN1bHQgaW4g
-NDAgKGFuZCBpcyB1bmF3YXJlIG9mIHRoZSBjaGFuZ2VkIGZvcm11bGEpLgoKSSBkaWRuJ3QgaGF2
-ZSBhbiBvcHBvcnR1bml0eSB0byBjaGVjayB0aGUgc2lnbmFscyB3aXRoIGFuIG9zemlsbG9zY29w
-ZSwgYnV0CmludGVuZCB0byBmZXRjaCB0aGF0IGxhdGVyLgotLS0KIGRyaXZlcnMvbmV0L2ZlY19p
-bXguYyB8ICAgNDggKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0t
-LS0tCiAxIGZpbGUgY2hhbmdlZCwgMzggaW5zZXJ0aW9ucygrKSwgMTAgZGVsZXRpb25zKC0pCgpk
-aWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvZmVjX2lteC5jIGIvZHJpdmVycy9uZXQvZmVjX2lteC5j
-CmluZGV4IDU5OWE5YjQuLjk2OWM5MDMgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbmV0L2ZlY19pbXgu
-YworKysgYi9kcml2ZXJzL25ldC9mZWNfaW14LmMKQEAgLTQ3LDYgKzQ3LDQxIEBAIHN0cnVjdCBm
-ZWNfZnJhbWUgewogCXVpbnQ4X3QgaGVhZFsxNl07CS8qIE1BQyBoZWFkZXIoNiArIDYgKyAyKSAr
-IDIoYWxpZ25lZCkgKi8KIH07CiAKK3N0YXRpYyB2b2lkIGZlY19taWlkZXZfc2V0c3BlZWQoc3Ry
-dWN0IGZlY19wcml2ICpmZWMpCit7CisJdTMyIG1paV9zcGVlZDsKKworCW1paV9zcGVlZCA9IERJ
-Vl9ST1VORF9VUChpbXhfZ2V0X2ZlY2NsaygpLCA1MDAwMDAwKTsKKworI2lmZGVmIENPTkZJR19B
-UkNIX01YUworCS8qCisJICogQ29tcGFyZWQgdG8gdGhlIG90aGVyIGlteCBzb2NzIGlteDI4IGFu
-ZCBpbXg2IGhhdmUgYW4gYWRkaXRpb25hbCAiKzEiCisJICogaW4gdGhlIGZvcm11bGEgZm9yIE1J
-SV9TUEVFRC4gSW4gTUNJTVgyOFJNIFJldi4xLCAyMDEwIHRoaXMgaXMgbm90CisJICogZG9jdW1l
-bnRlZCB0aG91Z2guCisJICovCisJbWlpX3NwZWVkIC09IDE7CisjZW5kaWYKKwlpZiAoIW1paV9z
-cGVlZCkKKwkJLyogQ2FuIHRoaXMgaGFwcGVuPyAqLworCQltaWlfc3BlZWQgPSAxOworCWlmICht
-aWlfc3BlZWQgPiAweDNmKSB7CisJCXN0YXRpYyBpbnQgb25jZSA9IDA7CisJCWlmICghb25jZSkK
-KwkJCXByaW50ZigiV2FybmluZzogZmVjIGNsayB0b28gaGlnaCB0byBnZXQgbWlpIGNsa1xuIik7
-CisJCW1paV9zcGVlZCA9IDB4M2Y7CisJfQorCisJLyoKKwkgKiBYWFg6IHNvbWUgU29DcyAoYXQg
-bGVhc3QgaS5NWDI4IGFuZCBpLk1YNiwgYnV0IG5vdCAuaU1YMjcpIGhhdmUgYW4KKwkgKiBiaXRm
-aWVsZCBpbiBFTkVUX01TQ1IgKGFrYSBNSUlfU1BFRUQpIGNhbGxlZCBIT0xEVElNRSB0aGF0IG5l
-ZWRzIHRvCisJICogYmUgPjAgZm9yIGlteF9nZXRfZmVjY2xrKCkgPiAxMDAgTUh6LgorCSAqLwor
-CisJd3JpdGVsKG1paV9zcGVlZCA8PCAxLCBmZWMtPnJlZ3MgKyBGRUNfTUlJX1NQRUVEKTsKKwor
-CXJldHVybiAwOworfQorCiAvKgogICogTUlJLWludGVyZmFjZSByZWxhdGVkIGZ1bmN0aW9ucwog
-ICovCkBAIC01OSw4ICs5NCw3IEBAIHN0YXRpYyBpbnQgZmVjX21paWRldl9yZWFkKHN0cnVjdCBt
-aWlfZGV2aWNlICptZGV2LCBpbnQgcGh5QWRkciwgaW50IHJlZ0FkZHIpCiAJdWludDMyX3QgcGh5
-OwkJLyogY29udmVuaWVudCBob2xkZXIgZm9yIHRoZSBQSFkgKi8KIAl1aW50NjRfdCBzdGFydDsK
-IAotCXdyaXRlbCgoKGlteF9nZXRfZmVjY2xrKCkgPj4gMjApIC8gNSkgPDwgMSwKLQkJCWZlYy0+
-cmVncyArIEZFQ19NSUlfU1BFRUQpOworCWZlY19taWlkZXZfc2V0c3BlZWQoZmVjKTsKIAkvKgog
-CSAqIHJlYWRpbmcgZnJvbSBhbnkgUEhZJ3MgcmVnaXN0ZXIgaXMgZG9uZSBieSBwcm9wZXJseQog
-CSAqIHByb2dyYW1taW5nIHRoZSBGRUMncyBNSUkgZGF0YSByZWdpc3Rlci4KQEAgLTEwMyw4ICsx
-MzcsNyBAQCBzdGF0aWMgaW50IGZlY19taWlkZXZfd3JpdGUoc3RydWN0IG1paV9kZXZpY2UgKm1k
-ZXYsIGludCBwaHlBZGRyLAogCXVpbnQzMl90IHBoeTsJCS8qIGNvbnZlbmllbnQgaG9sZGVyIGZv
-ciB0aGUgUEhZICovCiAJdWludDY0X3Qgc3RhcnQ7CiAKLQl3cml0ZWwoKChpbXhfZ2V0X2ZlY2Ns
-aygpID4+IDIwKSAvIDUpIDw8IDEsCi0JCQlmZWMtPnJlZ3MgKyBGRUNfTUlJX1NQRUVEKTsKKwlm
-ZWNfbWlpZGV2X3NldHNwZWVkKGZlYyk7CiAKIAlyZWcgPSByZWdBZGRyIDw8IEZFQ19NSUlfREFU
-QV9SQV9TSElGVDsKIAlwaHkgPSBwaHlBZGRyIDw8IEZFQ19NSUlfREFUQV9QQV9TSElGVDsKQEAg
-LTI5MiwxMiArMzI1LDcgQEAgc3RhdGljIGludCBmZWNfaW5pdChzdHJ1Y3QgZXRoX2RldmljZSAq
-ZGV2KQogCXJjbnRsID0gRkVDX1JfQ05UUkxfTUFYX0ZMKDE1MTgpOwogCWlmIChmZWMtPnhjdl90
-eXBlICE9IFNFVkVOV0lSRSkgewogCQlyY250bCB8PSBGRUNfUl9DTlRSTF9NSUlfTU9ERTsKLQkJ
-LyoKLQkJICogU2V0IE1JSV9TUEVFRCA9ICgxLyhtaWlfc3BlZWQgKiAyKSkgKiBTeXN0ZW0gQ2xv
-Y2sKLQkJICogYW5kIGRvIG5vdCBkcm9wIHRoZSBQcmVhbWJsZS4KLQkJICovCi0JCXdyaXRlbCgo
-KGlteF9nZXRfZmVjY2xrKCkgPj4gMjApIC8gNSkgPDwgMSwKLQkJCQlmZWMtPnJlZ3MgKyBGRUNf
-TUlJX1NQRUVEKTsKKwkJZmVjX21paWRldl9zZXRzcGVlZChmZWMpOwogCX0KIAogCWlmIChmZWMt
-Pnhjdl90eXBlID09IFJNSUkpIHsKLS0gCjEuNy4xMC40CgoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+Hi Alex,
+
+Le Thu, 6 Sep 2012 16:39:33 +0300,
+Alex Gershgorin <alexg@meprolight.com> a =E9crit :
+> > Without this patch I get following messages
+> >
+> > Board: Freescale MX35 3Stack
+> > NAND type unknown: ec,d7
+> > No NAND device found (-19)!
+> >
+> what is the part number of the NAND ?
+> =
+
+> If I'm not mistaken
+>  K9LBG08U0D-PCB0
+>  =
+
+this seems to be a 4GiB flash with 4k page + 218 OOB, not a 512MiB
+
+Eric
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
