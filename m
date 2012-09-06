@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T9huR-0001F2-SW
- for barebox@lists.infradead.org; Thu, 06 Sep 2012 19:38:41 +0000
+ id 1T9hvO-0001Ga-2V
+ for barebox@lists.infradead.org; Thu, 06 Sep 2012 19:39:39 +0000
 Received: from localhost.localdomain (unknown [82.233.81.124])
- by smtp3-g21.free.fr (Postfix) with ESMTP id D217CA622B
- for <barebox@lists.infradead.org>; Thu,  6 Sep 2012 21:38:30 +0200 (CEST)
+ by smtp3-g21.free.fr (Postfix) with ESMTP id 584AAA6222
+ for <barebox@lists.infradead.org>; Thu,  6 Sep 2012 21:39:33 +0200 (CEST)
 From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Thu,  6 Sep 2012 21:38:27 +0200
-Message-Id: <1346960309-3999-1-git-send-email-eric@eukrea.com>
+Date: Thu,  6 Sep 2012 21:39:29 +0200
+Message-Id: <1346960371-4129-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
