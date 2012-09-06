@@ -1,24 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
+ helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T9akK-0000O0-96
- for barebox@lists.infradead.org; Thu, 06 Sep 2012 11:59:45 +0000
+ id 1T9alE-0000hk-8L
+ for barebox@lists.infradead.org; Thu, 06 Sep 2012 12:00:42 +0000
 Received: from mail626.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 6C33EDC6C35
- for <barebox@lists.infradead.org>; Thu,  6 Sep 2012 14:05:04 +0200 (CEST)
-Date: Thu, 6 Sep 2012 13:59:38 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 2B633DC6D11
+ for <barebox@lists.infradead.org>; Thu,  6 Sep 2012 14:06:02 +0200 (CEST)
+Date: Thu, 6 Sep 2012 14:00:36 +0200
 From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120906135938.12ab2cd7@eb-e6520>
-In-Reply-To: <20120906102940.GF20330@game.jcrosoft.org>
+Message-ID: <20120906140036.35cc43c0@eb-e6520>
+In-Reply-To: <20120906104455.GH20330@game.jcrosoft.org>
 References: <20120906060058.GE4761@game.jcrosoft.org>
- <20120906093739.3ed5fd4b@eb-e6520>
- <20120906085500.GA20330@game.jcrosoft.org>
- <20120906111049.5f5adeda@eb-e6520>
- <20120906094717.GD20330@game.jcrosoft.org>
- <20120906115528.2de76711@eb-e6520>
- <20120906100304.GE20330@game.jcrosoft.org>
- <20120906121234.2bc835c0@eb-e6520>
- <20120906102940.GF20330@game.jcrosoft.org>
+ <1346911500-12902-1-git-send-email-plagnioj@jcrosoft.com>
+ <1346927845.3775.2.camel@coredoba.hi.pengutronix.de>
+ <20120906104455.GH20330@game.jcrosoft.org>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -32,37 +28,32 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/12] add PNG support
+Subject: Re: [PATCH 01/12] add barebox logo
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Le Thu, 6 Sep 2012 12:29:40 +0200,
+Le Thu, 6 Sep 2012 12:44:55 +0200,
 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
 
-> On 12:12 Thu 06 Sep     , Eric B=E9nard wrote:
-> > Le Thu, 6 Sep 2012 12:03:04 +0200,
-> > Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
-> > > On 11:55 Thu 06 Sep     , Eric B=E9nard wrote:
-> > > > check in Linux in drivers/video/logo/
-> > > > I don't see any restriction but I may not have looked at the right
-> > > > place.
-> > > Sorry the copyright are present the blackfin logo is a company logo C=
-opyrighted
-> > > SH, m32r too. This deos not mean you are not free to use this just me=
-an they are
-> > > protected.
+> On 12:37 Thu 06 Sep     , Jan L=FCbbe wrote:
+> > Hi,
 > > =
 
-> > where do you see these copyrights in Linux's source tree ?
-> they are on the web ase the logo have a trademark
+> > On Thu, 2012-09-06 at 08:04 +0200, Jean-Christophe PLAGNIOL-VILLARD
+> > wrote:
+> > > skip as too big
+> > =
+
+> > This adds 18MB of binary logos to the tree, which is larger than the
+> > complete current tree. Is this really necessary?
+> I put the bmp that's why if we drop it we have just 7MiB
 > =
 
-you see that as you want ... in that case why do you need to put a
-copyright & a readme concerning your logo ?
+> and compare tot he linux tree we have a small tree
+> =
 
-I don't care of the logo (I won't use this one in my projects) but at
-least I would prefer the logo to not carry proprietary tags inside its
-binary.
+barebox is not Linux and with such arguments you will always find a
+good reason to include whatever you want in the project.
 
 Eric
 
