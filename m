@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
- helo=mo2.mail-out.ovh.net)
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T9c7k-0005WT-A0
- for barebox@lists.infradead.org; Thu, 06 Sep 2012 13:28:01 +0000
-Received: from mail626.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 17ED9DC6E6C
- for <barebox@lists.infradead.org>; Thu,  6 Sep 2012 15:33:20 +0200 (CEST)
-Date: Thu, 6 Sep 2012 15:27:54 +0200
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20120906152754.355b7078@eb-e6520>
-In-Reply-To: <1346935710-23360-1-git-send-email-alexg@meprolight.com>
-References: <1346935710-23360-1-git-send-email-alexg@meprolight.com>
-Mime-Version: 1.0
+ id 1T9cGc-0007NM-PH
+ for barebox@lists.infradead.org; Thu, 06 Sep 2012 13:37:15 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id F0507BF0EB
+ for <barebox@lists.infradead.org>; Thu,  6 Sep 2012 15:37:09 +0200 (CEST)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Thu, 6 Sep 2012 15:37:09 +0200
+Message-Id: <1346938629-17752-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,29 +17,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i.mx35pdk add nand identification
-To: Alex Gershgorin <alexg@meprolight.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] PCM049: nand_bootstrap add shebang
+To: barebox@lists.infradead.org
 
-Le Thu, 6 Sep 2012 15:48:30 +0300,
-Alex Gershgorin <alexg@meprolight.com> a =E9crit :
 
-> Without this patch I get following messages
-> =
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+ arch/arm/boards/pcm049/env/bin/nand_bootstrap |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-> Board: Freescale MX35 3Stack   =
+diff --git a/arch/arm/boards/pcm049/env/bin/nand_bootstrap b/arch/arm/boards/pcm049/env/bin/nand_bootstrap
+index f8873fa..49e38dc 100644
+--- a/arch/arm/boards/pcm049/env/bin/nand_bootstrap
++++ b/arch/arm/boards/pcm049/env/bin/nand_bootstrap
+@@ -1,4 +1,4 @@
+-
++#!/bin/sh
+ echo "copying barebox to nand..."
+ 
+ mci0.probe=1
+-- 
+1.7.0.4
 
-> NAND type unknown: ec,d7
-> No NAND device found (-19)!
-> =
-
-what is the part number of the NAND ?
-
-Eric
 
 _______________________________________________
 barebox mailing list
