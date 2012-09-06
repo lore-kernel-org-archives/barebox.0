@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo3.mail-out.ovh.net ([46.105.57.200]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T9k09-0002JP-3y
- for barebox@lists.infradead.org; Thu, 06 Sep 2012 21:52:41 +0000
-Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id A7DD5FF88CE
- for <barebox@lists.infradead.org>; Fri,  7 Sep 2012 00:00:06 +0200 (CEST)
-Date: Thu, 6 Sep 2012 23:52:48 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120906215248.GM20330@game.jcrosoft.org>
-References: <1346960371-4129-1-git-send-email-eric@eukrea.com>
- <1346960371-4129-3-git-send-email-eric@eukrea.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1T9kWQ-0004R7-ED
+ for barebox@lists.infradead.org; Thu, 06 Sep 2012 22:26:04 +0000
+Date: Fri, 7 Sep 2012 00:25:59 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120906222559.GK26594@pengutronix.de>
+References: <20120906060058.GE4761@game.jcrosoft.org>
+ <20120906160308.GA26594@pengutronix.de>
+ <20120906215050.GK20330@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1346960371-4129-3-git-send-email-eric@eukrea.com>
+In-Reply-To: <20120906215050.GK20330@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,105 +20,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] miidev: fix 1G wrong detection
-To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
+Subject: Re: [PATCH 00/12] add PNG support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 21:39 Thu 06 Sep     , Eric B=E9nard wrote:
-> since 99e72c8bbdbdc690025a5868d831f1fe79ad56fc on an i.MX51 based board,
-> I get : "phy0: Link is up - 1000/Full". It seems miidev tries to probe
-> the PHY to early and gets 0x3ffff which leads to the wrong capabilities
-> setting.
-> =
+On Thu, Sep 06, 2012 at 11:50:50PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 18:03 Thu 06 Sep     , Sascha Hauer wrote:
+> > The discussion in this thread makes it clear that there are two problems
+> > with this logo, one technical and one political.
+> > 
+> > The technical problem:
+> > 
+> > From a technical pov it makes no sense to put big image binaries into
+> > the repository when a small svg image would be sufficient to generate
+> > all other images.
+> > 
+> > The political problem:
+> > 
+> > For an open source project a closed image is a no go. We (and by we I
+> > mean we as the community, not we as Pengutronix) must for example be
+> > able to:
+> > 
+> > - generate versions with different colors, sizes, dimensions
+> > - generate a logo without text
+> > - modify the image and to redistribute without limitations
+> > - add a journal to the logo and use it for bwn.org (barebox weekly news) ;)
+> As on Linux, Meego , Mozilla, Coreboot and others Logo are copyrighted and protected
 
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-Wait I going to drop this code instead of the phylib
+From http://commons.wikimedia.org/wiki/File:Tux.svg:
 
-Best Regards,
-J.
-> ---
->  drivers/net/miidev.c |   33 +++++++++------------------------
->  1 files changed, 9 insertions(+), 24 deletions(-)
-> =
+| The copyright holder of this file allows anyone to use it for any
+| purpose, provided that the copyright holder is properly attributed.
+| Redistribution, derivative work, commercial use, and all other use is
+| permitted.
 
-> diff --git a/drivers/net/miidev.c b/drivers/net/miidev.c
-> index 75b53e3..e0f9d67 100644
-> --- a/drivers/net/miidev.c
-> +++ b/drivers/net/miidev.c
-> @@ -131,6 +131,14 @@ int miidev_get_status(struct mii_device *mdev)
->  =
+So the Linux logo can explicitely be modified (derivative work)
 
->  	status =3D ret & BMSR_LSTATUS ? MIIDEV_STATUS_IS_UP : 0;
->  =
+You mentioned that:
+> It's free to USE without modification for the Barebox Project
+                   ^^^^^^^^^^^^^^^^^^^^
 
-> +	if (ret & BMSR_ESTATEN) {
-> +		ret =3D mii_read(mdev, mdev->address, MII_ESTATUS);
-> +		if (ret < 0)
-> +			goto err_out;
-> +		if (ret & (ESTATUS_1000_TFULL | ESTATUS_1000_THALF))
-> +			mdev->capabilities =3D MIIDEV_CAPABLE_1000M;
-> +	}
-> +
->  	ret =3D mii_read(mdev, mdev->address, MII_BMCR);
->  	if (ret < 0)
->  		goto err_out;
-> @@ -239,27 +247,8 @@ static struct file_operations miidev_ops =3D {
->  static int miidev_probe(struct device_d *dev)
->  {
->  	struct mii_device *mdev =3D dev->priv;
-> -	int val;
-> -	int caps =3D 0;
->  =
+Whereas is coreboot we have (from http://www.coreboot.org/Logo):
 
-> -	val =3D mii_read(mdev, mdev->address, MII_PHYSID1);
-> -	if (val < 0 || val =3D=3D 0xffff)
-> -		goto err_out;
-> -	val =3D mii_read(mdev, mdev->address, MII_PHYSID2);
-> -	if (val < 0 || val =3D=3D 0xffff)
-> -		goto err_out;
-> -	val =3D mii_read(mdev, mdev->address, MII_BMSR);
-> -	if (val < 0)
-> -		goto err_out;
-> -	if (val & BMSR_ESTATEN) {
-> -		val =3D mii_read(mdev, mdev->address, MII_ESTATUS);
-> -		if (val < 0)
-> -			goto err_out;
-> -		if (val & (ESTATUS_1000_TFULL | ESTATUS_1000_THALF))
-> -			caps =3D MIIDEV_CAPABLE_1000M;
-> -	}
-> -
-> -	mdev->capabilities =3D caps;
-> +	mdev->capabilities =3D 0;
->  	mdev->cdev.name =3D asprintf("phy%d", dev->id);
->  	mdev->cdev.size =3D 64;
->  	mdev->cdev.ops =3D &miidev_ops;
-> @@ -268,10 +257,6 @@ static int miidev_probe(struct device_d *dev)
->  	devfs_create(&mdev->cdev);
->  	list_add_tail(&mdev->list, &miidev_list);
->  	return 0;
-> -
-> -err_out:
-> -	dev_err(dev, "cannot read PHY registers (addr %d)\n", mdev->address);
-> -	return -ENODEV;
->  }
->  =
+| This logo or a modified version may be used by anyone to refer to the
+| coreboot project
 
->  static void miidev_remove(struct device_d *dev)
-> -- =
+btw, the mentioned projects do not seem to have a problem with svg
+files:
 
-> 1.7.7.6
-> =
+http://upload.wikimedia.org/wikipedia/commons/1/14/MeeGo_logo.svg
+http://commons.wikimedia.org/wiki/File:Tux.svg
+http://upload.wikimedia.org/wikipedia/en/7/74/Mozilla_Foundation_logo.svg
+http://upload.wikimedia.org/wikipedia/de/e/ec/Coreboot_logo.svg
 
-> =
+> 
+> This is a standard for project image protection
+> 
+> Modify the image means the image is not Barebox Logo
+> (Modify in the limit of the Licence)
 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Does this mean it can be modified or exactly the opposite?
+
+Could you send a license text?
+
+Thanks
+ Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
