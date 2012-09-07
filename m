@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo3.mail-out.ovh.net ([188.165.56.217]
+Received: from 13.mo3.mail-out.ovh.net ([188.165.33.202]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T9yK2-0002dm-HC
- for barebox@lists.infradead.org; Fri, 07 Sep 2012 13:10:16 +0000
+ id 1T9yK0-0002dA-Ec
+ for barebox@lists.infradead.org; Fri, 07 Sep 2012 13:10:10 +0000
 Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 7912EFF944B
- for <barebox@lists.infradead.org>; Fri,  7 Sep 2012 15:17:50 +0200 (CEST)
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id C1650FF93FC
+ for <barebox@lists.infradead.org>; Fri,  7 Sep 2012 15:17:47 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  7 Sep 2012 15:10:22 +0200
-Message-Id: <1347023425-22462-8-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri,  7 Sep 2012 15:10:16 +0200
+Message-Id: <1347023425-22462-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1347023425-22462-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120907130700.GS20330@game.jcrosoft.org>
  <1347023425-22462-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,87 +26,255 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/11] graphic_utils: add rgba support
+Subject: [PATCH 02/11] bmp: split bmp rending in lib/bmp.c
 To: barebox@lists.infradead.org
 
-this will allow to render rgba image with or without hw support
+So we can add other format support
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/graphic_utils.h |    4 ++
- lib/graphic_utils.c     |  116 +++++++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 116 insertions(+), 4 deletions(-)
+ commands/Kconfig     |    1 +
+ commands/splash.c    |  124 +++++------------------------------------------
+ include/bmp_layout.h |   11 +++++
+ lib/Kconfig          |    3 ++
+ lib/Makefile         |    1 +
+ lib/bmp.c            |  132 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 159 insertions(+), 113 deletions(-)
+ create mode 100644 lib/bmp.c
 
-diff --git a/include/graphic_utils.h b/include/graphic_utils.h
-index 6d555b2..7cb0b2f 100644
---- a/include/graphic_utils.h
-+++ b/include/graphic_utils.h
-@@ -7,7 +7,11 @@
- #ifndef __GRAPHIC_UTILS_H__
- #define __GRAPHIC_UTILS_H__
- 
-+void rgba_blend(struct fb_info *info, void *image, void* dest, int height,
-+	int width, int startx, int starty, bool is_rgba);
-+void set_pixel(struct fb_info *info, void *adr, u32 px);
- void set_rgb_pixel(struct fb_info *info, void *adr, int r, int g, int b);
-+void set_rgba_pixel(struct fb_info *info, void *adr, int r, int g, int b, int a);
- void memset_pixel(struct fb_info *info, void* buf, u32 color, size_t size);
- 
- #endif /* __GRAPHIC_UTILS_H__ */
-diff --git a/lib/graphic_utils.c b/lib/graphic_utils.c
-index 2e174d8..4d627b2 100644
---- a/lib/graphic_utils.c
-+++ b/lib/graphic_utils.c
-@@ -62,14 +62,39 @@ void memset_pixel(struct fb_info *info, void* buf, u32 color, size_t size)
- 	}
- }
- 
--void set_rgb_pixel(struct fb_info *info, void *adr, int r, int g, int b)
-+static void get_rgb_pixel(struct fb_info *info, void *adr, int *r ,int *g, int *b)
- {
- 	u32 px;
-+	u32 rmask, gmask, bmask;
- 
+diff --git a/commands/Kconfig b/commands/Kconfig
+index c4623fa..9107a3e 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -538,6 +538,7 @@ config CMD_LSMOD
+ config CMD_SPLASH
+ 	bool
+ 	depends on VIDEO
++	select BMP
+ 	prompt "splash"
+ 	help
+ 	  show bmp files on framebuffer devices
+diff --git a/commands/splash.c b/commands/splash.c
+index 6526b20..ad73778 100644
+--- a/commands/splash.c
++++ b/commands/splash.c
+@@ -8,43 +8,18 @@
+ #include <fcntl.h>
+ #include <fb.h>
+ #include <bmp_layout.h>
+-#include <asm/byteorder.h>
+-
+-static inline void set_pixel(struct fb_info *info, void *adr, int r, int g, int b)
+-{
+-	u32 px;
+-
 -	px = (r >> (8 - info->red.length)) << info->red.offset |
 -		(g >> (8 - info->green.length)) << info->green.offset |
 -		(b >> (8 - info->blue.length)) << info->blue.offset;
-+	switch (info->bits_per_pixel) {
-+	case 16:
-+		px = *(u16 *)adr;
-+		break;
-+	case 32:
-+		px = *(u32 *)adr;
-+		break;
-+	case 8:
-+	default:
-+		return;
-+	}
-+
-+	rmask = (0xff >> (8 - info->blue.length)) << info->blue.offset |
-+		(0xff >> (8 - info->green.length)) << info->green.offset;
-+
-+	gmask = (0xff >> (8 - info->red.length)) << info->red.offset |
-+		(0xff >> (8 - info->blue.length)) << info->blue.offset;
-+
-+	bmask = (0xff >> (8 - info->red.length)) << info->red.offset |
-+		(0xff >> (8 - info->green.length)) << info->green.offset;
+-
+-	switch (info->bits_per_pixel) {
+-	case 8:
+-		break;
+-	case 16:
+-		*(u16 *)adr = px;
+-		break;
+-	case 32:
+-		*(u32 *)adr = px;
+-		break;
+-	}
+-}
  
-+	*r = ((px & ~rmask) >> info->red.offset) << (8 - info->red.length);
-+	*g = ((px & ~gmask) >> info->green.offset) << (8 - info->green.length);
-+	*b = ((px & ~bmask) >> info->blue.offset) << (8 - info->blue.length);
-+}
+ static int do_splash(int argc, char *argv[])
+ {
+ 	int ret, opt, fd;
+ 	char *fbdev = "/dev/fb0";
+-	void *fb, *offscreenbuf = NULL;
++	void *fb;
+ 	struct fb_info info;
+-	struct bmp_image *bmp;
+ 	char *bmpfile;
+-	int bmpsize;
+-	char *image;
+-	int sw, sh, width, height, startx = -1, starty = -1;
+-	int bits_per_pixel, fbsize;
++	int startx = -1, starty = -1;
+ 	int xres, yres;
+ 	int offscreen = 0;
+-	void *adr, *buf;
++	void *offscreenbuf = NULL;
+ 
+ 	while((opt = getopt(argc, argv, "f:x:y:o")) > 0) {
+ 		switch(opt) {
+@@ -88,105 +63,28 @@ static int do_splash(int argc, char *argv[])
+ 	xres = info.xres;
+ 	yres = info.yres;
+ 
+-	bmp = read_file(bmpfile, &bmpsize);
+-	if (!bmp) {
+-		printf("unable to read %s\n", bmpfile);
+-		goto failed_memmap;
+-	}
+-
+-	if (bmp->header.signature[0] != 'B' ||
+-	      bmp->header.signature[1] != 'M') {
+-		printf("No valid bmp file\n");
+-	}
+-
+-	sw = le32_to_cpu(bmp->header.width);
+-	sh = le32_to_cpu(bmp->header.height);
+-
+-	if (startx < 0) {
+-		startx = (xres - sw) / 2;
+-		if (startx < 0)
+-			startx = 0;
+-	}
+-
+-	if (starty < 0) {
+-		starty = (yres - sh) / 2;
+-		if (starty < 0)
+-			starty = 0;
+-	}
+-
+-	width = min(sw, xres - startx);
+-	height = min(sh, yres - starty);
+-
+-	bits_per_pixel = le16_to_cpu(bmp->header.bit_count);
+-	fbsize = xres * yres * (info.bits_per_pixel >> 3);
+-
+ 	if (offscreen) {
++		int fbsize;
+ 		/* Don't fail if malloc fails, just continue rendering directly
+ 		 * on the framebuffer
+ 		 */
 +
-+void set_pixel(struct fb_info *info, void *adr, u32 px)
-+{
- 	switch (info->bits_per_pixel) {
- 	case 8:
- 		break;
-@@ -81,3 +106,86 @@ void set_rgb_pixel(struct fb_info *info, void *adr, int r, int g, int b)
- 		break;
++		fbsize = xres * yres * (info.bits_per_pixel >> 3);
+ 		offscreenbuf = malloc(fbsize);
+ 		if (offscreenbuf)
+ 			memcpy(offscreenbuf, fb, fbsize);
  	}
- }
+ 
+-	buf = offscreenbuf ? offscreenbuf : fb;
+-
+-	if (bits_per_pixel == 8) {
+-		int x, y;
+-		struct bmp_color_table_entry *color_table = bmp->color_table;
+-
+-		for (y = 0; y < height; y++) {
+-			image = (char *)bmp +
+-					le32_to_cpu(bmp->header.data_offset);
+-			image += (sh - y - 1) * sw * (bits_per_pixel >> 3);
+-			adr = buf + ((y + starty) * xres + startx) *
+-					(info.bits_per_pixel >> 3);
+-			for (x = 0; x < width; x++) {
+-				int pixel;
++	if (bmp_render_file(&info, bmpfile, fb, startx, starty, xres, yres,
++			    offscreenbuf) < 0)
++		ret = 1;
+ 
+-				pixel = *image;
+-
+-				set_pixel(&info, adr, color_table[pixel].red,
+-						color_table[pixel].green,
+-						color_table[pixel].blue);
+-				adr += info.bits_per_pixel >> 3;
+-
+-				image += bits_per_pixel >> 3;
+-			}
+-		}
+-	} else if (bits_per_pixel == 24) {
+-		int x, y;
+-
+-		for (y = 0; y < height; y++) {
+-			image = (char *)bmp +
+-					le32_to_cpu(bmp->header.data_offset);
+-			image += (sh - y - 1) * sw * (bits_per_pixel >> 3);
+-			adr = buf + ((y + starty) * xres + startx) *
+-					(info.bits_per_pixel >> 3);
+-			for (x = 0; x < width; x++) {
+-				char *pixel;
+-
+-				pixel = image;
+-
+-				set_pixel(&info, adr, pixel[2], pixel[1],
+-						pixel[0]);
+-				adr += info.bits_per_pixel >> 3;
+-
+-				image += bits_per_pixel >> 3;
+-			}
+-		}
+-	} else
+-		printf("bmp: illegal bits per pixel value: %d\n", bits_per_pixel);
+-
+-	if (offscreenbuf) {
+-		memcpy(fb, offscreenbuf, fbsize);
++	if (offscreenbuf)
+ 		free(offscreenbuf);
+-	}
+ 
+-	free(bmp);
+ 	close(fd);
+ 
+-	return 0;
++	return ret;
+ 
+ failed_memmap:
+ 	close(fd);
+diff --git a/include/bmp_layout.h b/include/bmp_layout.h
+index 63c5564..b5472dd 100644
+--- a/include/bmp_layout.h
++++ b/include/bmp_layout.h
+@@ -74,4 +74,15 @@ struct bmp_image {
+ #define BMP_BI_RLE8	1
+ #define BMP_BI_RLE4	2
+ 
++#ifdef CONFIG_BMP
++int bmp_render_file(struct fb_info *info, const char* bmpfile, void* fb,
++		    int startx, int starty, int xres, int yres, void* offscreenbuf);
++#else
++static inline int bmp_render_file(struct fb_info *info, const char* bmpfile, void* fb,
++		    int startx, int starty, int xres, int yres, void* offscreenbuf)
++{
++	return -ENOSYS;
++}
++#endif
 +
-+void set_rgb_pixel(struct fb_info *info, void *adr, int r, int g, int b)
+ #endif							/* _BMP_H_ */
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 32634df..93e360b 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -38,4 +38,7 @@ config BITREV
+ config QSORT
+ 	bool
+ 
++config BMP
++	bool
++
+ endmenu
+diff --git a/lib/Makefile b/lib/Makefile
+index 4e6b1ee..df4b5e5 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -34,3 +34,4 @@ obj-$(CONFIG_UNCOMPRESS)	+= uncompress.o
+ obj-$(CONFIG_BCH)	+= bch.o
+ obj-$(CONFIG_BITREV)	+= bitrev.o
+ obj-$(CONFIG_QSORT)	+= qsort.o
++obj-$(CONFIG_BMP)	+= bmp.o
+diff --git a/lib/bmp.c b/lib/bmp.c
+new file mode 100644
+index 0000000..776d3b3
+--- /dev/null
++++ b/lib/bmp.c
+@@ -0,0 +1,132 @@
++#include <common.h>
++#include <fs.h>
++#include <errno.h>
++#include <malloc.h>
++#include <fb.h>
++#include <bmp_layout.h>
++#include <asm/byteorder.h>
++
++static inline void set_pixel(struct fb_info *info, void *adr, int r, int g, int b)
 +{
 +	u32 px;
 +
@@ -114,79 +282,121 @@ index 2e174d8..4d627b2 100644
 +		(g >> (8 - info->green.length)) << info->green.offset |
 +		(b >> (8 - info->blue.length)) << info->blue.offset;
 +
-+	set_pixel(info, adr, px);
++	switch (info->bits_per_pixel) {
++	case 8:
++		break;
++	case 16:
++		*(u16 *)adr = px;
++		break;
++	case 32:
++		*(u32 *)adr = px;
++		break;
++	}
 +}
 +
-+static int alpha_mux(int s, int d, int a)
++int bmp_render_file(struct fb_info *info, const char* bmpfile, void* fb,
++		    int startx, int starty, int xres, int yres, void* offscreenbuf)
 +{
-+	return (d * a + s * (255 - a)) >> 8;
-+}
++	struct bmp_image *bmp;
++	int sw, sh, width, height;
++	int bits_per_pixel, fbsize;
++	int bmpsize;
++	int ret = 0;
++	void *adr, *buf;
++	char *image;
 +
-+void set_rgba_pixel(struct fb_info *info, void *adr, int r, int g, int b, int a)
-+{
-+	u32 px = 0x0;
-+
-+	if (!a)
-+		return;
-+
-+	if (a != 0xff) {
-+		if (info->transp.length) {
-+			px |= (a >> (8 - info->transp.length)) << info->transp.offset;
-+		} else {
-+			int sr = 0;
-+			int sg = 0;
-+			int sb = 0;
-+
-+			get_rgb_pixel(info, adr, &sr, &sg, &sb);
-+
-+			r = alpha_mux(sr, r, a);
-+			g = alpha_mux(sg, g, a);
-+			b = alpha_mux(sb, b, a);
-+
-+			set_rgb_pixel(info, adr, r, g, b);
-+
-+			return;
-+		}
++	bmp = read_file(bmpfile, &bmpsize);
++	if (!bmp) {
++		printf("unable to read %s\n", bmpfile);
++		return -ENOMEM;
 +	}
 +
-+	px |= (r >> (8 - info->red.length)) << info->red.offset |
-+		(g >> (8 - info->green.length)) << info->green.offset |
-+		(b >> (8 - info->blue.length)) << info->blue.offset;
-+
-+	set_pixel(info, adr, px);
-+}
-+
-+void rgba_blend(struct fb_info *info, void *image, void* buf, int height,
-+	int width, int startx, int starty, bool is_rgba)
-+{
-+	unsigned char *adr;
-+	int x, y;
-+	int xres;
-+	int img_byte_per_pixel = 3;
-+
-+	if (is_rgba)
-+		img_byte_per_pixel++;
-+
-+	xres = info->xres;
-+
-+	for (y = 0; y < height; y++) {
-+		adr = buf + ((y + starty) * xres + startx) *
-+				(info->bits_per_pixel >> 3);
-+
-+		for (x = 0; x < width; x++) {
-+			char *pixel;
-+
-+			pixel = image;
-+			if (is_rgba)
-+				set_rgba_pixel(info, adr, pixel[0], pixel[1],
-+						pixel[2], pixel[3]);
-+			else
-+				set_rgb_pixel(info, adr, pixel[0], pixel[1],
-+						pixel[2]);
-+			adr += info->bits_per_pixel >> 3;
-+			image += img_byte_per_pixel;
-+		}
++	if (bmp->header.signature[0] != 'B' ||
++	      bmp->header.signature[1] != 'M') {
++		printf("No valid bmp file\n");
++		ret = -EINVAL;
++		goto err;
 +	}
++
++	sw = le32_to_cpu(bmp->header.width);
++	sh = le32_to_cpu(bmp->header.height);
++
++	if (startx < 0) {
++		startx = (xres - sw) / 2;
++		if (startx < 0)
++			startx = 0;
++	}
++
++	if (starty < 0) {
++		starty = (yres - sh) / 2;
++		if (starty < 0)
++			starty = 0;
++	}
++
++	width = min(sw, xres - startx);
++	height = min(sh, yres - starty);
++
++	bits_per_pixel = le16_to_cpu(bmp->header.bit_count);
++	fbsize = xres * yres * (info->bits_per_pixel >> 3);
++
++	buf = offscreenbuf ? offscreenbuf : fb;
++
++	if (bits_per_pixel == 8) {
++		int x, y;
++		struct bmp_color_table_entry *color_table = bmp->color_table;
++
++		for (y = 0; y < height; y++) {
++			image = (char *)bmp +
++					le32_to_cpu(bmp->header.data_offset);
++			image += (sh - y - 1) * sw * (bits_per_pixel >> 3);
++			adr = buf + ((y + starty) * xres + startx) *
++					(info->bits_per_pixel >> 3);
++			for (x = 0; x < width; x++) {
++				int pixel;
++
++				pixel = *image;
++
++				set_pixel(info, adr, color_table[pixel].red,
++						color_table[pixel].green,
++						color_table[pixel].blue);
++				adr += info->bits_per_pixel >> 3;
++
++				image += bits_per_pixel >> 3;
++			}
++		}
++	} else if (bits_per_pixel == 24) {
++		int x, y;
++
++		for (y = 0; y < height; y++) {
++			image = (char *)bmp +
++					le32_to_cpu(bmp->header.data_offset);
++			image += (sh - y - 1) * sw * (bits_per_pixel >> 3);
++			adr = buf + ((y + starty) * xres + startx) *
++					(info->bits_per_pixel >> 3);
++			for (x = 0; x < width; x++) {
++				char *pixel;
++
++				pixel = image;
++
++				set_pixel(info, adr, pixel[2], pixel[1],
++						pixel[0]);
++				adr += info->bits_per_pixel >> 3;
++
++				image += bits_per_pixel >> 3;
++			}
++		}
++	} else
++		printf("bmp: illegal bits per pixel value: %d\n", bits_per_pixel);
++
++	if (offscreenbuf)
++		memcpy(fb, offscreenbuf, fbsize);
++
++	free(bmp);
++	return sh;
++
++err:
++	free(bmp);
++	return ret;
 +}
 -- 
 1.7.10.4
