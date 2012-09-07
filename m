@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo3.mail-out.ovh.net ([188.165.41.191]
+Received: from 15.mo3.mail-out.ovh.net ([87.98.150.177]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T9yK2-0002di-BV
- for barebox@lists.infradead.org; Fri, 07 Sep 2012 13:10:15 +0000
+ id 1T9yK2-0002dl-T4
+ for barebox@lists.infradead.org; Fri, 07 Sep 2012 13:10:19 +0000
 Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 058F1FF93FE
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 4A2DDFF9440
  for <barebox@lists.infradead.org>; Fri,  7 Sep 2012 15:17:50 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  7 Sep 2012 15:10:19 +0200
-Message-Id: <1347023425-22462-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri,  7 Sep 2012 15:10:21 +0200
+Message-Id: <1347023425-22462-7-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1347023425-22462-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120907130700.GS20330@game.jcrosoft.org>
  <1347023425-22462-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,104 +26,124 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/11] splash/bmp: switch to image_renderer
+Subject: [PATCH 07/11] Introduce graphic utils
 To: barebox@lists.infradead.org
+
+to Factorise pixel rendering
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/Kconfig              |    1 +
- commands/splash.c             |   10 +++----
- lib/Kconfig                   |    1 +
- lib/bmp.c                     |   63 +++++++++++++----------------------------
- {include => lib}/bmp_layout.h |    0
- 5 files changed, 26 insertions(+), 49 deletions(-)
- rename {include => lib}/bmp_layout.h (100%)
+ commands/splash.c        |   61 +---------------------------------
+ include/graphic_utils.h  |   13 ++++++++
+ include/image_renderer.h |   20 -----------
+ lib/Makefile             |    1 +
+ lib/bmp.c                |    5 +--
+ lib/graphic_utils.c      |   83 ++++++++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 101 insertions(+), 82 deletions(-)
+ create mode 100644 include/graphic_utils.h
+ create mode 100644 lib/graphic_utils.c
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 9107a3e..97993c1 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -538,6 +538,7 @@ config CMD_LSMOD
- config CMD_SPLASH
- 	bool
- 	depends on VIDEO
-+	select IMAGE_RENDERER
- 	select BMP
- 	prompt "splash"
- 	help
 diff --git a/commands/splash.c b/commands/splash.c
-index ad73778..88a6cf1 100644
+index 4bddc6c..f4b975b 100644
 --- a/commands/splash.c
 +++ b/commands/splash.c
-@@ -7,7 +7,7 @@
- #include <getopt.h>
+@@ -8,66 +8,7 @@
  #include <fcntl.h>
  #include <fb.h>
--#include <bmp_layout.h>
-+#include <image_renderer.h>
+ #include <image_renderer.h>
+-
+-static u32 get_pixel(struct fb_info *info, u32 color)
+-{
+-	u32 px;
+-	u8 t = (color >> 24) & 0xff;
+-	u8 r = (color >> 16) & 0xff;
+-	u8 g = (color >> 8 ) & 0xff;
+-	u8 b = (color >> 0 ) & 0xff;
+-
+-	if (info->grayscale) {
+-		 px = (r | g | b) ? 0xffffffff : 0x0;
+-		 return px;
+-	}
+-
+-	px = (t >> (8 - info->transp.length)) << info->transp.offset |
+-		 (r >> (8 - info->red.length)) << info->red.offset |
+-		 (g >> (8 - info->green.length)) << info->green.offset |
+-		 (b >> (8 - info->blue.length)) << info->blue.offset;
+-
+-	return px;
+-}
+-
+-static void memsetw(void *s, u16 c, size_t n)
+-{
+-	size_t i;
+-	u16* tmp = s;
+-
+-	for (i = 0; i < n; i++)
+-		*tmp++ = c;
+-}
+-
+-static void memsetl(void *s, u32 c, size_t n)
+-{
+-	size_t i;
+-	u32* tmp = s;
+-
+-	for (i = 0; i < n; i++)
+-		*tmp++ = c;
+-}
+-
+-static void memset_pixel(struct fb_info *info, void* buf, u32 color, size_t size)
+-{
+-	u32 px;
+-	u8 *screen = buf;
+-
+-	px = get_pixel(info, color);
+-
+-	switch (info->bits_per_pixel) {
+-	case 8:
+-		memset(screen, (uint8_t)px, size);
+-		break;
+-	case 16:
+-		memsetw(screen, (uint16_t)px, size);
+-		break;
+-	case 32:
+-	case 24:
+-		memsetl(screen, px, size);
+-		break;
+-	}
+-}
++#include <graphic_utils.h>
  
  static int do_splash(int argc, char *argv[])
  {
-@@ -15,7 +15,7 @@ static int do_splash(int argc, char *argv[])
- 	char *fbdev = "/dev/fb0";
- 	void *fb;
- 	struct fb_info info;
--	char *bmpfile;
-+	char *image_file;
- 	int startx = -1, starty = -1;
- 	int xres, yres;
- 	int offscreen = 0;
-@@ -40,7 +40,7 @@ static int do_splash(int argc, char *argv[])
- 		printf("no filename given\n");
- 		return 1;
- 	}
--	bmpfile = argv[optind];
-+	image_file = argv[optind];
- 
- 	fd = open(fbdev, O_RDWR);
- 	if (fd < 0) {
-@@ -75,8 +75,8 @@ static int do_splash(int argc, char *argv[])
- 			memcpy(offscreenbuf, fb, fbsize);
- 	}
- 
--	if (bmp_render_file(&info, bmpfile, fb, startx, starty, xres, yres,
--			    offscreenbuf) < 0)
-+	if (image_renderer_file(&info, image_file, fb, startx, starty,
-+				offscreenbuf) < 0)
- 		ret = 1;
- 
- 	if (offscreenbuf)
-diff --git a/lib/Kconfig b/lib/Kconfig
-index be3ea1c..417c81e 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -45,5 +45,6 @@ config IMAGE_RENDERER
- 
- config BMP
- 	bool
-+	depends on IMAGE_RENDERER
- 
- endmenu
-diff --git a/lib/bmp.c b/lib/bmp.c
-index 776d3b3..573cf97 100644
---- a/lib/bmp.c
-+++ b/lib/bmp.c
-@@ -1,54 +1,23 @@
- #include <common.h>
--#include <fs.h>
- #include <errno.h>
--#include <malloc.h>
- #include <fb.h>
--#include <bmp_layout.h>
-+#include "bmp_layout.h"
- #include <asm/byteorder.h>
-+#include <init.h>
-+#include <image_renderer.h>
+diff --git a/include/graphic_utils.h b/include/graphic_utils.h
+new file mode 100644
+index 0000000..6d555b2
+--- /dev/null
++++ b/include/graphic_utils.h
+@@ -0,0 +1,13 @@
++/*
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * GPL v2
++ */
++
++#ifndef __GRAPHIC_UTILS_H__
++#define __GRAPHIC_UTILS_H__
++
++void set_rgb_pixel(struct fb_info *info, void *adr, int r, int g, int b);
++void memset_pixel(struct fb_info *info, void* buf, u32 color, size_t size);
++
++#endif /* __GRAPHIC_UTILS_H__ */
+diff --git a/include/image_renderer.h b/include/image_renderer.h
+index a93242c..d735cf7 100644
+--- a/include/image_renderer.h
++++ b/include/image_renderer.h
+@@ -19,26 +19,6 @@ struct image_renderer {
+ 	struct list_head list;
+ };
  
 -static inline void set_pixel(struct fb_info *info, void *adr, int r, int g, int b)
-+static int bmp_renderer(struct fb_info *info, void* data, int size, void* fb,
-+		    int startx, int starty, void* offscreenbuf)
- {
+-{
 -	u32 px;
 -
 -	px = (r >> (8 - info->red.length)) << info->red.offset |
@@ -142,61 +162,138 @@ index 776d3b3..573cf97 100644
 -	}
 -}
 -
--int bmp_render_file(struct fb_info *info, const char* bmpfile, void* fb,
--		    int startx, int starty, int xres, int yres, void* offscreenbuf)
--{
--	struct bmp_image *bmp;
-+	struct bmp_image *bmp = data;
- 	int sw, sh, width, height;
- 	int bits_per_pixel, fbsize;
--	int bmpsize;
--	int ret = 0;
- 	void *adr, *buf;
- 	char *image;
-+	int xres, yres;
+ #ifdef CONFIG_IMAGE_RENDERER
+ int image_renderer_register(struct image_renderer *ir);
+ void image_render_unregister(struct image_renderer *ir);
+diff --git a/lib/Makefile b/lib/Makefile
+index 8fbae8a..96b7c56 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -35,4 +35,5 @@ obj-$(CONFIG_BCH)	+= bch.o
+ obj-$(CONFIG_BITREV)	+= bitrev.o
+ obj-$(CONFIG_QSORT)	+= qsort.o
+ obj-$(CONFIG_BMP)	+= bmp.o
++obj-$(CONFIG_IMAGE_RENDERER)	+= image_renderer.o graphic_utils.o
+ obj-$(CONFIG_IMAGE_RENDERER)	+= image_renderer.o
+diff --git a/lib/bmp.c b/lib/bmp.c
+index 573cf97..8986930 100644
+--- a/lib/bmp.c
++++ b/lib/bmp.c
+@@ -5,6 +5,7 @@
+ #include <asm/byteorder.h>
+ #include <init.h>
+ #include <image_renderer.h>
++#include <graphic_utils.h>
  
--	bmp = read_file(bmpfile, &bmpsize);
--	if (!bmp) {
--		printf("unable to read %s\n", bmpfile);
--		return -ENOMEM;
--	}
--
--	if (bmp->header.signature[0] != 'B' ||
--	      bmp->header.signature[1] != 'M') {
--		printf("No valid bmp file\n");
--		ret = -EINVAL;
--		goto err;
--	}
-+	xres = info->xres;
-+	yres = info->yres;
+ static int bmp_renderer(struct fb_info *info, void* data, int size, void* fb,
+ 		    int startx, int starty, void* offscreenbuf)
+@@ -57,7 +58,7 @@ static int bmp_renderer(struct fb_info *info, void* data, int size, void* fb,
  
- 	sw = le32_to_cpu(bmp->header.width);
- 	sh = le32_to_cpu(bmp->header.height);
-@@ -123,10 +92,16 @@ int bmp_render_file(struct fb_info *info, const char* bmpfile, void* fb,
- 	if (offscreenbuf)
- 		memcpy(fb, offscreenbuf, fbsize);
+ 				pixel = *image;
  
--	free(bmp);
- 	return sh;
-+}
+-				set_pixel(info, adr, color_table[pixel].red,
++				set_rgb_pixel(info, adr, color_table[pixel].red,
+ 						color_table[pixel].green,
+ 						color_table[pixel].blue);
+ 				adr += info->bits_per_pixel >> 3;
+@@ -79,7 +80,7 @@ static int bmp_renderer(struct fb_info *info, void* data, int size, void* fb,
  
--err:
--	free(bmp);
--	return ret;
-+static struct image_renderer bmp = {
-+	.type = filetype_bmp,
-+	.renderer = bmp_renderer,
-+};
+ 				pixel = image;
+ 
+-				set_pixel(info, adr, pixel[2], pixel[1],
++				set_rgb_pixel(info, adr, pixel[2], pixel[1],
+ 						pixel[0]);
+ 				adr += info->bits_per_pixel >> 3;
+ 
+diff --git a/lib/graphic_utils.c b/lib/graphic_utils.c
+new file mode 100644
+index 0000000..2e174d8
+--- /dev/null
++++ b/lib/graphic_utils.c
+@@ -0,0 +1,83 @@
++#include <common.h>
++#include <fb.h>
++#include <graphic_utils.h>
 +
-+static int bmp_init(void)
++static u32 get_pixel(struct fb_info *info, u32 color)
 +{
-+	return image_renderer_register(&bmp);
- }
-+fs_initcall(bmp_init);
-diff --git a/include/bmp_layout.h b/lib/bmp_layout.h
-similarity index 100%
-rename from include/bmp_layout.h
-rename to lib/bmp_layout.h
++	u32 px;
++	u8 t = (color >> 24) & 0xff;
++	u8 r = (color >> 16) & 0xff;
++	u8 g = (color >> 8 ) & 0xff;
++	u8 b = (color >> 0 ) & 0xff;
++
++	if (info->grayscale) {
++		 px = (r | g | b) ? 0xffffffff : 0x0;
++		 return px;
++	}
++
++	px = (t >> (8 - info->transp.length)) << info->transp.offset |
++		 (r >> (8 - info->red.length)) << info->red.offset |
++		 (g >> (8 - info->green.length)) << info->green.offset |
++		 (b >> (8 - info->blue.length)) << info->blue.offset;
++
++	return px;
++}
++
++static void memsetw(void *s, u16 c, size_t n)
++{
++	size_t i;
++	u16* tmp = s;
++
++	for (i = 0; i < n; i++)
++		*tmp++ = c;
++}
++
++static void memsetl(void *s, u32 c, size_t n)
++{
++	size_t i;
++	u32* tmp = s;
++
++	for (i = 0; i < n; i++)
++		*tmp++ = c;
++}
++
++void memset_pixel(struct fb_info *info, void* buf, u32 color, size_t size)
++{
++	u32 px;
++	u8 *screen = buf;
++
++	px = get_pixel(info, color);
++
++	switch (info->bits_per_pixel) {
++	case 8:
++		memset(screen, (uint8_t)px, size);
++		break;
++	case 16:
++		memsetw(screen, (uint16_t)px, size);
++		break;
++	case 32:
++	case 24:
++		memsetl(screen, px, size);
++		break;
++	}
++}
++
++void set_rgb_pixel(struct fb_info *info, void *adr, int r, int g, int b)
++{
++	u32 px;
++
++	px = (r >> (8 - info->red.length)) << info->red.offset |
++		(g >> (8 - info->green.length)) << info->green.offset |
++		(b >> (8 - info->blue.length)) << info->blue.offset;
++
++	switch (info->bits_per_pixel) {
++	case 8:
++		break;
++	case 16:
++		*(u16 *)adr = px;
++		break;
++	case 32:
++		*(u32 *)adr = px;
++		break;
++	}
++}
 -- 
 1.7.10.4
 
