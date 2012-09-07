@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TA2cm-0008K6-5u
- for barebox@lists.infradead.org; Fri, 07 Sep 2012 17:45:50 +0000
-Date: Fri, 7 Sep 2012 19:45:43 +0200
+ id 1TA2f0-0008V5-OP
+ for barebox@lists.infradead.org; Fri, 07 Sep 2012 17:48:07 +0000
+Date: Fri, 7 Sep 2012 19:48:05 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120907174543.GW26594@pengutronix.de>
+Message-ID: <20120907174805.GX26594@pengutronix.de>
 References: <20120905122556.GF32603@game.jcrosoft.org>
  <1346848107-4664-1-git-send-email-plagnioj@jcrosoft.com>
- <1346848107-4664-2-git-send-email-plagnioj@jcrosoft.com>
+ <1346848107-4664-3-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1346848107-4664-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1346848107-4664-3-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,177 +24,171 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] globalvar: add support to set a value to of all
- globalvars beginning with 'match'
+Subject: Re: [PATCH 3/7] defaultenv-2: boot use global.linux.bootargs.dyn for
+ dynamic globarvar
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 05, 2012 at 02:28:22PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> via c global_reset_match and global -r
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  commands/global.c   |   58 ++++++++++++++++++++++++++++++++++++++++++++-------
->  common/globalvar.c  |   10 +++++++++
->  include/globalvar.h |    3 +++
->  3 files changed, 64 insertions(+), 7 deletions(-)
-> 
-> diff --git a/commands/global.c b/commands/global.c
-> index de6b13e..cb22e63 100644
-> --- a/commands/global.c
-> +++ b/commands/global.c
-> @@ -24,25 +24,26 @@
->  #include <command.h>
->  #include <globalvar.h>
->  #include <environment.h>
-> +#include <getopt.h>
->  
-> -static int do_global(int argc, char *argv[])
-> +static int do_global_add(int argc, char *argv[])
->  {
->  	int ret;
->  	char *value;
->  
-> -	if (argc != 2)
-> +	if (argc != 1)
->  		return COMMAND_ERROR_USAGE;
->  
-> -	value = strchr(argv[1], '=');
-> +	value = strchr(argv[0], '=');
->  	if (value) {
->  		*value = 0;
->  		value++;
->  	}
->  
-> -	ret = globalvar_add_simple(argv[1]);
-> +	ret = globalvar_add_simple(argv[0]);
->  
->  	if (value) {
-> -		char *name = asprintf("global.%s", argv[1]);
-> +		char *name = asprintf("global.%s", argv[0]);
->  		ret = setenv(name, value);
->  		free(name);
->  	}
-> @@ -50,13 +51,56 @@ static int do_global(int argc, char *argv[])
->  	return ret ? 1 : 0;
->  }
->  
-> +static int do_global_reset(int argc, char *argv[])
-> +{
-> +	char *value;
-> +
-> +	if (argc != 1)
-> +		return COMMAND_ERROR_USAGE;
-> +
-> +	value = strchr(argv[0], '=');
-> +	if (value) {
-> +		*value = 0;
-> +		value++;
-> +	} else {
-> +		value = "";
-> +	}
-> +
-> +	globalvar_reset_match(argv[0], value);
-> +
-> +	return 0;
-> +}
-> +
-> +static int do_global(int argc, char *argv[])
-> +{
-> +	int opt;
-> +	int do_reset = 0;
-> +
-> +	while ((opt = getopt(argc, argv, "r")) > 0) {
-> +		switch (opt) {
-> +		case 'r':
-> +			do_reset = 1;
-> +			break;
-> +		}
-> +	}
-> +
-> +	argc -= optind;
-> +	argv += optind;
-> +
-> +	if (do_reset)
-> +		return do_global_reset(argc, argv);
-> +
-> +	return do_global_add(argc, argv);
-> +}
-> +
->  BAREBOX_CMD_HELP_START(global)
-> -BAREBOX_CMD_HELP_USAGE("global <var>[=<value]\n")
-> +BAREBOX_CMD_HELP_USAGE("global [-r] <var>[=<value]\n")
->  BAREBOX_CMD_HELP_SHORT("add a new global variable named <var>, optionally set to <value>\n")
-> +BAREBOX_CMD_HELP_SHORT("-r to set a value to of all globalvars beginning with 'match'")
->  BAREBOX_CMD_HELP_END
->  
->  BAREBOX_CMD_START(global)
->  	.cmd		= do_global,
-> -	.usage		= "create global variables",
-> +	.usage		= "create or reset global variables",
->  	BAREBOX_CMD_HELP(cmd_global_help)
->  BAREBOX_CMD_END
-> diff --git a/common/globalvar.c b/common/globalvar.c
-> index 71296ff..99f055e 100644
-> --- a/common/globalvar.c
-> +++ b/common/globalvar.c
-> @@ -46,6 +46,16 @@ char *globalvar_get_match(const char *match, const char *seperator)
->  	return val;
->  }
->  
-> +void globalvar_reset_match(const char *match, const char *val)
-> +{
+On Wed, Sep 05, 2012 at 02:28:23PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> linux.bootargs.dyn.* will be clearer at the beginning of boot
 
-I think globalvar_set_match would be a better name for this function
-as resetting is just a special usecase.
-
-How about changing the name and prototype of globalvar_add_simple
-to:
-
-int globalvar_set(const char *name, const char *value)
-
-Then instead of duplicating code in the command you could do
-a:
-
-	if (match)
-		globalvar_set_match(name, value);
-	else
-		globalvar_set(name, value);
+By 'clearer' do you mean 'cleared'? If yes, I maybe understand the
+intention of this patch.
 
 Sascha
 
-> +	struct param_d *param;
-> +
-> +	list_for_each_entry(param, &global_device.parameters, list) {
-> +		if (!strncmp(match, param->name, strlen(match)))
-> +			dev_set_param(&global_device, param->name, val);
-> +	}
-> +}
-> +
->  /*
->   * globalvar_add_simple
->   *
-> diff --git a/include/globalvar.h b/include/globalvar.h
-> index a127a05..1935f83 100644
-> --- a/include/globalvar.h
-> +++ b/include/globalvar.h
-> @@ -9,6 +9,7 @@ int globalvar_add(const char *name,
->  		const char *(*get)(struct device_d *, struct param_d *p),
->  		unsigned long flags);
->  char *globalvar_get_match(const char *match, const char *seperator);
-> +void globalvar_reset_match(const char *match, const char *val);
->  #else
->  static inline int globalvar_add_simple(const char *name)
->  {
-> @@ -27,6 +28,8 @@ static inline char *globalvar_get_match(const char *match, const char *seperator
->  {
->  	return NULL;
->  }
-> +
-> +static inline void globalvar_reset_match(const char *match, const char *val) {}
->  #endif
+> 
+> This is need for boot sequence to do not have the previous boot param.
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  defaultenv-2/base/bin/bootargs-ip          |    4 ++--
+>  defaultenv-2/base/bin/bootargs-ip-barebox  |    2 +-
+>  defaultenv-2/base/bin/bootargs-ip-dhcp     |    2 +-
+>  defaultenv-2/base/bin/bootargs-ip-none     |    2 +-
+>  defaultenv-2/base/bin/bootargs-root-disk   |    2 +-
+>  defaultenv-2/base/bin/bootargs-root-ext    |    2 +-
+>  defaultenv-2/base/bin/bootargs-root-initrd |    2 +-
+>  defaultenv-2/base/bin/bootargs-root-jffs2  |    2 +-
+>  defaultenv-2/base/bin/bootargs-root-nfs    |    2 +-
+>  defaultenv-2/base/bin/bootargs-root-ubi    |    2 +-
+>  defaultenv-2/base/bin/init                 |    5 +++--
+>  defaultenv-2/base/boot/initrd              |    2 +-
+>  12 files changed, 15 insertions(+), 14 deletions(-)
+> 
+> diff --git a/defaultenv-2/base/bin/bootargs-ip b/defaultenv-2/base/bin/bootargs-ip
+> index 15041c6..2d4486c 100644
+> --- a/defaultenv-2/base/bin/bootargs-ip
+> +++ b/defaultenv-2/base/bin/bootargs-ip
+> @@ -5,7 +5,7 @@
+>  . /env/network/eth0
 >  
->  #endif /* __GLOBALVAR_H */
+>  if [ $ip = dhcp ]; then
+> -	global.linux.bootargs.ip="ip=dhcp"
+> +	global.linux.bootargs.dyn.ip="ip=dhcp"
+>  else
+> -	global.linux.bootargs.ip="ip=$ipaddr:$serverip:$gateway:$netmask::eth0:"
+> +	global.linux.bootargs.dyn.ip="ip=$ipaddr:$serverip:$gateway:$netmask::eth0:"
+>  fi
+> diff --git a/defaultenv-2/base/bin/bootargs-ip-barebox b/defaultenv-2/base/bin/bootargs-ip-barebox
+> index 986c142..5a3b984 100644
+> --- a/defaultenv-2/base/bin/bootargs-ip-barebox
+> +++ b/defaultenv-2/base/bin/bootargs-ip-barebox
+> @@ -4,4 +4,4 @@
+>  
+>  ifup eth0
+>  
+> -global.linux.bootargs.ip="ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask::eth0:"
+> +global.linux.bootargs.dyn.ip="ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask::eth0:"
+> diff --git a/defaultenv-2/base/bin/bootargs-ip-dhcp b/defaultenv-2/base/bin/bootargs-ip-dhcp
+> index c542b24..dec8ae4 100644
+> --- a/defaultenv-2/base/bin/bootargs-ip-dhcp
+> +++ b/defaultenv-2/base/bin/bootargs-ip-dhcp
+> @@ -2,4 +2,4 @@
+>  
+>  # Do dhcp in Linux
+>  
+> -global.linux.bootargs.ip="ip=dhcp"
+> +global.linux.bootargs.dyn.ip="ip=dhcp"
+> diff --git a/defaultenv-2/base/bin/bootargs-ip-none b/defaultenv-2/base/bin/bootargs-ip-none
+> index c010154..88aaa21 100644
+> --- a/defaultenv-2/base/bin/bootargs-ip-none
+> +++ b/defaultenv-2/base/bin/bootargs-ip-none
+> @@ -2,4 +2,4 @@
+>  
+>  # disable ip setup in Linux
+>  
+> -global.linux.bootargs.ip="ip=none"
+> +global.linux.bootargs.dyn.ip="ip=none"
+> diff --git a/defaultenv-2/base/bin/bootargs-root-disk b/defaultenv-2/base/bin/bootargs-root-disk
+> index df8750e..aa60cf3 100644
+> --- a/defaultenv-2/base/bin/bootargs-root-disk
+> +++ b/defaultenv-2/base/bin/bootargs-root-disk
+> @@ -23,4 +23,4 @@ if [ -z "${fstype}" ]; then
+>  	exit 1
+>  fi
+>  
+> -global.linux.bootargs.root="root=/dev/$part rootfstype=$fstype rootwait"
+> +global.linux.bootargs.dyn.root="root=/dev/$part rootfstype=$fstype rootwait"
+> diff --git a/defaultenv-2/base/bin/bootargs-root-ext b/defaultenv-2/base/bin/bootargs-root-ext
+> index 45fcd5a..dbdddb9 100644
+> --- a/defaultenv-2/base/bin/bootargs-root-ext
+> +++ b/defaultenv-2/base/bin/bootargs-root-ext
+> @@ -9,4 +9,4 @@ while getopt "m:r:" opt; do
+>  	fi
+>  done
+>  
+> -global.linux.bootargs.root="root=/dev/$part rootfstype=ext$type rootwait"
+> +global.linux.bootargs.dyn.root="root=/dev/$part rootfstype=ext$type rootwait"
+> diff --git a/defaultenv-2/base/bin/bootargs-root-initrd b/defaultenv-2/base/bin/bootargs-root-initrd
+> index 7072cea..cc711a1 100644
+> --- a/defaultenv-2/base/bin/bootargs-root-initrd
+> +++ b/defaultenv-2/base/bin/bootargs-root-initrd
+> @@ -13,4 +13,4 @@ while getopt "i:h" opt; do
+>  	fi
+>  done
+>  
+> -global.linux.bootargs.root="root=/dev/ram0 rdinit=${rdinit}"
+> +global.linux.bootargs.dyn.root="root=/dev/ram0 rdinit=${rdinit}"
+> diff --git a/defaultenv-2/base/bin/bootargs-root-jffs2 b/defaultenv-2/base/bin/bootargs-root-jffs2
+> index 74d59af..a8eb5e7 100644
+> --- a/defaultenv-2/base/bin/bootargs-root-jffs2
+> +++ b/defaultenv-2/base/bin/bootargs-root-jffs2
+> @@ -18,4 +18,4 @@ if [ -z "$mtd" ]; then
+>  	exit 1
+>  fi
+>  
+> -global.linux.bootargs.root="root=$mtd rootfstype=jffs2"
+> +global.linux.bootargs.dyn.root="root=$mtd rootfstype=jffs2"
+> diff --git a/defaultenv-2/base/bin/bootargs-root-nfs b/defaultenv-2/base/bin/bootargs-root-nfs
+> index 27bb6c4..355f93d 100644
+> --- a/defaultenv-2/base/bin/bootargs-root-nfs
+> +++ b/defaultenv-2/base/bin/bootargs-root-nfs
+> @@ -17,4 +17,4 @@ if [ -n ${serverip} ]; then
+>  	nfsroot="$serverip:$nfsroot"
+>  fi
+>  
+> -global.linux.bootargs.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
+> +global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
+> diff --git a/defaultenv-2/base/bin/bootargs-root-ubi b/defaultenv-2/base/bin/bootargs-root-ubi
+> index fb7f328..4260336 100644
+> --- a/defaultenv-2/base/bin/bootargs-root-ubi
+> +++ b/defaultenv-2/base/bin/bootargs-root-ubi
+> @@ -21,4 +21,4 @@ if [ -z "$mtd" ]; then
+>  	exit 1
+>  fi
+>  
+> -global.linux.bootargs.root="root=ubi0:$ubiroot ubi.mtd=$mtd rootfstype=ubifs"
+> +global.linux.bootargs.dyn.root="root=ubi0:$ubiroot ubi.mtd=$mtd rootfstype=ubifs"
+> diff --git a/defaultenv-2/base/bin/init b/defaultenv-2/base/bin/init
+> index 9d7eb2e..8e8871d 100644
+> --- a/defaultenv-2/base/bin/init
+> +++ b/defaultenv-2/base/bin/init
+> @@ -8,8 +8,9 @@ global autoboot_timeout=3
+>  global boot.default=net
+>  global allow_color=true
+>  global linux.bootargs.base
+> -global linux.bootargs.ip
+> -global linux.bootargs.root
+> +#linux.bootargs.dyn.* will be clearer at the beginning of boot
+> +global linux.bootargs.dyn.ip
+> +global linux.bootargs.dyn.root
+>  global editcmd=sedit
+>  
+>  /env/init/general
+> diff --git a/defaultenv-2/base/boot/initrd b/defaultenv-2/base/boot/initrd
+> index 79a353a..7c44d07 100644
+> --- a/defaultenv-2/base/boot/initrd
+> +++ b/defaultenv-2/base/boot/initrd
+> @@ -11,7 +11,7 @@ global.bootm.initrd="${path}/initramfs"
+>  bootargs-root-initrd
+>  #global.bootm.oftree=<path to oftree>
+>  
+> -global.linux.bootargs.root="root=/dev/ram0"
+> +global.linux.bootargs.dyn.root="root=/dev/ram0"
+>  
+>  #bootargs-root-nfs -n "<path on server>" -s <serverip>
+>  #bootargs-root-ubi -r <volume> -m <mtdname>
 > -- 
 > 1.7.10.4
 > 
