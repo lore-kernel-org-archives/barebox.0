@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo3.mail-out.ovh.net ([87.98.165.232]
+Received: from 16.mo3.mail-out.ovh.net ([188.165.56.217]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1T9yGf-0002IE-Iu
- for barebox@lists.infradead.org; Fri, 07 Sep 2012 13:06:43 +0000
+ id 1T9yK2-0002do-HD
+ for barebox@lists.infradead.org; Fri, 07 Sep 2012 13:10:12 +0000
 Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 4F643FF9809
- for <barebox@lists.infradead.org>; Fri,  7 Sep 2012 15:14:20 +0200 (CEST)
-Date: Fri, 7 Sep 2012 15:07:00 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 95D0FFF9469
+ for <barebox@lists.infradead.org>; Fri,  7 Sep 2012 15:17:50 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120907130700.GS20330@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Fri,  7 Sep 2012 15:10:23 +0200
+Message-Id: <1347023425-22462-9-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1347023425-22462-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20120907130700.GS20330@game.jcrosoft.org>
+ <1347023425-22462-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,129 +21,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/11 v2] add PNG support
+Subject: [PATCH 09/11] filetype: add PNG support
 To: barebox@lists.infradead.org
 
-Hi,
-
-	v2:
-
-	 fix comment
-	 fix missing select
-	 drop logo (will be send in a seprated pull)
-
-please pull
-The following changes since commit 298d15571da8d1cb71e7fd87cc53cad3b2bf1d12:
-
-  i.MX51: unbreak FEC iomux (2012-09-07 10:28:17 +0200)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git tags/png
-
-for you to fetch changes up to 94ca148f67a8cc33dabb28a1bb0207cc3fa7fe6a:
-
-  png: add picoPNG lib support (2012-09-07 20:29:20 +0800)
-
-----------------------------------------------------------------
-Introduce PNG support
-
-This will allow to reduce the binary size and support transparent image
-png + png8 is 50% less than lzo + bmp (same image)
-
- - rename bmp to splash
- - add background support (usefull for transparent image)
- - add LodePNG and PicoPNG
-
-PicoPNG only support PNG8 RGBA where LodePNG support most of the PNG (PNG24 &
-PNG8). PicoPNG is ~5KiB smaller than LodePNG.
-
-Attention the coding style on both PicoPNG and LodePNG are untouched for
-maintainance purpose.
-
-Use LodePNG version 20120729 from http://lodev.org/lodepng/
-Use from http://forge.voodooprojects.org/
-which is base on picoPNG C++ wrote by Lode Vandevenne. The same author as
-LodePNG.
-
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ common/filetype.c  |    3 +++
+ include/filetype.h |    1 +
+ 2 files changed, 4 insertions(+)
 
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (11):
-      bmp: rename it to splash
-      bmp: split bmp rending in lib/bmp.c
-      introduce image_renderer framework
-      filetype: add BMP support
-      splash/bmp: switch to image_renderer
-      splash: add support to set a background color
-      Introduce graphic utils
-      graphic_utils: add rgba support
-      filetype: add PNG support
-      add PNG support
-      png: add picoPNG lib support
+diff --git a/common/filetype.c b/common/filetype.c
+index 5710394..0eaf119 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -71,6 +71,7 @@ static int is_fat(u8 *buf)
+ enum filetype file_detect_type(void *_buf)
+ {
+ 	u32 *buf = _buf;
++	u64 *buf64 = _buf;
+ 	u8 *buf8 = _buf;
+ 
+ 	if (strncmp(buf8, "#!/bin/sh", 9) == 0)
+@@ -103,6 +104,8 @@ enum filetype file_detect_type(void *_buf)
+ 		return filetype_fat;
+ 	if (strncmp(buf8, "BM", 2) == 0)
+ 		return filetype_bmp;
++	if (buf64[0] == le64_to_cpu(0x0a1a0a0d474e5089ull))
++		return filetype_png;
+ 
+ 	return filetype_unknown;
+ }
+diff --git a/include/filetype.h b/include/filetype.h
+index 6c97159..2924032 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -20,6 +20,7 @@ enum filetype {
+ 	filetype_mips_barebox,
+ 	filetype_fat,
+ 	filetype_bmp,
++	filetype_png,
+ };
+ 
+ const char *file_type_to_string(enum filetype f);
+-- 
+1.7.10.4
 
- Documentation/commands.dox                         |    2 +-
- arch/arm/boards/eukrea_cpuimx25/env/bin/init_board |    4 +-
- arch/arm/boards/eukrea_cpuimx27/env/bin/init       |    4 +-
- arch/arm/boards/eukrea_cpuimx35/env/bin/init_board |    4 +-
- arch/arm/boards/eukrea_cpuimx51/env/bin/init_board |    4 +-
- arch/arm/boards/karo-tx25/env/bin/init_board       |    2 +-
- arch/arm/boards/mioa701/env/bin/init               |    2 +-
- arch/arm/configs/chumbyone_defconfig               |    2 +-
- arch/arm/configs/cupid_defconfig                   |    2 +-
- arch/arm/configs/eukrea_cpuimx25_defconfig         |    2 +-
- arch/arm/configs/eukrea_cpuimx27_defconfig         |    2 +-
- arch/arm/configs/eukrea_cpuimx35_defconfig         |    2 +-
- arch/arm/configs/freescale_mx35_3stack_defconfig   |    2 +-
- arch/arm/configs/imx28evk_defconfig                |    2 +-
- arch/arm/configs/mioa701_defconfig                 |    2 +-
- arch/arm/configs/neso_defconfig                    |    2 +-
- arch/arm/configs/pcm027_defconfig                  |    2 +-
- arch/arm/configs/pcm038_defconfig                  |    2 +-
- arch/arm/configs/tx25stk5_defconfig                |    2 +-
- arch/arm/configs/tx28stk5_defconfig                |    2 +-
- commands/Kconfig                                   |    5 +-
- commands/Makefile                                  |    2 +-
- commands/bmp.c                                     |  221 ------
- commands/splash.c                                  |  133 ++++
- common/filetype.c                                  |    5 +
- include/filetype.h                                 |    2 +
- include/graphic_utils.h                            |   17 +
- include/image_renderer.h                           |   42 +
- lib/Kconfig                                        |   35 +
- lib/Makefile                                       |    5 +
- lib/bmp.c                                          |  108 +++
- {include => lib}/bmp_layout.h                      |   11 +
- lib/graphic_utils.c                                |  191 +++++
- lib/image_renderer.c                               |   73 ++
- lib/lodepng.c                                      | 5928 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/lodepng.h                                      | 1640 +++++++++++++++++++++++++++++++++++++++
- lib/picopng.c                                      |  810 ++++++++++++++++++++
- lib/picopng.h                                      |   34 +
- lib/png_lode.c                                     |  181 +++++
- lib/png_pico.c                                     |  152 ++++
- 40 files changed, 9395 insertions(+), 248 deletions(-)
- delete mode 100644 commands/bmp.c
- create mode 100644 commands/splash.c
- create mode 100644 include/graphic_utils.h
- create mode 100644 include/image_renderer.h
- create mode 100644 lib/bmp.c
- rename {include => lib}/bmp_layout.h (85%)
- create mode 100644 lib/graphic_utils.c
- create mode 100644 lib/image_renderer.c
- create mode 100644 lib/lodepng.c
- create mode 100644 lib/lodepng.h
- create mode 100644 lib/picopng.c
- create mode 100644 lib/picopng.h
- create mode 100644 lib/png_lode.c
- create mode 100644 lib/png_pico.c
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
