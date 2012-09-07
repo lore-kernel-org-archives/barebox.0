@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1T9sUy-0007hX-TE
- for barebox@lists.infradead.org; Fri, 07 Sep 2012 06:57:06 +0000
-Date: Fri, 7 Sep 2012 08:57:03 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120907065703.GM26594@pengutronix.de>
+Received: from 9.mo5.mail-out.ovh.net ([178.32.96.204]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1T9szS-0000er-Ux
+ for barebox@lists.infradead.org; Fri, 07 Sep 2012 07:28:36 +0000
+Received: from mail434.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id EC5C6FF9FD1
+ for <barebox@lists.infradead.org>; Fri,  7 Sep 2012 09:33:56 +0200 (CEST)
+Date: Fri, 7 Sep 2012 09:28:30 +0200
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20120907092830.63416f87@eb-e6520>
+In-Reply-To: <20120907064419.GL26594@pengutronix.de>
 References: <1346960371-4129-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1346960371-4129-1-git-send-email-eric@eukrea.com>
+ <1346960371-4129-3-git-send-email-eric@eukrea.com>
+ <20120907064419.GL26594@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,98 +23,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] fec: restart autoneg at open instead of init
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
+Subject: Re: [PATCH 3/3] miidev: fix 1G wrong detection
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Eric,
+Le Fri, 7 Sep 2012 08:44:19 +0200,
+Sascha Hauer <s.hauer@pengutronix.de> a =E9crit :
 
-On Thu, Sep 06, 2012 at 09:39:29PM +0200, Eric B=E9nard wrote:
-> this saves some time during boot when ethernet is not needed in barebox
+> On Thu, Sep 06, 2012 at 09:39:31PM +0200, Eric B=E9nard wrote:
+> > since 99e72c8bbdbdc690025a5868d831f1fe79ad56fc on an i.MX51 based board,
+> > I get : "phy0: Link is up - 1000/Full". It seems miidev tries to probe
+> > the PHY to early and gets 0x3ffff which leads to the wrong capabilities
+> > setting.
+> > =
 
-Is this really significant on your hardware? I made a measurement here
-and the miidev_restart_aneg() takes 130us on an i.MX27 board.
+> > Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> > ---
+> >  drivers/net/miidev.c |   33 +++++++++------------------------
+> >  1 files changed, 9 insertions(+), 24 deletions(-)
+> > =
 
-The original intention of doing it at init time was that autonegotation
-is already completed when we actually use the network. And this time
-really is significant:
+> > diff --git a/drivers/net/miidev.c b/drivers/net/miidev.c
+> > index 75b53e3..e0f9d67 100644
+> > --- a/drivers/net/miidev.c
+> > +++ b/drivers/net/miidev.c
+> > @@ -131,6 +131,14 @@ int miidev_get_status(struct mii_device *mdev)
+> >  =
 
-without the patch:
+> >  	status =3D ret & BMSR_LSTATUS ? MIIDEV_STATUS_IS_UP : 0;
+> >  =
 
-barebox@Phytec phyCORE-i.MX27:/ time ping 192.168.23.4
-warning: No MAC address set. Using random address 62:FE:FE:0B:09:A8
-phy0: Link is up - 100/Full
-host 192.168.23.4 is alive
-time: 10ms
+> > +	if (ret & BMSR_ESTATEN) {
+> > +		ret =3D mii_read(mdev, mdev->address, MII_ESTATUS);
+> > +		if (ret < 0)
+> > +			goto err_out;
+> > +		if (ret & (ESTATUS_1000_TFULL | ESTATUS_1000_THALF))
+> > +			mdev->capabilities =3D MIIDEV_CAPABLE_1000M;
+> > +	}
+> > +
+> >  	ret =3D mii_read(mdev, mdev->address, MII_BMCR);
+> >  	if (ret < 0)
+> >  		goto err_out;
+> > @@ -239,27 +247,8 @@ static struct file_operations miidev_ops =3D {
+> >  static int miidev_probe(struct device_d *dev)
+> >  {
+> >  	struct mii_device *mdev =3D dev->priv;
+> > -	int val;
+> > -	int caps =3D 0;
+> >  =
 
-with the patch:
-
-barebox@Phytec phyCORE-i.MX27:/ time ping 192.168.23.4
-warning: No MAC address set. Using random address A6:1B:AB:80:FA:E7
-phy0: Link is up - 100/Full
-host 192.168.23.4 is alive
-time: 2040ms
-
-
-Sascha
-
+> > -	val =3D mii_read(mdev, mdev->address, MII_PHYSID1);
+> > -	if (val < 0 || val =3D=3D 0xffff)
+> > -		goto err_out;
+> > -	val =3D mii_read(mdev, mdev->address, MII_PHYSID2);
+> > -	if (val < 0 || val =3D=3D 0xffff)
+> > -		goto err_out;
 > =
 
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> ---
->  drivers/net/fec_imx.c |    6 +++---
->  1 files changed, 3 insertions(+), 3 deletions(-)
+> Is the above necessary? This was present before the patch which made the
+> regression.
 > =
 
-> diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-> index 599a9b4..2bc06a9 100644
-> --- a/drivers/net/fec_imx.c
-> +++ b/drivers/net/fec_imx.c
-> @@ -347,9 +347,6 @@ static int fec_init(struct eth_device *dev)
->  	/* size of each buffer */
->  	writel(FEC_MAX_PKT_SIZE, fec->regs + FEC_EMRBR);
->  =
+well there is no interest as we don't check the value read (and in the
+present case I also get 0x3ffff here).
 
-> -	if (fec->xcv_type !=3D SEVENWIRE)
-> -		miidev_restart_aneg(&fec->miidev);
-> -
->  	return 0;
->  }
->  =
-
-> @@ -363,6 +360,9 @@ static int fec_open(struct eth_device *edev)
->  	int ret;
->  	u32 ecr;
->  =
-
-> +	if (fec->xcv_type !=3D SEVENWIRE)
-> +		miidev_restart_aneg(&fec->miidev);
-> +
->  	/*
->  	 * Initialize RxBD/TxBD rings
->  	 */
-> -- =
-
-> 1.7.7.6
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Eric
 
 _______________________________________________
 barebox mailing list
