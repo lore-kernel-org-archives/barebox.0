@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TALWs-00033J-Am
- for barebox@lists.infradead.org; Sat, 08 Sep 2012 13:56:59 +0000
-Date: Sat, 8 Sep 2012 15:56:56 +0200
+ id 1TALeh-00037l-86
+ for barebox@lists.infradead.org; Sat, 08 Sep 2012 14:05:03 +0000
+Date: Sat, 8 Sep 2012 16:04:57 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120908135656.GD18243@pengutronix.de>
+Message-ID: <20120908140457.GE18243@pengutronix.de>
 References: <20120907120713.GQ20330@game.jcrosoft.org>
  <1347020017-12110-1-git-send-email-plagnioj@jcrosoft.com>
- <1347020017-12110-9-git-send-email-plagnioj@jcrosoft.com>
+ <1347020017-12110-7-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1347020017-12110-9-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1347020017-12110-7-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,81 +24,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 09/11] defaultenv-2: boot/net add bootp support
+Subject: Re: [PATCH 07/11] defaultenv-2/ip: add dhcp-barebox support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Sep 07, 2012 at 02:13:35PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Fri, Sep 07, 2012 at 02:13:33PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  defaultenv-2/base/boot/net |   35 ++++++++++++++++++++++++++++++++++-
->  1 file changed, 34 insertions(+), 1 deletion(-)
+>  defaultenv-2/base/bin/bootargs-ip |    2 ++
+>  defaultenv-2/base/bin/ifup        |    2 +-
+>  2 files changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/defaultenv-2/base/boot/net b/defaultenv-2/base/boot/net
-> index 922bef1..ff05077 100644
-> --- a/defaultenv-2/base/boot/net
-> +++ b/defaultenv-2/base/boot/net
-> @@ -7,8 +7,41 @@ fi
+> diff --git a/defaultenv-2/base/bin/bootargs-ip b/defaultenv-2/base/bin/bootargs-ip
+> index 2d4486c..caeb5dd 100644
+> --- a/defaultenv-2/base/bin/bootargs-ip
+> +++ b/defaultenv-2/base/bin/bootargs-ip
+> @@ -6,6 +6,8 @@
 >  
->  path="/mnt/tftp"
->  
-> +# to get the dhcp info (global.dhcp.rootpath, global.dhcp.bootfile, global.dhcp.oftree_file)
-> +ifdown eth0
-> +ifup eth0
+>  if [ $ip = dhcp ]; then
+>  	global.linux.bootargs.dyn.ip="ip=dhcp"
+> +elif [ $ip = dhcp-barebox ]; then
+> +	global.linux.bootargs.dyn.ip="ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask::eth0:"
+>  else
+>  	global.linux.bootargs.dyn.ip="ip=$ipaddr:$serverip:$gateway:$netmask::eth0:"
+>  fi
+> diff --git a/defaultenv-2/base/bin/ifup b/defaultenv-2/base/bin/ifup
+> index 37b986c..554c35e 100644
+> --- a/defaultenv-2/base/bin/ifup
+> +++ b/defaultenv-2/base/bin/ifup
+> @@ -52,7 +52,7 @@ if [ "$ip" = static ]; then
+>  	${interface}.serverip=$serverip
+>  	${interface}.gateway=$gateway
+>  	ret=0
+> -elif [ "$ip" = dhcp ]; then
+> +elif [ "$ip" = dhcp -o "$ip" = dhcp-barebox ]; then
+>  	dhcp
+>  	ret=$?
+>  	if [ $ret = 0 -a -n "$serverip" ]; then
 
-If ifup has been called before the global.dhcp. variables are already
-set. Why do you force to do this again?
+The ifup script is used to configure networking for barebox. This is not
+the place for configuring kernel behaviour. If you want this add an
+option to the bootargs-ip script or add a bootargs-ip-barebox script.
 
-> +
->  global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
->  #global.bootm.oftree="${path}/${global.user}-oftree-${global.hostname}"
-> -nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
-> +
-> +if [ -n "${global.dhcp.rootpath}" ]; then
-> +	bootp=1
-> +	nfsroot="${global.dhcp.rootpath}"
-> +else
-> +	nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
-> +fi
-> +
-> +if [ -n "${global.dhcp.bootfile}" -o -n "${global.dhcp.oftree_file}" ]; then
-> +	bootp=1
-> +	path="/mnt/dhcp"
-> +
-> +	if [ -d "${path}" ]; then
-> +		umount "${path}"
-> +	else
-> +		mkdir "${path}"
-> +	fi
-> +	mount -t tftp $eth0.serverip "${path}"
+Sascha
 
-That's exactly the path that's already mounted to /mnt/tftp. Why are you
-doing this?
-
-
-> +
-> +	[ -n "${global.dhcp.bootfile}" ] && global.bootm.image="${path}/${global.dhcp.bootfile}"
-> +	[ -n "${global.dhcp.oftree_file}" ] && global.bootm.oftree="${path}/${global.dhcp.oftree_file}"
-> +fi
-> +
-> +if [ x${bootp} = x1 ]; then
-> +	echo "Boot via bootp/dhcp on server ${eth0.serverip}"
-> +	[ -n "${global.dhcp.bootfile}" ] && echo "bootm.image => ${global.dhcp.bootfile}"
-> +	[ -n "${global.dhcp.oftree_file}" ] && echo "bootm.oftree => ${global.dhcp.oftree_file}"
-> +	[ -n "${global.dhcp.rootpath}" ] && echo "nfsroot => ${global.dhcp.rootpath}"
-> +fi
-> +
->  bootargs-ip
->  bootargs-root-nfs -n "$nfsroot"
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
