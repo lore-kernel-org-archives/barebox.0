@@ -1,18 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pz0-f49.google.com ([209.85.210.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TAC1e-0000xG-74
- for barebox@lists.infradead.org; Sat, 08 Sep 2012 03:48:07 +0000
-Received: by dajq27 with SMTP id q27so185706daj.36
- for <barebox@lists.infradead.org>; Fri, 07 Sep 2012 20:48:03 -0700 (PDT)
-Message-ID: <504ABFEB.3040405@gmail.com>
-Date: Sat, 08 Sep 2012 09:17:55 +0530
-From: Vikram Narayanan <vikram186@gmail.com>
+Received: from 18.mo3.mail-out.ovh.net ([87.98.172.162]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TADmD-0001EP-Sl
+ for barebox@lists.infradead.org; Sat, 08 Sep 2012 05:40:19 +0000
+Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id E99C1FF8BEC
+ for <barebox@lists.infradead.org>; Sat,  8 Sep 2012 07:47:54 +0200 (CEST)
+Date: Sat, 8 Sep 2012 07:40:33 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120908054033.GT20330@game.jcrosoft.org>
+References: <20120907120713.GQ20330@game.jcrosoft.org>
+ <1347020017-12110-1-git-send-email-plagnioj@jcrosoft.com>
+ <1347020017-12110-9-git-send-email-plagnioj@jcrosoft.com>
+ <20120907182106.GA18243@pengutronix.de>
 MIME-Version: 1.0
-References: <20120907130700.GS20330@game.jcrosoft.org>
- <1347023425-22462-1-git-send-email-plagnioj@jcrosoft.com>
- <1347023425-22462-11-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1347023425-22462-11-git-send-email-plagnioj@jcrosoft.com>
+Content-Disposition: inline
+In-Reply-To: <20120907182106.GA18243@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +25,25 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 11/11] png: add picoPNG lib support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 09/11] defaultenv-2: boot/net add bootp support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 9/7/2012 6:40 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> This is an alternative to LodePNG take fromhttp://forge.voodooprojects.org/
-> which is base on picoPNG C++ wrote by Lode Vandevenne. The same author as
-> LodePNG.
->
-> PicoPNG only support RGBA PNG8
->
-> The source code of picopng.c was just adapat to be compliant to C89 and drop
-> the internal ZLIB support. Coding style untouched.
+On 20:21 Fri 07 Sep     , Sascha Hauer wrote:
+> On Fri, Sep 07, 2012 at 02:13:35PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> 
+> Given that the bootp support seems to have nearly nothing in common
+> with the boot/net file wouldn't it be better to just add a new file
+> boot/bootp?
+why not with the boot sequence we can do so
 
-s/adapat/adapted
-
-Not "compliant to", should be "compliant with".
-
->
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD<plagnioj@jcrosoft.com>
-
-Could you please fix the entire commit message? There are many 
-grammatical errors.
-
-Thanks,
-Vikram
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
