@@ -1,24 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo3.mail-out.ovh.net ([87.98.150.177]
+Received: from 9.mo3.mail-out.ovh.net ([87.98.184.141]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TAOkN-0007VP-CS
- for barebox@lists.infradead.org; Sat, 08 Sep 2012 17:23:08 +0000
+ id 1TAOpV-0007Ze-8J
+ for barebox@lists.infradead.org; Sat, 08 Sep 2012 17:28:25 +0000
 Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 289FAFF8B88
- for <barebox@lists.infradead.org>; Sat,  8 Sep 2012 19:22:04 +0200 (CEST)
-Date: Sat, 8 Sep 2012 19:14:40 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id B64D2FF85A1
+ for <barebox@lists.infradead.org>; Sat,  8 Sep 2012 19:36:06 +0200 (CEST)
+Date: Sat, 8 Sep 2012 19:28:44 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120908171440.GE20330@game.jcrosoft.org>
-References: <20120907120713.GQ20330@game.jcrosoft.org>
- <1347020017-12110-1-git-send-email-plagnioj@jcrosoft.com>
- <1347020017-12110-9-git-send-email-plagnioj@jcrosoft.com>
- <20120908135656.GD18243@pengutronix.de>
- <20120908143713.GX20330@game.jcrosoft.org>
- <20120908150936.GG18243@pengutronix.de>
+Message-ID: <20120908172844.GF20330@game.jcrosoft.org>
+References: <1347013566-26130-1-git-send-email-plagnioj@jcrosoft.com>
+ <20120908150243.GF18243@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120908150936.GG18243@pengutronix.de>
+In-Reply-To: <20120908150243.GF18243@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,69 +27,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 09/11] defaultenv-2: boot/net add bootp support
+Subject: Re: [PATCH 1/1] net: introduce phylib
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 17:09 Sat 08 Sep     , Sascha Hauer wrote:
-> On Sat, Sep 08, 2012 at 04:37:13PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 15:56 Sat 08 Sep     , Sascha Hauer wrote:
-> > > On Fri, Sep 07, 2012 at 02:13:35PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > > ---
-> > > >  defaultenv-2/base/boot/net |   35 ++++++++++++++++++++++++++++++++++-
-> > > >  1 file changed, 34 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/defaultenv-2/base/boot/net b/defaultenv-2/base/boot/net
-> > > > index 922bef1..ff05077 100644
-> > > > --- a/defaultenv-2/base/boot/net
-> > > > +++ b/defaultenv-2/base/boot/net
-> > > > @@ -7,8 +7,41 @@ fi
-> > > >  
-> > > >  path="/mnt/tftp"
-> > > >  
-> > > > +# to get the dhcp info (global.dhcp.rootpath, global.dhcp.bootfile, global.dhcp.oftree_file)
-> > > > +ifdown eth0
-> > > > +ifup eth0
-> > > 
-> > > If ifup has been called before the global.dhcp. variables are already
-> > > set. Why do you force to do this again?
-> > param dhcp may have changed I want to be sure we have the right one
+On 17:02 Sat 08 Sep     , Sascha Hauer wrote:
+> On Fri, Sep 07, 2012 at 12:26:06PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Adapt phylib from linux
+> > 
+> > switch all the driver to it
+> > 
+> > This will allow to have phy drivers and to only connect the phy at then
+> > opening of the device. And if the phy is not ready fail on open.
+> > 
+> > This is needed by the boot sequence support to do not endup in a loop or spend
+> > time on bootp when no ethernet cable is connected.
 > 
-> Normally you would change it *before* doing network. If you have changed
-> it manually afterwards, then of course you have to make sure the changes
-> are effective using ifdown/ifup manually.
-> 
-> > > 
-> > > > +
-> > > >  global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
-> > > >  #global.bootm.oftree="${path}/${global.user}-oftree-${global.hostname}"
-> > > > -nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
-> > > > +
-> > > > +if [ -n "${global.dhcp.rootpath}" ]; then
-> > > > +	bootp=1
-> > > > +	nfsroot="${global.dhcp.rootpath}"
-> > > > +else
-> > > > +	nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
-> > > > +fi
-> > > > +
-> > > > +if [ -n "${global.dhcp.bootfile}" -o -n "${global.dhcp.oftree_file}" ]; then
-> > > > +	bootp=1
-> > > > +	path="/mnt/dhcp"
-> > > > +
-> > > > +	if [ -d "${path}" ]; then
-> > > > +		umount "${path}"
-> > > > +	else
-> > > > +		mkdir "${path}"
-> > > > +	fi
-> > > > +	mount -t tftp $eth0.serverip "${path}"
-> > > 
-> > > That's exactly the path that's already mounted to /mnt/tftp. Why are you
-> > > doing this?
-> > evenif the ip is changed?
-> 
-> The ip won't change when you drop the ifdown/ifup above.
-the IP may change balance tftp
+> We do not 'need' this for the above reasons, we could also fix the
+> current code. The above may be an advantage of your code, but the major
+> selling point is code sharing with Linux (at least that's what you told
+> me)
+
+yes the major point is to touch the phy only when the ethernet is opening
+
+yes the commit is true but it's not the major selling point
 
 Best Regards,
 J.
