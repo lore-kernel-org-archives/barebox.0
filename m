@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TAMg8-00054B-Km
- for barebox@lists.infradead.org; Sat, 08 Sep 2012 15:10:37 +0000
-Date: Sat, 8 Sep 2012 17:10:34 +0200
+ id 1TAMwF-00058q-HV
+ for barebox@lists.infradead.org; Sat, 08 Sep 2012 15:27:16 +0000
+Date: Sat, 8 Sep 2012 17:27:12 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120908151034.GH18243@pengutronix.de>
+Message-ID: <20120908152712.GI18243@pengutronix.de>
 References: <20120907120713.GQ20330@game.jcrosoft.org>
  <1347020017-12110-1-git-send-email-plagnioj@jcrosoft.com>
  <1347020017-12110-9-git-send-email-plagnioj@jcrosoft.com>
@@ -13,10 +13,10 @@ References: <20120907120713.GQ20330@game.jcrosoft.org>
  <20120908054033.GT20330@game.jcrosoft.org>
  <20120908061730.GV20330@game.jcrosoft.org>
  <20120908134706.GB18243@pengutronix.de>
- <20120908144203.GY20330@game.jcrosoft.org>
+ <20120908145125.GB20330@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120908144203.GY20330@game.jcrosoft.org>
+In-Reply-To: <20120908145125.GB20330@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -33,8 +33,7 @@ Subject: Re: [PATCH 09/11] defaultenv-2: boot/net add bootp support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Sep 08, 2012 at 04:42:03PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > I really don't like the approach at all.
+On Sat, Sep 08, 2012 at 04:51:25PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > > 
 > > The current /env/boot/* scripts are written with the intention that they
 > > should be simple scripts which are easily adjustable. They are also
@@ -54,18 +53,34 @@ On Sat, Sep 08, 2012 at 04:42:03PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote
 > > 
 > > Since you introduced a boot sequence support it should be easy to try
 > > bootp like above and fall back to the regular net boot if it fails.
-> the issue with nfs is the mount path
+> no as the the nfsroot or global.bootm.oftree or global.bootm.image
+> may or may not specified via dhcp
 > 
-> you need to mount `dirname file`
+> the oftre is the perfect example you want use the one in the env if
+> not specify it via dhcp and so on
 > 
-> but if the file is a symlink this is where it's complex you need to resolv it
-> and mount the real path
-> 
-> I'd prefer to avoid it but nfs is like this
-> as you may just be allow to see a part of the host tree via nfs and the host
-> have different mountpoint
+> This was a feature of the defaultenv that I use for long time
+> I need to keep it
 
-Using dhcp for configuring nfs is an abuse of dhcp anyway. Drop it.
+Look, there are so many possible setups.
+
+- kernel on tftp, disk, nand
+- oftree on tftp, disk, nand, none at all
+- root on nfs, disk, nand
+
+Even the above makes for 36 combinations, different names/partitions not
+counted. The setups are board specific, company specific, project
+specific or person specific. There is no way of making all happy with a
+single script. Instead the bootscripts are meant as an *example* to get
+started, they are *not* meant to fit all your and everyone elses needs.
+
+You want to get your oftree path from a dhcp request? Then fine, change
+global.bootm.oftree to "${path}/${global.dhcp.oftree_file}". You want
+to use the one from /env/oftree? Then change global.bootm.oftree
+accordingly. You want to use one as a fallback from another one? Also
+fine, do some if/else.
+
+But please don't try to force your specific setup to other people.
 
 Sascha
 
