@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TAOag-0006vq-7w
- for barebox@lists.infradead.org; Sat, 08 Sep 2012 17:13:06 +0000
-Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 79235FF8C88
- for <barebox@lists.infradead.org>; Sat,  8 Sep 2012 19:20:48 +0200 (CEST)
-Date: Sat, 8 Sep 2012 19:13:25 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120908171325.GD20330@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TAOjL-0007SH-Ox
+ for barebox@lists.infradead.org; Sat, 08 Sep 2012 17:22:04 +0000
+Date: Sat, 8 Sep 2012 19:22:00 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120908172200.GJ18243@pengutronix.de>
 References: <20120907120713.GQ20330@game.jcrosoft.org>
  <1347020017-12110-1-git-send-email-plagnioj@jcrosoft.com>
  <1347020017-12110-9-git-send-email-plagnioj@jcrosoft.com>
@@ -17,11 +13,12 @@ References: <20120907120713.GQ20330@game.jcrosoft.org>
  <20120908054033.GT20330@game.jcrosoft.org>
  <20120908061730.GV20330@game.jcrosoft.org>
  <20120908134706.GB18243@pengutronix.de>
- <20120908144203.GY20330@game.jcrosoft.org>
- <20120908151034.GH18243@pengutronix.de>
+ <20120908145125.GB20330@game.jcrosoft.org>
+ <20120908152712.GI18243@pengutronix.de>
+ <20120908171229.GC20330@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120908151034.GH18243@pengutronix.de>
+In-Reply-To: <20120908171229.GC20330@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -35,47 +32,48 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 09/11] defaultenv-2: boot/net add bootp support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 17:10 Sat 08 Sep     , Sascha Hauer wrote:
-> On Sat, Sep 08, 2012 at 04:42:03PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > I really don't like the approach at all.
-> > > 
-> > > The current /env/boot/* scripts are written with the intention that they
-> > > should be simple scripts which are easily adjustable. They are also
-> > > meant as templates to add other board/company/project specific files.
-> > > 
-> > > Now it only takes one patch series to turn them into complex scripts
-> > > which after staring at them for half an hour I still not fully
-> > > understand. I don't understand why this must be so, because it seems
-> > > what the scripts do is a complex way of saying:
-> > > 
-> > > path=/mnt/tftp
-> > > global.bootm.image="${path}/${global.dhcp.bootfile}"
-> > > global.bootm.oftree="${path}/${global.dhcp.oftree_file}"
-> > > nfsroot="${global.dhcp.rootpath}"
-> > > bootargs-ip
-> > > bootargs-root-nfs -n "$nfsroot"
-> > > 
-> > > Since you introduced a boot sequence support it should be easy to try
-> > > bootp like above and fall back to the regular net boot if it fails.
-> > the issue with nfs is the mount path
+On Sat, Sep 08, 2012 at 07:12:29PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Look, there are so many possible setups.
 > > 
-> > you need to mount `dirname file`
+> > - kernel on tftp, disk, nand
+> > - oftree on tftp, disk, nand, none at all
+> > - root on nfs, disk, nand
 > > 
-> > but if the file is a symlink this is where it's complex you need to resolv it
-> > and mount the real path
+> > Even the above makes for 36 combinations, different names/partitions not
+> > counted. The setups are board specific, company specific, project
+> > specific or person specific. There is no way of making all happy with a
+> > single script. Instead the bootscripts are meant as an *example* to get
+> > started, they are *not* meant to fit all your and everyone elses needs.
 > > 
-> > I'd prefer to avoid it but nfs is like this
-> > as you may just be allow to see a part of the host tree via nfs and the host
-> > have different mountpoint
-> 
-> Using dhcp for configuring nfs is an abuse of dhcp anyway. Drop it.
-can not sorry Mandatory for me
+> > You want to get your oftree path from a dhcp request? Then fine, change
+> > global.bootm.oftree to "${path}/${global.dhcp.oftree_file}". You want
+> > to use the one from /env/oftree? Then change global.bootm.oftree
+> > accordingly. You want to use one as a fallback from another one? Also
+> > fine, do some if/else.
+> > 
+> > But please don't try to force your specific setup to other people.
+> I force nothing I just add the generic bootp support
 
-Best Regards,
-J.
+Sure you do. For example you leave no option to not use
+$global.dhcp.rootpath even if set. There is no option to not use
+$global.dhcp.bootfile even if set. Yes, you could add an option
+somewhere, but that would make the boot scripts even more complicated.
+
+The boot scripts are not the place to add code. You can add a
+helper script to do whatever magic you need; and if it's sufficiently
+useful we can add it to the tree.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
