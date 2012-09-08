@@ -1,24 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TAPUn-0001yB-67
- for barebox@lists.infradead.org; Sat, 08 Sep 2012 18:11:06 +0000
-Date: Sat, 8 Sep 2012 20:11:03 +0200
+ id 1TAPWG-0002AM-2t
+ for barebox@lists.infradead.org; Sat, 08 Sep 2012 18:12:36 +0000
+Date: Sat, 8 Sep 2012 20:12:33 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120908181103.GK18243@pengutronix.de>
-References: <1347020017-12110-9-git-send-email-plagnioj@jcrosoft.com>
- <20120907182106.GA18243@pengutronix.de>
- <20120908054033.GT20330@game.jcrosoft.org>
- <20120908061730.GV20330@game.jcrosoft.org>
- <20120908134706.GB18243@pengutronix.de>
- <20120908145125.GB20330@game.jcrosoft.org>
- <20120908152712.GI18243@pengutronix.de>
- <20120908171229.GC20330@game.jcrosoft.org>
- <20120908172200.GJ18243@pengutronix.de>
- <20120908173524.GG20330@game.jcrosoft.org>
+Message-ID: <20120908181233.GL18243@pengutronix.de>
+References: <20120907120713.GQ20330@game.jcrosoft.org>
+ <1347020017-12110-1-git-send-email-plagnioj@jcrosoft.com>
+ <1347020017-12110-9-git-send-email-plagnioj@jcrosoft.com>
+ <20120908135656.GD18243@pengutronix.de>
+ <20120908143713.GX20330@game.jcrosoft.org>
+ <20120908150936.GG18243@pengutronix.de>
+ <20120908171440.GE20330@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120908173524.GG20330@game.jcrosoft.org>
+In-Reply-To: <20120908171440.GE20330@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -35,60 +32,35 @@ Subject: Re: [PATCH 09/11] defaultenv-2: boot/net add bootp support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Sep 08, 2012 at 07:35:24PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 19:22 Sat 08 Sep     , Sascha Hauer wrote:
-> > On Sat, Sep 08, 2012 at 07:12:29PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > Look, there are so many possible setups.
+On Sat, Sep 08, 2012 at 07:14:40PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > > -nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
+> > > > > +
+> > > > > +if [ -n "${global.dhcp.rootpath}" ]; then
+> > > > > +	bootp=1
+> > > > > +	nfsroot="${global.dhcp.rootpath}"
+> > > > > +else
+> > > > > +	nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
+> > > > > +fi
+> > > > > +
+> > > > > +if [ -n "${global.dhcp.bootfile}" -o -n "${global.dhcp.oftree_file}" ]; then
+> > > > > +	bootp=1
+> > > > > +	path="/mnt/dhcp"
+> > > > > +
+> > > > > +	if [ -d "${path}" ]; then
+> > > > > +		umount "${path}"
+> > > > > +	else
+> > > > > +		mkdir "${path}"
+> > > > > +	fi
+> > > > > +	mount -t tftp $eth0.serverip "${path}"
 > > > > 
-> > > > - kernel on tftp, disk, nand
-> > > > - oftree on tftp, disk, nand, none at all
-> > > > - root on nfs, disk, nand
-> > > > 
-> > > > Even the above makes for 36 combinations, different names/partitions not
-> > > > counted. The setups are board specific, company specific, project
-> > > > specific or person specific. There is no way of making all happy with a
-> > > > single script. Instead the bootscripts are meant as an *example* to get
-> > > > started, they are *not* meant to fit all your and everyone elses needs.
-> > > > 
-> > > > You want to get your oftree path from a dhcp request? Then fine, change
-> > > > global.bootm.oftree to "${path}/${global.dhcp.oftree_file}". You want
-> > > > to use the one from /env/oftree? Then change global.bootm.oftree
-> > > > accordingly. You want to use one as a fallback from another one? Also
-> > > > fine, do some if/else.
-> > > > 
-> > > > But please don't try to force your specific setup to other people.
-> > > I force nothing I just add the generic bootp support
+> > > > That's exactly the path that's already mounted to /mnt/tftp. Why are you
+> > > > doing this?
+> > > evenif the ip is changed?
 > > 
-> > Sure you do. For example you leave no option to not use
-> > $global.dhcp.rootpath even if set. There is no option to not use
-> > $global.dhcp.bootfile even if set. Yes, you could add an option
-> > somewhere, but that would make the boot scripts even more complicated.
-> I do not want to add options ifs omeone want something different modify it
+> > The ip won't change when you drop the ifdown/ifup above.
+> the IP may change balance tftp
 
-Yes, that's my point. For this the scripts have to be modifyable, that
-means simple. Modifying should not mean hack through ifs/elses.
-
-In barebox we have the problem that it's not really clear what is
-configuration and what is code. The boot scripts are clearly meant
-for configuration.
-
-> > 
-> > The boot scripts are not the place to add code. You can add a
-> > helper script to do whatever magic you need; and if it's sufficiently
-> > useful we can add it to the tree.
-> in the case of bootp we need as it's a specifc boot method if you have in mind
-> a code for the helper please show me because I do not see any right now
-
-One could be:
-
-kernel-bootp -m [nfs|tftp]
-oftree-bootp -m [nfs|tftp]
-
-These scripts could for example only set global.bootm.image only if not
-set already. Then you could put the fallback into the next line without
-additional ifs.
-
-Sascha
+??
 
 -- 
 Pengutronix e.K.                           |                             |
