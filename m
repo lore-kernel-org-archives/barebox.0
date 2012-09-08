@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TALPn-0002ym-HJ
- for barebox@lists.infradead.org; Sat, 08 Sep 2012 13:49:40 +0000
-Date: Sat, 8 Sep 2012 15:49:37 +0200
+ id 1TALWs-00033J-Am
+ for barebox@lists.infradead.org; Sat, 08 Sep 2012 13:56:59 +0000
+Date: Sat, 8 Sep 2012 15:56:56 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120908134937.GC18243@pengutronix.de>
+Message-ID: <20120908135656.GD18243@pengutronix.de>
 References: <20120907120713.GQ20330@game.jcrosoft.org>
  <1347020017-12110-1-git-send-email-plagnioj@jcrosoft.com>
- <1347020017-12110-11-git-send-email-plagnioj@jcrosoft.com>
+ <1347020017-12110-9-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1347020017-12110-11-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1347020017-12110-9-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,58 +24,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 11/11] defaultenv-2: add symbolic link support to boot/nfs
+Subject: Re: [PATCH 09/11] defaultenv-2: boot/net add bootp support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Sep 07, 2012 at 02:13:37PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> If the symlink is not find on barebox try on the host.
-> So we are back compatible with nfs command.
-> 
+On Fri, Sep 07, 2012 at 02:13:35PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  defaultenv-2/base/boot/nfs |   64 +++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 61 insertions(+), 3 deletions(-)
+>  defaultenv-2/base/boot/net |   35 ++++++++++++++++++++++++++++++++++-
+>  1 file changed, 34 insertions(+), 1 deletion(-)
 > 
-> diff --git a/defaultenv-2/base/boot/nfs b/defaultenv-2/base/boot/nfs
-> index 892f103..bf27d38 100644
-> --- a/defaultenv-2/base/boot/nfs
-> +++ b/defaultenv-2/base/boot/nfs
-> @@ -5,6 +5,8 @@ if [ "$1" = menu ]; then
->  	exit
->  fi
+> diff --git a/defaultenv-2/base/boot/net b/defaultenv-2/base/boot/net
+> index 922bef1..ff05077 100644
+> --- a/defaultenv-2/base/boot/net
+> +++ b/defaultenv-2/base/boot/net
+> @@ -7,8 +7,41 @@ fi
 >  
-> +. /env/data/ansi-colors
-> +
 >  path="/mnt/tftp"
 >  
->  # to get the dhcp info (global.dhcp.rootpath, global.dhcp.bootfile, global.dhcp.oftree_file)
-> @@ -44,6 +46,24 @@ if [ -n "${global.dhcp.bootfile}" ]; then
->  	mount -t nfs "${eth0.serverip}:${mnt}" "${path}"
->  
->  	global.bootm.image="${path}/${bootfile}"
-> +
-> +	if [ -L "${global.bootm.image}" ]; then
-> +		readlink -f "${global.bootm.image}" bootfile_symlink
-> +
-> +		# if the file is not on barebox fs assume it's on the host
-> +		if [ ! -e "${bootfile_symlink}" ]; then
-> +			dirname "${bootfile_symlink}" mnt
-> +			basename "${bootfile_symlink}" bootfile
-> +
-> +			umount "${path}"
-> +			mount -t nfs "${eth0.serverip}:${mnt}" "${path}"
-> +
-> +			bootfile_symlink="${path}/${bootfile_symlink}"
-> +			global.bootm.image="${path}/${bootfile}"
-> +		else
-> +			global.bootm.image="${bootfile_symlink}"
-> +		fi
+> +# to get the dhcp info (global.dhcp.rootpath, global.dhcp.bootfile, global.dhcp.oftree_file)
+> +ifdown eth0
+> +ifup eth0
 
-symbolic links either point to the target or not, but doing magic on
-them to try to interpret where they *could* point to is no option.
+If ifup has been called before the global.dhcp. variables are already
+set. Why do you force to do this again?
 
-Sascha
+> +
+>  global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
+>  #global.bootm.oftree="${path}/${global.user}-oftree-${global.hostname}"
+> -nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
+> +
+> +if [ -n "${global.dhcp.rootpath}" ]; then
+> +	bootp=1
+> +	nfsroot="${global.dhcp.rootpath}"
+> +else
+> +	nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
+> +fi
+> +
+> +if [ -n "${global.dhcp.bootfile}" -o -n "${global.dhcp.oftree_file}" ]; then
+> +	bootp=1
+> +	path="/mnt/dhcp"
+> +
+> +	if [ -d "${path}" ]; then
+> +		umount "${path}"
+> +	else
+> +		mkdir "${path}"
+> +	fi
+> +	mount -t tftp $eth0.serverip "${path}"
+
+That's exactly the path that's already mounted to /mnt/tftp. Why are you
+doing this?
+
+
+> +
+> +	[ -n "${global.dhcp.bootfile}" ] && global.bootm.image="${path}/${global.dhcp.bootfile}"
+> +	[ -n "${global.dhcp.oftree_file}" ] && global.bootm.oftree="${path}/${global.dhcp.oftree_file}"
+> +fi
+> +
+> +if [ x${bootp} = x1 ]; then
+> +	echo "Boot via bootp/dhcp on server ${eth0.serverip}"
+> +	[ -n "${global.dhcp.bootfile}" ] && echo "bootm.image => ${global.dhcp.bootfile}"
+> +	[ -n "${global.dhcp.oftree_file}" ] && echo "bootm.oftree => ${global.dhcp.oftree_file}"
+> +	[ -n "${global.dhcp.rootpath}" ] && echo "nfsroot => ${global.dhcp.rootpath}"
+> +fi
+> +
+>  bootargs-ip
+>  bootargs-root-nfs -n "$nfsroot"
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
