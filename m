@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo3.mail-out.ovh.net ([87.98.172.162]
+Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TAOZl-0006sa-CY
- for barebox@lists.infradead.org; Sat, 08 Sep 2012 17:12:10 +0000
+ id 1TAOag-0006vq-7w
+ for barebox@lists.infradead.org; Sat, 08 Sep 2012 17:13:06 +0000
 Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id B9DA1FF8BF6
- for <barebox@lists.infradead.org>; Sat,  8 Sep 2012 19:19:51 +0200 (CEST)
-Date: Sat, 8 Sep 2012 19:12:29 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 79235FF8C88
+ for <barebox@lists.infradead.org>; Sat,  8 Sep 2012 19:20:48 +0200 (CEST)
+Date: Sat, 8 Sep 2012 19:13:25 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120908171229.GC20330@game.jcrosoft.org>
+Message-ID: <20120908171325.GD20330@game.jcrosoft.org>
 References: <20120907120713.GQ20330@game.jcrosoft.org>
  <1347020017-12110-1-git-send-email-plagnioj@jcrosoft.com>
  <1347020017-12110-9-git-send-email-plagnioj@jcrosoft.com>
@@ -17,11 +17,11 @@ References: <20120907120713.GQ20330@game.jcrosoft.org>
  <20120908054033.GT20330@game.jcrosoft.org>
  <20120908061730.GV20330@game.jcrosoft.org>
  <20120908134706.GB18243@pengutronix.de>
- <20120908145125.GB20330@game.jcrosoft.org>
- <20120908152712.GI18243@pengutronix.de>
+ <20120908144203.GY20330@game.jcrosoft.org>
+ <20120908151034.GH18243@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120908152712.GI18243@pengutronix.de>
+In-Reply-To: <20120908151034.GH18243@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -38,8 +38,9 @@ Subject: Re: [PATCH 09/11] defaultenv-2: boot/net add bootp support
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 17:27 Sat 08 Sep     , Sascha Hauer wrote:
-> On Sat, Sep 08, 2012 at 04:51:25PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On 17:10 Sat 08 Sep     , Sascha Hauer wrote:
+> On Sat, Sep 08, 2012 at 04:42:03PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > I really don't like the approach at all.
 > > > 
 > > > The current /env/boot/* scripts are written with the intention that they
 > > > should be simple scripts which are easily adjustable. They are also
@@ -59,44 +60,19 @@ On 17:27 Sat 08 Sep     , Sascha Hauer wrote:
 > > > 
 > > > Since you introduced a boot sequence support it should be easy to try
 > > > bootp like above and fall back to the regular net boot if it fails.
-> > no as the the nfsroot or global.bootm.oftree or global.bootm.image
-> > may or may not specified via dhcp
+> > the issue with nfs is the mount path
 > > 
-> > the oftre is the perfect example you want use the one in the env if
-> > not specify it via dhcp and so on
+> > you need to mount `dirname file`
 > > 
-> > This was a feature of the defaultenv that I use for long time
-> > I need to keep it
+> > but if the file is a symlink this is where it's complex you need to resolv it
+> > and mount the real path
+> > 
+> > I'd prefer to avoid it but nfs is like this
+> > as you may just be allow to see a part of the host tree via nfs and the host
+> > have different mountpoint
 > 
-> Look, there are so many possible setups.
-> 
-> - kernel on tftp, disk, nand
-> - oftree on tftp, disk, nand, none at all
-> - root on nfs, disk, nand
-> 
-> Even the above makes for 36 combinations, different names/partitions not
-> counted. The setups are board specific, company specific, project
-> specific or person specific. There is no way of making all happy with a
-> single script. Instead the bootscripts are meant as an *example* to get
-> started, they are *not* meant to fit all your and everyone elses needs.
-> 
-> You want to get your oftree path from a dhcp request? Then fine, change
-> global.bootm.oftree to "${path}/${global.dhcp.oftree_file}". You want
-> to use the one from /env/oftree? Then change global.bootm.oftree
-> accordingly. You want to use one as a fallback from another one? Also
-> fine, do some if/else.
-> 
-> But please don't try to force your specific setup to other people.
-I force nothing I just add the generic bootp support
-
-if someone want specific they modify
-
-this implementatation just repect the previsou one
-
-when booting via network if the dhcp is used in barebox and the dhcp provide
-bootp information use it otherwise fallback to the one provided by the board
-
-There is no specific setup here just how the bootp is suppose to work
+> Using dhcp for configuring nfs is an abuse of dhcp anyway. Drop it.
+can not sorry Mandatory for me
 
 Best Regards,
 J.
