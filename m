@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 4.mo3.mail-out.ovh.net ([178.33.46.10]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TAPPO-0001HS-5L
- for barebox@lists.infradead.org; Sat, 08 Sep 2012 18:05:37 +0000
+ id 1TAPPL-0001GV-9I
+ for barebox@lists.infradead.org; Sat, 08 Sep 2012 18:05:31 +0000
 Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 500EEFF8B69
- for <barebox@lists.infradead.org>; Sat,  8 Sep 2012 20:13:12 +0200 (CEST)
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id A5CFBFF8B2A
+ for <barebox@lists.infradead.org>; Sat,  8 Sep 2012 20:13:10 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat,  8 Sep 2012 20:05:39 +0200
-Message-Id: <1347127542-11981-8-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat,  8 Sep 2012 20:05:34 +0200
+Message-Id: <1347127542-11981-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1347127542-11981-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120908180310.GH20330@game.jcrosoft.org>
  <1347127542-11981-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,87 +26,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/11] graphic_utils: add rgba support
+Subject: [PATCH 03/11] introduce image_renderer framework
 To: barebox@lists.infradead.org
 
-this will allow to render rgba image with or without hw support
+This will allow to support bmp and png
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/graphic_utils.h |    4 ++
- lib/graphic_utils.c     |  116 +++++++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 116 insertions(+), 4 deletions(-)
+ include/image_renderer.h |  105 ++++++++++++++++++++++++++++++++++++++++++++++
+ lib/Kconfig              |    5 +++
+ lib/Makefile             |    1 +
+ lib/image_renderer.c     |   96 ++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 207 insertions(+)
+ create mode 100644 include/image_renderer.h
+ create mode 100644 lib/image_renderer.c
 
-diff --git a/include/graphic_utils.h b/include/graphic_utils.h
-index 6d555b2..7cb0b2f 100644
---- a/include/graphic_utils.h
-+++ b/include/graphic_utils.h
-@@ -7,7 +7,11 @@
- #ifndef __GRAPHIC_UTILS_H__
- #define __GRAPHIC_UTILS_H__
- 
-+void rgba_blend(struct fb_info *info, void *image, void* dest, int height,
-+	int width, int startx, int starty, bool is_rgba);
-+void set_pixel(struct fb_info *info, void *adr, u32 px);
- void set_rgb_pixel(struct fb_info *info, void *adr, int r, int g, int b);
-+void set_rgba_pixel(struct fb_info *info, void *adr, int r, int g, int b, int a);
- void memset_pixel(struct fb_info *info, void* buf, u32 color, size_t size);
- 
- #endif /* __GRAPHIC_UTILS_H__ */
-diff --git a/lib/graphic_utils.c b/lib/graphic_utils.c
-index 2e174d8..4d627b2 100644
---- a/lib/graphic_utils.c
-+++ b/lib/graphic_utils.c
-@@ -62,14 +62,39 @@ void memset_pixel(struct fb_info *info, void* buf, u32 color, size_t size)
- 	}
- }
- 
--void set_rgb_pixel(struct fb_info *info, void *adr, int r, int g, int b)
-+static void get_rgb_pixel(struct fb_info *info, void *adr, int *r ,int *g, int *b)
- {
- 	u32 px;
-+	u32 rmask, gmask, bmask;
- 
--	px = (r >> (8 - info->red.length)) << info->red.offset |
--		(g >> (8 - info->green.length)) << info->green.offset |
--		(b >> (8 - info->blue.length)) << info->blue.offset;
-+	switch (info->bits_per_pixel) {
-+	case 16:
-+		px = *(u16 *)adr;
-+		break;
-+	case 32:
-+		px = *(u32 *)adr;
-+		break;
-+	case 8:
-+	default:
-+		return;
-+	}
+diff --git a/include/image_renderer.h b/include/image_renderer.h
+new file mode 100644
+index 0000000..8604a2a
+--- /dev/null
++++ b/include/image_renderer.h
+@@ -0,0 +1,105 @@
++/*
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * GPL v2
++ */
 +
-+	rmask = (0xff >> (8 - info->blue.length)) << info->blue.offset |
-+		(0xff >> (8 - info->green.length)) << info->green.offset;
++#ifndef __IMAGE_RENDER_H__
++#define __IMAGE_RENDER_H__
 +
-+	gmask = (0xff >> (8 - info->red.length)) << info->red.offset |
-+		(0xff >> (8 - info->blue.length)) << info->blue.offset;
++#include <filetype.h>
++#include <linux/list.h>
++#include <errno.h>
++#include <linux/err.h>
++#include <fb.h>
 +
-+	bmask = (0xff >> (8 - info->red.length)) << info->red.offset |
-+		(0xff >> (8 - info->green.length)) << info->green.offset;
- 
-+	*r = ((px & ~rmask) >> info->red.offset) << (8 - info->red.length);
-+	*g = ((px & ~gmask) >> info->green.offset) << (8 - info->green.length);
-+	*b = ((px & ~bmask) >> info->blue.offset) << (8 - info->blue.length);
-+}
++struct image {
++	void *data;
++	struct image_renderer *ir;
++	int height;
++	int width;
++	int bits_per_pixel;
++};
 +
-+void set_pixel(struct fb_info *info, void *adr, u32 px)
-+{
- 	switch (info->bits_per_pixel) {
- 	case 8:
- 		break;
-@@ -81,3 +106,86 @@ void set_rgb_pixel(struct fb_info *info, void *adr, int r, int g, int b)
- 		break;
- 	}
- }
++struct image_renderer {
++	enum filetype type;
++	struct image *(*open)(char *data, int size);
++	void (*close)(struct image *img);
++	int (*renderer)(struct fb_info *info, struct image *img, void* fb,
++		int startx, int starty, void* offscreenbuf);
 +
-+void set_rgb_pixel(struct fb_info *info, void *adr, int r, int g, int b)
++	/*
++	 * do not free the data read from the file
++	 * needed by bmp support
++	 */
++	int keep_file_data;
++
++	struct list_head list;
++};
++
++static inline void set_pixel(struct fb_info *info, void *adr, int r, int g, int b)
 +{
 +	u32 px;
 +
@@ -114,79 +94,190 @@ index 2e174d8..4d627b2 100644
 +		(g >> (8 - info->green.length)) << info->green.offset |
 +		(b >> (8 - info->blue.length)) << info->blue.offset;
 +
-+	set_pixel(info, adr, px);
++	switch (info->bits_per_pixel) {
++	case 8:
++		break;
++	case 16:
++		*(u16 *)adr = px;
++		break;
++	case 32:
++		*(u32 *)adr = px;
++		break;
++	}
 +}
 +
-+static int alpha_mux(int s, int d, int a)
++#ifdef CONFIG_IMAGE_RENDERER
++int image_renderer_register(struct image_renderer *ir);
++void image_render_unregister(struct image_renderer *ir);
++
++int image_renderer_image(struct fb_info *info, struct image *img, void* fb,
++	    int startx, int starty, void* offscreenbuf);
++
++struct image *image_renderer_open(const char* file);
++void image_renderer_close(struct image *img);
++
++#else
++static inline int image_renderer_register(struct image_renderer *ir)
 +{
-+	return (d * a + s * (255 - a)) >> 8;
++	return -EINVAL;
++}
++static inline void image_renderer_unregister(struct image_renderer *ir) {}
++
++static inline struct image *image_renderer_open(const char* file)
++{
++	return ERR_PTR(-EINVAL);
 +}
 +
-+void set_rgba_pixel(struct fb_info *info, void *adr, int r, int g, int b, int a)
-+{
-+	u32 px = 0x0;
++static inline void image_renderer_close(struct image *img) {}
 +
-+	if (!a)
++int image_renderer_image(struct fb_info *info, struct image *img, void* fb,
++	    int startx, int starty, void* offscreenbuf);
++#endif
++
++static inline int image_renderer_file(struct fb_info *info, const char* file, void* fb,
++		    int startx, int starty, void* offscreenbuf)
++{
++	struct image* img = image_renderer_open(file);
++	int ret;
++
++	if (IS_ERR(img))
++		return PTR_ERR(img);
++
++	ret = image_renderer_image(info, img, fb, startx, starty,
++				offscreenbuf);
++
++	image_renderer_close(img);
++
++	return ret; 
++}
++
++#endif /* __IMAGE_RENDERER_H__ */
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 93e360b..be3ea1c 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -38,6 +38,11 @@ config BITREV
+ config QSORT
+ 	bool
+ 
++config IMAGE_RENDERER
++	bool
++	depends on VIDEO
++	select FILETYPE
++
+ config BMP
+ 	bool
+ 
+diff --git a/lib/Makefile b/lib/Makefile
+index df4b5e5..8fbae8a 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -35,3 +35,4 @@ obj-$(CONFIG_BCH)	+= bch.o
+ obj-$(CONFIG_BITREV)	+= bitrev.o
+ obj-$(CONFIG_QSORT)	+= qsort.o
+ obj-$(CONFIG_BMP)	+= bmp.o
++obj-$(CONFIG_IMAGE_RENDERER)	+= image_renderer.o
+diff --git a/lib/image_renderer.c b/lib/image_renderer.c
+new file mode 100644
+index 0000000..b08f6bf
+--- /dev/null
++++ b/lib/image_renderer.c
+@@ -0,0 +1,96 @@
++/*
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * GPL v2
++ */
++
++#include <common.h>
++#include <fb.h>
++#include <image_renderer.h>
++#include <errno.h>
++#include <fs.h>
++#include <malloc.h>
++
++static LIST_HEAD(image_renderers);
++
++static struct image_renderer *get_renderer(void* buf)
++{
++	struct image_renderer *ir;
++	enum filetype type = file_detect_type(buf);
++
++	list_for_each_entry(ir, &image_renderers, list) {
++		if (ir->type == type)
++			return ir;
++	}
++
++	return NULL;
++}
++
++struct image *image_renderer_open(const char* file)
++{
++	void *data;
++	int size;
++	struct image_renderer *ir;
++	struct image *img;
++	int ret;
++
++	data = read_file(file, &size);
++	if (!data) {
++		printf("unable to read %s\n", file);
++		return ERR_PTR(-ENOMEM);
++	}
++
++	ir = get_renderer(data);
++	if (!ir) {
++		ret = -ENOENT;
++		goto out;
++	}
++
++	img = ir->open(data, size);
++	if (IS_ERR(img)) {
++		ret = PTR_ERR(img);
++		goto out;
++	}
++	img->ir = ir;
++	if (!ir->keep_file_data)
++		free(data);
++
++	return img;
++out:
++	free(data);
++	return ERR_PTR(ret);
++}
++
++void image_renderer_close(struct image *img)
++{
++	if (!img)
 +		return;
 +
-+	if (a != 0xff) {
-+		if (info->transp.length) {
-+			px |= (a >> (8 - info->transp.length)) << info->transp.offset;
-+		} else {
-+			int sr = 0;
-+			int sg = 0;
-+			int sb = 0;
++	img->ir->close(img);
 +
-+			get_rgb_pixel(info, adr, &sr, &sg, &sb);
-+
-+			r = alpha_mux(sr, r, a);
-+			g = alpha_mux(sg, g, a);
-+			b = alpha_mux(sb, b, a);
-+
-+			set_rgb_pixel(info, adr, r, g, b);
-+
-+			return;
-+		}
-+	}
-+
-+	px |= (r >> (8 - info->red.length)) << info->red.offset |
-+		(g >> (8 - info->green.length)) << info->green.offset |
-+		(b >> (8 - info->blue.length)) << info->blue.offset;
-+
-+	set_pixel(info, adr, px);
++	free(img);
 +}
 +
-+void rgba_blend(struct fb_info *info, void *image, void* buf, int height,
-+	int width, int startx, int starty, bool is_rgba)
++int image_renderer_image(struct fb_info *info, struct image *img, void* fb,
++	    int startx, int starty, void* offscreenbuf)
 +{
-+	unsigned char *adr;
-+	int x, y;
-+	int xres;
-+	int img_byte_per_pixel = 3;
++	return img->ir->renderer(info, img, fb, startx, starty, offscreenbuf);
++}
 +
-+	if (is_rgba)
-+		img_byte_per_pixel++;
++int image_renderer_register(struct image_renderer *ir)
++{
++	if (!ir || !ir->type || !ir->renderer || !ir->open || !ir->close)
++		return -EIO;
 +
-+	xres = info->xres;
++	list_add_tail(&ir->list, &image_renderers);
 +
-+	for (y = 0; y < height; y++) {
-+		adr = buf + ((y + starty) * xres + startx) *
-+				(info->bits_per_pixel >> 3);
++	return 0;
++}
 +
-+		for (x = 0; x < width; x++) {
-+			char *pixel;
++void image_renderer_unregister(struct image_renderer *ir)
++{
++	if (!ir)
++		return;
 +
-+			pixel = image;
-+			if (is_rgba)
-+				set_rgba_pixel(info, adr, pixel[0], pixel[1],
-+						pixel[2], pixel[3]);
-+			else
-+				set_rgb_pixel(info, adr, pixel[0], pixel[1],
-+						pixel[2]);
-+			adr += info->bits_per_pixel >> 3;
-+			image += img_byte_per_pixel;
-+		}
-+	}
++	list_del(&ir->list);
 +}
 -- 
 1.7.10.4
