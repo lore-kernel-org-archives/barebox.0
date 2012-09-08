@@ -1,19 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TAMfC-00051f-Va
- for barebox@lists.infradead.org; Sat, 08 Sep 2012 15:09:39 +0000
-Date: Sat, 8 Sep 2012 17:09:36 +0200
+ id 1TAMg8-00054B-Km
+ for barebox@lists.infradead.org; Sat, 08 Sep 2012 15:10:37 +0000
+Date: Sat, 8 Sep 2012 17:10:34 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120908150936.GG18243@pengutronix.de>
+Message-ID: <20120908151034.GH18243@pengutronix.de>
 References: <20120907120713.GQ20330@game.jcrosoft.org>
  <1347020017-12110-1-git-send-email-plagnioj@jcrosoft.com>
  <1347020017-12110-9-git-send-email-plagnioj@jcrosoft.com>
- <20120908135656.GD18243@pengutronix.de>
- <20120908143713.GX20330@game.jcrosoft.org>
+ <20120907182106.GA18243@pengutronix.de>
+ <20120908054033.GT20330@game.jcrosoft.org>
+ <20120908061730.GV20330@game.jcrosoft.org>
+ <20120908134706.GB18243@pengutronix.de>
+ <20120908144203.GY20330@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120908143713.GX20330@game.jcrosoft.org>
+In-Reply-To: <20120908144203.GY20330@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,96 +33,41 @@ Subject: Re: [PATCH 09/11] defaultenv-2: boot/net add bootp support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Sep 08, 2012 at 04:37:13PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 15:56 Sat 08 Sep     , Sascha Hauer wrote:
-> > On Fri, Sep 07, 2012 at 02:13:35PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > ---
-> > >  defaultenv-2/base/boot/net |   35 ++++++++++++++++++++++++++++++++++-
-> > >  1 file changed, 34 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/defaultenv-2/base/boot/net b/defaultenv-2/base/boot/net
-> > > index 922bef1..ff05077 100644
-> > > --- a/defaultenv-2/base/boot/net
-> > > +++ b/defaultenv-2/base/boot/net
-> > > @@ -7,8 +7,41 @@ fi
-> > >  
-> > >  path="/mnt/tftp"
-> > >  
-> > > +# to get the dhcp info (global.dhcp.rootpath, global.dhcp.bootfile, global.dhcp.oftree_file)
-> > > +ifdown eth0
-> > > +ifup eth0
+On Sat, Sep 08, 2012 at 04:42:03PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > I really don't like the approach at all.
 > > 
-> > If ifup has been called before the global.dhcp. variables are already
-> > set. Why do you force to do this again?
-> param dhcp may have changed I want to be sure we have the right one
-
-Normally you would change it *before* doing network. If you have changed
-it manually afterwards, then of course you have to make sure the changes
-are effective using ifdown/ifup manually.
-
+> > The current /env/boot/* scripts are written with the intention that they
+> > should be simple scripts which are easily adjustable. They are also
+> > meant as templates to add other board/company/project specific files.
 > > 
-> > > +
-> > >  global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
-> > >  #global.bootm.oftree="${path}/${global.user}-oftree-${global.hostname}"
-> > > -nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
-> > > +
-> > > +if [ -n "${global.dhcp.rootpath}" ]; then
-> > > +	bootp=1
-> > > +	nfsroot="${global.dhcp.rootpath}"
-> > > +else
-> > > +	nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
-> > > +fi
-> > > +
-> > > +if [ -n "${global.dhcp.bootfile}" -o -n "${global.dhcp.oftree_file}" ]; then
-> > > +	bootp=1
-> > > +	path="/mnt/dhcp"
-> > > +
-> > > +	if [ -d "${path}" ]; then
-> > > +		umount "${path}"
-> > > +	else
-> > > +		mkdir "${path}"
-> > > +	fi
-> > > +	mount -t tftp $eth0.serverip "${path}"
+> > Now it only takes one patch series to turn them into complex scripts
+> > which after staring at them for half an hour I still not fully
+> > understand. I don't understand why this must be so, because it seems
+> > what the scripts do is a complex way of saying:
 > > 
-> > That's exactly the path that's already mounted to /mnt/tftp. Why are you
-> > doing this?
-> evenif the ip is changed?
-
-The ip won't change when you drop the ifdown/ifup above.
-
+> > path=/mnt/tftp
+> > global.bootm.image="${path}/${global.dhcp.bootfile}"
+> > global.bootm.oftree="${path}/${global.dhcp.oftree_file}"
+> > nfsroot="${global.dhcp.rootpath}"
+> > bootargs-ip
+> > bootargs-root-nfs -n "$nfsroot"
 > > 
-> > 
-> > > +
-> > > +	[ -n "${global.dhcp.bootfile}" ] && global.bootm.image="${path}/${global.dhcp.bootfile}"
-> > > +	[ -n "${global.dhcp.oftree_file}" ] && global.bootm.oftree="${path}/${global.dhcp.oftree_file}"
-> > > +fi
-> > > +
-> > > +if [ x${bootp} = x1 ]; then
-> > > +	echo "Boot via bootp/dhcp on server ${eth0.serverip}"
-> > > +	[ -n "${global.dhcp.bootfile}" ] && echo "bootm.image => ${global.dhcp.bootfile}"
-> > > +	[ -n "${global.dhcp.oftree_file}" ] && echo "bootm.oftree => ${global.dhcp.oftree_file}"
-> > > +	[ -n "${global.dhcp.rootpath}" ] && echo "nfsroot => ${global.dhcp.rootpath}"
-> > > +fi
-> > > +
-> > >  bootargs-ip
-> > >  bootargs-root-nfs -n "$nfsroot"
-> > > -- 
-> > > 1.7.10.4
-> > > 
-> > > 
-> > > _______________________________________________
-> > > barebox mailing list
-> > > barebox@lists.infradead.org
-> > > http://lists.infradead.org/mailman/listinfo/barebox
-> > > 
-> > 
-> > -- 
-> > Pengutronix e.K.                           |                             |
-> > Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> > Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> > Since you introduced a boot sequence support it should be easy to try
+> > bootp like above and fall back to the regular net boot if it fails.
+> the issue with nfs is the mount path
 > 
+> you need to mount `dirname file`
+> 
+> but if the file is a symlink this is where it's complex you need to resolv it
+> and mount the real path
+> 
+> I'd prefer to avoid it but nfs is like this
+> as you may just be allow to see a part of the host tree via nfs and the host
+> have different mountpoint
+
+Using dhcp for configuring nfs is an abuse of dhcp anyway. Drop it.
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
