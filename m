@@ -1,28 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo3.mail-out.ovh.net ([178.33.46.10]
+Received: from 7.mo3.mail-out.ovh.net ([46.105.57.200]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TAOvy-0007dy-6r
- for barebox@lists.infradead.org; Sat, 08 Sep 2012 17:35:07 +0000
+ id 1TAPMo-0001Cw-4a
+ for barebox@lists.infradead.org; Sat, 08 Sep 2012 18:02:51 +0000
 Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id AC958FF8B21
- for <barebox@lists.infradead.org>; Sat,  8 Sep 2012 19:42:47 +0200 (CEST)
-Date: Sat, 8 Sep 2012 19:35:24 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 35C55FF8C33
+ for <barebox@lists.infradead.org>; Sat,  8 Sep 2012 20:10:32 +0200 (CEST)
+Date: Sat, 8 Sep 2012 20:03:10 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120908173524.GG20330@game.jcrosoft.org>
-References: <1347020017-12110-1-git-send-email-plagnioj@jcrosoft.com>
- <1347020017-12110-9-git-send-email-plagnioj@jcrosoft.com>
- <20120907182106.GA18243@pengutronix.de>
- <20120908054033.GT20330@game.jcrosoft.org>
- <20120908061730.GV20330@game.jcrosoft.org>
- <20120908134706.GB18243@pengutronix.de>
- <20120908145125.GB20330@game.jcrosoft.org>
- <20120908152712.GI18243@pengutronix.de>
- <20120908171229.GC20330@game.jcrosoft.org>
- <20120908172200.GJ18243@pengutronix.de>
+Message-ID: <20120908180310.GH20330@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120908172200.GJ18243@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -35,44 +24,136 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 09/11] defaultenv-2: boot/net add bootp support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 00/11 v3] add PNG support
+To: barebox@lists.infradead.org
 
-On 19:22 Sat 08 Sep     , Sascha Hauer wrote:
-> On Sat, Sep 08, 2012 at 07:12:29PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > Look, there are so many possible setups.
-> > > 
-> > > - kernel on tftp, disk, nand
-> > > - oftree on tftp, disk, nand, none at all
-> > > - root on nfs, disk, nand
-> > > 
-> > > Even the above makes for 36 combinations, different names/partitions not
-> > > counted. The setups are board specific, company specific, project
-> > > specific or person specific. There is no way of making all happy with a
-> > > single script. Instead the bootscripts are meant as an *example* to get
-> > > started, they are *not* meant to fit all your and everyone elses needs.
-> > > 
-> > > You want to get your oftree path from a dhcp request? Then fine, change
-> > > global.bootm.oftree to "${path}/${global.dhcp.oftree_file}". You want
-> > > to use the one from /env/oftree? Then change global.bootm.oftree
-> > > accordingly. You want to use one as a fallback from another one? Also
-> > > fine, do some if/else.
-> > > 
-> > > But please don't try to force your specific setup to other people.
-> > I force nothing I just add the generic bootp support
-> 
-> Sure you do. For example you leave no option to not use
-> $global.dhcp.rootpath even if set. There is no option to not use
-> $global.dhcp.bootfile even if set. Yes, you could add an option
-> somewhere, but that would make the boot scripts even more complicated.
-I do not want to add options ifs omeone want something different modify it
-> 
-> The boot scripts are not the place to add code. You can add a
-> helper script to do whatever magic you need; and if it's sufficiently
-> useful we can add it to the tree.
-in the case of bootp we need as it's a specifc boot method if you have in mind
-a code for the helper please show me because I do not see any right now
+Hi,
+
+	v3:
+	 - fix comment
+	 - add introduce image helper
+	   while use the image renderer for multiple
+	   image support I found tis was missing
+
+	   This even simplify png implemtation by not duplication the
+	   rendering
+
+	v2:
+
+	 fix comment
+	 fix missing select
+	 drop logo (will be send in a seprated pull)
+
+please pull
+
+The following changes since commit 298d15571da8d1cb71e7fd87cc53cad3b2bf1d12:
+
+  i.MX51: unbreak FEC iomux (2012-09-07 10:28:17 +0200)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git tags/png
+
+for you to fetch changes up to 832e83c040dfa41b64ba5307d8f31218ff600934:
+
+  png: add picoPNG lib support (2012-09-09 01:56:27 +0800)
+
+----------------------------------------------------------------
+Introduce PNG support
+
+This will allow to reduce the binary size and support transparent image
+png + png8 is 50% less than lzo + bmp (same image)
+
+ - rename bmp to splash
+ - add background support (usefull for transparent image)
+ - add LodePNG and PicoPNG
+
+PicoPNG only support PNG8 RGBA where LodePNG support most of the PNG (PNG24 &
+PNG8). PicoPNG is ~5KiB smaller than LodePNG.
+
+Attention the coding style on both PicoPNG and LodePNG are untouched for
+maintainance purpose.
+
+Use LodePNG version 20120729 from http://lodev.org/lodepng/
+Use from http://forge.voodooprojects.org/
+which is base on picoPNG C++ wrote by Lode Vandevenne. The same author as
+LodePNG.
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (11):
+      bmp: rename it to splash
+      bmp: split bmp rending in lib/bmp.c
+      introduce image_renderer framework
+      filetype: add BMP support
+      splash/bmp: switch to image_renderer
+      splash: add support to set a background color
+      Introduce graphic utils
+      graphic_utils: add rgba support
+      filetype: add PNG support
+      add PNG support
+      png: add picoPNG lib support
+
+ Documentation/commands.dox                         |    2 +-
+ arch/arm/boards/eukrea_cpuimx25/env/bin/init_board |    4 +-
+ arch/arm/boards/eukrea_cpuimx27/env/bin/init       |    4 +-
+ arch/arm/boards/eukrea_cpuimx35/env/bin/init_board |    4 +-
+ arch/arm/boards/eukrea_cpuimx51/env/bin/init_board |    4 +-
+ arch/arm/boards/karo-tx25/env/bin/init_board       |    2 +-
+ arch/arm/boards/mioa701/env/bin/init               |    2 +-
+ arch/arm/configs/chumbyone_defconfig               |    2 +-
+ arch/arm/configs/cupid_defconfig                   |    2 +-
+ arch/arm/configs/eukrea_cpuimx25_defconfig         |    2 +-
+ arch/arm/configs/eukrea_cpuimx27_defconfig         |    2 +-
+ arch/arm/configs/eukrea_cpuimx35_defconfig         |    2 +-
+ arch/arm/configs/freescale_mx35_3stack_defconfig   |    2 +-
+ arch/arm/configs/imx28evk_defconfig                |    2 +-
+ arch/arm/configs/mioa701_defconfig                 |    2 +-
+ arch/arm/configs/neso_defconfig                    |    2 +-
+ arch/arm/configs/pcm027_defconfig                  |    2 +-
+ arch/arm/configs/pcm038_defconfig                  |    2 +-
+ arch/arm/configs/tx25stk5_defconfig                |    2 +-
+ arch/arm/configs/tx28stk5_defconfig                |    2 +-
+ commands/Kconfig                                   |    5 +-
+ commands/Makefile                                  |    2 +-
+ commands/bmp.c                                     |  221 ---
+ commands/splash.c                                  |  133 ++
+ common/filetype.c                                  |    5 +
+ include/filetype.h                                 |    2 +
+ include/graphic_utils.h                            |   17 +
+ include/image_renderer.h                           |   85 +
+ lib/Kconfig                                        |   35 +
+ lib/Makefile                                       |    6 +
+ lib/bmp.c                                          |  134 ++
+ {include => lib}/bmp_layout.h                      |   11 +
+ lib/graphic_utils.c                                |  191 +++
+ lib/image_renderer.c                               |   96 ++
+ lib/lodepng.c                                      | 5928 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/lodepng.h                                      | 1640 +++++++++++++++++++
+ lib/picopng.c                                      |  810 ++++++++++
+ lib/picopng.h                                      |   34 +
+ lib/png.c                                          |   89 ++
+ lib/png.h                                          |   21 +
+ lib/png_lode.c                                     |   90 ++
+ lib/png_pico.c                                     |   85 +
+ 42 files changed, 9440 insertions(+), 248 deletions(-)
+ delete mode 100644 commands/bmp.c
+ create mode 100644 commands/splash.c
+ create mode 100644 include/graphic_utils.h
+ create mode 100644 include/image_renderer.h
+ create mode 100644 lib/bmp.c
+ rename {include => lib}/bmp_layout.h (85%)
+ create mode 100644 lib/graphic_utils.c
+ create mode 100644 lib/image_renderer.c
+ create mode 100644 lib/lodepng.c
+ create mode 100644 lib/lodepng.h
+ create mode 100644 lib/picopng.c
+ create mode 100644 lib/picopng.h
+ create mode 100644 lib/png.c
+ create mode 100644 lib/png.h
+ create mode 100644 lib/png_lode.c
+ create mode 100644 lib/png_pico.c
 
 Best Regards,
 J.
