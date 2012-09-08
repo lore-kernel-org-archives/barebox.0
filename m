@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 4.mo3.mail-out.ovh.net ([178.33.46.10]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TAPPL-0001GV-9I
- for barebox@lists.infradead.org; Sat, 08 Sep 2012 18:05:31 +0000
+ id 1TAPPL-0001GX-Kr
+ for barebox@lists.infradead.org; Sat, 08 Sep 2012 18:05:30 +0000
 Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id A5CFBFF8B2A
- for <barebox@lists.infradead.org>; Sat,  8 Sep 2012 20:13:10 +0200 (CEST)
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 0FF48FF8B52
+ for <barebox@lists.infradead.org>; Sat,  8 Sep 2012 20:13:11 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat,  8 Sep 2012 20:05:34 +0200
-Message-Id: <1347127542-11981-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat,  8 Sep 2012 20:05:36 +0200
+Message-Id: <1347127542-11981-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1347127542-11981-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120908180310.GH20330@game.jcrosoft.org>
  <1347127542-11981-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,259 +26,246 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/11] introduce image_renderer framework
+Subject: [PATCH 05/11] splash/bmp: switch to image_renderer
 To: barebox@lists.infradead.org
-
-This will allow to support bmp and png
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/image_renderer.h |  105 ++++++++++++++++++++++++++++++++++++++++++++++
- lib/Kconfig              |    5 +++
- lib/Makefile             |    1 +
- lib/image_renderer.c     |   96 ++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 207 insertions(+)
- create mode 100644 include/image_renderer.h
- create mode 100644 lib/image_renderer.c
+ commands/Kconfig              |    1 +
+ commands/splash.c             |   10 ++--
+ lib/Kconfig                   |    1 +
+ lib/bmp.c                     |  103 +++++++++++++++++++++--------------------
+ {include => lib}/bmp_layout.h |    0
+ 5 files changed, 59 insertions(+), 56 deletions(-)
+ rename {include => lib}/bmp_layout.h (100%)
 
-diff --git a/include/image_renderer.h b/include/image_renderer.h
-new file mode 100644
-index 0000000..8604a2a
---- /dev/null
-+++ b/include/image_renderer.h
-@@ -0,0 +1,105 @@
-+/*
-+ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * GPL v2
-+ */
-+
-+#ifndef __IMAGE_RENDER_H__
-+#define __IMAGE_RENDER_H__
-+
-+#include <filetype.h>
-+#include <linux/list.h>
-+#include <errno.h>
-+#include <linux/err.h>
-+#include <fb.h>
-+
-+struct image {
-+	void *data;
-+	struct image_renderer *ir;
-+	int height;
-+	int width;
-+	int bits_per_pixel;
-+};
-+
-+struct image_renderer {
-+	enum filetype type;
-+	struct image *(*open)(char *data, int size);
-+	void (*close)(struct image *img);
-+	int (*renderer)(struct fb_info *info, struct image *img, void* fb,
-+		int startx, int starty, void* offscreenbuf);
-+
-+	/*
-+	 * do not free the data read from the file
-+	 * needed by bmp support
-+	 */
-+	int keep_file_data;
-+
-+	struct list_head list;
-+};
-+
-+static inline void set_pixel(struct fb_info *info, void *adr, int r, int g, int b)
-+{
-+	u32 px;
-+
-+	px = (r >> (8 - info->red.length)) << info->red.offset |
-+		(g >> (8 - info->green.length)) << info->green.offset |
-+		(b >> (8 - info->blue.length)) << info->blue.offset;
-+
-+	switch (info->bits_per_pixel) {
-+	case 8:
-+		break;
-+	case 16:
-+		*(u16 *)adr = px;
-+		break;
-+	case 32:
-+		*(u32 *)adr = px;
-+		break;
-+	}
-+}
-+
-+#ifdef CONFIG_IMAGE_RENDERER
-+int image_renderer_register(struct image_renderer *ir);
-+void image_render_unregister(struct image_renderer *ir);
-+
-+int image_renderer_image(struct fb_info *info, struct image *img, void* fb,
-+	    int startx, int starty, void* offscreenbuf);
-+
-+struct image *image_renderer_open(const char* file);
-+void image_renderer_close(struct image *img);
-+
-+#else
-+static inline int image_renderer_register(struct image_renderer *ir)
-+{
-+	return -EINVAL;
-+}
-+static inline void image_renderer_unregister(struct image_renderer *ir) {}
-+
-+static inline struct image *image_renderer_open(const char* file)
-+{
-+	return ERR_PTR(-EINVAL);
-+}
-+
-+static inline void image_renderer_close(struct image *img) {}
-+
-+int image_renderer_image(struct fb_info *info, struct image *img, void* fb,
-+	    int startx, int starty, void* offscreenbuf);
-+#endif
-+
-+static inline int image_renderer_file(struct fb_info *info, const char* file, void* fb,
-+		    int startx, int starty, void* offscreenbuf)
-+{
-+	struct image* img = image_renderer_open(file);
-+	int ret;
-+
-+	if (IS_ERR(img))
-+		return PTR_ERR(img);
-+
-+	ret = image_renderer_image(info, img, fb, startx, starty,
-+				offscreenbuf);
-+
-+	image_renderer_close(img);
-+
-+	return ret; 
-+}
-+
-+#endif /* __IMAGE_RENDERER_H__ */
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 9107a3e..97993c1 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -538,6 +538,7 @@ config CMD_LSMOD
+ config CMD_SPLASH
+ 	bool
+ 	depends on VIDEO
++	select IMAGE_RENDERER
+ 	select BMP
+ 	prompt "splash"
+ 	help
+diff --git a/commands/splash.c b/commands/splash.c
+index ad73778..88a6cf1 100644
+--- a/commands/splash.c
++++ b/commands/splash.c
+@@ -7,7 +7,7 @@
+ #include <getopt.h>
+ #include <fcntl.h>
+ #include <fb.h>
+-#include <bmp_layout.h>
++#include <image_renderer.h>
+ 
+ static int do_splash(int argc, char *argv[])
+ {
+@@ -15,7 +15,7 @@ static int do_splash(int argc, char *argv[])
+ 	char *fbdev = "/dev/fb0";
+ 	void *fb;
+ 	struct fb_info info;
+-	char *bmpfile;
++	char *image_file;
+ 	int startx = -1, starty = -1;
+ 	int xres, yres;
+ 	int offscreen = 0;
+@@ -40,7 +40,7 @@ static int do_splash(int argc, char *argv[])
+ 		printf("no filename given\n");
+ 		return 1;
+ 	}
+-	bmpfile = argv[optind];
++	image_file = argv[optind];
+ 
+ 	fd = open(fbdev, O_RDWR);
+ 	if (fd < 0) {
+@@ -75,8 +75,8 @@ static int do_splash(int argc, char *argv[])
+ 			memcpy(offscreenbuf, fb, fbsize);
+ 	}
+ 
+-	if (bmp_render_file(&info, bmpfile, fb, startx, starty, xres, yres,
+-			    offscreenbuf) < 0)
++	if (image_renderer_file(&info, image_file, fb, startx, starty,
++				offscreenbuf) < 0)
+ 		ret = 1;
+ 
+ 	if (offscreenbuf)
 diff --git a/lib/Kconfig b/lib/Kconfig
-index 93e360b..be3ea1c 100644
+index be3ea1c..417c81e 100644
 --- a/lib/Kconfig
 +++ b/lib/Kconfig
-@@ -38,6 +38,11 @@ config BITREV
- config QSORT
- 	bool
+@@ -45,5 +45,6 @@ config IMAGE_RENDERER
  
-+config IMAGE_RENDERER
-+	bool
-+	depends on VIDEO
-+	select FILETYPE
-+
  config BMP
  	bool
++	depends on IMAGE_RENDERER
  
-diff --git a/lib/Makefile b/lib/Makefile
-index df4b5e5..8fbae8a 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -35,3 +35,4 @@ obj-$(CONFIG_BCH)	+= bch.o
- obj-$(CONFIG_BITREV)	+= bitrev.o
- obj-$(CONFIG_QSORT)	+= qsort.o
- obj-$(CONFIG_BMP)	+= bmp.o
-+obj-$(CONFIG_IMAGE_RENDERER)	+= image_renderer.o
-diff --git a/lib/image_renderer.c b/lib/image_renderer.c
-new file mode 100644
-index 0000000..b08f6bf
---- /dev/null
-+++ b/lib/image_renderer.c
-@@ -0,0 +1,96 @@
-+/*
-+ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * GPL v2
-+ */
-+
-+#include <common.h>
-+#include <fb.h>
+ endmenu
+diff --git a/lib/bmp.c b/lib/bmp.c
+index 776d3b3..8dd141b 100644
+--- a/lib/bmp.c
++++ b/lib/bmp.c
+@@ -1,74 +1,67 @@
+ #include <common.h>
+-#include <fs.h>
+ #include <errno.h>
+ #include <malloc.h>
+ #include <fb.h>
+-#include <bmp_layout.h>
++#include "bmp_layout.h"
+ #include <asm/byteorder.h>
++#include <init.h>
 +#include <image_renderer.h>
-+#include <errno.h>
-+#include <fs.h>
-+#include <malloc.h>
+ 
+-static inline void set_pixel(struct fb_info *info, void *adr, int r, int g, int b)
++struct image *bmp_open(char *inbuf, int insize)
+ {
+-	u32 px;
+-
+-	px = (r >> (8 - info->red.length)) << info->red.offset |
+-		(g >> (8 - info->green.length)) << info->green.offset |
+-		(b >> (8 - info->blue.length)) << info->blue.offset;
+-
+-	switch (info->bits_per_pixel) {
+-	case 8:
+-		break;
+-	case 16:
+-		*(u16 *)adr = px;
+-		break;
+-	case 32:
+-		*(u32 *)adr = px;
+-		break;
++	struct image *img = calloc(1, sizeof(struct image));
++	struct bmp_image *bmp = (struct bmp_image*)inbuf;
 +
-+static LIST_HEAD(image_renderers);
-+
-+static struct image_renderer *get_renderer(void* buf)
-+{
-+	struct image_renderer *ir;
-+	enum filetype type = file_detect_type(buf);
-+
-+	list_for_each_entry(ir, &image_renderers, list) {
-+		if (ir->type == type)
-+			return ir;
-+	}
-+
-+	return NULL;
-+}
-+
-+struct image *image_renderer_open(const char* file)
-+{
-+	void *data;
-+	int size;
-+	struct image_renderer *ir;
-+	struct image *img;
-+	int ret;
-+
-+	data = read_file(file, &size);
-+	if (!data) {
-+		printf("unable to read %s\n", file);
++	if (!img) {
++		free(bmp);
 +		return ERR_PTR(-ENOMEM);
-+	}
+ 	}
 +
-+	ir = get_renderer(data);
-+	if (!ir) {
-+		ret = -ENOENT;
-+		goto out;
-+	}
++	img->data = inbuf;
++	img->height = le32_to_cpu(bmp->header.height);;
++	img->width = le32_to_cpu(bmp->header.width);;
++	img->bits_per_pixel = le16_to_cpu(bmp->header.bit_count);
 +
-+	img = ir->open(data, size);
-+	if (IS_ERR(img)) {
-+		ret = PTR_ERR(img);
-+		goto out;
-+	}
-+	img->ir = ir;
-+	if (!ir->keep_file_data)
-+		free(data);
++	pr_debug("bmp: %d x %d  x %d data@0x%p\n", img->width, img->height,
++		 img->bit_per_pixel, img->data);
 +
 +	return img;
-+out:
-+	free(data);
-+	return ERR_PTR(ret);
 +}
 +
-+void image_renderer_close(struct image *img)
++void bmp_close(struct image *img)
 +{
-+	if (!img)
-+		return;
-+
-+	img->ir->close(img);
-+
-+	free(img);
++	free(img->data);
+ }
+ 
+-int bmp_render_file(struct fb_info *info, const char* bmpfile, void* fb,
+-		    int startx, int starty, int xres, int yres, void* offscreenbuf)
++static int bmp_renderer(struct fb_info *info, struct image *img, void* fb,
++		int startx, int starty, void* offscreenbuf)
+ {
+-	struct bmp_image *bmp;
+-	int sw, sh, width, height;
++	struct bmp_image *bmp = img->data;
++	int width, height;
+ 	int bits_per_pixel, fbsize;
+-	int bmpsize;
+-	int ret = 0;
+ 	void *adr, *buf;
+ 	char *image;
++	int xres, yres;
+ 
+-	bmp = read_file(bmpfile, &bmpsize);
+-	if (!bmp) {
+-		printf("unable to read %s\n", bmpfile);
+-		return -ENOMEM;
+-	}
+-
+-	if (bmp->header.signature[0] != 'B' ||
+-	      bmp->header.signature[1] != 'M') {
+-		printf("No valid bmp file\n");
+-		ret = -EINVAL;
+-		goto err;
+-	}
+-
+-	sw = le32_to_cpu(bmp->header.width);
+-	sh = le32_to_cpu(bmp->header.height);
++	xres = info->xres;
++	yres = info->yres;
+ 
+ 	if (startx < 0) {
+-		startx = (xres - sw) / 2;
++		startx = (xres - img->width) / 2;
+ 		if (startx < 0)
+ 			startx = 0;
+ 	}
+ 
+ 	if (starty < 0) {
+-		starty = (yres - sh) / 2;
++		starty = (yres - img->height) / 2;
+ 		if (starty < 0)
+ 			starty = 0;
+ 	}
+ 
+-	width = min(sw, xres - startx);
+-	height = min(sh, yres - starty);
++	width = min(img->width, xres - startx);
++	height = min(img->height, yres - starty);
+ 
+-	bits_per_pixel = le16_to_cpu(bmp->header.bit_count);
++	bits_per_pixel = img->bits_per_pixel;
+ 	fbsize = xres * yres * (info->bits_per_pixel >> 3);
+ 
+ 	buf = offscreenbuf ? offscreenbuf : fb;
+@@ -80,7 +73,7 @@ int bmp_render_file(struct fb_info *info, const char* bmpfile, void* fb,
+ 		for (y = 0; y < height; y++) {
+ 			image = (char *)bmp +
+ 					le32_to_cpu(bmp->header.data_offset);
+-			image += (sh - y - 1) * sw * (bits_per_pixel >> 3);
++			image += (img->height - y - 1) * img->width * (bits_per_pixel >> 3);
+ 			adr = buf + ((y + starty) * xres + startx) *
+ 					(info->bits_per_pixel >> 3);
+ 			for (x = 0; x < width; x++) {
+@@ -102,7 +95,7 @@ int bmp_render_file(struct fb_info *info, const char* bmpfile, void* fb,
+ 		for (y = 0; y < height; y++) {
+ 			image = (char *)bmp +
+ 					le32_to_cpu(bmp->header.data_offset);
+-			image += (sh - y - 1) * sw * (bits_per_pixel >> 3);
++			image += (img->height - y - 1) * img->width * (bits_per_pixel >> 3);
+ 			adr = buf + ((y + starty) * xres + startx) *
+ 					(info->bits_per_pixel >> 3);
+ 			for (x = 0; x < width; x++) {
+@@ -123,10 +116,18 @@ int bmp_render_file(struct fb_info *info, const char* bmpfile, void* fb,
+ 	if (offscreenbuf)
+ 		memcpy(fb, offscreenbuf, fbsize);
+ 
+-	free(bmp);
+-	return sh;
++	return img->height;
 +}
 +
-+int image_renderer_image(struct fb_info *info, struct image *img, void* fb,
-+	    int startx, int starty, void* offscreenbuf)
++static struct image_renderer bmp = {
++	.type = filetype_bmp,
++	.open = bmp_open,
++	.close = bmp_close,
++	.renderer = bmp_renderer,
++};
+ 
+-err:
+-	free(bmp);
+-	return ret;
++static int bmp_init(void)
 +{
-+	return img->ir->renderer(info, img, fb, startx, starty, offscreenbuf);
-+}
-+
-+int image_renderer_register(struct image_renderer *ir)
-+{
-+	if (!ir || !ir->type || !ir->renderer || !ir->open || !ir->close)
-+		return -EIO;
-+
-+	list_add_tail(&ir->list, &image_renderers);
-+
-+	return 0;
-+}
-+
-+void image_renderer_unregister(struct image_renderer *ir)
-+{
-+	if (!ir)
-+		return;
-+
-+	list_del(&ir->list);
-+}
++	return image_renderer_register(&bmp);
+ }
++fs_initcall(bmp_init);
+diff --git a/include/bmp_layout.h b/lib/bmp_layout.h
+similarity index 100%
+rename from include/bmp_layout.h
+rename to lib/bmp_layout.h
 -- 
 1.7.10.4
 
