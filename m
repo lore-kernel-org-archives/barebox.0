@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ie0-f177.google.com ([209.85.223.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TAkLx-0005z9-FF
- for barebox@lists.infradead.org; Sun, 09 Sep 2012 16:27:22 +0000
-Date: Sun, 9 Sep 2012 18:27:17 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120909162717.GN18243@pengutronix.de>
-References: <1347184076-15238-1-git-send-email-s.hauer@pengutronix.de>
- <1347184076-15238-2-git-send-email-s.hauer@pengutronix.de>
- <20120909111240.GA31207@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120909111240.GA31207@game.jcrosoft.org>
+ id 1TApAs-0006uX-J0
+ for barebox@lists.infradead.org; Sun, 09 Sep 2012 21:36:16 +0000
+Received: by ieje10 with SMTP id e10so2219033iej.36
+ for <barebox@lists.infradead.org>; Sun, 09 Sep 2012 14:36:11 -0700 (PDT)
+From: Fadil Berisha <f.koliqi@gmail.com>
+Date: Sun,  9 Sep 2012 17:36:01 -0400
+Message-Id: <1347226561-19913-1-git-send-email-f.koliqi@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,30 +16,567 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] ARM: Add assembler function to get runtime offset
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 1/1] boards: Add support for imx233-olinuxino board
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 
-On Sun, Sep 09, 2012 at 01:12:40PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 11:47 Sun 09 Sep     , Sascha Hauer wrote:
-> > This function returns the offset between the address barebox is linked at
-> > and the address barebox is currently running at.
->  this work on thumb2?
+imx23-olinuxino is a board designed by Olimex.
 
-No, it doesn't work on thumb2. Will fix.
+It has the following features:
 
-Sascha
+- Freescale iMX233 ARM926J processor at 454MHz
+-64 MB RAM
+-SD-card connector
+-TV PAL/NTSC video output
+-2 USB High Speed Hosts
+-Ethernet 100 Mbit
+-Stereo Audio Input
+-Stereo Headphones Audio Output
 
+More information at:
+http://www.olimex.com/dev/imx233-olinuxino-maxi.html
 
+Signed-off-by: Fadil Berisha <f.koliqi@gmail.com>
+---
+ arch/arm/Makefile                                  |    1 +
+ arch/arm/boards/imx233-olinuxino/Makefile          |    1 +
+ arch/arm/boards/imx233-olinuxino/config.h          |   21 ++
+ arch/arm/boards/imx233-olinuxino/env/bin/boot      |   32 +++
+ arch/arm/boards/imx233-olinuxino/env/bin/init      |   15 ++
+ arch/arm/boards/imx233-olinuxino/env/config        |   42 ++++
+ arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c |  254 ++++++++++++++++++++
+ arch/arm/configs/imx233-olinuxino_defconfig        |   63 +++++
+ arch/arm/mach-mxs/Kconfig                          |    7 +
+ 9 files changed, 436 insertions(+)
+ create mode 100644 arch/arm/boards/imx233-olinuxino/Makefile
+ create mode 100644 arch/arm/boards/imx233-olinuxino/config.h
+ create mode 100644 arch/arm/boards/imx233-olinuxino/env/bin/boot
+ create mode 100644 arch/arm/boards/imx233-olinuxino/env/bin/init
+ create mode 100644 arch/arm/boards/imx233-olinuxino/env/config
+ create mode 100644 arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c
+ create mode 100644 arch/arm/configs/imx233-olinuxino_defconfig
+
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 8e660be..2adfd12 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -92,6 +92,7 @@ board-$(CONFIG_MACH_FREESCALE_MX25_3STACK)	:= freescale-mx25-3-stack
+ board-$(CONFIG_MACH_FREESCALE_MX35_3STACK)	:= freescale-mx35-3-stack
+ board-$(CONFIG_MACH_IMX21ADS)			:= imx21ads
+ board-$(CONFIG_MACH_IMX27ADS)			:= imx27ads
++board-$(CONFIG_MACH_IMX233_OLINUXINO)	:= imx233-olinuxino
+ board-$(CONFIG_MACH_MIOA701)			:= mioa701
+ board-$(CONFIG_MACH_MMCCPU)			:= mmccpu
+ board-$(CONFIG_MACH_NOMADIK_8815NHK)		:= nhk8815
+diff --git a/arch/arm/boards/imx233-olinuxino/Makefile b/arch/arm/boards/imx233-olinuxino/Makefile
+new file mode 100644
+index 0000000..6d71450
+--- /dev/null
++++ b/arch/arm/boards/imx233-olinuxino/Makefile
+@@ -0,0 +1 @@
++obj-y = imx23-olinuxino.o
+diff --git a/arch/arm/boards/imx233-olinuxino/config.h b/arch/arm/boards/imx233-olinuxino/config.h
+new file mode 100644
+index 0000000..87d9e2f
+--- /dev/null
++++ b/arch/arm/boards/imx233-olinuxino/config.h
+@@ -0,0 +1,21 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#ifndef _CONFIG_H_
++# define _CONFIG_H_
++
++#endif /* _CONFIG_H_ */
+diff --git a/arch/arm/boards/imx233-olinuxino/env/bin/boot b/arch/arm/boards/imx233-olinuxino/env/bin/boot
+new file mode 100644
+index 0000000..60dd93f
+--- /dev/null
++++ b/arch/arm/boards/imx233-olinuxino/env/bin/boot
+@@ -0,0 +1,32 @@
++#!/bin/sh
++
++. /env/config
++
++if [ x$1 = xdisk ]; then
++	rootfs_loc=disk
++	kernel_loc=disk
++elif [ x$1 = xnet ]; then
++	rootfs_loc=net
++	kernel_loc=net
++fi
++
++if [ x$ip = xdhcp ]; then
++	bootargs="$bootargs ip=dhcp"
++elif [ x$ip = xnone ]; then
++	bootargs="$bootargs ip=none"
++else
++	bootargs="$bootargs ip=$eth0.ipaddr::$eth0.gateway:$eth0.netmask:::"
++fi
++
++if [ x$rootfs_loc = xdisk ]; then
++	bootargs="$bootargs noinitrd rootfstype=$rootfs_type root=/dev/$rootfs_part"
++elif [ x$rootfs_loc = xnet ]; then
++	bootargs="$bootargs root=/dev/nfs nfsroot=$nfsroot,v3,tcp noinitrd"
++elif [ x$rootfs_loc = xinitrd ]; then
++	bootargs="$bootargs root=/dev/ram0 rdinit=/sbin/init"
++fi
++
++
++bootm -o $oftree_loc/imx23-olinuxino.dtb /dev/$kernel_part
++
++echo "Booting failed. Correct setup of 'kernel_part'?"
+diff --git a/arch/arm/boards/imx233-olinuxino/env/bin/init b/arch/arm/boards/imx233-olinuxino/env/bin/init
+new file mode 100644
+index 0000000..3ed68f7
+--- /dev/null
++++ b/arch/arm/boards/imx233-olinuxino/env/bin/init
+@@ -0,0 +1,15 @@
++#!/bin/sh
++
++PATH=/env/bin
++export PATH
++
++. /env/config
++
++echo
++echo -n "Hit any key to stop autoboot: "
++timeout -a $autoboot_timeout
++if [ $? != 0 ]; then
++	exit
++fi
++
++boot
+diff --git a/arch/arm/boards/imx233-olinuxino/env/config b/arch/arm/boards/imx233-olinuxino/env/config
+new file mode 100644
+index 0000000..0e95373
+--- /dev/null
++++ b/arch/arm/boards/imx233-olinuxino/env/config
+@@ -0,0 +1,42 @@
++#!/bin/sh
++
++hostname=imx23-olinuxino
++
++# use 'dhcp' to do dhcp in barebox and in kernel
++# use 'none' if you want to skip kernel ip autoconfiguration
++ip=none
++
++# or set your networking parameters here (if a USB network adapter is attached)
++#eth0.ipaddr=a.b.c.d
++#eth0.netmask=a.b.c.d
++#eth0.gateway=a.b.c.d
++#eth0.serverip=a.b.c.d
++
++# can be either 'net' or 'disk'
++kernel_loc=disk
++
++# can be either 'net', or 'disk' or 'initrd'
++rootfs_loc=disk
++
++# can be any regular filesystem like ext2, ext3, reiserfs in case of 'rootfs_loc=disk'
++rootfs_type=ext3
++
++# Where is the rootfs in case of 'rootfs_loc=disk'
++rootfs_part=mmcblk0p4
++
++# Where is the rootfs in case of 'rootfs_loc=net'
++nfsroot=FIXME
++
++# Where to get the kernel image in case of 'kernel_loc=disk'
++kernel_part=disk0.2
++
++# Where to get the device tree image in case of 'kernel_loc=disk'
++oftree_loc=env/oftree
++
++# base kernel parameter
++bootargs="console=ttyAMA0,115200 rw rootwait"
++
++autoboot_timeout=2
++
++# set a fancy prompt (if support is compiled in)
++PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
+diff --git a/arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c b/arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c
+new file mode 100644
+index 0000000..0482638
+--- /dev/null
++++ b/arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c
+@@ -0,0 +1,254 @@
++/*
++ * (C) Copyright 2012 Fadil Berisha, <fadil.r.berisha@gmail.com>
++ *     based on falconwing.c & mx23-evk.c
++ *
++ * (C) Copyright 2010 Juergen Beisert - Pengutronix
++ * (C) Copyright 2011 Wolfram Sang - Pengutronix
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <common.h>
++#include <init.h>
++#include <gpio.h>
++#include <environment.h>
++#include <errno.h>
++#include <mci.h>
++#include <asm/armlinux.h>
++#include <usb/ehci.h>
++#include <mach/usb.h>
++#include <generated/mach-types.h>
++#include <mach/imx-regs.h>
++#include <mach/clock.h>
++#include <mach/mci.h>
++
++static struct mxs_mci_platform_data mci_pdata = {
++	.caps = MMC_MODE_4BIT | MMC_MODE_HS | MMC_MODE_HS_52MHz,
++	.voltages = MMC_VDD_32_33 | MMC_VDD_33_34,	/* fixed to 3.3 V */
++	.f_min = 400000,
++};
++
++static const uint32_t pad_setup[] = {
++	/* debug port */
++	PWM1_DUART_TX | STRENGTH(S4MA),    /* PWM0/DUART_TXD - U_DEBUG PIN 2 */
++	PWM0_DUART_RX | STRENGTH(S4MA),    /* PWM0/DUART_RXD - U_DEBUG PIN 1 */
++
++	/* auart */
++	I2C_SDA_AUART1_RX | STRENGTH(S4MA),
++	I2C_CLK_AUART1_TX | STRENGTH(S4MA),
++
++	/* lcd */
++	LCD_D17 | STRENGTH(S12MA),         /*PIN18/LCD_D17   -   GPIO PIN 3 */
++	LCD_D16 | STRENGTH(S12MA),
++	LCD_D15 | STRENGTH(S12MA),
++	LCD_D14 | STRENGTH(S12MA),
++	LCD_D13 | STRENGTH(S12MA),
++	LCD_D12 | STRENGTH(S12MA),
++	LCD_D11 | STRENGTH(S12MA),
++	LCD_D10 | STRENGTH(S12MA),
++	LCD_D9 | STRENGTH(S12MA),
++	LCD_D8 | STRENGTH(S12MA),
++	LCD_D7 | STRENGTH(S12MA),
++	LCD_D6 | STRENGTH(S12MA),
++	LCD_D5 | STRENGTH(S12MA),
++	LCD_D4 | STRENGTH(S12MA),
++	LCD_D3 | STRENGTH(S12MA),
++	LCD_D2 | STRENGTH(S12MA),            /* PIN3/LCD_D02   - GPIO PIN 31*/
++	LCD_D1 | STRENGTH(S12MA),            /* PIN2/LCD_D01   - GPIO PIN 33*/
++	LCD_D0 | STRENGTH(S12MA),            /* PIN1/LCD_D00   - GPIO PIN 35*/
++	LCD_CS,                              /* PIN26/LCD_CS   - GPIO PIN 20*/
++	LCD_RS,                              /* PIN25/LCD_RS   - GPIO PIN 18*/
++	LCD_WR,                              /* PIN24/LCD_WR   - GPIO PIN 16*/
++	LCD_RESET,                           /* PIN23/LCD_DISP - GPIO PIN 14*/
++	LCD_ENABE | STRENGTH(S12MA),  /* PIN22/LCD_EN/I2C_SCL  - GPIO PIN 12*/
++	LCD_VSYNC | STRENGTH(S12MA), /* PIN21/LCD_HSYNC/I2C_SDA- GPIO PIN 10*/
++	LCD_HSYNC | STRENGTH(S12MA),     /* PIN20/LCD_VSYNC    - GPIO PIN  8*/
++	LCD_DOTCLOCK | STRENGTH(S12MA),  /* PIN19/LCD_DOTCLK   - GPIO PIN  6*/
++
++
++	/* SD card interface */
++	SSP1_DATA0 | PULLUP(1),
++	SSP1_DATA1 | PULLUP(1),
++	SSP1_DATA2 | PULLUP(1),
++	SSP1_DATA3 | PULLUP(1),
++	SSP1_SCK,
++	SSP1_CMD | PULLUP(1),
++	SSP1_DETECT | PULLUP(1),
++
++	/* led */
++	SSP1_DETECT_GPIO | GPIO_OUT | GPIO_VALUE(1),
++
++	/* gpio - USB hub LAN9512-JZX*/
++	GPMI_ALE_GPIO | GPIO_OUT | GPIO_VALUE(1),
++};
++
++static int imx23_olinuxino_mem_init(void)
++{
++	arm_add_mem_device("ram0", IMX_MEMORY_BASE, 64 * 1024 * 1024);
++
++	return 0;
++}
++mem_initcall(imx23_olinuxino_mem_init);
++
++static void olinuxino_init_usb(void)
++{
++
++	imx23_usb_phy_enable();
++
++	add_generic_usb_ehci_device(DEVICE_ID_DYNAMIC, IMX_USB_BASE, NULL);
++}
++
++/**
++ * Try to register an environment storage on the attached MCI card
++ * @return 0 on success
++ *
++ * We rely on the existence of a usable SD card, already attached to
++ * our system, to get something like a persistent memory for our environment.
++ * If this SD card is also the boot media, we can use the second partition
++ * for our environment purpose (if present!).
++ */
++static int register_persistant_environment(void)
++{
++	struct cdev *cdev;
++
++	/*
++	 * The imx23-olinuxino only has one MCI card socket.
++	 * So, we expect its name as "disk0".
++	 */
++	cdev = cdev_by_name("disk0");
++	if (cdev == NULL) {
++		pr_err("No MCI card preset\n");
++		return -ENODEV;
++	}
++
++
++
++	/* MCI card is present, also a useable partition on it? */
++	cdev = cdev_by_name("disk0.1");
++	if (cdev == NULL) {
++		pr_err("No second partition available\n");
++		pr_info("Please create at least a second partition with"
++			" 256 kiB...512 kiB in size (your choice)\n");
++		return -ENODEV;
++	}
++
++	/* use the full partition as our persistent environment storage */
++	return devfs_add_partition("disk0.1", 0, cdev->size,
++						DEVFS_PARTITION_FIXED, "env0");
++}
++
++
++static int imx23_olinuxino_devices_init(void)
++{
++	int i, rc;
++
++
++	/* initizalize gpios */
++	for (i = 0; i < ARRAY_SIZE(pad_setup); i++)
++		imx_gpio_mode(pad_setup[i]);
++
++	armlinux_set_bootparams((void *)IMX_MEMORY_BASE + 0x100);
++	armlinux_set_architecture(MACH_TYPE_IMX233_OLINUXINO);
++
++	/* enable IOCLK to run at the PLL frequency */
++	imx_set_ioclk(480000000);
++
++	/* run the SSP unit clock at 100,000 kHz */
++	imx_set_sspclk(0, 100000000, 1);
++
++	add_generic_device("mxs_mci", DEVICE_ID_DYNAMIC, NULL, IMX_SSP1_BASE,
++					0x8000, IORESOURCE_MEM, &mci_pdata);
++
++	olinuxino_init_usb();
++
++	rc = register_persistant_environment();
++	if (rc != 0)
++		printf("Cannot create the 'env0' persistant "
++			 "environment storage (%d)\n", rc);
++
++	return 0;
++}
++
++device_initcall(imx23_olinuxino_devices_init);
++
++static int imx23_olinuxino_console_init(void)
++{
++	add_generic_device("stm_serial", 0, NULL, IMX_DBGUART_BASE, 8192,
++			   IORESOURCE_MEM, NULL);
++
++	return 0;
++}
++
++console_initcall(imx23_olinuxino_console_init);
++
++/** @page olinuxino Olimex.ltd's i.MX23 evaluation kit
++
++This CPU card is based on an i.MX23 CPU. The card is shipped with:
++
++- 64 MiB synchronous dynamic RAM (mobile DDR type)
++
++
++Memory layout when @b barebox is running:
++
++- 0x40000000 start of SDRAM
++- 0x40000100 start of kernel's boot parameters
++  - below malloc area: stack area
++  - below barebox: malloc area
++- 0x42000000 start of @b barebox
++
++@section get_imx23_olinuxino_binary How to get the bootloader binary image:
++
++Using the default configuration:
++
++@verbatim
++make ARCH=arm imx23_olinuxino_defconfig
++@endverbatim
++
++Build the bootloader binary image:
++
++@verbatim
++make ARCH=arm CROSS_COMPILE=armv5compiler
++@endverbatim
++
++@note replace the armv5compiler with your ARM v5 cross compiler.
++
++@section imx233-olinuxino How to prepare an MCI card to boot
++the imx233-olinuxino with barebox
++
++- Create four primary partitions on the MCI card
++ - the first one for the bootlets (about 256 kiB)
++ - the second one for the persistant environment
++   (size is up to you, at least 256k)
++ - the third one for the kernel (2 MiB ... 4 MiB in size)
++ - the 4th one for the root filesystem which can fill the
++   rest of the available space
++
++- Mark the first partition with the partition ID "53" and copy the bootlets
++  into this partition (currently not part of @b barebox!).
++
++- @b barebox expect device tree blob file imx23-olinuxino.dtb
++  into directory env/oftree. At compile time, copy blob file into directory
++  arch/arm/boards/imx233-olinuxino/env/oftree/.
++
++- Copy the default @b barebox environment into the second partition
++  (no filesystem required).
++
++- Copy the kernel into the third partition (no filesystem required).
++
++- Create the root filesystem in the 4th partition. You may copy an
++  image into this partition or you can do it in the classic way:
++  mkfs on it, mount it and copy all required data and programs into it.
++*/
+diff --git a/arch/arm/configs/imx233-olinuxino_defconfig b/arch/arm/configs/imx233-olinuxino_defconfig
+new file mode 100644
+index 0000000..40b7e1d
+--- /dev/null
++++ b/arch/arm/configs/imx233-olinuxino_defconfig
+@@ -0,0 +1,63 @@
++CONFIG_ARCH_MXS=y
++CONFIG_MACH_IMX233_OLINUXINO=y
++CONFIG_AEABI=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_BROKEN=y
++CONFIG_EXPERIMENTAL=y
++CONFIG_MODULES=y
++CONFIG_LONGHELP=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/imx233-olinuxino/env"
++CONFIG_BAREBOXENV_TARGET=y
++CONFIG_DEBUG_INFO=y
++CONFIG_ENABLE_FLASH_NOISE=y
++CONFIG_ENABLE_PARTITION_NOISE=y
++CONFIG_ENABLE_DEVICE_NOISE=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_MTEST=y
++CONFIG_CMD_MTEST_ALTERNATIVE=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_BOOTM_VERBOSE=y
++CONFIG_CMD_BOOTM_INITRD=y
++CONFIG_CMD_BOOTM_OFTREE=y
++CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
++CONFIG_CMD_UIMAGE=y
++CONFIG_CMD_BOOTZ=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_NET=y
++CONFIG_NET_DHCP=y
++CONFIG_NET_NFS=y
++CONFIG_NET_PING=y
++CONFIG_NET_TFTP=y
++CONFIG_NET_TFTP_PUSH=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_NET_RESOLV=y
++CONFIG_NET_USB=y
++CONFIG_NET_USB_SMSC95XX=y
++CONFIG_DISK_INTF_PLATFORM_IDE=y
++CONFIG_USB=y
++CONFIG_USB_EHCI=y
++CONFIG_USB_STORAGE=y
++CONFIG_VIDEO=y
++CONFIG_DRIVER_VIDEO_STM=y
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++CONFIG_MCI_MXS=y
++CONFIG_LED=y
++CONFIG_KEYBOARD_GPIO=y
++CONFIG_MXS_APBH_DMA=y
++CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
++CONFIG_FS_FAT=y
+diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
+index 6f324a0..ff295f1 100644
+--- a/arch/arm/mach-mxs/Kconfig
++++ b/arch/arm/mach-mxs/Kconfig
+@@ -4,6 +4,7 @@ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0x41000000 if MACH_MX23EVK
+ 	default 0x42000000 if MACH_CHUMBY
++	default 0x42000000 if MACH_IMX233_OLINUXINO
+ 	default 0x47000000 if MACH_TX28
+ 	default 0x47000000 if MACH_MX28EVK
+ 	default 0x47000000 if MACH_CFA10036
+@@ -11,6 +12,7 @@ config ARCH_TEXT_BASE
+ config BOARDINFO
+ 	default "Freescale i.MX23-EVK" if MACH_MX23EVK
+ 	default "Chumby Falconwing" if MACH_CHUMBY
++	default "Olimex.ltd imx233-olinuxino" if MACH_IMX233_OLINUXINO
+ 	default "Karo TX28" if MACH_TX28
+ 	default "Freescale i.MX28-EVK" if MACH_MX28EVK
+ 	default "Crystalfontz CFA-10036" if MACH_CFA10036
+@@ -47,6 +49,11 @@ config MACH_CHUMBY
+ 	  Say Y here if you are using the "chumby one" aka falconwing from
+ 	  Chumby Industries
+ 
++config MACH_IMX233_OLINUXINO
++	bool "Olimex.ltd imx223-olinuxino"
++	help
++	  Say Y here if you are using the imx233-olinuxino
++
+ endchoice
+ 
+ endif
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10
+
 
 _______________________________________________
 barebox mailing list
