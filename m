@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from guitar.tcltek.co.il ([192.115.133.116] helo=sivan.tkos.co.il)
- by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TB1X4-0006rP-TX
- for barebox@lists.infradead.org; Mon, 10 Sep 2012 10:48:00 +0000
-Date: Mon, 10 Sep 2012 13:47:45 +0300
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20120910104745.GA9075@sapphire.tkos.co.il>
-References: <1347270624-18878-1-git-send-email-jlu@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1347270624-18878-1-git-send-email-jlu@pengutronix.de>
+Received: from exprod5og105.obsmtp.com ([64.18.0.180])
+ by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TB23b-0005kH-Cv
+ for barebox@lists.infradead.org; Mon, 10 Sep 2012 11:21:36 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Mon, 10 Sep 2012 12:21:24 +0100
+Message-Id: <1347276084-20145-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,35 +14,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] omap: add SPI as a boot mode for xload
-To: Jan Luebbe <jlu@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fsl TSEC: register map boundary
+To: barebox@lists.infradead.org
 
-Hi Jan,
+The end boundary of each registers set may overlap with the start
+of the next register set. Subtract 1 to the end boundary.
 
-On Mon, Sep 10, 2012 at 11:50:24AM +0200, Jan Luebbe wrote:
-> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
-> ---
->  arch/arm/mach-omap/include/mach/xload.h |    1 +
->  arch/arm/mach-omap/xload.c              |   40 +++++++++++++++++++++++++++++++
->  2 files changed, 41 insertions(+)
+Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+---
+ arch/ppc/mach-mpc85xx/eth-devices.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
 
-[snip]
-
-> +void *omap_xload_boot_spi(int offset)
-
-static?
-
-baruch
-
+diff --git a/arch/ppc/mach-mpc85xx/eth-devices.c b/arch/ppc/mach-mpc85xx/eth-devices.c
+index 02a3722..c6e8f36 100644
+--- a/arch/ppc/mach-mpc85xx/eth-devices.c
++++ b/arch/ppc/mach-mpc85xx/eth-devices.c
+@@ -32,15 +32,15 @@ int fsl_eth_init(int num, struct gfar_info_struct *gf)
+ 	res = xzalloc(3 * sizeof(struct resource));
+ 	/* TSEC interface registers */
+ 	res[0].start = GFAR_BASE_ADDR + ((num - 1) * 0x1000);
+-	res[0].end = res[0].start + 0x1000;
++	res[0].end = res[0].start + 0x1000 - 1;
+ 	res[0].flags = IORESOURCE_MEM;
+ 	/* External PHY access always through eTSEC1 */
+ 	res[1].start = MDIO_BASE_ADDR;
+-	res[1].end = res[1].start + 0x1000;
++	res[1].end = res[1].start + 0x1000 - 1;
+ 	res[1].flags = IORESOURCE_MEM;
+ 	/* Access to TBI/RTBI interface. */
+ 	res[2].start = MDIO_BASE_ADDR + ((num - 1) * 0x1000);
+-	res[2].end = res[2].start + 0x1000;
++	res[2].end = res[2].start + 0x1000 - 1;
+ 	res[2].flags = IORESOURCE_MEM;
+ 
+ 	add_generic_device_res("gfar", DEVICE_ID_DYNAMIC, res, 3, gf);
 -- 
-     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
