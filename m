@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og105.obsmtp.com ([64.18.0.180])
- by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TB23b-0005kH-Cv
- for barebox@lists.infradead.org; Mon, 10 Sep 2012 11:21:36 +0000
-From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Mon, 10 Sep 2012 12:21:24 +0100
-Message-Id: <1347276084-20145-1-git-send-email-renaud.barbier@ge.com>
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TB2FG-0007oU-47
+ for barebox@lists.infradead.org; Mon, 10 Sep 2012 11:33:39 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 6B3E5BF0E7
+ for <barebox@lists.infradead.org>; Mon, 10 Sep 2012 13:33:30 +0200 (CEST)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Mon, 10 Sep 2012 13:33:29 +0200
+Message-Id: <1347276809-8029-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,42 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fsl TSEC: register map boundary
+Subject: [PATCH] smsc911x: Check platformdata pointer
 To: barebox@lists.infradead.org
 
-The end boundary of each registers set may overlap with the start
-of the next register set. Subtract 1 to the end boundary.
+If pdata is NULL smc911x_probe will crash. Checking the zero initialized
+priv->shift results in default configuration if pdata is not set.
 
-Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 ---
- arch/ppc/mach-mpc85xx/eth-devices.c |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/smc911x.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/ppc/mach-mpc85xx/eth-devices.c b/arch/ppc/mach-mpc85xx/eth-devices.c
-index 02a3722..c6e8f36 100644
---- a/arch/ppc/mach-mpc85xx/eth-devices.c
-+++ b/arch/ppc/mach-mpc85xx/eth-devices.c
-@@ -32,15 +32,15 @@ int fsl_eth_init(int num, struct gfar_info_struct *gf)
- 	res = xzalloc(3 * sizeof(struct resource));
- 	/* TSEC interface registers */
- 	res[0].start = GFAR_BASE_ADDR + ((num - 1) * 0x1000);
--	res[0].end = res[0].start + 0x1000;
-+	res[0].end = res[0].start + 0x1000 - 1;
- 	res[0].flags = IORESOURCE_MEM;
- 	/* External PHY access always through eTSEC1 */
- 	res[1].start = MDIO_BASE_ADDR;
--	res[1].end = res[1].start + 0x1000;
-+	res[1].end = res[1].start + 0x1000 - 1;
- 	res[1].flags = IORESOURCE_MEM;
- 	/* Access to TBI/RTBI interface. */
- 	res[2].start = MDIO_BASE_ADDR + ((num - 1) * 0x1000);
--	res[2].end = res[2].start + 0x1000;
-+	res[2].end = res[2].start + 0x1000 - 1;
- 	res[2].flags = IORESOURCE_MEM;
+diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
+index bc1e001..f697608 100644
+--- a/drivers/net/smc911x.c
++++ b/drivers/net/smc911x.c
+@@ -435,7 +435,7 @@ static int smc911x_probe(struct device_d *dev)
+ 		priv->shift = pdata->shift;
  
- 	add_generic_device_res("gfar", DEVICE_ID_DYNAMIC, res, 3, gf);
+ 	if (is_32bit) {
+-		if (pdata->shift) {
++		if (priv->shift) {
+ 			priv->reg_read = __smc911x_reg_readl_shift;
+ 			priv->reg_write = __smc911x_reg_writel_shift;
+ 		} else {
+@@ -443,7 +443,7 @@ static int smc911x_probe(struct device_d *dev)
+ 			priv->reg_write = __smc911x_reg_writel;
+ 		}
+ 	} else {
+-		if (pdata->shift) {
++		if (priv->shift) {
+ 			priv->reg_read = __smc911x_reg_readw_shift;
+ 			priv->reg_write = __smc911x_reg_writew_shift;
+ 		} else {
 -- 
-1.7.1
+1.7.0.4
 
 
 _______________________________________________
