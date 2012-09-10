@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TAyrU-0006bf-Ma
+ id 1TAyrU-0006bg-Mc
  for barebox@lists.infradead.org; Mon, 10 Sep 2012 07:56:53 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 10 Sep 2012 09:56:47 +0200
-Message-Id: <1347263809-2620-2-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 10 Sep 2012 09:56:48 +0200
+Message-Id: <1347263809-2620-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1347263809-2620-1-git-send-email-s.hauer@pengutronix.de>
 References: <1347263809-2620-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,67 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] ARM lowlevel: Update function documentation
+Subject: [PATCH 2/3] ARM: Add assembler function to get runtime offset
 To: barebox@lists.infradead.org
+
+This function returns the offset between the address barebox is linked at
+and the address barebox is currently running at.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start-pbl.c   |    3 +++
- arch/arm/cpu/start-reset.c |    3 +++
- arch/arm/cpu/start.c       |    5 ++++-
- 3 files changed, 10 insertions(+), 1 deletion(-)
+ arch/arm/include/asm/barebox-arm.h |    1 +
+ arch/arm/lib/Makefile              |    2 ++
+ arch/arm/lib/runtime-offset.S      |   17 +++++++++++++++++
+ 3 files changed, 20 insertions(+)
+ create mode 100644 arch/arm/lib/runtime-offset.S
 
-diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index 932a3da..09a1940 100644
---- a/arch/arm/cpu/start-pbl.c
-+++ b/arch/arm/cpu/start-pbl.c
-@@ -36,6 +36,9 @@
- unsigned long free_mem_ptr;
- unsigned long free_mem_end_ptr;
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index b880dd4..3639365 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -42,5 +42,6 @@ extern char __ll_return[];
+ void board_init_lowlevel(void);
+ void board_init_lowlevel_return(void);
+ void arch_init_lowlevel(void);
++uint32_t get_runtime_offset(void);
  
+ #endif	/* _BAREBOX_ARM_H_ */
+diff --git a/arch/arm/lib/Makefile b/arch/arm/lib/Makefile
+index 9d0ff7a..2e624cd 100644
+--- a/arch/arm/lib/Makefile
++++ b/arch/arm/lib/Makefile
+@@ -16,6 +16,8 @@ obj-y	+= lib1funcs.o
+ obj-y	+= ashrdi3.o
+ obj-y	+= ashldi3.o
+ obj-y	+= lshrdi3.o
++obj-y	+= runtime-offset.o
++pbl-y	+= runtime-offset.o
+ obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memcpy.o
+ obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memset.o
+ obj-$(CONFIG_ARM_UNWIND) += unwind.o
+diff --git a/arch/arm/lib/runtime-offset.S b/arch/arm/lib/runtime-offset.S
+new file mode 100644
+index 0000000..ffa668c
+--- /dev/null
++++ b/arch/arm/lib/runtime-offset.S
+@@ -0,0 +1,17 @@
++#include <linux/linkage.h>
++#include <asm/assembler.h>
++
 +/*
-+ * First instructions in the pbl image
++ * Get the offset between the link address and the address
++ * we are currently running at.
 + */
- void __naked __section(.text_head_entry) pbl_start(void)
- {
- 	barebox_arm_head();
-diff --git a/arch/arm/cpu/start-reset.c b/arch/arm/cpu/start-reset.c
-index e0df676..fcfdce6 100644
---- a/arch/arm/cpu/start-reset.c
-+++ b/arch/arm/cpu/start-reset.c
-@@ -29,6 +29,9 @@
- /*
-  * The actual reset vector. This code is position independent and usually
-  * does not run at the address it's linked at.
-+ *
-+ * This is either executed in the pbl image (if enabled) or in the regular
-+ * image.
-  */
- void __naked __bare_init reset(void)
- {
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 07e7dfe..e43ff9c 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -30,7 +30,7 @@
- 
- #ifdef CONFIG_PBL_IMAGE
- /*
-- * First function in the pbl image. We get here from
-+ * First function in the uncompressed image. We get here from
-  * the pbl.
-  */
- void __naked __section(.text_entry) start(void)
-@@ -47,6 +47,9 @@ void __naked __section(.text_entry) start(void)
- }
- #else
- 
-+/*
-+ * First function in the image without pbl support
-+ */
- void __naked __section(.text_entry) start(void)
- {
- 	barebox_arm_head();
++ENTRY(get_runtime_offset)
++1:	adr r0, 1b
++	ldr r1, linkadr
++	subs r0, r1, r0
++THUMB(	subs r0, r0, #1)
++	mov pc, lr
++
++linkadr:
++.word get_runtime_offset
++ENDPROC(get_runtime_offset)
 -- 
 1.7.10.4
 
