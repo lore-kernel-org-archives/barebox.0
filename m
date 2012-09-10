@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.meprolight.com ([194.90.149.17] helo=meprolight.com)
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TB12k-0001sA-Gm
- for barebox@lists.infradead.org; Mon, 10 Sep 2012 10:16:39 +0000
-From: Alex Gershgorin <alexg@meprolight.com>
-Date: Mon, 10 Sep 2012 13:16:26 +0300
-Message-ID: <4875438356E7CA4A8F2145FCD3E61C0B3074AA38F9@MEP-EXCH.meprolight.com>
-References: <1347014799-23478-1-git-send-email-alexg@meprolight.com>,
- <20120910073632.GV18243@pengutronix.de>
-In-Reply-To: <20120910073632.GV18243@pengutronix.de>
-Content-Language: en-US
+Received: from guitar.tcltek.co.il ([192.115.133.116] helo=sivan.tkos.co.il)
+ by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TB1X4-0006rP-TX
+ for barebox@lists.infradead.org; Mon, 10 Sep 2012 10:48:00 +0000
+Date: Mon, 10 Sep 2012 13:47:45 +0300
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20120910104745.GA9075@sapphire.tkos.co.il>
+References: <1347270624-18878-1-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1347270624-18878-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,52 +22,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: [PATCH]    video imx-ipu-fb: add clear screen
-To: Sascha Hauer <s.hauer@pengutronix.de>, Alex Gershgorin <alexgershgorin@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] omap: add SPI as a boot mode for xload
+To: Jan Luebbe <jlu@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Sascha,
+Hi Jan,
 
- On Fri, Sep 07, 2012 at 01:46:39PM +0300, Alex Gershgorin wrote:
-> This patch clear screen before usage
->
-> Signed-off-by: Alex Gershgorin <alexg@meprolight.com>
+On Mon, Sep 10, 2012 at 11:50:24AM +0200, Jan Luebbe wrote:
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 > ---
->  drivers/video/imx-ipu-fb.c |    4 ++++
->  1 files changed, 4 insertions(+), 0 deletions(-)
->
-> diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
-> index 8039de0..d46cced 100644
-> --- a/drivers/video/imx-ipu-fb.c
-> +++ b/drivers/video/imx-ipu-fb.c
-> @@ -1012,6 +1012,10 @@ static int imxfb_probe(struct device_d *dev)
->                                              (info->bits_per_pixel >> 3));
->               if (!fbi->info.screen_base)
->                       return -ENOMEM;
-> +
-> +             /* Clear the screen */
-> +             memset((char *)fbi->info.screen_base, 0,
-> +             info->xres * info->yres * (info->bits_per_pixel >> 3));
+>  arch/arm/mach-omap/include/mach/xload.h |    1 +
+>  arch/arm/mach-omap/xload.c              |   40 +++++++++++++++++++++++++++++++
+>  2 files changed, 41 insertions(+)
 
-> > Not clearing the screen is intentional. Normally the fb drivers do not
-> > enable the framebuffer until explicitely requested via fb0.enable=1. The
-> > environment normally is supposed to set a picture on the screen and
-> > enable it afterwards.
-> > That said, we can clear the screen as with MMU enabled this probably
-> > does not take long time. But then it should be done in the fb core.
+[snip]
 
-Thanks for your explanation.
-In my case, I displayed picture on the screen, of course as you said I added to "init" script   
-fb0.enable = 1
-bmp / env / logo.bmp
-it was easy.
+> +void *omap_xload_boot_spi(int offset)
 
-The problem is that I have a screen with resolution 800x600, but picture that I displayed on the my screen is much smaller,
-resulting in a picture is displayed fine, but on the sides I get garbage. 
-This patch fixes this issue, of course it is not the only way to solve this issue.
+static?
 
-Regards,
-Alex
+baruch
+
+-- 
+     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
