@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo5.mail-out.ovh.net ([46.105.40.108]
+Received: from 10.mo5.mail-out.ovh.net ([46.105.52.148]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TBNbt-0003VN-C8
- for barebox@lists.infradead.org; Tue, 11 Sep 2012 10:22:31 +0000
+ id 1TBNd9-0004BB-VT
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 10:23:45 +0000
 Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 8BFE1FFA338
- for <barebox@lists.infradead.org>; Tue, 11 Sep 2012 12:27:56 +0200 (CEST)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id A136EFFA268
+ for <barebox@lists.infradead.org>; Tue, 11 Sep 2012 12:29:13 +0200 (CEST)
+Date: Tue, 11 Sep 2012 12:21:03 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 11 Sep 2012 12:19:27 +0200
-Message-Id: <1347358767-1180-7-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1347358767-1180-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1347358767-1180-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20120911102103.GH31207@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,258 +20,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] defaultenv-2: add boot sequence
+Subject: [PATCH 1/1 v2] genenv: Allow to also specify files for the
+ environment instead of only directories
 To: barebox@lists.infradead.org
 
-Boot will boot run sequentially the script in /env/boot.d
-
-drop global.boot.default as we start the boot sequence by default
-
-update the current board using the defaultenv-2 at the sametime
+we may specify file in the defconfig
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- .../arm/boards/crystalfontz-cfa10036/env/boot.d/01 |    1 +
- .../arm/boards/crystalfontz-cfa10036/env/boot.d/02 |    1 +
- .../arm/boards/crystalfontz-cfa10036/env/boot.d/03 |    1 +
- .../boards/crystalfontz-cfa10036/env/init/general  |    3 --
- .../boards/freescale-mx6-sabrelite/env/boot.d/01   |    1 +
- .../boards/freescale-mx6-sabrelite/env/boot.d/02   |    1 +
- arch/arm/boards/pcm038/env/boot.d/01               |    1 +
- arch/arm/boards/pcm038/env/boot.d/02               |    1 +
- arch/arm/boards/pcm038/env/boot.d/03               |    1 +
- arch/arm/boards/tqma53/env/boot.d/01               |    1 +
- arch/arm/boards/tqma53/env/boot.d/02               |    1 +
- common/Kconfig                                     |    2 +
- defaultenv-2/base/bin/boot                         |   51 +++++++++++++++++---
- defaultenv-2/base/init/general                     |    3 --
- 14 files changed, 57 insertions(+), 12 deletions(-)
- create mode 120000 arch/arm/boards/crystalfontz-cfa10036/env/boot.d/01
- create mode 120000 arch/arm/boards/crystalfontz-cfa10036/env/boot.d/02
- create mode 120000 arch/arm/boards/crystalfontz-cfa10036/env/boot.d/03
- create mode 120000 arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/01
- create mode 120000 arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/02
- create mode 120000 arch/arm/boards/pcm038/env/boot.d/01
- create mode 120000 arch/arm/boards/pcm038/env/boot.d/02
- create mode 120000 arch/arm/boards/pcm038/env/boot.d/03
- create mode 120000 arch/arm/boards/tqma53/env/boot.d/01
- create mode 120000 arch/arm/boards/tqma53/env/boot.d/02
+ scripts/genenv |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/crystalfontz-cfa10036/env/boot.d/01 b/arch/arm/boards/crystalfontz-cfa10036/env/boot.d/01
-new file mode 120000
-index 0000000..1e6fecc
---- /dev/null
-+++ b/arch/arm/boards/crystalfontz-cfa10036/env/boot.d/01
-@@ -0,0 +1 @@
-+../boot/mmc-ext3
-\ No newline at end of file
-diff --git a/arch/arm/boards/crystalfontz-cfa10036/env/boot.d/02 b/arch/arm/boards/crystalfontz-cfa10036/env/boot.d/02
-new file mode 120000
-index 0000000..70b8ea3
---- /dev/null
-+++ b/arch/arm/boards/crystalfontz-cfa10036/env/boot.d/02
-@@ -0,0 +1 @@
-+../boot/net
-\ No newline at end of file
-diff --git a/arch/arm/boards/crystalfontz-cfa10036/env/boot.d/03 b/arch/arm/boards/crystalfontz-cfa10036/env/boot.d/03
-new file mode 120000
-index 0000000..b41f2fd
---- /dev/null
-+++ b/arch/arm/boards/crystalfontz-cfa10036/env/boot.d/03
-@@ -0,0 +1 @@
-+../boot/initrd
-\ No newline at end of file
-diff --git a/arch/arm/boards/crystalfontz-cfa10036/env/init/general b/arch/arm/boards/crystalfontz-cfa10036/env/init/general
-index 5cb3a75..125de5d 100644
---- a/arch/arm/boards/crystalfontz-cfa10036/env/init/general
-+++ b/arch/arm/boards/crystalfontz-cfa10036/env/init/general
-@@ -7,6 +7,3 @@ fi
+diff --git a/scripts/genenv b/scripts/genenv
+index c84af0c..ff7972b 100755
+--- a/scripts/genenv
++++ b/scripts/genenv
+@@ -11,7 +11,11 @@ shift 2
+ tempdir=$(mktemp -d tmp.XXXXXX)
  
- # timeout in seconds before the default boot entry is started
- global.autoboot_timeout=3
--
--# default boot entry (one of /env/boot/*)
--global.boot.default=mmc-ext3
-diff --git a/arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/01 b/arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/01
-new file mode 120000
-index 0000000..70b8ea3
---- /dev/null
-+++ b/arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/01
-@@ -0,0 +1 @@
-+../boot/net
-\ No newline at end of file
-diff --git a/arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/02 b/arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/02
-new file mode 120000
-index 0000000..b41f2fd
---- /dev/null
-+++ b/arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/02
-@@ -0,0 +1 @@
-+../boot/initrd
-\ No newline at end of file
-diff --git a/arch/arm/boards/pcm038/env/boot.d/01 b/arch/arm/boards/pcm038/env/boot.d/01
-new file mode 120000
-index 0000000..d1b275c
---- /dev/null
-+++ b/arch/arm/boards/pcm038/env/boot.d/01
-@@ -0,0 +1 @@
-+../boot/nand-ubi
-\ No newline at end of file
-diff --git a/arch/arm/boards/pcm038/env/boot.d/02 b/arch/arm/boards/pcm038/env/boot.d/02
-new file mode 120000
-index 0000000..70b8ea3
---- /dev/null
-+++ b/arch/arm/boards/pcm038/env/boot.d/02
-@@ -0,0 +1 @@
-+../boot/net
-\ No newline at end of file
-diff --git a/arch/arm/boards/pcm038/env/boot.d/03 b/arch/arm/boards/pcm038/env/boot.d/03
-new file mode 120000
-index 0000000..b41f2fd
---- /dev/null
-+++ b/arch/arm/boards/pcm038/env/boot.d/03
-@@ -0,0 +1 @@
-+../boot/initrd
-\ No newline at end of file
-diff --git a/arch/arm/boards/tqma53/env/boot.d/01 b/arch/arm/boards/tqma53/env/boot.d/01
-new file mode 120000
-index 0000000..70b8ea3
---- /dev/null
-+++ b/arch/arm/boards/tqma53/env/boot.d/01
-@@ -0,0 +1 @@
-+../boot/net
-\ No newline at end of file
-diff --git a/arch/arm/boards/tqma53/env/boot.d/02 b/arch/arm/boards/tqma53/env/boot.d/02
-new file mode 120000
-index 0000000..b41f2fd
---- /dev/null
-+++ b/arch/arm/boards/tqma53/env/boot.d/02
-@@ -0,0 +1 @@
-+../boot/initrd
-\ No newline at end of file
-diff --git a/common/Kconfig b/common/Kconfig
-index b97392c..f411719 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -563,6 +563,8 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW
- 	select CMD_GLOBAL
- 	select CMD_AUTOMOUNT
- 	select CMD_BASENAME
-+	select CMD_READLINK
-+	select CMD_DIRNAME
- 	select FLEXIBLE_BOOTARGS
- 	prompt "Generic environment template"
- 
-diff --git a/defaultenv-2/base/bin/boot b/defaultenv-2/base/bin/boot
-index 103eb87..68e9e89 100644
---- a/defaultenv-2/base/bin/boot
-+++ b/defaultenv-2/base/bin/boot
-@@ -2,6 +2,8 @@
- 
- verbose=
- dryrun=
-+# ensure sequence is init at something
-+sequence=t
- 
- usage="
- $0 [OPTIONS] [source]\n
-@@ -10,11 +12,27 @@ $0 [OPTIONS] [source]\n
-  -l  list boot sources\n
-  -h  help"
- 
-+. /env/data/ansi-colors
-+
- for i in /env/boot/*; do
- 	basename $i s
- 	sources="$sources$s "
+ for i in $*; do
+-	cp -r $i/* $tempdir
++	if [ -d $i ]; then
++		cp -r $i/* $tempdir
++	else
++		cp -a $i $tempdir
++	fi
  done
  
-+if [ -d /env/boot.d ]; then
-+	sources="$sources\n\nboot sequence:"
-+	for i in /env/boot.d/*; do
-+		readlink -f $i s
-+		basename $s link
-+		basename $i s
-+		sources="$sources\n ${YELLOW}${s}${NC} -> ${CYAN}${link}${NC}"
-+	done
-+else
-+	sequence=n
-+	sources="$sources\n\nboot sequence:\nnone"
-+	echo "${RED}WARNING: boot sequence: none${NC}"
-+fi
-+
- while getopt "vdhl" opt; do
- 	if [ ${opt} = v ]; then
- 		if [ -n "$verbose" ]; then
-@@ -23,7 +41,7 @@ while getopt "vdhl" opt; do
- 			verbose="-v"
- 		fi
- 	elif [ ${opt} = d ]; then
--		dryrun=1
-+		dryrun="-d"
- 	elif [ ${opt} = l ]; then
- 		echo -e "boot sources:\n$sources"
- 		exit 0
-@@ -37,18 +55,39 @@ done
- global -r linux.bootargs.dyn.
- global -r bootm.
- 
--if [ $# = 0 ]; then
--	scr="$global.boot.default"
-+if [ $# = 0 -a "x$sequence" = "xt" ]; then
-+	sequence=y
- else
- 	scr="$1"
- fi
- 
-+if [ "x$sequence" = "xy" ]; then
-+	if [ ! -d /env/boot.d ]; then
-+		echo -e "${GREEN}boot sequence ${RED}none${NC}"
-+		exit 1
-+	fi
-+	echo -e "${GREEN}Start boot sequence${NC}"
-+	for i in /env/boot.d/*; do
-+		readlink -f $i s
-+		basename $s link
-+		basename $i s
-+		msg="${GREEN}boot${NC} ${YELLOW}${s}${NC} -> ${CYAN}${link}${NC}"
-+		echo -e "${msg}"
-+		boot $dryrun $s
-+		echo -e "${msg} ${RED}failled${NC}"
-+		ret=$?
-+	done
-+	echo -e "${GREEN}boot sequence ${RED}failled${NC}"
-+	exit $ret
-+fi
-+
- if [ -n "$scr" ]; then
--	if [ ! -f /env/boot/$scr ]; then
--		echo -e "/env/boot/$scr does not exist.Valid choices:\n$sources"
-+	if [ ! -f /env/boot.d/$scr -a ! -f /env/boot/$scr ]; then
-+		echo -e "/env/boot/$scr or /env/boot.d/$scr does not exist.Valid choices:\n$sources"
- 		exit
- 	fi
--	/env/boot/$scr
-+	[ -f /env/boot.d/$scr ] && /env/boot.d/$scr
-+	[ -f /env/boot/$scr ] && /env/boot/$scr
- fi
- 
- if [ -n "$dryrun" ]; then
-diff --git a/defaultenv-2/base/init/general b/defaultenv-2/base/init/general
-index 98a92d1..e7fffdd 100644
---- a/defaultenv-2/base/init/general
-+++ b/defaultenv-2/base/init/general
-@@ -10,6 +10,3 @@ global.user=sha
- 
- # timeout in seconds before the default boot entry is started
- global.autoboot_timeout=3
--
--# default boot entry (one of /env/boot/*)
--global.boot.default=net
+ find $tempdir -name '.svn' -o -name '*~' | xargs --no-run-if-empty rm -r
 -- 
 1.7.10.4
 
