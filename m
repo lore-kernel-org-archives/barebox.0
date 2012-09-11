@@ -2,22 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 4.mo1.mail-out.ovh.net ([46.105.76.26]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TBMl0-0001HZ-Db
- for barebox@lists.infradead.org; Tue, 11 Sep 2012 09:27:47 +0000
+ id 1TBNJJ-0003zQ-GJ
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 10:03:16 +0000
 Received: from mail425.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id C1D67FFA159
- for <barebox@lists.infradead.org>; Tue, 11 Sep 2012 11:35:45 +0200 (CEST)
-Date: Tue, 11 Sep 2012 11:25:07 +0200
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 2A49EFFA24D
+ for <barebox@lists.infradead.org>; Tue, 11 Sep 2012 12:11:10 +0200 (CEST)
+Date: Tue, 11 Sep 2012 12:00:13 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120911092507.GF31207@game.jcrosoft.org>
-References: <1344959336-18562-1-git-send-email-plagnioj@jcrosoft.com>
- <20120910151900.GC31207@game.jcrosoft.org>
- <20120911075357.GK18243@pengutronix.de>
- <20120911085721.GE31207@game.jcrosoft.org>
- <20120911091415.GR18243@pengutronix.de>
+Message-ID: <20120911100013.GG31207@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120911091415.GR18243@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,56 +24,99 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [for master PATCH 1/2] miidev: add phy_addr detection support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [Resend PATCH 0/7 v3] defaultenv-2: add boot sequence
+To: barebox@lists.infradead.org
 
-On 11:14 Tue 11 Sep     , Sascha Hauer wrote:
-> On Tue, Sep 11, 2012 at 10:57:21AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 09:53 Tue 11 Sep     , Sascha Hauer wrote:
-> > > On Mon, Sep 10, 2012 at 05:19:00PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > On 17:48 Tue 14 Aug     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > > export via param the phy_addr and the phy_id detected
-> > > > > 
-> > > > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > > > ---
-> > > > > Hi,
-> > > > > 
-> > > > > 	this is need to fix the calao board support since the introduction of
-> > > > > 	the gigabit phy detection support
-> > > > 
-> > > > can we have this as the phylib will not make it for this release
-> > > 
-> > > As said to Eric in the other thread, I intend to apply:
-> > > 
-> > > [PATCH 3/3] miidev: fix 1G wrong detection
-> > > 
-> > > This should fix your problem here aswell, right?
-> > no I need the phy_addr auto detected
-> 
-> Ok, but I still do not understand the following sentence from the commit
-> message:
-> 
-> 	this is need to fix the calao board support since the introduction of
-> 	the gigabit phy detection support
-> 
-> Hey, wait, you probably do not mean gigabit support, but the following
-> patch:
-> 
-> | commit 1b725b9c443cd80ab4f5876a1e2c8443a24472ef
-> | Author: Johannes Stezenbach <js@sig21.net>
-> | Date:   Mon Jun 18 16:47:56 2012 +0200
-> |
-> |     miidev: actually probe the PHY
-> |    
-> |     Check if the PHY is really accessible (e.g. the
-> |     PHY address is correct) during probe.
-> |     
-> |     Signed-off-by: Johannes Stezenbach <js@sig21.net>
-> |     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> 
+HI,
 
-yes
+	v3:
+	 update comments
+
+	v2:
+
+	  drop global.boot.default as we start the boot sequence by default
+	  update ansi-colors
+	  allow to always pass -e to echo
+
+	this patch series depends on fs-symlink send previously
+
+please pull
+The following changes since commit a685c02ebfd1b345c2059f36336e8c5d89cf2a8c:
+
+  smsc911x: Check platformdata pointer (2012-09-10 18:06:21 +0200)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git tags/defaultenv-2-boot-sequence
+
+for you to fetch changes up to 6f1c02c70616fbb40e0db116c67a3205c5d8681f:
+
+  defaultenv-2: add boot sequence (2012-09-11 17:58:34 +0800)
+
+----------------------------------------------------------------
+defaultenv-2: add boot sequence
+
+Boot will boot run sequentially the script in /env/boot.d
+We store symlink in /env/boot.d on /env/boot
+
+drop global.boot.default
+start the boot sequence by default
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (7):
+      globalbar: add inline when not enabled
+      globalvar: add support to set a value to of all globalvars beginning with 'match'
+      defaultenv-2: boot use global.linux.bootargs.dyn for dynamic globalvar
+      defaultenv-2: boot reset linux.bootargs.dyn. and bootm. globalvar
+      echo: always allow to pass -e option
+      defaultenv-2/ansi-colors: export color only if enable
+      defaultenv-2: add boot sequence
+
+ arch/arm/boards/crystalfontz-cfa10036/env/boot.d/01    |    1 +
+ arch/arm/boards/crystalfontz-cfa10036/env/boot.d/02    |    1 +
+ arch/arm/boards/crystalfontz-cfa10036/env/boot.d/03    |    1 +
+ arch/arm/boards/crystalfontz-cfa10036/env/init/general |    3 ---
+ arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/01  |    1 +
+ arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/02  |    1 +
+ arch/arm/boards/pcm038/env/boot.d/01                   |    1 +
+ arch/arm/boards/pcm038/env/boot.d/02                   |    1 +
+ arch/arm/boards/pcm038/env/boot.d/03                   |    1 +
+ arch/arm/boards/tqma53/env/boot.d/01                   |    1 +
+ arch/arm/boards/tqma53/env/boot.d/02                   |    1 +
+ commands/echo.c                                        |   12 ++++--------
+ commands/global.c                                      |   51 ++++++++++++++++++++++++++++++++++++++++-----------
+ common/Kconfig                                         |    2 ++
+ common/globalvar.c                                     |   10 ++++++++++
+ defaultenv-2/base/bin/boot                             |   55 +++++++++++++++++++++++++++++++++++++++++++++++++------
+ defaultenv-2/base/bin/bootargs-ip                      |    4 ++--
+ defaultenv-2/base/bin/bootargs-ip-barebox              |    2 +-
+ defaultenv-2/base/bin/bootargs-ip-dhcp                 |    2 +-
+ defaultenv-2/base/bin/bootargs-ip-none                 |    2 +-
+ defaultenv-2/base/bin/bootargs-root-disk               |    2 +-
+ defaultenv-2/base/bin/bootargs-root-ext                |    2 +-
+ defaultenv-2/base/bin/bootargs-root-initrd             |    2 +-
+ defaultenv-2/base/bin/bootargs-root-jffs2              |    2 +-
+ defaultenv-2/base/bin/bootargs-root-nfs                |    2 +-
+ defaultenv-2/base/bin/bootargs-root-ubi                |    2 +-
+ defaultenv-2/base/bin/init                             |    5 +++--
+ defaultenv-2/base/boot/initrd                          |    2 +-
+ defaultenv-2/base/data/ansi-colors                     |    4 ++++
+ defaultenv-2/base/init/general                         |    3 ---
+ defaultenv-2/menu/menu/mainmenu                        |    4 +---
+ include/globalvar.h                                    |   23 +++++++++++++++++++++++
+ 32 files changed, 158 insertions(+), 48 deletions(-)
+ create mode 120000 arch/arm/boards/crystalfontz-cfa10036/env/boot.d/01
+ create mode 120000 arch/arm/boards/crystalfontz-cfa10036/env/boot.d/02
+ create mode 120000 arch/arm/boards/crystalfontz-cfa10036/env/boot.d/03
+ create mode 120000 arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/01
+ create mode 120000 arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/02
+ create mode 120000 arch/arm/boards/pcm038/env/boot.d/01
+ create mode 120000 arch/arm/boards/pcm038/env/boot.d/02
+ create mode 120000 arch/arm/boards/pcm038/env/boot.d/03
+ create mode 120000 arch/arm/boards/tqma53/env/boot.d/01
+ create mode 120000 arch/arm/boards/tqma53/env/boot.d/02
 
 Best Regards,
 J.
