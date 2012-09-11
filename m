@@ -1,22 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo5.mail-out.ovh.net ([188.165.57.91]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TBPR4-0006ng-OH
- for barebox@lists.infradead.org; Tue, 11 Sep 2012 12:19:23 +0000
-Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id B4A0BFF9E52
- for <barebox@lists.infradead.org>; Tue, 11 Sep 2012 14:24:53 +0200 (CEST)
-Date: Tue, 11 Sep 2012 14:16:44 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120911121644.GJ31207@game.jcrosoft.org>
-References: <1347341518-2779-1-git-send-email-alex.aring@gmail.com>
- <1347341518-2779-2-git-send-email-alex.aring@gmail.com>
- <20120911073138.GE18243@pengutronix.de>
- <CAB_54W69jr4hnoa54mNn76WRCX3BV35UJYb0BrpCqfJUYJ0yOw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAB_54W69jr4hnoa54mNn76WRCX3BV35UJYb0BrpCqfJUYJ0yOw@mail.gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TBQZI-0003hT-NV
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 13:31:57 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 11 Sep 2012 15:31:49 +0200
+Message-Id: <1347370313-15184-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1347370313-15184-1-git-send-email-s.hauer@pengutronix.de>
+References: <1347370313-15184-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,35 +16,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] complete: abstract path complete
-To: Alexander Aring <alex.aring@googlemail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/5] mfd mc13xxx: Separate I2C and SPI probe
+To: barebox@lists.infradead.org
 
-On 12:38 Tue 11 Sep     , Alexander Aring wrote:
->    Hi,
-> 
->    I prefer this implementation than the older one, because it check on
->    executable(Maybe we add a attribute for that or check on shebang) file and
->    call found with the full path.
->    I was thinking about to put this as RFC..., because I don't have really a
->    usecase for this.
->    Some commands can do a autocompletion for files that are in $PATH, when
->    this is needed.
-> 
->    The naming things, I don't like the name, too. I was doing the naming like
->    the others functions.
->    I will send a v2 with a better name and functionheader
-do not like it is not a justification to move or rename it
+Upcoming patches will put I2C/SPI on their own busses with
+spi_register_driver / i2c_register_driver which will only
+be available if the subsystem is enabled. We could provide
+static inlines, but it wouldn't make much sense to compile
+a spi/i2c driver if the corresponding subsystem is disabled.
 
-IT remember the shit that did TI guys on the kernel rename and move stuff
-because x or y do notlinke the naming
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mfd/mc13xxx.c |   28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
-Best Regards,
-J.
+diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
+index 704446d..58394a7 100644
+--- a/drivers/mfd/mc13xxx.c
++++ b/drivers/mfd/mc13xxx.c
+@@ -336,31 +336,39 @@ static int mc_probe(struct device_d *dev, enum mc13xxx_mode mode)
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_I2C
+ static int mc_i2c_probe(struct device_d *dev)
+ {
+ 	return mc_probe(dev, MC13XXX_MODE_I2C);
+ }
+ 
+-static int mc_spi_probe(struct device_d *dev)
+-{
+-	return mc_probe(dev, MC13XXX_MODE_SPI);
+-}
+-
+ static struct driver_d mc_i2c_driver = {
+ 	.name  = "mc13xxx-i2c",
+ 	.probe = mc_i2c_probe,
+ };
+ 
++static int mc_i2c_init(void)
++{
++	return register_driver(&mc_i2c_driver);
++}
++device_initcall(mc_i2c_init);
++#endif
++
++#ifdef CONFIG_SPI
++static int mc_spi_probe(struct device_d *dev)
++{
++	return mc_probe(dev, MC13XXX_MODE_SPI);
++}
++
+ static struct driver_d mc_spi_driver = {
+ 	.name  = "mc13xxx-spi",
+ 	.probe = mc_spi_probe,
+ };
+ 
+-static int mc_init(void)
++static int mc_spi_init(void)
+ {
+-        register_driver(&mc_i2c_driver);
+-        register_driver(&mc_spi_driver);
+-        return 0;
++	return register_driver(&mc_spi_driver);
+ }
+ 
+-device_initcall(mc_init);
++device_initcall(mc_spi_init);
++#endif
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
