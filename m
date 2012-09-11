@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TBQZI-0003hV-Nc
- for barebox@lists.infradead.org; Tue, 11 Sep 2012 13:31:59 +0000
+ id 1TBQuX-0001EY-Jh
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 13:53:55 +0000
+Date: Tue, 11 Sep 2012 15:53:51 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 11 Sep 2012 15:31:51 +0200
-Message-Id: <1347370313-15184-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1347370313-15184-1-git-send-email-s.hauer@pengutronix.de>
-References: <1347370313-15184-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20120911135351.GA6180@pengutronix.de>
+References: <20120911044733.GD31207@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20120911044733.GD31207@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,195 +18,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] I2C: Put I2C devices on their own bus
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/3 v2] AMBA Bus support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-This patch adds a I2C bus on which the I2C devices and drivers register.
-This makes it cleaner as I2C devices won't accidently end up probed by
-a platform_device driver.
+On Tue, Sep 11, 2012 at 06:47:33AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
+> 
+> 	v2: upadte comment
+> 
+> 	this first patch series add the AMBA Bus support and is a preperation
+> 	for the adding of the ST-E ux500 support
+> 
+> please pull
+> The following changes since commit 298d15571da8d1cb71e7fd87cc53cad3b2bf1d12:
+> 
+>   i.MX51: unbreak FEC iomux (2012-09-07 10:28:17 +0200)
+> 
+> are available in the git repository at:
+> 
+>   git://git.jcrosoft.org/barebox.git tags/amba_bus
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/i2c/i2c.c       |   23 +++++++++++++++++++++++
- drivers/mfd/lp3972.c    |    2 +-
- drivers/mfd/mc13xxx.c   |    2 +-
- drivers/mfd/mc34704.c   |    4 ++--
- drivers/mfd/mc34708.c   |    2 +-
- drivers/mfd/mc9sdz60.c  |    2 +-
- drivers/mfd/stmpe-i2c.c |    2 +-
- drivers/mfd/twl4030.c   |    2 +-
- drivers/mfd/twl6030.c   |    2 +-
- include/i2c/i2c.h       |    8 ++++++++
- 10 files changed, 40 insertions(+), 9 deletions(-)
+Pulled, thanks
 
-diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-index 3af2b3e..555722b 100644
---- a/drivers/i2c/i2c.c
-+++ b/drivers/i2c/i2c.c
-@@ -251,6 +251,7 @@ struct i2c_client *i2c_new_device(struct i2c_adapter *adapter,
- 	strcpy(client->dev.name, chip->type);
- 	client->dev.type_data = client;
- 	client->dev.platform_data = chip->platform_data;
-+	client->dev.bus = &i2c_bus;
- 	client->adapter = adapter;
- 	client->addr = chip->addr;
- 
-@@ -372,3 +373,25 @@ int i2c_add_numbered_adapter(struct i2c_adapter *adapter)
- 	return 0;
- }
- EXPORT_SYMBOL(i2c_add_numbered_adapter);
-+
-+static int i2c_match(struct device_d *dev, struct driver_d *drv)
-+{
-+	return strcmp(dev->name, drv->name) ? -1 : 0;
-+}
-+
-+static int i2c_probe(struct device_d *dev)
-+{
-+	return dev->driver->probe(dev);
-+}
-+
-+static void i2c_remove(struct device_d *dev)
-+{
-+	dev->driver->remove(dev);
-+}
-+
-+struct bus_type i2c_bus = {
-+	.name = "i2c",
-+	.match = i2c_match,
-+	.probe = i2c_probe,
-+	.remove = i2c_remove,
-+};
-diff --git a/drivers/mfd/lp3972.c b/drivers/mfd/lp3972.c
-index 0f3093b..c5e6baa 100644
---- a/drivers/mfd/lp3972.c
-+++ b/drivers/mfd/lp3972.c
-@@ -103,7 +103,7 @@ static struct driver_d lp_driver = {
- 
- static int lp_init(void)
- {
--	register_driver(&lp_driver);
-+	i2c_register_driver(&lp_driver);
- 	return 0;
- }
- 
-diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
-index 42ed960..a62eca8 100644
---- a/drivers/mfd/mc13xxx.c
-+++ b/drivers/mfd/mc13xxx.c
-@@ -349,7 +349,7 @@ static struct driver_d mc_i2c_driver = {
- 
- static int mc_i2c_init(void)
- {
--	return register_driver(&mc_i2c_driver);
-+	return i2c_register_driver(&mc_i2c_driver);
- }
- device_initcall(mc_i2c_init);
- #endif
-diff --git a/drivers/mfd/mc34704.c b/drivers/mfd/mc34704.c
-index 0432a98..e22fb38 100644
---- a/drivers/mfd/mc34704.c
-+++ b/drivers/mfd/mc34704.c
-@@ -134,7 +134,7 @@ static struct driver_d mc34704_driver = {
- 
- static int mc34704_init(void)
- {
--	register_driver(&mc34704_driver);
--        return 0;
-+	i2c_register_driver(&mc34704_driver);
-+	return 0;
- }
- device_initcall(mc34704_init);
-diff --git a/drivers/mfd/mc34708.c b/drivers/mfd/mc34708.c
-index 75fff7b..f5e08e1 100644
---- a/drivers/mfd/mc34708.c
-+++ b/drivers/mfd/mc34708.c
-@@ -288,7 +288,7 @@ static struct driver_d mc_spi_driver = {
- 
- static int mc_init(void)
- {
--        register_driver(&mc_i2c_driver);
-+        i2c_register_driver(&mc_i2c_driver);
-         spi_register_driver(&mc_spi_driver);
-         return 0;
- }
-diff --git a/drivers/mfd/mc9sdz60.c b/drivers/mfd/mc9sdz60.c
-index 75d0789..612817d 100644
---- a/drivers/mfd/mc9sdz60.c
-+++ b/drivers/mfd/mc9sdz60.c
-@@ -146,7 +146,7 @@ static struct driver_d mc_driver = {
- 
- static int mc_init(void)
- {
--        register_driver(&mc_driver);
-+        i2c_register_driver(&mc_driver);
-         return 0;
- }
- 
-diff --git a/drivers/mfd/stmpe-i2c.c b/drivers/mfd/stmpe-i2c.c
-index 4af8b7b..12e95c1 100644
---- a/drivers/mfd/stmpe-i2c.c
-+++ b/drivers/mfd/stmpe-i2c.c
-@@ -146,7 +146,7 @@ static struct driver_d stmpe_driver = {
- 
- static int stmpe_init(void)
- {
--        register_driver(&stmpe_driver);
-+        i2c_register_driver(&stmpe_driver);
-         return 0;
- }
- 
-diff --git a/drivers/mfd/twl4030.c b/drivers/mfd/twl4030.c
-index 191c91f..9309765 100644
---- a/drivers/mfd/twl4030.c
-+++ b/drivers/mfd/twl4030.c
-@@ -53,7 +53,7 @@ static struct driver_d twl_driver = {
- 
- static int twl_init(void)
- {
--	register_driver(&twl_driver);
-+	i2c_register_driver(&twl_driver);
- 	return 0;
- }
- 
-diff --git a/drivers/mfd/twl6030.c b/drivers/mfd/twl6030.c
-index 7ecfed8..01728fd 100644
---- a/drivers/mfd/twl6030.c
-+++ b/drivers/mfd/twl6030.c
-@@ -49,7 +49,7 @@ static struct driver_d twl_driver = {
- 
- static int twl_init(void)
- {
--	register_driver(&twl_driver);
-+	i2c_register_driver(&twl_driver);
- 	return 0;
- }
- 
-diff --git a/include/i2c/i2c.h b/include/i2c/i2c.h
-index c3e1763..de2a7ea 100644
---- a/include/i2c/i2c.h
-+++ b/include/i2c/i2c.h
-@@ -139,4 +139,12 @@ extern int i2c_write_reg(struct i2c_client *client, u32 addr, const u8 *buf, u16
- 
- #endif /* DOXYGEN_SHOULD_SKIP_THIS */
- 
-+extern struct bus_type i2c_bus;
-+
-+static inline int i2c_register_driver(struct driver_d *drv)
-+{
-+	drv->bus = &i2c_bus;
-+	return register_driver(drv);
-+}
-+
- #endif /* I2C_I2C_H */
+Sascha
+
+> 
+> for you to fetch changes up to 75a0136ccae3899aee91f1d8d38274c426f99175:
+> 
+>   amba-pl011: add st specific init (2012-09-11 12:48:34 +0800)
+> 
+> ----------------------------------------------------------------
+> arm: Introduce ARM AMBA bus
+> 
+> This allow to detect the amba device and use the right driver for it at
+> runtime.
+> 
+> With pl011 amba support (ARM & ST Variant)
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> 
+> ----------------------------------------------------------------
+> Jean-Christophe PLAGNIOL-VILLARD (3):
+>       Introduce ARM AMBA bus
+>       amba-pl011: switch to amba bus
+>       amba-pl011: add st specific init
+> 
+>  arch/arm/mach-nomadik/8815.c   |    9 +++----
+>  arch/arm/mach-versatile/core.c |    7 ++++--
+>  drivers/Makefile               |    1 +
+>  drivers/amba/Makefile          |    2 ++
+>  drivers/amba/bus.c             |  210 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  drivers/serial/amba-pl011.c    |   74 +++++++++++++++++++++++++++++++++++++++++++++++----------
+>  include/linux/amba/bus.h       |  153 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/amba/serial.h    |   29 +++++++++++++++++++++++
+>  8 files changed, 467 insertions(+), 18 deletions(-)
+>  create mode 100644 drivers/amba/Makefile
+>  create mode 100644 drivers/amba/bus.c
+>  create mode 100644 include/linux/amba/bus.h
+> 
+> Best Regards,
+> J.
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
