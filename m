@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo1.mail-out.ovh.net ([178.32.96.102]
+Received: from 1.mo1.mail-out.ovh.net ([178.32.127.22]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TBIQO-0000ZI-7E
- for barebox@lists.infradead.org; Tue, 11 Sep 2012 04:50:13 +0000
+ id 1TBITu-0000sm-4j
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 04:53:51 +0000
 Received: from mail425.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 14D7CFF941A
- for <barebox@lists.infradead.org>; Tue, 11 Sep 2012 06:58:11 +0200 (CEST)
-Date: Tue, 11 Sep 2012 06:47:33 +0200
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id BC579FF9254
+ for <barebox@lists.infradead.org>; Tue, 11 Sep 2012 07:01:48 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120911044733.GD31207@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Tue, 11 Sep 2012 06:51:08 +0200
+Message-Id: <1347339069-14799-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1347339069-14799-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20120911044733.GD31207@game.jcrosoft.org>
+ <1347339069-14799-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,64 +21,192 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3 v2] AMBA Bus support
+Subject: [PATCH 2/3] amba-pl011: switch to amba bus
 To: barebox@lists.infradead.org
 
-Hi,
-
-	v2: upadte comment
-
-	this first patch series add the AMBA Bus support and is a preperation
-	for the adding of the ST-E ux500 support
-
-please pull
-The following changes since commit 298d15571da8d1cb71e7fd87cc53cad3b2bf1d12:
-
-  i.MX51: unbreak FEC iomux (2012-09-07 10:28:17 +0200)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git tags/amba_bus
-
-for you to fetch changes up to 75a0136ccae3899aee91f1d8d38274c426f99175:
-
-  amba-pl011: add st specific init (2012-09-11 12:48:34 +0800)
-
-----------------------------------------------------------------
-arm: Introduce ARM AMBA bus
-
-This allow to detect the amba device and use the right driver for it at
-runtime.
-
-With pl011 amba support (ARM & ST Variant)
+switch as the same time the nomadik and versatile arch that use the driver.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/mach-nomadik/8815.c   |    9 +++++----
+ arch/arm/mach-versatile/core.c |    7 +++++--
+ drivers/serial/amba-pl011.c    |   34 ++++++++++++++++++++++++----------
+ 3 files changed, 34 insertions(+), 16 deletions(-)
 
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (3):
-      Introduce ARM AMBA bus
-      amba-pl011: switch to amba bus
-      amba-pl011: add st specific init
+diff --git a/arch/arm/mach-nomadik/8815.c b/arch/arm/mach-nomadik/8815.c
+index e385598..aecd9e0 100644
+--- a/arch/arm/mach-nomadik/8815.c
++++ b/arch/arm/mach-nomadik/8815.c
+@@ -25,6 +25,7 @@
+ #include <mach/hardware.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
++#include <linux/amba/bus.h>
+ 
+ #include "clock.h"
+ 
+@@ -32,12 +33,15 @@ static struct clk st8815_clk_48 = {
+        .rate = 48 * 1000 * 1000,
+ };
+ 
++static struct clk st8815_dummy;
++
+ void st8815_add_device_sdram(u32 size)
+ {
+ 	arm_add_mem_device("ram0", 0x00000000, size);
+ }
+ 
+ static struct clk_lookup clocks_lookups[] = {
++	CLKDEV_CON_ID("apb_pclk", &st8815_dummy),
+ 	CLKDEV_DEV_ID("uart-pl0110", &st8815_clk_48),
+ 	CLKDEV_DEV_ID("uart-pl0111", &st8815_clk_48),
+ };
+@@ -53,7 +57,6 @@ postcore_initcall(st8815_clkdev_init);
+ void st8815_register_uart(unsigned id)
+ {
+ 	resource_size_t start;
+-	struct device_d *dev;
+ 
+ 	switch (id) {
+ 	case 0:
+@@ -63,7 +66,5 @@ void st8815_register_uart(unsigned id)
+ 		start = NOMADIK_UART1_BASE;
+ 		break;
+ 	}
+-	dev = add_generic_device("uart-pl011", id, NULL, start, 4096,
+-			   IORESOURCE_MEM, NULL);
+-	nmdk_clk_create(&st8815_clk_48, dev_name(dev));
++	amba_apb_device_add(NULL, "uart-pl011", id, start, 4096, NULL, 0);
+ }
+diff --git a/arch/arm/mach-versatile/core.c b/arch/arm/mach-versatile/core.c
+index bdf48f9..86cc755 100644
+--- a/arch/arm/mach-versatile/core.c
++++ b/arch/arm/mach-versatile/core.c
+@@ -34,6 +34,7 @@
+ #include <linux/clkdev.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
++#include <linux/amba/bus.h>
+ 
+ #include <io.h>
+ #include <asm/hardware/arm_timer.h>
+@@ -51,6 +52,8 @@ struct clk {
+ 	unsigned long rate;
+ };
+ 
++static struct clk ref_clk_dummy;
++
+ static struct clk ref_clk_24 = {
+ 	.rate = 24000000,
+ };
+@@ -145,6 +148,7 @@ static int vpb_clocksource_init(void)
+ core_initcall(vpb_clocksource_init);
+ 
+ static struct clk_lookup clocks_lookups[] = {
++	CLKDEV_CON_ID("apb_pclk", &ref_clk_dummy),
+ 	CLKDEV_DEV_ID("uart-pl0110", &ref_clk_24),
+ 	CLKDEV_DEV_ID("uart-pl0111", &ref_clk_24),
+ 	CLKDEV_DEV_ID("uart-pl0112", &ref_clk_24),
+@@ -179,8 +183,7 @@ void versatile_register_uart(unsigned id)
+ 	default:
+ 		return;
+ 	}
+-	add_generic_device("uart-pl011", id, NULL, start, 4096,
+-			   IORESOURCE_MEM, NULL);
++	amba_apb_device_add(NULL, "uart-pl011", id, start, 4096, NULL, 0);
+ }
+ 
+ void __noreturn reset_cpu (unsigned long ignored)
+diff --git a/drivers/serial/amba-pl011.c b/drivers/serial/amba-pl011.c
+index f8c55c4..77f8c8a 100644
+--- a/drivers/serial/amba-pl011.c
++++ b/drivers/serial/amba-pl011.c
+@@ -35,6 +35,7 @@
+ #include <linux/amba/serial.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
++#include <linux/amba/bus.h>
+ 
+ /*
+  * We wrap our port structure around the generic console_device.
+@@ -118,11 +119,8 @@ static int pl011_tstc(struct console_device *cdev)
+ 
+ int pl011_init_port (struct console_device *cdev)
+ {
+-	struct device_d *dev = cdev->dev;
+ 	struct amba_uart_port *uart = to_amba_uart_port(cdev);
+ 
+-	uart->base = dev_request_mem_region(dev, 0);
+-
+ 	/*
+ 	 ** First, disable everything.
+ 	 */
+@@ -154,19 +152,20 @@ int pl011_init_port (struct console_device *cdev)
+ 	return 0;
+ }
+ 
+-static int pl011_probe(struct device_d *dev)
++static int pl011_probe(struct amba_device *dev, const struct amba_id *id)
+ {
+ 	struct amba_uart_port *uart;
+ 	struct console_device *cdev;
+ 
+ 	uart = xzalloc(sizeof(struct amba_uart_port));
+-	uart->clk = clk_get(dev, NULL);
++	uart->clk = clk_get(&dev->dev, NULL);
++	uart->base = amba_get_mem_region(dev);
+ 
+ 	if (IS_ERR(uart->clk))
+ 		return PTR_ERR(uart->clk);
+ 
+ 	cdev = &uart->uart;
+-	cdev->dev = dev;
++	cdev->dev = &dev->dev;
+ 	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
+ 	cdev->tstc = pl011_tstc;
+ 	cdev->putc = pl011_putc;
+@@ -182,14 +181,29 @@ static int pl011_probe(struct device_d *dev)
+ 	return 0;
+ }
+ 
+-static struct driver_d pl011_driver = {
+-	.name = "uart-pl011",
+-	.probe = pl011_probe,
++static struct amba_id pl011_ids[] = {
++	{
++		.id	= 0x00041011,
++		.mask	= 0x000fffff,
++	},
++	{
++		.id	= 0x00380802,
++		.mask	= 0x00ffffff,
++	},
++	{ 0, 0 },
++};
++
++struct amba_driver pl011_driver = {
++	.drv = {
++		.name = "uart-pl011",
++	},
++	.probe		= pl011_probe,
++	.id_table	= pl011_ids,
+ };
+ 
+ static int pl011_init(void)
+ {
+-	register_driver(&pl011_driver);
++	amba_driver_register(&pl011_driver);
+ 	return 0;
+ }
+ 
+-- 
+1.7.10.4
 
- arch/arm/mach-nomadik/8815.c   |    9 +++----
- arch/arm/mach-versatile/core.c |    7 ++++--
- drivers/Makefile               |    1 +
- drivers/amba/Makefile          |    2 ++
- drivers/amba/bus.c             |  210 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/serial/amba-pl011.c    |   74 +++++++++++++++++++++++++++++++++++++++++++++++----------
- include/linux/amba/bus.h       |  153 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/amba/serial.h    |   29 +++++++++++++++++++++++
- 8 files changed, 467 insertions(+), 18 deletions(-)
- create mode 100644 drivers/amba/Makefile
- create mode 100644 drivers/amba/bus.c
- create mode 100644 include/linux/amba/bus.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
