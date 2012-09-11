@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TBL9A-0008A1-Bz
- for barebox@lists.infradead.org; Tue, 11 Sep 2012 07:44:41 +0000
-Date: Tue, 11 Sep 2012 09:44:32 +0200
+ id 1TBLBE-0008QI-Gg
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 07:46:45 +0000
+Date: Tue, 11 Sep 2012 09:46:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120911074432.GH18243@pengutronix.de>
-References: <1347014799-23478-1-git-send-email-alexg@meprolight.com>
- <20120910073632.GV18243@pengutronix.de>
- <4875438356E7CA4A8F2145FCD3E61C0B3074AA38F9@MEP-EXCH.meprolight.com>
+Message-ID: <20120911074642.GI18243@pengutronix.de>
+References: <1347341465-2560-1-git-send-email-alex.aring@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <4875438356E7CA4A8F2145FCD3E61C0B3074AA38F9@MEP-EXCH.meprolight.com>
+In-Reply-To: <1347341465-2560-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,65 +22,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH]    video imx-ipu-fb: add clear screen
-To: Alex Gershgorin <alexg@meprolight.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Alex Gershgorin <alexgershgorin@gmail.com>
+Subject: Re: [PATCH 1/3] commands: add testing menu
+To: Alexander Aring <alex.aring@googlemail.com>
+Cc: barebox@lists.infradead.org
 
-On Mon, Sep 10, 2012 at 01:16:26PM +0300, Alex Gershgorin wrote:
-> Hi Sascha,
+On Tue, Sep 11, 2012 at 07:31:03AM +0200, Alexander Aring wrote:
+> Add command menu for testing utilities.
 > 
->  On Fri, Sep 07, 2012 at 01:46:39PM +0300, Alex Gershgorin wrote:
-> > This patch clear screen before usage
-> >
-> > Signed-off-by: Alex Gershgorin <alexg@meprolight.com>
-> > ---
-> >  drivers/video/imx-ipu-fb.c |    4 ++++
-> >  1 files changed, 4 insertions(+), 0 deletions(-)
-> >
-> > diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
-> > index 8039de0..d46cced 100644
-> > --- a/drivers/video/imx-ipu-fb.c
-> > +++ b/drivers/video/imx-ipu-fb.c
-> > @@ -1012,6 +1012,10 @@ static int imxfb_probe(struct device_d *dev)
-> >                                              (info->bits_per_pixel >> 3));
-> >               if (!fbi->info.screen_base)
-> >                       return -ENOMEM;
-> > +
-> > +             /* Clear the screen */
-> > +             memset((char *)fbi->info.screen_base, 0,
-> > +             info->xres * info->yres * (info->bits_per_pixel >> 3));
-> 
-> > > Not clearing the screen is intentional. Normally the fb drivers do not
-> > > enable the framebuffer until explicitely requested via fb0.enable=1. The
-> > > environment normally is supposed to set a picture on the screen and
-> > > enable it afterwards.
-> > > That said, we can clear the screen as with MMU enabled this probably
-> > > does not take long time. But then it should be done in the fb core.
-> 
-> Thanks for your explanation.
-> In my case, I displayed picture on the screen, of course as you said I added to "init" script   
-> fb0.enable = 1
-> bmp / env / logo.bmp
+> Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 
-I would exchange the above commands. I don't know how this looks on your
-hardware, but often enough it looks a lot nicer if you draw the logo
-first and enable the framebuffer (the backlight most importantly)
-afterwards.
-
-> it was easy.
-> 
-> The problem is that I have a screen with resolution 800x600, but
-> picture that I displayed on the my screen is much smaller, resulting
-> in a picture is displayed fine, but on the sides I get garbage.  This
-> patch fixes this issue, of course it is not the only way to solve this
-> issue.
-
-Yes, I thought that. 'cp /dev/zero /dev/fb0' would be another solution.
-I think the memset in the fb code is fine, but it should be done in the
-generic code.
+Applied, thanks. I fixed the typo Jan mentioned while applying
 
 Sascha
 
+> ---
+>  commands/Kconfig | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index f2756cc..8f3a15a 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -472,6 +472,10 @@ config CMD_OFTREE
+>  
+>  endmenu
+>  
+> +menu "testing                       "
+> +
+> +endmenu
+> +
+>  config CMD_TIMEOUT
+>  	tristate
+>  	prompt "timeout"
+> -- 
+> 1.7.12
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
