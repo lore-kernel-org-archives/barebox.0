@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo1.mail-out.ovh.net ([178.32.127.22]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TBIaZ-00025E-Vy
- for barebox@lists.infradead.org; Tue, 11 Sep 2012 05:00:45 +0000
-Received: from mail425.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 477E5FF9405
- for <barebox@lists.infradead.org>; Tue, 11 Sep 2012 07:08:43 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 11 Sep 2012 06:58:05 +0200
-Message-Id: <1347339485-16235-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-wi0-f177.google.com ([209.85.212.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TBJ35-0004Lr-F6
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 05:30:11 +0000
+Received: by wibhn17 with SMTP id hn17so88213wib.0
+ for <barebox@lists.infradead.org>; Mon, 10 Sep 2012 22:30:08 -0700 (PDT)
+From: Alexander Aring <alex.aring@googlemail.com>
+Date: Tue, 11 Sep 2012 07:31:03 +0200
+Message-Id: <1347341465-2560-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,35 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] genenv: fix files copy
+Subject: [PATCH 1/3] commands: add testing menu
 To: barebox@lists.infradead.org
 
-we may specify file in the defconfig
+Add command menu for testing utilities.
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- scripts/genenv |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ commands/Kconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/scripts/genenv b/scripts/genenv
-index c84af0c..ff7972b 100755
---- a/scripts/genenv
-+++ b/scripts/genenv
-@@ -11,7 +11,11 @@ shift 2
- tempdir=$(mktemp -d tmp.XXXXXX)
+diff --git a/commands/Kconfig b/commands/Kconfig
+index f2756cc..8f3a15a 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -472,6 +472,10 @@ config CMD_OFTREE
  
- for i in $*; do
--	cp -r $i/* $tempdir
-+	if [ -d $i ]; then
-+		cp -r $i/* $tempdir
-+	else
-+		cp -a $i $tempdir
-+	fi
- done
+ endmenu
  
- find $tempdir -name '.svn' -o -name '*~' | xargs --no-run-if-empty rm -r
++menu "testing                       "
++
++endmenu
++
+ config CMD_TIMEOUT
+ 	tristate
+ 	prompt "timeout"
 -- 
-1.7.10.4
+1.7.12
 
 
 _______________________________________________
