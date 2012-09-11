@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TBOWh-0006Y8-0V
- for barebox@lists.infradead.org; Tue, 11 Sep 2012 11:21:07 +0000
-Date: Tue, 11 Sep 2012 13:21:03 +0200
+ id 1TBOsF-0001tX-PU
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 11:43:24 +0000
+Date: Tue, 11 Sep 2012 13:43:21 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120911112103.GV18243@pengutronix.de>
-References: <1347358767-1180-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20120911114321.GW18243@pengutronix.de>
+References: <20120911102103.GH31207@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1347358767-1180-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20120911102103.GH31207@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,59 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] globalbar: add inline when not enabled
+Subject: Re: [PATCH 1/1 v2] genenv: Allow to also specify files for the
+ environment instead of only directories
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Repeating my comment I made last time:
+On Tue, Sep 11, 2012 at 12:21:03PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> we may specify file in the defconfig
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
-Subject: s/globalbar/globalvar/
+Applied, thanks
 
 Sascha
 
-On Tue, Sep 11, 2012 at 12:19:21PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  include/globalvar.h |   20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
+>  scripts/genenv |    6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> diff --git a/include/globalvar.h b/include/globalvar.h
-> index 7cc3976..a127a05 100644
-> --- a/include/globalvar.h
-> +++ b/include/globalvar.h
-> @@ -1,6 +1,7 @@
->  #ifndef __GLOBALVAR_H
->  #define __GLOBALVAR_H
+> diff --git a/scripts/genenv b/scripts/genenv
+> index c84af0c..ff7972b 100755
+> --- a/scripts/genenv
+> +++ b/scripts/genenv
+> @@ -11,7 +11,11 @@ shift 2
+>  tempdir=$(mktemp -d tmp.XXXXXX)
 >  
-> +#ifdef CONFIG_GLOBALVAR
->  int globalvar_add_simple(const char *name);
+>  for i in $*; do
+> -	cp -r $i/* $tempdir
+> +	if [ -d $i ]; then
+> +		cp -r $i/* $tempdir
+> +	else
+> +		cp -a $i $tempdir
+> +	fi
+>  done
 >  
->  int globalvar_add(const char *name,
-> @@ -8,5 +9,24 @@ int globalvar_add(const char *name,
->  		const char *(*get)(struct device_d *, struct param_d *p),
->  		unsigned long flags);
->  char *globalvar_get_match(const char *match, const char *seperator);
-> +#else
-> +static inline int globalvar_add_simple(const char *name)
-> +{
-> +	return 0;
-> +}
-> +
-> +static inline int globalvar_add(const char *name,
-> +		int (*set)(struct device_d *dev, struct param_d *p, const char *val),
-> +		const char *(*get)(struct device_d *, struct param_d *p),
-> +		unsigned long flags)
-> +{
-> +	return 0;
-> +}
-> +
-> +static inline char *globalvar_get_match(const char *match, const char *seperator)
-> +{
-> +	return NULL;
-> +}
-> +#endif
->  
->  #endif /* __GLOBALVAR_H */
+>  find $tempdir -name '.svn' -o -name '*~' | xargs --no-run-if-empty rm -r
 > -- 
 > 1.7.10.4
 > 
