@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TBQuX-0001EY-Jh
- for barebox@lists.infradead.org; Tue, 11 Sep 2012 13:53:55 +0000
-Date: Tue, 11 Sep 2012 15:53:51 +0200
+ id 1TBQvn-0001U1-LL
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 13:55:12 +0000
+Date: Tue, 11 Sep 2012 15:55:09 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120911135351.GA6180@pengutronix.de>
-References: <20120911044733.GD31207@game.jcrosoft.org>
+Message-ID: <20120911135509.GB6180@pengutronix.de>
+References: <1347363808-8945-1-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120911044733.GD31207@game.jcrosoft.org>
+In-Reply-To: <1347363808-8945-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,67 +22,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3 v2] AMBA Bus support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 1/2] xload: make internal functions static
+To: Jan Luebbe <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 11, 2012 at 06:47:33AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,
-> 
-> 	v2: upadte comment
-> 
-> 	this first patch series add the AMBA Bus support and is a preperation
-> 	for the adding of the ST-E ux500 support
-> 
-> please pull
-> The following changes since commit 298d15571da8d1cb71e7fd87cc53cad3b2bf1d12:
-> 
->   i.MX51: unbreak FEC iomux (2012-09-07 10:28:17 +0200)
-> 
-> are available in the git repository at:
-> 
->   git://git.jcrosoft.org/barebox.git tags/amba_bus
+On Tue, Sep 11, 2012 at 01:43:27PM +0200, Jan Luebbe wrote:
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+> ---
+>  arch/arm/mach-omap/include/mach/xload.h |    3 ---
+>  arch/arm/mach-omap/xload.c              |    8 ++++----
+>  2 files changed, 4 insertions(+), 7 deletions(-)
 
-Pulled, thanks
+Applied (both), thanks
 
 Sascha
 
 > 
-> for you to fetch changes up to 75a0136ccae3899aee91f1d8d38274c426f99175:
+> diff --git a/arch/arm/mach-omap/include/mach/xload.h b/arch/arm/mach-omap/include/mach/xload.h
+> index 26f1b68..9294477 100644
+> --- a/arch/arm/mach-omap/include/mach/xload.h
+> +++ b/arch/arm/mach-omap/include/mach/xload.h
+> @@ -1,9 +1,6 @@
+>  #ifndef _MACH_XLOAD_H
+>  #define _MACH_XLOAD_H
+>  
+> -void *omap_xload_boot_nand(int offset);
+> -void *omap_xload_boot_mmc(void);
+> -
+>  enum omap_boot_src {
+>  	OMAP_BOOTSRC_UNKNOWN,
+>  	OMAP_BOOTSRC_MMC1,
+> diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
+> index 0afeea9..18a90c9 100644
+> --- a/arch/arm/mach-omap/xload.c
+> +++ b/arch/arm/mach-omap/xload.c
+> @@ -9,7 +9,7 @@
+>  #include <sizes.h>
+>  #include <filetype.h>
+>  
+> -void *read_image_head(const char *name)
+> +static void *read_image_head(const char *name)
+>  {
+>  	void *header = xmalloc(ARM_HEAD_SIZE);
+>  	struct cdev *cdev;
+> @@ -32,7 +32,7 @@ void *read_image_head(const char *name)
+>  	return header;
+>  }
+>  
+> -unsigned int get_image_size(void *head)
+> +static unsigned int get_image_size(void *head)
+>  {
+>  	unsigned int ret = 0;
+>  	unsigned int *psize = head + ARM_HEAD_SIZE_OFFSET;
+> @@ -44,7 +44,7 @@ unsigned int get_image_size(void *head)
+>  	return ret;
+>  }
+>  
+> -void *omap_xload_boot_nand(int offset)
+> +static void *omap_xload_boot_nand(int offset)
+>  {
+>  	int ret;
+>  	int size;
+> @@ -81,7 +81,7 @@ void *omap_xload_boot_nand(int offset)
+>  	return to;
+>  }
+>  
+> -void *omap_xload_boot_mmc(void)
+> +static void *omap_xload_boot_mmc(void)
+>  {
+>  	int ret;
+>  	void *buf;
+> -- 
+> 1.7.10.4
 > 
->   amba-pl011: add st specific init (2012-09-11 12:48:34 +0800)
-> 
-> ----------------------------------------------------------------
-> arm: Introduce ARM AMBA bus
-> 
-> This allow to detect the amba device and use the right driver for it at
-> runtime.
-> 
-> With pl011 amba support (ARM & ST Variant)
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (3):
->       Introduce ARM AMBA bus
->       amba-pl011: switch to amba bus
->       amba-pl011: add st specific init
-> 
->  arch/arm/mach-nomadik/8815.c   |    9 +++----
->  arch/arm/mach-versatile/core.c |    7 ++++--
->  drivers/Makefile               |    1 +
->  drivers/amba/Makefile          |    2 ++
->  drivers/amba/bus.c             |  210 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/serial/amba-pl011.c    |   74 +++++++++++++++++++++++++++++++++++++++++++++++----------
->  include/linux/amba/bus.h       |  153 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/amba/serial.h    |   29 +++++++++++++++++++++++
->  8 files changed, 467 insertions(+), 18 deletions(-)
->  create mode 100644 drivers/amba/Makefile
->  create mode 100644 drivers/amba/bus.c
->  create mode 100644 include/linux/amba/bus.h
-> 
-> Best Regards,
-> J.
 > 
 > _______________________________________________
 > barebox mailing list
