@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo1.mail-out.ovh.net ([46.105.76.26]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TBNJJ-0003zQ-GJ
- for barebox@lists.infradead.org; Tue, 11 Sep 2012 10:03:16 +0000
-Received: from mail425.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 2A49EFFA24D
- for <barebox@lists.infradead.org>; Tue, 11 Sep 2012 12:11:10 +0200 (CEST)
-Date: Tue, 11 Sep 2012 12:00:13 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120911100013.GG31207@game.jcrosoft.org>
+Received: from ftp.meprolight.com ([194.90.149.17] helo=meprolight.com)
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TBNU2-0001NF-21
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 10:14:19 +0000
+From: Alex Gershgorin <alexg@meprolight.com>
+Date: Tue, 11 Sep 2012 13:14:06 +0300
+Message-ID: <4875438356E7CA4A8F2145FCD3E61C0B3074AA38FC@MEP-EXCH.meprolight.com>
+References: <1347014799-23478-1-git-send-email-alexg@meprolight.com>
+ <20120910073632.GV18243@pengutronix.de>
+ <4875438356E7CA4A8F2145FCD3E61C0B3074AA38F9@MEP-EXCH.meprolight.com>,
+ <20120911074432.GH18243@pengutronix.de>
+In-Reply-To: <20120911074432.GH18243@pengutronix.de>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,103 +25,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [Resend PATCH 0/7 v3] defaultenv-2: add boot sequence
-To: barebox@lists.infradead.org
+Subject: RE: [PATCH]    video imx-ipu-fb: add clear screen
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Alex Gershgorin <alexgershgorin@gmail.com>
 
-HI,
+Hi Sascha,
+ 
+On Mon, Sep 10, 2012 at 01:16:26PM +0300, Alex Gershgorin wrote:
+> > Hi Sascha,
+> >
+> >  On Fri, Sep 07, 2012 at 01:46:39PM +0300, Alex Gershgorin wrote:
+> > > This patch clear screen before usage
+> > >
+> > > Signed-off-by: Alex Gershgorin <alexg@meprolight.com>
+> > > ---
+> > >  drivers/video/imx-ipu-fb.c |    4 ++++
+> > >  1 files changed, 4 insertions(+), 0 deletions(-)
+> > >
+> > > diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
+> > > index 8039de0..d46cced 100644
+> > > --- a/drivers/video/imx-ipu-fb.c
+> > > +++ b/drivers/video/imx-ipu-fb.c
+> > > @@ -1012,6 +1012,10 @@ static int imxfb_probe(struct device_d *dev)
+> > >                                              (info->bits_per_pixel >> 3));
+> > >               if (!fbi->info.screen_base)
+> > >                       return -ENOMEM;
+> > > +
+> > > +             /* Clear the screen */
+> > > +             memset((char *)fbi->info.screen_base, 0,
+> > > +             info->xres * info->yres * (info->bits_per_pixel >> 3));
+> >
+> > > > Not clearing the screen is intentional. Normally the fb drivers do not
+> > > > enable the framebuffer until explicitely requested via fb0.enable=1. The
+> > > > environment normally is supposed to set a picture on the screen and
+> > > > enable it afterwards.
+> > > > That said, we can clear the screen as with MMU enabled this probably
+> > > > does not take long time. But then it should be done in the fb core.
+> >
+> > Thanks for your explanation.
+> > In my case, I displayed picture on the screen, of course as you said I added to "init" script
+> > fb0.enable = 1
+> > bmp / env / logo.bmp
 
-	v3:
-	 update comments
+>   I would exchange the above commands. I don't know how this looks on your
+>   hardware, but often enough it looks a lot nicer if you draw the logo
+>   first and enable the framebuffer (the backlight most importantly)
+>   afterwards.
 
-	v2:
+Oh sorry it's my fault, but in the my script this written correctly :-)  
 
-	  drop global.boot.default as we start the boot sequence by default
-	  update ansi-colors
-	  allow to always pass -e to echo
+> it was easy.
+>
+> The problem is that I have a screen with resolution 800x600, but
+> picture that I displayed on the my screen is much smaller, resulting
+> in a picture is displayed fine, but on the sides I get garbage.  This
+> patch fixes this issue, of course it is not the only way to solve this
+> issue.
 
-	this patch series depends on fs-symlink send previously
+> Yes, I thought that. 'cp /dev/zero /dev/fb0' would be another solution.
+> I think the memset in the fb code is fine, but it should be done in the
+> generic code.
 
-please pull
-The following changes since commit a685c02ebfd1b345c2059f36336e8c5d89cf2a8c:
+Thanks for this point I tested it, this work fine :-) 
 
-  smsc911x: Check platformdata pointer (2012-09-10 18:06:21 +0200)
+Regards,
+Alex
 
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git tags/defaultenv-2-boot-sequence
-
-for you to fetch changes up to 6f1c02c70616fbb40e0db116c67a3205c5d8681f:
-
-  defaultenv-2: add boot sequence (2012-09-11 17:58:34 +0800)
-
-----------------------------------------------------------------
-defaultenv-2: add boot sequence
-
-Boot will boot run sequentially the script in /env/boot.d
-We store symlink in /env/boot.d on /env/boot
-
-drop global.boot.default
-start the boot sequence by default
-
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (7):
-      globalbar: add inline when not enabled
-      globalvar: add support to set a value to of all globalvars beginning with 'match'
-      defaultenv-2: boot use global.linux.bootargs.dyn for dynamic globalvar
-      defaultenv-2: boot reset linux.bootargs.dyn. and bootm. globalvar
-      echo: always allow to pass -e option
-      defaultenv-2/ansi-colors: export color only if enable
-      defaultenv-2: add boot sequence
-
- arch/arm/boards/crystalfontz-cfa10036/env/boot.d/01    |    1 +
- arch/arm/boards/crystalfontz-cfa10036/env/boot.d/02    |    1 +
- arch/arm/boards/crystalfontz-cfa10036/env/boot.d/03    |    1 +
- arch/arm/boards/crystalfontz-cfa10036/env/init/general |    3 ---
- arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/01  |    1 +
- arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/02  |    1 +
- arch/arm/boards/pcm038/env/boot.d/01                   |    1 +
- arch/arm/boards/pcm038/env/boot.d/02                   |    1 +
- arch/arm/boards/pcm038/env/boot.d/03                   |    1 +
- arch/arm/boards/tqma53/env/boot.d/01                   |    1 +
- arch/arm/boards/tqma53/env/boot.d/02                   |    1 +
- commands/echo.c                                        |   12 ++++--------
- commands/global.c                                      |   51 ++++++++++++++++++++++++++++++++++++++++-----------
- common/Kconfig                                         |    2 ++
- common/globalvar.c                                     |   10 ++++++++++
- defaultenv-2/base/bin/boot                             |   55 +++++++++++++++++++++++++++++++++++++++++++++++++------
- defaultenv-2/base/bin/bootargs-ip                      |    4 ++--
- defaultenv-2/base/bin/bootargs-ip-barebox              |    2 +-
- defaultenv-2/base/bin/bootargs-ip-dhcp                 |    2 +-
- defaultenv-2/base/bin/bootargs-ip-none                 |    2 +-
- defaultenv-2/base/bin/bootargs-root-disk               |    2 +-
- defaultenv-2/base/bin/bootargs-root-ext                |    2 +-
- defaultenv-2/base/bin/bootargs-root-initrd             |    2 +-
- defaultenv-2/base/bin/bootargs-root-jffs2              |    2 +-
- defaultenv-2/base/bin/bootargs-root-nfs                |    2 +-
- defaultenv-2/base/bin/bootargs-root-ubi                |    2 +-
- defaultenv-2/base/bin/init                             |    5 +++--
- defaultenv-2/base/boot/initrd                          |    2 +-
- defaultenv-2/base/data/ansi-colors                     |    4 ++++
- defaultenv-2/base/init/general                         |    3 ---
- defaultenv-2/menu/menu/mainmenu                        |    4 +---
- include/globalvar.h                                    |   23 +++++++++++++++++++++++
- 32 files changed, 158 insertions(+), 48 deletions(-)
- create mode 120000 arch/arm/boards/crystalfontz-cfa10036/env/boot.d/01
- create mode 120000 arch/arm/boards/crystalfontz-cfa10036/env/boot.d/02
- create mode 120000 arch/arm/boards/crystalfontz-cfa10036/env/boot.d/03
- create mode 120000 arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/01
- create mode 120000 arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/02
- create mode 120000 arch/arm/boards/pcm038/env/boot.d/01
- create mode 120000 arch/arm/boards/pcm038/env/boot.d/02
- create mode 120000 arch/arm/boards/pcm038/env/boot.d/03
- create mode 120000 arch/arm/boards/tqma53/env/boot.d/01
- create mode 120000 arch/arm/boards/tqma53/env/boot.d/02
-
-Best Regards,
-J.
-
+ 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
