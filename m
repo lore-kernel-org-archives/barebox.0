@@ -1,20 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo5.mail-out.ovh.net ([178.33.111.247]
+Received: from 1.mo5.mail-out.ovh.net ([188.165.57.91]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TBPNF-0006HK-Bv
- for barebox@lists.infradead.org; Tue, 11 Sep 2012 12:15:26 +0000
+ id 1TBPR4-0006ng-OH
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 12:19:23 +0000
 Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 6100EFFA217
- for <barebox@lists.infradead.org>; Tue, 11 Sep 2012 14:20:56 +0200 (CEST)
-Date: Tue, 11 Sep 2012 14:12:46 +0200
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id B4A0BFF9E52
+ for <barebox@lists.infradead.org>; Tue, 11 Sep 2012 14:24:53 +0200 (CEST)
+Date: Tue, 11 Sep 2012 14:16:44 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120911121246.GI31207@game.jcrosoft.org>
-References: <1347358767-1180-1-git-send-email-plagnioj@jcrosoft.com>
- <20120911112103.GV18243@pengutronix.de>
+Message-ID: <20120911121644.GJ31207@game.jcrosoft.org>
+References: <1347341518-2779-1-git-send-email-alex.aring@gmail.com>
+ <1347341518-2779-2-git-send-email-alex.aring@gmail.com>
+ <20120911073138.GE18243@pengutronix.de>
+ <CAB_54W69jr4hnoa54mNn76WRCX3BV35UJYb0BrpCqfJUYJ0yOw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120911112103.GV18243@pengutronix.de>
+In-Reply-To: <CAB_54W69jr4hnoa54mNn76WRCX3BV35UJYb0BrpCqfJUYJ0yOw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,79 +29,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] globalbar: add inline when not enabled
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 2/2] complete: abstract path complete
+To: Alexander Aring <alex.aring@googlemail.com>
 Cc: barebox@lists.infradead.org
 
-On 13:21 Tue 11 Sep     , Sascha Hauer wrote:
-> Repeating my comment I made last time:
+On 12:38 Tue 11 Sep     , Alexander Aring wrote:
+>    Hi,
 > 
-> Subject: s/globalbar/globalvar/
+>    I prefer this implementation than the older one, because it check on
+>    executable(Maybe we add a attribute for that or check on shebang) file and
+>    call found with the full path.
+>    I was thinking about to put this as RFC..., because I don't have really a
+>    usecase for this.
+>    Some commands can do a autocompletion for files that are in $PATH, when
+>    this is needed.
 > 
-I change the oherone forget this one tag updated
+>    The naming things, I don't like the name, too. I was doing the naming like
+>    the others functions.
+>    I will send a v2 with a better name and functionheader
+do not like it is not a justification to move or rename it
+
+IT remember the shit that did TI guys on the kernel rename and move stuff
+because x or y do notlinke the naming
 
 Best Regards,
 J.
-> Sascha
-> 
-> On Tue, Sep 11, 2012 at 12:19:21PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  include/globalvar.h |   20 ++++++++++++++++++++
-> >  1 file changed, 20 insertions(+)
-> > 
-> > diff --git a/include/globalvar.h b/include/globalvar.h
-> > index 7cc3976..a127a05 100644
-> > --- a/include/globalvar.h
-> > +++ b/include/globalvar.h
-> > @@ -1,6 +1,7 @@
-> >  #ifndef __GLOBALVAR_H
-> >  #define __GLOBALVAR_H
-> >  
-> > +#ifdef CONFIG_GLOBALVAR
-> >  int globalvar_add_simple(const char *name);
-> >  
-> >  int globalvar_add(const char *name,
-> > @@ -8,5 +9,24 @@ int globalvar_add(const char *name,
-> >  		const char *(*get)(struct device_d *, struct param_d *p),
-> >  		unsigned long flags);
-> >  char *globalvar_get_match(const char *match, const char *seperator);
-> > +#else
-> > +static inline int globalvar_add_simple(const char *name)
-> > +{
-> > +	return 0;
-> > +}
-> > +
-> > +static inline int globalvar_add(const char *name,
-> > +		int (*set)(struct device_d *dev, struct param_d *p, const char *val),
-> > +		const char *(*get)(struct device_d *, struct param_d *p),
-> > +		unsigned long flags)
-> > +{
-> > +	return 0;
-> > +}
-> > +
-> > +static inline char *globalvar_get_match(const char *match, const char *seperator)
-> > +{
-> > +	return NULL;
-> > +}
-> > +#endif
-> >  
-> >  #endif /* __GLOBALVAR_H */
-> > -- 
-> > 1.7.10.4
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> > 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
