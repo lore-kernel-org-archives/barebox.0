@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-f177.google.com ([209.85.212.177])
+Received: from mail-we0-f177.google.com ([74.125.82.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TBJ35-0004Lr-F6
- for barebox@lists.infradead.org; Tue, 11 Sep 2012 05:30:11 +0000
-Received: by wibhn17 with SMTP id hn17so88213wib.0
- for <barebox@lists.infradead.org>; Mon, 10 Sep 2012 22:30:08 -0700 (PDT)
+ id 1TBJ35-0004Hj-Nq
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 05:30:12 +0000
+Received: by mail-we0-f177.google.com with SMTP id r3so70225wey.36
+ for <barebox@lists.infradead.org>; Mon, 10 Sep 2012 22:30:11 -0700 (PDT)
 From: Alexander Aring <alex.aring@googlemail.com>
-Date: Tue, 11 Sep 2012 07:31:03 +0200
-Message-Id: <1347341465-2560-1-git-send-email-alex.aring@gmail.com>
+Date: Tue, 11 Sep 2012 07:31:05 +0200
+Message-Id: <1347341465-2560-3-git-send-email-alex.aring@gmail.com>
+In-Reply-To: <1347341465-2560-1-git-send-email-alex.aring@gmail.com>
+References: <1347341465-2560-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] commands: add testing menu
+Subject: [PATCH 3/3] commands: move memtest to testing
 To: barebox@lists.infradead.org
 
-Add command menu for testing utilities.
+Move memtest to testing commands menu.
 
 Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- commands/Kconfig | 4 ++++
- 1 file changed, 4 insertions(+)
+ commands/Kconfig | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/commands/Kconfig b/commands/Kconfig
-index f2756cc..8f3a15a 100644
+index 2ee8643..4b9e8ba 100644
 --- a/commands/Kconfig
 +++ b/commands/Kconfig
-@@ -472,6 +472,10 @@ config CMD_OFTREE
+@@ -319,15 +319,6 @@ config CMD_SHA224SUM
+ 	select SHA224
+ 	prompt "sha224sum"
  
+-config CMD_MTEST
+-	tristate
+-	prompt "mtest"
+-
+-config CMD_MTEST_ALTERNATIVE
+-	bool
+-	depends on CMD_MTEST
+-	prompt "alternative mtest implementation"
+-
  endmenu
  
-+menu "testing                       "
+ menu "flash                         "
+@@ -474,6 +465,15 @@ config CMD_NANDTEST
+ 	select PARTITION_NEED_MTD
+ 	prompt "nandtest"
+ 
++config CMD_MTEST
++	tristate
++	prompt "mtest"
 +
-+endmenu
++config CMD_MTEST_ALTERNATIVE
++	bool
++	depends on CMD_MTEST
++	prompt "alternative mtest implementation"
 +
+ endmenu
+ 
  config CMD_TIMEOUT
- 	tristate
- 	prompt "timeout"
 -- 
 1.7.12
 
