@@ -2,17 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 1.mo1.mail-out.ovh.net ([178.32.127.22]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TBITu-0000sm-4j
- for barebox@lists.infradead.org; Tue, 11 Sep 2012 04:53:51 +0000
+ id 1TBITu-0000sj-4n
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 04:53:52 +0000
 Received: from mail425.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id BC579FF9254
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id A8FACFF90DE
  for <barebox@lists.infradead.org>; Tue, 11 Sep 2012 07:01:48 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 11 Sep 2012 06:51:08 +0200
-Message-Id: <1347339069-14799-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1347339069-14799-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 11 Sep 2012 06:51:07 +0200
+Message-Id: <1347339069-14799-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20120911044733.GD31207@game.jcrosoft.org>
 References: <20120911044733.GD31207@game.jcrosoft.org>
- <1347339069-14799-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,184 +25,418 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] amba-pl011: switch to amba bus
+Subject: [PATCH 1/3] Introduce ARM AMBA bus
 To: barebox@lists.infradead.org
 
-switch as the same time the nomadik and versatile arch that use the driver.
+This will allow to detect the amba device and use the right driver for it at
+runtime.
+
+The code is base on linux 3.5.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-nomadik/8815.c   |    9 +++++----
- arch/arm/mach-versatile/core.c |    7 +++++--
- drivers/serial/amba-pl011.c    |   34 ++++++++++++++++++++++++----------
- 3 files changed, 34 insertions(+), 16 deletions(-)
+ drivers/Makefile         |    1 +
+ drivers/amba/Makefile    |    2 +
+ drivers/amba/bus.c       |  210 ++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/amba/bus.h |  153 +++++++++++++++++++++++++++++++++
+ 4 files changed, 366 insertions(+)
+ create mode 100644 drivers/amba/Makefile
+ create mode 100644 drivers/amba/bus.c
+ create mode 100644 include/linux/amba/bus.h
 
-diff --git a/arch/arm/mach-nomadik/8815.c b/arch/arm/mach-nomadik/8815.c
-index e385598..aecd9e0 100644
---- a/arch/arm/mach-nomadik/8815.c
-+++ b/arch/arm/mach-nomadik/8815.c
-@@ -25,6 +25,7 @@
- #include <mach/hardware.h>
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
-+#include <linux/amba/bus.h>
- 
- #include "clock.h"
- 
-@@ -32,12 +33,15 @@ static struct clk st8815_clk_48 = {
-        .rate = 48 * 1000 * 1000,
- };
- 
-+static struct clk st8815_dummy;
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 28a5cb8..0b44e90 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -1,4 +1,5 @@
+ obj-y	+= base/
++obj-$(CONFIG_ARM_AMBA) += amba/
+ obj-y	+= net/
+ obj-y	+= serial/
+ obj-y	+= mtd/
+diff --git a/drivers/amba/Makefile b/drivers/amba/Makefile
+new file mode 100644
+index 0000000..a4a511b
+--- /dev/null
++++ b/drivers/amba/Makefile
+@@ -0,0 +1,2 @@
 +
- void st8815_add_device_sdram(u32 size)
- {
- 	arm_add_mem_device("ram0", 0x00000000, size);
- }
- 
- static struct clk_lookup clocks_lookups[] = {
-+	CLKDEV_CON_ID("apb_pclk", &st8815_dummy),
- 	CLKDEV_DEV_ID("uart-pl0110", &st8815_clk_48),
- 	CLKDEV_DEV_ID("uart-pl0111", &st8815_clk_48),
- };
-@@ -53,7 +57,6 @@ postcore_initcall(st8815_clkdev_init);
- void st8815_register_uart(unsigned id)
- {
- 	resource_size_t start;
--	struct device_d *dev;
- 
- 	switch (id) {
- 	case 0:
-@@ -63,7 +66,5 @@ void st8815_register_uart(unsigned id)
- 		start = NOMADIK_UART1_BASE;
- 		break;
- 	}
--	dev = add_generic_device("uart-pl011", id, NULL, start, 4096,
--			   IORESOURCE_MEM, NULL);
--	nmdk_clk_create(&st8815_clk_48, dev_name(dev));
-+	amba_apb_device_add(NULL, "uart-pl011", id, start, 4096, NULL, 0);
- }
-diff --git a/arch/arm/mach-versatile/core.c b/arch/arm/mach-versatile/core.c
-index bdf48f9..86cc755 100644
---- a/arch/arm/mach-versatile/core.c
-+++ b/arch/arm/mach-versatile/core.c
-@@ -34,6 +34,7 @@
- #include <linux/clkdev.h>
- #include <linux/clk.h>
- #include <linux/err.h>
++obj-y += bus.o
+diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
+new file mode 100644
+index 0000000..383c77e
+--- /dev/null
++++ b/drivers/amba/bus.c
+@@ -0,0 +1,210 @@
++/*
++ * Copyright (C) 2003 Deep Blue Solutions Ltd, All Rights Reserved.
++ * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * Under GPLv2.
++ */
++#include <common.h>
++#include <driver.h>
++#include <linux/clk.h>
 +#include <linux/amba/bus.h>
- 
- #include <io.h>
- #include <asm/hardware/arm_timer.h>
-@@ -51,6 +52,8 @@ struct clk {
- 	unsigned long rate;
- };
- 
-+static struct clk ref_clk_dummy;
++#include <io.h>
 +
- static struct clk ref_clk_24 = {
- 	.rate = 24000000,
- };
-@@ -145,6 +148,7 @@ static int vpb_clocksource_init(void)
- core_initcall(vpb_clocksource_init);
- 
- static struct clk_lookup clocks_lookups[] = {
-+	CLKDEV_CON_ID("apb_pclk", &ref_clk_dummy),
- 	CLKDEV_DEV_ID("uart-pl0110", &ref_clk_24),
- 	CLKDEV_DEV_ID("uart-pl0111", &ref_clk_24),
- 	CLKDEV_DEV_ID("uart-pl0112", &ref_clk_24),
-@@ -179,8 +183,7 @@ void versatile_register_uart(unsigned id)
- 	default:
- 		return;
- 	}
--	add_generic_device("uart-pl011", id, NULL, start, 4096,
--			   IORESOURCE_MEM, NULL);
-+	amba_apb_device_add(NULL, "uart-pl011", id, start, 4096, NULL, 0);
- }
- 
- void __noreturn reset_cpu (unsigned long ignored)
-diff --git a/drivers/serial/amba-pl011.c b/drivers/serial/amba-pl011.c
-index f8c55c4..77f8c8a 100644
---- a/drivers/serial/amba-pl011.c
-+++ b/drivers/serial/amba-pl011.c
-@@ -35,6 +35,7 @@
- #include <linux/amba/serial.h>
- #include <linux/clk.h>
- #include <linux/err.h>
-+#include <linux/amba/bus.h>
- 
- /*
-  * We wrap our port structure around the generic console_device.
-@@ -118,11 +119,8 @@ static int pl011_tstc(struct console_device *cdev)
- 
- int pl011_init_port (struct console_device *cdev)
- {
--	struct device_d *dev = cdev->dev;
- 	struct amba_uart_port *uart = to_amba_uart_port(cdev);
- 
--	uart->base = dev_request_mem_region(dev, 0);
--
- 	/*
- 	 ** First, disable everything.
- 	 */
-@@ -154,19 +152,20 @@ int pl011_init_port (struct console_device *cdev)
- 	return 0;
- }
- 
--static int pl011_probe(struct device_d *dev)
-+static int pl011_probe(struct amba_device *dev, const struct amba_id *id)
- {
- 	struct amba_uart_port *uart;
- 	struct console_device *cdev;
- 
- 	uart = xzalloc(sizeof(struct amba_uart_port));
--	uart->clk = clk_get(dev, NULL);
-+	uart->clk = clk_get(&dev->dev, NULL);
-+	uart->base = amba_get_mem_region(dev);
- 
- 	if (IS_ERR(uart->clk))
- 		return PTR_ERR(uart->clk);
- 
- 	cdev = &uart->uart;
--	cdev->dev = dev;
-+	cdev->dev = &dev->dev;
- 	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
- 	cdev->tstc = pl011_tstc;
- 	cdev->putc = pl011_putc;
-@@ -182,14 +181,29 @@ static int pl011_probe(struct device_d *dev)
- 	return 0;
- }
- 
--static struct driver_d pl011_driver = {
--	.name = "uart-pl011",
--	.probe = pl011_probe,
-+static struct amba_id pl011_ids[] = {
-+	{
-+		.id	= 0x00041011,
-+		.mask	= 0x000fffff,
-+	},
-+	{
-+		.id	= 0x00380802,
-+		.mask	= 0x00ffffff,
-+	},
-+	{ 0, 0 },
++#define to_amba_driver(d)	container_of(d, struct amba_driver, drv)
++
++static const struct amba_id *
++amba_lookup(const struct amba_id *table, struct amba_device *dev)
++{
++	int ret = 0;
++
++	while (table->mask) {
++		ret = (dev->periphid & table->mask) == table->id;
++		if (ret)
++			break;
++		table++;
++	}
++
++	return ret ? table : NULL;
++}
++
++static int amba_match(struct device_d *dev, struct driver_d *drv)
++{
++	struct amba_device *pcdev = to_amba_device(dev);
++
++	struct amba_driver *pcdrv = to_amba_driver(drv);
++
++	return amba_lookup(pcdrv->id_table, pcdev) == NULL;
++}
++
++static int amba_get_enable_pclk(struct amba_device *pcdev)
++{
++	struct clk *pclk = clk_get(&pcdev->dev, "apb_pclk");
++	int ret;
++
++	pcdev->pclk = pclk;
++
++	if (IS_ERR(pclk))
++		return PTR_ERR(pclk);
++
++	ret = clk_enable(pclk);
++	if (ret) {
++		clk_put(pclk);
++	}
++
++	return ret;
++}
++
++static int amba_probe(struct device_d *dev)
++{
++	struct amba_device *pcdev = to_amba_device(dev);
++	struct amba_driver *pcdrv = to_amba_driver(dev->driver);
++	const struct amba_id *id = amba_lookup(pcdrv->id_table, pcdev);
++
++	return pcdrv->probe(pcdev, id);
++}
++
++static void amba_remove(struct device_d *dev)
++{
++	struct amba_device *pcdev = to_amba_device(dev);
++	struct amba_driver *drv = to_amba_driver(dev->driver);
++
++	drv->remove(pcdev);
++}
++
++struct bus_type amba_bustype = {
++	.name = "amba",
++	.match = amba_match,
++	.probe = amba_probe,
++	.remove = amba_remove,
 +};
 +
-+struct amba_driver pl011_driver = {
-+	.drv = {
-+		.name = "uart-pl011",
-+	},
-+	.probe		= pl011_probe,
-+	.id_table	= pl011_ids,
- };
- 
- static int pl011_init(void)
- {
--	register_driver(&pl011_driver);
-+	amba_driver_register(&pl011_driver);
- 	return 0;
- }
- 
++int amba_driver_register(struct amba_driver *drv)
++{
++	drv->drv.bus = &amba_bustype;
++
++	if (drv->probe)
++		drv->drv.probe = amba_probe;
++	if (drv->remove)
++		drv->drv.remove = amba_remove;
++
++	return register_driver(&drv->drv);
++}
++
++/**
++ *	amba_device_add - add a previously allocated AMBA device structure
++ *	@dev: AMBA device allocated by amba_device_alloc
++ *	@parent: resource parent for this devices resources
++ *
++ *	Claim the resource, and read the device cell ID if not already
++ *	initialized.  Register the AMBA device with the Linux device
++ *	manager.
++ */
++int amba_device_add(struct amba_device *dev)
++{
++	u32 size;
++	void __iomem *tmp;
++	int i, ret;
++	struct resource *res = NULL;
++
++	dev->dev.bus = &amba_bustype;
++
++	/*
++	 * Dynamically calculate the size of the resource
++	 * and use this for iomap
++	 */
++	size = resource_size(&dev->res);
++	res = request_iomem_region("amba", dev->res.start, dev->res.end);
++	if (!res)
++		return -ENOMEM;
++	dev->base = tmp = (void __force __iomem *)res->start;
++	if (!tmp) {
++		ret = -ENOMEM;
++		goto err_release;
++	}
++
++	/* Hard-coded primecell ID instead of plug-n-play */
++	if (dev->periphid != 0)
++		goto skip_probe;
++
++	ret = amba_get_enable_pclk(dev);
++	if (ret == 0) {
++		u32 pid, cid;
++
++		/*
++		 * Read pid and cid based on size of resource
++		 * they are located at end of region
++		 */
++		for (pid = 0, i = 0; i < 4; i++)
++			pid |= (readl(tmp + size - 0x20 + 4 * i) & 255) <<
++				(i * 8);
++		for (cid = 0, i = 0; i < 4; i++)
++			cid |= (readl(tmp + size - 0x10 + 4 * i) & 255) <<
++				(i * 8);
++
++		if (cid == AMBA_CID)
++			dev->periphid = pid;
++
++		if (!dev->periphid)
++			ret = -ENODEV;
++	}
++
++	if (ret)
++		goto err_release;
++
++ skip_probe:
++	ret = register_device(&dev->dev);
++	if (ret)
++		goto err_release;
++
++		return ret;
++ err_release:
++	release_region(res);
++	return ret;
++}
++
++struct amba_device *
++amba_aphb_device_add(struct device_d *parent, const char *name, int id,
++		     resource_size_t base, size_t size,
++		     void *pdata, unsigned int periphid)
++{
++	struct amba_device *dev;
++	int ret;
++
++	dev = amba_device_alloc(name, id, base, size);
++
++	dev->periphid = periphid;
++	dev->dev.platform_data = pdata;
++	dev->dev.parent = parent;
++
++	ret = amba_device_add(dev);
++	if (ret)
++		return ERR_PTR(ret);
++
++	return dev;
++}
++
++/**
++ *	amba_device_alloc - allocate an AMBA device
++ *	@name: sysfs name of the AMBA device
++ *	@base: base of AMBA device
++ *	@size: size of AMBA device
++ *
++ *	Allocate and initialize an AMBA device structure.  Returns %NULL
++ *	on failure.
++ */
++struct amba_device *amba_device_alloc(const char *name, int id, resource_size_t base,
++	size_t size)
++{
++	struct amba_device *dev;
++
++	dev = xzalloc(sizeof(*dev));
++
++	strcpy(dev->dev.name, name);
++	dev->dev.id = id;
++	dev->res.start = base;
++	dev->res.end = base + size - 1;
++	dev->res.flags = IORESOURCE_MEM;
++
++	return dev;
++}
++
+diff --git a/include/linux/amba/bus.h b/include/linux/amba/bus.h
+new file mode 100644
+index 0000000..cb3e3bd
+--- /dev/null
++++ b/include/linux/amba/bus.h
+@@ -0,0 +1,153 @@
++/*
++ *  linux/include/amba/bus.h
++ *
++ *  This device type deals with ARM PrimeCells and anything else that
++ *  presents a proper CID (0xB105F00D) at the end of the I/O register
++ *  region or that is derived from a PrimeCell.
++ *
++ *  Copyright (C) 2003 Deep Blue Solutions Ltd, All Rights Reserved.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++#ifndef ASMARM_AMBA_H
++#define ASMARM_AMBA_H
++
++#include <linux/clk.h>
++#include <driver.h>
++#include <linux/err.h>
++
++#define AMBA_CID	0xb105f00d
++
++/**
++ * struct amba_id - identifies a device on an AMBA bus
++ * @id: The significant bits if the hardware device ID
++ * @mask: Bitmask specifying which bits of the id field are significant when
++ *	matching.  A driver binds to a device when ((hardware device ID) & mask)
++ *	== id.
++ * @data: Private data used by the driver.
++ */
++struct amba_id {
++	unsigned int		id;
++	unsigned int		mask;
++	void			*data;
++};
++
++struct clk;
++
++struct amba_device {
++	struct device_d		dev;
++	struct resource		res;
++	void __iomem		*base;
++	struct clk		*pclk;
++	unsigned int		periphid;
++};
++
++struct amba_driver {
++	struct driver_d		drv;
++	int			(*probe)(struct amba_device *, const struct amba_id *);
++	int			(*remove)(struct amba_device *);
++	const struct amba_id	*id_table;
++};
++
++enum amba_vendor {
++	AMBA_VENDOR_ARM = 0x41,
++	AMBA_VENDOR_ST = 0x80,
++};
++
++extern struct bus_type amba_bustype;
++
++#define to_amba_device(d)	container_of(d, struct amba_device, dev)
++
++#define amba_get_drvdata(d)	dev_get_drvdata(&d->dev)
++#define amba_set_drvdata(d,p)	dev_set_drvdata(&d->dev, p)
++
++int amba_driver_register(struct amba_driver *);
++void amba_driver_unregister(struct amba_driver *);
++struct amba_device *amba_device_alloc(const char *, int id, resource_size_t, size_t);
++void amba_device_put(struct amba_device *);
++int amba_device_add(struct amba_device *);
++int amba_device_register(struct amba_device *, struct resource *);
++
++struct amba_device *
++amba_aphb_device_add(struct device_d *parent, const char *name, int id,
++		     resource_size_t base, size_t size,
++		     void *pdata, unsigned int periphid);
++
++static inline struct amba_device *
++amba_apb_device_add(struct device_d *parent, const char *name, int id,
++		    resource_size_t base, size_t size,
++		    void *pdata, unsigned int periphid)
++{
++	return amba_aphb_device_add(parent, name, id, base, size, pdata,
++				    periphid);
++}
++
++static inline struct amba_device *
++amba_ahb_device_add(struct device_d *parent, const char *name, int id,
++		    resource_size_t base, size_t size,
++		    void *pdata, unsigned int periphid)
++{
++	return amba_aphb_device_add(parent, name, id, base, size, pdata,
++				    periphid);
++}
++
++
++void amba_device_unregister(struct amba_device *);
++struct amba_device *amba_find_device(const char *, struct device_d *, unsigned int, unsigned int);
++int amba_request_regions(struct amba_device *, const char *);
++void amba_release_regions(struct amba_device *);
++
++static inline void __iomem *amba_get_mem_region(struct amba_device *dev)
++{
++	return dev->base;
++}
++
++#define amba_pclk_enable(d)	\
++	(IS_ERR((d)->pclk) ? 0 : clk_enable((d)->pclk))
++
++#define amba_pclk_disable(d)	\
++	do { if (!IS_ERR((d)->pclk)) clk_disable((d)->pclk); } while (0)
++
++/* Some drivers don't use the struct amba_device */
++#define AMBA_CONFIG_BITS(a) (((a) >> 24) & 0xff)
++#define AMBA_REV_BITS(a) (((a) >> 20) & 0x0f)
++#define AMBA_MANF_BITS(a) (((a) >> 12) & 0xff)
++#define AMBA_PART_BITS(a) ((a) & 0xfff)
++
++#define amba_config(d)	AMBA_CONFIG_BITS((d)->periphid)
++#define amba_rev(d)	AMBA_REV_BITS((d)->periphid)
++#define amba_manf(d)	AMBA_MANF_BITS((d)->periphid)
++#define amba_part(d)	AMBA_PART_BITS((d)->periphid)
++
++#define __AMBA_DEV(busid, data)				\
++	{							\
++		.init_name = busid,				\
++		.platform_data = data,				\
++	}
++
++/*
++ * APB devices do not themselves have the ability to address memory,
++ * so DMA masks should be zero (much like USB peripheral devices.)
++ * The DMA controller DMA masks should be used instead (much like
++ * USB host controllers in conventional PCs.)
++ */
++#define AMBA_APB_DEVICE(name, busid, id, base, data)	\
++struct amba_device name##_device = {				\
++	.dev = __AMBA_DEV(busid, data),			\
++	.res = DEFINE_RES_MEM(base, SZ_4K),			\
++	.periphid = id,						\
++}
++
++/*
++ * AHB devices are DMA capable, so set their DMA masks
++ */
++#define AMBA_AHB_DEVICE(name, busid, id, base, data)	\
++struct amba_device name##_device = {				\
++	.dev = __AMBA_DEV(busid, data),			\
++	.res = DEFINE_RES_MEM(base, SZ_4K),			\
++	.periphid = id,						\
++}
++
++#endif
 -- 
 1.7.10.4
 
