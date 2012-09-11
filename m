@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TBQZY-0003oX-Ld
- for barebox@lists.infradead.org; Tue, 11 Sep 2012 13:32:13 +0000
+ id 1TBQZI-0003hO-NS
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 13:31:57 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1TBQZG-0005KS-SH
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 15:31:54 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1TBQZG-0006GI-R9
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 15:31:54 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 11 Sep 2012 15:31:53 +0200
-Message-Id: <1347370313-15184-6-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1347370313-15184-1-git-send-email-s.hauer@pengutronix.de>
-References: <1347370313-15184-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 11 Sep 2012 15:31:48 +0200
+Message-Id: <1347370313-15184-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,83 +26,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] driver: Add platform_device_id mechanism
+Subject: [PATCH] device/driver work
 To: barebox@lists.infradead.org
 
-It is common for drivers to handle multiple similar devices. On
-Linux the driver can distinguish between the devices using the
-platform_device_id mechanism. Introduce the same for barebox.
+The following patches are contain some misc driver core changes.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
+Sascha
+
+----------------------------------------------------------------
+Sascha Hauer (5):
+      mfd mc13xxx: Separate I2C and SPI probe
+      SPI: Put SPI devices on their own bus
+      I2C: Put I2C devices on their own bus
+      driver: rewrite dev_printf as a function
+      driver: Add platform_device_id mechanism
+
+ drivers/base/driver.c   |   19 +++++++++++++++++++
  drivers/base/platform.c |   17 ++++++++++++++++-
- include/driver.h        |    9 +++++++++
- 2 files changed, 25 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index e0dd9ea..82d2521 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -24,7 +24,22 @@
- 
- static int platform_match(struct device_d *dev, struct driver_d *drv)
- {
--	return strcmp(dev->name, drv->name) ? -1 : 0;
-+	if (!strcmp(dev->name, drv->name))
-+		return 0;
-+
-+	if (drv->id_table) {
-+		struct platform_device_id *id = drv->id_table;
-+
-+		while (id->name) {
-+			if (!strcmp(id->name, dev->name)) {
-+				dev->id_entry = id;
-+				return 0;
-+			}
-+			id++;
-+		}
-+	}
-+
-+	return -1;
- }
- 
- static int platform_probe(struct device_d *dev)
-diff --git a/include/driver.h b/include/driver.h
-index c74f245..40b76c1 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -60,6 +60,11 @@
- struct filep;
- struct bus_type;
- 
-+struct platform_device_id {
-+	const char *name;
-+	unsigned long driver_data;
-+};
-+
- /** @brief Describes a particular device present in the system */
- struct device_d {
- 	/*! This member (and 'type' described below) is used to match with a
-@@ -99,6 +104,8 @@ struct device_d {
- 	struct list_head parameters;
- 
- 	struct list_head cdevs;
-+
-+	struct platform_device_id *id_entry;
- };
- 
- /** @brief Describes a driver present in the system */
-@@ -119,6 +126,8 @@ struct driver_d {
- 	void    (*shortinfo) (struct device_d *);
- 
- 	struct bus_type *bus;
-+
-+	struct platform_device_id *id_table;
- };
- 
- /*@}*/	/* do not delete, doxygen relevant */
--- 
-1.7.10.4
+ drivers/eeprom/at25.c   |    2 +-
+ drivers/i2c/i2c.c       |   23 +++++++++++++++++++++++
+ drivers/mfd/lp3972.c    |    2 +-
+ drivers/mfd/mc13xxx.c   |   28 ++++++++++++++++++----------
+ drivers/mfd/mc34704.c   |    4 ++--
+ drivers/mfd/mc34708.c   |    4 ++--
+ drivers/mfd/mc9sdz60.c  |    2 +-
+ drivers/mfd/stmpe-i2c.c |    2 +-
+ drivers/mfd/twl4030.c   |    2 +-
+ drivers/mfd/twl6030.c   |    2 +-
+ drivers/nor/m25p80.c    |    2 +-
+ drivers/spi/spi.c       |   24 ++++++++++++++++++++++++
+ include/driver.h        |   15 ++++++++++++---
+ include/i2c/i2c.h       |    8 ++++++++
+ include/spi/spi.h       |    7 +++++++
+ 17 files changed, 138 insertions(+), 25 deletions(-)
 
 
 _______________________________________________
