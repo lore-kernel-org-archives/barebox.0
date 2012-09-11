@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TB6WF-0001hC-1N
- for barebox@lists.infradead.org; Mon, 10 Sep 2012 16:07:27 +0000
-Date: Mon, 10 Sep 2012 18:07:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120910160724.GA18243@pengutronix.de>
-References: <1347276809-8029-1-git-send-email-j.weitzel@phytec.de>
+Received: from 10.mo1.mail-out.ovh.net ([178.32.96.102]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TBIQO-0000ZI-7E
+ for barebox@lists.infradead.org; Tue, 11 Sep 2012 04:50:13 +0000
+Received: from mail425.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 14D7CFF941A
+ for <barebox@lists.infradead.org>; Tue, 11 Sep 2012 06:58:11 +0200 (CEST)
+Date: Tue, 11 Sep 2012 06:47:33 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120911044733.GD31207@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1347276809-8029-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,61 +24,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] smsc911x: Check platformdata pointer
-To: Jan Weitzel <j.weitzel@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/3 v2] AMBA Bus support
+To: barebox@lists.infradead.org
 
-On Mon, Sep 10, 2012 at 01:33:29PM +0200, Jan Weitzel wrote:
-> If pdata is NULL smc911x_probe will crash. Checking the zero initialized
-> priv->shift results in default configuration if pdata is not set.
-> 
-> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+Hi,
 
-Applied, thanks
+	v2: upadte comment
 
-Sascha
+	this first patch series add the AMBA Bus support and is a preperation
+	for the adding of the ST-E ux500 support
 
-> ---
->  drivers/net/smc911x.c |    4 ++--
->  1 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
-> index bc1e001..f697608 100644
-> --- a/drivers/net/smc911x.c
-> +++ b/drivers/net/smc911x.c
-> @@ -435,7 +435,7 @@ static int smc911x_probe(struct device_d *dev)
->  		priv->shift = pdata->shift;
->  
->  	if (is_32bit) {
-> -		if (pdata->shift) {
-> +		if (priv->shift) {
->  			priv->reg_read = __smc911x_reg_readl_shift;
->  			priv->reg_write = __smc911x_reg_writel_shift;
->  		} else {
-> @@ -443,7 +443,7 @@ static int smc911x_probe(struct device_d *dev)
->  			priv->reg_write = __smc911x_reg_writel;
->  		}
->  	} else {
-> -		if (pdata->shift) {
-> +		if (priv->shift) {
->  			priv->reg_read = __smc911x_reg_readw_shift;
->  			priv->reg_write = __smc911x_reg_writew_shift;
->  		} else {
-> -- 
-> 1.7.0.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+please pull
+The following changes since commit 298d15571da8d1cb71e7fd87cc53cad3b2bf1d12:
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+  i.MX51: unbreak FEC iomux (2012-09-07 10:28:17 +0200)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git tags/amba_bus
+
+for you to fetch changes up to 75a0136ccae3899aee91f1d8d38274c426f99175:
+
+  amba-pl011: add st specific init (2012-09-11 12:48:34 +0800)
+
+----------------------------------------------------------------
+arm: Introduce ARM AMBA bus
+
+This allow to detect the amba device and use the right driver for it at
+runtime.
+
+With pl011 amba support (ARM & ST Variant)
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (3):
+      Introduce ARM AMBA bus
+      amba-pl011: switch to amba bus
+      amba-pl011: add st specific init
+
+ arch/arm/mach-nomadik/8815.c   |    9 +++----
+ arch/arm/mach-versatile/core.c |    7 ++++--
+ drivers/Makefile               |    1 +
+ drivers/amba/Makefile          |    2 ++
+ drivers/amba/bus.c             |  210 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/serial/amba-pl011.c    |   74 +++++++++++++++++++++++++++++++++++++++++++++++----------
+ include/linux/amba/bus.h       |  153 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/amba/serial.h    |   29 +++++++++++++++++++++++
+ 8 files changed, 467 insertions(+), 18 deletions(-)
+ create mode 100644 drivers/amba/Makefile
+ create mode 100644 drivers/amba/bus.c
+ create mode 100644 include/linux/amba/bus.h
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
