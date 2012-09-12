@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo5.mail-out.ovh.net ([188.165.57.91]
- helo=mo5.mail-out.ovh.net)
- by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TBpHK-00043t-S0
- for barebox@lists.infradead.org; Wed, 12 Sep 2012 15:55:04 +0000
-Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 89821FF9A5F
- for <barebox@lists.infradead.org>; Wed, 12 Sep 2012 17:56:34 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 12 Sep 2012 17:48:22 +0200
-Message-Id: <1347464902-2127-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TBtDk-0001sR-QZ
+ for barebox@lists.infradead.org; Wed, 12 Sep 2012 20:07:43 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 12 Sep 2012 22:06:36 +0200
+Message-Id: <1347480407-16865-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1347480407-16865-1-git-send-email-s.hauer@pengutronix.de>
+References: <1347480407-16865-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,77 +21,120 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4] bootm: add global bootm.{image/initrd}.loadaddr support
+Subject: [PATCH 04/15] of: Add devicetree partition parsing
 To: barebox@lists.infradead.org
 
-To be able to pass the loadaddr of the image and the initrd.
+Helper code to probe mtd partitions from the devicetree.
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/bootm.c |   25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ drivers/of/Makefile    |    1 +
+ drivers/of/partition.c |   64 ++++++++++++++++++++++++++++++++++++++++++++++++
+ include/of.h           |    9 +++++++
+ 3 files changed, 74 insertions(+)
+ create mode 100644 drivers/of/partition.c
 
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 2d9f7f2..dfd9ac9 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -254,6 +254,19 @@ static char *bootm_image_name_and_no(const char *name, int *no)
- #define BOOTM_OPTS BOOTM_OPTS_COMMON
- #endif
- 
-+static unsigned long long getenv_loadaddr(const char *name)
+diff --git a/drivers/of/Makefile b/drivers/of/Makefile
+index b38d40b..c14aaec 100644
+--- a/drivers/of/Makefile
++++ b/drivers/of/Makefile
+@@ -1,2 +1,3 @@
+ obj-y += base.o
+ obj-y += gpio.o
++obj-y += partition.o
+diff --git a/drivers/of/partition.c b/drivers/of/partition.c
+new file mode 100644
+index 0000000..6a57a60
+--- /dev/null
++++ b/drivers/of/partition.c
+@@ -0,0 +1,64 @@
++/*
++ * partition.c - devicetree partition parsing
++ *
++ * Copyright (c) 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ *
++ * based on Linux devicetree support
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++#include <common.h>
++#include <of.h>
++#include <malloc.h>
++#include <linux/mtd/mtd.h>
++
++int of_parse_partitions(const char *cdevname,
++				   struct device_node *node)
 +{
-+	const char *valstr = getenv(name);
++	struct device_node *n;
++	const char *partname;
++	char *filename;
 +
-+	if (!valstr)
-+		return UIMAGE_SOME_ADDRESS;
++	device_node_for_nach_child(node, n) {
++		const __be32 *reg;
++		unsigned long offset, size;
++		const char *name;
++		int len;
++		unsigned long flags = 0;
 +
-+	if (valstr[0] == '\0')
-+		return UIMAGE_SOME_ADDRESS;
++		reg = of_get_property(n, "reg", &len);
++		if (!reg)
++			continue;
 +
-+	return simple_strtoull(valstr, NULL, 0);
++		offset = be32_to_cpu(reg[0]);
++		size = be32_to_cpu(reg[1]);
++
++		partname = of_get_property(n, "label", &len);
++		if (!partname)
++			partname = of_get_property(n, "name", &len);
++		name = (char *)partname;
++
++		debug("add partition: %s.%s 0x%08lx 0x%08lx\n", cdevname, partname, offset, size);
++
++		if (of_get_property(n, "read-only", &len))
++			flags = DEVFS_PARTITION_READONLY;
++
++		filename = asprintf("%s.%s", cdevname, partname);
++
++		devfs_add_partition(cdevname, offset, size, flags, filename);
++
++		free(filename);
++	}
++
++	return 0;
++}
+diff --git a/include/of.h b/include/of.h
+index 762df9d..7b6a23a 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -109,9 +109,18 @@ int of_probe(void);
+ int of_parse_dtb(struct fdt_header *fdt);
+ 
+ #ifdef CONFIG_OFDEVICE
++int of_parse_partitions(const char *cdevname,
++			    struct device_node *node);
++
+ struct device_node *of_get_root_node(void);
+ int of_alias_get_id(struct device_node *np, const char *stem);
+ #else
++static inline int of_parse_partitions(const char *cdevname,
++					  struct device_node *node)
++{
++	return -EINVAL;
 +}
 +
- static int do_bootm(int argc, char *argv[])
+ static inline struct device_node *of_get_root_node(void)
  {
- 	int opt;
-@@ -273,8 +286,11 @@ static int do_bootm(int argc, char *argv[])
- 
- 	oftree = getenv("global.bootm.oftree");
- 	os_file = getenv("global.bootm.image");
--	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD))
-+	data.os_address = getenv_loadaddr("global.bootm.image.loadaddr");
-+	data.initrd_address = getenv_loadaddr("global.bootm.initrd.loadaddr");
-+	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD)) {
- 		initrd_file = getenv("global.bootm.initrd");
-+	}
- 
- 	while ((opt = getopt(argc, argv, BOOTM_OPTS)) > 0) {
- 		switch(opt) {
-@@ -446,9 +462,12 @@ static int bootm_init(void)
- {
- 
- 	globalvar_add_simple("bootm.image");
-+	globalvar_add_simple("bootm.image.loadaddr");
- 	globalvar_add_simple("bootm.oftree");
--	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD))
-+	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD)) {
- 		globalvar_add_simple("bootm.initrd");
-+		globalvar_add_simple("bootm.initrd.loadaddr");
-+	}
- 
- 	return 0;
- }
-@@ -480,7 +499,9 @@ BAREBOX_CMD_END
- 
- BAREBOX_MAGICVAR(bootargs, "Linux Kernel parameters");
- BAREBOX_MAGICVAR_NAMED(global_bootm_image, global.bootm.image, "bootm default boot image");
-+BAREBOX_MAGICVAR_NAMED(global_bootm_image_loadaddr, global.bootm.image.loadaddr, "bootm default boot image loadaadr");
- BAREBOX_MAGICVAR_NAMED(global_bootm_initrd, global.bootm.initrd, "bootm default initrd");
-+BAREBOX_MAGICVAR_NAMED(global_bootm_initrd_loadaddr, global.bootm.initrd.loadaddr, "bootm default initrd loadaadr");
- 
- static struct binfmt_hook binfmt_uimage_hook = {
- 	.type = filetype_uimage,
+ 	return NULL;
 -- 
 1.7.10.4
 
