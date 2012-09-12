@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo5.mail-out.ovh.net ([91.121.55.239]
+Received: from 4.mo5.mail-out.ovh.net ([178.33.111.247]
  helo=mo5.mail-out.ovh.net)
- by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TBnJr-0008H7-Th
- for barebox@lists.infradead.org; Wed, 12 Sep 2012 13:49:34 +0000
+ by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TBnJq-00062p-4B
+ for barebox@lists.infradead.org; Wed, 12 Sep 2012 13:49:31 +0000
 Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id E0828FF9D64
- for <barebox@lists.infradead.org>; Wed, 12 Sep 2012 15:51:03 +0200 (CEST)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 3973EFF9D0E
+ for <barebox@lists.infradead.org>; Wed, 12 Sep 2012 15:51:02 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 12 Sep 2012 15:42:43 +0200
-Message-Id: <1347457369-9215-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 12 Sep 2012 15:42:42 +0200
+Message-Id: <1347457369-9215-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1347457369-9215-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120912132443.GQ31207@game.jcrosoft.org>
  <1347457369-9215-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,40 +26,239 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/11] filetype: add BMP support
+Subject: [PATCH 04/11] introduce image_renderer framework
 To: barebox@lists.infradead.org
+
+This will allow to support bmp and png
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/filetype.c  |    2 ++
- include/filetype.h |    1 +
- 2 files changed, 3 insertions(+)
+ include/image_renderer.h |   85 ++++++++++++++++++++++++++++++++++++++++
+ lib/Kconfig              |    5 +++
+ lib/Makefile             |    1 +
+ lib/image_renderer.c     |   96 ++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 187 insertions(+)
+ create mode 100644 include/image_renderer.h
+ create mode 100644 lib/image_renderer.c
 
-diff --git a/common/filetype.c b/common/filetype.c
-index e736d43..5710394 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -101,6 +101,8 @@ enum filetype file_detect_type(void *_buf)
- 		return filetype_mips_barebox;
- 	if (is_fat(buf8))
- 		return filetype_fat;
-+	if (strncmp(buf8, "BM", 2) == 0)
-+		return filetype_bmp;
+diff --git a/include/image_renderer.h b/include/image_renderer.h
+new file mode 100644
+index 0000000..31ef1c6
+--- /dev/null
++++ b/include/image_renderer.h
+@@ -0,0 +1,85 @@
++/*
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * GPL v2
++ */
++
++#ifndef __IMAGE_RENDER_H__
++#define __IMAGE_RENDER_H__
++
++#include <filetype.h>
++#include <linux/list.h>
++#include <errno.h>
++#include <linux/err.h>
++#include <fb.h>
++
++struct image {
++	void *data;
++	struct image_renderer *ir;
++	int height;
++	int width;
++	int bits_per_pixel;
++};
++
++struct image_renderer {
++	enum filetype type;
++	struct image *(*open)(char *data, int size);
++	void (*close)(struct image *img);
++	int (*renderer)(struct fb_info *info, struct image *img, void* fb,
++		int startx, int starty, void* offscreenbuf);
++
++	/*
++	 * do not free the data read from the file
++	 * needed by bmp support
++	 */
++	int keep_file_data;
++
++	struct list_head list;
++};
++
++#ifdef CONFIG_IMAGE_RENDERER
++int image_renderer_register(struct image_renderer *ir);
++void image_render_unregister(struct image_renderer *ir);
++
++int image_renderer_image(struct fb_info *info, struct image *img, void* fb,
++	    int startx, int starty, void* offscreenbuf);
++
++struct image *image_renderer_open(const char* file);
++void image_renderer_close(struct image *img);
++
++#else
++static inline int image_renderer_register(struct image_renderer *ir)
++{
++	return -EINVAL;
++}
++static inline void image_renderer_unregister(struct image_renderer *ir) {}
++
++static inline struct image *image_renderer_open(const char* file)
++{
++	return ERR_PTR(-EINVAL);
++}
++
++static inline void image_renderer_close(struct image *img) {}
++
++int image_renderer_image(struct fb_info *info, struct image *img, void* fb,
++	    int startx, int starty, void* offscreenbuf);
++#endif
++
++static inline int image_renderer_file(struct fb_info *info, const char* file, void* fb,
++		    int startx, int starty, void* offscreenbuf)
++{
++	struct image* img = image_renderer_open(file);
++	int ret;
++
++	if (IS_ERR(img))
++		return PTR_ERR(img);
++
++	ret = image_renderer_image(info, img, fb, startx, starty,
++				offscreenbuf);
++
++	image_renderer_close(img);
++
++	return ret; 
++}
++
++#endif /* __IMAGE_RENDERER_H__ */
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 93e360b..be3ea1c 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -38,6 +38,11 @@ config BITREV
+ config QSORT
+ 	bool
  
- 	return filetype_unknown;
- }
-diff --git a/include/filetype.h b/include/filetype.h
-index 179ec0f..6c97159 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -19,6 +19,7 @@ enum filetype {
- 	filetype_sh,
- 	filetype_mips_barebox,
- 	filetype_fat,
-+	filetype_bmp,
- };
++config IMAGE_RENDERER
++	bool
++	depends on VIDEO
++	select FILETYPE
++
+ config BMP
+ 	bool
  
- const char *file_type_to_string(enum filetype f);
+diff --git a/lib/Makefile b/lib/Makefile
+index 997ba10..237daf1 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -35,3 +35,4 @@ obj-$(CONFIG_BCH)	+= bch.o
+ obj-$(CONFIG_BITREV)	+= bitrev.o
+ obj-$(CONFIG_QSORT)	+= qsort.o
+ obj-$(CONFIG_BMP)	+= bmp.o graphic_utils.o
++obj-$(CONFIG_IMAGE_RENDERER)	+= image_renderer.o
+diff --git a/lib/image_renderer.c b/lib/image_renderer.c
+new file mode 100644
+index 0000000..b08f6bf
+--- /dev/null
++++ b/lib/image_renderer.c
+@@ -0,0 +1,96 @@
++/*
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * GPL v2
++ */
++
++#include <common.h>
++#include <fb.h>
++#include <image_renderer.h>
++#include <errno.h>
++#include <fs.h>
++#include <malloc.h>
++
++static LIST_HEAD(image_renderers);
++
++static struct image_renderer *get_renderer(void* buf)
++{
++	struct image_renderer *ir;
++	enum filetype type = file_detect_type(buf);
++
++	list_for_each_entry(ir, &image_renderers, list) {
++		if (ir->type == type)
++			return ir;
++	}
++
++	return NULL;
++}
++
++struct image *image_renderer_open(const char* file)
++{
++	void *data;
++	int size;
++	struct image_renderer *ir;
++	struct image *img;
++	int ret;
++
++	data = read_file(file, &size);
++	if (!data) {
++		printf("unable to read %s\n", file);
++		return ERR_PTR(-ENOMEM);
++	}
++
++	ir = get_renderer(data);
++	if (!ir) {
++		ret = -ENOENT;
++		goto out;
++	}
++
++	img = ir->open(data, size);
++	if (IS_ERR(img)) {
++		ret = PTR_ERR(img);
++		goto out;
++	}
++	img->ir = ir;
++	if (!ir->keep_file_data)
++		free(data);
++
++	return img;
++out:
++	free(data);
++	return ERR_PTR(ret);
++}
++
++void image_renderer_close(struct image *img)
++{
++	if (!img)
++		return;
++
++	img->ir->close(img);
++
++	free(img);
++}
++
++int image_renderer_image(struct fb_info *info, struct image *img, void* fb,
++	    int startx, int starty, void* offscreenbuf)
++{
++	return img->ir->renderer(info, img, fb, startx, starty, offscreenbuf);
++}
++
++int image_renderer_register(struct image_renderer *ir)
++{
++	if (!ir || !ir->type || !ir->renderer || !ir->open || !ir->close)
++		return -EIO;
++
++	list_add_tail(&ir->list, &image_renderers);
++
++	return 0;
++}
++
++void image_renderer_unregister(struct image_renderer *ir)
++{
++	if (!ir)
++		return;
++
++	list_del(&ir->list);
++}
 -- 
 1.7.10.4
 
