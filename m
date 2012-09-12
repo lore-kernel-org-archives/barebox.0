@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-f177.google.com ([209.85.212.177])
+Received: from mail-wg0-f49.google.com ([74.125.82.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TBvQF-0006h7-Vm
- for barebox@lists.infradead.org; Wed, 12 Sep 2012 22:28:40 +0000
-Received: by wibhn17 with SMTP id hn17so1978378wib.0
- for <barebox@lists.infradead.org>; Wed, 12 Sep 2012 15:28:37 -0700 (PDT)
+ id 1TBvQF-0006h4-TC
+ for barebox@lists.infradead.org; Wed, 12 Sep 2012 22:28:41 +0000
+Received: by wgbdt14 with SMTP id dt14so1243177wgb.18
+ for <barebox@lists.infradead.org>; Wed, 12 Sep 2012 15:28:36 -0700 (PDT)
 From: Franck Jullien <franck.jullien@gmail.com>
-Date: Thu, 13 Sep 2012 00:28:33 +0200
-Message-Id: <1347488914-7460-2-git-send-email-franck.jullien@gmail.com>
-In-Reply-To: <1347488914-7460-1-git-send-email-franck.jullien@gmail.com>
-References: <1347488914-7460-1-git-send-email-franck.jullien@gmail.com>
+Date: Thu, 13 Sep 2012 00:28:32 +0200
+Message-Id: <1347488914-7460-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,54 +21,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] Add OpenRISC Image type
+Subject: [PATCH 1/3] [OpenRISC] Add __ashrdi3 and remove link to libgcc
 To: barebox@lists.infradead.org
 
-This patch sync the image type list with the kernel in order to add
-openrisc support.
+In a previous patch, Sascha needed to add __ashrdi3 and then linked
+to libgcc. This patch add the ashrdi3 function in the arch/openrisc/lib
+directory and remove the libgcc dependency.
 
 Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
 ---
- common/image.c  |    2 ++
- include/image.h |    5 +++++
- 2 files changed, 7 insertions(+), 0 deletions(-)
+ arch/openrisc/Makefile      |    4 ---
+ arch/openrisc/lib/Makefile  |    1 +
+ arch/openrisc/lib/ashrdi3.S |   59 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 60 insertions(+), 4 deletions(-)
+ create mode 100644 arch/openrisc/lib/ashrdi3.S
 
-diff --git a/common/image.c b/common/image.c
-index e7d2242..e02fbe6 100644
---- a/common/image.c
-+++ b/common/image.c
-@@ -61,6 +61,8 @@ static table_entry_t arch_name[] = {
- 	{ IH_ARCH_SPARC64,	"sparc64",	"SPARC 64 Bit",	},
- 	{ IH_ARCH_BLACKFIN,	"blackfin",	"Blackfin",	},
- 	{ IH_ARCH_AVR32,	"avr32",	"AVR32",	},
-+	{ IH_ARCH_NDS32,	"nds32",	"NDS32",	},
-+	{ IH_ARCH_OPENRISC,	"or1k",		"OpenRISC 1000",},
- 	{ -1,			"",		"",		},
- };
+diff --git a/arch/openrisc/Makefile b/arch/openrisc/Makefile
+index 1f4b175..fd8bbbf 100644
+--- a/arch/openrisc/Makefile
++++ b/arch/openrisc/Makefile
+@@ -1,7 +1,5 @@
+ CPPFLAGS += -D__OR1K__ -ffixed-r10 -mhard-mul -mhard-div
  
-diff --git a/include/image.h b/include/image.h
-index 027b5f2..5f45b6f 100644
---- a/include/image.h
-+++ b/include/image.h
-@@ -85,6 +85,9 @@
- #define IH_ARCH_BLACKFIN	16	/* Blackfin	*/
- #define IH_ARCH_AVR32		17	/* AVR32	*/
- #define IH_ARCH_LINUX		18	/* Linux	*/
-+#define IH_ARCH_SANDBOX		19	/* Sandbox architecture (test only) */
-+#define IH_ARCH_NDS32		20	/* ANDES Technology - NDS32  */
-+#define IH_ARCH_OPENRISC	21	/* OpenRISC 1000  */
+-LIBGCC          := $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
+-
+ board-$(CONFIG_GENERIC) := generic
  
- #if defined(__PPC__)
- #define IH_ARCH IH_ARCH_PPC
-@@ -102,6 +105,8 @@
- #define IH_ARCH IH_ARCH_MICROBLAZE
- #elif defined(__nios2__)
- #define IH_ARCH IH_ARCH_NIOS2
-+#elif defined(__OR1K__)
-+#define IH_ARCH IH_ARCH_OPENRISC
- #elif defined(__blackfin__)
- #define IH_ARCH IH_ARCH_BLACKFIN
- #elif defined(__avr32__)
+ KALLSYMS += --symbol-prefix=_
+@@ -20,6 +18,4 @@ common-y += $(BOARD)
+ common-y += arch/openrisc/lib/
+ common-y += arch/openrisc/cpu/
+ 
+-common-y          += $(LIBGCC)
+-
+ lds-y += arch/openrisc/cpu/barebox.lds
+diff --git a/arch/openrisc/lib/Makefile b/arch/openrisc/lib/Makefile
+index aaf93cb..0b3cc50 100644
+--- a/arch/openrisc/lib/Makefile
++++ b/arch/openrisc/lib/Makefile
+@@ -4,3 +4,4 @@ obj-y                 += cpuinfo.o
+ obj-y                 += muldi3.o
+ obj-y                 += lshrdi3.o
+ obj-y                 += ashldi3.o
++obj-y                 += ashrdi3.o
+diff --git a/arch/openrisc/lib/ashrdi3.S b/arch/openrisc/lib/ashrdi3.S
+new file mode 100644
+index 0000000..c656d9f
+--- /dev/null
++++ b/arch/openrisc/lib/ashrdi3.S
+@@ -0,0 +1,59 @@
++/*
++ * (C) Copyright 2012 - Franck JULLIEN <elec4fun@gmail.com>
++ *
++ * Extracted from gcc generated assembly.
++ *
++ * Extended precision shifts.
++ *
++ * R3/R4 (MSW, LSW) has 64 bit value
++ * R5    has shift count
++ * result in R11/R12
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++
++.globl __ashrdi3
++
++__ashrdi3:
++	l.sfeqi r5,0x0			/* if count = 0, go out                   */
++	l.bf out
++
++	l.addi r6,r0,0x20		/* r6 = 32                                */
++	l.sub r6,r6,r5			/* r6 = 32 - count                        */
++	l.sfgtsi r6,0x0			/* if count >= 32                         */
++	l.bnf more_than_32		/* branch to more_than_32                 */
++	l.nop 0x0
++
++
++ less_than_32:
++	l.sll r6,r3,r6			/* r6 gets the bits moved from MSW to LSW */
++	l.srl r4,r4,r5			/* shift LSW                              */
++	l.sra r5,r3,r5			/* shift MSW to r5                        */
++	l.or r4,r6,r4			/* LSW gets bits shifted from MSW         */
++	l.ori r3,r5,0x0			/* r3 = MSW                               */
++
++ out:
++	l.ori r11,r3,0x0
++	l.jr r9
++	l.ori r12,r4,0x0
++
++ more_than_32:
++	l.srai r5,r3,0x1f		/* r5 = MSW sign extended                 */
++	l.sub r4,r0,r6			/* r4 = -r6, the number of bits above 32  */
++	l.sra r4,r3,r4			/* LSW gets bits shifted from MSB         */
++	l.j out				/* go out                                 */
++	l.ori r3,r5,0x0			/* r3 = MSW                               */
 -- 
 1.7.1
 
