@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TBtDt-0001te-Mx
- for barebox@lists.infradead.org; Wed, 12 Sep 2012 20:07:46 +0000
+ id 1TBtDk-0001sW-Ql
+ for barebox@lists.infradead.org; Wed, 12 Sep 2012 20:07:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 12 Sep 2012 22:06:41 +0200
-Message-Id: <1347480407-16865-10-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 12 Sep 2012 22:06:40 +0200
+Message-Id: <1347480407-16865-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1347480407-16865-1-git-send-email-s.hauer@pengutronix.de>
 References: <1347480407-16865-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,86 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/15] net fec_imx: oftree support
+Subject: [PATCH 08/15] serial i.MX: oftree support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/fec_imx.c |   34 +++++++++++++++++++++++++++-------
- 1 file changed, 27 insertions(+), 7 deletions(-)
+ drivers/serial/serial_imx.c |   17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 599a9b4..d9a97b8 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -617,6 +617,7 @@ static int fec_probe(struct device_d *dev)
-         struct eth_device *edev;
- 	struct fec_priv *fec;
- 	void *base;
-+
- #ifdef CONFIG_ARCH_IMX27
- 	PCCR0 |= PCCR0_FEC_EN;
- #endif
-@@ -656,13 +657,19 @@ static int fec_probe(struct device_d *dev)
- 
- 	fec_alloc_receive_packets(fec, FEC_RBD_NUM, FEC_MAX_PKT_SIZE);
- 
--	fec->xcv_type = pdata->xcv_type;
-+	if (pdata)
-+		fec->xcv_type = pdata->xcv_type;
-+	else
-+		fec->xcv_type = MII100;
- 
- 	if (fec->xcv_type != SEVENWIRE) {
- 		fec->miidev.read = fec_miidev_read;
- 		fec->miidev.write = fec_miidev_write;
--		fec->miidev.address = pdata->phy_addr;
--		fec->miidev.flags = pdata->xcv_type == MII10 ? MIIDEV_FORCE_10 : 0;
-+		if (pdata) {
-+			fec->miidev.address = pdata->phy_addr;
-+			fec->miidev.flags = pdata->xcv_type == MII10 ? MIIDEV_FORCE_10 : 0;
-+		} else
-+			fec->miidev.address = 0;
- 		fec->miidev.edev = edev;
- 		fec->miidev.parent = dev;
- 
-@@ -680,19 +687,32 @@ static void fec_remove(struct device_d *dev)
- 	fec_halt(&fec->edev);
+diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
+index 1e1e8e3..9d15038 100644
+--- a/drivers/serial/serial_imx.c
++++ b/drivers/serial/serial_imx.c
+@@ -357,10 +357,23 @@ static void imx_serial_remove(struct device_d *dev)
+ 	free(priv);
  }
  
-+static __maybe_unused struct of_device_id imx_fec_dt_ids[] = {
++static __maybe_unused struct of_device_id imx_serial_dt_ids[] = {
 +	{
-+		.compatible = "fsl,imx25-fec",
++		.compatible = "fsl,imx1-uart",
++		.data = 0,
 +	}, {
-+		.compatible = "fsl,imx27-fec",
-+	}, {
-+		.compatible = "fsl,imx6q-fec",
++		.compatible = "fsl,imx21-uart",
++		.data = 1,
 +	}, {
 +		/* sentinel */
 +	}
 +};
 +
- /**
-  * Driver description for registering
-  */
- static struct driver_d fec_driver = {
--        .name   = "fec_imx",
--        .probe  = fec_probe,
-+	.name   = "fec_imx",
-+	.probe  = fec_probe,
- 	.remove = fec_remove,
-+	.of_compatible = DRV_OF_COMPAT(imx_fec_dt_ids),
+ static struct driver_d imx_serial_driver = {
+-        .name   = "imx_serial",
+-        .probe  = imx_serial_probe,
++	.name   = "imx_serial",
++	.probe  = imx_serial_probe,
+ 	.remove = imx_serial_remove,
++	.of_compatible = DRV_OF_COMPAT(imx_serial_dt_ids),
  };
  
- static int fec_register(void)
- {
--        register_driver(&fec_driver);
--        return 0;
-+	register_driver(&fec_driver);
-+	return 0;
- }
- 
- device_initcall(fec_register);
+ static int imx_serial_init(void)
 -- 
 1.7.10.4
 
