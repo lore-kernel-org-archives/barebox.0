@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TBtE9-00049g-ES
- for barebox@lists.infradead.org; Wed, 12 Sep 2012 20:08:01 +0000
+ id 1TBtE9-00049l-MM
+ for barebox@lists.infradead.org; Wed, 12 Sep 2012 20:08:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 12 Sep 2012 22:06:44 +0200
-Message-Id: <1347480407-16865-13-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 12 Sep 2012 22:06:46 +0200
+Message-Id: <1347480407-16865-15-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1347480407-16865-1-git-send-email-s.hauer@pengutronix.de>
 References: <1347480407-16865-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,76 +21,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/15] cfi-flash: Add devicetree probe support
+Subject: [PATCH 14/15] ARM i.MX: add devicetree support for gpio driver
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/nor/cfi_flash.c |   29 +++++++++++++++++++++++------
- 1 file changed, 23 insertions(+), 6 deletions(-)
+ arch/arm/mach-imx/gpio.c |   39 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nor/cfi_flash.c b/drivers/nor/cfi_flash.c
-index 16885c0..a8eebf5 100644
---- a/drivers/nor/cfi_flash.c
-+++ b/drivers/nor/cfi_flash.c
-@@ -982,6 +982,7 @@ static void cfi_init_mtd(struct flash_info *info)
- static int cfi_probe (struct device_d *dev)
- {
- 	struct flash_info *info = xzalloc(sizeof(*info));
-+	int cfinum;
- 
- 	dev->priv = (void *)info;
- 
-@@ -1000,7 +1001,12 @@ static int cfi_probe (struct device_d *dev)
- 	dev_info(dev, "found cfi flash at %p, size %ld\n",
- 			info->base, info->size);
- 
--	info->cdev.name = asprintf("nor%d", dev->id);
-+	if (dev->id < 0)
-+		cfinum = cdev_find_free_index("nor");
-+	else
-+		cfinum = dev->id;
-+
-+	info->cdev.name = asprintf("nor%d", cfinum);
- 	info->cdev.size = info->size;
- 	info->cdev.dev = dev;
- 	info->cdev.ops = &cfi_ops;
-@@ -1011,19 +1017,30 @@ static int cfi_probe (struct device_d *dev)
- #endif
- 	devfs_create(&info->cdev);
- 
-+	if (dev->device_node)
-+		of_parse_partitions(info->cdev.name, dev->device_node);
-+
+diff --git a/arch/arm/mach-imx/gpio.c b/arch/arm/mach-imx/gpio.c
+index b7426fe..df0b455 100644
+--- a/arch/arm/mach-imx/gpio.c
++++ b/arch/arm/mach-imx/gpio.c
+@@ -136,7 +136,13 @@ static int imx_gpio_probe(struct device_d *dev)
+ 	imxgpio = xzalloc(sizeof(*imxgpio));
+ 	imxgpio->base = dev_request_mem_region(dev, 0);
+ 	imxgpio->chip.ops = &imx_gpio_ops;
+-	imxgpio->chip.base = -1;
++	if (dev->id < 0) {
++		imxgpio->chip.base = of_alias_get_id(dev->device_node, "gpio");
++		if (imxgpio->chip.base < 0)
++			return imxgpio->chip.base;
++	} else {
++		imxgpio->chip.base = dev->id * 32;
++	}
+ 	imxgpio->chip.ngpio = 32;
+ 	imxgpio->chip.dev = dev;
+ 	imxgpio->regs = regs;
+@@ -147,6 +153,36 @@ static int imx_gpio_probe(struct device_d *dev)
  	return 0;
  }
  
-+static __maybe_unused struct of_device_id cfi_dt_ids[] = {
++static __maybe_unused struct of_device_id imx_gpio_dt_ids[] = {
 +	{
-+		.compatible = "cfi-flash",
++		.compatible = "fsl,imx1-gpio",
++		.data = (unsigned long)&regs_imx1,
++	}, {
++		.compatible = "fsl,imx21-gpio",
++		.data = (unsigned long)&regs_imx1,
++	}, {
++		.compatible = "fsl,imx27-gpio",
++		.data = (unsigned long)&regs_imx1,
++	}, {
++		.compatible = "fsl,imx31-gpio",
++		.data = (unsigned long)&regs_imx31,
++	}, {
++		.compatible = "fsl,imx35-gpio",
++		.data = (unsigned long)&regs_imx31,
++	}, {
++		.compatible = "fsl,imx51-gpio",
++		.data = (unsigned long)&regs_imx31,
++	}, {
++		.compatible = "fsl,imx53-gpio",
++		.data = (unsigned long)&regs_imx31,
++	}, {
++		.compatible = "fsl,imx6q-gpio",
++		.data = (unsigned long)&regs_imx31,
 +	}, {
 +		/* sentinel */
 +	}
 +};
 +
- static struct driver_d cfi_driver = {
--        .name    = "cfi_flash",
--        .probe   = cfi_probe,
--        .info    = cfi_info,
-+	.name    = "cfi_flash",
-+	.probe   = cfi_probe,
-+	.info    = cfi_info,
-+	.of_compatible = DRV_OF_COMPAT(cfi_dt_ids),
+ static struct platform_device_id imx_gpio_ids[] = {
+ 	{
+ 		.name = "imx1-gpio",
+@@ -162,6 +198,7 @@ static struct platform_device_id imx_gpio_ids[] = {
+ static struct driver_d imx_gpio_driver = {
+ 	.name = "imx-gpio",
+ 	.probe = imx_gpio_probe,
++	.of_compatible = DRV_OF_COMPAT(imx_gpio_dt_ids),
+ 	.id_table = imx_gpio_ids,
  };
  
- static int cfi_init(void)
- {
--        return register_driver(&cfi_driver);
-+	return register_driver(&cfi_driver);
- }
- 
- device_initcall(cfi_init);
--
 -- 
 1.7.10.4
 
