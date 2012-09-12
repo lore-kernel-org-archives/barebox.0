@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TBtDk-0001sW-Ql
- for barebox@lists.infradead.org; Wed, 12 Sep 2012 20:07:43 +0000
+ id 1TBtDt-0001td-Iq
+ for barebox@lists.infradead.org; Wed, 12 Sep 2012 20:07:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 12 Sep 2012 22:06:40 +0200
-Message-Id: <1347480407-16865-9-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 12 Sep 2012 22:06:45 +0200
+Message-Id: <1347480407-16865-14-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1347480407-16865-1-git-send-email-s.hauer@pengutronix.de>
 References: <1347480407-16865-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,44 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/15] serial i.MX: oftree support
+Subject: [PATCH 13/15] mci i.MX esdhc: Add oftree support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/serial/serial_imx.c |   17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/mci/imx-esdhc.c |   25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
-index 1e1e8e3..9d15038 100644
---- a/drivers/serial/serial_imx.c
-+++ b/drivers/serial/serial_imx.c
-@@ -357,10 +357,23 @@ static void imx_serial_remove(struct device_d *dev)
- 	free(priv);
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 585cab9..d9ef71b 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -567,16 +567,31 @@ static int fsl_esdhc_probe(struct device_d *dev)
+ 	return 0;
  }
  
-+static __maybe_unused struct of_device_id imx_serial_dt_ids[] = {
++static struct of_device_id fsl_esdhc_compatible[] = {
 +	{
-+		.compatible = "fsl,imx1-uart",
-+		.data = 0,
++		.compatible = "fsl,imx51-esdhc",
++		.data = (void *)0,
 +	}, {
-+		.compatible = "fsl,imx21-uart",
-+		.data = 1,
++		.compatible = "fsl,imx53-esdhc",
++		.data = (void *)0,
++	}, {
++		.compatible = "fsl,imx6q-usdhc",
++		.data = (void *)0,
 +	}, {
 +		/* sentinel */
 +	}
 +};
 +
- static struct driver_d imx_serial_driver = {
--        .name   = "imx_serial",
--        .probe  = imx_serial_probe,
-+	.name   = "imx_serial",
-+	.probe  = imx_serial_probe,
- 	.remove = imx_serial_remove,
-+	.of_compatible = DRV_OF_COMPAT(imx_serial_dt_ids),
+ static struct driver_d fsl_esdhc_driver = {
+-        .name  = "imx-esdhc",
+-        .probe = fsl_esdhc_probe,
++	.name  = "imx-esdhc",
++	.probe = fsl_esdhc_probe,
++	.of_compatible = fsl_esdhc_compatible,
  };
  
- static int imx_serial_init(void)
+ static int fsl_esdhc_init_driver(void)
+ {
+-        register_driver(&fsl_esdhc_driver);
+-        return 0;
++	register_driver(&fsl_esdhc_driver);
++	return 0;
+ }
+ 
+ device_initcall(fsl_esdhc_init_driver);
+-
 -- 
 1.7.10.4
 
