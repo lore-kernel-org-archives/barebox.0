@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-f177.google.com ([74.125.82.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TBhgG-0002T2-Mt
- for barebox@lists.infradead.org; Wed, 12 Sep 2012 07:48:17 +0000
-Received: by weyr3 with SMTP id r3so849290wey.36
- for <barebox@lists.infradead.org>; Wed, 12 Sep 2012 00:48:12 -0700 (PDT)
-From: Peter Korsgaard <jacmet@sunsite.dk>
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TBhqC-0005c0-22
+ for barebox@lists.infradead.org; Wed, 12 Sep 2012 07:58:32 +0000
+Date: Wed, 12 Sep 2012 09:57:44 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120912075744.GL6180@pengutronix.de>
 References: <20120908180310.GH20330@game.jcrosoft.org>
  <1347127542-11981-1-git-send-email-plagnioj@jcrosoft.com>
- <1347127542-11981-11-git-send-email-plagnioj@jcrosoft.com>
- <20120912073904.GK6180@pengutronix.de>
-Date: Wed, 12 Sep 2012 09:48:08 +0200
-In-Reply-To: <20120912073904.GK6180@pengutronix.de> (Sascha Hauer's message of
- "Wed, 12 Sep 2012 09:39:04 +0200")
-Message-ID: <87fw6nu1fr.fsf@macbook.be.48ers.dk>
+ <1347127542-11981-2-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1347127542-11981-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,26 +24,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 11/11] png: add picoPNG lib support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 02/11] bmp: split bmp rending in lib/bmp.c
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
->>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
+In Subject: s/rending/rendering/
 
- >> +config PICOPNG
- >> +	bool "picoPNG"
- >> +	help
- >> +	  Support only RGBA PNG8
+Or better: Move bmp rendering to lib/bmp.c
 
- Sascha> 	  This PNG libraray only supports RGBA PNG8 but is much smaller
- Sascha> 	  in binary size then lodepng.
+On Sat, Sep 08, 2012 at 08:05:33PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> @@ -34,3 +34,4 @@ obj-$(CONFIG_UNCOMPRESS)	+= uncompress.o
+>  obj-$(CONFIG_BCH)	+= bch.o
+>  obj-$(CONFIG_BITREV)	+= bitrev.o
+>  obj-$(CONFIG_QSORT)	+= qsort.o
+> +obj-$(CONFIG_BMP)	+= bmp.o
+> diff --git a/lib/bmp.c b/lib/bmp.c
+> new file mode 100644
+> index 0000000..776d3b3
+> --- /dev/null
+> +++ b/lib/bmp.c
+> @@ -0,0 +1,132 @@
+> +#include <common.h>
+> +#include <fs.h>
+> +#include <errno.h>
+> +#include <malloc.h>
+> +#include <fb.h>
+> +#include <bmp_layout.h>
+> +#include <asm/byteorder.h>
+> +
+> +static inline void set_pixel(struct fb_info *info, void *adr, int r, int g, int b)
 
-s/libraray/library/
+This function is first moved from commands/bmp.c to lib/bmp.c, then
+added as a static inline to include/image_renderer.h, then removed again
+from lib/bmp.c, then removed from include/image_renderer.h, then
+reintroduced as a different function in include/graphic_utils.h.
 
-s/then/than/
+Can you please reorder your patch series to make it readable so that we
+can see what actually happens?
+
+Thanks
+ Sascha
 
 -- 
-Bye, Peter Korsgaard
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
