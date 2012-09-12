@@ -1,15 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([92.198.50.35])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TBp4W-0003VB-EP
- for barebox@lists.infradead.org; Wed, 12 Sep 2012 15:41:50 +0000
-Date: Wed, 12 Sep 2012 17:41:45 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120912154145.GZ6180@pengutronix.de>
-References: <1347459234-17676-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from 7.mo5.mail-out.ovh.net ([178.32.124.100]
+ helo=mo5.mail-out.ovh.net)
+ by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TBp51-0000ZC-4V
+ for barebox@lists.infradead.org; Wed, 12 Sep 2012 15:42:20 +0000
+Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 126A5FF9588
+ for <barebox@lists.infradead.org>; Wed, 12 Sep 2012 17:43:51 +0200 (CEST)
+Date: Wed, 12 Sep 2012 17:35:39 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120912153539.GC28928@game.jcrosoft.org>
+References: <20120912142743.GR31207@game.jcrosoft.org>
+ <1347461308-24208-1-git-send-email-plagnioj@jcrosoft.com>
+ <1347461308-24208-3-git-send-email-plagnioj@jcrosoft.com>
+ <20120912153134.GY6180@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1347459234-17676-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20120912153134.GY6180@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +29,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1 v3] bootm: add global bootm.{image/initrd}.loadaddr
- support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 3/7] defaultenv: switch hostname to global.hostname
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 12, 2012 at 04:13:54PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> To be able to pass the loadaddr of the image and the initrd.
+On 17:31 Wed 12 Sep     , Sascha Hauer wrote:
+> On Wed, Sep 12, 2012 at 04:48:24PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > 
+> > diff --git a/arch/arm/boards/eukrea_cpuimx25/env/config b/arch/arm/boards/eukrea_cpuimx25/env/config
+> > index b6bf93f..9c70988 100644
+> > --- a/arch/arm/boards/eukrea_cpuimx25/env/config
+> > +++ b/arch/arm/boards/eukrea_cpuimx25/env/config
+> > @@ -24,16 +24,16 @@ rootfs_loc=nand
+> >  
+> >  # rootfs
+> >  rootfs_type=ubifs
+> > -rootfsimage=$hostname/rootfs.$rootfs_type
+> > +rootfsimage=${global.hostname}/rootfs.$rootfs_type
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
-> fix typo in doc
+> This fixes all cases where global.hostname is read, but not where it's
+> set, i.e.
 > 
-> Best Regards,
-> J.
->  commands/bootm.c |   25 +++++++++++++++++++++++--
->  1 file changed, 23 insertions(+), 2 deletions(-)
-> 
-> diff --git a/commands/bootm.c b/commands/bootm.c
-> index 2d9f7f2..c03ca30 100644
-> --- a/commands/bootm.c
-> +++ b/commands/bootm.c
-> @@ -254,6 +254,19 @@ static char *bootm_image_name_and_no(const char *name, int *no)
->  #define BOOTM_OPTS BOOTM_OPTS_COMMON
->  #endif
->  
-> +unsigned long long getenv_loadaddr(const char *name)
+> hostname=eukrea-cpuimx25
+yeap found it I send the v2
 
-Static?
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
