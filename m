@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TBtE5-0001ug-Sz
- for barebox@lists.infradead.org; Wed, 12 Sep 2012 20:07:58 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TBtDu-00047w-AU
+ for barebox@lists.infradead.org; Wed, 12 Sep 2012 20:07:47 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 12 Sep 2012 22:06:35 +0200
-Message-Id: <1347480407-16865-4-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 12 Sep 2012 22:06:37 +0200
+Message-Id: <1347480407-16865-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1347480407-16865-1-git-send-email-s.hauer@pengutronix.de>
 References: <1347480407-16865-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,121 +21,124 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/15] oftree command: Add devicetree probe support
+Subject: [PATCH 05/15] spi: add oftree support
 To: barebox@lists.infradead.org
-
-With this the -p option is no longer for parse, but for probe instead.
-Using this parses a devicetree given on the command line and probes
-the devices found in this tree. Devices which already exist are not
-probed again, but instead their device_node is attached to the existing
-device.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig  |   12 +++++++++++-
- commands/oftree.c |   28 +++++++++++++++-------------
- 2 files changed, 26 insertions(+), 14 deletions(-)
+ drivers/spi/spi.c |   34 +++++++++++++++++++++++++++++++++-
+ include/spi/spi.h |    6 ++++++
+ 2 files changed, 39 insertions(+), 1 deletion(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index f2756cc..8a3edfa 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -468,7 +468,17 @@ config CMD_OFTREE
- 	tristate
- 	select OFTREE
- 	prompt "oftree"
--	select FDT
-+	help
-+	  The oftree command has support for dumping devicetrees and, if
-+	  enabled, to probe devices from the devicetree
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 4416783..bbb7679 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -83,6 +83,7 @@ struct spi_device *spi_new_device(struct spi_master *master,
+ 	/* allocate a free id for this chip */
+ 	proxy->dev.id = DEVICE_ID_DYNAMIC;
+ 	proxy->dev.type_data = proxy;
++	proxy->dev.device_node = chip->device_node;
+ 	dev_add_child(master->dev, &proxy->dev);
+ 
+ 	/* drivers may modify this initial i/o setup */
+@@ -102,6 +103,29 @@ fail:
+ }
+ EXPORT_SYMBOL(spi_new_device);
+ 
++#ifdef CONFIG_OFTREE
++#include <of.h>
 +
-+config CMD_OFTREE_PROBE
-+	bool
-+	depends on CMD_OFTREE
-+	select OFDEVICE
-+	prompt "oftree probe support"
-+	help
-+	  This enables the -p option to probe devices from the devicetree
++void spi_of_register_slaves(struct spi_master *master, struct device_node *node)
++{
++	struct device_node *n;
++	struct spi_board_info chip;
++	struct property *reg;
++
++	device_node_for_nach_child(node, n) {
++		chip.name = n->name;
++		chip.bus_num = master->bus_num;
++		chip.max_speed_hz = 300000; /* FIXME */
++		reg = of_find_property(n, "reg");
++		if (!reg)
++			continue;
++		chip.chip_select = of_read_number(reg->value, 1);
++		chip.device_node = n;
++		spi_register_board_info(&chip, 1);
++	}
++}
++#endif
++
+ /**
+  * spi_register_board_info - register SPI devices for a given board
+  * @info: array of chip descriptors
+@@ -145,7 +169,7 @@ static void scan_boardinfo(struct spi_master *master)
+ 		unsigned		n;
  
- endmenu
- 
-diff --git a/commands/oftree.c b/commands/oftree.c
-index 77afbc5..6479fa4 100644
---- a/commands/oftree.c
-+++ b/commands/oftree.c
-@@ -48,7 +48,8 @@ static int do_oftree(int argc, char *argv[])
- 	char *file = NULL;
- 	const char *node = "/";
- 	int dump = 0;
--	int parse = 0;
-+	int probe = 0;
-+	int ret;
- 
- 	while ((opt = getopt(argc, argv, "dpfn:")) > 0) {
- 		switch (opt) {
-@@ -56,7 +57,12 @@ static int do_oftree(int argc, char *argv[])
- 			dump = 1;
- 			break;
- 		case 'p':
--			parse = 1;
-+			if (IS_ENABLED(CONFIG_CMD_OFTREE_PROBE)) {
-+				probe = 1;
-+			} else {
-+				printf("oftree device probe support disabled\n");
-+				return COMMAND_ERROR_USAGE;
-+			}
- 			break;
- 		case 'f':
- 			free(barebox_fdt);
-@@ -71,7 +77,7 @@ static int do_oftree(int argc, char *argv[])
- 	if (optind < argc)
- 		file = argv[optind];
- 
--	if (!dump && !parse)
-+	if (!dump && !probe)
- 		return COMMAND_ERROR_USAGE;
- 
- 	if (dump) {
-@@ -95,7 +101,7 @@ static int do_oftree(int argc, char *argv[])
- 		return 0;
+ 		for (n = bi->n_board_info; n > 0; n--, chip++) {
+-			debug("%s %d %d\n", __FUNCTION__, chip->bus_num, master->bus_num);
++			printf("%s %d %d\n", __FUNCTION__, chip->bus_num, master->bus_num);
+ 			if (chip->bus_num != master->bus_num)
+ 				continue;
+ 			/* NOTE: this relies on spi_new_device to
+@@ -156,6 +180,8 @@ static void scan_boardinfo(struct spi_master *master)
  	}
+ }
  
--	if (parse) {
-+	if (probe) {
- 		if (!file)
- 			return COMMAND_ERROR_USAGE;
++static LIST_HEAD(spi_master_list);
++
+ /**
+  * spi_register_master - register SPI master controller
+  * @master: initialized master, originally from spi_alloc_master()
+@@ -188,6 +214,8 @@ int spi_register_master(struct spi_master *master)
+ 	if (master->num_chipselect == 0)
+ 		return -EINVAL;
  
-@@ -105,17 +111,13 @@ static int do_oftree(int argc, char *argv[])
- 			return 1;
- 		}
++	list_add_tail(&master->list, &spi_master_list);
++
+ 	/* populate children from any spi device tables */
+ 	scan_boardinfo(master);
+ 	status = 0;
+@@ -245,6 +273,10 @@ EXPORT_SYMBOL(spi_write_then_read);
  
--		fdt = xrealloc(fdt, size + 0x8000);
--		fdt_open_into(fdt, fdt, size + 0x8000);
--		if (!fdt) {
--			printf("unable to read %s\n", file);
-+		ret = of_parse_dtb(fdt);
-+		if (ret) {
-+			printf("parse oftree: %s\n", strerror(-ret));
- 			return 1;
- 		}
+ static int spi_match(struct device_d *dev, struct driver_d *drv)
+ {
++	if (IS_ENABLED(CONFIG_OFDEVICE) && dev->device_node &&
++			drv->of_compatible)
++		return of_match(dev, drv);
++
+ 	return strcmp(dev->name, drv->name) ? -1 : 0;
+ }
  
--		if (barebox_fdt)
--			free(barebox_fdt);
--
--		barebox_fdt = fdt;
-+		of_probe();
- 	}
+diff --git a/include/spi/spi.h b/include/spi/spi.h
+index 569cdcd..1773ca2 100644
+--- a/include/spi/spi.h
++++ b/include/spi/spi.h
+@@ -17,6 +17,7 @@ struct spi_board_info {
+ 	u8	mode;
+ 	u8	bits_per_word;
+ 	void	*platform_data;
++	struct device_node *device_node;
+ };
  
- 	return 0;
-@@ -123,7 +125,7 @@ static int do_oftree(int argc, char *argv[])
+ /**
+@@ -163,6 +164,8 @@ struct spi_master {
  
- BAREBOX_CMD_HELP_START(oftree)
- BAREBOX_CMD_HELP_USAGE("oftree [OPTIONS]\n")
--BAREBOX_CMD_HELP_OPT  ("-p <FILE>",  "parse and store oftree from <file>\n")
-+BAREBOX_CMD_HELP_OPT  ("-p <FILE>",  "probe devices in oftree from <file>\n")
- BAREBOX_CMD_HELP_OPT  ("-d [FILE]",  "dump oftree from [FILE] or the parsed tree if no file is given\n")
- BAREBOX_CMD_HELP_OPT  ("-f",  "free stored oftree\n")
- BAREBOX_CMD_HELP_END
+ 	/* called on release() to free memory provided by spi_master */
+ 	void			(*cleanup)(struct spi_device *spi);
++
++	struct list_head list;
+ };
+ 
+ /*---------------------------------------------------------------------------*/
+@@ -434,4 +437,7 @@ static inline int spi_register_driver(struct driver_d *drv)
+ 	drv->bus = &spi_bus;
+ 	return register_driver(drv);
+ }
++
++void spi_of_register_slaves(struct spi_master *master, struct device_node *node);
++
+ #endif /* __INCLUDE_SPI_H */
 -- 
 1.7.10.4
 
