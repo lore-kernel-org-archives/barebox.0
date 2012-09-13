@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo5.mail-out.ovh.net ([46.105.40.108]
+Received: from 9.mo5.mail-out.ovh.net ([178.32.96.204]
  helo=mo5.mail-out.ovh.net)
- by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TCDVJ-0007yr-MX
- for barebox@lists.infradead.org; Thu, 13 Sep 2012 17:47:08 +0000
+ by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TCDVK-0003ZQ-Ki
+ for barebox@lists.infradead.org; Thu, 13 Sep 2012 17:47:07 +0000
 Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 2AE36FF9DF5
- for <barebox@lists.infradead.org>; Thu, 13 Sep 2012 19:48:37 +0200 (CEST)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id EA2E4FFA6DB
+ for <barebox@lists.infradead.org>; Thu, 13 Sep 2012 19:48:38 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 13 Sep 2012 19:40:19 +0200
-Message-Id: <1347558023-25680-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 13 Sep 2012 19:40:22 +0200
+Message-Id: <1347558023-25680-6-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1347558023-25680-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120913172220.GB20834@game.jcrosoft.org>
  <1347558023-25680-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,47 +26,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/7] defaultenv-2/ansi-colors: export color only if enable
+Subject: [PATCH 6/7] defaultenv-2: boot reset linux.bootargs.dyn. and bootm.
+ globalvar
 To: barebox@lists.infradead.org
 
-This will allow to do not check it everywhere
+This is need for boot sequence to do not have the previous boot param.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- defaultenv-2/base/data/ansi-colors |    4 ++++
- defaultenv-2/menu/menu/mainmenu    |    4 +---
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ defaultenv-2/base/bin/boot |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/defaultenv-2/base/data/ansi-colors b/defaultenv-2/base/data/ansi-colors
-index c71b6b7..6365329 100644
---- a/defaultenv-2/base/data/ansi-colors
-+++ b/defaultenv-2/base/data/ansi-colors
-@@ -1,5 +1,9 @@
- #!/bin/sh
+diff --git a/defaultenv-2/base/bin/boot b/defaultenv-2/base/bin/boot
+index 4ebda3f..103eb87 100644
+--- a/defaultenv-2/base/bin/boot
++++ b/defaultenv-2/base/bin/boot
+@@ -33,6 +33,10 @@ while getopt "vdhl" opt; do
+ 	fi
+ done
  
-+if [ ${global.allow_color} != "true" ]; then
-+	exit
-+fi
++# clear linux.bootargs.dyn.* and bootm.*
++global -r linux.bootargs.dyn.
++global -r bootm.
 +
- # Colors
- export RED='\e[1;31m'
- export BLUE='\e[1;34m'
-diff --git a/defaultenv-2/menu/menu/mainmenu b/defaultenv-2/menu/menu/mainmenu
-index d7b0033..5bd7027 100644
---- a/defaultenv-2/menu/menu/mainmenu
-+++ b/defaultenv-2/menu/menu/mainmenu
-@@ -3,9 +3,7 @@
- savepath=$PATH
- export menupath=$PATH:/env/menu
- 
--if [ ${global.allow_color} = "true" ]; then
--	. /env/data/ansi-colors
--fi
-+. /env/data/ansi-colors
- 
- while true; do
- 	export PATH=${menupath}
+ if [ $# = 0 ]; then
+ 	scr="$global.boot.default"
+ else
 -- 
 1.7.10.4
 
