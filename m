@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from 15.mo5.mail-out.ovh.net ([178.33.107.29]
  helo=mo5.mail-out.ovh.net)
- by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TCCOe-0006EE-Ql
- for barebox@lists.infradead.org; Thu, 13 Sep 2012 16:36:11 +0000
+ by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TCCOg-000247-4k
+ for barebox@lists.infradead.org; Thu, 13 Sep 2012 16:36:13 +0000
 Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 54E56FFAAEA
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 286CEFFAAC7
  for <barebox@lists.infradead.org>; Thu, 13 Sep 2012 18:37:43 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 13 Sep 2012 18:29:25 +0200
-Message-Id: <1347553768-19030-4-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 13 Sep 2012 18:29:24 +0200
+Message-Id: <1347553768-19030-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1347553768-19030-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120913155532.GA9153@game.jcrosoft.org>
  <1347553768-19030-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,435 +26,886 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] dhcp: switch to global var support
+Subject: [PATCH 3/7] defaultenv: switch hostname to global.hostname
 To: barebox@lists.infradead.org
 
-This way you can specify as previously set the dhcp parameter via global.dhcp.xxx
-and get the result via global.dhcp.xxx
-
-This is need for the defaultenv-2 to add the bootp suppport.
-Use it on defaultenv too to have only one set of var.
+Udpate dhcp with it too.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/at91rm9200ek/env/config        |    2 +-
- arch/arm/boards/at91sam9260ek/env/config       |    4 +-
- arch/arm/boards/at91sam9261ek/env/config       |    4 +-
- arch/arm/boards/at91sam9263ek/env/config       |    2 +-
- arch/arm/boards/at91sam9m10g45ek/env/config    |    2 +-
- arch/arm/boards/at91sam9x5ek/env/config        |    2 +-
- arch/arm/boards/freescale-mx53-loco/env/config |    2 +-
- arch/arm/boards/qil-a9260/env/config           |    2 +-
- arch/arm/boards/tny-a926x/env/config           |    6 +-
- arch/arm/boards/usb-a926x/env/config           |    6 +-
- defaultenv/bin/boot                            |   12 +--
- defaultenv/config                              |    2 +-
- net/dhcp.c                                     |  119 ++++++++++++++++++++----
- 13 files changed, 123 insertions(+), 42 deletions(-)
+ arch/arm/boards/chumby_falconwing/env/config      |    2 +-
+ arch/arm/boards/eukrea_cpuimx25/env/config        |   14 +++++++-------
+ arch/arm/boards/eukrea_cpuimx35/env/config        |   14 +++++++-------
+ arch/arm/boards/eukrea_cpuimx51/env/config        |   14 +++++++-------
+ arch/arm/boards/freescale-mx28-evk/env/config     |   12 ++++++------
+ arch/arm/boards/freescale-mx35-3-stack/env/config |   14 +++++++-------
+ arch/arm/boards/freescale-mx53-loco/env/config    |   14 +++++++-------
+ arch/arm/boards/freescale-mx53-smd/env/config     |   14 +++++++-------
+ arch/arm/boards/friendlyarm-mini2440/env/config   |   14 +++++++-------
+ arch/arm/boards/guf-cupid/env/config              |   14 +++++++-------
+ arch/arm/boards/guf-neso/env/config               |   14 +++++++-------
+ arch/arm/boards/karo-tx25/env/config              |   14 +++++++-------
+ arch/arm/boards/karo-tx28/env/config              |   14 +++++++-------
+ arch/arm/boards/panda/env/config                  |   12 ++++++------
+ arch/arm/boards/pcm027/env/config                 |   14 +++++++-------
+ arch/arm/boards/pcm037/env/config                 |   14 +++++++-------
+ arch/arm/boards/pcm043/env/config                 |   14 +++++++-------
+ arch/arm/boards/pcm049/env/config                 |   14 +++++++-------
+ arch/arm/boards/phycard-a-l1/env/config           |   18 +++++++++---------
+ arch/arm/boards/phycard-a-xl2/env/config          |   14 +++++++-------
+ arch/arm/boards/phycard-i.MX27/env/config         |   14 +++++++-------
+ arch/arm/boards/scb9328/env/config                |   14 +++++++-------
+ defaultenv/config                                 |   16 ++++++++--------
+ net/dhcp.c                                        |    4 ++--
+ 24 files changed, 158 insertions(+), 158 deletions(-)
 
-diff --git a/arch/arm/boards/at91rm9200ek/env/config b/arch/arm/boards/at91rm9200ek/env/config
-index 735bb10..a3830cb 100644
---- a/arch/arm/boards/at91rm9200ek/env/config
-+++ b/arch/arm/boards/at91rm9200ek/env/config
-@@ -3,7 +3,7 @@
+diff --git a/arch/arm/boards/chumby_falconwing/env/config b/arch/arm/boards/chumby_falconwing/env/config
+index bf48da6..3839b40 100644
+--- a/arch/arm/boards/chumby_falconwing/env/config
++++ b/arch/arm/boards/chumby_falconwing/env/config
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-hostname=falconwing
++global.hostname=falconwing
+ 
  # use 'dhcp' to do dhcp in barebox and in kernel
  # use 'none' if you want to skip kernel ip autoconfiguration
- ip=dhcp-barebox
--dhcp_vendor_id=barebox-at91rm9200ek
-+global.dhcp.vendor_id=barebox-at91rm9200ek
+diff --git a/arch/arm/boards/eukrea_cpuimx25/env/config b/arch/arm/boards/eukrea_cpuimx25/env/config
+index b6bf93f..63a85b2 100644
+--- a/arch/arm/boards/eukrea_cpuimx25/env/config
++++ b/arch/arm/boards/eukrea_cpuimx25/env/config
+@@ -5,7 +5,7 @@ otg_mode="device"
+ # video : can be CMO-QVGA, URT-WVGA, DVI-VGA or DVI-SVGA
+ video="CMO-QVGA"
  
- # or set your networking parameters here
- #eth0.ipaddr=a.b.c.d
-diff --git a/arch/arm/boards/at91sam9260ek/env/config b/arch/arm/boards/at91sam9260ek/env/config
-index 06b9faf..8e88186 100644
---- a/arch/arm/boards/at91sam9260ek/env/config
-+++ b/arch/arm/boards/at91sam9260ek/env/config
-@@ -6,9 +6,9 @@ ip=dhcp-barebox
+-hostname=eukrea-cpuimx25
++global.hostname=eukrea-cpuimx25
  
- if [ x$armlinux_architecture = x1099 ]
- then
--	dhcp_vendor_id=barebox-at91sam9260ek
-+	global.dhcp.vendor_id=barebox-at91sam9260ek
+ # use 'dhcp' to do dhcp in barebox and in kernel
+ # use 'none' if you want to skip kernel ip autoconfiguration
+@@ -24,16 +24,16 @@ rootfs_loc=nand
+ 
+ # rootfs
+ rootfs_type=ubifs
+-rootfsimage=$hostname/rootfs.$rootfs_type
++rootfsimage=${global.hostname}/rootfs.$rootfs_type
+ 
+ # kernel
+-kernelimage=$hostname/uImage-${hostname}.bin
++kernelimage=${global.hostname}/uImage-${global.hostname}.bin
+ 
+ # barebox and it's env
+-bareboximage=$hostname/barebox-${hostname}.bin
+-bareboxenvimage=$hostname/bareboxenv-${hostname}.bin
++bareboximage=${global.hostname}/barebox-${global.hostname}.bin
++bareboxenvimage=${global.hostname}/bareboxenv-${global.hostname}.bin
+ 
+-nfsroot="$eth0.serverip:/srv/nfs/$hostname"
++nfsroot="$eth0.serverip:/srv/nfs/${global.hostname}"
+ 
+ autoboot_timeout=1
+ 
+@@ -42,7 +42,7 @@ bootargs="console=ttymxc0,115200 otg_mode=$otg_mode video=imxfb:$video"
+ nand_parts="256k(barebox)ro,128k(bareboxenv),3M(kernel),-(root)"
+ rootfs_mtdblock_nand=3
+ nand_device="mxc_nand"
+-ubiroot="$hostname-rootfs"
++ubiroot="${global.hostname}-rootfs"
+ device_type="nand"
+ 
+ # set a fancy prompt (if support is compiled in)
+diff --git a/arch/arm/boards/eukrea_cpuimx35/env/config b/arch/arm/boards/eukrea_cpuimx35/env/config
+index 01cbfe9..50d33a4 100644
+--- a/arch/arm/boards/eukrea_cpuimx35/env/config
++++ b/arch/arm/boards/eukrea_cpuimx35/env/config
+@@ -5,7 +5,7 @@ otg_mode="device"
+ # video : can be CMO-QVGA, URT-WVGA, DVI-VGA or DVI-SVGA
+ video="CMO-QVGA"
+ 
+-hostname=eukrea-cpuimx35
++global.hostname=eukrea-cpuimx35
+ 
+ # use 'dhcp' to do dhcp in barebox and in kernel
+ # use 'none' if you want to skip kernel ip autoconfiguration
+@@ -24,16 +24,16 @@ rootfs_loc=nand
+ 
+ # rootfs
+ rootfs_type=ubifs
+-rootfsimage=$hostname/rootfs.$rootfs_type
++rootfsimage=${global.hostname}/rootfs.$rootfs_type
+ 
+ # kernel
+-kernelimage=$hostname/uImage-${hostname}.bin
++kernelimage=${global.hostname}/uImage-${global.hostname}.bin
+ 
+ # barebox and it's env
+-bareboximage=$hostname/barebox-${hostname}.bin
+-bareboxenvimage=$hostname/bareboxenv-${hostname}.bin
++bareboximage=${global.hostname}/barebox-${global.hostname}.bin
++bareboxenvimage=${global.hostname}/bareboxenv-${global.hostname}.bin
+ 
+-nfsroot="$eth0.serverip:/srv/nfs/$hostname"
++nfsroot="$eth0.serverip:/srv/nfs/${global.hostname}"
+ 
+ autoboot_timeout=1
+ 
+@@ -42,7 +42,7 @@ bootargs="console=ttymxc0,115200 otg_mode=$otg_mode video=mx3fb:$video"
+ nand_parts="256k(barebox)ro,128k(bareboxenv),3M(kernel),-(root)"
+ rootfs_mtdblock_nand=3
+ nand_device="mxc_nand"
+-ubiroot="$hostname-rootfs"
++ubiroot="${global.hostname}-rootfs"
+ device_type="nand"
+ 
+ # set a fancy prompt (if support is compiled in)
+diff --git a/arch/arm/boards/eukrea_cpuimx51/env/config b/arch/arm/boards/eukrea_cpuimx51/env/config
+index 163d026..17f8337 100644
+--- a/arch/arm/boards/eukrea_cpuimx51/env/config
++++ b/arch/arm/boards/eukrea_cpuimx51/env/config
+@@ -8,7 +8,7 @@ video="CMO-QVGA"
+ # screen type : can be 'tft' or 'dvi'
+ screen_type="tft"
+ 
+-hostname=eukrea-cpuimx51
++global.hostname=eukrea-cpuimx51
+ 
+ # use 'dhcp' to do dhcp in barebox and in kernel
+ # use 'none' if you want to skip kernel ip autoconfiguration
+@@ -27,16 +27,16 @@ rootfs_loc=nand
+ 
+ # rootfs
+ rootfs_type=ubifs
+-rootfsimage=$hostname/rootfs.$rootfs_type
++rootfsimage=${global.hostname}/rootfs.$rootfs_type
+ 
+ # kernel
+-kernelimage=$hostname/uImage-${hostname}.bin
++kernelimage=${global.hostname}/uImage-${global.hostname}.bin
+ 
+ # barebox and it's env
+-bareboximage=$hostname/barebox-${hostname}.bin
+-bareboxenvimage=$hostname/bareboxenv-${hostname}.bin
++bareboximage=${global.hostname}/barebox-${global.hostname}.bin
++bareboxenvimage=${global.hostname}/bareboxenv-${global.hostname}.bin
+ 
+-nfsroot="$eth0.serverip:/srv/nfs/$hostname"
++nfsroot="$eth0.serverip:/srv/nfs/${global.hostname}"
+ 
+ autoboot_timeout=1
+ 
+@@ -45,7 +45,7 @@ bootargs="console=ttymxc0,115200 otg_mode=$otg_mode video=$video screen_type=$sc
+ nand_parts="256k(barebox)ro,128k(bareboxenv),3M(kernel),-(root)"
+ rootfs_mtdblock_nand=3
+ nand_device="mxc_nand"
+-ubiroot="$hostname-rootfs"
++ubiroot="${global.hostname}-rootfs"
+ device_type="nand"
+ 
+ # set a fancy prompt (if support is compiled in)
+diff --git a/arch/arm/boards/freescale-mx28-evk/env/config b/arch/arm/boards/freescale-mx28-evk/env/config
+index 3951c5b..4e2c90d 100644
+--- a/arch/arm/boards/freescale-mx28-evk/env/config
++++ b/arch/arm/boards/freescale-mx28-evk/env/config
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-hostname=mx28-evk
++global.hostname=mx28-evk
+ #user=
+ 
+ # use 'dhcp' to do dhcp in barebox and in kernel
+@@ -24,21 +24,21 @@ rootfs_loc=net
+ rootfs_type=ext2
+ # where is the rootfs in case of 'rootfs_loc=disk' (linux name)
+ rootfs_part_linux_dev=mmcblk0p4
+-rootfsimage=rootfs-${hostname}.$rootfs_type
++rootfsimage=rootfs-${global.hostname}.$rootfs_type
+ 
+ # where is the kernel image in case of 'kernel_loc=disk'
+ kernel_part=disk0.2
+ 
+-kernelimage=zImage-$hostname
+-bareboximage=barebox-${hostname}.bin
+-bareboxenvimage=barebox-${hostname}.bin
++kernelimage=zImage-${global.hostname}
++bareboximage=barebox-${global.hostname}.bin
++bareboxenvimage=barebox-${global.hostname}.bin
+ 
+ if [ -n $user ]; then
+ 	bareboximage="$user"-"$bareboximage"
+ 	bareboxenvimage="$user"-"$bareboxenvimage"
+ 	kernelimage="$user"-"$kernelimage"
+ 	rootfsimage="$user"-"$rootfsimage"
+-	nfsroot="/home/$user/nfsroot/$hostname"
++	nfsroot="/home/$user/nfsroot/${global.hostname}"
  else
--	dhcp_vendor_id=barebox-at91sam9g20ek
-+	global.dhcp.vendor_id=barebox-at91sam9g20ek
+ 	nfsroot="/path/to/nfs/root"
  fi
+diff --git a/arch/arm/boards/freescale-mx35-3-stack/env/config b/arch/arm/boards/freescale-mx35-3-stack/env/config
+index 171ae8c..122c0fc 100644
+--- a/arch/arm/boards/freescale-mx35-3-stack/env/config
++++ b/arch/arm/boards/freescale-mx35-3-stack/env/config
+@@ -1,6 +1,6 @@
+ #!/bin/sh
  
- # or set your networking parameters here
-diff --git a/arch/arm/boards/at91sam9261ek/env/config b/arch/arm/boards/at91sam9261ek/env/config
-index 820485d..7d85577 100644
---- a/arch/arm/boards/at91sam9261ek/env/config
-+++ b/arch/arm/boards/at91sam9261ek/env/config
-@@ -6,9 +6,9 @@ ip=dhcp-barebox
+-hostname=mx35-3stack
++global.hostname=mx35-3stack
+ eth0.serverip=
+ user=
  
- if [ x$armlinux_architecture = x848 ]
- then
--	dhcp_vendor_id=barebox-at91sam9261ek
-+	global.dhcp.vendor_id=barebox-at91sam9261ek
+@@ -21,16 +21,16 @@ rootfs_loc=net
+ 
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
+-rootfsimage=root-$hostname.$rootfs_type
++rootfsimage=root-${global.hostname}.$rootfs_type
+ 
+-kernelimage=zImage-$hostname
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-$hostname.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+ if [ -n $user ]; then
+ 	kernelimage="$user"-"$kernelimage"
+-	nfsroot="$eth0.serverip:/home/$user/nfsroot/$hostname"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
+ 	rootfsimage="$user"-"$rootfsimage"
  else
--	dhcp_vendor_id=barebox-at91sam9g10ek
-+	global.dhcp.vendor_id=barebox-at91sam9g10ek
- fi
- 
- # or set your networking parameters here
-diff --git a/arch/arm/boards/at91sam9263ek/env/config b/arch/arm/boards/at91sam9263ek/env/config
-index a09bc26..5125020 100644
---- a/arch/arm/boards/at91sam9263ek/env/config
-+++ b/arch/arm/boards/at91sam9263ek/env/config
-@@ -3,7 +3,7 @@
- # use 'dhcp' to do dhcp in barebox and in kernel
- # use 'none' if you want to skip kernel ip autoconfiguration
- ip=dhcp-barebox
--dhcp_vendor_id=barebox-at91sam9263ek
-+global.dhcp.vendor_id=barebox-at91sam9263ek
- 
- # or set your networking parameters here
- #eth0.ipaddr=a.b.c.d
-diff --git a/arch/arm/boards/at91sam9m10g45ek/env/config b/arch/arm/boards/at91sam9m10g45ek/env/config
-index 37a20e9..54ed2cb 100644
---- a/arch/arm/boards/at91sam9m10g45ek/env/config
-+++ b/arch/arm/boards/at91sam9m10g45ek/env/config
-@@ -3,7 +3,7 @@
- # use 'dhcp' to do dhcp in barebox and in kernel
- # use 'none' if you want to skip kernel ip autoconfiguration
- ip=dhcp-barebox
--dhcp_vendor_id=barebox-at91sam9m10g45ek
-+global.dhcp.vendor_id=barebox-at91sam9m10g45ek
- 
- # or set your networking parameters here
- #eth0.ipaddr=a.b.c.d
-diff --git a/arch/arm/boards/at91sam9x5ek/env/config b/arch/arm/boards/at91sam9x5ek/env/config
-index dafe875..6a985ce 100644
---- a/arch/arm/boards/at91sam9x5ek/env/config
-+++ b/arch/arm/boards/at91sam9x5ek/env/config
-@@ -3,7 +3,7 @@
- # use 'dhcp' to do dhcp in barebox and in kernel
- # use 'none' if you want to skip kernel ip autoconfiguration
- ip=dhcp-barebox
--dhcp_vendor_id=barebox-at91sam9x5ek
-+global.dhcp.vendor_id=barebox-at91sam9x5ek
- 
- # or set your networking parameters here
- #eth0.ipaddr=a.b.c.d
+ 	nfsroot="$eth0.serverip:/path/to/nfs/root"
 diff --git a/arch/arm/boards/freescale-mx53-loco/env/config b/arch/arm/boards/freescale-mx53-loco/env/config
-index 24a1efb..2ab1268 100644
+index bceddaf..24a1efb 100644
 --- a/arch/arm/boards/freescale-mx53-loco/env/config
 +++ b/arch/arm/boards/freescale-mx53-loco/env/config
-@@ -7,7 +7,7 @@ user=
- # use 'dhcp' to do dhcp in barebox and in kernel
- # use 'none' if you want to skip kernel ip autoconfiguration
- ip=dhcp
--dhcp_vendor_id=barebox-mx53-loco
-+global.dhcp.vendor_id=barebox-mx53-loco
+@@ -1,6 +1,6 @@
+ #!/bin/sh
  
- # or set your networking parameters here
- #eth0.ipaddr=a.b.c.d
-diff --git a/arch/arm/boards/qil-a9260/env/config b/arch/arm/boards/qil-a9260/env/config
-index c0b5546..9971106 100644
---- a/arch/arm/boards/qil-a9260/env/config
-+++ b/arch/arm/boards/qil-a9260/env/config
-@@ -3,7 +3,7 @@
- # use 'dhcp' to do dhcp in barebox and in kernel
- # use 'none' if you want to skip kernel ip autoconfiguration
- ip=dhcp-barebox
--dhcp_vendor_id=barebox-qil-a9260
-+global.dhcp.vendor_id=barebox-qil-a9260
+-hostname=loco
++global.hostname=loco
+ eth0.serverip=
+ user=
  
- # or set your networking parameters here
- #eth0.ipaddr=a.b.c.d
-diff --git a/arch/arm/boards/tny-a926x/env/config b/arch/arm/boards/tny-a926x/env/config
-index 514fc9f..c19ec4f 100644
---- a/arch/arm/boards/tny-a926x/env/config
-+++ b/arch/arm/boards/tny-a926x/env/config
-@@ -3,9 +3,9 @@
- # use 'dhcp' to do dhcp in barebox and in kernel
- # use 'none' if you want to skip kernel ip autoconfiguration
- ip=dhcp-barebox
--[ x$armlinux_architecture = x2058 ] && dhcp_vendor_id=barebox-tny-a9260
--[ x$armlinux_architecture = x2059 ] && dhcp_vendor_id=barebox-tny-a9g20
--[ x$armlinux_architecture = x2140 ] && dhcp_vendor_id=barebox-tny-a9263
-+[ x$armlinux_architecture = x2058 ] && global.dhcp.vendor_id=barebox-tny-a9260
-+[ x$armlinux_architecture = x2059 ] && global.dhcp.vendor_id=barebox-tny-a9g20
-+[ x$armlinux_architecture = x2140 ] && global.dhcp.vendor_id=barebox-tny-a9263
+@@ -22,16 +22,16 @@ rootfs_loc=net
  
- # or set your networking parameters here
- #eth0.ipaddr=a.b.c.d
-diff --git a/arch/arm/boards/usb-a926x/env/config b/arch/arm/boards/usb-a926x/env/config
-index dc0a264..49199ba 100644
---- a/arch/arm/boards/usb-a926x/env/config
-+++ b/arch/arm/boards/usb-a926x/env/config
-@@ -3,9 +3,9 @@
- # use 'dhcp' to do dhcp in barebox and in kernel
- # use 'none' if you want to skip kernel ip autoconfiguration
- ip=dhcp-barebox
--[ x$armlinux_architecture = x1709 ] && dhcp_vendor_id=barebox-usb-a9260
--[ x$armlinux_architecture = x1710 ] && dhcp_vendor_id=barebox-usb-a9263
--[ x$armlinux_architecture = x1841 ] && dhcp_vendor_id=barebox-usb-a9g20
-+[ x$armlinux_architecture = x1709 ] && global.dhcp.vendor_id=barebox-usb-a9260
-+[ x$armlinux_architecture = x1710 ] && global.dhcp.vendor_id=barebox-usb-a9263
-+[ x$armlinux_architecture = x1841 ] && global.dhcp.vendor_id=barebox-usb-a9g20
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
+-rootfsimage=root-$hostname.$rootfs_type
++rootfsimage=root-${global.hostname}.$rootfs_type
  
- # or set your networking parameters here
- #eth0.ipaddr=a.b.c.d
-diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
-index 61b893a..4e2056e 100644
---- a/defaultenv/bin/boot
-+++ b/defaultenv/bin/boot
-@@ -44,14 +44,14 @@ fi
- if [ x$ip = xdhcp -o x$ip = "xdhcp-barebox" ]; then
- 	if [ x$kernel_loc = xnfs -o x$kernel_loc = xtftp ]; then
- 		dhcp
--		if [ x$rootpath != x ]; then
--			nfsroot=$rootpath
-+		if [ x${global.dhcp.rootpath} != x ]; then
-+			nfsroot=${global.dhcp.rootpath}
- 		fi
--		if [ x$bootfile != x ]; then
--			kernelimage=$bootfile
-+		if [ x${global.dhcp.bootfile} != x ]; then
-+			kernelimage=${global.dhcp.bootfile}
- 		fi
--		if [ x$dhcp_oftree_file != x ]; then
--			oftreeimage=$dhcp_oftree_file
-+		if [ x$global.dhcp.oftree_file} != x ]; then
-+			oftreeimage=${global.dhcp_oftree_file}
- 		fi
- 	fi
+-kernelimage=zImage-$hostname
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-$hostname.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+ if [ -n $user ]; then
+ 	kernelimage="$user"-"$kernelimage"
+-	nfsroot="$eth0.serverip:/home/$user/nfsroot/$hostname"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
+ 	rootfsimage="$user"-"$rootfsimage"
+ else
+ 	nfsroot="$eth0.serverip:/path/to/nfs/root"
+diff --git a/arch/arm/boards/freescale-mx53-smd/env/config b/arch/arm/boards/freescale-mx53-smd/env/config
+index d2afb29..d92beb9 100644
+--- a/arch/arm/boards/freescale-mx53-smd/env/config
++++ b/arch/arm/boards/freescale-mx53-smd/env/config
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-hostname=loco
++global.hostname=loco
+ eth0.serverip=
+ user=
+ 
+@@ -21,16 +21,16 @@ rootfs_loc=net
+ 
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
+-rootfsimage=root-$hostname.$rootfs_type
++rootfsimage=root-${global.hostname}.$rootfs_type
+ 
+-kernelimage=zImage-$hostname
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-$hostname.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+ if [ -n $user ]; then
+ 	kernelimage="$user"-"$kernelimage"
+-	nfsroot="$eth0.serverip:/home/$user/nfsroot/$hostname"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
+ 	rootfsimage="$user"-"$rootfsimage"
+ else
+ 	nfsroot="$eth0.serverip:/path/to/nfs/root"
+diff --git a/arch/arm/boards/friendlyarm-mini2440/env/config b/arch/arm/boards/friendlyarm-mini2440/env/config
+index 77cc34f..69d431a 100644
+--- a/arch/arm/boards/friendlyarm-mini2440/env/config
++++ b/arch/arm/boards/friendlyarm-mini2440/env/config
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-hostname=mini2440
++global.hostname=mini2440
+ eth0.serverip=
+ user=
+ 
+@@ -21,16 +21,16 @@ rootfs_loc=net
+ 
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
+-rootfsimage=root-${hostname}.${rootfs_type}
++rootfsimage=root-${global.hostname}.${rootfs_type}
+ 
+-kernelimage=zImage-${hostname}
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-$hostname.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+ if [ -n $user ]; then
+ 	kernelimage="${user}"-"${kernelimage}"
+-	nfsroot="${eth0.serverip}:/home/${user}/nfsroot/${hostname}"
++	nfsroot="${eth0.serverip}:/home/${user}/nfsroot/${global.hostname}"
+ 	rootfsimage="${user}"-"${rootfsimage}"
+ else
+ 	nfsroot="${eth0.serverip}:/path/to/nfs/root"
+diff --git a/arch/arm/boards/guf-cupid/env/config b/arch/arm/boards/guf-cupid/env/config
+index 1be875d..17b11a1 100644
+--- a/arch/arm/boards/guf-cupid/env/config
++++ b/arch/arm/boards/guf-cupid/env/config
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-hostname=cupid
++global.hostname=cupid
+ eth0.serverip=
+ user=
+ 
+@@ -21,16 +21,16 @@ rootfs_loc=net
+ 
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
+-rootfsimage=root-$hostname.$rootfs_type
++rootfsimage=root-${global.hostname}.$rootfs_type
+ 
+-kernelimage=zImage-$hostname
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-$hostname.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+ if [ -n $user ]; then
+ 	kernelimage="$user"-"$kernelimage"
+-	nfsroot="$eth0.serverip:/home/$user/nfsroot/$hostname"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
+ 	rootfsimage="$user"-"$rootfsimage"
+ else
+ 	nfsroot="$eth0.serverip:/path/to/nfs/root"
+diff --git a/arch/arm/boards/guf-neso/env/config b/arch/arm/boards/guf-neso/env/config
+index 3013728..1758c91 100644
+--- a/arch/arm/boards/guf-neso/env/config
++++ b/arch/arm/boards/guf-neso/env/config
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-hostname=guf-neso
++global.hostname=guf-neso
+ eth0.serverip=
+ user=
+ 
+@@ -21,16 +21,16 @@ rootfs_loc=net
+ 
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
+-rootfsimage=root-$hostname.$rootfs_type
++rootfsimage=root-${global.hostname}.$rootfs_type
+ 
+-kernelimage=zImage-$hostname
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-$hostname.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+ if [ -n $user ]; then
+ 	kernelimage="$user"-"$kernelimage"
+-	nfsroot="$eth0.serverip:/home/$user/nfsroot/$hostname"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
+ 	rootfsimage="$user"-"$rootfsimage"
+ else
+ 	nfsroot="$eth0.serverip:/path/to/nfs/root"
+diff --git a/arch/arm/boards/karo-tx25/env/config b/arch/arm/boards/karo-tx25/env/config
+index 28a5e7f..87beb6d 100644
+--- a/arch/arm/boards/karo-tx25/env/config
++++ b/arch/arm/boards/karo-tx25/env/config
+@@ -1,5 +1,5 @@
+ 
+-hostname=tx25
++global.hostname=tx25
+ baseboard=tx28stk5
+ user=
+ 
+@@ -21,16 +21,16 @@ rootfs_loc=net
+ 
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
+-rootfsimage=root-$hostname.$rootfs_type
++rootfsimage=root-${global.hostname}.$rootfs_type
+ 
+-kernelimage=zImage-$hostname
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-$hostname.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+ if [ -n $user ]; then
+ 	kernelimage="$user"-"$kernelimage"
+-	nfsroot="$eth0.serverip:/home/$user/nfsroot/$hostname"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
+ 	rootfsimage="$user"-"$rootfsimage"
+ else
+ 	nfsroot="$eth0.serverip:/path/to/nfs/root"
+diff --git a/arch/arm/boards/karo-tx28/env/config b/arch/arm/boards/karo-tx28/env/config
+index b5222e9..5259376 100644
+--- a/arch/arm/boards/karo-tx28/env/config
++++ b/arch/arm/boards/karo-tx28/env/config
+@@ -1,7 +1,7 @@
+ #
+ #
+ 
+-hostname=tx28
++global.hostname=tx28
+ baseboard=tx28stk5
+ 
+ # use 'dhcp' to do dhcp in barebox and in kernel
+@@ -22,16 +22,16 @@ rootfs_loc=net
+ 
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
+-rootfsimage=root-$hostname.$rootfs_type
++rootfsimage=root-${global.hostname}.$rootfs_type
+ 
+-kernelimage=zImage-$hostname
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-$hostname.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+ if [ -n $user ]; then
+ 	kernelimage="$user"-"$kernelimage"
+-	nfsroot="$eth0.serverip:/home/$user/nfsroot/$hostname"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
+ 	rootfsimage="$user"-"$rootfsimage"
+ else
+ 	nfsroot="$eth0.serverip:/path/to/nfs/root"
+diff --git a/arch/arm/boards/panda/env/config b/arch/arm/boards/panda/env/config
+index 29a63f3..1cd7eaa 100644
+--- a/arch/arm/boards/panda/env/config
++++ b/arch/arm/boards/panda/env/config
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-hostname=panda
++global.hostname=panda
+ user=
+ 
+ # use 'dhcp' to do dhcp in barebox and in kernel
+@@ -18,14 +18,14 @@ kernel_loc=tftp
+ # can be either 'net', 'nor', 'nand' or 'initrd'
+ rootfs_loc=net
+ 
+-kernelimage=zImage-$hostname
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-${hostname}.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+ if [ -n $user ]; then
+ 	kernelimage="$user"-"$kernelimage"
+-	nfsroot="$eth0.serverip:/home/$user/nfsroot/$hostname"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
+ 	rootfsimage="$user"-"$rootfsimage"
+ else
+ 	nfsroot="$eth0.serverip:/path/to/nfs/root"
+diff --git a/arch/arm/boards/pcm027/env/config b/arch/arm/boards/pcm027/env/config
+index 3ed963c..ec2752a 100644
+--- a/arch/arm/boards/pcm027/env/config
++++ b/arch/arm/boards/pcm027/env/config
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-hostname=pcm027
++global.hostname=pcm027
+ eth0.serverip=
+ user=
+ 
+@@ -21,16 +21,16 @@ rootfs_loc=net
+ 
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
+-rootfsimage=root-$hostname.$rootfs_type
++rootfsimage=root-${global.hostname}.$rootfs_type
+ 
+-kernelimage=zImage-$hostname
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-$hostname.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+ if [ -n $user ]; then
+ 	kernelimage="$user"-"$kernelimage"
+-	nfsroot="$eth0.serverip:/home/$user/nfsroot/$hostname"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
+ 	rootfsimage="$user"-"$rootfsimage"
+ else
+ 	nfsroot="$eth0.serverip:/path/to/nfs/root"
+diff --git a/arch/arm/boards/pcm037/env/config b/arch/arm/boards/pcm037/env/config
+index fcdb777..569bfe4 100644
+--- a/arch/arm/boards/pcm037/env/config
++++ b/arch/arm/boards/pcm037/env/config
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-hostname=pcm037
++global.hostname=pcm037
+ eth0.serverip=
+ user=
+ 
+@@ -21,16 +21,16 @@ rootfs_loc=net
+ 
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
+-rootfsimage=root-$hostname.$rootfs_type
++rootfsimage=root-${global.hostname}.$rootfs_type
+ 
+-kernelimage=zImage-$hostname
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-$hostname.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+ if [ -n $user ]; then
+ 	kernelimage="$user"-"$kernelimage"
+-	nfsroot="$eth0.serverip:/home/$user/nfsroot/$hostname"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
+ 	rootfsimage="$user"-"$rootfsimage"
+ else
+ 	nfsroot="$eth0.serverip:/path/to/nfs/root"
+diff --git a/arch/arm/boards/pcm043/env/config b/arch/arm/boards/pcm043/env/config
+index 644c7fb..4913053 100644
+--- a/arch/arm/boards/pcm043/env/config
++++ b/arch/arm/boards/pcm043/env/config
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-hostname=pcm043
++global.hostname=pcm043
+ eth0.serverip=
+ user=
+ 
+@@ -21,16 +21,16 @@ rootfs_loc=net
+ 
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
+-rootfsimage=root-$hostname.$rootfs_type
++rootfsimage=root-${global.hostname}.$rootfs_type
+ 
+-kernelimage=zImage-$hostname
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-$hostname.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+ if [ -n $user ]; then
+ 	kernelimage="$user"-"$kernelimage"
+-	nfsroot="$eth0.serverip:/home/$user/nfsroot/$hostname"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
+ 	rootfsimage="$user"-"$rootfsimage"
+ else
+ 	nfsroot="$eth0.serverip:/path/to/nfs/root"
+diff --git a/arch/arm/boards/pcm049/env/config b/arch/arm/boards/pcm049/env/config
+index efbe9ea..fc64215 100644
+--- a/arch/arm/boards/pcm049/env/config
++++ b/arch/arm/boards/pcm049/env/config
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-hostname=pcm049
++global.hostname=pcm049
+ eth0.serverip=
+ user=
+ 
+@@ -21,16 +21,16 @@ rootfs_loc=net
+ 
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
+-rootfsimage=root-${hostname}.$rootfs_type
++rootfsimage=root-${global.hostname}.$rootfs_type
+ 
+-kernelimage=zImage-$hostname
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-${hostname}.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+ if [ -n $user ]; then
+ 	kernelimage="$user"-"$kernelimage"
+-	nfsroot="$eth0.serverip:/home/$user/nfsroot/$hostname"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
+ 	rootfsimage="$user"-"$rootfsimage"
+ else
+ 	nfsroot="$eth0.serverip:/path/to/nfs/root"
+diff --git a/arch/arm/boards/phycard-a-l1/env/config b/arch/arm/boards/phycard-a-l1/env/config
+index e0f4dcc..90b2c24 100644
+--- a/arch/arm/boards/phycard-a-l1/env/config
++++ b/arch/arm/boards/phycard-a-l1/env/config
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-hostname=pcaal1
++global.hostname=pcaal1
+ #user=
+ 
+ # Enter MAC address here if not retrieved automatically
+@@ -26,26 +26,26 @@ rootfs_loc=nand
+ rootfs_type=jffs2
+ # where is the rootfs in case of 'rootfs_loc=disk' (linux name)
+ rootfs_part_linux_dev=mmcblk0p4
+-rootfsimage=rootfs-${hostname}.$rootfs_type
++rootfsimage=rootfs-${global.hostname}.$rootfs_type
+ 
+ # where is the kernel image in case of 'kernel_loc=disk'
+ kernel_part=disk0.2
+ 
+ # The image type of the kernel. Can be uimage, zimage, raw or raw_lzo
+-#kernelimage=zImage-$hostname
+-kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-$hostname.lzo
++#kernelimage=zImage-${global.hostname}
++kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+-bareboximage=barebox-${hostname}.bin
+-bareboxenvimage=barebox-${hostname}.bin
++bareboximage=barebox-${global.hostname}.bin
++bareboxenvimage=barebox-${global.hostname}.bin
+ 
+ if [ -n $user ]; then
+ 	bareboximage="$user"-"$bareboximage"
+ 	bareboxenvimage="$user"-"$bareboxenvimage"
+ 	kernelimage="$user"-"$kernelimage"
+ 	rootfsimage="$user"-"$rootfsimage"
+-	nfsroot="/home/$user/nfsroot/$hostname"
++	nfsroot="/home/$user/nfsroot/${global.hostname}"
+ else
+ 	nfsroot="/path/to/nfs/root"
  fi
+diff --git a/arch/arm/boards/phycard-a-xl2/env/config b/arch/arm/boards/phycard-a-xl2/env/config
+index 59e8eb3..532f290 100644
+--- a/arch/arm/boards/phycard-a-xl2/env/config
++++ b/arch/arm/boards/phycard-a-xl2/env/config
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-hostname=pcaaxl2
++global.hostname=pcaaxl2
+ user=
+ 
+ # use 'dhcp' to do dhcp in barebox and in kernel
+@@ -20,16 +20,16 @@ rootfs_loc=net
+ 
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
+-rootfsimage=root-${hostname}.$rootfs_type
++rootfsimage=root-${global.hostname}.$rootfs_type
+ 
+-kernelimage=zImage-$hostname
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-${hostname}.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+ if [ -n $user ]; then
+ 	kernelimage="$user"-"$kernelimage"
+-	nfsroot="$eth0.serverip:/home/$user/nfsroot/$hostname"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
+ 	rootfsimage="$user"-"$rootfsimage"
+ else
+ 	nfsroot="$eth0.serverip:/path/to/nfs/root"
+diff --git a/arch/arm/boards/phycard-i.MX27/env/config b/arch/arm/boards/phycard-i.MX27/env/config
+index 367029b..5f77440 100644
+--- a/arch/arm/boards/phycard-i.MX27/env/config
++++ b/arch/arm/boards/phycard-i.MX27/env/config
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-hostname=pca100
++global.hostname=pca100
+ eth0.serverip=
+ user=
+ 
+@@ -21,16 +21,16 @@ rootfs_loc=net
+ 
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
+-rootfsimage=root-$hostname.$rootfs_type
++rootfsimage=root-${global.hostname}.$rootfs_type
+ 
+-kernelimage=zImage-$hostname
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-$hostname.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+ if [ -n $user ]; then
+ 	kernelimage="$user"-"$kernelimage"
+-	nfsroot="$eth0.serverip:/home/$user/nfsroot/$hostname"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
+ 	rootfsimage="$user"-"$rootfsimage"
+ else
+ 	nfsroot="$eth0.serverip:/path/to/nfs/root"
+diff --git a/arch/arm/boards/scb9328/env/config b/arch/arm/boards/scb9328/env/config
+index a8eace7..ce6310b 100644
+--- a/arch/arm/boards/scb9328/env/config
++++ b/arch/arm/boards/scb9328/env/config
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ 
+-hostname=scb9328
++global.hostname=scb9328
+ eth0.serverip=
+ user=
+ 
+@@ -21,16 +21,16 @@ rootfs_loc=net
+ 
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
+-rootfsimage=root-$hostname.$rootfs_type
++rootfsimage=root-${global.hostname}.$rootfs_type
+ 
+-kernelimage=zImage-$hostname
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-$hostname.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+ if [ -n $user ]; then
+ 	kernelimage="$user"-"$kernelimage"
+-	nfsroot="$eth0.serverip:/home/$user/nfsroot/$hostname"
++	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
+ 	rootfsimage="$user"-"$rootfsimage"
+ else
+ 	nfsroot="$eth0.serverip:/path/to/nfs/root"
 diff --git a/defaultenv/config b/defaultenv/config
-index 81d6f95..391ba47 100644
+index 7b61d29..81d6f95 100644
 --- a/defaultenv/config
 +++ b/defaultenv/config
-@@ -11,7 +11,7 @@ fi
- # use 'dhcp' to do dhcp in barebox and in kernel
- # use 'none' if you want to skip kernel ip autoconfiguration
- ip=dhcp
--dhcp_vendor_id=barebox
-+global.dhcp.vendor_id=barebox
+@@ -31,25 +31,25 @@ oftree_loc=tftp
+ rootfs_type=ubifs
+ # where is the rootfs in case of 'rootfs_loc=disk' (linux name)
+ rootfs_part_linux_dev=mmcblk0p4
+-rootfsimage=rootfs-${hostname}.$rootfs_type
++rootfsimage=rootfs-${global.hostname}.$rootfs_type
  
- # or set your networking parameters here
- #eth0.ipaddr=a.b.c.d
+ # where is the kernel image in case of 'kernel_loc=disk'
+ kernel_part=disk0.2
+ 
+-kernelimage=zImage-$hostname
+-#kernelimage=uImage-$hostname
+-#kernelimage=Image-$hostname
+-#kernelimage=Image-$hostname.lzo
++kernelimage=zImage-${global.hostname}
++#kernelimage=uImage-${global.hostname}
++#kernelimage=Image-${global.hostname}
++#kernelimage=Image-${global.hostname}.lzo
+ 
+-bareboximage=barebox-${hostname}.bin
+-bareboxenvimage=barebox-${hostname}.bin
++bareboximage=barebox-${global.hostname}.bin
++bareboxenvimage=barebox-${global.hostname}.bin
+ 
+ if [ -n $user ]; then
+ 	bareboximage="$user"-"$bareboximage"
+ 	bareboxenvimage="$user"-"$bareboxenvimage"
+ 	kernelimage="$user"-"$kernelimage"
+ 	rootfsimage="$user"-"$rootfsimage"
+-	nfsroot="/home/$user/nfsroot/$hostname"
++	nfsroot="/home/$user/nfsroot/${global.hostname}"
+ else
+ 	nfsroot="/path/to/nfs/root"
+ fi
 diff --git a/net/dhcp.c b/net/dhcp.c
-index e73cc70..b4f2830 100644
+index 79efa3e..e73cc70 100644
 --- a/net/dhcp.c
 +++ b/net/dhcp.c
-@@ -19,6 +19,8 @@
- #include <magicvar.h>
- #include <linux/err.h>
- #include <getopt.h>
-+#include <globalvar.h>
-+#include <init.h>
- 
- #define OPT_SIZE 312	/* Minimum DHCP Options size per RFC2131 - results in 576 byte pkt */
- 
-@@ -78,11 +80,38 @@ static IPaddr_t net_dhcp_server_ip;
- static uint64_t dhcp_start;
- static char dhcp_tftpname[256];
- 
-+static const char* dhcp_get_barebox_global(const char * var)
-+{
-+	char * var_global = asprintf("global.dhcp.%s", var);
-+	const char *val;
-+
-+	if (!var_global)
-+		return NULL;
-+
-+	val = getenv(var_global);
-+	free(var_global);
-+	return val;
-+}
-+
-+static int dhcp_set_barebox_global(const char * var, char *val)
-+{
-+	char * var_global = asprintf("global.dhcp.%s", var);
-+	int ret;
-+
-+	if (!var_global)
-+		return -ENOMEM;
-+
-+	ret = setenv(var_global, val);
-+	free(var_global);
-+	return ret;
-+}
-+
- struct dhcp_opt {
- 	unsigned char option;
- 	/* request automatically the option when creating the DHCP request */
- 	bool optional;
- 	const char *barebox_var_name;
-+	const char *barebox_dhcp_global;
- 	void (*handle)(struct dhcp_opt *opt, unsigned char *data, int tlen);
- 	void *data;
- 
-@@ -123,7 +152,12 @@ static void env_str_handle(struct dhcp_opt *opt, unsigned char *popt, int optlen
- 
- 	memcpy(tmp, popt, optlen);
- 	tmp[optlen] = 0;
--	setenv(opt->barebox_var_name, tmp);
-+
-+	if (opt->barebox_var_name)
-+		setenv(opt->barebox_var_name, tmp);
-+	if (opt->barebox_dhcp_global)
-+		dhcp_set_barebox_global(opt->barebox_dhcp_global, tmp);
-+
- }
- 
- static void copy_uint32_handle(struct dhcp_opt *opt, unsigned char *popt, int optlen)
-@@ -183,7 +217,7 @@ struct dhcp_opt dhcp_options[] = {
+@@ -175,7 +175,7 @@ struct dhcp_opt dhcp_options[] = {
  	}, {
- 		.option = 17,
+ 		.option = 12,
  		.handle = env_str_handle,
--		.barebox_var_name = "rootpath",
-+		.barebox_dhcp_global = "rootpath",
+-		.barebox_var_name = "hostname",
++		.barebox_var_name = "global.hostname",
  	}, {
- 		.option = 51,
- 		.handle = copy_uint32_handle,
-@@ -196,22 +230,23 @@ struct dhcp_opt dhcp_options[] = {
- 	}, {
- 		.option = 66,
+ 		.option = 15,
  		.handle = env_str_handle,
--		.barebox_var_name = "dhcp_tftp_server_name",
-+		.barebox_dhcp_global = "tftp_server_name",
- 		.data = dhcp_tftpname,
- 	}, {
- 		.option = 67,
- 		.handle = bootfile_vendorex_handle,
--		.barebox_var_name = "bootfile",
-+		.barebox_dhcp_global = "bootfile",
- 	}, {
- 		.option = 224,
- 		.handle = env_str_handle,
--		.barebox_var_name = "dhcp_oftree_file",
-+		.barebox_dhcp_global = "oftree_file",
- 	},
- };
- 
- struct dhcp_param {
- 	unsigned char option;
- 	const char *barebox_var_name;
-+	const char *barebox_dhcp_global;
- 	int (*handle)(struct dhcp_param *param, u8 *e);
- 	void *data;
- };
-@@ -224,6 +259,9 @@ static int dhcp_set_string_options(struct dhcp_param *param, u8 *e)
- 	if (!str && param->barebox_var_name)
- 		str = (char*)getenv(param->barebox_var_name);
- 
-+	if (!str && param->barebox_dhcp_global)
-+		str = (char*)dhcp_get_barebox_global(param->barebox_dhcp_global);
-+
- 	if (!str)
- 		return 0;
- 
-@@ -252,19 +290,19 @@ struct dhcp_param dhcp_params[] = {
+@@ -248,7 +248,7 @@ struct dhcp_param dhcp_params[] = {
+ 	{
+ 		.option = DHCP_HOSTNAME,
+ 		.handle = dhcp_set_string_options,
+-		.barebox_var_name = "hostname",
++		.barebox_var_name = "global.hostname",
  	}, {
  		.option = DHCP_VENDOR_ID,
  		.handle = dhcp_set_string_options,
--		.barebox_var_name = "dhcp_vendor_id",
-+		.barebox_dhcp_global = "vendor_id",
- 	}, {
- 		.option = DHCP_CLIENT_ID,
- 		.handle = dhcp_set_string_options,
--		.barebox_var_name = "dhcp_client_id",
-+		.barebox_dhcp_global = "client_id",
- 	}, {
- 		.option = DHCP_USER_CLASS,
- 		.handle = dhcp_set_string_options,
--		.barebox_var_name = "dhcp_user_class",
-+		.barebox_dhcp_global = "user_class",
- 	}, {
- 		.option = DHCP_CLIENT_UUID,
- 		.handle = dhcp_set_string_options,
--		.barebox_var_name = "dhcp_client_uuid",
-+		.barebox_dhcp_global = "client_uuid",
- 	}
- };
- 
-@@ -345,8 +383,10 @@ static void bootp_copy_net_params(struct bootp *bp)
- 	if (tmp_ip != 0)
- 		net_set_serverip(tmp_ip);
- 
--	if (strlen(bp->bp_file) > 0)
-+	if (strlen(bp->bp_file) > 0) {
- 		setenv("bootfile", bp->bp_file);
-+		dhcp_set_barebox_global("bootfile", bp->bp_file);
-+	}
- 
- 	debug("bootfile: %s\n", bp->bp_file);
- }
-@@ -611,9 +651,50 @@ static void dhcp_reset_env(void)
- 			continue;
- 
- 		setenv(opt->barebox_var_name,"");
-+		if (opt->barebox_dhcp_global)
-+			dhcp_set_barebox_global(opt->barebox_dhcp_global,"");
- 	}
- }
- 
-+static void dhcp_global_add(const char *var)
-+{
-+	char * var_global = asprintf("dhcp.%s", var);
-+
-+	if (!var_global)
-+		return;
-+
-+	globalvar_add_simple(var_global);
-+	free(var_global);
-+}
-+
-+static int dhcp_global_init(void)
-+{
-+	struct dhcp_opt *opt;
-+	struct dhcp_param *param;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(dhcp_options); i++) {
-+		opt = &dhcp_options[i];
-+
-+		if (!opt->barebox_dhcp_global)
-+			continue;
-+
-+		dhcp_global_add(opt->barebox_dhcp_global);
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(dhcp_params); i++) {
-+		param = &dhcp_params[i];
-+
-+		if (!param->barebox_dhcp_global)
-+			continue;
-+
-+		dhcp_global_add(param->barebox_dhcp_global);
-+	}
-+
-+	return 0;
-+}
-+late_initcall(dhcp_global_init);
-+
- static int do_dhcp(int argc, char *argv[])
- {
- 	int ret, opt;
-@@ -709,12 +790,12 @@ BAREBOX_CMD_START(dhcp)
- 	BAREBOX_CMD_COMPLETE(empty_complete)
- BAREBOX_CMD_END
- 
--BAREBOX_MAGICVAR(bootfile, "bootfile returned from DHCP request");
--BAREBOX_MAGICVAR(hostname, "hostname to send or returned from DHCP request");
--BAREBOX_MAGICVAR(rootpath, "rootpath returned from DHCP request");
--BAREBOX_MAGICVAR(dhcp_vendor_id, "vendor id to send to the DHCP server");
--BAREBOX_MAGICVAR(dhcp_client_uuid, "cliend uuid to send to the DHCP server");
--BAREBOX_MAGICVAR(dhcp_client_id, "cliend id to send to the DHCP server");
--BAREBOX_MAGICVAR(dhcp_user_class, "user class to send to the DHCP server");
--BAREBOX_MAGICVAR(dhcp_tftp_server_name, "TFTP server Name returned from DHCP request");
--BAREBOX_MAGICVAR(dhcp_oftree_file, "OF tree returned from DHCP request (option 224)");
-+BAREBOX_MAGICVAR_NAMED(global_hostname, global.hostname, "hostname to send or returned from DHCP request");
-+BAREBOX_MAGICVAR_NAMED(global_dhcp_bootfile, global.dhcp.bootfile, "bootfile returned from DHCP request");
-+BAREBOX_MAGICVAR_NAMED(global_dhcp_rootpath, global.dhcp.rootpath, "rootpath returned from DHCP request");
-+BAREBOX_MAGICVAR_NAMED(global_dhcp_vendor_id, global.dhcp.vendor_id, "vendor id to send to the DHCP server");
-+BAREBOX_MAGICVAR_NAMED(global_dhcp_client_uuid, global.dhcp.client_uuid, "cliend uuid to send to the DHCP server");
-+BAREBOX_MAGICVAR_NAMED(global_dhcp_client_id, global.dhcp.client_id, "cliend id to send to the DHCP server");
-+BAREBOX_MAGICVAR_NAMED(global_dhcp_user_class, global.dhcp.user_class, "user class to send to the DHCP server");
-+BAREBOX_MAGICVAR_NAMED(global_dhcp_tftp_server_name, global.dhcp.tftp_server_name, "TFTP server Name returned from DHCP request");
-+BAREBOX_MAGICVAR_NAMED(global_dhcp_oftree_file, global.dhcp.oftree_file, "OF tree returned from DHCP request (option 224)");
 -- 
 1.7.10.4
 
