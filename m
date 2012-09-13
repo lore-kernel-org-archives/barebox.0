@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 17.mo5.mail-out.ovh.net ([46.105.56.132]
+Received: from 2.mo5.mail-out.ovh.net ([178.33.109.111]
  helo=mo5.mail-out.ovh.net)
  by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TC3s0-0007rU-UP
- for barebox@lists.infradead.org; Thu, 13 Sep 2012 07:29:53 +0000
+ id 1TC46w-0008De-5L
+ for barebox@lists.infradead.org; Thu, 13 Sep 2012 07:45:19 +0000
 Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id B798DFF98B7
- for <barebox@lists.infradead.org>; Thu, 13 Sep 2012 09:31:25 +0200 (CEST)
-Date: Thu, 13 Sep 2012 09:23:12 +0200
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id D7423FF99B3
+ for <barebox@lists.infradead.org>; Thu, 13 Sep 2012 09:46:50 +0200 (CEST)
+Date: Thu, 13 Sep 2012 09:38:38 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120913072312.GE28928@game.jcrosoft.org>
+Message-ID: <20120913073838.GF28928@game.jcrosoft.org>
 References: <20120912142743.GR31207@game.jcrosoft.org>
  <1347461308-24208-1-git-send-email-plagnioj@jcrosoft.com>
  <1347461308-24208-6-git-send-email-plagnioj@jcrosoft.com>
@@ -59,7 +59,20 @@ On 09:12 Thu 13 Sep     , Sascha Hauer wrote:
 > This is because the shell interpreted negative values as 'exit'. hush
 > does not do this anymore, so now we can think about a path to just
 > return negative error codes from the commands.
-yeah so we can drop few bytes too
+> 
+> 
+> > @@ -785,7 +812,8 @@ BAREBOX_CMD_HELP_OPT  ("-u <client_uuid>",
+> >  BAREBOX_CMD_HELP_OPT  ("-U <user_class>",
+> >  "DHCP User class (code 77) submitted in DHCP requests. It can\n"
+> >  "be used in the DHCP server's configuration to select options\n"
+> > -"(e.g. bootfile or server) which are valid for barebox clients only.\n");
+> > +"(e.g. bootfile or server) which are valid for barebox clients only.\n")
+> > +BAREBOX_CMD_HELP_OPT  ("-r <retry>", "retry limi\n");
+> 
+> s/limi/limit/
+what do you think to put something else than infinite loop by default
+
+I thinnk 20 is enough
 
 Best Regards,
 J.
