@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo5.mail-out.ovh.net ([178.32.96.204]
+Received: from 3.mo5.mail-out.ovh.net ([46.105.40.108]
  helo=mo5.mail-out.ovh.net)
- by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TCDVK-0003ZQ-Ki
- for barebox@lists.infradead.org; Thu, 13 Sep 2012 17:47:07 +0000
+ by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TCDVJ-0007ys-MH
+ for barebox@lists.infradead.org; Thu, 13 Sep 2012 17:47:08 +0000
 Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id EA2E4FFA6DB
- for <barebox@lists.infradead.org>; Thu, 13 Sep 2012 19:48:38 +0200 (CEST)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 339EEFFA646
+ for <barebox@lists.infradead.org>; Thu, 13 Sep 2012 19:48:37 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 13 Sep 2012 19:40:22 +0200
-Message-Id: <1347558023-25680-6-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 13 Sep 2012 19:40:20 +0200
+Message-Id: <1347558023-25680-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1347558023-25680-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120913172220.GB20834@game.jcrosoft.org>
  <1347558023-25680-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,32 +26,145 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] defaultenv-2: boot reset linux.bootargs.dyn. and bootm.
- globalvar
+Subject: [PATCH 4/7] globalvar: add support to set a value to of all
+ globalvars beginning with 'match'
 To: barebox@lists.infradead.org
 
-This is need for boot sequence to do not have the previous boot param.
+via c global_set_match and global -r
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- defaultenv-2/base/bin/boot |    4 ++++
- 1 file changed, 4 insertions(+)
+ commands/global.c   |   51 ++++++++++++++++++++++++++++++++++++++++-----------
+ common/globalvar.c  |   10 ++++++++++
+ include/globalvar.h |    3 +++
+ 3 files changed, 53 insertions(+), 11 deletions(-)
 
-diff --git a/defaultenv-2/base/bin/boot b/defaultenv-2/base/bin/boot
-index 4ebda3f..103eb87 100644
---- a/defaultenv-2/base/bin/boot
-+++ b/defaultenv-2/base/bin/boot
-@@ -33,6 +33,10 @@ while getopt "vdhl" opt; do
- 	fi
- done
+diff --git a/commands/global.c b/commands/global.c
+index de6b13e..b7c3743 100644
+--- a/commands/global.c
++++ b/commands/global.c
+@@ -24,39 +24,68 @@
+ #include <command.h>
+ #include <globalvar.h>
+ #include <environment.h>
++#include <getopt.h>
  
-+# clear linux.bootargs.dyn.* and bootm.*
-+global -r linux.bootargs.dyn.
-+global -r bootm.
+-static int do_global(int argc, char *argv[])
++static int globalvar_set(char* name, char* value)
+ {
+ 	int ret;
 +
- if [ $# = 0 ]; then
- 	scr="$global.boot.default"
- else
++	ret = globalvar_add_simple(name);
++
++	if (value) {
++		char *tmp = asprintf("global.%s", name);
++		ret = setenv(tmp, value);
++		free(tmp);
++	}
++
++	return ret ? 1 : 0;
++}
++
++static int do_global(int argc, char *argv[])
++{
++	int opt;
++	int do_set_match = 0;
+ 	char *value;
+ 
+-	if (argc != 2)
++	while ((opt = getopt(argc, argv, "r")) > 0) {
++		switch (opt) {
++		case 'r':
++			do_set_match = 1;
++			break;
++		}
++	}
++
++	argc -= optind;
++	argv += optind;
++
++	if (argc != 1)
+ 		return COMMAND_ERROR_USAGE;
+ 
+-	value = strchr(argv[1], '=');
++	value = strchr(argv[0], '=');
+ 	if (value) {
+ 		*value = 0;
+ 		value++;
+ 	}
+ 
+-	ret = globalvar_add_simple(argv[1]);
++	if (do_set_match) {
++		if (!value)
++			value = "";
+ 
+-	if (value) {
+-		char *name = asprintf("global.%s", argv[1]);
+-		ret = setenv(name, value);
+-		free(name);
++		globalvar_set_match(argv[0], value);
++		return 0;
+ 	}
+ 
+-	return ret ? 1 : 0;
++	return globalvar_set(argv[0], value);
+ }
+ 
+ BAREBOX_CMD_HELP_START(global)
+-BAREBOX_CMD_HELP_USAGE("global <var>[=<value]\n")
++BAREBOX_CMD_HELP_USAGE("global [-r] <var>[=<value]\n")
+ BAREBOX_CMD_HELP_SHORT("add a new global variable named <var>, optionally set to <value>\n")
++BAREBOX_CMD_HELP_SHORT("-r to set a value to of all globalvars beginning with 'match'")
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(global)
+ 	.cmd		= do_global,
+-	.usage		= "create global variables",
++	.usage		= "create or set global variables",
+ 	BAREBOX_CMD_HELP(cmd_global_help)
+ BAREBOX_CMD_END
+diff --git a/common/globalvar.c b/common/globalvar.c
+index 71296ff..a8aaa72 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -46,6 +46,16 @@ char *globalvar_get_match(const char *match, const char *seperator)
+ 	return val;
+ }
+ 
++void globalvar_set_match(const char *match, const char *val)
++{
++	struct param_d *param;
++
++	list_for_each_entry(param, &global_device.parameters, list) {
++		if (!strncmp(match, param->name, strlen(match)))
++			dev_set_param(&global_device, param->name, val);
++	}
++}
++
+ /*
+  * globalvar_add_simple
+  *
+diff --git a/include/globalvar.h b/include/globalvar.h
+index a127a05..ddf885f 100644
+--- a/include/globalvar.h
++++ b/include/globalvar.h
+@@ -9,6 +9,7 @@ int globalvar_add(const char *name,
+ 		const char *(*get)(struct device_d *, struct param_d *p),
+ 		unsigned long flags);
+ char *globalvar_get_match(const char *match, const char *seperator);
++void globalvar_set_match(const char *match, const char *val);
+ #else
+ static inline int globalvar_add_simple(const char *name)
+ {
+@@ -27,6 +28,8 @@ static inline char *globalvar_get_match(const char *match, const char *seperator
+ {
+ 	return NULL;
+ }
++
++static inline void globalvar_set_match(const char *match, const char *val) {}
+ #endif
+ 
+ #endif /* __GLOBALVAR_H */
 -- 
 1.7.10.4
 
