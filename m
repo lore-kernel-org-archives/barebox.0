@@ -1,24 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo5.mail-out.ovh.net ([178.32.116.78]
- helo=mo5.mail-out.ovh.net)
- by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TC4Cx-0008N9-LK
- for barebox@lists.infradead.org; Thu, 13 Sep 2012 07:51:32 +0000
-Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id D3296FF9A09
- for <barebox@lists.infradead.org>; Thu, 13 Sep 2012 09:53:04 +0200 (CEST)
-Date: Thu, 13 Sep 2012 09:44:52 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120913074452.GG28928@game.jcrosoft.org>
-References: <20120912142743.GR31207@game.jcrosoft.org>
- <1347461308-24208-1-git-send-email-plagnioj@jcrosoft.com>
- <1347461308-24208-6-git-send-email-plagnioj@jcrosoft.com>
- <20120913071203.GD6180@pengutronix.de>
- <20120913073838.GF28928@game.jcrosoft.org>
- <20120913074348.GF6180@pengutronix.de>
+Received: from mail-qc0-f177.google.com ([209.85.216.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TC8IV-0001Bi-Ng
+ for barebox@lists.infradead.org; Thu, 13 Sep 2012 12:13:32 +0000
+Received: by qcsu28 with SMTP id u28so1967639qcs.36
+ for <barebox@lists.infradead.org>; Thu, 13 Sep 2012 05:13:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120913074348.GF6180@pengutronix.de>
+Date: Thu, 13 Sep 2012 14:13:29 +0200
+Message-ID: <CAJfOKByn43d80YRB52D2RQXVhvweAzQYv2MvRtVyh2-+q5XBQg@mail.gmail.com>
+From: Franck Jullien <franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,60 +21,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/7] dhcp: add retries limit support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [RFC][FAT] Handle MBR on the first sector
+To: barebox <barebox@lists.infradead.org>
 
-On 09:43 Thu 13 Sep     , Sascha Hauer wrote:
-> On Thu, Sep 13, 2012 at 09:38:38AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 09:12 Thu 13 Sep     , Sascha Hauer wrote:
-> > > On Wed, Sep 12, 2012 at 04:48:27PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > via -r opt, global.dhcp.retries or dhcp_retries
-> > > > 
-> > > > set the priority order;
-> > > > 
-> > > > This will allow to do not stay infinite loop if no dhcp availlable
-> > > 
-> > > s/availlable/available/
-> > > 
-> > > > @@ -746,11 +767,17 @@ static int do_dhcp(int argc, char *argv[])
-> > > >  	while (dhcp_state != BOUND) {
-> > > >  		if (ctrlc())
-> > > >  			break;
-> > > > +		if (!retries) {
-> > > > +			ret = ETIMEDOUT;
-> > > 
-> > > -ETIMEDOUT
-> > > 
-> > > BTW currently we have in most commands:
-> > > 
-> > > 	return ret ? 1 : 0;
-> > > 
-> > > This is because the shell interpreted negative values as 'exit'. hush
-> > > does not do this anymore, so now we can think about a path to just
-> > > return negative error codes from the commands.
-> > > 
-> > > 
-> > > > @@ -785,7 +812,8 @@ BAREBOX_CMD_HELP_OPT  ("-u <client_uuid>",
-> > > >  BAREBOX_CMD_HELP_OPT  ("-U <user_class>",
-> > > >  "DHCP User class (code 77) submitted in DHCP requests. It can\n"
-> > > >  "be used in the DHCP server's configuration to select options\n"
-> > > > -"(e.g. bootfile or server) which are valid for barebox clients only.\n");
-> > > > +"(e.g. bootfile or server) which are valid for barebox clients only.\n")
-> > > > +BAREBOX_CMD_HELP_OPT  ("-r <retry>", "retry limi\n");
-> > > 
-> > > s/limi/limit/
-> > what do you think to put something else than infinite loop by default
-> > 
-> > I thinnk 20 is enough
-> 
-> Yes, ok, maybe even less. How long does one retry take?
-3s each
+*** Did not send this email with git because it's no working where I am **
 
-so 20 it's 60s
+We may have some disk with MBR as a first sector. In this case, the
+current FAT check returns an error. However, the FAT sector exist and
+the MBR can tell us where it is.
 
-Best Regards,
-J.
+This patch make the FAT fs try to find the FAT boot sector on the first
+sector of the first partition in case it is not on sector 0.
+
+Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+---
+ fs/fat/ff.c |   24 ++++++++++++++++++++----
+ 1 files changed, 20 insertions(+), 4 deletions(-)
+
+diff --git a/fs/fat/ff.c b/fs/fat/ff.c
+index 66db1d6..6a4ae32 100644
+--- a/fs/fat/ff.c
++++ b/fs/fat/ff.c
+@@ -191,6 +191,7 @@
+ #define	FSI_Nxt_Free		492	/* FSI: Last allocated cluster (4) */
+ #define MBR_Table		446	/* MBR: Partition table offset (2) */
+ #define	SZ_PTE			16	/* MBR: Size of a partition table entry */
++#define MBR_StartSector		8	/* MBR: Offset of Starting Sector in
+Partition Table Entry */
+ #define BS_55AA			510	/* Boot sector signature (2) */
+
+ #define	DIR_Name		0	/* Short file name (11) */
+@@ -1533,11 +1534,15 @@ int follow_path (	/* 0(0): successful, !=0:
+error code */
+  */
+ static int check_fs (	/* 0:The FAT BR, 1:Valid BR but not an FAT,
+2:Not a BR, 3:Disk error */
+ 	FATFS *fs,	/* File system object */
+-	DWORD sect	/* Sector# (lba) to check if it is an FAT boot record or not */
++	DWORD sect,	/* Sector# (lba) to check if it is an FAT boot record or not */
++	DWORD *bootsec
+ )
+ {
+ 	int ret;
+
++	if(bootsec)
++		*bootsec = 0;
++
+ 	/* Load boot record */
+ 	ret = disk_read(fs, fs->win, sect, 1);
+ 	if (ret)
+@@ -1553,6 +1558,12 @@ static int check_fs (	/* 0:The FAT BR, 1:Valid
+BR but not an FAT, 2:Not a BR, 3:
+ 	if ((LD_DWORD(&fs->win[BS_FilSysType32]) & 0xFFFFFF) == 0x544146)
+ 		return 0;
+
++	if(bootsec)
++		/* This must be an MBR, so return the starting sector of the
++		 * first partition so we could check if there is a FAT boot
++		 * sector there */
++		*bootsec = LD_WORD(&fs->win[MBR_Table + MBR_StartSector]);
++
+ 	return -ENODEV;
+ }
+
+@@ -1565,6 +1576,7 @@ static int chk_mounted (	/* 0(0): successful,
+!=0: any error occurred */
+ )
+ {
+ 	BYTE fmt, b;
++	DWORD first_boot_sect;
+ 	DWORD bsect, fasize, tsect, sysect, nclst, szbfat;
+ 	WORD nrsv;
+
+@@ -1579,9 +1591,13 @@ static int chk_mounted (	/* 0(0): successful,
+!=0: any error occurred */
+ 		return -EIO;
+ #endif
+ 	/* Search FAT partition on the drive. Supports only generic
+partitionings, FDISK and SFD. */
+-	fmt = check_fs(fs, bsect = 0);	/* Check sector 0 if it is a VBR */
+-	if (fmt)
+-		return fmt; /* No FAT volume is found */
++	fmt = check_fs(fs, bsect = 0, &first_boot_sect);	/* Check sector 0
+if it is a VBR */
++	if (fmt && first_boot_sect != 0) {
++		/* Sector 0 is an MBR, now check for FAT in the first partition */
++		fmt = check_fs(fs, bsect = first_boot_sect, NULL);
++		if(fmt)
++			return fmt; /* No FAT volume is found */
++	}
+
+ 	/* Following code initializes the file system object */
+
+-- 
+1.7.1
 
 _______________________________________________
 barebox mailing list
