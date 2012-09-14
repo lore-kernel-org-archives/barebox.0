@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([92.198.50.35])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TCQc3-0005Oz-Pa
- for barebox@lists.infradead.org; Fri, 14 Sep 2012 07:46:56 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Sep 2012 09:45:12 +0200
-Message-Id: <1347608713-10133-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1347608713-10133-1-git-send-email-s.hauer@pengutronix.de>
-References: <1347608713-10133-1-git-send-email-s.hauer@pengutronix.de>
+Received: from 17.mo5.mail-out.ovh.net ([46.105.56.132]
+ helo=mo5.mail-out.ovh.net)
+ by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TCQdU-0001ut-7Y
+ for barebox@lists.infradead.org; Fri, 14 Sep 2012 07:48:25 +0000
+Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 0257DFFA8CA
+ for <barebox@lists.infradead.org>; Fri, 14 Sep 2012 09:50:00 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Fri, 14 Sep 2012 09:41:43 +0200
+Message-Id: <1347608503-19372-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20120914070124.GC20834@game.jcrosoft.org>
+References: <20120914070124.GC20834@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,108 +25,104 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: Add dummy update handler
+Subject: [PATCH 1/1] add barebox logo
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+in logo/ you will found the barebox logo with color or white
+in:
+ - png24 (transparent)
+ - png8 (black background)
+
+for the following size
+ - 100x100
+ - 200x200
+ - 400x400
+ - 600x600
+ - 800x800
+
+The logo are origanize in a way to be able to include them in the envfs
+by just point as it.
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/lib/Makefile |    1 +
- arch/arm/lib/bbu.c    |   56 +++++++++++++++++++++++++++++++++++++++++++++++++
- include/bbu.h         |    3 +++
- 3 files changed, 60 insertions(+)
- create mode 100644 arch/arm/lib/bbu.c
 
-diff --git a/arch/arm/lib/Makefile b/arch/arm/lib/Makefile
-index 9d0ff7a..c5d6a06 100644
---- a/arch/arm/lib/Makefile
-+++ b/arch/arm/lib/Makefile
-@@ -16,6 +16,7 @@ obj-y	+= lib1funcs.o
- obj-y	+= ashrdi3.o
- obj-y	+= ashldi3.o
- obj-y	+= lshrdi3.o
-+obj-y	+= bbu.o
- obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memcpy.o
- obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memset.o
- obj-$(CONFIG_ARM_UNWIND) += unwind.o
-diff --git a/arch/arm/lib/bbu.c b/arch/arm/lib/bbu.c
+binary skipped
+
+Best Regards,
+J.
+ logo/LICENCE                                |   22 ++++++++++++++++++++++
+ logo/png24/100x100/color/barebox.png        |  Bin 0 -> 22724 bytes
+ logo/png24/100x100/white/barebox.png        |  Bin 0 -> 12053 bytes
+ logo/png24/200x200/color/barebox.png        |  Bin 0 -> 71557 bytes
+ logo/png24/200x200/white/barebox.png        |  Bin 0 -> 31132 bytes
+ logo/png24/400x400/color/barebox.png        |  Bin 0 -> 217170 bytes
+ logo/png24/400x400/white/barebox.png        |  Bin 0 -> 78591 bytes
+ logo/png24/600x600/color/barebox.png        |  Bin 0 -> 406788 bytes
+ logo/png24/600x600/while/barebox.png        |  Bin 0 -> 137235 bytes
+ logo/png24/800x800/color/barebox.png        |  Bin 0 -> 627433 bytes
+ logo/png24/800x800/white/barebox.png        |  Bin 0 -> 210397 bytes
+ logo/png8/100x100/color/blackbg/barebox.png |  Bin 0 -> 8279 bytes
+ logo/png8/100x100/white/blackbg/barebox.png |  Bin 0 -> 6089 bytes
+ logo/png8/200x200/color/blackbg/barebox.png |  Bin 0 -> 23616 bytes
+ logo/png8/200x200/white/blackbg/barebox.png |  Bin 0 -> 14838 bytes
+ logo/png8/400x400/color/blackbg/barebox.png |  Bin 0 -> 71295 bytes
+ logo/png8/400x400/white/blackbg/barebox.png |  Bin 0 -> 38480 bytes
+ logo/png8/600x600/color/blackbg/barebox.png |  Bin 0 -> 130709 bytes
+ logo/png8/600x600/while/blackbg/barebox.png |  Bin 0 -> 68648 bytes
+ logo/png8/800x800/color/blackbg/barebox.png |  Bin 0 -> 205281 bytes
+ logo/png8/800x800/white/blackbg/barebox.png |  Bin 0 -> 104173 bytes
+ 21 files changed, 22 insertions(+)
+ create mode 100644 logo/LICENCE
+ create mode 100644 logo/png24/100x100/color/barebox.png
+ create mode 100644 logo/png24/100x100/white/barebox.png
+ create mode 100644 logo/png24/200x200/color/barebox.png
+ create mode 100644 logo/png24/200x200/white/barebox.png
+ create mode 100644 logo/png24/400x400/color/barebox.png
+ create mode 100644 logo/png24/400x400/white/barebox.png
+ create mode 100644 logo/png24/600x600/color/barebox.png
+ create mode 100644 logo/png24/600x600/while/barebox.png
+ create mode 100644 logo/png24/800x800/color/barebox.png
+ create mode 100644 logo/png24/800x800/white/barebox.png
+ create mode 100644 logo/png8/100x100/color/blackbg/barebox.png
+ create mode 100644 logo/png8/100x100/white/blackbg/barebox.png
+ create mode 100644 logo/png8/200x200/color/blackbg/barebox.png
+ create mode 100644 logo/png8/200x200/white/blackbg/barebox.png
+ create mode 100644 logo/png8/400x400/color/blackbg/barebox.png
+ create mode 100644 logo/png8/400x400/white/blackbg/barebox.png
+ create mode 100644 logo/png8/600x600/color/blackbg/barebox.png
+ create mode 100644 logo/png8/600x600/while/blackbg/barebox.png
+ create mode 100644 logo/png8/800x800/color/blackbg/barebox.png
+ create mode 100644 logo/png8/800x800/white/blackbg/barebox.png
+
+diff --git a/logo/LICENCE b/logo/LICENCE
 new file mode 100644
-index 0000000..71a0d85
+index 0000000..c568afd
 --- /dev/null
-+++ b/arch/arm/lib/bbu.c
-@@ -0,0 +1,56 @@
-+/*
-+ * bbu.c - ARM specific barebox update functions
-+ *
-+ * Copyright (c) 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+#include <common.h>
-+#include <malloc.h>
-+#include <bbu.h>
-+#include <filetype.h>
-+#include <errno.h>
++++ b/logo/LICENCE
+@@ -0,0 +1,22 @@
++Barebox Logo Licence
 +
-+int barebox_arm_update(struct bbu_handler *handler, struct bbu_data *data)
-+{
-+	if (file_detect_type(data->image) != filetype_arm_barebox) {
-+		if (!bbu_force(data, "Not an ARM barebox image"))
-+			return -EINVAL;
-+	}
++Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++Copyright (C) 2012 JCrocoft.Ling Limited
 +
-+	if (!bbu_confirm(data))
-+		return -EINVAL;
++This logo or a modified version may be used by anyone to refer to the Barebox
++project only, but does not indicate endorsement by the project.
 +
-+	printf("updating to %s\n", (char *)handler->handler_data);
++The logo can be modified in the limit of the respect of the image to the
++Barebox project.
 +
-+	return 0;
-+}
++In particular, we encourage you to use the logo for the purpose of advertising
++support for Barebox. This includes, but is not limited to, the following
++uses:
++ - systems that come preloaded with Barebox and such that support
++   Barebox through a flash upgrade.
++ - Barebox documentation
++ - posters, clothing, presentations and other promotion material referring to the
++   Barebox project
 +
-+int bbu_register_arm_handler(const char *name, char *devicefile,
-+		unsigned long flags)
-+{
-+	struct bbu_handler *handler;
-+	int ret;
-+
-+	handler = xzalloc(sizeof(*handler));
-+	handler->name = name;
-+	handler->handler_data = devicefile;
-+	handler->flags = flags;
-+	handler->handler = barebox_arm_update;
-+
-+	ret = bbu_register_handler(handler);
-+	if (ret)
-+		free(handler);
-+
-+	return ret;
-+}
-diff --git a/include/bbu.h b/include/bbu.h
-index ce1a608..a71c25b 100644
---- a/include/bbu.h
-+++ b/include/bbu.h
-@@ -30,6 +30,9 @@ int bbu_register_handler(struct bbu_handler *);
- 
- int barebox_update(struct bbu_data *);
- 
-+int bbu_register_arm_handler(const char *name, char *devicefile,
-+		unsigned long flags);
-+
- int barebox_arm_update(struct bbu_handler *, struct bbu_data *data);
- 
- void bbu_handlers_list(void);
--- 
-1.7.10.4
-
++Please make the image a link to http://www.barebox.org/ if you use it on a
++web page.
 
 _______________________________________________
 barebox mailing list
