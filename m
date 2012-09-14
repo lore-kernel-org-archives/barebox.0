@@ -1,22 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo5.mail-out.ovh.net ([178.33.111.247]
- helo=mo5.mail-out.ovh.net)
- by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TCQgE-0001z1-Ll
- for barebox@lists.infradead.org; Fri, 14 Sep 2012 07:51:15 +0000
-Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id BB530FFA98B
- for <barebox@lists.infradead.org>; Fri, 14 Sep 2012 09:52:50 +0200 (CEST)
-Date: Fri, 14 Sep 2012 09:44:37 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120914074437.GE20834@game.jcrosoft.org>
-References: <CAJfOKByn43d80YRB52D2RQXVhvweAzQYv2MvRtVyh2-+q5XBQg@mail.gmail.com>
- <20120914071804.GR6180@pengutronix.de>
- <CAJfOKBwqwKGcTZ7X0Z9yLiD6EezXoZmjqfar3koM=d0pvRCCmQ@mail.gmail.com>
- <20120914072536.GS6180@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120914072536.GS6180@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TCQgo-0006Bk-SR
+ for barebox@lists.infradead.org; Fri, 14 Sep 2012 07:51:51 +0000
+From: Wolfram Sang <w.sang@pengutronix.de>
+Date: Fri, 14 Sep 2012 09:50:17 +0200
+Message-Id: <1347609017-31898-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,43 +14,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC][FAT] Handle MBR on the first sector
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH] net: tftp: timeout only after a proper amount of time
+To: barebox@lists.infradead.org
+Cc: Wolfram Sang <w.sang@pengutronix.de>
 
+Currently, the timeout when waiting for packages is smaller than the
+timeout communicated to the TFTP server for retransmitting. Make sure we
+wait at least for two retransmissions before giving up.
 
-On 09:25 Fri 14 Sep     , Sascha Hauer wrote:
-> 
-> On Fri, Sep 14, 2012 at 09:22:07AM +0200, Franck Jullien wrote:
-> > 2012/9/14 Sascha Hauer <s.hauer@pengutronix.de>:
-> > > Hi Franck,
-> > >
-> > > On Thu, Sep 13, 2012 at 02:13:29PM +0200, Franck Jullien wrote:
-> > >> *** Did not send this email with git because it's no working where I am **
-> > >>
-> > >> We may have some disk with MBR as a first sector. In this case, the
-> > >> current FAT check returns an error. However, the FAT sector exist and
-> > >> the MBR can tell us where it is.
-> > >>
-> > >> This patch make the FAT fs try to find the FAT boot sector on the first
-> > >> sector of the first partition in case it is not on sector 0.
-> > >
-> > > The patch looks good. Not applying it because it's RFC, but I would if
-> > > you give your ok.
-> > >
-> > 
-> > You have it.
-> 
-> Thanks, applied
+Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+---
+ net/tftp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Does this work with the fat autodetection
+diff --git a/net/tftp.c b/net/tftp.c
+index ca12638..053b8f3 100644
+--- a/net/tftp.c
++++ b/net/tftp.c
+@@ -354,7 +354,8 @@ static int do_tftpb(int argc, char *argv[])
+ 			tftp_retries++;
+ 		}
+ 
+-		if (tftp_retries > PKT_NUM_RETRIES) {
++		/* Wait for two TIMEOUT periods and add some */
++		if (tftp_retries > 2 * TIMEOUT + 1) {
+ 			tftp_err = -ETIMEDOUT;
+ 			break;
+ 		}
+-- 
+1.7.10.4
 
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
