@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TCPaS-0006Or-9p
- for barebox@lists.infradead.org; Fri, 14 Sep 2012 06:41:13 +0000
-Date: Fri, 14 Sep 2012 08:40:48 +0200
+ id 1TCPwB-0008Be-IB
+ for barebox@lists.infradead.org; Fri, 14 Sep 2012 07:03:40 +0000
+Date: Fri, 14 Sep 2012 09:03:32 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120914064048.GP6180@pengutronix.de>
-References: <1347488914-7460-1-git-send-email-franck.jullien@gmail.com>
+Message-ID: <20120914070332.GU24458@pengutronix.de>
+References: <1346960371-4129-1-git-send-email-eric@eukrea.com>
+ <1346960371-4129-3-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1347488914-7460-1-git-send-email-franck.jullien@gmail.com>
+In-Reply-To: <1346960371-4129-3-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,140 +19,110 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] [OpenRISC] Add __ashrdi3 and remove link to libgcc
-To: Franck Jullien <franck.jullien@gmail.com>
+Subject: Re: [PATCH 3/3] miidev: fix 1G wrong detection
+To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-Hi Franck,
+On Thu, Sep 06, 2012 at 09:39:31PM +0200, Eric B=E9nard wrote:
+> since 99e72c8bbdbdc690025a5868d831f1fe79ad56fc on an i.MX51 based board,
+> I get : "phy0: Link is up - 1000/Full". It seems miidev tries to probe
+> the PHY to early and gets 0x3ffff which leads to the wrong capabilities
+> setting.
+> =
 
-On Thu, Sep 13, 2012 at 12:28:32AM +0200, Franck Jullien wrote:
-> In a previous patch, Sascha needed to add __ashrdi3 and then linked
-> to libgcc. This patch add the ashrdi3 function in the arch/openrisc/lib
-> directory and remove the libgcc dependency.
-> 
-> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
 
-
-Applied this series.
+Applied to master.
 
 Thanks
  Sascha
 
 > ---
->  arch/openrisc/Makefile      |    4 ---
->  arch/openrisc/lib/Makefile  |    1 +
->  arch/openrisc/lib/ashrdi3.S |   59 +++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 60 insertions(+), 4 deletions(-)
->  create mode 100644 arch/openrisc/lib/ashrdi3.S
-> 
-> diff --git a/arch/openrisc/Makefile b/arch/openrisc/Makefile
-> index 1f4b175..fd8bbbf 100644
-> --- a/arch/openrisc/Makefile
-> +++ b/arch/openrisc/Makefile
-> @@ -1,7 +1,5 @@
->  CPPFLAGS += -D__OR1K__ -ffixed-r10 -mhard-mul -mhard-div
->  
-> -LIBGCC          := $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
+>  drivers/net/miidev.c |   33 +++++++++------------------------
+>  1 files changed, 9 insertions(+), 24 deletions(-)
+> =
+
+> diff --git a/drivers/net/miidev.c b/drivers/net/miidev.c
+> index 75b53e3..e0f9d67 100644
+> --- a/drivers/net/miidev.c
+> +++ b/drivers/net/miidev.c
+> @@ -131,6 +131,14 @@ int miidev_get_status(struct mii_device *mdev)
+>  =
+
+>  	status =3D ret & BMSR_LSTATUS ? MIIDEV_STATUS_IS_UP : 0;
+>  =
+
+> +	if (ret & BMSR_ESTATEN) {
+> +		ret =3D mii_read(mdev, mdev->address, MII_ESTATUS);
+> +		if (ret < 0)
+> +			goto err_out;
+> +		if (ret & (ESTATUS_1000_TFULL | ESTATUS_1000_THALF))
+> +			mdev->capabilities =3D MIIDEV_CAPABLE_1000M;
+> +	}
+> +
+>  	ret =3D mii_read(mdev, mdev->address, MII_BMCR);
+>  	if (ret < 0)
+>  		goto err_out;
+> @@ -239,27 +247,8 @@ static struct file_operations miidev_ops =3D {
+>  static int miidev_probe(struct device_d *dev)
+>  {
+>  	struct mii_device *mdev =3D dev->priv;
+> -	int val;
+> -	int caps =3D 0;
+>  =
+
+> -	val =3D mii_read(mdev, mdev->address, MII_PHYSID1);
+> -	if (val < 0 || val =3D=3D 0xffff)
+> -		goto err_out;
+> -	val =3D mii_read(mdev, mdev->address, MII_PHYSID2);
+> -	if (val < 0 || val =3D=3D 0xffff)
+> -		goto err_out;
+> -	val =3D mii_read(mdev, mdev->address, MII_BMSR);
+> -	if (val < 0)
+> -		goto err_out;
+> -	if (val & BMSR_ESTATEN) {
+> -		val =3D mii_read(mdev, mdev->address, MII_ESTATUS);
+> -		if (val < 0)
+> -			goto err_out;
+> -		if (val & (ESTATUS_1000_TFULL | ESTATUS_1000_THALF))
+> -			caps =3D MIIDEV_CAPABLE_1000M;
+> -	}
 > -
->  board-$(CONFIG_GENERIC) := generic
->  
->  KALLSYMS += --symbol-prefix=_
-> @@ -20,6 +18,4 @@ common-y += $(BOARD)
->  common-y += arch/openrisc/lib/
->  common-y += arch/openrisc/cpu/
->  
-> -common-y          += $(LIBGCC)
+> -	mdev->capabilities =3D caps;
+> +	mdev->capabilities =3D 0;
+>  	mdev->cdev.name =3D asprintf("phy%d", dev->id);
+>  	mdev->cdev.size =3D 64;
+>  	mdev->cdev.ops =3D &miidev_ops;
+> @@ -268,10 +257,6 @@ static int miidev_probe(struct device_d *dev)
+>  	devfs_create(&mdev->cdev);
+>  	list_add_tail(&mdev->list, &miidev_list);
+>  	return 0;
 > -
->  lds-y += arch/openrisc/cpu/barebox.lds
-> diff --git a/arch/openrisc/lib/Makefile b/arch/openrisc/lib/Makefile
-> index aaf93cb..0b3cc50 100644
-> --- a/arch/openrisc/lib/Makefile
-> +++ b/arch/openrisc/lib/Makefile
-> @@ -4,3 +4,4 @@ obj-y                 += cpuinfo.o
->  obj-y                 += muldi3.o
->  obj-y                 += lshrdi3.o
->  obj-y                 += ashldi3.o
-> +obj-y                 += ashrdi3.o
-> diff --git a/arch/openrisc/lib/ashrdi3.S b/arch/openrisc/lib/ashrdi3.S
-> new file mode 100644
-> index 0000000..c656d9f
-> --- /dev/null
-> +++ b/arch/openrisc/lib/ashrdi3.S
-> @@ -0,0 +1,59 @@
-> +/*
-> + * (C) Copyright 2012 - Franck JULLIEN <elec4fun@gmail.com>
-> + *
-> + * Extracted from gcc generated assembly.
-> + *
-> + * Extended precision shifts.
-> + *
-> + * R3/R4 (MSW, LSW) has 64 bit value
-> + * R5    has shift count
-> + * result in R11/R12
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License
-> + * along with this program; if not, write to the Free Software
-> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-> + * MA 02111-1307 USA
-> + */
-> +
-> +
-> +.globl __ashrdi3
-> +
-> +__ashrdi3:
-> +	l.sfeqi r5,0x0			/* if count = 0, go out                   */
-> +	l.bf out
-> +
-> +	l.addi r6,r0,0x20		/* r6 = 32                                */
-> +	l.sub r6,r6,r5			/* r6 = 32 - count                        */
-> +	l.sfgtsi r6,0x0			/* if count >= 32                         */
-> +	l.bnf more_than_32		/* branch to more_than_32                 */
-> +	l.nop 0x0
-> +
-> +
-> + less_than_32:
-> +	l.sll r6,r3,r6			/* r6 gets the bits moved from MSW to LSW */
-> +	l.srl r4,r4,r5			/* shift LSW                              */
-> +	l.sra r5,r3,r5			/* shift MSW to r5                        */
-> +	l.or r4,r6,r4			/* LSW gets bits shifted from MSW         */
-> +	l.ori r3,r5,0x0			/* r3 = MSW                               */
-> +
-> + out:
-> +	l.ori r11,r3,0x0
-> +	l.jr r9
-> +	l.ori r12,r4,0x0
-> +
-> + more_than_32:
-> +	l.srai r5,r3,0x1f		/* r5 = MSW sign extended                 */
-> +	l.sub r4,r0,r6			/* r4 = -r6, the number of bits above 32  */
-> +	l.sra r4,r3,r4			/* LSW gets bits shifted from MSB         */
-> +	l.j out				/* go out                                 */
-> +	l.ori r3,r5,0x0			/* r3 = MSW                               */
-> -- 
-> 1.7.1
-> 
-> 
+> -err_out:
+> -	dev_err(dev, "cannot read PHY registers (addr %d)\n", mdev->address);
+> -	return -ENODEV;
+>  }
+>  =
+
+>  static void miidev_remove(struct device_d *dev)
+> -- =
+
+> 1.7.7.6
+> =
+
+> =
+
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
--- 
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
