@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo5.mail-out.ovh.net ([178.33.45.10]
- helo=mo5.mail-out.ovh.net)
- by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TCDVK-0007yt-LZ
- for barebox@lists.infradead.org; Thu, 13 Sep 2012 17:47:10 +0000
-Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 530ABFFA6B3
- for <barebox@lists.infradead.org>; Thu, 13 Sep 2012 19:48:37 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 13 Sep 2012 19:40:21 +0200
-Message-Id: <1347558023-25680-5-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1347558023-25680-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20120913172220.GB20834@game.jcrosoft.org>
- <1347558023-25680-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TCOnH-0004sx-Cw
+ for barebox@lists.infradead.org; Fri, 14 Sep 2012 05:50:24 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id BF0B8BF081
+ for <barebox@lists.infradead.org>; Fri, 14 Sep 2012 07:49:57 +0200 (CEST)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Fri, 14 Sep 2012 07:49:56 +0200
+Message-Id: <1347601796-22812-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,165 +22,117 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] defaultenv-2: boot use global.linux.bootargs.dyn for
- dynamic globalvar
+Subject: [PATCH] pcm049 phycard l + xl2: update partion sizes
 To: barebox@lists.infradead.org
 
-linux.bootargs.dyn.* will be cleared at the beginning of boot
+Use 512k NAND Partion for barebox in enviroment and boards code
+pcm049: use 4MB for kernel
 
-This is need for boot sequence to do not have the previous boot param.
-
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 ---
- defaultenv-2/base/bin/bootargs-ip          |    4 ++--
- defaultenv-2/base/bin/bootargs-ip-barebox  |    2 +-
- defaultenv-2/base/bin/bootargs-ip-dhcp     |    2 +-
- defaultenv-2/base/bin/bootargs-ip-none     |    2 +-
- defaultenv-2/base/bin/bootargs-root-disk   |    2 +-
- defaultenv-2/base/bin/bootargs-root-ext    |    2 +-
- defaultenv-2/base/bin/bootargs-root-initrd |    2 +-
- defaultenv-2/base/bin/bootargs-root-jffs2  |    2 +-
- defaultenv-2/base/bin/bootargs-root-nfs    |    2 +-
- defaultenv-2/base/bin/bootargs-root-ubi    |    2 +-
- defaultenv-2/base/bin/init                 |    5 +++--
- defaultenv-2/base/boot/initrd              |    2 +-
- 12 files changed, 15 insertions(+), 14 deletions(-)
+ arch/arm/boards/pcm049/board.c            |    4 ++--
+ arch/arm/boards/pcm049/env/config         |    2 +-
+ arch/arm/boards/phycard-a-l1/env/config   |    2 +-
+ arch/arm/boards/phycard-a-l1/pca-a-l1.c   |    6 +++---
+ arch/arm/boards/phycard-a-xl2/env/config  |    2 +-
+ arch/arm/boards/phycard-a-xl2/pca-a-xl2.c |    4 ++--
+ 6 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/defaultenv-2/base/bin/bootargs-ip b/defaultenv-2/base/bin/bootargs-ip
-index 15041c6..2d4486c 100644
---- a/defaultenv-2/base/bin/bootargs-ip
-+++ b/defaultenv-2/base/bin/bootargs-ip
-@@ -5,7 +5,7 @@
- . /env/network/eth0
+diff --git a/arch/arm/boards/pcm049/board.c b/arch/arm/boards/pcm049/board.c
+index 3ef38a7..3b10d0a 100644
+--- a/arch/arm/boards/pcm049/board.c
++++ b/arch/arm/boards/pcm049/board.c
+@@ -118,9 +118,9 @@ static int pcm049_devices_init(void)
+ #ifdef CONFIG_PARTITION
+ 	devfs_add_partition("nand0", 0x00000, SZ_128K, DEVFS_PARTITION_FIXED, "xload_raw");
+ 	dev_add_bb_dev("xload_raw", "xload");
+-	devfs_add_partition("nand0", SZ_128K, SZ_256K, DEVFS_PARTITION_FIXED, "self_raw");
++	devfs_add_partition("nand0", SZ_128K, SZ_512K, DEVFS_PARTITION_FIXED, "self_raw");
+ 	dev_add_bb_dev("self_raw", "self0");
+-	devfs_add_partition("nand0", SZ_128K + SZ_256K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw");
++	devfs_add_partition("nand0", SZ_128K + SZ_512K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw");
+ 	dev_add_bb_dev("env_raw", "env0");
+ #endif
  
- if [ $ip = dhcp ]; then
--	global.linux.bootargs.ip="ip=dhcp"
-+	global.linux.bootargs.dyn.ip="ip=dhcp"
- else
--	global.linux.bootargs.ip="ip=$ipaddr:$serverip:$gateway:$netmask::eth0:"
-+	global.linux.bootargs.dyn.ip="ip=$ipaddr:$serverip:$gateway:$netmask::eth0:"
- fi
-diff --git a/defaultenv-2/base/bin/bootargs-ip-barebox b/defaultenv-2/base/bin/bootargs-ip-barebox
-index 986c142..5a3b984 100644
---- a/defaultenv-2/base/bin/bootargs-ip-barebox
-+++ b/defaultenv-2/base/bin/bootargs-ip-barebox
-@@ -4,4 +4,4 @@
+diff --git a/arch/arm/boards/pcm049/env/config b/arch/arm/boards/pcm049/env/config
+index efbe9ea..70e374f 100644
+--- a/arch/arm/boards/pcm049/env/config
++++ b/arch/arm/boards/pcm049/env/config
+@@ -40,7 +40,7 @@ autoboot_timeout=3
  
- ifup eth0
+ bootargs="console=ttyO2,115200"
  
--global.linux.bootargs.ip="ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask::eth0:"
-+global.linux.bootargs.dyn.ip="ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask::eth0:"
-diff --git a/defaultenv-2/base/bin/bootargs-ip-dhcp b/defaultenv-2/base/bin/bootargs-ip-dhcp
-index c542b24..dec8ae4 100644
---- a/defaultenv-2/base/bin/bootargs-ip-dhcp
-+++ b/defaultenv-2/base/bin/bootargs-ip-dhcp
-@@ -2,4 +2,4 @@
+-nand_parts="128k(xload)ro,256k(barebox),128k(bareboxenv),2M(kernel),-(root)"
++nand_parts="128k(xload)ro,512k(barebox),128k(bareboxenv),4M(kernel),-(root)"
+ rootfs_mtdblock_nand=4
  
- # Do dhcp in Linux
+ # set a fancy prompt (if support is compiled in)
+diff --git a/arch/arm/boards/phycard-a-l1/env/config b/arch/arm/boards/phycard-a-l1/env/config
+index e0f4dcc..5bc48d7 100644
+--- a/arch/arm/boards/phycard-a-l1/env/config
++++ b/arch/arm/boards/phycard-a-l1/env/config
+@@ -70,7 +70,7 @@ bootargs="$bootargs omapdss.def_disp=pd050vl1"
+ #bootargs="$bootargs omapdss.def_disp=pd104slf"
+ #bootargs="$bootargs omapdss.def_disp=pm070wl4"
  
--global.linux.bootargs.ip="ip=dhcp"
-+global.linux.bootargs.dyn.ip="ip=dhcp"
-diff --git a/defaultenv-2/base/bin/bootargs-ip-none b/defaultenv-2/base/bin/bootargs-ip-none
-index c010154..88aaa21 100644
---- a/defaultenv-2/base/bin/bootargs-ip-none
-+++ b/defaultenv-2/base/bin/bootargs-ip-none
-@@ -2,4 +2,4 @@
+-nand_parts="512k(x-loader)ro,1920k(barebox),128k(bareboxenv),4M(kernel),-(root)"
++nand_parts="128k(x-loader)ro,512k(barebox),128k(bareboxenv),4M(kernel),-(root)"
+ nand_device=omap2-nand.0
+ rootfs_mtdblock_nand=4
  
- # disable ip setup in Linux
+diff --git a/arch/arm/boards/phycard-a-l1/pca-a-l1.c b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+index 907198d..a08518f 100644
+--- a/arch/arm/boards/phycard-a-l1/pca-a-l1.c
++++ b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+@@ -422,13 +422,13 @@ device_initcall(pcaal1_init_devices);
+ static int pcaal1_late_init(void)
+ {
+ #ifdef CONFIG_PARTITION
+-	devfs_add_partition("nand0", 0x00000, 0x80000, DEVFS_PARTITION_FIXED, "x-loader");
++	devfs_add_partition("nand0", 0x00000, SZ_128K, DEVFS_PARTITION_FIXED, "x-loader");
+ 	dev_add_bb_dev("self_raw", "x_loader0");
  
--global.linux.bootargs.ip="ip=none"
-+global.linux.bootargs.dyn.ip="ip=none"
-diff --git a/defaultenv-2/base/bin/bootargs-root-disk b/defaultenv-2/base/bin/bootargs-root-disk
-index df8750e..aa60cf3 100644
---- a/defaultenv-2/base/bin/bootargs-root-disk
-+++ b/defaultenv-2/base/bin/bootargs-root-disk
-@@ -23,4 +23,4 @@ if [ -z "${fstype}" ]; then
- 	exit 1
- fi
+-	devfs_add_partition("nand0", 0x80000, 0x1e0000, DEVFS_PARTITION_FIXED, "self_raw");
++	devfs_add_partition("nand0", SZ_128K, SZ_512K, DEVFS_PARTITION_FIXED, "self_raw");
+ 	dev_add_bb_dev("self_raw", "self0");
  
--global.linux.bootargs.root="root=/dev/$part rootfstype=$fstype rootwait"
-+global.linux.bootargs.dyn.root="root=/dev/$part rootfstype=$fstype rootwait"
-diff --git a/defaultenv-2/base/bin/bootargs-root-ext b/defaultenv-2/base/bin/bootargs-root-ext
-index 45fcd5a..dbdddb9 100644
---- a/defaultenv-2/base/bin/bootargs-root-ext
-+++ b/defaultenv-2/base/bin/bootargs-root-ext
-@@ -9,4 +9,4 @@ while getopt "m:r:" opt; do
- 	fi
- done
+-	devfs_add_partition("nand0", 0x260000, 0x20000, DEVFS_PARTITION_FIXED, "env_raw");
++	devfs_add_partition("nand0", SZ_128K + SZ_512K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw");
+ 	dev_add_bb_dev("env_raw", "env0");
+ #endif
+ 	return 0;
+diff --git a/arch/arm/boards/phycard-a-xl2/env/config b/arch/arm/boards/phycard-a-xl2/env/config
+index 59e8eb3..44a4181 100644
+--- a/arch/arm/boards/phycard-a-xl2/env/config
++++ b/arch/arm/boards/phycard-a-xl2/env/config
+@@ -39,7 +39,7 @@ autoboot_timeout=3
  
--global.linux.bootargs.root="root=/dev/$part rootfstype=ext$type rootwait"
-+global.linux.bootargs.dyn.root="root=/dev/$part rootfstype=ext$type rootwait"
-diff --git a/defaultenv-2/base/bin/bootargs-root-initrd b/defaultenv-2/base/bin/bootargs-root-initrd
-index 7072cea..cc711a1 100644
---- a/defaultenv-2/base/bin/bootargs-root-initrd
-+++ b/defaultenv-2/base/bin/bootargs-root-initrd
-@@ -13,4 +13,4 @@ while getopt "i:h" opt; do
- 	fi
- done
+ bootargs="console=ttyO2,115200"
  
--global.linux.bootargs.root="root=/dev/ram0 rdinit=${rdinit}"
-+global.linux.bootargs.dyn.root="root=/dev/ram0 rdinit=${rdinit}"
-diff --git a/defaultenv-2/base/bin/bootargs-root-jffs2 b/defaultenv-2/base/bin/bootargs-root-jffs2
-index 74d59af..a8eb5e7 100644
---- a/defaultenv-2/base/bin/bootargs-root-jffs2
-+++ b/defaultenv-2/base/bin/bootargs-root-jffs2
-@@ -18,4 +18,4 @@ if [ -z "$mtd" ]; then
- 	exit 1
- fi
+-nand_parts="128k(xload)ro,256k(barebox),128k(bareboxenv),4M(kernel),-(root)"
++nand_parts="128k(xload)ro,512k(barebox),128k(bareboxenv),4M(kernel),-(root)"
+ rootfs_mtdblock_nand=4
  
--global.linux.bootargs.root="root=$mtd rootfstype=jffs2"
-+global.linux.bootargs.dyn.root="root=$mtd rootfstype=jffs2"
-diff --git a/defaultenv-2/base/bin/bootargs-root-nfs b/defaultenv-2/base/bin/bootargs-root-nfs
-index 27bb6c4..355f93d 100644
---- a/defaultenv-2/base/bin/bootargs-root-nfs
-+++ b/defaultenv-2/base/bin/bootargs-root-nfs
-@@ -17,4 +17,4 @@ if [ -n ${serverip} ]; then
- 	nfsroot="$serverip:$nfsroot"
- fi
- 
--global.linux.bootargs.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
-+global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
-diff --git a/defaultenv-2/base/bin/bootargs-root-ubi b/defaultenv-2/base/bin/bootargs-root-ubi
-index fb7f328..4260336 100644
---- a/defaultenv-2/base/bin/bootargs-root-ubi
-+++ b/defaultenv-2/base/bin/bootargs-root-ubi
-@@ -21,4 +21,4 @@ if [ -z "$mtd" ]; then
- 	exit 1
- fi
- 
--global.linux.bootargs.root="root=ubi0:$ubiroot ubi.mtd=$mtd rootfstype=ubifs"
-+global.linux.bootargs.dyn.root="root=ubi0:$ubiroot ubi.mtd=$mtd rootfstype=ubifs"
-diff --git a/defaultenv-2/base/bin/init b/defaultenv-2/base/bin/init
-index 9d7eb2e..8e8871d 100644
---- a/defaultenv-2/base/bin/init
-+++ b/defaultenv-2/base/bin/init
-@@ -8,8 +8,9 @@ global autoboot_timeout=3
- global boot.default=net
- global allow_color=true
- global linux.bootargs.base
--global linux.bootargs.ip
--global linux.bootargs.root
-+#linux.bootargs.dyn.* will be clearer at the beginning of boot
-+global linux.bootargs.dyn.ip
-+global linux.bootargs.dyn.root
- global editcmd=sedit
- 
- /env/init/general
-diff --git a/defaultenv-2/base/boot/initrd b/defaultenv-2/base/boot/initrd
-index 79a353a..7c44d07 100644
---- a/defaultenv-2/base/boot/initrd
-+++ b/defaultenv-2/base/boot/initrd
-@@ -11,7 +11,7 @@ global.bootm.initrd="${path}/initramfs"
- bootargs-root-initrd
- #global.bootm.oftree=<path to oftree>
- 
--global.linux.bootargs.root="root=/dev/ram0"
-+global.linux.bootargs.dyn.root="root=/dev/ram0"
- 
- #bootargs-root-nfs -n "<path on server>" -s <serverip>
- #bootargs-root-ubi -r <volume> -m <mtdname>
+ # set a fancy prompt (if support is compiled in)
+diff --git a/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c b/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
+index 4fec0f0..91d45dc 100644
+--- a/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
++++ b/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
+@@ -136,10 +136,10 @@ static int pcaaxl2_devices_init(void)
+ 	devfs_add_partition("nand0", 0x00000, SZ_128K,
+ 			DEVFS_PARTITION_FIXED, "xload_raw");
+ 	dev_add_bb_dev("xload_raw", "xload");
+-	devfs_add_partition("nand0", SZ_128K, SZ_256K,
++	devfs_add_partition("nand0", SZ_128K, SZ_512K,
+ 			DEVFS_PARTITION_FIXED, "self_raw");
+ 	dev_add_bb_dev("self_raw", "self0");
+-	devfs_add_partition("nand0", SZ_128K + SZ_256K, SZ_128K,
++	devfs_add_partition("nand0", SZ_128K + SZ_512K, SZ_128K,
+ 			DEVFS_PARTITION_FIXED, "env_raw");
+ 	dev_add_bb_dev("env_raw", "env0");
+ #endif
 -- 
-1.7.10.4
+1.7.0.4
 
 
 _______________________________________________
