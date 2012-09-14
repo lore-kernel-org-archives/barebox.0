@@ -1,25 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo5.mail-out.ovh.net ([178.32.228.5])
- by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TCRvX-0003y4-Hn
- for barebox@lists.infradead.org; Fri, 14 Sep 2012 09:11:08 +0000
-Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id BA104FFAD00
- for <barebox@lists.infradead.org>; Fri, 14 Sep 2012 11:12:43 +0200 (CEST)
-Date: Fri, 14 Sep 2012 11:04:29 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120914090429.GB25990@game.jcrosoft.org>
-References: <CAJfOKByn43d80YRB52D2RQXVhvweAzQYv2MvRtVyh2-+q5XBQg@mail.gmail.com>
- <20120914071804.GR6180@pengutronix.de>
- <CAJfOKBwqwKGcTZ7X0Z9yLiD6EezXoZmjqfar3koM=d0pvRCCmQ@mail.gmail.com>
- <20120914072536.GS6180@pengutronix.de>
- <20120914074437.GE20834@game.jcrosoft.org>
- <CAJfOKByY9O8ARE3BAbMbmyeowRLcVBMSQv8hFey=cx7=bahHWg@mail.gmail.com>
- <20120914085001.GA25990@game.jcrosoft.org>
- <CAJfOKBydgM3oTtHM-J+0i6n4kCiEz1jxp+2FhYnn+fC2Mou5Tg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAJfOKBydgM3oTtHM-J+0i6n4kCiEz1jxp+2FhYnn+fC2Mou5Tg@mail.gmail.com>
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TCSoB-0000pm-TP
+ for barebox@lists.infradead.org; Fri, 14 Sep 2012 10:07:37 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 14 Sep 2012 12:07:31 +0200
+Message-Id: <1347617251-9122-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,70 +14,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC][FAT] Handle MBR on the first sector
-To: Franck Jullien <franck.jullien@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH] mips: remove undefined local_irq_save/local_irq_restore
+To: barebox@lists.infradead.org
 
+mips currently uses local_irq_save and local_irq_restore
+which are not defined. Drop them.
 
-On 11:02 Fri 14 Sep     , Franck Jullien wrote:
-> 
-> 2012/9/14 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>:
-> >
-> > On 10:47 Fri 14 Sep     , Franck Jullien wrote:
-> >>
-> >> 2012/9/14 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>:
-> >> >
-> >> > On 09:25 Fri 14 Sep     , Sascha Hauer wrote:
-> >> >>
-> >> >> On Fri, Sep 14, 2012 at 09:22:07AM +0200, Franck Jullien wrote:
-> >> >> > 2012/9/14 Sascha Hauer <s.hauer@pengutronix.de>:
-> >> >> > > Hi Franck,
-> >> >> > >
-> >> >> > > On Thu, Sep 13, 2012 at 02:13:29PM +0200, Franck Jullien wrote:
-> >> >> > >> *** Did not send this email with git because it's no working where I am **
-> >> >> > >>
-> >> >> > >> We may have some disk with MBR as a first sector. In this case, the
-> >> >> > >> current FAT check returns an error. However, the FAT sector exist and
-> >> >> > >> the MBR can tell us where it is.
-> >> >> > >>
-> >> >> > >> This patch make the FAT fs try to find the FAT boot sector on the first
-> >> >> > >> sector of the first partition in case it is not on sector 0.
-> >> >> > >
-> >> >> > > The patch looks good. Not applying it because it's RFC, but I would if
-> >> >> > > you give your ok.
-> >> >> > >
-> >> >> >
-> >> >> > You have it.
-> >> >>
-> >> >> Thanks, applied
-> >> >
-> >> > Does this work with the fat autodetection
-> >> >
-> >> > Best Regards,
-> >> > J.
-> >>
-> >> What do you mean ?
-> >>
-> >> It works when you mount your device as FAT. The FAT fs check is the
-> >> first sector is FAT boot sector. If not, it suppose it is an MBR and
-> >> the FAT boot sector is in the first partition.
-> > check the the next branch
-> >
-> > I add the fs detection to do not specify the filesystem type anymore in mount
-> >
-> > Best Regards,
-> > J.
-> 
-> It won't. We need to check if it is an MBR here too (static int
-> is_fat(u8 *buf)) ....
-please fix it there too
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/include/asm/mipsregs.h |    4 ----
+ 1 file changed, 4 deletions(-)
 
-Best Regards,
-J.
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index 16ba38e..87c48ed 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -568,7 +568,6 @@ do {									\
+ 	unsigned long long __val;					\
+ 	unsigned long __flags;						\
+ 									\
+-	local_irq_save(__flags);					\
+ 	if (sel == 0)							\
+ 		__asm__ __volatile__(					\
+ 			".set\tmips64\n\t"				\
+@@ -587,7 +586,6 @@ do {									\
+ 			"dsra\t%L0, %L0, 32\n\t"			\
+ 			".set\tmips0"					\
+ 			: "=r" (__val));				\
+-	local_irq_restore(__flags);					\
+ 									\
+ 	__val;								\
+ })
+@@ -596,7 +594,6 @@ do {									\
+ do {									\
+ 	unsigned long __flags;						\
+ 									\
+-	local_irq_save(__flags);					\
+ 	if (sel == 0)							\
+ 		__asm__ __volatile__(					\
+ 			".set\tmips64\n\t"				\
+@@ -617,7 +614,6 @@ do {									\
+ 			"dmtc0\t%L0, " #source ", " #sel "\n\t"		\
+ 			".set\tmips0"					\
+ 			: : "r" (val));					\
+-	local_irq_restore(__flags);					\
+ } while (0)
+ 
+ #define read_c0_index()		__read_32bit_c0_register($0, 0)
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
