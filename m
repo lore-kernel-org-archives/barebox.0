@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TCQHS-0002gn-HR
- for barebox@lists.infradead.org; Fri, 14 Sep 2012 07:25:40 +0000
-Date: Fri, 14 Sep 2012 09:25:36 +0200
+ id 1TCQKG-00038m-AZ
+ for barebox@lists.infradead.org; Fri, 14 Sep 2012 07:28:33 +0000
+Date: Fri, 14 Sep 2012 09:28:30 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120914072536.GS6180@pengutronix.de>
-References: <CAJfOKByn43d80YRB52D2RQXVhvweAzQYv2MvRtVyh2-+q5XBQg@mail.gmail.com>
- <20120914071804.GR6180@pengutronix.de>
- <CAJfOKBwqwKGcTZ7X0Z9yLiD6EezXoZmjqfar3koM=d0pvRCCmQ@mail.gmail.com>
+Message-ID: <20120914072830.GT6180@pengutronix.de>
+References: <1347601796-22812-1-git-send-email-j.weitzel@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAJfOKBwqwKGcTZ7X0Z9yLiD6EezXoZmjqfar3koM=d0pvRCCmQ@mail.gmail.com>
+In-Reply-To: <1347601796-22812-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,132 +22,130 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC][FAT] Handle MBR on the first sector
-To: Franck Jullien <franck.jullien@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH] pcm049 phycard l + xl2: update partion sizes
+To: Jan Weitzel <j.weitzel@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On Fri, Sep 14, 2012 at 09:22:07AM +0200, Franck Jullien wrote:
-> 2012/9/14 Sascha Hauer <s.hauer@pengutronix.de>:
-> > Hi Franck,
-> >
-> > On Thu, Sep 13, 2012 at 02:13:29PM +0200, Franck Jullien wrote:
-> >> *** Did not send this email with git because it's no working where I am **
-> >>
-> >> We may have some disk with MBR as a first sector. In this case, the
-> >> current FAT check returns an error. However, the FAT sector exist and
-> >> the MBR can tell us where it is.
-> >>
-> >> This patch make the FAT fs try to find the FAT boot sector on the first
-> >> sector of the first partition in case it is not on sector 0.
-> >
-> > The patch looks good. Not applying it because it's RFC, but I would if
-> > you give your ok.
-> >
+On Fri, Sep 14, 2012 at 07:49:56AM +0200, Jan Weitzel wrote:
+> Use 512k NAND Partion for barebox in enviroment and boards code
+> pcm049: use 4MB for kernel
 > 
-> You have it.
+> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 
-Thanks, applied
+Applied, thanks
 
 Sascha
 
+> ---
+>  arch/arm/boards/pcm049/board.c            |    4 ++--
+>  arch/arm/boards/pcm049/env/config         |    2 +-
+>  arch/arm/boards/phycard-a-l1/env/config   |    2 +-
+>  arch/arm/boards/phycard-a-l1/pca-a-l1.c   |    6 +++---
+>  arch/arm/boards/phycard-a-xl2/env/config  |    2 +-
+>  arch/arm/boards/phycard-a-xl2/pca-a-xl2.c |    4 ++--
+>  6 files changed, 10 insertions(+), 10 deletions(-)
 > 
-> > Sascha
-> >
-> >>
-> >> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
-> >> ---
-> >>  fs/fat/ff.c |   24 ++++++++++++++++++++----
-> >>  1 files changed, 20 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/fs/fat/ff.c b/fs/fat/ff.c
-> >> index 66db1d6..6a4ae32 100644
-> >> --- a/fs/fat/ff.c
-> >> +++ b/fs/fat/ff.c
-> >> @@ -191,6 +191,7 @@
-> >>  #define      FSI_Nxt_Free            492     /* FSI: Last allocated cluster (4) */
-> >>  #define MBR_Table            446     /* MBR: Partition table offset (2) */
-> >>  #define      SZ_PTE                  16      /* MBR: Size of a partition table entry */
-> >> +#define MBR_StartSector              8       /* MBR: Offset of Starting Sector in
-> >> Partition Table Entry */
-> >>  #define BS_55AA                      510     /* Boot sector signature (2) */
-> >>
-> >>  #define      DIR_Name                0       /* Short file name (11) */
-> >> @@ -1533,11 +1534,15 @@ int follow_path (     /* 0(0): successful, !=0:
-> >> error code */
-> >>   */
-> >>  static int check_fs (        /* 0:The FAT BR, 1:Valid BR but not an FAT,
-> >> 2:Not a BR, 3:Disk error */
-> >>       FATFS *fs,      /* File system object */
-> >> -     DWORD sect      /* Sector# (lba) to check if it is an FAT boot record or not */
-> >> +     DWORD sect,     /* Sector# (lba) to check if it is an FAT boot record or not */
-> >> +     DWORD *bootsec
-> >>  )
-> >>  {
-> >>       int ret;
-> >>
-> >> +     if(bootsec)
-> >> +             *bootsec = 0;
-> >> +
-> >>       /* Load boot record */
-> >>       ret = disk_read(fs, fs->win, sect, 1);
-> >>       if (ret)
-> >> @@ -1553,6 +1558,12 @@ static int check_fs (  /* 0:The FAT BR, 1:Valid
-> >> BR but not an FAT, 2:Not a BR, 3:
-> >>       if ((LD_DWORD(&fs->win[BS_FilSysType32]) & 0xFFFFFF) == 0x544146)
-> >>               return 0;
-> >>
-> >> +     if(bootsec)
-> >> +             /* This must be an MBR, so return the starting sector of the
-> >> +              * first partition so we could check if there is a FAT boot
-> >> +              * sector there */
-> >> +             *bootsec = LD_WORD(&fs->win[MBR_Table + MBR_StartSector]);
-> >> +
-> >>       return -ENODEV;
-> >>  }
-> >>
-> >> @@ -1565,6 +1576,7 @@ static int chk_mounted (        /* 0(0): successful,
-> >> !=0: any error occurred */
-> >>  )
-> >>  {
-> >>       BYTE fmt, b;
-> >> +     DWORD first_boot_sect;
-> >>       DWORD bsect, fasize, tsect, sysect, nclst, szbfat;
-> >>       WORD nrsv;
-> >>
-> >> @@ -1579,9 +1591,13 @@ static int chk_mounted (       /* 0(0): successful,
-> >> !=0: any error occurred */
-> >>               return -EIO;
-> >>  #endif
-> >>       /* Search FAT partition on the drive. Supports only generic
-> >> partitionings, FDISK and SFD. */
-> >> -     fmt = check_fs(fs, bsect = 0);  /* Check sector 0 if it is a VBR */
-> >> -     if (fmt)
-> >> -             return fmt; /* No FAT volume is found */
-> >> +     fmt = check_fs(fs, bsect = 0, &first_boot_sect);        /* Check sector 0
-> >> if it is a VBR */
-> >> +     if (fmt && first_boot_sect != 0) {
-> >> +             /* Sector 0 is an MBR, now check for FAT in the first partition */
-> >> +             fmt = check_fs(fs, bsect = first_boot_sect, NULL);
-> >> +             if(fmt)
-> >> +                     return fmt; /* No FAT volume is found */
-> >> +     }
-> >>
-> >>       /* Following code initializes the file system object */
-> >>
-> >> --
-> >> 1.7.1
-> >>
-> >> _______________________________________________
-> >> barebox mailing list
-> >> barebox@lists.infradead.org
-> >> http://lists.infradead.org/mailman/listinfo/barebox
-> >>
-> >
-> > --
-> > Pengutronix e.K.                           |                             |
-> > Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> > Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> diff --git a/arch/arm/boards/pcm049/board.c b/arch/arm/boards/pcm049/board.c
+> index 3ef38a7..3b10d0a 100644
+> --- a/arch/arm/boards/pcm049/board.c
+> +++ b/arch/arm/boards/pcm049/board.c
+> @@ -118,9 +118,9 @@ static int pcm049_devices_init(void)
+>  #ifdef CONFIG_PARTITION
+>  	devfs_add_partition("nand0", 0x00000, SZ_128K, DEVFS_PARTITION_FIXED, "xload_raw");
+>  	dev_add_bb_dev("xload_raw", "xload");
+> -	devfs_add_partition("nand0", SZ_128K, SZ_256K, DEVFS_PARTITION_FIXED, "self_raw");
+> +	devfs_add_partition("nand0", SZ_128K, SZ_512K, DEVFS_PARTITION_FIXED, "self_raw");
+>  	dev_add_bb_dev("self_raw", "self0");
+> -	devfs_add_partition("nand0", SZ_128K + SZ_256K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw");
+> +	devfs_add_partition("nand0", SZ_128K + SZ_512K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw");
+>  	dev_add_bb_dev("env_raw", "env0");
+>  #endif
+>  
+> diff --git a/arch/arm/boards/pcm049/env/config b/arch/arm/boards/pcm049/env/config
+> index efbe9ea..70e374f 100644
+> --- a/arch/arm/boards/pcm049/env/config
+> +++ b/arch/arm/boards/pcm049/env/config
+> @@ -40,7 +40,7 @@ autoboot_timeout=3
+>  
+>  bootargs="console=ttyO2,115200"
+>  
+> -nand_parts="128k(xload)ro,256k(barebox),128k(bareboxenv),2M(kernel),-(root)"
+> +nand_parts="128k(xload)ro,512k(barebox),128k(bareboxenv),4M(kernel),-(root)"
+>  rootfs_mtdblock_nand=4
+>  
+>  # set a fancy prompt (if support is compiled in)
+> diff --git a/arch/arm/boards/phycard-a-l1/env/config b/arch/arm/boards/phycard-a-l1/env/config
+> index e0f4dcc..5bc48d7 100644
+> --- a/arch/arm/boards/phycard-a-l1/env/config
+> +++ b/arch/arm/boards/phycard-a-l1/env/config
+> @@ -70,7 +70,7 @@ bootargs="$bootargs omapdss.def_disp=pd050vl1"
+>  #bootargs="$bootargs omapdss.def_disp=pd104slf"
+>  #bootargs="$bootargs omapdss.def_disp=pm070wl4"
+>  
+> -nand_parts="512k(x-loader)ro,1920k(barebox),128k(bareboxenv),4M(kernel),-(root)"
+> +nand_parts="128k(x-loader)ro,512k(barebox),128k(bareboxenv),4M(kernel),-(root)"
+>  nand_device=omap2-nand.0
+>  rootfs_mtdblock_nand=4
+>  
+> diff --git a/arch/arm/boards/phycard-a-l1/pca-a-l1.c b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+> index 907198d..a08518f 100644
+> --- a/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+> +++ b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+> @@ -422,13 +422,13 @@ device_initcall(pcaal1_init_devices);
+>  static int pcaal1_late_init(void)
+>  {
+>  #ifdef CONFIG_PARTITION
+> -	devfs_add_partition("nand0", 0x00000, 0x80000, DEVFS_PARTITION_FIXED, "x-loader");
+> +	devfs_add_partition("nand0", 0x00000, SZ_128K, DEVFS_PARTITION_FIXED, "x-loader");
+>  	dev_add_bb_dev("self_raw", "x_loader0");
+>  
+> -	devfs_add_partition("nand0", 0x80000, 0x1e0000, DEVFS_PARTITION_FIXED, "self_raw");
+> +	devfs_add_partition("nand0", SZ_128K, SZ_512K, DEVFS_PARTITION_FIXED, "self_raw");
+>  	dev_add_bb_dev("self_raw", "self0");
+>  
+> -	devfs_add_partition("nand0", 0x260000, 0x20000, DEVFS_PARTITION_FIXED, "env_raw");
+> +	devfs_add_partition("nand0", SZ_128K + SZ_512K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw");
+>  	dev_add_bb_dev("env_raw", "env0");
+>  #endif
+>  	return 0;
+> diff --git a/arch/arm/boards/phycard-a-xl2/env/config b/arch/arm/boards/phycard-a-xl2/env/config
+> index 59e8eb3..44a4181 100644
+> --- a/arch/arm/boards/phycard-a-xl2/env/config
+> +++ b/arch/arm/boards/phycard-a-xl2/env/config
+> @@ -39,7 +39,7 @@ autoboot_timeout=3
+>  
+>  bootargs="console=ttyO2,115200"
+>  
+> -nand_parts="128k(xload)ro,256k(barebox),128k(bareboxenv),4M(kernel),-(root)"
+> +nand_parts="128k(xload)ro,512k(barebox),128k(bareboxenv),4M(kernel),-(root)"
+>  rootfs_mtdblock_nand=4
+>  
+>  # set a fancy prompt (if support is compiled in)
+> diff --git a/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c b/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
+> index 4fec0f0..91d45dc 100644
+> --- a/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
+> +++ b/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
+> @@ -136,10 +136,10 @@ static int pcaaxl2_devices_init(void)
+>  	devfs_add_partition("nand0", 0x00000, SZ_128K,
+>  			DEVFS_PARTITION_FIXED, "xload_raw");
+>  	dev_add_bb_dev("xload_raw", "xload");
+> -	devfs_add_partition("nand0", SZ_128K, SZ_256K,
+> +	devfs_add_partition("nand0", SZ_128K, SZ_512K,
+>  			DEVFS_PARTITION_FIXED, "self_raw");
+>  	dev_add_bb_dev("self_raw", "self0");
+> -	devfs_add_partition("nand0", SZ_128K + SZ_256K, SZ_128K,
+> +	devfs_add_partition("nand0", SZ_128K + SZ_512K, SZ_128K,
+>  			DEVFS_PARTITION_FIXED, "env_raw");
+>  	dev_add_bb_dev("env_raw", "env0");
+>  #endif
+> -- 
+> 1.7.0.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
