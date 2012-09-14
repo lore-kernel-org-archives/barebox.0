@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TCOnH-0004sx-Cw
- for barebox@lists.infradead.org; Fri, 14 Sep 2012 05:50:24 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id BF0B8BF081
- for <barebox@lists.infradead.org>; Fri, 14 Sep 2012 07:49:57 +0200 (CEST)
-From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Fri, 14 Sep 2012 07:49:56 +0200
-Message-Id: <1347601796-22812-1-git-send-email-j.weitzel@phytec.de>
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TCPaS-0006Or-9p
+ for barebox@lists.infradead.org; Fri, 14 Sep 2012 06:41:13 +0000
+Date: Fri, 14 Sep 2012 08:40:48 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120914064048.GP6180@pengutronix.de>
+References: <1347488914-7460-1-git-send-email-franck.jullien@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1347488914-7460-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,123 +18,144 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] pcm049 phycard l + xl2: update partion sizes
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/3] [OpenRISC] Add __ashrdi3 and remove link to libgcc
+To: Franck Jullien <franck.jullien@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Use 512k NAND Partion for barebox in enviroment and boards code
-pcm049: use 4MB for kernel
+Hi Franck,
 
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
----
- arch/arm/boards/pcm049/board.c            |    4 ++--
- arch/arm/boards/pcm049/env/config         |    2 +-
- arch/arm/boards/phycard-a-l1/env/config   |    2 +-
- arch/arm/boards/phycard-a-l1/pca-a-l1.c   |    6 +++---
- arch/arm/boards/phycard-a-xl2/env/config  |    2 +-
- arch/arm/boards/phycard-a-xl2/pca-a-xl2.c |    4 ++--
- 6 files changed, 10 insertions(+), 10 deletions(-)
+On Thu, Sep 13, 2012 at 12:28:32AM +0200, Franck Jullien wrote:
+> In a previous patch, Sascha needed to add __ashrdi3 and then linked
+> to libgcc. This patch add the ashrdi3 function in the arch/openrisc/lib
+> directory and remove the libgcc dependency.
+> 
+> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
 
-diff --git a/arch/arm/boards/pcm049/board.c b/arch/arm/boards/pcm049/board.c
-index 3ef38a7..3b10d0a 100644
---- a/arch/arm/boards/pcm049/board.c
-+++ b/arch/arm/boards/pcm049/board.c
-@@ -118,9 +118,9 @@ static int pcm049_devices_init(void)
- #ifdef CONFIG_PARTITION
- 	devfs_add_partition("nand0", 0x00000, SZ_128K, DEVFS_PARTITION_FIXED, "xload_raw");
- 	dev_add_bb_dev("xload_raw", "xload");
--	devfs_add_partition("nand0", SZ_128K, SZ_256K, DEVFS_PARTITION_FIXED, "self_raw");
-+	devfs_add_partition("nand0", SZ_128K, SZ_512K, DEVFS_PARTITION_FIXED, "self_raw");
- 	dev_add_bb_dev("self_raw", "self0");
--	devfs_add_partition("nand0", SZ_128K + SZ_256K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw");
-+	devfs_add_partition("nand0", SZ_128K + SZ_512K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw");
- 	dev_add_bb_dev("env_raw", "env0");
- #endif
- 
-diff --git a/arch/arm/boards/pcm049/env/config b/arch/arm/boards/pcm049/env/config
-index efbe9ea..70e374f 100644
---- a/arch/arm/boards/pcm049/env/config
-+++ b/arch/arm/boards/pcm049/env/config
-@@ -40,7 +40,7 @@ autoboot_timeout=3
- 
- bootargs="console=ttyO2,115200"
- 
--nand_parts="128k(xload)ro,256k(barebox),128k(bareboxenv),2M(kernel),-(root)"
-+nand_parts="128k(xload)ro,512k(barebox),128k(bareboxenv),4M(kernel),-(root)"
- rootfs_mtdblock_nand=4
- 
- # set a fancy prompt (if support is compiled in)
-diff --git a/arch/arm/boards/phycard-a-l1/env/config b/arch/arm/boards/phycard-a-l1/env/config
-index e0f4dcc..5bc48d7 100644
---- a/arch/arm/boards/phycard-a-l1/env/config
-+++ b/arch/arm/boards/phycard-a-l1/env/config
-@@ -70,7 +70,7 @@ bootargs="$bootargs omapdss.def_disp=pd050vl1"
- #bootargs="$bootargs omapdss.def_disp=pd104slf"
- #bootargs="$bootargs omapdss.def_disp=pm070wl4"
- 
--nand_parts="512k(x-loader)ro,1920k(barebox),128k(bareboxenv),4M(kernel),-(root)"
-+nand_parts="128k(x-loader)ro,512k(barebox),128k(bareboxenv),4M(kernel),-(root)"
- nand_device=omap2-nand.0
- rootfs_mtdblock_nand=4
- 
-diff --git a/arch/arm/boards/phycard-a-l1/pca-a-l1.c b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
-index 907198d..a08518f 100644
---- a/arch/arm/boards/phycard-a-l1/pca-a-l1.c
-+++ b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
-@@ -422,13 +422,13 @@ device_initcall(pcaal1_init_devices);
- static int pcaal1_late_init(void)
- {
- #ifdef CONFIG_PARTITION
--	devfs_add_partition("nand0", 0x00000, 0x80000, DEVFS_PARTITION_FIXED, "x-loader");
-+	devfs_add_partition("nand0", 0x00000, SZ_128K, DEVFS_PARTITION_FIXED, "x-loader");
- 	dev_add_bb_dev("self_raw", "x_loader0");
- 
--	devfs_add_partition("nand0", 0x80000, 0x1e0000, DEVFS_PARTITION_FIXED, "self_raw");
-+	devfs_add_partition("nand0", SZ_128K, SZ_512K, DEVFS_PARTITION_FIXED, "self_raw");
- 	dev_add_bb_dev("self_raw", "self0");
- 
--	devfs_add_partition("nand0", 0x260000, 0x20000, DEVFS_PARTITION_FIXED, "env_raw");
-+	devfs_add_partition("nand0", SZ_128K + SZ_512K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw");
- 	dev_add_bb_dev("env_raw", "env0");
- #endif
- 	return 0;
-diff --git a/arch/arm/boards/phycard-a-xl2/env/config b/arch/arm/boards/phycard-a-xl2/env/config
-index 59e8eb3..44a4181 100644
---- a/arch/arm/boards/phycard-a-xl2/env/config
-+++ b/arch/arm/boards/phycard-a-xl2/env/config
-@@ -39,7 +39,7 @@ autoboot_timeout=3
- 
- bootargs="console=ttyO2,115200"
- 
--nand_parts="128k(xload)ro,256k(barebox),128k(bareboxenv),4M(kernel),-(root)"
-+nand_parts="128k(xload)ro,512k(barebox),128k(bareboxenv),4M(kernel),-(root)"
- rootfs_mtdblock_nand=4
- 
- # set a fancy prompt (if support is compiled in)
-diff --git a/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c b/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
-index 4fec0f0..91d45dc 100644
---- a/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
-+++ b/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
-@@ -136,10 +136,10 @@ static int pcaaxl2_devices_init(void)
- 	devfs_add_partition("nand0", 0x00000, SZ_128K,
- 			DEVFS_PARTITION_FIXED, "xload_raw");
- 	dev_add_bb_dev("xload_raw", "xload");
--	devfs_add_partition("nand0", SZ_128K, SZ_256K,
-+	devfs_add_partition("nand0", SZ_128K, SZ_512K,
- 			DEVFS_PARTITION_FIXED, "self_raw");
- 	dev_add_bb_dev("self_raw", "self0");
--	devfs_add_partition("nand0", SZ_128K + SZ_256K, SZ_128K,
-+	devfs_add_partition("nand0", SZ_128K + SZ_512K, SZ_128K,
- 			DEVFS_PARTITION_FIXED, "env_raw");
- 	dev_add_bb_dev("env_raw", "env0");
- #endif
+
+Applied this series.
+
+Thanks
+ Sascha
+
+> ---
+>  arch/openrisc/Makefile      |    4 ---
+>  arch/openrisc/lib/Makefile  |    1 +
+>  arch/openrisc/lib/ashrdi3.S |   59 +++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 60 insertions(+), 4 deletions(-)
+>  create mode 100644 arch/openrisc/lib/ashrdi3.S
+> 
+> diff --git a/arch/openrisc/Makefile b/arch/openrisc/Makefile
+> index 1f4b175..fd8bbbf 100644
+> --- a/arch/openrisc/Makefile
+> +++ b/arch/openrisc/Makefile
+> @@ -1,7 +1,5 @@
+>  CPPFLAGS += -D__OR1K__ -ffixed-r10 -mhard-mul -mhard-div
+>  
+> -LIBGCC          := $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
+> -
+>  board-$(CONFIG_GENERIC) := generic
+>  
+>  KALLSYMS += --symbol-prefix=_
+> @@ -20,6 +18,4 @@ common-y += $(BOARD)
+>  common-y += arch/openrisc/lib/
+>  common-y += arch/openrisc/cpu/
+>  
+> -common-y          += $(LIBGCC)
+> -
+>  lds-y += arch/openrisc/cpu/barebox.lds
+> diff --git a/arch/openrisc/lib/Makefile b/arch/openrisc/lib/Makefile
+> index aaf93cb..0b3cc50 100644
+> --- a/arch/openrisc/lib/Makefile
+> +++ b/arch/openrisc/lib/Makefile
+> @@ -4,3 +4,4 @@ obj-y                 += cpuinfo.o
+>  obj-y                 += muldi3.o
+>  obj-y                 += lshrdi3.o
+>  obj-y                 += ashldi3.o
+> +obj-y                 += ashrdi3.o
+> diff --git a/arch/openrisc/lib/ashrdi3.S b/arch/openrisc/lib/ashrdi3.S
+> new file mode 100644
+> index 0000000..c656d9f
+> --- /dev/null
+> +++ b/arch/openrisc/lib/ashrdi3.S
+> @@ -0,0 +1,59 @@
+> +/*
+> + * (C) Copyright 2012 - Franck JULLIEN <elec4fun@gmail.com>
+> + *
+> + * Extracted from gcc generated assembly.
+> + *
+> + * Extended precision shifts.
+> + *
+> + * R3/R4 (MSW, LSW) has 64 bit value
+> + * R5    has shift count
+> + * result in R11/R12
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> + * MA 02111-1307 USA
+> + */
+> +
+> +
+> +.globl __ashrdi3
+> +
+> +__ashrdi3:
+> +	l.sfeqi r5,0x0			/* if count = 0, go out                   */
+> +	l.bf out
+> +
+> +	l.addi r6,r0,0x20		/* r6 = 32                                */
+> +	l.sub r6,r6,r5			/* r6 = 32 - count                        */
+> +	l.sfgtsi r6,0x0			/* if count >= 32                         */
+> +	l.bnf more_than_32		/* branch to more_than_32                 */
+> +	l.nop 0x0
+> +
+> +
+> + less_than_32:
+> +	l.sll r6,r3,r6			/* r6 gets the bits moved from MSW to LSW */
+> +	l.srl r4,r4,r5			/* shift LSW                              */
+> +	l.sra r5,r3,r5			/* shift MSW to r5                        */
+> +	l.or r4,r6,r4			/* LSW gets bits shifted from MSW         */
+> +	l.ori r3,r5,0x0			/* r3 = MSW                               */
+> +
+> + out:
+> +	l.ori r11,r3,0x0
+> +	l.jr r9
+> +	l.ori r12,r4,0x0
+> +
+> + more_than_32:
+> +	l.srai r5,r3,0x1f		/* r5 = MSW sign extended                 */
+> +	l.sub r4,r0,r6			/* r4 = -r6, the number of bits above 32  */
+> +	l.sra r4,r3,r4			/* LSW gets bits shifted from MSB         */
+> +	l.j out				/* go out                                 */
+> +	l.ori r3,r5,0x0			/* r3 = MSW                               */
+> -- 
+> 1.7.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.7.0.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
