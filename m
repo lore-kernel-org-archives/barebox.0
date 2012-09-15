@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TCqpQ-0005ri-HW
- for barebox@lists.infradead.org; Sat, 15 Sep 2012 11:46:29 +0000
-Received: by lbbgf7 with SMTP id gf7so3259388lbb.36
- for <barebox@lists.infradead.org>; Sat, 15 Sep 2012 04:46:22 -0700 (PDT)
-From: Marcus Folkesson <marcus.folkesson@gmail.com>
-Date: Sat, 15 Sep 2012 13:45:06 +0200
-Message-Id: <1347709506-8669-1-git-send-email-marcus.folkesson@gmail.com>
+ id 1TCrRc-00061l-Rk
+ for barebox@lists.infradead.org; Sat, 15 Sep 2012 12:25:58 +0000
+Date: Sat, 15 Sep 2012 14:24:28 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120915122428.GV24458@pengutronix.de>
+References: <20120914073755.GD20834@game.jcrosoft.org>
+ <1347609426-21286-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1347609426-21286-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,227 +19,177 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: nand: extend NAND flash detection to new MLC chips
-To: barebox@lists.infradead.org
-Cc: Marcus Folkesson <marcus.folkesson@gmail.com>
+Subject: Re: [PATCH 1/3] net: introduce phylib
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Some of the newer MLC devices have a 6-byte ID sequence in which
-several field definitions differ from older chips in a manner that is
-not backward compatible.
+On Fri, Sep 14, 2012 at 09:57:04AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> 
+> Adapt phylib from linux
+> 
+> switch all the driver to it
+> 
+> This will allow to have
+>  - phy drivers
+>  - to only connect the phy at then opening of the device
+>  - if the phy is not ready fail on open
+> 
+> Same behaviour as in linux and will allow to share code and simplify porting.
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
 
-This method is already used in the Linux Kernel.
+Had to squash the following in to fix compile breakage on i.MX6 boards.
 
-Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
----
- drivers/mtd/nand/nand_base.c |   97 +++++++++++++++++++++++++++++++++--------
- drivers/mtd/nand/nand_ids.c  |   38 +++++++++++++++--
- 2 files changed, 112 insertions(+), 23 deletions(-)
+Overall it seems there is enough room for cleanup still. We used to have
+a struct mii_device which was a combination of a mii_bus and a
+phy_device. Now we have a dedicated phy_device, but struct mii_device
+still has a single phy and a single cdev. I think we should move the
+struct cdev to struct phy_device and make the struct phy_device member
+of struct mii_device a list of phy_devices. Anyway, this can be done
+later.
 
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index 37e57b3..fe9a6e7 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -1137,7 +1137,7 @@ static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
+For now I merged this series with the below changes.
+
+Sascha
+
+
+diff --git a/arch/arm/boards/freescale-mx6-arm2/board.c b/arch/arm/boards/freescale-mx6-arm2/board.c
+index e4a9a49..7b08106 100644
+--- a/arch/arm/boards/freescale-mx6-arm2/board.c
++++ b/arch/arm/boards/freescale-mx6-arm2/board.c
+@@ -31,6 +31,7 @@
+ #include <asm/mmu.h>
+ #include <mach/generic.h>
+ #include <sizes.h>
++#include <phy.h>
+ #include <mach/imx6.h>
+ #include <mach/devices-imx6.h>
+ #include <mach/iomux-mx6.h>
+@@ -112,7 +113,9 @@ static struct fec_platform_data fec_info = {
+ static int mx6_rgmii_rework(void)
  {
- 	struct nand_flash_dev *type = NULL;
- 	int i, dev_id, maf_idx;
--	int tmp_id, tmp_manf;
-+	int id_data[8];
- 	int ret;
+ 	struct mii_device *mdev;
++	struct phy_device *pdev;
+ 	u16 val;
++	int ret;
  
- 	/* Select the device */
-@@ -1166,13 +1166,13 @@ static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
- 
- 	/* Read manufacturer and device IDs */
- 
--	tmp_manf = chip->read_byte(mtd);
--	tmp_id = chip->read_byte(mtd);
-+	id_data[0] = chip->read_byte(mtd);
-+	id_data[1] = chip->read_byte(mtd);
- 
--	if (tmp_manf != *maf_id || tmp_id != dev_id) {
-+	if (id_data[0] != *maf_id || id_data[1] != dev_id) {
- 		printk(KERN_ERR "%s: second ID read did not match "
- 		       "%02x,%02x against %02x,%02x\n", __func__,
--		       *maf_id, dev_id, tmp_manf, tmp_id);
-+		       *maf_id, dev_id, id_data[0], id_data[1]);
- 		return ERR_PTR(-ENODEV);
+ 	mdev = mii_open("phy0");
+ 	if (!mdev) {
+@@ -120,26 +123,35 @@ static int mx6_rgmii_rework(void)
+ 		return -ENODEV;
  	}
  
-@@ -1196,29 +1196,75 @@ static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
- 		}
++	pdev = mdev->phydev;
++	if (!pdev) {
++		printf("phy0 has no phydev\n");
++		ret = -ENODEV;
++		goto out;
++	}
++
+ 	/* To enable AR8031 ouput a 125MHz clk from CLK_25M */
+-	mii_write(mdev, mdev->address, 0xd, 0x7);
+-	mii_write(mdev, mdev->address, 0xe, 0x8016);
+-	mii_write(mdev, mdev->address, 0xd, 0x4007);
++	phy_write(pdev, 0xd, 0x7);
++	phy_write(pdev, 0xe, 0x8016);
++	phy_write(pdev, 0xd, 0x4007);
+ 
+-	val = mii_read(mdev, mdev->address, 0xe);
++	val = phy_read(pdev, 0xe);
+ 	val &= 0xffe3;
+ 	val |= 0x18;
+-	mii_write(mdev, mdev->address, 0xe, val);
++	phy_write(pdev, 0xe, val);
+ 
+ 	/* introduce tx clock delay */
+-	mii_write(mdev, mdev->address, 0x1d, 0x5);
++	phy_write(pdev, 0x1d, 0x5);
+ 
+-	val = mii_read(mdev, mdev->address, 0x1e);
++	val = phy_read(pdev, 0x1e);
+ 	val |= 0x0100;
+-	mii_write(mdev, mdev->address, 0x1e, val);
++	phy_write(pdev, 0x1e, val);
+ 
++	ret = 0;
++out:
+ 	mii_close(mdev);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int arm2_devices_init(void)
+diff --git a/arch/arm/boards/freescale-mx6-sabrelite/board.c b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+index 1ac401e..aded4ec 100644
+--- a/arch/arm/boards/freescale-mx6-sabrelite/board.c
++++ b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+@@ -40,6 +40,7 @@
+ #include <mach/gpio.h>
+ #include <spi/spi.h>
+ #include <mach/spi.h>
++#include <phy.h>
+ 
+ #define SABRELITE_SD3_WP	IMX_GPIO_NR(7, 1)
+ #define SABRELITE_SD3_CD	IMX_GPIO_NR(7, 0)
+@@ -143,6 +144,8 @@ static struct fec_platform_data fec_info = {
+ int mx6_rgmii_rework(void)
+ {
+ 	struct mii_device *mdev;
++	struct phy_device *pdev;
++	int ret;
+ 
+ 	mdev = mii_open("phy0");
+ 	if (!mdev) {
+@@ -150,21 +153,30 @@ int mx6_rgmii_rework(void)
+ 		return -ENODEV;
  	}
  
-+	chip->cmdfunc(mtd, NAND_CMD_READID, 0x00, -1);
+-	mii_write(mdev, mdev->address, 0x09, 0x0f00);
++	pdev = mdev->phydev;
++	if (!pdev) {
++		printf("phy0 has no phydev\n");
++		ret = -ENODEV;
++		goto out;
++	}
 +
-+	/* Read entire ID string */
-+
-+	for (i = 0; i < 8; i++)
-+		id_data[i] = chip->read_byte(mtd);
-+
- 	if (!mtd->name)
- 		mtd->name = type->name;
++	phy_write(pdev, 0x09, 0x0f00);
  
- 	chip->chipsize = type->chipsize << 20;
+ 	/* do same as linux kernel */
+ 	/* min rx data delay */
+-	mii_write(mdev, mdev->address, 0x0b, 0x8105);
+-	mii_write(mdev, mdev->address, 0x0c, 0x0000);
++	phy_write(pdev, 0x0b, 0x8105);
++	phy_write(pdev, 0x0c, 0x0000);
  
--	/* Newer devices have all the information in additional id bytes */
- 	if (!type->pagesize) {
- 		int extid;
- 		/* The 3rd id byte holds MLC / multichip data */
--		chip->cellinfo = chip->read_byte(mtd);
-+		chip->cellinfo = id_data[2];
- 		/* The 4th id byte is the important one */
--		extid = chip->read_byte(mtd);
--		/* Calc pagesize */
--		mtd->writesize = 1024 << (extid & 0x3);
--		extid >>= 2;
--		/* Calc oobsize */
--		mtd->oobsize = (8 << (extid & 0x01)) * (mtd->writesize >> 9);
--		extid >>= 2;
--		/* Calc blocksize. Blocksize is multiples of 64KiB */
--		mtd->erasesize = (64 * 1024) << (extid & 0x03);
--		extid >>= 2;
--		/* Get buswidth information */
--		busw = (extid & 0x01) ? NAND_BUSWIDTH_16 : 0;
-+		extid = id_data[3];
-+
-+		/*
-+		 * Field definitions are in the following datasheets:
-+		 * Old style (4,5 byte ID): Samsung K9GAG08U0M (p.32)
-+		 * New style   (6 byte ID): Samsung K9GBG08U0M (p.40)
-+		 *
-+		 * Check for wraparound + Samsung ID + nonzero 6th byte
-+		 * to decide what to do.
-+		 */
-+		if (id_data[0] == id_data[6] && id_data[1] == id_data[7] &&
-+				id_data[0] == NAND_MFR_SAMSUNG &&
-+				(chip->cellinfo & NAND_CI_CELLTYPE_MSK) &&
-+				id_data[5] != 0x00) {
-+			/* Calc pagesize */
-+			mtd->writesize = 2048 << (extid & 0x03);
-+			extid >>= 2;
-+			/* Calc oobsize */
-+			switch (extid & 0x03) {
-+			case 1:
-+				mtd->oobsize = 128;
-+				break;
-+			case 2:
-+				mtd->oobsize = 218;
-+				break;
-+			case 3:
-+				mtd->oobsize = 400;
-+				break;
-+			default:
-+				mtd->oobsize = 436;
-+				break;
-+			}
-+			extid >>= 2;
-+			/* Calc blocksize */
-+			mtd->erasesize = (128 * 1024) <<
-+				(((extid >> 1) & 0x04) | (extid & 0x03));
-+			busw = 0;
-+		} else {
-+			/* Calc pagesize */
-+			mtd->writesize = 1024 << (extid & 0x03);
-+			extid >>= 2;
-+			/* Calc oobsize */
-+			mtd->oobsize = (8 << (extid & 0x01)) *
-+				(mtd->writesize >> 9);
-+			extid >>= 2;
-+			/* Calc blocksize. Blocksize is multiples of 64KiB */
-+			mtd->erasesize = (64 * 1024) << (extid & 0x03);
-+			extid >>= 2;
-+			/* Get buswidth information */
-+			busw = (extid & 0x01) ? NAND_BUSWIDTH_16 : 0;
-+		}
-+
+ 	/* max rx/tx clock delay, min rx/tx control delay */
+-	mii_write(mdev, mdev->address, 0x0b, 0x8104);
+-	mii_write(mdev, mdev->address, 0x0c, 0xf0f0);
+-	mii_write(mdev, mdev->address, 0x0b, 0x104);
++	phy_write(pdev, 0x0b, 0x8104);
++	phy_write(pdev, 0x0c, 0xf0f0);
++	phy_write(pdev, 0x0b, 0x104);
  
- 	} else {
- 		/*
-@@ -1228,6 +1274,19 @@ static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
- 		mtd->writesize = type->pagesize;
- 		mtd->oobsize = mtd->writesize / 32;
- 		busw = type->options & NAND_BUSWIDTH_16;
-+
-+		/*
-+		 * Check for Spansion/AMD ID + repeating 5th, 6th byte since
-+		 * some Spansion chips have erasesize that conflicts with size
-+		 * listed in nand_ids table
-+		 * Data sheet (5 byte ID): Spansion S30ML-P ORNAND (p.39)
-+		 */
-+		if (*maf_id == NAND_MFR_AMD && id_data[4] != 0x00 &&
-+				id_data[5] == 0x00 && id_data[6] == 0x00 &&
-+				id_data[7] == 0x00 && mtd->writesize == 512) {
-+			mtd->erasesize = 128 * 1024;
-+			mtd->erasesize <<= ((id_data[3] & 0x03) << 1);
-+		}
- 	}
++	ret = 0;
++out:
+ 	mii_close(mdev);
  
- 	/* Try to identify manufacturer */
-diff --git a/drivers/mtd/nand/nand_ids.c b/drivers/mtd/nand/nand_ids.c
-index cb53fc6..73d4cc2 100644
---- a/drivers/mtd/nand/nand_ids.c
-+++ b/drivers/mtd/nand/nand_ids.c
-@@ -107,17 +107,47 @@ struct nand_flash_dev nand_flash_ids[] = {
- 	{__NANDSTR("NAND 512MiB 3,3V 16-bit"),	0xCC, 0, 512, 0, LP_OPTIONS16},
+-	return 0;
++	return ret;
+ }
  
- 	/* 8 Gigabit */
--	{__NANDSTR("NAND 1GiB 1,8V 8-bit"),	0xA3, 0, 1024, 0, LP_OPTIONS},
--	{__NANDSTR("NAND 1GiB 3,3V 8-bit"),	0xD3, 0, 1024, 0, LP_OPTIONS},
-+	{__NANDSTR("NAND 1GiB 1,8V 8-bit"),		0xA3, 0, 1024, 0, LP_OPTIONS},
-+	{__NANDSTR("NAND 1GiB 3,3V 8-bit"),		0xD3, 0, 1024, 0, LP_OPTIONS},
- 	{__NANDSTR("NAND 1GiB 1,8V 16-bit"),	0xB3, 0, 1024, 0, LP_OPTIONS16},
- 	{__NANDSTR("NAND 1GiB 3,3V 16-bit"),	0xC3, 0, 1024, 0, LP_OPTIONS16},
- 
- 	/* 16 Gigabit */
--	{__NANDSTR("NAND 2GiB 1,8V 8-bit"),	0xA5, 0, 2048, 0, LP_OPTIONS},
--	{__NANDSTR("NAND 2GiB 3,3V 8-bit"),	0xD5, 0, 2048, 0, LP_OPTIONS},
-+	{__NANDSTR("NAND 2GiB 1,8V 8-bit"),		0xA5, 0, 2048, 0, LP_OPTIONS},
-+	{__NANDSTR("NAND 2GiB 3,3V 8-bit"),		0xD5, 0, 2048, 0, LP_OPTIONS},
- 	{__NANDSTR("NAND 2GiB 1,8V 16-bit"),	0xB5, 0, 2048, 0, LP_OPTIONS16},
- 	{__NANDSTR("NAND 2GiB 3,3V 16-bit"),	0xC5, 0, 2048, 0, LP_OPTIONS16},
- 
-+	/* 32 Gigabit */
-+	{__NANDSTR("NAND 4GiB 1,8V 8-bit"),		0xA7, 0, 4096, 0, LP_OPTIONS},
-+	{__NANDSTR("NAND 4GiB 3,3V 8-bit"),		0xD7, 0, 4096, 0, LP_OPTIONS},
-+	{__NANDSTR("NAND 4GiB 1,8V 16-bit"),	0xB7, 0, 4096, 0, LP_OPTIONS16},
-+	{__NANDSTR("NAND 4GiB 3,3V 16-bit"),	0xC7, 0, 4096, 0, LP_OPTIONS16},
-+
-+	/* 64 Gigabit */
-+	{__NANDSTR("NAND 8GiB 1,8V 8-bit"),		0xAE, 0, 8192, 0, LP_OPTIONS},
-+	{__NANDSTR("NAND 8GiB 3,3V 8-bit"),		0xDE, 0, 8192, 0, LP_OPTIONS},
-+	{__NANDSTR("NAND 8GiB 1,8V 16-bit"),	0xBE, 0, 8192, 0, LP_OPTIONS16},
-+	{__NANDSTR("NAND 8GiB 3,3V 16-bit"),	0xCE, 0, 8192, 0, LP_OPTIONS16},
-+
-+	/* 128 Gigabit */
-+	{__NANDSTR("NAND 16GiB 1,8V 8-bit"),	0x1A, 0, 16384, 0, LP_OPTIONS},
-+	{__NANDSTR("NAND 16GiB 3,3V 8-bit"),	0x3A, 0, 16384, 0, LP_OPTIONS},
-+	{__NANDSTR("NAND 16GiB 1,8V 16-bit"),	0x2A, 0, 16384, 0, LP_OPTIONS16},
-+	{__NANDSTR("NAND 16GiB 3,3V 16-bit"),	0x4A, 0, 16384, 0, LP_OPTIONS16},
-+
-+	/* 256 Gigabit */
-+	{__NANDSTR("NAND 32GiB 1,8V 8-bit"),	0x1C, 0, 32768, 0, LP_OPTIONS},
-+	{__NANDSTR("NAND 32GiB 3,3V 8-bit"),	0x3C, 0, 32768, 0, LP_OPTIONS},
-+	{__NANDSTR("NAND 32GiB 1,8V 16-bit"),	0x2C, 0, 32768, 0, LP_OPTIONS16},
-+	{__NANDSTR("NAND 32GiB 3,3V 16-bit"),	0x4C, 0, 32768, 0, LP_OPTIONS16},
-+
-+	/* 512 Gigabit */
-+	{__NANDSTR("NAND 64GiB 1,8V 8-bit"),	0x1E, 0, 65536, 0, LP_OPTIONS},
-+	{__NANDSTR("NAND 64GiB 3,3V 8-bit"),	0x3E, 0, 65536, 0, LP_OPTIONS},
-+	{__NANDSTR("NAND 64GiB 1,8V 16-bit"),	0x2E, 0, 65536, 0, LP_OPTIONS16},
-+	{__NANDSTR("NAND 64GiB 3,3V 16-bit"),	0x4E, 0, 65536, 0, LP_OPTIONS16},
-+
- 	/*
- 	 * Renesas AND 1 Gigabit. Those chips do not support extended id and
- 	 * have a strange page/block layout !  The chosen minimum erasesize is
--- 
-1.7.5.4
+ static int sabrelite_ksz9021rn_setup(void)
 
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
