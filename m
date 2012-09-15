@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TCrZF-00069D-OF
- for barebox@lists.infradead.org; Sat, 15 Sep 2012 12:33:50 +0000
-Date: Sat, 15 Sep 2012 14:33:48 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120915123348.GY6180@pengutronix.de>
-References: <1347608713-10133-1-git-send-email-s.hauer@pengutronix.de>
- <1347626180.3037.18.camel@lws-weitzel>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1347626180.3037.18.camel@lws-weitzel>
+ id 1TCssI-0006r9-1l
+ for barebox@lists.infradead.org; Sat, 15 Sep 2012 13:57:34 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Sat, 15 Sep 2012 15:56:25 +0200
+Message-Id: <1347717385-24815-2-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1347717385-24815-1-git-send-email-s.trumtrar@pengutronix.de>
+References: <1347717385-24815-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,41 +16,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC, PATCH] barebox-update command support
-To: Jan Weitzel <J.Weitzel@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] ARM i.MX6: fix usb_ehci warnings for sabrelite
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-On Fri, Sep 14, 2012 at 02:36:20PM +0200, Jan Weitzel wrote:
-> Am Freitag, den 14.09.2012, 09:45 +0200 schrieb Sascha Hauer:
-> > Hi All,
-> > 
-> > The following adds barebox-update command support. This command is
-> > supposed to provide a dedicated command for updating barebox.
-> On OMAP we have MLO and barebox. Should we use the command only for MLO?
-> The barebox didn't need special handling. Whats about kernel image and
-> rootfs?
+This fixes the following warnings:
 
-For Omap I am not sure. Making it bootable indeed requires two images,
-so of these should be handled here. I don't know though how this could
-be handled in a generic command.
+arch/arm/boards/freescale-mx6-sabrelite/board.c: In function 'sabrelite_ehci_init':
+arch/arm/boards/freescale-mx6-sabrelite/board.c:265:2: warning: implicit declaration of function 'imx6_usb_phy1_disable_oc' [-Wimplicit-function-declaration]
+arch/arm/boards/freescale-mx6-sabrelite/board.c:266:2: warning: implicit declaration of function 'imx6_usb_phy1_enable' [-Wimplicit-function-declaration]
 
-Kernel and rootfs is another story, this shouldn't be handled here.
-This command is thought to be for the potentially dangerous barebox
-update where you only have a single try. Also, flashing kernel or rootfs
-is not really SoC or board specific.
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Sascha
+---
+ arch/arm/boards/freescale-mx6-sabrelite/board.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-
+diff --git a/arch/arm/boards/freescale-mx6-sabrelite/board.c b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+index 1ac401e..c5bcf8b 100644
+--- a/arch/arm/boards/freescale-mx6-sabrelite/board.c
++++ b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+@@ -40,6 +40,7 @@
+ #include <mach/gpio.h>
+ #include <spi/spi.h>
+ #include <mach/spi.h>
++#include <mach/usb.h>
+ 
+ #define SABRELITE_SD3_WP	IMX_GPIO_NR(7, 1)
+ #define SABRELITE_SD3_CD	IMX_GPIO_NR(7, 0)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
