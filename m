@@ -1,16 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([92.198.50.35])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TDAfy-0006S0-Lc
- for barebox@lists.infradead.org; Sun, 16 Sep 2012 08:58:03 +0000
-Date: Sun, 16 Sep 2012 10:58:01 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120916085801.GG6180@pengutronix.de>
-References: <1347720962-32574-1-git-send-email-s.hauer@pengutronix.de>
- <87k3vuuzgh.fsf@free.fr>
+Received: from 7.mo5.mail-out.ovh.net ([178.32.124.100]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TDAj6-0006WR-CJ
+ for barebox@lists.infradead.org; Sun, 16 Sep 2012 09:01:19 +0000
+Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 8FC0FFF9B30
+ for <barebox@lists.infradead.org>; Sun, 16 Sep 2012 11:06:55 +0200 (CEST)
+Date: Sun, 16 Sep 2012 10:58:39 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120916085839.GF25990@game.jcrosoft.org>
+References: <CAJfOKBxhsR6yQ0RSUgxYUayepN46g12fdUmerfS+4rnyvtRD3g@mail.gmail.com>
+ <20120916073419.GD25990@game.jcrosoft.org>
+ <20120916074457.GB6180@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <87k3vuuzgh.fsf@free.fr>
+In-Reply-To: <20120916074457.GB6180@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,47 +28,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd mtdraw: Fix partial page read
-To: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: barebox@lists.infradead.org
+Subject: Re: Patch a file in the next branch
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Sun, Sep 16, 2012 at 10:46:54AM +0200, Robert Jarzmik wrote:
-> Sascha Hauer <s.hauer@pengutronix.de> writes:
+On 09:44 Sun 16 Sep     , Sascha Hauer wrote:
+> On Sun, Sep 16, 2012 at 09:34:19AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 09:19 Sun 16 Sep     , Franck Jullien wrote:
+> > > Hi,
+> > > 
+> > > In order to fix fat detection, I need to patch ff.c and filetype.c.
+> > > However, ff.c is already patched in next (I need to modify the version
+> > > already in next).
+> > > Should I generate my patches against next or master ?
+> > redo the patch as it more a v2 that an increment one
 > 
-> > When reading parts of a page we have to limit the maximum bytes copied
-> > the the remaining bytes of a page.
-> >
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > Cc: Robert Jarzmik <robert.jarzmik@free.fr>
-> > ---
-> >  drivers/mtd/mtdraw.c |    1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
-> > index d28ae07..29f6a8c 100644
-> > --- a/drivers/mtd/mtdraw.c
-> > +++ b/drivers/mtd/mtdraw.c
-> > @@ -129,6 +129,7 @@ static ssize_t mtdraw_read(struct cdev *cdev, void *buf, size_t count,
-> >  
-> >  	while (ret > 0 && count > 0) {
-> >  		toread = min_t(int, count, mtd->writesize + mtd->oobsize);
-> > +		toread = min_t(int, toread, mtd->writesize + mtd->oobsize -
-> >  		skip);
-> Hi Sasha,
-> 
-> Why the 2 lines of min_t() instead of a single:
-> toread = min_t(int, count, mtd->writesize + mtd->oobsize - skip)
+> Probing a FAT with MBR is a new feature, being able to automatically
+> detect it is a new feature aswell, so I see no reason to merge both
+> patches.
+yes but without it the mount will ne to force the type
+and As discuss with Franch the ff.c should use the filetype so make in one
+patch make more sense
 
-Yeah, this doubles the efficiency ;) Will do that instead.
-
-Thanks
- Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
