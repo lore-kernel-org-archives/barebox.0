@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TD9bu-0004PW-Nu
- for barebox@lists.infradead.org; Sun, 16 Sep 2012 07:49:47 +0000
-Date: Sun, 16 Sep 2012 09:49:45 +0200
+ id 1TD9x7-0005DF-Bh
+ for barebox@lists.infradead.org; Sun, 16 Sep 2012 08:11:42 +0000
+Date: Sun, 16 Sep 2012 10:11:39 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120916074945.GC6180@pengutronix.de>
-References: <1347717385-24815-1-git-send-email-s.trumtrar@pengutronix.de>
+Message-ID: <20120916081139.GZ24458@pengutronix.de>
+References: <20120914073755.GD20834@game.jcrosoft.org>
+ <1347609426-21286-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1347717385-24815-1-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1347609426-21286-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM i.MX6: add usb function prototypes
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH 1/3] net: introduce phylib
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Sep 15, 2012 at 03:56:24PM +0200, Steffen Trumtrar wrote:
-> Add missing prototypes to mach/usb.h
+On Fri, Sep 14, 2012 at 09:57:04AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> Adapt phylib from linux
+> 
+> switch all the driver to it
+> 
+> This will allow to have
+>  - phy drivers
+>  - to only connect the phy at then opening of the device
+>  - if the phy is not ready fail on open
+> 
+> Same behaviour as in linux and will allow to share code and simplify porting.
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
 
-Applied, thanks
+[...]
+
+ +
+> +/* Automatically gets and returns the PHY device */
+> +int phy_device_connect(struct mii_device *bus, int addr,
+> +		void (*adjust_link) (struct mii_device *miidev))
+
+The prototype of adjust_link seems wrong. A mii_device is a mii bus with
+potentially multiple phys. adjust_link should work on the phy_device. With
+the above, when a mii_device has multiple phys, a network driver has no
+way to figure out which phy has an updated link.
+
+This probably bites Renaud who has a single mii bus for multiple network
+devices.
 
 Sascha
-
-> ---
->  arch/arm/mach-imx/include/mach/usb.h |    3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/arch/arm/mach-imx/include/mach/usb.h b/arch/arm/mach-imx/include/mach/usb.h
-> index 5d6670d..d953bf0 100644
-> --- a/arch/arm/mach-imx/include/mach/usb.h
-> +++ b/arch/arm/mach-imx/include/mach/usb.h
-> @@ -11,4 +11,7 @@
->  #define MX35_H1_USBTE_BIT	(1 << 4)
->  #define MXC_EHCI_INTERFACE_SINGLE_UNI	(2 << 0)
->  
-> +
-> +int imx6_usb_phy1_disable_oc(void);
-> +int imx6_usb_phy1_enable(void);
->  #endif /* __MACH_USB_H_*/
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
