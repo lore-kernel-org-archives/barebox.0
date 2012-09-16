@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo5.mail-out.ovh.net ([87.98.173.103]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TDAoe-0006di-RR
- for barebox@lists.infradead.org; Sun, 16 Sep 2012 09:07:01 +0000
-Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 85FFEFF999D
- for <barebox@lists.infradead.org>; Sun, 16 Sep 2012 11:12:41 +0200 (CEST)
-Date: Sun, 16 Sep 2012 11:04:25 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120916090425.GH25990@game.jcrosoft.org>
-References: <1347717626-19970-1-git-send-email-plagnioj@jcrosoft.com>
- <20120916082836.GE6180@pengutronix.de>
+Received: from mail-lpp01m010-f49.google.com ([209.85.215.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TDArq-0006jN-CU
+ for barebox@lists.infradead.org; Sun, 16 Sep 2012 09:10:19 +0000
+Received: by lagu2 with SMTP id u2so3507322lag.36
+ for <barebox@lists.infradead.org>; Sun, 16 Sep 2012 02:10:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120916082836.GE6180@pengutronix.de>
+In-Reply-To: <20120916081744.GD6180@pengutronix.de>
+References: <1347709506-8669-1-git-send-email-marcus.folkesson@gmail.com>
+ <20120916081744.GD6180@pengutronix.de>
+Date: Sun, 16 Sep 2012 11:10:15 +0200
+Message-ID: <CAM8FrKK_KFknE5_kCFB9KgFvNFwNO39Qtuj85i9-zXwaLn-fqA@mail.gmail.com>
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,30 +20,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] defconfig: substitute '-' to '_' in defconfig name
- so MAKEALL can work
+Subject: Re: [PATCH] mtd: nand: extend NAND flash detection to new MLC chips
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 10:28 Sun 16 Sep     , Sascha Hauer wrote:
-> You should rather fix the MAKEALL script.
-can not
+Hi Sascha,
 
-the scripts take a config file like this
+2012/9/16 Sascha Hauer <s.hauer@pengutronix.de>
+>
+> Hi Marcus,
+>
+> On Sat, Sep 15, 2012 at 01:45:06PM +0200, Marcus Folkesson wrote:
+> > Some of the newer MLC devices have a 6-byte ID sequence in which
+> > several field definitions differ from older chips in a manner that is
+> > not backward compatible.
+> >
+> > This method is already used in the Linux Kernel.
+> >
+> > Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+>
+> Applied, thanks. I dropped the patch adding one of the new nand ids
+> below from next in favour for this more complete list of new nand ids.
 
-The cross-compiler can be specify via
-CROSS_COMPILE               default
-CROSS_COMPILE_<arch>        arch default
-CROSS_COMPILE_<target>      deconfig specifc
+You're welcome.
 
-so bash does not accept var xx-xx only xx_xx
+> BTW do you have one of those chips > 4GiB? I bet barebox does not work out
+> of the box with these.
+>
 
-Best Regards,
-J.
+No, we are using a 4GiB chip. We are having a few problems to get it
+work properly, but this patch solved at least one of the problems...
+:-)
+
+Med v=E4nliga h=E4lsningar / Best regards
+Marcus Folkesson
 
 _______________________________________________
 barebox mailing list
