@@ -1,15 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([92.198.50.35])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TDADW-0005hl-Va
- for barebox@lists.infradead.org; Sun, 16 Sep 2012 08:28:40 +0000
-Date: Sun, 16 Sep 2012 10:28:36 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120916082836.GE6180@pengutronix.de>
-References: <1347717626-19970-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from 9.mo5.mail-out.ovh.net ([178.32.96.204]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TDAFc-0005uV-OV
+ for barebox@lists.infradead.org; Sun, 16 Sep 2012 08:30:49 +0000
+Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 4CD5AFF9AC7
+ for <barebox@lists.infradead.org>; Sun, 16 Sep 2012 10:36:29 +0200 (CEST)
+Date: Sun, 16 Sep 2012 10:28:13 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120916082813.GE25990@game.jcrosoft.org>
+References: <20120914073755.GD20834@game.jcrosoft.org>
+ <1347609426-21286-1-git-send-email-plagnioj@jcrosoft.com>
+ <20120916081139.GZ24458@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1347717626-19970-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20120916081139.GZ24458@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,65 +28,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] defconfig: substitute '-' to '_' in defconfig name
- so MAKEALL can work
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 1/3] net: introduce phylib
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-You should rather fix the MAKEALL script.
+On 10:11 Sun 16 Sep     , Sascha Hauer wrote:
+> On Fri, Sep 14, 2012 at 09:57:04AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > 
+> > Adapt phylib from linux
+> > 
+> > switch all the driver to it
+> > 
+> > This will allow to have
+> >  - phy drivers
+> >  - to only connect the phy at then opening of the device
+> >  - if the phy is not ready fail on open
+> > 
+> > Same behaviour as in linux and will allow to share code and simplify porting.
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> 
+> [...]
+> 
+>  +
+> > +/* Automatically gets and returns the PHY device */
+> > +int phy_device_connect(struct mii_device *bus, int addr,
+> > +		void (*adjust_link) (struct mii_device *miidev))
+> 
+> The prototype of adjust_link seems wrong. A mii_device is a mii bus with
+> potentially multiple phys. adjust_link should work on the phy_device. With
+> the above, when a mii_device has multiple phys, a network driver has no
+> way to figure out which phy has an updated link.
+> 
+> This probably bites Renaud who has a single mii bus for multiple network
+> devices.
+not really as the phydev have a bus field so will be the same
 
-Sascha
+but I guess we wil have to do like in linux attacehd the phydev to the
+eth_device
 
-On Sat, Sep 15, 2012 at 04:00:26PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  .../{freescale-mx6-arm2_defconfig => freescale_mx6_arm2_defconfig}     |    0
->  ...scale-mx6-sabrelite_defconfig => freescale_mx6_sabrelite_defconfig} |    0
->  .../configs/{imx233-olinuxino_defconfig => imx233_olinuxino_defconfig} |    0
->  arch/mips/configs/{dlink-dir-320_defconfig => dlink_dir_320_defconfig} |    0
->  arch/mips/configs/{qemu-malta_defconfig => qemu_malta_defconfig}       |    0
->  5 files changed, 0 insertions(+), 0 deletions(-)
->  rename arch/arm/configs/{freescale-mx6-arm2_defconfig => freescale_mx6_arm2_defconfig} (100%)
->  rename arch/arm/configs/{freescale-mx6-sabrelite_defconfig => freescale_mx6_sabrelite_defconfig} (100%)
->  rename arch/arm/configs/{imx233-olinuxino_defconfig => imx233_olinuxino_defconfig} (100%)
->  rename arch/mips/configs/{dlink-dir-320_defconfig => dlink_dir_320_defconfig} (100%)
->  rename arch/mips/configs/{qemu-malta_defconfig => qemu_malta_defconfig} (100%)
-> 
-> diff --git a/arch/arm/configs/freescale-mx6-arm2_defconfig b/arch/arm/configs/freescale_mx6_arm2_defconfig
-> similarity index 100%
-> rename from arch/arm/configs/freescale-mx6-arm2_defconfig
-> rename to arch/arm/configs/freescale_mx6_arm2_defconfig
-> diff --git a/arch/arm/configs/freescale-mx6-sabrelite_defconfig b/arch/arm/configs/freescale_mx6_sabrelite_defconfig
-> similarity index 100%
-> rename from arch/arm/configs/freescale-mx6-sabrelite_defconfig
-> rename to arch/arm/configs/freescale_mx6_sabrelite_defconfig
-> diff --git a/arch/arm/configs/imx233-olinuxino_defconfig b/arch/arm/configs/imx233_olinuxino_defconfig
-> similarity index 100%
-> rename from arch/arm/configs/imx233-olinuxino_defconfig
-> rename to arch/arm/configs/imx233_olinuxino_defconfig
-> diff --git a/arch/mips/configs/dlink-dir-320_defconfig b/arch/mips/configs/dlink_dir_320_defconfig
-> similarity index 100%
-> rename from arch/mips/configs/dlink-dir-320_defconfig
-> rename to arch/mips/configs/dlink_dir_320_defconfig
-> diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu_malta_defconfig
-> similarity index 100%
-> rename from arch/mips/configs/qemu-malta_defconfig
-> rename to arch/mips/configs/qemu_malta_defconfig
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regars,
+J.
 
 _______________________________________________
 barebox mailing list
