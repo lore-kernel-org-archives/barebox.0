@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-f177.google.com ([74.125.82.177])
+Received: from mail-wi0-f177.google.com ([209.85.212.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TDLX4-0005wj-Fk
+ id 1TDLX4-0005wk-Mo
  for barebox@lists.infradead.org; Sun, 16 Sep 2012 20:33:35 +0000
-Received: by weyr3 with SMTP id r3so3647734wey.36
- for <barebox@lists.infradead.org>; Sun, 16 Sep 2012 13:33:31 -0700 (PDT)
+Received: by wibhn17 with SMTP id hn17so1219752wib.0
+ for <barebox@lists.infradead.org>; Sun, 16 Sep 2012 13:33:32 -0700 (PDT)
 From: Franck Jullien <franck.jullien@gmail.com>
-Date: Sun, 16 Sep 2012 22:33:32 +0200
-Message-Id: <1347827613-25769-1-git-send-email-franck.jullien@gmail.com>
+Date: Sun, 16 Sep 2012 22:33:33 +0200
+Message-Id: <1347827613-25769-2-git-send-email-franck.jullien@gmail.com>
+In-Reply-To: <1347827613-25769-1-git-send-email-franck.jullien@gmail.com>
+References: <1347827613-25769-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,139 +23,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] [v2] filetype: Improve FAT detection
+Subject: [PATCH 2/2] fs/fat: Handle MBR on the first sector
 To: barebox@lists.infradead.org
 
-We may have some disk with MBR as a first sector. In this case, the
-current FAT check returns an error. However, the FAT sector exist and
-the MBR can tell us where it is.
-
-This patch add to file_name_detect_type function the ability to find
-the FAT boot sector on the first sector of the first partition in case
-it is not on sector 0.
-
-It also introduce is_fat_boot_sector to check if a buffer is a FAT boot
+Use the new filetype.c file detection function to support disk with MBR on the first
 sector.
 
 Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
 ---
- common/filetype.c  |   58 +++++++++++++++++++++++++++++++++++++++++++---------
- include/filetype.h |    1 +
- 2 files changed, 49 insertions(+), 10 deletions(-)
+ fs/fat/ff.c |   27 ++++++++++++---------------
+ 1 files changed, 12 insertions(+), 15 deletions(-)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index e736d43..04ed7fe 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -26,6 +26,8 @@
- #include <fcntl.h>
- #include <fs.h>
+diff --git a/fs/fat/ff.c b/fs/fat/ff.c
+index 66db1d6..622845a 100644
+--- a/fs/fat/ff.c
++++ b/fs/fat/ff.c
+@@ -93,6 +93,7 @@
+ #include <errno.h>
  #include <malloc.h>
-+#include <fat.h>
-+#include <errno.h>
+ #include <linux/ctype.h>
++#include <filetype.h>
+ #include "ff.h"			/* FatFs configurations and declarations */
+ #include "diskio.h"		/* Declarations of low level disk I/O functions */
  
- static const char *filetype_str[] = {
- 	[filetype_unknown] = "unknown",
-@@ -52,20 +54,35 @@ const char *file_type_to_string(enum filetype f)
- 	return NULL;
- }
- 
--static int is_fat(u8 *buf)
-+#define MBR_StartSector		8	/* MBR: Offset of Starting Sector in Partition Table Entry */
-+#define BS_55AA			510	/* Boot sector signature (2) */
-+#define MBR_Table		446	/* MBR: Partition table offset (2) */
-+#define BS_FilSysType32		82	/* File system type (1) */
-+#define BS_FilSysType		54	/* File system type (1) */
-+
-+int is_fat_boot_sector(unsigned char *sector, unsigned long *bootsec)
+@@ -1533,7 +1534,8 @@ int follow_path (	/* 0(0): successful, !=0: error code */
+  */
+ static int check_fs (	/* 0:The FAT BR, 1:Valid BR but not an FAT, 2:Not a BR, 3:Disk error */
+ 	FATFS *fs,	/* File system object */
+-	DWORD sect	/* Sector# (lba) to check if it is an FAT boot record or not */
++	DWORD sect,	/* Sector# (lba) to check if it is an FAT boot record or not */
++	DWORD *bootsec
+ )
  {
--	if (get_unaligned_le16(&buf[510]) != 0xAA55)
-+	if(bootsec)
-+		*bootsec = 0;
-+
-+	/* Check record signature (always placed at offset 510 even if the sector size is>512) */
-+	if (get_unaligned_le16(&sector[BS_55AA]) != 0xAA55)
-+		return -ENODEV;
-+
-+	/* Check "FAT" string */
-+	if ((get_unaligned_le32(&sector[BS_FilSysType]) & 0xFFFFFF) == 0x544146)
- 		return 0;
+ 	int ret;
+@@ -1542,18 +1544,8 @@ static int check_fs (	/* 0:The FAT BR, 1:Valid BR but not an FAT, 2:Not a BR, 3:
+ 	ret = disk_read(fs, fs->win, sect, 1);
+ 	if (ret)
+ 		return ret;
+-	/* Check record signature (always placed at offset 510 even if the sector size is>512) */
+-	if (LD_WORD(&fs->win[BS_55AA]) != 0xAA55)
+-		return -ENODEV;
  
--	/* FAT */
--	if ((get_unaligned_le32(&buf[54]) & 0xFFFFFF) == 0x544146)
--		return 1;
-+	if ((get_unaligned_le32(&sector[BS_FilSysType32]) & 0xFFFFFF) == 0x544146)
-+		return 0;
- 
--	/* FAT32 */
--	if ((get_unaligned_le32(&buf[82]) & 0xFFFFFF) == 0x544146)
--		return 1;
-+	if(bootsec)
-+		/* This must be an MBR, so return the starting sector of the
-+		 * first partition so we could check if there is a FAT boot
-+		 * sector there */
-+		*bootsec = get_unaligned_le16(&sector[MBR_Table + MBR_StartSector]);
- 
--	return 0;
-+	return -ENODEV;
+-	/* Check "FAT" string */
+-	if ((LD_DWORD(&fs->win[BS_FilSysType]) & 0xFFFFFF) == 0x544146)
+-		return 0;
+-
+-	if ((LD_DWORD(&fs->win[BS_FilSysType32]) & 0xFFFFFF) == 0x544146)
+-		return 0;
+-
+-	return -ENODEV;
++	return is_fat_boot_sector(fs->win, bootsec);
  }
  
- enum filetype file_detect_type(void *_buf)
-@@ -99,7 +116,8 @@ enum filetype file_detect_type(void *_buf)
- 		return filetype_aimage;
- 	if (strncmp(buf8 + 0x10, "barebox", 7) == 0)
- 		return filetype_mips_barebox;
--	if (is_fat(buf8))
-+
-+	if (!is_fat_boot_sector(buf8, NULL))
- 		return filetype_fat;
+ /*
+@@ -1565,6 +1557,7 @@ static int chk_mounted (	/* 0(0): successful, !=0: any error occurred */
+ )
+ {
+ 	BYTE fmt, b;
++	DWORD first_boot_sect;
+ 	DWORD bsect, fasize, tsect, sysect, nclst, szbfat;
+ 	WORD nrsv;
  
- 	return filetype_unknown;
-@@ -110,6 +128,7 @@ enum filetype file_name_detect_type(const char *filename)
- 	int fd, ret;
- 	void *buf;
- 	enum filetype type = filetype_unknown;
-+	unsigned long bootsec;
- 
- 	fd = open(filename, O_RDONLY);
- 	if (fd < 0)
-@@ -123,6 +142,25 @@ enum filetype file_name_detect_type(const char *filename)
- 
- 	type = file_detect_type(buf);
- 
-+	/* Let's give FAT another chance */
-+	if (type == filetype_unknown) {
-+		ret = is_fat_boot_sector((u8 *)buf, &bootsec);
-+		if (ret && bootsec != 0) {
-+			/* The first sector is an MBR, now check for
-+			 * FAT in the first partition */
-+			lseek(fd, (bootsec) * 512, SEEK_SET);
-+			ret = read(fd, buf, 512);
-+			if (ret < 0) {
-+				type = filetype_unknown;
-+				goto err_out;
-+			}
-+			ret = is_fat_boot_sector((u8 *)buf, NULL);
-+			if (!ret)
-+				type = filetype_fat;
-+		} else
-+			type = filetype_fat;
+@@ -1579,9 +1572,13 @@ static int chk_mounted (	/* 0(0): successful, !=0: any error occurred */
+ 		return -EIO;
+ #endif
+ 	/* Search FAT partition on the drive. Supports only generic partitionings, FDISK and SFD. */
+-	fmt = check_fs(fs, bsect = 0);	/* Check sector 0 if it is a VBR */
+-	if (fmt)
+-		return fmt; /* No FAT volume is found */
++	fmt = check_fs(fs, bsect = 0, &first_boot_sect);	/* Check sector 0 if it is a VBR */
++	if (fmt && first_boot_sect != 0) {
++		/* Sector 0 is an MBR, now check for FAT in the first partition */
++		fmt = check_fs(fs, bsect = first_boot_sect, NULL);
++		if(fmt)
++			return fmt; /* No FAT volume is found */
 +	}
-+
- err_out:
- 	close(fd);
- 	free(buf);
-diff --git a/include/filetype.h b/include/filetype.h
-index 179ec0f..c60f654 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -24,5 +24,6 @@ enum filetype {
- const char *file_type_to_string(enum filetype f);
- enum filetype file_detect_type(void *_buf);
- enum filetype file_name_detect_type(const char *filename);
-+int is_fat_boot_sector(unsigned char *sector, unsigned long *bootsec);
  
- #endif /* __FILE_TYPE_H */
+ 	/* Following code initializes the file system object */
+ 
 -- 
 1.7.1
 
