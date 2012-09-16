@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TDA30-0005L5-GC
- for barebox@lists.infradead.org; Sun, 16 Sep 2012 08:17:47 +0000
-Date: Sun, 16 Sep 2012 10:17:44 +0200
+ id 1TDADW-0005hl-Va
+ for barebox@lists.infradead.org; Sun, 16 Sep 2012 08:28:40 +0000
+Date: Sun, 16 Sep 2012 10:28:36 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120916081744.GD6180@pengutronix.de>
-References: <1347709506-8669-1-git-send-email-marcus.folkesson@gmail.com>
+Message-ID: <20120916082836.GE6180@pengutronix.de>
+References: <1347717626-19970-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1347709506-8669-1-git-send-email-marcus.folkesson@gmail.com>
+In-Reply-To: <1347717626-19970-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,82 +22,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: nand: extend NAND flash detection to new MLC chips
-To: Marcus Folkesson <marcus.folkesson@gmail.com>
+Subject: Re: [PATCH 1/1] defconfig: substitute '-' to '_' in defconfig name
+ so MAKEALL can work
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Hi Marcus,
-
-On Sat, Sep 15, 2012 at 01:45:06PM +0200, Marcus Folkesson wrote:
-> Some of the newer MLC devices have a 6-byte ID sequence in which
-> several field definitions differ from older chips in a manner that is
-> not backward compatible.
-> 
-> This method is already used in the Linux Kernel.
-> 
-> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-
-Applied, thanks. I dropped the patch adding one of the new nand ids
-below from next in favour for this more complete list of new nand ids.
-
-> diff --git a/drivers/mtd/nand/nand_ids.c b/drivers/mtd/nand/nand_ids.c
-> index cb53fc6..73d4cc2 100644
-> --- a/drivers/mtd/nand/nand_ids.c
-> +++ b/drivers/mtd/nand/nand_ids.c
-> @@ -107,17 +107,47 @@ struct nand_flash_dev nand_flash_ids[] = {
->  	{__NANDSTR("NAND 512MiB 3,3V 16-bit"),	0xCC, 0, 512, 0, LP_OPTIONS16},
->  
->  	/* 8 Gigabit */
-> -	{__NANDSTR("NAND 1GiB 1,8V 8-bit"),	0xA3, 0, 1024, 0, LP_OPTIONS},
-> -	{__NANDSTR("NAND 1GiB 3,3V 8-bit"),	0xD3, 0, 1024, 0, LP_OPTIONS},
-> +	{__NANDSTR("NAND 1GiB 1,8V 8-bit"),		0xA3, 0, 1024, 0, LP_OPTIONS},
-> +	{__NANDSTR("NAND 1GiB 3,3V 8-bit"),		0xD3, 0, 1024, 0, LP_OPTIONS},
->  	{__NANDSTR("NAND 1GiB 1,8V 16-bit"),	0xB3, 0, 1024, 0, LP_OPTIONS16},
->  	{__NANDSTR("NAND 1GiB 3,3V 16-bit"),	0xC3, 0, 1024, 0, LP_OPTIONS16},
->  
->  	/* 16 Gigabit */
-> -	{__NANDSTR("NAND 2GiB 1,8V 8-bit"),	0xA5, 0, 2048, 0, LP_OPTIONS},
-> -	{__NANDSTR("NAND 2GiB 3,3V 8-bit"),	0xD5, 0, 2048, 0, LP_OPTIONS},
-> +	{__NANDSTR("NAND 2GiB 1,8V 8-bit"),		0xA5, 0, 2048, 0, LP_OPTIONS},
-> +	{__NANDSTR("NAND 2GiB 3,3V 8-bit"),		0xD5, 0, 2048, 0, LP_OPTIONS},
->  	{__NANDSTR("NAND 2GiB 1,8V 16-bit"),	0xB5, 0, 2048, 0, LP_OPTIONS16},
->  	{__NANDSTR("NAND 2GiB 3,3V 16-bit"),	0xC5, 0, 2048, 0, LP_OPTIONS16},
->  
-> +	/* 32 Gigabit */
-> +	{__NANDSTR("NAND 4GiB 1,8V 8-bit"),		0xA7, 0, 4096, 0, LP_OPTIONS},
-> +	{__NANDSTR("NAND 4GiB 3,3V 8-bit"),		0xD7, 0, 4096, 0, LP_OPTIONS},
-> +	{__NANDSTR("NAND 4GiB 1,8V 16-bit"),	0xB7, 0, 4096, 0, LP_OPTIONS16},
-> +	{__NANDSTR("NAND 4GiB 3,3V 16-bit"),	0xC7, 0, 4096, 0, LP_OPTIONS16},
-> +
-> +	/* 64 Gigabit */
-> +	{__NANDSTR("NAND 8GiB 1,8V 8-bit"),		0xAE, 0, 8192, 0, LP_OPTIONS},
-> +	{__NANDSTR("NAND 8GiB 3,3V 8-bit"),		0xDE, 0, 8192, 0, LP_OPTIONS},
-> +	{__NANDSTR("NAND 8GiB 1,8V 16-bit"),	0xBE, 0, 8192, 0, LP_OPTIONS16},
-> +	{__NANDSTR("NAND 8GiB 3,3V 16-bit"),	0xCE, 0, 8192, 0, LP_OPTIONS16},
-> +
-> +	/* 128 Gigabit */
-> +	{__NANDSTR("NAND 16GiB 1,8V 8-bit"),	0x1A, 0, 16384, 0, LP_OPTIONS},
-> +	{__NANDSTR("NAND 16GiB 3,3V 8-bit"),	0x3A, 0, 16384, 0, LP_OPTIONS},
-> +	{__NANDSTR("NAND 16GiB 1,8V 16-bit"),	0x2A, 0, 16384, 0, LP_OPTIONS16},
-> +	{__NANDSTR("NAND 16GiB 3,3V 16-bit"),	0x4A, 0, 16384, 0, LP_OPTIONS16},
-> +
-> +	/* 256 Gigabit */
-> +	{__NANDSTR("NAND 32GiB 1,8V 8-bit"),	0x1C, 0, 32768, 0, LP_OPTIONS},
-> +	{__NANDSTR("NAND 32GiB 3,3V 8-bit"),	0x3C, 0, 32768, 0, LP_OPTIONS},
-> +	{__NANDSTR("NAND 32GiB 1,8V 16-bit"),	0x2C, 0, 32768, 0, LP_OPTIONS16},
-> +	{__NANDSTR("NAND 32GiB 3,3V 16-bit"),	0x4C, 0, 32768, 0, LP_OPTIONS16},
-> +
-> +	/* 512 Gigabit */
-> +	{__NANDSTR("NAND 64GiB 1,8V 8-bit"),	0x1E, 0, 65536, 0, LP_OPTIONS},
-> +	{__NANDSTR("NAND 64GiB 3,3V 8-bit"),	0x3E, 0, 65536, 0, LP_OPTIONS},
-> +	{__NANDSTR("NAND 64GiB 1,8V 16-bit"),	0x2E, 0, 65536, 0, LP_OPTIONS16},
-> +	{__NANDSTR("NAND 64GiB 3,3V 16-bit"),	0x4E, 0, 65536, 0, LP_OPTIONS16},
-
-BTW do you have one of those chips > 4GiB? I bet barebox does not work out
-of the box with these.
+You should rather fix the MAKEALL script.
 
 Sascha
 
+On Sat, Sep 15, 2012 at 04:00:26PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  .../{freescale-mx6-arm2_defconfig => freescale_mx6_arm2_defconfig}     |    0
+>  ...scale-mx6-sabrelite_defconfig => freescale_mx6_sabrelite_defconfig} |    0
+>  .../configs/{imx233-olinuxino_defconfig => imx233_olinuxino_defconfig} |    0
+>  arch/mips/configs/{dlink-dir-320_defconfig => dlink_dir_320_defconfig} |    0
+>  arch/mips/configs/{qemu-malta_defconfig => qemu_malta_defconfig}       |    0
+>  5 files changed, 0 insertions(+), 0 deletions(-)
+>  rename arch/arm/configs/{freescale-mx6-arm2_defconfig => freescale_mx6_arm2_defconfig} (100%)
+>  rename arch/arm/configs/{freescale-mx6-sabrelite_defconfig => freescale_mx6_sabrelite_defconfig} (100%)
+>  rename arch/arm/configs/{imx233-olinuxino_defconfig => imx233_olinuxino_defconfig} (100%)
+>  rename arch/mips/configs/{dlink-dir-320_defconfig => dlink_dir_320_defconfig} (100%)
+>  rename arch/mips/configs/{qemu-malta_defconfig => qemu_malta_defconfig} (100%)
+> 
+> diff --git a/arch/arm/configs/freescale-mx6-arm2_defconfig b/arch/arm/configs/freescale_mx6_arm2_defconfig
+> similarity index 100%
+> rename from arch/arm/configs/freescale-mx6-arm2_defconfig
+> rename to arch/arm/configs/freescale_mx6_arm2_defconfig
+> diff --git a/arch/arm/configs/freescale-mx6-sabrelite_defconfig b/arch/arm/configs/freescale_mx6_sabrelite_defconfig
+> similarity index 100%
+> rename from arch/arm/configs/freescale-mx6-sabrelite_defconfig
+> rename to arch/arm/configs/freescale_mx6_sabrelite_defconfig
+> diff --git a/arch/arm/configs/imx233-olinuxino_defconfig b/arch/arm/configs/imx233_olinuxino_defconfig
+> similarity index 100%
+> rename from arch/arm/configs/imx233-olinuxino_defconfig
+> rename to arch/arm/configs/imx233_olinuxino_defconfig
+> diff --git a/arch/mips/configs/dlink-dir-320_defconfig b/arch/mips/configs/dlink_dir_320_defconfig
+> similarity index 100%
+> rename from arch/mips/configs/dlink-dir-320_defconfig
+> rename to arch/mips/configs/dlink_dir_320_defconfig
+> diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu_malta_defconfig
+> similarity index 100%
+> rename from arch/mips/configs/qemu-malta_defconfig
+> rename to arch/mips/configs/qemu_malta_defconfig
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
