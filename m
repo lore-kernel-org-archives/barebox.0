@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([92.198.50.35])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TDAK4-00063y-OC
- for barebox@lists.infradead.org; Sun, 16 Sep 2012 08:35:25 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 16 Sep 2012 10:35:22 +0200
-Message-Id: <1347784522-29017-1-git-send-email-s.hauer@pengutronix.de>
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TDAVO-00068y-Jv
+ for barebox@lists.infradead.org; Sun, 16 Sep 2012 08:47:08 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1347720962-32574-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 16 Sep 2012 10:46:54 +0200
+In-Reply-To: <1347720962-32574-1-git-send-email-s.hauer@pengutronix.de>
+ (Sascha Hauer's message of "Sat, 15 Sep 2012 16:56:02 +0200")
+Message-ID: <87k3vuuzgh.fsf@free.fr>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -15,38 +18,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Make: Fix if_changed when command contains backslashes
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] mtd mtdraw: Fix partial page read
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-VGhlIGNhbGwgaWZfY2hhbmdlZCBtZWNoYW5pc20gZG9lcyBub3Qgd29yayB3aGVuIHRoZSBjb21t
-YW5kCmNvbnRhaW5zIGJhY2tzbGFzaGVzLiBUaGlzIGJhc2ljYWxseSBpcyBhbiBpc3N1ZSB3aXRo
-IGx6bwphbmQgYnppcDIgY29tcHJlc3NlZCBrZXJuZWxzLiBUaGUgY29tcHJlc3NlZCBiaW5hcmll
-cyBkbyBub3QKY29udGFpbiB0aGUgdW5jb21wcmVzc2VkIGltYWdlIHNpemUsIHNvIHRoZXNlIHVz
-ZSBzaXplX2FwcGVuZAp0byBhcHBlbmQgdGhlIHNpemUuIFRoaXMgcmVzdWx0cyBpbiBiYWNrc2xh
-c2hlcyBpbiB0aGUgZXhlY3V0ZWQKY29tbWFuZC4gV2l0aCB0aGlzIGlmX2NoYW5nZWQgYWx3YXlz
-IGRldGVjdHMgYSBjaGFuZ2UgaW4gdGhlCmNvbW1hbmQgYW5kIHJlYnVpbGRzIHRoZSBjb21wcmVz
-c2VkIGltYWdlIGV2ZW4gaWYgbm90aGluZwpoYXMgY2hhbmdlZC4KCkZpeCB0aGlzIGJ5IGVzY2Fw
-aW5nIGJhY2tzbGFzaGVzIGluIG1ha2UtY21kCgpUaGlzIHdhcyB3b3JrZWQgb3V0IHRvZ2V0aGVy
-IHdpdGggSmFuIEzDvGJiZS4gVGhlIHNhbWUgcGF0Y2gKaGFzIHJlY2VudGx5IGJlZW4gYWNjZXB0
-ZWQgdG8gdGhlIGtlcm5lbC4KClNpZ25lZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBw
-ZW5ndXRyb25peC5kZT4KU2lnbmVkLW9mZi1ieTogSmFuIEx1ZWJiZSA8amx1QHBlbmd1dHJvbml4
-LmRlPgotLS0KIHNjcmlwdHMvS2J1aWxkLmluY2x1ZGUgfCAgICAyICstCiAxIGZpbGUgY2hhbmdl
-ZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9zY3JpcHRzL0ti
-dWlsZC5pbmNsdWRlIGIvc2NyaXB0cy9LYnVpbGQuaW5jbHVkZQppbmRleCA5MTJjZmQ4Li5jN2Zh
-ZjY3IDEwMDY0NAotLS0gYS9zY3JpcHRzL0tidWlsZC5pbmNsdWRlCisrKyBiL3NjcmlwdHMvS2J1
-aWxkLmluY2x1ZGUKQEAgLTIwOSw3ICsyMDksNyBAQCBlbmRpZgogIyA+JDwgc3Vic3RpdHV0aW9u
-IHRvIHByZXNlcnZlICQgd2hlbiByZWxvYWRpbmcgLmNtZCBmaWxlCiAjIG5vdGU6IHdoZW4gdXNp
-bmcgaW5saW5lIHBlcmwgc2NyaXB0cyBbcGVybCAtZSAnLi4uJCR0PTE7Li4uJ10KICMgaW4gJChj
-bWRfeHh4KSBkb3VibGUgJCQgeW91ciBwZXJsIHZhcnMKLW1ha2UtY21kID0gJChzdWJzdCBcIyxc
-XFwjLCQoc3Vic3QgJCQsJCQkJCwkKGNhbGwgZXNjc3EsJChjbWRfJCgxKSkpKSkKK21ha2UtY21k
-ID0gJChzdWJzdCBcXCxcXFxcLCQoc3Vic3QgXCMsXFxcIywkKHN1YnN0ICQkLCQkJCQsJChjYWxs
-IGVzY3NxLCQoY21kXyQoMSkpKSkpKQogCiAjIEZpbmQgYW55IHByZXJlcXVpc2l0ZXMgdGhhdCBp
-cyBuZXdlciB0aGFuIHRhcmdldCBvciB0aGF0IGRvZXMgbm90IGV4aXN0LgogIyBQSE9OWSB0YXJn
-ZXRzIHNraXBwZWQgaW4gYm90aCBjYXNlcy4KLS0gCjEuNy4xMC40CgoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+Sascha Hauer <s.hauer@pengutronix.de> writes:
+
+> When reading parts of a page we have to limit the maximum bytes copied
+> the the remaining bytes of a page.
+>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+> ---
+>  drivers/mtd/mtdraw.c |    1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
+> index d28ae07..29f6a8c 100644
+> --- a/drivers/mtd/mtdraw.c
+> +++ b/drivers/mtd/mtdraw.c
+> @@ -129,6 +129,7 @@ static ssize_t mtdraw_read(struct cdev *cdev, void *buf, size_t count,
+>  
+>  	while (ret > 0 && count > 0) {
+>  		toread = min_t(int, count, mtd->writesize + mtd->oobsize);
+> +		toread = min_t(int, toread, mtd->writesize + mtd->oobsize -
+>  		skip);
+Hi Sasha,
+
+Why the 2 lines of min_t() instead of a single:
+toread = min_t(int, count, mtd->writesize + mtd->oobsize - skip)
+
+Cheers.
+
+--
+Robert
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
