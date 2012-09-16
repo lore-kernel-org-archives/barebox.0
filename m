@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f49.google.com ([74.125.82.49])
+Received: from mail-we0-f177.google.com ([74.125.82.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TDDB3-00026d-9Y
- for barebox@lists.infradead.org; Sun, 16 Sep 2012 11:38:18 +0000
-Received: by wgbdt14 with SMTP id dt14so495413wgb.18
- for <barebox@lists.infradead.org>; Sun, 16 Sep 2012 04:38:14 -0700 (PDT)
+ id 1TDE1G-0002hY-Qa
+ for barebox@lists.infradead.org; Sun, 16 Sep 2012 12:32:15 +0000
+Received: by weyr3 with SMTP id r3so3480132wey.36
+ for <barebox@lists.infradead.org>; Sun, 16 Sep 2012 05:32:11 -0700 (PDT)
 From: Franck Jullien <franck.jullien@gmail.com>
-Date: Sun, 16 Sep 2012 13:38:15 +0200
-Message-Id: <1347795495-15619-1-git-send-email-franck.jullien@gmail.com>
+Date: Sun, 16 Sep 2012 14:32:12 +0200
+Message-Id: <1347798733-22342-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,58 +21,131 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] nios2: Fix DMA functions when CPU has no dcache
+Subject: [PATCH 1/2] filetype: Improve FAT detection
 To: barebox@lists.infradead.org
+
+We may have some disk with MBR as a first sector. In this case, the
+current FAT check returns an error. However, the FAT sector exist and
+the MBR can tell us where it is.
+
+This patch make the FAT fs try to find the FAT boot sector on the first
+sector of the first partition in case it is not on sector 0.
 
 Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
 ---
- arch/nios2/include/asm/dma-mapping.h |   14 +++++++++++++-
- 1 files changed, 13 insertions(+), 1 deletions(-)
+ common/filetype.c  |   55 +++++++++++++++++++++++++++++++++++++++++----------
+ include/filetype.h |    1 +
+ 2 files changed, 45 insertions(+), 11 deletions(-)
 
-diff --git a/arch/nios2/include/asm/dma-mapping.h b/arch/nios2/include/asm/dma-mapping.h
-index 9819a97..620c207 100644
---- a/arch/nios2/include/asm/dma-mapping.h
-+++ b/arch/nios2/include/asm/dma-mapping.h
-@@ -6,7 +6,6 @@
+diff --git a/common/filetype.c b/common/filetype.c
+index e736d43..d07505b 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -26,6 +26,8 @@
+ #include <fcntl.h>
+ #include <fs.h>
+ #include <malloc.h>
++#include <fat.h>
++#include <errno.h>
  
- #include <asm/cache.h>
- 
--
- /* dma_alloc_coherent() return cache-line aligned allocation which is mapped
-  * to uncached io region.
-  *
-@@ -14,6 +13,7 @@
-  *   0x80000000 for nommu, 0xe0000000 for mmu
-  */
- 
-+#if (DCACHE_SIZE != 0)
- static inline void *dma_alloc_coherent(size_t len, unsigned long *handle)
- {
- 	void *addr = malloc(len + DCACHE_LINE_SIZE);
-@@ -25,11 +25,23 @@ static inline void *dma_alloc_coherent(size_t len, unsigned long *handle)
- 		~(DCACHE_LINE_SIZE - 1) & ~(IO_REGION_BASE);
- 	return (void *)(*handle | IO_REGION_BASE);
+ static const char *filetype_str[] = {
+ 	[filetype_unknown] = "unknown",
+@@ -52,26 +54,45 @@ const char *file_type_to_string(enum filetype f)
+ 	return NULL;
  }
-+#else
-+static inline void *dma_alloc_coherent(size_t len, unsigned long *handle)
-+{
-+	void *addr = malloc(len);
-+	if (!addr)
+ 
+-static int is_fat(u8 *buf)
++int fd;
++
++#define MBR_StartSector		8	/* MBR: Offset of Starting Sector in Partition Table Entry */
++#define BS_55AA			510	/* Boot sector signature (2) */
++#define MBR_Table		446	/* MBR: Partition table offset (2) */
++#define BS_FilSysType32		82	/* File system type (1) */
++#define BS_FilSysType		54	/* File system type (1) */
++
++int is_fat_boot_sector(unsigned char *sector, unsigned long *bootsec)
+ {
+-	if (get_unaligned_le16(&buf[510]) != 0xAA55)
++	if(bootsec)
++		*bootsec = 0;
++
++	/* Check record signature (always placed at offset 510 even if the sector size is>512) */
++	if (get_unaligned_le16(&sector[BS_55AA]) != 0xAA55)
++		return -ENODEV;
++
++	/* Check "FAT" string */
++	if ((get_unaligned_le32(&sector[BS_FilSysType]) & 0xFFFFFF) == 0x544146)
+ 		return 0;
+ 
+-	/* FAT */
+-	if ((get_unaligned_le32(&buf[54]) & 0xFFFFFF) == 0x544146)
+-		return 1;
++	if ((get_unaligned_le32(&sector[BS_FilSysType32]) & 0xFFFFFF) == 0x544146)
 +		return 0;
-+	*handle = (unsigned long)addr;
-+	return (void *)(*handle | IO_REGION_BASE);
-+}
-+#endif
  
-+#if (DCACHE_SIZE != 0)
- #define dma_alloc dma_alloc
- static inline void *dma_alloc(size_t size)
- {
- 	return xmemalign(DCACHE_LINE_SIZE, ALIGN(size, DCACHE_LINE_SIZE));
+-	/* FAT32 */
+-	if ((get_unaligned_le32(&buf[82]) & 0xFFFFFF) == 0x544146)
+-		return 1;
++	if(bootsec)
++		/* This must be an MBR, so return the starting sector of the
++		 * first partition so we could check if there is a FAT boot
++		 * sector there */
++		*bootsec = get_unaligned_le16(&sector[MBR_Table + MBR_StartSector]);
+ 
+-	return 0;
++	return -ENODEV;
  }
-+#endif
  
- #endif /* __ASM_NIOS2_DMA_MAPPING_H */
+ enum filetype file_detect_type(void *_buf)
+ {
+ 	u32 *buf = _buf;
+ 	u8 *buf8 = _buf;
++	unsigned long bootsec;
++	int ret;
+ 
+ 	if (strncmp(buf8, "#!/bin/sh", 9) == 0)
+ 		return filetype_sh;
+@@ -99,7 +120,19 @@ enum filetype file_detect_type(void *_buf)
+ 		return filetype_aimage;
+ 	if (strncmp(buf8 + 0x10, "barebox", 7) == 0)
+ 		return filetype_mips_barebox;
+-	if (is_fat(buf8))
++
++	ret = is_fat_boot_sector(buf8, &bootsec);
++	if (ret && bootsec != 0) {
++		/* The first sector is an MBR, now check for FAT in
++		 * the first partition */
++		lseek(fd, (bootsec) * 512, SEEK_SET);
++		ret = read(fd, buf, 512);
++		if (ret < 0)
++			return filetype_unknown;
++		ret = is_fat_boot_sector(buf8, NULL);
++		if (!ret)
++			return filetype_fat;
++	} else
+ 		return filetype_fat;
+ 
+ 	return filetype_unknown;
+@@ -107,7 +140,7 @@ enum filetype file_detect_type(void *_buf)
+ 
+ enum filetype file_name_detect_type(const char *filename)
+ {
+-	int fd, ret;
++	int ret;
+ 	void *buf;
+ 	enum filetype type = filetype_unknown;
+ 
+diff --git a/include/filetype.h b/include/filetype.h
+index 179ec0f..c60f654 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -24,5 +24,6 @@ enum filetype {
+ const char *file_type_to_string(enum filetype f);
+ enum filetype file_detect_type(void *_buf);
+ enum filetype file_name_detect_type(const char *filename);
++int is_fat_boot_sector(unsigned char *sector, unsigned long *bootsec);
+ 
+ #endif /* __FILE_TYPE_H */
 -- 
 1.7.1
 
