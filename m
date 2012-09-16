@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TDAIu-00060Q-Qk
- for barebox@lists.infradead.org; Sun, 16 Sep 2012 08:34:13 +0000
-Date: Sun, 16 Sep 2012 10:34:10 +0200
+ id 1TDAK4-00063y-OC
+ for barebox@lists.infradead.org; Sun, 16 Sep 2012 08:35:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120916083410.GF6180@pengutronix.de>
-References: <20120914073755.GD20834@game.jcrosoft.org>
- <1347609426-21286-1-git-send-email-plagnioj@jcrosoft.com>
- <20120916081139.GZ24458@pengutronix.de>
- <20120916082813.GE25990@game.jcrosoft.org>
+Date: Sun, 16 Sep 2012 10:35:22 +0200
+Message-Id: <1347784522-29017-1-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120916082813.GE25990@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,60 +15,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] net: introduce phylib
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Make: Fix if_changed when command contains backslashes
+To: barebox@lists.infradead.org
 
-On Sun, Sep 16, 2012 at 10:28:13AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 10:11 Sun 16 Sep     , Sascha Hauer wrote:
-> > On Fri, Sep 14, 2012 at 09:57:04AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > 
-> > > Adapt phylib from linux
-> > > 
-> > > switch all the driver to it
-> > > 
-> > > This will allow to have
-> > >  - phy drivers
-> > >  - to only connect the phy at then opening of the device
-> > >  - if the phy is not ready fail on open
-> > > 
-> > > Same behaviour as in linux and will allow to share code and simplify porting.
-> > > 
-> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > ---
-> > 
-> > [...]
-> > 
-> >  +
-> > > +/* Automatically gets and returns the PHY device */
-> > > +int phy_device_connect(struct mii_device *bus, int addr,
-> > > +		void (*adjust_link) (struct mii_device *miidev))
-> > 
-> > The prototype of adjust_link seems wrong. A mii_device is a mii bus with
-> > potentially multiple phys. adjust_link should work on the phy_device. With
-> > the above, when a mii_device has multiple phys, a network driver has no
-> > way to figure out which phy has an updated link.
-> > 
-> > This probably bites Renaud who has a single mii bus for multiple network
-> > devices.
-> not really as the phydev have a bus field so will be the same
-
-Renaud has two phys on the same mii bus, so when he is passed a struct
-mii_device, how can he get a pointer to his network device? He can't.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGNhbGwgaWZfY2hhbmdlZCBtZWNoYW5pc20gZG9lcyBub3Qgd29yayB3aGVuIHRoZSBjb21t
+YW5kCmNvbnRhaW5zIGJhY2tzbGFzaGVzLiBUaGlzIGJhc2ljYWxseSBpcyBhbiBpc3N1ZSB3aXRo
+IGx6bwphbmQgYnppcDIgY29tcHJlc3NlZCBrZXJuZWxzLiBUaGUgY29tcHJlc3NlZCBiaW5hcmll
+cyBkbyBub3QKY29udGFpbiB0aGUgdW5jb21wcmVzc2VkIGltYWdlIHNpemUsIHNvIHRoZXNlIHVz
+ZSBzaXplX2FwcGVuZAp0byBhcHBlbmQgdGhlIHNpemUuIFRoaXMgcmVzdWx0cyBpbiBiYWNrc2xh
+c2hlcyBpbiB0aGUgZXhlY3V0ZWQKY29tbWFuZC4gV2l0aCB0aGlzIGlmX2NoYW5nZWQgYWx3YXlz
+IGRldGVjdHMgYSBjaGFuZ2UgaW4gdGhlCmNvbW1hbmQgYW5kIHJlYnVpbGRzIHRoZSBjb21wcmVz
+c2VkIGltYWdlIGV2ZW4gaWYgbm90aGluZwpoYXMgY2hhbmdlZC4KCkZpeCB0aGlzIGJ5IGVzY2Fw
+aW5nIGJhY2tzbGFzaGVzIGluIG1ha2UtY21kCgpUaGlzIHdhcyB3b3JrZWQgb3V0IHRvZ2V0aGVy
+IHdpdGggSmFuIEzDvGJiZS4gVGhlIHNhbWUgcGF0Y2gKaGFzIHJlY2VudGx5IGJlZW4gYWNjZXB0
+ZWQgdG8gdGhlIGtlcm5lbC4KClNpZ25lZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBw
+ZW5ndXRyb25peC5kZT4KU2lnbmVkLW9mZi1ieTogSmFuIEx1ZWJiZSA8amx1QHBlbmd1dHJvbml4
+LmRlPgotLS0KIHNjcmlwdHMvS2J1aWxkLmluY2x1ZGUgfCAgICAyICstCiAxIGZpbGUgY2hhbmdl
+ZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9zY3JpcHRzL0ti
+dWlsZC5pbmNsdWRlIGIvc2NyaXB0cy9LYnVpbGQuaW5jbHVkZQppbmRleCA5MTJjZmQ4Li5jN2Zh
+ZjY3IDEwMDY0NAotLS0gYS9zY3JpcHRzL0tidWlsZC5pbmNsdWRlCisrKyBiL3NjcmlwdHMvS2J1
+aWxkLmluY2x1ZGUKQEAgLTIwOSw3ICsyMDksNyBAQCBlbmRpZgogIyA+JDwgc3Vic3RpdHV0aW9u
+IHRvIHByZXNlcnZlICQgd2hlbiByZWxvYWRpbmcgLmNtZCBmaWxlCiAjIG5vdGU6IHdoZW4gdXNp
+bmcgaW5saW5lIHBlcmwgc2NyaXB0cyBbcGVybCAtZSAnLi4uJCR0PTE7Li4uJ10KICMgaW4gJChj
+bWRfeHh4KSBkb3VibGUgJCQgeW91ciBwZXJsIHZhcnMKLW1ha2UtY21kID0gJChzdWJzdCBcIyxc
+XFwjLCQoc3Vic3QgJCQsJCQkJCwkKGNhbGwgZXNjc3EsJChjbWRfJCgxKSkpKSkKK21ha2UtY21k
+ID0gJChzdWJzdCBcXCxcXFxcLCQoc3Vic3QgXCMsXFxcIywkKHN1YnN0ICQkLCQkJCQsJChjYWxs
+IGVzY3NxLCQoY21kXyQoMSkpKSkpKQogCiAjIEZpbmQgYW55IHByZXJlcXVpc2l0ZXMgdGhhdCBp
+cyBuZXdlciB0aGFuIHRhcmdldCBvciB0aGF0IGRvZXMgbm90IGV4aXN0LgogIyBQSE9OWSB0YXJn
+ZXRzIHNraXBwZWQgaW4gYm90aCBjYXNlcy4KLS0gCjEuNy4xMC40CgoKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
+ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
+YW4vbGlzdGluZm8vYmFyZWJveAo=
