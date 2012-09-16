@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([92.198.50.35])
+Received: from mail-qc0-f177.google.com ([209.85.216.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TCtmv-0007YG-Rn
- for barebox@lists.infradead.org; Sat, 15 Sep 2012 14:56:06 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat, 15 Sep 2012 16:56:02 +0200
-Message-Id: <1347720962-32574-1-git-send-email-s.hauer@pengutronix.de>
+ id 1TD98T-0003TL-Pw
+ for barebox@lists.infradead.org; Sun, 16 Sep 2012 07:19:22 +0000
+Received: by qcsu28 with SMTP id u28so4068647qcs.36
+ for <barebox@lists.infradead.org>; Sun, 16 Sep 2012 00:19:18 -0700 (PDT)
+MIME-Version: 1.0
+Date: Sun, 16 Sep 2012 09:19:18 +0200
+Message-ID: <CAJfOKBxhsR6yQ0RSUgxYUayepN46g12fdUmerfS+4rnyvtRD3g@mail.gmail.com>
+From: Franck Jullien <franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,38 +17,21 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd mtdraw: Fix partial page read
-To: barebox@lists.infradead.org
+Subject: Patch a file in the next branch
+To: barebox <barebox@lists.infradead.org>
 
-When reading parts of a page we have to limit the maximum bytes copied
-the the remaining bytes of a page.
+Hi,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Robert Jarzmik <robert.jarzmik@free.fr>
----
- drivers/mtd/mtdraw.c |    1 +
- 1 file changed, 1 insertion(+)
+In order to fix fat detection, I need to patch ff.c and filetype.c.
+However, ff.c is already patched in next (I need to modify the version
+already in next).
+Should I generate my patches against next or master ?
 
-diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
-index d28ae07..29f6a8c 100644
---- a/drivers/mtd/mtdraw.c
-+++ b/drivers/mtd/mtdraw.c
-@@ -129,6 +129,7 @@ static ssize_t mtdraw_read(struct cdev *cdev, void *buf, size_t count,
- 
- 	while (ret > 0 && count > 0) {
- 		toread = min_t(int, count, mtd->writesize + mtd->oobsize);
-+		toread = min_t(int, toread, mtd->writesize + mtd->oobsize - skip);
- 		ret = mtdraw_read_unaligned(mtd, buf, toread,
- 					    skip, numpage++ * mtd->writesize);
- 		buf += ret;
--- 
-1.7.10.4
-
+Franck.
 
 _______________________________________________
 barebox mailing list
