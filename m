@@ -1,21 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo5.mail-out.ovh.net ([178.32.96.204]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TDAFc-0005uV-OV
- for barebox@lists.infradead.org; Sun, 16 Sep 2012 08:30:49 +0000
-Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 4CD5AFF9AC7
- for <barebox@lists.infradead.org>; Sun, 16 Sep 2012 10:36:29 +0200 (CEST)
-Date: Sun, 16 Sep 2012 10:28:13 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120916082813.GE25990@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TDAIu-00060Q-Qk
+ for barebox@lists.infradead.org; Sun, 16 Sep 2012 08:34:13 +0000
+Date: Sun, 16 Sep 2012 10:34:10 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120916083410.GF6180@pengutronix.de>
 References: <20120914073755.GD20834@game.jcrosoft.org>
  <1347609426-21286-1-git-send-email-plagnioj@jcrosoft.com>
  <20120916081139.GZ24458@pengutronix.de>
+ <20120916082813.GE25990@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120916081139.GZ24458@pengutronix.de>
+In-Reply-To: <20120916082813.GE25990@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,47 +26,53 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/3] net: introduce phylib
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 10:11 Sun 16 Sep     , Sascha Hauer wrote:
-> On Fri, Sep 14, 2012 at 09:57:04AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Sun, Sep 16, 2012 at 10:28:13AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 10:11 Sun 16 Sep     , Sascha Hauer wrote:
+> > On Fri, Sep 14, 2012 at 09:57:04AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > 
+> > > Adapt phylib from linux
+> > > 
+> > > switch all the driver to it
+> > > 
+> > > This will allow to have
+> > >  - phy drivers
+> > >  - to only connect the phy at then opening of the device
+> > >  - if the phy is not ready fail on open
+> > > 
+> > > Same behaviour as in linux and will allow to share code and simplify porting.
+> > > 
+> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > ---
 > > 
-> > Adapt phylib from linux
+> > [...]
 > > 
-> > switch all the driver to it
+> >  +
+> > > +/* Automatically gets and returns the PHY device */
+> > > +int phy_device_connect(struct mii_device *bus, int addr,
+> > > +		void (*adjust_link) (struct mii_device *miidev))
 > > 
-> > This will allow to have
-> >  - phy drivers
-> >  - to only connect the phy at then opening of the device
-> >  - if the phy is not ready fail on open
+> > The prototype of adjust_link seems wrong. A mii_device is a mii bus with
+> > potentially multiple phys. adjust_link should work on the phy_device. With
+> > the above, when a mii_device has multiple phys, a network driver has no
+> > way to figure out which phy has an updated link.
 > > 
-> > Same behaviour as in linux and will allow to share code and simplify porting.
-> > 
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> 
-> [...]
-> 
->  +
-> > +/* Automatically gets and returns the PHY device */
-> > +int phy_device_connect(struct mii_device *bus, int addr,
-> > +		void (*adjust_link) (struct mii_device *miidev))
-> 
-> The prototype of adjust_link seems wrong. A mii_device is a mii bus with
-> potentially multiple phys. adjust_link should work on the phy_device. With
-> the above, when a mii_device has multiple phys, a network driver has no
-> way to figure out which phy has an updated link.
-> 
-> This probably bites Renaud who has a single mii bus for multiple network
-> devices.
-not really as the phydev have a bus field so will be the same
+> > This probably bites Renaud who has a single mii bus for multiple network
+> > devices.
+> not really as the phydev have a bus field so will be the same
 
-but I guess we wil have to do like in linux attacehd the phydev to the
-eth_device
+Renaud has two phys on the same mii bus, so when he is passed a struct
+mii_device, how can he get a pointer to his network device? He can't.
 
-Best Regars,
-J.
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
