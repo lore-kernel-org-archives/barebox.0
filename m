@@ -1,21 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo5.mail-out.ovh.net ([178.32.119.138]
+Received: from 9.mo5.mail-out.ovh.net ([178.32.96.204]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TDTnz-0001Vn-RI
- for barebox@lists.infradead.org; Mon, 17 Sep 2012 05:23:37 +0000
+ id 1TDTq3-0001a8-Ta
+ for barebox@lists.infradead.org; Mon, 17 Sep 2012 05:25:44 +0000
 Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 78D1BFF9B82
- for <barebox@lists.infradead.org>; Mon, 17 Sep 2012 07:29:16 +0200 (CEST)
-Date: Mon, 17 Sep 2012 07:20:58 +0200
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 05001FF9C0F
+ for <barebox@lists.infradead.org>; Mon, 17 Sep 2012 07:31:26 +0200 (CEST)
+Date: Mon, 17 Sep 2012 07:23:07 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120917052058.GM25990@game.jcrosoft.org>
+Message-ID: <20120917052307.GN25990@game.jcrosoft.org>
 References: <20120916124223.GK25990@game.jcrosoft.org>
- <1347818098-10408-1-git-send-email-plagnioj@jcrosoft.com>
- <20120916210158.GL6180@pengutronix.de>
+ <1347803108-336-1-git-send-email-plagnioj@jcrosoft.com>
+ <20120916180759.GJ6180@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120916210158.GL6180@pengutronix.de>
+In-Reply-To: <20120916180759.GJ6180@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -32,8 +32,8 @@ Subject: Re: [PATCH 1/1] net: introduce phylib
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 23:01 Sun 16 Sep     , Sascha Hauer wrote:
-> On Sun, Sep 16, 2012 at 07:54:58PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On 20:07 Sun 16 Sep     , Sascha Hauer wrote:
+> On Sun, Sep 16, 2012 at 03:45:08PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > > Adapt phylib from linux
 > > 
 > > switch all the driver to it
@@ -47,36 +47,29 @@ On 23:01 Sun 16 Sep     , Sascha Hauer wrote:
 > > 
 > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > 
-> > +/* Automatically gets and returns the PHY device */
-> > +int phy_device_connect(struct mii_device *bus, int addr,
-> > +		       void (*adjust_link) (struct eth_device *edev),
-> > +		       u32 flags, phy_interface_t interface)
-> > +{
-> > +	struct eth_device *edev = bus->edev;
-> 
-> You should pass in a struct eth_device pointer here instead of getting
-> it from bus->edev because a struct mii_device can have multiple ethernet
-> devices. The next step would be to remove the edev member from struct
-> mii_dev and add it to struct phy_device insted.
-pass the edev ok.
-drop the edbua in mii_device ok.
-add the phy_device no
-the miidev is just the bus do not care about the phydev.
-we add attached the phydev to the eth_device not the mii_device
-> 
-> BTW no typedefs please. Use enum phy_interface instead.
-linux code I really do not want to touch it
+>  config:     ppc              pcm030_defconfig
+> drivers/net/fec_mpc5200.c: In function 'mpc5xxx_fec_open':
+> drivers/net/fec_mpc5200.c:415:15: error: 'mpc5xxx_fec_priv' has no member named 'phy_flags'
+> drivers/net/fec_mpc5200.c:415:31: error: 'mpc5xxx_fec_priv' has no member named 'interface'
+> drivers/net/fec_mpc5200.c: In function 'mpc5xxx_fec_probe':
+> drivers/net/fec_mpc5200.c:687:8: error: 'RMII' undeclared (first use in this function)
+> drivers/net/fec_mpc5200.c:687:8: note: each undeclared identifier is reported only once for each function it appears in
+> drivers/net/fec_mpc5200.c:688:7: error: 'mpc5xxx_fec_priv' has no member named 'interface'
+> drivers/net/fec_mpc5200.c:690:8: error: 'RGMII' undeclared (first use in this function)
+> drivers/net/fec_mpc5200.c:691:7: error: 'mpc5xxx_fec_priv' has no member named 'interface'
+> drivers/net/fec_mpc5200.c:694:7: error: 'mpc5xxx_fec_priv' has no member named 'phy_flags'
+> drivers/net/fec_mpc5200.c:696:7: error: 'mpc5xxx_fec_priv' has no member named 'interface'
+> drivers/net/fec_mpc5200.c:699:7: error: 'mpc5xxx_fec_priv' has no member named 'interface'
+> make[2]: *** [drivers/net/fec_mpc5200.o] Error 1
+> make[2]: *** Waiting for unfinished jobs....
+> make[1]: *** [drivers/net] Error 2
+> make: *** [drivers] Error 2
+> make: *** Waiting for unfinished jobs....
+we really need to cleanup this driver to share code with teh arm one instead
+of copy and paste everywhere
 
 Best Regards,
 J.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
