@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TEO7z-0001YN-GD
- for barebox@lists.infradead.org; Wed, 19 Sep 2012 17:32:00 +0000
-Date: Wed, 19 Sep 2012 19:31:57 +0200
+ id 1TEO9Q-0001iM-7d
+ for barebox@lists.infradead.org; Wed, 19 Sep 2012 17:33:28 +0000
+Date: Wed, 19 Sep 2012 19:33:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120919173157.GK6180@pengutronix.de>
-References: <1347795495-15619-1-git-send-email-franck.jullien@gmail.com>
+Message-ID: <20120919173326.GL6180@pengutronix.de>
+References: <1348047642-13041-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1347795495-15619-1-git-send-email-franck.jullien@gmail.com>
+In-Reply-To: <1348047642-13041-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,67 +22,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] nios2: Fix DMA functions when CPU has no dcache
-To: Franck Jullien <franck.jullien@gmail.com>
+Subject: Re: [PATCH 1/1 for master] MAKEALL: accept defconfig with '-' in it
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Sep 16, 2012 at 01:38:15PM +0200, Franck Jullien wrote:
-> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+On Wed, Sep 19, 2012 at 11:40:42AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> replace '-' with '_' for the configuration option
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
 Applied, thanks
 
 Sascha
 
 > ---
->  arch/nios2/include/asm/dma-mapping.h |   14 +++++++++++++-
->  1 files changed, 13 insertions(+), 1 deletions(-)
+> Hi,
 > 
-> diff --git a/arch/nios2/include/asm/dma-mapping.h b/arch/nios2/include/asm/dma-mapping.h
-> index 9819a97..620c207 100644
-> --- a/arch/nios2/include/asm/dma-mapping.h
-> +++ b/arch/nios2/include/asm/dma-mapping.h
-> @@ -6,7 +6,6 @@
+> 	this is a fix
+> 
+> Best Regards,
+> J.
+>  MAKEALL |    6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/MAKEALL b/MAKEALL
+> index 056a4d0..c08e484 100755
+> --- a/MAKEALL
+> +++ b/MAKEALL
+> @@ -96,8 +96,10 @@ do_build_target() {
+>  	mkdir -p "${LOGDIR}/${target}"
+>  	printf "Building ${arch} ${target} \n" >&2 | tee -a "${log_report}"
 >  
->  #include <asm/cache.h>
->  
-> -
->  /* dma_alloc_coherent() return cache-line aligned allocation which is mapped
->   * to uncached io region.
->   *
-> @@ -14,6 +13,7 @@
->   *   0x80000000 for nommu, 0xe0000000 for mmu
->   */
->  
-> +#if (DCACHE_SIZE != 0)
->  static inline void *dma_alloc_coherent(size_t len, unsigned long *handle)
->  {
->  	void *addr = malloc(len + DCACHE_LINE_SIZE);
-> @@ -25,11 +25,23 @@ static inline void *dma_alloc_coherent(size_t len, unsigned long *handle)
->  		~(DCACHE_LINE_SIZE - 1) & ~(IO_REGION_BASE);
->  	return (void *)(*handle | IO_REGION_BASE);
->  }
-> +#else
-> +static inline void *dma_alloc_coherent(size_t len, unsigned long *handle)
-> +{
-> +	void *addr = malloc(len);
-> +	if (!addr)
-> +		return 0;
-> +	*handle = (unsigned long)addr;
-> +	return (void *)(*handle | IO_REGION_BASE);
-> +}
-> +#endif
->  
-> +#if (DCACHE_SIZE != 0)
->  #define dma_alloc dma_alloc
->  static inline void *dma_alloc(size_t size)
->  {
->  	return xmemalign(DCACHE_LINE_SIZE, ALIGN(size, DCACHE_LINE_SIZE));
->  }
-> +#endif
->  
->  #endif /* __ASM_NIOS2_DMA_MAPPING_H */
+> -	cross_compile=`eval echo '$CROSS_COMPILE_'${target}`
+> -	cross_compile_set=`eval echo '${CROSS_COMPILE_'${target}'+set}'`
+> +	tmp=`echo "${target}" | tr - _`
+> +
+> +	cross_compile=`eval echo '$CROSS_COMPILE_'${tmp}`
+> +	cross_compile_set=`eval echo '${CROSS_COMPILE_'${tmp}'+set}'`
+>  	if [ "${cross_compile_set}" = "" ]
+>  	then
+>  		cross_compile=`eval echo '$CROSS_COMPILE_'${arch}`
 > -- 
-> 1.7.1
+> 1.7.10.4
 > 
 > 
 > _______________________________________________
