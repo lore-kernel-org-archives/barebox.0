@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-f177.google.com ([209.85.223.177])
+Received: from mail-bk0-f49.google.com ([209.85.214.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TEGyc-0007jF-5x
- for barebox@lists.infradead.org; Wed, 19 Sep 2012 09:53:50 +0000
-Received: by ieje14 with SMTP id e14so1319481iej.36
- for <barebox@lists.infradead.org>; Wed, 19 Sep 2012 02:53:48 -0700 (PDT)
+ id 1TEH4z-0007pD-EG
+ for barebox@lists.infradead.org; Wed, 19 Sep 2012 10:00:30 +0000
+Received: by bkcji2 with SMTP id ji2so387514bkc.36
+ for <barebox@lists.infradead.org>; Wed, 19 Sep 2012 03:00:23 -0700 (PDT)
+Message-ID: <505997B7.9040306@gmail.com>
+Date: Wed, 19 Sep 2012 12:00:23 +0200
+From: Carlo Caione <carlo.caione@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20120918092758.GR25990@game.jcrosoft.org>
-References: <CAJ8eaTzJcrYNSjjJ7ffOhsDM_UCFXQYpkUpwRABh-1ohEQQ-MA@mail.gmail.com>
- <20120918092758.GR25990@game.jcrosoft.org>
-Date: Wed, 19 Sep 2012 15:23:48 +0530
-Message-ID: <CAJ8eaTwMdHP2jCy9sW=RR5g_5yPg4D+yTZaxvwp0rjt+686Exw@mail.gmail.com>
-From: naveen yadav <yad.naveen@gmail.com>
+References: <n> <1348000210-21686-1-git-send-email-carlo.caione@gmail.com>
+ <1348045844.3397.8.camel@coredoba.hi.pengutronix.de>
+In-Reply-To: <1348045844.3397.8.camel@coredoba.hi.pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,32 +20,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Info about cache test at uboot prompt.
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] Add bcm2835/Raspberry-Pi support
+To: barebox@lists.infradead.org
 
-ahh, I mean barebox prompt only .
-
-On Tue, Sep 18, 2012 at 2:57 PM, Jean-Christophe PLAGNIOL-VILLARD
-<plagnioj@jcrosoft.com> wrote:
-> On 13:46 Tue 18 Sep     , naveen yadav wrote:
->> Dear All,
->>
->> I want to check the stability of L2 cache at uboot prompt.
->>
->> My question are.
->>
->> 1. Is it possible to verify, if yes what steps I need to do.
->>
->> 2. had nay body perform , pls share.
-> here it's barebox not U-Boot
+On 19/09/2012 11:10, Jan L=FCbbe wrote:
+> Hi,
 >
-> Best Regards,
-> J.
+> thanks for working on this!
+
+You are welcome :)
+
+> For trying out your code, I'd like to know how you tested this. How did
+> you prepare your SD card? Is there anything else I need to be ware of to
+> get it working?
+
+Yes, it works for me.
+You need an sd card with a single partition fat32 with inside =
+
+bootcode.bin, loader.bin and start.elf (you can find the files here =
+
+https://github.com/raspberrypi/firmware/tree/master/boot)
+Then just copy barebox.bin on the card and rename it kernel.img.
+
+Please, let me know if you have any problem.
+
+Thank you,
+
+--
+Carlo Caione
+
 
 _______________________________________________
 barebox mailing list
