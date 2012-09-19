@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TEIDf-0007s4-Nd
- for barebox@lists.infradead.org; Wed, 19 Sep 2012 11:13:28 +0000
-Message-ID: <5059A8CE.6050205@pengutronix.de>
-Date: Wed, 19 Sep 2012 13:13:18 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-MIME-Version: 1.0
-References: <n> <1348000210-21686-1-git-send-email-carlo.caione@gmail.com>
- <1348045844.3397.8.camel@coredoba.hi.pengutronix.de>
- <505997B7.9040306@gmail.com>
- <1348049328.3397.10.camel@coredoba.hi.pengutronix.de>
- <5059A33F.7080905@pengutronix.de> <5059A80E.5090006@gmail.com>
-In-Reply-To: <5059A80E.5090006@gmail.com>
+Received: from 8.mo5.mail-out.ovh.net ([178.32.116.78]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TEKXz-0001BZ-Qj
+ for barebox@lists.infradead.org; Wed, 19 Sep 2012 13:42:37 +0000
+Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id F013CFF9E88
+ for <barebox@lists.infradead.org>; Wed, 19 Sep 2012 15:48:22 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Wed, 19 Sep 2012 15:39:57 +0200
+Message-Id: <1348061997-16901-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1348061997-16901-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1348061997-16901-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,81 +20,124 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============3722910192165984603=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] Add bcm2835/Raspberry-Pi support
-To: Carlo Caione <carlo.caione@gmail.com>
-Cc: Michael Olbrich <mol@pengutronix.de>, barebox-request <barebox@lists.infradead.org>
+Subject: [PATCH 2/2] driver: search device and driver based on the bus instead
+ of all
+To: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---===============3722910192165984603==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enigB5DA54CBCF3748B598054FA2"
+This will allow reduce the number of driver and device to search on.
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---------------enigB5DA54CBCF3748B598054FA2
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/base/driver.c |    9 +++++----
+ include/driver.h      |   12 ++++++++++++
+ 2 files changed, 17 insertions(+), 4 deletions(-)
 
-On 09/19/2012 01:10 PM, Carlo Caione wrote:
-> On 19/09/2012 12:49, Marc Kleine-Budde wrote:
->> On 09/19/2012 12:08 PM, Jan L=FCbbe wrote:
->>> Hi,
->>>
->>> On Wed, 2012-09-19 at 12:00 +0200, Carlo Caione wrote:
->>>> You need an sd card with a single partition fat32 with inside
->>>> bootcode.bin, loader.bin and start.elf (you can find the files here
->>>> https://github.com/raspberrypi/firmware/tree/master/boot)
->>>> Then just copy barebox.bin on the card and rename it kernel.img.
->>>
->>> Ok, I'll try that later today.
->>>
->>> What are your next plans? The USB or SD controllers?
->>
->> IIRC our colleague Michael (mol) said it's another incarnation of the
->> chipidea IP core, which also in the imx28, imx53, etc...
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 18ac70c..8fade78 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -82,8 +82,6 @@ static int match(struct driver_d *drv, struct device_d *dev)
+ 
+ 	dev->driver = drv;
+ 
+-	if (dev->bus != drv->bus)
+-		goto err_out;
+ 	if (dev->bus->match(dev, drv))
+ 		goto err_out;
+ 	if (dev->bus->probe(dev))
+@@ -129,12 +127,13 @@ int register_device(struct device_d *new_device)
+ 	}
+ 
+ 	list_add_tail(&new_device->list, &device_list);
++	list_add_tail(&new_device->bus_list, &new_device->bus->device_list);
+ 	INIT_LIST_HEAD(&new_device->children);
+ 	INIT_LIST_HEAD(&new_device->cdevs);
+ 	INIT_LIST_HEAD(&new_device->parameters);
+ 	INIT_LIST_HEAD(&new_device->active);
+ 
+-	for_each_driver(drv) {
++	for_each_bus_driver(new_device->bus, drv) {
+ 		if (!match(drv, new_device))
+ 			break;
+ 	}
+@@ -166,6 +165,7 @@ int unregister_device(struct device_d *old_dev)
+ 	}
+ 
+ 	list_del(&old_dev->list);
++	list_del(&old_dev->bus_list);
+ 	list_del(&old_dev->active);
+ 
+ 	/* remove device from parents child list */
+@@ -219,13 +219,14 @@ int register_driver(struct driver_d *drv)
+ 	}
+ 
+ 	list_add_tail(&drv->list, &driver_list);
++	list_add_tail(&drv->bus_list, &drv->bus->driver_list);
+ 
+ 	if (!drv->info)
+ 		drv->info = noinfo;
+ 	if (!drv->shortinfo)
+ 		drv->shortinfo = noshortinfo;
+ 
+-	for_each_device(dev)
++	for_each_bus_device(drv->bus, dev)
+ 		match(drv, dev);
+ 
+ 	return 0;
+diff --git a/include/driver.h b/include/driver.h
+index f89bfff..10a2f10 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -88,6 +88,7 @@ struct device_d {
+ 	struct driver_d *driver; /*! The driver for this device */
+ 
+ 	struct list_head list;     /* The list of all devices */
++	struct list_head bus_list; /* our bus            */
+ 	struct list_head children; /* our children            */
+ 	struct list_head sibling;
+ 	struct list_head active;   /* The list of all devices which have a driver */
+@@ -115,6 +116,7 @@ struct driver_d {
+ 	const char *name;
+ 
+ 	struct list_head list;
++	struct list_head bus_list; /* our bus            */
+ 
+ 	/*! Called if an instance of a device is found */
+ 	int     (*probe) (struct device_d *);
+@@ -377,6 +379,8 @@ struct bus_type {
+ 	void (*remove)(struct device_d *dev);
+ 
+ 	struct list_head list;
++	struct list_head device_list;
++	struct list_head driver_list;
+ };
+ 
+ int bus_register(struct bus_type *bus);
+@@ -387,6 +391,14 @@ extern struct list_head bus_list;
+  */
+ #define for_each_bus(bus) list_for_each_entry(bus, &bus_list, list)
+ 
++/* Iterate over all devices of a bus
++ */
++#define for_each_bus_device(bus, dev) list_for_each_entry(dev, &bus->device_list, list)
++
++/* Iterate over all drivers of a bus
++ */
++#define for_each_bus_driver(bus, drv) list_for_each_entry(drv, &bus->driver_list, list)
++
+ extern struct bus_type platform_bus;
+ 
+ struct file_operations {
+-- 
+1.7.10.4
 
-Please check this :)
-
-The current mainline kernel implementation is located here:
-http://lxr.free-electrons.com/source/drivers/usb/chipidea/
-
-Marc
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
---------------enigB5DA54CBCF3748B598054FA2
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://www.enigmail.net/
-
-iEYEARECAAYFAlBZqNEACgkQjTAFq1RaXHNIjwCfUMOJphWbqkPFYWhjOiRAtZTv
-BR4AnjdBUS5rTvcdYtQEe0L/DxSWMGS4
-=zf/t
------END PGP SIGNATURE-----
-
---------------enigB5DA54CBCF3748B598054FA2--
-
-
---===============3722910192165984603==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============3722910192165984603==--
