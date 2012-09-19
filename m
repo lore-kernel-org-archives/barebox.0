@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 18.mo5.mail-out.ovh.net ([178.33.45.10]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TELbm-000358-O5
- for barebox@lists.infradead.org; Wed, 19 Sep 2012 14:50:38 +0000
+ id 1TELbm-000354-O9
+ for barebox@lists.infradead.org; Wed, 19 Sep 2012 14:50:40 +0000
 Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 223B9FF9FCD
- for <barebox@lists.infradead.org>; Wed, 19 Sep 2012 16:56:22 +0200 (CEST)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id CB5F9FF9BB2
+ for <barebox@lists.infradead.org>; Wed, 19 Sep 2012 16:56:21 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 19 Sep 2012 16:47:58 +0200
-Message-Id: <1348066078-26482-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 19 Sep 2012 16:47:55 +0200
+Message-Id: <1348066078-26482-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1348066078-26482-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20120919144332.GX25990@game.jcrosoft.org>
  <1348066078-26482-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,123 +26,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] driver: search device and driver based on the bus instead
- of all
+Subject: [PATCH 2/5] sandbox: do not register device before base is started
 To: barebox@lists.infradead.org
 
-This will allow reduce the number of driver and device to search on.
+This will crash when use registered bus with device registered to it.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/base/driver.c |   11 ++++++-----
- include/driver.h      |   12 ++++++++++++
- 2 files changed, 18 insertions(+), 5 deletions(-)
+ arch/sandbox/board/Makefile   |    1 +
+ arch/sandbox/board/console.c  |    2 +-
+ arch/sandbox/board/devices.c  |   35 +++++++++++++++++++++++++++++++++++
+ arch/sandbox/board/hostfile.c |   19 +++++++++++++++++--
+ 4 files changed, 54 insertions(+), 3 deletions(-)
+ create mode 100644 arch/sandbox/board/devices.c
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 18ac70c..5d25a3c 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -82,8 +82,6 @@ static int match(struct driver_d *drv, struct device_d *dev)
+diff --git a/arch/sandbox/board/Makefile b/arch/sandbox/board/Makefile
+index 266c3a3..5104f5c 100644
+--- a/arch/sandbox/board/Makefile
++++ b/arch/sandbox/board/Makefile
+@@ -2,5 +2,6 @@ obj-y += board.o
+ obj-y += clock.o
+ obj-y += hostfile.o
+ obj-y += console.o
++obj-y += devices.o
  
- 	dev->driver = drv;
+ extra-y += barebox.lds
+diff --git a/arch/sandbox/board/console.c b/arch/sandbox/board/console.c
+index 18b63e1..b0afa54 100644
+--- a/arch/sandbox/board/console.c
++++ b/arch/sandbox/board/console.c
+@@ -44,6 +44,6 @@ int barebox_register_console(char *name, int stdinfd, int stdoutfd)
+ 	data->stdoutfd = stdoutfd;
+ 	data->stdinfd  = stdinfd;
  
--	if (dev->bus != drv->bus)
--		goto err_out;
- 	if (dev->bus->match(dev, drv))
- 		goto err_out;
- 	if (dev->bus->probe(dev))
-@@ -119,7 +117,7 @@ int register_device(struct device_d *new_device)
- 	if (new_device->bus == &platform_bus && new_device->resource) {
- 		struct device_d *dev;
+-	return register_device(dev);
++	return sandbox_add_device(dev);
+ }
  
--		for_each_device(dev) {
-+		for_each_bus_device(new_device->bus, dev) {
- 			if (!dev->resource)
- 				continue;
- 			if (dev->resource->start == new_device->resource->start) {
-@@ -129,12 +127,13 @@ int register_device(struct device_d *new_device)
- 	}
- 
- 	list_add_tail(&new_device->list, &device_list);
-+	list_add_tail(&new_device->bus_list, &new_device->bus->device_list);
- 	INIT_LIST_HEAD(&new_device->children);
- 	INIT_LIST_HEAD(&new_device->cdevs);
- 	INIT_LIST_HEAD(&new_device->parameters);
- 	INIT_LIST_HEAD(&new_device->active);
- 
--	for_each_driver(drv) {
-+	for_each_bus_driver(new_device->bus, drv) {
- 		if (!match(drv, new_device))
- 			break;
- 	}
-@@ -166,6 +165,7 @@ int unregister_device(struct device_d *old_dev)
- 	}
- 
- 	list_del(&old_dev->list);
-+	list_del(&old_dev->bus_list);
- 	list_del(&old_dev->active);
- 
- 	/* remove device from parents child list */
-@@ -219,13 +219,14 @@ int register_driver(struct driver_d *drv)
- 	}
- 
- 	list_add_tail(&drv->list, &driver_list);
-+	list_add_tail(&drv->bus_list, &drv->bus->driver_list);
- 
- 	if (!drv->info)
- 		drv->info = noinfo;
- 	if (!drv->shortinfo)
- 		drv->shortinfo = noshortinfo;
- 
--	for_each_device(dev)
-+	for_each_bus_device(drv->bus, dev)
- 		match(drv, dev);
- 
- 	return 0;
-diff --git a/include/driver.h b/include/driver.h
-index f89bfff..6a182d8 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -88,6 +88,7 @@ struct device_d {
- 	struct driver_d *driver; /*! The driver for this device */
- 
- 	struct list_head list;     /* The list of all devices */
-+	struct list_head bus_list; /* our bus            */
- 	struct list_head children; /* our children            */
- 	struct list_head sibling;
- 	struct list_head active;   /* The list of all devices which have a driver */
-@@ -115,6 +116,7 @@ struct driver_d {
- 	const char *name;
- 
- 	struct list_head list;
-+	struct list_head bus_list; /* our bus            */
- 
- 	/*! Called if an instance of a device is found */
- 	int     (*probe) (struct device_d *);
-@@ -377,6 +379,8 @@ struct bus_type {
- 	void (*remove)(struct device_d *dev);
- 
- 	struct list_head list;
-+	struct list_head device_list;
-+	struct list_head driver_list;
- };
- 
- int bus_register(struct bus_type *bus);
-@@ -387,6 +391,14 @@ extern struct list_head bus_list;
-  */
- #define for_each_bus(bus) list_for_each_entry(bus, &bus_list, list)
- 
-+/* Iterate over all devices of a bus
+diff --git a/arch/sandbox/board/devices.c b/arch/sandbox/board/devices.c
+new file mode 100644
+index 0000000..d3fad78
+--- /dev/null
++++ b/arch/sandbox/board/devices.c
+@@ -0,0 +1,35 @@
++/*
++ * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * Under GPLv2 only
 + */
-+#define for_each_bus_device(bus, dev) list_for_each_entry(dev, &bus->device_list, bus_list)
 +
-+/* Iterate over all drivers of a bus
-+ */
-+#define for_each_bus_driver(bus, drv) list_for_each_entry(drv, &bus->driver_list, bus_list)
++#include <common.h>
++#include <driver.h>
++#include <init.h>
 +
- extern struct bus_type platform_bus;
++static LIST_HEAD(sandbox_device_list);
++
++int sandbox_add_device(struct device_d *dev)
++{
++	if (!dev)
++		return -EINVAL;
++
++	list_add(&dev->list, &sandbox_device_list);
++	return 0;
++}
++
++static int sandbox_device_init(void)
++{
++	struct device_d *dev, *tmp;
++
++	list_for_each_entry_safe(dev, tmp, &sandbox_device_list, list) {
++		/* reset the list before register for real */
++		dev->list.prev = NULL;
++		dev->list.next = NULL;
++		register_device(dev);
++	}
++
++	return 0;
++}
++postcore_initcall(sandbox_device_init);
+diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
+index f5acc78..2cc7c1f 100644
+--- a/arch/sandbox/board/hostfile.c
++++ b/arch/sandbox/board/hostfile.c
+@@ -99,7 +99,22 @@ device_initcall(hf_init);
  
- struct file_operations {
+ int barebox_register_filedev(struct hf_platform_data *hf)
+ {
+-	return !add_generic_device("hostfile", DEVICE_ID_DYNAMIC, NULL, hf->base, hf->size,
+-			   IORESOURCE_MEM, hf);
++	struct device_d *dev;
++	struct resource *res;
++
++	dev = xzalloc(sizeof(*dev));
++	strcpy(dev->name, "hostfile");
++	dev->id = DEVICE_ID_DYNAMIC;
++	dev->platform_data = hf;
++
++	res = xzalloc(sizeof(struct resource));
++	res[0].start = hf->base;
++	res[0].end = hf->base + hf->size - 1;
++	res[0].flags = IORESOURCE_MEM;
++
++	dev->resource = res;
++	dev->num_resources = 1;
++
++	return sandbox_add_device(dev);
+ }
+ 
 -- 
 1.7.10.4
 
