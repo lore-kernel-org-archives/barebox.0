@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f49.google.com ([209.85.214.49])
+Received: from mail-wi0-f171.google.com ([209.85.212.171])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TEHqM-0004nW-Te
- for barebox@lists.infradead.org; Wed, 19 Sep 2012 10:49:23 +0000
-Received: by bkcji2 with SMTP id ji2so415733bkc.36
- for <barebox@lists.infradead.org>; Wed, 19 Sep 2012 03:49:21 -0700 (PDT)
-Message-ID: <5059A331.6050909@gmail.com>
-Date: Wed, 19 Sep 2012 12:49:21 +0200
-From: Carlo Caione <carlo.caione@gmail.com>
-MIME-Version: 1.0
-References: <n> <1348000210-21686-1-git-send-email-carlo.caione@gmail.com>
- <1348045844.3397.8.camel@coredoba.hi.pengutronix.de>
- <505997B7.9040306@gmail.com>
- <1348049328.3397.10.camel@coredoba.hi.pengutronix.de>
-In-Reply-To: <1348049328.3397.10.camel@coredoba.hi.pengutronix.de>
+ id 1TEI9N-0007PX-CJ
+ for barebox@lists.infradead.org; Wed, 19 Sep 2012 11:09:02 +0000
+Received: by wibhq4 with SMTP id hq4so3892340wib.0
+ for <barebox@lists.infradead.org>; Wed, 19 Sep 2012 04:08:58 -0700 (PDT)
+From: Franck Jullien <franck.jullien@gmail.com>
+Date: Wed, 19 Sep 2012 13:09:01 +0200
+Message-Id: <1348052942-13853-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +16,167 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] Add bcm2835/Raspberry-Pi support
+Subject: [PATCH 1/2] [v4] filetype: Improve FAT detection
 To: barebox@lists.infradead.org
 
-On 19/09/2012 12:08, Jan L=FCbbe wrote:
-> Hi,
->
-> On Wed, 2012-09-19 at 12:00 +0200, Carlo Caione wrote:
->> You need an sd card with a single partition fat32 with inside
->> bootcode.bin, loader.bin and start.elf (you can find the files here
->> https://github.com/raspberrypi/firmware/tree/master/boot)
->> Then just copy barebox.bin on the card and rename it kernel.img.
->
-> Ok, I'll try that later today.
->
-> What are your next plans? The USB or SD controllers?
+We may have some disk with MBR as a first sector. In this case, the
+current FAT check returns an error. However, the FAT sector exist and
+the MBR can tell us where it is.
 
-SD controller definitely (after patching for Jean-Christophe suggestions).
+This patch add to file_name_detect_type function the ability to find
+the FAT boot sector on the first sector of the first partition in case
+it is not on sector 0.
 
-Regards,
+It also introduce is_fat_or_mbr to check if a buffer is a FAT boot
+or MBR sector
 
---
-Carlo Caione
+Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+---
+ common/filetype.c  |   60 +++++++++++++++++++++++++++++++++++++++++----------
+ include/filetype.h |    2 +
+ 2 files changed, 50 insertions(+), 12 deletions(-)
+
+diff --git a/common/filetype.c b/common/filetype.c
+index e736d43..b139d78 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -26,6 +26,8 @@
+ #include <fcntl.h>
+ #include <fs.h>
+ #include <malloc.h>
++#include <fat.h>
++#include <errno.h>
+ 
+ static const char *filetype_str[] = {
+ 	[filetype_unknown] = "unknown",
+@@ -42,6 +44,7 @@ static const char *filetype_str[] = {
+ 	[filetype_sh] = "Bourne Shell",
+ 	[filetype_mips_barebox] = "MIPS barebox image",
+ 	[filetype_fat] = "FAT filesytem",
++	[filetype_mbr] = "MBR sector",
+ };
+ 
+ const char *file_type_to_string(enum filetype f)
+@@ -52,26 +55,43 @@ const char *file_type_to_string(enum filetype f)
+ 	return NULL;
+ }
+ 
+-static int is_fat(u8 *buf)
++#define MBR_StartSector		8	/* MBR: Offset of Starting Sector in Partition Table Entry */
++#define BS_55AA			510	/* Boot sector signature (2) */
++#define MBR_Table		446	/* MBR: Partition table offset (2) */
++#define BS_FilSysType32		82	/* File system type (1) */
++#define BS_FilSysType		54	/* File system type (1) */
++
++enum filetype is_fat_or_mbr(const unsigned char *sector, unsigned long *bootsec)
+ {
+-	if (get_unaligned_le16(&buf[510]) != 0xAA55)
+-		return 0;
++	/* bootsec can be used to return index of the first sector in the first partition */
++	if (bootsec)
++		*bootsec = 0;
++
++	/* Check record signature (always placed at offset 510 even if the sector size is>512) */
++	if (get_unaligned_le16(&sector[BS_55AA]) != 0xAA55)
++		return filetype_unknown;
++
++	/* Check "FAT" string */
++	if ((get_unaligned_le32(&sector[BS_FilSysType]) & 0xFFFFFF) == 0x544146)
++		return filetype_fat;
+ 
+-	/* FAT */
+-	if ((get_unaligned_le32(&buf[54]) & 0xFFFFFF) == 0x544146)
+-		return 1;
++	if ((get_unaligned_le32(&sector[BS_FilSysType32]) & 0xFFFFFF) == 0x544146)
++		return filetype_fat;
+ 
+-	/* FAT32 */
+-	if ((get_unaligned_le32(&buf[82]) & 0xFFFFFF) == 0x544146)
+-		return 1;
++	if (bootsec)
++		/* This must be an MBR, so return the starting sector of the
++		 * first partition so we could check if there is a FAT boot
++		 * sector there */
++		*bootsec = get_unaligned_le16(&sector[MBR_Table + MBR_StartSector]);
+ 
+-	return 0;
++	return filetype_mbr;
+ }
+ 
+ enum filetype file_detect_type(void *_buf)
+ {
+ 	u32 *buf = _buf;
+ 	u8 *buf8 = _buf;
++	enum filetype type;
+ 
+ 	if (strncmp(buf8, "#!/bin/sh", 9) == 0)
+ 		return filetype_sh;
+@@ -99,8 +119,10 @@ enum filetype file_detect_type(void *_buf)
+ 		return filetype_aimage;
+ 	if (strncmp(buf8 + 0x10, "barebox", 7) == 0)
+ 		return filetype_mips_barebox;
+-	if (is_fat(buf8))
+-		return filetype_fat;
++
++	type = is_fat_or_mbr(buf8, NULL);
++	if (type != filetype_unknown)
++		return type;
+ 
+ 	return filetype_unknown;
+ }
+@@ -110,6 +132,7 @@ enum filetype file_name_detect_type(const char *filename)
+ 	int fd, ret;
+ 	void *buf;
+ 	enum filetype type = filetype_unknown;
++	unsigned long bootsec;
+ 
+ 	fd = open(filename, O_RDONLY);
+ 	if (fd < 0)
+@@ -123,6 +146,19 @@ enum filetype file_name_detect_type(const char *filename)
+ 
+ 	type = file_detect_type(buf);
+ 
++	if (type == filetype_mbr) {
++		/* Get the first partition start sector
++		 * and check for FAT in it */
++		is_fat_or_mbr(buf, &bootsec);
++		ret = lseek(fd, (bootsec) * 512, SEEK_SET);
++		if (ret < 0)
++			goto err_out;
++		ret = read(fd, buf, 512);
++		if (ret < 0)
++			goto err_out;
++		type = is_fat_or_mbr((u8 *)buf, NULL);
++	}
++
+ err_out:
+ 	close(fd);
+ 	free(buf);
+diff --git a/include/filetype.h b/include/filetype.h
+index 179ec0f..37eb620 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -19,10 +19,12 @@ enum filetype {
+ 	filetype_sh,
+ 	filetype_mips_barebox,
+ 	filetype_fat,
++	filetype_mbr,
+ };
+ 
+ const char *file_type_to_string(enum filetype f);
+ enum filetype file_detect_type(void *_buf);
+ enum filetype file_name_detect_type(const char *filename);
++enum filetype is_fat_or_mbr(const unsigned char *sector, unsigned long *bootsec);
+ 
+ #endif /* __FILE_TYPE_H */
+-- 
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
