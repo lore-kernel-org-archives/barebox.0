@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-wi0-f177.google.com ([209.85.212.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TERPa-0002sC-Dj
- for barebox@lists.infradead.org; Wed, 19 Sep 2012 21:02:23 +0000
-Date: Wed, 19 Sep 2012 23:02:19 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120919210219.GN6180@pengutronix.de>
-References: <1348048235-14431-1-git-send-email-plagnioj@jcrosoft.com>
- <20120919165343.GI6180@pengutronix.de>
- <20120919185721.GY25990@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120919185721.GY25990@game.jcrosoft.org>
+ id 1TESc7-00058z-Ml
+ for barebox@lists.infradead.org; Wed, 19 Sep 2012 22:19:24 +0000
+Received: by wibhn17 with SMTP id hn17so1315025wib.0
+ for <barebox@lists.infradead.org>; Wed, 19 Sep 2012 15:19:18 -0700 (PDT)
+Mime-Version: 1.0 (Mac OS X Mail 6.1 \(1498\))
+From: Carlo Caione <carlo.caione@gmail.com>
+In-Reply-To: <20120918220748.GU25990@game.jcrosoft.org>
+Date: Thu, 20 Sep 2012 00:19:11 +0200
+Message-Id: <D61358EC-6DC0-4F9B-82B0-CE44AA0976EB@gmail.com>
+References: <1348000210-21686-1-git-send-email-carlo.caione@gmail.com>
+ <1348000210-21686-2-git-send-email-carlo.caione@gmail.com>
+ <20120918220748.GU25990@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,71 +25,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] defaultenv-2: execute init/* before timeout
+Subject: Re: [PATCH 2/2] Add Raspberry-Pi defconfig
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 19, 2012 at 08:57:21PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 18:53 Wed 19 Sep     , Sascha Hauer wrote:
-> > On Wed, Sep 19, 2012 at 11:50:35AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > so we can have splah, usb serial, etc...
-> > > 
-> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > ---
-> > >  defaultenv-2/base/bin/init |    8 +++-----
-> > >  1 file changed, 3 insertions(+), 5 deletions(-)
-> > > 
-> > > diff --git a/defaultenv-2/base/bin/init b/defaultenv-2/base/bin/init
-> > > index 3cac41c..5524710 100644
-> > > --- a/defaultenv-2/base/bin/init
-> > > +++ b/defaultenv-2/base/bin/init
-> > > @@ -12,7 +12,9 @@ global linux.bootargs.dyn.ip
-> > >  global linux.bootargs.dyn.root
-> > >  global editcmd=sedit
-> > >  
-> > > -/env/init/general
-> > > +for i in /env/init/*; do
-> > > +	. $i
-> > > +done
-> > >  
-> > >  if [ -e /env/menu ]; then
-> > >  	echo -e -n "\nHit m for menu or any other key to stop autoboot: "
-> > > @@ -27,10 +29,6 @@ if [ "${key}" = "q" ]; then
-> > >  	exit
-> > >  fi
-> > >  
-> > > -for i in /env/init/*; do
-> > > -	. $i
-> > > -done
-> > > -
-> > 
-> > This was intentionally done *after* waiting for user intervention to be
-> > able to escape in case some init script crashes barebox.
-> yeah but we need splash before timeout and I do not what to hack the init
-> 
-> so can do a pseudo rc.d
-> 
-> /etc/init/pre
-> /etc/init/post
-> 
-> so we can have some before some after timeout
 
-Don't overengineer. Just do a
+On Sep 19, 2012, at 12:07 AM, Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
 
-timeout -s -a -v key 0
-if [ "{$key}" = 'q' ]; then
-	exit
-fi
+> On 22:30 Tue 18 Sep     , Carlo Caione wrote:
+>> Signed-off-by: Carlo Caione <carlo@carlocaione.org>
+>> ---
+>> arch/arm/configs/rpi_defconfig |   45 ++++++++++++++++++++++++++++++++++++++++
+> add this in the board patch
+>> 1 file changed, 45 insertions(+)
+>> create mode 100644 arch/arm/configs/rpi_defconfig
+>> 
+>> diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
+>> new file mode 100644
+>> index 0000000..2b35ef8
+>> --- /dev/null
+>> +++ b/arch/arm/configs/rpi_defconfig
+>> @@ -0,0 +1,45 @@
+>> +CONFIG_ARCH_BCM2835=y
+>> +CONFIG_ARCH_TEXT_BASE=0x00008000
+>> +CONFIG_MEMORY_LAYOUT_FIXED=y
+> why fixed?
 
-Sascha
+The problem here is that TEXT_BASE is at 0x00008000 and without setting CONFIG_MALLOC_BASE my malloc space falls outside of sdram.
 
+> Best Regards,
+> J.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards,
 
+--
+Carlo Caione
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
