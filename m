@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TENX3-00066u-OB
- for barebox@lists.infradead.org; Wed, 19 Sep 2012 16:53:50 +0000
-Date: Wed, 19 Sep 2012 18:53:43 +0200
+ id 1TEO1j-0001Hh-M1
+ for barebox@lists.infradead.org; Wed, 19 Sep 2012 17:25:32 +0000
+Date: Wed, 19 Sep 2012 19:25:29 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120919165343.GI6180@pengutronix.de>
-References: <1348048235-14431-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20120919172529.GJ6180@pengutronix.de>
+References: <1348061997-16901-1-git-send-email-plagnioj@jcrosoft.com>
+ <1348061997-16901-2-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1348048235-14431-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1348061997-16901-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] defaultenv-2: execute init/* before timeout
+Subject: Re: [PATCH 2/2] driver: search device and driver based on the bus
+ instead of all
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 19, 2012 at 11:50:35AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> so we can have splah, usb serial, etc...
+On Wed, Sep 19, 2012 at 03:39:57PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> This will allow reduce the number of driver and device to search on.
 > 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  defaultenv-2/base/bin/init |    8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
+>  drivers/base/driver.c |    9 +++++----
+>  include/driver.h      |   12 ++++++++++++
+>  2 files changed, 17 insertions(+), 4 deletions(-)
 > 
-> diff --git a/defaultenv-2/base/bin/init b/defaultenv-2/base/bin/init
-> index 3cac41c..5524710 100644
-> --- a/defaultenv-2/base/bin/init
-> +++ b/defaultenv-2/base/bin/init
-> @@ -12,7 +12,9 @@ global linux.bootargs.dyn.ip
->  global linux.bootargs.dyn.root
->  global editcmd=sedit
->  
-> -/env/init/general
-> +for i in /env/init/*; do
-> +	. $i
-> +done
->  
->  if [ -e /env/menu ]; then
->  	echo -e -n "\nHit m for menu or any other key to stop autoboot: "
-> @@ -27,10 +29,6 @@ if [ "${key}" = "q" ]; then
->  	exit
->  fi
->  
-> -for i in /env/init/*; do
-> -	. $i
-> -done
-> -
 
-This was intentionally done *after* waiting for user intervention to be
-able to escape in case some init script crashes barebox.
+[...]
+
+>  
+> +/* Iterate over all devices of a bus
+> + */
+> +#define for_each_bus_device(bus, dev) list_for_each_entry(dev, &bus->device_list, list)
+> +
+> +/* Iterate over all drivers of a bus
+> + */
+> +#define for_each_bus_driver(bus, drv) list_for_each_entry(drv, &bus->driver_list, list)
+> +
+
+bus_for_each_* please.
 
 Sascha
 
