@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TEO1j-0001Hh-M1
- for barebox@lists.infradead.org; Wed, 19 Sep 2012 17:25:32 +0000
-Date: Wed, 19 Sep 2012 19:25:29 +0200
+ id 1TEO7z-0001YN-GD
+ for barebox@lists.infradead.org; Wed, 19 Sep 2012 17:32:00 +0000
+Date: Wed, 19 Sep 2012 19:31:57 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120919172529.GJ6180@pengutronix.de>
-References: <1348061997-16901-1-git-send-email-plagnioj@jcrosoft.com>
- <1348061997-16901-2-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20120919173157.GK6180@pengutronix.de>
+References: <1347795495-15619-1-git-send-email-franck.jullien@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1348061997-16901-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1347795495-15619-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,37 +22,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] driver: search device and driver based on the bus
- instead of all
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] nios2: Fix DMA functions when CPU has no dcache
+To: Franck Jullien <franck.jullien@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 19, 2012 at 03:39:57PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> This will allow reduce the number of driver and device to search on.
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  drivers/base/driver.c |    9 +++++----
->  include/driver.h      |   12 ++++++++++++
->  2 files changed, 17 insertions(+), 4 deletions(-)
-> 
+On Sun, Sep 16, 2012 at 01:38:15PM +0200, Franck Jullien wrote:
+> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
 
-[...]
-
->  
-> +/* Iterate over all devices of a bus
-> + */
-> +#define for_each_bus_device(bus, dev) list_for_each_entry(dev, &bus->device_list, list)
-> +
-> +/* Iterate over all drivers of a bus
-> + */
-> +#define for_each_bus_driver(bus, drv) list_for_each_entry(drv, &bus->driver_list, list)
-> +
-
-bus_for_each_* please.
+Applied, thanks
 
 Sascha
 
+> ---
+>  arch/nios2/include/asm/dma-mapping.h |   14 +++++++++++++-
+>  1 files changed, 13 insertions(+), 1 deletions(-)
+> 
+> diff --git a/arch/nios2/include/asm/dma-mapping.h b/arch/nios2/include/asm/dma-mapping.h
+> index 9819a97..620c207 100644
+> --- a/arch/nios2/include/asm/dma-mapping.h
+> +++ b/arch/nios2/include/asm/dma-mapping.h
+> @@ -6,7 +6,6 @@
+>  
+>  #include <asm/cache.h>
+>  
+> -
+>  /* dma_alloc_coherent() return cache-line aligned allocation which is mapped
+>   * to uncached io region.
+>   *
+> @@ -14,6 +13,7 @@
+>   *   0x80000000 for nommu, 0xe0000000 for mmu
+>   */
+>  
+> +#if (DCACHE_SIZE != 0)
+>  static inline void *dma_alloc_coherent(size_t len, unsigned long *handle)
+>  {
+>  	void *addr = malloc(len + DCACHE_LINE_SIZE);
+> @@ -25,11 +25,23 @@ static inline void *dma_alloc_coherent(size_t len, unsigned long *handle)
+>  		~(DCACHE_LINE_SIZE - 1) & ~(IO_REGION_BASE);
+>  	return (void *)(*handle | IO_REGION_BASE);
+>  }
+> +#else
+> +static inline void *dma_alloc_coherent(size_t len, unsigned long *handle)
+> +{
+> +	void *addr = malloc(len);
+> +	if (!addr)
+> +		return 0;
+> +	*handle = (unsigned long)addr;
+> +	return (void *)(*handle | IO_REGION_BASE);
+> +}
+> +#endif
+>  
+> +#if (DCACHE_SIZE != 0)
+>  #define dma_alloc dma_alloc
+>  static inline void *dma_alloc(size_t size)
+>  {
+>  	return xmemalign(DCACHE_LINE_SIZE, ALIGN(size, DCACHE_LINE_SIZE));
+>  }
+> +#endif
+>  
+>  #endif /* __ASM_NIOS2_DMA_MAPPING_H */
+> -- 
+> 1.7.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
