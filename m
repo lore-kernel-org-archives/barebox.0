@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-f177.google.com ([74.125.82.177])
+Received: from mail-bk0-f49.google.com ([209.85.214.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TEI9N-0007PY-Cm
- for barebox@lists.infradead.org; Wed, 19 Sep 2012 11:09:02 +0000
-Received: by weyr3 with SMTP id r3so516033wey.36
- for <barebox@lists.infradead.org>; Wed, 19 Sep 2012 04:09:00 -0700 (PDT)
-From: Franck Jullien <franck.jullien@gmail.com>
-Date: Wed, 19 Sep 2012 13:09:02 +0200
-Message-Id: <1348052942-13853-2-git-send-email-franck.jullien@gmail.com>
-In-Reply-To: <1348052942-13853-1-git-send-email-franck.jullien@gmail.com>
-References: <1348052942-13853-1-git-send-email-franck.jullien@gmail.com>
+ id 1TEIAU-0007V4-0s
+ for barebox@lists.infradead.org; Wed, 19 Sep 2012 11:10:11 +0000
+Received: by bkcji2 with SMTP id ji2so426829bkc.36
+ for <barebox@lists.infradead.org>; Wed, 19 Sep 2012 04:10:08 -0700 (PDT)
+Message-ID: <5059A80E.5090006@gmail.com>
+Date: Wed, 19 Sep 2012 13:10:06 +0200
+From: Carlo Caione <carlo.caione@gmail.com>
+MIME-Version: 1.0
+References: <n> <1348000210-21686-1-git-send-email-carlo.caione@gmail.com>
+ <1348045844.3397.8.camel@coredoba.hi.pengutronix.de>
+ <505997B7.9040306@gmail.com>
+ <1348049328.3397.10.camel@coredoba.hi.pengutronix.de>
+ <5059A33F.7080905@pengutronix.de>
+In-Reply-To: <5059A33F.7080905@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,103 +23,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] [v2] fs/fat: Handle MBR on the first sector
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] Add bcm2835/Raspberry-Pi support
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Michael Olbrich <mol@pengutronix.de>, barebox-request <barebox@lists.infradead.org>
 
-Use filetype to detect FAT boot sector.
-Add support for disk with MBR on the first sector.
+On 19/09/2012 12:49, Marc Kleine-Budde wrote:
+> On 09/19/2012 12:08 PM, Jan L=FCbbe wrote:
+>> Hi,
+>>
+>> On Wed, 2012-09-19 at 12:00 +0200, Carlo Caione wrote:
+>>> You need an sd card with a single partition fat32 with inside
+>>> bootcode.bin, loader.bin and start.elf (you can find the files here
+>>> https://github.com/raspberrypi/firmware/tree/master/boot)
+>>> Then just copy barebox.bin on the card and rename it kernel.img.
+>>
+>> Ok, I'll try that later today.
+>>
+>> What are your next plans? The USB or SD controllers?
+>
+> IIRC our colleague Michael (mol) said it's another incarnation of the
+> chipidea IP core, which also in the imx28, imx53, etc...
 
-Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
----
- fs/fat/ff.c |   37 +++++++++++++++++++------------------
- 1 files changed, 19 insertions(+), 18 deletions(-)
+Great info!
 
-diff --git a/fs/fat/ff.c b/fs/fat/ff.c
-index 66db1d6..33f8b61 100644
---- a/fs/fat/ff.c
-+++ b/fs/fat/ff.c
-@@ -93,6 +93,7 @@
- #include <errno.h>
- #include <malloc.h>
- #include <linux/ctype.h>
-+#include <filetype.h>
- #include "ff.h"			/* FatFs configurations and declarations */
- #include "diskio.h"		/* Declarations of low level disk I/O functions */
- 
-@@ -1531,29 +1532,20 @@ int follow_path (	/* 0(0): successful, !=0: error code */
- /*
-  * Load boot record and check if it is an FAT boot record
-  */
--static int check_fs (	/* 0:The FAT BR, 1:Valid BR but not an FAT, 2:Not a BR, 3:Disk error */
-+static enum filetype check_fs (	/* 0:The FAT BR, 1:Valid BR but not an FAT, 2:Not a BR, 3:Disk error */
- 	FATFS *fs,	/* File system object */
--	DWORD sect	/* Sector# (lba) to check if it is an FAT boot record or not */
-+	DWORD sect,	/* Sector# (lba) to check if it is an FAT boot record or not */
-+	DWORD *bootsec
- )
- {
--	int ret;
-+	enum filetype ret;
- 
- 	/* Load boot record */
- 	ret = disk_read(fs, fs->win, sect, 1);
- 	if (ret)
--		return ret;
--	/* Check record signature (always placed at offset 510 even if the sector size is>512) */
--	if (LD_WORD(&fs->win[BS_55AA]) != 0xAA55)
--		return -ENODEV;
--
--	/* Check "FAT" string */
--	if ((LD_DWORD(&fs->win[BS_FilSysType]) & 0xFFFFFF) == 0x544146)
--		return 0;
--
--	if ((LD_DWORD(&fs->win[BS_FilSysType32]) & 0xFFFFFF) == 0x544146)
--		return 0;
-+		return filetype_unknown;
- 
--	return -ENODEV;
-+	return is_fat_or_mbr(fs->win, bootsec);
- }
- 
- /*
-@@ -1565,8 +1557,10 @@ static int chk_mounted (	/* 0(0): successful, !=0: any error occurred */
- )
- {
- 	BYTE fmt, b;
-+	DWORD first_boot_sect;
- 	DWORD bsect, fasize, tsect, sysect, nclst, szbfat;
- 	WORD nrsv;
-+	enum filetype type;
- 
- 	INIT_LIST_HEAD(&fs->dirtylist);
- 
-@@ -1579,9 +1573,16 @@ static int chk_mounted (	/* 0(0): successful, !=0: any error occurred */
- 		return -EIO;
- #endif
- 	/* Search FAT partition on the drive. Supports only generic partitionings, FDISK and SFD. */
--	fmt = check_fs(fs, bsect = 0);	/* Check sector 0 if it is a VBR */
--	if (fmt)
--		return fmt; /* No FAT volume is found */
-+	type = check_fs(fs, bsect = 0, &first_boot_sect);	/* Check sector 0 if it is a VBR */
-+	if (type == filetype_mbr) {
-+		/* Sector 0 is an MBR, now check for FAT in the first partition */
-+		type = check_fs(fs, bsect = first_boot_sect, NULL);
-+		if (type != filetype_fat)
-+			return -ENODEV;
-+	}
-+
-+	if (type == filetype_unknown)
-+		return -ENODEV;
- 
- 	/* Following code initializes the file system object */
- 
--- 
-1.7.1
+Thank you,
+
+--
+Carlo Caione
+
 
 
 _______________________________________________
