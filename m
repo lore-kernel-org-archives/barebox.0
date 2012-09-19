@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-qc0-f177.google.com ([209.85.216.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TEESR-0004cl-6i
- for barebox@lists.infradead.org; Wed, 19 Sep 2012 07:12:29 +0000
-Date: Wed, 19 Sep 2012 09:12:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120919071225.GV6180@pengutronix.de>
-References: <1348005096-3419-1-git-send-email-franck.jullien@gmail.com>
+ id 1TEEcz-0005KW-OL
+ for barebox@lists.infradead.org; Wed, 19 Sep 2012 07:23:22 +0000
+Received: by qcsu28 with SMTP id u28so602618qcs.36
+ for <barebox@lists.infradead.org>; Wed, 19 Sep 2012 00:23:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1348005096-3419-1-git-send-email-franck.jullien@gmail.com>
+In-Reply-To: <20120919071225.GV6180@pengutronix.de>
+References: <1348005096-3419-1-git-send-email-franck.jullien@gmail.com>
+ <20120919071225.GV6180@pengutronix.de>
+Date: Wed, 19 Sep 2012 09:23:19 +0200
+Message-ID: <CAJfOKBxCdWAO+WitmFdUwWYzBWoEPiNiy_wV+c0fe57daMSQBA@mail.gmail.com>
+From: Franck Jullien <franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,163 +25,167 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] [v3] filetype: Improve FAT detection
-To: Franck Jullien <franck.jullien@gmail.com>
-Cc: barebox@lists.infradead.org
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Tue, Sep 18, 2012 at 11:51:35PM +0200, Franck Jullien wrote:
-> We may have some disk with MBR as a first sector. In this case, the
-> current FAT check returns an error. However, the FAT sector exist and
-> the MBR can tell us where it is.
-> 
-> This patch add to file_name_detect_type function the ability to find
-> the FAT boot sector on the first sector of the first partition in case
-> it is not on sector 0.
-> 
-> It also introduce is_fat_or_mbr to check if a buffer is a FAT boot
-> or MBR sector
-> 
-> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
-> ---
->  common/filetype.c  |   63 ++++++++++++++++++++++++++++++++++++++++++----------
->  include/filetype.h |    2 +
->  2 files changed, 53 insertions(+), 12 deletions(-)
-> 
-> diff --git a/common/filetype.c b/common/filetype.c
-> index e736d43..cb4db5c 100644
-> --- a/common/filetype.c
-> +++ b/common/filetype.c
-> @@ -26,6 +26,8 @@
->  #include <fcntl.h>
->  #include <fs.h>
->  #include <malloc.h>
-> +#include <fat.h>
-> +#include <errno.h>
->  
->  static const char *filetype_str[] = {
->  	[filetype_unknown] = "unknown",
-> @@ -42,6 +44,7 @@ static const char *filetype_str[] = {
->  	[filetype_sh] = "Bourne Shell",
->  	[filetype_mips_barebox] = "MIPS barebox image",
->  	[filetype_fat] = "FAT filesytem",
-> +	[filetype_mbr] = "MBR sector",
->  };
->  
->  const char *file_type_to_string(enum filetype f)
-> @@ -52,26 +55,42 @@ const char *file_type_to_string(enum filetype f)
->  	return NULL;
->  }
->  
-> -static int is_fat(u8 *buf)
-> +#define MBR_StartSector		8	/* MBR: Offset of Starting Sector in Partition Table Entry */
-> +#define BS_55AA			510	/* Boot sector signature (2) */
-> +#define MBR_Table		446	/* MBR: Partition table offset (2) */
-> +#define BS_FilSysType32		82	/* File system type (1) */
-> +#define BS_FilSysType		54	/* File system type (1) */
-> +
-> +enum filetype is_fat_or_mbr(unsigned char *sector, unsigned long *bootsec)
+2012/9/19 Sascha Hauer <s.hauer@pengutronix.de>:
+> On Tue, Sep 18, 2012 at 11:51:35PM +0200, Franck Jullien wrote:
+>> We may have some disk with MBR as a first sector. In this case, the
+>> current FAT check returns an error. However, the FAT sector exist and
+>> the MBR can tell us where it is.
+>>
+>> This patch add to file_name_detect_type function the ability to find
+>> the FAT boot sector on the first sector of the first partition in case
+>> it is not on sector 0.
+>>
+>> It also introduce is_fat_or_mbr to check if a buffer is a FAT boot
+>> or MBR sector
+>>
+>> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+>> ---
+>>  common/filetype.c  |   63 ++++++++++++++++++++++++++++++++++++++++++----------
+>>  include/filetype.h |    2 +
+>>  2 files changed, 53 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/common/filetype.c b/common/filetype.c
+>> index e736d43..cb4db5c 100644
+>> --- a/common/filetype.c
+>> +++ b/common/filetype.c
+>> @@ -26,6 +26,8 @@
+>>  #include <fcntl.h>
+>>  #include <fs.h>
+>>  #include <malloc.h>
+>> +#include <fat.h>
+>> +#include <errno.h>
+>>
+>>  static const char *filetype_str[] = {
+>>       [filetype_unknown] = "unknown",
+>> @@ -42,6 +44,7 @@ static const char *filetype_str[] = {
+>>       [filetype_sh] = "Bourne Shell",
+>>       [filetype_mips_barebox] = "MIPS barebox image",
+>>       [filetype_fat] = "FAT filesytem",
+>> +     [filetype_mbr] = "MBR sector",
+>>  };
+>>
+>>  const char *file_type_to_string(enum filetype f)
+>> @@ -52,26 +55,42 @@ const char *file_type_to_string(enum filetype f)
+>>       return NULL;
+>>  }
+>>
+>> -static int is_fat(u8 *buf)
+>> +#define MBR_StartSector              8       /* MBR: Offset of Starting Sector in Partition Table Entry */
+>> +#define BS_55AA                      510     /* Boot sector signature (2) */
+>> +#define MBR_Table            446     /* MBR: Partition table offset (2) */
+>> +#define BS_FilSysType32              82      /* File system type (1) */
+>> +#define BS_FilSysType                54      /* File system type (1) */
+>> +
+>> +enum filetype is_fat_or_mbr(unsigned char *sector, unsigned long *bootsec)
+>
+> Could you add a comment describing the meaning of the bootsec argument?
+> Also, please make the sector argument 'const'. (I'll send a patch
+> making the other functions take a const argument where appropriate)
+>
+>>  {
+>> -     if (get_unaligned_le16(&buf[510]) != 0xAA55)
+>> -             return 0;
+>> +     if(bootsec)
+>
+> whitespace after 'if' please.
+>
+>> +             *bootsec = 0;
+>> +
+>> +     /* Check record signature (always placed at offset 510 even if the sector size is>512) */
+>> +     if (get_unaligned_le16(&sector[BS_55AA]) != 0xAA55)
+>> +             return filetype_unknown;
+>> +
+>> +     /* Check "FAT" string */
+>> +     if ((get_unaligned_le32(&sector[BS_FilSysType]) & 0xFFFFFF) == 0x544146)
+>> +             return filetype_fat;
+>>
+>> -     /* FAT */
+>> -     if ((get_unaligned_le32(&buf[54]) & 0xFFFFFF) == 0x544146)
+>> -             return 1;
+>> +     if ((get_unaligned_le32(&sector[BS_FilSysType32]) & 0xFFFFFF) == 0x544146)
+>> +             return filetype_fat;
+>>
+>> -     /* FAT32 */
+>> -     if ((get_unaligned_le32(&buf[82]) & 0xFFFFFF) == 0x544146)
+>> -             return 1;
+>> +     if(bootsec)
+>> +             /* This must be an MBR, so return the starting sector of the
+>> +              * first partition so we could check if there is a FAT boot
+>> +              * sector there */
+>> +             *bootsec = get_unaligned_le16(&sector[MBR_Table + MBR_StartSector]);
+>>
+>> -     return 0;
+>> +     return filetype_mbr;
+>>  }
+>>
+>>  enum filetype file_detect_type(void *_buf)
+>>  {
+>>       u32 *buf = _buf;
+>>       u8 *buf8 = _buf;
+>> +     enum filetype type;
+>>
+>>       if (strncmp(buf8, "#!/bin/sh", 9) == 0)
+>>               return filetype_sh;
+>> @@ -99,8 +118,10 @@ enum filetype file_detect_type(void *_buf)
+>>               return filetype_aimage;
+>>       if (strncmp(buf8 + 0x10, "barebox", 7) == 0)
+>>               return filetype_mips_barebox;
+>> -     if (is_fat(buf8))
+>> -             return filetype_fat;
+>> +
+>> +     type = is_fat_or_mbr(buf8, NULL);
+>> +     if (type != filetype_unknown)
+>> +             return type;
+>>
+>>       return filetype_unknown;
+>>  }
+>> @@ -110,6 +131,7 @@ enum filetype file_name_detect_type(const char *filename)
+>>       int fd, ret;
+>>       void *buf;
+>>       enum filetype type = filetype_unknown;
+>> +     unsigned long bootsec;
+>>
+>>       fd = open(filename, O_RDONLY);
+>>       if (fd < 0)
+>> @@ -123,6 +145,23 @@ enum filetype file_name_detect_type(const char *filename)
+>>
+>>       type = file_detect_type(buf);
+>>
+>> +     if (type == filetype_mbr) {
+>> +             /* Get the first partition start sector
+>> +              * and check for FAT in it */
+>> +             is_fat_or_mbr((u8 *)buf, &bootsec);
+>
+> Unnecessary cast.
+>
+>> +             ret = lseek(fd, (bootsec) * 512, SEEK_SET);
+>> +             if (ret < 0) {
+>> +                     type = filetype_unknown;
+>
+> It's still an mbr in this case.
+>
+>> +                     goto err_out;
+>> +             }
+>> +             ret = read(fd, buf, 512);
+>> +             if (ret < 0) {
+>> +                     type = filetype_unknown;
+>
+> ditto.
+>
+> Sascha
+>
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
-Could you add a comment describing the meaning of the bootsec argument?
-Also, please make the sector argument 'const'. (I'll send a patch
-making the other functions take a const argument where appropriate)
-
->  {
-> -	if (get_unaligned_le16(&buf[510]) != 0xAA55)
-> -		return 0;
-> +	if(bootsec)
-
-whitespace after 'if' please.
-
-> +		*bootsec = 0;
-> +
-> +	/* Check record signature (always placed at offset 510 even if the sector size is>512) */
-> +	if (get_unaligned_le16(&sector[BS_55AA]) != 0xAA55)
-> +		return filetype_unknown;
-> +
-> +	/* Check "FAT" string */
-> +	if ((get_unaligned_le32(&sector[BS_FilSysType]) & 0xFFFFFF) == 0x544146)
-> +		return filetype_fat;
->  
-> -	/* FAT */
-> -	if ((get_unaligned_le32(&buf[54]) & 0xFFFFFF) == 0x544146)
-> -		return 1;
-> +	if ((get_unaligned_le32(&sector[BS_FilSysType32]) & 0xFFFFFF) == 0x544146)
-> +		return filetype_fat;
->  
-> -	/* FAT32 */
-> -	if ((get_unaligned_le32(&buf[82]) & 0xFFFFFF) == 0x544146)
-> -		return 1;
-> +	if(bootsec)
-> +		/* This must be an MBR, so return the starting sector of the
-> +		 * first partition so we could check if there is a FAT boot
-> +		 * sector there */
-> +		*bootsec = get_unaligned_le16(&sector[MBR_Table + MBR_StartSector]);
->  
-> -	return 0;
-> +	return filetype_mbr;
->  }
->  
->  enum filetype file_detect_type(void *_buf)
->  {
->  	u32 *buf = _buf;
->  	u8 *buf8 = _buf;
-> +	enum filetype type;
->  
->  	if (strncmp(buf8, "#!/bin/sh", 9) == 0)
->  		return filetype_sh;
-> @@ -99,8 +118,10 @@ enum filetype file_detect_type(void *_buf)
->  		return filetype_aimage;
->  	if (strncmp(buf8 + 0x10, "barebox", 7) == 0)
->  		return filetype_mips_barebox;
-> -	if (is_fat(buf8))
-> -		return filetype_fat;
-> +
-> +	type = is_fat_or_mbr(buf8, NULL);
-> +	if (type != filetype_unknown)
-> +		return type;
->  
->  	return filetype_unknown;
->  }
-> @@ -110,6 +131,7 @@ enum filetype file_name_detect_type(const char *filename)
->  	int fd, ret;
->  	void *buf;
->  	enum filetype type = filetype_unknown;
-> +	unsigned long bootsec;
->  
->  	fd = open(filename, O_RDONLY);
->  	if (fd < 0)
-> @@ -123,6 +145,23 @@ enum filetype file_name_detect_type(const char *filename)
->  
->  	type = file_detect_type(buf);
->  
-> +	if (type == filetype_mbr) {
-> +		/* Get the first partition start sector
-> +		 * and check for FAT in it */
-> +		is_fat_or_mbr((u8 *)buf, &bootsec);
-
-Unnecessary cast.
-
-> +		ret = lseek(fd, (bootsec) * 512, SEEK_SET);
-> +		if (ret < 0) {
-> +			type = filetype_unknown;
-
-It's still an mbr in this case.
-
-> +			goto err_out;
-> +		}
-> +		ret = read(fd, buf, 512);
-> +		if (ret < 0) {
-> +			type = filetype_unknown;
-
-ditto.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I shouldn't write code late at night. Hopefully you are reading my
+code with attention :)
 
 _______________________________________________
 barebox mailing list
