@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f49.google.com ([209.85.214.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TEjSA-0001dl-Si
- for barebox@lists.infradead.org; Thu, 20 Sep 2012 16:18:16 +0000
-Received: by bkcji2 with SMTP id ji2so1236484bkc.36
- for <barebox@lists.infradead.org>; Thu, 20 Sep 2012 09:18:13 -0700 (PDT)
-Message-ID: <505B41C6.5010907@gmail.com>
-Date: Thu, 20 Sep 2012 18:18:14 +0200
-From: Carlo Caione <carlo.caione@gmail.com>
-MIME-Version: 1.0
-References: <n> <1348000210-21686-1-git-send-email-carlo.caione@gmail.com>
- <1348155606.3514.21.camel@coredoba.hi.pengutronix.de>
-In-Reply-To: <1348155606.3514.21.camel@coredoba.hi.pengutronix.de>
+Received: from exprod5og107.obsmtp.com ([64.18.0.184])
+ by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TEjet-0003ND-Hb
+ for barebox@lists.infradead.org; Thu, 20 Sep 2012 16:31:24 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Thu, 20 Sep 2012 17:31:08 +0100
+Message-Id: <1348158669-14034-5-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1348158669-14034-1-git-send-email-renaud.barbier@ge.com>
+References: <1348158669-14034-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,49 +16,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] Add bcm2835/Raspberry-Pi support
-To: barebox-request <barebox@lists.infradead.org>
+Subject: [PATCH 4/5] FSL mdio: configuration and build file
+To: barebox@lists.infradead.org
 
-On 20/09/2012 17:40, Jan L=FCbbe wrote:
-> Hi,
->
-> I've tried your patches and the boot fine:
+The configuration and build files are updated to compile the FSL mdio
+support.
 
-[cut]
+Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+---
+ drivers/net/Kconfig  |    5 +++++
+ drivers/net/Makefile |    1 +
+ 2 files changed, 6 insertions(+), 0 deletions(-)
 
-> The first patch has some white-space warnings which should be fixed:
->  $ git am ~/\[PATCH_1_2\]_Add_bcm2835_Raspberry-Pi_support.mbox
-> Applying: Add bcm2835/Raspberry-Pi support
-> /ptx/work/dude/jlu/raspi/barebox/.git/rebase-apply/patch:358:
-> trailing whitespace. .rate =3D UART0_CLOCK,
-> /ptx/work/dude/jlu/raspi/barebox/.git/rebase-apply/patch:410: space
-> before tab in indent. uint32_t rstc;
-> /ptx/work/dude/jlu/raspi/barebox/.git/rebase-apply/patch:411:
-> trailing whitespace.
->
-> /ptx/work/dude/jlu/raspi/barebox/.git/rebase-apply/patch:415:
-> trailing whitespace.
->
-> /ptx/work/dude/jlu/raspi/barebox/.git/rebase-apply/patch:595:
-> trailing whitespace.
->
-> warning: squelched 1 whitespace error warning: 6 lines add
-> whitespace errors.
->
-> So feel free to add my Tested-By for the cleaned-up version:
-> Tested-By: Jan Luebbe <jlu@pengutronix.de>
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 7db2837..c780340 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -128,8 +128,13 @@ config DRIVER_NET_DESIGNWARE_ALTDESCRIPTOR
+ config DRIVER_NET_GIANFAR
+ 	bool "Gianfar Ethernet"
+ 	depends on ARCH_MPC85XX
++	select FSL_MDIO
+ 	select MIIDEV
+ 
++config FSL_MDIO
++	bool
++	default n
++
+ source "drivers/net/usb/Kconfig"
+ 
+ config DRIVER_NET_MICREL
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index 2057963..af19d20 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -15,5 +15,6 @@ obj-$(CONFIG_NET_USB)			+= usb/
+ obj-$(CONFIG_DRIVER_NET_TSE)		+= altera_tse.o
+ obj-$(CONFIG_DRIVER_NET_KS8851_MLL)	+= ks8851_mll.o
+ obj-$(CONFIG_DRIVER_NET_DESIGNWARE)	+= designware.o
++obj-$(CONFIG_FSL_MDIO)			+= fsl_mdio.o
+ obj-$(CONFIG_DRIVER_NET_GIANFAR)	+= gianfar.o
+ obj-$(CONFIG_DRIVER_NET_MICREL)		+= ksz8864rmn.o
+-- 
+1.7.1
 
-Thank you for testing it.
-I'll fix the whitespace errors in the next patches.
-
-Best,
-
---
-Carlo Caione
 
 _______________________________________________
 barebox mailing list
