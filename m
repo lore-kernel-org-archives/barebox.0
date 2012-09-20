@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og107.obsmtp.com ([64.18.0.184])
+Received: from exprod5og106.obsmtp.com ([64.18.0.182])
  by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TEjet-0003ND-Hb
- for barebox@lists.infradead.org; Thu, 20 Sep 2012 16:31:24 +0000
+ id 1TEjes-0003Mj-GW
+ for barebox@lists.infradead.org; Thu, 20 Sep 2012 16:31:23 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Thu, 20 Sep 2012 17:31:08 +0100
-Message-Id: <1348158669-14034-5-git-send-email-renaud.barbier@ge.com>
+Date: Thu, 20 Sep 2012 17:31:05 +0100
+Message-Id: <1348158669-14034-2-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1348158669-14034-1-git-send-email-renaud.barbier@ge.com>
 References: <1348158669-14034-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,47 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] FSL mdio: configuration and build file
+Subject: [PATCH 1/5] phylib: bus reset function
 To: barebox@lists.infradead.org
 
-The configuration and build files are updated to compile the FSL mdio
-support.
+Added an entry point for a bus reset function.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- drivers/net/Kconfig  |    5 +++++
- drivers/net/Makefile |    1 +
- 2 files changed, 6 insertions(+), 0 deletions(-)
+ drivers/net/phy/phy.c |    3 +++
+ include/miidev.h      |    1 +
+ 2 files changed, 4 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 7db2837..c780340 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -128,8 +128,13 @@ config DRIVER_NET_DESIGNWARE_ALTDESCRIPTOR
- config DRIVER_NET_GIANFAR
- 	bool "Gianfar Ethernet"
- 	depends on ARCH_MPC85XX
-+	select FSL_MDIO
- 	select MIIDEV
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index 5406ea3..d9f5409 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -129,6 +129,9 @@ int phy_device_connect(struct eth_device *edev, struct mii_device *bus, int addr
+ 	unsigned int i;
+ 	int ret = -EINVAL;
  
-+config FSL_MDIO
-+	bool
-+	default n
++	if (bus->reset)
++		bus->reset(bus);
 +
- source "drivers/net/usb/Kconfig"
+ 	if (!edev->phydev) {
+ 		if (addr >= 0) {
+ 			dev = get_phy_device(bus, addr);
+diff --git a/include/miidev.h b/include/miidev.h
+index dc344ca..6e4ae92 100644
+--- a/include/miidev.h
++++ b/include/miidev.h
+@@ -36,6 +36,7 @@ struct mii_device {
  
- config DRIVER_NET_MICREL
-diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-index 2057963..af19d20 100644
---- a/drivers/net/Makefile
-+++ b/drivers/net/Makefile
-@@ -15,5 +15,6 @@ obj-$(CONFIG_NET_USB)			+= usb/
- obj-$(CONFIG_DRIVER_NET_TSE)		+= altera_tse.o
- obj-$(CONFIG_DRIVER_NET_KS8851_MLL)	+= ks8851_mll.o
- obj-$(CONFIG_DRIVER_NET_DESIGNWARE)	+= designware.o
-+obj-$(CONFIG_FSL_MDIO)			+= fsl_mdio.o
- obj-$(CONFIG_DRIVER_NET_GIANFAR)	+= gianfar.o
- obj-$(CONFIG_DRIVER_NET_MICREL)		+= ksz8864rmn.o
+ 	int	(*read) (struct mii_device *dev, int addr, int reg);
+ 	int	(*write) (struct mii_device *dev, int addr, int reg, int value);
++	int	(*reset) (struct mii_device *dev);
+ };
+ 
+ int mii_register(struct mii_device *dev);
 -- 
 1.7.1
 
