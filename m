@@ -1,13 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TEmCJ-0004Z7-MI
- for barebox@lists.infradead.org; Thu, 20 Sep 2012 19:14:04 +0000
+ id 1TEmO2-0005G2-OT
+ for barebox@lists.infradead.org; Thu, 20 Sep 2012 19:26:11 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jlu@pengutronix.de>) id 1TEmNz-00058m-Sg
+ for barebox@lists.infradead.org; Thu, 20 Sep 2012 21:26:07 +0200
+Received: from jlu by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <jlu@pengutronix.de>) id 1TEmNz-0004qf-Rk
+ for barebox@lists.infradead.org; Thu, 20 Sep 2012 21:26:07 +0200
+Date: Thu, 20 Sep 2012 21:26:07 +0200
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Thu, 20 Sep 2012 21:13:44 +0200
-Message-Id: <1348168424-11742-1-git-send-email-jlu@pengutronix.de>
-In-Reply-To: <1348149724-28468-1-git-send-email-t.gamez@phytec.de>
+Message-ID: <20120920192607.GA13630@pengutronix.de>
 References: <1348149724-28468-1-git-send-email-t.gamez@phytec.de>
+ <1348149724-28468-2-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1348149724-28468-2-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,89 +26,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Makefile: add target to produce a SPL compatible uImage
-To: barebox@lists.infradead.org, =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Subject: Re: [PATCH 2/3] ARM OMAP AM33XX: create new ARCH for AM33xx
+To: barebox@lists.infradead.org
 
-This is mostly useful during the initial port of barebox to a new
-board which is supported by u-boot. It also allows starting barebox
-from a SRAM-based u-boot SPL.
+Hi,
 
-A different load address can be set like this:
-make barebox.uimage UIMAGE_BASE=0x80000000
+On Thu, Sep 20, 2012 at 04:02:03PM +0200, Teresa G=E1mez wrote:
+> Created ARCH for AM33xx boards as second stage bootloader.
+> This includes:
+> - Added dmtimer0
+> - Created basic header files
+> - Added MMC support for ARCH_AM33XX
+> - Added reset function
 
-Also add barebox.ubl to CLEAN_FILES.
+Thanks for working on this!
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
----
-I've carried this patch for some time and adjusted it to support
-PBL (compressed image), but have not had an opportunity to verify
-it again.
+I've got a barebox booting as MLO+barebox.bin from SD on the
+BeagleBone, but it was a quick (or ugly) hack. A patch is here:
+http://git.pengutronix.de/?p=3Dplatform-pengutronix-beagleboneti.git;a=3Dbl=
+ob;f=3Dpatches/barebox-2012.07.0/0001-WIP-beaglebone-add-support-for-AM335x=
+-and-board.patch
 
-Teresa, if you have some time to try it out, that would be very
-much appreciated. :)
+I didn't have time to polish it for mainline inclusion and it's
+still based on 2012.07. I'll try to rebase it on your series and
+we should have first stage support rather soon.
 
+As the AM335x's SRAM is so large (109kB), it is possible to avoid a
+second stage and have a useful barebox even as MLO.
 
- .gitignore |    1 +
- Makefile   |   19 ++++++++++++++++++-
- 2 files changed, 19 insertions(+), 1 deletion(-)
+Regards,
+Jan
+-- =
 
-diff --git a/.gitignore b/.gitignore
-index 4154c73..7e98a25 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -35,6 +35,7 @@ barebox.srec
- barebox.netx
- barebox.s5p
- barebox.ubl
-+barebox.uimage
- barebox.map
- System.map
- Module.symvers
-diff --git a/Makefile b/Makefile
-index 0f1a319..5cb4730 100644
---- a/Makefile
-+++ b/Makefile
-@@ -686,6 +686,22 @@ ifndef CONFIG_PBL_IMAGE
- 	$(call cmd,check_file_size,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
- endif
- 
-+# By default the uImage load address is 2MB below CONFIG_TEXT_BASE,
-+# leaving space for the compressed PBL image at 1MB below CONFIG_TEXT_BASE.
-+UIMAGE_BASE ?= $(shell printf "0x%08x" $$(($(CONFIG_TEXT_BASE) - 0x200000)))
-+
-+# For development provide a target which makes barebox loadable by an
-+# unmodified u-boot
-+quiet_cmd_barebox_mkimage = MKIMAGE $@
-+      cmd_barebox_mkimage = $(srctree)/scripts/mkimage -A $(ARCH) -T firmware -C none \
-+       -O barebox -a $(UIMAGE_BASE) -e $(UIMAGE_BASE) \
-+       -n "barebox $(KERNELRELEASE)" -d $< $@
-+
-+# barebox.uimage is build from the raw barebox binary, without any other
-+# headers.
-+barebox.uimage: $(KBUILD_BINARY) FORCE
-+	$(call if_changed,barebox_mkimage)
-+
- ifdef CONFIG_X86
- barebox.S: barebox
- ifdef CONFIG_X86_HDBOOT
-@@ -1015,7 +1031,8 @@ CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
-                 .tmp_version .tmp_barebox* barebox.bin barebox.map barebox.S \
- 		.tmp_kallsyms* barebox_default_env* barebox.ldr \
- 		scripts/bareboxenv-target barebox-flash-image \
--		Doxyfile.version barebox.srec barebox.s5p
-+		Doxyfile.version barebox.srec barebox.s5p barebox.ubl \
-+		barebox.uimage
- 
- # Directories & files removed with 'make mrproper'
- MRPROPER_DIRS  += include/config include2 usr/include
--- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
