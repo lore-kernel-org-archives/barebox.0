@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og106.obsmtp.com ([64.18.0.182])
+Received: from exprod5og107.obsmtp.com ([64.18.0.184])
  by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TEjes-0003Mj-GW
- for barebox@lists.infradead.org; Thu, 20 Sep 2012 16:31:23 +0000
+ id 1TEjer-0003MT-Lr
+ for barebox@lists.infradead.org; Thu, 20 Sep 2012 16:31:22 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Thu, 20 Sep 2012 17:31:05 +0100
-Message-Id: <1348158669-14034-2-git-send-email-renaud.barbier@ge.com>
-In-Reply-To: <1348158669-14034-1-git-send-email-renaud.barbier@ge.com>
-References: <1348158669-14034-1-git-send-email-renaud.barbier@ge.com>
+Date: Thu, 20 Sep 2012 17:31:04 +0100
+Message-Id: <1348158669-14034-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,45 +19,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] phylib: bus reset function
+Subject: [PATCH 0/5] gianfar: mdio bus support
 To: barebox@lists.infradead.org
 
-Added an entry point for a bus reset function.
+This patch set removes the mdio bus registration and phy access functions from
+the Ethernet driver. The mdio bus is registered independently.
+The Ethernet driver then finds the mii device by name to have access
+to the PHYs.
+Since the mdio bus requires to be reset, a reset function is added to the
+mii_device structure. The reset function is called when a PHY is 
+connected by the Ethernet driver.
 
-Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
----
- drivers/net/phy/phy.c |    3 +++
- include/miidev.h      |    1 +
- 2 files changed, 4 insertions(+), 0 deletions(-)
+Renaud Barbier (5):
+  phylib: bus reset function
+  FSL mdio bus support
+  gianfar update
+  FSL mdio: configuration and build file
+  P2020rdb: eTSEC2 support
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 5406ea3..d9f5409 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -129,6 +129,9 @@ int phy_device_connect(struct eth_device *edev, struct mii_device *bus, int addr
- 	unsigned int i;
- 	int ret = -EINVAL;
- 
-+	if (bus->reset)
-+		bus->reset(bus);
-+
- 	if (!edev->phydev) {
- 		if (addr >= 0) {
- 			dev = get_phy_device(bus, addr);
-diff --git a/include/miidev.h b/include/miidev.h
-index dc344ca..6e4ae92 100644
---- a/include/miidev.h
-+++ b/include/miidev.h
-@@ -36,6 +36,7 @@ struct mii_device {
- 
- 	int	(*read) (struct mii_device *dev, int addr, int reg);
- 	int	(*write) (struct mii_device *dev, int addr, int reg, int value);
-+	int	(*reset) (struct mii_device *dev);
- };
- 
- int mii_register(struct mii_device *dev);
--- 
-1.7.1
+ arch/ppc/boards/freescale-p2020rdb/p2020rdb.c |   25 ++++-
+ arch/ppc/include/asm/fsl_mdio.h               |   11 ++
+ arch/ppc/mach-mpc85xx/eth-devices.c           |   14 +--
+ arch/ppc/mach-mpc85xx/include/mach/gianfar.h  |    2 +
+ drivers/net/Kconfig                           |    5 +
+ drivers/net/Makefile                          |    1 +
+ drivers/net/fsl_mdio.c                        |  134 +++++++++++++++++++++++++
+ drivers/net/gianfar.c                         |  127 ++++--------------------
+ drivers/net/gianfar.h                         |    3 +-
+ drivers/net/phy/phy.c                         |    3 +
+ include/miidev.h                              |    1 +
+ 11 files changed, 204 insertions(+), 122 deletions(-)
+ create mode 100644 arch/ppc/include/asm/fsl_mdio.h
+ create mode 100644 drivers/net/fsl_mdio.c
 
 
 _______________________________________________
