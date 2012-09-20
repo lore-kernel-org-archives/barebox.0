@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from exprod5og106.obsmtp.com ([64.18.0.182])
  by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TEjeq-0003MU-0y
- for barebox@lists.infradead.org; Thu, 20 Sep 2012 16:31:20 +0000
+ id 1TEjev-0003NV-0j
+ for barebox@lists.infradead.org; Thu, 20 Sep 2012 16:31:25 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Thu, 20 Sep 2012 17:31:06 +0100
-Message-Id: <1348158669-14034-3-git-send-email-renaud.barbier@ge.com>
+Date: Thu, 20 Sep 2012 17:31:09 +0100
+Message-Id: <1348158669-14034-6-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1348158669-14034-1-git-send-email-renaud.barbier@ge.com>
 References: <1348158669-14034-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,180 +21,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] FSL mdio bus support
+Subject: [PATCH 5/5] P2020rdb: eTSEC2 support
 To: barebox@lists.infradead.org
 
-An new file is added to handle the Freescale mdio bus. PHY access functions
-have been pulled out of the gianfar driver and a bus reset function defined
-in this new file.
-Also an initialization function is added to register the mii device
-with the read/write/reset function and bus base address.
+The mdio bus is registered before adding the gianfar interface.
+Also the eTSEC2 is configured. Either eTSEC2 or eTSEC3 can now be
+used.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- arch/ppc/include/asm/fsl_mdio.h |   11 +++
- drivers/net/fsl_mdio.c          |  134 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 145 insertions(+), 0 deletions(-)
- create mode 100644 arch/ppc/include/asm/fsl_mdio.h
- create mode 100644 drivers/net/fsl_mdio.c
+ arch/ppc/boards/freescale-p2020rdb/p2020rdb.c |   25 +++++++++++++++++++++++--
+ 1 files changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/arch/ppc/include/asm/fsl_mdio.h b/arch/ppc/include/asm/fsl_mdio.h
-new file mode 100644
-index 0000000..816d8e0
---- /dev/null
-+++ b/arch/ppc/include/asm/fsl_mdio.h
-@@ -0,0 +1,11 @@
-+/*
-+ * Copyright 2012 GE Intelligent Platforms, Inc.
-+ *
-+ * This software may be used and distributed according to the
-+ * terms of the GNU Public License, Version 2, incorporated
-+ * herein by reference.
-+ *
-+ */
-+int fsl_local_mdio_write(void __iomem *phyregs, uint addr, uint reg, uint val);
-+uint fsl_local_mdio_read(void __iomem *phyregs, uint phyid, uint reg);
-+int fsl_pq_mdio_init(void *busaddr);
-diff --git a/drivers/net/fsl_mdio.c b/drivers/net/fsl_mdio.c
-new file mode 100644
-index 0000000..174a8e0
---- /dev/null
-+++ b/drivers/net/fsl_mdio.c
-@@ -0,0 +1,134 @@
-+/*
-+ * Copyright 2009-2010 Freescale Semiconductor, Inc.
-+ *
-+ * This software may be used and distributed according to the
-+ * terms of the GNU Public License, Version 2, incorporated
-+ * herein by reference.
-+ *
-+ * Copyright 2012 GE Intelligent Platforms, Inc.
-+ * based on work by Jun-jie Zhang and Mingkai Hu
-+ */
+diff --git a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+index edb9bcd..9d83133 100644
+--- a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
++++ b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+@@ -59,9 +59,14 @@
+ #define SYSCLK_50	50000000
+ #define SYSCLK_100	100000000
+ 
+-/* Ethernet. Use eTSEC3 */
++/* eTSEC2 and eTSEC 3 Ethernet port parameters */
+ static struct gfar_info_struct gfar_info[] = {
+ 	{
++		.phyaddr = 0,
++		.tbiana = 0x1a0,
++		.tbicr = 0x9140,
++	},
++	{
+ 		.phyaddr = 1,
+ 		.tbiana = 0,
+ 		.tbicr = 0,
+@@ -75,6 +80,9 @@ struct i2c_platform_data i2cplat = {
+ 
+ static int devices_init(void)
+ {
++	void __iomem *tsecregs;
++	int ix;
 +
-+#include <common.h>
-+#include <linux/phy.h>
-+#include <init.h>
-+#include <miidev.h>
-+#include <malloc.h>
-+#include <errno.h>
-+#include <asm/io.h>
-+#include "gianfar.h"
-+
-+/* Writes the given phy's reg with value, using the specified MDIO regs */
-+int fsl_local_mdio_write(void __iomem *phyregs, uint addr, uint reg, uint val)
-+{
-+	uint64_t start;
-+
-+	out_be32(phyregs + GFAR_MIIMADD_OFFSET, (addr << 8) | (reg & 0x1f));
-+	out_be32(phyregs + GFAR_MIIMCON_OFFSET, val);
-+
-+	start = get_time_ns();
-+	while (!is_timeout(start, 10 * MSECOND)) {
-+		if (!(in_be32(phyregs + GFAR_MIIMMIND_OFFSET) &
-+					GFAR_MIIMIND_BUSY))
-+			return 0;
+ 	add_cfi_flash_device(DEVICE_ID_DYNAMIC, CFG_FLASH_BASE, 16 << 20, 0);
+ 
+ 	add_generic_device("i2c-fsl", 0, NULL, I2C1_BASE_ADDR,
+@@ -82,8 +90,21 @@ static int devices_init(void)
+ 	add_generic_device("i2c-fsl", 1, NULL, I2C2_BASE_ADDR,
+ 			0x100, IORESOURCE_MEM, &i2cplat);
+ 
++	/*
++	 * Assign TBI physical address early because eTSEC2 has a PHY address
++	 * of 0. Otherwise, the PHY on eTSEC2 goes into a bad state.
++	 */
++	for (ix = 0; ix < 3; ix++) {
++		tsecregs = (void __iomem *)(GFAR_BASE_ADDR + (ix * 0x1000));
++		out_be32(tsecregs + 0x30, 0x1f);
 +	}
 +
-+	return -EIO;
-+}
++	fsl_pq_mdio_init((void *)MDIO_BASE_ADDR);
 +
-+/*
-+ * Reads register regnum on the device's PHY through the
-+ * specified registers. It lowers and raises the read
-+ * command, and waits for the data to become valid (miimind
-+ * notvalid bit cleared), and the bus to cease activity (miimind
-+ * busy bit cleared), and then returns the value
-+ */
-+uint fsl_local_mdio_read(void __iomem *phyregs, uint phyid, uint reg)
-+{
-+	uint64_t start;
-+
-+	/* Put the address of the phy, and the register number into MIIMADD */
-+	out_be32(phyregs + GFAR_MIIMADD_OFFSET, (phyid << 8) | (reg & 0x1f));
-+
-+	/* Clear the command register, and wait */
-+	out_be32(phyregs + GFAR_MIIMCOM_OFFSET, 0);
-+
-+	/* Initiate a read command, and wait */
-+	out_be32(phyregs + GFAR_MIIMCOM_OFFSET, GFAR_MIIM_READ_COMMAND);
-+
-+	start = get_time_ns();
-+	while (!is_timeout(start, 10 * MSECOND)) {
-+		if (!(in_be32(phyregs + GFAR_MIIMMIND_OFFSET) &
-+			(GFAR_MIIMIND_NOTVALID | GFAR_MIIMIND_BUSY)))
-+			return in_be32(phyregs + GFAR_MIIMSTAT_OFFSET);
-+	}
-+
-+	return -EIO;
-+}
-+
-+/* Read a MII PHY register. */
-+static int fsl_miiphy_read(struct mii_device *bus, int addr, int reg)
-+{
-+	struct device_d *dev = bus->parent;
-+	void __iomem *phyregs = bus->priv;
-+	int ret;
-+
-+	ret = fsl_local_mdio_read(phyregs, addr, reg);
-+	if (ret == -EIO)
-+		dev_err(dev, "Can't read PHY at address %d\n", addr);
-+
-+	return ret;
-+}
-+
-+/* Write a MII PHY register.  */
-+static int fsl_miiphy_write(struct mii_device *bus, int addr, int reg,
-+				int value)
-+{
-+	struct device_d *dev = bus->parent;
-+	void __iomem *phyregs = bus->priv;
-+	unsigned short val = value;
-+	int ret;
-+
-+	ret = fsl_local_mdio_write(phyregs, addr, reg, val);
-+
-+	if (ret)
-+		dev_err(dev, "Can't write PHY at address %d\n", addr);
-+
-+	return 0;
-+}
-+
-+static int fsl_pq_mdio_reset(struct mii_device *bus)
-+{
-+	void __iomem *phyregs = bus->priv;
-+	uint64_t start;
-+
-+	/* Reset MII (due to new addresses) */
-+	out_be32(phyregs + GFAR_MIIMCFG_OFFSET, GFAR_MIIMCFG_RESET);
-+	out_be32(phyregs + GFAR_MIIMCFG_OFFSET, GFAR_MIIMCFG_INIT_VALUE);
-+
-+	start = get_time_ns();
-+	while (!is_timeout(start, 10 * MSECOND)) {
-+		if (!(in_be32(phyregs + GFAR_MIIMMIND_OFFSET) &
-+				GFAR_MIIMIND_BUSY))
-+			break;
-+	}
-+
-+	return 0;
-+}
-+
-+int fsl_pq_mdio_init(void *busaddr)
-+{
-+	struct mii_device *bus;
-+
-+	bus = xzalloc(sizeof(struct mii_device));
-+	if (bus == NULL)
-+		return -ENOMEM;
-+
-+	bus->read = fsl_miiphy_read;
-+	bus->write = fsl_miiphy_write;
-+	bus->reset = fsl_pq_mdio_reset;
-+	bus->parent = NULL;
-+	bus->priv = busaddr;
-+
-+	return mii_register(bus);
-+}
++	/* eTSEC2 */
++	fsl_eth_init(2, &gfar_info[0]);
+ 	/* eTSEC3 */
+-	fsl_eth_init(3, &gfar_info[0]);
++	fsl_eth_init(3, &gfar_info[1]);
+ 
+ 	devfs_add_partition("nor0", 0xf80000, 0x80000, DEVFS_PARTITION_FIXED,
+ 			    "self0");
 -- 
 1.7.1
 
