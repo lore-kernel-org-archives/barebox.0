@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TEydB-0008Em-IX
- for barebox@lists.infradead.org; Fri, 21 Sep 2012 08:30:38 +0000
-Date: Fri, 21 Sep 2012 10:30:34 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120921083034.GE1322@pengutronix.de>
-References: <1348158669-14034-1-git-send-email-renaud.barbier@ge.com>
- <1348158669-14034-2-git-send-email-renaud.barbier@ge.com>
- <20120920182332.GD26553@game.jcrosoft.org>
- <20120921063408.GC1322@pengutronix.de>
- <20120921080658.GL26553@game.jcrosoft.org>
+Received: from 20.mo5.mail-out.ovh.net ([91.121.55.239]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TF2kU-0004Tj-Va
+ for barebox@lists.infradead.org; Fri, 21 Sep 2012 12:54:28 +0000
+Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 27ED61014178
+ for <barebox@lists.infradead.org>; Fri, 21 Sep 2012 15:00:16 +0200 (CEST)
+Date: Fri, 21 Sep 2012 14:51:51 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120921125151.GM26553@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120921080658.GL26553@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,65 +24,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] phylib: bus reset function
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/5] at91 framebuffer support
+To: barebox@lists.infradead.org
+Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
 
-On Fri, Sep 21, 2012 at 10:06:58AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 08:34 Fri 21 Sep     , Sascha Hauer wrote:
-> > On Thu, Sep 20, 2012 at 08:23:32PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 17:31 Thu 20 Sep     , Renaud Barbier wrote:
-> > > > Added an entry point for a bus reset function.
-> > > > 
-> > > > Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
-> > > > ---
-> > > >  drivers/net/phy/phy.c |    3 +++
-> > > >  include/miidev.h      |    1 +
-> > > >  2 files changed, 4 insertions(+), 0 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-> > > > index 5406ea3..d9f5409 100644
-> > > > --- a/drivers/net/phy/phy.c
-> > > > +++ b/drivers/net/phy/phy.c
-> > > > @@ -129,6 +129,9 @@ int phy_device_connect(struct eth_device *edev, struct mii_device *bus, int addr
-> > > >  	unsigned int i;
-> > > >  	int ret = -EINVAL;
-> > > >  
-> > > > +	if (bus->reset)
-> > > > +		bus->reset(bus);
-> > > > +
-> > > I do not like this we should not touch the bus at phy connect
-> > 
-> > Then please make a suggestion where it should be then. I also have some
-> > drivers where this function could be used.
-> I have too the need of a reset
-> 
-> I get a big issue on reset the mii bus at eth open
-> 
-> my only idea was to move the phy detect awqy from the eth_open to the mii bus
-> probe
-> 
-> but this will increase the boot time as we do not need to probe the phy if we
-> do not use the network
+Hi,
 
-Before we start adding quirks for do-the-reset-only-when necessary,
-access-the-phy-pnly-when necessary can we have a statement on which
-timescales we talk about here? A quick test on a i.MX board shows that
-detecting the phy takes 186us when its address is specified and 1.7ms
-when the whole bus is scanned for phys. This is really not worth adding
-quirks for.
+	The following patch serie add the support of the Framebuffer on at91
+	sam9261/sam9263 and sam9g45. The sam9x5 series is not yet supported as
+	they use an other IP.
 
-BTW the reset function for the mii *bus* really should be done when the
-bus is registered. Doing it when a new phy is registered will break phys
-already present.
+	And enable it on sam0m10g45ek (9263ek and 9261ek will be availlable
+	later).
 
-Sascha
+	This is based on the next branch
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+The following changes since commit 6392955f283389fa4fecb0e2d5d1837bcb83f480:
+
+  Merge branch 'for-next/testing-menu' into next (2012-09-20 23:11:42 +0200)
+
+are available in the git repository at:
+
+
+  git://git.jcrosoft.org/barebox.git delivery/atmel_fb
+
+for you to fetch changes up to a60a81609fdc332ca8b84d2b8633dc59f8aacbc8:
+
+  at91sam9m10g45ek: add lcdc support (2012-09-21 20:49:25 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (5):
+      video: add atmel lcdc frambuffer support
+      at91sam9263: add atmel lcdc frambuffer support
+      at91sam9261: add atmel lcdc frambuffer support
+      at91sam9g45: add atmel lcdc frambuffer support
+      at91sam9m10g45ek: add lcdc support
+
+ arch/arm/boards/at91sam9m10g45ek/env/bin/boot_board |    7 +++
+ arch/arm/boards/at91sam9m10g45ek/env/splash.png     |  Bin 0 -> 22747 bytes
+ arch/arm/boards/at91sam9m10g45ek/init.c             |   35 +++++++++++++
+ arch/arm/configs/at91sam9m10g45ek_defconfig         |   11 ++--
+ arch/arm/mach-at91/at91sam9261.c                    |    1 +
+ arch/arm/mach-at91/at91sam9261_devices.c            |   51 ++++++++++++++++++
+ arch/arm/mach-at91/at91sam9263.c                    |    1 +
+ arch/arm/mach-at91/at91sam9263_devices.c            |   40 +++++++++++++++
+ arch/arm/mach-at91/at91sam9g45.c                    |    1 +
+ arch/arm/mach-at91/at91sam9g45_devices.c            |   49 ++++++++++++++++++
+ arch/arm/mach-at91/include/mach/atmel_lcdc.h        |  209 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/include/mach/board.h             |    4 ++
+ drivers/video/Kconfig                               |    4 ++
+ drivers/video/Makefile                              |    1 +
+ drivers/video/atmel_lcdfb.c                         |  477 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 15 files changed, 888 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm/boards/at91sam9m10g45ek/env/splash.png
+ create mode 100644 arch/arm/mach-at91/include/mach/atmel_lcdc.h
+ create mode 100644 drivers/video/atmel_lcdfb.c
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
