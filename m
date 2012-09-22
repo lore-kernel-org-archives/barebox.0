@@ -1,14 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f49.google.com ([209.85.214.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TFNQc-0007Fg-Cx
- for barebox@lists.infradead.org; Sat, 22 Sep 2012 10:59:22 +0000
-Received: by mail-bk0-f49.google.com with SMTP id ji2so2069215bkc.36
- for <barebox@lists.infradead.org>; Sat, 22 Sep 2012 03:59:18 -0700 (PDT)
-From: Christoph Fritz <chf.fritz@googlemail.com>
-Date: Sat, 22 Sep 2012 12:59:07 +0200
-Message-ID: <1348311547.3917.6.camel@mars>
-Mime-Version: 1.0
+Received: from 19.mo5.mail-out.ovh.net ([46.105.35.78]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TFO8H-000897-5n
+ for barebox@lists.infradead.org; Sat, 22 Sep 2012 11:44:26 +0000
+Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id E01B6FFA472
+ for <barebox@lists.infradead.org>; Sat, 22 Sep 2012 13:50:17 +0200 (CEST)
+Date: Sat, 22 Sep 2012 13:41:53 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120922114153.GS26553@game.jcrosoft.org>
+References: <1344781832-17978-1-git-send-email-s.hauer@pengutronix.de>
+ <20120920185243.GK26553@game.jcrosoft.org>
+ <20120920195618.GT6180@pengutronix.de>
+ <20120921132336.GO26553@game.jcrosoft.org>
+ <20120921144631.GP26553@game.jcrosoft.org>
+ <20120922102114.GH1322@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20120922102114.GH1322@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,86 +31,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] defaultenv-2: add nameserver IPs to kernel-parameter ip=
+Subject: Re: [PATCH] ARM: enable MMU in pbl
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Due to lack of testing environment this patch is untested.
+On 12:21 Sat 22 Sep     , Sascha Hauer wrote:
+> On Fri, Sep 21, 2012 at 04:46:31PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 15:23 Fri 21 Sep     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > On 21:56 Thu 20 Sep     , Sascha Hauer wrote:
+> > > > On Thu, Sep 20, 2012 at 08:52:43PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > > On 16:30 Sun 12 Aug     , Sascha Hauer wrote:
+> > > > > > The following enables the MMU during decompression which speeds up
+> > > > > > things significantly.
+> > > > > 
+> > > > > Atmel board does not boot
+> > > > > 
+> > > > > barebox@Atmel at91sam9m10g45-ek:/ dhcp && nfs
+> > > > > /opt/work/barebox/build/sam9m10g45ek-compressed/arch/arm/pbl/zbarebox.bin &&
+> > > > > bootm zbarebox.bin
+> > > > > phy0: Link is up - 100/Full
+> > > > > DHCP client bound to address 192.168.200.43
+> > > > > 
+> > > > > Filename
+> > > > > '/opt/work/barebox/build/sam9m10g45ek-compressed/arch/arm/pbl/zbarebox.bin'.
+> > > > > 	[#################################################################]
+> > > > > 
+> > > > > without MMU boot fine
+> > > > 
+> > > > does it work with the v1 version of this patch?
+> > > work but can use nand :(
+> > work but can *not* use nand :(
+> 
+> The at91 port depends on at91bootstrap as first stage loader, right? So
+> booting from NAND seems to need out of tree code. I can't help you then.
+no I'm working to add it and drop the at91boostrap so it's mandatory for me
+to have the MMU and nand access in the PBL
 
-Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
----
- defaultenv-2/base/bin/bootargs-ip         |    4 +++-
- defaultenv-2/base/bin/bootargs-ip-barebox |    5 ++++-
- defaultenv-2/base/bin/ifup                |    4 ++++
- defaultenv-2/base/network/eth0            |    2 ++
- 4 files changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/defaultenv-2/base/bin/bootargs-ip b/defaultenv-2/base/bin/bootargs-ip
-index 2d4486c..53623853 100644
---- a/defaultenv-2/base/bin/bootargs-ip
-+++ b/defaultenv-2/base/bin/bootargs-ip
-@@ -7,5 +7,7 @@
- if [ $ip = dhcp ]; then
- 	global.linux.bootargs.dyn.ip="ip=dhcp"
- else
--	global.linux.bootargs.dyn.ip="ip=$ipaddr:$serverip:$gateway:$netmask::eth0:"
-+	global.linux.bootargs.dyn.ip="ip=$ipaddr:$serverip:$gateway:$netmask::eth0::"
-+	global.linux.bootargs.dyn.ip="$global.linux.bootargs.dyn.ip$eth0.nameserver0:"
-+	global.linux.bootargs.dyn.ip="$global.linux.bootargs.dyn.ip$eth0.nameserver1"
- fi
-diff --git a/defaultenv-2/base/bin/bootargs-ip-barebox b/defaultenv-2/base/bin/bootargs-ip-barebox
-index 5a3b984..09f42a8 100644
---- a/defaultenv-2/base/bin/bootargs-ip-barebox
-+++ b/defaultenv-2/base/bin/bootargs-ip-barebox
-@@ -4,4 +4,7 @@
- 
- ifup eth0
- 
--global.linux.bootargs.dyn.ip="ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask::eth0:"
-+global.linux.bootargs.dyn.ip="ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:"
-+global.linux.bootargs.dyn.ip="$global.linux.bootargs.dyn.ip$eth0.netmask::eth0::"
-+global.linux.bootargs.dyn.ip="$global.linux.bootargs.dyn.ip$eth0.nameserver0:"
-+global.linux.bootargs.dyn.ip="$global.linux.bootargs.dyn.ip$eth0.nameserver1"
-diff --git a/defaultenv-2/base/bin/ifup b/defaultenv-2/base/bin/ifup
-index 37b986c..fe5a242 100644
---- a/defaultenv-2/base/bin/ifup
-+++ b/defaultenv-2/base/bin/ifup
-@@ -26,6 +26,8 @@ netmask=
- gateway=
- serverip=
- ethaddr=
-+nameserver0=
-+nameserver1=
- 
- . $cmd
- 
-@@ -51,6 +53,8 @@ if [ "$ip" = static ]; then
- 	${interface}.netmask=$netmask
- 	${interface}.serverip=$serverip
- 	${interface}.gateway=$gateway
-+	${interface}.nameserver0=$nameserver0
-+	${interface}.nameserver1=$nameserver1
- 	ret=0
- elif [ "$ip" = dhcp ]; then
- 	dhcp
-diff --git a/defaultenv-2/base/network/eth0 b/defaultenv-2/base/network/eth0
-index 7e731ca..2ed64ca 100644
---- a/defaultenv-2/base/network/eth0
-+++ b/defaultenv-2/base/network/eth0
-@@ -9,6 +9,8 @@ ipaddr=
- netmask=
- gateway=
- serverip=
-+nameserver0=
-+nameserver1=
- 
- # MAC address if needed
- #ethaddr=xx:xx:xx:xx:xx:xx
--- 
-1.7.2.5
-
-
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
