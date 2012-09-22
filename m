@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-bk0-f49.google.com ([209.85.214.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TFNQP-0007Fg-QJ
- for barebox@lists.infradead.org; Sat, 22 Sep 2012 10:59:09 +0000
-Received: by bkcji2 with SMTP id ji2so2069215bkc.36
- for <barebox@lists.infradead.org>; Sat, 22 Sep 2012 03:59:02 -0700 (PDT)
+ id 1TFNQc-0007Fg-Cx
+ for barebox@lists.infradead.org; Sat, 22 Sep 2012 10:59:22 +0000
+Received: by mail-bk0-f49.google.com with SMTP id ji2so2069215bkc.36
+ for <barebox@lists.infradead.org>; Sat, 22 Sep 2012 03:59:18 -0700 (PDT)
 From: Christoph Fritz <chf.fritz@googlemail.com>
-Date: Sat, 22 Sep 2012 12:58:50 +0200
-Message-ID: <1348311530.3917.5.camel@mars>
+Date: Sat, 22 Sep 2012 12:59:07 +0200
+Message-ID: <1348311547.3917.6.camel@mars>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,64 +21,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] net: add nameserver IPs to kernel-parameter ip=
+Subject: [PATCH 2/2] defaultenv-2: add nameserver IPs to kernel-parameter ip=
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Kernel-parameter "ip=" is used to assign network configuration.
-With linux kernel 3.7 it is also possible to set nameserver IPs.
-
-This patch adds two new options (nameserver0 and nameserver1) to
-ethernet device parameter. It also updates defaultenv version 1.
+Due to lack of testing environment this patch is untested.
 
 Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
 ---
- defaultenv/bin/boot |    4 +++-
- defaultenv/config   |    2 ++
- net/eth.c           |    2 ++
- 3 files changed, 7 insertions(+), 1 deletions(-)
+ defaultenv-2/base/bin/bootargs-ip         |    4 +++-
+ defaultenv-2/base/bin/bootargs-ip-barebox |    5 ++++-
+ defaultenv-2/base/bin/ifup                |    4 ++++
+ defaultenv-2/base/network/eth0            |    2 ++
+ 4 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
-index 4e2056e..d5b5844 100644
---- a/defaultenv/bin/boot
-+++ b/defaultenv/bin/boot
-@@ -61,7 +61,9 @@ if [ x$ip = xdhcp -o ]; then
- elif [ x$ip = xnone ]; then
- 	bootargs="$bootargs ip=none"
+diff --git a/defaultenv-2/base/bin/bootargs-ip b/defaultenv-2/base/bin/bootargs-ip
+index 2d4486c..53623853 100644
+--- a/defaultenv-2/base/bin/bootargs-ip
++++ b/defaultenv-2/base/bin/bootargs-ip
+@@ -7,5 +7,7 @@
+ if [ $ip = dhcp ]; then
+ 	global.linux.bootargs.dyn.ip="ip=dhcp"
  else
--	bootargs="$bootargs ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask::eth0:"
-+	bootargs="$bootargs ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:"
-+	bootargs="$bootargs$eth0.netmask::eth0::"
-+	bootargs="$bootargs$eth0.nameserver0:$eth0.nameserver1"
+-	global.linux.bootargs.dyn.ip="ip=$ipaddr:$serverip:$gateway:$netmask::eth0:"
++	global.linux.bootargs.dyn.ip="ip=$ipaddr:$serverip:$gateway:$netmask::eth0::"
++	global.linux.bootargs.dyn.ip="$global.linux.bootargs.dyn.ip$eth0.nameserver0:"
++	global.linux.bootargs.dyn.ip="$global.linux.bootargs.dyn.ip$eth0.nameserver1"
  fi
+diff --git a/defaultenv-2/base/bin/bootargs-ip-barebox b/defaultenv-2/base/bin/bootargs-ip-barebox
+index 5a3b984..09f42a8 100644
+--- a/defaultenv-2/base/bin/bootargs-ip-barebox
++++ b/defaultenv-2/base/bin/bootargs-ip-barebox
+@@ -4,4 +4,7 @@
  
+ ifup eth0
  
-diff --git a/defaultenv/config b/defaultenv/config
-index 391ba47..6596753 100644
---- a/defaultenv/config
-+++ b/defaultenv/config
-@@ -18,6 +18,8 @@ global.dhcp.vendor_id=barebox
- #eth0.netmask=a.b.c.d
- #eth0.serverip=a.b.c.d
- #eth0.gateway=a.b.c.d
-+#eth0.nameserver0=a.b.c.d
-+#eth0.nameserver1=a.b.c.d
+-global.linux.bootargs.dyn.ip="ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask::eth0:"
++global.linux.bootargs.dyn.ip="ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:"
++global.linux.bootargs.dyn.ip="$global.linux.bootargs.dyn.ip$eth0.netmask::eth0::"
++global.linux.bootargs.dyn.ip="$global.linux.bootargs.dyn.ip$eth0.nameserver0:"
++global.linux.bootargs.dyn.ip="$global.linux.bootargs.dyn.ip$eth0.nameserver1"
+diff --git a/defaultenv-2/base/bin/ifup b/defaultenv-2/base/bin/ifup
+index 37b986c..fe5a242 100644
+--- a/defaultenv-2/base/bin/ifup
++++ b/defaultenv-2/base/bin/ifup
+@@ -26,6 +26,8 @@ netmask=
+ gateway=
+ serverip=
+ ethaddr=
++nameserver0=
++nameserver1=
  
- # can be either 'tftp', 'nfs', 'nand', 'nor' or 'disk'
- kernel_loc=tftp
-diff --git a/net/eth.c b/net/eth.c
-index d42a72d..bb8157b 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -229,6 +229,8 @@ int eth_register(struct eth_device *edev)
- 	dev_add_param(dev, "gateway", eth_set_ipaddr, NULL, 0);
- 	dev_add_param(dev, "netmask", eth_set_ipaddr, NULL, 0);
- 	dev_add_param(dev, "serverip", eth_set_ipaddr, NULL, 0);
-+	dev_add_param(dev, "nameserver0", eth_set_ipaddr, NULL, 0);
-+	dev_add_param(dev, "nameserver1", eth_set_ipaddr, NULL, 0);
+ . $cmd
  
- 	edev->init(edev);
+@@ -51,6 +53,8 @@ if [ "$ip" = static ]; then
+ 	${interface}.netmask=$netmask
+ 	${interface}.serverip=$serverip
+ 	${interface}.gateway=$gateway
++	${interface}.nameserver0=$nameserver0
++	${interface}.nameserver1=$nameserver1
+ 	ret=0
+ elif [ "$ip" = dhcp ]; then
+ 	dhcp
+diff --git a/defaultenv-2/base/network/eth0 b/defaultenv-2/base/network/eth0
+index 7e731ca..2ed64ca 100644
+--- a/defaultenv-2/base/network/eth0
++++ b/defaultenv-2/base/network/eth0
+@@ -9,6 +9,8 @@ ipaddr=
+ netmask=
+ gateway=
+ serverip=
++nameserver0=
++nameserver1=
  
+ # MAC address if needed
+ #ethaddr=xx:xx:xx:xx:xx:xx
 -- 
 1.7.2.5
 
