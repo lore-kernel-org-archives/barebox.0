@@ -1,24 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo5.mail-out.ovh.net ([46.105.35.78]
+Received: from 4.mo5.mail-out.ovh.net ([178.33.111.247]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TFO8H-000897-5n
- for barebox@lists.infradead.org; Sat, 22 Sep 2012 11:44:26 +0000
+ id 1TFOA7-0008Jo-DT
+ for barebox@lists.infradead.org; Sat, 22 Sep 2012 11:46:23 +0000
 Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id E01B6FFA472
- for <barebox@lists.infradead.org>; Sat, 22 Sep 2012 13:50:17 +0200 (CEST)
-Date: Sat, 22 Sep 2012 13:41:53 +0200
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 73F49FFA47D
+ for <barebox@lists.infradead.org>; Sat, 22 Sep 2012 13:52:11 +0200 (CEST)
+Date: Sat, 22 Sep 2012 13:43:46 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120922114153.GS26553@game.jcrosoft.org>
-References: <1344781832-17978-1-git-send-email-s.hauer@pengutronix.de>
- <20120920185243.GK26553@game.jcrosoft.org>
- <20120920195618.GT6180@pengutronix.de>
- <20120921132336.GO26553@game.jcrosoft.org>
- <20120921144631.GP26553@game.jcrosoft.org>
- <20120922102114.GH1322@pengutronix.de>
+Message-ID: <20120922114346.GT26553@game.jcrosoft.org>
+References: <1348311530.3917.5.camel@mars>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120922102114.GH1322@pengutronix.de>
+In-Reply-To: <1348311530.3917.5.camel@mars>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,41 +26,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: enable MMU in pbl
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 1/2] net: add nameserver IPs to kernel-parameter ip=
+To: Christoph Fritz <chf.fritz@googlemail.com>
 Cc: barebox@lists.infradead.org
 
-On 12:21 Sat 22 Sep     , Sascha Hauer wrote:
-> On Fri, Sep 21, 2012 at 04:46:31PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 15:23 Fri 21 Sep     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 21:56 Thu 20 Sep     , Sascha Hauer wrote:
-> > > > On Thu, Sep 20, 2012 at 08:52:43PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > > On 16:30 Sun 12 Aug     , Sascha Hauer wrote:
-> > > > > > The following enables the MMU during decompression which speeds up
-> > > > > > things significantly.
-> > > > > 
-> > > > > Atmel board does not boot
-> > > > > 
-> > > > > barebox@Atmel at91sam9m10g45-ek:/ dhcp && nfs
-> > > > > /opt/work/barebox/build/sam9m10g45ek-compressed/arch/arm/pbl/zbarebox.bin &&
-> > > > > bootm zbarebox.bin
-> > > > > phy0: Link is up - 100/Full
-> > > > > DHCP client bound to address 192.168.200.43
-> > > > > 
-> > > > > Filename
-> > > > > '/opt/work/barebox/build/sam9m10g45ek-compressed/arch/arm/pbl/zbarebox.bin'.
-> > > > > 	[#################################################################]
-> > > > > 
-> > > > > without MMU boot fine
-> > > > 
-> > > > does it work with the v1 version of this patch?
-> > > work but can use nand :(
-> > work but can *not* use nand :(
+On 12:58 Sat 22 Sep     , Christoph Fritz wrote:
+> Kernel-parameter "ip=" is used to assign network configuration.
+> With linux kernel 3.7 it is also possible to set nameserver IPs.
 > 
-> The at91 port depends on at91bootstrap as first stage loader, right? So
-> booting from NAND seems to need out of tree code. I can't help you then.
-no I'm working to add it and drop the at91boostrap so it's mandatory for me
-to have the MMU and nand access in the PBL
+> This patch adds two new options (nameserver0 and nameserver1) to
+> ethernet device parameter. It also updates defaultenv version 1.
+defaultenv-2 mandatory
+
+v1 is for fix only
+
+
+> 
+> Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
+> ---
+>  defaultenv/bin/boot |    4 +++-
+>  defaultenv/config   |    2 ++
+>  net/eth.c           |    2 ++
+>  3 files changed, 7 insertions(+), 1 deletions(-)
+> 
+> diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
+> index 4e2056e..d5b5844 100644
+> --- a/defaultenv/bin/boot
+> +++ b/defaultenv/bin/boot
+> @@ -61,7 +61,9 @@ if [ x$ip = xdhcp -o ]; then
+>  elif [ x$ip = xnone ]; then
+>  	bootargs="$bootargs ip=none"
+>  else
+> -	bootargs="$bootargs ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask::eth0:"
+> +	bootargs="$bootargs ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:"
+> +	bootargs="$bootargs$eth0.netmask::eth0::"
+> +	bootargs="$bootargs$eth0.nameserver0:$eth0.nameserver1"
+>  fi
+>  
+>  
+> diff --git a/defaultenv/config b/defaultenv/config
+> index 391ba47..6596753 100644
+> --- a/defaultenv/config
+> +++ b/defaultenv/config
+> @@ -18,6 +18,8 @@ global.dhcp.vendor_id=barebox
+>  #eth0.netmask=a.b.c.d
+>  #eth0.serverip=a.b.c.d
+>  #eth0.gateway=a.b.c.d
+> +#eth0.nameserver0=a.b.c.d
+> +#eth0.nameserver1=a.b.c.d
+>  
+>  # can be either 'tftp', 'nfs', 'nand', 'nor' or 'disk'
+>  kernel_loc=tftp
+> diff --git a/net/eth.c b/net/eth.c
+> index d42a72d..bb8157b 100644
+> --- a/net/eth.c
+> +++ b/net/eth.c
+> @@ -229,6 +229,8 @@ int eth_register(struct eth_device *edev)
+>  	dev_add_param(dev, "gateway", eth_set_ipaddr, NULL, 0);
+>  	dev_add_param(dev, "netmask", eth_set_ipaddr, NULL, 0);
+>  	dev_add_param(dev, "serverip", eth_set_ipaddr, NULL, 0);
+> +	dev_add_param(dev, "nameserver0", eth_set_ipaddr, NULL, 0);
+> +	dev_add_param(dev, "nameserver1", eth_set_ipaddr, NULL, 0);
+this is done via net as the nameserver is not interface specific
 
 Best Regards,
 J.
