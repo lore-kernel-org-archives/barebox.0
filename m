@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f49.google.com ([209.85.214.49])
+Received: from mail-wg0-f49.google.com ([74.125.82.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TFRqM-0001fn-RV
- for barebox@lists.infradead.org; Sat, 22 Sep 2012 15:42:11 +0000
-Received: by bkcji2 with SMTP id ji2so2144010bkc.36
- for <barebox@lists.infradead.org>; Sat, 22 Sep 2012 08:42:08 -0700 (PDT)
+ id 1TFSEE-0004G2-Fe
+ for barebox@lists.infradead.org; Sat, 22 Sep 2012 16:06:51 +0000
+Received: by wgbdt14 with SMTP id dt14so2483504wgb.18
+ for <barebox@lists.infradead.org>; Sat, 22 Sep 2012 09:06:48 -0700 (PDT)
+Date: Sat, 22 Sep 2012 18:06:36 +0200
 From: Christoph Fritz <chf.fritz@googlemail.com>
-In-Reply-To: <20120922114346.GT26553@game.jcrosoft.org>
-References: <1348311530.3917.5.camel@mars>
- <20120922114346.GT26553@game.jcrosoft.org>
-Date: Sat, 22 Sep 2012 17:41:57 +0200
-Message-ID: <1348328517.25235.5.camel@mars>
-Mime-Version: 1.0
+Message-ID: <20120922160635.GA26987@mars>
+References: <1348311547.3917.6.camel@mars>
+ <20120922114539.GU26553@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20120922114539.GU26553@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,93 +25,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2][v2] net: add nameserver IPs to kernel-parameter ip=
+Subject: Re: [PATCH 2/2] defaultenv-2: add nameserver IPs to kernel-parameter
+ ip=
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Kernel-parameter "ip=" is used to assign network configuration.
-With linux kernel 3.7 it is also possible to set nameserver IPs.
+Hi Jean-Christophe
 
-This patch adds two new variables (nameserver0 and nameserver1) to
-barebox's $net configuration.
+On Sat, Sep 22, 2012 at 01:45:39PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 12:59 Sat 22 Sep     , Christoph Fritz wrote:
+> > --- a/defaultenv-2/base/bin/bootargs-ip
+> > +++ b/defaultenv-2/base/bin/bootargs-ip
+> > @@ -7,5 +7,7 @@
+> >  if [ $ip = dhcp ]; then
+> >  	global.linux.bootargs.dyn.ip="ip=dhcp"
+> >  else
+> > -	global.linux.bootargs.dyn.ip="ip=$ipaddr:$serverip:$gateway:$netmask::eth0:"
+> > +	global.linux.bootargs.dyn.ip="ip=$ipaddr:$serverip:$gateway:$netmask::eth0::"
+> > +	global.linux.bootargs.dyn.ip="$global.linux.bootargs.dyn.ip$eth0.nameserver0:"
+> > +	global.linux.bootargs.dyn.ip="$global.linux.bootargs.dyn.ip$eth0.nameserver1"
+> keep it on one line for grepping
 
-Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
----
- net/dhcp.c |    2 +-
- net/dns.c  |    4 ++--
- net/net.c  |   18 +++++++++++++++++-
- 3 files changed, 20 insertions(+), 4 deletions(-)
+ok
 
-diff --git a/net/dhcp.c b/net/dhcp.c
-index 768255e..118a5a6 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -211,7 +211,7 @@ struct dhcp_opt dhcp_options[] = {
- 	}, {
- 		.option = 6,
- 		.handle = env_ip_handle,
--		.barebox_var_name = "net.nameserver",
-+		.barebox_var_name = "net.nameserver0",
- 	}, {
- 		.option = 12,
- 		.copy_only_if_valid = 1,
-diff --git a/net/dns.c b/net/dns.c
-index eb96c57..e832f97 100644
---- a/net/dns.c
-+++ b/net/dns.c
-@@ -206,9 +206,9 @@ IPaddr_t resolv(char *host)
+> > diff --git a/defaultenv-2/base/bin/ifup b/defaultenv-2/base/bin/ifup
+> > index 37b986c..fe5a242 100644
+> > --- a/defaultenv-2/base/bin/ifup
+> > +++ b/defaultenv-2/base/bin/ifup
+> > @@ -26,6 +26,8 @@ netmask=
+> >  gateway=
+> >  serverip=
+> >  ethaddr=
+> > +nameserver0=
+> > +nameserver1=
+> >  
+> >  . $cmd
+> >  
+> > @@ -51,6 +53,8 @@ if [ "$ip" = static ]; then
+> >  	${interface}.netmask=$netmask
+> >  	${interface}.serverip=$serverip
+> >  	${interface}.gateway=$gateway
+> > +	${interface}.nameserver0=$nameserver0
+> > +	${interface}.nameserver1=$nameserver1
+> 
+> and this is not interface specific net.nameserver
+> 
+> and dhcp??
+
+When kernel-parameter "ip=dhcp" you can't set stuff like netmask, ip,
+or nameservers.
+
+As stated in the commit message, due to current lack of a
+env-2 testing environment, I'm not sure how to implement the
+following snippet from env-1 in env-2:
+
+diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
+index 4e2056e..61287d5 100644
+--- a/defaultenv/bin/boot
++++ b/defaultenv/bin/boot
+@@ -61,7 +61,7 @@ if [ x$ip = xdhcp -o ]; then
+ elif [ x$ip = xnone ]; then
+ 	bootargs="$bootargs ip=none"
+ else
+-	bootargs="$bootargs ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask::eth0:"
++	bootargs="$bootargs ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask::eth0::$net.nameserver0:$net.nameserver1"
+ fi
  
- 	dns_state = STATE_INIT;
  
--	ns = getenv("net.nameserver");
-+	ns = getenv("net.nameserver0");
- 	if (!ns || !*ns) {
--		printk("%s: no nameserver specified in $net.nameserver\n",
-+		printk("%s: no nameserver specified in $net.nameserver0\n",
- 				__func__);
- 		return 0;
- 	}
-diff --git a/net/net.c b/net/net.c
-index 3ac098f..171e644 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -669,6 +669,21 @@ static struct device_d net_device = {
- 	.id = DEVICE_ID_SINGLE,
- };
+diff --git a/defaultenv/config b/defaultenv/config
+index 391ba47..38fab40 100644
+--- a/defaultenv/config
++++ b/defaultenv/config
+@@ -18,6 +18,8 @@ global.dhcp.vendor_id=barebox
+ #eth0.netmask=a.b.c.d
+ #eth0.serverip=a.b.c.d
+ #eth0.gateway=a.b.c.d
+++#net.nameserver0=a.b.c.d
+++#net.nameserver1=a.b.c.d
  
-+static int net_set_namesrv(struct device_d *dev, struct param_d *param, const char *val)
-+{
-+	IPaddr_t ip;
-+
-+	if (!val)
-+		return -EINVAL;
-+
-+	if (string_to_ip(val, &ip))
-+		return -EINVAL;
-+
-+	dev_param_set_generic(dev, param, val);
-+
-+	return 0;
-+}
-+
- static int net_init(void)
- {
- 	int i;
-@@ -677,7 +692,8 @@ static int net_init(void)
- 		NetRxPackets[i] = net_alloc_packet();
- 
- 	register_device(&net_device);
--	dev_add_param(&net_device, "nameserver", NULL, NULL, 0);
-+	dev_add_param(&net_device, "nameserver0", net_set_namesrv, NULL, 0);
-+	dev_add_param(&net_device, "nameserver1", net_set_namesrv, NULL, 0);
- 	dev_add_param(&net_device, "domainname", NULL, NULL, 0);
- 
- 	return 0;
+ # can be either 'tftp', 'nfs', 'nand', 'nor' or 'disk'
+ kernel_loc=tftp
 -- 
-1.7.2.5
 
-
-
+Thanks,
+ -- Christoph
 
 _______________________________________________
 barebox mailing list
