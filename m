@@ -1,21 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo5.mail-out.ovh.net ([178.32.124.100]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TFpup-0004Bj-SM
- for barebox@lists.infradead.org; Sun, 23 Sep 2012 17:24:25 +0000
-Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 43B171054220
- for <barebox@lists.infradead.org>; Sun, 23 Sep 2012 19:30:18 +0200 (CEST)
-Date: Sun, 23 Sep 2012 19:21:51 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120923172151.GC26553@game.jcrosoft.org>
-References: <20120922100757.GR26553@game.jcrosoft.org>
- <1348308774-32378-1-git-send-email-plagnioj@jcrosoft.com>
- <20120923145036.GK1322@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20120923145036.GK1322@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TG3sK-0003J2-To
+ for barebox@lists.infradead.org; Mon, 24 Sep 2012 08:18:46 +0000
+From: Jan Luebbe <jlu@pengutronix.de>
+Date: Mon, 24 Sep 2012 10:18:33 +0200
+Message-Id: <1348474714-5807-3-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1348474714-5807-1-git-send-email-jlu@pengutronix.de>
+References: <1348474714-5807-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,69 +16,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] net: introduce phylib
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/4] ARM: remove ARCH_HAS_LOWLEVEL_INIT
+To: barebox@lists.infradead.org
 
-On 16:50 Sun 23 Sep     , Sascha Hauer wrote:
-> On Sat, Sep 22, 2012 at 12:12:54PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Adapt phylib from linux
-> > 
-> > switch all the driver to it
-> > reimplement mii bus
-> > 
-> > This will allow to have
-> >  - phy drivers
-> >  - to only connect the phy at then opening of the device
-> >  - if the phy is not ready or not up fail on open
-> > 
-> > Same behaviour as in linux and will allow to share code and simplify porting.
-> > 
-> > + * get_phy_id - reads the specified addr for its ID.
-> > + * @bus: the target MII bus
-> > + * @addr: PHY address on the MII bus
-> > + * @phy_id: where to store the ID retrieved.
-> > + *
-> > + * Description: Reads the ID registers of the PHY at @addr on the
-> > + *   @bus, stores it in @phy_id and returns zero on success.
-> > + */
-> > +int get_phy_id(struct mii_bus *bus, int addr, u32 *phy_id)
-> > +{
-> > +	int phy_reg;
-> > +
-> > +	/* Grab the bits from PHYIR1, and put them
-> > +	 * in the upper half */
-> > +	phy_reg = mdiobus_read(bus, addr, MII_PHYSID1);
-> > +
-> > +	io (phy_reg < 0)
-> > +		return -EIO;
-> 
-> Which gcc version do you use? Mine doesn't understand 'io'
-edit patch by mistake when checking it
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-the tag should be ok
-> 
-> Please also fix this:
-> 
-> config:     ppc              pcm030_defconfig
-> drivers/net/fec_mpc5200.c: In function 'mpc5xxx_fec_probe':
-> drivers/net/fec_mpc5200.c:683:8: error: 'RMII' undeclared (first use in this function)
-> drivers/net/fec_mpc5200.c:683:8: note: each undeclared identifier is reported only once for each function it appears in
-> drivers/net/fec_mpc5200.c:686:8: error: 'RGMII' undeclared (first use inthis function)
-> make[2]: *** [drivers/net/fec_mpc5200.o] Error 1
-> make[2]: *** Waiting for unfinished jobs....
-> make[1]: *** [drivers/net] Error 2
-> make[1]: *** Waiting for unfinished jobs....
-> make: *** [drivers] Error 2
-> make: *** Waiting for unfinished jobs....
-this freescale driver is piss me off with it's copy and paste
+This is unused now and not needed. We have a board_init_lowlevel. If a
+board needs some architecture setup it can always call it from its
+board_init_lowlevel.
 
-Best Regards,
-J.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/cpu/start-reset.c         |    4 ----
+ arch/arm/include/asm/barebox-arm.h |    1 -
+ common/Kconfig                     |    3 ---
+ 3 files changed, 8 deletions(-)
+
+diff --git a/arch/arm/cpu/start-reset.c b/arch/arm/cpu/start-reset.c
+index e0df676..46193ef 100644
+--- a/arch/arm/cpu/start-reset.c
++++ b/arch/arm/cpu/start-reset.c
+@@ -40,10 +40,6 @@ void __naked __bare_init reset(void)
+ 	r |= 0xd3;
+ 	__asm__ __volatile__("msr cpsr, %0" : : "r"(r));
+ 
+-#ifdef CONFIG_ARCH_HAS_LOWLEVEL_INIT
+-	arch_init_lowlevel();
+-#endif
+-
+ 	/* disable MMU stuff and caches */
+ 	r = get_cr();
+ 	r &= ~(CR_M | CR_C | CR_B | CR_S | CR_R | CR_V);
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index b880dd4..2689a04 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -41,6 +41,5 @@ extern char __ll_return[];
+ 
+ void board_init_lowlevel(void);
+ void board_init_lowlevel_return(void);
+-void arch_init_lowlevel(void);
+ 
+ #endif	/* _BAREBOX_ARM_H_ */
+diff --git a/common/Kconfig b/common/Kconfig
+index b97392c..bcc3581 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -292,9 +292,6 @@ config MACH_DO_LOWLEVEL_INIT
+ 	  on many platforms. Disabling this option allows configurations to use
+ 	  barebox as a second stage boot loader.
+ 
+-config ARCH_HAS_LOWLEVEL_INIT
+-	bool
+-
+ config PROMPT
+ 	string
+ 	prompt "barebox command prompt"
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
