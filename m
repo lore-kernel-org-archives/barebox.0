@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TG6TI-0000ij-HN
- for barebox@lists.infradead.org; Mon, 24 Sep 2012 11:05:22 +0000
+ id 1TG6TC-0000en-CR
+ for barebox@lists.infradead.org; Mon, 24 Sep 2012 11:05:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 24 Sep 2012 13:04:43 +0200
-Message-Id: <1348484692-24993-15-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 24 Sep 2012 13:04:48 +0200
+Message-Id: <1348484692-24993-20-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1348484692-24993-1-git-send-email-s.hauer@pengutronix.de>
 References: <1348484692-24993-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,100 +21,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/23] net fec: Switch to clk support
+Subject: [PATCH 19/23] mci i.MX: Switch to clock support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/fec_imx.c |   27 ++++++++++++++++++++++++---
- drivers/net/fec_imx.h |    1 +
- 2 files changed, 25 insertions(+), 3 deletions(-)
+ drivers/mci/imx.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 6acf6bd..4606558 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -24,6 +24,8 @@
+diff --git a/drivers/mci/imx.c b/drivers/mci/imx.c
+index 0e4fa66..035a3aa 100644
+--- a/drivers/mci/imx.c
++++ b/drivers/mci/imx.c
+@@ -25,6 +25,8 @@
  #include <clock.h>
- #include <xfuncs.h>
- #include <linux/phy.h>
+ #include <init.h>
+ #include <driver.h>
 +#include <linux/clk.h>
 +#include <linux/err.h>
+ #include <mach/clock.h>
+ #include <io.h>
  
- #include <asm/mmu.h>
+@@ -103,6 +105,7 @@ struct mxcmci_regs {
+ struct mxcmci_host {
+ 	struct mci_host		mci;
+ 	struct mxcmci_regs	*base;
++	struct clk		*clk;
+ 	int			irq;
+ 	int			detect_irq;
+ 	int			dma;
+@@ -415,7 +418,7 @@ static void mxcmci_set_clk_rate(struct mxcmci_host *host, unsigned int clk_ios)
+ {
+ 	unsigned int divider;
+ 	int prescaler = 0;
+-	unsigned long clk_in = imx_get_mmcclk();
++	unsigned long clk_in = clk_get_rate(host->clk);
  
-@@ -43,6 +45,19 @@ struct fec_frame {
- 	uint8_t head[16];	/* MAC header(6 + 6 + 2) + 2(aligned) */
- };
+ 	while (prescaler <= 0x800) {
+ 		for (divider = 1; divider <= 0xF; divider++) {
+@@ -490,9 +493,14 @@ static int mxcmci_init(struct mci_host *mci, struct device_d *dev)
+ static int mxcmci_probe(struct device_d *dev)
+ {
+ 	struct mxcmci_host *host;
++	unsigned long rate;
  
-+#ifdef CONFIG_COMMON_CLK
-+static inline unsigned long fec_clk_get_rate(struct fec_priv *fec)
-+{
-+	return clk_get_rate(fec->clk);
-+}
-+#else
-+static inline unsigned long fec_clk_get_rate(struct fec_priv *fec)
-+{
-+	return imx_get_fecclk();
-+}
-+#endif
+ 	host = xzalloc(sizeof(*host));
+ 
++	host->clk = clk_get(dev, NULL);
++	if (IS_ERR(host->clk))
++		return PTR_ERR(host->clk);
 +
-+
- /*
-  * MII-interface related functions
-  */
-@@ -54,7 +69,7 @@ static int fec_miibus_read(struct mii_bus *bus, int phyAddr, int regAddr)
- 	uint32_t phy;		/* convenient holder for the PHY */
- 	uint64_t start;
+ 	host->mci.send_cmd = mxcmci_request;
+ 	host->mci.set_ios = mxcmci_set_ios;
+ 	host->mci.init = mxcmci_init;
+@@ -503,8 +511,9 @@ static int mxcmci_probe(struct device_d *dev)
  
--	writel(((imx_get_fecclk() >> 20) / 5) << 1,
-+	writel(((fec_clk_get_rate(fec) >> 20) / 5) << 1,
- 			fec->regs + FEC_MII_SPEED);
- 	/*
- 	 * reading from any PHY's register is done by properly
-@@ -97,7 +112,7 @@ static int fec_miibus_write(struct mii_bus *bus, int phyAddr,
- 	uint32_t phy;		/* convenient holder for the PHY */
- 	uint64_t start;
+ 	host->mci.voltages = MMC_VDD_32_33 | MMC_VDD_33_34;
  
--	writel(((imx_get_fecclk() >> 20) / 5) << 1,
-+	writel(((fec_clk_get_rate(fec) >> 20) / 5) << 1,
- 			fec->regs + FEC_MII_SPEED);
+-	host->mci.f_min = imx_get_mmcclk() >> 7;
+-	host->mci.f_max = imx_get_mmcclk() >> 1;
++	rate = clk_get_rate(host->clk);
++	host->mci.f_min = rate >> 7;
++	host->mci.f_max = rate >> 1;
  
- 	reg = regAddr << FEC_MII_DATA_RA_SHIFT;
-@@ -290,7 +305,7 @@ static int fec_init(struct eth_device *dev)
- 		 * Set MII_SPEED = (1/(mii_speed * 2)) * System Clock
- 		 * and do not drop the Preamble.
- 		 */
--		writel(((imx_get_fecclk() >> 20) / 5) << 1,
-+		writel(((fec_clk_get_rate(fec) >> 20) / 5) << 1,
- 				fec->regs + FEC_MII_SPEED);
- 	}
+ 	mci_register(&host->mci);
  
-@@ -628,6 +643,12 @@ static int fec_probe(struct device_d *dev)
- 	edev->set_ethaddr = fec_set_hwaddr;
- 	edev->parent = dev;
- 
-+#ifdef CONFIG_COMMON_CLK
-+	fec->clk = clk_get(dev, NULL);
-+	if (IS_ERR(fec->clk))
-+		return PTR_ERR(fec->clk);
-+#endif
-+
- 	fec->regs = dev_request_mem_region(dev, 0);
- 
- 	/* Reset chip. */
-diff --git a/drivers/net/fec_imx.h b/drivers/net/fec_imx.h
-index d10385a..d147dca 100644
---- a/drivers/net/fec_imx.h
-+++ b/drivers/net/fec_imx.h
-@@ -138,6 +138,7 @@ struct fec_priv {
- 	u32 phy_flags;
- 	struct mii_bus miibus;
- 	void (*phy_init)(struct phy_device *dev);
-+	struct clk *clk;
- };
- 
- /**
 -- 
 1.7.10.4
 
