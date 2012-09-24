@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TG6TB-0000ee-Ly
- for barebox@lists.infradead.org; Mon, 24 Sep 2012 11:05:03 +0000
+ id 1TG6TA-0000eU-Th
+ for barebox@lists.infradead.org; Mon, 24 Sep 2012 11:04:59 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 24 Sep 2012 13:04:38 +0200
-Message-Id: <1348484692-24993-10-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 24 Sep 2012 13:04:33 +0200
+Message-Id: <1348484692-24993-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1348484692-24993-1-git-send-email-s.hauer@pengutronix.de>
 References: <1348484692-24993-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,161 +21,197 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/23] ARM i.MX1: Switch to common clk support
+Subject: [PATCH 04/23] commands: Add clk commands
 To: barebox@lists.infradead.org
+
+This adds some basic commands to manupulate clocks on the command
+line. Right now we have:
+
+- clk_set_parent
+- clk_set_rate
+- clk_enable
+- clk_disable
+- clk_dump
+
+The commands work based on the clock name, otherwise they behave like
+the Linux Kernel C functions. clk_dump will dump the clocktree to the
+console.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/Makefile   |    2 +-
- arch/arm/mach-imx/clk-imx1.c |  108 ++++++++++++++++++++++++++++++++++++++++++
- arch/arm/mach-imx/imx1.c     |    3 +-
- 3 files changed, 111 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/mach-imx/clk-imx1.c
+ commands/Kconfig  |    8 ++++
+ commands/Makefile |    1 +
+ commands/clk.c    |  133 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 142 insertions(+)
+ create mode 100644 commands/clk.c
 
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index 282913d..994159d 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -1,6 +1,6 @@
- obj-y += clocksource.o gpio.o
- obj-$(CONFIG_RESET_SOURCE) += reset_source.o
--obj-$(CONFIG_ARCH_IMX1)  += speed-imx1.o  imx1.o  iomux-v1.o
-+obj-$(CONFIG_ARCH_IMX1)  += speed-imx1.o  imx1.o  iomux-v1.o clk-imx1.o
- obj-$(CONFIG_ARCH_IMX25) += speed-imx25.o imx25.o iomux-v3.o clk-imx25.o
- obj-$(CONFIG_ARCH_IMX21) += speed-imx21.o imx21.o iomux-v1.o
- obj-$(CONFIG_ARCH_IMX27) += speed-imx27.o imx27.o iomux-v1.o clk-imx27.o
-diff --git a/arch/arm/mach-imx/clk-imx1.c b/arch/arm/mach-imx/clk-imx1.c
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 930a9b1..7969937 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -605,6 +605,14 @@ config CMD_USB
+ 	help
+ 	  The usb command allows to rescan for USB devices.
+ 
++config CMD_CLK
++	tristate
++	depends on COMMON_CLK
++	prompt "clock manipulation commands"
++	help
++	  Say yes here to get clk_set_rate, clk_set_parent and clk_dump
++	  commands to manipulate clocks on your system.
++
+ menuconfig CMD_WD
+ 	bool
+ 	depends on WATCHDOG
+diff --git a/commands/Makefile b/commands/Makefile
+index 24bf46a..7a36f60 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -74,3 +74,4 @@ obj-$(CONFIG_CMD_BASENAME)	+= basename.o
+ obj-$(CONFIG_CMD_DIRNAME)	+= dirname.o
+ obj-$(CONFIG_CMD_READLINK)	+= readlink.o
+ obj-$(CONFIG_CMD_LN)		+= ln.o
++obj-$(CONFIG_CMD_CLK)		+= clk.o
+diff --git a/commands/clk.c b/commands/clk.c
 new file mode 100644
-index 0000000..30906bf
+index 0000000..5cde3ca
 --- /dev/null
-+++ b/arch/arm/mach-imx/clk-imx1.c
-@@ -0,0 +1,108 @@
-+/*
-+ *  Copyright (C) 2008 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along
-+ * with this program; if not, write to the Free Software Foundation, Inc.,
-+ * 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
-+ */
-+
++++ b/commands/clk.c
+@@ -0,0 +1,133 @@
 +#include <common.h>
-+#include <init.h>
-+#include <driver.h>
++#include <command.h>
++#include <getopt.h>
 +#include <linux/clk.h>
-+#include <io.h>
-+#include <linux/clkdev.h>
 +#include <linux/err.h>
-+#include <mach/imx1-regs.h>
 +
-+#include "clk.h"
-+
-+#define CCM_CSCR	0x0
-+#define CCM_MPCTL0	0x4
-+#define CCM_SPCTL0	0xc
-+#define CCM_PCDR	0x20
-+
-+enum imx1_clks {
-+	dummy, clk32, clk16m, clk32_premult, prem, mpll, spll, mcu,
-+	fclk, hclk, clk48m, per1, per2, per3, clko, dma_gate, csi_gate,
-+	mma_gate, usbd_gate, clk_max
-+};
-+
-+static struct clk *clks[clk_max];
-+
-+static const char *prem_sel_clks[] = {
-+	"clk32_premult",
-+	"clk16m",
-+};
-+
-+static const char *clko_sel_clks[] = {
-+	"per1",
-+	"hclk",
-+	"clk48m",
-+	"clk16m",
-+	"prem",
-+	"fclk",
-+};
-+
-+int __init mx1_clocks_init(void __iomem *regs, unsigned long fref)
++static int do_clk_enable(int argc, char *argv[])
 +{
-+	clks[dummy] = clk_fixed("dummy", 0);
-+	clks[clk32] = clk_fixed("clk32", fref);
-+	clks[clk16m] = clk_fixed("clk16m", 16000000);
-+	clks[clk32_premult] = imx_clk_fixed_factor("clk32_premult", "clk32", 512, 1);
-+	clks[prem] = imx_clk_mux("prem", regs + CCM_CSCR, 16, 1, prem_sel_clks,
-+			ARRAY_SIZE(prem_sel_clks));
-+	clks[mpll] = imx_clk_pllv1("mpll", "clk32_premult", regs + CCM_MPCTL0);
-+	clks[spll] = imx_clk_pllv1("spll", "prem", regs + CCM_SPCTL0);
-+	clks[mcu] = imx_clk_divider("mcu", "clk32_premult", regs + CCM_CSCR, 15, 1);
-+	clks[fclk] = imx_clk_divider("fclk", "mpll", regs + CCM_CSCR, 15, 1);
-+	clks[hclk] = imx_clk_divider("hclk", "spll", regs + CCM_CSCR, 10, 4);
-+	clks[clk48m] = imx_clk_divider("clk48m", "spll", regs + CCM_CSCR, 26, 3);
-+	clks[per1] = imx_clk_divider("per1", "spll", regs + CCM_PCDR, 0, 4);
-+	clks[per2] = imx_clk_divider("per2", "spll", regs + CCM_PCDR, 4, 4);
-+	clks[per3] = imx_clk_divider("per3", "spll", regs + CCM_PCDR, 16, 7);
-+	clks[clko] = imx_clk_mux("clko", regs + CCM_CSCR, 29, 3, clko_sel_clks,
-+			ARRAY_SIZE(clko_sel_clks));
++	struct clk *clk;
 +
-+	clkdev_add_physbase(clks[hclk], MX1_TIM1_BASE_ADDR, NULL);
-+	clkdev_add_physbase(clks[hclk], MX1_TIM2_BASE_ADDR, NULL);
-+	clkdev_add_physbase(clks[per2], MX1_LCDC_BASE_ADDR, NULL);
-+	clkdev_add_physbase(clks[per1], MX1_UART1_BASE_ADDR, NULL);
-+	clkdev_add_physbase(clks[per1], MX1_UART2_BASE_ADDR, NULL);
-+	clkdev_add_physbase(clks[per2], MX1_CSPI1_BASE_ADDR, NULL);
-+	clkdev_add_physbase(clks[per2], MX1_CSPI2_BASE_ADDR, NULL);
-+	clkdev_add_physbase(clks[hclk], MX1_I2C_BASE_ADDR, NULL);
++	if (argc != 2)
++		return COMMAND_ERROR_USAGE;
++
++	clk = clk_lookup(argv[1]);
++
++	return clk_enable(clk);
++}
++
++BAREBOX_CMD_HELP_START(clk_enable)
++BAREBOX_CMD_HELP_USAGE("clk_enable <clk>\n")
++BAREBOX_CMD_HELP_SHORT("enable <clk>\n")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(clk_enable)
++	.cmd		= do_clk_enable,
++	.usage		= "enable a clock",
++	BAREBOX_CMD_HELP(cmd_clk_enable_help)
++BAREBOX_CMD_END
++
++static int do_clk_disable(int argc, char *argv[])
++{
++	struct clk *clk;
++
++	if (argc != 2)
++		return COMMAND_ERROR_USAGE;
++
++	clk = clk_lookup(argv[1]);
++
++	clk_disable(clk);
 +
 +	return 0;
 +}
 +
-+static int imx1_ccm_probe(struct device_d *dev)
++BAREBOX_CMD_HELP_START(clk_disable)
++BAREBOX_CMD_HELP_USAGE("clk_disable <clk>\n")
++BAREBOX_CMD_HELP_SHORT("disable <clk>\n")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(clk_disable)
++	.cmd		= do_clk_disable,
++	.usage		= "disable a clock",
++	BAREBOX_CMD_HELP(cmd_clk_disable_help)
++BAREBOX_CMD_END
++
++static int do_clk_set_rate(int argc, char *argv[])
 +{
-+	void __iomem *regs;
++	struct clk *clk;
++	unsigned long rate;
 +
-+	regs = dev_request_mem_region(dev, 0);
++	if (argc != 3)
++		return COMMAND_ERROR_USAGE;
 +
-+	mx1_clocks_init(regs, 32000);
++	clk = clk_lookup(argv[1]);
++	rate = simple_strtoul(argv[2], NULL, 0);
++
++	return clk_set_rate(clk, rate);
++}
++
++BAREBOX_CMD_HELP_START(clk_set_rate)
++BAREBOX_CMD_HELP_USAGE("clk_set_rate <clk> <rate_hz>\n")
++BAREBOX_CMD_HELP_SHORT("Set clock <clk> to <rate>\n")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(clk_set_rate)
++	.cmd		= do_clk_set_rate,
++	.usage		= "set a clocks rate",
++	BAREBOX_CMD_HELP(cmd_clk_set_rate_help)
++BAREBOX_CMD_END
++
++static int do_clk_dump(int argc, char *argv[])
++{
++	int opt, verbose = 0;
++
++	while ((opt = getopt(argc, argv, "v")) > 0) {
++		switch(opt) {
++		case 'v':
++			verbose = 1;
++			break;
++		default:
++			return -EINVAL;
++
++		}
++	}
++
++	clk_dump(verbose);
 +
 +	return 0;
 +}
 +
-+static struct driver_d imx1_ccm_driver = {
-+	.probe	= imx1_ccm_probe,
-+	.name	= "imx1-ccm",
-+};
++BAREBOX_CMD_HELP_START(clk_dump)
++BAREBOX_CMD_HELP_USAGE("clk_dump [-v]\n")
++BAREBOX_CMD_HELP_OPT  ("-v",  "verbose\n")
++BAREBOX_CMD_HELP_END
 +
-+static int imx1_ccm_init(void)
++BAREBOX_CMD_START(clk_dump)
++	.cmd		= do_clk_dump,
++	.usage		= "show information about registered clocks",
++	BAREBOX_CMD_HELP(cmd_clk_dump_help)
++BAREBOX_CMD_END
++
++static int do_clk_set_parent(int argc, char *argv[])
 +{
-+	return register_driver(&imx1_ccm_driver);
++	struct clk *clk, *parent;
++
++	if (argc != 3)
++		return COMMAND_ERROR_USAGE;
++
++	clk = clk_lookup(argv[1]);
++	parent = clk_lookup(argv[2]);
++
++	return clk_set_parent(clk, parent);
 +}
-+postcore_initcall(imx1_ccm_init);
-diff --git a/arch/arm/mach-imx/imx1.c b/arch/arm/mach-imx/imx1.c
-index 536a9ad..790e453 100644
---- a/arch/arm/mach-imx/imx1.c
-+++ b/arch/arm/mach-imx/imx1.c
-@@ -25,6 +25,7 @@ void imx1_setup_eimcs(size_t cs, unsigned upper, unsigned lower)
- 
- static int imx1_init(void)
- {
-+	add_generic_device("imx1-ccm", 0, NULL, MX1_CCM_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx1-gpt", 0, NULL, MX1_TIM1_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx1-gpio", 0, NULL, MX1_GPIO1_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx1-gpio", 1, NULL, MX1_GPIO2_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
-@@ -33,4 +34,4 @@ static int imx1_init(void)
- 
- 	return 0;
- }
--coredevice_initcall(imx1_init);
-+postcore_initcall(imx1_init);
++
++BAREBOX_CMD_HELP_START(clk_set_parent)
++BAREBOX_CMD_HELP_USAGE("clk_set_parent <clk> <parent>\n")
++BAREBOX_CMD_HELP_SHORT("Set parent of <clk> to <parent>\n")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(clk_set_parent)
++	.cmd		= do_clk_set_parent,
++	.usage		= "set a parent of a clock",
++	BAREBOX_CMD_HELP(cmd_clk_set_parent_help)
++BAREBOX_CMD_END
 -- 
 1.7.10.4
 
