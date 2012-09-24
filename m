@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TG6BJ-0005Ts-2U
+ id 1TG6BJ-0005Tr-2S
  for barebox@lists.infradead.org; Mon, 24 Sep 2012 10:46:33 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 24 Sep 2012 12:46:18 +0200
-Message-Id: <1348483583-12586-10-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 24 Sep 2012 12:46:19 +0200
+Message-Id: <1348483583-12586-11-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1348483583-12586-1-git-send-email-s.hauer@pengutronix.de>
 References: <1348483583-12586-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,128 +21,111 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/14] ARM i.MX: Add header file for WEIM cs setup
+Subject: [PATCH 10/14] ARM i.MX1: Add function to setup chipselect
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |    1 +
- arch/arm/boards/imx27ads/imx27ads.c               |    1 +
- arch/arm/boards/pcm038/pcm038.c                   |    1 +
- arch/arm/boards/pcm038/pcm970.c                   |    1 +
- arch/arm/mach-imx/imx27.c                         |    9 +++++++++
- arch/arm/mach-imx/include/mach/imx27-regs.h       |   10 ----------
- arch/arm/mach-imx/include/mach/weim.h             |    7 +++++++
- 7 files changed, 20 insertions(+), 10 deletions(-)
- create mode 100644 arch/arm/mach-imx/include/mach/weim.h
+ arch/arm/boards/scb9328/scb9328.c          |   19 ++++++-------------
+ arch/arm/mach-imx/imx1.c                   |    8 ++++++++
+ arch/arm/mach-imx/include/mach/imx1-regs.h |   15 ---------------
+ arch/arm/mach-imx/include/mach/weim.h      |    2 ++
+ 4 files changed, 16 insertions(+), 28 deletions(-)
 
-diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-index 0ffe43f..cff4f77 100644
---- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-+++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
-@@ -37,6 +37,7 @@
- #include <io.h>
- #include <mach/imx-nand.h>
- #include <mach/imx-pll.h>
-+#include <mach/weim.h>
- #include <mach/imxfb.h>
- #include <ns16550.h>
- #include <asm/mmu.h>
-diff --git a/arch/arm/boards/imx27ads/imx27ads.c b/arch/arm/boards/imx27ads/imx27ads.c
-index f9416e1..22c6e40 100644
---- a/arch/arm/boards/imx27ads/imx27ads.c
-+++ b/arch/arm/boards/imx27ads/imx27ads.c
-@@ -23,6 +23,7 @@
- #include <io.h>
- #include <fec.h>
+diff --git a/arch/arm/boards/scb9328/scb9328.c b/arch/arm/boards/scb9328/scb9328.c
+index 9bd9a7c..c83132a 100644
+--- a/arch/arm/boards/scb9328/scb9328.c
++++ b/arch/arm/boards/scb9328/scb9328.c
+@@ -22,6 +22,7 @@
+ #include <mach/imx-regs.h>
+ #include <asm/armlinux.h>
  #include <mach/gpio.h>
 +#include <mach/weim.h>
+ #include <io.h>
  #include <partition.h>
  #include <fs.h>
- #include <fcntl.h>
-diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
-index a51825b..58b1ec9 100644
---- a/arch/arm/boards/pcm038/pcm038.c
-+++ b/arch/arm/boards/pcm038/pcm038.c
-@@ -31,6 +31,7 @@
- #include <io.h>
- #include <mach/imx-nand.h>
- #include <mach/imx-pll.h>
-+#include <mach/weim.h>
- #include <mach/imxfb.h>
- #include <i2c/i2c.h>
- #include <mach/spi.h>
-diff --git a/arch/arm/boards/pcm038/pcm970.c b/arch/arm/boards/pcm038/pcm970.c
-index d392ea4..b8fc65b 100644
---- a/arch/arm/boards/pcm038/pcm970.c
-+++ b/arch/arm/boards/pcm038/pcm970.c
-@@ -18,6 +18,7 @@
- #include <platform_ide.h>
- #include <mach/imx-regs.h>
- #include <mach/iomux-mx27.h>
-+#include <mach/weim.h>
- #include <mach/gpio.h>
- #include <mach/devices-imx27.h>
- #include <usb/ulpi.h>
-diff --git a/arch/arm/mach-imx/imx27.c b/arch/arm/mach-imx/imx27.c
-index 76bb910..0c92385 100644
---- a/arch/arm/mach-imx/imx27.c
-+++ b/arch/arm/mach-imx/imx27.c
-@@ -13,6 +13,7 @@
+@@ -70,19 +71,11 @@ static int scb9328_devices_init(void)
+ /* CS3 becomes CS3 by clearing reset default bit 1 in FMCR */
+ 	FMCR = 0x1;
+ 
+-	CS0U = 0x000F2000;
+-	CS0L = 0x11110d01;
+-
+-	CS1U = 0x000F0a00;
+-	CS1L = 0x11110601;
+-	CS2U = 0x0;
+-	CS2L = 0x0;
+-	CS3U = 0x000FFFFF;
+-	CS3L = 0x00000303;
+-	CS4U = 0x000F0a00;
+-	CS4L = 0x11110301;
+-	CS5U = 0x00008400;
+-	CS5L = 0x00000D03;
++	imx1_setup_eimcs(0, 0x000F2000, 0x11110d01);
++	imx1_setup_eimcs(1, 0x000F0a00, 0x11110601);
++	imx1_setup_eimcs(3, 0x000FFFFF, 0x00000303);
++	imx1_setup_eimcs(4, 0x000F0a00, 0x11110301);
++	imx1_setup_eimcs(5, 0x00008400, 0x00000D03);
+ 
+ 	add_cfi_flash_device(DEVICE_ID_DYNAMIC, 0x10000000, 16 * 1024 * 1024, 0);
+ 	add_dm9000_device(DEVICE_ID_DYNAMIC, 0x16000000, 0x16000004,
+diff --git a/arch/arm/mach-imx/imx1.c b/arch/arm/mach-imx/imx1.c
+index e6fba16..536a9ad 100644
+--- a/arch/arm/mach-imx/imx1.c
++++ b/arch/arm/mach-imx/imx1.c
+@@ -13,7 +13,15 @@
  
  #include <common.h>
+ #include <init.h>
++#include <io.h>
  #include <mach/imx-regs.h>
 +#include <mach/weim.h>
- #include <sizes.h>
- #include <init.h>
- #include <io.h>
-@@ -22,6 +23,14 @@ int imx_silicon_revision(void)
- 	return CID >> 28;
- }
- 
-+void imx27_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
-+		unsigned additional)
++
++void imx1_setup_eimcs(size_t cs, unsigned upper, unsigned lower)
 +{
-+	writel(upper, MX27_WEIM_BASE_ADDR + (cs * 0x10) + 0x0);
-+	writel(lower, MX27_WEIM_BASE_ADDR + (cs * 0x10) + 0x4);
-+	writel(additional, MX27_WEIM_BASE_ADDR + (cs * 0x10) + 0x8);
++	writel(upper, MX1_EIM_BASE_ADDR + cs * 8);
++	writel(lower, MX1_EIM_BASE_ADDR + 4 + cs * 8);
 +}
-+
- /*
-  * Initialize MAX on i.MX27. necessary to give the DMA engine
-  * higher priority to the memory than the CPU. Needed for proper
-diff --git a/arch/arm/mach-imx/include/mach/imx27-regs.h b/arch/arm/mach-imx/include/mach/imx27-regs.h
-index 6e47b28..5db1a3c 100644
---- a/arch/arm/mach-imx/include/mach/imx27-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx27-regs.h
-@@ -278,14 +278,4 @@
- #define ESDCFG_TWTR		(1 << 20)
- #define ESDCFG_TXP(x)		(((x) & 0x3) << 21)
  
--#ifndef __ASSEMBLY__
--#include <io.h>
--static inline void imx27_setup_weimcs(size_t cs, unsigned upper, unsigned lower, unsigned additional)
--{
--	writel(upper, MX27_WEIM_BASE_ADDR + (cs * 0x10) + 0x0);
--	writel(lower, MX27_WEIM_BASE_ADDR + (cs * 0x10) + 0x4);
--	writel(additional, MX27_WEIM_BASE_ADDR + (cs * 0x10) + 0x4);
--}
--#endif /* __ASSEMBLY__ */
+ static int imx1_init(void)
+ {
+diff --git a/arch/arm/mach-imx/include/mach/imx1-regs.h b/arch/arm/mach-imx/include/mach/imx1-regs.h
+index 0e07dcd..cb60c84 100644
+--- a/arch/arm/mach-imx/include/mach/imx1-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx1-regs.h
+@@ -86,21 +86,6 @@
+ 
+ #define CSCR_MPLL_RESTART (1<<21)
+ 
+-/* Chip Select Registers */
+-#define CS0U __REG(MX1_EIM_BASE_ADDR)        /* Chip Select 0 Upper Register */
+-#define CS0L __REG(MX1_EIM_BASE_ADDR + 0x4)  /* Chip Select 0 Lower Register */
+-#define CS1U __REG(MX1_EIM_BASE_ADDR + 0x8)  /* Chip Select 1 Upper Register */
+-#define CS1L __REG(MX1_EIM_BASE_ADDR + 0xc)  /* Chip Select 1 Lower Register */
+-#define CS2U __REG(MX1_EIM_BASE_ADDR + 0x10) /* Chip Select 2 Upper Register */
+-#define CS2L __REG(MX1_EIM_BASE_ADDR + 0x14) /* Chip Select 2 Lower Register */
+-#define CS3U __REG(MX1_EIM_BASE_ADDR + 0x18) /* Chip Select 3 Upper Register */
+-#define CS3L __REG(MX1_EIM_BASE_ADDR + 0x1c) /* Chip Select 3 Lower Register */
+-#define CS4U __REG(MX1_EIM_BASE_ADDR + 0x20) /* Chip Select 4 Upper Register */
+-#define CS4L __REG(MX1_EIM_BASE_ADDR + 0x24) /* Chip Select 4 Lower Register */
+-#define CS5U __REG(MX1_EIM_BASE_ADDR + 0x28) /* Chip Select 5 Upper Register */
+-#define CS5L __REG(MX1_EIM_BASE_ADDR + 0x2c) /* Chip Select 5 Lower Register */
+-#define EIM  __REG(MX1_EIM_BASE_ADDR + 0x30) /* EIM Configuration Register */
 -
- #endif /* _IMX27_REGS_H */
+ /* assignements for GPIO alternate/primary functions */
+ 
+ /* FIXME: This list is not completed. The correct directions are
 diff --git a/arch/arm/mach-imx/include/mach/weim.h b/arch/arm/mach-imx/include/mach/weim.h
-new file mode 100644
-index 0000000..bc9b51e
---- /dev/null
+index bc9b51e..a15726f 100644
+--- a/arch/arm/mach-imx/include/mach/weim.h
 +++ b/arch/arm/mach-imx/include/mach/weim.h
-@@ -0,0 +1,7 @@
-+#ifndef __MACH_WEIM_H
-+#define __MACH_WEIM_H
+@@ -4,4 +4,6 @@
+ void imx27_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
+ 		unsigned additional);
+ 
++void imx1_setup_eimcs(size_t cs, unsigned upper, unsigned lower);
 +
-+void imx27_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
-+		unsigned additional);
-+
-+#endif /* __MACH_WEIM_H */
+ #endif /* __MACH_WEIM_H */
 -- 
 1.7.10.4
 
