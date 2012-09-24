@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-f177.google.com ([209.85.223.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TG7PO-0006MG-JM
- for barebox@lists.infradead.org; Mon, 24 Sep 2012 12:05:07 +0000
-Received: by ieje14 with SMTP id e14so11722044iej.36
- for <barebox@lists.infradead.org>; Mon, 24 Sep 2012 05:05:05 -0700 (PDT)
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TG7uM-0008Cs-Bd
+ for barebox@lists.infradead.org; Mon, 24 Sep 2012 12:37:07 +0000
+Message-ID: <506053EE.5070105@phytec.de>
+Date: Mon, 24 Sep 2012 14:37:02 +0200
+From: Teresa Gamez <t.gamez@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <1348483583-12586-15-git-send-email-s.hauer@pengutronix.de>
-References: <1348483583-12586-1-git-send-email-s.hauer@pengutronix.de>
- <1348483583-12586-15-git-send-email-s.hauer@pengutronix.de>
-From: Roberto Nibali <rnibali@gmail.com>
-Date: Mon, 24 Sep 2012 14:04:45 +0200
-Message-ID: <CAONxwYPfft_KjUydoZWikbaH6yUT3_tHqVZ=ND8AiNXm4ffk4A@mail.gmail.com>
+References: <1348149724-28468-1-git-send-email-t.gamez@phytec.de>
+ <1348168424-11742-1-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1348168424-11742-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,124 +18,98 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 14/14] ARM i.MX25: Add function to setup chipselect
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] Makefile: add target to produce a SPL compatible uImage
+To: Jan Luebbe <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi
+Hello Jan,
 
-Great series in general, nice cleanup!
+Am 20.09.2012 21:13, schrieb Jan Luebbe:
+> This is mostly useful during the initial port of barebox to a new
+> board which is supported by u-boot. It also allows starting barebox
+> from a SRAM-based u-boot SPL.
+>
+> A different load address can be set like this:
+> make barebox.uimage UIMAGE_BASE=0x80000000
+>
+> Also add barebox.ubl to CLEAN_FILES.
+>
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+> ---
+> I've carried this patch for some time and adjusted it to support
+> PBL (compressed image), but have not had an opportunity to verify
+> it again.
+>
+> Teresa, if you have some time to try it out, that would be very
+> much appreciated. :)
 
->  arch/arm/mach-imx/imx25.c                   |    9 +++++++++
->  arch/arm/mach-imx/include/mach/imx25-regs.h |    6 +-----
->  arch/arm/mach-imx/include/mach/weim.h       |    3 +++
->  3 files changed, 13 insertions(+), 5 deletions(-)
+I have tested it with my am335x patches. And it worked so far.
+But I have not done anything with the pbl image, yet.
+Could you explain me what it's actually for? And how I can test it?
+
+Regards
+Teresa
+
 >
-> diff --git a/arch/arm/mach-imx/imx25.c b/arch/arm/mach-imx/imx25.c
-> index 3f44649..32c0412 100644
-> --- a/arch/arm/mach-imx/imx25.c
-> +++ b/arch/arm/mach-imx/imx25.c
-> @@ -16,8 +16,17 @@
->  #include <mach/imx-regs.h>
->  #include <mach/iim.h>
->  #include <io.h>
-> +#include <mach/weim.h>
->  #include <sizes.h>
 >
-> +void imx25_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
-> +               unsigned additional)
-> +{
-> +       writel(upper, MX25_WEIM_BASE_ADDR + (cs * 0x10) + 0x0);
-> +       writel(lower, MX25_WEIM_BASE_ADDR + (cs * 0x10) + 0x4);
-> +       writel(additional, MX25_WEIM_BASE_ADDR + (cs * 0x10) + 0x8);
-> +}
+>   .gitignore |    1 +
+>   Makefile   |   19 ++++++++++++++++++-
+>   2 files changed, 19 insertions(+), 1 deletion(-)
+>
+> diff --git a/.gitignore b/.gitignore
+> index 4154c73..7e98a25 100644
+> --- a/.gitignore
+> +++ b/.gitignore
+> @@ -35,6 +35,7 @@ barebox.srec
+>   barebox.netx
+>   barebox.s5p
+>   barebox.ubl
+> +barebox.uimage
+>   barebox.map
+>   System.map
+>   Module.symvers
+> diff --git a/Makefile b/Makefile
+> index 0f1a319..5cb4730 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -686,6 +686,22 @@ ifndef CONFIG_PBL_IMAGE
+>   	$(call cmd,check_file_size,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
+>   endif
+>   
+> +# By default the uImage load address is 2MB below CONFIG_TEXT_BASE,
+> +# leaving space for the compressed PBL image at 1MB below CONFIG_TEXT_BASE.
+> +UIMAGE_BASE ?= $(shell printf "0x%08x" $$(($(CONFIG_TEXT_BASE) - 0x200000)))
 > +
->  /* IIM fuse definitions */
->  #define IIM_BANK0_BASE (MX25_IIM_BASE_ADDR + 0x800)
->  #define IIM_BANK1_BASE (MX25_IIM_BASE_ADDR + 0xc00)
-> diff --git a/arch/arm/mach-imx/include/mach/imx25-regs.h b/arch/arm/mach-imx/include/mach/imx25-regs.h
-> index 8e7ff85..0bf6e11 100644
-> --- a/arch/arm/mach-imx/include/mach/imx25-regs.h
-> +++ b/arch/arm/mach-imx/include/mach/imx25-regs.h
-> @@ -137,11 +137,7 @@
->  #define MX25_CSD1_BASE_ADDR  0x90000000
->
->  #define MX25_ESDCTL_BASE_ADDR  0xb8001000
-> -
-> -#define WEIM_BASE 0xb8002000
-> -#define CSCR_U(x)     (WEIM_BASE + (x) * 0x10)
-> -#define CSCR_L(x)     (WEIM_BASE + 4 + (x) * 0x10)
-> -#define CSCR_A(x)     (WEIM_BASE + 8 + (x) * 0x10)
-> +#define MX25_WEIM_BASE_ADDR    0xb8002000
->
->  /*
->   * Watchdog Registers
-> diff --git a/arch/arm/mach-imx/include/mach/weim.h b/arch/arm/mach-imx/include/mach/weim.h
-> index 576f87c..8d572dc 100644
-> --- a/arch/arm/mach-imx/include/mach/weim.h
-> +++ b/arch/arm/mach-imx/include/mach/weim.h
-> @@ -10,6 +10,9 @@ void imx31_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
->  void imx35_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
->                 unsigned additional);
->
-> +void imx25_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
-> +               unsigned additional);
+> +# For development provide a target which makes barebox loadable by an
+> +# unmodified u-boot
+> +quiet_cmd_barebox_mkimage = MKIMAGE $@
+> +      cmd_barebox_mkimage = $(srctree)/scripts/mkimage -A $(ARCH) -T firmware -C none \
+> +       -O barebox -a $(UIMAGE_BASE) -e $(UIMAGE_BASE) \
+> +       -n "barebox $(KERNELRELEASE)" -d $< $@
 > +
->  void imx1_setup_eimcs(size_t cs, unsigned upper, unsigned lower);
->
->  void imx21_setup_eimcs(size_t cs, unsigned upper, unsigned lower);
+> +# barebox.uimage is build from the raw barebox binary, without any other
+> +# headers.
+> +barebox.uimage: $(KBUILD_BINARY) FORCE
+> +	$(call if_changed,barebox_mkimage)
+> +
+>   ifdef CONFIG_X86
+>   barebox.S: barebox
+>   ifdef CONFIG_X86_HDBOOT
+> @@ -1015,7 +1031,8 @@ CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
+>                   .tmp_version .tmp_barebox* barebox.bin barebox.map barebox.S \
+>   		.tmp_kallsyms* barebox_default_env* barebox.ldr \
+>   		scripts/bareboxenv-target barebox-flash-image \
+> -		Doxyfile.version barebox.srec barebox.s5p
+> +		Doxyfile.version barebox.srec barebox.s5p barebox.ubl \
+> +		barebox.uimage
+>   
+>   # Directories & files removed with 'make mrproper'
+>   MRPROPER_DIRS  += include/config include2 usr/include
 
-This allows me to drop my ugly version of the WEIMCS setup from June
-based on imx27. Now, if only I got barebox to recognize the NOR on my
-platform :).
-
-diff --git a/arch/arm/mach-imx/include/mach/imx25-regs.h
-b/arch/arm/mach-imx/include/mach/imx25-regs.h
-index 73307c4..8225832 100644
---- a/arch/arm/mach-imx/include/mach/imx25-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx25-regs.h
-@@ -72,6 +72,7 @@
- #define CCM_LTR1	0x44
- #define CCM_LTR2	0x48
- #define CCM_LTR3	0x4c
-+#define CCM_MCR		0x64
-
- #define PDR0_AUTO_MUX_DIV(x)	(((x) & 0x7) << 9)
- #define PDR0_CCM_PER_AHB(x)	(((x) & 0x7) << 12)
-@@ -107,6 +108,22 @@
- #define CSCR_L(x)     (WEIM_BASE + 4 + (x) * 0x10)
- #define CSCR_A(x)     (WEIM_BASE + 8 + (x) * 0x10)
-
-+/* Chip Select Registers */
-+#define IMX_WEIM_BASE WEIM_BASE
-+#define CSxU(x) __REG(IMX_WEIM_BASE + (cs * 0x10) + 0x00) /* Chip
-Select x Upper Register    */
-+#define CSxL(x) __REG(IMX_WEIM_BASE + (cs * 0x10) + 0x04) /* Chip
-Select x Lower Register    */
-+#define CSxA(x) __REG(IMX_WEIM_BASE + (cs * 0x10) + 0x08) /* Chip
-Select x Addition Register */
-+#define EIM  __REG(IMX_WEIM_BASE + 0x60) /* WEIM Configuration Register     */
-+
-+#ifndef __ASSEMBLY__
-+static inline void imx25_setup_weimcs(size_t cs, unsigned upper,
-unsigned lower, unsigned addional)
-+{
-+        CSxU(cs) = upper;
-+        CSxL(cs) = lower;
-+        CSxA(cs) = addional;
-+}
-+#endif /* __ASSEMBLY__ */
-+
- /*
-  * Definitions for the clocksource driver
-  *
-
-Cheers
-Roberto
 
 _______________________________________________
 barebox mailing list
