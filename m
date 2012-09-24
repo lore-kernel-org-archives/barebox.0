@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TG3sK-0003J2-To
- for barebox@lists.infradead.org; Mon, 24 Sep 2012 08:18:46 +0000
+ id 1TG3sK-0003J1-SC
+ for barebox@lists.infradead.org; Mon, 24 Sep 2012 08:18:45 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Mon, 24 Sep 2012 10:18:33 +0200
-Message-Id: <1348474714-5807-3-git-send-email-jlu@pengutronix.de>
+Date: Mon, 24 Sep 2012 10:18:32 +0200
+Message-Id: <1348474714-5807-2-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1348474714-5807-1-git-send-email-jlu@pengutronix.de>
 References: <1348474714-5807-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,62 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] ARM: remove ARCH_HAS_LOWLEVEL_INIT
+Subject: [PATCH 2/4] ARM OMAP3: rename arch_init_lowlevel to
+ board_init_lowlevel
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-This is unused now and not needed. We have a board_init_lowlevel. If a
-board needs some architecture setup it can always call it from its
-board_init_lowlevel.
+OMAP3 is the only architecture which has a arch_init_lowlevel in
+which it invalidates the dcache. This can easily be done in
+board_init_lowlevel aswell. Since on OMAP3 we are always executed
+in SRAM we'll never need a board specific lowlevel_init. So the
+easiest way of getting rid of this special handling is to just
+rename the function.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start-reset.c         |    4 ----
- arch/arm/include/asm/barebox-arm.h |    1 -
- common/Kconfig                     |    3 ---
- 3 files changed, 8 deletions(-)
+ arch/arm/mach-omap/Kconfig      |    1 -
+ arch/arm/mach-omap/omap3_core.S |    8 ++------
+ 2 files changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/cpu/start-reset.c b/arch/arm/cpu/start-reset.c
-index e0df676..46193ef 100644
---- a/arch/arm/cpu/start-reset.c
-+++ b/arch/arm/cpu/start-reset.c
-@@ -40,10 +40,6 @@ void __naked __bare_init reset(void)
- 	r |= 0xd3;
- 	__asm__ __volatile__("msr cpsr, %0" : : "r"(r));
+diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+index d735284..9c76a96 100644
+--- a/arch/arm/mach-omap/Kconfig
++++ b/arch/arm/mach-omap/Kconfig
+@@ -37,7 +37,6 @@ config ARCH_OMAP3
+ 	select CPU_V7
+ 	select GENERIC_GPIO
+ 	select OMAP3_LOWLEVEL_INIT
+-	select ARCH_HAS_LOWLEVEL_INIT
+ 	select OMAP_CLOCK_SOURCE_S32K
+ 	help
+ 	  Say Y here if you are using Texas Instrument's OMAP343x based platform
+diff --git a/arch/arm/mach-omap/omap3_core.S b/arch/arm/mach-omap/omap3_core.S
+index 6a9f44f..d1be6e5 100644
+--- a/arch/arm/mach-omap/omap3_core.S
++++ b/arch/arm/mach-omap/omap3_core.S
+@@ -12,7 +12,6 @@
+  * functions.
+  * @li Call architecture initialization function a_init
+  *
+- * arch_init_lowlevel is enabled if CONFIG_ARCH_HAS_LOWLEVEL_INIT is defined
+  */
+ /*
+  * (C) Copyright 2006-2008
+@@ -42,8 +41,7 @@
+ #include <mach/wdt.h>
+ #include <mach/clocks.h>
  
 -#ifdef CONFIG_ARCH_HAS_LOWLEVEL_INIT
--	arch_init_lowlevel();
--#endif
+-ENTRY(arch_init_lowlevel)
++ENTRY(board_init_lowlevel)
+ 	/* Invalidate all Dcaches */
+ #ifndef CONFIG_CPU_V7_DCACHE_SKIP
+ 	/* If Arch specific ROM code SMI handling does not exist */
+@@ -93,6 +91,4 @@ finished_inval:
+ #endif /* CONFIG_CPU_V7_DCACHE_SKIP */
+ 	/* back to arch calling code */
+ 	mov	pc,	lr
+-ENDPROC(arch_init_lowlevel)
 -
- 	/* disable MMU stuff and caches */
- 	r = get_cr();
- 	r &= ~(CR_M | CR_C | CR_B | CR_S | CR_R | CR_V);
-diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-index b880dd4..2689a04 100644
---- a/arch/arm/include/asm/barebox-arm.h
-+++ b/arch/arm/include/asm/barebox-arm.h
-@@ -41,6 +41,5 @@ extern char __ll_return[];
- 
- void board_init_lowlevel(void);
- void board_init_lowlevel_return(void);
--void arch_init_lowlevel(void);
- 
- #endif	/* _BAREBOX_ARM_H_ */
-diff --git a/common/Kconfig b/common/Kconfig
-index b97392c..bcc3581 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -292,9 +292,6 @@ config MACH_DO_LOWLEVEL_INIT
- 	  on many platforms. Disabling this option allows configurations to use
- 	  barebox as a second stage boot loader.
- 
--config ARCH_HAS_LOWLEVEL_INIT
--	bool
--
- config PROMPT
- 	string
- 	prompt "barebox command prompt"
+-#endif /* CONFIG_ARCH_HAS_LOWLEVEL_INIT */
++ENDPROC(board_init_lowlevel)
 -- 
 1.7.10.4
 
