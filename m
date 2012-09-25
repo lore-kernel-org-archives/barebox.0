@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TGTHj-0002up-8U
- for barebox@lists.infradead.org; Tue, 25 Sep 2012 11:26:43 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1TGTHf-0002iA-S7
- for barebox@lists.infradead.org; Tue, 25 Sep 2012 13:26:35 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1TGTHf-0004zL-Qp
- for barebox@lists.infradead.org; Tue, 25 Sep 2012 13:26:35 +0200
-Date: Tue, 25 Sep 2012 13:26:35 +0200
+ id 1TGTJ9-0003Iz-TL
+ for barebox@lists.infradead.org; Tue, 25 Sep 2012 11:28:12 +0000
+Date: Tue, 25 Sep 2012 13:28:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120925112635.GE1322@pengutronix.de>
+Message-ID: <20120925112806.GF1322@pengutronix.de>
+References: <1348474714-5807-1-git-send-email-jlu@pengutronix.de>
+ <1348474714-5807-4-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <1348474714-5807-4-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,1200 +19,1305 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: next-stable tag
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/4] ARM: give boards control of the reset entry point
+To: Jan Luebbe <jlu@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi All,
+Hi Jan,
 
-I decided to create a next-stable tag to base further patches on until
-the next release. So if your patches conflict to master please use this
-tag as a base until the next release.
+Could you redo this based on the next-stable tag I created? There are
+two additional boards to handle now.
 
-Here's what we've queued up so far:
+Sascha
 
+On Mon, Sep 24, 2012 at 10:18:34AM +0200, Jan Luebbe wrote:
+> On some SoCs (for example AM35xx), the ROM bootloader passes useful
+> information in r0 when jumping to barebox.
+> 
+> To avoid overwriting this in the generic reset code, we introduce
+> common_reset as a C function and as an assembler macro. This is then
+> called form the reset entry point (either in common or in board code).
+> 
+> This patch is based on code by Sascha Hauer <s.hauer@pengutronix.de>.
+> 
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+> ---
+>  arch/arm/boards/a9m2410/lowlevel_init.S            |   17 +++--
+>  arch/arm/boards/a9m2440/lowlevel_init.S            |   15 ++---
+>  arch/arm/boards/at91sam9260ek/lowlevel_init.S      |    9 ++-
+>  arch/arm/boards/eukrea_cpuimx25/lowlevel.c         |    5 +-
+>  arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S    |   11 ++--
+>  arch/arm/boards/eukrea_cpuimx35/lowlevel.c         |    5 +-
+>  .../boards/freescale-mx25-3-stack/lowlevel_init.S  |   11 ++--
+>  .../boards/freescale-mx35-3-stack/lowlevel_init.S  |   12 ++--
+>  .../boards/friendlyarm-mini2440/lowlevel_init.S    |   18 +++---
+>  arch/arm/boards/friendlyarm-tiny210/lowlevel.c     |    5 +-
+>  arch/arm/boards/guf-cupid/lowlevel.c               |    7 +-
+>  arch/arm/boards/guf-neso/lowlevel.c                |    6 +-
+>  arch/arm/boards/imx21ads/lowlevel_init.S           |   12 ++--
+>  arch/arm/boards/imx27ads/lowlevel_init.S           |   11 ++--
+>  arch/arm/boards/karo-tx25/lowlevel.c               |    5 +-
+>  arch/arm/boards/netx/platform.S                    |    9 ++-
+>  arch/arm/boards/panda/lowlevel.c                   |    7 +-
+>  arch/arm/boards/pcm027/lowlevel_init.S             |   10 ++-
+>  arch/arm/boards/pcm037/lowlevel_init.S             |   12 ++--
+>  arch/arm/boards/pcm038/lowlevel.c                  |    5 +-
+>  arch/arm/boards/pcm043/lowlevel.c                  |    5 +-
+>  arch/arm/boards/pcm049/lowlevel.c                  |    5 +-
+>  arch/arm/boards/phycard-a-xl2/lowlevel.c           |    5 +-
+>  arch/arm/boards/phycard-i.MX27/lowlevel_init.S     |   12 ++--
+>  arch/arm/boards/scb9328/lowlevel_init.S            |   11 ++--
+>  arch/arm/cpu/Makefile                              |    4 +-
+>  arch/arm/cpu/start-pbl.c                           |   12 ++++
+>  arch/arm/cpu/start-reset.c                         |   63 ------------------
+>  arch/arm/cpu/start.c                               |   12 ++++
+>  arch/arm/include/asm/barebox-arm-head.h            |   68 ++++++++++++++++++++
+>  arch/arm/include/asm/system.h                      |    4 ++
+>  arch/arm/mach-at91/at91rm9200_lowlevel_init.c      |    5 +-
+>  arch/arm/mach-at91/at91sam926x_lowlevel_init.c     |    5 +-
+>  arch/arm/mach-ep93xx/lowlevel_init.S               |   15 ++---
+>  arch/arm/mach-omap/Kconfig                         |    5 +-
+>  arch/arm/mach-omap/omap3_core.S                    |    9 ++-
+>  36 files changed, 257 insertions(+), 175 deletions(-)
+>  delete mode 100644 arch/arm/cpu/start-reset.c
+> 
+> diff --git a/arch/arm/boards/a9m2410/lowlevel_init.S b/arch/arm/boards/a9m2410/lowlevel_init.S
+> index 0463b26..502ecdd 100644
+> --- a/arch/arm/boards/a9m2410/lowlevel_init.S
+> +++ b/arch/arm/boards/a9m2410/lowlevel_init.S
+> @@ -4,13 +4,14 @@
+>  
+>  #include <config.h>
+>  #include <mach/s3c-iomap.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+> -	.section ".text_bare_init.board_init_lowlevel","ax"
+> +	.section ".text_bare_init.reset","ax"
+>  
+> -.globl board_init_lowlevel
+> -board_init_lowlevel:
+> +.globl reset
+> +reset:
+>  
+> -	mov r10, lr		/* save the link register */
+> +	common_reset r0
+>  
+>  	bl s3c24x0_disable_wd
+>  
+> @@ -20,7 +21,7 @@ board_init_lowlevel:
+>  	cmp pc, #S3C_SDRAM_END
+>  	bhs 1f
+>  
+> -	mov pc, r10
+> +	b board_init_lowlevel_return
+>  
+>  /* we are running from NOR or NAND/SRAM memory. Do further initialisation */
+>  1:
+> @@ -29,9 +30,7 @@ board_init_lowlevel:
+>  	bl s3c24x0_sdram_init
+>  
+>  #ifdef CONFIG_S3C_NAND_BOOT
+> -	mov lr, r10		/* restore the link register */
+>  /* up to here we are running from the internal SRAM area */
+> -	b s3c24x0_nand_boot	/* does return directly to our caller into SDRAM */
+> -#else
+> -	mov pc, r10
+> +	bl s3c24x0_nand_boot
+>  #endif
+> +	b board_init_lowlevel_return
+> diff --git a/arch/arm/boards/a9m2440/lowlevel_init.S b/arch/arm/boards/a9m2440/lowlevel_init.S
+> index 305014c..da29efd 100644
+> --- a/arch/arm/boards/a9m2440/lowlevel_init.S
+> +++ b/arch/arm/boards/a9m2440/lowlevel_init.S
+> @@ -5,8 +5,9 @@
+>  #include <config.h>
+>  #include <mach/s3c-iomap.h>
+>  #include <mach/s3c24xx-gpio.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+> -	.section ".text_bare_init.board_init_lowlevel","ax"
+> +	.section ".text_bare_init.reset","ax"
+>  
+>  /*
+>   * To be able to setup the SDRAM interface correctly, we need some
+> @@ -211,10 +212,10 @@ SDRAMDATA:
+>  
+>  /* ------------------------------------------------------------------------ */
+>  
+> -.globl board_init_lowlevel
+> -board_init_lowlevel:
+> +.globl reset
+> +reset:
+>  
+> -	mov r10, lr		/* save the link register */
+> +	common_reset r0
+>  
+>  	bl s3c24x0_disable_wd
+>  
+> @@ -233,9 +234,7 @@ board_init_lowlevel:
+>  	bl sdram_init
+>  
+>  #ifdef CONFIG_S3C_NAND_BOOT
+> -	mov lr, r10		/* restore the link register */
+>  /* up to here we are running from the internal SRAM area */
+> -	b s3c24x0_nand_boot	/* does return directly to our caller into SDRAM */
+> -#else
+> -	mov pc, r10
+> +	bl s3c24x0_nand_boot
+>  #endif
+> +	b board_init_lowlevel_return
+> diff --git a/arch/arm/boards/at91sam9260ek/lowlevel_init.S b/arch/arm/boards/at91sam9260ek/lowlevel_init.S
+> index 4961682..7d51b7b 100644
+> --- a/arch/arm/boards/at91sam9260ek/lowlevel_init.S
+> +++ b/arch/arm/boards/at91sam9260ek/lowlevel_init.S
+> @@ -21,6 +21,9 @@
+>   * MA 02111-1307 USA
+>   */
+>  
+> -.globl board_init_lowlevel
+> -board_init_lowlevel:
+> -	mov	pc, lr
+> +#include <asm/barebox-arm-head.h>
+> +
+> +.globl reset
+> +reset:
+> +	common_reset r0
+> +	b board_init_lowlevel_return
+> diff --git a/arch/arm/boards/eukrea_cpuimx25/lowlevel.c b/arch/arm/boards/eukrea_cpuimx25/lowlevel.c
+> index 89066e9..ca94ac5 100644
+> --- a/arch/arm/boards/eukrea_cpuimx25/lowlevel.c
+> +++ b/arch/arm/boards/eukrea_cpuimx25/lowlevel.c
+> @@ -29,6 +29,7 @@
+>  #include <io.h>
+>  #include <mach/imx-nand.h>
+>  #include <asm/barebox-arm.h>
+> +#include <asm/barebox-arm-head.h>
+>  #include <asm-generic/sections.h>
+>  #include <asm-generic/memory_layout.h>
+>  #include <asm/system.h>
+> @@ -48,7 +49,7 @@ static void __bare_init __naked insdram(void)
+>  }
+>  #endif
+>  
+> -void __bare_init __naked board_init_lowlevel(void)
+> +void __bare_init __naked reset(void)
+>  {
+>  	uint32_t r;
+>  #ifdef CONFIG_NAND_IMX_BOOT
+> @@ -57,6 +58,8 @@ void __bare_init __naked board_init_lowlevel(void)
+>  #endif
+>  	register uint32_t loops = 0x20000;
+>  
+> +	common_reset();
+> +
+>  	/* restart the MPLL and wait until it's stable */
+>  	writel(readl(IMX_CCM_BASE + CCM_CCTL) | (1 << 27),
+>  						IMX_CCM_BASE + CCM_CCTL);
+> diff --git a/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S b/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S
+> index 0dae3ec..af4deeb 100644
+> --- a/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S
+> +++ b/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S
+> @@ -1,6 +1,7 @@
+>  #include <config.h>
+>  #include <asm-generic/memory_layout.h>
+>  #include <mach/imx-regs.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+>  #define writel(val, reg) \
+>  	ldr		r0,	=reg;	\
+> @@ -60,10 +61,10 @@
+>  
+>  	.section ".text_bare_init","ax"
+>  
+> -.globl board_init_lowlevel
+> -board_init_lowlevel:
+> +.globl reset
+> +reset:
+>  
+> -	mov	r10, lr
+> +	common_reset r0
+>  
+>  	/* ahb lite ip interface */
+>  	writel(0x20040304, AIPI1_PSR0)
+> @@ -103,7 +104,7 @@ board_init_lowlevel:
+>  	cmp	pc, #0xc0000000
+>  	bhi	1f
+>  
+> -	mov	pc,r10
+> +	b	board_init_lowlevel_return
+>  1:
+>  	sdram_init
+>  
+> @@ -135,4 +136,4 @@ copy_loop:
+>  #endif /* CONFIG_NAND_IMX_BOOT */
+>  
+>  ret:
+> -	mov	pc,r10
+> +	b	board_init_lowlevel_return
+> diff --git a/arch/arm/boards/eukrea_cpuimx35/lowlevel.c b/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
+> index 57867dc..b8dec71 100644
+> --- a/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
+> +++ b/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
+> @@ -29,6 +29,7 @@
+>  #include <io.h>
+>  #include <mach/imx-nand.h>
+>  #include <asm/barebox-arm.h>
+> +#include <asm/barebox-arm-head.h>
+>  #include <asm-generic/sections.h>
+>  #include <asm-generic/memory_layout.h>
+>  #include <asm/system.h>
+> @@ -59,7 +60,7 @@ static void __bare_init __naked insdram(void)
+>  }
+>  #endif
+>  
+> -void __bare_init __naked board_init_lowlevel(void)
+> +void __bare_init __naked reset(void)
+>  {
+>  	uint32_t r, s;
+>  	unsigned long ccm_base = IMX_CCM_BASE;
+> @@ -69,6 +70,8 @@ void __bare_init __naked board_init_lowlevel(void)
+>  #endif
+>  	register uint32_t loops = 0x20000;
+>  
+> +	common_reset();
+> +
+>  	r = get_cr();
+>  	r |= CR_Z; /* Flow prediction (Z) */
+>  	r |= CR_U; /* unaligned accesses  */
+> diff --git a/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S b/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S
+> index fa0f957..6157949 100644
+> --- a/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S
+> +++ b/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S
+> @@ -25,6 +25,7 @@
+>  #include <mach/imx-regs.h>
+>  #include <mach/imx-pll.h>
+>  #include <mach/esdctl.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+>  #define writel(val, reg) \
+>  	ldr		r0,	=reg;	\
+> @@ -52,9 +53,9 @@ MPCTL_PARAM_532_W:      .word   MPCTL_PARAM_532
+>  PPCTL_PARAM_W:    	.word   PPCTL_PARAM_300
+>  CCM_BASE_ADDR_W:        .word   IMX_CCM_BASE
+>  
+> -.globl board_init_lowlevel
+> -board_init_lowlevel:
+> -	mov     r10, lr
+> +.globl reset
+> +reset:
+> +	common_reset r0
+>  
+>  #define MX25_CCM_MCR	0x64
+>  
+> @@ -80,7 +81,7 @@ board_init_lowlevel:
+>  	cmp	pc, #0x90000000
+>  	bhi	1f
+>  
+> -	mov	pc, lr
+> +	b	board_init_lowlevel_return
+>  
+>  1:
+>  	ldr r0, ESDCTL_BASE_W
+> @@ -128,7 +129,7 @@ copy_loop:
+>  #endif /* CONFIG_NAND_IMX_BOOT */
+>  
+>  ret:
+> -	mov pc, r10
+> +	b	board_init_lowlevel_return
+>  
+>  /*
+>   * r0: control base, r1: ram bank base
+> diff --git a/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S b/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
+> index 837d2ff..a5e8c19 100644
+> --- a/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
+> +++ b/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
+> @@ -26,6 +26,8 @@
+>  #include <mach/esdctl.h>
+>  #include <asm/cache-l2x0.h>
+>  #include <asm-generic/memory_layout.h>
+> +#include <asm/barebox-arm-head.h>
+> +
+>  #include "board-mx35_3stack.h"
+>  
+>  #define CSD0_BASE_ADDR		0x80000000
+> @@ -58,9 +60,9 @@ MPCTL_PARAM_532_W:	.word	MPCTL_PARAM_532
+>  PPCTL_PARAM_W:		.word	PPCTL_PARAM_300
+>  CCM_BASE_ADDR_W:	.word	IMX_CCM_BASE
+>  
+> -.globl board_init_lowlevel
+> -board_init_lowlevel:
+> -	mov	r10, lr
+> +.globl reset
+> +reset:
+> +	common_reset r0
+>  
+>  	mrc	15, 0, r1, c1, c0, 0
+>  
+> @@ -128,7 +130,7 @@ board_init_lowlevel:
+>  	cmp	pc, #CSD1_BASE_ADDR
+>  	bhi	1f
+>  
+> -	mov	pc, r10
+> +	b	board_init_lowlevel_return
+>  
+>  1:
+>  	ldr	r0, =ESDCTL_BASE_ADDR
+> @@ -183,7 +185,7 @@ copy_loop:
+>  ret:
+>  #endif /* CONFIG_NAND_IMX_BOOT */
+>  
+> -	mov	pc, r10
+> +	b	board_init_lowlevel_return
+>  
+>  /*
+>   * r0: ESDCTL control base, r1: sdram slot base
+> diff --git a/arch/arm/boards/friendlyarm-mini2440/lowlevel_init.S b/arch/arm/boards/friendlyarm-mini2440/lowlevel_init.S
+> index 827cf00..5c06b1c 100644
+> --- a/arch/arm/boards/friendlyarm-mini2440/lowlevel_init.S
+> +++ b/arch/arm/boards/friendlyarm-mini2440/lowlevel_init.S
+> @@ -4,15 +4,15 @@
+>  
+>  #include <config.h>
+>  #include <mach/s3c-iomap.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+> -	.section ".text_bare_init.board_init_lowlevel","ax"
+> +	.section ".text_bare_init.reset","ax"
+>  
+>  /* ------------------------------------------------------------------------ */
+>  
+> -.globl board_init_lowlevel
+> -board_init_lowlevel:
+> -
+> -	mov r10, lr		/* save the link register */
+> +.globl reset
+> +reset:
+> +	common_reset r0
+>  
+>  	bl s3c24x0_disable_wd
+>  
+> @@ -22,7 +22,7 @@ board_init_lowlevel:
+>  	cmp pc, #S3C_SDRAM_END
+>  	bhs 1f
+>  
+> -	mov pc, r10
+> +	b board_init_lowlevel_return
+>  
+>  /* we are running from NOR or NAND/SRAM memory. Do further initialisation */
+>  1:
+> @@ -31,9 +31,7 @@ board_init_lowlevel:
+>  	bl s3c24x0_sdram_init
+>  
+>  #ifdef CONFIG_S3C_NAND_BOOT
+> -	mov lr, r10		/* restore the link register */
+>  /* up to here we are running from the internal SRAM area */
+> -	b s3c24x0_nand_boot	/* does return directly to our caller into SDRAM */
+> -#else
+> -	mov pc, r10
+> +	bl s3c24x0_nand_boot
+>  #endif
+> +	b board_init_lowlevel_return
+> diff --git a/arch/arm/boards/friendlyarm-tiny210/lowlevel.c b/arch/arm/boards/friendlyarm-tiny210/lowlevel.c
+> index 19739d8..791918a 100644
+> --- a/arch/arm/boards/friendlyarm-tiny210/lowlevel.c
+> +++ b/arch/arm/boards/friendlyarm-tiny210/lowlevel.c
+> @@ -24,6 +24,7 @@
+>  #include <init.h>
+>  #include <io.h>
+>  #include <asm/barebox-arm.h>
+> +#include <asm/barebox-arm-head.h>
+>  #include <asm/sections.h>
+>  #include <mach/s3c-iomap.h>
+>  #include <mach/s3c-clocks.h>
+> @@ -49,10 +50,12 @@ int __bare_init s5p_irom_load_mmc(void *dest, uint32_t start_block, uint16_t blo
+>  }
+>  
+>  
+> -void __bare_init board_init_lowlevel(void)
+> +void __bare_init reset(void)
+>  {
+>  	uint32_t r;
+>  
+> +	common_reset();
+> +
+>  #ifdef CONFIG_S3C_PLL_INIT
+>  	s5p_init_pll();
+>  #endif
+> diff --git a/arch/arm/boards/guf-cupid/lowlevel.c b/arch/arm/boards/guf-cupid/lowlevel.c
+> index 8fa9152..d50090b 100644
+> --- a/arch/arm/boards/guf-cupid/lowlevel.c
+> +++ b/arch/arm/boards/guf-cupid/lowlevel.c
+> @@ -29,6 +29,7 @@
+>  #include <io.h>
+>  #include <mach/imx-nand.h>
+>  #include <asm/barebox-arm.h>
+> +#include <asm/barebox-arm-head.h>
+>  #include <asm-generic/sections.h>
+>  #include <asm-generic/memory_layout.h>
+>  #include <asm/system.h>
+> @@ -182,7 +183,7 @@ static void __bare_init noinline setup_sdram(u32 memsize, u32 mode, u32 sdram_ad
+>  #define UNALIGNED_ACCESS_ENABLE
+>  #define LOW_INT_LATENCY_ENABLE
+>  
+> -void __bare_init __naked board_init_lowlevel(void)
+> +void __bare_init __naked reset(void)
+>  {
+>  	u32 r0, r1;
+>  	void *iomuxc_base = (void *)IMX_IOMUXC_BASE;
+> @@ -191,8 +192,10 @@ void __bare_init __naked board_init_lowlevel(void)
+>  	unsigned int *trg, *src;
+>  #endif
+>  
+> +	common_reset();
+> +
+>  	r0 = 0x10000000 + 128 * 1024 - 16;
+> -        __asm__ __volatile__("mov sp, %0" : : "r"(r0));
+> +	__asm__ __volatile__("mov sp, %0" : : "r"(r0));
+>  
+>  	/*
+>  	 *       ARM1136 init
+> diff --git a/arch/arm/boards/guf-neso/lowlevel.c b/arch/arm/boards/guf-neso/lowlevel.c
+> index 9b206be..5bb2d21 100644
+> --- a/arch/arm/boards/guf-neso/lowlevel.c
+> +++ b/arch/arm/boards/guf-neso/lowlevel.c
+> @@ -29,6 +29,7 @@
+>  #include <io.h>
+>  #include <mach/imx-nand.h>
+>  #include <asm/barebox-arm.h>
+> +#include <asm/barebox-arm-head.h>
+>  #include <asm/system.h>
+>  #include <asm-generic/sections.h>
+>  #include <asm-generic/memory_layout.h>
+> @@ -52,13 +53,16 @@ static void __bare_init __naked insdram(void)
+>  
+>  #define ESDCTL0_VAL (ESDCTL0_SDE | ESDCTL0_ROW13 | ESDCTL0_COL10)
+>  
+> -void __bare_init __naked board_init_lowlevel(void)
+> +void __bare_init __naked reset(void)
+>  {
+>  	uint32_t r;
+>  	int i;
+>  #ifdef CONFIG_NAND_IMX_BOOT
+>  	unsigned int *trg, *src;
+>  #endif
+> +
+> +	common_reset();
+> +
+>  	/* ahb lite ip interface */
+>  	AIPI1_PSR0 = 0x20040304;
+>  	AIPI1_PSR1 = 0xDFFBFCFB;
+> diff --git a/arch/arm/boards/imx21ads/lowlevel_init.S b/arch/arm/boards/imx21ads/lowlevel_init.S
+> index 1aeea57..1568f3c 100644
+> --- a/arch/arm/boards/imx21ads/lowlevel_init.S
+> +++ b/arch/arm/boards/imx21ads/lowlevel_init.S
+> @@ -20,14 +20,14 @@
+>  #include <config.h>
+>  #include <asm-generic/memory_layout.h>
+>  #include <mach/imx-regs.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+>  	.section ".text_bare_init","ax"
+>  
+> -.globl board_init_lowlevel
+> -board_init_lowlevel:
+> +.globl reset
+> +reset:
+>  
+> -/* Save lr, because it is overwritten by the calls to mem_delay. */
+> -	mov	r10, lr
+> +	common_reset r0
+>  
+>  /*
+>   * Initialize the AHB-Lite IP Interface (AIPI) module (to enable access to
+> @@ -79,7 +79,7 @@ board_init_lowlevel:
+>  	cmp	pc, #0xc8000000
+>  	bhi	1f
+>  
+> -	mov	pc, r10
+> +	b	board_init_lowlevel_return
+>  1:
+>  
+>  	/* Precharge */
+> @@ -149,7 +149,7 @@ copy_loop:
+>  #endif /* CONFIG_NAND_IMX_BOOT */
+>  
+>  ret:
+> -	mov	pc, r10
+> +	b	board_init_lowlevel_return
+>  
+>  /*
+>   *  spin for a while.  we need to wait at least 200 usecs.
+> diff --git a/arch/arm/boards/imx27ads/lowlevel_init.S b/arch/arm/boards/imx27ads/lowlevel_init.S
+> index df12aea..1bebb1d 100644
+> --- a/arch/arm/boards/imx27ads/lowlevel_init.S
+> +++ b/arch/arm/boards/imx27ads/lowlevel_init.S
+> @@ -6,6 +6,7 @@
+>  
+>  #include <config.h>
+>  #include <mach/imx-regs.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+>  #define writel(val, reg) \
+>  	ldr		r0,	=reg;	\
+> @@ -111,10 +112,10 @@ NORMAL_MODE		.long 0x00000000 // system/external device dependent data (SMODE=00
+>  	writel(0x0000000c, 0xD8001010)
+>  .endm
+>  
+> -.globl board_init_lowlevel
+> -board_init_lowlevel:
+> +.globl reset
+> +reset:
+>  
+> -	mov	r10, lr
+> +	common_reset r0
+>  
+>  	/* ahb lite ip interface */
+>  	writel(0x20040304, AIPI1_PSR0)
+> @@ -164,9 +165,9 @@ board_init_lowlevel:
+>  	cmp	pc, #0xc0000000
+>  	bhi	1f
+>  
+> -	mov	pc,r10
+> +	b board_init_lowlevel_return
+>  1:
+>  	sdram_init_sha
+>  
+> -	mov	pc,r10
+> +	b board_init_lowlevel_return
+>  
+> diff --git a/arch/arm/boards/karo-tx25/lowlevel.c b/arch/arm/boards/karo-tx25/lowlevel.c
+> index 9f1c5d6..f06cc7c 100644
+> --- a/arch/arm/boards/karo-tx25/lowlevel.c
+> +++ b/arch/arm/boards/karo-tx25/lowlevel.c
+> @@ -27,6 +27,7 @@
+>  #include <io.h>
+>  #include <mach/imx-nand.h>
+>  #include <asm/barebox-arm.h>
+> +#include <asm/barebox-arm-head.h>
+>  #include <asm/system.h>
+>  #include <asm-generic/sections.h>
+>  #include <asm-generic/memory_layout.h>
+> @@ -70,13 +71,15 @@ static inline void __bare_init  setup_sdram(uint32_t base, uint32_t esdctl,
+>  	writel(esdctl, esdctlreg);
+>  }
+>  
+> -void __bare_init __naked board_init_lowlevel(void)
+> +void __bare_init __naked reset(void)
+>  {
+>  	uint32_t r;
+>  #ifdef CONFIG_NAND_IMX_BOOT
+>  	unsigned int *trg, *src;
+>  #endif
+>  
+> +	common_reset();
+> +
+>  	/* AIPS setup - Only setup MPROTx registers. The PACR default values are good.
+>  	 * Set all MPROTx to be non-bufferable, trusted for R/W,
+>  	 * not forced to user-mode.
+> diff --git a/arch/arm/boards/netx/platform.S b/arch/arm/boards/netx/platform.S
+> index 4961682..7d51b7b 100644
+> --- a/arch/arm/boards/netx/platform.S
+> +++ b/arch/arm/boards/netx/platform.S
+> @@ -21,6 +21,9 @@
+>   * MA 02111-1307 USA
+>   */
+>  
+> -.globl board_init_lowlevel
+> -board_init_lowlevel:
+> -	mov	pc, lr
+> +#include <asm/barebox-arm-head.h>
+> +
+> +.globl reset
+> +reset:
+> +	common_reset r0
+> +	b board_init_lowlevel_return
+> diff --git a/arch/arm/boards/panda/lowlevel.c b/arch/arm/boards/panda/lowlevel.c
+> index 0b4b199..70a96d0 100644
+> --- a/arch/arm/boards/panda/lowlevel.c
+> +++ b/arch/arm/boards/panda/lowlevel.c
+> @@ -27,6 +27,7 @@
+>  #include <mach/omap4-clock.h>
+>  #include <mach/syslib.h>
+>  #include <asm/barebox-arm.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+>  #define TPS62361_VSEL0_GPIO    7
+>  
+> @@ -77,15 +78,17 @@ static void noinline panda_init_lowlevel(void)
+>  	board_init_lowlevel_return();
+>  }
+>  
+> -void board_init_lowlevel(void)
+> +void reset(void)
+>  {
+>  	u32 r;
+>  
+> +	common_reset();
+> +
+>  	if (get_pc() > 0x80000000)
+>  		return;
+>  
+>  	r = 0x4030d000;
+> -        __asm__ __volatile__("mov sp, %0" : : "r"(r));
+> +	__asm__ __volatile__("mov sp, %0" : : "r"(r));
+>  
+>  	panda_init_lowlevel();
+>  }
+> diff --git a/arch/arm/boards/pcm027/lowlevel_init.S b/arch/arm/boards/pcm027/lowlevel_init.S
+> index a436a33..f69899e 100644
+> --- a/arch/arm/boards/pcm027/lowlevel_init.S
+> +++ b/arch/arm/boards/pcm027/lowlevel_init.S
+> @@ -31,6 +31,7 @@
+>  #include <mach/pxa-regs.h>
+>  #include <mach/regs-ost.h>
+>  #include <mach/regs-intc.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+>  #define GPSR0		0x40E00018	/* GPIO Pin Output Set Register GPIO <31:00> */
+>  #define GPSR1		0x40E0001C	/* GPIO Pin Output Set Register GPIO <63:32> */
+> @@ -54,8 +55,10 @@
+>  /*
+>   *	Memory setup
+>   */
+> -.globl board_init_lowlevel
+> -board_init_lowlevel:
+> +.globl reset
+> +reset:
+> +	common_reset r0
+> +
+>  		@ Preserve r8/r7 i.e. kernel entry values
+>  
+>  		@ Data cache might be active.
+> @@ -453,4 +456,5 @@ initclks:
+>  	/* -------------------------------------------------------------------- */
+>  
+>  endlowlevel_init:
+> -	mov	pc, lr
+> +	b board_init_lowlevel_return
+> +
+> diff --git a/arch/arm/boards/pcm037/lowlevel_init.S b/arch/arm/boards/pcm037/lowlevel_init.S
+> index 1f8d38f..53b5811 100644
+> --- a/arch/arm/boards/pcm037/lowlevel_init.S
+> +++ b/arch/arm/boards/pcm037/lowlevel_init.S
+> @@ -23,6 +23,7 @@
+>  
+>  #include <mach/imx-regs.h>
+>  #include <mach/imx-pll.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+>  #define writel(val, reg) \
+>  	ldr		r0,	=reg;	\
+> @@ -44,10 +45,11 @@
+>  
+>  	.section ".text_bare_init","ax"
+>  
+> -.globl board_init_lowlevel
+> -board_init_lowlevel:
+> +.globl reset
+> +reset:
+> +
+> +	common_reset r0
+>  
+> -	mov r10, lr
+>  	writel(IPU_CONF_DI_EN, IPU_CONF)
+>  	writel(0x074B0BF5, IMX_CCM_BASE + CCM_CCMR)
+>  
+> @@ -91,7 +93,7 @@ clear_iomux:
+>  	cmp	pc, #0x90000000
+>  	bhs	1f
+>  
+> -	mov	pc, r10
+> +	b	board_init_lowlevel_return
+>  1:
+>  
+>  #if defined CONFIG_PCM037_SDRAM_BANK0_128MB
+> @@ -160,5 +162,5 @@ copy_loop:
+>  ret:
+>  #endif /* CONFIG_NAND_IMX_BOOT */
+>  
+> -	mov	pc, r10
+> +	b	board_init_lowlevel_return
+>  
+> diff --git a/arch/arm/boards/pcm038/lowlevel.c b/arch/arm/boards/pcm038/lowlevel.c
+> index 3f29a83..d3ce528 100644
+> --- a/arch/arm/boards/pcm038/lowlevel.c
+> +++ b/arch/arm/boards/pcm038/lowlevel.c
+> @@ -31,6 +31,7 @@
+>  #include <asm/system.h>
+>  #include <asm-generic/memory_layout.h>
+>  #include <asm-generic/sections.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+>  #include "pll.h"
+>  
+> @@ -53,13 +54,15 @@ static void __bare_init __naked insdram(void)
+>  
+>  #define ESDCTL0_VAL (ESDCTL0_SDE | ESDCTL0_ROW13 | ESDCTL0_COL10)
+>  
+> -void __bare_init __naked board_init_lowlevel(void)
+> +void __bare_init __naked reset(void)
+>  {
+>  	uint32_t r;
+>  	int i;
+>  #ifdef CONFIG_NAND_IMX_BOOT
+>  	unsigned int *trg, *src;
+>  #endif
+> +	common_reset();
+> +
+>  	/* ahb lite ip interface */
+>  	AIPI1_PSR0 = 0x20040304;
+>  	AIPI1_PSR1 = 0xDFFBFCFB;
+> diff --git a/arch/arm/boards/pcm043/lowlevel.c b/arch/arm/boards/pcm043/lowlevel.c
+> index fd6787f..dc51e05 100644
+> --- a/arch/arm/boards/pcm043/lowlevel.c
+> +++ b/arch/arm/boards/pcm043/lowlevel.c
+> @@ -29,6 +29,7 @@
+>  #include <io.h>
+>  #include <mach/imx-nand.h>
+>  #include <asm/barebox-arm.h>
+> +#include <asm/barebox-arm-head.h>
+>  #include <asm-generic/sections.h>
+>  #include <asm-generic/memory_layout.h>
+>  #include <asm/system.h>
+> @@ -64,7 +65,7 @@ static void __bare_init __naked insdram(void)
+>  }
+>  #endif
+>  
+> -void __bare_init __naked board_init_lowlevel(void)
+> +void __bare_init __naked reset(void)
+>  {
+>  	uint32_t r, s;
+>  	unsigned long ccm_base = IMX_CCM_BASE;
+> @@ -73,6 +74,8 @@ void __bare_init __naked board_init_lowlevel(void)
+>  	unsigned int *trg, *src;
+>  	int i;
+>  #endif
+> +	common_reset();
+> +
+>  	r = get_cr();
+>  	r |= CR_Z; /* Flow prediction (Z) */
+>  	r |= CR_U; /* unaligned accesses  */
+> diff --git a/arch/arm/boards/pcm049/lowlevel.c b/arch/arm/boards/pcm049/lowlevel.c
+> index 65a29ec..0df8eb5 100644
+> --- a/arch/arm/boards/pcm049/lowlevel.c
+> +++ b/arch/arm/boards/pcm049/lowlevel.c
+> @@ -27,6 +27,7 @@
+>  #include <mach/omap4-clock.h>
+>  #include <mach/syslib.h>
+>  #include <asm/barebox-arm.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+>  #define TPS62361_VSEL0_GPIO    182
+>  
+> @@ -87,10 +88,12 @@ static void noinline pcm049_init_lowlevel(void)
+>  	board_init_lowlevel_return();
+>  }
+>  
+> -void board_init_lowlevel(void)
+> +void reset(void)
+>  {
+>  	u32 r;
+>  
+> +	common_reset();
+> +
+>  	if (get_pc() > 0x80000000)
+>  		return;
+>  
+> diff --git a/arch/arm/boards/phycard-a-xl2/lowlevel.c b/arch/arm/boards/phycard-a-xl2/lowlevel.c
+> index 38f80c9..33277f3 100644
+> --- a/arch/arm/boards/phycard-a-xl2/lowlevel.c
+> +++ b/arch/arm/boards/phycard-a-xl2/lowlevel.c
+> @@ -27,6 +27,7 @@
+>  #include <mach/omap4-clock.h>
+>  #include <mach/syslib.h>
+>  #include <asm/barebox-arm.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+>  #define TPS62361_VSEL0_GPIO    7
+>  
+> @@ -87,10 +88,12 @@ static noinline void pcaaxl2_init_lowlevel(void)
+>  	board_init_lowlevel_return();
+>  }
+>  
+> -void board_init_lowlevel(void)
+> +void reset(void)
+>  {
+>  	u32 r;
+>  
+> +	common_reset();
+> +
+>  	if (get_pc() > 0x80000000)
+>  		return;
+>  
+> diff --git a/arch/arm/boards/phycard-i.MX27/lowlevel_init.S b/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
+> index c24edd4..b16afb5 100644
+> --- a/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
+> +++ b/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
+> @@ -7,6 +7,7 @@
+>  #include <config.h>
+>  #include <mach/imx-regs.h>
+>  #include <mach/imx-pll.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+>  #define writel(val, reg) \
+>  	ldr		r0,	=reg;	\
+> @@ -55,10 +56,9 @@
+>  
+>  	.section ".text_bare_init","ax"
+>  
+> -.globl board_init_lowlevel
+> -board_init_lowlevel:
+> -
+> -	mov	r10, lr
+> +.globl reset
+> +reset:
+> +	common_reset r0
+>  
+>  	/* ahb lite ip interface */
+>  	writel(0x20040304, AIPI1_PSR0)
+> @@ -72,7 +72,7 @@ board_init_lowlevel:
+>  	cmp	pc, #0xc0000000
+>  	bhi	1f
+>  
+> -	mov	pc,r10
+> +	b	board_init_lowlevel_return
+>  
+>  1:
+>  	writel(IMX_PLL_PD(0) |
+> @@ -121,5 +121,5 @@ copy_loop:
+>  #endif /* CONFIG_NAND_IMX_BOOT */
+>  
+>  ret:
+> -	mov	pc,r10
+> +	b	board_init_lowlevel_return
+>  
+> diff --git a/arch/arm/boards/scb9328/lowlevel_init.S b/arch/arm/boards/scb9328/lowlevel_init.S
+> index 5b02428..087e8e6 100644
+> --- a/arch/arm/boards/scb9328/lowlevel_init.S
+> +++ b/arch/arm/boards/scb9328/lowlevel_init.S
+> @@ -19,6 +19,7 @@
+>   */
+>  
+>  #include <mach/imx-regs.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+>  #define CPU200
+>  
+> @@ -81,10 +82,10 @@
+>  	ldr		r1,	=val;	\
+>  	str		r1,   [r0];
+>  
+> -.globl board_init_lowlevel
+> -board_init_lowlevel:
+> +.globl reset
+> +reset:
+>  
+> -	mov	r10, lr
+> +	common_reset r0
+>  
+>  	/* Change PERCLK1DIV to 14 ie 14+1 */
+>  	writel(CFG_PCDR_VAL, PCDR)
+> @@ -156,7 +157,7 @@ board_init_lowlevel:
+>  	cmp	pc, #0x09000000
+>  	bhi	1f
+>  
+> -	mov	pc,r10
+> +	b board_init_lowlevel_return
+>  
+>  1:
+>  
+> @@ -181,4 +182,4 @@ board_init_lowlevel:
+>  	writel(0x0, 0x08223000) /* CAS Latency 2, issue Mode Register Command, Burst Length = 8 */
+>  	writel(0x810a8200, SDCTL0) /* Set to Normal Mode CAS 2 */
+>  
+> -	mov	pc,r10
+> +	b board_init_lowlevel_return
+> diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
+> index 0ecc72e..f7ab276 100644
+> --- a/arch/arm/cpu/Makefile
+> +++ b/arch/arm/cpu/Makefile
+> @@ -1,7 +1,7 @@
+>  obj-y += cpu.o
+>  obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions.o
+>  obj-$(CONFIG_ARM_EXCEPTIONS) += interrupts.o
+> -obj-y += start.o start-reset.o
+> +obj-y += start.o
+>  
+>  #
+>  # Any variants can be called as start-armxyz.S
+> @@ -19,4 +19,4 @@ obj-$(CONFIG_CPU_32v7) += cache-armv7.o
+>  pbl-$(CONFIG_CPU_32v7) += cache-armv7.o
+>  obj-$(CONFIG_CACHE_L2X0) += cache-l2x0.o
+>  
+> -pbl-y += start-pbl.o start-reset.o
+> +pbl-y += start-pbl.o
+> diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+> index 932a3da..823b9cc 100644
+> --- a/arch/arm/cpu/start-pbl.c
+> +++ b/arch/arm/cpu/start-pbl.c
+> @@ -41,6 +41,18 @@ void __naked __section(.text_head_entry) pbl_start(void)
+>  	barebox_arm_head();
+>  }
+>  
+> +/*
+> + * The actual reset vector. This code is position independent and usually
+> + * does not run at the address it's linked at.
+> + */
+> +#ifndef CONFIG_MACH_DO_LOWLEVEL_INIT
+> +void __naked __bare_init reset(void)
+> +{
+> +	common_reset();
+> +	board_init_lowlevel_return();
+> +}
+> +#endif
+> +
+>  extern void *input_data;
+>  extern void *input_data_end;
+>  
+> diff --git a/arch/arm/cpu/start-reset.c b/arch/arm/cpu/start-reset.c
+> deleted file mode 100644
+> index 46193ef..0000000
+> --- a/arch/arm/cpu/start-reset.c
+> +++ /dev/null
+> @@ -1,63 +0,0 @@
+> -/*
+> - * start-reset.c
+> - *
+> - * Copyright (c) 2010 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+> - *
+> - * See file CREDITS for list of people who contributed to this
+> - * project.
+> - *
+> - * This program is free software; you can redistribute it and/or modify
+> - * it under the terms of the GNU General Public License version 2
+> - * as published by the Free Software Foundation.
+> - *
+> - * This program is distributed in the hope that it will be useful,
+> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - * GNU General Public License for more details.
+> - *
+> - * You should have received a copy of the GNU General Public License
+> - * along with this program; if not, write to the Free Software
+> - * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+> - */
+> -
+> -#include <common.h>
+> -#include <init.h>
+> -#include <asm/system.h>
+> -#include <asm/barebox-arm.h>
+> -#include <asm/sections.h>
+> -
+> -/*
+> - * The actual reset vector. This code is position independent and usually
+> - * does not run at the address it's linked at.
+> - */
+> -void __naked __bare_init reset(void)
+> -{
+> -	uint32_t r;
+> -
+> -	/* set the cpu to SVC32 mode */
+> -	__asm__ __volatile__("mrs %0, cpsr":"=r"(r));
+> -	r &= ~0x1f;
+> -	r |= 0xd3;
+> -	__asm__ __volatile__("msr cpsr, %0" : : "r"(r));
+> -
+> -	/* disable MMU stuff and caches */
+> -	r = get_cr();
+> -	r &= ~(CR_M | CR_C | CR_B | CR_S | CR_R | CR_V);
+> -	r |= CR_I;
+> -
+> -#if __LINUX_ARM_ARCH__ >= 6
+> -	r |= CR_U;
+> -#else
+> -	r |= CR_A;
+> -#endif
+> -
+> -#ifdef __ARMEB__
+> -	r |= CR_B;
+> -#endif
+> -	set_cr(r);
+> -
+> -#ifdef CONFIG_MACH_DO_LOWLEVEL_INIT
+> -	board_init_lowlevel();
+> -#endif
+> -	board_init_lowlevel_return();
+> -}
+> diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+> index 07e7dfe..e9a4620 100644
+> --- a/arch/arm/cpu/start.c
+> +++ b/arch/arm/cpu/start.c
+> @@ -53,6 +53,18 @@ void __naked __section(.text_entry) start(void)
+>  }
+>  
+>  /*
+> + * The actual reset vector. This code is position independent and usually
+> + * does not run at the address it's linked at.
+> + */
+> +#ifndef CONFIG_MACH_DO_LOWLEVEL_INIT
+> +void __naked __bare_init reset(void)
+> +{
+> +	common_reset();
+> +	board_init_lowlevel_return();
+> +}
+> +#endif
+> +
+> +/*
+>   * Board code can jump here by either returning from board_init_lowlevel
+>   * or by calling this function directly.
+>   */
+> diff --git a/arch/arm/include/asm/barebox-arm-head.h b/arch/arm/include/asm/barebox-arm-head.h
+> index 0b1d786..eafad4e 100644
+> --- a/arch/arm/include/asm/barebox-arm-head.h
+> +++ b/arch/arm/include/asm/barebox-arm-head.h
+> @@ -1,6 +1,37 @@
+>  #ifndef __ASM_ARM_HEAD_H
+>  #define __ASM_ARM_HEAD_H
+>  
+> +#include <asm/system.h>
+> +
+> +#ifndef __ASSEMBLY__
+> +
+> +static inline void common_reset(void)
+> +{
+> +	uint32_t r;
+> +
+> +	/* set the cpu to SVC32 mode */
+> +	__asm__ __volatile__("mrs %0, cpsr":"=r"(r));
+> +	r &= ~0x1f;
+> +	r |= 0xd3;
+> +	__asm__ __volatile__("msr cpsr, %0" : : "r"(r));
+> +
+> +	/* disable MMU stuff and caches */
+> +	r = get_cr();
+> +	r &= ~(CR_M | CR_C | CR_B | CR_S | CR_R | CR_V);
+> +	r |= CR_I;
+> +
+> +#if __LINUX_ARM_ARCH__ >= 6
+> +	r |= CR_U;
+> +#else
+> +	r |= CR_A;
+> +#endif
+> +
+> +#ifdef __ARMEB__
+> +	r |= CR_B;
+> +#endif
+> +	set_cr(r);
+> +}
+> +
+>  #ifdef CONFIG_HAVE_MACH_ARM_HEAD
+>  #include <mach/barebox-arm-head.h>
+>  #else
+> @@ -36,4 +67,41 @@ static inline void barebox_arm_head(void)
+>  }
+>  #endif
+>  
+> +#else
+> +
+> +.macro  common_reset, scratch
+> +
+> +	/* set the cpu to SVC32 mode */
+> +	mrs	\scratch, cpsr
+> +	bic	\scratch, \scratch, #0x1f
+> +	orr	\scratch, \scratch, #0xd3
+> +	msr	cpsr, \scratch
+> +
+> +#if __LINUX_ARM_ARCH__ >= 7
+> +	isb
+> +#elif __LINUX_ARM_ARCH__ == 6
+> +	mcr	p15, 0, \scratch, c7, c5, 4
+> +#endif
+> +
+> +	/* disable MMU stuff and caches */
+> +	mrc p15, 0, \scratch, c1, c0, 0
+> +	bic	\scratch, \scratch , #(CR_M | CR_C | CR_B)
+> +	bic	\scratch, \scratch,	#(CR_S | CR_R | CR_V)
+> +	orr	\scratch, \scratch, #CR_I
+> +
+> +#if __LINUX_ARM_ARCH__ >= 6
+> +	orr	\scratch, \scratch, #CR_U
+> +#else
+> +	orr	\scratch, \scratch, #CR_A
+> +#endif
+> +
+> +#ifdef __ARMEB__
+> +	orr	\scratch, \scratch, #CR_B
+> +#endif
+> +
+> +	mcr	p15, 0, \scratch, c1, c0, 0
+> +.endm
+> +
+> +#endif /* __ASSEMBLY__ */
+> +
+>  #endif /* __ASM_ARM_HEAD_H */
+> diff --git a/arch/arm/include/asm/system.h b/arch/arm/include/asm/system.h
+> index 1d67492..26fb18c 100644
+> --- a/arch/arm/include/asm/system.h
+> +++ b/arch/arm/include/asm/system.h
+> @@ -56,6 +56,7 @@
+>  #define CR_AFE  (1 << 29)	/* Access flag enable			*/
+>  #define CR_TE   (1 << 30)	/* Thumb exception enable		*/
+>  
+> +#ifndef __ASSEMBLY__
+>  static inline unsigned int get_cr(void)
+>  {
+>  	unsigned int val;
+> @@ -69,4 +70,7 @@ static inline void set_cr(unsigned int val)
+>  	  : : "r" (val) : "cc");
+>  	isb();
+>  }
+> +
+> +#endif
+> +
+>  #endif /* __ASM_ARM_SYSTEM_H */
+> diff --git a/arch/arm/mach-at91/at91rm9200_lowlevel_init.c b/arch/arm/mach-at91/at91rm9200_lowlevel_init.c
+> index 5340bba..3ce3e67 100644
+> --- a/arch/arm/mach-at91/at91rm9200_lowlevel_init.c
+> +++ b/arch/arm/mach-at91/at91rm9200_lowlevel_init.c
+> @@ -7,6 +7,7 @@
+>  #include <common.h>
+>  #include <asm/system.h>
+>  #include <asm/barebox-arm.h>
+> +#include <asm/barebox-arm-head.h>
+>  #include <mach/hardware.h>
+>  #include <mach/at91rm9200.h>
+>  #include <mach/at91rm9200_mc.h>
+> @@ -20,11 +21,13 @@ void static inline access_sdram(void)
+>  	writel(0x00000000, AT91_SDRAM_BASE);
+>  }
+>  
+> -void __naked __bare_init board_init_lowlevel(void)
+> +void __naked __bare_init reset(void)
+>  {
+>  	u32 r;
+>  	int i;
+>  
+> +	common_reset();
+> +
+>  	/*
+>  	 * PMC Check if the PLL is already initialized
+>  	 */
+> diff --git a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
+> index 669f377..0ee0345 100644
+> --- a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
+> +++ b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
+> @@ -8,6 +8,7 @@
+>  #include <common.h>
+>  #include <asm/system.h>
+>  #include <asm/barebox-arm.h>
+> +#include <asm/barebox-arm-head.h>
+>  #include <mach/hardware.h>
+>  #include <mach/at91_pmc.h>
+>  #include <mach/at91_pio.h>
+> @@ -33,11 +34,13 @@ static void inline pmc_check_mckrdy(void)
+>  	} while (!(r & AT91_PMC_MCKRDY));
+>  }
+>  
+> -void __naked __bare_init board_init_lowlevel(void)
+> +void __naked __bare_init reset(void)
+>  {
+>  	u32 r;
+>  	int i;
+>  
+> +	common_reset();
+> +
+>  	at91_sys_write(AT91_WDT_MR, CONFIG_SYS_WDTC_WDMR_VAL);
+>  
+>  	/* configure PIOx as EBI0 D[16-31] */
+> diff --git a/arch/arm/mach-ep93xx/lowlevel_init.S b/arch/arm/mach-ep93xx/lowlevel_init.S
+> index 27c2c90..07da8ae 100644
+> --- a/arch/arm/mach-ep93xx/lowlevel_init.S
+> +++ b/arch/arm/mach-ep93xx/lowlevel_init.S
+> @@ -25,12 +25,11 @@
+>   */
+>  
+>  #include <mach/ep93xx-regs.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+> -.globl board_init_lowlevel
+> -board_init_lowlevel:
+> -	/* backup return address */
+> -	ldr r1, =SYSCON_SCRATCH0
+> -	str lr, [r1]
+> +.globl reset
+> +reset:
+> +	common_reset r0
+>  
+>  	/* Turn on both LEDs */
+>  	bl red_LED_on
+> @@ -57,8 +56,4 @@ board_init_lowlevel:
+>  	orr r0, r0, #0xc0000000
+>  	mcr p15, 0, r0, c1, c0, 0
+>  
+> -	/* restore return address */
+> -	ldr r1, =SYSCON_SCRATCH0
+> -	ldr lr, [r1]
+> -
+> -	mov pc, lr
+> +	b board_init_lowlevel_return
+> diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+> index 9c76a96..c610a1f 100644
+> --- a/arch/arm/mach-omap/Kconfig
+> +++ b/arch/arm/mach-omap/Kconfig
+> @@ -26,9 +26,6 @@ menu "OMAP Features"
+>  config MACH_OMAP
+>  	bool
+>  
+> -config OMAP3_LOWLEVEL_INIT
+> -	bool
+> -
+>  choice
+>  	prompt "Select OMAP Variant"
+>  
+> @@ -36,7 +33,7 @@ config ARCH_OMAP3
+>  	bool "OMAP3"
+>  	select CPU_V7
+>  	select GENERIC_GPIO
+> -	select OMAP3_LOWLEVEL_INIT
+> +	select MACH_HAS_LOWLEVEL_INIT
+>  	select OMAP_CLOCK_SOURCE_S32K
+>  	help
+>  	  Say Y here if you are using Texas Instrument's OMAP343x based platform
+> diff --git a/arch/arm/mach-omap/omap3_core.S b/arch/arm/mach-omap/omap3_core.S
+> index d1be6e5..7c31e1e 100644
+> --- a/arch/arm/mach-omap/omap3_core.S
+> +++ b/arch/arm/mach-omap/omap3_core.S
+> @@ -40,8 +40,10 @@
+>  #include <mach/silicon.h>
+>  #include <mach/wdt.h>
+>  #include <mach/clocks.h>
+> +#include <asm/barebox-arm-head.h>
+>  
+> -ENTRY(board_init_lowlevel)
+> +#ifdef CONFIG_MACH_DO_LOWLEVEL_INIT
+> +ENTRY(reset)
+>  	/* Invalidate all Dcaches */
+>  #ifndef CONFIG_CPU_V7_DCACHE_SKIP
+>  	/* If Arch specific ROM code SMI handling does not exist */
+> @@ -90,5 +92,6 @@ finished_inval:
+>  	isb
+>  #endif /* CONFIG_CPU_V7_DCACHE_SKIP */
+>  	/* back to arch calling code */
+> -	mov	pc,	lr
+> -ENDPROC(board_init_lowlevel)
+> +	b board_init_lowlevel_return
+> +ENDPROC(reset)
+> +#endif
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-The following changes since commit 1af6fdcd03dbc311d785625bd6e2329f7ce1adb7:
-
-  ARM i.MX51 babbage: update defconfig (2012-09-21 10:33:52 +0200)
-
-are available in the git repository at:
-
-  git://git.pengutronix.de/git/barebox.git tags/next-stable
-
-for you to fetch changes up to 05b9f24e3ea4071f76ffc4157526946a1c2b1b96:
-
-  Merge branch 'for-next/sandbox' into next (2012-09-25 10:20:03 +0200)
-
-----------------------------------------------------------------
-
-next-stable tag for adding more patches ontop
-
-----------------------------------------------------------------
-Alexander Aring (7):
-      libbb: remove vi tabwidth setting
-      commands: add testing menu
-      commands: move nandtest to testing
-      commands: move memtest to testing
-      sandbox-unaligned: better usement of ifdef
-      sandbox: fix posix_types
-      sandbox: add missed case statement
-
-Eric B=E9nard (1):
-      miidev: fix 1G wrong detection
-
-Fadil Berisha (1):
-      boards: Add support for imx233-olinuxino board
-
-Franck Jullien (5):
-      Add __ashrdi3 and remove link to libgcc
-      Add OpenRISC Image type
-      Fix endianness error on be target
-      filetype: Improve FAT detection
-      fs/fat: Handle MBR on the first sector
-
-Jan Luebbe (12):
-      drivers/nor/m25p80: add JEDEC ID for Micron/Numonyx SPI NOR flash
-      common: split out meminfo output and make it optional
-      omap3: remove unused coded for clock configuration
-      kbuild: keep the barebox binary accessible
-      ARM Makefile: switch to kbuild command definition for mkublheader
-      drivers/spi: add driver for the Multichannel SPI controller found in =
-TI SoCs
-      xload: make internal functions static
-      xload: add SPI as a boot mode
-      drivers/net/ksz8864rmn: add driver for Micrel KSZ8864RMN Ethernet Swi=
-tch
-      drivers/nor/m25p80: add MTD support
-      drivers/nor/cfi_flash: use IS_ENABLED instead of an ifdef
-      drivers/net: add driver for the EMAC device found in some TI SoCs
-
-Jan Weitzel (2):
-      xload: get barebox size from barebox_arm_head
-      pcm049 phycard l + xl2: update partion sizes
-
-Jean-Christophe PLAGNIOL-VILLARD (35):
-      Introduce ARM AMBA bus
-      amba-pl011: switch to amba bus
-      amba-pl011: add st specific init
-      genenv: Allow to also specify files for the environment instead of on=
-ly directories
-      bmp: rename it to splash
-      bmp: Move bmp rendering to lib/bmp.c
-      Introduce graphic utils
-      introduce image_renderer framework
-      filetype: add BMP support
-      splash/bmp: switch to image_renderer
-      splash: add support to set a background color
-      graphic_utils: add rgba support
-      filetype: add PNG support
-      add PNG support
-      png: add picoPNG lib support
-      globalvar: add inline when not enabled
-      echo: always allow to pass -e option
-      defaultenv-2/ansi-colors: export color only if enable
-      globalvar: add support to set a value to of all globalvars beginning =
-with 'match'
-      defaultenv-2: boot use global.linux.bootargs.dyn for dynamic globalvar
-      defaultenv-2: boot reset linux.bootargs.dyn. and bootm. globalvar
-      defaultenv-2: add boot sequence
-      defaultenv: enable glovalvar support
-      defaultenv: switch hostname to global.hostname
-      net: catch error on eth_send
-      add barebox logo
-      driver: register bus
-      driver: search device and driver based on the bus instead of all
-      fb: add it's own bus for fb devices
-      net: introduce phylib
-      dhcp: switch to global var support
-      dhcp: add copy_only_if_valid support
-      dhcp: add retries limit support
-      defaultenv-2: eth0 add default global.dhcp.vendor_id
-      sandbox: add sdl video support
-
-Marcus Folkesson (1):
-      mtd: nand: extend NAND flash detection to new MLC chips
-
-Sascha Hauer (55):
-      ARM lowlevel: Update function documentation
-      ARM: Add assembler function to get runtime offset
-      ARM lowlevel: Use get_runtime_offset
-      mfd mc13xxx: Separate I2C and SPI probe
-      Merge tag 'amba_bus' of git://git.jcrosoft.org/barebox into for-next/=
-amba
-      mfd mc34708: Separate I2C and SPI probe
-      SPI: Put SPI devices on their own bus
-      I2C: Put I2C devices on their own bus
-      driver: rewrite dev_printf as a function
-      driver: Add platform_device_id mechanism
-      driver: add dev_get_drvdata function
-      of: add devicetree probing support
-      oftree command: Add devicetree probe support
-      of: Add devicetree partition parsing
-      spi: add oftree support
-      ARM i.MX: Use platform_device_id for gpio driver
-      ARM i.MX: Add Ka-Ro TX53 board support
-      ARM i.MX TX53: Add defconfig
-      ARM mxs: Clear USB boot mode during startup
-      Merge tag 'logo' of git://git.jcrosoft.org/barebox into for-next/logo
-      Treewide: remove address of the Free Software Foundation
-      ARM i.MX: implement clocksource as driver
-      serial i.MX: oftree support
-      net fec_mpc5200: Use same platform_data as i.MX fec driver
-      spi imx: dt support
-      mfd mc13xxx: Add devicetree support
-      cfi-flash: Add devicetree probe support
-      mci i.MX esdhc: Add oftree support
-      ARM i.MX: add devicetree support for gpio driver
-      ARM i.MX: Add devicetree support for clocksource driver
-      Merge branch 'for-next/driver' into next
-      Merge branch 'for-next/net' into next
-      Merge branch 'for-next/amba' into next
-      Merge branch 'for-next/arm' into next
-      Merge branch 'for-next/boot-sequence-dhcp' into next
-      Merge branch 'for-next/fat-detection' into next
-      Merge branch 'for-next/karo-tx53' into next
-      Merge branch 'for-next/logo' into next
-      Merge branch 'for-next/make' into next
-      Merge branch 'for-next/misc' into next
-      Merge branch 'for-next/mmc' into next
-      Merge branch 'for-next/mtd' into next
-      Merge branch 'for-next/mxs' into next
-      Merge branch 'for-next/omap' into next
-      Merge branch 'for-next/openrisc' into next
-      Merge branch 'for-next/png' into next
-      Merge branch 'for-next/remove-fsf-address' into next
-      Merge branch 'for-next/sandbox' into next
-      Merge branch 'for-next/spi' into next
-      Merge branch 'for-next/testing-menu' into next
-      ARM OMAP: remove SRAM stack
-      ARM OMAP3: rename arch_init_lowlevel to board_init_lowlevel
-      ARM: remove ARCH_HAS_LOWLEVEL_INIT
-      Merge branch 'for-next/arm-remove-arch-init-ll' into next
-      Merge branch 'for-next/sandbox' into next
-
-Teresa G=E1mez (1):
-      ARM OMAP: switch to gpiolib support
-
- Documentation/barebox-main.dox                     |    4 -
- Documentation/commands.dox                         |    2 +-
- Makefile                                           |   16 +-
- arch/arm/Kconfig                                   |    1 +
- arch/arm/Makefile                                  |   23 +-
- arch/arm/boards/a9m2410/a9m2410.c                  |    4 -
- arch/arm/boards/a9m2410/config.h                   |    4 -
- arch/arm/boards/a9m2440/a9m2410dev.c               |    4 -
- arch/arm/boards/a9m2440/a9m2440.c                  |    4 -
- arch/arm/boards/a9m2440/baseboards.h               |    4 -
- arch/arm/boards/a9m2440/config.h                   |    4 -
- arch/arm/boards/at91rm9200ek/env/config            |    2 +-
- arch/arm/boards/at91rm9200ek/init.c                |    4 -
- arch/arm/boards/at91sam9260ek/env/config           |    4 +-
- arch/arm/boards/at91sam9260ek/init.c               |    4 -
- arch/arm/boards/at91sam9260ek/lowlevel_init.S      |    4 -
- arch/arm/boards/at91sam9261ek/env/config           |    4 +-
- arch/arm/boards/at91sam9261ek/init.c               |    4 -
- arch/arm/boards/at91sam9263ek/env/config           |    2 +-
- arch/arm/boards/at91sam9263ek/init.c               |    4 -
- arch/arm/boards/at91sam9m10g45ek/env/config        |    2 +-
- arch/arm/boards/at91sam9m10g45ek/init.c            |    4 -
- arch/arm/boards/at91sam9x5ek/env/config            |    2 +-
- arch/arm/boards/at91sam9x5ek/init.c                |    4 -
- arch/arm/boards/beagle/board.c                     |    4 -
- arch/arm/boards/beagle/config.h                    |    4 -
- arch/arm/boards/chumby_falconwing/config.h         |    4 -
- arch/arm/boards/chumby_falconwing/env/config       |    2 +-
- arch/arm/boards/chumby_falconwing/falconwing.c     |    4 -
- .../arm/boards/crystalfontz-cfa10036/env/boot.d/01 |    1 +
- .../arm/boards/crystalfontz-cfa10036/env/boot.d/02 |    1 +
- .../arm/boards/crystalfontz-cfa10036/env/boot.d/03 |    1 +
- .../boards/crystalfontz-cfa10036/env/init/general  |    3 -
- arch/arm/boards/edb93xx/early_udelay.h             |    4 -
- arch/arm/boards/edb93xx/edb93xx.c                  |    4 -
- arch/arm/boards/edb93xx/edb93xx.h                  |    4 -
- arch/arm/boards/edb93xx/flash_cfg.c                |    4 -
- arch/arm/boards/edb93xx/pll_cfg.c                  |    4 -
- arch/arm/boards/edb93xx/pll_cfg.h                  |    4 -
- arch/arm/boards/edb93xx/sdram_cfg.c                |    4 -
- arch/arm/boards/edb93xx/sdram_cfg.h                |    4 -
- arch/arm/boards/eukrea_cpuimx25/Makefile           |    4 -
- arch/arm/boards/eukrea_cpuimx25/config.h           |    4 -
- arch/arm/boards/eukrea_cpuimx25/env/bin/init_board |    4 +-
- arch/arm/boards/eukrea_cpuimx25/env/config         |   14 +-
- arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c  |    4 -
- arch/arm/boards/eukrea_cpuimx25/lowlevel.c         |    4 -
- arch/arm/boards/eukrea_cpuimx27/config.h           |    4 -
- arch/arm/boards/eukrea_cpuimx27/env/bin/init       |    4 +-
- arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c  |    4 -
- arch/arm/boards/eukrea_cpuimx35/Makefile           |    4 -
- arch/arm/boards/eukrea_cpuimx35/config.h           |    4 -
- arch/arm/boards/eukrea_cpuimx35/env/bin/init_board |    4 +-
- arch/arm/boards/eukrea_cpuimx35/env/config         |   14 +-
- arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c  |    4 -
- arch/arm/boards/eukrea_cpuimx35/lowlevel.c         |    4 -
- arch/arm/boards/eukrea_cpuimx51/config.h           |    4 -
- arch/arm/boards/eukrea_cpuimx51/env/bin/init_board |    4 +-
- arch/arm/boards/eukrea_cpuimx51/env/config         |   14 +-
- arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c  |    4 -
- arch/arm/boards/freescale-mx23-evk/config.h        |    4 -
- arch/arm/boards/freescale-mx23-evk/mx23-evk.c      |    4 -
- arch/arm/boards/freescale-mx25-3-stack/3stack.c    |    4 -
- arch/arm/boards/freescale-mx25-3-stack/Makefile    |    4 -
- arch/arm/boards/freescale-mx25-3-stack/config.h    |    4 -
- .../boards/freescale-mx25-3-stack/lowlevel_init.S  |    4 -
- arch/arm/boards/freescale-mx28-evk/env/config      |   12 +-
- arch/arm/boards/freescale-mx35-3-stack/3stack.c    |    4 -
- .../freescale-mx35-3-stack/board-mx35_3stack.h     |    4 -
- arch/arm/boards/freescale-mx35-3-stack/config.h    |    4 -
- arch/arm/boards/freescale-mx35-3-stack/env/config  |   14 +-
- .../boards/freescale-mx35-3-stack/lowlevel_init.S  |    4 -
- arch/arm/boards/freescale-mx51-pdk/board.c         |    4 -
- arch/arm/boards/freescale-mx51-pdk/config.h        |    4 -
- arch/arm/boards/freescale-mx53-loco/config.h       |    4 -
- arch/arm/boards/freescale-mx53-loco/env/config     |   16 +-
- arch/arm/boards/freescale-mx53-smd/config.h        |    4 -
- arch/arm/boards/freescale-mx53-smd/env/config      |   14 +-
- arch/arm/boards/freescale-mx6-arm2/board.c         |   48 +-
- arch/arm/boards/freescale-mx6-sabrelite/board.c    |   45 +-
- .../boards/freescale-mx6-sabrelite/env/boot.d/01   |    1 +
- .../boards/freescale-mx6-sabrelite/env/boot.d/02   |    1 +
- arch/arm/boards/friendlyarm-mini2440/config.h      |    4 -
- arch/arm/boards/friendlyarm-mini2440/env/config    |   14 +-
- arch/arm/boards/friendlyarm-mini2440/mini2440.c    |    4 -
- arch/arm/boards/guf-cupid/Makefile                 |    4 -
- arch/arm/boards/guf-cupid/board.c                  |    4 -
- arch/arm/boards/guf-cupid/config.h                 |    4 -
- arch/arm/boards/guf-cupid/env/config               |   14 +-
- arch/arm/boards/guf-cupid/lowlevel.c               |    4 -
- arch/arm/boards/guf-neso/board.c                   |    4 -
- arch/arm/boards/guf-neso/config.h                  |    4 -
- arch/arm/boards/guf-neso/env/config                |   14 +-
- arch/arm/boards/guf-neso/lowlevel.c                |    4 -
- arch/arm/boards/imx21ads/config.h                  |    4 -
- arch/arm/boards/imx21ads/imx21ads.c                |    4 -
- arch/arm/boards/imx21ads/lowlevel_init.S           |    4 -
- arch/arm/boards/imx233-olinuxino/Makefile          |    1 +
- arch/arm/boards/imx233-olinuxino/config.h          |   21 +
- arch/arm/boards/imx233-olinuxino/env/bin/boot      |   32 +
- arch/arm/boards/imx233-olinuxino/env/bin/init      |   15 +
- arch/arm/boards/imx233-olinuxino/env/config        |   42 +
- arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c |  254 +
- arch/arm/boards/imx27ads/config.h                  |    4 -
- arch/arm/boards/imx27ads/imx27ads.c                |    4 -
- arch/arm/boards/karo-tx25/Makefile                 |    4 -
- arch/arm/boards/karo-tx25/board.c                  |    4 -
- arch/arm/boards/karo-tx25/config.h                 |    4 -
- arch/arm/boards/karo-tx25/env/bin/init_board       |    2 +-
- arch/arm/boards/karo-tx25/env/config               |   14 +-
- arch/arm/boards/karo-tx25/lowlevel.c               |    4 -
- arch/arm/boards/karo-tx28/env/config               |   14 +-
- arch/arm/boards/karo-tx51/config.h                 |    4 -
- arch/arm/boards/karo-tx51/flash_header.c           |    4 -
- arch/arm/boards/karo-tx51/tx51.c                   |    4 -
- arch/arm/boards/karo-tx53/Makefile                 |    2 +
- arch/arm/boards/karo-tx53/board.c                  |  240 +
- arch/arm/boards/karo-tx53/config.h                 |   24 +
- arch/arm/boards/karo-tx53/env/init/bootargs-base   |    8 +
- arch/arm/boards/karo-tx53/env/init/hostname        |    8 +
- arch/arm/boards/karo-tx53/flash_header.c           |  147 +
- arch/arm/boards/mioa701/env/bin/init               |    2 +-
- arch/arm/boards/mmccpu/init.c                      |    4 -
- arch/arm/boards/netx/netx.c                        |    4 -
- arch/arm/boards/netx/platform.S                    |    4 -
- arch/arm/boards/nhk8815/setup.c                    |    4 -
- arch/arm/boards/omap343xdsp/board.c                |    4 -
- arch/arm/boards/omap343xdsp/config.h               |    4 -
- arch/arm/boards/omap3evm/board.c                   |    4 -
- arch/arm/boards/omap3evm/config.h                  |    4 -
- arch/arm/boards/panda/env/config                   |   12 +-
- arch/arm/boards/panda/lowlevel.c                   |    4 -
- arch/arm/boards/pcm027/board.c                     |    4 -
- arch/arm/boards/pcm027/config.h                    |    4 -
- arch/arm/boards/pcm027/env/config                  |   14 +-
- arch/arm/boards/pcm027/lowlevel_init.S             |    4 -
- arch/arm/boards/pcm037/Makefile                    |    4 -
- arch/arm/boards/pcm037/config.h                    |    4 -
- arch/arm/boards/pcm037/env/config                  |   14 +-
- arch/arm/boards/pcm037/lowlevel_init.S             |    4 -
- arch/arm/boards/pcm037/pcm037.c                    |    4 -
- arch/arm/boards/pcm038/config.h                    |    4 -
- arch/arm/boards/pcm038/env/boot.d/01               |    1 +
- arch/arm/boards/pcm038/env/boot.d/02               |    1 +
- arch/arm/boards/pcm038/env/boot.d/03               |    1 +
- arch/arm/boards/pcm038/lowlevel.c                  |    4 -
- arch/arm/boards/pcm038/pcm038.c                    |    4 -
- arch/arm/boards/pcm038/pcm970.c                    |    4 -
- arch/arm/boards/pcm038/pll.h                       |    4 -
- arch/arm/boards/pcm043/Makefile                    |    4 -
- arch/arm/boards/pcm043/config.h                    |    4 -
- arch/arm/boards/pcm043/env/config                  |   14 +-
- arch/arm/boards/pcm043/lowlevel.c                  |    4 -
- arch/arm/boards/pcm043/pcm043.c                    |    4 -
- arch/arm/boards/pcm049/board.c                     |    8 +-
- arch/arm/boards/pcm049/env/config                  |   16 +-
- arch/arm/boards/pcm049/lowlevel.c                  |    4 -
- arch/arm/boards/phycard-a-l1/Makefile              |    4 -
- arch/arm/boards/phycard-a-l1/config.h              |    4 -
- arch/arm/boards/phycard-a-l1/env/config            |   20 +-
- arch/arm/boards/phycard-a-l1/pca-a-l1.c            |   10 +-
- arch/arm/boards/phycard-a-l1/pca-a-l1.h            |    4 -
- arch/arm/boards/phycard-a-xl2/Makefile             |    4 -
- arch/arm/boards/phycard-a-xl2/env/config           |   16 +-
- arch/arm/boards/phycard-a-xl2/lowlevel.c           |    4 -
- arch/arm/boards/phycard-a-xl2/pca-a-xl2.c          |    8 +-
- arch/arm/boards/phycard-i.MX27/config.h            |    4 -
- arch/arm/boards/phycard-i.MX27/env/config          |   14 +-
- arch/arm/boards/phycard-i.MX27/pca100.c            |    4 -
- arch/arm/boards/pm9261/init.c                      |    4 -
- arch/arm/boards/pm9263/init.c                      |    4 -
- arch/arm/boards/pm9g45/init.c                      |    4 -
- arch/arm/boards/qil-a9260/env/config               |    2 +-
- arch/arm/boards/scb9328/config.h                   |    4 -
- arch/arm/boards/scb9328/env/config                 |   14 +-
- arch/arm/boards/scb9328/lowlevel_init.S            |    6 -
- arch/arm/boards/scb9328/scb9328.c                  |    4 -
- arch/arm/boards/tny-a926x/env/config               |    6 +-
- arch/arm/boards/tny-a926x/init.c                   |    4 -
- arch/arm/boards/toshiba-ac100/board.c              |    4 -
- arch/arm/boards/toshiba-ac100/serial.c             |    4 -
- arch/arm/boards/tqma53/env/boot.d/01               |    1 +
- arch/arm/boards/tqma53/env/boot.d/02               |    1 +
- arch/arm/boards/usb-a926x/env/config               |    6 +-
- arch/arm/boards/usb-a926x/init.c                   |    4 -
- arch/arm/boards/versatile/versatilepb.c            |    4 -
- arch/arm/configs/chumbyone_defconfig               |    2 +-
- arch/arm/configs/cupid_defconfig                   |    2 +-
- arch/arm/configs/eukrea_cpuimx25_defconfig         |    2 +-
- arch/arm/configs/eukrea_cpuimx27_defconfig         |    2 +-
- arch/arm/configs/eukrea_cpuimx35_defconfig         |    2 +-
- arch/arm/configs/freescale_mx35_3stack_defconfig   |    2 +-
- arch/arm/configs/imx233-olinuxino_defconfig        |   63 +
- arch/arm/configs/imx28evk_defconfig                |    2 +-
- arch/arm/configs/mioa701_defconfig                 |    2 +-
- arch/arm/configs/neso_defconfig                    |    2 +-
- arch/arm/configs/pcm027_defconfig                  |    2 +-
- arch/arm/configs/pcm038_defconfig                  |    2 +-
- arch/arm/configs/phycard_a_l1_defconfig            |    2 +-
- arch/arm/configs/tx25stk5_defconfig                |    2 +-
- arch/arm/configs/tx28stk5_defconfig                |    2 +-
- arch/arm/configs/tx51stk5_defconfig                |    2 +-
- arch/arm/configs/tx53stk5_defconfig                |   76 +
- arch/arm/cpu/cpu.c                                 |    4 -
- arch/arm/cpu/cpuinfo.c                             |    4 -
- arch/arm/cpu/interrupts.c                          |    3 -
- arch/arm/cpu/start-pbl.c                           |   15 +-
- arch/arm/cpu/start-reset.c                         |    7 +-
- arch/arm/cpu/start.c                               |   20 +-
- arch/arm/include/asm/barebox-arm.h                 |    7 +-
- arch/arm/include/asm/cache-l2x0.h                  |    3 -
- arch/arm/include/asm/unified.h                     |    3 -
- arch/arm/include/asm/unwind.h                      |    3 -
- arch/arm/lib/Makefile                              |    2 +
- arch/arm/lib/armlinux.c                            |    5 -
- arch/arm/lib/ashldi3.S                             |    6 +-
- arch/arm/lib/ashrdi3.S                             |    6 +-
- arch/arm/lib/barebox.lds.S                         |    6 -
- arch/arm/lib/div0.c                                |    4 -
- arch/arm/lib/lib1funcs.S                           |    6 +-
- arch/arm/lib/lshrdi3.S                             |    6 +-
- arch/arm/lib/runtime-offset.S                      |   17 +
- arch/arm/mach-at91/at91rm9200_time.c               |    4 -
- arch/arm/mach-at91/at91sam926x_time.c              |    4 -
- arch/arm/mach-at91/gpio.c                          |    4 -
- arch/arm/mach-at91/include/mach/board.h            |    3 -
- arch/arm/mach-at91/include/mach/io.h               |    3 -
- arch/arm/mach-ep93xx/clocksource.c                 |    4 -
- arch/arm/mach-ep93xx/gpio.c                        |    3 -
- arch/arm/mach-ep93xx/include/mach/gpio.h           |    3 -
- arch/arm/mach-ep93xx/led.c                         |    4 -
- arch/arm/mach-ep93xx/led.h                         |    4 -
- arch/arm/mach-ep93xx/lowlevel_init.S               |    4 -
- arch/arm/mach-imx/Kconfig                          |    8 +
- arch/arm/mach-imx/boot.c                           |    4 -
- arch/arm/mach-imx/clocksource.c                    |   93 +-
- arch/arm/mach-imx/external-nand-boot.c             |    4 -
- arch/arm/mach-imx/gpio.c                           |  114 +-
- arch/arm/mach-imx/imx1.c                           |   13 +-
- arch/arm/mach-imx/imx21.c                          |   17 +-
- arch/arm/mach-imx/imx25.c                          |   14 +-
- arch/arm/mach-imx/imx27.c                          |   19 +-
- arch/arm/mach-imx/imx31.c                          |   11 +-
- arch/arm/mach-imx/imx35.c                          |   11 +-
- arch/arm/mach-imx/imx51.c                          |   13 +-
- arch/arm/mach-imx/imx53.c                          |   20 +-
- arch/arm/mach-imx/imx6.c                           |   19 +-
- arch/arm/mach-imx/include/mach/iim.h               |    4 -
- arch/arm/mach-imx/include/mach/imx-regs.h          |    4 -
- arch/arm/mach-imx/include/mach/imx1-regs.h         |   23 -
- arch/arm/mach-imx/include/mach/imx21-regs.h        |   24 -
- arch/arm/mach-imx/include/mach/imx25-regs.h        |   31 -
- arch/arm/mach-imx/include/mach/imx27-regs.h        |   23 -
- arch/arm/mach-imx/include/mach/imx31-regs.h        |   31 -
- arch/arm/mach-imx/include/mach/imx35-regs.h        |   32 -
- arch/arm/mach-imx/include/mach/imx51-regs.h        |   19 -
- arch/arm/mach-imx/include/mach/imx53-regs.h        |   19 -
- arch/arm/mach-imx/include/mach/imx6-anadig.h       |    5 -
- arch/arm/mach-imx/include/mach/imx6-regs.h         |   19 -
- arch/arm/mach-imx/include/mach/iomux-mx21.h        |    5 -
- arch/arm/mach-imx/include/mach/iomux-mx27.h        |    4 -
- arch/arm/mach-imx/include/mach/iomux-mx2x.h        |    4 -
- arch/arm/mach-imx/include/mach/iomux-mx31.h        |    4 -
- arch/arm/mach-imx/include/mach/iomux-mx35.h        |    4 -
- arch/arm/mach-imx/include/mach/iomux-v3.h          |    4 -
- arch/arm/mach-imx/iomux-v2.c                       |    3 -
- arch/arm/mach-imx/iomux-v3.c                       |    4 -
- arch/arm/mach-imx/nand.c                           |    4 -
- arch/arm/mach-imx/speed-imx1.c                     |    4 -
- arch/arm/mach-imx/speed-imx21.c                    |    4 -
- arch/arm/mach-imx/speed-imx27.c                    |    4 -
- arch/arm/mach-imx/speed-imx31.c                    |    4 -
- arch/arm/mach-imx/speed-imx35.c                    |    4 -
- arch/arm/mach-imx/speed.c                          |    4 -
- arch/arm/mach-mxs/Kconfig                          |    7 +
- arch/arm/mach-mxs/clocksource-imx23.c              |    4 -
- arch/arm/mach-mxs/imx.c                            |   28 +-
- arch/arm/mach-mxs/include/mach/clock.h             |    4 -
- arch/arm/mach-mxs/include/mach/generic.h           |    4 -
- arch/arm/mach-mxs/include/mach/gpio.h              |    4 -
- arch/arm/mach-mxs/include/mach/imx-regs.h          |    4 -
- arch/arm/mach-mxs/include/mach/imx23-regs.h        |    4 -
- arch/arm/mach-mxs/include/mach/iomux-imx23.h       |    4 -
- arch/arm/mach-mxs/include/mach/mci.h               |    4 -
- arch/arm/mach-mxs/iomux-imx.c                      |    4 -
- arch/arm/mach-mxs/speed-imx23.c                    |    4 -
- arch/arm/mach-mxs/usb-imx23.c                      |    4 -
- arch/arm/mach-netx/clocksource.c                   |    4 -
- arch/arm/mach-netx/generic.c                       |    4 -
- arch/arm/mach-netx/include/mach/netx-regs.h        |    3 -
- arch/arm/mach-nomadik/8815.c                       |   13 +-
- arch/arm/mach-nomadik/include/mach/board.h         |    4 -
- arch/arm/mach-nomadik/include/mach/hardware.h      |    4 -
- arch/arm/mach-nomadik/reset.c                      |    3 -
- arch/arm/mach-omap/Kconfig                         |   22 -
- arch/arm/mach-omap/Makefile                        |    4 -
- arch/arm/mach-omap/devices-gpmc-nand.c             |    4 -
- arch/arm/mach-omap/gpio.c                          |  175 +-
- arch/arm/mach-omap/gpmc.c                          |    4 -
- arch/arm/mach-omap/include/mach/clocks.h           |    4 -
- arch/arm/mach-omap/include/mach/control.h          |    4 -
- arch/arm/mach-omap/include/mach/debug_ll.h         |    3 -
- arch/arm/mach-omap/include/mach/emac_defs.h        |   48 +
- arch/arm/mach-omap/include/mach/gpio.h             |    4 -
- arch/arm/mach-omap/include/mach/gpmc.h             |    4 -
- arch/arm/mach-omap/include/mach/intc.h             |    4 -
- arch/arm/mach-omap/include/mach/mcspi.h            |   11 +
- arch/arm/mach-omap/include/mach/omap3-clock.h      |    4 -
- arch/arm/mach-omap/include/mach/omap3-devices.h    |   32 +
- arch/arm/mach-omap/include/mach/omap3-mux.h        |    4 -
- arch/arm/mach-omap/include/mach/omap3-silicon.h    |    6 -
- arch/arm/mach-omap/include/mach/omap3-smx.h        |    3 -
- arch/arm/mach-omap/include/mach/omap4-mux.h        |    4 -
- arch/arm/mach-omap/include/mach/omap4-silicon.h    |    6 -
- arch/arm/mach-omap/include/mach/sdrc.h             |    4 -
- arch/arm/mach-omap/include/mach/silicon.h          |    4 -
- arch/arm/mach-omap/include/mach/sys_info.h         |    4 -
- arch/arm/mach-omap/include/mach/syslib.h           |    4 -
- arch/arm/mach-omap/include/mach/timers.h           |    4 -
- arch/arm/mach-omap/include/mach/wdt.h              |    4 -
- arch/arm/mach-omap/include/mach/xload.h            |    4 +-
- arch/arm/mach-omap/omap3_clock.c                   |   18 +-
- arch/arm/mach-omap/omap3_core.S                    |   14 +-
- arch/arm/mach-omap/omap3_generic.c                 |   23 +-
- arch/arm/mach-omap/omap4_generic.c                 |   19 +
- arch/arm/mach-omap/omap4_twl6030_mmc.c             |    4 -
- arch/arm/mach-omap/s32k_clksource.c                |    4 -
- arch/arm/mach-omap/syslib.c                        |    4 -
- arch/arm/mach-omap/xload.c                         |   99 +-
- arch/arm/mach-samsung/generic.c                    |    4 -
- arch/arm/mach-samsung/gpio-s3c24x0.c               |    4 -
- arch/arm/mach-samsung/include/mach/iomux-s3c24x0.h |    4 -
- arch/arm/mach-samsung/include/mach/s3c-clocks.h    |    4 -
- arch/arm/mach-samsung/include/mach/s3c-generic.h   |    4 -
- arch/arm/mach-samsung/include/mach/s3c-iomap.h     |    4 -
- arch/arm/mach-samsung/include/mach/s3c-mci.h       |    4 -
- arch/arm/mach-samsung/include/mach/s3c24xx-fb.h    |    4 -
- arch/arm/mach-samsung/include/mach/s3c24xx-iomap.h |    4 -
- arch/arm/mach-samsung/include/mach/s3c24xx-nand.h  |    4 -
- arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h  |    4 -
- arch/arm/mach-samsung/lowlevel-s3c24x0.S           |    4 -
- arch/arm/mach-samsung/mem-s3c24x0.c                |    4 -
- arch/arm/mach-tegra/clock.c                        |    3 -
- arch/arm/mach-tegra/include/mach/debug_ll.h        |    3 -
- arch/arm/mach-tegra/reset.c                        |    3 -
- arch/arm/mach-versatile/core.c                     |   11 +-
- arch/arm/mach-versatile/include/mach/debug_ll.h    |    3 -
- arch/arm/mach-versatile/include/mach/platform.h    |    3 -
- arch/arm/pbl/zbarebox.lds.S                        |    2 -
- arch/blackfin/boards/ipe337/barebox.lds.S          |    4 -
- arch/blackfin/cpu-bf561/start.S                    |    4 -
- arch/blackfin/include/asm/barebox.h                |    4 -
- arch/blackfin/include/asm/bitops.h                 |    4 -
- arch/blackfin/include/asm/blackfin.h               |    4 -
- arch/blackfin/include/asm/blackfin_defs.h          |    4 -
- arch/blackfin/include/asm/byteorder.h              |    4 -
- arch/blackfin/include/asm/cpu.h                    |    4 -
- arch/blackfin/include/asm/current.h                |    4 -
- arch/blackfin/include/asm/entry.h                  |    4 -
- arch/blackfin/include/asm/hw_irq.h                 |    4 -
- arch/blackfin/include/asm/io.h                     |    4 -
- arch/blackfin/include/asm/linkage.h                |    4 -
- arch/blackfin/include/asm/mem_init.h               |    4 -
- arch/blackfin/include/asm/page.h                   |    4 -
- arch/blackfin/include/asm/page_offset.h            |    4 -
- arch/blackfin/include/asm/posix_types.h            |    4 -
- arch/blackfin/include/asm/processor.h              |    4 -
- arch/blackfin/include/asm/ptrace.h                 |    4 -
- arch/blackfin/include/asm/segment.h                |    4 -
- arch/blackfin/include/asm/setup.h                  |    4 -
- arch/blackfin/include/asm/string.h                 |    4 -
- arch/blackfin/include/asm/system.h                 |    4 -
- arch/blackfin/include/asm/traps.h                  |    4 -
- arch/blackfin/include/asm/types.h                  |    4 -
- arch/blackfin/lib/ashldi3.c                        |    5 -
- arch/blackfin/lib/bf533_string.c                   |    4 -
- arch/blackfin/lib/blackfin_linux.c                 |    4 -
- arch/blackfin/lib/board.c                          |    4 -
- arch/blackfin/lib/cpu.c                            |    4 -
- arch/blackfin/lib/divsi3.S                         |    5 -
- arch/blackfin/lib/gcclib.h                         |    5 -
- arch/blackfin/lib/interrupt.S                      |    4 -
- arch/blackfin/lib/lshrdi3.c                        |    5 -
- arch/blackfin/lib/modsi3.S                         |    5 -
- arch/blackfin/lib/module.c                         |    5 -
- arch/blackfin/lib/muldi3.c                         |    4 -
- arch/blackfin/lib/traps.c                          |    4 -
- arch/blackfin/lib/udivsi3.S                        |    5 -
- arch/blackfin/lib/umodsi3.S                        |    5 -
- arch/mips/boards/dlink-dir-320/config.h            |    4 -
- arch/mips/boards/dlink-dir-320/serial.c            |    3 -
- arch/mips/boards/qemu-malta/config.h               |    4 -
- arch/mips/boards/qemu-malta/init.c                 |    3 -
- arch/mips/boards/rzx50/config.h                    |    4 -
- arch/mips/boards/rzx50/include/board/debug_ll.h    |    3 -
- arch/mips/boards/rzx50/serial.c                    |    3 -
- arch/mips/boot/main_entry.c                        |    4 -
- arch/mips/boot/start.S                             |    3 -
- arch/mips/include/asm/barebox.h                    |    4 -
- arch/mips/include/asm/bitops.h                     |    4 -
- arch/mips/include/asm/common.h                     |    4 -
- arch/mips/include/asm/module.h                     |    4 -
- arch/mips/include/asm/string.h                     |    4 -
- arch/mips/include/debug_ll_ns16550.h               |    3 -
- arch/mips/lib/barebox.lds.S                        |    3 -
- arch/mips/lib/cpuinfo.c                            |    3 -
- arch/mips/lib/csrc-r4k.c                           |    3 -
- arch/mips/lib/memory.c                             |    3 -
- arch/mips/mach-bcm47xx/include/mach/debug_ll.h     |    3 -
- arch/mips/mach-bcm47xx/include/mach/hardware.h     |    3 -
- arch/mips/mach-bcm47xx/reset.c                     |    3 -
- arch/mips/mach-malta/include/mach/debug_ll.h       |    3 -
- arch/mips/mach-malta/include/mach/hardware.h       |    3 -
- arch/mips/mach-malta/reset.c                       |    3 -
- arch/mips/mach-xburst/csrc-jz4750.c                |    3 -
- arch/mips/mach-xburst/include/mach/debug_ll.h      |    3 -
- arch/mips/mach-xburst/reset-jz4750.c               |    3 -
- arch/nios2/cpu/barebox.lds.S                       |    4 -
- arch/nios2/cpu/cpu.c                               |    4 -
- arch/nios2/cpu/exceptions.S                        |    4 -
- arch/nios2/cpu/start.S                             |    4 -
- arch/nios2/cpu/traps.c                             |    4 -
- arch/nios2/include/asm/io.h                        |    4 -
- arch/nios2/include/asm/nios2-io.h                  |    4 -
- arch/nios2/include/asm/nios2.h                     |    4 -
- arch/nios2/include/asm/opcodes.h                   |    4 -
- arch/nios2/include/asm/ptrace.h                    |    4 -
- arch/nios2/include/asm/string.h                    |    4 -
- arch/nios2/include/asm/system.h                    |    4 -
- arch/nios2/lib/board.c                             |    4 -
- arch/nios2/lib/bootm.c                             |    4 -
- arch/nios2/lib/clock.c                             |    4 -
- arch/nios2/lib/early_printf.c                      |    4 -
- arch/nios2/lib/longlong.h                          |    5 -
- arch/openrisc/Makefile                             |    4 -
- arch/openrisc/cpu/barebox.lds.S                    |    4 -
- arch/openrisc/cpu/cache.c                          |    4 -
- arch/openrisc/cpu/cpu.c                            |    4 -
- arch/openrisc/cpu/exceptions.c                     |    4 -
- arch/openrisc/cpu/start.S                          |    4 -
- arch/openrisc/include/asm/bitops.h                 |    4 -
- arch/openrisc/include/asm/cache.h                  |    4 -
- arch/openrisc/include/asm/io.h                     |    4 -
- arch/openrisc/include/asm/openrisc_exc.h           |    4 -
- arch/openrisc/include/asm/system.h                 |    4 -
- arch/openrisc/include/asm/types.h                  |    4 -
- arch/openrisc/lib/Makefile                         |    1 +
- arch/openrisc/lib/ashrdi3.S                        |   59 +
- arch/openrisc/lib/board.c                          |    4 -
- arch/openrisc/lib/clock.c                          |    4 -
- arch/openrisc/lib/cpuinfo.c                        |    4 -
- arch/ppc/boards/freescale-p2020rdb/barebox.lds.S   |    4 -
- arch/ppc/boards/freescale-p2020rdb/config.h        |    4 -
- arch/ppc/boards/freescale-p2020rdb/law.c           |    4 -
- arch/ppc/boards/freescale-p2020rdb/p2020rdb.c      |    4 -
- arch/ppc/boards/freescale-p2020rdb/tlb.c           |    4 -
- arch/ppc/boards/pcm030/barebox.lds.S               |    4 -
- arch/ppc/boards/pcm030/config.h                    |    4 -
- arch/ppc/boards/pcm030/mt46v32m16-75.h             |    4 -
- arch/ppc/boards/pcm030/pcm030.c                    |    9 +-
- arch/ppc/cpu-85xx/fixed_ivor.S                     |    4 -
- arch/ppc/cpu-85xx/start.S                          |    4 -
- arch/ppc/cpu-85xx/tlb.c                            |    4 -
- arch/ppc/cpu-85xx/traps.c                          |    4 -
- arch/ppc/include/asm/barebox.h                     |    4 -
- arch/ppc/include/asm/config.h                      |    4 -
- arch/ppc/include/asm/ppc_asm.tmpl                  |    4 -
- arch/ppc/include/asm/ppc_defs.h                    |    4 -
- arch/ppc/lib/bat_rw.c                              |    4 -
- arch/ppc/lib/board.c                               |    4 -
- arch/ppc/lib/crtsavres.S                           |    5 -
- arch/ppc/lib/extable.c                             |    4 -
- arch/ppc/lib/module.c                              |    3 -
- arch/ppc/lib/reloc.S                               |    4 -
- arch/ppc/lib/ticks.S                               |    4 -
- arch/ppc/mach-mpc5xxx/cpu.c                        |    4 -
- arch/ppc/mach-mpc5xxx/cpu_init.c                   |    4 -
- arch/ppc/mach-mpc5xxx/include/mach/fec.h           |   14 -
- arch/ppc/mach-mpc5xxx/include/mach/mpc5xxx.h       |    4 -
- arch/ppc/mach-mpc5xxx/io.S                         |    4 -
- arch/ppc/mach-mpc5xxx/pci_mpc5200.c                |    4 -
- arch/ppc/mach-mpc5xxx/speed.c                      |    4 -
- arch/ppc/mach-mpc5xxx/start.S                      |    4 -
- arch/ppc/mach-mpc5xxx/time.c                       |    4 -
- arch/ppc/mach-mpc5xxx/traps.c                      |    4 -
- arch/ppc/mach-mpc85xx/cpu.c                        |    4 -
- arch/ppc/mach-mpc85xx/cpu_init.c                   |    4 -
- arch/ppc/mach-mpc85xx/cpuid.c                      |    4 -
- arch/ppc/mach-mpc85xx/fsl_law.c                    |    4 -
- .../ppc/mach-mpc85xx/include/mach/config_mpc85xx.h |    4 -
- arch/ppc/mach-mpc85xx/include/mach/early_udelay.h  |    4 -
- arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h    |    4 -
- arch/ppc/mach-mpc85xx/speed.c                      |    4 -
- arch/ppc/mach-mpc85xx/time.c                       |    4 -
- arch/sandbox/Kconfig                               |    3 +
- arch/sandbox/Makefile                              |    6 +-
- arch/sandbox/board/board.c                         |   24 +-
- arch/sandbox/board/clock.c                         |    3 -
- arch/sandbox/board/console.c                       |    3 -
- arch/sandbox/board/hostfile.c                      |    3 -
- arch/sandbox/include/asm/posix_types.h             |   14 +
- arch/sandbox/include/asm/processor.h               |    4 -
- arch/sandbox/include/asm/unaligned.h               |    2 +-
- arch/sandbox/mach-sandbox/include/mach/linux.h     |   14 +
- arch/sandbox/os/Makefile                           |    2 +
- arch/sandbox/os/common.c                           |   36 +-
- arch/sandbox/os/sdl.c                              |  108 +
- arch/sandbox/os/tap.c                              |    3 -
- arch/x86/boards/x86_generic/config.h               |    4 -
- arch/x86/boards/x86_generic/generic_pc.c           |    4 -
- arch/x86/boot/boot_hdisk.S                         |    4 -
- arch/x86/boot/boot_main.S                          |    4 -
- arch/x86/boot/main_entry.c                         |    4 -
- arch/x86/include/asm/barebox.h                     |    4 -
- arch/x86/include/asm/bitops.h                      |    4 -
- arch/x86/include/asm/byteorder.h                   |    4 -
- arch/x86/include/asm/common.h                      |    4 -
- arch/x86/include/asm/elf.h                         |    4 -
- arch/x86/include/asm/modes.h                       |    4 -
- arch/x86/include/asm/module.h                      |    4 -
- arch/x86/include/asm/posix_types.h                 |    4 -
- arch/x86/include/asm/segment.h                     |    4 -
- arch/x86/include/asm/string.h                      |    4 -
- arch/x86/include/asm/syslib.h                      |    4 -
- arch/x86/include/asm/types.h                       |    4 -
- arch/x86/lib/barebox.lds.S                         |    4 -
- arch/x86/lib/bios_disk.S                           |    4 -
- arch/x86/lib/gdt.c                                 |    4 -
- arch/x86/lib/linux_start.S                         |    4 -
- arch/x86/lib/memory.c                              |    4 -
- arch/x86/lib/memory16.S                            |    4 -
- arch/x86/lib/traveler.S                            |    4 -
- arch/x86/mach-i386/generic.c                       |    4 -
- arch/x86/mach-i386/include/mach/barebox.lds.h      |    4 -
- arch/x86/mach-i386/pit_timer.c                     |    4 -
- arch/x86/mach-i386/reset.c                         |    4 -
- commands/Kconfig                                   |   55 +-
- commands/Makefile                                  |    2 +-
- commands/automount.c                               |    4 -
- commands/bmp.c                                     |  221 -
- commands/bootm.c                                   |    4 -
- commands/cat.c                                     |    3 -
- commands/cd.c                                      |    3 -
- commands/clear.c                                   |    3 -
- commands/cp.c                                      |    3 -
- commands/crc.c                                     |    3 -
- commands/dfu.c                                     |    3 -
- commands/digest.c                                  |    3 -
- commands/echo.c                                    |   15 +-
- commands/edit.c                                    |    3 -
- commands/exec.c                                    |    3 -
- commands/export.c                                  |    3 -
- commands/false.c                                   |    4 -
- commands/flash.c                                   |    4 -
- commands/global.c                                  |   54 +-
- commands/go.c                                      |    4 -
- commands/gpio.c                                    |    4 -
- commands/help.c                                    |    4 -
- commands/i2c.c                                     |    4 -
- commands/iomem.c                                   |    4 -
- commands/led.c                                     |    4 -
- commands/linux16.c                                 |    4 -
- commands/linux_exec.c                              |    3 -
- commands/loadb.c                                   |    4 -
- commands/loadenv.c                                 |    3 -
- commands/loads.c                                   |    4 -
- commands/login.c                                   |    3 -
- commands/ls.c                                      |    3 -
- commands/mem.c                                     |    4 -
- commands/meminfo.c                                 |    3 -
- commands/memtest.c                                 |    4 -
- commands/menu.c                                    |    4 -
- commands/mkdir.c                                   |    3 -
- commands/mount.c                                   |    3 -
- commands/nand.c                                    |    3 -
- commands/nandtest.c                                |    3 -
- commands/net.c                                     |    4 -
- commands/oftree.c                                  |   31 +-
- commands/partition.c                               |    3 -
- commands/passwd.c                                  |    3 -
- commands/printenv.c                                |    3 -
- commands/pwd.c                                     |    3 -
- commands/readline.c                                |    4 -
- commands/reginfo.c                                 |    3 -
- commands/reset.c                                   |    3 -
- commands/rm.c                                      |    3 -
- commands/saveenv.c                                 |    3 -
- commands/setenv.c                                  |    3 -
- commands/sleep.c                                   |    3 -
- commands/splash.c                                  |  133 +
- commands/test.c                                    |    3 -
- commands/timeout.c                                 |    3 -
- commands/trigger.c                                 |    4 -
- commands/true.c                                    |    4 -
- commands/umount.c                                  |    3 -
- commands/uncompress.c                              |    3 -
- commands/usb.c                                     |    3 -
- commands/usbserial.c                               |    3 -
- commands/version.c                                 |    4 -
- common/Kconfig                                     |   10 +-
- common/Makefile                                    |    1 +
- common/block.c                                     |    3 -
- common/bootargs.c                                  |    3 -
- common/clock.c                                     |    3 -
- common/command.c                                   |    4 -
- common/complete.c                                  |    3 -
- common/console.c                                   |    4 -
- common/date.c                                      |    4 -
- common/digest.c                                    |    4 -
- common/env.c                                       |    3 -
- common/environment.c                               |    3 -
- common/filetype.c                                  |   81 +-
- common/globalvar.c                                 |   10 +
- common/hush.c                                      |    3 -
- common/image.c                                     |    6 +-
- common/meminfo.c                                   |   23 +
- common/memory.c                                    |    3 -
- common/memsize.c                                   |    4 -
- common/menu.c                                      |    4 -
- common/misc.c                                      |    3 -
- common/module.c                                    |    3 -
- common/module.lds.S                                |    4 -
- common/oftree.c                                    |    4 +-
- common/partitions.c                                |    4 -
- common/password.c                                  |    3 -
- common/resource.c                                  |    4 -
- common/s_record.c                                  |    4 -
- common/startup.c                                   |   25 -
- common/tlsf_malloc.c                               |    3 -
- common/uimage.c                                    |    4 -
- crypto/sha1.c                                      |    5 -
- crypto/sha2.c                                      |    3 -
- defaultenv-2/base/bin/boot                         |   61 +-
- defaultenv-2/base/bin/bootargs-ip                  |    4 +-
- defaultenv-2/base/bin/bootargs-ip-barebox          |    2 +-
- defaultenv-2/base/bin/bootargs-ip-dhcp             |    2 +-
- defaultenv-2/base/bin/bootargs-ip-none             |    2 +-
- defaultenv-2/base/bin/bootargs-root-disk           |    2 +-
- defaultenv-2/base/bin/bootargs-root-ext            |    2 +-
- defaultenv-2/base/bin/bootargs-root-initrd         |    2 +-
- defaultenv-2/base/bin/bootargs-root-jffs2          |    2 +-
- defaultenv-2/base/bin/bootargs-root-nfs            |    2 +-
- defaultenv-2/base/bin/bootargs-root-ubi            |    2 +-
- defaultenv-2/base/bin/init                         |    6 +-
- defaultenv-2/base/boot/initrd                      |    2 +-
- defaultenv-2/base/data/ansi-colors                 |    4 +
- defaultenv-2/base/init/general                     |    3 -
- defaultenv-2/base/network/eth0                     |    1 +
- defaultenv-2/menu/menu/boot-entries-collect        |    6 +-
- defaultenv-2/menu/menu/mainmenu                    |    4 +-
- defaultenv/bin/boot                                |   12 +-
- defaultenv/bin/init                                |    2 +
- defaultenv/config                                  |   18 +-
- drivers/Kconfig                                    |    1 +
- drivers/Makefile                                   |    2 +
- drivers/amba/Makefile                              |    2 +
- drivers/amba/bus.c                                 |  210 +
- drivers/ata/disk_bios_drive.c                      |    4 -
- drivers/base/Makefile                              |    1 +
- drivers/base/bus.c                                 |   37 +
- drivers/base/driver.c                              |   66 +-
- drivers/base/platform.c                            |   39 +-
- drivers/base/resource.c                            |    4 -
- drivers/eeprom/at25.c                              |    2 +-
- drivers/i2c/busses/i2c-imx.c                       |    5 -
- drivers/i2c/busses/i2c-omap.c                      |    4 -
- drivers/i2c/i2c.c                                  |   30 +
- drivers/led/core.c                                 |    4 -
- drivers/led/led-gpio.c                             |    4 -
- drivers/led/led-triggers.c                         |    4 -
- drivers/mci/imx-esdhc.c                            |   26 +-
- drivers/mci/imx-esdhc.h                            |    4 -
- drivers/mci/mci-core.c                             |    4 -
- drivers/mci/mci_spi.c                              |   13 +-
- drivers/mci/mxs.c                                  |    4 -
- drivers/mci/omap_hsmmc.c                           |    4 -
- drivers/mci/s3c.c                                  |    4 -
- drivers/mfd/lp3972.c                               |    6 +-
- drivers/mfd/mc13xxx.c                              |   44 +-
- drivers/mfd/mc34704.c                              |    8 +-
- drivers/mfd/mc34708.c                              |   33 +-
- drivers/mfd/mc9sdz60.c                             |    6 +-
- drivers/mfd/stmpe-i2c.c                            |    2 +-
- drivers/mfd/twl4030.c                              |    2 +-
- drivers/mfd/twl6030.c                              |    2 +-
- drivers/mtd/nand/nand-bb.c                         |    3 -
- drivers/mtd/nand/nand_base.c                       |   97 +-
- drivers/mtd/nand/nand_ids.c                        |   30 +
- drivers/mtd/nand/nand_s3c24xx.c                    |    3 -
- drivers/mtd/ubi/build.c                            |    3 -
- drivers/mtd/ubi/debug.c                            |    3 -
- drivers/mtd/ubi/debug.h                            |    3 -
- drivers/mtd/ubi/eba.c                              |    3 -
- drivers/mtd/ubi/io.c                               |    3 -
- drivers/mtd/ubi/kapi.c                             |    3 -
- drivers/mtd/ubi/misc.c                             |    3 -
- drivers/mtd/ubi/scan.c                             |    3 -
- drivers/mtd/ubi/scan.h                             |    3 -
- drivers/mtd/ubi/ubi-media.h                        |    3 -
- drivers/mtd/ubi/ubi.h                              |    3 -
- drivers/mtd/ubi/upd.c                              |    3 -
- drivers/mtd/ubi/vmt.c                              |    3 -
- drivers/mtd/ubi/vtbl.c                             |    3 -
- drivers/mtd/ubi/wl.c                               |    3 -
- drivers/net/Kconfig                                |   42 +-
- drivers/net/Makefile                               |    4 +-
- drivers/net/altera_tse.c                           |   52 +-
- drivers/net/altera_tse.h                           |    3 +-
- drivers/net/at91_ether.c                           |   53 +-
- drivers/net/davinci_emac.c                         |  618 ++
- drivers/net/davinci_emac.h                         |  289 +
- drivers/net/designware.c                           |   62 +-
- drivers/net/dm9k.c                                 |   50 +-
- drivers/net/ep93xx.c                               |   35 +-
- drivers/net/ep93xx.h                               |    6 +-
- drivers/net/fec_imx.c                              |   93 +-
- drivers/net/fec_imx.h                              |   10 +-
- drivers/net/fec_mpc5200.c                          |   58 +-
- drivers/net/fec_mpc5200.h                          |    4 +-
- drivers/net/gianfar.c                              |   61 +-
- drivers/net/gianfar.h                              |    2 +-
- drivers/net/ks8851_mll.c                           |   40 +-
- drivers/net/ksz8864rmn.c                           |  191 +
- drivers/net/macb.c                                 |   82 +-
- drivers/net/macb.h                                 |    4 -
- drivers/net/miidev.c                               |  316 --
- drivers/net/netx_eth.c                             |   26 +-
- drivers/net/phy/Kconfig                            |   17 +
- drivers/net/phy/Makefile                           |    2 +
- drivers/net/phy/generic.c                          |   36 +
- drivers/net/phy/mdio_bus.c                         |  248 +
- drivers/net/phy/phy.c                              |  568 ++
- drivers/net/smc91111.c                             |   51 +-
- drivers/net/smc911x.c                              |   41 +-
- drivers/net/tap.c                                  |    3 -
- drivers/net/usb/Kconfig                            |    4 +-
- drivers/net/usb/asix.c                             |   29 +-
- drivers/net/usb/smsc95xx.c                         |   45 +-
- drivers/net/usb/smsc95xx.h                         |    4 -
- drivers/net/usb/usbnet.c                           |   11 +-
- drivers/nor/cfi_flash.c                            |   41 +-
- drivers/nor/cfi_flash.h                            |    6 -
- drivers/nor/m25p80.c                               |   76 +-
- drivers/nor/m25p80.h                               |    2 +-
- drivers/of/Kconfig                                 |    2 +
- drivers/of/Makefile                                |    3 +
- drivers/of/base.c                                  |  802 +++
- drivers/of/gpio.c                                  |   28 +
- drivers/of/partition.c                             |   64 +
- drivers/pwm/core.c                                 |    4 -
- drivers/serial/amba-pl011.c                        |   78 +-
- drivers/serial/arm_dcc.c                           |    3 -
- drivers/serial/atmel.c                             |    3 -
- drivers/serial/linux_console.c                     |    3 -
- drivers/serial/serial_altera.c                     |    4 -
- drivers/serial/serial_altera_jtag.c                |    4 -
- drivers/serial/serial_blackfin.c                   |    4 -
- drivers/serial/serial_imx.c                        |   20 +-
- drivers/serial/serial_mpc5xxx.c                    |    4 -
- drivers/serial/serial_netx.c                       |    4 -
- drivers/serial/serial_ns16550.c                    |    4 -
- drivers/serial/serial_pl010.c                      |    4 -
- drivers/serial/serial_pl010.h                      |    4 -
- drivers/serial/serial_s3c.c                        |    3 -
- drivers/serial/stm-serial.c                        |    3 -
- drivers/spi/Kconfig                                |    6 +
- drivers/spi/Makefile                               |    1 +
- drivers/spi/altera_spi.c                           |    4 -
- drivers/spi/atmel_spi.c                            |    4 -
- drivers/spi/imx_spi.c                              |   53 +-
- drivers/spi/omap3_spi.c                            |  399 ++
- drivers/spi/omap3_spi.h                            |   94 +
- drivers/spi/spi.c                                  |   67 +-
- drivers/usb/core/usb.c                             |    9 +-
- drivers/usb/gadget/composite.c                     |    3 -
- drivers/usb/gadget/dfu.c                           |    4 -
- drivers/usb/gadget/epautoconf.c                    |    3 -
- drivers/usb/gadget/pxa27x_udc.c                    |    3 -
- drivers/usb/gadget/pxa27x_udc.h                    |    4 -
- drivers/usb/host/ehci-core.h                       |    4 -
- drivers/usb/host/ehci-hcd.c                        |    4 -
- drivers/usb/host/ehci.h                            |    4 -
- drivers/usb/host/ohci-at91.c                       |    4 -
- drivers/usb/host/ohci-hcd.c                        |    4 -
- drivers/usb/otg/twl4030.c                          |    4 -
- drivers/usb/otg/ulpi.c                             |    5 -
- drivers/usb/storage/transport.c                    |    4 -
- drivers/usb/storage/transport.h                    |    4 -
- drivers/usb/storage/usb.c                          |    4 -
- drivers/usb/storage/usb.h                          |    4 -
- drivers/video/Kconfig                              |    4 +
- drivers/video/Makefile                             |    1 +
- drivers/video/fb.c                                 |   31 +-
- drivers/video/imx-ipu-fb.c                         |    4 -
- drivers/video/pxa.c                                |    5 -
- drivers/video/s3c24xx.c                            |    4 -
- drivers/video/sdl.c                                |  101 +
- fs/devfs-core.c                                    |    3 -
- fs/devfs.c                                         |    3 -
- fs/fat/fat.c                                       |    3 -
- fs/fat/ff.c                                        |   37 +-
- fs/fs.c                                            |    9 +-
- fs/nfs.c                                           |    3 -
- fs/ramfs.c                                         |    3 -
- fs/tftp.c                                          |    3 -
- include/command.h                                  |    4 -
- include/common.h                                   |    8 +-
- include/console.h                                  |    4 -
- include/debug_ll.h                                 |    6 -
- include/digest.h                                   |    4 -
- include/driver.h                                   |   49 +-
- include/environment.h                              |    4 -
- include/fb.h                                       |    2 +
- include/fec.h                                      |    7 +-
- include/filetype.h                                 |   20 +
- include/getopt.h                                   |    3 -
- include/globalvar.h                                |   23 +
- include/graphic_utils.h                            |   17 +
- include/i2c/i2c.h                                  |    8 +
- include/image.h                                    |    9 +-
- include/image_renderer.h                           |   85 +
- include/kfifo.h                                    |    5 -
- include/linux/amba/bus.h                           |  153 +
- include/linux/amba/serial.h                        |   32 +-
- include/linux/ethtool.h                            |  114 +
- include/linux/mii.h                                |  421 +-
- include/linux/mtd/ubi.h                            |    3 -
- include/linux/phy.h                                |  266 +
- include/linux/rbtree.h                             |    3 -
- include/mci.h                                      |    4 -
- include/menu.h                                     |    4 -
- include/miidev.h                                   |   55 +-
- include/mtd/ubi-user.h                             |    3 -
- include/net.h                                      |    4 +
- include/ns16550.h                                  |    4 -
- include/of.h                                       |  113 +
- include/part.h                                     |    4 -
- include/password.h                                 |    3 -
- include/rtc.h                                      |    4 -
- include/s_record.h                                 |    4 -
- include/scsi.h                                     |    4 -
- include/sizes.h                                    |    4 -
- include/spi/spi.h                                  |   13 +
- include/ubi-media.h                                |    3 -
- include/usb/composite.h                            |    4 -
- include/usb/dfu.h                                  |    3 -
- include/usb/usb.h                                  |    4 -
- include/usb/usb_defs.h                             |    4 -
- include/usb/usbnet.h                               |    8 +-
- lib/Kconfig                                        |   36 +
- lib/Makefile                                       |    5 +
- lib/bmp.c                                          |  134 +
- {include =3D> lib}/bmp_layout.h                      |   15 +-
- lib/ctype.c                                        |    4 -
- lib/decompress_unlzo.c                             |    5 -
- lib/display_options.c                              |    4 -
- lib/getopt.c                                       |    3 -
- lib/graphic_utils.c                                |  191 +
- lib/image_renderer.c                               |   96 +
- lib/kfifo.c                                        |    5 -
- lib/libbb.c                                        |    1 -
- lib/libgen.c                                       |    3 -
- lib/lodepng.c                                      | 5928 ++++++++++++++++=
-++++
- lib/lodepng.h                                      | 1640 ++++++
- lib/misc.c                                         |    3 -
- lib/parameter.c                                    |    3 -
- lib/picopng.c                                      |  810 +++
- lib/picopng.h                                      |   34 +
- lib/png.c                                          |   89 +
- lib/png.h                                          |   21 +
- lib/png_lode.c                                     |   90 +
- lib/png_pico.c                                     |   85 +
- lib/process_escape_sequence.c                      |    3 -
- lib/rbtree.c                                       |    3 -
- lib/readkey.c                                      |    3 -
- lib/show_progress.c                                |    3 -
- lib/uncompress.c                                   |    3 -
- lib/xfuncs.c                                       |    3 -
- logo/LICENCE                                       |   22 +
- logo/png24/100x100/color/barebox.png               |  Bin 0 -> 22724 bytes
- logo/png24/100x100/white/barebox.png               |  Bin 0 -> 12053 bytes
- logo/png24/200x200/color/barebox.png               |  Bin 0 -> 71557 bytes
- logo/png24/200x200/white/barebox.png               |  Bin 0 -> 31132 bytes
- logo/png24/400x400/color/barebox.png               |  Bin 0 -> 217170 bytes
- logo/png24/400x400/white/barebox.png               |  Bin 0 -> 78591 bytes
- logo/png24/600x600/color/barebox.png               |  Bin 0 -> 406788 bytes
- logo/png24/600x600/while/barebox.png               |  Bin 0 -> 137235 bytes
- logo/png24/800x800/color/barebox.png               |  Bin 0 -> 627433 bytes
- logo/png24/800x800/white/barebox.png               |  Bin 0 -> 210397 bytes
- logo/png8/100x100/color/blackbg/barebox.png        |  Bin 0 -> 8279 bytes
- logo/png8/100x100/white/blackbg/barebox.png        |  Bin 0 -> 6089 bytes
- logo/png8/200x200/color/blackbg/barebox.png        |  Bin 0 -> 23616 bytes
- logo/png8/200x200/white/blackbg/barebox.png        |  Bin 0 -> 14838 bytes
- logo/png8/400x400/color/blackbg/barebox.png        |  Bin 0 -> 71295 bytes
- logo/png8/400x400/white/blackbg/barebox.png        |  Bin 0 -> 38480 bytes
- logo/png8/600x600/color/blackbg/barebox.png        |  Bin 0 -> 130709 bytes
- logo/png8/600x600/while/blackbg/barebox.png        |  Bin 0 -> 68648 bytes
- logo/png8/800x800/color/blackbg/barebox.png        |  Bin 0 -> 205281 bytes
- logo/png8/800x800/white/blackbg/barebox.png        |  Bin 0 -> 104173 bytes
- net/dhcp.c                                         |  167 +-
- net/eth.c                                          |   12 +-
- net/net.c                                          |   21 +-
- net/netconsole.c                                   |    3 -
- net/rarp.h                                         |    4 -
- scripts/bareboxenv.c                               |    3 -
- scripts/genenv                                     |    6 +-
- scripts/kconfig/lxdialog/checklist.c               |    4 -
- scripts/kconfig/lxdialog/dialog.h                  |    4 -
- scripts/kconfig/lxdialog/inputbox.c                |    4 -
- scripts/kconfig/lxdialog/menubox.c                 |    4 -
- scripts/kconfig/lxdialog/textbox.c                 |    4 -
- scripts/kconfig/lxdialog/util.c                    |    4 -
- scripts/kconfig/lxdialog/yesno.c                   |    4 -
- scripts/kconfig/zconf.tab.c_shipped                |    5 +-
- scripts/mkimage.c                                  |    4 -
- scripts/omap_signGP.c                              |    3 -
- scripts/s5p_cksum.c                                |    4 -
- scripts/setupmbr/setupmbr.c                        |    4 -
- 918 files changed, 17878 insertions(+), 4737 deletions(-)
- create mode 120000 arch/arm/boards/crystalfontz-cfa10036/env/boot.d/01
- create mode 120000 arch/arm/boards/crystalfontz-cfa10036/env/boot.d/02
- create mode 120000 arch/arm/boards/crystalfontz-cfa10036/env/boot.d/03
- create mode 120000 arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/01
- create mode 120000 arch/arm/boards/freescale-mx6-sabrelite/env/boot.d/02
- create mode 100644 arch/arm/boards/imx233-olinuxino/Makefile
- create mode 100644 arch/arm/boards/imx233-olinuxino/config.h
- create mode 100644 arch/arm/boards/imx233-olinuxino/env/bin/boot
- create mode 100644 arch/arm/boards/imx233-olinuxino/env/bin/init
- create mode 100644 arch/arm/boards/imx233-olinuxino/env/config
- create mode 100644 arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c
- create mode 100644 arch/arm/boards/karo-tx53/Makefile
- create mode 100644 arch/arm/boards/karo-tx53/board.c
- create mode 100644 arch/arm/boards/karo-tx53/config.h
- create mode 100644 arch/arm/boards/karo-tx53/env/init/bootargs-base
- create mode 100644 arch/arm/boards/karo-tx53/env/init/hostname
- create mode 100644 arch/arm/boards/karo-tx53/flash_header.c
- create mode 120000 arch/arm/boards/pcm038/env/boot.d/01
- create mode 120000 arch/arm/boards/pcm038/env/boot.d/02
- create mode 120000 arch/arm/boards/pcm038/env/boot.d/03
- create mode 120000 arch/arm/boards/tqma53/env/boot.d/01
- create mode 120000 arch/arm/boards/tqma53/env/boot.d/02
- create mode 100644 arch/arm/configs/imx233-olinuxino_defconfig
- create mode 100644 arch/arm/configs/tx53stk5_defconfig
- create mode 100644 arch/arm/lib/runtime-offset.S
- create mode 100644 arch/arm/mach-omap/include/mach/emac_defs.h
- create mode 100644 arch/arm/mach-omap/include/mach/mcspi.h
- create mode 100644 arch/arm/mach-omap/include/mach/omap3-devices.h
- create mode 100644 arch/openrisc/lib/ashrdi3.S
- delete mode 100644 arch/ppc/mach-mpc5xxx/include/mach/fec.h
- create mode 100644 arch/sandbox/os/sdl.c
- delete mode 100644 commands/bmp.c
- create mode 100644 commands/splash.c
- create mode 100644 common/meminfo.c
- create mode 100644 drivers/amba/Makefile
- create mode 100644 drivers/amba/bus.c
- create mode 100644 drivers/base/bus.c
- create mode 100644 drivers/net/davinci_emac.c
- create mode 100644 drivers/net/davinci_emac.h
- create mode 100644 drivers/net/ksz8864rmn.c
- delete mode 100644 drivers/net/miidev.c
- create mode 100644 drivers/net/phy/Kconfig
- create mode 100644 drivers/net/phy/Makefile
- create mode 100644 drivers/net/phy/generic.c
- create mode 100644 drivers/net/phy/mdio_bus.c
- create mode 100644 drivers/net/phy/phy.c
- create mode 100644 drivers/of/Kconfig
- create mode 100644 drivers/of/Makefile
- create mode 100644 drivers/of/base.c
- create mode 100644 drivers/of/gpio.c
- create mode 100644 drivers/of/partition.c
- create mode 100644 drivers/spi/omap3_spi.c
- create mode 100644 drivers/spi/omap3_spi.h
- create mode 100644 drivers/video/sdl.c
- create mode 100644 include/graphic_utils.h
- create mode 100644 include/image_renderer.h
- create mode 100644 include/linux/amba/bus.h
- create mode 100644 include/linux/ethtool.h
- create mode 100644 include/linux/phy.h
- create mode 100644 lib/bmp.c
- rename {include =3D> lib}/bmp_layout.h (84%)
- create mode 100644 lib/graphic_utils.c
- create mode 100644 lib/image_renderer.c
- create mode 100644 lib/lodepng.c
- create mode 100644 lib/lodepng.h
- create mode 100644 lib/picopng.c
- create mode 100644 lib/picopng.h
- create mode 100644 lib/png.c
- create mode 100644 lib/png.h
- create mode 100644 lib/png_lode.c
- create mode 100644 lib/png_pico.c
- create mode 100644 logo/LICENCE
- create mode 100644 logo/png24/100x100/color/barebox.png
- create mode 100644 logo/png24/100x100/white/barebox.png
- create mode 100644 logo/png24/200x200/color/barebox.png
- create mode 100644 logo/png24/200x200/white/barebox.png
- create mode 100644 logo/png24/400x400/color/barebox.png
- create mode 100644 logo/png24/400x400/white/barebox.png
- create mode 100644 logo/png24/600x600/color/barebox.png
- create mode 100644 logo/png24/600x600/while/barebox.png
- create mode 100644 logo/png24/800x800/color/barebox.png
- create mode 100644 logo/png24/800x800/white/barebox.png
- create mode 100644 logo/png8/100x100/color/blackbg/barebox.png
- create mode 100644 logo/png8/100x100/white/blackbg/barebox.png
- create mode 100644 logo/png8/200x200/color/blackbg/barebox.png
- create mode 100644 logo/png8/200x200/white/blackbg/barebox.png
- create mode 100644 logo/png8/400x400/color/blackbg/barebox.png
- create mode 100644 logo/png8/400x400/white/blackbg/barebox.png
- create mode 100644 logo/png8/600x600/color/blackbg/barebox.png
- create mode 100644 logo/png8/600x600/while/blackbg/barebox.png
- create mode 100644 logo/png8/800x800/color/blackbg/barebox.png
- create mode 100644 logo/png8/800x800/white/blackbg/barebox.png
-
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
