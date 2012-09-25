@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TGUFC-0001s6-3z
- for barebox@lists.infradead.org; Tue, 25 Sep 2012 12:28:08 +0000
-Message-ID: <1348576082.3396.37.camel@coredoba.hi.pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Tue, 25 Sep 2012 14:28:02 +0200
-In-Reply-To: <1348168424-11742-1-git-send-email-jlu@pengutronix.de>
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TGUGO-0001xt-KP
+ for barebox@lists.infradead.org; Tue, 25 Sep 2012 12:29:21 +0000
+Message-ID: <5061A39C.1060309@phytec.de>
+Date: Tue, 25 Sep 2012 14:29:16 +0200
+From: Teresa Gamez <t.gamez@phytec.de>
+MIME-Version: 1.0
 References: <1348149724-28468-1-git-send-email-t.gamez@phytec.de>
  <1348168424-11742-1-git-send-email-jlu@pengutronix.de>
-Mime-Version: 1.0
+ <506053EE.5070105@phytec.de>
+ <1348490948.3491.11.camel@coredoba.hi.pengutronix.de>
+In-Reply-To: <1348490948.3491.11.camel@coredoba.hi.pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,44 +20,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] Makefile: add target to produce a SPL compatible uImage
-To: barebox@lists.infradead.org
+To: =?UTF-8?B?SmFuIEzDvGJiZQ==?= <jlu@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Thu, 2012-09-20 at 21:13 +0200, Jan Luebbe wrote:
-> This is mostly useful during the initial port of barebox to a new
-> board which is supported by u-boot. It also allows starting barebox
-> from a SRAM-based u-boot SPL.
-> 
-> A different load address can be set like this:
-> make barebox.uimage UIMAGE_BASE=0x80000000
-> 
-> Also add barebox.ubl to CLEAN_FILES.
-> 
-> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
-> ---
-> I've carried this patch for some time and adjusted it to support
-> PBL (compressed image), but have not had an opportunity to verify
-> it again.
-> 
-> Teresa, if you have some time to try it out, that would be very
-> much appreciated. :)
-
-Sascha: As Teresa has tested this, could you apply it?
-
-Regards,
-Jan
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gMjQuMDkuMjAxMiAxNDo0OSwgc2NocmllYiBKYW4gTMO8YmJlOgo+IE9uIE1vbiwgMjAxMi0w
+OS0yNCBhdCAxNDozNyArMDIwMCwgVGVyZXNhIEdhbWV6IHdyb3RlOgo+PiBJIGhhdmUgdGVzdGVk
+IGl0IHdpdGggbXkgYW0zMzV4IHBhdGNoZXMuIEFuZCBpdCB3b3JrZWQgc28gZmFyLgo+PiBCdXQg
+SSBoYXZlIG5vdCBkb25lIGFueXRoaW5nIHdpdGggdGhlIHBibCBpbWFnZSwgeWV0Lgo+PiBDb3Vs
+ZCB5b3UgZXhwbGFpbiBtZSB3aGF0IGl0J3MgYWN0dWFsbHkgZm9yPyBBbmQgaG93IEkgY2FuIHRl
+c3QgaXQ/Cj4gVGhhbmtzIQo+Cj4gUEJMIHN0YW5kcyBmb3IgUHJlLUJvb3Rsb2FkZXIgSW1hZ2Us
+IHdoaWNoIGlzIHVzZWQgdG8gaGF2ZSBhIGNvbXByZXNzZWQKPiBiYXJlYm94IGJpbmFyeS4gWW91
+IGNhbiBlbmFibGUgaXQgaW4gIkdlbmVyYWwgU2V0dGluZ3MgLT4gbWVtb3J5IGxheW91dAo+IC0+
+IFByZS1Cb290bG9hZGVyIGltYWdlIi4KCkRvIEkgdW5kZXJzdGFuZCB0aGlzIGNvcnJlY3RseSB0
+aGF0IHRoaXMgaXMgc3VwcG9zZSB0byBiZSB1c2VkIHRvIGRlY3JlYXNlCnRoZSBzaXplIG9mIGZp
+cnN0IHN0YWdlIGJvb3Rsb2FkZXIgYmluYXJpZXMgbGlrZSB0aGUgTUxPIG9uIHRpIGJvYXJkcz8K
+ClJlZ2FyZHMsClRlcmVzYQoKCj4KPiBSZWdhcmRzLAo+IEphbgoKCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
