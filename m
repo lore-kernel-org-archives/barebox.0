@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TGUGO-0001xt-KP
- for barebox@lists.infradead.org; Tue, 25 Sep 2012 12:29:21 +0000
-Message-ID: <5061A39C.1060309@phytec.de>
-Date: Tue, 25 Sep 2012 14:29:16 +0200
-From: Teresa Gamez <t.gamez@phytec.de>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TGUMM-00034G-MR
+ for barebox@lists.infradead.org; Tue, 25 Sep 2012 12:35:31 +0000
+Message-ID: <1348576528.3396.43.camel@coredoba.hi.pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Tue, 25 Sep 2012 14:35:28 +0200
+In-Reply-To: <5061A39C.1060309@phytec.de>
 References: <1348149724-28468-1-git-send-email-t.gamez@phytec.de>
  <1348168424-11742-1-git-send-email-jlu@pengutronix.de>
  <506053EE.5070105@phytec.de>
  <1348490948.3491.11.camel@coredoba.hi.pengutronix.de>
-In-Reply-To: <1348490948.3491.11.camel@coredoba.hi.pengutronix.de>
+ <5061A39C.1060309@phytec.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,26 +21,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] Makefile: add target to produce a SPL compatible uImage
-To: =?UTF-8?B?SmFuIEzDvGJiZQ==?= <jlu@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: Barebox List <barebox@lists.infradead.org>
 
-QW0gMjQuMDkuMjAxMiAxNDo0OSwgc2NocmllYiBKYW4gTMO8YmJlOgo+IE9uIE1vbiwgMjAxMi0w
-OS0yNCBhdCAxNDozNyArMDIwMCwgVGVyZXNhIEdhbWV6IHdyb3RlOgo+PiBJIGhhdmUgdGVzdGVk
-IGl0IHdpdGggbXkgYW0zMzV4IHBhdGNoZXMuIEFuZCBpdCB3b3JrZWQgc28gZmFyLgo+PiBCdXQg
-SSBoYXZlIG5vdCBkb25lIGFueXRoaW5nIHdpdGggdGhlIHBibCBpbWFnZSwgeWV0Lgo+PiBDb3Vs
-ZCB5b3UgZXhwbGFpbiBtZSB3aGF0IGl0J3MgYWN0dWFsbHkgZm9yPyBBbmQgaG93IEkgY2FuIHRl
-c3QgaXQ/Cj4gVGhhbmtzIQo+Cj4gUEJMIHN0YW5kcyBmb3IgUHJlLUJvb3Rsb2FkZXIgSW1hZ2Us
-IHdoaWNoIGlzIHVzZWQgdG8gaGF2ZSBhIGNvbXByZXNzZWQKPiBiYXJlYm94IGJpbmFyeS4gWW91
-IGNhbiBlbmFibGUgaXQgaW4gIkdlbmVyYWwgU2V0dGluZ3MgLT4gbWVtb3J5IGxheW91dAo+IC0+
-IFByZS1Cb290bG9hZGVyIGltYWdlIi4KCkRvIEkgdW5kZXJzdGFuZCB0aGlzIGNvcnJlY3RseSB0
-aGF0IHRoaXMgaXMgc3VwcG9zZSB0byBiZSB1c2VkIHRvIGRlY3JlYXNlCnRoZSBzaXplIG9mIGZp
-cnN0IHN0YWdlIGJvb3Rsb2FkZXIgYmluYXJpZXMgbGlrZSB0aGUgTUxPIG9uIHRpIGJvYXJkcz8K
-ClJlZ2FyZHMsClRlcmVzYQoKCj4KPiBSZWdhcmRzLAo+IEphbgoKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+T24gVHVlLCAyMDEyLTA5LTI1IGF0IDE0OjI5ICswMjAwLCBUZXJlc2EgR2FtZXogd3JvdGU6Cj4g
+QW0gMjQuMDkuMjAxMiAxNDo0OSwgc2NocmllYiBKYW4gTMO8YmJlOgo+ID4gT24gTW9uLCAyMDEy
+LTA5LTI0IGF0IDE0OjM3ICswMjAwLCBUZXJlc2EgR2FtZXogd3JvdGU6Cj4gPj4gSSBoYXZlIHRl
+c3RlZCBpdCB3aXRoIG15IGFtMzM1eCBwYXRjaGVzLiBBbmQgaXQgd29ya2VkIHNvIGZhci4KPiA+
+PiBCdXQgSSBoYXZlIG5vdCBkb25lIGFueXRoaW5nIHdpdGggdGhlIHBibCBpbWFnZSwgeWV0Lgo+
+ID4+IENvdWxkIHlvdSBleHBsYWluIG1lIHdoYXQgaXQncyBhY3R1YWxseSBmb3I/IEFuZCBob3cg
+SSBjYW4gdGVzdCBpdD8KPiA+IFRoYW5rcyEKPiA+Cj4gPiBQQkwgc3RhbmRzIGZvciBQcmUtQm9v
+dGxvYWRlciBJbWFnZSwgd2hpY2ggaXMgdXNlZCB0byBoYXZlIGEgY29tcHJlc3NlZAo+ID4gYmFy
+ZWJveCBiaW5hcnkuIFlvdSBjYW4gZW5hYmxlIGl0IGluICJHZW5lcmFsIFNldHRpbmdzIC0+IG1l
+bW9yeSBsYXlvdXQKPiA+IC0+IFByZS1Cb290bG9hZGVyIGltYWdlIi4KPiAKPiBEbyBJIHVuZGVy
+c3RhbmQgdGhpcyBjb3JyZWN0bHkgdGhhdCB0aGlzIGlzIHN1cHBvc2UgdG8gYmUgdXNlZCB0byBk
+ZWNyZWFzZQo+IHRoZSBzaXplIG9mIGZpcnN0IHN0YWdlIGJvb3Rsb2FkZXIgYmluYXJpZXMgbGlr
+ZSB0aGUgTUxPIG9uIHRpIGJvYXJkcz8KCkkgZG9uJ3QgdGhpbmsgaXQgaXMgdXNlZnVsIGluIHRo
+ZSBjdXJyZW50IGZvcm0gZm9yIHRoZSBNTE8gY2FzZS4gVGhlCnByb2JsZW0gdGhlcmUgaXMgdGhh
+dCB0aGUgU1JBTSB3b3VsZCBiZSB0b28gc21hbGwgdG8gY29udGFpbiB0aGUKZGVjb21wcmVzc2Vk
+IGltYWdlIChpbiBhZGRpdGlvbiB0byB0aGUgY29tcHJlc3NlZCBvbmUpLiAKCkl0IHNhdmVzIHNv
+bWUgdGltZSB3aGVuIGxvYWRpbmcgZnJvbSBzbG93ZXIgZmxhc2ggYW5kIGlzIHVzZWZ1bCB3aGVu
+IHRoZQpzcGFjZSBmb3IgYmFyZWJveCBpbiBmbGFzaCBpcyBsaW1pdGVkIHNvbWUgaG93IChidXQg
+eW91IGhhdmUgZW5vdWdoClJBTSkuCgpGb3IgdGhlIE1MTyBjYXNlIHdlIHdvdWxkIG5lZWQgdG8g
+aGF2ZSB0aGUgRFJBTSBzZXR1cCBpbiB0aGUKUHJlLUJvb3Rsb2FkZXIgYW5kIHRoZW4gZGVjb21w
+cmVzcyB0byBEUkFNLiBUaGF0IHNob3VsZCBiZSBwb3NzaWJsZSwgYnV0CkknbSBub3Qgc3VyZSBo
+b3cgbXVjaCB3ZSdkIGdhaW4gKHRoZSBjb21wcmVzc2VkIGltYWdlIHdvdWxkIHN0aWxsIGJlCmxp
+bWl0ZWQgYnkgU1JBTSBzaXplKS4KClJlZ2FyZHMsCkphbgotLSAKUGVuZ3V0cm9uaXggZS5LLiAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwK
+SW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5w
+ZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJt
+YW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVp
+bSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
