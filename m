@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo5.mail-out.ovh.net ([87.98.173.103]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TGZld-00022H-OZ
- for barebox@lists.infradead.org; Tue, 25 Sep 2012 18:21:58 +0000
-Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 78F3CFFA59A
- for <barebox@lists.infradead.org>; Tue, 25 Sep 2012 20:27:55 +0200 (CEST)
-Date: Tue, 25 Sep 2012 20:19:25 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120925181925.GN26553@game.jcrosoft.org>
-References: <20120924093122.GD26553@game.jcrosoft.org>
- <1348593966.3396.46.camel@coredoba.hi.pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1348593966.3396.46.camel@coredoba.hi.pengutronix.de>
+Received: from mail-we0-f177.google.com ([74.125.82.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TGe74-0007PZ-Ht
+ for barebox@lists.infradead.org; Tue, 25 Sep 2012 23:00:22 +0000
+Received: by mail-we0-f177.google.com with SMTP id u50so996925wey.36
+ for <barebox@lists.infradead.org>; Tue, 25 Sep 2012 16:00:22 -0700 (PDT)
+From: vj <vicencb@gmail.com>
+Date: Wed, 26 Sep 2012 00:59:49 +0200
+Message-Id: <1348613994-1793-3-git-send-email-vicencb@gmail.com>
+In-Reply-To: <1348613994-1793-1-git-send-email-vicencb@gmail.com>
+References: <[RFC][PATCH] archosg9: add support for tablet>
+ <1348613994-1793-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,27 +19,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/1 v7] net: introduce phylib
-To: Jan =?iso-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/7] added debug info for twl6030
+To: barebox@lists.infradead.org
+Cc: vj <vicencb@gmail.com>
 
-On 19:26 Tue 25 Sep     , Jan L=FCbbe wrote:
-> On Mon, 2012-09-24 at 11:31 +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> >  include/linux/phy.h                             |  266 +++++++++++++++=
-+++++++++++
-> >  include/miidev.h                                |   51 +----
-> =
+---
+ drivers/mfd/twl6030.c | 13 +++++++++++++
+ include/mfd/twl6030.h |  8 ++++++++
+ 2 files changed, 21 insertions(+)
 
-> We now have a "struct mii_bus" in include/linux/phy.h and
-> include/miidev.h. Is this intentional?
-miidev is dropped
+diff --git a/drivers/mfd/twl6030.c b/drivers/mfd/twl6030.c
+index 7ecfed8..a2d16a1 100644
+--- a/drivers/mfd/twl6030.c
++++ b/drivers/mfd/twl6030.c
+@@ -39,6 +39,19 @@ static int twl_probe(struct device_d *dev)
+ 
+ 	devfs_create(&(twl_dev->core.cdev));
+ 
++#ifdef DEBUG
++    {
++        u8 i, jtag_rev, eprom_rev;
++        int r;
++        u64 dieid;
++        r =twl6030_reg_read(twl_dev, TWL6030_JTAG_JTAGVERNUM, &jtag_rev );
++        r|=twl6030_reg_read(twl_dev, TWL6030_JTAG_EPROM_REV , &eprom_rev);
++        for(i=0; i<8; i++) r|=twl6030_reg_read(twl_dev, TWL6030_DIEID_0+i, ((u8*)(&dieid))+i);
++        if(r) debug("TWL6030 Error reading ID\n");
++        else  debug("TWL6030 JTAG REV: 0x%02X, EPROM REV: 0x%02X DIE ID: 0x%016llX\n", (unsigned)jtag_rev, (unsigned)eprom_rev, dieid);
++    }
++#endif
++
+ 	return 0;
+ }
+ 
+diff --git a/include/mfd/twl6030.h b/include/mfd/twl6030.h
+index f1278d4..bb4f773 100644
+--- a/include/mfd/twl6030.h
++++ b/include/mfd/twl6030.h
+@@ -371,6 +371,14 @@ enum twl6030_reg {
+ 	/* JTAG */
+ 	TWL6030_JTAG_JTAGVERNUM = 0x0287,
+ 	TWL6030_JTAG_EPROM_REV = 0x02DF,
++	TWL6030_DIEID_0 = 0x02C0,
++	TWL6030_DIEID_1 = 0x02C1,
++	TWL6030_DIEID_2 = 0x02C2,
++	TWL6030_DIEID_3 = 0x02C3,
++	TWL6030_DIEID_4 = 0x02C4,
++	TWL6030_DIEID_5 = 0x02C5,
++	TWL6030_DIEID_6 = 0x02C6,
++	TWL6030_DIEID_7 = 0x02C7,
+ 	/* GPADC Trimming */
+ 	TWL6030_GPADC_TRIM1 = 0x02CD,
+ 	TWL6030_GPADC_TRIM2 = 0x02CE,
+-- 
+1.7.12.1
 
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
