@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo5.mail-out.ovh.net ([87.98.173.103]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TGKE5-0003IO-Kf
- for barebox@lists.infradead.org; Tue, 25 Sep 2012 01:46:18 +0000
-Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 1B51DFFA9FE
- for <barebox@lists.infradead.org>; Tue, 25 Sep 2012 03:52:14 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 25 Sep 2012 03:43:44 +0200
-Message-Id: <1348537424-9859-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TGOel-0004XQ-PY
+ for barebox@lists.infradead.org; Tue, 25 Sep 2012 06:30:11 +0000
+Date: Tue, 25 Sep 2012 08:30:05 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120925063005.GW1322@pengutronix.de>
+References: <1348517762-30088-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1348517762-30088-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,75 +18,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] defaultenv-2: move settings in a submenu
-To: barebox@lists.infradead.org
+Subject: Re: [For next PATCH 1/1] defaultenv: fix typo in dhco bootp oftree
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-To be more clear
+On Mon, Sep 24, 2012 at 10:16:02PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> it's global.dhcp.oftree
 
-so on the mainmenu we will just have
- - the boot option
- - settings
- - shell
- - reset
+Applied, thanks
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- defaultenv-2/menu/menu/mainmenu |    5 +----
- defaultenv-2/menu/menu/settings |   21 +++++++++++++++++++++
- 2 files changed, 22 insertions(+), 4 deletions(-)
- create mode 100644 defaultenv-2/menu/menu/settings
+Sascha
 
-diff --git a/defaultenv-2/menu/menu/mainmenu b/defaultenv-2/menu/menu/mainmenu
-index 5bd7027..f10f67a 100644
---- a/defaultenv-2/menu/menu/mainmenu
-+++ b/defaultenv-2/menu/menu/mainmenu
-@@ -14,10 +14,7 @@ while true; do
- 
- 	boot-entries-collect
- 
--	menu -e -a -R -m boot -c "$global.editcmd /env/network/eth0" -d "Network settings"
--	menu -e -a -m boot -c "boot-entries-edit" -d "Edit boot entries"
--	menu -e -a -m boot -c "init-entries-edit" -d "Edit init entries"
--	menu -e -a -R -m boot -c "saveenv || echo \"failed to save environment\" && sleep 2" -d "Save settings"
-+	menu -e -a -m boot -c "settings" -d "Settings"
- 	menu -e -a -m boot -c 'PATH=$savepath; echo "enter exit to return to menu"; sh' -d "${DARK_YELLOW}Shell${NC}"
- 	menu -e -a -m boot -c reset -d "${RED}Reset${NC}"
- 
-diff --git a/defaultenv-2/menu/menu/settings b/defaultenv-2/menu/menu/settings
-new file mode 100644
-index 0000000..3f84b03
---- /dev/null
-+++ b/defaultenv-2/menu/menu/settings
-@@ -0,0 +1,21 @@
-+#!/bin/sh
-+
-+export menu_exit=false
-+
-+while true; do
-+	menu -a -m settings -d "${CYAN}Settings${NC}"
-+
-+	menu -e -a -R -m settings -c "$global.editcmd /env/network/eth0" -d "Network settings"
-+
-+	menu -e -a -m settings -c "boot-entries-edit" -d "Edit boot entries"
-+	menu -e -a -m settings -c "init-entries-edit" -d "Edit init entries"
-+	menu -e -a -R -m settings -c "saveenv || echo \"failed to save environment\" && sleep 2" -d "Save settings"
-+	menu -e -a -m settings -c "menu_exit=true" -d "back"
-+
-+	menu -s -m settings
-+	menu -r -m settings
-+
-+	if [ $menu_exit = true ]; then
-+		exit
-+	fi
-+done
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  defaultenv/bin/boot |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
+> index 4e2056e..c17ccdb 100644
+> --- a/defaultenv/bin/boot
+> +++ b/defaultenv/bin/boot
+> @@ -51,7 +51,7 @@ if [ x$ip = xdhcp -o x$ip = "xdhcp-barebox" ]; then
+>  			kernelimage=${global.dhcp.bootfile}
+>  		fi
+>  		if [ x$global.dhcp.oftree_file} != x ]; then
+> -			oftreeimage=${global.dhcp_oftree_file}
+> +			oftreeimage=${global.dhcp.oftree_file}
+>  		fi
+>  	fi
+>  fi
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
