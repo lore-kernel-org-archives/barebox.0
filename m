@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo5.mail-out.ovh.net ([178.32.119.138]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TGuEO-0004xC-O6
- for barebox@lists.infradead.org; Wed, 26 Sep 2012 16:13:02 +0000
-Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 4374EFFBFAD
- for <barebox@lists.infradead.org>; Wed, 26 Sep 2012 18:19:01 +0200 (CEST)
-Date: Wed, 26 Sep 2012 18:10:29 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120926161029.GY26553@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TGvMM-0002Kl-7U
+ for barebox@lists.infradead.org; Wed, 26 Sep 2012 17:25:18 +0000
+Date: Wed, 26 Sep 2012 19:25:16 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120926172516.GR1322@pengutronix.de>
 References: <1348484692-24993-1-git-send-email-s.hauer@pengutronix.de>
- <1348484692-24993-21-git-send-email-s.hauer@pengutronix.de>
+ <1348484692-24993-3-git-send-email-s.hauer@pengutronix.de>
+ <20120926160239.GV26553@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1348484692-24993-21-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <20120926160239.GV26553@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,88 +24,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 20/23] i2c i.MX: Switch to clock support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 02/23] clk clkdev: Add clkdev matching based on physbase
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 13:04 Mon 24 Sep     , Sascha Hauer wrote:
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  drivers/i2c/busses/i2c-imx.c |   23 +++++++++++++++++++++--
->  1 file changed, 21 insertions(+), 2 deletions(-)
+On Wed, Sep 26, 2012 at 06:02:39PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 13:04 Mon 24 Sep     , Sascha Hauer wrote:
+> > Most clock/device associations can be done based on the physical
+> > base address of the corresponding device. So instead of depending
+> > on string matching add an optional possibility to associate a clock
+> > lookups with physical addresses. This also has the advantage that
+> > the lookups for devicetree based devices can be identical to the
+> > platform based devices.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  drivers/clk/clkdev.c   |   47 +++++++++++++++++++++++++++++++++++++++++++++++
+> >  include/linux/clkdev.h |    3 +++
+> >  2 files changed, 50 insertions(+)
+> > 
+> > diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
+> > index 717fea5..40bc006 100644
+> > --- a/drivers/clk/clkdev.c
+> > +++ b/drivers/clk/clkdev.c
+> > @@ -62,6 +62,32 @@ static struct clk *clk_find(const char *dev_id, const char *con_id)
+> >  	return clk;
+> >  }
+> >  
+> > +static struct clk *clk_find_physbase(struct device_d *dev, const char *con_id)
+> > +{
+> > +	struct clk_lookup *p;
+> > +	unsigned long start;
+> > +
+> > +	if (!dev || !dev->resource)
+> > +		return ERR_PTR(-ENOSYS);
+> this is broken
 > 
-> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-> index 2ac043b..98c06f0 100644
-> --- a/drivers/i2c/busses/i2c-imx.c
-> +++ b/drivers/i2c/busses/i2c-imx.c
-> @@ -37,7 +37,7 @@
->  #include <malloc.h>
->  #include <types.h>
->  #include <xfuncs.h>
-> -
-> +#include <linux/clk.h>
->  #include <linux/err.h>
->  
->  #include <io.h>
-> @@ -101,6 +101,7 @@ static u16 i2c_clk_div[50][2] = {
->  
->  struct fsl_i2c_struct {
->  	void __iomem		*base;
-> +	struct clk		*clk;
->  	struct i2c_adapter	adapter;
->  	unsigned int 		disable_delay;
->  	int			stopped;
-> @@ -109,6 +110,19 @@ struct fsl_i2c_struct {
->  };
->  #define to_fsl_i2c_struct(a)	container_of(a, struct fsl_i2c_struct, adapter)
->  
-> +#ifdef CONFIG_COMMON_CLK
-> +static inline unsigned long i2c_fsl_clk_get_rate(struct fsl_i2c_struct *i2c_fsl)
-> +{
-> +	return clk_get_rate(i2c_fsl->clk);
-> +}
-> +
-> +#else
-> +static inline unsigned long i2c_fsl_clk_get_rate(struct fsl_i2c_struct *i2c_fsl)
-> +{
-> +	return fsl_get_i2cclk();
-> +}
-> +#endif
-> +
->  #ifdef CONFIG_I2C_DEBUG
->  static void i2c_fsl_dump_reg(struct i2c_adapter *adapter)
->  {
-> @@ -344,7 +358,7 @@ static void i2c_fsl_set_clk(struct fsl_i2c_struct *i2c_fsl,
->  	int i;
->  
->  	/* Divider value calculation */
-> -	i2c_clk_rate = fsl_get_i2cclk();
-> +	i2c_clk_rate = i2c_fsl_clk_get_rate(i2c_fsl);
->  	div = (i2c_clk_rate + rate - 1) / rate;
->  	if (div < i2c_clk_div[0][0])
->  		i = 0;
-> @@ -535,6 +549,11 @@ static int __init i2c_fsl_probe(struct device_d *pdev)
->  
->  	i2c_fsl = kzalloc(sizeof(struct fsl_i2c_struct), GFP_KERNEL);
->  
-> +#ifdef CONFIG_COMMON_CLK
-if IS_ENABLED
-> +	i2c_fsl->clk = clk_get(pdev, NULL);
-> +	if (IS_ERR(i2c_fsl->clk))
-> +		return PTR_ERR(i2c_fsl->clk);
-no free on the error path?
-> +#endif
->  	/* Setup i2c_fsl driver structure */
->  	i2c_fsl->adapter.master_xfer = i2c_fsl_xfer;
->  	i2c_fsl->adapter.nr = pdev->id;
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> clk_get_sys(NULL, "toto") is a valid call
+
+clk_get_sys never calls clk_find_physbase. clk_get(NULL, "toto") will
+call clk_find_physbase in which case clk_find_physbase returns -ENOSYS
+and clk_get falls back to clk_get_sys just as it did before.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
