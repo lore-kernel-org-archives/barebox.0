@@ -1,21 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 11.mo5.mail-out.ovh.net ([46.105.47.167]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TGrLB-0003Wg-ND
- for barebox@lists.infradead.org; Wed, 26 Sep 2012 13:07:53 +0000
-Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 777F9100002D
- for <barebox@lists.infradead.org>; Wed, 26 Sep 2012 15:13:50 +0200 (CEST)
-Date: Wed, 26 Sep 2012 15:05:19 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120926130519.GR26553@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TGrMG-0003an-87
+ for barebox@lists.infradead.org; Wed, 26 Sep 2012 13:08:57 +0000
+Date: Wed, 26 Sep 2012 15:08:54 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120926130853.GP1322@pengutronix.de>
 References: <1348659472-7038-1-git-send-email-plagnioj@jcrosoft.com>
  <1348660411-9210-1-git-send-email-plagnioj@jcrosoft.com>
  <20120926124305.GO1322@pengutronix.de>
+ <1348663849.3370.5.camel@coredoba.hi.pengutronix.de>
+ <20120926130353.GQ26553@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120926124305.GO1322@pengutronix.de>
+In-Reply-To: <20120926130353.GQ26553@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,60 +22,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 3/3] net/eth: fix link handling
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 14:43 Wed 26 Sep     , Sascha Hauer wrote:
-> On Wed, Sep 26, 2012 at 01:53:31PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > The current code handle just the send where we are supposed to the same on rx
-> > 
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> 
-> This is broken. For better readability I refer to the result, not to the
-> patch:
-> 
-> > int eth_open(void)
-> > {
-> > 	int ret;
-> > 
-> > 	if (!eth_current)
-> > 		return -ENODEV;
-> > 
-> > 	if (!eth_current->active) {
-> > 		ret = eth_current->open(eth_current);
-> > 		if (ret)
-> > 			return ret;
-> > 
-> > 		if (eth_current->phydev)
-> > 			eth_current->active = eth_current->phydev->link;
-> > 		else
-> > 			eth_current->active = 1;
-> > 	}
-> > 
-> > 	if (!eth_current->active)
-> > 		return -ENETDOWN;
-> > 
-> > 	return 0;
-> > }
-> 
-> The eth->active is for tracking whether a device is opened (thus we have
-> to call eth->halt). With this patch eth->active == 0 could mean:
-> 
-> a) device not opened
-> b) opened, but no link
-> 
-> This is asking for trouble. A bit only has two states, you should not
-> encode three states in it.
-ok we can have both but the current will not not monitor the phy status
+On Wed, Sep 26, 2012 at 03:03:53PM +0200, Jean-Christophe PLAGNIOL-VILLARD =
+wrote:
+> On 14:50 Wed 26 Sep     , Jan L=FCbbe wrote:
+> > On Wed, 2012-09-26 at 14:43 +0200, Sascha Hauer wrote:
+> > > The eth->active is for tracking whether a device is opened (thus we h=
+ave
+> > > to call eth->halt). With this patch eth->active =3D=3D 0 could mean:
+> > > =
 
-Best Regards,
-J.
+> > > a) device not opened
+> > > b) opened, but no link
+> > > =
+
+> > > This is asking for trouble. A bit only has two states, you should not
+> > > encode three states in it.
+> > =
+
+> > Yes. We should not repeatedly open the device to check link status
+> > again. A open (active=3D=3D1) device with no link is perfectly valid, it
+> > just can't be used for TX/RX.
+> > =
+
+> > So if we have an open device in TX/RX and
+> >   link down: recheck link
+> >   link up: recheck link if the last check is "too old"
+> > =
+
+> > This way we notice both link going down and up, while not wasting time
+> > when we are waiting for link up.
+> except this can not work in barebox. In linux you can as you have a sched=
+ule
+> work that check the phy status. In barebox we do not do so and I do not w=
+ant
+> it (slow down the boot). So we check it at the open only and only once. W=
+hen
+> the phy is up we do not check it again.
+> =
+
+> Remember we are in a bootloader not in an os we need to do some concessio=
+n.
+
+int check_link_status(void)
+{
+	if (is_timeout(last_link_check, SECOND)) {
+		do_link_check();
+		last_link_check =3D get_time_ns();
+	}
+}
+
+eth_rx(void)
+{
+	check_link_status();
+}
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
