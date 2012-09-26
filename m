@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TGo8E-00053d-80
- for barebox@lists.infradead.org; Wed, 26 Sep 2012 09:42:16 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 26 Sep 2012 11:42:09 +0200
-Message-Id: <1348652529-7355-1-git-send-email-s.hauer@pengutronix.de>
+Received: from 15.mo5.mail-out.ovh.net ([178.33.107.29]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TGoOq-0006fq-Tm
+ for barebox@lists.infradead.org; Wed, 26 Sep 2012 09:59:27 +0000
+Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id A759CFFB365
+ for <barebox@lists.infradead.org>; Wed, 26 Sep 2012 12:05:23 +0200 (CEST)
+Date: Wed, 26 Sep 2012 11:56:50 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120926095650.GG31983@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,55 +20,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] defenv2: fix verbose booting, typo
+Subject: [PATCH 0/6] gui: factorise code
 To: barebox@lists.infradead.org
 
-- failed is written with a single 'l'
-- the script calls itself during a boot sequence, so pass
-  verbose option on to the called script
-- multiple -v can simply be appended, no need for if/else
+Hi,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- defaultenv-2/base/bin/boot |   10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+The following changes since commit 05b9f24e3ea4071f76ffc4157526946a1c2b1b96:
 
-diff --git a/defaultenv-2/base/bin/boot b/defaultenv-2/base/bin/boot
-index 509986f..60871f0 100644
---- a/defaultenv-2/base/bin/boot
-+++ b/defaultenv-2/base/bin/boot
-@@ -34,11 +34,7 @@ fi
- 
- while getopt "vdhl" opt; do
- 	if [ ${opt} = v ]; then
--		if [ -n "$verbose" ]; then
--			verbose="-v -v"
--		else
--			verbose="-v"
--		fi
-+		verbose="$verbose -v"
- 	elif [ ${opt} = d ]; then
- 		dryrun="-d"
- 	elif [ ${opt} = l ]; then
-@@ -70,8 +66,8 @@ if [ "$sequence" = y ]; then
- 		basename $i s
- 		msg="${GREEN}boot${NC} ${YELLOW}${s}${NC} -> ${CYAN}${link}${NC}"
- 		echo -e "${msg}"
--		boot $dryrun $s
--		echo -e "${msg} ${RED}failled${NC}"
-+		boot $dryrun $verbose $s
-+		echo -e "${msg} ${RED}failed${NC}"
- 		ret=$?
- 	done
- 	echo -e "${GREEN}boot sequence ${RED}failed${NC}"
--- 
-1.7.10.4
+  Merge branch 'for-next/sandbox' into next (2012-09-25 10:20:03 +0200)
 
+are available in the git repository at:
+
+
+  git://git.jcrosoft.org/barebox.git tags/gui_fbcon_prepare
+
+for you to fetch changes up to 267da5665afa3be979cbab2c2787128f4b763f33:
+
+  gui: blit the surface on demand (2012-09-26 16:51:11 +0800)
+
+----------------------------------------------------------------
+gui: factorise code
+
+This patch series move the gui framework to lib/gui and include/gui
+and commands to there own menu
+
+This also factorise code to handle screen and framebuffer
+
+This is a preparation for the framebuffer console support and other gui
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (6):
+      image_renderer: fix size type
+      gui: move gui file to include/gui and lib/gui
+      graphic_utils: pass image so we can draw only the visible part of the image
+      gui: introduce screen and surface to factorize and simplify code
+      graphic_utils: introduce common fb_open/close
+      gui: blit the surface on demand
+
+ commands/Kconfig                   |   23 +++++++++++++++--------
+ commands/splash.c                  |   76 +++++++++++++++++++++++-----------------------------------------------------
+ drivers/video/sdl.c                |    2 +-
+ include/{ => gui}/graphic_utils.h  |    9 ++++++++-
+ include/gui/gui.h                  |   38 ++++++++++++++++++++++++++++++++++++++
+ include/gui/image.h                |   20 ++++++++++++++++++++
+ include/{ => gui}/image_renderer.h |   25 +++++++------------------
+ lib/Kconfig                        |   36 +-----------------------------------
+ lib/Makefile                       |    6 +-----
+ lib/gui/Kconfig                    |   39 +++++++++++++++++++++++++++++++++++++++
+ lib/gui/Makefile                   |    5 +++++
+ lib/{ => gui}/bmp.c                |   54 +++++++++++++++++++++++++++---------------------------
+ lib/{ => gui}/bmp_layout.h         |    0
+ lib/{ => gui}/graphic_utils.c      |   69 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
+ lib/{ => gui}/image_renderer.c     |    9 ++++-----
+ lib/{ => gui}/lodepng.c            |    0
+ lib/{ => gui}/lodepng.h            |    0
+ lib/{ => gui}/picopng.c            |    0
+ lib/{ => gui}/picopng.h            |    0
+ lib/{ => gui}/png.c                |   39 ++++++++++++++++++---------------------
+ lib/{ => gui}/png.h                |    0
+ lib/{ => gui}/png_lode.c           |    4 ++--
+ lib/{ => gui}/png_pico.c           |    4 ++--
+ 23 files changed, 276 insertions(+), 182 deletions(-)
+ rename include/{ => gui}/graphic_utils.h (65%)
+ create mode 100644 include/gui/gui.h
+ create mode 100644 include/gui/image.h
+ rename include/{ => gui}/image_renderer.h (65%)
+ create mode 100644 lib/gui/Kconfig
+ create mode 100644 lib/gui/Makefile
+ rename lib/{ => gui}/bmp.c (69%)
+ rename lib/{ => gui}/bmp_layout.h (100%)
+ rename lib/{ => gui}/graphic_utils.c (74%)
+ rename lib/{ => gui}/image_renderer.c (85%)
+ rename lib/{ => gui}/lodepng.c (100%)
+ rename lib/{ => gui}/lodepng.h (100%)
+ rename lib/{ => gui}/picopng.c (100%)
+ rename lib/{ => gui}/picopng.h (100%)
+ rename lib/{ => gui}/png.c (60%)
+ rename lib/{ => gui}/png.h (100%)
+ rename lib/{ => gui}/png_lode.c (96%)
+ rename lib/{ => gui}/png_pico.c (96%)
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
