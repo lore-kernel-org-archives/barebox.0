@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TGqt2-00019t-Sh
- for barebox@lists.infradead.org; Wed, 26 Sep 2012 12:38:45 +0000
-From: Jan Luebbe <jlu@pengutronix.de>
-Date: Wed, 26 Sep 2012 14:38:40 +0200
-Message-Id: <1348663120-18758-1-git-send-email-jlu@pengutronix.de>
+ id 1TGqxH-0001sn-KR
+ for barebox@lists.infradead.org; Wed, 26 Sep 2012 12:43:08 +0000
+Date: Wed, 26 Sep 2012 14:43:05 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120926124305.GO1322@pengutronix.de>
+References: <1348659472-7038-1-git-send-email-plagnioj@jcrosoft.com>
+ <1348660411-9210-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1348660411-9210-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,55 +19,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] omap3_spi: fix bus numbers according to omap3_add_spi[1-4]
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/3] net/eth: fix link handling
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
----
- drivers/spi/omap3_spi.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+On Wed, Sep 26, 2012 at 01:53:31PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> The current code handle just the send where we are supposed to the same on rx
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
 
-diff --git a/drivers/spi/omap3_spi.c b/drivers/spi/omap3_spi.c
-index 3008977..bf98092 100644
---- a/drivers/spi/omap3_spi.c
-+++ b/drivers/spi/omap3_spi.c
-@@ -327,10 +327,10 @@ static int omap3_spi_setup(struct spi_device *spi)
- {
- 	struct spi_master *master = spi->master;
- 
--	if (((master->bus_num == 0) && (spi->chip_select > 3)) ||
--			((master->bus_num == 1) && (spi->chip_select > 1)) ||
-+	if (((master->bus_num == 1) && (spi->chip_select > 3)) ||
- 			((master->bus_num == 2) && (spi->chip_select > 1)) ||
--			((master->bus_num == 3) && (spi->chip_select > 0))) {
-+			((master->bus_num == 3) && (spi->chip_select > 1)) ||
-+			((master->bus_num == 4) && (spi->chip_select > 0))) {
- 		printf("SPI error: unsupported chip select %i \
- 			on bus %i\n", spi->chip_select, master->bus_num);
- 		return -EINVAL;
-@@ -363,10 +363,10 @@ static int omap3_spi_probe(struct device_d *dev)
- 	/*
- 	 * OMAP3 McSPI (MultiChannel SPI) has 4 busses (modules)
- 	 * with different number of chip selects (CS, channels):
--	 * McSPI1 has 4 CS (bus 0, cs 0 - 3)
--	 * McSPI2 has 2 CS (bus 1, cs 0 - 1)
--	 * McSPI3 has 2 CS (bus 2, cs 0 - 1)
--	 * McSPI4 has 1 CS (bus 3, cs 0)
-+	 * McSPI1 has 4 CS (bus 1, cs 0 - 3)
-+	 * McSPI2 has 2 CS (bus 2, cs 0 - 1)
-+	 * McSPI3 has 2 CS (bus 3, cs 0 - 1)
-+	 * McSPI4 has 1 CS (bus 4, cs 0)
- 	 *
- 	 * The board code has to make sure that it does not use
- 	 * invalid buses or chip selects.
+This is broken. For better readability I refer to the result, not to the
+patch:
+
+> int eth_open(void)
+> {
+> 	int ret;
+> 
+> 	if (!eth_current)
+> 		return -ENODEV;
+> 
+> 	if (!eth_current->active) {
+> 		ret = eth_current->open(eth_current);
+> 		if (ret)
+> 			return ret;
+> 
+> 		if (eth_current->phydev)
+> 			eth_current->active = eth_current->phydev->link;
+> 		else
+> 			eth_current->active = 1;
+> 	}
+> 
+> 	if (!eth_current->active)
+> 		return -ENETDOWN;
+> 
+> 	return 0;
+> }
+
+The eth->active is for tracking whether a device is opened (thus we have
+to call eth->halt). With this patch eth->active == 0 could mean:
+
+a) device not opened
+b) opened, but no link
+
+This is asking for trouble. A bit only has two states, you should not
+encode three states in it.
+
+Sascha
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
