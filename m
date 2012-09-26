@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo5.mail-out.ovh.net ([188.165.51.82]
+Received: from 10.mo5.mail-out.ovh.net ([46.105.52.148]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TGpyZ-0005zF-01
- for barebox@lists.infradead.org; Wed, 26 Sep 2012 11:40:23 +0000
+ id 1TGqDj-0006Nm-P5
+ for barebox@lists.infradead.org; Wed, 26 Sep 2012 11:56:04 +0000
 Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id B0BE0FFB652
- for <barebox@lists.infradead.org>; Wed, 26 Sep 2012 13:46:23 +0200 (CEST)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 13ED8FFBCAE
+ for <barebox@lists.infradead.org>; Wed, 26 Sep 2012 14:02:03 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 26 Sep 2012 13:37:51 +0200
-Message-Id: <1348659472-7038-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20120926110244.GH24458@pengutronix.de>
-References: <20120926110244.GH24458@pengutronix.de>
+Date: Wed, 26 Sep 2012 13:53:31 +0200
+Message-Id: <1348660411-9210-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1348659472-7038-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1348659472-7038-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,55 +25,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] calao: at91 qil/tny/usb auto detect the phy addr
+Subject: [PATCH 3/3] net/eth: fix link handling
 To: barebox@lists.infradead.org
+
+The current code handle just the send where we are supposed to the same on rx
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/qil-a9260/init.c |    2 +-
- arch/arm/boards/tny-a926x/init.c |    2 +-
- arch/arm/boards/usb-a926x/init.c |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ net/eth.c |   25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/boards/qil-a9260/init.c b/arch/arm/boards/qil-a9260/init.c
-index 6b1ed85..8a12b17 100644
---- a/arch/arm/boards/qil-a9260/init.c
-+++ b/arch/arm/boards/qil-a9260/init.c
-@@ -80,7 +80,7 @@ static void qil_a9260_add_device_mci(void) {}
- #ifdef CONFIG_CALAO_MB_QIL_A9260
- static struct at91_ether_platform_data macb_pdata = {
- 	.flags		= AT91SAM_ETHER_RMII,
--	.phy_addr	= 0,
-+	.phy_addr	= -1,
- };
+diff --git a/net/eth.c b/net/eth.c
+index d3bda81..402e479 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -124,7 +124,7 @@ int eth_complete(struct string_list *sl, char *instr)
+ }
+ #endif
  
- static void qil_a9260_phy_reset(void)
-diff --git a/arch/arm/boards/tny-a926x/init.c b/arch/arm/boards/tny-a926x/init.c
-index 1e8a732..ce36570 100644
---- a/arch/arm/boards/tny-a926x/init.c
-+++ b/arch/arm/boards/tny-a926x/init.c
-@@ -114,7 +114,7 @@ static void tny_a9260_add_device_nand(void)
- #ifdef CONFIG_DRIVER_NET_MACB
- static struct at91_ether_platform_data macb_pdata = {
- 	.flags		= AT91SAM_ETHER_RMII,
--	.phy_addr	= 0,
-+	.phy_addr	= -1,
- };
+-int eth_send(void *packet, int length)
++int eth_open(void)
+ {
+ 	int ret;
  
- static void __init ek_add_device_macb(void)
-diff --git a/arch/arm/boards/usb-a926x/init.c b/arch/arm/boards/usb-a926x/init.c
-index 2366c77..7b946a3 100644
---- a/arch/arm/boards/usb-a926x/init.c
-+++ b/arch/arm/boards/usb-a926x/init.c
-@@ -113,7 +113,7 @@ static void usb_a9260_add_device_nand(void)
+@@ -145,6 +145,17 @@ int eth_send(void *packet, int length)
+ 	if (!eth_current->active)
+ 		return -ENETDOWN;
  
- static struct at91_ether_platform_data macb_pdata = {
- 	.flags		= AT91SAM_ETHER_RMII,
--	.phy_addr	= 0,
-+	.phy_addr	= -1,
- };
++	return 0;
++}
++
++int eth_send(void *packet, int length)
++{
++	int ret;
++
++	ret = eth_open();
++	if (ret)
++		return ret;
++
+ 	led_trigger_network(LED_TRIGGER_NET_TX);
  
- static void usb_a9260_phy_reset(void)
+ 	return eth_current->send(eth_current, packet, length);
+@@ -154,15 +165,9 @@ int eth_rx(void)
+ {
+ 	int ret;
+ 
+-	if (!eth_current)
+-		return -ENODEV;
+-
+-	if (!eth_current->active) {
+-		ret = eth_current->open(eth_current);
+-		if (ret)
+-			return ret;
+-		eth_current->active = 1;
+-	}
++	ret = eth_open();
++	if (ret)
++		return ret;
+ 
+ 	return eth_current->recv(eth_current);
+ }
 -- 
 1.7.10.4
 
