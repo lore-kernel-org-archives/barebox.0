@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pb0-f49.google.com ([209.85.160.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TH0Fc-00072f-Pf
- for barebox@lists.infradead.org; Wed, 26 Sep 2012 22:38:42 +0000
-Received: by pbcxa7 with SMTP id xa7so1393592pbc.36
- for <barebox@lists.infradead.org>; Wed, 26 Sep 2012 15:38:36 -0700 (PDT)
+ id 1TH0XH-0007cf-6O
+ for barebox@lists.infradead.org; Wed, 26 Sep 2012 22:56:56 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu, 27 Sep 2012 00:56:46 +0200
+Message-Id: <1348700206-30581-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20120926070608.GG1322@pengutronix.de>
-References: <1348613994-1793-1-git-send-email-vicencb@gmail.com>
- <20120926070608.GG1322@pengutronix.de>
-Date: Thu, 27 Sep 2012 00:38:36 +0200
-Message-ID: <CAAMcf8Byso2Zu7JOYRD+ybd5HudjofONHL67T5Di9eAmmM5SjQ@mail.gmail.com>
-From: vj <vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,238 +15,105 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============4057022033485870753=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/7] [RFC][PATCH] archosg9: add support for tablet
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] [RFC] i2c-imx: send a soft bus reset during probe
+To: barebox@lists.infradead.org
+Cc: kernel@pengutronix.de
 
---===============4057022033485870753==
-Content-Type: multipart/alternative; boundary=f46d042ef475c188fc04caa27bf2
-
---f46d042ef475c188fc04caa27bf2
-Content-Type: text/plain; charset=UTF-8
-
-Hi Sascha,
- I'm not an expert in ARM assembly, so, if this is correct:
-    u32 r=0;
-    asm ("mrc p15, 0, %0, c12, c0, 0" : "=r" (r));
-    printf("MRC p15, 0, <Rd>, c12, c0, 0 returns 0x%08X\n", r);
-    r=-1;
-    asm ("mrc p15, 0, %0, c12, c0, 0" : "=r" (r));
-    printf("MRC p15, 0, <Rd>, c12, c0, 0 returns 0x%08X\n", r);
-the return value is:
-    MRC p15, 0, <Rd>, c12, c0, 0 returns 0x00030000
-    MRC p15, 0, <Rd>, c12, c0, 0 returns 0x00030000
-Which is the base address of "ROM exception vectors" and the address of the
-"Reset" exception vector.
-This is the value when omap_vector_init is disabled.
-
-Hope this helps,
-  Vicente.
-
-
-On Wed, Sep 26, 2012 at 9:06 AM, Sascha Hauer <s.hauer@pengutronix.de>wrote:
-
-> On Wed, Sep 26, 2012 at 12:59:47AM +0200, vj wrote:
-> > Hello,
-> > A this is my first contribution, so I'm basically requesting for
-> comments.
-> >
-> > The attached patch adds support for Archos G9 tablet wich uses an
-> OMAP4460 cpu.
->
-> Nice :)
-> I should have bought that one instead of a Acer.
->
->
-> >
-> > A question I have is what does omap_vector_init do?
-> > It breaks usb-booting.
->
-> I digged around a bit. The funny thing is that this was introduced with
-> OMAP4 support and is only done on OMAP4. U-Boot instead has the following:
->
-> > #if !defined(CONFIG_TEGRA2)
-> > /*
-> >  * Setup vector:
-> >  * (OMAP4 spl TEXT_BASE is not 32 byte aligned.
-> >  * Continue to use ROM code vector only in OMAP4 spl)
-> >  */
-> > #if !(defined(CONFIG_OMAP44XX) && defined(CONFIG_SPL_BUILD))
-> >       /* Set V=0 in CP15 SCTRL register - for VBAR to point to vector
-> >  * */
-> >       mrc     p15, 0, r0, c1, c0, 0   @ Read CP15 SCTRL Register
-> >       bic     r0, #CR_V               @ V = 0
-> >       mcr     p15, 0, r0, c1, c0, 0   @ Write CP15 SCTRL Register
-> >
-> >       /* Set vector address in CP15 VBAR register */
-> >       ldr     r0, =_start
-> >       mcr     p15, 0, r0, c12, c0, 0  @Set VBAR
-> > #endif
-> > #endif        /* !Tegra2 */
->
-> So in U-Boot it's done for every ARMv7 *except* OMAP4 (and Tegra)
->
-> ARM has this information about it:
->
->
-> http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0434b/CIHHDAIH.html
->
-> > Purpose
-> >
-> >     Provides the exception base address for exceptions that are not
-> >     handled in monitor mode.
-> >
-> > Usage constraints
-> >
-> >     The VBAR is:
-> >
-> >         * only accessible in privileged modes
-> >         * only accessible in Secure state.
->
-> I think this is necessary to move the exception vector from ROM to our
-> own code. Does it work to read the VBAR register using the following
-> instruction:
->
->         MRC p15, 0, <Rd>, c12, c0, 0 ; Read VBAR Register
->
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->
-
---f46d042ef475c188fc04caa27bf2
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-Hi Sascha,<br>=C2=A0I&#39;m not an expert in ARM assembly, so, if this is c=
-orrect:<br>=C2=A0=C2=A0=C2=A0 u32 r=3D0;<br>=C2=A0=C2=A0=C2=A0 asm (&quot;m=
-rc p15, 0, %0, c12, c0, 0&quot; : &quot;=3Dr&quot; (r));<br>=C2=A0=C2=A0=C2=
-=A0 printf(&quot;MRC p15, 0, &lt;Rd&gt;, c12, c0, 0 returns 0x%08X\n&quot;,=
- r);<br>
-=C2=A0=C2=A0=C2=A0 r=3D-1;<br>=C2=A0=C2=A0=C2=A0 asm (&quot;mrc p15, 0, %0,=
- c12, c0, 0&quot; : &quot;=3Dr&quot; (r));<br>=C2=A0=C2=A0=C2=A0 printf(&qu=
-ot;MRC p15, 0, &lt;Rd&gt;, c12, c0, 0 returns 0x%08X\n&quot;, r);<br>the re=
-turn value is:<br>=C2=A0=C2=A0=C2=A0 MRC p15, 0, &lt;Rd&gt;, c12, c0, 0 ret=
-urns 0x00030000<br>
-=C2=A0=C2=A0=C2=A0 MRC p15, 0, &lt;Rd&gt;, c12, c0, 0 returns 0x00030000<br=
->Which is the base address of &quot;ROM exception vectors&quot; and the add=
-ress of the &quot;Reset&quot; exception vector.<br>This is the value when o=
-map_vector_init is disabled.<br>
-<br>Hope this helps,<br>=C2=A0 Vicente.<br><br><br><div class=3D"gmail_quot=
-e">On Wed, Sep 26, 2012 at 9:06 AM, Sascha Hauer <span dir=3D"ltr">&lt;<a h=
-ref=3D"mailto:s.hauer@pengutronix.de" target=3D"_blank">s.hauer@pengutronix=
-.de</a>&gt;</span> wrote:<br>
-<blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1p=
-x #ccc solid;padding-left:1ex"><div class=3D"im">On Wed, Sep 26, 2012 at 12=
-:59:47AM +0200, vj wrote:<br>
-&gt; Hello,<br>
-&gt; A this is my first contribution, so I&#39;m basically requesting for c=
-omments.<br>
-&gt;<br>
-&gt; The attached patch adds support for Archos G9 tablet wich uses an OMAP=
-4460 cpu.<br>
-<br>
-</div>Nice :)<br>
-I should have bought that one instead of a Acer.<br>
-<div class=3D"im"><br>
-<br>
-&gt;<br>
-&gt; A question I have is what does omap_vector_init do?<br>
-&gt; It breaks usb-booting.<br>
-<br>
-</div>I digged around a bit. The funny thing is that this was introduced wi=
-th<br>
-OMAP4 support and is only done on OMAP4. U-Boot instead has the following:<=
-br>
-<br>
-&gt; #if !defined(CONFIG_TEGRA2)<br>
-&gt; /*<br>
-&gt; =C2=A0* Setup vector:<br>
-&gt; =C2=A0* (OMAP4 spl TEXT_BASE is not 32 byte aligned.<br>
-&gt; =C2=A0* Continue to use ROM code vector only in OMAP4 spl)<br>
-&gt; =C2=A0*/<br>
-&gt; #if !(defined(CONFIG_OMAP44XX) &amp;&amp; defined(CONFIG_SPL_BUILD))<b=
-r>
-&gt; =C2=A0 =C2=A0 =C2=A0 /* Set V=3D0 in CP15 SCTRL register - for VBAR to=
- point to vector<br>
-&gt; =C2=A0* */<br>
-&gt; =C2=A0 =C2=A0 =C2=A0 mrc =C2=A0 =C2=A0 p15, 0, r0, c1, c0, 0 =C2=A0 @ =
-Read CP15 SCTRL Register<br>
-&gt; =C2=A0 =C2=A0 =C2=A0 bic =C2=A0 =C2=A0 r0, #CR_V =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 @ V =3D 0<br>
-&gt; =C2=A0 =C2=A0 =C2=A0 mcr =C2=A0 =C2=A0 p15, 0, r0, c1, c0, 0 =C2=A0 @ =
-Write CP15 SCTRL Register<br>
-&gt;<br>
-&gt; =C2=A0 =C2=A0 =C2=A0 /* Set vector address in CP15 VBAR register */<br=
->
-&gt; =C2=A0 =C2=A0 =C2=A0 ldr =C2=A0 =C2=A0 r0, =3D_start<br>
-&gt; =C2=A0 =C2=A0 =C2=A0 mcr =C2=A0 =C2=A0 p15, 0, r0, c12, c0, 0 =C2=A0@S=
-et VBAR<br>
-&gt; #endif<br>
-&gt; #endif =C2=A0 =C2=A0 =C2=A0 =C2=A0/* !Tegra2 */<br>
-<br>
-So in U-Boot it&#39;s done for every ARMv7 *except* OMAP4 (and Tegra)<br>
-<br>
-ARM has this information about it:<br>
-<br>
-<a href=3D"http://infocenter.arm.com/help/index.jsp?topic=3D/com.arm.doc.dd=
-i0434b/CIHHDAIH.html" target=3D"_blank">http://infocenter.arm.com/help/inde=
-x.jsp?topic=3D/com.arm.doc.ddi0434b/CIHHDAIH.html</a><br>
-<br>
-&gt; Purpose<br>
-&gt;<br>
-&gt; =C2=A0 =C2=A0 Provides the exception base address for exceptions that =
-are not<br>
-&gt; =C2=A0 =C2=A0 handled in monitor mode.<br>
-&gt;<br>
-&gt; Usage constraints<br>
-&gt;<br>
-&gt; =C2=A0 =C2=A0 The VBAR is:<br>
-&gt;<br>
-&gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 * only accessible in privileged modes<br>
-&gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 * only accessible in Secure state.<br>
-<br>
-I think this is necessary to move the exception vector from ROM to our<br>
-own code. Does it work to read the VBAR register using the following<br>
-instruction:<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 MRC p15, 0, &lt;Rd&gt;, c12, c0, 0 ; Read VBAR =
-Register<br>
-<span class=3D"HOEnZb"><font color=3D"#888888"><br>
-Sascha<br>
-<br>
---<br>
-Pengutronix e.K. =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |<br>
-Industrial Linux Solutions =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 | <a href=3D"http://www.pengutronix.de/" target=3D"_blank">http://w=
-ww.pengutronix.de/</a> =C2=A0|<br>
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0 =C2=
-=A0 =C2=A0|<br>
-Amtsgericht Hildesheim, HRA 2686 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | Fax: =
-=C2=A0 +49-5121-206917-5555 |<br>
-</font></span></blockquote></div><br>
-
---f46d042ef475c188fc04caa27bf2--
-
-
---===============4057022033485870753==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
-
---===============4057022033485870753==--
+SWYgYW4gaTJjIHNsYXZlIHB1bGxzIFNEQSBsb3cgd2hlbiB0aGUgU29DIHdhbnRzIHRvIHN0YXJ0
+IGEgdHJhbnNmZXIsIGl0CmNhbm5vdCBnZXQgdGhlIGJ1cy4gVGhpcyBjYW4gaGFwcGVuIGZvciBl
+eGFtcGxlIGlmIHRoZSBTb0MgaXMgcmVzZXQgd2hlbgppdCBqdXN0IHN1Y2Nlc3NmdWxseSBhZGRy
+ZXNzZWQgYSBzbGF2ZSBidXQgYmVmb3JlIGl0IHJpc2VzIFNDTCBmb3IgdGhlCnNsYXZlIHRvIGFj
+ay4gQ3VycmVudGx5IHRoaXMgbWFrZXMgdGhlIGRyaXZlciByZWZ1c2UgdG8gZG8gYW55dGhpbmcu
+IFlvdQpjYW4gZm9yY2UgdGhpcyBzaXR1YXRpb24gd2l0aCB0aGUgZm9sbG93aW5nIGNvZGUgYXNz
+dW1pbmcgeW91IGhhdmUgYQpkZXZpY2Ugb24gYWRkcmVzcyAweDUwOgoKCS8qIGdlbmVyYXRlIGEg
+c3RhcnQgY29uZGl0aW9uICovCglncGlvX2RpcmVjdGlvbl9pbnB1dChJMkNTQ0wpOwoJZ3Bpb19k
+aXJlY3Rpb25faW5wdXQoSTJDU0RBKTsKCW1kZWxheSgxKTsKCWdwaW9fZGlyZWN0aW9uX291dHB1
+dChJMkNTREEsIDApOwoKCW1kZWxheSgxKTsKCgkvKiBhZGRyZXNzIGRldmljZSAweDUwICovCglm
+b3IgKGkgPSAwOyBpIDwgODsgKytpKSB7CgkJZ3Bpb19kaXJlY3Rpb25fb3V0cHV0KEkyQ1NDTCwg
+MCk7CgkJbWRlbGF5KDEpOwoJCWlmICgoMHg1MCA8PCAxKSA+PiAoNyAtIGkpKQoJCQlncGlvX2Rp
+cmVjdGlvbl9pbnB1dChJMkNTREEpOwoJCWVsc2UKCQkJZ3Bpb19kaXJlY3Rpb25fb3V0cHV0KEky
+Q1NEQSwgMCk7CgkJbWRlbGF5KDEpOwoJCWdwaW9fZGlyZWN0aW9uX2lucHV0KEkyQ1NDTCk7CgkJ
+bWRlbGF5KDEpOwoJfQoJZ3Bpb19kaXJlY3Rpb25fb3V0cHV0KEkyQ1NDTCwgMCk7CgoJcmVzZXRf
+Y3B1KDApOwoKVG8gY2lyY3VtdmVudCB0aGlzIHNpdHVhdGlvbiBqdXN0IGNsb2NrIHRoZSBidXMg
+OSB0aW1lcyB3aXRob3V0IHB1bGxpbmcKb24gU0RBIGZvbGxvd2luZyBhIHN0YXJ0IGNvbmRpdGlv
+biBhbmQgZmluYWxpemluZyB3aXRoIGEgcmVwZWF0ZWQgc3RhcnQgYW5kCnN0b3AuIFRoaXMgaXMg
+c3VnZ2VzdGVkIGluIGFuIEF0bWVsIGF0MjQgZGF0YXNoZWV0ICg1MjI2Ry1TRUVQUi0xMS8wOSk6
+CgogICAgICAgIDItV0lSRSBTT0ZUV0FSRSBSRVNFVDogQWZ0ZXIgYW4gaW50ZXJydXB0aW9uIGlu
+IHByb3RvY29sLCBwb3dlciBsb3NzIG9yCiAgICAgICAgc3lzdGVtIHJlc2V0LCBhbnkgMi13aXJl
+IHBhcnQgY2FuIGJlIHJlc2V0IGJ5IGZvbGxvd2luZyB0aGVzZSBzdGVwczoKICAgICAgICAoYSkg
+Q3JlYXRlIGEgc3RhcnQgYml0IGNvbmRpdGlvbiwKICAgICAgICAoYikgQ2xvY2sgOSBjeWNsZXMs
+CiAgICAgICAgKGMpIENyZWF0ZSBhbm90aGVyIHN0YXJ0IGJpdCBmb2xsb3dlZCBieSBhIHN0b3Ag
+Yml0IGNvbmRpdGlvbiBhcwogICAgICAgICAgICBzaG93biBiZWxvdy4gVGhlIGRldmljZSBpcyBy
+ZWFkeSBmb3IgdGhlIG5leHQgY29tbXVuaWNhdGlvbgogICAgICAgICAgICBhZnRlciB0aGUgYWJv
+dmUgc3RlcHMgaGF2ZSBiZWVuIGNvbXBsZXRlZC4KCiAgICAgICAgU0NMIC/Cr1xfL8KvXF8vwq9c
+Xy/Cr1xfL8KvXF8vwq9cXy/Cr1xfL8KvXF8vwq9cXy/Cr1xfL8KvXF8vwq9cCiAgICAgICAgU0RB
+IMKvXF8vwq/Cr8Kvwq/Cr8Kvwq/Cr8Kvwq/Cr8Kvwq/Cr8Kvwq/Cr8Kvwq/Cr8Kvwq/Cr8Kvwq/C
+r8Kvwq/Cr8Kvwq/Cr8Kvwq/Cr8Kvwq9cX19fL8KvCiAgICAgICAgICAgICBTICAgMSAgIDIgICAz
+ICAgNCAgIDUgICA2ICAgNyAgIDggICA5ICAgU3IgIFAKClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVp
+bmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQpIZWxsbywKCkkg
+ZGV2ZWxvcHBlZCB0aGlzIHBhdGNoIG9uIGFuIG9sZGVyIGJhcmVib3ggdmVyc2lvbiAoMjAxMi4w
+NC4wKSBhbmQgaXQKZG9lc24ndCBmaXQgb24gY3VycmVudCBtYXN0ZXIgKG9yIG5leHQpLiBCdXQg
+dGhhdCdzIG5vdCB0aGF0IGJhZCBiZWNhdXNlCml0J3MgYW4gUkZDIHBhdGNoIGFuZCBJIHdpbGwg
+aGFwcGlseSByZXNlbmQgaWYgdGhlIGlkZWEgaXMgYWNjZXB0ZWQuCgpUaGlzIHBhdGNoIHNvbHZl
+cyB0aGUgYnVzIHN0YWxsIGRlc2NyaWJlZCBpbiB0aGUgY29tbWl0IG1lc3NhZ2UgYWJvdmUKYW5k
+IEkgdGhpbmsgaXQgY2Fubm90IGRvIGFueSBoYXJtOgogLSBpZiBubyBzbGF2ZSBvY2N1cGllcyB0
+aGUgYnVzLCBzb21ldGhpbmcgc3RyYW5nZSBtaWdodCBoYXBwZW4gaWYgdGhlcmUKICAgaXMgYSBz
+bGF2ZSB3aXRoIGFkZHJlc3MgMHg3Zi4gVGhpcyBhZGRyZXNzIGlzIHJlc2VydmVkIHRob3VnaCBp
+bgogICB0aGUgScKyQy1CdXMgU3BlY2lmaWNhdGlvbiBWZXJzaW9uIDIuMS4KIC0gaWYgYSBzbGF2
+ZSBpcyBvdXQgb2Ygc3luYyBhbmQgcHVsbHMgU0RBIGxvdyBkdXJpbmcgdGhlIChpbnRlbmRlZCkg
+UwogICBhdCB0aGUgYmVnaW5uaW5nLCBubyBzbGF2ZSB3aWxsIGRldGVjdCBhIHN0YXJ0IGNvbmRp
+dGlvbi4gU28gdGhlCiAgIGNsb2NrcyBvbmx5IGFmZmVjdCB0aGUgKHNpbmdsZT8pIHNsYXZlIHRo
+YXQgaXMgY3VycmVudGx5IGFjdGl2ZS4gVGhpcwogICBvbmUgY29tcGxldGVzIGl0cyBjeWNsZSBk
+dXJpbmcgdGhlIDkgY2xvY2tzLCBpZ25vcmVzIHBvdGVudGlhbCBjbG9jawogICBwdWxzZXMgYXQg
+dGhlIGVuZCBvZiBpdHMgY3ljbGUgYW5kIHRoZSBmb2xsb3dpbmcgU3IgcmVzZXRzIHRoZSBzdGF0
+ZQogICBtYWNoaW5lLgoKVGhpcyBzb3VuZHMgcmVhc29uYWJsZSB0byBtZSAoYW5kIG9idmlvdXNs
+eSBzb21lIGVuZ2luZWVycyBhdCBBdG1lbCksCmJ1dCBJJ2Qgc3RpbGwgd2VsY29tZSBzb21lIG1v
+cmUgZXllcyBhbmQgdGhvdWdodHMgb24gdGhpcy4KCkFsc28gSSBpbnRlbmQgZG8gdmVyaWZ5IHRo
+ZSBpbnRlbmRlZCBiZWhhdmlvdXIgd2l0aCBhbiBvc2NpbGxvc2NvcGUuCgpCZXN0IHJlZ2FyZHMK
+VXdlCgogZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1pbXguYyB8ICAgMzkgKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKystLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMzIgaW5zZXJ0aW9ucygr
+KSwgNyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2kyYy9idXNzZXMvaTJjLWlt
+eC5jIGIvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1pbXguYwppbmRleCBkYTYyMThmLi5iYTc3NGI5
+IDEwMDY0NAotLS0gYS9kcml2ZXJzL2kyYy9idXNzZXMvaTJjLWlteC5jCisrKyBiL2RyaXZlcnMv
+aTJjL2J1c3Nlcy9pMmMtaW14LmMKQEAgLTIwNywxMiArMjA3LDkgQEAgc3RhdGljIGludCBpMmNf
+aW14X2Fja2VkKHN0cnVjdCBpMmNfYWRhcHRlciAqYWRhcHRlcikKIAlyZXR1cm4gMDsKIH0KIAot
+c3RhdGljIGludCBpMmNfaW14X3N0YXJ0KHN0cnVjdCBpMmNfYWRhcHRlciAqYWRhcHRlcikKK3N0
+YXRpYyB2b2lkIF9faTJjX2lteF9zdGFydChzdHJ1Y3QgaW14X2kyY19zdHJ1Y3QgKmkyY19pbXgs
+IHVuc2lnbmVkIGludCAqaTJjcikKIHsKLQlzdHJ1Y3QgaW14X2kyY19zdHJ1Y3QgKmkyY19pbXgg
+PSB0b19pbXhfaTJjX3N0cnVjdChhZGFwdGVyKTsKIAl2b2lkIF9faW9tZW0gKmJhc2UgPSBpMmNf
+aW14LT5iYXNlOwotCXVuc2lnbmVkIGludCB0ZW1wID0gMDsKLQlpbnQgcmVzdWx0OwogCiAJd3Jp
+dGViKGkyY19pbXgtPmlmZHIsIGJhc2UgKyBJTVhfSTJDX0lGRFIpOwogCS8qIEVuYWJsZSBJMkMg
+Y29udHJvbGxlciAqLwpAQCAtMjIzLDkgKzIyMCwxOSBAQCBzdGF0aWMgaW50IGkyY19pbXhfc3Rh
+cnQoc3RydWN0IGkyY19hZGFwdGVyICphZGFwdGVyKQogCXVkZWxheSgxMDApOwogCiAJLyogU3Rh
+cnQgSTJDIHRyYW5zYWN0aW9uICovCi0JdGVtcCA9IHJlYWRiKGJhc2UgKyBJTVhfSTJDX0kyQ1Ip
+OwotCXRlbXAgfD0gSTJDUl9NU1RBOwotCXdyaXRlYih0ZW1wLCBiYXNlICsgSU1YX0kyQ19JMkNS
+KTsKKwkqaTJjciA9IHJlYWRiKGJhc2UgKyBJTVhfSTJDX0kyQ1IpOworCSppMmNyIHw9IEkyQ1Jf
+TVNUQTsKKwl3cml0ZWIoKmkyY3IsIGJhc2UgKyBJTVhfSTJDX0kyQ1IpOworfQorCitzdGF0aWMg
+aW50IGkyY19pbXhfc3RhcnQoc3RydWN0IGkyY19hZGFwdGVyICphZGFwdGVyKQoreworCXN0cnVj
+dCBpbXhfaTJjX3N0cnVjdCAqaTJjX2lteCA9IHRvX2lteF9pMmNfc3RydWN0KGFkYXB0ZXIpOwor
+CWludCByZXN1bHQ7CisJdW5zaWduZWQgaW50IHRlbXA7CisJdm9pZCBfX2lvbWVtICpiYXNlID0g
+aTJjX2lteC0+YmFzZTsKKworCV9faTJjX2lteF9zdGFydChpMmNfaW14LCAmdGVtcCk7CiAKIAly
+ZXN1bHQgPSBpMmNfaW14X2J1c19idXN5KGFkYXB0ZXIsIDEpOwogCWlmIChyZXN1bHQpCkBAIC0y
+MzksNiArMjQ2LDIyIEBAIHN0YXRpYyBpbnQgaTJjX2lteF9zdGFydChzdHJ1Y3QgaTJjX2FkYXB0
+ZXIgKmFkYXB0ZXIpCiAJcmV0dXJuIHJlc3VsdDsKIH0KIAorc3RhdGljIHZvaWQgaTJjX2lteF9i
+dXNyZXNldChzdHJ1Y3QgaW14X2kyY19zdHJ1Y3QgKmkyY19pbXgpCit7CisJdm9pZCBfX2lvbWVt
+ICpiYXNlID0gaTJjX2lteC0+YmFzZTsKKwl1bnNpZ25lZCBpbnQgdGVtcDsKKworCV9faTJjX2lt
+eF9zdGFydChpMmNfaW14LCAmdGVtcCk7CisKKwkvKiBzZW5kIDkgY2xvY2tzIHdpdGhvdXQgYW55
+dGhpbmcgb24gU0RBIGZvbGxvd2VkIGJ5IFNyICovCisJd3JpdGViKHRlbXAgfCBJMkNSX1JTVEEs
+IGJhc2UgKyBJTVhfSTJDX0kyQ1IpOworCisJd3JpdGViKDB4ZmYsIGJhc2UgKyBJTVhfSTJDX0ky
+RFIpOworCisJLyogc2VuZCBhIFAgKi8KKwl3cml0ZWIoMCwgaTJjX2lteC0+YmFzZSArIElNWF9J
+MkNfSTJDUik7Cit9CisKIHN0YXRpYyB2b2lkIGkyY19pbXhfc3RvcChzdHJ1Y3QgaTJjX2FkYXB0
+ZXIgKmFkYXB0ZXIpCiB7CiAJc3RydWN0IGlteF9pMmNfc3RydWN0ICppMmNfaW14ID0gdG9faW14
+X2kyY19zdHJ1Y3QoYWRhcHRlcik7CkBAIC00ODUsNiArNTA4LDggQEAgc3RhdGljIGludCBfX2lu
+aXQgaTJjX2lteF9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKnBkZXYpCiAJd3JpdGViKDAsIGkyY19p
+bXgtPmJhc2UgKyBJTVhfSTJDX0kyQ1IpOwogCXdyaXRlYigwLCBpMmNfaW14LT5iYXNlICsgSU1Y
+X0kyQ19JMlNSKTsKIAorCWkyY19pbXhfYnVzcmVzZXQoaTJjX2lteCk7CisKIAkvKiBBZGQgSTJD
+IGFkYXB0ZXIgKi8KIAlyZXQgPSBpMmNfYWRkX251bWJlcmVkX2FkYXB0ZXIoJmkyY19pbXgtPmFk
+YXB0ZXIpOwogCWlmIChyZXQgPCAwKSB7Ci0tIAoxLjcuMTAuNAoKCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
