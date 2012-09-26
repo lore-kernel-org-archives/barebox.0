@@ -1,16 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TGqxH-0001sn-KR
- for barebox@lists.infradead.org; Wed, 26 Sep 2012 12:43:08 +0000
-Date: Wed, 26 Sep 2012 14:43:05 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120926124305.GO1322@pengutronix.de>
+ id 1TGr4l-0002XK-1p
+ for barebox@lists.infradead.org; Wed, 26 Sep 2012 12:50:51 +0000
+Received: from coredoba.hi.pengutronix.de ([2001:6f8:1178:2:219:99ff:fe56:8d7])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jlu@pengutronix.de>) id 1TGr4j-0005me-Dv
+ for barebox@lists.infradead.org; Wed, 26 Sep 2012 14:50:49 +0200
+Received: from jlu by coredoba.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <jlu@pengutronix.de>) id 1TGr4j-0004w6-A5
+ for barebox@lists.infradead.org; Wed, 26 Sep 2012 14:50:49 +0200
+Message-ID: <1348663849.3370.5.camel@coredoba.hi.pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Wed, 26 Sep 2012 14:50:49 +0200
+In-Reply-To: <20120926124305.GO1322@pengutronix.de>
 References: <1348659472-7038-1-git-send-email-plagnioj@jcrosoft.com>
  <1348660411-9210-1-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1348660411-9210-1-git-send-email-plagnioj@jcrosoft.com>
+ <20120926124305.GO1322@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,58 +31,37 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 3/3] net/eth: fix link handling
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
 
-On Wed, Sep 26, 2012 at 01:53:31PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> The current code handle just the send where we are supposed to the same on rx
+On Wed, 2012-09-26 at 14:43 +0200, Sascha Hauer wrote:
+> The eth->active is for tracking whether a device is opened (thus we have
+> to call eth->halt). With this patch eth->active == 0 could mean:
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
-
-This is broken. For better readability I refer to the result, not to the
-patch:
-
-> int eth_open(void)
-> {
-> 	int ret;
+> a) device not opened
+> b) opened, but no link
 > 
-> 	if (!eth_current)
-> 		return -ENODEV;
-> 
-> 	if (!eth_current->active) {
-> 		ret = eth_current->open(eth_current);
-> 		if (ret)
-> 			return ret;
-> 
-> 		if (eth_current->phydev)
-> 			eth_current->active = eth_current->phydev->link;
-> 		else
-> 			eth_current->active = 1;
-> 	}
-> 
-> 	if (!eth_current->active)
-> 		return -ENETDOWN;
-> 
-> 	return 0;
-> }
+> This is asking for trouble. A bit only has two states, you should not
+> encode three states in it.
 
-The eth->active is for tracking whether a device is opened (thus we have
-to call eth->halt). With this patch eth->active == 0 could mean:
+Yes. We should not repeatedly open the device to check link status
+again. A open (active==1) device with no link is perfectly valid, it
+just can't be used for TX/RX.
 
-a) device not opened
-b) opened, but no link
+So if we have an open device in TX/RX and
+  link down: recheck link
+  link up: recheck link if the last check is "too old"
 
-This is asking for trouble. A bit only has two states, you should not
-encode three states in it.
+This way we notice both link going down and up, while not wasting time
+when we are waiting for link up.
 
-Sascha
-
+Regards,
+Jan
 -- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 _______________________________________________
 barebox mailing list
