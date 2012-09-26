@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TGltO-0004EN-Fq
- for barebox@lists.infradead.org; Wed, 26 Sep 2012 07:18:47 +0000
-Date: Wed, 26 Sep 2012 09:18:44 +0200
+ id 1TGmJ6-0005kh-2c
+ for barebox@lists.infradead.org; Wed, 26 Sep 2012 07:45:21 +0000
+Date: Wed, 26 Sep 2012 09:45:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120926071844.GI1322@pengutronix.de>
+Message-ID: <20120926074516.GJ1322@pengutronix.de>
 References: <1348613994-1793-1-git-send-email-vicencb@gmail.com>
- <1348613994-1793-4-git-send-email-vicencb@gmail.com>
+ <1348613994-1793-5-git-send-email-vicencb@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1348613994-1793-4-git-send-email-vicencb@gmail.com>
+In-Reply-To: <1348613994-1793-5-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,120 +23,104 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/7] OMAP specific changes
+Subject: Re: [PATCH 4/7] Add USB booting capabilities to OMAP
 To: vj <vicencb@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 26, 2012 at 12:59:50AM +0200, vj wrote:
-> mux:
->   added definitions with the same names as in the datasheet
->   added two new definitions
->   changed PAD definitions to have the same names in the datasheet
->   changed value for jtag_tck to match the one on the datasheet
-> added base addresses and usb bootsrc
+On Wed, Sep 26, 2012 at 12:59:51AM +0200, vj wrote:
 > ---
->  arch/arm/mach-omap/include/mach/omap4-mux.h     | 80 ++++++++++++++++---------
->  arch/arm/mach-omap/include/mach/omap4-silicon.h | 13 ++++
->  arch/arm/mach-omap/include/mach/xload.h         |  1 +
->  arch/arm/mach-omap/omap4_generic.c              |  4 ++
->  4 files changed, 70 insertions(+), 28 deletions(-)
+>  arch/arm/cpu/cpu.c                              |   1 +
+>  arch/arm/lib/barebox.lds.S                      |  10 +
+>  arch/arm/mach-omap/Kconfig                      |  21 +
+>  arch/arm/mach-omap/Makefile                     |   1 +
+>  arch/arm/mach-omap/include/mach/omap4_rom_usb.h | 146 +++++
+>  arch/arm/mach-omap/omap4_generic.c              |   2 +
+>  arch/arm/mach-omap/omap4_rom_usb.c              | 189 ++++++
+>  arch/arm/mach-omap/xload.c                      |  26 +
+>  scripts/.gitignore                              |   1 +
+>  scripts/Makefile                                |   3 +
+>  scripts/usbboot.c                               | 797 ++++++++++++++++++++++++
+>  11 files changed, 1197 insertions(+)
+>  create mode 100644 arch/arm/mach-omap/include/mach/omap4_rom_usb.h
+>  create mode 100644 arch/arm/mach-omap/omap4_rom_usb.c
+>  create mode 100644 scripts/usbboot.c
 > 
-> @@ -301,34 +325,34 @@ struct pad_conf_entry {
->  #define WKUP_REVISION		0x0000
->  #define WKUP_HWINFO		0x0004
->  #define WKUP_SYSCONFIG		0x0010
-> -#define PAD0_SIM_IO		0x0040
-> -#define PAD1_SIM_CLK		0x0042
-> -#define PAD0_SIM_RESET		0x0044
-> -#define PAD1_SIM_CD		0x0046
-> -#define PAD0_SIM_PWRCTRL		0x0048
-> -#define PAD1_SR_SCL		0x004A
-> -#define PAD0_SR_SDA		0x004C
-> -#define PAD1_FREF_XTAL_IN		0x004E
-> -#define PAD0_FREF_SLICER_IN	0x0050
-> -#define PAD1_FREF_CLK_IOREQ	0x0052
-> -#define PAD0_FREF_CLK0_OUT		0x0054
-> -#define PAD1_FREF_CLK3_REQ		0x0056
-> -#define PAD0_FREF_CLK3_OUT		0x0058
-> -#define PAD1_FREF_CLK4_REQ		0x005A
-> -#define PAD0_FREF_CLK4_OUT		0x005C
-> -#define PAD1_SYS_32K		0x005E
-> -#define PAD0_SYS_NRESPWRON		0x0060
-> -#define PAD1_SYS_NRESWARM		0x0062
-> -#define PAD0_SYS_PWR_REQ		0x0064
-> -#define PAD1_SYS_PWRON_RESET	0x0066
-> -#define PAD0_SYS_BOOT6		0x0068
-> -#define PAD1_SYS_BOOT7		0x006A
-> -#define PAD0_JTAG_NTRST		0x006C
-> -#define PAD1_JTAG_TCK		0x006D
-> -#define PAD0_JTAG_RTCK		0x0070
-> -#define PAD1_JTAG_TMS_TMSC		0x0072
-> -#define PAD0_JTAG_TDI		0x0074
-> -#define PAD1_JTAG_TDO		0x0076
-> +#define GPIO_WK0		0x0040
-> +#define GPIO_WK1		0x0042
-> +#define GPIO_WK2		0x0044
-> +#define GPIO_WK3		0x0046
-> +#define GPIO_WK4		0x0048
-> +#define SR_SCL			0x004A
-> +#define SR_SDA			0x004C
-> +#define FREF_XTAL_IN		0x004E
-> +#define FREF_SLICER_IN		0x0050
-> +#define FREF_CLK_IOREQ		0x0052
-> +#define FREF_CLK0_OUT		0x0054
-> +#define FREF_CLK3_REQ		0x0056
-> +#define FREF_CLK3_OUT		0x0058
-> +#define FREF_CLK4_REQ		0x005A
-> +#define FREF_CLK4_OUT		0x005C
-> +#define SYS_32K		0x005E
-> +#define SYS_NRESPWRON		0x0060
-> +#define SYS_NRESWARM		0x0062
-> +#define SYS_PWR_REQ		0x0064
-> +#define SYS_PWRON_RESET_OUT	0x0066
-> +#define SYS_BOOT6		0x0068
-> +#define SYS_BOOT7		0x006A
-> +#define JTAG_NTRST		0x006C
-> +#define JTAG_TCK		0x006E
-> +#define JTAG_RTCK		0x0070
-> +#define JTAG_TMS_TMSC		0x0072
-> +#define JTAG_TDI		0x0074
-> +#define JTAG_TDO		0x0076
-
-Renaming these is ok, but you have to change the code which uses these
-defines aswell:
-
-./arch/arm/boards/phycard-a-xl2/mux.c:220:      {PAD1_SR_SCL, (PTU | IEN| M0)}, /* sr_scl */
-./arch/arm/boards/pcm049/mux.c:220:     {PAD1_SR_SCL, (PTU | IEN | M0)},/* sr_scl */
-./arch/arm/boards/panda/mux.c:220:      { PAD1_SR_SCL, PTU | IEN | M0/* sr_scl */ },
-
-> diff --git a/arch/arm/mach-omap/include/mach/xload.h b/arch/arm/mach-omap/include/mach/xload.h
-> index 844b57f..cfc3f68 100644
-> --- a/arch/arm/mach-omap/include/mach/xload.h
-> +++ b/arch/arm/mach-omap/include/mach/xload.h
-> @@ -8,6 +8,7 @@ enum omap_boot_src {
->  	OMAP_BOOTSRC_UNKNOWN,
->  	OMAP_BOOTSRC_MMC1,
->  	OMAP_BOOTSRC_NAND,
-> +	OMAP_BOOTSRC_USB1,
->  };
+> diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
+> index 71ef8c0..05343de 100644
+> --- a/arch/arm/cpu/cpu.c
+> +++ b/arch/arm/cpu/cpu.c
+> @@ -89,6 +89,7 @@ void arch_shutdown(void)
+>  		: "r0", "r1", "r2", "r3", "r6", "r10", "r12", "lr", "cc", "memory"
+>  	);
+>  #endif
+> +	__asm__ __volatile__ ("cpsid i\n");
+>  }
 >  
->  enum omap_boot_src omap3_bootsrc(void);
-> diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
-> index 617d786..55d8fe3 100644
-> --- a/arch/arm/mach-omap/omap4_generic.c
-> +++ b/arch/arm/mach-omap/omap4_generic.c
-> @@ -481,6 +481,10 @@ enum omap_boot_src omap4_bootsrc(void)
->  		return OMAP_BOOTSRC_MMC1;
->  	if (bootsrc & (1 << 3))
->  		return OMAP_BOOTSRC_NAND;
-> +#ifdef CONFIG_USB_BOOT
-> +	if (bootsrc & (1<<20))
-> +		return OMAP_BOOTSRC_USB1;
+>  #ifdef CONFIG_THUMB2_BAREBOX
+> diff --git a/arch/arm/lib/barebox.lds.S b/arch/arm/lib/barebox.lds.S
+> index a69013f..ff7b63d 100644
+> --- a/arch/arm/lib/barebox.lds.S
+> +++ b/arch/arm/lib/barebox.lds.S
+> @@ -97,6 +97,16 @@ SECTIONS
+>  	__bss_start = .;
+>  	.bss : { *(.bss*) }
+>  	__bss_stop = .;
+> +#ifdef CONFIG_SHARE_USB_HANDLE
+> +    /*
+> +     * Reserve space for the USB handle
+> +     */
+> +	. = CONFIG_USB_HANDLE_HANDOVER;
+> +	. = ALIGN(4);
+> +	__usb_handle = .;
+> +	/* . += sizeof(struct usb); */
+> +	. += 84;
 > +#endif
 
-This seems to be too early in the series, CONFIG_USB_BOOT is not yet
-introduced. You can drop the ifdef anyway, disabling CONFIG_USB_BOOT
-doesn't necessarily mean the SoC has not been booted from USB ;)
+If I understand correctly the first stage loader puts some data here
+where a second stage barebox (configured with the same value for
+CONFIG_USB_HANDLE_HANDOVER) will pick it up.
+
+This seems to be a bit fragile. Fortunately Jan has posted a series
+that gives the control of the reset vector to the boards, which means
+that both stages do not have to agree on an addres, but instead a
+pointer can be passed from the first to the second stage.
+
+> +int usb_open(void)
+
+So this uses the OMAP4 ROM to do USB communication, right? The functions
+should have a omap_rom_* prefix then, otherwise it's not clear for a
+reader which context these functions have.
+
+The calling of the ROM code btw explains why the setting of VBAR breaks
+USB boot. The ROM probably uses the vectors.
+
+> +
+> +	n = rom_get_per_driver(&pusb->io, boot->device_type);
+> +	if (n)
+> +		return n;
+> +
+> +	pusb->dread.xfer_mode = boot->xfer_mode;
+> +	pusb->dread.options = boot->options;
+> +	pusb->dread.device_type = boot->device_type;
+> +
+> +	pusb->dwrite.xfer_mode = boot->xfer_mode;
+> +	pusb->dwrite.options = boot->options;
+> +	pusb->dwrite.device_type = boot->device_type;
+> +#else
+> +#ifdef CONFIG_MMU
+> +#error USB communications not working under MMU
+
+You can add the following to CONFIG_OMAP4_USB_BOOT instead:
+
+	depends on !MMU
+
+So that an invalid config is not allowed in the first place.
+
+
+> diff --git a/scripts/usbboot.c b/scripts/usbboot.c
+
+This should also be named omap4-usbboot.c, or maybe, if the works on
+other OMAPs, just omap-usboot.c
 
 Sascha
 
