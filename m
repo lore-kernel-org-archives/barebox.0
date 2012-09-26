@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TGmPG-00066z-JL
- for barebox@lists.infradead.org; Wed, 26 Sep 2012 07:51:43 +0000
-Date: Wed, 26 Sep 2012 09:51:40 +0200
+ id 1TGmnU-0007md-ME
+ for barebox@lists.infradead.org; Wed, 26 Sep 2012 08:16:45 +0000
+Date: Wed, 26 Sep 2012 10:16:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120926075140.GK1322@pengutronix.de>
-References: <20120925132132.GM26553@game.jcrosoft.org>
+Message-ID: <20120926081641.GL1322@pengutronix.de>
+References: <1348613994-1793-1-git-send-email-vicencb@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120925132132.GM26553@game.jcrosoft.org>
+In-Reply-To: <1348613994-1793-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,159 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] final bus cleanup
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 0/7] [RFC][PATCH] archosg9: add support for tablet
+To: vj <vicencb@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 25, 2012 at 03:21:32PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> HI,
+On Wed, Sep 26, 2012 at 12:59:47AM +0200, vj wrote:
+> Hello,
+> A this is my first contribution, so I'm basically requesting for comments.
 > 
-> The following changes since commit 05b9f24e3ea4071f76ffc4157526946a1c2b1b96:
+> The attached patch adds support for Archos G9 tablet wich uses an OMAP4460 cpu.
+> The tablet by default only boots from internal flash, so to test
+> barebox on it a hardware tweak is required: change the sys_boot
+> configuration.  Once done the tablet can be booted with the following
+> command:
+> A sudo scripts/usbboot <first_stage> <rootfs>
 > 
->   Merge branch 'for-next/sandbox' into next (2012-09-25 10:20:03 +0200)
+> The patch contains
+> A 1.- specific changes for OMAP4460
+> A 2.- support for usb-booting
+> A 3.- support for console on usb
+> A 4.- support for file transfer through usb
+> A 5.- some minor bug fixes
+> A 6.- adds support for archosg9 board
 > 
-> are available in the git repository at:
+> A question I have is what does omap_vector_init do?
+> It breaks usb-booting.
+> An improvement to be done would be to split the file
+> "scripts/usbboot.c" into a header and two c files, but the Makefile
+> framework seemed to me to do not allow that.
 > 
-> 
->   git://git.jcrosoft.org/barebox.git tags/bus
+> In any case the patch should be tested with other boards to check it
+> does not breaks something.
 
-Pulled, thanks
+
+This is very interesting stuff indeed.
+
+Now that I read through the series I can say that the biggest single
+problem with it is the missing context of filenames and function names.
+All OMAP specific stuff should have a omap_ or omap4_ prefix.
 
 Sascha
-
-> 
-> for you to fetch changes up to c69f204ed9872d0d05e13ca34d1893181e787374:
-> 
->   devinfo: display device bus name (2012-09-25 20:56:14 +0800)
-> 
-> ----------------------------------------------------------------
-> Bus finall cleanup
-> 
-> this second patch serie will finally switch all platform_bus
-> device/driver registering to platform_driver/device_register
-> 
-> now register_driver and register_device are for bus only usage.
-> if no bus specify with register_device this will allow to register a
-> pure device such as net or global.
-> 
-> Bus should also register their own device and then attached their
-> child but this could be done in a second step
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (3):
->       fb: move add param to bus probe
->       switch all platform_bus device/driver registering to platform_driver/device_register
->       devinfo: display device bus name
-> 
->  Documentation/porting.txt                      |    2 +-
->  arch/arm/boards/nhk8815/setup.c                |    2 +-
->  arch/arm/boards/pcm038/pcm970.c                |    2 +-
->  arch/arm/mach-imx/clocksource.c                |    2 +-
->  arch/arm/mach-imx/gpio.c                       |    2 +-
->  arch/arm/mach-imx/iim.c                        |    2 +-
->  arch/arm/mach-imx/include/mach/devices-imx51.h |    2 +-
->  arch/arm/mach-imx/include/mach/devices-imx53.h |    2 +-
->  arch/arm/mach-mxs/ocotp.c                      |    2 +-
->  arch/arm/mach-omap/arch-omap.dox               |    2 +-
->  arch/arm/mach-omap/gpio.c                      |    3 +--
->  arch/nios2/boards/generic/generic.c            |    2 +-
->  arch/sandbox/board/board.c                     |    4 ++--
->  arch/sandbox/board/devices.c                   |    2 +-
->  arch/sandbox/board/hostfile.c                  |    2 +-
->  commands/mem.c                                 |    2 +-
->  common/console.c                               |    2 +-
->  drivers/ata/disk_bios_drive.c                  |    2 +-
->  drivers/ata/intf_platform_ide.c                |    2 +-
->  drivers/base/driver.c                          |   31 ++++++++++---------------------
->  drivers/base/platform.c                        |   26 ++++++++++++++++++++++++++
->  drivers/base/resource.c                        |    2 +-
->  drivers/gpio/gpio-stmpe.c                      |    2 +-
->  drivers/i2c/busses/i2c-imx.c                   |    2 +-
->  drivers/i2c/busses/i2c-omap.c                  |    2 +-
->  drivers/input/gpio_keys.c                      |    2 +-
->  drivers/input/imx_keypad.c                     |    2 +-
->  drivers/mci/atmel_mci.c                        |    2 +-
->  drivers/mci/imx-esdhc.c                        |    2 +-
->  drivers/mci/imx.c                              |    2 +-
->  drivers/mci/mci-core.c                         |    4 ++--
->  drivers/mci/mxs.c                              |    2 +-
->  drivers/mci/omap_hsmmc.c                       |    2 +-
->  drivers/mci/pxamci.c                           |    2 +-
->  drivers/mci/s3c.c                              |    2 +-
->  drivers/misc/jtag.c                            |    2 +-
->  drivers/mtd/core.c                             |    2 +-
->  drivers/mtd/devices/docg3.c                    |    2 +-
->  drivers/mtd/nand/atmel_nand.c                  |    2 +-
->  drivers/mtd/nand/nand_imx.c                    |    2 +-
->  drivers/mtd/nand/nand_mxs.c                    |    2 +-
->  drivers/mtd/nand/nand_omap_gpmc.c              |    2 +-
->  drivers/mtd/nand/nand_s3c24xx.c                |    2 +-
->  drivers/mtd/nand/nomadik_nand.c                |    2 +-
->  drivers/net/altera_tse.c                       |    2 +-
->  drivers/net/at91_ether.c                       |    2 +-
->  drivers/net/cs8900.c                           |    2 +-
->  drivers/net/davinci_emac.c                     |    2 +-
->  drivers/net/designware.c                       |    2 +-
->  drivers/net/dm9k.c                             |    2 +-
->  drivers/net/ep93xx.c                           |    2 +-
->  drivers/net/fec_imx.c                          |    4 ++--
->  drivers/net/fec_mpc5200.c                      |    2 +-
->  drivers/net/gianfar.c                          |    2 +-
->  drivers/net/ks8851_mll.c                       |    2 +-
->  drivers/net/macb.c                             |    2 +-
->  drivers/net/netx_eth.c                         |    2 +-
->  drivers/net/smc91111.c                         |    2 +-
->  drivers/net/smc911x.c                          |    2 +-
->  drivers/net/tap.c                              |    2 +-
->  drivers/nor/cfi_flash.c                        |    2 +-
->  drivers/of/base.c                              |    2 +-
->  drivers/pwm/pxa_pwm.c                          |    2 +-
->  drivers/serial/arm_dcc.c                       |    4 ++--
->  drivers/serial/atmel.c                         |    2 +-
->  drivers/serial/linux_console.c                 |    2 +-
->  drivers/serial/serial_altera.c                 |    2 +-
->  drivers/serial/serial_altera_jtag.c            |    2 +-
->  drivers/serial/serial_blackfin.c               |    2 +-
->  drivers/serial/serial_imx.c                    |    2 +-
->  drivers/serial/serial_mpc5xxx.c                |    2 +-
->  drivers/serial/serial_netx.c                   |    2 +-
->  drivers/serial/serial_ns16550.c                |    4 ++--
->  drivers/serial/serial_pl010.c                  |    2 +-
->  drivers/serial/serial_pxa.c                    |    2 +-
->  drivers/serial/serial_s3c.c                    |    2 +-
->  drivers/serial/stm-serial.c                    |    2 +-
->  drivers/spi/altera_spi.c                       |    2 +-
->  drivers/spi/atmel_spi.c                        |    2 +-
->  drivers/spi/imx_spi.c                          |    2 +-
->  drivers/spi/omap3_spi.c                        |    2 +-
->  drivers/usb/gadget/at91_udc.c                  |    2 +-
->  drivers/usb/gadget/fsl_udc.c                   |    2 +-
->  drivers/usb/gadget/pxa27x_udc.c                |    2 +-
->  drivers/usb/host/ehci-hcd.c                    |    2 +-
->  drivers/usb/host/ohci-at91.c                   |    2 +-
->  drivers/usb/host/ohci-hcd.c                    |    2 +-
->  drivers/video/fb.c                             |   23 ++++++++++++-----------
->  drivers/video/imx-ipu-fb.c                     |    2 +-
->  drivers/video/imx.c                            |    2 +-
->  drivers/video/pxa.c                            |    2 +-
->  drivers/video/s3c24xx.c                        |    2 +-
->  drivers/video/sdl.c                            |    2 +-
->  drivers/video/stm.c                            |    2 +-
->  drivers/watchdog/im28wd.c                      |    2 +-
->  include/driver.h                               |    3 +++
->  net/eth.c                                      |    2 +-
->  97 files changed, 149 insertions(+), 131 deletions(-)
-> 
-> Best Regards,
-> J.
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
