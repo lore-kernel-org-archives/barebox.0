@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo5.mail-out.ovh.net ([178.33.107.29]
+Received: from 19.mo5.mail-out.ovh.net ([46.105.35.78]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TGoOq-0006fq-Tm
- for barebox@lists.infradead.org; Wed, 26 Sep 2012 09:59:27 +0000
+ id 1TGoQy-0006jw-1z
+ for barebox@lists.infradead.org; Wed, 26 Sep 2012 10:01:36 +0000
 Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id A759CFFB365
- for <barebox@lists.infradead.org>; Wed, 26 Sep 2012 12:05:23 +0200 (CEST)
-Date: Wed, 26 Sep 2012 11:56:50 +0200
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id E2D86FFB26D
+ for <barebox@lists.infradead.org>; Wed, 26 Sep 2012 12:07:35 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120926095650.GG31983@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Wed, 26 Sep 2012 11:59:01 +0200
+Message-Id: <1348653544-27095-3-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1348653544-27095-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20120926095650.GG31983@game.jcrosoft.org>
+ <1348653544-27095-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,94 +21,90 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/6] gui: factorise code
+Subject: [PATCH 3/6] graphic_utils: pass image so we can draw only the visible
+ part of the image
 To: barebox@lists.infradead.org
 
-Hi,
-
-The following changes since commit 05b9f24e3ea4071f76ffc4157526946a1c2b1b96:
-
-  Merge branch 'for-next/sandbox' into next (2012-09-25 10:20:03 +0200)
-
-are available in the git repository at:
-
-
-  git://git.jcrosoft.org/barebox.git tags/gui_fbcon_prepare
-
-for you to fetch changes up to 267da5665afa3be979cbab2c2787128f4b763f33:
-
-  gui: blit the surface on demand (2012-09-26 16:51:11 +0800)
-
-----------------------------------------------------------------
-gui: factorise code
-
-This patch series move the gui framework to lib/gui and include/gui
-and commands to there own menu
-
-This also factorise code to handle screen and framebuffer
-
-This is a preparation for the framebuffer console support and other gui
+This is needed if the image is bigger than the screen.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ include/gui/graphic_utils.h |    5 ++++-
+ lib/gui/graphic_utils.c     |    7 ++++---
+ lib/gui/png.c               |    2 +-
+ 3 files changed, 9 insertions(+), 5 deletions(-)
 
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (6):
-      image_renderer: fix size type
-      gui: move gui file to include/gui and lib/gui
-      graphic_utils: pass image so we can draw only the visible part of the image
-      gui: introduce screen and surface to factorize and simplify code
-      graphic_utils: introduce common fb_open/close
-      gui: blit the surface on demand
+diff --git a/include/gui/graphic_utils.h b/include/gui/graphic_utils.h
+index 9909b6c..4690e51 100644
+--- a/include/gui/graphic_utils.h
++++ b/include/gui/graphic_utils.h
+@@ -7,7 +7,10 @@
+ #ifndef __GRAPHIC_UTILS_H__
+ #define __GRAPHIC_UTILS_H__
+ 
+-void rgba_blend(struct fb_info *info, void *image, void* dest, int height,
++#include <fb.h>
++#include <gui/image.h>
++
++void rgba_blend(struct fb_info *info, struct image *img, void* dest, int height,
+ 	int width, int startx, int starty, bool is_rgba);
+ void set_pixel(struct fb_info *info, void *adr, u32 px);
+ void set_rgb_pixel(struct fb_info *info, void *adr, u8 r, u8 g, u8 b);
+diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
+index bf42103..06f811c 100644
+--- a/lib/gui/graphic_utils.c
++++ b/lib/gui/graphic_utils.c
+@@ -157,13 +157,14 @@ void set_rgba_pixel(struct fb_info *info, void *adr, u8 r, u8 g, u8 b, u8 a)
+ 	set_pixel(info, adr, px);
+ }
+ 
+-void rgba_blend(struct fb_info *info, void *image, void* buf, int height,
++void rgba_blend(struct fb_info *info, struct image *img, void* buf, int height,
+ 	int width, int startx, int starty, bool is_rgba)
+ {
+ 	unsigned char *adr;
+ 	int x, y;
+ 	int xres;
+ 	int img_byte_per_pixel = 3;
++	void *image;
+ 
+ 	if (is_rgba)
+ 		img_byte_per_pixel++;
+@@ -173,11 +174,11 @@ void rgba_blend(struct fb_info *info, void *image, void* buf, int height,
+ 	for (y = 0; y < height; y++) {
+ 		adr = buf + ((y + starty) * xres + startx) *
+ 				(info->bits_per_pixel >> 3);
++		image = img->data + (y * img->width *img_byte_per_pixel);
+ 
+ 		for (x = 0; x < width; x++) {
+-			char *pixel;
++			uint8_t *pixel = image;
+ 
+-			pixel = image;
+ 			if (is_rgba)
+ 				set_rgba_pixel(info, adr, pixel[0], pixel[1],
+ 						pixel[2], pixel[3]);
+diff --git a/lib/gui/png.c b/lib/gui/png.c
+index 5d77c8c..1e9efd5 100644
+--- a/lib/gui/png.c
++++ b/lib/gui/png.c
+@@ -63,7 +63,7 @@ static int png_renderer(struct fb_info *info, struct image *img, void* fb,
+ 
+ 	buf = offscreenbuf ? offscreenbuf : fb;
+ 
+-	rgba_blend(info, img->data, buf, height, width, startx, starty, true);
++	rgba_blend(info, img, buf, height, width, startx, starty, true);
+ 
+ 	if (offscreenbuf) {
+ 		int fbsize;
+-- 
+1.7.10.4
 
- commands/Kconfig                   |   23 +++++++++++++++--------
- commands/splash.c                  |   76 +++++++++++++++++++++++-----------------------------------------------------
- drivers/video/sdl.c                |    2 +-
- include/{ => gui}/graphic_utils.h  |    9 ++++++++-
- include/gui/gui.h                  |   38 ++++++++++++++++++++++++++++++++++++++
- include/gui/image.h                |   20 ++++++++++++++++++++
- include/{ => gui}/image_renderer.h |   25 +++++++------------------
- lib/Kconfig                        |   36 +-----------------------------------
- lib/Makefile                       |    6 +-----
- lib/gui/Kconfig                    |   39 +++++++++++++++++++++++++++++++++++++++
- lib/gui/Makefile                   |    5 +++++
- lib/{ => gui}/bmp.c                |   54 +++++++++++++++++++++++++++---------------------------
- lib/{ => gui}/bmp_layout.h         |    0
- lib/{ => gui}/graphic_utils.c      |   69 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
- lib/{ => gui}/image_renderer.c     |    9 ++++-----
- lib/{ => gui}/lodepng.c            |    0
- lib/{ => gui}/lodepng.h            |    0
- lib/{ => gui}/picopng.c            |    0
- lib/{ => gui}/picopng.h            |    0
- lib/{ => gui}/png.c                |   39 ++++++++++++++++++---------------------
- lib/{ => gui}/png.h                |    0
- lib/{ => gui}/png_lode.c           |    4 ++--
- lib/{ => gui}/png_pico.c           |    4 ++--
- 23 files changed, 276 insertions(+), 182 deletions(-)
- rename include/{ => gui}/graphic_utils.h (65%)
- create mode 100644 include/gui/gui.h
- create mode 100644 include/gui/image.h
- rename include/{ => gui}/image_renderer.h (65%)
- create mode 100644 lib/gui/Kconfig
- create mode 100644 lib/gui/Makefile
- rename lib/{ => gui}/bmp.c (69%)
- rename lib/{ => gui}/bmp_layout.h (100%)
- rename lib/{ => gui}/graphic_utils.c (74%)
- rename lib/{ => gui}/image_renderer.c (85%)
- rename lib/{ => gui}/lodepng.c (100%)
- rename lib/{ => gui}/lodepng.h (100%)
- rename lib/{ => gui}/picopng.c (100%)
- rename lib/{ => gui}/picopng.h (100%)
- rename lib/{ => gui}/png.c (60%)
- rename lib/{ => gui}/png.h (100%)
- rename lib/{ => gui}/png_lode.c (96%)
- rename lib/{ => gui}/png_pico.c (96%)
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
