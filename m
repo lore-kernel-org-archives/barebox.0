@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo5.mail-out.ovh.net ([178.32.119.138]
- helo=mo5.mail-out.ovh.net)
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
+ helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1THJ4p-0001Qb-K2
- for barebox@lists.infradead.org; Thu, 27 Sep 2012 18:44:48 +0000
-Received: from mail404.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 16BD3FFAA2C
- for <barebox@lists.infradead.org>; Thu, 27 Sep 2012 20:50:50 +0200 (CEST)
-Date: Thu, 27 Sep 2012 20:42:18 +0200
+ id 1THJtB-0002OE-3a
+ for barebox@lists.infradead.org; Thu, 27 Sep 2012 19:36:50 +0000
+Received: from mail436.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 8869ADC12ED
+ for <barebox@lists.infradead.org>; Thu, 27 Sep 2012 21:42:44 +0200 (CEST)
+Date: Thu, 27 Sep 2012 21:34:12 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120927184218.GD26553@game.jcrosoft.org>
-References: <1348766042-18815-1-git-send-email-s.hauer@pengutronix.de>
- <1348766042-18815-4-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20120927193412.GE26553@game.jcrosoft.org>
+References: <1348766546-21547-1-git-send-email-s.hauer@pengutronix.de>
+ <1348766546-21547-2-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1348766042-18815-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1348766546-21547-2-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,28 +27,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] environment generation: Fix dependencies
+Subject: Re: [PATCH 1/3] net: Add tftp command which uses the new tftp code
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 19:14 Thu 27 Sep     , Sascha Hauer wrote:
-> The dependencies for generating the environment do not work properly:
+On 19:22 Thu 27 Sep     , Sascha Hauer wrote:
+> Traditionally tftp is a command of its own. Since we can
+> mount tftp as a filesystem we have duplicated the tftp code, the old
+> code is used by the tftp command, the new by the filesystem support.
+> This adds a tftp command based on the filesystem support to preserve
+> backward compatibility. This allows us to remove the old tftp support
+> in the next step.
 > 
-> - If files are removed from the defaultenv, a subsequent make will not
->   update the default environment.
-> - If CONFIG_DEFAULT_ENVIRONMENT_PATH changes, the default environment
->   also will not be regenerated.
-> 
-> This patch fixes this by introducing a cmd_env which has the content of
-> $(ENV_FILES) in the command so that the if_changed mechanism recognizes
-> a change when $(ENV_FILE) changes. This also results in a nice "  ENV "
-> string in the build process.
-> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  commands/Kconfig  |    8 +++++
+>  commands/Makefile |    1 +
+>  commands/tftp.c   |  103 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+why this is c code?
 
-we still have an toehr annoying bug generte the temporary env in srctree
-instead of objtree
+why not simply do it via script
 
-Best Regrards,
+Best Regards,
 J.
 
 _______________________________________________
