@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1THHnG-0005Ys-AG
+ id 1THHnG-0005Yu-AI
  for barebox@lists.infradead.org; Thu, 27 Sep 2012 17:22:36 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1THHn9-0001U5-PL
- for barebox@lists.infradead.org; Thu, 27 Sep 2012 19:22:27 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1THHn9-0005e0-OD
- for barebox@lists.infradead.org; Thu, 27 Sep 2012 19:22:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 27 Sep 2012 19:22:23 +0200
-Message-Id: <1348766546-21547-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 27 Sep 2012 19:22:24 +0200
+Message-Id: <1348766546-21547-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1348766546-21547-1-git-send-email-s.hauer@pengutronix.de>
+References: <1348766546-21547-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,98 +21,163 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] use fs based tftp support
+Subject: [PATCH 1/3] net: Add tftp command which uses the new tftp code
 To: barebox@lists.infradead.org
 
-Since the introduction of fs based tftp support we have two instances
-of tftp code in the tree. This series adds a backward compatible tftp
-command using the fs based tftp support. The defconfigs are updated to
-use it and the then unused code removed.
+Traditionally tftp is a command of its own. Since we can
+mount tftp as a filesystem we have duplicated the tftp code, the old
+code is used by the tftp command, the new by the filesystem support.
+This adds a tftp command based on the filesystem support to preserve
+backward compatibility. This allows us to remove the old tftp support
+in the next step.
 
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (3):
-      net: Add tftp command which uses the new tftp code
-      defconfig: Switch all defconfig to new tftp command
-      net: remove old tftp support
-
- arch/arm/configs/a9m2410_defconfig                 |    3 +-
- arch/arm/configs/a9m2440_defconfig                 |    3 +-
- arch/arm/configs/at91rm9200ek_defconfig            |    4 +-
- arch/arm/configs/at91sam9260ek_defconfig           |    3 +-
- arch/arm/configs/at91sam9261ek_defconfig           |    4 +-
- arch/arm/configs/at91sam9263ek_defconfig           |    3 +-
- arch/arm/configs/at91sam9g10ek_defconfig           |    4 +-
- arch/arm/configs/at91sam9g20ek_defconfig           |    3 +-
- arch/arm/configs/at91sam9m10g45ek_defconfig        |    4 +-
- arch/arm/configs/at91sam9x5ek_defconfig            |    3 +-
- arch/arm/configs/chumbyone_defconfig               |    4 +-
- arch/arm/configs/cupid_defconfig                   |    4 +-
- arch/arm/configs/dss11_defconfig                   |    4 +-
- arch/arm/configs/edb93xx_defconfig                 |    3 +-
- arch/arm/configs/eukrea_cpuimx25_defconfig         |    4 +-
- arch/arm/configs/eukrea_cpuimx27_defconfig         |    3 +-
- arch/arm/configs/eukrea_cpuimx35_defconfig         |    4 +-
- arch/arm/configs/eukrea_cpuimx51_defconfig         |    4 +-
- arch/arm/configs/freescale-mx6-arm2_defconfig      |    4 +-
- arch/arm/configs/freescale-mx6-sabrelite_defconfig |    3 +
- arch/arm/configs/freescale_mx25_3stack_defconfig   |    3 +-
- arch/arm/configs/freescale_mx35_3stack_defconfig   |    3 +-
- arch/arm/configs/freescale_mx53_loco_defconfig     |    4 +-
- arch/arm/configs/freescale_mx53_smd_defconfig      |    4 +-
- arch/arm/configs/friendlyarm_mini2440_defconfig    |    3 +-
- arch/arm/configs/imx28evk_defconfig                |    3 +-
- arch/arm/configs/mmccpu_defconfig                  |    3 +-
- arch/arm/configs/mx21ads_defconfig                 |    3 +-
- arch/arm/configs/mx27ads_defconfig                 |    3 +-
- arch/arm/configs/neso_defconfig                    |    4 +-
- arch/arm/configs/netx_nxdb500_defconfig            |    3 +-
- arch/arm/configs/nhk8815_defconfig                 |    4 +-
- arch/arm/configs/omap3530_beagle_defconfig         |    4 +-
- arch/arm/configs/panda_defconfig                   |    4 +-
- arch/arm/configs/pca100_defconfig                  |    4 +-
- arch/arm/configs/pcm027_defconfig                  |    4 +-
- arch/arm/configs/pcm037_defconfig                  |    4 +-
- arch/arm/configs/pcm043_defconfig                  |    4 +-
- arch/arm/configs/pcm049_defconfig                  |    4 +-
- arch/arm/configs/phycard_a_l1_defconfig            |    4 +-
- arch/arm/configs/phycard_a_xl2_defconfig           |    4 +-
- arch/arm/configs/pm9261_defconfig                  |    4 +-
- arch/arm/configs/pm9263_defconfig                  |    3 +-
- arch/arm/configs/pm9g45_defconfig                  |    4 +-
- arch/arm/configs/qil_a9260_128mib_defconfig        |    4 +-
- arch/arm/configs/qil_a9260_defconfig               |    4 +-
- arch/arm/configs/scb9328_defconfig                 |    4 +-
- arch/arm/configs/tny_a9260_defconfig               |    3 +-
- arch/arm/configs/tny_a9263_defconfig               |    3 +-
- arch/arm/configs/tny_a9g20_defconfig               |    3 +-
- arch/arm/configs/toshiba_ac100_defconfig           |    4 +-
- arch/arm/configs/tx25stk5_defconfig                |    4 +-
- arch/arm/configs/tx28stk5_defconfig                |    3 +-
- arch/arm/configs/tx51stk5_defconfig                |    4 +-
- arch/arm/configs/usb_a9260_defconfig               |    4 +-
- arch/arm/configs/usb_a9263_128mib_defconfig        |    4 +-
- arch/arm/configs/usb_a9263_defconfig               |    4 +-
- arch/arm/configs/usb_a9g20_128mib_defconfig        |    4 +-
- arch/arm/configs/usb_a9g20_defconfig               |    4 +-
- arch/arm/configs/versatilepb_defconfig             |    4 +-
- arch/blackfin/configs/ipe337_defconfig             |    3 +-
- arch/mips/configs/dlink-dir-320_defconfig          |    4 +-
- arch/mips/configs/qemu-malta_defconfig             |    4 +-
- arch/ppc/configs/pcm030_defconfig                  |    3 +-
- arch/sandbox/configs/sandbox_defconfig             |    3 +-
- commands/Kconfig                                   |    8 +
- commands/Makefile                                  |    1 +
- commands/tftp.c                                    |  103 +++++
- net/Kconfig                                        |    8 -
- net/Makefile                                       |    1 -
- net/tftp.c                                         |  412 --------------------
- net/tftp.h                                         |   18 -
- 72 files changed, 243 insertions(+), 543 deletions(-)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/Kconfig  |    8 +++++
+ commands/Makefile |    1 +
+ commands/tftp.c   |  103 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 112 insertions(+)
  create mode 100644 commands/tftp.c
- delete mode 100644 net/tftp.c
- delete mode 100644 net/tftp.h
+
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 7969937..cf414200 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -222,6 +222,14 @@ config CMD_READLINK
+ 	help
+ 	  read value of a symbolic link
+ 
++config CMD_TFTP
++	depends on FS_TFTP
++	tristate
++	prompt "tftp"
++	help
++	  barebox can mount tftp as a filesystem. This command is only needed to
++	  preserve backward compatibility to the old tftp command.
++
+ endmenu
+ 
+ menu "console                       "
+diff --git a/commands/Makefile b/commands/Makefile
+index 7a36f60..610be55 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -75,3 +75,4 @@ obj-$(CONFIG_CMD_DIRNAME)	+= dirname.o
+ obj-$(CONFIG_CMD_READLINK)	+= readlink.o
+ obj-$(CONFIG_CMD_LN)		+= ln.o
+ obj-$(CONFIG_CMD_CLK)		+= clk.o
++obj-$(CONFIG_CMD_TFTP)		+= tftp.o
+diff --git a/commands/tftp.c b/commands/tftp.c
+new file mode 100644
+index 0000000..558b0ac
+--- /dev/null
++++ b/commands/tftp.c
+@@ -0,0 +1,103 @@
++/*
++ * tftp.c - (up)load tftp files
++ *
++ * Copyright (c) 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++#include <common.h>
++#include <command.h>
++#include <linux/stat.h>
++#include <getopt.h>
++#include <fcntl.h>
++#include <libgen.h>
++#include <fs.h>
++#include <net.h>
++#include <libbb.h>
++
++#define TFTP_MOUNT_PATH	"/.tftp_tmp_path"
++
++static int do_tftpb(int argc, char *argv[])
++{
++	char *source, *dest, *freep;
++	int opt;
++	unsigned long flags;
++	int tftp_push = 0;
++	int ret;
++	IPaddr_t ip;
++
++	while ((opt = getopt(argc, argv, "p")) > 0) {
++		switch(opt) {
++		case 'p':
++			tftp_push = 1;
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
++	}
++
++	if (argc <= optind)
++		return COMMAND_ERROR_USAGE;
++
++	source = argv[optind++];
++
++	if (argc == optind)
++		dest = basename(source);
++	else
++		dest = argv[optind];
++
++	if (tftp_push) {
++		dest = freep = asprintf("%s/%s", TFTP_MOUNT_PATH, dest);
++		flags = O_RDONLY;
++	} else {
++		source = freep = asprintf("%s/%s", TFTP_MOUNT_PATH, source);
++		flags = O_WRONLY | O_CREAT;
++	}
++
++	if (!freep)
++		return -ENOMEM;
++
++	ret = make_directory(TFTP_MOUNT_PATH);
++	if (ret)
++		goto err_free;
++
++	ip = net_get_serverip();
++	ret = mount(ip_to_string(ip), "tftp", TFTP_MOUNT_PATH);
++	if (ret)
++		goto err_rmdir;
++
++	printk("%s: %s -> %s\n", __func__, source, dest);
++
++	ret = copy_file(source, dest, 1);
++
++	umount(TFTP_MOUNT_PATH);
++
++err_rmdir:
++	rmdir(TFTP_MOUNT_PATH);
++
++err_free:
++	free(freep);
++
++	return ret;
++}
++
++BAREBOX_CMD_HELP_START(tftp)
++BAREBOX_CMD_HELP_USAGE("tftp [-p] <source> [dest]\n")
++BAREBOX_CMD_HELP_SHORT("Load a file from or upload to TFTP server.\n")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(tftp)
++	.cmd		= do_tftpb,
++	.usage		= "(up-)Load file using tftp protocol",
++	BAREBOX_CMD_HELP(cmd_tftp_help)
++BAREBOX_CMD_END
+-- 
+1.7.10.4
 
 
 _______________________________________________
