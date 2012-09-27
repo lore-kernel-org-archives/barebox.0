@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1THHnG-0005Yv-AJ
- for barebox@lists.infradead.org; Thu, 27 Sep 2012 17:22:39 +0000
+ id 1THHnJ-0005aI-DF
+ for barebox@lists.infradead.org; Thu, 27 Sep 2012 17:22:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 27 Sep 2012 19:22:26 +0200
-Message-Id: <1348766546-21547-4-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 27 Sep 2012 19:22:25 +0200
+Message-Id: <1348766546-21547-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1348766546-21547-1-git-send-email-s.hauer@pengutronix.de>
 References: <1348766546-21547-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,495 +21,1026 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] net: remove old tftp support
+Subject: [PATCH 2/3] defconfig: Switch all defconfig to new tftp command
 To: barebox@lists.infradead.org
-
-The old tftp suppoer has been replaced with filesystem based tftp
-support, so remove the old code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/Kconfig  |    8 --
- net/Makefile |    1 -
- net/tftp.c   |  412 ----------------------------------------------------------
- net/tftp.h   |   18 ---
- 4 files changed, 439 deletions(-)
- delete mode 100644 net/tftp.c
- delete mode 100644 net/tftp.h
+ arch/arm/configs/a9m2410_defconfig                 |    3 ++-
+ arch/arm/configs/a9m2440_defconfig                 |    3 ++-
+ arch/arm/configs/at91rm9200ek_defconfig            |    4 ++--
+ arch/arm/configs/at91sam9260ek_defconfig           |    3 ++-
+ arch/arm/configs/at91sam9261ek_defconfig           |    4 ++--
+ arch/arm/configs/at91sam9263ek_defconfig           |    3 ++-
+ arch/arm/configs/at91sam9g10ek_defconfig           |    4 ++--
+ arch/arm/configs/at91sam9g20ek_defconfig           |    3 ++-
+ arch/arm/configs/at91sam9m10g45ek_defconfig        |    4 ++--
+ arch/arm/configs/at91sam9x5ek_defconfig            |    3 ++-
+ arch/arm/configs/chumbyone_defconfig               |    4 ++--
+ arch/arm/configs/cupid_defconfig                   |    4 ++--
+ arch/arm/configs/dss11_defconfig                   |    4 ++--
+ arch/arm/configs/edb93xx_defconfig                 |    3 ++-
+ arch/arm/configs/eukrea_cpuimx25_defconfig         |    4 ++--
+ arch/arm/configs/eukrea_cpuimx27_defconfig         |    3 ++-
+ arch/arm/configs/eukrea_cpuimx35_defconfig         |    4 ++--
+ arch/arm/configs/eukrea_cpuimx51_defconfig         |    4 ++--
+ arch/arm/configs/freescale-mx6-arm2_defconfig      |    4 ++--
+ arch/arm/configs/freescale-mx6-sabrelite_defconfig |    3 +++
+ arch/arm/configs/freescale_mx25_3stack_defconfig   |    3 ++-
+ arch/arm/configs/freescale_mx35_3stack_defconfig   |    3 ++-
+ arch/arm/configs/freescale_mx53_loco_defconfig     |    4 ++--
+ arch/arm/configs/freescale_mx53_smd_defconfig      |    4 ++--
+ arch/arm/configs/friendlyarm_mini2440_defconfig    |    3 ++-
+ arch/arm/configs/imx28evk_defconfig                |    3 ++-
+ arch/arm/configs/mmccpu_defconfig                  |    3 ++-
+ arch/arm/configs/mx21ads_defconfig                 |    3 ++-
+ arch/arm/configs/mx27ads_defconfig                 |    3 ++-
+ arch/arm/configs/neso_defconfig                    |    4 ++--
+ arch/arm/configs/netx_nxdb500_defconfig            |    3 ++-
+ arch/arm/configs/nhk8815_defconfig                 |    4 ++--
+ arch/arm/configs/omap3530_beagle_defconfig         |    4 ++--
+ arch/arm/configs/panda_defconfig                   |    4 ++--
+ arch/arm/configs/pca100_defconfig                  |    4 ++--
+ arch/arm/configs/pcm027_defconfig                  |    4 ++--
+ arch/arm/configs/pcm037_defconfig                  |    4 ++--
+ arch/arm/configs/pcm043_defconfig                  |    4 ++--
+ arch/arm/configs/pcm049_defconfig                  |    4 ++--
+ arch/arm/configs/phycard_a_l1_defconfig            |    4 ++--
+ arch/arm/configs/phycard_a_xl2_defconfig           |    4 ++--
+ arch/arm/configs/pm9261_defconfig                  |    4 ++--
+ arch/arm/configs/pm9263_defconfig                  |    3 ++-
+ arch/arm/configs/pm9g45_defconfig                  |    4 ++--
+ arch/arm/configs/qil_a9260_128mib_defconfig        |    4 ++--
+ arch/arm/configs/qil_a9260_defconfig               |    4 ++--
+ arch/arm/configs/scb9328_defconfig                 |    4 ++--
+ arch/arm/configs/tny_a9260_defconfig               |    3 ++-
+ arch/arm/configs/tny_a9263_defconfig               |    3 ++-
+ arch/arm/configs/tny_a9g20_defconfig               |    3 ++-
+ arch/arm/configs/toshiba_ac100_defconfig           |    4 ++--
+ arch/arm/configs/tx25stk5_defconfig                |    4 ++--
+ arch/arm/configs/tx28stk5_defconfig                |    3 ++-
+ arch/arm/configs/tx51stk5_defconfig                |    4 ++--
+ arch/arm/configs/usb_a9260_defconfig               |    4 ++--
+ arch/arm/configs/usb_a9263_128mib_defconfig        |    4 ++--
+ arch/arm/configs/usb_a9263_defconfig               |    4 ++--
+ arch/arm/configs/usb_a9g20_128mib_defconfig        |    4 ++--
+ arch/arm/configs/usb_a9g20_defconfig               |    4 ++--
+ arch/arm/configs/versatilepb_defconfig             |    4 ++--
+ arch/blackfin/configs/ipe337_defconfig             |    3 ++-
+ arch/mips/configs/dlink-dir-320_defconfig          |    4 ++--
+ arch/mips/configs/qemu-malta_defconfig             |    4 ++--
+ arch/ppc/configs/pcm030_defconfig                  |    3 ++-
+ arch/sandbox/configs/sandbox_defconfig             |    3 ++-
+ 65 files changed, 131 insertions(+), 104 deletions(-)
 
-diff --git a/net/Kconfig b/net/Kconfig
-index 3169d20..00fffb3 100644
---- a/net/Kconfig
-+++ b/net/Kconfig
-@@ -15,14 +15,6 @@ config NET_PING
- 	bool
- 	prompt "ping support"
- 
--config NET_TFTP
--	bool
--	prompt "tftp support"
--
--config NET_TFTP_PUSH
--	bool
--	prompt "tftp push support"
--
- config NET_NETCONSOLE
- 	bool
- 	prompt "network console support"
-diff --git a/net/Makefile b/net/Makefile
-index 66dc564..416e30a 100644
---- a/net/Makefile
-+++ b/net/Makefile
-@@ -2,7 +2,6 @@ obj-$(CONFIG_NET_DHCP)	+= dhcp.o
- obj-$(CONFIG_NET)	+= eth.o
- obj-$(CONFIG_NET)	+= net.o
- obj-$(CONFIG_NET_NFS)	+= nfs.o
--obj-$(CONFIG_NET_TFTP)	+= tftp.o
- obj-$(CONFIG_NET_PING)	+= ping.o
- obj-$(CONFIG_NET_RESOLV)+= dns.o
- obj-$(CONFIG_NET_NETCONSOLE) += netconsole.o
-diff --git a/net/tftp.c b/net/tftp.c
-deleted file mode 100644
-index 053b8f3..0000000
---- a/net/tftp.c
-+++ /dev/null
-@@ -1,412 +0,0 @@
--/*
-- *	Copyright 1994, 1995, 2000 Neil Russell.
-- *	(See License)
-- *	Copyright 2000, 2001 DENX Software Engineering, Wolfgang Denk, wd@denx.de
-- */
--
--#include <common.h>
--#include <command.h>
--#include <net.h>
--#include <driver.h>
--#include <clock.h>
--#include <fs.h>
--#include <errno.h>
--#include <libgen.h>
--#include <fcntl.h>
--#include <progress.h>
--#include <getopt.h>
--#include <fs.h>
--#include <linux/stat.h>
--#include <linux/err.h>
--
--#define TFTP_PORT	69		/* Well known TFTP port #		*/
--#define TIMEOUT		5		/* Seconds to timeout for a lost pkt	*/
--
--/*
-- *	TFTP operations.
-- */
--#define TFTP_RRQ	1
--#define TFTP_WRQ	2
--#define TFTP_DATA	3
--#define TFTP_ACK	4
--#define TFTP_ERROR	5
--#define TFTP_OACK	6
--
--
--static int		tftp_server_port;	/* The UDP port at their end		*/
--static unsigned int	tftp_block;		/* packet sequence number		*/
--static unsigned int	tftp_last_block;	/* last packet sequence number received */
--static int		tftp_state;
--static uint64_t		tftp_timer_start;
--static int		tftp_err;
--static unsigned		tftp_retries;
--
--#define STATE_RRQ	1
--#define STATE_WRQ	2
--#define STATE_RDATA	3
--#define STATE_WDATA	4
--#define STATE_OACK	5
--#define STATE_LAST	6
--#define STATE_DONE	7
--
--#define TFTP_BLOCK_SIZE		512		    /* default TFTP block size	*/
--
--static char *tftp_filename;
--static struct net_connection *tftp_con;
--static int tftp_fd;
--static int tftp_size;
--
--#ifdef CONFIG_NET_TFTP_PUSH
--static int tftp_push;
--
--static inline void do_tftp_push(int push)
--{
--	tftp_push = push;
--}
--
--#else
--
--#define tftp_push	0
--
--static inline void do_tftp_push(int push)
--{
--}
--#endif
--
--static int tftp_send(void)
--{
--	unsigned char *xp;
--	int len = 0;
--	uint16_t *s;
--	unsigned char *pkt = net_udp_get_payload(tftp_con);
--	int ret;
--	static int last_len;
--
--	switch (tftp_state) {
--	case STATE_RRQ:
--	case STATE_WRQ:
--		xp = pkt;
--		s = (uint16_t *)pkt;
--		if (tftp_state == STATE_RRQ)
--			*s++ = htons(TFTP_RRQ);
--		else
--			*s++ = htons(TFTP_WRQ);
--		pkt = (unsigned char *)s;
--		pkt += sprintf((unsigned char *)pkt, "%s%coctet%ctimeout%c%d",
--				tftp_filename, 0, 0, 0, TIMEOUT) + 1;
--		len = pkt - xp;
--		break;
--
--	case STATE_WDATA:
--		if (!tftp_push)
--			break;
--
--		if (tftp_last_block == tftp_block) {
--			len = last_len;
--			break;
--		}
--
--		tftp_last_block = tftp_block;
--		tftp_retries = 0;
--		s = (uint16_t *)pkt;
--		*s++ = htons(TFTP_DATA);
--		*s++ = htons(tftp_block);
--		len = read(tftp_fd, s, 512);
--		if (len < 0) {
--			perror("read");
--			tftp_err = -errno;
--			tftp_state = STATE_DONE;
--			return tftp_err;
--		}
--		tftp_size += len;
--		if (len < 512)
--			tftp_state = STATE_LAST;
--		len += 4;
--		last_len = len;
--		break;
--
--	case STATE_RDATA:
--	case STATE_OACK:
--		xp = pkt;
--		s = (uint16_t *)pkt;
--		*s++ = htons(TFTP_ACK);
--		*s++ = htons(tftp_block);
--		pkt = (unsigned char *)s;
--		len = pkt - xp;
--		break;
--	}
--
--	tftp_timer_start = get_time_ns();
--	show_progress(tftp_size);
--	ret = net_udp_send(tftp_con, len);
--
--	return ret;
--}
--
--static void tftp_handler(void *ctx, char *packet, unsigned len)
--{
--	uint16_t proto;
--	uint16_t *s;
--	char *pkt = net_eth_to_udp_payload(packet);
--	struct udphdr *udp = net_eth_to_udphdr(packet);
--	int ret;
--
--	len = net_eth_to_udplen(packet);
--	if (len < 2)
--		return;
--
--	len -= 2;
--
--	s = (uint16_t *)pkt;
--	proto = *s++;
--	pkt = (unsigned char *)s;
--
--	switch (ntohs(proto)) {
--	case TFTP_RRQ:
--	case TFTP_WRQ:
--	default:
--		break;
--	case TFTP_ACK:
--		if (!tftp_push)
--			break;
--
--		tftp_block = ntohs(*(uint16_t *)pkt);
--		if (tftp_block != tftp_last_block) {
--			debug("ack %d != %d\n", tftp_block, tftp_last_block);
--			break;
--		}
--		tftp_block++;
--		if (tftp_state == STATE_LAST) {
--			tftp_state = STATE_DONE;
--			break;
--		}
--		tftp_con->udp->uh_dport = udp->uh_sport;
--		tftp_state = STATE_WDATA;
--		tftp_send();
--		break;
--
--	case TFTP_OACK:
--		debug("Got OACK: %s %s\n", pkt, pkt + strlen(pkt) + 1);
--		tftp_server_port = ntohs(udp->uh_sport);
--		tftp_con->udp->uh_dport = udp->uh_sport;
--
--		if (tftp_push) {
--			/* send first block */
--			tftp_state = STATE_WDATA;
--			tftp_block = 1;
--		} else {
--			/* send ACK */
--			tftp_state = STATE_OACK;
--			tftp_block = 0;
--		}
--
--		tftp_send();
--
--		break;
--	case TFTP_DATA:
--		if (len < 2)
--			return;
--		len -= 2;
--		tftp_block = ntohs(*(uint16_t *)pkt);
--
--		if (tftp_state == STATE_RRQ)
--			debug("Server did not acknowledge timeout option!\n");
--
--		if (tftp_state == STATE_RRQ || tftp_state == STATE_OACK) {
--			/* first block received */
--			tftp_state = STATE_RDATA;
--			tftp_con->udp->uh_dport = udp->uh_sport;
--			tftp_server_port = ntohs(udp->uh_sport);
--			tftp_last_block = 0;
--
--			if (tftp_block != 1) {	/* Assertion */
--				printf("error: First block is not block 1 (%d)\n",
--					tftp_block);
--				tftp_err = -EINVAL;
--				tftp_state = STATE_DONE;
--				break;
--			}
--		}
--
--		if (tftp_block == tftp_last_block)
--			/* Same block again; ignore it. */
--			break;
--
--		tftp_last_block = tftp_block;
--		tftp_retries = 0;
--
--		if (!(tftp_block % 10))
--			tftp_size++;
--
--		ret = write(tftp_fd, pkt + 2, len);
--		if (ret < 0) {
--			perror("write");
--			tftp_err = -errno;
--			tftp_state = STATE_DONE;
--			return;
--		}
--
--		/*
--		 *	Acknowledge the block just received, which will prompt
--		 *	the server for the next one.
--		 */
--		tftp_send();
--
--		if (len < TFTP_BLOCK_SIZE)
--			tftp_state = STATE_DONE;
--
--		break;
--
--	case TFTP_ERROR:
--		debug("\nTFTP error: '%s' (%d)\n",
--					pkt + 2, ntohs(*(uint16_t *)pkt));
--		switch (ntohs(*(uint16_t *)pkt)) {
--		case 1: tftp_err = -ENOENT; break;
--		case 2: tftp_err = -EACCES; break;
--		default: tftp_err = -EINVAL; break;
--		}
--		tftp_state = STATE_DONE;
--		break;
--	}
--}
--
--static int do_tftpb(int argc, char *argv[])
--{
--	char *localfile, *remotefile, *file1, *file2;
--	int opt;
--	struct stat s;
--	unsigned long flags;
--
--	do_tftp_push(0);
--	tftp_last_block = 0;
--	tftp_size = 0;
--	tftp_retries = 0;
--
--	while((opt = getopt(argc, argv, "p")) > 0) {
--		switch(opt) {
--		case 'p':
--			do_tftp_push(1);
--			break;
--		}
--	}
--
--	if (argc <= optind)
--		return COMMAND_ERROR_USAGE;
--
--	file1 = argv[optind++];
--
--	if (argc == optind)
--		file2 = basename(file1);
--	else
--		file2 = argv[optind];
--
--	if (tftp_push) {
--		localfile = file1;
--		remotefile = file2;
--		stat(localfile, &s);
--		flags = O_RDONLY;
--	} else {
--		localfile = file2;
--		remotefile = file1;
--		flags = O_WRONLY | O_CREAT;
--	}
--
--	tftp_fd = open(localfile, flags);
--	if (tftp_fd < 0) {
--		perror("open");
--		return 1;
--	}
--
--	tftp_con = net_udp_new(net_get_serverip(), TFTP_PORT, tftp_handler, NULL);
--	if (IS_ERR(tftp_con)) {
--		tftp_err = PTR_ERR(tftp_con);
--		goto out_close;
--	}
--
--	tftp_filename = remotefile;
--
--	printf("TFTP %s server %s ('%s' -> '%s')\n",
--			tftp_push ? "to" : "from",
--			ip_to_string(net_get_serverip()),
--			file1, file2);
--
--	init_progression_bar(tftp_push ? s.st_size : 0);
--
--	tftp_timer_start = get_time_ns();
--	tftp_state = tftp_push ? STATE_WRQ : STATE_RRQ;
--	tftp_block = 1;
--
--	tftp_err = tftp_send();
--	if (tftp_err)
--		goto out_unreg;
--
--	while (tftp_state != STATE_DONE) {
--		if (ctrlc()) {
--			tftp_err = -EINTR;
--			break;
--		}
--		net_poll();
--		if (is_timeout(tftp_timer_start, SECOND)) {
--			show_progress(-1);
--			tftp_err = tftp_send();
--			if (tftp_err)
--				goto out_unreg;
--			tftp_retries++;
--		}
--
--		/* Wait for two TIMEOUT periods and add some */
--		if (tftp_retries > 2 * TIMEOUT + 1) {
--			tftp_err = -ETIMEDOUT;
--			break;
--		}
--	}
--out_unreg:
--	net_unregister(tftp_con);
--out_close:
--	close(tftp_fd);
--
--	if (tftp_err) {
--		printf("\ntftp failed: %s\n", strerror(-tftp_err));
--		if (!tftp_push)
--			unlink(localfile);
--	}
--
--	printf("\n");
--
--	return tftp_err == 0 ? 0 : 1;
--}
--
--BAREBOX_CMD_HELP_START(tftp)
--#ifdef CONFIG_NET_TFTP_PUSH
--BAREBOX_CMD_HELP_USAGE("tftp <remotefile> [localfile], tftp -p <localfile> [remotefile]\n")
--BAREBOX_CMD_HELP_SHORT("Load a file from or upload to TFTP server.\n")
--BAREBOX_CMD_HELP_END
--#else
--BAREBOX_CMD_HELP_USAGE("tftp <remotefile> [localfile]\n")
--BAREBOX_CMD_HELP_SHORT("Load a file from a TFTP server.\n")
--BAREBOX_CMD_HELP_END
--#endif
--
--/**
-- * @page tftp_command
--
--The second file argument can be skipped in which case the first filename
--is used (without the directory part).
--
--\<localfile> can be the local filename or a device file under /dev.
--This also works for flash memory. Refer to \ref erase_command and \ref
--unprotect_command for flash preparation.
--
--\note This command is available only if enabled in menuconfig.
-- */
--
--BAREBOX_CMD_START(tftp)
--	.cmd		= do_tftpb,
--	.usage		=
--#ifdef CONFIG_NET_TFTP_PUSH
--			"(up-)"
--#endif
--			"Load file using tftp protocol",
--	BAREBOX_CMD_HELP(cmd_tftp_help)
--BAREBOX_CMD_END
--
-diff --git a/net/tftp.h b/net/tftp.h
-deleted file mode 100644
-index 7fed2e6..0000000
---- a/net/tftp.h
-+++ /dev/null
-@@ -1,18 +0,0 @@
--/*
-- *	LiMon - BOOTP/TFTP.
-- *
-- *	Copyright 1994, 1995, 2000 Neil Russell.
-- *	(See License)
-- */
--
--#ifndef __TFTP_H__
--#define __TFTP_H__
--
--/**********************************************************************/
--/*
-- *	Global functions and variables.
-- */
--
--/**********************************************************************/
--
--#endif /* __TFTP_H__ */
+diff --git a/arch/arm/configs/a9m2410_defconfig b/arch/arm/configs/a9m2410_defconfig
+index 1955023..a69b0f9 100644
+--- a/arch/arm/configs/a9m2410_defconfig
++++ b/arch/arm/configs/a9m2410_defconfig
+@@ -29,6 +29,7 @@ CONFIG_CMD_PARTITION=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_NET_SMC91111=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/a9m2440_defconfig b/arch/arm/configs/a9m2440_defconfig
+index ebdf64f..c4c4e1e 100644
+--- a/arch/arm/configs/a9m2440_defconfig
++++ b/arch/arm/configs/a9m2440_defconfig
+@@ -31,6 +31,7 @@ CONFIG_CMD_PARTITION=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_NET_SMC91111=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/at91rm9200ek_defconfig b/arch/arm/configs/at91rm9200ek_defconfig
+index 1c56787..6a105c6 100644
+--- a/arch/arm/configs/at91rm9200ek_defconfig
++++ b/arch/arm/configs/at91rm9200ek_defconfig
+@@ -45,8 +45,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_AT91_ETHER=y
+diff --git a/arch/arm/configs/at91sam9260ek_defconfig b/arch/arm/configs/at91sam9260ek_defconfig
+index 9466c07..b746bc8 100644
+--- a/arch/arm/configs/at91sam9260ek_defconfig
++++ b/arch/arm/configs/at91sam9260ek_defconfig
+@@ -48,7 +48,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_MACB=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/at91sam9261ek_defconfig b/arch/arm/configs/at91sam9261ek_defconfig
+index 0fd31d6..5daa47b 100644
+--- a/arch/arm/configs/at91sam9261ek_defconfig
++++ b/arch/arm/configs/at91sam9261ek_defconfig
+@@ -47,8 +47,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_DM9K=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/at91sam9263ek_defconfig b/arch/arm/configs/at91sam9263ek_defconfig
+index b91d2e2..5d44052 100644
+--- a/arch/arm/configs/at91sam9263ek_defconfig
++++ b/arch/arm/configs/at91sam9263ek_defconfig
+@@ -45,7 +45,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_NET_MACB=y
+ # CONFIG_SPI is not set
+ CONFIG_DRIVER_CFI=y
+diff --git a/arch/arm/configs/at91sam9g10ek_defconfig b/arch/arm/configs/at91sam9g10ek_defconfig
+index 0cc37ac..b22969c 100644
+--- a/arch/arm/configs/at91sam9g10ek_defconfig
++++ b/arch/arm/configs/at91sam9g10ek_defconfig
+@@ -47,8 +47,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_DM9K=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/at91sam9g20ek_defconfig b/arch/arm/configs/at91sam9g20ek_defconfig
+index c1c1ff7..af10c6c 100644
+--- a/arch/arm/configs/at91sam9g20ek_defconfig
++++ b/arch/arm/configs/at91sam9g20ek_defconfig
+@@ -49,7 +49,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_MACB=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/at91sam9m10g45ek_defconfig b/arch/arm/configs/at91sam9m10g45ek_defconfig
+index 1fa37d6..0929f8e 100644
+--- a/arch/arm/configs/at91sam9m10g45ek_defconfig
++++ b/arch/arm/configs/at91sam9m10g45ek_defconfig
+@@ -53,8 +53,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_MACB=y
+diff --git a/arch/arm/configs/at91sam9x5ek_defconfig b/arch/arm/configs/at91sam9x5ek_defconfig
+index e67ebc9..cda360d 100644
+--- a/arch/arm/configs/at91sam9x5ek_defconfig
++++ b/arch/arm/configs/at91sam9x5ek_defconfig
+@@ -47,7 +47,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_MACB=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/chumbyone_defconfig b/arch/arm/configs/chumbyone_defconfig
+index 1b03530..228a7b2 100644
+--- a/arch/arm/configs/chumbyone_defconfig
++++ b/arch/arm/configs/chumbyone_defconfig
+@@ -36,8 +36,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_NET_USB=y
+diff --git a/arch/arm/configs/cupid_defconfig b/arch/arm/configs/cupid_defconfig
+index d7716ea..e2ad9c6 100644
+--- a/arch/arm/configs/cupid_defconfig
++++ b/arch/arm/configs/cupid_defconfig
+@@ -52,8 +52,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+diff --git a/arch/arm/configs/dss11_defconfig b/arch/arm/configs/dss11_defconfig
+index 71143c9..b4fcf01 100644
+--- a/arch/arm/configs/dss11_defconfig
++++ b/arch/arm/configs/dss11_defconfig
+@@ -20,8 +20,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_NET_MACB=y
+ CONFIG_DRIVER_SPI_ATMEL=y
+ CONFIG_MTD=y
+diff --git a/arch/arm/configs/edb93xx_defconfig b/arch/arm/configs/edb93xx_defconfig
+index 3b66384..363e511 100644
+--- a/arch/arm/configs/edb93xx_defconfig
++++ b/arch/arm/configs/edb93xx_defconfig
+@@ -26,7 +26,8 @@ CONFIG_CMD_GPIO=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_NET_EP93XX=y
+ # CONFIG_SPI is not set
+ CONFIG_DRIVER_CFI=y
+diff --git a/arch/arm/configs/eukrea_cpuimx25_defconfig b/arch/arm/configs/eukrea_cpuimx25_defconfig
+index 5eb4ff3..c3537aa 100644
+--- a/arch/arm/configs/eukrea_cpuimx25_defconfig
++++ b/arch/arm/configs/eukrea_cpuimx25_defconfig
+@@ -53,8 +53,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/eukrea_cpuimx27_defconfig b/arch/arm/configs/eukrea_cpuimx27_defconfig
+index 2b95156..880941d 100644
+--- a/arch/arm/configs/eukrea_cpuimx27_defconfig
++++ b/arch/arm/configs/eukrea_cpuimx27_defconfig
+@@ -38,7 +38,8 @@ CONFIG_CMD_I2C=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/eukrea_cpuimx35_defconfig b/arch/arm/configs/eukrea_cpuimx35_defconfig
+index 16ef4cc..f85e9a2 100644
+--- a/arch/arm/configs/eukrea_cpuimx35_defconfig
++++ b/arch/arm/configs/eukrea_cpuimx35_defconfig
+@@ -54,8 +54,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/eukrea_cpuimx51_defconfig b/arch/arm/configs/eukrea_cpuimx51_defconfig
+index 7261796..e4ec7b0 100644
+--- a/arch/arm/configs/eukrea_cpuimx51_defconfig
++++ b/arch/arm/configs/eukrea_cpuimx51_defconfig
+@@ -49,8 +49,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+diff --git a/arch/arm/configs/freescale-mx6-arm2_defconfig b/arch/arm/configs/freescale-mx6-arm2_defconfig
+index c150cc7..d2812e4 100644
+--- a/arch/arm/configs/freescale-mx6-arm2_defconfig
++++ b/arch/arm/configs/freescale-mx6-arm2_defconfig
+@@ -48,8 +48,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ CONFIG_NET_USB=y
+diff --git a/arch/arm/configs/freescale-mx6-sabrelite_defconfig b/arch/arm/configs/freescale-mx6-sabrelite_defconfig
+index 7e6cfa1..be7919b 100644
+--- a/arch/arm/configs/freescale-mx6-sabrelite_defconfig
++++ b/arch/arm/configs/freescale-mx6-sabrelite_defconfig
+@@ -56,6 +56,9 @@ CONFIG_CMD_UNCOMPRESS=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_RESOLV=y
++CONFIG_NET_PING=y
++CONFIG_CMD_TFTP=y
++CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ CONFIG_DRIVER_SPI_IMX=y
+ CONFIG_MTD_M25P80=y
+diff --git a/arch/arm/configs/freescale_mx25_3stack_defconfig b/arch/arm/configs/freescale_mx25_3stack_defconfig
+index eac343f..888736a 100644
+--- a/arch/arm/configs/freescale_mx25_3stack_defconfig
++++ b/arch/arm/configs/freescale_mx25_3stack_defconfig
+@@ -49,7 +49,8 @@ CONFIG_CMD_UNCOMPRESS=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ # CONFIG_SPI is not set
+ CONFIG_USB=y
+diff --git a/arch/arm/configs/freescale_mx35_3stack_defconfig b/arch/arm/configs/freescale_mx35_3stack_defconfig
+index 4052325..2f45764 100644
+--- a/arch/arm/configs/freescale_mx35_3stack_defconfig
++++ b/arch/arm/configs/freescale_mx35_3stack_defconfig
+@@ -49,7 +49,8 @@ CONFIG_CMD_I2C=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_NET_SMC911X=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/freescale_mx53_loco_defconfig b/arch/arm/configs/freescale_mx53_loco_defconfig
+index 6cb4c17..37aa182 100644
+--- a/arch/arm/configs/freescale_mx53_loco_defconfig
++++ b/arch/arm/configs/freescale_mx53_loco_defconfig
+@@ -50,8 +50,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/freescale_mx53_smd_defconfig b/arch/arm/configs/freescale_mx53_smd_defconfig
+index 1ede9ac..f18c436 100644
+--- a/arch/arm/configs/freescale_mx53_smd_defconfig
++++ b/arch/arm/configs/freescale_mx53_smd_defconfig
+@@ -51,8 +51,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/friendlyarm_mini2440_defconfig b/arch/arm/configs/friendlyarm_mini2440_defconfig
+index 5551ffe..955e71b 100644
+--- a/arch/arm/configs/friendlyarm_mini2440_defconfig
++++ b/arch/arm/configs/friendlyarm_mini2440_defconfig
+@@ -32,7 +32,8 @@ CONFIG_CMD_GPIO=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_NET_DM9K=y
+ # CONFIG_SPI is not set
+ CONFIG_USB=y
+diff --git a/arch/arm/configs/imx28evk_defconfig b/arch/arm/configs/imx28evk_defconfig
+index f4d4661..0cc269b 100644
+--- a/arch/arm/configs/imx28evk_defconfig
++++ b/arch/arm/configs/imx28evk_defconfig
+@@ -38,7 +38,8 @@ CONFIG_CMD_GPIO=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/mmccpu_defconfig b/arch/arm/configs/mmccpu_defconfig
+index 3f1af6a..334c5e8 100644
+--- a/arch/arm/configs/mmccpu_defconfig
++++ b/arch/arm/configs/mmccpu_defconfig
+@@ -29,7 +29,8 @@ CONFIG_CMD_GPIO=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_NET_MACB=y
+ # CONFIG_SPI is not set
+ CONFIG_I2C=y
+diff --git a/arch/arm/configs/mx21ads_defconfig b/arch/arm/configs/mx21ads_defconfig
+index e63a386..28ad013 100644
+--- a/arch/arm/configs/mx21ads_defconfig
++++ b/arch/arm/configs/mx21ads_defconfig
+@@ -31,7 +31,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_NET_CS8900=y
+ # CONFIG_SPI is not set
+ CONFIG_DRIVER_CFI=y
+diff --git a/arch/arm/configs/mx27ads_defconfig b/arch/arm/configs/mx27ads_defconfig
+index 34fe81d..077e799 100644
+--- a/arch/arm/configs/mx27ads_defconfig
++++ b/arch/arm/configs/mx27ads_defconfig
+@@ -30,7 +30,8 @@ CONFIG_CMD_GPIO=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_SPI_IMX=y
+ CONFIG_DRIVER_CFI=y
+ # CONFIG_DRIVER_CFI_INTEL is not set
+diff --git a/arch/arm/configs/neso_defconfig b/arch/arm/configs/neso_defconfig
+index 3ea6891..7e1cce8 100644
+--- a/arch/arm/configs/neso_defconfig
++++ b/arch/arm/configs/neso_defconfig
+@@ -52,8 +52,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+diff --git a/arch/arm/configs/netx_nxdb500_defconfig b/arch/arm/configs/netx_nxdb500_defconfig
+index 179058b..6d32c56 100644
+--- a/arch/arm/configs/netx_nxdb500_defconfig
++++ b/arch/arm/configs/netx_nxdb500_defconfig
+@@ -23,7 +23,8 @@ CONFIG_CMD_PARTITION=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_NET_NETX=y
+ CONFIG_DRIVER_CFI=y
+ CONFIG_CFI_BUFFER_WRITE=y
+diff --git a/arch/arm/configs/nhk8815_defconfig b/arch/arm/configs/nhk8815_defconfig
+index cec50d5..015b576 100644
+--- a/arch/arm/configs/nhk8815_defconfig
++++ b/arch/arm/configs/nhk8815_defconfig
+@@ -39,8 +39,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_SERIAL_AMBA_PL011=y
+diff --git a/arch/arm/configs/omap3530_beagle_defconfig b/arch/arm/configs/omap3530_beagle_defconfig
+index 621bd49..0d83a4f 100644
+--- a/arch/arm/configs/omap3530_beagle_defconfig
++++ b/arch/arm/configs/omap3530_beagle_defconfig
+@@ -37,8 +37,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_NET_USB=y
+diff --git a/arch/arm/configs/panda_defconfig b/arch/arm/configs/panda_defconfig
+index 0b2d423..5f53ff9 100644
+--- a/arch/arm/configs/panda_defconfig
++++ b/arch/arm/configs/panda_defconfig
+@@ -48,8 +48,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_NET_USB=y
+diff --git a/arch/arm/configs/pca100_defconfig b/arch/arm/configs/pca100_defconfig
+index 76039e2..db2b164 100644
+--- a/arch/arm/configs/pca100_defconfig
++++ b/arch/arm/configs/pca100_defconfig
+@@ -50,8 +50,8 @@ CONFIG_CMD_UNCOMPRESS=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ CONFIG_NET_USB=y
+diff --git a/arch/arm/configs/pcm027_defconfig b/arch/arm/configs/pcm027_defconfig
+index 5a65a72..e08955b 100644
+--- a/arch/arm/configs/pcm027_defconfig
++++ b/arch/arm/configs/pcm027_defconfig
+@@ -49,8 +49,8 @@ CONFIG_CMD_UNCOMPRESS=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_SERIAL_PXA=y
+ CONFIG_DRIVER_NET_SMC91111=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/pcm037_defconfig b/arch/arm/configs/pcm037_defconfig
+index 7705bcf..5a527d5 100644
+--- a/arch/arm/configs/pcm037_defconfig
++++ b/arch/arm/configs/pcm037_defconfig
+@@ -51,8 +51,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_SMC911X=y
+ CONFIG_NET_USB=y
+diff --git a/arch/arm/configs/pcm043_defconfig b/arch/arm/configs/pcm043_defconfig
+index 7f7a2d6..7c62193 100644
+--- a/arch/arm/configs/pcm043_defconfig
++++ b/arch/arm/configs/pcm043_defconfig
+@@ -54,8 +54,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/pcm049_defconfig b/arch/arm/configs/pcm049_defconfig
+index cf1cf48..adb600f 100644
+--- a/arch/arm/configs/pcm049_defconfig
++++ b/arch/arm/configs/pcm049_defconfig
+@@ -50,8 +50,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_DRIVER_NET_SMC911X=y
+diff --git a/arch/arm/configs/phycard_a_l1_defconfig b/arch/arm/configs/phycard_a_l1_defconfig
+index 4cf2d21..5170722 100644
+--- a/arch/arm/configs/phycard_a_l1_defconfig
++++ b/arch/arm/configs/phycard_a_l1_defconfig
+@@ -128,8 +128,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+diff --git a/arch/arm/configs/phycard_a_xl2_defconfig b/arch/arm/configs/phycard_a_xl2_defconfig
+index 62ea5e9..f091b82 100644
+--- a/arch/arm/configs/phycard_a_xl2_defconfig
++++ b/arch/arm/configs/phycard_a_xl2_defconfig
+@@ -39,8 +39,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_DRIVER_NET_KS8851_MLL=y
+diff --git a/arch/arm/configs/pm9261_defconfig b/arch/arm/configs/pm9261_defconfig
+index 39f401f..1db16d5 100644
+--- a/arch/arm/configs/pm9261_defconfig
++++ b/arch/arm/configs/pm9261_defconfig
+@@ -39,8 +39,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_DM9K=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/pm9263_defconfig b/arch/arm/configs/pm9263_defconfig
+index b76f201..8c92894 100644
+--- a/arch/arm/configs/pm9263_defconfig
++++ b/arch/arm/configs/pm9263_defconfig
+@@ -29,7 +29,8 @@ CONFIG_CMD_GPIO=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_NET_MACB=y
+ # CONFIG_SPI is not set
+ CONFIG_DRIVER_CFI=y
+diff --git a/arch/arm/configs/pm9g45_defconfig b/arch/arm/configs/pm9g45_defconfig
+index 3c9fa69..331f122 100644
+--- a/arch/arm/configs/pm9g45_defconfig
++++ b/arch/arm/configs/pm9g45_defconfig
+@@ -22,8 +22,8 @@ CONFIG_CMD_PARTITION=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_MACB=y
+ CONFIG_DRIVER_SPI_ATMEL=y
+diff --git a/arch/arm/configs/qil_a9260_128mib_defconfig b/arch/arm/configs/qil_a9260_128mib_defconfig
+index cc2c6ac..8cd28f4 100644
+--- a/arch/arm/configs/qil_a9260_128mib_defconfig
++++ b/arch/arm/configs/qil_a9260_128mib_defconfig
+@@ -55,8 +55,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_MACB=y
+diff --git a/arch/arm/configs/qil_a9260_defconfig b/arch/arm/configs/qil_a9260_defconfig
+index 225f785..13460e8 100644
+--- a/arch/arm/configs/qil_a9260_defconfig
++++ b/arch/arm/configs/qil_a9260_defconfig
+@@ -54,8 +54,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_MACB=y
+diff --git a/arch/arm/configs/scb9328_defconfig b/arch/arm/configs/scb9328_defconfig
+index 1a16999..818bbd0 100644
+--- a/arch/arm/configs/scb9328_defconfig
++++ b/arch/arm/configs/scb9328_defconfig
+@@ -47,8 +47,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_DM9K=y
+diff --git a/arch/arm/configs/tny_a9260_defconfig b/arch/arm/configs/tny_a9260_defconfig
+index e525966..af22234 100644
+--- a/arch/arm/configs/tny_a9260_defconfig
++++ b/arch/arm/configs/tny_a9260_defconfig
+@@ -55,7 +55,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_MACB=y
+ CONFIG_DRIVER_SPI_ATMEL=y
+diff --git a/arch/arm/configs/tny_a9263_defconfig b/arch/arm/configs/tny_a9263_defconfig
+index 0a83b05..c199cca 100644
+--- a/arch/arm/configs/tny_a9263_defconfig
++++ b/arch/arm/configs/tny_a9263_defconfig
+@@ -55,7 +55,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_MACB=y
+ CONFIG_DRIVER_SPI_ATMEL=y
+diff --git a/arch/arm/configs/tny_a9g20_defconfig b/arch/arm/configs/tny_a9g20_defconfig
+index 8d606d1..cf5d4c5 100644
+--- a/arch/arm/configs/tny_a9g20_defconfig
++++ b/arch/arm/configs/tny_a9g20_defconfig
+@@ -55,7 +55,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_MACB=y
+ CONFIG_DRIVER_SPI_ATMEL=y
+diff --git a/arch/arm/configs/toshiba_ac100_defconfig b/arch/arm/configs/toshiba_ac100_defconfig
+index 053f53a..065189d 100644
+--- a/arch/arm/configs/toshiba_ac100_defconfig
++++ b/arch/arm/configs/toshiba_ac100_defconfig
+@@ -26,8 +26,8 @@ CONFIG_CMD_GO=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_NET_USB=y
+diff --git a/arch/arm/configs/tx25stk5_defconfig b/arch/arm/configs/tx25stk5_defconfig
+index e098ef8..8ec5178 100644
+--- a/arch/arm/configs/tx25stk5_defconfig
++++ b/arch/arm/configs/tx25stk5_defconfig
+@@ -51,8 +51,8 @@ CONFIG_CMD_UNCOMPRESS=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/tx28stk5_defconfig b/arch/arm/configs/tx28stk5_defconfig
+index 49a0ab3..3cefa76 100644
+--- a/arch/arm/configs/tx28stk5_defconfig
++++ b/arch/arm/configs/tx28stk5_defconfig
+@@ -46,7 +46,8 @@ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_UNCOMPRESS=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ # CONFIG_SPI is not set
+diff --git a/arch/arm/configs/tx51stk5_defconfig b/arch/arm/configs/tx51stk5_defconfig
+index 2c83189..354e809 100644
+--- a/arch/arm/configs/tx51stk5_defconfig
++++ b/arch/arm/configs/tx51stk5_defconfig
+@@ -106,8 +106,8 @@ CONFIG_CMD_LED=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_SERIAL_IMX=y
+ CONFIG_ARCH_HAS_FEC_IMX=y
+ CONFIG_PHYLIB=y
+diff --git a/arch/arm/configs/usb_a9260_defconfig b/arch/arm/configs/usb_a9260_defconfig
+index 8fd2a18..5f78c56 100644
+--- a/arch/arm/configs/usb_a9260_defconfig
++++ b/arch/arm/configs/usb_a9260_defconfig
+@@ -58,8 +58,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_MACB=y
+diff --git a/arch/arm/configs/usb_a9263_128mib_defconfig b/arch/arm/configs/usb_a9263_128mib_defconfig
+index efd68a8..87f708f 100644
+--- a/arch/arm/configs/usb_a9263_128mib_defconfig
++++ b/arch/arm/configs/usb_a9263_128mib_defconfig
+@@ -59,8 +59,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_MACB=y
+diff --git a/arch/arm/configs/usb_a9263_defconfig b/arch/arm/configs/usb_a9263_defconfig
+index 9706d65..9bfb7e7 100644
+--- a/arch/arm/configs/usb_a9263_defconfig
++++ b/arch/arm/configs/usb_a9263_defconfig
+@@ -58,8 +58,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_MACB=y
+diff --git a/arch/arm/configs/usb_a9g20_128mib_defconfig b/arch/arm/configs/usb_a9g20_128mib_defconfig
+index 026cbcc..4a6c933 100644
+--- a/arch/arm/configs/usb_a9g20_128mib_defconfig
++++ b/arch/arm/configs/usb_a9g20_128mib_defconfig
+@@ -59,8 +59,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_MACB=y
+diff --git a/arch/arm/configs/usb_a9g20_defconfig b/arch/arm/configs/usb_a9g20_defconfig
+index f32593f..e851b9c 100644
+--- a/arch/arm/configs/usb_a9g20_defconfig
++++ b/arch/arm/configs/usb_a9g20_defconfig
+@@ -58,8 +58,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_MACB=y
+diff --git a/arch/arm/configs/versatilepb_defconfig b/arch/arm/configs/versatilepb_defconfig
+index 1b51d91..87aec4d 100644
+--- a/arch/arm/configs/versatilepb_defconfig
++++ b/arch/arm/configs/versatilepb_defconfig
+@@ -37,8 +37,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_SERIAL_AMBA_PL011=y
+diff --git a/arch/blackfin/configs/ipe337_defconfig b/arch/blackfin/configs/ipe337_defconfig
+index ffd144c..d01c7e7 100644
+--- a/arch/blackfin/configs/ipe337_defconfig
++++ b/arch/blackfin/configs/ipe337_defconfig
+@@ -22,7 +22,8 @@ CONFIG_CMD_PARTITION=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_NET_SMC911X=y
+ CONFIG_DRIVER_CFI=y
+ CONFIG_CFI_BUFFER_WRITE=y
+diff --git a/arch/mips/configs/dlink-dir-320_defconfig b/arch/mips/configs/dlink-dir-320_defconfig
+index 88c0e83..3cd16c9 100644
+--- a/arch/mips/configs/dlink-dir-320_defconfig
++++ b/arch/mips/configs/dlink-dir-320_defconfig
+@@ -46,8 +46,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ # CONFIG_SPI is not set
+diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
+index 50e0dc4..7ade1aa 100644
+--- a/arch/mips/configs/qemu-malta_defconfig
++++ b/arch/mips/configs/qemu-malta_defconfig
+@@ -45,8 +45,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
+-CONFIG_NET_TFTP_PUSH=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ # CONFIG_SPI is not set
+diff --git a/arch/ppc/configs/pcm030_defconfig b/arch/ppc/configs/pcm030_defconfig
+index c037502..d2ff16c 100644
+--- a/arch/ppc/configs/pcm030_defconfig
++++ b/arch/ppc/configs/pcm030_defconfig
+@@ -31,7 +31,8 @@ CONFIG_CMD_UNCOMPRESS=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_ARCH_MPC5XXX=y
+ CONFIG_MACH_PHYCORE_MPC5200B_TINY=y
+ CONFIG_DRIVER_NET_MPC5200=y
+diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
+index d105584..2ee7f78 100644
+--- a/arch/sandbox/configs/sandbox_defconfig
++++ b/arch/sandbox/configs/sandbox_defconfig
+@@ -21,7 +21,8 @@ CONFIG_CMD_PARTITION=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_NET_TFTP=y
++CONFIG_CMD_TFTP=y
++CONFIG_FS_TFTP=y
+ CONFIG_DRIVER_NET_TAP=y
+ # CONFIG_SPI is not set
+ CONFIG_FS_CRAMFS=y
 -- 
 1.7.10.4
 
