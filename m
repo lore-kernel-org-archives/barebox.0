@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1THHnG-0005Yu-AI
- for barebox@lists.infradead.org; Thu, 27 Sep 2012 17:22:36 +0000
+ id 1THHnG-0005Yv-AJ
+ for barebox@lists.infradead.org; Thu, 27 Sep 2012 17:22:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 27 Sep 2012 19:22:24 +0200
-Message-Id: <1348766546-21547-2-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 27 Sep 2012 19:22:26 +0200
+Message-Id: <1348766546-21547-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1348766546-21547-1-git-send-email-s.hauer@pengutronix.de>
 References: <1348766546-21547-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,161 +21,495 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] net: Add tftp command which uses the new tftp code
+Subject: [PATCH 3/3] net: remove old tftp support
 To: barebox@lists.infradead.org
 
-Traditionally tftp is a command of its own. Since we can
-mount tftp as a filesystem we have duplicated the tftp code, the old
-code is used by the tftp command, the new by the filesystem support.
-This adds a tftp command based on the filesystem support to preserve
-backward compatibility. This allows us to remove the old tftp support
-in the next step.
+The old tftp suppoer has been replaced with filesystem based tftp
+support, so remove the old code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig  |    8 +++++
- commands/Makefile |    1 +
- commands/tftp.c   |  103 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 112 insertions(+)
- create mode 100644 commands/tftp.c
+ net/Kconfig  |    8 --
+ net/Makefile |    1 -
+ net/tftp.c   |  412 ----------------------------------------------------------
+ net/tftp.h   |   18 ---
+ 4 files changed, 439 deletions(-)
+ delete mode 100644 net/tftp.c
+ delete mode 100644 net/tftp.h
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 7969937..cf414200 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -222,6 +222,14 @@ config CMD_READLINK
- 	help
- 	  read value of a symbolic link
+diff --git a/net/Kconfig b/net/Kconfig
+index 3169d20..00fffb3 100644
+--- a/net/Kconfig
++++ b/net/Kconfig
+@@ -15,14 +15,6 @@ config NET_PING
+ 	bool
+ 	prompt "ping support"
  
-+config CMD_TFTP
-+	depends on FS_TFTP
-+	tristate
-+	prompt "tftp"
-+	help
-+	  barebox can mount tftp as a filesystem. This command is only needed to
-+	  preserve backward compatibility to the old tftp command.
-+
- endmenu
- 
- menu "console                       "
-diff --git a/commands/Makefile b/commands/Makefile
-index 7a36f60..610be55 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -75,3 +75,4 @@ obj-$(CONFIG_CMD_DIRNAME)	+= dirname.o
- obj-$(CONFIG_CMD_READLINK)	+= readlink.o
- obj-$(CONFIG_CMD_LN)		+= ln.o
- obj-$(CONFIG_CMD_CLK)		+= clk.o
-+obj-$(CONFIG_CMD_TFTP)		+= tftp.o
-diff --git a/commands/tftp.c b/commands/tftp.c
-new file mode 100644
-index 0000000..558b0ac
---- /dev/null
-+++ b/commands/tftp.c
-@@ -0,0 +1,103 @@
-+/*
-+ * tftp.c - (up)load tftp files
-+ *
-+ * Copyright (c) 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+#include <common.h>
-+#include <command.h>
-+#include <linux/stat.h>
-+#include <getopt.h>
-+#include <fcntl.h>
-+#include <libgen.h>
-+#include <fs.h>
-+#include <net.h>
-+#include <libbb.h>
-+
-+#define TFTP_MOUNT_PATH	"/.tftp_tmp_path"
-+
-+static int do_tftpb(int argc, char *argv[])
-+{
-+	char *source, *dest, *freep;
-+	int opt;
-+	unsigned long flags;
-+	int tftp_push = 0;
-+	int ret;
-+	IPaddr_t ip;
-+
-+	while ((opt = getopt(argc, argv, "p")) > 0) {
-+		switch(opt) {
-+		case 'p':
-+			tftp_push = 1;
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
-+	if (argc <= optind)
-+		return COMMAND_ERROR_USAGE;
-+
-+	source = argv[optind++];
-+
-+	if (argc == optind)
-+		dest = basename(source);
-+	else
-+		dest = argv[optind];
-+
-+	if (tftp_push) {
-+		dest = freep = asprintf("%s/%s", TFTP_MOUNT_PATH, dest);
-+		flags = O_RDONLY;
-+	} else {
-+		source = freep = asprintf("%s/%s", TFTP_MOUNT_PATH, source);
-+		flags = O_WRONLY | O_CREAT;
-+	}
-+
-+	if (!freep)
-+		return -ENOMEM;
-+
-+	ret = make_directory(TFTP_MOUNT_PATH);
-+	if (ret)
-+		goto err_free;
-+
-+	ip = net_get_serverip();
-+	ret = mount(ip_to_string(ip), "tftp", TFTP_MOUNT_PATH);
-+	if (ret)
-+		goto err_rmdir;
-+
-+	printk("%s: %s -> %s\n", __func__, source, dest);
-+
-+	ret = copy_file(source, dest, 1);
-+
-+	umount(TFTP_MOUNT_PATH);
-+
-+err_rmdir:
-+	rmdir(TFTP_MOUNT_PATH);
-+
-+err_free:
-+	free(freep);
-+
-+	return ret;
-+}
-+
-+BAREBOX_CMD_HELP_START(tftp)
-+BAREBOX_CMD_HELP_USAGE("tftp [-p] <source> [dest]\n")
-+BAREBOX_CMD_HELP_SHORT("Load a file from or upload to TFTP server.\n")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(tftp)
-+	.cmd		= do_tftpb,
-+	.usage		= "(up-)Load file using tftp protocol",
-+	BAREBOX_CMD_HELP(cmd_tftp_help)
-+BAREBOX_CMD_END
+-config NET_TFTP
+-	bool
+-	prompt "tftp support"
+-
+-config NET_TFTP_PUSH
+-	bool
+-	prompt "tftp push support"
+-
+ config NET_NETCONSOLE
+ 	bool
+ 	prompt "network console support"
+diff --git a/net/Makefile b/net/Makefile
+index 66dc564..416e30a 100644
+--- a/net/Makefile
++++ b/net/Makefile
+@@ -2,7 +2,6 @@ obj-$(CONFIG_NET_DHCP)	+= dhcp.o
+ obj-$(CONFIG_NET)	+= eth.o
+ obj-$(CONFIG_NET)	+= net.o
+ obj-$(CONFIG_NET_NFS)	+= nfs.o
+-obj-$(CONFIG_NET_TFTP)	+= tftp.o
+ obj-$(CONFIG_NET_PING)	+= ping.o
+ obj-$(CONFIG_NET_RESOLV)+= dns.o
+ obj-$(CONFIG_NET_NETCONSOLE) += netconsole.o
+diff --git a/net/tftp.c b/net/tftp.c
+deleted file mode 100644
+index 053b8f3..0000000
+--- a/net/tftp.c
++++ /dev/null
+@@ -1,412 +0,0 @@
+-/*
+- *	Copyright 1994, 1995, 2000 Neil Russell.
+- *	(See License)
+- *	Copyright 2000, 2001 DENX Software Engineering, Wolfgang Denk, wd@denx.de
+- */
+-
+-#include <common.h>
+-#include <command.h>
+-#include <net.h>
+-#include <driver.h>
+-#include <clock.h>
+-#include <fs.h>
+-#include <errno.h>
+-#include <libgen.h>
+-#include <fcntl.h>
+-#include <progress.h>
+-#include <getopt.h>
+-#include <fs.h>
+-#include <linux/stat.h>
+-#include <linux/err.h>
+-
+-#define TFTP_PORT	69		/* Well known TFTP port #		*/
+-#define TIMEOUT		5		/* Seconds to timeout for a lost pkt	*/
+-
+-/*
+- *	TFTP operations.
+- */
+-#define TFTP_RRQ	1
+-#define TFTP_WRQ	2
+-#define TFTP_DATA	3
+-#define TFTP_ACK	4
+-#define TFTP_ERROR	5
+-#define TFTP_OACK	6
+-
+-
+-static int		tftp_server_port;	/* The UDP port at their end		*/
+-static unsigned int	tftp_block;		/* packet sequence number		*/
+-static unsigned int	tftp_last_block;	/* last packet sequence number received */
+-static int		tftp_state;
+-static uint64_t		tftp_timer_start;
+-static int		tftp_err;
+-static unsigned		tftp_retries;
+-
+-#define STATE_RRQ	1
+-#define STATE_WRQ	2
+-#define STATE_RDATA	3
+-#define STATE_WDATA	4
+-#define STATE_OACK	5
+-#define STATE_LAST	6
+-#define STATE_DONE	7
+-
+-#define TFTP_BLOCK_SIZE		512		    /* default TFTP block size	*/
+-
+-static char *tftp_filename;
+-static struct net_connection *tftp_con;
+-static int tftp_fd;
+-static int tftp_size;
+-
+-#ifdef CONFIG_NET_TFTP_PUSH
+-static int tftp_push;
+-
+-static inline void do_tftp_push(int push)
+-{
+-	tftp_push = push;
+-}
+-
+-#else
+-
+-#define tftp_push	0
+-
+-static inline void do_tftp_push(int push)
+-{
+-}
+-#endif
+-
+-static int tftp_send(void)
+-{
+-	unsigned char *xp;
+-	int len = 0;
+-	uint16_t *s;
+-	unsigned char *pkt = net_udp_get_payload(tftp_con);
+-	int ret;
+-	static int last_len;
+-
+-	switch (tftp_state) {
+-	case STATE_RRQ:
+-	case STATE_WRQ:
+-		xp = pkt;
+-		s = (uint16_t *)pkt;
+-		if (tftp_state == STATE_RRQ)
+-			*s++ = htons(TFTP_RRQ);
+-		else
+-			*s++ = htons(TFTP_WRQ);
+-		pkt = (unsigned char *)s;
+-		pkt += sprintf((unsigned char *)pkt, "%s%coctet%ctimeout%c%d",
+-				tftp_filename, 0, 0, 0, TIMEOUT) + 1;
+-		len = pkt - xp;
+-		break;
+-
+-	case STATE_WDATA:
+-		if (!tftp_push)
+-			break;
+-
+-		if (tftp_last_block == tftp_block) {
+-			len = last_len;
+-			break;
+-		}
+-
+-		tftp_last_block = tftp_block;
+-		tftp_retries = 0;
+-		s = (uint16_t *)pkt;
+-		*s++ = htons(TFTP_DATA);
+-		*s++ = htons(tftp_block);
+-		len = read(tftp_fd, s, 512);
+-		if (len < 0) {
+-			perror("read");
+-			tftp_err = -errno;
+-			tftp_state = STATE_DONE;
+-			return tftp_err;
+-		}
+-		tftp_size += len;
+-		if (len < 512)
+-			tftp_state = STATE_LAST;
+-		len += 4;
+-		last_len = len;
+-		break;
+-
+-	case STATE_RDATA:
+-	case STATE_OACK:
+-		xp = pkt;
+-		s = (uint16_t *)pkt;
+-		*s++ = htons(TFTP_ACK);
+-		*s++ = htons(tftp_block);
+-		pkt = (unsigned char *)s;
+-		len = pkt - xp;
+-		break;
+-	}
+-
+-	tftp_timer_start = get_time_ns();
+-	show_progress(tftp_size);
+-	ret = net_udp_send(tftp_con, len);
+-
+-	return ret;
+-}
+-
+-static void tftp_handler(void *ctx, char *packet, unsigned len)
+-{
+-	uint16_t proto;
+-	uint16_t *s;
+-	char *pkt = net_eth_to_udp_payload(packet);
+-	struct udphdr *udp = net_eth_to_udphdr(packet);
+-	int ret;
+-
+-	len = net_eth_to_udplen(packet);
+-	if (len < 2)
+-		return;
+-
+-	len -= 2;
+-
+-	s = (uint16_t *)pkt;
+-	proto = *s++;
+-	pkt = (unsigned char *)s;
+-
+-	switch (ntohs(proto)) {
+-	case TFTP_RRQ:
+-	case TFTP_WRQ:
+-	default:
+-		break;
+-	case TFTP_ACK:
+-		if (!tftp_push)
+-			break;
+-
+-		tftp_block = ntohs(*(uint16_t *)pkt);
+-		if (tftp_block != tftp_last_block) {
+-			debug("ack %d != %d\n", tftp_block, tftp_last_block);
+-			break;
+-		}
+-		tftp_block++;
+-		if (tftp_state == STATE_LAST) {
+-			tftp_state = STATE_DONE;
+-			break;
+-		}
+-		tftp_con->udp->uh_dport = udp->uh_sport;
+-		tftp_state = STATE_WDATA;
+-		tftp_send();
+-		break;
+-
+-	case TFTP_OACK:
+-		debug("Got OACK: %s %s\n", pkt, pkt + strlen(pkt) + 1);
+-		tftp_server_port = ntohs(udp->uh_sport);
+-		tftp_con->udp->uh_dport = udp->uh_sport;
+-
+-		if (tftp_push) {
+-			/* send first block */
+-			tftp_state = STATE_WDATA;
+-			tftp_block = 1;
+-		} else {
+-			/* send ACK */
+-			tftp_state = STATE_OACK;
+-			tftp_block = 0;
+-		}
+-
+-		tftp_send();
+-
+-		break;
+-	case TFTP_DATA:
+-		if (len < 2)
+-			return;
+-		len -= 2;
+-		tftp_block = ntohs(*(uint16_t *)pkt);
+-
+-		if (tftp_state == STATE_RRQ)
+-			debug("Server did not acknowledge timeout option!\n");
+-
+-		if (tftp_state == STATE_RRQ || tftp_state == STATE_OACK) {
+-			/* first block received */
+-			tftp_state = STATE_RDATA;
+-			tftp_con->udp->uh_dport = udp->uh_sport;
+-			tftp_server_port = ntohs(udp->uh_sport);
+-			tftp_last_block = 0;
+-
+-			if (tftp_block != 1) {	/* Assertion */
+-				printf("error: First block is not block 1 (%d)\n",
+-					tftp_block);
+-				tftp_err = -EINVAL;
+-				tftp_state = STATE_DONE;
+-				break;
+-			}
+-		}
+-
+-		if (tftp_block == tftp_last_block)
+-			/* Same block again; ignore it. */
+-			break;
+-
+-		tftp_last_block = tftp_block;
+-		tftp_retries = 0;
+-
+-		if (!(tftp_block % 10))
+-			tftp_size++;
+-
+-		ret = write(tftp_fd, pkt + 2, len);
+-		if (ret < 0) {
+-			perror("write");
+-			tftp_err = -errno;
+-			tftp_state = STATE_DONE;
+-			return;
+-		}
+-
+-		/*
+-		 *	Acknowledge the block just received, which will prompt
+-		 *	the server for the next one.
+-		 */
+-		tftp_send();
+-
+-		if (len < TFTP_BLOCK_SIZE)
+-			tftp_state = STATE_DONE;
+-
+-		break;
+-
+-	case TFTP_ERROR:
+-		debug("\nTFTP error: '%s' (%d)\n",
+-					pkt + 2, ntohs(*(uint16_t *)pkt));
+-		switch (ntohs(*(uint16_t *)pkt)) {
+-		case 1: tftp_err = -ENOENT; break;
+-		case 2: tftp_err = -EACCES; break;
+-		default: tftp_err = -EINVAL; break;
+-		}
+-		tftp_state = STATE_DONE;
+-		break;
+-	}
+-}
+-
+-static int do_tftpb(int argc, char *argv[])
+-{
+-	char *localfile, *remotefile, *file1, *file2;
+-	int opt;
+-	struct stat s;
+-	unsigned long flags;
+-
+-	do_tftp_push(0);
+-	tftp_last_block = 0;
+-	tftp_size = 0;
+-	tftp_retries = 0;
+-
+-	while((opt = getopt(argc, argv, "p")) > 0) {
+-		switch(opt) {
+-		case 'p':
+-			do_tftp_push(1);
+-			break;
+-		}
+-	}
+-
+-	if (argc <= optind)
+-		return COMMAND_ERROR_USAGE;
+-
+-	file1 = argv[optind++];
+-
+-	if (argc == optind)
+-		file2 = basename(file1);
+-	else
+-		file2 = argv[optind];
+-
+-	if (tftp_push) {
+-		localfile = file1;
+-		remotefile = file2;
+-		stat(localfile, &s);
+-		flags = O_RDONLY;
+-	} else {
+-		localfile = file2;
+-		remotefile = file1;
+-		flags = O_WRONLY | O_CREAT;
+-	}
+-
+-	tftp_fd = open(localfile, flags);
+-	if (tftp_fd < 0) {
+-		perror("open");
+-		return 1;
+-	}
+-
+-	tftp_con = net_udp_new(net_get_serverip(), TFTP_PORT, tftp_handler, NULL);
+-	if (IS_ERR(tftp_con)) {
+-		tftp_err = PTR_ERR(tftp_con);
+-		goto out_close;
+-	}
+-
+-	tftp_filename = remotefile;
+-
+-	printf("TFTP %s server %s ('%s' -> '%s')\n",
+-			tftp_push ? "to" : "from",
+-			ip_to_string(net_get_serverip()),
+-			file1, file2);
+-
+-	init_progression_bar(tftp_push ? s.st_size : 0);
+-
+-	tftp_timer_start = get_time_ns();
+-	tftp_state = tftp_push ? STATE_WRQ : STATE_RRQ;
+-	tftp_block = 1;
+-
+-	tftp_err = tftp_send();
+-	if (tftp_err)
+-		goto out_unreg;
+-
+-	while (tftp_state != STATE_DONE) {
+-		if (ctrlc()) {
+-			tftp_err = -EINTR;
+-			break;
+-		}
+-		net_poll();
+-		if (is_timeout(tftp_timer_start, SECOND)) {
+-			show_progress(-1);
+-			tftp_err = tftp_send();
+-			if (tftp_err)
+-				goto out_unreg;
+-			tftp_retries++;
+-		}
+-
+-		/* Wait for two TIMEOUT periods and add some */
+-		if (tftp_retries > 2 * TIMEOUT + 1) {
+-			tftp_err = -ETIMEDOUT;
+-			break;
+-		}
+-	}
+-out_unreg:
+-	net_unregister(tftp_con);
+-out_close:
+-	close(tftp_fd);
+-
+-	if (tftp_err) {
+-		printf("\ntftp failed: %s\n", strerror(-tftp_err));
+-		if (!tftp_push)
+-			unlink(localfile);
+-	}
+-
+-	printf("\n");
+-
+-	return tftp_err == 0 ? 0 : 1;
+-}
+-
+-BAREBOX_CMD_HELP_START(tftp)
+-#ifdef CONFIG_NET_TFTP_PUSH
+-BAREBOX_CMD_HELP_USAGE("tftp <remotefile> [localfile], tftp -p <localfile> [remotefile]\n")
+-BAREBOX_CMD_HELP_SHORT("Load a file from or upload to TFTP server.\n")
+-BAREBOX_CMD_HELP_END
+-#else
+-BAREBOX_CMD_HELP_USAGE("tftp <remotefile> [localfile]\n")
+-BAREBOX_CMD_HELP_SHORT("Load a file from a TFTP server.\n")
+-BAREBOX_CMD_HELP_END
+-#endif
+-
+-/**
+- * @page tftp_command
+-
+-The second file argument can be skipped in which case the first filename
+-is used (without the directory part).
+-
+-\<localfile> can be the local filename or a device file under /dev.
+-This also works for flash memory. Refer to \ref erase_command and \ref
+-unprotect_command for flash preparation.
+-
+-\note This command is available only if enabled in menuconfig.
+- */
+-
+-BAREBOX_CMD_START(tftp)
+-	.cmd		= do_tftpb,
+-	.usage		=
+-#ifdef CONFIG_NET_TFTP_PUSH
+-			"(up-)"
+-#endif
+-			"Load file using tftp protocol",
+-	BAREBOX_CMD_HELP(cmd_tftp_help)
+-BAREBOX_CMD_END
+-
+diff --git a/net/tftp.h b/net/tftp.h
+deleted file mode 100644
+index 7fed2e6..0000000
+--- a/net/tftp.h
++++ /dev/null
+@@ -1,18 +0,0 @@
+-/*
+- *	LiMon - BOOTP/TFTP.
+- *
+- *	Copyright 1994, 1995, 2000 Neil Russell.
+- *	(See License)
+- */
+-
+-#ifndef __TFTP_H__
+-#define __TFTP_H__
+-
+-/**********************************************************************/
+-/*
+- *	Global functions and variables.
+- */
+-
+-/**********************************************************************/
+-
+-#endif /* __TFTP_H__ */
 -- 
 1.7.10.4
 
