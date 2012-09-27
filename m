@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1THHg6-0004sx-3c
- for barebox@lists.infradead.org; Thu, 27 Sep 2012 17:15:10 +0000
+ id 1THHhZ-0005A2-Uh
+ for barebox@lists.infradead.org; Thu, 27 Sep 2012 17:16:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 27 Sep 2012 19:15:07 +0200
-Message-Id: <1348766107-19261-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 27 Sep 2012 19:16:39 +0200
+Message-Id: <1348766199-19802-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,34 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM i.MX51 babbage: Add delay after phy reset
+Subject: [PATCH] ARM i.MX: add debug for iomux-v3
 To: barebox@lists.infradead.org
 
-Since we have phylib the phy won't be detected after poweron. It seems
-the phy needs some time after reset.
+iomux setup often is the source of great fun. Add some debug printf
+for it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx51-pdk/board.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/iomux-v3.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
-index 8c6bba5..3a8e5ea 100644
---- a/arch/arm/boards/freescale-mx51-pdk/board.c
-+++ b/arch/arm/boards/freescale-mx51-pdk/board.c
-@@ -227,9 +227,11 @@ static void babbage_power_init(void)
- 	val = 0x49249;
- 	mc13xxx_reg_write(mc13xxx, MC13892_REG_MODE_1, val);
+diff --git a/arch/arm/mach-imx/iomux-v3.c b/arch/arm/mach-imx/iomux-v3.c
+index 680d260..5d7a244 100644
+--- a/arch/arm/mach-imx/iomux-v3.c
++++ b/arch/arm/mach-imx/iomux-v3.c
+@@ -37,6 +37,10 @@ int mxc_iomux_v3_setup_pad(iomux_v3_cfg_t pad)
+ 	u32 pad_ctrl_ofs = (pad & MUX_PAD_CTRL_OFS_MASK) >> MUX_PAD_CTRL_OFS_SHIFT;
+ 	u32 pad_ctrl = (pad & MUX_PAD_CTRL_MASK) >> MUX_PAD_CTRL_SHIFT;
  
--	udelay(500);
-+	udelay(200);
- 
- 	gpio_set_value(GPIO_LAN8700_RESET, 1);
++	debug("%s: mux 0x%08x -> 0x%04x pad: 0x%08x -> 0x%04x sel_inp: 0x%08x -> 0x%04x\n",
++			__func__, mux_mode, mux_ctrl_ofs, pad_ctrl, pad_ctrl_ofs, sel_input,
++			sel_input_ofs);
 +
-+	mdelay(50);
- }
+ 	if (mux_ctrl_ofs)
+ 		__raw_writel(mux_mode, base + mux_ctrl_ofs);
  
- static int f3s_devices_init(void)
 -- 
 1.7.10.4
 
