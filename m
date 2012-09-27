@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from [2a02:8b8:656::164] (helo=bar.sig21.net)
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TH0XH-0007cf-6O
- for barebox@lists.infradead.org; Wed, 26 Sep 2012 22:56:56 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu, 27 Sep 2012 00:56:46 +0200
-Message-Id: <1348700206-30581-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ id 1THBPh-0007K4-LW
+ for barebox@lists.infradead.org; Thu, 27 Sep 2012 10:33:50 +0000
+Date: Thu, 27 Sep 2012 12:33:23 +0200
+From: Johannes Stezenbach <js@sig21.net>
+Message-ID: <20120927103323.GA14329@sig21.net>
+References: <1348700206-30581-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <20120927095312.GU1322@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20120927095312.GU1322@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,105 +19,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] [RFC] i2c-imx: send a soft bus reset during probe
-To: barebox@lists.infradead.org
-Cc: kernel@pengutronix.de
+Subject: Re: [PATCH] [RFC] i2c-imx: send a soft bus reset during probe
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, kernel@pengutronix.de, Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 
-SWYgYW4gaTJjIHNsYXZlIHB1bGxzIFNEQSBsb3cgd2hlbiB0aGUgU29DIHdhbnRzIHRvIHN0YXJ0
-IGEgdHJhbnNmZXIsIGl0CmNhbm5vdCBnZXQgdGhlIGJ1cy4gVGhpcyBjYW4gaGFwcGVuIGZvciBl
-eGFtcGxlIGlmIHRoZSBTb0MgaXMgcmVzZXQgd2hlbgppdCBqdXN0IHN1Y2Nlc3NmdWxseSBhZGRy
-ZXNzZWQgYSBzbGF2ZSBidXQgYmVmb3JlIGl0IHJpc2VzIFNDTCBmb3IgdGhlCnNsYXZlIHRvIGFj
-ay4gQ3VycmVudGx5IHRoaXMgbWFrZXMgdGhlIGRyaXZlciByZWZ1c2UgdG8gZG8gYW55dGhpbmcu
-IFlvdQpjYW4gZm9yY2UgdGhpcyBzaXR1YXRpb24gd2l0aCB0aGUgZm9sbG93aW5nIGNvZGUgYXNz
-dW1pbmcgeW91IGhhdmUgYQpkZXZpY2Ugb24gYWRkcmVzcyAweDUwOgoKCS8qIGdlbmVyYXRlIGEg
-c3RhcnQgY29uZGl0aW9uICovCglncGlvX2RpcmVjdGlvbl9pbnB1dChJMkNTQ0wpOwoJZ3Bpb19k
-aXJlY3Rpb25faW5wdXQoSTJDU0RBKTsKCW1kZWxheSgxKTsKCWdwaW9fZGlyZWN0aW9uX291dHB1
-dChJMkNTREEsIDApOwoKCW1kZWxheSgxKTsKCgkvKiBhZGRyZXNzIGRldmljZSAweDUwICovCglm
-b3IgKGkgPSAwOyBpIDwgODsgKytpKSB7CgkJZ3Bpb19kaXJlY3Rpb25fb3V0cHV0KEkyQ1NDTCwg
-MCk7CgkJbWRlbGF5KDEpOwoJCWlmICgoMHg1MCA8PCAxKSA+PiAoNyAtIGkpKQoJCQlncGlvX2Rp
-cmVjdGlvbl9pbnB1dChJMkNTREEpOwoJCWVsc2UKCQkJZ3Bpb19kaXJlY3Rpb25fb3V0cHV0KEky
-Q1NEQSwgMCk7CgkJbWRlbGF5KDEpOwoJCWdwaW9fZGlyZWN0aW9uX2lucHV0KEkyQ1NDTCk7CgkJ
-bWRlbGF5KDEpOwoJfQoJZ3Bpb19kaXJlY3Rpb25fb3V0cHV0KEkyQ1NDTCwgMCk7CgoJcmVzZXRf
-Y3B1KDApOwoKVG8gY2lyY3VtdmVudCB0aGlzIHNpdHVhdGlvbiBqdXN0IGNsb2NrIHRoZSBidXMg
-OSB0aW1lcyB3aXRob3V0IHB1bGxpbmcKb24gU0RBIGZvbGxvd2luZyBhIHN0YXJ0IGNvbmRpdGlv
-biBhbmQgZmluYWxpemluZyB3aXRoIGEgcmVwZWF0ZWQgc3RhcnQgYW5kCnN0b3AuIFRoaXMgaXMg
-c3VnZ2VzdGVkIGluIGFuIEF0bWVsIGF0MjQgZGF0YXNoZWV0ICg1MjI2Ry1TRUVQUi0xMS8wOSk6
-CgogICAgICAgIDItV0lSRSBTT0ZUV0FSRSBSRVNFVDogQWZ0ZXIgYW4gaW50ZXJydXB0aW9uIGlu
-IHByb3RvY29sLCBwb3dlciBsb3NzIG9yCiAgICAgICAgc3lzdGVtIHJlc2V0LCBhbnkgMi13aXJl
-IHBhcnQgY2FuIGJlIHJlc2V0IGJ5IGZvbGxvd2luZyB0aGVzZSBzdGVwczoKICAgICAgICAoYSkg
-Q3JlYXRlIGEgc3RhcnQgYml0IGNvbmRpdGlvbiwKICAgICAgICAoYikgQ2xvY2sgOSBjeWNsZXMs
-CiAgICAgICAgKGMpIENyZWF0ZSBhbm90aGVyIHN0YXJ0IGJpdCBmb2xsb3dlZCBieSBhIHN0b3Ag
-Yml0IGNvbmRpdGlvbiBhcwogICAgICAgICAgICBzaG93biBiZWxvdy4gVGhlIGRldmljZSBpcyBy
-ZWFkeSBmb3IgdGhlIG5leHQgY29tbXVuaWNhdGlvbgogICAgICAgICAgICBhZnRlciB0aGUgYWJv
-dmUgc3RlcHMgaGF2ZSBiZWVuIGNvbXBsZXRlZC4KCiAgICAgICAgU0NMIC/Cr1xfL8KvXF8vwq9c
-Xy/Cr1xfL8KvXF8vwq9cXy/Cr1xfL8KvXF8vwq9cXy/Cr1xfL8KvXF8vwq9cCiAgICAgICAgU0RB
-IMKvXF8vwq/Cr8Kvwq/Cr8Kvwq/Cr8Kvwq/Cr8Kvwq/Cr8Kvwq/Cr8Kvwq/Cr8Kvwq/Cr8Kvwq/C
-r8Kvwq/Cr8Kvwq/Cr8Kvwq/Cr8Kvwq9cX19fL8KvCiAgICAgICAgICAgICBTICAgMSAgIDIgICAz
-ICAgNCAgIDUgICA2ICAgNyAgIDggICA5ICAgU3IgIFAKClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVp
-bmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQpIZWxsbywKCkkg
-ZGV2ZWxvcHBlZCB0aGlzIHBhdGNoIG9uIGFuIG9sZGVyIGJhcmVib3ggdmVyc2lvbiAoMjAxMi4w
-NC4wKSBhbmQgaXQKZG9lc24ndCBmaXQgb24gY3VycmVudCBtYXN0ZXIgKG9yIG5leHQpLiBCdXQg
-dGhhdCdzIG5vdCB0aGF0IGJhZCBiZWNhdXNlCml0J3MgYW4gUkZDIHBhdGNoIGFuZCBJIHdpbGwg
-aGFwcGlseSByZXNlbmQgaWYgdGhlIGlkZWEgaXMgYWNjZXB0ZWQuCgpUaGlzIHBhdGNoIHNvbHZl
-cyB0aGUgYnVzIHN0YWxsIGRlc2NyaWJlZCBpbiB0aGUgY29tbWl0IG1lc3NhZ2UgYWJvdmUKYW5k
-IEkgdGhpbmsgaXQgY2Fubm90IGRvIGFueSBoYXJtOgogLSBpZiBubyBzbGF2ZSBvY2N1cGllcyB0
-aGUgYnVzLCBzb21ldGhpbmcgc3RyYW5nZSBtaWdodCBoYXBwZW4gaWYgdGhlcmUKICAgaXMgYSBz
-bGF2ZSB3aXRoIGFkZHJlc3MgMHg3Zi4gVGhpcyBhZGRyZXNzIGlzIHJlc2VydmVkIHRob3VnaCBp
-bgogICB0aGUgScKyQy1CdXMgU3BlY2lmaWNhdGlvbiBWZXJzaW9uIDIuMS4KIC0gaWYgYSBzbGF2
-ZSBpcyBvdXQgb2Ygc3luYyBhbmQgcHVsbHMgU0RBIGxvdyBkdXJpbmcgdGhlIChpbnRlbmRlZCkg
-UwogICBhdCB0aGUgYmVnaW5uaW5nLCBubyBzbGF2ZSB3aWxsIGRldGVjdCBhIHN0YXJ0IGNvbmRp
-dGlvbi4gU28gdGhlCiAgIGNsb2NrcyBvbmx5IGFmZmVjdCB0aGUgKHNpbmdsZT8pIHNsYXZlIHRo
-YXQgaXMgY3VycmVudGx5IGFjdGl2ZS4gVGhpcwogICBvbmUgY29tcGxldGVzIGl0cyBjeWNsZSBk
-dXJpbmcgdGhlIDkgY2xvY2tzLCBpZ25vcmVzIHBvdGVudGlhbCBjbG9jawogICBwdWxzZXMgYXQg
-dGhlIGVuZCBvZiBpdHMgY3ljbGUgYW5kIHRoZSBmb2xsb3dpbmcgU3IgcmVzZXRzIHRoZSBzdGF0
-ZQogICBtYWNoaW5lLgoKVGhpcyBzb3VuZHMgcmVhc29uYWJsZSB0byBtZSAoYW5kIG9idmlvdXNs
-eSBzb21lIGVuZ2luZWVycyBhdCBBdG1lbCksCmJ1dCBJJ2Qgc3RpbGwgd2VsY29tZSBzb21lIG1v
-cmUgZXllcyBhbmQgdGhvdWdodHMgb24gdGhpcy4KCkFsc28gSSBpbnRlbmQgZG8gdmVyaWZ5IHRo
-ZSBpbnRlbmRlZCBiZWhhdmlvdXIgd2l0aCBhbiBvc2NpbGxvc2NvcGUuCgpCZXN0IHJlZ2FyZHMK
-VXdlCgogZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1pbXguYyB8ICAgMzkgKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKystLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMzIgaW5zZXJ0aW9ucygr
-KSwgNyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2kyYy9idXNzZXMvaTJjLWlt
-eC5jIGIvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1pbXguYwppbmRleCBkYTYyMThmLi5iYTc3NGI5
-IDEwMDY0NAotLS0gYS9kcml2ZXJzL2kyYy9idXNzZXMvaTJjLWlteC5jCisrKyBiL2RyaXZlcnMv
-aTJjL2J1c3Nlcy9pMmMtaW14LmMKQEAgLTIwNywxMiArMjA3LDkgQEAgc3RhdGljIGludCBpMmNf
-aW14X2Fja2VkKHN0cnVjdCBpMmNfYWRhcHRlciAqYWRhcHRlcikKIAlyZXR1cm4gMDsKIH0KIAot
-c3RhdGljIGludCBpMmNfaW14X3N0YXJ0KHN0cnVjdCBpMmNfYWRhcHRlciAqYWRhcHRlcikKK3N0
-YXRpYyB2b2lkIF9faTJjX2lteF9zdGFydChzdHJ1Y3QgaW14X2kyY19zdHJ1Y3QgKmkyY19pbXgs
-IHVuc2lnbmVkIGludCAqaTJjcikKIHsKLQlzdHJ1Y3QgaW14X2kyY19zdHJ1Y3QgKmkyY19pbXgg
-PSB0b19pbXhfaTJjX3N0cnVjdChhZGFwdGVyKTsKIAl2b2lkIF9faW9tZW0gKmJhc2UgPSBpMmNf
-aW14LT5iYXNlOwotCXVuc2lnbmVkIGludCB0ZW1wID0gMDsKLQlpbnQgcmVzdWx0OwogCiAJd3Jp
-dGViKGkyY19pbXgtPmlmZHIsIGJhc2UgKyBJTVhfSTJDX0lGRFIpOwogCS8qIEVuYWJsZSBJMkMg
-Y29udHJvbGxlciAqLwpAQCAtMjIzLDkgKzIyMCwxOSBAQCBzdGF0aWMgaW50IGkyY19pbXhfc3Rh
-cnQoc3RydWN0IGkyY19hZGFwdGVyICphZGFwdGVyKQogCXVkZWxheSgxMDApOwogCiAJLyogU3Rh
-cnQgSTJDIHRyYW5zYWN0aW9uICovCi0JdGVtcCA9IHJlYWRiKGJhc2UgKyBJTVhfSTJDX0kyQ1Ip
-OwotCXRlbXAgfD0gSTJDUl9NU1RBOwotCXdyaXRlYih0ZW1wLCBiYXNlICsgSU1YX0kyQ19JMkNS
-KTsKKwkqaTJjciA9IHJlYWRiKGJhc2UgKyBJTVhfSTJDX0kyQ1IpOworCSppMmNyIHw9IEkyQ1Jf
-TVNUQTsKKwl3cml0ZWIoKmkyY3IsIGJhc2UgKyBJTVhfSTJDX0kyQ1IpOworfQorCitzdGF0aWMg
-aW50IGkyY19pbXhfc3RhcnQoc3RydWN0IGkyY19hZGFwdGVyICphZGFwdGVyKQoreworCXN0cnVj
-dCBpbXhfaTJjX3N0cnVjdCAqaTJjX2lteCA9IHRvX2lteF9pMmNfc3RydWN0KGFkYXB0ZXIpOwor
-CWludCByZXN1bHQ7CisJdW5zaWduZWQgaW50IHRlbXA7CisJdm9pZCBfX2lvbWVtICpiYXNlID0g
-aTJjX2lteC0+YmFzZTsKKworCV9faTJjX2lteF9zdGFydChpMmNfaW14LCAmdGVtcCk7CiAKIAly
-ZXN1bHQgPSBpMmNfaW14X2J1c19idXN5KGFkYXB0ZXIsIDEpOwogCWlmIChyZXN1bHQpCkBAIC0y
-MzksNiArMjQ2LDIyIEBAIHN0YXRpYyBpbnQgaTJjX2lteF9zdGFydChzdHJ1Y3QgaTJjX2FkYXB0
-ZXIgKmFkYXB0ZXIpCiAJcmV0dXJuIHJlc3VsdDsKIH0KIAorc3RhdGljIHZvaWQgaTJjX2lteF9i
-dXNyZXNldChzdHJ1Y3QgaW14X2kyY19zdHJ1Y3QgKmkyY19pbXgpCit7CisJdm9pZCBfX2lvbWVt
-ICpiYXNlID0gaTJjX2lteC0+YmFzZTsKKwl1bnNpZ25lZCBpbnQgdGVtcDsKKworCV9faTJjX2lt
-eF9zdGFydChpMmNfaW14LCAmdGVtcCk7CisKKwkvKiBzZW5kIDkgY2xvY2tzIHdpdGhvdXQgYW55
-dGhpbmcgb24gU0RBIGZvbGxvd2VkIGJ5IFNyICovCisJd3JpdGViKHRlbXAgfCBJMkNSX1JTVEEs
-IGJhc2UgKyBJTVhfSTJDX0kyQ1IpOworCisJd3JpdGViKDB4ZmYsIGJhc2UgKyBJTVhfSTJDX0ky
-RFIpOworCisJLyogc2VuZCBhIFAgKi8KKwl3cml0ZWIoMCwgaTJjX2lteC0+YmFzZSArIElNWF9J
-MkNfSTJDUik7Cit9CisKIHN0YXRpYyB2b2lkIGkyY19pbXhfc3RvcChzdHJ1Y3QgaTJjX2FkYXB0
-ZXIgKmFkYXB0ZXIpCiB7CiAJc3RydWN0IGlteF9pMmNfc3RydWN0ICppMmNfaW14ID0gdG9faW14
-X2kyY19zdHJ1Y3QoYWRhcHRlcik7CkBAIC00ODUsNiArNTA4LDggQEAgc3RhdGljIGludCBfX2lu
-aXQgaTJjX2lteF9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKnBkZXYpCiAJd3JpdGViKDAsIGkyY19p
-bXgtPmJhc2UgKyBJTVhfSTJDX0kyQ1IpOwogCXdyaXRlYigwLCBpMmNfaW14LT5iYXNlICsgSU1Y
-X0kyQ19JMlNSKTsKIAorCWkyY19pbXhfYnVzcmVzZXQoaTJjX2lteCk7CisKIAkvKiBBZGQgSTJD
-IGFkYXB0ZXIgKi8KIAlyZXQgPSBpMmNfYWRkX251bWJlcmVkX2FkYXB0ZXIoJmkyY19pbXgtPmFk
-YXB0ZXIpOwogCWlmIChyZXQgPCAwKSB7Ci0tIAoxLjcuMTAuNAoKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+Hi,
+
+On Thu, Sep 27, 2012 at 11:53:12AM +0200, Sascha Hauer wrote:
+> On Thu, Sep 27, 2012 at 12:56:46AM +0200, Uwe Kleine-K=F6nig wrote:
+> > =
+
+> >         2-WIRE SOFTWARE RESET: After an interruption in protocol, power=
+ loss or
+> >         system reset, any 2-wire part can be reset by following these s=
+teps:
+> >         (a) Create a start bit condition,
+> >         (b) Clock 9 cycles,
+> >         (c) Create another start bit followed by a stop bit condition as
+> >             shown below. The device is ready for the next communication
+> >             after the above steps have been completed.
+> > =
+
+> >         SCL /=AF\_/=AF\_/=AF\_/=AF\_/=AF\_/=AF\_/=AF\_/=AF\_/=AF\_/=AF\=
+_/=AF\_/=AF\
+> >         SDA =AF\_/=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=
+=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF=AF\___/=AF
+> >              S   1   2   3   4   5   6   7   8   9   Sr  P
+> > =
+
+> =
+
+> Sounds good. We often have this problem.
+> =
+
+> I wonder if it's worth to have this as a general callback in the i2c
+> layer.
+
+I wonder how this relates to the SW reset and Bus Clear
+procedures from the I2C spec?
+http://www.nxp.com/documents/user_manual/UM10204.pdf
+
+I think the above is not a SW reset, essentially it
+sends 9 clocks to make the slave release SDA and then
+it sends a STOP to get the bus into an idle state.
+
+Johannes
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
