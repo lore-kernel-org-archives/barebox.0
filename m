@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo4.mail-out.ovh.net ([188.165.33.109]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1THQLt-0000Ru-04
- for barebox@lists.infradead.org; Fri, 28 Sep 2012 02:30:54 +0000
-Received: from mail403.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 216E0104EF3C
- for <barebox@lists.infradead.org>; Fri, 28 Sep 2012 04:36:53 +0200 (CEST)
-Date: Fri, 28 Sep 2012 04:28:21 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120928022821.GF26553@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1THV3N-0004ea-Mt
+ for barebox@lists.infradead.org; Fri, 28 Sep 2012 07:32:06 +0000
+Date: Fri, 28 Sep 2012 09:32:03 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120928073203.GZ1322@pengutronix.de>
+References: <1348613994-1793-1-git-send-email-vicencb@gmail.com>
+ <1348613994-1793-5-git-send-email-vicencb@gmail.com>
+ <20120926074516.GJ1322@pengutronix.de>
+ <CAAMcf8CnnKG9WDk8PxsCjwcyVRTE11P1THeYtomAcfEawt0Jxg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <CAAMcf8CnnKG9WDk8PxsCjwcyVRTE11P1THeYtomAcfEawt0Jxg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,22 +25,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: issue patch in next net/eth: fix link handling
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/7] Add USB booting capabilities to OMAP
+To: vj <vicencb@gmail.com>
+Cc: barebox@lists.infradead.org
 
-HI,
+On Fri, Sep 28, 2012 at 02:27:54AM +0200, vj wrote:
+> Hi Sascha,
+>  I've been playing with passing some data from first to second stage using
+> Jan's patches.
+> It worked fine, but in my case I want to store this data on a global
+> variable, which is cleared as it's in the BSS.
+> There is a clean workarround to this issue?
 
-	The patch is next
-	net/eth: fix link handling
+The workaound would be to initialize the variable so it can't be in bss.
+I'm still looking for a better way to do it.
 
-	was NEVER send to the ML
+Sascha
 
-	IIRC I was the author of the first version and this disapear
 
-	Uwe and I just get this discussion on the kernel ML about patch update
-
-Best Regards,
-J.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
