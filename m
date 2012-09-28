@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1THbPR-0001N4-Kg
- for barebox@lists.infradead.org; Fri, 28 Sep 2012 14:19:18 +0000
-Date: Fri, 28 Sep 2012 16:19:15 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20120928141915.GF16606@pengutronix.de>
-References: <1348700206-30581-1-git-send-email-u.kleine-koenig@pengutronix.de>
- <20120927095312.GU1322@pengutronix.de>
+ id 1THY7l-00026c-Jw
+ for barebox@lists.infradead.org; Fri, 28 Sep 2012 10:48:51 +0000
+Date: Fri, 28 Sep 2012 12:48:46 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20120928104846.GI24458@pengutronix.de>
+References: <20120913172220.GB20834@game.jcrosoft.org>
+ <1347558023-25680-1-git-send-email-plagnioj@jcrosoft.com>
+ <1347558023-25680-7-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120927095312.GU1322@pengutronix.de>
+In-Reply-To: <1347558023-25680-7-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,51 +20,91 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] [RFC] i2c-imx: send a soft bus reset during probe
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, kernel@pengutronix.de
+Subject: Re: [PATCH 7/7] defaultenv-2: add boot sequence
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-SGVsbG8sCgpPbiBUaHUsIFNlcCAyNywgMjAxMiBhdCAxMTo1MzoxMkFNICswMjAwLCBTYXNjaGEg
-SGF1ZXIgd3JvdGU6Cj4gU291bmRzIGdvb2QuIFdlIG9mdGVuIGhhdmUgdGhpcyBwcm9ibGVtLgo+
-IAo+IEkgd29uZGVyIGlmIGl0J3Mgd29ydGggdG8gaGF2ZSB0aGlzIGFzIGEgZ2VuZXJhbCBjYWxs
-YmFjayBpbiB0aGUgaTJjCj4gbGF5ZXIuClVuZm9ydHVuYXRlbHkgbXkgcGF0Y2ggZG9lc24ndCB3
-b3JrLiBUaGUgcHJvYmxlbSBpcyB0aGF0IGlmIGFuIGkyYyBzbGF2ZQppcyBzdHVjayB3aXRoIHNk
-YSBsb3cgdGhlIGlteCBkaWFnbm9zZXMgYSBsb3NzIG9mIGFyYml0cmF0aW9uIGJlZm9yZQpldmVu
-IHRyeWluZyB0byBzdGFydCBwdWxsaW5nIFNEQSBsb3cgdG8gY3JlYXRlIGEgc3RhcnQgaW5kaWNh
-dGlvbi4KClNvIEkgaGF2ZSB0byB1c2UgZ3BpbyBiaXRiYW5naW5nIGFuZCB0aGVyZSBpcyBubyBj
-aGFuY2UgdG8gaW1wbGVtZW50CnRoaXMgaW4gZ2VuZXJpYyBjb2RlIG9ubHkuCgo+IE9uIFRodSwg
-U2VwIDI3LCAyMDEyIGF0IDEyOjU2OjQ2QU0gKzAyMDAsIFV3ZSBLbGVpbmUtS8O2bmlnIHdyb3Rl
-Ogo+ID4gSWYgYW4gaTJjIHNsYXZlIHB1bGxzIFNEQSBsb3cgd2hlbiB0aGUgU29DIHdhbnRzIHRv
-IHN0YXJ0IGEgdHJhbnNmZXIsIGl0Cj4gPiBjYW5ub3QgZ2V0IHRoZSBidXMuIFRoaXMgY2FuIGhh
-cHBlbiBmb3IgZXhhbXBsZSBpZiB0aGUgU29DIGlzIHJlc2V0IHdoZW4KPiA+IGl0IGp1c3Qgc3Vj
-Y2Vzc2Z1bGx5IGFkZHJlc3NlZCBhIHNsYXZlIGJ1dCBiZWZvcmUgaXQgcmlzZXMgU0NMIGZvciB0
-aGUKPiA+IHNsYXZlIHRvIGFjay4gQ3VycmVudGx5IHRoaXMgbWFrZXMgdGhlIGRyaXZlciByZWZ1
-c2UgdG8gZG8gYW55dGhpbmcuIFlvdQo+ID4gY2FuIGZvcmNlIHRoaXMgc2l0dWF0aW9uIHdpdGgg
-dGhlIGZvbGxvd2luZyBjb2RlIGFzc3VtaW5nIHlvdSBoYXZlIGEKPiA+IGRldmljZSBvbiBhZGRy
-ZXNzIDB4NTA6Cj4gPiAKQlRXLCBwYXJ0IG9mIHRoZSByZWFzb24gSSBmaXJzdCB0aG91Z2h0IG15
-IHBhdGNoIHdvdWxkIGhlbHAgaXMgdGhhdCB0aGlzCnJlY2lwZSBpcyB3cm9uZy4uLgoKPiA+IAkv
-KiBnZW5lcmF0ZSBhIHN0YXJ0IGNvbmRpdGlvbiAqLwo+ID4gCWdwaW9fZGlyZWN0aW9uX2lucHV0
-KEkyQ1NDTCk7Cj4gPiAJZ3Bpb19kaXJlY3Rpb25faW5wdXQoSTJDU0RBKTsKPiA+IAltZGVsYXko
-MSk7Cj4gPiAJZ3Bpb19kaXJlY3Rpb25fb3V0cHV0KEkyQ1NEQSwgMCk7Cj4gPiAKPiA+IAltZGVs
-YXkoMSk7Cj4gPiAKPiA+IAkvKiBhZGRyZXNzIGRldmljZSAweDUwICovCj4gPiAJZm9yIChpID0g
-MDsgaSA8IDg7ICsraSkgewo+ID4gCQlncGlvX2RpcmVjdGlvbl9vdXRwdXQoSTJDU0NMLCAwKTsK
-PiA+IAkJbWRlbGF5KDEpOwo+ID4gCQlpZiAoKDB4NTAgPDwgMSkgPj4gKDcgLSBpKSkKLi4uIFRo
-aXMgaGFzIHRvIHJlYWQ6IGlmICgoMHg1MCA8PCAxKSAmICgxIDw8ICg3IC0gaSkpKSB0byBhY3R1
-YWxseQpzdHVjayB0aGUgZGV2aWNlIHdpdGggYWRkcmVzcyAweDUwLgoKPiA+IAkJCWdwaW9fZGly
-ZWN0aW9uX2lucHV0KEkyQ1NEQSk7Cj4gPiAJCWVsc2UKPiA+IAkJCWdwaW9fZGlyZWN0aW9uX291
-dHB1dChJMkNTREEsIDApOwo+ID4gCQltZGVsYXkoMSk7Cj4gPiAJCWdwaW9fZGlyZWN0aW9uX2lu
-cHV0KEkyQ1NDTCk7Cj4gPiAJCW1kZWxheSgxKTsKPiA+IAl9Cj4gPiAJZ3Bpb19kaXJlY3Rpb25f
-b3V0cHV0KEkyQ1NDTCwgMCk7Cj4gPiAKPiA+IAlyZXNldF9jcHUoMCk7Cj4gPiAKKEFuZCBteSBi
-dXMgcmVzZXQgdXNlZCB0byBoZWxwIGJlY2F1c2UgSSBhc3NlcnRlZCB0aGF0IHRoZSBwaW5tdXhp
-bmcgaXMKcmlnaHQgYmVmb3JlIHRoZSByZXNldCBidXQgbm90IGFmdGVyIHRoaXMgc3R1Y2sgcmVj
-aXBlLCBzaWdoIOKKmV/il44uKQoKQmVzdCByZWdhcmRzClV3ZQoKLS0gClBlbmd1dHJvbml4IGUu
-Sy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8IFV3ZSBLbGVpbmUtS8O2bmlnICAgICAgICAg
-ICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8v
-d3d3LnBlbmd1dHJvbml4LmRlLyAgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
-YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
-eAo=
+On Thu, Sep 13, 2012 at 07:40:23PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Boot will boot run sequentially the script in /env/boot.d
+> 
+> drop global.boot.default as we start the boot sequence by default
+> 
+> update the current board using the defaultenv-2 at the sametime
+> 
+
+I'm going to drop this one in its current form.
+
+The way it is written is just too confusing. We have a sequence=[y|n]
+which is set in multiple places, then after evaluating 60 lines of
+shell code the script eventually may call itself, which again sets
+sequence to other values.
+
+Currently my babbage board (which appearantly does not have links in
+/env/boot.d comes up with:
+
+> WARNING: boot sequence: none
+> booting
+> /env/boot/ or /env/boot.d/ does not exist. Valid choices:
+> initrd net
+> 
+> boot sequence:
+> none
+
+This gives not much clue what is wrong and what has to be done next.
+
+The recursive call to itself makes the script unmaintainable and error
+prone.
+
+The boot sequence feature per se is ok and it's good to have, but the
+implementation currently is not good.
+
+It would be much better to separate the boot script from a script
+running a boot sequence. That way the boot script can have a clear set
+of parameters and is responsible for only booting a single source. Then
+a boot-sequence script again can have a clear set of options and has the
+only responsibility of iterating over the available sources.
+
+I think many usecases do not require a boot sequence. For example if
+I want to boot from network it won't help me if the board boots from
+flash instead due to some network error. That's why I think users
+not wanting a boot sequence should be bothered with this as little
+as possible. This could be solved by keeping the boot script like
+it is and move the sequence stuff out to another script.
+
+Look at documenting what the script does:
+
+boot [method]: Boot a system using /env/boot/[method]
+boot-sequence: Boot a system by iterating over /env/boot.d/* until
+               one succeeds.
+
+Now with both combined in a single script:
+
+boot [method]: If called without method, it will iterate over
+               /env/boot.d/*. If that directory does not exist,
+               it will fall back to a single boot source, which you
+               haven't specified, so the script will complain. If you
+               give [method], that will be one of /env/boot/[method]
+               or /env/boot.d/[method]. If [method] exists in both
+               directories, the behaviour will be unspecified.
+
+Another thing is that I do not have a good feeling about putting soft
+links into the repository. I can't really give any concrete problems
+with it, it just don't feels good to use such a feature which other
+version control systems or filesystems do not support
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
