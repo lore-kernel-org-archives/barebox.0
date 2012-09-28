@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1THbf4-0006ZE-J7
- for barebox@lists.infradead.org; Fri, 28 Sep 2012 14:35:30 +0000
-Date: Fri, 28 Sep 2012 16:35:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120928143525.GH1322@pengutronix.de>
-References: <1348837021-18424-1-git-send-email-jlu@pengutronix.de>
+Received: from mail.free-electrons.com ([88.190.12.23])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1THbil-0001Dh-2e
+ for barebox@lists.infradead.org; Fri, 28 Sep 2012 14:39:16 +0000
+Message-ID: <5065B686.3060503@free-electrons.com>
+Date: Fri, 28 Sep 2012 16:39:02 +0200
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1348837021-18424-1-git-send-email-jlu@pengutronix.de>
+References: <1348840692-1913-1-git-send-email-maxime.ripard@free-electrons.com>
+ <20120928143207.GF1322@pengutronix.de>
+In-Reply-To: <20120928143207.GF1322@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,81 +18,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] gpio: reduce verbosity while probing
-To: Jan Luebbe <jlu@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] arm: cfa10036: Add proper resource length
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, brian@crystalfontz.com
 
-On Fri, Sep 28, 2012 at 02:57:01PM +0200, Jan Luebbe wrote:
-> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
-> ---
->  arch/arm/mach-imx/gpio.c  |    2 +-
->  arch/arm/mach-omap/gpio.c |    2 +-
->  drivers/gpio/gpio-stmpe.c |    2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
+Hi Sascha,
 
-Applied, thanks
+Le 28/09/2012 16:32, Sascha Hauer a =E9crit :
+> On Fri, Sep 28, 2012 at 03:58:12PM +0200, Maxime Ripard wrote:
+>> The cfa10036 board file were missing the length parameter when adding
+>> devices. This made barebox crash early in the boot, in the mxs-mci
+>> driver.
+>>
+>> Provide the resources lengths in a consistent format.
+> =
 
-Sascha
+> Applied, thanks
 
-> 
-> diff --git a/arch/arm/mach-imx/gpio.c b/arch/arm/mach-imx/gpio.c
-> index e661cc1..268e598 100644
-> --- a/arch/arm/mach-imx/gpio.c
-> +++ b/arch/arm/mach-imx/gpio.c
-> @@ -145,7 +145,7 @@ static int imx_gpio_probe(struct device_d *dev)
->  	imxgpio->regs = regs;
->  	gpiochip_add(&imxgpio->chip);
->  
-> -	dev_info(dev, "probed gpiochip%d with base %d\n", dev->id, imxgpio->chip.base);
-> +	dev_dbg(dev, "probed gpiochip%d with base %d\n", dev->id, imxgpio->chip.base);
->  
->  	return 0;
->  }
-> diff --git a/arch/arm/mach-omap/gpio.c b/arch/arm/mach-omap/gpio.c
-> index 422831b..ff49708 100644
-> --- a/arch/arm/mach-omap/gpio.c
-> +++ b/arch/arm/mach-omap/gpio.c
-> @@ -138,7 +138,7 @@ static int omap_gpio_probe(struct device_d *dev)
->  	omapgpio->chip.dev = dev;
->  	gpiochip_add(&omapgpio->chip);
->  
-> -	dev_info(dev, "probed gpiochip%d with base %d\n",
-> +	dev_dbg(dev, "probed gpiochip%d with base %d\n",
->  				dev->id, omapgpio->chip.base);
->  
->  	return 0;
-> diff --git a/drivers/gpio/gpio-stmpe.c b/drivers/gpio/gpio-stmpe.c
-> index fa3b041..1181351 100644
-> --- a/drivers/gpio/gpio-stmpe.c
-> +++ b/drivers/gpio/gpio-stmpe.c
-> @@ -145,7 +145,7 @@ static int stmpe_gpio_probe(struct device_d *dev)
->  		return ret;
->  	}
->  
-> -	dev_info(dev, "probed stmpe gpiochip%d with base %d\n", dev->id, stmpegpio->chip.base);
-> +	dev_dbg(dev, "probed stmpe gpiochip%d with base %d\n", dev->id, stmpegpio->chip.base);
->  	return 0;
->  }
->  
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Will this be applied to the next stable release (2012.10)? Since 2012.09
+was already broken (my bad), it would be nice if 2012.10 wasn't.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-- =
+
+Maxime Ripard, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
