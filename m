@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1THbbu-0004a8-Jo
- for barebox@lists.infradead.org; Fri, 28 Sep 2012 14:32:12 +0000
-Date: Fri, 28 Sep 2012 16:32:07 +0200
+ id 1THbc5-0004hY-TC
+ for barebox@lists.infradead.org; Fri, 28 Sep 2012 14:32:24 +0000
+Date: Fri, 28 Sep 2012 16:32:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20120928143207.GF1322@pengutronix.de>
-References: <1348840692-1913-1-git-send-email-maxime.ripard@free-electrons.com>
+Message-ID: <20120928143220.GG1322@pengutronix.de>
+References: <1348840701-1951-1-git-send-email-maxime.ripard@free-electrons.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1348840692-1913-1-git-send-email-maxime.ripard@free-electrons.com>
+In-Reply-To: <1348840701-1951-1-git-send-email-maxime.ripard@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,57 +22,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: cfa10036: Add proper resource length
+Subject: Re: [PATCH] arm: cfa10036: Add the OCOTP device
 To: Maxime Ripard <maxime.ripard@free-electrons.com>
 Cc: barebox@lists.infradead.org, brian@crystalfontz.com
 
-On Fri, Sep 28, 2012 at 03:58:12PM +0200, Maxime Ripard wrote:
-> The cfa10036 board file were missing the length parameter when adding
-> devices. This made barebox crash early in the boot, in the mxs-mci
-> driver.
-> 
-> Provide the resources lengths in a consistent format.
+On Fri, Sep 28, 2012 at 03:58:21PM +0200, Maxime Ripard wrote:
+> Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+> ---
+>  arch/arm/boards/crystalfontz-cfa10036/cfa10036.c |    4 ++++
+>  1 file changed, 4 insertions(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
-> ---
->  arch/arm/boards/crystalfontz-cfa10036/cfa10036.c |    5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
 > diff --git a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
-> index e454afd..fcb7057 100644
+> index fcb7057..522d2d7 100644
 > --- a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
 > +++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
 > @@ -23,6 +23,7 @@
 >  #include <init.h>
 >  #include <mci.h>
 >  #include <io.h>
-> +#include <sizes.h>
+> +#include <net.h>
+>  #include <sizes.h>
 >  
 >  #include <mach/clock.h>
->  #include <mach/imx-regs.h>
-> @@ -89,7 +90,7 @@ static int cfa10036_devices_init(void)
->  	armlinux_set_bootparams((void *)IMX_MEMORY_BASE + 0x100);
->  	armlinux_set_architecture(MACH_TYPE_CFA10036);
->  
-> -	add_generic_device("mxs_mci", 0, NULL, IMX_SSP0_BASE, 0,
-> +	add_generic_device("mxs_mci", 0, NULL, IMX_SSP0_BASE, SZ_8K,
+> @@ -93,6 +94,9 @@ static int cfa10036_devices_init(void)
+>  	add_generic_device("mxs_mci", 0, NULL, IMX_SSP0_BASE, SZ_8K,
 >  			   IORESOURCE_MEM, &mci_pdata);
 >  
+> +	add_generic_device("ocotp", 0, NULL, IMX_OCOTP_BASE, SZ_8K,
+> +			   IORESOURCE_MEM, NULL);
+> +
 >  	return 0;
-> @@ -98,7 +99,7 @@ device_initcall(cfa10036_devices_init);
->  
->  static int cfa10036_console_init(void)
->  {
-> -	add_generic_device("stm_serial", 0, NULL, IMX_DBGUART_BASE, 8192,
-> +	add_generic_device("stm_serial", 0, NULL, IMX_DBGUART_BASE, SZ_8K,
->  			   IORESOURCE_MEM, NULL);
->  
->  	return 0;
+>  }
+>  device_initcall(cfa10036_devices_init);
 > -- 
 > 1.7.9.5
 > 
