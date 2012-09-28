@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([88.190.12.23])
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1THbjB-0001ZJ-AK
- for barebox@lists.infradead.org; Fri, 28 Sep 2012 14:39:41 +0000
-Message-ID: <5065B6A5.2080807@free-electrons.com>
-Date: Fri, 28 Sep 2012 16:39:33 +0200
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
+ id 1THbj7-0001RV-Ek
+ for barebox@lists.infradead.org; Fri, 28 Sep 2012 14:39:39 +0000
+Message-ID: <5065B6A1.7060802@phytec.de>
+Date: Fri, 28 Sep 2012 16:39:29 +0200
+From: Teresa Gamez <t.gamez@phytec.de>
 MIME-Version: 1.0
-References: <5065935A.8040302@free-electrons.com>
- <506596C4.6080903@free-electrons.com> <20120928124212.GC1322@pengutronix.de>
-In-Reply-To: <20120928124212.GC1322@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,60 +15,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Writing to the OCOTP on mx28 boards
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Brian Lilly <brian@crystalfontz.com>
+Subject: OMAP SPI adding inline functions
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+Hello Jan,
 
-Le 28/09/2012 14:42, Sascha Hauer a =E9crit :
-> On Fri, Sep 28, 2012 at 02:23:32PM +0200, Maxime Ripard wrote:
->> Le 28/09/2012 14:08, Maxime Ripard a =E9crit :
->>> Hi everyone,
->>>
->>> I'm trying to write down some data to the /dev/ocotp file, which is
->>> basically a one time programming chip containing four bytes.
->>>
->>> Using the command mw -b -d /dev/ocotp 0-3 0x01020304 writes down only
->>> "4" to the first byte of the OCOTP, which is not quite what I was
->>> expecting. What's the correct syntax for the mw command?
->>
->> Ok, just found out, it should be
->> mw -l -d /dev/ocotp 0-3 0x01020304
-> =
+I'm working on adding inline functions for omap devices to reduce the 
+board code. I have noticed that the omap3_spi driver doesn't fit in the 
+scheme. It uses the dev->id to set the master->bus_num. So I have to 
+pass the argument here and can not use the DEVICE_ID_DYNAMIC define. Has 
+that been intentional? Wouldn't it be better to pass this over 
+platform_data like in the altera_spi driver does?
+I allready noticed that it's done the same way in the kernel...
 
-> Not quite. 0-3 is wrong, though appearantly happens to work. It should
-> be:
-> =
 
-> mw -d /dev/ocotp 0 0x01020304
-> =
+Sadly I'm on vacation next week so my patches have to wait.
+And sorry for not having time to look at your lowlevel support of am335x.
 
-> (-l can be skipped, as 32bit accesses are default). If you want to write
-> multiple words you can do a:
-> =
+Regards
+Teresa
 
-> mw -d /dev/ocotp 0 0xdeadbeef 0x12345678 0x11223344
-> =
-
-> The 0-3 notation is only for 'md'
-
-Ok, I see.
-
-Thanks!
-
-Maxime
-
--- =
-
-Maxime Ripard, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
