@@ -1,21 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo3.mail-out.ovh.net ([178.32.228.3])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1THWge-0001Cs-QP
- for barebox@lists.infradead.org; Fri, 28 Sep 2012 09:16:45 +0000
-Received: from mail181.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 537D2FFC404
- for <barebox@lists.infradead.org>; Fri, 28 Sep 2012 11:25:18 +0200 (CEST)
-Date: Fri, 28 Sep 2012 11:14:14 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120928091414.GI26553@game.jcrosoft.org>
-References: <20120928022821.GF26553@game.jcrosoft.org>
- <20120928075047.GA1322@pengutronix.de>
- <20120928082716.GG26553@game.jcrosoft.org>
- <20120928085524.GB1322@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1THbPR-0001N4-Kg
+ for barebox@lists.infradead.org; Fri, 28 Sep 2012 14:19:18 +0000
+Date: Fri, 28 Sep 2012 16:19:15 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20120928141915.GF16606@pengutronix.de>
+References: <1348700206-30581-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <20120927095312.GU1322@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120928085524.GB1322@pengutronix.de>
+In-Reply-To: <20120927095312.GU1322@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,61 +19,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: issue patch in next net/eth: fix link handling
+Subject: Re: [PATCH] [RFC] i2c-imx: send a soft bus reset during probe
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: barebox@lists.infradead.org, kernel@pengutronix.de
 
-On 10:55 Fri 28 Sep     , Sascha Hauer wrote:
-> On Fri, Sep 28, 2012 at 10:27:16AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 09:50 Fri 28 Sep     , Sascha Hauer wrote:
-> > > On Fri, Sep 28, 2012 at 04:28:21AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > HI,
-> > > > 
-> > > > 	The patch is next
-> > > > 	net/eth: fix link handling
-> > > > 
-> > > > 	was NEVER send to the ML
-> > > > 
-> > > > 	IIRC I was the author of the first version and this disapear
-> > > > 
-> > > > 	Uwe and I just get this discussion on the kernel ML about patch update
-> > > > 
-> > > 
-> > > I was basically pissed off because I got the strong feeling that I spent
-> > > more time reviewing and testing the patch than you initially spent
-> > > writing it in the first place. The second version still stored apples
-> > > in edev->phydev->link and bananas in edev->carrier, but still did a
-> > > edev->carrier = dev->link.
-> > I did this on purpose as I do want to store the link and later export it via
-> > env as I get a patch here for 2 wifi driver where I'll not use the phylib
-> > 
-> > so store the carrier is the correct way
-> 
-> Whatever it is, adding a variable to an ethernet device and then
-> manipulating it in both the phylib and the ethernet code is desastrous.
-> It must be clear everytime who owns a variable. Doing a
-> 
-> eth_current->carrier = CARRIER_UNKNOW;
-> 
-> in the ethernet code, and then:
-> 
-> edev->carrier = dev->link;
-> 
-> in the phy code is a recipe for spaghetti code.
-> 
-so we need to do call net_carrier in phylib as done in the kernel
-the net framework mamange the carrier by itself
-
-as example in wifi phy up does not mean carrier on
-
-Best Regards,
-J.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sCgpPbiBUaHUsIFNlcCAyNywgMjAxMiBhdCAxMTo1MzoxMkFNICswMjAwLCBTYXNjaGEg
+SGF1ZXIgd3JvdGU6Cj4gU291bmRzIGdvb2QuIFdlIG9mdGVuIGhhdmUgdGhpcyBwcm9ibGVtLgo+
+IAo+IEkgd29uZGVyIGlmIGl0J3Mgd29ydGggdG8gaGF2ZSB0aGlzIGFzIGEgZ2VuZXJhbCBjYWxs
+YmFjayBpbiB0aGUgaTJjCj4gbGF5ZXIuClVuZm9ydHVuYXRlbHkgbXkgcGF0Y2ggZG9lc24ndCB3
+b3JrLiBUaGUgcHJvYmxlbSBpcyB0aGF0IGlmIGFuIGkyYyBzbGF2ZQppcyBzdHVjayB3aXRoIHNk
+YSBsb3cgdGhlIGlteCBkaWFnbm9zZXMgYSBsb3NzIG9mIGFyYml0cmF0aW9uIGJlZm9yZQpldmVu
+IHRyeWluZyB0byBzdGFydCBwdWxsaW5nIFNEQSBsb3cgdG8gY3JlYXRlIGEgc3RhcnQgaW5kaWNh
+dGlvbi4KClNvIEkgaGF2ZSB0byB1c2UgZ3BpbyBiaXRiYW5naW5nIGFuZCB0aGVyZSBpcyBubyBj
+aGFuY2UgdG8gaW1wbGVtZW50CnRoaXMgaW4gZ2VuZXJpYyBjb2RlIG9ubHkuCgo+IE9uIFRodSwg
+U2VwIDI3LCAyMDEyIGF0IDEyOjU2OjQ2QU0gKzAyMDAsIFV3ZSBLbGVpbmUtS8O2bmlnIHdyb3Rl
+Ogo+ID4gSWYgYW4gaTJjIHNsYXZlIHB1bGxzIFNEQSBsb3cgd2hlbiB0aGUgU29DIHdhbnRzIHRv
+IHN0YXJ0IGEgdHJhbnNmZXIsIGl0Cj4gPiBjYW5ub3QgZ2V0IHRoZSBidXMuIFRoaXMgY2FuIGhh
+cHBlbiBmb3IgZXhhbXBsZSBpZiB0aGUgU29DIGlzIHJlc2V0IHdoZW4KPiA+IGl0IGp1c3Qgc3Vj
+Y2Vzc2Z1bGx5IGFkZHJlc3NlZCBhIHNsYXZlIGJ1dCBiZWZvcmUgaXQgcmlzZXMgU0NMIGZvciB0
+aGUKPiA+IHNsYXZlIHRvIGFjay4gQ3VycmVudGx5IHRoaXMgbWFrZXMgdGhlIGRyaXZlciByZWZ1
+c2UgdG8gZG8gYW55dGhpbmcuIFlvdQo+ID4gY2FuIGZvcmNlIHRoaXMgc2l0dWF0aW9uIHdpdGgg
+dGhlIGZvbGxvd2luZyBjb2RlIGFzc3VtaW5nIHlvdSBoYXZlIGEKPiA+IGRldmljZSBvbiBhZGRy
+ZXNzIDB4NTA6Cj4gPiAKQlRXLCBwYXJ0IG9mIHRoZSByZWFzb24gSSBmaXJzdCB0aG91Z2h0IG15
+IHBhdGNoIHdvdWxkIGhlbHAgaXMgdGhhdCB0aGlzCnJlY2lwZSBpcyB3cm9uZy4uLgoKPiA+IAkv
+KiBnZW5lcmF0ZSBhIHN0YXJ0IGNvbmRpdGlvbiAqLwo+ID4gCWdwaW9fZGlyZWN0aW9uX2lucHV0
+KEkyQ1NDTCk7Cj4gPiAJZ3Bpb19kaXJlY3Rpb25faW5wdXQoSTJDU0RBKTsKPiA+IAltZGVsYXko
+MSk7Cj4gPiAJZ3Bpb19kaXJlY3Rpb25fb3V0cHV0KEkyQ1NEQSwgMCk7Cj4gPiAKPiA+IAltZGVs
+YXkoMSk7Cj4gPiAKPiA+IAkvKiBhZGRyZXNzIGRldmljZSAweDUwICovCj4gPiAJZm9yIChpID0g
+MDsgaSA8IDg7ICsraSkgewo+ID4gCQlncGlvX2RpcmVjdGlvbl9vdXRwdXQoSTJDU0NMLCAwKTsK
+PiA+IAkJbWRlbGF5KDEpOwo+ID4gCQlpZiAoKDB4NTAgPDwgMSkgPj4gKDcgLSBpKSkKLi4uIFRo
+aXMgaGFzIHRvIHJlYWQ6IGlmICgoMHg1MCA8PCAxKSAmICgxIDw8ICg3IC0gaSkpKSB0byBhY3R1
+YWxseQpzdHVjayB0aGUgZGV2aWNlIHdpdGggYWRkcmVzcyAweDUwLgoKPiA+IAkJCWdwaW9fZGly
+ZWN0aW9uX2lucHV0KEkyQ1NEQSk7Cj4gPiAJCWVsc2UKPiA+IAkJCWdwaW9fZGlyZWN0aW9uX291
+dHB1dChJMkNTREEsIDApOwo+ID4gCQltZGVsYXkoMSk7Cj4gPiAJCWdwaW9fZGlyZWN0aW9uX2lu
+cHV0KEkyQ1NDTCk7Cj4gPiAJCW1kZWxheSgxKTsKPiA+IAl9Cj4gPiAJZ3Bpb19kaXJlY3Rpb25f
+b3V0cHV0KEkyQ1NDTCwgMCk7Cj4gPiAKPiA+IAlyZXNldF9jcHUoMCk7Cj4gPiAKKEFuZCBteSBi
+dXMgcmVzZXQgdXNlZCB0byBoZWxwIGJlY2F1c2UgSSBhc3NlcnRlZCB0aGF0IHRoZSBwaW5tdXhp
+bmcgaXMKcmlnaHQgYmVmb3JlIHRoZSByZXNldCBidXQgbm90IGFmdGVyIHRoaXMgc3R1Y2sgcmVj
+aXBlLCBzaWdoIOKKmV/il44uKQoKQmVzdCByZWdhcmRzClV3ZQoKLS0gClBlbmd1dHJvbml4IGUu
+Sy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8IFV3ZSBLbGVpbmUtS8O2bmlnICAgICAgICAg
+ICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8v
+d3d3LnBlbmd1dHJvbml4LmRlLyAgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
+YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
+eAo=
