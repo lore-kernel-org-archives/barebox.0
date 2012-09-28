@@ -1,24 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from plane.gmane.org ([80.91.229.3])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1THZ6y-00014b-Kh
- for barebox@lists.infradead.org; Fri, 28 Sep 2012 11:52:05 +0000
-Received: from list by plane.gmane.org with local (Exim 4.69)
- (envelope-from <gcbb-barebox@m.gmane.org>) id 1THZ6v-00034b-Qc
- for barebox@lists.infradead.org; Fri, 28 Sep 2012 13:52:02 +0200
-Received: from h96-60-251-119.cncrtn.dsl.dynamic.tds.net ([96.60.251.119])
- by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
- id 1AlnuQ-0007hv-00
- for <barebox@lists.infradead.org>; Fri, 28 Sep 2012 13:52:01 +0200
-Received: from jkirk865 by h96-60-251-119.cncrtn.dsl.dynamic.tds.net with
- local (Gmexim 0.1 (Debian)) id 1AlnuQ-0007hv-00
- for <barebox@lists.infradead.org>; Fri, 28 Sep 2012 13:52:01 +0200
-From: Jerry Kirk <jkirk865@gmail.com>
-Date: Fri, 28 Sep 2012 11:51:47 +0000 (UTC)
-Message-ID: <loom.20120928T135012-259@post.gmane.org>
-References: <loom.20120926T210129-125@post.gmane.org>
- <20120926214515.GT1322@pengutronix.de>
-Mime-Version: 1.0
+Received: from mail.free-electrons.com ([88.190.12.23])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1THZNY-0007fS-5t
+ for barebox@lists.infradead.org; Fri, 28 Sep 2012 12:09:12 +0000
+Message-ID: <5065935A.8040302@free-electrons.com>
+Date: Fri, 28 Sep 2012 14:08:58 +0200
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,17 +19,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Write Protect Error re-flashing /dev/nor0.barebox
+Subject: Writing to the OCOTP on mx28 boards
 To: barebox@lists.infradead.org
+Cc: Brian Lilly <brian@crystalfontz.com>
 
-Sascha Hauer <s.hauer@...> writes:
-> On Wed, Sep 26, 2012 at 07:07:32PM +0000, Jerry Kirk wrote:
-> > Any ideas what we now need to do to be able to overwrite Barebox?
-> 
-> I think you are the victim of a bug fix ;)
+Hi everyone,
 
-Thanks Sascha, that was it. 
+I'm trying to write down some data to the /dev/ocotp file, which is
+basically a one time programming chip containing four bytes.
 
+Using the command mw -b -d /dev/ocotp 0-3 0x01020304 writes down only
+"4" to the first byte of the OCOTP, which is not quite what I was
+expecting. What's the correct syntax for the mw command?
+
+Thanks,
+Maxime
+
+
+-- 
+Maxime Ripard, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
