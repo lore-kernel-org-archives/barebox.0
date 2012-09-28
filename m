@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo3.mail-out.ovh.net ([46.105.44.175]
+Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1THVzL-0005os-T1
- for barebox@lists.infradead.org; Fri, 28 Sep 2012 08:32:01 +0000
+ id 1THW4e-0005sP-6s
+ for barebox@lists.infradead.org; Fri, 28 Sep 2012 08:37:29 +0000
 Received: from mail181.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 53D3AFFC0BC
- for <barebox@lists.infradead.org>; Fri, 28 Sep 2012 10:40:34 +0200 (CEST)
-Date: Fri, 28 Sep 2012 10:29:30 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id C83F8FFC015
+ for <barebox@lists.infradead.org>; Fri, 28 Sep 2012 10:38:20 +0200 (CEST)
+Date: Fri, 28 Sep 2012 10:27:16 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120928082930.GH26553@game.jcrosoft.org>
-References: <1348819477-22665-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20120928082716.GG26553@game.jcrosoft.org>
+References: <20120928022821.GF26553@game.jcrosoft.org>
+ <20120928075047.GA1322@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1348819477-22665-1-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <20120928075047.GA1322@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,108 +27,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] environment generation: Fix dependencies
+Subject: Re: issue patch in next net/eth: fix link handling
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 10:04 Fri 28 Sep     , Sascha Hauer wrote:
-> The dependencies for generating the environment do not work properly:
+On 09:50 Fri 28 Sep     , Sascha Hauer wrote:
+> On Fri, Sep 28, 2012 at 04:28:21AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > HI,
+> > 
+> > 	The patch is next
+> > 	net/eth: fix link handling
+> > 
+> > 	was NEVER send to the ML
+> > 
+> > 	IIRC I was the author of the first version and this disapear
+> > 
+> > 	Uwe and I just get this discussion on the kernel ML about patch update
+> > 
 > 
-> - If files are removed from the defaultenv, a subsequent make will not
->   update the default environment.
-> - If CONFIG_DEFAULT_ENVIRONMENT_PATH changes, the default environment
->   also will not be regenerated.
-> 
-> This patch fixes this by introducing a cmd_env which has the content of
-> $(ENV_FILES) in the command so that the if_changed mechanism recognizes
-> a change when $(ENV_FILE) changes. This also results in a nice "  ENV "
-> string in the build process.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
-> 
-> changes since v1:
-> 
-> - fix out of tree building
-> 
->  Makefile        |    2 +-
->  common/Makefile |   28 ++++++++++++++++++++--------
->  scripts/genenv  |   17 +++++++++++------
->  3 files changed, 32 insertions(+), 15 deletions(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index 0f1a319..af5c036 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1013,7 +1013,7 @@ endif # CONFIG_MODULES
->  CLEAN_DIRS  += $(MODVERDIR)
->  CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
->                  .tmp_version .tmp_barebox* barebox.bin barebox.map barebox.S \
-> -		.tmp_kallsyms* barebox_default_env* barebox.ldr \
-> +		.tmp_kallsyms* common/barebox_default_env* barebox.ldr \
->  		scripts/bareboxenv-target barebox-flash-image \
->  		Doxyfile.version barebox.srec barebox.s5p
->  
-> diff --git a/common/Makefile b/common/Makefile
-> index 9eda98c..b74c76b 100644
-> --- a/common/Makefile
-> +++ b/common/Makefile
-> @@ -39,6 +39,7 @@ obj-$(CONFIG_PASSWORD) += password.o
->  obj-$(CONFIG_MODULES) += module.o
->  obj-$(CONFIG_FLEXIBLE_BOOTARGS) += bootargs.o
->  extra-$(CONFIG_MODULES) += module.lds
-> +extra-y += barebox_default_env
->  
->  ifdef CONFIG_DEFAULT_ENVIRONMENT
->  $(obj)/startup.o: include/generated/barebox_default_env.h
-> @@ -63,8 +64,19 @@ ENV_FILES := $(shell cd $(srctree); for i in $(DEFAULT_ENVIRONMENT_PATH); do fin
->  
->  endif # ifdef CONFIG_DEFAULT_ENVIRONMENT
->  
-> -barebox_default_env: $(ENV_FILES)
-> -	$(Q)$(srctree)/scripts/genenv $(srctree) $(objtree) $(DEFAULT_ENVIRONMENT_PATH)
-> +#
-> +# Generate a barebox envfs image.
-> +#
-> +# echo $(ENV_FILES) > /dev/null is just for letting if_changed
-> +# recognize that something has changed when the environment has
-> +# other files,
-> +#
-> +quiet_cmd_env = ENV     $@
-> +cmd_env = ($(srctree)/scripts/genenv $(srctree) $(objtree) $@ $(DEFAULT_ENVIRONMENT_PATH)) || \
-> +	(echo $(ENV_FILES) > /dev/null; rm -f $@ ; false)
-> +
-> +$(obj)/barebox_default_env: $(ENV_FILES) FORCE
-> +	$(call if_changed,env)
->  
->  barebox_default_env_comp =
->  ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_GZIP),y)
-> @@ -77,18 +89,18 @@ ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_LZO),y)
->  barebox_default_env_comp = .lzo
->  endif
->  
-> -barebox_default_env.gz: barebox_default_env
-> +$(obj)/barebox_default_env.gz: $(obj)/barebox_default_env
->  	$(call if_changed,gzip)
->  
-> -barebox_default_env.bz2: barebox_default_env
-> +$(obj)/barebox_default_env.bz2: $(obj)/barebox_default_env
->  	$(call if_changed,bzip2)
->  
-> -barebox_default_env.lzo: barebox_default_env
-> +$(obj)/barebox_default_env.lzo: $(obj)/barebox_default_env
->  	$(call if_changed,lzo)
->  
-> -include/generated/barebox_default_env.h: barebox_default_env$(barebox_default_env_comp)
-> -	$(Q)cat $< | $(objtree)/scripts/bin2c default_environment > $@
-> -	$(Q)echo "const int default_environment_uncompress_size=`stat -c%s barebox_default_env`;" >> $@
-> +include/generated/barebox_default_env.h: $(obj)/barebox_default_env$(barebox_default_env_comp)
-> +	$(Q)cat $< | (cd $(obj) && $(objtree)/scripts/bin2c default_environment) > $@
-> +	$(Q)echo "const int default_environment_uncompress_size=`stat -c%s $(obj)/barebox_default_env`;" >> $@
-just one comment I was think to drop the header and use a piggy data instead
+> I was basically pissed off because I got the strong feeling that I spent
+> more time reviewing and testing the patch than you initially spent
+> writing it in the first place. The second version still stored apples
+> in edev->phydev->link and bananas in edev->carrier, but still did a
+> edev->carrier = dev->link.
+I did this on purpose as I do want to store the link and later export it via
+env as I get a patch here for 2 wifi driver where I'll not use the phylib
 
-and also maybe drop the bareboxenv for an other fs or switch bareboxenv to fs
-so we can use want we want as env
+so store the carrier is the correct way
+
+we could use a net_carrier(xx) as in the kernel to update the field but I do
+need the carrier to not be manage only for the phylib
+
+my work on thiose wifi driver is not finished but on the way maybe next
+release
+> 
+> Sorry for not posting it on the ML, doing that now.
+I was pissed off that this is based on my work and I lost the author of the
+patch and no mention about my work
 
 Best Regards,
 J.
