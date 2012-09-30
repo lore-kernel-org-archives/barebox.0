@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-f177.google.com ([209.85.223.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TIIQ1-00019E-Vq
- for barebox@lists.infradead.org; Sun, 30 Sep 2012 12:14:46 +0000
-Received: by ieje14 with SMTP id e14so11057959iej.36
- for <barebox@lists.infradead.org>; Sun, 30 Sep 2012 05:14:41 -0700 (PDT)
+Received: from 15.mo3.mail-out.ovh.net ([87.98.150.177]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TIJuW-0001yV-Mu
+ for barebox@lists.infradead.org; Sun, 30 Sep 2012 13:50:22 +0000
+Received: from mail181.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 063E3FFB3A5
+ for <barebox@lists.infradead.org>; Sun, 30 Sep 2012 15:58:58 +0200 (CEST)
+Date: Sun, 30 Sep 2012 15:47:49 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20120930134749.GN26553@game.jcrosoft.org>
+References: <20120926095650.GG31983@game.jcrosoft.org>
 MIME-Version: 1.0
-In-Reply-To: <1348973437-31132-7-git-send-email-vicencb@gmail.com>
-References: <1348973437-31132-1-git-send-email-vicencb@gmail.com>
- <1348973437-31132-7-git-send-email-vicencb@gmail.com>
-Date: Sun, 30 Sep 2012 16:14:41 +0400
-Message-ID: <CAA4bVAG-yzYGNb4mNGTT=hcz1EwAcgDZyKVWnZ-aM8AVaN3wmg@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20120926095650.GG31983@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,68 +26,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/9] omap4: add usb boot support
-To: vj <vicencb@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/6] gui: factorise code
+To: barebox@lists.infradead.org
 
-On 30 September 2012 06:50, vj <vicencb@gmail.com> wrote:
-> ---
->  arch/arm/cpu/cpu.c                              |   1 +
->  arch/arm/mach-omap/Kconfig                      |   7 +
->  arch/arm/mach-omap/Makefile                     |   1 +
->  arch/arm/mach-omap/include/mach/omap4_rom_usb.h | 142 ++++++++
->  arch/arm/mach-omap/omap4_generic.c              |  13 +
->  arch/arm/mach-omap/omap4_rom_usb.c              | 186 +++++++++++
->  scripts/.gitignore                              |   1 +
->  scripts/Makefile                                |   4 +
->  scripts/omap4_usbboot.c                         | 416 ++++++++++++++++++++++++
->  scripts/usb.h                                   |  61 ++++
->  scripts/usb_linux.c                             | 397 ++++++++++++++++++++++
->  11 files changed, 1229 insertions(+)
->  create mode 100644 arch/arm/mach-omap/include/mach/omap4_rom_usb.h
->  create mode 100644 arch/arm/mach-omap/omap4_rom_usb.c
->  create mode 100644 scripts/omap4_usbboot.c
->  create mode 100644 scripts/usb.h
->  create mode 100644 scripts/usb_linux.c
->
-> diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
-> index 71ef8c0..05343de 100644
-> --- a/arch/arm/cpu/cpu.c
-> +++ b/arch/arm/cpu/cpu.c
-> @@ -89,6 +89,7 @@ void arch_shutdown(void)
->                 : "r0", "r1", "r2", "r3", "r6", "r10", "r12", "lr", "cc", "memory"
->         );
->  #endif
-> +       __asm__ __volatile__ ("cpsid i\n");
->  }
->
->  #ifdef CONFIG_THUMB2_BAREBOX
-> diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-> index d735284..16583cb 100644
-> --- a/arch/arm/mach-omap/Kconfig
-> +++ b/arch/arm/mach-omap/Kconfig
-> @@ -96,6 +96,13 @@ config ARCH_TEXT_BASE
->         default 0x80e80000 if MACH_OMAP343xSDP
->         default 0x80e80000 if MACH_BEAGLE
->
-> +config OMAP4_USBBOOT
-> +       bool "enable booting from USB"
-> +       default n
-> +       depends on ARCH_OMAP4 && !MMU
-> +       help
-> +         Enable this to enable USB booting
-> +
+Hi,
 
-Can we add more detailed description here? E.g.:
+	ping
 
-Say Y here if you want to be able to boot <name of the chip family
-here> from USB.
-You need an utility program called <name of the program here> to boot
-from USB. Please read <file name or URL here> for more information.
-
--- 
-Best regards,
-  Antony Pavlov
+Best Regards,
+J.
+On 11:56 Wed 26 Sep     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
+> 
+> The following changes since commit 05b9f24e3ea4071f76ffc4157526946a1c2b1b96:
+> 
+>   Merge branch 'for-next/sandbox' into next (2012-09-25 10:20:03 +0200)
+> 
+> are available in the git repository at:
+> 
+> 
+>   git://git.jcrosoft.org/barebox.git tags/gui_fbcon_prepare
+> 
+> for you to fetch changes up to 267da5665afa3be979cbab2c2787128f4b763f33:
+> 
+>   gui: blit the surface on demand (2012-09-26 16:51:11 +0800)
+> 
+> ----------------------------------------------------------------
+> gui: factorise code
+> 
+> This patch series move the gui framework to lib/gui and include/gui
+> and commands to there own menu
+> 
+> This also factorise code to handle screen and framebuffer
+> 
+> This is a preparation for the framebuffer console support and other gui
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> 
+> ----------------------------------------------------------------
+> Jean-Christophe PLAGNIOL-VILLARD (6):
+>       image_renderer: fix size type
+>       gui: move gui file to include/gui and lib/gui
+>       graphic_utils: pass image so we can draw only the visible part of the image
+>       gui: introduce screen and surface to factorize and simplify code
+>       graphic_utils: introduce common fb_open/close
+>       gui: blit the surface on demand
+> 
+>  commands/Kconfig                   |   23 +++++++++++++++--------
+>  commands/splash.c                  |   76 +++++++++++++++++++++++-----------------------------------------------------
+>  drivers/video/sdl.c                |    2 +-
+>  include/{ => gui}/graphic_utils.h  |    9 ++++++++-
+>  include/gui/gui.h                  |   38 ++++++++++++++++++++++++++++++++++++++
+>  include/gui/image.h                |   20 ++++++++++++++++++++
+>  include/{ => gui}/image_renderer.h |   25 +++++++------------------
+>  lib/Kconfig                        |   36 +-----------------------------------
+>  lib/Makefile                       |    6 +-----
+>  lib/gui/Kconfig                    |   39 +++++++++++++++++++++++++++++++++++++++
+>  lib/gui/Makefile                   |    5 +++++
+>  lib/{ => gui}/bmp.c                |   54 +++++++++++++++++++++++++++---------------------------
+>  lib/{ => gui}/bmp_layout.h         |    0
+>  lib/{ => gui}/graphic_utils.c      |   69 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
+>  lib/{ => gui}/image_renderer.c     |    9 ++++-----
+>  lib/{ => gui}/lodepng.c            |    0
+>  lib/{ => gui}/lodepng.h            |    0
+>  lib/{ => gui}/picopng.c            |    0
+>  lib/{ => gui}/picopng.h            |    0
+>  lib/{ => gui}/png.c                |   39 ++++++++++++++++++---------------------
+>  lib/{ => gui}/png.h                |    0
+>  lib/{ => gui}/png_lode.c           |    4 ++--
+>  lib/{ => gui}/png_pico.c           |    4 ++--
+>  23 files changed, 276 insertions(+), 182 deletions(-)
+>  rename include/{ => gui}/graphic_utils.h (65%)
+>  create mode 100644 include/gui/gui.h
+>  create mode 100644 include/gui/image.h
+>  rename include/{ => gui}/image_renderer.h (65%)
+>  create mode 100644 lib/gui/Kconfig
+>  create mode 100644 lib/gui/Makefile
+>  rename lib/{ => gui}/bmp.c (69%)
+>  rename lib/{ => gui}/bmp_layout.h (100%)
+>  rename lib/{ => gui}/graphic_utils.c (74%)
+>  rename lib/{ => gui}/image_renderer.c (85%)
+>  rename lib/{ => gui}/lodepng.c (100%)
+>  rename lib/{ => gui}/lodepng.h (100%)
+>  rename lib/{ => gui}/picopng.c (100%)
+>  rename lib/{ => gui}/picopng.h (100%)
+>  rename lib/{ => gui}/png.c (60%)
+>  rename lib/{ => gui}/png.h (100%)
+>  rename lib/{ => gui}/png_lode.c (96%)
+>  rename lib/{ => gui}/png_pico.c (96%)
+> 
+> Best Regards,
+> J.
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
