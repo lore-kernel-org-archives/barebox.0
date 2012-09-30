@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo3.mail-out.ovh.net ([87.98.150.177]
+Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TIJuW-0001yV-Mu
- for barebox@lists.infradead.org; Sun, 30 Sep 2012 13:50:22 +0000
+ id 1TIJx1-00021z-9m
+ for barebox@lists.infradead.org; Sun, 30 Sep 2012 13:52:55 +0000
 Received: from mail181.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 063E3FFB3A5
- for <barebox@lists.infradead.org>; Sun, 30 Sep 2012 15:58:58 +0200 (CEST)
-Date: Sun, 30 Sep 2012 15:47:49 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id A5608FFAF01
+ for <barebox@lists.infradead.org>; Sun, 30 Sep 2012 16:01:35 +0200 (CEST)
+Date: Sun, 30 Sep 2012 15:50:28 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20120930134749.GN26553@game.jcrosoft.org>
-References: <20120926095650.GG31983@game.jcrosoft.org>
+Message-ID: <20120930135028.GO26553@game.jcrosoft.org>
+References: <1348973437-31132-1-git-send-email-vicencb@gmail.com>
+ <1348973437-31132-5-git-send-email-vicencb@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20120926095650.GG31983@game.jcrosoft.org>
+In-Reply-To: <1348973437-31132-5-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,97 +27,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/6] gui: factorise code
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/9] twl6030: add debug info
+To: vj <vicencb@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
-
-	ping
-
-Best Regards,
-J.
-On 11:56 Wed 26 Sep     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,
+On 04:50 Sun 30 Sep     , vj wrote:
+> ---
+>  drivers/mfd/twl6030.c | 22 ++++++++++++++++++++++
+>  include/mfd/twl6030.h |  8 ++++++++
+>  2 files changed, 30 insertions(+)
 > 
-> The following changes since commit 05b9f24e3ea4071f76ffc4157526946a1c2b1b96:
+> diff --git a/drivers/mfd/twl6030.c b/drivers/mfd/twl6030.c
+> index 7ecfed8..b8b0418 100644
+> --- a/drivers/mfd/twl6030.c
+> +++ b/drivers/mfd/twl6030.c
+> @@ -39,6 +39,28 @@ static int twl_probe(struct device_d *dev)
+>  
+>  	devfs_create(&(twl_dev->core.cdev));
+>  
+> +#ifdef DEBUG
+	if (IS_ENABLED(DEBUG)) {
+		....
+	}
+> +	{
+> +		u8 i, jtag_rev, eprom_rev;
+> +		int r;
+> +		u64 dieid;
+> +		r = twl6030_reg_read(twl_dev, TWL6030_JTAG_JTAGVERNUM,
+> +			&jtag_rev);
+> +		r |= twl6030_reg_read(twl_dev, TWL6030_JTAG_EPROM_REV,
+> +			&eprom_rev);
+> +		for (i = 0; i < 8; i++)
+> +			r |= twl6030_reg_read(twl_dev, TWL6030_DIEID_0+i,
+> +				((u8 *)(&dieid))+i);
+> +		if (r)
+> +			debug("TWL6030 Error reading ID\n");
+> +		else
+> +			debug("TWL6030 JTAG REV: 0x%02X, "
+> +				"EPROM REV: 0x%02X, "
+> +				"DIE ID: 0x%016llX\n",
+> +				(unsigned)jtag_rev, (unsigned)eprom_rev, dieid);
+> +	}
+> +#endif
+> +
+>  	return 0;
+>  }
+>  
+> diff --git a/include/mfd/twl6030.h b/include/mfd/twl6030.h
+> index f1278d4..bb4f773 100644
+> --- a/include/mfd/twl6030.h
+> +++ b/include/mfd/twl6030.h
+> @@ -371,6 +371,14 @@ enum twl6030_reg {
+>  	/* JTAG */
+>  	TWL6030_JTAG_JTAGVERNUM = 0x0287,
+>  	TWL6030_JTAG_EPROM_REV = 0x02DF,
+> +	TWL6030_DIEID_0 = 0x02C0,
+> +	TWL6030_DIEID_1 = 0x02C1,
+> +	TWL6030_DIEID_2 = 0x02C2,
+> +	TWL6030_DIEID_3 = 0x02C3,
+> +	TWL6030_DIEID_4 = 0x02C4,
+> +	TWL6030_DIEID_5 = 0x02C5,
+> +	TWL6030_DIEID_6 = 0x02C6,
+> +	TWL6030_DIEID_7 = 0x02C7,
+>  	/* GPADC Trimming */
+>  	TWL6030_GPADC_TRIM1 = 0x02CD,
+>  	TWL6030_GPADC_TRIM2 = 0x02CE,
+> -- 
+> 1.7.12.1
 > 
->   Merge branch 'for-next/sandbox' into next (2012-09-25 10:20:03 +0200)
-> 
-> are available in the git repository at:
-> 
-> 
->   git://git.jcrosoft.org/barebox.git tags/gui_fbcon_prepare
-> 
-> for you to fetch changes up to 267da5665afa3be979cbab2c2787128f4b763f33:
-> 
->   gui: blit the surface on demand (2012-09-26 16:51:11 +0800)
-> 
-> ----------------------------------------------------------------
-> gui: factorise code
-> 
-> This patch series move the gui framework to lib/gui and include/gui
-> and commands to there own menu
-> 
-> This also factorise code to handle screen and framebuffer
-> 
-> This is a preparation for the framebuffer console support and other gui
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (6):
->       image_renderer: fix size type
->       gui: move gui file to include/gui and lib/gui
->       graphic_utils: pass image so we can draw only the visible part of the image
->       gui: introduce screen and surface to factorize and simplify code
->       graphic_utils: introduce common fb_open/close
->       gui: blit the surface on demand
-> 
->  commands/Kconfig                   |   23 +++++++++++++++--------
->  commands/splash.c                  |   76 +++++++++++++++++++++++-----------------------------------------------------
->  drivers/video/sdl.c                |    2 +-
->  include/{ => gui}/graphic_utils.h  |    9 ++++++++-
->  include/gui/gui.h                  |   38 ++++++++++++++++++++++++++++++++++++++
->  include/gui/image.h                |   20 ++++++++++++++++++++
->  include/{ => gui}/image_renderer.h |   25 +++++++------------------
->  lib/Kconfig                        |   36 +-----------------------------------
->  lib/Makefile                       |    6 +-----
->  lib/gui/Kconfig                    |   39 +++++++++++++++++++++++++++++++++++++++
->  lib/gui/Makefile                   |    5 +++++
->  lib/{ => gui}/bmp.c                |   54 +++++++++++++++++++++++++++---------------------------
->  lib/{ => gui}/bmp_layout.h         |    0
->  lib/{ => gui}/graphic_utils.c      |   69 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
->  lib/{ => gui}/image_renderer.c     |    9 ++++-----
->  lib/{ => gui}/lodepng.c            |    0
->  lib/{ => gui}/lodepng.h            |    0
->  lib/{ => gui}/picopng.c            |    0
->  lib/{ => gui}/picopng.h            |    0
->  lib/{ => gui}/png.c                |   39 ++++++++++++++++++---------------------
->  lib/{ => gui}/png.h                |    0
->  lib/{ => gui}/png_lode.c           |    4 ++--
->  lib/{ => gui}/png_pico.c           |    4 ++--
->  23 files changed, 276 insertions(+), 182 deletions(-)
->  rename include/{ => gui}/graphic_utils.h (65%)
->  create mode 100644 include/gui/gui.h
->  create mode 100644 include/gui/image.h
->  rename include/{ => gui}/image_renderer.h (65%)
->  create mode 100644 lib/gui/Kconfig
->  create mode 100644 lib/gui/Makefile
->  rename lib/{ => gui}/bmp.c (69%)
->  rename lib/{ => gui}/bmp_layout.h (100%)
->  rename lib/{ => gui}/graphic_utils.c (74%)
->  rename lib/{ => gui}/image_renderer.c (85%)
->  rename lib/{ => gui}/lodepng.c (100%)
->  rename lib/{ => gui}/lodepng.h (100%)
->  rename lib/{ => gui}/picopng.c (100%)
->  rename lib/{ => gui}/picopng.h (100%)
->  rename lib/{ => gui}/png.c (60%)
->  rename lib/{ => gui}/png.h (100%)
->  rename lib/{ => gui}/png_lode.c (96%)
->  rename lib/{ => gui}/png_pico.c (96%)
-> 
-> Best Regards,
-> J.
 > 
 > _______________________________________________
 > barebox mailing list
