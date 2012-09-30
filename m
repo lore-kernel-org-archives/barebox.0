@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-f177.google.com ([209.85.223.177])
+Received: from mail-da0-f49.google.com ([209.85.210.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TIL2N-0003kh-MD
- for barebox@lists.infradead.org; Sun, 30 Sep 2012 15:02:35 +0000
-Received: by ieje14 with SMTP id e14so11220354iej.36
- for <barebox@lists.infradead.org>; Sun, 30 Sep 2012 08:02:28 -0700 (PDT)
+ id 1TIL2P-0003kr-VZ
+ for barebox@lists.infradead.org; Sun, 30 Sep 2012 15:02:34 +0000
+Received: by dajq27 with SMTP id q27so1304359daj.36
+ for <barebox@lists.infradead.org>; Sun, 30 Sep 2012 08:02:32 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1348973437-31132-10-git-send-email-vicencb@gmail.com>
+In-Reply-To: <20120930140225.GR26553@game.jcrosoft.org>
 References: <1348973437-31132-1-git-send-email-vicencb@gmail.com>
- <1348973437-31132-10-git-send-email-vicencb@gmail.com>
-Date: Sun, 30 Sep 2012 19:02:28 +0400
-Message-ID: <CAA4bVAE6NbY8ay4h+W3uH+ATXoTg9MANVBy8rVBd1a_nQ1HnkA@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+ <1348973437-31132-7-git-send-email-vicencb@gmail.com>
+ <CAA4bVAG-yzYGNb4mNGTT=hcz1EwAcgDZyKVWnZ-aM8AVaN3wmg@mail.gmail.com>
+ <20120930140225.GR26553@game.jcrosoft.org>
+Date: Sun, 30 Sep 2012 17:02:32 +0200
+Message-ID: <CAAMcf8Aa00YqVG-87F1Lk+_oCHwrRCeCTKE7G9g_QDK1C2tMcw@mail.gmail.com>
+From: vj <vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,102 +22,156 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============2396665554773935495=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 9/9] Add support for Archos G9 tablet
-To: vj <vicencb@gmail.com>
+Subject: Re: [PATCH 6/9] omap4: add usb boot support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 30 September 2012 06:50, vj <vicencb@gmail.com> wrote:
-> ---
->  arch/arm/Makefile                         |   1 +
->  arch/arm/boards/archosg9/Makefile         |   3 +
->  arch/arm/boards/archosg9/board.c          |  72 +++++
->  arch/arm/boards/archosg9/config.h         |   1 +
->  arch/arm/boards/archosg9/env/bin/init     |  18 ++
->  arch/arm/boards/archosg9/env/config       |   2 +
->  arch/arm/boards/archosg9/lowlevel.c       | 133 +++++++++
->  arch/arm/boards/archosg9/mux.c            | 463 ++++++++++++++++++++++++++++++
->  arch/arm/boards/archosg9/mux.h            |   6 +
->  arch/arm/configs/archosg9_defconfig       |  69 +++++
->  arch/arm/configs/archosg9_xload_defconfig |  24 ++
->  arch/arm/mach-omap/Kconfig                |   9 +
->  arch/arm/tools/mach-types                 |   1 +
->  13 files changed, 802 insertions(+)
->  create mode 100644 arch/arm/boards/archosg9/Makefile
->  create mode 100644 arch/arm/boards/archosg9/board.c
->  create mode 100644 arch/arm/boards/archosg9/config.h
->  create mode 100644 arch/arm/boards/archosg9/env/bin/init
->  create mode 100644 arch/arm/boards/archosg9/env/config
->  create mode 100644 arch/arm/boards/archosg9/lowlevel.c
->  create mode 100644 arch/arm/boards/archosg9/mux.c
->  create mode 100644 arch/arm/boards/archosg9/mux.h
->  create mode 100644 arch/arm/configs/archosg9_defconfig
->  create mode 100644 arch/arm/configs/archosg9_xload_defconfig
+--===============2396665554773935495==
+Content-Type: multipart/alternative; boundary=e89a8fb20834175a4704caec94f0
+
+--e89a8fb20834175a4704caec94f0
+Content-Type: text/plain; charset=UTF-8
+
+In fact the interrupts get enabled at omap4_usbboot_open, it's required for
+usb transfers.
+For this reason the interrupts are disabled at barebox exit.
+
+On Sun, Sep 30, 2012 at 4:02 PM, Jean-Christophe PLAGNIOL-VILLARD <
+plagnioj@jcrosoft.com> wrote:
+
+> On 16:14 Sun 30 Sep     , Antony Pavlov wrote:
+> > On 30 September 2012 06:50, vj <vicencb@gmail.com> wrote:
+> > > ---
+> > >  arch/arm/cpu/cpu.c                              |   1 +
+> > >  arch/arm/mach-omap/Kconfig                      |   7 +
+> > >  arch/arm/mach-omap/Makefile                     |   1 +
+> > >  arch/arm/mach-omap/include/mach/omap4_rom_usb.h | 142 ++++++++
+> > >  arch/arm/mach-omap/omap4_generic.c              |  13 +
+> > >  arch/arm/mach-omap/omap4_rom_usb.c              | 186 +++++++++++
+> > >  scripts/.gitignore                              |   1 +
+> > >  scripts/Makefile                                |   4 +
+> > >  scripts/omap4_usbboot.c                         | 416
+> ++++++++++++++++++++++++
+> > >  scripts/usb.h                                   |  61 ++++
+> > >  scripts/usb_linux.c                             | 397
+> ++++++++++++++++++++++
+> > >  11 files changed, 1229 insertions(+)
+> > >  create mode 100644 arch/arm/mach-omap/include/mach/omap4_rom_usb.h
+> > >  create mode 100644 arch/arm/mach-omap/omap4_rom_usb.c
+> > >  create mode 100644 scripts/omap4_usbboot.c
+> > >  create mode 100644 scripts/usb.h
+> > >  create mode 100644 scripts/usb_linux.c
+> > >
+> > > diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
+> > > index 71ef8c0..05343de 100644
+> > > --- a/arch/arm/cpu/cpu.c
+> > > +++ b/arch/arm/cpu/cpu.c
+> > > @@ -89,6 +89,7 @@ void arch_shutdown(void)
+> > >                 : "r0", "r1", "r2", "r3", "r6", "r10", "r12", "lr",
+> "cc", "memory"
+> > >         );
+> > >  #endif
+> > > +       __asm__ __volatile__ ("cpsid i\n");
+> ???
 >
-> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> index 8e660be..8598005 100644
-> --- a/arch/arm/Makefile
-> +++ b/arch/arm/Makefile
-> @@ -100,6 +100,7 @@ board-$(CONFIG_MACH_OMAP343xSDP)            := omap343xdsp
->  board-$(CONFIG_MACH_BEAGLE)                    := beagle
->  board-$(CONFIG_MACH_OMAP3EVM)                  := omap3evm
->  board-$(CONFIG_MACH_PANDA)                     := panda
-> +board-$(CONFIG_MACH_ARCHOSG9)                  := archosg9
->  board-$(CONFIG_MACH_PCM049)                    := pcm049
->  board-$(CONFIG_MACH_PCA100)                    := phycard-i.MX27
->  board-$(CONFIG_MACH_PCAAL1)                    := phycard-a-l1
-> diff --git a/arch/arm/boards/archosg9/Makefile b/arch/arm/boards/archosg9/Makefile
-> new file mode 100644
-> index 0000000..53b9d5b
-> --- /dev/null
-> +++ b/arch/arm/boards/archosg9/Makefile
-> @@ -0,0 +1,3 @@
-> +obj-y += board.o
-> +obj-y += lowlevel.o mux.o
-> +pbl-y += lowlevel.o mux.o
-> diff --git a/arch/arm/boards/archosg9/board.c b/arch/arm/boards/archosg9/board.c
-> new file mode 100644
-> index 0000000..5ef9126
-> --- /dev/null
-> +++ b/arch/arm/boards/archosg9/board.c
-> @@ -0,0 +1,72 @@
-> +/*
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License
-> + * version 2 as published by the Free Software Foundation.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License
-> + * along with this program; if not, write to the Free Software
-> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-> + * MA 02111-1307 USA
-> + */
+> why do you add this?
+>
+> we never enable the interrupt
+>
+> and this is generic not omap4 must be in a seperate patch
+>
+>
 
-see the following commit in the 'next' branch:
+--e89a8fb20834175a4704caec94f0
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-commit 77322aa896895f4f68501a071086e432e575dcc2
-Author: Sascha Hauer <s.hauer@pengutronix.de>
-Date:   Tue Jul 31 09:51:20 2012 +0200
+In fact the interrupts get enabled at omap4_usbboot_open, it&#39;s required=
+ for usb transfers.<br>For this reason the interrupts are disabled at bareb=
+ox exit.<br><br><div class=3D"gmail_quote">On Sun, Sep 30, 2012 at 4:02 PM,=
+ Jean-Christophe PLAGNIOL-VILLARD <span dir=3D"ltr">&lt;<a href=3D"mailto:p=
+lagnioj@jcrosoft.com" target=3D"_blank">plagnioj@jcrosoft.com</a>&gt;</span=
+> wrote:<br>
+<blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1p=
+x #ccc solid;padding-left:1ex"><div class=3D"HOEnZb"><div class=3D"h5">On 1=
+6:14 Sun 30 Sep =C2=A0 =C2=A0 , Antony Pavlov wrote:<br>
+&gt; On 30 September 2012 06:50, vj &lt;<a href=3D"mailto:vicencb@gmail.com=
+">vicencb@gmail.com</a>&gt; wrote:<br>
+&gt; &gt; ---<br>
+&gt; &gt; =C2=A0arch/arm/cpu/cpu.c =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| =C2=A0 =
+1 +<br>
+&gt; &gt; =C2=A0arch/arm/mach-omap/Kconfig =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| =C2=A0 7 +<br>
+&gt; &gt; =C2=A0arch/arm/mach-omap/Makefile =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | =C2=A0 1 +<br>
+&gt; &gt; =C2=A0arch/arm/mach-omap/include/mach/omap4_rom_usb.h | 142 +++++=
++++<br>
+&gt; &gt; =C2=A0arch/arm/mach-omap/omap4_generic.c =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0| =C2=A013 +<br>
+&gt; &gt; =C2=A0arch/arm/mach-omap/omap4_rom_usb.c =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0| 186 +++++++++++<br>
+&gt; &gt; =C2=A0scripts/.gitignore =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| =C2=A0 =
+1 +<br>
+&gt; &gt; =C2=A0scripts/Makefile =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| =C2=
+=A0 4 +<br>
+&gt; &gt; =C2=A0scripts/omap4_usbboot.c =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 416 ++++++++++++++++++++=
+++++<br>
+&gt; &gt; =C2=A0scripts/usb.h =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=
+ =C2=A061 ++++<br>
+&gt; &gt; =C2=A0scripts/usb_linux.c =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 397 +++++++++=
++++++++++++++<br>
+&gt; &gt; =C2=A011 files changed, 1229 insertions(+)<br>
+&gt; &gt; =C2=A0create mode 100644 arch/arm/mach-omap/include/mach/omap4_ro=
+m_usb.h<br>
+&gt; &gt; =C2=A0create mode 100644 arch/arm/mach-omap/omap4_rom_usb.c<br>
+&gt; &gt; =C2=A0create mode 100644 scripts/omap4_usbboot.c<br>
+&gt; &gt; =C2=A0create mode 100644 scripts/usb.h<br>
+&gt; &gt; =C2=A0create mode 100644 scripts/usb_linux.c<br>
+&gt; &gt;<br>
+&gt; &gt; diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c<br>
+&gt; &gt; index 71ef8c0..05343de 100644<br>
+&gt; &gt; --- a/arch/arm/cpu/cpu.c<br>
+&gt; &gt; +++ b/arch/arm/cpu/cpu.c<br>
+&gt; &gt; @@ -89,6 +89,7 @@ void arch_shutdown(void)<br>
+&gt; &gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 : &quot;r=
+0&quot;, &quot;r1&quot;, &quot;r2&quot;, &quot;r3&quot;, &quot;r6&quot;, &q=
+uot;r10&quot;, &quot;r12&quot;, &quot;lr&quot;, &quot;cc&quot;, &quot;memor=
+y&quot;<br>
+&gt; &gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 );<br>
+&gt; &gt; =C2=A0#endif<br>
+&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 __asm__ __volatile__ (&quot;cpsid i\n&quot=
+;);<br>
+</div></div>???<br>
+<br>
+why do you add this?<br>
+<br>
+we never enable the interrupt<br>
+<br>
+and this is generic not omap4 must be in a seperate patch<br>
+<br>
+</blockquote></div><br>
 
-    Treewide: remove address of the Free Software Foundation
+--e89a8fb20834175a4704caec94f0--
 
-    The FSF address has changed in the past. Instead of updating it
-    each time the address changes, just drop it completely treewide.
 
-    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
--- 
-Best regards,
-  Antony Pavlov
+--===============2396665554773935495==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============2396665554773935495==--
