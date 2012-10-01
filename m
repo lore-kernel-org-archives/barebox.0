@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f49.google.com ([209.85.214.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TIimt-0000Ts-HP
- for barebox@lists.infradead.org; Mon, 01 Oct 2012 16:24:08 +0000
-Received: by bkwj4 with SMTP id j4so4739383bkw.36
- for <barebox@lists.infradead.org>; Mon, 01 Oct 2012 09:24:04 -0700 (PDT)
-Date: Mon, 1 Oct 2012 18:24:01 +0200
-From: Christoph Fritz <chf.fritz@googlemail.com>
-Message-ID: <20121001162400.GA29504@lovely.krouter>
+ id 1TIjMB-0002Ip-Pz
+ for barebox@lists.infradead.org; Mon, 01 Oct 2012 17:00:37 +0000
+Date: Mon, 1 Oct 2012 19:00:32 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121001170032.GR1322@pengutronix.de>
 References: <1347391260.4361.12.camel@mars>
+ <20121001162400.GA29504@lovely.krouter>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1347391260.4361.12.camel@mars>
+In-Reply-To: <20121001162400.GA29504@lovely.krouter>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,72 +24,75 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: regression: ARM: pca100: Use _text rather than TEXT_BASE
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Christoph Fritz <chf.fritz@googlemail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 11, 2012 at 09:21:00PM +0200, Christoph Fritz wrote:
-> Hi Sascha,
+On Mon, Oct 01, 2012 at 06:24:01PM +0200, Christoph Fritz wrote:
+> On Tue, Sep 11, 2012 at 09:21:00PM +0200, Christoph Fritz wrote:
+> > Hi Sascha,
+> > 
+> > your commit 244198e "ARM boards: Use _text rather than TEXT_BASE"
+> > breaks board pca100 (phycard-i.MX27): It doesn't boot.
+> > 
+> > Revering the patch fixes the problem.
+> > 
+> > Any ideas?
 > 
-> your commit 244198e "ARM boards: Use _text rather than TEXT_BASE"
-> breaks board pca100 (phycard-i.MX27): It doesn't boot.
-> 
-> Revering the patch fixes the problem.
-> 
-> Any ideas?
+> *ping*
 
-*ping*
+Sorry, missed this one.
 
+Does the following fix it?
+
+8<------------------------------------------------------------
+
+From d199fdf0b57879485fcde51c6a4e4d6e316816ee Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 1 Oct 2012 18:58:16 +0200
+Subject: [PATCH] ARM i.MX pca100: Add missing jump to
+ board_init_lowlevel_return()
+
+This is broken since:
+
+| commit 244198ea8bdf592799ebfd430fe9ab165284e480
+| Author: Sascha Hauer <s.hauer@pengutronix.de>
+| Date:   Sun Jul 8 18:30:42 2012 +0200
+|
+|     ARM boards: Use _text rather than TEXT_BASE
+|
+|     With compressed image support TEXT_BASE will become the base
+|     address of the uncompressed image. What the boards want instead
+|     is the base address of the decompressor code or, if not compressed,
+|     the base address of the uncompressed image. Use _text which is
+|     the correct one for both cases.
+|
+|     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-Subject: [PATCH] ARM: pca100: revert TEXT_BASE changes
+ arch/arm/boards/phycard-i.MX27/pca100.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-This reverts commit 244198ea8bdf592799ebfd430fe9ab165284e480
-its changes for pca100.
----
- arch/arm/boards/phycard-i.MX27/lowlevel_init.S |    8 ++++++--
- arch/arm/boards/phycard-i.MX27/pca100.c        |    2 +-
- 2 files changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm/boards/phycard-i.MX27/lowlevel_init.S b/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
-index 0907382..7b700c5 100644
---- a/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
-+++ b/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
-@@ -115,7 +115,7 @@ board_init_lowlevel:
- 	bhi	ret
- 
- 	/* Move ourselves out of NFC SRAM */
--	ldr	r1, =_text
-+	ldr	r1, =TEXT_BASE
- 
- copy_loop:
- 	ldmia	r0!, {r3-r9}		/* copy from source address [r0]    */
-@@ -125,7 +125,11 @@ copy_loop:
- 
- 	ldr	pc, =1f			/* Jump to SDRAM                    */
- 1:
--	b	nand_boot		/* Load barebox from NAND Flash      */
-+	bl	nand_boot		/* Load barebox from NAND Flash      */
-+
-+	ldr	r1, =IMX_NFC_BASE - TEXT_BASE
-+	sub	r10, r10, r1		/* adjust return address from NFC SRAM */
-+					/* to SDRAM                            */
- 
- #endif /* CONFIG_NAND_IMX_BOOT */
- 
 diff --git a/arch/arm/boards/phycard-i.MX27/pca100.c b/arch/arm/boards/phycard-i.MX27/pca100.c
-index b77e532..3e60ccd 100644
+index 614bfc6..4b6e26e 100644
 --- a/arch/arm/boards/phycard-i.MX27/pca100.c
 +++ b/arch/arm/boards/phycard-i.MX27/pca100.c
-@@ -339,7 +339,7 @@ console_initcall(pca100_console_init);
- #ifdef CONFIG_NAND_IMX_BOOT
+@@ -329,6 +329,7 @@ console_initcall(pca100_console_init);
  void __bare_init nand_boot(void)
  {
--	imx_nand_load_image(_text, barebox_image_size);
-+	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
+ 	imx_nand_load_image(_text, barebox_image_size);
++	board_init_lowlevel_return();
  }
  #endif
  
 -- 
-1.7.2.5
+1.7.10.4
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
