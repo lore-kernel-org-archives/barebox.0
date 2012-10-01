@@ -1,21 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-bk0-f49.google.com ([209.85.214.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TIfQZ-0006F4-06
- for barebox@lists.infradead.org; Mon, 01 Oct 2012 12:48:52 +0000
-Date: Mon, 1 Oct 2012 14:48:45 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121001124845.GQ1322@pengutronix.de>
-References: <1348973437-31132-1-git-send-email-vicencb@gmail.com>
- <1348973437-31132-7-git-send-email-vicencb@gmail.com>
- <CAA4bVAG-yzYGNb4mNGTT=hcz1EwAcgDZyKVWnZ-aM8AVaN3wmg@mail.gmail.com>
- <20120930140225.GR26553@game.jcrosoft.org>
- <CAAMcf8Aa00YqVG-87F1Lk+_oCHwrRCeCTKE7G9g_QDK1C2tMcw@mail.gmail.com>
- <20120930152919.GT26553@game.jcrosoft.org>
- <CAAMcf8Bw5vB7-9aFUo22yegTg+AhtTR35340DYnxb2qZfupLKA@mail.gmail.com>
+ id 1TIimt-0000Ts-HP
+ for barebox@lists.infradead.org; Mon, 01 Oct 2012 16:24:08 +0000
+Received: by bkwj4 with SMTP id j4so4739383bkw.36
+ for <barebox@lists.infradead.org>; Mon, 01 Oct 2012 09:24:04 -0700 (PDT)
+Date: Mon, 1 Oct 2012 18:24:01 +0200
+From: Christoph Fritz <chf.fritz@googlemail.com>
+Message-ID: <20121001162400.GA29504@lovely.krouter>
+References: <1347391260.4361.12.camel@mars>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAAMcf8Bw5vB7-9aFUo22yegTg+AhtTR35340DYnxb2qZfupLKA@mail.gmail.com>
+In-Reply-To: <1347391260.4361.12.camel@mars>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,31 +24,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/9] omap4: add usb boot support
-To: vj <vicencb@gmail.com>
+Subject: Re: regression: ARM: pca100: Use _text rather than TEXT_BASE
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Please do not top post.
+On Tue, Sep 11, 2012 at 09:21:00PM +0200, Christoph Fritz wrote:
+> Hi Sascha,
+> 
+> your commit 244198e "ARM boards: Use _text rather than TEXT_BASE"
+> breaks board pca100 (phycard-i.MX27): It doesn't boot.
+> 
+> Revering the patch fixes the problem.
+> 
+> Any ideas?
 
-On Sun, Sep 30, 2012 at 06:00:06PM +0200, vj wrote:
-> It's out of my control:
->  The OMAP4 processor has an internal ROM which is in charge of the USB port
-> for booting.
-> Once the user application is running the USB communications are not closed
-> and can be reused by the user application through the ROM public API.
-> The OMAP4 ROM is implemented in a way it requires interrupts enabled.
+*ping*
 
-That explains why changing the vector address does not work with the ROM
-code.
+---
+Subject: [PATCH] ARM: pca100: revert TEXT_BASE changes
 
-Sascha
+This reverts commit 244198ea8bdf592799ebfd430fe9ab165284e480
+its changes for pca100.
+---
+ arch/arm/boards/phycard-i.MX27/lowlevel_init.S |    8 ++++++--
+ arch/arm/boards/phycard-i.MX27/pca100.c        |    2 +-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-
+diff --git a/arch/arm/boards/phycard-i.MX27/lowlevel_init.S b/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
+index 0907382..7b700c5 100644
+--- a/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
++++ b/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
+@@ -115,7 +115,7 @@ board_init_lowlevel:
+ 	bhi	ret
+ 
+ 	/* Move ourselves out of NFC SRAM */
+-	ldr	r1, =_text
++	ldr	r1, =TEXT_BASE
+ 
+ copy_loop:
+ 	ldmia	r0!, {r3-r9}		/* copy from source address [r0]    */
+@@ -125,7 +125,11 @@ copy_loop:
+ 
+ 	ldr	pc, =1f			/* Jump to SDRAM                    */
+ 1:
+-	b	nand_boot		/* Load barebox from NAND Flash      */
++	bl	nand_boot		/* Load barebox from NAND Flash      */
++
++	ldr	r1, =IMX_NFC_BASE - TEXT_BASE
++	sub	r10, r10, r1		/* adjust return address from NFC SRAM */
++					/* to SDRAM                            */
+ 
+ #endif /* CONFIG_NAND_IMX_BOOT */
+ 
+diff --git a/arch/arm/boards/phycard-i.MX27/pca100.c b/arch/arm/boards/phycard-i.MX27/pca100.c
+index b77e532..3e60ccd 100644
+--- a/arch/arm/boards/phycard-i.MX27/pca100.c
++++ b/arch/arm/boards/phycard-i.MX27/pca100.c
+@@ -339,7 +339,7 @@ console_initcall(pca100_console_init);
+ #ifdef CONFIG_NAND_IMX_BOOT
+ void __bare_init nand_boot(void)
+ {
+-	imx_nand_load_image(_text, barebox_image_size);
++	imx_nand_load_image((void *)TEXT_BASE, barebox_image_size);
+ }
+ #endif
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.2.5
 
 _______________________________________________
 barebox mailing list
