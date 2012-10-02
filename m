@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TJ2Bj-0002D4-Bs
+ id 1TJ2Bj-0002D5-O1
  for barebox@lists.infradead.org; Tue, 02 Oct 2012 13:07:07 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  2 Oct 2012 15:06:56 +0200
-Message-Id: <1349183217-19639-2-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  2 Oct 2012 15:06:57 +0200
+Message-Id: <1349183217-19639-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1349183217-19639-1-git-send-email-s.hauer@pengutronix.de>
 References: <1349183217-19639-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,45 +21,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM pbl: Provide a dummy error function for the
+Subject: [PATCH 2/2] ARM pbl: actually create cached mappings in the
  decompressor
 To: barebox@lists.infradead.org
 
-We can't do anything useful in the error function, so we just hang.
-This has the advantage that at least when a JTAG debugger is connected
-we can see what happens. Otherwise the code just jumps to NULL in case
-of an error.
+We called create_sections with 4096MB as size argument, but create_sections
+expected the argument in bytes, so create sections was completely optimized
+away due to the size >>= 20. This patch changes the size argument to be in
+megabytes and adjusts map_cachable to pass the argument in megabytes.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start-pbl.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm/cpu/start-pbl.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index 932a3da..2cd33ce 100644
+index 2cd33ce..1626eb3 100644
 --- a/arch/arm/cpu/start-pbl.c
 +++ b/arch/arm/cpu/start-pbl.c
-@@ -113,6 +113,11 @@ static void mmu_disable(void)
- 	__mmu_cache_off();
+@@ -56,14 +56,13 @@ extern void *input_data_end;
+ 
+ static unsigned long *ttb;
+ 
+-static void create_sections(unsigned long addr, int size, unsigned int flags)
++static void create_sections(unsigned long addr, int size_m, unsigned int flags)
+ {
+ 	int i;
+ 
+ 	addr >>= 20;
+-	size >>= 20;
+ 
+-	for (i = size; i > 0; i--, addr++)
++	for (i = size_m; i > 0; i--, addr++)
+ 		ttb[addr] = (addr << 20) | flags;
  }
  
-+void noinline errorfn(char *error)
-+{
-+	while (1);
-+}
-+
- static void barebox_uncompress(void *compressed_start, unsigned int len)
- {
- 	void (*barebox)(void);
-@@ -135,7 +140,7 @@ static void barebox_uncompress(void *compressed_start, unsigned int len)
- 	decompress((void *)compressed_start,
- 			len,
- 			NULL, NULL,
--			(void *)TEXT_BASE, NULL, NULL);
-+			(void *)TEXT_BASE, NULL, errorfn);
+@@ -72,7 +71,7 @@ static void map_cachable(unsigned long start, unsigned long size)
+ 	start &= ~(SZ_1M - 1);
+ 	size = (size + (SZ_1M - 1)) & ~(SZ_1M - 1);
  
- 	if (use_mmu)
- 		mmu_disable();
+-	create_sections(start, size, PMD_SECT_AP_WRITE |
++	create_sections(start, size >> 20, PMD_SECT_AP_WRITE |
+ 			PMD_SECT_AP_READ | PMD_TYPE_SECT | PMD_SECT_WB);
+ }
+ 
 -- 
 1.7.10.4
 
