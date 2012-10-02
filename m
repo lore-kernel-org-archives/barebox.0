@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TJ2Bj-0002D3-Aq
- for barebox@lists.infradead.org; Tue, 02 Oct 2012 13:07:07 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1TJ2Be-0000Nt-Lt
- for barebox@lists.infradead.org; Tue, 02 Oct 2012 15:06:58 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1TJ2Be-0001ps-KA
- for barebox@lists.infradead.org; Tue, 02 Oct 2012 15:06:58 +0200
+ id 1TJ2S8-0004Qj-7e
+ for barebox@lists.infradead.org; Tue, 02 Oct 2012 13:24:01 +0000
+Date: Tue, 2 Oct 2012 15:23:57 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  2 Oct 2012 15:06:55 +0200
-Message-Id: <1349183217-19639-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20121002132357.GK24458@pengutronix.de>
+References: <1344959336-18562-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1344959336-18562-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +18,159 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] pbl updates
-To: barebox@lists.infradead.org
+Subject: Re: [for master PATCH 1/2] miidev: add phy_addr detection support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Here are two updates for the MMU code in the decompressor. The first
-one may come in handy when a JTAG debugger is connected. The second
-one is more important. It actually makes turning on the MMU in the
-decompressor useful by making map_cachable work. It turned out that
-this didn't work leaving the whole mapping uncached.
-Note that the code in current master should work, but slow. Since
-it actually does work I do not want to put this into the upcoming
-release.
+Hi J,
 
-Sascha
+Can you revamp this on current master? Without the detection part if a
+phy address is given, thus introducing no change when phy address is > 0.
 
-----------------------------------------------------------------
-Sascha Hauer (2):
-      ARM pbl: Provide a dummy error function for the decompressor
-      ARM pbl: actually create cached mappings in the decompressor
+Thanks
+ Sascha
 
- arch/arm/cpu/start-pbl.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+On Tue, Aug 14, 2012 at 05:48:55PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> export via param the phy_addr and the phy_id detected
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+> Hi,
+> 
+> 	this is need to fix the calao board support since the introduction of
+> 	the gigabit phy detection support
+> 
+> Best Regards,
+> J.
+>  drivers/net/miidev.c |   76 ++++++++++++++++++++++++++++++++++++++++++++++----
+>  include/miidev.h     |    2 ++
+>  2 files changed, 72 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/miidev.c b/drivers/net/miidev.c
+> index b49944b..ab1811d 100644
+> --- a/drivers/net/miidev.c
+> +++ b/drivers/net/miidev.c
+> @@ -236,18 +236,82 @@ static struct file_operations miidev_ops = {
+>  	.lseek = dev_lseek_default,
+>  };
+>  
+> +static int get_phy_id(struct mii_device *mdev, int phy_addr,
+> +			  uint32_t *phy_id)
+> +{
+> +	int val;
+> +
+> +	val = mii_read(mdev, phy_addr, MII_PHYSID1);
+> +	if (val < 0)
+> +		return -EIO;
+> +	*phy_id = (val & 0xffff) << 16;
+> +	val = mii_read(mdev, phy_addr, MII_PHYSID2);
+> +	if (val < 0)
+> +		return -EIO;
+> +	*phy_id |= (val & 0xffff);
+> +
+> +	return 0;
+> +}
+> +
+> +static int phy_detect_one(struct mii_device *mdev, int phy_addr,
+> +			  uint32_t *phy_id)
+> +{
+> +	uint32_t _phy_id;
+> +	int ret;
+> +
+> +	ret = get_phy_id(mdev, phy_addr, &_phy_id);
+> +
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* If the phy_id is mostly Fs, there is no device there */
+> +	if ((_phy_id & 0x1fffffff) == 0x1fffffff)
+> +		return -EIO;
+> +
+> +	*phy_id = _phy_id;
+> +
+> +	return 0;
+> +}
+> +
+> +static int phy_detect(struct mii_device *mdev)
+> +{
+> +	int phy_addr;
+> +
+> +	for (phy_addr = 0; phy_addr <= 0x1f; phy_addr++) {
+> +		if (!phy_detect_one(mdev, phy_addr, &mdev->phy_id))
+> +			return phy_addr;
+> +	}
+> +
+> +	return -EIO;
+> +}
+> +
+>  static int miidev_probe(struct device_d *dev)
+>  {
+>  	struct mii_device *mdev = dev->priv;
+>  	int val;
+>  	int caps = 0;
+> +	char str[11];
+> +
+> +	if (mdev->address < 0) {
+> +		int phy_addr;
+> +
+> +		phy_addr = phy_detect(mdev);
+> +
+> +		if (phy_addr < 0) {
+> +			dev_err(dev, "cannot detect PHY\n");
+> +			return -ENODEV;
+> +		}
+> +		mdev->address = phy_addr;
+> +	} else {
+> +		if (phy_detect_one(mdev, mdev->address, &mdev->phy_id) < 0)
+> +			goto err_out;
+> +	}
+> +
+> +	sprintf(str, "%u", mdev->address);
+> +	dev_add_param_fixed(dev, "phy_addr", str);
+> +	sprintf(str, "0x%08x", mdev->phy_id);
+> +	dev_add_param_fixed(dev, "phy_id", str);
+>  
+> -	val = mii_read(mdev, mdev->address, MII_PHYSID1);
+> -	if (val < 0 || val == 0xffff)
+> -		goto err_out;
+> -	val = mii_read(mdev, mdev->address, MII_PHYSID2);
+> -	if (val < 0 || val == 0xffff)
+> -		goto err_out;
+>  	val = mii_read(mdev, mdev->address, MII_BMSR);
+>  	if (val < 0)
+>  		goto err_out;
+> diff --git a/include/miidev.h b/include/miidev.h
+> index 4bbf94c..2f39234 100644
+> --- a/include/miidev.h
+> +++ b/include/miidev.h
+> @@ -38,6 +38,8 @@ struct mii_device {
+>  	struct device_d *parent;
+>  
+>  	int address;	/* The address the phy has on the bus */
+> +	uint32_t phy_id;	/* The phy id */
+> +
+>  	int	(*read) (struct mii_device *dev, int addr, int reg);
+>  	int	(*write) (struct mii_device *dev, int addr, int reg, int value);
+>  
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
