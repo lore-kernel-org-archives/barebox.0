@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TJ5o1-0004CX-GC
- for barebox@lists.infradead.org; Tue, 02 Oct 2012 16:58:50 +0000
-Date: Tue, 2 Oct 2012 18:58:47 +0200
+ id 1TJ5vs-0004hi-GS
+ for barebox@lists.infradead.org; Tue, 02 Oct 2012 17:06:57 +0000
+Date: Tue, 2 Oct 2012 19:06:54 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121002165847.GA1322@pengutronix.de>
-References: <20120924093122.GD26553@game.jcrosoft.org>
- <506AFDEB.4010805@ge.com>
- <20121002160421.GA26553@game.jcrosoft.org>
+Message-ID: <20121002170654.GB1322@pengutronix.de>
+References: <1348973437-31132-1-git-send-email-vicencb@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121002160421.GA26553@game.jcrosoft.org>
+In-Reply-To: <1348973437-31132-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,37 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/1 v7] net: introduce phylib
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 0/9] archosg9: add support for tablet, second round
+To: vj <vicencb@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 02, 2012 at 06:04:21PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > The mdiobus_scan performed when registering the mdio bus at probe time
-> > has an impact on boot time. I have a 85xx board whose PHY needs 450ms to
-> > be ready for access.
-> > 
-> > I will send a patch for the gianfar driver to register the mdio bus only
-> > when the device is open.
-> That why I did at the first open before
-> 
-> and I guess your case is not the only one
-> 
-> I do not like the idea to register the bus later
-> 
-> we need to have defer probe
+Hi,
 
-Yes, that's probably the best. Normally, when a phy address is given, we
-do not have to scan the bus at all, we only have to do it when -1 is
-given as phy address.
+On Sun, Sep 30, 2012 at 04:50:28AM +0200, vj wrote:
+> Hello,
+>  here is the second round of patches including all the modifications suggested by your comments, which are greatly appreciated.
+> 
+> There are also some improvements wrt the previous round of patches:
+>  1.- Now there is no need to pass data from first to second stage.
+>         The second stage reopens the usb port and that works.
+>  2.- The usb scripts have been splitted in several files.
+> 
+> vj (9):
+>   ARM: set rev instead of returning it
+>   mmc_omap: improve error message
+>   omap4: add/rename definitions to match datasheet
+>   twl6030: add debug info
+>   add gitignore file
+>   omap4: add usb boot support
+>   omap4: add serial communications over usb boot
+>   omap4: add filesystem support over usb boot
+>   Add support for Archos G9 tablet
 
-Another idea would be to pass a bitmask for valid phy addresses rather
-than a number. Maybe some board has a phy at a known address and another
-one at some to be detected address. Then for one phy the mask would be
-0x00010000 and for the other 0xfffeffff. Given that this would be more
-effort to change all the platform data we can do this should the need
-arise.
+I applied 1/9, 2/9 and 5/9 as obvious bugfix/cleanups
 
-Sascha
+Thanks
+ Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
