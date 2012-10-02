@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TJ2fn-0004oT-L3
- for barebox@lists.infradead.org; Tue, 02 Oct 2012 13:38:08 +0000
-Date: Tue, 2 Oct 2012 15:38:05 +0200
+ id 1TJ2o0-000677-7A
+ for barebox@lists.infradead.org; Tue, 02 Oct 2012 13:46:41 +0000
+Date: Tue, 2 Oct 2012 15:46:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121002133805.GV1322@pengutronix.de>
-References: <20120926095650.GG31983@game.jcrosoft.org>
- <20120930134749.GN26553@game.jcrosoft.org>
- <20121001181212.GV26553@game.jcrosoft.org>
- <20121002085447.GW26553@game.jcrosoft.org>
+Message-ID: <20121002134631.GX1322@pengutronix.de>
+References: <1348973437-31132-1-git-send-email-vicencb@gmail.com>
+ <1348973437-31132-5-git-send-email-vicencb@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121002085447.GW26553@game.jcrosoft.org>
+In-Reply-To: <1348973437-31132-5-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,23 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/6] gui: factorise code
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 4/9] twl6030: add debug info
+To: vj <vicencb@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 02, 2012 at 10:54:47AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> HI,
+On Sun, Sep 30, 2012 at 04:50:32AM +0200, vj wrote:
+> ---
+>  drivers/mfd/twl6030.c | 22 ++++++++++++++++++++++
+>  include/mfd/twl6030.h |  8 ++++++++
+>  2 files changed, 30 insertions(+)
 > 
-> 	can you announce publicy if you now decide to refuse my contribution in
-> 	Barebox
+> diff --git a/drivers/mfd/twl6030.c b/drivers/mfd/twl6030.c
+> index 7ecfed8..b8b0418 100644
+> --- a/drivers/mfd/twl6030.c
+> +++ b/drivers/mfd/twl6030.c
+> @@ -39,6 +39,28 @@ static int twl_probe(struct device_d *dev)
+>  
+>  	devfs_create(&(twl_dev->core.cdev));
+>  
+> +#ifdef DEBUG
+> +	{
+> +		u8 i, jtag_rev, eprom_rev;
+> +		int r;
+> +		u64 dieid;
+> +		r = twl6030_reg_read(twl_dev, TWL6030_JTAG_JTAGVERNUM,
+> +			&jtag_rev);
+> +		r |= twl6030_reg_read(twl_dev, TWL6030_JTAG_EPROM_REV,
+> +			&eprom_rev);
+> +		for (i = 0; i < 8; i++)
+> +			r |= twl6030_reg_read(twl_dev, TWL6030_DIEID_0+i,
+> +				((u8 *)(&dieid))+i);
+> +		if (r)
+> +			debug("TWL6030 Error reading ID\n");
+> +		else
+> +			debug("TWL6030 JTAG REV: 0x%02X, "
+> +				"EPROM REV: 0x%02X, "
+> +				"DIE ID: 0x%016llX\n",
+> +				(unsigned)jtag_rev, (unsigned)eprom_rev, dieid);
 
-I do not intend to refuse your contribution to barebox, but if you want
-to drop huge amounts of code into the repository please give me the
-feeling that you have looked at your patches and have tested them. The
-series you are pinging here refactors code which didn't even hit the
-master branch.
-
-That said, I think this series looks ok and I'm going to apply it.
+Please use dev_dbg for driver/device related messages. dev_dbg will add
+the correct context to the message.
 
 Sascha
 
