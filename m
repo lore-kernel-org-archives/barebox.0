@@ -1,22 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo3.mail-out.ovh.net ([87.98.172.162]
- helo=mo3.mail-out.ovh.net)
+Received: from mo3.mail-out.ovh.net ([178.32.228.3])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TJ7JJ-0000dY-EO
- for barebox@lists.infradead.org; Tue, 02 Oct 2012 18:35:14 +0000
+ id 1TJ7N5-0000t6-Dc
+ for barebox@lists.infradead.org; Tue, 02 Oct 2012 18:39:07 +0000
 Received: from mail181.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 38224FFB849
- for <barebox@lists.infradead.org>; Tue,  2 Oct 2012 20:43:59 +0200 (CEST)
-Date: Tue, 2 Oct 2012 20:32:46 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id DB4EFFFBA1B
+ for <barebox@lists.infradead.org>; Tue,  2 Oct 2012 20:47:53 +0200 (CEST)
+Date: Tue, 2 Oct 2012 20:36:41 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121002183246.GB26553@game.jcrosoft.org>
-References: <20120924093122.GD26553@game.jcrosoft.org>
- <506AFDEB.4010805@ge.com>
- <20121002160421.GA26553@game.jcrosoft.org>
- <20121002165847.GA1322@pengutronix.de>
+Message-ID: <20121002183641.GC26553@game.jcrosoft.org>
+References: <1349183217-19639-1-git-send-email-s.hauer@pengutronix.de>
+ <20121002143011.GZ26553@game.jcrosoft.org>
+ <20121002165033.GZ1322@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121002165847.GA1322@pengutronix.de>
+In-Reply-To: <20121002165033.GZ1322@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,46 +27,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/1 v7] net: introduce phylib
+Subject: Re: [PATCH] pbl updates
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 18:58 Tue 02 Oct     , Sascha Hauer wrote:
-> On Tue, Oct 02, 2012 at 06:04:21PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > The mdiobus_scan performed when registering the mdio bus at probe time
-> > > has an impact on boot time. I have a 85xx board whose PHY needs 450ms to
-> > > be ready for access.
-> > > 
-> > > I will send a patch for the gianfar driver to register the mdio bus only
-> > > when the device is open.
-> > That why I did at the first open before
+On 18:50 Tue 02 Oct     , Sascha Hauer wrote:
+> On Tue, Oct 02, 2012 at 04:30:11PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 15:06 Tue 02 Oct     , Sascha Hauer wrote:
+> > > Here are two updates for the MMU code in the decompressor. The first
+> > > one may come in handy when a JTAG debugger is connected. The second
+> > > one is more important. It actually makes turning on the MMU in the
+> > > decompressor useful by making map_cachable work. It turned out that
+> > > this didn't work leaving the whole mapping uncached.
+> > > Note that the code in current master should work, but slow. Since
+> > > it actually does work I do not want to put this into the upcoming
+> > > release.
+> > As I report the current code does not work on at91sam9g45
+> > I suspect as we boot from the second ram controler on this SoC
 > > 
-> > and I guess your case is not the only one
-> > 
-> > I do not like the idea to register the bus later
-> > 
-> > we need to have defer probe
+> > So please hold the release that I can try those patch on sam9g45 if they fix
+> > the PBL they will be mandatory for it
 > 
-> Yes, that's probably the best. Normally, when a phy address is given, we
-> do not have to scan the bus at all, we only have to do it when -1 is
-> given as phy address.
+> I think they won't fix it. map_cachable currently is a noop, but this
+> should be fine as now we have a complete 1:1 uncached mapping. I don't
+> see why this shouldn't work. I hope you find out.
 > 
-> Another idea would be to pass a bitmask for valid phy addresses rather
-> than a number. Maybe some board has a phy at a known address and another
-> one at some to be detected address. Then for one phy the mask would be
-> 0x00010000 and for the other 0xfffeffff. Given that this would be more
-> effort to change all the platform data we can do this should the need
-> arise.
-scan the bus take nothing 100ms normally the mdio lock is 3MHz to 6MHz,
-the issue is that some phy need to be reset and you need wait for it
-and the bus reset
+> What we can do for now is to add an additional Kconfig option to make
+> enabling the MMU in the pbl optional. Then at least it should work on
+> your boards.
+Was thinking about this too
+> 
+> BTW I hunted down a strange problem with the MMU on a KaRO Tx53 board.
+> It turned out that the image header (which basically is a poke table
+> to initialize the SDRAM) indeed initialized the SDRAM. The problem was
+> that this SDRAM setup depends on some other lowlevel setup which is done
+> later. The SDRAM setup was good enough to load with MMU disabled, but
+> once the MMU is enabled the SDRAM does burst accesses and the board goes
+> to nirvana.
+> Maybe your problem is related somehow.
+yeah It may solve my issue with the MMU and nand boot
 
-so I think we need to add:
-
- - device probe defer support
- - phy reset support at phylib level
-
-phy mask will just reduce a few the bus scan
+I was thinking to add a initcall support to the pbl and enable the MMU at the
+right momment. This will allow to simplify the adding of generic SPL framework
 
 Best Regards,
 J.
