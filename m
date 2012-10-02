@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TJ2o0-000677-7A
- for barebox@lists.infradead.org; Tue, 02 Oct 2012 13:46:41 +0000
-Date: Tue, 2 Oct 2012 15:46:31 +0200
+ id 1TJ2ss-0006pT-LF
+ for barebox@lists.infradead.org; Tue, 02 Oct 2012 13:51:39 +0000
+Date: Tue, 2 Oct 2012 15:51:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121002134631.GX1322@pengutronix.de>
+Message-ID: <20121002135127.GY1322@pengutronix.de>
 References: <1348973437-31132-1-git-send-email-vicencb@gmail.com>
- <1348973437-31132-5-git-send-email-vicencb@gmail.com>
+ <1348973437-31132-7-git-send-email-vicencb@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1348973437-31132-5-git-send-email-vicencb@gmail.com>
+In-Reply-To: <1348973437-31132-7-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,48 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/9] twl6030: add debug info
+Subject: Re: [PATCH 6/9] omap4: add usb boot support
 To: vj <vicencb@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Sep 30, 2012 at 04:50:32AM +0200, vj wrote:
+On Sun, Sep 30, 2012 at 04:50:34AM +0200, vj wrote:
 > ---
->  drivers/mfd/twl6030.c | 22 ++++++++++++++++++++++
->  include/mfd/twl6030.h |  8 ++++++++
->  2 files changed, 30 insertions(+)
+>  arch/arm/cpu/cpu.c                              |   1 +
+>  arch/arm/mach-omap/Kconfig                      |   7 +
+>  arch/arm/mach-omap/Makefile                     |   1 +
+>  arch/arm/mach-omap/include/mach/omap4_rom_usb.h | 142 ++++++++
+>  arch/arm/mach-omap/omap4_generic.c              |  13 +
+>  arch/arm/mach-omap/omap4_rom_usb.c              | 186 +++++++++++
+>  scripts/.gitignore                              |   1 +
+>  scripts/Makefile                                |   4 +
+>  scripts/omap4_usbboot.c                         | 416 ++++++++++++++++++++++++
+>  scripts/usb.h                                   |  61 ++++
+>  scripts/usb_linux.c                             | 397 ++++++++++++++++++++++
+>  11 files changed, 1229 insertions(+)
+>  create mode 100644 arch/arm/mach-omap/include/mach/omap4_rom_usb.h
+>  create mode 100644 arch/arm/mach-omap/omap4_rom_usb.c
+>  create mode 100644 scripts/omap4_usbboot.c
+>  create mode 100644 scripts/usb.h
+>  create mode 100644 scripts/usb_linux.c
 > 
-> diff --git a/drivers/mfd/twl6030.c b/drivers/mfd/twl6030.c
-> index 7ecfed8..b8b0418 100644
-> --- a/drivers/mfd/twl6030.c
-> +++ b/drivers/mfd/twl6030.c
-> @@ -39,6 +39,28 @@ static int twl_probe(struct device_d *dev)
->  
->  	devfs_create(&(twl_dev->core.cdev));
->  
-> +#ifdef DEBUG
-> +	{
-> +		u8 i, jtag_rev, eprom_rev;
-> +		int r;
-> +		u64 dieid;
-> +		r = twl6030_reg_read(twl_dev, TWL6030_JTAG_JTAGVERNUM,
-> +			&jtag_rev);
-> +		r |= twl6030_reg_read(twl_dev, TWL6030_JTAG_EPROM_REV,
-> +			&eprom_rev);
-> +		for (i = 0; i < 8; i++)
-> +			r |= twl6030_reg_read(twl_dev, TWL6030_DIEID_0+i,
-> +				((u8 *)(&dieid))+i);
-> +		if (r)
-> +			debug("TWL6030 Error reading ID\n");
-> +		else
-> +			debug("TWL6030 JTAG REV: 0x%02X, "
-> +				"EPROM REV: 0x%02X, "
-> +				"DIE ID: 0x%016llX\n",
-> +				(unsigned)jtag_rev, (unsigned)eprom_rev, dieid);
+> diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
+> index 71ef8c0..05343de 100644
+> --- a/arch/arm/cpu/cpu.c
+> +++ b/arch/arm/cpu/cpu.c
+> @@ -89,6 +89,7 @@ void arch_shutdown(void)
+>  		: "r0", "r1", "r2", "r3", "r6", "r10", "r12", "lr", "cc", "memory"
+>  	);
+>  #endif
+> +	__asm__ __volatile__ ("cpsid i\n");
 
-Please use dev_dbg for driver/device related messages. dev_dbg will add
-the correct context to the message.
+This is a generic arm file. If you want to change something here, please
+send a separate patch with this change and explain what it does (and why
+it does it)
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
