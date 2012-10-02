@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TJ2Bj-0002D5-O1
+ id 1TJ2Bj-0002D3-Aq
  for barebox@lists.infradead.org; Tue, 02 Oct 2012 13:07:07 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1TJ2Be-0000Nt-Lt
+ for barebox@lists.infradead.org; Tue, 02 Oct 2012 15:06:58 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1TJ2Be-0001ps-KA
+ for barebox@lists.infradead.org; Tue, 02 Oct 2012 15:06:58 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  2 Oct 2012 15:06:57 +0200
-Message-Id: <1349183217-19639-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1349183217-19639-1-git-send-email-s.hauer@pengutronix.de>
-References: <1349183217-19639-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  2 Oct 2012 15:06:55 +0200
+Message-Id: <1349183217-19639-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,53 +26,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM pbl: actually create cached mappings in the
- decompressor
+Subject: [PATCH] pbl updates
 To: barebox@lists.infradead.org
 
-We called create_sections with 4096MB as size argument, but create_sections
-expected the argument in bytes, so create sections was completely optimized
-away due to the size >>= 20. This patch changes the size argument to be in
-megabytes and adjusts map_cachable to pass the argument in megabytes.
+Here are two updates for the MMU code in the decompressor. The first
+one may come in handy when a JTAG debugger is connected. The second
+one is more important. It actually makes turning on the MMU in the
+decompressor useful by making map_cachable work. It turned out that
+this didn't work leaving the whole mapping uncached.
+Note that the code in current master should work, but slow. Since
+it actually does work I do not want to put this into the upcoming
+release.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/cpu/start-pbl.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+Sascha
 
-diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index 2cd33ce..1626eb3 100644
---- a/arch/arm/cpu/start-pbl.c
-+++ b/arch/arm/cpu/start-pbl.c
-@@ -56,14 +56,13 @@ extern void *input_data_end;
- 
- static unsigned long *ttb;
- 
--static void create_sections(unsigned long addr, int size, unsigned int flags)
-+static void create_sections(unsigned long addr, int size_m, unsigned int flags)
- {
- 	int i;
- 
- 	addr >>= 20;
--	size >>= 20;
- 
--	for (i = size; i > 0; i--, addr++)
-+	for (i = size_m; i > 0; i--, addr++)
- 		ttb[addr] = (addr << 20) | flags;
- }
- 
-@@ -72,7 +71,7 @@ static void map_cachable(unsigned long start, unsigned long size)
- 	start &= ~(SZ_1M - 1);
- 	size = (size + (SZ_1M - 1)) & ~(SZ_1M - 1);
- 
--	create_sections(start, size, PMD_SECT_AP_WRITE |
-+	create_sections(start, size >> 20, PMD_SECT_AP_WRITE |
- 			PMD_SECT_AP_READ | PMD_TYPE_SECT | PMD_SECT_WB);
- }
- 
--- 
-1.7.10.4
+----------------------------------------------------------------
+Sascha Hauer (2):
+      ARM pbl: Provide a dummy error function for the decompressor
+      ARM pbl: actually create cached mappings in the decompressor
 
+ arch/arm/cpu/start-pbl.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
 _______________________________________________
 barebox mailing list
