@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.mo4.mail-out.ovh.net ([178.33.251.8]
+Received: from 4.mo4.mail-out.ovh.net ([178.32.98.131]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TJQaZ-0006OO-N5
- for barebox@lists.infradead.org; Wed, 03 Oct 2012 15:10:21 +0000
+ id 1TJQo9-0008Up-C6
+ for barebox@lists.infradead.org; Wed, 03 Oct 2012 15:24:22 +0000
 Received: from mail247.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 340BF104F9A8
- for <barebox@lists.infradead.org>; Wed,  3 Oct 2012 17:16:32 +0200 (CEST)
-Date: Wed, 3 Oct 2012 17:07:50 +0200
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 8EDC1104F93F
+ for <barebox@lists.infradead.org>; Wed,  3 Oct 2012 17:30:33 +0200 (CEST)
+Date: Wed, 3 Oct 2012 17:21:53 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121003150750.GG26553@game.jcrosoft.org>
+Message-ID: <20121003152153.GH26553@game.jcrosoft.org>
 References: <1349259879-32523-1-git-send-email-s.hauer@pengutronix.de>
  <20121003113550.GD26553@game.jcrosoft.org>
  <20121003123010.GE1322@pengutronix.de>
@@ -83,11 +83,57 @@ On 16:12 Wed 03 Oct     , Sascha Hauer wrote:
 > a release we can equally well disable the feature for now.
 > 
 > Ok?
-ok the pbl is mandatory on at91 due to barebox size issue we can live without
-MMU for one release
+just for the  record I work on ux5x0 for ST-E /ST Soc where you must enable
+the l2x0 to use the mmu
+
+And I get the same issue on nomadik that was alo on fo the reason I want to
+add the initcall to the pbl to have SoC and board init
 
 Best Regards,
 J.
+> 
+> Sascha
+> 
+> 8<------------------------------------------------------
+> 
+> From c05511d6cdbcddf32d41d4036e49af8a9c18832d Mon Sep 17 00:00:00 2001
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> Date: Wed, 3 Oct 2012 12:23:41 +0200
+> Subject: [PATCH] ARM: Disable MMU feature in PBL
+> 
+> remap_cache currently does not work, so enabling the MMU in the
+> PBL currently does not make sense. Disable it for now.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/cpu/start-pbl.c |    6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+> index 932a3da..3bd520c 100644
+> --- a/arch/arm/cpu/start-pbl.c
+> +++ b/arch/arm/cpu/start-pbl.c
+> @@ -116,7 +116,11 @@ static void mmu_disable(void)
+>  static void barebox_uncompress(void *compressed_start, unsigned int len)
+>  {
+>  	void (*barebox)(void);
+> -	int use_mmu = IS_ENABLED(CONFIG_MMU);
+> +	/*
+> +	 * remap_cached currently does not work rendering the feature
+> +	 * of enabling the MMU in the PBL useless. disable for now.
+> +	 */
+> +	int use_mmu = 0;
+>  
+>  	/* set 128 KiB at the end of the MALLOC_BASE for early malloc */
+>  	free_mem_ptr = MALLOC_BASE + MALLOC_SIZE - SZ_128K;
+> -- 
+> 1.7.10.4
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
