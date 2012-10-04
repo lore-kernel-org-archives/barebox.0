@@ -2,16 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 2.mo1.mail-out.ovh.net ([178.32.119.250]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TJfSP-00022X-T6
+ id 1TJfSP-00022W-T5
  for barebox@lists.infradead.org; Thu, 04 Oct 2012 07:02:54 +0000
 Received: from mail405.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 85A32FF8F7E
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 660AAFF8F67
  for <barebox@lists.infradead.org>; Thu,  4 Oct 2012 09:11:58 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  4 Oct 2012 09:00:27 +0200
-Message-Id: <1349334027-9525-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1349334027-9525-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1349334027-9525-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu,  4 Oct 2012 09:00:25 +0200
+Message-Id: <1349334027-9525-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,44 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] net/designware: fix phylib support
+Subject: [PATCH 1/3] net/designware: update version display to print user ID
+ and Synosys ID
 To: barebox@lists.infradead.org
 
-/opt/work/barebox/drivers/net/designware.c: In function 'dwc_update_linkspeed':
-/opt/work/barebox/drivers/net/designware.c:234:9: error: 'mac_p' undeclared (first use in this function)
-/opt/work/barebox/drivers/net/designware.c:234:9: note: each undeclared identifier is reported only once for each function it appears in
-/opt/work/barebox/drivers/net/designware.c: In function 'dwc_ether_open':
-/opt/work/barebox/drivers/net/designware.c:254:6: error: too few arguments to function 'phy_device_connect'
-/opt/work/barebox/include/linux/phy.h:252:5: note: declared here
-/opt/work/barebox/drivers/net/designware.c: At top level:
-/opt/work/barebox/drivers/net/designware.c:226:13: warning: 'dwc_update_linkspeed' defined but not used
+So we can check it with the kernel one
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/net/designware.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/designware.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/designware.c b/drivers/net/designware.c
-index 6a36f14..ec51825 100644
+index a9a04e3..6a36f14 100644
 --- a/drivers/net/designware.c
 +++ b/drivers/net/designware.c
-@@ -226,6 +226,7 @@ static int dwc_ether_init(struct eth_device *dev)
- static void dwc_update_linkspeed(struct eth_device *edev)
+@@ -373,6 +373,15 @@ static int dwc_ether_set_ethaddr(struct eth_device *dev, u8 adr[6])
+ 	return 0;
+ }
+ 
++static void dwc_version(struct device_d *dev, u32 hwid)
++{
++	u32 uid = ((hwid & 0x0000ff00) >> 8);
++	u32 synid = (hwid & 0x000000ff);
++
++	dev_info(dev, "user ID: 0x%x, Synopsys ID: 0x%x\n",
++		uid, synid);
++}
++
+ static int dwc_ether_probe(struct device_d *dev)
  {
- 	struct dw_eth_dev *priv = edev->priv;
-+	struct eth_mac_regs *mac_p = priv->mac_regs_p;
- 	u32 conf;
+ 	struct dw_eth_dev *priv;
+@@ -390,7 +399,7 @@ static int dwc_ether_probe(struct device_d *dev)
  
- 	if (priv->fix_mac_speed)
-@@ -251,7 +252,7 @@ static int dwc_ether_open(struct eth_device *dev)
- 	int ret;
- 
- 	ret = phy_device_connect(dev, &priv->miibus, priv->phy_addr,
--				 0, PHY_INTERFACE_MODE_NA);
-+				 dwc_update_linkspeed, 0, PHY_INTERFACE_MODE_NA);
- 	if (ret)
- 		return ret;
- 
+ 	base = dev_request_mem_region(dev, 0);
+ 	priv->mac_regs_p = base;
+-	dev_info(dev, "MAC version %08x\n", readl(&priv->mac_regs_p->version));
++	dwc_version(dev, readl(&priv->mac_regs_p->version));
+ 	priv->dma_regs_p = base + DW_DMA_BASE_OFFSET;
+ 	priv->tx_mac_descrtable = dma_alloc_coherent(
+ 		CONFIG_TX_DESCR_NUM * sizeof(struct dmamacdescr));
 -- 
 1.7.10.4
 
