@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo1.mail-out.ovh.net ([178.32.97.215]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TJj80-0002hs-AL
- for barebox@lists.infradead.org; Thu, 04 Oct 2012 10:58:05 +0000
-Received: from mail615.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 51623FF94D9
- for <barebox@lists.infradead.org>; Thu,  4 Oct 2012 13:07:08 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  4 Oct 2012 12:55:35 +0200
-Message-Id: <1349348135-509-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TJjGZ-0002nT-Vd
+ for barebox@lists.infradead.org; Thu, 04 Oct 2012 11:06:56 +0000
+Date: Thu, 4 Oct 2012 13:06:53 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121004110653.GH1322@pengutronix.de>
+References: <1349348135-509-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1349348135-509-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,167 +18,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1 v2] arm: add generic smp twd timer
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1 v2] arm: add generic smp twd timer
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-on Cortex A9 and Cortex A5 we have a generic timer which we can use as
-clocksource
+On Thu, Oct 04, 2012 at 12:55:35PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> on Cortex A9 and Cortex A5 we have a generic timer which we can use as
+> clocksource
+> 
+> Limit the timer frequency to < 25Mhz
+> 
+> +	return ~readl(twd_base + TWD_TIMER_COUNTER);
+> +}
+> +
+> +static struct clocksource smp_twd_clksrc = {
+> +	.read	= smp_twd_read,
+> +	.shift	= 20,
+> +	.mask	= CLOCKSOURCE_MASK(32),
+> +};
+> +
+> +#define SMP_TWD_MAX_FREQ (25 *1000 * 1000)
+> +
+> +static int smp_twd_probe(struct device_d *dev)
+> +{
+> +	u32 tick_rate;
+> +	u32 val;
+> +	int ret;
+> +	u32 presc = 0;
+> +
+> +	twd_clk = clk_get(dev, NULL);
+> +	if (IS_ERR(twd_clk)) {
+> +		ret = PTR_ERR(twd_clk);
+> +		dev_err(dev, "clock not found: %d\n", ret);
 
-Limit the timer frequency to < 25Mhz
+Still do you really really want to bloat the binary with such strings?
+This message will only ever be seen by developers. I would find it much
+more useful to turn this into dev_dbg and instead add a dev_err in the
+driver code when a device fails to probe. That would give a developer
+enough hints to know where to increase the debug level.
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- v2:
-  move to clocksource
-  drop header
+Sascha
 
-Best Regards,
-J.
- drivers/Kconfig                   |    1 +
- drivers/Makefile                  |    1 +
- drivers/clocksource/arm_smp_twd.c |  101 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 103 insertions(+)
- create mode 100644 drivers/clocksource/arm_smp_twd.c
 
-diff --git a/drivers/Kconfig b/drivers/Kconfig
-index d0b5e3a..6f78644 100644
---- a/drivers/Kconfig
-+++ b/drivers/Kconfig
-@@ -11,6 +11,7 @@ source "drivers/usb/Kconfig"
- source "drivers/video/Kconfig"
- source "drivers/mci/Kconfig"
- source "drivers/clk/Kconfig"
-+source "drivers/clocksource/Kconfig"
- source "drivers/mfd/Kconfig"
- source "drivers/misc/Kconfig"
- source "drivers/led/Kconfig"
-diff --git a/drivers/Makefile b/drivers/Makefile
-index 2a1f8b0..742a5bd 100644
---- a/drivers/Makefile
-+++ b/drivers/Makefile
-@@ -11,6 +11,7 @@ obj-$(CONFIG_I2C) += i2c/
- obj-$(CONFIG_MCI) += mci/
- obj-$(CONFIG_VIDEO) += video/
- obj-y	+= clk/
-+obj-y	+= clocksource/
- obj-y	+= mfd/
- obj-$(CONFIG_LED) += led/
- obj-y	+= eeprom/
-diff --git a/drivers/clocksource/arm_smp_twd.c b/drivers/clocksource/arm_smp_twd.c
-new file mode 100644
-index 0000000..746d566
---- /dev/null
-+++ b/drivers/clocksource/arm_smp_twd.c
-@@ -0,0 +1,101 @@
-+/*
-+ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPL v2
-+ */
-+#include <common.h>
-+#include <init.h>
-+#include <clock.h>
-+#include <io.h>
-+#include <driver.h>
-+#include <errno.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+
-+#define TWD_TIMER_LOAD			0x00
-+#define TWD_TIMER_COUNTER		0x04
-+#define TWD_TIMER_CONTROL		0x08
-+#define TWD_TIMER_INTSTAT		0x0C
-+
-+#define TWD_TIMER_CONTROL_ENABLE	(1 << 0)
-+#define TWD_TIMER_CONTROL_ONESHOT	(0 << 1)
-+#define TWD_TIMER_CONTROL_PERIODIC	(1 << 1)
-+#define TWD_TIMER_CONTROL_IT_ENABLE	(1 << 2)
-+
-+#define TWD_TIMER_CONTROL_PRESC(x)	(((x) & 0xff) << 8)
-+
-+static __iomem void *twd_base;
-+static struct clk *twd_clk;
-+
-+static uint64_t smp_twd_read(void)
-+{
-+	return ~readl(twd_base + TWD_TIMER_COUNTER);
-+}
-+
-+static struct clocksource smp_twd_clksrc = {
-+	.read	= smp_twd_read,
-+	.shift	= 20,
-+	.mask	= CLOCKSOURCE_MASK(32),
-+};
-+
-+#define SMP_TWD_MAX_FREQ (25 *1000 * 1000)
-+
-+static int smp_twd_probe(struct device_d *dev)
-+{
-+	u32 tick_rate;
-+	u32 val;
-+	int ret;
-+	u32 presc = 0;
-+
-+	twd_clk = clk_get(dev, NULL);
-+	if (IS_ERR(twd_clk)) {
-+		ret = PTR_ERR(twd_clk);
-+		dev_err(dev, "clock not found: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = clk_enable(twd_clk);
-+	if (ret < 0) {
-+		dev_err(dev, "clock failed to enable: %d\n", ret);
-+		clk_put(twd_clk);
-+		return ret;
-+	}
-+
-+	twd_base = dev_request_mem_region(dev, 0);
-+
-+	tick_rate = clk_get_rate(twd_clk);
-+	if (tick_rate > SMP_TWD_MAX_FREQ) {
-+		presc = tick_rate / SMP_TWD_MAX_FREQ;
-+		if (presc)
-+			presc--;
-+		presc = min((u32)0xff, presc);
-+		tick_rate /= presc + 1;
-+	}
-+
-+	val = TWD_TIMER_CONTROL_PRESC(presc) |
-+	      TWD_TIMER_CONTROL_PERIODIC;
-+	writel(val, twd_base + TWD_TIMER_CONTROL);
-+
-+	writel(0xffffffff, twd_base + TWD_TIMER_LOAD);
-+
-+	val = readl(twd_base + TWD_TIMER_CONTROL);
-+	val |= TWD_TIMER_CONTROL_ENABLE;
-+	writel(val, twd_base + TWD_TIMER_CONTROL);
-+
-+	smp_twd_clksrc.mult = clocksource_hz2mult(tick_rate, smp_twd_clksrc.shift);
-+
-+	init_clock(&smp_twd_clksrc);
-+
-+	return 0;
-+}
-+
-+static struct driver_d smp_twd_driver = {
-+	.name = "smp_twd",
-+	.probe = smp_twd_probe,
-+};
-+
-+static int smp_twd_init(void)
-+{
-+	return platform_driver_register(&smp_twd_driver);
-+}
-+coredevice_initcall(smp_twd_init);
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
