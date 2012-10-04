@@ -1,17 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f290.mail.ru ([128.140.169.163])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TJl6M-0007Xl-9w
- for barebox@lists.infradead.org; Thu, 04 Oct 2012 13:04:31 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Thu, 04 Oct 2012 17:04:25 +0400
+Received: from 16.mo1.mail-out.ovh.net ([178.33.104.224]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TJlO3-00022k-Ef
+ for barebox@lists.infradead.org; Thu, 04 Oct 2012 13:22:47 +0000
+Received: from mail615.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 106E5FF9388
+ for <barebox@lists.infradead.org>; Thu,  4 Oct 2012 15:31:51 +0200 (CEST)
+Date: Thu, 4 Oct 2012 15:20:20 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121004132020.GM26553@game.jcrosoft.org>
 References: <1349354221-28409-1-git-send-email-shc_work@mail.ru>
  <1349354221-28409-2-git-send-email-shc_work@mail.ru>
  <20121004125328.GL26553@game.jcrosoft.org>
-In-Reply-To: <20121004125328.GL26553@game.jcrosoft.org>
-Message-ID: <1349355865.129741612@f290.mail.ru>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ <1349355865.129741612@f290.mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1349355865.129741612@f290.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,29 +29,32 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCAyLzNdIEFkZCBtb3JlIGdlbmVyYXRlZCBmaWxlcyB0?=
- =?UTF-8?B?byAuZ2l0aWdub3Jl?=
-To: =?UTF-8?B?SmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9MLVZJTExBUkQ=?= <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 2/3] Add more generated files to .gitignore
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-VGh1LCA0IE9jdCAyMDEyIDE0OjUzOjI4ICswMjAwINC+0YIgSmVhbi1DaHJpc3RvcGhlIFBMQUdO
-SU9MLVZJTExBUkQgPHBsYWduaW9qQGpjcm9zb2Z0LmNvbT46Cj4gT24gMTY6MzcgVGh1IDA0IE9j
-dCAgICAgLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgouLi4KPiA+IGRpZmYgLS1naXQgYS8uZ2l0
-aWdub3JlIGIvLmdpdGlnbm9yZQo+ID4gaW5kZXggNDE1NGM3My4uM2ZkZWQ0ZSAxMDA2NDQKPiA+
-IC0tLSBhLy5naXRpZ25vcmUKPiA+ICsrKyBiLy5naXRpZ25vcmUKPiA+IEBAIC0yNiwxOSArMjYs
-MTEgQEAKPiA+ICAjCj4gPiAgdGFncwo+ID4gIFRBR1MKPiA+ICtiYXJlYm94Kgo+ID4gIGNyb3Nz
-X2FyY2gKPiA+ICBjcm9zc19jb21waWxlCj4gPiAtYmFyZWJveAo+ID4gLWJhcmVib3guUwo+ID4g
-LWJhcmVib3guYmluCj4gPiAtYmFyZWJveC5zcmVjCj4gPiAtYmFyZWJveC5uZXR4Cj4gPiAtYmFy
-ZWJveC5zNXAKPiA+IC1iYXJlYm94LnVibAo+ID4gLWJhcmVib3gubWFwCj4gPiAgU3lzdGVtLm1h
-cAo+ID4gIE1vZHVsZS5zeW12ZXJzCj4gPiAtYmFyZWJveF9kZWZhdWx0X2VudioKPiA+ICAKPiA+
-ICAjCj4gPiAgIyBHZW5lcmF0ZWQgaW5jbHVkZSBmaWxlcwo+ID4gQEAgLTY3LDMgKzU5LDQgQEAg
-Y3Njb3BlLioKPiA+ICBzY3JpcHRzL2dlbl9uZXR4X2ltYWdlCj4gPiAgc2NyaXB0cy9zNXBfY2tz
-dW0KPiA+ICBzY3JpcHRzL2JhcmVib3hlbnYtdGFyZ2V0Cj4gPiArc2NyaXB0cy9rY29uZmlnL3pj
-b25mLmxleC5jCj4gYWxyZWFkeSBpZ25vcmVkCgpzaGNAc2hjIC9ob21lL2dpdC9iYl9jbHBzMiAk
-IGdpdCBzdGF0dXMKIyBPbiBicmFuY2ggbXkKIyBVbnRyYWNrZWQgZmlsZXM6CiMgICAodXNlICJn
-aXQgYWRkIDxmaWxlPi4uLiIgdG8gaW5jbHVkZSBpbiB3aGF0IHdpbGwgYmUgY29tbWl0dGVkKQoj
-CiMgICAgICAgc2NyaXB0cy9rY29uZmlnL3pjb25mLmxleC5jCm5vIGNoYW5nZXMgYWRkZWQgdG8g
-Y29tbWl0ICh1c2UgImdpdCBhZGQiIGFuZC9vciAiZ2l0IGNvbW1pdCAtYSIpCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
-CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+T24gMTc6MDQgVGh1IDA0IE9jdCAgICAgLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+IFRodSwg
+NCBPY3QgMjAxMiAxNDo1MzoyOCArMDIwMCDQvtGCIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1W
+SUxMQVJEIDxwbGFnbmlvakBqY3Jvc29mdC5jb20+Ogo+ID4gT24gMTY6MzcgVGh1IDA0IE9jdCAg
+ICAgLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+IC4uLgo+ID4gPiBkaWZmIC0tZ2l0IGEvLmdp
+dGlnbm9yZSBiLy5naXRpZ25vcmUKPiA+ID4gaW5kZXggNDE1NGM3My4uM2ZkZWQ0ZSAxMDA2NDQK
+PiA+ID4gLS0tIGEvLmdpdGlnbm9yZQo+ID4gPiArKysgYi8uZ2l0aWdub3JlCj4gPiA+IEBAIC0y
+NiwxOSArMjYsMTEgQEAKPiA+ID4gICMKPiA+ID4gIHRhZ3MKPiA+ID4gIFRBR1MKPiA+ID4gK2Jh
+cmVib3gqCj4gPiA+ICBjcm9zc19hcmNoCj4gPiA+ICBjcm9zc19jb21waWxlCj4gPiA+IC1iYXJl
+Ym94Cj4gPiA+IC1iYXJlYm94LlMKPiA+ID4gLWJhcmVib3guYmluCj4gPiA+IC1iYXJlYm94LnNy
+ZWMKPiA+ID4gLWJhcmVib3gubmV0eAo+ID4gPiAtYmFyZWJveC5zNXAKPiA+ID4gLWJhcmVib3gu
+dWJsCj4gPiA+IC1iYXJlYm94Lm1hcAo+ID4gPiAgU3lzdGVtLm1hcAo+ID4gPiAgTW9kdWxlLnN5
+bXZlcnMKPiA+ID4gLWJhcmVib3hfZGVmYXVsdF9lbnYqCj4gPiA+ICAKPiA+ID4gICMKPiA+ID4g
+ICMgR2VuZXJhdGVkIGluY2x1ZGUgZmlsZXMKPiA+ID4gQEAgLTY3LDMgKzU5LDQgQEAgY3Njb3Bl
+LioKPiA+ID4gIHNjcmlwdHMvZ2VuX25ldHhfaW1hZ2UKPiA+ID4gIHNjcmlwdHMvczVwX2Nrc3Vt
+Cj4gPiA+ICBzY3JpcHRzL2JhcmVib3hlbnYtdGFyZ2V0Cj4gPiA+ICtzY3JpcHRzL2tjb25maWcv
+emNvbmYubGV4LmMKPiA+IGFscmVhZHkgaWdub3JlZAo+IAo+IHNoY0BzaGMgL2hvbWUvZ2l0L2Ji
+X2NscHMyICQgZ2l0IHN0YXR1cwo+ICMgT24gYnJhbmNoIG15Cj4gIyBVbnRyYWNrZWQgZmlsZXM6
+Cj4gIyAgICh1c2UgImdpdCBhZGQgPGZpbGU+Li4uIiB0byBpbmNsdWRlIGluIHdoYXQgd2lsbCBi
+ZSBjb21taXR0ZWQpCj4gIwo+ICMgICAgICAgc2NyaXB0cy9rY29uZmlnL3pjb25mLmxleC5jCj4g
+bm8gY2hhbmdlcyBhZGRlZCB0byBjb21taXQgKHVzZSAiZ2l0IGFkZCIgYW5kL29yICJnaXQgY29t
+bWl0IC1hIikKc28geW91ciB0cmVlIGlzIG5vdCB1cHRvZGF0ZQoKICA4MyAgICAgU2VwMzAgdmog
+ICAgICAgICAgICAgIOKUnOKUgD5bUEFUQ0ggNS85XSBhZGQgZ2l0aWdub3JlIGZpbGUgCgpCZXN0
+IFJlZ2FyZHMsCkouCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
