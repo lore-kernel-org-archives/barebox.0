@@ -1,22 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo1.mail-out.ovh.net ([178.33.104.224]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TJlO3-00022k-Ef
- for barebox@lists.infradead.org; Thu, 04 Oct 2012 13:22:47 +0000
-Received: from mail615.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 106E5FF9388
- for <barebox@lists.infradead.org>; Thu,  4 Oct 2012 15:31:51 +0200 (CEST)
-Date: Thu, 4 Oct 2012 15:20:20 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121004132020.GM26553@game.jcrosoft.org>
+Received: from smtp21.mail.ru ([94.100.176.174])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TJn8I-0008MK-1a
+ for barebox@lists.infradead.org; Thu, 04 Oct 2012 15:14:39 +0000
+Date: Thu, 4 Oct 2012 19:14:30 +0400
+From: Alexander Shiyan <shc_work@mail.ru>
+Message-Id: <20121004191430.e7cc5e94.shc_work@mail.ru>
+In-Reply-To: <20121004125229.GK26553@game.jcrosoft.org>
 References: <1349354221-28409-1-git-send-email-shc_work@mail.ru>
- <1349354221-28409-2-git-send-email-shc_work@mail.ru>
- <20121004125328.GL26553@game.jcrosoft.org>
- <1349355865.129741612@f290.mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1349355865.129741612@f290.mail.ru>
+ <1349354221-28409-3-git-send-email-shc_work@mail.ru>
+ <20121004125229.GK26553@game.jcrosoft.org>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,36 +19,72 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] Add more generated files to .gitignore
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH 3/3] ARM: Add CLPS711X architecture
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-T24gMTc6MDQgVGh1IDA0IE9jdCAgICAgLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+IFRodSwg
-NCBPY3QgMjAxMiAxNDo1MzoyOCArMDIwMCDQvtGCIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1W
-SUxMQVJEIDxwbGFnbmlvakBqY3Jvc29mdC5jb20+Ogo+ID4gT24gMTY6MzcgVGh1IDA0IE9jdCAg
-ICAgLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+IC4uLgo+ID4gPiBkaWZmIC0tZ2l0IGEvLmdp
-dGlnbm9yZSBiLy5naXRpZ25vcmUKPiA+ID4gaW5kZXggNDE1NGM3My4uM2ZkZWQ0ZSAxMDA2NDQK
-PiA+ID4gLS0tIGEvLmdpdGlnbm9yZQo+ID4gPiArKysgYi8uZ2l0aWdub3JlCj4gPiA+IEBAIC0y
-NiwxOSArMjYsMTEgQEAKPiA+ID4gICMKPiA+ID4gIHRhZ3MKPiA+ID4gIFRBR1MKPiA+ID4gK2Jh
-cmVib3gqCj4gPiA+ICBjcm9zc19hcmNoCj4gPiA+ICBjcm9zc19jb21waWxlCj4gPiA+IC1iYXJl
-Ym94Cj4gPiA+IC1iYXJlYm94LlMKPiA+ID4gLWJhcmVib3guYmluCj4gPiA+IC1iYXJlYm94LnNy
-ZWMKPiA+ID4gLWJhcmVib3gubmV0eAo+ID4gPiAtYmFyZWJveC5zNXAKPiA+ID4gLWJhcmVib3gu
-dWJsCj4gPiA+IC1iYXJlYm94Lm1hcAo+ID4gPiAgU3lzdGVtLm1hcAo+ID4gPiAgTW9kdWxlLnN5
-bXZlcnMKPiA+ID4gLWJhcmVib3hfZGVmYXVsdF9lbnYqCj4gPiA+ICAKPiA+ID4gICMKPiA+ID4g
-ICMgR2VuZXJhdGVkIGluY2x1ZGUgZmlsZXMKPiA+ID4gQEAgLTY3LDMgKzU5LDQgQEAgY3Njb3Bl
-LioKPiA+ID4gIHNjcmlwdHMvZ2VuX25ldHhfaW1hZ2UKPiA+ID4gIHNjcmlwdHMvczVwX2Nrc3Vt
-Cj4gPiA+ICBzY3JpcHRzL2JhcmVib3hlbnYtdGFyZ2V0Cj4gPiA+ICtzY3JpcHRzL2tjb25maWcv
-emNvbmYubGV4LmMKPiA+IGFscmVhZHkgaWdub3JlZAo+IAo+IHNoY0BzaGMgL2hvbWUvZ2l0L2Ji
-X2NscHMyICQgZ2l0IHN0YXR1cwo+ICMgT24gYnJhbmNoIG15Cj4gIyBVbnRyYWNrZWQgZmlsZXM6
-Cj4gIyAgICh1c2UgImdpdCBhZGQgPGZpbGU+Li4uIiB0byBpbmNsdWRlIGluIHdoYXQgd2lsbCBi
-ZSBjb21taXR0ZWQpCj4gIwo+ICMgICAgICAgc2NyaXB0cy9rY29uZmlnL3pjb25mLmxleC5jCj4g
-bm8gY2hhbmdlcyBhZGRlZCB0byBjb21taXQgKHVzZSAiZ2l0IGFkZCIgYW5kL29yICJnaXQgY29t
-bWl0IC1hIikKc28geW91ciB0cmVlIGlzIG5vdCB1cHRvZGF0ZQoKICA4MyAgICAgU2VwMzAgdmog
-ICAgICAgICAgICAgIOKUnOKUgD5bUEFUQ0ggNS85XSBhZGQgZ2l0aWdub3JlIGZpbGUgCgpCZXN0
-IFJlZ2FyZHMsCkouCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
-cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Thu, 4 Oct 2012 14:52:29 +0200
+Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
+
+> On 16:37 Thu 04 Oct     , Alexander Shiyan wrote:
+> > This patch adds new architecture (CLPS711X) into barebox.
+> > The core-logic functionality of the device is built around an ARM720T
+> > processor running at clock speeds up to 90 MHz and 74 MHz.
+> > Patch also adds a generic board support (CLEP7212, Linux ARM ID=91) and
+> > serial driver for this CPU.
+...
+> > +CONFIG_BAUDRATE=57600
+> why?? usally 115200
+It is impossible rate when CPU is clocked from an external source.
+Possible rates is very limited for this platform  and historically
+(for this target) default baudrate is 57600. In any case it can be changed
+via config option.
+
+...
+> > +static int clocks_init(void)
+> please split clocksource and clk
+I do not know how best to do it because I need access to calculated values of
+the frequency in initialization clkdev & clocksource.
+
+> > +void _setup_memcfg(int bank, u32 addr, u32 val)
+> > +{
+> > +	u32 tmp = readl(addr);
+> > +
+> > +	switch (bank) {
+> > +	case 0:
+> > +		tmp &= ~(0xff << 0);
+> > +		tmp |= val << 0;
+> > +		break;
+> > +	case 1:
+> > +		tmp &= ~(0xff << 8);
+> > +		tmp |= val << 8;
+> > +		break;
+> > +	case 2:
+> > +		tmp &= ~(0xff << 16);
+> > +		tmp |= val << 16;
+> > +		break;
+> > +	case 3:
+> > +		tmp &= ~(0xff << 24);
+> > +		tmp |= val << 24;
+> > +		break;
+> no default?
+"Default" is not needed, because call is used internally in this unit and it
+protected by "switch/case" in the caller.
+
+> > +void __noreturn reset_cpu(unsigned long addr)
+> > +{
+> > +	for (;;)
+> no cpu reset?
+This CPU don't have reset register.
+
+-- 
+Alexander Shiyan <shc_work@mail.ru>
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
