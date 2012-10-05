@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TKB1R-0001ev-CY
- for barebox@lists.infradead.org; Fri, 05 Oct 2012 16:45:10 +0000
+ id 1TKB1h-0001iy-2l
+ for barebox@lists.infradead.org; Fri, 05 Oct 2012 16:45:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  5 Oct 2012 18:45:04 +0200
-Message-Id: <1349455505-31731-4-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  5 Oct 2012 18:45:05 +0200
+Message-Id: <1349455505-31731-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1349455505-31731-1-git-send-email-s.hauer@pengutronix.de>
 References: <1349455505-31731-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,55 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] ARM: cleanup piggydata copy check
+Subject: [PATCH 4/4] ARM: simplify start.c
 To: barebox@lists.infradead.org
 
-Replace to gotos with a single if().
+start() for the PBL case is a duplicate of board_init_lowlevel_return().
+Instead of duplicating it just call it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start-pbl.c |   28 ++++++++--------------------
- 1 file changed, 8 insertions(+), 20 deletions(-)
+ arch/arm/cpu/start.c |   22 ++++------------------
+ 1 file changed, 4 insertions(+), 18 deletions(-)
 
-diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index 1298ca0..29d82e5 100644
---- a/arch/arm/cpu/start-pbl.c
-+++ b/arch/arm/cpu/start-pbl.c
-@@ -188,26 +188,14 @@ void __naked board_init_lowlevel_return(void)
- 	pg_end = (uint32_t)&input_data_end - offset;
- 	pg_len = pg_end - pg_start;
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 7e0a29a..7e72eec 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -24,32 +24,19 @@
+ #include <asm-generic/memory_layout.h>
+ #include <asm/sections.h>
+ #include <asm/cache.h>
++#include <memory.h>
  
--	if (IS_ENABLED(CONFIG_PBL_FORCE_PIGGYDATA_COPY))
--		goto copy_piggy_link;
+-#ifdef CONFIG_PBL_IMAGE
+ /*
+  * First function in the uncompressed image. We get here from
+  * the pbl.
+  */
+ void __naked __section(.text_entry) start(void)
+ {
+-	u32 r;
 -
--	/*
--	 * Check if the piggydata binary will be overwritten
--	 * by the uncompressed binary or by the pbl relocation
--	 */
--	if (!offset ||
--	    !((pg_start >= TEXT_BASE && pg_start < TEXT_BASE + pg_len * 4) ||
--	      ((uint32_t)_text >= pg_start && (uint32_t)_text <= pg_end)))
--		goto copy_link;
+-	/* Setup the stack */
+-	r = STACK_BASE + STACK_SIZE - 16;
+-	__asm__ __volatile__("mov sp, %0" : : "r"(r));
 -
--copy_piggy_link:
--	/*
--	 * copy piggydata binary to its link address
--	 */
--	memcpy(&input_data, (void *)pg_start, pg_len);
--	pg_start = (uint32_t)&input_data;
+-	setup_c();
 -
--copy_link:
-+	if (offset && (IS_ENABLED(CONFIG_PBL_FORCE_PIGGYDATA_COPY) ||
-+				region_overlap(pg_start, pg_len, TEXT_BASE, pg_len * 4))) {
-+		/*
-+		 * copy piggydata binary to its link address
-+		 */
-+		memcpy(&input_data, (void *)pg_start, pg_len);
-+		pg_start = (uint32_t)&input_data;
-+	}
+-	start_barebox();
+-}
++#ifdef CONFIG_PBL_IMAGE
++	board_init_lowlevel_return();
+ #else
+-
+-/*
+- * First function in the image without pbl support
+- */
+-void __naked __section(.text_entry) start(void)
+-{
+ 	barebox_arm_head();
++#endif
+ }
  
- 	setup_c();
+ /*
+@@ -80,4 +67,3 @@ void __naked board_init_lowlevel_return(void)
  
+ 	start_barebox();
+ }
+-#endif
 -- 
 1.7.10.4
 
