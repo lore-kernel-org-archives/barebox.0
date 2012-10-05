@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo4.mail-out.ovh.net ([46.105.40.29]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TK8mT-0001Gf-Eo
- for barebox@lists.infradead.org; Fri, 05 Oct 2012 14:21:41 +0000
-Received: from mail413.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 589A610508FE
- for <barebox@lists.infradead.org>; Fri,  5 Oct 2012 16:27:30 +0200 (CEST)
-Date: Fri, 5 Oct 2012 16:18:48 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121005141848.GT26553@game.jcrosoft.org>
-References: <1349422624-5278-1-git-send-email-gregory.hermant@calao-systems.com>
- <20121005134131.GU1322@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TK9g4-0002Ko-JK
+ for barebox@lists.infradead.org; Fri, 05 Oct 2012 15:19:01 +0000
+Date: Fri, 5 Oct 2012 17:18:37 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121005151837.GV1322@pengutronix.de>
+References: <20121005132017.GS26553@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121005134131.GU1322@pengutronix.de>
+In-Reply-To: <20121005132017.GS26553@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,46 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] Add support for the Calao-systems HABA-KNX controllers
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 0/4 v2] add gpio primcell pl061 support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 15:41 Fri 05 Oct     , Sascha Hauer wrote:
-> On Fri, Oct 05, 2012 at 09:37:03AM +0200, Gregory Hermant wrote:
-> > Signed-off-by: Gregory Hermant <gregory.hermant@calao-systems.com>
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+On Fri, Oct 05, 2012 at 03:20:17PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
 > 
-> >  create mode 100644 arch/arm/boards/haba-knx/Makefile
-> >  create mode 100644 arch/arm/boards/haba-knx/config.h
-> >  create mode 100644 arch/arm/boards/haba-knx/env/boot.d/10
-> >  create mode 100644 arch/arm/boards/haba-knx/env/boot.d/11
-> >  create mode 100644 arch/arm/boards/haba-knx/env/boot.d/12
-> >  create mode 100644 arch/arm/boards/haba-knx/env/boot.d/13
+> The following changes since commit 6bb06524d665b4fbcefddb6b914273466fe801dd:
 > 
-> Please drop the links for now until the boot sequence patches are
-> reworked.
+>   ARM pbl: actually create cached mappings in the decompressor (2012-10-04 18:30:58 +0200)
 > 
-> > +
-> > +# MAC address if needed
-> > +#ethaddr=xx:xx:xx:xx:xx:xx
-> > +ethaddr=6a:63:73:00:00:34
+> are available in the git repository at:
 > 
-> No hardcoded MAC addresses in the environment please.
-> 
-> > +#include <spi/flash.h>
-> > +
-> > +static void haba_knx_set_board_type(void)
-> > +{
-> > +	if (machine_is_haba_knx_lite())
-> > +		armlinux_set_architecture(MACH_TYPE_HABA_KNX_LITE);
-> > +	else
-> > +		armlinux_set_architecture(MACH_TYPE_HABA_KNX_EXPLORER);
-> 
-> Can the board type somehow be autodetected? That would be great.
-can not
+>   git://git.jcrosoft.org/barebox.git tags/gpio_arm
 
-Best Regards,
-J.
+pulled, thanks
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
