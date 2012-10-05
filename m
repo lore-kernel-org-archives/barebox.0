@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TKB8R-00035m-Hx
- for barebox@lists.infradead.org; Fri, 05 Oct 2012 16:52:24 +0000
-Date: Fri, 5 Oct 2012 18:52:21 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121005165221.GY1322@pengutronix.de>
-References: <1349440069-23987-1-git-send-email-antonynpavlov@gmail.com>
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TKDzQ-0000Ht-Pb
+ for barebox@lists.infradead.org; Fri, 05 Oct 2012 19:55:20 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1349455505-31731-1-git-send-email-s.hauer@pengutronix.de>
+ <1349455505-31731-3-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 05 Oct 2012 21:55:04 +0200
+In-Reply-To: <1349455505-31731-3-git-send-email-s.hauer@pengutronix.de>
+ (Sascha Hauer's message of "Fri, 5 Oct 2012 18:45:03 +0200")
+Message-ID: <87txu8y9rb.fsf@free.fr>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1349440069-23987-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,62 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] davinci_emac: fix comment for the _send function
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH 2/4] introduce region_overlap() function
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Oct 05, 2012 at 04:27:49PM +0400, Antony Pavlov wrote:
-> The _send function should not return the length
-> of the transmitted packet.
-> 
-> See also
-> 
-> commit 76c4c9e48ffbe35490e1f7d3abcedc04934ac302
-> Author: Jan Luebbe <jlu@pengutronix.de>
-> Date:   Fri Sep 28 18:17:44 2012 +0200
-> 
->     davinci_emac: return 0 on successful transmit
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-Applied, thanks
-
-Sascha
-
+> To check if two regions overlap
+>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  drivers/net/davinci_emac.c |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/davinci_emac.c b/drivers/net/davinci_emac.c
-> index 5bd5f30..989e119 100644
-> --- a/drivers/net/davinci_emac.c
-> +++ b/drivers/net/davinci_emac.c
-> @@ -387,8 +387,8 @@ static void davinci_emac_halt(struct eth_device *edev)
->  }
+>  include/common.h |   13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>
+> diff --git a/include/common.h b/include/common.h
+> index c1f44b4..e30774a 100644
+> --- a/include/common.h
+> +++ b/include/common.h
+> @@ -256,4 +256,17 @@ static inline void barebox_banner(void) {}
+>  		(__x < 0) ? -__x : __x;         \
+>  	})
 >  
->  /*
-> - * This function sends a single packet on the network and returns
-> - * positive number (number of bytes transmitted) or negative for error
-> + * This function sends a single packet on the network
-> + * and returns 0 on successful transmit or negative for error
->   */
->  static int davinci_emac_send(struct eth_device *edev, void *packet, int length)
->  {
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+> +/*
+> + * Check if two regions overlap. returns true if they do, false otherwise
+> + */
+> +static inline bool region_overlap(unsigned long starta, unsigned long lena,
+> +		unsigned long startb, unsigned long lenb)
+> +{
+> +	if (starta + lena <= startb)
+> +		return 0;
+> +	if (startb + lenb <= starta)
+> +		return 0;
+> +	return 1;
+> +}
+> +
+>  #endif	/* __COMMON_H_ */
+
+Or if you look for perfomance (I presume not in barebox) :
+static inline bool region_overlap(unsigned long starta, unsigned long lena,
+		unsigned long startb, unsigned long lenb)
+{
+        return starta <= startb + lenb && starta + lena >= startb;
+}
+
+It's a bit more obfuscated, but performance wise no branch prediction :)
+
+Cheers.
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Robert
 
 _______________________________________________
 barebox mailing list
