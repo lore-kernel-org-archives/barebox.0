@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f49.google.com ([74.125.82.49])
+Received: from mail-we0-f177.google.com ([74.125.82.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TKGSm-0005Mr-Vt
- for barebox@lists.infradead.org; Fri, 05 Oct 2012 22:33:46 +0000
-Received: by mail-wg0-f49.google.com with SMTP id gg4so1242132wgb.18
- for <barebox@lists.infradead.org>; Fri, 05 Oct 2012 15:33:44 -0700 (PDT)
+ id 1TKGSo-0005O3-Kf
+ for barebox@lists.infradead.org; Fri, 05 Oct 2012 22:33:47 +0000
+Received: by mail-we0-f177.google.com with SMTP id u50so1385046wey.36
+ for <barebox@lists.infradead.org>; Fri, 05 Oct 2012 15:33:46 -0700 (PDT)
 From: vj <vicencb@gmail.com>
-Date: Sat,  6 Oct 2012 00:33:11 +0200
-Message-Id: <1349476393-25520-10-git-send-email-vicencb@gmail.com>
+Date: Sat,  6 Oct 2012 00:33:12 +0200
+Message-Id: <1349476393-25520-11-git-send-email-vicencb@gmail.com>
 In-Reply-To: <1349476393-25520-1-git-send-email-vicencb@gmail.com>
 References: <1349476393-25520-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,60 +23,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/11] omap4: add support for loading second stage from usb
+Subject: [PATCH 10/11] mach-types: add ID for Archos G9 tablet
 To: barebox@lists.infradead.org
 Cc: vj <vicencb@gmail.com>
 
 
 Signed-off-by: vj <vicencb@gmail.com>
 ---
- arch/arm/mach-omap/xload.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ arch/arm/tools/mach-types | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
-index 9fa8221..240d3ff 100644
---- a/arch/arm/mach-omap/xload.c
-+++ b/arch/arm/mach-omap/xload.c
-@@ -139,6 +139,24 @@ static void *omap_xload_boot_spi(int offset)
- 	return to;
- }
- 
-+static void *omap4_xload_boot_usb(void){
-+	int ret;
-+	void *buf;
-+	int len;
-+
-+	ret = mount("omap4_usbboot", "omap4_usbbootfs", "/");
-+	if (ret) {
-+		printf("Unable to mount omap4_usbbootfs (%d)\n", ret);
-+		return NULL;
-+	}
-+
-+	buf = read_file("/barebox.bin", &len);
-+	if (!buf)
-+		printf("could not read barebox.bin from omap4_usbbootfs\n");
-+
-+	return buf;
-+}
-+
- enum omap_boot_src omap_bootsrc(void)
- {
- #if defined(CONFIG_ARCH_OMAP3)
-@@ -161,6 +179,14 @@ int run_shell(void)
- 		printf("booting from MMC1\n");
- 		func = omap_xload_boot_mmc();
- 		break;
-+	case OMAP_BOOTSRC_USB1:
-+		if (IS_ENABLED(CONFIG_FS_OMAP4_USBBOOT)) {
-+			printf("booting from USB1\n");
-+			func = omap4_xload_boot_usb();
-+			break;
-+		} else {
-+			printf("booting from usb1 not enabled\n");
-+		}
- 	case OMAP_BOOTSRC_UNKNOWN:
- 		printf("unknown boot source. Fall back to nand\n");
- 	case OMAP_BOOTSRC_NAND:
+diff --git a/arch/arm/tools/mach-types b/arch/arm/tools/mach-types
+index 325513f..a21da3b 100644
+--- a/arch/arm/tools/mach-types
++++ b/arch/arm/tools/mach-types
+@@ -4148,3 +4148,4 @@ msm8625_evt		MACH_MSM8625_EVT	MSM8625_EVT		4193
+ mx53_sellwood		MACH_MX53_SELLWOOD	MX53_SELLWOOD		4194
+ somiq_am35		MACH_SOMIQ_AM35		SOMIQ_AM35		4195
+ somiq_am37		MACH_SOMIQ_AM37		SOMIQ_AM37		4196
++omap4_archosg9		MACH_OMAP4_ARCHOSG9	OMAP4_ARCHOSG9		5032
 -- 
 1.7.12.2
 
