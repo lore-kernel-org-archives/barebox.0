@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TKB1R-0001ep-Ca
+ id 1TKB1R-0001ev-CY
  for barebox@lists.infradead.org; Fri, 05 Oct 2012 16:45:10 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1TKB1P-0006MB-BQ
- for barebox@lists.infradead.org; Fri, 05 Oct 2012 18:45:07 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1TKB1P-0004Yh-AA
- for barebox@lists.infradead.org; Fri, 05 Oct 2012 18:45:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  5 Oct 2012 18:45:01 +0200
-Message-Id: <1349455505-31731-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  5 Oct 2012 18:45:04 +0200
+Message-Id: <1349455505-31731-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1349455505-31731-1-git-send-email-s.hauer@pengutronix.de>
+References: <1349455505-31731-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,28 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] cleanup arm startup a bit
+Subject: [PATCH 3/4] ARM: cleanup piggydata copy check
 To: barebox@lists.infradead.org
 
-Some cleanups to the arm start files.
+Replace to gotos with a single if().
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/cpu/start-pbl.c |   28 ++++++++--------------------
+ 1 file changed, 8 insertions(+), 20 deletions(-)
 
-----------------------------------------------------------------
-Sascha Hauer (4):
-      ARM: add assembly function for setting up C environment
-      introduce region_overlap() function
-      ARM: cleanup piggydata copy check
-      ARM: simplify start.c
-
- arch/arm/cpu/Makefile              |    4 +--
- arch/arm/cpu/setupc.S              |   34 ++++++++++++++++++++++++
- arch/arm/cpu/start-pbl.c           |   51 +++++++++---------------------------
- arch/arm/cpu/start.c               |   41 +++++------------------------
- arch/arm/include/asm/barebox-arm.h |    2 ++
- include/common.h                   |   13 +++++++++
- 6 files changed, 70 insertions(+), 75 deletions(-)
- create mode 100644 arch/arm/cpu/setupc.S
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index 1298ca0..29d82e5 100644
+--- a/arch/arm/cpu/start-pbl.c
++++ b/arch/arm/cpu/start-pbl.c
+@@ -188,26 +188,14 @@ void __naked board_init_lowlevel_return(void)
+ 	pg_end = (uint32_t)&input_data_end - offset;
+ 	pg_len = pg_end - pg_start;
+ 
+-	if (IS_ENABLED(CONFIG_PBL_FORCE_PIGGYDATA_COPY))
+-		goto copy_piggy_link;
+-
+-	/*
+-	 * Check if the piggydata binary will be overwritten
+-	 * by the uncompressed binary or by the pbl relocation
+-	 */
+-	if (!offset ||
+-	    !((pg_start >= TEXT_BASE && pg_start < TEXT_BASE + pg_len * 4) ||
+-	      ((uint32_t)_text >= pg_start && (uint32_t)_text <= pg_end)))
+-		goto copy_link;
+-
+-copy_piggy_link:
+-	/*
+-	 * copy piggydata binary to its link address
+-	 */
+-	memcpy(&input_data, (void *)pg_start, pg_len);
+-	pg_start = (uint32_t)&input_data;
+-
+-copy_link:
++	if (offset && (IS_ENABLED(CONFIG_PBL_FORCE_PIGGYDATA_COPY) ||
++				region_overlap(pg_start, pg_len, TEXT_BASE, pg_len * 4))) {
++		/*
++		 * copy piggydata binary to its link address
++		 */
++		memcpy(&input_data, (void *)pg_start, pg_len);
++		pg_start = (uint32_t)&input_data;
++	}
+ 
+ 	setup_c();
+ 
+-- 
+1.7.10.4
 
 
 _______________________________________________
