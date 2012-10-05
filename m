@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mo6-p00-ob.rzone.de ([2a01:238:20a:202:5300::1])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TK2TE-0000cA-CW
- for barebox@lists.infradead.org; Fri, 05 Oct 2012 07:37:18 +0000
+ id 1TK2TE-0000c9-DA
+ for barebox@lists.infradead.org; Fri, 05 Oct 2012 07:37:21 +0000
 From: Gregory Hermant <gregory.hermant@calao-systems.com>
-Date: Fri,  5 Oct 2012 09:37:04 +0200
-Message-Id: <1349422624-5278-2-git-send-email-gregory.hermant@calao-systems.com>
-In-Reply-To: <1349422624-5278-1-git-send-email-gregory.hermant@calao-systems.com>
-References: <1349422624-5278-1-git-send-email-gregory.hermant@calao-systems.com>
+Date: Fri,  5 Oct 2012 09:37:03 +0200
+Message-Id: <1349422624-5278-1-git-send-email-gregory.hermant@calao-systems.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,228 +19,894 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] mach-types file updated
+Subject: [PATCH 1/2] Add support for the Calao-systems HABA-KNX controllers
 To: barebox@lists.infradead.org
 
 Signed-off-by: Gregory Hermant <gregory.hermant@calao-systems.com>
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/tools/mach-types |  184 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 182 insertions(+), 2 deletions(-)
+ Documentation/boards.dox                           |    2 +
+ arch/arm/Makefile                                  |    2 +
+ arch/arm/boards/haba-knx/Makefile                  |    1 +
+ arch/arm/boards/haba-knx/config.h                  |    6 +
+ arch/arm/boards/haba-knx/env/boot.d/10             |    1 +
+ arch/arm/boards/haba-knx/env/boot.d/11             |    1 +
+ arch/arm/boards/haba-knx/env/boot.d/12             |    1 +
+ arch/arm/boards/haba-knx/env/boot.d/13             |    1 +
+ arch/arm/boards/haba-knx/env/boot/nand-ubi         |   10 +
+ arch/arm/boards/haba-knx/env/init/bootargs-base    |    8 +
+ arch/arm/boards/haba-knx/env/init/general          |   15 ++
+ arch/arm/boards/haba-knx/env/init/hostname         |    9 +
+ arch/arm/boards/haba-knx/env/init/mtdparts-nand    |   11 +
+ .../arm/boards/haba-knx/env/init/mtdparts-spiflash |   11 +
+ arch/arm/boards/haba-knx/env/init/prompt           |    7 +
+ arch/arm/boards/haba-knx/env/init/usb_device       |   49 ++++
+ arch/arm/boards/haba-knx/env/network/eth0          |   17 ++
+ arch/arm/boards/haba-knx/haba-knx-explorer.dox     |   43 ++++
+ arch/arm/boards/haba-knx/haba-knx-lite.dox         |   42 ++++
+ arch/arm/boards/haba-knx/init.c                    |  260 ++++++++++++++++++++
+ arch/arm/configs/haba_knx_explorer_defconfig       |   81 ++++++
+ arch/arm/configs/haba_knx_lite_defconfig           |   81 ++++++
+ arch/arm/mach-at91/Kconfig                         |   14 ++
+ 23 files changed, 673 insertions(+)
+ create mode 100644 arch/arm/boards/haba-knx/Makefile
+ create mode 100644 arch/arm/boards/haba-knx/config.h
+ create mode 100644 arch/arm/boards/haba-knx/env/boot.d/10
+ create mode 100644 arch/arm/boards/haba-knx/env/boot.d/11
+ create mode 100644 arch/arm/boards/haba-knx/env/boot.d/12
+ create mode 100644 arch/arm/boards/haba-knx/env/boot.d/13
+ create mode 100644 arch/arm/boards/haba-knx/env/boot/nand-ubi
+ create mode 100644 arch/arm/boards/haba-knx/env/init/bootargs-base
+ create mode 100644 arch/arm/boards/haba-knx/env/init/general
+ create mode 100644 arch/arm/boards/haba-knx/env/init/hostname
+ create mode 100644 arch/arm/boards/haba-knx/env/init/mtdparts-nand
+ create mode 100644 arch/arm/boards/haba-knx/env/init/mtdparts-spiflash
+ create mode 100644 arch/arm/boards/haba-knx/env/init/prompt
+ create mode 100644 arch/arm/boards/haba-knx/env/init/usb_device
+ create mode 100644 arch/arm/boards/haba-knx/env/network/eth0
+ create mode 100644 arch/arm/boards/haba-knx/haba-knx-explorer.dox
+ create mode 100644 arch/arm/boards/haba-knx/haba-knx-lite.dox
+ create mode 100644 arch/arm/boards/haba-knx/init.c
+ create mode 100644 arch/arm/configs/haba_knx_explorer_defconfig
+ create mode 100644 arch/arm/configs/haba_knx_lite_defconfig
 
-diff --git a/arch/arm/tools/mach-types b/arch/arm/tools/mach-types
-index 325513f..6578b8d 100644
---- a/arch/arm/tools/mach-types
-+++ b/arch/arm/tools/mach-types
-@@ -12,7 +12,7 @@
- #
- #   http://www.arm.linux.org.uk/developer/machines/?action=new
- #
--# Last update: Mon May 14 09:28:07 2012
-+# Last update: Thu Oct 4 10:27:45 2012
- #
- # machine_is_xxx	CONFIG_xxxx		MACH_TYPE_xxx		number
- #
-@@ -3006,6 +3006,7 @@ armada_xp_db		MACH_ARMADA_XP_DB	ARMADA_XP_DB		3036
- spdm			MACH_SPDM		SPDM			3037
- gtib			MACH_GTIB		GTIB			3038
- dgm3240			MACH_DGM3240		DGM3240			3039
-+iv_atlas_i_lpe		MACH_ATLAS_I_LPE	ATLAS_I_LPE		3040
- htcmega			MACH_HTCMEGA		HTCMEGA			3041
- tricorder		MACH_TRICORDER		TRICORDER		3042
- tx28			MACH_TX28		TX28			3043
-@@ -4071,7 +4072,7 @@ tam335x			MACH_TAM335X		TAM335X			4116
- grouper			MACH_GROUPER		GROUPER			4117
- mpcsa21_9g20		MACH_MPCSA21_9G20	MPCSA21_9G20		4118
- m6u_cpu			MACH_M6U_CPU		M6U_CPU			4119
--davinci_dp10		MACH_DAVINCI_DP10	DAVINCI_DP10		4120
-+davinci_dp7		MACH_DAVINCI_DP10	DAVINCI_DP10		4120
- ginkgo			MACH_GINKGO		GINKGO			4121
- cgt_qmx6		MACH_CGT_QMX6		CGT_QMX6		4122
- profpga			MACH_PROFPGA		PROFPGA			4123
-@@ -4148,3 +4149,182 @@ msm8625_evt		MACH_MSM8625_EVT	MSM8625_EVT		4193
- mx53_sellwood		MACH_MX53_SELLWOOD	MX53_SELLWOOD		4194
- somiq_am35		MACH_SOMIQ_AM35		SOMIQ_AM35		4195
- somiq_am37		MACH_SOMIQ_AM37		SOMIQ_AM37		4196
-+k2_plc_cl		MACH_K2_PLC_CL		K2_PLC_CL		4197
-+tc2			MACH_TC2		TC2			4198
-+dulex_j			MACH_DULEX_J		DULEX_J			4199
-+stm_b2044		MACH_STM_B2044		STM_B2044		4200
-+deluxe_j		MACH_DELUXE_J		DELUXE_J		4201
-+mango2443		MACH_MANGO2443		MANGO2443		4202
-+cp2dcg			MACH_CP2DCG		CP2DCG			4203
-+cp2dtg			MACH_CP2DTG		CP2DTG			4204
-+cp2dug			MACH_CP2DUG		CP2DUG			4205
-+var_som_am33		MACH_VAR_SOM_AM33	VAR_SOM_AM33		4206
-+pepper			MACH_PEPPER		PEPPER			4207
-+mango2450		MACH_MANGO2450		MANGO2450		4208
-+valente_wx_c9		MACH_VALENTE_WX_C9	VALENTE_WX_C9		4209
-+minitv			MACH_MINITV		MINITV			4210
-+u8540			MACH_U8540		U8540			4211
-+iv_atlas_i_z7e		MACH_IV_ATLAS_I_Z7E	IV_ATLAS_I_Z7E		4212
-+mx53_csb1733		MACH_COGENT_CSB1733	COGENT_CSB1733		4213
-+mach_type_sky		MACH_MACH_TYPE_SKY	MACH_TYPE_SKY		4214
-+bluesky			MACH_BLUESKY		BLUESKY			4215
-+ngrouter		MACH_NGROUTER		NGROUTER		4216
-+mx53_denetim		MACH_MX53_DENETIM	MX53_DENETIM		4217
-+opal			MACH_OPAL		OPAL			4218
-+gnet_us3gref		MACH_GNET_US3GREF	GNET_US3GREF		4219
-+gnet_nc3g		MACH_GNET_NC3G		GNET_NC3G		4220
-+gnet_ge3g		MACH_GNET_GE3G		GNET_GE3G		4221
-+adp2			MACH_ADP2		ADP2			4222
-+tqma28			MACH_TQMA28		TQMA28			4223
-+kacom3			MACH_KACOM3		KACOM3			4224
-+rrhdemo			MACH_RRHDEMO		RRHDEMO			4225
-+protodug		MACH_PROTODUG		PROTODUG		4226
-+lago			MACH_LAGO		LAGO			4227
-+ktt30			MACH_KTT30		KTT30			4228
-+ts43xx			MACH_TS43XX		TS43XX			4229
-+mx6q_denso		MACH_MX6Q_DENSO		MX6Q_DENSO		4230
-+comsat_gsmumts8		MACH_COMSAT_GSMUMTS8	COMSAT_GSMUMTS8		4231
-+dreamx			MACH_DREAMX		DREAMX			4232
-+thunderstonem		MACH_THUNDERSTONEM	THUNDERSTONEM		4233
-+yoyopad			MACH_YOYOPAD		YOYOPAD			4234
-+yoyopatient		MACH_YOYOPATIENT	YOYOPATIENT		4235
-+a10l			MACH_A10L		A10L			4236
-+mq60			MACH_MQ60		MQ60			4237
-+linkstation_lsql	MACH_LINKSTATION_LSQL	LINKSTATION_LSQL	4238
-+am3703gateway		MACH_AM3703GATEWAY	AM3703GATEWAY		4239
-+accipiter		MACH_ACCIPITER		ACCIPITER		4240
-+e1853			MACH_P1853		P1853			4241
-+magnidug		MACH_MAGNIDUG		MAGNIDUG		4242
-+hydra			MACH_HYDRA		HYDRA			4243
-+sun3i			MACH_SUN3I		SUN3I			4244
-+stm_b2078		MACH_STM_B2078		STM_B2078		4245
-+at91sam9263deskv2	MACH_AT91SAM9263DESKV2	AT91SAM9263DESKV2	4246
-+deluxe_r		MACH_DELUXE_R		DELUXE_R		4247
-+p_98_v			MACH_P_98_V		P_98_V			4248
-+p_98_c			MACH_P_98_C		P_98_C			4249
-+davinci_am18xx_omn	MACH_DAVINCI_AM18XX_OMN	DAVINCI_AM18XX_OMN	4250
-+socfpga_cyclone5	MACH_SOCFPGA_CYCLONE5	SOCFPGA_CYCLONE5	4251
-+cabatuin		MACH_CABATUIN		CABATUIN		4252
-+yoyopad_ft		MACH_YOYOPAD_FT		YOYOPAD_FT		4253
-+dan2400evb		MACH_DAN2400EVB		DAN2400EVB		4254
-+dan3400evb		MACH_DAN3400EVB		DAN3400EVB		4255
-+edm_sf_imx6		MACH_EDM_SF_IMX6	EDM_SF_IMX6		4256
-+edm_cf_imx6		MACH_EDM_CF_IMX6	EDM_CF_IMX6		4257
-+vpos3xx			MACH_VPOS3XX		VPOS3XX			4258
-+vulcano_9x5		MACH_VULCANO_9X5	VULCANO_9X5		4259
-+spmp8000		MACH_SPMP8000		SPMP8000		4260
-+catalina		MACH_CATALINA		CATALINA		4261
-+rd88f5181l_fe		MACH_RD88F5181L_FE	RD88F5181L_FE		4262
-+mx535_mx		MACH_MX535_MX		MX535_MX		4263
-+armadillo840		MACH_ARMADILLO840	ARMADILLO840		4264
-+spc9000baseboard	MACH_SPC9000BASEBOARD	SPC9000BASEBOARD	4265
-+iris			MACH_IRIS		IRIS			4266
-+protodcg		MACH_PROTODCG		PROTODCG		4267
-+palmtree		MACH_PALMTREE		PALMTREE		4268
-+novena			MACH_NOVENA		NOVENA			4269
-+ma_um			MACH_MA_UM		MA_UM			4270
-+ma_am			MACH_MA_AM		MA_AM			4271
-+ems348			MACH_EMS348		EMS348			4272
-+cm_fx6			MACH_CM_FX6		CM_FX6			4273
-+arndale			MACH_ARNDALE		ARNDALE			4274
-+q5xr5			MACH_Q5XR5		Q5XR5			4275
-+willow			MACH_WILLOW		WILLOW			4276
-+omap3621_odyv3		MACH_OMAP3621_ODYV3	OMAP3621_ODYV3		4277
-+omapl138_presonus	MACH_OMAPL138_PRESONUS	OMAPL138_PRESONUS	4278
-+dvf99			MACH_DVF99		DVF99			4279
-+impression_j		MACH_IMPRESSION_J	IMPRESSION_J		4280
-+qblissa9		MACH_QBLISSA9		QBLISSA9		4281
-+robin_heliview10	MACH_ROBIN_HELIVIEW10	ROBIN_HELIVIEW10	4282
-+sun7i			MACH_SUN7I		SUN7I			4283
-+mx6q_hdmidongle		MACH_MX6Q_HDMIDONGLE	MX6Q_HDMIDONGLE		4284
-+mx6_sid2		MACH_MX6_SID2		MX6_SID2		4285
-+helios_v3		MACH_HELIOS_V3		HELIOS_V3		4286
-+helios_v4		MACH_HELIOS_V4		HELIOS_V4		4287
-+q7_imx6			MACH_Q7_IMX6		Q7_IMX6			4288
-+odroidx			MACH_ODROIDX		ODROIDX			4289
-+robpro			MACH_ROBPRO		ROBPRO			4290
-+research59if_mk1	MACH_RESEARCH59IF_MK1	RESEARCH59IF_MK1	4291
-+bobsleigh		MACH_BOBSLEIGH		BOBSLEIGH		4292
-+dcshgwt3		MACH_DCSHGWT3		DCSHGWT3		4293
-+gld1018			MACH_GLD1018		GLD1018			4294
-+ev10			MACH_EV10		EV10			4295
-+nitrogen6x		MACH_NITROGEN6X		NITROGEN6X		4296
-+p_107_bb		MACH_P_107_BB		P_107_BB		4297
-+evita_utl		MACH_EVITA_UTL		EVITA_UTL		4298
-+falconwing		MACH_FALCONWING		FALCONWING		4299
-+dct3			MACH_DCT3		DCT3			4300
-+cpx2e_cell		MACH_CPX2E_CELL		CPX2E_CELL		4301
-+amiro			MACH_AMIRO		AMIRO			4302
-+mx6q_brassboard		MACH_MX6Q_BRASSBOARD	MX6Q_BRASSBOARD		4303
-+dalmore			MACH_DALMORE		DALMORE			4304
-+omap3_portal7cp		MACH_OMAP3_PORTAL7CP	OMAP3_PORTAL7CP		4305
-+tegra_pluto		MACH_TEGRA_PLUTO	TEGRA_PLUTO		4306
-+mx6sl_evk		MACH_MX6SL_EVK		MX6SL_EVK		4307
-+m7			MACH_M7			M7			4308
-+pxm2			MACH_PXM2		PXM2			4309
-+haba_knx_lite		MACH_HABA_KNX_LITE	HABA_KNX_LITE		4310
-+tai			MACH_TAI		TAI			4311
-+prototd			MACH_PROTOTD		PROTOTD			4312
-+dst_tonto		MACH_DST_TONTO		DST_TONTO		4313
-+draco			MACH_DRACO		DRACO			4314
-+dxr2			MACH_DXR2		DXR2			4315
-+rut			MACH_RUT		RUT			4316
-+am180x_wsc		MACH_AM180X_WSC		AM180X_WSC		4317
-+deluxe_u		MACH_DELUXE_U		DELUXE_U		4318
-+deluxe_ul		MACH_DELUXE_UL		DELUXE_UL		4319
-+at91sam9260medths	MACH_AT91SAM9260MEDTHS	AT91SAM9260MEDTHS	4320
-+matrix516		MACH_MATRIX516		MATRIX516		4321
-+vid401x			MACH_VID401X		VID401X			4322
-+helios_v5		MACH_HELIOS_V5		HELIOS_V5		4323
-+playpaq2		MACH_PLAYPAQ2		PLAYPAQ2		4324
-+igam			MACH_IGAM		IGAM			4325
-+amico_i			MACH_AMICO_I		AMICO_I			4326
-+amico_e			MACH_AMICO_E		AMICO_E			4327
-+sentient_mm3_ck		MACH_SENTIENT_MM3_CK	SENTIENT_MM3_CK		4328
-+smx6			MACH_SMX6		SMX6			4329
-+pango			MACH_PANGO		PANGO			4330
-+ns115_stick		MACH_NS115_STICK	NS115_STICK		4331
-+bctrm3			MACH_BCTRM3		BCTRM3			4332
-+doctorws		MACH_DOCTORWS		DOCTORWS		4333
-+m2601			MACH_M2601		M2601			4334
-+gco_mgmtt		MACH_GRIDCO_TRINITY	GRIDCO_TRINITY		4335
-+pc73032			MACH_PC3032		PC3032			4336
-+vgg1111			MACH_VGG1111		VGG1111			4337
-+countach		MACH_COUNTACH		COUNTACH		4338
-+visstrim_sm20		MACH_VISSTRIM_SM20	VISSTRIM_SM20		4339
-+a639			MACH_A639		A639			4340
-+spacemonkey		MACH_SPACEMONKEY	SPACEMONKEY		4341
-+zpdu_stamp		MACH_ZPDU_STAMP		ZPDU_STAMP		4342
-+htc_g7_clone		MACH_HTC_G7_CLONE	HTC_G7_CLONE		4343
-+ft2080_corvus		MACH_FT2080_CORVUS	FT2080_CORVUS		4344
-+fisland			MACH_FISLAND		FISLAND			4345
-+zpdu			MACH_ZPDU		ZPDU			4346
-+urt			MACH_URT		URT			4347
-+conti_ovip		MACH_CONTI_OVIP		CONTI_OVIP		4348
-+omapl138_nagra		MACH_OMAPL138_NAGRA	OMAPL138_NAGRA		4349
-+da850_at3kp1		MACH_DA850_AT3KP1	DA850_AT3KP1		4350
-+da850_at3kp2		MACH_DA850_AT3KP2	DA850_AT3KP2		4351
-+surma			MACH_SURMA		SURMA			4352
-+stm_b2092		MACH_STM_B2092		STM_B2092		4353
-+mx535_ycr		MACH_MX535_YCR		MX535_YCR		4354
-+m7_wl			MACH_M7_WL		M7_WL			4355
-+m7_u			MACH_M7_U		M7_U			4356
-+omap3_stndt_evm		MACH_OMAP3_STNDT_EVM	OMAP3_STNDT_EVM		4357
-+m7_wlv			MACH_M7_WLV		M7_WLV			4358
-+xam3517			MACH_XAM3517		XAM3517			4359
-+a220			MACH_A220		A220			4360
-+aclima_odie		MACH_ACLIMA_ODIE	ACLIMA_ODIE		4361
-+vibble			MACH_VIBBLE		VIBBLE			4362
-+k2_u			MACH_K2_U		K2_U			4363
-+mx53_egf		MACH_MX53_EGF		MX53_EGF		4364
-+novpek_imx53		MACH_NOVPEK_IMX53	NOVPEK_IMX53		4365
-+novpek_imx6x		MACH_NOVPEK_IMX6X	NOVPEK_IMX6X		4366
-+mx25_smartbox		MACH_MX25_SMARTBOX	MX25_SMARTBOX		4367
-+eicg6410		MACH_EICG6410		EICG6410		4368
-+picasso_e3		MACH_PICASSO_E3		PICASSO_E3		4369
-+motonavigator		MACH_MOTONAVIGATOR	MOTONAVIGATOR		4370
-+varioconnect2		MACH_VARIOCONNECT2	VARIOCONNECT2		4371
-+deluxe_tw		MACH_DELUXE_TW		DELUXE_TW		4372
-+visconti3		MACH_VISCONTI3		VISCONTI3		4373
-+kore3			MACH_KORE3		KORE3			4374
-+mx6s_drs		MACH_MX6S_DRS		MX6S_DRS		4375
+diff --git a/Documentation/boards.dox b/Documentation/boards.dox
+index 41de836..e859281 100644
+--- a/Documentation/boards.dox
++++ b/Documentation/boards.dox
+@@ -43,6 +43,8 @@ ARM type:
+ @li @subpage tny-a9263
+ @li @subpage usb-a9g20-lpw
+ @li @subpage usb-a9263
++@li @subpage haba-knx-explorer
++@li @subpage haba-knx-lite
+ 
+ Blackfin type:
+ 
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 855043a..34dcf48 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -90,6 +90,8 @@ board-$(CONFIG_MACH_EUKREA_CPUIMX35)		:= eukrea_cpuimx35
+ board-$(CONFIG_MACH_EUKREA_CPUIMX51SD)		:= eukrea_cpuimx51
+ board-$(CONFIG_MACH_FREESCALE_MX25_3STACK)	:= freescale-mx25-3-stack
+ board-$(CONFIG_MACH_FREESCALE_MX35_3STACK)	:= freescale-mx35-3-stack
++board-$(CONFIG_MACH_HABA_KNX_EXPLORER)		:= haba-knx
++board-$(CONFIG_MACH_HABA_KNX_LITE)		:= haba-knx
+ board-$(CONFIG_MACH_IMX21ADS)			:= imx21ads
+ board-$(CONFIG_MACH_IMX27ADS)			:= imx27ads
+ board-$(CONFIG_MACH_IMX233_OLINUXINO)	:= imx233-olinuxino
+diff --git a/arch/arm/boards/haba-knx/Makefile b/arch/arm/boards/haba-knx/Makefile
+new file mode 100644
+index 0000000..eb072c0
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/Makefile
+@@ -0,0 +1 @@
++obj-y += init.o
+diff --git a/arch/arm/boards/haba-knx/config.h b/arch/arm/boards/haba-knx/config.h
+new file mode 100644
+index 0000000..b91d9f5
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/config.h
+@@ -0,0 +1,6 @@
++#ifndef __CONFIG_H
++#define __CONFIG_H
++
++#define AT91_MAIN_CLOCK		12000000	/* 12 MHz oscillator */
++
++#endif	/* __CONFIG_H */
+diff --git a/arch/arm/boards/haba-knx/env/boot.d/10 b/arch/arm/boards/haba-knx/env/boot.d/10
+new file mode 100644
+index 0000000..d1b275c
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/env/boot.d/10
+@@ -0,0 +1 @@
++../boot/nand-ubi
+\ No newline at end of file
+diff --git a/arch/arm/boards/haba-knx/env/boot.d/11 b/arch/arm/boards/haba-knx/env/boot.d/11
+new file mode 100644
+index 0000000..7b7f395
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/env/boot.d/11
+@@ -0,0 +1 @@
++../boot/nfs
+\ No newline at end of file
+diff --git a/arch/arm/boards/haba-knx/env/boot.d/12 b/arch/arm/boards/haba-knx/env/boot.d/12
+new file mode 100644
+index 0000000..70b8ea3
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/env/boot.d/12
+@@ -0,0 +1 @@
++../boot/net
+\ No newline at end of file
+diff --git a/arch/arm/boards/haba-knx/env/boot.d/13 b/arch/arm/boards/haba-knx/env/boot.d/13
+new file mode 100644
+index 0000000..b41f2fd
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/env/boot.d/13
+@@ -0,0 +1 @@
++../boot/initrd
+\ No newline at end of file
+diff --git a/arch/arm/boards/haba-knx/env/boot/nand-ubi b/arch/arm/boards/haba-knx/env/boot/nand-ubi
+new file mode 100644
+index 0000000..5a338fe
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/env/boot/nand-ubi
+@@ -0,0 +1,10 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	boot-menu-add-entry "$0" "nand (UBI)"
++	exit
++fi
++
++global.bootm.image="/dev/nand0.kernel.bb"
++#global.bootm.oftree="/dev/nand0.oftree.bb"
++bootargs-root-ubi -r root -m nand0.rootfs
+diff --git a/arch/arm/boards/haba-knx/env/init/bootargs-base b/arch/arm/boards/haba-knx/env/init/bootargs-base
+new file mode 100644
+index 0000000..8e588ad
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/env/init/bootargs-base
+@@ -0,0 +1,8 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "Base bootargs"
++	exit
++fi
++
++global.linux.bootargs.base="console=ttyS0,115200"
+diff --git a/arch/arm/boards/haba-knx/env/init/general b/arch/arm/boards/haba-knx/env/init/general
+new file mode 100644
+index 0000000..fef8738
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/env/init/general
+@@ -0,0 +1,15 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "general config settings"
++	exit
++fi
++
++# user (used for network filenames)
++global.user=
++
++# timeout in seconds before the default boot entry is started
++global.autoboot_timeout=3
++
++# default boot entry (one of /env/boot/*)
++global.boot.default=net
+diff --git a/arch/arm/boards/haba-knx/env/init/hostname b/arch/arm/boards/haba-knx/env/init/hostname
+new file mode 100644
+index 0000000..f2b2691
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/env/init/hostname
+@@ -0,0 +1,9 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "hostname"
++	exit
++fi
++
++[ x$armlinux_architecture = x3141 ] && global.hostname=haba-explorer
++[ x$armlinux_architecture = x4310 ] && global.hostname=haba-lite
+diff --git a/arch/arm/boards/haba-knx/env/init/mtdparts-nand b/arch/arm/boards/haba-knx/env/init/mtdparts-nand
+new file mode 100644
+index 0000000..99b5223
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/env/init/mtdparts-nand
+@@ -0,0 +1,11 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "NAND partitions"
++	exit
++fi
++
++kernelname=atmel_nand
++mtdparts="128k(nand0.at91bootstrap),256k(nand0.barebox)ro,128k(nand0.bareboxenv),128k(nand0.bareboxenv2),128k(nand0.oftree),4M(nand0.kernel),120M(nand0.rootfs),-(nand0.data)"
++
++mtdparts-add -b -d nand0 -k ${kernelname} -p "${mtdparts}"
+diff --git a/arch/arm/boards/haba-knx/env/init/mtdparts-spiflash b/arch/arm/boards/haba-knx/env/init/mtdparts-spiflash
+new file mode 100644
+index 0000000..3819a23
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/env/init/mtdparts-spiflash
+@@ -0,0 +1,11 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "SPI partitions"
++	exit
++fi
++
++kernelname="spi0.0"
++mtdparts="16k(spi0.at91bootstrap)ro,256k(spi0.barebox)ro,112k(spi0.bareboxenv),-(spi0.data)"
++
++mtdparts-add -d spi0 -k ${kernelname} -p "${mtdparts}"
+diff --git a/arch/arm/boards/haba-knx/env/init/prompt b/arch/arm/boards/haba-knx/env/init/prompt
+new file mode 100644
+index 0000000..9b71fbd
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/env/init/prompt
+@@ -0,0 +1,7 @@
++#!/bin/sh
++
++if [ ${global.allow_color} = "true" ]; then
++	export PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m\n# "
++else
++	export PS1="barebox@\h:\w\n# "
++fi
+diff --git a/arch/arm/boards/haba-knx/env/init/usb_device b/arch/arm/boards/haba-knx/env/init/usb_device
+new file mode 100644
+index 0000000..0a6baf7
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/env/init/usb_device
+@@ -0,0 +1,49 @@
++#!/bin/sh
++
++button_name="dfu_bp"
++button_wait=5
++
++product_id=0x1234
++vendor_id=0x4321
++
++dfu_config="/dev/nand0.barebox.bb(barebox)sr,/dev/nand0.kernel.bb(kernel)r,/dev/nand0.rootfs.bb(rootfs)r"
++
++if [ $at91_udc0.vbus != 1 ]
++then
++	echo "No USB Device cable plugged, normal boot"
++	exit
++fi
++
++gpio_get_value ${dfu_button}
++if [ $? != 0 ]
++then
++	autoboot_timeout=16
++	echo "enable tty over USB Device, increase the boot delay to ${autoboot_timeout}s"
++	usbserial
++	exit
++fi
++
++echo "${button_name} pressed detected wait ${button_wait}s"
++timeout -s -a ${button_wait}
++
++if [ $at91_udc0.vbus != 1 ]
++then
++	echo "No USB Device cable plugged, normal boot"
++	exit
++fi
++
++gpio_get_value ${dfu_button}
++if [ $? != 0 ]
++then
++	echo "${button_name} released, normal boot"
++	autoboot_timeout=16
++	echo "enable tty over USB Device, increase the boot delay to ${autoboot_timeout}s"
++	usbserial
++	exit
++fi
++
++echo ""
++echo "Start DFU Mode"
++echo ""
++
++dfu ${dfu_config} -P ${product_id} -V ${vendor_id}
+diff --git a/arch/arm/boards/haba-knx/env/network/eth0 b/arch/arm/boards/haba-knx/env/network/eth0
+new file mode 100644
+index 0000000..efad827
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/env/network/eth0
+@@ -0,0 +1,17 @@
++#!/bin/sh
++
++# ip setting (static/dhcp)
++ip=dhcp-barebox
++global.dhcp.vendor_id=barebox-${global.hostname}
++
++# static setup used if ip=static
++ipaddr=
++netmask=
++gateway=
++serverip=
++
++# MAC address if needed
++#ethaddr=xx:xx:xx:xx:xx:xx
++ethaddr=6a:63:73:00:00:34
++
++# put code to discover eth0 (i.e. 'usb') to /env/network/eth0-discover
+diff --git a/arch/arm/boards/haba-knx/haba-knx-explorer.dox b/arch/arm/boards/haba-knx/haba-knx-explorer.dox
+new file mode 100644
+index 0000000..77e5b53
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/haba-knx-explorer.dox
+@@ -0,0 +1,43 @@
++/**
++@page haba-knx-explorer Calao-systems HABA-KNX-EXPLORER
++
++@section haba-knx-explorer The DIN module
++
++http://www.calao-systems.com
++
++This Rail DIN module is based on an Atmel AT91SAM9G20 CPU. The module is shipped with:
++
++- 128MiB SDRAM
++- 256MiB NAND type Flash Memory
++- 2 port Ethernet switch 10/100M 
++- KNX/TP1 Interface
++- USB Host port 2.0 (FS)
++- USB device port (FS)
++- Micro SD socket (SPI bus)
++- 1x Isolated RS232
++- 2x Isolated RS485
++- 4x Isolated dry contacts
++- RTC with battery backup
++- JTAG connector
++- I2C connector
++- Reset push button
++- Expansion connector for daughter boards (GPS, WIFI/BT, GPRS, 3G, ZigBee, MBUS, ...)
++
++
++@section haba-knx-explorer-db Supported daughter boards
++
++Supported daughter boards are:
++- DAB-GPI2-CXX
++- DAB-GPS
++- DAB-GPRS
++- DAB-HSDPA
++- DAB-WLAN-BT
++- DAB-ZIGBEE
++- DAB-MBUS
++- DAB-KNX-RF
++
++@section haba-knx-explorer-help Help
++
++Click <a href="http://www.calao-systems.com/mediawiki/index.php?title=HABA-KNX-EXPLORER_Software">here</a>
++to find more information about how to use barebox on the HABA-KNX-EXPLORER controller.
++*/
+diff --git a/arch/arm/boards/haba-knx/haba-knx-lite.dox b/arch/arm/boards/haba-knx/haba-knx-lite.dox
+new file mode 100644
+index 0000000..c338d33
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/haba-knx-lite.dox
+@@ -0,0 +1,42 @@
++/**
++@page haba-knx-lite Calao-systems HABA-KNX-LITE
++
++@section haba-knx-lite The DIN module 
++
++http://www.calao-systems.com
++
++This Rail DIN module is based on an Atmel AT91SAM9G20 CPU. The module is shipped with:
++
++- 128MiB SDRAM (1.8V)
++- 256MiB NAND type Flash Memory (1.8V)
++- Ethernet 10/100M
++- KNX/TP1 Interface
++- USB Host port 2.0 (FS)
++- USB device port (FS)
++- Micro SD socket (SPI bus)
++- 2Mb SPI Flash 
++- RTC with battery backup
++- JTAG connector
++- I2C connector
++- DBGU serial port for console 
++- Reset and User push button
++- Expansion connector for daughter boards (GPS, WIFI/BT, GPRS, 3G, ZigBee, MBUS, ...)
++
++
++@section haba-knx-lite-db Supported daughter boards
++
++Supported daughter boards are:
++- DAB-GPI2-CXX
++- DAB-GPS
++- DAB-GPRS
++- DAB-HSDPA
++- DAB-WLAN-BT
++- DAB-ZIGBEE
++- DAB-MBUS
++- DAB-KNX-RF
++
++@section haba-knx-lite-help Help
++
++Click <a href="http://www.calao-systems.com/mediawiki/index.php?title=HABA-KNX-LITE_Software">here</a>
++to find more information about how to use barebox on the HABA-KNX-LITE controller.
++*/
+diff --git a/arch/arm/boards/haba-knx/init.c b/arch/arm/boards/haba-knx/init.c
+new file mode 100644
+index 0000000..a96ce18
+--- /dev/null
++++ b/arch/arm/boards/haba-knx/init.c
+@@ -0,0 +1,260 @@
++/*
++ * Copyright (C) 2011-2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ * Copyright (C) 2012 Gregory Hermant <gregory.hermant@calao-systems.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
++ */
++
++#include <common.h>
++#include <net.h>
++#include <init.h>
++#include <environment.h>
++#include <asm/armlinux.h>
++#include <generated/mach-types.h>
++#include <partition.h>
++#include <fs.h>
++#include <fcntl.h>
++#include <io.h>
++#include <asm/hardware.h>
++#include <nand.h>
++#include <sizes.h>
++#include <linux/mtd/nand.h>
++#include <linux/clk.h>
++#include <mach/board.h>
++#include <mach/at91sam9_smc.h>
++#include <mach/sam9_smc.h>
++#include <gpio.h>
++#include <led.h>
++#include <mach/io.h>
++#include <mach/at91_pmc.h>
++#include <mach/at91_rstc.h>
++#include <gpio_keys.h>
++#include <readkey.h>
++#include <spi/flash.h>
++
++static void haba_knx_set_board_type(void)
++{
++	if (machine_is_haba_knx_lite())
++		armlinux_set_architecture(MACH_TYPE_HABA_KNX_LITE);
++	else
++		armlinux_set_architecture(MACH_TYPE_HABA_KNX_EXPLORER);
++}
++
++static struct atmel_nand_data nand_pdata = {
++	.ale		= 21,
++	.cle		= 22,
++/*	.det_pin	= ... not connected */
++	.rdy_pin	= AT91_PIN_PC13,
++	.enable_pin	= AT91_PIN_PC14,
++	.on_flash_bbt	= 1,
++};
++
++static struct sam9_smc_config haba_knx_nand_smc_config = {
++	.ncs_read_setup		= 0,
++	.nrd_setup		= 2,
++	.ncs_write_setup	= 0,
++	.nwe_setup		= 2,
++
++	.ncs_read_pulse		= 4,
++	.nrd_pulse		= 4,
++	.ncs_write_pulse	= 4,
++	.nwe_pulse		= 4,
++
++	.read_cycle		= 7,
++	.write_cycle		= 7,
++
++	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE | AT91_SMC_EXNWMODE_DISABLE | AT91_SMC_DBW_8,
++	.tdf_cycles		= 3,
++};
++
++static void haba_knx_add_device_nand(void)
++{
++	/* configure chip-select 3 (NAND) */
++	sam9_smc_configure(3, &haba_knx_nand_smc_config);
++	at91_add_device_nand(&nand_pdata);
++}
++
++static struct at91_ether_platform_data macb_pdata = {
++	.phy_addr	= -1,
++};
++
++static void haba_knx_phy_reset(void)
++{
++	unsigned long rstc;
++	struct clk *clk = clk_get(NULL, "macb_clk");
++
++	clk_enable(clk);
++
++	at91_set_gpio_input(AT91_PIN_PA14, 0);
++	at91_set_gpio_input(AT91_PIN_PA15, 0);
++
++	if (machine_is_haba_knx_lite()) {
++		at91_set_gpio_input(AT91_PIN_PA17, 0);
++		at91_set_gpio_input(AT91_PIN_PA18, 0);
++	} else {
++		at91_set_gpio_input(AT91_PIN_PA25, 0);
++		at91_set_gpio_input(AT91_PIN_PA26, 0);
++	}
++
++	rstc = at91_sys_read(AT91_RSTC_MR) & AT91_RSTC_ERSTL;
++
++	/* Need to reset PHY -> 500ms reset */
++	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
++				     (AT91_RSTC_ERSTL & (0x0d << 8)) |
++				     AT91_RSTC_URSTEN);
++
++	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_EXTRST);
++
++	/* Wait for end hardware reset */
++	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL));
++
++	/* Restore NRST value */
++	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
++				     (rstc) |
++				     AT91_RSTC_URSTEN);
++}
++
++static void haba_knx_add_device_eth(void)
++{
++	if (machine_is_haba_knx_explorer())
++		macb_pdata.flags = AT91SAM_ETHER_MII | AT91SAM_ETX2_ETX3_ALTERNATIVE;
++	else
++		macb_pdata.flags = AT91SAM_ETHER_RMII;
++
++	at91_add_device_eth(0, &macb_pdata);
++}
++
++#if defined(CONFIG_MCI_ATMEL)
++static struct atmel_mci_platform_data __initdata haba_knx_mci_data = {
++	.bus_width	= 1,
++	.detect_pin	= AT91_PIN_PC11,
++};
++
++static void haba_knx_add_device_mci(void)
++{
++	if (machine_is_haba_knx_explorer())
++		at91_add_device_mci(0, &haba_knx_mci_data);
++}
++#else
++static void haba_knx_add_device_mci(void) {}
++#endif
++
++static struct at91_usbh_data ek_usbh_data = {
++	.ports		= 2,
++};
++
++/*
++ * USB Device port
++ */
++static struct at91_udc_data __initdata ek_udc_data = {
++	.vbus_pin	= AT91_PIN_PB2,
++	.pullup_pin	= 0,		/* pull-up driven by UDC */
++};
++
++static void __init ek_add_device_udc(void)
++{
++	if (machine_is_haba_knx_explorer())
++		ek_udc_data.vbus_pin = AT91_PIN_PC5;
++	at91_add_device_udc(&ek_udc_data);
++}
++
++static struct flash_platform_data spiflash = {
++	.name = "spi",
++};
++
++static struct spi_board_info haba_knx_spi_devices[] = {
++	{
++		.name = "m25p",
++		.max_speed_hz = 20 * 1000 * 1000,	/* max spi clock (SCK) speed in HZ */
++		.bus_num = 0,
++		.chip_select = 0,
++		.platform_data = &spiflash,
++	},
++};
++
++struct gpio_led led = {
++	.gpio = AT91_PIN_PA28,
++	.led = {
++		.name = "user_led",
++	},
++};
++
++static void __init ek_add_led(void)
++{
++	if (!machine_is_haba_knx_lite())
++		return;
++	at91_set_gpio_output(led.gpio, led.active_low);
++	led_gpio_register(&led);
++}
++
++static int haba_knx_mem_init(void)
++{
++	at91_add_device_sdram(0);
++
++	return 0;
++}
++mem_initcall(haba_knx_mem_init);
++
++static void __init ek_add_device_button(void)
++{
++	if (machine_is_haba_knx_lite()) {
++		at91_set_GPIO_periph(AT91_PIN_PC3, 1);	/* user push button, pull up enabled */
++		at91_set_deglitch(AT91_PIN_PC3, 1);
++		export_env_ull("dfu_button", AT91_PIN_PC3);
++	}
++}
++
++static int haba_knx_devices_init(void)
++{
++	haba_knx_add_device_nand();
++	haba_knx_phy_reset();
++	haba_knx_add_device_eth();
++	haba_knx_add_device_mci();
++	at91_add_device_usbh_ohci(&ek_usbh_data);
++	ek_add_device_udc();
++	ek_add_led();
++	ek_add_device_button();
++
++	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_1 + 0x100));
++	haba_knx_set_board_type();
++
++	if (machine_is_haba_knx_lite()) {
++		spi_register_board_info(haba_knx_spi_devices,
++			ARRAY_SIZE(haba_knx_spi_devices));
++		at91_add_device_spi(0, NULL);
++	}
++
++	devfs_add_partition("nand0", 0x00000, SZ_128K, DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
++	dev_add_bb_dev("at91bootstrap_raw", "at91bootstrap");
++	devfs_add_partition("nand0", SZ_128K, SZ_256K, DEVFS_PARTITION_FIXED, "self_raw");
++	dev_add_bb_dev("self_raw", "self0");
++	devfs_add_partition("nand0", SZ_256K + SZ_128K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw");
++	dev_add_bb_dev("env_raw", "env0");
++	devfs_add_partition("nand0", SZ_512K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw1");
++	dev_add_bb_dev("env_raw1", "env1");
++
++	return 0;
++}
++device_initcall(haba_knx_devices_init);
++
++static int haba_knx_console_init(void)
++{
++	at91_register_uart(0, 0);
++
++	return 0;
++}
++console_initcall(haba_knx_console_init);
+diff --git a/arch/arm/configs/haba_knx_explorer_defconfig b/arch/arm/configs/haba_knx_explorer_defconfig
+new file mode 100644
+index 0000000..849dcf9
+--- /dev/null
++++ b/arch/arm/configs/haba_knx_explorer_defconfig
+@@ -0,0 +1,81 @@
++CONFIG_ARCH_AT91SAM9G20=y
++CONFIG_MACH_HABA_KNX_EXPLORER=y
++CONFIG_AEABI=y
++# CONFIG_CMD_ARM_CPUINFO is not set
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
++CONFIG_MMU=y
++CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
++CONFIG_EXPERIMENTAL=y
++CONFIG_MALLOC_TLSF=y
++CONFIG_PROMPT="HABA-EXPLORER:"
++CONFIG_LONGHELP=y
++CONFIG_PROMPT_HUSH_PS2="y"
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++# CONFIG_CONSOLE_ACTIVATE_FIRST is not set
++CONFIG_CONSOLE_ACTIVATE_ALL=y
++CONFIG_PARTITION=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/haba-knx/env"
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_PASSWD=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_MTEST=y
++CONFIG_CMD_MTEST_ALTERNATIVE=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_BOOTM_VERBOSE=y
++CONFIG_CMD_BOOTM_INITRD=y
++CONFIG_CMD_BOOTM_OFTREE=y
++CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
++CONFIG_CMD_UIMAGE=y
++# CONFIG_CMD_BOOTU is not set
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_LED=y
++CONFIG_CMD_LED_TRIGGER=y
++CONFIG_NET=y
++CONFIG_NET_DHCP=y
++CONFIG_NET_NFS=y
++CONFIG_NET_PING=y
++CONFIG_NET_TFTP=y
++CONFIG_NET_TFTP_PUSH=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_NET_RESOLV=y
++CONFIG_DRIVER_NET_MACB=y
++# CONFIG_SPI is not set
++CONFIG_MTD=y
++# CONFIG_MTD_OOB_DEVICE is not set
++CONFIG_NAND=y
++# CONFIG_NAND_ECC_HW is not set
++# CONFIG_NAND_ECC_HW_SYNDROME is not set
++# CONFIG_NAND_ECC_HW_NONE is not set
++CONFIG_NAND_ATMEL=y
++CONFIG_UBI=y
++CONFIG_USB_GADGET=y
++CONFIG_USB_GADGET_DFU=y
++CONFIG_USB_GADGET_SERIAL=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_TRIGGERS=y
++CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
+diff --git a/arch/arm/configs/haba_knx_lite_defconfig b/arch/arm/configs/haba_knx_lite_defconfig
+new file mode 100644
+index 0000000..7665d97
+--- /dev/null
++++ b/arch/arm/configs/haba_knx_lite_defconfig
+@@ -0,0 +1,81 @@
++CONFIG_ARCH_AT91SAM9G20=y
++CONFIG_MACH_HABA_KNX_LITE=y
++CONFIG_AEABI=y
++# CONFIG_CMD_ARM_CPUINFO is not set
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
++CONFIG_MMU=y
++CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
++CONFIG_EXPERIMENTAL=y
++CONFIG_MALLOC_TLSF=y
++CONFIG_PROMPT="HABA-LITE:"
++CONFIG_LONGHELP=y
++CONFIG_PROMPT_HUSH_PS2="y"
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++# CONFIG_CONSOLE_ACTIVATE_FIRST is not set
++CONFIG_CONSOLE_ACTIVATE_ALL=y
++CONFIG_PARTITION=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/haba-knx/env"
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_PASSWD=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_MTEST=y
++CONFIG_CMD_MTEST_ALTERNATIVE=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_BOOTM_VERBOSE=y
++CONFIG_CMD_BOOTM_INITRD=y
++CONFIG_CMD_BOOTM_OFTREE=y
++CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
++CONFIG_CMD_UIMAGE=y
++# CONFIG_CMD_BOOTU is not set
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_LED=y
++CONFIG_CMD_LED_TRIGGER=y
++CONFIG_NET=y
++CONFIG_NET_DHCP=y
++CONFIG_NET_NFS=y
++CONFIG_NET_PING=y
++CONFIG_NET_TFTP=y
++CONFIG_NET_TFTP_PUSH=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_NET_RESOLV=y
++CONFIG_DRIVER_NET_MACB=y
++# CONFIG_SPI is not set
++CONFIG_MTD=y
++# CONFIG_MTD_OOB_DEVICE is not set
++CONFIG_NAND=y
++# CONFIG_NAND_ECC_HW is not set
++# CONFIG_NAND_ECC_HW_SYNDROME is not set
++# CONFIG_NAND_ECC_HW_NONE is not set
++CONFIG_NAND_ATMEL=y
++CONFIG_UBI=y
++CONFIG_USB_GADGET=y
++CONFIG_USB_GADGET_DFU=y
++CONFIG_USB_GADGET_SERIAL=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_TRIGGERS=y
++CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 30225fa..4df6096 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -26,6 +26,8 @@ config BOARDINFO
+ 	default "Calao TNY-A9263" if MACH_TNY_A9263
+ 	default "Calao TNY-A9G20" if MACH_TNY_A9G20
+ 	default "Calao QIL-A9260" if MACH_QIL_A9260
++	default "Calao HABA-KNX-LITE" if MACH_HABA_KNX_LITE
++	default "Calao HABA-KNX-EXPLORER" if MACH_HABA_KNX_EXPLORER
+ 
+ config HAVE_NAND_ATMEL_BUSWIDTH_16
+ 	bool
+@@ -244,6 +246,18 @@ config MACH_DSS11
+ 	  Select this if you are using aizo dSS11
+ 	  that embeds only one SD/MMC slot.
+ 
++config MACH_HABA_KNX_LITE
++	bool "CALAO HABA-KNX-LITE"
++	help
++	  Select this if you are using a Calao Systems HABA-KNX-LITE.
++	  <http://www.calao-systems.com>
++
++config MACH_HABA_KNX_EXPLORER
++	bool "CALAO HABA-KNX-EXPLORER"
++	help
++	  Select this if you are using a Calao Systems HABA-KNX-EXPLORER.
++	  <http://www.calao-systems.com>
++
+ endchoice
+ 
+ endif
 -- 
 1.7.9.5
 
