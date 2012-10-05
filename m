@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TK5XI-0004iV-UX
- for barebox@lists.infradead.org; Fri, 05 Oct 2012 10:53:47 +0000
+ id 1TK5XI-0004iQ-QL
+ for barebox@lists.infradead.org; Fri, 05 Oct 2012 10:53:48 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  5 Oct 2012 12:53:36 +0200
-Message-Id: <1349434416-4231-9-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  5 Oct 2012 12:53:30 +0200
+Message-Id: <1349434416-4231-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1349434416-4231-1-git-send-email-s.hauer@pengutronix.de>
 References: <1349434416-4231-1-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,449 +17,219 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] ARM i.MX: rework bootsource setting
+Subject: =?UTF-8?q?=5BPATCH=202/8=5D=20ARM=20i=2EMX=3A=20streamline=20imx=5Fsilicon=5Frevision?=
 To: barebox@lists.infradead.org
 
-This moves the known i.MX bootsource settings to a single file
-so that the code can be shared. Also we add a enum for the different
-boot sources so that it can be used in C Code and not only on the shell.
-The pcm038 board is changed to use it instead of digging in the registers
-manually.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/pcm038/pcm038.c             |    8 +-
- arch/arm/mach-imx/boot.c                    |  178 +++++++++++++++++++--------
- arch/arm/mach-imx/imx25.c                   |    7 ++
- arch/arm/mach-imx/imx35.c                   |    6 +
- arch/arm/mach-imx/imx51.c                   |   67 ----------
- arch/arm/mach-imx/include/mach/generic.h    |   17 +++
- arch/arm/mach-imx/include/mach/imx27-regs.h |   10 --
- 7 files changed, 158 insertions(+), 135 deletions(-)
-
-diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
-index 58b1ec9..ec4ffd7 100644
---- a/arch/arm/boards/pcm038/pcm038.c
-+++ b/arch/arm/boards/pcm038/pcm038.c
-@@ -39,6 +39,7 @@
- #include <mach/devices-imx27.h>
- #include <mach/iim.h>
- #include <mfd/mc13xxx.h>
-+#include <mach/generic.h>
- 
- #include "pll.h"
- 
-@@ -302,11 +303,8 @@ static int pcm038_devices_init(void)
- 	 */
- 	imx27_add_fec(&fec_info);
- 
--	switch ((GPCR & GPCR_BOOT_MASK) >> GPCR_BOOT_SHIFT) {
--	case GPCR_BOOT_8BIT_NAND_2k:
--	case GPCR_BOOT_16BIT_NAND_2k:
--	case GPCR_BOOT_16BIT_NAND_512:
--	case GPCR_BOOT_8BIT_NAND_512:
-+	switch (imx_bootsource()) {
-+	case bootsource_nand:
- 		devfs_add_partition("nand0", 0x00000, 0x80000,
- 					DEVFS_PARTITION_FIXED, "self_raw");
- 		dev_add_bb_dev("self_raw", "self0");
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 11c688e..409c237 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -17,9 +17,64 @@
- #include <magicvar.h>
- 
- #include <io.h>
--#include <mach/imx-regs.h>
-+#include <mach/generic.h>
-+
-+static const char *bootsource_str[] = {
-+	[bootsource_unknown] = "unknown",
-+	[bootsource_nand] = "nand",
-+	[bootsource_nor] = "nor",
-+	[bootsource_mmc] = "mmc",
-+	[bootsource_i2c] = "i2c",
-+	[bootsource_spi] = "spi",
-+	[bootsource_serial] = "serial",
-+	[bootsource_onenand] = "onenand",
-+};
-+
-+static enum imx_bootsource bootsource;
-+
-+void imx_set_bootsource(enum imx_bootsource src)
-+{
-+	if (src >= ARRAY_SIZE(bootsource_str))
-+		src = bootsource_unknown;
-+
-+	bootsource = src;
-+
-+	setenv("barebox_loc", bootsource_str[src]);
-+	export("barebox_loc");
-+}
-+
-+enum imx_bootsource imx_bootsource(void)
-+{
-+	return bootsource;
-+}
-+
-+BAREBOX_MAGICVAR(barebox_loc, "The source barebox has been booted from");
-+
-+/* [CTRL][TYPE] */
-+static const enum imx_bootsource locations[4][4] = {
-+	{ /* CTRL = WEIM */
-+		bootsource_nor,
-+		bootsource_unknown,
-+		bootsource_onenand,
-+		bootsource_unknown,
-+	}, { /* CTRL == NAND */
-+		bootsource_nand,
-+		bootsource_nand,
-+		bootsource_nand,
-+		bootsource_nand,
-+	}, { /* CTRL == ATA, (imx35 only) */
-+		bootsource_unknown,
-+		bootsource_unknown, /* might be p-ata */
-+		bootsource_unknown,
-+		bootsource_unknown,
-+	}, { /* CTRL == expansion */
-+		bootsource_mmc, /* note imx25 could also be: movinand, ce-ata */
-+		bootsource_unknown,
-+		bootsource_i2c,
-+		bootsource_spi,
-+	}
-+};
- 
--#if defined(CONFIG_ARCH_IMX25) || defined(CONFIG_ARCH_IMX35)
- /*
-  * Saves the boot source media into the $barebox_loc enviroment variable
-  *
-@@ -38,43 +93,14 @@
-  * Note also that I suspect that the boot source pins are only sampled at
-  * power up.
-  */
--static int imx_25_35_boot_save_loc(void)
-+int imx_25_35_boot_save_loc(unsigned int ctrl, unsigned int type)
- {
- 	const char *bareboxloc = NULL;
--	uint32_t reg;
--	unsigned int ctrl, type;
-+	enum imx_bootsource src;
- 
--	/* [CTRL][TYPE] */
--	const char *const locations[4][4] = {
--		{ /* CTRL = WEIM */
--			"nor",
--			NULL,
--			"onenand",
--			NULL,
--		}, { /* CTRL == NAND */
--			"nand",
--			"nand",
--			"nand",
--			"nand",
--		}, { /* CTRL == ATA, (imx35 only) */
--			NULL,
--			NULL, /* might be p-ata */
--			NULL,
--			NULL,
--		}, { /* CTRL == expansion */
--			"mmc", /* note imx25 could also be: movinand, ce-ata */
--			NULL,
--			"i2c",
--			"spi",
--		}
--	};
--
--	reg = readl(IMX_CCM_BASE + CCM_RCSR);
--	ctrl = (reg >> CCM_RCSR_MEM_CTRL_SHIFT) & 0x3;
--	type = (reg >> CCM_RCSR_MEM_TYPE_SHIFT) & 0x3;
--
--	bareboxloc = locations[ctrl][type];
-+	src = locations[ctrl][type];
- 
-+	imx_set_bootsource(src);
- 	if (bareboxloc) {
- 		setenv("barebox_loc", bareboxloc);
- 		export("barebox_loc");
-@@ -82,32 +108,78 @@ static int imx_25_35_boot_save_loc(void)
- 
- 	return 0;
- }
--coredevice_initcall(imx_25_35_boot_save_loc);
--#endif
- 
--#if defined(CONFIG_ARCH_IMX27)
--static int imx_27_boot_save_loc(void)
-+#define IMX27_SYSCTRL_GPCR	0x18
-+#define IMX27_GPCR_BOOT_SHIFT			16
-+#define IMX27_GPCR_BOOT_MASK			(0xf << IMX27_GPCR_BOOT_SHIFT)
-+#define IMX27_GPCR_BOOT_UART_USB		0
-+#define IMX27_GPCR_BOOT_8BIT_NAND_2k		2
-+#define IMX27_GPCR_BOOT_16BIT_NAND_2k		3
-+#define IMX27_GPCR_BOOT_16BIT_NAND_512		4
-+#define IMX27_GPCR_BOOT_16BIT_CS0		5
-+#define IMX27_GPCR_BOOT_32BIT_CS0		6
-+#define IMX27_GPCR_BOOT_8BIT_NAND_512		7
-+
-+void imx_27_boot_save_loc(void __iomem *sysctrl_base)
- {
--	switch ((GPCR & GPCR_BOOT_MASK) >> GPCR_BOOT_SHIFT) {
--	case GPCR_BOOT_UART_USB:
--		setenv("barebox_loc", "serial");
-+	enum imx_bootsource src;
-+	uint32_t val;
-+
-+	val = readl(sysctrl_base + IMX27_SYSCTRL_GPCR);
-+	val &= IMX27_GPCR_BOOT_MASK;
-+	val >>= IMX27_GPCR_BOOT_SHIFT;
-+
-+	switch (val) {
-+	case IMX27_GPCR_BOOT_UART_USB:
-+		src = bootsource_serial;
- 		break;
--	case GPCR_BOOT_8BIT_NAND_2k:
--	case GPCR_BOOT_16BIT_NAND_2k:
--	case GPCR_BOOT_16BIT_NAND_512:
--	case GPCR_BOOT_8BIT_NAND_512:
--		setenv("barebox_loc", "nand");
-+	case IMX27_GPCR_BOOT_8BIT_NAND_2k:
-+	case IMX27_GPCR_BOOT_16BIT_NAND_2k:
-+	case IMX27_GPCR_BOOT_16BIT_NAND_512:
-+	case IMX27_GPCR_BOOT_8BIT_NAND_512:
-+		src = bootsource_nand;
- 		break;
- 	default:
--		setenv("barebox_loc", "nor");
-+		src = bootsource_nor;
- 		break;
- 	}
- 
--	export("barebox_loc");
-+	imx_set_bootsource(src);
-+}
-+
-+#define IMX51_SRC_SBMR			0x4
-+#define IMX51_SBMR_BT_MEM_TYPE_SHIFT	7
-+#define IMX51_SBMR_BT_MEM_CTL_SHIFT	0
-+#define IMX51_SBMR_BMOD_SHIFT		14
-+
-+int imx51_boot_save_loc(void __iomem *src_base)
-+{
-+	enum imx_bootsource src = bootsource_unknown;
-+	uint32_t reg;
-+	unsigned int ctrl, type;
-+
-+	reg = readl(src_base + IMX51_SRC_SBMR);
-+
-+	switch ((reg >> IMX51_SBMR_BMOD_SHIFT) & 0x3) {
-+	case 0:
-+	case 2:
-+		/* internal boot */
-+		ctrl = (reg >> IMX51_SBMR_BT_MEM_CTL_SHIFT) & 0x3;
-+		type = (reg >> IMX51_SBMR_BT_MEM_TYPE_SHIFT) & 0x3;
-+
-+		src = locations[ctrl][type];
-+		break;
-+	case 1:
-+		/* reserved */
-+		src = bootsource_unknown;
-+		break;
-+	case 3:
-+		src = bootsource_serial;
-+		break;
-+
-+	}
-+
-+	imx_set_bootsource(src);
- 
- 	return 0;
- }
--coredevice_initcall(imx_27_boot_save_loc);
--#endif
--
--BAREBOX_MAGICVAR(barebox_loc, "The source barebox has been booted from");
-diff --git a/arch/arm/mach-imx/imx25.c b/arch/arm/mach-imx/imx25.c
-index 5e6532a..87c23ec 100644
---- a/arch/arm/mach-imx/imx25.c
-+++ b/arch/arm/mach-imx/imx25.c
-@@ -17,6 +17,7 @@
- #include <mach/iim.h>
- #include <io.h>
- #include <mach/weim.h>
-+#include <mach/generic.h>
- #include <sizes.h>
- 
- void imx25_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
-@@ -58,6 +59,12 @@ static struct imx_iim_platform_data imx25_iim_pdata = {
- 
- static int imx25_init(void)
- {
-+	uint32_t val;
-+
-+	val = readl(MX25_CCM_BASE_ADDR + CCM_RCSR);
-+	imx_25_35_boot_save_loc((val >> CCM_RCSR_MEM_CTRL_SHIFT) & 0x3,
-+			(val >> CCM_RCSR_MEM_TYPE_SHIFT) & 0x3);
-+
- 	add_generic_device("imx_iim", 0, NULL, MX25_IIM_BASE_ADDR, SZ_4K,
- 			IORESOURCE_MEM, &imx25_iim_pdata);
- 
-diff --git a/arch/arm/mach-imx/imx35.c b/arch/arm/mach-imx/imx35.c
-index bb93c37..f89bd10 100644
---- a/arch/arm/mach-imx/imx35.c
-+++ b/arch/arm/mach-imx/imx35.c
-@@ -59,8 +59,14 @@ core_initcall(imx35_l2_fix);
- 
- static int imx35_init(void)
- {
-+	uint32_t val;
-+
- 	imx35_silicon_revision();
- 
-+	val = readl(MX35_CCM_BASE_ADDR + CCM_RCSR);
-+	imx_25_35_boot_save_loc((val >> CCM_RCSR_MEM_CTRL_SHIFT) & 0x3,
-+			(val >> CCM_RCSR_MEM_TYPE_SHIFT) & 0x3);
-+
- 	add_generic_device("imx_iim", 0, NULL, MX35_IIM_BASE_ADDR, SZ_4K,
- 			IORESOURCE_MEM, NULL);
- 
-diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
-index 81e6211..805361d 100644
---- a/arch/arm/mach-imx/imx51.c
-+++ b/arch/arm/mach-imx/imx51.c
-@@ -104,73 +104,6 @@ postcore_initcall(imx51_init);
-  * power up.
-  */
- 
--#define SRC_SBMR	0x4
--#define SBMR_BT_MEM_TYPE_SHIFT	7
--#define SBMR_BT_MEM_CTL_SHIFT	0
--#define SBMR_BMOD_SHIFT		14
--
--static int imx51_boot_save_loc(void)
--{
--	const char *bareboxloc = NULL;
--	uint32_t reg;
--	unsigned int ctrl, type;
--
--	/* [CTRL][TYPE] */
--	const char *const locations[4][4] = {
--		{ /* CTRL = WEIM */
--			"nor",
--			NULL,
--			"onenand",
--			NULL,
--		}, { /* CTRL == NAND */
--			"nand",
--			"nand",
--			"nand",
--			"nand",
--		}, { /* CTRL == reserved */
--			NULL,
--			NULL,
--			NULL,
--			NULL,
--		}, { /* CTRL == expansion */
--			"mmc",
--			NULL,
--			"i2c",
--			"spi",
--		}
--	};
--
--	reg = readl(MX51_SRC_BASE_ADDR + SRC_SBMR);
--
--	switch ((reg >> SBMR_BMOD_SHIFT) & 0x3) {
--	case 0:
--	case 2:
--		/* internal boot */
--		ctrl = (reg >> SBMR_BT_MEM_CTL_SHIFT) & 0x3;
--		type = (reg >> SBMR_BT_MEM_TYPE_SHIFT) & 0x3;
--
--		bareboxloc = locations[ctrl][type];
--		break;
--	case 1:
--		/* reserved */
--		bareboxloc = "unknown";
--		break;
--	case 3:
--		bareboxloc = "serial";
--		break;
--
--	}
--
--	if (bareboxloc) {
--		setenv("barebox_loc", bareboxloc);
--		export("barebox_loc");
--	}
--
--	return 0;
--}
--
--coredevice_initcall(imx51_boot_save_loc);
--
- #define setup_pll_800(base)	imx5_setup_pll((base), 800,  (( 8 << 4) + ((1 - 1) << 0)), ( 3 - 1),  1)
- #define setup_pll_665(base)	imx5_setup_pll((base), 665,  (( 6 << 4) + ((1 - 1) << 0)), (96 - 1), 89)
- #define setup_pll_600(base)	imx5_setup_pll((base), 600,  (( 6 << 4) + ((1 - 1) << 0)), ( 4 - 1),  1)
-diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
-index 691a146..7fe5810 100644
---- a/arch/arm/mach-imx/include/mach/generic.h
-+++ b/arch/arm/mach-imx/include/mach/generic.h
-@@ -1,6 +1,23 @@
- 
- u64 imx_uid(void);
- 
-+enum imx_bootsource {
-+	bootsource_unknown,
-+	bootsource_nand,
-+	bootsource_nor,
-+	bootsource_mmc,
-+	bootsource_i2c,
-+	bootsource_spi,
-+	bootsource_serial,
-+	bootsource_onenand,
-+};
-+
-+enum imx_bootsource imx_bootsource(void);
-+void imx_set_bootsource(enum imx_bootsource src);
-+
-+int imx_25_35_boot_save_loc(unsigned int ctrl, unsigned int type);
-+void imx_27_boot_save_loc(void __iomem *sysctrl_base);
-+int imx51_boot_save_loc(void __iomem *src_base);
- 
- #ifdef CONFIG_ARCH_IMX1
- #define cpu_is_mx1()	(1)
-diff --git a/arch/arm/mach-imx/include/mach/imx27-regs.h b/arch/arm/mach-imx/include/mach/imx27-regs.h
-index 5db1a3c..e7372e4 100644
---- a/arch/arm/mach-imx/include/mach/imx27-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx27-regs.h
-@@ -129,16 +129,6 @@
- #define WBCR	__REG(MX27_SYSCTRL_BASE_ADDR + 0x1C)		/* Well Bias Control Register */
- #define DSCR(x)	__REG(MX27_SYSCTRL_BASE_ADDR + 0x1C + ((x) << 2))	/* Driving Strength Control Register 1 - 13 */
- 
--#define GPCR_BOOT_SHIFT			16
--#define GPCR_BOOT_MASK			(0xf << GPCR_BOOT_SHIFT)
--#define GPCR_BOOT_UART_USB		0
--#define GPCR_BOOT_8BIT_NAND_2k		2
--#define GPCR_BOOT_16BIT_NAND_2k		3
--#define GPCR_BOOT_16BIT_NAND_512	4
--#define GPCR_BOOT_16BIT_CS0		5
--#define GPCR_BOOT_32BIT_CS0		6
--#define GPCR_BOOT_8BIT_NAND_512		7
--
- #include "esdctl.h"
- 
- /* PLL registers */
--- 
-1.7.10.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QWxsIGkuTVggU29DcyBub3cgdXNlIHRoZSBzYW1lIGlteF9zaWxpY29uX3JldmlzaW9uKCkgZnVu
+Y3Rpb24gdG8gZ2V0CnRoZSByZXZpc2lvbi4gQWRkIGEgc2VwYXJhdGUgaGVhZGVyIGZpbGUgZm9y
+IGl0IGFuZCBhIGNvbW1vbiBmdW5jdGlvbgp1c2VkIG9uIGFsbCBTb0NzLgoKU2lnbmVkLW9mZi1i
+eTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgotLS0KIGFyY2gvYXJtL2Jv
+YXJkcy9jY3hteDUxL2NjeG14NTEuYyAgICAgICAgICAgICAgIHwgICAgMSArCiBhcmNoL2FybS9i
+b2FyZHMvZnJlZXNjYWxlLW14MzUtMy1zdGFjay8zc3RhY2suYyB8ICAgIDEgKwogYXJjaC9hcm0v
+Ym9hcmRzL2ZyZWVzY2FsZS1teDUxLXBkay9ib2FyZC5jICAgICAgfCAgICAxICsKIGFyY2gvYXJt
+L2JvYXJkcy9mcmVlc2NhbGUtbXg1My1sb2NvL2JvYXJkLmMgICAgIHwgICAgMSArCiBhcmNoL2Fy
+bS9tYWNoLWlteC9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICB8ICAgIDIgKy0KIGFyY2gv
+YXJtL21hY2gtaW14L2Nsay1pbXgyNy5jICAgICAgICAgICAgICAgICAgIHwgICAgMSArCiBhcmNo
+L2FybS9tYWNoLWlteC9pbXguYyAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMjcgKysrKysr
+KysrKysrKysrKysrKysrKysKIGFyY2gvYXJtL21hY2gtaW14L2lteDIxLmMgICAgICAgICAgICAg
+ICAgICAgICAgIHwgICAgOCAtLS0tLS0tCiBhcmNoL2FybS9tYWNoLWlteC9pbXgyNy5jICAgICAg
+ICAgICAgICAgICAgICAgICB8ICAgMjQgKysrKysrKysrKysrKysrLS0tLS0KIGFyY2gvYXJtL21h
+Y2gtaW14L2lteDM1LmMgICAgICAgICAgICAgICAgICAgICAgIHwgICAgNyArKysrLS0KIGFyY2gv
+YXJtL21hY2gtaW14L2lteDUxLmMgICAgICAgICAgICAgICAgICAgICAgIHwgICAxNSArKysrKyst
+LS0tLS0tCiBhcmNoL2FybS9tYWNoLWlteC9pbXg1My5jICAgICAgICAgICAgICAgICAgICAgICB8
+ICAgMTUgKysrKysrLS0tLS0tLQogYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2dlbmVy
+aWMuaCAgICAgICAgfCAgICAyIC0tCiBhcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvaW14
+LXJlZ3MuaCAgICAgICB8ICAgMTQgLS0tLS0tLS0tLS0tCiBhcmNoL2FybS9tYWNoLWlteC9pbmNs
+dWRlL21hY2gvcmV2aXNpb24uaCAgICAgICB8ICAgMjIgKysrKysrKysrKysrKysrKysrCiAxNSBm
+aWxlcyBjaGFuZ2VkLCA5MiBpbnNlcnRpb25zKCspLCA0OSBkZWxldGlvbnMoLSkKIGNyZWF0ZSBt
+b2RlIDEwMDY0NCBhcmNoL2FybS9tYWNoLWlteC9pbXguYwogY3JlYXRlIG1vZGUgMTAwNjQ0IGFy
+Y2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9yZXZpc2lvbi5oCgpkaWZmIC0tZ2l0IGEvYXJj
+aC9hcm0vYm9hcmRzL2NjeG14NTEvY2N4bXg1MS5jIGIvYXJjaC9hcm0vYm9hcmRzL2NjeG14NTEv
+Y2N4bXg1MS5jCmluZGV4IDBiNDUwZDYuLmIzOTFkZjEgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2Jv
+YXJkcy9jY3hteDUxL2NjeG14NTEuYworKysgYi9hcmNoL2FybS9ib2FyZHMvY2N4bXg1MS9jY3ht
+eDUxLmMKQEAgLTQ1LDYgKzQ1LDcgQEAKICNpbmNsdWRlIDxtYWNoL2lpbS5oPgogI2luY2x1ZGUg
+PG1hY2gvY2xvY2staW14NTFfNTMuaD4KICNpbmNsdWRlIDxtYWNoL2lteDUuaD4KKyNpbmNsdWRl
+IDxtYWNoL3JldmlzaW9uLmg+CiAKICNpbmNsdWRlICJjY3hteDUxLmgiCiAKZGlmZiAtLWdpdCBh
+L2FyY2gvYXJtL2JvYXJkcy9mcmVlc2NhbGUtbXgzNS0zLXN0YWNrLzNzdGFjay5jIGIvYXJjaC9h
+cm0vYm9hcmRzL2ZyZWVzY2FsZS1teDM1LTMtc3RhY2svM3N0YWNrLmMKaW5kZXggOWEwMTQyNC4u
+MWE1YmY1YiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDM1LTMtc3Rh
+Y2svM3N0YWNrLmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDM1LTMtc3RhY2sv
+M3N0YWNrLmMKQEAgLTQ3LDYgKzQ3LDcgQEAKICNpbmNsdWRlIDxtYWNoL2lteC1pcHUtZmIuaD4K
+ICNpbmNsdWRlIDxtYWNoL2dlbmVyaWMuaD4KICNpbmNsdWRlIDxtYWNoL2RldmljZXMtaW14MzUu
+aD4KKyNpbmNsdWRlIDxtYWNoL3JldmlzaW9uLmg+CiAKICNpbmNsdWRlIDxpMmMvaTJjLmg+CiAj
+aW5jbHVkZSA8bWZkL21jMTN4eHguaD4KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9mcmVl
+c2NhbGUtbXg1MS1wZGsvYm9hcmQuYyBiL2FyY2gvYXJtL2JvYXJkcy9mcmVlc2NhbGUtbXg1MS1w
+ZGsvYm9hcmQuYwppbmRleCAzYThlNWVhLi42MWU2MzVhIDEwMDY0NAotLS0gYS9hcmNoL2FybS9i
+b2FyZHMvZnJlZXNjYWxlLW14NTEtcGRrL2JvYXJkLmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL2Zy
+ZWVzY2FsZS1teDUxLXBkay9ib2FyZC5jCkBAIC0zNyw2ICszNyw3IEBACiAjaW5jbHVkZSA8bWFj
+aC9nZW5lcmljLmg+CiAjaW5jbHVkZSA8bWFjaC9pb211eC1teDUxLmg+CiAjaW5jbHVkZSA8bWFj
+aC9kZXZpY2VzLWlteDUxLmg+CisjaW5jbHVkZSA8bWFjaC9yZXZpc2lvbi5oPgogI2luY2x1ZGUg
+PG1hY2gvaWltLmg+CiAKIHN0YXRpYyBzdHJ1Y3QgZmVjX3BsYXRmb3JtX2RhdGEgZmVjX2luZm8g
+PSB7CmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14NTMtbG9jby9ib2Fy
+ZC5jIGIvYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDUzLWxvY28vYm9hcmQuYwppbmRleCAw
+ZDcxNTU1Li44ZTliMDMwIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14
+NTMtbG9jby9ib2FyZC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9mcmVlc2NhbGUtbXg1My1sb2Nv
+L2JvYXJkLmMKQEAgLTM1LDYgKzM1LDcgQEAKICNpbmNsdWRlIDxtYWNoL2lteC1uYW5kLmg+CiAj
+aW5jbHVkZSA8bWFjaC9paW0uaD4KICNpbmNsdWRlIDxtYWNoL2lteDUuaD4KKyNpbmNsdWRlIDxt
+YWNoL3JldmlzaW9uLmg+CiAKICNpbmNsdWRlIDxpMmMvaTJjLmg+CiAjaW5jbHVkZSA8bWZkL21j
+MzQ3MDguaD4KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtaW14L01ha2VmaWxlIGIvYXJjaC9h
+cm0vbWFjaC1pbXgvTWFrZWZpbGUKaW5kZXggZTQzZjkyZS4uNTQ3MDNmMyAxMDA2NDQKLS0tIGEv
+YXJjaC9hcm0vbWFjaC1pbXgvTWFrZWZpbGUKKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvTWFrZWZp
+bGUKQEAgLTE0LDUgKzE0LDUgQEAgb2JqLSQoQ09ORklHX05BTkRfSU1YKSArPSBuYW5kLm8KIG9i
+ai0kKENPTkZJR19BUkNIX0lNWF9FWFRFUk5BTF9CT09UX05BTkQpICs9IGV4dGVybmFsLW5hbmQt
+Ym9vdC5vCiBwYmwtJChDT05GSUdfQVJDSF9JTVhfRVhURVJOQUxfQk9PVF9OQU5EKSArPSBleHRl
+cm5hbC1uYW5kLWJvb3Qubwogb2JqLSQoQ09ORklHX0NPTU1PTl9DTEspICs9IGNsay1wbGx2MS5v
+IGNsay1wbGx2Mi5vIGNsay1wbGx2My5vIGNsay1wZmQubwotb2JqLXkgKz0gZGV2aWNlcy5vCitv
+YmoteSArPSBkZXZpY2VzLm8gaW14Lm8KIG9iai15ICs9IGJvb3QubwpkaWZmIC0tZ2l0IGEvYXJj
+aC9hcm0vbWFjaC1pbXgvY2xrLWlteDI3LmMgYi9hcmNoL2FybS9tYWNoLWlteC9jbGstaW14Mjcu
+YwppbmRleCA3NGQ3MGRiLi5lNDA2MjI4IDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLWlteC9j
+bGstaW14MjcuYworKysgYi9hcmNoL2FybS9tYWNoLWlteC9jbGstaW14MjcuYwpAQCAtNyw2ICs3
+LDcgQEAKICNpbmNsdWRlIDxsaW51eC9lcnIuaD4KICNpbmNsdWRlIDxtYWNoL2lteDI3LXJlZ3Mu
+aD4KICNpbmNsdWRlIDxtYWNoL2dlbmVyaWMuaD4KKyNpbmNsdWRlIDxtYWNoL3JldmlzaW9uLmg+
+CiAKICNpbmNsdWRlICJjbGsuaCIKIApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW14
+LmMgYi9hcmNoL2FybS9tYWNoLWlteC9pbXguYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAw
+MDAwMDAwLi4xYmM2ZTIzCi0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW14
+LmMKQEAgLTAsMCArMSwyNyBAQAorLyoKKyAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJl
+OyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IKKyAqIG1vZGlmeSBpdCB1bmRlciB0aGUg
+dGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzCisgKiBwdWJsaXNoZWQg
+YnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgorICog
+dGhlIExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCisgKgor
+ICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBi
+ZSB1c2VmdWwsCisgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUg
+aW1wbGllZCB3YXJyYW50eSBvZgorICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEg
+UEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQorICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vu
+c2UgZm9yIG1vcmUgZGV0YWlscy4KKyAqCisgKi8KKworI2luY2x1ZGUgPGNvbW1vbi5oPgorI2lu
+Y2x1ZGUgPG1hY2gvcmV2aXNpb24uaD4KKworc3RhdGljIGludCBfX2lteF9zaWxpY29uX3Jldmlz
+aW9uID0gSU1YX0NISVBfUkVWX1VOS05PV047CisKK2ludCBpbXhfc2lsaWNvbl9yZXZpc2lvbih2
+b2lkKQoreworCXJldHVybiBfX2lteF9zaWxpY29uX3JldmlzaW9uOworfQorCit2b2lkIGlteF9z
+ZXRfc2lsaWNvbl9yZXZpc2lvbihpbnQgcmV2aXNpb24pCit7CisJX19pbXhfc2lsaWNvbl9yZXZp
+c2lvbiA9IHJldmlzaW9uOworfQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW14MjEu
+YyBiL2FyY2gvYXJtL21hY2gtaW14L2lteDIxLmMKaW5kZXggN2VkMDgwOS4uNTg4OTVkYSAxMDA2
+NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW14MjEuYworKysgYi9hcmNoL2FybS9tYWNoLWlt
+eC9pbXgyMS5jCkBAIC0yMywxNCArMjMsNiBAQCB2b2lkIGlteDIxX3NldHVwX2VpbWNzKHNpemVf
+dCBjcywgdW5zaWduZWQgdXBwZXIsIHVuc2lnbmVkIGxvd2VyKQogCXdyaXRlbChsb3dlciwgTVgy
+MV9FSU1fQkFTRV9BRERSICsgNCArIGNzICogOCk7CiB9CiAKLWludCBpbXhfc2lsaWNvbl9yZXZp
+c2lvbih2b2lkKQotewotCS8vIEtub3duIHZhbHVlczoKLQkvLyAgIDB4MTAxRDEwMUQgOiBtYXNr
+IHNldCBJRCAwTTU1QgotCS8vICAgMHgyMDFEMTAxRCA6IG1hc2sgc2V0IElEIDFNNTVCIG9yIE01
+NUIKLQlyZXR1cm4gQ0lEOwotfQotCiBzdGF0aWMgaW50IGlteDIxX2luaXQodm9pZCkKIHsKIAlh
+ZGRfZ2VuZXJpY19kZXZpY2UoImlteDIxLWNjbSIsIDAsIE5VTEwsIE1YMjFfQ0NNX0JBU0VfQURE
+UiwgMHgxMDAsIElPUkVTT1VSQ0VfTUVNLCBOVUxMKTsKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21h
+Y2gtaW14L2lteDI3LmMgYi9hcmNoL2FybS9tYWNoLWlteC9pbXgyNy5jCmluZGV4IGNkNDI5ZDAu
+LjNkN2IyMWQgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2lteDI3LmMKKysrIGIvYXJj
+aC9hcm0vbWFjaC1pbXgvaW14MjcuYwpAQCAtMTIsMjggKzEyLDM4IEBACiAgKi8KIAogI2luY2x1
+ZGUgPGNvbW1vbi5oPgotI2luY2x1ZGUgPG1hY2gvaW14LXJlZ3MuaD4KKyNpbmNsdWRlIDxtYWNo
+L2lteDI3LXJlZ3MuaD4KICNpbmNsdWRlIDxtYWNoL3dlaW0uaD4KICNpbmNsdWRlIDxzaXplcy5o
+PgorI2luY2x1ZGUgPG1hY2gvcmV2aXNpb24uaD4KICNpbmNsdWRlIDxpbml0Lmg+CiAjaW5jbHVk
+ZSA8aW8uaD4KIAotaW50IGlteF9zaWxpY29uX3JldmlzaW9uKHZvaWQpCitzdGF0aWMgaW50IGlt
+eDI3X3NpbGljb25fcmV2aXNpb24odm9pZCkKIHsKIAl1aW50MzJfdCB2YWw7CisJaW50IHJldjsK
+IAogCXZhbCA9IHJlYWRsKE1YMjdfU1lTQ1RSTF9CQVNFX0FERFIpOwogCiAJc3dpdGNoICh2YWwg
+Pj4gMjgpIHsKIAljYXNlIDA6Ci0JCXJldHVybiBJTVhfQ0hJUF9SRVZfMV8wOworCQlyZXYgPSBJ
+TVhfQ0hJUF9SRVZfMV8wOworCQlicmVhazsKIAljYXNlIDE6Ci0JCXJldHVybiBJTVhfQ0hJUF9S
+RVZfMl8wOworCQlyZXYgPSBJTVhfQ0hJUF9SRVZfMl8wOworCQlicmVhazsKIAljYXNlIDI6Ci0J
+CXJldHVybiBJTVhfQ0hJUF9SRVZfMl8xOworCQlyZXYgPSBJTVhfQ0hJUF9SRVZfMl8xOworCQli
+cmVhazsKIAlkZWZhdWx0OgotCQlyZXR1cm4gSU1YX0NISVBfUkVWX1VOS05PV047CisJCXJldiA9
+IElNWF9DSElQX1JFVl9VTktOT1dOOworCQlicmVhazsKIAl9CisKKwlpbXhfc2V0X3NpbGljb25f
+cmV2aXNpb24ocmV2KTsKKworCXJldHVybiAwOwogfQogCiB2b2lkIGlteDI3X3NldHVwX3dlaW1j
+cyhzaXplX3QgY3MsIHVuc2lnbmVkIHVwcGVyLCB1bnNpZ25lZCBsb3dlciwKQEAgLTg2LDYgKzk2
+LDggQEAgc3RhdGljIHZvaWQgaW14MjdfaW5pdF9tYXgodm9pZCkKIAogc3RhdGljIGludCBpbXgy
+N19pbml0KHZvaWQpCiB7CisJaW14Mjdfc2lsaWNvbl9yZXZpc2lvbigpOworCiAJYWRkX2dlbmVy
+aWNfZGV2aWNlKCJpbXhfaWltIiwgMCwgTlVMTCwgTVgyN19JSU1fQkFTRV9BRERSLCBTWl80SywK
+IAkJCUlPUkVTT1VSQ0VfTUVNLCBOVUxMKTsKIApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1p
+bXgvaW14MzUuYyBiL2FyY2gvYXJtL21hY2gtaW14L2lteDM1LmMKaW5kZXggNzIyZGQ0Yy4uMTU3
+NWQ1NCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW14MzUuYworKysgYi9hcmNoL2Fy
+bS9tYWNoLWlteC9pbXgzNS5jCkBAIC0xOCw2ICsxOCw3IEBACiAjaW5jbHVkZSA8bWFjaC93ZWlt
+Lmg+CiAjaW5jbHVkZSA8bWFjaC9pbXgtcmVncy5oPgogI2luY2x1ZGUgPG1hY2gvaWltLmg+Cisj
+aW5jbHVkZSA8bWFjaC9yZXZpc2lvbi5oPgogI2luY2x1ZGUgPG1hY2gvZ2VuZXJpYy5oPgogCiB2
+b2lkIGlteDM1X3NldHVwX3dlaW1jcyhzaXplX3QgY3MsIHVuc2lnbmVkIHVwcGVyLCB1bnNpZ25l
+ZCBsb3dlciwKQEAgLTI4LDE0ICsyOSwxNCBAQCB2b2lkIGlteDM1X3NldHVwX3dlaW1jcyhzaXpl
+X3QgY3MsIHVuc2lnbmVkIHVwcGVyLCB1bnNpZ25lZCBsb3dlciwKIAl3cml0ZWwoYWRkaXRpb25h
+bCwgTVgzNV9XRUlNX0JBU0VfQUREUiArIChjcyAqIDB4MTApICsgMHg4KTsKIH0KIAotaW50IGlt
+eF9zaWxpY29uX3JldmlzaW9uKCkKK3N0YXRpYyB2b2lkIGlteDM1X3NpbGljb25fcmV2aXNpb24o
+dm9pZCkKIHsKIAl1aW50MzJfdCByZWc7CiAJcmVnID0gcmVhZGwoTVgzNV9JSU1fQkFTRV9BRERS
+ICsgSUlNX1NSRVYpOwogCS8qIDDDlzAwID0gVE8gMS4wLCBGaXJzdCBzaWxpY29uICovCiAJcmVn
+ICs9IElNWF9DSElQX1JFVl8xXzA7CiAKLQlyZXR1cm4gKHJlZyAmIDB4RkYpOworCWlteF9zZXRf
+c2lsaWNvbl9yZXZpc2lvbihyZWcgJiAweEZGKTsKIH0KIAogLyoKQEAgLTU4LDYgKzU5LDggQEAg
+Y29yZV9pbml0Y2FsbChpbXgzNV9sMl9maXgpOwogCiBzdGF0aWMgaW50IGlteDM1X2luaXQodm9p
+ZCkKIHsKKwlpbXgzNV9zaWxpY29uX3JldmlzaW9uKCk7CisKIAlhZGRfZ2VuZXJpY19kZXZpY2Uo
+ImlteF9paW0iLCAwLCBOVUxMLCBNWDM1X0lJTV9CQVNFX0FERFIsIFNaXzRLLAogCQkJSU9SRVNP
+VVJDRV9NRU0sIE5VTEwpOwogCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbXg1MS5j
+IGIvYXJjaC9hcm0vbWFjaC1pbXgvaW14NTEuYwppbmRleCA4NzA5YzQzLi4zODUwMDAxIDEwMDY0
+NAotLS0gYS9hcmNoL2FybS9tYWNoLWlteC9pbXg1MS5jCisrKyBiL2FyY2gvYXJtL21hY2gtaW14
+L2lteDUxLmMKQEAgLTE4LDIxICsxOCwxNyBAQAogI2luY2x1ZGUgPGlvLmg+CiAjaW5jbHVkZSA8
+bWFjaC9pbXg1Lmg+CiAjaW5jbHVkZSA8bWFjaC9pbXgtcmVncy5oPgorI2luY2x1ZGUgPG1hY2gv
+cmV2aXNpb24uaD4KICNpbmNsdWRlIDxtYWNoL2Nsb2NrLWlteDUxXzUzLmg+CiAKICNkZWZpbmUg
+U0lfUkVWIDB4NDgKIAotc3RhdGljIHUzMiBteDUxX3NpbGljb25fcmV2aXNpb247CiBzdGF0aWMg
+Y2hhciAqbXg1MV9yZXZfc3RyaW5nID0gInVua25vd24iOwogCi1pbnQgaW14X3NpbGljb25fcmV2
+aXNpb24odm9pZCkKLXsKLQlyZXR1cm4gbXg1MV9zaWxpY29uX3JldmlzaW9uOwotfQotCi1zdGF0
+aWMgaW50IHF1ZXJ5X3NpbGljb25fcmV2aXNpb24odm9pZCkKK3N0YXRpYyBpbnQgaW14NTFfc2ls
+aWNvbl9yZXZpc2lvbih2b2lkKQogewogCXZvaWQgX19pb21lbSAqcm9tID0gTVg1MV9JUk9NX0JB
+U0VfQUREUjsKKwl1MzIgbXg1MV9zaWxpY29uX3JldmlzaW9uOwogCXUzMiByZXY7CiAKIAlyZXYg
+PSByZWFkbChyb20gKyBTSV9SRVYpOwpAQCAtNTcsOSArNTMsMTAgQEAgc3RhdGljIGludCBxdWVy
+eV9zaWxpY29uX3JldmlzaW9uKHZvaWQpCiAJCW14NTFfc2lsaWNvbl9yZXZpc2lvbiA9IDA7CiAJ
+fQogCisJaW14X3NldF9zaWxpY29uX3JldmlzaW9uKG14NTFfc2lsaWNvbl9yZXZpc2lvbik7CisK
+IAlyZXR1cm4gMDsKIH0KLWNvcmVfaW5pdGNhbGwocXVlcnlfc2lsaWNvbl9yZXZpc2lvbik7CiAK
+IHN0YXRpYyBpbnQgaW14NTFfcHJpbnRfc2lsaWNvbl9yZXYodm9pZCkKIHsKQEAgLTcxLDYgKzY4
+LDggQEAgZGV2aWNlX2luaXRjYWxsKGlteDUxX3ByaW50X3NpbGljb25fcmV2KTsKIAogc3RhdGlj
+IGludCBpbXg1MV9pbml0KHZvaWQpCiB7CisJaW14NTFfc2lsaWNvbl9yZXZpc2lvbigpOworCiAJ
+YWRkX2dlbmVyaWNfZGV2aWNlKCJpbXhfaWltIiwgMCwgTlVMTCwgTVg1MV9JSU1fQkFTRV9BRERS
+LCBTWl80SywKIAkJCUlPUkVTT1VSQ0VfTUVNLCBOVUxMKTsKIApkaWZmIC0tZ2l0IGEvYXJjaC9h
+cm0vbWFjaC1pbXgvaW14NTMuYyBiL2FyY2gvYXJtL21hY2gtaW14L2lteDUzLmMKaW5kZXggODhi
+NDI3NC4uNGFhM2Y2MSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW14NTMuYworKysg
+Yi9hcmNoL2FybS9tYWNoLWlteC9pbXg1My5jCkBAIC0xOCwyMiArMTgsMTggQEAKICNpbmNsdWRl
+IDxzaXplcy5oPgogI2luY2x1ZGUgPG1hY2gvaW14NS5oPgogI2luY2x1ZGUgPG1hY2gvaW14LXJl
+Z3MuaD4KKyNpbmNsdWRlIDxtYWNoL3JldmlzaW9uLmg+CiAjaW5jbHVkZSA8bWFjaC9jbG9jay1p
+bXg1MV81My5oPgogCiAjZGVmaW5lIFNJX1JFViAweDQ4CiAKLXN0YXRpYyB1MzIgbXg1M19zaWxp
+Y29uX3JldmlzaW9uOwogc3RhdGljIGNoYXIgKm14NTNfcmV2X3N0cmluZyA9ICJ1bmtub3duIjsK
+IAotaW50IGlteF9zaWxpY29uX3JldmlzaW9uKHZvaWQpCi17Ci0JcmV0dXJuIG14NTNfc2lsaWNv
+bl9yZXZpc2lvbjsKLX0KLQotc3RhdGljIGludCBxdWVyeV9zaWxpY29uX3JldmlzaW9uKHZvaWQp
+CitzdGF0aWMgaW50IGlteDUzX3NpbGljb25fcmV2aXNpb24odm9pZCkKIHsKIAl2b2lkIF9faW9t
+ZW0gKnJvbSA9IE1YNTNfSVJPTV9CQVNFX0FERFI7CiAJdTMyIHJldjsKKwl1MzIgbXg1M19zaWxp
+Y29uX3JldmlzaW9uOwogCiAJcmV2ID0gcmVhZGwocm9tICsgU0lfUkVWKTsKIAlzd2l0Y2ggKHJl
+dikgewpAQCAtNTMsOSArNDksMTAgQEAgc3RhdGljIGludCBxdWVyeV9zaWxpY29uX3JldmlzaW9u
+KHZvaWQpCiAJCW14NTNfc2lsaWNvbl9yZXZpc2lvbiA9IDA7CiAJfQogCisJaW14X3NldF9zaWxp
+Y29uX3JldmlzaW9uKG14NTNfc2lsaWNvbl9yZXZpc2lvbik7CisKIAlyZXR1cm4gMDsKIH0KLWNv
+cmVfaW5pdGNhbGwocXVlcnlfc2lsaWNvbl9yZXZpc2lvbik7CiAKIHN0YXRpYyBpbnQgaW14NTNf
+cHJpbnRfc2lsaWNvbl9yZXYodm9pZCkKIHsKQEAgLTY3LDYgKzY0LDggQEAgZGV2aWNlX2luaXRj
+YWxsKGlteDUzX3ByaW50X3NpbGljb25fcmV2KTsKIAogc3RhdGljIGludCBpbXg1M19pbml0KHZv
+aWQpCiB7CisJaW14NTNfc2lsaWNvbl9yZXZpc2lvbigpOworCiAJYWRkX2dlbmVyaWNfZGV2aWNl
+KCJpbXhfaWltIiwgMCwgTlVMTCwgTVg1M19JSU1fQkFTRV9BRERSLCBTWl80SywKIAkJCUlPUkVT
+T1VSQ0VfTUVNLCBOVUxMKTsKIApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVk
+ZS9tYWNoL2dlbmVyaWMuaCBiL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9nZW5lcmlj
+LmgKaW5kZXggMDE4ZWE5MS4uNjkxYTE0NiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgv
+aW5jbHVkZS9tYWNoL2dlbmVyaWMuaAorKysgYi9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21h
+Y2gvZ2VuZXJpYy5oCkBAIC0xLDYgKzEsNCBAQAogCi1pbnQgaW14X3NpbGljb25fcmV2aXNpb24o
+dm9pZCk7Ci0KIHU2NCBpbXhfdWlkKHZvaWQpOwogCiAKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21h
+Y2gtaW14L2luY2x1ZGUvbWFjaC9pbXgtcmVncy5oIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVk
+ZS9tYWNoL2lteC1yZWdzLmgKaW5kZXggMmI4MzZjOS4uMDhlZTk1NyAxMDA2NDQKLS0tIGEvYXJj
+aC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2lteC1yZWdzLmgKKysrIGIvYXJjaC9hcm0vbWFj
+aC1pbXgvaW5jbHVkZS9tYWNoL2lteC1yZWdzLmgKQEAgLTEwMywxOCArMTAzLDQgQEAKIAogI2Rl
+ZmluZSBHUElPX0dJVVMgICAgICAoMTw8MTYpCiAKLS8qIHNpbGljb24gcmV2aXNpb25zICAqLwot
+I2RlZmluZSBJTVhfQ0hJUF9SRVZfMV8wCTB4MTAKLSNkZWZpbmUgSU1YX0NISVBfUkVWXzFfMQkw
+eDExCi0jZGVmaW5lIElNWF9DSElQX1JFVl8xXzIJMHgxMgotI2RlZmluZSBJTVhfQ0hJUF9SRVZf
+MV8zCTB4MTMKLSNkZWZpbmUgSU1YX0NISVBfUkVWXzJfMAkweDIwCi0jZGVmaW5lIElNWF9DSElQ
+X1JFVl8yXzEJMHgyMQotI2RlZmluZSBJTVhfQ0hJUF9SRVZfMl8yCTB4MjIKLSNkZWZpbmUgSU1Y
+X0NISVBfUkVWXzJfMwkweDIzCi0jZGVmaW5lIElNWF9DSElQX1JFVl8zXzAJMHgzMAotI2RlZmlu
+ZSBJTVhfQ0hJUF9SRVZfM18xCTB4MzEKLSNkZWZpbmUgSU1YX0NISVBfUkVWXzNfMgkweDMyCi0j
+ZGVmaW5lIElNWF9DSElQX1JFVl9VTktOT1dOCTB4ZmYKLQogI2VuZGlmCQkJCS8qIF9JTVhfUkVH
+U19IICovCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvcmV2aXNp
+b24uaCBiL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9yZXZpc2lvbi5oCm5ldyBmaWxl
+IG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAuLmI2YjA2ZWYKLS0tIC9kZXYvbnVsbAorKysgYi9h
+cmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvcmV2aXNpb24uaApAQCAtMCwwICsxLDIyIEBA
+CisjaWZuZGVmIF9fTUFDSF9SRVZJU0lPTl9IX18KKyNkZWZpbmUgX19NQUNIX1JFVklTSU9OX0hf
+XworCisvKiBzaWxpY29uIHJldmlzaW9ucyAgKi8KKyNkZWZpbmUgSU1YX0NISVBfUkVWXzFfMAkw
+eDEwCisjZGVmaW5lIElNWF9DSElQX1JFVl8xXzEJMHgxMQorI2RlZmluZSBJTVhfQ0hJUF9SRVZf
+MV8yCTB4MTIKKyNkZWZpbmUgSU1YX0NISVBfUkVWXzFfMwkweDEzCisjZGVmaW5lIElNWF9DSElQ
+X1JFVl8yXzAJMHgyMAorI2RlZmluZSBJTVhfQ0hJUF9SRVZfMl8xCTB4MjEKKyNkZWZpbmUgSU1Y
+X0NISVBfUkVWXzJfMgkweDIyCisjZGVmaW5lIElNWF9DSElQX1JFVl8yXzMJMHgyMworI2RlZmlu
+ZSBJTVhfQ0hJUF9SRVZfM18wCTB4MzAKKyNkZWZpbmUgSU1YX0NISVBfUkVWXzNfMQkweDMxCisj
+ZGVmaW5lIElNWF9DSElQX1JFVl8zXzIJMHgzMgorI2RlZmluZSBJTVhfQ0hJUF9SRVZfVU5LTk9X
+TgkweGZmCisKK2ludCBpbXhfc2lsaWNvbl9yZXZpc2lvbih2b2lkKTsKKwordm9pZCBpbXhfc2V0
+X3NpbGljb25fcmV2aXNpb24oaW50IHJldmlzaW9uKTsKKworI2VuZGlmIC8qIF9fTUFDSF9SRVZJ
+U0lPTl9IX18gKi8KLS0gCjEuNy4xMC40CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
+YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
+ZWJveAo=
