@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f49.google.com ([74.125.82.49])
+Received: from mail-wi0-f171.google.com ([209.85.212.171])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TKGSj-0005Mr-IY
- for barebox@lists.infradead.org; Fri, 05 Oct 2012 22:33:43 +0000
-Received: by mail-wg0-f49.google.com with SMTP id gg4so1242132wgb.18
- for <barebox@lists.infradead.org>; Fri, 05 Oct 2012 15:33:41 -0700 (PDT)
+ id 1TKGSf-0005N5-PE
+ for barebox@lists.infradead.org; Fri, 05 Oct 2012 22:33:39 +0000
+Received: by mail-wi0-f171.google.com with SMTP id hj13so1047058wib.0
+ for <barebox@lists.infradead.org>; Fri, 05 Oct 2012 15:33:37 -0700 (PDT)
 From: vj <vicencb@gmail.com>
-Date: Sat,  6 Oct 2012 00:33:09 +0200
-Message-Id: <1349476393-25520-8-git-send-email-vicencb@gmail.com>
+Date: Sat,  6 Oct 2012 00:33:07 +0200
+Message-Id: <1349476393-25520-6-git-send-email-vicencb@gmail.com>
 In-Reply-To: <1349476393-25520-1-git-send-email-vicencb@gmail.com>
 References: <1349476393-25520-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,133 +23,313 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/11] omap4: add serial communications over usb boot
+Subject: [PATCH 05/11] omap: revert gpiolib
 To: barebox@lists.infradead.org
 Cc: vj <vicencb@gmail.com>
 
+This patch reverts 29e4031b460d1c84c1a8fc276199d40680b354d4.
+This is not meant to revert the gpiolib, this is only a temporal
+workaround because it breaks support for ArchosG9 tablet.
+Please, can anybody check if using gpiolib works for other omap4460
+based boards?
 
 Signed-off-by: vj <vicencb@gmail.com>
 ---
- drivers/serial/Kconfig                |  7 +++
- drivers/serial/Makefile               |  1 +
- drivers/serial/serial_omap4_usbboot.c | 83 +++++++++++++++++++++++++++++++++++
- 3 files changed, 91 insertions(+)
- create mode 100644 drivers/serial/serial_omap4_usbboot.c
+ arch/arm/Kconfig                   |   1 -
+ arch/arm/mach-omap/gpio.c          | 170 ++++++++++++++++++++-----------------
+ arch/arm/mach-omap/omap3_generic.c |  19 -----
+ arch/arm/mach-omap/omap4_generic.c |  19 -----
+ 4 files changed, 93 insertions(+), 116 deletions(-)
 
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index 7eb96ed..0627b6e 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -100,4 +100,11 @@ config DRIVER_SERIAL_PXA
- 	bool "PXA serial driver"
- 	depends on ARCH_PXA
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 8278c82..1cb56c5 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -60,7 +60,6 @@ config ARCH_NOMADIK
+ config ARCH_OMAP
+ 	bool "TI OMAP"
+ 	select HAS_DEBUG_LL
+-	select GPIOLIB
  
-+config DRIVER_SERIAL_OMAP4_USBBOOT
-+	bool "serial driver over omap4 usb"
-+	default n
-+	depends on OMAP4_USBBOOT
-+	help
-+	  Enable this to get console support over the usb bus used to boot an OMAP4
+ config ARCH_PXA
+ 	bool "Intel/Marvell PXA based"
+diff --git a/arch/arm/mach-omap/gpio.c b/arch/arm/mach-omap/gpio.c
+index 376e9a7..bb5f30f 100644
+--- a/arch/arm/mach-omap/gpio.c
++++ b/arch/arm/mach-omap/gpio.c
+@@ -32,10 +32,11 @@
+  * published by the Free Software Foundation.
+  */
+ #include <common.h>
++#include <mach/gpio.h>
+ #include <io.h>
+ #include <errno.h>
+-#include <gpio.h>
+-#include <init.h>
 +
- endmenu
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index e2d56b9..ff99e72 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -19,3 +19,4 @@ obj-$(CONFIG_DRIVER_SERIAL_S3C)			+= serial_s3c.o
- obj-$(CONFIG_DRIVER_SERIAL_ALTERA)		+= serial_altera.o
- obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)		+= serial_altera_jtag.o
- obj-$(CONFIG_DRIVER_SERIAL_PXA)			+= serial_pxa.o
-+obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)	+= serial_omap4_usbboot.o
-diff --git a/drivers/serial/serial_omap4_usbboot.c b/drivers/serial/serial_omap4_usbboot.c
-new file mode 100644
-index 0000000..f0a2fd1
---- /dev/null
-+++ b/drivers/serial/serial_omap4_usbboot.c
-@@ -0,0 +1,83 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include <errno.h>
-+#include <mach/omap4_rom_usb.h>
-+
-+struct serial_omap4_usbboot_priv {
-+	struct console_device cdev;
-+	u32 val;
++#ifdef CONFIG_ARCH_OMAP3
+ 
+ #define OMAP_GPIO_OE		0x0034
+ #define OMAP_GPIO_DATAIN	0x0038
+@@ -43,114 +44,129 @@
+ #define OMAP_GPIO_CLEARDATAOUT	0x0090
+ #define OMAP_GPIO_SETDATAOUT	0x0094
+ 
+-struct omap_gpio_chip {
+-	void __iomem *base;
+-	struct gpio_chip chip;
++static void __iomem *gpio_bank[] = {
++	(void *)0x48310000,
++	(void *)0x49050000,
++	(void *)0x49052000,
++	(void *)0x49054000,
++	(void *)0x49056000,
++	(void *)0x49058000,
 +};
++#endif
 +
-+static void serial_omap4_usbboot_putc(struct console_device *cdev, char c)
-+{
-+	unsigned b = c;
-+	omap4_usbboot_write(&b, 4);
++#ifdef CONFIG_ARCH_OMAP4
++
++#define OMAP_GPIO_OE		0x0134
++#define OMAP_GPIO_DATAIN	0x0138
++#define OMAP_GPIO_DATAOUT	0x013c
++#define OMAP_GPIO_CLEARDATAOUT	0x0190
++#define OMAP_GPIO_SETDATAOUT	0x0194
++
++static void __iomem *gpio_bank[] = {
++	(void *)0x4a310000,
++	(void *)0x48055000,
++	(void *)0x48057000,
++	(void *)0x48059000,
++	(void *)0x4805b000,
++	(void *)0x4805d000,
+ };
++#endif
+ 
+-static inline int omap_get_gpio_index(int gpio)
++static inline void __iomem *get_gpio_base(int gpio)
+ {
+-	return gpio & 0x1f;
++	return gpio_bank[gpio >> 5];
+ }
+ 
+-static void omap_gpio_set_value(struct gpio_chip *chip,
+-					unsigned gpio, int value)
++static inline int get_gpio_index(int gpio)
+ {
+-	struct omap_gpio_chip *omapgpio =
+-			container_of(chip, struct omap_gpio_chip, chip);
+-	void __iomem *base = omapgpio->base;
+-	u32 l = 0;
+-
+-	if (value)
+-		base += OMAP_GPIO_SETDATAOUT;
+-	else
+-		base += OMAP_GPIO_CLEARDATAOUT;
++	return gpio & 0x1f;
 +}
-+
-+static int serial_omap4_usbboot_tstc(struct console_device *cdev)
+ 
+-	l = 1 << omap_get_gpio_index(gpio);
++static inline int gpio_valid(int gpio)
 +{
-+	struct serial_omap4_usbboot_priv *priv =
-+		container_of(cdev, struct serial_omap4_usbboot_priv, cdev);
-+	if (omap4_usbboot_is_read_waiting())
++	if (gpio < 0)
++		return -1;
++	if (gpio / 32 < ARRAY_SIZE(gpio_bank))
 +		return 0;
-+	else if (omap4_usbboot_is_read_ok())
-+		return 1;
-+	omap4_usbboot_queue_read(&priv->val, 4);
-+	udelay(100);
-+	if (omap4_usbboot_is_read_waiting())
-+		return 0;
-+	else if (omap4_usbboot_is_read_ok())
-+		return 1;
-+	return 0;
++	return -1;
 +}
-+
-+static int serial_omap4_usbboot_getc(struct console_device *cdev)
+ 
+-	writel(l, base);
++static int check_gpio(int gpio)
 +{
-+	struct serial_omap4_usbboot_priv *priv =
-+		container_of(cdev, struct serial_omap4_usbboot_priv, cdev);
-+	if (omap4_usbboot_is_read_waiting() || omap4_usbboot_is_read_ok()) {
-+		omap4_usbboot_wait_read();
-+		return priv->val;
++	if (gpio_valid(gpio) < 0) {
++		printf("ERROR : check_gpio: invalid GPIO %d\n", gpio);
++		return -1;
 +	}
-+	omap4_usbboot_read(&priv->val, 4);
-+	return priv->val;
-+}
++	return 0;
+ }
+ 
+-static int omap_gpio_direction_input(struct gpio_chip *chip,
+-					unsigned gpio)
++void gpio_set_value(unsigned gpio, int value)
+ {
+-	struct omap_gpio_chip *omapgpio =
+-			container_of(chip, struct omap_gpio_chip, chip);
+-	void __iomem *base = omapgpio->base;
+-	u32 val;
++	void __iomem *reg;
++	u32 l = 0;
+ 
+-	base += OMAP_GPIO_OE;
++	if (check_gpio(gpio) < 0)
++		return;
+ 
+-	val = readl(base);
+-	val |= 1 << omap_get_gpio_index(gpio);
+-	writel(val, base);
++	reg = get_gpio_base(gpio);
+ 
+-	return 0;
++	if (value)
++		reg += OMAP_GPIO_SETDATAOUT;
++	else
++		reg += OMAP_GPIO_CLEARDATAOUT;
++	l = 1 << get_gpio_index(gpio);
 +
-+static int serial_omap4_usbboot_probe(struct device_d *dev)
-+{
-+	struct serial_omap4_usbboot_priv *priv;
-+	priv = xzalloc(sizeof(*priv));
++	__raw_writel(l, reg);
+ }
+ 
+-static int omap_gpio_direction_output(struct gpio_chip *chip,
+-					unsigned gpio, int value)
++int gpio_direction_input(unsigned gpio)
+ {
+-	struct omap_gpio_chip *omapgpio =
+-			container_of(chip, struct omap_gpio_chip, chip);
+-	void __iomem *base = omapgpio->base;
++	void __iomem *reg;
+ 	u32 val;
+ 
+-	omap_gpio_set_value(chip, gpio, value);
++	if (check_gpio(gpio) < 0)
++		return -EINVAL;
 +
-+	priv->cdev.dev = dev;
-+	priv->cdev.f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
-+	priv->cdev.tstc = serial_omap4_usbboot_tstc;
-+	priv->cdev.putc = serial_omap4_usbboot_putc;
-+	priv->cdev.getc = serial_omap4_usbboot_getc;
-+	priv->cdev.setbrg = NULL;
++	reg = get_gpio_base(gpio);
+ 
+-	base += OMAP_GPIO_OE;
++	reg += OMAP_GPIO_OE;
+ 
+-	val = readl(base);
+-	val &= ~(1 << omap_get_gpio_index(gpio));
+-	writel(val, base);
++	val = __raw_readl(reg);
++	val |= 1 << get_gpio_index(gpio);
++	__raw_writel(val, reg);
+ 
+ 	return 0;
+ }
+ 
+-static int omap_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
++int gpio_direction_output(unsigned gpio, int value)
+ {
+-	struct omap_gpio_chip *omapgpio =
+-			container_of(chip, struct omap_gpio_chip, chip);
+-	void __iomem *base = omapgpio->base;
+-
+-	base  += OMAP_GPIO_DATAIN;
+-
+-	return (readl(base) & (1 << omap_get_gpio_index(gpio))) != 0;
+-
+-}
++	void __iomem *reg;
++	u32 val;
+ 
+-static struct gpio_ops omap_gpio_ops = {
+-	.direction_input = omap_gpio_direction_input,
+-	.direction_output = omap_gpio_direction_output,
+-	.get = omap_gpio_get_value,
+-	.set = omap_gpio_set_value,
+-};
++	if (check_gpio(gpio) < 0)
++		return -EINVAL;
++	reg = get_gpio_base(gpio);
+ 
+-static int omap_gpio_probe(struct device_d *dev)
+-{
+-	struct omap_gpio_chip *omapgpio;
++	gpio_set_value(gpio, value);
+ 
+-	omapgpio = xzalloc(sizeof(*omapgpio));
+-	omapgpio->base = dev_request_mem_region(dev, 0);
+-	omapgpio->chip.ops = &omap_gpio_ops;
+-	omapgpio->chip.base = -1;
+-	omapgpio->chip.ngpio = 32;
+-	omapgpio->chip.dev = dev;
+-	gpiochip_add(&omapgpio->chip);
++	reg += OMAP_GPIO_OE;
+ 
+-	dev_dbg(dev, "probed gpiochip%d with base %d\n",
+-				dev->id, omapgpio->chip.base);
++	val = __raw_readl(reg);
++	val &= ~(1 << get_gpio_index(gpio));
++	__raw_writel(val, reg);
+ 
+ 	return 0;
+ }
+ 
+-static struct driver_d omap_gpio_driver = {
+-	.name = "omap-gpio",
+-	.probe = omap_gpio_probe,
+-};
+-
+-static int omap_gpio_add(void)
++int gpio_get_value(unsigned gpio)
+ {
+-	return platform_driver_register(&omap_gpio_driver);
++	void __iomem *reg;
 +
-+	return console_register(&priv->cdev);
-+}
++	if (check_gpio(gpio) < 0)
++		return -EINVAL;
++	reg = get_gpio_base(gpio);
 +
-+static struct driver_d serial_omap4_usbboot_driver = {
-+	.name = "serial_omap4_usbboot",
-+	.probe = serial_omap4_usbboot_probe,
-+};
++	reg += OMAP_GPIO_DATAIN;
 +
-+static int serial_omap4_usbboot_init(void)
-+{
-+	return platform_driver_register(&serial_omap4_usbboot_driver);
-+}
-+console_initcall(serial_omap4_usbboot_init);
++	return (__raw_readl(reg) & (1 << get_gpio_index(gpio))) != 0;
+ }
+-coredevice_initcall(omap_gpio_add);
+diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
+index 5028e9a..af26af4 100644
+--- a/arch/arm/mach-omap/omap3_generic.c
++++ b/arch/arm/mach-omap/omap3_generic.c
+@@ -511,22 +511,3 @@ const struct gpmc_config omap3_nand_cfg = {
+ 	.base = 0x28000000,
+ 	.size = GPMC_SIZE_16M,
+ };
+-
+-static int omap3_gpio_init(void)
+-{
+-	add_generic_device("omap-gpio", 0, NULL, 0x48310000,
+-					0x100, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-gpio", 1, NULL, 0x49050000,
+-					0x100, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-gpio", 2, NULL, 0x49052000,
+-					0x100, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-gpio", 3, NULL, 0x49054000,
+-					0x100, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-gpio", 4, NULL, 0x49056000,
+-					0x100, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-gpio", 5, NULL, 0x49058000,
+-					0x100, IORESOURCE_MEM, NULL);
+-
+-	return 0;
+-}
+-coredevice_initcall(omap3_gpio_init);
+diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+index 584d724..6562268 100644
+--- a/arch/arm/mach-omap/omap4_generic.c
++++ b/arch/arm/mach-omap/omap4_generic.c
+@@ -574,22 +574,3 @@ const struct gpmc_config omap4_nand_cfg = {
+ 	.base = 0x28000000,
+ 	.size = GPMC_SIZE_16M,
+ };
+-
+-static int omap4_gpio_init(void)
+-{
+-	add_generic_device("omap-gpio", 0, NULL, 0x4a310100,
+-				0x1000, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-gpio", 1, NULL, 0x48055100,
+-				0x1000, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-gpio", 2, NULL, 0x48057100,
+-				0x1000, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-gpio", 3, NULL, 0x48059100,
+-				0x1000, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-gpio", 4, NULL, 0x4805b100,
+-				0x1000, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-gpio", 5, NULL, 0x4805d100,
+-				0x1000, IORESOURCE_MEM, NULL);
+-
+-	return 0;
+-}
+-coredevice_initcall(omap4_gpio_init);
 -- 
 1.7.12.2
 
