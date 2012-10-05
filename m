@@ -2,17 +2,18 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 7.mo4.mail-out.ovh.net ([178.33.253.54]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TK7wt-0005ks-17
- for barebox@lists.infradead.org; Fri, 05 Oct 2012 13:28:15 +0000
+ id 1TK7wt-0005kr-13
+ for barebox@lists.infradead.org; Fri, 05 Oct 2012 13:28:22 +0000
 Received: from mail413.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 9448E104F78D
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 7163610506EC
  for <barebox@lists.infradead.org>; Fri,  5 Oct 2012 15:34:20 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  5 Oct 2012 15:25:35 +0200
-Message-Id: <1349443536-16923-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri,  5 Oct 2012 15:25:34 +0200
+Message-Id: <1349443536-16923-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1349443536-16923-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121005132017.GS26553@game.jcrosoft.org>
  <1349443536-16923-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,237 +22,118 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] gpio: add ARM Primcell pl061 support
+Subject: =?UTF-8?q?=5BPATCH=202/4=5D=20gpio=3A=20provide=20generic=20gpio=20header?=
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/gpio/Kconfig       |    6 ++
- drivers/gpio/Makefile      |    2 +
- drivers/gpio/gpio-pl061.c  |  158 ++++++++++++++++++++++++++++++++++++++++++++
- include/linux/amba/pl061.h |   12 ++++
- 4 files changed, 178 insertions(+)
- create mode 100644 drivers/gpio/gpio-pl061.c
- create mode 100644 include/linux/amba/pl061.h
-
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index f03fbf6..a0e9b58 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -6,6 +6,12 @@ if GPIOLIB
- 
- menu "GPIO                          "
- 
-+config GPIO_PL061
-+	bool "PrimeCell PL061 GPIO support"
-+	depends on ARM_AMBA
-+	help
-+	  Say yes here to support the PrimeCell PL061 GPIO device
-+
- config GPIO_STMPE
- 	depends on I2C_STMPE
- 	bool "STMPE GPIO Expander"
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 945122b..e2e97d3 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -1,2 +1,4 @@
- obj-$(CONFIG_GPIOLIB) += gpio.o
-+
-+obj-$(CONFIG_GPIO_PL061)	+= gpio-pl061.o
- obj-$(CONFIG_GPIO_STMPE) += gpio-stmpe.o
-diff --git a/drivers/gpio/gpio-pl061.c b/drivers/gpio/gpio-pl061.c
-new file mode 100644
-index 0000000..f34aba9
---- /dev/null
-+++ b/drivers/gpio/gpio-pl061.c
-@@ -0,0 +1,158 @@
-+/*
-+ * Copyright (C) 2008, 2009 Provigent Ltd.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+ * Driver for the ARM PrimeCell(tm) General Purpose Input/Output (PL061)
-+ *
-+ * Data sheet: ARM DDI 0190B, September 2000
-+ */
-+#include <common.h>
-+#include <malloc.h>
-+#include <errno.h>
-+#include <io.h>
-+#include <gpio.h>
-+#include <init.h>
-+
-+#include <linux/amba/bus.h>
-+#include <linux/amba/pl061.h>
-+
-+#define GPIODIR 0x400
-+#define GPIOIS  0x404
-+#define GPIOIBE 0x408
-+#define GPIOIEV 0x40C
-+#define GPIOIE  0x410
-+#define GPIORIS 0x414
-+#define GPIOMIS 0x418
-+#define GPIOIC  0x41C
-+
-+#define PL061_GPIO_NR	8
-+
-+struct pl061_gpio {
-+	void __iomem		*base;
-+	struct gpio_chip	gc;
-+};
-+
-+static int pl061_direction_input(struct gpio_chip *gc, unsigned offset)
-+{
-+	struct pl061_gpio *chip = container_of(gc, struct pl061_gpio, gc);
-+	unsigned char gpiodir;
-+
-+	if (offset >= gc->ngpio)
-+		return -EINVAL;
-+
-+	gpiodir = readb(chip->base + GPIODIR);
-+	gpiodir &= ~(1 << offset);
-+	writeb(gpiodir, chip->base + GPIODIR);
-+
-+	return 0;
-+}
-+
-+static int pl061_direction_output(struct gpio_chip *gc, unsigned offset,
-+		int value)
-+{
-+	struct pl061_gpio *chip = container_of(gc, struct pl061_gpio, gc);
-+	unsigned char gpiodir;
-+
-+	if (offset >= gc->ngpio)
-+		return -EINVAL;
-+
-+	writeb(!!value << offset, chip->base + (1 << (offset + 2)));
-+	gpiodir = readb(chip->base + GPIODIR);
-+	gpiodir |= 1 << offset;
-+	writeb(gpiodir, chip->base + GPIODIR);
-+
-+	/*
-+	 * gpio value is set again, because pl061 doesn't allow to set value of
-+	 * a gpio pin before configuring it in OUT mode.
-+	 */
-+	writeb(!!value << offset, chip->base + (1 << (offset + 2)));
-+
-+	return 0;
-+}
-+
-+static int pl061_get_value(struct gpio_chip *gc, unsigned offset)
-+{
-+	struct pl061_gpio *chip = container_of(gc, struct pl061_gpio, gc);
-+
-+	return !!readb(chip->base + (1 << (offset + 2)));
-+}
-+
-+static void pl061_set_value(struct gpio_chip *gc, unsigned offset, int value)
-+{
-+	struct pl061_gpio *chip = container_of(gc, struct pl061_gpio, gc);
-+
-+	writeb(!!value << offset, chip->base + (1 << (offset + 2)));
-+}
-+
-+static struct gpio_ops pl061_gpio_ops = {
-+	.direction_input = pl061_direction_input,
-+	.direction_output = pl061_direction_output,
-+	.get = pl061_get_value,
-+	.set = pl061_set_value,
-+};
-+
-+static int pl061_probe(struct amba_device *dev, const struct amba_id *id)
-+{
-+	struct pl061_platform_data *pdata;
-+	struct pl061_gpio *chip;
-+	int ret;
-+
-+	chip = xzalloc(sizeof(*chip));
-+
-+	pdata = dev->dev.platform_data;
-+	if (pdata) {
-+		chip->gc.base = pdata->gpio_base;
-+	} else {
-+		chip->gc.base = -1;
-+	}
-+
-+	chip->base = amba_get_mem_region(dev);
-+
-+	chip->gc.ops = &pl061_gpio_ops;
-+	chip->gc.ngpio = PL061_GPIO_NR;
-+	chip->gc.dev = &dev->dev;
-+
-+	ret = gpiochip_add(&chip->gc);
-+	if (ret) {
-+		dev_err(&dev->dev, "couldn't add gpiochip, ret = %d\n", ret);
-+		goto free_mem;
-+	}
-+
-+	writeb(0, chip->base + GPIOIE); /* disable irqs */
-+
-+	return 0;
-+
-+free_mem:
-+	kfree(chip);
-+
-+	return ret;
-+}
-+
-+static struct amba_id pl061_ids[] = {
-+	{
-+		.id	= 0x00041061,
-+		.mask	= 0x000fffff,
-+	},
-+	{ 0, 0 },
-+};
-+
-+static struct amba_driver pl061_gpio_driver = {
-+	.drv = {
-+		.name	= "pl061_gpio",
-+	},
-+	.id_table	= pl061_ids,
-+	.probe		= pl061_probe,
-+};
-+
-+static int __init pl061_gpio_init(void)
-+{
-+	return amba_driver_register(&pl061_gpio_driver);
-+}
-+coredevice_initcall(pl061_gpio_init);
-+
-+MODULE_AUTHOR("Baruch Siach <baruch@tkos.co.il>");
-+MODULE_DESCRIPTION("PL061 GPIO driver");
-+MODULE_LICENSE("GPL");
-diff --git a/include/linux/amba/pl061.h b/include/linux/amba/pl061.h
-new file mode 100644
-index 0000000..d498cd7
---- /dev/null
-+++ b/include/linux/amba/pl061.h
-@@ -0,0 +1,12 @@
-+#ifndef __AMBA_PL061_H__
-+#define __AMBA_PL061_H__
-+
-+#include <linux/types.h>
-+
-+/* platform data for the PL061 GPIO driver */
-+
-+struct pl061_platform_data {
-+	/* number of the first GPIO */
-+	unsigned	gpio_base;
-+};
-+#endif /* __AMBA_PL061_H__ */
--- 
-1.7.10.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogSmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9MLVZJTExBUkQgPHBsYWduaW9q
+QGpjcm9zb2Z0LmNvbT4KLS0tCiBhcmNoL2FybS9tYWNoLWVwOTN4eC9pbmNsdWRlL21hY2gvZ3Bp
+by5oICAgICAgICAgICB8ICAgMjcgKy0tLS0tLS0tLS0tCiBhcmNoL2FybS9tYWNoLWlteC9pbmNs
+dWRlL21hY2gvZ3Bpby5oICAgICAgICAgICAgICB8ICAgIDcgKy0tLQogYXJjaC9hcm0vbWFjaC1t
+eHMvaW5jbHVkZS9tYWNoL2dwaW8uaCAgICAgICAgICAgICAgfCAgICA2ICstLQogYXJjaC9hcm0v
+bWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9ncGlvLmggICAgICAgICAgICAgfCAgIDQzICstLS0tLS0t
+LS0tLS0tLS0tLS0tCiBhcmNoL2FybS9tYWNoLXNhbXN1bmcvaW5jbHVkZS9tYWNoL2dwaW8uaCAg
+ICAgICAgICB8ICAgIDYgKy0tCiAuLi4vaW5jbHVkZS9tYWNoID0+IGluY2x1ZGUvYXNtLWdlbmVy
+aWN9L2dwaW8uaCAgICB8ICAgIDcgKystLQogNiBmaWxlcyBjaGFuZ2VkLCAxMSBpbnNlcnRpb25z
+KCspLCA4NSBkZWxldGlvbnMoLSkKIHJld3JpdGUgYXJjaC9hcm0vbWFjaC1lcDkzeHgvaW5jbHVk
+ZS9tYWNoL2dwaW8uaCAoMTAwJSkKIHJld3JpdGUgYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUv
+bWFjaC9ncGlvLmggKDEwMCUpCiBjb3B5IHthcmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gg
+PT4gaW5jbHVkZS9hc20tZ2VuZXJpY30vZ3Bpby5oICg2MCUpCgpkaWZmIC0tZ2l0IGEvYXJjaC9h
+cm0vbWFjaC1lcDkzeHgvaW5jbHVkZS9tYWNoL2dwaW8uaCBiL2FyY2gvYXJtL21hY2gtZXA5M3h4
+L2luY2x1ZGUvbWFjaC9ncGlvLmgKZGlzc2ltaWxhcml0eSBpbmRleCAxMDAlCmluZGV4IDVmMWI0
+YmMuLjMwNmFiNGMgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtZXA5M3h4L2luY2x1ZGUvbWFj
+aC9ncGlvLmgKKysrIGIvYXJjaC9hcm0vbWFjaC1lcDkzeHgvaW5jbHVkZS9tYWNoL2dwaW8uaApA
+QCAtMSwyNiArMSBAQAotLyoKLSAqIENvcHlyaWdodCAoQykgMjAxMCBNYXR0aGlhcyBLYWVobGNr
+ZSA8bWF0dGhpYXNAa2FlaGxja2UubmV0PgotICoKLSAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNv
+ZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9kaWZ5Ci0gKiBpdCB1bmRl
+ciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzIHB1Ymxpc2hl
+ZCBieQotICogdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBv
+ZiB0aGUgTGljZW5zZSwgb3IKLSAqIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24u
+Ci0gKgotICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQg
+d2lsbCBiZSB1c2VmdWwsCi0gKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZl
+biB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgotICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1Mg
+Rk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQotICogR05VIEdlbmVyYWwgUHVibGlj
+IExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KLSAqCi0gKgotICovCi0KLSNpZm5kZWYgX19BU01f
+QVJDSF9HUElPX0gKLSNkZWZpbmUgX19BU01fQVJDSF9HUElPX0gKLQotdm9pZCBncGlvX3NldF92
+YWx1ZSh1bnNpZ25lZCBncGlvLCBpbnQgdmFsdWUpOwotaW50IGdwaW9fZ2V0X3ZhbHVlKHVuc2ln
+bmVkIGdwaW8pOwotaW50IGdwaW9fZGlyZWN0aW9uX291dHB1dCh1bnNpZ25lZCBncGlvLCBpbnQg
+dmFsdWUpOwotaW50IGdwaW9fZGlyZWN0aW9uX2lucHV0KHVuc2lnbmVkIGdwaW8pOwotCi0jZW5k
+aWYgLyogX19BU01fQVJDSF9HUElPX0ggKi8KLQorI2luY2x1ZGUgPGFzbS1nZW5lcmljL2dwaW8u
+aD4KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9ncGlvLmggYi9h
+cmNoL2FybS9tYWNoLWlteC9pbmNsdWRlL21hY2gvZ3Bpby5oCmluZGV4IDBlYmMzZjkuLjQ4OWFl
+MmMgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9ncGlvLmgKKysr
+IGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL2dwaW8uaApAQCAtMSwxMSArMSw4IEBA
+CiAjaWZuZGVmIF9fQVNNX0FSQ0hfR1BJT19ICiAjZGVmaW5lIF9fQVNNX0FSQ0hfR1BJT19ICiAK
+KyNpbmNsdWRlIDxhc20tZ2VuZXJpYy9ncGlvLmg+CisKIHZvaWQgaW14X2dwaW9fbW9kZShpbnQg
+Z3Bpb19tb2RlKTsKLXZvaWQgZ3Bpb19zZXRfdmFsdWUodW5zaWduZWQgZ3BpbywgaW50IHZhbHVl
+KTsKLWludCBncGlvX2dldF92YWx1ZSh1bnNpZ25lZCBncGlvKTsKLWludCBncGlvX2RpcmVjdGlv
+bl9vdXRwdXQodW5zaWduZWQgZ3BpbywgaW50IHZhbHVlKTsKLWludCBncGlvX2RpcmVjdGlvbl9p
+bnB1dCh1bnNpZ25lZCBncGlvKTsKIAogI2VuZGlmIC8qIF9fQVNNX0FSQ0hfR1BJT19IICovCi0K
+ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtbXhzL2luY2x1ZGUvbWFjaC9ncGlvLmggYi9hcmNo
+L2FybS9tYWNoLW14cy9pbmNsdWRlL21hY2gvZ3Bpby5oCmluZGV4IDFlNTc1ZmEuLjRlN2M4ZmUg
+MTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtbXhzL2luY2x1ZGUvbWFjaC9ncGlvLmgKKysrIGIv
+YXJjaC9hcm0vbWFjaC1teHMvaW5jbHVkZS9tYWNoL2dwaW8uaApAQCAtMjUsMTAgKzI1LDggQEAK
+ICMgaW5jbHVkZSA8bWFjaC9pb211eC1pbXgyOC5oPgogI2VuZGlmCiAKKyNpbmNsdWRlIDxhc20t
+Z2VuZXJpYy9ncGlvLmg+CisKIHZvaWQgaW14X2dwaW9fbW9kZSh1aW50MzJfdCk7Ci12b2lkIGdw
+aW9fc2V0X3ZhbHVlKHVuc2lnbmVkLCBpbnQpOwotaW50IGdwaW9fZGlyZWN0aW9uX2lucHV0KHVu
+c2lnbmVkKTsKLWludCBncGlvX2RpcmVjdGlvbl9vdXRwdXQodW5zaWduZWQsIGludCk7Ci1pbnQg
+Z3Bpb19nZXRfdmFsdWUodW5zaWduZWQpOwogCiAjZW5kaWYgLyogX19BU01fTUFDSF9HUElPX0gg
+Ki8KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvZ3Bpby5oIGIv
+YXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9ncGlvLmgKZGlzc2ltaWxhcml0eSBpbmRl
+eCAxMDAlCmluZGV4IDc5YmY0NDguLjMwNmFiNGMgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gt
+b21hcC9pbmNsdWRlL21hY2gvZ3Bpby5oCisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRl
+L21hY2gvZ3Bpby5oCkBAIC0xLDQyICsxIEBACi0vKgotICogQ29weXJpZ2h0IChjKSAyMDA5IFdp
+bmQgUml2ZXIgU3lzdGVtcywgSW5jLgotICogVG9tIFJpeCA8VG9tLlJpeEB3aW5kcml2ZXIuY29t
+PgotICoKLSAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJp
+YnV0ZSBpdCBhbmQvb3IKLSAqIG1vZGlmeSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBH
+ZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzCi0gKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdh
+cmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgotICogdGhlIExpY2Vuc2UsIG9yIChh
+dCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCi0gKgotICogVGhpcyBwcm9ncmFtIGlz
+IGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCi0gKiBidXQg
+V0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBv
+ZgotICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NF
+LiAgU2VlIHRoZQotICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWls
+cy4KLSAqCi0gKgotICogVGhpcyB3b3JrIGlzIGRlcml2ZWQgZnJvbSB0aGUgbGludXggMi42LjI3
+IGtlcm5lbCBzb3VyY2UKLSAqIFRvIGZldGNoLCB1c2UgdGhlIGtlcm5lbCByZXBvc2l0b3J5Ci0g
+KiBnaXQ6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvdG9ydmFsZHMv
+bGludXgtMi42LmdpdAotICogVXNlIHRoZSB2Mi42LjI3IHRhZy4KLSAqCi0gKiBCZWxvdyBpcyB0
+aGUgb3JpZ2luYWwncyBoZWFkZXIgaW5jbHVkaW5nIGl0cyBjb3B5cmlnaHQKLSAqCi0gKiAgbGlu
+dXgvYXJjaC9hcm0vcGxhdC1vbWFwL2dwaW8uYwotICoKLSAqIFN1cHBvcnQgZnVuY3Rpb25zIGZv
+ciBPTUFQIEdQSU8KLSAqCi0gKiBDb3B5cmlnaHQgKEMpIDIwMDMtMjAwNSBOb2tpYSBDb3Jwb3Jh
+dGlvbgotICogV3JpdHRlbiBieSBKdWhhIFlyasO2bMOkIDxqdWhhLnlyam9sYUBub2tpYS5jb20+
+Ci0gKgotICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmli
+dXRlIGl0IGFuZC9vciBtb2RpZnkKLSAqIGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdl
+bmVyYWwgUHVibGljIExpY2Vuc2UgdmVyc2lvbiAyIGFzCi0gKiBwdWJsaXNoZWQgYnkgdGhlIEZy
+ZWUgU29mdHdhcmUgRm91bmRhdGlvbi4KLSAqLwotI2lmbmRlZiBfR1BJT19ICi0jZGVmaW5lIF9H
+UElPX0gKLQotdm9pZCBncGlvX3NldF92YWx1ZSh1bnNpZ25lZCBncGlvLCBpbnQgdmFsdWUpOwot
+aW50IGdwaW9fZ2V0X3ZhbHVlKHVuc2lnbmVkIGdwaW8pOwotaW50IGdwaW9fZGlyZWN0aW9uX291
+dHB1dCh1bnNpZ25lZCBncGlvLCBpbnQgdmFsdWUpOwotaW50IGdwaW9fZGlyZWN0aW9uX2lucHV0
+KHVuc2lnbmVkIGdwaW8pOwotCi0jZW5kaWYgLyogX0dQSU9fSF8gKi8KKyNpbmNsdWRlIDxhc20t
+Z2VuZXJpYy9ncGlvLmg+CmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLXNhbXN1bmcvaW5jbHVk
+ZS9tYWNoL2dwaW8uaCBiL2FyY2gvYXJtL21hY2gtc2Ftc3VuZy9pbmNsdWRlL21hY2gvZ3Bpby5o
+CmluZGV4IDJiNDU2OTUuLjllNjRhODQgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtc2Ftc3Vu
+Zy9pbmNsdWRlL21hY2gvZ3Bpby5oCisrKyBiL2FyY2gvYXJtL21hY2gtc2Ftc3VuZy9pbmNsdWRl
+L21hY2gvZ3Bpby5oCkBAIC0yMywxMCArMjMsOCBAQAogIyBpbmNsdWRlIDxtYWNoL2lvbXV4LXM1
+cGN4eC5oPgogI2VuZGlmCiAKLXZvaWQgZ3Bpb19zZXRfdmFsdWUodW5zaWduZWQsIGludCk7Ci1p
+bnQgZ3Bpb19kaXJlY3Rpb25faW5wdXQodW5zaWduZWQpOwotaW50IGdwaW9fZGlyZWN0aW9uX291
+dHB1dCh1bnNpZ25lZCwgaW50KTsKLWludCBncGlvX2dldF92YWx1ZSh1bnNpZ25lZCk7CisjaW5j
+bHVkZSA8YXNtLWdlbmVyaWMvZ3Bpby5oPgorCiB2b2lkIHMzY19ncGlvX21vZGUodW5zaWduZWQp
+OwogCiAjZW5kaWYgLyogX19BU01fTUFDSF9HUElPX0ggKi8KZGlmZiAtLWdpdCBhL2FyY2gvYXJt
+L21hY2gtaW14L2luY2x1ZGUvbWFjaC9ncGlvLmggYi9pbmNsdWRlL2FzbS1nZW5lcmljL2dwaW8u
+aApzaW1pbGFyaXR5IGluZGV4IDYwJQpjb3B5IGZyb20gYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVk
+ZS9tYWNoL2dwaW8uaApjb3B5IHRvIGluY2x1ZGUvYXNtLWdlbmVyaWMvZ3Bpby5oCmluZGV4IDBl
+YmMzZjkuLjE5OTc4ODggMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFj
+aC9ncGlvLmgKKysrIGIvaW5jbHVkZS9hc20tZ2VuZXJpYy9ncGlvLmgKQEAgLTEsMTEgKzEsMTAg
+QEAKLSNpZm5kZWYgX19BU01fQVJDSF9HUElPX0gKLSNkZWZpbmUgX19BU01fQVJDSF9HUElPX0gK
+KyNpZm5kZWYgX19BU01fR0VORVJJQ19HUElPX0gKKyNkZWZpbmUgX19BU01fR0VORVJJQ19HUElP
+X0gKIAotdm9pZCBpbXhfZ3Bpb19tb2RlKGludCBncGlvX21vZGUpOwogdm9pZCBncGlvX3NldF92
+YWx1ZSh1bnNpZ25lZCBncGlvLCBpbnQgdmFsdWUpOwogaW50IGdwaW9fZ2V0X3ZhbHVlKHVuc2ln
+bmVkIGdwaW8pOwogaW50IGdwaW9fZGlyZWN0aW9uX291dHB1dCh1bnNpZ25lZCBncGlvLCBpbnQg
+dmFsdWUpOwogaW50IGdwaW9fZGlyZWN0aW9uX2lucHV0KHVuc2lnbmVkIGdwaW8pOwogCi0jZW5k
+aWYgLyogX19BU01fQVJDSF9HUElPX0ggKi8KKyNlbmRpZiAvKiBfX0FTTV9HRU5FUklDX0dQSU9f
+SCAqLwogCi0tIAoxLjcuMTAuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
