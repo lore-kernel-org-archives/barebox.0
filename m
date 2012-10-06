@@ -1,12 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from e-post13.km.ru ([217.197.114.153])
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TKWIJ-0004yC-WA
- for barebox@lists.infradead.org; Sat, 06 Oct 2012 15:28:03 +0000
-Message-Id: <PmNRE9B0NXFu5X5cSOI6uKrkJo93zro9odzuOfzg1Wvx@freemail.ru>
-Mime-Version: 1.0
-From: =?windows-1251?B?dHJ1ZWJvYXJkLnJ1?= <zy271@freemail.ru>
-Date: Sat, 6 Oct 2012 19:28:09 +0400
+ id 1TKaJs-0003HE-Sx
+ for barebox@lists.infradead.org; Sat, 06 Oct 2012 19:45:54 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1349455505-31731-1-git-send-email-s.hauer@pengutronix.de>
+ <1349455505-31731-3-git-send-email-s.hauer@pengutronix.de>
+ <87txu8y9rb.fsf@free.fr> <20121005213302.GZ1322@pengutronix.de>
+Date: Sat, 06 Oct 2012 21:44:54 +0200
+In-Reply-To: <20121005213302.GZ1322@pengutronix.de> (Sascha Hauer's message of
+ "Fri, 5 Oct 2012 23:33:02 +0200")
+Message-ID: <87obkfxu4p.fsf@free.fr>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,21 +20,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="cp1251"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?windows-1251?B?xO7x6uAg4eXx7+vg8u379SDu4fr/4uvl7ejpIPEgyuDy4Ovu4+7sIM7w4+Dt6Ofg9ujp?=
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/4] introduce region_overlap() function
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-0ODn7OXx8ujy5SDC4PjlIO7h+v/i6+Xt6OUg4eXx7+vg8u3uIO3gIO3g+OXpIMTu8erlIO7h+v/i
-6+Xt6Okg6CDiIMrg8uDr7uPlIM7w4+Dt6Ofg9ujpIHRydWVib2FyZC5ydSwg/fLuIO/u7O7m5fIg
-wuDsIOvo9+3uIOjr6CDC4Pjl6SDO8OPg7ejn4Pbo6CDk7u/u6+3o8uXr/O3uIO/w7vDl6uvg7Ojw
-7uLg8vwgwuD46CDy7uLg8Psg6OvoIPPx6/Pj6CDoIOTg8fIg5O7v7uvt6PLl6/zt+/Ug6uvo5e3y
-7uIg8SDt4Pjl6SDE7vHq6CDu4fr/4uvl7ejpIOgg7+7k8O7h7fP+IOjt9O7w7OD26P4g7iDC4PEg
-6OcgyuDy4Ovu4+AgzvDj4O3o5+D26OkgLgogyvDu7OUg8u7j7iDl8evoIPMgwuDxIOXx8vwg8eDp
-8iwg8ODn7OXx8ujy5SDt4CDt5ewg7eD4IOjt9O7w7OXwICjx7CDw4Ofk5esgItPx6/Pj6CIpIOgg
-wvsg7+7r8/fo8uUgVklQIO7h+v/i6+Xt6OUg4eXx7+vg8u3uIQoKCgp3d3cudHJ1ZWJvYXJkLnJ1
-CgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Sascha Hauer <s.hauer@pengutronix.de> writes:
+> You made me curious. I tried to compile both and here is the result on
+> ARM (I swapped the arguments left and right of the &&):
+>
+...zip...
+>
+> Maybe gcc isn't so clever on other architectures, I don't know ;)
+
+You're right.
+Same conclusion on x86 with gcc 4.7. I had tried that a long time ago (maybe 10
+years or so) on x86, benchmarking both pure C and Java on this very function (it
+was for aircrafts timeslots conflicts discovery).
+
+At that time, the "startA <= endB && endA >= startB" was fastest. So compilation
+technique have improved enough to write maintainable code after all :)
+
+Cheers.
+
+-- 
+Robert
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
