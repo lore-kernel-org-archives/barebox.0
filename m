@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TKpD8-0006fu-GQ
- for barebox@lists.infradead.org; Sun, 07 Oct 2012 11:39:55 +0000
+ id 1TKpS3-00073F-2q
+ for barebox@lists.infradead.org; Sun, 07 Oct 2012 11:55:19 +0000
+Date: Sun, 7 Oct 2012 13:55:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun,  7 Oct 2012 13:39:47 +0200
-Message-Id: <1349609991-26567-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1349609991-26567-1-git-send-email-s.hauer@pengutronix.de>
-References: <1349609991-26567-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20121007115515.GH1322@pengutronix.de>
+References: <1349354221-28409-3-git-send-email-shc_work@mail.ru>
+ <20121005121204.GP1322@pengutronix.de>
+ <20121007140337.b778f85b.shc_work@mail.ru>
+ <20121007104550.GG1322@pengutronix.de>
+ <20121007145701.75a20196.shc_work@mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20121007145701.75a20196.shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,48 +22,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] driver: print error message when probe fails
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/3] ARM: Add CLPS711X architecture
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/base/driver.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+On Sun, Oct 07, 2012 at 02:57:01PM +0400, Alexander Shiyan wrote:
+> On Sun, 7 Oct 2012 12:45:50 +0200
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> ...
+> > And in the driver:
+> > 
+> > #define SYSCON		0x100
+> > 
+> > 	...
+> > 	writel(0xdeadbeef, base + SYSCON);
+> > 	...
+> You a right, but SYSCON is used not only for UARTs. This register also
+> used for setup timers, keypad, lcd, spi etc... Just look on bit definitions.
+> Same I can say about other resisters.
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 6c8fd05..7bb3ab4 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -77,6 +77,8 @@ int get_free_deviceid(const char *name_template)
- 
- static int match(struct driver_d *drv, struct device_d *dev)
- {
-+	int ret;
-+
- 	if (dev->driver)
- 		return -1;
- 
-@@ -84,8 +86,11 @@ static int match(struct driver_d *drv, struct device_d *dev)
- 
- 	if (dev->bus->match(dev, drv))
- 		goto err_out;
--	if (dev->bus->probe(dev))
-+	ret = dev->bus->probe(dev);
-+	if (ret) {
-+		dev_err(dev, "probe failed: %s\n", strerror(-ret));
- 		goto err_out;
-+	}
- 
- 	list_add(&dev->active, &active);
- 
+Oh my gosh, that indeed looks strange... Normally register regions are
+reserved for separate units, on this SoC it seems more that bit
+positions inside registers are reserved for separate units ;)
+
+> In this case we have some redundancy definitions. I will think about other way.
+
+Try and have a look if you could clean this up a bit, but it might be
+that you already found the best solution.
+
+Sascha
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
