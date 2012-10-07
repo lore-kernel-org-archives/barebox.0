@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f49.google.com ([74.125.82.49])
+Received: from mail-we0-f177.google.com ([74.125.82.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TKyvF-0006S8-Ci
- for barebox@lists.infradead.org; Sun, 07 Oct 2012 22:02:07 +0000
-Received: by mail-wg0-f49.google.com with SMTP id gg4so2101007wgb.18
- for <barebox@lists.infradead.org>; Sun, 07 Oct 2012 15:02:05 -0700 (PDT)
+ id 1TKyvB-0006RO-UV
+ for barebox@lists.infradead.org; Sun, 07 Oct 2012 22:02:03 +0000
+Received: by mail-we0-f177.google.com with SMTP id u50so2294765wey.36
+ for <barebox@lists.infradead.org>; Sun, 07 Oct 2012 15:02:01 -0700 (PDT)
 From: Vicente <vicencb@gmail.com>
-Date: Mon,  8 Oct 2012 00:01:26 +0200
-Message-Id: <1349647287-28224-13-git-send-email-vicencb@gmail.com>
+Date: Mon,  8 Oct 2012 00:01:24 +0200
+Message-Id: <1349647287-28224-11-git-send-email-vicencb@gmail.com>
 In-Reply-To: <1349647287-28224-1-git-send-email-vicencb@gmail.com>
 References: <1349647287-28224-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,60 +23,133 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/13] omap4: add support for loading second stage from usb
+Subject: [PATCH 10/13] omap4: add serial communications over usb boot
 To: barebox@lists.infradead.org
 Cc: Vicente <vicencb@gmail.com>
 
 
 Signed-off-by: Vicente <vicencb@gmail.com>
 ---
- arch/arm/mach-omap/xload.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ drivers/serial/Kconfig                |  7 +++
+ drivers/serial/Makefile               |  1 +
+ drivers/serial/serial_omap4_usbboot.c | 83 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 91 insertions(+)
+ create mode 100644 drivers/serial/serial_omap4_usbboot.c
 
-diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
-index 9fa8221..240d3ff 100644
---- a/arch/arm/mach-omap/xload.c
-+++ b/arch/arm/mach-omap/xload.c
-@@ -139,6 +139,24 @@ static void *omap_xload_boot_spi(int offset)
- 	return to;
- }
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index 7eb96ed..0627b6e 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -100,4 +100,11 @@ config DRIVER_SERIAL_PXA
+ 	bool "PXA serial driver"
+ 	depends on ARCH_PXA
  
-+static void *omap4_xload_boot_usb(void){
-+	int ret;
-+	void *buf;
-+	int len;
++config DRIVER_SERIAL_OMAP4_USBBOOT
++	bool "serial driver over omap4 usb"
++	default n
++	depends on OMAP4_USBBOOT
++	help
++	  Enable this to get console support over the usb bus used to boot an OMAP4
 +
-+	ret = mount("omap4_usbboot", "omap4_usbbootfs", "/");
-+	if (ret) {
-+		printf("Unable to mount omap4_usbbootfs (%d)\n", ret);
-+		return NULL;
-+	}
+ endmenu
+diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+index e2d56b9..ff99e72 100644
+--- a/drivers/serial/Makefile
++++ b/drivers/serial/Makefile
+@@ -19,3 +19,4 @@ obj-$(CONFIG_DRIVER_SERIAL_S3C)			+= serial_s3c.o
+ obj-$(CONFIG_DRIVER_SERIAL_ALTERA)		+= serial_altera.o
+ obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)		+= serial_altera_jtag.o
+ obj-$(CONFIG_DRIVER_SERIAL_PXA)			+= serial_pxa.o
++obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)	+= serial_omap4_usbboot.o
+diff --git a/drivers/serial/serial_omap4_usbboot.c b/drivers/serial/serial_omap4_usbboot.c
+new file mode 100644
+index 0000000..f0a2fd1
+--- /dev/null
++++ b/drivers/serial/serial_omap4_usbboot.c
+@@ -0,0 +1,83 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
 +
-+	buf = read_file("/barebox.bin", &len);
-+	if (!buf)
-+		printf("could not read barebox.bin from omap4_usbbootfs\n");
++#include <common.h>
++#include <init.h>
++#include <malloc.h>
++#include <errno.h>
++#include <mach/omap4_rom_usb.h>
 +
-+	return buf;
++struct serial_omap4_usbboot_priv {
++	struct console_device cdev;
++	u32 val;
++};
++
++static void serial_omap4_usbboot_putc(struct console_device *cdev, char c)
++{
++	unsigned b = c;
++	omap4_usbboot_write(&b, 4);
 +}
 +
- enum omap_boot_src omap_bootsrc(void)
- {
- #if defined(CONFIG_ARCH_OMAP3)
-@@ -161,6 +179,14 @@ int run_shell(void)
- 		printf("booting from MMC1\n");
- 		func = omap_xload_boot_mmc();
- 		break;
-+	case OMAP_BOOTSRC_USB1:
-+		if (IS_ENABLED(CONFIG_FS_OMAP4_USBBOOT)) {
-+			printf("booting from USB1\n");
-+			func = omap4_xload_boot_usb();
-+			break;
-+		} else {
-+			printf("booting from usb1 not enabled\n");
-+		}
- 	case OMAP_BOOTSRC_UNKNOWN:
- 		printf("unknown boot source. Fall back to nand\n");
- 	case OMAP_BOOTSRC_NAND:
++static int serial_omap4_usbboot_tstc(struct console_device *cdev)
++{
++	struct serial_omap4_usbboot_priv *priv =
++		container_of(cdev, struct serial_omap4_usbboot_priv, cdev);
++	if (omap4_usbboot_is_read_waiting())
++		return 0;
++	else if (omap4_usbboot_is_read_ok())
++		return 1;
++	omap4_usbboot_queue_read(&priv->val, 4);
++	udelay(100);
++	if (omap4_usbboot_is_read_waiting())
++		return 0;
++	else if (omap4_usbboot_is_read_ok())
++		return 1;
++	return 0;
++}
++
++static int serial_omap4_usbboot_getc(struct console_device *cdev)
++{
++	struct serial_omap4_usbboot_priv *priv =
++		container_of(cdev, struct serial_omap4_usbboot_priv, cdev);
++	if (omap4_usbboot_is_read_waiting() || omap4_usbboot_is_read_ok()) {
++		omap4_usbboot_wait_read();
++		return priv->val;
++	}
++	omap4_usbboot_read(&priv->val, 4);
++	return priv->val;
++}
++
++static int serial_omap4_usbboot_probe(struct device_d *dev)
++{
++	struct serial_omap4_usbboot_priv *priv;
++	priv = xzalloc(sizeof(*priv));
++
++	priv->cdev.dev = dev;
++	priv->cdev.f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
++	priv->cdev.tstc = serial_omap4_usbboot_tstc;
++	priv->cdev.putc = serial_omap4_usbboot_putc;
++	priv->cdev.getc = serial_omap4_usbboot_getc;
++	priv->cdev.setbrg = NULL;
++
++	return console_register(&priv->cdev);
++}
++
++static struct driver_d serial_omap4_usbboot_driver = {
++	.name = "serial_omap4_usbboot",
++	.probe = serial_omap4_usbboot_probe,
++};
++
++static int serial_omap4_usbboot_init(void)
++{
++	return platform_driver_register(&serial_omap4_usbboot_driver);
++}
++console_initcall(serial_omap4_usbboot_init);
 -- 
 1.7.12.2
 
