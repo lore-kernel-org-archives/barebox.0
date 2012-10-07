@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-f49.google.com ([209.85.220.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TKpie-0007FQ-57
- for barebox@lists.infradead.org; Sun, 07 Oct 2012 12:12:28 +0000
-Received: by mail-pa0-f49.google.com with SMTP id bi5so3451640pad.36
- for <barebox@lists.infradead.org>; Sun, 07 Oct 2012 05:12:26 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20121007103434.GF1322@pengutronix.de>
+ id 1TKpm6-0007Lz-J1
+ for barebox@lists.infradead.org; Sun, 07 Oct 2012 12:16:03 +0000
+Date: Sun, 7 Oct 2012 14:16:00 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121007121600.GI1322@pengutronix.de>
 References: <1349476393-25520-1-git-send-email-vicencb@gmail.com>
- <20121007103434.GF1322@pengutronix.de>
-Date: Sun, 7 Oct 2012 14:12:26 +0200
-Message-ID: <CAAMcf8AppGVVgLmMG7YvFpE32-zu-3dmmim-MRtNvfFiVin23A@mail.gmail.com>
-From: vj <vicencb@gmail.com>
+ <1349476393-25520-11-git-send-email-vicencb@gmail.com>
+ <20121007103027.GE1322@pengutronix.de>
+ <CAAMcf8CjJHfkLDBGzA4-Uny-9KJEv3nR3ozC0g+V65B28xLD6A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAAMcf8CjJHfkLDBGzA4-Uny-9KJEv3nR3ozC0g+V65B28xLD6A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,56 +25,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/11] archosg9: add support for tablet, third round
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 10/11] mach-types: add ID for Archos G9 tablet
+To: vj <vicencb@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Oct 7, 2012 at 12:34 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
-> Hi vj,
->
-> On Sat, Oct 06, 2012 at 12:33:02AM +0200, vj wrote:
-> > Hello,
-> >  here is the third round of patches including most of the
-> >  modifications suggested by your comments, which are greatly
-> >  appreciated.  one of the modifications not done is the move of the
-> >  usb-booting infrastructure into a driver. Jean, can you please add
-> >  more information about this? Thanks.
+On Sun, Oct 07, 2012 at 02:07:28PM +0200, vj wrote:
+> On Sun, Oct 7, 2012 at 12:30 PM, Sascha Hauer <s.hauer@pengutronix.de>wrote:
+> 
+> > Please no manual updates to this file, they will be overwritten once the
+> > next update from:
 > >
-> >  scripts/checkpatch.pl returns two errors: "Macros with complex values
-> >  should be enclosed in parenthesis", but in this case parenthesis
-> >  can't be added, any suggestion?
->
-> Could you post the macros which give this error?
->
-> Overall apart from the little comments I made the series looks quite
-> good now. Thanks, nice work ;)
->
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> > http://www.arm.linux.org.uk/developer/machines/download.php
+> >
+> > comes in. I see that the Archos G9 does not have a machine id
+> > registered. You can register one yourself at:
+> >
+> > http://www.arm.linux.org.uk/developer/machines/
+> >
+> > btw is 5032 the id Archos uses or did you think it up yourself?
+> >
+> > Sascha
+> >
+> > --
+> > Pengutronix e.K.                           |                             |
+> > Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> > Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> >
+> 
+> 5032 is chosen by Archos in it's Android kernel:
+> http://gitorious.org/archos/archos-gpl-gen9-kernel-ics/blobs/master/arch/arm/tools/mach-types
 
+Appearently the Archos guys can't read :(
 
-The macros are:
-#define TARGET_FORMAT 0x1B, BRIGHT, RED+30, BLACK+40
-#define HOST_FORMAT   0x1B, RESET, WHITE+30, BLACK+40
+In this case I suggest that you just hardcode this number in your board
+file and add a big fat warning comment that you only did that to make
+the Archos kernel bootable.
+Another, maybe better solution would be to:
 
-which are used in this way:
-#define FORMAT        "%c[%d;%d;%dm"
-#define host_print(fmt, arg...)    printf(FORMAT fmt FORMAT"\n",
-HOST_FORMAT, ##arg, TARGET_FORMAT)
-printf(FORMAT, TARGET_FORMAT);
+- register a proper id for the G9
+- use it as default in barebox
+- Add some template in the environment to overwrite it to make the
+  Archos provided Kernel boot.
 
-The reason is that scripts/omap4_usbboot has to print two types of
-messages, the ones comming from the OMAP4 and the ones coming from the
-PC. This is the way chosen to differentiate them.
+Sascha
 
-Regards,
-  Vicente.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
