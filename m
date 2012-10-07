@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pb0-f49.google.com ([209.85.160.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TKpdu-0007Aw-7m
- for barebox@lists.infradead.org; Sun, 07 Oct 2012 12:07:35 +0000
-Received: by mail-pb0-f49.google.com with SMTP id xa7so3511170pbc.36
- for <barebox@lists.infradead.org>; Sun, 07 Oct 2012 05:07:29 -0700 (PDT)
+ id 1TKpi8-0007ES-F3
+ for barebox@lists.infradead.org; Sun, 07 Oct 2012 12:11:57 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Sun,  7 Oct 2012 14:11:53 +0200
+Message-Id: <1349611913-31580-1-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20121007103027.GE1322@pengutronix.de>
-References: <1349476393-25520-1-git-send-email-vicencb@gmail.com>
- <1349476393-25520-11-git-send-email-vicencb@gmail.com>
- <20121007103027.GE1322@pengutronix.de>
-Date: Sun, 7 Oct 2012 14:07:28 +0200
-Message-ID: <CAAMcf8CjJHfkLDBGzA4-Uny-9KJEv3nR3ozC0g+V65B28xLD6A@mail.gmail.com>
-From: vj <vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,151 +15,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============6090259079966970050=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 10/11] mach-types: add ID for Archos G9 tablet
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: =?UTF-8?q?=5BPATCH=5D=20ARM=20i=2EMX=3A=20Print=20silicon=20revision=20in=20common=20place?=
+To: barebox@lists.infradead.org
 
---===============6090259079966970050==
-Content-Type: multipart/alternative; boundary=047d7b15ab27e81f4a04cb76f2e4
-
---047d7b15ab27e81f4a04cb76f2e4
-Content-Type: text/plain; charset=UTF-8
-
-On Sun, Oct 7, 2012 at 12:30 PM, Sascha Hauer <s.hauer@pengutronix.de>wrote:
-
-> On Sat, Oct 06, 2012 at 12:33:12AM +0200, vj wrote:
-> >
-> > Signed-off-by: vj <vicencb@gmail.com>
-> > ---
-> >  arch/arm/tools/mach-types | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/arch/arm/tools/mach-types b/arch/arm/tools/mach-types
-> > index 325513f..a21da3b 100644
-> > --- a/arch/arm/tools/mach-types
-> > +++ b/arch/arm/tools/mach-types
-> > @@ -4148,3 +4148,4 @@ msm8625_evt             MACH_MSM8625_EVT
->  MSM8625_EVT             4193
-> >  mx53_sellwood                MACH_MX53_SELLWOOD      MX53_SELLWOOD
->       4194
-> >  somiq_am35           MACH_SOMIQ_AM35         SOMIQ_AM35
->  4195
-> >  somiq_am37           MACH_SOMIQ_AM37         SOMIQ_AM37
->  4196
-> > +omap4_archosg9               MACH_OMAP4_ARCHOSG9     OMAP4_ARCHOSG9
->      5032
->
-> Please no manual updates to this file, they will be overwritten once the
-> next update from:
->
-> http://www.arm.linux.org.uk/developer/machines/download.php
->
-> comes in. I see that the Archos G9 does not have a machine id
-> registered. You can register one yourself at:
->
-> http://www.arm.linux.org.uk/developer/machines/
->
-> btw is 5032 the id Archos uses or did you think it up yourself?
->
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->
-
-5032 is chosen by Archos in it's Android kernel:
-http://gitorious.org/archos/archos-gpl-gen9-kernel-ics/blobs/master/arch/arm/tools/mach-types
-
---047d7b15ab27e81f4a04cb76f2e4
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-<div class=3D"gmail_quote">On Sun, Oct 7, 2012 at 12:30 PM, Sascha Hauer <s=
-pan dir=3D"ltr">&lt;<a href=3D"mailto:s.hauer@pengutronix.de" target=3D"_bl=
-ank">s.hauer@pengutronix.de</a>&gt;</span> wrote:<br><blockquote class=3D"g=
-mail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-l=
-eft:1ex">
-<div class=3D"HOEnZb"><div class=3D"h5">On Sat, Oct 06, 2012 at 12:33:12AM =
-+0200, vj wrote:<br>
-&gt;<br>
-&gt; Signed-off-by: vj &lt;<a href=3D"mailto:vicencb@gmail.com">vicencb@gma=
-il.com</a>&gt;<br>
-&gt; ---<br>
-&gt; =C2=A0arch/arm/tools/mach-types | 1 +<br>
-&gt; =C2=A01 file changed, 1 insertion(+)<br>
-&gt;<br>
-&gt; diff --git a/arch/arm/tools/mach-types b/arch/arm/tools/mach-types<br>
-&gt; index 325513f..a21da3b 100644<br>
-&gt; --- a/arch/arm/tools/mach-types<br>
-&gt; +++ b/arch/arm/tools/mach-types<br>
-&gt; @@ -4148,3 +4148,4 @@ msm8625_evt =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 MACH_MSM8625_EVT =C2=A0 =C2=A0 =C2=A0 =C2=A0MSM8625_EVT =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 4193<br>
-&gt; =C2=A0mx53_sellwood =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0MACH_MX53_SELLWOOD =C2=A0 =C2=A0 =C2=A0MX53_SELLWOOD =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 4194<br>
-&gt; =C2=A0somiq_am35 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 MACH_SOMIQ_AM35 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 SOMIQ_AM35 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A04195<br>
-&gt; =C2=A0somiq_am37 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 MACH_SOMIQ_AM37 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 SOMIQ_AM37 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A04196<br>
-&gt; +omap4_archosg9 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 MACH_=
-OMAP4_ARCHOSG9 =C2=A0 =C2=A0 OMAP4_ARCHOSG9 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A05032<br>
-<br>
-</div></div>Please no manual updates to this file, they will be overwritten=
- once the<br>
-next update from:<br>
-<br>
-<a href=3D"http://www.arm.linux.org.uk/developer/machines/download.php" tar=
-get=3D"_blank">http://www.arm.linux.org.uk/developer/machines/download.php<=
-/a><br>
-<br>
-comes in. I see that the Archos G9 does not have a machine id<br>
-registered. You can register one yourself at:<br>
-<br>
-<a href=3D"http://www.arm.linux.org.uk/developer/machines/" target=3D"_blan=
-k">http://www.arm.linux.org.uk/developer/machines/</a><br>
-<br>
-btw is 5032 the id Archos uses or did you think it up yourself?<br>
-<span class=3D"HOEnZb"><font color=3D"#888888"><br>
-Sascha<br>
-<br>
---<br>
-Pengutronix e.K. =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |<br>
-Industrial Linux Solutions =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 | <a href=3D"http://www.pengutronix.de/" target=3D"_blank">http://w=
-ww.pengutronix.de/</a> =C2=A0|<br>
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0 =C2=
-=A0 =C2=A0|<br>
-Amtsgericht Hildesheim, HRA 2686 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | Fax: =
-=C2=A0 +49-5121-206917-5555 |<br>
-</font></span></blockquote></div><br>5032 is chosen by Archos in it&#39;s A=
-ndroid kernel: <a href=3D"http://gitorious.org/archos/archos-gpl-gen9-kerne=
-l-ics/blobs/master/arch/arm/tools/mach-types">http://gitorious.org/archos/a=
-rchos-gpl-gen9-kernel-ics/blobs/master/arch/arm/tools/mach-types</a><br>
-
---047d7b15ab27e81f4a04cb76f2e4--
-
-
---===============6090259079966970050==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
-
---===============6090259079966970050==--
+UmF0aGVyIHRoYW4gZG9pbmcgdGhpcyBpbiB0aGUgU29DIHNwZWNpZmljIGNvZGUganVzdCBwcmlu
+dAppdCBpbiBpbXhfc2V0X3NpbGljb25fcmV2aXNpb24uIFRoaXMgc2F2ZXMgc29tZSBsaW5lcyBv
+ZiBjb2RlCmFuZCBhbHNvIHJlc3VsdHMgaW4gaS5NWDI3IG5vdyBhbHNvIGhhdmluZyB0aGUgc2ls
+aWNvbiByZXZpc2lvbgpwcmludGVkIGR1cmluZyBzdGFydHVwLgoKU2lnbmVkLW9mZi1ieTogU2Fz
+Y2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgotLS0KIGFyY2gvYXJtL21hY2gtaW14
+L2lteC5jICAgICAgICAgICAgICAgICAgIHwgICAgNiArKysrKy0KIGFyY2gvYXJtL21hY2gtaW14
+L2lteDI3LmMgICAgICAgICAgICAgICAgIHwgICAgMiArLQogYXJjaC9hcm0vbWFjaC1pbXgvaW14
+MzUuYyAgICAgICAgICAgICAgICAgfCAgICAyICstCiBhcmNoL2FybS9tYWNoLWlteC9pbXg1MS5j
+ICAgICAgICAgICAgICAgICB8ICAgMTYgKy0tLS0tLS0tLS0tLS0tLQogYXJjaC9hcm0vbWFjaC1p
+bXgvaW14NTMuYyAgICAgICAgICAgICAgICAgfCAgIDE1ICstLS0tLS0tLS0tLS0tLQogYXJjaC9h
+cm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL3JldmlzaW9uLmggfCAgICAyICstCiA2IGZpbGVzIGNo
+YW5nZWQsIDEwIGluc2VydGlvbnMoKyksIDMzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2Fy
+Y2gvYXJtL21hY2gtaW14L2lteC5jIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW14LmMKaW5kZXggMWJj
+NmUyMy4uZDM2ZjNkOSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW14LmMKKysrIGIv
+YXJjaC9hcm0vbWFjaC1pbXgvaW14LmMKQEAgLTIxLDcgKzIxLDExIEBAIGludCBpbXhfc2lsaWNv
+bl9yZXZpc2lvbih2b2lkKQogCXJldHVybiBfX2lteF9zaWxpY29uX3JldmlzaW9uOwogfQogCi12
+b2lkIGlteF9zZXRfc2lsaWNvbl9yZXZpc2lvbihpbnQgcmV2aXNpb24pCit2b2lkIGlteF9zZXRf
+c2lsaWNvbl9yZXZpc2lvbihjb25zdCBjaGFyICpzb2MsIGludCByZXZpc2lvbikKIHsKIAlfX2lt
+eF9zaWxpY29uX3JldmlzaW9uID0gcmV2aXNpb247CisKKwlwcmludGYoImRldGVjdGVkICVzIHJl
+dmlzaW9uICVkLiVkXG4iLCBzb2MsCisJCQkocmV2aXNpb24gPj4gNCkgJiAweGYsCisJCQlyZXZp
+c2lvbiAmIDB4Zik7CiB9CmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbXgyNy5jIGIv
+YXJjaC9hcm0vbWFjaC1pbXgvaW14MjcuYwppbmRleCBkMWFhMjEzLi5mZWQ5YzhiIDEwMDY0NAot
+LS0gYS9hcmNoL2FybS9tYWNoLWlteC9pbXgyNy5jCisrKyBiL2FyY2gvYXJtL21hY2gtaW14L2lt
+eDI3LmMKQEAgLTQyLDcgKzQyLDcgQEAgc3RhdGljIGludCBpbXgyN19zaWxpY29uX3JldmlzaW9u
+KHZvaWQpCiAJCWJyZWFrOwogCX0KIAotCWlteF9zZXRfc2lsaWNvbl9yZXZpc2lvbihyZXYpOwor
+CWlteF9zZXRfc2lsaWNvbl9yZXZpc2lvbigiaS5NWDI3IiwgcmV2KTsKIAogCXJldHVybiAwOwog
+fQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW14MzUuYyBiL2FyY2gvYXJtL21hY2gt
+aW14L2lteDM1LmMKaW5kZXggZjg5YmQxMC4uN2I3NDNkZiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0v
+bWFjaC1pbXgvaW14MzUuYworKysgYi9hcmNoL2FybS9tYWNoLWlteC9pbXgzNS5jCkBAIC0zNiw3
+ICszNiw3IEBAIHN0YXRpYyB2b2lkIGlteDM1X3NpbGljb25fcmV2aXNpb24odm9pZCkKIAkvKiAw
+w5cwMCA9IFRPIDEuMCwgRmlyc3Qgc2lsaWNvbiAqLwogCXJlZyArPSBJTVhfQ0hJUF9SRVZfMV8w
+OwogCi0JaW14X3NldF9zaWxpY29uX3JldmlzaW9uKHJlZyAmIDB4RkYpOworCWlteF9zZXRfc2ls
+aWNvbl9yZXZpc2lvbigiaS5NWDM1IiwgcmVnICYgMHhGRik7CiB9CiAKIC8qCmRpZmYgLS1naXQg
+YS9hcmNoL2FybS9tYWNoLWlteC9pbXg1MS5jIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW14NTEuYwpp
+bmRleCA4MDUzNjFkLi5mOWMxYTkxIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLWlteC9pbXg1
+MS5jCisrKyBiL2FyY2gvYXJtL21hY2gtaW14L2lteDUxLmMKQEAgLTIzLDggKzIzLDYgQEAKIAog
+I2RlZmluZSBTSV9SRVYgMHg0OAogCi1zdGF0aWMgY2hhciAqbXg1MV9yZXZfc3RyaW5nID0gInVu
+a25vd24iOwotCiBzdGF0aWMgaW50IGlteDUxX3NpbGljb25fcmV2aXNpb24odm9pZCkKIHsKIAl2
+b2lkIF9faW9tZW0gKnJvbSA9IE1YNTFfSVJPTV9CQVNFX0FERFI7CkBAIC0zNSwzNiArMzMsMjQg
+QEAgc3RhdGljIGludCBpbXg1MV9zaWxpY29uX3JldmlzaW9uKHZvaWQpCiAJc3dpdGNoIChyZXYp
+IHsKIAljYXNlIDB4MToKIAkJbXg1MV9zaWxpY29uX3JldmlzaW9uID0gSU1YX0NISVBfUkVWXzFf
+MDsKLQkJbXg1MV9yZXZfc3RyaW5nID0gIjEuMCI7CiAJCWJyZWFrOwogCWNhc2UgMHgyOgogCQlt
+eDUxX3NpbGljb25fcmV2aXNpb24gPSBJTVhfQ0hJUF9SRVZfMV8xOwotCQlteDUxX3Jldl9zdHJp
+bmcgPSAiMS4xIjsKIAkJYnJlYWs7CiAJY2FzZSAweDEwOgogCQlteDUxX3NpbGljb25fcmV2aXNp
+b24gPSBJTVhfQ0hJUF9SRVZfMl8wOwotCQlteDUxX3Jldl9zdHJpbmcgPSAiMi4wIjsKIAkJYnJl
+YWs7CiAJY2FzZSAweDIwOgogCQlteDUxX3NpbGljb25fcmV2aXNpb24gPSBJTVhfQ0hJUF9SRVZf
+M18wOwotCQlteDUxX3Jldl9zdHJpbmcgPSAiMy4wIjsKIAkJYnJlYWs7CiAJZGVmYXVsdDoKIAkJ
+bXg1MV9zaWxpY29uX3JldmlzaW9uID0gMDsKIAl9CiAKLQlpbXhfc2V0X3NpbGljb25fcmV2aXNp
+b24obXg1MV9zaWxpY29uX3JldmlzaW9uKTsKLQotCXJldHVybiAwOwotfQotCi1zdGF0aWMgaW50
+IGlteDUxX3ByaW50X3NpbGljb25fcmV2KHZvaWQpCi17Ci0JcHJpbnRmKCJkZXRlY3RlZCBpLk1Y
+NTEgcmV2ICVzXG4iLCBteDUxX3Jldl9zdHJpbmcpOworCWlteF9zZXRfc2lsaWNvbl9yZXZpc2lv
+bigiaS5NWDUxIiwgbXg1MV9zaWxpY29uX3JldmlzaW9uKTsKIAogCXJldHVybiAwOwogfQotZGV2
+aWNlX2luaXRjYWxsKGlteDUxX3ByaW50X3NpbGljb25fcmV2KTsKIAogc3RhdGljIGludCBpbXg1
+MV9pbml0KHZvaWQpCiB7CmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbXg1My5jIGIv
+YXJjaC9hcm0vbWFjaC1pbXgvaW14NTMuYwppbmRleCA1NjlkOGY0Li4wNTllZjcyIDEwMDY0NAot
+LS0gYS9hcmNoL2FybS9tYWNoLWlteC9pbXg1My5jCisrKyBiL2FyY2gvYXJtL21hY2gtaW14L2lt
+eDUzLmMKQEAgLTIzLDggKzIzLDYgQEAKIAogI2RlZmluZSBTSV9SRVYgMHg0OAogCi1zdGF0aWMg
+Y2hhciAqbXg1M19yZXZfc3RyaW5nID0gInVua25vd24iOwotCiBzdGF0aWMgaW50IGlteDUzX3Np
+bGljb25fcmV2aXNpb24odm9pZCkKIHsKIAl2b2lkIF9faW9tZW0gKnJvbSA9IE1YNTNfSVJPTV9C
+QVNFX0FERFI7CkBAIC0zNSwzMiArMzMsMjEgQEAgc3RhdGljIGludCBpbXg1M19zaWxpY29uX3Jl
+dmlzaW9uKHZvaWQpCiAJc3dpdGNoIChyZXYpIHsKIAljYXNlIDB4MTA6CiAJCW14NTNfc2lsaWNv
+bl9yZXZpc2lvbiA9IElNWF9DSElQX1JFVl8xXzA7Ci0JCW14NTNfcmV2X3N0cmluZyA9ICIxLjAi
+OwogCQlicmVhazsKIAljYXNlIDB4MjA6CiAJCW14NTNfc2lsaWNvbl9yZXZpc2lvbiA9IElNWF9D
+SElQX1JFVl8yXzA7Ci0JCW14NTNfcmV2X3N0cmluZyA9ICIyLjAiOwogCQlicmVhazsKIAljYXNl
+IDB4MjE6CiAJCW14NTNfc2lsaWNvbl9yZXZpc2lvbiA9IElNWF9DSElQX1JFVl8yXzE7Ci0JCW14
+NTNfcmV2X3N0cmluZyA9ICIyLjEiOwogCQlicmVhazsKIAlkZWZhdWx0OgogCQlteDUzX3NpbGlj
+b25fcmV2aXNpb24gPSAwOwogCX0KIAotCWlteF9zZXRfc2lsaWNvbl9yZXZpc2lvbihteDUzX3Np
+bGljb25fcmV2aXNpb24pOwotCi0JcmV0dXJuIDA7Ci19Ci0KLXN0YXRpYyBpbnQgaW14NTNfcHJp
+bnRfc2lsaWNvbl9yZXYodm9pZCkKLXsKLQlwcmludGYoImRldGVjdGVkIGkuTVg1MyByZXYgJXNc
+biIsIG14NTNfcmV2X3N0cmluZyk7CisJaW14X3NldF9zaWxpY29uX3JldmlzaW9uKCJpLk1YNTMi
+LCBteDUzX3NpbGljb25fcmV2aXNpb24pOwogCiAJcmV0dXJuIDA7CiB9Ci1kZXZpY2VfaW5pdGNh
+bGwoaW14NTNfcHJpbnRfc2lsaWNvbl9yZXYpOwogCiBzdGF0aWMgaW50IGlteDUzX2luaXQodm9p
+ZCkKIHsKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtaW14L2luY2x1ZGUvbWFjaC9yZXZpc2lv
+bi5oIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL3JldmlzaW9uLmgKaW5kZXggYjZi
+MDZlZi4uYmM2ZjIwYSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNo
+L3JldmlzaW9uLmgKKysrIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW5jbHVkZS9tYWNoL3JldmlzaW9u
+LmgKQEAgLTE3LDYgKzE3LDYgQEAKIAogaW50IGlteF9zaWxpY29uX3JldmlzaW9uKHZvaWQpOwog
+Ci12b2lkIGlteF9zZXRfc2lsaWNvbl9yZXZpc2lvbihpbnQgcmV2aXNpb24pOwordm9pZCBpbXhf
+c2V0X3NpbGljb25fcmV2aXNpb24oY29uc3QgY2hhciAqc29jLCBpbnQgcmV2aXNpb24pOwogCiAj
+ZW5kaWYgLyogX19NQUNIX1JFVklTSU9OX0hfXyAqLwotLSAKMS43LjEwLjQKCgpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
+dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
