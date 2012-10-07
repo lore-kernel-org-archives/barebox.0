@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TKo7x-0004GR-0h
- for barebox@lists.infradead.org; Sun, 07 Oct 2012 10:30:31 +0000
-Date: Sun, 7 Oct 2012 12:30:27 +0200
+ id 1TKoBx-0004dA-BB
+ for barebox@lists.infradead.org; Sun, 07 Oct 2012 10:34:38 +0000
+Date: Sun, 7 Oct 2012 12:34:34 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121007103027.GE1322@pengutronix.de>
+Message-ID: <20121007103434.GF1322@pengutronix.de>
 References: <1349476393-25520-1-git-send-email-vicencb@gmail.com>
- <1349476393-25520-11-git-send-email-vicencb@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1349476393-25520-11-git-send-email-vicencb@gmail.com>
+In-Reply-To: <1349476393-25520-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,38 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 10/11] mach-types: add ID for Archos G9 tablet
+Subject: Re: [PATCH 00/11] archosg9: add support for tablet, third round
 To: vj <vicencb@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Oct 06, 2012 at 12:33:12AM +0200, vj wrote:
-> 
-> Signed-off-by: vj <vicencb@gmail.com>
-> ---
->  arch/arm/tools/mach-types | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/arm/tools/mach-types b/arch/arm/tools/mach-types
-> index 325513f..a21da3b 100644
-> --- a/arch/arm/tools/mach-types
-> +++ b/arch/arm/tools/mach-types
-> @@ -4148,3 +4148,4 @@ msm8625_evt		MACH_MSM8625_EVT	MSM8625_EVT		4193
->  mx53_sellwood		MACH_MX53_SELLWOOD	MX53_SELLWOOD		4194
->  somiq_am35		MACH_SOMIQ_AM35		SOMIQ_AM35		4195
->  somiq_am37		MACH_SOMIQ_AM37		SOMIQ_AM37		4196
-> +omap4_archosg9		MACH_OMAP4_ARCHOSG9	OMAP4_ARCHOSG9		5032
+Hi vj,
 
-Please no manual updates to this file, they will be overwritten once the
-next update from:
+On Sat, Oct 06, 2012 at 12:33:02AM +0200, vj wrote:
+> Hello,
+>  here is the third round of patches including most of the
+>  modifications suggested by your comments, which are greatly
+>  appreciated.  one of the modifications not done is the move of the
+>  usb-booting infrastructure into a driver. Jean, can you please add
+>  more information about this? Thanks.
+>  
+>  scripts/checkpatch.pl returns two errors: "Macros with complex values
+>  should be enclosed in parenthesis", but in this case parenthesis
+>  can't be added, any suggestion?
 
-http://www.arm.linux.org.uk/developer/machines/download.php
+Could you post the macros which give this error?
 
-comes in. I see that the Archos G9 does not have a machine id
-registered. You can register one yourself at:
-
-http://www.arm.linux.org.uk/developer/machines/
-
-btw is 5032 the id Archos uses or did you think it up yourself?
+Overall apart from the little comments I made the series looks quite
+good now. Thanks, nice work ;)
 
 Sascha
 
