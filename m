@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-f177.google.com ([74.125.82.177])
+Received: from mail-wg0-f49.google.com ([74.125.82.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TKyv4-0006RO-DL
- for barebox@lists.infradead.org; Sun, 07 Oct 2012 22:01:55 +0000
-Received: by mail-we0-f177.google.com with SMTP id u50so2294765wey.36
- for <barebox@lists.infradead.org>; Sun, 07 Oct 2012 15:01:54 -0700 (PDT)
+ id 1TKyux-0006Qv-7p
+ for barebox@lists.infradead.org; Sun, 07 Oct 2012 22:01:47 +0000
+Received: by mail-wg0-f49.google.com with SMTP id gg4so2100962wgb.18
+ for <barebox@lists.infradead.org>; Sun, 07 Oct 2012 15:01:45 -0700 (PDT)
 From: Vicente <vicencb@gmail.com>
-Date: Mon,  8 Oct 2012 00:01:20 +0200
-Message-Id: <1349647287-28224-7-git-send-email-vicencb@gmail.com>
+Date: Mon,  8 Oct 2012 00:01:15 +0200
+Message-Id: <1349647287-28224-2-git-send-email-vicencb@gmail.com>
 In-Reply-To: <1349647287-28224-1-git-send-email-vicencb@gmail.com>
 References: <1349647287-28224-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,72 +23,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/13] bootm: close open files
+Subject: [PATCH 01/13] twl6030: add debug info
 To: barebox@lists.infradead.org
 Cc: Vicente <vicencb@gmail.com>
 
 
 Signed-off-by: Vicente <vicencb@gmail.com>
 ---
- arch/arm/lib/bootm.c | 4 +++-
- commands/bootm.c     | 6 +++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/mfd/twl6030.c | 21 +++++++++++++++++++++
+ include/mfd/twl6030.h |  8 ++++++++
+ 2 files changed, 29 insertions(+)
 
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index c5b76ea..288c0b2 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -269,8 +269,9 @@ static int do_bootz_linux(struct image_data *data)
+diff --git a/drivers/mfd/twl6030.c b/drivers/mfd/twl6030.c
+index 01728fd..6b872ab 100644
+--- a/drivers/mfd/twl6030.c
++++ b/drivers/mfd/twl6030.c
+@@ -39,6 +39,27 @@ static int twl_probe(struct device_d *dev)
  
- 	ret = do_bootz_linux_fdt(fd, data);
- 	if (ret && ret != -ENXIO)
--		return ret;
-+		goto err_out;
+ 	devfs_create(&(twl_dev->core.cdev));
  
-+	close(fd);
- 	return __do_bootm_linux(data, swap);
- 
- err_out:
-@@ -431,6 +432,7 @@ static int do_bootm_aimage(struct image_data *data)
- 		reset_cpu(0);
- 	}
- 
-+	close(fd);
- 	return __do_bootm_linux(data, 0);
- 
- err_out:
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 8e51695..20b49f0 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -70,6 +70,7 @@ static int bootm_open_os_uimage(struct image_data *data)
- 		if (ret) {
- 			printf("Checking data crc failed with %s\n",
- 					strerror(-ret));
-+			uimage_close(data->os);
- 			return ret;
- 		}
- 	}
-@@ -79,6 +80,7 @@ static int bootm_open_os_uimage(struct image_data *data)
- 	if (data->os->header.ih_arch != IH_ARCH) {
- 		printf("Unsupported Architecture 0x%x\n",
- 		       data->os->header.ih_arch);
-+		uimage_close(data->os);
- 		return -EINVAL;
- 	}
- 
-@@ -88,8 +90,10 @@ static int bootm_open_os_uimage(struct image_data *data)
- 	if (data->os_address != UIMAGE_INVALID_ADDRESS) {
- 		data->os_res = uimage_load_to_sdram(data->os, 0,
- 				data->os_address);
--		if (!data->os_res)
-+		if (!data->os_res) {
-+			uimage_close(data->os);
- 			return -ENOMEM;
-+		}
- 	}
- 
++	if (IS_ENABLED(CONFIG_DEBUG)) {
++		u8 i, jtag_rev, eprom_rev;
++		int r;
++		u64 dieid;
++
++		r = twl6030_reg_read(twl_dev, TWL6030_JTAG_JTAGVERNUM,
++			&jtag_rev);
++		r |= twl6030_reg_read(twl_dev, TWL6030_JTAG_EPROM_REV,
++			&eprom_rev);
++		for (i = 0; i < 8; i++)
++			r |= twl6030_reg_read(twl_dev, TWL6030_DIEID_0+i,
++				((u8 *)(&dieid))+i);
++		if (r)
++			dev_dbg(dev, "TWL6030 Error reading ID\n");
++		else
++			dev_dbg(dev, "TWL6030 JTAG REV: 0x%02X, "
++				"EPROM REV: 0x%02X, "
++				"DIE ID: 0x%016llX\n",
++				(unsigned)jtag_rev, (unsigned)eprom_rev, dieid);
++	}
++
  	return 0;
+ }
+ 
+diff --git a/include/mfd/twl6030.h b/include/mfd/twl6030.h
+index f1278d4..bb4f773 100644
+--- a/include/mfd/twl6030.h
++++ b/include/mfd/twl6030.h
+@@ -371,6 +371,14 @@ enum twl6030_reg {
+ 	/* JTAG */
+ 	TWL6030_JTAG_JTAGVERNUM = 0x0287,
+ 	TWL6030_JTAG_EPROM_REV = 0x02DF,
++	TWL6030_DIEID_0 = 0x02C0,
++	TWL6030_DIEID_1 = 0x02C1,
++	TWL6030_DIEID_2 = 0x02C2,
++	TWL6030_DIEID_3 = 0x02C3,
++	TWL6030_DIEID_4 = 0x02C4,
++	TWL6030_DIEID_5 = 0x02C5,
++	TWL6030_DIEID_6 = 0x02C6,
++	TWL6030_DIEID_7 = 0x02C7,
+ 	/* GPADC Trimming */
+ 	TWL6030_GPADC_TRIM1 = 0x02CD,
+ 	TWL6030_GPADC_TRIM2 = 0x02CE,
 -- 
 1.7.12.2
 
