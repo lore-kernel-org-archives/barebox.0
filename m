@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f49.google.com ([74.125.82.49])
+Received: from mail-wi0-f177.google.com ([209.85.212.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TKyv1-0006Qv-1P
- for barebox@lists.infradead.org; Sun, 07 Oct 2012 22:01:53 +0000
-Received: by mail-wg0-f49.google.com with SMTP id gg4so2100962wgb.18
- for <barebox@lists.infradead.org>; Sun, 07 Oct 2012 15:01:50 -0700 (PDT)
+ id 1TKyuw-0006Qt-J4
+ for barebox@lists.infradead.org; Sun, 07 Oct 2012 22:01:47 +0000
+Received: by mail-wi0-f177.google.com with SMTP id hj13so2086452wib.0
+ for <barebox@lists.infradead.org>; Sun, 07 Oct 2012 15:01:43 -0700 (PDT)
 From: Vicente <vicencb@gmail.com>
-Date: Mon,  8 Oct 2012 00:01:18 +0200
-Message-Id: <1349647287-28224-5-git-send-email-vicencb@gmail.com>
-In-Reply-To: <1349647287-28224-1-git-send-email-vicencb@gmail.com>
-References: <1349647287-28224-1-git-send-email-vicencb@gmail.com>
+Date: Mon,  8 Oct 2012 00:01:14 +0200
+Message-Id: <1349647287-28224-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,308 +21,107 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/13] omap: revert gpiolib
+Subject: [PATCH 00/13] archosg9: add support for tablet, fourth round
 To: barebox@lists.infradead.org
 Cc: Vicente <vicencb@gmail.com>
 
+Hello,
+ here is the fourth round of patches including all of the modifications
+ suggested by your comments, which are greatly appreciated.
+  
+ The change 29e4031b460d1c84c1a8fc276199d40680b354d4 "ARM OMAP: switch to
+ gpiolib support" breaks support for the tablet and it's reverted here only to
+ make this patch-list feature-complete.
+ Can somebody check if gpiolib works for other OMAP4460-based boards?
+ 
+ New things added in this series:
+  bootm: do not leave files open
+  uimage: improve transfer speed
+  fs: improve robustness
+ 
+ Regards,
+  Vicente.
 
-Signed-off-by: Vicente <vicencb@gmail.com>
----
- arch/arm/Kconfig                   |   1 -
- arch/arm/mach-omap/gpio.c          | 170 ++++++++++++++++++++-----------------
- arch/arm/mach-omap/omap3_generic.c |  19 -----
- arch/arm/mach-omap/omap4_generic.c |  19 -----
- 4 files changed, 93 insertions(+), 116 deletions(-)
+Vicente (13):
+  twl6030: add debug info
+  omap4: add rename definitions to match datasheet
+  ARM: ensure irqs are disabled
+  omap: revert gpiolib
+  omap4: add usb boot source
+  bootm: close open files
+  uimage: improve transfer speed
+  fs: improve robustness
+  omap4: add support for booting cpu from usb
+  omap4: add serial communications over usb boot
+  omap4: add filesystem support over usb boot
+  omap4: add support for loading second stage from usb
+  Add support for Archos G9 tablet
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 8278c82..1cb56c5 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -60,7 +60,6 @@ config ARCH_NOMADIK
- config ARCH_OMAP
- 	bool "TI OMAP"
- 	select HAS_DEBUG_LL
--	select GPIOLIB
- 
- config ARCH_PXA
- 	bool "Intel/Marvell PXA based"
-diff --git a/arch/arm/mach-omap/gpio.c b/arch/arm/mach-omap/gpio.c
-index 376e9a7..bb5f30f 100644
---- a/arch/arm/mach-omap/gpio.c
-+++ b/arch/arm/mach-omap/gpio.c
-@@ -32,10 +32,11 @@
-  * published by the Free Software Foundation.
-  */
- #include <common.h>
-+#include <mach/gpio.h>
- #include <io.h>
- #include <errno.h>
--#include <gpio.h>
--#include <init.h>
-+
-+#ifdef CONFIG_ARCH_OMAP3
- 
- #define OMAP_GPIO_OE		0x0034
- #define OMAP_GPIO_DATAIN	0x0038
-@@ -43,114 +44,129 @@
- #define OMAP_GPIO_CLEARDATAOUT	0x0090
- #define OMAP_GPIO_SETDATAOUT	0x0094
- 
--struct omap_gpio_chip {
--	void __iomem *base;
--	struct gpio_chip chip;
-+static void __iomem *gpio_bank[] = {
-+	(void *)0x48310000,
-+	(void *)0x49050000,
-+	(void *)0x49052000,
-+	(void *)0x49054000,
-+	(void *)0x49056000,
-+	(void *)0x49058000,
-+};
-+#endif
-+
-+#ifdef CONFIG_ARCH_OMAP4
-+
-+#define OMAP_GPIO_OE		0x0134
-+#define OMAP_GPIO_DATAIN	0x0138
-+#define OMAP_GPIO_DATAOUT	0x013c
-+#define OMAP_GPIO_CLEARDATAOUT	0x0190
-+#define OMAP_GPIO_SETDATAOUT	0x0194
-+
-+static void __iomem *gpio_bank[] = {
-+	(void *)0x4a310000,
-+	(void *)0x48055000,
-+	(void *)0x48057000,
-+	(void *)0x48059000,
-+	(void *)0x4805b000,
-+	(void *)0x4805d000,
- };
-+#endif
- 
--static inline int omap_get_gpio_index(int gpio)
-+static inline void __iomem *get_gpio_base(int gpio)
- {
--	return gpio & 0x1f;
-+	return gpio_bank[gpio >> 5];
- }
- 
--static void omap_gpio_set_value(struct gpio_chip *chip,
--					unsigned gpio, int value)
-+static inline int get_gpio_index(int gpio)
- {
--	struct omap_gpio_chip *omapgpio =
--			container_of(chip, struct omap_gpio_chip, chip);
--	void __iomem *base = omapgpio->base;
--	u32 l = 0;
--
--	if (value)
--		base += OMAP_GPIO_SETDATAOUT;
--	else
--		base += OMAP_GPIO_CLEARDATAOUT;
-+	return gpio & 0x1f;
-+}
- 
--	l = 1 << omap_get_gpio_index(gpio);
-+static inline int gpio_valid(int gpio)
-+{
-+	if (gpio < 0)
-+		return -1;
-+	if (gpio / 32 < ARRAY_SIZE(gpio_bank))
-+		return 0;
-+	return -1;
-+}
- 
--	writel(l, base);
-+static int check_gpio(int gpio)
-+{
-+	if (gpio_valid(gpio) < 0) {
-+		printf("ERROR : check_gpio: invalid GPIO %d\n", gpio);
-+		return -1;
-+	}
-+	return 0;
- }
- 
--static int omap_gpio_direction_input(struct gpio_chip *chip,
--					unsigned gpio)
-+void gpio_set_value(unsigned gpio, int value)
- {
--	struct omap_gpio_chip *omapgpio =
--			container_of(chip, struct omap_gpio_chip, chip);
--	void __iomem *base = omapgpio->base;
--	u32 val;
-+	void __iomem *reg;
-+	u32 l = 0;
- 
--	base += OMAP_GPIO_OE;
-+	if (check_gpio(gpio) < 0)
-+		return;
- 
--	val = readl(base);
--	val |= 1 << omap_get_gpio_index(gpio);
--	writel(val, base);
-+	reg = get_gpio_base(gpio);
- 
--	return 0;
-+	if (value)
-+		reg += OMAP_GPIO_SETDATAOUT;
-+	else
-+		reg += OMAP_GPIO_CLEARDATAOUT;
-+	l = 1 << get_gpio_index(gpio);
-+
-+	__raw_writel(l, reg);
- }
- 
--static int omap_gpio_direction_output(struct gpio_chip *chip,
--					unsigned gpio, int value)
-+int gpio_direction_input(unsigned gpio)
- {
--	struct omap_gpio_chip *omapgpio =
--			container_of(chip, struct omap_gpio_chip, chip);
--	void __iomem *base = omapgpio->base;
-+	void __iomem *reg;
- 	u32 val;
- 
--	omap_gpio_set_value(chip, gpio, value);
-+	if (check_gpio(gpio) < 0)
-+		return -EINVAL;
-+
-+	reg = get_gpio_base(gpio);
- 
--	base += OMAP_GPIO_OE;
-+	reg += OMAP_GPIO_OE;
- 
--	val = readl(base);
--	val &= ~(1 << omap_get_gpio_index(gpio));
--	writel(val, base);
-+	val = __raw_readl(reg);
-+	val |= 1 << get_gpio_index(gpio);
-+	__raw_writel(val, reg);
- 
- 	return 0;
- }
- 
--static int omap_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
-+int gpio_direction_output(unsigned gpio, int value)
- {
--	struct omap_gpio_chip *omapgpio =
--			container_of(chip, struct omap_gpio_chip, chip);
--	void __iomem *base = omapgpio->base;
--
--	base  += OMAP_GPIO_DATAIN;
--
--	return (readl(base) & (1 << omap_get_gpio_index(gpio))) != 0;
--
--}
-+	void __iomem *reg;
-+	u32 val;
- 
--static struct gpio_ops omap_gpio_ops = {
--	.direction_input = omap_gpio_direction_input,
--	.direction_output = omap_gpio_direction_output,
--	.get = omap_gpio_get_value,
--	.set = omap_gpio_set_value,
--};
-+	if (check_gpio(gpio) < 0)
-+		return -EINVAL;
-+	reg = get_gpio_base(gpio);
- 
--static int omap_gpio_probe(struct device_d *dev)
--{
--	struct omap_gpio_chip *omapgpio;
-+	gpio_set_value(gpio, value);
- 
--	omapgpio = xzalloc(sizeof(*omapgpio));
--	omapgpio->base = dev_request_mem_region(dev, 0);
--	omapgpio->chip.ops = &omap_gpio_ops;
--	omapgpio->chip.base = -1;
--	omapgpio->chip.ngpio = 32;
--	omapgpio->chip.dev = dev;
--	gpiochip_add(&omapgpio->chip);
-+	reg += OMAP_GPIO_OE;
- 
--	dev_dbg(dev, "probed gpiochip%d with base %d\n",
--				dev->id, omapgpio->chip.base);
-+	val = __raw_readl(reg);
-+	val &= ~(1 << get_gpio_index(gpio));
-+	__raw_writel(val, reg);
- 
- 	return 0;
- }
- 
--static struct driver_d omap_gpio_driver = {
--	.name = "omap-gpio",
--	.probe = omap_gpio_probe,
--};
--
--static int omap_gpio_add(void)
-+int gpio_get_value(unsigned gpio)
- {
--	return platform_driver_register(&omap_gpio_driver);
-+	void __iomem *reg;
-+
-+	if (check_gpio(gpio) < 0)
-+		return -EINVAL;
-+	reg = get_gpio_base(gpio);
-+
-+	reg += OMAP_GPIO_DATAIN;
-+
-+	return (__raw_readl(reg) & (1 << get_gpio_index(gpio))) != 0;
- }
--coredevice_initcall(omap_gpio_add);
-diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
-index 5028e9a..af26af4 100644
---- a/arch/arm/mach-omap/omap3_generic.c
-+++ b/arch/arm/mach-omap/omap3_generic.c
-@@ -511,22 +511,3 @@ const struct gpmc_config omap3_nand_cfg = {
- 	.base = 0x28000000,
- 	.size = GPMC_SIZE_16M,
- };
--
--static int omap3_gpio_init(void)
--{
--	add_generic_device("omap-gpio", 0, NULL, 0x48310000,
--					0x100, IORESOURCE_MEM, NULL);
--	add_generic_device("omap-gpio", 1, NULL, 0x49050000,
--					0x100, IORESOURCE_MEM, NULL);
--	add_generic_device("omap-gpio", 2, NULL, 0x49052000,
--					0x100, IORESOURCE_MEM, NULL);
--	add_generic_device("omap-gpio", 3, NULL, 0x49054000,
--					0x100, IORESOURCE_MEM, NULL);
--	add_generic_device("omap-gpio", 4, NULL, 0x49056000,
--					0x100, IORESOURCE_MEM, NULL);
--	add_generic_device("omap-gpio", 5, NULL, 0x49058000,
--					0x100, IORESOURCE_MEM, NULL);
--
--	return 0;
--}
--coredevice_initcall(omap3_gpio_init);
-diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
-index a159dfc..617d786 100644
---- a/arch/arm/mach-omap/omap4_generic.c
-+++ b/arch/arm/mach-omap/omap4_generic.c
-@@ -572,22 +572,3 @@ const struct gpmc_config omap4_nand_cfg = {
- 	.base = 0x28000000,
- 	.size = GPMC_SIZE_16M,
- };
--
--static int omap4_gpio_init(void)
--{
--	add_generic_device("omap-gpio", 0, NULL, 0x4a310100,
--				0x1000, IORESOURCE_MEM, NULL);
--	add_generic_device("omap-gpio", 1, NULL, 0x48055100,
--				0x1000, IORESOURCE_MEM, NULL);
--	add_generic_device("omap-gpio", 2, NULL, 0x48057100,
--				0x1000, IORESOURCE_MEM, NULL);
--	add_generic_device("omap-gpio", 3, NULL, 0x48059100,
--				0x1000, IORESOURCE_MEM, NULL);
--	add_generic_device("omap-gpio", 4, NULL, 0x4805b100,
--				0x1000, IORESOURCE_MEM, NULL);
--	add_generic_device("omap-gpio", 5, NULL, 0x4805d100,
--				0x1000, IORESOURCE_MEM, NULL);
--
--	return 0;
--}
--coredevice_initcall(omap4_gpio_init);
+ Documentation/oamp4_usb_booting.txt             |  27 ++
+ arch/arm/Kconfig                                |   1 -
+ arch/arm/Makefile                               |   1 +
+ arch/arm/boards/archosg9/Makefile               |   3 +
+ arch/arm/boards/archosg9/board.c                |  71 ++++
+ arch/arm/boards/archosg9/config.h               |   1 +
+ arch/arm/boards/archosg9/env/config             |   1 +
+ arch/arm/boards/archosg9/env/init/usbboot       |   5 +
+ arch/arm/boards/archosg9/lowlevel.c             |  79 ++++
+ arch/arm/boards/archosg9/mux.c                  | 459 ++++++++++++++++++++++++
+ arch/arm/boards/archosg9/mux.h                  |   6 +
+ arch/arm/boards/panda/mux.c                     |  52 +--
+ arch/arm/boards/pcm049/mux.c                    |  44 +--
+ arch/arm/boards/phycard-a-xl2/mux.c             |  46 +--
+ arch/arm/configs/archosg9_defconfig             |  70 ++++
+ arch/arm/configs/archosg9_xload_defconfig       |  24 ++
+ arch/arm/cpu/cpu.c                              |  11 +
+ arch/arm/lib/bootm.c                            |   4 +-
+ arch/arm/mach-omap/Kconfig                      |  18 +
+ arch/arm/mach-omap/Makefile                     |   1 +
+ arch/arm/mach-omap/gpio.c                       | 170 +++++----
+ arch/arm/mach-omap/include/mach/omap4-mux.h     |  80 +++--
+ arch/arm/mach-omap/include/mach/omap4-silicon.h |  13 +
+ arch/arm/mach-omap/include/mach/omap4_rom_usb.h | 141 ++++++++
+ arch/arm/mach-omap/include/mach/xload.h         |   1 +
+ arch/arm/mach-omap/omap3_generic.c              |  19 -
+ arch/arm/mach-omap/omap4_generic.c              |  44 +--
+ arch/arm/mach-omap/omap4_rom_usb.c              | 198 ++++++++++
+ arch/arm/mach-omap/xload.c                      |  26 ++
+ commands/bootm.c                                |   6 +-
+ common/uimage.c                                 |  26 +-
+ drivers/mfd/twl6030.c                           |  21 ++
+ drivers/serial/Kconfig                          |   7 +
+ drivers/serial/Makefile                         |   1 +
+ drivers/serial/serial_omap4_usbboot.c           |  83 +++++
+ fs/Kconfig                                      |   5 +
+ fs/Makefile                                     |   1 +
+ fs/fs.c                                         |  27 +-
+ fs/omap4_usbbootfs.c                            | 219 +++++++++++
+ include/mfd/twl6030.h                           |   8 +
+ scripts/.gitignore                              |   1 +
+ scripts/Makefile                                |   4 +
+ scripts/omap4_usbboot.c                         | 415 +++++++++++++++++++++
+ scripts/usb.h                                   |  61 ++++
+ scripts/usb_linux.c                             | 397 ++++++++++++++++++++
+ 45 files changed, 2663 insertions(+), 235 deletions(-)
+ create mode 100644 Documentation/oamp4_usb_booting.txt
+ create mode 100644 arch/arm/boards/archosg9/Makefile
+ create mode 100644 arch/arm/boards/archosg9/board.c
+ create mode 100644 arch/arm/boards/archosg9/config.h
+ create mode 100644 arch/arm/boards/archosg9/env/config
+ create mode 100644 arch/arm/boards/archosg9/env/init/usbboot
+ create mode 100644 arch/arm/boards/archosg9/lowlevel.c
+ create mode 100644 arch/arm/boards/archosg9/mux.c
+ create mode 100644 arch/arm/boards/archosg9/mux.h
+ create mode 100644 arch/arm/configs/archosg9_defconfig
+ create mode 100644 arch/arm/configs/archosg9_xload_defconfig
+ create mode 100644 arch/arm/mach-omap/include/mach/omap4_rom_usb.h
+ create mode 100644 arch/arm/mach-omap/omap4_rom_usb.c
+ create mode 100644 drivers/serial/serial_omap4_usbboot.c
+ create mode 100644 fs/omap4_usbbootfs.c
+ create mode 100644 scripts/omap4_usbboot.c
+ create mode 100644 scripts/usb.h
+ create mode 100644 scripts/usb_linux.c
+
 -- 
 1.7.12.2
 
