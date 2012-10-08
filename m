@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TLJFf-0005BA-Ma
- for barebox@lists.infradead.org; Mon, 08 Oct 2012 19:44:32 +0000
+ id 1TLJFX-00058U-MX
+ for barebox@lists.infradead.org; Mon, 08 Oct 2012 19:44:28 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  8 Oct 2012 21:44:18 +0200
-Message-Id: <1349725459-20226-10-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  8 Oct 2012 21:44:14 +0200
+Message-Id: <1349725459-20226-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1349725459-20226-1-git-send-email-s.hauer@pengutronix.de>
 References: <1349725459-20226-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,87 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/10] video i.MX: Use regular clk_[en|dis]able functions
+Subject: [PATCH 05/10] ARM i.MX25: Enable all needed clocks during startup
 To: barebox@lists.infradead.org
-
-This controller has no enable bit. It is always on once the
-pixel clock is provided. This patch switches the driver to use
-regular clk functions instead of SoC specific register hacking.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/imx.c |   44 +++++---------------------------------------
- 1 file changed, 5 insertions(+), 39 deletions(-)
+ arch/arm/mach-imx/clk-imx25.c |   16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/imx.c b/drivers/video/imx.c
-index 9406b36..ae4c671 100644
---- a/drivers/video/imx.c
-+++ b/drivers/video/imx.c
-@@ -252,19 +252,9 @@ static void imxfb_enable_controller(struct fb_info *info)
- 	struct imxfb_info *fbi = info->priv;
+diff --git a/arch/arm/mach-imx/clk-imx25.c b/arch/arm/mach-imx/clk-imx25.c
+index 3b9588c..3a141c2 100644
+--- a/arch/arm/mach-imx/clk-imx25.c
++++ b/arch/arm/mach-imx/clk-imx25.c
+@@ -76,9 +76,19 @@ static int imx25_ccm_probe(struct device_d *dev)
  
- 	writel(RMCR_LCDC_EN, fbi->regs + LCDC_RMCR);
--#ifdef CONFIG_ARCH_IMX21
--	PCCR0 |= PCCR0_PERCLK3_EN | PCCR0_HCLK_LCDC_EN;
--#endif
--#ifdef CONFIG_ARCH_IMX27
--	PCCR0 |= PCCR0_LCDC_EN;
--	PCCR1 |= PCCR1_HCLK_LCDC;
--#endif
--#ifdef CONFIG_ARCH_IMX25
--	writel(readl(IMX_CCM_BASE + CCM_CGCR0) | (1 << 24) | (1 << 7),
--		IMX_CCM_BASE + CCM_CGCR0);
--	writel(readl(IMX_CCM_BASE + CCM_CGCR1) | (1 << 29),
--		IMX_CCM_BASE + CCM_CGCR1);
--#endif
+ 	base = dev_request_mem_region(dev, 0);
+ 
+-	writel(0x10e88578, base + CCM_CGCR0);
+-	writel(0x0478e1e0, base + CCM_CGCR0);
+-	writel(0x0007c400, base + CCM_CGCR0);
++	writel((1 << 3) | (1 << 4) | (1 << 5) | (1 << 6) | (1 << 8) | (1 << 9) |
++			(1 << 10) | (1 << 15) |	(1 << 19) | (1 << 21) | (1 << 22) |
++			(1 << 22) | (1 << 23) | (1 << 24) | (1 << 28),
++			base + CCM_CGCR0);
 +
-+	clk_enable(fbi->clk);
++	writel((1 << 5) | (1 << 6) | (1 << 7) | (1 << 8) | (1 << 13) | (1 << 14) |
++			(1 << 15) | (1 << 19) | (1 << 20) | (1 << 21) | (1 << 22) |
++			(1 << 26) | (1 << 29) | (1 << 31),
++			base + CCM_CGCR1);
 +
- 	if (fbi->enable)
- 		fbi->enable(1);
- }
-@@ -277,19 +267,8 @@ static void imxfb_disable_controller(struct fb_info *info)
- 		fbi->enable(0);
++	writel((1 << 0) | (1 << 1) | (1 << 2) | (1 << 10) | (1 << 13) | (1 << 14) |
++			(1 << 15) | (1 << 16) | (1 << 17) | (1 << 18),
++			base + CCM_CGCR2);
  
- 	writel(0, fbi->regs + LCDC_RMCR);
--#ifdef CONFIG_ARCH_IMX21
--	PCCR0 &= ~(PCCR0_PERCLK3_EN | PCCR0_HCLK_LCDC_EN);
--#endif
--#ifdef CONFIG_ARCH_IMX27
--	PCCR0 &= ~PCCR0_LCDC_EN;
--	PCCR1 &= ~PCCR1_HCLK_LCDC;
--#endif
--#ifdef CONFIG_ARCH_IMX25
--	writel(readl(IMX_CCM_BASE + CCM_CGCR0) & ~((1 << 24) | (1 << 7)),
--		IMX_CCM_BASE + CCM_CGCR0);
--	writel(readl(IMX_CCM_BASE + CCM_CGCR1) & ~(1 << 29),
--		IMX_CCM_BASE + CCM_CGCR1);
--#endif
-+
-+	clk_disable(fbi->clk);
- }
- 
- /*
-@@ -541,19 +520,6 @@ static int imxfb_probe(struct device_d *dev)
- 	if (!pdata)
- 		return -ENODEV;
- 
--#ifdef CONFIG_ARCH_IMX21
--	PCCR0 &= ~(PCCR0_PERCLK3_EN | PCCR0_HCLK_LCDC_EN);
--#endif
--#ifdef CONFIG_ARCH_IMX27
--	PCCR0 &= ~PCCR0_LCDC_EN;
--	PCCR1 &= ~PCCR1_HCLK_LCDC;
--#endif
--#ifdef CONFIG_ARCH_IMX25
--	writel(readl(IMX_CCM_BASE + CCM_CGCR0) & ~((1 << 24) | (1 << 7)),
--		IMX_CCM_BASE + CCM_CGCR0);
--	writel(readl(IMX_CCM_BASE + CCM_CGCR1) & ~(1 << 29),
--		IMX_CCM_BASE + CCM_CGCR1);
--#endif
- 	if (!pdata->num_modes) {
- 		dev_err(dev, "no modes. bailing out\n");
- 		return -EINVAL;
+ 	clks[dummy] = clk_fixed("dummy", 0);
+ 	clks[osc] = clk_fixed("osc", 24000000);
 -- 
 1.7.10.4
 
