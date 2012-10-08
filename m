@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-f177.google.com ([74.125.82.177])
+Received: from smtp28.mail.ru ([94.100.176.181])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TKyvB-0006RO-UV
- for barebox@lists.infradead.org; Sun, 07 Oct 2012 22:02:03 +0000
-Received: by mail-we0-f177.google.com with SMTP id u50so2294765wey.36
- for <barebox@lists.infradead.org>; Sun, 07 Oct 2012 15:02:01 -0700 (PDT)
-From: Vicente <vicencb@gmail.com>
-Date: Mon,  8 Oct 2012 00:01:24 +0200
-Message-Id: <1349647287-28224-11-git-send-email-vicencb@gmail.com>
-In-Reply-To: <1349647287-28224-1-git-send-email-vicencb@gmail.com>
-References: <1349647287-28224-1-git-send-email-vicencb@gmail.com>
+ id 1TL6vq-0002Qk-VR
+ for barebox@lists.infradead.org; Mon, 08 Oct 2012 06:35:16 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Mon,  8 Oct 2012 10:35:04 +0400
+Message-Id: <1349678104-4531-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,135 +19,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/13] omap4: add serial communications over usb boot
+Subject: [PATCH v2] Add more generated files to .gitignore
 To: barebox@lists.infradead.org
-Cc: Vicente <vicencb@gmail.com>
 
+This patch adds at least one more generated file to .gitignore list:
 
-Signed-off-by: Vicente <vicencb@gmail.com>
+shc@shc /home/git/bb_clps3 $ git status
+# On branch my
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#       barebox-flash-image
+
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/serial/Kconfig                |  7 +++
- drivers/serial/Makefile               |  1 +
- drivers/serial/serial_omap4_usbboot.c | 83 +++++++++++++++++++++++++++++++++++
- 3 files changed, 91 insertions(+)
- create mode 100644 drivers/serial/serial_omap4_usbboot.c
+ .gitignore |   12 +-----------
+ 1 files changed, 1 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index 7eb96ed..0627b6e 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -100,4 +100,11 @@ config DRIVER_SERIAL_PXA
- 	bool "PXA serial driver"
- 	depends on ARCH_PXA
+diff --git a/.gitignore b/.gitignore
+index 9af6710..81e74a0 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -26,21 +26,11 @@
+ #
+ tags
+ TAGS
++barebox*
+ cross_arch
+ cross_compile
+-barebox
+-barebox.S
+-barebox.bin
+-barebox.srec
+-barebox.netx
+-barebox.s5p
+-barebox.spi
+-barebox.ubl
+-barebox.uimage
+-barebox.map
+ System.map
+ Module.symvers
+-barebox_default_env*
  
-+config DRIVER_SERIAL_OMAP4_USBBOOT
-+	bool "serial driver over omap4 usb"
-+	default n
-+	depends on OMAP4_USBBOOT
-+	help
-+	  Enable this to get console support over the usb bus used to boot an OMAP4
-+
- endmenu
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index e2d56b9..ff99e72 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -19,3 +19,4 @@ obj-$(CONFIG_DRIVER_SERIAL_S3C)			+= serial_s3c.o
- obj-$(CONFIG_DRIVER_SERIAL_ALTERA)		+= serial_altera.o
- obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)		+= serial_altera_jtag.o
- obj-$(CONFIG_DRIVER_SERIAL_PXA)			+= serial_pxa.o
-+obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)	+= serial_omap4_usbboot.o
-diff --git a/drivers/serial/serial_omap4_usbboot.c b/drivers/serial/serial_omap4_usbboot.c
-new file mode 100644
-index 0000000..f0a2fd1
---- /dev/null
-+++ b/drivers/serial/serial_omap4_usbboot.c
-@@ -0,0 +1,83 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include <errno.h>
-+#include <mach/omap4_rom_usb.h>
-+
-+struct serial_omap4_usbboot_priv {
-+	struct console_device cdev;
-+	u32 val;
-+};
-+
-+static void serial_omap4_usbboot_putc(struct console_device *cdev, char c)
-+{
-+	unsigned b = c;
-+	omap4_usbboot_write(&b, 4);
-+}
-+
-+static int serial_omap4_usbboot_tstc(struct console_device *cdev)
-+{
-+	struct serial_omap4_usbboot_priv *priv =
-+		container_of(cdev, struct serial_omap4_usbboot_priv, cdev);
-+	if (omap4_usbboot_is_read_waiting())
-+		return 0;
-+	else if (omap4_usbboot_is_read_ok())
-+		return 1;
-+	omap4_usbboot_queue_read(&priv->val, 4);
-+	udelay(100);
-+	if (omap4_usbboot_is_read_waiting())
-+		return 0;
-+	else if (omap4_usbboot_is_read_ok())
-+		return 1;
-+	return 0;
-+}
-+
-+static int serial_omap4_usbboot_getc(struct console_device *cdev)
-+{
-+	struct serial_omap4_usbboot_priv *priv =
-+		container_of(cdev, struct serial_omap4_usbboot_priv, cdev);
-+	if (omap4_usbboot_is_read_waiting() || omap4_usbboot_is_read_ok()) {
-+		omap4_usbboot_wait_read();
-+		return priv->val;
-+	}
-+	omap4_usbboot_read(&priv->val, 4);
-+	return priv->val;
-+}
-+
-+static int serial_omap4_usbboot_probe(struct device_d *dev)
-+{
-+	struct serial_omap4_usbboot_priv *priv;
-+	priv = xzalloc(sizeof(*priv));
-+
-+	priv->cdev.dev = dev;
-+	priv->cdev.f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
-+	priv->cdev.tstc = serial_omap4_usbboot_tstc;
-+	priv->cdev.putc = serial_omap4_usbboot_putc;
-+	priv->cdev.getc = serial_omap4_usbboot_getc;
-+	priv->cdev.setbrg = NULL;
-+
-+	return console_register(&priv->cdev);
-+}
-+
-+static struct driver_d serial_omap4_usbboot_driver = {
-+	.name = "serial_omap4_usbboot",
-+	.probe = serial_omap4_usbboot_probe,
-+};
-+
-+static int serial_omap4_usbboot_init(void)
-+{
-+	return platform_driver_register(&serial_omap4_usbboot_driver);
-+}
-+console_initcall(serial_omap4_usbboot_init);
+ #
+ # Generated include files
 -- 
-1.7.12.2
+1.7.3.4
 
 
 _______________________________________________
