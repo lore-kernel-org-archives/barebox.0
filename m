@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f160.mail.ru ([217.69.128.112])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TL9Z7-00056L-N1
- for barebox@lists.infradead.org; Mon, 08 Oct 2012 09:23:58 +0000
-Received: from mail by f160.mail.ru with local (envelope-from
- <shc_work@mail.ru>) id 1TL9Z5-0000JV-0E
- for barebox@lists.infradead.org; Mon, 08 Oct 2012 13:23:55 +0400
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Mon, 08 Oct 2012 13:23:54 +0400
-Message-ID: <1349688234.526637681@f160.mail.ru>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from 12.mo5.mail-out.ovh.net ([46.105.39.65]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TL9eV-0006YB-UQ
+ for barebox@lists.infradead.org; Mon, 08 Oct 2012 09:29:33 +0000
+Received: from mail629.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id B8F0FFF8F39
+ for <barebox@lists.infradead.org>; Mon,  8 Oct 2012 11:35:55 +0200 (CEST)
+Date: Mon, 8 Oct 2012 11:27:06 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121008092706.GX26553@game.jcrosoft.org>
+References: <1349614983-12495-1-git-send-email-plagnioj@jcrosoft.com>
+ <20121008090313.GA5498@sig21.net>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20121008090313.GA5498@sig21.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,17 +27,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVncmVzc2lvbiBvbiBsYXRlc3QgYmFyZWJveA==?=
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1] designware: add clock support
+To: Johannes Stezenbach <js@sig21.net>
+Cc: barebox@lists.infradead.org
 
-Hello.
+On 11:03 Mon 08 Oct     , Johannes Stezenbach wrote:
+> On Sun, Oct 07, 2012 at 03:03:03PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > allow the driver to request it's clock and enable it
+> ...
+> > +	clk = clk_get(dev, NULL);
+> > +	if (IS_ERR(clk)) {
+> > +		ret = PTR_ERR(clk);
+> > +		dev_err(dev, "no clk ret = %d\n", ret);
+> > +		return ret;
+> > +	}
+> 
+> Just a minor nit: s/allow/require/.  Users of the driver may
+> now have to define a dummy clock.  Since the actual clock freqeuency
+> is not used by the driver you could also make it optional?
+> 
+> And while at it, it's "its", not "it's". :-)
+srry but there is no user at hte mainline and I'm preparing the ST support
+where I nned to enabld the clock and this IP require 2 clock one for the gmac
+and one for phy
 
-Latest master sources have a regression due migrate to use platform_device_register functions.
-Now I cannot register cfi_flash device which resides at 0x0, because it have conflicts with "mem"
-command which have same start address.
-Thanks!
+so no please provide a clock on generic drivers I do want to use the clk
+framework
 
----
+btw which SoC do you use because I see no code for it
+
+Best Regards,
+J.
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
