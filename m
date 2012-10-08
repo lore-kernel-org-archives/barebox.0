@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TLJFX-00058Y-MZ
- for barebox@lists.infradead.org; Mon, 08 Oct 2012 19:44:29 +0000
+ id 1TLJFW-00058E-QP
+ for barebox@lists.infradead.org; Mon, 08 Oct 2012 19:44:26 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1TLJFU-0001Y9-MO
+ for barebox@lists.infradead.org; Mon, 08 Oct 2012 21:44:20 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1TLJFU-0005Ig-Ll
+ for barebox@lists.infradead.org; Mon, 08 Oct 2012 21:44:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  8 Oct 2012 21:44:17 +0200
-Message-Id: <1349725459-20226-9-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1349725459-20226-1-git-send-email-s.hauer@pengutronix.de>
-References: <1349725459-20226-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  8 Oct 2012 21:44:09 +0200
+Message-Id: <1349725459-20226-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,49 +26,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/10] ARM i.MX25: Add lcdc per gate
+Subject: [PATCH] i.MX clk
 To: barebox@lists.infradead.org
 
-This gate is used to enable/disable the lcd controller, hence we
-need a gate for it.
+Another round of clk patches, mostly driven by the fact that
+the i.MX LCD controller does not have an enable bit. Instead
+it starts once a clock is provided.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/clk-imx25.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Sascha
 
-diff --git a/arch/arm/mach-imx/clk-imx25.c b/arch/arm/mach-imx/clk-imx25.c
-index 3a141c2..2587994 100644
---- a/arch/arm/mach-imx/clk-imx25.c
-+++ b/arch/arm/mach-imx/clk-imx25.c
-@@ -55,7 +55,7 @@ enum mx25_clks {
- 	per7_sel, per8_sel, per9_sel, per10_sel, per11_sel, per12_sel,
- 	per13_sel, per14_sel, per15_sel, per0, per1, per2, per3, per4, per5,
- 	per6, per7, per8, per9, per10, per11, per12, per13, per14, per15,
--	clk_max
-+	lcdc_per_gate, clk_max
- };
- 
- static struct clk *clks[clk_max];
-@@ -132,6 +132,7 @@ static int imx25_ccm_probe(struct device_d *dev)
- 	clks[per13] = imx_clk_divider("per13", "per13_sel", base + CCM_PCDR3, 8, 6);
- 	clks[per14] = imx_clk_divider("per14", "per14_sel", base + CCM_PCDR3, 16, 6);
- 	clks[per15] = imx_clk_divider("per15", "per15_sel", base + CCM_PCDR3, 24, 6);
-+	clks[lcdc_per_gate] = imx_clk_gate("lcdc_per_gate", "per7", base + CCM_CGCR0, 7);
- 
- 	clkdev_add_physbase(clks[per15], MX25_UART1_BASE_ADDR, NULL);
- 	clkdev_add_physbase(clks[per15], MX25_UART2_BASE_ADDR, NULL);
-@@ -148,6 +149,7 @@ static int imx25_ccm_probe(struct device_d *dev)
- 	clkdev_add_physbase(clks[ipg], MX25_CSPI3_BASE_ADDR, NULL);
- 	clkdev_add_physbase(clks[per3], MX25_ESDHC1_BASE_ADDR, NULL);
- 	clkdev_add_physbase(clks[per4], MX25_ESDHC2_BASE_ADDR, NULL);
-+	clkdev_add_physbase(clks[lcdc_per_gate], MX25_LCDC_BASE_ADDR, NULL);
- 
- 	return 0;
- }
--- 
-1.7.10.4
+----------------------------------------------------------------
+Sascha Hauer (10):
+      clk: Add clk gate support
+      ARM i.MX: Add clk_gate inline function
+      ARM i.MX21: Fix CSPI parent clock
+      ARM i.MX21: Enable all needed clocks during startup
+      ARM i.MX25: Enable all needed clocks during startup
+      ARM i.MX21: Add lcdc per gate
+      ARM i.MX27: Add lcdc per gate
+      ARM i.MX25: Add lcdc per gate
+      video i.MX: Use regular clk_[en|dis]able functions
+      ARM i.MX: Enable clocks in common place
 
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c |   15 ----
+ arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |    1 -
+ arch/arm/boards/guf-neso/lowlevel.c               |    2 -
+ arch/arm/boards/imx21ads/imx21ads.c               |    1 -
+ arch/arm/boards/pcm038/lowlevel.c                 |    2 -
+ arch/arm/boards/pcm038/pcm038.c                   |    4 --
+ arch/arm/boards/pcm038/pcm970.c                   |    1 -
+ arch/arm/boards/phycard-i.MX27/pca100.c           |    4 --
+ arch/arm/mach-imx/clk-imx21.c                     |   17 ++++-
+ arch/arm/mach-imx/clk-imx25.c                     |   20 ++++--
+ arch/arm/mach-imx/clk-imx27.c                     |   25 +++----
+ arch/arm/mach-imx/clk.h                           |    6 ++
+ arch/arm/mach-imx/clocksource.c                   |   12 ----
+ drivers/clk/Makefile                              |    3 +-
+ drivers/clk/clk-gate.c                            |   78 +++++++++++++++++++++
+ drivers/mtd/nand/nand_imx.c                       |    6 --
+ drivers/net/fec_imx.c                             |    4 +-
+ drivers/video/imx.c                               |   44 ++----------
+ include/linux/clk.h                               |    2 +
+ 19 files changed, 137 insertions(+), 110 deletions(-)
+ create mode 100644 drivers/clk/clk-gate.c
 
 _______________________________________________
 barebox mailing list
