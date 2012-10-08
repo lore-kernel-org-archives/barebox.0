@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-we0-f177.google.com ([74.125.82.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TLMEq-0007Os-K8
- for barebox@lists.infradead.org; Mon, 08 Oct 2012 22:55:53 +0000
+ id 1TLMEs-0007Os-7r
+ for barebox@lists.infradead.org; Mon, 08 Oct 2012 22:55:54 +0000
 Received: by mail-we0-f177.google.com with SMTP id u50so2991003wey.36
- for <barebox@lists.infradead.org>; Mon, 08 Oct 2012 15:55:52 -0700 (PDT)
+ for <barebox@lists.infradead.org>; Mon, 08 Oct 2012 15:55:53 -0700 (PDT)
 From: Vicente <vicencb@gmail.com>
-Date: Tue,  9 Oct 2012 00:55:17 +0200
-Message-Id: <1349736924-24667-8-git-send-email-vicencb@gmail.com>
+Date: Tue,  9 Oct 2012 00:55:18 +0200
+Message-Id: <1349736924-24667-9-git-send-email-vicencb@gmail.com>
 In-Reply-To: <1349736924-24667-1-git-send-email-vicencb@gmail.com>
 References: <1349736924-24667-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,72 +23,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/14] bootm: close open files
+Subject: [PATCH 08/14] uimage: improve transfer speed
 To: barebox@lists.infradead.org
 Cc: Vicente <vicencb@gmail.com>
 
 
 Signed-off-by: Vicente <vicencb@gmail.com>
 ---
- arch/arm/lib/bootm.c | 4 +++-
- commands/bootm.c     | 6 +++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ common/uimage.c | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index c5b76ea..288c0b2 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -269,8 +269,9 @@ static int do_bootz_linux(struct image_data *data)
+diff --git a/common/uimage.c b/common/uimage.c
+index c72db41..8f8736f 100644
+--- a/common/uimage.c
++++ b/common/uimage.c
+@@ -28,6 +28,8 @@
+ #include <rtc.h>
+ #include <filetype.h>
+ #include <memory.h>
++#include <linux/stat.h>
++#include <sizes.h>
  
- 	ret = do_bootz_linux_fdt(fd, data);
- 	if (ret && ret != -ENXIO)
--		return ret;
-+		goto err_out;
+ #ifdef CONFIG_UIMAGE_MULTI
+ static inline int uimage_is_multi_image(struct uimage_handle *handle)
+@@ -380,15 +382,36 @@ struct resource *file_to_sdram(const char *filename, unsigned long adr)
+ 	struct resource *res;
+ 	size_t size = BUFSIZ;
+ 	size_t ofs = 0;
++	size_t now;
+ 	int fd;
++	struct stat s;
  
-+	close(fd);
- 	return __do_bootm_linux(data, swap);
+ 	fd = open(filename, O_RDONLY);
+ 	if (fd < 0)
+ 		return NULL;
  
- err_out:
-@@ -431,6 +432,7 @@ static int do_bootm_aimage(struct image_data *data)
- 		reset_cpu(0);
- 	}
- 
-+	close(fd);
- 	return __do_bootm_linux(data, 0);
- 
- err_out:
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 8e51695..20b49f0 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -70,6 +70,7 @@ static int bootm_open_os_uimage(struct image_data *data)
- 		if (ret) {
- 			printf("Checking data crc failed with %s\n",
- 					strerror(-ret));
-+			uimage_close(data->os);
- 			return ret;
- 		}
- 	}
-@@ -79,6 +80,7 @@ static int bootm_open_os_uimage(struct image_data *data)
- 	if (data->os->header.ih_arch != IH_ARCH) {
- 		printf("Unsupported Architecture 0x%x\n",
- 		       data->os->header.ih_arch);
-+		uimage_close(data->os);
- 		return -EINVAL;
- 	}
- 
-@@ -88,8 +90,10 @@ static int bootm_open_os_uimage(struct image_data *data)
- 	if (data->os_address != UIMAGE_INVALID_ADDRESS) {
- 		data->os_res = uimage_load_to_sdram(data->os, 0,
- 				data->os_address);
--		if (!data->os_res)
-+		if (!data->os_res) {
-+			uimage_close(data->os);
- 			return -ENOMEM;
+-	while (1) {
+-		size_t now;
++	/* TODO: use fstat(fd, &s) when implemented and avoid reopening file */
++	if (stat(filename, &s) == 0 && s.st_size <= SZ_1G) {
++		/*
++		 * As the file size is known we can read it at once and improve
++		 * transfer speed.
++		 */
++		size = s.st_size;
++		res = request_sdram_region("image", adr, size);
++		if (!res) {
++			printf("unable to request SDRAM 0x%08lx-0x%08lx\n",
++				adr, adr + size - 1);
++			goto out;
 +		}
- 	}
  
- 	return 0;
++		now = read_full(fd, (void *)(res->start), size);
++		if (now < size) {
++			release_sdram_region(res);
++			res = NULL;
++		}
++		goto out;
++	}
++	while (1) {
+ 		res = request_sdram_region("image", adr, size);
+ 		if (!res) {
+ 			printf("unable to request SDRAM 0x%08lx-0x%08lx\n",
 -- 
 1.7.12.2
 
