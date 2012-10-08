@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo1.mail-out.ovh.net ([178.32.97.206]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TLCHT-0005MT-Ou
- for barebox@lists.infradead.org; Mon, 08 Oct 2012 12:17:56 +0000
-Received: from mail26.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 20727FFC78E
- for <barebox@lists.infradead.org>; Mon,  8 Oct 2012 14:27:09 +0200 (CEST)
-Date: Mon, 8 Oct 2012 14:15:27 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121008121527.GY26553@game.jcrosoft.org>
-References: <1349694156-30554-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-ie0-f177.google.com ([209.85.223.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TLCNg-0005q7-Aw
+ for barebox@lists.infradead.org; Mon, 08 Oct 2012 12:24:20 +0000
+Received: by mail-ie0-f177.google.com with SMTP id e14so433125iej.36
+ for <barebox@lists.infradead.org>; Mon, 08 Oct 2012 05:24:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1349694156-30554-1-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <20121008121527.GY26553@game.jcrosoft.org>
+References: <1349694156-30554-1-git-send-email-s.hauer@pengutronix.de>
+ <20121008121527.GY26553@game.jcrosoft.org>
+Date: Mon, 8 Oct 2012 16:24:18 +0400
+Message-ID: <CAA4bVAGCbbrw0RmMdpDa88bF12Wjqp2FFixsKZ_-6wYyUKwcCQ@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,22 +25,27 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM at91sam9260ek: remove unused reset entry
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 13:02 Mon 08 Oct     , Sascha Hauer wrote:
-> The at91sam9260ek has a custom reset function which does the same thing
-> as the default function. Also it does not define MACH_HAS_LOWLEVEL_INIT
-> as it should do. Remove the function.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
-Acked-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+On 8 October 2012 16:15, Jean-Christophe PLAGNIOL-VILLARD
+<plagnioj@jcrosoft.com> wrote:
+> On 13:02 Mon 08 Oct     , Sascha Hauer wrote:
+>> The at91sam9260ek has a custom reset function which does the same thing
+>> as the default function. Also it does not define MACH_HAS_LOWLEVEL_INIT
+>> as it should do. Remove the function.
+>>
+>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+>> ---
+> Acked-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+>
+> btw we should rename the command reset reboot because it start to be confusing
 
-btw we should rename the command reset reboot because it start to be confusing
+IMHO it is a very good idea!
 
-Best Regards,
-J.
+-- 
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
