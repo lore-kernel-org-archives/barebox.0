@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TLJmH-0007c4-Nk
- for barebox@lists.infradead.org; Mon, 08 Oct 2012 20:18:14 +0000
-Date: Mon, 8 Oct 2012 22:18:11 +0200
+ id 1TLJph-0007je-Tx
+ for barebox@lists.infradead.org; Mon, 08 Oct 2012 20:21:46 +0000
+Date: Mon, 8 Oct 2012 22:21:43 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121008201811.GR1322@pengutronix.de>
+Message-ID: <20121008202143.GS1322@pengutronix.de>
 References: <1349647287-28224-1-git-send-email-vicencb@gmail.com>
- <1349647287-28224-7-git-send-email-vicencb@gmail.com>
+ <1349647287-28224-4-git-send-email-vicencb@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1349647287-28224-7-git-send-email-vicencb@gmail.com>
+In-Reply-To: <1349647287-28224-4-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,33 +23,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 06/13] bootm: close open files
+Subject: Re: [PATCH 03/13] ARM: ensure irqs are disabled
 To: Vicente <vicencb@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Oct 08, 2012 at 12:01:20AM +0200, Vicente wrote:
+On Mon, Oct 08, 2012 at 12:01:17AM +0200, Vicente wrote:
 > 
 > Signed-off-by: Vicente <vicencb@gmail.com>
-> ---
->  arch/arm/lib/bootm.c | 4 +++-
->  commands/bootm.c     | 6 +++++-
->  2 files changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-> index c5b76ea..288c0b2 100644
-> --- a/arch/arm/lib/bootm.c
-> +++ b/arch/arm/lib/bootm.c
-> @@ -269,8 +269,9 @@ static int do_bootz_linux(struct image_data *data)
->  
->  	ret = do_bootz_linux_fdt(fd, data);
->  	if (ret && ret != -ENXIO)
-> -		return ret;
-> +		goto err_out;
->  
-> +	close(fd);
->  	return __do_bootm_linux(data, swap);
+> +	/*
+> +	 * barebox normally does not use interrupts, but some functionalities
+> +	 * (eg. OMAP4_USBBOOT) require them enabled. So be sure interrupts are
+> +	 * disabled before exiting.
+> +	 */
+> +#if __LINUX_ARM_ARCH__ >= 6
+> +	__asm__ __volatile__ ("cpsid i\n");
+> +#else
+> +	__asm__ __volatile__ ("msr cpsr_c, #PSR_I_BIT | SVC_MODE\n");
 
-ret = __do_bootm_linux and fall through?
+This does not compile, we are currently lacking a definition of
+PSR_I_BIT
 
 Sascha
 
