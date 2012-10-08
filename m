@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TLJHY-0005iC-5v
- for barebox@lists.infradead.org; Mon, 08 Oct 2012 19:46:29 +0000
+ id 1TLJHY-0005iE-60
+ for barebox@lists.infradead.org; Mon, 08 Oct 2012 19:46:31 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  8 Oct 2012 21:46:21 +0200
-Message-Id: <1349725584-20509-3-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  8 Oct 2012 21:46:22 +0200
+Message-Id: <1349725584-20509-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1349725584-20509-1-git-send-email-s.hauer@pengutronix.de>
 References: <1349725584-20509-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,92 +21,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] of: find and register memory during probe
+Subject: [PATCH 3/5] console/of: evaluate linux,stdout-path property
 To: barebox@lists.infradead.org
 
-This automatically registers the memory nodes in the devicetree.
+When a linux,stdout-path property is given in the devicetree
+activate the corresponding console.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/base.c |   49 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 48 insertions(+), 1 deletion(-)
+ common/console.c  |    3 +++
+ drivers/of/base.c |   23 +++++++++++++++++++++++
+ include/of.h      |    6 ++++++
+ 3 files changed, 32 insertions(+)
 
+diff --git a/common/console.c b/common/console.c
+index 3dd964c..2766981 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -161,6 +161,9 @@ int console_register(struct console_device *newcdev)
+ 	}
+ #endif
+ 
++	if (newcdev->dev && of_device_is_stdout_path(newcdev->dev))
++		activate = 1;
++
+ 	list_add_tail(&newcdev->list, &console_list);
+ 
+ 	while (kfifo_getc(console_output_fifo, &ch) == 0)
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index fd152d6..09785fb 100644
+index 09785fb..3d26343 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -23,6 +23,7 @@
- #include <libfdt.h>
- #include <malloc.h>
- #include <init.h>
-+#include <memory.h>
- #include <linux/ctype.h>
- 
- /**
-@@ -612,9 +613,51 @@ static struct device_d *add_of_device(struct device_node *node)
+@@ -758,11 +758,15 @@ static void __of_probe(struct device_node *node)
+ 		__of_probe(n);
  }
- EXPORT_SYMBOL(add_of_device);
  
-+u64 dt_mem_next_cell(int s, const __be32 **cellp)
++struct device_node *of_chosen;
++
+ int of_probe(void)
+ {
+ 	if(!root_node)
+ 		return -ENODEV;
+ 
++	of_chosen = of_find_node_by_path("/chosen");
++
+ 	__of_probe(root_node);
+ 
+ 	return 0;
+@@ -847,3 +851,22 @@ int of_parse_dtb(struct fdt_header *fdt)
+ 
+ 	return 0;
+ }
++
++int of_device_is_stdout_path(struct device_d *dev)
 +{
-+	const __be32 *p = *cellp;
++	struct device_node *dn;
++	const char *name;
 +
-+	*cellp = p + s;
-+	return of_read_number(p, s);
-+}
++	name = of_get_property(of_chosen, "linux,stdout-path", NULL);
++	if (name == NULL)
++		return 0;
++	dn = of_find_node_by_path(name);
 +
-+static int of_add_memory(struct device_node *node)
-+{
-+	int na, nc;
-+	const __be32 *reg, *endp;
-+	int len, r = 0;
-+	static char str[6];
-+
-+	of_bus_count_cells(node, &na, &nc);
-+
-+	reg = of_get_property(node, "reg", &len);
-+	if (!reg)
++	if (!dn)
 +		return 0;
 +
-+	endp = reg + (len / sizeof(__be32));
-+
-+	while ((endp - reg) >= (na + nc)) {
-+		u64 base, size;
-+
-+		base = dt_mem_next_cell(na, &reg);
-+		size = dt_mem_next_cell(nc, &reg);
-+
-+		if (size == 0)
-+			continue;
-+
-+		sprintf(str, "ram%d", r);
-+
-+                barebox_add_memory_bank(str, base, size);
-+
-+		r++;
-+        }
++	if (dn == dev->device_node)
++		return 1;
 +
 +	return 0;
 +}
-+
- static int add_of_device_resource(struct device_node *node)
- {
--	struct property *reg;
-+	struct property *reg, *type;
- 	u64 address, size;
- 	struct resource *res;
- 	struct device_d *dev;
-@@ -627,6 +670,10 @@ static int add_of_device_resource(struct device_node *node)
- 		list_add_tail(&node->phandles, &phandle_list);
- 	}
+diff --git a/include/of.h b/include/of.h
+index 7b6a23a..e6342b6 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -114,6 +114,7 @@ int of_parse_partitions(const char *cdevname,
  
-+	type = of_find_property(node, "device_type");
-+	if (type)
-+		return of_add_memory(node);
+ struct device_node *of_get_root_node(void);
+ int of_alias_get_id(struct device_node *np, const char *stem);
++int of_device_is_stdout_path(struct device_d *dev);
+ #else
+ static inline int of_parse_partitions(const char *cdevname,
+ 					  struct device_node *node)
+@@ -130,6 +131,11 @@ static inline int of_alias_get_id(struct device_node *np, const char *stem)
+ {
+ 	return -ENOENT;
+ }
 +
- 	reg = of_find_property(node, "reg");
- 	if (!reg)
- 		return -ENODEV;
++static inline int of_device_is_stdout_path(struct device_d *dev)
++{
++	return 0;
++}
+ #endif
+ 
+ #endif /* __OF_H */
 -- 
 1.7.10.4
 
