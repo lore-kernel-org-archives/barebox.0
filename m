@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-f177.google.com ([74.125.82.177])
+Received: from mail-wi0-f177.google.com ([209.85.212.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TLMEu-0007Os-0k
- for barebox@lists.infradead.org; Mon, 08 Oct 2012 22:55:57 +0000
-Received: by mail-we0-f177.google.com with SMTP id u50so2991003wey.36
- for <barebox@lists.infradead.org>; Mon, 08 Oct 2012 15:55:55 -0700 (PDT)
+ id 1TLMF1-0007Oe-EY
+ for barebox@lists.infradead.org; Mon, 08 Oct 2012 22:56:05 +0000
+Received: by mail-wi0-f177.google.com with SMTP id hj13so3126618wib.0
+ for <barebox@lists.infradead.org>; Mon, 08 Oct 2012 15:56:03 -0700 (PDT)
 From: Vicente <vicencb@gmail.com>
-Date: Tue,  9 Oct 2012 00:55:19 +0200
-Message-Id: <1349736924-24667-10-git-send-email-vicencb@gmail.com>
+Date: Tue,  9 Oct 2012 00:55:23 +0200
+Message-Id: <1349736924-24667-14-git-send-email-vicencb@gmail.com>
 In-Reply-To: <1349736924-24667-1-git-send-email-vicencb@gmail.com>
 References: <1349736924-24667-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,155 +23,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/14] fs: improve robustness
+Subject: [PATCH 13/14] omap4: add support for loading second stage from usb
 To: barebox@lists.infradead.org
 Cc: Vicente <vicencb@gmail.com>
 
 
 Signed-off-by: Vicente <vicencb@gmail.com>
 ---
- fs/fs.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ arch/arm/mach-omap/xload.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index b9a1f17..dc3a6e3 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -715,12 +715,13 @@ int ioctl(int fd, int request, void *buf)
+diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
+index 9fa8221..240d3ff 100644
+--- a/arch/arm/mach-omap/xload.c
++++ b/arch/arm/mach-omap/xload.c
+@@ -139,6 +139,24 @@ static void *omap_xload_boot_spi(int offset)
+ 	return to;
+ }
+ 
++static void *omap4_xload_boot_usb(void){
++	int ret;
++	void *buf;
++	int len;
++
++	ret = mount("omap4_usbboot", "omap4_usbbootfs", "/");
++	if (ret) {
++		printf("Unable to mount omap4_usbbootfs (%d)\n", ret);
++		return NULL;
++	}
++
++	buf = read_file("/barebox.bin", &len);
++	if (!buf)
++		printf("could not read barebox.bin from omap4_usbbootfs\n");
++
++	return buf;
++}
++
+ enum omap_boot_src omap_bootsrc(void)
  {
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
--	FILE *f = &files[fd];
-+	FILE *f;
- 	int ret;
- 
- 	if (check_fd(fd))
- 		return -errno;
- 
-+	f = &files[fd];
- 	dev = f->dev;
- 
- 	fsdrv = dev_to_fs_driver(dev);
-@@ -738,12 +739,13 @@ int read(int fd, void *buf, size_t count)
- {
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
--	FILE *f = &files[fd];
-+	FILE *f;
- 	int ret;
- 
- 	if (check_fd(fd))
- 		return -errno;
- 
-+	f = &files[fd];
- 	dev = f->dev;
- 
- 	fsdrv = dev_to_fs_driver(dev);
-@@ -768,12 +770,13 @@ ssize_t write(int fd, const void *buf, size_t count)
- {
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
--	FILE *f = &files[fd];
-+	FILE *f;
- 	int ret;
- 
- 	if (check_fd(fd))
- 		return -errno;
- 
-+	f = &files[fd];
- 	dev = f->dev;
- 
- 	fsdrv = dev_to_fs_driver(dev);
-@@ -803,12 +806,13 @@ int flush(int fd)
- {
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
--	FILE *f = &files[fd];
-+	FILE *f;
- 	int ret;
- 
- 	if (check_fd(fd))
- 		return -errno;
- 
-+	f = &files[fd];
- 	dev = f->dev;
- 
- 	fsdrv = dev_to_fs_driver(dev);
-@@ -827,13 +831,14 @@ loff_t lseek(int fildes, loff_t offset, int whence)
- {
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
--	FILE *f = &files[fildes];
-+	FILE *f;
- 	loff_t pos;
- 	int ret;
- 
- 	if (check_fd(fildes))
- 		return -1;
- 
-+	f = &files[fildes];
- 	dev = f->dev;
- 	fsdrv = dev_to_fs_driver(dev);
- 	if (!fsdrv->lseek) {
-@@ -877,11 +882,12 @@ int erase(int fd, size_t count, unsigned long offset)
- {
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
--	FILE *f = &files[fd];
-+	FILE *f;
- 	int ret;
- 
- 	if (check_fd(fd))
- 		return -errno;
-+	f = &files[fd];
- 	if (offset >= f->size)
- 		return 0;
- 	if (count > f->size - offset)
-@@ -905,11 +911,12 @@ int protect(int fd, size_t count, unsigned long offset, int prot)
- {
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
--	FILE *f = &files[fd];
-+	FILE *f;
- 	int ret;
- 
- 	if (check_fd(fd))
- 		return -errno;
-+	f = &files[fd];
- 	if (offset >= f->size)
- 		return 0;
- 	if (count > f->size - offset)
-@@ -948,13 +955,14 @@ void *memmap(int fd, int flags)
- {
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
--	FILE *f = &files[fd];
-+	FILE *f;
- 	void *retp = (void *)-1;
- 	int ret;
- 
- 	if (check_fd(fd))
- 		return retp;
- 
-+	f = &files[fd];
- 	dev = f->dev;
- 
- 	fsdrv = dev_to_fs_driver(dev);
-@@ -975,12 +983,13 @@ int close(int fd)
- {
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
--	FILE *f = &files[fd];
-+	FILE *f;
- 	int ret;
- 
- 	if (check_fd(fd))
- 		return -errno;
- 
-+	f = &files[fd];
- 	dev = f->dev;
- 
- 	fsdrv = dev_to_fs_driver(dev);
+ #if defined(CONFIG_ARCH_OMAP3)
+@@ -161,6 +179,14 @@ int run_shell(void)
+ 		printf("booting from MMC1\n");
+ 		func = omap_xload_boot_mmc();
+ 		break;
++	case OMAP_BOOTSRC_USB1:
++		if (IS_ENABLED(CONFIG_FS_OMAP4_USBBOOT)) {
++			printf("booting from USB1\n");
++			func = omap4_xload_boot_usb();
++			break;
++		} else {
++			printf("booting from usb1 not enabled\n");
++		}
+ 	case OMAP_BOOTSRC_UNKNOWN:
+ 		printf("unknown boot source. Fall back to nand\n");
+ 	case OMAP_BOOTSRC_NAND:
 -- 
 1.7.12.2
 
