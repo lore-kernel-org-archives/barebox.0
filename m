@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f49.google.com ([74.125.82.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TLMEz-0007PR-PK
- for barebox@lists.infradead.org; Mon, 08 Oct 2012 22:56:04 +0000
-Received: by mail-wg0-f49.google.com with SMTP id gg4so2739976wgb.18
- for <barebox@lists.infradead.org>; Mon, 08 Oct 2012 15:56:01 -0700 (PDT)
-From: Vicente <vicencb@gmail.com>
-Date: Tue,  9 Oct 2012 00:55:22 +0200
-Message-Id: <1349736924-24667-13-git-send-email-vicencb@gmail.com>
-In-Reply-To: <1349736924-24667-1-git-send-email-vicencb@gmail.com>
-References: <1349736924-24667-1-git-send-email-vicencb@gmail.com>
+Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TLTLA-0000Yn-CZ
+ for barebox@lists.infradead.org; Tue, 09 Oct 2012 06:30:53 +0000
+Message-ID: <5073C495.4070900@phytec.de>
+Date: Tue, 09 Oct 2012 08:30:45 +0200
+From: Teresa Gamez <t.gamez@phytec.de>
+MIME-Version: 1.0
+References: <1349476393-25520-1-git-send-email-vicencb@gmail.com>
+ <1349476393-25520-6-git-send-email-vicencb@gmail.com>
+ <20121007101130.GC1322@pengutronix.de>
+In-Reply-To: <20121007101130.GC1322@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,277 +19,98 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/14] omap4: add filesystem support over usb boot
-To: barebox@lists.infradead.org
-Cc: Vicente <vicencb@gmail.com>
+Subject: Re: [PATCH 05/11] omap: revert gpiolib
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, vj <vicencb@gmail.com>
 
+Hello Sascha,
 
-Signed-off-by: Vicente <vicencb@gmail.com>
----
- fs/Kconfig           |   5 ++
- fs/Makefile          |   1 +
- fs/omap4_usbbootfs.c | 219 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 225 insertions(+)
- create mode 100644 fs/omap4_usbbootfs.c
+Am 07.10.2012 12:11, schrieb Sascha Hauer:
+> On Sat, Oct 06, 2012 at 12:33:07AM +0200, vj wrote:
+>> This patch reverts 29e4031b460d1c84c1a8fc276199d40680b354d4.
+>> This is not meant to revert the gpiolib, this is only a temporal
+>> workaround because it breaks support for ArchosG9 tablet.
+>> Please, can anybody check if using gpiolib works for other omap4460
+>> based boards?
+> Teresa, have you tested this on OMAP4?
 
-diff --git a/fs/Kconfig b/fs/Kconfig
-index 4c66543..0ab69d7 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -29,6 +29,11 @@ config FS_TFTP
- 	prompt "tftp support"
- 	depends on NET
- 
-+config FS_OMAP4_USBBOOT
-+	bool
-+	prompt "Filesystem over usb boot"
-+	depends on OMAP4_USBBOOT
-+
- config FS_NFS
- 	depends on NET
- 	bool
-diff --git a/fs/Makefile b/fs/Makefile
-index 1b52bee..ad745d9 100644
---- a/fs/Makefile
-+++ b/fs/Makefile
-@@ -5,4 +5,5 @@ obj-$(CONFIG_FS_DEVFS)	+= devfs.o
- obj-$(CONFIG_FS_FAT)	+= fat/
- obj-y	+= fs.o
- obj-$(CONFIG_FS_TFTP)	+= tftp.o
-+obj-$(CONFIG_FS_OMAP4_USBBOOT)	+= omap4_usbbootfs.o
- obj-$(CONFIG_FS_NFS)	+= nfs.o
-diff --git a/fs/omap4_usbbootfs.c b/fs/omap4_usbbootfs.c
-new file mode 100644
-index 0000000..0dc7682
---- /dev/null
-+++ b/fs/omap4_usbbootfs.c
-@@ -0,0 +1,219 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <common.h>
-+#include <malloc.h>
-+#include <fs.h>
-+#include <fcntl.h>
-+#include <init.h>
-+#include <linux/stat.h>
-+#include <linux/err.h>
-+#include <mach/omap4_rom_usb.h>
-+
-+#define OMAP4_USBBOOT_FS_MAGIC		0x5562464D
-+#define OMAP4_USBBOOT_FS_CMD_OPEN	0x46530000
-+#define OMAP4_USBBOOT_FS_CMD_CLOSE	0x46530001
-+#define OMAP4_USBBOOT_FS_CMD_READ	0x46530002
-+#define OMAP4_USBBOOT_FS_CMD_END	0x4653FFFF
-+
-+struct file_priv {
-+	s32 id;
-+	u32 size;
-+};
-+/*
-+static int omap4_usbbootfs_create(
-+	struct device_d *dev, const char *pathname, mode_t mode)
-+{
-+	return -ENOSYS;
-+}
-+
-+static int omap4_usbbootfs_unlink(struct device_d *dev, const char *pathname)
-+{
-+	return -ENOSYS;
-+}
-+
-+static int omap4_usbbootfs_mkdir(struct device_d *dev, const char *pathname)
-+{
-+	return -ENOSYS;
-+}
-+
-+static int omap4_usbbootfs_rmdir(struct device_d *dev, const char *pathname)
-+{
-+	return -ENOSYS;
-+}
-+
-+static int omap4_usbbootfs_write(
-+	struct device_d *_dev, FILE *f, const void *inbuf, size_t size)
-+{
-+	return -ENOSYS;
-+}
-+
-+static int omap4_usbbootfs_truncate(struct device_d *dev, FILE *f, ulong size)
-+{
-+	return -ENOSYS;
-+}
-+*/
-+
-+static struct file_priv *omap4_usbbootfs_do_open(
-+	struct device_d *dev, int accmode, const char *filename)
-+{
-+	struct file_priv *priv;
-+	u32 data;
-+
-+	if (accmode & O_ACCMODE)
-+		return ERR_PTR(-ENOSYS);
-+
-+	priv = xzalloc(sizeof(*priv));
-+	if (!priv)
-+		return ERR_PTR(-ENOMEM);
-+
-+	data = OMAP4_USBBOOT_FS_MAGIC	; omap4_usbboot_write(&data, 4);
-+	data = OMAP4_USBBOOT_FS_CMD_OPEN; omap4_usbboot_write(&data, 4);
-+	omap4_usbboot_puts(filename);
-+	data = OMAP4_USBBOOT_FS_CMD_END	; omap4_usbboot_write(&data, 4);
-+
-+	if (omap4_usbboot_read(&priv->id, 4) ||
-+		omap4_usbboot_read(&priv->size, 4)
-+	) {
-+		free(priv);
-+		return ERR_PTR(-EIO);
-+	}
-+	if (priv->id < 0) {
-+		free(priv);
-+		return ERR_PTR(-ENOENT);
-+	}
-+
-+	return priv;
-+}
-+
-+static int omap4_usbbootfs_open(
-+	struct device_d *dev, FILE *file, const char *filename)
-+{
-+	struct file_priv *priv;
-+
-+	priv = omap4_usbbootfs_do_open(dev, file->flags, filename);
-+	if (IS_ERR(priv))
-+		return PTR_ERR(priv);
-+
-+	file->inode = priv;
-+	file->size = priv->size;
-+
-+	return 0;
-+}
-+
-+static int omap4_usbbootfs_do_close(struct file_priv *priv)
-+{
-+	u32 data;
-+	data = OMAP4_USBBOOT_FS_MAGIC	; omap4_usbboot_write(&data, 4);
-+	data = OMAP4_USBBOOT_FS_CMD_CLOSE; omap4_usbboot_write(&data, 4);
-+	omap4_usbboot_write(&priv->id, 4);
-+	data = OMAP4_USBBOOT_FS_CMD_END	; omap4_usbboot_write(&data, 4);
-+	free(priv);
-+	return 0;
-+}
-+
-+static int omap4_usbbootfs_close(struct device_d *dev, FILE *f)
-+{
-+	struct file_priv *priv = f->inode;
-+	return omap4_usbbootfs_do_close(priv);
-+}
-+
-+static int omap4_usbbootfs_read(
-+	struct device_d *dev, FILE *f, void *buf, size_t size)
-+{
-+	struct file_priv *priv = f->inode;
-+	u32 data;
-+
-+	if (size > priv->size - f->pos)
-+		size = priv->size - f->pos;
-+	if (!size)
-+		return 0;
-+
-+	data = OMAP4_USBBOOT_FS_MAGIC	; omap4_usbboot_write(&data, 4);
-+	data = OMAP4_USBBOOT_FS_CMD_READ; omap4_usbboot_write(&data, 4);
-+	omap4_usbboot_write(&priv->id, 4);
-+	omap4_usbboot_write(&f->pos, 4);
-+	omap4_usbboot_write(&size, 4);
-+	data = OMAP4_USBBOOT_FS_CMD_END	; omap4_usbboot_write(&data, 4);
-+
-+	if (omap4_usbboot_read(buf, size))
-+		return -EIO;
-+
-+	return size;
-+}
-+
-+static loff_t omap4_usbbootfs_lseek(struct device_d *dev, FILE *f, loff_t pos)
-+{
-+	f->pos = pos;
-+	return pos;
-+}
-+
-+static DIR *omap4_usbbootfs_opendir(struct device_d *dev, const char *pathname)
-+{
-+	return NULL;
-+}
-+
-+static int omap4_usbbootfs_stat(
-+	struct device_d *dev, const char *filename, struct stat *s)
-+{
-+	struct file_priv *priv;
-+
-+	priv = omap4_usbbootfs_do_open(dev, O_RDONLY, filename);
-+	if (IS_ERR(priv))
-+		return PTR_ERR(priv);
-+
-+	s->st_mode = S_IFREG |
-+				 S_IRUSR | S_IRGRP | S_IROTH |
-+				 S_IXUSR | S_IXGRP | S_IXOTH ;
-+	s->st_size = priv->size;
-+
-+	omap4_usbbootfs_do_close(priv);
-+
-+	return 0;
-+}
-+
-+static int omap4_usbbootfs_probe(struct device_d *dev)
-+{
-+	return 0;
-+}
-+static void omap4_usbbootfs_remove(struct device_d *dev)
-+{
-+}
-+
-+static struct fs_driver_d omap4_usbbootfs_driver = {
-+	.open    = omap4_usbbootfs_open,
-+	.close   = omap4_usbbootfs_close,
-+	.read    = omap4_usbbootfs_read,
-+	.lseek   = omap4_usbbootfs_lseek,
-+	.opendir = omap4_usbbootfs_opendir,
-+	.stat    = omap4_usbbootfs_stat,
-+/*
-+	.create	= omap4_usbbootfs_create,
-+	.unlink	= omap4_usbbootfs_unlink,
-+	.mkdir	= omap4_usbbootfs_mkdir,
-+	.rmdir	= omap4_usbbootfs_rmdir,
-+	.write	= omap4_usbbootfs_write,
-+	.truncate= omap4_usbbootfs_truncate,
-+*/
-+	.flags	 = 0,
-+	.drv = {
-+		.probe	= omap4_usbbootfs_probe,
-+		.remove	= omap4_usbbootfs_remove,
-+		.name	= "omap4_usbbootfs",
-+	}
-+};
-+
-+static int omap4_usbbootfs_init(void)
-+{
-+	return register_fs_driver(&omap4_usbbootfs_driver);
-+}
-+coredevice_initcall(omap4_usbbootfs_init);
--- 
-1.7.12.2
+Yes, but I have only tested it with OMAP4430.
+Now checking it with 4460, I see that it does not work here, too.
+Problem is in the omap4_scale_vcores function called by *_init_lowlevel().
+It already uses the gpio_direction_output() function on an OMAP4460 and 
+crashes there. Should I do the gpio setup
+just "manually" here?
+But I wonder anyway why It is crashing at all. I would expect the 
+condition if (!chip) to be true in the function gpio_direction_output 
+(drivers/gpio/gpio.c) and to return at this point. But it doesn't.
+
+>
+>
+> I can't find anything obviously wrong int this patch.
+>>   
+>> -static int omap_gpio_probe(struct device_d *dev)
+>> -{
+>> -	struct omap_gpio_chip *omapgpio;
+>> +	gpio_set_value(gpio, value);
+>>   
+>> -	omapgpio = xzalloc(sizeof(*omapgpio));
+>> -	omapgpio->base = dev_request_mem_region(dev, 0);
+>> -	omapgpio->chip.ops = &omap_gpio_ops;
+>> -	omapgpio->chip.base = -1;
+> base should be calculated as dev->id * 32. Otherwise the gpio numbering
+> gets depended on the probe order.
+
+I will fix this.
+
+>
+>> -	omapgpio->chip.ngpio = 32;
+>> -	omapgpio->chip.dev = dev;
+>> -	gpiochip_add(&omapgpio->chip);
+>> +	reg += OMAP_GPIO_OE;
+>>   
+>> -	dev_dbg(dev, "probed gpiochip%d with base %d\n",
+>> -				dev->id, omapgpio->chip.base);
+>> +	val = __raw_readl(reg);
+>> +	val &= ~(1 << get_gpio_index(gpio));
+>> +	__raw_writel(val, reg);
+>>   
+>>   	return 0;
+>>   }
+> [...]
+>
+>>   
+>> -coredevice_initcall(omap3_gpio_init);
+>> diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+>> index 584d724..6562268 100644
+>> --- a/arch/arm/mach-omap/omap4_generic.c
+>> +++ b/arch/arm/mach-omap/omap4_generic.c
+>> @@ -574,22 +574,3 @@ const struct gpmc_config omap4_nand_cfg = {
+>>   	.base = 0x28000000,
+>>   	.size = GPMC_SIZE_16M,
+>>   };
+>> -
+>> -static int omap4_gpio_init(void)
+>> -{
+>> -	add_generic_device("omap-gpio", 0, NULL, 0x4a310100,
+>> -				0x1000, IORESOURCE_MEM, NULL);
+> It seems on OMAP4 the register addresses are at an additional 0x100
+> offset compared to OMAP3. This little trick here to compensate that
+> will lead to problems should we add devicetree support for omap. For
+> now it's ok, but the region size should be reduced to 0x0f00 so that
+> there's no risk that it overlaps with the next region.
+
+What about moving the gpio offsets to the *-silicon.h? So we may have
+different values for OMAP3 and OMAP4.
+
+Teresa
+
+>
+> Sascha
+>
 
 
 _______________________________________________
