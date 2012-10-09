@@ -1,17 +1,29 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-f177.google.com ([209.85.223.177])
+Received: from mout3.freenet.de ([195.4.92.93])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TLUPW-0001Yz-OU
- for barebox@lists.infradead.org; Tue, 09 Oct 2012 07:39:27 +0000
-Received: by mail-ie0-f177.google.com with SMTP id e14so2460075iej.36
- for <barebox@lists.infradead.org>; Tue, 09 Oct 2012 00:39:24 -0700 (PDT)
+ id 1TLVV5-0005CO-U7
+ for barebox@lists.infradead.org; Tue, 09 Oct 2012 08:49:17 +0000
+Received: from [195.4.92.141] (helo=mjail1.freenet.de)
+ by mout3.freenet.de with esmtpa (ID g.gebhardt@gg-sw-systems.de) (port 25)
+ (Exim 4.76 #1) id 1TLVUp-0007rK-3a
+ for barebox@lists.infradead.org; Tue, 09 Oct 2012 10:48:59 +0200
+Received: from localhost ([::1]:54866 helo=mjail1.freenet.de)
+ by mjail1.freenet.de with esmtpa (ID g.gebhardt@gg-sw-systems.de) (Exim 4.76
+ #1) id 1TLVUo-0002FB-Vh
+ for barebox@lists.infradead.org; Tue, 09 Oct 2012 10:48:59 +0200
+Received: from [195.4.92.15] (port=60189 helo=5.mx.freenet.de)
+ by mjail1.freenet.de with esmtpa (ID g.gebhardt@gg-sw-systems.de) (Exim 4.76
+ #1) id 1TLVS4-0000vh-8T
+ for barebox@lists.infradead.org; Tue, 09 Oct 2012 10:46:08 +0200
+Received: from p4fced536.dip.t-dialin.net ([79.206.213.54]:64622
+ helo=linux-xmcx.localnet)
+ by 5.mx.freenet.de with esmtpsa (ID g.gebhardt@gg-sw-systems.de)
+ (TLSv1:AES256-SHA:256) (port 25) (Exim 4.76 #1) id 1TLVS3-0007Ei-M3
+ for barebox@lists.infradead.org; Tue, 09 Oct 2012 10:46:08 +0200
+From: =?ISO-8859-1?Q?G=FCnter?= Gebhardt <guenter.gebhardt@freenet.de>
+Date: Tue, 09 Oct 2012 10:46:03 +0200
+Message-ID: <1354932.YHvktshCZC@linux-xmcx>
 MIME-Version: 1.0
-In-Reply-To: <20121008204745.GT1322@pengutronix.de>
-References: <1349641053-18685-1-git-send-email-antonynpavlov@gmail.com>
- <20121008204745.GT1322@pengutronix.de>
-Date: Tue, 9 Oct 2012 11:39:24 +0400
-Message-ID: <CAA4bVAH7YpUgp6-hJZMLVK3Vt=LsEJNgjqg8E+50WiXuc7=U7g@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,55 +32,18 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] add 'miitool' command to view media-independent interface
- status
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: USB to Serial
+To: barebox@lists.infradead.org
 
-On 9 October 2012 00:47, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> Hi Antony,
->
-> On Mon, Oct 08, 2012 at 12:17:33AM +0400, Antony Pavlov wrote:
->> This command is based on "mii-diag" and "mii-tool" programs.
->>
->> TODO:
->>  * drop MII_ANER_ and MII_AN_, use linux/mii.h macros;
->>  * add routines to manipulate media-independent interface state.
->
-> Such a tool is nice to have. Some small comments inline.
->
-...
->> +
->> +/* Table of known MII's */
->> +static struct {
->> +     u_short id1, id2;
->> +     u_short mask1, mask2;
->> +     char    *name;
->> +} mii_id[] = {
->> +     { 0x7810, 0x0003, 0xffff, 0xffff, "Level One LXT970A" },
->> +     { 0x7810, 0x0000, 0xffff, 0xfff0, "Level One LXT970/LXT971" },
->> +     { 0x0013, 0x78e0, 0xffff, 0xfff0, "Level One LXT971A" },
->> +};
->
-> Maybe we should find a place where other code (phylib?) can use this
-> table aswell?
+Hello,
 
-I agree. It is very convinient to use only one place to store the MII
-tranceivers database.
-But just now we have only one phy driver ("Generic PHY"). It has no
-table of know MII.
-I have tryed to port drivers/net/phy/lxt.c from linux. But there is no
-reason to do it: it contain only generic support for LXT970/971.
+is there support for USB to Serial Converters?
 
-IMHO mii_id[] table is a __temporary__ but a good-enough solution.
-
--- 
-Best regards,
-  Antony Pavlov
+-- G=FCnter Gebhardt
 
 _______________________________________________
 barebox mailing list
