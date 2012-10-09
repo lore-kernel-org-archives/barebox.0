@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ie0-f177.google.com ([209.85.223.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TLThn-00010o-5f
- for barebox@lists.infradead.org; Tue, 09 Oct 2012 06:54:17 +0000
-Date: Tue, 9 Oct 2012 08:54:08 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121009065408.GB27665@pengutronix.de>
-References: <1349476393-25520-1-git-send-email-vicencb@gmail.com>
- <1349476393-25520-6-git-send-email-vicencb@gmail.com>
- <20121007101130.GC1322@pengutronix.de> <5073C495.4070900@phytec.de>
+ id 1TLUPW-0001Yz-OU
+ for barebox@lists.infradead.org; Tue, 09 Oct 2012 07:39:27 +0000
+Received: by mail-ie0-f177.google.com with SMTP id e14so2460075iej.36
+ for <barebox@lists.infradead.org>; Tue, 09 Oct 2012 00:39:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <5073C495.4070900@phytec.de>
+In-Reply-To: <20121008204745.GT1322@pengutronix.de>
+References: <1349641053-18685-1-git-send-email-antonynpavlov@gmail.com>
+ <20121008204745.GT1322@pengutronix.de>
+Date: Tue, 9 Oct 2012 11:39:24 +0400
+Message-ID: <CAA4bVAH7YpUgp6-hJZMLVK3Vt=LsEJNgjqg8E+50WiXuc7=U7g@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,76 +24,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 05/11] omap: revert gpiolib
-To: Teresa Gamez <t.gamez@phytec.de>
-Cc: barebox@lists.infradead.org, vj <vicencb@gmail.com>
+Subject: Re: [RFC] add 'miitool' command to view media-independent interface
+ status
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Teresa,
+On 9 October 2012 00:47, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> Hi Antony,
+>
+> On Mon, Oct 08, 2012 at 12:17:33AM +0400, Antony Pavlov wrote:
+>> This command is based on "mii-diag" and "mii-tool" programs.
+>>
+>> TODO:
+>>  * drop MII_ANER_ and MII_AN_, use linux/mii.h macros;
+>>  * add routines to manipulate media-independent interface state.
+>
+> Such a tool is nice to have. Some small comments inline.
+>
+...
+>> +
+>> +/* Table of known MII's */
+>> +static struct {
+>> +     u_short id1, id2;
+>> +     u_short mask1, mask2;
+>> +     char    *name;
+>> +} mii_id[] = {
+>> +     { 0x7810, 0x0003, 0xffff, 0xffff, "Level One LXT970A" },
+>> +     { 0x7810, 0x0000, 0xffff, 0xfff0, "Level One LXT970/LXT971" },
+>> +     { 0x0013, 0x78e0, 0xffff, 0xfff0, "Level One LXT971A" },
+>> +};
+>
+> Maybe we should find a place where other code (phylib?) can use this
+> table aswell?
 
-On Tue, Oct 09, 2012 at 08:30:45AM +0200, Teresa Gamez wrote:
-> Hello Sascha,
-> 
-> Am 07.10.2012 12:11, schrieb Sascha Hauer:
-> >On Sat, Oct 06, 2012 at 12:33:07AM +0200, vj wrote:
-> >>This patch reverts 29e4031b460d1c84c1a8fc276199d40680b354d4.
-> >>This is not meant to revert the gpiolib, this is only a temporal
-> >>workaround because it breaks support for ArchosG9 tablet.
-> >>Please, can anybody check if using gpiolib works for other omap4460
-> >>based boards?
-> >Teresa, have you tested this on OMAP4?
-> 
-> Yes, but I have only tested it with OMAP4430.
-> Now checking it with 4460, I see that it does not work here, too.
-> Problem is in the omap4_scale_vcores function called by *_init_lowlevel().
-> It already uses the gpio_direction_output() function on an OMAP4460
-> and crashes there. Should I do the gpio setup
-> just "manually" here?
+I agree. It is very convinient to use only one place to store the MII
+tranceivers database.
+But just now we have only one phy driver ("Generic PHY"). It has no
+table of know MII.
+I have tryed to port drivers/net/phy/lxt.c from linux. But there is no
+reason to do it: it contain only generic support for LXT970/971.
 
-I think you have to. Otherwise we would pull the whole gpio/driver stack
-into the pbl should we want to build omap as a compressed image.
-
-> But I wonder anyway why It is crashing at all. I would expect the
-> condition if (!chip) to be true in the function
-> gpio_direction_output (drivers/gpio/gpio.c) and to return at this
-> point. But it doesn't.
-
-The bss is not yet cleared which means that all unitialized variables
-contain random garbage.
-
-> >>-	struct omap_gpio_chip *omapgpio;
-> >>+	gpio_set_value(gpio, value);
-> >>-	omapgpio = xzalloc(sizeof(*omapgpio));
-> >>-	omapgpio->base = dev_request_mem_region(dev, 0);
-> >>-	omapgpio->chip.ops = &omap_gpio_ops;
-> >>-	omapgpio->chip.base = -1;
-> >base should be calculated as dev->id * 32. Otherwise the gpio numbering
-> >gets depended on the probe order.
-> 
-> I will fix this.
-
-Thanks.
-
-> >>-				0x1000, IORESOURCE_MEM, NULL);
-> >It seems on OMAP4 the register addresses are at an additional 0x100
-> >offset compared to OMAP3. This little trick here to compensate that
-> >will lead to problems should we add devicetree support for omap. For
-> >now it's ok, but the region size should be reduced to 0x0f00 so that
-> >there's no risk that it overlaps with the next region.
-> 
-> What about moving the gpio offsets to the *-silicon.h? So we may have
-> different values for OMAP3 and OMAP4.
-
-No. That would mean conflicting defines in the header files. These are a
-pain I'm currently trying to get rid of at i.MX. The correct way would
-be to use the device_id mechanism to abstract between SoC differences.
-
-Sascha
+IMHO mii_id[] table is a __temporary__ but a good-enough solution.
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
