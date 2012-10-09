@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-f177.google.com ([209.85.223.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TLVh8-00068k-8k
- for barebox@lists.infradead.org; Tue, 09 Oct 2012 09:01:43 +0000
-Received: by mail-ie0-f177.google.com with SMTP id e14so2554980iej.36
- for <barebox@lists.infradead.org>; Tue, 09 Oct 2012 02:01:40 -0700 (PDT)
+Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TLWVG-0001a6-Nz
+ for barebox@lists.infradead.org; Tue, 09 Oct 2012 09:53:31 +0000
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Tue, 9 Oct 2012 11:53:25 +0200
+Message-Id: <1349776406-14453-2-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1349776406-14453-1-git-send-email-t.gamez@phytec.de>
+References: <1349776406-14453-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <1354932.YHvktshCZC@linux-xmcx>
-References: <1354932.YHvktshCZC@linux-xmcx>
-Date: Tue, 9 Oct 2012 13:01:39 +0400
-Message-ID: <CAA4bVAEaReqHLO4k+vbZYrX+KZX7aYry4Hh7fX770xmhPJEcNg@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +17,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: USB to Serial
-To: =?ISO-8859-1?Q?G=FCnter_Gebhardt?= <guenter.gebhardt@freenet.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/3] ARM OMAP: Remove usage of gpio lib calls in lowlevel code
+To: barebox@lists.infradead.org
+Cc: vicencb@gmail.com
 
-On 9 October 2012 12:46, G=FCnter Gebhardt <guenter.gebhardt@freenet.de> wr=
-ote:
-> Hello,
->
-> is there support for USB to Serial Converters?
-
-Do you want to connect USB-to-Serial converter to USB-host of a
-barebox-powered board and use it as the serial console?
-
--- =
-
-Best regards,
-  Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QXMgdGhlIGdwaW8gZnVuY3Rpb25zIGFyZSBub3QgYXZhaWxhYmxlIGF0IHRoaXMgcG9pbnQsIHNl
+dCB0aGUgZ3BpbyBtYW51YWxseS4KClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2Ft
+ZXpAcGh5dGVjLmRlPgotLS0KIGFyY2gvYXJtL21hY2gtb21hcC9vbWFwNF9nZW5lcmljLmMgfCAg
+IDI5ICsrKysrKysrKysrKysrKysrKysrKysrKysrKy0tCiAxIGZpbGVzIGNoYW5nZWQsIDI3IGlu
+c2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1v
+bWFwL29tYXA0X2dlbmVyaWMuYyBiL2FyY2gvYXJtL21hY2gtb21hcC9vbWFwNF9nZW5lcmljLmMK
+aW5kZXggYTE1OWRmYy4uODFiMzlmOSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL29t
+YXA0X2dlbmVyaWMuYworKysgYi9hcmNoL2FybS9tYWNoLW9tYXAvb21hcDRfZ2VuZXJpYy5jCkBA
+IC00ODQsMTEgKzQ4NCwyNyBAQCBlbnVtIG9tYXBfYm9vdF9zcmMgb21hcDRfYm9vdHNyYyh2b2lk
+KQogCXJldHVybiBPTUFQX0JPT1RTUkNfVU5LTk9XTjsKIH0KIAorI2RlZmluZSBHUElPX01BU0sg
+MHgxZgorCitzdGF0aWMgdm9pZCBfX2lvbWVtICpvbWFwNF9nZXRfZ3Bpb19iYXNlKHVuc2lnbmVk
+IGdwaW8pCit7CisJdm9pZCBfX2lvbWVtICpiYXNlOworCisJaWYgKGdwaW8gPCAzMikKKwkJYmFz
+ZSA9ICh2b2lkICopMHg0YTMxMDAwMDsKKwllbHNlCisJCWJhc2UgPSAodm9pZCAqKSgweDQ4MDUz
+MDAwICsgKChncGlvICYgfkdQSU9fTUFTSykgPDwgOCkpOworCisJcmV0dXJuIGJhc2U7Cit9CisK
+ICNkZWZpbmUgSTJDX1NMQVZFIDB4MTIKIAogbm9pbmxpbmUgaW50IG9tYXA0X3NjYWxlX3Zjb3Jl
+cyh1bnNpZ25lZCB2c2VsMF9waW4pCiB7CisJdm9pZCBfX2lvbWVtICpiYXNlOwogCXVuc2lnbmVk
+IGludCByZXYgPSBvbWFwNF9yZXZpc2lvbigpOworCXUzMiB2YWwgPSAwOwogCiAJLyogRm9yIFZD
+IGJ5cGFzcyBvbmx5IFZDT1JFeF9DR0ZfRk9SQ0UgIGlzIG5lY2Vzc2FyeSBhbmQKIAkgKiBWQ09S
+RXhfQ0ZHX1ZPTFRBR0UgIGNoYW5nZXMgY2FuIGJlIGRpc2NhcmRlZApAQCAtNTEwLDggKzUyNiwx
+NyBAQCBub2lubGluZSBpbnQgb21hcDRfc2NhbGVfdmNvcmVzKHVuc2lnbmVkIHZzZWwwX3BpbikK
+IAkJICogVlNFTDEgaXMgZ3JvdW5kZWQgb24gYm9hcmQuIFNvIHRoZSBmb2xsb3dpbmcgc2VsZWN0
+cwogCQkgKiBWU0VMMSA9IDAgYW5kIFZTRUwwID0gMQogCQkgKi8KLQkJZ3Bpb19kaXJlY3Rpb25f
+b3V0cHV0KHZzZWwwX3BpbiwgMCk7Ci0JCWdwaW9fc2V0X3ZhbHVlKHZzZWwwX3BpbiwgMSk7CisJ
+CWJhc2UgPSBvbWFwNF9nZXRfZ3Bpb19iYXNlKHZzZWwwX3Bpbik7CisKKwkJdmFsID0gMSA8PCAo
+dnNlbDBfcGluICYgR1BJT19NQVNLKTsKKwkJd3JpdGVsKHZhbCwgYmFzZSArIDB4MTkwKTsKKwor
+CQl2YWwgPSAgcmVhZGwoYmFzZSArIDB4MTM0KTsKKwkJdmFsICY9ICgxIDw8ICh2c2VsMF9waW4g
+JiBHUElPX01BU0spKTsKKwkJd3JpdGVsKHZhbCwgYmFzZSArIDB4MTM0KTsKKworCQl2YWwgPSAx
+IDw8ICh2c2VsMF9waW4gJiBHUElPX01BU0spOworCQl3cml0ZWwodmFsLCBiYXNlICsgMHgxOTQp
+OwogCX0KIAogCS8qIHNldCBWQ09SRTEgZm9yY2UgVlNFTCAqLwotLSAKMS43LjAuNAoKCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
+ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
