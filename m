@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from m50-110.126.com ([123.125.50.110])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TLnne-0003LD-8V
- for barebox@lists.infradead.org; Wed, 10 Oct 2012 04:21:39 +0000
-Date: Wed, 10 Oct 2012 11:50:11 +0800
-From: zzs <zzs213@126.com>
-Message-ID: <20121010035010.GA24043@greatfirst.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TLq3w-0007Pz-Fa
+ for barebox@lists.infradead.org; Wed, 10 Oct 2012 06:46:37 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1TLq3t-0004jf-QB
+ for barebox@lists.infradead.org; Wed, 10 Oct 2012 08:46:33 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1TLq3t-0000Ri-Pd
+ for barebox@lists.infradead.org; Wed, 10 Oct 2012 08:46:33 +0200
+Date: Wed, 10 Oct 2012 08:46:33 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121010064633.GH27665@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
@@ -20,27 +27,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: How to init DDR on a at91sam9g45 board
-To: barebox <barebox@lists.infradead.org>
+Subject: barebox@ELCE
+To: barebox@lists.infradead.org
 
-dear all:
+Hi All,
 
-I'm using a at91sam9g45 board similar to atmel's sam9g45-ek.
+As you might have noticed already there is a barebox presentation at the
+ELCE this year in Barcelona. For everyone who is able to come I'd be
+happy to see and meet you there.
+I will talk about the current barebox status and the future directions
+for barebox.
 
-So I select MACH_AT91SAM9M10G45EK in config.
-
-first step I want to init the DDR memory, But
-grep all barebox src, No code for init DDR been found.
-
-Who can tell me, Where the DDR init code is Or barebox
-can't use the DDR memory on MACH_AT91SAM9M10G45EK !?
-
+Sascha
 
 -- 
-Best Regards,
-zzs
-
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
