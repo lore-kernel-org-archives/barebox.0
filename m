@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TLszV-0005Bc-RF
- for barebox@lists.infradead.org; Wed, 10 Oct 2012 09:54:14 +0000
-Date: Wed, 10 Oct 2012 11:54:11 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121010095411.GB27665@pengutronix.de>
-References: <20121010064633.GH27665@pengutronix.de>
- <20121010094123.GH26553@game.jcrosoft.org>
+Received: from mail.free-electrons.com ([88.190.12.23])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TLtAE-0005gw-KQ
+ for barebox@lists.infradead.org; Wed, 10 Oct 2012 10:05:19 +0000
+Message-ID: <50754842.3060202@free-electrons.com>
+Date: Wed, 10 Oct 2012 12:04:50 +0200
+From: Gregory CLEMENT <gregory.clement@free-electrons.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20121010094123.GH26553@game.jcrosoft.org>
+References: <20121010064633.GH27665@pengutronix.de>
+In-Reply-To: <20121010064633.GH27665@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,30 +22,33 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: barebox@ELCE
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Oct 10, 2012 at 11:41:23AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 08:46 Wed 10 Oct     , Sascha Hauer wrote:
-> > Hi All,
-> > 
-> > As you might have noticed already there is a barebox presentation at the
-> > ELCE this year in Barcelona. For everyone who is able to come I'd be
-> > happy to see and meet you there.
-> > I will talk about the current barebox status and the future directions
-> > for barebox.
-> for the future direction I thik we could discus about it here first
+On 10/10/2012 08:46 AM, Sascha Hauer wrote:
+> Hi All,
+> 
+> As you might have noticed already there is a barebox presentation at the
+> ELCE this year in Barcelona. For everyone who is able to come I'd be
+> happy to see and meet you there.
 
-Well those who have seen the patches I was recently working on won't be
-surprised: It goes into the direction of a multiplatform bootloader.
+This event (ELCE) is a good opportunity to meet each other and to speak
+about a project such as barebox. You may consider to setup a more formal
+meeting associated to ELCE. Thomas Petazzoni did this for the Buildroot
+developers, I am sure he can told you how he organized it.
 
-Sascha
+> I will talk about the current barebox status and the future directions
+> for barebox.
+> 
+> Sascha
+> 
+
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
