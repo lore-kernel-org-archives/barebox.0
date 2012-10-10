@@ -1,13 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TLtkg-0000hG-J8
- for barebox@lists.infradead.org; Wed, 10 Oct 2012 10:42:59 +0000
-From: Jan Luebbe <jlu@pengutronix.de>
-Date: Wed, 10 Oct 2012 12:42:51 +0200
-Message-Id: <1349865771-18825-2-git-send-email-jlu@pengutronix.de>
-In-Reply-To: <1349865771-18825-1-git-send-email-jlu@pengutronix.de>
-References: <1349865771-18825-1-git-send-email-jlu@pengutronix.de>
+Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TLttU-0001kh-I3
+ for barebox@lists.infradead.org; Wed, 10 Oct 2012 10:52:05 +0000
+Received: from mail611.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id A20C3DC1823
+ for <barebox@lists.infradead.org>; Wed, 10 Oct 2012 12:58:29 +0200 (CEST)
+Date: Wed, 10 Oct 2012 12:49:41 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121010104941.GI26553@game.jcrosoft.org>
+References: <20121010064633.GH27665@pengutronix.de>
+ <20121010094123.GH26553@game.jcrosoft.org>
+ <20121010095411.GB27665@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20121010095411.GB27665@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,74 +23,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] parameter: support removing named parameters
-To: barebox@lists.infradead.org
+Subject: Re: barebox@ELCE
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
----
- include/param.h |    4 ++++
- lib/parameter.c |   18 ++++++++++++++++++
- 2 files changed, 22 insertions(+)
+On 11:54 Wed 10 Oct     , Sascha Hauer wrote:
+> On Wed, Oct 10, 2012 at 11:41:23AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 08:46 Wed 10 Oct     , Sascha Hauer wrote:
+> > > Hi All,
+> > > 
+> > > As you might have noticed already there is a barebox presentation at the
+> > > ELCE this year in Barcelona. For everyone who is able to come I'd be
+> > > happy to see and meet you there.
+> > > I will talk about the current barebox status and the future directions
+> > > for barebox.
+> > for the future direction I thik we could discus about it here first
+> 
+> Well those who have seen the patches I was recently working on won't be
+> surprised: It goes into the direction of a multiplatform bootloader.
+can we add dt probe will full dt support (maybe drop the boards
 
-diff --git a/include/param.h b/include/param.h
-index e0c415d..21f4f7d 100644
---- a/include/param.h
-+++ b/include/param.h
-@@ -30,6 +30,8 @@ int dev_add_param(struct device_d *dev, const char *name,
- 
- int dev_add_param_fixed(struct device_d *dev, char *name, char *value);
- 
-+void dev_remove_param(struct device_d *dev, char *name);
-+
- void dev_remove_parameters(struct device_d *dev);
- 
- int dev_param_set_generic(struct device_d *dev, struct param_d *p,
-@@ -67,6 +69,8 @@ static inline int dev_add_param_fixed(struct device_d *dev, char *name, char *va
- 	return 0;
- }
- 
-+static inline void dev_remove_param(struct device_d *dev, char *name) {}
-+
- static inline void dev_remove_parameters(struct device_d *dev) {}
- 
- static inline int dev_param_set_generic(struct device_d *dev, struct param_d *p,
-diff --git a/lib/parameter.c b/lib/parameter.c
-index b33ad17..c00b824 100644
---- a/lib/parameter.c
-+++ b/lib/parameter.c
-@@ -213,6 +213,24 @@ int dev_add_param_fixed(struct device_d *dev, char *name, char *value)
- }
- 
- /**
-+ * dev_remove_param - remove a parameter from a device and free its
-+ * memory
-+ * @param dev	The device
-+ * @param name	The name of the parameter
-+ */
-+void dev_remove_param(struct device_d *dev, char *name)
-+{
-+	struct param_d *p = get_param_by_name(dev, name);
-+
-+	if (p) {
-+		p->set(dev, p, NULL);
-+		list_del(&p->list);
-+		free(p->name);
-+		free(p);
-+	}
-+}
-+
-+/**
-  * dev_remove_parameters - remove all parameters from a device and free their
-  * memory
-  * @param dev	The device
--- 
-1.7.10.4
+I'll to add multi boards support too specially usefull as a second stage. As
+example we could detect the board type in the pbl and let barebox select the
+correct one, also if a first stage oottloader exist it can pass the
+infotmation.
 
+I was thinking on arm in the same way as the kernel
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
