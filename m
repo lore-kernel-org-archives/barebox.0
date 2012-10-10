@@ -1,11 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TLspf-00043F-KG
- for barebox@lists.infradead.org; Wed, 10 Oct 2012 09:44:04 +0000
+ id 1TLssc-0004HW-3D
+ for barebox@lists.infradead.org; Wed, 10 Oct 2012 09:47:07 +0000
+Date: Wed, 10 Oct 2012 11:47:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 10 Oct 2012 11:44:00 +0200
-Message-Id: <1349862240-1501-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20121010094703.GZ27665@pengutronix.de>
+References: <1349694156-30554-1-git-send-email-s.hauer@pengutronix.de>
+ <20121008121527.GY26553@game.jcrosoft.org>
+ <CAA4bVAGCbbrw0RmMdpDa88bF12Wjqp2FFixsKZ_-6wYyUKwcCQ@mail.gmail.com>
+ <20121010084637.GR27665@pengutronix.de>
+ <20121010093921.GG26553@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20121010093921.GG26553@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,56 +22,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] platform driver: Drop check for resource conflicts
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM at91sam9260ek: remove unused reset entry
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-The check is wrong since it would have to check whether the
-new iomem region overlaps with an existing region. Checking
-for the base address only is not enough.
-Currently this is not possible because every device conflicts
-with the top iomem region which covers the whole address space.
+On Wed, Oct 10, 2012 at 11:39:21AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 10:46 Wed 10 Oct     , Sascha Hauer wrote:
+> > On Mon, Oct 08, 2012 at 04:24:18PM +0400, Antony Pavlov wrote:
+> > > On 8 October 2012 16:15, Jean-Christophe PLAGNIOL-VILLARD
+> > > <plagnioj@jcrosoft.com> wrote:
+> > > > On 13:02 Mon 08 Oct     , Sascha Hauer wrote:
+> > > >> The at91sam9260ek has a custom reset function which does the same thing
+> > > >> as the default function. Also it does not define MACH_HAS_LOWLEVEL_INIT
+> > > >> as it should do. Remove the function.
+> > > >>
+> > > >> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > >> ---
+> > > > Acked-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > >
+> > > > btw we should rename the command reset reboot because it start to be confusing
+> > > 
+> > > IMHO it is a very good idea!
+> > 
+> > I would rather use a different name for the reset functions which are in
+> > the startup code. In the end the reset command just resets the board.
+> > 'reboot' sounds like something is being shutdown before restarting a
+> > board.
+> > 
+> > Changing a command is quite painful since all environment scripts will
+> > be broken. I don't think reset is used in the environment, but the
+> > API change to the mount command always nags me when using a new barebox
+> > which has an older environment in flash. I think we really have to be
+> > more careful when changing commands.
+> reset means reset the screen in linux
+> 
+> and I check nearly no one use reset in the env
+> execpt sam9g45 and defaultenv2
+> 
+> when I ask to do not update the var to pass the arch number on arm you give
+> the invert comment env evolve and we do not want to loose tis freedom
 
-This at least fixes the regression that devices whose memory region
-begins at 0x0 can no longer be succesfully registered.
+You are right, but still we have a problem in this area and I wanted to
+mention it. One way out could for example be that we introduce some
+version counter which we increase when incompatible changes occur. Then
+we could fall back to the default env. I haven't thought that to an end
+though.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Alexander Shiyan <shc_work@mail.ru>
-Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/base/platform.c |   12 ------------
- 1 file changed, 12 deletions(-)
+Sascha
 
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index 13b4620..ea4e37b 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -66,18 +66,6 @@ int platform_device_register(struct device_d *new_device)
- {
- 	new_device->bus = &platform_bus;
- 
--	if (new_device->resource) {
--		struct device_d *dev;
--
--		bus_for_each_device(new_device->bus, dev) {
--			if (!dev->resource)
--				continue;
--			if (dev->resource->start == new_device->resource->start) {
--				return -EBUSY;
--			}
--		}
--	}
--
- 	return register_device(new_device);
- }
- 
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
