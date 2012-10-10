@@ -1,20 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
+ helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TLttU-0001kh-I3
- for barebox@lists.infradead.org; Wed, 10 Oct 2012 10:52:05 +0000
+ id 1TLtx9-0001pz-4P
+ for barebox@lists.infradead.org; Wed, 10 Oct 2012 10:55:52 +0000
 Received: from mail611.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id A20C3DC1823
- for <barebox@lists.infradead.org>; Wed, 10 Oct 2012 12:58:29 +0200 (CEST)
-Date: Wed, 10 Oct 2012 12:49:41 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 8FD12DC1966
+ for <barebox@lists.infradead.org>; Wed, 10 Oct 2012 13:02:14 +0200 (CEST)
+Date: Wed, 10 Oct 2012 12:53:23 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121010104941.GI26553@game.jcrosoft.org>
-References: <20121010064633.GH27665@pengutronix.de>
- <20121010094123.GH26553@game.jcrosoft.org>
- <20121010095411.GB27665@pengutronix.de>
+Message-ID: <20121010105323.GJ26553@game.jcrosoft.org>
+References: <1349694156-30554-1-git-send-email-s.hauer@pengutronix.de>
+ <20121008121527.GY26553@game.jcrosoft.org>
+ <CAA4bVAGCbbrw0RmMdpDa88bF12Wjqp2FFixsKZ_-6wYyUKwcCQ@mail.gmail.com>
+ <20121010084637.GR27665@pengutronix.de>
+ <20121010093921.GG26553@game.jcrosoft.org>
+ <20121010094703.GZ27665@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121010095411.GB27665@pengutronix.de>
+In-Reply-To: <20121010094703.GZ27665@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,32 +31,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox@ELCE
+Subject: Re: [PATCH] ARM at91sam9260ek: remove unused reset entry
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 11:54 Wed 10 Oct     , Sascha Hauer wrote:
-> On Wed, Oct 10, 2012 at 11:41:23AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 08:46 Wed 10 Oct     , Sascha Hauer wrote:
-> > > Hi All,
+On 11:47 Wed 10 Oct     , Sascha Hauer wrote:
+> On Wed, Oct 10, 2012 at 11:39:21AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 10:46 Wed 10 Oct     , Sascha Hauer wrote:
+> > > On Mon, Oct 08, 2012 at 04:24:18PM +0400, Antony Pavlov wrote:
+> > > > On 8 October 2012 16:15, Jean-Christophe PLAGNIOL-VILLARD
+> > > > <plagnioj@jcrosoft.com> wrote:
+> > > > > On 13:02 Mon 08 Oct     , Sascha Hauer wrote:
+> > > > >> The at91sam9260ek has a custom reset function which does the same thing
+> > > > >> as the default function. Also it does not define MACH_HAS_LOWLEVEL_INIT
+> > > > >> as it should do. Remove the function.
+> > > > >>
+> > > > >> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > > >> ---
+> > > > > Acked-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > > >
+> > > > > btw we should rename the command reset reboot because it start to be confusing
+> > > > 
+> > > > IMHO it is a very good idea!
 > > > 
-> > > As you might have noticed already there is a barebox presentation at the
-> > > ELCE this year in Barcelona. For everyone who is able to come I'd be
-> > > happy to see and meet you there.
-> > > I will talk about the current barebox status and the future directions
-> > > for barebox.
-> > for the future direction I thik we could discus about it here first
+> > > I would rather use a different name for the reset functions which are in
+> > > the startup code. In the end the reset command just resets the board.
+> > > 'reboot' sounds like something is being shutdown before restarting a
+> > > board.
+> > > 
+> > > Changing a command is quite painful since all environment scripts will
+> > > be broken. I don't think reset is used in the environment, but the
+> > > API change to the mount command always nags me when using a new barebox
+> > > which has an older environment in flash. I think we really have to be
+> > > more careful when changing commands.
+> > reset means reset the screen in linux
+> > 
+> > and I check nearly no one use reset in the env
+> > execpt sam9g45 and defaultenv2
+> > 
+> > when I ask to do not update the var to pass the arch number on arm you give
+> > the invert comment env evolve and we do not want to loose tis freedom
 > 
-> Well those who have seen the patches I was recently working on won't be
-> surprised: It goes into the direction of a multiplatform bootloader.
-can we add dt probe will full dt support (maybe drop the boards
+> You are right, but still we have a problem in this area and I wanted to
+> mention it. One way out could for example be that we introduce some
+> version counter which we increase when incompatible changes occur. Then
+> we could fall back to the default env. I haven't thought that to an end
+> though.
+agreed, I've add such info in the env for it's own format
 
-I'll to add multi boards support too specially usefull as a second stage. As
-example we could detect the board type in the pbl and let barebox select the
-correct one, also if a first stage oottloader exist it can pass the
-infotmation.
-
-I was thinking on arm in the same way as the kernel
+maybe with a question to the end use the first time with a timeout
+if he really want to keep the current one
 
 Best Regards,
 J.
