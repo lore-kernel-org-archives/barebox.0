@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-f49.google.com ([209.85.220.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TLidN-0002RZ-Nb
- for barebox@lists.infradead.org; Tue, 09 Oct 2012 22:50:42 +0000
-Received: by mail-pa0-f49.google.com with SMTP id bi5so6116899pad.36
- for <barebox@lists.infradead.org>; Tue, 09 Oct 2012 15:50:37 -0700 (PDT)
+Received: from m50-110.126.com ([123.125.50.110])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TLnne-0003LD-8V
+ for barebox@lists.infradead.org; Wed, 10 Oct 2012 04:21:39 +0000
+Date: Wed, 10 Oct 2012 11:50:11 +0800
+From: zzs <zzs213@126.com>
+Message-ID: <20121010035010.GA24043@greatfirst.com>
 MIME-Version: 1.0
-In-Reply-To: <1349776406-14453-2-git-send-email-t.gamez@phytec.de>
-References: <1349776406-14453-1-git-send-email-t.gamez@phytec.de>
- <1349776406-14453-2-git-send-email-t.gamez@phytec.de>
-Date: Wed, 10 Oct 2012 00:50:37 +0200
-Message-ID: <CAAMcf8D_YWMGrE2jvHGVT-5=7f8kwmELthj-YVnpd74FREx4zQ@mail.gmail.com>
-From: vj <vicencb@gmail.com>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,53 +16,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] ARM OMAP: Remove usage of gpio lib calls in lowlevel
- code
-To: =?UTF-8?Q?Teresa_G=C3=A1mez?= <t.gamez@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: How to init DDR on a at91sam9g45 board
+To: barebox <barebox@lists.infradead.org>
 
-T24gVHVlLCBPY3QgOSwgMjAxMiBhdCAxMTo1MyBBTSwgVGVyZXNhIEfDoW1leiA8dC5nYW1lekBw
-aHl0ZWMuZGU+IHdyb3RlOgo+IEFzIHRoZSBncGlvIGZ1bmN0aW9ucyBhcmUgbm90IGF2YWlsYWJs
-ZSBhdCB0aGlzIHBvaW50LCBzZXQgdGhlIGdwaW8gbWFudWFsbHkuCj4KPiBTaWduZWQtb2ZmLWJ5
-OiBUZXJlc2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5kZT4KPiAtLS0KPiAgYXJjaC9hcm0vbWFj
-aC1vbWFwL29tYXA0X2dlbmVyaWMuYyB8ICAgMjkgKysrKysrKysrKysrKysrKysrKysrKysrKysr
-LS0KPiAgMSBmaWxlcyBjaGFuZ2VkLCAyNyBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQo+
-Cj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9vbWFwNF9nZW5lcmljLmMgYi9hcmNo
-L2FybS9tYWNoLW9tYXAvb21hcDRfZ2VuZXJpYy5jCj4gaW5kZXggYTE1OWRmYy4uODFiMzlmOSAx
-MDA2NDQKPiAtLS0gYS9hcmNoL2FybS9tYWNoLW9tYXAvb21hcDRfZ2VuZXJpYy5jCj4gKysrIGIv
-YXJjaC9hcm0vbWFjaC1vbWFwL29tYXA0X2dlbmVyaWMuYwo+IEBAIC00ODQsMTEgKzQ4NCwyNyBA
-QCBlbnVtIG9tYXBfYm9vdF9zcmMgb21hcDRfYm9vdHNyYyh2b2lkKQo+ICAgICAgICAgcmV0dXJu
-IE9NQVBfQk9PVFNSQ19VTktOT1dOOwo+ICB9Cj4KPiArI2RlZmluZSBHUElPX01BU0sgMHgxZgo+
-ICsKPiArc3RhdGljIHZvaWQgX19pb21lbSAqb21hcDRfZ2V0X2dwaW9fYmFzZSh1bnNpZ25lZCBn
-cGlvKQo+ICt7Cj4gKyAgICAgICB2b2lkIF9faW9tZW0gKmJhc2U7Cj4gKwo+ICsgICAgICAgaWYg
-KGdwaW8gPCAzMikKPiArICAgICAgICAgICAgICAgYmFzZSA9ICh2b2lkICopMHg0YTMxMDAwMDsK
-PiArICAgICAgIGVsc2UKPiArICAgICAgICAgICAgICAgYmFzZSA9ICh2b2lkICopKDB4NDgwNTMw
-MDAgKyAoKGdwaW8gJiB+R1BJT19NQVNLKSA8PCA4KSk7Cj4gKwo+ICsgICAgICAgcmV0dXJuIGJh
-c2U7Cj4gK30KPiArCj4gICNkZWZpbmUgSTJDX1NMQVZFIDB4MTIKPgo+ICBub2lubGluZSBpbnQg
-b21hcDRfc2NhbGVfdmNvcmVzKHVuc2lnbmVkIHZzZWwwX3BpbikKPiAgewo+ICsgICAgICAgdm9p
-ZCBfX2lvbWVtICpiYXNlOwo+ICAgICAgICAgdW5zaWduZWQgaW50IHJldiA9IG9tYXA0X3Jldmlz
-aW9uKCk7Cj4gKyAgICAgICB1MzIgdmFsID0gMDsKPgo+ICAgICAgICAgLyogRm9yIFZDIGJ5cGFz
-cyBvbmx5IFZDT1JFeF9DR0ZfRk9SQ0UgIGlzIG5lY2Vzc2FyeSBhbmQKPiAgICAgICAgICAqIFZD
-T1JFeF9DRkdfVk9MVEFHRSAgY2hhbmdlcyBjYW4gYmUgZGlzY2FyZGVkCj4gQEAgLTUxMCw4ICs1
-MjYsMTcgQEAgbm9pbmxpbmUgaW50IG9tYXA0X3NjYWxlX3Zjb3Jlcyh1bnNpZ25lZCB2c2VsMF9w
-aW4pCj4gICAgICAgICAgICAgICAgICAqIFZTRUwxIGlzIGdyb3VuZGVkIG9uIGJvYXJkLiBTbyB0
-aGUgZm9sbG93aW5nIHNlbGVjdHMKPiAgICAgICAgICAgICAgICAgICogVlNFTDEgPSAwIGFuZCBW
-U0VMMCA9IDEKPiAgICAgICAgICAgICAgICAgICovCj4gLSAgICAgICAgICAgICAgIGdwaW9fZGly
-ZWN0aW9uX291dHB1dCh2c2VsMF9waW4sIDApOwo+IC0gICAgICAgICAgICAgICBncGlvX3NldF92
-YWx1ZSh2c2VsMF9waW4sIDEpOwo+ICsgICAgICAgICAgICAgICBiYXNlID0gb21hcDRfZ2V0X2dw
-aW9fYmFzZSh2c2VsMF9waW4pOwo+ICsKPiArICAgICAgICAgICAgICAgdmFsID0gMSA8PCAodnNl
-bDBfcGluICYgR1BJT19NQVNLKTsKPiArICAgICAgICAgICAgICAgd3JpdGVsKHZhbCwgYmFzZSAr
-IDB4MTkwKTsKPiArCj4gKyAgICAgICAgICAgICAgIHZhbCA9ICByZWFkbChiYXNlICsgMHgxMzQp
-Owo+ICsgICAgICAgICAgICAgICB2YWwgJj0gKDEgPDwgKHZzZWwwX3BpbiAmIEdQSU9fTUFTSykp
-Owo+ICsgICAgICAgICAgICAgICB3cml0ZWwodmFsLCBiYXNlICsgMHgxMzQpOwo+ICsKPiArICAg
-ICAgICAgICAgICAgdmFsID0gMSA8PCAodnNlbDBfcGluICYgR1BJT19NQVNLKTsKPiArICAgICAg
-ICAgICAgICAgd3JpdGVsKHZhbCwgYmFzZSArIDB4MTk0KTsKPiAgICAgICAgIH0KPgo+ICAgICAg
-ICAgLyogc2V0IFZDT1JFMSBmb3JjZSBWU0VMICovCj4gLS0KPiAxLjcuMC40Cj4KClllcyBUZXJl
-c2EsIHRoaXMgYWxzbyB3b3JrcyBpbiBteSBjYXNlLgpUaGFua3MsCiAgVmljZW50ZS4KCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
-ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+dear all:
+
+I'm using a at91sam9g45 board similar to atmel's sam9g45-ek.
+
+So I select MACH_AT91SAM9M10G45EK in config.
+
+first step I want to init the DDR memory, But
+grep all barebox src, No code for init DDR been found.
+
+Who can tell me, Where the DDR init code is Or barebox
+can't use the DDR memory on MACH_AT91SAM9M10G45EK !?
+
+
+-- 
+Best Regards,
+zzs
+
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
