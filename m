@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TLtLu-00066B-3d
- for barebox@lists.infradead.org; Wed, 10 Oct 2012 10:17:22 +0000
+ id 1TLtkf-0000h6-3y
+ for barebox@lists.infradead.org; Wed, 10 Oct 2012 10:42:57 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Wed, 10 Oct 2012 12:17:08 +0200
-Message-Id: <1349864229-12914-1-git-send-email-jlu@pengutronix.de>
+Date: Wed, 10 Oct 2012 12:42:50 +0200
+Message-Id: <1349865771-18825-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,39 +19,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] parameter: remove unused function global_add_parameter
+Subject: [PATCH 1/2] parameter: fix memory leak
 To: barebox@lists.infradead.org
+
+In __dev_add_param, the name string is allocated using strdup.
+Free it when removing the parameter.
 
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- include/param.h |    7 -------
- 1 file changed, 7 deletions(-)
+ lib/parameter.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/param.h b/include/param.h
-index a855102..e0c415d 100644
---- a/include/param.h
-+++ b/include/param.h
-@@ -38,8 +38,6 @@ int dev_param_set_generic(struct device_d *dev, struct param_d *p,
- /* Convenience functions to handle a parameter as an ip address */
- int dev_set_param_ip(struct device_d *dev, char *name, IPaddr_t ip);
- IPaddr_t dev_get_param_ip(struct device_d *dev, char *name);
--
--int global_add_parameter(struct param_d *param);
- #else
- static inline const char *dev_get_param(struct device_d *dev, const char *name)
- {
-@@ -86,11 +84,6 @@ static inline IPaddr_t dev_get_param_ip(struct device_d *dev, char *name)
- {
- 	return 0;
+diff --git a/lib/parameter.c b/lib/parameter.c
+index 3ecb480..b33ad17 100644
+--- a/lib/parameter.c
++++ b/lib/parameter.c
+@@ -224,6 +224,7 @@ void dev_remove_parameters(struct device_d *dev)
+ 	list_for_each_entry_safe(p, n, &dev->parameters, list) {
+ 		p->set(dev, p, NULL);
+ 		list_del(&p->list);
++		free(p->name);
+ 		free(p);
+ 	}
  }
--
--static inline int global_add_parameter(struct param_d *param)
--{
--	return 0;
--}
- #endif
- 
- #endif /* PARAM_H */
 -- 
 1.7.10.4
 
