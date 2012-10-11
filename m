@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TMCxt-0008Tf-NQ
- for barebox@lists.infradead.org; Thu, 11 Oct 2012 07:14:06 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 11 Oct 2012 09:13:33 +0200
-Message-Id: <1349939621-17793-6-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1349939621-17793-1-git-send-email-s.hauer@pengutronix.de>
-References: <1349939621-17793-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TMD9M-0001eI-MU
+ for barebox@lists.infradead.org; Thu, 11 Oct 2012 07:25:47 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id E85C1BF0EB
+ for <barebox@lists.infradead.org>; Thu, 11 Oct 2012 09:25:39 +0200 (CEST)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Thu, 11 Oct 2012 09:25:35 +0200
+Message-Id: <1349940335-20960-2-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1349940335-20960-1-git-send-email-t.gamez@phytec.de>
+References: <1349940335-20960-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,480 +20,233 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/13] ARM i.MX35: Cleanup remaining unprefixed registers
+Subject: [PATCH 2/2] ARM OMAP: Use wrapper in board files
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c  |   20 +++----
- arch/arm/boards/eukrea_cpuimx35/lowlevel.c         |   24 ++++----
- arch/arm/boards/freescale-mx35-3-stack/3stack.c    |   10 ++--
- .../boards/freescale-mx35-3-stack/lowlevel_init.S  |   20 +++----
- arch/arm/boards/guf-cupid/board.c                  |    6 +-
- arch/arm/boards/guf-cupid/lowlevel.c               |   18 +++---
- arch/arm/boards/pcm043/lowlevel.c                  |   18 +++---
- arch/arm/boards/pcm043/pcm043.c                    |    6 +-
- arch/arm/mach-imx/external-nand-boot.c             |    2 +-
- arch/arm/mach-imx/imx35.c                          |    6 +-
- arch/arm/mach-imx/include/mach/imx35-regs.h        |   62 ++++++++++----------
- arch/arm/mach-imx/nand.c                           |    2 +-
- drivers/video/imx-ipu-fb.c                         |    4 +-
- 13 files changed, 99 insertions(+), 99 deletions(-)
-
-diff --git a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
-index 53cc428..5d8830b 100644
---- a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
-+++ b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
-@@ -246,14 +246,14 @@ static int eukrea_cpuimx35_core_init(void)
- 	u32 reg;
- 
- 	/* enable clock for I2C1, SDHC1, USB and FEC */
--	reg = readl(MX35_CCM_BASE_ADDR + CCM_CGR1);
--	reg |= 0x3 << CCM_CGR1_FEC_SHIFT;
--	reg |= 0x3 << CCM_CGR1_SDHC1_SHIFT;
--	reg |= 0x3 << CCM_CGR1_I2C1_SHIFT,
--	reg = writel(reg, MX35_CCM_BASE_ADDR + CCM_CGR1);
--	reg = readl(MX35_CCM_BASE_ADDR + CCM_CGR2);
--	reg |= 0x3 << CCM_CGR2_USB_SHIFT;
--	reg = writel(reg, MX35_CCM_BASE_ADDR + CCM_CGR2);
-+	reg = readl(MX35_CCM_BASE_ADDR + MX35_CCM_CGR1);
-+	reg |= 0x3 << MX35_CCM_CGR1_FEC_SHIFT;
-+	reg |= 0x3 << MX35_CCM_CGR1_SDHC1_SHIFT;
-+	reg |= 0x3 << MX35_CCM_CGR1_I2C1_SHIFT,
-+	reg = writel(reg, MX35_CCM_BASE_ADDR + MX35_CCM_CGR1);
-+	reg = readl(MX35_CCM_BASE_ADDR + MX35_CCM_CGR2);
-+	reg |= 0x3 << MX35_CCM_CGR2_USB_SHIFT;
-+	reg = writel(reg, MX35_CCM_BASE_ADDR + MX35_CCM_CGR2);
- 
- 	/* AIPS setup - Only setup MPROTx registers. The PACR default values are good.*/
- 	/*
-@@ -345,10 +345,10 @@ static int do_cpufreq(int argc, char *argv[])
- 
- 	switch (freq) {
- 	case 399:
--		writel(MPCTL_PARAM_399, MX35_CCM_BASE_ADDR + CCM_MPCTL);
-+		writel(MPCTL_PARAM_399, MX35_CCM_BASE_ADDR + MX35_CCM_MPCTL);
- 		break;
- 	case 532:
--		writel(MPCTL_PARAM_532, MX35_CCM_BASE_ADDR + CCM_MPCTL);
-+		writel(MPCTL_PARAM_532, MX35_CCM_BASE_ADDR + MX35_CCM_MPCTL);
- 		break;
- 	default:
- 		return COMMAND_ERROR_USAGE;
-diff --git a/arch/arm/boards/eukrea_cpuimx35/lowlevel.c b/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
-index 7f9395e..c6ab3be 100644
---- a/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
-+++ b/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
-@@ -41,10 +41,10 @@ static void __bare_init __naked insdram(void)
- 	uint32_t r;
- 
- 	/* Speed up NAND controller by adjusting the NFC divider */
--	r = readl(MX35_CCM_BASE_ADDR + CCM_PDR4);
-+	r = readl(MX35_CCM_BASE_ADDR + MX35_CCM_PDR4);
- 	r &= ~(0xf << 28);
- 	r |= 0x1 << 28;
--	writel(r, MX35_CCM_BASE_ADDR + CCM_PDR4);
-+	writel(r, MX35_CCM_BASE_ADDR + MX35_CCM_PDR4);
- 
- 	/* setup a stack to be able to call imx_nand_load_image() */
- 	r = STACK_BASE + STACK_SIZE - 12;
-@@ -106,27 +106,27 @@ void __bare_init __naked reset(void)
- 	 * End of ARM1136 init
- 	 */
- 
--	writel(0x003F4208, ccm_base + CCM_CCMR);
-+	writel(0x003F4208, ccm_base + MX35_CCM_CCMR);
- 
- 	/* Set MPLL , arm clock and ahb clock*/
--	writel(MPCTL_PARAM_532, ccm_base + CCM_MPCTL);
-+	writel(MPCTL_PARAM_532, ccm_base + MX35_CCM_MPCTL);
- 
--	writel(PPCTL_PARAM_300, ccm_base + CCM_PPCTL);
--	writel(0x00001000, ccm_base + CCM_PDR0);
-+	writel(PPCTL_PARAM_300, ccm_base + MX35_CCM_PPCTL);
-+	writel(0x00001000, ccm_base + MX35_CCM_PDR0);
- 
--	r = readl(ccm_base + CCM_CGR0);
-+	r = readl(ccm_base + MX35_CCM_CGR0);
- 	r |= 0x00300000;
--	writel(r, ccm_base + CCM_CGR0);
-+	writel(r, ccm_base + MX35_CCM_CGR0);
- 
--	r = readl(ccm_base + CCM_CGR1);
-+	r = readl(ccm_base + MX35_CCM_CGR1);
- 	r |= 0x00030C00;
- 	r |= 0x00000003;
--	writel(r, ccm_base + CCM_CGR1);
-+	writel(r, ccm_base + MX35_CCM_CGR1);
- 
- 	/* enable watchdog asap */
--	r = readl(ccm_base + CCM_CGR2);
-+	r = readl(ccm_base + MX35_CCM_CGR2);
- 	r |= 0x03000000;
--	writel(r, ccm_base + CCM_CGR2);
-+	writel(r, ccm_base + MX35_CCM_CGR2);
- 
- 	r = readl(MX35_L2CC_BASE_ADDR + L2X0_AUX_CTRL);
- 	r |= 0x1000;
-diff --git a/arch/arm/boards/freescale-mx35-3-stack/3stack.c b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
-index 1a5bf5b..4c79317 100644
---- a/arch/arm/boards/freescale-mx35-3-stack/3stack.c
-+++ b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
-@@ -144,7 +144,7 @@ static int f3s_devices_init(void)
- 	/* CS0: Nor Flash */
- 	imx35_setup_weimcs(0, 0x0000cf03, 0x10000d03, 0x00720900);
- 
--	reg = readl(MX35_CCM_BASE_ADDR + CCM_RCSR);
-+	reg = readl(MX35_CCM_BASE_ADDR + MX35_CCM_RCSR);
- 	/* some fuses provide us vital information about connected hardware */
- 	if (reg & 0x20000000)
- 		nand_info.width = 2;	/* 16 bit */
-@@ -282,10 +282,10 @@ static int f3s_core_init(void)
- 	imx35_setup_weimcs(5, 0x0000D843, 0x22252521, 0x22220A00);
- 
- 	/* enable clock for I2C1 and FEC */
--	reg = readl(MX35_CCM_BASE_ADDR + CCM_CGR1);
--	reg |= 0x3 << CCM_CGR1_FEC_SHIFT;
--	reg |= 0x3 << CCM_CGR1_I2C1_SHIFT;
--	reg = writel(reg, MX35_CCM_BASE_ADDR + CCM_CGR1);
-+	reg = readl(MX35_CCM_BASE_ADDR + MX35_CCM_CGR1);
-+	reg |= 0x3 << MX35_CCM_CGR1_FEC_SHIFT;
-+	reg |= 0x3 << MX35_CCM_CGR1_I2C1_SHIFT;
-+	reg = writel(reg, MX35_CCM_BASE_ADDR + MX35_CCM_CGR1);
- 
- 	/* AIPS setup - Only setup MPROTx registers. The PACR default values are good.*/
- 	/*
-diff --git a/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S b/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
-index e5d0feb..bd3dd7f 100644
---- a/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
-+++ b/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
-@@ -98,27 +98,27 @@ reset:
- 	ldr	r0, CCM_BASE_ADDR_W
- 
- 	ldr	r2, CCM_CCMR_W
--	str	r2, [r0, #CCM_CCMR]
-+	str	r2, [r0, #MX35_CCM_CCMR]
- 
- 	ldr	r3, MPCTL_PARAM_532_W		/* consumer path*/
- 
- 	/* Set MPLL, arm clock and ahb clock */
--	str	r3, [r0, #CCM_MPCTL]
-+	str	r3, [r0, #MX35_CCM_MPCTL]
- 
- 	ldr	r1, PPCTL_PARAM_W
--	str	r1, [r0, #CCM_PPCTL]
-+	str	r1, [r0, #MX35_CCM_PPCTL]
- 
- 	ldr	r1, CCM_PDR0_W
--	str	r1, [r0, #CCM_PDR0]
-+	str	r1, [r0, #MX35_CCM_PDR0]
- 
--	ldr	r1, [r0, #CCM_CGR0]
-+	ldr	r1, [r0, #MX35_CCM_CGR0]
- 	orr	r1, r1, #0x00300000
--	str	r1, [r0, #CCM_CGR0]
-+	str	r1, [r0, #MX35_CCM_CGR0]
- 
--	ldr	r1, [r0, #CCM_CGR1]
-+	ldr	r1, [r0, #MX35_CCM_CGR1]
- 	orr	r1, r1, #0x00000C00
- 	orr	r1, r1, #0x00000003
--	str	r1, [r0, #CCM_CGR1]
-+	str	r1, [r0, #MX35_CCM_CGR1]
- 
- 	/* Skip SDRAM initialization if we run from RAM */
- 	cmp	pc, #CSD0_BASE_ADDR
-@@ -140,13 +140,13 @@ reset:
- 	/* setup bank 0 */
- 	mov	r5, #0x00
- 	mov	r2, #0x00
--	mov	r1, #CSD0_BASE_ADDR
-+	mov	r1, #MX35_CSD0_BASE_ADDR
- 	bl	setup_sdram_bank
- 
- 	/* setup bank 1 */
- 	mov	r5, #0x00
- 	mov	r2, #0x00
--	mov	r1, #CSD1_BASE_ADDR
-+	mov	r1, #MX35_CSD1_BASE_ADDR
- 	bl	setup_sdram_bank
- 
- 	mov	lr, fp
-diff --git a/arch/arm/boards/guf-cupid/board.c b/arch/arm/boards/guf-cupid/board.c
-index 933a9cd..e36fee8 100644
---- a/arch/arm/boards/guf-cupid/board.c
-+++ b/arch/arm/boards/guf-cupid/board.c
-@@ -117,7 +117,7 @@ static int cupid_devices_init(void)
- 	gpio_direction_output(GPIO_LCD_ENABLE, 0);
- 	gpio_direction_output(GPIO_LCD_BACKLIGHT, 0);
- 
--	reg = readl(MX35_CCM_BASE_ADDR + CCM_RCSR);
-+	reg = readl(MX35_CCM_BASE_ADDR + MX35_CCM_RCSR);
- 	/* some fuses provide us vital information about connected hardware */
- 	if (reg & 0x20000000)
- 		nand_info.width = 2;    /* 16 bit */
-@@ -339,10 +339,10 @@ static int do_cpufreq(int argc, char *argv[])
- 
- 	switch (freq) {
- 	case 399:
--		writel(MPCTL_PARAM_399, MX35_CCM_BASE_ADDR + CCM_MPCTL);
-+		writel(MPCTL_PARAM_399, MX35_CCM_BASE_ADDR + MX35_CCM_MPCTL);
- 		break;
- 	case 532:
--		writel(MPCTL_PARAM_532, MX35_CCM_BASE_ADDR + CCM_MPCTL);
-+		writel(MPCTL_PARAM_532, MX35_CCM_BASE_ADDR + MX35_CCM_MPCTL);
- 		break;
- 	default:
- 		return COMMAND_ERROR_USAGE;
-diff --git a/arch/arm/boards/guf-cupid/lowlevel.c b/arch/arm/boards/guf-cupid/lowlevel.c
-index aa42697..900bdf9 100644
---- a/arch/arm/boards/guf-cupid/lowlevel.c
-+++ b/arch/arm/boards/guf-cupid/lowlevel.c
-@@ -304,27 +304,27 @@ void __bare_init __naked reset(void)
- 	/* Configure clocks */
- 
- 	/* setup cpu/bus clocks */
--	writel(0x003f4208, MX35_CCM_BASE_ADDR + CCM_CCMR);
-+	writel(0x003f4208, MX35_CCM_BASE_ADDR + MX35_CCM_CCMR);
- 
- 	/* configure MPLL */
--	writel(MPCTL_PARAM_532, MX35_CCM_BASE_ADDR + CCM_MPCTL);
-+	writel(MPCTL_PARAM_532, MX35_CCM_BASE_ADDR + MX35_CCM_MPCTL);
- 
- 	/* configure PPLL */
--	writel(PPCTL_PARAM_300, MX35_CCM_BASE_ADDR + CCM_PPCTL);
-+	writel(PPCTL_PARAM_300, MX35_CCM_BASE_ADDR + MX35_CCM_PPCTL);
- 
- 	/* configure core dividers */
--	r0 = PDR0_CCM_PER_AHB(1) | PDR0_HSP_PODF(2);
-+	r0 = MX35_PDR0_CCM_PER_AHB(1) | MX35_PDR0_HSP_PODF(2);
- 
--	writel(r0, MX35_CCM_BASE_ADDR + CCM_PDR0);
-+	writel(r0, MX35_CCM_BASE_ADDR + MX35_CCM_PDR0);
- 
- 	/* configure clock-gates */
--	r0 = readl(MX35_CCM_BASE_ADDR + CCM_CGR0);
-+	r0 = readl(MX35_CCM_BASE_ADDR + MX35_CCM_CGR0);
- 	r0 |= 0x00300000;
--	writel(r0, MX35_CCM_BASE_ADDR + CCM_CGR0);
-+	writel(r0, MX35_CCM_BASE_ADDR + MX35_CCM_CGR0);
- 
--	r0 = readl(MX35_CCM_BASE_ADDR + CCM_CGR1);
-+	r0 = readl(MX35_CCM_BASE_ADDR + MX35_CCM_CGR1);
- 	r0 |= 0x00000c03;
--	writel(r0, MX35_CCM_BASE_ADDR + CCM_CGR1);
-+	writel(r0, MX35_CCM_BASE_ADDR + MX35_CCM_CGR1);
- 
- 	/* Configure SDRAM */
- 	/* Try 32-Bit 256 MB DDR memory */
-diff --git a/arch/arm/boards/pcm043/lowlevel.c b/arch/arm/boards/pcm043/lowlevel.c
-index a3c1a09..58c0840 100644
---- a/arch/arm/boards/pcm043/lowlevel.c
-+++ b/arch/arm/boards/pcm043/lowlevel.c
-@@ -111,28 +111,28 @@ void __bare_init __naked reset(void)
- 	 * End of ARM1136 init
- 	 */
- 
--	writel(0x003F4208, ccm_base + CCM_CCMR);
-+	writel(0x003F4208, ccm_base + MX35_CCM_CCMR);
- 
- 	/* Set MPLL , arm clock and ahb clock*/
--	writel(MPCTL_PARAM_532, ccm_base + CCM_MPCTL);
-+	writel(MPCTL_PARAM_532, ccm_base + MX35_CCM_MPCTL);
- 
--	writel(PPCTL_PARAM_300, ccm_base + CCM_PPCTL);
-+	writel(PPCTL_PARAM_300, ccm_base + MX35_CCM_PPCTL);
- 
- 	/* Check silicon revision and use 532MHz if >=2.1 */
- 	r = readl(MX35_IIM_BASE_ADDR + 0x24);
- 	if (r >= IMX35_CHIP_REVISION_2_1)
--		writel(CCM_PDR0_532, ccm_base + CCM_PDR0);
-+		writel(CCM_PDR0_532, ccm_base + MX35_CCM_PDR0);
- 	else
--		writel(CCM_PDR0_399, ccm_base + CCM_PDR0);
-+		writel(CCM_PDR0_399, ccm_base + MX35_CCM_PDR0);
- 
--	r = readl(ccm_base + CCM_CGR0);
-+	r = readl(ccm_base + MX35_CCM_CGR0);
- 	r |= 0x00300000;
--	writel(r, ccm_base + CCM_CGR0);
-+	writel(r, ccm_base + MX35_CCM_CGR0);
- 
--	r = readl(ccm_base + CCM_CGR1);
-+	r = readl(ccm_base + MX35_CCM_CGR1);
- 	r |= 0x00000C00;
- 	r |= 0x00000003;
--	writel(r, ccm_base + CCM_CGR1);
-+	writel(r, ccm_base + MX35_CCM_CGR1);
- 
- 	r = readl(MX35_L2CC_BASE_ADDR + L2X0_AUX_CTRL);
- 	r |= 0x1000;
-diff --git a/arch/arm/boards/pcm043/pcm043.c b/arch/arm/boards/pcm043/pcm043.c
-index 09bc96a..b0d48ba 100644
---- a/arch/arm/boards/pcm043/pcm043.c
-+++ b/arch/arm/boards/pcm043/pcm043.c
-@@ -127,7 +127,7 @@ static int imx35_devices_init(void)
- 
- 	led_gpio_register(&led0);
- 
--	reg = readl(MX35_CCM_BASE_ADDR + CCM_RCSR);
-+	reg = readl(MX35_CCM_BASE_ADDR + MX35_CCM_RCSR);
- 	/* some fuses provide us vital information about connected hardware */
- 	if (reg & 0x20000000)
- 		nand_info.width = 2;    /* 16 bit */
-@@ -308,10 +308,10 @@ static int do_cpufreq(int argc, char *argv[])
- 
- 	switch (freq) {
- 	case 399:
--		writel(MPCTL_PARAM_399, MX35_CCM_BASE_ADDR + CCM_MPCTL);
-+		writel(MPCTL_PARAM_399, MX35_CCM_BASE_ADDR + MX35_CCM_MPCTL);
- 		break;
- 	case 532:
--		writel(MPCTL_PARAM_532, MX35_CCM_BASE_ADDR + CCM_MPCTL);
-+		writel(MPCTL_PARAM_532, MX35_CCM_BASE_ADDR + MX35_CCM_MPCTL);
- 		break;
- 	default:
- 		return COMMAND_ERROR_USAGE;
-diff --git a/arch/arm/mach-imx/external-nand-boot.c b/arch/arm/mach-imx/external-nand-boot.c
-index 9bcfcca..7cf2a07 100644
---- a/arch/arm/mach-imx/external-nand-boot.c
-+++ b/arch/arm/mach-imx/external-nand-boot.c
-@@ -140,7 +140,7 @@ static int __maybe_unused is_pagesize_2k(void)
- 		return 0;
- #endif
- #if defined(CONFIG_ARCH_IMX35)
--	if (readl(IMX_CCM_BASE + CCM_RCSR) & (1 << 8))
-+	if (readl(MX35_CCM_BASE_ADDR + MX35_CCM_RCSR) & (1 << 8))
- 		return 1;
- 	else
- 		return 0;
-diff --git a/arch/arm/mach-imx/imx35.c b/arch/arm/mach-imx/imx35.c
-index 946c8dd..5560157 100644
---- a/arch/arm/mach-imx/imx35.c
-+++ b/arch/arm/mach-imx/imx35.c
-@@ -63,9 +63,9 @@ static int imx35_init(void)
- 
- 	imx35_silicon_revision();
- 
--	val = readl(MX35_CCM_BASE_ADDR + CCM_RCSR);
--	imx_25_35_boot_save_loc((val >> CCM_RCSR_MEM_CTRL_SHIFT) & 0x3,
--			(val >> CCM_RCSR_MEM_TYPE_SHIFT) & 0x3);
-+	val = readl(MX35_CCM_BASE_ADDR + MX35_CCM_RCSR);
-+	imx_25_35_boot_save_loc((val >> MX35_CCM_RCSR_MEM_CTRL_SHIFT) & 0x3,
-+			(val >> MX35_CCM_RCSR_MEM_TYPE_SHIFT) & 0x3);
- 
- 	add_generic_device("imx_iim", 0, NULL, MX35_IIM_BASE_ADDR, SZ_4K,
- 			IORESOURCE_MEM, NULL);
-diff --git a/arch/arm/mach-imx/include/mach/imx35-regs.h b/arch/arm/mach-imx/include/mach/imx35-regs.h
-index 19f6389..37a4dad 100644
---- a/arch/arm/mach-imx/include/mach/imx35-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx35-regs.h
-@@ -141,36 +141,36 @@
- /*
-  * Clock Controller Module (CCM)
-  */
--#define CCM_CCMR	0x00
--#define CCM_PDR0	0x04
--#define CCM_PDR1	0x08
--#define CCM_PDR2	0x0C
--#define CCM_PDR3	0x10
--#define CCM_PDR4	0x14
--#define CCM_RCSR	0x18
--#define CCM_MPCTL	0x1C
--#define CCM_PPCTL	0x20
--#define CCM_ACMR	0x24
--#define CCM_COSR	0x28
--#define CCM_CGR0	0x2C
--#define CCM_CGR1	0x30
--#define CCM_CGR2	0x34
--#define CCM_CGR3	0x38
--
--#define CCM_CGR0_CSPI1_SHIFT	10
--#define CCM_CGR1_FEC_SHIFT	0
--#define CCM_CGR1_I2C1_SHIFT	10
--#define CCM_CGR1_SDHC1_SHIFT	26
--#define CCM_CGR2_USB_SHIFT	22
--
--#define CCM_RCSR_MEM_CTRL_SHIFT		25
--#define CCM_RCSR_MEM_TYPE_SHIFT		23
--
--#define PDR0_AUTO_MUX_DIV(x)	(((x) & 0x7) << 9)
--#define PDR0_CCM_PER_AHB(x)	(((x) & 0x7) << 12)
--#define PDR0_CON_MUX_DIV(x)	(((x) & 0xf) << 16)
--#define PDR0_HSP_PODF(x)	(((x) & 0x3) << 20)
--#define PDR0_AUTO_CON		(1 << 0)
--#define PDR0_PER_SEL		(1 << 26)
-+#define MX35_CCM_CCMR	0x00
-+#define MX35_CCM_PDR0	0x04
-+#define MX35_CCM_PDR1	0x08
-+#define MX35_CCM_PDR2	0x0C
-+#define MX35_CCM_PDR3	0x10
-+#define MX35_CCM_PDR4	0x14
-+#define MX35_CCM_RCSR	0x18
-+#define MX35_CCM_MPCTL	0x1C
-+#define MX35_CCM_PPCTL	0x20
-+#define MX35_CCM_ACMR	0x24
-+#define MX35_CCM_COSR	0x28
-+#define MX35_CCM_CGR0	0x2C
-+#define MX35_CCM_CGR1	0x30
-+#define MX35_CCM_CGR2	0x34
-+#define MX35_CCM_CGR3	0x38
-+
-+#define MX35_CCM_CGR0_CSPI1_SHIFT	10
-+#define MX35_CCM_CGR1_FEC_SHIFT	0
-+#define MX35_CCM_CGR1_I2C1_SHIFT	10
-+#define MX35_CCM_CGR1_SDHC1_SHIFT	26
-+#define MX35_CCM_CGR2_USB_SHIFT	22
-+
-+#define MX35_CCM_RCSR_MEM_CTRL_SHIFT		25
-+#define MX35_CCM_RCSR_MEM_TYPE_SHIFT		23
-+
-+#define MX35_PDR0_AUTO_MUX_DIV(x)	(((x) & 0x7) << 9)
-+#define MX35_PDR0_CCM_PER_AHB(x)	(((x) & 0x7) << 12)
-+#define MX35_PDR0_CON_MUX_DIV(x)	(((x) & 0xf) << 16)
-+#define MX35_PDR0_HSP_PODF(x)		(((x) & 0x3) << 20)
-+#define MX35_PDR0_AUTO_CON		(1 << 0)
-+#define MX35_PDR0_PER_SEL		(1 << 26)
- 
- #endif /* __ASM_ARCH_MX35_REGS_H */
-diff --git a/arch/arm/mach-imx/nand.c b/arch/arm/mach-imx/nand.c
-index 9b53b70..e793015 100644
---- a/arch/arm/mach-imx/nand.c
-+++ b/arch/arm/mach-imx/nand.c
-@@ -110,6 +110,6 @@ void imx_nand_set_layout(int writesize, int datawidth)
- #ifdef CONFIG_ARCH_IMX35
- 	if (cpu_is_mx35())
- 		imx25_35_nand_set_layout((void *)MX35_CCM_BASE_ADDR +
--				CCM_RCSR, writesize, datawidth);
-+				MX35_CCM_RCSR, writesize, datawidth);
- #endif
- }
-diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
-index 3f8fd33..5b9d7d5 100644
---- a/drivers/video/imx-ipu-fb.c
-+++ b/drivers/video/imx-ipu-fb.c
-@@ -742,9 +742,9 @@ static void ipu_fb_enable(struct fb_info *info)
- 	/* ipu_idmac.c::ipu_probe() */
- 
- 	/* Start the clock */
--	reg = readl(IMX_CCM_BASE + CCM_CGR1);
-+	reg = readl(MX35_CCM_BASE_ADDR + MX35_CCM_CGR1);
- 	reg |= (3 << 18);
--	writel(reg, IMX_CCM_BASE + CCM_CGR1);
-+	writel(reg, MX35_CCM_BASE_ADDR + MX35_CCM_CGR1);
- 
- 	/* ipu_idmac.c::ipu_idmac_init() */
- 
--- 
-1.7.10.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VXNlIHRoZSBvbWFwIHdyYXBwZXJzIGluIGJvYXJkIGZpbGVzIGluc3RlYWQgb2YgYWRkX2dlbmVy
+aWNfZGV2aWNlKCkuCkNvbXBpbGUgdGVzdGVkIGV2ZXJ5IGFmZmVjdGVkIGJvYXJkLiBUZXN0ZWQg
+b24gcGNtMDQ5LgoKU2lnbmVkLW9mZi1ieTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMu
+ZGU+Ci0tLQogYXJjaC9hcm0vYm9hcmRzL2JlYWdsZS9ib2FyZC5jICAgICAgICAgICAgfCAgIDE3
+ICsrKysrLS0tLS0tLS0tLS0tCiBhcmNoL2FybS9ib2FyZHMvb21hcDM0M3hkc3AvYm9hcmQuYyAg
+ICAgICB8ICAgMTIgKysrKy0tLS0tLS0tCiBhcmNoL2FybS9ib2FyZHMvb21hcDNldm0vYm9hcmQu
+YyAgICAgICAgICB8ICAgMTggKysrKystLS0tLS0tLS0tLS0tCiBhcmNoL2FybS9ib2FyZHMvcGFu
+ZGEvYm9hcmQuYyAgICAgICAgICAgICB8ICAgMTkgKysrKystLS0tLS0tLS0tLS0tLQogYXJjaC9h
+cm0vYm9hcmRzL3BjbTA0OS9ib2FyZC5jICAgICAgICAgICAgfCAgIDIxICsrKysrKystLS0tLS0t
+LS0tLS0tLQogYXJjaC9hcm0vYm9hcmRzL3BoeWNhcmQtYS1sMS9wY2EtYS1sMS5jICAgfCAgIDIw
+ICsrKysrLS0tLS0tLS0tLS0tLS0tCiBhcmNoL2FybS9ib2FyZHMvcGh5Y2FyZC1hLXhsMi9wY2Et
+YS14bDIuYyB8ICAgMjEgKysrKysrKy0tLS0tLS0tLS0tLS0tCiA3IGZpbGVzIGNoYW5nZWQsIDM4
+IGluc2VydGlvbnMoKyksIDkwIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Jv
+YXJkcy9iZWFnbGUvYm9hcmQuYyBiL2FyY2gvYXJtL2JvYXJkcy9iZWFnbGUvYm9hcmQuYwppbmRl
+eCAxOWJmNzQwLi5iYWIxMWM4IDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvYmVhZ2xlL2Jv
+YXJkLmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL2JlYWdsZS9ib2FyZC5jCkBAIC02Miw2ICs2Miw3
+IEBACiAjaW5jbHVkZSA8bWFjaC9zeXNfaW5mby5oPgogI2luY2x1ZGUgPG1hY2gvc3lzbGliLmg+
+CiAjaW5jbHVkZSA8bWFjaC9jb250cm9sLmg+CisjaW5jbHVkZSA8bWFjaC9kZXZpY2VzLmg+CiAj
+aW5jbHVkZSA8bWFjaC9vbWFwMy1tdXguaD4KICNpbmNsdWRlIDxtYWNoL2dwbWMuaD4KICNpbmNs
+dWRlIDxtYWNoL2dwbWNfbmFuZC5oPgpAQCAtMjM1LDExICsyMzYsNiBAQCBwdXJlX2luaXRjYWxs
+KGJlYWdsZV9ib2FyZF9pbml0KTsKIAogI2lmZGVmIENPTkZJR19EUklWRVJfU0VSSUFMX05TMTY1
+NTAKIAotc3RhdGljIHN0cnVjdCBOUzE2NTUwX3BsYXQgc2VyaWFsX3BsYXQgPSB7Ci0JLmNsb2Nr
+ID0gNDgwMDAwMDAsICAgICAgLyogNDhNSHogKEFQTEw5Ni8yKSAqLwotCS5zaGlmdCA9IDIsCi19
+OwotCiAvKioKICAqIEBicmllZiBVQVJUIHNlcmlhbCBwb3J0IGluaXRpYWxpemF0aW9uIC0gcmVt
+ZW1iZXIgdG8gZW5hYmxlIENPTSBjbG9ja3MgaW4KICAqIGFyY2gKQEAgLTI0OSw4ICsyNDUsNyBA
+QCBzdGF0aWMgc3RydWN0IE5TMTY1NTBfcGxhdCBzZXJpYWxfcGxhdCA9IHsKIHN0YXRpYyBpbnQg
+YmVhZ2xlX2NvbnNvbGVfaW5pdCh2b2lkKQogewogCS8qIFJlZ2lzdGVyIHRoZSBzZXJpYWwgcG9y
+dCAqLwotCWFkZF9uczE2NTUwX2RldmljZShERVZJQ0VfSURfRFlOQU1JQywgT01BUF9VQVJUM19C
+QVNFLCAxMDI0LCBJT1JFU09VUkNFX01FTV84QklULAotCQkJICAgJnNlcmlhbF9wbGF0KTsKKwlv
+bWFwX2FkZF9uczE2NTUwKE9NQVBfVUFSVDNfQkFTRSk7CiAKIAlyZXR1cm4gMDsKIH0KQEAgLTI4
+Nyw3ICsyODIsNyBAQCBzdGF0aWMgc3RydWN0IGdwbWNfbmFuZF9wbGF0Zm9ybV9kYXRhIG5hbmRf
+cGxhdCA9IHsKIAogc3RhdGljIGludCBiZWFnbGVfbWVtX2luaXQodm9pZCkKIHsKLQlhcm1fYWRk
+X21lbV9kZXZpY2UoInJhbTAiLCAweDgwMDAwMDAwLCAxMjggKiAxMDI0ICogMTAyNCk7CisJb21h
+cF9hZGRfcmFtMChTWl8xMjhNKTsKIAogCXJldHVybiAwOwogfQpAQCAtMjk2LDggKzI5MSw3IEBA
+IG1lbV9pbml0Y2FsbChiZWFnbGVfbWVtX2luaXQpOwogc3RhdGljIGludCBiZWFnbGVfZGV2aWNl
+c19pbml0KHZvaWQpCiB7CiAJaTJjX3JlZ2lzdGVyX2JvYXJkX2luZm8oMCwgaTJjX2RldmljZXMs
+IEFSUkFZX1NJWkUoaTJjX2RldmljZXMpKTsKLQlhZGRfZ2VuZXJpY19kZXZpY2UoImkyYy1vbWFw
+IiwgREVWSUNFX0lEX0RZTkFNSUMsIE5VTEwsIE9NQVBfSTJDMV9CQVNFLCBTWl80SywKLQkJCSAg
+IElPUkVTT1VSQ0VfTUVNLCBOVUxMKTsKKwlvbWFwX2FkZF9pMmMoT01BUF9JMkMxX0JBU0UsIE5V
+TEwpOwogCiAjaWZkZWYgQ09ORklHX1VTQl9FSENJX09NQVAKIAlpZiAoZWhjaV9vbWFwX2luaXQo
+Jm9tYXBfZWhjaV9wZGF0YSkgPj0gMCkKQEAgLTMxMCw4ICszMDQsNyBAQCBzdGF0aWMgaW50IGJl
+YWdsZV9kZXZpY2VzX2luaXQodm9pZCkKICNlbmRpZgogCW9tYXBfYWRkX2dwbWNfbmFuZF9kZXZp
+Y2UoJm5hbmRfcGxhdCk7CiAKLQlhZGRfZ2VuZXJpY19kZXZpY2UoIm9tYXAtaHNtbWMiLCBERVZJ
+Q0VfSURfRFlOQU1JQywgTlVMTCwgT01BUF9NTUMxX0JBU0UsIFNaXzRLLAotCQkJICAgSU9SRVNP
+VVJDRV9NRU0sIE5VTEwpOworCW9tYXBfYWRkX21tYyhPTUFQX01NQzFfQkFTRSwgTlVMTCk7CiAK
+IAlhcm1saW51eF9zZXRfYm9vdHBhcmFtcygodm9pZCAqKTB4ODAwMDAxMDApOwogCWFybWxpbnV4
+X3NldF9hcmNoaXRlY3R1cmUoTUFDSF9UWVBFX09NQVAzX0JFQUdMRSk7CmRpZmYgLS1naXQgYS9h
+cmNoL2FybS9ib2FyZHMvb21hcDM0M3hkc3AvYm9hcmQuYyBiL2FyY2gvYXJtL2JvYXJkcy9vbWFw
+MzQzeGRzcC9ib2FyZC5jCmluZGV4IDIzNDNkYzAuLjA4MjExYzMgMTAwNjQ0Ci0tLSBhL2FyY2gv
+YXJtL2JvYXJkcy9vbWFwMzQzeGRzcC9ib2FyZC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9vbWFw
+MzQzeGRzcC9ib2FyZC5jCkBAIC00NSwxMSArNDUsMTMgQEAKIAogI2luY2x1ZGUgPGNvbW1vbi5o
+PgogI2luY2x1ZGUgPGNvbnNvbGUuaD4KKyNpbmNsdWRlIDxzaXplcy5oPgogI2luY2x1ZGUgPGlu
+aXQuaD4KICNpbmNsdWRlIDxkcml2ZXIuaD4KICNpbmNsdWRlIDxpby5oPgogI2luY2x1ZGUgPG5z
+MTY1NTAuaD4KICNpbmNsdWRlIDxhc20vYXJtbGludXguaD4KKyNpbmNsdWRlIDxtYWNoL2Rldmlj
+ZXMuaD4KICNpbmNsdWRlIDxtYWNoL3NpbGljb24uaD4KICNpbmNsdWRlIDxtYWNoL3NkcmMuaD4K
+ICNpbmNsdWRlIDxtYWNoL3N5c19pbmZvLmg+CkBAIC02MDQsMTEgKzYwNiw2IEBAIHN0YXRpYyB2
+b2lkIG11eF9jb25maWcodm9pZCkKIAogI2lmZGVmIENPTkZJR19EUklWRVJfU0VSSUFMX05TMTY1
+NTAKIAotc3RhdGljIHN0cnVjdCBOUzE2NTUwX3BsYXQgc2VyaWFsX3BsYXQgPSB7Ci0JLmNsb2Nr
+ID0gNDgwMDAwMDAsCS8qIDQ4TUh6IChBUExMOTYvMikgKi8KLQkuc2hpZnQgPSAyLAotfTsKLQog
+LyoqCiAgKiBAYnJpZWYgVUFSVCBzZXJpYWwgcG9ydCBpbml0aWFsaXphdGlvbiAtIHJlbWVtYmVy
+IHRvIGVuYWJsZSBDT00gY2xvY2tzIGluIGFyY2gKICAqCkBAIC02MTcsOCArNjE0LDcgQEAgc3Rh
+dGljIHN0cnVjdCBOUzE2NTUwX3BsYXQgc2VyaWFsX3BsYXQgPSB7CiBzdGF0aWMgaW50IHNkcDM0
+MzBfY29uc29sZV9pbml0KHZvaWQpCiB7CiAJLyogUmVnaXN0ZXIgdGhlIHNlcmlhbCBwb3J0ICov
+Ci0JYWRkX25zMTY1NTBfZGV2aWNlKERFVklDRV9JRF9EWU5BTUlDLCBPTUFQX1VBUlQzX0JBU0Us
+IDEwMjQsIElPUkVTT1VSQ0VfTUVNXzhCSVQsCi0JCQkgICAmc2VyaWFsX3BsYXQpOworCW9tYXBf
+YWRkX25zMTY1NTAoT01BUF9VQVJUM19CQVNFKTsKIAogCXJldHVybiAwOwogfQpAQCAtNjI4LDcg
+KzYyNCw3IEBAIGNvbnNvbGVfaW5pdGNhbGwoc2RwMzQzMF9jb25zb2xlX2luaXQpOwogCiBzdGF0
+aWMgaW50IHNkcDM0MzBfbWVtX2luaXQodm9pZCkKIHsKLQlhcm1fYWRkX21lbV9kZXZpY2UoInJh
+bTAiLCAweDgwMDAwMDAwLCAxMjggKiAxMDI0ICogMTAyNCk7CisJb21hcF9hZGRfcmFtMChTWl8x
+MjhNKTsKIAogCXJldHVybiAwOwogfQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL29tYXAz
+ZXZtL2JvYXJkLmMgYi9hcmNoL2FybS9ib2FyZHMvb21hcDNldm0vYm9hcmQuYwppbmRleCA3ZDRh
+ODdmLi5kYmFhNjNjIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvb21hcDNldm0vYm9hcmQu
+YworKysgYi9hcmNoL2FybS9ib2FyZHMvb21hcDNldm0vYm9hcmQuYwpAQCAtNDgsNiArNDgsNyBA
+QAogI2luY2x1ZGUgPHNpemVzLmg+CiAjaW5jbHVkZSA8bnMxNjU1MC5oPgogI2luY2x1ZGUgPGFz
+bS9hcm1saW51eC5oPgorI2luY2x1ZGUgPG1hY2gvZGV2aWNlcy5oPgogI2luY2x1ZGUgPG1hY2gv
+c2lsaWNvbi5oPgogI2luY2x1ZGUgPG1hY2gvc2RyYy5oPgogI2luY2x1ZGUgPG1hY2gvc3lzX2lu
+Zm8uaD4KQEAgLTIxNCwxMSArMjE1LDYgQEAgcHVyZV9pbml0Y2FsbChvbWFwM19ldm1fYm9hcmRf
+aW5pdCk7CiAKICNpZmRlZiBDT05GSUdfRFJJVkVSX1NFUklBTF9OUzE2NTUwCiAKLXN0YXRpYyBz
+dHJ1Y3QgTlMxNjU1MF9wbGF0IHNlcmlhbF9wbGF0ID0gewotCS5jbG9jawkJPSA0ODAwMDAwMCwg
+ICAgICAvKiA0OE1IeiAoQVBMTDk2LzIpICovCi0JLnNoaWZ0CQk9IDIsCi19OwotCiAvKioKICAq
+IEBicmllZiBJbml0aWFsaXplIHRoZSBzZXJpYWwgcG9ydCB0byBiZSB1c2VkIGFzIGNvbnNvbGUu
+CiAgKgpAQCAtMjI2LDE0ICsyMjIsMTEgQEAgc3RhdGljIHN0cnVjdCBOUzE2NTUwX3BsYXQgc2Vy
+aWFsX3BsYXQgPSB7CiAgKi8KIHN0YXRpYyBpbnQgb21hcDNldm1faW5pdF9jb25zb2xlKHZvaWQp
+CiB7Ci0JYWRkX25zMTY1NTBfZGV2aWNlKERFVklDRV9JRF9EWU5BTUlDLAogI2lmIGRlZmluZWQo
+Q09ORklHX09NQVAzRVZNX1VBUlQxKQotCQkJT01BUF9VQVJUMV9CQVNFLAorCW9tYXBfYWRkX25z
+MTY1NTAoT01BUF9VQVJUMV9CQVNFKTsKICNlbGlmIGRlZmluZWQoQ09ORklHX09NQVAzRVZNX1VB
+UlQzKQotCQkJT01BUF9VQVJUM19CQVNFLAorCW9tYXBfYWRkX25zMTY1NTAoT01BUF9VQVJUM19C
+QVNFKTsKICNlbmRpZgotCQkJMTAyNCwgSU9SRVNPVVJDRV9NRU1fOEJJVCwgJnNlcmlhbF9wbGF0
+KTsKLQogCXJldHVybiAwOwogfQogY29uc29sZV9pbml0Y2FsbChvbWFwM2V2bV9pbml0X2NvbnNv
+bGUpOwpAQCAtMjQxLDcgKzIzNCw3IEBAIGNvbnNvbGVfaW5pdGNhbGwob21hcDNldm1faW5pdF9j
+b25zb2xlKTsKIAogc3RhdGljIGludCBvbWFwM2V2bV9tZW1faW5pdCh2b2lkKQogewotCWFybV9h
+ZGRfbWVtX2RldmljZSgicmFtMCIsIDB4ODAwMDAwMDAsIDEyOCAqIDEwMjQgKiAxMDI0KTsKKwlv
+bWFwX2FkZF9yYW0wKFNaXzEyOE0pOwogCiAJcmV0dXJuIDA7CiB9CkBAIC0yNTYsOCArMjQ5LDcg
+QEAgc3RhdGljIGludCBvbWFwM2V2bV9pbml0X2RldmljZXModm9pZCkKIAlncG1jX2dlbmVyaWNf
+aW5pdCgweDEwKTsKICNlbmRpZgogI2lmZGVmIENPTkZJR19NQ0lfT01BUF9IU01NQwotCWFkZF9n
+ZW5lcmljX2RldmljZSgib21hcC1oc21tYyIsIERFVklDRV9JRF9EWU5BTUlDLCBOVUxMLCBPTUFQ
+X01NQzFfQkFTRSwgU1pfNEssCi0JCQkJSU9SRVNPVVJDRV9NRU0sIE5VTEwpOworCW9tYXBfYWRk
+X21tYyhPTUFQX01NQzFfQkFTRSwgTlVMTCk7CiAjZW5kaWYKICAgICAgICAgYXJtbGludXhfc2V0
+X2Jvb3RwYXJhbXMoKHZvaWQgKikweDgwMDAwMTAwKTsKICAgICAgICAgYXJtbGludXhfc2V0X2Fy
+Y2hpdGVjdHVyZShNQUNIX1RZUEVfT01BUDNFVk0pOwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9h
+cmRzL3BhbmRhL2JvYXJkLmMgYi9hcmNoL2FybS9ib2FyZHMvcGFuZGEvYm9hcmQuYwppbmRleCA5
+OGMwNWIyLi43ZjNmNDMwIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcGFuZGEvYm9hcmQu
+YworKysgYi9hcmNoL2FybS9ib2FyZHMvcGFuZGEvYm9hcmQuYwpAQCAtMTksNiArMTksNyBAQAog
+I2luY2x1ZGUgPGFzbS9tbXUuaD4KICNpbmNsdWRlIDxtYWNoL2dwaW8uaD4KICNpbmNsdWRlIDxl
+bnZpcm9ubWVudC5oPgorI2luY2x1ZGUgPG1hY2gvZGV2aWNlcy5oPgogI2luY2x1ZGUgPG1hY2gv
+eGxvYWQuaD4KICNpbmNsdWRlIDxpMmMvaTJjLmg+CiAjaW5jbHVkZSA8Z3Bpby5oPgpAQCAtMzMs
+MTYgKzM0LDEwIEBAIHN0YXRpYyBpbnQgYm9hcmRfcmV2aXNpb247CiAjZGVmaW5lIEdQSU9fQk9B
+UkRfSUQxIDEwMQogI2RlZmluZSBHUElPX0JPQVJEX0lEMiAxNzEKIAotc3RhdGljIHN0cnVjdCBO
+UzE2NTUwX3BsYXQgc2VyaWFsX3BsYXQgPSB7Ci0JLmNsb2NrID0gNDgwMDAwMDAsICAgICAgLyog
+NDhNSHogKEFQTEw5Ni8yKSAqLwotCS5zaGlmdCA9IDIsCi19OwotCiBzdGF0aWMgaW50IHBhbmRh
+X2NvbnNvbGVfaW5pdCh2b2lkKQogewogCS8qIFJlZ2lzdGVyIHRoZSBzZXJpYWwgcG9ydCAqLwot
+CWFkZF9uczE2NTUwX2RldmljZShERVZJQ0VfSURfRFlOQU1JQywgT01BUDQ0WFhfVUFSVDNfQkFT
+RSwgMTAyNCwKLQkJCUlPUkVTT1VSQ0VfTUVNXzhCSVQsICZzZXJpYWxfcGxhdCk7CisJb21hcF9h
+ZGRfbnMxNjU1MChPTUFQNDRYWF9VQVJUM19CQVNFKTsKIAogCXJldHVybiAwOwogfQpAQCAtNTAs
+NyArNDUsNyBAQCBjb25zb2xlX2luaXRjYWxsKHBhbmRhX2NvbnNvbGVfaW5pdCk7CiAKIHN0YXRp
+YyBpbnQgcGFuZGFfbWVtX2luaXQodm9pZCkKIHsKLQlhcm1fYWRkX21lbV9kZXZpY2UoInJhbTAi
+LCAweDgwMDAwMDAwLCBTWl8xRyk7CisJb21hcF9hZGRfcmFtMChTWl8xRyk7CiAKIAlyZXR1cm4g
+MDsKIH0KQEAgLTE2MCwxMyArMTU1LDkgQEAgc3RhdGljIGludCBwYW5kYV9kZXZpY2VzX2luaXQo
+dm9pZCkKIAl9CiAKIAlpMmNfcmVnaXN0ZXJfYm9hcmRfaW5mbygwLCBpMmNfZGV2aWNlcywgQVJS
+QVlfU0laRShpMmNfZGV2aWNlcykpOwotCWFkZF9nZW5lcmljX2RldmljZSgiaTJjLW9tYXAiLCBE
+RVZJQ0VfSURfRFlOQU1JQywKLQkJCQlOVUxMLCAweDQ4MDcwMDAwLCAweDEwMDAsCi0JCQkJSU9S
+RVNPVVJDRV9NRU0sIE5VTEwpOwotCisJb21hcF9hZGRfaTJjKDB4NDgwNzAwMDAsIE5VTEwpOwog
+Ci0JYWRkX2dlbmVyaWNfZGV2aWNlKCJvbWFwLWhzbW1jIiwgREVWSUNFX0lEX0RZTkFNSUMsIE5V
+TEwsIDB4NDgwOUMxMDAsIFNaXzRLLAotCQkJICAgSU9SRVNPVVJDRV9NRU0sIE5VTEwpOworCW9t
+YXBfYWRkX21tYygweDQ4MDlDMTAwLCBOVUxMKTsKIAlwYW5kYV9laGNpX2luaXQoKTsKIAogCXBh
+bmRhX2xlZF9pbml0KCk7CmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcGNtMDQ5L2JvYXJk
+LmMgYi9hcmNoL2FybS9ib2FyZHMvcGNtMDQ5L2JvYXJkLmMKaW5kZXggMzE1OTQ1Ny4uYWEyMGZm
+MSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BjbTA0OS9ib2FyZC5jCisrKyBiL2FyY2gv
+YXJtL2JvYXJkcy9wY20wNDkvYm9hcmQuYwpAQCAtMzIsMjIgKzMyLDE3IEBACiAjaW5jbHVkZSA8
+cGFydGl0aW9uLmg+CiAjaW5jbHVkZSA8bmFuZC5oPgogI2luY2x1ZGUgPGFzbS9tbXUuaD4KKyNp
+bmNsdWRlIDxtYWNoL2RldmljZXMuaD4KICNpbmNsdWRlIDxtYWNoL2dwaW8uaD4KICNpbmNsdWRl
+IDxtYWNoL2dwbWMuaD4KICNpbmNsdWRlIDxtYWNoL2dwbWNfbmFuZC5oPgogI2luY2x1ZGUgPG1h
+Y2gveGxvYWQuaD4KICNpbmNsdWRlIDxpMmMvaTJjLmg+CiAKLXN0YXRpYyBzdHJ1Y3QgTlMxNjU1
+MF9wbGF0IHNlcmlhbF9wbGF0ID0gewotCS5jbG9jayA9IDQ4MDAwMDAwLCAgICAgIC8qIDQ4TUh6
+IChBUExMOTYvMikgKi8KLQkuc2hpZnQgPSAyLAotfTsKLQogc3RhdGljIGludCBwY20wNDlfY29u
+c29sZV9pbml0KHZvaWQpCiB7CiAJLyogUmVnaXN0ZXIgdGhlIHNlcmlhbCBwb3J0ICovCi0JYWRk
+X25zMTY1NTBfZGV2aWNlKERFVklDRV9JRF9EWU5BTUlDLCBPTUFQNDRYWF9VQVJUM19CQVNFLCAx
+MDI0LAotCQkJSU9SRVNPVVJDRV9NRU1fOEJJVCwgJnNlcmlhbF9wbGF0KTsKKwlvbWFwX2FkZF9u
+czE2NTUwKE9NQVA0NFhYX1VBUlQzX0JBU0UpOwogCiAJcmV0dXJuIDA7CiB9CkBAIC01NSwxMCAr
+NTAsMTAgQEAgY29uc29sZV9pbml0Y2FsbChwY20wNDlfY29uc29sZV9pbml0KTsKIAogc3RhdGlj
+IGludCBwY20wNDlfbWVtX2luaXQodm9pZCkKIHsKLQlhcm1fYWRkX21lbV9kZXZpY2UoInJhbTAi
+LCAweDgwMDAwMDAwLCBTWl81MTJNKTsKKwlvbWFwX2FkZF9yYW0wKFNaXzUxMk0pOworCisJb21h
+cF9hZGRfc3JhbTAoMHg0MDMwMDAwMCwgNDggKiBTWl8xSyk7CiAKLQlhZGRfbWVtX2RldmljZSgi
+c3JhbTAiLCAweDQwMzAwMDAwLCA0OCAqIDEwMjQsCi0JCQkJICAgSU9SRVNPVVJDRV9NRU1fV1JJ
+VEVBQkxFKTsKIAlyZXR1cm4gMDsKIH0KIG1lbV9pbml0Y2FsbChwY20wNDlfbWVtX2luaXQpOwpA
+QCAtOTksMTEgKzk0LDkgQEAgc3RhdGljIHN0cnVjdCBncG1jX25hbmRfcGxhdGZvcm1fZGF0YSBu
+YW5kX3BsYXQgPSB7CiBzdGF0aWMgaW50IHBjbTA0OV9kZXZpY2VzX2luaXQodm9pZCkKIHsKIAlp
+MmNfcmVnaXN0ZXJfYm9hcmRfaW5mbygwLCBpMmNfZGV2aWNlcywgQVJSQVlfU0laRShpMmNfZGV2
+aWNlcykpOwotCWFkZF9nZW5lcmljX2RldmljZSgiaTJjLW9tYXAiLCBERVZJQ0VfSURfRFlOQU1J
+QywgTlVMTCwgMHg0ODA3MDAwMCwgMHgxMDAwLAotCQkJCUlPUkVTT1VSQ0VfTUVNLCBOVUxMKTsK
+KwlvbWFwX2FkZF9pMmMoMHg0ODA3MDAwMCwgTlVMTCk7CiAKLQlhZGRfZ2VuZXJpY19kZXZpY2Uo
+Im9tYXAtaHNtbWMiLCBERVZJQ0VfSURfRFlOQU1JQywgTlVMTCwgMHg0ODA5QzEwMCwgU1pfNEss
+Ci0JCQkgICBJT1JFU09VUkNFX01FTSwgTlVMTCk7CisJb21hcF9hZGRfbW1jKDB4NDgwOUMxMDAs
+IE5VTEwpOwogCiAJZ3BtY19nZW5lcmljX2luaXQoMHgxMCk7CiAKZGlmZiAtLWdpdCBhL2FyY2gv
+YXJtL2JvYXJkcy9waHljYXJkLWEtbDEvcGNhLWEtbDEuYyBiL2FyY2gvYXJtL2JvYXJkcy9waHlj
+YXJkLWEtbDEvcGNhLWEtbDEuYwppbmRleCBmMmQxMGYyLi5hOTM0MDU3IDEwMDY0NAotLS0gYS9h
+cmNoL2FybS9ib2FyZHMvcGh5Y2FyZC1hLWwxL3BjYS1hLWwxLmMKKysrIGIvYXJjaC9hcm0vYm9h
+cmRzL3BoeWNhcmQtYS1sMS9wY2EtYS1sMS5jCkBAIC01Nyw2ICs1Nyw3IEBACiAjaW5jbHVkZSA8
+Z2VuZXJhdGVkL21hY2gtdHlwZXMuaD4KICNpbmNsdWRlIDxsaW51eC9lcnIuaD4KICNpbmNsdWRl
+IDxtYWNoL2NvbnRyb2wuaD4KKyNpbmNsdWRlIDxtYWNoL2RldmljZXMuaD4KICNpbmNsdWRlIDxt
+YWNoL2dwbWMuaD4KICNpbmNsdWRlIDxtYWNoL2dwbWNfbmFuZC5oPgogI2luY2x1ZGUgPG1hY2gv
+b21hcF9oc21tYy5oPgpAQCAtMzA4LDE0ICszMDksNiBAQCBzdGF0aWMgaW50IHBjYWFsMV9ib2Fy
+ZF9pbml0KHZvaWQpCiB9CiBwdXJlX2luaXRjYWxsKHBjYWFsMV9ib2FyZF9pbml0KTsKIAotLyoK
+LSAqIFJ1bi10aW1lIGluaXRpYWxpemF0aW9uKHMpCi0gKi8KLXN0YXRpYyBzdHJ1Y3QgTlMxNjU1
+MF9wbGF0IHNlcmlhbF9wbGF0ID0gewotCS5jbG9jawk9IDQ4MDAwMDAwLCAgICAgIC8qIDQ4TUh6
+IChBUExMOTYvMikgKi8KLQkuc2hpZnQJPSAyLAotfTsKLQogLyoqCiAgKiBAYnJpZWYgSW5pdGlh
+bGl6ZSB0aGUgc2VyaWFsIHBvcnQgdG8gYmUgdXNlZCBhcyBjb25zb2xlLgogICoKQEAgLTMyMyw4
+ICszMTYsNyBAQCBzdGF0aWMgc3RydWN0IE5TMTY1NTBfcGxhdCBzZXJpYWxfcGxhdCA9IHsKICAq
+Lwogc3RhdGljIGludCBwY2FhbDFfaW5pdF9jb25zb2xlKHZvaWQpCiB7Ci0JYWRkX25zMTY1NTBf
+ZGV2aWNlKERFVklDRV9JRF9EWU5BTUlDLCBPTUFQX1VBUlQzX0JBU0UsIDEwMjQsIElPUkVTT1VS
+Q0VfTUVNXzhCSVQsCi0JCQkgICAmc2VyaWFsX3BsYXQpOworCW9tYXBfYWRkX25zMTY1NTAoT01B
+UF9VQVJUM19CQVNFKTsKIAogCXJldHVybiAwOwogfQpAQCAtMzY2LDEwICszNTgsOSBAQCBzdGF0
+aWMgaW50IHBjYWFsMV9tZW1faW5pdCh2b2lkKQogCSAqLwogCWdwbWNfZ2VuZXJpY19pbml0KDB4
+MTApOwogI2VuZGlmCi0JYWRkX21lbV9kZXZpY2UoInNyYW0wIiwgT01BUF9TUkFNX0JBU0UsIDYw
+ICogU1pfMUssCi0JCQkJICAgSU9SRVNPVVJDRV9NRU1fV1JJVEVBQkxFKTsKKwlvbWFwX2FkZF9z
+cmFtMChPTUFQX1NSQU1fQkFTRSwgNjAgKiBTWl8xSyk7CiAKLQlhcm1fYWRkX21lbV9kZXZpY2Uo
+InJhbTAiLCBPTUFQX1NEUkNfQ1MwLCBnZXRfc2RyX2NzX3NpemUoU0RSQ19DUzBfT1NFVCkpOwor
+CW9tYXBfYWRkX3JhbTAoZ2V0X3Nkcl9jc19zaXplKFNEUkNfQ1MwX09TRVQpKTsKIAlwcmludGYo
+ImZvdW5kICVzIGF0IFNEQ1MwXG4iLCBzaXplX2h1bWFuX3JlYWRhYmxlKGdldF9zZHJfY3Nfc2l6
+ZShTRFJDX0NTMF9PU0VUKSkpOwogCiAJaWYgKChnZXRfc2RyX2NzX3NpemUoU0RSQ19DUzFfT1NF
+VCkgIT0gMCkgJiYgKGdldF9zZHJfY3MxX2Jhc2UoKSAhPSBPTUFQX1NEUkNfQ1MwKSkgewpAQCAt
+Mzk4LDggKzM4OSw3IEBAIHN0YXRpYyBpbnQgcGNhYWwxX2luaXRfZGV2aWNlcyh2b2lkKQogCW9t
+YXBfYWRkX2dwbWNfbmFuZF9kZXZpY2UoJm5hbmRfcGxhdCk7CiAKICNpZmRlZiBDT05GSUdfTUNJ
+X09NQVBfSFNNTUMKLQlhZGRfZ2VuZXJpY19kZXZpY2UoIm9tYXAtaHNtbWMiLCBERVZJQ0VfSURf
+RFlOQU1JQywgTlVMTCwgT01BUF9NTUMxX0JBU0UsIFNaXzRLLAotCQkJICAgSU9SRVNPVVJDRV9N
+RU0sICZwY2FhbDFfaHNtbWNfcGxhdCk7CisJb21hcF9hZGRfbW1jKE9NQVBfTU1DMV9CQVNFLCAm
+cGNhYWwxX2hzbW1jX3BsYXQpOwogI2VuZGlmCiAKICNpZmRlZiBDT05GSUdfRFJJVkVSX05FVF9T
+TUM5MTFYCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcGh5Y2FyZC1hLXhsMi9wY2EtYS14
+bDIuYyBiL2FyY2gvYXJtL2JvYXJkcy9waHljYXJkLWEteGwyL3BjYS1hLXhsMi5jCmluZGV4IDY0
+ZTZkOTQuLjEyZDExOGIgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9waHljYXJkLWEteGwy
+L3BjYS1hLXhsMi5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9waHljYXJkLWEteGwyL3BjYS1hLXhs
+Mi5jCkBAIC0zMiw2ICszMiw3IEBACiAjaW5jbHVkZSA8cGFydGl0aW9uLmg+CiAjaW5jbHVkZSA8
+bmFuZC5oPgogI2luY2x1ZGUgPGFzbS9tbXUuaD4KKyNpbmNsdWRlIDxtYWNoL2RldmljZXMuaD4K
+ICNpbmNsdWRlIDxtYWNoL2dwaW8uaD4KICNpbmNsdWRlIDxtYWNoL2dwbWMuaD4KICNpbmNsdWRl
+IDxtYWNoL2dwbWNfbmFuZC5oPgpAQCAtMzksMTYgKzQwLDEwIEBACiAjaW5jbHVkZSA8bWFjaC9v
+bWFwX2hzbW1jLmg+CiAjaW5jbHVkZSA8aTJjL2kyYy5oPgogCi1zdGF0aWMgc3RydWN0IE5TMTY1
+NTBfcGxhdCBzZXJpYWxfcGxhdCA9IHsKLQkuY2xvY2sgPSA0ODAwMDAwMCwgICAgICAvKiA0OE1I
+eiAoQVBMTDk2LzIpICovCi0JLnNoaWZ0ID0gMiwKLX07Ci0KIHN0YXRpYyBpbnQgcGNhYXhsMl9j
+b25zb2xlX2luaXQodm9pZCkKIHsKIAkvKiBSZWdpc3RlciB0aGUgc2VyaWFsIHBvcnQgKi8KLQlh
+ZGRfbnMxNjU1MF9kZXZpY2UoREVWSUNFX0lEX0RZTkFNSUMsIE9NQVA0NFhYX1VBUlQzX0JBU0Us
+IDEwMjQsCi0JCUlPUkVTT1VSQ0VfTUVNXzhCSVQsICZzZXJpYWxfcGxhdCk7CisJb21hcF9hZGRf
+bnMxNjU1MChPTUFQNDRYWF9VQVJUM19CQVNFKTsKIAogCXJldHVybiAwOwogfQpAQCAtNTYsMTAg
+KzUxLDEwIEBAIGNvbnNvbGVfaW5pdGNhbGwocGNhYXhsMl9jb25zb2xlX2luaXQpOwogCiBzdGF0
+aWMgaW50IHBjYWF4bDJfbWVtX2luaXQodm9pZCkKIHsKLQlhcm1fYWRkX21lbV9kZXZpY2UoInJh
+bTAiLCAweDgwMDAwMDAwLCBTWl81MTJNKTsKKwlvbWFwX2FkZF9yYW0wKFNaXzUxMk0pOworCisJ
+b21hcF9hZGRfc3JhbTAoMHg0MDMwMDAwMCwgNDggKiBTWl8xSyk7CiAKLQlhZGRfbWVtX2Rldmlj
+ZSgic3JhbTAiLCAweDQwMzAwMDAwLCA0OCAqIDEwMjQsCi0JCQkJICAgSU9SRVNPVVJDRV9NRU1f
+V1JJVEVBQkxFKTsKIAlyZXR1cm4gMDsKIH0KIG1lbV9pbml0Y2FsbChwY2FheGwyX21lbV9pbml0
+KTsKQEAgLTExMSwxNiArMTA2LDE0IEBAIHN0YXRpYyBpbnQgcGNhYXhsMl9kZXZpY2VzX2luaXQo
+dm9pZCkKIAl1MzIgdmFsdWU7CiAKIAlpMmNfcmVnaXN0ZXJfYm9hcmRfaW5mbygwLCBpMmNfZGV2
+aWNlcywgQVJSQVlfU0laRShpMmNfZGV2aWNlcykpOwotCWFkZF9nZW5lcmljX2RldmljZSgiaTJj
+LW9tYXAiLCBERVZJQ0VfSURfRFlOQU1JQywgTlVMTCwgMHg0ODA3MDAwMCwgMHgxMDAwLAotCQkJ
+CUlPUkVTT1VSQ0VfTUVNLCBOVUxMKTsKKwlvbWFwX2FkZF9pMmMoMHg0ODA3MDAwMCwgTlVMTCk7
+CiAKIAl2YWx1ZSA9IHJlYWRsKE9NQVA0X0NPTlRST0xfUEJJQVNMSVRFKTsKIAl2YWx1ZSAmPSB+
+T01BUDRfTU1DMV9QQklBU0xJVEVfVk1PREU7CiAJdmFsdWUgfD0gKE9NQVA0X01NQzFfUEJJQVNM
+SVRFX1BXUkROWiB8CU9NQVA0X01NQzFfUFdSRE5aKTsKIAl3cml0ZWwodmFsdWUsIE9NQVA0X0NP
+TlRST0xfUEJJQVNMSVRFKTsKIAotCWFkZF9nZW5lcmljX2RldmljZSgib21hcC1oc21tYyIsIERF
+VklDRV9JRF9EWU5BTUlDLCBOVUxMLCAweDQ4MDlDMTAwLCBTWl80SywKLQkJCSAgIElPUkVTT1VS
+Q0VfTUVNLCAmbW1jX2RldmljZSk7CisJb21hcF9hZGRfbW1jKDB4NDgwOUMxMDAsICZtbWNfZGV2
+aWNlKTsKIAogCWdwbWNfZ2VuZXJpY19pbml0KDB4MTApOwogCi0tIAoxLjcuMC40CgoKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
+IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
+b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
