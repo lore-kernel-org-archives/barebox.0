@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f49.google.com ([74.125.82.49])
+Received: from mail-wi0-f177.google.com ([209.85.212.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TMQg6-0002dZ-7T
- for barebox@lists.infradead.org; Thu, 11 Oct 2012 21:52:27 +0000
-Received: by mail-wg0-f49.google.com with SMTP id gg4so1262431wgb.18
- for <barebox@lists.infradead.org>; Thu, 11 Oct 2012 14:52:25 -0700 (PDT)
+ id 1TMQg8-0002eJ-5o
+ for barebox@lists.infradead.org; Thu, 11 Oct 2012 21:52:29 +0000
+Received: by mail-wi0-f177.google.com with SMTP id hj13so2206028wib.0
+ for <barebox@lists.infradead.org>; Thu, 11 Oct 2012 14:52:26 -0700 (PDT)
 From: Carlo Caione <carlo.caione@gmail.com>
-Date: Thu, 11 Oct 2012 23:52:07 +0200
-Message-Id: <1349992331-22987-2-git-send-email-carlo.caione@gmail.com>
+Date: Thu, 11 Oct 2012 23:52:08 +0200
+Message-Id: <1349992331-22987-3-git-send-email-carlo.caione@gmail.com>
 In-Reply-To: <1349992331-22987-1-git-send-email-carlo.caione@gmail.com>
 References: <1349992331-22987-1-git-send-email-carlo.caione@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,50 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] BCM2835: clocksource driver
+Subject: [PATCH 2/5] BCM2835: add gpio driver
 To: barebox@lists.infradead.org
 
 Signed-off-by: Carlo Caione <carlo.caione@gmail.com>
 ---
- drivers/clocksource/Kconfig   |  4 ++
- drivers/clocksource/Makefile  |  1 +
- drivers/clocksource/bcm2835.c | 92 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 97 insertions(+)
- create mode 100644 drivers/clocksource/bcm2835.c
+ drivers/gpio/Kconfig        |   4 ++
+ drivers/gpio/Makefile       |   1 +
+ drivers/gpio/gpio-bcm2835.c | 166 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 171 insertions(+)
+ create mode 100644 drivers/gpio/gpio-bcm2835.c
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 9d6d293..09acdd7 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -2,6 +2,10 @@ config ARM_SMP_TWD
- 	bool
- 	depends on ARM && CPU_V7
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index a0e9b58..e8eeb6d 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -6,6 +6,10 @@ if GPIOLIB
  
-+config CLOCKSOURCE_BCM2835
-+	bool
+ menu "GPIO                          "
+ 
++config GPIO_BCM2835
++	bool "GPIO support for BCM2835"
 +	depends on ARCH_BCM2835
 +
- config CLOCKSOURCE_NOMADIK
- 	bool
- 	depends on ARM
-diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-index bef465c..92d7c13 100644
---- a/drivers/clocksource/Makefile
-+++ b/drivers/clocksource/Makefile
-@@ -1,2 +1,3 @@
- obj-$(CONFIG_ARM_SMP_TWD) += arm_smp_twd.o
-+obj-$(CONFIG_CLOCKSOURCE_BCM2835) += bcm2835.o
- obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
-diff --git a/drivers/clocksource/bcm2835.c b/drivers/clocksource/bcm2835.c
+ config GPIO_PL061
+ 	bool "PrimeCell PL061 GPIO support"
+ 	depends on ARM_AMBA
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index e2e97d3..aecdf24 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -1,4 +1,5 @@
+ obj-$(CONFIG_GPIOLIB) += gpio.o
+ 
++obj-$(CONFIG_GPIO_BCM2835)	+= gpio-bcm2835.o
+ obj-$(CONFIG_GPIO_PL061)	+= gpio-pl061.o
+ obj-$(CONFIG_GPIO_STMPE) += gpio-stmpe.o
+diff --git a/drivers/gpio/gpio-bcm2835.c b/drivers/gpio/gpio-bcm2835.c
 new file mode 100644
-index 0000000..60085a9
+index 0000000..e31894c
 --- /dev/null
-+++ b/drivers/clocksource/bcm2835.c
-@@ -0,0 +1,92 @@
++++ b/drivers/gpio/gpio-bcm2835.c
+@@ -0,0 +1,166 @@
 +/*
 + * Author: Carlo Caione <carlo@carlocaione.org>
 + *
-+ * Based on clocksource for nomadik
++ * Based on linux/arch/arm/mach-bcm2708/bcm2708_gpio.c
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -85,76 +87,150 @@ index 0000000..60085a9
 + *
 + */
 +
-+
 +#include <common.h>
-+#include <clock.h>
-+#include <io.h>
-+#include <init.h>
-+#include <driver.h>
 +#include <errno.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
++#include <malloc.h>
++#include <io.h>
++#include <gpio.h>
++#include <init.h>
++#include <mach/platform.h>
 +
-+static __iomem void *stc_base;
++#define GPIOFSEL(x)  (0x00+(x)*4)
++#define GPIOSET(x)   (0x1c+(x)*4)
++#define GPIOCLR(x)   (0x28+(x)*4)
++#define GPIOLEV(x)   (0x34+(x)*4)
++#define GPIOEDS(x)   (0x40+(x)*4)
++#define GPIOREN(x)   (0x4c+(x)*4)
++#define GPIOFEN(x)   (0x58+(x)*4)
++#define GPIOHEN(x)   (0x64+(x)*4)
++#define GPIOLEN(x)   (0x70+(x)*4)
++#define GPIOAREN(x)  (0x7c+(x)*4)
++#define GPIOAFEN(x)  (0x88+(x)*4)
++#define GPIOUD(x)    (0x94+(x)*4)
++#define GPIOUDCLK(x) (0x98+(x)*4)
 +
-+static uint64_t stc_read_cycles(void)
-+{
-+	return readl(stc_base + 0x04);
-+}
-+
-+static struct clocksource bcm2835_stc = {
-+	.read = stc_read_cycles,
-+	.mask = CLOCKSOURCE_MASK(32),
++enum {
++	GPIO_FSEL_INPUT, GPIO_FSEL_OUTPUT,
++	GPIO_FSEL_ALT5, GPIO_FSEL_ALT_4,
++	GPIO_FSEL_ALT0, GPIO_FSEL_ALT1,
++	GPIO_FSEL_ALT2, GPIO_FSEL_ALT3,
 +};
 +
-+static int bcm2835_cs_probe(struct device_d *dev)
++struct bcm2835_gpio_chip {
++	void __iomem *base;
++	struct gpio_chip chip;
++};
++
++static int bcm2835_set_function(struct gpio_chip *chip, unsigned gpio, int function)
 +{
-+	static struct clk *stc_clk;
-+	u32 rate;
-+	int ret;
++	struct bcm2835_gpio_chip *bcmgpio = container_of(chip, struct bcm2835_gpio_chip, chip);
++	void __iomem *base = bcmgpio->base;
++	unsigned gpiodir;
++	unsigned gpio_bank = gpio / 10;
++	unsigned gpio_field_offset = (gpio - 10 * gpio_bank) * 3;
 +
-+	stc_clk = clk_get(dev, NULL);
-+	if (IS_ERR(stc_clk)) {
-+		ret = PTR_ERR(stc_clk);
-+		dev_err(dev, "clock not found: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = clk_enable(stc_clk);
-+	if (ret) {
-+		dev_err(dev, "clock failed to enable: %d\n", ret);
-+		clk_put(stc_clk);
-+		return ret;
-+	}
-+
-+	rate = clk_get_rate(stc_clk);
-+	stc_base = dev_request_mem_region(dev, 0);
-+
-+	clocks_calc_mult_shift(&bcm2835_stc.mult, &bcm2835_stc.shift, rate, NSEC_PER_SEC, 60);
-+	init_clock(&bcm2835_stc);
++	gpiodir = readl(base + GPIOFSEL(gpio_bank));
++	gpiodir &= ~(7 << gpio_field_offset);
++	gpiodir |= function << gpio_field_offset;
++	writel(gpiodir, base + GPIOFSEL(gpio_bank));
++	gpiodir = readl(base + GPIOFSEL(gpio_bank));
 +
 +	return 0;
 +}
 +
-+static __maybe_unused struct of_device_id bcm2835_cs_dt_ids[] = {
++static void bcm2835_gpio_set_value(struct gpio_chip *chip, unsigned gpio, int value)
++{
++	struct bcm2835_gpio_chip *bcmgpio = container_of(chip, struct bcm2835_gpio_chip, chip);
++	void __iomem *base = bcmgpio->base;
++	unsigned gpio_bank = gpio / 32;
++	unsigned gpio_field_offset = gpio % 32;
++
++	if (value)
++		writel(1 << gpio_field_offset, base + GPIOSET(gpio_bank));
++	else
++		writel(1 << gpio_field_offset, base + GPIOCLR(gpio_bank));
++}
++
++static int bcm2835_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
++{
++	struct bcm2835_gpio_chip *bcmgpio = container_of(chip, struct bcm2835_gpio_chip, chip);
++	void __iomem *base = bcmgpio->base;
++	unsigned gpio_bank = gpio / 32;
++	unsigned gpio_field_offset = gpio % 32;
++	unsigned lev;
++
++	lev = readl(base + GPIOLEV(gpio_bank));
++	return 0x1 & (lev >> gpio_field_offset);
++}
++
++static int bcm2835_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
++{
++	return bcm2835_set_function(chip, gpio, GPIO_FSEL_INPUT);
++}
++
++static int bcm2835_gpio_direction_output(struct gpio_chip *chip, unsigned gpio, int value)
++{
++	int ret;
++	ret =  bcm2835_set_function(chip, gpio, GPIO_FSEL_OUTPUT);
++	if (ret >= 0)
++		bcm2835_gpio_set_value(chip, gpio, value);
++	return ret;
++}
++
++static struct gpio_ops bcm2835_gpio_ops = {
++	.direction_input = bcm2835_gpio_direction_input,
++	.direction_output = bcm2835_gpio_direction_output,
++	.get = bcm2835_gpio_get_value,
++	.set = bcm2835_gpio_set_value,
++};
++
++static int bcm2835_gpio_probe(struct device_d *dev)
++{
++	struct bcm2835_gpio_chip *bcmgpio;
++	int ret;
++
++	bcmgpio = xzalloc(sizeof(*bcmgpio));
++	bcmgpio->base = dev_request_mem_region(dev, 0);
++	bcmgpio->chip.ops = &bcm2835_gpio_ops;
++	bcmgpio->chip.base = -1;
++	bcmgpio->chip.ngpio = 54;
++	bcmgpio->chip.dev = dev;
++
++	ret = gpiochip_add(&bcmgpio->chip);
++	if (ret) {
++		dev_err(dev, "couldn't add gpiochip, ret = %d\n", ret);
++		goto err;
++	}
++	dev_info(dev, "probed gpiochip%d with base %d\n", dev->id, bcmgpio->chip.base);
++
++	return 0;
++
++err:
++	kfree(bcmgpio);
++
++	return ret;
++}
++
++static __maybe_unused struct of_device_id bcm2835_gpio_dt_ids[] = {
 +	{
-+			.compatible = "bcm,bcm2835-cs",
++			.compatible = "bcm,bcm2835-gpio",
 +	}, {
 +			/* sentinel */
 +	}
 +};
 +
-+static struct driver_d bcm2835_cs_driver = {
-+	.name = "bcm2835-cs",
-+	.probe = bcm2835_cs_probe,
-+	.of_compatible = DRV_OF_COMPAT(bcm2835_cs_dt_ids),
++static struct driver_d bcm2835_gpio_driver = {
++	.name = "bcm2835-gpio",
++	.probe = bcm2835_gpio_probe,
++	.of_compatible = DRV_OF_COMPAT(bcm2835_gpio_dt_ids),
 +};
 +
-+static int bcm2835_cs_init(void)
++static int bcm2835_gpio_add(void)
 +{
-+	return platform_driver_register(&bcm2835_cs_driver);
++	platform_driver_register(&bcm2835_gpio_driver);
++	return 0;
 +}
-+coredevice_initcall(bcm2835_cs_init);
++coredevice_initcall(bcm2835_gpio_add);
 -- 
 1.7.12.3
 
