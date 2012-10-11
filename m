@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-f177.google.com ([74.125.82.177])
+Received: from mail-wi0-f171.google.com ([209.85.212.171])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TMQgB-0002gH-Lx
- for barebox@lists.infradead.org; Thu, 11 Oct 2012 21:52:33 +0000
-Received: by mail-we0-f177.google.com with SMTP id u50so1359406wey.36
- for <barebox@lists.infradead.org>; Thu, 11 Oct 2012 14:52:30 -0700 (PDT)
+ id 1TMQlI-0003za-0n
+ for barebox@lists.infradead.org; Thu, 11 Oct 2012 21:57:48 +0000
+Received: by mail-wi0-f171.google.com with SMTP id hj13so6969656wib.0
+ for <barebox@lists.infradead.org>; Thu, 11 Oct 2012 14:57:46 -0700 (PDT)
 From: Carlo Caione <carlo.caione@gmail.com>
-Date: Thu, 11 Oct 2012 23:52:11 +0200
-Message-Id: <1349992331-22987-6-git-send-email-carlo.caione@gmail.com>
+Date: Thu, 11 Oct 2012 23:52:09 +0200
+Message-Id: <1349992331-22987-4-git-send-email-carlo.caione@gmail.com>
 In-Reply-To: <1349992331-22987-1-git-send-email-carlo.caione@gmail.com>
 References: <1349992331-22987-1-git-send-email-carlo.caione@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,211 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] Raspberry-Pi: add support
+Subject: [PATCH 3/5] ARM1176: add support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Carlo Caione <carlo.caione@gmail.com>
 ---
- arch/arm/Makefile                                  |  1 +
- arch/arm/boards/raspberry-pi/Kconfig               | 10 ++++
- arch/arm/boards/raspberry-pi/Makefile              |  1 +
- arch/arm/boards/raspberry-pi/config.h              |  4 ++
- .../arm/boards/raspberry-pi/env/init/bootargs-base |  8 +++
- arch/arm/boards/raspberry-pi/env/init/hostname     |  8 +++
- arch/arm/boards/raspberry-pi/rpi.c                 | 58 ++++++++++++++++++++++
- arch/arm/configs/rpi_defconfig                     | 40 +++++++++++++++
- 8 files changed, 130 insertions(+)
- create mode 100644 arch/arm/boards/raspberry-pi/Kconfig
- create mode 100644 arch/arm/boards/raspberry-pi/Makefile
- create mode 100644 arch/arm/boards/raspberry-pi/config.h
- create mode 100644 arch/arm/boards/raspberry-pi/env/init/bootargs-base
- create mode 100644 arch/arm/boards/raspberry-pi/env/init/hostname
- create mode 100644 arch/arm/boards/raspberry-pi/rpi.c
- create mode 100644 arch/arm/configs/rpi_defconfig
+ arch/arm/cpu/Kconfig | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 2ea11d6..adfe590 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -113,6 +113,7 @@ board-$(CONFIG_MACH_PCM043)			:= pcm043
- board-$(CONFIG_MACH_PM9261)			:= pm9261
- board-$(CONFIG_MACH_PM9263)			:= pm9263
- board-$(CONFIG_MACH_PM9G45)			:= pm9g45
-+board-$(CONFIG_MACH_RPI)				:= raspberry-pi
- board-$(CONFIG_MACH_SCB9328)			:= scb9328
- board-$(CONFIG_MACH_NESO)			:= guf-neso
- board-$(CONFIG_MACH_MX23EVK)			:= freescale-mx23-evk
-diff --git a/arch/arm/boards/raspberry-pi/Kconfig b/arch/arm/boards/raspberry-pi/Kconfig
-new file mode 100644
-index 0000000..3ac8829
---- /dev/null
-+++ b/arch/arm/boards/raspberry-pi/Kconfig
-@@ -0,0 +1,10 @@
-+if MACH_RPI
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index 2ed6789..d8a5fb1 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -8,6 +8,11 @@ config CPU_32
+ # which CPUs we support in the kernel image, and the compiler instruction
+ # optimiser behaviour.
+ 
++# ARM1176
++config CPU_ARM1176
++	bool
++	select CPU_V6
 +
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0x04000000
-+
-+config BOARDINFO
-+	default "RaspberryPi (BCM2835/ARM1176JZF-S)"
-+
-+endif
-diff --git a/arch/arm/boards/raspberry-pi/Makefile b/arch/arm/boards/raspberry-pi/Makefile
-new file mode 100644
-index 0000000..6ce5ede
---- /dev/null
-+++ b/arch/arm/boards/raspberry-pi/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_MACH_RPI) += rpi.o
-diff --git a/arch/arm/boards/raspberry-pi/config.h b/arch/arm/boards/raspberry-pi/config.h
-new file mode 100644
-index 0000000..ca15136
---- /dev/null
-+++ b/arch/arm/boards/raspberry-pi/config.h
-@@ -0,0 +1,4 @@
-+#ifndef __CONFIG_H
-+#define __CONFIG_H
-+
-+#endif	/* __CONFIG_H */
-diff --git a/arch/arm/boards/raspberry-pi/env/init/bootargs-base b/arch/arm/boards/raspberry-pi/env/init/bootargs-base
-new file mode 100644
-index 0000000..d869754
---- /dev/null
-+++ b/arch/arm/boards/raspberry-pi/env/init/bootargs-base
-@@ -0,0 +1,8 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	init-menu-add-entry "$0" "Base bootargs"
-+	exit
-+fi
-+
-+global.linux.bootargs.base="console=ttymxc0,115200"
-diff --git a/arch/arm/boards/raspberry-pi/env/init/hostname b/arch/arm/boards/raspberry-pi/env/init/hostname
-new file mode 100644
-index 0000000..7e8f294
---- /dev/null
-+++ b/arch/arm/boards/raspberry-pi/env/init/hostname
-@@ -0,0 +1,8 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	init-menu-add-entry "$0" "hostname"
-+	exit
-+fi
-+
-+global.hostname=Raspberry-Pi
-diff --git a/arch/arm/boards/raspberry-pi/rpi.c b/arch/arm/boards/raspberry-pi/rpi.c
-new file mode 100644
-index 0000000..4d861e4
---- /dev/null
-+++ b/arch/arm/boards/raspberry-pi/rpi.c
-@@ -0,0 +1,58 @@
-+/*
-+ * Copyright (C) 2009 Carlo Caione <carlo@carlocaione.org>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <asm/armlinux.h>
-+#include <generated/mach-types.h>
-+#include <environment.h>
-+#include <partition.h>
-+#include <sizes.h>
-+
-+#include <mach/gpio.h>
-+#include <mach/core.h>
-+#include <mach/platform.h>
-+#include <io.h>
-+
-+static int rpi_mem_init(void)
-+{
-+	ulong memsize;
-+
-+	memsize = get_ram_size((ulong *)BCM2835_SDRAM_BASE, SZ_128M);
-+	bcm2835_add_device_sdram(memsize);
-+	return 0;
-+}
-+mem_initcall(rpi_mem_init);
-+
-+static int rpi_console_init(void)
-+{
-+	bcm2835_register_uart();
-+	return 0;
-+}
-+console_initcall(rpi_console_init);
-+
-+static int rpi_devices_init(void)
-+{
-+	armlinux_set_architecture(MACH_TYPE_BCM2708);
-+	armlinux_set_bootparams((void *)(0x00000100));
-+	return 0;
-+}
-+
-+device_initcall(rpi_devices_init);
-diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
-new file mode 100644
-index 0000000..bca3d25
---- /dev/null
-+++ b/arch/arm/configs/rpi_defconfig
-@@ -0,0 +1,40 @@
-+CONFIG_ARCH_BCM2835=y
-+CONFIG_GPIO_BCM2835=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_PROMPT="R-Pi> "
-+CONFIG_LONGHELP=y
-+CONFIG_GLOB=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
-+CONFIG_PARTITION=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/raspberry-pi/env"
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_MENU=y
-+CONFIG_CMD_MENU_MANAGEMENT=y
-+CONFIG_CMD_PASSWD=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_LOADB=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_MTEST=y
-+CONFIG_CMD_MTEST_ALTERNATIVE=y
-+CONFIG_CMD_BOOTM_ZLIB=y
-+CONFIG_CMD_BOOTM_BZLIB=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_SERIAL_AMBA_PL011=y
-+CONFIG_SHA1=y
-+CONFIG_SHA256=y
+ # ARM920T
+ config CPU_ARM920T
+ 	bool
 -- 
 1.7.12.3
 
