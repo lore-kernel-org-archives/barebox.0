@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f49.google.com ([74.125.82.49])
+Received: from mail-wi0-f171.google.com ([209.85.212.171])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TMPMl-0000SE-By
- for barebox@lists.infradead.org; Thu, 11 Oct 2012 20:28:24 +0000
-Received: by mail-wg0-f49.google.com with SMTP id gg4so1222198wgb.18
- for <barebox@lists.infradead.org>; Thu, 11 Oct 2012 13:28:21 -0700 (PDT)
+ id 1TMPMs-0000Uk-1N
+ for barebox@lists.infradead.org; Thu, 11 Oct 2012 20:28:31 +0000
+Received: by mail-wi0-f171.google.com with SMTP id hj13so6894187wib.0
+ for <barebox@lists.infradead.org>; Thu, 11 Oct 2012 13:28:27 -0700 (PDT)
 From: Franck Jullien <franck.jullien@gmail.com>
-Date: Thu, 11 Oct 2012 22:28:10 +0200
-Message-Id: <1349987291-11714-1-git-send-email-franck.jullien@gmail.com>
+Date: Thu, 11 Oct 2012 22:28:11 +0200
+Message-Id: <1349987291-11714-2-git-send-email-franck.jullien@gmail.com>
+In-Reply-To: <1349987291-11714-1-git-send-email-franck.jullien@gmail.com>
+References: <1349987291-11714-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,43 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] common/paritions.c: force little endian reads
+Subject: [PATCH 2/2] common/partitions.c: make use of is_fat_or_mbr
 To: barebox@lists.infradead.org
-
-When reading values from a DOS disk, we need to force a little endian
-reading.
 
 Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
 ---
- common/partitions.c |    8 ++++----
- 1 files changed, 4 insertions(+), 4 deletions(-)
+ common/partitions.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
 diff --git a/common/partitions.c b/common/partitions.c
-index cee0a65..0e42937 100644
+index 0e42937..85bca32 100644
 --- a/common/partitions.c
 +++ b/common/partitions.c
-@@ -52,8 +52,8 @@ static int disk_guess_size(struct device_d *dev, struct partition_entry *table)
+@@ -28,6 +28,7 @@
+ #include <asm/unaligned.h>
+ #include <disks.h>
+ #include <dma.h>
++#include <filetype.h>
  
- 	for (i = 0; i < 4; i++) {
- 		if (table[i].partition_start != 0) {
--			size += get_unaligned(&table[i].partition_start) - size;
--			size += get_unaligned(&table[i].partition_size);
-+			size += get_unaligned_le32(&table[i].partition_start) - size;
-+			size += get_unaligned_le32(&table[i].partition_size);
- 		}
+ struct partition {
+ 	uint64_t first_sec;
+@@ -85,7 +86,7 @@ static void __maybe_unused try_dos_partition(struct block_device *blk,
+ 		goto on_error;
  	}
  
-@@ -97,8 +97,8 @@ static void __maybe_unused try_dos_partition(struct block_device *blk,
- 		blk->num_blocks = disk_guess_size(blk->dev, table);
- 
- 	for (i = 0; i < 4; i++) {
--		pentry.first_sec = get_unaligned(&table[i].partition_start);
--		pentry.size = get_unaligned(&table[i].partition_size);
-+		pentry.first_sec = get_unaligned_le32(&table[i].partition_start);
-+		pentry.size = get_unaligned_le32(&table[i].partition_size);
- 
- 		if (pentry.first_sec != 0) {
- 			pd->parts[pd->used_entries].first_sec = pentry.first_sec;
+-	if ((buffer[510] != 0x55) || (buffer[511] != 0xAA)) {
++	if(is_fat_or_mbr(buffer, NULL) != filetype_mbr) {
+ 		dev_info(blk->dev, "No partition table found\n");
+ 		goto on_error;
+ 	}
 -- 
 1.7.1
 
