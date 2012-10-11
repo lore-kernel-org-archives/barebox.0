@@ -1,20 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo4.mail-out.ovh.net ([188.165.36.253]
- helo=mo4.mail-out.ovh.net)
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
+ helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TMI9s-0001dY-TP
- for barebox@lists.infradead.org; Thu, 11 Oct 2012 12:46:38 +0000
-Received: from mail177.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 077B11050360
- for <barebox@lists.infradead.org>; Thu, 11 Oct 2012 14:53:02 +0200 (CEST)
-Date: Thu, 11 Oct 2012 14:44:11 +0200
+ id 1TMJa1-00021R-Tb
+ for barebox@lists.infradead.org; Thu, 11 Oct 2012 14:17:43 +0000
+Received: from mail426.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id B2A80DC1C42
+ for <barebox@lists.infradead.org>; Thu, 11 Oct 2012 16:24:07 +0200 (CEST)
+Date: Thu, 11 Oct 2012 16:15:17 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121011124411.GB13639@game.jcrosoft.org>
-References: <1349940335-20960-1-git-send-email-t.gamez@phytec.de>
- <1349940335-20960-2-git-send-email-t.gamez@phytec.de>
+Message-ID: <20121011141517.GC13639@game.jcrosoft.org>
+References: <n> <1349734061-32339-1-git-send-email-carlo.caione@gmail.com>
+ <1349734061-32339-6-git-send-email-carlo.caione@gmail.com>
+ <20121009113142.GD26553@game.jcrosoft.org>
+ <19A97966-0AF1-4D37-BC6F-CA6D47F59B50@gmail.com>
+ <20121011071735.GE27665@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1349940335-20960-2-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <20121011071735.GE27665@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,97 +26,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] ARM OMAP: Use wrapper in board files
-To: Teresa =?iso-8859-1?Q?G=E1mez?= <t.gamez@phytec.de>
+Subject: Re: [PATCH 5/5] Add support for GPIO (BCM2835/Raspberry-Pi)
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 09:25 Thu 11 Oct     , Teresa G=E1mez wrote:
-> Use the omap wrappers in board files instead of add_generic_device().
-> Compile tested every affected board. Tested on pcm049.
-> =
-
-> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
-> ---
->  arch/arm/boards/beagle/board.c            |   17 +++++------------
->  arch/arm/boards/omap343xdsp/board.c       |   12 ++++--------
->  arch/arm/boards/omap3evm/board.c          |   18 +++++-------------
->  arch/arm/boards/panda/board.c             |   19 +++++--------------
->  arch/arm/boards/pcm049/board.c            |   21 +++++++--------------
->  arch/arm/boards/phycard-a-l1/pca-a-l1.c   |   20 +++++---------------
->  arch/arm/boards/phycard-a-xl2/pca-a-xl2.c |   21 +++++++--------------
->  7 files changed, 38 insertions(+), 90 deletions(-)
-> =
-
-> diff --git a/arch/arm/boards/beagle/board.c b/arch/arm/boards/beagle/boar=
-d.c
-> index 19bf740..bab11c8 100644
-> --- a/arch/arm/boards/beagle/board.c
-> +++ b/arch/arm/boards/beagle/board.c
-> @@ -62,6 +62,7 @@
->  #include <mach/sys_info.h>
->  #include <mach/syslib.h>
->  #include <mach/control.h>
-> +#include <mach/devices.h>
->  #include <mach/omap3-mux.h>
->  #include <mach/gpmc.h>
->  #include <mach/gpmc_nand.h>
-> @@ -235,11 +236,6 @@ pure_initcall(beagle_board_init);
->  =
-
->  #ifdef CONFIG_DRIVER_SERIAL_NS16550
->  =
-
-> -static struct NS16550_plat serial_plat =3D {
-> -	.clock =3D 48000000,      /* 48MHz (APLL96/2) */
-> -	.shift =3D 2,
-> -};
-> -
->  /**
->   * @brief UART serial port initialization - remember to enable COM clock=
-s in
->   * arch
-> @@ -249,8 +245,7 @@ static struct NS16550_plat serial_plat =3D {
->  static int beagle_console_init(void)
->  {
->  	/* Register the serial port */
-> -	add_ns16550_device(DEVICE_ID_DYNAMIC, OMAP_UART3_BASE, 1024, IORESOURCE=
-_MEM_8BIT,
-> -			   &serial_plat);
-> +	omap_add_ns16550(OMAP_UART3_BASE);
-do not even provide the base at board level
->  =
-
->  	return 0;
->  }
-> @@ -287,7 +282,7 @@ static struct gpmc_nand_platform_data nand_plat =3D {
->  =
-
->  static int beagle_mem_init(void)
->  {
-> -	arm_add_mem_device("ram0", 0x80000000, 128 * 1024 * 1024);
-> +	omap_add_ram0(SZ_128M);
->  =
-
->  	return 0;
->  }
-> @@ -296,8 +291,7 @@ mem_initcall(beagle_mem_init);
->  static int beagle_devices_init(void)
->  {
->  	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
-> -	add_generic_device("i2c-omap", DEVICE_ID_DYNAMIC, NULL, OMAP_I2C1_BASE,=
- SZ_4K,
-> -			   IORESOURCE_MEM, NULL);
-> +	omap_add_i2c(OMAP_I2C1_BASE, NULL);
-ditoo and etc..
-
-Best Regards,
-J.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMDk6MTcgVGh1IDExIE9jdCAgICAgLCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4gT24gV2VkLCBP
+Y3QgMTAsIDIwMTIgYXQgMTA6MzY6NTlQTSArMDIwMCwgQ2FybG8gQ2Fpb25lIHdyb3RlOgo+ID4g
+Cj4gPiBPbiBPY3QgOSwgMjAxMiwgYXQgMTozMSBQTSwgSmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9M
+LVZJTExBUkQgPHBsYWduaW9qQGpjcm9zb2Z0LmNvbT4gd3JvdGU6Cj4gPiBbY3V0XQo+ID4gCj4g
+PiA+IHlvdSBzaG91bGQgYWRkIG9uZSBiYW5rIHByZSBncGlvX2NoaXAgCj4gPiA+PiArCXN0cnVj
+dCBiY20yODM1X2dwaW9fY2hpcCAqYmNtZ3BpbyA9IGNvbnRhaW5lcl9vZihjaGlwLCBzdHJ1Y3Qg
+YmNtMjgzNV9ncGlvX2NoaXAsIGNoaXApOwo+ID4gPj4gKwl2b2lkIF9faW9tZW0gKmJhc2UgPSBi
+Y21ncGlvLT5iYXNlOwo+ID4gPj4gKwl1bnNpZ25lZCBncGlvZGlyOwo+ID4gPj4gKwl1bnNpZ25l
+ZCBncGlvX2JhbmsgPSBncGlvIC8gMTA7Cj4gPiA+PiArCXVuc2lnbmVkIGdwaW9fZmllbGRfb2Zm
+c2V0ID0gKGdwaW8gLSAxMCAqIGdwaW9fYmFuaykgKiAzOwo+ID4gPiBzbyB0aGlzIHdpbGwgYmUg
+ZHJvcHBlZAo+ID4gPj4gKwo+ID4gPj4gKwlncGlvZGlyID0gcmVhZGwoYmFzZSArIEdQSU9GU0VM
+KGdwaW9fYmFuaykpOwo+ID4gPj4gKwlncGlvZGlyICY9IH4oNyA8PCBncGlvX2ZpZWxkX29mZnNl
+dCk7Cj4gPiA+PiArCWdwaW9kaXIgfD0gZnVuY3Rpb24gPDwgZ3Bpb19maWVsZF9vZmZzZXQ7Cj4g
+PiA+PiArCXdyaXRlbChncGlvZGlyLCBiYXNlICsgR1BJT0ZTRUwoZ3Bpb19iYW5rKSk7Cj4gPiA+
+PiArCWdwaW9kaXIgPSByZWFkbChiYXNlICsgR1BJT0ZTRUwoZ3Bpb19iYW5rKSk7Cj4gPiA+PiAr
+Cj4gPiA+PiArCXJldHVybiAwOwo+ID4gPj4gK30KPiA+ID4+ICsKPiA+IAo+ID4gVWhtLCB0aGlz
+IGNvdWxkIGJlIG5vdCBjb252ZW5pZW50IHNpbmNlIHRoZSB0d28gYmFua3MgaW4gQkNNMjgzNSBh
+cmUKPiA+IG5vdCByZWFsbHkgc2VwYXJhdGVkLCB0aGVyZSBhcmUgbm90IGV4Y2x1c2l2ZSByZWdp
+c3RlcnMgZm9yIG9uZSBiYW5rCj4gPiBvciBmb3IgdGhlIG90aGVyLiBUaGUgcmVnaXN0ZXJzIHVz
+ZWQgZm9yIEdQSU9zIGNvbmZpZ3VyYXRpb24gbWFuYWdlCj4gPiBib3RoIHRoZSB0d28gYmFua3Mg
+KHNlZSBmb3IgZXhhbXBsZSBHUEZTRUx4KS4gIElmIEkgYWRkIG9uZSBiYW5rIEkgY2FuCj4gPiBh
+dm9pZCBjYWxjdWxhdGluZyB0aGUgYmFuayBvZmZzZXQgZm9yIEdQQ0xSeCBhbmQgR1BTRVR4IGJ1
+dCBub3QgZm9yCj4gPiBHUEZTRUx4IGFuZCB2aWNldmVyc2EgKGluIGZhY3QgaW4gdGhlIGNvZGUg
+SSBzZWxlY3QgdGhlIGJhbmsgZm9yCj4gPiBHUENMUnggYW5kIEdQU0VUeCB3aXRoIGdwaW9fYmFu
+ayA9IGdwaW8gLyAzMiB3aGVyZWFzIGZvciBHUElPRlNFTCB3aXRoCj4gPiBncGlvX2JhbmsgPSBn
+cGlvIC8gMTApLiAgWWF5LCBjb25mdXNpbmcg4oCmCj4gCj4gSSBzb21ldGltZXMgd29uZGVyIGlm
+IGhhcmR3YXJlIGRlc2lnbmVycyBrbm93IHdoYXQgcGFpbnMgdGhleSBjYXVzZS4uLgpUaGV5IHRo
+aW5rIHNvZnR3YXJlIGlzIGhlcmUgdG8gc2VydmUgdGhlIGh3IHdoZXJlIGl0IHdhcyB0cnVlIDIw
+IG9yIDMwIHllYXJzCmFnbyBidXQgbm93IGl0J3MgdGhlIGludmVydAoKQmVzdCBSZWdhcmRzLApK
+LgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJv
+eCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5p
+bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
