@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TMCxm-0008Pw-JX
- for barebox@lists.infradead.org; Thu, 11 Oct 2012 07:13:57 +0000
+ id 1TMCxn-0008QG-24
+ for barebox@lists.infradead.org; Thu, 11 Oct 2012 07:14:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 11 Oct 2012 09:13:29 +0200
-Message-Id: <1349939621-17793-2-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 11 Oct 2012 09:13:41 +0200
+Message-Id: <1349939621-17793-14-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1349939621-17793-1-git-send-email-s.hauer@pengutronix.de>
 References: <1349939621-17793-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,598 +21,1036 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/13] ARM i.MX: Use SoC specific base to access sdram
- controller registers
+Subject: [PATCH 13/13] ARM i.MX: get rid of imx-regs.h
 To: barebox@lists.infradead.org
 
-This redefines the sdram controller registers as offsets to the base
-rather than as absolute addresses. All users are fixed to use the
-SoC specific base address.
+- remove now unused __REG definitions
+- include individual SoC register files instead of imx-regs.h
+- move IMX_GPIO_NR to generic.h
+- finally remove imx-regs.h
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/eukrea_cpuimx25/lowlevel.c      |   14 +++++-----
- arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S |   24 +++++++++++------
- arch/arm/boards/eukrea_cpuimx35/lowlevel.c      |   14 +++++-----
- arch/arm/boards/guf-cupid/lowlevel.c            |   33 +++++++++++++----------
- arch/arm/boards/guf-neso/lowlevel.c             |   21 ++++++++++-----
- arch/arm/boards/karo-tx25/lowlevel.c            |    8 +++---
- arch/arm/boards/pcm037/lowlevel_init.S          |   26 +++++++++---------
- arch/arm/boards/pcm038/lowlevel.c               |   21 ++++++++++-----
- arch/arm/boards/pcm043/lowlevel.c               |   21 ++++++++-------
- arch/arm/boards/phycard-i.MX27/lowlevel_init.S  |   22 ++++++++++-----
- arch/arm/mach-imx/include/mach/esdctl.h         |   10 +++----
- arch/arm/mach-imx/include/mach/imx27-regs.h     |    2 +-
- 12 files changed, 126 insertions(+), 90 deletions(-)
+ arch/arm/boards/ccxmx51/ccxmx51.c                  |    2 +-
+ arch/arm/boards/ccxmx51/ccxmx51js.c                |    2 +-
+ arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c  |    2 +-
+ arch/arm/boards/eukrea_cpuimx25/flash_header.c     |    2 +-
+ arch/arm/boards/eukrea_cpuimx25/lowlevel.c         |    2 +-
+ arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c  |    2 +-
+ arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S    |    2 +-
+ arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c  |    2 +-
+ arch/arm/boards/eukrea_cpuimx35/flash_header.c     |    2 +-
+ arch/arm/boards/eukrea_cpuimx35/lowlevel.c         |    2 +-
+ arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c  |    2 +-
+ arch/arm/boards/freescale-mx25-3-stack/3stack.c    |    2 +-
+ .../boards/freescale-mx25-3-stack/lowlevel_init.S  |    2 +-
+ arch/arm/boards/freescale-mx35-3-stack/3stack.c    |    2 +-
+ .../boards/freescale-mx35-3-stack/flash_header.c   |    2 +-
+ .../boards/freescale-mx35-3-stack/lowlevel_init.S  |    2 +-
+ arch/arm/boards/freescale-mx51-pdk/board.c         |    2 +-
+ arch/arm/boards/freescale-mx53-loco/board.c        |    2 +-
+ arch/arm/boards/freescale-mx53-smd/board.c         |    2 +-
+ arch/arm/boards/freescale-mx6-arm2/board.c         |    2 +-
+ arch/arm/boards/freescale-mx6-sabrelite/board.c    |    2 +-
+ arch/arm/boards/guf-cupid/board.c                  |    2 +-
+ arch/arm/boards/guf-cupid/lowlevel.c               |    2 +-
+ arch/arm/boards/guf-neso/board.c                   |    2 +-
+ arch/arm/boards/guf-neso/lowlevel.c                |    2 +-
+ arch/arm/boards/guf-neso/pll_init.S                |    2 +-
+ arch/arm/boards/imx21ads/imx21ads.c                |    2 +-
+ arch/arm/boards/imx21ads/lowlevel_init.S           |    2 +-
+ arch/arm/boards/imx27ads/imx27ads.c                |    2 +-
+ arch/arm/boards/imx27ads/lowlevel_init.S           |    2 +-
+ arch/arm/boards/karo-tx25/board.c                  |    2 +-
+ arch/arm/boards/karo-tx25/lowlevel.c               |    2 +-
+ arch/arm/boards/karo-tx51/tx51.c                   |    2 +-
+ arch/arm/boards/karo-tx53/board.c                  |    2 +-
+ arch/arm/boards/pcm037/lowlevel_init.S             |    2 +-
+ arch/arm/boards/pcm037/pcm037.c                    |    2 +-
+ arch/arm/boards/pcm038/lowlevel.c                  |    2 +-
+ arch/arm/boards/pcm038/pcm038.c                    |    2 +-
+ arch/arm/boards/pcm038/pcm970.c                    |    2 +-
+ arch/arm/boards/pcm043/lowlevel.c                  |    2 +-
+ arch/arm/boards/pcm043/pcm043.c                    |    2 +-
+ arch/arm/boards/phycard-i.MX27/lowlevel_init.S     |    2 +-
+ arch/arm/boards/phycard-i.MX27/pca100.c            |    2 +-
+ arch/arm/boards/scb9328/lowlevel_init.S            |    2 +-
+ arch/arm/boards/scb9328/scb9328.c                  |    2 +-
+ arch/arm/boards/tqma53/board.c                     |    2 +-
+ arch/arm/mach-imx/clk-imx5.c                       |    3 +-
+ arch/arm/mach-imx/clk-pllv2.c                      |    1 -
+ arch/arm/mach-imx/clk-pllv3.c                      |    1 -
+ arch/arm/mach-imx/clocksource.c                    |    1 -
+ arch/arm/mach-imx/external-nand-boot.c             |    6 +-
+ arch/arm/mach-imx/gpio.c                           |    1 -
+ arch/arm/mach-imx/imx1.c                           |    2 +-
+ arch/arm/mach-imx/imx21.c                          |    2 +-
+ arch/arm/mach-imx/imx25.c                          |    2 +-
+ arch/arm/mach-imx/imx31.c                          |    2 +-
+ arch/arm/mach-imx/imx35.c                          |    2 +-
+ arch/arm/mach-imx/imx51.c                          |    2 +-
+ arch/arm/mach-imx/imx53.c                          |    2 +-
+ arch/arm/mach-imx/include/mach/devices-imx31.h     |    2 +-
+ arch/arm/mach-imx/include/mach/generic.h           |    4 ++
+ arch/arm/mach-imx/include/mach/imx-regs.h          |   64 --------------------
+ arch/arm/mach-imx/iomux-v3.c                       |    1 -
+ arch/arm/mach-imx/nand.c                           |    5 +-
+ drivers/mtd/nand/nand_imx.c                        |    1 -
+ drivers/net/fec_imx.c                              |    1 -
+ drivers/serial/serial_imx.c                        |    1 -
+ drivers/video/imx-ipu-fb.c                         |    2 +-
+ drivers/video/imx.c                                |    1 -
+ 69 files changed, 70 insertions(+), 131 deletions(-)
+ delete mode 100644 arch/arm/mach-imx/include/mach/imx-regs.h
 
+diff --git a/arch/arm/boards/ccxmx51/ccxmx51.c b/arch/arm/boards/ccxmx51/ccxmx51.c
+index b391df1..a8d172c 100644
+--- a/arch/arm/boards/ccxmx51/ccxmx51.c
++++ b/arch/arm/boards/ccxmx51/ccxmx51.c
+@@ -23,7 +23,7 @@
+ #include <net.h>
+ #include <init.h>
+ #include <environment.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx51-regs.h>
+ #include <fec.h>
+ #include <mach/gpio.h>
+ #include <asm/armlinux.h>
+diff --git a/arch/arm/boards/ccxmx51/ccxmx51js.c b/arch/arm/boards/ccxmx51/ccxmx51js.c
+index f04615d..c947a1e 100644
+--- a/arch/arm/boards/ccxmx51/ccxmx51js.c
++++ b/arch/arm/boards/ccxmx51/ccxmx51js.c
+@@ -20,7 +20,7 @@
+ #include <init.h>
+ #include <mci.h>
+ #include <asm/armlinux.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx51-regs.h>
+ #include <mach/iomux-mx51.h>
+ #include <mach/devices-imx51.h>
+ #include <generated/mach-types.h>
+diff --git a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+index 39ed3b0..92e8df2 100644
+--- a/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
++++ b/arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c
+@@ -22,7 +22,7 @@
+ #include <init.h>
+ #include <driver.h>
+ #include <environment.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx25-regs.h>
+ #include <asm/armlinux.h>
+ #include <asm/barebox-arm.h>
+ #include <asm-generic/sections.h>
+diff --git a/arch/arm/boards/eukrea_cpuimx25/flash_header.c b/arch/arm/boards/eukrea_cpuimx25/flash_header.c
+index 344c7ff..9102c2a 100644
+--- a/arch/arm/boards/eukrea_cpuimx25/flash_header.c
++++ b/arch/arm/boards/eukrea_cpuimx25/flash_header.c
+@@ -23,7 +23,7 @@
+  */
+ #include <common.h>
+ #include <mach/imx-flash-header.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx25-regs.h>
+ #include <asm/barebox-arm-head.h>
+ 
+ void __naked __flash_header_start go(void)
 diff --git a/arch/arm/boards/eukrea_cpuimx25/lowlevel.c b/arch/arm/boards/eukrea_cpuimx25/lowlevel.c
-index cd80b25..fe4e70c 100644
+index 61105a7..303da29 100644
 --- a/arch/arm/boards/eukrea_cpuimx25/lowlevel.c
 +++ b/arch/arm/boards/eukrea_cpuimx25/lowlevel.c
-@@ -129,22 +129,22 @@ void __bare_init __naked reset(void)
- 		board_init_lowlevel_return();
- 
- 	/* Init Mobile DDR */
--	writel(0x0000000E, ESDMISC);
--	writel(0x00000004, ESDMISC);
-+	writel(0x0000000E, MX25_ESDCTL_BASE_ADDR + IMX_ESDMISC);
-+	writel(0x00000004, MX25_ESDCTL_BASE_ADDR + IMX_ESDMISC);
- 	__asm__ volatile ("1:\n"
- 			"subs %0, %1, #1\n"
- 			"bne 1b":"=r" (loops):"0" (loops));
- 
--	writel(0x0029572B, ESDCFG0);
--	writel(0x92210000, ESDCTL0);
-+	writel(0x0029572B, MX25_ESDCTL_BASE_ADDR + IMX_ESDCFG0);
-+	writel(0x92210000, MX25_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 	writeb(0xda, MX25_CSD0_BASE_ADDR + 0x400);
--	writel(0xA2210000, ESDCTL0);
-+	writel(0xA2210000, MX25_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 	writeb(0xda, MX25_CSD0_BASE_ADDR);
- 	writeb(0xda, MX25_CSD0_BASE_ADDR);
--	writel(0xB2210000, ESDCTL0);
-+	writel(0xB2210000, MX25_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 	writeb(0xda, MX25_CSD0_BASE_ADDR + 0x33);
- 	writeb(0xda, MX25_CSD0_BASE_ADDR + 0x1000000);
--	writel(0x82216080, ESDCTL0);
-+	writel(0x82216080, MX25_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 
- #ifdef CONFIG_NAND_IMX_BOOT
- 	/* skip NAND boot if not running from NFC space */
+@@ -19,7 +19,7 @@
+  */
+ #include <common.h>
+ #include <init.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx25-regs.h>
+ #include <mach/imx-pll.h>
+ #include <mach/esdctl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+index 4667e62..c89ce8a 100644
+--- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
++++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+@@ -21,7 +21,7 @@
+ #include <net.h>
+ #include <init.h>
+ #include <environment.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx27-regs.h>
+ #include <fec.h>
+ #include <notifier.h>
+ #include <mach/gpio.h>
 diff --git a/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S b/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S
-index 1983d48..eac9ecc 100644
+index be9a4f4..4ee6efb 100644
 --- a/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S
 +++ b/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S
-@@ -22,7 +22,8 @@
- 	/*
- 	 * DDR on CSD0
- 	 */
--	writel(0x0000000C, ESDMISC) /* Enable DDR SDRAM operation */
-+	/* Enable DDR SDRAM operation */
-+	writel(0x0000000C, MX27_ESDCTL_BASE_ADDR + IMX_ESDMISC)
+@@ -1,6 +1,6 @@
+ #include <config.h>
+ #include <asm-generic/memory_layout.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx27-regs.h>
+ #include <mach/esdctl.h>
+ #include <asm/barebox-arm-head.h>
  
- 	writel(0x55555555, DSCR(3)) /* Set the driving strength   */
- 	writel(0x55555555, DSCR(5))
-@@ -30,12 +31,16 @@
- 	writel(0x00005005, DSCR(7))
- 	writel(0x15555555, DSCR(8))
+diff --git a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
+index 5d8830b..fdbc26a 100644
+--- a/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
++++ b/arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c
+@@ -41,7 +41,7 @@
  
--	writel(0x00000004, ESDMISC) /* Initial reset */
--	writel(CFG0, ESDCFG0)
--	
--	writel(ESDCTL0_VAL | ESDCTL0_SMODE_PRECHARGE, ESDCTL0) /* precharge CSD0 all banks */
-+	/* Initial reset */
-+	writel(0x00000004, MX27_ESDCTL_BASE_ADDR + IMX_ESDMISC)
-+	writel(CFG0, MX27_ESDCTL_BASE_ADDR + IMX_ESDCFG0)
-+
-+	/* precharge CSD0 all banks */
-+	writel(ESDCTL0_VAL | ESDCTL0_SMODE_PRECHARGE,
-+			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0)
- 	writel(0x00000000, 0xA0000F00)	/* CSD0 precharge address (A10 = 1) */
--	writel(ESDCTL0_VAL | ESDCTL0_SMODE_AUTO_REFRESH, ESDCTL0)
-+	writel(ESDCTL0_VAL | ESDCTL0_SMODE_AUTO_REFRESH,
-+			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0)
+ #include <mach/gpio.h>
+ #include <mach/imx-nand.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx35-regs.h>
+ #include <mach/iomux-mx35.h>
+ #include <mach/iomux-v3.h>
+ #include <mach/imx-ipu-fb.h>
+diff --git a/arch/arm/boards/eukrea_cpuimx35/flash_header.c b/arch/arm/boards/eukrea_cpuimx35/flash_header.c
+index 26752d1..6fa9c8b 100644
+--- a/arch/arm/boards/eukrea_cpuimx35/flash_header.c
++++ b/arch/arm/boards/eukrea_cpuimx35/flash_header.c
+@@ -1,6 +1,6 @@
+ #include <common.h>
+ #include <mach/imx-flash-header.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx35-regs.h>
+ #include <asm/barebox-arm-head.h>
  
- 	ldr	r0, =0xa0000f00
- 	mov	r1, #0
-@@ -45,7 +50,8 @@
- 	subs	r2, #1
- 	bne	1b
- 
--	writel(ESDCTL0_VAL | ESDCTL0_SMODE_LOAD_MODE, ESDCTL0)
-+	writel(ESDCTL0_VAL | ESDCTL0_SMODE_LOAD_MODE,
-+			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0)
- 	ldr		r0, =0xA0000033
- 	mov		r1, #0xda
- 	strb		r1, [r0]
-@@ -56,7 +62,9 @@
- #endif
- 	mov		r1, #0xff
- 	strb		r1, [r0]
--	writel(ESDCTL0_VAL | ESDCTL0_DSIZ_31_0 | ESDCTL0_REF4 | ESDCTL0_BL | ESDCTL0_SMODE_NORMAL, ESDCTL0)
-+	writel(ESDCTL0_VAL | ESDCTL0_DSIZ_31_0 | ESDCTL0_REF4 |
-+			ESDCTL0_BL | ESDCTL0_SMODE_NORMAL,
-+			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0)
- .endm
- 
- 	.section ".text_bare_init","ax"
+ void __naked __flash_header_start go(void)
 diff --git a/arch/arm/boards/eukrea_cpuimx35/lowlevel.c b/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
-index ea932f7..7f9395e 100644
+index c6ab3be..e38a0b5 100644
 --- a/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
 +++ b/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
-@@ -138,22 +138,22 @@ void __bare_init __naked reset(void)
- 		board_init_lowlevel_return();
+@@ -18,7 +18,7 @@
+  */
+ #include <common.h>
+ #include <init.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx35-regs.h>
+ #include <mach/imx-pll.h>
+ #include <mach/esdctl.h>
+ #include <asm/cache-l2x0.h>
+diff --git a/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c b/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c
+index 1279f89..ab0ff81 100644
+--- a/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c
++++ b/arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c
+@@ -19,7 +19,7 @@
+ #include <net.h>
+ #include <init.h>
+ #include <environment.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx51-regs.h>
+ #include <fec.h>
+ #include <mach/gpio.h>
+ #include <asm/armlinux.h>
+diff --git a/arch/arm/boards/freescale-mx25-3-stack/3stack.c b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
+index 8b3c43d..5ce2f8e 100644
+--- a/arch/arm/boards/freescale-mx25-3-stack/3stack.c
++++ b/arch/arm/boards/freescale-mx25-3-stack/3stack.c
+@@ -21,7 +21,7 @@
+ #include <init.h>
+ #include <driver.h>
+ #include <environment.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx25-regs.h>
+ #include <asm/armlinux.h>
+ #include <asm-generic/sections.h>
+ #include <asm/barebox-arm.h>
+diff --git a/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S b/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S
+index 6635571..fb98099 100644
+--- a/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S
++++ b/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S
+@@ -18,7 +18,7 @@
+  */
  
- 	/* Init Mobile DDR */
--	writel(0x0000000E, ESDMISC);
--	writel(0x00000004, ESDMISC);
-+	writel(0x0000000E, MX35_ESDCTL_BASE_ADDR + IMX_ESDMISC);
-+	writel(0x00000004, MX35_ESDCTL_BASE_ADDR + IMX_ESDMISC);
- 	__asm__ volatile ("1:\n"
- 			"subs %0, %1, #1\n"
- 			"bne 1b":"=r" (loops):"0" (loops));
+ #include <asm-generic/memory_layout.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx25-regs.h>
+ #include <mach/imx-pll.h>
+ #include <mach/esdctl.h>
+ #include <asm/barebox-arm-head.h>
+diff --git a/arch/arm/boards/freescale-mx35-3-stack/3stack.c b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
+index 4c79317..7da031a 100644
+--- a/arch/arm/boards/freescale-mx35-3-stack/3stack.c
++++ b/arch/arm/boards/freescale-mx35-3-stack/3stack.c
+@@ -41,7 +41,7 @@
+ #include <mach/gpio.h>
+ #include <mach/weim.h>
+ #include <mach/imx-nand.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx35-regs.h>
+ #include <mach/iomux-mx35.h>
+ #include <mach/iomux-v3.h>
+ #include <mach/imx-ipu-fb.h>
+diff --git a/arch/arm/boards/freescale-mx35-3-stack/flash_header.c b/arch/arm/boards/freescale-mx35-3-stack/flash_header.c
+index 66763db..076b816 100644
+--- a/arch/arm/boards/freescale-mx35-3-stack/flash_header.c
++++ b/arch/arm/boards/freescale-mx35-3-stack/flash_header.c
+@@ -1,6 +1,6 @@
+ #include <common.h>
+ #include <mach/imx-flash-header.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx35-regs.h>
+ #include <asm/barebox-arm-head.h>
  
--	writel(0x0009572B, ESDCFG0);
--	writel(0x92220000, ESDCTL0);
-+	writel(0x0009572B, MX35_ESDCTL_BASE_ADDR + IMX_ESDCFG0);
-+	writel(0x92220000, MX35_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 	writeb(0xda, MX35_CSD0_BASE_ADDR + 0x400);
--	writel(0xA2220000, ESDCTL0);
-+	writel(0xA2220000, MX35_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 	writeb(0xda, MX35_CSD0_BASE_ADDR);
- 	writeb(0xda, MX35_CSD0_BASE_ADDR);
--	writel(0xB2220000, ESDCTL0);
-+	writel(0xB2220000, MX35_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 	writeb(0xda, MX35_CSD0_BASE_ADDR + 0x33);
- 	writeb(0xda, MX35_CSD0_BASE_ADDR + 0x2000000);
--	writel(0x82228080, ESDCTL0);
-+	writel(0x82228080, MX35_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
+ void __naked __flash_header_start go(void)
+diff --git a/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S b/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
+index bd3dd7f..dada5f3 100644
+--- a/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
++++ b/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
+@@ -17,7 +17,7 @@
+  *
+  */
  
- #ifdef CONFIG_NAND_IMX_BOOT
- 	/* skip NAND boot if not running from NFC space */
+-#include <mach/imx-regs.h>
++#include <mach/imx35-regs.h>
+ #include <mach/imx-pll.h>
+ #include <mach/esdctl.h>
+ #include <asm/cache-l2x0.h>
+diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
+index 61e635a..0adceac 100644
+--- a/arch/arm/boards/freescale-mx51-pdk/board.c
++++ b/arch/arm/boards/freescale-mx51-pdk/board.c
+@@ -17,7 +17,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <environment.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx51-regs.h>
+ #include <fec.h>
+ #include <mach/gpio.h>
+ #include <asm/armlinux.h>
+diff --git a/arch/arm/boards/freescale-mx53-loco/board.c b/arch/arm/boards/freescale-mx53-loco/board.c
+index 8e9b030..0678e0a 100644
+--- a/arch/arm/boards/freescale-mx53-loco/board.c
++++ b/arch/arm/boards/freescale-mx53-loco/board.c
+@@ -27,7 +27,7 @@
+ 
+ #include <generated/mach-types.h>
+ 
+-#include <mach/imx-regs.h>
++#include <mach/imx53-regs.h>
+ #include <mach/iomux-mx53.h>
+ #include <mach/devices-imx53.h>
+ #include <mach/generic.h>
+diff --git a/arch/arm/boards/freescale-mx53-smd/board.c b/arch/arm/boards/freescale-mx53-smd/board.c
+index 0483103..a5ad009 100644
+--- a/arch/arm/boards/freescale-mx53-smd/board.c
++++ b/arch/arm/boards/freescale-mx53-smd/board.c
+@@ -27,7 +27,7 @@
+ 
+ #include <generated/mach-types.h>
+ 
+-#include <mach/imx-regs.h>
++#include <mach/imx53-regs.h>
+ #include <mach/iomux-mx53.h>
+ #include <mach/devices-imx53.h>
+ #include <mach/generic.h>
+diff --git a/arch/arm/boards/freescale-mx6-arm2/board.c b/arch/arm/boards/freescale-mx6-arm2/board.c
+index ccc7318..ce9874d 100644
+--- a/arch/arm/boards/freescale-mx6-arm2/board.c
++++ b/arch/arm/boards/freescale-mx6-arm2/board.c
+@@ -15,7 +15,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <environment.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx6-regs.h>
+ #include <fec.h>
+ #include <mach/gpio.h>
+ #include <asm/armlinux.h>
+diff --git a/arch/arm/boards/freescale-mx6-sabrelite/board.c b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+index cbfa3b4..da37e17 100644
+--- a/arch/arm/boards/freescale-mx6-sabrelite/board.c
++++ b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+@@ -17,7 +17,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <environment.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx6-regs.h>
+ #include <fec.h>
+ #include <mach/gpio.h>
+ #include <asm/armlinux.h>
+diff --git a/arch/arm/boards/guf-cupid/board.c b/arch/arm/boards/guf-cupid/board.c
+index e36fee8..5b17326 100644
+--- a/arch/arm/boards/guf-cupid/board.c
++++ b/arch/arm/boards/guf-cupid/board.c
+@@ -25,7 +25,7 @@
+ #include <driver.h>
+ #include <environment.h>
+ #include <fs.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx35-regs.h>
+ #include <asm/armlinux.h>
+ #include <mach/gpio.h>
+ #include <io.h>
 diff --git a/arch/arm/boards/guf-cupid/lowlevel.c b/arch/arm/boards/guf-cupid/lowlevel.c
-index d451fd9..aa42697 100644
+index 22ebaa0..5d6dfc5 100644
 --- a/arch/arm/boards/guf-cupid/lowlevel.c
 +++ b/arch/arm/boards/guf-cupid/lowlevel.c
-@@ -71,15 +71,15 @@ static void __bare_init noinline setup_sdram(u32 memsize, u32 mode, u32 sdram_ad
- 	u32 r1, r0;
+@@ -18,7 +18,7 @@
+  */
+ #include <common.h>
+ #include <init.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx35-regs.h>
+ #include <mach/imx-pll.h>
+ #include <mach/esdctl.h>
+ #include <asm/cache-l2x0.h>
+diff --git a/arch/arm/boards/guf-neso/board.c b/arch/arm/boards/guf-neso/board.c
+index 1b8db26..200a2ef 100644
+--- a/arch/arm/boards/guf-neso/board.c
++++ b/arch/arm/boards/guf-neso/board.c
+@@ -35,7 +35,7 @@
  
- 	/* disable second SDRAM region to save power */
--	r1 = readl(ESDCTL1);
-+	r1 = readl(MX35_ESDCTL_BASE_ADDR + IMX_ESDCTL1);
- 	r1 &= ~ESDCTL0_SDE;
--	writel(r1, ESDCTL1);
-+	writel(r1, MX35_ESDCTL_BASE_ADDR + IMX_ESDCTL1);
- 
- 	mode |= ESDMISC_RST | ESDMISC_MDDR_DL_RST;
--	writel(mode, ESDMISC);
-+	writel(mode, MX35_ESDCTL_BASE_ADDR + IMX_ESDMISC);
- 
- 	mode &= ~(ESDMISC_RST | ESDMISC_MDDR_DL_RST);
--	writel(mode, ESDMISC);
-+	writel(mode, MX35_ESDCTL_BASE_ADDR + IMX_ESDMISC);
- 
- 	/* wait for esdctl reset */
- 	for (loop = 0; loop < 0x20000; loop++);
-@@ -90,16 +90,18 @@ static void __bare_init noinline setup_sdram(u32 memsize, u32 mode, u32 sdram_ad
- 		ESDCFGx_tRRD_2 | ESDCFGx_tCAS_3 |
- 		ESDCFGx_tRCD_3 | ESDCFGx_tRC_20;
- 
--	writel(r1, ESDCFG0);
-+	writel(r1, MX35_ESDCTL_BASE_ADDR + IMX_ESDCFG0);
- 
- 	/* enable SDRAM controller */
--	writel(memsize | ESDCTL0_SMODE_NORMAL, ESDCTL0);
-+	writel(memsize | ESDCTL0_SMODE_NORMAL,
-+			MX35_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 
- 	/* Micron Datasheet Initialization Step 3: Wait 200us before first command */
- 	for (loop = 0; loop < 1000; loop++);
- 
- 	/* Micron Datasheet Initialization Step 4: PRE CHARGE ALL */
--	writel(memsize | ESDCTL0_SMODE_PRECHARGE, ESDCTL0);
-+	writel(memsize | ESDCTL0_SMODE_PRECHARGE,
-+			MX35_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 	writeb(r11, sdram_addr);
- 
- 	/* Micron Datasheet Initialization Step 5: NOP for tRP (at least 22.5ns)
-@@ -109,7 +111,8 @@ static void __bare_init noinline setup_sdram(u32 memsize, u32 mode, u32 sdram_ad
- 	/* Micron Datasheet Initialization Step 6: 2 AUTO REFRESH and tRFC NOP
- 	 * (at least 140ns)
- 	 */
--	writel(memsize | ESDCTL0_SMODE_AUTO_REFRESH, ESDCTL0);
-+	writel(memsize | ESDCTL0_SMODE_AUTO_REFRESH,
-+			MX35_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 	writeb(r11, r9); /* AUTO REFRESH #1 */
- 
- 	for (loop = 0; loop < 3; loop++); /* ~140ns delay at 532MHz */
-@@ -119,7 +122,8 @@ static void __bare_init noinline setup_sdram(u32 memsize, u32 mode, u32 sdram_ad
- 	for (loop = 0; loop < 3; loop++); /* ~140ns delay at 532MHz */
- 
- 	/* Micron Datasheet Initialization Step 7: LOAD MODE REGISTER */
--	writel(memsize | ESDCTL0_SMODE_LOAD_MODE, ESDCTL0);
-+	writel(memsize | ESDCTL0_SMODE_LOAD_MODE,
-+			MX35_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 	writeb(r11, r9 + (SDRAM_MODE_BL_8 | SDRAM_MODE_BSEQ | SDRAM_MODE_CL_3));
- 
- 	/* Micron Datasheet Initialization Step 8: tMRD = 2 tCK NOP
-@@ -134,7 +138,8 @@ static void __bare_init noinline setup_sdram(u32 memsize, u32 mode, u32 sdram_ad
- 	 */
- 
- 	/* Now configure SDRAM-Controller and check that it works */
--	writel(memsize | ESDCTL0_BL | ESDCTL0_REF4, ESDCTL0);
-+	writel(memsize | ESDCTL0_BL | ESDCTL0_REF4,
-+			MX35_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 
- 	/* Freescale asks for first access to be a write to properly
- 	 * initialize DQS pin-state and keepers
-@@ -156,10 +161,10 @@ static void __bare_init noinline setup_sdram(u32 memsize, u32 mode, u32 sdram_ad
- 
- 	/* if both value are identical, we don't have 14 rows. assume 13 instead */
- 	if (readl(r9) == readl(r9 + (1 << 25))) {
--		r0 = readl(ESDCTL0);
-+		r0 = readl(MX35_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 		r0 &= ~ESDCTL0_ROW_MASK;
- 		r0 |= ESDCTL0_ROW13;
--		writel(r0, ESDCTL0);
-+		writel(r0, MX35_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 	}
- 
- 	/* So far we asssumed that we have 10 columns, verify this */
-@@ -168,10 +173,10 @@ static void __bare_init noinline setup_sdram(u32 memsize, u32 mode, u32 sdram_ad
- 
- 	/* if both value are identical, we don't have 10 cols. assume 9 instead */
- 	if (readl(r9) == readl(r9 + (1 << 11))) {
--		r0 = readl(ESDCTL0);
-+		r0 = readl(MX35_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 		r0 &= ~ESDCTL0_COL_MASK;
- 		r0 |= ESDCTL0_COL9;
--		writel(r0, ESDCTL0);
-+		writel(r0, MX35_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 	}
- }
- 
+ #include <mach/gpio.h>
+ #include <mach/spi.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx27-regs.h>
+ #include <mach/iomux-mx27.h>
+ #include <mach/imx-nand.h>
+ #include <mach/imx-pll.h>
 diff --git a/arch/arm/boards/guf-neso/lowlevel.c b/arch/arm/boards/guf-neso/lowlevel.c
-index e2e3c78..eff1f8d 100644
+index 4c1cfeb..8c351f6 100644
 --- a/arch/arm/boards/guf-neso/lowlevel.c
 +++ b/arch/arm/boards/guf-neso/lowlevel.c
-@@ -71,7 +71,8 @@ void __bare_init __naked reset(void)
- 	/*
- 	 * DDR on CSD0
- 	 */
--	writel(0x00000008, ESDMISC); /* Enable DDR SDRAM operation */
-+	/* Enable DDR SDRAM operation */
-+	writel(0x00000008, MX27_ESDCTL_BASE_ADDR + IMX_ESDMISC);
+@@ -18,7 +18,7 @@
+  */
+ #include <common.h>
+ #include <init.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx27-regs.h>
+ #include <mach/imx-pll.h>
+ #include <mach/esdctl.h>
+ #include <asm/cache-l2x0.h>
+diff --git a/arch/arm/boards/guf-neso/pll_init.S b/arch/arm/boards/guf-neso/pll_init.S
+index 13df4a3..4c6cb67 100644
+--- a/arch/arm/boards/guf-neso/pll_init.S
++++ b/arch/arm/boards/guf-neso/pll_init.S
+@@ -1,5 +1,5 @@
+ #include <config.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx27-regs.h>
+ #include <mach/imx-pll.h>
+ #include <linux/linkage.h>
  
- 	DSCR(3) = 0x55555555; /* Set the driving strength   */
- 	DSCR(5) = 0x55555555;
-@@ -79,22 +80,28 @@ void __bare_init __naked reset(void)
- 	DSCR(7) = 0x00005005;
- 	DSCR(8) = 0x15555555;
+diff --git a/arch/arm/boards/imx21ads/imx21ads.c b/arch/arm/boards/imx21ads/imx21ads.c
+index c4f44e9..ca566c8 100644
+--- a/arch/arm/boards/imx21ads/imx21ads.c
++++ b/arch/arm/boards/imx21ads/imx21ads.c
+@@ -21,7 +21,7 @@
+ #include <net.h>
+ #include <init.h>
+ #include <environment.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx21-regs.h>
+ #include <asm/armlinux.h>
+ #include <asm-generic/sections.h>
+ #include <asm/barebox-arm.h>
+diff --git a/arch/arm/boards/imx21ads/lowlevel_init.S b/arch/arm/boards/imx21ads/lowlevel_init.S
+index be1199b..e52cac1 100644
+--- a/arch/arm/boards/imx21ads/lowlevel_init.S
++++ b/arch/arm/boards/imx21ads/lowlevel_init.S
+@@ -15,7 +15,7 @@
  
--	writel(0x00000004, ESDMISC); /* Initial reset */
--	writel(0x006ac73a, ESDCFG0);
-+	/* Initial reset */
-+	writel(0x00000004, MX27_ESDCTL_BASE_ADDR + IMX_ESDMISC);
-+	writel(0x006ac73a, MX27_ESDCTL_BASE_ADDR + IMX_ESDCFG0);
- 
--	writel(ESDCTL0_VAL | ESDCTL0_SMODE_PRECHARGE, ESDCTL0); /* precharge CSD0 all banks */
-+	/* precharge CSD0 all banks */
-+	writel(ESDCTL0_VAL | ESDCTL0_SMODE_PRECHARGE,
-+			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 	writel(0x00000000, 0xA0000F00);	/* CSD0 precharge address (A10 = 1) */
--	writel(ESDCTL0_VAL | ESDCTL0_SMODE_AUTO_REFRESH, ESDCTL0);
-+	writel(ESDCTL0_VAL | ESDCTL0_SMODE_AUTO_REFRESH,
-+			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 
- 	for (i = 0; i < 8; i++)
- 		writel(0, 0xa0000f00);
- 
--	writel(ESDCTL0_VAL | ESDCTL0_SMODE_LOAD_MODE, ESDCTL0);
-+	writel(ESDCTL0_VAL | ESDCTL0_SMODE_LOAD_MODE,
-+			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 
- 	writeb(0xda, 0xa0000033);
- 	writeb(0xff, 0xa1000000);
- 	writel(ESDCTL0_VAL | ESDCTL0_DSIZ_31_0 | ESDCTL0_REF4 |
--			ESDCTL0_BL | ESDCTL0_SMODE_NORMAL, ESDCTL0);
-+			ESDCTL0_BL | ESDCTL0_SMODE_NORMAL,
-+			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 
- #ifdef CONFIG_NAND_IMX_BOOT
- 	/* skip NAND boot if not running from NFC space */
-diff --git a/arch/arm/boards/karo-tx25/lowlevel.c b/arch/arm/boards/karo-tx25/lowlevel.c
-index 3192abd..6a324ce 100644
---- a/arch/arm/boards/karo-tx25/lowlevel.c
-+++ b/arch/arm/boards/karo-tx25/lowlevel.c
-@@ -46,8 +46,8 @@ static void __bare_init __naked insdram(void)
- static inline void __bare_init  setup_sdram(uint32_t base, uint32_t esdctl,
- 		uint32_t esdcfg)
- {
--	uint32_t esdctlreg = ESDCTL0;
--	uint32_t esdcfgreg = ESDCFG0;
-+	uint32_t esdctlreg = MX25_ESDCTL_BASE_ADDR + IMX_ESDCTL0;
-+	uint32_t esdcfgreg = MX25_ESDCTL_BASE_ADDR + IMX_ESDCFG0;
- 
- 	if (base == 0x90000000) {
- 		esdctlreg += 8;
-@@ -137,9 +137,9 @@ void __bare_init __naked reset(void)
- 	/* set to 3.3v SDRAM */
- 	writel(0x800, MX25_IOMUXC_BASE_ADDR + 0x454);
- 
--	writel(ESDMISC_RST, ESDMISC);
-+	writel(ESDMISC_RST, MX25_ESDCTL_BASE_ADDR + IMX_ESDMISC);
- 
--	while (!(readl(ESDMISC) & (1 << 31)));
-+	while (!(readl(MX25_ESDCTL_BASE_ADDR + IMX_ESDMISC) & (1 << 31)));
- 
- #define ESDCTLVAL	(ESDCTL0_ROW13 | ESDCTL0_COL9 |	ESDCTL0_DSIZ_15_0 | \
- 			 ESDCTL0_REF4 | ESDCTL0_PWDT_PRECHARGE_PWDN | ESDCTL0_BL)
-diff --git a/arch/arm/boards/pcm037/lowlevel_init.S b/arch/arm/boards/pcm037/lowlevel_init.S
-index a6747c2..49e9b36 100644
---- a/arch/arm/boards/pcm037/lowlevel_init.S
-+++ b/arch/arm/boards/pcm037/lowlevel_init.S
-@@ -96,19 +96,19 @@ clear_iomux:
- #elif defined CONFIG_PCM037_SDRAM_BANK0_256MB
- #define ROWS0	ESDCTL0_ROW14
- #endif
--	writel(0x00000004, ESDMISC)
--	writel(0x006ac73a, ESDCFG0)
--	writel(0x90100000 | ROWS0, ESDCTL0)
-+	writel(0x00000004, MX31_ESDCTL_BASE_ADDR + IMX_ESDMISC)
-+	writel(0x006ac73a, MX31_ESDCTL_BASE_ADDR + IMX_ESDCFG0)
-+	writel(0x90100000 | ROWS0, MX31_ESDCTL_BASE_ADDR + IMX_ESDCTL0)
- 	writel(0x12344321, MX31_CSD0_BASE_ADDR + 0xf00)
--	writel(0xa0100000 | ROWS0, ESDCTL0)
-+	writel(0xa0100000 | ROWS0, MX31_ESDCTL_BASE_ADDR + IMX_ESDCTL0)
- 	writel(0x12344321, MX31_CSD0_BASE_ADDR)
- 	writel(0x12344321, MX31_CSD0_BASE_ADDR)
--	writel(0xb0100000 | ROWS0, ESDCTL0)
-+	writel(0xb0100000 | ROWS0, MX31_ESDCTL_BASE_ADDR + IMX_ESDCTL0)
- 	writeb(0xda, MX31_CSD0_BASE_ADDR + 0x33)
- 	writeb(0xff, MX31_CSD0_BASE_ADDR + 0x01000000)
--	writel(0x80226080 | ROWS0, ESDCTL0)
-+	writel(0x80226080 | ROWS0, MX31_ESDCTL_BASE_ADDR + IMX_ESDCTL0)
- 	writel(0xDEADBEEF, MX31_CSD0_BASE_ADDR)
--	writel(0x0000000c, ESDMISC)
-+	writel(0x0000000c, MX31_ESDCTL_BASE_ADDR + IMX_ESDMISC)
- 
- #ifndef CONFIG_PCM037_SDRAM_BANK1_NONE
- #if defined CONFIG_PCM037_SDRAM_BANK1_128MB
-@@ -116,18 +116,18 @@ clear_iomux:
- #elif defined CONFIG_PCM037_SDRAM_BANK1_256MB
- #define ROWS1	ESDCTL0_ROW14
- #endif
--	writel(0x006ac73a, ESDCFG1)
--	writel(0x90100000 | ROWS1, ESDCTL1)
-+	writel(0x006ac73a, MX31_ESDCTL_BASE_ADDR + IMX_ESDCFG1)
-+	writel(0x90100000 | ROWS1, MX31_ESDCTL_BASE_ADDR + IMX_ESDCTL1)
- 	writel(0x12344321, MX31_CSD1_BASE_ADDR + 0xf00)
--	writel(0xa0100000 | ROWS1, ESDCTL1)
-+	writel(0xa0100000 | ROWS1, MX31_ESDCTL_BASE_ADDR + IMX_ESDCTL1)
- 	writel(0x12344321, MX31_CSD1_BASE_ADDR)
- 	writel(0x12344321, MX31_CSD1_BASE_ADDR)
--	writel(0xb0100000 | ROWS1, ESDCTL1)
-+	writel(0xb0100000 | ROWS1, MX31_ESDCTL_BASE_ADDR + IMX_ESDCTL1)
- 	writeb(0xda, MX31_CSD1_BASE_ADDR + 0x33)
- 	writeb(0xff, MX31_CSD1_BASE_ADDR + 0x01000000)
--	writel(0x80226080 | ROWS1, ESDCTL1)
-+	writel(0x80226080 | ROWS1, MX31_ESDCTL_BASE_ADDR + IMX_ESDCTL1)
- 	writel(0xDEADBEEF, MX31_CSD1_BASE_ADDR)
--	writel(0x0000000c, ESDMISC)
-+	writel(0x0000000c, MX31_ESDCTL_BASE_ADDR + IMX_ESDMISC)
- #endif
- 
- #ifdef CONFIG_NAND_IMX_BOOT
-diff --git a/arch/arm/boards/pcm038/lowlevel.c b/arch/arm/boards/pcm038/lowlevel.c
-index bed1c3f..2211e42 100644
---- a/arch/arm/boards/pcm038/lowlevel.c
-+++ b/arch/arm/boards/pcm038/lowlevel.c
-@@ -76,7 +76,8 @@ void __bare_init __naked reset(void)
- 	/*
- 	 * DDR on CSD0
- 	 */
--	writel(0x00000008, ESDMISC); /* Enable DDR SDRAM operation */
-+	/* Enable DDR SDRAM operation */
-+	writel(0x00000008, MX27_ESDCTL_BASE_ADDR + IMX_ESDMISC);
- 
- 	DSCR(3) = 0x55555555; /* Set the driving strength   */
- 	DSCR(5) = 0x55555555;
-@@ -84,22 +85,28 @@ void __bare_init __naked reset(void)
- 	DSCR(7) = 0x00005005;
- 	DSCR(8) = 0x15555555;
- 
--	writel(0x00000004, ESDMISC); /* Initial reset */
--	writel(0x006ac73a, ESDCFG0);
-+	/* Initial reset */
-+	writel(0x00000004, MX27_ESDCTL_BASE_ADDR + IMX_ESDMISC);
-+	writel(0x006ac73a, MX27_ESDCTL_BASE_ADDR + IMX_ESDCFG0);
- 
--	writel(ESDCTL0_VAL | ESDCTL0_SMODE_PRECHARGE, ESDCTL0); /* precharge CSD0 all banks */
-+	/* precharge CSD0 all banks */
-+	writel(ESDCTL0_VAL | ESDCTL0_SMODE_PRECHARGE,
-+			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 	writel(0x00000000, 0xA0000F00);	/* CSD0 precharge address (A10 = 1) */
--	writel(ESDCTL0_VAL | ESDCTL0_SMODE_AUTO_REFRESH, ESDCTL0);
-+	writel(ESDCTL0_VAL | ESDCTL0_SMODE_AUTO_REFRESH,
-+			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 
- 	for (i = 0; i < 8; i++)
- 		writel(0, 0xa0000f00);
- 
--	writel(ESDCTL0_VAL | ESDCTL0_SMODE_LOAD_MODE, ESDCTL0);
-+	writel(ESDCTL0_VAL | ESDCTL0_SMODE_LOAD_MODE,
-+			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 
- 	writeb(0xda, 0xa0000033);
- 	writeb(0xff, 0xa1000000);
- 	writel(ESDCTL0_VAL | ESDCTL0_DSIZ_31_0 | ESDCTL0_REF4 |
--			ESDCTL0_BL | ESDCTL0_SMODE_NORMAL, ESDCTL0);
-+			ESDCTL0_BL | ESDCTL0_SMODE_NORMAL,
-+			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- 
- #ifdef CONFIG_NAND_IMX_BOOT
- 	/* skip NAND boot if not running from NFC space */
-diff --git a/arch/arm/boards/pcm043/lowlevel.c b/arch/arm/boards/pcm043/lowlevel.c
-index 4516e9f..a3c1a09 100644
---- a/arch/arm/boards/pcm043/lowlevel.c
-+++ b/arch/arm/boards/pcm043/lowlevel.c
-@@ -66,6 +66,7 @@ void __bare_init __naked reset(void)
- 	uint32_t r, s;
- 	unsigned long ccm_base = MX35_CCM_BASE_ADDR;
- 	unsigned long iomuxc_base = MX35_IOMUXC_BASE_ADDR;
-+	unsigned long esdctl_base = MX35_ESDCTL_BASE_ADDR;
- #ifdef CONFIG_NAND_IMX_BOOT
- 	unsigned int *trg, *src;
- 	int i;
-@@ -154,17 +155,17 @@ void __bare_init __naked reset(void)
- 	writel(r, iomuxc_base + 0x7a4);
- 
- 	/* MDDR init, enable mDDR*/
--	writel(0x00000304, ESDMISC); /* was 0x00000004 */
-+	writel(0x00000304, esdctl_base + IMX_ESDMISC); /* was 0x00000004 */
- 
- 	/* set timing paramters */
--	writel(0x0025541F, ESDCFG0);
-+	writel(0x0025541F, esdctl_base + IMX_ESDCFG0);
- 	/* select Precharge-All mode */
--	writel(0x92220000, ESDCTL0);
-+	writel(0x92220000, esdctl_base + IMX_ESDCTL0);
- 	/* Precharge-All */
- 	writel(0x12345678, MX35_CSD0_BASE_ADDR + 0x400);
- 
- 	/* select Load-Mode-Register mode */
--	writel(0xB8001000, ESDCTL0);
-+	writel(0xB8001000, esdctl_base + IMX_ESDCTL0);
- 	/* Load reg EMR2 */
- 	writeb(0xda, 0x84000000);
- 	/* Load reg EMR3 */
-@@ -175,18 +176,18 @@ void __bare_init __naked reset(void)
- 	writeb(0xda, 0x80000333);
- 
- 	/* select Precharge-All mode */
--	writel(0x92220000, ESDCTL0);
-+	writel(0x92220000, esdctl_base + IMX_ESDCTL0);
- 	/* Precharge-All */
- 	writel(0x12345678, MX35_CSD0_BASE_ADDR + 0x400);
- 
- 	/* select Manual-Refresh mode */
--	writel(0xA2220000, ESDCTL0);
-+	writel(0xA2220000, esdctl_base + IMX_ESDCTL0);
- 	/* Manual-Refresh 2 times */
- 	writel(0x87654321, MX35_CSD0_BASE_ADDR);
- 	writel(0x87654321, MX35_CSD0_BASE_ADDR);
- 
- 	/* select Load-Mode-Register mode */
--	writel(0xB2220000, ESDCTL0);
-+	writel(0xB2220000, esdctl_base + IMX_ESDCTL0);
- 	/* Load reg MR -- CL3, BL8, end DLL reset */
- 	writeb(0xda, 0x80000233);
- 	/* Load reg EMR1 -- OCD default */
-@@ -198,12 +199,12 @@ void __bare_init __naked reset(void)
- 	 * DSIZ32-bit, BL8, COL10-bit, ROW13-bit
- 	 * disable PWT & PRCT
- 	 * disable Auto-Refresh */
--	writel(0x82220080, ESDCTL0);
-+	writel(0x82220080, esdctl_base + IMX_ESDCTL0);
- 
- 	/* enable Auto-Refresh */
--	writel(0x82228080, ESDCTL0);
-+	writel(0x82228080, esdctl_base + IMX_ESDCTL0);
- 	/* enable Auto-Refresh */
--	writel(0x00002000, ESDCTL1);
-+	writel(0x00002000, esdctl_base + IMX_ESDCTL1);
- 
- #ifdef CONFIG_NAND_IMX_BOOT
- 	/* skip NAND boot if not running from NFC space */
-diff --git a/arch/arm/boards/phycard-i.MX27/lowlevel_init.S b/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
-index 3c36889..4b9add9 100644
---- a/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
-+++ b/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
-@@ -21,7 +21,8 @@
- 	/*
- 	 * DDR on CSD0
- 	 */
--	writel(0x00000008, ESDMISC) /* Enable DDR SDRAM operation */
-+	/* Enable DDR SDRAM operation */
-+	writel(0x00000008, MX27_ESDCTL_BASE_ADDR + IMX_ESDMISC)
- 
- 	writel(0x55555555, DSCR(3)) /* Set the driving strength   */
- 	writel(0x55555555, DSCR(5))
-@@ -29,12 +30,16 @@
- 	writel(0x00005005, DSCR(7))
- 	writel(0x15555555, DSCR(8))
- 
--	writel(0x00000004, ESDMISC) /* Initial reset */
--	writel(0x006ac73a, ESDCFG0)
-+	/* Initial reset */
-+	writel(0x00000004, MX27_ESDCTL_BASE_ADDR + IMX_ESDMISC)
-+	writel(0x006ac73a, MX27_ESDCTL_BASE_ADDR + IMX_ESDCFG0)
- 
--	writel(ESDCTL0_VAL | ESDCTL0_SMODE_PRECHARGE, ESDCTL0) /* precharge CSD0 all banks */
-+	/* precharge CSD0 all banks */
-+	writel(ESDCTL0_VAL | ESDCTL0_SMODE_PRECHARGE,
-+			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0)
- 	writel(0x00000000, 0xA0000F00)	/* CSD0 precharge address (A10 = 1) */
--	writel(ESDCTL0_VAL | ESDCTL0_SMODE_AUTO_REFRESH, ESDCTL0)
-+	writel(ESDCTL0_VAL | ESDCTL0_SMODE_AUTO_REFRESH,
-+			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0)
- 
- 	ldr	r0, =0xa0000f00
- 	mov	r1, #0
-@@ -44,14 +49,17 @@
- 	subs	r2, #1
- 	bne	1b
- 
--	writel(ESDCTL0_VAL | ESDCTL0_SMODE_LOAD_MODE, ESDCTL0)
-+	writel(ESDCTL0_VAL | ESDCTL0_SMODE_LOAD_MODE,
-+			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0)
- 	ldr		r0, =0xA0000033
- 	mov		r1, #0xda
- 	strb		r1, [r0]
- 	ldr		r0, =0xA1000000
- 	mov		r1, #0xff
- 	strb		r1, [r0]
--	writel(ESDCTL0_VAL | ESDCTL0_DSIZ_31_0 | ESDCTL0_REF4 | ESDCTL0_BL | ESDCTL0_SMODE_NORMAL, ESDCTL0)
-+	writel(ESDCTL0_VAL | ESDCTL0_DSIZ_31_0 | ESDCTL0_REF4 |
-+			ESDCTL0_BL | ESDCTL0_SMODE_NORMAL,
-+			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0)
- .endm
+ #include <config.h>
+ #include <asm-generic/memory_layout.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx21-regs.h>
+ #include <asm/barebox-arm-head.h>
  
  	.section ".text_bare_init","ax"
-diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
-index 10c8b9b..8124c87 100644
---- a/arch/arm/mach-imx/include/mach/esdctl.h
-+++ b/arch/arm/mach-imx/include/mach/esdctl.h
-@@ -1,10 +1,10 @@
+diff --git a/arch/arm/boards/imx27ads/imx27ads.c b/arch/arm/boards/imx27ads/imx27ads.c
+index 22c6e40..f41b155 100644
+--- a/arch/arm/boards/imx27ads/imx27ads.c
++++ b/arch/arm/boards/imx27ads/imx27ads.c
+@@ -18,7 +18,7 @@
+ #include <net.h>
+ #include <init.h>
+ #include <environment.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx27-regs.h>
+ #include <asm/armlinux.h>
+ #include <io.h>
+ #include <fec.h>
+diff --git a/arch/arm/boards/imx27ads/lowlevel_init.S b/arch/arm/boards/imx27ads/lowlevel_init.S
+index 7c01558..2dc34b5 100644
+--- a/arch/arm/boards/imx27ads/lowlevel_init.S
++++ b/arch/arm/boards/imx27ads/lowlevel_init.S
+@@ -5,7 +5,7 @@
+  */
  
- /* SDRAM Controller registers */
--#define ESDCTL0 (IMX_ESD_BASE + 0x00) /* Enhanced SDRAM Control Register 0       */
--#define ESDCFG0 (IMX_ESD_BASE + 0x04) /* Enhanced SDRAM Configuration Register 0 */
--#define ESDCTL1 (IMX_ESD_BASE + 0x08) /* Enhanced SDRAM Control Register 1       */
--#define ESDCFG1 (IMX_ESD_BASE + 0x0C) /* Enhanced SDRAM Configuration Register 1 */
--#define ESDMISC (IMX_ESD_BASE + 0x10) /* Enhanced SDRAM Miscellanious Register   */
-+#define IMX_ESDCTL0 0x00 /* Enhanced SDRAM Control Register 0       */
-+#define IMX_ESDCFG0 0x04 /* Enhanced SDRAM Configuration Register 0 */
-+#define IMX_ESDCTL1 0x08 /* Enhanced SDRAM Control Register 1       */
-+#define IMX_ESDCFG1 0x0C /* Enhanced SDRAM Configuration Register 1 */
-+#define IMX_ESDMISC 0x10 /* Enhanced SDRAM Miscellanious Register   */
+ #include <config.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx27-regs.h>
+ #include <asm/barebox-arm-head.h>
  
- #define ESDCTL0_SDE				(1 << 31)
- #define ESDCTL0_SMODE_NORMAL			(0 << 28)
-diff --git a/arch/arm/mach-imx/include/mach/imx27-regs.h b/arch/arm/mach-imx/include/mach/imx27-regs.h
-index e7372e4..afc7a39 100644
---- a/arch/arm/mach-imx/include/mach/imx27-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx27-regs.h
-@@ -86,7 +86,7 @@
- #define MX27_X_MEMC_BASE_ADDR		0xd8000000
- #define MX27_X_MEMC_SIZE		SZ_1M
- #define MX27_NFC_BASE_ADDR		(MX27_X_MEMC_BASE_ADDR)
--#define MX27_SDRAMC_BASE_ADDR		(MX27_X_MEMC_BASE_ADDR + 0x1000)
-+#define MX27_ESDCTL_BASE_ADDR		(MX27_X_MEMC_BASE_ADDR + 0x1000)
- #define MX27_WEIM_BASE_ADDR		(MX27_X_MEMC_BASE_ADDR + 0x2000)
- #define MX27_M3IF_BASE_ADDR		(MX27_X_MEMC_BASE_ADDR + 0x3000)
- #define MX27_PCMCIA_CTL_BASE_ADDR	(MX27_X_MEMC_BASE_ADDR + 0x4000)
+ #define writel(val, reg) \
+diff --git a/arch/arm/boards/karo-tx25/board.c b/arch/arm/boards/karo-tx25/board.c
+index 5c7b28b..1ffd890 100644
+--- a/arch/arm/boards/karo-tx25/board.c
++++ b/arch/arm/boards/karo-tx25/board.c
+@@ -21,7 +21,7 @@
+ #include <init.h>
+ #include <driver.h>
+ #include <environment.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx25-regs.h>
+ #include <asm/armlinux.h>
+ #include <asm-generic/sections.h>
+ #include <asm/barebox-arm.h>
+diff --git a/arch/arm/boards/karo-tx25/lowlevel.c b/arch/arm/boards/karo-tx25/lowlevel.c
+index 0689f83..4250cc7 100644
+--- a/arch/arm/boards/karo-tx25/lowlevel.c
++++ b/arch/arm/boards/karo-tx25/lowlevel.c
+@@ -18,7 +18,7 @@
+  */
+ #include <common.h>
+ #include <init.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx25-regs.h>
+ #include <mach/esdctl.h>
+ #include <io.h>
+ #include <mach/imx-nand.h>
+diff --git a/arch/arm/boards/karo-tx51/tx51.c b/arch/arm/boards/karo-tx51/tx51.c
+index 3ee0ebd..dd377c1 100644
+--- a/arch/arm/boards/karo-tx51/tx51.c
++++ b/arch/arm/boards/karo-tx51/tx51.c
+@@ -18,7 +18,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <environment.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx51-regs.h>
+ #include <fec.h>
+ #include <mach/gpio.h>
+ #include <asm/armlinux.h>
+diff --git a/arch/arm/boards/karo-tx53/board.c b/arch/arm/boards/karo-tx53/board.c
+index c8509be..9829a8f 100644
+--- a/arch/arm/boards/karo-tx53/board.c
++++ b/arch/arm/boards/karo-tx53/board.c
+@@ -25,7 +25,7 @@
+ 
+ #include <generated/mach-types.h>
+ 
+-#include <mach/imx-regs.h>
++#include <mach/imx53-regs.h>
+ #include <mach/iomux-mx53.h>
+ #include <mach/devices-imx53.h>
+ #include <mach/generic.h>
+diff --git a/arch/arm/boards/pcm037/lowlevel_init.S b/arch/arm/boards/pcm037/lowlevel_init.S
+index 283ea54..f9ecce1 100644
+--- a/arch/arm/boards/pcm037/lowlevel_init.S
++++ b/arch/arm/boards/pcm037/lowlevel_init.S
+@@ -17,7 +17,7 @@
+  *
+  */
+ 
+-#include <mach/imx-regs.h>
++#include <mach/imx31-regs.h>
+ #include <mach/imx-pll.h>
+ #include <asm/barebox-arm-head.h>
+ #include <mach/esdctl.h>
+diff --git a/arch/arm/boards/pcm037/pcm037.c b/arch/arm/boards/pcm037/pcm037.c
+index 79ea1dc..ff4089a 100644
+--- a/arch/arm/boards/pcm037/pcm037.c
++++ b/arch/arm/boards/pcm037/pcm037.c
+@@ -24,7 +24,7 @@
+ #include <fs.h>
+ #include <environment.h>
+ #include <usb/ulpi.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx31-regs.h>
+ #include <mach/iomux-mx31.h>
+ #include <asm/armlinux.h>
+ #include <asm-generic/sections.h>
+diff --git a/arch/arm/boards/pcm038/lowlevel.c b/arch/arm/boards/pcm038/lowlevel.c
+index 13639bc..a2da3cb 100644
+--- a/arch/arm/boards/pcm038/lowlevel.c
++++ b/arch/arm/boards/pcm038/lowlevel.c
+@@ -18,7 +18,7 @@
+  */
+ #include <common.h>
+ #include <init.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx27-regs.h>
+ #include <mach/imx-pll.h>
+ #include <mach/esdctl.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+index d6d1d01..715d604 100644
+--- a/arch/arm/boards/pcm038/pcm038.c
++++ b/arch/arm/boards/pcm038/pcm038.c
+@@ -18,7 +18,7 @@
+ #include <net.h>
+ #include <init.h>
+ #include <environment.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx27-regs.h>
+ #include <fec.h>
+ #include <notifier.h>
+ #include <mach/gpio.h>
+diff --git a/arch/arm/boards/pcm038/pcm970.c b/arch/arm/boards/pcm038/pcm970.c
+index 8caed11..93a1839 100644
+--- a/arch/arm/boards/pcm038/pcm970.c
++++ b/arch/arm/boards/pcm038/pcm970.c
+@@ -16,7 +16,7 @@
+ #include <init.h>
+ #include <sizes.h>
+ #include <platform_ide.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx27-regs.h>
+ #include <mach/iomux-mx27.h>
+ #include <mach/weim.h>
+ #include <mach/gpio.h>
+diff --git a/arch/arm/boards/pcm043/lowlevel.c b/arch/arm/boards/pcm043/lowlevel.c
+index 58c0840..3db0f8c 100644
+--- a/arch/arm/boards/pcm043/lowlevel.c
++++ b/arch/arm/boards/pcm043/lowlevel.c
+@@ -18,7 +18,7 @@
+  */
+ #include <common.h>
+ #include <init.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx35-regs.h>
+ #include <mach/imx-pll.h>
+ #include <mach/esdctl.h>
+ #include <asm/cache-l2x0.h>
+diff --git a/arch/arm/boards/pcm043/pcm043.c b/arch/arm/boards/pcm043/pcm043.c
+index b0d48ba..abfeaf1 100644
+--- a/arch/arm/boards/pcm043/pcm043.c
++++ b/arch/arm/boards/pcm043/pcm043.c
+@@ -26,7 +26,7 @@
+ #include <environment.h>
+ #include <fs.h>
+ #include <sizes.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx35-regs.h>
+ #include <asm/armlinux.h>
+ #include <mach/gpio.h>
+ #include <io.h>
+diff --git a/arch/arm/boards/phycard-i.MX27/lowlevel_init.S b/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
+index 60393c6..8f0000f 100644
+--- a/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
++++ b/arch/arm/boards/phycard-i.MX27/lowlevel_init.S
+@@ -5,7 +5,7 @@
+  */
+ 
+ #include <config.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx27-regs.h>
+ #include <mach/imx-pll.h>
+ #include <asm/barebox-arm-head.h>
+ 
+diff --git a/arch/arm/boards/phycard-i.MX27/pca100.c b/arch/arm/boards/phycard-i.MX27/pca100.c
+index b8abd1b..0b66b04 100644
+--- a/arch/arm/boards/phycard-i.MX27/pca100.c
++++ b/arch/arm/boards/phycard-i.MX27/pca100.c
+@@ -18,7 +18,7 @@
+ #include <net.h>
+ #include <init.h>
+ #include <environment.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx27-regs.h>
+ #include <fec.h>
+ #include <mach/gpio.h>
+ #include <asm/armlinux.h>
+diff --git a/arch/arm/boards/scb9328/lowlevel_init.S b/arch/arm/boards/scb9328/lowlevel_init.S
+index c303d2d..cefac84 100644
+--- a/arch/arm/boards/scb9328/lowlevel_init.S
++++ b/arch/arm/boards/scb9328/lowlevel_init.S
+@@ -12,7 +12,7 @@
+  * GNU General Public License for more details.
+  */
+ 
+-#include <mach/imx-regs.h>
++#include <mach/imx1-regs.h>
+ #include <asm/barebox-arm-head.h>
+ 
+ #define CPU200
+diff --git a/arch/arm/boards/scb9328/scb9328.c b/arch/arm/boards/scb9328/scb9328.c
+index fd2758c..c70852c 100644
+--- a/arch/arm/boards/scb9328/scb9328.c
++++ b/arch/arm/boards/scb9328/scb9328.c
+@@ -19,7 +19,7 @@
+ #include <init.h>
+ #include <environment.h>
+ #include <generated/mach-types.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx1-regs.h>
+ #include <asm/armlinux.h>
+ #include <mach/gpio.h>
+ #include <mach/weim.h>
+diff --git a/arch/arm/boards/tqma53/board.c b/arch/arm/boards/tqma53/board.c
+index 8c3d855..77535b5 100644
+--- a/arch/arm/boards/tqma53/board.c
++++ b/arch/arm/boards/tqma53/board.c
+@@ -30,7 +30,7 @@
+ #include <asm/mmu.h>
+ #include <generated/mach-types.h>
+ 
+-#include <mach/imx-regs.h>
++#include <mach/imx53-regs.h>
+ #include <mach/iomux-mx53.h>
+ #include <mach/devices-imx53.h>
+ #include <mach/generic.h>
+diff --git a/arch/arm/mach-imx/clk-imx5.c b/arch/arm/mach-imx/clk-imx5.c
+index 03a1843..050842d 100644
+--- a/arch/arm/mach-imx/clk-imx5.c
++++ b/arch/arm/mach-imx/clk-imx5.c
+@@ -13,7 +13,8 @@
+ #include <io.h>
+ #include <linux/clkdev.h>
+ #include <linux/err.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx51-regs.h>
++#include <mach/imx53-regs.h>
+ 
+ #include "clk.h"
+ 
+diff --git a/arch/arm/mach-imx/clk-pllv2.c b/arch/arm/mach-imx/clk-pllv2.c
+index 6907269..7e087c1 100644
+--- a/arch/arm/mach-imx/clk-pllv2.c
++++ b/arch/arm/mach-imx/clk-pllv2.c
+@@ -17,7 +17,6 @@
+ #include <io.h>
+ #include <linux/clkdev.h>
+ #include <linux/err.h>
+-#include <mach/imx-regs.h>
+ #include <malloc.h>
+ #include <asm-generic/div64.h>
+ 
+diff --git a/arch/arm/mach-imx/clk-pllv3.c b/arch/arm/mach-imx/clk-pllv3.c
+index a99eec5..e337e87 100644
+--- a/arch/arm/mach-imx/clk-pllv3.c
++++ b/arch/arm/mach-imx/clk-pllv3.c
+@@ -17,7 +17,6 @@
+ #include <io.h>
+ #include <linux/clkdev.h>
+ #include <linux/err.h>
+-#include <mach/imx-regs.h>
+ #include <malloc.h>
+ #include <clock.h>
+ #include <asm-generic/div64.h>
+diff --git a/arch/arm/mach-imx/clocksource.c b/arch/arm/mach-imx/clocksource.c
+index cc7c38f..e18685e 100644
+--- a/arch/arm/mach-imx/clocksource.c
++++ b/arch/arm/mach-imx/clocksource.c
+@@ -32,7 +32,6 @@
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <notifier.h>
+-#include <mach/imx-regs.h>
+ #include <io.h>
+ 
+ /* Part 1: Registers */
+diff --git a/arch/arm/mach-imx/external-nand-boot.c b/arch/arm/mach-imx/external-nand-boot.c
+index d3f2637..2e9e475 100644
+--- a/arch/arm/mach-imx/external-nand-boot.c
++++ b/arch/arm/mach-imx/external-nand-boot.c
+@@ -17,7 +17,11 @@
+ #include <linux/mtd/nand.h>
+ #include <mach/imx-nand.h>
+ #include <mach/generic.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx21-regs.h>
++#include <mach/imx25-regs.h>
++#include <mach/imx27-regs.h>
++#include <mach/imx31-regs.h>
++#include <mach/imx35-regs.h>
+ 
+ static void __bare_init noinline imx_nandboot_wait_op_done(void *regs)
+ {
+diff --git a/arch/arm/mach-imx/gpio.c b/arch/arm/mach-imx/gpio.c
+index cd7655a..1bf4100 100644
+--- a/arch/arm/mach-imx/gpio.c
++++ b/arch/arm/mach-imx/gpio.c
+@@ -23,7 +23,6 @@
+ #include <common.h>
+ #include <errno.h>
+ #include <io.h>
+-#include <mach/imx-regs.h>
+ #include <gpio.h>
+ #include <init.h>
+ 
+diff --git a/arch/arm/mach-imx/imx1.c b/arch/arm/mach-imx/imx1.c
+index 966a8c2..18901ea 100644
+--- a/arch/arm/mach-imx/imx1.c
++++ b/arch/arm/mach-imx/imx1.c
+@@ -14,7 +14,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <io.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx1-regs.h>
+ #include <mach/weim.h>
+ #include <mach/iomux-v1.h>
+ #include <reset_source.h>
+diff --git a/arch/arm/mach-imx/imx21.c b/arch/arm/mach-imx/imx21.c
+index 417ada3..cddf3c0 100644
+--- a/arch/arm/mach-imx/imx21.c
++++ b/arch/arm/mach-imx/imx21.c
+@@ -14,7 +14,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <io.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx21-regs.h>
+ #include <mach/weim.h>
+ #include <mach/iomux-v1.h>
+ 
+diff --git a/arch/arm/mach-imx/imx25.c b/arch/arm/mach-imx/imx25.c
+index 0f92b17..3bd95c1 100644
+--- a/arch/arm/mach-imx/imx25.c
++++ b/arch/arm/mach-imx/imx25.c
+@@ -13,7 +13,7 @@
+ 
+ #include <common.h>
+ #include <init.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx25-regs.h>
+ #include <mach/iim.h>
+ #include <io.h>
+ #include <mach/weim.h>
+diff --git a/arch/arm/mach-imx/imx31.c b/arch/arm/mach-imx/imx31.c
+index 71b4c33..b2f0724 100644
+--- a/arch/arm/mach-imx/imx31.c
++++ b/arch/arm/mach-imx/imx31.c
+@@ -15,7 +15,7 @@
+ #include <init.h>
+ #include <sizes.h>
+ #include <io.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx31-regs.h>
+ #include <mach/weim.h>
+ 
+ void imx31_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
+diff --git a/arch/arm/mach-imx/imx35.c b/arch/arm/mach-imx/imx35.c
+index 5560157..737eb3a 100644
+--- a/arch/arm/mach-imx/imx35.c
++++ b/arch/arm/mach-imx/imx35.c
+@@ -16,7 +16,7 @@
+ #include <init.h>
+ #include <io.h>
+ #include <mach/weim.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx35-regs.h>
+ #include <mach/iim.h>
+ #include <mach/revision.h>
+ #include <mach/generic.h>
+diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
+index 60c8885..cf6230b 100644
+--- a/arch/arm/mach-imx/imx51.c
++++ b/arch/arm/mach-imx/imx51.c
+@@ -17,7 +17,7 @@
+ #include <environment.h>
+ #include <io.h>
+ #include <mach/imx5.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx51-regs.h>
+ #include <mach/revision.h>
+ #include <mach/clock-imx51_53.h>
+ 
+diff --git a/arch/arm/mach-imx/imx53.c b/arch/arm/mach-imx/imx53.c
+index 0a4de83..38b94fc 100644
+--- a/arch/arm/mach-imx/imx53.c
++++ b/arch/arm/mach-imx/imx53.c
+@@ -17,7 +17,7 @@
+ #include <notifier.h>
+ #include <sizes.h>
+ #include <mach/imx5.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx53-regs.h>
+ #include <mach/revision.h>
+ #include <mach/clock-imx51_53.h>
+ 
+diff --git a/arch/arm/mach-imx/include/mach/devices-imx31.h b/arch/arm/mach-imx/include/mach/devices-imx31.h
+index 72167b0..fe71930 100644
+--- a/arch/arm/mach-imx/include/mach/devices-imx31.h
++++ b/arch/arm/mach-imx/include/mach/devices-imx31.h
+@@ -1,5 +1,5 @@
+ 
+-#include <mach/imx-regs.h>
++#include <mach/imx31-regs.h>
+ #include <mach/devices.h>
+ 
+ static inline struct device_d *imx31_add_spi0(struct spi_imx_master *pdata)
+diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
+index 7fe5810..86966e4 100644
+--- a/arch/arm/mach-imx/include/mach/generic.h
++++ b/arch/arm/mach-imx/include/mach/generic.h
+@@ -19,6 +19,10 @@ int imx_25_35_boot_save_loc(unsigned int ctrl, unsigned int type);
+ void imx_27_boot_save_loc(void __iomem *sysctrl_base);
+ int imx51_boot_save_loc(void __iomem *src_base);
+ 
++/* There's a off-by-one betweem the gpio bank number and the gpiochip */
++/* range e.g. GPIO_1_5 is gpio 5 under linux */
++#define IMX_GPIO_NR(bank, nr)		(((bank) - 1) * 32 + (nr))
++
+ #ifdef CONFIG_ARCH_IMX1
+ #define cpu_is_mx1()	(1)
+ #else
+diff --git a/arch/arm/mach-imx/include/mach/imx-regs.h b/arch/arm/mach-imx/include/mach/imx-regs.h
+deleted file mode 100644
+index 4acee24..0000000
+--- a/arch/arm/mach-imx/include/mach/imx-regs.h
++++ /dev/null
+@@ -1,64 +0,0 @@
+-/*
+- *
+- * (c) 2007 Pengutronix, Sascha Hauer <s.hauer@pengutronix.de>
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#ifndef _IMX_REGS_H
+-#define _IMX_REGS_H
+-
+-/* ------------------------------------------------------------------------
+- *  Motorola IMX system registers
+- * ------------------------------------------------------------------------
+- */
+-
+-# ifndef __ASSEMBLY__
+-# define __REG(x)	(*((volatile u32 *)(x)))
+-# define __REG16(x)     (*(volatile u16 *)(x))
+-# define __REG2(x,y)    (*(volatile u32 *)((u32)&__REG(x) + (y)))
+-# else
+-#  define __REG(x) (x)
+-#  define __REG16(x) (x)
+-#  define __REG2(x,y) ((x)+(y))
+-#endif
+-
+-#ifdef CONFIG_ARCH_IMX1
+-# include <mach/imx1-regs.h>
+-#elif defined CONFIG_ARCH_IMX21
+-# include <mach/imx21-regs.h>
+-#elif defined CONFIG_ARCH_IMX27
+-# include <mach/imx27-regs.h>
+-#elif defined CONFIG_ARCH_IMX31
+-# include <mach/imx31-regs.h>
+-#elif defined CONFIG_ARCH_IMX35
+-# include <mach/imx35-regs.h>
+-#elif defined CONFIG_ARCH_IMX25
+-# include <mach/imx25-regs.h>
+-#elif defined CONFIG_ARCH_IMX51
+-# include <mach/imx51-regs.h>
+-#elif defined CONFIG_ARCH_IMX53
+-# include <mach/imx53-regs.h>
+-#elif defined CONFIG_ARCH_IMX6
+-# include <mach/imx6-regs.h>
+-#else
+-# error "unknown i.MX soc type"
+-#endif
+-
+-/* There's a off-by-one betweem the gpio bank number and the gpiochip */
+-/* range e.g. GPIO_1_5 is gpio 5 under linux */
+-#define IMX_GPIO_NR(bank, nr)		(((bank) - 1) * 32 + (nr))
+-
+-#endif				/* _IMX_REGS_H */
+diff --git a/arch/arm/mach-imx/iomux-v3.c b/arch/arm/mach-imx/iomux-v3.c
+index 9153ead..8a6064d 100644
+--- a/arch/arm/mach-imx/iomux-v3.c
++++ b/arch/arm/mach-imx/iomux-v3.c
+@@ -18,7 +18,6 @@
+ #include <init.h>
+ #include <io.h>
+ #include <mach/iomux-v3.h>
+-#include <mach/imx-regs.h>
+ 
+ static void __iomem *base;
+ 
+diff --git a/arch/arm/mach-imx/nand.c b/arch/arm/mach-imx/nand.c
+index e793015..f298a36 100644
+--- a/arch/arm/mach-imx/nand.c
++++ b/arch/arm/mach-imx/nand.c
+@@ -13,7 +13,10 @@
+ 
+ #include <common.h>
+ #include <mach/generic.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx21-regs.h>
++#include <mach/imx25-regs.h>
++#include <mach/imx27-regs.h>
++#include <mach/imx35-regs.h>
+ #include <io.h>
+ 
+ #define RCSR_NFC_FMS		(1 << 8)
+diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/nand_imx.c
+index 0489d09..58dbd70 100644
+--- a/drivers/mtd/nand/nand_imx.c
++++ b/drivers/mtd/nand/nand_imx.c
+@@ -26,7 +26,6 @@
+ #include <linux/mtd/nand.h>
+ #include <mach/generic.h>
+ #include <mach/imx-nand.h>
+-#include <mach/imx-regs.h>
+ #include <io.h>
+ #include <errno.h>
+ 
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 3432d04..3b8b5f4 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -30,7 +30,6 @@
+ #include <asm/mmu.h>
+ 
+ #include <mach/generic.h>
+-#include <mach/imx-regs.h>
+ #include <mach/clock.h>
+ #ifndef CONFIG_ARCH_MXS
+ # include <mach/iim.h>
+diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
+index e3fe6ad..694eac2 100644
+--- a/drivers/serial/serial_imx.c
++++ b/drivers/serial/serial_imx.c
+@@ -15,7 +15,6 @@
+  */
+ 
+ #include <common.h>
+-#include <mach/imx-regs.h>
+ #include <driver.h>
+ #include <init.h>
+ #include <malloc.h>
+diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
+index 5b9d7d5..a29920d 100644
+--- a/drivers/video/imx-ipu-fb.c
++++ b/drivers/video/imx-ipu-fb.c
+@@ -20,7 +20,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <io.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx35-regs.h>
+ #include <fb.h>
+ #include <mach/imxfb.h>
+ #include <malloc.h>
+diff --git a/drivers/video/imx.c b/drivers/video/imx.c
+index ae4c671..39ecf6a 100644
+--- a/drivers/video/imx.c
++++ b/drivers/video/imx.c
+@@ -24,7 +24,6 @@
+ #include <init.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+-#include <mach/imx-regs.h>
+ #include <asm-generic/div64.h>
+ 
+ #define LCDC_SSA	0x00
 -- 
 1.7.10.4
 
