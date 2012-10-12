@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-we0-f177.google.com ([74.125.82.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TMjAI-00057P-UW
- for barebox@lists.infradead.org; Fri, 12 Oct 2012 17:36:51 +0000
-Received: by mail-we0-f177.google.com with SMTP id u50so1890267wey.36
- for <barebox@lists.infradead.org>; Fri, 12 Oct 2012 10:36:48 -0700 (PDT)
+ id 1TMjAJ-00057O-0p
+ for barebox@lists.infradead.org; Fri, 12 Oct 2012 17:36:52 +0000
+Received: by mail-we0-f177.google.com with SMTP id u50so1890259wey.36
+ for <barebox@lists.infradead.org>; Fri, 12 Oct 2012 10:36:47 -0700 (PDT)
 From: Alexander Aring <alex.aring@googlemail.com>
-Date: Fri, 12 Oct 2012 19:38:13 +0200
-Message-Id: <1350063493-3782-2-git-send-email-alex.aring@gmail.com>
-In-Reply-To: <1350063493-3782-1-git-send-email-alex.aring@gmail.com>
-References: <1350063493-3782-1-git-send-email-alex.aring@gmail.com>
+Date: Fri, 12 Oct 2012 19:38:12 +0200
+Message-Id: <1350063493-3782-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,29 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] sandbox: fix malloc argument string
+Subject: [PATCH 1/2] sandbox: move add_image for env in second getopt
 To: barebox@lists.infradead.org
 
-Fix malloc argument string.
+Function add_image needs a allocated malloc space.
+This is only available in the second getopt loop.
 
 Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- arch/sandbox/os/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/sandbox/os/common.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
-index 8c7679a..db347e2 100644
+index 0dedfe1..8c7679a 100644
 --- a/arch/sandbox/os/common.c
 +++ b/arch/sandbox/os/common.c
-@@ -403,7 +403,7 @@ static void print_usage(const char *prgname)
- "Usage: %s [OPTIONS]\n"
- "Start barebox.\n\n"
- "Options:\n\n"
--"  -m, "
-+"  -m, --malloc=<size>	Start sandbox with a specified malloc-space size in bytes.\n"
- "  -i, --image=<file>   Map an image file to barebox. This option can be given\n"
- "                       multiple times. The files will show up as\n"
- "                       /dev/fd0 ... /dev/fdx under barebox.\n"
+@@ -311,11 +311,6 @@ int main(int argc, char *argv[])
+ 		case 'i':
+ 			break;
+ 		case 'e':
+-			sprintf(str, "env%d", envno);
+-			ret = add_image(optarg, str);
+-			if (ret)
+-				exit(1);
+-			envno++;
+ 			break;
+ 		case 'O':
+ 			fd = open(optarg, O_WRONLY);
+@@ -376,6 +371,13 @@ int main(int argc, char *argv[])
+ 				exit(1);
+ 			fdno++;
+ 			break;
++		case 'e':
++			sprintf(str, "env%d", envno);
++			ret = add_image(optarg, str);
++			if (ret)
++				exit(1);
++			envno++;
++			break;
+ 		default:
+ 			break;
+ 		}
 -- 
 1.7.12.2
 
