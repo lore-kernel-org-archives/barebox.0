@@ -1,19 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TMam5-000384-Cq
- for barebox@lists.infradead.org; Fri, 12 Oct 2012 08:39:19 +0000
-Date: Fri, 12 Oct 2012 10:39:15 +0200
+ id 1TMaxz-0003wq-O9
+ for barebox@lists.infradead.org; Fri, 12 Oct 2012 08:51:36 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1TMaxy-0004WQ-3g
+ for barebox@lists.infradead.org; Fri, 12 Oct 2012 10:51:34 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1TMaxx-0006aE-1s
+ for barebox@lists.infradead.org; Fri, 12 Oct 2012 10:51:33 +0200
+Date: Fri, 12 Oct 2012 10:51:33 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121012083915.GN27665@pengutronix.de>
-References: <1349736924-24667-1-git-send-email-vicencb@gmail.com>
- <20121010074015.GM27665@pengutronix.de>
- <CAAMcf8D0Xn6aWztkD=8dnv3P1qxNgxSV-2Q37kGOaRsOQE7xVA@mail.gmail.com>
- <20121010093223.GX27665@pengutronix.de>
- <CAAMcf8CLimKWZddBfctSCct0wOJOk7tgTJpM7m_w8h5dOQRt1Q@mail.gmail.com>
+Message-ID: <20121012085133.GP27665@pengutronix.de>
+References: <20121012040621.GA3300@greatfirst.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAAMcf8CLimKWZddBfctSCct0wOJOk7tgTJpM7m_w8h5dOQRt1Q@mail.gmail.com>
+In-Reply-To: <20121012040621.GA3300@greatfirst.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,60 +29,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/14] archosg9: add support for tablet
-To: vj <vicencb@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: error building sandbox with debug on
+To: barebox <barebox@lists.infradead.org>
 
-On Fri, Oct 12, 2012 at 02:55:18AM +0200, vj wrote:
-> > Ups, missed that. That's really a huge speed gain. I wonder why this
-> > happens. Maybe the overhead of request/release sdram region is
-> > significant with MMU disabled. Could you play with the BUFSIZ parameter
-> > to see if there's a good compromise between speeding up your transfer
-> > and still sensible buffer sizes?
+On Fri, Oct 12, 2012 at 12:06:21PM +0800, zzs wrote:
+> my src is f9df22b002af99532b66360e08128e
 > 
-> Here are the results:
-> 13133*PAGE_SIZE: Transferred 53789775 bytes in 3.326747 seconds at
-> 15.419848 MBps
->    64*PAGE_SIZE: Transferred 53789775 bytes in 3.478078 seconds at
-> 14.748928 MBps
->    32*PAGE_SIZE: Transferred 53789775 bytes in 3.655790 seconds at
-> 14.031968 MBps
->    16*PAGE_SIZE: Transferred 53789775 bytes in 3.987313 seconds at
-> 12.865286 MBps
->     8*PAGE_SIZE: Transferred 53789775 bytes in 4.540697 seconds at
-> 11.297368 MBps
->     4*PAGE_SIZE: Transferred 53789775 bytes in 5.876598 seconds at
-> 8.729188 MBps
->     2*PAGE_SIZE: Transferred 53789775 bytes in 8.249404 seconds at
-> 6.218380 MBps
-> Note: 13133 is reading the file at once.
+> now config it:
+>     CROSS_COMPILE= ARCH=sandbox make sandbox_defconfig
+> 
+> Then add the the flowwing line in front of include/common.h
+> 
+>     #define DEBUG
+> 
+> and run "CROSS_COMPILE= ARCH=sandbox make", this command output
+> the flowwing message:
+> 
+> --------------------------------------
+>   CC      common/meminfo.o
+> common/meminfo.c: In function 'display_meminfo':
+> common/meminfo.c:12:49: error: '_stext' undeclared (first use in this function)
+> common/meminfo.c:12:49: note: each undeclared identifier is reported only once for each function it appears in
+> common/meminfo.c:12:57: error: '_etext' undeclared (first use in this function)
+> common/meminfo.c:13:49: error: '__bss_start' undeclared (first use in this function)
+> common/meminfo.c:13:62: error: '__bss_stop' undeclared (first use in this function)
+> make[1]: *** [common/meminfo.o] Error 1
+> make: *** [common] Error 2
 
-So 32 * PAGE_SIZE could be a good compromise. That is still a fine
-enough granularity for requesting SDRAM regions.
+This is because ./arch/sandbox/board/barebox.lds.S is missing these
+variables. I don't know how much sense it makes to add these. You could
+just try and add them as done in the other linker scripts.
 
-> 
-> >
-> > BTW I wonder if it would be possible to use the MMU in your setup. We
-> > have a 1:1 flat mapping which should be no problem for the ROM code.
-> > You probably would have to use dma_alloc_coherent to allocate the
-> > buffers which are used for USB transfers.
-> 
-> Tested with MMU enabled having the buffers on local stack: fail
-> with buffers allocated with xzalloc: fail
-> with dma_alloc_coherent: fail
-> all of them freezes when calling the ROM function
-> omap4_usbboot_pdata.io->write(...)
-> also tried this initcalls, all with same result:
-> core_initcall(omap4_usbboot_init);
-> postmmu_initcall(omap4_usbboot_init);
-> 
-> Why it doesn't work? I don't know. But if anybody wants to investigate attached
-> is the ROM code. At the top of the file are the entry points used by
-> barebox, which
-> surely are wrong because aren't dword aligned!
-
-I have no idea. That's probably the point where a jtag debugger could
-help.
+This is a bug in the sense that you should be able to compile with DEBUG
+defined, but otherwise you can just comment the lines out and ignore
+this. It will have no bad effect on the resulting binary.
 
 Sascha
 
