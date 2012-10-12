@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo4.mail-out.ovh.net ([178.33.253.54]
- helo=mo4.mail-out.ovh.net)
+Received: from mo4.mail-out.ovh.net ([178.32.228.4])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TMbbj-0000kd-1S
- for barebox@lists.infradead.org; Fri, 12 Oct 2012 09:32:40 +0000
+ id 1TMbfJ-00011Q-6R
+ for barebox@lists.infradead.org; Fri, 12 Oct 2012 09:36:21 +0000
 Received: from mail413.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 796771050247
- for <barebox@lists.infradead.org>; Fri, 12 Oct 2012 11:39:08 +0200 (CEST)
-Date: Fri, 12 Oct 2012 11:30:17 +0200
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id BA9101050168
+ for <barebox@lists.infradead.org>; Fri, 12 Oct 2012 11:42:49 +0200 (CEST)
+Date: Fri, 12 Oct 2012 11:33:59 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121012093017.GH13639@game.jcrosoft.org>
+Message-ID: <20121012093359.GI13639@game.jcrosoft.org>
 References: <1349992331-22987-1-git-send-email-carlo.caione@gmail.com>
- <1349992331-22987-3-git-send-email-carlo.caione@gmail.com>
+ <1349992331-22987-5-git-send-email-carlo.caione@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1349992331-22987-3-git-send-email-carlo.caione@gmail.com>
+In-Reply-To: <1349992331-22987-5-git-send-email-carlo.caione@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,164 +26,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] BCM2835: add gpio driver
+Subject: Re: [PATCH 4/5] BCM2835: add support
 To: Carlo Caione <carlo.caione@gmail.com>
 Cc: barebox@lists.infradead.org
 
 On 23:52 Thu 11 Oct     , Carlo Caione wrote:
 > Signed-off-by: Carlo Caione <carlo.caione@gmail.com>
 > ---
->  drivers/gpio/Kconfig        |   4 ++
->  drivers/gpio/Makefile       |   1 +
->  drivers/gpio/gpio-bcm2835.c | 166 ++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 171 insertions(+)
->  create mode 100644 drivers/gpio/gpio-bcm2835.c
+>  arch/arm/Kconfig                              |   8 ++
+>  arch/arm/Makefile                             |   1 +
+>  arch/arm/mach-bcm2835/Kconfig                 |  14 ++++
+>  arch/arm/mach-bcm2835/Makefile                |   2 +
+>  arch/arm/mach-bcm2835/clock.c                 |  39 ++++++++++
+>  arch/arm/mach-bcm2835/core.c                  | 102 ++++++++++++++++++++++++++
+>  arch/arm/mach-bcm2835/include/mach/clkdev.h   |   7 ++
+>  arch/arm/mach-bcm2835/include/mach/clock.h    |   8 ++
+>  arch/arm/mach-bcm2835/include/mach/core.h     |  27 +++++++
+>  arch/arm/mach-bcm2835/include/mach/gpio.h     |   1 +
+>  arch/arm/mach-bcm2835/include/mach/platform.h |  53 +++++++++++++
+>  arch/arm/mach-bcm2835/include/mach/wd.h       |  50 +++++++++++++
+>  12 files changed, 312 insertions(+)
+>  create mode 100644 arch/arm/mach-bcm2835/Kconfig
+>  create mode 100644 arch/arm/mach-bcm2835/Makefile
+>  create mode 100644 arch/arm/mach-bcm2835/clock.c
+>  create mode 100644 arch/arm/mach-bcm2835/core.c
+>  create mode 100644 arch/arm/mach-bcm2835/include/mach/clkdev.h
+>  create mode 100644 arch/arm/mach-bcm2835/include/mach/clock.h
+>  create mode 100644 arch/arm/mach-bcm2835/include/mach/core.h
+>  create mode 100644 arch/arm/mach-bcm2835/include/mach/gpio.h
+>  create mode 100644 arch/arm/mach-bcm2835/include/mach/platform.h
+>  create mode 100644 arch/arm/mach-bcm2835/include/mach/wd.h
 > 
-> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-> index a0e9b58..e8eeb6d 100644
-> --- a/drivers/gpio/Kconfig
-> +++ b/drivers/gpio/Kconfig
-> @@ -6,6 +6,10 @@ if GPIOLIB
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 1e45ebf..daedc00 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -31,6 +31,13 @@ config ARCH_AT91
+>  	select HAS_DEBUG_LL
+>  	select HAVE_MACH_ARM_HEAD
 >  
->  menu "GPIO                          "
->  
-> +config GPIO_BCM2835
-> +	bool "GPIO support for BCM2835"
-> +	depends on ARCH_BCM2835
+> +config ARCH_BCM2835
+> +	bool "Broadcom BCM2835 boards"
+> +	select GPIOLIB
+> +	select CPU_ARM1176
+> +	select CLKDEV_LOOKUP
+> +	select CLOCKSOURCE_BCM2835
 > +
->  config GPIO_PL061
->  	bool "PrimeCell PL061 GPIO support"
->  	depends on ARM_AMBA
-> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-> index e2e97d3..aecdf24 100644
-> --- a/drivers/gpio/Makefile
-> +++ b/drivers/gpio/Makefile
-> @@ -1,4 +1,5 @@
->  obj-$(CONFIG_GPIOLIB) += gpio.o
+>  config ARCH_EP93XX
+>  	bool "Cirrus Logic EP93xx"
+>  	select CPU_ARM920T
+> @@ -101,6 +108,7 @@ endchoice
 >  
-> +obj-$(CONFIG_GPIO_BCM2835)	+= gpio-bcm2835.o
->  obj-$(CONFIG_GPIO_PL061)	+= gpio-pl061.o
->  obj-$(CONFIG_GPIO_STMPE) += gpio-stmpe.o
-> diff --git a/drivers/gpio/gpio-bcm2835.c b/drivers/gpio/gpio-bcm2835.c
+>  source arch/arm/cpu/Kconfig
+>  source arch/arm/mach-at91/Kconfig
+> +source arch/arm/mach-bcm2835/Kconfig
+>  source arch/arm/mach-ep93xx/Kconfig
+>  source arch/arm/mach-imx/Kconfig
+>  source arch/arm/mach-mxs/Kconfig
+> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+> index 855043a..2ea11d6 100644
+> --- a/arch/arm/Makefile
+> +++ b/arch/arm/Makefile
+> @@ -52,6 +52,7 @@ AFLAGS   += -include asm/unified.h -msoft-float $(AFLAGS_THUMB2)
+>  # Machine directory name.  This list is sorted alphanumerically
+>  # by CONFIG_* macro name.
+>  machine-$(CONFIG_ARCH_AT91)		:= at91
+> +machine-$(CONFIG_ARCH_BCM2835)		:= bcm2835
+>  machine-$(CONFIG_ARCH_EP93XX)		:= ep93xx
+>  machine-$(CONFIG_ARCH_IMX)		:= imx
+>  machine-$(CONFIG_ARCH_MXS)		:= mxs
+> diff --git a/arch/arm/mach-bcm2835/Kconfig b/arch/arm/mach-bcm2835/Kconfig
 > new file mode 100644
-> index 0000000..e31894c
+> index 0000000..1090955
 > --- /dev/null
-> +++ b/drivers/gpio/gpio-bcm2835.c
-> @@ -0,0 +1,166 @@
-> +/*
-> + * Author: Carlo Caione <carlo@carlocaione.org>
-> + *
-> + * Based on linux/arch/arm/mach-bcm2708/bcm2708_gpio.c
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License
-> + * along with this program; if not, write to the Free Software
-> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-> + * MA 02111-1307 USA
-> + *
-> + */
+> +++ b/arch/arm/mach-bcm2835/Kconfig
+> @@ -0,0 +1,14 @@
+> +if ARCH_BCM2835
 > +
-> +#include <common.h>
-> +#include <errno.h>
-> +#include <malloc.h>
-> +#include <io.h>
-> +#include <gpio.h>
-> +#include <init.h>
-> +#include <mach/platform.h>
+> +choice
+> +	prompt "Broadcom Board type"
 > +
-> +#define GPIOFSEL(x)  (0x00+(x)*4)
-> +#define GPIOSET(x)   (0x1c+(x)*4)
-> +#define GPIOCLR(x)   (0x28+(x)*4)
-> +#define GPIOLEV(x)   (0x34+(x)*4)
-> +#define GPIOEDS(x)   (0x40+(x)*4)
-> +#define GPIOREN(x)   (0x4c+(x)*4)
-> +#define GPIOFEN(x)   (0x58+(x)*4)
-> +#define GPIOHEN(x)   (0x64+(x)*4)
-> +#define GPIOLEN(x)   (0x70+(x)*4)
-> +#define GPIOAREN(x)  (0x7c+(x)*4)
-> +#define GPIOAFEN(x)  (0x88+(x)*4)
-> +#define GPIOUD(x)    (0x94+(x)*4)
-> +#define GPIOUDCLK(x) (0x98+(x)*4)
+> +config MACH_RPI
+> +	bool "RaspberryPi (BCM2835/ARM1176JZF-S)"
+> +	select ARM_AMBA
+here again ARM_AMBA is SOC not board
+
+move it to
+config ARCH_BCMxx
+	select ARM_AMBA
 > +
-> +enum {
-> +	GPIO_FSEL_INPUT, GPIO_FSEL_OUTPUT,
-> +	GPIO_FSEL_ALT5, GPIO_FSEL_ALT_4,
-> +	GPIO_FSEL_ALT0, GPIO_FSEL_ALT1,
-> +	GPIO_FSEL_ALT2, GPIO_FSEL_ALT3,
-> +};
+> +endchoice
 > +
-> +struct bcm2835_gpio_chip {
-> +	void __iomem *base;
-> +	struct gpio_chip chip;
-> +};
+> +source arch/arm/boards/raspberry-pi/Kconfig
 > +
-> +static int bcm2835_set_function(struct gpio_chip *chip, unsigned gpio, int function)
-> +{
-> +	struct bcm2835_gpio_chip *bcmgpio = container_of(chip, struct bcm2835_gpio_chip, chip);
-> +	void __iomem *base = bcmgpio->base;
-> +	unsigned gpiodir;
-> +	unsigned gpio_bank = gpio / 10;
-> +	unsigned gpio_field_offset = (gpio - 10 * gpio_bank) * 3;
-> +
-> +	gpiodir = readl(base + GPIOFSEL(gpio_bank));
-> +	gpiodir &= ~(7 << gpio_field_offset);
-> +	gpiodir |= function << gpio_field_offset;
-> +	writel(gpiodir, base + GPIOFSEL(gpio_bank));
-> +	gpiodir = readl(base + GPIOFSEL(gpio_bank));
-> +
-> +	return 0;
-> +}
-> +
-> +static void bcm2835_gpio_set_value(struct gpio_chip *chip, unsigned gpio, int value)
-> +{
-> +	struct bcm2835_gpio_chip *bcmgpio = container_of(chip, struct bcm2835_gpio_chip, chip);
-> +	void __iomem *base = bcmgpio->base;
-> +	unsigned gpio_bank = gpio / 32;
-> +	unsigned gpio_field_offset = gpio % 32;
-> +
-> +	if (value)
-> +		writel(1 << gpio_field_offset, base + GPIOSET(gpio_bank));
-> +	else
-> +		writel(1 << gpio_field_offset, base + GPIOCLR(gpio_bank));
-> +}
-> +
-> +static int bcm2835_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
-> +{
-> +	struct bcm2835_gpio_chip *bcmgpio = container_of(chip, struct bcm2835_gpio_chip, chip);
-> +	void __iomem *base = bcmgpio->base;
-> +	unsigned gpio_bank = gpio / 32;
-> +	unsigned gpio_field_offset = gpio % 32;
-> +	unsigned lev;
-> +
-> +	lev = readl(base + GPIOLEV(gpio_bank));
-> +	return 0x1 & (lev >> gpio_field_offset);
-> +}
-> +
-> +static int bcm2835_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
-> +{
-> +	return bcm2835_set_function(chip, gpio, GPIO_FSEL_INPUT);
-> +}
-> +
-> +static int bcm2835_gpio_direction_output(struct gpio_chip *chip, unsigned gpio, int value)
-> +{
-> +	int ret;
-missing empty line
-> +	ret =  bcm2835_set_function(chip, gpio, GPIO_FSEL_OUTPUT);
-always return 0
-> +	if (ret >= 0)
-> +		bcm2835_gpio_set_value(chip, gpio, value);
-> +	return ret;
-> +}
-> +
+> +endif
+> diff --git a/arch/arm/mach-bcm2835/Makefile b/arch/arm/mach-bcm2835/Makefile
+> new file mode 100644
+> index 0000000..f0aa2e0
+> --- /dev/null
+> +++ b/arch/arm/mach-bcm2835/Makefile
+> @@ -0,0 +1,2 @@
+> +obj-y += core.o
+> +obj-y += clock.o
+> \ No newline at end of file
+> diff --git a/arch/arm/mach-bcm2835/clock.c b/arch/arm/mach-bcm2835/clock.c
+> new file mode 100644
+> index 0000000..31400ea
+> --- /dev/null
 Best Regards,
 J.
 
