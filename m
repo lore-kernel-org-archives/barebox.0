@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp5.mail.ru ([94.100.176.132])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TMZ4q-0006Hx-RX
- for barebox@lists.infradead.org; Fri, 12 Oct 2012 06:50:34 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri, 12 Oct 2012 10:50:14 +0400
-Message-Id: <1350024615-4260-1-git-send-email-shc_work@mail.ru>
+ id 1TMa8k-0006jS-44
+ for barebox@lists.infradead.org; Fri, 12 Oct 2012 07:58:39 +0000
+Date: Fri, 12 Oct 2012 09:58:35 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121012075835.GG27665@pengutronix.de>
+References: <1349940335-20960-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1349940335-20960-1-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,37 +18,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] defaultenv-2: Select CMD_ECHO & CMD_ECHO_E by default
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] ARM OMAP: Create device file
+To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Command is used in the scripts and it should be compiled in.
+Hi Teresa,
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- common/Kconfig |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+On Thu, Oct 11, 2012 at 09:25:34AM +0200, Teresa G=E1mez wrote:
+> Created wrapper to add omap devices.
+> =
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 9210739..2783405 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -564,6 +564,8 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW
- 	select CMD_GLOBAL
- 	select CMD_AUTOMOUNT
- 	select CMD_BASENAME
-+	select CMD_ECHO
-+	select CMD_ECHO_E
- 	select FLEXIBLE_BOOTARGS
- 	prompt "Generic environment template"
- 
--- 
-1.7.3.4
+> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
+> ---
+> +
+> +struct device_d *omap_add_mmc(resource_size_t base, void *pdata)
+> +{
+> +	return omap_add_device("omap-hsmmc", base, SZ_4K, pdata);
+> +}
 
+Nice work. As Jean Christophe already mentioned, it would be nice to
+skip the base address. That would mean to have a omap_add_mmc() function
+like above in an omap generic place and then:
+
+static inline struct device_d omap<x>_add_mmc<y>(void *pdata)
+{
+	omap_add_mmc(OMAPx_MMCy_BASE, pdata);
+}
+
+in omap3/4 specific include files.
+
+Let me know if you want to work on this, otherwise I'm also happy to
+apply this one as it's already a step forward.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
