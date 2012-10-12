@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo4.mail-out.ovh.net ([188.165.55.104]
+Received: from 12.mo4.mail-out.ovh.net ([178.33.104.253]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TMbNB-0006Tx-DU
- for barebox@lists.infradead.org; Fri, 12 Oct 2012 09:17:38 +0000
+ id 1TMbVl-0007tQ-Ce
+ for barebox@lists.infradead.org; Fri, 12 Oct 2012 09:26:29 +0000
 Received: from mail413.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id EC18410501DC
- for <barebox@lists.infradead.org>; Fri, 12 Oct 2012 11:24:03 +0200 (CEST)
-Date: Fri, 12 Oct 2012 11:15:08 +0200
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 52E241050174
+ for <barebox@lists.infradead.org>; Fri, 12 Oct 2012 11:32:58 +0200 (CEST)
+Date: Fri, 12 Oct 2012 11:24:08 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121012091508.GD13639@game.jcrosoft.org>
-References: <20121012040621.GA3300@greatfirst.com>
- <20121012085133.GP27665@pengutronix.de>
+Message-ID: <20121012092408.GE13639@game.jcrosoft.org>
+References: <1350024615-4260-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121012085133.GP27665@pengutronix.de>
+In-Reply-To: <1350024615-4260-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,45 +26,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: error building sandbox with debug on
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/2] defaultenv-2: Select CMD_ECHO & CMD_ECHO_E by default
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-On 10:51 Fri 12 Oct     , Sascha Hauer wrote:
-> On Fri, Oct 12, 2012 at 12:06:21PM +0800, zzs wrote:
-> > my src is f9df22b002af99532b66360e08128e
-> > 
-> > now config it:
-> >     CROSS_COMPILE= ARCH=sandbox make sandbox_defconfig
-> > 
-> > Then add the the flowwing line in front of include/common.h
-> > 
-> >     #define DEBUG
-> > 
-> > and run "CROSS_COMPILE= ARCH=sandbox make", this command output
-> > the flowwing message:
-> > 
-> > --------------------------------------
-> >   CC      common/meminfo.o
-> > common/meminfo.c: In function 'display_meminfo':
-> > common/meminfo.c:12:49: error: '_stext' undeclared (first use in this function)
-> > common/meminfo.c:12:49: note: each undeclared identifier is reported only once for each function it appears in
-> > common/meminfo.c:12:57: error: '_etext' undeclared (first use in this function)
-> > common/meminfo.c:13:49: error: '__bss_start' undeclared (first use in this function)
-> > common/meminfo.c:13:62: error: '__bss_stop' undeclared (first use in this function)
-> > make[1]: *** [common/meminfo.o] Error 1
-> > make: *** [common] Error 2
+On 10:50 Fri 12 Oct     , Alexander Shiyan wrote:
+> Command is used in the scripts and it should be compiled in.
 > 
-> This is because ./arch/sandbox/board/barebox.lds.S is missing these
-> variables. I don't know how much sense it makes to add these. You could
-> just try and add them as done in the other linker scripts.
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  common/Kconfig |    2 ++
+>  1 files changed, 2 insertions(+), 0 deletions(-)
 > 
-> This is a bug in the sense that you should be able to compile with DEBUG
-> defined, but otherwise you can just comment the lines out and ignore
-> this. It will have no bad effect on the resulting binary
-
-on sandbox we should ignore this as the lds is based on the gcc one
-and we just insert section inside
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 9210739..2783405 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -564,6 +564,8 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW
+>  	select CMD_GLOBAL
+>  	select CMD_AUTOMOUNT
+>  	select CMD_BASENAME
+> +	select CMD_ECHO
+> +	select CMD_ECHO_E
+ECHO_E need to be optionnal as you may not want the color support
 
 Best Regards,
 J.
