@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TN0rK-0004J6-1F
- for barebox@lists.infradead.org; Sat, 13 Oct 2012 12:30:26 +0000
-Date: Sat, 13 Oct 2012 14:30:24 +0200
+ id 1TN0s1-0004NG-P5
+ for barebox@lists.infradead.org; Sat, 13 Oct 2012 12:31:10 +0000
+Date: Sat, 13 Oct 2012 14:31:08 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121013123024.GX27665@pengutronix.de>
-References: <1350068157-601-1-git-send-email-alex.aring@gmail.com>
+Message-ID: <20121013123108.GY27665@pengutronix.de>
+References: <1350114328-23060-1-git-send-email-alex.aring@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1350068157-601-1-git-send-email-alex.aring@gmail.com>
+In-Reply-To: <1350114328-23060-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,12 +22,12 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] documentation: add sandbox malloc argument
+Subject: Re: [PATCH] mtd-core: add writesize in MEMGETINFO ioctl
 To: Alexander Aring <alex.aring@googlemail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Oct 12, 2012 at 08:55:57PM +0200, Alexander Aring wrote:
-> Add malloc argument in doxygen comment.
+On Sat, Oct 13, 2012 at 09:45:28AM +0200, Alexander Aring wrote:
+> Add writesize in MEMGETINFO ioctl.
 > 
 > Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 
@@ -36,24 +36,21 @@ Applied, thanks
 Sascha
 
 > ---
->  arch/sandbox/os/common.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  drivers/mtd/core.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
-> index db347e2..36c8d62 100644
-> --- a/arch/sandbox/os/common.c
-> +++ b/arch/sandbox/os/common.c
-> @@ -436,6 +436,10 @@ static void print_usage(const char *prgname)
->   *
->   * Options can be:
->   *
-> + * -m, --malloc=\<size\>
-> + *
-> + * Start sandbox with a specified malloc-space \<size\> in bytes.
-> + *
->   * -i \<file\>
->   *
->   * Map a \<file\> to barebox. This option can be given multiple times. The \<file\>s
+> diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+> index 6550741..7c323a1 100644
+> --- a/drivers/mtd/core.c
+> +++ b/drivers/mtd/core.c
+> @@ -143,6 +143,7 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+>  		user->flags	= mtd->flags;
+>  		user->size	= mtd->size;
+>  		user->erasesize	= mtd->erasesize;
+> +		user->writesize	= mtd->writesize;
+>  		user->oobsize	= mtd->oobsize;
+>  		user->mtd	= mtd;
+>  		/* The below fields are obsolete */
 > -- 
 > 1.7.12.2
 > 
