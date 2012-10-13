@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo3.mail-out.ovh.net ([188.165.43.173]
+Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TN255-0005Vf-Ow
- for barebox@lists.infradead.org; Sat, 13 Oct 2012 13:48:45 +0000
+ id 1TN280-0005ZH-8r
+ for barebox@lists.infradead.org; Sat, 13 Oct 2012 13:51:44 +0000
 Received: from mail632.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 3E7A4FF887D
- for <barebox@lists.infradead.org>; Sat, 13 Oct 2012 15:57:58 +0200 (CEST)
-Date: Sat, 13 Oct 2012 15:46:22 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 1193DFF88AE
+ for <barebox@lists.infradead.org>; Sat, 13 Oct 2012 16:00:59 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121013134622.GM13639@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Sat, 13 Oct 2012 15:49:21 +0200
+Message-Id: <1350136162-22061-3-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1350136162-22061-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20121013134622.GM13639@game.jcrosoft.org>
+ <1350136162-22061-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,55 +21,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4 v2] add wakup source
+Subject: [PATCH 3/4] reset_resource: add wakeup source
 To: barebox@lists.infradead.org
 
-HI,
+This will allow to known the source of wakeup
 
-	v2:
-	  update against next
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ common/reset_source.c  |   17 +++++++++++++++++
+ include/reset_source.h |   11 +++++++++++
+ 2 files changed, 28 insertions(+)
 
-	add wakeup source and amek power source human readable
+diff --git a/common/reset_source.c b/common/reset_source.c
+index ec1afc0..4791d29 100644
+--- a/common/reset_source.c
++++ b/common/reset_source.c
+@@ -34,11 +34,28 @@ void set_reset_source(enum reset_src_type st)
+ }
+ EXPORT_SYMBOL(set_reset_source);
+ 
++static const char * const wakeup_src_names[] = {
++	[WAKEUP_UKWNOWN] = "unknown",
++	[WAKEUP_POWER] = "power",
++	[WAKEUP_RTC] = "rtc",
++	[WAKEUP_TIMER] = "timer",
++	[WAKEUP_USER] = "user",
++	[WAKEUP_WOL] = "wakeup on lan",
++};
++
++void set_wakeup_source(enum wakeup_src_type st)
++{
++	setenv("global.system.wakeup", wakeup_src_names[st]);
++}
++EXPORT_SYMBOL(set_reset_source);
++
+ /* ensure this runs after the 'global' device is already registerd */
+ static int init_reset_source(void)
+ {
+ 	globalvar_add_simple("system.reset");
++	globalvar_add_simple("system.wakeup");
+ 	set_reset_source(RESET_UKWNOWN);
++	set_wakeup_source(WAKEUP_UKWNOWN);
+ 	return 0;
+ }
+ 
+diff --git a/include/reset_source.h b/include/reset_source.h
+index af4246a..1777b2b 100644
+--- a/include/reset_source.h
++++ b/include/reset_source.h
+@@ -31,4 +31,15 @@ static inline void set_reset_source(enum reset_src_type unused)
+ }
+ #endif
+ 
++enum wakeup_src_type {
++	WAKEUP_UKWNOWN,	/* maybe the SoC cannot detect the wakeup source */
++	WAKEUP_POWER,	/* Power restore */
++	WAKEUP_RTC,	/* rtc */
++	WAKEUP_TIMER,	/* timer */
++	WAKEUP_USER,	/* user */
++	WAKEUP_WOL,	/* wakeup on lan */
++};
++
++void set_wakeup_source(enum wakeup_src_type);
++
+ #endif /* __INCLUDE_RESET_SOURCE_H */
+-- 
+1.7.10.4
 
-The following changes since commit f0c7ee4201d56ec87c8b0deff3a481644a34bb9d:
-
-  Merge branch 'for-next-1/karo-tx53' into next (2012-10-13 14:24:49 +0200)
-
-are available in the git repository at:
-
-
-  git://git.jcrosoft.org/barebox.git delivery/reset_source
-
-for you to fetch changes up to f4d6ae60c34f1e01bf913e3b8166b478e1b55fb2:
-
-  at91: add reset and wakeup source detection support (2012-10-13 13:45:02 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (4):
-      reset_source: make enum and string human readable
-      reset_source: add software reset as possible source
-      reset_resource: add wakeup source
-      at91: add reset and wakeup source detection support
-
- arch/arm/mach-at91/Makefile                  |    1 +
- arch/arm/mach-at91/include/mach/at91_shdwc.h |   40 ++++++++++++++++++++++++++++++++++++++++
- arch/arm/mach-at91/reset_source.c            |   59 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/mach-imx/imx1.c                     |    6 +++---
- arch/arm/mach-samsung/reset_source.c         |    6 +++---
- common/reset_source.c                        |   32 +++++++++++++++++++++++++-------
- drivers/watchdog/im28wd.c                    |    6 +++---
- drivers/watchdog/imxwd.c                     |    6 +++---
- include/reset_source.h                       |   22 +++++++++++++++++-----
- 9 files changed, 154 insertions(+), 24 deletions(-)
- create mode 100644 arch/arm/mach-at91/include/mach/at91_shdwc.h
- create mode 100644 arch/arm/mach-at91/reset_source.c
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
