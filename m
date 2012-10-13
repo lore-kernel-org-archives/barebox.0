@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-f177.google.com ([209.85.212.177])
+Received: from mail-wg0-f49.google.com ([74.125.82.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TMkNN-0007zQ-6w
- for barebox@lists.infradead.org; Fri, 12 Oct 2012 18:54:26 +0000
-Received: by mail-wi0-f177.google.com with SMTP id hj13so92496wib.0
- for <barebox@lists.infradead.org>; Fri, 12 Oct 2012 11:54:23 -0700 (PDT)
+ id 1TMwOA-0007kq-JE
+ for barebox@lists.infradead.org; Sat, 13 Oct 2012 07:44:03 +0000
+Received: by mail-wg0-f49.google.com with SMTP id gg4so2027740wgb.18
+ for <barebox@lists.infradead.org>; Sat, 13 Oct 2012 00:43:58 -0700 (PDT)
 From: Alexander Aring <alex.aring@googlemail.com>
-Date: Fri, 12 Oct 2012 20:55:57 +0200
-Message-Id: <1350068157-601-1-git-send-email-alex.aring@gmail.com>
+Date: Sat, 13 Oct 2012 09:45:28 +0200
+Message-Id: <1350114328-23060-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] documentation: add sandbox malloc argument
+Subject: [PATCH] mtd-core: add writesize in MEMGETINFO ioctl
 To: barebox@lists.infradead.org
 
-Add malloc argument in doxygen comment.
+Add writesize in MEMGETINFO ioctl.
 
 Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- arch/sandbox/os/common.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mtd/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
-index db347e2..36c8d62 100644
---- a/arch/sandbox/os/common.c
-+++ b/arch/sandbox/os/common.c
-@@ -436,6 +436,10 @@ static void print_usage(const char *prgname)
-  *
-  * Options can be:
-  *
-+ * -m, --malloc=\<size\>
-+ *
-+ * Start sandbox with a specified malloc-space \<size\> in bytes.
-+ *
-  * -i \<file\>
-  *
-  * Map a \<file\> to barebox. This option can be given multiple times. The \<file\>s
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index 6550741..7c323a1 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -143,6 +143,7 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+ 		user->flags	= mtd->flags;
+ 		user->size	= mtd->size;
+ 		user->erasesize	= mtd->erasesize;
++		user->writesize	= mtd->writesize;
+ 		user->oobsize	= mtd->oobsize;
+ 		user->mtd	= mtd;
+ 		/* The below fields are obsolete */
 -- 
 1.7.12.2
 
