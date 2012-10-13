@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f41.google.com ([74.125.82.41])
+Received: from mail-we0-f177.google.com ([74.125.82.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TN2Hr-0005oy-Jp
- for barebox@lists.infradead.org; Sat, 13 Oct 2012 14:01:56 +0000
-Received: by mail-wg0-f41.google.com with SMTP id ds1so21430wgb.0
- for <barebox@lists.infradead.org>; Sat, 13 Oct 2012 07:01:49 -0700 (PDT)
+ id 1TN2IW-0005wc-Gm
+ for barebox@lists.infradead.org; Sat, 13 Oct 2012 14:02:39 +0000
+Received: by mail-we0-f177.google.com with SMTP id u50so2304882wey.36
+ for <barebox@lists.infradead.org>; Sat, 13 Oct 2012 07:02:34 -0700 (PDT)
 From: Carlo Caione <carlo.caione@gmail.com>
-Date: Sat, 13 Oct 2012 16:00:12 +0200
-Message-Id: <1350136816-33529-2-git-send-email-carlo.caione@gmail.com>
+Date: Sat, 13 Oct 2012 16:00:16 +0200
+Message-Id: <1350136816-33529-6-git-send-email-carlo.caione@gmail.com>
 In-Reply-To: <1350136816-33529-1-git-send-email-carlo.caione@gmail.com>
 References: <1350136816-33529-1-git-send-email-carlo.caione@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,50 +23,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] BCM2835: add clocksource driver
+Subject: [PATCH 5/5] Raspberry-Pi: add support (board)
 To: barebox@lists.infradead.org
 
+Tested-By: Jan Luebbe <jlu@pengutronix.de>
 Signed-off-by: Carlo Caione <carlo.caione@gmail.com>
 ---
- drivers/clocksource/Kconfig   |  4 ++
- drivers/clocksource/Makefile  |  1 +
- drivers/clocksource/bcm2835.c | 95 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 100 insertions(+)
- create mode 100644 drivers/clocksource/bcm2835.c
+ arch/arm/Makefile                                  |  1 +
+ arch/arm/boards/raspberry-pi/Makefile              |  1 +
+ arch/arm/boards/raspberry-pi/config.h              |  4 ++
+ .../arm/boards/raspberry-pi/env/init/bootargs-base |  8 ++++
+ arch/arm/boards/raspberry-pi/env/init/hostname     |  8 ++++
+ arch/arm/boards/raspberry-pi/rpi.c                 | 49 ++++++++++++++++++++++
+ arch/arm/configs/rpi_defconfig                     | 40 ++++++++++++++++++
+ arch/arm/mach-bcm2835/Kconfig                      | 15 +++++++
+ 8 files changed, 126 insertions(+)
+ create mode 100644 arch/arm/boards/raspberry-pi/Makefile
+ create mode 100644 arch/arm/boards/raspberry-pi/config.h
+ create mode 100644 arch/arm/boards/raspberry-pi/env/init/bootargs-base
+ create mode 100644 arch/arm/boards/raspberry-pi/env/init/hostname
+ create mode 100644 arch/arm/boards/raspberry-pi/rpi.c
+ create mode 100644 arch/arm/configs/rpi_defconfig
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 9d6d293..09acdd7 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -2,6 +2,10 @@ config ARM_SMP_TWD
- 	bool
- 	depends on ARM && CPU_V7
- 
-+config CLOCKSOURCE_BCM2835
-+	bool
-+	depends on ARCH_BCM2835
-+
- config CLOCKSOURCE_NOMADIK
- 	bool
- 	depends on ARM
-diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-index bef465c..92d7c13 100644
---- a/drivers/clocksource/Makefile
-+++ b/drivers/clocksource/Makefile
-@@ -1,2 +1,3 @@
- obj-$(CONFIG_ARM_SMP_TWD) += arm_smp_twd.o
-+obj-$(CONFIG_CLOCKSOURCE_BCM2835) += bcm2835.o
- obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
-diff --git a/drivers/clocksource/bcm2835.c b/drivers/clocksource/bcm2835.c
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 3449fd7..ec9898c 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -114,6 +114,7 @@ board-$(CONFIG_MACH_PCM043)			:= pcm043
+ board-$(CONFIG_MACH_PM9261)			:= pm9261
+ board-$(CONFIG_MACH_PM9263)			:= pm9263
+ board-$(CONFIG_MACH_PM9G45)			:= pm9g45
++board-$(CONFIG_MACH_RPI)			:= raspberry-pi
+ board-$(CONFIG_MACH_SCB9328)			:= scb9328
+ board-$(CONFIG_MACH_NESO)			:= guf-neso
+ board-$(CONFIG_MACH_MX23EVK)			:= freescale-mx23-evk
+diff --git a/arch/arm/boards/raspberry-pi/Makefile b/arch/arm/boards/raspberry-pi/Makefile
 new file mode 100644
-index 0000000..78f0cae
+index 0000000..6ce5ede
 --- /dev/null
-+++ b/drivers/clocksource/bcm2835.c
-@@ -0,0 +1,95 @@
++++ b/arch/arm/boards/raspberry-pi/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_MACH_RPI) += rpi.o
+diff --git a/arch/arm/boards/raspberry-pi/config.h b/arch/arm/boards/raspberry-pi/config.h
+new file mode 100644
+index 0000000..ca15136
+--- /dev/null
++++ b/arch/arm/boards/raspberry-pi/config.h
+@@ -0,0 +1,4 @@
++#ifndef __CONFIG_H
++#define __CONFIG_H
++
++#endif	/* __CONFIG_H */
+diff --git a/arch/arm/boards/raspberry-pi/env/init/bootargs-base b/arch/arm/boards/raspberry-pi/env/init/bootargs-base
+new file mode 100644
+index 0000000..d869754
+--- /dev/null
++++ b/arch/arm/boards/raspberry-pi/env/init/bootargs-base
+@@ -0,0 +1,8 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "Base bootargs"
++	exit
++fi
++
++global.linux.bootargs.base="console=ttymxc0,115200"
+diff --git a/arch/arm/boards/raspberry-pi/env/init/hostname b/arch/arm/boards/raspberry-pi/env/init/hostname
+new file mode 100644
+index 0000000..7e8f294
+--- /dev/null
++++ b/arch/arm/boards/raspberry-pi/env/init/hostname
+@@ -0,0 +1,8 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "hostname"
++	exit
++fi
++
++global.hostname=Raspberry-Pi
+diff --git a/arch/arm/boards/raspberry-pi/rpi.c b/arch/arm/boards/raspberry-pi/rpi.c
+new file mode 100644
+index 0000000..6c94dcd
+--- /dev/null
++++ b/arch/arm/boards/raspberry-pi/rpi.c
+@@ -0,0 +1,49 @@
 +/*
-+ * Author: Carlo Caione <carlo@carlocaione.org>
-+ *
-+ * Based on clocksource for nomadik
++ * Copyright (C) 2009 Carlo Caione <carlo@carlocaione.org>
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -85,79 +128,104 @@ index 0000000..78f0cae
 + *
 + */
 +
-+
 +#include <common.h>
-+#include <clock.h>
-+#include <io.h>
 +#include <init.h>
-+#include <driver.h>
-+#include <errno.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
++#include <asm/armlinux.h>
++#include <generated/mach-types.h>
 +
-+/* Registers */
-+#define ST_CLO	0x04
++#include <mach/core.h>
 +
-+static __iomem void *stc_base;
-+
-+static uint64_t stc_read_cycles(void)
++static int rpi_mem_init(void)
 +{
-+	return readl(stc_base + ST_CLO);
++	bcm2835_add_device_sdram(0);
++	return 0;
 +}
++mem_initcall(rpi_mem_init);
 +
-+static struct clocksource bcm2835_stc = {
-+	.read = stc_read_cycles,
-+	.mask = CLOCKSOURCE_MASK(32),
-+};
-+
-+static int bcm2835_cs_probe(struct device_d *dev)
++static int rpi_console_init(void)
 +{
-+	static struct clk *stc_clk;
-+	u32 rate;
-+	int ret;
++	bcm2835_register_uart();
++	return 0;
++}
++console_initcall(rpi_console_init);
 +
-+	stc_clk = clk_get(dev, NULL);
-+	if (IS_ERR(stc_clk)) {
-+		ret = PTR_ERR(stc_clk);
-+		dev_err(dev, "clock not found: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = clk_enable(stc_clk);
-+	if (ret) {
-+		dev_err(dev, "clock failed to enable: %d\n", ret);
-+		clk_put(stc_clk);
-+		return ret;
-+	}
-+
-+	rate = clk_get_rate(stc_clk);
-+	stc_base = dev_request_mem_region(dev, 0);
-+
-+	clocks_calc_mult_shift(&bcm2835_stc.mult, &bcm2835_stc.shift, rate, NSEC_PER_SEC, 60);
-+	init_clock(&bcm2835_stc);
-+
++static int rpi_devices_init(void)
++{
++	armlinux_set_architecture(MACH_TYPE_BCM2708);
++	armlinux_set_bootparams((void *)(0x00000100));
 +	return 0;
 +}
 +
-+static __maybe_unused struct of_device_id bcm2835_cs_dt_ids[] = {
-+	{
-+			.compatible = "bcm,bcm2835-cs",
-+	}, {
-+			/* sentinel */
-+	}
-+};
++device_initcall(rpi_devices_init);
+diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
+new file mode 100644
+index 0000000..bca3d25
+--- /dev/null
++++ b/arch/arm/configs/rpi_defconfig
+@@ -0,0 +1,40 @@
++CONFIG_ARCH_BCM2835=y
++CONFIG_GPIO_BCM2835=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PROMPT="R-Pi> "
++CONFIG_LONGHELP=y
++CONFIG_GLOB=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++CONFIG_PARTITION=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/raspberry-pi/env"
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_PASSWD=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_MTEST=y
++CONFIG_CMD_MTEST_ALTERNATIVE=y
++CONFIG_CMD_BOOTM_ZLIB=y
++CONFIG_CMD_BOOTM_BZLIB=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_GPIO=y
++CONFIG_SERIAL_AMBA_PL011=y
++CONFIG_SHA1=y
++CONFIG_SHA256=y
+diff --git a/arch/arm/mach-bcm2835/Kconfig b/arch/arm/mach-bcm2835/Kconfig
+index c42fe1c..9d97aea 100644
+--- a/arch/arm/mach-bcm2835/Kconfig
++++ b/arch/arm/mach-bcm2835/Kconfig
+@@ -1,3 +1,18 @@
+ if ARCH_BCM2835
+ 
++config ARCH_TEXT_BASE
++	hex
++	default 0x04000000 if MACH_RPI
 +
-+static struct driver_d bcm2835_cs_driver = {
-+	.name = "bcm2835-cs",
-+	.probe = bcm2835_cs_probe,
-+	.of_compatible = DRV_OF_COMPAT(bcm2835_cs_dt_ids),
-+};
++config BOARDINFO
++	default "RaspberryPi (BCM2835/ARM1176JZF-S)" if MACH_RPI
 +
-+static int bcm2835_cs_init(void)
-+{
-+	return platform_driver_register(&bcm2835_cs_driver);
-+}
-+coredevice_initcall(bcm2835_cs_init);
++choice
++	prompt "Broadcom Board type"
++
++config MACH_RPI
++	bool "RaspberryPi (BCM2835/ARM1176JZF-S)"
++
++endchoice
++
+ endif
 -- 
 1.7.12.3
 
