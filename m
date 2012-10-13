@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f49.google.com ([74.125.82.49])
+Received: from mail-wi0-f169.google.com ([209.85.212.169])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TMzoj-0002Lf-H7
+ id 1TMzok-0002MG-HR
  for barebox@lists.infradead.org; Sat, 13 Oct 2012 11:23:44 +0000
-Received: by mail-wg0-f49.google.com with SMTP id gg4so2097629wgb.18
- for <barebox@lists.infradead.org>; Sat, 13 Oct 2012 04:23:39 -0700 (PDT)
+Received: by mail-wi0-f169.google.com with SMTP id hq4so84586wib.0
+ for <barebox@lists.infradead.org>; Sat, 13 Oct 2012 04:23:40 -0700 (PDT)
 From: Carlo Caione <carlo.caione@gmail.com>
-Date: Sat, 13 Oct 2012 13:23:00 +0200
-Message-Id: <1350127381-21312-5-git-send-email-carlo.caione@gmail.com>
+Date: Sat, 13 Oct 2012 13:23:01 +0200
+Message-Id: <1350127381-21312-6-git-send-email-carlo.caione@gmail.com>
 In-Reply-To: <1350127381-21312-1-git-send-email-carlo.caione@gmail.com>
 References: <1350127381-21312-1-git-send-email-carlo.caione@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,281 +23,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] BCM2835: add support (arch)
+Subject: [PATCH 5/5] Raspberry-Pi: add support (board)
 To: barebox@lists.infradead.org
 
+Tested-By: Jan Luebbe <jlu@pengutronix.de>
 Signed-off-by: Carlo Caione <carlo.caione@gmail.com>
 ---
- arch/arm/Kconfig                              |   9 +++
- arch/arm/Makefile                             |   1 +
- arch/arm/mach-bcm2835/Kconfig                 |   3 +
- arch/arm/mach-bcm2835/Makefile                |   2 +
- arch/arm/mach-bcm2835/clock.c                 |  39 ++++++++++
- arch/arm/mach-bcm2835/core.c                  | 105 ++++++++++++++++++++++++++
- arch/arm/mach-bcm2835/include/mach/clkdev.h   |   7 ++
- arch/arm/mach-bcm2835/include/mach/clock.h    |   8 ++
- arch/arm/mach-bcm2835/include/mach/core.h     |  27 +++++++
- arch/arm/mach-bcm2835/include/mach/gpio.h     |   1 +
- arch/arm/mach-bcm2835/include/mach/platform.h |  53 +++++++++++++
- arch/arm/mach-bcm2835/include/mach/wd.h       |  50 ++++++++++++
- 12 files changed, 305 insertions(+)
- create mode 100644 arch/arm/mach-bcm2835/Kconfig
- create mode 100644 arch/arm/mach-bcm2835/Makefile
- create mode 100644 arch/arm/mach-bcm2835/clock.c
- create mode 100644 arch/arm/mach-bcm2835/core.c
- create mode 100644 arch/arm/mach-bcm2835/include/mach/clkdev.h
- create mode 100644 arch/arm/mach-bcm2835/include/mach/clock.h
- create mode 100644 arch/arm/mach-bcm2835/include/mach/core.h
- create mode 100644 arch/arm/mach-bcm2835/include/mach/gpio.h
- create mode 100644 arch/arm/mach-bcm2835/include/mach/platform.h
- create mode 100644 arch/arm/mach-bcm2835/include/mach/wd.h
+ arch/arm/Makefile                                  |  1 +
+ arch/arm/boards/raspberry-pi/Kconfig               | 10 +++++
+ arch/arm/boards/raspberry-pi/Makefile              |  1 +
+ arch/arm/boards/raspberry-pi/config.h              |  4 ++
+ .../arm/boards/raspberry-pi/env/init/bootargs-base |  8 ++++
+ arch/arm/boards/raspberry-pi/env/init/hostname     |  8 ++++
+ arch/arm/boards/raspberry-pi/rpi.c                 | 49 ++++++++++++++++++++++
+ arch/arm/configs/rpi_defconfig                     | 40 ++++++++++++++++++
+ arch/arm/mach-bcm2835/Kconfig                      | 10 +++++
+ 9 files changed, 131 insertions(+)
+ create mode 100644 arch/arm/boards/raspberry-pi/Kconfig
+ create mode 100644 arch/arm/boards/raspberry-pi/Makefile
+ create mode 100644 arch/arm/boards/raspberry-pi/config.h
+ create mode 100644 arch/arm/boards/raspberry-pi/env/init/bootargs-base
+ create mode 100644 arch/arm/boards/raspberry-pi/env/init/hostname
+ create mode 100644 arch/arm/boards/raspberry-pi/rpi.c
+ create mode 100644 arch/arm/configs/rpi_defconfig
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 1e45ebf..512bd44 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -31,6 +31,14 @@ config ARCH_AT91
- 	select HAS_DEBUG_LL
- 	select HAVE_MACH_ARM_HEAD
- 
-+config ARCH_BCM2835
-+	bool "Broadcom BCM2835 boards"
-+	select GPIOLIB
-+	select CPU_ARM1176
-+	select CLKDEV_LOOKUP
-+	select CLOCKSOURCE_BCM2835
-+	select ARM_AMBA
-+
- config ARCH_EP93XX
- 	bool "Cirrus Logic EP93xx"
- 	select CPU_ARM920T
-@@ -101,6 +109,7 @@ endchoice
- 
- source arch/arm/cpu/Kconfig
- source arch/arm/mach-at91/Kconfig
-+source arch/arm/mach-bcm2835/Kconfig
- source arch/arm/mach-ep93xx/Kconfig
- source arch/arm/mach-imx/Kconfig
- source arch/arm/mach-mxs/Kconfig
 diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 855043a..2ea11d6 100644
+index 2ea11d6..adfe590 100644
 --- a/arch/arm/Makefile
 +++ b/arch/arm/Makefile
-@@ -52,6 +52,7 @@ AFLAGS   += -include asm/unified.h -msoft-float $(AFLAGS_THUMB2)
- # Machine directory name.  This list is sorted alphanumerically
- # by CONFIG_* macro name.
- machine-$(CONFIG_ARCH_AT91)		:= at91
-+machine-$(CONFIG_ARCH_BCM2835)		:= bcm2835
- machine-$(CONFIG_ARCH_EP93XX)		:= ep93xx
- machine-$(CONFIG_ARCH_IMX)		:= imx
- machine-$(CONFIG_ARCH_MXS)		:= mxs
-diff --git a/arch/arm/mach-bcm2835/Kconfig b/arch/arm/mach-bcm2835/Kconfig
+@@ -113,6 +113,7 @@ board-$(CONFIG_MACH_PCM043)			:= pcm043
+ board-$(CONFIG_MACH_PM9261)			:= pm9261
+ board-$(CONFIG_MACH_PM9263)			:= pm9263
+ board-$(CONFIG_MACH_PM9G45)			:= pm9g45
++board-$(CONFIG_MACH_RPI)				:= raspberry-pi
+ board-$(CONFIG_MACH_SCB9328)			:= scb9328
+ board-$(CONFIG_MACH_NESO)			:= guf-neso
+ board-$(CONFIG_MACH_MX23EVK)			:= freescale-mx23-evk
+diff --git a/arch/arm/boards/raspberry-pi/Kconfig b/arch/arm/boards/raspberry-pi/Kconfig
 new file mode 100644
-index 0000000..c42fe1c
+index 0000000..3ac8829
 --- /dev/null
-+++ b/arch/arm/mach-bcm2835/Kconfig
-@@ -0,0 +1,3 @@
-+if ARCH_BCM2835
++++ b/arch/arm/boards/raspberry-pi/Kconfig
+@@ -0,0 +1,10 @@
++if MACH_RPI
++
++config ARCH_TEXT_BASE
++	hex
++	default 0x04000000
++
++config BOARDINFO
++	default "RaspberryPi (BCM2835/ARM1176JZF-S)"
 +
 +endif
-diff --git a/arch/arm/mach-bcm2835/Makefile b/arch/arm/mach-bcm2835/Makefile
+diff --git a/arch/arm/boards/raspberry-pi/Makefile b/arch/arm/boards/raspberry-pi/Makefile
 new file mode 100644
-index 0000000..f0aa2e0
+index 0000000..6ce5ede
 --- /dev/null
-+++ b/arch/arm/mach-bcm2835/Makefile
-@@ -0,0 +1,2 @@
-+obj-y += core.o
-+obj-y += clock.o
-\ No newline at end of file
-diff --git a/arch/arm/mach-bcm2835/clock.c b/arch/arm/mach-bcm2835/clock.c
++++ b/arch/arm/boards/raspberry-pi/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_MACH_RPI) += rpi.o
+diff --git a/arch/arm/boards/raspberry-pi/config.h b/arch/arm/boards/raspberry-pi/config.h
 new file mode 100644
-index 0000000..31400ea
+index 0000000..ca15136
 --- /dev/null
-+++ b/arch/arm/mach-bcm2835/clock.c
-@@ -0,0 +1,39 @@
-+/*
-+ * Copyright (C) 2009 Alessandro Rubini
-+ */
++++ b/arch/arm/boards/raspberry-pi/config.h
+@@ -0,0 +1,4 @@
++#ifndef __CONFIG_H
++#define __CONFIG_H
 +
-+#include <common.h>
-+#include <init.h>
-+#include <linux/clkdev.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <mach/clock.h>
-+
-+int clk_enable(struct clk *clk)
-+{
-+	return 0;
-+}
-+EXPORT_SYMBOL(clk_enable);
-+
-+void clk_disable(struct clk *clk)
-+{
-+}
-+EXPORT_SYMBOL(clk_disable);
-+
-+unsigned long clk_get_rate(struct clk *clk)
-+{
-+	return clk->rate;
-+}
-+EXPORT_SYMBOL(clk_get_rate);
-+
-+long clk_round_rate(struct clk *clk, unsigned long rate)
-+{
-+	return clk->rate;
-+}
-+EXPORT_SYMBOL(clk_round_rate);
-+
-+int clk_set_rate(struct clk *clk, unsigned long rate)
-+{
-+	return -EIO;
-+}
-+EXPORT_SYMBOL(clk_set_rate);
-diff --git a/arch/arm/mach-bcm2835/core.c b/arch/arm/mach-bcm2835/core.c
++#endif	/* __CONFIG_H */
+diff --git a/arch/arm/boards/raspberry-pi/env/init/bootargs-base b/arch/arm/boards/raspberry-pi/env/init/bootargs-base
 new file mode 100644
-index 0000000..4c1bf28
+index 0000000..d869754
 --- /dev/null
-+++ b/arch/arm/mach-bcm2835/core.c
-@@ -0,0 +1,105 @@
-+/*
-+ * Author: Carlo Caione <carlo@carlocaione.org>
-+ *
-+ * Based on mach-nomadik
-+ * Copyright (C) 2009 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <clock.h>
-+
-+#include <linux/clkdev.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+
-+#include <io.h>
-+#include <asm/hardware/arm_timer.h>
-+#include <asm/armlinux.h>
-+#include <sizes.h>
-+
-+#include <mach/platform.h>
-+#include <mach/wd.h>
-+#include <mach/core.h>
-+#include <mach/clock.h>
-+#include <linux/amba/bus.h>
-+
-+static struct clk ref_3_clk = {
-+	.rate = 3 * 1000 * 1000,
-+};
-+
-+static struct clk ref_1_clk = {
-+	.rate = 1 * 1000 * 1000,
-+};
-+
-+static struct clk bcm2835_dummy;
-+
-+void bcm2835_add_device_sdram(u32 size)
-+{
-+	if (!size)
-+		size = get_ram_size((ulong *) BCM2835_SDRAM_BASE, SZ_128M);
-+
-+	arm_add_mem_device("ram0", BCM2835_SDRAM_BASE, size);
-+}
-+
-+static struct clk_lookup clocks_lookups[] = {
-+	CLKDEV_CON_ID("apb_pclk", &bcm2835_dummy),
-+	CLKDEV_DEV_ID("bcm2835-cs", &ref_1_clk),
-+	CLKDEV_DEV_ID("uart0-pl0110", &ref_3_clk),
-+};
-+
-+static int bcm2835_gpio_init(void)
-+{
-+	add_generic_device("bcm2835-gpio", 0, NULL, BCM2835_GPIO_BASE, 0xB0, IORESOURCE_MEM, NULL);
-+	return 0;
-+}
-+coredevice_initcall(bcm2835_gpio_init);
-+
-+static int bcm2835_clkdev_init(void)
-+{
-+	clkdev_add_table(clocks_lookups, ARRAY_SIZE(clocks_lookups));
-+	return 0;
-+}
-+postcore_initcall(bcm2835_clkdev_init);
-+
-+static int bcm2835_clocksource_init(void)
-+{
-+	add_generic_device("bcm2835-cs", DEVICE_ID_SINGLE, NULL, BCM2835_ST_BASE, 0x1C, IORESOURCE_MEM, NULL);
-+	return 0;
-+}
-+coredevice_initcall(bcm2835_clocksource_init);
-+
-+void bcm2835_register_uart(void)
-+{
-+	amba_apb_device_add(NULL, "uart0-pl011", 0, BCM2835_UART0_BASE, 4096, NULL, 0);
-+}
-+
-+#define RESET_TIMEOUT 10
-+
-+void __noreturn reset_cpu (unsigned long addr)
-+{
-+	uint32_t rstc;
-+
-+	rstc = readl(PM_RSTC);
-+	rstc &= ~PM_RSTC_WRCFG_SET;
-+	rstc |= PM_RSTC_WRCFG_FULL_RESET;
-+	writel(PM_PASSWORD | RESET_TIMEOUT, PM_WDOG);
-+	writel(PM_PASSWORD | rstc, PM_RSTC);
-+}
-+EXPORT_SYMBOL(reset_cpu);
-diff --git a/arch/arm/mach-bcm2835/include/mach/clkdev.h b/arch/arm/mach-bcm2835/include/mach/clkdev.h
-new file mode 100644
-index 0000000..04b37a8
---- /dev/null
-+++ b/arch/arm/mach-bcm2835/include/mach/clkdev.h
-@@ -0,0 +1,7 @@
-+#ifndef __ASM_MACH_CLKDEV_H
-+#define __ASM_MACH_CLKDEV_H
-+
-+#define __clk_get(clk) ({ 1; })
-+#define __clk_put(clk) do { } while (0)
-+
-+#endif
-diff --git a/arch/arm/mach-bcm2835/include/mach/clock.h b/arch/arm/mach-bcm2835/include/mach/clock.h
-new file mode 100644
-index 0000000..0550bf1
---- /dev/null
-+++ b/arch/arm/mach-bcm2835/include/mach/clock.h
++++ b/arch/arm/boards/raspberry-pi/env/init/bootargs-base
 @@ -0,0 +1,8 @@
-+#ifndef _BCM2835_CLOCK_H
-+#define _BCM2835_CLOCK_H
++#!/bin/sh
 +
-+struct clk {
-+	unsigned long rate;
-+};
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "Base bootargs"
++	exit
++fi
 +
-+#endif
-diff --git a/arch/arm/mach-bcm2835/include/mach/core.h b/arch/arm/mach-bcm2835/include/mach/core.h
++global.linux.bootargs.base="console=ttymxc0,115200"
+diff --git a/arch/arm/boards/raspberry-pi/env/init/hostname b/arch/arm/boards/raspberry-pi/env/init/hostname
 new file mode 100644
-index 0000000..e60d947
+index 0000000..7e8f294
 --- /dev/null
-+++ b/arch/arm/mach-bcm2835/include/mach/core.h
-@@ -0,0 +1,27 @@
++++ b/arch/arm/boards/raspberry-pi/env/init/hostname
+@@ -0,0 +1,8 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "hostname"
++	exit
++fi
++
++global.hostname=Raspberry-Pi
+diff --git a/arch/arm/boards/raspberry-pi/rpi.c b/arch/arm/boards/raspberry-pi/rpi.c
+new file mode 100644
+index 0000000..6c94dcd
+--- /dev/null
++++ b/arch/arm/boards/raspberry-pi/rpi.c
+@@ -0,0 +1,49 @@
 +/*
 + * Copyright (C) 2009 Carlo Caione <carlo@carlocaione.org>
 + *
@@ -318,135 +146,99 @@ index 0000000..e60d947
 + *
 + */
 +
-+#ifndef __BCM2835_CORE_H__
-+#define __BCM2835_CORE_H__
++#include <common.h>
++#include <init.h>
++#include <asm/armlinux.h>
++#include <generated/mach-types.h>
 +
-+void bcm2835_register_uart(void);
-+void bcm2835_add_device_sdram(u32 size);
++#include <mach/core.h>
 +
-+#endif
-diff --git a/arch/arm/mach-bcm2835/include/mach/gpio.h b/arch/arm/mach-bcm2835/include/mach/gpio.h
++static int rpi_mem_init(void)
++{
++	bcm2835_add_device_sdram(0);
++	return 0;
++}
++mem_initcall(rpi_mem_init);
++
++static int rpi_console_init(void)
++{
++	bcm2835_register_uart();
++	return 0;
++}
++console_initcall(rpi_console_init);
++
++static int rpi_devices_init(void)
++{
++	armlinux_set_architecture(MACH_TYPE_BCM2708);
++	armlinux_set_bootparams((void *)(0x00000100));
++	return 0;
++}
++
++device_initcall(rpi_devices_init);
+diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
 new file mode 100644
-index 0000000..306ab4c
+index 0000000..bca3d25
 --- /dev/null
-+++ b/arch/arm/mach-bcm2835/include/mach/gpio.h
-@@ -0,0 +1 @@
-+#include <asm-generic/gpio.h>
-diff --git a/arch/arm/mach-bcm2835/include/mach/platform.h b/arch/arm/mach-bcm2835/include/mach/platform.h
-new file mode 100644
-index 0000000..a058ec5
---- /dev/null
-+++ b/arch/arm/mach-bcm2835/include/mach/platform.h
-@@ -0,0 +1,53 @@
-+/*
-+ * Extract from arch/arm/mach-bcm2708/include/mach/platform.h
-+ *
-+ * Copyright (C) 2010 Broadcom
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
++++ b/arch/arm/configs/rpi_defconfig
+@@ -0,0 +1,40 @@
++CONFIG_ARCH_BCM2835=y
++CONFIG_GPIO_BCM2835=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PROMPT="R-Pi> "
++CONFIG_LONGHELP=y
++CONFIG_GLOB=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++CONFIG_PARTITION=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/raspberry-pi/env"
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_PASSWD=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_MTEST=y
++CONFIG_CMD_MTEST_ALTERNATIVE=y
++CONFIG_CMD_BOOTM_ZLIB=y
++CONFIG_CMD_BOOTM_BZLIB=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_GPIO=y
++CONFIG_SERIAL_AMBA_PL011=y
++CONFIG_SHA1=y
++CONFIG_SHA256=y
+diff --git a/arch/arm/mach-bcm2835/Kconfig b/arch/arm/mach-bcm2835/Kconfig
+index c42fe1c..fadb1dc 100644
+--- a/arch/arm/mach-bcm2835/Kconfig
++++ b/arch/arm/mach-bcm2835/Kconfig
+@@ -1,3 +1,13 @@
+ if ARCH_BCM2835
+ 
++choice
++	prompt "Broadcom Board type"
 +
-+#ifndef _BCM2835_PLATFORM_H
-+#define _BCM2835_PLATFORM_H
++config MACH_RPI
++	bool "RaspberryPi (BCM2835/ARM1176JZF-S)"
 +
-+/*
-+ *  SDRAM
-+ */
-+#define BCM2835_SDRAM_BASE	0x00000000
++endchoice
 +
-+/*
-+ * Definitions and addresses for the ARM CONTROL logic
-+ * This file is manually generated.
-+ */
++source arch/arm/boards/raspberry-pi/Kconfig
 +
-+#define BCM2835_PERI_BASE	0x20000000
-+#define BCM2835_ST_BASE		(BCM2835_PERI_BASE + 0x3000)	/* System Timer */
-+#define BCM2835_DMA_BASE	(BCM2835_PERI_BASE + 0x7000)	/* DMA controller */
-+#define BCM2835_ARM_BASE	(BCM2835_PERI_BASE + 0xB000)	/* BCM2708 ARM control block */
-+#define BCM2835_PM_BASE		(BCM2835_PERI_BASE + 0x100000)	/* Power Management, Reset controller and Watchdog registers */
-+#define BCM2835_GPIO_BASE	(BCM2835_PERI_BASE + 0x200000)	/* GPIO */
-+#define BCM2835_UART0_BASE	(BCM2835_PERI_BASE + 0x201000)	/* Uart 0 */
-+#define BCM2835_MMCI0_BASE	(BCM2835_PERI_BASE + 0x202000)	/* MMC interface */
-+#define BCM2835_SPI0_BASE	(BCM2835_PERI_BASE + 0x204000)	/* SPI0 */
-+#define BCM2835_BSC0_BASE	(BCM2835_PERI_BASE + 0x205000)	/* BSC0 I2C/TWI */
-+#define BCM2835_UART1_BASE	(BCM2835_PERI_BASE + 0x215000)	/* Uart 1 */
-+#define BCM2835_EMMC_BASE	(BCM2835_PERI_BASE + 0x300000)	/* eMMC interface */
-+#define BCM2835_SMI_BASE	(BCM2835_PERI_BASE + 0x600000)	/* SMI */
-+#define BCM2835_BSC1_BASE	(BCM2835_PERI_BASE + 0x804000)	/* BSC1 I2C/TWI */
-+#define BCM2835_USB_BASE	(BCM2835_PERI_BASE + 0x980000)	/* DTC_OTG USB controller */
-+#define BCM2835_MCORE_BASE	(BCM2835_PERI_BASE + 0x0000)	/* Fake frame buffer device (actually the multicore sync block*/
-+
-+#endif
-+
-+/* END */
-diff --git a/arch/arm/mach-bcm2835/include/mach/wd.h b/arch/arm/mach-bcm2835/include/mach/wd.h
-new file mode 100644
-index 0000000..8046734
---- /dev/null
-+++ b/arch/arm/mach-bcm2835/include/mach/wd.h
-@@ -0,0 +1,50 @@
-+/*
-+ * Extract from arch/arm/mach-bcm2708/include/mach/platform.h
-+ *
-+ * Copyright (C) 2010 Broadcom
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+
-+#ifndef _WD_H
-+#define _WD_H
-+
-+/*
-+ * Watchdog
-+ */
-+#define PM_RSTC		(BCM2835_PM_BASE+0x1c)
-+#define PM_RSTS		(BCM2835_PM_BASE+0x20)
-+#define PM_WDOG		(BCM2835_PM_BASE+0x24)
-+
-+#define PM_WDOG_RESET				0000000000
-+#define PM_PASSWORD				0x5a000000
-+#define PM_WDOG_TIME_SET			0x000fffff
-+#define PM_RSTC_WRCFG_CLR			0xffffffcf
-+#define PM_RSTC_WRCFG_SET			0x00000030
-+#define PM_RSTC_WRCFG_FULL_RESET		0x00000020
-+#define PM_RSTC_RESET				0x00000102
-+
-+#define PM_RSTS_HADPOR_SET			0x00001000
-+#define PM_RSTS_HADSRH_SET			0x00000400
-+#define PM_RSTS_HADSRF_SET			0x00000200
-+#define PM_RSTS_HADSRQ_SET			0x00000100
-+#define PM_RSTS_HADWRH_SET			0x00000040
-+#define PM_RSTS_HADWRF_SET			0x00000020
-+#define PM_RSTS_HADWRQ_SET			0x00000010
-+#define PM_RSTS_HADDRH_SET			0x00000004
-+#define PM_RSTS_HADDRF_SET			0x00000002
-+#define PM_RSTS_HADDRQ_SET			0x00000001
-+
-+#endif
+ endif
 -- 
 1.7.12.3
 
