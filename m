@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-wi0-f169.google.com ([209.85.212.169])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TN0Ys-0003BL-PF
- for barebox@lists.infradead.org; Sat, 13 Oct 2012 12:11:23 +0000
-Date: Sat, 13 Oct 2012 14:11:21 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121013121121.GU27665@pengutronix.de>
-References: <20121010064633.GH27665@pengutronix.de>
- <50754842.3060202@free-electrons.com>
- <20121010165528.GD27665@pengutronix.de>
- <5077E55E.5080206@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <5077E55E.5080206@phytec.de>
+ id 1TN0Yy-0003Ch-FY
+ for barebox@lists.infradead.org; Sat, 13 Oct 2012 12:11:28 +0000
+Received: by mail-wi0-f169.google.com with SMTP id hq4so108775wib.0
+ for <barebox@lists.infradead.org>; Sat, 13 Oct 2012 05:11:27 -0700 (PDT)
+From: Carlo Caione <carlo.caione@gmail.com>
+Date: Sat, 13 Oct 2012 14:11:16 +0200
+Message-Id: <1350130276-24333-1-git-send-email-carlo.caione@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,46 +16,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox@ELCE
-To: Teresa Gamez <t.gamez@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] cosmetic: extra new line in automount usage command
+To: barebox@lists.infradead.org
 
-On Fri, Oct 12, 2012 at 11:39:42AM +0200, Teresa Gamez wrote:
-> Am 10.10.2012 18:55, schrieb Sascha Hauer:
-> >On Wed, Oct 10, 2012 at 12:04:50PM +0200, Gregory CLEMENT wrote:
-> >>On 10/10/2012 08:46 AM, Sascha Hauer wrote:
-> >>>Hi All,
-> >>>
-> >>>As you might have noticed already there is a barebox presentation at t=
-he
-> >>>ELCE this year in Barcelona. For everyone who is able to come I'd be
-> >>>happy to see and meet you there.
-> >>This event (ELCE) is a good opportunity to meet each other and to speak
-> >>about a project such as barebox. You may consider to setup a more formal
-> >>meeting associated to ELCE. Thomas Petazzoni did this for the Buildroot
-> >>developers, I am sure he can told you how he organized it.
-> >I asked him, let's see. Is anyone interested in coming? At least I am,
-> >it would be interesting for me to hear from other barebox users what
-> >could be made better, what already is perfect ;), or just chat.
-> =
+Signed-off-by: Carlo Caione <carlo.caione@gmail.com>
+---
+ commands/automount.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> J=FCrgen Kilb, Christian Hemp, Jan Weitzel and I will be there.
-> And yes we are interested :)
+diff --git a/commands/automount.c b/commands/automount.c
+index 4f7aa0e..4713932 100644
+--- a/commands/automount.c
++++ b/commands/automount.c
+@@ -65,7 +65,7 @@ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(automount)
+ 	.cmd		= do_automount,
+-	.usage		= "automount [OPTIONS] <PATH> <cmd>\n",
++	.usage		= "automount [OPTIONS] <PATH> <cmd>",
+ 	BAREBOX_CMD_HELP(cmd_automount_help)
+ BAREBOX_CMD_END
+ 
+-- 
+1.7.12.3
 
-Ok, then let's go for it. Are you still there on thursday?
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
