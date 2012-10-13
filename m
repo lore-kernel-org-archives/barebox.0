@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-we0-f177.google.com ([74.125.82.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TMzoi-0002Ld-5b
+ id 1TMzoi-0002Le-4m
  for barebox@lists.infradead.org; Sat, 13 Oct 2012 11:23:41 +0000
-Received: by mail-we0-f177.google.com with SMTP id u50so2249982wey.36
- for <barebox@lists.infradead.org>; Sat, 13 Oct 2012 04:23:35 -0700 (PDT)
+Received: by mail-we0-f177.google.com with SMTP id u50so2249999wey.36
+ for <barebox@lists.infradead.org>; Sat, 13 Oct 2012 04:23:38 -0700 (PDT)
 From: Carlo Caione <carlo.caione@gmail.com>
-Date: Sat, 13 Oct 2012 13:22:57 +0200
-Message-Id: <1350127381-21312-2-git-send-email-carlo.caione@gmail.com>
+Date: Sat, 13 Oct 2012 13:22:59 +0200
+Message-Id: <1350127381-21312-4-git-send-email-carlo.caione@gmail.com>
 In-Reply-To: <1350127381-21312-1-git-send-email-carlo.caione@gmail.com>
 References: <1350127381-21312-1-git-send-email-carlo.caione@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,141 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] BCM2835: add clocksource driver
+Subject: [PATCH 3/5] ARM1176: add support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Carlo Caione <carlo.caione@gmail.com>
 ---
- drivers/clocksource/Kconfig   |  4 ++
- drivers/clocksource/Makefile  |  1 +
- drivers/clocksource/bcm2835.c | 95 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 100 insertions(+)
- create mode 100644 drivers/clocksource/bcm2835.c
+ arch/arm/cpu/Kconfig | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 9d6d293..09acdd7 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -2,6 +2,10 @@ config ARM_SMP_TWD
- 	bool
- 	depends on ARM && CPU_V7
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index 2ed6789..d8a5fb1 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -8,6 +8,11 @@ config CPU_32
+ # which CPUs we support in the kernel image, and the compiler instruction
+ # optimiser behaviour.
  
-+config CLOCKSOURCE_BCM2835
++# ARM1176
++config CPU_ARM1176
 +	bool
-+	depends on ARCH_BCM2835
++	select CPU_V6
 +
- config CLOCKSOURCE_NOMADIK
+ # ARM920T
+ config CPU_ARM920T
  	bool
- 	depends on ARM
-diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-index bef465c..92d7c13 100644
---- a/drivers/clocksource/Makefile
-+++ b/drivers/clocksource/Makefile
-@@ -1,2 +1,3 @@
- obj-$(CONFIG_ARM_SMP_TWD) += arm_smp_twd.o
-+obj-$(CONFIG_CLOCKSOURCE_BCM2835) += bcm2835.o
- obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
-diff --git a/drivers/clocksource/bcm2835.c b/drivers/clocksource/bcm2835.c
-new file mode 100644
-index 0000000..78f0cae
---- /dev/null
-+++ b/drivers/clocksource/bcm2835.c
-@@ -0,0 +1,95 @@
-+/*
-+ * Author: Carlo Caione <carlo@carlocaione.org>
-+ *
-+ * Based on clocksource for nomadik
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ *
-+ */
-+
-+
-+#include <common.h>
-+#include <clock.h>
-+#include <io.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <errno.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+
-+/* Registers */
-+#define ST_CLO	0x04
-+
-+static __iomem void *stc_base;
-+
-+static uint64_t stc_read_cycles(void)
-+{
-+	return readl(stc_base + ST_CLO);
-+}
-+
-+static struct clocksource bcm2835_stc = {
-+	.read = stc_read_cycles,
-+	.mask = CLOCKSOURCE_MASK(32),
-+};
-+
-+static int bcm2835_cs_probe(struct device_d *dev)
-+{
-+	static struct clk *stc_clk;
-+	u32 rate;
-+	int ret;
-+
-+	stc_clk = clk_get(dev, NULL);
-+	if (IS_ERR(stc_clk)) {
-+		ret = PTR_ERR(stc_clk);
-+		dev_err(dev, "clock not found: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = clk_enable(stc_clk);
-+	if (ret) {
-+		dev_err(dev, "clock failed to enable: %d\n", ret);
-+		clk_put(stc_clk);
-+		return ret;
-+	}
-+
-+	rate = clk_get_rate(stc_clk);
-+	stc_base = dev_request_mem_region(dev, 0);
-+
-+	clocks_calc_mult_shift(&bcm2835_stc.mult, &bcm2835_stc.shift, rate, NSEC_PER_SEC, 60);
-+	init_clock(&bcm2835_stc);
-+
-+	return 0;
-+}
-+
-+static __maybe_unused struct of_device_id bcm2835_cs_dt_ids[] = {
-+	{
-+			.compatible = "bcm,bcm2835-cs",
-+	}, {
-+			/* sentinel */
-+	}
-+};
-+
-+static struct driver_d bcm2835_cs_driver = {
-+	.name = "bcm2835-cs",
-+	.probe = bcm2835_cs_probe,
-+	.of_compatible = DRV_OF_COMPAT(bcm2835_cs_dt_ids),
-+};
-+
-+static int bcm2835_cs_init(void)
-+{
-+	return platform_driver_register(&bcm2835_cs_driver);
-+}
-+coredevice_initcall(bcm2835_cs_init);
 -- 
 1.7.12.3
 
