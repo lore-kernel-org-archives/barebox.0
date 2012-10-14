@@ -2,17 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 8.mo5.mail-out.ovh.net ([178.32.116.78]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TNVA2-0003uu-FT
+ id 1TNVA2-0003ut-FQ
  for barebox@lists.infradead.org; Sun, 14 Oct 2012 20:51:47 +0000
 Received: from mail619.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 51C6DFF94EE
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 2AF61FF94E8
  for <barebox@lists.infradead.org>; Sun, 14 Oct 2012 22:58:22 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 14 Oct 2012 22:49:24 +0200
-Message-Id: <1350247764-18132-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1350247764-18132-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 14 Oct 2012 22:49:22 +0200
+Message-Id: <1350247764-18132-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20121014204622.GT13639@game.jcrosoft.org>
 References: <20121014204622.GT13639@game.jcrosoft.org>
- <1350247764-18132-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,94 +25,144 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] usb-a9263: add spi dataflash support
+Subject: [PATCH 1/3] import include/linux/math64.h
 To: barebox@lists.infradead.org
+
+need by mtd_dataflash
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/usb-a926x/init.c            |   21 +++++++++++++++++++++
- arch/arm/configs/usb_a9263_128mib_defconfig |    3 ++-
- arch/arm/configs/usb_a9263_defconfig        |    3 ++-
- 3 files changed, 25 insertions(+), 2 deletions(-)
+ include/linux/math64.h |  121 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 121 insertions(+)
+ create mode 100644 include/linux/math64.h
 
-diff --git a/arch/arm/boards/usb-a926x/init.c b/arch/arm/boards/usb-a926x/init.c
-index 7b946a3..9708aaa 100644
---- a/arch/arm/boards/usb-a926x/init.c
-+++ b/arch/arm/boards/usb-a926x/init.c
-@@ -39,6 +39,7 @@
- #include <mach/at91_rstc.h>
- #include <gpio_keys.h>
- #include <readkey.h>
-+#include <spi/spi.h>
- 
- static void usb_a9260_set_board_type(void)
- {
-@@ -148,6 +149,25 @@ static void usb_a9260_phy_reset(void)
- 				     AT91_RSTC_URSTEN);
- }
- 
-+static const struct spi_board_info usb_a9263_spi_devices[] = {
-+	{
-+		.name		= "mtd_dataflash",
-+		.chip_select	= 0,
-+		.max_speed_hz	= 15 * 1000 * 1000,
-+		.bus_num	= 0,
-+	}
-+};
+diff --git a/include/linux/math64.h b/include/linux/math64.h
+new file mode 100644
+index 0000000..71dd6d7
+--- /dev/null
++++ b/include/linux/math64.h
+@@ -0,0 +1,121 @@
++#ifndef _LINUX_MATH64_H
++#define _LINUX_MATH64_H
 +
-+static void usb_a9260_add_spi(void)
++#include <linux/types.h>
++#include <asm-generic/div64.h>
++
++#if BITS_PER_LONG == 64
++
++#define div64_long(x,y) div64_s64((x),(y))
++
++/**
++ * div_u64_rem - unsigned 64bit divide with 32bit divisor with remainder
++ *
++ * This is commonly provided by 32bit archs to provide an optimized 64bit
++ * divide.
++ */
++static inline u64 div_u64_rem(u64 dividend, u32 divisor, u32 *remainder)
 +{
-+	if (!machine_is_usb_a9263())
-+		return;
-+
-+	spi_register_board_info(usb_a9263_spi_devices,
-+			ARRAY_SIZE(usb_a9263_spi_devices));
-+	at91_add_device_spi(0, NULL);
++	*remainder = dividend % divisor;
++	return dividend / divisor;
 +}
 +
- #if defined(CONFIG_MCI_ATMEL)
- static struct atmel_mci_platform_data __initdata usb_a9260_mci_data = {
- 	.bus_width	= 4,
-@@ -314,6 +334,7 @@ static int usb_a9260_devices_init(void)
- 	usb_a9260_phy_reset();
- 	at91_add_device_eth(0, &macb_pdata);
- 	usb_a9260_add_device_mci();
-+	usb_a9260_add_spi();
- 	at91_add_device_usbh_ohci(&ek_usbh_data);
- 	ek_add_device_udc();
- 	ek_add_led();
-diff --git a/arch/arm/configs/usb_a9263_128mib_defconfig b/arch/arm/configs/usb_a9263_128mib_defconfig
-index 87f708f..71774f9 100644
---- a/arch/arm/configs/usb_a9263_128mib_defconfig
-+++ b/arch/arm/configs/usb_a9263_128mib_defconfig
-@@ -64,9 +64,10 @@ CONFIG_FS_TFTP=y
- CONFIG_NET_NETCONSOLE=y
- CONFIG_NET_RESOLV=y
- CONFIG_DRIVER_NET_MACB=y
--# CONFIG_SPI is not set
-+CONFIG_DRIVER_SPI_ATMEL=y
- CONFIG_MTD=y
- # CONFIG_MTD_OOB_DEVICE is not set
-+CONFIG_MTD_DATAFLASH=y
- CONFIG_NAND=y
- # CONFIG_NAND_ECC_HW is not set
- # CONFIG_NAND_ECC_HW_SYNDROME is not set
-diff --git a/arch/arm/configs/usb_a9263_defconfig b/arch/arm/configs/usb_a9263_defconfig
-index 9bfb7e7..251c654 100644
---- a/arch/arm/configs/usb_a9263_defconfig
-+++ b/arch/arm/configs/usb_a9263_defconfig
-@@ -63,9 +63,10 @@ CONFIG_FS_TFTP=y
- CONFIG_NET_NETCONSOLE=y
- CONFIG_NET_RESOLV=y
- CONFIG_DRIVER_NET_MACB=y
--# CONFIG_SPI is not set
-+CONFIG_DRIVER_SPI_ATMEL=y
- CONFIG_MTD=y
- # CONFIG_MTD_OOB_DEVICE is not set
-+CONFIG_MTD_DATAFLASH=y
- CONFIG_NAND=y
- # CONFIG_NAND_ECC_HW is not set
- # CONFIG_NAND_ECC_HW_SYNDROME is not set
++/**
++ * div_s64_rem - signed 64bit divide with 32bit divisor with remainder
++ */
++static inline s64 div_s64_rem(s64 dividend, s32 divisor, s32 *remainder)
++{
++	*remainder = dividend % divisor;
++	return dividend / divisor;
++}
++
++/**
++ * div64_u64 - unsigned 64bit divide with 64bit divisor
++ */
++static inline u64 div64_u64(u64 dividend, u64 divisor)
++{
++	return dividend / divisor;
++}
++
++/**
++ * div64_s64 - signed 64bit divide with 64bit divisor
++ */
++static inline s64 div64_s64(s64 dividend, s64 divisor)
++{
++	return dividend / divisor;
++}
++
++#elif BITS_PER_LONG == 32
++
++#define div64_long(x,y) div_s64((x),(y))
++
++#ifndef div_u64_rem
++static inline u64 div_u64_rem(u64 dividend, u32 divisor, u32 *remainder)
++{
++	*remainder = do_div(dividend, divisor);
++	return dividend;
++}
++#endif
++
++#ifndef div_s64_rem
++extern s64 div_s64_rem(s64 dividend, s32 divisor, s32 *remainder);
++#endif
++
++#ifndef div64_u64
++extern u64 div64_u64(u64 dividend, u64 divisor);
++#endif
++
++#ifndef div64_s64
++extern s64 div64_s64(s64 dividend, s64 divisor);
++#endif
++
++#endif /* BITS_PER_LONG */
++
++/**
++ * div_u64 - unsigned 64bit divide with 32bit divisor
++ *
++ * This is the most common 64bit divide and should be used if possible,
++ * as many 32bit archs can optimize this variant better than a full 64bit
++ * divide.
++ */
++#ifndef div_u64
++static inline u64 div_u64(u64 dividend, u32 divisor)
++{
++	u32 remainder;
++	return div_u64_rem(dividend, divisor, &remainder);
++}
++#endif
++
++/**
++ * div_s64 - signed 64bit divide with 32bit divisor
++ */
++#ifndef div_s64
++static inline s64 div_s64(s64 dividend, s32 divisor)
++{
++	s32 remainder;
++	return div_s64_rem(dividend, divisor, &remainder);
++}
++#endif
++
++u32 iter_div_u64_rem(u64 dividend, u32 divisor, u64 *remainder);
++
++static __always_inline u32
++__iter_div_u64_rem(u64 dividend, u32 divisor, u64 *remainder)
++{
++	u32 ret = 0;
++
++	while (dividend >= divisor) {
++		/* The following asm() prevents the compiler from
++		   optimising this loop into a modulo operation.  */
++		asm("" : "+rm"(dividend));
++
++		dividend -= divisor;
++		ret++;
++	}
++
++	*remainder = dividend;
++
++	return ret;
++}
++
++#endif /* _LINUX_MATH64_H */
 -- 
 1.7.10.4
 
