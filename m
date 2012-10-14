@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo5.mail-out.ovh.net ([87.98.173.103]
+Received: from 16.mo5.mail-out.ovh.net ([87.98.174.144]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TNVLa-0004Au-Gd
- for barebox@lists.infradead.org; Sun, 14 Oct 2012 21:03:45 +0000
+ id 1TNVPM-0004qF-UT
+ for barebox@lists.infradead.org; Sun, 14 Oct 2012 21:07:37 +0000
 Received: from mail619.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 201E7FF9674
- for <barebox@lists.infradead.org>; Sun, 14 Oct 2012 23:10:17 +0200 (CEST)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 4E7D0FF9592
+ for <barebox@lists.infradead.org>; Sun, 14 Oct 2012 23:14:13 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 14 Oct 2012 23:01:15 +0200
-Message-Id: <1350248478-19359-9-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1350248478-19359-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20121014205929.GU13639@game.jcrosoft.org>
- <1350248478-19359-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 14 Oct 2012 23:05:16 +0200
+Message-Id: <1350248716-19965-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,78 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/12] fb: add bus device
+Subject: [PATCH 1/1] designware: set parent for eth_device and miibus
 To: barebox@lists.infradead.org
-
-automatically add it as parent of any fb device
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/video/fb.c |   17 +++++++++++++----
- include/fb.h       |    3 ++-
- 2 files changed, 15 insertions(+), 5 deletions(-)
+ drivers/net/designware.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/video/fb.c b/drivers/video/fb.c
-index ee53272..0933a57 100644
---- a/drivers/video/fb.c
-+++ b/drivers/video/fb.c
-@@ -125,7 +125,10 @@ int register_framebuffer(struct fb_info *info)
+diff --git a/drivers/net/designware.c b/drivers/net/designware.c
+index bf71d15..63b199f 100644
+--- a/drivers/net/designware.c
++++ b/drivers/net/designware.c
+@@ -419,6 +419,7 @@ static int dwc_ether_probe(struct device_d *dev)
+ 	miibus = &priv->miibus;
+ 	edev->priv = priv;
  
- 	sprintf(dev->name, "fb");
++	edev->parent = dev;
+ 	edev->init = dwc_ether_init;
+ 	edev->open = dwc_ether_open;
+ 	edev->send = dwc_ether_send;
+@@ -429,6 +430,7 @@ static int dwc_ether_probe(struct device_d *dev)
  
--	info->dev.bus = &fb_bus;
-+	info->dev.bus = &fb_bus_type;
-+	info->dev.parent = &fb_bus;
-+	dev_add_child(info->dev.parent, &info->dev);
-+
- 	register_device(&info->dev);
- 
- 	return 0;
-@@ -181,7 +184,12 @@ static void fb_remove(struct device_d *dev)
- {
- }
- 
--struct bus_type fb_bus = {
-+struct device_d fb_bus = {
-+	.name = "fb",
-+	.id = DEVICE_ID_SINGLE,
-+};
-+
-+struct bus_type fb_bus_type = {
- 	.name = "fb",
- 	.match = fb_match,
- 	.probe = fb_probe,
-@@ -190,13 +198,14 @@ struct bus_type fb_bus = {
- 
- static int fb_bus_init(void)
- {
--	return bus_register(&fb_bus);
-+	register_device(&fb_bus);
-+	return bus_register(&fb_bus_type);
- }
- pure_initcall(fb_bus_init);
- 
- static int fb_init_driver(void)
- {
--	fb_driver.bus = &fb_bus;
-+	fb_driver.bus = &fb_bus_type;
- 	register_driver(&fb_driver);
- 	return 0;
- }
-diff --git a/include/fb.h b/include/fb.h
-index c594418..9631733 100644
---- a/include/fb.h
-+++ b/include/fb.h
-@@ -110,7 +110,8 @@ int register_framebuffer(struct fb_info *info);
- #define	FBIO_ENABLE		_IO('F', 2)
- #define	FBIO_DISABLE		_IO('F', 3)
- 
--extern struct bus_type fb_bus;
-+extern struct device_d fb_bus;
-+extern struct bus_type fb_bus_type;
- 
- #endif /* __FB_H */
- 
+ 	priv->phy_addr = pdata->phy_addr;
+ 	priv->interface = pdata->interface;
++	miibus->parent = dev;
+ 	miibus->read = dwc_ether_mii_read;
+ 	miibus->write = dwc_ether_mii_write;
+ 	miibus->priv = priv;
 -- 
 1.7.10.4
 
