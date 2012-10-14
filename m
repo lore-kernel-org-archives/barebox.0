@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qc0-f177.google.com ([209.85.216.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TNMUz-0007us-Cu
- for barebox@lists.infradead.org; Sun, 14 Oct 2012 11:36:49 +0000
-Received: by mail-qc0-f177.google.com with SMTP id u28so3559513qcs.36
- for <barebox@lists.infradead.org>; Sun, 14 Oct 2012 04:36:46 -0700 (PDT)
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TNOwf-00089K-Bo
+ for barebox@lists.infradead.org; Sun, 14 Oct 2012 14:13:34 +0000
+Received: from mail641.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 7A050DC1280
+ for <barebox@lists.infradead.org>; Sun, 14 Oct 2012 16:20:03 +0200 (CEST)
+Date: Sun, 14 Oct 2012 16:11:08 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121014141108.GR13639@game.jcrosoft.org>
+References: <1349878154-7099-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <1350214478-3906-1-git-send-email-franck.jullien@gmail.com>
-References: <1350214478-3906-1-git-send-email-franck.jullien@gmail.com>
-Date: Sun, 14 Oct 2012 13:36:45 +0200
-Message-ID: <CAJfOKBxu7pTTPLm8cc6w2ifdFbYquVE+h__USoAJk5Xk2S-Mtg@mail.gmail.com>
-From: Franck Jullien <franck.jullien@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1349878154-7099-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,38 +26,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] cosmetic: remove right alignment on driver list
-To: barebox@lists.infradead.org
+Subject: Re: [RFC v2] add 'miitool' command to view media-independent
+ interface status
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-2012/10/14 Franck Jullien <franck.jullien@gmail.com>:
-> From: franck <franck@franck-M1110M.(none)>
-
-????
-
-Forget this email, I'll resend this patch (I also forgot to add my signoff).
-
->
-> In order to avoid misalignment, just remove the right alignment while printing the drivers list.
+On 18:09 Wed 10 Oct     , Antony Pavlov wrote:
+> This command is based on "mii-diag" and "mii-tool" programs.
+> 
+> TODO:
+>  * add GbE support (see http://ftp.debian.org/debian/pool/main/n/net-tools/net-tools_1.60-24.2.diff.gz);
+>  * add routines to manipulate media-independent interface state.
+> 
+> EXAMPLES:
+> 
+> barebox:/ miitool /dev/phy0
+> negotiated 100baseTx-FD, link ok
+> 
+> barebox:/ miitool -v /dev/phy0
+> negotiated 100baseTx-FD, link ok
+>   product info: Level One LXT971A rev 2
+>   basic mode:   autonegotiation enabled
+>   basic status: autonegotiation complete, link ok
+>   capabilities: 100baseTx-FD 100baseTx-HD 10baseT-FD 10baseT-HD
+>   advertising:  100baseTx-FD 100baseTx-HD 10baseT-FD 10baseT-HD
+>   link partner: 100baseTx-FD 100baseTx-HD 10baseT-FD 10baseT-HD flow-control
+> 
+> barebox:/ miitool -vv /dev/phy0
+> negotiated 100baseTx-FD, link ok
+>   registers for MII PHY:
+>     3100 782d 0013 78e2 01e1 45e1 0007 2001
+>     0000 ffff ffff ffff ffff ffff ffff ffff
+>     0084 4780 0000 0000 0422 0000 0000 0000
+>     0000 0000 0080 0000 ffff 0000 0000 3660
+>   product info: Level One LXT971A rev 2
+>   basic mode:   autonegotiation enabled
+>   basic status: autonegotiation complete, link ok
+>   capabilities: 100baseTx-FD 100baseTx-HD 10baseT-FD 10baseT-HD
+>   advertising:  100baseTx-FD 100baseTx-HD 10baseT-FD 10baseT-HD
+>   link partner: 100baseTx-FD 100baseTx-HD 10baseT-FD 10baseT-HD flow-control
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  drivers/base/driver.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
->
-> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-> index 64fe289..0879cd0 100644
-> --- a/drivers/base/driver.c
-> +++ b/drivers/base/driver.c
-> @@ -403,7 +403,7 @@ static int do_devinfo(int argc, char *argv[])
->
->                 printf("\ndrivers:\n");
->                 for_each_driver(drv)
-> -                       printf("%10s\n",drv->name);
-> +                       printf("%s\n",drv->name);
->         } else {
->                 dev = get_device_by_name(argv[1]);
->
-> --
-> 1.7.5.4
->
+>  commands/Kconfig   |   11 +++
+>  commands/Makefile  |    1 +
+>  commands/miitool.c |  268 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 280 insertions(+)
+>  create mode 100644 commands/miitool.c
+> 
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index e934f29..c8cdd54 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -620,6 +620,17 @@ config CMD_USB
+>  	help
+>  	  The usb command allows to rescan for USB devices.
+>  
+> +config CMD_MIITOOL
+> +	bool
+> +	prompt "miitool command"
+> +	depends on NET
+phylib
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
