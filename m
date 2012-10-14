@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 5.mo5.mail-out.ovh.net ([87.98.173.103]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TNVLb-0004Bb-9b
- for barebox@lists.infradead.org; Sun, 14 Oct 2012 21:03:46 +0000
+ id 1TNVLX-00049y-KG
+ for barebox@lists.infradead.org; Sun, 14 Oct 2012 21:03:42 +0000
 Received: from mail619.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 4FE6DFF967E
- for <barebox@lists.infradead.org>; Sun, 14 Oct 2012 23:10:17 +0200 (CEST)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id D39FCFF965E
+ for <barebox@lists.infradead.org>; Sun, 14 Oct 2012 23:10:16 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 14 Oct 2012 23:01:18 +0200
-Message-Id: <1350248478-19359-12-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 14 Oct 2012 23:01:11 +0200
+Message-Id: <1350248478-19359-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1350248478-19359-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121014205929.GU13639@game.jcrosoft.org>
  <1350248478-19359-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,29 +26,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/12] eth: register device a pure device
+Subject: [PATCH 05/12] mdio: add bus device
 To: barebox@lists.infradead.org
-
-as we do not need to probe them and they have no driver or bus attached
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- net/eth.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/mdio_bus.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/eth.c b/net/eth.c
-index f3d7bfe..220edcf 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -261,7 +261,7 @@ int eth_register(struct eth_device *edev)
- 	if (edev->parent)
- 		dev_add_child(edev->parent, &edev->dev);
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index b49f714..eba3e1f 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -233,6 +233,11 @@ static void mdio_bus_remove(struct device_d *_dev)
+ 	devfs_remove(&dev->cdev);
+ }
  
--	platform_device_register(&edev->dev);
-+	register_device(&edev->dev);
++struct device_d mdio_bus = {
++	.name = "mdio_bus",
++	.id = DEVICE_ID_SINGLE,
++};
++
+ struct bus_type mdio_bus_type = {
+ 	.name		= "mdio_bus",
+ 	.match		= mdio_bus_match,
+@@ -243,6 +248,7 @@ EXPORT_SYMBOL(mdio_bus_type);
  
- 	dev_add_param(dev, "ipaddr", eth_set_ipaddr, NULL, 0);
- 	dev_add_param(dev, "ethaddr", eth_set_ethaddr, NULL, 0);
+ static int mdio_bus_init(void)
+ {
++	register_device(&mdio_bus);
+ 	return bus_register(&mdio_bus_type);
+ }
+ pure_initcall(mdio_bus_init);
 -- 
 1.7.10.4
 
