@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TNq8O-0008Ok-TT
- for barebox@lists.infradead.org; Mon, 15 Oct 2012 19:15:29 +0000
+ id 1TNqEj-0002Uu-Df
+ for barebox@lists.infradead.org; Mon, 15 Oct 2012 19:22:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 15 Oct 2012 21:15:25 +0200
-Message-Id: <1350328525-14354-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 15 Oct 2012 21:21:58 +0200
+Message-Id: <1350328918-15383-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,72 +19,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] make make -s more silent
+Subject: [PATCH] ARM bootz: use request_sdram_region
 To: barebox@lists.infradead.org
 
-use $(kecho) instead of echo to not output messages with
-make -s
+We now have request_sdram_region to request a region. Use
+it instead of a comparison with MALLOC_BASE.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Makefile                |    6 +++---
- arch/arm/pbl/Makefile   |    2 +-
- arch/arm/tools/Makefile |    4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ arch/arm/lib/bootz.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 881680d..af3711a 100644
---- a/Makefile
-+++ b/Makefile
-@@ -894,7 +894,7 @@ endef
- # directory for generated filesas used by some architectures.
- define create-symlink
- 	if [ ! -L include/asm ]; then					\
--			echo '  SYMLINK $@ -> include/asm-$(SRCARCH)';	\
-+			$(kecho) '  SYMLINK $@ -> include/asm-$(SRCARCH)';	\
- 			if [ ! -d include/asm-$(SRCARCH) ]; then	\
- 				mkdir -p include/asm-$(SRCARCH);	\
- 			fi;						\
-@@ -907,11 +907,11 @@ include/asm:
- 	$(Q)$(create-symlink)
+diff --git a/arch/arm/lib/bootz.c b/arch/arm/lib/bootz.c
+index f394a6b..f069127 100644
+--- a/arch/arm/lib/bootz.c
++++ b/arch/arm/lib/bootz.c
+@@ -30,6 +30,7 @@ static int do_bootz(int argc, char *argv[])
+ 	u32 end;
+ 	int usemap = 0;
+ 	struct memory_bank *bank = list_first_entry(&memory_banks, struct memory_bank, list);
++	struct resource *res = NULL;
  
- include/config.h: include/config/auto.conf
--	@echo '  SYMLINK $@ -> $(BOARD)/config.h'
-+	$(kecho) '  SYMLINK $@ -> $(BOARD)/config.h'
- ifneq ($(KBUILD_SRC),)
- 	$(Q)ln -fsn $(srctree)/$(BOARD)/config.h $@
- else
--	@ln -fsn ../$(BOARD)/config.h $@
-+	$(Q)ln -fsn ../$(BOARD)/config.h $@
- endif
+ 	if (argc != 2)
+ 		return COMMAND_ERROR_USAGE;
+@@ -83,8 +84,10 @@ static int do_bootz(int argc, char *argv[])
+ 			zimage = xmalloc(end);
+ 		} else {
+ 			zimage = (void *)bank->start + SZ_8M;
+-			if (bank->start + SZ_8M + end >= MALLOC_BASE) {
+-				printf("won't overwrite malloc space with image\n");
++			res = request_sdram_region("zimage",
++					bank->start + SZ_8M, end);
++			if (!res) {
++				printf("can't request region for kernel\n");
+ 				goto err_out1;
+ 			}
+ 		}
+@@ -94,7 +97,7 @@ static int do_bootz(int argc, char *argv[])
+ 		ret = read(fd, zimage + sizeof(*header), end - sizeof(*header));
+ 		if (ret < end - sizeof(*header)) {
+ 			printf("could not read %s\n", argv[1]);
+-			goto err_out1;
++			goto err_out2;
+ 		}
+ 	}
  
- # Generate some files
-diff --git a/arch/arm/pbl/Makefile b/arch/arm/pbl/Makefile
-index fe68e72..4e4e7ef 100644
---- a/arch/arm/pbl/Makefile
-+++ b/arch/arm/pbl/Makefile
-@@ -14,7 +14,7 @@ extra-y       += piggy.gzip piggy.lzo piggy.lzma piggy.xzkern
- $(obj)/zbarebox.bin:	$(obj)/zbarebox FORCE
- 	$(call if_changed,objcopy)
- 	$(call cmd,check_file_size,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
--	@echo '  Barebox: $@ is ready'
-+	$(kecho) '  Barebox: $@ is ready'
+@@ -113,6 +116,9 @@ static int do_bootz(int argc, char *argv[])
  
- $(obj)/zbarebox.S: $(obj)/zbarebox FORCE
- 	$(call if_changed,disasm)
-diff --git a/arch/arm/tools/Makefile b/arch/arm/tools/Makefile
-index 635cb18..7d8c14a 100644
---- a/arch/arm/tools/Makefile
-+++ b/arch/arm/tools/Makefile
-@@ -5,6 +5,6 @@
- #
+ 	return 0;
  
- include/generated/mach-types.h: $(src)/gen-mach-types $(src)/mach-types
--	@echo '  Generating $@'
--	@mkdir -p $(dir $@)
-+	$(kecho) '  Generating $@'
-+	$(Q)mkdir -p $(dir $@)
- 	$(Q)$(AWK) -f $^ > $@ || { rm -f $@; /bin/false; }
++err_out2:
++	if (res)
++		release_sdram_region(res);
+ err_out1:
+ 	free(zimage);
+ err_out:
 -- 
 1.7.10.4
 
