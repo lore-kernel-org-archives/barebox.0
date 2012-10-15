@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo5.mail-out.ovh.net ([188.165.51.82]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TNk3k-0006gc-A0
- for barebox@lists.infradead.org; Mon, 15 Oct 2012 12:46:17 +0000
-Received: from mail419.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 94574FFA5F1
- for <barebox@lists.infradead.org>; Mon, 15 Oct 2012 14:52:51 +0200 (CEST)
-Date: Mon, 15 Oct 2012 14:43:49 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121015124349.GX13639@game.jcrosoft.org>
-References: <1350136816-33529-1-git-send-email-carlo.caione@gmail.com>
- <20121015065640.GF27665@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20121015065640.GF27665@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TNkVj-0008BY-BF
+ for barebox@lists.infradead.org; Mon, 15 Oct 2012 13:15:13 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 15 Oct 2012 15:15:07 +0200
+Message-Id: <1350306908-25206-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1350306908-25206-1-git-send-email-s.hauer@pengutronix.de>
+References: <1350306908-25206-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,104 +16,186 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/5] BCM2835/Raspberry-Pi support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 4/5] ARM i.MX53 loco: register MMC update handler
+To: barebox@lists.infradead.org
 
-On 08:56 Mon 15 Oct     , Sascha Hauer wrote:
-> 
-> Jean-Christophe,
-> 
-> Since you reviewed this series can I assume you give your Acked-by once
-> you are happy with it?
-I'm happy with it except one point that I just check with the mainline kernel
-the DT
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/freescale-mx53-loco/board.c        |    9 ++++
+ arch/arm/boards/freescale-mx53-loco/dcd-data.h     |   54 +++++++++++++++++++
+ arch/arm/boards/freescale-mx53-loco/flash_header.c |   56 ++------------------
+ 3 files changed, 66 insertions(+), 53 deletions(-)
+ create mode 100644 arch/arm/boards/freescale-mx53-loco/dcd-data.h
 
-the timer as example is "brcm,bcm2835-system-timer" not "brcm,bcm2835-cs"
+diff --git a/arch/arm/boards/freescale-mx53-loco/board.c b/arch/arm/boards/freescale-mx53-loco/board.c
+index 0678e0a..45c05c2 100644
+--- a/arch/arm/boards/freescale-mx53-loco/board.c
++++ b/arch/arm/boards/freescale-mx53-loco/board.c
+@@ -36,6 +36,8 @@
+ #include <mach/iim.h>
+ #include <mach/imx5.h>
+ #include <mach/revision.h>
++#include <mach/bbu.h>
++#include <mach/imx-flash-header.h>
+ 
+ #include <i2c/i2c.h>
+ #include <mfd/mc34708.h>
+@@ -177,6 +179,10 @@ static void loco_ehci_init(void)
+ 	add_generic_usb_ehci_device(1, MX53_OTG_BASE_ADDR + 0x200, NULL);
+ }
+ 
++#define DCD_NAME static struct imx_dcd_v2_entry dcd_entry
++
++#include "dcd-data.h"
++
+ static int loco_devices_init(void)
+ {
+ 
+@@ -197,6 +203,9 @@ static int loco_devices_init(void)
+ 	armlinux_set_bootparams((void *)0x70000100);
+ 	armlinux_set_architecture(MACH_TYPE_MX53_LOCO);
+ 
++	imx53_bbu_internal_mmc_register_handler("mmc", "/dev/disk0",
++		BBU_HANDLER_FLAG_DEFAULT, dcd_entry, sizeof(dcd_entry));
++
+ 	return 0;
+ }
+ 
+diff --git a/arch/arm/boards/freescale-mx53-loco/dcd-data.h b/arch/arm/boards/freescale-mx53-loco/dcd-data.h
+new file mode 100644
+index 0000000..9f95fb4
+--- /dev/null
++++ b/arch/arm/boards/freescale-mx53-loco/dcd-data.h
+@@ -0,0 +1,54 @@
++
++DCD_NAME[] = {
++	{ .addr = cpu_to_be32(0x53fa8554), .val = cpu_to_be32(0x00300000), },
++	{ .addr = cpu_to_be32(0x53fa8558), .val = cpu_to_be32(0x00300040), },
++	{ .addr = cpu_to_be32(0x53fa8560), .val = cpu_to_be32(0x00300000), },
++	{ .addr = cpu_to_be32(0x53fa8564), .val = cpu_to_be32(0x00300040), },
++	{ .addr = cpu_to_be32(0x53fa8568), .val = cpu_to_be32(0x00300040), },
++	{ .addr = cpu_to_be32(0x53fa8570), .val = cpu_to_be32(0x00300000), },
++	{ .addr = cpu_to_be32(0x53fa8574), .val = cpu_to_be32(0x00300000), },
++	{ .addr = cpu_to_be32(0x53fa8578), .val = cpu_to_be32(0x00300000), },
++	{ .addr = cpu_to_be32(0x53fa857c), .val = cpu_to_be32(0x00300040), },
++	{ .addr = cpu_to_be32(0x53fa8580), .val = cpu_to_be32(0x00300040), },
++	{ .addr = cpu_to_be32(0x53fa8584), .val = cpu_to_be32(0x00300000), },
++	{ .addr = cpu_to_be32(0x53fa8588), .val = cpu_to_be32(0x00300000), },
++	{ .addr = cpu_to_be32(0x53fa8590), .val = cpu_to_be32(0x00300040), },
++	{ .addr = cpu_to_be32(0x53fa8594), .val = cpu_to_be32(0x00300000), },
++	{ .addr = cpu_to_be32(0x53fa86f0), .val = cpu_to_be32(0x00300000), },
++	{ .addr = cpu_to_be32(0x53fa86f4), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa86fc), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa8714), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa8718), .val = cpu_to_be32(0x00300000), },
++	{ .addr = cpu_to_be32(0x53fa871c), .val = cpu_to_be32(0x00300000), },
++	{ .addr = cpu_to_be32(0x53fa8720), .val = cpu_to_be32(0x00300000), },
++	{ .addr = cpu_to_be32(0x53fa8724), .val = cpu_to_be32(0x04000000), },
++	{ .addr = cpu_to_be32(0x53fa8728), .val = cpu_to_be32(0x00300000), },
++	{ .addr = cpu_to_be32(0x53fa872c), .val = cpu_to_be32(0x00300000), },
++	{ .addr = cpu_to_be32(0x63fd9088), .val = cpu_to_be32(0x35343535), },
++	{ .addr = cpu_to_be32(0x63fd9090), .val = cpu_to_be32(0x4d444c44), },
++	{ .addr = cpu_to_be32(0x63fd907c), .val = cpu_to_be32(0x01370138), },
++	{ .addr = cpu_to_be32(0x63fd9080), .val = cpu_to_be32(0x013b013c), },
++	{ .addr = cpu_to_be32(0x63fd9018), .val = cpu_to_be32(0x00011740), },
++	{ .addr = cpu_to_be32(0x63fd9000), .val = cpu_to_be32(0xc3190000), },
++	{ .addr = cpu_to_be32(0x63fd900c), .val = cpu_to_be32(0x9f5152e3), },
++	{ .addr = cpu_to_be32(0x63fd9010), .val = cpu_to_be32(0xb68e8a63), },
++	{ .addr = cpu_to_be32(0x63fd9014), .val = cpu_to_be32(0x01ff00db), },
++	{ .addr = cpu_to_be32(0x63fd902c), .val = cpu_to_be32(0x000026d2), },
++	{ .addr = cpu_to_be32(0x63fd9030), .val = cpu_to_be32(0x009f0e21), },
++	{ .addr = cpu_to_be32(0x63fd9008), .val = cpu_to_be32(0x12273030), },
++	{ .addr = cpu_to_be32(0x63fd9004), .val = cpu_to_be32(0x0002002d), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008032), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008033), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00028031), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x052080b0), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x04008040), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x0000803a), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x0000803b), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00028039), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x05208138), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x04008048), },
++	{ .addr = cpu_to_be32(0x63fd9020), .val = cpu_to_be32(0x00005800), },
++	{ .addr = cpu_to_be32(0x63fd9040), .val = cpu_to_be32(0x04b80003), },
++	{ .addr = cpu_to_be32(0x63fd9058), .val = cpu_to_be32(0x00022227), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00000000), },
++};
+diff --git a/arch/arm/boards/freescale-mx53-loco/flash_header.c b/arch/arm/boards/freescale-mx53-loco/flash_header.c
+index c2ab255..dc1162b 100644
+--- a/arch/arm/boards/freescale-mx53-loco/flash_header.c
++++ b/arch/arm/boards/freescale-mx53-loco/flash_header.c
+@@ -23,59 +23,9 @@ void __naked __flash_header_start go(void)
+ 	barebox_arm_head();
+ }
+ 
+-struct imx_dcd_v2_entry __dcd_entry_section dcd_entry[] = {
+-	{ .addr = cpu_to_be32(0x53fa8554), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8558), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8560), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8564), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8568), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8570), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8574), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8578), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa857c), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8580), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8584), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8588), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8590), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8594), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa86f0), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa86f4), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa86fc), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa8714), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa8718), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa871c), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8720), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8724), .val = cpu_to_be32(0x04000000), },
+-	{ .addr = cpu_to_be32(0x53fa8728), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa872c), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x63fd9088), .val = cpu_to_be32(0x35343535), },
+-	{ .addr = cpu_to_be32(0x63fd9090), .val = cpu_to_be32(0x4d444c44), },
+-	{ .addr = cpu_to_be32(0x63fd907c), .val = cpu_to_be32(0x01370138), },
+-	{ .addr = cpu_to_be32(0x63fd9080), .val = cpu_to_be32(0x013b013c), },
+-	{ .addr = cpu_to_be32(0x63fd9018), .val = cpu_to_be32(0x00011740), },
+-	{ .addr = cpu_to_be32(0x63fd9000), .val = cpu_to_be32(0xc3190000), },
+-	{ .addr = cpu_to_be32(0x63fd900c), .val = cpu_to_be32(0x9f5152e3), },
+-	{ .addr = cpu_to_be32(0x63fd9010), .val = cpu_to_be32(0xb68e8a63), },
+-	{ .addr = cpu_to_be32(0x63fd9014), .val = cpu_to_be32(0x01ff00db), },
+-	{ .addr = cpu_to_be32(0x63fd902c), .val = cpu_to_be32(0x000026d2), },
+-	{ .addr = cpu_to_be32(0x63fd9030), .val = cpu_to_be32(0x009f0e21), },
+-	{ .addr = cpu_to_be32(0x63fd9008), .val = cpu_to_be32(0x12273030), },
+-	{ .addr = cpu_to_be32(0x63fd9004), .val = cpu_to_be32(0x0002002d), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008032), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008033), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00028031), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x052080b0), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x04008040), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x0000803a), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x0000803b), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00028039), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x05208138), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x04008048), },
+-	{ .addr = cpu_to_be32(0x63fd9020), .val = cpu_to_be32(0x00005800), },
+-	{ .addr = cpu_to_be32(0x63fd9040), .val = cpu_to_be32(0x04b80003), },
+-	{ .addr = cpu_to_be32(0x63fd9058), .val = cpu_to_be32(0x00022227), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00000000), },
+-};
++#define DCD_NAME struct imx_dcd_v2_entry __dcd_entry_section dcd_entry
++
++#include "dcd-data.h"
+ 
+ #define APP_DEST	0x70000000
+ 
+-- 
+1.7.10.4
 
-for gpio it's the right one
-
-as we can agree to dt must be in sync
-
-Best Regards,
-J.
-> 
-> Sascha
-> 
-> On Sat, Oct 13, 2012 at 04:00:11PM +0200, Carlo Caione wrote:
-> > The set is the same as before except for patch 05/05
-> > 
-> > Carlo Caione (5):
-> >   BCM2835: add clocksource driver
-> >   BCM2835: add gpio driver
-> >   ARM1176: add support
-> >   BCM2835: add support (arch)
-> >   Raspberry-Pi: add support (board)
-> > 
-> >  arch/arm/Kconfig                                   |   9 ++
-> >  arch/arm/Makefile                                  |   2 +
-> >  arch/arm/boards/raspberry-pi/Makefile              |   1 +
-> >  arch/arm/boards/raspberry-pi/config.h              |   4 +
-> >  .../arm/boards/raspberry-pi/env/init/bootargs-base |   8 +
-> >  arch/arm/boards/raspberry-pi/env/init/hostname     |   8 +
-> >  arch/arm/boards/raspberry-pi/rpi.c                 |  49 ++++++
-> >  arch/arm/configs/rpi_defconfig                     |  40 +++++
-> >  arch/arm/cpu/Kconfig                               |   5 +
-> >  arch/arm/mach-bcm2835/Kconfig                      |  18 +++
-> >  arch/arm/mach-bcm2835/Makefile                     |   2 +
-> >  arch/arm/mach-bcm2835/clock.c                      |  39 +++++
-> >  arch/arm/mach-bcm2835/core.c                       | 105 +++++++++++++
-> >  arch/arm/mach-bcm2835/include/mach/clkdev.h        |   7 +
-> >  arch/arm/mach-bcm2835/include/mach/clock.h         |   8 +
-> >  arch/arm/mach-bcm2835/include/mach/core.h          |  27 ++++
-> >  arch/arm/mach-bcm2835/include/mach/gpio.h          |   1 +
-> >  arch/arm/mach-bcm2835/include/mach/platform.h      |  53 +++++++
-> >  arch/arm/mach-bcm2835/include/mach/wd.h            |  50 +++++++
-> >  drivers/clocksource/Kconfig                        |   4 +
-> >  drivers/clocksource/Makefile                       |   1 +
-> >  drivers/clocksource/bcm2835.c                      |  95 ++++++++++++
-> >  drivers/gpio/Kconfig                               |   4 +
-> >  drivers/gpio/Makefile                              |   1 +
-> >  drivers/gpio/gpio-bcm2835.c                        | 165 +++++++++++++++++++++
-> >  25 files changed, 706 insertions(+)
-> >  create mode 100644 arch/arm/boards/raspberry-pi/Makefile
-> >  create mode 100644 arch/arm/boards/raspberry-pi/config.h
-> >  create mode 100644 arch/arm/boards/raspberry-pi/env/init/bootargs-base
-> >  create mode 100644 arch/arm/boards/raspberry-pi/env/init/hostname
-> >  create mode 100644 arch/arm/boards/raspberry-pi/rpi.c
-> >  create mode 100644 arch/arm/configs/rpi_defconfig
-> >  create mode 100644 arch/arm/mach-bcm2835/Kconfig
-> >  create mode 100644 arch/arm/mach-bcm2835/Makefile
-> >  create mode 100644 arch/arm/mach-bcm2835/clock.c
-> >  create mode 100644 arch/arm/mach-bcm2835/core.c
-> >  create mode 100644 arch/arm/mach-bcm2835/include/mach/clkdev.h
-> >  create mode 100644 arch/arm/mach-bcm2835/include/mach/clock.h
-> >  create mode 100644 arch/arm/mach-bcm2835/include/mach/core.h
-> >  create mode 100644 arch/arm/mach-bcm2835/include/mach/gpio.h
-> >  create mode 100644 arch/arm/mach-bcm2835/include/mach/platform.h
-> >  create mode 100644 arch/arm/mach-bcm2835/include/mach/wd.h
-> >  create mode 100644 drivers/clocksource/bcm2835.c
-> >  create mode 100644 drivers/gpio/gpio-bcm2835.c
-> > 
-> > -- 
-> > 1.7.12.3
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> > 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
