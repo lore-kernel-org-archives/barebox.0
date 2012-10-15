@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TNkVq-0008EN-Th
- for barebox@lists.infradead.org; Mon, 15 Oct 2012 13:15:24 +0000
+ id 1TNkVj-0008Ba-BO
+ for barebox@lists.infradead.org; Mon, 15 Oct 2012 13:15:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 15 Oct 2012 15:15:05 +0200
-Message-Id: <1350306908-25206-3-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 15 Oct 2012 15:15:08 +0200
+Message-Id: <1350306908-25206-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1350306908-25206-1-git-send-email-s.hauer@pengutronix.de>
 References: <1350306908-25206-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,664 +21,581 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] ARM i.MX: Add barebox update handler for internal boot
+Subject: [PATCH 5/5] ARM i.MX53 tx53: register MMC and NAND update handler
 To: barebox@lists.infradead.org
 
-This adds support for an update handler for internal boot. Currently
-handled are:
-
-- v1 MMC/SD
-- v2 MMC/SD
-- v2 NAND
-
-where v1 is found on i.MX25, i.MX35 and i.MX51. v2 is found on i.MX53.
-
-This code intentionally does not use the DCD data compiled into every
-i.MX internal boot image. This makes it possible to make a pure second
-stage barebox bootable on i.MX internal boot devices later.
-
-This has been tested on the i.MX51 babbage, i.MX53 loco and i.MX53 tx53
-board.
+We support two different board revisions, both of which only differ
+in the dcd table, so we can support both in a single binary with the
+cost of storing both dcd tables in the binary.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/Makefile                        |    1 +
- arch/arm/mach-imx/imx-bbu-internal.c              |  543 +++++++++++++++++++++
- arch/arm/mach-imx/include/mach/bbu.h              |   51 ++
- arch/arm/mach-imx/include/mach/imx-flash-header.h |    2 +
- 4 files changed, 597 insertions(+)
- create mode 100644 arch/arm/mach-imx/imx-bbu-internal.c
- create mode 100644 arch/arm/mach-imx/include/mach/bbu.h
+ arch/arm/boards/karo-tx53/board.c         |   18 +++
+ arch/arm/boards/karo-tx53/dcd-data-1011.h |   94 +++++++++++
+ arch/arm/boards/karo-tx53/dcd-data-xx30.h |  145 +++++++++++++++++
+ arch/arm/boards/karo-tx53/flash_header.c  |  248 ++---------------------------
+ 4 files changed, 269 insertions(+), 236 deletions(-)
+ create mode 100644 arch/arm/boards/karo-tx53/dcd-data-1011.h
+ create mode 100644 arch/arm/boards/karo-tx53/dcd-data-xx30.h
 
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index e5ef78a..259733e 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -16,3 +16,4 @@ pbl-$(CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND) += external-nand-boot.o
- obj-$(CONFIG_COMMON_CLK) += clk-pllv1.o clk-pllv2.o clk-pllv3.o clk-pfd.o
- obj-y += devices.o imx.o
- obj-y += boot.o
-+obj-$(CONFIG_BAREBOX_UPDATE) += imx-bbu-internal.o
-diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-new file mode 100644
-index 0000000..85d10cf
---- /dev/null
-+++ b/arch/arm/mach-imx/imx-bbu-internal.c
-@@ -0,0 +1,543 @@
-+/*
-+ * imx-bbu-internal.c - i.MX specific update functions for internal boot
-+ *
-+ * Copyright (c) 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#define IMX_INTERNAL_NAND_BBU
-+
-+#include <common.h>
-+#include <malloc.h>
-+#include <bbu.h>
-+#include <filetype.h>
-+#include <errno.h>
-+#include <fs.h>
-+#include <fcntl.h>
-+#include <sizes.h>
-+#include <linux/mtd/mtd-abi.h>
-+#include <linux/stat.h>
-+#include <ioctl.h>
-+#include <mach/bbu.h>
+diff --git a/arch/arm/boards/karo-tx53/board.c b/arch/arm/boards/karo-tx53/board.c
+index 99ddcec..8f87c9c 100644
+--- a/arch/arm/boards/karo-tx53/board.c
++++ b/arch/arm/boards/karo-tx53/board.c
+@@ -33,6 +33,8 @@
+ #include <mach/imx-nand.h>
+ #include <mach/iim.h>
+ #include <mach/imx5.h>
 +#include <mach/imx-flash-header.h>
-+
-+#define FLASH_HEADER_OFFSET_MMC		0x400
-+
-+#define IMX_INTERNAL_FLAG_NAND		(1 << 0)
-+#define IMX_INTERNAL_FLAG_KEEP_DOSPART	(1 << 1)
-+
-+struct imx_internal_bbu_handler {
-+	struct bbu_handler handler;
-+	const void *dcd;
-+	int dcdsize;
-+	unsigned long app_dest;
-+	unsigned long flash_header_offset;
-+	size_t device_size;
-+	unsigned long flags;
-+};
-+
-+/*
-+ * Actually write an image to the target device, eventually keeping a
-+ * DOS partition table on the device
-+ */
-+static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
-+		struct bbu_data *data, void *buf, int image_len)
-+{
-+	int fd, ret;
-+
-+	fd = open(data->devicefile, O_RDWR | O_CREAT);
-+	if (fd < 0)
-+		return fd;
-+
-+	if (imx_handler->flags & IMX_INTERNAL_FLAG_KEEP_DOSPART) {
-+		void *mbr = xzalloc(512);
-+
-+		debug("%s: reading DOS partition table in order to keep it\n");
-+
-+		ret = read(fd, mbr, 512);
-+		if (ret < 0) {
-+			free(mbr);
-+			goto err_close;
-+		}
-+
-+		memcpy(buf + 0x1b8, mbr + 0x1b8, 0x48);
-+		free(buf);
-+
-+		ret = lseek(fd, 0, SEEK_SET);
-+		if (ret)
-+			goto err_close;
-+	}
-+
-+	ret = write(fd, buf, image_len);
-+	if (ret < 0)
-+		goto err_close;
-+
-+	ret = 0;
-+
-+err_close:
-+	close(fd);
-+
-+	return ret;
-+}
-+
-+/*
-+ * Update barebox on a v1 type internal boot (i.MX25, i.MX35, i.MX51)
-+ *
-+ * This constructs a DCD header, adds the specific DCD data and writes
-+ * the resulting image to the device. Currently this handles MMC/SD
-+ * devices.
-+ */
-+static int imx_bbu_internal_v1_update(struct bbu_handler *handler, struct bbu_data *data)
-+{
-+	struct imx_internal_bbu_handler *imx_handler =
-+		container_of(handler, struct imx_internal_bbu_handler, handler);
-+	struct imx_flash_header *flash_header;
-+	unsigned long flash_header_offset = imx_handler->flash_header_offset;
-+	u32 *dcd_image_size;
-+	void *imx_pre_image;
-+	int imx_pre_image_size = 0x2000;
-+	int ret, image_len;
-+	void *buf;
-+
-+	if (file_detect_type(data->image) != filetype_arm_barebox) {
-+		if (!bbu_force(data, "Not an ARM barebox image"))
-+			return -EINVAL;
-+	}
-+
-+	ret = bbu_confirm(data);
-+	if (ret)
-+		return ret;
-+
-+	printf("updating to %s\n", data->devicefile);
-+
-+	imx_pre_image = xzalloc(imx_pre_image_size);
-+	flash_header = imx_pre_image + flash_header_offset;
-+
-+	flash_header->app_code_jump_vector = imx_handler->app_dest + 0x1000;
-+	flash_header->app_code_barker = APP_CODE_BARKER;
-+	flash_header->app_code_csf = 0;
-+	flash_header->dcd_ptr_ptr = imx_handler->app_dest + flash_header_offset +
-+		offsetof(struct imx_flash_header, dcd);
-+	flash_header->super_root_key = 0;
-+	flash_header->dcd = imx_handler->app_dest + flash_header_offset +
-+		offsetof(struct imx_flash_header, dcd_barker);
-+	flash_header->app_dest = imx_handler->app_dest;
-+	flash_header->dcd_barker = DCD_BARKER;
-+	flash_header->dcd_block_len = imx_handler->dcdsize;
-+
-+	memcpy((void *)flash_header + sizeof(*flash_header), imx_handler->dcd, imx_handler->dcdsize);
-+
-+	dcd_image_size = (imx_pre_image + flash_header_offset + sizeof(*flash_header) + imx_handler->dcdsize);
-+
-+	*dcd_image_size = ALIGN(imx_pre_image_size + data->len, 4096);
-+
-+	/* Create a buffer containing header and image data */
-+	image_len = data->len + imx_pre_image_size;
-+	buf = xzalloc(image_len);
-+	memcpy(buf, imx_pre_image, imx_pre_image_size);
-+	memcpy(buf + imx_pre_image_size, data->image, data->len);
-+
-+	ret = imx_bbu_write_device(imx_handler, data, buf, image_len);
-+
-+	free(buf);
-+
-+	free(imx_pre_image);
-+
-+	return ret;
-+}
-+
-+#define DBBT_MAGIC	0x44424254
-+#define FCB_MAGIC	0x20424346
-+
-+/*
-+ * Write an image to NAND. This creates a FCB header and a DBBT (Discovered Bad
-+ * Block Table). The DBBT is initialized with the bad blocks known from the mtd
-+ * layer.
-+ */
-+static int imx_bbu_internal_v2_write_nand_dbbt(struct imx_internal_bbu_handler *imx_handler,
-+		struct bbu_data *data, void *image, int image_len)
-+{
-+	struct mtd_info_user meminfo;
-+	int fd;
-+	struct stat s;
-+	int size_available, size_need;
-+	int ret;
-+	uint32_t *ptr, *num_bb, *bb;
-+	uint64_t offset;
-+	int block = 0, len, now, blocksize;
-+
-+	ret = stat(data->devicefile, &s);
-+	if (ret)
-+		return ret;
-+
-+	size_available = s.st_size;
-+
-+	fd = open(data->devicefile, O_RDWR);
-+	if (fd < 0)
-+		return fd;
-+
-+	ret = ioctl(fd, MEMGETINFO, &meminfo);
-+	if (ret)
-+		goto out;
-+
-+	blocksize = meminfo.erasesize;
-+
-+	ptr = image + 0x4;
-+	*ptr++ = FCB_MAGIC;	/* FCB */
-+	*ptr++ = 1;		/* FCB version */
-+
-+	ptr = image + 0x78; /* DBBT start page */
-+	*ptr = 4;
-+
-+	ptr = image + 4 * 2048 + 4;
-+	*ptr++ = DBBT_MAGIC;	/* DBBT */
-+	*ptr = 1;		/* DBBT version */
-+
-+	ptr = (u32*)(image + 0x2010);
-+	/*
-+	 * This is marked as reserved in the i.MX53 reference manual, but
-+	 * must be != 0. Otherwise the ROM ignores the DBBT
-+	 */
-+	*ptr = 1;
-+
-+	ptr = (u32*)(image + 0x4004); /* start of DBBT */
-+	num_bb = ptr;
-+	bb = ptr + 1;
-+	offset = 0;
-+
-+	size_need = data->len + 0x8000;
-+
-+	/*
-+	 * Collect bad blocks and construct DBBT
-+	 */
-+	while (size_need > 0) {
-+		ret = ioctl(fd, MEMGETBADBLOCK, &offset);
-+		if (ret < 0)
-+			goto out;
-+
-+		if (ret) {
-+			if (!offset) {
-+				printf("1st block is bad. This is not supported\n");
-+				ret = -EINVAL;
-+				goto out;
-+			}
-+
-+			debug("bad block at 0x%08llx\n", offset);
-+			*num_bb += 1;
-+			if (*num_bb == 425) {
-+				/* Maximum number of bad blocks the ROM supports */
-+				printf("maximum number of bad blocks reached\n");
-+				ret = -ENOSPC;
-+				goto out;
-+			}
-+			*bb++ = block;
-+			offset += blocksize;
-+			block++;
-+			continue;
-+		}
-+		size_need -= blocksize;
-+		size_available -= blocksize;
-+		offset += blocksize;
-+		block++;
-+
-+		if (size_available < 0) {
-+			printf("device is too small");
-+			ret = -ENOSPC;
-+			goto out;
-+		}
-+	}
-+
-+	debug("total image size: 0x%08x. Space needed including bad blocks: 0x%08x\n",
-+			data->len + 0x8000,
-+			data->len + 0x8000 + *num_bb * blocksize);
-+
-+	if (data->len + 0x8000 + *num_bb * blocksize > imx_handler->device_size) {
-+		printf("needed space (0x%08x) exceeds partition space (0x%08x)\n",
-+				data->len + 0x8000 + *num_bb * blocksize,
-+				imx_handler->device_size);
-+		ret = -ENOSPC;
-+		goto out;
-+	}
-+
-+	len = data->len + 0x8000;
-+	offset = 0;
-+
-+	/*
-+	 * Write image to NAND skipping bad blocks
-+	 */
-+	while (len > 0) {
-+		now = min(len, blocksize);
-+
-+		ret = ioctl(fd, MEMGETBADBLOCK, &offset);
-+		if (ret < 0)
-+			goto out;
-+
-+		if (ret) {
-+			ret = lseek(fd, offset + blocksize, SEEK_SET);
-+			if (ret < 0)
-+				goto out;
-+			offset += blocksize;
-+			continue;
-+		}
-+
-+		debug("writing %d bytes at 0x%08llx\n", now, offset);
-+
-+		ret = erase(fd, blocksize, offset);
-+		if (ret)
-+			goto out;
-+
-+		ret = write(fd, image, now);
-+		if (ret < 0)
-+			goto out;
-+
-+		len -= now;
-+		image += now;
-+		offset += now;
-+	}
-+
-+	ret = 0;
-+
-+out:
-+	close(fd);
-+
-+	return ret;
-+}
-+
-+/*
-+ * Update barebox on a v2 type internal boot (i.MX53)
-+ *
-+ * This constructs a DCD header, adds the specific DCD data and writes
-+ * the resulting image to the device. Currently this handles MMC/SD
-+ * and NAND devices.
-+ */
-+static int imx_bbu_internal_v2_update(struct bbu_handler *handler, struct bbu_data *data)
-+{
-+	struct imx_internal_bbu_handler *imx_handler =
-+		container_of(handler, struct imx_internal_bbu_handler, handler);
-+	struct imx_flash_header_v2 *flash_header;
-+	unsigned long flash_header_offset = imx_handler->flash_header_offset;
-+	void *imx_pre_image;
-+	int imx_pre_image_size;
-+	int ret, image_len;
-+	void *buf;
-+
-+	if (file_detect_type(data->image) != filetype_arm_barebox) {
-+		if (!bbu_force(data, "Not an ARM barebox image"))
-+			return -EINVAL;
-+	}
-+
-+	ret = bbu_confirm(data);
-+	if (ret)
-+		return ret;
-+
-+	printf("updating to %s\n", data->devicefile);
-+
-+	if (imx_handler->flags & IMX_INTERNAL_FLAG_NAND)
-+		/* NAND needs additional space for the DBBT */
-+		imx_pre_image_size = 0x8000;
-+	else
-+		imx_pre_image_size = 0x2000;
-+
-+	imx_pre_image = xzalloc(imx_pre_image_size);
-+	flash_header = imx_pre_image + flash_header_offset;
-+
-+	flash_header->header.tag = IVT_HEADER_TAG;
-+	flash_header->header.length = cpu_to_be16(32);
-+	flash_header->header.version = IVT_VERSION;
-+
-+	flash_header->entry = imx_handler->app_dest + imx_pre_image_size;
-+	flash_header->dcd_ptr = imx_handler->app_dest + flash_header_offset +
-+		offsetof(struct imx_flash_header_v2, dcd);
-+	flash_header->boot_data_ptr = imx_handler->app_dest +
-+		flash_header_offset + offsetof(struct imx_flash_header_v2, boot_data);
-+	flash_header->self = imx_handler->app_dest + flash_header_offset;
-+
-+	flash_header->boot_data.start = imx_handler->app_dest;
-+	flash_header->boot_data.size = ALIGN(imx_pre_image_size + data->len, 4096);;
-+
-+	flash_header->dcd.header.tag = DCD_HEADER_TAG;
-+	flash_header->dcd.header.length = cpu_to_be16(sizeof(struct imx_dcd) +
-+			imx_handler->dcdsize);
-+	flash_header->dcd.header.version = DCD_VERSION;
-+
-+	/* Add dcd data */
-+	memcpy((void *)flash_header + sizeof(*flash_header), imx_handler->dcd, imx_handler->dcdsize);
-+
-+	/* Create a buffer containing header and image data */
-+	image_len = data->len + imx_pre_image_size;
-+	buf = xzalloc(image_len);
-+	memcpy(buf, imx_pre_image, imx_pre_image_size);
-+	memcpy(buf + imx_pre_image_size, data->image, data->len);
-+
-+	if (imx_handler->flags & IMX_INTERNAL_FLAG_NAND) {
-+		ret = imx_bbu_internal_v2_write_nand_dbbt(imx_handler, data, buf,
-+				image_len);
-+		goto out_free_buf;
-+	}
-+
-+	ret = imx_bbu_write_device(imx_handler, data, buf, image_len);
-+
-+out_free_buf:
-+	free(buf);
-+
-+	free(imx_pre_image);
-+	return ret;
-+}
-+
-+/*
-+ * On the i.MX53 the dcd data can contain several commands. Each of them must
-+ * have its length encoded into it. We can't express that during compile time,
-+ * so use this function if you are using multiple dcd commands and wish to
-+ * concatenate them together to a single dcd table with the correct sizes for
-+ * each command.
-+ */
-+void *imx53_bbu_internal_concat_dcd_table(struct dcd_table *table, int num_entries)
-+{
-+	int i;
-+	unsigned int dcdsize = 0, pos = 0;
-+	void *dcdptr;
-+
-+	for (i = 0; i < num_entries; i++)
-+		dcdsize += table[i].size;
-+
-+	dcdptr = xmalloc(dcdsize);
-+
-+	for (i = 0; i < num_entries; i++) {
-+		u32 *current = dcdptr + pos;
-+		memcpy(current, table[i].data, table[i].size);
-+		*current |= cpu_to_be32(table[i].size << 8);
-+		pos += table[i].size;
-+	}
-+
-+	return dcdptr;
-+}
-+
-+static struct imx_internal_bbu_handler *__init_handler(const char *name, char *devicefile,
-+		unsigned long flags)
-+{
-+	struct imx_internal_bbu_handler *imx_handler;
-+	struct bbu_handler *handler;
-+
-+	imx_handler = xzalloc(sizeof(*imx_handler));
-+	handler = &imx_handler->handler;
-+	handler->devicefile = devicefile;
-+	handler->name = name;
-+	handler->flags = flags;
-+
-+	return imx_handler;
-+}
-+
-+static int __register_handler(struct imx_internal_bbu_handler *imx_handler)
-+{
-+	int ret;
-+
-+	ret = bbu_register_handler(&imx_handler->handler);
-+	if (ret)
-+		free(imx_handler);
-+
-+	return ret;
-+}
-+
-+/*
-+ * Register a i.MX51 internal boot update handler for MMC/SD
-+ */
-+int imx51_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
-+		unsigned long flags, struct imx_dcd_entry *dcd, int dcdsize)
-+{
-+	struct imx_internal_bbu_handler *imx_handler;
-+
-+	imx_handler = __init_handler(name, devicefile, flags);
-+	imx_handler->dcd = dcd;
-+	imx_handler->dcdsize = dcdsize;
-+	imx_handler->flash_header_offset = FLASH_HEADER_OFFSET_MMC;
-+	imx_handler->app_dest = 0x90000000;
-+	imx_handler->flags = IMX_INTERNAL_FLAG_KEEP_DOSPART;
-+	imx_handler->handler.handler = imx_bbu_internal_v1_update;
-+
-+	return __register_handler(imx_handler);
-+}
-+
-+#define DCD_WR_CMD(len)		cpu_to_be32(0xcc << 24 | (((len) & 0xffff) << 8) | 0x04)
-+
-+static int imx53_bbu_internal_init_dcd(struct imx_internal_bbu_handler *imx_handler,
-+		void *dcd, int dcdsize)
-+{
-+	uint32_t *dcd32 = dcd;
-+
-+	/*
-+	 * The DCD data we have compiled in does not have a DCD_WR_CMD at
-+	 * the beginning. Instead it is contained in struct imx_flash_header_v2.
-+	 * This is necessary to generate the DCD size at compile time. If
-+	 * we are passed such a DCD data here, prepend a DCD_WR_CMD.
-+	 */
-+	if ((*dcd32 & 0xff0000ff) != DCD_WR_CMD(0)) {
-+		__be32 *buf;
-+
-+		debug("%s: dcd does not have a DCD_WR_CMD. Prepending one\n");
-+
-+		buf = xmalloc(dcdsize + sizeof(__be32));
-+
-+		*buf = DCD_WR_CMD(dcdsize + sizeof(__be32));
-+		memcpy(&buf[1], dcd, dcdsize);
-+
-+		imx_handler->dcd = buf;
-+		imx_handler->dcdsize = dcdsize + sizeof(__be32);
-+	} else {
-+		debug("%s: dcd already has a DCD_WR_CMD. Using original dcd data\n");
-+
-+		imx_handler->dcd = dcd;
-+		imx_handler->dcdsize = dcdsize;
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Register a i.MX53 internal boot update handler for MMC/SD
-+ */
-+int imx53_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
-+		unsigned long flags, struct imx_dcd_v2_entry *dcd, int dcdsize)
-+{
-+	struct imx_internal_bbu_handler *imx_handler;
-+
-+	imx_handler = __init_handler(name, devicefile, flags);
-+	imx53_bbu_internal_init_dcd(imx_handler, dcd, dcdsize);
-+	imx_handler->flash_header_offset = FLASH_HEADER_OFFSET_MMC;
-+	imx_handler->app_dest = 0x70000000;
-+	imx_handler->flags = IMX_INTERNAL_FLAG_KEEP_DOSPART;
-+	imx_handler->handler.handler = imx_bbu_internal_v2_update;
-+
-+	return __register_handler(imx_handler);
-+}
-+
-+/*
-+ * Register a i.MX53 internal boot update handler for NAND
-+ */
-+int imx53_bbu_internal_nand_register_handler(const char *name,
-+		unsigned long flags, struct imx_dcd_v2_entry *dcd, int dcdsize,
-+		int partition_size)
-+{
-+	struct imx_internal_bbu_handler *imx_handler;
-+
-+	imx_handler = __init_handler(name, NULL, flags);
-+	imx53_bbu_internal_init_dcd(imx_handler, dcd, dcdsize);
-+	imx_handler->flash_header_offset = 0x400;
-+	imx_handler->app_dest = 0x70000000;
-+	imx_handler->handler.handler = imx_bbu_internal_v2_update;
-+	imx_handler->flags = IMX_INTERNAL_FLAG_NAND;
-+	imx_handler->handler.devicefile = "/dev/nand0";
-+	imx_handler->device_size = partition_size;
-+
-+	return __register_handler(imx_handler);
-+}
-diff --git a/arch/arm/mach-imx/include/mach/bbu.h b/arch/arm/mach-imx/include/mach/bbu.h
++#include <mach/bbu.h>
+ 
+ #include <asm/armlinux.h>
+ #include <io.h>
+@@ -206,6 +208,14 @@ static inline void tx53_fec_init(void)
+ 			ARRAY_SIZE(tx53_fec_pads));
+ }
+ 
++#define DCD_NAME_1011 static struct imx_dcd_v2_entry dcd_entry_1011
++
++#include "dcd-data-1011.h"
++
++#define DCD_NAME_XX30 static u32 dcd_entry_xx30
++
++#include "dcd-data-xx30.h"
++
+ static int tx53_devices_init(void)
+ {
+ 	imx53_iim_register_fec_ethaddr();
+@@ -217,6 +227,14 @@ static int tx53_devices_init(void)
+ 	armlinux_set_bootparams((void *)0x70000100);
+ 	armlinux_set_architecture(MACH_TYPE_TX53);
+ 
++	/* rev xx30 can boot from nand or USB */
++	imx53_bbu_internal_nand_register_handler("nand-xx30",
++		BBU_HANDLER_FLAG_DEFAULT, (void *)dcd_entry_xx30, sizeof(dcd_entry_xx30), SZ_512K);
++
++	/* rev 1011 can boot from MMC/SD, other bootsource currently unknown */
++	imx53_bbu_internal_mmc_register_handler("mmc-1011", "/dev/disk0",
++		0, (void *)dcd_entry_1011, sizeof(dcd_entry_1011));
++
+ 	return 0;
+ }
+ 
+diff --git a/arch/arm/boards/karo-tx53/dcd-data-1011.h b/arch/arm/boards/karo-tx53/dcd-data-1011.h
 new file mode 100644
-index 0000000..f9ec1cc
+index 0000000..7034ff8
 --- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/bbu.h
-@@ -0,0 +1,51 @@
-+#ifndef __MACH_BBU_H
-+#define __MACH_BBU_H
-+
-+#include <bbu.h>
-+
-+struct imx_dcd_entry;
-+struct imx_dcd_v2_entry;
-+
-+#ifdef CONFIG_BAREBOX_UPDATE
-+
-+int imx51_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
-+		unsigned long flags, struct imx_dcd_entry *, int dcdsize);
-+
-+int imx53_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
-+		unsigned long flags, struct imx_dcd_v2_entry *, int dcdsize);
-+
-+int imx53_bbu_internal_nand_register_handler(const char *name,
-+		unsigned long flags, struct imx_dcd_v2_entry *, int dcdsize,
-+		int partition_size);
-+
-+#else
-+
-+static inline int imx51_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
-+		unsigned long flags, struct imx_dcd_entry *dcd, int dcdsize)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline int imx53_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
-+		unsigned long flags, struct imx_dcd_v2_entry *dcd, int dcdsize)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline int imx53_bbu_internal_nand_register_handler(const char *name,
-+		unsigned long flags, struct imx_dcd_v2_entry *dcd, int dcdsize,
-+		int partition_size)
-+{
-+	return -ENOSYS;
-+}
-+
-+#endif
-+
-+struct dcd_table {
-+	void *data;
-+	unsigned int size;
++++ b/arch/arm/boards/karo-tx53/dcd-data-1011.h
+@@ -0,0 +1,94 @@
++DCD_NAME_1011[] = {
++	{ .addr = cpu_to_be32(0x53fd406c), .val = cpu_to_be32(0xffffffff), },
++	{ .addr = cpu_to_be32(0x53fd4070), .val = cpu_to_be32(0xffffffff), },
++	{ .addr = cpu_to_be32(0x53fd4074), .val = cpu_to_be32(0xffffffff), },
++	{ .addr = cpu_to_be32(0x53fd4078), .val = cpu_to_be32(0xffffffff), },
++	{ .addr = cpu_to_be32(0x53fd407c), .val = cpu_to_be32(0xffffffff), },
++	{ .addr = cpu_to_be32(0x53fd4080), .val = cpu_to_be32(0xffffffff), },
++	{ .addr = cpu_to_be32(0x53fd4088), .val = cpu_to_be32(0xffffffff), },
++	{ .addr = cpu_to_be32(0x53fa8174), .val = cpu_to_be32(0x00000011), },
++	{ .addr = cpu_to_be32(0x63fd800c), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa8554), .val = cpu_to_be32(0x00200000), },
++	{ .addr = cpu_to_be32(0x53fa8560), .val = cpu_to_be32(0x00200000), },
++	{ .addr = cpu_to_be32(0x53fa8594), .val = cpu_to_be32(0x00200000), },
++	{ .addr = cpu_to_be32(0x53fa8584), .val = cpu_to_be32(0x00200000), },
++	{ .addr = cpu_to_be32(0x53fa8558), .val = cpu_to_be32(0x00200040), },
++	{ .addr = cpu_to_be32(0x53fa8568), .val = cpu_to_be32(0x00200040), },
++	{ .addr = cpu_to_be32(0x53fa8590), .val = cpu_to_be32(0x00200040), },
++	{ .addr = cpu_to_be32(0x53fa857c), .val = cpu_to_be32(0x00200040), },
++	{ .addr = cpu_to_be32(0x53fa8564), .val = cpu_to_be32(0x00200040), },
++	{ .addr = cpu_to_be32(0x53fa8580), .val = cpu_to_be32(0x00200040), },
++	{ .addr = cpu_to_be32(0x53fa8570), .val = cpu_to_be32(0x00200000), },
++	{ .addr = cpu_to_be32(0x53fa8578), .val = cpu_to_be32(0x00200000), },
++	{ .addr = cpu_to_be32(0x53fa872c), .val = cpu_to_be32(0x00200000), },
++	{ .addr = cpu_to_be32(0x53fa8728), .val = cpu_to_be32(0x00200000), },
++	{ .addr = cpu_to_be32(0x53fa871c), .val = cpu_to_be32(0x00200000), },
++	{ .addr = cpu_to_be32(0x53fa8718), .val = cpu_to_be32(0x00200000), },
++	{ .addr = cpu_to_be32(0x53fa8574), .val = cpu_to_be32(0x00280000), },
++	{ .addr = cpu_to_be32(0x53fa8588), .val = cpu_to_be32(0x00280000), },
++	{ .addr = cpu_to_be32(0x53fa86f0), .val = cpu_to_be32(0x00280000), },
++	{ .addr = cpu_to_be32(0x53fa8720), .val = cpu_to_be32(0x00280000), },
++	{ .addr = cpu_to_be32(0x53fa86fc), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa86f4), .val = cpu_to_be32(0x00000200), },
++	{ .addr = cpu_to_be32(0x53fa8714), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa8724), .val = cpu_to_be32(0x06000000), },
++	{ .addr = cpu_to_be32(0x63fd9088), .val = cpu_to_be32(0x36353b38), },
++	{ .addr = cpu_to_be32(0x63fd9090), .val = cpu_to_be32(0x49434942), },
++	{ .addr = cpu_to_be32(0x63fd90f8), .val = cpu_to_be32(0x00000800), },
++	{ .addr = cpu_to_be32(0x63fd907c), .val = cpu_to_be32(0x01350138), },
++	{ .addr = cpu_to_be32(0x63fd9080), .val = cpu_to_be32(0x01380139), },
++	{ .addr = cpu_to_be32(0x63fd9018), .val = cpu_to_be32(0x00001710), },
++	{ .addr = cpu_to_be32(0x63fd9000), .val = cpu_to_be32(0x84110000), },
++	{ .addr = cpu_to_be32(0x63fd900c), .val = cpu_to_be32(0x4d5122d2), },
++	{ .addr = cpu_to_be32(0x63fd9010), .val = cpu_to_be32(0xb6f18a22), },
++	{ .addr = cpu_to_be32(0x63fd9014), .val = cpu_to_be32(0x00c700db), },
++	{ .addr = cpu_to_be32(0x63fd902c), .val = cpu_to_be32(0x000026d2), },
++	{ .addr = cpu_to_be32(0x63fd9030), .val = cpu_to_be32(0x009f000e), },
++	{ .addr = cpu_to_be32(0x63fd9008), .val = cpu_to_be32(0x12272000), },
++	{ .addr = cpu_to_be32(0x63fd9004), .val = cpu_to_be32(0x00030012), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x04008010), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008020), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008020), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x0a528030), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x03868031), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00068031), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008032), },
++	{ .addr = cpu_to_be32(0x63fd9020), .val = cpu_to_be32(0x00005800), },
++	{ .addr = cpu_to_be32(0x63fd9058), .val = cpu_to_be32(0x00033332), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00448031), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x04008018), },
++	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x63fd9040), .val = cpu_to_be32(0x04b80003), },
++	{ .addr = cpu_to_be32(0x53fa8004), .val = cpu_to_be32(0x00194005), },
++	{ .addr = cpu_to_be32(0x53fa819c), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa81a0), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa81a4), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa81a8), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa81ac), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa81b0), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa81b4), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa81b8), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa81dc), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa81e0), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa8228), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa822c), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa8230), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa8234), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa8238), .val = cpu_to_be32(0x00000000), },
++	{ .addr = cpu_to_be32(0x53fa84ec), .val = cpu_to_be32(0x000000e4), },
++	{ .addr = cpu_to_be32(0x53fa84f0), .val = cpu_to_be32(0x000000e4), },
++	{ .addr = cpu_to_be32(0x53fa84f4), .val = cpu_to_be32(0x000000e4), },
++	{ .addr = cpu_to_be32(0x53fa84f8), .val = cpu_to_be32(0x000000e4), },
++	{ .addr = cpu_to_be32(0x53fa84fc), .val = cpu_to_be32(0x000000e4), },
++	{ .addr = cpu_to_be32(0x53fa8500), .val = cpu_to_be32(0x000000e4), },
++	{ .addr = cpu_to_be32(0x53fa8504), .val = cpu_to_be32(0x000000e4), },
++	{ .addr = cpu_to_be32(0x53fa8508), .val = cpu_to_be32(0x000000e4), },
++	{ .addr = cpu_to_be32(0x53fa852c), .val = cpu_to_be32(0x00000004), },
++	{ .addr = cpu_to_be32(0x53fa8530), .val = cpu_to_be32(0x00000004), },
++	{ .addr = cpu_to_be32(0x53fa85a0), .val = cpu_to_be32(0x00000004), },
++	{ .addr = cpu_to_be32(0x53fa85a4), .val = cpu_to_be32(0x00000004), },
++	{ .addr = cpu_to_be32(0x53fa85a8), .val = cpu_to_be32(0x000000e4), },
++	{ .addr = cpu_to_be32(0x53fa85ac), .val = cpu_to_be32(0x000000e4), },
++	{ .addr = cpu_to_be32(0x53fa85b0), .val = cpu_to_be32(0x00000004), },
 +};
+diff --git a/arch/arm/boards/karo-tx53/dcd-data-xx30.h b/arch/arm/boards/karo-tx53/dcd-data-xx30.h
+new file mode 100644
+index 0000000..aa569c2
+--- /dev/null
++++ b/arch/arm/boards/karo-tx53/dcd-data-xx30.h
+@@ -0,0 +1,145 @@
 +
-+void *imx53_bbu_internal_concat_dcd_table(struct dcd_table *table, int num_entries);
++#define DCD_ITEM(adr, val)	cpu_to_be32(adr), cpu_to_be32(val)
++#define DCD_WR_CMD(len)		cpu_to_be32(0xcc << 24 | (len) << 8 | 0x04)
++#define DCD_CHECK_CMD(a, b, c)	cpu_to_be32(a), cpu_to_be32(b), cpu_to_be32(c)
 +
-+#endif
-diff --git a/arch/arm/mach-imx/include/mach/imx-flash-header.h b/arch/arm/mach-imx/include/mach/imx-flash-header.h
-index 7d048df..9a351ad 100644
---- a/arch/arm/mach-imx/include/mach/imx-flash-header.h
-+++ b/arch/arm/mach-imx/include/mach/imx-flash-header.h
-@@ -120,7 +120,9 @@ struct imx_dcd_command {
++/*
++ * This board uses advanced features of the DCD which do not corporate
++ * well with our flash header defines. The DCD consists of commands which
++ * have the length econded into them. Normally the DCDs only have a single
++ * command (DCD_COMMAND_WRITE_TAG) which is already part of struct
++ * imx_flash_header_v2. Now this board uses multiple commands, so we cannot
++ * calculate the command length using sizeof(dcd_entry).
++ */
++
++DCD_NAME_XX30[] = {
++	DCD_WR_CMD(0x21c),
++	DCD_ITEM(0x53fd4068, 0xffcc0fff),
++	DCD_ITEM(0x53fd406c, 0x000fffc3),
++	DCD_ITEM(0x53fd4070, 0x033c0000),
++	DCD_ITEM(0x53fd4074, 0x00000000),
++	DCD_ITEM(0x53fd4078, 0x00000000),
++	DCD_ITEM(0x53fd407c, 0x00fff033),
++	DCD_ITEM(0x53fd4080, 0x0f00030f),
++	DCD_ITEM(0x53fd4084, 0xfff00000),
++	DCD_ITEM(0x53fd4088, 0x00000000),
++	DCD_ITEM(0x53fa8174, 0x00000011),
++	DCD_ITEM(0x53fa8318, 0x00000011),
++	DCD_ITEM(0x63fd800c, 0x00000000),
++	DCD_ITEM(0x53fd4014, 0x00888944),
++	DCD_ITEM(0x53fd4018, 0x00016154),
++	DCD_ITEM(0x53fa8724, 0x04000000),
++	DCD_ITEM(0x53fa86f4, 0x00000000),
++	DCD_ITEM(0x53fa8714, 0x00000000),
++	DCD_ITEM(0x53fa86fc, 0x00000080),
++	DCD_ITEM(0x53fa8710, 0x00000000),
++	DCD_ITEM(0x53fa8708, 0x00000040),
++	DCD_ITEM(0x53fa8584, 0x00280000),
++	DCD_ITEM(0x53fa8594, 0x00280000),
++	DCD_ITEM(0x53fa8560, 0x00280000),
++	DCD_ITEM(0x53fa8554, 0x00280000),
++	DCD_ITEM(0x53fa857c, 0x00a80040),
++	DCD_ITEM(0x53fa8590, 0x00a80040),
++	DCD_ITEM(0x53fa8568, 0x00a80040),
++	DCD_ITEM(0x53fa8558, 0x00a80040),
++	DCD_ITEM(0x53fa8580, 0x00280040),
++	DCD_ITEM(0x53fa8578, 0x00280000),
++	DCD_ITEM(0x53fa8564, 0x00280040),
++	DCD_ITEM(0x53fa8570, 0x00280000),
++	DCD_ITEM(0x53fa858c, 0x000000c0),
++	DCD_ITEM(0x53fa855c, 0x000000c0),
++	DCD_ITEM(0x53fa8574, 0x00280000),
++	DCD_ITEM(0x53fa8588, 0x00280000),
++	DCD_ITEM(0x53fa86f0, 0x00280000),
++	DCD_ITEM(0x53fa8720, 0x00280000),
++	DCD_ITEM(0x53fa8718, 0x00280000),
++	DCD_ITEM(0x53fa871c, 0x00280000),
++	DCD_ITEM(0x53fa8728, 0x00280000),
++	DCD_ITEM(0x53fa872c, 0x00280000),
++	DCD_ITEM(0x63fd904c, 0x001f001f),
++	DCD_ITEM(0x63fd9050, 0x001f001f),
++	DCD_ITEM(0x63fd907c, 0x011e011e),
++	DCD_ITEM(0x63fd9080, 0x011f0120),
++	DCD_ITEM(0x63fd9088, 0x3a393d3b),
++	DCD_ITEM(0x63fd9090, 0x3f3f3f3f),
++	DCD_ITEM(0x63fd9018, 0x00011740),
++	DCD_ITEM(0x63fd9000, 0x83190000),
++	DCD_ITEM(0x63fd900c, 0x3f435316),
++	DCD_ITEM(0x63fd9010, 0xb66e0a63),
++	DCD_ITEM(0x63fd9014, 0x01ff00db),
++	DCD_ITEM(0x63fd902c, 0x000026d2),
++	DCD_ITEM(0x63fd9030, 0x00430f24),
++	DCD_ITEM(0x63fd9008, 0x1b221010),
++	DCD_ITEM(0x63fd9004, 0x00030012),
++	DCD_ITEM(0x63fd901c, 0x00008032),
++	DCD_ITEM(0x63fd901c, 0x00008033),
++	DCD_ITEM(0x63fd901c, 0x00408031),
++	DCD_ITEM(0x63fd901c, 0x055080b0),
++	DCD_ITEM(0x63fd9020, 0x00005800),
++	DCD_ITEM(0x63fd9058, 0x00011112),
++	DCD_ITEM(0x63fd90d0, 0x00000003),
++	DCD_ITEM(0x63fd901c, 0x04008010),
++	DCD_ITEM(0x63fd901c, 0x00008040),
++	DCD_ITEM(0x63fd9040, 0x0539002b),
++	DCD_CHECK_CMD(0xcf000c04, 0x63fd9040, 0x00010000),
++	DCD_WR_CMD(0x24),
++	DCD_ITEM(0x63fd901c, 0x00048033),
++	DCD_ITEM(0x63fd901c, 0x00848231),
++	DCD_ITEM(0x63fd901c, 0x00000000),
++	DCD_ITEM(0x63fd9048, 0x00000001),
++	DCD_CHECK_CMD(0xcf000c04, 0x63fd9048, 0x00000001),
++	DCD_WR_CMD(0x2c),
++	DCD_ITEM(0x63fd901c, 0x00048031),
++	DCD_ITEM(0x63fd901c, 0x00008033),
++	DCD_ITEM(0x63fd901c, 0x04008010),
++	DCD_ITEM(0x63fd901c, 0x00048033),
++	DCD_ITEM(0x63fd907c, 0x90000000),
++	DCD_CHECK_CMD(0xcf000c04, 0x63fd907c, 0x90000000),
++	DCD_WR_CMD(0x2c),
++	DCD_ITEM(0x63fd901c, 0x00008033),
++	DCD_ITEM(0x63fd901c, 0x00000000),
++	DCD_ITEM(0x63fd901c, 0x04008010),
++	DCD_ITEM(0x63fd901c, 0x00048033),
++	DCD_ITEM(0x63fd90a4, 0x00000010),
++	DCD_CHECK_CMD(0xcf000c04, 0x63fd90a4, 0x00000010),
++	DCD_WR_CMD(0x24),
++	DCD_ITEM(0x63fd901c, 0x00008033),
++	DCD_ITEM(0x63fd901c, 0x04008010),
++	DCD_ITEM(0x63fd901c, 0x00048033),
++	DCD_ITEM(0x63fd90a0, 0x00000010),
++	DCD_CHECK_CMD(0xcf000c04, 0x63fd90a0, 0x00000010),
++	DCD_WR_CMD(0x010c),
++	DCD_ITEM(0x63fd901c, 0x00008033),
++	DCD_ITEM(0x63fd901c, 0x00000000),
++	DCD_ITEM(0x53fa8004, 0x00194005),
++	DCD_ITEM(0x53fa819c, 0x00000000),
++	DCD_ITEM(0x53fa81a0, 0x00000000),
++	DCD_ITEM(0x53fa81a4, 0x00000000),
++	DCD_ITEM(0x53fa81a8, 0x00000000),
++	DCD_ITEM(0x53fa81ac, 0x00000000),
++	DCD_ITEM(0x53fa81b0, 0x00000000),
++	DCD_ITEM(0x53fa81b4, 0x00000000),
++	DCD_ITEM(0x53fa81b8, 0x00000000),
++	DCD_ITEM(0x53fa81dc, 0x00000000),
++	DCD_ITEM(0x53fa81e0, 0x00000000),
++	DCD_ITEM(0x53fa8228, 0x00000000),
++	DCD_ITEM(0x53fa822c, 0x00000000),
++	DCD_ITEM(0x53fa8230, 0x00000000),
++	DCD_ITEM(0x53fa8234, 0x00000000),
++	DCD_ITEM(0x53fa8238, 0x00000000),
++	DCD_ITEM(0x53fa84ec, 0x000000e4),
++	DCD_ITEM(0x53fa84f0, 0x000000e4),
++	DCD_ITEM(0x53fa84f4, 0x000000e4),
++	DCD_ITEM(0x53fa84f8, 0x000000e4),
++	DCD_ITEM(0x53fa84fc, 0x000000e4),
++	DCD_ITEM(0x53fa8500, 0x000000e4),
++	DCD_ITEM(0x53fa8504, 0x000000e4),
++	DCD_ITEM(0x53fa8508, 0x000000e4),
++	DCD_ITEM(0x53fa852c, 0x00000004),
++	DCD_ITEM(0x53fa8530, 0x00000004),
++	DCD_ITEM(0x53fa85a0, 0x00000004),
++	DCD_ITEM(0x53fa85a4, 0x00000004),
++	DCD_ITEM(0x53fa85a8, 0x000000e4),
++	DCD_ITEM(0x53fa85ac, 0x000000e4),
++	DCD_ITEM(0x53fa85b0, 0x00000004),
++};
+diff --git a/arch/arm/boards/karo-tx53/flash_header.c b/arch/arm/boards/karo-tx53/flash_header.c
+index 1e4a167..5c6aa53 100644
+--- a/arch/arm/boards/karo-tx53/flash_header.c
++++ b/arch/arm/boards/karo-tx53/flash_header.c
+@@ -28,247 +28,23 @@ void __naked __flash_header_start go(void)
+  *        is not in production. It has 1GB DDR2 memory.
+  */
+ #ifdef CONFIG_TX53_REV_1011
+-struct imx_dcd_v2_entry __dcd_entry_section dcd_entry[] = {
+-	{ .addr = cpu_to_be32(0x53fd406c), .val = cpu_to_be32(0xffffffff), },
+-	{ .addr = cpu_to_be32(0x53fd4070), .val = cpu_to_be32(0xffffffff), },
+-	{ .addr = cpu_to_be32(0x53fd4074), .val = cpu_to_be32(0xffffffff), },
+-	{ .addr = cpu_to_be32(0x53fd4078), .val = cpu_to_be32(0xffffffff), },
+-	{ .addr = cpu_to_be32(0x53fd407c), .val = cpu_to_be32(0xffffffff), },
+-	{ .addr = cpu_to_be32(0x53fd4080), .val = cpu_to_be32(0xffffffff), },
+-	{ .addr = cpu_to_be32(0x53fd4088), .val = cpu_to_be32(0xffffffff), },
+-	{ .addr = cpu_to_be32(0x53fa8174), .val = cpu_to_be32(0x00000011), },
+-	{ .addr = cpu_to_be32(0x63fd800c), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa8554), .val = cpu_to_be32(0x00200000), },
+-	{ .addr = cpu_to_be32(0x53fa8560), .val = cpu_to_be32(0x00200000), },
+-	{ .addr = cpu_to_be32(0x53fa8594), .val = cpu_to_be32(0x00200000), },
+-	{ .addr = cpu_to_be32(0x53fa8584), .val = cpu_to_be32(0x00200000), },
+-	{ .addr = cpu_to_be32(0x53fa8558), .val = cpu_to_be32(0x00200040), },
+-	{ .addr = cpu_to_be32(0x53fa8568), .val = cpu_to_be32(0x00200040), },
+-	{ .addr = cpu_to_be32(0x53fa8590), .val = cpu_to_be32(0x00200040), },
+-	{ .addr = cpu_to_be32(0x53fa857c), .val = cpu_to_be32(0x00200040), },
+-	{ .addr = cpu_to_be32(0x53fa8564), .val = cpu_to_be32(0x00200040), },
+-	{ .addr = cpu_to_be32(0x53fa8580), .val = cpu_to_be32(0x00200040), },
+-	{ .addr = cpu_to_be32(0x53fa8570), .val = cpu_to_be32(0x00200000), },
+-	{ .addr = cpu_to_be32(0x53fa8578), .val = cpu_to_be32(0x00200000), },
+-	{ .addr = cpu_to_be32(0x53fa872c), .val = cpu_to_be32(0x00200000), },
+-	{ .addr = cpu_to_be32(0x53fa8728), .val = cpu_to_be32(0x00200000), },
+-	{ .addr = cpu_to_be32(0x53fa871c), .val = cpu_to_be32(0x00200000), },
+-	{ .addr = cpu_to_be32(0x53fa8718), .val = cpu_to_be32(0x00200000), },
+-	{ .addr = cpu_to_be32(0x53fa8574), .val = cpu_to_be32(0x00280000), },
+-	{ .addr = cpu_to_be32(0x53fa8588), .val = cpu_to_be32(0x00280000), },
+-	{ .addr = cpu_to_be32(0x53fa86f0), .val = cpu_to_be32(0x00280000), },
+-	{ .addr = cpu_to_be32(0x53fa8720), .val = cpu_to_be32(0x00280000), },
+-	{ .addr = cpu_to_be32(0x53fa86fc), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa86f4), .val = cpu_to_be32(0x00000200), },
+-	{ .addr = cpu_to_be32(0x53fa8714), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa8724), .val = cpu_to_be32(0x06000000), },
+-	{ .addr = cpu_to_be32(0x63fd9088), .val = cpu_to_be32(0x36353b38), },
+-	{ .addr = cpu_to_be32(0x63fd9090), .val = cpu_to_be32(0x49434942), },
+-	{ .addr = cpu_to_be32(0x63fd90f8), .val = cpu_to_be32(0x00000800), },
+-	{ .addr = cpu_to_be32(0x63fd907c), .val = cpu_to_be32(0x01350138), },
+-	{ .addr = cpu_to_be32(0x63fd9080), .val = cpu_to_be32(0x01380139), },
+-	{ .addr = cpu_to_be32(0x63fd9018), .val = cpu_to_be32(0x00001710), },
+-	{ .addr = cpu_to_be32(0x63fd9000), .val = cpu_to_be32(0x84110000), },
+-	{ .addr = cpu_to_be32(0x63fd900c), .val = cpu_to_be32(0x4d5122d2), },
+-	{ .addr = cpu_to_be32(0x63fd9010), .val = cpu_to_be32(0xb6f18a22), },
+-	{ .addr = cpu_to_be32(0x63fd9014), .val = cpu_to_be32(0x00c700db), },
+-	{ .addr = cpu_to_be32(0x63fd902c), .val = cpu_to_be32(0x000026d2), },
+-	{ .addr = cpu_to_be32(0x63fd9030), .val = cpu_to_be32(0x009f000e), },
+-	{ .addr = cpu_to_be32(0x63fd9008), .val = cpu_to_be32(0x12272000), },
+-	{ .addr = cpu_to_be32(0x63fd9004), .val = cpu_to_be32(0x00030012), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x04008010), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008020), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008020), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x0a528030), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x03868031), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00068031), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008032), },
+-	{ .addr = cpu_to_be32(0x63fd9020), .val = cpu_to_be32(0x00005800), },
+-	{ .addr = cpu_to_be32(0x63fd9058), .val = cpu_to_be32(0x00033332), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00448031), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x04008018), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x63fd9040), .val = cpu_to_be32(0x04b80003), },
+-	{ .addr = cpu_to_be32(0x53fa8004), .val = cpu_to_be32(0x00194005), },
+-	{ .addr = cpu_to_be32(0x53fa819c), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa81a0), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa81a4), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa81a8), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa81ac), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa81b0), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa81b4), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa81b8), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa81dc), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa81e0), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa8228), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa822c), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa8230), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa8234), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa8238), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa84ec), .val = cpu_to_be32(0x000000e4), },
+-	{ .addr = cpu_to_be32(0x53fa84f0), .val = cpu_to_be32(0x000000e4), },
+-	{ .addr = cpu_to_be32(0x53fa84f4), .val = cpu_to_be32(0x000000e4), },
+-	{ .addr = cpu_to_be32(0x53fa84f8), .val = cpu_to_be32(0x000000e4), },
+-	{ .addr = cpu_to_be32(0x53fa84fc), .val = cpu_to_be32(0x000000e4), },
+-	{ .addr = cpu_to_be32(0x53fa8500), .val = cpu_to_be32(0x000000e4), },
+-	{ .addr = cpu_to_be32(0x53fa8504), .val = cpu_to_be32(0x000000e4), },
+-	{ .addr = cpu_to_be32(0x53fa8508), .val = cpu_to_be32(0x000000e4), },
+-	{ .addr = cpu_to_be32(0x53fa852c), .val = cpu_to_be32(0x00000004), },
+-	{ .addr = cpu_to_be32(0x53fa8530), .val = cpu_to_be32(0x00000004), },
+-	{ .addr = cpu_to_be32(0x53fa85a0), .val = cpu_to_be32(0x00000004), },
+-	{ .addr = cpu_to_be32(0x53fa85a4), .val = cpu_to_be32(0x00000004), },
+-	{ .addr = cpu_to_be32(0x53fa85a8), .val = cpu_to_be32(0x000000e4), },
+-	{ .addr = cpu_to_be32(0x53fa85ac), .val = cpu_to_be32(0x000000e4), },
+-	{ .addr = cpu_to_be32(0x53fa85b0), .val = cpu_to_be32(0x00000004), },
+-};
++
++#define DCD_NAME_1011 struct imx_dcd_v2_entry __dcd_entry_section dcd_entry
++
++#include "dcd-data-1011.h"
++
+ #elif defined(CONFIG_TX53_REV_XX30)
  
- struct imx_dcd {
- 	struct imx_ivt_header header;
-+#ifndef IMX_INTERNAL_NAND_BBU
- 	struct imx_dcd_command command;
-+#endif
- };
+-#define DCD_ITEM(adr, val)	cpu_to_be32(adr), cpu_to_be32(val)
+-#define DCD_WR_CMD(len)		cpu_to_be32(0xcc << 24 | (len) << 8 | 0x04)
+-#define DCD_CHECK_CMD(a, b, c)	cpu_to_be32(a), cpu_to_be32(b), cpu_to_be32(c)
++#define DCD_NAME_XX30 u32 __dcd_entry_section dcd_entry
++
++#include "dcd-data-xx30.h"
  
- struct imx_boot_data {
+-/*
+- * This board uses advanced features of the DCD which do not corporate
+- * well with our flash header defines. The DCD consists of commands which
+- * have the length econded into them. Normally the DCDs only have a single
+- * command (DCD_COMMAND_WRITE_TAG) which is already part of struct
+- * imx_flash_header_v2. Now this board uses multiple commands, so we cannot
+- * calculate the command length using sizeof(dcd_entry).
+- */
+-u32 __dcd_entry_section dcd_entry[] = {
+-	DCD_ITEM(0x53fd4068, 0xffcc0fff),
+-	DCD_ITEM(0x53fd406c, 0x000fffc3),
+-	DCD_ITEM(0x53fd4070, 0x033c0000),
+-	DCD_ITEM(0x53fd4074, 0x00000000),
+-	DCD_ITEM(0x53fd4078, 0x00000000),
+-	DCD_ITEM(0x53fd407c, 0x00fff033),
+-	DCD_ITEM(0x53fd4080, 0x0f00030f),
+-	DCD_ITEM(0x53fd4084, 0xfff00000),
+-	DCD_ITEM(0x53fd4088, 0x00000000),
+-	DCD_ITEM(0x53fa8174, 0x00000011),
+-	DCD_ITEM(0x53fa8318, 0x00000011),
+-	DCD_ITEM(0x63fd800c, 0x00000000),
+-	DCD_ITEM(0x53fd4014, 0x00888944),
+-	DCD_ITEM(0x53fd4018, 0x00016154),
+-	DCD_ITEM(0x53fa8724, 0x04000000),
+-	DCD_ITEM(0x53fa86f4, 0x00000000),
+-	DCD_ITEM(0x53fa8714, 0x00000000),
+-	DCD_ITEM(0x53fa86fc, 0x00000080),
+-	DCD_ITEM(0x53fa8710, 0x00000000),
+-	DCD_ITEM(0x53fa8708, 0x00000040),
+-	DCD_ITEM(0x53fa8584, 0x00280000),
+-	DCD_ITEM(0x53fa8594, 0x00280000),
+-	DCD_ITEM(0x53fa8560, 0x00280000),
+-	DCD_ITEM(0x53fa8554, 0x00280000),
+-	DCD_ITEM(0x53fa857c, 0x00a80040),
+-	DCD_ITEM(0x53fa8590, 0x00a80040),
+-	DCD_ITEM(0x53fa8568, 0x00a80040),
+-	DCD_ITEM(0x53fa8558, 0x00a80040),
+-	DCD_ITEM(0x53fa8580, 0x00280040),
+-	DCD_ITEM(0x53fa8578, 0x00280000),
+-	DCD_ITEM(0x53fa8564, 0x00280040),
+-	DCD_ITEM(0x53fa8570, 0x00280000),
+-	DCD_ITEM(0x53fa858c, 0x000000c0),
+-	DCD_ITEM(0x53fa855c, 0x000000c0),
+-	DCD_ITEM(0x53fa8574, 0x00280000),
+-	DCD_ITEM(0x53fa8588, 0x00280000),
+-	DCD_ITEM(0x53fa86f0, 0x00280000),
+-	DCD_ITEM(0x53fa8720, 0x00280000),
+-	DCD_ITEM(0x53fa8718, 0x00280000),
+-	DCD_ITEM(0x53fa871c, 0x00280000),
+-	DCD_ITEM(0x53fa8728, 0x00280000),
+-	DCD_ITEM(0x53fa872c, 0x00280000),
+-	DCD_ITEM(0x63fd904c, 0x001f001f),
+-	DCD_ITEM(0x63fd9050, 0x001f001f),
+-	DCD_ITEM(0x63fd907c, 0x011e011e),
+-	DCD_ITEM(0x63fd9080, 0x011f0120),
+-	DCD_ITEM(0x63fd9088, 0x3a393d3b),
+-	DCD_ITEM(0x63fd9090, 0x3f3f3f3f),
+-	DCD_ITEM(0x63fd9018, 0x00011740),
+-	DCD_ITEM(0x63fd9000, 0x83190000),
+-	DCD_ITEM(0x63fd900c, 0x3f435316),
+-	DCD_ITEM(0x63fd9010, 0xb66e0a63),
+-	DCD_ITEM(0x63fd9014, 0x01ff00db),
+-	DCD_ITEM(0x63fd902c, 0x000026d2),
+-	DCD_ITEM(0x63fd9030, 0x00430f24),
+-	DCD_ITEM(0x63fd9008, 0x1b221010),
+-	DCD_ITEM(0x63fd9004, 0x00030012),
+-	DCD_ITEM(0x63fd901c, 0x00008032),
+-	DCD_ITEM(0x63fd901c, 0x00008033),
+-	DCD_ITEM(0x63fd901c, 0x00408031),
+-	DCD_ITEM(0x63fd901c, 0x055080b0),
+-	DCD_ITEM(0x63fd9020, 0x00005800),
+-	DCD_ITEM(0x63fd9058, 0x00011112),
+-	DCD_ITEM(0x63fd90d0, 0x00000003),
+-	DCD_ITEM(0x63fd901c, 0x04008010),
+-	DCD_ITEM(0x63fd901c, 0x00008040),
+-	DCD_ITEM(0x63fd9040, 0x0539002b),
+-	DCD_CHECK_CMD(0xcf000c04, 0x63fd9040, 0x00010000),
+-	DCD_WR_CMD(0x24),
+-	DCD_ITEM(0x63fd901c, 0x00048033),
+-	DCD_ITEM(0x63fd901c, 0x00848231),
+-	DCD_ITEM(0x63fd901c, 0x00000000),
+-	DCD_ITEM(0x63fd9048, 0x00000001),
+-	DCD_CHECK_CMD(0xcf000c04, 0x63fd9048, 0x00000001),
+-	DCD_WR_CMD(0x2c),
+-	DCD_ITEM(0x63fd901c, 0x00048031),
+-	DCD_ITEM(0x63fd901c, 0x00008033),
+-	DCD_ITEM(0x63fd901c, 0x04008010),
+-	DCD_ITEM(0x63fd901c, 0x00048033),
+-	DCD_ITEM(0x63fd907c, 0x90000000),
+-	DCD_CHECK_CMD(0xcf000c04, 0x63fd907c, 0x90000000),
+-	DCD_WR_CMD(0x2c),
+-	DCD_ITEM(0x63fd901c, 0x00008033),
+-	DCD_ITEM(0x63fd901c, 0x00000000),
+-	DCD_ITEM(0x63fd901c, 0x04008010),
+-	DCD_ITEM(0x63fd901c, 0x00048033),
+-	DCD_ITEM(0x63fd90a4, 0x00000010),
+-	DCD_CHECK_CMD(0xcf000c04, 0x63fd90a4, 0x00000010),
+-	DCD_WR_CMD(0x24),
+-	DCD_ITEM(0x63fd901c, 0x00008033),
+-	DCD_ITEM(0x63fd901c, 0x04008010),
+-	DCD_ITEM(0x63fd901c, 0x00048033),
+-	DCD_ITEM(0x63fd90a0, 0x00000010),
+-	DCD_CHECK_CMD(0xcf000c04, 0x63fd90a0, 0x00000010),
+-	DCD_WR_CMD(0x010c),
+-	DCD_ITEM(0x63fd901c, 0x00008033),
+-	DCD_ITEM(0x63fd901c, 0x00000000),
+-	DCD_ITEM(0x53fa8004, 0x00194005),
+-	DCD_ITEM(0x53fa819c, 0x00000000),
+-	DCD_ITEM(0x53fa81a0, 0x00000000),
+-	DCD_ITEM(0x53fa81a4, 0x00000000),
+-	DCD_ITEM(0x53fa81a8, 0x00000000),
+-	DCD_ITEM(0x53fa81ac, 0x00000000),
+-	DCD_ITEM(0x53fa81b0, 0x00000000),
+-	DCD_ITEM(0x53fa81b4, 0x00000000),
+-	DCD_ITEM(0x53fa81b8, 0x00000000),
+-	DCD_ITEM(0x53fa81dc, 0x00000000),
+-	DCD_ITEM(0x53fa81e0, 0x00000000),
+-	DCD_ITEM(0x53fa8228, 0x00000000),
+-	DCD_ITEM(0x53fa822c, 0x00000000),
+-	DCD_ITEM(0x53fa8230, 0x00000000),
+-	DCD_ITEM(0x53fa8234, 0x00000000),
+-	DCD_ITEM(0x53fa8238, 0x00000000),
+-	DCD_ITEM(0x53fa84ec, 0x000000e4),
+-	DCD_ITEM(0x53fa84f0, 0x000000e4),
+-	DCD_ITEM(0x53fa84f4, 0x000000e4),
+-	DCD_ITEM(0x53fa84f8, 0x000000e4),
+-	DCD_ITEM(0x53fa84fc, 0x000000e4),
+-	DCD_ITEM(0x53fa8500, 0x000000e4),
+-	DCD_ITEM(0x53fa8504, 0x000000e4),
+-	DCD_ITEM(0x53fa8508, 0x000000e4),
+-	DCD_ITEM(0x53fa852c, 0x00000004),
+-	DCD_ITEM(0x53fa8530, 0x00000004),
+-	DCD_ITEM(0x53fa85a0, 0x00000004),
+-	DCD_ITEM(0x53fa85a4, 0x00000004),
+-	DCD_ITEM(0x53fa85a8, 0x000000e4),
+-	DCD_ITEM(0x53fa85ac, 0x000000e4),
+-	DCD_ITEM(0x53fa85b0, 0x00000004),
+-};
+ #endif
+ 
+-#define APP_DEST	0x70000000
++#define APP_DEST	0x71000000
++
++int tx53_dcdentry_size = sizeof(dcd_entry);
++void *tx53_dcd_entry = &dcd_entry;
+ 
+ struct imx_flash_header_v2 __flash_header_section flash_header = {
+ 	.header.tag		= IVT_HEADER_TAG,
 -- 
 1.7.10.4
 
