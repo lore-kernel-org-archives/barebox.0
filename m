@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp26.mail.ru ([94.100.176.179])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TNptb-0005XC-77
- for barebox@lists.infradead.org; Mon, 15 Oct 2012 19:00:12 +0000
-Date: Mon, 15 Oct 2012 23:00:08 +0400
-From: Alexander Shiyan <shc_work@mail.ru>
-Message-Id: <20121015230008.8153c2db47fa837122615241@mail.ru>
-In-Reply-To: <20121015175852.GC5803@game.jcrosoft.org>
-References: <1350318405-20081-1-git-send-email-shc_work@mail.ru>
- <1350318405-20081-2-git-send-email-shc_work@mail.ru>
- <20121015175852.GC5803@game.jcrosoft.org>
-Mime-Version: 1.0
+ id 1TNpyb-0006KK-Fh
+ for barebox@lists.infradead.org; Mon, 15 Oct 2012 19:05:22 +0000
+Date: Mon, 15 Oct 2012 21:05:16 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121015190516.GO24458@pengutronix.de>
+References: <20121010064633.GH27665@pengutronix.de>
+ <20121010094123.GH26553@game.jcrosoft.org>
+ <20121010095411.GB27665@pengutronix.de>
+ <20121010104941.GI26553@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20121010104941.GI26553@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,24 +25,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/3] ARM: clps711x: Add serial driver
+Subject: Re: barebox@ELCE
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, 15 Oct 2012 19:58:52 +0200
-Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
-
-> > +static int clps711x_tstc(struct console_device *cdev)
-> > +{
-> > +	return !(readl(SYSFLG(cdev->dev->id)) & SYSFLG_URXFE);
-> factorise those pull status as
+On Wed, Oct 10, 2012 at 12:49:41PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 11:54 Wed 10 Oct     , Sascha Hauer wrote:
+> > On Wed, Oct 10, 2012 at 11:41:23AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > On 08:46 Wed 10 Oct     , Sascha Hauer wrote:
+> > > > Hi All,
+> > > > 
+> > > > As you might have noticed already there is a barebox presentation at the
+> > > > ELCE this year in Barcelona. For everyone who is able to come I'd be
+> > > > happy to see and meet you there.
+> > > > I will talk about the current barebox status and the future directions
+> > > > for barebox.
+> > > for the future direction I thik we could discus about it here first
+> > 
+> > Well those who have seen the patches I was recently working on won't be
+> > surprised: It goes into the direction of a multiplatform bootloader.
+> can we add dt probe will full dt support (maybe drop the boards
 > 
-> status int xxx(data, mask) {}
-Not clean understand this comment. You mean about one more define
-for check status?
+> I'll to add multi boards support too specially usefull as a second stage. As
+> example we could detect the board type in the pbl and let barebox select the
+> correct one, also if a first stage oottloader exist it can pass the
+> infotmation.
+> 
+> I was thinking on arm in the same way as the kernel
+
+That's exactly what I am working on.
+
+Sascha
 
 -- 
-Alexander Shiyan <shc_work@mail.ru>
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
