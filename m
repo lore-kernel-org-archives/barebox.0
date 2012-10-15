@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp2.mail.ru ([94.100.176.130])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TNnVJ-0007c8-CC
- for barebox@lists.infradead.org; Mon, 15 Oct 2012 16:26:58 +0000
+ id 1TNnVP-0007ck-W7
+ for barebox@lists.infradead.org; Mon, 15 Oct 2012 16:27:05 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Mon, 15 Oct 2012 20:26:44 +0400
-Message-Id: <1350318405-20081-2-git-send-email-shc_work@mail.ru>
+Date: Mon, 15 Oct 2012 20:26:45 +0400
+Message-Id: <1350318405-20081-3-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1350318405-20081-1-git-send-email-shc_work@mail.ru>
 References: <1350318405-20081-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,56 +21,253 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/3] ARM: clps711x: Add serial driver
+Subject: [PATCH v2 3/3] ARM: clps711x: Add generic board support (CLEP7212)
 To: barebox@lists.infradead.org
 
+This patch adds generic board support (CLEP7212, Linux ARM ID=91)
+for CLPS711X-target.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/serial/Kconfig           |    5 ++
- drivers/serial/Makefile          |    1 +
- drivers/serial/serial_clps711x.c |  118 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 124 insertions(+), 0 deletions(-)
- create mode 100644 drivers/serial/serial_clps711x.c
+ arch/arm/Makefile                               |    1 +
+ arch/arm/boards/clep7212/Makefile               |    1 +
+ arch/arm/boards/clep7212/clep7212.c             |   64 +++++++++++++++++++++++
+ arch/arm/boards/clep7212/config.h               |    4 ++
+ arch/arm/boards/clep7212/env/bin/mtdparts-add   |   21 +++++++
+ arch/arm/boards/clep7212/env/boot/nor           |    9 +++
+ arch/arm/boards/clep7212/env/init/automount     |   12 ++++
+ arch/arm/boards/clep7212/env/init/bootargs-base |    8 +++
+ arch/arm/boards/clep7212/env/init/general       |   12 ++++
+ arch/arm/boards/clep7212/env/init/hostname      |    8 +++
+ arch/arm/boards/clep7212/lowlevel.c             |   56 ++++++++++++++++++++
+ arch/arm/configs/clps711x_defconfig             |   42 +++++++++++++++
+ arch/arm/mach-clps711x/Kconfig                  |    9 +++
+ 13 files changed, 247 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/boards/clep7212/Makefile
+ create mode 100644 arch/arm/boards/clep7212/clep7212.c
+ create mode 100644 arch/arm/boards/clep7212/config.h
+ create mode 100644 arch/arm/boards/clep7212/env/bin/mtdparts-add
+ create mode 100644 arch/arm/boards/clep7212/env/boot/nor
+ create mode 100644 arch/arm/boards/clep7212/env/init/automount
+ create mode 100644 arch/arm/boards/clep7212/env/init/bootargs-base
+ create mode 100644 arch/arm/boards/clep7212/env/init/general
+ create mode 100644 arch/arm/boards/clep7212/env/init/hostname
+ create mode 100644 arch/arm/boards/clep7212/lowlevel.c
+ create mode 100644 arch/arm/configs/clps711x_defconfig
 
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index 7eb96ed..02bc8bf 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -43,6 +43,11 @@ config DRIVER_SERIAL_BLACKFIN
- 	default y
- 	bool "Blackfin serial driver"
- 
-+config DRIVER_SERIAL_CLPS711X
-+	depends on ARCH_CLPS711X
-+	default y
-+	bool "CLPS711X serial driver"
-+
- config DRIVER_SERIAL_ALTERA
- 	depends on NIOS2
- 	default y
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index e2d56b9..e6f1e22 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -13,6 +13,7 @@ obj-$(CONFIG_DRIVER_SERIAL_NETX)		+= serial_netx.o
- obj-$(CONFIG_DRIVER_SERIAL_LINUX_CONSOLE)	+= linux_console.o
- obj-$(CONFIG_DRIVER_SERIAL_MPC5XXX)		+= serial_mpc5xxx.o
- obj-$(CONFIG_DRIVER_SERIAL_BLACKFIN)		+= serial_blackfin.o
-+obj-$(CONFIG_DRIVER_SERIAL_CLPS711X)		+= serial_clps711x.o
- obj-$(CONFIG_DRIVER_SERIAL_NS16550)		+= serial_ns16550.o
- obj-$(CONFIG_DRIVER_SERIAL_PL010)		+= serial_pl010.o
- obj-$(CONFIG_DRIVER_SERIAL_S3C)			+= serial_s3c.o
-diff --git a/drivers/serial/serial_clps711x.c b/drivers/serial/serial_clps711x.c
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index da80e00..05f9943 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -76,6 +76,7 @@ board-$(CONFIG_MACH_AT91SAM9G10EK)		:= at91sam9261ek
+ board-$(CONFIG_MACH_AT91SAM9G20EK)		:= at91sam9260ek
+ board-$(CONFIG_MACH_AT91SAM9X5EK)		:= at91sam9x5ek
+ board-$(CONFIG_MACH_AT91SAM9M10G45EK)		:= at91sam9m10g45ek
++board-$(CONFIG_MACH_CLEP7212)			:= clep7212
+ board-$(CONFIG_MACH_DSS11)			:= dss11
+ board-$(CONFIG_MACH_EDB9301)			:= edb93xx
+ board-$(CONFIG_MACH_EDB9302)			:= edb93xx
+diff --git a/arch/arm/boards/clep7212/Makefile b/arch/arm/boards/clep7212/Makefile
 new file mode 100644
-index 0000000..462ba9f
+index 0000000..7e58f10
 --- /dev/null
-+++ b/drivers/serial/serial_clps711x.c
-@@ -0,0 +1,118 @@
++++ b/arch/arm/boards/clep7212/Makefile
+@@ -0,0 +1 @@
++obj-y += clep7212.o lowlevel.o
+diff --git a/arch/arm/boards/clep7212/clep7212.c b/arch/arm/boards/clep7212/clep7212.c
+new file mode 100644
+index 0000000..1d5828d
+--- /dev/null
++++ b/arch/arm/boards/clep7212/clep7212.c
+@@ -0,0 +1,64 @@
 +/*
-+ * Simple CLPS711X serial driver
++ * Copyright (C) 2012 Alexander Shiyan <shc_work@mail.ru>
 + *
-+ * (C) Copyright 2012 Alexander Shiyan <shc_work@mail.ru>
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ */
++
++#include <common.h>
++#include <driver.h>
++#include <init.h>
++#include <partition.h>
++#include <io.h>
++#include <sizes.h>
++#include <asm/armlinux.h>
++#include <generated/mach-types.h>
++
++#include <mach/clps711x.h>
++#include <mach/devices.h>
++
++static int clps711x_mem_init(void)
++{
++	ulong memsize = get_ram_size((ulong *)SDRAM_BASE, SZ_32M);
++
++	arm_add_mem_device("ram0", SDRAM_BASE, memsize);
++
++	return 0;
++}
++mem_initcall(clps711x_mem_init);
++
++static int clps711x_devices_init(void)
++{
++	u32 serial_h = 0, serial_l = readl(UNIQID);
++
++	/* Setup Chipselects */
++	clps711x_setup_memcfg(0, MEMCFG_WAITSTATE_6_1 | MEMCFG_BUS_WIDTH_16);
++	clps711x_setup_memcfg(1, MEMCFG_WAITSTATE_6_1 | MEMCFG_BUS_WIDTH_8);
++	clps711x_setup_memcfg(2, MEMCFG_WAITSTATE_8_3 | MEMCFG_BUS_WIDTH_16 |
++			      MEMCFG_CLKENB);
++	clps711x_setup_memcfg(3, MEMCFG_WAITSTATE_6_1 | MEMCFG_BUS_WIDTH_32);
++
++	add_cfi_flash_device(0, CS0_BASE, SZ_32M, 0);
++
++	devfs_add_partition("nor0", 0x00000, SZ_256K, DEVFS_PARTITION_FIXED,
++			    "self0");
++	devfs_add_partition("nor0", SZ_256K, SZ_256K, DEVFS_PARTITION_FIXED,
++			    "env0");
++
++	armlinux_set_bootparams((void *)SDRAM_BASE + 0x100);
++	armlinux_set_architecture(MACH_TYPE_CLEP7212);
++	armlinux_set_serial(((u64)serial_h << 32) | serial_l);
++
++	return 0;
++}
++device_initcall(clps711x_devices_init);
++
++static int clps711x_console_init(void)
++{
++	clps711x_add_uart(0);
++
++	return 0;
++}
++console_initcall(clps711x_console_init);
+diff --git a/arch/arm/boards/clep7212/config.h b/arch/arm/boards/clep7212/config.h
+new file mode 100644
+index 0000000..6ae9a40
+--- /dev/null
++++ b/arch/arm/boards/clep7212/config.h
+@@ -0,0 +1,4 @@
++#ifndef __CONFIG_H
++#define __CONFIG_H
++
++#endif  /* __CONFIG_H */
+diff --git a/arch/arm/boards/clep7212/env/bin/mtdparts-add b/arch/arm/boards/clep7212/env/bin/mtdparts-add
+new file mode 100644
+index 0000000..ef1bc02
+--- /dev/null
++++ b/arch/arm/boards/clep7212/env/bin/mtdparts-add
+@@ -0,0 +1,21 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "Partitions"
++	exit
++fi
++
++norparts="256k(barebox),256k(bareboxenv),3584k(kernel),-(root)"
++ramparts="-(ramdisk)"
++
++if [ -e /dev/nor0 ]; then
++	addpart -n /dev/nor0 "${norparts}"
++
++	global linux.mtdparts.nor
++	global.linux.mtdparts.nor="physmap-flash.0:${norparts}"
++else
++	echo "NOR Flash not found."
++fi
++
++global linux.mtdparts.ram
++global.linux.mtdparts.ram="mtd-ram.0:${ramparts}"
+diff --git a/arch/arm/boards/clep7212/env/boot/nor b/arch/arm/boards/clep7212/env/boot/nor
+new file mode 100644
+index 0000000..5cf1e15
+--- /dev/null
++++ b/arch/arm/boards/clep7212/env/boot/nor
+@@ -0,0 +1,9 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	boot-menu-add-entry "$0" "NOR Flash"
++	exit
++fi
++
++global.bootm.image="/dev/kernel"
++global.linux.bootargs.dyn.root="root=/dev/mtdblock4 ro"
+diff --git a/arch/arm/boards/clep7212/env/init/automount b/arch/arm/boards/clep7212/env/init/automount
+new file mode 100644
+index 0000000..2ceefc3
+--- /dev/null
++++ b/arch/arm/boards/clep7212/env/init/automount
+@@ -0,0 +1,12 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "Automountpoints"
++	exit
++fi
++
++mkdir -p /mnt/disk0
++automount -d /mnt/disk0 '[ -e /dev/disk0.0 ] && mount /dev/disk0.0 /mnt/disk0'
++
++mkdir -p /mnt/disk1
++automount -d /mnt/disk1 '[ -e /dev/disk1.0 ] && mount /dev/disk1.0 /mnt/disk1'
+diff --git a/arch/arm/boards/clep7212/env/init/bootargs-base b/arch/arm/boards/clep7212/env/init/bootargs-base
+new file mode 100644
+index 0000000..ec08e39
+--- /dev/null
++++ b/arch/arm/boards/clep7212/env/init/bootargs-base
+@@ -0,0 +1,8 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "Base bootargs"
++	exit
++fi
++
++global.linux.bootargs.base="earlyprintk console=ttyCL0,57600n8"
+diff --git a/arch/arm/boards/clep7212/env/init/general b/arch/arm/boards/clep7212/env/init/general
+new file mode 100644
+index 0000000..77e6a59
+--- /dev/null
++++ b/arch/arm/boards/clep7212/env/init/general
+@@ -0,0 +1,12 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "general config settings"
++	exit
++fi
++
++global.user=barebox
++global.autoboot_timeout=2
++global.boot.default=nor
++
++/env/bin/mtdparts-add
+diff --git a/arch/arm/boards/clep7212/env/init/hostname b/arch/arm/boards/clep7212/env/init/hostname
+new file mode 100644
+index 0000000..684ee63
+--- /dev/null
++++ b/arch/arm/boards/clep7212/env/init/hostname
+@@ -0,0 +1,8 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "hostname"
++	exit
++fi
++
++global.hostname=clep7212
+diff --git a/arch/arm/boards/clep7212/lowlevel.c b/arch/arm/boards/clep7212/lowlevel.c
+new file mode 100644
+index 0000000..9b7e241
+--- /dev/null
++++ b/arch/arm/boards/clep7212/lowlevel.c
+@@ -0,0 +1,56 @@
++/*
++ * Copyright (C) 2012 Alexander Shiyan <shc_work@mail.ru>
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -80,111 +277,121 @@ index 0000000..462ba9f
 +
 +#include <common.h>
 +#include <init.h>
-+#include <io.h>
-+#include <linux/clk.h>
++
++#include <asm/io.h>
++#include <asm/barebox-arm.h>
++#include <asm/barebox-arm-head.h>
 +
 +#include <mach/clps711x.h>
 +
-+#define UBRLCR(x)	(UBRLCR1 + (x) * 0x1000)
-+#define SYSCON(x)	(SYSCON1 + (x) * 0x1000)
-+#define SYSFLG(x)	(SYSFLG1 + (x) * 0x1000)
-+#define UARTDR(x)	(UARTDR1 + (x) * 0x1000)
++#define MAIN_CLOCK		3686400
++#define CPU_SPEED		92160000
++#define BUS_SPEED		(CPU_SPEED / 2)
 +
-+static int clps711x_setbaudrate(struct console_device *cdev, int baudrate)
-+{
-+	int divisor;
-+	u32 tmp;
++#define PLL_VALUE		(((CPU_SPEED * 2) / MAIN_CLOCK) << 24)
++#define SDRAM_REFRESH_RATE	(64 * (BUS_SPEED / (8192 * 1000)))
 +
-+	divisor = (clk_get_rate(cdev->dev->priv) / 16) / baudrate;
-+
-+	tmp = readl(UBRLCR(cdev->dev->id)) & ~UBRLCR_BAUD_MASK;
-+	tmp |= divisor - 1;
-+	writel(tmp, UBRLCR(cdev->dev->id));
-+
-+	return 0;
-+}
-+
-+static void clps711x_init_port(struct console_device *cdev)
++void __naked __bare_init reset(void)
 +{
 +	u32 tmp;
 +
-+	/* Disable the UART */
-+	writel(readl(SYSCON(cdev->dev->id)) & ~SYSCON_UARTEN,
-+	       SYSCON(cdev->dev->id));
++	common_reset();
 +
-+	/* Setup Line Control Register */
-+	tmp = readl(UBRLCR(cdev->dev->id)) & UBRLCR_BAUD_MASK;
-+	tmp |= UBRLCR_FIFOEN | UBRLCR_WRDLEN8; /* FIFO on, 8N1 mode */
-+	writel(tmp, UBRLCR(cdev->dev->id));
++	/* Setup base clock */
++	writel(SYSCON3_CLKCTL0 | SYSCON3_CLKCTL1, SYSCON3);
++	asm("nop");
 +
-+	/* Set default baudrate on initialization */
-+	clps711x_setbaudrate(cdev, CONFIG_BAUDRATE);
++	/* Setup PLL */
++	writel(PLL_VALUE, PLLW);
++	asm("nop");
 +
-+	/* Enable the UART */
-+	writel(readl(SYSCON(cdev->dev->id)) | SYSCON_UARTEN,
-+	       SYSCON(cdev->dev->id));
++	/* CLKEN select, SDRAM width=32 */
++	writel(SYSCON2_CLKENSL, SYSCON2);
++
++	/* Enable SDQM pins */
++	tmp = readl(SYSCON3);
++	tmp &= ~SYSCON3_ENPD67;
++	writel(tmp, SYSCON3);
++
++	/* Setup Refresh Rate (64ms 8K Blocks) */
++	writel(SDRAM_REFRESH_RATE, SDRFPR);
++
++	/* Setup SDRAM (32MB, 16Bit*2, CAS=3) */
++	writel(SDCONF_CASLAT_3 | SDCONF_SIZE_256 | SDCONF_WIDTH_16 |
++	       SDCONF_CLKCTL | SDCONF_ACTIVE, SDCONF);
++
++	board_init_lowlevel_return();
 +}
+diff --git a/arch/arm/configs/clps711x_defconfig b/arch/arm/configs/clps711x_defconfig
+new file mode 100644
+index 0000000..cf2b3b6
+--- /dev/null
++++ b/arch/arm/configs/clps711x_defconfig
+@@ -0,0 +1,42 @@
++CONFIG_ARCH_CLPS711X=y
++CONFIG_AEABI=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++# CONFIG_MEMINFO is not set
++CONFIG_TEXT_BASE=0xc0780000
++CONFIG_EXPERIMENTAL=y
++CONFIG_BAUDRATE=57600
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_LZO=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/clep7212/env"
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_CRC=y
++CONFIG_CMD_CRC_CMP=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_BOOTM_INITRD=y
++CONFIG_CMD_BOOTZ=y
++# CONFIG_CMD_BOOTU is not set
++CONFIG_CMD_RESET=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
++# CONFIG_SPI is not set
++CONFIG_DRIVER_CFI=y
++# CONFIG_DRIVER_CFI_BANK_WIDTH_1 is not set
++# CONFIG_DRIVER_CFI_BANK_WIDTH_4 is not set
++CONFIG_MTD=y
++CONFIG_DISK=y
++CONFIG_DISK_WRITE=y
++CONFIG_DISK_INTF_PLATFORM_IDE=y
++CONFIG_FS_CRAMFS=y
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_LFN=y
++CONFIG_LZO_DECOMPRESS=y
+diff --git a/arch/arm/mach-clps711x/Kconfig b/arch/arm/mach-clps711x/Kconfig
+index c5e97ed..f531587 100644
+--- a/arch/arm/mach-clps711x/Kconfig
++++ b/arch/arm/mach-clps711x/Kconfig
+@@ -3,8 +3,17 @@ if ARCH_CLPS711X
+ choice
+ 	prompt "Cirrus Logic EP711x/EP721x/EP731x Board Type"
+ 
++config MACH_CLEP7212
++	bool "Cirrus Logic CLEP7212"
++	select MACH_HAS_LOWLEVEL_INIT
++	help
++	  Boards based on the Cirrus Logic 7212/7312 CPU
 +
-+static void clps711x_putc(struct console_device *cdev, char c)
-+{
-+	/* Wait until there is space in the FIFO */
-+	while (readl(SYSFLG(cdev->dev->id)) & SYSFLG_UTXFF) {
-+	}
+ endchoice
+ 
++config BOARDINFO
++	default "Cirrus Logic CLEP7212"
 +
-+	/* Send the character */
-+	writew(c, UARTDR(cdev->dev->id));
-+}
-+
-+static int clps711x_getc(struct console_device *cdev)
-+{
-+	u16 data;
-+
-+	/* Wait until there is data in the FIFO */
-+	while (readl(SYSFLG(cdev->dev->id)) & SYSFLG_URXFE) {
-+	}
-+
-+	data = readw(UARTDR(cdev->dev->id));
-+
-+	/* Check for an error flag */
-+	if (data & (UARTDR_FRMERR | UARTDR_PARERR | UARTDR_OVERR))
-+		return -1;
-+
-+	return (int)data;
-+}
-+
-+static int clps711x_tstc(struct console_device *cdev)
-+{
-+	return !(readl(SYSFLG(cdev->dev->id)) & SYSFLG_URXFE);
-+}
-+
-+static int clps711x_probe(struct device_d *dev)
-+{
-+	struct console_device *cdev = xzalloc(sizeof(struct console_device));
-+
-+	dev->priv = clk_get(dev, NULL);
-+	BUG_ON(!dev->priv);
-+
-+	cdev->dev	= dev;
-+	cdev->f_caps	= CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
-+	cdev->tstc	= clps711x_tstc;
-+	cdev->putc	= clps711x_putc;
-+	cdev->getc	= clps711x_getc;
-+	cdev->setbrg	= clps711x_setbaudrate;
-+	clps711x_init_port(cdev);
-+
-+	return console_register(cdev);
-+}
-+
-+static struct driver_d clps711x_driver = {
-+	.name	= "clps711x_serial",
-+	.probe	= clps711x_probe,
-+};
-+
-+static int clps711x_init(void)
-+{
-+	return platform_driver_register(&clps711x_driver);
-+}
-+console_initcall(clps711x_init);
+ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0xc0780000
 -- 
 1.7.8.6
 
