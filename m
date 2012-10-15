@@ -1,15 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TNlk0-0005AM-OX
- for barebox@lists.infradead.org; Mon, 15 Oct 2012 14:34:01 +0000
-Date: Mon, 15 Oct 2012 16:33:58 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121015143358.GO27665@pengutronix.de>
-References: <CA+pW49qskve7wDMqJe6gZrVX9O1UCOK4cdQXehwK3oLdamsyYQ@mail.gmail.com>
+Received: from mo5.mail-out.ovh.net ([178.32.228.5])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TNm1K-0005fp-Hw
+ for barebox@lists.infradead.org; Mon, 15 Oct 2012 14:51:56 +0000
+Received: from mail419.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id D30DEFFA294
+ for <barebox@lists.infradead.org>; Mon, 15 Oct 2012 16:58:31 +0200 (CEST)
+Date: Mon, 15 Oct 2012 16:49:35 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121015144935.GA5803@game.jcrosoft.org>
+References: <20121014205929.GU13639@game.jcrosoft.org>
+ <20121015071010.GI27665@pengutronix.de>
+ <20121015102307.GV13639@game.jcrosoft.org>
+ <20121015132125.GM27665@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CA+pW49qskve7wDMqJe6gZrVX9O1UCOK4cdQXehwK3oLdamsyYQ@mail.gmail.com>
+In-Reply-To: <20121015132125.GM27665@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,62 +28,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: malloc Out of memory after ubiattach operation
-To: Madhu koriginja <madhava.koriginja@gmail.com>
+Subject: Re: [PATCH 00/12] add bus device
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi,
-
-On Mon, Oct 15, 2012 at 07:57:09PM +0530, Madhu koriginja wrote:
-> After barebox up, I erased the /dev/nand0.rootfs.bb using erase command.
-> kernel is already present in the /dev/nand0.kernel.
-> After ubiattach command, if I try the boot I am getting the below error.
-> Actually my aim is to boot the kernel and it should mount to ubifs, to
-> simplify the problem and reproduce the same I am just trying the boot after
-> ubiattach instead of preparing the ubi0 device.
-> Barebox >/ubiattach /dev/nand0.rootfs
-> UBI: attaching mtd0 to ubi0
-> UBI: physical eraseblock size:   1048576 bytes (1024 KiB)
-> UBI: logical eraseblock size:    1044480 bytes
-> UBI: smallest flash I/O unit:    4096
-> UBI: sub-page size:              1024
-> UBI: VID header offset:          1024 (aligned 1024)
-> UBI: data offset:                4096
-> UBI: empty MTD device detected
-> UBI: create volume table (copy #1)
-> UBI: create volume table (copy #2)
-> registering /dev/ubi0
-> UBI: attached mtd0 to ubi0
-> UBI: MTD device name:            "nand0.rootfs"
-> UBI: MTD device size:            16 MiB
-> UBI: number of good PEBs:        16
-> UBI: number of bad PEBs:         0
-> UBI: max. allowed volumes:       128
-> UBI: wear-leveling threshold:    4096
-> UBI: number of internal volumes: 1
-> UBI: number of user volumes:     0
-> UBI: available PEBs:             10
-> UBI: total number of reserved PEBs: 6
-> UBI: number of PEBs reserved for bad PEB handling: 2
-> UBI: max/mean erase counter: 1/0
+On 15:21 Mon 15 Oct     , Sascha Hauer wrote:
+> On Mon, Oct 15, 2012 at 12:23:07PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 09:10 Mon 15 Oct     , Sascha Hauer wrote:
+> > > +	ret = register_device(&bus->bus_dev);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > >  	list_add_tail(&bus->list, &bus_list);
+> > >  
+> > >  	return 0;
+> > > diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+> > > index 5b7286a..395546b 100644
+> > > --- a/drivers/base/driver.c
+> > > +++ b/drivers/base/driver.c
+> > > @@ -127,6 +127,11 @@ int register_device(struct device_d *new_device)
+> > >  
+> > >  	list_add_tail(&new_device->bus_list, &new_device->bus->device_list);
+> > >  
+> > > +	if (!new_device->parent) {
+> > > +		new_device->parent = &new_device->bus->dev;
+> > > +		dev_add_child(new_device->parent, new_device);
+> > and I was wanting to add global name "barebox" and add everyone under to it
+> > 
+> > I choose to do let the bus manage the child
+> > and to create a device or not
 > 
-> Barebox >/ boot
-> booting kernel of type uimage from /dev/nand0.kernel.bb
-> bootm /dev/nand0.kernel.bb
-> requesting xmalloc size: 2456544
-> ERROR: out of memory
+> Any idea why we would need this?
+mdio bus as example I was thinking to drop the device as they are always
+attached to a ethernet device
 
-Try a make menuconfig and increase CONFIG_MALLOC_SIZE to whatever you
-can spare.
+input bus too
 
-Sascha
+as example some bus as device specific so no need to add device as the device
+is already here
 
+I already implement this on arm and so it in the kernel arm too
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
