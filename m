@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-we0-f177.google.com ([74.125.82.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TNYSZ-0004Cn-O0
- for barebox@lists.infradead.org; Mon, 15 Oct 2012 00:23:09 +0000
-Received: by mail-we0-f177.google.com with SMTP id u50so2886019wey.36
- for <barebox@lists.infradead.org>; Sun, 14 Oct 2012 17:23:02 -0700 (PDT)
+ id 1TNYXV-0004Yk-S6
+ for barebox@lists.infradead.org; Mon, 15 Oct 2012 00:28:15 +0000
+Received: by mail-we0-f177.google.com with SMTP id u50so2887448wey.36
+ for <barebox@lists.infradead.org>; Sun, 14 Oct 2012 17:28:12 -0700 (PDT)
 From: Vicente Bergas <vicencb@gmail.com>
-Date: Mon, 15 Oct 2012 02:22:36 +0200
-Message-Id: <1350260560-15528-3-git-send-email-vicencb@gmail.com>
+Date: Mon, 15 Oct 2012 02:22:40 +0200
+Message-Id: <1350260560-15528-7-git-send-email-vicencb@gmail.com>
 In-Reply-To: <1350260560-15528-1-git-send-email-vicencb@gmail.com>
 References: <1350260560-15528-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,144 +23,209 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] ARM: add rename PSR bits to match linux names
+Subject: [PATCH 6/6] OMAP4: clean voltage switch
 To: barebox@lists.infradead.org
 Cc: Vicente Bergas <vicencb@gmail.com>
 
+ Modified voltage setting to do a clean switch.
+ See: http://lists.denx.de/pipermail/u-boot/2012-March/119149.html
+
+ Also changed vdd_mpu and VCORE2 to 1.2 volt as in u-boot.
 
 Signed-off-by: Vicente Bergas <vicencb@gmail.com>
 ---
- arch/arm/cpu/exceptions.S     |  1 -
- arch/arm/cpu/interrupts.c     |  6 ++---
- arch/arm/include/asm/ptrace.h | 55 +++++++++++++++++++++++--------------------
- 3 files changed, 33 insertions(+), 29 deletions(-)
+ arch/arm/boards/archosg9/mux.c                  |  9 +----
+ arch/arm/mach-omap/include/mach/omap4-clock.h   |  2 +-
+ arch/arm/mach-omap/include/mach/omap4-silicon.h |  2 +-
+ arch/arm/mach-omap/omap4_clock.c                | 37 +++++++++++++++++-
+ arch/arm/mach-omap/omap4_generic.c              | 52 ++++---------------------
+ 5 files changed, 46 insertions(+), 56 deletions(-)
 
-diff --git a/arch/arm/cpu/exceptions.S b/arch/arm/cpu/exceptions.S
-index fe63a37..115c4e5 100644
---- a/arch/arm/cpu/exceptions.S
-+++ b/arch/arm/cpu/exceptions.S
-@@ -35,7 +35,6 @@
- #define S_R0		0
+diff --git a/arch/arm/boards/archosg9/mux.c b/arch/arm/boards/archosg9/mux.c
+index 7ca5057..c8695c0 100644
+--- a/arch/arm/boards/archosg9/mux.c
++++ b/arch/arm/boards/archosg9/mux.c
+@@ -441,7 +441,7 @@ static const struct pad_conf_entry wkup_padconf_array[] = {
+ 	/* gpio_wk30           */
+ 	{ FREF_CLK3_REQ        ,             M3 },
+ 	/* gpio_wk7            */ /* tps62361_vsel0 */
+-	{ FREF_CLK4_REQ        , IEN | PTU | M3 },
++	{ FREF_CLK4_REQ        ,             M3 },
+ };
  
- #define MODE_SVC	0x13
--#define I_BIT		0x80
- 
- /*
-  * use bad_save_user_regs for abort/prefetch/undef/swi ...
-diff --git a/arch/arm/cpu/interrupts.c b/arch/arm/cpu/interrupts.c
-index 4ed562f..6e60adc 100644
---- a/arch/arm/cpu/interrupts.c
-+++ b/arch/arm/cpu/interrupts.c
-@@ -57,9 +57,9 @@ void show_regs (struct pt_regs *regs)
- 	printf ("r3 : %08lx  r2 : %08lx  r1 : %08lx  r0 : %08lx\n",
- 		regs->ARM_r3, regs->ARM_r2, regs->ARM_r1, regs->ARM_r0);
- 	printf ("Flags: %c%c%c%c",
--		flags & CC_N_BIT ? 'N' : 'n',
--		flags & CC_Z_BIT ? 'Z' : 'z',
--		flags & CC_C_BIT ? 'C' : 'c', flags & CC_V_BIT ? 'V' : 'v');
-+		flags & PSR_N_BIT ? 'N' : 'n',
-+		flags & PSR_Z_BIT ? 'Z' : 'z',
-+		flags & PSR_C_BIT ? 'C' : 'c', flags & PSR_V_BIT ? 'V' : 'v');
- 	printf ("  IRQs %s  FIQs %s  Mode %s%s\n",
- 		interrupts_enabled (regs) ? "on" : "off",
- 		fast_interrupts_enabled (regs) ? "on" : "off",
-diff --git a/arch/arm/include/asm/ptrace.h b/arch/arm/include/asm/ptrace.h
-index b384369..e0695bb 100644
---- a/arch/arm/include/asm/ptrace.h
-+++ b/arch/arm/include/asm/ptrace.h
-@@ -23,25 +23,30 @@
- /*
-  * PSR bits
-  */
--#define USR26_MODE	0x00
--#define FIQ26_MODE	0x01
--#define IRQ26_MODE	0x02
--#define SVC26_MODE	0x03
--#define USR_MODE	0x10
--#define FIQ_MODE	0x11
--#define IRQ_MODE	0x12
--#define SVC_MODE	0x13
--#define ABT_MODE	0x17
--#define UND_MODE	0x1b
--#define SYSTEM_MODE	0x1f
--#define MODE_MASK	0x1f
--#define T_BIT		0x20
--#define F_BIT		0x40
--#define I_BIT		0x80
--#define CC_V_BIT	(1 << 28)
--#define CC_C_BIT	(1 << 29)
--#define CC_Z_BIT	(1 << 30)
--#define CC_N_BIT	(1 << 31)
-+#define USR26_MODE	0x00000000
-+#define FIQ26_MODE	0x00000001
-+#define IRQ26_MODE	0x00000002
-+#define SVC26_MODE	0x00000003
-+#define USR_MODE	0x00000010
-+#define FIQ_MODE	0x00000011
-+#define IRQ_MODE	0x00000012
-+#define SVC_MODE	0x00000013
-+#define ABT_MODE	0x00000017
-+#define UND_MODE	0x0000001b
-+#define SYSTEM_MODE	0x0000001f
-+#define MODE32_BIT	0x00000010
-+#define MODE_MASK	0x0000001f
-+#define PSR_T_BIT	0x00000020
-+#define PSR_F_BIT	0x00000040
-+#define PSR_I_BIT	0x00000080
-+#define PSR_A_BIT	0x00000100
-+#define PSR_E_BIT	0x00000200
-+#define PSR_J_BIT	0x01000000
-+#define PSR_Q_BIT	0x08000000
-+#define PSR_V_BIT	0x10000000
-+#define PSR_C_BIT	0x20000000
-+#define PSR_Z_BIT	0x40000000
-+#define PSR_N_BIT	0x80000000
- #define PCMASK		0
- 
- #ifndef __ASSEMBLY__
-@@ -79,7 +84,7 @@ struct pt_regs {
- 
- #ifdef CONFIG_ARM_THUMB
- #define thumb_mode(regs) \
--	(((regs)->ARM_cpsr & T_BIT))
-+	(((regs)->ARM_cpsr & PSR_T_BIT))
- #else
- #define thumb_mode(regs) (0)
- #endif
-@@ -88,13 +93,13 @@ struct pt_regs {
- 	((regs)->ARM_cpsr & MODE_MASK)
- 
- #define interrupts_enabled(regs) \
--	(!((regs)->ARM_cpsr & I_BIT))
-+	(!((regs)->ARM_cpsr & PSR_I_BIT))
- 
- #define fast_interrupts_enabled(regs) \
--	(!((regs)->ARM_cpsr & F_BIT))
-+	(!((regs)->ARM_cpsr & PSR_F_BIT))
- 
- #define condition_codes(regs) \
--	((regs)->ARM_cpsr & (CC_V_BIT|CC_C_BIT|CC_Z_BIT|CC_N_BIT))
-+	((regs)->ARM_cpsr & (PSR_V_BIT | PSR_C_BIT | PSR_Z_BIT | PSR_N_BIT))
- 
- /* Are the current registers suitable for user mode?
-  * (used to maintain security in signal handlers)
-@@ -102,13 +107,14 @@ struct pt_regs {
- static inline int valid_user_regs(struct pt_regs *regs)
- {
- 	if ((regs->ARM_cpsr & 0xf) == 0 &&
--	    (regs->ARM_cpsr & (F_BIT|I_BIT)) == 0)
-+	    (regs->ARM_cpsr & (PSR_F_BIT | PSR_I_BIT)) == 0)
- 		return 1;
- 
- 	/*
- 	 * Force CPSR to something logical...
- 	 */
--	regs->ARM_cpsr &= (CC_V_BIT|CC_C_BIT|CC_Z_BIT|CC_N_BIT|0x10);
-+	regs->ARM_cpsr &= (PSR_V_BIT | PSR_C_BIT | PSR_Z_BIT | PSR_N_BIT |
-+				0x10);
- 
- 	return 0;
+ void set_muxconf_regs(void){
+@@ -449,11 +449,4 @@ void set_muxconf_regs(void){
+ 		core_padconf_array, ARRAY_SIZE(core_padconf_array));
+ 	omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP,
+ 		wkup_padconf_array, ARRAY_SIZE(wkup_padconf_array));
+-
+-	/* gpio_wk7 is used for controlling TPS on 4460 */
+-	if (omap4_revision() >= OMAP4460_ES1_0) {
+-		writew(M3, OMAP44XX_CONTROL_PADCONF_WKUP + FREF_CLK4_REQ);
+-		/* Enable GPIO-1 clocks before TPS initialization */
+-		omap4_enable_gpio1_wup_clocks();
+-	}
  }
+diff --git a/arch/arm/mach-omap/include/mach/omap4-clock.h b/arch/arm/mach-omap/include/mach/omap4-clock.h
+index e5302d6..8cbc061 100644
+--- a/arch/arm/mach-omap/include/mach/omap4-clock.h
++++ b/arch/arm/mach-omap/include/mach/omap4-clock.h
+@@ -335,5 +335,5 @@ void omap4_lock_core_dpll_shadow(const struct dpll_param *param);
+ void omap4_enable_gpio1_wup_clocks(void);
+ void omap4_enable_gpio_clocks(void);
+ void omap4_enable_all_clocks(void);
+-void omap4_do_scale_tps62361(u32 reg, u32 volt_mv);
++void omap4_do_scale_tps62361(int vsel0_pin, u32 reg, u32 volt_mv);
+ 
+diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+index 71ffe39..137cc88 100644
+--- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
++++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+@@ -196,6 +196,6 @@ struct dpll_param;
+ void omap4_ddr_init(const struct ddr_regs *, const struct dpll_param *);
+ void omap4_power_i2c_send(u32);
+ unsigned int omap4_revision(void);
+-noinline int omap4_scale_vcores(unsigned vsel0_pin);
++noinline int omap4_scale_vcores(int vsel0_pin);
+ 
+ #endif
+diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
+index 1481f16..f7927d2 100644
+--- a/arch/arm/mach-omap/omap4_clock.c
++++ b/arch/arm/mach-omap/omap4_clock.c
+@@ -394,9 +394,38 @@ void omap4_enable_all_clocks(void)
+ 	sr32(CM_L3INIT_USBPHY_CLKCTRL, 0, 32, 0x301);
+ }
+ 
+-void omap4_do_scale_tps62361(u32 reg, u32 volt_mv)
++#define GPIO_MASK		0x1f
++#define GPIO_OE			0x34
++#define GPIO_CLEARDATAOUT	0x90
++#define GPIO_SETDATAOUT		0x94
++
++static void __iomem *omap4_get_gpio_base(unsigned gpio)
++{
++	void __iomem *base;
++
++	if (gpio < 32)
++		base = (void *)0x4a310100;
++	else
++		base = (void *)(0x48053100 + ((gpio & ~GPIO_MASK) << 8));
++
++	return base;
++}
++
++void omap4_do_scale_tps62361(int vsel0_pin, u32 reg, u32 volt_mv)
+ {
+ 	u32 temp, step;
++	void __iomem *base;
++	u32 val;
++
++	/* Pull the GPIO low to select SET0 register, while we program SET1 */
++	if (vsel0_pin >= 0) {
++		base = omap4_get_gpio_base(vsel0_pin);
++		val = 1 << (vsel0_pin & GPIO_MASK);
++		writel(val, base + GPIO_CLEARDATAOUT);
++		val =  readl(base + GPIO_OE);
++		val &= (1 << (vsel0_pin & GPIO_MASK));
++		writel(val, base + GPIO_OE);
++	}
+ 
+ 	step = volt_mv - TPS62361_BASE_VOLT_MV;
+ 	step /= 10;
+@@ -411,4 +440,10 @@ void omap4_do_scale_tps62361(u32 reg, u32 volt_mv)
+ 	if (!wait_on_value(OMAP44XX_PRM_VC_VAL_BYPASS_VALID_BIT, 0,
+ 				OMAP44XX_PRM_VC_VAL_BYPASS, LDELAY))
+ 		puts("Scaling voltage failed for vdd_mpu from TPS\n");
++
++	/* Pull the GPIO high to select SET1 register */
++	if (vsel0_pin >= 0) {
++		val = 1 << (vsel0_pin & GPIO_MASK);
++		writel(val, base + GPIO_SETDATAOUT);
++	}
+ }
+diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+index 765fcb5..8e692ba 100644
+--- a/arch/arm/mach-omap/omap4_generic.c
++++ b/arch/arm/mach-omap/omap4_generic.c
+@@ -495,27 +495,11 @@ enum omap_boot_src omap4_bootsrc(void)
+ 	return OMAP_BOOTSRC_UNKNOWN;
+ }
+ 
+-#define GPIO_MASK 0x1f
+-
+-static void __iomem *omap4_get_gpio_base(unsigned gpio)
+-{
+-	void __iomem *base;
+-
+-	if (gpio < 32)
+-		base = (void *)0x4a310000;
+-	else
+-		base = (void *)(0x48053000 + ((gpio & ~GPIO_MASK) << 8));
+-
+-	return base;
+-}
+-
+ #define I2C_SLAVE 0x12
+ 
+-noinline int omap4_scale_vcores(unsigned vsel0_pin)
++noinline int omap4_scale_vcores(int vsel0_pin)
+ {
+-	void __iomem *base;
+ 	unsigned int rev = omap4_revision();
+-	u32 val = 0;
+ 
+ 	/* For VC bypass only VCOREx_CGF_FORCE  is necessary and
+ 	 * VCOREx_CFG_VOLTAGE  changes can be discarded
+@@ -523,33 +507,6 @@ noinline int omap4_scale_vcores(unsigned vsel0_pin)
+ 	writel(0, OMAP44XX_PRM_VC_CFG_I2C_MODE);
+ 	writel(0x6026, OMAP44XX_PRM_VC_CFG_I2C_CLK);
+ 
+-	/* TPS - supplies vdd_mpu on 4460 */
+-	if (rev >= OMAP4460_ES1_0) {
+-		/*
+-		 * Setup SET1 and SET0 with right values so that kernel
+-		 * can use either of them based on its needs.
+-		 */
+-		omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET0, 1430);
+-		omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET1, 1430);
+-
+-		/*
+-		 * Select SET1 in TPS62361:
+-		 * VSEL1 is grounded on board. So the following selects
+-		 * VSEL1 = 0 and VSEL0 = 1
+-		 */
+-		base = omap4_get_gpio_base(vsel0_pin);
+-
+-		val = 1 << (vsel0_pin & GPIO_MASK);
+-		writel(val, base + 0x190);
+-
+-		val =  readl(base + 0x134);
+-		val &= (1 << (vsel0_pin & GPIO_MASK));
+-		writel(val, base + 0x134);
+-
+-		val = 1 << (vsel0_pin & GPIO_MASK);
+-		writel(val, base + 0x194);
+-	}
+-
+ 	/* set VCORE1 force VSEL */
+ 	/*
+ 	 * 4430 : supplies vdd_mpu
+@@ -568,8 +525,13 @@ noinline int omap4_scale_vcores(unsigned vsel0_pin)
+ 		/* 0x55: i2c addr, 28: ~ 1200 mvolts*/
+ 		omap4_power_i2c_send((0x2855 << 8) | I2C_SLAVE);
+ 
++	/* TPS - supplies vdd_mpu on 4460 */
++	if (rev >= OMAP4460_ES1_0)
++		omap4_do_scale_tps62361(vsel0_pin,
++			TPS62361_REG_ADDR_SET1, 1203);
++
+ 	/* FIXME: set VCORE2 force VSEL, Check the reset value */
+-	omap4_power_i2c_send((0x295B << 8) | I2C_SLAVE);
++	omap4_power_i2c_send((0x285B << 8) | I2C_SLAVE);
+ 
+ 	/* set VCORE3 force VSEL */
+ 	switch (rev) {
 -- 
 1.7.12.3
 
