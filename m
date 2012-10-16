@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-f177.google.com ([209.85.212.177])
+Received: from mail-wg0-f49.google.com ([74.125.82.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TODEI-0003Kg-7t
- for barebox@lists.infradead.org; Tue, 16 Oct 2012 19:55:07 +0000
-Received: by mail-wi0-f177.google.com with SMTP id hj13so268905wib.0
- for <barebox@lists.infradead.org>; Tue, 16 Oct 2012 12:55:04 -0700 (PDT)
+ id 1TODEG-0003KT-Tt
+ for barebox@lists.infradead.org; Tue, 16 Oct 2012 19:55:05 +0000
+Received: by mail-wg0-f49.google.com with SMTP id gg4so3902164wgb.18
+ for <barebox@lists.infradead.org>; Tue, 16 Oct 2012 12:55:02 -0700 (PDT)
 From: Franck Jullien <franck.jullien@gmail.com>
-Date: Tue, 16 Oct 2012 21:54:56 +0200
-Message-Id: <1350417296-26963-3-git-send-email-franck.jullien@gmail.com>
+Date: Tue, 16 Oct 2012 21:54:55 +0200
+Message-Id: <1350417296-26963-2-git-send-email-franck.jullien@gmail.com>
 In-Reply-To: <1350417296-26963-1-git-send-email-franck.jullien@gmail.com>
 References: <1350417296-26963-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,52 +23,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] openrisc: generic board cleanup
+Subject: [PATCH 1/2] openrisc: switch to defaultenv-2 and change boardinfo
 To: barebox@lists.infradead.org
 
 Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
----
- arch/openrisc/boards/generic/config.h  |    7 +++----
- arch/openrisc/boards/generic/generic.c |    2 +-
- 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/openrisc/boards/generic/config.h b/arch/openrisc/boards/generic/config.h
-index 88d2929..95260cd 100644
---- a/arch/openrisc/boards/generic/config.h
-+++ b/arch/openrisc/boards/generic/config.h
-@@ -1,16 +1,15 @@
- #ifndef _GENERIC_NAMES_H_
- #define _GENERIC_NAMES_H_
+---
+ arch/openrisc/Kconfig                   |    3 ++-
+ arch/openrisc/configs/generic_defconfig |    4 ++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/arch/openrisc/Kconfig b/arch/openrisc/Kconfig
+index a3cb337..bcfd67f 100644
+--- a/arch/openrisc/Kconfig
++++ b/arch/openrisc/Kconfig
+@@ -1,6 +1,7 @@
+ config OPENRISC
+ 	bool
+ 	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
++	select HAVE_DEFAULT_ENVIRONMENT_NEW
+ 	default y
  
--#define CONFIG_SYS_CLK_FREQ		20000000
-+#define CONFIG_SYS_CLK_FREQ		50000000
+ # not used
+@@ -9,7 +10,7 @@ config ARCH_TEXT_BASE
+ 	default 0x00000000
  
--#define OPENRISC_TIMER_FREQ		20000000
-+#define OPENRISC_TIMER_FREQ		CONFIG_SYS_CLK_FREQ
+ config BOARDINFO
+-	default "Openrisc simulator" if GENERIC
++	default "or1k" if GENERIC
  
- #define OPENRISC_SOPC_MEMORY_BASE	0x00000000
- #define OPENRISC_SOPC_MEMORY_SIZE	0x02000000
- 
-+#define OPENRISC_SOPC_UART_FREQ		CONFIG_SYS_CLK_FREQ
- #define OPENRISC_SOPC_UART_BASE		0x90000000
--#define CONFIG_SYS_UART_FREQ		CONFIG_SYS_CLK_FREQ
--#define CONFIG_SYS_UART_BAUD		115200
- 
- /* We reserve 256K for barebox */
- #define BAREBOX_RESERVED_SIZE		0x40000
-diff --git a/arch/openrisc/boards/generic/generic.c b/arch/openrisc/boards/generic/generic.c
-index 54c73a5..14b5e18 100644
---- a/arch/openrisc/boards/generic/generic.c
-+++ b/arch/openrisc/boards/generic/generic.c
-@@ -5,7 +5,7 @@
- #include <ns16550.h>
- 
- static struct NS16550_plat serial_plat = {
--	.clock = 50000000,      /* 48MHz (APLL96/2) */
-+	.clock = OPENRISC_SOPC_UART_FREQ,
- 	.shift = 0,
- };
- 
+ choice
+ 	prompt "Select your board"
+diff --git a/arch/openrisc/configs/generic_defconfig b/arch/openrisc/configs/generic_defconfig
+index 68e0371..7ae85b0 100644
+--- a/arch/openrisc/configs/generic_defconfig
++++ b/arch/openrisc/configs/generic_defconfig
+@@ -3,13 +3,13 @@ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+ CONFIG_PARTITION=y
+-CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_SAVEENV=y
+-CONFIG_CMD_LOADENV=y
+ CONFIG_CMD_EXPORT=y
+ CONFIG_CMD_PRINTENV=y
+ CONFIG_CMD_TIME=y
++CONFIG_CMD_ECHO_E=y
+ CONFIG_CMD_MEMINFO=y
+ CONFIG_CMD_FLASH=y
+ # CONFIG_CMD_BOOTM is not set
 -- 
 1.7.1
 
