@@ -1,21 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo4.mail-out.ovh.net ([178.33.104.253]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TO2qZ-00082k-K5
- for barebox@lists.infradead.org; Tue, 16 Oct 2012 08:49:56 +0000
-Received: from mail97.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 9E8E9104F663
- for <barebox@lists.infradead.org>; Tue, 16 Oct 2012 10:56:31 +0200 (CEST)
-Date: Tue, 16 Oct 2012 10:47:34 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121016084734.GI5803@game.jcrosoft.org>
-References: <1350328918-15383-1-git-send-email-s.hauer@pengutronix.de>
- <20121016072248.GE5803@game.jcrosoft.org>
- <20121016073052.GV27665@pengutronix.de>
+Received: from mail-oa0-f49.google.com ([209.85.219.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TO3Hg-00021t-Uy
+ for barebox@lists.infradead.org; Tue, 16 Oct 2012 09:17:58 +0000
+Received: by mail-oa0-f49.google.com with SMTP id l10so6250820oag.36
+ for <barebox@lists.infradead.org>; Tue, 16 Oct 2012 02:17:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20121016073052.GV27665@pengutronix.de>
+In-Reply-To: <20121016084658.GH5803@game.jcrosoft.org>
+References: <20121016080209.GA19402@greatfirst.com>
+ <20121016084658.GH5803@game.jcrosoft.org>
+Date: Tue, 16 Oct 2012 11:17:55 +0200
+Message-ID: <CAB_54W4acHCCot06K9MvK31WU_Hbhsco6MSQQ2hmunBnkHGdcA@mail.gmail.com>
+From: Alexander Aring <alex.aring@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,29 +20,131 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============2040569243758440123=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM bootz: use request_sdram_region
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: sandbox whith oftree on making error
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On 09:30 Tue 16 Oct     , Sascha Hauer wrote:
-> On Tue, Oct 16, 2012 at 09:22:48AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 21:21 Mon 15 Oct     , Sascha Hauer wrote:
-> > > We now have request_sdram_region to request a region. Use
-> > > it instead of a comparison with MALLOC_BASE.
-> > > 
-> > do we really need to keep bootz??
-> 
-> As long as it does not cause a real maintenance burden we can keep it.
-bootm do the same job
+--===============2040569243758440123==
+Content-Type: multipart/alternative; boundary=bcaec54c52fc15a9c104cc29a139
 
-Best Regards,
-J.
+--bcaec54c52fc15a9c104cc29a139
+Content-Type: text/plain; charset=UTF-8
+
+Hi,
+
+maybe we can add a simulated gpio driver in sandbox?
+
+Regards
+Alexander Aring
+
+2012/10/16 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
+> On 16:02 Tue 16 Oct     , zzs wrote:
+> > my code baseed 7423f13
+> >
+> > when making sandox with command oftree on then I got the flowwing
+> > build error:
+> >
+> > CC      drivers/of/gpio.o
+> > In file included from /home/zzs/work/repos/barebox/drivers/of/gpio.c:6:0:
+> > /home/zzs/work/repos/barebox/include/gpio.h:4:22: fatal error:
+> asm/gpio.h: No such file or directory
+> > compilation terminated.
+> > make[3]: *** [drivers/of/gpio.o] Error 1
+> > make[2]: *** [drivers/of] Error 2
+> > make[1]: *** [drivers] Error 2
+> > make: *** [_all] Error 2
+> >
+> > My building commandline like this:
+> >     CROSS_COMPILE= ARCH=sandbox make O=objtree sandbox_defconfig
+> >     CROSS_COMPILE= ARCH=sandbox make O=objtree xconfig
+> >         .... turn oftree on
+> >     CROSS_COMPILE= ARCH=sandbox make O=objtree
+> >
+> > I think this is a bug
+> I'm not sure oftree make sense on sandbox
+>
+> but anyway the sandbox have no gpio support
+>
+> so gpio.c can not be compiled
+>
+> Best Regards,
+> J.
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+>
+
+--bcaec54c52fc15a9c104cc29a139
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Hi,<br><br>maybe we can add a simulated gpio driver in sandbox?<br><br>Rega=
+rds<br>Alexander Aring<br><br><div class=3D"gmail_quote">2012/10/16 Jean-Ch=
+ristophe PLAGNIOL-VILLARD <span dir=3D"ltr">&lt;<a href=3D"mailto:plagnioj@=
+jcrosoft.com" target=3D"_blank">plagnioj@jcrosoft.com</a>&gt;</span><br>
+<blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1p=
+x #ccc solid;padding-left:1ex"><div class=3D"im">On 16:02 Tue 16 Oct =C2=A0=
+ =C2=A0 , zzs wrote:<br>
+&gt; my code baseed 7423f13<br>
+&gt;<br>
+&gt; when making sandox with command oftree on then I got the flowwing<br>
+&gt; build error:<br>
+&gt;<br>
+&gt; CC =C2=A0 =C2=A0 =C2=A0drivers/of/gpio.o<br>
+&gt; In file included from /home/zzs/work/repos/barebox/drivers/of/gpio.c:6=
+:0:<br>
+&gt; /home/zzs/work/repos/barebox/include/gpio.h:4:22: fatal error: asm/gpi=
+o.h: No such file or directory<br>
+&gt; compilation terminated.<br>
+&gt; make[3]: *** [drivers/of/gpio.o] Error 1<br>
+&gt; make[2]: *** [drivers/of] Error 2<br>
+&gt; make[1]: *** [drivers] Error 2<br>
+&gt; make: *** [_all] Error 2<br>
+&gt;<br>
+&gt; My building commandline like this:<br>
+&gt; =C2=A0 =C2=A0 CROSS_COMPILE=3D ARCH=3Dsandbox make O=3Dobjtree sandbox=
+_defconfig<br>
+&gt; =C2=A0 =C2=A0 CROSS_COMPILE=3D ARCH=3Dsandbox make O=3Dobjtree xconfig=
+<br>
+&gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 .... turn oftree on<br>
+&gt; =C2=A0 =C2=A0 CROSS_COMPILE=3D ARCH=3Dsandbox make O=3Dobjtree<br>
+&gt;<br>
+&gt; I think this is a bug<br>
+</div>I&#39;m not sure oftree make sense on sandbox<br>
+<br>
+but anyway the sandbox have no gpio support<br>
+<br>
+so gpio.c can not be compiled<br>
+<br>
+Best Regards,<br>
+J.<br>
+<div class=3D"HOEnZb"><div class=3D"h5"><br>
+_______________________________________________<br>
+barebox mailing list<br>
+<a href=3D"mailto:barebox@lists.infradead.org">barebox@lists.infradead.org<=
+/a><br>
+<a href=3D"http://lists.infradead.org/mailman/listinfo/barebox" target=3D"_=
+blank">http://lists.infradead.org/mailman/listinfo/barebox</a><br>
+</div></div></blockquote></div><br>
+
+--bcaec54c52fc15a9c104cc29a139--
+
+
+--===============2040569243758440123==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============2040569243758440123==--
