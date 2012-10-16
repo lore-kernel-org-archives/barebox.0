@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOElQ-0001ly-U5
- for barebox@lists.infradead.org; Tue, 16 Oct 2012 21:33:25 +0000
-Date: Tue, 16 Oct 2012 23:33:22 +0200
+ id 1TOErm-0002iA-Tc
+ for barebox@lists.infradead.org; Tue, 16 Oct 2012 21:39:59 +0000
+Date: Tue, 16 Oct 2012 23:39:56 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121016213322.GE27665@pengutronix.de>
-References: <1350417296-26963-1-git-send-email-franck.jullien@gmail.com>
- <1350417296-26963-3-git-send-email-franck.jullien@gmail.com>
+Message-ID: <20121016213956.GH27665@pengutronix.de>
+References: <1350318405-20081-1-git-send-email-shc_work@mail.ru>
+ <1350318405-20081-2-git-send-email-shc_work@mail.ru>
+ <20121015175852.GC5803@game.jcrosoft.org>
+ <20121015215839.GR27665@pengutronix.de>
+ <20121016080801.GF5803@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1350417296-26963-3-git-send-email-franck.jullien@gmail.com>
+In-Reply-To: <20121016080801.GF5803@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,35 +26,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] openrisc: generic board cleanup
-To: Franck Jullien <franck.jullien@gmail.com>
+Subject: Re: [PATCH v2 2/3] ARM: clps711x: Add serial driver
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 16, 2012 at 09:54:56PM +0200, Franck Jullien wrote:
-> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
-> ---
->  arch/openrisc/boards/generic/config.h  |    7 +++----
->  arch/openrisc/boards/generic/generic.c |    2 +-
->  2 files changed, 4 insertions(+), 5 deletions(-)
+On Tue, Oct 16, 2012 at 10:08:01AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > 
+> > > here 4 resources
+> > 
+> > We already had this. This SoC has a very strange register layout. The
+> > registers for the UARTs are spread around the SoC and the registers
+> > are not even exclusively used for the UARTs. They have bits which are
+> > also used for the timer and other stuff.
+> use the device id to select the register is wrong
 > 
-> diff --git a/arch/openrisc/boards/generic/config.h b/arch/openrisc/boards/generic/config.h
-> index 88d2929..95260cd 100644
-> --- a/arch/openrisc/boards/generic/config.h
-> +++ b/arch/openrisc/boards/generic/config.h
-> @@ -1,16 +1,15 @@
->  #ifndef _GENERIC_NAMES_H_
->  #define _GENERIC_NAMES_H_
->  
-> -#define CONFIG_SYS_CLK_FREQ		20000000
-> +#define CONFIG_SYS_CLK_FREQ		50000000
->  
-> -#define OPENRISC_TIMER_FREQ		20000000
-> +#define OPENRISC_TIMER_FREQ		CONFIG_SYS_CLK_FREQ
+> we need to pass the register via resource (without request) or platform data
+> > 
+> > > > +static int clps711x_tstc(struct console_device *cdev)
+> > > > +{
+> > > > +	return !(readl(SYSFLG(cdev->dev->id)) & SYSFLG_URXFE);
+> > > factorise those pull status as
+> > > 
+> > > status int xxx(data, mask) {}
+> > 
+> > I don'r understand this. This is a single register read, there's not
+> > much to factorize and the code is easy to read.
+> he use the code at a least 2 place
 
-The timer frequency changes from 20MHz to 50MHz. Is this intended?
+Testing for a bit like above is done a thousand times all around the
+kernel and barebox. There is nothing to factorize. The way Alexander did
+it is perfectly fine.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
