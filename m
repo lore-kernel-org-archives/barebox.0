@@ -1,21 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]
+Received: from 8.mo4.mail-out.ovh.net ([188.165.33.112]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TO2Fy-0005Dm-ES
- for barebox@lists.infradead.org; Tue, 16 Oct 2012 08:12:07 +0000
+ id 1TO2py-0007ya-5O
+ for barebox@lists.infradead.org; Tue, 16 Oct 2012 08:49:18 +0000
 Received: from mail97.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 07C5E104F650
- for <barebox@lists.infradead.org>; Tue, 16 Oct 2012 10:18:44 +0200 (CEST)
-Date: Tue, 16 Oct 2012 10:09:47 +0200
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 2003E104E78B
+ for <barebox@lists.infradead.org>; Tue, 16 Oct 2012 10:55:54 +0200 (CEST)
+Date: Tue, 16 Oct 2012 10:46:58 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121016080947.GG5803@game.jcrosoft.org>
-References: <1350318405-20081-1-git-send-email-shc_work@mail.ru>
- <20121015175414.GB5803@game.jcrosoft.org>
- <20121015225600.0a10a803c98d4213e8e2a1a3@mail.ru>
+Message-ID: <20121016084658.GH5803@game.jcrosoft.org>
+References: <20121016080209.GA19402@greatfirst.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121015225600.0a10a803c98d4213e8e2a1a3@mail.ru>
+In-Reply-To: <20121016080209.GA19402@greatfirst.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,53 +26,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] ARM: Add CLPS711X architecture
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: sandbox whith oftree on making error
+To: barebox <barebox@lists.infradead.org>
 
-On 22:56 Mon 15 Oct     , Alexander Shiyan wrote:
-> On Mon, 15 Oct 2012 19:54:14 +0200
-> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
+On 16:02 Tue 16 Oct     , zzs wrote:
+> my code baseed 7423f13
 > 
-> > On 20:26 Mon 15 Oct     , Alexander Shiyan wrote:
-> > > This patch adds new architecture (CLPS711X) into barebox.
-> > > The core-logic functionality of the device is built around an ARM720T
-> > > processor running at clock speeds up to 90 MHz.
-> > > 
-> > > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ...
-> > > +#include <linux/clkdev.h>
-> > split the code in 2
-> >  - clock
-> >  - clocksource in drivers/clocksource
-> >  and cs as a driver
-> drivers/clocksource is missing in master repository and as far I know we are
-> made patches for "master" but not for "next".
-so base your code on next
+> when making sandox with command oftree on then I got the flowwing
+> build error:
 > 
-> ...
-> > > +	osc = 3686400;
-> > > +	ext = 13000000;
-> > creaet a clock for this
-> This is constant frequencies and it is used only here. Is this really need?
-but it's still a clock if the driver need clock info fixed or not he request a
-clock as the value can change across soc
+> CC      drivers/of/gpio.o
+> In file included from /home/zzs/work/repos/barebox/drivers/of/gpio.c:6:0:
+> /home/zzs/work/repos/barebox/include/gpio.h:4:22: fatal error: asm/gpio.h: No such file or directory
+> compilation terminated.
+> make[3]: *** [drivers/of/gpio.o] Error 1
+> make[2]: *** [drivers/of] Error 2
+> make[1]: *** [drivers] Error 2
+> make: *** [_all] Error 2
 > 
-> ...
-> > > +void clps711x_add_uart(unsigned int id)
-> > > +{
-> > > +	add_generic_device_res("clps711x_serial", id, NULL, 0, NULL);
-> > where is the base address address?
-> Base address is not needed because it is impossible to request resource for
-> registers for this CPU. Registers is shared for all devices.
+> My building commandline like this:
+>     CROSS_COMPILE= ARCH=sandbox make O=objtree sandbox_defconfig
+>     CROSS_COMPILE= ARCH=sandbox make O=objtree xconfig
+>         .... turn oftree on
+>     CROSS_COMPILE= ARCH=sandbox make O=objtree
 > 
-> > where is the check on the id?
-> Simple check is provided in serial driver by definition, for example:
-> SYSFLG(x) ? SYSFLG2 : SYSFLG1, where x is "id".
-> But, you are right, I will made one more check for id in "probe".
-> 
-> -- 
-> Alexander Shiyan <shc_work@mail.ru>
+> I think this is a bug
+I'm not sure oftree make sense on sandbox
+
+but anyway the sandbox have no gpio support
+
+so gpio.c can not be compiled
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
