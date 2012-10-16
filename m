@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOEgc-0000sm-Ue
- for barebox@lists.infradead.org; Tue, 16 Oct 2012 21:28:27 +0000
-Date: Tue, 16 Oct 2012 23:28:25 +0200
+ id 1TOElQ-0001ly-U5
+ for barebox@lists.infradead.org; Tue, 16 Oct 2012 21:33:25 +0000
+Date: Tue, 16 Oct 2012 23:33:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121016212825.GD27665@pengutronix.de>
-References: <1350387231-27935-1-git-send-email-j.weitzel@phytec.de>
+Message-ID: <20121016213322.GE27665@pengutronix.de>
+References: <1350417296-26963-1-git-send-email-franck.jullien@gmail.com>
+ <1350417296-26963-3-git-send-email-franck.jullien@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1350387231-27935-1-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <1350417296-26963-3-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] OMAP: Documentation file misspelled
-To: Jan Weitzel <j.weitzel@phytec.de>
+Subject: Re: [PATCH 2/2] openrisc: generic board cleanup
+To: Franck Jullien <franck.jullien@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 16, 2012 at 01:33:51PM +0200, Jan Weitzel wrote:
-> based on next
+On Tue, Oct 16, 2012 at 09:54:56PM +0200, Franck Jullien wrote:
+> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+> ---
+>  arch/openrisc/boards/generic/config.h  |    7 +++----
+>  arch/openrisc/boards/generic/generic.c |    2 +-
+>  2 files changed, 4 insertions(+), 5 deletions(-)
 > 
-> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+> diff --git a/arch/openrisc/boards/generic/config.h b/arch/openrisc/boards/generic/config.h
+> index 88d2929..95260cd 100644
+> --- a/arch/openrisc/boards/generic/config.h
+> +++ b/arch/openrisc/boards/generic/config.h
+> @@ -1,16 +1,15 @@
+>  #ifndef _GENERIC_NAMES_H_
+>  #define _GENERIC_NAMES_H_
+>  
+> -#define CONFIG_SYS_CLK_FREQ		20000000
+> +#define CONFIG_SYS_CLK_FREQ		50000000
+>  
+> -#define OPENRISC_TIMER_FREQ		20000000
+> +#define OPENRISC_TIMER_FREQ		CONFIG_SYS_CLK_FREQ
 
-Applied, thanks
+The timer frequency changes from 20MHz to 50MHz. Is this intended?
 
 Sascha
 
-> ---
->  ...oamp4_usb_booting.txt => omap4_usb_booting.txt} |    0
->  1 files changed, 0 insertions(+), 0 deletions(-)
->  rename Documentation/{oamp4_usb_booting.txt => omap4_usb_booting.txt} (100%)
-> 
-> diff --git a/Documentation/oamp4_usb_booting.txt b/Documentation/omap4_usb_booting.txt
-> similarity index 100%
-> rename from Documentation/oamp4_usb_booting.txt
-> rename to Documentation/omap4_usb_booting.txt
-> -- 
-> 1.7.0.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
