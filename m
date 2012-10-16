@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TODx7-0005m3-BE
- for barebox@lists.infradead.org; Tue, 16 Oct 2012 20:41:25 +0000
-Date: Tue, 16 Oct 2012 22:41:23 +0200
+ id 1TOE6I-0006TH-OU
+ for barebox@lists.infradead.org; Tue, 16 Oct 2012 20:50:55 +0000
+Date: Tue, 16 Oct 2012 22:50:53 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121016204123.GP24458@pengutronix.de>
-References: <1347464902-2127-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20121016205053.GA27665@pengutronix.de>
+References: <20121016151831.GB30038@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1347464902-2127-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20121016151831.GB30038@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,54 +22,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4] bootm: add global bootm.{image/initrd}.loadaddr support
+Subject: Re: [PATCH 0/2] mtd add parent support and use pure device
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 12, 2012 at 05:48:22PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> To be able to pass the loadaddr of the image and the initrd.
+On Tue, Oct 16, 2012 at 05:18:31PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> HI,
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  commands/bootm.c |   25 +++++++++++++++++++++++--
->  1 file changed, 23 insertions(+), 2 deletions(-)
+> The following changes since commit 11e1a135a989427fbb8920890ba6d824789a02e8:
 > 
-> diff --git a/commands/bootm.c b/commands/bootm.c
-> index 2d9f7f2..dfd9ac9 100644
-> --- a/commands/bootm.c
-> +++ b/commands/bootm.c
-> @@ -254,6 +254,19 @@ static char *bootm_image_name_and_no(const char *name, int *no)
->  #define BOOTM_OPTS BOOTM_OPTS_COMMON
->  #endif
->  
-> +static unsigned long long getenv_loadaddr(const char *name)
-> +{
-> +	const char *valstr = getenv(name);
-> +
-> +	if (!valstr)
-> +		return UIMAGE_SOME_ADDRESS;
-> +
-> +	if (valstr[0] == '\0')
-> +		return UIMAGE_SOME_ADDRESS;
-> +
-> +	return simple_strtoull(valstr, NULL, 0);
-> +}
-> +
->  static int do_bootm(int argc, char *argv[])
->  {
->  	int opt;
-> @@ -273,8 +286,11 @@ static int do_bootm(int argc, char *argv[])
->  
->  	oftree = getenv("global.bootm.oftree");
->  	os_file = getenv("global.bootm.image");
-> -	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD))
-> +	data.os_address = getenv_loadaddr("global.bootm.image.loadaddr");
-> +	data.initrd_address = getenv_loadaddr("global.bootm.initrd.loadaddr");
+>   Merge branch 'for-next-1/bbu' into next (2012-10-16 09:38:45 +0200)
+> 
+> are available in the git repository at:
+> 
+> 
+>   git://git.jcrosoft.org/barebox.git delivery/mtd
 
-This needs to be in the 'if' below.
+Applied, thanks
 
 Sascha
 
+> 
+> for you to fetch changes up to 5a1bf8453e1a82200d24007394e4016cfe2bee48:
+> 
+>   mtd: add parent support (2012-10-16 14:23:38 +0800)
+> 
+> ----------------------------------------------------------------
+> Jean-Christophe PLAGNIOL-VILLARD (2):
+>       mtd: register device a pure device
+>       mtd: add parent support
+> 
+>  drivers/mtd/core.c                  |    6 +++++-
+>  drivers/mtd/devices/docg3.c         |    1 +
+>  drivers/mtd/devices/mtd_dataflash.c |    2 ++
+>  drivers/mtd/nand/atmel_nand.c       |    1 +
+>  drivers/mtd/nand/nand_imx.c         |    2 +-
+>  drivers/mtd/nand/nand_mxs.c         |    1 +
+>  drivers/mtd/nand/nand_omap_gpmc.c   |    1 +
+>  drivers/mtd/nand/nand_s3c24xx.c     |    1 +
+>  drivers/mtd/nand/nomadik_nand.c     |    1 +
+>  include/linux/mtd/mtd.h             |    2 +-
+>  10 files changed, 15 insertions(+), 3 deletions(-)
+> 
+> Best Regards,
+> J.
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
