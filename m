@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOEuH-0003Cm-26
- for barebox@lists.infradead.org; Tue, 16 Oct 2012 21:42:34 +0000
-Date: Tue, 16 Oct 2012 23:42:31 +0200
+ id 1TOF0F-0003Tr-3h
+ for barebox@lists.infradead.org; Tue, 16 Oct 2012 21:48:45 +0000
+Date: Tue, 16 Oct 2012 23:48:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121016214231.GI27665@pengutronix.de>
-References: <1350318405-20081-1-git-send-email-shc_work@mail.ru>
- <20121015175414.GB5803@game.jcrosoft.org>
- <20121015225600.0a10a803c98d4213e8e2a1a3@mail.ru>
- <20121016080947.GG5803@game.jcrosoft.org>
+Message-ID: <20121016214841.GK27665@pengutronix.de>
+References: <1350417491-27030-1-git-send-email-franck.jullien@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121016080947.GG5803@game.jcrosoft.org>
+In-Reply-To: <1350417491-27030-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,39 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] ARM: Add CLPS711X architecture
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] cosmetic: remove right alignment on driver list
+To: Franck Jullien <franck.jullien@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 16, 2012 at 10:09:47AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 22:56 Mon 15 Oct     , Alexander Shiyan wrote:
-> > On Mon, 15 Oct 2012 19:54:14 +0200
-> > Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
-> > 
-> > > On 20:26 Mon 15 Oct     , Alexander Shiyan wrote:
-> > > > This patch adds new architecture (CLPS711X) into barebox.
-> > > > The core-logic functionality of the device is built around an ARM720T
-> > > > processor running at clock speeds up to 90 MHz.
-> > > > 
-> > > > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> > ...
-> > > > +#include <linux/clkdev.h>
-> > > split the code in 2
-> > >  - clock
-> > >  - clocksource in drivers/clocksource
-> > >  and cs as a driver
-> > drivers/clocksource is missing in master repository and as far I know we are
-> > made patches for "master" but not for "next".
-> so base your code on next
+On Tue, Oct 16, 2012 at 09:58:11PM +0200, Franck Jullien wrote:
+> In order to avoid misalignment, just remove the right alignment while
+> printing the drivers list.
+> 
+> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
 
-Generally basing code on next causes maintenance burden. I really prefer
-patches on master. In this case it means that the location for the
-clocksource driver is fine. What we can look at is that this files
-really only contains the clocksource so that it can simply be moved
-later.
+Applied, thanks
 
 Sascha
 
+> ---
+>  drivers/base/driver.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+> index 64fe289..0879cd0 100644
+> --- a/drivers/base/driver.c
+> +++ b/drivers/base/driver.c
+> @@ -403,7 +403,7 @@ static int do_devinfo(int argc, char *argv[])
+>  
+>  		printf("\ndrivers:\n");
+>  		for_each_driver(drv)
+> -			printf("%10s\n",drv->name);
+> +			printf("%s\n",drv->name);
+>  	} else {
+>  		dev = get_device_by_name(argv[1]);
+>  
+> -- 
+> 1.7.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
