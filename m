@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOF0F-0003Tr-3h
- for barebox@lists.infradead.org; Tue, 16 Oct 2012 21:48:45 +0000
-Date: Tue, 16 Oct 2012 23:48:41 +0200
+ id 1TOFCh-0005Uw-Dt
+ for barebox@lists.infradead.org; Tue, 16 Oct 2012 22:01:36 +0000
+Date: Wed, 17 Oct 2012 00:01:33 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121016214841.GK27665@pengutronix.de>
-References: <1350417491-27030-1-git-send-email-franck.jullien@gmail.com>
+Message-ID: <20121016220133.GL27665@pengutronix.de>
+References: <1350381953-17388-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1350417491-27030-1-git-send-email-franck.jullien@gmail.com>
+In-Reply-To: <1350381953-17388-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +22,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] cosmetic: remove right alignment on driver list
-To: Franck Jullien <franck.jullien@gmail.com>
+Subject: Re: [PATCH 1/1] console: use debug_ll before the console is available
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 16, 2012 at 09:58:11PM +0200, Franck Jullien wrote:
-> In order to avoid misalignment, just remove the right alignment while
-> printing the drivers list.
+On Tue, Oct 16, 2012 at 12:05:53PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> This will allow to have the same feature as earlyprintk in the kernel
 > 
-> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
 Applied, thanks
 
 Sascha
 
 > ---
->  drivers/base/driver.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
+>  common/console.c        |    2 ++
+>  common/console_simple.c |    5 ++++-
+>  2 files changed, 6 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-> index 64fe289..0879cd0 100644
-> --- a/drivers/base/driver.c
-> +++ b/drivers/base/driver.c
-> @@ -403,7 +403,7 @@ static int do_devinfo(int argc, char *argv[])
+> diff --git a/common/console.c b/common/console.c
+> index b4b3a99..2e8c973 100644
+> --- a/common/console.c
+> +++ b/common/console.c
+> @@ -32,6 +32,7 @@
+>  #include <poller.h>
+>  #include <linux/list.h>
+>  #include <linux/stringify.h>
+> +#include <debug_ll.h>
 >  
->  		printf("\ndrivers:\n");
->  		for_each_driver(drv)
-> -			printf("%10s\n",drv->name);
-> +			printf("%s\n",drv->name);
->  	} else {
->  		dev = get_device_by_name(argv[1]);
+>  LIST_HEAD(console_list);
+>  EXPORT_SYMBOL(console_list);
+> @@ -280,6 +281,7 @@ void console_putc(unsigned int ch, char c)
 >  
+>  	case CONSOLE_INITIALIZED_BUFFER:
+>  		kfifo_putc(console_output_fifo, c);
+> +		PUTC_LL(c);
+>  		return;
+>  
+>  	case CONSOLE_INIT_FULL:
+> diff --git a/common/console_simple.c b/common/console_simple.c
+> index 7ad88d9..a4d4315 100644
+> --- a/common/console_simple.c
+> +++ b/common/console_simple.c
+> @@ -2,6 +2,7 @@
+>  #include <common.h>
+>  #include <fs.h>
+>  #include <errno.h>
+> +#include <debug_ll.h>
+>  
+>  LIST_HEAD(console_list);
+>  EXPORT_SYMBOL(console_list);
+> @@ -85,8 +86,10 @@ EXPORT_SYMBOL(console_puts);
+>  
+>  void console_putc(unsigned int ch, char c)
+>  {
+> -	if (!console)
+> +	if (!console) {
+> +		PUTC_LL(c);
+>  		return;
+> +	}
+>  
+>  	console->putc(console, c);
+>  	if (c == '\n')
 > -- 
-> 1.7.1
+> 1.7.10.4
 > 
 > 
 > _______________________________________________
