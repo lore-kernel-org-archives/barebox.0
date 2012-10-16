@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOEOm-0007ni-RT
- for barebox@lists.infradead.org; Tue, 16 Oct 2012 21:10:01 +0000
-Date: Tue, 16 Oct 2012 23:09:58 +0200
+ id 1TOEcc-0000AX-Ox
+ for barebox@lists.infradead.org; Tue, 16 Oct 2012 21:24:19 +0000
+Date: Tue, 16 Oct 2012 23:24:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121016210958.GB27665@pengutronix.de>
+Message-ID: <20121016212416.GC27665@pengutronix.de>
 References: <1350410685-46202-1-git-send-email-carlo.caione@gmail.com>
- <1350410685-46202-3-git-send-email-carlo.caione@gmail.com>
+ <1350410685-46202-5-git-send-email-carlo.caione@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1350410685-46202-3-git-send-email-carlo.caione@gmail.com>
+In-Reply-To: <1350410685-46202-5-git-send-email-carlo.caione@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,59 +23,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] BCM2835: add gpio driver
+Subject: Re: [PATCH 4/5] BCM2835: add support (arch)
 To: Carlo Caione <carlo.caione@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Carlo,
-
-I had an additional look before applying it, but there are still
-some things that deserve a cleanup.
-
-On Tue, Oct 16, 2012 at 08:04:42PM +0200, Carlo Caione wrote:
-> +#include <common.h>
-> +#include <errno.h>
-> +#include <malloc.h>
-> +#include <io.h>
-> +#include <gpio.h>
-> +#include <init.h>
-> +#include <mach/platform.h>
-
-Is this needed? I think not as this file only defines some base
-addresses.
-
-> +static int bcm2835_gpio_probe(struct device_d *dev)
-> +{
-> +	struct bcm2835_gpio_chip *bcmgpio;
-> +	int ret;
+On Tue, Oct 16, 2012 at 08:04:44PM +0200, Carlo Caione wrote:
 > +
-> +	bcmgpio = xzalloc(sizeof(*bcmgpio));
-> +	bcmgpio->base = dev_request_mem_region(dev, 0);
-> +	bcmgpio->chip.ops = &bcm2835_gpio_ops;
-> +	bcmgpio->chip.base = -1;
-
-Better to use 0 for base of the SoC internal gpios (or something like
-dev->id * 32) to get a known base for the gpios. Board code will likely
-depend on fixed numbers.
-
+> +static struct clk ref_3_clk = {
+> +	.rate = 3 * 1000 * 1000,
+> +};
 > +
-> +static __maybe_unused struct of_device_id bcm2835_gpio_dt_ids[] = {
-> +	{
-> +			.compatible = "brcm,bcm2835-gpio",
+> +static struct clk ref_1_clk = {
+> +	.rate = 1 * 1000 * 1000,
+> +};
 
-Too many whitespaces here.
+Add a 'select COMMON_CLK' to your Kconfig and do a:
 
-Sascha
+	clk_dummy = clk_fixed("dummy", 0);
+	clk_ref_3 = clk_fixed("ref3", 3 * 1000 * 1000);
+	clk_ref_1 = clk_fixed("ref1", 1 * 1000 * 1000);
 
-> +static int bcm2835_gpio_add(void)
+Then you can drop your clk code and get a clk_dump command
+which you can use to see what clocks you have.
+
+> +static int bcm2835_gpio_init(void)
 > +{
-> +	platform_driver_register(&bcm2835_gpio_driver);
+> +	add_generic_device("bcm2835-gpio", 0, NULL, BCM2835_GPIO_BASE, 0xB0, IORESOURCE_MEM, NULL);
 > +	return 0;
+> +}
+> +coredevice_initcall(bcm2835_gpio_init);
+> +
+> +static int bcm2835_clkdev_init(void)
+> +{
+> +	clkdev_add_table(clocks_lookups, ARRAY_SIZE(clocks_lookups));
+> +	return 0;
+> +}
+> +postcore_initcall(bcm2835_clkdev_init);
+> +
+> +static int bcm2835_clocksource_init(void)
+> +{
+> +	add_generic_device("bcm2835-cs", DEVICE_ID_SINGLE, NULL, BCM2835_ST_BASE, 0x1C, IORESOURCE_MEM, NULL);
+> +	return 0;
+> +}
+> +coredevice_initcall(bcm2835_clocksource_init);
+> +
 
-return platform_device_register() please. We had a time when barebox
-just paniced when an initcall failed, hence we never returned
-unsuccesful. Now we just print an error message, so when the register
-for some reason fails you will see it.
+Please consolidate the initcalls. A single function for the three above
+is enough.
+
+> +void bcm2835_register_uart(void)
+
+Please add the UART index to the function name.
+
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+The address is wrong. Please remove this paragraph completly
 
 Sascha
 
