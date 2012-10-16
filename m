@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.mo4.mail-out.ovh.net ([178.33.251.8]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TO93t-0007aS-J0
- for barebox@lists.infradead.org; Tue, 16 Oct 2012 15:28:06 +0000
-Received: from mail97.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 4479C104FEBD
- for <barebox@lists.infradead.org>; Tue, 16 Oct 2012 17:34:43 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 16 Oct 2012 17:25:36 +0200
-Message-Id: <1350401137-12977-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20121016151831.GB30038@game.jcrosoft.org>
-References: <20121016151831.GB30038@game.jcrosoft.org>
+Received: from mail-wi0-f177.google.com ([209.85.212.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TOBWI-0002aq-2N
+ for barebox@lists.infradead.org; Tue, 16 Oct 2012 18:05:34 +0000
+Received: by mail-wi0-f177.google.com with SMTP id hj13so169871wib.0
+ for <barebox@lists.infradead.org>; Tue, 16 Oct 2012 11:05:31 -0700 (PDT)
+From: Carlo Caione <carlo.caione@gmail.com>
+Date: Tue, 16 Oct 2012 20:04:40 +0200
+Message-Id: <1350410685-46202-1-git-send-email-carlo.caione@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,31 +21,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] mtd: register device a pure device
+Subject: [PATCH 0/5] BCM2835/Raspberry-Pi support
 To: barebox@lists.infradead.org
 
-as we do not need to probe them and they have no driver or bus attached
+Hi,
+the same set as before but with the correct drivers name for DT
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/mtd/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Best regards,
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 7c323a1..a91ef04 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -225,7 +225,7 @@ int add_mtd_device(struct mtd_info *mtd, char *devname)
- 		devname = "mtd";
- 	strcpy(mtd->class_dev.name, devname);
- 	mtd->class_dev.id = DEVICE_ID_DYNAMIC;
--	platform_device_register(&mtd->class_dev);
-+	register_device(&mtd->class_dev);
- 
- 	mtd->cdev.ops = &mtd_ops;
- 	mtd->cdev.size = mtd->size;
+Carlo Caione (5):
+  BCM2835: add clocksource driver
+  BCM2835: add gpio driver
+  ARM1176: add support
+  BCM2835: add support (arch)
+  Raspberry-Pi: add support (board)
+
+ arch/arm/Kconfig                                   |   9 ++
+ arch/arm/Makefile                                  |   2 +
+ arch/arm/boards/raspberry-pi/Makefile              |   1 +
+ arch/arm/boards/raspberry-pi/config.h              |   4 +
+ .../arm/boards/raspberry-pi/env/init/bootargs-base |   8 +
+ arch/arm/boards/raspberry-pi/env/init/hostname     |   8 +
+ arch/arm/boards/raspberry-pi/rpi.c                 |  49 ++++++
+ arch/arm/configs/rpi_defconfig                     |  40 +++++
+ arch/arm/cpu/Kconfig                               |   5 +
+ arch/arm/mach-bcm2835/Kconfig                      |  18 +++
+ arch/arm/mach-bcm2835/Makefile                     |   2 +
+ arch/arm/mach-bcm2835/clock.c                      |  39 +++++
+ arch/arm/mach-bcm2835/core.c                       | 105 +++++++++++++
+ arch/arm/mach-bcm2835/include/mach/clkdev.h        |   7 +
+ arch/arm/mach-bcm2835/include/mach/clock.h         |   8 +
+ arch/arm/mach-bcm2835/include/mach/core.h          |  27 ++++
+ arch/arm/mach-bcm2835/include/mach/gpio.h          |   1 +
+ arch/arm/mach-bcm2835/include/mach/platform.h      |  53 +++++++
+ arch/arm/mach-bcm2835/include/mach/wd.h            |  50 +++++++
+ drivers/clocksource/Kconfig                        |   4 +
+ drivers/clocksource/Makefile                       |   1 +
+ drivers/clocksource/bcm2835.c                      |  95 ++++++++++++
+ drivers/gpio/Kconfig                               |   4 +
+ drivers/gpio/Makefile                              |   1 +
+ drivers/gpio/gpio-bcm2835.c                        | 165 +++++++++++++++++++++
+ 25 files changed, 706 insertions(+)
+ create mode 100644 arch/arm/boards/raspberry-pi/Makefile
+ create mode 100644 arch/arm/boards/raspberry-pi/config.h
+ create mode 100644 arch/arm/boards/raspberry-pi/env/init/bootargs-base
+ create mode 100644 arch/arm/boards/raspberry-pi/env/init/hostname
+ create mode 100644 arch/arm/boards/raspberry-pi/rpi.c
+ create mode 100644 arch/arm/configs/rpi_defconfig
+ create mode 100644 arch/arm/mach-bcm2835/Kconfig
+ create mode 100644 arch/arm/mach-bcm2835/Makefile
+ create mode 100644 arch/arm/mach-bcm2835/clock.c
+ create mode 100644 arch/arm/mach-bcm2835/core.c
+ create mode 100644 arch/arm/mach-bcm2835/include/mach/clkdev.h
+ create mode 100644 arch/arm/mach-bcm2835/include/mach/clock.h
+ create mode 100644 arch/arm/mach-bcm2835/include/mach/core.h
+ create mode 100644 arch/arm/mach-bcm2835/include/mach/gpio.h
+ create mode 100644 arch/arm/mach-bcm2835/include/mach/platform.h
+ create mode 100644 arch/arm/mach-bcm2835/include/mach/wd.h
+ create mode 100644 drivers/clocksource/bcm2835.c
+ create mode 100644 drivers/gpio/gpio-bcm2835.c
+
 -- 
-1.7.10.4
+1.7.12.3
 
 
 _______________________________________________
