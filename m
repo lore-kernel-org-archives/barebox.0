@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-qa0-f49.google.com ([209.85.216.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOFCh-0005Uw-Dt
- for barebox@lists.infradead.org; Tue, 16 Oct 2012 22:01:36 +0000
-Date: Wed, 17 Oct 2012 00:01:33 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121016220133.GL27665@pengutronix.de>
-References: <1350381953-17388-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1TOMps-0004gr-8y
+ for barebox@lists.infradead.org; Wed, 17 Oct 2012 06:10:33 +0000
+Received: by mail-qa0-f49.google.com with SMTP id a17so178262qae.15
+ for <barebox@lists.infradead.org>; Tue, 16 Oct 2012 23:10:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1350381953-17388-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20121016213322.GE27665@pengutronix.de>
+References: <1350417296-26963-1-git-send-email-franck.jullien@gmail.com>
+ <1350417296-26963-3-git-send-email-franck.jullien@gmail.com>
+ <20121016213322.GE27665@pengutronix.de>
+Date: Wed, 17 Oct 2012 08:10:29 +0200
+Message-ID: <CAJfOKBy4r1iM983z4aY5LEZDJR+a+_1pDytLmPG+YUESpB+0kQ@mail.gmail.com>
+From: Franck Jullien <franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,83 +25,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] console: use debug_ll before the console is available
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 2/2] openrisc: generic board cleanup
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 16, 2012 at 12:05:53PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> This will allow to have the same feature as earlyprintk in the kernel
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+2012/10/16 Sascha Hauer <s.hauer@pengutronix.de>:
+> On Tue, Oct 16, 2012 at 09:54:56PM +0200, Franck Jullien wrote:
+>> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+>> ---
+>>  arch/openrisc/boards/generic/config.h  |    7 +++----
+>>  arch/openrisc/boards/generic/generic.c |    2 +-
+>>  2 files changed, 4 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/arch/openrisc/boards/generic/config.h b/arch/openrisc/boards/generic/config.h
+>> index 88d2929..95260cd 100644
+>> --- a/arch/openrisc/boards/generic/config.h
+>> +++ b/arch/openrisc/boards/generic/config.h
+>> @@ -1,16 +1,15 @@
+>>  #ifndef _GENERIC_NAMES_H_
+>>  #define _GENERIC_NAMES_H_
+>>
+>> -#define CONFIG_SYS_CLK_FREQ          20000000
+>> +#define CONFIG_SYS_CLK_FREQ          50000000
+>>
+>> -#define OPENRISC_TIMER_FREQ          20000000
+>> +#define OPENRISC_TIMER_FREQ          CONFIG_SYS_CLK_FREQ
+>
+> The timer frequency changes from 20MHz to 50MHz. Is this intended?
+>
 
-Applied, thanks
+Yes it is, 50MHz is the frequency the CPU is running most of the time.
 
-Sascha
+However, it's not really important since this is a generic board.
+The important thing is that OPENRISC_TIMER_FREQ = CONFIG_SYS_CLK_FREQ.
 
-> ---
->  common/console.c        |    2 ++
->  common/console_simple.c |    5 ++++-
->  2 files changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/common/console.c b/common/console.c
-> index b4b3a99..2e8c973 100644
-> --- a/common/console.c
-> +++ b/common/console.c
-> @@ -32,6 +32,7 @@
->  #include <poller.h>
->  #include <linux/list.h>
->  #include <linux/stringify.h>
-> +#include <debug_ll.h>
->  
->  LIST_HEAD(console_list);
->  EXPORT_SYMBOL(console_list);
-> @@ -280,6 +281,7 @@ void console_putc(unsigned int ch, char c)
->  
->  	case CONSOLE_INITIALIZED_BUFFER:
->  		kfifo_putc(console_output_fifo, c);
-> +		PUTC_LL(c);
->  		return;
->  
->  	case CONSOLE_INIT_FULL:
-> diff --git a/common/console_simple.c b/common/console_simple.c
-> index 7ad88d9..a4d4315 100644
-> --- a/common/console_simple.c
-> +++ b/common/console_simple.c
-> @@ -2,6 +2,7 @@
->  #include <common.h>
->  #include <fs.h>
->  #include <errno.h>
-> +#include <debug_ll.h>
->  
->  LIST_HEAD(console_list);
->  EXPORT_SYMBOL(console_list);
-> @@ -85,8 +86,10 @@ EXPORT_SYMBOL(console_puts);
->  
->  void console_putc(unsigned int ch, char c)
->  {
-> -	if (!console)
-> +	if (!console) {
-> +		PUTC_LL(c);
->  		return;
-> +	}
->  
->  	console->putc(console, c);
->  	if (c == '\n')
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+> Sascha
+>
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Franck.
 
 _______________________________________________
 barebox mailing list
