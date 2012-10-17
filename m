@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOamW-0003cl-F2
- for barebox@lists.infradead.org; Wed, 17 Oct 2012 21:04:02 +0000
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TOamM-0002Cd-0E
+ for barebox@lists.infradead.org; Wed, 17 Oct 2012 21:04:03 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Oct 2012 23:03:24 +0200
-Message-Id: <1350507817-7819-16-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 17 Oct 2012 23:03:10 +0200
+Message-Id: <1350507817-7819-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
 References: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,43 +21,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/28] ARM versatile boards: switch to barebox_arm_entry
+Subject: [PATCH 01/28] ARM: Make malloc available in all initcalls
 To: barebox@lists.infradead.org
 
-Only one board, the qemu based Versatile/PB. Uses hardcoded SDRAM settings.
+This moves mem_malloc_init from an initcall to board_init_lowlevel_return.
+This has the advantage that malloc is now available for all initcalls (though
+only on ARM currently).
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/versatile/Makefile   |    3 ++-
- arch/arm/boards/versatile/lowlevel.c |   10 ++++++++++
- 2 files changed, 12 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/boards/versatile/lowlevel.c
+ arch/arm/cpu/start.c  |    3 +++
+ arch/arm/lib/Makefile |    1 -
+ arch/arm/lib/arm.c    |   14 --------------
+ 3 files changed, 3 insertions(+), 15 deletions(-)
+ delete mode 100644 arch/arm/lib/arm.c
 
-diff --git a/arch/arm/boards/versatile/Makefile b/arch/arm/boards/versatile/Makefile
-index a17aed3..9dc6869 100644
---- a/arch/arm/boards/versatile/Makefile
-+++ b/arch/arm/boards/versatile/Makefile
-@@ -1,2 +1,3 @@
--
- obj-$(CONFIG_MACH_VERSATILEPB) += versatilepb.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/versatile/lowlevel.c b/arch/arm/boards/versatile/lowlevel.c
-new file mode 100644
-index 0000000..3956347
---- /dev/null
-+++ b/arch/arm/boards/versatile/lowlevel.c
-@@ -0,0 +1,10 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 793445a..d47a9e9 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -61,5 +61,8 @@ void __naked board_init_lowlevel_return(void)
+ 
+ 	setup_c();
+ 
++	mem_malloc_init((void *)MALLOC_BASE,
++			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
 +
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(0x0, SZ_64M, 0);
-+}
+ 	start_barebox();
+ }
+diff --git a/arch/arm/lib/Makefile b/arch/arm/lib/Makefile
+index 2e624cd..3ea695c 100644
+--- a/arch/arm/lib/Makefile
++++ b/arch/arm/lib/Makefile
+@@ -4,7 +4,6 @@ obj-$(CONFIG_CMD_BOOTZ)	+= bootz.o
+ obj-$(CONFIG_CMD_BOOTU)	+= bootu.o
+ obj-y	+= div0.o
+ obj-y	+= findbit.o
+-obj-y	+= arm.o
+ obj-y	+= io.o
+ obj-y	+= io-readsb.o
+ obj-y	+= io-readsw-armv4.o
+diff --git a/arch/arm/lib/arm.c b/arch/arm/lib/arm.c
+deleted file mode 100644
+index 80b62e9..0000000
+--- a/arch/arm/lib/arm.c
++++ /dev/null
+@@ -1,14 +0,0 @@
+-#include <common.h>
+-#include <init.h>
+-#include <memory.h>
+-#include <asm/barebox-arm.h>
+-#include <asm-generic/memory_layout.h>
+-
+-static int arm_mem_malloc_init(void)
+-{
+-	mem_malloc_init((void *)MALLOC_BASE,
+-			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
+-	return 0;
+-}
+-
+-core_initcall(arm_mem_malloc_init);
 -- 
 1.7.10.4
 
