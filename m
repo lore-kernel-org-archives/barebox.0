@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOamF-00027b-Bs
- for barebox@lists.infradead.org; Wed, 17 Oct 2012 21:03:55 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TOamW-0003cl-F2
+ for barebox@lists.infradead.org; Wed, 17 Oct 2012 21:04:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Oct 2012 23:03:21 +0200
-Message-Id: <1350507817-7819-13-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 17 Oct 2012 23:03:24 +0200
+Message-Id: <1350507817-7819-16-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
 References: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,58 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/28] ARM ep93xx boards: switch to barebox_arm_entry
+Subject: [PATCH 15/28] ARM versatile boards: switch to barebox_arm_entry
 To: barebox@lists.infradead.org
 
-This architecture is a bit strange. It has up to four SDRAM banks, but
-all have a quite limited size. The SDRAM size for the different boards
-currently is unknown as it's configurable with Kconfig. We use a SDRAM
-size based on the value of the only board we have in the defconfigs:
-edb9301. This likely breaks other ep93xx boards.
+Only one board, the qemu based Versatile/PB. Uses hardcoded SDRAM settings.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-ep93xx/Makefile        |    4 ++--
- arch/arm/mach-ep93xx/lowlevel_init.S |   11 ++++++++++-
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ arch/arm/boards/versatile/Makefile   |    3 ++-
+ arch/arm/boards/versatile/lowlevel.c |   10 ++++++++++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/boards/versatile/lowlevel.c
 
-diff --git a/arch/arm/mach-ep93xx/Makefile b/arch/arm/mach-ep93xx/Makefile
-index 5615394..0ff0b66 100644
---- a/arch/arm/mach-ep93xx/Makefile
-+++ b/arch/arm/mach-ep93xx/Makefile
-@@ -1,4 +1,4 @@
- obj-y += clocksource.o gpio.o led.o header.o
- 
--obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
--pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o led.o
-+obj-y += lowlevel_init.o
-+pbl-y += lowlevel_init.o led.o
-diff --git a/arch/arm/mach-ep93xx/lowlevel_init.S b/arch/arm/mach-ep93xx/lowlevel_init.S
-index 6de53dd..154d38d 100644
---- a/arch/arm/mach-ep93xx/lowlevel_init.S
-+++ b/arch/arm/mach-ep93xx/lowlevel_init.S
-@@ -20,6 +20,7 @@
-  *
-  */
- 
+diff --git a/arch/arm/boards/versatile/Makefile b/arch/arm/boards/versatile/Makefile
+index a17aed3..9dc6869 100644
+--- a/arch/arm/boards/versatile/Makefile
++++ b/arch/arm/boards/versatile/Makefile
+@@ -1,2 +1,3 @@
+-
+ obj-$(CONFIG_MACH_VERSATILEPB) += versatilepb.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/versatile/lowlevel.c b/arch/arm/boards/versatile/lowlevel.c
+new file mode 100644
+index 0000000..3956347
+--- /dev/null
++++ b/arch/arm/boards/versatile/lowlevel.c
+@@ -0,0 +1,10 @@
++#include <common.h>
 +#include <sizes.h>
- #include <mach/ep93xx-regs.h>
- #include <asm/barebox-arm-head.h>
- 
-@@ -52,4 +53,12 @@ reset:
- 	orr r0, r0, #0xc0000000
- 	mcr p15, 0, r0, c1, c0, 0
- 
--	b board_init_lowlevel_return
-+	/*
-+	 * FIXME: This is suitable for the edb9301, the
-+	 * only ep93xx board we have in our defconfigs.
-+	 * Other boards need different values here.
-+	 */
-+	mov	r0, #0x05000000
-+	mov	r1, #SZ_8M
-+	mov	r2, #0
-+	b	barebox_arm_entry
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++
++void __naked reset(void)
++{
++	common_reset();
++	barebox_arm_entry(0x0, SZ_64M, 0);
++}
 -- 
 1.7.10.4
 
