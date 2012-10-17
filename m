@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOa6X-0007uq-Pz
+ id 1TOa6X-0007ur-Q3
  for barebox@lists.infradead.org; Wed, 17 Oct 2012 20:20:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Oct 2012 22:20:32 +0200
-Message-Id: <1350505234-29464-2-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 17 Oct 2012 22:20:34 +0200
+Message-Id: <1350505234-29464-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1350505234-29464-1-git-send-email-s.hauer@pengutronix.de>
 References: <1350505234-29464-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,35 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] mips: remove unused variable
+Subject: [PATCH 3/3] net gianfar: remove unused variable
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/mips/include/asm/mipsregs.h |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/gianfar.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 87c48ed..608f19b 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -566,7 +566,6 @@ do {									\
- #define __read_64bit_c0_split(source, sel)				\
- ({									\
- 	unsigned long long __val;					\
--	unsigned long __flags;						\
- 									\
- 	if (sel == 0)							\
- 		__asm__ __volatile__(					\
-@@ -592,8 +591,6 @@ do {									\
+diff --git a/drivers/net/gianfar.c b/drivers/net/gianfar.c
+index bf834b6..55675ba 100644
+--- a/drivers/net/gianfar.c
++++ b/drivers/net/gianfar.c
+@@ -82,7 +82,6 @@ static void gfar_adjust_link(struct eth_device *edev)
+ 	struct gfar_private *priv = edev->priv;
+ 	void __iomem *regs = priv->regs;
+ 	u32 ecntrl, maccfg2;
+-	uint32_t status;
  
- #define __write_64bit_c0_split(source, sel, val)			\
- do {									\
--	unsigned long __flags;						\
--									\
- 	if (sel == 0)							\
- 		__asm__ __volatile__(					\
- 			".set\tmips64\n\t"				\
+ 	priv->link = edev->phydev->link;
+ 	priv->duplexity =edev->phydev->duplex;
 -- 
 1.7.10.4
 
