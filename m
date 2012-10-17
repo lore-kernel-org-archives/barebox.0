@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOamE-00027E-Ah
- for barebox@lists.infradead.org; Wed, 17 Oct 2012 21:03:43 +0000
+ id 1TOamE-00027I-K5
+ for barebox@lists.infradead.org; Wed, 17 Oct 2012 21:03:47 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Oct 2012 23:03:12 +0200
-Message-Id: <1350507817-7819-4-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 17 Oct 2012 23:03:13 +0200
+Message-Id: <1350507817-7819-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
 References: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,98 +21,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/28] ARM at91rm9200: provide reset function for boards with
- lowlevel init
+Subject: [PATCH 04/28] ARM: Add new entry point for barebox
 To: barebox@lists.infradead.org
 
-Some Atmel boards use a reset() function provided by the architecture.
-Add a reset function for the board instead and call the architecture
-specific init function from there. While at it, test if we are running
-from SDRAM and skip the init function in this case. This makes the configs
-safe for both first and second stage.
+Memory is a precious resource, so it makes sense to make it available as
+early as possible. By definition the lowlevel init code already knows where
+to find memory because it's the lowlevel init code which sets up the memory.
+Until all boards are converted this new entry is just a fallback to the old
+entry point.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/at91rm9200ek/Makefile         |    2 ++
- arch/arm/mach-at91/Kconfig                    |    3 +++
- arch/arm/mach-at91/Makefile                   |    7 ++-----
- arch/arm/mach-at91/at91rm9200_lowlevel_init.c |    9 ++++++---
- arch/arm/mach-at91/include/mach/board.h       |    1 +
- 5 files changed, 14 insertions(+), 8 deletions(-)
+ arch/arm/cpu/start-pbl.c           |   13 +++++++++++++
+ arch/arm/cpu/start.c               |   13 +++++++++++++
+ arch/arm/include/asm/barebox-arm.h |    1 +
+ 3 files changed, 27 insertions(+)
 
-diff --git a/arch/arm/boards/at91rm9200ek/Makefile b/arch/arm/boards/at91rm9200ek/Makefile
-index eb072c0..47ab803 100644
---- a/arch/arm/boards/at91rm9200ek/Makefile
-+++ b/arch/arm/boards/at91rm9200ek/Makefile
-@@ -1 +1,3 @@
- obj-y += init.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index f962084..8ec033b 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -110,6 +110,9 @@ config SUPPORT_CALAO_MOB_TNY_MD2
- config HAVE_AT91SAM926X_LOWLEVEL_INIT
- 	bool
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index 609aedb..30877b4 100644
+--- a/arch/arm/cpu/start-pbl.c
++++ b/arch/arm/cpu/start-pbl.c
+@@ -200,3 +200,16 @@ void __naked board_init_lowlevel_return(void)
  
-+config HAVE_AT91RM9200_LOWLEVEL_INIT
-+	bool
-+
- # ----------------------------------------------------------
- 
- if ARCH_AT91RM9200
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index f9cb4f1..5ce433c 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -1,10 +1,7 @@
- obj-y += clock.o gpio.o
- 
--lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
--obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
--
--pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
--
-+obj-$(CONFIG_HAVE_AT91RM9200_LOWLEVEL_INIT) += at91rm9200_lowlevel_init.o
-+pbl-$(CONFIG_HAVE_AT91RM9200_LOWLEVEL_INIT) += at91rm9200_lowlevel_init.o
- obj-$(CONFIG_HAVE_AT91SAM926X_LOWLEVEL_INIT) += at91sam926x_lowlevel_init.o
- pbl-$(CONFIG_HAVE_AT91SAM926X_LOWLEVEL_INIT) += at91sam926x_lowlevel_init.o
- 
-diff --git a/arch/arm/mach-at91/at91rm9200_lowlevel_init.c b/arch/arm/mach-at91/at91rm9200_lowlevel_init.c
-index 3ce3e67..a0a0d5e 100644
---- a/arch/arm/mach-at91/at91rm9200_lowlevel_init.c
-+++ b/arch/arm/mach-at91/at91rm9200_lowlevel_init.c
-@@ -21,12 +21,15 @@ void static inline access_sdram(void)
- 	writel(0x00000000, AT91_SDRAM_BASE);
+ 	barebox_uncompress((void *)pg_start, pg_len);
  }
++
++/*
++ * Main ARM entry point in the compressed image. Call this with the memory
++ * region you can spare for barebox. This doesn't necessarily have to be the
++ * full SDRAM. The currently running binary can be inside or outside of this
++ * region. TEXT_BASE can be inside or outside of this region. boarddata will
++ * be preserved and can be accessed later with barebox_arm_boarddata().
++ */
++void __naked barebox_arm_entry(uint32_t membase, uint32_t memsize,
++		uint32_t boarddata)
++{
++	board_init_lowlevel_return();
++}
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index d47a9e9..79cb437 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -66,3 +66,16 @@ void __naked board_init_lowlevel_return(void)
  
--void __naked __bare_init reset(void)
-+void __naked __bare_init at91rm9200_entry(unsigned long sdram_base,
-+		unsigned long sdram_size)
- {
--	u32 r;
-+	u32 r, pc;
- 	int i;
+ 	start_barebox();
+ }
++
++/*
++ * Main ARM entry point in the uncompressed image. Call this with the memory
++ * region you can spare for barebox. This doesn't necessarily have to be the
++ * full SDRAM. The currently running binary can be inside or outside of this
++ * region. TEXT_BASE can be inside or outside of this region. boarddata will
++ * be preserved and can be accessed later with barebox_arm_boarddata().
++ */
++void __naked barebox_arm_entry(uint32_t membase, uint32_t memsize,
++                uint32_t boarddata)
++{
++	board_init_lowlevel_return();
++}
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 993130d..3eb28c0 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -39,5 +39,6 @@ void board_init_lowlevel_return(void);
+ uint32_t get_runtime_offset(void);
  
--	common_reset();
-+	pc = get_pc();
-+	if (pc < AT91_SDRAM_BASE || pc > AT91_SDRAM_BASE + 0x10000000)
-+		goto end;
+ void setup_c(void);
++void barebox_arm_entry(uint32_t membase, uint32_t memsize, uint32_t boarddata);
  
- 	/*
- 	 * PMC Check if the PLL is already initialized
-diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
-index eb71ed5..fc8947d 100644
---- a/arch/arm/mach-at91/include/mach/board.h
-+++ b/arch/arm/mach-at91/include/mach/board.h
-@@ -156,5 +156,6 @@ struct at91_spi_platform_data {
- void at91_add_device_spi(int spi_id, struct at91_spi_platform_data *pdata);
- 
- void at91sam926x_entry(unsigned long sdram_base, unsigned long sdram_size);
-+void at91rm9200_entry(unsigned long sdram_base, unsigned long sdram_size);
- 
- #endif
+ #endif	/* _BAREBOX_ARM_H_ */
 -- 
 1.7.10.4
 
