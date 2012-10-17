@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qa0-f49.google.com ([209.85.216.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOMps-0004gr-8y
- for barebox@lists.infradead.org; Wed, 17 Oct 2012 06:10:33 +0000
-Received: by mail-qa0-f49.google.com with SMTP id a17so178262qae.15
- for <barebox@lists.infradead.org>; Tue, 16 Oct 2012 23:10:29 -0700 (PDT)
+ id 1TONOy-0005VP-Uq
+ for barebox@lists.infradead.org; Wed, 17 Oct 2012 06:46:49 +0000
+Date: Wed, 17 Oct 2012 08:46:45 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121017064645.GQ24458@pengutronix.de>
+References: <20121016151831.GB30038@game.jcrosoft.org>
+ <20121016205053.GA27665@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20121016213322.GE27665@pengutronix.de>
-References: <1350417296-26963-1-git-send-email-franck.jullien@gmail.com>
- <1350417296-26963-3-git-send-email-franck.jullien@gmail.com>
- <20121016213322.GE27665@pengutronix.de>
-Date: Wed, 17 Oct 2012 08:10:29 +0200
-Message-ID: <CAJfOKBy4r1iM983z4aY5LEZDJR+a+_1pDytLmPG+YUESpB+0kQ@mail.gmail.com>
-From: Franck Jullien <franck.jullien@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20121016205053.GA27665@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,50 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] openrisc: generic board cleanup
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 0/2] mtd add parent support and use pure device
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-2012/10/16 Sascha Hauer <s.hauer@pengutronix.de>:
-> On Tue, Oct 16, 2012 at 09:54:56PM +0200, Franck Jullien wrote:
->> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
->> ---
->>  arch/openrisc/boards/generic/config.h  |    7 +++----
->>  arch/openrisc/boards/generic/generic.c |    2 +-
->>  2 files changed, 4 insertions(+), 5 deletions(-)
->>
->> diff --git a/arch/openrisc/boards/generic/config.h b/arch/openrisc/boards/generic/config.h
->> index 88d2929..95260cd 100644
->> --- a/arch/openrisc/boards/generic/config.h
->> +++ b/arch/openrisc/boards/generic/config.h
->> @@ -1,16 +1,15 @@
->>  #ifndef _GENERIC_NAMES_H_
->>  #define _GENERIC_NAMES_H_
->>
->> -#define CONFIG_SYS_CLK_FREQ          20000000
->> +#define CONFIG_SYS_CLK_FREQ          50000000
->>
->> -#define OPENRISC_TIMER_FREQ          20000000
->> +#define OPENRISC_TIMER_FREQ          CONFIG_SYS_CLK_FREQ
->
-> The timer frequency changes from 20MHz to 50MHz. Is this intended?
->
+On Tue, Oct 16, 2012 at 10:50:53PM +0200, Sascha Hauer wrote:
+> On Tue, Oct 16, 2012 at 05:18:31PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > HI,
+> > 
+> > The following changes since commit 11e1a135a989427fbb8920890ba6d824789a02e8:
+> > 
+> >   Merge branch 'for-next-1/bbu' into next (2012-10-16 09:38:45 +0200)
+> > 
+> > are available in the git repository at:
+> > 
+> > 
+> >   git://git.jcrosoft.org/barebox.git delivery/mtd
+> 
+> Applied, thanks
 
-Yes it is, 50MHz is the frequency the CPU is running most of the time.
+And fixed the resulting compilation errors in the OMAP nand driver.
 
-However, it's not really important since this is a generic board.
-The important thing is that OPENRISC_TIMER_FREQ = CONFIG_SYS_CLK_FREQ.
+Sascha
 
-> Sascha
->
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
-Franck.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
