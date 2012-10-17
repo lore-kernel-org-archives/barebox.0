@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOamE-00027C-6Z
- for barebox@lists.infradead.org; Wed, 17 Oct 2012 21:03:46 +0000
+ id 1TOamE-00027G-FT
+ for barebox@lists.infradead.org; Wed, 17 Oct 2012 21:03:49 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Oct 2012 23:03:11 +0200
-Message-Id: <1350507817-7819-3-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 17 Oct 2012 23:03:14 +0200
+Message-Id: <1350507817-7819-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
 References: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,230 +21,356 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/28] ARM at91sam926x: provide reset function for boards with
- lowlevel init
+Subject: [PATCH 05/28] ARM i.MX Add functions to get sdram base and size
 To: barebox@lists.infradead.org
 
-Some Atmel boards use a reset() function provided by the architecture.
-Add a reset function for the board instead and call the architecture
-specific init function from there. While at it, test if we are running
-from SDRAM and skip the init function in this case. This makes the configs
-safe for both first and second stage.
+The code initializing the SDRAM controller is not at the same
+place where SDRAM is registered with barebox. To reduce the
+risk of registering wrong SDRAM sizes add functions to read
+back the sizes from the SDRAM controller.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/at91sam9263ek/Makefile         |    2 ++
- arch/arm/boards/at91sam9263ek/lowlevel.c       |   15 +++++++++++++++
- arch/arm/boards/pm9261/Makefile                |    2 ++
- arch/arm/boards/pm9261/lowlevel.c              |   14 ++++++++++++++
- arch/arm/boards/pm9263/Makefile                |    2 ++
- arch/arm/boards/pm9263/lowlevel.c              |   14 ++++++++++++++
- arch/arm/mach-at91/Kconfig                     |   11 +++++++++++
- arch/arm/mach-at91/Makefile                    |    4 +++-
- arch/arm/mach-at91/at91sam926x_lowlevel_init.c |    9 +++++++--
- arch/arm/mach-at91/include/mach/board.h        |    3 +++
- 10 files changed, 73 insertions(+), 3 deletions(-)
- create mode 100644 arch/arm/boards/at91sam9263ek/lowlevel.c
- create mode 100644 arch/arm/boards/pm9261/lowlevel.c
- create mode 100644 arch/arm/boards/pm9263/lowlevel.c
+ arch/arm/mach-imx/Makefile              |    3 +-
+ arch/arm/mach-imx/esdctl.c              |  273 +++++++++++++++++++++++++++++++
+ arch/arm/mach-imx/imx1.c                |    2 +
+ arch/arm/mach-imx/include/mach/esdctl.h |   13 ++
+ 4 files changed, 290 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/mach-imx/esdctl.c
 
-diff --git a/arch/arm/boards/at91sam9263ek/Makefile b/arch/arm/boards/at91sam9263ek/Makefile
-index eb072c0..47ab803 100644
---- a/arch/arm/boards/at91sam9263ek/Makefile
-+++ b/arch/arm/boards/at91sam9263ek/Makefile
-@@ -1 +1,3 @@
- obj-y += init.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/at91sam9263ek/lowlevel.c b/arch/arm/boards/at91sam9263ek/lowlevel.c
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index 259733e..6bc2b79 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -14,6 +14,7 @@ obj-$(CONFIG_NAND_IMX) += nand.o
+ obj-$(CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND) += external-nand-boot.o
+ pbl-$(CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND) += external-nand-boot.o
+ obj-$(CONFIG_COMMON_CLK) += clk-pllv1.o clk-pllv2.o clk-pllv3.o clk-pfd.o
+-obj-y += devices.o imx.o
++obj-y += devices.o imx.o esdctl.o
+ obj-y += boot.o
+ obj-$(CONFIG_BAREBOX_UPDATE) += imx-bbu-internal.o
++pbl-y += esdctl.o
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
 new file mode 100644
-index 0000000..6050bcd
+index 0000000..1e1ede1
 --- /dev/null
-+++ b/arch/arm/boards/at91sam9263ek/lowlevel.c
-@@ -0,0 +1,15 @@
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -0,0 +1,273 @@
++/*
++ * esdctl.c - i.MX sdram controller functions
++ *
++ * Copyright (c) 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ *
++ * based on Linux devicetree support
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
 +#include <common.h>
-+#include <init.h>
++#include <io.h>
 +#include <sizes.h>
 +#include <asm/barebox-arm.h>
-+#include <asm/barebox-arm-head.h>
-+#include <mach/hardware.h>
-+#include <mach/board.h>
-+#include <mach/at91sam9_sdramc.h>
++#include <mach/esdctl.h>
++#include <mach/imx1-regs.h>
++#include <mach/imx21-regs.h>
++#include <mach/imx25-regs.h>
++#include <mach/imx27-regs.h>
++#include <mach/imx31-regs.h>
++#include <mach/imx35-regs.h>
++#include <mach/imx51-regs.h>
++#include <mach/imx53-regs.h>
 +
-+void __naked __bare_init reset(void)
++static inline unsigned long imx_v1_sdram_size(void __iomem *esdctlbase, int num)
 +{
-+	common_reset();
++	void __iomem *esdctl = esdctlbase + (num ? 4 : 0);
++	u32 ctlval = readl(esdctl);
++	unsigned long size;
++	int rows, cols, width = 2, banks = 4;
 +
-+	at91sam926x_entry(AT91_SDRAM_BASE, at91_get_sdram_size());
++	if (!(ctlval & ESDCTL0_SDE))
++		/* SDRAM controller disabled, so no RAM here */
++		return 0;
++
++	rows = ((ctlval >> 24) & 0x3) + 11;
++	cols = ((ctlval >> 20) & 0x3) + 8;
++
++	if (ctlval & (1 << 17))
++		width = 4;
++
++	size = (1 << cols) * (1 << rows) * banks * width;
++
++	if (size > SZ_64M)
++		size = SZ_64M;
++
++	return size;
 +}
-diff --git a/arch/arm/boards/pm9261/Makefile b/arch/arm/boards/pm9261/Makefile
-index eb072c0..47ab803 100644
---- a/arch/arm/boards/pm9261/Makefile
-+++ b/arch/arm/boards/pm9261/Makefile
-@@ -1 +1,3 @@
- obj-y += init.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/pm9261/lowlevel.c b/arch/arm/boards/pm9261/lowlevel.c
-new file mode 100644
-index 0000000..b8a8728
---- /dev/null
-+++ b/arch/arm/boards/pm9261/lowlevel.c
-@@ -0,0 +1,14 @@
-+#include <common.h>
-+#include <init.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/barebox-arm-head.h>
-+#include <mach/hardware.h>
-+#include <mach/board.h>
 +
-+void __naked __bare_init reset(void)
++static inline unsigned long imx_v2_sdram_size(void __iomem *esdctlbase, int num)
 +{
-+	common_reset();
++	void __iomem *esdctl = esdctlbase + (num ? IMX_ESDCTL1 : IMX_ESDCTL0);
++	u32 ctlval = readl(esdctl);
++	unsigned long size;
++	int rows, cols, width = 2, banks = 4;
 +
-+	at91sam926x_entry(AT91_SDRAM_BASE, SZ_64M);
++	if (!(ctlval & ESDCTL0_SDE))
++		/* SDRAM controller disabled, so no RAM here */
++		return 0;
++
++	rows = ((ctlval >> 24) & 0x7) + 11;
++	cols = ((ctlval >> 20) & 0x3) + 8;
++
++	if ((ctlval & ESDCTL0_DSIZ_MASK) == ESDCTL0_DSIZ_31_0)
++		width = 4;
++
++	size = (1 << cols) * (1 << rows) * banks * width;
++
++	if (size > SZ_256M)
++		size = SZ_256M;
++
++	return size;
 +}
-diff --git a/arch/arm/boards/pm9263/Makefile b/arch/arm/boards/pm9263/Makefile
-index eb072c0..47ab803 100644
---- a/arch/arm/boards/pm9263/Makefile
-+++ b/arch/arm/boards/pm9263/Makefile
-@@ -1 +1,3 @@
- obj-y += init.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/pm9263/lowlevel.c b/arch/arm/boards/pm9263/lowlevel.c
-new file mode 100644
-index 0000000..b8a8728
---- /dev/null
-+++ b/arch/arm/boards/pm9263/lowlevel.c
-@@ -0,0 +1,14 @@
-+#include <common.h>
-+#include <init.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/barebox-arm-head.h>
-+#include <mach/hardware.h>
-+#include <mach/board.h>
 +
-+void __naked __bare_init reset(void)
++static inline unsigned long imx_v3_sdram_size(void __iomem *esdctlbase, int num)
 +{
-+	common_reset();
++	unsigned long size;
 +
-+	at91sam926x_entry(AT91_SDRAM_BASE, SZ_64M);
++	size = imx_v2_sdram_size(esdctlbase, num);
++
++	if (readl(esdctlbase + IMX_ESDMISC) & (1 << 6))
++		size *= 2;
++
++	if (size > SZ_256M)
++		size = SZ_256M;
++
++	return size;
 +}
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 30225fa..f962084 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -107,6 +107,9 @@ config SUPPORT_CALAO_DAB_MMX
- config SUPPORT_CALAO_MOB_TNY_MD2
- 	bool
- 
-+config HAVE_AT91SAM926X_LOWLEVEL_INIT
-+	bool
 +
- # ----------------------------------------------------------
- 
- if ARCH_AT91RM9200
-@@ -116,6 +119,7 @@ choice
- 	prompt "AT91RM9200 Board Type"
- 
- config MACH_AT91RM9200EK
-+	select HAVE_AT91RM9200_LOWLEVEL_INIT
- 	bool "Atmel AT91RM9200-EK Evaluation Kit"
- 	help
- 	  Select this if you are using Atmel's AT91RM9200-EK Evaluation Kit.
-@@ -180,8 +184,10 @@ config MACH_AT91SAM9261EK
- 
- config MACH_PM9261
- 	bool "Ronetix PM9261"
-+	select HAVE_AT91SAM926X_LOWLEVEL_INIT
- 	select HAS_DM9000
- 	select MACH_HAS_LOWLEVEL_INIT
-+	select MACH_DO_LOWLEVEL_INIT
- 	help
- 	  Say y here if you are using the Ronetix PM9261 Board
- 
-@@ -258,18 +264,23 @@ choice
- config MACH_AT91SAM9263EK
- 	bool "Atmel AT91SAM9263-EK"
- 	select MACH_HAS_LOWLEVEL_INIT
-+	select MACH_DO_LOWLEVEL_INIT
- 	select HAVE_NAND_ATMEL_BUSWIDTH_16
-+	select HAVE_AT91SAM926X_LOWLEVEL_INIT
- 	help
- 	  Say y here if you are using Atmel's AT91SAM9263-EK Evaluation board
- 
- config MACH_MMCCPU
- 	bool "Bucyrus MMC-CPU"
-+	select HAVE_AT91SAM926X_LOWLEVEL_INIT
- 	help
- 	  Say y here if you are using the Bucyrus MMC-CPU
- 
- config MACH_PM9263
- 	bool "Ronetix PM9263"
- 	select MACH_HAS_LOWLEVEL_INIT
-+	select MACH_DO_LOWLEVEL_INIT
-+	select HAVE_AT91SAM926X_LOWLEVEL_INIT
- 	help
- 	  Say y here if you are using the Ronetix PM9263 Board
- 
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 3ade725..f9cb4f1 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -1,11 +1,13 @@
- obj-y += clock.o gpio.o
- 
--lowlevel_init-y = at91sam926x_lowlevel_init.o
- lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
- obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
- 
- pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
- 
-+obj-$(CONFIG_HAVE_AT91SAM926X_LOWLEVEL_INIT) += at91sam926x_lowlevel_init.o
-+pbl-$(CONFIG_HAVE_AT91SAM926X_LOWLEVEL_INIT) += at91sam926x_lowlevel_init.o
++#define IMX_ESDCTL_V4_ESDCTL	0x0
++#define ESDCTL_V4_ESDCTL_DSIZ		(1 << 16)
 +
- obj-$(CONFIG_AT91SAM9_RESET) += at91sam9_reset.o
- obj-$(CONFIG_AT91SAM9G45_RESET) += at91sam9g45_reset.o
- 
-diff --git a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-index 0ee0345..a399854 100644
---- a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-+++ b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-@@ -34,12 +34,17 @@ static void inline pmc_check_mckrdy(void)
- 	} while (!(r & AT91_PMC_MCKRDY));
++#define IMX_ESDCTL_V4_ESDMISC	0x18
++#define ESDCTL_V4_ESDMISC_DDR_4_BANK	(1 << 5)
++#define ESDCTL_V4_ESDMISC_ONECS		(1 << 20)
++
++#define ESDCTL_V4_ESDCTL_SDE_0	1 /* FIXME */
++#define ESDCTL_V4_ESDMISC_BI	1 /* FIXME */
++
++static inline unsigned long imx_v4_sdram_size(void __iomem *esdctlbase)
++{
++	u32 ctlval = readl(esdctlbase + IMX_ESDCTL_V4_ESDCTL);
++	u32 esdmisc = readl(esdctlbase + IMX_ESDCTL_V4_ESDMISC);
++	unsigned long size;
++	int rows, cols, width = 2, banks = 8;
++
++	if (!(ctlval & ESDCTL_V4_ESDCTL_SDE_0))
++		return 0;
++
++	rows = ((ctlval >> 24) & 0x7) + 11;
++	switch ((ctlval >> 20) & 0x7) {
++	case 0:
++		cols = 9;
++		break;
++	case 1:
++		cols = 10;
++		break;
++	case 2:
++		cols = 11;
++		break;
++	case 3:
++		cols = 8;
++		break;
++	case 4:
++		cols = 12;
++		break;
++	default:
++		cols = 0;
++		break;
++	}
++
++	if (ctlval & ESDCTL_V4_ESDCTL_DSIZ)
++		width = 4;
++
++	if (esdmisc & ESDCTL_V4_ESDMISC_DDR_4_BANK)
++		banks = 4;
++
++	size = (1 << cols) * (1 << rows) * banks * width;
++
++	/* second cs not enabled, return size */
++	if (!(ctlval & ESDCTL_V4_ESDCTL_SDE_0))
++		return size;
++
++	/* one 2GiB cs, return size */
++	if (esdmisc & ESDCTL_V4_ESDMISC_ONECS)
++		return size;
++
++	/* interleaved, double size */
++	if (esdmisc & ESDCTL_V4_ESDMISC_BI)
++		return size * 2;
++
++	/* two areas with hole, return first area size */
++	if (size < SZ_1G)
++		return size;
++
++	/* both cs, 2 * 1GiB */
++	return size * 2;
++}
++
++/*
++ * The i.MX SoCs usually have two SDRAM chipselects. The following
++ * SoC specific functions return:
++ *
++ * - cs0 disabled, cs1 disabled: 0
++ * - cs0 enabled, cs1 disabled: SDRAM size for cs0
++ * - cs0 disabled, c1 enabled: 0 (currently assumed that no hardware does this)
++ * - cs0 enabled, cs1 enabled: The largest continuous region, that is, cs0 + cs1
++ *                             if cs0 is taking the whole address space.
++ */
++void __naked imx1_barebox_entry(uint32_t boarddata)
++{
++	unsigned long base;
++	unsigned long size;
++
++	base = 0x08000000;
++
++	size = imx_v1_sdram_size((void *)MX1_SDRAMC_BASE_ADDR, 0);
++	if (size == SZ_64M)
++		size += imx_v1_sdram_size((void *)MX1_SDRAMC_BASE_ADDR, 1);
++
++	barebox_arm_entry(base, size, boarddata);
++}
++
++void __naked imx25_barebox_entry(uint32_t boarddata)
++{
++	unsigned long base;
++	unsigned long size;
++
++	base = MX25_CSD0_BASE_ADDR;
++
++	size = imx_v2_sdram_size((void *)MX25_ESDCTL_BASE_ADDR, 0);
++	if (size == SZ_256M)
++		size += imx_v2_sdram_size((void *)MX25_ESDCTL_BASE_ADDR, 1);
++
++	barebox_arm_entry(base, size, boarddata);
++}
++
++void __naked imx27_barebox_entry(uint32_t boarddata)
++{
++	unsigned long base;
++	unsigned long size;
++
++	base = MX27_CSD0_BASE_ADDR;
++
++	size = imx_v2_sdram_size((void *)MX27_ESDCTL_BASE_ADDR, 0);
++	if (size == SZ_256M)
++		size += imx_v2_sdram_size((void *)MX27_ESDCTL_BASE_ADDR, 1);
++
++	barebox_arm_entry(base, size, boarddata);
++}
++
++void __naked imx31_barebox_entry(uint32_t boarddata)
++{
++	unsigned long base;
++	unsigned long size;
++
++	base = MX31_CSD0_BASE_ADDR;
++
++	size = imx_v2_sdram_size((void *)MX31_ESDCTL_BASE_ADDR, 0);
++	if (size == SZ_256M)
++		size += imx_v2_sdram_size((void *)MX31_ESDCTL_BASE_ADDR, 1);
++
++	barebox_arm_entry(base, size, boarddata);
++}
++
++void __naked imx35_barebox_entry(uint32_t boarddata)
++{
++	unsigned long base;
++	unsigned long size;
++
++	base = MX35_CSD0_BASE_ADDR;
++
++	size = imx_v2_sdram_size((void *)MX35_ESDCTL_BASE_ADDR, 0);
++	if (size == SZ_256M)
++		size += imx_v2_sdram_size((void *)MX35_ESDCTL_BASE_ADDR, 1);
++
++	barebox_arm_entry(base, size, boarddata);
++}
++
++void __naked imx51_barebox_entry(uint32_t boarddata)
++{
++	unsigned long base;
++	unsigned long size;
++
++	base = MX51_CSD0_BASE_ADDR;
++
++	size = imx_v3_sdram_size((void *)MX51_ESDCTL_BASE_ADDR, 0);
++	if (size == SZ_256M)
++		size += imx_v3_sdram_size((void *)MX51_ESDCTL_BASE_ADDR, 1);
++
++	barebox_arm_entry(base, size, boarddata);
++}
++
++void __naked imx53_barebox_entry(uint32_t boarddata)
++{
++	unsigned long base;
++	unsigned long size;
++
++	base = MX53_CSD0_BASE_ADDR;
++
++	size = imx_v4_sdram_size((void *)MX53_ESDCTL_BASE_ADDR);
++
++	barebox_arm_entry(base, size, boarddata);
++}
+diff --git a/arch/arm/mach-imx/imx1.c b/arch/arm/mach-imx/imx1.c
+index 18901ea..59cff28 100644
+--- a/arch/arm/mach-imx/imx1.c
++++ b/arch/arm/mach-imx/imx1.c
+@@ -49,6 +49,8 @@ void imx1_setup_eimcs(size_t cs, unsigned upper, unsigned lower)
+ 	writel(lower, MX1_EIM_BASE_ADDR + 4 + cs * 8);
  }
  
--void __naked __bare_init reset(void)
-+void __naked __bare_init at91sam926x_entry(unsigned long sdram_base,
-+		unsigned long sdram_size)
++#include <mach/esdctl.h>
++
+ static int imx1_init(void)
  {
-+	uint32_t pc;
- 	u32 r;
- 	int i;
+ 	imx_iomuxv1_init((void *)MX1_GPIO1_BASE_ADDR);
+diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
+index 8124c87..c31831b 100644
+--- a/arch/arm/mach-imx/include/mach/esdctl.h
++++ b/arch/arm/mach-imx/include/mach/esdctl.h
+@@ -26,6 +26,7 @@
+ #define ESDCTL0_DSIZ_31_16			(0 << 16)
+ #define ESDCTL0_DSIZ_15_0			(1 << 16)
+ #define ESDCTL0_DSIZ_31_0			(2 << 16)
++#define ESDCTL0_DSIZ_MASK			(3 << 16)
+ #define ESDCTL0_REF1				(1 << 13)
+ #define ESDCTL0_REF2				(2 << 13)
+ #define ESDCTL0_REF4				(3 << 13)
+@@ -124,3 +125,15 @@
+ //#define ESDCFGx_tRC_14		0x0000000e	// 15 seems to not exist
+ #define ESDCFGx_tRC_16			0x0000000f
  
--	common_reset();
-+	pc = get_pc();
++#ifndef __ASSEMBLY__
 +
-+	if (pc < AT91_SDRAM_BASE || pc > AT91_SDRAM_BASE + 0x10000000)
-+		goto end;
- 
- 	at91_sys_write(AT91_WDT_MR, CONFIG_SYS_WDTC_WDMR_VAL);
- 
-diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
-index 670c73d..eb71ed5 100644
---- a/arch/arm/mach-at91/include/mach/board.h
-+++ b/arch/arm/mach-at91/include/mach/board.h
-@@ -154,4 +154,7 @@ struct at91_spi_platform_data {
- };
- 
- void at91_add_device_spi(int spi_id, struct at91_spi_platform_data *pdata);
++void __naked imx1_barebox_entry(uint32_t boarddata);
++void __naked imx21_barebox_entry(uint32_t boarddata);
++void __naked imx25_barebox_entry(uint32_t boarddata);
++void __naked imx27_barebox_entry(uint32_t boarddata);
++void __naked imx31_barebox_entry(uint32_t boarddata);
++void __naked imx35_barebox_entry(uint32_t boarddata);
++void __naked imx51_barebox_entry(uint32_t boarddata);
++void __naked imx53_barebox_entry(uint32_t boarddata);
 +
-+void at91sam926x_entry(unsigned long sdram_base, unsigned long sdram_size);
-+
- #endif
++#endif
 -- 
 1.7.10.4
 
