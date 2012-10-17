@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOamE-00027G-FT
- for barebox@lists.infradead.org; Wed, 17 Oct 2012 21:03:49 +0000
+ id 1TOamE-00027O-Rw
+ for barebox@lists.infradead.org; Wed, 17 Oct 2012 21:03:52 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Oct 2012 23:03:14 +0200
-Message-Id: <1350507817-7819-6-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 17 Oct 2012 23:03:16 +0200
+Message-Id: <1350507817-7819-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
 References: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,356 +21,349 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/28] ARM i.MX Add functions to get sdram base and size
+Subject: [PATCH 07/28] ARM AT91 boards: switch to barebox_arm_entry
 To: barebox@lists.infradead.org
 
-The code initializing the SDRAM controller is not at the same
-place where SDRAM is registered with barebox. To reduce the
-risk of registering wrong SDRAM sizes add functions to read
-back the sizes from the SDRAM controller.
+Most boards use hardcoded addresses, some automatically determine the
+SDRAM size using at91_get_sdram_size(),
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/Makefile              |    3 +-
- arch/arm/mach-imx/esdctl.c              |  273 +++++++++++++++++++++++++++++++
- arch/arm/mach-imx/imx1.c                |    2 +
- arch/arm/mach-imx/include/mach/esdctl.h |   13 ++
- 4 files changed, 290 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/mach-imx/esdctl.c
+ arch/arm/boards/at91rm9200ek/lowlevel.c        |   14 ++++++++++++++
+ arch/arm/boards/at91sam9260ek/Makefile         |    2 ++
+ arch/arm/boards/at91sam9260ek/lowlevel.c       |   12 ++++++++++++
+ arch/arm/boards/at91sam9261ek/Makefile         |    2 ++
+ arch/arm/boards/at91sam9261ek/lowlevel.c       |   12 ++++++++++++
+ arch/arm/boards/at91sam9m10g45ek/Makefile      |    2 ++
+ arch/arm/boards/at91sam9m10g45ek/lowlevel.c    |   11 +++++++++++
+ arch/arm/boards/at91sam9x5ek/Makefile          |    2 ++
+ arch/arm/boards/at91sam9x5ek/lowlevel.c        |   11 +++++++++++
+ arch/arm/boards/dss11/Makefile                 |    2 ++
+ arch/arm/boards/dss11/lowlevel.c               |   12 ++++++++++++
+ arch/arm/boards/mmccpu/Makefile                |    2 ++
+ arch/arm/boards/mmccpu/lowlevel.c              |   12 ++++++++++++
+ arch/arm/boards/pm9g45/Makefile                |    2 ++
+ arch/arm/boards/pm9g45/lowlevel.c              |   11 +++++++++++
+ arch/arm/boards/qil-a9260/Makefile             |    2 ++
+ arch/arm/boards/qil-a9260/lowlevel.c           |   12 ++++++++++++
+ arch/arm/boards/tny-a926x/Makefile             |    2 ++
+ arch/arm/boards/tny-a926x/lowlevel.c           |   12 ++++++++++++
+ arch/arm/boards/usb-a926x/Makefile             |    2 ++
+ arch/arm/boards/usb-a926x/lowlevel.c           |   12 ++++++++++++
+ arch/arm/mach-at91/at91rm9200_lowlevel_init.c  |    2 +-
+ arch/arm/mach-at91/at91sam926x_lowlevel_init.c |    2 +-
+ 23 files changed, 153 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/boards/at91rm9200ek/lowlevel.c
+ create mode 100644 arch/arm/boards/at91sam9260ek/lowlevel.c
+ create mode 100644 arch/arm/boards/at91sam9261ek/lowlevel.c
+ create mode 100644 arch/arm/boards/at91sam9m10g45ek/lowlevel.c
+ create mode 100644 arch/arm/boards/at91sam9x5ek/lowlevel.c
+ create mode 100644 arch/arm/boards/dss11/lowlevel.c
+ create mode 100644 arch/arm/boards/mmccpu/lowlevel.c
+ create mode 100644 arch/arm/boards/pm9g45/lowlevel.c
+ create mode 100644 arch/arm/boards/qil-a9260/lowlevel.c
+ create mode 100644 arch/arm/boards/tny-a926x/lowlevel.c
+ create mode 100644 arch/arm/boards/usb-a926x/lowlevel.c
 
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index 259733e..6bc2b79 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -14,6 +14,7 @@ obj-$(CONFIG_NAND_IMX) += nand.o
- obj-$(CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND) += external-nand-boot.o
- pbl-$(CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND) += external-nand-boot.o
- obj-$(CONFIG_COMMON_CLK) += clk-pllv1.o clk-pllv2.o clk-pllv3.o clk-pfd.o
--obj-y += devices.o imx.o
-+obj-y += devices.o imx.o esdctl.o
- obj-y += boot.o
- obj-$(CONFIG_BAREBOX_UPDATE) += imx-bbu-internal.o
-+pbl-y += esdctl.o
-diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+diff --git a/arch/arm/boards/at91rm9200ek/lowlevel.c b/arch/arm/boards/at91rm9200ek/lowlevel.c
 new file mode 100644
-index 0000000..1e1ede1
+index 0000000..5240596
 --- /dev/null
-+++ b/arch/arm/mach-imx/esdctl.c
-@@ -0,0 +1,273 @@
-+/*
-+ * esdctl.c - i.MX sdram controller functions
-+ *
-+ * Copyright (c) 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * based on Linux devicetree support
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
++++ b/arch/arm/boards/at91rm9200ek/lowlevel.c
+@@ -0,0 +1,14 @@
 +#include <common.h>
-+#include <io.h>
++#include <init.h>
 +#include <sizes.h>
 +#include <asm/barebox-arm.h>
-+#include <mach/esdctl.h>
-+#include <mach/imx1-regs.h>
-+#include <mach/imx21-regs.h>
-+#include <mach/imx25-regs.h>
-+#include <mach/imx27-regs.h>
-+#include <mach/imx31-regs.h>
-+#include <mach/imx35-regs.h>
-+#include <mach/imx51-regs.h>
-+#include <mach/imx53-regs.h>
++#include <asm/barebox-arm-head.h>
++#include <mach/hardware.h>
++#include <mach/board.h>
 +
-+static inline unsigned long imx_v1_sdram_size(void __iomem *esdctlbase, int num)
++void __naked __bare_init reset(void)
 +{
-+	void __iomem *esdctl = esdctlbase + (num ? 4 : 0);
-+	u32 ctlval = readl(esdctl);
-+	unsigned long size;
-+	int rows, cols, width = 2, banks = 4;
++	common_reset();
 +
-+	if (!(ctlval & ESDCTL0_SDE))
-+		/* SDRAM controller disabled, so no RAM here */
-+		return 0;
-+
-+	rows = ((ctlval >> 24) & 0x3) + 11;
-+	cols = ((ctlval >> 20) & 0x3) + 8;
-+
-+	if (ctlval & (1 << 17))
-+		width = 4;
-+
-+	size = (1 << cols) * (1 << rows) * banks * width;
-+
-+	if (size > SZ_64M)
-+		size = SZ_64M;
-+
-+	return size;
++	at91rm9200_entry(AT91_SDRAM_BASE, SZ_64M);
 +}
+diff --git a/arch/arm/boards/at91sam9260ek/Makefile b/arch/arm/boards/at91sam9260ek/Makefile
+index eb072c0..47ab803 100644
+--- a/arch/arm/boards/at91sam9260ek/Makefile
++++ b/arch/arm/boards/at91sam9260ek/Makefile
+@@ -1 +1,3 @@
+ obj-y += init.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/at91sam9260ek/lowlevel.c b/arch/arm/boards/at91sam9260ek/lowlevel.c
+new file mode 100644
+index 0000000..82520c3
+--- /dev/null
++++ b/arch/arm/boards/at91sam9260ek/lowlevel.c
+@@ -0,0 +1,12 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/hardware.h>
++#include <mach/at91sam9_sdramc.h>
 +
-+static inline unsigned long imx_v2_sdram_size(void __iomem *esdctlbase, int num)
++void __naked reset(void)
 +{
-+	void __iomem *esdctl = esdctlbase + (num ? IMX_ESDCTL1 : IMX_ESDCTL0);
-+	u32 ctlval = readl(esdctl);
-+	unsigned long size;
-+	int rows, cols, width = 2, banks = 4;
-+
-+	if (!(ctlval & ESDCTL0_SDE))
-+		/* SDRAM controller disabled, so no RAM here */
-+		return 0;
-+
-+	rows = ((ctlval >> 24) & 0x7) + 11;
-+	cols = ((ctlval >> 20) & 0x3) + 8;
-+
-+	if ((ctlval & ESDCTL0_DSIZ_MASK) == ESDCTL0_DSIZ_31_0)
-+		width = 4;
-+
-+	size = (1 << cols) * (1 << rows) * banks * width;
-+
-+	if (size > SZ_256M)
-+		size = SZ_256M;
-+
-+	return size;
++	common_reset();
++	barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(), 0);
 +}
+diff --git a/arch/arm/boards/at91sam9261ek/Makefile b/arch/arm/boards/at91sam9261ek/Makefile
+index eb072c0..47ab803 100644
+--- a/arch/arm/boards/at91sam9261ek/Makefile
++++ b/arch/arm/boards/at91sam9261ek/Makefile
+@@ -1 +1,3 @@
+ obj-y += init.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/at91sam9261ek/lowlevel.c b/arch/arm/boards/at91sam9261ek/lowlevel.c
+new file mode 100644
+index 0000000..82520c3
+--- /dev/null
++++ b/arch/arm/boards/at91sam9261ek/lowlevel.c
+@@ -0,0 +1,12 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/hardware.h>
++#include <mach/at91sam9_sdramc.h>
 +
-+static inline unsigned long imx_v3_sdram_size(void __iomem *esdctlbase, int num)
++void __naked reset(void)
 +{
-+	unsigned long size;
-+
-+	size = imx_v2_sdram_size(esdctlbase, num);
-+
-+	if (readl(esdctlbase + IMX_ESDMISC) & (1 << 6))
-+		size *= 2;
-+
-+	if (size > SZ_256M)
-+		size = SZ_256M;
-+
-+	return size;
++	common_reset();
++	barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(), 0);
 +}
+diff --git a/arch/arm/boards/at91sam9m10g45ek/Makefile b/arch/arm/boards/at91sam9m10g45ek/Makefile
+index eb072c0..47ab803 100644
+--- a/arch/arm/boards/at91sam9m10g45ek/Makefile
++++ b/arch/arm/boards/at91sam9m10g45ek/Makefile
+@@ -1 +1,3 @@
+ obj-y += init.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/at91sam9m10g45ek/lowlevel.c b/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
+new file mode 100644
+index 0000000..83da64d
+--- /dev/null
++++ b/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
+@@ -0,0 +1,11 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/hardware.h>
 +
-+#define IMX_ESDCTL_V4_ESDCTL	0x0
-+#define ESDCTL_V4_ESDCTL_DSIZ		(1 << 16)
-+
-+#define IMX_ESDCTL_V4_ESDMISC	0x18
-+#define ESDCTL_V4_ESDMISC_DDR_4_BANK	(1 << 5)
-+#define ESDCTL_V4_ESDMISC_ONECS		(1 << 20)
-+
-+#define ESDCTL_V4_ESDCTL_SDE_0	1 /* FIXME */
-+#define ESDCTL_V4_ESDMISC_BI	1 /* FIXME */
-+
-+static inline unsigned long imx_v4_sdram_size(void __iomem *esdctlbase)
++void __naked reset(void)
 +{
-+	u32 ctlval = readl(esdctlbase + IMX_ESDCTL_V4_ESDCTL);
-+	u32 esdmisc = readl(esdctlbase + IMX_ESDCTL_V4_ESDMISC);
-+	unsigned long size;
-+	int rows, cols, width = 2, banks = 8;
-+
-+	if (!(ctlval & ESDCTL_V4_ESDCTL_SDE_0))
-+		return 0;
-+
-+	rows = ((ctlval >> 24) & 0x7) + 11;
-+	switch ((ctlval >> 20) & 0x7) {
-+	case 0:
-+		cols = 9;
-+		break;
-+	case 1:
-+		cols = 10;
-+		break;
-+	case 2:
-+		cols = 11;
-+		break;
-+	case 3:
-+		cols = 8;
-+		break;
-+	case 4:
-+		cols = 12;
-+		break;
-+	default:
-+		cols = 0;
-+		break;
-+	}
-+
-+	if (ctlval & ESDCTL_V4_ESDCTL_DSIZ)
-+		width = 4;
-+
-+	if (esdmisc & ESDCTL_V4_ESDMISC_DDR_4_BANK)
-+		banks = 4;
-+
-+	size = (1 << cols) * (1 << rows) * banks * width;
-+
-+	/* second cs not enabled, return size */
-+	if (!(ctlval & ESDCTL_V4_ESDCTL_SDE_0))
-+		return size;
-+
-+	/* one 2GiB cs, return size */
-+	if (esdmisc & ESDCTL_V4_ESDMISC_ONECS)
-+		return size;
-+
-+	/* interleaved, double size */
-+	if (esdmisc & ESDCTL_V4_ESDMISC_BI)
-+		return size * 2;
-+
-+	/* two areas with hole, return first area size */
-+	if (size < SZ_1G)
-+		return size;
-+
-+	/* both cs, 2 * 1GiB */
-+	return size * 2;
++	common_reset();
++	barebox_arm_entry(AT91_CHIPSELECT_1, SZ_128M, 0);
 +}
+diff --git a/arch/arm/boards/at91sam9x5ek/Makefile b/arch/arm/boards/at91sam9x5ek/Makefile
+index eb072c0..47ab803 100644
+--- a/arch/arm/boards/at91sam9x5ek/Makefile
++++ b/arch/arm/boards/at91sam9x5ek/Makefile
+@@ -1 +1,3 @@
+ obj-y += init.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/at91sam9x5ek/lowlevel.c b/arch/arm/boards/at91sam9x5ek/lowlevel.c
+new file mode 100644
+index 0000000..83da64d
+--- /dev/null
++++ b/arch/arm/boards/at91sam9x5ek/lowlevel.c
+@@ -0,0 +1,11 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/hardware.h>
 +
-+/*
-+ * The i.MX SoCs usually have two SDRAM chipselects. The following
-+ * SoC specific functions return:
-+ *
-+ * - cs0 disabled, cs1 disabled: 0
-+ * - cs0 enabled, cs1 disabled: SDRAM size for cs0
-+ * - cs0 disabled, c1 enabled: 0 (currently assumed that no hardware does this)
-+ * - cs0 enabled, cs1 enabled: The largest continuous region, that is, cs0 + cs1
-+ *                             if cs0 is taking the whole address space.
-+ */
-+void __naked imx1_barebox_entry(uint32_t boarddata)
++void __naked reset(void)
 +{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = 0x08000000;
-+
-+	size = imx_v1_sdram_size((void *)MX1_SDRAMC_BASE_ADDR, 0);
-+	if (size == SZ_64M)
-+		size += imx_v1_sdram_size((void *)MX1_SDRAMC_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
++	common_reset();
++	barebox_arm_entry(AT91_CHIPSELECT_1, SZ_128M, 0);
 +}
+diff --git a/arch/arm/boards/dss11/Makefile b/arch/arm/boards/dss11/Makefile
+index eb072c0..47ab803 100644
+--- a/arch/arm/boards/dss11/Makefile
++++ b/arch/arm/boards/dss11/Makefile
+@@ -1 +1,3 @@
+ obj-y += init.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/dss11/lowlevel.c b/arch/arm/boards/dss11/lowlevel.c
+new file mode 100644
+index 0000000..82520c3
+--- /dev/null
++++ b/arch/arm/boards/dss11/lowlevel.c
+@@ -0,0 +1,12 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/hardware.h>
++#include <mach/at91sam9_sdramc.h>
 +
-+void __naked imx25_barebox_entry(uint32_t boarddata)
++void __naked reset(void)
 +{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX25_CSD0_BASE_ADDR;
-+
-+	size = imx_v2_sdram_size((void *)MX25_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_256M)
-+		size += imx_v2_sdram_size((void *)MX25_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
++	common_reset();
++	barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(), 0);
 +}
+diff --git a/arch/arm/boards/mmccpu/Makefile b/arch/arm/boards/mmccpu/Makefile
+index eb072c0..47ab803 100644
+--- a/arch/arm/boards/mmccpu/Makefile
++++ b/arch/arm/boards/mmccpu/Makefile
+@@ -1 +1,3 @@
+ obj-y += init.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/mmccpu/lowlevel.c b/arch/arm/boards/mmccpu/lowlevel.c
+new file mode 100644
+index 0000000..9f6290c
+--- /dev/null
++++ b/arch/arm/boards/mmccpu/lowlevel.c
+@@ -0,0 +1,12 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/hardware.h>
 +
-+void __naked imx27_barebox_entry(uint32_t boarddata)
++void __naked reset(void)
 +{
-+	unsigned long base;
-+	unsigned long size;
++	common_reset();
 +
-+	base = MX27_CSD0_BASE_ADDR;
-+
-+	size = imx_v2_sdram_size((void *)MX27_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_256M)
-+		size += imx_v2_sdram_size((void *)MX27_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
++	barebox_arm_entry(AT91_CHIPSELECT_1, SZ_128M, 0);
 +}
+diff --git a/arch/arm/boards/pm9g45/Makefile b/arch/arm/boards/pm9g45/Makefile
+index eb072c0..47ab803 100644
+--- a/arch/arm/boards/pm9g45/Makefile
++++ b/arch/arm/boards/pm9g45/Makefile
+@@ -1 +1,3 @@
+ obj-y += init.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/pm9g45/lowlevel.c b/arch/arm/boards/pm9g45/lowlevel.c
+new file mode 100644
+index 0000000..83da64d
+--- /dev/null
++++ b/arch/arm/boards/pm9g45/lowlevel.c
+@@ -0,0 +1,11 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/hardware.h>
 +
-+void __naked imx31_barebox_entry(uint32_t boarddata)
++void __naked reset(void)
 +{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX31_CSD0_BASE_ADDR;
-+
-+	size = imx_v2_sdram_size((void *)MX31_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_256M)
-+		size += imx_v2_sdram_size((void *)MX31_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
++	common_reset();
++	barebox_arm_entry(AT91_CHIPSELECT_1, SZ_128M, 0);
 +}
+diff --git a/arch/arm/boards/qil-a9260/Makefile b/arch/arm/boards/qil-a9260/Makefile
+index eb072c0..47ab803 100644
+--- a/arch/arm/boards/qil-a9260/Makefile
++++ b/arch/arm/boards/qil-a9260/Makefile
+@@ -1 +1,3 @@
+ obj-y += init.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/qil-a9260/lowlevel.c b/arch/arm/boards/qil-a9260/lowlevel.c
+new file mode 100644
+index 0000000..82520c3
+--- /dev/null
++++ b/arch/arm/boards/qil-a9260/lowlevel.c
+@@ -0,0 +1,12 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/hardware.h>
++#include <mach/at91sam9_sdramc.h>
 +
-+void __naked imx35_barebox_entry(uint32_t boarddata)
++void __naked reset(void)
 +{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX35_CSD0_BASE_ADDR;
-+
-+	size = imx_v2_sdram_size((void *)MX35_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_256M)
-+		size += imx_v2_sdram_size((void *)MX35_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
++	common_reset();
++	barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(), 0);
 +}
+diff --git a/arch/arm/boards/tny-a926x/Makefile b/arch/arm/boards/tny-a926x/Makefile
+index eb072c0..47ab803 100644
+--- a/arch/arm/boards/tny-a926x/Makefile
++++ b/arch/arm/boards/tny-a926x/Makefile
+@@ -1 +1,3 @@
+ obj-y += init.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/tny-a926x/lowlevel.c b/arch/arm/boards/tny-a926x/lowlevel.c
+new file mode 100644
+index 0000000..82520c3
+--- /dev/null
++++ b/arch/arm/boards/tny-a926x/lowlevel.c
+@@ -0,0 +1,12 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/hardware.h>
++#include <mach/at91sam9_sdramc.h>
 +
-+void __naked imx51_barebox_entry(uint32_t boarddata)
++void __naked reset(void)
 +{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX51_CSD0_BASE_ADDR;
-+
-+	size = imx_v3_sdram_size((void *)MX51_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_256M)
-+		size += imx_v3_sdram_size((void *)MX51_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
++	common_reset();
++	barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(), 0);
 +}
+diff --git a/arch/arm/boards/usb-a926x/Makefile b/arch/arm/boards/usb-a926x/Makefile
+index eb072c0..47ab803 100644
+--- a/arch/arm/boards/usb-a926x/Makefile
++++ b/arch/arm/boards/usb-a926x/Makefile
+@@ -1 +1,3 @@
+ obj-y += init.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/usb-a926x/lowlevel.c b/arch/arm/boards/usb-a926x/lowlevel.c
+new file mode 100644
+index 0000000..82520c3
+--- /dev/null
++++ b/arch/arm/boards/usb-a926x/lowlevel.c
+@@ -0,0 +1,12 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/hardware.h>
++#include <mach/at91sam9_sdramc.h>
 +
-+void __naked imx53_barebox_entry(uint32_t boarddata)
++void __naked reset(void)
 +{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX53_CSD0_BASE_ADDR;
-+
-+	size = imx_v4_sdram_size((void *)MX53_ESDCTL_BASE_ADDR);
-+
-+	barebox_arm_entry(base, size, boarddata);
++	common_reset();
++	barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(), 0);
 +}
-diff --git a/arch/arm/mach-imx/imx1.c b/arch/arm/mach-imx/imx1.c
-index 18901ea..59cff28 100644
---- a/arch/arm/mach-imx/imx1.c
-+++ b/arch/arm/mach-imx/imx1.c
-@@ -49,6 +49,8 @@ void imx1_setup_eimcs(size_t cs, unsigned upper, unsigned lower)
- 	writel(lower, MX1_EIM_BASE_ADDR + 4 + cs * 8);
+diff --git a/arch/arm/mach-at91/at91rm9200_lowlevel_init.c b/arch/arm/mach-at91/at91rm9200_lowlevel_init.c
+index a0a0d5e..897d266 100644
+--- a/arch/arm/mach-at91/at91rm9200_lowlevel_init.c
++++ b/arch/arm/mach-at91/at91rm9200_lowlevel_init.c
+@@ -130,5 +130,5 @@ void __naked __bare_init at91rm9200_entry(unsigned long sdram_base,
+ 	set_cr(r);
+ 
+ end:
+-	board_init_lowlevel_return();
++	barebox_arm_entry(sdram_base, sdram_size, 0);
  }
+diff --git a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
+index a399854..b8463aa 100644
+--- a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
++++ b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
+@@ -175,5 +175,5 @@ void __naked __bare_init at91sam926x_entry(unsigned long sdram_base,
+ #endif
  
-+#include <mach/esdctl.h>
-+
- static int imx1_init(void)
- {
- 	imx_iomuxv1_init((void *)MX1_GPIO1_BASE_ADDR);
-diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
-index 8124c87..c31831b 100644
---- a/arch/arm/mach-imx/include/mach/esdctl.h
-+++ b/arch/arm/mach-imx/include/mach/esdctl.h
-@@ -26,6 +26,7 @@
- #define ESDCTL0_DSIZ_31_16			(0 << 16)
- #define ESDCTL0_DSIZ_15_0			(1 << 16)
- #define ESDCTL0_DSIZ_31_0			(2 << 16)
-+#define ESDCTL0_DSIZ_MASK			(3 << 16)
- #define ESDCTL0_REF1				(1 << 13)
- #define ESDCTL0_REF2				(2 << 13)
- #define ESDCTL0_REF4				(3 << 13)
-@@ -124,3 +125,15 @@
- //#define ESDCFGx_tRC_14		0x0000000e	// 15 seems to not exist
- #define ESDCFGx_tRC_16			0x0000000f
- 
-+#ifndef __ASSEMBLY__
-+
-+void __naked imx1_barebox_entry(uint32_t boarddata);
-+void __naked imx21_barebox_entry(uint32_t boarddata);
-+void __naked imx25_barebox_entry(uint32_t boarddata);
-+void __naked imx27_barebox_entry(uint32_t boarddata);
-+void __naked imx31_barebox_entry(uint32_t boarddata);
-+void __naked imx35_barebox_entry(uint32_t boarddata);
-+void __naked imx51_barebox_entry(uint32_t boarddata);
-+void __naked imx53_barebox_entry(uint32_t boarddata);
-+
-+#endif
+ end:
+-	board_init_lowlevel_return();
++	barebox_arm_entry(sdram_base, sdram_size, 0);
+ }
 -- 
 1.7.10.4
 
