@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOamF-00027g-BF
- for barebox@lists.infradead.org; Wed, 17 Oct 2012 21:03:58 +0000
+ id 1TOamF-00027Y-Bj
+ for barebox@lists.infradead.org; Wed, 17 Oct 2012 21:03:59 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Oct 2012 23:03:28 +0200
-Message-Id: <1350507817-7819-20-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 17 Oct 2012 23:03:20 +0200
+Message-Id: <1350507817-7819-12-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
 References: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,40 +21,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 19/28] ARM pbl: setup stack at end of SDRAM
+Subject: [PATCH 11/28] ARM PXA boards: switch to barebox_arm_entry
 To: barebox@lists.infradead.org
 
-We now have memory information available in barebox_arm_entry,
-use it to setup the stack at the end of SDRAM instead of hardcoded
-config value.
+All boards use hardcoded base addresses.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start-pbl.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/arm/boards/mioa701/Makefile       |    2 ++
+ arch/arm/boards/mioa701/lowlevel.c     |   10 ++++++++++
+ arch/arm/boards/pcm027/lowlevel_init.S |    7 +++++--
+ 3 files changed, 17 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/boards/mioa701/lowlevel.c
 
-diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index a2cdbf2..e612d51 100644
---- a/arch/arm/cpu/start-pbl.c
-+++ b/arch/arm/cpu/start-pbl.c
-@@ -162,9 +162,6 @@ static noinline void __barebox_arm_entry(uint32_t membase, uint32_t memsize,
- 	uint32_t offset;
- 	uint32_t pg_start, pg_end, pg_len;
- 
--	/* Setup the stack */
--	arm_setup_stack(STACK_BASE + STACK_SIZE - 16);
--
- 	/* Get offset between linked address and runtime address */
- 	offset = get_runtime_offset();
- 
-@@ -196,5 +193,7 @@ static noinline void __barebox_arm_entry(uint32_t membase, uint32_t memsize,
- void __naked barebox_arm_entry(uint32_t membase, uint32_t memsize,
- 		uint32_t boarddata)
- {
-+	arm_setup_stack(membase + memsize - 8);
+diff --git a/arch/arm/boards/mioa701/Makefile b/arch/arm/boards/mioa701/Makefile
+index dcfc293..88c223a 100644
+--- a/arch/arm/boards/mioa701/Makefile
++++ b/arch/arm/boards/mioa701/Makefile
+@@ -1 +1,3 @@
+ obj-y += board.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/mioa701/lowlevel.c b/arch/arm/boards/mioa701/lowlevel.c
+new file mode 100644
+index 0000000..6d48c97
+--- /dev/null
++++ b/arch/arm/boards/mioa701/lowlevel.c
+@@ -0,0 +1,10 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
 +
- 	__barebox_arm_entry(membase, memsize, boarddata);
- }
++void __naked reset(void)
++{
++	common_reset();
++	barebox_arm_entry(0xa0000000, SZ_64M, 0);
++}
+diff --git a/arch/arm/boards/pcm027/lowlevel_init.S b/arch/arm/boards/pcm027/lowlevel_init.S
+index cf5fcd9..b90682c 100644
+--- a/arch/arm/boards/pcm027/lowlevel_init.S
++++ b/arch/arm/boards/pcm027/lowlevel_init.S
+@@ -24,6 +24,7 @@
+  */
+ 
+ #include <config.h>
++#include <sizes.h>
+ #include <mach/pxa-regs.h>
+ #include <mach/regs-ost.h>
+ #include <mach/regs-intc.h>
+@@ -452,5 +453,7 @@ initclks:
+ 	/* -------------------------------------------------------------------- */
+ 
+ endlowlevel_init:
+-	b board_init_lowlevel_return
+-
++	mov	r0, #0xa0000000
++	mov	r1, #SZ_64M
++	mov	r2, #0
++	b	barebox_arm_entry
 -- 
 1.7.10.4
 
