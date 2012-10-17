@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo4.mail-out.ovh.net ([188.165.55.104]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TONZ1-0005d5-0U
- for barebox@lists.infradead.org; Wed, 17 Oct 2012 06:57:12 +0000
-Received: from mail438.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 093DE104F19E
- for <barebox@lists.infradead.org>; Wed, 17 Oct 2012 09:03:49 +0200 (CEST)
-Date: Wed, 17 Oct 2012 08:54:51 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121017065451.GD30038@game.jcrosoft.org>
-References: <1347464902-2127-1-git-send-email-plagnioj@jcrosoft.com>
- <20121016204123.GP24458@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TONdN-0005nw-B6
+ for barebox@lists.infradead.org; Wed, 17 Oct 2012 07:01:41 +0000
+Date: Wed, 17 Oct 2012 09:01:39 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121017070139.GM27665@pengutronix.de>
+References: <1350410685-46202-1-git-send-email-carlo.caione@gmail.com>
+ <1350410685-46202-5-git-send-email-carlo.caione@gmail.com>
+ <20121016212416.GC27665@pengutronix.de>
+ <20121017065135.GC30038@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121016204123.GP24458@pengutronix.de>
+In-Reply-To: <20121017065135.GC30038@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,58 +25,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4] bootm: add global bootm.{image/initrd}.loadaddr support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 4/5] BCM2835: add support (arch)
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 22:41 Tue 16 Oct     , Sascha Hauer wrote:
-> On Wed, Sep 12, 2012 at 05:48:22PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > To be able to pass the loadaddr of the image and the initrd.
+On Wed, Oct 17, 2012 at 08:51:35AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 23:24 Tue 16 Oct     , Sascha Hauer wrote:
+> > On Tue, Oct 16, 2012 at 08:04:44PM +0200, Carlo Caione wrote:
+> > > +
+> > > +static struct clk ref_3_clk = {
+> > > +	.rate = 3 * 1000 * 1000,
+> > > +};
+> > > +
+> > > +static struct clk ref_1_clk = {
+> > > +	.rate = 1 * 1000 * 1000,
+> > > +};
 > > 
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  commands/bootm.c |   25 +++++++++++++++++++++++--
-> >  1 file changed, 23 insertions(+), 2 deletions(-)
+> > Add a 'select COMMON_CLK' to your Kconfig and do a:
 > > 
-> > diff --git a/commands/bootm.c b/commands/bootm.c
-> > index 2d9f7f2..dfd9ac9 100644
-> > --- a/commands/bootm.c
-> > +++ b/commands/bootm.c
-> > @@ -254,6 +254,19 @@ static char *bootm_image_name_and_no(const char *name, int *no)
-> >  #define BOOTM_OPTS BOOTM_OPTS_COMMON
-> >  #endif
-> >  
-> > +static unsigned long long getenv_loadaddr(const char *name)
-> > +{
-> > +	const char *valstr = getenv(name);
-> > +
-> > +	if (!valstr)
-> > +		return UIMAGE_SOME_ADDRESS;
-> > +
-> > +	if (valstr[0] == '\0')
-> > +		return UIMAGE_SOME_ADDRESS;
-> > +
-> > +	return simple_strtoull(valstr, NULL, 0);
-> > +}
-> > +
-> >  static int do_bootm(int argc, char *argv[])
-> >  {
-> >  	int opt;
-> > @@ -273,8 +286,11 @@ static int do_bootm(int argc, char *argv[])
-> >  
-> >  	oftree = getenv("global.bootm.oftree");
-> >  	os_file = getenv("global.bootm.image");
-> > -	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD))
-> > +	data.os_address = getenv_loadaddr("global.bootm.image.loadaddr");
-> > +	data.initrd_address = getenv_loadaddr("global.bootm.initrd.loadaddr");
-> 
-> This needs to be in the 'if' below.
-no need if not present the address as set to SOME_ADDRESS
+> > 	clk_dummy = clk_fixed("dummy", 0);
+> > 	clk_ref_3 = clk_fixed("ref3", 3 * 1000 * 1000);
+> > 	clk_ref_1 = clk_fixed("ref1", 1 * 1000 * 1000);
+> > 
+> > Then you can drop your clk code and get a clk_dump command
+> > which you can use to see what clocks you have.
+> > 
+> > > +static int bcm2835_gpio_init(void)
+> > > +{
+> > > +	add_generic_device("bcm2835-gpio", 0, NULL, BCM2835_GPIO_BASE, 0xB0, IORESOURCE_MEM, NULL);
+> > > +	return 0;
+> > > +}
+> > > +coredevice_initcall(bcm2835_gpio_init);
+> > > +
+> > > +static int bcm2835_clkdev_init(void)
+> > > +{
+> > > +	clkdev_add_table(clocks_lookups, ARRAY_SIZE(clocks_lookups));
+> > > +	return 0;
+> > > +}
+> > > +postcore_initcall(bcm2835_clkdev_init);
+> > > +
+> > > +static int bcm2835_clocksource_init(void)
+> > > +{
+> > > +	add_generic_device("bcm2835-cs", DEVICE_ID_SINGLE, NULL, BCM2835_ST_BASE, 0x1C, IORESOURCE_MEM, NULL);
+> > > +	return 0;
+> > > +}
+> > > +coredevice_initcall(bcm2835_clocksource_init);
+> > > +
+> > 
+> > Please consolidate the initcalls. A single function for the three above
+> > is enough.
+> > 
+> > > +void bcm2835_register_uart(void)
+> > 
+> > Please add the UART index to the function name.
+> as we discuss no need the uart1 use the same pin as uart0 and is a wired mini
+> uart
 
-and this save nearly no space 8 bytes
+But it has a different register base. How do I decide which one I use?
 
-Best Regards,
-J.
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
