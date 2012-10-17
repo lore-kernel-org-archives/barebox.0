@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOamE-00027I-K5
+ id 1TOamE-00027Q-Rx
  for barebox@lists.infradead.org; Wed, 17 Oct 2012 21:03:47 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Oct 2012 23:03:13 +0200
-Message-Id: <1350507817-7819-5-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 17 Oct 2012 23:03:17 +0200
+Message-Id: <1350507817-7819-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
 References: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,75 +21,175 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/28] ARM: Add new entry point for barebox
+Subject: [PATCH 08/28] ARM i.MXs boards: switch to barebox_arm_entry
 To: barebox@lists.infradead.org
 
-Memory is a precious resource, so it makes sense to make it available as
-early as possible. By definition the lowlevel init code already knows where
-to find memory because it's the lowlevel init code which sets up the memory.
-Until all boards are converted this new entry is just a fallback to the old
-entry point.
+All boards use hardcoded SDRAM addresses, copied from the board init file.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start-pbl.c           |   13 +++++++++++++
- arch/arm/cpu/start.c               |   13 +++++++++++++
- arch/arm/include/asm/barebox-arm.h |    1 +
- 3 files changed, 27 insertions(+)
+ arch/arm/boards/chumby_falconwing/Makefile       |    2 ++
+ arch/arm/boards/chumby_falconwing/lowlevel.c     |   11 +++++++++++
+ arch/arm/boards/crystalfontz-cfa10036/Makefile   |    2 ++
+ arch/arm/boards/crystalfontz-cfa10036/lowlevel.c |   11 +++++++++++
+ arch/arm/boards/freescale-mx23-evk/Makefile      |    2 ++
+ arch/arm/boards/freescale-mx23-evk/lowlevel.c    |   11 +++++++++++
+ arch/arm/boards/freescale-mx28-evk/Makefile      |    2 ++
+ arch/arm/boards/freescale-mx28-evk/lowlevel.c    |   11 +++++++++++
+ arch/arm/boards/imx233-olinuxino/Makefile        |    2 ++
+ arch/arm/boards/imx233-olinuxino/lowlevel.c      |   11 +++++++++++
+ arch/arm/boards/karo-tx28/lowlevel.c             |   11 +++++++++++
+ 11 files changed, 76 insertions(+)
+ create mode 100644 arch/arm/boards/chumby_falconwing/lowlevel.c
+ create mode 100644 arch/arm/boards/crystalfontz-cfa10036/lowlevel.c
+ create mode 100644 arch/arm/boards/freescale-mx23-evk/lowlevel.c
+ create mode 100644 arch/arm/boards/freescale-mx28-evk/lowlevel.c
+ create mode 100644 arch/arm/boards/imx233-olinuxino/lowlevel.c
+ create mode 100644 arch/arm/boards/karo-tx28/lowlevel.c
 
-diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index 609aedb..30877b4 100644
---- a/arch/arm/cpu/start-pbl.c
-+++ b/arch/arm/cpu/start-pbl.c
-@@ -200,3 +200,16 @@ void __naked board_init_lowlevel_return(void)
- 
- 	barebox_uncompress((void *)pg_start, pg_len);
- }
+diff --git a/arch/arm/boards/chumby_falconwing/Makefile b/arch/arm/boards/chumby_falconwing/Makefile
+index 0bc79d9..360b55c 100644
+--- a/arch/arm/boards/chumby_falconwing/Makefile
++++ b/arch/arm/boards/chumby_falconwing/Makefile
+@@ -1 +1,3 @@
+ obj-y = falconwing.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/chumby_falconwing/lowlevel.c b/arch/arm/boards/chumby_falconwing/lowlevel.c
+new file mode 100644
+index 0000000..df28ad4
+--- /dev/null
++++ b/arch/arm/boards/chumby_falconwing/lowlevel.c
+@@ -0,0 +1,11 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/imx23-regs.h>
 +
-+/*
-+ * Main ARM entry point in the compressed image. Call this with the memory
-+ * region you can spare for barebox. This doesn't necessarily have to be the
-+ * full SDRAM. The currently running binary can be inside or outside of this
-+ * region. TEXT_BASE can be inside or outside of this region. boarddata will
-+ * be preserved and can be accessed later with barebox_arm_boarddata().
-+ */
-+void __naked barebox_arm_entry(uint32_t membase, uint32_t memsize,
-+		uint32_t boarddata)
++void __naked reset(void)
 +{
-+	board_init_lowlevel_return();
++	common_reset();
++	barebox_arm_entry(IMX_MEMORY_BASE, SZ_64M, 0);
 +}
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index d47a9e9..79cb437 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -66,3 +66,16 @@ void __naked board_init_lowlevel_return(void)
- 
- 	start_barebox();
- }
+diff --git a/arch/arm/boards/crystalfontz-cfa10036/Makefile b/arch/arm/boards/crystalfontz-cfa10036/Makefile
+index 75f0020..ec3f601 100644
+--- a/arch/arm/boards/crystalfontz-cfa10036/Makefile
++++ b/arch/arm/boards/crystalfontz-cfa10036/Makefile
+@@ -1 +1,3 @@
+ obj-y += cfa10036.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/crystalfontz-cfa10036/lowlevel.c b/arch/arm/boards/crystalfontz-cfa10036/lowlevel.c
+new file mode 100644
+index 0000000..467194f
+--- /dev/null
++++ b/arch/arm/boards/crystalfontz-cfa10036/lowlevel.c
+@@ -0,0 +1,11 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/imx28-regs.h>
 +
-+/*
-+ * Main ARM entry point in the uncompressed image. Call this with the memory
-+ * region you can spare for barebox. This doesn't necessarily have to be the
-+ * full SDRAM. The currently running binary can be inside or outside of this
-+ * region. TEXT_BASE can be inside or outside of this region. boarddata will
-+ * be preserved and can be accessed later with barebox_arm_boarddata().
-+ */
-+void __naked barebox_arm_entry(uint32_t membase, uint32_t memsize,
-+                uint32_t boarddata)
++void __naked reset(void)
 +{
-+	board_init_lowlevel_return();
++	common_reset();
++	barebox_arm_entry(IMX_MEMORY_BASE, SZ_128M, 0);
 +}
-diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-index 993130d..3eb28c0 100644
---- a/arch/arm/include/asm/barebox-arm.h
-+++ b/arch/arm/include/asm/barebox-arm.h
-@@ -39,5 +39,6 @@ void board_init_lowlevel_return(void);
- uint32_t get_runtime_offset(void);
- 
- void setup_c(void);
-+void barebox_arm_entry(uint32_t membase, uint32_t memsize, uint32_t boarddata);
- 
- #endif	/* _BAREBOX_ARM_H_ */
+diff --git a/arch/arm/boards/freescale-mx23-evk/Makefile b/arch/arm/boards/freescale-mx23-evk/Makefile
+index cffb561..9386603 100644
+--- a/arch/arm/boards/freescale-mx23-evk/Makefile
++++ b/arch/arm/boards/freescale-mx23-evk/Makefile
+@@ -1,2 +1,4 @@
+ #
+ obj-y := mx23-evk.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/freescale-mx23-evk/lowlevel.c b/arch/arm/boards/freescale-mx23-evk/lowlevel.c
+new file mode 100644
+index 0000000..0c7e665
+--- /dev/null
++++ b/arch/arm/boards/freescale-mx23-evk/lowlevel.c
+@@ -0,0 +1,11 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/imx23-regs.h>
++
++void __naked reset(void)
++{
++	common_reset();
++	barebox_arm_entry(IMX_MEMORY_BASE, SZ_32M, 0);
++}
+diff --git a/arch/arm/boards/freescale-mx28-evk/Makefile b/arch/arm/boards/freescale-mx28-evk/Makefile
+index 3e1f53b..2039610 100644
+--- a/arch/arm/boards/freescale-mx28-evk/Makefile
++++ b/arch/arm/boards/freescale-mx28-evk/Makefile
+@@ -1 +1,3 @@
+ obj-y += mx28-evk.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/freescale-mx28-evk/lowlevel.c b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+new file mode 100644
+index 0000000..467194f
+--- /dev/null
++++ b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+@@ -0,0 +1,11 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/imx28-regs.h>
++
++void __naked reset(void)
++{
++	common_reset();
++	barebox_arm_entry(IMX_MEMORY_BASE, SZ_128M, 0);
++}
+diff --git a/arch/arm/boards/imx233-olinuxino/Makefile b/arch/arm/boards/imx233-olinuxino/Makefile
+index 6d71450..b8d9223 100644
+--- a/arch/arm/boards/imx233-olinuxino/Makefile
++++ b/arch/arm/boards/imx233-olinuxino/Makefile
+@@ -1 +1,3 @@
+ obj-y = imx23-olinuxino.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/imx233-olinuxino/lowlevel.c b/arch/arm/boards/imx233-olinuxino/lowlevel.c
+new file mode 100644
+index 0000000..df28ad4
+--- /dev/null
++++ b/arch/arm/boards/imx233-olinuxino/lowlevel.c
+@@ -0,0 +1,11 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/imx23-regs.h>
++
++void __naked reset(void)
++{
++	common_reset();
++	barebox_arm_entry(IMX_MEMORY_BASE, SZ_64M, 0);
++}
+diff --git a/arch/arm/boards/karo-tx28/lowlevel.c b/arch/arm/boards/karo-tx28/lowlevel.c
+new file mode 100644
+index 0000000..467194f
+--- /dev/null
++++ b/arch/arm/boards/karo-tx28/lowlevel.c
+@@ -0,0 +1,11 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/imx28-regs.h>
++
++void __naked reset(void)
++{
++	common_reset();
++	barebox_arm_entry(IMX_MEMORY_BASE, SZ_128M, 0);
++}
 -- 
 1.7.10.4
 
