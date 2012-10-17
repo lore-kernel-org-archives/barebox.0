@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-wg0-f49.google.com ([74.125.82.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOamF-00027m-BX
- for barebox@lists.infradead.org; Wed, 17 Oct 2012 21:03:59 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Oct 2012 23:03:33 +0200
-Message-Id: <1350507817-7819-25-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
-References: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
+ id 1TOc59-00010K-1N
+ for barebox@lists.infradead.org; Wed, 17 Oct 2012 22:27:19 +0000
+Received: by mail-wg0-f49.google.com with SMTP id gg4so4613118wgb.18
+ for <barebox@lists.infradead.org>; Wed, 17 Oct 2012 15:27:16 -0700 (PDT)
+Mime-Version: 1.0 (Mac OS X Mail 6.2 \(1499\))
+From: Carlo Caione <carlo.caione@gmail.com>
+In-Reply-To: <20121016212416.GC27665@pengutronix.de>
+Date: Thu, 18 Oct 2012 00:27:14 +0200
+Message-Id: <7273C8F9-F3BD-4606-8C35-B370AA04C98C@gmail.com>
+References: <1350410685-46202-1-git-send-email-carlo.caione@gmail.com>
+ <1350410685-46202-5-git-send-email-carlo.caione@gmail.com>
+ <20121016212416.GC27665@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,91 +21,89 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 24/28] ARM: Determine base and size of malloc space from SDRAM
-To: barebox@lists.infradead.org
-
-Now that we know how where to find memory we no longer depend on hardcoded
-values. If no malloc size has been specified in Kconfig set up the malloc
-space based on the available SDRAM. We use the SDRAM base up to TEXT_BASE
-for malloc and unused memory where we put the kernel later.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/cpu/start.c |   43 +++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 41 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 901dc6d..163a636 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -25,6 +25,7 @@
- #include <asm/sections.h>
- #include <asm/cache.h>
- #include <memory.h>
-+#include <sizes.h>
- 
- static uint32_t __barebox_arm_boarddata;
- 
-@@ -41,10 +42,48 @@ uint32_t barebox_arm_boarddata(void)
- static noinline void __start(uint32_t membase, uint32_t memsize,
- 		uint32_t boarddata)
- {
-+	unsigned long malloc_start, malloc_end;
-+
- 	setup_c();
- 
--	mem_malloc_init((void *)MALLOC_BASE,
--			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
-+	if ((unsigned long)_text > membase + memsize ||
-+			(unsigned long) _text < membase)
-+		/*
-+		 * barebox is either outside SDRAM or in another
-+		 * memory bank, so we can use the whole bank for
-+		 * malloc.
-+		 */
-+		malloc_end = membase + memsize - 1;
-+	else
-+		malloc_end = (unsigned long)_text - 1;
-+
-+	if (MALLOC_SIZE > 0) {
-+		/*
-+		 * malloc size has been configured in Kconfig. Use it, but
-+		 * check if it's outside the region we are provided.
-+		 */
-+		malloc_start = malloc_end - MALLOC_SIZE + 1;
-+		if (malloc_start < membase)
-+			malloc_start = membase;
-+	} else {
-+		/*
-+		 * No memory size given in Kconfig, try to make the best out of the
-+		 * available space.
-+		 *
-+		 * We need space for malloc and space to put the kernel outside the
-+		 * malloc space later. Divide available memory into two parts.
-+		 */
-+		malloc_start = (membase + malloc_end) / 2;
-+
-+		/*
-+		 * Limit space we do not use for malloc to 16MB
-+		 */
-+		if (malloc_start - membase > SZ_16M)
-+			malloc_start = membase + SZ_16M;
-+	}
-+
-+	mem_malloc_init((void *)malloc_start,
-+			(void *)malloc_end);
- 
- 	__barebox_arm_boarddata = boarddata;
- 
--- 
-1.7.10.4
+Subject: Re: [PATCH 4/5] BCM2835: add support (arch)
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
 
+On Oct 16, 2012, at 11:24 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+
+> On Tue, Oct 16, 2012 at 08:04:44PM +0200, Carlo Caione wrote:
+>> +
+>> +static struct clk ref_3_clk = {
+>> +	.rate = 3 * 1000 * 1000,
+>> +};
+>> +
+>> +static struct clk ref_1_clk = {
+>> +	.rate = 1 * 1000 * 1000,
+>> +};
+> 
+> Add a 'select COMMON_CLK' to your Kconfig and do a:
+> 
+> 	clk_dummy = clk_fixed("dummy", 0);
+> 	clk_ref_3 = clk_fixed("ref3", 3 * 1000 * 1000);
+> 	clk_ref_1 = clk_fixed("ref1", 1 * 1000 * 1000);
+> 
+> Then you can drop your clk code and get a clk_dump command
+> which you can use to see what clocks you have.
+
+RFC
+
+ok I ask here before submitting the whole set because I'm not sure if this is a convenient solution.
+I'm not sure if you are suggesting to have two different clock definition one for clk_fixed and the other one for clkdev,
+so I was thinking something like:
+
+enum brcm_clks {
+	dummy, clk_ref_3, clk_ref_1, clks_max
+};
+
+static struct clk *clks[clks_max];
+
+int brmc_clk_create(struct clk *clk, const char *con_id, const char *dev_id)
+{
+	struct clk_lookup *clkdev;
+
+	clkdev = clkdev_alloc(clk, con_id, dev_id);
+	if (!clkdev)
+		return -ENOMEM;
+	clkdev_add(clkdev);
+	return 0;
+}
+
+static int bcm2835_clk_init(void)
+{
+	int ret; 
+
+	clks[dummy] = clk_fixed("dummy", 0);
+	ret = brmc_clk_create(clks[dummy], "apb_pclk", NULL);
+	if (ret)
+		goto clk_err;
+
+	clks[clk_ref_3] = clk_fixed("ref3", 3 * 1000 * 1000);
+	ret = brmc_clk_create(clks[clk_ref_3], NULL, "uart0-pl0110");
+	if (ret)
+		goto clk_err;
+
+	clks[clk_ref_1] = clk_fixed("ref1", 1 * 1000 * 1000);
+	ret = brmc_clk_create(clks[clk_ref_1], NULL, "bcm2835-cs");
+	if (ret)
+		goto clk_err;
+
+	return 0;
+
+clk_err:
+	return ret;
+
+}
+postcore_initcall(bcm2835_clk_init);
+
+Any comment on this solution?
+
+--
+Carlo Caione
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
