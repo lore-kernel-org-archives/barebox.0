@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TOTES-0006Nz-D9
- for barebox@lists.infradead.org; Wed, 17 Oct 2012 13:00:21 +0000
+ id 1TOTJc-0006fH-9a
+ for barebox@lists.infradead.org; Wed, 17 Oct 2012 13:05:40 +0000
 Received: from mail426.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 1805EDC237B
- for <barebox@lists.infradead.org>; Wed, 17 Oct 2012 15:06:57 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id C215ADC2295
+ for <barebox@lists.infradead.org>; Wed, 17 Oct 2012 15:12:18 +0200 (CEST)
+Date: Wed, 17 Oct 2012 15:03:20 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 17 Oct 2012 14:57:58 +0200
-Message-Id: <1350478678-28500-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20121017130320.GF30038@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,71 +20,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] spi: move the depends on SPI to if SPI and keep config
- alphanum ordered
+Subject: [PATCH 0/2] allow to use named resources
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/spi/Kconfig |   25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+Hi,
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index dc17ead..b003290 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -4,10 +4,19 @@ config SPI
- 	bool "Enable SPI driver support"
- 	default y
- 
-+if SPI
-+
-+config DRIVER_SPI_ALTERA
-+	bool "Altera SPI Master driver"
-+	depends on NIOS2
-+
-+config DRIVER_SPI_ATMEL
-+	bool "Atmel (AT91) SPI Master driver"
-+	depends on ARCH_AT91
-+
- config DRIVER_SPI_IMX
- 	bool "i.MX SPI Master driver"
- 	depends on ARCH_IMX
--	depends on SPI
- 
- config DRIVER_SPI_IMX_0_0
- 	bool
-@@ -24,20 +33,10 @@ config DRIVER_SPI_IMX_2_3
- 	depends on ARCH_IMX51 || ARCH_IMX53 || ARCH_IMX6
- 	default y
- 
--config DRIVER_SPI_ALTERA
--	bool "Altera SPI Master driver"
--	depends on NIOS2
--	depends on SPI
--
--config DRIVER_SPI_ATMEL
--	bool "Atmel (AT91) SPI Master driver"
--	depends on ARCH_AT91
--	depends on SPI
--
--
- config DRIVER_SPI_OMAP3
- 	bool "OMAP3 McSPI Master driver"
- 	depends on ARCH_OMAP3
--	depends on SPI
-+
-+endif
- 
- endmenu
--- 
-1.7.10.4
+	add helper to use named resources and use it on nomadik
 
+The following changes since commit f99ea5c9d8cfddf3a1d6b181d0dbb26e06a86d2b:
+
+  ARM samsung S5P: Enable board support (2012-10-15 19:47:01 +0200)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/nomadik
+
+for you to fetch changes up to 0bcfbe7caab23ba5c78c964e91c43456e66cd9aa:
+
+  nomadik_nand: switch to named resource (2012-10-17 12:09:16 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (2):
+      driver: add support for requesting resource by name
+      nomadik_nand: switch to named resource
+
+ arch/arm/boards/nhk8815/setup.c |    3 +++
+ drivers/base/driver.c           |   46 ++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/mtd/nand/nomadik_nand.c |    6 +++---
+ include/driver.h                |   15 +++++++++++++++
+ 4 files changed, 67 insertions(+), 3 deletions(-)
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
