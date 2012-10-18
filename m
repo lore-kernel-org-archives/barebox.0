@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wg0-f49.google.com ([74.125.82.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOvzd-0002gK-3e
- for barebox@lists.infradead.org; Thu, 18 Oct 2012 19:42:58 +0000
+ id 1TOvzh-0002gK-Gl
+ for barebox@lists.infradead.org; Thu, 18 Oct 2012 19:43:04 +0000
 Received: by mail-wg0-f49.google.com with SMTP id gg4so5176039wgb.18
- for <barebox@lists.infradead.org>; Thu, 18 Oct 2012 12:42:55 -0700 (PDT)
+ for <barebox@lists.infradead.org>; Thu, 18 Oct 2012 12:43:01 -0700 (PDT)
 From: Carlo Caione <carlo.caione@gmail.com>
-Date: Thu, 18 Oct 2012 21:42:40 +0200
-Message-Id: <1350589363-82697-3-git-send-email-carlo.caione@gmail.com>
+Date: Thu, 18 Oct 2012 21:42:43 +0200
+Message-Id: <1350589363-82697-6-git-send-email-carlo.caione@gmail.com>
 In-Reply-To: <1350589363-82697-1-git-send-email-carlo.caione@gmail.com>
 References: <1350589363-82697-1-git-send-email-carlo.caione@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,52 +23,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] BCM2835: add gpio driver
+Subject: [PATCH 5/5] Raspberry-Pi: add support (board)
 To: barebox@lists.infradead.org
 
+Tested-By: Jan Luebbe <jlu@pengutronix.de>
 Signed-off-by: Carlo Caione <carlo.caione@gmail.com>
 ---
- drivers/gpio/Kconfig        |   4 ++
- drivers/gpio/Makefile       |   1 +
- drivers/gpio/gpio-bcm2835.c | 158 ++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 163 insertions(+)
- create mode 100644 drivers/gpio/gpio-bcm2835.c
+ arch/arm/Makefile                                  |  1 +
+ arch/arm/boards/raspberry-pi/Makefile              |  1 +
+ arch/arm/boards/raspberry-pi/config.h              |  4 ++
+ .../arm/boards/raspberry-pi/env/init/bootargs-base |  8 ++++
+ arch/arm/boards/raspberry-pi/env/init/hostname     |  8 ++++
+ arch/arm/boards/raspberry-pi/rpi.c                 | 44 ++++++++++++++++++++++
+ arch/arm/configs/rpi_defconfig                     | 41 ++++++++++++++++++++
+ arch/arm/mach-bcm2835/Kconfig                      | 15 ++++++++
+ 8 files changed, 122 insertions(+)
+ create mode 100644 arch/arm/boards/raspberry-pi/Makefile
+ create mode 100644 arch/arm/boards/raspberry-pi/config.h
+ create mode 100644 arch/arm/boards/raspberry-pi/env/init/bootargs-base
+ create mode 100644 arch/arm/boards/raspberry-pi/env/init/hostname
+ create mode 100644 arch/arm/boards/raspberry-pi/rpi.c
+ create mode 100644 arch/arm/configs/rpi_defconfig
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index a0e9b58..e8eeb6d 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -6,6 +6,10 @@ if GPIOLIB
- 
- menu "GPIO                          "
- 
-+config GPIO_BCM2835
-+	bool "GPIO support for BCM2835"
-+	depends on ARCH_BCM2835
-+
- config GPIO_PL061
- 	bool "PrimeCell PL061 GPIO support"
- 	depends on ARM_AMBA
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index e2e97d3..aecdf24 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -1,4 +1,5 @@
- obj-$(CONFIG_GPIOLIB) += gpio.o
- 
-+obj-$(CONFIG_GPIO_BCM2835)	+= gpio-bcm2835.o
- obj-$(CONFIG_GPIO_PL061)	+= gpio-pl061.o
- obj-$(CONFIG_GPIO_STMPE) += gpio-stmpe.o
-diff --git a/drivers/gpio/gpio-bcm2835.c b/drivers/gpio/gpio-bcm2835.c
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 3449fd7..ec9898c 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -114,6 +114,7 @@ board-$(CONFIG_MACH_PCM043)			:= pcm043
+ board-$(CONFIG_MACH_PM9261)			:= pm9261
+ board-$(CONFIG_MACH_PM9263)			:= pm9263
+ board-$(CONFIG_MACH_PM9G45)			:= pm9g45
++board-$(CONFIG_MACH_RPI)			:= raspberry-pi
+ board-$(CONFIG_MACH_SCB9328)			:= scb9328
+ board-$(CONFIG_MACH_NESO)			:= guf-neso
+ board-$(CONFIG_MACH_MX23EVK)			:= freescale-mx23-evk
+diff --git a/arch/arm/boards/raspberry-pi/Makefile b/arch/arm/boards/raspberry-pi/Makefile
 new file mode 100644
-index 0000000..cec15c9
+index 0000000..6ce5ede
 --- /dev/null
-+++ b/drivers/gpio/gpio-bcm2835.c
-@@ -0,0 +1,158 @@
++++ b/arch/arm/boards/raspberry-pi/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_MACH_RPI) += rpi.o
+diff --git a/arch/arm/boards/raspberry-pi/config.h b/arch/arm/boards/raspberry-pi/config.h
+new file mode 100644
+index 0000000..ca15136
+--- /dev/null
++++ b/arch/arm/boards/raspberry-pi/config.h
+@@ -0,0 +1,4 @@
++#ifndef __CONFIG_H
++#define __CONFIG_H
++
++#endif	/* __CONFIG_H */
+diff --git a/arch/arm/boards/raspberry-pi/env/init/bootargs-base b/arch/arm/boards/raspberry-pi/env/init/bootargs-base
+new file mode 100644
+index 0000000..d869754
+--- /dev/null
++++ b/arch/arm/boards/raspberry-pi/env/init/bootargs-base
+@@ -0,0 +1,8 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "Base bootargs"
++	exit
++fi
++
++global.linux.bootargs.base="console=ttymxc0,115200"
+diff --git a/arch/arm/boards/raspberry-pi/env/init/hostname b/arch/arm/boards/raspberry-pi/env/init/hostname
+new file mode 100644
+index 0000000..7e8f294
+--- /dev/null
++++ b/arch/arm/boards/raspberry-pi/env/init/hostname
+@@ -0,0 +1,8 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "hostname"
++	exit
++fi
++
++global.hostname=Raspberry-Pi
+diff --git a/arch/arm/boards/raspberry-pi/rpi.c b/arch/arm/boards/raspberry-pi/rpi.c
+new file mode 100644
+index 0000000..3be95ae
+--- /dev/null
++++ b/arch/arm/boards/raspberry-pi/rpi.c
+@@ -0,0 +1,44 @@
 +/*
-+ * Author: Carlo Caione <carlo@carlocaione.org>
-+ *
-+ * Based on linux/arch/arm/mach-bcm2708/bcm2708_gpio.c
++ * Copyright (C) 2009 Carlo Caione <carlo@carlocaione.org>
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -83,146 +124,104 @@ index 0000000..cec15c9
 + */
 +
 +#include <common.h>
-+#include <errno.h>
-+#include <malloc.h>
-+#include <io.h>
-+#include <gpio.h>
 +#include <init.h>
++#include <asm/armlinux.h>
++#include <generated/mach-types.h>
 +
-+#define GPIOFSEL(x)  (0x00+(x)*4)
-+#define GPIOSET(x)   (0x1c+(x)*4)
-+#define GPIOCLR(x)   (0x28+(x)*4)
-+#define GPIOLEV(x)   (0x34+(x)*4)
-+#define GPIOEDS(x)   (0x40+(x)*4)
-+#define GPIOREN(x)   (0x4c+(x)*4)
-+#define GPIOFEN(x)   (0x58+(x)*4)
-+#define GPIOHEN(x)   (0x64+(x)*4)
-+#define GPIOLEN(x)   (0x70+(x)*4)
-+#define GPIOAREN(x)  (0x7c+(x)*4)
-+#define GPIOAFEN(x)  (0x88+(x)*4)
-+#define GPIOUD(x)    (0x94+(x)*4)
-+#define GPIOUDCLK(x) (0x98+(x)*4)
++#include <mach/core.h>
 +
-+enum {
-+	GPIO_FSEL_INPUT, GPIO_FSEL_OUTPUT,
-+	GPIO_FSEL_ALT5, GPIO_FSEL_ALT_4,
-+	GPIO_FSEL_ALT0, GPIO_FSEL_ALT1,
-+	GPIO_FSEL_ALT2, GPIO_FSEL_ALT3,
-+};
-+
-+struct bcm2835_gpio_chip {
-+	void __iomem *base;
-+	struct gpio_chip chip;
-+};
-+
-+static int bcm2835_set_function(struct gpio_chip *chip, unsigned gpio, int function)
++static int rpi_mem_init(void)
 +{
-+	struct bcm2835_gpio_chip *bcmgpio = container_of(chip, struct bcm2835_gpio_chip, chip);
-+	void __iomem *base = bcmgpio->base;
-+	unsigned gpiodir;
-+	unsigned gpio_bank = gpio / 10;
-+	unsigned gpio_field_offset = (gpio - 10 * gpio_bank) * 3;
++	bcm2835_add_device_sdram(0);
++	return 0;
++}
++mem_initcall(rpi_mem_init);
 +
-+	gpiodir = readl(base + GPIOFSEL(gpio_bank));
-+	gpiodir &= ~(7 << gpio_field_offset);
-+	gpiodir |= function << gpio_field_offset;
-+	writel(gpiodir, base + GPIOFSEL(gpio_bank));
-+	gpiodir = readl(base + GPIOFSEL(gpio_bank));
++static int rpi_console_init(void)
++{
++	bcm2835_register_uart();
++	return 0;
++}
++console_initcall(rpi_console_init);
 +
++static int rpi_devices_init(void)
++{
++	armlinux_set_architecture(MACH_TYPE_BCM2708);
++	armlinux_set_bootparams((void *)(0x00000100));
 +	return 0;
 +}
 +
-+static void bcm2835_gpio_set_value(struct gpio_chip *chip, unsigned gpio, int value)
-+{
-+	struct bcm2835_gpio_chip *bcmgpio = container_of(chip, struct bcm2835_gpio_chip, chip);
-+	void __iomem *base = bcmgpio->base;
-+	unsigned gpio_bank = gpio / 32;
-+	unsigned gpio_field_offset = gpio % 32;
++device_initcall(rpi_devices_init);
+diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
+new file mode 100644
+index 0000000..014e28c
+--- /dev/null
++++ b/arch/arm/configs/rpi_defconfig
+@@ -0,0 +1,41 @@
++CONFIG_ARCH_BCM2835=y
++CONFIG_GPIO_BCM2835=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PROMPT="R-Pi> "
++CONFIG_LONGHELP=y
++CONFIG_GLOB=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++CONFIG_PARTITION=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/raspberry-pi/env"
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_PASSWD=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_MTEST=y
++CONFIG_CMD_MTEST_ALTERNATIVE=y
++CONFIG_CMD_BOOTM_ZLIB=y
++CONFIG_CMD_BOOTM_BZLIB=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_GPIO=y
++CONFIG_SERIAL_AMBA_PL011=y
++CONFIG_SHA1=y
++CONFIG_SHA256=y
+diff --git a/arch/arm/mach-bcm2835/Kconfig b/arch/arm/mach-bcm2835/Kconfig
+index c42fe1c..9d97aea 100644
+--- a/arch/arm/mach-bcm2835/Kconfig
++++ b/arch/arm/mach-bcm2835/Kconfig
+@@ -1,3 +1,18 @@
+ if ARCH_BCM2835
+ 
++config ARCH_TEXT_BASE
++	hex
++	default 0x04000000 if MACH_RPI
 +
-+	if (value)
-+		writel(1 << gpio_field_offset, base + GPIOSET(gpio_bank));
-+	else
-+		writel(1 << gpio_field_offset, base + GPIOCLR(gpio_bank));
-+}
++config BOARDINFO
++	default "RaspberryPi (BCM2835/ARM1176JZF-S)" if MACH_RPI
 +
-+static int bcm2835_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
-+{
-+	struct bcm2835_gpio_chip *bcmgpio = container_of(chip, struct bcm2835_gpio_chip, chip);
-+	void __iomem *base = bcmgpio->base;
-+	unsigned gpio_bank = gpio / 32;
-+	unsigned gpio_field_offset = gpio % 32;
-+	unsigned lev;
++choice
++	prompt "Broadcom Board type"
 +
-+	lev = readl(base + GPIOLEV(gpio_bank));
-+	return 0x1 & (lev >> gpio_field_offset);
-+}
++config MACH_RPI
++	bool "RaspberryPi (BCM2835/ARM1176JZF-S)"
 +
-+static int bcm2835_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
-+{
-+	return bcm2835_set_function(chip, gpio, GPIO_FSEL_INPUT);
-+}
++endchoice
 +
-+static int bcm2835_gpio_direction_output(struct gpio_chip *chip, unsigned gpio, int value)
-+{
-+	bcm2835_set_function(chip, gpio, GPIO_FSEL_OUTPUT);
-+	bcm2835_gpio_set_value(chip, gpio, value);
-+
-+	return 0;
-+}
-+
-+static struct gpio_ops bcm2835_gpio_ops = {
-+	.direction_input = bcm2835_gpio_direction_input,
-+	.direction_output = bcm2835_gpio_direction_output,
-+	.get = bcm2835_gpio_get_value,
-+	.set = bcm2835_gpio_set_value,
-+};
-+
-+static int bcm2835_gpio_probe(struct device_d *dev)
-+{
-+	struct bcm2835_gpio_chip *bcmgpio;
-+	int ret;
-+
-+	bcmgpio = xzalloc(sizeof(*bcmgpio));
-+	bcmgpio->base = dev_request_mem_region(dev, 0);
-+	bcmgpio->chip.ops = &bcm2835_gpio_ops;
-+	bcmgpio->chip.base = 0;
-+	bcmgpio->chip.ngpio = 54;
-+	bcmgpio->chip.dev = dev;
-+
-+	ret = gpiochip_add(&bcmgpio->chip);
-+	if (ret) {
-+		dev_err(dev, "couldn't add gpiochip, ret = %d\n", ret);
-+		goto err;
-+	}
-+	dev_info(dev, "probed gpiochip%d with base %d\n", dev->id, bcmgpio->chip.base);
-+
-+	return 0;
-+
-+err:
-+	kfree(bcmgpio);
-+
-+	return ret;
-+}
-+
-+static __maybe_unused struct of_device_id bcm2835_gpio_dt_ids[] = {
-+	{
-+		.compatible = "brcm,bcm2835-gpio",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
-+static struct driver_d bcm2835_gpio_driver = {
-+	.name = "bcm2835-gpio",
-+	.probe = bcm2835_gpio_probe,
-+	.of_compatible = DRV_OF_COMPAT(bcm2835_gpio_dt_ids),
-+};
-+
-+static int bcm2835_gpio_add(void)
-+{
-+	return platform_driver_register(&bcm2835_gpio_driver);
-+}
-+coredevice_initcall(bcm2835_gpio_add);
+ endif
 -- 
 1.7.12.3
 
