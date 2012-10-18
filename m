@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-f171.google.com ([209.85.212.171])
+Received: from mail-wi0-f169.google.com ([209.85.212.169])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOvzc-0002f6-D5
- for barebox@lists.infradead.org; Thu, 18 Oct 2012 19:42:57 +0000
-Received: by mail-wi0-f171.google.com with SMTP id hj13so1946881wib.0
- for <barebox@lists.infradead.org>; Thu, 18 Oct 2012 12:42:52 -0700 (PDT)
+ id 1TOvze-0002gz-9B
+ for barebox@lists.infradead.org; Thu, 18 Oct 2012 19:42:59 +0000
+Received: by mail-wi0-f169.google.com with SMTP id hq4so2109186wib.0
+ for <barebox@lists.infradead.org>; Thu, 18 Oct 2012 12:42:56 -0700 (PDT)
 From: Carlo Caione <carlo.caione@gmail.com>
-Date: Thu, 18 Oct 2012 21:42:38 +0200
-Message-Id: <1350589363-82697-1-git-send-email-carlo.caione@gmail.com>
+Date: Thu, 18 Oct 2012 21:42:41 +0200
+Message-Id: <1350589363-82697-4-git-send-email-carlo.caione@gmail.com>
+In-Reply-To: <1350589363-82697-1-git-send-email-carlo.caione@gmail.com>
+References: <1350589363-82697-1-git-send-email-carlo.caione@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,64 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] BCM2835/Raspberry-Pi support
+Subject: [PATCH 3/5] ARM1176: add support
 To: barebox@lists.infradead.org
 
-Hi,
-set of patches based on next.
-It's required:
-[PATCH] clkdev: add helper function to register one clock lookup for a struct clk
+Signed-off-by: Carlo Caione <carlo.caione@gmail.com>
+---
+ arch/arm/cpu/Kconfig | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Best regards,
-
-Carlo Caione (5):
-  BCM2835: add clocksource driver
-  BCM2835: add gpio driver
-  ARM1176: add support
-  BCM2835: add support (arch)
-  Raspberry-Pi: add support (board)
-
- arch/arm/Kconfig                                   |  10 ++
- arch/arm/Makefile                                  |   2 +
- arch/arm/boards/raspberry-pi/Makefile              |   1 +
- arch/arm/boards/raspberry-pi/config.h              |   4 +
- .../arm/boards/raspberry-pi/env/init/bootargs-base |   8 ++
- arch/arm/boards/raspberry-pi/env/init/hostname     |   8 ++
- arch/arm/boards/raspberry-pi/rpi.c                 |  44 ++++++
- arch/arm/configs/rpi_defconfig                     |  41 ++++++
- arch/arm/cpu/Kconfig                               |   5 +
- arch/arm/mach-bcm2835/Kconfig                      |  18 +++
- arch/arm/mach-bcm2835/Makefile                     |   1 +
- arch/arm/mach-bcm2835/core.c                       | 101 +++++++++++++
- arch/arm/mach-bcm2835/include/mach/clkdev.h        |   7 +
- arch/arm/mach-bcm2835/include/mach/core.h          |  22 +++
- arch/arm/mach-bcm2835/include/mach/gpio.h          |   1 +
- arch/arm/mach-bcm2835/include/mach/platform.h      |  50 +++++++
- arch/arm/mach-bcm2835/include/mach/wd.h            |  47 ++++++
- drivers/clocksource/Kconfig                        |   4 +
- drivers/clocksource/Makefile                       |   1 +
- drivers/clocksource/bcm2835.c                      |  90 ++++++++++++
- drivers/gpio/Kconfig                               |   4 +
- drivers/gpio/Makefile                              |   1 +
- drivers/gpio/gpio-bcm2835.c                        | 158 +++++++++++++++++++++
- 23 files changed, 628 insertions(+)
- create mode 100644 arch/arm/boards/raspberry-pi/Makefile
- create mode 100644 arch/arm/boards/raspberry-pi/config.h
- create mode 100644 arch/arm/boards/raspberry-pi/env/init/bootargs-base
- create mode 100644 arch/arm/boards/raspberry-pi/env/init/hostname
- create mode 100644 arch/arm/boards/raspberry-pi/rpi.c
- create mode 100644 arch/arm/configs/rpi_defconfig
- create mode 100644 arch/arm/mach-bcm2835/Kconfig
- create mode 100644 arch/arm/mach-bcm2835/Makefile
- create mode 100644 arch/arm/mach-bcm2835/core.c
- create mode 100644 arch/arm/mach-bcm2835/include/mach/clkdev.h
- create mode 100644 arch/arm/mach-bcm2835/include/mach/core.h
- create mode 100644 arch/arm/mach-bcm2835/include/mach/gpio.h
- create mode 100644 arch/arm/mach-bcm2835/include/mach/platform.h
- create mode 100644 arch/arm/mach-bcm2835/include/mach/wd.h
- create mode 100644 drivers/clocksource/bcm2835.c
- create mode 100644 drivers/gpio/gpio-bcm2835.c
-
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index 2ed6789..d8a5fb1 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -8,6 +8,11 @@ config CPU_32
+ # which CPUs we support in the kernel image, and the compiler instruction
+ # optimiser behaviour.
+ 
++# ARM1176
++config CPU_ARM1176
++	bool
++	select CPU_V6
++
+ # ARM920T
+ config CPU_ARM920T
+ 	bool
 -- 
 1.7.12.3
 
