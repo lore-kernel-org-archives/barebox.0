@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOlwS-0000QA-JY
- for barebox@lists.infradead.org; Thu, 18 Oct 2012 08:59:01 +0000
-Received: by mail-lb0-f177.google.com with SMTP id gi11so5547343lbb.36
- for <barebox@lists.infradead.org>; Thu, 18 Oct 2012 01:58:58 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 18 Oct 2012 12:58:55 +0400
-Message-Id: <1350550735-25666-1-git-send-email-antonynpavlov@gmail.com>
+Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TOoO5-0000O7-8f
+ for barebox@lists.infradead.org; Thu, 18 Oct 2012 11:35:43 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 3D434BF0F0
+ for <barebox@lists.infradead.org>; Thu, 18 Oct 2012 13:35:32 +0200 (CEST)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Thu, 18 Oct 2012 13:35:30 +0200
+Message-Id: <1350560130-21431-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,50 +18,25 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands/Kconfig: move 'ln' to the 'file commands' section
+Subject: [PATCH] ARM OMAP: Enable gpio output
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- commands/Kconfig |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/commands/Kconfig b/commands/Kconfig
-index d89cda9..546e58e 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -57,10 +57,6 @@ config CMD_READLINE
- 	tristate
- 	prompt "readline"
- 
--config CMD_LN
--	tristate
--	prompt "ln"
--
- config CMD_TRUE
- 	tristate
- 	default y
-@@ -216,6 +212,10 @@ config CMD_DIRNAME
- 	  Strip last component of file name and store the result in a
- 	  environment variable
- 
-+config CMD_LN
-+	tristate
-+	prompt "ln"
-+
- config CMD_READLINK
- 	tristate
- 	prompt "readlink"
--- 
-1.7.10.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RW5hYmxlIG91dHB1dCBpbnN0ZWFkIG9mIGRpc2FibGluZyBpdC4KClNpZ25lZC1vZmYtYnk6IFRl
+cmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KIGFyY2gvYXJtL21hY2gtb21hcC9v
+bWFwNF9nZW5lcmljLmMgfCAgICAyICstCiAxIGZpbGVzIGNoYW5nZWQsIDEgaW5zZXJ0aW9ucygr
+KSwgMSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvb21hcDRf
+Z2VuZXJpYy5jIGIvYXJjaC9hcm0vbWFjaC1vbWFwL29tYXA0X2dlbmVyaWMuYwppbmRleCA3NjEz
+NGYyLi5kNzc3MWJmIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW9tYXAvb21hcDRfZ2VuZXJp
+Yy5jCisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9vbWFwNF9nZW5lcmljLmMKQEAgLTUzMiw3ICs1
+MzIsNyBAQCBub2lubGluZSBpbnQgb21hcDRfc2NhbGVfdmNvcmVzKHVuc2lnbmVkIHZzZWwwX3Bp
+bikKIAkJd3JpdGVsKHZhbCwgYmFzZSArIDB4MTkwKTsKIAogCQl2YWwgPSAgcmVhZGwoYmFzZSAr
+IDB4MTM0KTsKLQkJdmFsICY9ICgxIDw8ICh2c2VsMF9waW4gJiBHUElPX01BU0spKTsKKwkJdmFs
+ICY9IH4oMSA8PCAodnNlbDBfcGluICYgR1BJT19NQVNLKSk7CiAJCXdyaXRlbCh2YWwsIGJhc2Ug
+KyAweDEzNCk7CiAKIAkJdmFsID0gMSA8PCAodnNlbDBfcGluICYgR1BJT19NQVNLKTsKLS0gCjEu
+Ny4wLjQKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
+YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
+c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
