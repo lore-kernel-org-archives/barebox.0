@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-we0-f177.google.com ([74.125.82.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TOvxG-00020M-VV
- for barebox@lists.infradead.org; Thu, 18 Oct 2012 19:40:31 +0000
-Received: by mail-we0-f177.google.com with SMTP id u50so5439094wey.36
- for <barebox@lists.infradead.org>; Thu, 18 Oct 2012 12:40:26 -0700 (PDT)
+ id 1TOvzb-0002fl-4P
+ for barebox@lists.infradead.org; Thu, 18 Oct 2012 19:42:56 +0000
+Received: by mail-we0-f177.google.com with SMTP id u50so5440264wey.36
+ for <barebox@lists.infradead.org>; Thu, 18 Oct 2012 12:42:54 -0700 (PDT)
 From: Carlo Caione <carlo.caione@gmail.com>
-Date: Thu, 18 Oct 2012 21:40:16 +0200
-Message-Id: <1350589216-82634-1-git-send-email-carlo.caione@gmail.com>
+Date: Thu, 18 Oct 2012 21:42:39 +0200
+Message-Id: <1350589363-82697-2-git-send-email-carlo.caione@gmail.com>
+In-Reply-To: <1350589363-82697-1-git-send-email-carlo.caione@gmail.com>
+References: <1350589363-82697-1-git-send-email-carlo.caione@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,60 +23,136 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clkdev: add helper function to register one clock lookup for
- a struct clk
+Subject: [PATCH 1/5] BCM2835: add clocksource driver
 To: barebox@lists.infradead.org
 
 Signed-off-by: Carlo Caione <carlo.caione@gmail.com>
 ---
- drivers/clk/clkdev.c   | 21 +++++++++++++++++++++
- include/linux/clkdev.h |  1 +
- 2 files changed, 22 insertions(+)
+ drivers/clocksource/Kconfig   |  4 ++
+ drivers/clocksource/Makefile  |  1 +
+ drivers/clocksource/bcm2835.c | 90 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 95 insertions(+)
+ create mode 100644 drivers/clocksource/bcm2835.c
 
-diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
-index 1ae822f..5441eeb 100644
---- a/drivers/clk/clkdev.c
-+++ b/drivers/clk/clkdev.c
-@@ -178,6 +178,27 @@ struct clk_lookup *clkdev_alloc(struct clk *clk, const char *con_id,
- }
- EXPORT_SYMBOL(clkdev_alloc);
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 9d6d293..09acdd7 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -2,6 +2,10 @@ config ARM_SMP_TWD
+ 	bool
+ 	depends on ARM && CPU_V7
  
-+int clk_register_clkdev(struct clk *clk, const char *con_id,
-+	const char *dev_fmt, ...)
++config CLOCKSOURCE_BCM2835
++	bool
++	depends on ARCH_BCM2835
++
+ config CLOCKSOURCE_NOMADIK
+ 	bool
+ 	depends on ARM
+diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+index bef465c..92d7c13 100644
+--- a/drivers/clocksource/Makefile
++++ b/drivers/clocksource/Makefile
+@@ -1,2 +1,3 @@
+ obj-$(CONFIG_ARM_SMP_TWD) += arm_smp_twd.o
++obj-$(CONFIG_CLOCKSOURCE_BCM2835) += bcm2835.o
+ obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
+diff --git a/drivers/clocksource/bcm2835.c b/drivers/clocksource/bcm2835.c
+new file mode 100644
+index 0000000..d5fe0f0
+--- /dev/null
++++ b/drivers/clocksource/bcm2835.c
+@@ -0,0 +1,90 @@
++/*
++ * Author: Carlo Caione <carlo@carlocaione.org>
++ *
++ * Based on clocksource for nomadik
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++
++#include <common.h>
++#include <clock.h>
++#include <io.h>
++#include <init.h>
++#include <driver.h>
++#include <errno.h>
++#include <linux/clk.h>
++#include <linux/err.h>
++
++/* Registers */
++#define ST_CLO	0x04
++
++static __iomem void *stc_base;
++
++static uint64_t stc_read_cycles(void)
 +{
-+	struct clk_lookup *cl;
-+	va_list ap;
++	return readl(stc_base + ST_CLO);
++}
 +
-+	if (IS_ERR(clk))
-+                return PTR_ERR(clk);
++static struct clocksource bcm2835_stc = {
++	.read = stc_read_cycles,
++	.mask = CLOCKSOURCE_MASK(32),
++};
 +
-+	va_start(ap, dev_fmt);
-+	cl = clkdev_alloc(clk, con_id, dev_fmt, ap);
-+	va_end(ap);
++static int bcm2835_cs_probe(struct device_d *dev)
++{
++	static struct clk *stc_clk;
++	u32 rate;
++	int ret;
 +
-+	if (!cl)
-+		return -ENOMEM;
++	stc_clk = clk_get(dev, NULL);
++	if (IS_ERR(stc_clk)) {
++		ret = PTR_ERR(stc_clk);
++		dev_err(dev, "clock not found: %d\n", ret);
++		return ret;
++	}
 +
-+	clkdev_add(cl);
++	ret = clk_enable(stc_clk);
++	if (ret) {
++		dev_err(dev, "clock failed to enable: %d\n", ret);
++		clk_put(stc_clk);
++		return ret;
++	}
++
++	rate = clk_get_rate(stc_clk);
++	stc_base = dev_request_mem_region(dev, 0);
++
++	clocks_calc_mult_shift(&bcm2835_stc.mult, &bcm2835_stc.shift, rate, NSEC_PER_SEC, 60);
++	init_clock(&bcm2835_stc);
 +
 +	return 0;
 +}
 +
- int clk_add_alias(const char *alias, const char *alias_dev_name, char *id,
- 	struct device_d *dev)
- {
-diff --git a/include/linux/clkdev.h b/include/linux/clkdev.h
-index d2f0d89..1fc0ab9 100644
---- a/include/linux/clkdev.h
-+++ b/include/linux/clkdev.h
-@@ -33,6 +33,7 @@ void clkdev_drop(struct clk_lookup *cl);
- 
- void clkdev_add_table(struct clk_lookup *, size_t);
- int clk_add_alias(const char *, const char *, char *, struct device_d *);
-+int clk_register_clkdev(struct clk *, const char *, const char *, ...);
- 
- int clkdev_add_physbase(struct clk *clk, unsigned long base, const char *id);
- 
++static __maybe_unused struct of_device_id bcm2835_cs_dt_ids[] = {
++	{
++		.compatible = "brcm,bcm2835-system-timer",
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct driver_d bcm2835_cs_driver = {
++	.name = "bcm2835-cs",
++	.probe = bcm2835_cs_probe,
++	.of_compatible = DRV_OF_COMPAT(bcm2835_cs_dt_ids),
++};
++
++static int bcm2835_cs_init(void)
++{
++	return platform_driver_register(&bcm2835_cs_driver);
++}
++coredevice_initcall(bcm2835_cs_init);
 -- 
 1.7.12.3
 
