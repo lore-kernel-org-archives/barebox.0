@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-f169.google.com ([209.85.212.169])
+Received: from mail-we0-f177.google.com ([74.125.82.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQ2fh-00011u-Kp
- for barebox@lists.infradead.org; Sun, 21 Oct 2012 21:02:58 +0000
-Received: by mail-wi0-f169.google.com with SMTP id hq4so1530630wib.0
- for <barebox@lists.infradead.org>; Sun, 21 Oct 2012 14:02:54 -0700 (PDT)
+ id 1TQ2hx-00015T-FK
+ for barebox@lists.infradead.org; Sun, 21 Oct 2012 21:05:17 +0000
+Received: by mail-we0-f177.google.com with SMTP id u50so1128472wey.36
+ for <barebox@lists.infradead.org>; Sun, 21 Oct 2012 14:05:14 -0700 (PDT)
 From: Alexander Aring <alex.aring@googlemail.com>
-Date: Sun, 21 Oct 2012 22:59:07 +0200
-Message-Id: <1350853147-9233-2-git-send-email-alex.aring@gmail.com>
-In-Reply-To: <1350853147-9233-1-git-send-email-alex.aring@gmail.com>
-References: <1350853147-9233-1-git-send-email-alex.aring@gmail.com>
+Date: Sun, 21 Oct 2012 22:59:06 +0200
+Message-Id: <1350853147-9233-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,28 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] devfs-core: add writesize in mtd partition ioctl
+Subject: [PATCH] progressbar: use __stringify in format string
 To: barebox@lists.infradead.org
 
-Add writesize in mtd partition MEMGETINFO ioctl.
+Use stringify in format string for HASH_PER_LINE.
 
 Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- fs/devfs-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ lib/show_progress.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 2788fe7..0d2f75a 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -136,6 +136,7 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
- 			user->flags	= cdev->mtd->flags;
- 			user->size	= cdev->mtd->size;
- 			user->erasesize	= cdev->mtd->erasesize;
-+			user->writesize	= cdev->mtd->writesize;
- 			user->oobsize	= cdev->mtd->oobsize;
- 			user->mtd	= cdev->mtd;
- 			/* The below fields are obsolete */
+diff --git a/lib/show_progress.c b/lib/show_progress.c
+index d958a44..bc067ea 100644
+--- a/lib/show_progress.c
++++ b/lib/show_progress.c
+@@ -20,6 +20,7 @@
+ #include <common.h>
+ #include <progress.h>
+ #include <asm-generic/div64.h>
++#include <linux/stringify.h>
+ 
+ #define HASHES_PER_LINE	65
+ 
+@@ -56,7 +57,7 @@ void init_progression_bar(int max)
+ 	progress_max = max;
+ 	spin = 0;
+ 	if (progress_max)
+-		printf("\t[%65s]\r\t[", "");
++		printf("\t[%"__stringify(HASHES_PER_LINE)"s]\r\t[", "");
+ 	else
+ 		printf("\t");
+ }
 -- 
 1.7.12.4
 
