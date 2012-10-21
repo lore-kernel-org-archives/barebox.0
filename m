@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oa0-f49.google.com ([209.85.219.49])
+Received: from mail-ob0-f177.google.com ([209.85.214.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TPinX-00051K-Jv
- for barebox@lists.infradead.org; Sat, 20 Oct 2012 23:49:44 +0000
-Received: by mail-oa0-f49.google.com with SMTP id l10so1490486oag.36
- for <barebox@lists.infradead.org>; Sat, 20 Oct 2012 16:49:41 -0700 (PDT)
+ id 1TPjuV-00063a-Sd
+ for barebox@lists.infradead.org; Sun, 21 Oct 2012 01:01:00 +0000
+Received: by mail-ob0-f177.google.com with SMTP id wd20so1502333obb.36
+ for <barebox@lists.infradead.org>; Sat, 20 Oct 2012 18:00:55 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1350643386.3484.5.camel@lws-weitzel>
-References: <1350599459-5325-1-git-send-email-vicencb@gmail.com>
- <1350643386.3484.5.camel@lws-weitzel>
-Date: Sun, 21 Oct 2012 01:49:40 +0200
-Message-ID: <CAAMcf8Dv6wE+pwNZqW+64t-eKrcLSMb9PE8jN8zgvyYq6dX2Jg@mail.gmail.com>
+In-Reply-To: <1350645021.3484.14.camel@lws-weitzel>
+References: <1349736924-24667-1-git-send-email-vicencb@gmail.com>
+ <1349736924-24667-15-git-send-email-vicencb@gmail.com>
+ <1350645021.3484.14.camel@lws-weitzel>
+Date: Sun, 21 Oct 2012 03:00:55 +0200
+Message-ID: <CAAMcf8AymQQ6oXJJfFgAkm4oKkMyZfuczq+7y7MrPA5gOUYjbg@mail.gmail.com>
 From: vj <vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,254 +25,107 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/6] OMAP4: clean voltage switch
+Subject: Re: [PATCH 14/14] Add support for Archos G9 tablet
 To: J.Weitzel@phytec.de
 Cc: barebox@lists.infradead.org
 
-On Fri, Oct 19, 2012 at 12:43 PM, Jan Weitzel <J.Weitzel@phytec.de> wrote:
-> Am Freitag, den 19.10.2012, 00:30 +0200 schrieb Vicente Bergas:
->> OMAP4 requires that parent domains scale ahead of dependent domains.
->> This is due to the restrictions in timing closure. To ensure
->> a consistent behavior across all OMAP4 SoC, ensure that
->> vdd_core scale first, then vdd_mpu and finally vdd_iva.
->>
->> TPS SET0/SET1 register is selected by a GPIO pin on OMAP4460 platforms.
->> Currently we control this pin with a mux configuration as part of
->> boot sequence.
->> Current configuration results in the following voltage waveform:
->>                            |---------------| (SET1 default 1.4V)
->>                            |               --------(programmed voltage)
->>                            | <- (This switch happens on mux7,pullup)
->> vdd_mpu(TPS)         -----/ (OPP boot voltage)
->>                                              --------- (programmed voltage)
->> vdd_core(TWL6030)    -----------------------/ (OPP boot voltage)
->> Problem 1)                |<----- Tx ------>|
->>    timing violation for a duration Tx close to few milliseconds.
->> Problem 2) voltage of MPU goes beyond spec for even the highest of MPU OPP.
->>
->> By using GPIO as recommended as standard procedure by TI, the sequence
->> changes to:
->>                                   -------- (programmed voltage)
->> vdd_mpu(TPS)         ------------/ (Opp boot voltage)
->>                                    --------- (programmed voltage)
->> vdd_core(TWL6030)    -------------/ (OPP boot voltage)
->>
->> original patch from:
->> http://lists.denx.de/pipermail/u-boot/2012-March/119149.html
->> http://lists.denx.de/pipermail/u-boot/2012-March/119150.html
->>
->> Signed-off-by: Vicente Bergas <vicencb@gmail.com>
->> ---
->>  arch/arm/boards/archosg9/mux.c                  |  9 +----
->>  arch/arm/mach-omap/include/mach/omap4-clock.h   |  2 +-
->>  arch/arm/mach-omap/include/mach/omap4-silicon.h |  2 +-
->>  arch/arm/mach-omap/omap4_clock.c                | 37 +++++++++++++++++-
->>  arch/arm/mach-omap/omap4_generic.c              | 52 ++++---------------------
->>  5 files changed, 46 insertions(+), 56 deletions(-)
->>
->> diff --git a/arch/arm/boards/archosg9/mux.c b/arch/arm/boards/archosg9/mux.c
->> index 7ca5057..c8695c0 100644
->> --- a/arch/arm/boards/archosg9/mux.c
->> +++ b/arch/arm/boards/archosg9/mux.c
->> @@ -441,7 +441,7 @@ static const struct pad_conf_entry wkup_padconf_array[] = {
->>       /* gpio_wk30           */
->>       { FREF_CLK3_REQ        ,             M3 },
->>       /* gpio_wk7            */ /* tps62361_vsel0 */
->> -     { FREF_CLK4_REQ        , IEN | PTU | M3 },
->> +     { FREF_CLK4_REQ        ,             M3 },
->>  };
-> This should also be fixed for the panda board.
->>  void set_muxconf_regs(void){
->> @@ -449,11 +449,4 @@ void set_muxconf_regs(void){
->>               core_padconf_array, ARRAY_SIZE(core_padconf_array));
->>       omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP,
->>               wkup_padconf_array, ARRAY_SIZE(wkup_padconf_array));
->> -
->> -     /* gpio_wk7 is used for controlling TPS on 4460 */
->> -     if (omap4_revision() >= OMAP4460_ES1_0) {
->> -             writew(M3, OMAP44XX_CONTROL_PADCONF_WKUP + FREF_CLK4_REQ);
->> -             /* Enable GPIO-1 clocks before TPS initialization */
->> -             omap4_enable_gpio1_wup_clocks();
->> -     }
->>  }
->> diff --git a/arch/arm/mach-omap/include/mach/omap4-clock.h b/arch/arm/mach-omap/include/mach/omap4-clock.h
->> index e5302d6..8cbc061 100644
->> --- a/arch/arm/mach-omap/include/mach/omap4-clock.h
->> +++ b/arch/arm/mach-omap/include/mach/omap4-clock.h
->> @@ -335,5 +335,5 @@ void omap4_lock_core_dpll_shadow(const struct dpll_param *param);
->>  void omap4_enable_gpio1_wup_clocks(void);
->>  void omap4_enable_gpio_clocks(void);
->>  void omap4_enable_all_clocks(void);
->> -void omap4_do_scale_tps62361(u32 reg, u32 volt_mv);
->> +void omap4_do_scale_tps62361(int vsel0_pin, u32 reg, u32 volt_mv);
->>
->> diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
->> index 71ffe39..137cc88 100644
->> --- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
->> +++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
->> @@ -196,6 +196,6 @@ struct dpll_param;
->>  void omap4_ddr_init(const struct ddr_regs *, const struct dpll_param *);
->>  void omap4_power_i2c_send(u32);
->>  unsigned int omap4_revision(void);
->> -noinline int omap4_scale_vcores(unsigned vsel0_pin);
->> +noinline int omap4_scale_vcores(int vsel0_pin);
->>
->>  #endif
->> diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
->> index 1481f16..f7927d2 100644
->> --- a/arch/arm/mach-omap/omap4_clock.c
->> +++ b/arch/arm/mach-omap/omap4_clock.c
->> @@ -394,9 +394,38 @@ void omap4_enable_all_clocks(void)
->>       sr32(CM_L3INIT_USBPHY_CLKCTRL, 0, 32, 0x301);
->>  }
->>
->> -void omap4_do_scale_tps62361(u32 reg, u32 volt_mv)
->> +#define GPIO_MASK            0x1f
->> +#define GPIO_OE                      0x34
->> +#define GPIO_CLEARDATAOUT    0x90
->> +#define GPIO_SETDATAOUT              0x94
+On Fri, Oct 19, 2012 at 1:10 PM, Jan Weitzel <J.Weitzel@phytec.de> wrote:
+>> diff --git a/arch/arm/boards/archosg9/lowlevel.c b/arch/arm/boards/archosg9/lowlevel.c
+>> new file mode 100644
+>> index 0000000..fa5be1d
+>> --- /dev/null
+>> +++ b/arch/arm/boards/archosg9/lowlevel.c
+>> @@ -0,0 +1,79 @@
+>> +/*
+>> + * This program is free software; you can redistribute it and/or
+>> + * modify it under the terms of the GNU General Public License as
+>> + * published by the Free Software Foundation; either version 2 of
+>> + * the License, or (at your option) any later version.
+>> + *
+>> + * This program is distributed in the hope that it will be useful,
+>> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+>> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+>> + * GNU General Public License for more details.
+>> + */
 >> +
->> +static void __iomem *omap4_get_gpio_base(unsigned gpio)
+>> +#include <common.h>
+>> +#include <io.h>
+>> +#include <init.h>
+>> +#include <mach/omap4-mux.h>
+>> +#include <mach/omap4-silicon.h>
+>> +#include <mach/omap4-clock.h>
+>> +#include <mach/syslib.h>
+>> +#include <asm/barebox-arm.h>
+>> +#include <asm/barebox-arm-head.h>
+>> +#include "mux.h"
+>> +
+>> +#define TPS62361_VSEL0_GPIO    7
+>> +
+>> +static const struct ddr_regs ddr_regs_400_mhz_2cs = {
+>> +     .tim1         = 0x10EB0662,
+>> +     .tim2         = 0x20370DD2,
+>> +     .tim3         = 0x00B1C33F,
+>> +     .phy_ctrl_1   = 0x849FF408,
+>> +     .ref_ctrl     = 0x00000618,
+>> +     .config_init  = 0x80000EB9,
+>> +     .config_final = 0x80001AB9,
+>> +     .zq_config    = 0xD00B3215,
+>> +     .mr1          = 0x83,
+>> +     .mr2          = 0x4
+>> +};
+>> +
+>> +static noinline void archosg9_init_lowlevel(void)
 >> +{
->> +     void __iomem *base;
+>> +     struct dpll_param core = OMAP4_CORE_DPLL_PARAM_19M2_DDR400;
+>> +     struct dpll_param mpu = OMAP4_MPU_DPLL_PARAM_19M2_MPU600;
+> This if OPP100 for 4430, for 4460 OPP100 defines 700MHz.
+>> +     struct dpll_param iva = OMAP4_IVA_DPLL_PARAM_19M2;
+>> +     struct dpll_param per = OMAP4_PER_DPLL_PARAM_19M2;
+>> +     struct dpll_param abe = OMAP4_ABE_DPLL_PARAM_19M2;
+>> +     struct dpll_param usb = OMAP4_USB_DPLL_PARAM_19M2;
 >> +
->> +     if (gpio < 32)
->> +             base = (void *)0x4a310100;
->> +     else
->> +             base = (void *)(0x48053100 + ((gpio & ~GPIO_MASK) << 8));
+>> +     writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
 >> +
->> +     return base;
->> +}
+>> +     /* Configure all DPLL's at 100% OPP */
+>> +     omap4_configure_mpu_dpll(&mpu);
+>> +     omap4_configure_iva_dpll(&iva);
+>> +     omap4_configure_per_dpll(&per);
+>> +     omap4_configure_abe_dpll(&abe);
+>> +     omap4_configure_usb_dpll(&usb);
 >> +
->> +void omap4_do_scale_tps62361(int vsel0_pin, u32 reg, u32 volt_mv)
->>  {
->>       u32 temp, step;
->> +     void __iomem *base;
->> +     u32 val;
+>> +     /* Enable all clocks */
+>> +     omap4_enable_all_clocks();
 >> +
->> +     /* Pull the GPIO low to select SET0 register, while we program SET1 */
->> +     if (vsel0_pin >= 0) {
->> +             base = omap4_get_gpio_base(vsel0_pin);
->> +             val = 1 << (vsel0_pin & GPIO_MASK);
->> +             writel(val, base + GPIO_CLEARDATAOUT);
->> +             val =  readl(base + GPIO_OE);
->> +             val &= ~(1 << (vsel0_pin & GPIO_MASK));
->> +             writel(val, base + GPIO_OE);
->> +     }
->>
->>       step = volt_mv - TPS62361_BASE_VOLT_MV;
->>       step /= 10;
->> @@ -411,4 +440,10 @@ void omap4_do_scale_tps62361(u32 reg, u32 volt_mv)
->>       if (!wait_on_value(OMAP44XX_PRM_VC_VAL_BYPASS_VALID_BIT, 0,
->>                               OMAP44XX_PRM_VC_VAL_BYPASS, LDELAY))
->>               puts("Scaling voltage failed for vdd_mpu from TPS\n");
+>> +     set_muxconf_regs();
 >> +
->> +     /* Pull the GPIO high to select SET1 register */
->> +     if (vsel0_pin >= 0) {
->> +             val = 1 << (vsel0_pin & GPIO_MASK);
->> +             writel(val, base + GPIO_SETDATAOUT);
->> +     }
->>  }
->> diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
->> index 765fcb5..8e692ba 100644
->> --- a/arch/arm/mach-omap/omap4_generic.c
->> +++ b/arch/arm/mach-omap/omap4_generic.c
->> @@ -495,27 +495,11 @@ enum omap_boot_src omap4_bootsrc(void)
->>       return OMAP_BOOTSRC_UNKNOWN;
->>  }
->>
->> -#define GPIO_MASK 0x1f
->> -
->> -static void __iomem *omap4_get_gpio_base(unsigned gpio)
->> -{
->> -     void __iomem *base;
->> -
->> -     if (gpio < 32)
->> -             base = (void *)0x4a310000;
->> -     else
->> -             base = (void *)(0x48053000 + ((gpio & ~GPIO_MASK) << 8));
->> -
->> -     return base;
->> -}
->> -
->>  #define I2C_SLAVE 0x12
->>
->> -noinline int omap4_scale_vcores(unsigned vsel0_pin)
->> +noinline int omap4_scale_vcores(int vsel0_pin)
->>  {
->> -     void __iomem *base;
->>       unsigned int rev = omap4_revision();
->> -     u32 val = 0;
->>
->>       /* For VC bypass only VCOREx_CGF_FORCE  is necessary and
->>        * VCOREx_CFG_VOLTAGE  changes can be discarded
->> @@ -523,33 +507,6 @@ noinline int omap4_scale_vcores(unsigned vsel0_pin)
->>       writel(0, OMAP44XX_PRM_VC_CFG_I2C_MODE);
->>       writel(0x6026, OMAP44XX_PRM_VC_CFG_I2C_CLK);
->>
->> -     /* TPS - supplies vdd_mpu on 4460 */
->> -     if (rev >= OMAP4460_ES1_0) {
->> -             /*
->> -              * Setup SET1 and SET0 with right values so that kernel
->> -              * can use either of them based on its needs.
->> -              */
->> -             omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET0, 1430);
->> -             omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET1, 1430);
->> -
->> -             /*
->> -              * Select SET1 in TPS62361:
->> -              * VSEL1 is grounded on board. So the following selects
->> -              * VSEL1 = 0 and VSEL0 = 1
->> -              */
->> -             base = omap4_get_gpio_base(vsel0_pin);
->> -
->> -             val = 1 << (vsel0_pin & GPIO_MASK);
->> -             writel(val, base + 0x190);
->> -
->> -             val =  readl(base + 0x134);
->> -             val &= (1 << (vsel0_pin & GPIO_MASK));
->> -             writel(val, base + 0x134);
->> -
->> -             val = 1 << (vsel0_pin & GPIO_MASK);
->> -             writel(val, base + 0x194);
->> -     }
->> -
->>       /* set VCORE1 force VSEL */
->>       /*
->>        * 4430 : supplies vdd_mpu
->> @@ -568,8 +525,13 @@ noinline int omap4_scale_vcores(unsigned vsel0_pin)
->>               /* 0x55: i2c addr, 28: ~ 1200 mvolts*/
->>               omap4_power_i2c_send((0x2855 << 8) | I2C_SLAVE);
->>
->> +     /* TPS - supplies vdd_mpu on 4460 */
->> +     if (rev >= OMAP4460_ES1_0)
->> +             omap4_do_scale_tps62361(vsel0_pin,
->> +                     TPS62361_REG_ADDR_SET1, 1203);
+>> +     omap4_ddr_init(&ddr_regs_400_mhz_2cs, &core);
 >> +
-> On PCM049 we use 920 MHz OPP_Turbo so this doesn't work. We must make
-> the voltage configurable.
+>> +     /* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+>> +     omap4_scale_vcores(TPS62361_VSEL0_GPIO);
+> According to TIs DM the sequence for going into a higher OPP is to first
+> raise the voltage. I saw this is also wrong on pandaboard.
+> They also say rise core freq before mpu freq so the order should be
+> omap4_scale_vcores
+> omap4_ddr_init
+> omap4_configure_mpu_dpll
+>
+> I'll fix and test the order on PCM049
 >
 > Jan
 
-Is there any way to choose the correct VCOREs based only on OMAP revision?
-Or the only solution is to give control of VCOREs to the boards?
-In u-boot the voltages are selected as a function of the OMAP revision only.
-Another possible solution is to choose a lower OPP, if this is possible.
-Afterwards the OS will change it as required.
+The only way I could make it work on archosG9 is with this order:
+  set_muxconf_regs();
+  writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
+  omap4_enable_all_clocks();
+  omap4_scale_vcores(TPS62361_VSEL0_GPIO);
+  omap4_ddr_init(&ddr_regs_400_mhz_2cs, &core);
+  omap4_configure_mpu_dpll(&mpu);
+  ...
 
-Also in u-boot the VSEL0 pin is platform-defined, not board-defined. But this
- will break the pcm049 board as it uses a non-standard gpio (182 instead of 7).
+Is this correct? That is, enable_all_clocks can be done before scale_vcores?
+It will depend on the default clock frequencies, I think.
 
-I think that as few things are board-dependent the better.
-
->>       /* FIXME: set VCORE2 force VSEL, Check the reset value */
->> -     omap4_power_i2c_send((0x295B << 8) | I2C_SLAVE);
->> +     omap4_power_i2c_send((0x285B << 8) | I2C_SLAVE);
->>
->>       /* set VCORE3 force VSEL */
->>       switch (rev) {
->
->
+Vicente
 
 _______________________________________________
 barebox mailing list
