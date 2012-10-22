@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f49.google.com ([209.85.214.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQCKh-0002Pe-Iv
- for barebox@lists.infradead.org; Mon, 22 Oct 2012 07:21:56 +0000
-Received: by mail-bk0-f49.google.com with SMTP id j4so641041bkw.36
- for <barebox@lists.infradead.org>; Mon, 22 Oct 2012 00:21:55 -0700 (PDT)
-From: Alexander Aring <alex.aring@googlemail.com>
-Date: Mon, 22 Oct 2012 09:23:31 +0200
-Message-Id: <1350890612-10588-8-git-send-email-alex.aring@gmail.com>
-In-Reply-To: <1350890612-10588-1-git-send-email-alex.aring@gmail.com>
-References: <1350890612-10588-1-git-send-email-alex.aring@gmail.com>
+Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TQDs9-0007V3-Qe
+ for barebox@lists.infradead.org; Mon, 22 Oct 2012 09:00:35 +0000
+Message-ID: <1350896430.3205.4.camel@lws-weitzel>
+From: Jan Weitzel <J.Weitzel@phytec.de>
+Date: Mon, 22 Oct 2012 11:00:30 +0200
+In-Reply-To: <CAAMcf8Dv6wE+pwNZqW+64t-eKrcLSMb9PE8jN8zgvyYq6dX2Jg@mail.gmail.com>
+References: <1350599459-5325-1-git-send-email-vicencb@gmail.com>
+ <1350643386.3484.5.camel@lws-weitzel>
+ <CAAMcf8Dv6wE+pwNZqW+64t-eKrcLSMb9PE8jN8zgvyYq6dX2Jg@mail.gmail.com>
+Mime-Version: 1.0
+Reply-To: J.Weitzel@phytec.de
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,156 +20,262 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] nandtest: use loff_t instead off_t
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 6/6] OMAP4: clean voltage switch
+To: vj <vicencb@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Use the same offset type like mtd interface.
-Replace modulo operation with IS_ALIGNED macro.
+Am Sonntag, den 21.10.2012, 01:49 +0200 schrieb vj:
+> On Fri, Oct 19, 2012 at 12:43 PM, Jan Weitzel <J.Weitzel@phytec.de> wrote:
+> > Am Freitag, den 19.10.2012, 00:30 +0200 schrieb Vicente Bergas:
+> >> OMAP4 requires that parent domains scale ahead of dependent domains.
+> >> This is due to the restrictions in timing closure. To ensure
+> >> a consistent behavior across all OMAP4 SoC, ensure that
+> >> vdd_core scale first, then vdd_mpu and finally vdd_iva.
+> >>
+> >> TPS SET0/SET1 register is selected by a GPIO pin on OMAP4460 platforms.
+> >> Currently we control this pin with a mux configuration as part of
+> >> boot sequence.
+> >> Current configuration results in the following voltage waveform:
+> >>                            |---------------| (SET1 default 1.4V)
+> >>                            |               --------(programmed voltage)
+> >>                            | <- (This switch happens on mux7,pullup)
+> >> vdd_mpu(TPS)         -----/ (OPP boot voltage)
+> >>                                              --------- (programmed voltage)
+> >> vdd_core(TWL6030)    -----------------------/ (OPP boot voltage)
+> >> Problem 1)                |<----- Tx ------>|
+> >>    timing violation for a duration Tx close to few milliseconds.
+> >> Problem 2) voltage of MPU goes beyond spec for even the highest of MPU OPP.
+> >>
+> >> By using GPIO as recommended as standard procedure by TI, the sequence
+> >> changes to:
+> >>                                   -------- (programmed voltage)
+> >> vdd_mpu(TPS)         ------------/ (Opp boot voltage)
+> >>                                    --------- (programmed voltage)
+> >> vdd_core(TWL6030)    -------------/ (OPP boot voltage)
+> >>
+> >> original patch from:
+> >> http://lists.denx.de/pipermail/u-boot/2012-March/119149.html
+> >> http://lists.denx.de/pipermail/u-boot/2012-March/119150.html
+> >>
+> >> Signed-off-by: Vicente Bergas <vicencb@gmail.com>
+> >> ---
+> >>  arch/arm/boards/archosg9/mux.c                  |  9 +----
+> >>  arch/arm/mach-omap/include/mach/omap4-clock.h   |  2 +-
+> >>  arch/arm/mach-omap/include/mach/omap4-silicon.h |  2 +-
+> >>  arch/arm/mach-omap/omap4_clock.c                | 37 +++++++++++++++++-
+> >>  arch/arm/mach-omap/omap4_generic.c              | 52 ++++---------------------
+> >>  5 files changed, 46 insertions(+), 56 deletions(-)
+> >>
+> >> diff --git a/arch/arm/boards/archosg9/mux.c b/arch/arm/boards/archosg9/mux.c
+> >> index 7ca5057..c8695c0 100644
+> >> --- a/arch/arm/boards/archosg9/mux.c
+> >> +++ b/arch/arm/boards/archosg9/mux.c
+> >> @@ -441,7 +441,7 @@ static const struct pad_conf_entry wkup_padconf_array[] = {
+> >>       /* gpio_wk30           */
+> >>       { FREF_CLK3_REQ        ,             M3 },
+> >>       /* gpio_wk7            */ /* tps62361_vsel0 */
+> >> -     { FREF_CLK4_REQ        , IEN | PTU | M3 },
+> >> +     { FREF_CLK4_REQ        ,             M3 },
+> >>  };
+> > This should also be fixed for the panda board.
+> >>  void set_muxconf_regs(void){
+> >> @@ -449,11 +449,4 @@ void set_muxconf_regs(void){
+> >>               core_padconf_array, ARRAY_SIZE(core_padconf_array));
+> >>       omap4_do_set_mux(OMAP44XX_CONTROL_PADCONF_WKUP,
+> >>               wkup_padconf_array, ARRAY_SIZE(wkup_padconf_array));
+> >> -
+> >> -     /* gpio_wk7 is used for controlling TPS on 4460 */
+> >> -     if (omap4_revision() >= OMAP4460_ES1_0) {
+> >> -             writew(M3, OMAP44XX_CONTROL_PADCONF_WKUP + FREF_CLK4_REQ);
+> >> -             /* Enable GPIO-1 clocks before TPS initialization */
+> >> -             omap4_enable_gpio1_wup_clocks();
+> >> -     }
+> >>  }
+> >> diff --git a/arch/arm/mach-omap/include/mach/omap4-clock.h b/arch/arm/mach-omap/include/mach/omap4-clock.h
+> >> index e5302d6..8cbc061 100644
+> >> --- a/arch/arm/mach-omap/include/mach/omap4-clock.h
+> >> +++ b/arch/arm/mach-omap/include/mach/omap4-clock.h
+> >> @@ -335,5 +335,5 @@ void omap4_lock_core_dpll_shadow(const struct dpll_param *param);
+> >>  void omap4_enable_gpio1_wup_clocks(void);
+> >>  void omap4_enable_gpio_clocks(void);
+> >>  void omap4_enable_all_clocks(void);
+> >> -void omap4_do_scale_tps62361(u32 reg, u32 volt_mv);
+> >> +void omap4_do_scale_tps62361(int vsel0_pin, u32 reg, u32 volt_mv);
+> >>
+> >> diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+> >> index 71ffe39..137cc88 100644
+> >> --- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
+> >> +++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+> >> @@ -196,6 +196,6 @@ struct dpll_param;
+> >>  void omap4_ddr_init(const struct ddr_regs *, const struct dpll_param *);
+> >>  void omap4_power_i2c_send(u32);
+> >>  unsigned int omap4_revision(void);
+> >> -noinline int omap4_scale_vcores(unsigned vsel0_pin);
+> >> +noinline int omap4_scale_vcores(int vsel0_pin);
+> >>
+> >>  #endif
+> >> diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
+> >> index 1481f16..f7927d2 100644
+> >> --- a/arch/arm/mach-omap/omap4_clock.c
+> >> +++ b/arch/arm/mach-omap/omap4_clock.c
+> >> @@ -394,9 +394,38 @@ void omap4_enable_all_clocks(void)
+> >>       sr32(CM_L3INIT_USBPHY_CLKCTRL, 0, 32, 0x301);
+> >>  }
+> >>
+> >> -void omap4_do_scale_tps62361(u32 reg, u32 volt_mv)
+> >> +#define GPIO_MASK            0x1f
+> >> +#define GPIO_OE                      0x34
+> >> +#define GPIO_CLEARDATAOUT    0x90
+> >> +#define GPIO_SETDATAOUT              0x94
+> >> +
+> >> +static void __iomem *omap4_get_gpio_base(unsigned gpio)
+> >> +{
+> >> +     void __iomem *base;
+> >> +
+> >> +     if (gpio < 32)
+> >> +             base = (void *)0x4a310100;
+> >> +     else
+> >> +             base = (void *)(0x48053100 + ((gpio & ~GPIO_MASK) << 8));
+> >> +
+> >> +     return base;
+> >> +}
+> >> +
+> >> +void omap4_do_scale_tps62361(int vsel0_pin, u32 reg, u32 volt_mv)
+> >>  {
+> >>       u32 temp, step;
+> >> +     void __iomem *base;
+> >> +     u32 val;
+> >> +
+> >> +     /* Pull the GPIO low to select SET0 register, while we program SET1 */
+> >> +     if (vsel0_pin >= 0) {
+> >> +             base = omap4_get_gpio_base(vsel0_pin);
+> >> +             val = 1 << (vsel0_pin & GPIO_MASK);
+> >> +             writel(val, base + GPIO_CLEARDATAOUT);
+> >> +             val =  readl(base + GPIO_OE);
+> >> +             val &= ~(1 << (vsel0_pin & GPIO_MASK));
+> >> +             writel(val, base + GPIO_OE);
+> >> +     }
+> >>
+> >>       step = volt_mv - TPS62361_BASE_VOLT_MV;
+> >>       step /= 10;
+> >> @@ -411,4 +440,10 @@ void omap4_do_scale_tps62361(u32 reg, u32 volt_mv)
+> >>       if (!wait_on_value(OMAP44XX_PRM_VC_VAL_BYPASS_VALID_BIT, 0,
+> >>                               OMAP44XX_PRM_VC_VAL_BYPASS, LDELAY))
+> >>               puts("Scaling voltage failed for vdd_mpu from TPS\n");
+> >> +
+> >> +     /* Pull the GPIO high to select SET1 register */
+> >> +     if (vsel0_pin >= 0) {
+> >> +             val = 1 << (vsel0_pin & GPIO_MASK);
+> >> +             writel(val, base + GPIO_SETDATAOUT);
+> >> +     }
+> >>  }
+> >> diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+> >> index 765fcb5..8e692ba 100644
+> >> --- a/arch/arm/mach-omap/omap4_generic.c
+> >> +++ b/arch/arm/mach-omap/omap4_generic.c
+> >> @@ -495,27 +495,11 @@ enum omap_boot_src omap4_bootsrc(void)
+> >>       return OMAP_BOOTSRC_UNKNOWN;
+> >>  }
+> >>
+> >> -#define GPIO_MASK 0x1f
+> >> -
+> >> -static void __iomem *omap4_get_gpio_base(unsigned gpio)
+> >> -{
+> >> -     void __iomem *base;
+> >> -
+> >> -     if (gpio < 32)
+> >> -             base = (void *)0x4a310000;
+> >> -     else
+> >> -             base = (void *)(0x48053000 + ((gpio & ~GPIO_MASK) << 8));
+> >> -
+> >> -     return base;
+> >> -}
+> >> -
+> >>  #define I2C_SLAVE 0x12
+> >>
+> >> -noinline int omap4_scale_vcores(unsigned vsel0_pin)
+> >> +noinline int omap4_scale_vcores(int vsel0_pin)
+> >>  {
+> >> -     void __iomem *base;
+> >>       unsigned int rev = omap4_revision();
+> >> -     u32 val = 0;
+> >>
+> >>       /* For VC bypass only VCOREx_CGF_FORCE  is necessary and
+> >>        * VCOREx_CFG_VOLTAGE  changes can be discarded
+> >> @@ -523,33 +507,6 @@ noinline int omap4_scale_vcores(unsigned vsel0_pin)
+> >>       writel(0, OMAP44XX_PRM_VC_CFG_I2C_MODE);
+> >>       writel(0x6026, OMAP44XX_PRM_VC_CFG_I2C_CLK);
+> >>
+> >> -     /* TPS - supplies vdd_mpu on 4460 */
+> >> -     if (rev >= OMAP4460_ES1_0) {
+> >> -             /*
+> >> -              * Setup SET1 and SET0 with right values so that kernel
+> >> -              * can use either of them based on its needs.
+> >> -              */
+> >> -             omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET0, 1430);
+> >> -             omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET1, 1430);
+> >> -
+> >> -             /*
+> >> -              * Select SET1 in TPS62361:
+> >> -              * VSEL1 is grounded on board. So the following selects
+> >> -              * VSEL1 = 0 and VSEL0 = 1
+> >> -              */
+> >> -             base = omap4_get_gpio_base(vsel0_pin);
+> >> -
+> >> -             val = 1 << (vsel0_pin & GPIO_MASK);
+> >> -             writel(val, base + 0x190);
+> >> -
+> >> -             val =  readl(base + 0x134);
+> >> -             val &= (1 << (vsel0_pin & GPIO_MASK));
+> >> -             writel(val, base + 0x134);
+> >> -
+> >> -             val = 1 << (vsel0_pin & GPIO_MASK);
+> >> -             writel(val, base + 0x194);
+> >> -     }
+> >> -
+> >>       /* set VCORE1 force VSEL */
+> >>       /*
+> >>        * 4430 : supplies vdd_mpu
+> >> @@ -568,8 +525,13 @@ noinline int omap4_scale_vcores(unsigned vsel0_pin)
+> >>               /* 0x55: i2c addr, 28: ~ 1200 mvolts*/
+> >>               omap4_power_i2c_send((0x2855 << 8) | I2C_SLAVE);
+> >>
+> >> +     /* TPS - supplies vdd_mpu on 4460 */
+> >> +     if (rev >= OMAP4460_ES1_0)
+> >> +             omap4_do_scale_tps62361(vsel0_pin,
+> >> +                     TPS62361_REG_ADDR_SET1, 1203);
+> >> +
+> > On PCM049 we use 920 MHz OPP_Turbo so this doesn't work. We must make
+> > the voltage configurable.
+> >
+> > Jan
+> 
+> Is there any way to choose the correct VCOREs based only on OMAP revision?
+> Or the only solution is to give control of VCOREs to the boards?
+> In u-boot the voltages are selected as a function of the OMAP revision only.
+> Another possible solution is to choose a lower OPP, if this is possible.
+> Afterwards the OS will change it as required.
+Going to OPP100 is ok for us. So only the RAM timings and the oscillator are board specific.
+Jan
 
-Signed-off-by: Alexander Aring <alex.aring@gmail.com>
----
- commands/nandtest.c | 57 ++++++++++++++++++++++++++---------------------------
- 1 file changed, 28 insertions(+), 29 deletions(-)
+> Also in u-boot the VSEL0 pin is platform-defined, not board-defined. But this
+>  will break the pcm049 board as it uses a non-standard gpio (182 instead of 7).
+> 
+> I think that as few things are board-dependent the better.
+> 
+> >>       /* FIXME: set VCORE2 force VSEL, Check the reset value */
+> >> -     omap4_power_i2c_send((0x295B << 8) | I2C_SLAVE);
+> >> +     omap4_power_i2c_send((0x285B << 8) | I2C_SLAVE);
+> >>
+> >>       /* set VCORE3 force VSEL */
+> >>       switch (rev) {
+> >
+> >
 
-diff --git a/commands/nandtest.c b/commands/nandtest.c
-index ead728b..f9c9318 100644
---- a/commands/nandtest.c
-+++ b/commands/nandtest.c
-@@ -45,7 +45,7 @@ static unsigned int ecc_failed_cnt;
- /*
-  * Implementation of pread with lseek and read.
-  */
--static ssize_t pread(int fd, void *buf, size_t count, off_t offset)
-+static ssize_t pread(int fd, void *buf, size_t count, loff_t offset)
- {
- 	int ret;
- 
-@@ -66,7 +66,7 @@ static ssize_t pread(int fd, void *buf, size_t count, off_t offset)
-  * Implementation of pwrite with lseek and write.
-  */
- static ssize_t pwrite(int fd, const void *buf,
--		size_t count, off_t offset, off_t length)
-+		size_t count, loff_t offset, loff_t length)
- {
- 	int ret;
- 
-@@ -79,8 +79,8 @@ static ssize_t pwrite(int fd, const void *buf,
- 	if (ret < 0) {
- 		perror("write");
- 		if (markbad) {
--			printf("\nMark block bad at 0x%08x\n",
--					(unsigned)(offset + memregion.offset));
-+			printf("\nMark block bad at 0x%08llx\n",
-+					offset + memregion.offset);
- 			ioctl(fd, MEMSETBADBLOCK, &offset);
- 			init_progression_bar(length);
- 			show_progress(offset);
-@@ -98,8 +98,8 @@ static ssize_t pwrite(int fd, const void *buf,
-  * Param rbuf: pointer to allocated buffer to copy readed data.
-  * Param length: length of testing area
-  */
--static int erase_and_write(off_t ofs, unsigned char *data,
--		unsigned char *rbuf, off_t length)
-+static int erase_and_write(loff_t ofs, unsigned char *data,
-+		unsigned char *rbuf, loff_t length)
- {
- 	struct erase_info_user er;
- 	unsigned int i;
-@@ -132,9 +132,9 @@ static int erase_and_write(off_t ofs, unsigned char *data,
- 		}
- 
- 		if (newstats.corrected > oldstats.corrected) {
--			printf("\n %d bit(s) ECC corrected at page 0x%08x\n",
-+			printf("\n %d bit(s) ECC corrected at page 0x%08llx\n",
- 					newstats.corrected - oldstats.corrected,
--					(unsigned)(ofs + memregion.offset + i));
-+					ofs + memregion.offset + i);
- 			init_progression_bar(length);
- 			show_progress(ofs);
- 			if ((newstats.corrected-oldstats.corrected) >=
-@@ -151,8 +151,8 @@ static int erase_and_write(off_t ofs, unsigned char *data,
- 			oldstats.corrected = newstats.corrected;
- 		}
- 		if (newstats.failed > oldstats.failed) {
--			printf("\nECC failed at page 0x%08x\n",
--					(unsigned)(ofs + memregion.offset + i));
-+			printf("\nECC failed at page 0x%08llx\n",
-+					ofs + memregion.offset + i);
- 			init_progression_bar(length);
- 			show_progress(ofs);
- 			oldstats.failed = newstats.failed;
-@@ -196,7 +196,7 @@ static void print_stats(int nr_passes, int length)
- static int do_nandtest(int argc, char *argv[])
- {
- 	int opt, do_nandtest_dev = -1, ret = -1;
--	off_t flash_offset = 0, test_ofs, length = 0;
-+	loff_t flash_offset = 0, test_ofs, length = 0;
- 	unsigned int nr_iterations = 1, iter;
- 	unsigned char *wbuf, *rbuf;
- 
-@@ -274,28 +274,28 @@ static int do_nandtest(int argc, char *argv[])
- 		length -= flash_offset;
- 	}
- 
--	printf("Flash offset: 0x%08x\n",
--			(unsigned)(flash_offset + memregion.offset));
--	printf("Length: 0x%08x\n", (unsigned)length);
--	printf("End address: 0x%08x\n",
--			(unsigned)(flash_offset + length + memregion.offset));
--	printf("Erasesize: 0x%08x\n", (unsigned)(meminfo.erasesize));
-+	printf("Flash offset: 0x%08llx\n",
-+			flash_offset + memregion.offset);
-+	printf("Length: 0x%08llx\n", length);
-+	printf("End address: 0x%08llx\n",
-+			flash_offset + length + memregion.offset);
-+	printf("Erasesize: 0x%08x\n", meminfo.erasesize);
- 	printf("Starting nandtest...\n");
- 
--	if (flash_offset % meminfo.erasesize) {
--		printf("Offset 0x%08x not multiple of erase size 0x%08x\n",
--			(unsigned)flash_offset, meminfo.erasesize);
-+	if (!IS_ALIGNED(flash_offset, meminfo.erasesize)) {
-+		printf("Offset 0x%08llx not multiple of erase size 0x%08x\n",
-+			flash_offset, meminfo.erasesize);
- 		goto err;
- 	}
--	if (length % meminfo.erasesize) {
--		printf("Length 0x%08x not multiple of erase size 0x%08x\n",
--			(unsigned)length, meminfo.erasesize);
-+	if (!IS_ALIGNED(length, meminfo.erasesize)) {
-+		printf("Length 0x%08llx not multiple of erase size 0x%08x\n",
-+			length, meminfo.erasesize);
- 		goto err;
- 	}
- 	if (length + flash_offset > meminfo.size) {
--		printf("Length 0x%08x + offset 0x%08x exceeds "
--				"device size 0x%08x\n", (unsigned)length,
--				(unsigned)flash_offset, meminfo.size);
-+		printf("Length 0x%08llx + offset 0x%08llx exceeds "
-+				"device size 0x%08x\n", length,
-+				flash_offset, meminfo.size);
- 		goto err;
- 	}
- 
-@@ -317,9 +317,8 @@ static int do_nandtest(int argc, char *argv[])
- 			seed = rand();
- 
- 			if (ioctl(fd, MEMGETBADBLOCK, &test_ofs)) {
--				printf("\nBad block at 0x%08x\n",
--						(unsigned)(test_ofs +
--							memregion.offset));
-+				printf("\nBad block at 0x%08llx\n",
-+						test_ofs + memregion.offset);
- 				init_progression_bar(length);
- 				show_progress(test_ofs);
- 				continue;
--- 
-1.7.12.4
 
 
 _______________________________________________
