@@ -1,11 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQLZw-00015v-7b
- for barebox@lists.infradead.org; Mon, 22 Oct 2012 17:14:17 +0000
+ id 1TQNzo-000601-CJ
+ for barebox@lists.infradead.org; Mon, 22 Oct 2012 19:49:10 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Mon, 22 Oct 2012 19:14:08 +0200
-Message-Id: <1350926048-12681-1-git-send-email-w.sang@pengutronix.de>
+Date: Mon, 22 Oct 2012 21:48:59 +0200
+Message-Id: <1350935339-11653-1-git-send-email-w.sang@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,43 +15,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] common: Makefile: 'cd' command could lead to broken
- default_env.h
+Subject: [PATCH] mtd: ubi: cdev: fix build warning for 64-bit
 To: barebox@lists.infradead.org
 Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-Depending on the user's settings (CDPATH), 'cd' may print out the
-directory which was changed to. This causes broken barebox_default_env.h
-to be generated. Ignore the cd printout.
-
-Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
----
- common/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/common/Makefile b/common/Makefile
-index 132bd06..f2c8a2e 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -99,7 +99,7 @@ $(obj)/barebox_default_env.lzo: $(obj)/barebox_default_env FORCE
- 	$(call if_changed,lzo)
- 
- quiet_cmd_env_h = ENVH    $@
--cmd_env_h = cat $< | (cd $(obj) && $(objtree)/scripts/bin2c default_environment) > $@; \
-+cmd_env_h = cat $< | (cd $(obj) > /dev/null && $(objtree)/scripts/bin2c default_environment) > $@; \
- 	echo "const int default_environment_uncompress_size=`stat -c%s $(obj)/barebox_default_env`;" >> $@
- 
- $(obj)/barebox_default_env.h: $(obj)/barebox_default_env$(barebox_default_env_comp) FORCE
--- 
-1.7.10.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+R290IHRoaXMgd2hlbiBjb21waWxpbmcgc2FuZGJveCBvbiBhIDY0LWJpdCBzeXN0ZW06Cgpkcml2
+ZXJzL210ZC91YmkvY2Rldi5jOiBJbiBmdW5jdGlvbiDigJh1Ymlfdm9sdW1lX2NkZXZfcmVhZOKA
+mToKZHJpdmVycy9tdGQvdWJpL2NkZXYuYzoyNjoyOiB3YXJuaW5nOiBmb3JtYXQg4oCYJWTigJkg
+ZXhwZWN0cyBhcmd1bWVudCBvZiB0eXBlIOKAmGludOKAmSwgYnV0IGFyZ3VtZW50IDMgaGFzIHR5
+cGUg4oCYc2l6ZV904oCZIFstV2Zvcm1hdF0KClNpZ25lZC1vZmYtYnk6IFdvbGZyYW0gU2FuZyA8
+dy5zYW5nQHBlbmd1dHJvbml4LmRlPgotLS0KIGRyaXZlcnMvbXRkL3ViaS9jZGV2LmMgfCAgICAy
+ICstCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYg
+LS1naXQgYS9kcml2ZXJzL210ZC91YmkvY2Rldi5jIGIvZHJpdmVycy9tdGQvdWJpL2NkZXYuYwpp
+bmRleCA5M2MzNDkxLi40YmM0YTk5IDEwMDY0NAotLS0gYS9kcml2ZXJzL210ZC91YmkvY2Rldi5j
+CisrKyBiL2RyaXZlcnMvbXRkL3ViaS9jZGV2LmMKQEAgLTIzLDcgKzIzLDcgQEAgc3RhdGljIHNz
+aXplX3QgdWJpX3ZvbHVtZV9jZGV2X3JlYWQoc3RydWN0IGNkZXYgKmNkZXYsIHZvaWQgKmJ1Ziwg
+c2l6ZV90IHNpemUsCiAJbG9mZl90IG9mZnAgPSBvZmZzZXQ7CiAJaW50IHVzYWJsZV9sZWJfc2l6
+ZSA9IHZvbC0+dXNhYmxlX2xlYl9zaXplOwogCi0JcHJpbnRmKCIlczogJWQgQCAweCUwOGxseFxu
+IiwgX19mdW5jX18sIHNpemUsIG9mZnNldCk7CisJcHJpbnRmKCIlczogJXpkIEAgMHglMDhsbHhc
+biIsIF9fZnVuY19fLCBzaXplLCBvZmZzZXQpOwogCiAJbGVuID0gc2l6ZSA+IHVzYWJsZV9sZWJf
+c2l6ZSA/IHVzYWJsZV9sZWJfc2l6ZSA6IHNpemU7CiAKLS0gCjEuNy4xMC40CgoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
+c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
