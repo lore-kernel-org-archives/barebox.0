@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-f177.google.com ([74.125.82.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQ2hx-00015T-FK
- for barebox@lists.infradead.org; Sun, 21 Oct 2012 21:05:17 +0000
-Received: by mail-we0-f177.google.com with SMTP id u50so1128472wey.36
- for <barebox@lists.infradead.org>; Sun, 21 Oct 2012 14:05:14 -0700 (PDT)
-From: Alexander Aring <alex.aring@googlemail.com>
-Date: Sun, 21 Oct 2012 22:59:06 +0200
-Message-Id: <1350853147-9233-1-git-send-email-alex.aring@gmail.com>
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TQBqt-0008Tp-0r
+ for barebox@lists.infradead.org; Mon, 22 Oct 2012 06:51:10 +0000
+Message-ID: <1350888658.3205.1.camel@lws-weitzel>
+From: Jan Weitzel <J.Weitzel@phytec.de>
+Date: Mon, 22 Oct 2012 08:50:58 +0200
+In-Reply-To: <CAAMcf8AymQQ6oXJJfFgAkm4oKkMyZfuczq+7y7MrPA5gOUYjbg@mail.gmail.com>
+References: <1349736924-24667-1-git-send-email-vicencb@gmail.com>
+ <1349736924-24667-15-git-send-email-vicencb@gmail.com>
+ <1350645021.3484.14.camel@lws-weitzel>
+ <CAAMcf8AymQQ6oXJJfFgAkm4oKkMyZfuczq+7y7MrPA5gOUYjbg@mail.gmail.com>
+Mime-Version: 1.0
+Reply-To: J.Weitzel@phytec.de
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,44 +21,115 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] progressbar: use __stringify in format string
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 14/14] Add support for Archos G9 tablet
+To: vj <vicencb@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Use stringify in format string for HASH_PER_LINE.
+Am Sonntag, den 21.10.2012, 03:00 +0200 schrieb vj:
+> On Fri, Oct 19, 2012 at 1:10 PM, Jan Weitzel <J.Weitzel@phytec.de> wrote:
+> >> diff --git a/arch/arm/boards/archosg9/lowlevel.c b/arch/arm/boards/archosg9/lowlevel.c
+> >> new file mode 100644
+> >> index 0000000..fa5be1d
+> >> --- /dev/null
+> >> +++ b/arch/arm/boards/archosg9/lowlevel.c
+> >> @@ -0,0 +1,79 @@
+> >> +/*
+> >> + * This program is free software; you can redistribute it and/or
+> >> + * modify it under the terms of the GNU General Public License as
+> >> + * published by the Free Software Foundation; either version 2 of
+> >> + * the License, or (at your option) any later version.
+> >> + *
+> >> + * This program is distributed in the hope that it will be useful,
+> >> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> >> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> >> + * GNU General Public License for more details.
+> >> + */
+> >> +
+> >> +#include <common.h>
+> >> +#include <io.h>
+> >> +#include <init.h>
+> >> +#include <mach/omap4-mux.h>
+> >> +#include <mach/omap4-silicon.h>
+> >> +#include <mach/omap4-clock.h>
+> >> +#include <mach/syslib.h>
+> >> +#include <asm/barebox-arm.h>
+> >> +#include <asm/barebox-arm-head.h>
+> >> +#include "mux.h"
+> >> +
+> >> +#define TPS62361_VSEL0_GPIO    7
+> >> +
+> >> +static const struct ddr_regs ddr_regs_400_mhz_2cs = {
+> >> +     .tim1         = 0x10EB0662,
+> >> +     .tim2         = 0x20370DD2,
+> >> +     .tim3         = 0x00B1C33F,
+> >> +     .phy_ctrl_1   = 0x849FF408,
+> >> +     .ref_ctrl     = 0x00000618,
+> >> +     .config_init  = 0x80000EB9,
+> >> +     .config_final = 0x80001AB9,
+> >> +     .zq_config    = 0xD00B3215,
+> >> +     .mr1          = 0x83,
+> >> +     .mr2          = 0x4
+> >> +};
+> >> +
+> >> +static noinline void archosg9_init_lowlevel(void)
+> >> +{
+> >> +     struct dpll_param core = OMAP4_CORE_DPLL_PARAM_19M2_DDR400;
+> >> +     struct dpll_param mpu = OMAP4_MPU_DPLL_PARAM_19M2_MPU600;
+> > This if OPP100 for 4430, for 4460 OPP100 defines 700MHz.
+> >> +     struct dpll_param iva = OMAP4_IVA_DPLL_PARAM_19M2;
+> >> +     struct dpll_param per = OMAP4_PER_DPLL_PARAM_19M2;
+> >> +     struct dpll_param abe = OMAP4_ABE_DPLL_PARAM_19M2;
+> >> +     struct dpll_param usb = OMAP4_USB_DPLL_PARAM_19M2;
+> >> +
+> >> +     writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
+> >> +
+> >> +     /* Configure all DPLL's at 100% OPP */
+> >> +     omap4_configure_mpu_dpll(&mpu);
+> >> +     omap4_configure_iva_dpll(&iva);
+> >> +     omap4_configure_per_dpll(&per);
+> >> +     omap4_configure_abe_dpll(&abe);
+> >> +     omap4_configure_usb_dpll(&usb);
+> >> +
+> >> +     /* Enable all clocks */
+> >> +     omap4_enable_all_clocks();
+> >> +
+> >> +     set_muxconf_regs();
+> >> +
+> >> +     omap4_ddr_init(&ddr_regs_400_mhz_2cs, &core);
+> >> +
+> >> +     /* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+> >> +     omap4_scale_vcores(TPS62361_VSEL0_GPIO);
+> > According to TIs DM the sequence for going into a higher OPP is to first
+> > raise the voltage. I saw this is also wrong on pandaboard.
+> > They also say rise core freq before mpu freq so the order should be
+> > omap4_scale_vcores
+> > omap4_ddr_init
+> > omap4_configure_mpu_dpll
+> >
+> > I'll fix and test the order on PCM049
+> >
+> > Jan
+> 
+> The only way I could make it work on archosG9 is with this order:
+>   set_muxconf_regs();
+>   writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
+>   omap4_enable_all_clocks();
+>   omap4_scale_vcores(TPS62361_VSEL0_GPIO);
+>   omap4_ddr_init(&ddr_regs_400_mhz_2cs, &core);
+>   omap4_configure_mpu_dpll(&mpu);
+>   ...
+I think you need al least omap4_enable_gpio1_wup_clocks for using TPS62361_VSEL0_GPIO.
 
-Signed-off-by: Alexander Aring <alex.aring@gmail.com>
----
- lib/show_progress.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Jan
+> Is this correct? That is, enable_all_clocks can be done before scale_vcores?
+> It will depend on the default clock frequencies, I think.
+> 
+> Vicente
 
-diff --git a/lib/show_progress.c b/lib/show_progress.c
-index d958a44..bc067ea 100644
---- a/lib/show_progress.c
-+++ b/lib/show_progress.c
-@@ -20,6 +20,7 @@
- #include <common.h>
- #include <progress.h>
- #include <asm-generic/div64.h>
-+#include <linux/stringify.h>
- 
- #define HASHES_PER_LINE	65
- 
-@@ -56,7 +57,7 @@ void init_progression_bar(int max)
- 	progress_max = max;
- 	spin = 0;
- 	if (progress_max)
--		printf("\t[%65s]\r\t[", "");
-+		printf("\t[%"__stringify(HASHES_PER_LINE)"s]\r\t[", "");
- 	else
- 		printf("\t");
- }
--- 
-1.7.12.4
 
 
 _______________________________________________
