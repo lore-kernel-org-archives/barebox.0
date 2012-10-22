@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-bk0-f49.google.com ([209.85.214.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQCKa-0002Pe-Ll
- for barebox@lists.infradead.org; Mon, 22 Oct 2012 07:21:49 +0000
-Received: by mail-bk0-f49.google.com with SMTP id j4so641041bkw.36
- for <barebox@lists.infradead.org>; Mon, 22 Oct 2012 00:21:47 -0700 (PDT)
+ id 1TQCKc-0002Pa-QN
+ for barebox@lists.infradead.org; Mon, 22 Oct 2012 07:21:51 +0000
+Received: by mail-bk0-f49.google.com with SMTP id j4so641038bkw.36
+ for <barebox@lists.infradead.org>; Mon, 22 Oct 2012 00:21:50 -0700 (PDT)
 From: Alexander Aring <alex.aring@googlemail.com>
-Date: Mon, 22 Oct 2012 09:23:25 +0200
-Message-Id: <1350890612-10588-2-git-send-email-alex.aring@gmail.com>
+Date: Mon, 22 Oct 2012 09:23:27 +0200
+Message-Id: <1350890612-10588-4-git-send-email-alex.aring@gmail.com>
 In-Reply-To: <1350890612-10588-1-git-send-email-alex.aring@gmail.com>
 References: <1350890612-10588-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,111 +23,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] nandtest: stat ecc per page not per eraseblock
+Subject: [PATCH 3/8] nandtest: rename command argument p to i
 To: barebox@lists.infradead.org
 
-Collect ecc statistics per page not per eraseblock.
+Rename command argument p for 'passes' to 'i' iteration.
 
 Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- commands/nandtest.c | 70 +++++++++++++++++++++++++++++------------------------
- 1 file changed, 39 insertions(+), 31 deletions(-)
+ commands/nandtest.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/commands/nandtest.c b/commands/nandtest.c
-index d683b24..cdb837f 100644
+index f614cd5..656fb65 100644
 --- a/commands/nandtest.c
 +++ b/commands/nandtest.c
-@@ -96,7 +96,8 @@ static ssize_t pwrite(int fd, const void *buf, size_t count, off_t offset)
- static int erase_and_write(off_t ofs, unsigned char *data, unsigned char *rbuf)
- {
- 	struct erase_info_user er;
--	int i, ret;
-+	unsigned int i;
-+	int ret;
+@@ -198,7 +198,7 @@ static int do_nandtest(int argc, char *argv[])
+ 	int opt, length = -1, do_nandtest_dev = -1;
+ 	off_t flash_offset = 0;
+ 	off_t test_ofs;
+-	unsigned int nr_passes = 1, pass;
++	unsigned int nr_iterations = 1, iter;
+ 	int i;
+ 	int ret = -1;
+ 	unsigned char *wbuf, *rbuf;
+@@ -210,7 +210,7 @@ static int do_nandtest(int argc, char *argv[])
  
- 	printf("\r0x%08x: erasing... ", (unsigned)(ofs + memregion.offset));
+ 	memset(ecc_stats, 0, MAX_ECC_BITS);
  
-@@ -111,43 +112,50 @@ static int erase_and_write(off_t ofs, unsigned char *data, unsigned char *rbuf)
- 		return ret;
+-	while ((opt = getopt(argc, argv, "ms:p:o:l:t")) > 0) {
++	while ((opt = getopt(argc, argv, "ms:i:o:l:t")) > 0) {
+ 		switch (opt) {
+ 		case 'm':
+ 			markbad = 1;
+@@ -218,8 +218,8 @@ static int do_nandtest(int argc, char *argv[])
+ 		case 's':
+ 			seed = simple_strtoul(optarg, NULL, 0);
+ 			break;
+-		case 'p':
+-			nr_passes = simple_strtoul(optarg, NULL, 0);
++		case 'i':
++			nr_iterations = simple_strtoul(optarg, NULL, 0);
+ 			break;
+ 		case 'o':
+ 			flash_offset = simple_strtoul(optarg, NULL, 0);
+@@ -310,7 +310,7 @@ static int do_nandtest(int argc, char *argv[])
  	}
+ 	rbuf = wbuf + meminfo.erasesize;
  
--	printf("\r0x%08x: writing...", (unsigned)(ofs + memregion.offset));
-+	for (i = 0; i < meminfo.erasesize;
-+			i += meminfo.writesize) {
-+		printf("\r0x%08x: writing...", (unsigned)
-+				(ofs + i + memregion.offset));
- 
--	/* Write data to given offset */
--	pwrite(fd, data, meminfo.erasesize, ofs);
-+		/* Write data to given offset */
-+		pwrite(fd, data + i, meminfo.writesize, ofs + i);
- 
--	printf("\r0x%08x: reading...", (unsigned)(ofs + memregion.offset));
-+		printf("\r0x%08x: reading...", (unsigned)
-+				(ofs + i + memregion.offset));
- 
--	/* Read data from offset */
--	pread(fd, rbuf, meminfo.erasesize, ofs);
-+		/* Read data from offset */
-+		pread(fd, rbuf + i, meminfo.writesize, ofs + i);
- 
--	ret = ioctl(fd, ECCGETSTATS, &newstats);
--	if (ret < 0) {
--		perror("ECCGETSTATS");
--		return ret;
--	}
-+		ret = ioctl(fd, ECCGETSTATS, &newstats);
-+		if (ret < 0) {
-+			perror("ECCGETSTATS");
-+			return ret;
-+		}
- 
--	if (newstats.corrected > oldstats.corrected) {
--		printf("\n %d bit(s) ECC corrected at 0x%08x\n",
--				newstats.corrected - oldstats.corrected,
--				(unsigned)(ofs + memregion.offset));
--		if ((newstats.corrected-oldstats.corrected) >= MAX_ECC_BITS) {
--			/* Increment ECC stats that are over MAX_ECC_BITS */
--			ecc_stats_over++;
--		} else {
--			/* Increment ECC stat value */
--			ecc_stats[(newstats.corrected-oldstats.corrected)-1]++;
-+		if (newstats.corrected > oldstats.corrected) {
-+			printf("\n %d bit(s) ECC corrected at page 0x%08x\n",
-+					newstats.corrected - oldstats.corrected,
-+					(unsigned)(ofs + memregion.offset + i));
-+			if ((newstats.corrected-oldstats.corrected) >=
-+					MAX_ECC_BITS) {
-+				/* Increment ECC stats that
-+				 * are over MAX_ECC_BITS */
-+				ecc_stats_over++;
-+			} else {
-+				/* Increment ECC stat value */
-+				ecc_stats[(newstats.corrected-
-+						oldstats.corrected)-1]++;
-+			}
-+			/* Set oldstats to newstats */
-+			oldstats.corrected = newstats.corrected;
-+		}
-+		if (newstats.failed > oldstats.failed) {
-+			printf("\nECC failed at page 0x%08x\n",
-+					(unsigned)(ofs + memregion.offset + i));
-+			oldstats.failed = newstats.failed;
-+			ecc_failed_cnt++;
+-	for (pass = 0; pass < nr_passes; pass++) {
++	for (iter = 0; iter < nr_iterations; iter++) {
+ 		init_progression_bar(length);
+ 		for (test_ofs = flash_offset;
+ 				test_ofs < flash_offset+length;
+@@ -338,10 +338,10 @@ static int do_nandtest(int argc, char *argv[])
+ 				goto err2;
  		}
--		/* Set oldstats to newstats */
--		oldstats.corrected = newstats.corrected;
--	}
--	if (newstats.failed > oldstats.failed) {
--		printf("\nECC failed at 0x%08x\n",
--				(unsigned)(ofs + memregion.offset));
--		oldstats.failed = newstats.failed;
--		ecc_failed_cnt++;
+ 		show_progress(test_ofs);
+-		printf("\nFinished pass %d successfully\n", pass+1);
++		printf("\nFinished pass %d successfully\n", iter+1);
  	}
--
- 	printf("\r0x%08x: checking...", (unsigned)(ofs + memregion.offset));
  
- 	/* Compared written data with read data.
+-	print_stats(nr_passes, length);
++	print_stats(nr_iterations, length);
+ 
+ 	ret = close(fd);
+ 	if (ret < 0) {
+@@ -366,7 +366,7 @@ static const __maybe_unused char cmd_nandtest_help[] =
+ 		"  -t,	Really do a nandtest on device.\n"
+ 		"  -m,	Mark blocks bad if they appear so.\n"
+ 		"  -s	<seed>,	Supply random seed.\n"
+-		"  -p	<passes>, Number of passes.\n"
++		"  -i	<iterations>, Number of iterations.\n"
+ 		"  -o	<offset>, Start offset on flash.\n"
+ 		"  -l	<length>, Length of flash to test.\n";
+ 
 -- 
 1.7.12.4
 
