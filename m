@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQYiG-0004F9-H8
- for barebox@lists.infradead.org; Tue, 23 Oct 2012 07:15:45 +0000
-Date: Tue, 23 Oct 2012 09:15:42 +0200
+ id 1TQa2r-0005Ai-6L
+ for barebox@lists.infradead.org; Tue, 23 Oct 2012 08:41:06 +0000
+Date: Tue, 23 Oct 2012 10:40:58 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121023071542.GM27665@pengutronix.de>
-References: <CA+pW49pE4oHFFC4=8UzDm+KTfYVVKWGzcmUT6n+Sza2HkeUL-A@mail.gmail.com>
+Message-ID: <20121023084058.GO27665@pengutronix.de>
+References: <1350478678-28500-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CA+pW49pE4oHFFC4=8UzDm+KTfYVVKWGzcmUT6n+Sza2HkeUL-A@mail.gmail.com>
+In-Reply-To: <1350478678-28500-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +22,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: How to flash ubi image from barebox
-To: Madhu koriginja <madhava.koriginja@gmail.com>
+Subject: Re: [PATCH 1/1] spi: move the depends on SPI to if SPI and keep
+ config alphanum ordered
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Oct 17, 2012 at 04:41:59PM +0530, Madhu koriginja wrote:
-> Hi All,
->              Please help me how to flash the ubi image from barebox.
-> I generated the ubifs image using the mkfs.jffs2,
+On Wed, Oct 17, 2012 at 02:57:58PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
-I assume the above is a typo, right? mkfs.jffs2 won't create ubifs
-images.
-
-> then I created the ubi
-> image using the ubinize. I am trying to flash this ubi image on NAND.
-> 
-> I tried in two ways
-> 1) I flashed the UBI image directly on /dev/nand0.rootfs.bb(erased the
-> partition before flash).
-
-This should generally work.
-
-> 
-> 2) I executed the below commands from barebox
-> #erase /dev/nand0.rootfs.bb
-> #ubiattach /dev/nand0.rootfs
->  After this command it created the /dev/ubi0
-> #ubimkvol /dev/ubi0 rootfs 0
->    After this command it created the /dev/ubi0.rootfs
-
-This should also work.
-
-Do the parameters to mkfs.ubifs/ubinize match your hardware? Some
-parameters are not really obvious.
-
-Also, what hardware are you on?
+Applied, thanks
 
 Sascha
+
+> ---
+>  drivers/spi/Kconfig |   25 ++++++++++++-------------
+>  1 file changed, 12 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index dc17ead..b003290 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -4,10 +4,19 @@ config SPI
+>  	bool "Enable SPI driver support"
+>  	default y
+>  
+> +if SPI
+> +
+> +config DRIVER_SPI_ALTERA
+> +	bool "Altera SPI Master driver"
+> +	depends on NIOS2
+> +
+> +config DRIVER_SPI_ATMEL
+> +	bool "Atmel (AT91) SPI Master driver"
+> +	depends on ARCH_AT91
+> +
+>  config DRIVER_SPI_IMX
+>  	bool "i.MX SPI Master driver"
+>  	depends on ARCH_IMX
+> -	depends on SPI
+>  
+>  config DRIVER_SPI_IMX_0_0
+>  	bool
+> @@ -24,20 +33,10 @@ config DRIVER_SPI_IMX_2_3
+>  	depends on ARCH_IMX51 || ARCH_IMX53 || ARCH_IMX6
+>  	default y
+>  
+> -config DRIVER_SPI_ALTERA
+> -	bool "Altera SPI Master driver"
+> -	depends on NIOS2
+> -	depends on SPI
+> -
+> -config DRIVER_SPI_ATMEL
+> -	bool "Atmel (AT91) SPI Master driver"
+> -	depends on ARCH_AT91
+> -	depends on SPI
+> -
+> -
+>  config DRIVER_SPI_OMAP3
+>  	bool "OMAP3 McSPI Master driver"
+>  	depends on ARCH_OMAP3
+> -	depends on SPI
+> +
+> +endif
+>  
+>  endmenu
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
