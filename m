@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQYZP-00044x-Gu
- for barebox@lists.infradead.org; Tue, 23 Oct 2012 07:06:37 +0000
-Date: Tue, 23 Oct 2012 09:06:32 +0200
+ id 1TQYbx-00048f-CK
+ for barebox@lists.infradead.org; Tue, 23 Oct 2012 07:09:13 +0000
+Date: Tue, 23 Oct 2012 09:09:11 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121023070632.GK27665@pengutronix.de>
-References: <1350935339-11653-1-git-send-email-w.sang@pengutronix.de>
+Message-ID: <20121023070911.GL27665@pengutronix.de>
+References: <20121019020430.GE22418@game.jcrosoft.org>
+ <20121023063503.GG21588@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1350935339-11653-1-git-send-email-w.sang@pengutronix.de>
+In-Reply-To: <20121023063503.GG21588@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,41 +19,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: ubi: cdev: fix build warning for 64-bit
-To: Wolfram Sang <w.sang@pengutronix.de>
+Subject: Re: [PATCH 0/2] pm9g45 fix
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-T24gTW9uLCBPY3QgMjIsIDIwMTIgYXQgMDk6NDg6NTlQTSArMDIwMCwgV29sZnJhbSBTYW5nIHdy
-b3RlOgo+IEdvdCB0aGlzIHdoZW4gY29tcGlsaW5nIHNhbmRib3ggb24gYSA2NC1iaXQgc3lzdGVt
-Ogo+IAo+IGRyaXZlcnMvbXRkL3ViaS9jZGV2LmM6IEluIGZ1bmN0aW9uIOKAmHViaV92b2x1bWVf
-Y2Rldl9yZWFk4oCZOgo+IGRyaXZlcnMvbXRkL3ViaS9jZGV2LmM6MjY6Mjogd2FybmluZzogZm9y
-bWF0IOKAmCVk4oCZIGV4cGVjdHMgYXJndW1lbnQgb2YgdHlwZSDigJhpbnTigJksIGJ1dCBhcmd1
-bWVudCAzIGhhcyB0eXBlIOKAmHNpemVfdOKAmSBbLVdmb3JtYXRdCj4gCj4gU2lnbmVkLW9mZi1i
-eTogV29sZnJhbSBTYW5nIDx3LnNhbmdAcGVuZ3V0cm9uaXguZGU+CgpBcHBsaWVkLCB0aGFua3MK
-ClNhc2NoYQoKPiAtLS0KPiAgZHJpdmVycy9tdGQvdWJpL2NkZXYuYyB8ICAgIDIgKy0KPiAgMSBm
-aWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCj4gCj4gZGlmZiAtLWdp
-dCBhL2RyaXZlcnMvbXRkL3ViaS9jZGV2LmMgYi9kcml2ZXJzL210ZC91YmkvY2Rldi5jCj4gaW5k
-ZXggOTNjMzQ5MS4uNGJjNGE5OSAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL210ZC91YmkvY2Rldi5j
-Cj4gKysrIGIvZHJpdmVycy9tdGQvdWJpL2NkZXYuYwo+IEBAIC0yMyw3ICsyMyw3IEBAIHN0YXRp
-YyBzc2l6ZV90IHViaV92b2x1bWVfY2Rldl9yZWFkKHN0cnVjdCBjZGV2ICpjZGV2LCB2b2lkICpi
-dWYsIHNpemVfdCBzaXplLAo+ICAJbG9mZl90IG9mZnAgPSBvZmZzZXQ7Cj4gIAlpbnQgdXNhYmxl
-X2xlYl9zaXplID0gdm9sLT51c2FibGVfbGViX3NpemU7Cj4gIAo+IC0JcHJpbnRmKCIlczogJWQg
-QCAweCUwOGxseFxuIiwgX19mdW5jX18sIHNpemUsIG9mZnNldCk7Cj4gKwlwcmludGYoIiVzOiAl
-emQgQCAweCUwOGxseFxuIiwgX19mdW5jX18sIHNpemUsIG9mZnNldCk7Cj4gIAo+ICAJbGVuID0g
-c2l6ZSA+IHVzYWJsZV9sZWJfc2l6ZSA/IHVzYWJsZV9sZWJfc2l6ZSA6IHNpemU7Cj4gIAo+IC0t
-IAo+IDEuNy4xMC40Cj4gCj4gCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAg
-ICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIu
-IDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTct
-MCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDog
-ICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
-ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
-Ym94Cg==
+On Tue, Oct 23, 2012 at 08:35:03AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Ping
+
+Relax. I'm still catching up my backlog.
+
+Applied.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
