@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQNzo-000601-CJ
- for barebox@lists.infradead.org; Mon, 22 Oct 2012 19:49:10 +0000
-From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Mon, 22 Oct 2012 21:48:59 +0200
-Message-Id: <1350935339-11653-1-git-send-email-w.sang@pengutronix.de>
+ id 1TQXvP-0002uC-Eu
+ for barebox@lists.infradead.org; Tue, 23 Oct 2012 06:25:16 +0000
+Date: Tue, 23 Oct 2012 08:25:11 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121023062511.GF27665@pengutronix.de>
+References: <1350853147-9233-1-git-send-email-alex.aring@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1350853147-9233-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,30 +18,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: ubi: cdev: fix build warning for 64-bit
-To: barebox@lists.infradead.org
-Cc: Wolfram Sang <w.sang@pengutronix.de>
+Subject: Re: [PATCH] progressbar: use __stringify in format string
+To: Alexander Aring <alex.aring@googlemail.com>
+Cc: barebox@lists.infradead.org
 
-R290IHRoaXMgd2hlbiBjb21waWxpbmcgc2FuZGJveCBvbiBhIDY0LWJpdCBzeXN0ZW06Cgpkcml2
-ZXJzL210ZC91YmkvY2Rldi5jOiBJbiBmdW5jdGlvbiDigJh1Ymlfdm9sdW1lX2NkZXZfcmVhZOKA
-mToKZHJpdmVycy9tdGQvdWJpL2NkZXYuYzoyNjoyOiB3YXJuaW5nOiBmb3JtYXQg4oCYJWTigJkg
-ZXhwZWN0cyBhcmd1bWVudCBvZiB0eXBlIOKAmGludOKAmSwgYnV0IGFyZ3VtZW50IDMgaGFzIHR5
-cGUg4oCYc2l6ZV904oCZIFstV2Zvcm1hdF0KClNpZ25lZC1vZmYtYnk6IFdvbGZyYW0gU2FuZyA8
-dy5zYW5nQHBlbmd1dHJvbml4LmRlPgotLS0KIGRyaXZlcnMvbXRkL3ViaS9jZGV2LmMgfCAgICAy
-ICstCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYg
-LS1naXQgYS9kcml2ZXJzL210ZC91YmkvY2Rldi5jIGIvZHJpdmVycy9tdGQvdWJpL2NkZXYuYwpp
-bmRleCA5M2MzNDkxLi40YmM0YTk5IDEwMDY0NAotLS0gYS9kcml2ZXJzL210ZC91YmkvY2Rldi5j
-CisrKyBiL2RyaXZlcnMvbXRkL3ViaS9jZGV2LmMKQEAgLTIzLDcgKzIzLDcgQEAgc3RhdGljIHNz
-aXplX3QgdWJpX3ZvbHVtZV9jZGV2X3JlYWQoc3RydWN0IGNkZXYgKmNkZXYsIHZvaWQgKmJ1Ziwg
-c2l6ZV90IHNpemUsCiAJbG9mZl90IG9mZnAgPSBvZmZzZXQ7CiAJaW50IHVzYWJsZV9sZWJfc2l6
-ZSA9IHZvbC0+dXNhYmxlX2xlYl9zaXplOwogCi0JcHJpbnRmKCIlczogJWQgQCAweCUwOGxseFxu
-IiwgX19mdW5jX18sIHNpemUsIG9mZnNldCk7CisJcHJpbnRmKCIlczogJXpkIEAgMHglMDhsbHhc
-biIsIF9fZnVuY19fLCBzaXplLCBvZmZzZXQpOwogCiAJbGVuID0gc2l6ZSA+IHVzYWJsZV9sZWJf
-c2l6ZSA/IHVzYWJsZV9sZWJfc2l6ZSA6IHNpemU7CiAKLS0gCjEuNy4xMC40CgoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
-c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Sun, Oct 21, 2012 at 10:59:06PM +0200, Alexander Aring wrote:
+> Use stringify in format string for HASH_PER_LINE.
+> 
+> Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+
+Applied, thanks.
+
+Sascha
+
+> ---
+>  lib/show_progress.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/show_progress.c b/lib/show_progress.c
+> index d958a44..bc067ea 100644
+> --- a/lib/show_progress.c
+> +++ b/lib/show_progress.c
+> @@ -20,6 +20,7 @@
+>  #include <common.h>
+>  #include <progress.h>
+>  #include <asm-generic/div64.h>
+> +#include <linux/stringify.h>
+>  
+>  #define HASHES_PER_LINE	65
+>  
+> @@ -56,7 +57,7 @@ void init_progression_bar(int max)
+>  	progress_max = max;
+>  	spin = 0;
+>  	if (progress_max)
+> -		printf("\t[%65s]\r\t[", "");
+> +		printf("\t[%"__stringify(HASHES_PER_LINE)"s]\r\t[", "");
+>  	else
+>  		printf("\t");
+>  }
+> -- 
+> 1.7.12.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
