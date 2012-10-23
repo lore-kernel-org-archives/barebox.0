@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQYbx-00048f-CK
- for barebox@lists.infradead.org; Tue, 23 Oct 2012 07:09:13 +0000
-Date: Tue, 23 Oct 2012 09:09:11 +0200
+ id 1TQYiG-0004F9-H8
+ for barebox@lists.infradead.org; Tue, 23 Oct 2012 07:15:45 +0000
+Date: Tue, 23 Oct 2012 09:15:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121023070911.GL27665@pengutronix.de>
-References: <20121019020430.GE22418@game.jcrosoft.org>
- <20121023063503.GG21588@game.jcrosoft.org>
+Message-ID: <20121023071542.GM27665@pengutronix.de>
+References: <CA+pW49pE4oHFFC4=8UzDm+KTfYVVKWGzcmUT6n+Sza2HkeUL-A@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121023063503.GG21588@game.jcrosoft.org>
+In-Reply-To: <CA+pW49pE4oHFFC4=8UzDm+KTfYVVKWGzcmUT6n+Sza2HkeUL-A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,19 +22,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] pm9g45 fix
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: How to flash ubi image from barebox
+To: Madhu koriginja <madhava.koriginja@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 23, 2012 at 08:35:03AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Ping
+On Wed, Oct 17, 2012 at 04:41:59PM +0530, Madhu koriginja wrote:
+> Hi All,
+>              Please help me how to flash the ubi image from barebox.
+> I generated the ubifs image using the mkfs.jffs2,
 
-Relax. I'm still catching up my backlog.
+I assume the above is a typo, right? mkfs.jffs2 won't create ubifs
+images.
 
-Applied.
+> then I created the ubi
+> image using the ubinize. I am trying to flash this ubi image on NAND.
+> 
+> I tried in two ways
+> 1) I flashed the UBI image directly on /dev/nand0.rootfs.bb(erased the
+> partition before flash).
+
+This should generally work.
+
+> 
+> 2) I executed the below commands from barebox
+> #erase /dev/nand0.rootfs.bb
+> #ubiattach /dev/nand0.rootfs
+>  After this command it created the /dev/ubi0
+> #ubimkvol /dev/ubi0 rootfs 0
+>    After this command it created the /dev/ubi0.rootfs
+
+This should also work.
+
+Do the parameters to mkfs.ubifs/ubinize match your hardware? Some
+parameters are not really obvious.
+
+Also, what hardware are you on?
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
