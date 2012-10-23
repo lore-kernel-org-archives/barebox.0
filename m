@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQa68-0006Qe-Gg
- for barebox@lists.infradead.org; Tue, 23 Oct 2012 08:44:30 +0000
-Date: Tue, 23 Oct 2012 10:44:26 +0200
+ id 1TQaCk-0007kH-3e
+ for barebox@lists.infradead.org; Tue, 23 Oct 2012 08:51:18 +0000
+Date: Tue, 23 Oct 2012 10:51:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121023084426.GP27665@pengutronix.de>
-References: <20121017130320.GF30038@game.jcrosoft.org>
+Message-ID: <20121023085116.GQ27665@pengutronix.de>
+References: <20121022160341.GF21588@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121017130320.GF30038@game.jcrosoft.org>
+In-Reply-To: <20121022160341.GF21588@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,20 +22,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] allow to use named resources
+Subject: Re: [PATCH 0/3] introduce command abi version
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Oct 17, 2012 at 03:03:20PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Mon, Oct 22, 2012 at 06:03:41PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > Hi,
 > 
-> 	add helper to use named resources and use it on nomadik
+> 	This will allow to detect command incompability between different
+> 	version of barebox
 
-Do we need this? devicetree does not have named resources, so with
-devicetree support we are back to some arbitrary numbered resource
-anyway.
+Generally a good move. I want to it some more time to apply it though
+as this is a significant change.
+Nevertheless some comments inline.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
