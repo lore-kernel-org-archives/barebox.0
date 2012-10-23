@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo3.mail-out.ovh.net ([188.165.41.191]
+Received: from 3.mo3.mail-out.ovh.net ([46.105.44.175]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TQbfL-00023L-6F
- for barebox@lists.infradead.org; Tue, 23 Oct 2012 10:24:55 +0000
+ id 1TQbko-0003Ct-L4
+ for barebox@lists.infradead.org; Tue, 23 Oct 2012 10:30:35 +0000
 Received: from mail622.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 42609FFC631
- for <barebox@lists.infradead.org>; Tue, 23 Oct 2012 12:34:36 +0200 (CEST)
-Date: Tue, 23 Oct 2012 12:22:40 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 532B5FFC784
+ for <barebox@lists.infradead.org>; Tue, 23 Oct 2012 12:40:15 +0200 (CEST)
+Date: Tue, 23 Oct 2012 12:28:19 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121023102240.GI21588@game.jcrosoft.org>
-References: <20121017130320.GF30038@game.jcrosoft.org>
- <20121023084426.GP27665@pengutronix.de>
+Message-ID: <20121023102819.GJ21588@game.jcrosoft.org>
+References: <20121022160341.GF21588@game.jcrosoft.org>
+ <20121023085116.GQ27665@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121023084426.GP27665@pengutronix.de>
+In-Reply-To: <20121023085116.GQ27665@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,49 +27,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] allow to use named resources
+Subject: Re: [PATCH 0/3] introduce command abi version
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 10:44 Tue 23 Oct     , Sascha Hauer wrote:
-> On Wed, Oct 17, 2012 at 03:03:20PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On 10:51 Tue 23 Oct     , Sascha Hauer wrote:
+> On Mon, Oct 22, 2012 at 06:03:41PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > > Hi,
 > > 
-> > 	add helper to use named resources and use it on nomadik
+> > 	This will allow to detect command incompability between different
+> > 	version of barebox
 > 
-> Do we need this? devicetree does not have named resources, so with
-> devicetree support we are back to some arbitrary numbered resource
-> anyway.
-> 
-devicetree does have it I use on spear and I'm going to ues on at91 too
+> Generally a good move. I want to it some more time to apply it though
+> as this is a significant change.
+> Nevertheless some comments inline.
+I'm going to resend the boot sequence and want to bump the command ABI
 
-for spear13xx.dtsi
+I was think to use a major minor to report minor command udpate such as nand
+test which is not critical as mount which need major bump
 
-                fsmc: flash@b0000000 {
-                        compatible = "st,spear600-fsmc-nand";
-                        #address-cells = <1>;
-                        #size-cells = <1>;
-                        reg = <0xb0000000 0x1000        /* FSMC Register */
-                               0xb0800000 0x0010>;      /* NAND Base */
-                        reg-names = "fsmc_regs", "nand_data";
-                        interrupts = <0 20 0x4
-                                      0 21 0x4
-                                      0 22 0x4
-                                      0 23 0x4>;
-                        st,ale-off = <0x20000>;
-                        st,cle-off = <0x10000>;
-                        status = "disabled";
-                };
+one a issue I get is how to describe env compatible with multiple version of
+barebox and choose if env is more recent than the current barebox do not
+udpate it
 
 Best Regards,
 J.
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
