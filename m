@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQY8f-0003SC-75
- for barebox@lists.infradead.org; Tue, 23 Oct 2012 06:38:58 +0000
-Date: Tue, 23 Oct 2012 08:38:51 +0200
+ id 1TQYXp-00041N-Fd
+ for barebox@lists.infradead.org; Tue, 23 Oct 2012 07:04:58 +0000
+Date: Tue, 23 Oct 2012 09:04:55 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121023063851.GI27665@pengutronix.de>
-References: <1350318405-20081-1-git-send-email-shc_work@mail.ru>
- <1350318405-20081-2-git-send-email-shc_work@mail.ru>
- <20121015175852.GC5803@game.jcrosoft.org>
- <20121015215839.GR27665@pengutronix.de>
- <20121016080801.GF5803@game.jcrosoft.org>
- <20121016213956.GH27665@pengutronix.de>
- <20121020175058.7a9270e287ea94ed5df84925@mail.ru>
+Message-ID: <20121023070455.GJ27665@pengutronix.de>
+References: <1350926048-12681-1-git-send-email-w.sang@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121020175058.7a9270e287ea94ed5df84925@mail.ru>
+In-Reply-To: <1350926048-12681-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,170 +22,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/3] ARM: clps711x: Add serial driver
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] common: Makefile: 'cd' command could lead to broken
+ default_env.h
+To: Wolfram Sang <w.sang@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, Oct 20, 2012 at 05:50:58PM +0400, Alexander Shiyan wrote:
-> On Tue, 16 Oct 2012 23:39:56 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> ...
-> > > > We already had this. This SoC has a very strange register layout. The
-> > > > registers for the UARTs are spread around the SoC and the registers
-> > > > are not even exclusively used for the UARTs. They have bits which are
-> > > > also used for the timer and other stuff.
-> > > use the device id to select the register is wrong
-> > > 
-> > > we need to pass the register via resource (without request) or platform data
-> > > > 
-> > > > > > +static int clps711x_tstc(struct console_device *cdev)
-> > > > > > +{
-> > > > > > +	return !(readl(SYSFLG(cdev->dev->id)) & SYSFLG_URXFE);
-> > > > > factorise those pull status as
-> > > > > 
-> > > > > status int xxx(data, mask) {}
-> > > > 
-> > > > I don'r understand this. This is a single register read, there's not
-> > > > much to factorize and the code is easy to read.
-> > > he use the code at a least 2 place
-> > 
-> > Testing for a bit like above is done a thousand times all around the
-> > kernel and barebox. There is nothing to factorize. The way Alexander did
-> > it is perfectly fine.
-> Please look on new version below. If it looks OK, I will make complete v2 patch.
-> Thanks!
-> 
-> /*
->  * Simple CLPS711X serial driver
->  *
->  * (C) Copyright 2012 Alexander Shiyan <shc_work@mail.ru>
->  *
->  * This program is free software; you can redistribute it and/or
->  * modify it under the terms of the GNU General Public License as
->  * published by the Free Software Foundation; either version 2 of
->  * the License, or (at your option) any later version.
->  */
-> 
-> #include <common.h>
-> #include <malloc.h>
-> #include <init.h>
-> #include <io.h>
-> #include <linux/clk.h>
-> 
-> #include <mach/clps711x.h>
-> 
-> struct clps711x_uart {
-> 	void __iomem		*UBRLCR;
-> 	void __iomem		*SYSCON;
-> 	void __iomem		*SYSFLG;
-> 	void __iomem		*UARTDR;
-> 	struct clk		*uart_clk;
-> 	struct console_device	cdev;
-> };
-> 
-> static int clps711x_setbaudrate(struct console_device *cdev, int baudrate)
-> {
-> 	struct clps711x_uart *s = cdev->dev->priv;
-> 	int divisor;
-> 	u32 tmp;
-> 
-> 	divisor = (clk_get_rate(s->uart_clk) / 16) / baudrate;
-> 
-> 	tmp = readl(s->UBRLCR) & ~UBRLCR_BAUD_MASK;
-> 	tmp |= divisor - 1;
-> 	writel(tmp, s->UBRLCR);
-> 
-> 	return 0;
-> }
-> 
-> static void clps711x_init_port(struct console_device *cdev)
-> {
-> 	struct clps711x_uart *s = cdev->dev->priv;
-> 	u32 tmp;
-> 
-> 	/* Disable the UART */
-> 	writel(readl(s->SYSCON) & ~SYSCON_UARTEN, s->SYSCON);
-> 
-> 	/* Setup Line Control Register */
-> 	tmp = readl(s->UBRLCR) & UBRLCR_BAUD_MASK;
-> 	tmp |= UBRLCR_FIFOEN | UBRLCR_WRDLEN8; /* FIFO on, 8N1 mode */
-> 	writel(tmp, s->UBRLCR);
-> 
-> 	/* Set default baudrate on initialization */
-> 	clps711x_setbaudrate(cdev, CONFIG_BAUDRATE);
-> 
-> 	/* Enable the UART */
-> 	writel(readl(s->SYSCON) | SYSCON_UARTEN, s->SYSCON);
-> }
-> 
-> static void clps711x_putc(struct console_device *cdev, char c)
-> {
-> 	struct clps711x_uart *s = cdev->dev->priv;
-> 
-> 	/* Wait until there is space in the FIFO */
-> 	while (readl(s->SYSFLG) & SYSFLG_UTXFF)
-> 		barrier();
-> 
-> 	/* Send the character */
-> 	writew(c, s->UARTDR);
-> }
-> 
-> static int clps711x_getc(struct console_device *cdev)
-> {
-> 	struct clps711x_uart *s = cdev->dev->priv;
-> 	u16 data;
-> 
-> 	/* Wait until there is data in the FIFO */
-> 	while (readl(s->SYSFLG) & SYSFLG_URXFE)
-> 		barrier();
-> 
-> 	data = readw(s->UARTDR);
-> 
-> 	/* Check for an error flag */
-> 	if (data & (UARTDR_FRMERR | UARTDR_PARERR | UARTDR_OVERR))
-> 		return -1;
-> 
-> 	return (int)data;
-> }
-> 
-> static int clps711x_tstc(struct console_device *cdev)
-> {
-> 	struct clps711x_uart *s = cdev->dev->priv;
-> 
-> 	return !(readl(s->SYSFLG) & SYSFLG_URXFE);
-> }
-> 
-> static void clps711x_flush(struct console_device *cdev)
-> {
-> 	struct clps711x_uart *s = cdev->dev->priv;
-> 
-> 	while (readl(s->SYSFLG) & SYSFLG_UBUSY)
-> 		barrier();
-> }
-> 
-> static int clps711x_probe(struct device_d *dev)
-> {
-> 	struct clps711x_uart *s;
-> 
-> 	BUG_ON(dev->num_resources != 4);
-> 
-> 	s = xzalloc(sizeof(struct clps711x_uart));
-> 	s->uart_clk = clk_get(dev, NULL);
-> 	BUG_ON(!s->uart_clk);
+On Mon, Oct 22, 2012 at 07:14:08PM +0200, Wolfram Sang wrote:
+> Depending on the user's settings (CDPATH), 'cd' may print out the
+> directory which was changed to. This causes broken barebox_default_env.h
+> to be generated. Ignore the cd printout.
 
-clk_get returns error pointers, you have to use IS_ERR() to test for
-errors.
-
-> 
-> 	s->UBRLCR = dev_get_mem_region(dev, 0);
-> 	s->SYSCON = dev_get_mem_region(dev, 1);
-> 	s->SYSFLG = dev_get_mem_region(dev, 2);
-> 	s->UARTDR = dev_get_mem_region(dev, 3);
-
-From my point of view this looks ok.
+I didn't know such a thing exists. This can cause unexpected behaviour
+of 'cd'. Wouldn't it be better to completely disable it by emptying
+CDPATH in scripts?
 
 Sascha
+
+
+> 
+> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+> ---
+>  common/Makefile |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/common/Makefile b/common/Makefile
+> index 132bd06..f2c8a2e 100644
+> --- a/common/Makefile
+> +++ b/common/Makefile
+> @@ -99,7 +99,7 @@ $(obj)/barebox_default_env.lzo: $(obj)/barebox_default_env FORCE
+>  	$(call if_changed,lzo)
+>  
+>  quiet_cmd_env_h = ENVH    $@
+> -cmd_env_h = cat $< | (cd $(obj) && $(objtree)/scripts/bin2c default_environment) > $@; \
+> +cmd_env_h = cat $< | (cd $(obj) > /dev/null && $(objtree)/scripts/bin2c default_environment) > $@; \
+>  	echo "const int default_environment_uncompress_size=`stat -c%s $(obj)/barebox_default_env`;" >> $@
+>  
+>  $(obj)/barebox_default_env.h: $(obj)/barebox_default_env$(barebox_default_env_comp) FORCE
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
