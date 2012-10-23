@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f49.google.com ([209.85.214.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQaJU-0008Vk-9u
- for barebox@lists.infradead.org; Tue, 23 Oct 2012 08:58:17 +0000
-Received: by mail-bk0-f49.google.com with SMTP id j4so1143291bkw.36
- for <barebox@lists.infradead.org>; Tue, 23 Oct 2012 01:58:12 -0700 (PDT)
-From: Alexander Aring <alex.aring@googlemail.com>
-Date: Tue, 23 Oct 2012 11:00:00 +0200
-Message-Id: <1350982800-11777-1-git-send-email-alex.aring@gmail.com>
+ id 1TQaKJ-0000JT-Vm
+ for barebox@lists.infradead.org; Tue, 23 Oct 2012 08:59:08 +0000
+Date: Tue, 23 Oct 2012 10:59:06 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121023085906.GR27665@pengutronix.de>
+References: <20121022160341.GF21588@game.jcrosoft.org>
+ <1350922048-25699-1-git-send-email-plagnioj@jcrosoft.com>
+ <1350922048-25699-2-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1350922048-25699-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,36 +20,118 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] devfs-core: add writesize in mtd partition ioctl
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/3] envfs: add command_abi_version support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Add writesize in mtd partition MEMGETINFO ioctl.
+On Mon, Oct 22, 2012 at 06:07:27PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> allow to store the command abi version
+> This will allow to detect incompatibility
+> 
+> Increase envfs minor to 1
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  commands/loadenv.c    |   11 ++++++++++-
+>  common/environment.c  |    7 ++++++-
+>  common/startup.c      |    4 ++--
+>  include/envfs.h       |    4 ++--
+>  include/environment.h |   13 ++++++++++++-
+>  scripts/bareboxenv.c  |    9 ++++++++-
+>  6 files changed, 40 insertions(+), 8 deletions(-)
+> 
+> diff --git a/commands/loadenv.c b/commands/loadenv.c
+> index 5bf1740..c52ee4b 100644
+> --- a/commands/loadenv.c
+> +++ b/commands/loadenv.c
+> @@ -26,6 +26,9 @@
+>  
+>  static int do_loadenv(int argc, char *argv[])
+>  {
+> +	int ret;
+> +	uint16_t command_abi_version;
+> +
+>  	char *filename, *dirname;
+>  
+>  	if (argc < 3)
+> @@ -37,7 +40,13 @@ static int do_loadenv(int argc, char *argv[])
+>  	else
+>  		filename = argv[1];
+>  	printf("loading environment from %s\n", filename);
+> -	return envfs_load(filename, dirname);
+> +	ret = envfs_load(filename, dirname, &command_abi_version);
+> +
+> +	if (command_abi_version < COMMAND_ABI_VERSION)
 
-Signed-off-by: Alexander Aring <alex.aring@gmail.com>
----
- fs/devfs-core.c | 1 +
- 1 file changed, 1 insertion(+)
+'!=' instead of '<'? The incompatibility is often in both directions.
 
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 2788fe7..0d2f75a 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -136,6 +136,7 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
- 			user->flags	= cdev->mtd->flags;
- 			user->size	= cdev->mtd->size;
- 			user->erasesize	= cdev->mtd->erasesize;
-+			user->writesize	= cdev->mtd->writesize;
- 			user->oobsize	= cdev->mtd->oobsize;
- 			user->mtd	= cdev->mtd;
- 			/* The below fields are obsolete */
+We may have to introduce min/max, I'm not sure on that.
+
+
+> -int envfs_load(char *filename, char *dir)
+> +int envfs_load(char *filename, char *dir, uint16_t *command_abi_version)
+>  {
+>  	struct envfs_super super;
+>  	void *buf = NULL, *buf_free = NULL;
+> @@ -235,6 +236,7 @@ int envfs_load(char *filename, char *dir)
+>  		goto out;
+>  	}
+>  
+> +
+>  	if ( ENVFS_32(super.magic) != ENVFS_MAGIC) {
+>  		printf("envfs: wrong magic on %s\n", filename);
+>  		ret = -EIO;
+
+Drop this hunk.
+
+> diff --git a/scripts/bareboxenv.c b/scripts/bareboxenv.c
+> index f44a1f8..6bd23e8 100644
+> --- a/scripts/bareboxenv.c
+> +++ b/scripts/bareboxenv.c
+> @@ -115,6 +115,7 @@ char *concat_subpath_file(const char *path, const char *f)
+>  }
+>  
+>  #include "../lib/recursive_action.c"
+> +#include "../include/command_abi.h"
+>  #include "../include/envfs.h"
+>  #include "../crypto/crc32.c"
+>  #include "../lib/make_directory.c"
+> @@ -189,14 +190,20 @@ int main(int argc, char *argv[])
+>  	}
+>  
+>  	if (load) {
+> +		uint16_t command_abi_version;
+> +
+>  		if (verbose)
+>  			printf("loading env from file %s to %s\n", filename, dirname);
+> -		envfs_load(filename, dirname);
+> +		envfs_load(filename, dirname, &command_abi_version);
+> +		if (verbose)
+> +			printf("with command_abi_version = %u\n", command_abi_version);
+>  	}
+>  	if (save) {
+>  		if (verbose)
+>  			printf("saving contents of %s to file %s\n", dirname, filename);
+>  		envfs_save(filename, dirname);
+> +		if (verbose)
+> +			printf("with command_abi_version = %u\n", COMMAND_ABI_VERSION);
+>  	}
+
+For testing purposes or for generating an environment for another
+barebox version it would be useful to be able to specify the ABI version
+from the command line.
+
+Sascha
+
 -- 
-1.8.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
