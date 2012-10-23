@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQa2r-0005Ai-6L
- for barebox@lists.infradead.org; Tue, 23 Oct 2012 08:41:06 +0000
-Date: Tue, 23 Oct 2012 10:40:58 +0200
+ id 1TQa68-0006Qe-Gg
+ for barebox@lists.infradead.org; Tue, 23 Oct 2012 08:44:30 +0000
+Date: Tue, 23 Oct 2012 10:44:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121023084058.GO27665@pengutronix.de>
-References: <1350478678-28500-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20121023084426.GP27665@pengutronix.de>
+References: <20121017130320.GF30038@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1350478678-28500-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20121017130320.GF30038@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,79 +22,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] spi: move the depends on SPI to if SPI and keep
- config alphanum ordered
+Subject: Re: [PATCH 0/2] allow to use named resources
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Oct 17, 2012 at 02:57:58PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+On Wed, Oct 17, 2012 at 03:03:20PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
+> 
+> 	add helper to use named resources and use it on nomadik
 
-Applied, thanks
+Do we need this? devicetree does not have named resources, so with
+devicetree support we are back to some arbitrary numbered resource
+anyway.
 
 Sascha
-
-> ---
->  drivers/spi/Kconfig |   25 ++++++++++++-------------
->  1 file changed, 12 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index dc17ead..b003290 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -4,10 +4,19 @@ config SPI
->  	bool "Enable SPI driver support"
->  	default y
->  
-> +if SPI
-> +
-> +config DRIVER_SPI_ALTERA
-> +	bool "Altera SPI Master driver"
-> +	depends on NIOS2
-> +
-> +config DRIVER_SPI_ATMEL
-> +	bool "Atmel (AT91) SPI Master driver"
-> +	depends on ARCH_AT91
-> +
->  config DRIVER_SPI_IMX
->  	bool "i.MX SPI Master driver"
->  	depends on ARCH_IMX
-> -	depends on SPI
->  
->  config DRIVER_SPI_IMX_0_0
->  	bool
-> @@ -24,20 +33,10 @@ config DRIVER_SPI_IMX_2_3
->  	depends on ARCH_IMX51 || ARCH_IMX53 || ARCH_IMX6
->  	default y
->  
-> -config DRIVER_SPI_ALTERA
-> -	bool "Altera SPI Master driver"
-> -	depends on NIOS2
-> -	depends on SPI
-> -
-> -config DRIVER_SPI_ATMEL
-> -	bool "Atmel (AT91) SPI Master driver"
-> -	depends on ARCH_AT91
-> -	depends on SPI
-> -
-> -
->  config DRIVER_SPI_OMAP3
->  	bool "OMAP3 McSPI Master driver"
->  	depends on ARCH_OMAP3
-> -	depends on SPI
-> +
-> +endif
->  
->  endmenu
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
