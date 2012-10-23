@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQdze-00022y-53
- for barebox@lists.infradead.org; Tue, 23 Oct 2012 12:54:03 +0000
-Date: Tue, 23 Oct 2012 14:54:00 +0200
+ id 1TQe2T-0002Oj-HR
+ for barebox@lists.infradead.org; Tue, 23 Oct 2012 12:56:58 +0000
+Date: Tue, 23 Oct 2012 14:56:54 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121023125400.GS27665@pengutronix.de>
-References: <1350926048-12681-1-git-send-email-w.sang@pengutronix.de>
- <20121023070455.GJ27665@pengutronix.de>
- <20121023112517.GA21425@pengutronix.de>
+Message-ID: <20121023125654.GT27665@pengutronix.de>
+References: <20121022160341.GF21588@game.jcrosoft.org>
+ <1350922048-25699-1-git-send-email-plagnioj@jcrosoft.com>
+ <1350922048-25699-2-git-send-email-plagnioj@jcrosoft.com>
+ <20121023085906.GR27665@pengutronix.de>
+ <20121023102059.GH21588@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121023112517.GA21425@pengutronix.de>
+In-Reply-To: <20121023102059.GH21588@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,27 +26,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] common: Makefile: 'cd' command could lead to broken
- default_env.h
-To: Wolfram Sang <w.sang@pengutronix.de>
+Subject: Re: [PATCH 2/3] envfs: add command_abi_version support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 23, 2012 at 01:25:17PM +0200, Wolfram Sang wrote:
-> On Tue, Oct 23, 2012 at 09:04:55AM +0200, Sascha Hauer wrote:
-> > On Mon, Oct 22, 2012 at 07:14:08PM +0200, Wolfram Sang wrote:
-> > > Depending on the user's settings (CDPATH), 'cd' may print out the
-> > > directory which was changed to. This causes broken barebox_default_env.h
-> > > to be generated. Ignore the cd printout.
+On Tue, Oct 23, 2012 at 12:20:59PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > > 
-> > I didn't know such a thing exists. This can cause unexpected behaviour
-> > of 'cd'. Wouldn't it be better to completely disable it by emptying
-> > CDPATH in scripts?
+> > We may have to introduce min/max, I'm not sure on that.
+> no if your env is compatible with more recent but back compatible too
 > 
-> Yes, probably. You or me? :)
+> as you do this with the example of mount update I did recently
+> 
+> if [ $command_abi_version -lt 1 ]
+> then
+> 	mount /dev/disk0.0 fat /mnt
+> else
+> 	mount /dev/disk0.0 /mnt
+> fi
 
-If you ask... you ;)
+That is going to be *very* painful.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
