@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQvsq-00058X-6B
- for barebox@lists.infradead.org; Wed, 24 Oct 2012 08:00:14 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1TQvso-0000pu-Ib
- for barebox@lists.infradead.org; Wed, 24 Oct 2012 10:00:10 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1TQvso-0005vp-H9
- for barebox@lists.infradead.org; Wed, 24 Oct 2012 10:00:10 +0200
+ id 1TQvsy-0005Ap-0t
+ for barebox@lists.infradead.org; Wed, 24 Oct 2012 08:00:20 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 24 Oct 2012 10:00:07 +0200
-Message-Id: <1351065609-22101-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 24 Oct 2012 10:00:08 +0200
+Message-Id: <1351065609-22101-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1351065609-22101-1-git-send-email-s.hauer@pengutronix.de>
+References: <1351065609-22101-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,21 +21,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] tftp fixes
+Subject: [PATCH 1/2] fs tftp: Only request a block once
 To: barebox@lists.infradead.org
 
-Two fixes. One rather cosmetic, but the second is important for
-the reliability of the tftp fs support.
+tftp_send is called often. Each time, when in STATE_RDATA, a packet
+is requested from the tftp server, even if we requested the same packet
+already.
+Stop this by tracking which packet we requested.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/tftp.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-----------------------------------------------------------------
-Sascha Hauer (2):
-      fs tftp: Only request a block once
-      fs tftp: Fix possible fifo overflow
-
- fs/tftp.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+diff --git a/fs/tftp.c b/fs/tftp.c
+index ae57f95..d89272e 100644
+--- a/fs/tftp.c
++++ b/fs/tftp.c
+@@ -80,6 +80,7 @@ struct file_priv {
+ 	struct kfifo *fifo;
+ 	void *buf;
+ 	int blocksize;
++	int block_requested;
+ };
+ 
+ struct tftp_priv {
+@@ -152,11 +153,14 @@ static int tftp_send(struct file_priv *priv)
+ 		break;
+ 
+ 	case STATE_RDATA:
++		if (priv->block == priv->block_requested)
++			return 0;
+ 	case STATE_OACK:
+ 		xp = pkt;
+ 		s = (uint16_t *)pkt;
+ 		*s++ = htons(TFTP_ACK);
+ 		*s++ = htons(priv->block);
++		priv->block_requested = priv->block;
+ 		pkt = (unsigned char *)s;
+ 		len = pkt - xp;
+ 		break;
+@@ -199,6 +203,7 @@ static int tftp_poll(struct file_priv *priv)
+ 	if (is_timeout(priv->resend_timeout, TFTP_RESEND_TIMEOUT)) {
+ 		printf("T ");
+ 		priv->resend_timeout = get_time_ns();
++		priv->block_requested = -1;
+ 		return TFTP_ERR_RESEND;
+ 	}
+ 
+@@ -392,6 +397,7 @@ static struct file_priv *tftp_do_open(struct device_d *dev,
+ 	priv->err = -EINVAL;
+ 	priv->filename = filename;
+ 	priv->blocksize = TFTP_BLOCK_SIZE;
++	priv->block_requested = -1;
+ 
+ 	priv->fifo = kfifo_alloc(4096);
+ 	if (!priv->fifo) {
+-- 
+1.7.10.4
 
 
 _______________________________________________
