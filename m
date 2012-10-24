@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.mo3.mail-out.ovh.net ([188.165.33.202]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TQw1I-00073W-Am
- for barebox@lists.infradead.org; Wed, 24 Oct 2012 08:08:57 +0000
-Received: from mail417.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 02ABEFFBF83
- for <barebox@lists.infradead.org>; Wed, 24 Oct 2012 10:18:40 +0200 (CEST)
-Date: Wed, 24 Oct 2012 10:06:41 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121024080641.GM21588@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TQweu-0003Jj-1w
+ for barebox@lists.infradead.org; Wed, 24 Oct 2012 08:49:54 +0000
+Date: Wed, 24 Oct 2012 10:49:49 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121024084949.GX27665@pengutronix.de>
 References: <1351064903-17330-1-git-send-email-s.hauer@pengutronix.de>
+ <20121024080641.GM21588@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1351064903-17330-1-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <20121024080641.GM21588@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,43 +24,33 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] defenv-2: set username to 'none'
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 09:48 Wed 24 Oct     , Sascha Hauer wrote:
-> The current 'sha' setting, though admittedly very convenient for me,
-> was never intended to be in mainline.
-prefer empty
+On Wed, Oct 24, 2012 at 10:06:41AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 09:48 Wed 24 Oct     , Sascha Hauer wrote:
+> > The current 'sha' setting, though admittedly very convenient for me,
+> > was never intended to be in mainline.
+> prefer empty
 
-Best Regards,
-J.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  defaultenv-2/base/init/general |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/defaultenv-2/base/init/general b/defaultenv-2/base/init/general
-> index 98a92d1..1de06ce 100644
-> --- a/defaultenv-2/base/init/general
-> +++ b/defaultenv-2/base/init/general
-> @@ -6,7 +6,7 @@ if [ "$1" = menu ]; then
->  fi
->  
->  # user (used for network filenames)
-> -global.user=sha
-> +global.user=none
->  
->  # timeout in seconds before the default boot entry is started
->  global.autoboot_timeout=3
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Then the network boot defaults to:
+
+Kernel: -linux-hostname
+
+and nfsroot from:
+
+/home//nfsroot/hostname
+
+none is more obvious...
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
