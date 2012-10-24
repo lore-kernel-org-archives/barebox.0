@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo3.mail-out.ovh.net ([178.32.98.231]
+Received: from 13.mo3.mail-out.ovh.net ([188.165.33.202]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TQw0p-0006uN-ID
- for barebox@lists.infradead.org; Wed, 24 Oct 2012 08:08:30 +0000
+ id 1TQw1I-00073W-Am
+ for barebox@lists.infradead.org; Wed, 24 Oct 2012 08:08:57 +0000
 Received: from mail417.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 3222FFFBFEA
- for <barebox@lists.infradead.org>; Wed, 24 Oct 2012 10:18:09 +0200 (CEST)
-Date: Wed, 24 Oct 2012 10:06:07 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 02ABEFFBF83
+ for <barebox@lists.infradead.org>; Wed, 24 Oct 2012 10:18:40 +0200 (CEST)
+Date: Wed, 24 Oct 2012 10:06:41 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121024080607.GL21588@game.jcrosoft.org>
-References: <20121024074615.GU27665@pengutronix.de>
+Message-ID: <20121024080641.GM21588@game.jcrosoft.org>
+References: <1351064903-17330-1-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121024074615.GU27665@pengutronix.de>
+In-Reply-To: <1351064903-17330-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,37 +26,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: phylib does not wait for link
+Subject: Re: [PATCH] defenv-2: set username to 'none'
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 09:46 Wed 24 Oct     , Sascha Hauer wrote:
-> The current phylib behaviour is unusable for unattended network boot, we
-> need to do something about it.
+On 09:48 Wed 24 Oct     , Sascha Hauer wrote:
+> The current 'sha' setting, though admittedly very convenient for me,
+> was never intended to be in mainline.
+prefer empty
+
+Best Regards,
+J.
 > 
-> We currently have no instance that would wait until a link comes up.
-> This may work for the default-3-seconds-boot-timeout which is enough for
-> most phys, but fails with smaller timeouts.
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  defaultenv-2/base/init/general |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> There are several places in which we could wait for a link to come up, I
-> have no idea which one is the best:
-> 
-> - eth_send
-yes with timeout
-> - phylib
-no
-> - in the protocols (dhcp, ping, ...)
-no too many
-> 
-> Anyway, this deserves fixing before the next release.
-> 
-> Sascha
-> 
+> diff --git a/defaultenv-2/base/init/general b/defaultenv-2/base/init/general
+> index 98a92d1..1de06ce 100644
+> --- a/defaultenv-2/base/init/general
+> +++ b/defaultenv-2/base/init/general
+> @@ -6,7 +6,7 @@ if [ "$1" = menu ]; then
+>  fi
+>  
+>  # user (used for network filenames)
+> -global.user=sha
+> +global.user=none
+>  
+>  # timeout in seconds before the default boot entry is started
+>  global.autoboot_timeout=3
 > -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
