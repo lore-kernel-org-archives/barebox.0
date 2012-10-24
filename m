@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQvsq-00058Z-6C
+ id 1TQvsq-00058X-6B
  for barebox@lists.infradead.org; Wed, 24 Oct 2012 08:00:14 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1TQvso-0000pu-Ib
+ for barebox@lists.infradead.org; Wed, 24 Oct 2012 10:00:10 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1TQvso-0005vp-H9
+ for barebox@lists.infradead.org; Wed, 24 Oct 2012 10:00:10 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 24 Oct 2012 10:00:09 +0200
-Message-Id: <1351065609-22101-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1351065609-22101-1-git-send-email-s.hauer@pengutronix.de>
-References: <1351065609-22101-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
+Date: Wed, 24 Oct 2012 10:00:07 +0200
+Message-Id: <1351065609-22101-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,35 +21,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] fs tftp: Fix possible fifo overflow
+Subject: [PATCH] tftp fixes
 To: barebox@lists.infradead.org
 
-SW4gdGZ0cF9yZWFkIHdlIHNlbmQgYSByZXF1ZXN0IGZvciBhIG5ldyBwYWNrZXQgd2l0aG91dCBj
-aGVja2luZyBpZiB3ZQpoYXZlIGVub3VnaCBzcGFjZSBpbiB0aGUgRklGTy4gVGhpcyBjYW4gbGVh
-ZCB0byBhIEZJRk8gb3ZlcmZsb3cgYW5kIGEKY29ycnVwdCBmaWxlLiBBZGQgYSBjaGVjayBmb3Ig
-aXQuCgpTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+
-ClJlcG9ydGVkLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJv
-bml4LmRlPgpUZXN0ZWQtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVu
-Z3V0cm9uaXguZGU+Ci0tLQogZnMvdGZ0cC5jIHwgICAgNiArKysrKy0KIDEgZmlsZSBjaGFuZ2Vk
-LCA1IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9mcy90ZnRwLmMg
-Yi9mcy90ZnRwLmMKaW5kZXggZDg5MjcyZS4uZGZmNDFlOSAxMDA2NDQKLS0tIGEvZnMvdGZ0cC5j
-CisrKyBiL2ZzL3RmdHAuYwpAQCAtNjIsNiArNjIsNyBAQAogI2RlZmluZSBTVEFURV9ET05FCTgK
-IAogI2RlZmluZSBURlRQX0JMT0NLX1NJWkUJCTUxMgkvKiBkZWZhdWx0IFRGVFAgYmxvY2sgc2l6
-ZSAqLworI2RlZmluZSBURlRQX0ZJRk9fU0laRQkJNDA5NgogCiAjZGVmaW5lIFRGVFBfRVJSX1JF
-U0VORAkxCiAKQEAgLTM5OSw3ICs0MDAsNyBAQCBzdGF0aWMgc3RydWN0IGZpbGVfcHJpdiAqdGZ0
-cF9kb19vcGVuKHN0cnVjdCBkZXZpY2VfZCAqZGV2LAogCXByaXYtPmJsb2Nrc2l6ZSA9IFRGVFBf
-QkxPQ0tfU0laRTsKIAlwcml2LT5ibG9ja19yZXF1ZXN0ZWQgPSAtMTsKIAotCXByaXYtPmZpZm8g
-PSBrZmlmb19hbGxvYyg0MDk2KTsKKwlwcml2LT5maWZvID0ga2ZpZm9fYWxsb2MoVEZUUF9GSUZP
-X1NJWkUpOwogCWlmICghcHJpdi0+ZmlmbykgewogCQlyZXQgPSAtRU5PTUVNOwogCQlnb3RvIG91
-dDsKQEAgLTU1OCw2ICs1NTksOSBAQCBzdGF0aWMgaW50IHRmdHBfcmVhZChzdHJ1Y3QgZGV2aWNl
-X2QgKmRldiwgRklMRSAqZiwgdm9pZCAqYnVmLCBzaXplX3QgaW5zaXplKQogCQkJb3V0c2l6ZSAr
-PSBub3c7CiAJCQlidWYgKz0gbm93OwogCQkJaW5zaXplIC09IG5vdzsKKwkJfQorCisJCWlmIChU
-RlRQX0ZJRk9fU0laRSAtIGtmaWZvX2xlbihwcml2LT5maWZvKSA+PSBwcml2LT5ibG9ja3NpemUp
-IHsKIAkJCXRmdHBfc2VuZChwcml2KTsKIAkJCXRmdHBfdGltZXJfcmVzZXQocHJpdik7CiAJCX0K
-LS0gCjEuNy4xMC40CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
-dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Two fixes. One rather cosmetic, but the second is important for
+the reliability of the tftp fs support.
+
+Sascha
+
+----------------------------------------------------------------
+Sascha Hauer (2):
+      fs tftp: Only request a block once
+      fs tftp: Fix possible fifo overflow
+
+ fs/tftp.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
