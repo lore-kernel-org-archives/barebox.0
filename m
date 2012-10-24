@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TQviu-0004BZ-U6
- for barebox@lists.infradead.org; Wed, 24 Oct 2012 07:49:57 +0000
-Date: Wed, 24 Oct 2012 09:49:55 +0200
+ id 1TQvsq-00058Z-6C
+ for barebox@lists.infradead.org; Wed, 24 Oct 2012 08:00:14 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121024074955.GV27665@pengutronix.de>
-References: <1350982800-11777-1-git-send-email-alex.aring@gmail.com>
+Date: Wed, 24 Oct 2012 10:00:09 +0200
+Message-Id: <1351065609-22101-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1351065609-22101-1-git-send-email-s.hauer@pengutronix.de>
+References: <1351065609-22101-1-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1350982800-11777-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,56 +17,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] devfs-core: add writesize in mtd partition ioctl
-To: Alexander Aring <alex.aring@googlemail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] fs tftp: Fix possible fifo overflow
+To: barebox@lists.infradead.org
 
-On Tue, Oct 23, 2012 at 11:00:00AM +0200, Alexander Aring wrote:
-> Add writesize in mtd partition MEMGETINFO ioctl.
-> 
-> Signed-off-by: Alexander Aring <alex.aring@gmail.com>
-
-Just checked, we already have this one.
-
-Sascha
-
-> ---
->  fs/devfs-core.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-> index 2788fe7..0d2f75a 100644
-> --- a/fs/devfs-core.c
-> +++ b/fs/devfs-core.c
-> @@ -136,6 +136,7 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
->  			user->flags	= cdev->mtd->flags;
->  			user->size	= cdev->mtd->size;
->  			user->erasesize	= cdev->mtd->erasesize;
-> +			user->writesize	= cdev->mtd->writesize;
->  			user->oobsize	= cdev->mtd->oobsize;
->  			user->mtd	= cdev->mtd;
->  			/* The below fields are obsolete */
-> -- 
-> 1.8.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SW4gdGZ0cF9yZWFkIHdlIHNlbmQgYSByZXF1ZXN0IGZvciBhIG5ldyBwYWNrZXQgd2l0aG91dCBj
+aGVja2luZyBpZiB3ZQpoYXZlIGVub3VnaCBzcGFjZSBpbiB0aGUgRklGTy4gVGhpcyBjYW4gbGVh
+ZCB0byBhIEZJRk8gb3ZlcmZsb3cgYW5kIGEKY29ycnVwdCBmaWxlLiBBZGQgYSBjaGVjayBmb3Ig
+aXQuCgpTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+
+ClJlcG9ydGVkLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJv
+bml4LmRlPgpUZXN0ZWQtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVu
+Z3V0cm9uaXguZGU+Ci0tLQogZnMvdGZ0cC5jIHwgICAgNiArKysrKy0KIDEgZmlsZSBjaGFuZ2Vk
+LCA1IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9mcy90ZnRwLmMg
+Yi9mcy90ZnRwLmMKaW5kZXggZDg5MjcyZS4uZGZmNDFlOSAxMDA2NDQKLS0tIGEvZnMvdGZ0cC5j
+CisrKyBiL2ZzL3RmdHAuYwpAQCAtNjIsNiArNjIsNyBAQAogI2RlZmluZSBTVEFURV9ET05FCTgK
+IAogI2RlZmluZSBURlRQX0JMT0NLX1NJWkUJCTUxMgkvKiBkZWZhdWx0IFRGVFAgYmxvY2sgc2l6
+ZSAqLworI2RlZmluZSBURlRQX0ZJRk9fU0laRQkJNDA5NgogCiAjZGVmaW5lIFRGVFBfRVJSX1JF
+U0VORAkxCiAKQEAgLTM5OSw3ICs0MDAsNyBAQCBzdGF0aWMgc3RydWN0IGZpbGVfcHJpdiAqdGZ0
+cF9kb19vcGVuKHN0cnVjdCBkZXZpY2VfZCAqZGV2LAogCXByaXYtPmJsb2Nrc2l6ZSA9IFRGVFBf
+QkxPQ0tfU0laRTsKIAlwcml2LT5ibG9ja19yZXF1ZXN0ZWQgPSAtMTsKIAotCXByaXYtPmZpZm8g
+PSBrZmlmb19hbGxvYyg0MDk2KTsKKwlwcml2LT5maWZvID0ga2ZpZm9fYWxsb2MoVEZUUF9GSUZP
+X1NJWkUpOwogCWlmICghcHJpdi0+ZmlmbykgewogCQlyZXQgPSAtRU5PTUVNOwogCQlnb3RvIG91
+dDsKQEAgLTU1OCw2ICs1NTksOSBAQCBzdGF0aWMgaW50IHRmdHBfcmVhZChzdHJ1Y3QgZGV2aWNl
+X2QgKmRldiwgRklMRSAqZiwgdm9pZCAqYnVmLCBzaXplX3QgaW5zaXplKQogCQkJb3V0c2l6ZSAr
+PSBub3c7CiAJCQlidWYgKz0gbm93OwogCQkJaW5zaXplIC09IG5vdzsKKwkJfQorCisJCWlmIChU
+RlRQX0ZJRk9fU0laRSAtIGtmaWZvX2xlbihwcml2LT5maWZvKSA+PSBwcml2LT5ibG9ja3NpemUp
+IHsKIAkJCXRmdHBfc2VuZChwcml2KTsKIAkJCXRmdHBfdGltZXJfcmVzZXQocHJpdik7CiAJCX0K
+LS0gCjEuNy4xMC40CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
+dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
