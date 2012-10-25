@@ -1,21 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo5.mail-out.ovh.net ([178.33.45.10]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TRQGe-0006bP-SS
- for barebox@lists.infradead.org; Thu, 25 Oct 2012 16:26:50 +0000
-Received: from mail439.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id BC4ABFFA93A
- for <barebox@lists.infradead.org>; Thu, 25 Oct 2012 18:33:44 +0200 (CEST)
-Date: Thu, 25 Oct 2012 18:24:31 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121025162431.GA26883@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TRRk4-0007oU-T8
+ for barebox@lists.infradead.org; Thu, 25 Oct 2012 18:01:17 +0000
+Date: Thu, 25 Oct 2012 20:01:14 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121025180114.GI27665@pengutronix.de>
 References: <20121019020430.GE22418@game.jcrosoft.org>
  <20121023063503.GG21588@game.jcrosoft.org>
  <20121023070911.GL27665@pengutronix.de>
+ <20121025162431.GA26883@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121023070911.GL27665@pengutronix.de>
+In-Reply-To: <20121025162431.GA26883@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,18 +26,26 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 0/2] pm9g45 fix
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 09:09 Tue 23 Oct     , Sascha Hauer wrote:
-> On Tue, Oct 23, 2012 at 08:35:03AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Ping
-> 
-> Relax. I'm still catching up my backlog.
-I did nt see it on the tree
+On Thu, Oct 25, 2012 at 06:24:31PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 09:09 Tue 23 Oct     , Sascha Hauer wrote:
+> > On Tue, Oct 23, 2012 at 08:35:03AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > Ping
+> > 
+> > Relax. I'm still catching up my backlog.
+> I did nt see it on the tree
 
-Best Regards,
-J.
+I do. They are sitting in master for several days now.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
