@@ -1,23 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TRMOO-0003c2-Ah
- for barebox@lists.infradead.org; Thu, 25 Oct 2012 12:18:33 +0000
-Received: from mail190.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id E8136DC24C3
- for <barebox@lists.infradead.org>; Thu, 25 Oct 2012 14:25:21 +0200 (CEST)
-Date: Thu, 25 Oct 2012 14:18:23 +0200
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20121025141823.7a7eb52e@eb-e6520>
-In-Reply-To: <20121025091106.GP21588@game.jcrosoft.org>
-References: <1351101988-6681-1-git-send-email-s.hauer@pengutronix.de>
- <20121024183359.GN21588@game.jcrosoft.org>
- <20121024215649.25964bc6@eb-e6520>
- <20121025084902.GO21588@game.jcrosoft.org>
- <20121025110533.2ae743e9@eb-e6520>
- <20121025091106.GP21588@game.jcrosoft.org>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TRPUt-0001LV-2K
+ for barebox@lists.infradead.org; Thu, 25 Oct 2012 15:37:28 +0000
+From: Wolfram Sang <w.sang@pengutronix.de>
+Date: Thu, 25 Oct 2012 17:37:20 +0200
+Message-Id: <1351179440-24664-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,70 +14,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net phy: poll for a link
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mtd: ubi: fix typos in comment of build.c
+To: barebox@lists.infradead.org
+Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-Le Thu, 25 Oct 2012 11:11:06 +0200,
-Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
+Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+---
+ drivers/mtd/ubi/build.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> On 11:05 Thu 25 Oct     , Eric B=E9nard wrote:
-> > Le Thu, 25 Oct 2012 10:49:02 +0200,
-> > Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
-> > =
+diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
+index f2c8923..1ea1209 100644
+--- a/drivers/mtd/ubi/build.c
++++ b/drivers/mtd/ubi/build.c
+@@ -701,7 +701,7 @@ static int autoresize(struct ubi_device *ubi, int vol_id)
+  *
+  * This function attaches MTD device @mtd_dev to UBI and assign @ubi_num number
+  * to the newly created UBI device, unless @ubi_num is %UBI_DEV_NUM_AUTO, in
+- * which case this function finds a vacant device nubert and assings it
++ * which case this function finds a vacant device number and assigns it
+  * automatically. Returns the new UBI device number in case of success and a
+  * negative error code in case of failure.
+  *
+-- 
+1.7.10.4
 
-> > > On 21:56 Wed 24 Oct     , Eric B=E9nard wrote:
-> > > > Hi,
-> > > > =
-
-> > > > Le Wed, 24 Oct 2012 20:33:59 +0200,
-> > > > Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
-> > > > =
-
-> > > > > On 20:06 Wed 24 Oct     , Sascha Hauer wrote:
-> > > > > > Since we have phylib we have no instance which polls for a link=
-. This
-> > > > > > means that network boot often bails out after a powercycle or p=
-hy reset.
-> > > > > > This changes the link status behaviour to:
-> > > > > > =
-
-> > > > > > - Always check for a link if the last link test was unsuccesful
-> > > > > > - If the last check was succesful, check for a link when the la=
-st
-> > > > > >   check is longer than 5 seconds ago
-> > > > > > - Try to get a link for 5 seconds.
-> > > > > 5 seconds is too long
-> > > > > =
-
-> > > > > and check the link is wrong you need to check the autoneg
-> > > > > the link may be down because no cable
-> > > > > =
-
-> > > > and the autoneg can have been successful before the cable was
-> > > > removed : how to you handle this cas ?
-> > > the advertise tell you something change
-> > > =
-
-> > > so you need to restart the autoneg
-> > > =
-
-> > so I don't really understand why you don't want to use the link
-> > information which seems to be the first thing to do before trying to
-> > launch an autoneg but why not, let see the patches when they come.
-> because if the link is down and the have no advertise meens the phy is re=
-ally
-> down and no need to wait
-> =
-
-under which conditions can you have link down and advertise at the same
-time ?
-
-Eric
 
 _______________________________________________
 barebox mailing list
