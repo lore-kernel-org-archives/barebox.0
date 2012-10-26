@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TRgy6-0001a2-PF
- for barebox@lists.infradead.org; Fri, 26 Oct 2012 10:16:48 +0000
+ id 1TRgy6-0001Zz-PD
+ for barebox@lists.infradead.org; Fri, 26 Oct 2012 10:16:50 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Fri, 26 Oct 2012 12:16:37 +0200
-Message-Id: <1351246602-8859-6-git-send-email-w.sang@pengutronix.de>
+Date: Fri, 26 Oct 2012 12:16:36 +0200
+Message-Id: <1351246602-8859-5-git-send-email-w.sang@pengutronix.de>
 In-Reply-To: <1351246602-8859-1-git-send-email-w.sang@pengutronix.de>
 References: <1351246602-8859-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,56 +21,139 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 05/10] mtd: utils: apply macros for message printouts
+Subject: [RFC 04/10] devfs & mtd: add MEMERASE ioctl support
 To: barebox@lists.infradead.org
 Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-mtd-utils have a few macros for printouts. Provide the wrappers to make
-it easier to import them.
+To make that, we need to shift mtd_erase before mtd_ioctl.
+ubi-utils need that, especially ubiformat.
 
 Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 ---
- include/mtd/utils.h |   27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ drivers/mtd/core.c |   68 +++++++++++++++++++++++++++-------------------------
+ fs/devfs-core.c    |    3 ++-
+ 2 files changed, 37 insertions(+), 34 deletions(-)
 
-diff --git a/include/mtd/utils.h b/include/mtd/utils.h
-index 229fb34..05a3405 100644
---- a/include/mtd/utils.h
-+++ b/include/mtd/utils.h
-@@ -17,6 +17,33 @@
- #ifndef INCLUDE_MTD_UTILS_H
- # define INCLUDE_MTD_UTILS_H
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index 7c323a1..aca4f13 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -114,7 +114,37 @@ static ssize_t mtd_write(struct cdev* cdev, const void *buf, size_t _count,
+ out:
+ 	return ret ? ret : _count;
+ }
+-#endif
++
++static int mtd_erase(struct cdev *cdev, size_t count, loff_t offset)
++{
++	struct mtd_info *mtd = cdev->priv;
++	struct erase_info erase;
++	int ret;
++
++	memset(&erase, 0, sizeof(erase));
++	erase.mtd = mtd;
++	erase.addr = offset;
++	erase.len = mtd->erasesize;
++
++	while (count > 0) {
++		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
++
++		ret = mtd->block_isbad(mtd, erase.addr);
++		if (ret > 0) {
++			printf("Skipping bad block at 0x%08x\n", erase.addr);
++		} else {
++			ret = mtd->erase(mtd, &erase);
++			if (ret)
++				return ret;
++		}
++
++		erase.addr += mtd->erasesize;
++		count -= count > mtd->erasesize ? mtd->erasesize : count;
++	}
++
++	return 0;
++}
++#endif /* CONFIG_MTD_WRITE */
  
-+/* Messages as used in mtd-utils */
-+
-+#define bareverbose(verbose, fmt, ...) do {                        \
-+	if (verbose)                                               \
-+		printf(fmt, ##__VA_ARGS__);                        \
-+} while(0)
-+#define verbose(verbose, fmt, ...) \
-+	bareverbose(verbose, "%s: " fmt "\n", PROGRAM_NAME, ##__VA_ARGS__)
-+
-+#define normsg_cont(fmt, ...) do {                                 \
-+	printf("%s: " fmt, PROGRAM_NAME, ##__VA_ARGS__);           \
-+} while(0)
-+
-+#define normsg(fmt, ...) do {                                      \
-+	normsg_cont(fmt "\n", ##__VA_ARGS__);                      \
-+} while(0)
-+
-+#define errmsg(fmt, ...)  ({                                                \
-+	printf("%s: error!: " fmt "\n", PROGRAM_NAME, ##__VA_ARGS__); \
-+	-1;                                                                 \
-+})
-+#define sys_errmsg errmsg
-+
-+#define warnmsg(fmt, ...) do {                                                \
-+	fprintf(stderr, "%s: warning!: " fmt "\n", PROGRAM_NAME, ##__VA_ARGS__); \
-+} while(0)
-+
- static inline int is_power_of_2(unsigned long n)
+ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
  {
- 	return (n != 0 && ((n & (n - 1)) == 0));
+@@ -125,6 +155,7 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+ 	struct mtd_ecc_stats *ecc = buf;
+ #endif
+ 	struct region_info_user *reg = buf;
++	struct erase_info_user *ei = buf;
+ 	loff_t *offset = buf;
+ 
+ 	switch (request) {
+@@ -137,6 +168,9 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+ 		dev_dbg(cdev->dev, "MEMSETBADBLOCK: 0x%08llx\n", *offset);
+ 		ret = mtd->block_markbad(mtd, *offset);
+ 		break;
++	case MEMERASE:
++		ret = mtd_erase(cdev, ei->length, ei->start + cdev->offset);
++		break;
+ #endif
+ 	case MEMGETINFO:
+ 		user->type	= mtd->type;
+@@ -174,38 +208,6 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+ 	return ret;
+ }
+ 
+-#ifdef CONFIG_MTD_WRITE
+-static int mtd_erase(struct cdev *cdev, size_t count, loff_t offset)
+-{
+-	struct mtd_info *mtd = cdev->priv;
+-	struct erase_info erase;
+-	int ret;
+-
+-	memset(&erase, 0, sizeof(erase));
+-	erase.mtd = mtd;
+-	erase.addr = offset;
+-	erase.len = mtd->erasesize;
+-
+-	while (count > 0) {
+-		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
+-
+-		ret = mtd->block_isbad(mtd, erase.addr);
+-		if (ret > 0) {
+-			printf("Skipping bad block at 0x%08x\n", erase.addr);
+-		} else {
+-			ret = mtd->erase(mtd, &erase);
+-			if (ret)
+-				return ret;
+-		}
+-
+-		erase.addr += mtd->erasesize;
+-		count -= count > mtd->erasesize ? mtd->erasesize : count;
+-	}
+-
+-	return 0;
+-}
+-#endif
+-
+ static struct file_operations mtd_ops = {
+ 	.read   = mtd_read,
+ #ifdef CONFIG_MTD_WRITE
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index 0d2f75a..262e0a2 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -152,13 +152,14 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
+ 		break;
+ #if (defined(CONFIG_NAND_ECC_HW) || defined(CONFIG_NAND_ECC_SOFT))
+ 	case ECCGETSTATS:
++#endif
++	case MEMERASE:
+ 		if (!cdev->ops->ioctl) {
+ 			ret = -EINVAL;
+ 			break;
+ 		}
+ 		ret = cdev->ops->ioctl(cdev, request, buf);
+ 		break;
+-#endif
+ #ifdef CONFIG_PARTITION
+ 	case MEMGETREGIONINFO:
+ 		if (cdev->mtd) {
 -- 
 1.7.10.4
 
