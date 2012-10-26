@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TRgy6-0001Zz-PD
- for barebox@lists.infradead.org; Fri, 26 Oct 2012 10:16:50 +0000
+ id 1TRgy6-0001a3-PI
+ for barebox@lists.infradead.org; Fri, 26 Oct 2012 10:16:52 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Fri, 26 Oct 2012 12:16:36 +0200
-Message-Id: <1351246602-8859-5-git-send-email-w.sang@pengutronix.de>
+Date: Fri, 26 Oct 2012 12:16:38 +0200
+Message-Id: <1351246602-8859-7-git-send-email-w.sang@pengutronix.de>
 In-Reply-To: <1351246602-8859-1-git-send-email-w.sang@pengutronix.de>
 References: <1351246602-8859-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,139 +21,207 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 04/10] devfs & mtd: add MEMERASE ioctl support
+Subject: [RFC 06/10] lib: add ubiutils-common
 To: barebox@lists.infradead.org
 Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-To make that, we need to shift mtd_erase before mtd_ioctl.
-ubi-utils need that, especially ubiformat.
+Imported from mtd-utils and stripped down to needed functionality for
+ubiformat.
 
 Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 ---
- drivers/mtd/core.c |   68 +++++++++++++++++++++++++++-------------------------
- fs/devfs-core.c    |    3 ++-
- 2 files changed, 37 insertions(+), 34 deletions(-)
+ include/mtd/ubiutils-common.h |   26 +++++++++
+ lib/Kconfig                   |    3 +
+ lib/Makefile                  |    1 +
+ lib/ubiutils-common.c         |  122 +++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 152 insertions(+)
+ create mode 100644 include/mtd/ubiutils-common.h
+ create mode 100644 lib/ubiutils-common.c
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 7c323a1..aca4f13 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -114,7 +114,37 @@ static ssize_t mtd_write(struct cdev* cdev, const void *buf, size_t _count,
- out:
- 	return ret ? ret : _count;
- }
--#endif
+diff --git a/include/mtd/ubiutils-common.h b/include/mtd/ubiutils-common.h
+new file mode 100644
+index 0000000..3a16617
+--- /dev/null
++++ b/include/mtd/ubiutils-common.h
+@@ -0,0 +1,26 @@
++/*
++ * Copyright (c) Artem Bityutskiy, 2007, 2008
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
++ * the GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
 +
-+static int mtd_erase(struct cdev *cdev, size_t count, loff_t offset)
++#ifndef __UBI_UTILS_COMMON_H__
++#define __UBI_UTILS_COMMON_H__
++
++long long ubiutils_get_bytes(const char *str);
++void ubiutils_print_bytes(long long bytes, int bracket);
++
++#endif /* !__UBI_UTILS_COMMON_H__ */
++
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 9882d2d..fd7a1f9 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -38,6 +38,9 @@ config BITREV
+ config QSORT
+ 	bool
+ 
++config UBIUTILS
++	bool
++
+ source lib/gui/Kconfig
+ 
+ endmenu
+diff --git a/lib/Makefile b/lib/Makefile
+index 41e6a0f..68404d1 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -34,4 +34,5 @@ obj-$(CONFIG_UNCOMPRESS)	+= uncompress.o
+ obj-$(CONFIG_BCH)	+= bch.o
+ obj-$(CONFIG_BITREV)	+= bitrev.o
+ obj-$(CONFIG_QSORT)	+= qsort.o
++obj-$(CONFIG_UBIUTILS)	+= ubiutils-common.o
+ obj-y			+= gui/
+diff --git a/lib/ubiutils-common.c b/lib/ubiutils-common.c
+new file mode 100644
+index 0000000..d01e723
+--- /dev/null
++++ b/lib/ubiutils-common.c
+@@ -0,0 +1,122 @@
++/*
++ * Copyright (C) 2007, 2008 Nokia Corporation
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
++ * the GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++/*
++ * This file contains various common stuff used by UBI utilities.
++ *
++ * Authors: Artem Bityutskiy
++ *          Adrian Hunter
++ */
++
++#include <common.h>
++#include <stdlib.h>
++#include <string.h>
++
++/**
++ * get_multiplier - convert size specifier to an integer multiplier.
++ * @str: the size specifier string
++ *
++ * This function parses the @str size specifier, which may be one of
++ * 'KiB', 'MiB', or 'GiB' into an integer multiplier. Returns positive
++ * size multiplier in case of success and %-1 in case of failure.
++ */
++static int get_multiplier(const char *str)
 +{
-+	struct mtd_info *mtd = cdev->priv;
-+	struct erase_info erase;
-+	int ret;
++	if (!str)
++		return 1;
 +
-+	memset(&erase, 0, sizeof(erase));
-+	erase.mtd = mtd;
-+	erase.addr = offset;
-+	erase.len = mtd->erasesize;
++	/* Remove spaces before the specifier */
++	while (*str == ' ' || *str == '\t')
++		str += 1;
 +
-+	while (count > 0) {
-+		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
++	if (!strcmp(str, "KiB"))
++		return 1024;
++	if (!strcmp(str, "MiB"))
++		return 1024 * 1024;
++	if (!strcmp(str, "GiB"))
++		return 1024 * 1024 * 1024;
 +
-+		ret = mtd->block_isbad(mtd, erase.addr);
-+		if (ret > 0) {
-+			printf("Skipping bad block at 0x%08x\n", erase.addr);
-+		} else {
-+			ret = mtd->erase(mtd, &erase);
-+			if (ret)
-+				return ret;
-+		}
++	return -1;
++}
 +
-+		erase.addr += mtd->erasesize;
-+		count -= count > mtd->erasesize ? mtd->erasesize : count;
++/**
++ * ubiutils_get_bytes - convert a string containing amount of bytes into an
++ * integer
++ * @str: string to convert
++ *
++ * This function parses @str which may have one of 'KiB', 'MiB', or 'GiB'
++ * size specifiers. Returns positive amount of bytes in case of success and %-1
++ * in case of failure.
++ */
++long long ubiutils_get_bytes(const char *str)
++{
++	char *endp;
++	long long bytes = simple_strtoull(str, &endp, 0);
++
++	if (endp == str || bytes < 0) {
++		fprintf(stderr, "incorrect amount of bytes: \"%s\"\n", str);
++		return -1;
 +	}
 +
-+	return 0;
++	if (*endp != '\0') {
++		int mult = get_multiplier(endp);
++
++		if (mult == -1) {
++			fprintf(stderr, "bad size specifier: \"%s\" - "
++			        "should be 'KiB', 'MiB' or 'GiB'\n", endp);
++			return -1;
++		}
++		bytes *= mult;
++	}
++
++	return bytes;
 +}
-+#endif /* CONFIG_MTD_WRITE */
- 
- int mtd_ioctl(struct cdev *cdev, int request, void *buf)
- {
-@@ -125,6 +155,7 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
- 	struct mtd_ecc_stats *ecc = buf;
- #endif
- 	struct region_info_user *reg = buf;
-+	struct erase_info_user *ei = buf;
- 	loff_t *offset = buf;
- 
- 	switch (request) {
-@@ -137,6 +168,9 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
- 		dev_dbg(cdev->dev, "MEMSETBADBLOCK: 0x%08llx\n", *offset);
- 		ret = mtd->block_markbad(mtd, *offset);
- 		break;
-+	case MEMERASE:
-+		ret = mtd_erase(cdev, ei->length, ei->start + cdev->offset);
-+		break;
- #endif
- 	case MEMGETINFO:
- 		user->type	= mtd->type;
-@@ -174,38 +208,6 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
- 	return ret;
- }
- 
--#ifdef CONFIG_MTD_WRITE
--static int mtd_erase(struct cdev *cdev, size_t count, loff_t offset)
--{
--	struct mtd_info *mtd = cdev->priv;
--	struct erase_info erase;
--	int ret;
--
--	memset(&erase, 0, sizeof(erase));
--	erase.mtd = mtd;
--	erase.addr = offset;
--	erase.len = mtd->erasesize;
--
--	while (count > 0) {
--		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
--
--		ret = mtd->block_isbad(mtd, erase.addr);
--		if (ret > 0) {
--			printf("Skipping bad block at 0x%08x\n", erase.addr);
--		} else {
--			ret = mtd->erase(mtd, &erase);
--			if (ret)
--				return ret;
--		}
--
--		erase.addr += mtd->erasesize;
--		count -= count > mtd->erasesize ? mtd->erasesize : count;
--	}
--
--	return 0;
--}
--#endif
--
- static struct file_operations mtd_ops = {
- 	.read   = mtd_read,
- #ifdef CONFIG_MTD_WRITE
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 0d2f75a..262e0a2 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -152,13 +152,14 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
- 		break;
- #if (defined(CONFIG_NAND_ECC_HW) || defined(CONFIG_NAND_ECC_SOFT))
- 	case ECCGETSTATS:
-+#endif
-+	case MEMERASE:
- 		if (!cdev->ops->ioctl) {
- 			ret = -EINVAL;
- 			break;
- 		}
- 		ret = cdev->ops->ioctl(cdev, request, buf);
- 		break;
--#endif
- #ifdef CONFIG_PARTITION
- 	case MEMGETREGIONINFO:
- 		if (cdev->mtd) {
++
++/**
++ * ubiutils_print_bytes - print bytes.
++ * @bytes: variable to print
++ * @bracket: whether brackets have to be put or not
++ *
++ * This is a helper function which prints amount of bytes in a human-readable
++ * form, i.e., it prints the exact amount of bytes following by the approximate
++ * amount of Kilobytes, Megabytes, or Gigabytes, depending on how big @bytes
++ * is.
++ */
++void ubiutils_print_bytes(long long bytes, int bracket)
++{
++	const char *p;
++
++	if (bracket)
++		p = " (";
++	else
++		p = ", ";
++
++	printf("%lld bytes", bytes);
++
++	if (bytes > 1024 * 1024 * 1024)
++		printf("%s%lld GiB", p, bytes / (1024 * 1024 * 1024));
++	else if (bytes > 1024 * 1024)
++		printf("%s%lld MiB", p, bytes / (1024 * 1024));
++	else if (bytes > 1024 && bytes != 0)
++		printf("%s%lld KiB", p, bytes / 1024);
++	else
++		return;
++
++	if (bracket)
++		printf(")");
++}
 -- 
 1.7.10.4
 
