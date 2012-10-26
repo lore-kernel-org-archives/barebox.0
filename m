@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-la0-f49.google.com ([209.85.215.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TRRk4-0007oU-T8
- for barebox@lists.infradead.org; Thu, 25 Oct 2012 18:01:17 +0000
-Date: Thu, 25 Oct 2012 20:01:14 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121025180114.GI27665@pengutronix.de>
-References: <20121019020430.GE22418@game.jcrosoft.org>
- <20121023063503.GG21588@game.jcrosoft.org>
- <20121023070911.GL27665@pengutronix.de>
- <20121025162431.GA26883@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20121025162431.GA26883@game.jcrosoft.org>
+ id 1TRcwm-0008PQ-HB
+ for barebox@lists.infradead.org; Fri, 26 Oct 2012 05:59:09 +0000
+Received: by mail-la0-f49.google.com with SMTP id z14so2151175lag.36
+ for <barebox@lists.infradead.org>; Thu, 25 Oct 2012 22:59:08 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri, 26 Oct 2012 09:58:55 +0400
+Message-Id: <1351231135-17324-4-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1351231135-17324-1-git-send-email-antonynpavlov@gmail.com>
+References: <1351231135-17324-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +18,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] pm9g45 fix
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [RFC 3/3] readline: fix the 'new blank line at EOF' typo
+To: barebox@lists.infradead.org
 
-On Thu, Oct 25, 2012 at 06:24:31PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 09:09 Tue 23 Oct     , Sascha Hauer wrote:
-> > On Tue, Oct 23, 2012 at 08:35:03AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > Ping
-> > 
-> > Relax. I'm still catching up my backlog.
-> I did nt see it on the tree
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ lib/readline.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-I do. They are sitting in master for several days now.
-
-Sascha
-
+diff --git a/lib/readline.c b/lib/readline.c
+index 37566c3..3fb620e 100644
+--- a/lib/readline.c
++++ b/lib/readline.c
+@@ -353,4 +353,3 @@ int readline(const char *prompt, char *buf, int len)
+ 
+ 	return rc < 0 ? rc : len;
+ }
+-
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
