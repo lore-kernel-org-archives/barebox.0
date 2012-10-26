@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TRkiX-0002ia-C6
- for barebox@lists.infradead.org; Fri, 26 Oct 2012 14:16:58 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 26 Oct 2012 16:16:54 +0200
-Message-Id: <1351261014-25235-1-git-send-email-s.hauer@pengutronix.de>
+Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TRomk-0001Oh-N5
+ for barebox@lists.infradead.org; Fri, 26 Oct 2012 18:37:36 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Date: Fri, 26 Oct 2012 20:37:21 +0200
+Message-Id: <1351276641-24913-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,93 +19,127 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net fec: connect phy at probe time
+Subject: [PATCH] usb: add flow control to u_serial
 To: barebox@lists.infradead.org
 
-Several i.MX boards (all i.MX6 boards) need to do some adjustments
-to phy registers. If barebox itself does not use network, networking
-won't work in the kernel if the kernel does not have the fixups. Connect
-the phy at probe time so that these tweaks are done during probe so that
-the kernel works without phy register tweaks. Also this has the effect
-that the phy device is present and introspectable without doing fake
-network transfers beforehand.
+When using the serial console over USB to download files, and
+when the USB bandwidth is pushed to its limits, the barebox UDC
+device won't be able to absorb all the traffic.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Modify the u_serial gadget so that if there is not enough room
+in buffers, don't push USB requests down the gadget driver, so
+that it is saturated, and give it a chance to NAK requests.
+
+The previous behaviour was loosing bytes (as kfifo_put is lossy).
+The fixed behavious is lossless (based on USB NAK protocol).
+
+While at it, increase a bit buffer sizes to 8kB to absorb heavy
+transfers such as a linux kernel image.
+
+Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- drivers/net/fec_imx.c |   42 ++++++++++++++++++++++++++++++------------
- 1 file changed, 30 insertions(+), 12 deletions(-)
+ drivers/usb/gadget/u_serial.c |   25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index fde6658..29faff3 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -373,6 +373,26 @@ static void fec_update_linkspeed(struct eth_device *edev)
- 	writel(rcntl, fec->regs + FEC_R_CNTRL);
+diff --git a/drivers/usb/gadget/u_serial.c b/drivers/usb/gadget/u_serial.c
+index 946b4f2..162439e 100644
+--- a/drivers/usb/gadget/u_serial.c
++++ b/drivers/usb/gadget/u_serial.c
+@@ -74,9 +74,9 @@
+  * next layer of buffering.  For TX that's a circular buffer; for RX
+  * consider it a NOP.  A third layer is provided by the TTY code.
+  */
+-#define QUEUE_SIZE		16
++#define QUEUE_SIZE		128
+ #define WRITE_BUF_SIZE		8192		/* TX only */
+-
++#define RECV_FIFO_SIZE		(1024 * 8)
+ /*
+  * The port structure holds info for each port, one for each minor number
+  * (and thus for each /dev/ node).
+@@ -92,7 +92,7 @@ struct gs_port {
+ 	u8			port_num;
+ 
+ 	struct list_head	read_pool;
+-	unsigned		n_read;
++	unsigned		read_nb_queued;
+ 
+ 	struct list_head	write_pool;
+ 
+@@ -123,7 +123,9 @@ static unsigned gs_start_rx(struct gs_port *port)
+ 	struct usb_ep		*out = port->port_usb->out;
+ 	unsigned		started = 0;
+ 
+-	while (!list_empty(pool)) {
++	while (!list_empty(pool) &&
++	       ((out->maxpacket * (port->read_nb_queued + 1) +
++		kfifo_len(port->recv_fifo)) < RECV_FIFO_SIZE)) {
+ 		struct usb_request	*req;
+ 		int			status;
+ 
+@@ -134,6 +136,7 @@ static unsigned gs_start_rx(struct gs_port *port)
+ 		/* drop lock while we call out; the controller driver
+ 		 * may need to call us back (e.g. for disconnect)
+ 		 */
++		port->read_nb_queued++;
+ 		status = usb_ep_queue(out, req);
+ 
+ 		if (status) {
+@@ -161,8 +164,9 @@ static void gs_read_complete(struct usb_ep *ep, struct usb_request *req)
+ 		return;
+ 
+ 	kfifo_put(port->recv_fifo, req->buf, req->actual);
+-
+ 	list_add_tail(&req->list, &port->read_pool);
++	port->read_nb_queued--;
++
+ 	gs_start_rx(port);
  }
  
-+static int fec_phy_connect(struct eth_device *edev)
-+{
-+	struct fec_priv *fec = (struct fec_priv *)edev->priv;
-+	int ret;
-+
-+	if (fec->xcv_type == SEVENWIRE)
-+		return 0;
-+
-+	ret = phy_device_connect(edev, &fec->miibus, fec->phy_addr,
-+			 fec_update_linkspeed, fec->phy_flags,
-+			 fec->interface);
-+	if (ret)
-+		return ret;
-+
-+	if (fec->phy_init)
-+		fec->phy_init(edev->phydev);
-+
-+	return 0;
-+}
-+
- /**
-  * Start the FEC engine
-  * @param[in] edev Our device to handle
-@@ -383,17 +403,6 @@ static int fec_open(struct eth_device *edev)
- 	int ret;
- 	u32 ecr;
- 
--	if (fec->xcv_type != SEVENWIRE) {
--		ret = phy_device_connect(edev, &fec->miibus, fec->phy_addr,
--					 fec_update_linkspeed, fec->phy_flags,
--					 fec->interface);
--		if (ret)
--			return ret;
--
--		if (fec->phy_init)
--			fec->phy_init(edev->phydev);
--	}
--
- 	/*
- 	 * Initialize RxBD/TxBD rings
- 	 */
-@@ -706,9 +715,18 @@ static int fec_probe(struct device_d *dev)
- 		mdiobus_register(&fec->miibus);
+@@ -276,7 +280,7 @@ static int gs_start_io(struct gs_port *port)
  	}
  
--	eth_register(edev);
-+	ret = eth_register(edev);
-+	if (ret)
-+		goto err_free;
-+
-+	ret = fec_phy_connect(edev);
-+	if (ret)
-+		goto err_unregister;
-+
- 	return 0;
+ 	/* queue read requests */
+-	port->n_read = 0;
++	port->read_nb_queued = 0;
+ 	started = gs_start_rx(port);
  
-+err_unregister:
-+	eth_unregister(edev);
- err_free:
- 	free(fec);
- 	return ret;
+ 	/* unblock any pending writes into our circular buffer */
+@@ -396,6 +400,7 @@ static int serial_tstc(struct console_device *cdev)
+ 	struct gs_port	*port = container_of(cdev,
+ 					struct gs_port, cdev);
+ 
++	gs_start_rx(port);
+ 	return (kfifo_len(port->recv_fifo) == 0) ? 0 : 1;
+ }
+ 
+@@ -412,10 +417,14 @@ static int serial_getc(struct console_device *cdev)
+ 	while (kfifo_getc(port->recv_fifo, &ch)) {
+ 		usb_gadget_poll();
+ 		if (is_timeout(to, 300 * MSECOND))
+-			break;
++			goto timeout;
+ 	}
+ 
++	gs_start_rx(port);
+ 	return ch;
++timeout:
++	gs_start_rx(port);
++	return -ETIMEDOUT;
+ }
+ 
+ static void serial_flush(struct console_device *cdev)
+@@ -461,7 +470,7 @@ int gserial_connect(struct gserial *gser, u8 port_num)
+ 	 */
+ 	gser->port_line_coding = port->port_line_coding;
+ 
+-	port->recv_fifo = kfifo_alloc(1024);
++	port->recv_fifo = kfifo_alloc(RECV_FIFO_SIZE);
+ 
+ 	/*printf("gserial_connect: start ttyGS%d\n", port->port_num);*/
+ 	gs_start_io(port);
 -- 
-1.7.10.4
+1.7.10
 
 
 _______________________________________________
