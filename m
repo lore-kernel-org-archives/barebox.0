@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TRgy6-0001Zt-P5
- for barebox@lists.infradead.org; Fri, 26 Oct 2012 10:16:49 +0000
+ id 1TRgy6-0001Zq-P9
+ for barebox@lists.infradead.org; Fri, 26 Oct 2012 10:16:48 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Fri, 26 Oct 2012 12:16:33 +0200
-Message-Id: <1351246602-8859-2-git-send-email-w.sang@pengutronix.de>
-In-Reply-To: <1351246602-8859-1-git-send-email-w.sang@pengutronix.de>
-References: <1351246602-8859-1-git-send-email-w.sang@pengutronix.de>
+Date: Fri, 26 Oct 2012 12:16:32 +0200
+Message-Id: <1351246602-8859-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,73 +19,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 01/10] mtd: move is_power_of_2() to a public place
+Subject: [RFC 00/10] ubiformat in barebox
 To: barebox@lists.infradead.org
 Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-Will need this later for ubiformat.
+So, here is a series which implements 'ubiformat' in barebox. This has the
+advantage that you can update UBI without resetting erase counters.
 
-Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
----
- drivers/mtd/ubi/ubi-barebox.h |    5 +----
- include/mtd/utils.h           |   25 +++++++++++++++++++++++++
- 2 files changed, 26 insertions(+), 4 deletions(-)
+Note: This is an RFC, although it works for me(tm), I still need to do way more
+testing. Yet, I want to collect comments on the general approach and if people
+are interested in testing, too, this is very much appreciated!
+
+Kind regards,
+
+   Wolfram
+
+
+Wolfram Sang (10):
+  mtd: move is_power_of_2() to a public place
+  ubi: consolidate ubi-media.h
+  ubi: bump ubi-media.h to newest version
+  devfs & mtd: add MEMERASE ioctl support
+  mtd: utils: apply macros for message printouts
+  lib: add ubiutils-common
+  lib: add libscan
+  lib: add libubigen
+  lib: add barebox version of libmtd
+  commands: add ubiformat
+
+ commands/Kconfig              |    9 +
+ commands/Makefile             |    1 +
+ commands/ubi.c                |    2 +-
+ commands/ubiformat.c          |  795 +++++++++++++++++++++++++++++++++++++++++
+ drivers/mtd/core.c            |   68 ++--
+ drivers/mtd/ubi/ubi-barebox.h |    5 +-
+ drivers/mtd/ubi/ubi-media.h   |  369 -------------------
+ drivers/mtd/ubi/ubi.h         |    3 +-
+ fs/devfs-core.c               |    3 +-
+ include/mtd/libmtd.h          |  154 ++++++++
+ include/mtd/libscan.h         |  105 ++++++
+ include/mtd/libubigen.h       |  186 ++++++++++
+ include/{ => mtd}/ubi-media.h |   20 +-
+ include/mtd/ubiutils-common.h |   26 ++
+ include/mtd/utils.h           |   52 +++
+ lib/Kconfig                   |   12 +
+ lib/Makefile                  |    4 +
+ lib/libmtd.c                  |  371 +++++++++++++++++++
+ lib/libscan.c                 |  223 ++++++++++++
+ lib/libubigen.c               |  316 ++++++++++++++++
+ lib/ubiutils-common.c         |  122 +++++++
+ 21 files changed, 2431 insertions(+), 415 deletions(-)
+ create mode 100644 commands/ubiformat.c
+ delete mode 100644 drivers/mtd/ubi/ubi-media.h
+ create mode 100644 include/mtd/libmtd.h
+ create mode 100644 include/mtd/libscan.h
+ create mode 100644 include/mtd/libubigen.h
+ rename include/{ => mtd}/ubi-media.h (95%)
+ create mode 100644 include/mtd/ubiutils-common.h
  create mode 100644 include/mtd/utils.h
+ create mode 100644 lib/libmtd.c
+ create mode 100644 lib/libscan.c
+ create mode 100644 lib/libubigen.c
+ create mode 100644 lib/ubiutils-common.c
 
-diff --git a/drivers/mtd/ubi/ubi-barebox.h b/drivers/mtd/ubi/ubi-barebox.h
-index 72f29a6..919dc50 100644
---- a/drivers/mtd/ubi/ubi-barebox.h
-+++ b/drivers/mtd/ubi/ubi-barebox.h
-@@ -25,6 +25,7 @@
- #include <linux/string.h>
- #include <linux/mtd/mtd.h>
- #include <linux/mtd/ubi.h>
-+#include <mtd/utils.h>
- 
- #define crc32(seed, data, length)  crc32_no_comp(seed, (unsigned char const *)data, length)
- 
-@@ -53,10 +54,6 @@ do {									\
- #define put_device(...)
- #define ubi_sysfs_init(...)		0
- #define ubi_sysfs_close(...)		do { } while (0)
--static inline int is_power_of_2(unsigned long n)
--{
--	return (n != 0 && ((n & (n - 1)) == 0));
--}
- 
- /* FIXME */
- #define MKDEV(...)			0
-diff --git a/include/mtd/utils.h b/include/mtd/utils.h
-new file mode 100644
-index 0000000..229fb34
---- /dev/null
-+++ b/include/mtd/utils.h
-@@ -0,0 +1,25 @@
-+/*
-+ * mtd/utils.h - helper functions for various MTD utilities
-+ *
-+ * Copyright (C) 2012 by Wolfram Sang <w.sang@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#ifndef INCLUDE_MTD_UTILS_H
-+# define INCLUDE_MTD_UTILS_H
-+
-+static inline int is_power_of_2(unsigned long n)
-+{
-+	return (n != 0 && ((n & (n - 1)) == 0));
-+}
-+
-+#endif /* INCLUDE_MTD_UTILS_H */
 -- 
 1.7.10.4
 
