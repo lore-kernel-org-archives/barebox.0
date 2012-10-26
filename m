@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TRgy6-0001a8-PR
- for barebox@lists.infradead.org; Fri, 26 Oct 2012 10:17:00 +0000
+ id 1TRgy6-0001Zy-PA
+ for barebox@lists.infradead.org; Fri, 26 Oct 2012 10:16:55 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Fri, 26 Oct 2012 12:16:41 +0200
-Message-Id: <1351246602-8859-10-git-send-email-w.sang@pengutronix.de>
+Date: Fri, 26 Oct 2012 12:16:35 +0200
+Message-Id: <1351246602-8859-4-git-send-email-w.sang@pengutronix.de>
 In-Reply-To: <1351246602-8859-1-git-send-email-w.sang@pengutronix.de>
 References: <1351246602-8859-1-git-send-email-w.sang@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,594 +17,150 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 09/10] lib: add barebox version of libmtd
+Subject: =?UTF-8?q?=5BRFC=2003/10=5D=20ubi=3A=20bump=20ubi-media=2Eh=20to=20newest=20version?=
 To: barebox@lists.infradead.org
 Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-Based on mtd-utils and stripped down to needed functionality and
-reworked to barebox interfaces.
-
-Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
----
- include/mtd/libmtd.h |  154 +++++++++++++++++++++
- lib/Kconfig          |    3 +
- lib/Makefile         |    1 +
- lib/libmtd.c         |  371 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 529 insertions(+)
- create mode 100644 include/mtd/libmtd.h
- create mode 100644 lib/libmtd.c
-
-diff --git a/include/mtd/libmtd.h b/include/mtd/libmtd.h
-new file mode 100644
-index 0000000..6267dac
---- /dev/null
-+++ b/include/mtd/libmtd.h
-@@ -0,0 +1,154 @@
-+/*
-+ * Copyright (C) 2008, 2009 Nokia Corporation
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ * Author: Artem Bityutskiy
-+ *
-+ * MTD library.
-+ */
-+
-+#ifndef __LIBMTD_H__
-+#define __LIBMTD_H__
-+
-+/* Maximum MTD device name length */
-+#define MTD_NAME_MAX 127
-+/* Maximum MTD device type string length */
-+#define MTD_TYPE_MAX 64
-+
-+/**
-+ * struct mtd_dev_info - information about an MTD device.
-+ * @node: node pointing to device
-+ * @type: flash type (constants like %MTD_NANDFLASH defined in mtd-abi.h)
-+ * @type_str: static R/O flash type string
-+ * @name: device name
-+ * @size: device size in bytes
-+ * @eb_cnt: count of eraseblocks
-+ * @eb_size: eraseblock size
-+ * @min_io_size: minimum input/output unit size
-+ * @subpage_size: sub-page size
-+ * @oob_size: OOB size (zero if the device does not have OOB area)
-+ * @region_cnt: count of additional erase regions
-+ * @writable: zero if the device is read-only
-+ * @bb_allowed: non-zero if the MTD device may have bad eraseblocks
-+ */
-+struct mtd_dev_info
-+{
-+	const char *node;
-+	int type;
-+	const char type_str[MTD_TYPE_MAX + 1];
-+	long long size;
-+	int eb_cnt;
-+	int eb_size;
-+	int min_io_size;
-+	int subpage_size;
-+	int oob_size;
-+	int region_cnt;
-+	unsigned int writable:1;
-+	unsigned int bb_allowed:1;
-+};
-+
-+/**
-+ * mtd_get_dev_info - get information about an MTD device.
-+ * @desc: MTD library descriptor
-+ * @node: name of the MTD device node
-+ * @mtd: the MTD device information is returned here
-+ *
-+ * This function gets information about MTD device defined by the @node device
-+ * node file and saves this information in the @mtd object. Returns %0 in case
-+ * of success and %-1 in case of failure. If MTD subsystem is not present in the
-+ * system, or the MTD device does not exist, errno is set to @ENODEV.
-+ */
-+int mtd_get_dev_info(const char *node, struct mtd_dev_info *mtd);
-+
-+/**
-+ * mtd_erase - erase an eraseblock.
-+ * @desc: MTD library descriptor
-+ * @mtd: MTD device description object
-+ * @fd: MTD device node file descriptor
-+ * @eb: eraseblock to erase
-+ *
-+ * This function erases eraseblock @eb of MTD device described by @fd. Returns
-+ * %0 in case of success and %-1 in case of failure.
-+ */
-+int mtd_erase(const struct mtd_dev_info *mtd, int fd, int eb);
-+
-+/**
-+ * mtd_torture - torture an eraseblock.
-+ * @desc: MTD library descriptor
-+ * @mtd: MTD device description object
-+ * @fd: MTD device node file descriptor
-+ * @eb: eraseblock to torture
-+ *
-+ * This function tortures eraseblock @eb. Returns %0 in case of success and %-1
-+ * in case of failure.
-+ */
-+int mtd_torture(const struct mtd_dev_info *mtd, int fd, int eb);
-+
-+/**
-+ * mtd_is_bad - check if eraseblock is bad.
-+ * @mtd: MTD device description object
-+ * @fd: MTD device node file descriptor
-+ * @eb: eraseblock to check
-+ *
-+ * This function checks if eraseblock @eb is bad. Returns %0 if not, %1 if yes,
-+ * and %-1 in case of failure.
-+ */
-+int mtd_is_bad(const struct mtd_dev_info *mtd, int fd, int eb);
-+
-+/**
-+ * mtd_mark_bad - mark an eraseblock as bad.
-+ * @mtd: MTD device description object
-+ * @fd: MTD device node file descriptor
-+ * @eb: eraseblock to mark as bad
-+ *
-+ * This function marks eraseblock @eb as bad. Returns %0 in case of success and
-+ * %-1 in case of failure.
-+ */
-+int mtd_mark_bad(const struct mtd_dev_info *mtd, int fd, int eb);
-+
-+/**
-+ * mtd_read - read data from an MTD device.
-+ * @mtd: MTD device description object
-+ * @fd: MTD device node file descriptor
-+ * @eb: eraseblock to read from
-+ * @offs: offset withing the eraseblock to read from
-+ * @buf: buffer to read data to
-+ * @len: how many bytes to read
-+ *
-+ * This function reads @len bytes of data from eraseblock @eb and offset @offs
-+ * of the MTD device defined by @mtd and stores the read data at buffer @buf.
-+ * Returns %0 in case of success and %-1 in case of failure.
-+ */
-+int mtd_read(const struct mtd_dev_info *mtd, int fd, int eb, int offs,
-+	     void *buf, int len);
-+
-+/**
-+ * mtd_write - write data to an MTD device.
-+ * @mtd: MTD device description object
-+ * @fd: MTD device node file descriptor
-+ * @eb: eraseblock to write to
-+ * @offs: offset withing the eraseblock to write to
-+ * @buf: buffer to write
-+ * @len: how many bytes to write
-+ *
-+ * This function writes @len bytes of data to eraseblock @eb and offset @offs
-+ * of the MTD device defined by @mtd. Returns %0 in case of success and %-1 in
-+ * case of failure.
-+ */
-+int mtd_write(const struct mtd_dev_info *mtd, int fd, int eb, int offs,
-+	      void *buf, int len);
-+
-+#endif /* __LIBMTD_H__ */
-diff --git a/lib/Kconfig b/lib/Kconfig
-index e6727b3..db5a091 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -47,6 +47,9 @@ config LIBSCAN
- config LIBUBIGEN
- 	bool
- 
-+config LIBMTD
-+	bool
-+
- source lib/gui/Kconfig
- 
- endmenu
-diff --git a/lib/Makefile b/lib/Makefile
-index e996a48..3ebb5d9 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -37,4 +37,5 @@ obj-$(CONFIG_QSORT)	+= qsort.o
- obj-$(CONFIG_UBIUTILS)	+= ubiutils-common.o
- obj-$(CONFIG_LIBSCAN)	+= libscan.o
- obj-$(CONFIG_LIBUBIGEN)	+= libubigen.o
-+obj-$(CONFIG_LIBMTD)	+= libmtd.o
- obj-y			+= gui/
-diff --git a/lib/libmtd.c b/lib/libmtd.c
-new file mode 100644
-index 0000000..78b5c8a
---- /dev/null
-+++ b/lib/libmtd.c
-@@ -0,0 +1,371 @@
-+/*
-+ * Copyright (C) 2009 Nokia Corporation
-+ * Copyright (C) 2012 Wolfram Sang, Pengutronix e.K. <w.sang@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ * Author: Artem Bityutskiy
-+ * Author: Wolfram Sang
-+ *
-+ * This file is part of the MTD library. Based on pre-2.6.30 kernels support,
-+ * now adapted to barebox.
-+ *
-+ * NOTE: No support for 64 bit sizes yet!
-+ */
-+
-+#include <common.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <malloc.h>
-+#include <errno.h>
-+#include <crc.h>
-+#include <fs.h>
-+#include <fcntl.h>
-+#include <ioctl.h>
-+#include <linux/stat.h>
-+#include <linux/mtd/mtd-abi.h>
-+#include <mtd/libmtd.h>
-+#include <mtd/utils.h>
-+
-+#define PROGRAM_NAME "libmtd"
-+
-+static inline int mtd_ioctl_error(const struct mtd_dev_info *mtd, int eb,
-+				  const char *sreq)
-+{
-+	return sys_errmsg("%s ioctl failed for eraseblock %d (%s)",
-+			  sreq, eb, mtd->node);
-+}
-+
-+static int mtd_valid_erase_block(const struct mtd_dev_info *mtd, int eb)
-+{
-+	if (eb < 0 || eb >= mtd->eb_cnt) {
-+		errmsg("bad eraseblock number %d, %s has %d eraseblocks",
-+		       eb, mtd->node, mtd->eb_cnt);
-+		errno = EINVAL;
-+		return -1;
-+	}
-+	return 0;
-+}
-+
-+int mtd_erase(const struct mtd_dev_info *mtd, int fd, int eb)
-+{
-+	int ret;
-+	struct erase_info_user ei;
-+
-+	ret = mtd_valid_erase_block(mtd, eb);
-+	if (ret)
-+		return ret;
-+
-+	ei.start = (__u64)eb * mtd->eb_size;
-+	ei.length = mtd->eb_size;
-+
-+	ret = ioctl(fd, MEMERASE, &ei);
-+	if (ret < 0)
-+		return mtd_ioctl_error(mtd, eb, "MEMERASE");
-+	return 0;
-+}
-+
-+/* Patterns to write to a physical eraseblock when torturing it */
-+static uint8_t patterns[] = {0xa5, 0x5a, 0x0};
-+
-+/**
-+ * check_pattern - check if buffer contains only a certain byte pattern.
-+ * @buf: buffer to check
-+ * @patt: the pattern to check
-+ * @size: buffer size in bytes
-+ *
-+ * This function returns %1 in there are only @patt bytes in @buf, and %0 if
-+ * something else was also found.
-+ */
-+static int check_pattern(const void *buf, uint8_t patt, int size)
-+{
-+	int i;
-+
-+	for (i = 0; i < size; i++)
-+		if (((const uint8_t *)buf)[i] != patt)
-+			return 0;
-+	return 1;
-+}
-+
-+int mtd_torture(const struct mtd_dev_info *mtd, int fd, int eb)
-+{
-+	int err, i, patt_count;
-+	void *buf;
-+
-+	normsg("run torture test for PEB %d", eb);
-+	patt_count = ARRAY_SIZE(patterns);
-+
-+	buf = xmalloc(mtd->eb_size);
-+
-+	for (i = 0; i < patt_count; i++) {
-+		err = mtd_erase(mtd, fd, eb);
-+		if (err)
-+			goto out;
-+
-+		/* Make sure the PEB contains only 0xFF bytes */
-+		err = mtd_read(mtd, fd, eb, 0, buf, mtd->eb_size);
-+		if (err)
-+			goto out;
-+
-+		err = check_pattern(buf, 0xFF, mtd->eb_size);
-+		if (err == 0) {
-+			errmsg("erased PEB %d, but a non-0xFF byte found", eb);
-+			errno = EIO;
-+			goto out;
-+		}
-+
-+		/* Write a pattern and check it */
-+		memset(buf, patterns[i], mtd->eb_size);
-+		err = mtd_write(mtd, fd, eb, 0, buf, mtd->eb_size);
-+		if (err)
-+			goto out;
-+
-+		memset(buf, ~patterns[i], mtd->eb_size);
-+		err = mtd_read(mtd, fd, eb, 0, buf, mtd->eb_size);
-+		if (err)
-+			goto out;
-+
-+		err = check_pattern(buf, patterns[i], mtd->eb_size);
-+		if (err == 0) {
-+			errmsg("pattern %x checking failed for PEB %d",
-+				patterns[i], eb);
-+			errno = EIO;
-+			goto out;
-+		}
-+	}
-+
-+	err = 0;
-+	normsg("PEB %d passed torture test, do not mark it a bad", eb);
-+
-+out:
-+	free(buf);
-+	return -1;
-+}
-+
-+int mtd_is_bad(const struct mtd_dev_info *mtd, int fd, int eb)
-+{
-+	int ret;
-+	loff_t seek;
-+
-+	ret = mtd_valid_erase_block(mtd, eb);
-+	if (ret)
-+		return ret;
-+
-+	if (!mtd->bb_allowed)
-+		return 0;
-+
-+	seek = (loff_t)eb * mtd->eb_size;
-+	ret = ioctl(fd, MEMGETBADBLOCK, &seek);
-+	if (ret == -1)
-+		return mtd_ioctl_error(mtd, eb, "MEMGETBADBLOCK");
-+	return ret;
-+}
-+
-+int mtd_mark_bad(const struct mtd_dev_info *mtd, int fd, int eb)
-+{
-+	int ret;
-+	loff_t seek;
-+
-+	if (!mtd->bb_allowed) {
-+		errno = EINVAL;
-+		return -1;
-+	}
-+
-+	ret = mtd_valid_erase_block(mtd, eb);
-+	if (ret)
-+		return ret;
-+
-+	seek = (loff_t)eb * mtd->eb_size;
-+	ret = ioctl(fd, MEMSETBADBLOCK, &seek);
-+	if (ret == -1)
-+		return mtd_ioctl_error(mtd, eb, "MEMSETBADBLOCK");
-+	return 0;
-+}
-+
-+int mtd_read(const struct mtd_dev_info *mtd, int fd, int eb, int offs,
-+	     void *buf, int len)
-+{
-+	int ret, rd = 0;
-+	off_t seek;
-+
-+	ret = mtd_valid_erase_block(mtd, eb);
-+	if (ret)
-+		return ret;
-+
-+	if (offs < 0 || offs + len > mtd->eb_size) {
-+		errmsg("bad offset %d or length %d, %s eraseblock size is %d",
-+		       offs, len, mtd->node, mtd->eb_size);
-+		errno = EINVAL;
-+		return -1;
-+	}
-+
-+	/* Seek to the beginning of the eraseblock */
-+	seek = (off_t)eb * mtd->eb_size + offs;
-+	if (lseek(fd, seek, SEEK_SET) != seek)
-+		return sys_errmsg("cannot seek %s to offset %llu",
-+				  mtd->node, (unsigned long long)seek);
-+
-+	while (rd < len) {
-+		ret = read(fd, buf, len);
-+		if (ret < 0)
-+			return sys_errmsg("cannot read %d bytes from %s (eraseblock %d, offset %d)",
-+					  len, mtd->node, eb, offs);
-+		rd += ret;
-+	}
-+
-+	return 0;
-+}
-+
-+int mtd_write(const struct mtd_dev_info *mtd, int fd, int eb, int offs,
-+	      void *buf, int len)
-+{
-+	int ret;
-+	off_t seek;
-+
-+	ret = mtd_valid_erase_block(mtd, eb);
-+	if (ret)
-+		return ret;
-+
-+	if (offs < 0 || offs + len > mtd->eb_size) {
-+		errmsg("bad offset %d or length %d, %s eraseblock size is %d",
-+		       offs, len, mtd->node, mtd->eb_size);
-+		errno = EINVAL;
-+		return -1;
-+	}
-+	if (offs % mtd->subpage_size) {
-+		errmsg("write offset %d is not aligned to %s min. I/O size %d",
-+		       offs, mtd->node, mtd->subpage_size);
-+		errno = EINVAL;
-+		return -1;
-+	}
-+	if (len % mtd->subpage_size) {
-+		errmsg("write length %d is not aligned to %s min. I/O size %d",
-+		       len, mtd->node, mtd->subpage_size);
-+		errno = EINVAL;
-+		return -1;
-+	}
-+
-+	/* Seek to the beginning of the eraseblock */
-+	seek = (off_t)eb * mtd->eb_size + offs;
-+	if (lseek(fd, seek, SEEK_SET) != seek)
-+		return sys_errmsg("cannot seek %s to offset %llu",
-+				  mtd->node, (unsigned long long)seek);
-+
-+	ret = write(fd, buf, len);
-+	if (ret != len)
-+		return sys_errmsg("cannot write %d bytes to %s (eraseblock %d, offset %d)",
-+				  len, mtd->node, eb, offs);
-+
-+	return 0;
-+}
-+
-+/**
-+ * mtd_get_dev_info - fill the mtd_dev_info structure
-+ * @node: name of the MTD device node
-+ * @mtd: the MTD device information is returned here
-+ */
-+int mtd_get_dev_info(const char *node, struct mtd_dev_info *mtd)
-+{
-+	struct mtd_info_user ui;
-+	int fd, ret;
-+	loff_t offs = 0;
-+
-+	memset(mtd, '\0', sizeof(struct mtd_dev_info));
-+
-+	mtd->node = node;
-+
-+	fd = open(node, O_RDWR);
-+	if (fd == -1)
-+		return sys_errmsg("cannot open \"%s\"", node);
-+
-+	if (ioctl(fd, MEMGETINFO, &ui)) {
-+		sys_errmsg("MEMGETINFO ioctl request failed");
-+		goto out_close;
-+	}
-+
-+	ret = ioctl(fd, MEMGETBADBLOCK, &offs);
-+	if (ret == -1) {
-+		if (errno != EOPNOTSUPP) {
-+			sys_errmsg("MEMGETBADBLOCK ioctl failed");
-+			goto out_close;
-+		}
-+		errno = 0;
-+		mtd->bb_allowed = 0;
-+	} else
-+		mtd->bb_allowed = 1;
-+
-+	mtd->type = ui.type;
-+	mtd->size = ui.size;
-+	mtd->eb_size = ui.erasesize;
-+	mtd->min_io_size = ui.writesize;
-+	mtd->oob_size = ui.oobsize;
-+
-+	if (mtd->min_io_size <= 0) {
-+		errmsg("%s has insane min. I/O unit size %d",
-+		       node, mtd->min_io_size);
-+		goto out_close;
-+	}
-+	if (mtd->eb_size <= 0 || mtd->eb_size < mtd->min_io_size) {
-+		errmsg("%s has insane eraseblock size %d",
-+		       node, mtd->eb_size);
-+		goto out_close;
-+	}
-+	if (mtd->size <= 0 || mtd->size < mtd->eb_size) {
-+		errmsg("%s has insane size %lld",
-+		       node, mtd->size);
-+		goto out_close;
-+	}
-+
-+	mtd->eb_cnt = ui.size / ui.erasesize;
-+
-+	switch(mtd->type) {
-+	case MTD_ABSENT:
-+		errmsg("%s (%s) is removable and is not present",
-+		       mtd->node, node);
-+		goto out_close;
-+	case MTD_RAM:
-+		strcpy((char *)mtd->type_str, "ram");
-+		break;
-+	case MTD_ROM:
-+		strcpy((char *)mtd->type_str, "rom");
-+		break;
-+	case MTD_NORFLASH:
-+		strcpy((char *)mtd->type_str, "nor");
-+		break;
-+	case MTD_NANDFLASH:
-+		strcpy((char *)mtd->type_str, "nand");
-+		break;
-+	case MTD_DATAFLASH:
-+		strcpy((char *)mtd->type_str, "dataflash");
-+		break;
-+	case MTD_UBIVOLUME:
-+		strcpy((char *)mtd->type_str, "ubi");
-+		break;
-+	default:
-+		goto out_close;
-+	}
-+
-+	if (ui.flags & MTD_WRITEABLE)
-+		mtd->writable = 1;
-+	mtd->subpage_size = mtd->min_io_size;
-+
-+	close(fd);
-+
-+	return 0;
-+
-+out_close:
-+	close(fd);
-+	return -1;
-+}
--- 
-1.7.10.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+TmVlZGVkIGZvciB1Ymlmb3JtYXQsIHdlIGFyZSBpbnRlcmVzdGVkIGluIGltYWdlX3NlcSBlc3Bl
+Y2lhbGx5LgoKU2lnbmVkLW9mZi1ieTogV29sZnJhbSBTYW5nIDx3LnNhbmdAcGVuZ3V0cm9uaXgu
+ZGU+Ci0tLQogaW5jbHVkZS9tdGQvdWJpLW1lZGlhLmggfCAgIDU3ICsrKysrKysrKysrKysrKysr
+KysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMzMgaW5zZXJ0
+aW9ucygrKSwgMjQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9tdGQvdWJpLW1l
+ZGlhLmggYi9pbmNsdWRlL210ZC91YmktbWVkaWEuaAppbmRleCBjZDFiZDhlLi4wOGJlYzNlIDEw
+MDY0NAotLS0gYS9pbmNsdWRlL210ZC91YmktbWVkaWEuaAorKysgYi9pbmNsdWRlL210ZC91Ymkt
+bWVkaWEuaApAQCAtMTEsNiArMTEsOSBAQAogICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1Mg
+Rk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiBTZWUKICAqIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMg
+TGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgogICoKKyAqIFlvdSBzaG91bGQgaGF2ZSByZWNlaXZl
+ZCBhIGNvcHkgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlCisgKiBhbG9uZyB3aXRo
+IHRoaXMgcHJvZ3JhbTsgaWYgbm90LCB3cml0ZSB0byB0aGUgRnJlZSBTb2Z0d2FyZQorICogRm91
+bmRhdGlvbiwgSW5jLiwgNTkgVGVtcGxlIFBsYWNlLCBTdWl0ZSAzMzAsIEJvc3RvbiwgTUEgMDIx
+MTEtMTMwNyBVU0EKICAqCiAgKiBBdXRob3JzOiBBcnRlbSBCaXR5dXRza2l5ICjQkdC40YLRjtGG
+0LrQuNC5INCQ0YDRgtGR0LwpCiAgKiAgICAgICAgICBUaG9tYXMgR2xlaXhuZXIKQEAgLTk1LDEw
+ICs5OCwxMSBAQCBlbnVtIHsKICAqIENvbXBhdGliaWxpdHkgY29uc3RhbnRzIHVzZWQgYnkgaW50
+ZXJuYWwgdm9sdW1lcy4KICAqCiAgKiBAVUJJX0NPTVBBVF9ERUxFVEU6IGRlbGV0ZSB0aGlzIGlu
+dGVybmFsIHZvbHVtZSBiZWZvcmUgYW55dGhpbmcgaXMgd3JpdHRlbgotICogdG8gdGhlIGZsYXNo
+CisgKiAgICAgICAgICAgICAgICAgICAgIHRvIHRoZSBmbGFzaAogICogQFVCSV9DT01QQVRfUk86
+IGF0dGFjaCB0aGlzIGRldmljZSBpbiByZWFkLW9ubHkgbW9kZQogICogQFVCSV9DT01QQVRfUFJF
+U0VSVkU6IHByZXNlcnZlIHRoaXMgaW50ZXJuYWwgdm9sdW1lIC0gZG8gbm90IHRvdWNoIGl0cwot
+ICogcGh5c2ljYWwgZXJhc2VibG9ja3MsIGRvbid0IGFsbG93IHRoZSB3ZWFyLWxldmVsaW5nIHVu
+aXQgdG8gbW92ZSB0aGVtCisgKiAgICAgICAgICAgICAgICAgICAgICAgcGh5c2ljYWwgZXJhc2Vi
+bG9ja3MsIGRvbid0IGFsbG93IHRoZSB3ZWFyLWxldmVsaW5nCisgKiAgICAgICAgICAgICAgICAg
+ICAgICAgc3ViLXN5c3RlbSB0byBtb3ZlIHRoZW0KICAqIEBVQklfQ09NUEFUX1JFSkVDVDogcmVq
+ZWN0IHRoaXMgVUJJIGltYWdlCiAgKi8KIGVudW0gewpAQCAtMTIwLDE4ICsxMjQsMTkgQEAgZW51
+bSB7CiAgKiBzdHJ1Y3QgdWJpX2VjX2hkciAtIFVCSSBlcmFzZSBjb3VudGVyIGhlYWRlci4KICAq
+IEBtYWdpYzogZXJhc2UgY291bnRlciBoZWFkZXIgbWFnaWMgbnVtYmVyICglVUJJX0VDX0hEUl9N
+QUdJQykKICAqIEB2ZXJzaW9uOiB2ZXJzaW9uIG9mIFVCSSBpbXBsZW1lbnRhdGlvbiB3aGljaCBp
+cyBzdXBwb3NlZCB0byBhY2NlcHQgdGhpcwotICogVUJJIGltYWdlCisgKiAgICAgICAgICAgVUJJ
+IGltYWdlCiAgKiBAcGFkZGluZzE6IHJlc2VydmVkIGZvciBmdXR1cmUsIHplcm9lcwogICogQGVj
+OiB0aGUgZXJhc2UgY291bnRlcgogICogQHZpZF9oZHJfb2Zmc2V0OiB3aGVyZSB0aGUgVklEIGhl
+YWRlciBzdGFydHMKICAqIEBkYXRhX29mZnNldDogd2hlcmUgdGhlIHVzZXIgZGF0YSBzdGFydAor
+ICogQGltYWdlX3NlcTogaW1hZ2Ugc2VxdWVuY2UgbnVtYmVyCiAgKiBAcGFkZGluZzI6IHJlc2Vy
+dmVkIGZvciBmdXR1cmUsIHplcm9lcwogICogQGhkcl9jcmM6IGVyYXNlIGNvdW50ZXIgaGVhZGVy
+IENSQyBjaGVja3N1bQogICoKICAqIFRoZSBlcmFzZSBjb3VudGVyIGhlYWRlciB0YWtlcyA2NCBi
+eXRlcyBhbmQgaGFzIGEgcGxlbnR5IG9mIHVudXNlZCBzcGFjZSBmb3IKICAqIGZ1dHVyZSB1c2Fn
+ZS4gVGhlIHVudXNlZCBmaWVsZHMgYXJlIHplcm9lZC4gVGhlIEB2ZXJzaW9uIGZpZWxkIGlzIHVz
+ZWQgdG8KICAqIGluZGljYXRlIHRoZSB2ZXJzaW9uIG9mIFVCSSBpbXBsZW1lbnRhdGlvbiB3aGlj
+aCBpcyBzdXBwb3NlZCB0byBiZSBhYmxlIHRvCi0gKiB3b3JrIHdpdGggdGhpcyBVQkkgaW1hZ2Uu
+IElmIEB2ZXJzaW9uIGlzIGdyZWF0ZXIgdGhlbiB0aGUgY3VycmVudCBVQkkKKyAqIHdvcmsgd2l0
+aCB0aGlzIFVCSSBpbWFnZS4gSWYgQHZlcnNpb24gaXMgZ3JlYXRlciB0aGFuIHRoZSBjdXJyZW50
+IFVCSQogICogdmVyc2lvbiwgdGhlIGltYWdlIGlzIHJlamVjdGVkLiBUaGlzIG1heSBiZSB1c2Vm
+dWwgaW4gZnV0dXJlIGlmIHNvbWV0aGluZwogICogaXMgY2hhbmdlZCByYWRpY2FsbHkuIFRoaXMg
+ZmllbGQgaXMgZHVwbGljYXRlZCBpbiB0aGUgdm9sdW1lIGlkZW50aWZpZXIKICAqIGhlYWRlci4K
+QEAgLTE0MCw2ICsxNDUsMTQgQEAgZW51bSB7CiAgKiB2b2x1bWUgaWRlbnRpZmllciBoZWFkZXIg
+YW5kIHVzZXIgZGF0YSwgcmVsYXRpdmUgdG8gdGhlIGJlZ2lubmluZyBvZiB0aGUKICAqIHBoeXNp
+Y2FsIGVyYXNlYmxvY2suIFRoZXNlIHZhbHVlcyBoYXZlIHRvIGJlIHRoZSBzYW1lIGZvciBhbGwg
+cGh5c2ljYWwKICAqIGVyYXNlYmxvY2tzLgorICoKKyAqIFRoZSBAaW1hZ2Vfc2VxIGZpZWxkIGlz
+IHVzZWQgdG8gdmFsaWRhdGUgYSBVQkkgaW1hZ2UgdGhhdCBoYXMgYmVlbiBwcmVwYXJlZAorICog
+Zm9yIGEgVUJJIGRldmljZS4gVGhlIEBpbWFnZV9zZXEgdmFsdWUgY2FuIGJlIGFueSB2YWx1ZSwg
+YnV0IGl0IG11c3QgYmUgdGhlCisgKiBzYW1lIG9uIGFsbCBlcmFzZWJsb2Nrcy4gVUJJIHdpbGwg
+ZW5zdXJlIHRoYXQgYWxsIG5ldyBlcmFzZSBjb3VudGVyIGhlYWRlcnMKKyAqIGFsc28gY29udGFp
+biB0aGlzIHZhbHVlLCBhbmQgd2lsbCBjaGVjayB0aGUgdmFsdWUgd2hlbiBzY2FubmluZyBhdCBz
+dGFydC11cC4KKyAqIE9uZSB3YXkgdG8gbWFrZSB1c2Ugb2YgQGltYWdlX3NlcSBpcyB0byBpbmNy
+ZWFzZSBpdHMgdmFsdWUgYnkgb25lIGV2ZXJ5IHRpbWUKKyAqIGFuIGltYWdlIGlzIGZsYXNoZWQg
+b3ZlciBhbiBleGlzdGluZyBpbWFnZSwgdGhlbiwgaWYgdGhlIGZsYXNoaW5nIGRvZXMgbm90Cisg
+KiBjb21wbGV0ZSwgVUJJIHdpbGwgZGV0ZWN0IHRoZSBlcnJvciB3aGVuIHNjYW5uaW5nLgogICov
+CiBzdHJ1Y3QgdWJpX2VjX2hkciB7CiAJX19iZTMyICBtYWdpYzsKQEAgLTE0OCw3ICsxNjEsOCBA
+QCBzdHJ1Y3QgdWJpX2VjX2hkciB7CiAJX19iZTY0ICBlYzsgLyogV2FybmluZzogdGhlIGN1cnJl
+bnQgbGltaXQgaXMgMzEtYml0IGFueXdheSEgKi8KIAlfX2JlMzIgIHZpZF9oZHJfb2Zmc2V0Owog
+CV9fYmUzMiAgZGF0YV9vZmZzZXQ7Ci0JX191OCAgICBwYWRkaW5nMlszNl07CisJX19iZTMyICBp
+bWFnZV9zZXE7CisJX191OCAgICBwYWRkaW5nMlszMl07CiAJX19iZTMyICBoZHJfY3JjOwogfSBf
+X2F0dHJpYnV0ZV9fICgocGFja2VkKSk7CiAKQEAgLTE1NiwyNCArMTcwLDIzIEBAIHN0cnVjdCB1
+YmlfZWNfaGRyIHsKICAqIHN0cnVjdCB1YmlfdmlkX2hkciAtIG9uLWZsYXNoIFVCSSB2b2x1bWUg
+aWRlbnRpZmllciBoZWFkZXIuCiAgKiBAbWFnaWM6IHZvbHVtZSBpZGVudGlmaWVyIGhlYWRlciBt
+YWdpYyBudW1iZXIgKCVVQklfVklEX0hEUl9NQUdJQykKICAqIEB2ZXJzaW9uOiBVQkkgaW1wbGVt
+ZW50YXRpb24gdmVyc2lvbiB3aGljaCBpcyBzdXBwb3NlZCB0byBhY2NlcHQgdGhpcyBVQkkKLSAq
+IGltYWdlICglVUJJX1ZFUlNJT04pCisgKiAgICAgICAgICAgaW1hZ2UgKCVVQklfVkVSU0lPTikK
+ICAqIEB2b2xfdHlwZTogdm9sdW1lIHR5cGUgKCVVQklfVklEX0RZTkFNSUMgb3IgJVVCSV9WSURf
+U1RBVElDKQogICogQGNvcHlfZmxhZzogaWYgdGhpcyBsb2dpY2FsIGVyYXNlYmxvY2sgd2FzIGNv
+cGllZCBmcm9tIGFub3RoZXIgcGh5c2ljYWwKLSAqIGVyYXNlYmxvY2sgKGZvciB3ZWFyLWxldmVs
+aW5nIHJlYXNvbnMpCisgKiAgICAgICAgICAgICBlcmFzZWJsb2NrIChmb3Igd2Vhci1sZXZlbGlu
+ZyByZWFzb25zKQogICogQGNvbXBhdDogY29tcGF0aWJpbGl0eSBvZiB0aGlzIHZvbHVtZSAoJTAs
+ICVVQklfQ09NUEFUX0RFTEVURSwKLSAqICVVQklfQ09NUEFUX0lHTk9SRSwgJVVCSV9DT01QQVRf
+UFJFU0VSVkUsIG9yICVVQklfQ09NUEFUX1JFSkVDVCkKKyAqICAgICAgICAgICVVQklfQ09NUEFU
+X0lHTk9SRSwgJVVCSV9DT01QQVRfUFJFU0VSVkUsIG9yICVVQklfQ09NUEFUX1JFSkVDVCkKICAq
+IEB2b2xfaWQ6IElEIG9mIHRoaXMgdm9sdW1lCiAgKiBAbG51bTogbG9naWNhbCBlcmFzZWJsb2Nr
+IG51bWJlcgotICogQGxlYl92ZXI6IHZlcnNpb24gb2YgdGhpcyBsb2dpY2FsIGVyYXNlYmxvY2sg
+KElNUE9SVEFOVDogb2Jzb2xldGUsIHRvIGJlCi0gKiByZW1vdmVkLCBrZXB0IG9ubHkgZm9yIG5v
+dCBicmVha2luZyBvbGRlciBVQkkgdXNlcnMpCisgKiBAcGFkZGluZzE6IHJlc2VydmVkIGZvciBm
+dXR1cmUsIHplcm9lcwogICogQGRhdGFfc2l6ZTogaG93IG1hbnkgYnl0ZXMgb2YgZGF0YSB0aGlz
+IGxvZ2ljYWwgZXJhc2VibG9jayBjb250YWlucwogICogQHVzZWRfZWJzOiB0b3RhbCBudW1iZXIg
+b2YgdXNlZCBsb2dpY2FsIGVyYXNlYmxvY2tzIGluIHRoaXMgdm9sdW1lCiAgKiBAZGF0YV9wYWQ6
+IGhvdyBtYW55IGJ5dGVzIGF0IHRoZSBlbmQgb2YgdGhpcyBwaHlzaWNhbCBlcmFzZWJsb2NrIGFy
+ZSBub3QKLSAqIHVzZWQKKyAqICAgICAgICAgICAgdXNlZAogICogQGRhdGFfY3JjOiBDUkMgY2hl
+Y2tzdW0gb2YgdGhlIGRhdGEgc3RvcmVkIGluIHRoaXMgbG9naWNhbCBlcmFzZWJsb2NrCi0gKiBA
+cGFkZGluZzE6IHJlc2VydmVkIGZvciBmdXR1cmUsIHplcm9lcwotICogQHNxbnVtOiBzZXF1ZW5j
+ZSBudW1iZXIKICAqIEBwYWRkaW5nMjogcmVzZXJ2ZWQgZm9yIGZ1dHVyZSwgemVyb2VzCisgKiBA
+c3FudW06IHNlcXVlbmNlIG51bWJlcgorICogQHBhZGRpbmczOiByZXNlcnZlZCBmb3IgZnV0dXJl
+LCB6ZXJvZXMKICAqIEBoZHJfY3JjOiB2b2x1bWUgaWRlbnRpZmllciBoZWFkZXIgQ1JDIGNoZWNr
+c3VtCiAgKgogICogVGhlIEBzcW51bSBpcyB0aGUgdmFsdWUgb2YgdGhlIGdsb2JhbCBzZXF1ZW5j
+ZSBjb3VudGVyIGF0IHRoZSB0aW1lIHdoZW4gdGhpcwpAQCAtMTg0LDcgKzE5Nyw3IEBAIHN0cnVj
+dCB1YmlfZWNfaGRyIHsKICAqIChzZXF1ZW5jZSBudW1iZXIpIGlzIHVzZWQgdG8gZGlzdGluZ3Vp
+c2ggYmV0d2VlbiBvbGRlciBhbmQgbmV3ZXIgdmVyc2lvbnMgb2YKICAqIGxvZ2ljYWwgZXJhc2Vi
+bG9ja3MuCiAgKgotICogVGhlcmUgYXJlIDIgc2l0dWF0aW9ucyB3aGVuIHRoZXJlIG1heSBiZSBt
+b3JlIHRoZW4gb25lIHBoeXNpY2FsIGVyYXNlYmxvY2sKKyAqIFRoZXJlIGFyZSAyIHNpdHVhdGlv
+bnMgd2hlbiB0aGVyZSBtYXkgYmUgbW9yZSB0aGFuIG9uZSBwaHlzaWNhbCBlcmFzZWJsb2NrCiAg
+KiBjb3JyZXNwb25kaW5nIHRvIHRoZSBzYW1lIGxvZ2ljYWwgZXJhc2VibG9jaywgaS5lLiwgaGF2
+aW5nIHRoZSBzYW1lIEB2b2xfaWQKICAqIGFuZCBAbG51bSB2YWx1ZXMgaW4gdGhlIHZvbHVtZSBp
+ZGVudGlmaWVyIGhlYWRlci4gU3VwcG9zZSB3ZSBoYXZlIGEgbG9naWNhbAogICogZXJhc2VibG9j
+ayBMIGFuZCBpdCBpcyBtYXBwZWQgdG8gdGhlIHBoeXNpY2FsIGVyYXNlYmxvY2sgUC4KQEAgLTIy
+MSwxMCArMjM0LDYgQEAgc3RydWN0IHViaV9lY19oZHIgewogICogY2hlY2tzdW0gaXMgY29ycmVj
+dCwgdGhpcyBwaHlzaWNhbCBlcmFzZWJsb2NrIGlzIHNlbGVjdGVkIChQMSkuIE90aGVyd2lzZQog
+ICogdGhlIG9sZGVyIG9uZSAoUCkgaXMgc2VsZWN0ZWQuCiAgKgotICogTm90ZSwgdGhlcmUgaXMg
+YW4gb2Jzb2xldGUgQGxlYl92ZXIgZmllbGQgd2hpY2ggd2FzIHVzZWQgaW5zdGVhZCBvZiBAc3Fu
+dW0KLSAqIGluIHRoZSBwYXN0LiBCdXQgaXQgaXMgbm90IHVzZWQgYW55bW9yZSBhbmQgd2Uga2Vl
+cCBpdCBpbiBvcmRlciB0byBiZSBhYmxlCi0gKiB0byBkZWFsIHdpdGggb2xkIFVCSSBpbWFnZXMu
+IEl0IHdpbGwgYmUgcmVtb3ZlZCBhdCBzb21lIHBvaW50LgotICoKICAqIFRoZXJlIGFyZSAyIHNv
+cnRzIG9mIHZvbHVtZXMgaW4gVUJJOiB1c2VyIHZvbHVtZXMgYW5kIGludGVybmFsIHZvbHVtZXMu
+CiAgKiBJbnRlcm5hbCB2b2x1bWVzIGFyZSBub3Qgc2VlbiBmcm9tIG91dHNpZGUgYW5kIGFyZSB1
+c2VkIGZvciB2YXJpb3VzIGludGVybmFsCiAgKiBVQkkgcHVycG9zZXMuIEluIHRoaXMgaW1wbGVt
+ZW50YXRpb24gdGhlcmUgaXMgb25seSBvbmUgaW50ZXJuYWwgdm9sdW1lIC0gdGhlCkBAIC0yNDUs
+OSArMjU0LDkgQEAgc3RydWN0IHViaV9lY19oZHIgewogICogVGhlIEBkYXRhX2NyYyBmaWVsZCBj
+b250YWlucyB0aGUgQ1JDIGNoZWNrc3VtIG9mIHRoZSBjb250ZW50cyBvZiB0aGUgbG9naWNhbAog
+ICogZXJhc2VibG9jayBpZiB0aGlzIGlzIGEgc3RhdGljIHZvbHVtZS4gSW4gY2FzZSBvZiBkeW5h
+bWljIHZvbHVtZXMsIGl0IGRvZXMKICAqIG5vdCBjb250YWluIHRoZSBDUkMgY2hlY2tzdW0gYXMg
+YSBydWxlLiBUaGUgb25seSBleGNlcHRpb24gaXMgd2hlbiB0aGUKLSAqIGRhdGEgb2YgdGhlIHBo
+eXNpY2FsIGVyYXNlYmxvY2sgd2FzIG1vdmVkIGJ5IHRoZSB3ZWFyLWxldmVsaW5nIHVuaXQsIHRo
+ZW4KLSAqIHRoZSB3ZWFyLWxldmVsaW5nIHVuaXQgY2FsY3VsYXRlcyB0aGUgZGF0YSBDUkMgYW5k
+IHN0b3JlcyBpdCBpbiB0aGUKLSAqIEBkYXRhX2NyYyBmaWVsZC4gQW5kIG9mIGNvdXJzZSwgdGhl
+IEBjb3B5X2ZsYWcgaXMgJWluIHRoaXMgY2FzZS4KKyAqIGRhdGEgb2YgdGhlIHBoeXNpY2FsIGVy
+YXNlYmxvY2sgd2FzIG1vdmVkIGJ5IHRoZSB3ZWFyLWxldmVsaW5nIHN1Yi1zeXN0ZW0sCisgKiB0
+aGVuIHRoZSB3ZWFyLWxldmVsaW5nIHN1Yi1zeXN0ZW0gY2FsY3VsYXRlcyB0aGUgZGF0YSBDUkMg
+YW5kIHN0b3JlcyBpdCBpbgorICogdGhlIEBkYXRhX2NyYyBmaWVsZC4gQW5kIG9mIGNvdXJzZSwg
+dGhlIEBjb3B5X2ZsYWcgaXMgJWluIHRoaXMgY2FzZS4KICAqCiAgKiBUaGUgQGRhdGFfc2l6ZSBm
+aWVsZCBpcyB1c2VkIG9ubHkgZm9yIHN0YXRpYyB2b2x1bWVzIGJlY2F1c2UgVUJJIGhhcyB0byBr
+bm93CiAgKiBob3cgbWFueSBieXRlcyBvZiBkYXRhIGFyZSBzdG9yZWQgaW4gdGhpcyBlcmFzZWJs
+b2NrLiBGb3IgZHluYW1pYyB2b2x1bWVzLApAQCAtMjc0LDE0ICsyODMsMTQgQEAgc3RydWN0IHVi
+aV92aWRfaGRyIHsKIAlfX3U4ICAgIGNvbXBhdDsKIAlfX2JlMzIgIHZvbF9pZDsKIAlfX2JlMzIg
+IGxudW07Ci0JX19iZTMyICBsZWJfdmVyOyAvKiBvYnNvbGV0ZSwgdG8gYmUgcmVtb3ZlZCwgZG9u
+J3QgdXNlICovCisJX19iZTMyICBsZWJfdmVyOwogCV9fYmUzMiAgZGF0YV9zaXplOwogCV9fYmUz
+MiAgdXNlZF9lYnM7CiAJX19iZTMyICBkYXRhX3BhZDsKIAlfX2JlMzIgIGRhdGFfY3JjOwotCV9f
+dTggICAgcGFkZGluZzFbNF07CisJX191OCAgICBwYWRkaW5nMls0XTsKIAlfX2JlNjQgIHNxbnVt
+OwotCV9fdTggICAgcGFkZGluZzJbMTJdOworCV9fdTggICAgcGFkZGluZzNbMTJdOwogCV9fYmUz
+MiAgaGRyX2NyYzsKIH0gX19hdHRyaWJ1dGVfXyAoKHBhY2tlZCkpOwogCi0tIAoxLjcuMTAuNAoK
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
+bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
+cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
