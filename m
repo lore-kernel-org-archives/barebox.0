@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f49.google.com ([209.85.215.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TRcwi-0008PQ-9p
- for barebox@lists.infradead.org; Fri, 26 Oct 2012 05:59:04 +0000
-Received: by mail-la0-f49.google.com with SMTP id z14so2151175lag.36
- for <barebox@lists.infradead.org>; Thu, 25 Oct 2012 22:59:00 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 26 Oct 2012 09:58:52 +0400
-Message-Id: <1351231135-17324-1-git-send-email-antonynpavlov@gmail.com>
+ id 1TRdsu-0003z6-HH
+ for barebox@lists.infradead.org; Fri, 26 Oct 2012 06:59:13 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 26 Oct 2012 08:59:08 +0200
+Message-Id: <1351234748-24994-16-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1351234748-24994-1-git-send-email-s.hauer@pengutronix.de>
+References: <1351234748-24994-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,19 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 0/3] readline: add ctrl-w handling (cut-the-last-word)
+Subject: [PATCH 15/15] ARM omap spi image: print error to stderr
 To: barebox@lists.infradead.org
 
-The popular 'bash' command interpreter has the ctrl-w keystroke for
-cutting the last word in the command line. This keystroke is
-very handy for me and I really miss it in barebox.
+Since the utility outputs the image on stdout we have to print the
+error messages to stderr in order to see them.
 
-This patch series adds ctrl-w support to barebox's readline
-and in addition fixes a typo.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ scripts/mk-am35xx-spi-image.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[RFC 1/3] readline: move backspace key handling to the DO_BACKSPACE
-[RFC 2/3] readline: add ctrl-w handling (cut-the-last-word)
-[RFC 3/3] readline: fix the 'new blank line at EOF' typo
+diff --git a/scripts/mk-am35xx-spi-image.c b/scripts/mk-am35xx-spi-image.c
+index 1372fbd..74e79db 100644
+--- a/scripts/mk-am35xx-spi-image.c
++++ b/scripts/mk-am35xx-spi-image.c
+@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
+ 		exit(EXIT_FAILURE);
+ 	}
+ 	if (pos > 0x100000) {
+-		printf("error: image should be smaller than 1 MiB\n");
++		fprintf(stderr, "error: image should be smaller than 1 MiB\n");
+ 		exit(EXIT_FAILURE);
+ 	}
+ 
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
