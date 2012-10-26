@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TRdsy-0003z3-U5
- for barebox@lists.infradead.org; Fri, 26 Oct 2012 06:59:20 +0000
+ id 1TRdt1-00042Y-VH
+ for barebox@lists.infradead.org; Fri, 26 Oct 2012 06:59:21 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 26 Oct 2012 08:59:04 +0200
-Message-Id: <1351234748-24994-12-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 26 Oct 2012 08:59:05 +0200
+Message-Id: <1351234748-24994-13-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1351234748-24994-1-git-send-email-s.hauer@pengutronix.de>
 References: <1351234748-24994-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,31 +21,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/15] mtd nand i.MX: fix compilation for unsupported SoC
+Subject: [PATCH 12/15] of gpio: Build gpio helper only when gpiolib is selected
 To: barebox@lists.infradead.org
 
-Add a default case when all if(nfc_is_*) else if()
-return false to prevent a compiler warning.
+Otherwise the functions needed by the helper won't be available.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand_imx.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/of/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/nand_imx.c
-index b1b7f55..ef927c5 100644
---- a/drivers/mtd/nand/nand_imx.c
-+++ b/drivers/mtd/nand/nand_imx.c
-@@ -1175,6 +1175,9 @@ static int __init imxnd_probe(struct device_d *dev)
- 		oob_smallpage = &nandv2_hw_eccoob_smallpage;
- 		oob_largepage = &nandv2_hw_eccoob_largepage;
- 		oob_4kpage = &nandv2_hw_eccoob_4k;
-+	} else {
-+		err = -EINVAL;
-+		goto escan;
- 	}
- 
- 	host->dev = dev;
+diff --git a/drivers/of/Makefile b/drivers/of/Makefile
+index c14aaec..5a5960d 100644
+--- a/drivers/of/Makefile
++++ b/drivers/of/Makefile
+@@ -1,3 +1,3 @@
+ obj-y += base.o
+-obj-y += gpio.o
++obj-$(CONFIG_GPIOLIB) += gpio.o
+ obj-y += partition.o
 -- 
 1.7.10.4
 
