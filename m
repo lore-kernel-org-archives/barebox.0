@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TRgy6-0001Zu-PB
+ id 1TRgy6-0001a5-PG
  for barebox@lists.infradead.org; Fri, 26 Oct 2012 10:17:02 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Fri, 26 Oct 2012 12:16:34 +0200
-Message-Id: <1351246602-8859-3-git-send-email-w.sang@pengutronix.de>
+Date: Fri, 26 Oct 2012 12:16:40 +0200
+Message-Id: <1351246602-8859-9-git-send-email-w.sang@pengutronix.de>
 In-Reply-To: <1351246602-8859-1-git-send-email-w.sang@pengutronix.de>
 References: <1351246602-8859-1-git-send-email-w.sang@pengutronix.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,332 +16,570 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?q?=5BRFC=2002/10=5D=20ubi=3A=20consolidate=20ubi-media=2Eh?=
+Subject: [RFC 08/10] lib: add libubigen
 To: barebox@lists.infradead.org
 Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-V2UgaGF2ZSB0d28gdmVyc2lvbnMgaW4gdGhlIHRyZWUuIFVzZSB0aGUgbmV3ZXIgb25lLCBhbmQg
-cHV0IGl0IGludG8gdGhlCm10ZCBkaXJlY3Rvcnkgd2hpbGUgd2UgYXJlIGF0IGl0LgoKU2lnbmVk
-LW9mZi1ieTogV29sZnJhbSBTYW5nIDx3LnNhbmdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogY29tbWFu
-ZHMvdWJpLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAyICstCiBkcml2ZXJz
-L210ZC91YmkvdWJpLmggICAgICAgICAgICAgICAgICAgICAgICB8ICAgIDMgKy0KIHtkcml2ZXJz
-L210ZC91YmkgPT4gaW5jbHVkZS9tdGR9L3ViaS1tZWRpYS5oIHwgICAgMAogaW5jbHVkZS91Ymkt
-bWVkaWEuaCAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMzcwIC0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tCiA0IGZpbGVzIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMzcyIGRlbGV0aW9u
-cygtKQogcmVuYW1lIHtkcml2ZXJzL210ZC91YmkgPT4gaW5jbHVkZS9tdGR9L3ViaS1tZWRpYS5o
-ICgxMDAlKQogZGVsZXRlIG1vZGUgMTAwNjQ0IGluY2x1ZGUvdWJpLW1lZGlhLmgKCmRpZmYgLS1n
-aXQgYS9jb21tYW5kcy91YmkuYyBiL2NvbW1hbmRzL3ViaS5jCmluZGV4IGJmNzAwNzEuLjE2NTNl
-YWEgMTAwNjQ0Ci0tLSBhL2NvbW1hbmRzL3ViaS5jCisrKyBiL2NvbW1hbmRzL3ViaS5jCkBAIC05
-LDcgKzksNyBAQAogI2luY2x1ZGUgPGxpbnV4L2tlcm5lbC5oPgogI2luY2x1ZGUgPGxpbnV4L210
-ZC9tdGQtYWJpLmg+CiAjaW5jbHVkZSA8bXRkL3ViaS11c2VyLmg+Ci0jaW5jbHVkZSA8dWJpLW1l
-ZGlhLmg+CisjaW5jbHVkZSA8bXRkL3ViaS1tZWRpYS5oPgogCiBzdGF0aWMgaW50IGRvX3ViaW1r
-dm9sKGludCBhcmdjLCBjaGFyICphcmd2W10pCiB7CmRpZmYgLS1naXQgYS9kcml2ZXJzL210ZC91
-YmkvdWJpLmggYi9kcml2ZXJzL210ZC91YmkvdWJpLmgKaW5kZXggOTdhZWQ4Zi4uOTY0YTNjNCAx
-MDA2NDQKLS0tIGEvZHJpdmVycy9tdGQvdWJpL3ViaS5oCisrKyBiL2RyaXZlcnMvbXRkL3ViaS91
-YmkuaApAQCAtNDUsNyArNDUsOCBAQAogI2luY2x1ZGUgPGxpbnV4L210ZC9tdGQuaD4KICNpbmNs
-dWRlIDxsaW51eC9tdGQvdWJpLmg+CiAKLSNpbmNsdWRlICJ1YmktbWVkaWEuaCIKKyNpbmNsdWRl
-IDxtdGQvdWJpLW1lZGlhLmg+CisKICNpbmNsdWRlICJzY2FuLmgiCiAjaW5jbHVkZSAiZGVidWcu
-aCIKIApkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvdWJpL3ViaS1tZWRpYS5oIGIvaW5jbHVkZS9t
-dGQvdWJpLW1lZGlhLmgKc2ltaWxhcml0eSBpbmRleCAxMDAlCnJlbmFtZSBmcm9tIGRyaXZlcnMv
-bXRkL3ViaS91YmktbWVkaWEuaApyZW5hbWUgdG8gaW5jbHVkZS9tdGQvdWJpLW1lZGlhLmgKZGlm
-ZiAtLWdpdCBhL2luY2x1ZGUvdWJpLW1lZGlhLmggYi9pbmNsdWRlL3ViaS1tZWRpYS5oCmRlbGV0
-ZWQgZmlsZSBtb2RlIDEwMDY0NAppbmRleCA0ZWRiYmIyLi4wMDAwMDAwCi0tLSBhL2luY2x1ZGUv
-dWJpLW1lZGlhLmgKKysrIC9kZXYvbnVsbApAQCAtMSwzNzAgKzAsMCBAQAotLyoKLSAqIENvcHly
-aWdodCAoYykgSW50ZXJuYXRpb25hbCBCdXNpbmVzcyBNYWNoaW5lcyBDb3JwLiwgMjAwNgotICoK
-LSAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBp
-dCBhbmQvb3IgbW9kaWZ5Ci0gKiBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFs
-IFB1YmxpYyBMaWNlbnNlIGFzIHB1Ymxpc2hlZCBieQotICogdGhlIEZyZWUgU29mdHdhcmUgRm91
-bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZiB0aGUgTGljZW5zZSwgb3IKLSAqIChhdCB5b3Vy
-IG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCi0gKgotICogVGhpcyBwcm9ncmFtIGlzIGRpc3Ry
-aWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCi0gKiBidXQgV0lUSE9V
-VCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgotICog
-TUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiBTZWUK
-LSAqIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgotICoK
-LSAqCi0gKiBBdXRob3JzOiBBcnRlbSBCaXR5dXRza2l5ICjQkdC40YLRjtGG0LrQuNC5INCQ0YDR
-gtGR0LwpCi0gKiAgICAgICAgICBUaG9tYXMgR2xlaXhuZXIKLSAqICAgICAgICAgIEZyYW5rIEhh
-dmVya2FtcAotICogICAgICAgICAgT2xpdmVyIExvaG1hbm4KLSAqICAgICAgICAgIEFuZHJlYXMg
-QXJuZXoKLSAqLwotCi0vKgotICogVGhpcyBmaWxlIGRlZmluZXMgdGhlIGxheW91dCBvZiBVQkkg
-aGVhZGVycyBhbmQgYWxsIHRoZSBvdGhlciBVQkkgb24tZmxhc2gKLSAqIGRhdGEgc3RydWN0dXJl
-cy4KLSAqLwotCi0jaWZuZGVmIF9fVUJJX01FRElBX0hfXwotI2RlZmluZSBfX1VCSV9NRURJQV9I
-X18KLQotI2lmbmRlZiBET1hZR0VOX1NIT1VMRF9TS0lQX1RISVMKLQotI2luY2x1ZGUgPGFzbS9i
-eXRlb3JkZXIuaD4KLQotLyogVGhlIHZlcnNpb24gb2YgVUJJIGltYWdlcyBzdXBwb3J0ZWQgYnkg
-dGhpcyBpbXBsZW1lbnRhdGlvbiAqLwotI2RlZmluZSBVQklfVkVSU0lPTiAxCi0KLS8qIFRoZSBo
-aWdoZXN0IGVyYXNlIGNvdW50ZXIgdmFsdWUgc3VwcG9ydGVkIGJ5IHRoaXMgaW1wbGVtZW50YXRp
-b24gKi8KLSNkZWZpbmUgVUJJX01BWF9FUkFTRUNPVU5URVIgMHg3RkZGRkZGRgotCi0vKiBUaGUg
-aW5pdGlhbCBDUkMzMiB2YWx1ZSB1c2VkIHdoZW4gY2FsY3VsYXRpbmcgQ1JDIGNoZWNrc3VtcyAq
-LwotI2RlZmluZSBVQklfQ1JDMzJfSU5JVCAweEZGRkZGRkZGVQotCi0vKiBFcmFzZSBjb3VudGVy
-IGhlYWRlciBtYWdpYyBudW1iZXIgKEFTQ0lJICJVQkkjIikgKi8KLSNkZWZpbmUgVUJJX0VDX0hE
-Ul9NQUdJQyAgMHg1NTQyNDkyMwotLyogVm9sdW1lIGlkZW50aWZpZXIgaGVhZGVyIG1hZ2ljIG51
-bWJlciAoQVNDSUkgIlVCSSEiKSAqLwotI2RlZmluZSBVQklfVklEX0hEUl9NQUdJQyAweDU1NDI0
-OTIxCi0KLS8qCi0gKiBWb2x1bWUgdHlwZSBjb25zdGFudHMgdXNlZCBpbiB0aGUgdm9sdW1lIGlk
-ZW50aWZpZXIgaGVhZGVyLgotICoKLSAqIEBVQklfVklEX0RZTkFNSUM6IGR5bmFtaWMgdm9sdW1l
-Ci0gKiBAVUJJX1ZJRF9TVEFUSUM6IHN0YXRpYyB2b2x1bWUKLSAqLwotZW51bSB7Ci0JVUJJX1ZJ
-RF9EWU5BTUlDID0gMSwKLQlVQklfVklEX1NUQVRJQyAgPSAyCi19OwotCi0vKgotICogVm9sdW1l
-IGZsYWdzIHVzZWQgaW4gdGhlIHZvbHVtZSB0YWJsZSByZWNvcmQuCi0gKgotICogQFVCSV9WVEJM
-X0FVVE9SRVNJWkVfRkxHOiBhdXRvLXJlc2l6ZSB0aGlzIHZvbHVtZQotICoKLSAqICVVQklfVlRC
-TF9BVVRPUkVTSVpFX0ZMRyBmbGFnIGNhbiBiZSBzZXQgb25seSBmb3Igb25lIHZvbHVtZSBpbiB0
-aGUgdm9sdW1lCi0gKiB0YWJsZS4gVUJJIGF1dG9tYXRpY2FsbHkgcmUtc2l6ZXMgdGhlIHZvbHVt
-ZSB3aGljaCBoYXMgdGhpcyBmbGFnIGFuZCBtYWtlcwotICogdGhlIHZvbHVtZSB0byBiZSBvZiBs
-YXJnZXN0IHBvc3NpYmxlIHNpemUuIFRoaXMgbWVhbnMgdGhhdCBpZiBhZnRlciB0aGUKLSAqIGlu
-aXRpYWxpemF0aW9uIFVCSSBmaW5kcyBvdXQgdGhhdCB0aGVyZSBhcmUgYXZhaWxhYmxlIHBoeXNp
-Y2FsIGVyYXNlYmxvY2tzCi0gKiBwcmVzZW50IG9uIHRoZSBkZXZpY2UsIGl0IGF1dG9tYXRpY2Fs
-bHkgYXBwZW5kcyBhbGwgb2YgdGhlbSB0byB0aGUgdm9sdW1lCi0gKiAodGhlIHBoeXNpY2FsIGVy
-YXNlYmxvY2tzIHJlc2VydmVkIGZvciBiYWQgZXJhc2VibG9ja3MgaGFuZGxpbmcgYW5kIG90aGVy
-Ci0gKiByZXNlcnZlZCBwaHlzaWNhbCBlcmFzZWJsb2NrcyBhcmUgbm90IHRha2VuKS4gU28sIGlm
-IHRoZXJlIGlzIGEgdm9sdW1lIHdpdGgKLSAqIHRoZSAlVUJJX1ZUQkxfQVVUT1JFU0laRV9GTEcg
-ZmxhZyBzZXQsIHRoZSBhbW91bnQgb2YgYXZhaWxhYmxlIGxvZ2ljYWwKLSAqIGVyYXNlYmxvY2tz
-IHdpbGwgYmUgemVybyBhZnRlciBVQkkgaXMgbG9hZGVkLCBiZWNhdXNlIGFsbCBvZiB0aGVtIHdp
-bGwgYmUKLSAqIHJlc2VydmVkIGZvciB0aGlzIHZvbHVtZS4gTm90ZSwgdGhlICVVQklfVlRCTF9B
-VVRPUkVTSVpFX0ZMRyBiaXQgaXMgY2xlYXJlZAotICogYWZ0ZXIgdGhlIHZvbHVtZSBoYWQgYmVl
-biBpbml0aWFsaXplZC4KLSAqCi0gKiBUaGUgYXV0by1yZXNpemUgZmVhdHVyZSBpcyB1c2VmdWwg
-Zm9yIGRldmljZSBwcm9kdWN0aW9uIHB1cnBvc2VzLiBGb3IKLSAqIGV4YW1wbGUsIGRpZmZlcmVu
-dCBOQU5EIGZsYXNoIGNoaXBzIG1heSBoYXZlIGRpZmZlcmVudCBhbW91bnQgb2YgaW5pdGlhbCBi
-YWQKLSAqIGVyYXNlYmxvY2tzLCBkZXBlbmRpbmcgb2YgcGFydGljdWxhciBjaGlwIGluc3RhbmNl
-LiBNYW51ZmFjdHVyZXJzIG9mIE5BTkQKLSAqIGNoaXBzIHVzdWFsbHkgZ3VhcmFudGVlIHRoYXQg
-dGhlIGFtb3VudCBvZiBpbml0aWFsIGJhZCBlcmFzZWJsb2NrcyBkb2VzIG5vdAotICogZXhjZWVk
-IGNlcnRhaW4gcGVyY2VudCwgZS5nLiAyJS4gV2hlbiBvbmUgY3JlYXRlcyBhbiBVQkkgaW1hZ2Ug
-d2hpY2ggd2lsbCBiZQotICogZmxhc2hlZCB0byB0aGUgZW5kIGRldmljZXMgaW4gcHJvZHVjdGlv
-biwgaGUgZG9lcyBub3Qga25vdyB0aGUgZXhhY3QgYW1vdW50Ci0gKiBvZiBnb29kIHBoeXNpY2Fs
-IGVyYXNlYmxvY2tzIHRoZSBOQU5EIGNoaXAgb24gdGhlIGRldmljZSB3aWxsIGhhdmUsIGJ1dCB0
-aGlzCi0gKiBudW1iZXIgaXMgcmVxdWlyZWQgdG8gY2FsY3VsYXRlIHRoZSB2b2x1bWUgc2l6ZWQg
-YW5kIHB1dCB0aGVtIHRvIHRoZSB2b2x1bWUKLSAqIHRhYmxlIG9mIHRoZSBVQkkgaW1hZ2UuIElu
-IHRoaXMgY2FzZSwgb25lIG9mIHRoZSB2b2x1bWVzIChlLmcuLCB0aGUgb25lCi0gKiB3aGljaCB3
-aWxsIHN0b3JlIHRoZSByb290IGZpbGUgc3lzdGVtKSBpcyBtYXJrZWQgYXMgImF1dG8tcmVzaXph
-YmxlIiwgYW5kCi0gKiBVQkkgd2lsbCBhZGp1c3QgaXRzIHNpemUgb24gdGhlIGZpcnN0IGJvb3Qg
-aWYgbmVlZGVkLgotICoKLSAqIE5vdGUsIGZpcnN0IFVCSSByZXNlcnZlcyBzb21lIGFtb3VudCBv
-ZiBwaHlzaWNhbCBlcmFzZWJsb2NrcyBmb3IgYmFkCi0gKiBlcmFzZWJsb2NrIGhhbmRsaW5nLCBh
-bmQgdGhlbiByZS1zaXplcyB0aGUgdm9sdW1lLCBub3QgdmljZS12ZXJzYS4gVGhpcwotICogbWVh
-bnMgdGhhdCB0aGUgcG9vbCBvZiByZXNlcnZlZCBwaHlzaWNhbCBlcmFzZWJsb2NrcyB3aWxsIGFs
-d2F5cyBiZSBwcmVzZW50LgotICovCi1lbnVtIHsKLQlVQklfVlRCTF9BVVRPUkVTSVpFX0ZMRyA9
-IDB4MDEsCi19OwotCi0vKgotICogQ29tcGF0aWJpbGl0eSBjb25zdGFudHMgdXNlZCBieSBpbnRl
-cm5hbCB2b2x1bWVzLgotICoKLSAqIEBVQklfQ09NUEFUX0RFTEVURTogZGVsZXRlIHRoaXMgaW50
-ZXJuYWwgdm9sdW1lIGJlZm9yZSBhbnl0aGluZyBpcyB3cml0dGVuCi0gKiAgICAgICAgICAgICAg
-ICAgICAgIHRvIHRoZSBmbGFzaAotICogQFVCSV9DT01QQVRfUk86IGF0dGFjaCB0aGlzIGRldmlj
-ZSBpbiByZWFkLW9ubHkgbW9kZQotICogQFVCSV9DT01QQVRfUFJFU0VSVkU6IHByZXNlcnZlIHRo
-aXMgaW50ZXJuYWwgdm9sdW1lIC0gZG8gbm90IHRvdWNoIGl0cwotICogICAgICAgICAgICAgICAg
-ICAgICAgIHBoeXNpY2FsIGVyYXNlYmxvY2tzLCBkb24ndCBhbGxvdyB0aGUgd2Vhci1sZXZlbGlu
-ZwotICogICAgICAgICAgICAgICAgICAgICAgIHN1Yi1zeXN0ZW0gdG8gbW92ZSB0aGVtCi0gKiBA
-VUJJX0NPTVBBVF9SRUpFQ1Q6IHJlamVjdCB0aGlzIFVCSSBpbWFnZQotICovCi1lbnVtIHsKLQlV
-QklfQ09NUEFUX0RFTEVURSAgID0gMSwKLQlVQklfQ09NUEFUX1JPICAgICAgID0gMiwKLQlVQklf
-Q09NUEFUX1BSRVNFUlZFID0gNCwKLQlVQklfQ09NUEFUX1JFSkVDVCAgID0gNQotfTsKLQotLyog
-U2l6ZXMgb2YgVUJJIGhlYWRlcnMgKi8KLSNkZWZpbmUgVUJJX0VDX0hEUl9TSVpFICBzaXplb2Yo
-c3RydWN0IHViaV9lY19oZHIpCi0jZGVmaW5lIFVCSV9WSURfSERSX1NJWkUgc2l6ZW9mKHN0cnVj
-dCB1YmlfdmlkX2hkcikKLQotLyogU2l6ZXMgb2YgVUJJIGhlYWRlcnMgd2l0aG91dCB0aGUgZW5k
-aW5nIENSQyAqLwotI2RlZmluZSBVQklfRUNfSERSX1NJWkVfQ1JDICAoVUJJX0VDX0hEUl9TSVpF
-ICAtIHNpemVvZihfX2JlMzIpKQotI2RlZmluZSBVQklfVklEX0hEUl9TSVpFX0NSQyAoVUJJX1ZJ
-RF9IRFJfU0laRSAtIHNpemVvZihfX2JlMzIpKQotCi0vKioKLSAqIHN0cnVjdCB1YmlfZWNfaGRy
-IC0gVUJJIGVyYXNlIGNvdW50ZXIgaGVhZGVyLgotICogQG1hZ2ljOiBlcmFzZSBjb3VudGVyIGhl
-YWRlciBtYWdpYyBudW1iZXIgKCVVQklfRUNfSERSX01BR0lDKQotICogQHZlcnNpb246IHZlcnNp
-b24gb2YgVUJJIGltcGxlbWVudGF0aW9uIHdoaWNoIGlzIHN1cHBvc2VkIHRvIGFjY2VwdCB0aGlz
-Ci0gKiAgICAgICAgICAgVUJJIGltYWdlCi0gKiBAcGFkZGluZzE6IHJlc2VydmVkIGZvciBmdXR1
-cmUsIHplcm9lcwotICogQGVjOiB0aGUgZXJhc2UgY291bnRlcgotICogQHZpZF9oZHJfb2Zmc2V0
-OiB3aGVyZSB0aGUgVklEIGhlYWRlciBzdGFydHMKLSAqIEBkYXRhX29mZnNldDogd2hlcmUgdGhl
-IHVzZXIgZGF0YSBzdGFydAotICogQHBhZGRpbmcyOiByZXNlcnZlZCBmb3IgZnV0dXJlLCB6ZXJv
-ZXMKLSAqIEBoZHJfY3JjOiBlcmFzZSBjb3VudGVyIGhlYWRlciBDUkMgY2hlY2tzdW0KLSAqCi0g
-KiBUaGUgZXJhc2UgY291bnRlciBoZWFkZXIgdGFrZXMgNjQgYnl0ZXMgYW5kIGhhcyBhIHBsZW50
-eSBvZiB1bnVzZWQgc3BhY2UgZm9yCi0gKiBmdXR1cmUgdXNhZ2UuIFRoZSB1bnVzZWQgZmllbGRz
-IGFyZSB6ZXJvZWQuIFRoZSBAdmVyc2lvbiBmaWVsZCBpcyB1c2VkIHRvCi0gKiBpbmRpY2F0ZSB0
-aGUgdmVyc2lvbiBvZiBVQkkgaW1wbGVtZW50YXRpb24gd2hpY2ggaXMgc3VwcG9zZWQgdG8gYmUg
-YWJsZSB0bwotICogd29yayB3aXRoIHRoaXMgVUJJIGltYWdlLiBJZiBAdmVyc2lvbiBpcyBncmVh
-dGVyIHRoYW4gdGhlIGN1cnJlbnQgVUJJCi0gKiB2ZXJzaW9uLCB0aGUgaW1hZ2UgaXMgcmVqZWN0
-ZWQuIFRoaXMgbWF5IGJlIHVzZWZ1bCBpbiBmdXR1cmUgaWYgc29tZXRoaW5nCi0gKiBpcyBjaGFu
-Z2VkIHJhZGljYWxseS4gVGhpcyBmaWVsZCBpcyBkdXBsaWNhdGVkIGluIHRoZSB2b2x1bWUgaWRl
-bnRpZmllcgotICogaGVhZGVyLgotICoKLSAqIFRoZSBAdmlkX2hkcl9vZmZzZXQgYW5kIEBkYXRh
-X29mZnNldCBmaWVsZHMgY29udGFpbiB0aGUgb2Zmc2V0IG9mIHRoZSB0aGUKLSAqIHZvbHVtZSBp
-ZGVudGlmaWVyIGhlYWRlciBhbmQgdXNlciBkYXRhLCByZWxhdGl2ZSB0byB0aGUgYmVnaW5uaW5n
-IG9mIHRoZQotICogcGh5c2ljYWwgZXJhc2VibG9jay4gVGhlc2UgdmFsdWVzIGhhdmUgdG8gYmUg
-dGhlIHNhbWUgZm9yIGFsbCBwaHlzaWNhbAotICogZXJhc2VibG9ja3MuCi0gKi8KLXN0cnVjdCB1
-YmlfZWNfaGRyIHsKLQlfX2JlMzIgIG1hZ2ljOwotCV9fdTggICAgdmVyc2lvbjsKLQlfX3U4ICAg
-IHBhZGRpbmcxWzNdOwotCV9fYmU2NCAgZWM7IC8qIFdhcm5pbmc6IHRoZSBjdXJyZW50IGxpbWl0
-IGlzIDMxLWJpdCBhbnl3YXkhICovCi0JX19iZTMyICB2aWRfaGRyX29mZnNldDsKLQlfX2JlMzIg
-IGRhdGFfb2Zmc2V0OwotCV9fdTggICAgcGFkZGluZzJbMzZdOwotCV9fYmUzMiAgaGRyX2NyYzsK
-LX0gX19hdHRyaWJ1dGVfXyAoKHBhY2tlZCkpOwotCi0vKioKLSAqIHN0cnVjdCB1YmlfdmlkX2hk
-ciAtIG9uLWZsYXNoIFVCSSB2b2x1bWUgaWRlbnRpZmllciBoZWFkZXIuCi0gKiBAbWFnaWM6IHZv
-bHVtZSBpZGVudGlmaWVyIGhlYWRlciBtYWdpYyBudW1iZXIgKCVVQklfVklEX0hEUl9NQUdJQykK
-LSAqIEB2ZXJzaW9uOiBVQkkgaW1wbGVtZW50YXRpb24gdmVyc2lvbiB3aGljaCBpcyBzdXBwb3Nl
-ZCB0byBhY2NlcHQgdGhpcyBVQkkKLSAqICAgICAgICAgICBpbWFnZSAoJVVCSV9WRVJTSU9OKQot
-ICogQHZvbF90eXBlOiB2b2x1bWUgdHlwZSAoJVVCSV9WSURfRFlOQU1JQyBvciAlVUJJX1ZJRF9T
-VEFUSUMpCi0gKiBAY29weV9mbGFnOiBpZiB0aGlzIGxvZ2ljYWwgZXJhc2VibG9jayB3YXMgY29w
-aWVkIGZyb20gYW5vdGhlciBwaHlzaWNhbAotICogICAgICAgICAgICAgZXJhc2VibG9jayAoZm9y
-IHdlYXItbGV2ZWxpbmcgcmVhc29ucykKLSAqIEBjb21wYXQ6IGNvbXBhdGliaWxpdHkgb2YgdGhp
-cyB2b2x1bWUgKCUwLCAlVUJJX0NPTVBBVF9ERUxFVEUsCi0gKiAgICAgICAgICAlVUJJX0NPTVBB
-VF9JR05PUkUsICVVQklfQ09NUEFUX1BSRVNFUlZFLCBvciAlVUJJX0NPTVBBVF9SRUpFQ1QpCi0g
-KiBAdm9sX2lkOiBJRCBvZiB0aGlzIHZvbHVtZQotICogQGxudW06IGxvZ2ljYWwgZXJhc2VibG9j
-ayBudW1iZXIKLSAqIEBwYWRkaW5nMTogcmVzZXJ2ZWQgZm9yIGZ1dHVyZSwgemVyb2VzCi0gKiBA
-ZGF0YV9zaXplOiBob3cgbWFueSBieXRlcyBvZiBkYXRhIHRoaXMgbG9naWNhbCBlcmFzZWJsb2Nr
-IGNvbnRhaW5zCi0gKiBAdXNlZF9lYnM6IHRvdGFsIG51bWJlciBvZiB1c2VkIGxvZ2ljYWwgZXJh
-c2VibG9ja3MgaW4gdGhpcyB2b2x1bWUKLSAqIEBkYXRhX3BhZDogaG93IG1hbnkgYnl0ZXMgYXQg
-dGhlIGVuZCBvZiB0aGlzIHBoeXNpY2FsIGVyYXNlYmxvY2sgYXJlIG5vdAotICogICAgICAgICAg
-ICB1c2VkCi0gKiBAZGF0YV9jcmM6IENSQyBjaGVja3N1bSBvZiB0aGUgZGF0YSBzdG9yZWQgaW4g
-dGhpcyBsb2dpY2FsIGVyYXNlYmxvY2sKLSAqIEBwYWRkaW5nMjogcmVzZXJ2ZWQgZm9yIGZ1dHVy
-ZSwgemVyb2VzCi0gKiBAc3FudW06IHNlcXVlbmNlIG51bWJlcgotICogQHBhZGRpbmczOiByZXNl
-cnZlZCBmb3IgZnV0dXJlLCB6ZXJvZXMKLSAqIEBoZHJfY3JjOiB2b2x1bWUgaWRlbnRpZmllciBo
-ZWFkZXIgQ1JDIGNoZWNrc3VtCi0gKgotICogVGhlIEBzcW51bSBpcyB0aGUgdmFsdWUgb2YgdGhl
-IGdsb2JhbCBzZXF1ZW5jZSBjb3VudGVyIGF0IHRoZSB0aW1lIHdoZW4gdGhpcwotICogVklEIGhl
-YWRlciB3YXMgY3JlYXRlZC4gVGhlIGdsb2JhbCBzZXF1ZW5jZSBjb3VudGVyIGlzIGluY3JlbWVu
-dGVkIGVhY2ggdGltZQotICogVUJJIHdyaXRlcyBhIG5ldyBWSUQgaGVhZGVyIHRvIHRoZSBmbGFz
-aCwgaS5lLiB3aGVuIGl0IG1hcHMgYSBsb2dpY2FsCi0gKiBlcmFzZWJsb2NrIHRvIGEgbmV3IHBo
-eXNpY2FsIGVyYXNlYmxvY2suIFRoZSBnbG9iYWwgc2VxdWVuY2UgY291bnRlciBpcyBhbgotICog
-dW5zaWduZWQgNjQtYml0IGludGVnZXIgYW5kIHdlIGFzc3VtZSBpdCBuZXZlciBvdmVyZmxvd3Mu
-IFRoZSBAc3FudW0KLSAqIChzZXF1ZW5jZSBudW1iZXIpIGlzIHVzZWQgdG8gZGlzdGluZ3Vpc2gg
-YmV0d2VlbiBvbGRlciBhbmQgbmV3ZXIgdmVyc2lvbnMgb2YKLSAqIGxvZ2ljYWwgZXJhc2VibG9j
-a3MuCi0gKgotICogVGhlcmUgYXJlIDIgc2l0dWF0aW9ucyB3aGVuIHRoZXJlIG1heSBiZSBtb3Jl
-IHRoYW4gb25lIHBoeXNpY2FsIGVyYXNlYmxvY2sKLSAqIGNvcnJlc3BvbmRpbmcgdG8gdGhlIHNh
-bWUgbG9naWNhbCBlcmFzZWJsb2NrLCBpLmUuLCBoYXZpbmcgdGhlIHNhbWUgQHZvbF9pZAotICog
-YW5kIEBsbnVtIHZhbHVlcyBpbiB0aGUgdm9sdW1lIGlkZW50aWZpZXIgaGVhZGVyLiBTdXBwb3Nl
-IHdlIGhhdmUgYSBsb2dpY2FsCi0gKiBlcmFzZWJsb2NrIEwgYW5kIGl0IGlzIG1hcHBlZCB0byB0
-aGUgcGh5c2ljYWwgZXJhc2VibG9jayBQLgotICoKLSAqIDEuIEJlY2F1c2UgVUJJIG1heSBlcmFz
-ZSBwaHlzaWNhbCBlcmFzZWJsb2NrcyBhc3luY2hyb25vdXNseSwgdGhlIGZvbGxvd2luZwotICog
-c2l0dWF0aW9uIGlzIHBvc3NpYmxlOiBMIGlzIGFzeW5jaHJvbm91c2x5IGVyYXNlZCwgc28gUCBp
-cyBzY2hlZHVsZWQgZm9yCi0gKiBlcmFzdXJlLCB0aGVuIEwgaXMgd3JpdHRlbiB0byxpLmUuIG1h
-cHBlZCB0byBhbm90aGVyIHBoeXNpY2FsIGVyYXNlYmxvY2sgUDEsCi0gKiBzbyBQMSBpcyB3cml0
-dGVuIHRvLCB0aGVuIGFuIHVuY2xlYW4gcmVib290IGhhcHBlbnMuIFJlc3VsdCAtIHRoZXJlIGFy
-ZSAyCi0gKiBwaHlzaWNhbCBlcmFzZWJsb2NrcyBQIGFuZCBQMSBjb3JyZXNwb25kaW5nIHRvIHRo
-ZSBzYW1lIGxvZ2ljYWwgZXJhc2VibG9jawotICogTC4gQnV0IFAxIGhhcyBncmVhdGVyIHNlcXVl
-bmNlIG51bWJlciwgc28gVUJJIHBpY2tzIFAxIHdoZW4gaXQgYXR0YWNoZXMgdGhlCi0gKiBmbGFz
-aC4KLSAqCi0gKiAyLiBGcm9tIHRpbWUgdG8gdGltZSBVQkkgbW92ZXMgbG9naWNhbCBlcmFzZWJs
-b2NrcyB0byBvdGhlciBwaHlzaWNhbAotICogZXJhc2VibG9ja3MgZm9yIHdlYXItbGV2ZWxpbmcg
-cmVhc29ucy4gSWYsIGZvciBleGFtcGxlLCBVQkkgbW92ZXMgTCBmcm9tIFAKLSAqIHRvIFAxLCBh
-bmQgYW4gdW5jbGVhbiByZWJvb3QgaGFwcGVucyBiZWZvcmUgUCBpcyBwaHlzaWNhbGx5IGVyYXNl
-ZCwgdGhlcmUKLSAqIGFyZSB0d28gcGh5c2ljYWwgZXJhc2VibG9ja3MgUCBhbmQgUDEgY29ycmVz
-cG9uZGluZyB0byBMIGFuZCBVQkkgaGFzIHRvCi0gKiBzZWxlY3Qgb25lIG9mIHRoZW0gd2hlbiB0
-aGUgZmxhc2ggaXMgYXR0YWNoZWQuIFRoZSBAc3FudW0gZmllbGQgc2F5cyB3aGljaAotICogUEVC
-IGlzIHRoZSBvcmlnaW5hbCAob2J2aW91c2x5IFAgd2lsbCBoYXZlIGxvd2VyIEBzcW51bSkgYW5k
-IHRoZSBjb3B5LiBCdXQKLSAqIGl0IGlzIG5vdCBlbm91Z2ggdG8gc2VsZWN0IHRoZSBwaHlzaWNh
-bCBlcmFzZWJsb2NrIHdpdGggdGhlIGhpZ2hlciBzZXF1ZW5jZQotICogbnVtYmVyLCBiZWNhdXNl
-IHRoZSB1bmNsZWFuIHJlYm9vdCBjb3VsZCBoYXZlIGhhcHBlbiBpbiB0aGUgbWlkZGxlIG9mIHRo
-ZQotICogY29weWluZyBwcm9jZXNzLCBzbyB0aGUgZGF0YSBpbiBQIGlzIGNvcnJ1cHRlZC4gSXQg
-aXMgYWxzbyBub3QgZW5vdWdoIHRvCi0gKiBqdXN0IHNlbGVjdCB0aGUgcGh5c2ljYWwgZXJhc2Vi
-bG9jayB3aXRoIGxvd2VyIHNlcXVlbmNlIG51bWJlciwgYmVjYXVzZSB0aGUKLSAqIGRhdGEgdGhl
-cmUgbWF5IGJlIG9sZCAoY29uc2lkZXIgYSBjYXNlIGlmIG1vcmUgZGF0YSB3YXMgYWRkZWQgdG8g
-UDEgYWZ0ZXIKLSAqIHRoZSBjb3B5aW5nKS4gTW9yZW92ZXIsIHRoZSB1bmNsZWFuIHJlYm9vdCBt
-YXkgaGFwcGVuIHdoZW4gdGhlIGVyYXN1cmUgb2YgUAotICogd2FzIGp1c3Qgc3RhcnRlZCwgc28g
-aXQgcmVzdWx0IGluIHVuc3RhYmxlIFAsIHdoaWNoIGlzICJtb3N0bHkiIE9LLCBidXQKLSAqIHN0
-aWxsIGhhcyB1bnN0YWJsZSBiaXRzLgotICoKLSAqIFVCSSB1c2VzIHRoZSBAY29weV9mbGFnIGZp
-ZWxkIHRvIGluZGljYXRlIHRoYXQgdGhpcyBsb2dpY2FsIGVyYXNlYmxvY2sgaXMgYQotICogY29w
-eS4gVUJJIGFsc28gY2FsY3VsYXRlcyBkYXRhIENSQyB3aGVuIHRoZSBkYXRhIGlzIG1vdmVkIGFu
-ZCBzdG9yZXMgaXQgYXQKLSAqIHRoZSBAZGF0YV9jcmMgZmllbGQgb2YgdGhlIGNvcHkgKFAxKS4g
-U28gd2hlbiBVQkkgbmVlZHMgdG8gcGljayBvbmUgcGh5c2ljYWwKLSAqIGVyYXNlYmxvY2sgb2Yg
-dHdvIChQIG9yIFAxKSwgdGhlIEBjb3B5X2ZsYWcgb2YgdGhlIG5ld2VyIG9uZSAoUDEpIGlzCi0g
-KiBleGFtaW5lZC4gSWYgaXQgaXMgY2xlYXJlZCwgdGhlIHNpdHVhdGlvbiogaXMgc2ltcGxlIGFu
-ZCB0aGUgbmV3ZXIgb25lIGlzCi0gKiBwaWNrZWQuIElmIGl0IGlzIHNldCwgdGhlIGRhdGEgQ1JD
-IG9mIHRoZSBjb3B5IChQMSkgaXMgZXhhbWluZWQuIElmIHRoZSBDUkMKLSAqIGNoZWNrc3VtIGlz
-IGNvcnJlY3QsIHRoaXMgcGh5c2ljYWwgZXJhc2VibG9jayBpcyBzZWxlY3RlZCAoUDEpLiBPdGhl
-cndpc2UKLSAqIHRoZSBvbGRlciBvbmUgKFApIGlzIHNlbGVjdGVkLgotICoKLSAqIFRoZXJlIGFy
-ZSAyIHNvcnRzIG9mIHZvbHVtZXMgaW4gVUJJOiB1c2VyIHZvbHVtZXMgYW5kIGludGVybmFsIHZv
-bHVtZXMuCi0gKiBJbnRlcm5hbCB2b2x1bWVzIGFyZSBub3Qgc2VlbiBmcm9tIG91dHNpZGUgYW5k
-IGFyZSB1c2VkIGZvciB2YXJpb3VzIGludGVybmFsCi0gKiBVQkkgcHVycG9zZXMuIEluIHRoaXMg
-aW1wbGVtZW50YXRpb24gdGhlcmUgaXMgb25seSBvbmUgaW50ZXJuYWwgdm9sdW1lIC0gdGhlCi0g
-KiBsYXlvdXQgdm9sdW1lLiBJbnRlcm5hbCB2b2x1bWVzIGFyZSB0aGUgbWFpbiBtZWNoYW5pc20g
-b2YgVUJJIGV4dGVuc2lvbnMuCi0gKiBGb3IgZXhhbXBsZSwgaW4gZnV0dXJlIG9uZSBtYXkgaW50
-cm9kdWNlIGEgam91cm5hbCBpbnRlcm5hbCB2b2x1bWUuIEludGVybmFsCi0gKiB2b2x1bWVzIGhh
-dmUgdGhlaXIgb3duIHJlc2VydmVkIHJhbmdlIG9mIElEcy4KLSAqCi0gKiBUaGUgQGNvbXBhdCBm
-aWVsZCBpcyBvbmx5IHVzZWQgZm9yIGludGVybmFsIHZvbHVtZXMgYW5kIGNvbnRhaW5zIHRoZSAi
-ZGVncmVlCi0gKiBvZiB0aGVpciBjb21wYXRpYmlsaXR5Ii4gSXQgaXMgYWx3YXlzIHplcm8gZm9y
-IHVzZXIgdm9sdW1lcy4gVGhpcyBmaWVsZAotICogcHJvdmlkZXMgYSBtZWNoYW5pc20gdG8gaW50
-cm9kdWNlIFVCSSBleHRlbnNpb25zIGFuZCB0byBiZSBzdGlsbCBjb21wYXRpYmxlCi0gKiB3aXRo
-IG9sZGVyIFVCSSBiaW5hcmllcy4gRm9yIGV4YW1wbGUsIGlmIHNvbWVvbmUgaW50cm9kdWNlZCBh
-IGpvdXJuYWwgaW4KLSAqIGZ1dHVyZSwgaGUgd291bGQgcHJvYmFibHkgdXNlICVVQklfQ09NUEFU
-X0RFTEVURSBjb21wYXRpYmlsaXR5IGZvciB0aGUKLSAqIGpvdXJuYWwgdm9sdW1lLiAgQW5kIGlu
-IHRoaXMgY2FzZSwgb2xkZXIgVUJJIGJpbmFyaWVzLCB3aGljaCBrbm93IG5vdGhpbmcKLSAqIGFi
-b3V0IHRoZSBqb3VybmFsIHZvbHVtZSwgd291bGQganVzdCBkZWxldGUgdGhpcyB2b2x1bWUgYW5k
-IHdvcmsgcGVyZmVjdGx5Ci0gKiBmaW5lLiBUaGlzIGlzIHNpbWlsYXIgdG8gd2hhdCBFeHQyZnMg
-ZG9lcyB3aGVuIGl0IGlzIGZlZCBieSBhbiBFeHQzZnMgaW1hZ2UKLSAqIC0gaXQganVzdCBpZ25v
-cmVzIHRoZSBFeHQzZnMgam91cm5hbC4KLSAqCi0gKiBUaGUgQGRhdGFfY3JjIGZpZWxkIGNvbnRh
-aW5zIHRoZSBDUkMgY2hlY2tzdW0gb2YgdGhlIGNvbnRlbnRzIG9mIHRoZSBsb2dpY2FsCi0gKiBl
-cmFzZWJsb2NrIGlmIHRoaXMgaXMgYSBzdGF0aWMgdm9sdW1lLiBJbiBjYXNlIG9mIGR5bmFtaWMg
-dm9sdW1lcywgaXQgZG9lcwotICogbm90IGNvbnRhaW4gdGhlIENSQyBjaGVja3N1bSBhcyBhIHJ1
-bGUuIFRoZSBvbmx5IGV4Y2VwdGlvbiBpcyB3aGVuIHRoZQotICogZGF0YSBvZiB0aGUgcGh5c2lj
-YWwgZXJhc2VibG9jayB3YXMgbW92ZWQgYnkgdGhlIHdlYXItbGV2ZWxpbmcgc3ViLXN5c3RlbSwK
-LSAqIHRoZW4gdGhlIHdlYXItbGV2ZWxpbmcgc3ViLXN5c3RlbSBjYWxjdWxhdGVzIHRoZSBkYXRh
-IENSQyBhbmQgc3RvcmVzIGl0IGluCi0gKiB0aGUgQGRhdGFfY3JjIGZpZWxkLiBBbmQgb2YgY291
-cnNlLCB0aGUgQGNvcHlfZmxhZyBpcyAlaW4gdGhpcyBjYXNlLgotICoKLSAqIFRoZSBAZGF0YV9z
-aXplIGZpZWxkIGlzIHVzZWQgb25seSBmb3Igc3RhdGljIHZvbHVtZXMgYmVjYXVzZSBVQkkgaGFz
-IHRvIGtub3cKLSAqIGhvdyBtYW55IGJ5dGVzIG9mIGRhdGEgYXJlIHN0b3JlZCBpbiB0aGlzIGVy
-YXNlYmxvY2suIEZvciBkeW5hbWljIHZvbHVtZXMsCi0gKiB0aGlzIGZpZWxkIHVzdWFsbHkgY29u
-dGFpbnMgemVyby4gVGhlIG9ubHkgZXhjZXB0aW9uIGlzIHdoZW4gdGhlIGRhdGEgb2YgdGhlCi0g
-KiBwaHlzaWNhbCBlcmFzZWJsb2NrIHdhcyBtb3ZlZCB0byBhbm90aGVyIHBoeXNpY2FsIGVyYXNl
-YmxvY2sgZm9yCi0gKiB3ZWFyLWxldmVsaW5nIHJlYXNvbnMuIEluIHRoaXMgY2FzZSwgVUJJIGNh
-bGN1bGF0ZXMgQ1JDIGNoZWNrc3VtIG9mIHRoZQotICogY29udGVudHMgYW5kIHVzZXMgYm90aCBA
-ZGF0YV9jcmMgYW5kIEBkYXRhX3NpemUgZmllbGRzLiBJbiB0aGlzIGNhc2UsIHRoZQotICogQGRh
-dGFfc2l6ZSBmaWVsZCBjb250YWlucyBkYXRhIHNpemUuCi0gKgotICogVGhlIEB1c2VkX2VicyBm
-aWVsZCBpcyB1c2VkIG9ubHkgZm9yIHN0YXRpYyB2b2x1bWVzIGFuZCBpbmRpY2F0ZXMgaG93IG1h
-bnkKLSAqIGVyYXNlYmxvY2tzIHRoZSBkYXRhIG9mIHRoZSB2b2x1bWUgdGFrZXMuIEZvciBkeW5h
-bWljIHZvbHVtZXMgdGhpcyBmaWVsZCBpcwotICogbm90IHVzZWQgYW5kIGFsd2F5cyBjb250YWlu
-cyB6ZXJvLgotICoKLSAqIFRoZSBAZGF0YV9wYWQgaXMgY2FsY3VsYXRlZCB3aGVuIHZvbHVtZXMg
-YXJlIGNyZWF0ZWQgdXNpbmcgdGhlIGFsaWdubWVudAotICogcGFyYW1ldGVyLiBTbywgZWZmZWN0
-aXZlbHksIHRoZSBAZGF0YV9wYWQgZmllbGQgcmVkdWNlcyB0aGUgc2l6ZSBvZiBsb2dpY2FsCi0g
-KiBlcmFzZWJsb2NrcyBvZiB0aGlzIHZvbHVtZS4gVGhpcyBpcyB2ZXJ5IGhhbmR5IHdoZW4gb25l
-IHVzZXMgYmxvY2stb3JpZW50ZWQKLSAqIHNvZnR3YXJlIChzYXksIGNyYW1mcykgb24gdG9wIG9m
-IHRoZSBVQkkgdm9sdW1lLgotICovCi1zdHJ1Y3QgdWJpX3ZpZF9oZHIgewotCV9fYmUzMiAgbWFn
-aWM7Ci0JX191OCAgICB2ZXJzaW9uOwotCV9fdTggICAgdm9sX3R5cGU7Ci0JX191OCAgICBjb3B5
-X2ZsYWc7Ci0JX191OCAgICBjb21wYXQ7Ci0JX19iZTMyICB2b2xfaWQ7Ci0JX19iZTMyICBsbnVt
-OwotCV9fYmUzMiAgbGViX3ZlcjsKLQlfX2JlMzIgIGRhdGFfc2l6ZTsKLQlfX2JlMzIgIHVzZWRf
-ZWJzOwotCV9fYmUzMiAgZGF0YV9wYWQ7Ci0JX19iZTMyICBkYXRhX2NyYzsKLQlfX3U4ICAgIHBh
-ZGRpbmcyWzRdOwotCV9fYmU2NCAgc3FudW07Ci0JX191OCAgICBwYWRkaW5nM1sxMl07Ci0JX19i
-ZTMyICBoZHJfY3JjOwotfSBfX2F0dHJpYnV0ZV9fICgocGFja2VkKSk7Ci0KLS8qIEludGVybmFs
-IFVCSSB2b2x1bWVzIGNvdW50ICovCi0jZGVmaW5lIFVCSV9JTlRfVk9MX0NPVU5UIDEKLQotLyoK
-LSAqIFN0YXJ0aW5nIElEIG9mIGludGVybmFsIHZvbHVtZXMuIFRoZXJlIGlzIHJlc2VydmVkIHJv
-b20gZm9yIDQwOTYgaW50ZXJuYWwKLSAqIHZvbHVtZXMuCi0gKi8KLSNkZWZpbmUgVUJJX0lOVEVS
-TkFMX1ZPTF9TVEFSVCAoMHg3RkZGRkZGRiAtIDQwOTYpCi0KLS8qIFRoZSBsYXlvdXQgdm9sdW1l
-IGNvbnRhaW5zIHRoZSB2b2x1bWUgdGFibGUgKi8KLQotI2RlZmluZSBVQklfTEFZT1VUX1ZPTFVN
-RV9JRCAgICAgVUJJX0lOVEVSTkFMX1ZPTF9TVEFSVAotI2RlZmluZSBVQklfTEFZT1VUX1ZPTFVN
-RV9UWVBFICAgVUJJX1ZJRF9EWU5BTUlDCi0jZGVmaW5lIFVCSV9MQVlPVVRfVk9MVU1FX0FMSUdO
-ICAxCi0jZGVmaW5lIFVCSV9MQVlPVVRfVk9MVU1FX0VCUyAgICAyCi0jZGVmaW5lIFVCSV9MQVlP
-VVRfVk9MVU1FX05BTUUgICAibGF5b3V0IHZvbHVtZSIKLSNkZWZpbmUgVUJJX0xBWU9VVF9WT0xV
-TUVfQ09NUEFUIFVCSV9DT01QQVRfUkVKRUNUCi0KLS8qIFRoZSBtYXhpbXVtIG51bWJlciBvZiB2
-b2x1bWVzIHBlciBvbmUgVUJJIGRldmljZSAqLwotI2RlZmluZSBVQklfTUFYX1ZPTFVNRVMgMTI4
-Ci0KLS8qIFRoZSBtYXhpbXVtIHZvbHVtZSBuYW1lIGxlbmd0aCAqLwotI2RlZmluZSBVQklfVk9M
-X05BTUVfTUFYIDEyNwotCi0vKiBTaXplIG9mIHRoZSB2b2x1bWUgdGFibGUgcmVjb3JkICovCi0j
-ZGVmaW5lIFVCSV9WVEJMX1JFQ09SRF9TSVpFIHNpemVvZihzdHJ1Y3QgdWJpX3Z0YmxfcmVjb3Jk
-KQotCi0vKiBTaXplIG9mIHRoZSB2b2x1bWUgdGFibGUgcmVjb3JkIHdpdGhvdXQgdGhlIGVuZGlu
-ZyBDUkMgKi8KLSNkZWZpbmUgVUJJX1ZUQkxfUkVDT1JEX1NJWkVfQ1JDIChVQklfVlRCTF9SRUNP
-UkRfU0laRSAtIHNpemVvZihfX2JlMzIpKQotCi0vKioKLSAqIHN0cnVjdCB1YmlfdnRibF9yZWNv
-cmQgLSBhIHJlY29yZCBpbiB0aGUgdm9sdW1lIHRhYmxlLgotICogQHJlc2VydmVkX3BlYnM6IGhv
-dyBtYW55IHBoeXNpY2FsIGVyYXNlYmxvY2tzIGFyZSByZXNlcnZlZCBmb3IgdGhpcyB2b2x1bWUK
-LSAqIEBhbGlnbm1lbnQ6IHZvbHVtZSBhbGlnbm1lbnQKLSAqIEBkYXRhX3BhZDogaG93IG1hbnkg
-Ynl0ZXMgYXJlIHVudXNlZCBhdCB0aGUgZW5kIG9mIHRoZSBlYWNoIHBoeXNpY2FsCi0gKiBlcmFz
-ZWJsb2NrIHRvIHNhdGlzZnkgdGhlIHJlcXVlc3RlZCBhbGlnbm1lbnQKLSAqIEB2b2xfdHlwZTog
-dm9sdW1lIHR5cGUgKCVVQklfRFlOQU1JQ19WT0xVTUUgb3IgJVVCSV9TVEFUSUNfVk9MVU1FKQot
-ICogQHVwZF9tYXJrZXI6IGlmIHZvbHVtZSB1cGRhdGUgd2FzIHN0YXJ0ZWQgYnV0IG5vdCBmaW5p
-c2hlZAotICogQG5hbWVfbGVuOiB2b2x1bWUgbmFtZSBsZW5ndGgKLSAqIEBuYW1lOiB0aGUgdm9s
-dW1lIG5hbWUKLSAqIEBmbGFnczogdm9sdW1lIGZsYWdzICglVUJJX1ZUQkxfQVVUT1JFU0laRV9G
-TEcpCi0gKiBAcGFkZGluZzogcmVzZXJ2ZWQsIHplcm9lcwotICogQGNyYzogYSBDUkMzMiBjaGVj
-a3N1bSBvZiB0aGUgcmVjb3JkCi0gKgotICogVGhlIHZvbHVtZSB0YWJsZSByZWNvcmRzIGFyZSBz
-dG9yZWQgaW4gdGhlIHZvbHVtZSB0YWJsZSwgd2hpY2ggaXMgc3RvcmVkIGluCi0gKiB0aGUgbGF5
-b3V0IHZvbHVtZS4gVGhlIGxheW91dCB2b2x1bWUgY29uc2lzdHMgb2YgMiBsb2dpY2FsIGVyYXNl
-YmxvY2ssIGVhY2gKLSAqIG9mIHdoaWNoIGNvbnRhaW5zIGEgY29weSBvZiB0aGUgdm9sdW1lIHRh
-YmxlIChpLmUuLCB0aGUgdm9sdW1lIHRhYmxlIGlzCi0gKiBkdXBsaWNhdGVkKS4gVGhlIHZvbHVt
-ZSB0YWJsZSBpcyBhbiBhcnJheSBvZiAmc3RydWN0IHViaV92dGJsX3JlY29yZAotICogb2JqZWN0
-cyBpbmRleGVkIGJ5IHRoZSB2b2x1bWUgSUQuCi0gKgotICogSWYgdGhlIHNpemUgb2YgdGhlIGxv
-Z2ljYWwgZXJhc2VibG9jayBpcyBsYXJnZSBlbm91Z2ggdG8gZml0Ci0gKiAlVUJJX01BWF9WT0xV
-TUVTIHJlY29yZHMsIHRoZSB2b2x1bWUgdGFibGUgY29udGFpbnMgJVVCSV9NQVhfVk9MVU1FUwot
-ICogcmVjb3Jkcy4gT3RoZXJ3aXNlLCBpdCBjb250YWlucyBhcyBtYW55IHJlY29yZHMgYXMgaXQg
-Y2FuIGZpdCAoaS5lLiwgc2l6ZSBvZgotICogbG9naWNhbCBlcmFzZWJsb2NrIGRpdmlkZWQgYnkg
-c2l6ZW9mKHN0cnVjdCB1YmlfdnRibF9yZWNvcmQpKS4KLSAqCi0gKiBUaGUgQHVwZF9tYXJrZXIg
-ZmxhZyBpcyB1c2VkIHRvIGltcGxlbWVudCB2b2x1bWUgdXBkYXRlLiBJdCBpcyBzZXQgdG8gJTEK
-LSAqIGJlZm9yZSB1cGRhdGUgYW5kIHNldCB0byAlMCBhZnRlciB0aGUgdXBkYXRlLiBTbyBpZiB0
-aGUgdXBkYXRlIG9wZXJhdGlvbiB3YXMKLSAqIGludGVycnVwdGVkLCBVQkkga25vd3MgdGhhdCB0
-aGUgdm9sdW1lIGlzIGNvcnJ1cHRlZC4KLSAqCi0gKiBUaGUgQGFsaWdubWVudCBmaWVsZCBpcyBz
-cGVjaWZpZWQgd2hlbiB0aGUgdm9sdW1lIGlzIGNyZWF0ZWQgYW5kIGNhbm5vdCBiZQotICogbGF0
-ZXIgY2hhbmdlZC4gSXQgbWF5IGJlIHVzZWZ1bCwgZm9yIGV4YW1wbGUsIHdoZW4gYSBibG9jay1v
-cmllbnRlZCBmaWxlCi0gKiBzeXN0ZW0gd29ya3Mgb24gdG9wIG9mIFVCSS4gVGhlIEBkYXRhX3Bh
-ZCBmaWVsZCBpcyBjYWxjdWxhdGVkIHVzaW5nIHRoZQotICogbG9naWNhbCBlcmFzZWJsb2NrIHNp
-emUgYW5kIEBhbGlnbm1lbnQuIFRoZSBhbGlnbm1lbnQgbXVzdCBiZSBtdWx0aXBsZSB0byB0aGUK
-LSAqIG1pbmltYWwgZmxhc2ggSS9PIHVuaXQuIElmIEBhbGlnbm1lbnQgaXMgMSwgYWxsIHRoZSBh
-dmFpbGFibGUgc3BhY2Ugb2YKLSAqIHRoZSBwaHlzaWNhbCBlcmFzZWJsb2NrcyBpcyB1c2VkLgot
-ICoKLSAqIEVtcHR5IHJlY29yZHMgY29udGFpbiBhbGwgemVyb2VzIGFuZCB0aGUgQ1JDIGNoZWNr
-c3VtIG9mIHRob3NlIHplcm9lcy4KLSAqLwotc3RydWN0IHViaV92dGJsX3JlY29yZCB7Ci0JX19i
-ZTMyICByZXNlcnZlZF9wZWJzOwotCV9fYmUzMiAgYWxpZ25tZW50OwotCV9fYmUzMiAgZGF0YV9w
-YWQ7Ci0JX191OCAgICB2b2xfdHlwZTsKLQlfX3U4ICAgIHVwZF9tYXJrZXI7Ci0JX19iZTE2ICBu
-YW1lX2xlbjsKLQlfX3U4ICAgIG5hbWVbVUJJX1ZPTF9OQU1FX01BWCsxXTsKLQlfX3U4ICAgIGZs
-YWdzOwotCV9fdTggICAgcGFkZGluZ1syM107Ci0JX19iZTMyICBjcmM7Ci19IF9fYXR0cmlidXRl
-X18gKChwYWNrZWQpKTsKLQotI2VuZGlmIC8qIERPWFlHRU5fU0hPVUxEX1NLSVBfVEhJUyAqLwot
-Ci0jZW5kaWYgLyogIV9fVUJJX01FRElBX0hfXyAqLwotCi0tIAoxLjcuMTAuNAoKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
-aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Imported from mtd-utils and stripped down to needed functionality.
+
+Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+---
+ include/mtd/libubigen.h |  186 ++++++++++++++++++++++++++++
+ lib/Kconfig             |    3 +
+ lib/Makefile            |    1 +
+ lib/libubigen.c         |  316 +++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 506 insertions(+)
+ create mode 100644 include/mtd/libubigen.h
+ create mode 100644 lib/libubigen.c
+
+diff --git a/include/mtd/libubigen.h b/include/mtd/libubigen.h
+new file mode 100644
+index 0000000..5ebdb78
+--- /dev/null
++++ b/include/mtd/libubigen.h
+@@ -0,0 +1,186 @@
++/*
++ * Copyright (c) International Business Machines Corp., 2006
++ * Copyright (C) 2008 Nokia Corporation
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
++ * the GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++/*
++ * Authors: Frank Haverkamp
++ *          Artem Bityutskiy
++ */
++
++#ifndef __LIBUBIGEN_H__
++#define __LIBUBIGEN_H__
++
++#include <mtd/ubi-media.h>
++
++/**
++ * struct ubigen_info - libubigen information.
++ * @leb_size: logical eraseblock size
++ * @peb_size: size of the physical eraseblock
++ * @min_io_size: minimum input/output unit size
++ * @vid_hdr_offs: offset of the VID header
++ * @data_offs: data offset
++ * @ubi_ver: UBI version
++ * @vtbl_size: volume table size
++ * @max_volumes: maximum amount of volumes
++ * @image_seq: UBI image sequence number
++ */
++struct ubigen_info
++{
++	int leb_size;
++	int peb_size;
++	int min_io_size;
++	int vid_hdr_offs;
++	int data_offs;
++	int ubi_ver;
++	int vtbl_size;
++	int max_volumes;
++	uint32_t image_seq;
++};
++
++/**
++ * struct ubigen_vol_info - information about a volume.
++ * @id: volume id
++ * @type: volume type (%UBI_VID_DYNAMIC or %UBI_VID_STATIC)
++ * @alignment: volume alignment
++ * @data_pad: how many bytes are unused at the end of the each physical
++ *            eraseblock to satisfy the requested alignment
++ * @usable_leb_size: LEB size accessible for volume users
++ * @name: volume name
++ * @name_len: volume name length
++ * @compat: compatibility of this volume (%0, %UBI_COMPAT_DELETE,
++ *          %UBI_COMPAT_IGNORE, %UBI_COMPAT_PRESERVE, or %UBI_COMPAT_REJECT)
++ * @used_ebs: total number of used logical eraseblocks in this volume (relevant
++ *            for static volumes only)
++ * @bytes: size of the volume contents in bytes (relevant for static volumes
++ *         only)
++ * @flags: volume flags (%UBI_VTBL_AUTORESIZE_FLG)
++ */
++struct ubigen_vol_info
++{
++	int id;
++	int type;
++	int alignment;
++	int data_pad;
++	int usable_leb_size;
++	const char *name;
++	int name_len;
++	int compat;
++	int used_ebs;
++	long long bytes;
++	uint8_t flags;
++};
++
++/**
++ * ubigen_info_init - initialize libubigen.
++ * @ui: libubigen information
++ * @peb_size: flash physical eraseblock size
++ * @min_io_size: flash minimum input/output unit size
++ * @subpage_size: flash sub-page, if present (has to be equivalent to
++ *                @min_io_size if does not exist)
++ * @vid_hdr_offs: offset of the VID header
++ * @ubi_ver: UBI version
++ * @image_seq: UBI image sequence number
++ */
++void ubigen_info_init(struct ubigen_info *ui, int peb_size, int min_io_size,
++		      int subpage_size, int vid_hdr_offs, int ubi_ver,
++		      uint32_t image_seq);
++
++/**
++ * ubigen_create_empty_vtbl - creates empty volume table.
++ * @ui: libubigen information
++ *
++ * This function creates an empty volume table and returns a pointer to it in
++ * case of success and %NULL in case of failure. The returned object has to be
++ * freed with 'free()' call.
++ */
++struct ubi_vtbl_record *ubigen_create_empty_vtbl(const struct ubigen_info *ui);
++
++/**
++ * ubigen_init_ec_hdr - initialize EC header.
++ * @ui: libubigen information
++ * @hdr: the EC header to initialize
++ * @ec: erase counter value
++ */
++void ubigen_init_ec_hdr(const struct ubigen_info *ui,
++		        struct ubi_ec_hdr *hdr, long long ec);
++
++/**
++ * ubigen_init_vid_hdr - initialize VID header.
++ * @ui: libubigen information
++ * @vi: volume information
++ * @hdr: the VID header to initialize
++ * @lnum: logical eraseblock number
++ * @data: the contents of the LEB (static volumes only)
++ * @data_size: amount of data in this LEB (static volumes only)
++ *
++ * Note, @used_ebs, @data and @data_size are ignored in case of dynamic
++ * volumes.
++ */
++void ubigen_init_vid_hdr(const struct ubigen_info *ui,
++			 const struct ubigen_vol_info *vi,
++			 struct ubi_vid_hdr *hdr, int lnum,
++			 const void *data, int data_size);
++
++/**
++ * ubigen_add_volume - add a volume to the volume table.
++ * @ui: libubigen information
++ * @vi: volume information
++ * @vtbl: volume table to add to
++ *
++ * This function adds volume described by input parameters to the volume table
++ * @vtbl.
++ */
++int ubigen_add_volume(const struct ubigen_info *ui,
++		      const struct ubigen_vol_info *vi,
++		      struct ubi_vtbl_record *vtbl);
++
++/**
++ * ubigen_write_volume - write UBI volume.
++ * @ui: libubigen information
++ * @vi: volume information
++ * @ec: erase counter value to put to EC headers
++ * @bytes: volume size in bytes
++ * @in: input file descriptor (has to be properly seeked)
++ * @out: output file descriptor
++ *
++ * This function reads the contents of the volume from the input file @in and
++ * writes the UBI volume to the output file @out. Returns zero on success and
++ * %-1 on failure.
++ */
++int ubigen_write_volume(const struct ubigen_info *ui,
++			const struct ubigen_vol_info *vi, long long ec,
++			long long bytes, int in, int out);
++
++/**
++ * ubigen_write_layout_vol - write UBI layout volume
++ * @ui: libubigen information
++ * @peb1: physical eraseblock number to write the first volume table copy
++ * @peb2: physical eraseblock number to write the second volume table copy
++ * @ec1: erase counter value for @peb1
++ * @ec2: erase counter value for @peb1
++ * @vtbl: volume table
++ * @fd: output file descriptor seeked to the proper position
++ *
++ * This function creates the UBI layout volume which contains 2 copies of the
++ * volume table. Returns zero in case of success and %-1 in case of failure.
++ */
++int ubigen_write_layout_vol(const struct ubigen_info *ui, int peb1, int peb2,
++			    long long ec1, long long ec2,
++			    struct ubi_vtbl_record *vtbl, int fd);
++
++#endif /* !__LIBUBIGEN_H__ */
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 1d4d8ad..e6727b3 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -44,6 +44,9 @@ config UBIUTILS
+ config LIBSCAN
+ 	bool
+ 
++config LIBUBIGEN
++	bool
++
+ source lib/gui/Kconfig
+ 
+ endmenu
+diff --git a/lib/Makefile b/lib/Makefile
+index 41583c8..e996a48 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -36,4 +36,5 @@ obj-$(CONFIG_BITREV)	+= bitrev.o
+ obj-$(CONFIG_QSORT)	+= qsort.o
+ obj-$(CONFIG_UBIUTILS)	+= ubiutils-common.o
+ obj-$(CONFIG_LIBSCAN)	+= libscan.o
++obj-$(CONFIG_LIBUBIGEN)	+= libubigen.o
+ obj-y			+= gui/
+diff --git a/lib/libubigen.c b/lib/libubigen.c
+new file mode 100644
+index 0000000..9001c3b
+--- /dev/null
++++ b/lib/libubigen.c
+@@ -0,0 +1,316 @@
++/*
++ * Copyright (c) International Business Machines Corp., 2006
++ * Copyright (C) 2008 Nokia Corporation
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
++ * the GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++/*
++ * Generating UBI images.
++ *
++ * Authors: Oliver Lohmann
++ *          Artem Bityutskiy
++ */
++
++#define PROGRAM_NAME "libubigen"
++
++#include <common.h>
++#include <stdlib.h>
++#include <string.h>
++#include <malloc.h>
++#include <errno.h>
++#include <crc.h>
++#include <fs.h>
++
++#include <mtd/utils.h>
++#include <mtd/ubi-media.h>
++#include <mtd/libubigen.h>
++
++void ubigen_info_init(struct ubigen_info *ui, int peb_size, int min_io_size,
++		      int subpage_size, int vid_hdr_offs, int ubi_ver,
++		      uint32_t image_seq)
++{
++	if (!vid_hdr_offs) {
++		vid_hdr_offs = UBI_EC_HDR_SIZE + subpage_size - 1;
++		vid_hdr_offs /= subpage_size;
++		vid_hdr_offs *= subpage_size;
++	}
++
++	ui->peb_size = peb_size;
++	ui->min_io_size = min_io_size;
++	ui->vid_hdr_offs = vid_hdr_offs;
++	ui->data_offs = vid_hdr_offs + UBI_VID_HDR_SIZE + min_io_size - 1;
++	ui->data_offs /= min_io_size;
++	ui->data_offs *= min_io_size;
++	ui->leb_size = peb_size - ui->data_offs;
++	ui->ubi_ver = ubi_ver;
++	ui->image_seq = image_seq;
++
++	ui->max_volumes = ui->leb_size / UBI_VTBL_RECORD_SIZE;
++	if (ui->max_volumes > UBI_MAX_VOLUMES)
++		ui->max_volumes = UBI_MAX_VOLUMES;
++	ui->vtbl_size = ui->max_volumes * UBI_VTBL_RECORD_SIZE;
++}
++
++struct ubi_vtbl_record *ubigen_create_empty_vtbl(const struct ubigen_info *ui)
++{
++	struct ubi_vtbl_record *vtbl;
++	int i;
++
++	vtbl = calloc(1, ui->vtbl_size);
++	if (!vtbl) {
++		sys_errmsg("cannot allocate %d bytes of memory", ui->vtbl_size);
++		return NULL;
++	}
++
++	for (i = 0; i < ui->max_volumes; i++) {
++		uint32_t crc = crc32_no_comp(UBI_CRC32_INIT, &vtbl[i],
++				     UBI_VTBL_RECORD_SIZE_CRC);
++		vtbl[i].crc = cpu_to_be32(crc);
++	}
++
++	return vtbl;
++}
++
++int ubigen_add_volume(const struct ubigen_info *ui,
++		      const struct ubigen_vol_info *vi,
++		      struct ubi_vtbl_record *vtbl)
++{
++	struct ubi_vtbl_record *vtbl_rec = &vtbl[vi->id];
++	uint32_t tmp;
++
++	if (vi->id >= ui->max_volumes) {
++		errmsg("too high volume id %d, max. volumes is %d",
++		       vi->id, ui->max_volumes);
++		errno = EINVAL;
++		return -1;
++	}
++
++	if (vi->alignment >= ui->leb_size) {
++		errmsg("too large alignment %d, max is %d (LEB size)",
++		       vi->alignment, ui->leb_size);
++		errno = EINVAL;
++		return -1;
++	}
++
++	memset(vtbl_rec, 0, sizeof(struct ubi_vtbl_record));
++	tmp = (vi->bytes + ui->leb_size - 1) / ui->leb_size;
++	vtbl_rec->reserved_pebs = cpu_to_be32(tmp);
++	vtbl_rec->alignment = cpu_to_be32(vi->alignment);
++	vtbl_rec->vol_type = vi->type;
++	tmp = ui->leb_size % vi->alignment;
++	vtbl_rec->data_pad = cpu_to_be32(tmp);
++	vtbl_rec->flags = vi->flags;
++
++	memcpy(vtbl_rec->name, vi->name, vi->name_len);
++	vtbl_rec->name[vi->name_len] = '\0';
++	vtbl_rec->name_len = cpu_to_be16(vi->name_len);
++
++	tmp = crc32_no_comp(UBI_CRC32_INIT, vtbl_rec, UBI_VTBL_RECORD_SIZE_CRC);
++	vtbl_rec->crc =	 cpu_to_be32(tmp);
++	return 0;
++}
++
++void ubigen_init_ec_hdr(const struct ubigen_info *ui,
++		        struct ubi_ec_hdr *hdr, long long ec)
++{
++	uint32_t crc;
++
++	memset(hdr, 0, sizeof(struct ubi_ec_hdr));
++
++	hdr->magic = cpu_to_be32(UBI_EC_HDR_MAGIC);
++	hdr->version = ui->ubi_ver;
++	hdr->ec = cpu_to_be64(ec);
++	hdr->vid_hdr_offset = cpu_to_be32(ui->vid_hdr_offs);
++	hdr->data_offset = cpu_to_be32(ui->data_offs);
++	hdr->image_seq = cpu_to_be32(ui->image_seq);
++
++	crc = crc32_no_comp(UBI_CRC32_INIT, hdr, UBI_EC_HDR_SIZE_CRC);
++	hdr->hdr_crc = cpu_to_be32(crc);
++}
++
++void ubigen_init_vid_hdr(const struct ubigen_info *ui,
++			 const struct ubigen_vol_info *vi,
++			 struct ubi_vid_hdr *hdr, int lnum,
++			 const void *data, int data_size)
++{
++	uint32_t crc;
++
++	memset(hdr, 0, sizeof(struct ubi_vid_hdr));
++
++	hdr->magic = cpu_to_be32(UBI_VID_HDR_MAGIC);
++	hdr->version = ui->ubi_ver;
++	hdr->vol_type = vi->type;
++	hdr->vol_id = cpu_to_be32(vi->id);
++	hdr->lnum = cpu_to_be32(lnum);
++	hdr->data_pad = cpu_to_be32(vi->data_pad);
++	hdr->compat = vi->compat;
++
++	if (vi->type == UBI_VID_STATIC) {
++		hdr->data_size = cpu_to_be32(data_size);
++		hdr->used_ebs = cpu_to_be32(vi->used_ebs);
++		crc = crc32_no_comp(UBI_CRC32_INIT, data, data_size);
++		hdr->data_crc = cpu_to_be32(crc);
++	}
++
++	crc = crc32_no_comp(UBI_CRC32_INIT, hdr, UBI_VID_HDR_SIZE_CRC);
++	hdr->hdr_crc = cpu_to_be32(crc);
++}
++
++int ubigen_write_volume(const struct ubigen_info *ui,
++			const struct ubigen_vol_info *vi, long long ec,
++			long long bytes, int in, int out)
++{
++	int len = vi->usable_leb_size, rd, lnum = 0;
++	char *inbuf, *outbuf;
++
++	if (vi->id >= ui->max_volumes) {
++		errmsg("too high volume id %d, max. volumes is %d",
++		       vi->id, ui->max_volumes);
++		errno = EINVAL;
++		return -1;
++	}
++
++	if (vi->alignment >= ui->leb_size) {
++		errmsg("too large alignment %d, max is %d (LEB size)",
++		       vi->alignment, ui->leb_size);
++		errno = EINVAL;
++		return -1;
++	}
++
++	inbuf = malloc(ui->leb_size);
++	if (!inbuf)
++		return sys_errmsg("cannot allocate %d bytes of memory",
++				  ui->leb_size);
++	outbuf = malloc(ui->peb_size);
++	if (!outbuf) {
++		sys_errmsg("cannot allocate %d bytes of memory", ui->peb_size);
++		goto out_free;
++	}
++
++	memset(outbuf, 0xFF, ui->data_offs);
++	ubigen_init_ec_hdr(ui, (struct ubi_ec_hdr *)outbuf, ec);
++
++	while (bytes) {
++		int l;
++		struct ubi_vid_hdr *vid_hdr;
++
++		if (bytes < len)
++			len = bytes;
++		bytes -= len;
++
++		l = len;
++		do {
++			rd = read(in, inbuf + len - l, l);
++			if (rd != l) {
++				sys_errmsg("cannot read %d bytes from the input file", l);
++				goto out_free1;
++			}
++
++			l -= rd;
++		} while (l);
++
++		vid_hdr = (struct ubi_vid_hdr *)(&outbuf[ui->vid_hdr_offs]);
++		ubigen_init_vid_hdr(ui, vi, vid_hdr, lnum, inbuf, len);
++
++		memcpy(outbuf + ui->data_offs, inbuf, len);
++		memset(outbuf + ui->data_offs + len, 0xFF,
++		       ui->peb_size - ui->data_offs - len);
++
++		if (write(out, outbuf, ui->peb_size) != ui->peb_size) {
++			sys_errmsg("cannot write %d bytes to the output file", ui->peb_size);
++			goto out_free1;
++		}
++
++		lnum += 1;
++	}
++
++	free(outbuf);
++	free(inbuf);
++	return 0;
++
++out_free1:
++	free(outbuf);
++out_free:
++	free(inbuf);
++	return -1;
++}
++
++int ubigen_write_layout_vol(const struct ubigen_info *ui, int peb1, int peb2,
++			    long long ec1, long long ec2,
++			    struct ubi_vtbl_record *vtbl, int fd)
++{
++	int ret;
++	struct ubigen_vol_info vi;
++	char *outbuf;
++	struct ubi_vid_hdr *vid_hdr;
++	off_t seek;
++
++	vi.bytes = ui->leb_size * UBI_LAYOUT_VOLUME_EBS;
++	vi.id = UBI_LAYOUT_VOLUME_ID;
++	vi.alignment = UBI_LAYOUT_VOLUME_ALIGN;
++	vi.data_pad = ui->leb_size % UBI_LAYOUT_VOLUME_ALIGN;
++	vi.usable_leb_size = ui->leb_size - vi.data_pad;
++	vi.data_pad = ui->leb_size - vi.usable_leb_size;
++	vi.type = UBI_LAYOUT_VOLUME_TYPE;
++	vi.name = UBI_LAYOUT_VOLUME_NAME;
++	vi.name_len = strlen(UBI_LAYOUT_VOLUME_NAME);
++	vi.compat = UBI_LAYOUT_VOLUME_COMPAT;
++
++	outbuf = malloc(ui->peb_size);
++	if (!outbuf)
++		return sys_errmsg("failed to allocate %d bytes",
++				  ui->peb_size);
++
++	memset(outbuf, 0xFF, ui->data_offs);
++	vid_hdr = (struct ubi_vid_hdr *)(&outbuf[ui->vid_hdr_offs]);
++	memcpy(outbuf + ui->data_offs, vtbl, ui->vtbl_size);
++	memset(outbuf + ui->data_offs + ui->vtbl_size, 0xFF,
++	       ui->peb_size - ui->data_offs - ui->vtbl_size);
++
++	seek = (off_t) peb1 * ui->peb_size;
++	if (lseek(fd, seek, SEEK_SET) != seek) {
++		sys_errmsg("cannot seek output file");
++		goto out_free;
++	}
++
++	ubigen_init_ec_hdr(ui, (struct ubi_ec_hdr *)outbuf, ec1);
++	ubigen_init_vid_hdr(ui, &vi, vid_hdr, 0, NULL, 0);
++	ret = write(fd, outbuf, ui->peb_size);
++	if (ret != ui->peb_size) {
++		sys_errmsg("cannot write %d bytes", ui->peb_size);
++		goto out_free;
++	}
++
++	seek = (off_t) peb2 * ui->peb_size;
++	if (lseek(fd, seek, SEEK_SET) != seek) {
++		sys_errmsg("cannot seek output file");
++		goto out_free;
++	}
++	ubigen_init_ec_hdr(ui, (struct ubi_ec_hdr *)outbuf, ec2);
++	ubigen_init_vid_hdr(ui, &vi, vid_hdr, 1, NULL, 0);
++	ret = write(fd, outbuf, ui->peb_size);
++	if (ret != ui->peb_size) {
++		sys_errmsg("cannot write %d bytes", ui->peb_size);
++		goto out_free;
++	}
++
++	free(outbuf);
++	return 0;
++
++out_free:
++	free(outbuf);
++	return -1;
++}
+-- 
+1.7.10.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
