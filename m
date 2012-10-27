@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TS5OD-0001fp-Jl
- for barebox@lists.infradead.org; Sat, 27 Oct 2012 12:21:22 +0000
-Date: Sat, 27 Oct 2012 14:21:18 +0200
+ id 1TS5RE-0001jM-Hr
+ for barebox@lists.infradead.org; Sat, 27 Oct 2012 12:24:29 +0000
+Date: Sat, 27 Oct 2012 14:24:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121027122118.GD1641@pengutronix.de>
-References: <1351278011-26982-1-git-send-email-robert.jarzmik@free.fr>
+Message-ID: <20121027122426.GE1641@pengutronix.de>
+References: <1351231135-17324-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1351278011-26982-1-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <1351231135-17324-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +22,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH] commands: change Y-Modem implementation
-To: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [RFC 0/3] readline: add ctrl-w handling (cut-the-last-word)
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Robert,
+Hi Antony,
 
-On Fri, Oct 26, 2012 at 09:00:11PM +0200, Robert Jarzmik wrote:
-> The current Y-Modem implementation has some limitations:
->  - Y-Modem/G protocol is not supported
->  - Multiple files (aka. batch) transfers are not supported
->  - Transfer speed over fast lines (USB console) is slow
->  - Code is not trivial to maintain (personnal opinion)
+On Fri, Oct 26, 2012 at 09:58:52AM +0400, Antony Pavlov wrote:
+> The popular 'bash' command interpreter has the ctrl-w keystroke for
+> cutting the last word in the command line. This keystroke is
+> very handy for me and I really miss it in barebox.
+> 
+> This patch series adds ctrl-w support to barebox's readline
+> and in addition fixes a typo.
+> 
+> [RFC 1/3] readline: move backspace key handling to the DO_BACKSPACE
+> [RFC 2/3] readline: add ctrl-w handling (cut-the-last-word)
+> [RFC 3/3] readline: fix the 'new blank line at EOF' typo
 
-This is my personal opinion aswell.
-
-From a first sight your code looks much better. When the problems are
-solved we should go and replace the old code.
-
-If you continue on this it would be nice to separate the protocol
-implemention from the command so that it can be used from C code aswell
-rather than only from the command.
+Looks good.
 
 Sascha
 
