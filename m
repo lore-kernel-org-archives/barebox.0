@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TS5RE-0001jM-Hr
- for barebox@lists.infradead.org; Sat, 27 Oct 2012 12:24:29 +0000
-Date: Sat, 27 Oct 2012 14:24:26 +0200
+ id 1TS5aT-0002bA-3y
+ for barebox@lists.infradead.org; Sat, 27 Oct 2012 12:34:02 +0000
+Date: Sat, 27 Oct 2012 14:33:58 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121027122426.GE1641@pengutronix.de>
-References: <1351231135-17324-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20121027123358.GF1641@pengutronix.de>
+References: <1351246602-8859-1-git-send-email-w.sang@pengutronix.de>
+ <1351246602-8859-5-git-send-email-w.sang@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1351231135-17324-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1351246602-8859-5-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +23,143 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 0/3] readline: add ctrl-w handling (cut-the-last-word)
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [RFC 04/10] devfs & mtd: add MEMERASE ioctl support
+To: Wolfram Sang <w.sang@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Antony,
-
-On Fri, Oct 26, 2012 at 09:58:52AM +0400, Antony Pavlov wrote:
-> The popular 'bash' command interpreter has the ctrl-w keystroke for
-> cutting the last word in the command line. This keystroke is
-> very handy for me and I really miss it in barebox.
+On Fri, Oct 26, 2012 at 12:16:36PM +0200, Wolfram Sang wrote:
+> To make that, we need to shift mtd_erase before mtd_ioctl.
+> ubi-utils need that, especially ubiformat.
 > 
-> This patch series adds ctrl-w support to barebox's readline
-> and in addition fixes a typo.
+> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+> ---
+>  drivers/mtd/core.c |   68 +++++++++++++++++++++++++++-------------------------
+>  fs/devfs-core.c    |    3 ++-
+>  2 files changed, 37 insertions(+), 34 deletions(-)
 > 
-> [RFC 1/3] readline: move backspace key handling to the DO_BACKSPACE
-> [RFC 2/3] readline: add ctrl-w handling (cut-the-last-word)
-> [RFC 3/3] readline: fix the 'new blank line at EOF' typo
+> diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+> index 7c323a1..aca4f13 100644
+> --- a/drivers/mtd/core.c
+> +++ b/drivers/mtd/core.c
+> @@ -114,7 +114,37 @@ static ssize_t mtd_write(struct cdev* cdev, const void *buf, size_t _count,
+>  out:
+>  	return ret ? ret : _count;
+>  }
+> -#endif
+> +
+> +static int mtd_erase(struct cdev *cdev, size_t count, loff_t offset)
+> +{
+> +	struct mtd_info *mtd = cdev->priv;
+> +	struct erase_info erase;
+> +	int ret;
+> +
+> +	memset(&erase, 0, sizeof(erase));
+> +	erase.mtd = mtd;
+> +	erase.addr = offset;
+> +	erase.len = mtd->erasesize;
+> +
+> +	while (count > 0) {
+> +		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
+> +
+> +		ret = mtd->block_isbad(mtd, erase.addr);
+> +		if (ret > 0) {
+> +			printf("Skipping bad block at 0x%08x\n", erase.addr);
+> +		} else {
+> +			ret = mtd->erase(mtd, &erase);
+> +			if (ret)
+> +				return ret;
+> +		}
+> +
+> +		erase.addr += mtd->erasesize;
+> +		count -= count > mtd->erasesize ? mtd->erasesize : count;
+> +	}
+> +
+> +	return 0;
+> +}
+> +#endif /* CONFIG_MTD_WRITE */
+>  
+>  int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+>  {
+> @@ -125,6 +155,7 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+>  	struct mtd_ecc_stats *ecc = buf;
+>  #endif
+>  	struct region_info_user *reg = buf;
+> +	struct erase_info_user *ei = buf;
+>  	loff_t *offset = buf;
+>  
+>  	switch (request) {
+> @@ -137,6 +168,9 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+>  		dev_dbg(cdev->dev, "MEMSETBADBLOCK: 0x%08llx\n", *offset);
+>  		ret = mtd->block_markbad(mtd, *offset);
+>  		break;
+> +	case MEMERASE:
+> +		ret = mtd_erase(cdev, ei->length, ei->start + cdev->offset);
+> +		break;
 
-Looks good.
+Please check this compiles with CONFIG_MTD_WRITE disabled.
+
+>  #endif
+>  	case MEMGETINFO:
+>  		user->type	= mtd->type;
+> @@ -174,38 +208,6 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+>  	return ret;
+>  }
+>  
+> -#ifdef CONFIG_MTD_WRITE
+> -static int mtd_erase(struct cdev *cdev, size_t count, loff_t offset)
+> -{
+> -	struct mtd_info *mtd = cdev->priv;
+> -	struct erase_info erase;
+> -	int ret;
+> -
+> -	memset(&erase, 0, sizeof(erase));
+> -	erase.mtd = mtd;
+> -	erase.addr = offset;
+> -	erase.len = mtd->erasesize;
+> -
+> -	while (count > 0) {
+> -		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
+> -
+> -		ret = mtd->block_isbad(mtd, erase.addr);
+> -		if (ret > 0) {
+> -			printf("Skipping bad block at 0x%08x\n", erase.addr);
+> -		} else {
+> -			ret = mtd->erase(mtd, &erase);
+> -			if (ret)
+> -				return ret;
+> -		}
+> -
+> -		erase.addr += mtd->erasesize;
+> -		count -= count > mtd->erasesize ? mtd->erasesize : count;
+> -	}
+> -
+> -	return 0;
+> -}
+> -#endif
+> -
+>  static struct file_operations mtd_ops = {
+>  	.read   = mtd_read,
+>  #ifdef CONFIG_MTD_WRITE
+> diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+> index 0d2f75a..262e0a2 100644
+> --- a/fs/devfs-core.c
+> +++ b/fs/devfs-core.c
+> @@ -152,13 +152,14 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
+>  		break;
+>  #if (defined(CONFIG_NAND_ECC_HW) || defined(CONFIG_NAND_ECC_SOFT))
+>  	case ECCGETSTATS:
+> +#endif
+> +	case MEMERASE:
+>  		if (!cdev->ops->ioctl) {
+>  			ret = -EINVAL;
+>  			break;
+>  		}
+>  		ret = cdev->ops->ioctl(cdev, request, buf);
+>  		break;
+
+Are you sure this works for partitions? I assume you have to take
+cdev->offset into account like for example the MEMGETBADBLOCK ioctl
+does.
 
 Sascha
 
