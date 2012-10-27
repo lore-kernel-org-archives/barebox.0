@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSCwF-0004T1-VX
- for barebox@lists.infradead.org; Sat, 27 Oct 2012 20:25:00 +0000
-Received: from mail611.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 3358FDC0F6E
- for <barebox@lists.infradead.org>; Sat, 27 Oct 2012 22:31:58 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 27 Oct 2012 22:22:45 +0200
-Message-Id: <1351369365-21395-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1351368639-20174-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1351368639-20174-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1TSFse-0006vo-RE
+ for barebox@lists.infradead.org; Sat, 27 Oct 2012 23:33:34 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+In-Reply-To: <20121027132604.GA28904@game.jcrosoft.org> (Jean-Christophe
+ PLAGNIOL-VILLARD's message of "Sat, 27 Oct 2012 15:26:04 +0200")
+References: <1351278011-26982-1-git-send-email-robert.jarzmik@free.fr>
+ <20121027132604.GA28904@game.jcrosoft.org>
+Date: Sun, 28 Oct 2012 01:33:16 +0200
+Message-ID: <871ugjxzgj.fsf@free.fr>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,73 +19,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1 v2] gpio: move gpio_is_valid to gpio.h
-To: barebox@lists.infradead.org
+Subject: Re: [RFC PATCH] commands: change Y-Modem implementation
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-gpio < 0 means invalid too
+Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> writes:
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
-send right version
+> On 21:00 Fri 26 Oct     , Robert Jarzmik wrote:
+> personnaly I use kermit so I need xmodem
+>
+> did you try it?
+I just did.
 
-Best Regards,
-J.
- drivers/gpio/gpio.c        |    9 ---------
- include/asm-generic/gpio.h |   11 +++++++++++
- 2 files changed, 11 insertions(+), 9 deletions(-)
+There is a small fix needed on top of my previous patch to make xmodem behave
+properly with a minicom+xmodem setup (sx -vv barebox.bin). I'll put that in the
+second revision of the patch, once I'll have tries transfers over real serial
+lines just as Antony did.
 
-diff --git a/drivers/gpio/gpio.c b/drivers/gpio/gpio.c
-index 6ad8d27..042a062 100644
---- a/drivers/gpio/gpio.c
-+++ b/drivers/gpio/gpio.c
-@@ -4,17 +4,8 @@
- 
- static LIST_HEAD(chip_list);
- 
--#define ARCH_NR_GPIOS 256
--
- static struct gpio_chip *gpio_desc[ARCH_NR_GPIOS];
- 
--static int gpio_is_valid(unsigned gpio)
--{
--	if (gpio < ARCH_NR_GPIOS)
--		return 1;
--	return 0;
--}
--
- void gpio_set_value(unsigned gpio, int value)
- {
- 	struct gpio_chip *chip = gpio_desc[gpio];
-diff --git a/include/asm-generic/gpio.h b/include/asm-generic/gpio.h
-index 1997888..c2e7a5d 100644
---- a/include/asm-generic/gpio.h
-+++ b/include/asm-generic/gpio.h
-@@ -1,6 +1,17 @@
- #ifndef __ASM_GENERIC_GPIO_H
- #define __ASM_GENERIC_GPIO_H
- 
-+#define ARCH_NR_GPIOS 256
-+
-+static inline int gpio_is_valid(int gpio)
-+{
-+	if (gpio < 0)
-+		return 0;
-+	if (gpio < ARCH_NR_GPIOS)
-+		return 1;
-+	return 0;
-+}
-+
- void gpio_set_value(unsigned gpio, int value);
- int gpio_get_value(unsigned gpio);
- int gpio_direction_output(unsigned gpio, int value);
+Cheers.
+
 -- 
-1.7.10.4
-
+Robert
 
 _______________________________________________
 barebox mailing list
