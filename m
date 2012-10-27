@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TS2UG-000775-72
- for barebox@lists.infradead.org; Sat, 27 Oct 2012 09:15:25 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TS5OD-0001fp-Jl
+ for barebox@lists.infradead.org; Sat, 27 Oct 2012 12:21:22 +0000
+Date: Sat, 27 Oct 2012 14:21:18 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121027122118.GD1641@pengutronix.de>
 References: <1351278011-26982-1-git-send-email-robert.jarzmik@free.fr>
- <CAA4bVAEuG1fpobFT+AJns9fUHPUfKMDW1RDcoqPz-etM9UTPmw@mail.gmail.com>
-Date: Sat, 27 Oct 2012 11:15:13 +0200
-In-Reply-To: <CAA4bVAEuG1fpobFT+AJns9fUHPUfKMDW1RDcoqPz-etM9UTPmw@mail.gmail.com>
- (Antony Pavlov's message of "Sat, 27 Oct 2012 09:49:00 +0400")
-Message-ID: <878vasxom6.fsf@free.fr>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1351278011-26982-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,28 +23,34 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [RFC PATCH] commands: change Y-Modem implementation
-To: Antony Pavlov <antonynpavlov@gmail.com>
+To: Robert Jarzmik <robert.jarzmik@free.fr>
 Cc: barebox@lists.infradead.org
 
-Antony Pavlov <antonynpavlov@gmail.com> writes:
+Hi Robert,
 
-> I have just checked your Y-Modem implementation over 115200 bps UART.
->
-> Traditional 'loady' works fine, but neither 'loady2' nor 'loady2 -g'
-> does not work.
-> I use lrzsz-0.12.21-5 on my host.
-OK, thanks Antony.
+On Fri, Oct 26, 2012 at 09:00:11PM +0200, Robert Jarzmik wrote:
+> The current Y-Modem implementation has some limitations:
+>  - Y-Modem/G protocol is not supported
+>  - Multiple files (aka. batch) transfers are not supported
+>  - Transfer speed over fast lines (USB console) is slow
+>  - Code is not trivial to maintain (personnal opinion)
 
-I use the very same lrzsz version on my host. I'll try to find an old
-motherboard with a UART and an USB/Serial dongle to play with to find out what's
-wrong.
+This is my personal opinion aswell.
 
-Once I'll get that working, I'll repost.
+From a first sight your code looks much better. When the problems are
+solved we should go and replace the old code.
 
-Cheers.
+If you continue on this it would be nice to separate the protocol
+implemention from the command so that it can be used from C code aswell
+rather than only from the command.
 
---
-Robert
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
