@@ -2,17 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSCdt-00042x-Kt
+ id 1TSCdt-00042v-Kp
  for barebox@lists.infradead.org; Sat, 27 Oct 2012 20:06:02 +0000
 Received: from mail611.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id B05AADC1409
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 6F7AFDC13F4
  for <barebox@lists.infradead.org>; Sat, 27 Oct 2012 22:12:57 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 27 Oct 2012 22:03:43 +0200
-Message-Id: <1351368225-19521-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1351368225-19521-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat, 27 Oct 2012 22:03:41 +0200
+Message-Id: <1351368225-19521-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20121027195938.GB28904@game.jcrosoft.org>
 References: <20121027195938.GB28904@game.jcrosoft.org>
- <1351368225-19521-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,199 +25,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] 1-wire: add gpio bus
+Subject: [PATCH 1/5] clock: introduce non interruptible timeout
 To: barebox@lists.infradead.org
 
-Based on linux implementation.
+is_non_timeout call poller_call if the timeout is >= 100us
+
+but on 1-wire bus we need to wait 500us and not more than 930us
+for the bus reset. So if the poller_call is caller we can not guarantee it.
+
+So for this introduce is_non_interruptible_timeout than we only wait.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/w1/masters/Kconfig   |    7 +++
- drivers/w1/masters/Makefile  |    1 +
- drivers/w1/masters/w1-gpio.c |  116 ++++++++++++++++++++++++++++++++++++++++++
- include/linux/w1-gpio.h      |   25 +++++++++
- 4 files changed, 149 insertions(+)
- create mode 100644 drivers/w1/masters/w1-gpio.c
- create mode 100644 include/linux/w1-gpio.h
+ common/clock.c  |   14 ++++++++++----
+ include/clock.h |    1 +
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/w1/masters/Kconfig b/drivers/w1/masters/Kconfig
-index 86aa8df..e429c14 100644
---- a/drivers/w1/masters/Kconfig
-+++ b/drivers/w1/masters/Kconfig
-@@ -4,4 +4,11 @@
+diff --git a/common/clock.c b/common/clock.c
+index 8adbeaf..a358b78 100644
+--- a/common/clock.c
++++ b/common/clock.c
+@@ -135,16 +135,22 @@ uint32_t clocksource_hz2mult(uint32_t hz, uint32_t shift_constant)
+         return (uint32_t)tmp;
+ }
  
- menu "1-wire Bus Masters"
+-int is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
++int is_non_interruptible_timeout(uint64_t start_ns, uint64_t time_offset_ns)
+ {
+-	if (time_offset_ns >= 100 * USECOND)
+-		poller_call();
+-
+ 	if ((int64_t)(start_ns + time_offset_ns - get_time_ns()) < 0)
+ 		return 1;
+ 	else
+ 		return 0;
+ }
++EXPORT_SYMBOL(is_non_interruptable_timeout);
++
++int is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
++{
++	if (time_offset_ns >= 100 * USECOND)
++		poller_call();
++
++	return is_non_interruptible_timeout(start_ns, time_offset_ns);
++}
+ EXPORT_SYMBOL(is_timeout);
  
-+config W1_MASTER_GPIO
-+	bool "GPIO 1-wire busmaster"
-+	depends on GENERIC_GPIO
-+	help
-+	  Say Y here if you want to communicate with your 1-wire devices using
-+	  GPIO pins. This driver uses the GPIO API to control the wire.
-+
- endmenu
-diff --git a/drivers/w1/masters/Makefile b/drivers/w1/masters/Makefile
-index ed1b9d9..84b35bb 100644
---- a/drivers/w1/masters/Makefile
-+++ b/drivers/w1/masters/Makefile
-@@ -2,3 +2,4 @@
- # Makefile for 1-wire bus master drivers.
- #
+ void ndelay(unsigned long nsecs)
+diff --git a/include/clock.h b/include/clock.h
+index c01a8d0..5fd9134 100644
+--- a/include/clock.h
++++ b/include/clock.h
+@@ -32,6 +32,7 @@ void clocks_calc_mult_shift(uint32_t *mult, uint32_t *shift, uint32_t from, uint
+ uint32_t clocksource_hz2mult(uint32_t hz, uint32_t shift_constant);
  
-+obj-$(CONFIG_W1_MASTER_GPIO)		+= w1-gpio.o
-diff --git a/drivers/w1/masters/w1-gpio.c b/drivers/w1/masters/w1-gpio.c
-new file mode 100644
-index 0000000..0a3794d
---- /dev/null
-+++ b/drivers/w1/masters/w1-gpio.c
-@@ -0,0 +1,116 @@
-+/*
-+ * w1-gpio - GPIO w1 bus master driver
-+ *
-+ * Copyright (C) 2007 Ville Syrjala <syrjala@sci.fi>
-+ * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include <xfuncs.h>
-+#include <driver.h>
-+#include <linux/w1-gpio.h>
-+#include <gpio.h>
-+
-+#include "../w1.h"
-+
-+static void w1_gpio_write_bit_dir(struct w1_bus *bus, u8 bit)
-+{
-+	struct w1_gpio_platform_data *pdata = bus->data;
-+
-+	if (bit)
-+		gpio_direction_input(pdata->pin);
-+	else
-+		gpio_direction_output(pdata->pin, 0);
-+}
-+
-+static void w1_gpio_write_bit_val(struct w1_bus *bus, u8 bit)
-+{
-+	struct w1_gpio_platform_data *pdata = bus->data;
-+
-+	gpio_set_value(pdata->pin, bit);
-+}
-+
-+static u8 w1_gpio_read_bit(struct w1_bus *bus)
-+{
-+	struct w1_gpio_platform_data *pdata = bus->data;
-+
-+	return gpio_get_value(pdata->pin) ? 1 : 0;
-+}
-+
-+static int __init w1_gpio_probe(struct device_d *dev)
-+{
-+	struct w1_bus *master;
-+	struct w1_gpio_platform_data *pdata;
-+	int err;
-+
-+	pdata = dev->platform_data;
-+
-+	if (!pdata)
-+		return -ENXIO;
-+
-+	master = xzalloc(sizeof(struct w1_bus));
-+
-+	err = gpio_request(pdata->pin, "w1");
-+	if (err)
-+		goto free_master;
-+
-+	if (gpio_is_valid(pdata->ext_pullup_enable_pin)) {
-+		err = gpio_request(pdata->pin, "w1 pullup");
-+		if (err < 0)
-+			goto free_gpio;
-+
-+		gpio_direction_output(pdata->pin, 0);
-+	}
-+
-+	master->data = pdata;
-+	master->read_bit = w1_gpio_read_bit;
-+
-+	if (pdata->is_open_drain) {
-+		gpio_direction_output(pdata->pin, 1);
-+		master->write_bit = w1_gpio_write_bit_val;
-+	} else {
-+		gpio_direction_input(pdata->pin);
-+		master->write_bit = w1_gpio_write_bit_dir;
-+	}
-+
-+	master->parent = dev;
-+
-+	err = w1_bus_register(master);
-+	if (err)
-+		goto free_gpio_ext_pu;
-+
-+	if (pdata->enable_external_pullup)
-+		pdata->enable_external_pullup(1);
-+
-+	if (gpio_is_valid(pdata->ext_pullup_enable_pin))
-+		gpio_set_value(pdata->ext_pullup_enable_pin, 1);
-+
-+	return 0;
-+
-+ free_gpio_ext_pu:
-+	if (gpio_is_valid(pdata->ext_pullup_enable_pin))
-+		gpio_free(pdata->ext_pullup_enable_pin);
-+ free_gpio:
-+	gpio_free(pdata->pin);
-+ free_master:
-+	kfree(master);
-+
-+	return err;
-+}
-+
-+static struct driver_d w1_gpio_driver = {
-+	.name	= "w1-gpio",
-+	.probe	= w1_gpio_probe,
-+};
-+
-+static int __init w1_gpio_init(void)
-+{
-+	return platform_driver_register(&w1_gpio_driver);
-+}
-+device_initcall(w1_gpio_init);
-diff --git a/include/linux/w1-gpio.h b/include/linux/w1-gpio.h
-new file mode 100644
-index 0000000..065e3ae
---- /dev/null
-+++ b/include/linux/w1-gpio.h
-@@ -0,0 +1,25 @@
-+/*
-+ * w1-gpio interface to platform code
-+ *
-+ * Copyright (C) 2007 Ville Syrjala <syrjala@sci.fi>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ */
-+#ifndef _LINUX_W1_GPIO_H
-+#define _LINUX_W1_GPIO_H
-+
-+/**
-+ * struct w1_gpio_platform_data - Platform-dependent data for w1-gpio
-+ * @pin: GPIO pin to use
-+ * @is_open_drain: GPIO pin is configured as open drain
-+ */
-+struct w1_gpio_platform_data {
-+	unsigned int pin;
-+	unsigned int is_open_drain:1;
-+	void (*enable_external_pullup)(int enable);
-+	unsigned int ext_pullup_enable_pin;
-+};
-+
-+#endif /* _LINUX_W1_GPIO_H */
+ int is_timeout(uint64_t start_ns, uint64_t time_offset_ns);
++int is_non_interruptible_timeout(uint64_t start_ns, uint64_t time_offset_ns);
+ 
+ // void udelay(unsigned long usecs);
+ 
 -- 
 1.7.10.4
 
