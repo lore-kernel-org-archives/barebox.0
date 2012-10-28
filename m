@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSXoW-0000y0-NU
- for barebox@lists.infradead.org; Sun, 28 Oct 2012 18:42:25 +0000
-Received: from beldin (unknown [IPv6:2a01:e35:2f37:a360:e088:9f04:3111:39ad])
- by smtp1-g21.free.fr (Postfix) with ESMTP id 98CEB940156
- for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 19:42:19 +0100 (CET)
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Sun, 28 Oct 2012 19:42:18 +0100
-Message-ID: <87k3uawi9h.fsf@free.fr>
+Received: from astoria.ccjclearline.com ([64.235.106.9])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TSZkB-00018s-22
+ for barebox@lists.infradead.org; Sun, 28 Oct 2012 20:46:05 +0000
+Received: from 71-19-187-49.dedicated.allstream.net ([71.19.187.49]:57909
+ helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+ (Exim 4.77) (envelope-from <rpjday@crashcourse.ca>)
+ id 1TSZjx-0006Ws-Ni
+ for barebox@lists.infradead.org; Sun, 28 Oct 2012 16:45:49 -0400
+Date: Sun, 28 Oct 2012 16:45:46 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.DEB.2.02.1210281641520.5519@oneiric>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,29 +25,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: sandbox and tty input/output
-To: barebox@lists.infradead.org
+Subject: current barebox support for beagle xM and panda ES?
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Hi all,
 
-I wanted to test a bit my barebox over a serial line.
-I compiled sandbox defconfig on my x86 laptop, and executed it in 2 manners :
- - "</dev/ttyUSB0 ./barebox >/dev/ttyUSB0"
- - ./barebox -I /dev/ttyUSB0 -O /dev/ttyUSB0
+  it's been a few months since i've played with barebox so a simple
+question -- what is the status of barebox support specifically for the
+beagleboard xM and panda ES (as opposed to the original beagle and
+panda)?
 
-I connect on the other end of /dev/ttyUSB0 a serial port and try to type some
-commands, or see the "barebox:" prompt : no luck.
+  i checked in on this page just now:
 
-The first command gives back nothing (I still have to check my serial line).
-The second command does a "panic, out of memory".
+http://wiki.barebox.org/doku.php?id=boards:omap
 
-Has anybody tried to use sandbox over a tty line and can he give me a recipee to
-speed up my work ?
+and it doesn't look like anything's changed since the last time i read
+it.  i *specifically* would like to replace u-boot on my beagle xM
+(rev C) with barebox, just curious if anyone's done this and can
+verify how well it works, thanks.
 
-Cheers.
+rday
 
 -- 
-Robert
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
