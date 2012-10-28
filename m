@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-f177.google.com ([209.85.223.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TSUWZ-00043C-9x
- for barebox@lists.infradead.org; Sun, 28 Oct 2012 15:11:40 +0000
-Received: by mail-ie0-f177.google.com with SMTP id e14so5589768iej.36
- for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 08:11:37 -0700 (PDT)
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TSXoW-0000y0-NU
+ for barebox@lists.infradead.org; Sun, 28 Oct 2012 18:42:25 +0000
+Received: from beldin (unknown [IPv6:2a01:e35:2f37:a360:e088:9f04:3111:39ad])
+ by smtp1-g21.free.fr (Postfix) with ESMTP id 98CEB940156
+ for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 19:42:19 +0100 (CET)
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Date: Sun, 28 Oct 2012 19:42:18 +0100
+Message-ID: <87k3uawi9h.fsf@free.fr>
 MIME-Version: 1.0
-In-Reply-To: <20121027122426.GE1641@pengutronix.de>
-References: <1351231135-17324-1-git-send-email-antonynpavlov@gmail.com>
- <20121027122426.GE1641@pengutronix.de>
-Date: Sun, 28 Oct 2012 19:11:37 +0400
-Message-ID: <CAA4bVAFWO_CK8U9dDBTn+5eo686CuYhAbYRV5Nxdqr0KC5eJcw@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,32 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 0/3] readline: add ctrl-w handling (cut-the-last-word)
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: sandbox and tty input/output
+To: barebox@lists.infradead.org
 
-On 27 October 2012 16:24, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> Hi Antony,
->
-> On Fri, Oct 26, 2012 at 09:58:52AM +0400, Antony Pavlov wrote:
->> The popular 'bash' command interpreter has the ctrl-w keystroke for
->> cutting the last word in the command line. This keystroke is
->> very handy for me and I really miss it in barebox.
->>
->> This patch series adds ctrl-w support to barebox's readline
->> and in addition fixes a typo.
->>
->> [RFC 1/3] readline: move backspace key handling to the DO_BACKSPACE
->> [RFC 2/3] readline: add ctrl-w handling (cut-the-last-word)
->> [RFC 3/3] readline: fix the 'new blank line at EOF' typo
->
-> Looks good.
+Hi all,
 
-So apply the patches, please.
+I wanted to test a bit my barebox over a serial line.
+I compiled sandbox defconfig on my x86 laptop, and executed it in 2 manners :
+ - "</dev/ttyUSB0 ./barebox >/dev/ttyUSB0"
+ - ./barebox -I /dev/ttyUSB0 -O /dev/ttyUSB0
+
+I connect on the other end of /dev/ttyUSB0 a serial port and try to type some
+commands, or see the "barebox:" prompt : no luck.
+
+The first command gives back nothing (I still have to check my serial line).
+The second command does a "panic, out of memory".
+
+Has anybody tried to use sandbox over a tty line and can he give me a recipee to
+speed up my work ?
+
+Cheers.
 
 -- 
-Best regards,
-  Antony Pavlov
+Robert
 
 _______________________________________________
 barebox mailing list
