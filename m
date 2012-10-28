@@ -2,16 +2,17 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 4.mo5.mail-out.ovh.net ([178.33.111.247]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSGht-0000Pa-Pl
- for barebox@lists.infradead.org; Sun, 28 Oct 2012 00:26:29 +0000
+ id 1TSGhu-0000Pm-Pu
+ for barebox@lists.infradead.org; Sun, 28 Oct 2012 00:26:33 +0000
 Received: from mail409.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id C367EFFA517
- for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 02:33:27 +0200 (CEST)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id DB5D9FFA523
+ for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 02:33:29 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 28 Oct 2012 02:24:05 +0200
-Message-Id: <1351383852-8488-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20121028002134.GD28904@game.jcrosoft.org>
+Date: Sun, 28 Oct 2012 02:24:07 +0200
+Message-Id: <1351383852-8488-3-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1351383852-8488-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121028002134.GD28904@game.jcrosoft.org>
+ <1351383852-8488-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,36 +26,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] arm: at91: add gpio_is_valid support
+Subject: [PATCH 3/8] pm9g45: add 1-wire support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/include/mach/gpio.h |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/arm/boards/pm9g45/init.c     |   11 ++++++++++-
+ arch/arm/configs/pm9g45_defconfig |    2 ++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-at91/include/mach/gpio.h b/arch/arm/mach-at91/include/mach/gpio.h
-index 3533bf9..4edfd25 100644
---- a/arch/arm/mach-at91/include/mach/gpio.h
-+++ b/arch/arm/mach-at91/include/mach/gpio.h
-@@ -22,6 +22,17 @@
- 
- /* these pin numbers double as IRQ numbers, like AT91xxx_ID_* values */
- 
-+#define ARCH_NR_GPIOS 256
+diff --git a/arch/arm/boards/pm9g45/init.c b/arch/arm/boards/pm9g45/init.c
+index a12896b..907c6bb 100644
+--- a/arch/arm/boards/pm9g45/init.c
++++ b/arch/arm/boards/pm9g45/init.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright (C) 2009 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ * Copyright (C) 2009-2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
+  *
+  * Copyright (C) 2007 Sascha Hauer, Pengutronix
+  *
+@@ -35,6 +35,12 @@
+ #include <mach/io.h>
+ #include <mach/at91sam9_smc.h>
+ #include <mach/sam9_smc.h>
++#include <linux/w1-gpio.h>
 +
-+static inline int gpio_is_valid(int gpio)
-+{
-+	if (gpio < 0)
-+		return 0;
-+	if (gpio < ARCH_NR_GPIOS)
-+		return 1;
-+	return 0;
-+}
++struct w1_gpio_platform_data w1_pdata = {
++	.pin = AT91_PIN_PA31,
++	.is_open_drain = 0,
++};
+ 
+ static struct atmel_nand_data nand_pdata = {
+ 	.ale		= 21,
+@@ -132,6 +138,9 @@ mem_initcall(pm9g45_mem_init);
+ 
+ static int pm9g45_devices_init(void)
+ {
++	at91_set_gpio_input(w1_pdata.pin, 0);
++	add_generic_device_res("w1-gpio", DEVICE_ID_SINGLE, NULL, 0, &w1_pdata);
 +
- #define	AT91_PIN_PA0	(PIN_BASE + 0x00 + 0)
- #define	AT91_PIN_PA1	(PIN_BASE + 0x00 + 1)
- #define	AT91_PIN_PA2	(PIN_BASE + 0x00 + 2)
+ 	pm_add_device_nand();
+ 	pm9g45_add_device_mci();
+ 	pm9g45_phy_init();
+diff --git a/arch/arm/configs/pm9g45_defconfig b/arch/arm/configs/pm9g45_defconfig
+index 958301d..d242bdc 100644
+--- a/arch/arm/configs/pm9g45_defconfig
++++ b/arch/arm/configs/pm9g45_defconfig
+@@ -56,6 +56,8 @@ CONFIG_USB_OHCI_AT91=y
+ CONFIG_USB_STORAGE=y
+ CONFIG_MCI=y
+ CONFIG_MCI_ATMEL=y
++CONFIG_W1=y
++CONFIG_W1_MASTER_GPIO=y
+ CONFIG_FS_TFTP=y
+ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_WRITE=y
 -- 
 1.7.10.4
 
