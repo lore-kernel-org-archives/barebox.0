@@ -2,17 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 4.mo5.mail-out.ovh.net ([178.33.111.247]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSGhu-0000Pn-Ta
- for barebox@lists.infradead.org; Sun, 28 Oct 2012 00:26:33 +0000
+ id 1TSGht-0000Pa-Pl
+ for barebox@lists.infradead.org; Sun, 28 Oct 2012 00:26:29 +0000
 Received: from mail409.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 02AFDFFA54D
- for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 02:33:30 +0200 (CEST)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id C367EFFA517
+ for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 02:33:27 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 28 Oct 2012 02:24:09 +0200
-Message-Id: <1351383852-8488-5-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1351383852-8488-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 28 Oct 2012 02:24:05 +0200
+Message-Id: <1351383852-8488-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20121028002134.GD28904@game.jcrosoft.org>
 References: <20121028002134.GD28904@game.jcrosoft.org>
- <1351383852-8488-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,59 +25,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] pm9263: add 1-wire support
+Subject: [PATCH 1/8] arm: at91: add gpio_is_valid support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/pm9263/init.c     |   11 +++++++++++
- arch/arm/configs/pm9263_defconfig |    2 ++
- 2 files changed, 13 insertions(+)
+ arch/arm/mach-at91/include/mach/gpio.h |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/arm/boards/pm9263/init.c b/arch/arm/boards/pm9263/init.c
-index b17a90a..1d13e03 100644
---- a/arch/arm/boards/pm9263/init.c
-+++ b/arch/arm/boards/pm9263/init.c
-@@ -1,4 +1,6 @@
- /*
-+ * Copyright (C) 2009-2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-  * Copyright (C) 2007 Sascha Hauer, Pengutronix
-  *
-  * This program is free software; you can redistribute it and/or
-@@ -34,6 +36,12 @@
- #include <mach/io.h>
- #include <mach/at91sam9_smc.h>
- #include <mach/sam9_smc.h>
-+#include <linux/w1-gpio.h>
-+
-+struct w1_gpio_platform_data w1_pdata = {
-+	.pin = AT91_PIN_PB31,
-+	.is_open_drain = 0,
-+};
+diff --git a/arch/arm/mach-at91/include/mach/gpio.h b/arch/arm/mach-at91/include/mach/gpio.h
+index 3533bf9..4edfd25 100644
+--- a/arch/arm/mach-at91/include/mach/gpio.h
++++ b/arch/arm/mach-at91/include/mach/gpio.h
+@@ -22,6 +22,17 @@
  
- static struct atmel_nand_data nand_pdata = {
- 	.ale		= 21,
-@@ -95,6 +103,9 @@ mem_initcall(pm9263_mem_init);
+ /* these pin numbers double as IRQ numbers, like AT91xxx_ID_* values */
  
- static int pm9263_devices_init(void)
- {
-+	at91_set_gpio_input(w1_pdata.pin, 0);
-+	add_generic_device_res("w1-gpio", DEVICE_ID_SINGLE, NULL, 0, &w1_pdata);
++#define ARCH_NR_GPIOS 256
 +
- 	/*
- 	 * PB27 enables the 50MHz oscillator for Ethernet PHY
- 	 * 1 - enable
-diff --git a/arch/arm/configs/pm9263_defconfig b/arch/arm/configs/pm9263_defconfig
-index 8c92894..e223e77 100644
---- a/arch/arm/configs/pm9263_defconfig
-+++ b/arch/arm/configs/pm9263_defconfig
-@@ -35,3 +35,5 @@ CONFIG_DRIVER_NET_MACB=y
- # CONFIG_SPI is not set
- CONFIG_DRIVER_CFI=y
- CONFIG_CFI_BUFFER_WRITE=y
-+CONFIG_W1=y
-+CONFIG_W1_MASTER_GPIO=y
++static inline int gpio_is_valid(int gpio)
++{
++	if (gpio < 0)
++		return 0;
++	if (gpio < ARCH_NR_GPIOS)
++		return 1;
++	return 0;
++}
++
+ #define	AT91_PIN_PA0	(PIN_BASE + 0x00 + 0)
+ #define	AT91_PIN_PA1	(PIN_BASE + 0x00 + 1)
+ #define	AT91_PIN_PA2	(PIN_BASE + 0x00 + 2)
 -- 
 1.7.10.4
 
