@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo5.mail-out.ovh.net ([46.105.35.78]
+Received: from 4.mo5.mail-out.ovh.net ([178.33.111.247]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSGfP-0000Lz-FE
- for barebox@lists.infradead.org; Sun, 28 Oct 2012 00:23:55 +0000
+ id 1TSGhu-0000Pk-Ns
+ for barebox@lists.infradead.org; Sun, 28 Oct 2012 00:26:31 +0000
 Received: from mail409.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id D98B6FFA439
- for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 02:30:51 +0200 (CEST)
-Date: Sun, 28 Oct 2012 02:21:34 +0200
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id CBF4EFFA50A
+ for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 02:33:29 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121028002134.GD28904@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Sun, 28 Oct 2012 02:24:06 +0200
+Message-Id: <1351383852-8488-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1351383852-8488-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20121028002134.GD28904@game.jcrosoft.org>
+ <1351383852-8488-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,61 +21,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/8] pm9g45/pm9253/pm9261: add 1-wire support
+Subject: [PATCH 2/8] w1: introduce helper to generate mac address from 1-wire
+ id
 To: barebox@lists.infradead.org
 
-Hi,
-
-	add 1-wire support for:
-	 - pm9g45
-	 - pm9263
-	 - pm9261
-
-	use the 1-wire uniq id to generate a local mac address
-	The OUI will be 'ron' => 72:6F:6E
-
-	The patch series go on the top of the 1-wire support
-
-The following changes since commit 91413767b35d5f9f66d14376c925386a42d1db0e:
-
-  1-wire: add ds2433 support (2012-10-27 12:47:20 +0800)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/ronetix_w1
-
-for you to fetch changes up to 32c1cc8c210614799454e63cd2728470ab8732b5:
-
-  pm9261: use w1 serial number to generate local mac address (2012-10-27 17:08:03 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (8):
-      arm: at91: add gpio_is_valid support
-      w1: introduce helper to generate mac address from 1-wire id
-      pm9g45: add 1-wire support
-      pm9g45: use w1 serial number to generate local mac address
-      pm9263: add 1-wire support
-      pm9263: use w1 serial number to generate local mac address
-      pm9261: add 1-wire support
-      pm9261: use w1 serial number to generate local mac address
-
- arch/arm/boards/pm9261/init.c          |   10 ++++++++++
- arch/arm/boards/pm9263/init.c          |   38 ++++++++++++++++++++++++++++++--------
- arch/arm/boards/pm9g45/init.c          |   22 +++++++++++++++++++---
- arch/arm/configs/pm9261_defconfig      |    2 ++
- arch/arm/configs/pm9263_defconfig      |    2 ++
- arch/arm/configs/pm9g45_defconfig      |    2 ++
- arch/arm/mach-at91/include/mach/gpio.h |   11 +++++++++++
- include/w1_mac_address.h               |   64 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 8 files changed, 140 insertions(+), 11 deletions(-)
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ include/w1_mac_address.h |   64 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 64 insertions(+)
  create mode 100644 include/w1_mac_address.h
 
-Best Regards,
-J.
+diff --git a/include/w1_mac_address.h b/include/w1_mac_address.h
+new file mode 100644
+index 0000000..ed93e0e
+--- /dev/null
++++ b/include/w1_mac_address.h
+@@ -0,0 +1,64 @@
++/*
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ *
++ * Under GPLv2 only
++ */
++
++#ifndef __W1_MAC_ADDRESS_H__
++#define __W1_MAC_ADDRESS_H__
++
++static inline int w1_mac_address_register(int eth_num, bool local,
++					 char * oui, char *w1_dev)
++{
++	char buf[6];
++	const char *val;
++	u64 id;
++	int nb_oui = 0;
++	int i, shift;
++	char *tmp = NULL;
++	int ret = 0;
++
++	if (!local && !oui)
++		return -EINVAL;
++
++	if (oui) {
++		nb_oui = strlen(oui);
++		if (!local && nb_oui != 3)
++			return -EINVAL;
++
++		nb_oui = min(nb_oui, 3);
++
++		for (i = 0; i < nb_oui; i++)
++			buf[i] = oui[i];
++	}
++
++	tmp = asprintf("%s.id", w1_dev);
++	if (!tmp)
++		return -ENOMEM;
++
++	val = getenv("w1-1-0.id");
++	if (!val) {
++		ret = -EINVAL;
++		goto err;
++	}
++
++	id = simple_strtoull(val, NULL, 16);
++	if (!id) {
++		ret = -EINVAL;
++		goto err;
++	}
++
++	for (i = nb_oui, shift = 40; i < 6; i++, shift -= 8)
++		buf[i] = (id >> shift) & 0xff;
++
++	if (local)
++		buf[0] |= 0x2;
++
++	eth_register_ethaddr(eth_num, buf);
++
++err:
++	free(tmp);
++	return ret;
++}
++
++#endif /* __W1_MAC_ADDRESS_H__ */
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
