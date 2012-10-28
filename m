@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 11.mo1.mail-out.ovh.net ([188.165.48.29]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSOzm-0006NK-1j
- for barebox@lists.infradead.org; Sun, 28 Oct 2012 09:17:27 +0000
-Received: from mail189.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 8ADA3FFA281
- for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 10:27:37 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 28 Oct 2012 10:15:09 +0100
-Message-Id: <1351415710-19380-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TSQwM-0005J1-Px
+ for barebox@lists.infradead.org; Sun, 28 Oct 2012 11:22:03 +0000
+Date: Sun, 28 Oct 2012 12:21:59 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121028112159.GU24458@pengutronix.de>
+References: <1351101988-6681-1-git-send-email-s.hauer@pengutronix.de>
+ <20121024183359.GN21588@game.jcrosoft.org>
+ <20121025063711.GC27665@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20121025063711.GC27665@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,35 +20,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] debug_ll: use const char* for PUTS_LL
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] net phy: poll for a link
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- include/debug_ll.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Jean-Christophe,
 
-diff --git a/include/debug_ll.h b/include/debug_ll.h
-index a8bac27..c744573 100644
---- a/include/debug_ll.h
-+++ b/include/debug_ll.h
-@@ -30,7 +30,7 @@
- 			     ch += (ch >= 10) ? 'a' - 10 : '0';\
- 			     PUTC_LL (ch); }})
- 
--static __inline__ void PUTS_LL(char * str)
-+static __inline__ void PUTS_LL(const char * str)
- {
- 	while (*str) {
- 		if (*str == '\n') {
+On Thu, Oct 25, 2012 at 08:37:11AM +0200, Sascha Hauer wrote:
+> On Wed, Oct 24, 2012 at 08:33:59PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 20:06 Wed 24 Oct     , Sascha Hauer wrote:
+> > > Since we have phylib we have no instance which polls for a link. This
+> > > means that network boot often bails out after a powercycle or phy reset.
+> > > This changes the link status behaviour to:
+> > > 
+> > > - Always check for a link if the last link test was unsuccesful
+> > > - If the last check was succesful, check for a link when the last
+> > >   check is longer than 5 seconds ago
+> > > - Try to get a link for 5 seconds.
+> > 5 seconds is too long
+> > 
+> > and check the link is wrong you need to check the autoneg
+> > the link may be down because no cable
+> > 
+> > Here we need to check the autoneg is finished
+> > and the phy is up
+> > 
+> > so use phy_aneg_done and genphy_config_aneg is for this
+> 
+> phy_aneg_done is not exported and genphy_config_aneg is for phy driver
+> use only.
+> 
+> Could you prepare a patch for this? You insisted hard on getting this
+> merged in the first place and seem to know what has to be done.
+
+Will you prepare a patch for this? This is really something I want to
+have solved before the next release and right now I do not understand
+your proposed solution to this.
+
+Sascha
+
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
