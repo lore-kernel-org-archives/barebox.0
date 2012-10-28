@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo5.mail-out.ovh.net ([178.32.228.5])
+Received: from 2.mo5.mail-out.ovh.net ([178.33.109.111]
+ helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSS44-0000Ew-Df
- for barebox@lists.infradead.org; Sun, 28 Oct 2012 12:34:05 +0000
+ id 1TSS7E-0000JV-9w
+ for barebox@lists.infradead.org; Sun, 28 Oct 2012 12:37:21 +0000
 Received: from mail634.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 220ABFFA19C
- for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 13:41:06 +0100 (CET)
-Date: Sun, 28 Oct 2012 13:31:48 +0100
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 467E3FFA09F
+ for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 13:44:23 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121028123148.GE28904@game.jcrosoft.org>
-References: <1351101988-6681-1-git-send-email-s.hauer@pengutronix.de>
- <20121024183359.GN21588@game.jcrosoft.org>
- <20121025063711.GC27665@pengutronix.de>
- <20121028112159.GU24458@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20121028112159.GU24458@pengutronix.de>
+Date: Sun, 28 Oct 2012 13:35:05 +0100
+Message-Id: <1351427705-3398-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,55 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net phy: poll for a link
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] at91sam9x5ek: enable MMU
+To: barebox@lists.infradead.org
 
-On 12:21 Sun 28 Oct     , Sascha Hauer wrote:
-> Jean-Christophe,
-> 
-> On Thu, Oct 25, 2012 at 08:37:11AM +0200, Sascha Hauer wrote:
-> > On Wed, Oct 24, 2012 at 08:33:59PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 20:06 Wed 24 Oct     , Sascha Hauer wrote:
-> > > > Since we have phylib we have no instance which polls for a link. This
-> > > > means that network boot often bails out after a powercycle or phy reset.
-> > > > This changes the link status behaviour to:
-> > > > 
-> > > > - Always check for a link if the last link test was unsuccesful
-> > > > - If the last check was succesful, check for a link when the last
-> > > >   check is longer than 5 seconds ago
-> > > > - Try to get a link for 5 seconds.
-> > > 5 seconds is too long
-> > > 
-> > > and check the link is wrong you need to check the autoneg
-> > > the link may be down because no cable
-> > > 
-> > > Here we need to check the autoneg is finished
-> > > and the phy is up
-> > > 
-> > > so use phy_aneg_done and genphy_config_aneg is for this
-> > 
-> > phy_aneg_done is not exported and genphy_config_aneg is for phy driver
-> > use only.
-> > 
-> > Could you prepare a patch for this? You insisted hard on getting this
-> > merged in the first place and seem to know what has to be done.
-> 
-> Will you prepare a patch for this? This is really something I want to
-> have solved before the next release and right now I do not understand
-> your proposed solution to this.
-next week maybe tuesday or wednesday
-I need to finish some work on at91 for the Atmel kernel release
-to fix some hw issue
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/configs/at91sam9x5ek_defconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-The 1-wire support is needed for this
+diff --git a/arch/arm/configs/at91sam9x5ek_defconfig b/arch/arm/configs/at91sam9x5ek_defconfig
+index 5d2e03e..5a168de 100644
+--- a/arch/arm/configs/at91sam9x5ek_defconfig
++++ b/arch/arm/configs/at91sam9x5ek_defconfig
+@@ -3,6 +3,7 @@ CONFIG_AEABI=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_PBL_IMAGE=y
++CONFIG_MMU=y
+ CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
+ CONFIG_EXPERIMENTAL=y
+ CONFIG_MALLOC_TLSF=y
+-- 
+1.7.10.4
 
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
