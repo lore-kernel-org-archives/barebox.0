@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo5.mail-out.ovh.net ([178.33.109.111]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSS7E-0000JV-9w
- for barebox@lists.infradead.org; Sun, 28 Oct 2012 12:37:21 +0000
-Received: from mail634.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 467E3FFA09F
- for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 13:44:23 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 28 Oct 2012 13:35:05 +0100
-Message-Id: <1351427705-3398-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-ie0-f177.google.com ([209.85.223.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TSUWZ-00043C-9x
+ for barebox@lists.infradead.org; Sun, 28 Oct 2012 15:11:40 +0000
+Received: by mail-ie0-f177.google.com with SMTP id e14so5589768iej.36
+ for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 08:11:37 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20121027122426.GE1641@pengutronix.de>
+References: <1351231135-17324-1-git-send-email-antonynpavlov@gmail.com>
+ <20121027122426.GE1641@pengutronix.de>
+Date: Sun, 28 Oct 2012 19:11:37 +0400
+Message-ID: <CAA4bVAFWO_CK8U9dDBTn+5eo686CuYhAbYRV5Nxdqr0KC5eJcw@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,34 +20,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] at91sam9x5ek: enable MMU
-To: barebox@lists.infradead.org
+Subject: Re: [RFC 0/3] readline: add ctrl-w handling (cut-the-last-word)
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/configs/at91sam9x5ek_defconfig |    1 +
- 1 file changed, 1 insertion(+)
+On 27 October 2012 16:24, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> Hi Antony,
+>
+> On Fri, Oct 26, 2012 at 09:58:52AM +0400, Antony Pavlov wrote:
+>> The popular 'bash' command interpreter has the ctrl-w keystroke for
+>> cutting the last word in the command line. This keystroke is
+>> very handy for me and I really miss it in barebox.
+>>
+>> This patch series adds ctrl-w support to barebox's readline
+>> and in addition fixes a typo.
+>>
+>> [RFC 1/3] readline: move backspace key handling to the DO_BACKSPACE
+>> [RFC 2/3] readline: add ctrl-w handling (cut-the-last-word)
+>> [RFC 3/3] readline: fix the 'new blank line at EOF' typo
+>
+> Looks good.
 
-diff --git a/arch/arm/configs/at91sam9x5ek_defconfig b/arch/arm/configs/at91sam9x5ek_defconfig
-index 5d2e03e..5a168de 100644
---- a/arch/arm/configs/at91sam9x5ek_defconfig
-+++ b/arch/arm/configs/at91sam9x5ek_defconfig
-@@ -3,6 +3,7 @@ CONFIG_AEABI=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_PBL_IMAGE=y
-+CONFIG_MMU=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
- CONFIG_EXPERIMENTAL=y
- CONFIG_MALLOC_TLSF=y
+So apply the patches, please.
+
 -- 
-1.7.10.4
-
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
