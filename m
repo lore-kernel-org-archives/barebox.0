@@ -2,16 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 11.mo1.mail-out.ovh.net ([188.165.48.29]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSOzm-0006NJ-1l
+ id 1TSOzm-0006NK-1j
  for barebox@lists.infradead.org; Sun, 28 Oct 2012 09:17:27 +0000
 Received: from mail189.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id A6FF5FFA282
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 8ADA3FFA281
  for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 10:27:37 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 28 Oct 2012 10:15:10 +0100
-Message-Id: <1351415710-19380-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1351415710-19380-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1351415710-19380-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 28 Oct 2012 10:15:09 +0100
+Message-Id: <1351415710-19380-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,29 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] console: display Switch to console [csxx] when switching
- from debug_ll to real console
+Subject: [PATCH 1/2] debug_ll: use const char* for PUTS_LL
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/console.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/debug_ll.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/console.c b/common/console.c
-index 2e8c973..fdd5f42 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -88,6 +88,9 @@ static int console_std_set(struct device_d *dev, struct param_d *param,
- 	if (initialized < CONSOLE_INIT_FULL) {
- 		char ch;
- 		initialized = CONSOLE_INIT_FULL;
-+		PUTS_LL("Switch to console [");
-+		PUTS_LL(dev_name(dev));
-+		PUTS_LL("]\n");
- 		barebox_banner();
- 		while (kfifo_getc(console_output_fifo, &ch) == 0)
- 			console_putc(CONSOLE_STDOUT, ch);
+diff --git a/include/debug_ll.h b/include/debug_ll.h
+index a8bac27..c744573 100644
+--- a/include/debug_ll.h
++++ b/include/debug_ll.h
+@@ -30,7 +30,7 @@
+ 			     ch += (ch >= 10) ? 'a' - 10 : '0';\
+ 			     PUTC_LL (ch); }})
+ 
+-static __inline__ void PUTS_LL(char * str)
++static __inline__ void PUTS_LL(const char * str)
+ {
+ 	while (*str) {
+ 		if (*str == '\n') {
 -- 
 1.7.10.4
 
