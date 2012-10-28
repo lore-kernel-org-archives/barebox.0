@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 4.mo5.mail-out.ovh.net ([178.33.111.247]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSGhu-0000Pk-Ns
- for barebox@lists.infradead.org; Sun, 28 Oct 2012 00:26:31 +0000
+ id 1TSGhu-0000Pn-Ta
+ for barebox@lists.infradead.org; Sun, 28 Oct 2012 00:26:33 +0000
 Received: from mail409.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id CBF4EFFA50A
- for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 02:33:29 +0200 (CEST)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 02AFDFFA54D
+ for <barebox@lists.infradead.org>; Sun, 28 Oct 2012 02:33:30 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 28 Oct 2012 02:24:06 +0200
-Message-Id: <1351383852-8488-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 28 Oct 2012 02:24:09 +0200
+Message-Id: <1351383852-8488-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1351383852-8488-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121028002134.GD28904@game.jcrosoft.org>
  <1351383852-8488-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,86 +26,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/8] w1: introduce helper to generate mac address from 1-wire
- id
+Subject: [PATCH 5/8] pm9263: add 1-wire support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/w1_mac_address.h |   64 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
- create mode 100644 include/w1_mac_address.h
+ arch/arm/boards/pm9263/init.c     |   11 +++++++++++
+ arch/arm/configs/pm9263_defconfig |    2 ++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/include/w1_mac_address.h b/include/w1_mac_address.h
-new file mode 100644
-index 0000000..ed93e0e
---- /dev/null
-+++ b/include/w1_mac_address.h
-@@ -0,0 +1,64 @@
-+/*
-+ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
+diff --git a/arch/arm/boards/pm9263/init.c b/arch/arm/boards/pm9263/init.c
+index b17a90a..1d13e03 100644
+--- a/arch/arm/boards/pm9263/init.c
++++ b/arch/arm/boards/pm9263/init.c
+@@ -1,4 +1,6 @@
+ /*
++ * Copyright (C) 2009-2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
 + *
-+ * Under GPLv2 only
-+ */
+  * Copyright (C) 2007 Sascha Hauer, Pengutronix
+  *
+  * This program is free software; you can redistribute it and/or
+@@ -34,6 +36,12 @@
+ #include <mach/io.h>
+ #include <mach/at91sam9_smc.h>
+ #include <mach/sam9_smc.h>
++#include <linux/w1-gpio.h>
 +
-+#ifndef __W1_MAC_ADDRESS_H__
-+#define __W1_MAC_ADDRESS_H__
++struct w1_gpio_platform_data w1_pdata = {
++	.pin = AT91_PIN_PB31,
++	.is_open_drain = 0,
++};
+ 
+ static struct atmel_nand_data nand_pdata = {
+ 	.ale		= 21,
+@@ -95,6 +103,9 @@ mem_initcall(pm9263_mem_init);
+ 
+ static int pm9263_devices_init(void)
+ {
++	at91_set_gpio_input(w1_pdata.pin, 0);
++	add_generic_device_res("w1-gpio", DEVICE_ID_SINGLE, NULL, 0, &w1_pdata);
 +
-+static inline int w1_mac_address_register(int eth_num, bool local,
-+					 char * oui, char *w1_dev)
-+{
-+	char buf[6];
-+	const char *val;
-+	u64 id;
-+	int nb_oui = 0;
-+	int i, shift;
-+	char *tmp = NULL;
-+	int ret = 0;
-+
-+	if (!local && !oui)
-+		return -EINVAL;
-+
-+	if (oui) {
-+		nb_oui = strlen(oui);
-+		if (!local && nb_oui != 3)
-+			return -EINVAL;
-+
-+		nb_oui = min(nb_oui, 3);
-+
-+		for (i = 0; i < nb_oui; i++)
-+			buf[i] = oui[i];
-+	}
-+
-+	tmp = asprintf("%s.id", w1_dev);
-+	if (!tmp)
-+		return -ENOMEM;
-+
-+	val = getenv("w1-1-0.id");
-+	if (!val) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
-+
-+	id = simple_strtoull(val, NULL, 16);
-+	if (!id) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
-+
-+	for (i = nb_oui, shift = 40; i < 6; i++, shift -= 8)
-+		buf[i] = (id >> shift) & 0xff;
-+
-+	if (local)
-+		buf[0] |= 0x2;
-+
-+	eth_register_ethaddr(eth_num, buf);
-+
-+err:
-+	free(tmp);
-+	return ret;
-+}
-+
-+#endif /* __W1_MAC_ADDRESS_H__ */
+ 	/*
+ 	 * PB27 enables the 50MHz oscillator for Ethernet PHY
+ 	 * 1 - enable
+diff --git a/arch/arm/configs/pm9263_defconfig b/arch/arm/configs/pm9263_defconfig
+index 8c92894..e223e77 100644
+--- a/arch/arm/configs/pm9263_defconfig
++++ b/arch/arm/configs/pm9263_defconfig
+@@ -35,3 +35,5 @@ CONFIG_DRIVER_NET_MACB=y
+ # CONFIG_SPI is not set
+ CONFIG_DRIVER_CFI=y
+ CONFIG_CFI_BUFFER_WRITE=y
++CONFIG_W1=y
++CONFIG_W1_MASTER_GPIO=y
 -- 
 1.7.10.4
 
