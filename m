@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.mo4.mail-out.ovh.net ([178.33.251.8]
+Received: from 20.mo4.mail-out.ovh.net ([46.105.33.73]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSpiS-0000br-QK
- for barebox@lists.infradead.org; Mon, 29 Oct 2012 13:49:22 +0000
+ id 1TSpiT-0000bq-7x
+ for barebox@lists.infradead.org; Mon, 29 Oct 2012 13:49:24 +0000
 Received: from mail172.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id A69AF104E8A4
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 61074104EB0D
  for <barebox@lists.infradead.org>; Mon, 29 Oct 2012 14:56:22 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 29 Oct 2012 14:47:03 +0100
-Message-Id: <1351518424-29523-7-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 29 Oct 2012 14:47:02 +0100
+Message-Id: <1351518424-29523-6-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1351518424-29523-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121029134033.GH28904@game.jcrosoft.org>
  <1351518424-29523-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,49 +26,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] pm9261: add 1-wire support
+Subject: [PATCH 6/8] pm9263: use w1 serial number to generate local mac address
 To: barebox@lists.infradead.org
+
+The OUI will be 'ron' => 72:6F:6E
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/pm9261/init.c     |    8 ++++++++
- arch/arm/configs/pm9261_defconfig |    2 ++
- 2 files changed, 10 insertions(+)
+ arch/arm/boards/pm9263/init.c |   29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm/boards/pm9261/init.c b/arch/arm/boards/pm9261/init.c
-index 5214394..2c3615f 100644
---- a/arch/arm/boards/pm9261/init.c
-+++ b/arch/arm/boards/pm9261/init.c
-@@ -1,4 +1,6 @@
- /*
-+ * Copyright (C) 2009-2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-  * Copyright (C) 2007 Sascha Hauer, Pengutronix
-  *
-  * This program is free software; you can redistribute it and/or
-@@ -34,6 +36,12 @@
+diff --git a/arch/arm/boards/pm9263/init.c b/arch/arm/boards/pm9263/init.c
+index 1d13e03..7ba804a 100644
+--- a/arch/arm/boards/pm9263/init.c
++++ b/arch/arm/boards/pm9263/init.c
+@@ -37,6 +37,7 @@
  #include <mach/at91sam9_smc.h>
  #include <mach/sam9_smc.h>
- #include <dm9000.h>
-+#include <linux/w1-gpio.h>
-+
-+struct w1_gpio_platform_data w1_pdata = {
-+	.pin = AT91_PIN_PA7,
-+	.is_open_drain = 0,
-+};
+ #include <linux/w1-gpio.h>
++#include <w1_mac_address.h>
  
- static struct atmel_nand_data nand_pdata = {
- 	.ale		= 22,
-diff --git a/arch/arm/configs/pm9261_defconfig b/arch/arm/configs/pm9261_defconfig
-index 1db16d5..0aea2c9 100644
---- a/arch/arm/configs/pm9261_defconfig
-+++ b/arch/arm/configs/pm9261_defconfig
-@@ -50,3 +50,5 @@ CONFIG_MTD=y
- CONFIG_NAND=y
- CONFIG_NAND_ATMEL=y
- CONFIG_UBI=y
-+CONFIG_W1=y
-+CONFIG_W1_MASTER_GPIO=y
+ struct w1_gpio_platform_data w1_pdata = {
+ 	.pin = AT91_PIN_PB31,
+@@ -93,6 +94,24 @@ static struct at91_ether_platform_data macb_pdata = {
+ 	.phy_addr = 0,
+ };
+ 
++static void pm9263_phy_init(void)
++{
++	/*
++	 * PB27 enables the 50MHz oscillator for Ethernet PHY
++	 * 1 - enable
++	 * 0 - disable
++	 */
++	at91_set_gpio_output(AT91_PIN_PB27, 1);
++	at91_set_gpio_value(AT91_PIN_PB27, 1); /* 1- enable, 0 - disable */
++}
++
++static void pm9263_add_device_eth(void)
++{
++	w1_mac_address_register(0, true, "ron", "w1-1-0");
++	pm9263_phy_init();
++	at91_add_device_eth(0, &macb_pdata);
++}
++
+ static int pm9263_mem_init(void)
+ {
+ 	at91_add_device_sdram(64 * 1024 * 1024);
+@@ -106,16 +125,8 @@ static int pm9263_devices_init(void)
+ 	at91_set_gpio_input(w1_pdata.pin, 0);
+ 	add_generic_device_res("w1-gpio", DEVICE_ID_SINGLE, NULL, 0, &w1_pdata);
+ 
+-	/*
+-	 * PB27 enables the 50MHz oscillator for Ethernet PHY
+-	 * 1 - enable
+-	 * 0 - disable
+-	 */
+-	at91_set_gpio_output(AT91_PIN_PB27, 1);
+-	at91_set_gpio_value(AT91_PIN_PB27, 1); /* 1- enable, 0 - disable */
+-
+ 	pm_add_device_nand();
+-	at91_add_device_eth(0, &macb_pdata);
++	pm9263_add_device_eth();
+ 	add_cfi_flash_device(0, AT91_CHIPSELECT_0, 4 * 1024 * 1024, 0);
+ 
+ 	devfs_add_partition("nor0", 0x00000, 0x40000, DEVFS_PARTITION_FIXED, "self0");
 -- 
 1.7.10.4
 
