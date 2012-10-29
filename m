@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo4.mail-out.ovh.net ([46.105.72.36]
+Received: from 1.mo4.mail-out.ovh.net ([178.33.248.196]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSpc4-0000OI-Uo
- for barebox@lists.infradead.org; Mon, 29 Oct 2012 13:42:46 +0000
+ id 1TSpiS-0000bl-NB
+ for barebox@lists.infradead.org; Mon, 29 Oct 2012 13:49:21 +0000
 Received: from mail172.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id EFA7A104ED8C
- for <barebox@lists.infradead.org>; Mon, 29 Oct 2012 14:49:45 +0100 (CET)
-Date: Mon, 29 Oct 2012 14:40:33 +0100
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id B65FA104EA77
+ for <barebox@lists.infradead.org>; Mon, 29 Oct 2012 14:56:21 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121029134033.GH28904@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Mon, 29 Oct 2012 14:47:00 +0100
+Message-Id: <1351518424-29523-4-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1351518424-29523-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20121029134033.GH28904@game.jcrosoft.org>
+ <1351518424-29523-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,63 +21,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/8 v2:wqa] pm9g45/pm9253/pm9261: add 1-wire support
+Subject: [PATCH 4/8] pm9g45: use w1 serial number to generate local mac address
 To: barebox@lists.infradead.org
 
-Hi,
+The OUI will be 'ron' => 72:6F:6E
 
-	v2: fixup and add comment
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/boards/pm9g45/init.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-	add 1-wire support for:
-	 - pm9g45
-	 - pm9263
-	 - pm9261
+diff --git a/arch/arm/boards/pm9g45/init.c b/arch/arm/boards/pm9g45/init.c
+index 907c6bb..f3764bb 100644
+--- a/arch/arm/boards/pm9g45/init.c
++++ b/arch/arm/boards/pm9g45/init.c
+@@ -36,6 +36,7 @@
+ #include <mach/at91sam9_smc.h>
+ #include <mach/sam9_smc.h>
+ #include <linux/w1-gpio.h>
++#include <w1_mac_address.h>
+ 
+ struct w1_gpio_platform_data w1_pdata = {
+ 	.pin = AT91_PIN_PA31,
+@@ -128,6 +129,13 @@ static void pm9g45_phy_init(void)
+ 	at91_set_gpio_value(AT91_PIN_PD2, 1);
+ }
+ 
++static void pm9g45_add_device_eth(void)
++{
++	w1_mac_address_register(0, true, "ron", "w1-1-0");
++	pm9g45_phy_init();
++	at91_add_device_eth(0, &macb_pdata);
++}
++
+ static int pm9g45_mem_init(void)
+ {
+ 	at91_add_device_sdram(128 * 1024 * 1024);
+@@ -143,8 +151,7 @@ static int pm9g45_devices_init(void)
+ 
+ 	pm_add_device_nand();
+ 	pm9g45_add_device_mci();
+-	pm9g45_phy_init();
+-	at91_add_device_eth(0, &macb_pdata);
++	pm9g45_add_device_eth();
+ 	pm9g45_add_device_usbh();
+ 
+ 	devfs_add_partition("nand0", 0x00000, SZ_128K, DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
+-- 
+1.7.10.4
 
-	use the 1-wire uniq id to generate a local mac address
-	The OUI will be 'ron' => 72:6F:6E
-
-	The patch series go on the top of the 1-wire support v2
-
-The following changes since commit acaa716bce8cd1373cb5dabff54332fb1da7355b:
-
-  1-wire: add ds2433 support (2012-10-29 04:46:21 +0800)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/ronetix_w1
-
-for you to fetch changes up to f64064f91ca518f538c5f9e92d4d4a80c75acdf4:
-
-  pm9261: use w1 serial number to generate local mac address (2012-10-29 05:19:04 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (8):
-      arm: at91: add gpio_is_valid support
-      w1: introduce helper to generate mac address from 1-wire id
-      pm9g45: add 1-wire support
-      pm9g45: use w1 serial number to generate local mac address
-      pm9263: add 1-wire support
-      pm9263: use w1 serial number to generate local mac address
-      pm9261: add 1-wire support
-      pm9261: use w1 serial number to generate local mac address
-
- arch/arm/boards/pm9261/init.c          |   10 ++++++++++
- arch/arm/boards/pm9263/init.c          |   38 ++++++++++++++++++++++++++++++--------
- arch/arm/boards/pm9g45/init.c          |   22 +++++++++++++++++++---
- arch/arm/configs/pm9261_defconfig      |    2 ++
- arch/arm/configs/pm9263_defconfig      |    2 ++
- arch/arm/configs/pm9g45_defconfig      |    2 ++
- arch/arm/mach-at91/include/mach/gpio.h |   11 +++++++++++
- include/w1_mac_address.h               |   72 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 8 files changed, 148 insertions(+), 11 deletions(-)
- create mode 100644 include/w1_mac_address.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
