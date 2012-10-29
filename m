@@ -1,22 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtprelay0232.hostedemail.com ([216.40.44.232]
- helo=smtprelay.hostedemail.com)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSlZn-0007Ej-Uz
- for barebox@lists.infradead.org; Mon, 29 Oct 2012 09:24:08 +0000
-Received: from filter.hostedemail.com (ff-bigip1 [10.5.19.254])
- by smtprelay05.hostedemail.com (Postfix) with SMTP id 779DB1DC03E
- for <barebox@lists.infradead.org>; Mon, 29 Oct 2012 09:24:01 +0000 (UTC)
-Received: from lhfhp (leeshillfarm.plus.com [212.159.119.250])
- (Authenticated sender: andy.pont@sdcsystems.com)
- by omf03.hostedemail.com (Postfix) with ESMTPA
- for <barebox@lists.infradead.org>; Mon, 29 Oct 2012 09:24:00 +0000 (UTC)
-From: "Andy Pont" <andy.pont@sdcsystems.com>
-Date: Mon, 29 Oct 2012 09:23:57 -0000
-Message-ID: <002c01cdb5b7$204cf750$60e6e5f0$@pont@sdcsystems.com>
+Received: from [2a02:8b8:656::164] (helo=bar.sig21.net)
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TSm57-0003Nt-5t
+ for barebox@lists.infradead.org; Mon, 29 Oct 2012 09:56:30 +0000
+Date: Mon, 29 Oct 2012 10:56:04 +0100
+From: Johannes Stezenbach <js@sig21.net>
+Message-ID: <20121029095604.GA31639@sig21.net>
+References: <20121022160341.GF21588@game.jcrosoft.org>
+ <1350922048-25699-1-git-send-email-plagnioj@jcrosoft.com>
+ <20121029085055.GV24458@pengutronix.de>
 MIME-Version: 1.0
-Content-Language: en-gb
-Reply-To: andy.pont@sdcsystems.com
+Content-Disposition: inline
+In-Reply-To: <20121029085055.GV24458@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,22 +24,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Trying to pause delivery of messages
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/3] command: introduce abi version
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hello!
+On Mon, Oct 29, 2012 at 09:50:55AM +0100, Sascha Hauer wrote:
+> On Mon, Oct 22, 2012 at 06:07:26PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > This will allow to detect incompatibility between the env abi and the current
+> > barebox one
+...
+> > +
+> > +#define COMMAND_ABI_VERSION	0
+> 
+> Please describe what this is. Something like:
+> 
+> /*
+>  * This tracks incompatible changes to the barebox command interface.
+>  * This number is increased when changes are introduced which will cause
+>  * an older environment to no longer work. This could be:
+>  *
+>  * - changes in commandline options to commands
+>  * - renames of commands
+>  * - rename of device files
+>  *
+>  * If you change this value, add a explanation of the actual change to
+>  * Documentation/command-abi-changes.txt
+>  */
 
-I am about to head off on vacation for a week and want to pause the delivery
-of messages before I set my out of office but the web interface to the
-mailing list at http://lists.infradead.org/mailman/listinfo/barebox appears
-to be broken.
+I wonder how this will work in practice.  If I use a simple
+/env/bin/init script and someone makes changes to a command
+which isn't used by my /env/bin/init, will it still cause
+my environment to be detected as incompatible?
 
-Can someone validate that this is correct and poke it back into life?
+Maybe it would be a good idea to give the user control
+over when to change COMMAND_ABI_VERSION by putting it into menuconfig?
 
-Thanks,
+Either way I guess it means the default environment's init script
+would need to implement automatic update to not lose important  settings.
 
-Andy.
+Bottom line: It's much better to not make incompatible ABI changes _ever_.
 
+
+Johannes
 
 _______________________________________________
 barebox mailing list
