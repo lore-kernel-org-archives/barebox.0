@@ -1,22 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
- helo=mo3.mail-out.ovh.net)
+Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]
+ helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSniT-0003Op-6s
- for barebox@lists.infradead.org; Mon, 29 Oct 2012 11:41:14 +0000
-Received: from mail422.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 48060FF8D33
- for <barebox@lists.infradead.org>; Mon, 29 Oct 2012 12:41:39 +0100 (CET)
-Date: Mon, 29 Oct 2012 12:29:29 +0100
+ id 1TSolT-000508-DE
+ for barebox@lists.infradead.org; Mon, 29 Oct 2012 12:48:24 +0000
+Received: from mail172.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 538B9104ED9D
+ for <barebox@lists.infradead.org>; Mon, 29 Oct 2012 13:55:23 +0100 (CET)
+Date: Mon, 29 Oct 2012 13:46:09 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121029112929.GF28904@game.jcrosoft.org>
-References: <20121028002134.GD28904@game.jcrosoft.org>
- <1351383852-8488-1-git-send-email-plagnioj@jcrosoft.com>
- <1351383852-8488-2-git-send-email-plagnioj@jcrosoft.com>
- <20121029083312.GM1641@pengutronix.de>
+Message-ID: <20121029124609.GG28904@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121029083312.GM1641@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,129 +24,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/8] w1: introduce helper to generate mac address from
- 1-wire id
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/5 v2] add 1-wire support
+To: barebox@lists.infradead.org
 
-On 09:33 Mon 29 Oct     , Sascha Hauer wrote:
-> On Sun, Oct 28, 2012 at 02:24:06AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  include/w1_mac_address.h |   64 ++++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 64 insertions(+)
-> >  create mode 100644 include/w1_mac_address.h
-> > 
-> > diff --git a/include/w1_mac_address.h b/include/w1_mac_address.h
-> > new file mode 100644
-> > index 0000000..ed93e0e
-> > --- /dev/null
-> > +++ b/include/w1_mac_address.h
-> > @@ -0,0 +1,64 @@
-> > +/*
-> > + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-> > + *
-> > + * Under GPLv2 only
-> > + */
-> > +
-> > +#ifndef __W1_MAC_ADDRESS_H__
-> > +#define __W1_MAC_ADDRESS_H__
-> > +
-> > +static inline int w1_mac_address_register(int eth_num, bool local,
-> > +					 char * oui, char *w1_dev)
-> 
-> This function really deserves a comment what it does. From the name I
-> assume that it turns something w1 related into a MAC address, but I have
-> no clue what.
-> 
-> Also I think the 'local' parameter should not exist and be unconditional
-> true. I don't think any vendor with a real ieee registered oui will
-> match their mac addresses with ids from a w1 eeprom.
-as you can request specific id format for the serial number 1-wire (smem)
+Hi,
 
-you can use it for real OUI
+	v2: use is_non_interruptible_timeout as name
+	use is_non_interruptible_timeout for ndelay as we will never call poller_cal anyway
 
-with this way you can prouve than you manage your OUI correctly if you need to
-request an other one
+The following changes since commit 72703410feff9ed44779b54a41ff30312e781279:
+
+  misc JTAG: include fixes (2012-10-26 09:08:51 +0200)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git tags/w1
+
+for you to fetch changes up to acaa716bce8cd1373cb5dabff54332fb1da7355b:
+
+  1-wire: add ds2433 support (2012-10-29 04:46:21 +0800)
+
+----------------------------------------------------------------
+add 1-wire support
+
+export for each device via param
+the familly id (fid)
+the id
+the full reg_num
+
+so for simple 64bit memory rom(ds2401/ds2411/ds1990*) no need driver.
+
+with ds2431 and ds2433 eeprom support
+
+Based on linux implementation, cleaned and re-implement the master/slave
+support to use the device/driver model correctly.
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (5):
+      clock: introduce non interruptible timeout
+      add 1-wire support
+      1-wire: add gpio bus
+      1-wire: add ds2431 support
+      1-wire: add ds2433 support
+
+ common/clock.c                |   16 ++-
+ drivers/Kconfig               |    1 +
+ drivers/Makefile              |    1 +
+ drivers/w1/Kconfig            |   14 +++
+ drivers/w1/Makefile           |    6 +
+ drivers/w1/masters/Kconfig    |   14 +++
+ drivers/w1/masters/Makefile   |    5 +
+ drivers/w1/masters/w1-gpio.c  |  116 ++++++++++++++++++++
+ drivers/w1/slaves/Kconfig     |   27 +++++
+ drivers/w1/slaves/Makefile    |    6 +
+ drivers/w1/slaves/w1_ds2431.c |  294 +++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/w1/slaves/w1_ds2433.c |  196 +++++++++++++++++++++++++++++++++
+ drivers/w1/w1.c               |  621 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/w1/w1.h               |  152 ++++++++++++++++++++++++++
+ include/clock.h               |    1 +
+ include/linux/w1-gpio.h       |   25 +++++
+ 16 files changed, 1490 insertions(+), 5 deletions(-)
+ create mode 100644 drivers/w1/Kconfig
+ create mode 100644 drivers/w1/Makefile
+ create mode 100644 drivers/w1/masters/Kconfig
+ create mode 100644 drivers/w1/masters/Makefile
+ create mode 100644 drivers/w1/masters/w1-gpio.c
+ create mode 100644 drivers/w1/slaves/Kconfig
+ create mode 100644 drivers/w1/slaves/Makefile
+ create mode 100644 drivers/w1/slaves/w1_ds2431.c
+ create mode 100644 drivers/w1/slaves/w1_ds2433.c
+ create mode 100644 drivers/w1/w1.c
+ create mode 100644 drivers/w1/w1.h
+ create mode 100644 include/linux/w1-gpio.h
 
 Best Regards,
 J.
-> 
-> > +{
-> > +	char buf[6];
-> > +	const char *val;
-> > +	u64 id;
-> > +	int nb_oui = 0;
-> > +	int i, shift;
-> > +	char *tmp = NULL;
-> > +	int ret = 0;
-> > +
-> > +	if (!local && !oui)
-> > +		return -EINVAL;
-> > +
-> > +	if (oui) {
-> > +		nb_oui = strlen(oui);
-> 
-> A oui always has three bytes. You can't use strlen here as for example
-> Freescale has the oui 00-04-9f
-> 
-> > +		if (!local && nb_oui != 3)
-> > +			return -EINVAL;
-> > +
-> > +		nb_oui = min(nb_oui, 3);
-> > +
-> > +		for (i = 0; i < nb_oui; i++)
-> > +			buf[i] = oui[i];
-> > +	}
-> > +
-> > +	tmp = asprintf("%s.id", w1_dev);
-> > +	if (!tmp)
-> > +		return -ENOMEM;
-> > +
-> > +	val = getenv("w1-1-0.id");
-> 
-> tmp is never used. I assume it should be used here, right?
-> 
-> > +	if (!val) {
-> > +		ret = -EINVAL;
-> > +		goto err;
-> > +	}
-> > +
-> > +	id = simple_strtoull(val, NULL, 16);
-> > +	if (!id) {
-> > +		ret = -EINVAL;
-> > +		goto err;
-> > +	}
-> > +
-> > +	for (i = nb_oui, shift = 40; i < 6; i++, shift -= 8)
-> > +		buf[i] = (id >> shift) & 0xff;
-> > +
-> > +	if (local)
-> > +		buf[0] |= 0x2;
-> > +
-> > +	eth_register_ethaddr(eth_num, buf);
-> > +
-> > +err:
-> > +	free(tmp);
-> > +	return ret;
-> > +}
-> > +
-> > +#endif /* __W1_MAC_ADDRESS_H__ */
-> > -- 
-> > 1.7.10.4
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> > 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
