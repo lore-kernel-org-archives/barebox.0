@@ -1,18 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo4.mail-out.ovh.net ([188.165.44.50]
- helo=mo4.mail-out.ovh.net)
+Received: from 15.mo1.mail-out.ovh.net ([188.165.38.232]
+ helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSpiT-0000bs-PU
- for barebox@lists.infradead.org; Mon, 29 Oct 2012 13:49:24 +0000
-Received: from mail172.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 031D3104EB1D
- for <barebox@lists.infradead.org>; Mon, 29 Oct 2012 14:56:23 +0100 (CET)
+ id 1TSrs8-0002Cp-JB
+ for barebox@lists.infradead.org; Mon, 29 Oct 2012 16:07:29 +0000
+Received: from mail435.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 9945D10041EE
+ for <barebox@lists.infradead.org>; Mon, 29 Oct 2012 17:17:44 +0100 (CET)
+Date: Mon, 29 Oct 2012 17:05:13 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 29 Oct 2012 14:47:04 +0100
-Message-Id: <1351518424-29523-8-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1351518424-29523-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20121029134033.GH28904@game.jcrosoft.org>
- <1351518424-29523-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20121029160513.GA29599@game.jcrosoft.org>
+References: <20121022160341.GF21588@game.jcrosoft.org>
+ <1350922048-25699-1-git-send-email-plagnioj@jcrosoft.com>
+ <20121029085055.GV24458@pengutronix.de>
+ <20121029095604.GA31639@sig21.net>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20121029095604.GA31639@sig21.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,44 +25,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] pm9261: use w1 serial number to generate local mac address
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/3] command: introduce abi version
+To: Johannes Stezenbach <js@sig21.net>
+Cc: barebox@lists.infradead.org
 
-The OUI will be 'ron' => 72:6F:6E
+On 10:56 Mon 29 Oct     , Johannes Stezenbach wrote:
+> On Mon, Oct 29, 2012 at 09:50:55AM +0100, Sascha Hauer wrote:
+> > On Mon, Oct 22, 2012 at 06:07:26PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > This will allow to detect incompatibility between the env abi and the current
+> > > barebox one
+> ...
+> > > +
+> > > +#define COMMAND_ABI_VERSION	0
+> > 
+> > Please describe what this is. Something like:
+> > 
+> > /*
+> >  * This tracks incompatible changes to the barebox command interface.
+> >  * This number is increased when changes are introduced which will cause
+> >  * an older environment to no longer work. This could be:
+> >  *
+> >  * - changes in commandline options to commands
+> >  * - renames of commands
+> >  * - rename of device files
+> >  *
+> >  * If you change this value, add a explanation of the actual change to
+> >  * Documentation/command-abi-changes.txt
+> >  */
+> 
+> I wonder how this will work in practice.  If I use a simple
+> /env/bin/init script and someone makes changes to a command
+> which isn't used by my /env/bin/init, will it still cause
+> my environment to be detected as incompatible?
+> 
+> Maybe it would be a good idea to give the user control
+> over when to change COMMAND_ABI_VERSION by putting it into menuconfig?
+> 
+> Either way I guess it means the default environment's init script
+> would need to implement automatic update to not lose important  settings.
+here you loose nothing we just load defaulenv then you load the old one if you
+one the code does not save the defaultenv automatlically
+> 
+> Bottom line: It's much better to not make incompatible ABI changes _ever_.
+I disagree here sometimes we do need as the ABI is really not convinian or
+POSIX or like this linux one
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/boards/pm9261/init.c |    2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/arm/boards/pm9261/init.c b/arch/arm/boards/pm9261/init.c
-index 2c3615f..72fdb0e 100644
---- a/arch/arm/boards/pm9261/init.c
-+++ b/arch/arm/boards/pm9261/init.c
-@@ -37,6 +37,7 @@
- #include <mach/sam9_smc.h>
- #include <dm9000.h>
- #include <linux/w1-gpio.h>
-+#include <w1_mac_address.h>
- 
- struct w1_gpio_platform_data w1_pdata = {
- 	.pin = AT91_PIN_PA7,
-@@ -120,6 +121,7 @@ static struct sam9_smc_config __initdata dm9000_smc_config = {
- 
- static void __init pm_add_device_dm9000(void)
- {
-+	w1_mac_address_register(0, true, "ron", "w1-1-0");
- 	/* Configure chip-select 2 (DM9000) */
- 	sam9_smc_configure(2, &dm9000_smc_config);
- 
--- 
-1.7.10.4
-
+Best Regrds.
+J.
+> 
+> 
+> Johannes
 
 _______________________________________________
 barebox mailing list
