@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TSjwy-00012b-2I
- for barebox@lists.infradead.org; Mon, 29 Oct 2012 07:39:56 +0000
-Date: Mon, 29 Oct 2012 08:39:54 +0100
+ id 1TSk0M-00017m-Ki
+ for barebox@lists.infradead.org; Mon, 29 Oct 2012 07:43:27 +0000
+Date: Mon, 29 Oct 2012 08:43:24 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121029073954.GJ1641@pengutronix.de>
-References: <1351427705-3398-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20121029074324.GK1641@pengutronix.de>
+References: <1351368639-20174-1-git-send-email-plagnioj@jcrosoft.com>
+ <1351369365-21395-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1351427705-3398-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1351369365-21395-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +23,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] at91sam9x5ek: enable MMU
+Subject: Re: [PATCH 1/1 v2] gpio: move gpio_is_valid to gpio.h
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Oct 28, 2012 at 01:35:05PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Sat, Oct 27, 2012 at 10:22:45PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> gpio < 0 means invalid too
+> 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
+What we really should do is to get rid of is the inclusion of
+mach/gpio.h, asm/gpio.h from gpio.h. I began to prepare a patch for
+this, but it has to wait some time due to other things to do.
 
 Applied, thanks
 
 Sascha
 
 > ---
->  arch/arm/configs/at91sam9x5ek_defconfig |    1 +
->  1 file changed, 1 insertion(+)
+> send right version
 > 
-> diff --git a/arch/arm/configs/at91sam9x5ek_defconfig b/arch/arm/configs/at91sam9x5ek_defconfig
-> index 5d2e03e..5a168de 100644
-> --- a/arch/arm/configs/at91sam9x5ek_defconfig
-> +++ b/arch/arm/configs/at91sam9x5ek_defconfig
-> @@ -3,6 +3,7 @@ CONFIG_AEABI=y
->  # CONFIG_CMD_ARM_CPUINFO is not set
->  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
->  CONFIG_PBL_IMAGE=y
-> +CONFIG_MMU=y
->  CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
->  CONFIG_EXPERIMENTAL=y
->  CONFIG_MALLOC_TLSF=y
+> Best Regards,
+> J.
+>  drivers/gpio/gpio.c        |    9 ---------
+>  include/asm-generic/gpio.h |   11 +++++++++++
+>  2 files changed, 11 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/gpio/gpio.c b/drivers/gpio/gpio.c
+> index 6ad8d27..042a062 100644
+> --- a/drivers/gpio/gpio.c
+> +++ b/drivers/gpio/gpio.c
+> @@ -4,17 +4,8 @@
+>  
+>  static LIST_HEAD(chip_list);
+>  
+> -#define ARCH_NR_GPIOS 256
+> -
+>  static struct gpio_chip *gpio_desc[ARCH_NR_GPIOS];
+>  
+> -static int gpio_is_valid(unsigned gpio)
+> -{
+> -	if (gpio < ARCH_NR_GPIOS)
+> -		return 1;
+> -	return 0;
+> -}
+> -
+>  void gpio_set_value(unsigned gpio, int value)
+>  {
+>  	struct gpio_chip *chip = gpio_desc[gpio];
+> diff --git a/include/asm-generic/gpio.h b/include/asm-generic/gpio.h
+> index 1997888..c2e7a5d 100644
+> --- a/include/asm-generic/gpio.h
+> +++ b/include/asm-generic/gpio.h
+> @@ -1,6 +1,17 @@
+>  #ifndef __ASM_GENERIC_GPIO_H
+>  #define __ASM_GENERIC_GPIO_H
+>  
+> +#define ARCH_NR_GPIOS 256
+> +
+> +static inline int gpio_is_valid(int gpio)
+> +{
+> +	if (gpio < 0)
+> +		return 0;
+> +	if (gpio < ARCH_NR_GPIOS)
+> +		return 1;
+> +	return 0;
+> +}
+> +
+>  void gpio_set_value(unsigned gpio, int value);
+>  int gpio_get_value(unsigned gpio);
+>  int gpio_direction_output(unsigned gpio, int value);
 > -- 
 > 1.7.10.4
 > 
