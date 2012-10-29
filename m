@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 1.mo4.mail-out.ovh.net ([178.33.248.196]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSpiS-0000bn-ND
- for barebox@lists.infradead.org; Mon, 29 Oct 2012 13:49:21 +0000
+ id 1TSpiS-0000bm-NA
+ for barebox@lists.infradead.org; Mon, 29 Oct 2012 13:49:24 +0000
 Received: from mail172.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id B6407104EA03
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id B6473104EA09
  for <barebox@lists.infradead.org>; Mon, 29 Oct 2012 14:56:21 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 29 Oct 2012 14:46:59 +0100
-Message-Id: <1351518424-29523-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 29 Oct 2012 14:46:58 +0100
+Message-Id: <1351518424-29523-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1351518424-29523-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121029134033.GH28904@game.jcrosoft.org>
  <1351518424-29523-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,62 +26,97 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] pm9g45: add 1-wire support
+Subject: [PATCH 2/8] w1: introduce helper to generate mac address from 1-wire
+ id
 To: barebox@lists.infradead.org
+
+use the first 3 byte of the id of a 1-wire
+or 6 if no OUI provided device to provide an Ethernet address
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/pm9g45/init.c     |   11 ++++++++++-
- arch/arm/configs/pm9g45_defconfig |    2 ++
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ include/w1_mac_address.h |   72 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 72 insertions(+)
+ create mode 100644 include/w1_mac_address.h
 
-diff --git a/arch/arm/boards/pm9g45/init.c b/arch/arm/boards/pm9g45/init.c
-index a12896b..907c6bb 100644
---- a/arch/arm/boards/pm9g45/init.c
-+++ b/arch/arm/boards/pm9g45/init.c
-@@ -1,5 +1,5 @@
- /*
-- * Copyright (C) 2009 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ * Copyright (C) 2009-2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-  *
-  * Copyright (C) 2007 Sascha Hauer, Pengutronix
-  *
-@@ -35,6 +35,12 @@
- #include <mach/io.h>
- #include <mach/at91sam9_smc.h>
- #include <mach/sam9_smc.h>
-+#include <linux/w1-gpio.h>
+diff --git a/include/w1_mac_address.h b/include/w1_mac_address.h
+new file mode 100644
+index 0000000..78348be
+--- /dev/null
++++ b/include/w1_mac_address.h
+@@ -0,0 +1,72 @@
++/*
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ *
++ * Under GPLv2 only
++ */
 +
-+struct w1_gpio_platform_data w1_pdata = {
-+	.pin = AT91_PIN_PA31,
-+	.is_open_drain = 0,
-+};
- 
- static struct atmel_nand_data nand_pdata = {
- 	.ale		= 21,
-@@ -132,6 +138,9 @@ mem_initcall(pm9g45_mem_init);
- 
- static int pm9g45_devices_init(void)
- {
-+	at91_set_gpio_input(w1_pdata.pin, 0);
-+	add_generic_device_res("w1-gpio", DEVICE_ID_SINGLE, NULL, 0, &w1_pdata);
++#ifndef __W1_MAC_ADDRESS_H__
++#define __W1_MAC_ADDRESS_H__
 +
- 	pm_add_device_nand();
- 	pm9g45_add_device_mci();
- 	pm9g45_phy_init();
-diff --git a/arch/arm/configs/pm9g45_defconfig b/arch/arm/configs/pm9g45_defconfig
-index 958301d..d242bdc 100644
---- a/arch/arm/configs/pm9g45_defconfig
-+++ b/arch/arm/configs/pm9g45_defconfig
-@@ -56,6 +56,8 @@ CONFIG_USB_OHCI_AT91=y
- CONFIG_USB_STORAGE=y
- CONFIG_MCI=y
- CONFIG_MCI_ATMEL=y
-+CONFIG_W1=y
-+CONFIG_W1_MASTER_GPIO=y
- CONFIG_FS_TFTP=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_WRITE=y
++/**
++ * w1_mac_address_register - use the first 3 byte of the id of a 1-wire
++ * or 6 if no OUI provided device to provide an Ethernet address
++ * @ethid: ethernet device id
++ * @local: generate a local Ethernet address
++ * @oui: Ethernet OUI (3 bytes
++ * @w1_dev: 1-wire device name
++ *
++ * Generate a Ethernet address (MAC) that is not multicast using a 1-wire id.
++ */
++static inline int w1_mac_address_register(int ethid, bool local,
++					 char * oui, char *w1_dev)
++{
++	char addr[6];
++	const char *val;
++	u64 id;
++	int nb_oui = 0;
++	int i, shift;
++	char *tmp = NULL;
++	int ret = 0;
++
++	if (!local && !oui)
++		return -EINVAL;
++
++	if (oui) {
++		nb_oui = 3;
++
++		for (i = 0; i < nb_oui; i++)
++			addr[i] = oui[i];
++	}
++
++	tmp = asprintf("%s.id", w1_dev);
++	if (!tmp)
++		return -ENOMEM;
++
++	val = getenv(tmp);
++	if (!val) {
++		ret = -EINVAL;
++		goto err;
++	}
++
++	id = simple_strtoull(val, NULL, 16);
++	if (!id) {
++		ret = -EINVAL;
++		goto err;
++	}
++
++	for (i = nb_oui, shift = 40; i < 6; i++, shift -= 8)
++		addr[i] = (id >> shift) & 0xff;
++
++	if (local) {
++		addr[0] &= 0xfe;	/* clear multicast bit */
++		addr[0] |= 0x02;	/* set local assignment bit (IEEE802) */
++	}
++
++	eth_register_ethaddr(ethid, addr);
++
++err:
++	free(tmp);
++	return ret;
++}
++
++#endif /* __W1_MAC_ADDRESS_H__ */
 -- 
 1.7.10.4
 
