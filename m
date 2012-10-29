@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo4.mail-out.ovh.net ([87.98.179.66]
- helo=mo4.mail-out.ovh.net)
+Received: from mo4.mail-out.ovh.net ([178.32.228.4])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TSp1T-0006OX-3w
- for barebox@lists.infradead.org; Mon, 29 Oct 2012 13:04:57 +0000
+ id 1TSp1V-0006OZ-LC
+ for barebox@lists.infradead.org; Mon, 29 Oct 2012 13:05:00 +0000
 Received: from mail172.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id AF73E104E94D
- for <barebox@lists.infradead.org>; Mon, 29 Oct 2012 14:11:56 +0100 (CET)
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id A8CA0104EA92
+ for <barebox@lists.infradead.org>; Mon, 29 Oct 2012 14:11:57 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 29 Oct 2012 14:02:37 +0100
-Message-Id: <1351515759-25548-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 29 Oct 2012 14:02:39 +0100
+Message-Id: <1351515759-25548-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1351515759-25548-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121029124609.GG28904@game.jcrosoft.org>
  <1351515759-25548-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,199 +25,249 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] 1-wire: add gpio bus
+Subject: [PATCH 5/5] 1-wire: add ds2433 support
 To: barebox@lists.infradead.org
 
 Based on linux implementation.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/w1/masters/Kconfig   |    7 +++
- drivers/w1/masters/Makefile  |    1 +
- drivers/w1/masters/w1-gpio.c |  116 ++++++++++++++++++++++++++++++++++++++++++
- include/linux/w1-gpio.h      |   25 +++++++++
- 4 files changed, 149 insertions(+)
- create mode 100644 drivers/w1/masters/w1-gpio.c
- create mode 100644 include/linux/w1-gpio.h
+ drivers/w1/slaves/Kconfig     |   10 +++
+ drivers/w1/slaves/Makefile    |    1 +
+ drivers/w1/slaves/w1_ds2433.c |  196 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 207 insertions(+)
+ create mode 100644 drivers/w1/slaves/w1_ds2433.c
 
-diff --git a/drivers/w1/masters/Kconfig b/drivers/w1/masters/Kconfig
-index 86aa8df..e429c14 100644
---- a/drivers/w1/masters/Kconfig
-+++ b/drivers/w1/masters/Kconfig
-@@ -4,4 +4,11 @@
+diff --git a/drivers/w1/slaves/Kconfig b/drivers/w1/slaves/Kconfig
+index 26150a2..946a0b3 100644
+--- a/drivers/w1/slaves/Kconfig
++++ b/drivers/w1/slaves/Kconfig
+@@ -14,4 +14,14 @@ config W1_SLAVE_DS2431_WRITE
+ 	bool "write support"
+ 	depends on W1_SLAVE_DS2431
  
- menu "1-wire Bus Masters"
- 
-+config W1_MASTER_GPIO
-+	bool "GPIO 1-wire busmaster"
-+	depends on GENERIC_GPIO
++config W1_SLAVE_DS2433
++	bool "4kb EEPROM family support (DS2433)"
 +	help
-+	  Say Y here if you want to communicate with your 1-wire devices using
-+	  GPIO pins. This driver uses the GPIO API to control the wire.
++	  Say Y here if you want to use a 1-wire
++	  4kb EEPROM family device (DS2433).
++
++config W1_SLAVE_DS2433_WRITE
++	bool "write support"
++	depends on W1_SLAVE_DS2433
 +
  endmenu
-diff --git a/drivers/w1/masters/Makefile b/drivers/w1/masters/Makefile
-index ed1b9d9..84b35bb 100644
---- a/drivers/w1/masters/Makefile
-+++ b/drivers/w1/masters/Makefile
-@@ -2,3 +2,4 @@
- # Makefile for 1-wire bus master drivers.
+diff --git a/drivers/w1/slaves/Makefile b/drivers/w1/slaves/Makefile
+index 65804e0..dd7160a 100644
+--- a/drivers/w1/slaves/Makefile
++++ b/drivers/w1/slaves/Makefile
+@@ -3,3 +3,4 @@
  #
  
-+obj-$(CONFIG_W1_MASTER_GPIO)		+= w1-gpio.o
-diff --git a/drivers/w1/masters/w1-gpio.c b/drivers/w1/masters/w1-gpio.c
+ obj-$(CONFIG_W1_SLAVE_DS2431)	+= w1_ds2431.o
++obj-$(CONFIG_W1_SLAVE_DS2433)	+= w1_ds2433.o
+diff --git a/drivers/w1/slaves/w1_ds2433.c b/drivers/w1/slaves/w1_ds2433.c
 new file mode 100644
-index 0000000..0a3794d
+index 0000000..51279fb
 --- /dev/null
-+++ b/drivers/w1/masters/w1-gpio.c
-@@ -0,0 +1,116 @@
++++ b/drivers/w1/slaves/w1_ds2433.c
+@@ -0,0 +1,196 @@
 +/*
-+ * w1-gpio - GPIO w1 bus master driver
++ *	w1_ds2433.c - w1 family 23 (DS2433) driver
 + *
-+ * Copyright (C) 2007 Ville Syrjala <syrjala@sci.fi>
-+ * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ * Copyright (c) 2005 Ben Gardner <bgardner@wabtec.com>
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
++ * This source code is licensed under the GNU General Public License,
++ * Version 2. See the file COPYING for more details.
 + */
 +
-+#include <common.h>
 +#include <init.h>
-+#include <malloc.h>
-+#include <xfuncs.h>
-+#include <driver.h>
-+#include <linux/w1-gpio.h>
-+#include <gpio.h>
-+
 +#include "../w1.h"
 +
-+static void w1_gpio_write_bit_dir(struct w1_bus *bus, u8 bit)
-+{
-+	struct w1_gpio_platform_data *pdata = bus->data;
++#define W1_EEPROM_SIZE		512
++#define W1_PAGE_COUNT		16
++#define W1_PAGE_SIZE		32
++#define W1_PAGE_BITS		5
++#define W1_PAGE_MASK		0x1F
 +
-+	if (bit)
-+		gpio_direction_input(pdata->pin);
-+	else
-+		gpio_direction_output(pdata->pin, 0);
-+}
++#define W1_F23_TIME		300
 +
-+static void w1_gpio_write_bit_val(struct w1_bus *bus, u8 bit)
-+{
-+	struct w1_gpio_platform_data *pdata = bus->data;
++#define W1_F23_READ_EEPROM	0xF0
++#define W1_F23_WRITE_SCRATCH	0x0F
++#define W1_F23_READ_SCRATCH	0xAA
++#define W1_F23_COPY_SCRATCH	0x55
 +
-+	gpio_set_value(pdata->pin, bit);
-+}
++#define DRIVERNAME	"ds2433"
 +
-+static u8 w1_gpio_read_bit(struct w1_bus *bus)
-+{
-+	struct w1_gpio_platform_data *pdata = bus->data;
-+
-+	return gpio_get_value(pdata->pin) ? 1 : 0;
-+}
-+
-+static int __init w1_gpio_probe(struct device_d *dev)
-+{
-+	struct w1_bus *master;
-+	struct w1_gpio_platform_data *pdata;
-+	int err;
-+
-+	pdata = dev->platform_data;
-+
-+	if (!pdata)
-+		return -ENXIO;
-+
-+	master = xzalloc(sizeof(struct w1_bus));
-+
-+	err = gpio_request(pdata->pin, "w1");
-+	if (err)
-+		goto free_master;
-+
-+	if (gpio_is_valid(pdata->ext_pullup_enable_pin)) {
-+		err = gpio_request(pdata->pin, "w1 pullup");
-+		if (err < 0)
-+			goto free_gpio;
-+
-+		gpio_direction_output(pdata->pin, 0);
-+	}
-+
-+	master->data = pdata;
-+	master->read_bit = w1_gpio_read_bit;
-+
-+	if (pdata->is_open_drain) {
-+		gpio_direction_output(pdata->pin, 1);
-+		master->write_bit = w1_gpio_write_bit_val;
-+	} else {
-+		gpio_direction_input(pdata->pin);
-+		master->write_bit = w1_gpio_write_bit_dir;
-+	}
-+
-+	master->parent = dev;
-+
-+	err = w1_bus_register(master);
-+	if (err)
-+		goto free_gpio_ext_pu;
-+
-+	if (pdata->enable_external_pullup)
-+		pdata->enable_external_pullup(1);
-+
-+	if (gpio_is_valid(pdata->ext_pullup_enable_pin))
-+		gpio_set_value(pdata->ext_pullup_enable_pin, 1);
-+
-+	return 0;
-+
-+ free_gpio_ext_pu:
-+	if (gpio_is_valid(pdata->ext_pullup_enable_pin))
-+		gpio_free(pdata->ext_pullup_enable_pin);
-+ free_gpio:
-+	gpio_free(pdata->pin);
-+ free_master:
-+	kfree(master);
-+
-+	return err;
-+}
-+
-+static struct driver_d w1_gpio_driver = {
-+	.name	= "w1-gpio",
-+	.probe	= w1_gpio_probe,
-+};
-+
-+static int __init w1_gpio_init(void)
-+{
-+	return platform_driver_register(&w1_gpio_driver);
-+}
-+device_initcall(w1_gpio_init);
-diff --git a/include/linux/w1-gpio.h b/include/linux/w1-gpio.h
-new file mode 100644
-index 0000000..065e3ae
---- /dev/null
-+++ b/include/linux/w1-gpio.h
-@@ -0,0 +1,25 @@
-+/*
-+ * w1-gpio interface to platform code
-+ *
-+ * Copyright (C) 2007 Ville Syrjala <syrjala@sci.fi>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ */
-+#ifndef _LINUX_W1_GPIO_H
-+#define _LINUX_W1_GPIO_H
++static int ds2433_count = 0;
 +
 +/**
-+ * struct w1_gpio_platform_data - Platform-dependent data for w1-gpio
-+ * @pin: GPIO pin to use
-+ * @is_open_drain: GPIO pin is configured as open drain
++ * Check the file size bounds and adjusts count as needed.
++ * This would not be needed if the file size didn't reset to 0 after a write.
 + */
-+struct w1_gpio_platform_data {
-+	unsigned int pin;
-+	unsigned int is_open_drain:1;
-+	void (*enable_external_pullup)(int enable);
-+	unsigned int ext_pullup_enable_pin;
++static inline size_t ds2433_fix_count(loff_t off, size_t count, size_t size)
++{
++	if (off > size)
++		return 0;
++
++	if ((off + count) > size)
++		return (size - off);
++
++	return count;
++}
++
++static ssize_t ds2433_cdev_read(struct cdev *cdev, void *buf, size_t count,
++		loff_t off, ulong flags)
++{
++	struct w1_device *dev = cdev->priv;
++	struct w1_bus *bus = dev->bus;
++	u8 wrbuf[3];
++
++	if ((count = ds2433_fix_count(off, count, W1_EEPROM_SIZE)) == 0)
++		return 0;
++
++	/* read directly from the EEPROM */
++	if (w1_reset_select_slave(dev)) {
++		count = -EIO;
++		goto out_up;
++	}
++
++	wrbuf[0] = W1_F23_READ_EEPROM;
++	wrbuf[1] = off & 0xff;
++	wrbuf[2] = off >> 8;
++	w1_write_block(bus, wrbuf, 3);
++	w1_read_block(bus, buf, count);
++
++out_up:
++	return count;
++}
++
++#ifdef CONFIG_W1_SLAVE_DS2433_WRITE
++/**
++ * Writes to the scratchpad and reads it back for verification.
++ * Then copies the scratchpad to EEPROM.
++ * The data must be on one page.
++ * The master must be locked.
++ *
++ * @param sl	The slave structure
++ * @param addr	Address for the write
++ * @param len   length must be <= (W1_PAGE_SIZE - (addr & W1_PAGE_MASK))
++ * @param data	The data to write
++ * @return	0=Success -1=failure
++ */
++static int ds2433_write(struct w1_device *dev, int addr, int len, const u8 *data)
++{
++	struct w1_bus *bus = dev->bus;
++	u8 wrbuf[4];
++	u8 rdbuf[W1_PAGE_SIZE + 3];
++	u8 es = (addr + len - 1) & 0x1f;
++
++	/* Write the data to the scratchpad */
++	if (w1_reset_select_slave(dev))
++		return -1;
++
++	wrbuf[0] = W1_F23_WRITE_SCRATCH;
++	wrbuf[1] = addr & 0xff;
++	wrbuf[2] = addr >> 8;
++
++	w1_write_block(bus, wrbuf, 3);
++	w1_write_block(bus, data, len);
++
++	/* Read the scratchpad and verify */
++	if (w1_reset_select_slave(dev))
++		return -1;
++
++	w1_write_8(bus, W1_F23_READ_SCRATCH);
++	w1_read_block(bus, rdbuf, len + 3);
++
++	/* Compare what was read against the data written */
++	if ((rdbuf[0] != wrbuf[1]) || (rdbuf[1] != wrbuf[2]) ||
++	    (rdbuf[2] != es) || (memcmp(data, &rdbuf[3], len) != 0))
++		return -1;
++
++	/* Copy the scratchpad to EEPROM */
++	if (w1_reset_select_slave(dev))
++		return -1;
++
++	wrbuf[0] = W1_F23_COPY_SCRATCH;
++	wrbuf[3] = es;
++	w1_write_block(bus, wrbuf, 4);
++
++	/* Sleep for 5 ms to wait for the write to complete */
++	mdelay(5);
++
++	/* Reset the bus to wake up the EEPROM (this may not be needed) */
++	w1_reset_bus(bus);
++	return 0;
++}
++
++static ssize_t ds2433_cdev_write(struct cdev *cdev, const void *buf, size_t count,
++		loff_t off, ulong flags)
++{
++	struct w1_device *dev = cdev->priv;
++	int addr, len, idx;
++	const u8 *buf8 = buf;
++
++	if ((count = ds2433_fix_count(off, count, W1_EEPROM_SIZE)) == 0)
++		return 0;
++
++	/* Can only write data to one page at a time */
++	idx = 0;
++	while (idx < count) {
++		addr = off + idx;
++		len = W1_PAGE_SIZE - (addr & W1_PAGE_MASK);
++		if (len > (count - idx))
++			len = count - idx;
++
++		if (ds2433_write(dev, addr, len, &buf8[idx]) < 0) {
++			count = -EIO;
++			goto out_up;
++		}
++		idx += len;
++	}
++
++out_up:
++	return count;
++}
++#else
++#define ds2433_cdev_write NULL
++#endif
++
++static struct file_operations ds2433_ops = {
++	.read	= ds2433_cdev_read,
++	.write	= ds2433_cdev_write,
++	.lseek	= dev_lseek_default,
 +};
 +
-+#endif /* _LINUX_W1_GPIO_H */
++static int ds2433_probe(struct w1_device *dev)
++{
++	struct cdev *cdev;
++
++	cdev = xzalloc(sizeof(*cdev));
++	cdev->dev	= &dev->dev;
++	cdev->priv	= dev;
++	cdev->ops	= &ds2433_ops;
++	cdev->size	= W1_EEPROM_SIZE;
++	cdev->name	= asprintf(DRIVERNAME"%d", ds2433_count++);
++	if (cdev->name == NULL)
++		return -ENOMEM;
++
++	return devfs_create(cdev);
++}
++
++struct w1_driver ds2433_driver = {
++	.drv = {
++		.name = DRIVERNAME,
++	},
++	.probe		= ds2433_probe,
++	.fid		= 0x23,
++};
++
++static int w1_ds2433_init(void)
++{
++	return w1_driver_register(&ds2433_driver);
++}
++device_initcall(w1_ds2433_init);
 -- 
 1.7.10.4
 
