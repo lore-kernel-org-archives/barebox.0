@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TTChs-00088i-7J
- for barebox@lists.infradead.org; Tue, 30 Oct 2012 14:22:17 +0000
+ id 1TTChr-00088h-5N
+ for barebox@lists.infradead.org; Tue, 30 Oct 2012 14:22:16 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Tue, 30 Oct 2012 15:22:11 +0100
-Message-Id: <1351606931-12815-2-git-send-email-w.sang@pengutronix.de>
-In-Reply-To: <1351606931-12815-1-git-send-email-w.sang@pengutronix.de>
-References: <1351606931-12815-1-git-send-email-w.sang@pengutronix.de>
+Date: Tue, 30 Oct 2012 15:22:10 +0100
+Message-Id: <1351606931-12815-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,73 +19,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] configs: mx28evk: add NAND support
+Subject: [PATCH 1/2] mxs: mx28evk: add nand device
 To: barebox@lists.infradead.org
 Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-Took the mx28evk defconfig, activated DMA and NAND, used savedefconfig;
-this patch is the result.
+While flash layout may be custom, at least the nand0-device is good to
+have.
 
 Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 ---
- arch/arm/configs/imx28evk_defconfig |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ arch/arm/boards/freescale-mx28-evk/mx28-evk.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/arch/arm/configs/imx28evk_defconfig b/arch/arm/configs/imx28evk_defconfig
-index 0cc269b..3b69d4d 100644
---- a/arch/arm/configs/imx28evk_defconfig
-+++ b/arch/arm/configs/imx28evk_defconfig
-@@ -12,41 +12,41 @@ CONFIG_GLOB=y
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
--CONFIG_PARTITION=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/freescale-mx28-evk/env"
- CONFIG_DEBUG_INFO=y
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
- CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_LOADENV=y
- CONFIG_CMD_EXPORT=y
- CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TFTP=y
- CONFIG_CMD_ECHO_E=y
--CONFIG_CMD_MTEST=y
--CONFIG_CMD_MTEST_ALTERNATIVE=y
--CONFIG_CMD_BOOTM_ZLIB=y
--CONFIG_CMD_BOOTM_BZLIB=y
- CONFIG_CMD_BOOTM_SHOW_TYPE=y
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
-+CONFIG_CMD_MTEST=y
-+CONFIG_CMD_MTEST_ALTERNATIVE=y
-+CONFIG_CMD_SPLASH=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
--CONFIG_CMD_SPLASH=y
- CONFIG_CMD_GPIO=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_PING=y
--CONFIG_CMD_TFTP=y
--CONFIG_FS_TFTP=y
- CONFIG_NET_RESOLV=y
- CONFIG_DRIVER_NET_FEC_IMX=y
- # CONFIG_SPI is not set
-+CONFIG_MTD=y
-+CONFIG_NAND=y
-+CONFIG_NAND_MXS=y
- CONFIG_VIDEO=y
- CONFIG_DRIVER_VIDEO_STM=y
- CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
- CONFIG_MCI_MXS=y
-+CONFIG_MXS_APBH_DMA=y
-+CONFIG_FS_TFTP=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_LFN=y
+diff --git a/arch/arm/boards/freescale-mx28-evk/mx28-evk.c b/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
+index 7cd61f9..0fbb229 100644
+--- a/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
++++ b/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
+@@ -109,6 +109,23 @@ static const uint32_t mx28evk_pads[] = {
+ 	LCD_RESET_GPIO | VE_3_3V | GPIO_OUT | GPIO_VALUE(0),
+ 	/* backlight  */
+ 	PWM2_GPIO | VE_3_3V | STRENGTH(S4MA) | SE | VE,
++
++	/* GPMI-NAND (blocks mmc1 for now) */
++	GPMI_D0 | VE_3_3V,
++	GPMI_D1 | VE_3_3V,
++	GPMI_D2 | VE_3_3V,
++	GPMI_D3 | VE_3_3V,
++	GPMI_D4 | VE_3_3V,
++	GPMI_D5 | VE_3_3V,
++	GPMI_D6 | VE_3_3V,
++	GPMI_D7 | VE_3_3V,
++	GPMI_READY0 | VE_3_3V,	/* external PU */
++	GPMI_CE0N | VE_3_3V, 	/* external PU */
++	GPMI_RDN | VE_3_3V,
++	GPMI_WRN | VE_3_3V,
++	GPMI_ALE | VE_3_3V,
++	GPMI_CLE | VE_3_3V,
++	GPMI_RESETN,		/* act as WP, external PU */
+ };
+ 
+ static struct mxs_mci_platform_data mci_pdata = {
+@@ -239,6 +256,9 @@ static int mx28_evk_devices_init(void)
+ 	add_generic_device("fec_imx", 0, NULL, IMX_FEC0_BASE, 0x4000,
+ 			   IORESOURCE_MEM, &fec_info);
+ 
++	add_generic_device("mxs_nand", 0, NULL, MXS_GPMI_BASE, 0x2000,
++			   IORESOURCE_MEM, NULL);
++
+ 	return 0;
+ }
+ device_initcall(mx28_evk_devices_init);
 -- 
 1.7.10.4
 
