@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo4.mail-out.ovh.net ([178.33.253.54]
+Received: from 1.mo4.mail-out.ovh.net ([178.33.248.196]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TTIxK-0008V2-1S
- for barebox@lists.infradead.org; Tue, 30 Oct 2012 21:02:39 +0000
+ id 1TTIxH-0008Ux-8D
+ for barebox@lists.infradead.org; Tue, 30 Oct 2012 21:02:38 +0000
 Received: from mail643.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 286DA104E886
- for <barebox@lists.infradead.org>; Tue, 30 Oct 2012 22:09:40 +0100 (CET)
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 5A4A7104E869
+ for <barebox@lists.infradead.org>; Tue, 30 Oct 2012 22:09:38 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 30 Oct 2012 22:00:22 +0100
-Message-Id: <1351630822-20803-8-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 30 Oct 2012 22:00:17 +0100
+Message-Id: <1351630822-20803-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1351630822-20803-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121030205459.GE29599@game.jcrosoft.org>
  <1351630822-20803-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,36 +26,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] pm9261: use w1 serial number to generate local mac address
+Subject: [PATCH 3/8] pm9g45: add 1-wire support
 To: barebox@lists.infradead.org
-
-The OUI will be 'ron' => 72:6F:6E
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/pm9261/init.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boards/pm9g45/init.c     |   11 ++++++++++-
+ arch/arm/configs/pm9g45_defconfig |    2 ++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/pm9261/init.c b/arch/arm/boards/pm9261/init.c
-index 2c3615f..6d2ac98 100644
---- a/arch/arm/boards/pm9261/init.c
-+++ b/arch/arm/boards/pm9261/init.c
-@@ -37,6 +37,7 @@
+diff --git a/arch/arm/boards/pm9g45/init.c b/arch/arm/boards/pm9g45/init.c
+index a12896b..907c6bb 100644
+--- a/arch/arm/boards/pm9g45/init.c
++++ b/arch/arm/boards/pm9g45/init.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright (C) 2009 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ * Copyright (C) 2009-2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
+  *
+  * Copyright (C) 2007 Sascha Hauer, Pengutronix
+  *
+@@ -35,6 +35,12 @@
+ #include <mach/io.h>
+ #include <mach/at91sam9_smc.h>
  #include <mach/sam9_smc.h>
- #include <dm9000.h>
- #include <linux/w1-gpio.h>
-+#include <w1_mac_address.h>
++#include <linux/w1-gpio.h>
++
++struct w1_gpio_platform_data w1_pdata = {
++	.pin = AT91_PIN_PA31,
++	.is_open_drain = 0,
++};
  
- struct w1_gpio_platform_data w1_pdata = {
- 	.pin = AT91_PIN_PA7,
-@@ -120,6 +121,7 @@ static struct sam9_smc_config __initdata dm9000_smc_config = {
+ static struct atmel_nand_data nand_pdata = {
+ 	.ale		= 21,
+@@ -132,6 +138,9 @@ mem_initcall(pm9g45_mem_init);
  
- static void __init pm_add_device_dm9000(void)
+ static int pm9g45_devices_init(void)
  {
-+	w1_local_mac_address_register(0, "ron", "w1-1-0");
- 	/* Configure chip-select 2 (DM9000) */
- 	sam9_smc_configure(2, &dm9000_smc_config);
- 
++	at91_set_gpio_input(w1_pdata.pin, 0);
++	add_generic_device_res("w1-gpio", DEVICE_ID_SINGLE, NULL, 0, &w1_pdata);
++
+ 	pm_add_device_nand();
+ 	pm9g45_add_device_mci();
+ 	pm9g45_phy_init();
+diff --git a/arch/arm/configs/pm9g45_defconfig b/arch/arm/configs/pm9g45_defconfig
+index 958301d..d242bdc 100644
+--- a/arch/arm/configs/pm9g45_defconfig
++++ b/arch/arm/configs/pm9g45_defconfig
+@@ -56,6 +56,8 @@ CONFIG_USB_OHCI_AT91=y
+ CONFIG_USB_STORAGE=y
+ CONFIG_MCI=y
+ CONFIG_MCI_ATMEL=y
++CONFIG_W1=y
++CONFIG_W1_MASTER_GPIO=y
+ CONFIG_FS_TFTP=y
+ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_WRITE=y
 -- 
 1.7.10.4
 
