@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TTEkC-0008VG-RC
- for barebox@lists.infradead.org; Tue, 30 Oct 2012 16:32:49 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 30 Oct 2012 17:32:37 +0100
-Message-Id: <1351614757-20520-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1351614757-20520-1-git-send-email-s.hauer@pengutronix.de>
-References: <1351614757-20520-1-git-send-email-s.hauer@pengutronix.de>
+Received: from 3.mo4.mail-out.ovh.net ([46.105.57.129]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TTIs4-0008If-VW
+ for barebox@lists.infradead.org; Tue, 30 Oct 2012 20:57:15 +0000
+Received: from mail643.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id A4728104E48A
+ for <barebox@lists.infradead.org>; Tue, 30 Oct 2012 22:04:13 +0100 (CET)
+Date: Tue, 30 Oct 2012 21:54:59 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121030205459.GE29599@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,92 +20,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] mdiobus: do not scan the bus at registration time
+Subject: [PATCH 0/8 v3] pm9g45/pm9253/pm9261: add 1-wire support
 To: barebox@lists.infradead.org
 
-Scanning the bus can take some time. If we do not need the ethernet
-device, this is unnecessary, so delay the scan until the phy device
-iactually is needed.
+Hi,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/net/phy/mdio_bus.c |   23 +----------------------
- drivers/net/phy/phy.c      |    4 ++--
- 2 files changed, 3 insertions(+), 24 deletions(-)
+	v3: comment
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 5025e3f..35319b4 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -36,7 +36,7 @@
-  */
- int mdiobus_register(struct mii_bus *bus)
- {
--	int i, err;
-+	int err;
- 
- 	if (NULL == bus ||
- 			NULL == bus->read ||
-@@ -59,29 +59,8 @@ int mdiobus_register(struct mii_bus *bus)
- 	if (bus->reset)
- 		bus->reset(bus);
- 
--	for (i = 0; i < PHY_MAX_ADDR; i++) {
--		if ((bus->phy_mask & (1 << i)) == 0) {
--			struct phy_device *phydev;
--
--			phydev = mdiobus_scan(bus, i);
--			if (IS_ERR(phydev)) {
--				err = PTR_ERR(phydev);
--				goto error;
--			}
--		}
--	}
--
- 	pr_info("%s: probed\n", dev_name(&bus->dev));
- 	return 0;
--
--error:
--	while (--i >= 0) {
--		if (bus->phy_map[i]) {
--			kfree(bus->phy_map[i]);
--			bus->phy_map[i] = NULL;
--		}
--	}
--	return err;
- }
- EXPORT_SYMBOL(mdiobus_register);
- 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 88c3ff7..8d36300 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -154,7 +154,7 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
- 
- 	if (!edev->phydev) {
- 		if (addr >= 0) {
--			dev = bus->phy_map[addr];
-+			dev = mdiobus_scan(bus, addr);
- 			if (!dev) {
- 				ret = -EIO;
- 				goto fail;
-@@ -169,7 +169,7 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
- 				goto fail;
- 		} else {
- 			for (i = 0; i < PHY_MAX_ADDR && !edev->phydev; i++) {
--				dev = bus->phy_map[i];
-+				dev = mdiobus_scan(bus, addr);
- 				if (!dev || dev->attached_dev)
- 					continue;
- 
--- 
-1.7.10.4
+	v2: fixup and add comment
 
+	add 1-wire support for:
+	 - pm9g45
+	 - pm9263
+	 - pm9261
+
+	use the 1-wire uniq id to generate a local mac address
+	The OUI will be 'ron' => 72:6F:6E
+
+	The patch series go on the top of the 1-wire support v2
+
+The following changes since commit acaa716bce8cd1373cb5dabff54332fb1da7355b:
+
+  1-wire: add ds2433 support (2012-10-29 04:46:21 +0800)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/ronetix_w1
+
+for you to fetch changes up to 7fb0cb2ce2f7800341ab8de711dccbd2c4753c84:
+
+  pm9261: use w1 serial number to generate local mac address (2012-10-30 13:44:54 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (8):
+      arm: at91: add gpio_is_valid support
+      w1: introduce helper to generate mac address from 1-wire id
+      pm9g45: add 1-wire support
+      pm9g45: use w1 serial number to generate local mac address
+      pm9263: add 1-wire support
+      pm9263: use w1 serial number to generate local mac address
+      pm9261: add 1-wire support
+      pm9261: use w1 serial number to generate local mac address
+
+ arch/arm/boards/pm9261/init.c          |   10 ++++++++++
+ arch/arm/boards/pm9263/init.c          |   38 ++++++++++++++++++++++++++++++--------
+ arch/arm/boards/pm9g45/init.c          |   22 +++++++++++++++++++---
+ arch/arm/configs/pm9261_defconfig      |    2 ++
+ arch/arm/configs/pm9263_defconfig      |    2 ++
+ arch/arm/configs/pm9g45_defconfig      |    2 ++
+ arch/arm/mach-at91/include/mach/gpio.h |   11 +++++++++++
+ include/w1_mac_address.h               |   65 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 8 files changed, 141 insertions(+), 11 deletions(-)
+ create mode 100644 include/w1_mac_address.h
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
