@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TTEhi-0007l9-PL
+ id 1TTEhi-0007ky-PN
  for barebox@lists.infradead.org; Tue, 30 Oct 2012 16:30:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 30 Oct 2012 17:30:06 +0100
-Message-Id: <1351614606-16461-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1351614606-16461-1-git-send-email-s.hauer@pengutronix.de>
-References: <1351614606-16461-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 30 Oct 2012 17:30:04 +0100
+Message-Id: <1351614606-16461-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,42 +19,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] net fec: call fec_init at probe time
+Subject: [PATCH] i.MX fec fixes
 To: barebox@lists.infradead.org
 Cc: wsa@pengutronix.de
 
-fec_init() initializes some bits important for phy access, so do
-this before the mdiobus is registered. This fixes mdiobus support
-on i.MX28 boards in RMII mode.
+The i.MX fec driver is broken on some boards since the introduction
+of phylib. This is not really a phylib problem, but the phylib triggered
+it. Problem is that the fec mdio read depends on fec_init called during
+eth_register time. The mdiobus though is accessed earlier, so a phy
+cannot be detected.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
+Sascha
+
+----------------------------------------------------------------
+Sascha Hauer (2):
+      net eth: make edev->init optional
+      net fec: call fec_init at probe time
+
  drivers/net/fec_imx.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index f6065aa..21ce38c 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -644,7 +644,6 @@ static int fec_probe(struct device_d *dev)
- 	dev->priv = fec;
- 	edev->priv = fec;
- 	edev->open = fec_open;
--	edev->init = fec_init;
- 	edev->send = fec_send;
- 	edev->recv = fec_recv;
- 	edev->halt = fec_halt;
-@@ -685,6 +684,8 @@ static int fec_probe(struct device_d *dev)
- 
- 	fec->xcv_type = pdata->xcv_type;
- 
-+	fec_init(edev);
-+
- 	if (fec->xcv_type != SEVENWIRE) {
- 		fec->phy_init = pdata->phy_init;
- 		fec->miibus.read = fec_miibus_read;
--- 
-1.7.10.4
+ net/eth.c             |    3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
 
 _______________________________________________
