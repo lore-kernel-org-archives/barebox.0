@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo4.mail-out.ovh.net ([46.105.57.129]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TTIs4-0008If-VW
- for barebox@lists.infradead.org; Tue, 30 Oct 2012 20:57:15 +0000
-Received: from mail643.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id A4728104E48A
- for <barebox@lists.infradead.org>; Tue, 30 Oct 2012 22:04:13 +0100 (CET)
-Date: Tue, 30 Oct 2012 21:54:59 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121030205459.GE29599@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Received: from mail-ee0-f49.google.com ([74.125.83.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TTItK-0008Ju-NN
+ for barebox@lists.infradead.org; Tue, 30 Oct 2012 20:58:31 +0000
+Received: by mail-ee0-f49.google.com with SMTP id c1so408491eek.36
+ for <barebox@lists.infradead.org>; Tue, 30 Oct 2012 13:58:27 -0700 (PDT)
+From: Alexander Aring <alex.aring@googlemail.com>
+Date: Tue, 30 Oct 2012 22:00:25 +0100
+Message-Id: <1351630826-3133-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,65 +16,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/8 v3] pm9g45/pm9253/pm9261: add 1-wire support
+Subject: [PATCH/RFC] Introduce nandsim command
 To: barebox@lists.infradead.org
 
-Hi,
+Introduce nandsim command for develop/test nand mtd software.
+Based on the nandsim kernel module. Don't know the version anymore.
 
-	v3: comment
+The data which nandsim holds are in malloc space.
+The original module can use a file to operate on this.
+I removed this implementation, because it used the page-cache and I don't
+have a page-cache in barebox.
 
-	v2: fixup and add comment
+I used nandsim in the following szenario:
+	- barebox sandbox system with -i command to get a /dev/fd# device.
+	- in barebox system you can use 'cp /dev/fd# /dev/nandsim#.
+	- do some testing things on /dev/nandsim#
+	- afterwards writeback with /dev/nandsim# /dev/fd#
 
-	add 1-wire support for:
-	 - pm9g45
-	 - pm9263
-	 - pm9261
+This works for example with a envfs image.
+Maybe I will add to synchronize with /dev/fd#(or another file) directly on changes.
 
-	use the 1-wire uniq id to generate a local mac address
-	The OUI will be 'ron' => 72:6F:6E
+It needs a high malloc space and a high max argument number for commands.
 
-	The patch series go on the top of the 1-wire support v2
+Please look at help text to see all parameters. I don't test all of these.
 
-The following changes since commit acaa716bce8cd1373cb5dabff54332fb1da7355b:
+I added two parameters to supply a random seed and to manipulate a
+bitflip_chance per page.
+To manipulate the bitflip_chance is not a nice solution at the moment.
 
-  1-wire: add ds2433 support (2012-10-29 04:46:21 +0800)
+I send this patches, because maybe somebody can use it
+to test things with ubiformat.
 
-are available in the git repository at:
+The nandsim implementation is not done yet!
 
-  git://git.jcrosoft.org/barebox.git delivery/ronetix_w1
+Alexander Aring (1):
+  nandsim: add nandsim command
 
-for you to fetch changes up to 7fb0cb2ce2f7800341ab8de711dccbd2c4753c84:
+ commands/Kconfig   |   11 +
+ commands/Makefile  |    1 +
+ commands/nandsim.c | 2495 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 2507 insertions(+)
+ create mode 100644 commands/nandsim.c
 
-  pm9261: use w1 serial number to generate local mac address (2012-10-30 13:44:54 +0800)
+-- 
+1.8.0
 
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (8):
-      arm: at91: add gpio_is_valid support
-      w1: introduce helper to generate mac address from 1-wire id
-      pm9g45: add 1-wire support
-      pm9g45: use w1 serial number to generate local mac address
-      pm9263: add 1-wire support
-      pm9263: use w1 serial number to generate local mac address
-      pm9261: add 1-wire support
-      pm9261: use w1 serial number to generate local mac address
-
- arch/arm/boards/pm9261/init.c          |   10 ++++++++++
- arch/arm/boards/pm9263/init.c          |   38 ++++++++++++++++++++++++++++++--------
- arch/arm/boards/pm9g45/init.c          |   22 +++++++++++++++++++---
- arch/arm/configs/pm9261_defconfig      |    2 ++
- arch/arm/configs/pm9263_defconfig      |    2 ++
- arch/arm/configs/pm9g45_defconfig      |    2 ++
- arch/arm/mach-at91/include/mach/gpio.h |   11 +++++++++++
- include/w1_mac_address.h               |   65 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 8 files changed, 141 insertions(+), 11 deletions(-)
- create mode 100644 include/w1_mac_address.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
