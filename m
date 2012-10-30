@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TTEhi-0007kz-PP
- for barebox@lists.infradead.org; Tue, 30 Oct 2012 16:30:16 +0000
+ id 1TTEhi-0007l9-PL
+ for barebox@lists.infradead.org; Tue, 30 Oct 2012 16:30:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 30 Oct 2012 17:30:05 +0100
-Message-Id: <1351614606-16461-2-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 30 Oct 2012 17:30:06 +0100
+Message-Id: <1351614606-16461-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1351614606-16461-1-git-send-email-s.hauer@pengutronix.de>
 References: <1351614606-16461-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,35 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] net eth: make edev->init optional
+Subject: [PATCH 2/2] net fec: call fec_init at probe time
 To: barebox@lists.infradead.org
 Cc: wsa@pengutronix.de
 
-edev->init is called at eth_register time unconditionally and is supposed
-to initialize the ethernet hardware. Since it's called unconditionally
-this could be done by the driver without having an additional hook.
-Some drivers need their initialization done earlier since they also register
-a mdiobus which does hardware accesses on registration time.
+fec_init() initializes some bits important for phy access, so do
+this before the mdiobus is registered. This fixes mdiobus support
+on i.MX28 boards in RMII mode.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/eth.c |    3 ++-
+ drivers/net/fec_imx.c |    3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/eth.c b/net/eth.c
-index f3d7bfe..2cfdb96 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -269,7 +269,8 @@ int eth_register(struct eth_device *edev)
- 	dev_add_param(dev, "netmask", eth_set_ipaddr, NULL, 0);
- 	dev_add_param(dev, "serverip", eth_set_ipaddr, NULL, 0);
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index f6065aa..21ce38c 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -644,7 +644,6 @@ static int fec_probe(struct device_d *dev)
+ 	dev->priv = fec;
+ 	edev->priv = fec;
+ 	edev->open = fec_open;
+-	edev->init = fec_init;
+ 	edev->send = fec_send;
+ 	edev->recv = fec_recv;
+ 	edev->halt = fec_halt;
+@@ -685,6 +684,8 @@ static int fec_probe(struct device_d *dev)
  
--	edev->init(edev);
-+	if (edev->init)
-+		edev->init(edev);
+ 	fec->xcv_type = pdata->xcv_type;
  
- 	list_add_tail(&edev->list, &netdev_list);
- 
++	fec_init(edev);
++
+ 	if (fec->xcv_type != SEVENWIRE) {
+ 		fec->phy_init = pdata->phy_init;
+ 		fec->miibus.read = fec_miibus_read;
 -- 
 1.7.10.4
 
