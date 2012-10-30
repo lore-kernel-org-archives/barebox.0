@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TTCMl-0005DB-3I
- for barebox@lists.infradead.org; Tue, 30 Oct 2012 14:00:30 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 30 Oct 2012 15:00:21 +0100
-Message-Id: <1351605621-19717-1-git-send-email-s.hauer@pengutronix.de>
+ id 1TTCh0-00082w-HD
+ for barebox@lists.infradead.org; Tue, 30 Oct 2012 14:21:24 +0000
+From: Wolfram Sang <w.sang@pengutronix.de>
+Date: Tue, 30 Oct 2012 15:21:14 +0100
+Message-Id: <1351606875-31558-2-git-send-email-w.sang@pengutronix.de>
+In-Reply-To: <1351606875-31558-1-git-send-email-w.sang@pengutronix.de>
+References: <1351606875-31558-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,32 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] uimage: Fix deleting of temporary file
+Subject: [PATCH 2/3] dma: apbh: check for errors when resetting ip core
 To: barebox@lists.infradead.org
+Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-the uImage support may generate a temporary file which ought to be deleted
-after usage. Due to the wrong filename this never happened. Fix this.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 ---
- common/uimage.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/dma/apbh_dma.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/common/uimage.c b/common/uimage.c
-index c72db41..3a97534 100644
---- a/common/uimage.c
-+++ b/common/uimage.c
-@@ -225,8 +225,8 @@ void uimage_close(struct uimage_handle *handle)
- 	free(handle->name);
- 	free(handle);
+diff --git a/drivers/dma/apbh_dma.c b/drivers/dma/apbh_dma.c
+index 363878f..d30b8fb 100644
+--- a/drivers/dma/apbh_dma.c
++++ b/drivers/dma/apbh_dma.c
+@@ -555,7 +555,9 @@ int mxs_dma_init(void)
+ 	int ret, channel;
+ 	u32 val, reg;
  
--	if (IS_BUILTIN(CONFIG_FS_TFTP) && !stat("/.uimage_tmp", &s))
--		unlink("/.uimage_tmp");
-+	if (IS_BUILTIN(CONFIG_FS_TFTP) && !stat(uimage_tmp, &s))
-+		unlink(uimage_tmp);
- }
- EXPORT_SYMBOL(uimage_close);
+-	mxs_reset_block(apbh_regs, 0);
++	ret = mxs_reset_block(apbh_regs, 0);
++	if (ret)
++		return ret;
  
+ 	/* HACK: Get CPUID and determine APBH version */
+ 	val = readl(0x8001c310) >> 16;
 -- 
 1.7.10.4
 
