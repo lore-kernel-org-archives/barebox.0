@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo1.mail-out.ovh.net ([178.32.96.102]
+Received: from 3.mo1.mail-out.ovh.net ([46.105.60.232]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TTaXk-0008Ln-P3
- for barebox@lists.infradead.org; Wed, 31 Oct 2012 15:49:26 +0000
+ id 1TTbZ5-0001kl-Dy
+ for barebox@lists.infradead.org; Wed, 31 Oct 2012 16:54:52 +0000
 Received: from mail615.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 3260FFF9DFB
- for <barebox@lists.infradead.org>; Wed, 31 Oct 2012 16:59:46 +0100 (CET)
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id D280FFFAF6E
+ for <barebox@lists.infradead.org>; Wed, 31 Oct 2012 18:05:13 +0100 (CET)
+Date: Wed, 31 Oct 2012 17:52:40 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 31 Oct 2012 16:47:11 +0100
-Message-Id: <1351698431-15255-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20121031165240.GG29599@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,46 +20,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] at91sam9xek: fix mtd partition
+Subject: [PATCH 0/4] at91sam9x5ek: add 1-wire support and hardware
+ detection support
 To: barebox@lists.infradead.org
+Cc: "ludovic.desroches" <ludovic.desroches@atmel.com>
 
-barebox size is 384KiB
-and for the official atmel release we need to rootfs at 8M
+HI,
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/boards/at91sam9x5ek/env/config |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+	This patch serie add the 1-wire support to the at91sam9x5ek
 
-diff --git a/arch/arm/boards/at91sam9x5ek/env/config b/arch/arm/boards/at91sam9x5ek/env/config
-index 19457be..b8cf4e3 100644
---- a/arch/arm/boards/at91sam9x5ek/env/config
-+++ b/arch/arm/boards/at91sam9x5ek/env/config
-@@ -22,6 +22,7 @@ oftree_loc=nfs
- # can be either 'jffs2' or 'ubifs'
- rootfs_type=ubifs
- rootfsimage=root.$rootfs_type
-+ubiroot=rootfs
- 
- # The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
- kernelimage=zImage
-@@ -30,7 +31,7 @@ kernelimage=zImage
- #kernelimage=Image.lzo
- 
- nand_device=atmel_nand
--nand_parts="256k(at91bootstrap),256k(barebox)ro,128k(bareboxenv),128k(bareboxenv2),128k(oftree),1M(free),4M(kernel),120M(rootfs),-(data)"
-+nand_parts="256k(at91bootstrap),384k(barebox)ro,128k(bareboxenv),128k(bareboxenv2),128k(oftree),1M(free),6M(kernel),120M(rootfs),-(data)"
- rootfs_mtdblock_nand=7
- 
- autoboot_timeout=3
--- 
-1.7.10.4
+	on sam9x5ek we have on each module and motherboard a 1-wire eeprom
+	that describe the hardware revision and type
 
+	And on the Cogent Cpu Module we have some difference with teh others
+	modules and some bug
+
+	So fix
+
+	Also use the 1-wire to generate a local mac address
+
+	This patch series depends on the pm9g45/pm9263/pm9261 v3
+
+The following changes since commit 7fb0cb2ce2f7800341ab8de711dccbd2c4753c84:
+
+  pm9261: use w1 serial number to generate local mac address (2012-10-30 13:44:54 +0800)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/at91sam9x5ek_w1
+
+for you to fetch changes up to 4e088306b778a5f14c2503be54b061e60e27e6a0:
+
+  at91sam9x5ek: use w1 serial number to generate local mac address (2012-10-31 09:33:38 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (4):
+      at91sam9x5ek: add 1-wire support
+      at91sam9x5ek: add hw detection support
+      at91sam9x5ek: add fixup for cogent cpu module
+      at91sam9x5ek: use w1 serial number to generate local mac address
+
+ arch/arm/boards/at91sam9x5ek/Makefile     |    1 +
+ arch/arm/boards/at91sam9x5ek/env/config   |    1 +
+ arch/arm/boards/at91sam9x5ek/hw_version.c |  272 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/boards/at91sam9x5ek/hw_version.h |   34 ++++++++++++++++++++++++++++
+ arch/arm/boards/at91sam9x5ek/init.c       |   38 +++++++++++++++++++++++++++++++-
+ arch/arm/configs/at91sam9x5ek_defconfig   |    4 ++++
+ 6 files changed, 349 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/boards/at91sam9x5ek/hw_version.c
+ create mode 100644 arch/arm/boards/at91sam9x5ek/hw_version.h
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
