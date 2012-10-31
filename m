@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TTSs0-00057Q-DZ
- for barebox@lists.infradead.org; Wed, 31 Oct 2012 07:37:49 +0000
-Date: Wed, 31 Oct 2012 08:37:47 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121031073747.GK1641@pengutronix.de>
-References: <1351606931-12815-1-git-send-email-w.sang@pengutronix.de>
+ id 1TTTca-0007Ra-Cb
+ for barebox@lists.infradead.org; Wed, 31 Oct 2012 08:25:57 +0000
+Date: Wed, 31 Oct 2012 09:25:52 +0100
+From: Wolfram Sang <w.sang@pengutronix.de>
+Message-ID: <20121031082552.GA2582@pengutronix.de>
+References: <1351614606-16461-1-git-send-email-s.hauer@pengutronix.de>
+ <1351614606-16461-3-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1351606931-12815-1-git-send-email-w.sang@pengutronix.de>
+In-Reply-To: <1351614606-16461-3-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,83 +18,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============2144420122157662345=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] mxs: mx28evk: add nand device
-To: Wolfram Sang <w.sang@pengutronix.de>
+Subject: Re: [PATCH 2/2] net fec: call fec_init at probe time
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 30, 2012 at 03:22:10PM +0100, Wolfram Sang wrote:
-> While flash layout may be custom, at least the nand0-device is good to
-> have.
-> 
-> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 
-Applied, thanks
+--===============2144420122157662345==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="huq684BweRXVnRxX"
+Content-Disposition: inline
 
-Sascha
 
-> ---
->  arch/arm/boards/freescale-mx28-evk/mx28-evk.c |   20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
-> 
-> diff --git a/arch/arm/boards/freescale-mx28-evk/mx28-evk.c b/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
-> index 7cd61f9..0fbb229 100644
-> --- a/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
-> +++ b/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
-> @@ -109,6 +109,23 @@ static const uint32_t mx28evk_pads[] = {
->  	LCD_RESET_GPIO | VE_3_3V | GPIO_OUT | GPIO_VALUE(0),
->  	/* backlight  */
->  	PWM2_GPIO | VE_3_3V | STRENGTH(S4MA) | SE | VE,
-> +
-> +	/* GPMI-NAND (blocks mmc1 for now) */
-> +	GPMI_D0 | VE_3_3V,
-> +	GPMI_D1 | VE_3_3V,
-> +	GPMI_D2 | VE_3_3V,
-> +	GPMI_D3 | VE_3_3V,
-> +	GPMI_D4 | VE_3_3V,
-> +	GPMI_D5 | VE_3_3V,
-> +	GPMI_D6 | VE_3_3V,
-> +	GPMI_D7 | VE_3_3V,
-> +	GPMI_READY0 | VE_3_3V,	/* external PU */
-> +	GPMI_CE0N | VE_3_3V, 	/* external PU */
-> +	GPMI_RDN | VE_3_3V,
-> +	GPMI_WRN | VE_3_3V,
-> +	GPMI_ALE | VE_3_3V,
-> +	GPMI_CLE | VE_3_3V,
-> +	GPMI_RESETN,		/* act as WP, external PU */
->  };
->  
->  static struct mxs_mci_platform_data mci_pdata = {
-> @@ -239,6 +256,9 @@ static int mx28_evk_devices_init(void)
->  	add_generic_device("fec_imx", 0, NULL, IMX_FEC0_BASE, 0x4000,
->  			   IORESOURCE_MEM, &fec_info);
->  
-> +	add_generic_device("mxs_nand", 0, NULL, MXS_GPMI_BASE, 0x2000,
-> +			   IORESOURCE_MEM, NULL);
-> +
->  	return 0;
->  }
->  device_initcall(mx28_evk_devices_init);
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+--huq684BweRXVnRxX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--- 
-Pengutronix e.K.                           |                             |
+On Tue, Oct 30, 2012 at 05:30:06PM +0100, Sascha Hauer wrote:
+> fec_init() initializes some bits important for phy access, so do
+> this before the mdiobus is registered. This fixes mdiobus support
+> on i.MX28 boards in RMII mode.
+>=20
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+Extremly minor:
+
+Reported-by: Wolfram Sang <w.sang@pengutronix.de>
+
+--=20
+Pengutronix e.K.                           | Wolfram Sang                |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+--huq684BweRXVnRxX
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iEYEARECAAYFAlCQ4JAACgkQD27XaX1/VRvmJwCdHCiExUXM7mgo2mDod8QzWNJJ
+RpUAoMG5+Y+BikQBGGz2WOTt+qCA+Mfc
+=6GTh
+-----END PGP SIGNATURE-----
+
+--huq684BweRXVnRxX--
+
+
+--===============2144420122157662345==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============2144420122157662345==--
