@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo1.mail-out.ovh.net ([46.105.60.232]
- helo=mo1.mail-out.ovh.net)
+Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
+ helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TTbZ5-0001kl-Dy
- for barebox@lists.infradead.org; Wed, 31 Oct 2012 16:54:52 +0000
-Received: from mail615.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id D280FFFAF6E
- for <barebox@lists.infradead.org>; Wed, 31 Oct 2012 18:05:13 +0100 (CET)
-Date: Wed, 31 Oct 2012 17:52:40 +0100
+ id 1TTcxf-0008GV-Lm
+ for barebox@lists.infradead.org; Wed, 31 Oct 2012 18:24:20 +0000
+Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 15FFAFF9887
+ for <barebox@lists.infradead.org>; Wed, 31 Oct 2012 19:34:22 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121031165240.GG29599@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Wed, 31 Oct 2012 19:22:04 +0100
+Message-Id: <1351707724-28704-4-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1351707724-28704-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20121031165240.GG29599@game.jcrosoft.org>
+ <1351707724-28704-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,62 +21,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4] at91sam9x5ek: add 1-wire support and hardware
- detection support
+Subject: [PATCH 4/4] at91sam9x5ek: use w1 serial number to generate local mac
+ address
 To: barebox@lists.infradead.org
-Cc: "ludovic.desroches" <ludovic.desroches@atmel.com>
 
-HI,
+The OUI will be 'tml' => 76:6D:6C
 
-	This patch serie add the 1-wire support to the at91sam9x5ek
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/boards/at91sam9x5ek/init.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-	on sam9x5ek we have on each module and motherboard a 1-wire eeprom
-	that describe the hardware revision and type
+diff --git a/arch/arm/boards/at91sam9x5ek/init.c b/arch/arm/boards/at91sam9x5ek/init.c
+index b3d7ab2..78f7349 100644
+--- a/arch/arm/boards/at91sam9x5ek/init.c
++++ b/arch/arm/boards/at91sam9x5ek/init.c
+@@ -40,6 +40,7 @@
+ #include <gpio_keys.h>
+ #include <readkey.h>
+ #include <linux/w1-gpio.h>
++#include <w1_mac_address.h>
+ 
+ #include "hw_version.h"
+ 
+@@ -105,6 +106,14 @@ static struct at91_ether_platform_data macb_pdata = {
+ 	.phy_addr = 0,
+ };
+ 
++static void ek_add_device_eth(void)
++{
++	if (w1_local_mac_address_register(0, "tml", "w1-2d-0"))
++		w1_local_mac_address_register(0, "tml", "w1-23-0");
++
++	at91_add_device_eth(0, &macb_pdata);
++}
++
+ /*
+  * USB Host port
+  */
+@@ -160,7 +169,7 @@ static int at91sam9x5ek_devices_init(void)
+ {
+ 	ek_add_device_w1();
+ 	ek_add_device_nand();
+-	at91_add_device_eth(0, &macb_pdata);
++	ek_add_device_eth();
+ 	at91_add_device_usbh_ohci(&ek_usbh_data);
+ 	ek_add_led();
+ 
+-- 
+1.7.10.4
 
-	And on the Cogent Cpu Module we have some difference with teh others
-	modules and some bug
-
-	So fix
-
-	Also use the 1-wire to generate a local mac address
-
-	This patch series depends on the pm9g45/pm9263/pm9261 v3
-
-The following changes since commit 7fb0cb2ce2f7800341ab8de711dccbd2c4753c84:
-
-  pm9261: use w1 serial number to generate local mac address (2012-10-30 13:44:54 +0800)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/at91sam9x5ek_w1
-
-for you to fetch changes up to 4e088306b778a5f14c2503be54b061e60e27e6a0:
-
-  at91sam9x5ek: use w1 serial number to generate local mac address (2012-10-31 09:33:38 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (4):
-      at91sam9x5ek: add 1-wire support
-      at91sam9x5ek: add hw detection support
-      at91sam9x5ek: add fixup for cogent cpu module
-      at91sam9x5ek: use w1 serial number to generate local mac address
-
- arch/arm/boards/at91sam9x5ek/Makefile     |    1 +
- arch/arm/boards/at91sam9x5ek/env/config   |    1 +
- arch/arm/boards/at91sam9x5ek/hw_version.c |  272 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/boards/at91sam9x5ek/hw_version.h |   34 ++++++++++++++++++++++++++++
- arch/arm/boards/at91sam9x5ek/init.c       |   38 +++++++++++++++++++++++++++++++-
- arch/arm/configs/at91sam9x5ek_defconfig   |    4 ++++
- 6 files changed, 349 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/boards/at91sam9x5ek/hw_version.c
- create mode 100644 arch/arm/boards/at91sam9x5ek/hw_version.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
