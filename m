@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TTSrK-0004rl-Sx
- for barebox@lists.infradead.org; Wed, 31 Oct 2012 07:37:07 +0000
-Date: Wed, 31 Oct 2012 08:37:05 +0100
+ id 1TTSs0-00057Q-DZ
+ for barebox@lists.infradead.org; Wed, 31 Oct 2012 07:37:49 +0000
+Date: Wed, 31 Oct 2012 08:37:47 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121031073705.GJ1641@pengutronix.de>
-References: <1351606875-31558-1-git-send-email-w.sang@pengutronix.de>
+Message-ID: <20121031073747.GK1641@pengutronix.de>
+References: <1351606931-12815-1-git-send-email-w.sang@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1351606875-31558-1-git-send-email-w.sang@pengutronix.de>
+In-Reply-To: <1351606931-12815-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,13 +22,13 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] arm: mxs: use timeouts in block reset routines
+Subject: Re: [PATCH 1/2] mxs: mx28evk: add nand device
 To: Wolfram Sang <w.sang@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 30, 2012 at 03:21:13PM +0100, Wolfram Sang wrote:
-> These routines can fail, add support for that. Also, put in missing
-> copyright headers.
+On Tue, Oct 30, 2012 at 03:22:10PM +0100, Wolfram Sang wrote:
+> While flash layout may be custom, at least the nand0-device is good to
+> have.
 > 
 > Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 
@@ -37,82 +37,47 @@ Applied, thanks
 Sascha
 
 > ---
->  arch/arm/mach-mxs/common.c |   39 +++++++++++++++++++++++++++++++++++----
->  1 file changed, 35 insertions(+), 4 deletions(-)
+>  arch/arm/boards/freescale-mx28-evk/mx28-evk.c |   20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
 > 
-> diff --git a/arch/arm/mach-mxs/common.c b/arch/arm/mach-mxs/common.c
-> index 3730633..122d883 100644
-> --- a/arch/arm/mach-mxs/common.c
-> +++ b/arch/arm/mach-mxs/common.c
-> @@ -1,8 +1,26 @@
-> +/*
-> + * Freescale i.MXS common code
-> + *
-> + * Copyright (C) 2012 Wolfram Sang <w.sang@pengutronix.de>
-> + *
-> + * Based on code from LTIB:
-> + * Copyright (C) 2010 Freescale Semiconductor, Inc.
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + */
+> diff --git a/arch/arm/boards/freescale-mx28-evk/mx28-evk.c b/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
+> index 7cd61f9..0fbb229 100644
+> --- a/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
+> +++ b/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
+> @@ -109,6 +109,23 @@ static const uint32_t mx28evk_pads[] = {
+>  	LCD_RESET_GPIO | VE_3_3V | GPIO_OUT | GPIO_VALUE(0),
+>  	/* backlight  */
+>  	PWM2_GPIO | VE_3_3V | STRENGTH(S4MA) | SE | VE,
 > +
->  #include <common.h>
->  #include <io.h>
-> +#include <errno.h>
-> +#include <clock.h>
->  #include <mach/mxs.h>
->  #include <mach/imx-regs.h>
+> +	/* GPMI-NAND (blocks mmc1 for now) */
+> +	GPMI_D0 | VE_3_3V,
+> +	GPMI_D1 | VE_3_3V,
+> +	GPMI_D2 | VE_3_3V,
+> +	GPMI_D3 | VE_3_3V,
+> +	GPMI_D4 | VE_3_3V,
+> +	GPMI_D5 | VE_3_3V,
+> +	GPMI_D6 | VE_3_3V,
+> +	GPMI_D7 | VE_3_3V,
+> +	GPMI_READY0 | VE_3_3V,	/* external PU */
+> +	GPMI_CE0N | VE_3_3V, 	/* external PU */
+> +	GPMI_RDN | VE_3_3V,
+> +	GPMI_WRN | VE_3_3V,
+> +	GPMI_ALE | VE_3_3V,
+> +	GPMI_CLE | VE_3_3V,
+> +	GPMI_RESETN,		/* act as WP, external PU */
+>  };
 >  
-> +#define	MXS_IP_RESET_TIMEOUT	(10 * MSECOND)
+>  static struct mxs_mci_platform_data mci_pdata = {
+> @@ -239,6 +256,9 @@ static int mx28_evk_devices_init(void)
+>  	add_generic_device("fec_imx", 0, NULL, IMX_FEC0_BASE, 0x4000,
+>  			   IORESOURCE_MEM, &fec_info);
+>  
+> +	add_generic_device("mxs_nand", 0, NULL, MXS_GPMI_BASE, 0x2000,
+> +			   IORESOURCE_MEM, NULL);
 > +
->  #define	MXS_BLOCK_SFTRST				(1 << 31)
->  #define	MXS_BLOCK_CLKGATE				(1 << 30)
->  
-> @@ -10,7 +28,9 @@ int mxs_reset_block(void __iomem *reg, int just_enable)
->  {
->  	/* Clear SFTRST */
->  	writel(MXS_BLOCK_SFTRST, reg + BIT_CLR);
-> -	mdelay(1);
-> +
-> +	if (wait_on_timeout(MXS_IP_RESET_TIMEOUT, !(readl(reg) & MXS_BLOCK_SFTRST)))
-> +		goto timeout;
->  
->  	/* Clear CLKGATE */
->  	writel(MXS_BLOCK_CLKGATE, reg + BIT_CLR);
-> @@ -18,16 +38,27 @@ int mxs_reset_block(void __iomem *reg, int just_enable)
->  	if (!just_enable) {
->  		/* Set SFTRST */
->  		writel(MXS_BLOCK_SFTRST, reg + BIT_SET);
-> -		mdelay(1);
-> +
-> +		/* Wait for CLKGATE being set */
-> +		if (wait_on_timeout(MXS_IP_RESET_TIMEOUT, readl(reg) & MXS_BLOCK_CLKGATE))
-> +			goto timeout;
->  	}
->  
->  	/* Clear SFTRST */
->  	writel(MXS_BLOCK_SFTRST, reg + BIT_CLR);
-> -	mdelay(1);
-> +
-> +	if (wait_on_timeout(MXS_IP_RESET_TIMEOUT, !(readl(reg) & MXS_BLOCK_SFTRST)))
-> +		goto timeout;
->  
->  	/* Clear CLKGATE */
->  	writel(MXS_BLOCK_CLKGATE, reg + BIT_CLR);
-> -	mdelay(1);
-> +
-> +	if (wait_on_timeout(MXS_IP_RESET_TIMEOUT, !(readl(reg) & MXS_BLOCK_CLKGATE)))
-> +		goto timeout;
->  
 >  	return 0;
-> +
-> +timeout:
-> +	printf("MXS: Timeout resetting block via register 0x%p\n", reg);
-> +	return -ETIMEDOUT;
 >  }
+>  device_initcall(mx28_evk_devices_init);
 > -- 
 > 1.7.10.4
 > 
