@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo4.mail-out.ovh.net ([178.33.253.54]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TTIxK-0008V1-1P
- for barebox@lists.infradead.org; Tue, 30 Oct 2012 21:02:39 +0000
-Received: from mail643.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 1C4F1104E814
- for <barebox@lists.infradead.org>; Tue, 30 Oct 2012 22:09:40 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 30 Oct 2012 22:00:21 +0100
-Message-Id: <1351630822-20803-7-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1351630822-20803-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20121030205459.GE29599@game.jcrosoft.org>
- <1351630822-20803-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TTSrK-0004rl-Sx
+ for barebox@lists.infradead.org; Wed, 31 Oct 2012 07:37:07 +0000
+Date: Wed, 31 Oct 2012 08:37:05 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121031073705.GJ1641@pengutronix.de>
+References: <1351606875-31558-1-git-send-email-w.sang@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1351606875-31558-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,57 +18,116 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] pm9261: add 1-wire support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/3] arm: mxs: use timeouts in block reset routines
+To: Wolfram Sang <w.sang@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/boards/pm9261/init.c     |    8 ++++++++
- arch/arm/configs/pm9261_defconfig |    2 ++
- 2 files changed, 10 insertions(+)
+On Tue, Oct 30, 2012 at 03:21:13PM +0100, Wolfram Sang wrote:
+> These routines can fail, add support for that. Also, put in missing
+> copyright headers.
+> 
+> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 
-diff --git a/arch/arm/boards/pm9261/init.c b/arch/arm/boards/pm9261/init.c
-index 5214394..2c3615f 100644
---- a/arch/arm/boards/pm9261/init.c
-+++ b/arch/arm/boards/pm9261/init.c
-@@ -1,4 +1,6 @@
- /*
-+ * Copyright (C) 2009-2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-  * Copyright (C) 2007 Sascha Hauer, Pengutronix
-  *
-  * This program is free software; you can redistribute it and/or
-@@ -34,6 +36,12 @@
- #include <mach/at91sam9_smc.h>
- #include <mach/sam9_smc.h>
- #include <dm9000.h>
-+#include <linux/w1-gpio.h>
-+
-+struct w1_gpio_platform_data w1_pdata = {
-+	.pin = AT91_PIN_PA7,
-+	.is_open_drain = 0,
-+};
- 
- static struct atmel_nand_data nand_pdata = {
- 	.ale		= 22,
-diff --git a/arch/arm/configs/pm9261_defconfig b/arch/arm/configs/pm9261_defconfig
-index 1db16d5..0aea2c9 100644
---- a/arch/arm/configs/pm9261_defconfig
-+++ b/arch/arm/configs/pm9261_defconfig
-@@ -50,3 +50,5 @@ CONFIG_MTD=y
- CONFIG_NAND=y
- CONFIG_NAND_ATMEL=y
- CONFIG_UBI=y
-+CONFIG_W1=y
-+CONFIG_W1_MASTER_GPIO=y
+Applied, thanks
+
+Sascha
+
+> ---
+>  arch/arm/mach-mxs/common.c |   39 +++++++++++++++++++++++++++++++++++----
+>  1 file changed, 35 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/arm/mach-mxs/common.c b/arch/arm/mach-mxs/common.c
+> index 3730633..122d883 100644
+> --- a/arch/arm/mach-mxs/common.c
+> +++ b/arch/arm/mach-mxs/common.c
+> @@ -1,8 +1,26 @@
+> +/*
+> + * Freescale i.MXS common code
+> + *
+> + * Copyright (C) 2012 Wolfram Sang <w.sang@pengutronix.de>
+> + *
+> + * Based on code from LTIB:
+> + * Copyright (C) 2010 Freescale Semiconductor, Inc.
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + */
+> +
+>  #include <common.h>
+>  #include <io.h>
+> +#include <errno.h>
+> +#include <clock.h>
+>  #include <mach/mxs.h>
+>  #include <mach/imx-regs.h>
+>  
+> +#define	MXS_IP_RESET_TIMEOUT	(10 * MSECOND)
+> +
+>  #define	MXS_BLOCK_SFTRST				(1 << 31)
+>  #define	MXS_BLOCK_CLKGATE				(1 << 30)
+>  
+> @@ -10,7 +28,9 @@ int mxs_reset_block(void __iomem *reg, int just_enable)
+>  {
+>  	/* Clear SFTRST */
+>  	writel(MXS_BLOCK_SFTRST, reg + BIT_CLR);
+> -	mdelay(1);
+> +
+> +	if (wait_on_timeout(MXS_IP_RESET_TIMEOUT, !(readl(reg) & MXS_BLOCK_SFTRST)))
+> +		goto timeout;
+>  
+>  	/* Clear CLKGATE */
+>  	writel(MXS_BLOCK_CLKGATE, reg + BIT_CLR);
+> @@ -18,16 +38,27 @@ int mxs_reset_block(void __iomem *reg, int just_enable)
+>  	if (!just_enable) {
+>  		/* Set SFTRST */
+>  		writel(MXS_BLOCK_SFTRST, reg + BIT_SET);
+> -		mdelay(1);
+> +
+> +		/* Wait for CLKGATE being set */
+> +		if (wait_on_timeout(MXS_IP_RESET_TIMEOUT, readl(reg) & MXS_BLOCK_CLKGATE))
+> +			goto timeout;
+>  	}
+>  
+>  	/* Clear SFTRST */
+>  	writel(MXS_BLOCK_SFTRST, reg + BIT_CLR);
+> -	mdelay(1);
+> +
+> +	if (wait_on_timeout(MXS_IP_RESET_TIMEOUT, !(readl(reg) & MXS_BLOCK_SFTRST)))
+> +		goto timeout;
+>  
+>  	/* Clear CLKGATE */
+>  	writel(MXS_BLOCK_CLKGATE, reg + BIT_CLR);
+> -	mdelay(1);
+> +
+> +	if (wait_on_timeout(MXS_IP_RESET_TIMEOUT, !(readl(reg) & MXS_BLOCK_CLKGATE)))
+> +		goto timeout;
+>  
+>  	return 0;
+> +
+> +timeout:
+> +	printf("MXS: Timeout resetting block via register 0x%p\n", reg);
+> +	return -ETIMEDOUT;
+>  }
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
