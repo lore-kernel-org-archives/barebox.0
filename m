@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TTwiQ-0000wi-J3
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 15:29:55 +0000
-Date: Thu, 1 Nov 2012 16:29:52 +0100
+ id 1TTwin-0000zI-Vo
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 15:30:18 +0000
+Date: Thu, 1 Nov 2012 16:30:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121101152952.GV1641@pengutronix.de>
-References: <20121030205459.GE29599@game.jcrosoft.org>
+Message-ID: <20121101153015.GW1641@pengutronix.de>
+References: <20121031165240.GG29599@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121030205459.GE29599@game.jcrosoft.org>
+In-Reply-To: <20121031165240.GG29599@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/8 v3] pm9g45/pm9253/pm9261: add 1-wire support
+Subject: Re: [PATCH 0/4] at91sam9x5ek: add 1-wire support and hardware
+ detection support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Cc: barebox@lists.infradead.org, "ludovic.desroches" <ludovic.desroches@atmel.com>
 
-On Tue, Oct 30, 2012 at 09:54:59PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,
+On Wed, Oct 31, 2012 at 05:52:40PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> HI,
 > 
-> 	v3: comment
+> 	This patch serie add the 1-wire support to the at91sam9x5ek
 > 
-> 	v2: fixup and add comment
+> 	on sam9x5ek we have on each module and motherboard a 1-wire eeprom
+> 	that describe the hardware revision and type
 > 
-> 	add 1-wire support for:
-> 	 - pm9g45
-> 	 - pm9263
-> 	 - pm9261
+> 	And on the Cogent Cpu Module we have some difference with teh others
+> 	modules and some bug
 > 
-> 	use the 1-wire uniq id to generate a local mac address
-> 	The OUI will be 'ron' => 72:6F:6E
+> 	So fix
 > 
-> 	The patch series go on the top of the 1-wire support v2
+> 	Also use the 1-wire to generate a local mac address
 > 
-> The following changes since commit acaa716bce8cd1373cb5dabff54332fb1da7355b:
+> 	This patch series depends on the pm9g45/pm9263/pm9261 v3
 > 
->   1-wire: add ds2433 support (2012-10-29 04:46:21 +0800)
+> The following changes since commit 7fb0cb2ce2f7800341ab8de711dccbd2c4753c84:
+> 
+>   pm9261: use w1 serial number to generate local mac address (2012-10-30 13:44:54 +0800)
 > 
 > are available in the git repository at:
 > 
->   git://git.jcrosoft.org/barebox.git delivery/ronetix_w1
+>   git://git.jcrosoft.org/barebox.git delivery/at91sam9x5ek_w1
 > 
-> for you to fetch changes up to 7fb0cb2ce2f7800341ab8de711dccbd2c4753c84:
+> for you to fetch changes up to 4e088306b778a5f14c2503be54b061e60e27e6a0:
 > 
->   pm9261: use w1 serial number to generate local mac address (2012-10-30 13:44:54 +0800)
+>   at91sam9x5ek: use w1 serial number to generate local mac address (2012-10-31 09:33:38 +0800)
 
-Applied, thanks.
+Also applied
 
 Sascha
 
