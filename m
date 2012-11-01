@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TTtHF-0001Z5-CQ
+ id 1TTtHF-0001Z3-CP
  for barebox@lists.infradead.org; Thu, 01 Nov 2012 11:49:38 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1TTtHC-0001pm-Bw
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 12:49:34 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1TTtHC-0004hE-Av
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 12:49:34 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  1 Nov 2012 12:49:33 +0100
-Message-Id: <1351770573-30009-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1351770573-30009-1-git-send-email-s.hauer@pengutronix.de>
-References: <1351770573-30009-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  1 Nov 2012 12:49:31 +0100
+Message-Id: <1351770573-30009-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,49 +26,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] bootm: Do not cross 1MiB sections for the devicetree
+Subject: [PATCH] fix devicetree alignment
 To: barebox@lists.infradead.org
 
-ARM Linux only maps a single 1MiB section for the devicetree. This has
-a 1Mib alignment, so we are not allowed to cross such a boundary. Align
-the devicetree to the next power of two so that this never happens.
+The following fixes a nasty problem with passing devicetrees to
+the (ARM-) Kernel. In short, we are not allowed to cross 1MiB
+boundaries with the devicetree. This can happen sometimes since
+we allocate space for the devicetree using memalign(). I think
+this is rather a kernel bug since this restriction is not documented
+anywhere. Anyway, working around it in barebox is easy enough.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/bootm.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+Sascha
 
-diff --git a/commands/bootm.c b/commands/bootm.c
-index d14ec2b..98d2e4f 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -141,6 +141,7 @@ static int bootm_open_oftree(struct image_data *data, const char *oftree, int nu
- 	struct fdt_header *fdt, *fixfdt;
- 	int ret;
- 	size_t size;
-+	unsigned int align;
- 
- 	if (bootm_verbose(data))
- 		printf("Loading oftree from '%s'\n", oftree);
-@@ -189,7 +190,14 @@ static int bootm_open_oftree(struct image_data *data, const char *oftree, int nu
- 				file_type_to_string(ft));
- 	}
- 
--	fixfdt = xmemalign(4096, size + OFTREE_SIZE_INCREASE);
-+	/*
-+	 * ARM Linux uses a single 1MiB section (with 1MiB alignment)
-+	 * for mapping the devicetree, so we are not allowed to cross
-+	 * 1MiB boundaries.
-+	 */
-+	align = 1 << fls(size + OFTREE_SIZE_INCREASE - 1);
-+
-+	fixfdt = xmemalign(align, size + OFTREE_SIZE_INCREASE);
- 	memcpy(fixfdt, fdt, size);
- 
- 
--- 
-1.7.10.4
+----------------------------------------------------------------
+Sascha Hauer (2):
+      bootm: Add a define for the additional devicetree size
+      bootm: Do not cross 1MiB sections for the devicetree
 
+ commands/bootm.c |   19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
 _______________________________________________
 barebox mailing list
