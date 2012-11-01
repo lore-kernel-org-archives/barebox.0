@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-f177.google.com ([209.85.223.177])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TU0Ik-0000Q6-7T
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 19:19:38 +0000
-Received: by mail-ie0-f177.google.com with SMTP id e14so4032939iej.36
- for <barebox@lists.infradead.org>; Thu, 01 Nov 2012 12:19:36 -0700 (PDT)
+ id 1TU0KD-0000ZC-EW
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 19:21:10 +0000
+Date: Thu, 1 Nov 2012 20:21:07 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121101192107.GZ24458@pengutronix.de>
+References: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
+ <1350507817-7819-7-git-send-email-s.hauer@pengutronix.de>
+ <1350508337.128691867@f327.mail.ru>
 MIME-Version: 1.0
-In-Reply-To: <1351791438-29967-1-git-send-email-robert.jarzmik@free.fr>
-References: <1351791438-29967-1-git-send-email-robert.jarzmik@free.fr>
-Date: Thu, 1 Nov 2012 23:19:36 +0400
-Message-ID: <CAA4bVAFj-_LAKnedX-epOv_9EatCvYGCRLe3SS=g8QqDTw+q_g@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1350508337.128691867@f327.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,79 +20,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] Y-Modem implementation change
-To: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH 06/28] ARM i.MX boards: switch to barebox_arm_entry
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On 1 November 2012 21:37, Robert Jarzmik <robert.jarzmik@free.fr> wrote:
-> Hi everyone,
->
-> This patchset aims at changing the Y-Modem protocol implementation.
-> You have already seen the RFC version, this is the next version, which :
->  - provides a much more tested version
->  - is ready for review
->
-> The following comments have been taken into account :
->  - Antony: testing on a serial line
->  - Sascha: split between protocol and commands
->  - Jean-Christophe: kermit protocol change
->
-> So before doing the real review, could I ask of you :
->  - Antony: could you redo your test over a serial line by applying only
->            the first patch so that you can compare loady and loady2 ?
->            Don't use "loady2 -g", as Y-Modem/G protocol requires a
->            lossless line (USB), and a serial line cannot guarantee it.
-
-I have redone the test.
-
-Sorry, but the new 'loady2' does not work. I tested it over 9600 and
-over 115200 serial line.
-
->  - Sascha: does the split command/protocol suit you ?
->  - Jean-Christophe: I left the loadb implementation as it is. The goal
->                     of the patch is to change X-Modem and Y-Modem(G)
->                     implementation, not kermit. Could you test that I
->                     have not created a regression of loadb ?
->
-> Cheers.
->
-> --
-> Robert
->
-> Robert Jarzmik (2):
->   commands: change Y-Modem implementation
->   commands: remove old Y-Modem implementation
->
->  commands/Makefile   |    4 +-
->  commands/loadb.c    |  102 +------
->  commands/loads.c    |    1 -
->  commands/loadxy.c   |  238 ++++++++++++++++
->  commands/xymodem.c  |  552 ++++++++++++++++++++++++++++++++++++
->  commands/xyzModem.c |  785 ---------------------------------------------------
->  include/xymodem.h   |   25 ++
->  include/xyzModem.h  |  109 -------
->  8 files changed, 826 insertions(+), 990 deletions(-)
->  create mode 100644 commands/loadxy.c
->  create mode 100644 commands/xymodem.c
->  delete mode 100644 commands/xyzModem.c
->  create mode 100644 include/xymodem.h
->  delete mode 100644 include/xyzModem.h
->
-> --
-> 1.7.10
->
-
-
-
--- 
-Best regards,
-  Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgQWxleGFuZGVyLAoKT24gVGh1LCBPY3QgMTgsIDIwMTIgYXQgMDE6MTI6MTdBTSArMDQwMCwg
+QWxleGFuZGVyIFNoaXlhbiB3cm90ZToKPiBXZWQsIDE3IE9jdCAyMDEyIDIzOjAzOjE1ICswMjAw
+INC+0YIgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiA+TW9zdCBpLk1Y
+IGJvYXJkcyBjYW4gdXNlIHRoZSBpbXgqX2JhcmVib3hfZW50cnkgZnVuY3Rpb25zLiBUaGUgcmVt
+YWluaW5nCj4gKGkuTVgyMSwgaS5NWDYpIHVzZSBoYXJkY29kZWQgYmFzZSBhZGRyZXNzZXMuCj4g
+U2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgo+ID4K
+PiBTYXNjaGEsIHN0b3AuIFRvbyBtYW55IHBhdGNoZXMgd2hpbGUgeW91IG5lZWQgdG8gcHJlcGFy
+ZSBzdGFibGUgdmVyc2lvbiBmb3IgY29uZmVyZW5jZS4KPiBSZWFsbHksIHN0b3AgYW5kIHRyeSB0
+byBtYWtlIG9uZSBtb3JlIHN0YWJsZSB2ZXJzaW9uIGZvciB5b3VyIHByZXNlbnRhdGlvbi4KPiA7
+KSBTb3JyeSwgYnV0IEkgdGhpbmsgYWJvdXQgYWxsIDopCgpBbHRob3VnaCB1bnRpbCBub3cgSSBo
+YXZlbid0IGFuc3dlcmVkIHRoaXMgbWFpbCBJIGZvciBzdXJlIGhhdmUgcmVhZCBpdCwKYW5kIHll
+cywgeW91IGFyZSByaWdodC4gVGhhdCdzIHdoeSBJIGhhdmUgY29uY2VudHJhdGVkIG9uIGdldHRp
+bmcgc29tZQpmaXhlcyBvdXQgcmF0aGVyIHRoYW4gYWRkaW5nIG1vcmUgZmVhdHVyZXMuIFRoYW5r
+cyBmb3IgcG9pbnRpbmcgdGhhdCBvdXQKOykKClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4g
+ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
+CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cu
+cGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2Vy
+bWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
+aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
