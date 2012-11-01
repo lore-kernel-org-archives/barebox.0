@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 7.mo4.mail-out.ovh.net ([178.33.253.54]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TTwOp-0007oX-F5
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 15:09:44 +0000
+ id 1TTwOs-0007q8-EW
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 15:09:45 +0000
 Received: from mail403.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id EC7E8104F6D0
- for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 16:16:46 +0100 (CET)
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 34A1C104F788
+ for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 16:16:47 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  1 Nov 2012 16:07:23 +0100
-Message-Id: <1351782447-32199-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu,  1 Nov 2012 16:07:27 +0100
+Message-Id: <1351782447-32199-7-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1351782447-32199-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121101143352.GJ29599@game.jcrosoft.org>
  <1351782447-32199-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,66 +26,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/7] at91sam9260/sam9g20: add i2c support
+Subject: [PATCH 7/7] at91sam9x5ek: add i2c support
 To: barebox@lists.infradead.org
 
-use i2c-gpio as the hw ip is broken
+enable qt1070 support
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/at91sam9260_devices.c |   32 ++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ arch/arm/boards/at91sam9x5ek/init.c     |   12 ++++++++++++
+ arch/arm/configs/at91sam9x5ek_defconfig |    5 ++++-
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
-index 9c9534e..7450ec1 100644
---- a/arch/arm/mach-at91/at91sam9260_devices.c
-+++ b/arch/arm/mach-at91/at91sam9260_devices.c
-@@ -20,6 +20,7 @@
- #include <mach/gpio.h>
- #include <mach/io.h>
- #include <mach/cpu.h>
-+#include <i2c/i2c-gpio.h>
+diff --git a/arch/arm/boards/at91sam9x5ek/init.c b/arch/arm/boards/at91sam9x5ek/init.c
+index 78f7349..48eebac 100644
+--- a/arch/arm/boards/at91sam9x5ek/init.c
++++ b/arch/arm/boards/at91sam9x5ek/init.c
+@@ -114,6 +114,17 @@ static void ek_add_device_eth(void)
+ 	at91_add_device_eth(0, &macb_pdata);
+ }
  
- #include "generic.h"
- 
-@@ -155,6 +156,37 @@ void at91_add_device_nand(struct atmel_nand_data *data) {}
- #endif
- 
- /* --------------------------------------------------------------------
-+ *  TWI (i2c)
-+ * -------------------------------------------------------------------- */
-+
-+#if defined(CONFIG_I2C_GPIO)
-+static struct i2c_gpio_platform_data pdata_i2c = {
-+	.sda_pin		= AT91_PIN_PA23,
-+	.sda_is_open_drain	= 1,
-+	.scl_pin		= AT91_PIN_PA24,
-+	.scl_is_open_drain	= 1,
-+	.udelay			= 5,		/* ~100 kHz */
++static struct i2c_board_info i2c_devices[] = {
++	{
++		I2C_BOARD_INFO("qt1070", 0x1b),
++	},
 +};
 +
-+void at91_add_device_i2c(short i2c_id, struct i2c_board_info *devices, int nr_devices)
++static void ek_add_device_i2c(void)
 +{
-+	struct i2c_gpio_platform_data *pdata = &pdata_i2c;
-+
-+	i2c_register_board_info(0, devices, nr_devices);
-+
-+	at91_set_GPIO_periph(pdata->sda_pin, 1);		/* TWD (SDA) */
-+	at91_set_multi_drive(pdata->sda_pin, 1);
-+
-+	at91_set_GPIO_periph(pdata->scl_pin, 1);		/* TWCK (SCL) */
-+	at91_set_multi_drive(pdata->scl_pin, 1);
-+
-+	add_generic_device_res("i2c-gpio", 0, NULL, 0, pdata);
++	at91_add_device_i2c(0, i2c_devices, ARRAY_SIZE(i2c_devices));
 +}
-+#else
-+void at91_add_device_i2c(short i2c_id, struct i2c_board_info *devices, int nr_devices) {}
-+#endif
 +
-+/* --------------------------------------------------------------------
-  *  SPI
-  * -------------------------------------------------------------------- */
+ /*
+  * USB Host port
+  */
+@@ -172,6 +183,7 @@ static int at91sam9x5ek_devices_init(void)
+ 	ek_add_device_eth();
+ 	at91_add_device_usbh_ohci(&ek_usbh_data);
+ 	ek_add_led();
++	ek_add_device_i2c();
  
+ 	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_1 + 0x100));
+ 	armlinux_set_architecture(CONFIG_MACH_AT91SAM9X5EK);
+diff --git a/arch/arm/configs/at91sam9x5ek_defconfig b/arch/arm/configs/at91sam9x5ek_defconfig
+index 6315d9f..3e66c44 100644
+--- a/arch/arm/configs/at91sam9x5ek_defconfig
++++ b/arch/arm/configs/at91sam9x5ek_defconfig
+@@ -41,6 +41,7 @@ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
+ CONFIG_CMD_LED=y
+ CONFIG_CMD_LED_TRIGGER=y
+ CONFIG_NET=y
+@@ -52,6 +53,8 @@ CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_MACB=y
+ # CONFIG_SPI is not set
++CONFIG_I2C=y
++CONFIG_I2C_GPIO=y
+ CONFIG_MTD=y
+ CONFIG_NAND=y
+ # CONFIG_NAND_ECC_HW is not set
+@@ -64,7 +67,7 @@ CONFIG_DISK_WRITE=y
+ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
+ CONFIG_LED_TRIGGERS=y
+-CONFIG_KEYBOARD_GPIO=y
++CONFIG_KEYBOARD_QT1070=y
+ CONFIG_W1=y
+ CONFIG_W1_MASTER_GPIO=y
+ CONFIG_W1_SLAVE_DS2431=y
 -- 
 1.7.10.4
 
