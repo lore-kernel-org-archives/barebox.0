@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 10.mo5.mail-out.ovh.net ([46.105.52.148]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TU2AP-00028f-LC
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 21:19:11 +0000
+ id 1TU2AP-00028g-L8
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 21:19:10 +0000
 Received: from mail624.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id BF25DFFAAC6
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id CB3C6FFAAC7
  for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 22:26:20 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  1 Nov 2012 22:16:55 +0100
-Message-Id: <1351804616-31047-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu,  1 Nov 2012 22:16:56 +0100
+Message-Id: <1351804616-31047-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1351804616-31047-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121101195008.GM29599@game.jcrosoft.org>
  <1351804616-31047-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,101 +26,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] at91sam9x5: add mci support
+Subject: [PATCH 4/4] at91sam9x5ek: add mci support
 To: barebox@lists.infradead.org
+
+only add mci0 (microSD slot) as mci1 conflict with spi0
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/at91sam9x5.c         |    2 +
- arch/arm/mach-at91/at91sam9x5_devices.c |   62 +++++++++++++++++++++++++++++++
- 2 files changed, 64 insertions(+)
+ arch/arm/boards/at91sam9x5ek/init.c     |   20 ++++++++++++++++++++
+ arch/arm/configs/at91sam9x5ek_defconfig |    5 +++--
+ 2 files changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-at91/at91sam9x5.c b/arch/arm/mach-at91/at91sam9x5.c
-index a9065ff..7c7d997 100644
---- a/arch/arm/mach-at91/at91sam9x5.c
-+++ b/arch/arm/mach-at91/at91sam9x5.c
-@@ -207,6 +207,8 @@ static struct clk_lookup periph_clocks_lookups[] = {
- 	CLKDEV_CON_ID("ohci_clk", &uhphs_clk),
- 	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
- 	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
-+	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci0", &mmc0_clk),
-+	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci1", &mmc1_clk),
- };
+diff --git a/arch/arm/boards/at91sam9x5ek/init.c b/arch/arm/boards/at91sam9x5ek/init.c
+index afb50e8..da488bd 100644
+--- a/arch/arm/boards/at91sam9x5ek/init.c
++++ b/arch/arm/boards/at91sam9x5ek/init.c
+@@ -115,6 +115,25 @@ static void ek_add_device_eth(void)
+ 	at91_add_device_eth(0, &macb_pdata);
+ }
  
- static struct clk_lookup usart_clocks_lookups[] = {
-diff --git a/arch/arm/mach-at91/at91sam9x5_devices.c b/arch/arm/mach-at91/at91sam9x5_devices.c
-index 710ded7..14fcb1e 100644
---- a/arch/arm/mach-at91/at91sam9x5_devices.c
-+++ b/arch/arm/mach-at91/at91sam9x5_devices.c
-@@ -123,6 +123,68 @@ void at91_add_device_eth(int id, struct at91_ether_platform_data *data)
- void at91_add_device_eth(int id, struct at91_ether_platform_data *data) {}
- #endif
- 
-+#if defined(CONFIG_MCI_ATMEL)
-+/* Consider only one slot : slot 0 */
-+void __init at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
++/*
++ * MCI (SD/MMC)
++ */
++/* mci0 detect_pin is revision dependent */
++static struct atmel_mci_platform_data mci0_data = {
++	.bus_width	= 4,
++	.detect_pin	= AT91_PIN_PD15,
++	.wp_pin		= 0,
++};
++
++static void ek_add_device_mci(void)
 +{
-+	resource_size_t start = ~0;
++	if (at91sam9x5ek_cm_is_vendor(VENDOR_COGENT))
++		mci0_data.detect_pin = 0;
 +
-+	if (!data)
-+		return;
-+
-+	/* Must have at least one usable slot */
-+	if (!data->bus_width)
-+		return;
-+
-+	/* input/irq */
-+	if (data->detect_pin) {
-+		at91_set_gpio_input(data->detect_pin, 1);
-+		at91_set_deglitch(data->detect_pin, 1);
-+	}
-+	if (data->wp_pin)
-+		at91_set_gpio_input(data->wp_pin, 1);
-+
-+	if (mmc_id == 0) {		/* MCI0 */
-+		start = AT91SAM9X5_BASE_MCI0;
-+
-+		/* CLK */
-+		at91_set_A_periph(AT91_PIN_PA17, 0);
-+
-+		/* CMD */
-+		at91_set_A_periph(AT91_PIN_PA16, 1);
-+
-+		/* DAT0, maybe DAT1..DAT3 */
-+		at91_set_A_periph(AT91_PIN_PA15, 1);
-+		if (data->bus_width == 4) {
-+			at91_set_A_periph(AT91_PIN_PA18, 1);
-+			at91_set_A_periph(AT91_PIN_PA19, 1);
-+			at91_set_A_periph(AT91_PIN_PA20, 1);
-+		}
-+	} else {			/* MCI1 */
-+		start = AT91SAM9X5_BASE_MCI1;
-+
-+		/* CLK */
-+		at91_set_B_periph(AT91_PIN_PA13, 0);
-+
-+		/* CMD */
-+		at91_set_B_periph(AT91_PIN_PA12, 1);
-+
-+		/* DAT0, maybe DAT1..DAT3 */
-+		at91_set_B_periph(AT91_PIN_PA11, 1);
-+		if (data->bus_width == 4) {
-+			at91_set_B_periph(AT91_PIN_PA2, 1);
-+			at91_set_B_periph(AT91_PIN_PA3, 1);
-+			at91_set_B_periph(AT91_PIN_PA4, 1);
-+		}
-+	}
-+
-+	add_generic_device("atmel_mci", mmc_id, NULL, start, SZ_16K,
-+			   IORESOURCE_MEM, data);
++	/* MMC0 */
++	at91_add_device_mci(0, &mci0_data);
 +}
-+#else
-+void __init at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data) {}
-+#endif
 +
- /* --------------------------------------------------------------------
-  *  NAND / SmartMedia
-  * -------------------------------------------------------------------- */
+ static struct i2c_board_info i2c_devices[] = {
+ 	{
+ 		I2C_BOARD_INFO("qt1070", 0x1b),
+@@ -218,6 +237,7 @@ static int at91sam9x5ek_devices_init(void)
+ 	ek_add_device_nand();
+ 	ek_add_device_eth();
+ 	ek_add_device_spi();
++	ek_add_device_mci();
+ 	at91_add_device_usbh_ohci(&ek_usbh_data);
+ 	ek_add_led();
+ 	ek_add_device_i2c();
+diff --git a/arch/arm/configs/at91sam9x5ek_defconfig b/arch/arm/configs/at91sam9x5ek_defconfig
+index 5611b95..d097683 100644
+--- a/arch/arm/configs/at91sam9x5ek_defconfig
++++ b/arch/arm/configs/at91sam9x5ek_defconfig
+@@ -65,8 +65,9 @@ CONFIG_NAND=y
+ # CONFIG_NAND_ECC_HW_NONE is not set
+ CONFIG_NAND_ATMEL=y
+ CONFIG_UBI=y
+-CONFIG_DISK=y
+-CONFIG_DISK_WRITE=y
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++CONFIG_MCI_ATMEL=y
+ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
+ CONFIG_LED_TRIGGERS=y
 -- 
 1.7.10.4
 
