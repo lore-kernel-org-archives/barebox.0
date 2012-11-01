@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TTwhg-0000uV-0c
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 15:29:09 +0000
-Date: Thu, 1 Nov 2012 16:29:05 +0100
+ id 1TTwiQ-0000wi-J3
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 15:29:55 +0000
+Date: Thu, 1 Nov 2012 16:29:52 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121101152905.GU1641@pengutronix.de>
-References: <1351698431-15255-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20121101152952.GV1641@pengutronix.de>
+References: <20121030205459.GE29599@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1351698431-15255-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20121030205459.GE29599@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,54 +22,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] at91sam9xek: fix mtd partition
+Subject: Re: [PATCH 0/8 v3] pm9g45/pm9253/pm9261: add 1-wire support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Oct 31, 2012 at 04:47:11PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> barebox size is 384KiB
-> and for the official atmel release we need to rootfs at 8M
+On Tue, Oct 30, 2012 at 09:54:59PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> 	v3: comment
+> 
+> 	v2: fixup and add comment
+> 
+> 	add 1-wire support for:
+> 	 - pm9g45
+> 	 - pm9263
+> 	 - pm9261
+> 
+> 	use the 1-wire uniq id to generate a local mac address
+> 	The OUI will be 'ron' => 72:6F:6E
+> 
+> 	The patch series go on the top of the 1-wire support v2
+> 
+> The following changes since commit acaa716bce8cd1373cb5dabff54332fb1da7355b:
+> 
+>   1-wire: add ds2433 support (2012-10-29 04:46:21 +0800)
+> 
+> are available in the git repository at:
+> 
+>   git://git.jcrosoft.org/barebox.git delivery/ronetix_w1
+> 
+> for you to fetch changes up to 7fb0cb2ce2f7800341ab8de711dccbd2c4753c84:
+> 
+>   pm9261: use w1 serial number to generate local mac address (2012-10-30 13:44:54 +0800)
 
-Applied, thanks
+Applied, thanks.
 
 Sascha
 
-> ---
->  arch/arm/boards/at91sam9x5ek/env/config |    3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boards/at91sam9x5ek/env/config b/arch/arm/boards/at91sam9x5ek/env/config
-> index 19457be..b8cf4e3 100644
-> --- a/arch/arm/boards/at91sam9x5ek/env/config
-> +++ b/arch/arm/boards/at91sam9x5ek/env/config
-> @@ -22,6 +22,7 @@ oftree_loc=nfs
->  # can be either 'jffs2' or 'ubifs'
->  rootfs_type=ubifs
->  rootfsimage=root.$rootfs_type
-> +ubiroot=rootfs
->  
->  # The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
->  kernelimage=zImage
-> @@ -30,7 +31,7 @@ kernelimage=zImage
->  #kernelimage=Image.lzo
->  
->  nand_device=atmel_nand
-> -nand_parts="256k(at91bootstrap),256k(barebox)ro,128k(bareboxenv),128k(bareboxenv2),128k(oftree),1M(free),4M(kernel),120M(rootfs),-(data)"
-> +nand_parts="256k(at91bootstrap),384k(barebox)ro,128k(bareboxenv),128k(bareboxenv2),128k(oftree),1M(free),6M(kernel),120M(rootfs),-(data)"
->  rootfs_mtdblock_nand=7
->  
->  autoboot_timeout=3
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
