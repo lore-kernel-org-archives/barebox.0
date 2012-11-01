@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo4.mail-out.ovh.net ([188.165.44.50]
+Received: from 3.mo4.mail-out.ovh.net ([46.105.57.129]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TTrK7-0006Qd-Q9
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 09:44:29 +0000
+ id 1TTrMk-0006Ze-QU
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 09:47:12 +0000
 Received: from mail192.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 64C67104FC2E
- for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 10:51:34 +0100 (CET)
-Date: Thu, 1 Nov 2012 10:42:16 +0100
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 0B255104FCEE
+ for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 10:54:14 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121101094216.GI29599@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Thu,  1 Nov 2012 10:44:52 +0100
+Message-Id: <1351763092-5781-4-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1351763092-5781-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20121101094216.GI29599@game.jcrosoft.org>
+ <1351763092-5781-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,68 +21,169 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4] i2c: add algo-bit support with gpio and versatile support
+Subject: [PATCH 4/4] i2c: add versatile support
 To: barebox@lists.infradead.org
 
-HI,
-
-	the foloing patch series add the i2c algo bit support with 2 drivers
-	that use it
-
-	 - gpio
-	 - versatile
-
-	 thie also create a device for i2c bus itself
-
-The following changes since commit 2d1ceaff2f905f4a2bd7e6c539e7dd3d8d8e9bef:
-
-  uimage: Fix deleting of temporary file (2012-10-30 18:39:38 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/i2c
-
-for you to fetch changes up to d56fd9fa4f6872c2ce109fb25e8a48110750320b:
-
-  i2c: add versatile support (2012-11-01 02:28:11 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (4):
-      i2c: adapter: register it's own device
-      i2c: add i2c algo bit support
-      i2c: add i2c-gpio support
-      i2c: add versatile support
-
- drivers/i2c/Kconfig                |    1 +
- drivers/i2c/Makefile               |    2 +-
- drivers/i2c/algos/Kconfig          |    6 +++
- drivers/i2c/algos/Makefile         |    5 ++
- drivers/i2c/algos/i2c-algo-bit.c   |  585 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/i2c/busses/Kconfig         |   16 +++++++
- drivers/i2c/busses/Makefile        |    2 +
- drivers/i2c/busses/i2c-gpio.c      |  177 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/i2c/busses/i2c-imx.c       |   20 ++++----
- drivers/i2c/busses/i2c-omap.c      |   30 ++++++------
- drivers/i2c/busses/i2c-versatile.c |  112 +++++++++++++++++++++++++++++++++++++++++++++
- drivers/i2c/i2c.c                  |   18 ++++++--
- include/i2c/i2c-algo-bit.h         |   55 ++++++++++++++++++++++
- include/i2c/i2c-gpio.h             |   38 +++++++++++++++
- include/i2c/i2c.h                  |    4 +-
- 15 files changed, 1041 insertions(+), 30 deletions(-)
- create mode 100644 drivers/i2c/algos/Kconfig
- create mode 100644 drivers/i2c/algos/Makefile
- create mode 100644 drivers/i2c/algos/i2c-algo-bit.c
- create mode 100644 drivers/i2c/busses/i2c-gpio.c
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/i2c/busses/Kconfig         |    8 +++
+ drivers/i2c/busses/Makefile        |    1 +
+ drivers/i2c/busses/i2c-versatile.c |  112 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 121 insertions(+)
  create mode 100644 drivers/i2c/busses/i2c-versatile.c
- create mode 100644 include/i2c/i2c-algo-bit.h
- create mode 100644 include/i2c/i2c-gpio.h
 
-Best Regards,
-J.
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index 17e33cb..68d9b46 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -20,4 +20,12 @@ config I2C_OMAP
+ 	bool "OMAP I2C Master driver"
+ 	depends on ARCH_OMAP
+ 
++config I2C_VERSATILE
++	tristate "ARM Versatile/Realview I2C bus support"
++	depends on ARCH_VERSATILE
++	select I2C_ALGOBIT
++	help
++	  Say yes if you want to support the I2C serial bus on ARMs Versatile
++	  range of platforms.
++
+ endmenu
+diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
+index 18c7c46..a30f9b8 100644
+--- a/drivers/i2c/busses/Makefile
++++ b/drivers/i2c/busses/Makefile
+@@ -1,3 +1,4 @@
+ obj-$(CONFIG_I2C_GPIO)		+= i2c-gpio.o
+ obj-$(CONFIG_I2C_IMX) += i2c-imx.o
+ obj-$(CONFIG_I2C_OMAP) += i2c-omap.o
++obj-$(CONFIG_I2C_VERSATILE)	+= i2c-versatile.o
+diff --git a/drivers/i2c/busses/i2c-versatile.c b/drivers/i2c/busses/i2c-versatile.c
+new file mode 100644
+index 0000000..7c99322
+--- /dev/null
++++ b/drivers/i2c/busses/i2c-versatile.c
+@@ -0,0 +1,112 @@
++/*
++ *  i2c-versatile.c
++ *
++ *  Copyright (C) 2006 ARM Ltd.
++ *  written by Russell King, Deep Blue Solutions Ltd.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++#include <common.h>
++#include <driver.h>
++#include <i2c/i2c.h>
++#include <i2c/i2c-algo-bit.h>
++#include <init.h>
++#include <malloc.h>
++#include <io.h>
++
++#define I2C_CONTROL	0x00
++#define I2C_CONTROLS	0x00
++#define I2C_CONTROLC	0x04
++#define SCL		(1 << 0)
++#define SDA		(1 << 1)
++
++struct i2c_versatile {
++	struct i2c_adapter	 adap;
++	struct i2c_algo_bit_data algo;
++	void __iomem		 *base;
++};
++
++static void i2c_versatile_setsda(void *data, int state)
++{
++	struct i2c_versatile *i2c = data;
++
++	writel(SDA, i2c->base + (state ? I2C_CONTROLS : I2C_CONTROLC));
++}
++
++static void i2c_versatile_setscl(void *data, int state)
++{
++	struct i2c_versatile *i2c = data;
++
++	writel(SCL, i2c->base + (state ? I2C_CONTROLS : I2C_CONTROLC));
++}
++
++static int i2c_versatile_getsda(void *data)
++{
++	struct i2c_versatile *i2c = data;
++	return !!(readl(i2c->base + I2C_CONTROL) & SDA);
++}
++
++static int i2c_versatile_getscl(void *data)
++{
++	struct i2c_versatile *i2c = data;
++	return !!(readl(i2c->base + I2C_CONTROL) & SCL);
++}
++
++static struct i2c_algo_bit_data i2c_versatile_algo = {
++	.setsda	= i2c_versatile_setsda,
++	.setscl = i2c_versatile_setscl,
++	.getsda	= i2c_versatile_getsda,
++	.getscl = i2c_versatile_getscl,
++	.udelay	= 30,
++	.timeout_ms = 100,
++};
++
++static int i2c_versatile_probe(struct device_d *dev)
++{
++	struct i2c_versatile *i2c;
++	int ret;
++
++	i2c = kzalloc(sizeof(struct i2c_versatile), GFP_KERNEL);
++	if (!i2c) {
++		ret = -ENOMEM;
++		goto err_release;
++	}
++
++	i2c->base = dev_request_mem_region(dev, 0);
++	if (!i2c->base) {
++		ret = -ENOMEM;
++		goto err_free;
++	}
++
++	writel(SCL | SDA, i2c->base + I2C_CONTROLS);
++
++	i2c->adap.algo_data = &i2c->algo;
++	i2c->adap.dev.parent = dev;
++	i2c->algo = i2c_versatile_algo;
++	i2c->algo.data = i2c;
++
++	i2c->adap.nr = dev->id;
++	ret = i2c_bit_add_numbered_bus(&i2c->adap);
++	if (ret >= 0) {
++		return 0;
++	}
++
++ err_free:
++	kfree(i2c);
++ err_release:
++	return ret;
++}
++
++static struct driver_d i2c_versatile_driver = {
++	.name	= "versatile-i2c",
++	.probe	= i2c_versatile_probe,
++};
++
++static int __init i2c_versatile_init(void)
++{
++	return platform_driver_register(&i2c_versatile_driver);
++}
++
++device_initcall(i2c_versatile_init);
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
