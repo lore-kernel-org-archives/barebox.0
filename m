@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo4.mail-out.ovh.net ([178.32.98.131]
+Received: from 7.mo4.mail-out.ovh.net ([178.33.253.54]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TTulT-00061U-MK
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 13:24:57 +0000
+ id 1TTvEe-0008AG-Bh
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 13:55:05 +0000
 Received: from mail403.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id DC1D0104F6F6
- for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 14:32:01 +0100 (CET)
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 5BD8D104F982
+ for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 15:02:11 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  1 Nov 2012 14:22:42 +0100
-Message-Id: <1351776162-23461-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu,  1 Nov 2012 14:52:53 +0100
+Message-Id: <1351777973-26024-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1351776162-23461-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1351776162-23461-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,11 +25,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] input: add qt1070 touch keyboard support
+Subject: [PATCH 1/1 v2] input: add qt1070 touch keyboard support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
+fix typo add when checking the patch
+
+Best Regards,
+J.
  drivers/input/Kconfig  |    7 ++
  drivers/input/Makefile |    1 +
  drivers/input/qt1070.c |  228 ++++++++++++++++++++++++++++++++++++++++++++++++
@@ -62,7 +68,7 @@ index 3d105cc..d042980 100644
 +obj-$(CONFIG_KEYBOARD_QT1070) += qt1070.o
 diff --git a/drivers/input/qt1070.c b/drivers/input/qt1070.c
 new file mode 100644
-index 0000000..cd9c5a6
+index 0000000..49cd836
 --- /dev/null
 +++ b/drivers/input/qt1070.c
 @@ -0,0 +1,228 @@
@@ -254,7 +260,7 @@ index 0000000..cd9c5a6
 +
 +	memcpy(data->code, default_code, sizeof(int) * ARRAY_SIZE(default_code));
 +	if (dev->platform_data) {
-+		struct qt1070_platform_data pdata = dev->platform_data;
++		struct qt1070_platform_data *pdata = dev->platform_data;
 +
 +		memcpy(data->code, pdata->code, sizeof(int) * pdata->nb_code);
 +	}
