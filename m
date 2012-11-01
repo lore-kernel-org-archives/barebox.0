@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo4.mail-out.ovh.net ([188.165.33.109]
+Received: from 8.mo4.mail-out.ovh.net ([188.165.33.112]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TTrAH-0008HF-TP
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 09:34:20 +0000
+ id 1TTrBQ-0000os-5D
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 09:35:31 +0000
 Received: from mail192.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 4CA82104E21B
- for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 10:41:24 +0100 (CET)
-Date: Thu, 1 Nov 2012 10:32:05 +0100
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id F2138104EC34
+ for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 10:42:33 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121101093205.GH29599@game.jcrosoft.org>
+Date: Thu,  1 Nov 2012 10:33:14 +0100
+Message-Id: <1351762394-4597-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20121031120122.GF29599@game.jcrosoft.org>
 References: <20121031120122.GF29599@game.jcrosoft.org>
- <20121031212902.GQ1641@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20121031212902.GQ1641@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,81 +20,119 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] m25p80: re-import it againt mtd_add_host
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] mtd: introduce mtd_block_isbad
+To: barebox@lists.infradead.org
 
-On 22:29 Wed 31 Oct     , Sascha Hauer wrote:
-> On Wed, Oct 31, 2012 at 01:01:22PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Hi,
-> > 
-> > 	so we now create the cdev via mtd
-> > 
-> > 	This will also simplify sync with linux
-> > 
-> > 	to avoid the m25p8000 or m25p00 the cdev is still named name m25p and the
-> > 	drivers m25p80
-> > 
-> > 	sync with linux too
-> > 
-> > 	this patch series is agianst mtd_dataflash support
-> > 
-> > The following changes since commit 9428c386f876fa3a8871eeea4725a805cea5c367:
-> > 
-> >   mtd: add dataflash support (2012-10-31 04:48:39 +0800)
-> > 
-> > are available in the git repository at:
-> > 
-> >   git://git.jcrosoft.org/barebox.git delivery/m25p80
-> 
-> Sometimes I get the feeling that you do this only to break other peoples
-> setup:
-I forget to include a fix from my next
+this allow to do not provide block_isbad at mtd driver level
+as example spi flash
 
-I send it and re pushed the brnach
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/mtd/core.c      |   13 +++++++++++--
+ drivers/mtd/mtdraw.c    |    2 +-
+ drivers/mtd/partition.c |    2 +-
+ drivers/mtd/ubi/io.c    |    2 +-
+ include/linux/mtd/mtd.h |    2 ++
+ 5 files changed, 16 insertions(+), 5 deletions(-)
 
-The following changes since commit 9bd9176fdafac1566107da3f3a0ed55094907d91:
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index 7c323a1..0139851 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -30,6 +30,15 @@
+ 
+ static LIST_HEAD(mtd_register_hooks);
+ 
++int mtd_block_isbad(struct mtd_info *mtd, loff_t ofs)
++{
++	if (!mtd->block_isbad)
++		return 0;
++	if (ofs < 0 || ofs > mtd->size)
++		return -EINVAL;
++	return mtd->block_isbad(mtd, ofs);
++}
++
+ static 	ssize_t mtd_read(struct cdev *cdev, void* buf, size_t count,
+ 			  loff_t _offset, ulong flags)
+ {
+@@ -130,7 +139,7 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+ 	switch (request) {
+ 	case MEMGETBADBLOCK:
+ 		dev_dbg(cdev->dev, "MEMGETBADBLOCK: 0x%08llx\n", *offset);
+-		ret = mtd->block_isbad(mtd, *offset);
++		ret = mtd_block_isbad(mtd, *offset);
+ 		break;
+ #ifdef CONFIG_MTD_WRITE
+ 	case MEMSETBADBLOCK:
+@@ -189,7 +198,7 @@ static int mtd_erase(struct cdev *cdev, size_t count, loff_t offset)
+ 	while (count > 0) {
+ 		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
+ 
+-		ret = mtd->block_isbad(mtd, erase.addr);
++		ret = mtd_block_isbad(mtd, erase.addr);
+ 		if (ret > 0) {
+ 			printf("Skipping bad block at 0x%08x\n", erase.addr);
+ 		} else {
+diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
+index 079575c..ec77692 100644
+--- a/drivers/mtd/mtdraw.c
++++ b/drivers/mtd/mtdraw.c
+@@ -241,7 +241,7 @@ static int mtdraw_erase(struct cdev *cdev, size_t count, loff_t _offset)
+ 	while (count > 0) {
+ 		debug("erase %d %d\n", erase.addr, erase.len);
+ 
+-		ret = mtd->block_isbad(mtd, erase.addr);
++		ret = mtd_block_isbad(mtd, erase.addr);
+ 		if (ret > 0) {
+ 			printf("Skipping bad block at 0x%08x\n", erase.addr);
+ 		} else {
+diff --git a/drivers/mtd/partition.c b/drivers/mtd/partition.c
+index df2eb40..85f486d 100644
+--- a/drivers/mtd/partition.c
++++ b/drivers/mtd/partition.c
+@@ -71,7 +71,7 @@ static int mtd_part_block_isbad(struct mtd_info *mtd, loff_t ofs)
+ 	if (ofs >= mtd->size)
+ 		return -EINVAL;
+ 	ofs += part->offset;
+-	return part->master->block_isbad(part->master, ofs);
++	return mtd_block_isbad(part->master, ofs);
+ }
+ 
+ static int mtd_part_block_markbad(struct mtd_info *mtd, loff_t ofs)
+diff --git a/drivers/mtd/ubi/io.c b/drivers/mtd/ubi/io.c
+index da38837..e3598b9 100644
+--- a/drivers/mtd/ubi/io.c
++++ b/drivers/mtd/ubi/io.c
+@@ -513,7 +513,7 @@ int ubi_io_is_bad(const struct ubi_device *ubi, int pnum)
+ 	if (ubi->bad_allowed) {
+ 		int ret;
+ 
+-		ret = mtd->block_isbad(mtd, (loff_t)pnum * ubi->peb_size);
++		ret = mtd_block_isbad(mtd, (loff_t)pnum * ubi->peb_size);
+ 		if (ret < 0)
+ 			ubi_err("error %d while checking if PEB %d is bad",
+ 				ret, pnum);
+diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
+index 71d3c6f..5db884c 100644
+--- a/include/linux/mtd/mtd.h
++++ b/include/linux/mtd/mtd.h
+@@ -251,6 +251,8 @@ static inline void mtd_erase_callback(struct erase_info *instr)
+ }
+ #endif
+ 
++int mtd_block_isbad(struct mtd_info *mtd, loff_t ofs);
++
+ /*
+  * Debugging macro and defines
+  */
+-- 
+1.7.10.4
 
-  mtd: dataflash: fix spi_transfer init (2012-11-01 02:22:22 +0800)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/m25p80
-
-for you to fetch changes up to 3b672b01bb8bba0c61886bdcb85b70009673372d:
-
-  m25p80: sync flash support with the kernel (2012-11-01 02:22:28 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (3):
-      mtd: introduce mtd_block_isbad
-      m25p80: re-import it againt mtd_add_host
-      m25p80: sync flash support with the kernel
-
- arch/arm/boards/freescale-mx6-sabrelite/board.c |    2 +-
- drivers/mtd/core.c                              |   13 +++++-
- drivers/mtd/devices/Kconfig                     |   27 ++++++++++++
- drivers/mtd/devices/Makefile                    |    1 +
- drivers/{nor => mtd/devices}/m25p80.c           |  512 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------------------------------------------------------------------------------------
- drivers/mtd/mtdraw.c                            |    2 +-
- drivers/mtd/partition.c                         |    2 +-
- drivers/mtd/ubi/io.c                            |    2 +-
- drivers/nor/Kconfig                             |   27 ------------
- drivers/nor/Makefile                            |    1 -
- drivers/nor/m25p80.h                            |   84 ------------------------------------
- include/linux/mtd/cfi.h                         |   65 ++++++++++++++++++++++++++++
- include/linux/mtd/mtd.h                         |    2 +
- 13 files changed, 387 insertions(+), 353 deletions(-)
- rename drivers/{nor => mtd/devices}/m25p80.c (65%)
- delete mode 100644 drivers/nor/m25p80.h
- create mode 100644 include/linux/mtd/cfi.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
