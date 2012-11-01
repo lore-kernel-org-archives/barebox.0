@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TTzsq-0008Ef-Jv
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 18:52:55 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  1 Nov 2012 19:52:47 +0100
-Message-Id: <1351795968-2352-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1351795968-2352-1-git-send-email-s.hauer@pengutronix.de>
-References: <1351795968-2352-1-git-send-email-s.hauer@pengutronix.de>
+Received: from 18.mo1.mail-out.ovh.net ([46.105.35.72]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TTzuH-0008Si-2p
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 18:54:22 +0000
+Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id B3148FFA630
+ for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 20:04:45 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Thu,  1 Nov 2012 19:52:08 +0100
+Message-Id: <1351795928-18677-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1351782447-32199-7-git-send-email-plagnioj@jcrosoft.com>
+References: <1351782447-32199-7-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,271 +25,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] defenv-2: remove some helper scripts
+Subject: [PATCH 1/1 v2] at91sam9x5ek: add i2c support
 To: barebox@lists.infradead.org
 
-The added complexity of bootargs-ip-* and bootargs-root-* makes
-understanding defenv-2 more complicated. remove them and open
-code the scripts instead in their users.
+enable the qt1070 for debug only as this slow down barebox a lot
+as we need to read the i2c via poller
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- .../boards/crystalfontz-cfa10036/env/boot/mmc-ext3 |    2 +-
- arch/arm/boards/pcm038/env/boot/nand-ubi           |    2 +-
- defaultenv-2/base/bin/bootargs-ip-barebox          |    7 ------
- defaultenv-2/base/bin/bootargs-ip-dhcp             |    5 ----
- defaultenv-2/base/bin/bootargs-ip-none             |    5 ----
- defaultenv-2/base/bin/bootargs-root-disk           |   26 --------------------
- defaultenv-2/base/bin/bootargs-root-ext            |   12 ---------
- defaultenv-2/base/bin/bootargs-root-initrd         |   16 ------------
- defaultenv-2/base/bin/bootargs-root-jffs2          |   21 ----------------
- defaultenv-2/base/bin/bootargs-root-nfs            |   20 ---------------
- defaultenv-2/base/bin/bootargs-root-ubi            |   24 ------------------
- defaultenv-2/base/boot/net                         |    2 +-
- defaultenv-2/base/data/boot-template               |    4 +--
- 13 files changed, 4 insertions(+), 142 deletions(-)
- delete mode 100644 defaultenv-2/base/bin/bootargs-ip-barebox
- delete mode 100644 defaultenv-2/base/bin/bootargs-ip-dhcp
- delete mode 100644 defaultenv-2/base/bin/bootargs-ip-none
- delete mode 100644 defaultenv-2/base/bin/bootargs-root-disk
- delete mode 100644 defaultenv-2/base/bin/bootargs-root-ext
- delete mode 100644 defaultenv-2/base/bin/bootargs-root-initrd
- delete mode 100644 defaultenv-2/base/bin/bootargs-root-jffs2
- delete mode 100644 defaultenv-2/base/bin/bootargs-root-nfs
- delete mode 100644 defaultenv-2/base/bin/bootargs-root-ubi
+HI
 
-diff --git a/arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3 b/arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3
-index 7d7eb50..b2325af 100644
---- a/arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3
-+++ b/arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3
-@@ -7,4 +7,4 @@ fi
+branch updated
+
+The following changes since commit 3a5609a37a19b0b6b5f4c61e3c561b7bf2d25b72:
+
+  i2c: add versatile support (2012-11-01 06:58:21 +0800)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/at91_i2c
+
+for you to fetch changes up to 3c67dcab6fc9b1ab0966b2693f2952209f18cdda:
+
+  at91sam9x5ek: add i2c support (2012-11-01 11:26:25 +0800)
+
+Jean-Christophe PLAGNIOL-VILLARD (7):
+      at91sam9x5: add i2c support
+      at91rm9200: add i2c support
+      at91sam9260/sam9g20: add i2c support
+      at91sam9263: add i2c support
+      at91sam9261/sam9g10: add i2c support
+      at91sam9g45: add i2c support
+      at91sam9x5ek: add i2c support
+
+ arch/arm/boards/at91sam9x5ek/init.c      |   12 ++++++++++++
+ arch/arm/configs/at91sam9x5ek_defconfig  |    3 +++
+ arch/arm/mach-at91/at91rm9200_devices.c  |   28 ++++++++++++++++++++++++++++
+ arch/arm/mach-at91/at91sam9260_devices.c |   32 ++++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/at91sam9261_devices.c |   31 +++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/at91sam9263_devices.c |   31 +++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/at91sam9g45_devices.c |   50 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/at91sam9x5_devices.c  |   58 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/include/mach/board.h  |    3 +++
+ 9 files changed, 248 insertions(+)
+
+Best Regards,
+J.
+ arch/arm/configs/at91sam9x5ek_defconfig |    3 +++
+ 2 files changed, 15 insertions(+)
+
+diff --git a/arch/arm/boards/at91sam9x5ek/init.c b/arch/arm/boards/at91sam9x5ek/init.c
+index 78f7349..48eebac 100644
+--- a/arch/arm/boards/at91sam9x5ek/init.c
++++ b/arch/arm/boards/at91sam9x5ek/init.c
+@@ -114,6 +114,17 @@ static void ek_add_device_eth(void)
+ 	at91_add_device_eth(0, &macb_pdata);
+ }
  
- global.bootm.image="/mnt/disk0.1/zImage-cfa10036"
- global.bootm.oftree="/mnt/disk0.1/oftree-cfa10036"
--bootargs-root-ext -r 3 -m mmcblk0p3
-+global.linux.bootargs.dyn.root="root=/dev/mmcblk0p3 rootfstype=ext3 rootwait"
-diff --git a/arch/arm/boards/pcm038/env/boot/nand-ubi b/arch/arm/boards/pcm038/env/boot/nand-ubi
-index a3f748e..67b0cb4 100644
---- a/arch/arm/boards/pcm038/env/boot/nand-ubi
-+++ b/arch/arm/boards/pcm038/env/boot/nand-ubi
-@@ -7,4 +7,4 @@ fi
++static struct i2c_board_info i2c_devices[] = {
++	{
++		I2C_BOARD_INFO("qt1070", 0x1b),
++	},
++};
++
++static void ek_add_device_i2c(void)
++{
++	at91_add_device_i2c(0, i2c_devices, ARRAY_SIZE(i2c_devices));
++}
++
+ /*
+  * USB Host port
+  */
+@@ -172,6 +183,7 @@ static int at91sam9x5ek_devices_init(void)
+ 	ek_add_device_eth();
+ 	at91_add_device_usbh_ohci(&ek_usbh_data);
+ 	ek_add_led();
++	ek_add_device_i2c();
  
- global.bootm.image="/dev/nand0.kernel.bb"
- #global.bootm.oftree="/env/oftree"
--bootargs-root-ubi -r root -m nand0.root
-+global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rootfstype=ubifs"
-diff --git a/defaultenv-2/base/bin/bootargs-ip-barebox b/defaultenv-2/base/bin/bootargs-ip-barebox
-deleted file mode 100644
-index 5a3b984..0000000
---- a/defaultenv-2/base/bin/bootargs-ip-barebox
-+++ /dev/null
-@@ -1,7 +0,0 @@
--#!/bin/sh
--
--# pass barebox ip settings for eth0 to Linux
--
--ifup eth0
--
--global.linux.bootargs.dyn.ip="ip=$eth0.ipaddr:$eth0.serverip:$eth0.gateway:$eth0.netmask::eth0:"
-diff --git a/defaultenv-2/base/bin/bootargs-ip-dhcp b/defaultenv-2/base/bin/bootargs-ip-dhcp
-deleted file mode 100644
-index dec8ae4..0000000
---- a/defaultenv-2/base/bin/bootargs-ip-dhcp
-+++ /dev/null
-@@ -1,5 +0,0 @@
--#!/bin/sh
--
--# Do dhcp in Linux
--
--global.linux.bootargs.dyn.ip="ip=dhcp"
-diff --git a/defaultenv-2/base/bin/bootargs-ip-none b/defaultenv-2/base/bin/bootargs-ip-none
-deleted file mode 100644
-index 88aaa21..0000000
---- a/defaultenv-2/base/bin/bootargs-ip-none
-+++ /dev/null
-@@ -1,5 +0,0 @@
--#!/bin/sh
--
--# disable ip setup in Linux
--
--global.linux.bootargs.dyn.ip="ip=none"
-diff --git a/defaultenv-2/base/bin/bootargs-root-disk b/defaultenv-2/base/bin/bootargs-root-disk
-deleted file mode 100644
-index aa60cf3..0000000
---- a/defaultenv-2/base/bin/bootargs-root-disk
-+++ /dev/null
-@@ -1,26 +0,0 @@
--#!/bin/sh
--
--usage="$0 [OPTIONS]\n -p <partition>\n -t <fstype>"
--
--while getopt "p:t:h" opt; do
--	if [ ${opt} = p ]; then
--		part=${OPTARG}
--	elif [ ${opt} = t ]; then
--		fstype=${OPTARG}
--	elif [ ${opt} = h ]; then
--		echo -e "$usage"
--		exit 0
--	fi
--done
--
--if [ -z "${part}" ]; then
--	echo "$0: no partition given"
--	exit 1
--fi
--
--if [ -z "${fstype}" ]; then
--	echo "$0: no filesystem type given"
--	exit 1
--fi
--
--global.linux.bootargs.dyn.root="root=/dev/$part rootfstype=$fstype rootwait"
-diff --git a/defaultenv-2/base/bin/bootargs-root-ext b/defaultenv-2/base/bin/bootargs-root-ext
-deleted file mode 100644
-index dbdddb9..0000000
---- a/defaultenv-2/base/bin/bootargs-root-ext
-+++ /dev/null
-@@ -1,12 +0,0 @@
--#!/bin/sh
--
--while getopt "m:r:" opt; do
--	if [ ${opt} = m ]; then
--		part=${OPTARG}
--	fi
--	if [ ${opt} = r ]; then
--		type=${OPTARG}
--	fi
--done
--
--global.linux.bootargs.dyn.root="root=/dev/$part rootfstype=ext$type rootwait"
-diff --git a/defaultenv-2/base/bin/bootargs-root-initrd b/defaultenv-2/base/bin/bootargs-root-initrd
-deleted file mode 100644
-index cc711a1..0000000
---- a/defaultenv-2/base/bin/bootargs-root-initrd
-+++ /dev/null
-@@ -1,16 +0,0 @@
--#!/bin/sh
--
--rdinit="/sbin/init"
--
--usage="$0 [OPTIONS]\n -i <rdinitpath> (/sbin/init)"
--
--while getopt "i:h" opt; do
--	if [ ${opt} = i ]; then
--		rdinit=${OPTARG}
--	elif [ ${opt} = h ]; then
--		echo -e "$usage"
--		exit 0
--	fi
--done
--
--global.linux.bootargs.dyn.root="root=/dev/ram0 rdinit=${rdinit}"
-diff --git a/defaultenv-2/base/bin/bootargs-root-jffs2 b/defaultenv-2/base/bin/bootargs-root-jffs2
-deleted file mode 100644
-index a8eb5e7..0000000
---- a/defaultenv-2/base/bin/bootargs-root-jffs2
-+++ /dev/null
-@@ -1,21 +0,0 @@
--#!/bin/sh
--
--mtd=
--
--usage="$0 [OPTIONS]\n -m <mtd>"
--
--while getopt "m:h" opt; do
--	if [ ${opt} = m ]; then
--		mtd=${OPTARG}
--	elif [ ${opt} = h ]; then
--		echo -e "$usage"
--		exit 0
--	fi
--done
--
--if [ -z "$mtd" ]; then
--	echo -e "$usage"
--	exit 1
--fi
--
--global.linux.bootargs.dyn.root="root=$mtd rootfstype=jffs2"
-diff --git a/defaultenv-2/base/bin/bootargs-root-nfs b/defaultenv-2/base/bin/bootargs-root-nfs
-deleted file mode 100644
-index 355f93d..0000000
---- a/defaultenv-2/base/bin/bootargs-root-nfs
-+++ /dev/null
-@@ -1,20 +0,0 @@
--#!/bin/sh
--
--usage="$0 [OPTIONS]\n -n <nfspath>\n -s <serverip>"
--
--while getopt "n:s:h" opt; do
--	if [ ${opt} = n ]; then
--		nfsroot=${OPTARG}
--	elif [ ${opt} = s ]; then
--		serverip=${OPTARG}
--	elif [ ${opt} = h ]; then
--		echo -e "$usage"
--		exit 0
--	fi
--done
--
--if [ -n ${serverip} ]; then
--	nfsroot="$serverip:$nfsroot"
--fi
--
--global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
-diff --git a/defaultenv-2/base/bin/bootargs-root-ubi b/defaultenv-2/base/bin/bootargs-root-ubi
-deleted file mode 100644
-index 4260336..0000000
---- a/defaultenv-2/base/bin/bootargs-root-ubi
-+++ /dev/null
-@@ -1,24 +0,0 @@
--#!/bin/sh
--
--ubiroot=root
--mtd=
--
--usage="$0 [OPTIONS]\n -r <ubiroot> (root)\n -m <mtd>"
--
--while getopt "m:r:h" opt; do
--	if [ ${opt} = r ]; then
--		ubiroot=${OPTARG}
--	elif [ ${opt} = m ]; then
--		mtd=${OPTARG}
--	elif [ ${opt} = h ]; then
--		echo -e "$usage"
--		exit 0
--	fi
--done
--
--if [ -z "$mtd" ]; then
--	echo -e "$usage"
--	exit 1
--fi
--
--global.linux.bootargs.dyn.root="root=ubi0:$ubiroot ubi.mtd=$mtd rootfstype=ubifs"
-diff --git a/defaultenv-2/base/boot/net b/defaultenv-2/base/boot/net
-index 922bef1..90c25aa 100644
---- a/defaultenv-2/base/boot/net
-+++ b/defaultenv-2/base/boot/net
-@@ -11,4 +11,4 @@ global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
- #global.bootm.oftree="${path}/${global.user}-oftree-${global.hostname}"
- nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
- bootargs-ip
--bootargs-root-nfs -n "$nfsroot"
-+global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
-diff --git a/defaultenv-2/base/data/boot-template b/defaultenv-2/base/data/boot-template
-index 1cacf18..9297499 100644
---- a/defaultenv-2/base/data/boot-template
-+++ b/defaultenv-2/base/data/boot-template
-@@ -11,6 +11,4 @@ global.bootm.image=<path to image>
- 
- #bootargs-ip
- 
--#bootargs-root-nfs -n "<path on server>" -s <serverip>
--#bootargs-root-jffs2 -m <mtdname>
--#bootargs-root-ubi -r <volume> -m <mtdname>
-+global.linux.bootargs.dyn.root="root=<rootfs here>"
+ 	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_1 + 0x100));
+ 	armlinux_set_architecture(CONFIG_MACH_AT91SAM9X5EK);
+diff --git a/arch/arm/configs/at91sam9x5ek_defconfig b/arch/arm/configs/at91sam9x5ek_defconfig
+index 6315d9f..c71fe0d 100644
+--- a/arch/arm/configs/at91sam9x5ek_defconfig
++++ b/arch/arm/configs/at91sam9x5ek_defconfig
+@@ -41,6 +41,7 @@ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
+ CONFIG_CMD_LED=y
+ CONFIG_CMD_LED_TRIGGER=y
+ CONFIG_NET=y
+@@ -52,6 +53,8 @@ CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_MACB=y
+ # CONFIG_SPI is not set
++CONFIG_I2C=y
++CONFIG_I2C_GPIO=y
+ CONFIG_MTD=y
+ CONFIG_NAND=y
+ # CONFIG_NAND_ECC_HW is not set
 -- 
 1.7.10.4
 
