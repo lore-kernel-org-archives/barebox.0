@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo4.mail-out.ovh.net ([188.165.33.112]
+Received: from 5.mo4.mail-out.ovh.net ([188.165.44.50]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TTrBQ-0000os-5D
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 09:35:31 +0000
+ id 1TTrK7-0006Qd-Q9
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 09:44:29 +0000
 Received: from mail192.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id F2138104EC34
- for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 10:42:33 +0100 (CET)
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 64C67104FC2E
+ for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 10:51:34 +0100 (CET)
+Date: Thu, 1 Nov 2012 10:42:16 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  1 Nov 2012 10:33:14 +0100
-Message-Id: <1351762394-4597-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20121031120122.GF29599@game.jcrosoft.org>
-References: <20121031120122.GF29599@game.jcrosoft.org>
+Message-ID: <20121101094216.GI29599@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,119 +20,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] mtd: introduce mtd_block_isbad
+Subject: [PATCH 0/4] i2c: add algo-bit support with gpio and versatile support
 To: barebox@lists.infradead.org
 
-this allow to do not provide block_isbad at mtd driver level
-as example spi flash
+HI,
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/mtd/core.c      |   13 +++++++++++--
- drivers/mtd/mtdraw.c    |    2 +-
- drivers/mtd/partition.c |    2 +-
- drivers/mtd/ubi/io.c    |    2 +-
- include/linux/mtd/mtd.h |    2 ++
- 5 files changed, 16 insertions(+), 5 deletions(-)
+	the foloing patch series add the i2c algo bit support with 2 drivers
+	that use it
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 7c323a1..0139851 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -30,6 +30,15 @@
- 
- static LIST_HEAD(mtd_register_hooks);
- 
-+int mtd_block_isbad(struct mtd_info *mtd, loff_t ofs)
-+{
-+	if (!mtd->block_isbad)
-+		return 0;
-+	if (ofs < 0 || ofs > mtd->size)
-+		return -EINVAL;
-+	return mtd->block_isbad(mtd, ofs);
-+}
-+
- static 	ssize_t mtd_read(struct cdev *cdev, void* buf, size_t count,
- 			  loff_t _offset, ulong flags)
- {
-@@ -130,7 +139,7 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
- 	switch (request) {
- 	case MEMGETBADBLOCK:
- 		dev_dbg(cdev->dev, "MEMGETBADBLOCK: 0x%08llx\n", *offset);
--		ret = mtd->block_isbad(mtd, *offset);
-+		ret = mtd_block_isbad(mtd, *offset);
- 		break;
- #ifdef CONFIG_MTD_WRITE
- 	case MEMSETBADBLOCK:
-@@ -189,7 +198,7 @@ static int mtd_erase(struct cdev *cdev, size_t count, loff_t offset)
- 	while (count > 0) {
- 		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
- 
--		ret = mtd->block_isbad(mtd, erase.addr);
-+		ret = mtd_block_isbad(mtd, erase.addr);
- 		if (ret > 0) {
- 			printf("Skipping bad block at 0x%08x\n", erase.addr);
- 		} else {
-diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
-index 079575c..ec77692 100644
---- a/drivers/mtd/mtdraw.c
-+++ b/drivers/mtd/mtdraw.c
-@@ -241,7 +241,7 @@ static int mtdraw_erase(struct cdev *cdev, size_t count, loff_t _offset)
- 	while (count > 0) {
- 		debug("erase %d %d\n", erase.addr, erase.len);
- 
--		ret = mtd->block_isbad(mtd, erase.addr);
-+		ret = mtd_block_isbad(mtd, erase.addr);
- 		if (ret > 0) {
- 			printf("Skipping bad block at 0x%08x\n", erase.addr);
- 		} else {
-diff --git a/drivers/mtd/partition.c b/drivers/mtd/partition.c
-index df2eb40..85f486d 100644
---- a/drivers/mtd/partition.c
-+++ b/drivers/mtd/partition.c
-@@ -71,7 +71,7 @@ static int mtd_part_block_isbad(struct mtd_info *mtd, loff_t ofs)
- 	if (ofs >= mtd->size)
- 		return -EINVAL;
- 	ofs += part->offset;
--	return part->master->block_isbad(part->master, ofs);
-+	return mtd_block_isbad(part->master, ofs);
- }
- 
- static int mtd_part_block_markbad(struct mtd_info *mtd, loff_t ofs)
-diff --git a/drivers/mtd/ubi/io.c b/drivers/mtd/ubi/io.c
-index da38837..e3598b9 100644
---- a/drivers/mtd/ubi/io.c
-+++ b/drivers/mtd/ubi/io.c
-@@ -513,7 +513,7 @@ int ubi_io_is_bad(const struct ubi_device *ubi, int pnum)
- 	if (ubi->bad_allowed) {
- 		int ret;
- 
--		ret = mtd->block_isbad(mtd, (loff_t)pnum * ubi->peb_size);
-+		ret = mtd_block_isbad(mtd, (loff_t)pnum * ubi->peb_size);
- 		if (ret < 0)
- 			ubi_err("error %d while checking if PEB %d is bad",
- 				ret, pnum);
-diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
-index 71d3c6f..5db884c 100644
---- a/include/linux/mtd/mtd.h
-+++ b/include/linux/mtd/mtd.h
-@@ -251,6 +251,8 @@ static inline void mtd_erase_callback(struct erase_info *instr)
- }
- #endif
- 
-+int mtd_block_isbad(struct mtd_info *mtd, loff_t ofs);
-+
- /*
-  * Debugging macro and defines
-  */
--- 
-1.7.10.4
+	 - gpio
+	 - versatile
 
+	 thie also create a device for i2c bus itself
+
+The following changes since commit 2d1ceaff2f905f4a2bd7e6c539e7dd3d8d8e9bef:
+
+  uimage: Fix deleting of temporary file (2012-10-30 18:39:38 +0100)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/i2c
+
+for you to fetch changes up to d56fd9fa4f6872c2ce109fb25e8a48110750320b:
+
+  i2c: add versatile support (2012-11-01 02:28:11 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (4):
+      i2c: adapter: register it's own device
+      i2c: add i2c algo bit support
+      i2c: add i2c-gpio support
+      i2c: add versatile support
+
+ drivers/i2c/Kconfig                |    1 +
+ drivers/i2c/Makefile               |    2 +-
+ drivers/i2c/algos/Kconfig          |    6 +++
+ drivers/i2c/algos/Makefile         |    5 ++
+ drivers/i2c/algos/i2c-algo-bit.c   |  585 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/i2c/busses/Kconfig         |   16 +++++++
+ drivers/i2c/busses/Makefile        |    2 +
+ drivers/i2c/busses/i2c-gpio.c      |  177 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/i2c/busses/i2c-imx.c       |   20 ++++----
+ drivers/i2c/busses/i2c-omap.c      |   30 ++++++------
+ drivers/i2c/busses/i2c-versatile.c |  112 +++++++++++++++++++++++++++++++++++++++++++++
+ drivers/i2c/i2c.c                  |   18 ++++++--
+ include/i2c/i2c-algo-bit.h         |   55 ++++++++++++++++++++++
+ include/i2c/i2c-gpio.h             |   38 +++++++++++++++
+ include/i2c/i2c.h                  |    4 +-
+ 15 files changed, 1041 insertions(+), 30 deletions(-)
+ create mode 100644 drivers/i2c/algos/Kconfig
+ create mode 100644 drivers/i2c/algos/Makefile
+ create mode 100644 drivers/i2c/algos/i2c-algo-bit.c
+ create mode 100644 drivers/i2c/busses/i2c-gpio.c
+ create mode 100644 drivers/i2c/busses/i2c-versatile.c
+ create mode 100644 include/i2c/i2c-algo-bit.h
+ create mode 100644 include/i2c/i2c-gpio.h
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
