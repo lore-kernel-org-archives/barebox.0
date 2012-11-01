@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TU0KD-0000ZC-EW
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 19:21:10 +0000
-Date: Thu, 1 Nov 2012 20:21:07 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121101192107.GZ24458@pengutronix.de>
-References: <1350507817-7819-1-git-send-email-s.hauer@pengutronix.de>
- <1350507817-7819-7-git-send-email-s.hauer@pengutronix.de>
- <1350508337.128691867@f327.mail.ru>
+Received: from 18.mo1.mail-out.ovh.net ([46.105.35.72]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TU0Uu-00011a-4s
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 19:32:13 +0000
+Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 2725DFFA822
+ for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 20:42:38 +0100 (CET)
+Date: Thu, 1 Nov 2012 20:30:02 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121101193002.GL29599@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1350508337.128691867@f327.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,33 +20,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 06/28] ARM i.MX boards: switch to barebox_arm_entry
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/4] at91sam9x5ek: add spi and mci support
+To: barebox@lists.infradead.org
 
-SGkgQWxleGFuZGVyLAoKT24gVGh1LCBPY3QgMTgsIDIwMTIgYXQgMDE6MTI6MTdBTSArMDQwMCwg
-QWxleGFuZGVyIFNoaXlhbiB3cm90ZToKPiBXZWQsIDE3IE9jdCAyMDEyIDIzOjAzOjE1ICswMjAw
-INC+0YIgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiA+TW9zdCBpLk1Y
-IGJvYXJkcyBjYW4gdXNlIHRoZSBpbXgqX2JhcmVib3hfZW50cnkgZnVuY3Rpb25zLiBUaGUgcmVt
-YWluaW5nCj4gKGkuTVgyMSwgaS5NWDYpIHVzZSBoYXJkY29kZWQgYmFzZSBhZGRyZXNzZXMuCj4g
-U2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgo+ID4K
-PiBTYXNjaGEsIHN0b3AuIFRvbyBtYW55IHBhdGNoZXMgd2hpbGUgeW91IG5lZWQgdG8gcHJlcGFy
-ZSBzdGFibGUgdmVyc2lvbiBmb3IgY29uZmVyZW5jZS4KPiBSZWFsbHksIHN0b3AgYW5kIHRyeSB0
-byBtYWtlIG9uZSBtb3JlIHN0YWJsZSB2ZXJzaW9uIGZvciB5b3VyIHByZXNlbnRhdGlvbi4KPiA7
-KSBTb3JyeSwgYnV0IEkgdGhpbmsgYWJvdXQgYWxsIDopCgpBbHRob3VnaCB1bnRpbCBub3cgSSBo
-YXZlbid0IGFuc3dlcmVkIHRoaXMgbWFpbCBJIGZvciBzdXJlIGhhdmUgcmVhZCBpdCwKYW5kIHll
-cywgeW91IGFyZSByaWdodC4gVGhhdCdzIHdoeSBJIGhhdmUgY29uY2VudHJhdGVkIG9uIGdldHRp
-bmcgc29tZQpmaXhlcyBvdXQgcmF0aGVyIHRoYW4gYWRkaW5nIG1vcmUgZmVhdHVyZXMuIFRoYW5r
-cyBmb3IgcG9pbnRpbmcgdGhhdCBvdXQKOykKClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4g
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
-CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cu
-cGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2Vy
-bWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
-aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+HI,
+
+	with this +1 patch serie the support of the at91sam9x5ek is mostly
+	complete
+
+	This will add spi and mci0 support as spi0 and mci0 conflict
+
+	We are still missing framebuffer, usb host and device and hardware i2c support
+	but this wil be added later
+
+	This patch serie depedsn on the at91sam9x5ek i2c and m25p80 patcheries
+
+The following changes since commit 04ffb7b107af50bd64d803b72e5fc315180381a2:
+
+  m25p80: sync flash support with the kernel (2012-11-01 12:15:26 +0800)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/at91sam9x5ek_mci_spi
+
+for you to fetch changes up to 2c12218e89c0318dc9bed4f7f397b68903b4203e:
+
+  at91sam9x5ek: add mci support (2012-11-01 12:15:41 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (4):
+      at91sam9x5: add spi support
+      at91sam9x5ek: add spi support
+      at91sam9x5: add mci support
+      at91sam9x5ek: add mci support
+
+ arch/arm/boards/at91sam9x5ek/init.c     |   51 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/configs/at91sam9x5ek_defconfig |   10 +++++++---
+ arch/arm/mach-at91/at91sam9x5.c         |    4 ++++
+ arch/arm/mach-at91/at91sam9x5_devices.c |  124 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 186 insertions(+), 3 deletions(-)
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
