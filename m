@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TTtHF-0001Z3-CP
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 11:49:38 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1TTtHC-0001pm-Bw
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 12:49:34 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1TTtHC-0004hE-Av
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 12:49:34 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  1 Nov 2012 12:49:31 +0100
-Message-Id: <1351770573-30009-1-git-send-email-s.hauer@pengutronix.de>
+Received: from 4.mo4.mail-out.ovh.net ([178.32.98.131]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TTulT-00061U-MK
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 13:24:57 +0000
+Received: from mail403.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id DC1D0104F6F6
+ for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 14:32:01 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Thu,  1 Nov 2012 14:22:42 +0100
+Message-Id: <1351776162-23461-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,25 +23,303 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fix devicetree alignment
+Subject: [PATCH 1/1] input: add qt1070 touch keyboard support
 To: barebox@lists.infradead.org
 
-The following fixes a nasty problem with passing devicetrees to
-the (ARM-) Kernel. In short, we are not allowed to cross 1MiB
-boundaries with the devicetree. This can happen sometimes since
-we allocate space for the devicetree using memalign(). I think
-this is rather a kernel bug since this restriction is not documented
-anywhere. Anyway, working around it in barebox is easy enough.
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/input/Kconfig  |    7 ++
+ drivers/input/Makefile |    1 +
+ drivers/input/qt1070.c |  228 ++++++++++++++++++++++++++++++++++++++++++++++++
+ include/input/qt1070.h |   17 ++++
+ 4 files changed, 253 insertions(+)
+ create mode 100644 drivers/input/qt1070.c
+ create mode 100644 include/input/qt1070.h
 
-Sascha
+diff --git a/drivers/input/Kconfig b/drivers/input/Kconfig
+index 15979a2..8c528b4 100644
+--- a/drivers/input/Kconfig
++++ b/drivers/input/Kconfig
+@@ -30,4 +30,11 @@ config KEYBOARD_IMX_KEYPAD
+ 	  setup logic must also provide a 'matrix_keymap_data' structure,
+ 	  defining the used keys.
+ 
++config KEYBOARD_QT1070
++	tristate "Atmel AT42QT1070 Touch Sensor Chip"
++	depends on I2C
++	help
++	  Say Y here if you want to use Atmel AT42QT1070 QTouch
++	  Sensor chip as input device.
++
+ endmenu
+diff --git a/drivers/input/Makefile b/drivers/input/Makefile
+index 3d105cc..d042980 100644
+--- a/drivers/input/Makefile
++++ b/drivers/input/Makefile
+@@ -1,2 +1,3 @@
+ obj-$(CONFIG_KEYBOARD_GPIO) += gpio_keys.o
+ obj-$(CONFIG_KEYBOARD_IMX_KEYPAD) += imx_keypad.o
++obj-$(CONFIG_KEYBOARD_QT1070) += qt1070.o
+diff --git a/drivers/input/qt1070.c b/drivers/input/qt1070.c
+new file mode 100644
+index 0000000..cd9c5a6
+--- /dev/null
++++ b/drivers/input/qt1070.c
+@@ -0,0 +1,228 @@
++/*
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * Under GPLv2
++ */
++
++#include <common.h>
++#include <errno.h>
++#include <init.h>
++#include <clock.h>
++#include <poller.h>
++#include <kfifo.h>
++#include <i2c/i2c.h>
++#include <malloc.h>
++#include <readkey.h>
++#include <input/qt1070.h>
++
++#define QT1070_CHIP_ID		0x2e
++
++#define QT1070_READ_CHIP_ID	0x00
++#define QT1070_FW_VERSION	0x01
++#define QT1070_DET_STATUS	0x02
++#define QT1070_KEY_STATUS	0x03
++
++/* Calibrate */
++#define QT1070_CALIBRATE_CMD	0x38
++#define QT1070_CAL_TIME		200
++
++/* Reset */
++#define QT1070_RESET		0x39
++#define QT1070_RESET_TIME	255
++
++static int default_code[QT1070_NB_BUTTONS] = {
++	KEY_ENTER, KEY_HOME, KEY_UP, KEY_DOWN,
++	KEY_RIGHT, KEY_LEFT, KEY_CLEAR_SCREEN };
++
++struct qt1070_data {
++	int code[QT1070_NB_BUTTONS];
++
++	/* optional */
++	int fifo_size;
++
++	struct i2c_client *client;
++	u8 button_state[QT1070_NB_BUTTONS];
++	u8 previous_state;
++
++	struct kfifo *recv_fifo;
++	struct poller_struct poller;
++	struct console_device cdev;
++};
++
++static inline struct qt1070_data *
++poller_to_qt_data(struct poller_struct *poller)
++{
++	return container_of(poller, struct qt1070_data, poller);
++}
++
++static inline struct qt1070_data *
++cdev_to_qt_data(struct console_device *cdev)
++{
++	return container_of(cdev, struct qt1070_data, cdev);
++}
++
++static bool qt1070_read(struct qt1070_data *data, u8 reg, u8 *val)
++{
++	int ret;
++
++	ret = i2c_read_reg(data->client, reg, val, 1);
++
++	if (ret < 0)
++		return ret;
++	if (ret != 1)
++		return -EIO;
++	return 0;
++}
++
++static bool qt1070_write(struct qt1070_data *data, u8 reg, const u8 val)
++{
++	int ret;
++
++	ret = i2c_write_reg(data->client, reg, &val, 1);
++	if (ret < 0)
++		return ret;
++	if (ret != 1)
++		return -EIO;
++	return 0;
++}
++
++static void qt1070_poller(struct poller_struct *poller)
++{
++	struct qt1070_data *data = poller_to_qt_data(poller);
++	int i;
++	u8 buf, bt;
++	u8 mask = 0x1;
++
++	qt1070_read(data, QT1070_DET_STATUS, &buf);
++
++	if (qt1070_read(data, QT1070_KEY_STATUS, &buf))
++		return;
++
++	if (!buf & !data->previous_state)
++		return;
++
++	for (i = 0; i < QT1070_NB_BUTTONS; i++) {
++		bt = buf & mask;
++
++		if (!bt && data->button_state[i]) {
++			debug("release key(%d) as %d\n", i, data->code[i]);
++			kfifo_put(data->recv_fifo, (u_char*)&data->code[i], sizeof(int));
++		} else if (bt) {
++			debug("pressed key(%d) as %d\n", i, data->code[i]);
++		}
++
++		data->button_state[i] = bt;
++		mask <<= 1;
++	}
++
++	data->previous_state = buf;
++}
++
++static int qt1070_tstc(struct console_device *cdev)
++{
++	struct qt1070_data *data = cdev_to_qt_data(cdev);
++
++	return (kfifo_len(data->recv_fifo) == 0) ? 0 : 1;
++}
++
++static int qt1070_getc(struct console_device *cdev)
++{
++	int code = 0;
++	struct qt1070_data *data = cdev_to_qt_data(cdev);
++
++	kfifo_get(data->recv_fifo, (u_char*)&code, sizeof(int));
++	return code;
++}
++
++static int __init qt1070_probe(struct device_d *dev)
++{
++	struct console_device *cdev;
++	struct qt1070_data *data;
++	u8 fw_version, chip_id;
++	int ret;
++	char buf[6];
++
++	data = xzalloc(sizeof(*data));
++	data->client = to_i2c_client(dev);
++
++	ret = qt1070_read(data, QT1070_READ_CHIP_ID, &chip_id);
++	if (ret) {
++		dev_err(dev, "can not read chip id (%d)\n", ret);
++		goto err;
++	}
++
++	if (chip_id != QT1070_CHIP_ID) {
++		dev_err(dev, "unsupported id 0x%x\n", chip_id);
++		ret = -ENXIO;
++		goto err;
++	}
++
++	ret = qt1070_read(data, QT1070_FW_VERSION, &fw_version);
++	if (ret) {
++		dev_err(dev, "can not read firmware version (%d)\n", ret);
++		goto err;
++	}
++
++	sprintf(buf, "0x%x", fw_version);
++	dev_add_param_fixed(dev, "fw_version", buf);
++	sprintf(buf, "0x%x", chip_id);
++	dev_add_param_fixed(dev, "chip_ip", buf);
++
++	/* Calibrate device */
++	qt1070_write(data, QT1070_CALIBRATE_CMD, 1);
++	if (ret) {
++		dev_err(dev, "can not calibreate the chip (%d)\n", ret);
++		goto err;
++	}
++	mdelay(QT1070_CAL_TIME);
++
++	/* Soft reset */
++	ret = qt1070_write(data, QT1070_RESET, 1);
++	if (ret) {
++		dev_err(dev, "can not reset the chip (%d)\n", ret);
++		goto err;
++	}
++	mdelay(QT1070_RESET_TIME);
++
++	memcpy(data->code, default_code, sizeof(int) * ARRAY_SIZE(default_code));
++	if (dev->platform_data) {
++		struct qt1070_platform_data pdata = dev->platform_data;
++
++		memcpy(data->code, pdata->code, sizeof(int) * pdata->nb_code);
++	}
++
++	data->fifo_size = 50;
++	data->recv_fifo = kfifo_alloc(data->fifo_size);
++
++	data->poller.func = qt1070_poller;
++
++	cdev = &data->cdev;
++	dev->type_data = cdev;
++	cdev->dev = dev;
++	cdev->f_caps = CONSOLE_STDIN;
++	cdev->tstc = qt1070_tstc;
++	cdev->getc = qt1070_getc;
++
++	console_register(&data->cdev);
++
++	ret = poller_register(&data->poller);
++	if (ret)
++		goto err;
++
++	return 0;
++err:
++	free(data);
++	return ret;
++}
++
++static struct driver_d qt1070_driver = {
++	.name	= "qt1070",
++	.probe	= qt1070_probe,
++};
++
++static int qt1070_init(void)
++{
++	i2c_register_driver(&qt1070_driver);
++	return 0;
++}
++device_initcall(qt1070_init);
+diff --git a/include/input/qt1070.h b/include/input/qt1070.h
+new file mode 100644
+index 0000000..8a29559
+--- /dev/null
++++ b/include/input/qt1070.h
+@@ -0,0 +1,17 @@
++/*
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * Under GPLv2
++ */
++
++#ifndef __QT1070_H__
++#define __QT1070_H__
++
++#define QT1070_NB_BUTTONS	7
++
++struct qt1070_platform_data {
++	int code[QT1070_NB_BUTTONS];
++	int nb_code;
++};
++
++#endif /* __QT1070_H__ */
+-- 
+1.7.10.4
 
-----------------------------------------------------------------
-Sascha Hauer (2):
-      bootm: Add a define for the additional devicetree size
-      bootm: Do not cross 1MiB sections for the devicetree
-
- commands/bootm.c |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
 
 _______________________________________________
 barebox mailing list
