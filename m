@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo1.mail-out.ovh.net ([46.105.35.72]
+Received: from 7.mo1.mail-out.ovh.net ([87.98.158.110]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TU0b6-00019R-G1
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 19:38:38 +0000
+ id 1TU0oO-0001Qa-So
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 19:52:22 +0000
 Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id D39EDFFAB5B
- for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 20:48:59 +0100 (CET)
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id CF439FFAC03
+ for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 21:02:43 +0100 (CET)
+Date: Thu, 1 Nov 2012 20:50:08 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  1 Nov 2012 20:36:21 +0100
-Message-Id: <1351798582-22667-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1351798582-22667-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20121101193002.GL29599@game.jcrosoft.org>
- <1351798582-22667-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20121101195008.GM29599@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,109 +20,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] at91sam9x5: add mci support
+Subject: [PATCH 0/4 v2] at91sam9x5ek: add spi and mci support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/mach-at91/at91sam9x5.c         |    2 +
- arch/arm/mach-at91/at91sam9x5_devices.c |   62 +++++++++++++++++++++++++++++++
- 2 files changed, 64 insertions(+)
+HI,
 
-diff --git a/arch/arm/mach-at91/at91sam9x5.c b/arch/arm/mach-at91/at91sam9x5.c
-index a9065ff..7c7d997 100644
---- a/arch/arm/mach-at91/at91sam9x5.c
-+++ b/arch/arm/mach-at91/at91sam9x5.c
-@@ -207,6 +207,8 @@ static struct clk_lookup periph_clocks_lookups[] = {
- 	CLKDEV_CON_ID("ohci_clk", &uhphs_clk),
- 	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
- 	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
-+	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci0", &mmc0_clk),
-+	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci1", &mmc1_clk),
- };
- 
- static struct clk_lookup usart_clocks_lookups[] = {
-diff --git a/arch/arm/mach-at91/at91sam9x5_devices.c b/arch/arm/mach-at91/at91sam9x5_devices.c
-index 710ded7..14fcb1e 100644
---- a/arch/arm/mach-at91/at91sam9x5_devices.c
-+++ b/arch/arm/mach-at91/at91sam9x5_devices.c
-@@ -123,6 +123,68 @@ void at91_add_device_eth(int id, struct at91_ether_platform_data *data)
- void at91_add_device_eth(int id, struct at91_ether_platform_data *data) {}
- #endif
- 
-+#if defined(CONFIG_MCI_ATMEL)
-+/* Consider only one slot : slot 0 */
-+void __init at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
-+{
-+	resource_size_t start = ~0;
-+
-+	if (!data)
-+		return;
-+
-+	/* Must have at least one usable slot */
-+	if (!data->bus_width)
-+		return;
-+
-+	/* input/irq */
-+	if (data->detect_pin) {
-+		at91_set_gpio_input(data->detect_pin, 1);
-+		at91_set_deglitch(data->detect_pin, 1);
-+	}
-+	if (data->wp_pin)
-+		at91_set_gpio_input(data->wp_pin, 1);
-+
-+	if (mmc_id == 0) {		/* MCI0 */
-+		start = AT91SAM9X5_BASE_MCI0;
-+
-+		/* CLK */
-+		at91_set_A_periph(AT91_PIN_PA17, 0);
-+
-+		/* CMD */
-+		at91_set_A_periph(AT91_PIN_PA16, 1);
-+
-+		/* DAT0, maybe DAT1..DAT3 */
-+		at91_set_A_periph(AT91_PIN_PA15, 1);
-+		if (data->bus_width == 4) {
-+			at91_set_A_periph(AT91_PIN_PA18, 1);
-+			at91_set_A_periph(AT91_PIN_PA19, 1);
-+			at91_set_A_periph(AT91_PIN_PA20, 1);
-+		}
-+	} else {			/* MCI1 */
-+		start = AT91SAM9X5_BASE_MCI1;
-+
-+		/* CLK */
-+		at91_set_B_periph(AT91_PIN_PA13, 0);
-+
-+		/* CMD */
-+		at91_set_B_periph(AT91_PIN_PA12, 1);
-+
-+		/* DAT0, maybe DAT1..DAT3 */
-+		at91_set_B_periph(AT91_PIN_PA11, 1);
-+		if (data->bus_width == 4) {
-+			at91_set_B_periph(AT91_PIN_PA2, 1);
-+			at91_set_B_periph(AT91_PIN_PA3, 1);
-+			at91_set_B_periph(AT91_PIN_PA4, 1);
-+		}
-+	}
-+
-+	add_generic_device("atmel_mci", mmc_id, NULL, start, SZ_16K,
-+			   IORESOURCE_MEM, data);
-+}
-+#else
-+void __init at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data) {}
-+#endif
-+
- /* --------------------------------------------------------------------
-  *  NAND / SmartMedia
-  * -------------------------------------------------------------------- */
--- 
-1.7.10.4
+	with this +1 patch serie the support of the at91sam9x5ek is mostly
+	complete
 
+	This will add spi and mci0 support as spi0 and mci0 conflict
+
+	We are still missing framebuffer, usb host and device and hardware i2c support
+	but this wil be added later
+
+	This patch serie depedsn on the at91sam9x5ek i2c and m25p80 patcheries
+
+	the correct version
+
+	this one work but brake the etherent as it mux the 4 cs as gpio and we
+	use them on the eth0
+
+The following changes since commit 04ffb7b107af50bd64d803b72e5fc315180381a2:
+
+  m25p80: sync flash support with the kernel (2012-11-01 12:15:26 +0800)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/at91sam9x5ek_mci_spi
+
+for you to fetch changes up to 86d0ef8200bfea132613e7654a6eb4f0d1c77cba:
+
+  at91sam9x5ek: add mci support (2012-11-01 12:39:52 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (4):
+      at91sam9x5: add spi support
+      at91sam9x5ek: add spi support
+      at91sam9x5: add mci support
+      at91sam9x5ek: add mci support
+
+ arch/arm/boards/at91sam9x5ek/init.c     |   57 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/configs/at91sam9x5ek_defconfig |   10 +++++++---
+ arch/arm/mach-at91/at91sam9x5.c         |    4 ++++
+ arch/arm/mach-at91/at91sam9x5_devices.c |  124 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 192 insertions(+), 3 deletions(-)
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
