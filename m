@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo1.mail-out.ovh.net ([46.105.35.72]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TU0Uu-00011a-4s
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 19:32:13 +0000
-Received: from mail94.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 2725DFFA822
- for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 20:42:38 +0100 (CET)
-Date: Thu, 1 Nov 2012 20:30:02 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121101193002.GL29599@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TU0WY-00015O-CL
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 19:33:55 +0000
+Date: Thu, 1 Nov 2012 20:33:51 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121101193351.GZ1641@pengutronix.de>
+References: <1351791438-29967-1-git-send-email-robert.jarzmik@free.fr>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <1351791438-29967-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,48 +22,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4] at91sam9x5ek: add spi and mci support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/2] Y-Modem implementation change
+To: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: barebox@lists.infradead.org
 
-HI,
+On Thu, Nov 01, 2012 at 06:37:16PM +0100, Robert Jarzmik wrote:
+> Hi everyone,
+> 
+> This patchset aims at changing the Y-Modem protocol implementation.
+> You have already seen the RFC version, this is the next version, which :
+>  - provides a much more tested version
+>  - is ready for review
+> 
+> The following comments have been taken into account :
+>  - Antony: testing on a serial line
+>  - Sascha: split between protocol and commands
+>  - Jean-Christophe: kermit protocol change
+> 
+> So before doing the real review, could I ask of you :
+>  - Antony: could you redo your test over a serial line by applying only
+>            the first patch so that you can compare loady and loady2 ?
+>            Don't use "loady2 -g", as Y-Modem/G protocol requires a 
+>            lossless line (USB), and a serial line cannot guarantee it.
+>  - Sascha: does the split command/protocol suit you ?
 
-	with this +1 patch serie the support of the at91sam9x5ek is mostly
-	complete
+Almost, yes. The backend support should go to common/ or lib/ and get
+its own (invisible) Kconfig symbol which is then selected by the command.
+So:
 
-	This will add spi and mci0 support as spi0 and mci0 conflict
+lib/ or common/:
 
-	We are still missing framebuffer, usb host and device and hardware i2c support
-	but this wil be added later
+config XYZMODEM
+	bool
 
-	This patch serie depedsn on the at91sam9x5ek i2c and m25p80 patcheries
+command/:
 
-The following changes since commit 04ffb7b107af50bd64d803b72e5fc315180381a2:
+config CMD_XYZMODEM
+	bool "bla"
+	select XYZMODEM
+	help
+	  ...
 
-  m25p80: sync flash support with the kernel (2012-11-01 12:15:26 +0800)
+Sascha
 
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/at91sam9x5ek_mci_spi
-
-for you to fetch changes up to 2c12218e89c0318dc9bed4f7f397b68903b4203e:
-
-  at91sam9x5ek: add mci support (2012-11-01 12:15:41 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (4):
-      at91sam9x5: add spi support
-      at91sam9x5ek: add spi support
-      at91sam9x5: add mci support
-      at91sam9x5ek: add mci support
-
- arch/arm/boards/at91sam9x5ek/init.c     |   51 +++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/configs/at91sam9x5ek_defconfig |   10 +++++++---
- arch/arm/mach-at91/at91sam9x5.c         |    4 ++++
- arch/arm/mach-at91/at91sam9x5_devices.c |  124 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 186 insertions(+), 3 deletions(-)
-
-Best Regards,
-J.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
