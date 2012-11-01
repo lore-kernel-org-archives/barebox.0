@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 11.mo4.mail-out.ovh.net ([46.105.34.195]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TTrUS-0006qM-35
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 09:55:09 +0000
-Received: from mail192.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 1025B104F8B6
- for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 11:02:14 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  1 Nov 2012 10:52:47 +0100
-Message-Id: <1351763567-6641-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TTtHF-0001Z4-CS
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 11:49:38 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu,  1 Nov 2012 12:49:32 +0100
+Message-Id: <1351770573-30009-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1351770573-30009-1-git-send-email-s.hauer@pengutronix.de>
+References: <1351770573-30009-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,92 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [For next PATCH 1/1] versatilepb: add i2c support
+Subject: [PATCH 1/2] bootm: Add a define for the additional devicetree size
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+The fixed devicetree may need more space than the original one.
+We used to use 0x8000 here. Add a define for it to have the
+space defined at a single place.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-apply over next
+ commands/bootm.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-depends on verstile i2c driver send via i2c algo-bit series
-
-Best Regards,
-J.
- arch/arm/boards/versatile/versatilepb.c     |    1 +
- arch/arm/configs/versatilepb_defconfig      |    3 +++
- arch/arm/mach-versatile/core.c              |    7 +++++++
- arch/arm/mach-versatile/include/mach/init.h |    1 +
- 4 files changed, 12 insertions(+)
-
-diff --git a/arch/arm/boards/versatile/versatilepb.c b/arch/arm/boards/versatile/versatilepb.c
-index 5a9c0b6..2eb7473 100644
---- a/arch/arm/boards/versatile/versatilepb.c
-+++ b/arch/arm/boards/versatile/versatilepb.c
-@@ -47,6 +47,7 @@ mem_initcall(vpb_mem_init);
- static int vpb_devices_init(void)
- {
- 	add_cfi_flash_device(DEVICE_ID_DYNAMIC, VERSATILE_FLASH_BASE, VERSATILE_FLASH_SIZE, 0);
-+	versatile_register_i2c();
- 	devfs_add_partition("nor0", 0x00000, 0x40000, DEVFS_PARTITION_FIXED, "self");
- 	devfs_add_partition("nor0", 0x40000, 0x20000, DEVFS_PARTITION_FIXED, "env0");
+diff --git a/commands/bootm.c b/commands/bootm.c
+index 20b49f0..d14ec2b 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -49,6 +49,11 @@
  
-diff --git a/arch/arm/configs/versatilepb_defconfig b/arch/arm/configs/versatilepb_defconfig
-index 4c71c3c..f6fa454 100644
---- a/arch/arm/configs/versatilepb_defconfig
-+++ b/arch/arm/configs/versatilepb_defconfig
-@@ -34,6 +34,7 @@ CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
- CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_I2C=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
-@@ -44,6 +45,8 @@ CONFIG_NET_NETCONSOLE=y
- CONFIG_NET_RESOLV=y
- CONFIG_SERIAL_AMBA_PL011=y
- CONFIG_DRIVER_NET_SMC91111=y
-+CONFIG_I2C=y
-+CONFIG_I2C_VERSATILE=y
- CONFIG_GPIO_PL061=y
- CONFIG_FS_CRAMFS=y
- CONFIG_SHA1=y
-diff --git a/arch/arm/mach-versatile/core.c b/arch/arm/mach-versatile/core.c
-index 6e913df..8aca2a1 100644
---- a/arch/arm/mach-versatile/core.c
-+++ b/arch/arm/mach-versatile/core.c
-@@ -26,6 +26,7 @@
- #include <init.h>
- #include <clock.h>
- #include <debug_ll.h>
-+#include <sizes.h>
+ static LIST_HEAD(handler_list);
  
- #include <linux/clkdev.h>
- #include <linux/clk.h>
-@@ -182,6 +183,12 @@ void versatile_register_uart(unsigned id)
- 	amba_apb_device_add(NULL, "uart-pl011", id, start, 4096, NULL, 0);
- }
- 
-+void versatile_register_i2c(void)
-+{
-+	add_generic_device("versatile-i2c", DEVICE_ID_DYNAMIC, NULL,
-+			VERSATILE_I2C_BASE, SZ_4K, IORESOURCE_MEM, NULL);
-+}
++/*
++ * Additional oftree size for the fixed tree
++ */
++#define OFTREE_SIZE_INCREASE	0x8000
 +
- void __noreturn reset_cpu (unsigned long ignored)
+ int register_image_handler(struct image_handler *handler)
  {
- 	u32 val;
-diff --git a/arch/arm/mach-versatile/include/mach/init.h b/arch/arm/mach-versatile/include/mach/init.h
-index 878cde0..b40e4f9 100644
---- a/arch/arm/mach-versatile/include/mach/init.h
-+++ b/arch/arm/mach-versatile/include/mach/init.h
-@@ -4,5 +4,6 @@
+ 	list_add_tail(&handler->list, &handler_list);
+@@ -184,12 +189,14 @@ static int bootm_open_oftree(struct image_data *data, const char *oftree, int nu
+ 				file_type_to_string(ft));
+ 	}
  
- void versatile_add_sdram(u32 size);
- void versatile_register_uart(unsigned id);
-+void versatile_register_i2c(void);
+-	fixfdt = xmemalign(4096, size + 0x8000);
++	fixfdt = xmemalign(4096, size + OFTREE_SIZE_INCREASE);
+ 	memcpy(fixfdt, fdt, size);
  
- #endif
++
++	ret = fdt_open_into(fdt, fixfdt, size + OFTREE_SIZE_INCREASE);
++
+ 	free(fdt);
+ 
+-	ret = fdt_open_into(fixfdt, fixfdt, size + 0x8000);
+ 	if (ret) {
+ 		printf("unable to parse %s\n", oftree);
+ 		return -ENODEV;
 -- 
 1.7.10.4
 
