@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo5.mail-out.ovh.net ([46.105.52.148]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TU2AP-00028h-LA
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 21:19:11 +0000
-Received: from mail624.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id AFA9AFFAAAB
- for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 22:26:20 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  1 Nov 2012 22:16:53 +0100
-Message-Id: <1351804616-31047-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20121101195008.GM29599@game.jcrosoft.org>
-References: <20121101195008.GM29599@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TU3T9-0006Hk-Ru
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 22:42:37 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu,  1 Nov 2012 23:42:32 +0100
+Message-Id: <1351809753-28816-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,101 +19,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] at91sam9x5: add spi support
+Subject: [PATCH] defenv-2 menu: when booting failed wait for key press
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/mach-at91/at91sam9x5.c         |    2 +
- arch/arm/mach-at91/at91sam9x5_devices.c |   62 +++++++++++++++++++++++++++++++
- 2 files changed, 64 insertions(+)
+When booting fails we will be immediately be back into the menu,
+so the error message can't be seen. Also, boot in verbose mode
+since in interactive mode the last bit of performance is not that
+necessary.
 
-diff --git a/arch/arm/mach-at91/at91sam9x5.c b/arch/arm/mach-at91/at91sam9x5.c
-index c256989..a9065ff 100644
---- a/arch/arm/mach-at91/at91sam9x5.c
-+++ b/arch/arm/mach-at91/at91sam9x5.c
-@@ -205,6 +205,8 @@ static struct clk_lookup periph_clocks_lookups[] = {
- 	CLKDEV_CON_DEV_ID("macb_clk", "macb0", &macb0_clk),
- 	CLKDEV_CON_DEV_ID("macb_clk", "macb1", &macb1_clk),
- 	CLKDEV_CON_ID("ohci_clk", &uhphs_clk),
-+	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
-+	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
- };
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ defaultenv-2/menu/menu/boot-menu-add-entry |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/defaultenv-2/menu/menu/boot-menu-add-entry b/defaultenv-2/menu/menu/boot-menu-add-entry
+index 7e1d9c6..f06c524 100644
+--- a/defaultenv-2/menu/menu/boot-menu-add-entry
++++ b/defaultenv-2/menu/menu/boot-menu-add-entry
+@@ -1,5 +1,5 @@
+ #!/bin/sh
  
- static struct clk_lookup usart_clocks_lookups[] = {
-diff --git a/arch/arm/mach-at91/at91sam9x5_devices.c b/arch/arm/mach-at91/at91sam9x5_devices.c
-index 5a24325..710ded7 100644
---- a/arch/arm/mach-at91/at91sam9x5_devices.c
-+++ b/arch/arm/mach-at91/at91sam9x5_devices.c
-@@ -228,6 +228,68 @@ void at91_add_device_i2c(short i2c_id, struct i2c_board_info *devices, int nr_de
- #endif
- 
- /* --------------------------------------------------------------------
-+ *  SPI
-+ * -------------------------------------------------------------------- */
-+
-+#if defined(CONFIG_DRIVER_SPI_ATMEL)
-+static unsigned spi0_standard_cs[4] = { AT91_PIN_PA14, AT91_PIN_PA7, AT91_PIN_PA1, AT91_PIN_PB3 };
-+
-+static unsigned spi1_standard_cs[4] = { AT91_PIN_PA8, AT91_PIN_PA0, AT91_PIN_PA31, AT91_PIN_PA30 };
-+
-+static struct at91_spi_platform_data spi_pdata[] = {
-+	[0] = {
-+		.chipselect = spi0_standard_cs,
-+		.num_chipselect = ARRAY_SIZE(spi0_standard_cs),
-+	},
-+	[1] = {
-+		.chipselect = spi1_standard_cs,
-+		.num_chipselect = ARRAY_SIZE(spi1_standard_cs),
-+	},
-+};
-+
-+void at91_add_device_spi(int spi_id, struct at91_spi_platform_data *pdata)
-+{
-+	int i;
-+	int cs_pin;
-+	resource_size_t start = ~0;
-+
-+	BUG_ON(spi_id > 1);
-+
-+	if (!pdata)
-+		pdata = &spi_pdata[spi_id];
-+
-+	for (i = 0; i < pdata->num_chipselect; i++) {
-+		cs_pin = pdata->chipselect[i];
-+
-+		/* enable chip-select pin */
-+		if (cs_pin > 0)
-+			at91_set_gpio_output(cs_pin, 1);
-+	}
-+
-+	/* Configure SPI bus(es) */
-+	switch (spi_id) {
-+	case 0:
-+		start = AT91SAM9X5_BASE_SPI0;
-+		at91_set_A_periph(AT91_PIN_PA11, 0);	/* SPI0_MISO */
-+		at91_set_A_periph(AT91_PIN_PA12, 0);	/* SPI0_MOSI */
-+		at91_set_A_periph(AT91_PIN_PA13, 0);	/* SPI0_SPCK */
-+		break;
-+	case 1:
-+		start = AT91SAM9X5_BASE_SPI1;
-+		at91_set_B_periph(AT91_PIN_PA21, 0);	/* SPI1_MISO */
-+		at91_set_B_periph(AT91_PIN_PA22, 0);	/* SPI1_MOSI */
-+		at91_set_B_periph(AT91_PIN_PA23, 0);	/* SPI1_SPCK */
-+		break;
-+	}
-+
-+	add_generic_device("atmel_spi", spi_id, NULL, start, SZ_16K,
-+			   IORESOURCE_MEM, pdata);
-+}
-+#else
-+void at91_add_device_spi(int spi_id, struct at91_spi_platform_data *pdata) {}
-+#endif
-+
-+/* --------------------------------------------------------------------
-  *  UART
-  * -------------------------------------------------------------------- */
- 
+-menu -e -a -m boot -c "boot $1" -d "Boot: ${GREEN}$2${NC}"
++menu -e -a -m boot -c "boot -v $1; echo; readline \"press enter to continue\" a " -d "Boot: ${GREEN}$2${NC}"
+ menu -e -a -m boot_entries_edit -c "$global.editcmd /env/boot/$1" -d "${GREEN}$2${NC}"
+ menu -e -a -m boot_entries_remove -c "rm /env/boot/$1" -d "${GREEN}$2${NC}"
 -- 
 1.7.10.4
 
