@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TTpd3-0007HJ-Bg
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 07:55:54 +0000
+ id 1TTpd3-0007HH-Bl
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 07:55:55 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  1 Nov 2012 08:55:48 +0100
-Message-Id: <1351756548-24640-7-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  1 Nov 2012 08:55:47 +0100
+Message-Id: <1351756548-24640-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1351756548-24640-1-git-send-email-s.hauer@pengutronix.de>
 References: <1351756548-24640-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] ARM OMAP3: Put reset() into its own section
+Subject: [PATCH 5/6] ARM OMAP3 boards: Call omap3_core_init only from SRAM
 To: barebox@lists.infradead.org
-
-Needed so that the linker can throw it away when unused. This is needed
-at least on current master for being able to enable pbl support for omap3
-boards.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/omap3_core.S |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boards/beagle/board.c          |    3 ++-
+ arch/arm/boards/omap343xdsp/board.c     |    3 ++-
+ arch/arm/boards/phycard-a-l1/pca-a-l1.c |    3 ++-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-omap/omap3_core.S b/arch/arm/mach-omap/omap3_core.S
-index df7c5b4..c3e4086 100644
---- a/arch/arm/mach-omap/omap3_core.S
-+++ b/arch/arm/mach-omap/omap3_core.S
-@@ -39,6 +39,7 @@
- #include <asm/barebox-arm-head.h>
+diff --git a/arch/arm/boards/beagle/board.c b/arch/arm/boards/beagle/board.c
+index 19bf740..ec26528 100644
+--- a/arch/arm/boards/beagle/board.c
++++ b/arch/arm/boards/beagle/board.c
+@@ -220,7 +220,8 @@ static int beagle_board_init(void)
+ {
+ 	int in_sdram = running_in_sdram();
  
- #ifdef CONFIG_MACH_DO_LOWLEVEL_INIT
-+.section .text.__reset
- ENTRY(reset)
- 	/* Invalidate all Dcaches */
- #ifndef CONFIG_CPU_V7_DCACHE_SKIP
+-	omap3_core_init();
++	if (!in_sdram)
++		omap3_core_init();
+ 
+ 	mux_config();
+ 	/* Dont reconfigure SDRAM while running in SDRAM! */
+diff --git a/arch/arm/boards/omap343xdsp/board.c b/arch/arm/boards/omap343xdsp/board.c
+index 2343dc0..692cf9a 100644
+--- a/arch/arm/boards/omap343xdsp/board.c
++++ b/arch/arm/boards/omap343xdsp/board.c
+@@ -76,7 +76,8 @@ static int sdp343x_board_init(void)
+ {
+ 	int in_sdram = running_in_sdram();
+ 
+-	omap3_core_init();
++	if (!in_sdram)
++		omap3_core_init();
+ 
+ 	mux_config();
+ 	if (!in_sdram)
+diff --git a/arch/arm/boards/phycard-a-l1/pca-a-l1.c b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+index f2d10f2..6652242 100644
+--- a/arch/arm/boards/phycard-a-l1/pca-a-l1.c
++++ b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+@@ -297,7 +297,8 @@ static int pcaal1_board_init(void)
+ {
+ 	int in_sdram = running_in_sdram();
+ 
+-	omap3_core_init();
++	if (!in_sdram)
++		omap3_core_init();
+ 
+ 	pcaal1_mux_config();
+ 	/* Dont reconfigure SDRAM while running in SDRAM! */
 -- 
 1.7.10.4
 
