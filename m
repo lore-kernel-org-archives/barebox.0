@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo4.mail-out.ovh.net ([178.33.253.54]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TTwOp-0007oW-F1
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 15:09:44 +0000
-Received: from mail403.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id DA701104F6B4
- for <barebox@lists.infradead.org>; Thu,  1 Nov 2012 16:16:46 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  1 Nov 2012 16:07:22 +0100
-Message-Id: <1351782447-32199-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1351782447-32199-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20121101143352.GJ29599@game.jcrosoft.org>
- <1351782447-32199-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TTwhg-0000uV-0c
+ for barebox@lists.infradead.org; Thu, 01 Nov 2012 15:29:09 +0000
+Date: Thu, 1 Nov 2012 16:29:05 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121101152905.GU1641@pengutronix.de>
+References: <1351698431-15255-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1351698431-15255-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,70 +18,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] at91rm9200: add i2c support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1] at91sam9xek: fix mtd partition
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-use i2c-gpio as the hw ip is broken
+On Wed, Oct 31, 2012 at 04:47:11PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> barebox size is 384KiB
+> and for the official atmel release we need to rootfs at 8M
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/mach-at91/at91rm9200_devices.c |   28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+Applied, thanks
 
-diff --git a/arch/arm/mach-at91/at91rm9200_devices.c b/arch/arm/mach-at91/at91rm9200_devices.c
-index 8cb2f57..1a2d0fd 100644
---- a/arch/arm/mach-at91/at91rm9200_devices.c
-+++ b/arch/arm/mach-at91/at91rm9200_devices.c
-@@ -18,6 +18,7 @@
- #include <mach/gpio.h>
- #include <mach/io.h>
- #include <mach/at91rm9200_mc.h>
-+#include <i2c/i2c-gpio.h>
- #include <sizes.h>
- 
- #include "generic.h"
-@@ -154,6 +155,33 @@ void __init at91_add_device_nand(struct atmel_nand_data *data)
- void __init at91_add_device_nand(struct atmel_nand_data *data) {}
- #endif
- 
-+#if defined(CONFIG_I2C_GPIO)
-+static struct i2c_gpio_platform_data pdata_i2c = {
-+	.sda_pin		= AT91_PIN_PA25,
-+	.sda_is_open_drain	= 1,
-+	.scl_pin		= AT91_PIN_PA26,
-+	.scl_is_open_drain	= 1,
-+	.udelay			= 5,		/* ~100 kHz */
-+};
-+
-+void at91_add_device_i2c(short i2c_id, struct i2c_board_info *devices, int nr_devices)
-+{
-+	struct i2c_gpio_platform_data *pdata = &pdata_i2c;
-+
-+	i2c_register_board_info(0, devices, nr_devices);
-+
-+	at91_set_GPIO_periph(pdata->sda_pin, 1);		/* TWD (SDA) */
-+	at91_set_multi_drive(pdata->sda_pin, 1);
-+
-+	at91_set_GPIO_periph(pdata->scl_pin, 1);		/* TWCK (SCL) */
-+	at91_set_multi_drive(pdata->scl_pin, 1);
-+
-+	add_generic_device_res("i2c-gpio", 0, NULL, 0, pdata);
-+}
-+#else
-+void at91_add_device_i2c(short i2c_id, struct i2c_board_info *devices, int nr_devices) {}
-+#endif
-+
- /* --------------------------------------------------------------------
-  *  SPI
-  * -------------------------------------------------------------------- */
+Sascha
+
+> ---
+>  arch/arm/boards/at91sam9x5ek/env/config |    3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/boards/at91sam9x5ek/env/config b/arch/arm/boards/at91sam9x5ek/env/config
+> index 19457be..b8cf4e3 100644
+> --- a/arch/arm/boards/at91sam9x5ek/env/config
+> +++ b/arch/arm/boards/at91sam9x5ek/env/config
+> @@ -22,6 +22,7 @@ oftree_loc=nfs
+>  # can be either 'jffs2' or 'ubifs'
+>  rootfs_type=ubifs
+>  rootfsimage=root.$rootfs_type
+> +ubiroot=rootfs
+>  
+>  # The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+>  kernelimage=zImage
+> @@ -30,7 +31,7 @@ kernelimage=zImage
+>  #kernelimage=Image.lzo
+>  
+>  nand_device=atmel_nand
+> -nand_parts="256k(at91bootstrap),256k(barebox)ro,128k(bareboxenv),128k(bareboxenv2),128k(oftree),1M(free),4M(kernel),120M(rootfs),-(data)"
+> +nand_parts="256k(at91bootstrap),384k(barebox)ro,128k(bareboxenv),128k(bareboxenv2),128k(oftree),1M(free),6M(kernel),120M(rootfs),-(data)"
+>  rootfs_mtdblock_nand=7
+>  
+>  autoboot_timeout=3
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
