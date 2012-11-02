@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo4.mail-out.ovh.net ([178.33.248.196]
+Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TUDZC-0001Qa-1K
- for barebox@lists.infradead.org; Fri, 02 Nov 2012 09:29:30 +0000
+ id 1TUDfs-0001lP-9s
+ for barebox@lists.infradead.org; Fri, 02 Nov 2012 09:36:25 +0000
 Received: from mail247.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 593DB104F1AC
- for <barebox@lists.infradead.org>; Fri,  2 Nov 2012 10:36:38 +0100 (CET)
-Date: Fri, 2 Nov 2012 10:27:18 +0100
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id BF37F104EFC1
+ for <barebox@lists.infradead.org>; Fri,  2 Nov 2012 10:43:30 +0100 (CET)
+Date: Fri, 2 Nov 2012 10:34:11 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121102092718.GO29599@game.jcrosoft.org>
+Message-ID: <20121102093411.GP29599@game.jcrosoft.org>
+References: <20121101143352.GJ29599@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <20121101143352.GJ29599@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,66 +26,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4 v2] i2c: add algo-bit support with gpio and versatile
- support
+Subject: Re: [PATCH 0/7] at91 add i2c-gpio suport
 To: barebox@lists.infradead.org
 
-HI,
+On 15:33 Thu 01 Nov     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
+> 
+> 	This paatch serie add the i2c suport to at91 using the i2c-gpio as teh
+> 	IP is broken until the sam9x5. For the sam9x5 untill we have the hw
+> 	driver support use the i2c-gpio too
+> 
+> 	on the sam9x5ek enable the i2c and the qt1070
+> 
+> 	This patch serie depends on i2c qt1070 patch and the at91sam9x5ek
+> 	1-wire one
+> 
+v2 rebase on i2c v2 patch series
 
-	v2: keep return -EBUSY if the adapter is already present
+The following changes since commit d3298969a9fcc5d95c2c4f8a39c1d4aa21780009:
 
-	the foloing patch series add the i2c algo bit support with 2 drivers
-	that use it
-
-	 - gpio
-	 - versatile
-
-	 thie also create a device for i2c bus itself
-
-	 all the pedending branch are rebased on it
-
-The following changes since commit 2d1ceaff2f905f4a2bd7e6c539e7dd3d8d8e9bef:
-
-  uimage: Fix deleting of temporary file (2012-10-30 18:39:38 +0100)
+  i2c: add versatile support (2012-11-02 02:24:49 +0800)
 
 are available in the git repository at:
 
-  git://git.jcrosoft.org/barebox.git delivery/i2c
+  git://git.jcrosoft.org/barebox.git delivery/at91_i2c
 
-for you to fetch changes up to 5c90416b6ffb8d4ca7c4bc6aff92578b555cb965:
+for you to fetch changes up to 972103b8b146974e4d1ed6a5912f6b0172c40d02:
 
-  i2c: add versatile support (2012-11-02 02:17:04 +0800)
+  at91sam9x5ek: add i2c support (2012-11-02 02:24:59 +0800)
 
 ----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (4):
-      i2c: adapter: register it's own device
-      i2c: add i2c algo bit support
-      i2c: add i2c-gpio support
-      i2c: add versatile support
+Jean-Christophe PLAGNIOL-VILLARD (7):
+      at91sam9x5: add i2c support
+      at91rm9200: add i2c support
+      at91sam9260/sam9g20: add i2c support
+      at91sam9263: add i2c support
+      at91sam9261/sam9g10: add i2c support
+      at91sam9g45: add i2c support
+      at91sam9x5ek: add i2c support
 
- drivers/i2c/Kconfig                |    1 +
- drivers/i2c/Makefile               |    2 +-
- drivers/i2c/algos/Kconfig          |    6 +++
- drivers/i2c/algos/Makefile         |    5 ++
- drivers/i2c/algos/i2c-algo-bit.c   |  585 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/i2c/busses/Kconfig         |   16 +++++++
- drivers/i2c/busses/Makefile        |    2 +
- drivers/i2c/busses/i2c-gpio.c      |  177 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/i2c/busses/i2c-imx.c       |   20 ++++----
- drivers/i2c/busses/i2c-omap.c      |   30 ++++++------
- drivers/i2c/busses/i2c-versatile.c |  112 +++++++++++++++++++++++++++++++++++++++++++++
- drivers/i2c/i2c.c                  |   17 ++++++-
- include/i2c/i2c-algo-bit.h         |   55 ++++++++++++++++++++++
- include/i2c/i2c-gpio.h             |   38 +++++++++++++++
- include/i2c/i2c.h                  |    4 +-
- 15 files changed, 1042 insertions(+), 28 deletions(-)
- create mode 100644 drivers/i2c/algos/Kconfig
- create mode 100644 drivers/i2c/algos/Makefile
- create mode 100644 drivers/i2c/algos/i2c-algo-bit.c
- create mode 100644 drivers/i2c/busses/i2c-gpio.c
- create mode 100644 drivers/i2c/busses/i2c-versatile.c
- create mode 100644 include/i2c/i2c-algo-bit.h
- create mode 100644 include/i2c/i2c-gpio.h
+ arch/arm/boards/at91sam9x5ek/init.c      |   12 ++++++++++++
+ arch/arm/configs/at91sam9x5ek_defconfig  |    3 +++
+ arch/arm/mach-at91/at91rm9200_devices.c  |   28 ++++++++++++++++++++++++++++
+ arch/arm/mach-at91/at91sam9260_devices.c |   32 ++++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/at91sam9261_devices.c |   31 +++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/at91sam9263_devices.c |   31 +++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/at91sam9g45_devices.c |   50 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/at91sam9x5_devices.c  |   58 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/include/mach/board.h  |    3 +++
+ 9 files changed, 248 insertions(+)
 
 Best Regards,
 J.
