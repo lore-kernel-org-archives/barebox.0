@@ -1,17 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f213.mail.ru ([217.69.128.150])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TUK4K-0004Ke-1J
- for barebox@lists.infradead.org; Fri, 02 Nov 2012 16:26:05 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Fri, 02 Nov 2012 20:26:00 +0400
+Received: from 16.mo5.mail-out.ovh.net ([87.98.174.144]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TUKPF-00055z-0k
+ for barebox@lists.infradead.org; Fri, 02 Nov 2012 16:47:42 +0000
+Received: from mail183.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id B057AFFAC90
+ for <barebox@lists.infradead.org>; Fri,  2 Nov 2012 17:54:54 +0100 (CET)
+Date: Fri, 2 Nov 2012 17:45:31 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121102164531.GT29599@game.jcrosoft.org>
 References: <1351873060-27968-1-git-send-email-plagnioj@jcrosoft.com>
  <20121102160659.GS29599@game.jcrosoft.org>
  <1351873060-27968-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1351873060-27968-2-git-send-email-plagnioj@jcrosoft.com>
-Message-ID: <1351873560.417163578@f213.mail.ru>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ <1351873560.417163578@f213.mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1351873560.417163578@f213.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,26 +29,32 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCAyLzJdIGludHJvZHVjZSBzcGkgY29tbWFuZA==?=
-To: =?UTF-8?B?SmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9MLVZJTExBUkQ=?= <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 2/2] introduce spi command
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-RnJpLCAgMiBOb3YgMjAxMiAxNzoxNzo0MCArMDEwMCDQvtGCIEplYW4tQ2hyaXN0b3BoZSBQTEFH
-TklPTC1WSUxMQVJEIDxwbGFnbmlvakBqY3Jvc29mdC5jb20+Ogo+IHVzZWZ1bGwgdG8gZGVidWcg
-c3BpCj4gCj4gVGhlIGNvbW1hbmQgYWxsb3cgdG8gcmVhZC93cml0ZSBvbiBhIHNwaSBkZXZpY2UK
-PiAKPiBVc2FnZTogc3BpIFtPUFRJT05dIFtkYXRhIHRvIHdyaXRlIDB4WFhdCj4gd3JpdGUvcmVh
-ZCBzcGkgZGV2aWNlLgo+ICAgLWIgPGJ1c19udW0+ICBzcGkgYnVzIG51bWJlciAoZGVmYXVsdCA9
-IDApCj4gICAtciA8Y291bnQ+ICAgIHRvIHJlYWQKPiAgIC1jIDxjcz4gICAgICAgY2hpcCBzZWxl
-Y3QgKGRlZmF1bHQgPSAwKQo+ICAgLW0gPG1vZGU+ICAgICBzcGkgbW9kZSAoZGVmYXVsdCA9IDAp
-Cj4gICAtZiA8aHo+ICAgICAgIG1heF9zcGVlZF9oeiAoZGVmYXVsdCA9IDFNSHopCj4gICAtdyA8
-Yml0PiAgICAgIGJpdHNfcGVyX3dvcmQgKGRlZmF1bHQgPSA4KQo+ICAgLXYgICAgICAgICAgICB2
-ZXJib3NlCi4uLgo+ICtzdGF0aWMgaW50IGRvX3NwaShpbnQgYXJnYywgY2hhciAqYXJndltdKQo+
-ICt7Cj4gKwlzdHJ1Y3Qgc3BpX2RldmljZSBzcGk7Cj4gKwlpbnQgYnVzID0gMDsKPiArCWludCBy
-ZWFkID0gMDsKPiArCWludCB2ZXJib3NlID0gMDsKPiArCWludCBvcHQsIGNvdW50LCBpLCByZXQ7
-Cj4gKwo+ICsJdTggKnR4X2J1ZiwgKnJ4X2J1ZjsKPiArCj4gKwltZW1zZXQoJnNwaSwgMCwgc2l6
-ZW9mKHN0cnVjdCBzcGlfZGV2aWNlKSk7Cj4gKwo+ICsJc3BpLm1heF9zcGVlZF9oeiA9IDEgKiAx
-MDAwICogMTAwMDsKPiArCXNwaS5iaXRzX3Blcl93b3JkID0gODsKCkkgc3VnZ2VzdCB1c2luZyB0
-aGUgZGVmYXVsdCBkYXRhIGZyb20gbWFzdGVyIGZvciB0aGVzZSBwYXJhbWV0ZXJzLgoKLS0tCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
-bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+T24gMjA6MjYgRnJpIDAyIE5vdiAgICAgLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+IEZyaSwg
+IDIgTm92IDIwMTIgMTc6MTc6NDAgKzAxMDAg0L7RgiBKZWFuLUNocmlzdG9waGUgUExBR05JT0wt
+VklMTEFSRCA8cGxhZ25pb2pAamNyb3NvZnQuY29tPjoKPiA+IHVzZWZ1bGwgdG8gZGVidWcgc3Bp
+Cj4gPiAKPiA+IFRoZSBjb21tYW5kIGFsbG93IHRvIHJlYWQvd3JpdGUgb24gYSBzcGkgZGV2aWNl
+Cj4gPiAKPiA+IFVzYWdlOiBzcGkgW09QVElPTl0gW2RhdGEgdG8gd3JpdGUgMHhYWF0KPiA+IHdy
+aXRlL3JlYWQgc3BpIGRldmljZS4KPiA+ICAgLWIgPGJ1c19udW0+ICBzcGkgYnVzIG51bWJlciAo
+ZGVmYXVsdCA9IDApCj4gPiAgIC1yIDxjb3VudD4gICAgdG8gcmVhZAo+ID4gICAtYyA8Y3M+ICAg
+ICAgIGNoaXAgc2VsZWN0IChkZWZhdWx0ID0gMCkKPiA+ICAgLW0gPG1vZGU+ICAgICBzcGkgbW9k
+ZSAoZGVmYXVsdCA9IDApCj4gPiAgIC1mIDxoej4gICAgICAgbWF4X3NwZWVkX2h6IChkZWZhdWx0
+ID0gMU1IeikKPiA+ICAgLXcgPGJpdD4gICAgICBiaXRzX3Blcl93b3JkIChkZWZhdWx0ID0gOCkK
+PiA+ICAgLXYgICAgICAgICAgICB2ZXJib3NlCj4gLi4uCj4gPiArc3RhdGljIGludCBkb19zcGko
+aW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKPiA+ICt7Cj4gPiArCXN0cnVjdCBzcGlfZGV2aWNlIHNw
+aTsKPiA+ICsJaW50IGJ1cyA9IDA7Cj4gPiArCWludCByZWFkID0gMDsKPiA+ICsJaW50IHZlcmJv
+c2UgPSAwOwo+ID4gKwlpbnQgb3B0LCBjb3VudCwgaSwgcmV0Owo+ID4gKwo+ID4gKwl1OCAqdHhf
+YnVmLCAqcnhfYnVmOwo+ID4gKwo+ID4gKwltZW1zZXQoJnNwaSwgMCwgc2l6ZW9mKHN0cnVjdCBz
+cGlfZGV2aWNlKSk7Cj4gPiArCj4gPiArCXNwaS5tYXhfc3BlZWRfaHogPSAxICogMTAwMCAqIDEw
+MDA7Cj4gPiArCXNwaS5iaXRzX3Blcl93b3JkID0gODsKPiAKPiBJIHN1Z2dlc3QgdXNpbmcgdGhl
+IGRlZmF1bHQgZGF0YSBmcm9tIG1hc3RlciBmb3IgdGhlc2UgcGFyYW1ldGVycy4Kbm8gb3RoZXJ3
+aXNlIHdlIGNhbiBub3Qgd3JpdGUgdGhlIGhlbHAgYW5kIGJpdHNfZXRfd29yZCBpdCdzIGRlZmF1
+bHQgdmFsdWUgYXQKc3BpIGZyYW1ld29yayBsZXZlbCBpcyA4CgphbmQgdGhoIG1heF9zcGVlZF9o
+eiBpcyBzbG93IGFscmVhZHkKCmFuZCBpdCBoYXMgYWx3YXlzIGJlZW4gdGhlIGRldmljZSB0byBj
+b250cm9sIGl0IG5vIHRoZSBtYXN0ZXIKCkJlc3QgUmVnYXJkcywKSi4KCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
