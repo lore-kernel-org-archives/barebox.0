@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp24.mail.ru ([94.100.176.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TUCVA-0003KI-6r
- for barebox@lists.infradead.org; Fri, 02 Nov 2012 08:21:17 +0000
-Date: Fri, 2 Nov 2012 09:21:13 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121102082113.GC1641@pengutronix.de>
+ id 1TUCru-00040D-96
+ for barebox@lists.infradead.org; Fri, 02 Nov 2012 08:44:47 +0000
+Date: Fri, 2 Nov 2012 12:44:43 +0400
+From: Alexander Shiyan <shc_work@mail.ru>
+Message-Id: <20121102124443.66678a1d76cceaf646c4507b@mail.ru>
+In-Reply-To: <20121102082113.GC1641@pengutronix.de>
 References: <1351613312-4506-1-git-send-email-shc_work@mail.ru>
  <20121031213608.GR1641@pengutronix.de>
  <20121101092038.0b71630228ecac770b8b1128@mail.ru>
  <20121101073251.GS1641@pengutronix.de>
  <20121102102419.52e6cc0269ae07ef1b3ff26d@mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20121102102419.52e6cc0269ae07ef1b3ff26d@mail.ru>
+ <20121102082113.GC1641@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,50 +27,31 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v3 1/3] ARM: Add CLPS711X architecture
-To: Alexander Shiyan <shc_work@mail.ru>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Nov 02, 2012 at 10:24:19AM +0400, Alexander Shiyan wrote:
-> On Thu, 1 Nov 2012 08:32:51 +0100
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Fri, 2 Nov 2012 09:21:13 +0100
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
+
+...
+> > Well, if there are no more comments for this series, I will create a v4 with
+> > one more forgotten fix for serial driver (IS_ERR clock check).
 > 
-> > On Thu, Nov 01, 2012 at 09:20:38AM +0400, Alexander Shiyan wrote:
-> > > On Wed, 31 Oct 2012 22:36:08 +0100
-> > > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > > 
-> > > ...
-> > > > > +
-> > > > > +	asm("mov pc, #0");
-> > > > 
-> > > > Or is it because you do not have a real reset function and have to jump
-> > > > through zero instead? Still common_reset() shouldn't be necessary. What
-> > > Yes.
-> > > > you may have to do here is to make sure the MMU is disabled and caches
-> > > > are flushed.
-> > > Yes. This call was be added for do it.
-> > > I may replace entrie function by calling start(). Is it a better way()?
-> > 
-> > arch_shutdown() should do it.
-> Well, if there are no more comments for this series, I will create a v4 with
-> one more forgotten fix for serial driver (IS_ERR clock check).
+> Fine, thanks. This should be the final one.
+> 
+> Two last things:
+> 
+> You should add pbl-y += lowlevel.o to your board Makefile. This allows
+> it to compile barebox as a compressed image.
+> 
+> You shouldn't have to overwrite env/bin/mtdparts-add. Instead this
+> should be called from env/init/mtdparts*
 
-Fine, thanks. This should be the final one.
-
-Two last things:
-
-You should add pbl-y += lowlevel.o to your board Makefile. This allows
-it to compile barebox as a compressed image.
-
-You shouldn't have to overwrite env/bin/mtdparts-add. Instead this
-should be called from env/init/mtdparts*
-
-Sascha
+OK, but the changes I'll have to test, so the revised version will be in a week.
+Thank you.
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Alexander Shiyan <shc_work@mail.ru>
 
 _______________________________________________
 barebox mailing list
