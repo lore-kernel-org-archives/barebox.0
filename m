@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp10.mail.ru ([94.100.176.152])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TU3T9-0006Hk-Ru
- for barebox@lists.infradead.org; Thu, 01 Nov 2012 22:42:37 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  1 Nov 2012 23:42:32 +0100
-Message-Id: <1351809753-28816-1-git-send-email-s.hauer@pengutronix.de>
+ id 1TUAg5-0007fj-QC
+ for barebox@lists.infradead.org; Fri, 02 Nov 2012 06:24:27 +0000
+Date: Fri, 2 Nov 2012 10:24:19 +0400
+From: Alexander Shiyan <shc_work@mail.ru>
+Message-Id: <20121102102419.52e6cc0269ae07ef1b3ff26d@mail.ru>
+In-Reply-To: <20121101073251.GS1641@pengutronix.de>
+References: <1351613312-4506-1-git-send-email-shc_work@mail.ru>
+ <20121031213608.GR1641@pengutronix.de>
+ <20121101092038.0b71630228ecac770b8b1128@mail.ru>
+ <20121101073251.GS1641@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,38 +20,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] defenv-2 menu: when booting failed wait for key press
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v3 1/3] ARM: Add CLPS711X architecture
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-When booting fails we will be immediately be back into the menu,
-so the error message can't be seen. Also, boot in verbose mode
-since in interactive mode the last bit of performance is not that
-necessary.
+On Thu, 1 Nov 2012 08:32:51 +0100
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- defaultenv-2/menu/menu/boot-menu-add-entry |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> On Thu, Nov 01, 2012 at 09:20:38AM +0400, Alexander Shiyan wrote:
+> > On Wed, 31 Oct 2012 22:36:08 +0100
+> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > 
+> > ...
+> > > > +
+> > > > +	asm("mov pc, #0");
+> > > 
+> > > Or is it because you do not have a real reset function and have to jump
+> > > through zero instead? Still common_reset() shouldn't be necessary. What
+> > Yes.
+> > > you may have to do here is to make sure the MMU is disabled and caches
+> > > are flushed.
+> > Yes. This call was be added for do it.
+> > I may replace entrie function by calling start(). Is it a better way()?
+> 
+> arch_shutdown() should do it.
+Well, if there are no more comments for this series, I will create a v4 with
+one more forgotten fix for serial driver (IS_ERR clock check).
 
-diff --git a/defaultenv-2/menu/menu/boot-menu-add-entry b/defaultenv-2/menu/menu/boot-menu-add-entry
-index 7e1d9c6..f06c524 100644
---- a/defaultenv-2/menu/menu/boot-menu-add-entry
-+++ b/defaultenv-2/menu/menu/boot-menu-add-entry
-@@ -1,5 +1,5 @@
- #!/bin/sh
- 
--menu -e -a -m boot -c "boot $1" -d "Boot: ${GREEN}$2${NC}"
-+menu -e -a -m boot -c "boot -v $1; echo; readline \"press enter to continue\" a " -d "Boot: ${GREEN}$2${NC}"
- menu -e -a -m boot_entries_edit -c "$global.editcmd /env/boot/$1" -d "${GREEN}$2${NC}"
- menu -e -a -m boot_entries_remove -c "rm /env/boot/$1" -d "${GREEN}$2${NC}"
 -- 
-1.7.10.4
-
+Alexander Shiyan <shc_work@mail.ru>
 
 _______________________________________________
 barebox mailing list
