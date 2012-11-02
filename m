@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo4.mail-out.ovh.net ([188.165.55.104]
+Received: from 6.mo4.mail-out.ovh.net ([188.165.36.253]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TUDiS-00020l-Pe
- for barebox@lists.infradead.org; Fri, 02 Nov 2012 09:39:06 +0000
+ id 1TUDks-0002MQ-1C
+ for barebox@lists.infradead.org; Fri, 02 Nov 2012 09:41:35 +0000
 Received: from mail247.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 94145104F17A
- for <barebox@lists.infradead.org>; Fri,  2 Nov 2012 10:46:14 +0100 (CET)
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 93963104F34B
+ for <barebox@lists.infradead.org>; Fri,  2 Nov 2012 10:48:42 +0100 (CET)
+Date: Fri, 2 Nov 2012 10:39:23 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  2 Nov 2012 10:36:52 +0100
-Message-Id: <1351849012-26236-4-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1351849012-26236-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20121102092718.GO29599@game.jcrosoft.org>
- <1351849012-26236-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20121102093923.GQ29599@game.jcrosoft.org>
+References: <20121101195008.GM29599@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20121101195008.GM29599@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,169 +22,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] i2c: add versatile support
+Subject: Re: [PATCH 0/4 v2] at91sam9x5ek: add spi and mci support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/i2c/busses/Kconfig         |    8 +++
- drivers/i2c/busses/Makefile        |    1 +
- drivers/i2c/busses/i2c-versatile.c |  112 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 121 insertions(+)
- create mode 100644 drivers/i2c/busses/i2c-versatile.c
+On 20:50 Thu 01 Nov     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> HI,
+> 
+> 	with this +1 patch serie the support of the at91sam9x5ek is mostly
+> 	complete
+> 
+> 	This will add spi and mci0 support as spi0 and mci0 conflict
+> 
+> 	We are still missing framebuffer, usb host and device and hardware i2c support
+> 	but this wil be added later
+> 
+> 	This patch serie depedsn on the at91sam9x5ek i2c and m25p80 patcheries
+> 
+> 	the correct version
+> 
+> 	this one work but brake the etherent as it mux the 4 cs as gpio and we
+> 	use them on the eth0
 
-diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-index 17e33cb..68d9b46 100644
---- a/drivers/i2c/busses/Kconfig
-+++ b/drivers/i2c/busses/Kconfig
-@@ -20,4 +20,12 @@ config I2C_OMAP
- 	bool "OMAP I2C Master driver"
- 	depends on ARCH_OMAP
- 
-+config I2C_VERSATILE
-+	tristate "ARM Versatile/Realview I2C bus support"
-+	depends on ARCH_VERSATILE
-+	select I2C_ALGOBIT
-+	help
-+	  Say yes if you want to support the I2C serial bus on ARMs Versatile
-+	  range of platforms.
-+
- endmenu
-diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
-index 18c7c46..a30f9b8 100644
---- a/drivers/i2c/busses/Makefile
-+++ b/drivers/i2c/busses/Makefile
-@@ -1,3 +1,4 @@
- obj-$(CONFIG_I2C_GPIO)		+= i2c-gpio.o
- obj-$(CONFIG_I2C_IMX) += i2c-imx.o
- obj-$(CONFIG_I2C_OMAP) += i2c-omap.o
-+obj-$(CONFIG_I2C_VERSATILE)	+= i2c-versatile.o
-diff --git a/drivers/i2c/busses/i2c-versatile.c b/drivers/i2c/busses/i2c-versatile.c
-new file mode 100644
-index 0000000..7c99322
---- /dev/null
-+++ b/drivers/i2c/busses/i2c-versatile.c
-@@ -0,0 +1,112 @@
-+/*
-+ *  i2c-versatile.c
-+ *
-+ *  Copyright (C) 2006 ARM Ltd.
-+ *  written by Russell King, Deep Blue Solutions Ltd.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+#include <common.h>
-+#include <driver.h>
-+#include <i2c/i2c.h>
-+#include <i2c/i2c-algo-bit.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include <io.h>
-+
-+#define I2C_CONTROL	0x00
-+#define I2C_CONTROLS	0x00
-+#define I2C_CONTROLC	0x04
-+#define SCL		(1 << 0)
-+#define SDA		(1 << 1)
-+
-+struct i2c_versatile {
-+	struct i2c_adapter	 adap;
-+	struct i2c_algo_bit_data algo;
-+	void __iomem		 *base;
-+};
-+
-+static void i2c_versatile_setsda(void *data, int state)
-+{
-+	struct i2c_versatile *i2c = data;
-+
-+	writel(SDA, i2c->base + (state ? I2C_CONTROLS : I2C_CONTROLC));
-+}
-+
-+static void i2c_versatile_setscl(void *data, int state)
-+{
-+	struct i2c_versatile *i2c = data;
-+
-+	writel(SCL, i2c->base + (state ? I2C_CONTROLS : I2C_CONTROLC));
-+}
-+
-+static int i2c_versatile_getsda(void *data)
-+{
-+	struct i2c_versatile *i2c = data;
-+	return !!(readl(i2c->base + I2C_CONTROL) & SDA);
-+}
-+
-+static int i2c_versatile_getscl(void *data)
-+{
-+	struct i2c_versatile *i2c = data;
-+	return !!(readl(i2c->base + I2C_CONTROL) & SCL);
-+}
-+
-+static struct i2c_algo_bit_data i2c_versatile_algo = {
-+	.setsda	= i2c_versatile_setsda,
-+	.setscl = i2c_versatile_setscl,
-+	.getsda	= i2c_versatile_getsda,
-+	.getscl = i2c_versatile_getscl,
-+	.udelay	= 30,
-+	.timeout_ms = 100,
-+};
-+
-+static int i2c_versatile_probe(struct device_d *dev)
-+{
-+	struct i2c_versatile *i2c;
-+	int ret;
-+
-+	i2c = kzalloc(sizeof(struct i2c_versatile), GFP_KERNEL);
-+	if (!i2c) {
-+		ret = -ENOMEM;
-+		goto err_release;
-+	}
-+
-+	i2c->base = dev_request_mem_region(dev, 0);
-+	if (!i2c->base) {
-+		ret = -ENOMEM;
-+		goto err_free;
-+	}
-+
-+	writel(SCL | SDA, i2c->base + I2C_CONTROLS);
-+
-+	i2c->adap.algo_data = &i2c->algo;
-+	i2c->adap.dev.parent = dev;
-+	i2c->algo = i2c_versatile_algo;
-+	i2c->algo.data = i2c;
-+
-+	i2c->adap.nr = dev->id;
-+	ret = i2c_bit_add_numbered_bus(&i2c->adap);
-+	if (ret >= 0) {
-+		return 0;
-+	}
-+
-+ err_free:
-+	kfree(i2c);
-+ err_release:
-+	return ret;
-+}
-+
-+static struct driver_d i2c_versatile_driver = {
-+	.name	= "versatile-i2c",
-+	.probe	= i2c_versatile_probe,
-+};
-+
-+static int __init i2c_versatile_init(void)
-+{
-+	return platform_driver_register(&i2c_versatile_driver);
-+}
-+
-+device_initcall(i2c_versatile_init);
--- 
-1.7.10.4
+v2 rebase agains i2c patch serie v2
 
+The following changes since commit 244b46fb5c4663cba1df182670c212b8b4b7a4b0:
+
+  m25p80: sync flash support with the kernel (2012-11-02 02:28:41 +0800)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/at91sam9x5ek_mci_spi
+
+for you to fetch changes up to 9d74c51ca7d8d9a959aa989f83bbb3e1a9e3a129:
+
+  at91sam9x5ek: add mci support (2012-11-02 02:28:42 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (4):
+      at91sam9x5: add spi support
+      at91sam9x5ek: add spi support
+      at91sam9x5: add mci support
+      at91sam9x5ek: add mci support
+
+ arch/arm/boards/at91sam9x5ek/init.c     |   57 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/configs/at91sam9x5ek_defconfig |   10 +++++++---
+ arch/arm/mach-at91/at91sam9x5.c         |    4 ++++
+ arch/arm/mach-at91/at91sam9x5_devices.c |  124 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 192 insertions(+), 3 deletions(-)
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
