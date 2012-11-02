@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp21.mail.ru ([94.100.176.174])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TUEah-0005yQ-Uv
- for barebox@lists.infradead.org; Fri, 02 Nov 2012 10:35:09 +0000
-Date: Fri, 2 Nov 2012 14:35:03 +0400
-From: Alexander Shiyan <shc_work@mail.ru>
-Message-Id: <20121102143503.c0daefb7b5f19478daf95720@mail.ru>
-In-Reply-To: <20121102102429.GR29599@game.jcrosoft.org>
-References: <1351847836-8221-1-git-send-email-shc_work@mail.ru>
- <20121102102429.GR29599@game.jcrosoft.org>
-Mime-Version: 1.0
+Received: from 16.mo5.mail-out.ovh.net ([87.98.174.144]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TUJnz-0003T1-SI
+ for barebox@lists.infradead.org; Fri, 02 Nov 2012 16:09:13 +0000
+Received: from mail183.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 9C1B1FFB051
+ for <barebox@lists.infradead.org>; Fri,  2 Nov 2012 17:16:23 +0100 (CET)
+Date: Fri, 2 Nov 2012 17:06:59 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121102160659.GS29599@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,49 +24,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4 1/3] ARM: Add initial support for CLPS711X architecture
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/2] add spi command
+To: barebox@lists.infradead.org
 
-On Fri, 2 Nov 2012 11:24:29 +0100
-Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
+HI,
 
-...
-> > +static int clocks_init(void)
-> > +{
-> > +	int osc, ext, pll, cpu, timer;
-> > +	u32 tmp;
-> > +
-> > +	osc = 3686400;
-> > +	ext = 13000000;
-> > +
-> > +	tmp = readl(PLLR) >> 24;
-> > +	if (tmp)
-> > +		pll = (osc * tmp) / 2;
-> > +	else
-> > +		pll = 73728000; /* Default value for old CPUs */
-> > +
-> > +	tmp = readl(SYSFLG2);
-> > +	if (tmp & SYSFLG2_CKMODE) {
-> > +		cpu = ext;
-> > +		bus_clk.rate = cpu;
-> > +	} else {
-> > +		cpu = pll;
-> > +		if (cpu >= 36864000)
-> > +			bus_clk.rate = cpu / 2;
-> > +		else
-> > +			bus_clk.rate = 36864000 / 2;
-> > +	}
-> > +
-> > +	uart_clk.rate = bus_clk.rate / 10;
-> this wrong split clocksource driver and clocks init
-> 
-> the clock driver will have to go to drivers/clocksource
-I remember about it, and as soon as clocksource go into master, I will
-make the necessary modifications.
+	while debugging a spi issue I found we have a i2c commands but no spi
+	command
 
--- 
-Alexander Shiyan <shc_work@mail.ru>
+	So introduce one
+
+The following changes since commit 56371f4e8446d04d2a5608dd5890fd87a50f888e:
+
+  iomux-imx35: add missing comma in pad definition (2012-11-01 16:32:12 +0100)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/command_spi
+
+for you to fetch changes up to 3d6660a40aa5a51215a1909fd2fb5702f0e6558b:
+
+  introduce spi command (2012-11-02 08:55:11 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (2):
+      spi: introduce spi_get_master
+      introduce spi command
+
+ commands/Kconfig  |    6 ++++++
+ commands/Makefile |    1 +
+ commands/spi.c    |  126 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/spi/spi.c |   12 ++++++++++++
+ include/spi/spi.h |    2 ++
+ 5 files changed, 147 insertions(+)
+ create mode 100644 commands/spi.c
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
