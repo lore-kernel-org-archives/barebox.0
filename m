@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mo2.mail-out.ovh.net ([178.32.228.2])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TUc3o-00023q-8m
- for barebox@lists.infradead.org; Sat, 03 Nov 2012 11:38:45 +0000
+ id 1TUc3n-00023N-DG
+ for barebox@lists.infradead.org; Sat, 03 Nov 2012 11:38:44 +0000
 Received: from mail401.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 1745DDC2458
- for <barebox@lists.infradead.org>; Sat,  3 Nov 2012 12:45:56 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 11076DC244D
+ for <barebox@lists.infradead.org>; Sat,  3 Nov 2012 12:45:54 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat,  3 Nov 2012 12:36:32 +0100
-Message-Id: <1351942593-26400-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1351942593-26400-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat,  3 Nov 2012 12:36:30 +0100
+Message-Id: <1351942593-26400-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20121103113406.GX29599@game.jcrosoft.org>
 References: <20121103113406.GX29599@game.jcrosoft.org>
- <1351942593-26400-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,7 +24,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] at91sam9x5: add mci support
+Subject: [PATCH 1/4] at91sam9x5: add spi support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
@@ -35,91 +34,91 @@ Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
  2 files changed, 64 insertions(+)
 
 diff --git a/arch/arm/mach-at91/at91sam9x5.c b/arch/arm/mach-at91/at91sam9x5.c
-index a9065ff..7c7d997 100644
+index c256989..a9065ff 100644
 --- a/arch/arm/mach-at91/at91sam9x5.c
 +++ b/arch/arm/mach-at91/at91sam9x5.c
-@@ -207,6 +207,8 @@ static struct clk_lookup periph_clocks_lookups[] = {
+@@ -205,6 +205,8 @@ static struct clk_lookup periph_clocks_lookups[] = {
+ 	CLKDEV_CON_DEV_ID("macb_clk", "macb0", &macb0_clk),
+ 	CLKDEV_CON_DEV_ID("macb_clk", "macb1", &macb1_clk),
  	CLKDEV_CON_ID("ohci_clk", &uhphs_clk),
- 	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
- 	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
-+	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci0", &mmc0_clk),
-+	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci1", &mmc1_clk),
++	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
++	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
  };
  
  static struct clk_lookup usart_clocks_lookups[] = {
 diff --git a/arch/arm/mach-at91/at91sam9x5_devices.c b/arch/arm/mach-at91/at91sam9x5_devices.c
-index 710ded7..14fcb1e 100644
+index 5a24325..710ded7 100644
 --- a/arch/arm/mach-at91/at91sam9x5_devices.c
 +++ b/arch/arm/mach-at91/at91sam9x5_devices.c
-@@ -123,6 +123,68 @@ void at91_add_device_eth(int id, struct at91_ether_platform_data *data)
- void at91_add_device_eth(int id, struct at91_ether_platform_data *data) {}
+@@ -228,6 +228,68 @@ void at91_add_device_i2c(short i2c_id, struct i2c_board_info *devices, int nr_de
  #endif
  
-+#if defined(CONFIG_MCI_ATMEL)
-+/* Consider only one slot : slot 0 */
-+void __init at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
+ /* --------------------------------------------------------------------
++ *  SPI
++ * -------------------------------------------------------------------- */
++
++#if defined(CONFIG_DRIVER_SPI_ATMEL)
++static unsigned spi0_standard_cs[4] = { AT91_PIN_PA14, AT91_PIN_PA7, AT91_PIN_PA1, AT91_PIN_PB3 };
++
++static unsigned spi1_standard_cs[4] = { AT91_PIN_PA8, AT91_PIN_PA0, AT91_PIN_PA31, AT91_PIN_PA30 };
++
++static struct at91_spi_platform_data spi_pdata[] = {
++	[0] = {
++		.chipselect = spi0_standard_cs,
++		.num_chipselect = ARRAY_SIZE(spi0_standard_cs),
++	},
++	[1] = {
++		.chipselect = spi1_standard_cs,
++		.num_chipselect = ARRAY_SIZE(spi1_standard_cs),
++	},
++};
++
++void at91_add_device_spi(int spi_id, struct at91_spi_platform_data *pdata)
 +{
++	int i;
++	int cs_pin;
 +	resource_size_t start = ~0;
 +
-+	if (!data)
-+		return;
++	BUG_ON(spi_id > 1);
 +
-+	/* Must have at least one usable slot */
-+	if (!data->bus_width)
-+		return;
++	if (!pdata)
++		pdata = &spi_pdata[spi_id];
 +
-+	/* input/irq */
-+	if (data->detect_pin) {
-+		at91_set_gpio_input(data->detect_pin, 1);
-+		at91_set_deglitch(data->detect_pin, 1);
-+	}
-+	if (data->wp_pin)
-+		at91_set_gpio_input(data->wp_pin, 1);
++	for (i = 0; i < pdata->num_chipselect; i++) {
++		cs_pin = pdata->chipselect[i];
 +
-+	if (mmc_id == 0) {		/* MCI0 */
-+		start = AT91SAM9X5_BASE_MCI0;
-+
-+		/* CLK */
-+		at91_set_A_periph(AT91_PIN_PA17, 0);
-+
-+		/* CMD */
-+		at91_set_A_periph(AT91_PIN_PA16, 1);
-+
-+		/* DAT0, maybe DAT1..DAT3 */
-+		at91_set_A_periph(AT91_PIN_PA15, 1);
-+		if (data->bus_width == 4) {
-+			at91_set_A_periph(AT91_PIN_PA18, 1);
-+			at91_set_A_periph(AT91_PIN_PA19, 1);
-+			at91_set_A_periph(AT91_PIN_PA20, 1);
-+		}
-+	} else {			/* MCI1 */
-+		start = AT91SAM9X5_BASE_MCI1;
-+
-+		/* CLK */
-+		at91_set_B_periph(AT91_PIN_PA13, 0);
-+
-+		/* CMD */
-+		at91_set_B_periph(AT91_PIN_PA12, 1);
-+
-+		/* DAT0, maybe DAT1..DAT3 */
-+		at91_set_B_periph(AT91_PIN_PA11, 1);
-+		if (data->bus_width == 4) {
-+			at91_set_B_periph(AT91_PIN_PA2, 1);
-+			at91_set_B_periph(AT91_PIN_PA3, 1);
-+			at91_set_B_periph(AT91_PIN_PA4, 1);
-+		}
++		/* enable chip-select pin */
++		if (cs_pin > 0)
++			at91_set_gpio_output(cs_pin, 1);
 +	}
 +
-+	add_generic_device("atmel_mci", mmc_id, NULL, start, SZ_16K,
-+			   IORESOURCE_MEM, data);
++	/* Configure SPI bus(es) */
++	switch (spi_id) {
++	case 0:
++		start = AT91SAM9X5_BASE_SPI0;
++		at91_set_A_periph(AT91_PIN_PA11, 0);	/* SPI0_MISO */
++		at91_set_A_periph(AT91_PIN_PA12, 0);	/* SPI0_MOSI */
++		at91_set_A_periph(AT91_PIN_PA13, 0);	/* SPI0_SPCK */
++		break;
++	case 1:
++		start = AT91SAM9X5_BASE_SPI1;
++		at91_set_B_periph(AT91_PIN_PA21, 0);	/* SPI1_MISO */
++		at91_set_B_periph(AT91_PIN_PA22, 0);	/* SPI1_MOSI */
++		at91_set_B_periph(AT91_PIN_PA23, 0);	/* SPI1_SPCK */
++		break;
++	}
++
++	add_generic_device("atmel_spi", spi_id, NULL, start, SZ_16K,
++			   IORESOURCE_MEM, pdata);
 +}
 +#else
-+void __init at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data) {}
++void at91_add_device_spi(int spi_id, struct at91_spi_platform_data *pdata) {}
 +#endif
 +
- /* --------------------------------------------------------------------
-  *  NAND / SmartMedia
++/* --------------------------------------------------------------------
+  *  UART
   * -------------------------------------------------------------------- */
+ 
 -- 
 1.7.10.4
 
