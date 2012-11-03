@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
- helo=mo2.mail-out.ovh.net)
+Received: from mo2.mail-out.ovh.net ([178.32.228.2])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TUc1O-0001ze-Bi
- for barebox@lists.infradead.org; Sat, 03 Nov 2012 11:36:14 +0000
+ id 1TUc3o-00023r-8t
+ for barebox@lists.infradead.org; Sat, 03 Nov 2012 11:38:45 +0000
 Received: from mail401.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id B1AACDC244D
- for <barebox@lists.infradead.org>; Sat,  3 Nov 2012 12:43:25 +0100 (CET)
-Date: Sat, 3 Nov 2012 12:34:06 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 22910DC2462
+ for <barebox@lists.infradead.org>; Sat,  3 Nov 2012 12:45:56 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121103113406.GX29599@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Sat,  3 Nov 2012 12:36:33 +0100
+Message-Id: <1351942593-26400-4-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1351942593-26400-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20121103113406.GX29599@game.jcrosoft.org>
+ <1351942593-26400-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,58 +20,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4 v3] at91sam9x5ek: add spi and mci support
+Subject: [PATCH 4/4] at91sam9x5ek: add mci support
 To: barebox@lists.infradead.org
 
-HI,
-	v3: rebase on the v3 of at91sam9xek i2c support
+only add mci0 (microSD slot) as mci1 conflict with spi0
 
-	with this +1 patch serie the support of the at91sam9x5ek is mostly
-	complete
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/boards/at91sam9x5ek/init.c     |   20 ++++++++++++++++++++
+ arch/arm/configs/at91sam9x5ek_defconfig |    5 +++--
+ 2 files changed, 23 insertions(+), 2 deletions(-)
 
-	This will add spi and mci0 support as spi0 and mci0 conflict
+diff --git a/arch/arm/boards/at91sam9x5ek/init.c b/arch/arm/boards/at91sam9x5ek/init.c
+index d97da2b..4b3c099 100644
+--- a/arch/arm/boards/at91sam9x5ek/init.c
++++ b/arch/arm/boards/at91sam9x5ek/init.c
+@@ -115,6 +115,25 @@ static void ek_add_device_eth(void)
+ 	at91_add_device_eth(0, &macb_pdata);
+ }
+ 
++/*
++ * MCI (SD/MMC)
++ */
++/* mci0 detect_pin is revision dependent */
++static struct atmel_mci_platform_data mci0_data = {
++	.bus_width	= 4,
++	.detect_pin	= AT91_PIN_PD15,
++	.wp_pin		= 0,
++};
++
++static void ek_add_device_mci(void)
++{
++	if (at91sam9x5ek_cm_is_vendor(VENDOR_COGENT))
++		mci0_data.detect_pin = 0;
++
++	/* MMC0 */
++	at91_add_device_mci(0, &mci0_data);
++}
++
+ struct qt1070_platform_data qt1070_pdata = {
+ 	.irq_pin	= AT91_PIN_PA7,
+ };
+@@ -225,6 +244,7 @@ static int at91sam9x5ek_devices_init(void)
+ 	ek_add_device_nand();
+ 	ek_add_device_eth();
+ 	ek_add_device_spi();
++	ek_add_device_mci();
+ 	at91_add_device_usbh_ohci(&ek_usbh_data);
+ 	ek_add_led();
+ 	ek_add_device_i2c();
+diff --git a/arch/arm/configs/at91sam9x5ek_defconfig b/arch/arm/configs/at91sam9x5ek_defconfig
+index 5b17002..354cf08 100644
+--- a/arch/arm/configs/at91sam9x5ek_defconfig
++++ b/arch/arm/configs/at91sam9x5ek_defconfig
+@@ -65,8 +65,9 @@ CONFIG_NAND=y
+ # CONFIG_NAND_ECC_HW_NONE is not set
+ CONFIG_NAND_ATMEL=y
+ CONFIG_UBI=y
+-CONFIG_DISK=y
+-CONFIG_DISK_WRITE=y
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++CONFIG_MCI_ATMEL=y
+ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
+ CONFIG_LED_TRIGGERS=y
+-- 
+1.7.10.4
 
-	We are still missing framebuffer, usb host and device and hardware i2c support
-	but this wil be added later
-
-	This patch serie depedsn on the at91sam9x5ek i2c and m25p80 patcheries
-
-	the correct version
-
-	this one work but brake the etherent as it mux the 4 cs as gpio and we
-	use them on the eth0
-
-The following changes since commit b3a0963d358e14180e9bbde68ab78fdebae071b7:
-
-  m25p80: sync flash support with the kernel (2012-11-03 04:23:15 +0800)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/at91sam9x5ek_mci_spi
-
-for you to fetch changes up to dc7e1ce2a4ca879d07ba5786cfaa84f54d2ee763:
-
-  at91sam9x5ek: add mci support (2012-11-03 04:23:48 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (4):
-      at91sam9x5: add spi support
-      at91sam9x5ek: add spi support
-      at91sam9x5: add mci support
-      at91sam9x5ek: add mci support
-
- arch/arm/boards/at91sam9x5ek/init.c     |   57 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/configs/at91sam9x5ek_defconfig |   10 +++++++---
- arch/arm/mach-at91/at91sam9x5.c         |    4 ++++
- arch/arm/mach-at91/at91sam9x5_devices.c |  124 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 192 insertions(+), 3 deletions(-)
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
