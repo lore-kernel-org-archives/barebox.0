@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo3.mail-out.ovh.net ([178.32.228.3])
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TUw4u-00036Q-DQ
- for barebox@lists.infradead.org; Sun, 04 Nov 2012 09:01:13 +0000
-Received: from mail181.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 92BF0FFB250
- for <barebox@lists.infradead.org>; Sun,  4 Nov 2012 10:11:24 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun,  4 Nov 2012 09:59:02 +0100
-Message-Id: <1352019542-3237-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1352019542-3237-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20121104085453.GB29599@game.jcrosoft.org>
- <1352019542-3237-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1TV4OY-0005mR-8o
+ for barebox@lists.infradead.org; Sun, 04 Nov 2012 17:54:04 +0000
+Received: from beldin (unknown [IPv6:2a01:e35:2f37:a360:bdc2:bfed:6e53:2b33])
+ by smtp1-g21.free.fr (Postfix) with ESMTP id D6843940139
+ for <barebox@lists.infradead.org>; Sun,  4 Nov 2012 18:53:52 +0100 (CET)
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Date: Sun, 04 Nov 2012 18:53:51 +0100
+Message-ID: <87zk2xuuds.fsf@free.fr>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,200 +18,98 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] introduce spi command
+Subject: Ramfs and NULL pointer
 To: barebox@lists.infradead.org
 
-usefull to debug spi
+Hi there,
 
-The command allow to read/write on a spi device
+Lately, I see null pointer dereferences in barebox.
+I traced the culprit to ramfs ...
+From what I've seen, the inodes list is a bit ... weird ... especially the last
+item in the list contains null pointers ...
 
-Usage: spi [OPTION] [data to write 0xXX]
-write/read spi device.
-  -b <bus_num>  spi bus number (default = 0)
-  -r <count>    to read
-  -c <cs>       chip select (default = 0)
-  -m <mode>     spi mode (default = 0)
-  -f <hz>       max_speed_hz (default = 1MHz)
-  -w <bit>      bits_per_word (default = 8)
-  -v            verbose
+I wonder if anybody sees such an effect ...
+My board (arm/mioa701) has not changed much wrt the environment embedded ... The
+only thing I did lately was to rebase against "next" branch.
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- commands/Kconfig  |    6 +++
- commands/Makefile |    1 +
- commands/spi.c    |  126 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 133 insertions(+)
- create mode 100644 commands/spi.c
+I joined my debugging session at the end to show my problem. The rjk_abort()
+function was introduced for breakpoint purpose only.
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 16706d3..f7cbd67 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -597,6 +597,12 @@ config CMD_I2C
- 	  include i2c_probe, i2c_read and i2c_write commands to communicate
- 	  on i2c bus.
- 
-+config CMD_SPI
-+	bool
-+	depends on SPI
-+	prompt "spi command"
-+	help
-+
- config CMD_LED
- 	bool
- 	depends on LED
-diff --git a/commands/Makefile b/commands/Makefile
-index 610be55..19d496e 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -55,6 +55,7 @@ obj-$(CONFIG_USB_GADGET_SERIAL)	+= usbserial.o
- obj-$(CONFIG_CMD_GPIO)		+= gpio.o
- obj-$(CONFIG_CMD_UNCOMPRESS)	+= uncompress.o
- obj-$(CONFIG_CMD_I2C)		+= i2c.o
-+obj-$(CONFIG_CMD_SPI)		+= spi.o
- obj-$(CONFIG_CMD_UBI)		+= ubi.o
- obj-$(CONFIG_CMD_MENU)		+= menu.o
- obj-$(CONFIG_CMD_PASSWD)	+= passwd.o
-diff --git a/commands/spi.c b/commands/spi.c
-new file mode 100644
-index 0000000..b4663f2
---- /dev/null
-+++ b/commands/spi.c
-@@ -0,0 +1,126 @@
-+/*
-+ * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2 only
-+ *
-+ */
-+
-+#include <common.h>
-+#include <command.h>
-+#include <errno.h>
-+#include <malloc.h>
-+#include <getopt.h>
-+#include <spi/spi.h>
-+
-+static int do_spi(int argc, char *argv[])
-+{
-+	struct spi_device spi;
-+	int bus = 0;
-+	int read = 0;
-+	int verbose = 0;
-+	int opt, count, i, ret;
-+	int byte_per_word;
-+
-+	u8 *tx_buf, *rx_buf;
-+
-+	memset(&spi, 0, sizeof(struct spi_device));
-+
-+	spi.max_speed_hz = 1 * 1000 * 1000;
-+	spi.bits_per_word = 8;
-+
-+	while ((opt = getopt(argc, argv, "b:c:r:m:f:w:v")) > 0) {
-+		switch (opt) {
-+		case 'b':
-+			bus = simple_strtol(optarg, NULL, 0);
-+			break;
-+		case 'r':
-+			read = simple_strtol(optarg, NULL, 0);
-+			break;
-+		case 'c':
-+			spi.chip_select = simple_strtoul(optarg, NULL, 0);
-+			break;
-+		case 'm':
-+			spi.mode = simple_strtoul(optarg, NULL, 0);
-+			break;
-+		case 'f':
-+			spi.max_speed_hz = simple_strtoul(optarg, NULL, 0);
-+			break;
-+		case 'w':
-+			spi.bits_per_word = simple_strtoul(optarg, NULL, 0);
-+			break;
-+		case 'v':
-+			verbose = 1;
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
-+	count = argc - optind;
-+
-+	if ((!read && !count) || !spi.max_speed_hz || !spi.bits_per_word)
-+		return COMMAND_ERROR_USAGE;
-+
-+
-+	spi.master = spi_get_master(bus);
-+	if (!spi.master) {
-+		printf("spi bus %d not found\n", bus);
-+		return -ENODEV;
-+	}
-+
-+	if (spi.chip_select > spi.master->num_chipselect) {
-+		printf("spi chip select (%d)> master num chipselect (%d)\n",
-+			spi.chip_select, spi.master->num_chipselect);
-+		return -EINVAL;
-+	}
-+
-+	tx_buf = xmalloc(count);
-+	rx_buf = xmalloc(count);
-+
-+	for (i = 0; i < count; i++)
-+		tx_buf[i] = (u8) simple_strtol(argv[optind + i], NULL, 16);
-+
-+	ret = spi_write_then_read(&spi, tx_buf, count, rx_buf, read);
-+	if (ret)
-+		goto out;
-+
-+	byte_per_word = min(spi.bits_per_word / 8, 1);
-+	if (verbose) {
-+		printf("device config\n");
-+		printf("    bus_num       = %d\n", spi.master->bus_num);
-+		printf("    max_speed_hz  = %d\n", spi.max_speed_hz);
-+		printf("    chip_select   = %d\n", spi.chip_select);
-+		printf("    mode          = 0x%x\n", spi.mode);
-+		printf("    bits_per_word = %d\n", spi.bits_per_word);
-+		printf("\n");
-+
-+		printf("wrote %i bytes\n", count);
-+		memory_display(tx_buf, 0, count, byte_per_word);
-+
-+		printf("read %i bytes\n", read);
-+	}
-+
-+	memory_display(rx_buf, 0, read, byte_per_word);
-+
-+out:
-+	free(rx_buf);
-+	free(tx_buf);
-+	return ret;
-+}
-+
-+static const __maybe_unused char cmd_spi_help[] =
-+"Usage: spi [OPTION] [data to write 0xXX]\n"
-+"write/read spi device.\n"
-+"  -b <bus_num>  spi bus number (default = 0)\n"
-+"  -r <count>    to read\n"
-+"  -c <cs>       chip select (default = 0)\n"
-+"  -m <mode>     spi mode (default = 0)\n"
-+"  -f <hz>       max_speed_hz (default = 1MHz)\n"
-+"  -w <bit>      bits_per_word (default = 8)\n"
-+"  -v            verbose\n";
-+
-+BAREBOX_CMD_START(spi)
-+	.cmd		= do_spi,
-+	.usage		= "write/read spi device",
-+	BAREBOX_CMD_HELP(cmd_spi_help)
-+BAREBOX_CMD_END
--- 
-1.7.10.4
+If anybody has any clue please tell me.
 
+Cheers.
+
+--
+Robert
+
+#0  rjk_abort () at lib/string.c:144
+#1  0xa3f19a10 in strcmp (cs=0x0, ct=0xa3025c99 "env") at lib/string.c:157
+#2  0xa3f28758 in lookup (priv=<value optimized out>, path=<value optimized out>) at fs/ramfs.c:72
+#3  rlookup (priv=<value optimized out>, path=<value optimized out>) at fs/ramfs.c:95
+#4  0xa3f287a0 in ramfs_stat (dev=<value optimized out>, filename=0xa3025c99 "env", s=0x2e) at fs/ramfs.c:549
+#5  0xa3f2d8a4 in lstat (filename=<value optimized out>, s=0xa2effb10) at fs/fs.c:1412
+#6  0xa3f2e10c in realfile (pathname=<value optimized out>, s=0xa2effb10) at fs/fs.c:582
+#7  0xa3f2e2cc in open (pathname=0x0, flags=0) at fs/fs.c:624
+#8  0xa3f2e508 in read_file (filename=0xa2f55220 "/env/bin/mtd_env_override", size=0x0) at fs/fs.c:47
+#9  0xa3f01dfc in source_script (path=0x0, argc=<value optimized out>, argv=0xfffffff2) at common/hush.c:1809
+#10 0xa3f01e80 in execute_script (path=0xa2f55220 "/env/bin/mtd_env_override", argc=1, argv=0xa2fa5668) at common/hush.c:1794
+#11 0xa3f00140 in binfmt_run (file=0xa2f55220 "/env/bin/mtd_env_override", argc=1, argv=0xa2fa5668) at common/binfmt.c:26
+#12 0xa3f001cc in execute_binfmt (argc=1, argv=0xa2fa5668) at common/binfmt.c:65
+#13 0xa3f01964 in run_pipe_real (ctx=0xa2effda8, pi=0xa2fa5028) at common/hush.c:790
+#14 run_list_real (ctx=0xa2effda8, pi=0xa2fa5028) at common/hush.c:914
+#15 0xa3f01bfc in run_list (ctx=0xa2effda8, inp=0xa2effd7c, flag=2) at common/hush.c:1033
+#16 parse_stream_outer (ctx=0xa2effda8, inp=0xa2effd7c, flag=2) at common/hush.c:1618
+#17 0xa3f01d80 in parse_string_outer (ctx=0xa2effda8, 
+    s=0xa2f015a0 "#!/bin/sh\n\nPATH=/env/bin\nexport PATH\n\n. /env/config\naddpart /dev/mtd0 $mtdparts\n\nusbserial -s \"Mio A701 usb gadget\"\nled keyboard 0\n\nsdcard_override\n\nfb0.enable=1\nsplash /dev/mtd0.barebox-logo\n\nmtd_env"..., flag=2) at common/hush.c:1662
+#18 0xa3f01e24 in source_script (path=<value optimized out>, argc=<value optimized out>, argv=<value optimized out>) at common/hush.c:1815
+#19 0xa3f01fdc in do_source (argc=2, argv=<value optimized out>) at common/hush.c:1877
+#20 0xa3f05b2c in execute_command (argc=2, argv=0xa2f01530) at common/command.c:77
+#21 0xa3f01964 in run_pipe_real (ctx=0xa2efff58, pi=0xa2f0fe10) at common/hush.c:790
+#22 run_list_real (ctx=0xa2efff58, pi=0xa2f0fe10) at common/hush.c:914
+#23 0xa3f01bfc in run_list (ctx=0xa2efff58, inp=0xa2efff2c, flag=2) at common/hush.c:1033
+#24 parse_stream_outer (ctx=0xa2efff58, inp=0xa2efff2c, flag=2) at common/hush.c:1618
+#25 0xa3f01d80 in parse_string_outer (ctx=0xa2efff58, s=0xa3f31bda "source /env/bin/init", flag=2) at common/hush.c:1662
+#26 0xa3f01eb8 in run_command (cmd=0x0, flag=<value optimized out>) at common/hush.c:1783
+#27 0xa3f073a0 in start_barebox () at common/startup.c:124
+#28 0xa3f305b8 in board_init_lowlevel_return () at arch/arm/cpu/start.c:62
+Backtrace stopped: frame did not save the PC
+
+(gdb) up
+#5  0xa3f2d8a4 in lstat (filename=<value optimized out>, s=0xa2effb10) at fs/fs.c:1412
+1412		ret = fsdrv->stat(dev, f, s);
+(gdb) p dev
+$14 = (struct device_d *) 0xa2f00644
+(gdb) p *dev
+$15 = {name = "ramfs", '\000' <repeats 26 times>, id = 0, resource = 0x0, num_resources = 0, platform_data = 0x0, priv = 0xa2f00708, type_data = 0x0, driver = 0xa3f3b2dc, list = {
+    next = 0xa2f00cd8, prev = 0xa2f004f4}, bus_list = {next = 0xa2f00ce0, prev = 0xa3f3b464}, children = {next = 0xa2f00690, prev = 0xa2f00690}, sibling = {next = 0x0, prev = 0x0}, active = {
+    next = 0xa3f3a658, prev = 0xa2f00cf8}, parent = 0x0, bus = 0xa3f3b44c, parameters = {next = 0xa2f006b0, prev = 0xa2f006b0}, cdevs = {next = 0xa2f006b8, prev = 0xa2f006b8}, id_entry = 0x0, 
+  device_node = 0x0, of_id_entry = 0x0}
+
+(gdb) p *(struct ramfs_node *)0xa2f00738
+No struct type named ramfs_node.
+(gdb) p *(struct ramfs_inode *)0xa2f00738
+$19 = {name = 0xa2f00768 ".", parent = 0xa2f00708, next = 0xa2f00778, child = 0xa2f00738, symlink = 0x0, mode = 16384, handle = 0x0, size = 0, data = 0x0, recent_chunk = 0, 
+  recent_chunkp = 0x0}
+(gdb) p *(struct ramfs_inode *)Quitf00738
+(gdb) p *(struct ramfs_inode *)0xa2f00738
+$20 = {name = 0xa2f00768 ".", parent = 0xa2f00708, next = 0xa2f00778, child = 0xa2f00738, symlink = 0x0, mode = 16384, handle = 0x0, size = 0, data = 0x0, recent_chunk = 0, 
+  recent_chunkp = 0x0}
+(gdb) p *(struct ramfs_inode *)0xa2f00778
+$21 = {name = 0xa2f007a8 "..", parent = 0xa2f00708, next = 0xa2f007c8, child = 0xa2f00738, symlink = 0x0, mode = 16895, handle = 0x0, size = 0, data = 0x0, recent_chunk = 0, 
+  recent_chunkp = 0x0}
+(gdb) p *(struct ramfs_inode *)0xa2f007c8
+$22 = {name = 0x0, parent = 0x0, next = 0x0, child = 0x0, symlink = 0x0, mode = 0, handle = 0x0, size = 0, data = 0x0, recent_chunk = 0, recent_chunkp = 0x0}
+(gdb) p *(struct ramfs_inode *)0xa2f00738
+$23 = {name = 0xa2f00768 ".", parent = 0xa2f00708, next = 0xa2f00778, child = 0xa2f00738, symlink = 0x0, mode = 16384, handle = 0x0, size = 0, data = 0x0, recent_chunk = 0, 
+  recent_chunkp = 0x0}
+(gdb) p *(struct ramfs_priv *)0xa2f00708
+$18 = {root = {name = 0xa3f314f8 "/", parent = 0xa2f00708, next = 0x0, child = 0xa2f00738, symlink = 0x0, mode = 16895, handle = 0x0, size = 0, data = 0x0, recent_chunk = 0, 
+    recent_chunkp = 0x0}}
+(gdb) quit
 
 _______________________________________________
 barebox mailing list
