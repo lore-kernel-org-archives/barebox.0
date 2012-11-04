@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo1.mail-out.ovh.net ([188.165.45.168]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TV5KI-0000Qv-EX
- for barebox@lists.infradead.org; Sun, 04 Nov 2012 18:53:43 +0000
-Received: from mail405.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 468A9FFAC25
- for <barebox@lists.infradead.org>; Sun,  4 Nov 2012 20:04:15 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun,  4 Nov 2012 19:51:32 +0100
-Message-Id: <1352055092-21128-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TV975-0002tK-K9
+ for barebox@lists.infradead.org; Sun, 04 Nov 2012 22:56:20 +0000
+Date: Sun, 4 Nov 2012 23:56:14 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121104225614.GU1641@pengutronix.de>
+References: <87zk2xuuds.fsf@free.fr>
+ <87vcdlurvc.fsf@free.fr>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <87vcdlurvc.fsf@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,55 +19,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] at91rm9200ek: enable dt support
-To: barebox@lists.infradead.org
+Subject: Re: Ramfs and NULL pointer
+To: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/boards/at91rm9200ek/env/config |    2 ++
- arch/arm/configs/at91rm9200ek_defconfig |    5 +++++
- 2 files changed, 7 insertions(+)
+On Sun, Nov 04, 2012 at 07:48:07PM +0100, Robert Jarzmik wrote:
+> Robert Jarzmik <robert.jarzmik@free.fr> writes:
+> 
+> > Hi there,
+> >
+> > Lately, I see null pointer dereferences in barebox.
+> > I traced the culprit to ramfs ...
+> 
+> Ah and if I take back v2012.09.0, the problem disappears. 
+> I'm not fully in the mood for a bisection of 544 commits ... any idea ?
 
-diff --git a/arch/arm/boards/at91rm9200ek/env/config b/arch/arm/boards/at91rm9200ek/env/config
-index a3830cb..76c180b 100644
---- a/arch/arm/boards/at91rm9200ek/env/config
-+++ b/arch/arm/boards/at91rm9200ek/env/config
-@@ -15,6 +15,8 @@ global.dhcp.vendor_id=barebox-at91rm9200ek
- kernel_loc=nfs
- # can be either 'net', 'nor' or 'initrd'
- rootfs_loc=net
-+# can be either 'nfs', 'tftp', or empty
-+oftree_loc=nfs
- 
- # can be either 'jffs2' or 'ubifs'
- rootfs_type=ubifs
-diff --git a/arch/arm/configs/at91rm9200ek_defconfig b/arch/arm/configs/at91rm9200ek_defconfig
-index 6a105c6..2bcade9 100644
---- a/arch/arm/configs/at91rm9200ek_defconfig
-+++ b/arch/arm/configs/at91rm9200ek_defconfig
-@@ -32,9 +32,14 @@ CONFIG_CMD_FLASH=y
- CONFIG_CMD_BOOTM_ZLIB=y
- CONFIG_CMD_BOOTM_BZLIB=y
- CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_VERBOSE=y
- CONFIG_CMD_BOOTM_INITRD=y
-+CONFIG_CMD_BOOTM_OFTREE=y
-+CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
-+# CONFIG_CMD_BOOTU is not set
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
-+CONFIG_CMD_OFTREE=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
+sha@dude:~/dude/barebox/barebox git lg v2012.09.0..origin/master fs/ramfs.c
+77322aa Treewide: remove address of the Free Software Foundation
+ad6c28a ramfs: add symlink and readlink support
+
+Both look harmless, so I don't think that the culprit is ramfs itself.
+
+Sorry, no idea. The good news is that due to my compile tests all 544
+commits at least should compile ;)
+
+Do you have some specific command sequence to provoke this?
+
+Sascha
+
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
