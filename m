@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from moutng.kundenserver.de ([212.227.126.186])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TVMiH-00031o-4E
- for barebox@lists.infradead.org; Mon, 05 Nov 2012 13:27:37 +0000
-Message-ID: <5097BEBE.5040706@cmotion.eu>
-Date: Mon, 05 Nov 2012 14:27:26 +0100
-From: Christian Kapeller <christian.kapeller@cmotion.eu>
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TVR5W-0003kL-K0
+ for barebox@lists.infradead.org; Mon, 05 Nov 2012 18:07:57 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1351791438-29967-1-git-send-email-robert.jarzmik@free.fr>
+ <1352051724-16253-1-git-send-email-robert.jarzmik@free.fr>
+ <20121104183659.GC29599@game.jcrosoft.org>
+Date: Mon, 05 Nov 2012 19:07:39 +0100
+In-Reply-To: <20121104183659.GC29599@game.jcrosoft.org> (Jean-Christophe
+ PLAGNIOL-VILLARD's message of "Sun, 4 Nov 2012 19:36:59 +0100")
+Message-ID: <87mwyvvs7o.fsf@free.fr>
 MIME-Version: 1.0
-References: <50979E1A.2000707@cmotion.eu>
- <20121105125258.GV1641@pengutronix.de>
-In-Reply-To: <20121105125258.GV1641@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,53 +24,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: TX53: Not Bootable from next tree
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v2 1/2] commands: change Y-Modem implementation
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
+Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> writes:
 
->> I've just flashed barebox from the next tree onto a TX53-8030 module,
->> and have to report, that the board won't boot.
->>
->> Currently I've tried to run it with MMU off and setting the text-base
->> to 0x71000000, with no positive results.
->>
->> I'll do further investigation, but meanwhile does anyone have barebox
->> running on a TX53 board?
-> 
-> I just tested that it works for me as second stage. I can't test 1st
-> stage atm as I currently have no physical access to the board.
+>> +	cdev = get_current_console();
+>> +	if (NULL == cdev) {
+> this really look wired
+> 	if (!cdev)
+Yes, true. A copy-paste from loadb.c, I'll amend for v3.
 
-Until now I've used bb in a 2nd stage configuration on top of the supplied
-Redboot, and it worked without any problem.
+>> +	if (NULL == cdev) {
+> 	ditto
+Yes again.
 
-Additionally I had CONFIG_MACH_DO_LOW_LEVEL_INIT disabled which skips
-another pll setup step, that was already done by Redboot.
+>> +		printf("%s:No console device with STDIN and STDOUT\n", argv[0]);
+>> +		return -ENODEV;
+>> +	}
+>> +
+>> +	/* Load Defaults */
+>> +	if (NULL == output_file)
+> 	ditto
+Yes again.
 
-> Some guesses: Have you checked the correct the correct board revision in
-> the config? It's the default, so I assume it's correct.
+>> +static void xy_flush(struct console_device *cdev, struct kfifo *fifo)
+>> +{
+>> +	while (cdev->tstc(cdev))
+> no timeout?
+No timeout indeed, on purpose.
 
-Yes, I did check for the correct board revision, and am using the
-correct one: CONFIG_TX53_REV_XX30=y
+The short explanation is that in a purge situation, all incoming data must be
+flushed, regardless of the time it takes.
 
-> Are you using the barebox-flash-image link or barebox.bin? You have to
-> use the former because it's a compressed image.
+The long explantion is :
+ - suppose the while(cdev->tstc(cdev)) takes a lot of time
+ - this implies that :
+   => the sender is sending data as fast as the reader can consume (not quite
+   probable, but why not ...)
+   => the sender has gone crazy, as in *-Modem protocol when this function is
+   called, no more than 1029 bytes can be sent by a *sane* sender
 
-I've noticed, that the link target changes depending on build
-configuration. So I've flashed the file pointed to by barebox-flash-image.
+So let's take as granted that the sender has gone crazy (or hardware is brain
+dead). What will happen if I place a timeout here ?
+ - first, I'll obviously get out of xy_flush()
+ - then, as I receive garbage, xy_handle() will exit with either -EBADMSG or
+ -EILSEQ. So far so good.
+ - then the loady command will finish on error. Still good.
+ - then the input console will take over, and execute all the garbage sent to
+ it.
+   This is definitely something we don't want. Imagine in the garbage you have
+   something like "erase /dev/mtd0" ... Therefore, no timeout.
 
-> You might want to disable compressed image support in
->  General settings ->
->   memory layout ->
->    [ ] pre-bootoloader image
+>> +	while (cdev->tstc(cdev))
+> ditto
+Ditto.
 
-Just tried that, but without changed result.
+>> +			proto->total_SOH++;
+> no capital please
+Yep, for v3.
 
-Currently I am trying to get my PEEDI JTAG probe working with the
-board, but until then I stay in the dark.
+>> +			break;
+>> +		case STX:
+>> +			data_len = 1024;
+>> +			hdr_found = 1;
+> boolean
+I don't catch that one.
+Did you mean that hdr_found should be declared as "bool" ?
 
-Cheers,
-Christian
+>> +static int parse_first_block(struct xyz_ctxt *proto, struct xy_block *blk)
+>> +{
+>> +	int filename_len;
+>> +	char *str_num;
+>> +
+>> +	filename_len = strlen(blk->buf);
+>> +	if (filename_len > blk->len)
+>> +		return -EINVAL;
+>> +	memset(proto->filename, 0, sizeof(proto->filename));
+> no need just add 0 at the end
+>> +	strncpy(proto->filename, blk->buf, filename_len);
+Why not use strlcpy instead of memset+strncpy now I think of it ?
+
+Cheers, and thanks for the review.
+
+-- 
+Robert
 
 _______________________________________________
 barebox mailing list
