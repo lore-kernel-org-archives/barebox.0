@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo3.mail-out.ovh.net ([178.32.228.3])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TVJ8i-0002j0-HJ
- for barebox@lists.infradead.org; Mon, 05 Nov 2012 09:38:41 +0000
-Received: from mail422.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 451F0FFC073
- for <barebox@lists.infradead.org>; Mon,  5 Nov 2012 10:48:56 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  5 Nov 2012 10:36:28 +0100
-Message-Id: <1352108189-29964-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20121105092900.GD29599@game.jcrosoft.org>
-References: <20121105092900.GD29599@game.jcrosoft.org>
+Received: from moutng.kundenserver.de ([212.227.17.10])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TVKXQ-0002ne-Vz
+ for barebox@lists.infradead.org; Mon, 05 Nov 2012 11:08:18 +0000
+Message-ID: <50979E1A.2000707@cmotion.eu>
+Date: Mon, 05 Nov 2012 12:08:10 +0100
+From: Christian Kapeller <christian.kapeller@cmotion.eu>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,61 +15,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] spi: introduce spi_get_master
+Subject: TX53: Not Bootable from next tree
 To: barebox@lists.infradead.org
 
-so we can request a master usefull for the spi command
+Hi,
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/spi/spi.c |   12 ++++++++++++
- include/spi/spi.h |    2 ++
- 2 files changed, 14 insertions(+)
+I've just flashed barebox from the next tree onto a TX53-8030 module,
+and have to report, that the board won't boot.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 44040e5..6a5bd6d 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -219,6 +219,18 @@ int spi_register_master(struct spi_master *master)
- }
- EXPORT_SYMBOL(spi_register_master);
- 
-+struct spi_master *spi_get_master(int bus)
-+{
-+	struct spi_master* m;
-+
-+	list_for_each_entry(m, &spi_master_list, list) {
-+		if (m->bus_num == bus)
-+			return m;
-+	}
-+
-+	return NULL;
-+}
-+
- int spi_sync(struct spi_device *spi, struct spi_message *message)
- {
- 	return spi->master->transfer(spi, message);
-diff --git a/include/spi/spi.h b/include/spi/spi.h
-index 1773ca2..d6570a4 100644
---- a/include/spi/spi.h
-+++ b/include/spi/spi.h
-@@ -432,6 +432,8 @@ static inline ssize_t spi_w8r8(struct spi_device *spi, u8 cmd)
- 
- extern struct bus_type spi_bus;
- 
-+struct spi_master *spi_get_master(int bus);
-+
- static inline int spi_register_driver(struct driver_d *drv)
- {
- 	drv->bus = &spi_bus;
--- 
-1.7.10.4
+Currently I've tried to run it with MMU off and setting the text-base
+to 0x71000000, with no positive results.
 
+I'll do further investigation, but meanwhile does anyone have barebox
+running on a TX53 board?
+
+Cheers,
+Christian
 
 _______________________________________________
 barebox mailing list
