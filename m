@@ -1,28 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from plane.gmane.org ([80.91.229.3])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TVp9w-0000pM-9S
- for barebox@lists.infradead.org; Tue, 06 Nov 2012 19:50:06 +0000
-Received: from list by plane.gmane.org with local (Exim 4.69)
- (envelope-from <gcbb-barebox@m.gmane.org>) id 1TVp9w-00034n-Ig
- for barebox@lists.infradead.org; Tue, 06 Nov 2012 20:50:06 +0100
-Received: from h96-61-122-6.cncrtn.broadband.dynamic.tds.net ([96.61.122.6])
- by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
- id 1AlnuQ-0007hv-00
- for <barebox@lists.infradead.org>; Tue, 06 Nov 2012 20:50:04 +0100
-Received: from mdburkey by h96-61-122-6.cncrtn.broadband.dynamic.tds.net with
- local (Gmexim 0.1 (Debian)) id 1AlnuQ-0007hv-00
- for <barebox@lists.infradead.org>; Tue, 06 Nov 2012 20:50:04 +0100
-From: Michael Burkey <mdburkey@gmail.com>
-Date: Tue, 6 Nov 2012 19:48:32 +0000 (UTC)
-Message-ID: <loom.20121106T203753-607@post.gmane.org>
-References: <loom.20120719T173418-826@post.gmane.org>
- <20120719161139.GB30009@pengutronix.de>
- <loom.20120719T224910-551@post.gmane.org>
- <20120720080435.GP30009@pengutronix.de> <1343827988.3466.76.camel@mars>
- <20120801185644.52c45c4b@eb-e6520> <1343855078.3466.85.camel@mars>
- <20120802081509.GH30009@pengutronix.de>
-Mime-Version: 1.0
+Received: from 2.mo3.mail-out.ovh.net ([46.105.75.36]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TVpKS-0000xF-Gh
+ for barebox@lists.infradead.org; Tue, 06 Nov 2012 20:00:58 +0000
+Received: from mail612.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 6743DFFBDDF
+ for <barebox@lists.infradead.org>; Tue,  6 Nov 2012 20:46:08 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Tue,  6 Nov 2012 20:33:36 +0100
+Message-Id: <1352230416-9396-8-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1352230416-9396-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20121106193010.GE25679@game.jcrosoft.org>
+ <1352230416-9396-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,58 +21,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC][PATCH] pcm043: usb support --not working--
+Subject: [PATCH 8/8] at91rm9200: fix spi cs support
 To: barebox@lists.infradead.org
 
-U2FzY2hhIEhhdWVyIDxzLmhhdWVyQC4uLj4gd3JpdGVzOgoKPiAKPiBPbiBXZWQsIEF1ZyAwMSwg
-MjAxMiBhdCAxMTowNDozOFBNICswMjAwLCBDaHJpc3RvcGggRnJpdHogd3JvdGU6Cj4gPiBPbiBX
-ZWQsIDIwMTItMDgtMDEgYXQgMTg6NTYgKzAyMDAsIEVyaWMgQsOpbmFyZCB3cm90ZTogCj4gPiA+
-ID4gVGhlIGNsb2NrIHNldHRpbmdzIHNlZW1zIHRvIGJlIHRoZSBzYW1lIGFzIGZvciBldWtyZWFf
-Y3B1aW14MzUuIEVyaWM6Cj4gPiA+ID4gRG9lcyBVU0Igd29yayBmb3IgeW91IG9uIHlvdXIgYm9h
-cmQ/Cj4gPiA+ID4gCj4gPiA+IHRoYW5rcyBmb3IgdGhlIGhlYWRzIHVwIDogbm93IGl0IHdvcmtz
-Lgo+ID4gCj4gPiBncmVhdCAKPiA+IAo+ID4gPiA+IFNhc2NoYSwgSSBjdXJyZW50bHkgaGF2ZSBu
-byB3b3JraW5nIGNvbmZpZyBmb3Iga2VybmVsID49My41IHRvIGNoZWNrIGZvcgo+ID4gPiA+IGNs
-b2NrcyBpbiBkZWJ1Z2ZzLgo+ID4gPiA+IAo+ID4gPiA+IEFueSB0aG91Z2h0cyBvbiB0aGlzPwo+
-ID4gPiA+IAo+ID4gPiB0cnkgdG8gY29weSB0aGUgY29uZmlnIGluIHRoYXQgcGF0Y2ggSSBqdXN0
-IHNlbnQgCj4gPiAKPiA+IEkgZGlkIC0gd2l0aG91dCBzdWNjZXNzLiBJIHN1cHBvc2UgdGhlIGV4
-dGVybmFsIHBoeSBuZWVkcyB0byBiZQo+ID4gY29uZmlndXJlZCBwcm9wZXJseS4KPiA+IAo+ID4g
-V2hlbiB5b3UgdHlwZSB0aGUgY29tbWFuZCAidXNiIiwgeW91IGFyZSBnZXR0aW5nIGEgbGlzdCBv
-ZiBjb25uZWN0ZWQKPiA+IGRldmljZXMuIENhbiB5b3UgZXhlY3V0ZSBjb21tYW5kICJ1c2IiIGEg
-c2Vjb25kIGFuZCB0aGlyZCB0aW1lIHdpdGggdGhlCj4gPiBzYW1lIHJlc3VsdD8KPiAKPiBCeSBk
-ZWZhdWx0ICd1c2InIG5vdyBvbmx5IHByb2JlcyBvbmNlLiBUaGF0IGlzIGJlY2F1c2UgdGhlIFVT
-QiBzdGFjayBpcwo+IHRvbyBzaWxseSB0byBqdXN0IGtlZXAgYWxyZWFkeSBlbnVtYXJhdGVkIGRl
-dmljZXMsIGJ1dCBpbnN0ZWFkIGp1c3QKPiByZW1vdmVzIGFsbCBkZXZpY2VzIGFuZCByZWVudW1h
-cmF0ZXMgdGhlbS4gQmFkIHRoaW5ncyBoYXBwZW4gaWYgb25lIG9mCj4geW91ciBkZXZpY2VzIHdh
-cyBhIG1vdW50ZWQgVVNCIG1hc3Mgc3RvcmFnZSBkZXZpY2UgZm9yIGV4YW1wbGUuCj4gSWYgeW91
-IHdhbnQgdG8gcHJvYmUgbXVsdGlwbGUgdGltZXMgdHJ5IHRoZSAtZiBha2EgZm9yY2UgYWthIEkg
-a25vdyB3aGF0Cj4gSSdtIGRvaW5nIG9wdGlvbi4KPiAKPiBTYXNjaGEKPiAKClNhc2NoYSwKCkkg
-d29yayB3aXRoIEplcnJ5IGFuZCBJJ3ZlIGJlZW4gZG9pbmcgYSBsb3QgbW9yZSB0ZXN0aW5nIHdp
-dGggVVNCIGxhdGVseSBhbmQgCndlIGFyZSBzdGlsbCBoYXZpbmcgaXNzdWVzIHVuZGVyIEJhcmVi
-b3guIFdlIGFyZSBvbiBuZXcgaGFyZHdhcmUgdGhhdCBub3cgCnVzZXMgdGhlIGludGVybmFsIFBo
-eSBhbmQgZXZlcnl0aGluZyBzZWVtcyB0byB3b3JrIGZpbmQgdW5kZXIgTGludXggaXRzZWxmLgpI
-b3dldmVyLHVuZGVyIEJhcmVib3ggSSBhbSBzdGlsbCBzZWVpbmcgdGhlIGZvbGxvd2luZyBiZWhh
-dmlvdXI6CgoxKSBUaGUgZmlyc3QgdGltZSBhZnRlciByZXNldCwgd2hlbiBJIGRvIHRoZSAiVVNC
-IiBjb21tYW5kIGl0IGRldGVjdHMgdGhlCmJ1aWx0LWluIGh1YiBkZXZpY2UgYW5kIGFueSBISUQg
-ZGV2aWNlcyBJIGhhdmUgdGVzdGVkIHdpdGhvdXQgaXNzdWUuIAoyKSBBbnkgYWRkaXRpb25hbCB0
-aW1lcyBJIGRvICJVU0IgLUYiIGFmdGVyIHRoYXQgaXQgT05MWSBkZXRlY3RzIHRoZQppbnRlcm5h
-bCBodWIuCjMpIFVTQiBNYXNzIFN0b3JhZ2UgZGV2aWNlcyAoZmxhc2ggZHJpdmVzLCBoYXJkIGRy
-aXZlcywgZXQgYWwpIGFyZSBORVZFUgpkZXRlY3RlZCAtLSBhbmQgSSd2ZSB0cmllZCBhIExPVCBv
-ZiBkaWZmZXJlbnQgb25lcy4gVGhlIHZhc3QgbWFqb3JpdHkgYXJlCm5ldmVyIGV2ZW4gZGV0ZWN0
-ZWQgYXQgYWxsLCBidXQgSSBoYXZlIG9uZSByZWFsbHkgb2xkIG9uZSB0aGF0IGl0IHdpbGwgYXQK
-bGVhc3Qgc2F5ICIyIGRldmljZXMgZGV0ZWN0ZWQiIG9uIHRoZSBwcm9iZSBidXQgbmV2ZXIgc2hv
-d3MgYW55IGRlc2NyaXB0aW9uCm9mIHRoZSBkZXZpY2UuCgpXZSBhcmUgdXNpbmcgYSBQQ00wNDMg
-U09NIG9uIGEgY3VzdG9tIGNhcnJpZXIgYm9hcmQgLS0gYW5kIHRvIHRoZSBiZXN0IG9mIApteSBr
-bm93bGVkZ2UgZXZlcnl0aGluZyBpcyBzZXR1cCBwcm9wZXJseS4gSSd2ZSBhbHNvIGNoZWNrZWQg
-dGhlIFVTQiBjbG9jawphbmQgaXQgaXMgY29ycmVjdC4gSSBoYXZlIHNvIGZhciB0cmllZCB0aGlz
-IHdpdGggYm90aCBCYXJlYm94IDkgYW5kIEJhcmVib3gKMTAsIHdpdGggbm8gc3VjY2Vzcy4gSSBo
-YXZlIG1hZGUgc3VyZSB0aGF0IFVTQiBzdXBwb3J0IGlzIGNvbXBpbGVkIGluLCBhcwp3ZWxsIGFz
-IG1hc3Mgc3RvcmFnZSBzdXBwb3J0IGFuZCBGQVQgc3VwcG9ydC4KCkRvIHlvdSBoYXZlIGFueSBp
-ZGVhcyBhcyB0byB3aGF0IG1pZ2h0IGJlIGdvaW5nIG9uIG9yIHdoYXQgd2Ugc2hvdWxkIGJlIAps
-b29raW5nIGF0PyAKClRoYW5rcywKTWljaGFlbCBCdXJrZXkKCgoKCgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+the rm9200 have a errata the cs0 must be used via hw cs not gpio
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/mach-at91/at91rm9200_devices.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-at91/at91rm9200_devices.c b/arch/arm/mach-at91/at91rm9200_devices.c
+index 8cb2f57..c9ceef9 100644
+--- a/arch/arm/mach-at91/at91rm9200_devices.c
++++ b/arch/arm/mach-at91/at91rm9200_devices.c
+@@ -182,7 +182,12 @@ void at91_add_device_spi(int spi_id, struct at91_spi_platform_data *pdata)
+ 		cs_pin = pdata->chipselect[i];
+ 
+ 		/* enable chip-select pin */
+-		if (cs_pin > 0)
++		if (!gpio_is_valid(cs_pin))
++			continue;
++
++		if (cs_pin == AT91_PIN_PA3)
++			at91_set_A_periph(cs_pin, 0);
++		else
+ 			at91_set_gpio_output(cs_pin, 1);
+ 	}
+ 
+-- 
+1.7.10.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
