@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo3.mail-out.ovh.net ([188.165.41.191]
- helo=mo3.mail-out.ovh.net)
+Received: from mo3.mail-out.ovh.net ([178.32.228.3])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TVosn-0007iQ-2S
- for barebox@lists.infradead.org; Tue, 06 Nov 2012 19:32:22 +0000
+ id 1TVow6-0007zD-7K
+ for barebox@lists.infradead.org; Tue, 06 Nov 2012 19:35:47 +0000
 Received: from mail612.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 52170FFBC29
- for <barebox@lists.infradead.org>; Tue,  6 Nov 2012 20:42:36 +0100 (CET)
-Date: Tue, 6 Nov 2012 20:30:10 +0100
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id F16ABFFBD14
+ for <barebox@lists.infradead.org>; Tue,  6 Nov 2012 20:46:05 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121106193010.GE25679@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Tue,  6 Nov 2012 20:33:29 +0100
+Message-Id: <1352230416-9396-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20121106193010.GE25679@game.jcrosoft.org>
+References: <20121106193010.GE25679@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,63 +19,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/8] atmtel: fix spi driver + rm9200
+Subject: [PATCH 1/8] atmel_spi: use device id as bus num
 To: barebox@lists.infradead.org
 
-HI,
-
-The following changes since commit d74bef2b04a3ccf7339ba916e56830bb2feae957:
-
-  mount: add compatibility to old mount command (2012-11-02 21:26:29 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git tags/atmel_spi_fix
-
-for you to fetch changes up to 7e7b7aa81cdf7e47a8f828818f1e453a27046c38:
-
-  at91rm9200: fix spi cs support (2012-11-06 04:39:09 +0800)
-
-----------------------------------------------------------------
-atmel spi support fix
-
-The current drivers for atmel have a lot of issues but we are lucky
-enough if you use it one device + one master instance it will work on
-most of the spi device
-
-but this will not work on mmc spi or multi-master instance or multi-device
-
-so now fix all those issues
- - fix the cs support
- - fix setup setup support
- - do not call setup before each transfert
- - add sanity check
-
-now the atmel spi work on rm9200, mmc spi and at24, at45, eeprom
-
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/spi/atmel_spi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (8):
-      atmel_spi: use device id as bus num
-      atmel_spi: split transfert to atmel_spi_do_xfer
-      atmel_spi: after setup the cs need to be disable
-      atmel_spi: add sanity check in setup
-      atmel_spi: fix cs support
-      atmel_spi: drop setup during transfer
-      atmel_spi: add cs change support
-      at91rm9200: fix spi cs support
+diff --git a/drivers/spi/atmel_spi.c b/drivers/spi/atmel_spi.c
+index 43aec8e..3375f81 100644
+--- a/drivers/spi/atmel_spi.c
++++ b/drivers/spi/atmel_spi.c
+@@ -265,6 +265,7 @@ static int atmel_spi_probe(struct device_d *dev)
+ 
+ 	master = &as->master;
+ 	master->dev = dev;
++	master->bus_num = dev->id;
+ 
+ 	as->clk = clk_get(dev, "spi_clk");
+ 	if (IS_ERR(as->clk)) {
+-- 
+1.7.10.4
 
- arch/arm/mach-at91/at91rm9200_devices.c |    7 ++++++-
- drivers/spi/atmel_spi.c                 |  260 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------------------------------------------------
- 2 files changed, 196 insertions(+), 71 deletions(-)
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
