@@ -1,20 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+Received: from mail.mars-solutions.de ([213.239.212.107])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TVq6n-0004PM-SK
- for barebox@lists.infradead.org; Tue, 06 Nov 2012 20:50:56 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1351791438-29967-1-git-send-email-robert.jarzmik@free.fr>
- <1352051724-16253-1-git-send-email-robert.jarzmik@free.fr>
- <20121104183659.GC29599@game.jcrosoft.org> <87mwyvvs7o.fsf@free.fr>
- <20121105182544.GB25679@game.jcrosoft.org> <878vafvq9b.fsf@free.fr>
- <20121105194907.GC25679@game.jcrosoft.org> <871ug7visp.fsf@free.fr>
- <20121106073458.GD25679@game.jcrosoft.org>
-Date: Tue, 06 Nov 2012 21:50:39 +0100
-In-Reply-To: <20121106073458.GD25679@game.jcrosoft.org> (Jean-Christophe
- PLAGNIOL-VILLARD's message of "Tue, 6 Nov 2012 08:34:58 +0100")
-Message-ID: <87wqxytq00.fsf@free.fr>
-MIME-Version: 1.0
+ id 1TVup2-0007fA-P4
+ for barebox@lists.infradead.org; Wed, 07 Nov 2012 01:52:54 +0000
+From: Andreas Pretzsch <apr@cn-eng.de>
+Date: Wed,  7 Nov 2012 02:52:19 +0100
+Message-Id: <1352253139-19430-1-git-send-email-apr@cn-eng.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +14,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] commands: change Y-Modem implementation
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mdiobus: unbreak phy_device_connect() "scan all PHY
+ addresses" feature
+To: barebox@lists.infradead.org
 
-Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> writes:
+Calling phy_device_connect() with a PHY address of -1 will scan for a PHY
+in the address range of 0..PHY_MAX_ADDR and registers the first one found.
+This was broken by commit 09254f639c94cc7dc47fff7638dc8c7f88d700b1
+"mdiobus: do not scan the bus at registration time", erroneously scanning
+for -1 as PHY address.
 
-> On 22:31 Mon 05 Nov     , Robert Jarzmik wrote:
->> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> writes:
->> And how do you choose the alternative UART ? loady is not provided such a
->> parameter in its new form.
-> by it's name cs1 as example
+Signed-off-by: Andreas Pretzsch <apr@cn-eng.de>
+---
+patch against branch "next" / commit 129300139cbe7265c4b8b4142740c59b5b997e4d
 
->> Now if you want, I can add it. And if I add it, I'll add a timeout also to the
->> xy_flush() function ...
-> yes please
+ drivers/net/phy/phy.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->> >> > can you put the v3 on a tree somewhere so I can pull it
->> >> I'll try. I have no external git I can push to. If you have a hint ...
->> > https://git.wiki.kernel.org/index.php/GitHosting
->> Ah yes, ok. I'll send you the URL once I've amended the patches, along the
->> patch mails.
-> personnaly for at91 we use github tks
-Here is my candidate for v3 :
-     git fetch git@github.com:rjarzmik/barebox.git xymodem
-
-If you could test the "loady -t cs1", as I don't happen to have multiple
-consoles ...
-And Antony, if you have a little bit of time, would you test it also, as that
-endianess bug drove me mad.
-
-If it does work, I'll send the v3 of the patchset.
-
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index 8d36300..547e269 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -169,7 +169,7 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
+ 				goto fail;
+ 		} else {
+ 			for (i = 0; i < PHY_MAX_ADDR && !edev->phydev; i++) {
+-				dev = mdiobus_scan(bus, addr);
++				dev = mdiobus_scan(bus, i);
+ 				if (!dev || dev->attached_dev)
+ 					continue;
+ 
 -- 
-Robert
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
