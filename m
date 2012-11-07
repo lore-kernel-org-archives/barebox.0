@@ -1,21 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ia0-f177.google.com ([209.85.210.177])
+Received: from mail-la0-f49.google.com ([209.85.215.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TW0uV-0006Gx-7S
- for barebox@lists.infradead.org; Wed, 07 Nov 2012 08:22:56 +0000
-Received: by mail-ia0-f177.google.com with SMTP id x26so921018iak.36
- for <barebox@lists.infradead.org>; Wed, 07 Nov 2012 00:22:53 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <87wqxytq00.fsf@free.fr>
-References: <1351791438-29967-1-git-send-email-robert.jarzmik@free.fr>
- <1352051724-16253-1-git-send-email-robert.jarzmik@free.fr>
- <20121104183659.GC29599@game.jcrosoft.org> <87mwyvvs7o.fsf@free.fr>
- <20121105182544.GB25679@game.jcrosoft.org> <878vafvq9b.fsf@free.fr>
- <20121105194907.GC25679@game.jcrosoft.org> <871ug7visp.fsf@free.fr>
- <20121106073458.GD25679@game.jcrosoft.org> <87wqxytq00.fsf@free.fr>
-Date: Wed, 7 Nov 2012 12:22:53 +0400
-Message-ID: <CAA4bVAHpB2zxpC1LznHG1A64BohWEZSA6D3Wocx0y2fK+5CcXw@mail.gmail.com>
+ id 1TW0ux-0006Hz-9Q
+ for barebox@lists.infradead.org; Wed, 07 Nov 2012 08:23:25 +0000
+Received: by mail-la0-f49.google.com with SMTP id z14so952974lag.36
+ for <barebox@lists.infradead.org>; Wed, 07 Nov 2012 00:23:21 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed,  7 Nov 2012 12:23:05 +0400
+Message-Id: <1352276585-20262-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,52 +16,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] commands: change Y-Modem implementation
-To: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] make new y-modem (PATCH v2) work on big-endian CPU
+To: barebox@lists.infradead.org
 
-On 7 November 2012 00:50, Robert Jarzmik <robert.jarzmik@free.fr> wrote:
-> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> writes:
->
->> On 22:31 Mon 05 Nov     , Robert Jarzmik wrote:
->>> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> writes:
->>> And how do you choose the alternative UART ? loady is not provided such a
->>> parameter in its new form.
->> by it's name cs1 as example
->
->>> Now if you want, I can add it. And if I add it, I'll add a timeout also to the
->>> xy_flush() function ...
->> yes please
->
->>> >> > can you put the v3 on a tree somewhere so I can pull it
->>> >> I'll try. I have no external git I can push to. If you have a hint ...
->>> > https://git.wiki.kernel.org/index.php/GitHosting
->>> Ah yes, ok. I'll send you the URL once I've amended the patches, along the
->>> patch mails.
->> personnaly for at91 we use github tks
-> Here is my candidate for v3 :
->      git fetch git@github.com:rjarzmik/barebox.git xymodem
->
-> If you could test the "loady -t cs1", as I don't happen to have multiple
-> consoles ...
-> And Antony, if you have a little bit of time, would you test it also, as that
-> endianess bug drove me mad.
+apply this commit after that one:
 
-I just have tested your v3 patchset. It works fine on my little-endian
-MIPS CPU, but it needs a small patch for correct work on the
-big-endian one. You can find the patch in my next message.
+    Author: Robert Jarzmik <robert.jarzmik@free.fr>
+    Date:   Sun Nov 4 18:55:23 2012 +0100
 
-I have fetched your v3 branch from your github repo. I'm sorry, but I
-have no time to test it just now on my hardware. But I think where
-will be no problems with squashing my patch into it.
+        commands: change Y-Modem implementation
+---
+ lib/xymodem.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
+diff --git a/lib/xymodem.c b/lib/xymodem.c
+index 1469a9a..0e82ce2 100644
+--- a/lib/xymodem.c
++++ b/lib/xymodem.c
+@@ -257,8 +257,8 @@ static ssize_t xy_read_block(struct xyz_ctxt *proto, struct xy_block *blk,
+ 	uint64_t timeout)
+ {
+ 	ssize_t rc, data_len = 0;
+-	unsigned char hdr, seqs[2], crcs[2];
+-	int crc = 0, hdr_found = 0;
++	unsigned char hdr, seqs[2];
++	uint16_t crc = 0, hdr_found = 0;
+ 	uint64_t start = get_time_ns();
+ 
+ 	while (!hdr_found) {
+@@ -308,12 +308,13 @@ static ssize_t xy_read_block(struct xyz_ctxt *proto, struct xy_block *blk,
+ 
+ 	switch (proto->crc_mode) {
+ 	case CRC_ADD8:
+-		rc = xy_gets(proto->cdev, proto->fifo, crcs, 1, timeout);
+-		crc = crcs[0];
++		rc = xy_gets(proto->cdev, proto->fifo,
++				(unsigned char *)&crc, 1, timeout);
+ 		break;
+ 	case CRC_CRC16:
+-		rc = xy_gets(proto->cdev, proto->fifo, crcs, 2, timeout);
+-		crc = be16_to_cpu(*(uint16_t *)crcs);
++		rc = xy_gets(proto->cdev, proto->fifo,
++				(unsigned char *)&crc, 2, timeout);
++		crc = be16_to_cpu(crc);
+ 		break;
+ 	case CRC_NONE:
+ 		rc = 0;
 -- 
-Best regards,
-  Antony Pavlov
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
