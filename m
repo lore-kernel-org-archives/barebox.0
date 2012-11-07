@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f49.google.com ([209.85.215.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TW0ux-0006Hz-9Q
- for barebox@lists.infradead.org; Wed, 07 Nov 2012 08:23:25 +0000
-Received: by mail-la0-f49.google.com with SMTP id z14so952974lag.36
- for <barebox@lists.infradead.org>; Wed, 07 Nov 2012 00:23:21 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  7 Nov 2012 12:23:05 +0400
-Message-Id: <1352276585-20262-1-git-send-email-antonynpavlov@gmail.com>
+Received: from mail.mars-solutions.de ([213.239.212.107])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TWEbH-0001Uw-4c
+ for barebox@lists.infradead.org; Wed, 07 Nov 2012 23:00:03 +0000
+From: Andreas Pretzsch <apr@cn-eng.de>
+Date: Wed,  7 Nov 2012 23:59:39 +0100
+Message-Id: <1352329179-19809-1-git-send-email-apr@cn-eng.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,52 +19,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] make new y-modem (PATCH v2) work on big-endian CPU
+Subject: [PATCH] mdiobus: unbreak phy_device_connect(): honor masked out PHYs
 To: barebox@lists.infradead.org
 
-apply this commit after that one:
+commit 89dfe2d2af87f1b803f611d986d4ef383b6ad964 "mdiobus: do not scan
+the bus at registration time" dropped the check for struct mii_bus
+element phy_mask while scanning through all addresses.
+Re-add this check.
 
-    Author: Robert Jarzmik <robert.jarzmik@free.fr>
-    Date:   Sun Nov 4 18:55:23 2012 +0100
-
-        commands: change Y-Modem implementation
+Signed-off-by: Andreas Pretzsch <apr@cn-eng.de>
 ---
- lib/xymodem.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+patch against branch "next" / commit 89dfe2d2af87f1b803f611d986d4ef383b6ad964
+Another one to fold into original patch. Sorry for missing it the first round.
 
-diff --git a/lib/xymodem.c b/lib/xymodem.c
-index 1469a9a..0e82ce2 100644
---- a/lib/xymodem.c
-+++ b/lib/xymodem.c
-@@ -257,8 +257,8 @@ static ssize_t xy_read_block(struct xyz_ctxt *proto, struct xy_block *blk,
- 	uint64_t timeout)
- {
- 	ssize_t rc, data_len = 0;
--	unsigned char hdr, seqs[2], crcs[2];
--	int crc = 0, hdr_found = 0;
-+	unsigned char hdr, seqs[2];
-+	uint16_t crc = 0, hdr_found = 0;
- 	uint64_t start = get_time_ns();
- 
- 	while (!hdr_found) {
-@@ -308,12 +308,13 @@ static ssize_t xy_read_block(struct xyz_ctxt *proto, struct xy_block *blk,
- 
- 	switch (proto->crc_mode) {
- 	case CRC_ADD8:
--		rc = xy_gets(proto->cdev, proto->fifo, crcs, 1, timeout);
--		crc = crcs[0];
-+		rc = xy_gets(proto->cdev, proto->fifo,
-+				(unsigned char *)&crc, 1, timeout);
- 		break;
- 	case CRC_CRC16:
--		rc = xy_gets(proto->cdev, proto->fifo, crcs, 2, timeout);
--		crc = be16_to_cpu(*(uint16_t *)crcs);
-+		rc = xy_gets(proto->cdev, proto->fifo,
-+				(unsigned char *)&crc, 2, timeout);
-+		crc = be16_to_cpu(crc);
- 		break;
- 	case CRC_NONE:
- 		rc = 0;
+ drivers/net/phy/phy.c |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index 547e269..d8132b9 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -169,6 +169,10 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
+ 				goto fail;
+ 		} else {
+ 			for (i = 0; i < PHY_MAX_ADDR && !edev->phydev; i++) {
++				/* skip masked out PHY addresses */
++				if (bus->phy_mask & (1 << i))
++					continue;
++
+ 				dev = mdiobus_scan(bus, i);
+ 				if (!dev || dev->attached_dev)
+ 					continue;
 -- 
 1.7.10.4
 
