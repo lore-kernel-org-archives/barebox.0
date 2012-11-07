@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TW0cc-0005IJ-WF
- for barebox@lists.infradead.org; Wed, 07 Nov 2012 08:04:28 +0000
-Date: Wed, 7 Nov 2012 09:04:22 +0100
+ id 1TW0dz-0005Ks-FT
+ for barebox@lists.infradead.org; Wed, 07 Nov 2012 08:05:52 +0000
+Date: Wed, 7 Nov 2012 09:05:50 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121107080422.GA10369@pengutronix.de>
-References: <alpine.LSU.2.00.1211061440560.27068@redbean.intranet.gw-instruments.de>
+Message-ID: <20121107080550.GB10369@pengutronix.de>
+References: <1352253139-19430-1-git-send-email-apr@cn-eng.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.LSU.2.00.1211061440560.27068@redbean.intranet.gw-instruments.de>
+In-Reply-To: <1352253139-19430-1-git-send-email-apr@cn-eng.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +22,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: TX53: Not Bootable from next tree
-To: Peter Wippich <pewi@gw-instruments.de>
+Subject: Re: [PATCH] mdiobus: unbreak phy_device_connect() "scan all PHY
+ addresses" feature
+To: Andreas Pretzsch <apr@cn-eng.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Nov 06, 2012 at 02:49:06PM +0100, Peter Wippich wrote:
-> 
-> Hi,
-> 
-> got the same problem here. Double checked Board Version (8030) and
-> that I have the right binary (compressed with flash header). After
-> flashing and reset nothing happens....
+Hi Andreas,
+
+On Wed, Nov 07, 2012 at 02:52:19AM +0100, Andreas Pretzsch wrote:
+> Calling phy_device_connect() with a PHY address of -1 will scan for a PHY
+> in the address range of 0..PHY_MAX_ADDR and registers the first one found.
+> This was broken by commit 09254f639c94cc7dc47fff7638dc8c7f88d700b1
+> "mdiobus: do not scan the bus at registration time", erroneously scanning
+> for -1 as PHY address.
 > 
 
-I'll recheck when I'm back in the office next week. I have no idea what
-is going wrong atm.
+Folded this into the original patch breaking it.
 
-Sascha
+Thanks
+ Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
