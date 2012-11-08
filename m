@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-f177.google.com ([209.85.223.177])
+Received: from mail-ia0-f177.google.com ([209.85.210.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TWKzN-0002t8-CS
- for barebox@lists.infradead.org; Thu, 08 Nov 2012 05:49:17 +0000
-Received: by mail-ie0-f177.google.com with SMTP id e14so3600384iej.36
- for <barebox@lists.infradead.org>; Wed, 07 Nov 2012 21:49:15 -0800 (PST)
+ id 1TWYEU-00063t-9Z
+ for barebox@lists.infradead.org; Thu, 08 Nov 2012 19:57:47 +0000
+Received: by mail-ia0-f177.google.com with SMTP id x26so2192854iak.36
+ for <barebox@lists.infradead.org>; Thu, 08 Nov 2012 11:57:44 -0800 (PST)
 MIME-Version: 1.0
 In-Reply-To: <87pq3pt1zh.fsf@free.fr>
 References: <1352276585-20262-1-git-send-email-antonynpavlov@gmail.com>
  <87pq3pt1zh.fsf@free.fr>
-Date: Thu, 8 Nov 2012 09:49:15 +0400
-Message-ID: <CAA4bVAFtC4WscuH_e+wFnQnt33tg4v4iOtHiSsw7S6Fq4YJf0Q@mail.gmail.com>
+Date: Thu, 8 Nov 2012 23:57:44 +0400
+Message-ID: <CAA4bVAF68HGdDqgtUCvxTiJJnGjb2j2sziQpLNY4e-fMFJOwcw@mail.gmail.com>
 From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,7 +25,8 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] make new y-modem (PATCH v2) work on big-endian CPU
-To: barebox <barebox@lists.infradead.org>
+To: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: barebox@lists.infradead.org
 
 On 8 November 2012 03:41, Robert Jarzmik <robert.jarzmik@free.fr> wrote:
 > Antony Pavlov <antonynpavlov@gmail.com> writes:
@@ -67,14 +68,7 @@ On 8 November 2012 03:41, Robert Jarzmik <robert.jarzmik@free.fr> wrote:
 > In big-endian arch, suppose you read 0xab as the crc.
 > In that case, won't crc be equal to 0xab00 instead of 0x00ab in this code ? If
 > that's the case, the previous code was right ...
-
-To make the patch I got your old working version and your PATCH v2
-branches. I got 'git diff'. I found the key difference and tested the
-patch. That is all.
-
-May be the 'proto->crc_mode==CRC_ADD8' condition is always false
-during my tests?
-
+>
 >>               break;
 >>       case CRC_CRC16:
 >> -             rc = xy_gets(proto->cdev, proto->fifo, crcs, 2, timeout);
@@ -86,13 +80,18 @@ during my tests?
 > Does that mean that the code up there doesn't work on big endian ? I'm really
 > puzzled, as the sender sends in big endian, the xy_gets() receives the bytes
 > into crcs[2], and the be16_to_cpu() should be a no-op ...
-
-I have no idea just now. I'll try to disassemble generated code.
-
+>
 > I think that we should do this simpler :
 >   crc = crcs[0] << 8 + crcs[1]
 >
 > I'll put that into my github branch for testing.
+
+I have just tested the commits from your github 'xymodem' branch on my
+big-endian and little-endian MIPS boards.
+
+It works perfect!
+
+Tested-by: Antony Pavlov <antonynpavlov@gmail.com>
 
 -- 
 Best regards,
