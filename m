@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TWFFl-0003Xf-6c
- for barebox@lists.infradead.org; Wed, 07 Nov 2012 23:41:50 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1352276585-20262-1-git-send-email-antonynpavlov@gmail.com>
-Date: Thu, 08 Nov 2012 00:41:38 +0100
-In-Reply-To: <1352276585-20262-1-git-send-email-antonynpavlov@gmail.com>
- (Antony Pavlov's message of "Wed, 7 Nov 2012 12:23:05 +0400")
-Message-ID: <87pq3pt1zh.fsf@free.fr>
+Received: from mail-ie0-f177.google.com ([209.85.223.177])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TWKzN-0002t8-CS
+ for barebox@lists.infradead.org; Thu, 08 Nov 2012 05:49:17 +0000
+Received: by mail-ie0-f177.google.com with SMTP id e14so3600384iej.36
+ for <barebox@lists.infradead.org>; Wed, 07 Nov 2012 21:49:15 -0800 (PST)
 MIME-Version: 1.0
+In-Reply-To: <87pq3pt1zh.fsf@free.fr>
+References: <1352276585-20262-1-git-send-email-antonynpavlov@gmail.com>
+ <87pq3pt1zh.fsf@free.fr>
+Date: Thu, 8 Nov 2012 09:49:15 +0400
+Message-ID: <CAA4bVAFtC4WscuH_e+wFnQnt33tg4v4iOtHiSsw7S6Fq4YJf0Q@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,70 +25,78 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] make new y-modem (PATCH v2) work on big-endian CPU
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+To: barebox <barebox@lists.infradead.org>
 
-Antony Pavlov <antonynpavlov@gmail.com> writes:
-
-> apply this commit after that one:
+On 8 November 2012 03:41, Robert Jarzmik <robert.jarzmik@free.fr> wrote:
+> Antony Pavlov <antonynpavlov@gmail.com> writes:
 >
->     Author: Robert Jarzmik <robert.jarzmik@free.fr>
->     Date:   Sun Nov 4 18:55:23 2012 +0100
+>> apply this commit after that one:
+>>
+>>     Author: Robert Jarzmik <robert.jarzmik@free.fr>
+>>     Date:   Sun Nov 4 18:55:23 2012 +0100
+>>
+>>         commands: change Y-Modem implementation
+>> ---
+>>  lib/xymodem.c |   13 +++++++------
+>>  1 file changed, 7 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/lib/xymodem.c b/lib/xymodem.c
+>> index 1469a9a..0e82ce2 100644
+>> --- a/lib/xymodem.c
+>> +++ b/lib/xymodem.c
+>> @@ -257,8 +257,8 @@ static ssize_t xy_read_block(struct xyz_ctxt *proto, struct xy_block *blk,
+>>       uint64_t timeout)
+>>  {
+>>       ssize_t rc, data_len = 0;
+>> -     unsigned char hdr, seqs[2], crcs[2];
+>> -     int crc = 0, hdr_found = 0;
+>> +     unsigned char hdr, seqs[2];
+>> +     uint16_t crc = 0, hdr_found = 0;
+>>       uint64_t start = get_time_ns();
+>>
+>>       while (!hdr_found) {
+>> @@ -308,12 +308,13 @@ static ssize_t xy_read_block(struct xyz_ctxt *proto, struct xy_block *blk,
+>>
+>>       switch (proto->crc_mode) {
+>>       case CRC_ADD8:
+>> -             rc = xy_gets(proto->cdev, proto->fifo, crcs, 1, timeout);
+>> -             crc = crcs[0];
+>> +             rc = xy_gets(proto->cdev, proto->fifo,
+>> +                             (unsigned char *)&crc, 1, timeout);
+> This doesn't look good to me.
+> In big-endian arch, suppose you read 0xab as the crc.
+> In that case, won't crc be equal to 0xab00 instead of 0x00ab in this code ? If
+> that's the case, the previous code was right ...
+
+To make the patch I got your old working version and your PATCH v2
+branches. I got 'git diff'. I found the key difference and tested the
+patch. That is all.
+
+May be the 'proto->crc_mode==CRC_ADD8' condition is always false
+during my tests?
+
+>>               break;
+>>       case CRC_CRC16:
+>> -             rc = xy_gets(proto->cdev, proto->fifo, crcs, 2, timeout);
+>> -             crc = be16_to_cpu(*(uint16_t *)crcs);
+>> +             rc = xy_gets(proto->cdev, proto->fifo,
+>> +                             (unsigned char *)&crc, 2, timeout);
+>> +             crc = be16_to_cpu(crc);
 >
->         commands: change Y-Modem implementation
-> ---
->  lib/xymodem.c |   13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
+> Does that mean that the code up there doesn't work on big endian ? I'm really
+> puzzled, as the sender sends in big endian, the xy_gets() receives the bytes
+> into crcs[2], and the be16_to_cpu() should be a no-op ...
+
+I have no idea just now. I'll try to disassemble generated code.
+
+> I think that we should do this simpler :
+>   crc = crcs[0] << 8 + crcs[1]
 >
-> diff --git a/lib/xymodem.c b/lib/xymodem.c
-> index 1469a9a..0e82ce2 100644
-> --- a/lib/xymodem.c
-> +++ b/lib/xymodem.c
-> @@ -257,8 +257,8 @@ static ssize_t xy_read_block(struct xyz_ctxt *proto, struct xy_block *blk,
->  	uint64_t timeout)
->  {
->  	ssize_t rc, data_len = 0;
-> -	unsigned char hdr, seqs[2], crcs[2];
-> -	int crc = 0, hdr_found = 0;
-> +	unsigned char hdr, seqs[2];
-> +	uint16_t crc = 0, hdr_found = 0;
->  	uint64_t start = get_time_ns();
->  
->  	while (!hdr_found) {
-> @@ -308,12 +308,13 @@ static ssize_t xy_read_block(struct xyz_ctxt *proto, struct xy_block *blk,
->  
->  	switch (proto->crc_mode) {
->  	case CRC_ADD8:
-> -		rc = xy_gets(proto->cdev, proto->fifo, crcs, 1, timeout);
-> -		crc = crcs[0];
-> +		rc = xy_gets(proto->cdev, proto->fifo,
-> +				(unsigned char *)&crc, 1, timeout);
-This doesn't look good to me.
-In big-endian arch, suppose you read 0xab as the crc.
-In that case, won't crc be equal to 0xab00 instead of 0x00ab in this code ? If
-that's the case, the previous code was right ...
-
->  		break;
->  	case CRC_CRC16:
-> -		rc = xy_gets(proto->cdev, proto->fifo, crcs, 2, timeout);
-> -		crc = be16_to_cpu(*(uint16_t *)crcs);
-> +		rc = xy_gets(proto->cdev, proto->fifo,
-> +				(unsigned char *)&crc, 2, timeout);
-> +		crc = be16_to_cpu(crc);
-
-Does that mean that the code up there doesn't work on big endian ? I'm really
-puzzled, as the sender sends in big endian, the xy_gets() receives the bytes
-into crcs[2], and the be16_to_cpu() should be a no-op ...
-
-I think that we should do this simpler :
-  crc = crcs[0] << 8 + crcs[1]
-
-I'll put that into my github branch for testing.
-
-Cheers.
+> I'll put that into my github branch for testing.
 
 -- 
-Robert
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
