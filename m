@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TWYGE-0006oi-Ro
- for barebox@lists.infradead.org; Thu, 08 Nov 2012 19:59:36 +0000
+ id 1TWZT5-0002bq-OQ
+ for barebox@lists.infradead.org; Thu, 08 Nov 2012 21:16:59 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1352276585-20262-1-git-send-email-antonynpavlov@gmail.com>
- <87pq3pt1zh.fsf@free.fr>
- <CAA4bVAFtC4WscuH_e+wFnQnt33tg4v4iOtHiSsw7S6Fq4YJf0Q@mail.gmail.com>
-Date: Thu, 08 Nov 2012 20:59:22 +0100
-In-Reply-To: <CAA4bVAFtC4WscuH_e+wFnQnt33tg4v4iOtHiSsw7S6Fq4YJf0Q@mail.gmail.com>
- (Antony Pavlov's message of "Thu, 8 Nov 2012 09:49:15 +0400")
-Message-ID: <87liebuaqt.fsf@free.fr>
-MIME-Version: 1.0
+Date: Thu,  8 Nov 2012 22:16:41 +0100
+Message-Id: <1352409401-3333-2-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <1352409401-3333-1-git-send-email-robert.jarzmik@free.fr>
+References: <1352409401-3333-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,25 +16,1264 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] make new y-modem (PATCH v2) work on big-endian CPU
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH v3 2/2] commands: remove old Y-Modem implementation
+To: plagnioj@jcrosoft.com, antonynpavlov@gmail.com, s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-Antony Pavlov <antonynpavlov@gmail.com> writes:
+As a new implementation of Y-Modem protocol is available,
+switch from old implementation to the new one :
+ - remove old xyzModem* files
+ - remove old command loady2
+ - rename command loady2 to loady
 
-> May be the 'proto->crc_mode==CRC_ADD8' condition is always false
-> during my tests?
-Yes, surely. CRC8 is a fallback when the sender is unable to cope with CRC16. As
-you use linux sb, it does cope with CRC16 :)
+Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+Tested-by: Antony Pavlov <antonynpavlov@gmail.com>
 
-Cheers.
+---
+Since V2:
+ - Jean-Christophe's review
+ - added "-t" options to loadx and loady to select console
+---
+ commands/Makefile   |    4 +-
+ commands/loadb.c    |  102 +------
+ commands/loads.c    |    1 -
+ commands/loadxy.c   |   69 +++--
+ commands/xyzModem.c |  785 ---------------------------------------------------
+ include/xyzModem.h  |  109 -------
+ 6 files changed, 63 insertions(+), 1007 deletions(-)
+ delete mode 100644 commands/xyzModem.c
+ delete mode 100644 include/xyzModem.h
 
+diff --git a/commands/Makefile b/commands/Makefile
+index 2be5f9c..c5539a7 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -2,8 +2,8 @@ obj-$(CONFIG_STDDEV)		+= stddev.o
+ obj-$(CONFIG_CMD_BOOTM)		+= bootm.o
+ obj-$(CONFIG_CMD_UIMAGE)	+= uimage.o
+ obj-$(CONFIG_CMD_LINUX16)	+= linux16.o
+-obj-$(CONFIG_CMD_LOADB)		+= loadb.o xyzModem.o
+-obj-$(CONFIG_CMD_LOADY)		+= loadb.o xyzModem.o loadxy.o
++obj-$(CONFIG_CMD_LOADB)		+= loadb.o
++obj-$(CONFIG_CMD_LOADY)		+= loadxy.o
+ obj-$(CONFIG_CMD_LOADS)		+= loads.o
+ obj-$(CONFIG_CMD_ECHO)		+= echo.o
+ obj-$(CONFIG_CMD_MEMORY)	+= mem.o
+diff --git a/commands/loadb.c b/commands/loadb.c
+index 898b9e3..a2f3315 100644
+--- a/commands/loadb.c
++++ b/commands/loadb.c
+@@ -31,7 +31,6 @@
+  */
+ #include <common.h>
+ #include <command.h>
+-#include <xyzModem.h>
+ #include <console.h>
+ #include <errno.h>
+ #include <environment.h>
+@@ -59,8 +58,6 @@
+ 
+ static int ofd;			/* output file descriptor */
+ 
+-#ifdef CONFIG_CMD_LOADB
+-
+ /* Size of my buffer to write to o/p file */
+ #define MAX_WRITE_BUFFER 4096	/* Write size to o/p file */
+ static char *write_buffer;	/* buffer for finalized data to write */
+@@ -593,66 +590,6 @@ err_quit:
+ 	return size;
+ }
+ 
+-#endif				/* CONFIG_CMD_LOADB */
+-
+-#ifdef CONFIG_CMD_LOADY
+-/**
+- * @brief getcxmodem
+- *
+- * @return if character avaiable, return the same, else return -1
+- */
+-static int getcxmodem(void)
+-{
+-	if (tstc())
+-		return (getc());
+-	return -1;
+-}
+-
+-/**
+- * @brief  LoadY over ymodem protocol
+- *
+- * @return download size
+- */
+-static ulong load_serial_ymodem(void)
+-{
+-	int size;
+-	char buf[32];
+-	int err;
+-	int res, wr;
+-	connection_info_t info;
+-	char ymodemBuf[1024];
+-	ulong addr = 0;
+-
+-	size = 0;
+-	info.mode = xyzModem_ymodem;
+-	res = xyzModem_stream_open(&info, &err);
+-	if (!res) {
+-		while ((res = xyzModem_stream_read(ymodemBuf, 1024, &err)) >
+-				0) {
+-			size += res;
+-			addr += res;
+-			wr = write(ofd, ymodemBuf, res);
+-			if (res != wr) {
+-				perror("ymodem");
+-				break;
+-			}
+-
+-		}
+-	} else {
+-		printf("%s\n", xyzModem_error(err));
+-	}
+-
+-	xyzModem_stream_close(&err);
+-	xyzModem_stream_terminate(false, &getcxmodem);
+-
+-	printf("## Total Size      = 0x%08x = %d Bytes\n", size, size);
+-	sprintf(buf, "%X", size);
+-	setenv("filesize", buf);
+-
+-	return res;
+-}
+-#endif
+-
+ /**
+  * @brief returns current used console device
+  *
+@@ -754,27 +691,16 @@ static int do_load_serial_bin(int argc, char *argv[])
+ 				break;
+ 		}
+ 	}
+-#ifdef CONFIG_CMD_LOADY
+-	if (strcmp(argv[0], "loady") == 0) {
+-		printf("## Ready for binary (ymodem) download "
+-		       "to 0x%08lX offset on %s device at %d bps...\n", offset,
+-		       output_file, load_baudrate);
+-		addr = load_serial_ymodem();
+-	}
+-#endif
+-#ifdef CONFIG_CMD_LOADB
+-	if (strcmp(argv[0], "loadb") == 0) {
+-
+-		printf("## Ready for binary (kermit) download "
+-		       "to 0x%08lX offset on %s device at %d bps...\n", offset,
+-		       output_file, load_baudrate);
+-		addr = load_serial_bin();
+-		if (addr == 0) {
+-			printf("## Binary (kermit) download aborted\n");
+-			rcode = 1;
+-		}
++
++	printf("## Ready for binary (kermit) download "
++	       "to 0x%08lX offset on %s device at %d bps...\n", offset,
++	       output_file, load_baudrate);
++	addr = load_serial_bin();
++	if (addr == 0) {
++		printf("## Binary (kermit) download aborted\n");
++		rcode = 1;
+ 	}
+-#endif
++
+ 	if (load_baudrate != current_baudrate) {
+ 		printf("## Switch baudrate to %d bps and press ESC ...\n",
+ 		       current_baudrate);
+@@ -799,18 +725,8 @@ static const __maybe_unused char cmd_loadb_help[] =
+     "  -b baud   - baudrate at which to download - defaults to "
+     "console baudrate\n"
+     "  -c        - Create file if it is not present - default disabled";
+-#ifdef CONFIG_CMD_LOADB
+ BAREBOX_CMD_START(loadb)
+ 	.cmd = do_load_serial_bin,
+ 	.usage = "Load binary file over serial line (kermit mode)",
+ 	BAREBOX_CMD_HELP(cmd_loadb_help)
+ BAREBOX_CMD_END
+-#endif
+-#ifdef CONFIG_CMD_LOADY
+-BAREBOX_CMD_START(loady)
+-	.cmd = do_load_serial_bin,
+-	.usage = "Load binary file over serial line (ymodem mode)",
+-	BAREBOX_CMD_HELP(cmd_loadb_help)
+-BAREBOX_CMD_END
+-#endif
+-
+diff --git a/commands/loads.c b/commands/loads.c
+index 7f4c647..bfc465b 100644
+--- a/commands/loads.c
++++ b/commands/loads.c
+@@ -25,7 +25,6 @@
+ #include <environment.h>
+ #include <s_record.h>
+ #include <net.h>
+-#include <xyzModem.h>
+ 
+ static ulong load_serial(ulong offset);
+ static int read_record(char *buf, ulong len);
+diff --git a/commands/loadxy.c b/commands/loadxy.c
+index 141bd7b..52ecdca 100644
+--- a/commands/loadxy.c
++++ b/commands/loadxy.c
+@@ -77,6 +77,28 @@ static int console_change_speed(struct console_device *cdev, int baudrate)
+ 	return current_baudrate;
+ }
+ 
++static struct console_device *get_named_console(const char *cname)
++{
++	struct console_device *cdev;
++	const char *target;
++
++	/*
++	 * Assumption to have BOTH CONSOLE_STDIN AND STDOUT in the
++	 * same output console
++	 */
++	for_each_console(cdev) {
++		target = dev_id(&cdev->class_dev);
++		if (strlen(target) != strlen(cname))
++			continue;
++		printf("RJK: looking for %s in console name %s\n",
++		       cname, target);
++		if ((cdev->f_active & (CONSOLE_STDIN | CONSOLE_STDOUT))
++		    && !strcmp(cname, target))
++			return cdev;
++	}
++	return NULL;
++}
++
+ /**
+  * @brief provide the loady(Y-Modem or Y-Modem/G) support
+  *
+@@ -89,9 +111,10 @@ static int do_loady(int argc, char *argv[])
+ {
+ 	int is_ymodemg = 0, rc = 0, opt, rcode = 0;
+ 	int load_baudrate = 0, current_baudrate;
++	char *cname = NULL;
+ 	struct console_device *cdev = NULL;
+ 
+-	while ((opt = getopt(argc, argv, "b:g")) > 0) {
++	while ((opt = getopt(argc, argv, "b:t:g")) > 0) {
+ 		switch (opt) {
+ 		case 'b':
+ 			load_baudrate = (int)simple_strtoul(optarg, NULL, 10);
+@@ -99,15 +122,22 @@ static int do_loady(int argc, char *argv[])
+ 		case 'g':
+ 			is_ymodemg = 1;
+ 			break;
++		case 't':
++			cname = optarg;
++			break;
+ 		default:
+ 			perror(argv[0]);
+ 			return 1;
+ 		}
+ 	}
+ 
+-	cdev = get_current_console();
+-	if (NULL == cdev) {
+-		printf("%s:No console device with STDIN and STDOUT\n", argv[0]);
++	if (cname)
++		cdev = get_named_console(cname);
++	else
++		cdev = get_current_console();
++	if (!cdev) {
++		printf("%s:No console device %s with STDIN and STDOUT\n",
++		       argv[0], cname ? cname : "default");
+ 		return -ENODEV;
+ 	}
+ 
+@@ -143,7 +173,7 @@ static int do_loadx(int argc, char *argv[])
+ 	ulong offset = 0;
+ 	int load_baudrate = 0, current_baudrate, ofd, opt, rcode = 0;
+ 	int open_mode = O_WRONLY;
+-	char *output_file = NULL;
++	char *output_file = NULL, *cname = NULL;
+ 	struct console_device *cdev = NULL;
+ 
+ 	while ((opt = getopt(argc, argv, "f:b:o:c")) > 0) {
+@@ -160,20 +190,27 @@ static int do_loadx(int argc, char *argv[])
+ 		case 'c':
+ 			open_mode |= O_CREAT;
+ 			break;
++		case 't':
++			cname = optarg;
++			break;
+ 		default:
+ 			perror(argv[0]);
+ 			return 1;
+ 		}
+ 	}
+ 
+-	cdev = get_current_console();
+-	if (NULL == cdev) {
+-		printf("%s:No console device with STDIN and STDOUT\n", argv[0]);
++	if (cname)
++		cdev = get_named_console(cname);
++	else
++		cdev = get_current_console();
++	if (!cdev) {
++		printf("%s:No console device %s with STDIN and STDOUT\n",
++		       argv[0], cname ? cname : "default");
+ 		return -ENODEV;
+ 	}
+ 
+ 	/* Load Defaults */
+-	if (NULL == output_file)
++	if (!output_file)
+ 		output_file = DEF_FILE;
+ 
+ 	/* File should exist */
+@@ -211,26 +248,24 @@ static const __maybe_unused char cmd_loadx_help[] =
+ 	"[OPTIONS]\n"
+ 	"  -f file   - where to download to - defaults to " DEF_FILE "\n"
+ 	"  -o offset - what offset to download - defaults to 0\n"
+-	"  -b baud   - baudrate at which to download - defaults to "
+-	"console baudrate\n"
++	"  -t name   - console device name to use - defaults to current console\n"
++	"  -b baud   - baudrate at which to download - defaults to console baudrate\n"
+ 	"  -c        - Create file if it is not present - default disabled";
+ 
+-#ifdef CONFIG_CMD_LOADB
++#ifdef CONFIG_CMD_LOADY
+ BAREBOX_CMD_START(loadx)
+ 	.cmd = do_loadx,
+ 	.usage = "Load binary file over serial line (X-Modem)",
+ BAREBOX_CMD_HELP(cmd_loadx_help)
+ BAREBOX_CMD_END
+-#endif
+ 
+ static const __maybe_unused char cmd_loady_help[] =
+ 	"[OPTIONS]\n"
+ 	"  -y        - use Y-Modem/G (only for lossless tty as USB)\n"
+-	"  -b baud   - baudrate at which to download - defaults to "
+-	"console baudrate\n";
++	"  -t name   - console device name to use - defaults to current console\n"
++	"  -b baud   - baudrate at which to download - defaults to console baudrate\n";
+ 
+-#ifdef CONFIG_CMD_LOADY
+-BAREBOX_CMD_START(loady2)
++BAREBOX_CMD_START(loady)
+ 	.cmd = do_loady,
+ 	.usage = "Load binary file over serial line (Y-Modem or Y-Modem/G)",
+ BAREBOX_CMD_HELP(cmd_loady_help)
+diff --git a/commands/xyzModem.c b/commands/xyzModem.c
+deleted file mode 100644
+index 71d7d68..0000000
+--- a/commands/xyzModem.c
++++ /dev/null
+@@ -1,785 +0,0 @@
+-/**
+- * @file
+- * @brief RedBoot stream handler for xyzModem protocol
+- *
+- * FileName: commands/xyzModem.c
+- * Originally from u-boot xyzModem.c
+- */
+-/*
+- * 2008 - Nishanth Menon <x0nishan@ti.com>
+- * Modified for sparse and checkpatch.pl compliance
+- */
+-/*
+- *==========================================================================
+- *
+- *      xyzModem.c
+- *
+- *      RedBoot stream handler for xyzModem protocol
+- *
+- *==========================================================================
+- *####ECOSGPLCOPYRIGHTBEGIN####
+- * -------------------------------------------
+- * This file is part of eCos, the Embedded Configurable Operating System.
+- * Copyright (C) 1998, 1999, 2000, 2001, 2002 Red Hat, Inc.
+- * Copyright (C) 2002 Gary Thomas
+- *
+- * eCos is free software; you can redistribute it and/or modify it under
+- * the terms of the GNU General Public License as published by the Free
+- * Software Foundation; either version 2 or (at your option) any later version.
+- *
+- * eCos is distributed in the hope that it will be useful, but WITHOUT ANY
+- * WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- * for more details.
+- *
+- * You should have received a copy of the GNU General Public License along
+- * with eCos; if not, write to the Free Software Foundation, Inc.,
+- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+- *
+- * As a special exception, if other files instantiate templates or use macros
+- * or inline functions from this file, or you compile this file and link it
+- * with other works to produce a work based on this file, this file does not
+- * by itself cause the resulting work to be covered by the GNU General Public
+- * License. However the source code for this file must still be made available
+- * in accordance with section (3) of the GNU General Public License.
+- *
+- * This exception does not invalidate any other reasons why a work based on
+- * this file might be covered by the GNU General Public License.
+- *
+- * Alternative licenses for eCos may be arranged by contacting Red Hat, Inc.
+- * at http: *sources.redhat.com/ecos/ecos-license/
+- * -------------------------------------------
+- *####ECOSGPLCOPYRIGHTEND####
+- *==========================================================================
+- *#####DESCRIPTIONBEGIN####
+- *
+- * Author(s):    gthomas
+- * Contributors: gthomas, tsmith, Yoshinori Sato
+- * Date:         2000-07-14
+- * Purpose:
+- * Description:
+- *
+- * This code is part of RedBoot (tm).
+- *
+- *####DESCRIPTIONEND####
+- *
+- *==========================================================================
+- */
+-#include <common.h>
+-#include <xyzModem.h>
+-#include <stdarg.h>
+-#include <stdio.h>
+-#include <console.h>
+-#include <crc.h>
+-#include <linux/ctype.h>
+-
+-/* Assumption - run xyzModem protocol over the console port */
+-
+-/* Values magic to the protocol */
+-#define SOH 0x01
+-#define STX 0x02
+-#define EOT 0x04
+-#define ACK 0x06
+-#define BSP 0x08
+-#define NAK 0x15
+-#define CAN 0x18
+-#define EOF 0x1A		/* ^Z for DOS officionados */
+-
+-#define USE_YMODEM_LENGTH
+-
+-/* Data & state local to the protocol */
+-static struct {
+-#ifdef REDBOOT
+-	hal_virtual_comm_table_t *__chan;
+-#else
+-	int *__chan;
+-#endif
+-	unsigned char pkt[1024], *bufp;
+-	unsigned char blk, cblk, crc1, crc2;
+-	unsigned char next_blk;	/* Expected block */
+-	int len, mode, total_retries;
+-	int total_SOH, total_STX, total_CAN;
+-	bool crc_mode, at_eof, tx_ack;
+-#ifdef USE_YMODEM_LENGTH
+-	unsigned long file_length, read_length;
+-#endif
+-} xyz;
+-
+-#define xyzModem_CHAR_TIMEOUT            2000	/* 2 seconds */
+-#define xyzModem_MAX_RETRIES             20
+-#define xyzModem_MAX_RETRIES_WITH_CRC    10
+-/* Wait for 3 CAN before quitting */
+-#define xyzModem_CAN_COUNT                3
+-
+-#ifndef REDBOOT			/*SB */
+-typedef int cyg_int32;
+-static int CYGACC_COMM_IF_GETC_TIMEOUT(char chan, char *c)
+-{
+-#define DELAY 20
+-	unsigned long counter = 0;
+-	while (!tstc() && (counter < xyzModem_CHAR_TIMEOUT * 1000 / DELAY)) {
+-		udelay(DELAY);
+-		counter++;
+-	}
+-	if (tstc()) {
+-		*c = getc();
+-		return 1;
+-	}
+-	return 0;
+-}
+-
+-static void CYGACC_COMM_IF_PUTC(char x, char y)
+-{
+-	console_putc(CONSOLE_STDOUT, y);
+-}
+-
+-/* Validate a hex character */
+-static inline bool _is_hex(char c)
+-{
+-	return (((c >= '0') && (c <= '9')) ||
+-		((c >= 'A') && (c <= 'F')) || ((c >= 'a') && (c <= 'f')));
+-}
+-
+-/* Convert a single hex nibble */
+-static inline int _from_hex(char c)
+-{
+-	int ret = 0;
+-
+-	if ((c >= '0') && (c <= '9'))
+-		ret = (c - '0');
+-	else if ((c >= 'a') && (c <= 'f'))
+-		ret = (c - 'a' + 0x0a);
+-	else if ((c >= 'A') && (c <= 'F'))
+-		ret = (c - 'A' + 0x0A);
+-
+-	return ret;
+-}
+-
+-/* Parse (scan) a number */
+-static bool parse_num(char *s, unsigned long *val, char **es, char *delim)
+-{
+-	bool first = true;
+-	int radix = 10;
+-	char c;
+-	unsigned long result = 0;
+-	int digit = 0;
+-
+-	while (*s == ' ')
+-		s++;
+-	while (*s) {
+-		if (first && (s[0] == '0') && (tolower(s[1]) == 'x')) {
+-			radix = 16;
+-			s += 2;
+-		}
+-		first = false;
+-		c = *s++;
+-		if (_is_hex(c))
+-			digit = _from_hex(c);
+-		if (_is_hex(c) && (digit < radix)) {
+-			/* Valid digit */
+-#ifdef CYGPKG_HAL_MIPS
+-			/* FIXME: tx49 compiler generates 0x2539018 for
+-			 * MUL which isn't any good. */
+-			if (16 == radix)
+-				result = result << 4;
+-			else
+-				result = 10 * result;
+-			result += digit;
+-#else
+-			result = (result * radix) + digit;
+-#endif
+-		} else {
+-			if (delim != (char *)0) {
+-				/* See if this character is one of the
+-				 * delimiters */
+-				char *dp = delim;
+-				while (*dp && (c != *dp))
+-					dp++;
+-				if (*dp)
+-					break;	/* Found a good delimiter */
+-			}
+-			return false;	/* Malformatted number */
+-		}
+-	}
+-	*val = result;
+-	if (es != (char **)0)
+-		*es = s;
+-	return true;
+-}
+-
+-#endif
+-
+-#define USE_SPRINTF
+-#ifdef DEBUG
+-#ifndef USE_SPRINTF
+-/*
+- * Note: this debug setup only works if the target platform has two serial ports
+- * available so that the other one (currently only port 1) can be used for debug
+- * messages.
+- */
+-static int zm_dprintf(char *fmt, ...)
+-{
+-	int cur_console;
+-	va_list args;
+-
+-	va_start(args, fmt);
+-#ifdef REDBOOT
+-	cur_console =
+-	    CYGACC_CALL_IF_SET_CONSOLE_COMM
+-	    (CYGNUM_CALL_IF_SET_COMM_ID_QUERY_CURRENT);
+-	CYGACC_CALL_IF_SET_CONSOLE_COMM(1);
+-#endif
+-	diag_vprintf(fmt, args);
+-#ifdef REDBOOT
+-	CYGACC_CALL_IF_SET_CONSOLE_COMM(cur_console);
+-#endif
+-}
+-
+-static void zm_flush(void)
+-{
+-}
+-
+-#else
+-/*
+- * Note: this debug setup works by storing the strings in a fixed buffer
+- */
+-#define FINAL
+-#ifdef FINAL
+-static char *zm_out = (char *)0x00380000;
+-static char *zm_out_start = (char *)0x00380000;
+-#else
+-static char zm_buf[8192];
+-static char *zm_out = zm_buf;
+-static char *zm_out_start = zm_buf;
+-
+-#endif
+-static int zm_dprintf(char *fmt, ...)
+-{
+-	int len;
+-	va_list args;
+-
+-	va_start(args, fmt);
+-	len = diag_vsprintf(zm_out, fmt, args);
+-	zm_out += len;
+-	return len;
+-}
+-
+-static void zm_flush(void)
+-{
+-#ifdef REDBOOT
+-	char *p = zm_out_start;
+-	while (*p)
+-		mon_write_char(*p++);
+-#endif
+-	zm_out = zm_out_start;
+-}
+-#endif
+-
+-static void zm_dump_buf(void *buf, int len)
+-{
+-#ifdef REDBOOT
+-	diag_vdump_buf_with_offset(zm_dprintf, buf, len, 0);
+-#else
+-
+-#endif
+-}
+-
+-static unsigned char zm_buf[2048];
+-static unsigned char *zm_bp;
+-
+-static void zm_new(void)
+-{
+-	zm_bp = zm_buf;
+-}
+-
+-static void zm_save(unsigned char c)
+-{
+-	*zm_bp++ = c;
+-}
+-
+-static void zm_dump(int line)
+-{
+-	zm_dprintf("Packet at line: %d\n", line);
+-	zm_dump_buf(zm_buf, zm_bp - zm_buf);
+-}
+-
+-#define ZM_DEBUG(x) x
+-#else
+-#define ZM_DEBUG(x)
+-#endif
+-
+-/* Wait for the line to go idle */
+-static void xyzModem_flush(void)
+-{
+-	int res;
+-	char c;
+-	while (true) {
+-		res = CYGACC_COMM_IF_GETC_TIMEOUT(*xyz.__chan, &c);
+-		if (!res)
+-			return;
+-	}
+-}
+-
+-static int xyzModem_get_hdr(void)
+-{
+-	char c;
+-	int res;
+-	bool hdr_found = false;
+-	int i, can_total, hdr_chars;
+-	unsigned short cksum;
+-
+-	ZM_DEBUG(zm_new());
+-	/* Find the start of a header */
+-	can_total = 0;
+-	hdr_chars = 0;
+-
+-	if (xyz.tx_ack) {
+-		CYGACC_COMM_IF_PUTC(*xyz.__chan, ACK);
+-		xyz.tx_ack = false;
+-	}
+-	while (!hdr_found) {
+-		res = CYGACC_COMM_IF_GETC_TIMEOUT(*xyz.__chan, &c);
+-		ZM_DEBUG(zm_save(c));
+-		if (res) {
+-			hdr_chars++;
+-			switch (c) {
+-			case SOH:
+-				xyz.total_SOH++;
+-			case STX:
+-				if (c == STX)
+-					xyz.total_STX++;
+-				hdr_found = true;
+-				break;
+-			case CAN:
+-				xyz.total_CAN++;
+-				ZM_DEBUG(zm_dump(__LINE__));
+-				if (++can_total == xyzModem_CAN_COUNT) {
+-					return xyzModem_cancel;
+-				} else {
+-					/* Wait for multiple CAN to avoid
+-					 * early quits */
+-					break;
+-				}
+-			case EOT:
+-				/* EOT only supported if no noise */
+-				if (hdr_chars == 1) {
+-					CYGACC_COMM_IF_PUTC(*xyz.__chan, ACK);
+-					ZM_DEBUG(zm_dprintf
+-						 ("ACK on EOT #%d\n",
+-						  __LINE__));
+-					ZM_DEBUG(zm_dump(__LINE__));
+-					return xyzModem_eof;
+-				}
+-			default:
+-				/* Ignore, waiting for start of header */
+-				;
+-			}
+-		} else {
+-			/* Data stream timed out */
+-			xyzModem_flush();	/* Toss any current input */
+-			ZM_DEBUG(zm_dump(__LINE__));
+-			CYGACC_CALL_IF_DELAY_US((cyg_int32) 250000);
+-			return xyzModem_timeout;
+-		}
+-	}
+-
+-	/* Header found, now read the data */
+-	res = CYGACC_COMM_IF_GETC_TIMEOUT(*xyz.__chan, (char *)&xyz.blk);
+-	ZM_DEBUG(zm_save(xyz.blk));
+-	if (!res) {
+-		ZM_DEBUG(zm_dump(__LINE__));
+-		return xyzModem_timeout;
+-	}
+-	res = CYGACC_COMM_IF_GETC_TIMEOUT(*xyz.__chan, (char *)&xyz.cblk);
+-	ZM_DEBUG(zm_save(xyz.cblk));
+-	if (!res) {
+-		ZM_DEBUG(zm_dump(__LINE__));
+-		return xyzModem_timeout;
+-	}
+-	xyz.len = (c == SOH) ? 128 : 1024;
+-	xyz.bufp = xyz.pkt;
+-	for (i = 0; i < xyz.len; i++) {
+-		res = CYGACC_COMM_IF_GETC_TIMEOUT(*xyz.__chan, &c);
+-		ZM_DEBUG(zm_save(c));
+-		if (res) {
+-			xyz.pkt[i] = c;
+-		} else {
+-			ZM_DEBUG(zm_dump(__LINE__));
+-			return xyzModem_timeout;
+-		}
+-	}
+-	res = CYGACC_COMM_IF_GETC_TIMEOUT(*xyz.__chan, (char *)&xyz.crc1);
+-	ZM_DEBUG(zm_save(xyz.crc1));
+-	if (!res) {
+-		ZM_DEBUG(zm_dump(__LINE__));
+-		return xyzModem_timeout;
+-	}
+-	if (xyz.crc_mode) {
+-		res =
+-		    CYGACC_COMM_IF_GETC_TIMEOUT(*xyz.__chan, (char *)&xyz.crc2);
+-		ZM_DEBUG(zm_save(xyz.crc2));
+-		if (!res) {
+-			ZM_DEBUG(zm_dump(__LINE__));
+-			return xyzModem_timeout;
+-		}
+-	}
+-	ZM_DEBUG(zm_dump(__LINE__));
+-	/* Validate the message */
+-	if ((xyz.blk ^ xyz.cblk) != (unsigned char)0xFF) {
+-		ZM_DEBUG(zm_dprintf
+-			 ("Framing error - blk: %x/%x/%x\n", xyz.blk, xyz.cblk,
+-			  (xyz.blk ^ xyz.cblk)));
+-		ZM_DEBUG(zm_dump_buf(xyz.pkt, xyz.len));
+-		xyzModem_flush();
+-		return xyzModem_frame;
+-	}
+-	/* Verify checksum/CRC */
+-	if (xyz.crc_mode) {
+-		cksum = cyg_crc16(xyz.pkt, xyz.len);
+-		if (cksum != ((xyz.crc1 << 8) | xyz.crc2)) {
+-			ZM_DEBUG(zm_dprintf
+-				 ("CRC error - recvd: %02x%02x, computed: %x\n",
+-				  xyz.crc1, xyz.crc2, cksum & 0xFFFF));
+-			return xyzModem_cksum;
+-		}
+-	} else {
+-		cksum = 0;
+-		for (i = 0; i < xyz.len; i++)
+-			cksum += xyz.pkt[i];
+-		if (xyz.crc1 != (cksum & 0xFF)) {
+-			ZM_DEBUG(zm_dprintf
+-				 ("Checksum error - recvd: %x, computed: %x\n",
+-				  xyz.crc1, cksum & 0xFF));
+-			return xyzModem_cksum;
+-		}
+-	}
+-	/* If we get here, the message passes [structural] muster */
+-	return 0;
+-}
+-
+-int xyzModem_stream_open(connection_info_t *info, int *err)
+-{
+-#ifdef REDBOOT
+-	int console_chan;
+-#endif
+-	int stat = 0;
+-	int retries = xyzModem_MAX_RETRIES;
+-	int crc_retries = xyzModem_MAX_RETRIES_WITH_CRC;
+-
+-/*    ZM_DEBUG(zm_out = zm_out_start); */
+-#ifdef xyzModem_zmodem
+-	if (info->mode == xyzModem_zmodem) {
+-		*err = xyzModem_noZmodem;
+-		return -1;
+-	}
+-#endif
+-
+-#ifdef REDBOOT
+-	/* Set up the I/O channel.  Note: this allows for using a different
+-	 * port in the future */
+-	console_chan =
+-	    CYGACC_CALL_IF_SET_CONSOLE_COMM
+-	    (CYGNUM_CALL_IF_SET_COMM_ID_QUERY_CURRENT);
+-	if (info->chan >= 0)
+-		CYGACC_CALL_IF_SET_CONSOLE_COMM(info->chan);
+-	else
+-		CYGACC_CALL_IF_SET_CONSOLE_COMM(console_chan);
+-
+-	xyz.__chan = CYGACC_CALL_IF_CONSOLE_PROCS();
+-
+-	CYGACC_CALL_IF_SET_CONSOLE_COMM(console_chan);
+-	CYGACC_COMM_IF_CONTROL(*xyz.__chan, __COMMCTL_SET_TIMEOUT,
+-			       xyzModem_CHAR_TIMEOUT);
+-#else
+-/* TODO: CHECK ! */
+-	int dummy = 0;
+-	xyz.__chan = &dummy;
+-#endif
+-	xyz.len = 0;
+-	xyz.crc_mode = true;
+-	xyz.at_eof = false;
+-	xyz.tx_ack = false;
+-	xyz.mode = info->mode;
+-	xyz.total_retries = 0;
+-	xyz.total_SOH = 0;
+-	xyz.total_STX = 0;
+-	xyz.total_CAN = 0;
+-#ifdef USE_YMODEM_LENGTH
+-	xyz.read_length = 0;
+-	xyz.file_length = 0;
+-#endif
+-
+-	CYGACC_COMM_IF_PUTC(*xyz.__chan, (xyz.crc_mode ? 'C' : NAK));
+-
+-	if (xyz.mode == xyzModem_xmodem) {
+-		/* X-modem doesn't have an information header - exit here */
+-		xyz.next_blk = 1;
+-		return 0;
+-	}
+-
+-	while (retries-- > 0) {
+-		stat = xyzModem_get_hdr();
+-		if (stat == 0) {
+-			/* Y-modem file information header */
+-			if (xyz.blk == 0) {
+-#ifdef USE_YMODEM_LENGTH
+-				/* skip filename */
+-				while (*xyz.bufp++) ;
+-				/* get the length */
+-				parse_num((char *)xyz.bufp, &xyz.file_length,
+-					  NULL, " ");
+-#endif
+-				/* The rest of the file name data block
+-				 * quietly discarded
+-				 */
+-				xyz.tx_ack = true;
+-			}
+-			xyz.next_blk = 1;
+-			xyz.len = 0;
+-			return 0;
+-		} else if (stat == xyzModem_timeout) {
+-			if (--crc_retries <= 0)
+-				xyz.crc_mode = false;
+-			/* Extra delay for startup */
+-			CYGACC_CALL_IF_DELAY_US(5 * 100000);
+-			CYGACC_COMM_IF_PUTC(*xyz.__chan,
+-					    (xyz.crc_mode ? 'C' : NAK));
+-			xyz.total_retries++;
+-			ZM_DEBUG(zm_dprintf("NAK (%d)\n", __LINE__));
+-		}
+-		if (stat == xyzModem_cancel)
+-			break;
+-	}
+-	*err = stat;
+-	ZM_DEBUG(zm_flush());
+-	return -1;
+-}
+-
+-int xyzModem_stream_read(char *buf, int size, int *err)
+-{
+-	int stat, total, len;
+-	int retries;
+-
+-	total = 0;
+-	stat = xyzModem_cancel;
+-	/* Try and get 'size' bytes into the buffer */
+-	while (!xyz.at_eof && (size > 0)) {
+-		if (xyz.len == 0) {
+-			retries = xyzModem_MAX_RETRIES;
+-			while (retries-- > 0) {
+-				stat = xyzModem_get_hdr();
+-				if (stat == 0) {
+-					if (xyz.blk == xyz.next_blk) {
+-						xyz.tx_ack = true;
+-						ZM_DEBUG(zm_dprintf
+-							 ("ACK block %d (%d)\n",
+-							  xyz.blk, __LINE__));
+-						xyz.next_blk =
+-						    (xyz.next_blk + 1) & 0xFF;
+-
+-#if defined(xyzModem_zmodem) || defined(USE_YMODEM_LENGTH)
+-						if (xyz.mode == xyzModem_xmodem
+-						    || xyz.file_length == 0) {
+-#else
+-						if (1) {
+-#endif
+-			/* WARNING - Leaving formatting aside for code
+-			 * clarity */
+-			/* Data blocks can be padded with ^Z (EOF) characters */
+-			/* This code tries to detect and remove them */
+-			if ((xyz.bufp[xyz.len - 1] == EOF)
+-			    && (xyz.bufp[xyz.len - 2] == EOF)
+-			    && (xyz.bufp[xyz.len - 3] == EOF)) {
+-				while (xyz.len &&
+-					(xyz.bufp[xyz.len - 1] == EOF))
+-						xyz.len--;
+-				}
+-			}
+-#ifdef USE_YMODEM_LENGTH
+-			/* WARNING - Leaving formatting aside for code
+-			 * clarity */
+-			/*
+-			 * See if accumulated length exceeds that of the file.
+-			 * If so, reduce size (i.e., cut out pad bytes)
+-			 * Only do this for Y-modem (and Z-modem should it ever
+-			 * be supported since it can fall back to Y-modem mode).
+-			 */
+-			if (xyz.mode != xyzModem_xmodem
+-			    && 0 != xyz.file_length) {
+-				xyz.read_length += xyz.len;
+-				if (xyz.read_length > xyz.file_length)
+-					xyz.len -= (xyz.read_length -
+-					     xyz.file_length);
+-			}
+-#endif
+-						break;
+-					} else if (xyz.blk ==
+-						   ((xyz.next_blk - 1) &
+-						    0xFF)) {
+-						/* Just re-ACK this so sender
+-						 * will get on with it */
+-						CYGACC_COMM_IF_PUTC(*xyz.__chan,
+-								    ACK);
+-						/* Need new header */
+-						continue;
+-					} else
+-						stat = xyzModem_sequence;
+-				}
+-				if (stat == xyzModem_cancel)
+-					break;
+-				if (stat == xyzModem_eof) {
+-					CYGACC_COMM_IF_PUTC(*xyz.__chan, ACK);
+-					ZM_DEBUG(zm_dprintf
+-						 ("ACK (%d)\n", __LINE__));
+-					if (xyz.mode == xyzModem_ymodem) {
+-						CYGACC_COMM_IF_PUTC(*xyz.__chan,
+-								    (xyz.
+-								     crc_mode ?
+-								     'C' :
+-								     NAK));
+-						xyz.total_retries++;
+-						ZM_DEBUG(zm_dprintf
+-						 ("Reading Final Header\n"));
+-						stat = xyzModem_get_hdr();
+-						CYGACC_COMM_IF_PUTC(*xyz.__chan,
+-								    ACK);
+-						ZM_DEBUG(zm_dprintf
+-							 ("FINAL ACK (%d)\n",
+-							  __LINE__));
+-					}
+-					xyz.at_eof = true;
+-					break;
+-				}
+-				CYGACC_COMM_IF_PUTC(*xyz.__chan,
+-						    (xyz.crc_mode ? 'C' : NAK));
+-				xyz.total_retries++;
+-				ZM_DEBUG(zm_dprintf("NAK (%d)\n", __LINE__));
+-			}
+-			if (stat < 0) {
+-				*err = stat;
+-				xyz.len = -1;
+-				return total;
+-			}
+-		}
+-		/* Don't "read" data from the EOF protocol package */
+-		if (!xyz.at_eof) {
+-			len = xyz.len;
+-			if (size < len)
+-				len = size;
+-			memcpy(buf, xyz.bufp, len);
+-			size -= len;
+-			buf += len;
+-			total += len;
+-			xyz.len -= len;
+-			xyz.bufp += len;
+-		}
+-	}
+-	return total;
+-}
+-
+-void xyzModem_stream_close(int *err)
+-{
+-	diag_printf
+-	    ("xyzModem - %s mode, %d(SOH)/%d(STX)/%d(CAN) packets,"
+-	     " %d retries\n",
+-	     xyz.crc_mode ? "CRC" : "Cksum", xyz.total_SOH, xyz.total_STX,
+-	     xyz.total_CAN, xyz.total_retries);
+-	ZM_DEBUG(zm_flush());
+-}
+-
+-/* Need to be able to clean out the input buffer, so have to take the */
+-/* getc */
+-void xyzModem_stream_terminate(bool abort, int (*getc) (void))
+-{
+-	int c;
+-
+-	if (abort) {
+-		ZM_DEBUG(zm_dprintf("!!!! TRANSFER ABORT !!!!\n"));
+-		switch (xyz.mode) {
+-		case xyzModem_xmodem:
+-		case xyzModem_ymodem:
+-			/* The X/YMODEM Spec seems to suggest that multiple CAN
+-			 * followed by an equal number of Backspaces is a
+-			 * friendly way to get the other end to abort. */
+-			CYGACC_COMM_IF_PUTC(*xyz.__chan, CAN);
+-			CYGACC_COMM_IF_PUTC(*xyz.__chan, CAN);
+-			CYGACC_COMM_IF_PUTC(*xyz.__chan, CAN);
+-			CYGACC_COMM_IF_PUTC(*xyz.__chan, CAN);
+-			CYGACC_COMM_IF_PUTC(*xyz.__chan, BSP);
+-			CYGACC_COMM_IF_PUTC(*xyz.__chan, BSP);
+-			CYGACC_COMM_IF_PUTC(*xyz.__chan, BSP);
+-			CYGACC_COMM_IF_PUTC(*xyz.__chan, BSP);
+-			/* Now consume the rest of what's waiting on the line.*/
+-			ZM_DEBUG(zm_dprintf("Flushing serial line.\n"));
+-			xyzModem_flush();
+-			xyz.at_eof = true;
+-			break;
+-#ifdef xyzModem_zmodem
+-		case xyzModem_zmodem:
+-			/* Might support it some day I suppose. */
+-#endif
+-			break;
+-		}
+-	} else {
+-		ZM_DEBUG(zm_dprintf("Engaging cleanup mode...\n"));
+-		/*
+-		 * Consume any trailing crap left in the inbuffer from
+-		 * previous recieved blocks. Since very few files are an
+-		 * exact multiple of the transfer block size, there will
+-		 * almost always be some gunk here.
+-		 * If we don't eat it now, RedBoot will think the user typed it.
+-		 */
+-		ZM_DEBUG(zm_dprintf("Trailing gunk:\n"));
+-		while ((c = (*getc) ()) > -1) ;
+-		ZM_DEBUG(zm_dprintf("\n"));
+-		/*
+-		 * Make a small delay to give terminal programs like minicom
+-		 * time to get control again after their file transfer program
+-		 * exits.
+-		 */
+-		CYGACC_CALL_IF_DELAY_US((cyg_int32) 250000);
+-	}
+-}
+-
+-char *xyzModem_error(int err)
+-{
+-	switch (err) {
+-	case xyzModem_access:
+-		return "Can't access file";
+-		break;
+-	case xyzModem_noZmodem:
+-		return "Sorry, zModem not available yet";
+-		break;
+-	case xyzModem_timeout:
+-		return "Timed out";
+-		break;
+-	case xyzModem_eof:
+-		return "End of file";
+-		break;
+-	case xyzModem_cancel:
+-		return "Cancelled";
+-		break;
+-	case xyzModem_frame:
+-		return "Invalid framing";
+-		break;
+-	case xyzModem_cksum:
+-		return "CRC/checksum error";
+-		break;
+-	case xyzModem_sequence:
+-		return "Block sequence error";
+-		break;
+-	default:
+-		return "Unknown error";
+-		break;
+-	}
+-}
+-
+-/*
+- * RedBoot interface
+- */
+-#if 0				/* SB */
+-GETC_IO_FUNCS(xyzModem_io, xyzModem_stream_open, xyzModem_stream_close,
+-	      xyzModem_stream_terminate, xyzModem_stream_read, xyzModem_error);
+-RedBoot_load(xmodem, xyzModem_io, false, false, xyzModem_xmodem);
+-RedBoot_load(ymodem, xyzModem_io, false, false, xyzModem_ymodem);
+-#endif
+diff --git a/include/xyzModem.h b/include/xyzModem.h
+deleted file mode 100644
+index a3ea768..0000000
+--- a/include/xyzModem.h
++++ /dev/null
+@@ -1,109 +0,0 @@
+-/*
+- *==========================================================================
+- *
+- *      xyzModem.h
+- *
+- *      RedBoot stream handler for xyzModem protocol
+- *
+- *==========================================================================
+- *####ECOSGPLCOPYRIGHTBEGIN####
+- * -------------------------------------------
+- * This file is part of eCos, the Embedded Configurable Operating System.
+- * Copyright (C) 1998, 1999, 2000, 2001, 2002 Red Hat, Inc.
+- * Copyright (C) 2002 Gary Thomas
+- *
+- * eCos is free software; you can redistribute it and/or modify it under
+- * the terms of the GNU General Public License as published by the Free
+- * Software Foundation; either version 2 or (at your option) any later version.
+- *
+- * eCos is distributed in the hope that it will be useful, but WITHOUT ANY
+- * WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- * for more details.
+- *
+- * You should have received a copy of the GNU General Public License along
+- * with eCos; if not, write to the Free Software Foundation, Inc.,
+- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+- *
+- * As a special exception, if other files instantiate templates or use macros
+- * or inline functions from this file, or you compile this file and link it
+- * with other works to produce a work based on this file, this file does not
+- * by itself cause the resulting work to be covered by the GNU General Public
+- * License. However the source code for this file must still be made available
+- * in accordance with section (3) of the GNU General Public License.
+- *
+- * This exception does not invalidate any other reasons why a work based on
+- * this file might be covered by the GNU General Public License.
+- *
+- * Alternative licenses for eCos may be arranged by contacting Red Hat, Inc.
+- * at http: *sources.redhat.com/ecos/ecos-license/
+- * -------------------------------------------
+- *####ECOSGPLCOPYRIGHTEND####
+- *==========================================================================
+- *#####DESCRIPTIONBEGIN####
+- *
+- * Author(s):    gthomas
+- * Contributors: gthomas
+- * Date:         2000-07-14
+- * Purpose:
+- * Description:
+- *
+- * This code is part of RedBoot (tm).
+- *
+- *####DESCRIPTIONEND####
+- *
+- *==========================================================================
+- */
+-
+-#ifndef _XYZMODEM_H_
+-#define _XYZMODEM_H_
+-
+-#define xyzModem_xmodem 1
+-#define xyzModem_ymodem 2
+-/* Don't define this until the protocol support is in place */
+-/*#define xyzModem_zmodem 3 */
+-
+-#define xyzModem_access   -1
+-#define xyzModem_noZmodem -2
+-#define xyzModem_timeout  -3
+-#define xyzModem_eof      -4
+-#define xyzModem_cancel   -5
+-#define xyzModem_frame    -6
+-#define xyzModem_cksum    -7
+-#define xyzModem_sequence -8
+-
+-#define xyzModem_close 1
+-#define xyzModem_abort 2
+-
+-
+-#ifdef REDBOOT
+-extern getc_io_funcs_t xyzModem_io;
+-#else
+-#define CYGNUM_CALL_IF_SET_COMM_ID_QUERY_CURRENT
+-#define CYGACC_CALL_IF_SET_CONSOLE_COMM(x)
+-
+-#define diag_vprintf vprintf
+-#define diag_printf printf
+-#define diag_vsprintf vsprintf
+-
+-#define CYGACC_CALL_IF_DELAY_US(x) udelay(x)
+-
+-typedef struct {
+-    char *filename;
+-    int   mode;
+-    int   chan;
+-#ifdef CYGPKG_REDBOOT_NETWORKING
+-    struct sockaddr_in *server;
+-#endif
+-} connection_info_t;
+-
+-#endif
+-
+-
+-int   xyzModem_stream_open(connection_info_t *info, int *err);
+-void  xyzModem_stream_close(int *err);
+-void  xyzModem_stream_terminate(bool method, int (*getc)(void));
+-int   xyzModem_stream_read(char *buf, int size, int *err);
+-char *xyzModem_error(int err);
+-
+-#endif /* _XYZMODEM_H_ */
 -- 
-Robert
+1.7.10
+
 
 _______________________________________________
 barebox mailing list
