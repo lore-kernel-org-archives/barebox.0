@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-f177.google.com ([209.85.223.177])
+Received: from mail-oa0-f49.google.com ([209.85.219.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TWZu3-0002sF-6G
- for barebox@lists.infradead.org; Thu, 08 Nov 2012 21:44:47 +0000
-Received: by mail-ie0-f177.google.com with SMTP id e14so4876343iej.36
- for <barebox@lists.infradead.org>; Thu, 08 Nov 2012 13:44:46 -0800 (PST)
+ id 1TWmQO-0004HV-Ln
+ for barebox@lists.infradead.org; Fri, 09 Nov 2012 11:07:01 +0000
+Received: by mail-oa0-f49.google.com with SMTP id l10so3720859oag.36
+ for <barebox@lists.infradead.org>; Fri, 09 Nov 2012 03:06:58 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <1352409401-3333-1-git-send-email-robert.jarzmik@free.fr>
-References: <1352409401-3333-1-git-send-email-robert.jarzmik@free.fr>
-Date: Fri, 9 Nov 2012 01:44:46 +0400
-Message-ID: <CAA4bVAHfj7jX-Qb_4OvOPe73nSLaRmEadQd=c_cRHemODgxZzg@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Fri, 9 Nov 2012 12:06:38 +0100
+Message-ID: <CAHkwnC-dDfPesg5vy5V2rj7vdY_DH9cjfJ3gCVsm8xY-DPf35A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,32 +17,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============3799540869828338013=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 1/2] commands: change Y-Modem implementation
-To: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: barebox@lists.infradead.org
+Subject: defaultenv-2: how to update a flash partition?
+To: barebox@lists.infradead.org
 
-On 9 November 2012 01:16, Robert Jarzmik <robert.jarzmik@free.fr> wrote:
-> The current Y-Modem implementation has some limitations:
->  - Y-Modem/G protocol is not supported
->  - Multiple files (aka. batch) transfers are not supported
->  - Transfer speed over fast lines (USB console) is slow
->  - Code is not trivial to maintain (personnal opinion)
+--===============3799540869828338013==
+Content-Type: multipart/alternative; boundary=e89a8f839f6f4c64b304ce0df303
 
-personal
+--e89a8f839f6f4c64b304ce0df303
+Content-Type: text/plain; charset=ISO-8859-1
 
+Hi all,
 
-> This implementation tries to address all these points by
-> introducing loady2 command.
+I want to use the defaultenv-2 but i don't find any more the "update"
+command
+like in the defaultenv.
+What is the recommended way to update a flash partition in the new
+environment?
 
+Best regards
 -- 
-Best regards,
-  Antony Pavlov
+Fabio Porcedda
+
+--e89a8f839f6f4c64b304ce0df303
+Content-Type: text/html; charset=ISO-8859-1
+
+Hi all,<br><br>I want to use the defaultenv-2 but i don&#39;t find any more the &quot;update&quot; command<br>like in the defaultenv.<br>What is the recommended way to update a flash partition in the new environment?<br><br>
+
+Best regards<br>-- <br>Fabio Porcedda<br><br>
+
+--e89a8f839f6f4c64b304ce0df303--
+
+
+--===============3799540869828338013==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============3799540869828338013==--
