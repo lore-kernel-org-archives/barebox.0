@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from moutng.kundenserver.de ([212.227.126.186])
+Received: from mail-wg0-f49.google.com ([74.125.82.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TXteV-0008Vz-4C
- for barebox@lists.infradead.org; Mon, 12 Nov 2012 13:02:12 +0000
-Message-ID: <50A0F349.6070008@cmotion.eu>
-Date: Mon, 12 Nov 2012 14:02:01 +0100
-From: Christian Kapeller <christian.kapeller@cmotion.eu>
-MIME-Version: 1.0
-References: <alpine.LSU.2.00.1211061440560.27068@redbean.intranet.gw-instruments.de>
- <20121112083339.GQ10369@pengutronix.de>
-In-Reply-To: <20121112083339.GQ10369@pengutronix.de>
+ id 1TY1Mv-0002MB-EK
+ for barebox@lists.infradead.org; Mon, 12 Nov 2012 21:16:34 +0000
+Received: by mail-wg0-f49.google.com with SMTP id gg4so2867160wgb.18
+ for <barebox@lists.infradead.org>; Mon, 12 Nov 2012 13:16:31 -0800 (PST)
+From: Franck Jullien <franck.jullien@gmail.com>
+Date: Mon, 12 Nov 2012 22:16:31 +0100
+Message-Id: <1352754991-11660-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,77 +16,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: TX53: Not Bootable from next tree
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, g@pengutronix.de, Peter Wippich <pewi@gw-instruments.de>
+Subject: [PATCH] mci_spi: always compute command crc byte
+To: barebox@lists.infradead.org
 
-Hi,
+The spec says: "the CMD8 CRC verification is always enabled.
+The Host shall set correct CRC in the argument ofCMD8. If
+CRC error is detected, card returns CRC error in R1 response
+regardless of command index."
 
-> In the meantime, could you try removing the call to
-> imx53_init_lowlevel() and try booting 2nd stage (from U-Boot or
-> redboot)?
+Make it simple, and compute crc on every commands.
 
-2nd stage booting TX83-8030 from redboot works with and without call to
-imx53_init_lowlevel (boards/karo-tx53/lowlevel.c)
+Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+---
+ drivers/mci/Kconfig   |    2 +-
+ drivers/mci/mci_spi.c |   12 ------------
+ 2 files changed, 1 insertions(+), 13 deletions(-)
 
-I've also looked at the DCD sequence at the beginning of the redboot and
-bb (CONFIG_PBL=y) binaries and saw, that what set's them appart is:
-
-flash_header.entry RB: 0x8FFC0000
-flash_header.entry BB: 0x71000000
-
-flash_header.boot_data_size = 0x1fd87;
-flash_header.boot_data_size = 0x40000;
-
-
-Barebox has an additional DCD Item compared to redboot:
-
-arch/arm/boards/karo-tx53/dcd-data-xx30.h line 15:
-DCD_NAME_XX30[] = {
-	DCD_WR_CMD(0x21c),
-	DCD_ITEM(0x53fd4068, 0xffcc0fff),
-	DCD_ITEM(0x53fd406c, 0x000fffc3),
-
-
-The DCD_WR_CMD(0x21c) duplicates the the last entries of the
-flash_header_section structure:
-
-arch/arm/boards/karo-tx53/flash_header.h line 68:
-	.dcd.command.tag	= DCD_COMMAND_WRITE_TAG,
-#ifdef CONFIG_TX53_REV_1011
-	.dcd.command.length	= cpu_to_be16(sizeof(struct imx_dcd_command) +
-sizeof(dcd_entry)),
-#elif defined(CONFIG_TX53_REV_XX30)
-	.dcd.command.length	= cpu_to_be16(0x21c),
-
-So the DCD_WR_CMD(0x21c) seems to be superfluous.
-
-
-
-I've adjusted entry address, the boot_data_size, and removed the
-DCD_WR_CMD entry, to match the flash header to that of redboot, and
-flashed that. That didn't show any improvement.
-
-Also here the situation is the same with and without imx53_init_lowlevel.
-
-
-Cheers,
-Christian
-
-
+diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+index b1a678e..5c0ca4d 100644
+--- a/drivers/mci/Kconfig
++++ b/drivers/mci/Kconfig
+@@ -88,6 +88,7 @@ config MCI_ATMEL
+ 
+ config MCI_SPI
+ 	bool "MMC/SD over SPI"
++	select CRC7
+ 	depends on SPI
+ 	help
+ 	  Some systems access MMC/SD/SDIO cards using a SPI controller
+@@ -98,7 +99,6 @@ config MCI_SPI
+ 
+ config MMC_SPI_CRC_ON
+ 	bool "Enable CRC protection for transfers"
+-	select CRC7
+ 	select CRC16
+ 	depends on MCI_SPI
+ 	help
+diff --git a/drivers/mci/mci_spi.c b/drivers/mci/mci_spi.c
+index 5894104..cb5e0bb 100644
+--- a/drivers/mci/mci_spi.c
++++ b/drivers/mci/mci_spi.c
+@@ -121,14 +121,6 @@ mmc_spi_writebytes(struct mmc_spi_host *host, unsigned len, void *data)
+ 	return status;
+ }
+ 
+-/*
+- * Note that while the CRC, in general, is ignored in SPI mode, the very first
+- * command must be followed by a valid CRC, since the card is not yet in SPI mode.
+- * The CRC byte for a CMD0 command with a zero argument is a constant 0x4A. For
+- * simplicity, this CRC byte is always sent with every command.
+- */
+-#define MMC_SPI_CMD0_CRC	((0x4a << 1) | 0x1)
+-
+ static int mmc_spi_command_send(struct mmc_spi_host *host, struct mci_cmd *cmd)
+ {
+ 	uint8_t r1;
+@@ -141,11 +133,7 @@ static int mmc_spi_command_send(struct mmc_spi_host *host, struct mci_cmd *cmd)
+ 	command[3] = cmd->cmdarg >> 16;
+ 	command[4] = cmd->cmdarg >> 8;
+ 	command[5] = cmd->cmdarg;
+-#ifdef CONFIG_MMC_SPI_CRC_ON
+ 	command[6] = (crc7(0, &command[1], 5) << 1) | 0x01;
+-#else
+-	command[6] = MMC_SPI_CMD0_CRC;
+-#endif
+ 
+ 	mmc_spi_writebytes(host, 7, command);
+ 
 -- 
-Christian Kapeller
-cmotion GmbH
-Kriehubergasse 16
-1050 Wien / Austria
-http://www.cmotion.eu
+1.7.1
 
-christian.kapeller@cmotion.eu
-Phone: +43 1 789 1096 38
 
 _______________________________________________
 barebox mailing list
