@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oa0-f49.google.com ([209.85.219.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TWmQO-0004HV-Ln
- for barebox@lists.infradead.org; Fri, 09 Nov 2012 11:07:01 +0000
-Received: by mail-oa0-f49.google.com with SMTP id l10so3720859oag.36
- for <barebox@lists.infradead.org>; Fri, 09 Nov 2012 03:06:58 -0800 (PST)
+ id 1TXoRo-0003wI-RH
+ for barebox@lists.infradead.org; Mon, 12 Nov 2012 07:28:45 +0000
+Date: Mon, 12 Nov 2012 08:28:39 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121112072839.GF10369@pengutronix.de>
+References: <1352329179-19809-1-git-send-email-apr@cn-eng.de>
 MIME-Version: 1.0
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-Date: Fri, 9 Nov 2012 12:06:38 +0100
-Message-ID: <CAHkwnC-dDfPesg5vy5V2rj7vdY_DH9cjfJ3gCVsm8xY-DPf35A@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1352329179-19809-1-git-send-email-apr@cn-eng.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,49 +18,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============3799540869828338013=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: defaultenv-2: how to update a flash partition?
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] mdiobus: unbreak phy_device_connect(): honor masked out
+ PHYs
+To: Andreas Pretzsch <apr@cn-eng.de>
+Cc: barebox@lists.infradead.org
 
---===============3799540869828338013==
-Content-Type: multipart/alternative; boundary=e89a8f839f6f4c64b304ce0df303
+On Wed, Nov 07, 2012 at 11:59:39PM +0100, Andreas Pretzsch wrote:
+> commit 89dfe2d2af87f1b803f611d986d4ef383b6ad964 "mdiobus: do not scan
+> the bus at registration time" dropped the check for struct mii_bus
+> element phy_mask while scanning through all addresses.
+> Re-add this check.
+> 
+> Signed-off-by: Andreas Pretzsch <apr@cn-eng.de>
 
---e89a8f839f6f4c64b304ce0df303
-Content-Type: text/plain; charset=ISO-8859-1
+Applied, thanks
 
-Hi all,
+Sascha
 
-I want to use the defaultenv-2 but i don't find any more the "update"
-command
-like in the defaultenv.
-What is the recommended way to update a flash partition in the new
-environment?
+> ---
+> patch against branch "next" / commit 89dfe2d2af87f1b803f611d986d4ef383b6ad964
+> Another one to fold into original patch. Sorry for missing it the first round.
+> 
+>  drivers/net/phy/phy.c |    4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+> index 547e269..d8132b9 100644
+> --- a/drivers/net/phy/phy.c
+> +++ b/drivers/net/phy/phy.c
+> @@ -169,6 +169,10 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
+>  				goto fail;
+>  		} else {
+>  			for (i = 0; i < PHY_MAX_ADDR && !edev->phydev; i++) {
+> +				/* skip masked out PHY addresses */
+> +				if (bus->phy_mask & (1 << i))
+> +					continue;
+> +
+>  				dev = mdiobus_scan(bus, i);
+>  				if (!dev || dev->attached_dev)
+>  					continue;
+> -- 
+> 1.7.10.4
+> 
+> 
 
-Best regards
 -- 
-Fabio Porcedda
-
---e89a8f839f6f4c64b304ce0df303
-Content-Type: text/html; charset=ISO-8859-1
-
-Hi all,<br><br>I want to use the defaultenv-2 but i don&#39;t find any more the &quot;update&quot; command<br>like in the defaultenv.<br>What is the recommended way to update a flash partition in the new environment?<br><br>
-
-Best regards<br>-- <br>Fabio Porcedda<br><br>
-
---e89a8f839f6f4c64b304ce0df303--
-
-
---===============3799540869828338013==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============3799540869828338013==--
