@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TXoZU-0004Is-4d
- for barebox@lists.infradead.org; Mon, 12 Nov 2012 07:36:40 +0000
-Date: Mon, 12 Nov 2012 08:36:37 +0100
+ id 1TXob7-0004Mo-FJ
+ for barebox@lists.infradead.org; Mon, 12 Nov 2012 07:38:22 +0000
+Date: Mon, 12 Nov 2012 08:38:19 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121112073637.GJ10369@pengutronix.de>
-References: <20121106193010.GE25679@game.jcrosoft.org>
+Message-ID: <20121112073819.GK10369@pengutronix.de>
+References: <20121103205655.GA29599@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121106193010.GE25679@game.jcrosoft.org>
+In-Reply-To: <20121103205655.GA29599@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,63 +22,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/8] atmtel: fix spi driver + rm9200
+Subject: Re: [PATCH 0/3] i2c: add at24 eeprom support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Nov 06, 2012 at 08:30:10PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Sat, Nov 03, 2012 at 09:56:55PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > HI,
 > 
-> The following changes since commit d74bef2b04a3ccf7339ba916e56830bb2feae957:
+> 	this patch serie add the at24 eeprom support based on linux 3.6
 > 
->   mount: add compatibility to old mount command (2012-11-02 21:26:29 +0100)
+> 	the depends on the i2c prepare 1t24 support patch series
+> 
+> The following changes since commit 5526278ac77ecd7109c9c1bbc35d7c74875902e7:
+> 
+>   i2c: add id_table support (2012-11-03 13:33:54 +0800)
 > 
 > are available in the git repository at:
 > 
->   git://git.jcrosoft.org/barebox.git tags/atmel_spi_fix
+>   git://git.jcrosoft.org/barebox.git delivery/at24
 > 
-> for you to fetch changes up to 7e7b7aa81cdf7e47a8f828818f1e453a27046c38:
-> 
->   at91rm9200: fix spi cs support (2012-11-06 04:39:09 +0800)
+> for you to fetch changes up to fe6968e20c39461df068d5cc15869012be4a3161:
 
 Applied, thanks
 
 Sascha
 
 > 
-> ----------------------------------------------------------------
-> atmel spi support fix
-> 
-> The current drivers for atmel have a lot of issues but we are lucky
-> enough if you use it one device + one master instance it will work on
-> most of the spi device
-> 
-> but this will not work on mmc spi or multi-master instance or multi-device
-> 
-> so now fix all those issues
->  - fix the cs support
->  - fix setup setup support
->  - do not call setup before each transfert
->  - add sanity check
-> 
-> now the atmel spi work on rm9200, mmc spi and at24, at45, eeprom
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+>   eeprom: add at24 support (2012-11-03 13:46:50 +0800)
 > 
 > ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (8):
->       atmel_spi: use device id as bus num
->       atmel_spi: split transfert to atmel_spi_do_xfer
->       atmel_spi: after setup the cs need to be disable
->       atmel_spi: add sanity check in setup
->       atmel_spi: fix cs support
->       atmel_spi: drop setup during transfer
->       atmel_spi: add cs change support
->       at91rm9200: fix spi cs support
+> Jean-Christophe PLAGNIOL-VILLARD (3):
+>       import log2 support from linux
+>       add roundup and rounddown support
+>       eeprom: add at24 support
 > 
->  arch/arm/mach-at91/at91rm9200_devices.c |    7 ++++++-
->  drivers/spi/atmel_spi.c                 |  260 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------------------------------------------------
->  2 files changed, 196 insertions(+), 71 deletions(-)
+>  drivers/eeprom/Kconfig  |   19 ++++++++++
+>  drivers/eeprom/Makefile |    1 +
+>  drivers/eeprom/at24.c   |  460 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  include/i2c/at24.h      |   35 +++++++++++++++++++
+>  include/linux/kernel.h  |   15 ++++++++
+>  include/linux/log2.h    |  190 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  6 files changed, 720 insertions(+)
+>  create mode 100644 drivers/eeprom/at24.c
+>  create mode 100644 include/i2c/at24.h
+>  create mode 100644 include/linux/log2.h
 > 
 > Best Regards,
 > J.
