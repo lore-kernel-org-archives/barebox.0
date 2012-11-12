@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TXoT3-00043Y-NT
- for barebox@lists.infradead.org; Mon, 12 Nov 2012 07:30:02 +0000
-Date: Mon, 12 Nov 2012 08:30:00 +0100
+ id 1TXoVX-0004BP-H5
+ for barebox@lists.infradead.org; Mon, 12 Nov 2012 07:32:36 +0000
+Date: Mon, 12 Nov 2012 08:32:33 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121112073000.GG10369@pengutronix.de>
-References: <1352330703-27402-1-git-send-email-apr@cn-eng.de>
+Message-ID: <20121112073233.GH10369@pengutronix.de>
+References: <20121105182148.GA25679@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1352330703-27402-1-git-send-email-apr@cn-eng.de>
+In-Reply-To: <20121105182148.GA25679@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,208 +22,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net smc911x: add support for external PHY
-To: Andreas Pretzsch <apr@cn-eng.de>
+Subject: Re: [PATCH 0/2 v4] add spi command
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Nov 08, 2012 at 12:25:03AM +0100, Andreas Pretzsch wrote:
-> On LAN9115/LAN9117/LAN9215/LAN9217, external PHYs are supported.
-> Switch to external PHY based on hardware strap pin and/or override flags.
-> Also add a mask to platform data selecting external PHY address to be used.
+On Mon, Nov 05, 2012 at 07:21:48PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> HI,
 > 
-> Code based on linux/drivers/net/ethernet/smsc/smsc911x.c (fd9abb3d, d23f028a).
+> 	v4:
+> 	do not touch the atmel_spi
+> 
+> 	v3:
+> 	call setup before accesing the device
+> 	This was working properly on at91 as the driver is wrong.
+> 	It call setup for every transfer. I will fix the atmel_spi.
+> 
+> 	v2:
+> 	add default return usage
+> 	use memory_display
+> 
+> 	while debugging a spi issue I found we have a i2c commands but no spi
+> 	command
+> 
+> 	So introduce one
+> 
+> The following changes since commit 56371f4e8446d04d2a5608dd5890fd87a50f888e:
 
 Applied, thanks
 
 Sascha
 
-> ---
-> Code is tested on a SMSC LAN9217 with an external PHY (switch chip attached
-> in PHY mode via MII), the external mode works as expected.
-> As I have no board at hand using the internal PHY of the controller (or any
-> of these family), I cannot verify the current behaviour, beside looking at
-> the internal PHY register (which are fine).
-> But as the modifications are mostly 1:1 copies of the respective Linux mainline
-> code, slightly adapted for Barebox, I expect no problems here.
 > 
-> Patch is against current next, but should also match current master.
-> CC'ing last active authors.
+>   iomux-imx35: add missing comma in pad definition (2012-11-01 16:32:12 +0100)
 > 
->  drivers/net/smc911x.c |   97 +++++++++++++++++++++++++++++++++++++++++++++++--
->  include/smc911x.h     |    6 +++
->  2 files changed, 99 insertions(+), 4 deletions(-)
+> are available in the git repository at:
 > 
-> diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
-> index c657fec..28c69ba 100644
-> --- a/drivers/net/smc911x.c
-> +++ b/drivers/net/smc911x.c
-> @@ -44,6 +44,10 @@ struct smc911x_priv {
->  
->  	int shift;
->  	int generation;
-> +	unsigned int flags;
-> +	unsigned int idrev;
-> +	unsigned int using_extphy;
-> +	unsigned int phy_mask;
->  
->  	u32 (*reg_read)(struct smc911x_priv *priv, u32 reg);
->  	void (*reg_write)(struct smc911x_priv *priv, u32 reg, u32 val);
-> @@ -225,6 +229,60 @@ static int smc911x_phy_write(struct mii_bus *bus, int phy_addr,
->  	return 0;
->  }
->  
-> +/* Switch to external phy. Assumes tx and rx are stopped. */
-> +static void smsc911x_phy_enable_external(struct eth_device *edev)
-> +{
-> +	struct smc911x_priv *priv = edev->priv;
-> +	u32 hwcfg = smc911x_reg_read(priv, HW_CFG);
-> +
-> +	/* Disable phy clocks to the MAC */
-> +	hwcfg &= (~HW_CFG_PHY_CLK_SEL);
-> +	hwcfg |= HW_CFG_PHY_CLK_SEL_CLK_DIS;
-> +	smc911x_reg_write(priv, HW_CFG, hwcfg);
-> +	udelay(10);	/* Enough time for clocks to stop */
-> +
-> +	/* Switch to external phy */
-> +	hwcfg |= HW_CFG_EXT_PHY_EN;
-> +	smc911x_reg_write(priv, HW_CFG, hwcfg);
-> +
-> +	/* Enable phy clocks to the MAC */
-> +	hwcfg &= (~HW_CFG_PHY_CLK_SEL);
-> +	hwcfg |= HW_CFG_PHY_CLK_SEL_EXT_PHY;
-> +	smc911x_reg_write(priv, HW_CFG, hwcfg);
-> +	udelay(10);	/* Enough time for clocks to restart */
-> +
-> +	/* Switch MDIO/MDC to external PHY */
-> +	hwcfg |= HW_CFG_SMI_SEL;
-> +	smc911x_reg_write(priv, HW_CFG, hwcfg);
-> +}
-> +
-> +/* Autodetects and enables external phy if present on supported chips.
-> + * autodetection can be overridden by specifying SMC911X_FORCE_INTERNAL_PHY
-> + * or SMC911X_FORCE_EXTERNAL_PHY in the platform_data flags. */
-> +static void smsc911x_phy_initialise_external(struct eth_device *edev)
-> +{
-> +	struct smc911x_priv *priv = edev->priv;
-> +	u32 hwcfg = smc911x_reg_read(priv, HW_CFG);
-> +
-> +	if (priv->flags & SMC911X_FORCE_INTERNAL_PHY) {
-> +		dev_info(edev->parent, "Forcing internal PHY\n");
-> +		priv->using_extphy = 0;
-> +	} else if (priv->flags & SMC911X_FORCE_EXTERNAL_PHY) {
-> +		dev_info(edev->parent, "Forcing external PHY\n");
-> +		smsc911x_phy_enable_external(edev);
-> +		priv->using_extphy = 1;
-> +	} else if (hwcfg & HW_CFG_EXT_PHY_DET) {
-> +		dev_info(edev->parent,
-> +			"HW_CFG EXT_PHY_DET set, using external PHY\n");
-> +		smsc911x_phy_enable_external(edev);
-> +		priv->using_extphy = 1;
-> +	} else {
-> +		dev_info(edev->parent,
-> +			"HW_CFG EXT_PHY_DET clear, using internal PHY\n");
-> +		priv->using_extphy = 0;
-> +	}
-> +}
-> +
->  static int smc911x_phy_reset(struct eth_device *edev)
->  {
->  	struct smc911x_priv *priv = edev->priv;
-> @@ -284,14 +342,41 @@ static void smc911x_reset(struct eth_device *edev)
->  
->  	/* Set to LED outputs */
->  	smc911x_reg_write(priv, GPIO_CFG, 0x70070000);
-> +
-> +	/* Select internal/external PHY */
-> +	switch (priv->idrev & 0xFFFF0000) {
-> +	case 0x01170000:
-> +	case 0x01150000:
-> +	case 0x117A0000:
-> +	case 0x115A0000:
-> +		/* External PHY supported, try to autodetect */
-> +		smsc911x_phy_initialise_external(edev);
-> +		break;
-> +	default:
-> +		dev_dbg(edev->parent, "External PHY is not supported, "
-> +			"using internal PHY\n");
-> +		priv->using_extphy = 0;
-> +		break;
-> +	}
-> +
-> +	if (!priv->using_extphy) {
-> +		/* Mask all PHYs except ID 1 (internal) */
-> +		priv->miibus.phy_mask = ~(1 << 1);
-> +	} else {
-> +		/* Mask PHYs as requested (or try all if mask is 0) */
-> +		/* Attn.: first probed PHY is used by phy_device_connect */
-> +		priv->miibus.phy_mask = priv->phy_mask;
-> +	}
->  }
->  
->  static void smc911x_enable(struct eth_device *edev)
->  {
->  	struct smc911x_priv *priv = edev->priv;
-> +	u32 hw_cfg_phy_settings;
->  
->  	/* Enable TX */
-> -	smc911x_reg_write(priv, HW_CFG, 8 << 16 | HW_CFG_SF);
-> +	hw_cfg_phy_settings = smc911x_reg_read(priv, HW_CFG) & (HW_CFG_PHY_CLK_SEL|HW_CFG_SMI_SEL|HW_CFG_EXT_PHY_EN);
-> +	smc911x_reg_write(priv, HW_CFG, 8 << 16 | HW_CFG_SF | hw_cfg_phy_settings);
->  
->  	smc911x_reg_write(priv, GPT_CFG, GPT_CFG_TIMER_EN | 10000);
->  
-> @@ -306,7 +391,8 @@ static int smc911x_eth_open(struct eth_device *edev)
->  	struct smc911x_priv *priv = (struct smc911x_priv *)edev->priv;
->  	int ret;
->  
-> -	ret = phy_device_connect(edev, &priv->miibus, 1, NULL,
-> +	/* use first probed PHY (see also phy_mask) */
-> +	ret = phy_device_connect(edev, &priv->miibus, -1, NULL,
->  				 0, PHY_INTERFACE_MODE_NA);
->  	if (ret)
->  		return ret;
-> @@ -426,8 +512,11 @@ static int smc911x_probe(struct device_d *dev)
->  		is_32bit = is_32bit == IORESOURCE_MEM_32BIT;
->  	priv->base = dev_request_mem_region(dev, 0);
->  
-> -	if (pdata && pdata->shift)
-> +	if (pdata) {
->  		priv->shift = pdata->shift;
-> +		priv->flags = pdata->flags;
-> +		priv->phy_mask = pdata->phy_mask;
-> +	}
->  
->  	if (is_32bit) {
->  		if (priv->shift) {
-> @@ -483,7 +572,7 @@ static int smc911x_probe(struct device_d *dev)
->  		return -ENODEV;
->  	}
->  
-> -	val = smc911x_reg_read(priv, ID_REV);
-> +	priv->idrev = val = smc911x_reg_read(priv, ID_REV);
->  	switch (val & 0xFFFF0000) {
->  	case 0x01180000:
->  	case 0x01170000:
-> diff --git a/include/smc911x.h b/include/smc911x.h
-> index 148906b..4a802ee 100644
-> --- a/include/smc911x.h
-> +++ b/include/smc911x.h
-> @@ -13,6 +13,12 @@
->   */
->  struct smc911x_plat {
->  	int shift;
-> +	unsigned int flags;
-> +	unsigned int phy_mask;	/* external PHY only: mask out PHYs,
-> +				   e.g. ~(1 << 5) to use PHY addr 5 */
->  };
->  
-> +#define SMC911X_FORCE_INTERNAL_PHY	0x01
-> +#define SMC911X_FORCE_EXTERNAL_PHY	0x02
-> +
->  #endif /* __SMC911X_PLATFORM_H_ */
-> -- 
-> 1.7.10.4
+>   git://git.jcrosoft.org/barebox.git delivery/command_spi
 > 
+> for you to fetch changes up to 268e3d4f67da35571159fd096c62fa2e660783b0:
+> 
+>   introduce spi command (2012-11-05 11:13:25 +0800)
+> 
+> ----------------------------------------------------------------
+> Jean-Christophe PLAGNIOL-VILLARD (2):
+>       spi: introduce spi_get_master
+>       introduce spi command
+> 
+>  commands/Kconfig  |    6 ++++++
+>  commands/Makefile |    1 +
+>  commands/spi.c    |  132 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  drivers/spi/spi.c |   12 ++++++++++++
+>  include/spi/spi.h |    2 ++
+>  5 files changed, 153 insertions(+)
+>  create mode 100644 commands/spi.c
+> 
+> Best Regards,
+> J.
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
