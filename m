@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TXpVD-00011B-TA
- for barebox@lists.infradead.org; Mon, 12 Nov 2012 08:36:22 +0000
-Date: Mon, 12 Nov 2012 09:36:15 +0100
+ id 1TXpXB-0001Ei-MW
+ for barebox@lists.infradead.org; Mon, 12 Nov 2012 08:38:22 +0000
+Date: Mon, 12 Nov 2012 09:38:19 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121112083615.GR10369@pengutronix.de>
-References: <1352409401-3333-1-git-send-email-robert.jarzmik@free.fr>
+Message-ID: <20121112083819.GS10369@pengutronix.de>
+References: <1348663120-18758-1-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1352409401-3333-1-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <1348663120-18758-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +22,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 1/2] commands: change Y-Modem implementation
-To: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH] omap3_spi: fix bus numbers according to omap3_add_spi[1-4]
+To: Jan Luebbe <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Nov 08, 2012 at 10:16:40PM +0100, Robert Jarzmik wrote:
-> The current Y-Modem implementation has some limitations:
->  - Y-Modem/G protocol is not supported
->  - Multiple files (aka. batch) transfers are not supported
->  - Transfer speed over fast lines (USB console) is slow
->  - Code is not trivial to maintain (personnal opinion)
-> 
-> This implementation tries to address all these points by
-> introducing loady2 command.
-> 
-> The effects are :
->  - transfer speed for Y-Modem over USB jumps from 2kBytes/s
->    to 180kBytes/s
->  - transfer speed for Y-Modem/G jumps to 200kBytes/s
->  - multiple file transfers are possible
-> 
-> This command was tested on a USB console and UART 9600bps
-> serial line :
->  - NAKs (and retransmissions) were tested for faulty
->    serial lines
->  - multiple file transfers were tested
->  - Y-Modem, Y-Modem/G and X-Modem transfers were tested
-> 
-> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
-> Tested-by: Antony Pavlov <antonynpavlov@gmail.com>
+On Wed, Sep 26, 2012 at 02:38:40PM +0200, Jan Luebbe wrote:
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+> ---
+>  drivers/spi/omap3_spi.c |   14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
 
 Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/drivers/spi/omap3_spi.c b/drivers/spi/omap3_spi.c
+> index 3008977..bf98092 100644
+> --- a/drivers/spi/omap3_spi.c
+> +++ b/drivers/spi/omap3_spi.c
+> @@ -327,10 +327,10 @@ static int omap3_spi_setup(struct spi_device *spi)
+>  {
+>  	struct spi_master *master = spi->master;
+>  
+> -	if (((master->bus_num == 0) && (spi->chip_select > 3)) ||
+> -			((master->bus_num == 1) && (spi->chip_select > 1)) ||
+> +	if (((master->bus_num == 1) && (spi->chip_select > 3)) ||
+>  			((master->bus_num == 2) && (spi->chip_select > 1)) ||
+> -			((master->bus_num == 3) && (spi->chip_select > 0))) {
+> +			((master->bus_num == 3) && (spi->chip_select > 1)) ||
+> +			((master->bus_num == 4) && (spi->chip_select > 0))) {
+>  		printf("SPI error: unsupported chip select %i \
+>  			on bus %i\n", spi->chip_select, master->bus_num);
+>  		return -EINVAL;
+> @@ -363,10 +363,10 @@ static int omap3_spi_probe(struct device_d *dev)
+>  	/*
+>  	 * OMAP3 McSPI (MultiChannel SPI) has 4 busses (modules)
+>  	 * with different number of chip selects (CS, channels):
+> -	 * McSPI1 has 4 CS (bus 0, cs 0 - 3)
+> -	 * McSPI2 has 2 CS (bus 1, cs 0 - 1)
+> -	 * McSPI3 has 2 CS (bus 2, cs 0 - 1)
+> -	 * McSPI4 has 1 CS (bus 3, cs 0)
+> +	 * McSPI1 has 4 CS (bus 1, cs 0 - 3)
+> +	 * McSPI2 has 2 CS (bus 2, cs 0 - 1)
+> +	 * McSPI3 has 2 CS (bus 3, cs 0 - 1)
+> +	 * McSPI4 has 1 CS (bus 4, cs 0)
+>  	 *
+>  	 * The board code has to make sure that it does not use
+>  	 * invalid buses or chip selects.
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
