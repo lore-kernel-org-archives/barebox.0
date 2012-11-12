@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TXoVX-0004BP-H5
- for barebox@lists.infradead.org; Mon, 12 Nov 2012 07:32:36 +0000
-Date: Mon, 12 Nov 2012 08:32:33 +0100
+ id 1TXoWi-0004Er-5z
+ for barebox@lists.infradead.org; Mon, 12 Nov 2012 07:33:48 +0000
+Date: Mon, 12 Nov 2012 08:33:46 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121112073233.GH10369@pengutronix.de>
-References: <20121105182148.GA25679@game.jcrosoft.org>
+Message-ID: <20121112073346.GI10369@pengutronix.de>
+References: <1352055092-21128-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121105182148.GA25679@game.jcrosoft.org>
+In-Reply-To: <1352055092-21128-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,62 +22,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2 v4] add spi command
+Subject: Re: [PATCH 1/1] at91rm9200ek: enable dt support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Nov 05, 2012 at 07:21:48PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> HI,
+On Sun, Nov 04, 2012 at 07:51:32PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/boards/at91rm9200ek/env/config |    2 ++
+>  arch/arm/configs/at91rm9200ek_defconfig |    5 +++++
+>  2 files changed, 7 insertions(+)
 > 
-> 	v4:
-> 	do not touch the atmel_spi
-> 
-> 	v3:
-> 	call setup before accesing the device
-> 	This was working properly on at91 as the driver is wrong.
-> 	It call setup for every transfer. I will fix the atmel_spi.
-> 
-> 	v2:
-> 	add default return usage
-> 	use memory_display
-> 
-> 	while debugging a spi issue I found we have a i2c commands but no spi
-> 	command
-> 
-> 	So introduce one
-> 
-> The following changes since commit 56371f4e8446d04d2a5608dd5890fd87a50f888e:
 
 Applied, thanks
 
 Sascha
 
+> diff --git a/arch/arm/boards/at91rm9200ek/env/config b/arch/arm/boards/at91rm9200ek/env/config
+> index a3830cb..76c180b 100644
+> --- a/arch/arm/boards/at91rm9200ek/env/config
+> +++ b/arch/arm/boards/at91rm9200ek/env/config
+> @@ -15,6 +15,8 @@ global.dhcp.vendor_id=barebox-at91rm9200ek
+>  kernel_loc=nfs
+>  # can be either 'net', 'nor' or 'initrd'
+>  rootfs_loc=net
+> +# can be either 'nfs', 'tftp', or empty
+> +oftree_loc=nfs
+>  
+>  # can be either 'jffs2' or 'ubifs'
+>  rootfs_type=ubifs
+> diff --git a/arch/arm/configs/at91rm9200ek_defconfig b/arch/arm/configs/at91rm9200ek_defconfig
+> index 6a105c6..2bcade9 100644
+> --- a/arch/arm/configs/at91rm9200ek_defconfig
+> +++ b/arch/arm/configs/at91rm9200ek_defconfig
+> @@ -32,9 +32,14 @@ CONFIG_CMD_FLASH=y
+>  CONFIG_CMD_BOOTM_ZLIB=y
+>  CONFIG_CMD_BOOTM_BZLIB=y
+>  CONFIG_CMD_BOOTM_SHOW_TYPE=y
+> +CONFIG_CMD_BOOTM_VERBOSE=y
+>  CONFIG_CMD_BOOTM_INITRD=y
+> +CONFIG_CMD_BOOTM_OFTREE=y
+> +CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
+> +# CONFIG_CMD_BOOTU is not set
+>  CONFIG_CMD_RESET=y
+>  CONFIG_CMD_GO=y
+> +CONFIG_CMD_OFTREE=y
+>  CONFIG_CMD_TIMEOUT=y
+>  CONFIG_CMD_PARTITION=y
+>  CONFIG_CMD_GPIO=y
+> -- 
+> 1.7.10.4
 > 
->   iomux-imx35: add missing comma in pad definition (2012-11-01 16:32:12 +0100)
-> 
-> are available in the git repository at:
-> 
->   git://git.jcrosoft.org/barebox.git delivery/command_spi
-> 
-> for you to fetch changes up to 268e3d4f67da35571159fd096c62fa2e660783b0:
-> 
->   introduce spi command (2012-11-05 11:13:25 +0800)
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (2):
->       spi: introduce spi_get_master
->       introduce spi command
-> 
->  commands/Kconfig  |    6 ++++++
->  commands/Makefile |    1 +
->  commands/spi.c    |  132 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/spi/spi.c |   12 ++++++++++++
->  include/spi/spi.h |    2 ++
->  5 files changed, 153 insertions(+)
->  create mode 100644 commands/spi.c
-> 
-> Best Regards,
-> J.
 > 
 > _______________________________________________
 > barebox mailing list
