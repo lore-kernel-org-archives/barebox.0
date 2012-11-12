@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.gw-instruments.de ([82.144.60.34]
- helo=redbean.intranet.gw-instruments.de)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TXsBi-0001kt-Td
- for barebox@lists.infradead.org; Mon, 12 Nov 2012 11:28:23 +0000
-Date: Mon, 12 Nov 2012 12:22:33 +0100 (CET)
-From: Peter Wippich <pewi@gw-instruments.de>
-In-Reply-To: <20121112083339.GQ10369@pengutronix.de>
-Message-ID: <alpine.LSU.2.00.1211121220380.14365@redbean.intranet.gw-instruments.de>
+Received: from moutng.kundenserver.de ([212.227.126.186])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TXteV-0008Vz-4C
+ for barebox@lists.infradead.org; Mon, 12 Nov 2012 13:02:12 +0000
+Message-ID: <50A0F349.6070008@cmotion.eu>
+Date: Mon, 12 Nov 2012 14:02:01 +0100
+From: Christian Kapeller <christian.kapeller@cmotion.eu>
+MIME-Version: 1.0
 References: <alpine.LSU.2.00.1211061440560.27068@redbean.intranet.gw-instruments.de>
  <20121112083339.GQ10369@pengutronix.de>
-MIME-Version: 1.0
+In-Reply-To: <20121112083339.GQ10369@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,62 +18,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: TX53: Not Bootable from next tree
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, g@pengutronix.de
+Cc: barebox@lists.infradead.org, g@pengutronix.de, Peter Wippich <pewi@gw-instruments.de>
 
+Hi,
 
-
-
-On Mon, 12 Nov 2012, Sascha Hauer wrote:
-
-> On Tue, Nov 06, 2012 at 02:49:06PM +0100, Peter Wippich wrote:
->>
->> Hi,
->>
->> got the same problem here. Double checked Board Version (8030) and
->> that I have the right binary (compressed with flash header). After
->> flashing and reset nothing happens....
->
-> I'm back in the office now and realized that we have the 1011
-> revision in our remotelab. That at least explains why I can't reproduce
-> this issue. Unfortunately I can't find the 8030 revision anywhere in the
-> office, I'll wait for my collegue.
 > In the meantime, could you try removing the call to
 > imx53_init_lowlevel() and try booting 2nd stage (from U-Boot or
 > redboot)?
->
-> Sascha
+
+2nd stage booting TX83-8030 from redboot works with and without call to
+imx53_init_lowlevel (boards/karo-tx53/lowlevel.c)
+
+I've also looked at the DCD sequence at the beginning of the redboot and
+bb (CONFIG_PBL=y) binaries and saw, that what set's them appart is:
+
+flash_header.entry RB: 0x8FFC0000
+flash_header.entry BB: 0x71000000
+
+flash_header.boot_data_size = 0x1fd87;
+flash_header.boot_data_size = 0x40000;
 
 
-Hi Sascha,
+Barebox has an additional DCD Item compared to redboot:
 
-bad enough my test board is out for some customer tests. I'll try a second 
-stage boot as soon as it is back.
-
-Best regards,
-
-Peter
-
-
->
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->
+arch/arm/boards/karo-tx53/dcd-data-xx30.h line 15:
+DCD_NAME_XX30[] = {
+	DCD_WR_CMD(0x21c),
+	DCD_ITEM(0x53fd4068, 0xffcc0fff),
+	DCD_ITEM(0x53fd406c, 0x000fffc3),
 
 
-|       Peter Wippich                   Voice: +49 30 46776411          |
-|       G&W Instruments GmbH            fax:   +49 30 46776419          |
-|       Gustav-Meyer-Allee 25, Geb. 12  Email: pewi@gw-instruments.de   |
-|       D-13355 Berlin  / Germany                                       |
+The DCD_WR_CMD(0x21c) duplicates the the last entries of the
+flash_header_section structure:
 
+arch/arm/boards/karo-tx53/flash_header.h line 68:
+	.dcd.command.tag	= DCD_COMMAND_WRITE_TAG,
+#ifdef CONFIG_TX53_REV_1011
+	.dcd.command.length	= cpu_to_be16(sizeof(struct imx_dcd_command) +
+sizeof(dcd_entry)),
+#elif defined(CONFIG_TX53_REV_XX30)
+	.dcd.command.length	= cpu_to_be16(0x21c),
+
+So the DCD_WR_CMD(0x21c) seems to be superfluous.
+
+
+
+I've adjusted entry address, the boot_data_size, and removed the
+DCD_WR_CMD entry, to match the flash header to that of redboot, and
+flashed that. That didn't show any improvement.
+
+Also here the situation is the same with and without imx53_init_lowlevel.
+
+
+Cheers,
+Christian
+
+
+-- 
+Christian Kapeller
+cmotion GmbH
+Kriehubergasse 16
+1050 Wien / Austria
+http://www.cmotion.eu
+
+christian.kapeller@cmotion.eu
+Phone: +43 1 789 1096 38
 
 _______________________________________________
 barebox mailing list
