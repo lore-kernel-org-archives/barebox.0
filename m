@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TXorq-00075F-3p
- for barebox@lists.infradead.org; Mon, 12 Nov 2012 07:55:38 +0000
-Date: Mon, 12 Nov 2012 08:55:36 +0100
+ id 1TXpSh-0000w6-IG
+ for barebox@lists.infradead.org; Mon, 12 Nov 2012 08:33:44 +0000
+Date: Mon, 12 Nov 2012 09:33:39 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121112075536.GP10369@pengutronix.de>
-References: <CAHkwnC-dDfPesg5vy5V2rj7vdY_DH9cjfJ3gCVsm8xY-DPf35A@mail.gmail.com>
+Message-ID: <20121112083339.GQ10369@pengutronix.de>
+References: <alpine.LSU.2.00.1211061440560.27068@redbean.intranet.gw-instruments.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAHkwnC-dDfPesg5vy5V2rj7vdY_DH9cjfJ3gCVsm8xY-DPf35A@mail.gmail.com>
+In-Reply-To: <alpine.LSU.2.00.1211061440560.27068@redbean.intranet.gw-instruments.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: defaultenv-2: how to update a flash partition?
-To: Fabio Porcedda <fabio.porcedda@gmail.com>
+Subject: Re: TX53: Not Bootable from next tree
+To: Peter Wippich <pewi@gw-instruments.de>, g@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-On Fri, Nov 09, 2012 at 12:06:38PM +0100, Fabio Porcedda wrote:
-> Hi all,
+On Tue, Nov 06, 2012 at 02:49:06PM +0100, Peter Wippich wrote:
 > 
-> I want to use the defaultenv-2 but i don't find any more the "update"
-> command
-> like in the defaultenv.
-> What is the recommended way to update a flash partition in the new
-> environment?
+> Hi,
+> 
+> got the same problem here. Double checked Board Version (8030) and
+> that I have the right binary (compressed with flash header). After
+> flashing and reset nothing happens....
 
-erase /dev/env0
-cp /mnt/tftp/your-new-env /dev/env0
-
-(I was thinking about adding a -e parameter to cp to eventually skip the
-first step)
+I'm back in the office now and realized that we have the 1011
+revision in our remotelab. That at least explains why I can't reproduce
+this issue. Unfortunately I can't find the 8030 revision anywhere in the
+office, I'll wait for my collegue.
+In the meantime, could you try removing the call to
+imx53_init_lowlevel() and try booting 2nd stage (from U-Boot or
+redboot)?
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
