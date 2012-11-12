@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TXpSh-0000w6-IG
- for barebox@lists.infradead.org; Mon, 12 Nov 2012 08:33:44 +0000
-Date: Mon, 12 Nov 2012 09:33:39 +0100
+ id 1TXpVD-00011B-TA
+ for barebox@lists.infradead.org; Mon, 12 Nov 2012 08:36:22 +0000
+Date: Mon, 12 Nov 2012 09:36:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121112083339.GQ10369@pengutronix.de>
-References: <alpine.LSU.2.00.1211061440560.27068@redbean.intranet.gw-instruments.de>
+Message-ID: <20121112083615.GR10369@pengutronix.de>
+References: <1352409401-3333-1-git-send-email-robert.jarzmik@free.fr>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.LSU.2.00.1211061440560.27068@redbean.intranet.gw-instruments.de>
+In-Reply-To: <1352409401-3333-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +22,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: TX53: Not Bootable from next tree
-To: Peter Wippich <pewi@gw-instruments.de>, g@pengutronix.de
+Subject: Re: [PATCH v3 1/2] commands: change Y-Modem implementation
+To: Robert Jarzmik <robert.jarzmik@free.fr>
 Cc: barebox@lists.infradead.org
 
-On Tue, Nov 06, 2012 at 02:49:06PM +0100, Peter Wippich wrote:
+On Thu, Nov 08, 2012 at 10:16:40PM +0100, Robert Jarzmik wrote:
+> The current Y-Modem implementation has some limitations:
+>  - Y-Modem/G protocol is not supported
+>  - Multiple files (aka. batch) transfers are not supported
+>  - Transfer speed over fast lines (USB console) is slow
+>  - Code is not trivial to maintain (personnal opinion)
 > 
-> Hi,
+> This implementation tries to address all these points by
+> introducing loady2 command.
 > 
-> got the same problem here. Double checked Board Version (8030) and
-> that I have the right binary (compressed with flash header). After
-> flashing and reset nothing happens....
+> The effects are :
+>  - transfer speed for Y-Modem over USB jumps from 2kBytes/s
+>    to 180kBytes/s
+>  - transfer speed for Y-Modem/G jumps to 200kBytes/s
+>  - multiple file transfers are possible
+> 
+> This command was tested on a USB console and UART 9600bps
+> serial line :
+>  - NAKs (and retransmissions) were tested for faulty
+>    serial lines
+>  - multiple file transfers were tested
+>  - Y-Modem, Y-Modem/G and X-Modem transfers were tested
+> 
+> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+> Tested-by: Antony Pavlov <antonynpavlov@gmail.com>
 
-I'm back in the office now and realized that we have the 1011
-revision in our remotelab. That at least explains why I can't reproduce
-this issue. Unfortunately I can't find the 8030 revision anywhere in the
-office, I'll wait for my collegue.
-In the meantime, could you try removing the call to
-imx53_init_lowlevel() and try booting 2nd stage (from U-Boot or
-redboot)?
+Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
