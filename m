@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f49.google.com ([74.125.82.49])
+Received: from mail-oa0-f49.google.com ([209.85.219.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TY1Mv-0002MB-EK
- for barebox@lists.infradead.org; Mon, 12 Nov 2012 21:16:34 +0000
-Received: by mail-wg0-f49.google.com with SMTP id gg4so2867160wgb.18
- for <barebox@lists.infradead.org>; Mon, 12 Nov 2012 13:16:31 -0800 (PST)
-From: Franck Jullien <franck.jullien@gmail.com>
-Date: Mon, 12 Nov 2012 22:16:31 +0100
-Message-Id: <1352754991-11660-1-git-send-email-franck.jullien@gmail.com>
+ id 1TYEOZ-0003uv-BF
+ for barebox@lists.infradead.org; Tue, 13 Nov 2012 11:11:11 +0000
+Received: by mail-oa0-f49.google.com with SMTP id l10so6953435oag.36
+ for <barebox@lists.infradead.org>; Tue, 13 Nov 2012 03:11:05 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <20121112075536.GP10369@pengutronix.de>
+References: <CAHkwnC-dDfPesg5vy5V2rj7vdY_DH9cjfJ3gCVsm8xY-DPf35A@mail.gmail.com>
+ <20121112075536.GP10369@pengutronix.de>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Tue, 13 Nov 2012 12:10:45 +0100
+Message-ID: <CAHkwnC_FXJ3reNcwDuxhsC=fSG-dDSgg+7njS5sy7aCG5QCRoQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,83 +20,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============6163709666378553830=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mci_spi: always compute command crc byte
-To: barebox@lists.infradead.org
+Subject: Re: defaultenv-2: how to update a flash partition?
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The spec says: "the CMD8 CRC verification is always enabled.
-The Host shall set correct CRC in the argument ofCMD8. If
-CRC error is detected, card returns CRC error in R1 response
-regardless of command index."
+--===============6163709666378553830==
+Content-Type: multipart/alternative; boundary=e89a8f839f6f61092004ce5e7904
 
-Make it simple, and compute crc on every commands.
+--e89a8f839f6f61092004ce5e7904
+Content-Type: text/plain; charset=ISO-8859-1
 
-Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
----
- drivers/mci/Kconfig   |    2 +-
- drivers/mci/mci_spi.c |   12 ------------
- 2 files changed, 1 insertions(+), 13 deletions(-)
+On Mon, Nov 12, 2012 at 8:55 AM, Sascha Hauer <s.hauer@pengutronix.de>wrote:
 
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index b1a678e..5c0ca4d 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -88,6 +88,7 @@ config MCI_ATMEL
- 
- config MCI_SPI
- 	bool "MMC/SD over SPI"
-+	select CRC7
- 	depends on SPI
- 	help
- 	  Some systems access MMC/SD/SDIO cards using a SPI controller
-@@ -98,7 +99,6 @@ config MCI_SPI
- 
- config MMC_SPI_CRC_ON
- 	bool "Enable CRC protection for transfers"
--	select CRC7
- 	select CRC16
- 	depends on MCI_SPI
- 	help
-diff --git a/drivers/mci/mci_spi.c b/drivers/mci/mci_spi.c
-index 5894104..cb5e0bb 100644
---- a/drivers/mci/mci_spi.c
-+++ b/drivers/mci/mci_spi.c
-@@ -121,14 +121,6 @@ mmc_spi_writebytes(struct mmc_spi_host *host, unsigned len, void *data)
- 	return status;
- }
- 
--/*
-- * Note that while the CRC, in general, is ignored in SPI mode, the very first
-- * command must be followed by a valid CRC, since the card is not yet in SPI mode.
-- * The CRC byte for a CMD0 command with a zero argument is a constant 0x4A. For
-- * simplicity, this CRC byte is always sent with every command.
-- */
--#define MMC_SPI_CMD0_CRC	((0x4a << 1) | 0x1)
--
- static int mmc_spi_command_send(struct mmc_spi_host *host, struct mci_cmd *cmd)
- {
- 	uint8_t r1;
-@@ -141,11 +133,7 @@ static int mmc_spi_command_send(struct mmc_spi_host *host, struct mci_cmd *cmd)
- 	command[3] = cmd->cmdarg >> 16;
- 	command[4] = cmd->cmdarg >> 8;
- 	command[5] = cmd->cmdarg;
--#ifdef CONFIG_MMC_SPI_CRC_ON
- 	command[6] = (crc7(0, &command[1], 5) << 1) | 0x01;
--#else
--	command[6] = MMC_SPI_CMD0_CRC;
--#endif
- 
- 	mmc_spi_writebytes(host, 7, command);
- 
+> On Fri, Nov 09, 2012 at 12:06:38PM +0100, Fabio Porcedda wrote:
+> > Hi all,
+> >
+> > I want to use the defaultenv-2 but i don't find any more the "update"
+> > command
+> > like in the defaultenv.
+> > What is the recommended way to update a flash partition in the new
+> > environment?
+>
+> erase /dev/env0
+> cp /mnt/tftp/your-new-env /dev/env0
+>
+>
+Thanks, it worked.
+
+
+> (I was thinking about adding a -e parameter to cp to eventually skip the
+> first step)
+>
+
+It seems a nice addition for me.
+
+There is some plane in the future to add a "update" command, like in
+"defaultenv"?
+
+Thanks for the help and the great work with barebox, i like it very much.
 -- 
-1.7.1
+Fabio Porcedda
 
+--e89a8f839f6f61092004ce5e7904
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<div class=3D"gmail_extra"><div class=3D"gmail_quote">On Mon, Nov 12, 2012 =
+at 8:55 AM, Sascha Hauer <span dir=3D"ltr">&lt;<a href=3D"mailto:s.hauer@pe=
+ngutronix.de" target=3D"_blank">s.hauer@pengutronix.de</a>&gt;</span> wrote=
+:<br><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-le=
+ft:1px #ccc solid;padding-left:1ex">
+
+
+<div>On Fri, Nov 09, 2012 at 12:06:38PM +0100, Fabio Porcedda wrote:<br>
+&gt; Hi all,<br>
+&gt;<br>
+&gt; I want to use the defaultenv-2 but i don&#39;t find any more the &quot=
+;update&quot;<br>
+&gt; command<br>
+&gt; like in the defaultenv.<br>
+&gt; What is the recommended way to update a flash partition in the new<br>
+&gt; environment?<br>
+<br>
+</div>erase /dev/env0<br>
+cp /mnt/tftp/your-new-env /dev/env0<br>
+<br></blockquote><div><br>Thanks, it worked.<br>=A0<br></div><blockquote cl=
+ass=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;p=
+adding-left:1ex">
+(I was thinking about adding a -e parameter to cp to eventually skip the<br=
+>
+first step)<span><font color=3D"#888888"><br></font></span></blockquote><di=
+v><br>It seems a nice addition for me. <br></div><br>There is some plane in=
+ the future to add a &quot;update&quot; command, like in &quot;defaultenv&q=
+uot;?<br>
+
+
+</div><br>Thanks for the help and the great work with barebox, i like it ve=
+ry much.<br>-- <br>Fabio Porcedda<br><br>
+</div>
+
+--e89a8f839f6f61092004ce5e7904--
+
+
+--===============6163709666378553830==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============6163709666378553830==--
