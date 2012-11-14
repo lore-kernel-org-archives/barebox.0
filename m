@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo3.mail-out.ovh.net ([178.32.228.3])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TYZP3-0007uU-B9
- for barebox@lists.infradead.org; Wed, 14 Nov 2012 09:37:02 +0000
-Received: from mail412.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 7018FFF9B56
- for <barebox@lists.infradead.org>; Wed, 14 Nov 2012 10:47:41 +0100 (CET)
-Date: Wed, 14 Nov 2012 10:34:58 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121114093458.GH25679@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TYbht-0003vd-RT
+ for barebox@lists.infradead.org; Wed, 14 Nov 2012 12:04:38 +0000
+Date: Wed, 14 Nov 2012 13:04:36 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121114120436.GL10369@pengutronix.de>
 References: <1352841245-22767-1-git-send-email-plagnioj@jcrosoft.com>
  <20121114080528.GF10369@pengutronix.de>
+ <20121114093458.GH25679@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121114080528.GF10369@pengutronix.de>
+In-Reply-To: <20121114093458.GH25679@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,77 +25,85 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/1] phy: phy_update_status wait auto neg done when enabled
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 09:05 Wed 14 Nov     , Sascha Hauer wrote:
-> On Tue, Nov 13, 2012 at 10:14:05PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > if the autoneg was start by the hw wait it to be finished
+On Wed, Nov 14, 2012 at 10:34:58AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 09:05 Wed 14 Nov     , Sascha Hauer wrote:
+> > On Tue, Nov 13, 2012 at 10:14:05PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > >  
+> > >  int phy_update_status(struct phy_device *dev)
+> > >  {
+> > > @@ -35,11 +54,18 @@ int phy_update_status(struct phy_device *dev)
+> > >  	struct eth_device *edev = dev->attached_dev;
+> > >  	int ret;
+> > >  	int oldspeed = dev->speed, oldduplex = dev->duplex;
+> > > +	int old_link = dev->link;
+> > >  
+> > >  	ret = drv->read_status(dev);
+> > >  	if (ret)
+> > >  		return ret;
+> > >  
+> > > +	if (dev->link && !old_link) {
+> > > +		ret = phy_wait_aneg_read_status(dev, drv);
+> > > +		if (ret)
+> > > +			return ret;
+> > > +	}
 > > 
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  drivers/net/phy/phy.c |   26 ++++++++++++++++++++++++++
-> >  1 file changed, 26 insertions(+)
-> > 
-> > diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-> > index 0c2e602..43738c2 100644
-> > --- a/drivers/net/phy/phy.c
-> > +++ b/drivers/net/phy/phy.c
-> > @@ -28,6 +28,25 @@
-> >  #define PHY_AN_TIMEOUT	10
-> >  
-> >  static int genphy_config_init(struct phy_device *phydev);
-> > +static int phy_aneg_done(struct phy_device *phydev);
-> > +
-> > +static int phy_wait_aneg_read_status(struct phy_device *dev, struct phy_driver *drv)
-> > +{
-> > +	int ret;
-> > +
-> > +	if (AUTONEG_ENABLE != dev->autoneg)
-> > +		return 0;
-> > +
-> > +	ret = phy_aneg_done(dev);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/*
-> > +	 * re-read the status as the aneg may not be finished
-> > +	 * when we read it the first time
-> > +	 */
-> > +	return drv->read_status(dev);
-> > +}
-> >  
-> >  int phy_update_status(struct phy_device *dev)
-> >  {
-> > @@ -35,11 +54,18 @@ int phy_update_status(struct phy_device *dev)
-> >  	struct eth_device *edev = dev->attached_dev;
-> >  	int ret;
-> >  	int oldspeed = dev->speed, oldduplex = dev->duplex;
-> > +	int old_link = dev->link;
-> >  
-> >  	ret = drv->read_status(dev);
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > +	if (dev->link && !old_link) {
-> > +		ret = phy_wait_aneg_read_status(dev, drv);
-> > +		if (ret)
-> > +			return ret;
-> > +	}
+> > This does not help. dev->link is false after reset, so we never get into
+> > phy_wait_aneg_read_status() which waits for a link.
+> read_status update the dev->link as we call update_link
 > 
-> This does not help. dev->link is false after reset, so we never get into
-> phy_wait_aneg_read_status() which waits for a link.
-read_status update the dev->link as we call update_link
+> if !dev->link means no cable detected
 
-if !dev->link means no cable detected
+How should the phy detect the cable if we do not wait for it being
+detected?
 
-if the phy is reset the link is ready immediately or that means the reset is
-not finished and the phy is not stable
+Here's what I get from my board:
 
-this may means the phy need specific init
+> barebox@Freescale i.MX53 LOCO:/ dhcp 
+> r 0x0000 0x0001 0x7809
 
-Best Regards,
-J.
+BMSR_ANEGCOMPLETE (1<<5) not set, this means autonegotiation is not complete
+
+> r 0x0000 0x0004 0x01e1
+> r 0x0000 0x0000 0x3000
+> r 0x0000 0x0001 0x7809
+
+Still not complete,
+
+> r 0x0000 0x0001 0x7809
+> r 0x0000 0x0005 0x0001
+> r 0x0000 0x0004 0x01e1
+> dhcp failed: Network is down
+
+but we do not wait for it, so network down
+
+> dhcp: Network is down
+> barebox@Freescale i.MX53 LOCO:/ dhcp 
+> r 0x0000 0x0001 0x782d
+
+Next try, a few seconds later. BMSR_ANEGCOMPLETE is set, autonegotiation is complete,
+BMSR_LSTATUS showd that link status is up.
+
+> r 0x0000 0x0001 0x782d
+> r 0x0000 0x0005 0x45e1
+> r 0x0000 0x0004 0x01e1
+> 100Mbps full duplex link detected
+
+And it works.
+
+I do not believe that this behaviour is specific to the special phy on
+this board.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
