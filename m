@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo5.mail-out.ovh.net ([46.105.39.65]
+Received: from 19.mo5.mail-out.ovh.net ([46.105.35.78]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TYgjG-0001SE-TR
- for barebox@lists.infradead.org; Wed, 14 Nov 2012 17:26:24 +0000
-Received: from mail614.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 8AC95FFABEB
- for <barebox@lists.infradead.org>; Wed, 14 Nov 2012 18:33:58 +0100 (CET)
-Date: Wed, 14 Nov 2012 18:24:17 +0100
+ id 1TYk9F-0003mL-O6
+ for barebox@lists.infradead.org; Wed, 14 Nov 2012 21:05:27 +0000
+Received: from mail609.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 9E4FBFFA434
+ for <barebox@lists.infradead.org>; Wed, 14 Nov 2012 22:13:01 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121114172417.GA31820@game.jcrosoft.org>
-References: <1352841245-22767-1-git-send-email-plagnioj@jcrosoft.com>
- <20121114080528.GF10369@pengutronix.de>
- <20121114093458.GH25679@game.jcrosoft.org>
- <20121114120436.GL10369@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20121114120436.GL10369@pengutronix.de>
+Date: Wed, 14 Nov 2012 22:03:19 +0100
+Message-Id: <1352926999-14981-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,51 +18,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] phy: phy_update_status wait auto neg done when enabled
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] phy: if the link partner just ack us wait the end of the
+ autoneg
+To: barebox@lists.infradead.org
 
-On 13:04 Wed 14 Nov     , Sascha Hauer wrote:
-> On Wed, Nov 14, 2012 at 10:34:58AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 09:05 Wed 14 Nov     , Sascha Hauer wrote:
-> > > On Tue, Nov 13, 2012 at 10:14:05PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > >  
-> > > >  int phy_update_status(struct phy_device *dev)
-> > > >  {
-> > > > @@ -35,11 +54,18 @@ int phy_update_status(struct phy_device *dev)
-> > > >  	struct eth_device *edev = dev->attached_dev;
-> > > >  	int ret;
-> > > >  	int oldspeed = dev->speed, oldduplex = dev->duplex;
-> > > > +	int old_link = dev->link;
-> > > >  
-> > > >  	ret = drv->read_status(dev);
-> > > >  	if (ret)
-> > > >  		return ret;
-> > > >  
-> > > > +	if (dev->link && !old_link) {
-> > > > +		ret = phy_wait_aneg_read_status(dev, drv);
-> > > > +		if (ret)
-> > > > +			return ret;
-> > > > +	}
-> > > 
-> > > This does not help. dev->link is false after reset, so we never get into
-> > > phy_wait_aneg_read_status() which waits for a link.
-> > read_status update the dev->link as we call update_link
-> > 
-> > if !dev->link means no cable detected
-> 
-> How should the phy detect the cable if we do not wait for it being
-> detected?
-we do not have too
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/net/phy/phy.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-I'm going to try on the loco
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index 43738c2..daa657f 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -578,6 +578,18 @@ int genphy_read_status(struct phy_device *phydev)
+ 		if (lpa < 0)
+ 			return lpa;
+ 
++		if (lpa & LPA_LPACK) {
++			int ret;
++
++			ret = phy_aneg_done(phydev);
++			if (ret)
++				return ret;
++
++			lpa = phy_read(phydev, MII_LPA);
++			if (lpa < 0)
++				return lpa;
++		}
++
+ 		adv = phy_read(phydev, MII_ADVERTISE);
+ 
+ 		if (adv < 0)
+-- 
+1.7.10.4
 
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
