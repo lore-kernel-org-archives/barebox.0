@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TYY3i-0001tC-9F
- for barebox@lists.infradead.org; Wed, 14 Nov 2012 08:10:54 +0000
-Date: Wed, 14 Nov 2012 09:10:51 +0100
+ id 1TYYEF-00022Y-0Q
+ for barebox@lists.infradead.org; Wed, 14 Nov 2012 08:21:47 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121114081051.GG10369@pengutronix.de>
-References: <CAHkwnC-dDfPesg5vy5V2rj7vdY_DH9cjfJ3gCVsm8xY-DPf35A@mail.gmail.com>
- <20121112075536.GP10369@pengutronix.de>
- <CAHkwnC_FXJ3reNcwDuxhsC=fSG-dDSgg+7njS5sy7aCG5QCRoQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHkwnC_FXJ3reNcwDuxhsC=fSG-dDSgg+7njS5sy7aCG5QCRoQ@mail.gmail.com>
+Date: Wed, 14 Nov 2012 09:21:41 +0100
+Message-Id: <1352881301-9744-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,64 +14,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: defaultenv-2: how to update a flash partition?
-To: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] replace barebox* in .gitignore with individual files
+To: barebox@lists.infradead.org
 
-On Tue, Nov 13, 2012 at 12:10:45PM +0100, Fabio Porcedda wrote:
-> On Mon, Nov 12, 2012 at 8:55 AM, Sascha Hauer <s.hauer@pengutronix.de>wrote:
-> 
-> > On Fri, Nov 09, 2012 at 12:06:38PM +0100, Fabio Porcedda wrote:
-> > > Hi all,
-> > >
-> > > I want to use the defaultenv-2 but i don't find any more the "update"
-> > > command
-> > > like in the defaultenv.
-> > > What is the recommended way to update a flash partition in the new
-> > > environment?
-> >
-> > erase /dev/env0
-> > cp /mnt/tftp/your-new-env /dev/env0
-> >
-> >
-> Thanks, it worked.
-> 
-> 
-> > (I was thinking about adding a -e parameter to cp to eventually skip the
-> > first step)
-> >
-> 
-> It seems a nice addition for me.
+This effectively reverts:
 
-I'll look into it.
+| commit f9df22b002af99532b66360e08128ea3e7e82a97
+| Author: Alexander Shiyan <shc_work@mail.ru>
+| Date:   Mon Oct 8 10:35:04 2012 +0400
+|
+|    Add more generated files to .gitignore
 
-> 
-> There is some plane in the future to add a "update" command, like in
-> "defaultenv"?
+barebox* is not limited to the toplevel directory, so this ignores
+all files starting with 'barebox' from which we have several we do
+not wish to ignore. Add barebox-flash-image to the ignore list which
+seemed to be the motivation for the original patch.
 
-I have no plans doing so. Basically not because I do not want such a
-command, but because I do not know what such should do. The old command
-took parameters like 'mmc' or 'net' which was hard to dispatch into
-the different files and does not work with multiple mmc cards, so I
-thought doing it completely on file level would be enough (with the
-above additions added, maybe).
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Alexander Shiyan <shc_work@mail.ru>
+---
+ .gitignore |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-> 
-> Thanks for the help and the great work with barebox, i like it very much.
-
-Thanks. I appreciate that ;)
-
-Sascha
-
+diff --git a/.gitignore b/.gitignore
+index 81e74a0..064753d 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -26,11 +26,22 @@
+ #
+ tags
+ TAGS
+-barebox*
+ cross_arch
+ cross_compile
++barebox
++barebox.S
++barebox.bin
++barebox.srec
++barebox.netx
++barebox.s5p
++barebox.spi
++barebox.ubl
++barebox.uimage
++barebox.map
++barebox-flash-image
+ System.map
+ Module.symvers
++barebox_default_env*
+ 
+ #
+ # Generated include files
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
