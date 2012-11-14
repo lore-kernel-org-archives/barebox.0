@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo5.mail-out.ovh.net ([178.32.124.100]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TYkAL-0003op-E8
- for barebox@lists.infradead.org; Wed, 14 Nov 2012 21:06:35 +0000
-Received: from mail609.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 9B16FFFA2CF
- for <barebox@lists.infradead.org>; Wed, 14 Nov 2012 22:14:10 +0100 (CET)
-Date: Wed, 14 Nov 2012 22:04:30 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121114210430.GB31820@game.jcrosoft.org>
-References: <1352926999-14981-1-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1352926999-14981-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-wi0-f171.google.com ([209.85.212.171])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TYlMt-0003U3-5J
+ for barebox@lists.infradead.org; Wed, 14 Nov 2012 22:23:36 +0000
+Received: by mail-wi0-f171.google.com with SMTP id c10so2644536wiw.0
+ for <barebox@lists.infradead.org>; Wed, 14 Nov 2012 14:23:32 -0800 (PST)
+From: Franck Jullien <franck.jullien@gmail.com>
+Date: Wed, 14 Nov 2012 23:23:32 +0100
+Message-Id: <1352931813-2817-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +16,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] phy: if the link partner just ack us wait the end
- of the autoneg
+Subject: [PATCH 1/2] nios2: use barebox_add_memory_bank in generic.c
 To: barebox@lists.infradead.org
 
-On 22:03 Wed 14 Nov     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
-this will detect that the phy was jsut notified that the link is up
+In the nios2 generic board generic.c file, use the
+new barebox_add_memory_bank to init ram memory.
 
-Best Regards,
-J.
->  drivers/net/phy/phy.c |   12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-> index 43738c2..daa657f 100644
-> --- a/drivers/net/phy/phy.c
-> +++ b/drivers/net/phy/phy.c
-> @@ -578,6 +578,18 @@ int genphy_read_status(struct phy_device *phydev)
->  		if (lpa < 0)
->  			return lpa;
->  
-> +		if (lpa & LPA_LPACK) {
-> +			int ret;
-> +
-> +			ret = phy_aneg_done(phydev);
-> +			if (ret)
-> +				return ret;
-> +
-> +			lpa = phy_read(phydev, MII_LPA);
-> +			if (lpa < 0)
-> +				return lpa;
-> +		}
-> +
->  		adv = phy_read(phydev, MII_ADVERTISE);
->  
->  		if (adv < 0)
-> -- 
-> 1.7.10.4
-> 
+Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+---
+ arch/nios2/boards/generic/generic.c |   11 +++++++++--
+ 1 files changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/arch/nios2/boards/generic/generic.c b/arch/nios2/boards/generic/generic.c
+index 66eb856..499d93b 100644
+--- a/arch/nios2/boards/generic/generic.c
++++ b/arch/nios2/boards/generic/generic.c
+@@ -3,6 +3,7 @@
+ #include <driver.h>
+ #include <partition.h>
+ #include <fs.h>
++#include <memory.h>
+ 
+ static int phy_address = 1;
+ 
+@@ -32,11 +33,17 @@ static struct device_d mac_dev = {
+ 	.platform_data = &phy_address,
+ };
+ 
++static int mem_init(void)
++{
++	barebox_add_memory_bank("ram0", NIOS_SOPC_MEMORY_BASE, NIOS_SOPC_MEMORY_SIZE);
++
++	return 0;
++}
++mem_initcall(mem_init);
++
+ static int generic_devices_init(void)
+ {
+ 	add_cfi_flash_device(DEVICE_ID_DYNAMIC, NIOS_SOPC_FLASH_BASE, NIOS_SOPC_FLASH_SIZE, 0);
+-	add_mem_device("ram0", NIOS_SOPC_MEMORY_BASE, NIOS_SOPC_MEMORY_SIZE,
+-		       IORESOURCE_MEM_WRITEABLE);
+ 	platform_device_register(&mac_dev);
+ 	/*register_device(&epcs_flash_device);*/
+ 
+-- 
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
