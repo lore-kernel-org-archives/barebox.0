@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TYYHz-0002AM-05
- for barebox@lists.infradead.org; Wed, 14 Nov 2012 08:25:40 +0000
-Date: Wed, 14 Nov 2012 09:25:37 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121114082537.GJ10369@pengutronix.de>
-References: <1352754991-11660-1-git-send-email-franck.jullien@gmail.com>
+Received: from mo3.mail-out.ovh.net ([178.32.228.3])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TYZP3-0007uU-B9
+ for barebox@lists.infradead.org; Wed, 14 Nov 2012 09:37:02 +0000
+Received: from mail412.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 7018FFF9B56
+ for <barebox@lists.infradead.org>; Wed, 14 Nov 2012 10:47:41 +0100 (CET)
+Date: Wed, 14 Nov 2012 10:34:58 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121114093458.GH25679@game.jcrosoft.org>
+References: <1352841245-22767-1-git-send-email-plagnioj@jcrosoft.com>
+ <20121114080528.GF10369@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1352754991-11660-1-git-send-email-franck.jullien@gmail.com>
+In-Reply-To: <20121114080528.GF10369@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,95 +26,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mci_spi: always compute command crc byte
-To: Franck Jullien <franck.jullien@gmail.com>
+Subject: Re: [PATCH 1/1] phy: phy_update_status wait auto neg done when enabled
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Nov 12, 2012 at 10:16:31PM +0100, Franck Jullien wrote:
-> The spec says: "the CMD8 CRC verification is always enabled.
-> The Host shall set correct CRC in the argument ofCMD8. If
-> CRC error is detected, card returns CRC error in R1 response
-> regardless of command index."
+On 09:05 Wed 14 Nov     , Sascha Hauer wrote:
+> On Tue, Nov 13, 2012 at 10:14:05PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > if the autoneg was start by the hw wait it to be finished
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  drivers/net/phy/phy.c |   26 ++++++++++++++++++++++++++
+> >  1 file changed, 26 insertions(+)
+> > 
+> > diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+> > index 0c2e602..43738c2 100644
+> > --- a/drivers/net/phy/phy.c
+> > +++ b/drivers/net/phy/phy.c
+> > @@ -28,6 +28,25 @@
+> >  #define PHY_AN_TIMEOUT	10
+> >  
+> >  static int genphy_config_init(struct phy_device *phydev);
+> > +static int phy_aneg_done(struct phy_device *phydev);
+> > +
+> > +static int phy_wait_aneg_read_status(struct phy_device *dev, struct phy_driver *drv)
+> > +{
+> > +	int ret;
+> > +
+> > +	if (AUTONEG_ENABLE != dev->autoneg)
+> > +		return 0;
+> > +
+> > +	ret = phy_aneg_done(dev);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	/*
+> > +	 * re-read the status as the aneg may not be finished
+> > +	 * when we read it the first time
+> > +	 */
+> > +	return drv->read_status(dev);
+> > +}
+> >  
+> >  int phy_update_status(struct phy_device *dev)
+> >  {
+> > @@ -35,11 +54,18 @@ int phy_update_status(struct phy_device *dev)
+> >  	struct eth_device *edev = dev->attached_dev;
+> >  	int ret;
+> >  	int oldspeed = dev->speed, oldduplex = dev->duplex;
+> > +	int old_link = dev->link;
+> >  
+> >  	ret = drv->read_status(dev);
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > +	if (dev->link && !old_link) {
+> > +		ret = phy_wait_aneg_read_status(dev, drv);
+> > +		if (ret)
+> > +			return ret;
+> > +	}
 > 
-> Make it simple, and compute crc on every commands.
-> 
-> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+> This does not help. dev->link is false after reset, so we never get into
+> phy_wait_aneg_read_status() which waits for a link.
+read_status update the dev->link as we call update_link
 
-Applied, thanks
+if !dev->link means no cable detected
 
-Sascha
+if the phy is reset the link is ready immediately or that means the reset is
+not finished and the phy is not stable
 
-> ---
->  drivers/mci/Kconfig   |    2 +-
->  drivers/mci/mci_spi.c |   12 ------------
->  2 files changed, 1 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-> index b1a678e..5c0ca4d 100644
-> --- a/drivers/mci/Kconfig
-> +++ b/drivers/mci/Kconfig
-> @@ -88,6 +88,7 @@ config MCI_ATMEL
->  
->  config MCI_SPI
->  	bool "MMC/SD over SPI"
-> +	select CRC7
->  	depends on SPI
->  	help
->  	  Some systems access MMC/SD/SDIO cards using a SPI controller
-> @@ -98,7 +99,6 @@ config MCI_SPI
->  
->  config MMC_SPI_CRC_ON
->  	bool "Enable CRC protection for transfers"
-> -	select CRC7
->  	select CRC16
->  	depends on MCI_SPI
->  	help
-> diff --git a/drivers/mci/mci_spi.c b/drivers/mci/mci_spi.c
-> index 5894104..cb5e0bb 100644
-> --- a/drivers/mci/mci_spi.c
-> +++ b/drivers/mci/mci_spi.c
-> @@ -121,14 +121,6 @@ mmc_spi_writebytes(struct mmc_spi_host *host, unsigned len, void *data)
->  	return status;
->  }
->  
-> -/*
-> - * Note that while the CRC, in general, is ignored in SPI mode, the very first
-> - * command must be followed by a valid CRC, since the card is not yet in SPI mode.
-> - * The CRC byte for a CMD0 command with a zero argument is a constant 0x4A. For
-> - * simplicity, this CRC byte is always sent with every command.
-> - */
-> -#define MMC_SPI_CMD0_CRC	((0x4a << 1) | 0x1)
-> -
->  static int mmc_spi_command_send(struct mmc_spi_host *host, struct mci_cmd *cmd)
->  {
->  	uint8_t r1;
-> @@ -141,11 +133,7 @@ static int mmc_spi_command_send(struct mmc_spi_host *host, struct mci_cmd *cmd)
->  	command[3] = cmd->cmdarg >> 16;
->  	command[4] = cmd->cmdarg >> 8;
->  	command[5] = cmd->cmdarg;
-> -#ifdef CONFIG_MMC_SPI_CRC_ON
->  	command[6] = (crc7(0, &command[1], 5) << 1) | 0x01;
-> -#else
-> -	command[6] = MMC_SPI_CMD0_CRC;
-> -#endif
->  
->  	mmc_spi_writebytes(host, 7, command);
->  
-> -- 
-> 1.7.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+this may means the phy need specific init
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
