@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo5.mail-out.ovh.net ([178.33.107.29]
+Received: from 17.mo5.mail-out.ovh.net ([46.105.56.132]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TYwRZ-0008F6-VS
- for barebox@lists.infradead.org; Thu, 15 Nov 2012 10:13:11 +0000
+ id 1TYwRo-0008GY-0r
+ for barebox@lists.infradead.org; Thu, 15 Nov 2012 10:13:24 +0000
 Received: from mail629.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id DC7D4FFB3E2
- for <barebox@lists.infradead.org>; Thu, 15 Nov 2012 11:20:48 +0100 (CET)
-Date: Thu, 15 Nov 2012 11:11:09 +0100
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 3D19BFFB3E2
+ for <barebox@lists.infradead.org>; Thu, 15 Nov 2012 11:21:03 +0100 (CET)
+Date: Thu, 15 Nov 2012 11:11:22 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121115101109.GD31820@game.jcrosoft.org>
-References: <20121103150823.GY29599@game.jcrosoft.org>
+Message-ID: <20121115101122.GE31820@game.jcrosoft.org>
+References: <20121103113406.GX29599@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121103150823.GY29599@game.jcrosoft.org>
+In-Reply-To: <20121103113406.GX29599@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,134 +26,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2 v2] add bus device
+Subject: Re: [PATCH 0/4 v3] at91sam9x5ek: add spi and mci support
 To: barebox@lists.infradead.org
 
 ping
-On 16:08 Sat 03 Nov     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,
+On 12:34 Sat 03 Nov     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> HI,
+> 	v3: rebase on the v3 of at91sam9xek i2c support
 > 
-> The following changes since commit 37b37cb2bff79f4edbbcaf316149d814e11a358e:
+> 	with this +1 patch serie the support of the at91sam9x5ek is mostly
+> 	complete
 > 
->   eth: register device a pure device (2012-11-03 07:48:12 +0800)
+> 	This will add spi and mci0 support as spi0 and mci0 conflict
+> 
+> 	We are still missing framebuffer, usb host and device and hardware i2c support
+> 	but this wil be added later
+> 
+> 	This patch serie depedsn on the at91sam9x5ek i2c and m25p80 patcheries
+> 
+> 	the correct version
+> 
+> 	this one work but brake the etherent as it mux the 4 cs as gpio and we
+> 	use them on the eth0
+> 
+> The following changes since commit b3a0963d358e14180e9bbde68ab78fdebae071b7:
+> 
+>   m25p80: sync flash support with the kernel (2012-11-03 04:23:15 +0800)
 > 
 > are available in the git repository at:
 > 
->   git://git.jcrosoft.org/barebox.git tags/bus_device
+>   git://git.jcrosoft.org/barebox.git delivery/at91sam9x5ek_mci_spi
 > 
-> for you to fetch changes up to 35f8933bf003b5049131487882d8ae57a1a50d3a:
+> for you to fetch changes up to dc7e1ce2a4ca879d07ba5786cfaa84f54d2ee763:
 > 
->   bus: add bus device (2012-11-03 07:52:49 +0800)
-> 
-> ----------------------------------------------------------------
-> add bus device
-> 
-> This patch serie add a pure device for each bus
-> 
-> And set this device to each bus device as a parent if the device
-> does not have a parent already
-> 
-> we have now a nice output per bus
-> 
-> barebox@Atmel at91sam9x5-ek:/
-> devices:
-> `---- platform
->      `---- atmel_usart0
->           `---- cs0
->      `---- atmel_usart1
->           `---- cs1
->      `---- mem0
->           `---- 0x00000000-0x07ffffff: /dev/ram0
->      `---- mem1
->           `---- 0x00000000-0x00007fff: /dev/sram0
->      `---- mem2
->           `---- 0x00000000-0x000037bf: /dev/defaultenv
->      `---- mem3
->           `---- 0x00000000-0xfffffffe: /dev/mem
->      `---- cs2
->      `---- w1-gpio
->           `---- w1_bus0
->                `---- w1-2d-0
->                     `---- 0x00000000-0x0000007f: /dev/ds24310
->                `---- w1-2d-1
->                     `---- 0x00000000-0x0000007f: /dev/ds24311
->                `---- w1-23-0
->                     `---- 0x00000000-0x000001ff: /dev/ds24330
->      `---- at91sam9x5cm
->      `---- at91sam9x5ek
->      `---- at91sam9x5dm
->      `---- atmel_nand0
->           `---- nand0
->                `---- 0x00000000-0x1fffffff: /dev/nand0
->                `---- 0x00000000-0x0003ffff: /dev/at91bootstrap_raw
->                `---- 0x00040000-0x0009ffff: /dev/self_raw
->                `---- 0x000a0000-0x000bffff: /dev/env_raw
->                `---- 0x000c0000-0x000dffff: /dev/env_raw1
->                `---- 0x00000000-0x0003ffff: /dev/nand0.at91bootstrap
->                `---- 0x00040000-0x0009ffff: /dev/nand0.barebox
->                `---- 0x000a0000-0x000bffff: /dev/nand0.bareboxenv
->                `---- 0x000c0000-0x000dffff: /dev/nand0.bareboxenv2
->                `---- 0x000e0000-0x000fffff: /dev/nand0.oftree
->                `---- 0x00100000-0x001fffff: /dev/nand0.free
->                `---- 0x00200000-0x007fffff: /dev/nand0.kernel
->                `---- 0x00800000-0x07ffffff: /dev/nand0.rootfs
->                `---- 0x08000000-0x1fffffff: /dev/nand0.data
->      `---- macb0
->           `---- miibus0
->           `---- eth0
->      `---- atmel_spi0
->           `---- mtd_dataflash0
->                     `---- 0x00000000-0x0041ffff: /dev/dataflash0
->      `---- atmel_mci0
->           `---- mci0
->                `---- 0x00000000-0x1d9bfffff: /dev/disk0
->                `---- 0x00100000-0x064fffff: /dev/disk0.0
->                `---- 0x06500000-0x1d9bfffff: /dev/disk0.1
->      `---- i2c-gpio0
->           `---- i2c0
->                `---- qt10700
->                     `---- cs3
-> `---- mdio_bus
-> `---- spi
-> `---- i2c
-> `---- w1_bus
-> `---- fs
->      `---- ramfs0
->      `---- devfs0
-> `---- net
-> `---- global
-> 
-> drivers:
-> atmel_usart
-> ramfs
-> devfs
-> fat
-> macb
-> Generic PHY
-> atmel_nand
-> mtd_dataflash
-> m25p80
-> atmel_spi
-> i2c-gpio
-> mci
-> atmel_mci
-> qt1070
-> w1-gpio
-> ds2431
-> ds2433
-> mem
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+>   at91sam9x5ek: add mci support (2012-11-03 04:23:48 +0800)
 > 
 > ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (2):
->       bus_for_each_device/bus_for_each_driver: add () to allow use &bus
->       bus: add bus device
+> Jean-Christophe PLAGNIOL-VILLARD (4):
+>       at91sam9x5: add spi support
+>       at91sam9x5ek: add spi support
+>       at91sam9x5: add mci support
+>       at91sam9x5ek: add mci support
 > 
->  drivers/base/bus.c    |   10 ++++++++++
->  drivers/base/driver.c |    5 +++++
->  include/driver.h      |    6 ++++--
->  3 files changed, 19 insertions(+), 2 deletions(-)
+>  arch/arm/boards/at91sam9x5ek/init.c     |   57 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  arch/arm/configs/at91sam9x5ek_defconfig |   10 +++++++---
+>  arch/arm/mach-at91/at91sam9x5.c         |    4 ++++
+>  arch/arm/mach-at91/at91sam9x5_devices.c |  124 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 192 insertions(+), 3 deletions(-)
 > 
 > Best Regards,
 > J.
