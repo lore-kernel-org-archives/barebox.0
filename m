@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from moutng.kundenserver.de ([212.227.126.186])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TYx2g-0005Xi-FJ
- for barebox@lists.infradead.org; Thu, 15 Nov 2012 10:51:31 +0000
-From: Christian Kapeller <christian.kapeller@cmotion.eu>
-Date: Thu, 15 Nov 2012 11:51:11 +0100
-Message-Id: <1352976671-17492-1-git-send-email-christian.kapeller@cmotion.eu>
+ id 1TYxbp-0002gh-CL
+ for barebox@lists.infradead.org; Thu, 15 Nov 2012 11:27:50 +0000
+Date: Thu, 15 Nov 2012 12:27:46 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121115112746.GA10369@pengutronix.de>
+References: <1352976064-18544-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1352976064-18544-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,36 +18,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] imx53: implement imx53_add_kpp
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1] mx53-loco: fix phy reset
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Allows usage of imx keypad driver in imx53 platforms
+On Thu, Nov 15, 2012 at 11:41:04AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> the phy reset neet to be done before the fec driver is registered
+> as we accesst the phy at the fec probe time
 
----
- arch/arm/mach-imx/include/mach/devices-imx53.h |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
+I spotted that aswell in the meantime. Applied, thanks
 
-diff --git a/arch/arm/mach-imx/include/mach/devices-imx53.h b/arch/arm/mach-imx/include/mach/devices-imx53.h
-index 5f967ea..6692396 100644
---- a/arch/arm/mach-imx/include/mach/devices-imx53.h
-+++ b/arch/arm/mach-imx/include/mach/devices-imx53.h
-@@ -82,3 +82,8 @@ static inline struct device_d *imx53_add_nand(struct imx_nand_platform_data *pda
- 
- 	return dev;
- }
-+
-+static inline struct device_d *imx53_add_kpp(struct matrix_keymap_data *pdata)
-+{
-+	return imx_add_kpp((void *)MX53_KPP_BASE_ADDR, pdata);
-+}
+Sascha
+
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/boards/freescale-mx53-loco/board.c |    3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/boards/freescale-mx53-loco/board.c b/arch/arm/boards/freescale-mx53-loco/board.c
+> index 45c05c2..216d26a 100644
+> --- a/arch/arm/boards/freescale-mx53-loco/board.c
+> +++ b/arch/arm/boards/freescale-mx53-loco/board.c
+> @@ -187,6 +187,7 @@ static int loco_devices_init(void)
+>  {
+>  
+>  	imx53_iim_register_fec_ethaddr();
+> +	loco_fec_reset();
+>  	imx53_add_fec(&fec_info);
+>  	imx53_add_mmc0(&loco_sd1_data);
+>  	imx53_add_mmc2(&loco_sd3_data);
+> @@ -196,8 +197,6 @@ static int loco_devices_init(void)
+>  	if (IS_ENABLED(CONFIG_USB_EHCI))
+>  		loco_ehci_init();
+>  
+> -	loco_fec_reset();
+> -
+>  	set_silicon_rev(imx_silicon_revision());
+>  
+>  	armlinux_set_bootparams((void *)0x70000100);
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.7.5.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
