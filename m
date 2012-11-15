@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo4.mail-out.ovh.net ([178.33.104.253]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TZ53A-0008Es-F4
- for barebox@lists.infradead.org; Thu, 15 Nov 2012 19:24:33 +0000
-Received: from mail92.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 764811050F56
- for <barebox@lists.infradead.org>; Thu, 15 Nov 2012 20:32:06 +0100 (CET)
-Date: Thu, 15 Nov 2012 20:22:29 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121115192229.GI31820@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TZ556-0008TD-Um
+ for barebox@lists.infradead.org; Thu, 15 Nov 2012 19:26:34 +0000
+Date: Thu, 15 Nov 2012 20:26:30 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121115192630.GJ10369@pengutronix.de>
 References: <alpine.DEB.2.02.1211150924030.1247@oneiric>
  <20121115161615.GI10369@pengutronix.de>
  <alpine.DEB.2.02.1211151128470.5359@oneiric>
@@ -32,52 +28,7 @@ Subject: Re: how easy to add extra config for NAND-less beagle?
 To: "Robert P. J. Day" <rpjday@crashcourse.ca>
 Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On 11:39 Thu 15 Nov     , Robert P. J. Day wrote:
-> On Thu, 15 Nov 2012, Sascha Hauer wrote:
-> 
-> > Hi Robert,
-> >
-> > On Thu, Nov 15, 2012 at 09:36:37AM -0500, Robert P. J. Day wrote:
-> > >
-> > >   returning to playing with barebox after lengthy hiatus and i asked
-> > > an equivalent question on the u-boot list, let's see if it's relevant
-> > > here.
-> > >
-> > >   i did a regular configure and build for my beagle xM (rev C) which,
-> > > unlike the beagle classic, has no NAND flash:
-> > >
-> > > $ make omap3530_beagle_xload_defconfig ; make
-> > > $ make omap3530_beagle_defconfig ; make
-> > >
-> > > then copied MLO and barebox.bin to an appropriate card and, lo, it
-> > > booted nicely and i'm currently sitting in barebox:
-> > >
-> > >   barebox@Texas Instrument's Beagle:/ version
-> > >
-> > >   barebox 2012.10.0-00283-gd65d9df #2 Thu Nov 15 06:45:21 EST 2012
-> > >
-> > > thing is, this build has a good deal of NAND-related functionality
-> > > that is of no use whatsoever on the current beagle xMs, so i'm
-> > > interested in how little work it would take to add an extra config
-> > > that would deselect everything related to NAND.  (obviously, having
-> > > that functionality there doesn't *hurt*, but i'm planning to use
-> > > barebox in my new embedded linux courses and it would be nice to be
-> > > able to build for an xM and have it *totally* correspond to the actual
-> > > hardware.)  it shouldn't be hard -- simply deselecting anything
-> > > related to NAND, MTD or JFFS2 should do the trick.
-> >
-> > Disable MTD support and if you want also the protect/erase commands:
-> >
-> > make menuconfig
-> >
-> > Drivers                         --->
-> >   [ ] Memory Technology Device (MTD) support  --->
-> >
-> > commands                        --->
-> >   flash                           --->
-> >     [ ] protect/erase
-> >
-> > Saves you around 35Kb of binary space
+On Thu, Nov 15, 2012 at 11:39:58AM -0500, Robert P. J. Day wrote:
 > 
 >   yup, i'm testing that shortly, but my question was more along the
 > lines of, rather than having to disable all NAND-related
@@ -97,36 +48,19 @@ On 11:39 Thu 15 Nov     , Robert P. J. Day wrote:
 > 
 >   is this worth doing?  it would seem to be fairly easy, i can whip
 > something up and test it.
-> 
-> rday
-> 
-> p.s.  there are other significant differences as well -- onboard
-> ethernet, 4-port USB hub.  it seems to me that there is enough of a
-> difference to warrant a separate configuration.  thoughts?
-no can you detect it?
 
-on at91 we have teh 9x5ek which can a 5 different soc with different daughter
+I don't think this is worth it. We should rather keep the number of
+defconfigs low. Splitting them means we have to maintain them and
+keep them in sync. Also it means to increase the time needed to compile
+all defconfigs (which I do routinely, currently on every commit).
 
-which we detetct
+Sascha
 
-Best Regards,
-J.
-> 
-> -- 
-> 
-> ========================================================================
-> Robert P. J. Day                                 Ottawa, Ontario, CANADA
->                         http://crashcourse.ca
-> 
-> Twitter:                                       http://twitter.com/rpjday
-> LinkedIn:                               http://ca.linkedin.com/in/rpjday
-> ========================================================================
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
