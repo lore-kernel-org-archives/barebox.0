@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 17.mo5.mail-out.ovh.net ([46.105.56.132]
+Received: from 20.mo5.mail-out.ovh.net ([91.121.55.239]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TYwRo-0008GY-0r
- for barebox@lists.infradead.org; Thu, 15 Nov 2012 10:13:24 +0000
+ id 1TYwSH-0008JH-Dq
+ for barebox@lists.infradead.org; Thu, 15 Nov 2012 10:13:54 +0000
 Received: from mail629.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 3D19BFFB3E2
- for <barebox@lists.infradead.org>; Thu, 15 Nov 2012 11:21:03 +0100 (CET)
-Date: Thu, 15 Nov 2012 11:11:22 +0100
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id C09B2FFB524
+ for <barebox@lists.infradead.org>; Thu, 15 Nov 2012 11:21:31 +0100 (CET)
+Date: Thu, 15 Nov 2012 11:11:50 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121115101122.GE31820@game.jcrosoft.org>
-References: <20121103113406.GX29599@game.jcrosoft.org>
+Message-ID: <20121115101150.GF31820@game.jcrosoft.org>
+References: <20121031120122.GF29599@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121103113406.GX29599@game.jcrosoft.org>
+In-Reply-To: <20121031120122.GF29599@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,53 +26,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/4 v3] at91sam9x5ek: add spi and mci support
+Subject: Re: [PATCH 0/2] m25p80: re-import it againt mtd_add_host
 To: barebox@lists.infradead.org
 
 ping
-On 12:34 Sat 03 Nov     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> HI,
-> 	v3: rebase on the v3 of at91sam9xek i2c support
+
+work on next
+On 13:01 Wed 31 Oct     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
 > 
-> 	with this +1 patch serie the support of the at91sam9x5ek is mostly
-> 	complete
+> 	so we now create the cdev via mtd
 > 
-> 	This will add spi and mci0 support as spi0 and mci0 conflict
+> 	This will also simplify sync with linux
 > 
-> 	We are still missing framebuffer, usb host and device and hardware i2c support
-> 	but this wil be added later
+> 	to avoid the m25p8000 or m25p00 the cdev is still named name m25p and the
+> 	drivers m25p80
 > 
-> 	This patch serie depedsn on the at91sam9x5ek i2c and m25p80 patcheries
+> 	sync with linux too
 > 
-> 	the correct version
+> 	this patch series is agianst mtd_dataflash support
 > 
-> 	this one work but brake the etherent as it mux the 4 cs as gpio and we
-> 	use them on the eth0
+> The following changes since commit 9428c386f876fa3a8871eeea4725a805cea5c367:
 > 
-> The following changes since commit b3a0963d358e14180e9bbde68ab78fdebae071b7:
-> 
->   m25p80: sync flash support with the kernel (2012-11-03 04:23:15 +0800)
+>   mtd: add dataflash support (2012-10-31 04:48:39 +0800)
 > 
 > are available in the git repository at:
 > 
->   git://git.jcrosoft.org/barebox.git delivery/at91sam9x5ek_mci_spi
+>   git://git.jcrosoft.org/barebox.git delivery/m25p80
 > 
-> for you to fetch changes up to dc7e1ce2a4ca879d07ba5786cfaa84f54d2ee763:
+> for you to fetch changes up to 35b8b98230dbcfe25973d5ed52a874027b4f3f05:
 > 
->   at91sam9x5ek: add mci support (2012-11-03 04:23:48 +0800)
+>   m25p80: sync flash support with the kernel (2012-10-31 04:51:08 +0800)
 > 
 > ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (4):
->       at91sam9x5: add spi support
->       at91sam9x5ek: add spi support
->       at91sam9x5: add mci support
->       at91sam9x5ek: add mci support
+> Jean-Christophe PLAGNIOL-VILLARD (2):
+>       m25p80: re-import it againt mtd_add_host
+>       m25p80: sync flash support with the kernel
 > 
->  arch/arm/boards/at91sam9x5ek/init.c     |   57 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  arch/arm/configs/at91sam9x5ek_defconfig |   10 +++++++---
->  arch/arm/mach-at91/at91sam9x5.c         |    4 ++++
->  arch/arm/mach-at91/at91sam9x5_devices.c |  124 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 192 insertions(+), 3 deletions(-)
+>  arch/arm/boards/freescale-mx6-sabrelite/board.c |    2 +-
+>  drivers/mtd/devices/Kconfig                     |   27 ++++++++++++
+>  drivers/mtd/devices/Makefile                    |    1 +
+>  drivers/{nor => mtd/devices}/m25p80.c           |  512 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------------------------------------------------------------------------------------
+>  drivers/nor/Kconfig                             |   27 ------------
+>  drivers/nor/Makefile                            |    1 -
+>  drivers/nor/m25p80.h                            |   84 ------------------------------------
+>  include/linux/mtd/cfi.h                         |   65 ++++++++++++++++++++++++++++
+>  8 files changed, 371 insertions(+), 348 deletions(-)
+>  rename drivers/{nor => mtd/devices}/m25p80.c (65%)
+>  delete mode 100644 drivers/nor/m25p80.h
+>  create mode 100644 include/linux/mtd/cfi.h
 > 
 > Best Regards,
 > J.
