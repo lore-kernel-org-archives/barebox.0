@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo5.mail-out.ovh.net ([91.121.55.239]
+Received: from 3.mo5.mail-out.ovh.net ([46.105.40.108]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TYwSH-0008JH-Dq
- for barebox@lists.infradead.org; Thu, 15 Nov 2012 10:13:54 +0000
+ id 1TYwuc-0004ZA-OR
+ for barebox@lists.infradead.org; Thu, 15 Nov 2012 10:43:11 +0000
 Received: from mail629.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id C09B2FFB524
- for <barebox@lists.infradead.org>; Thu, 15 Nov 2012 11:21:31 +0100 (CET)
-Date: Thu, 15 Nov 2012 11:11:50 +0100
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 2E1FFFFB421
+ for <barebox@lists.infradead.org>; Thu, 15 Nov 2012 11:50:47 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121115101150.GF31820@game.jcrosoft.org>
-References: <20121031120122.GF29599@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20121031120122.GF29599@game.jcrosoft.org>
+Date: Thu, 15 Nov 2012 11:41:04 +0100
+Message-Id: <1352976064-18544-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,67 +18,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] m25p80: re-import it againt mtd_add_host
+Subject: [PATCH 1/1] mx53-loco: fix phy reset
 To: barebox@lists.infradead.org
 
-ping
+the phy reset neet to be done before the fec driver is registered
+as we accesst the phy at the fec probe time
 
-work on next
-On 13:01 Wed 31 Oct     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,
-> 
-> 	so we now create the cdev via mtd
-> 
-> 	This will also simplify sync with linux
-> 
-> 	to avoid the m25p8000 or m25p00 the cdev is still named name m25p and the
-> 	drivers m25p80
-> 
-> 	sync with linux too
-> 
-> 	this patch series is agianst mtd_dataflash support
-> 
-> The following changes since commit 9428c386f876fa3a8871eeea4725a805cea5c367:
-> 
->   mtd: add dataflash support (2012-10-31 04:48:39 +0800)
-> 
-> are available in the git repository at:
-> 
->   git://git.jcrosoft.org/barebox.git delivery/m25p80
-> 
-> for you to fetch changes up to 35b8b98230dbcfe25973d5ed52a874027b4f3f05:
-> 
->   m25p80: sync flash support with the kernel (2012-10-31 04:51:08 +0800)
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (2):
->       m25p80: re-import it againt mtd_add_host
->       m25p80: sync flash support with the kernel
-> 
->  arch/arm/boards/freescale-mx6-sabrelite/board.c |    2 +-
->  drivers/mtd/devices/Kconfig                     |   27 ++++++++++++
->  drivers/mtd/devices/Makefile                    |    1 +
->  drivers/{nor => mtd/devices}/m25p80.c           |  512 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------------------------------------------------------------------------------------
->  drivers/nor/Kconfig                             |   27 ------------
->  drivers/nor/Makefile                            |    1 -
->  drivers/nor/m25p80.h                            |   84 ------------------------------------
->  include/linux/mtd/cfi.h                         |   65 ++++++++++++++++++++++++++++
->  8 files changed, 371 insertions(+), 348 deletions(-)
->  rename drivers/{nor => mtd/devices}/m25p80.c (65%)
->  delete mode 100644 drivers/nor/m25p80.h
->  create mode 100644 include/linux/mtd/cfi.h
-> 
-> Best Regards,
-> J.
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/boards/freescale-mx53-loco/board.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/arch/arm/boards/freescale-mx53-loco/board.c b/arch/arm/boards/freescale-mx53-loco/board.c
+index 45c05c2..216d26a 100644
+--- a/arch/arm/boards/freescale-mx53-loco/board.c
++++ b/arch/arm/boards/freescale-mx53-loco/board.c
+@@ -187,6 +187,7 @@ static int loco_devices_init(void)
+ {
+ 
+ 	imx53_iim_register_fec_ethaddr();
++	loco_fec_reset();
+ 	imx53_add_fec(&fec_info);
+ 	imx53_add_mmc0(&loco_sd1_data);
+ 	imx53_add_mmc2(&loco_sd3_data);
+@@ -196,8 +197,6 @@ static int loco_devices_init(void)
+ 	if (IS_ENABLED(CONFIG_USB_EHCI))
+ 		loco_ehci_init();
+ 
+-	loco_fec_reset();
+-
+ 	set_silicon_rev(imx_silicon_revision());
+ 
+ 	armlinux_set_bootparams((void *)0x70000100);
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
