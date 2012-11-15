@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo5.mail-out.ovh.net ([178.32.119.138]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TZ2Dp-0003Xe-Fl
- for barebox@lists.infradead.org; Thu, 15 Nov 2012 16:23:22 +0000
-Received: from mail629.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id CCACDFFBA25
- for <barebox@lists.infradead.org>; Thu, 15 Nov 2012 17:30:59 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 15 Nov 2012 17:21:16 +0100
-Message-Id: <1352996476-16071-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from astoria.ccjclearline.com ([64.235.106.9])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TZ2U0-0005SE-JL
+ for barebox@lists.infradead.org; Thu, 15 Nov 2012 16:40:05 +0000
+Date: Thu, 15 Nov 2012 11:39:58 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+In-Reply-To: <20121115161615.GI10369@pengutronix.de>
+Message-ID: <alpine.DEB.2.02.1211151128470.5359@oneiric>
+References: <alpine.DEB.2.02.1211150924030.1247@oneiric>
+ <20121115161615.GI10369@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,173 +18,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] at91rm9200ek: add spi support
-To: barebox@lists.infradead.org
+Subject: Re: how easy to add extra config for NAND-less beagle?
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-as the support atmel mci drivers does not work on rm9200 and we have the
-possibility to use it as spi use it
+On Thu, 15 Nov 2012, Sascha Hauer wrote:
 
-Originally on rm9200 when the interface mci is in SPI mode we use a DataFlash Card
-so allow it but if no dataflash card option is enable use as mmc spi.
+> Hi Robert,
+>
+> On Thu, Nov 15, 2012 at 09:36:37AM -0500, Robert P. J. Day wrote:
+> >
+> >   returning to playing with barebox after lengthy hiatus and i asked
+> > an equivalent question on the u-boot list, let's see if it's relevant
+> > here.
+> >
+> >   i did a regular configure and build for my beagle xM (rev C) which,
+> > unlike the beagle classic, has no NAND flash:
+> >
+> > $ make omap3530_beagle_xload_defconfig ; make
+> > $ make omap3530_beagle_defconfig ; make
+> >
+> > then copied MLO and barebox.bin to an appropriate card and, lo, it
+> > booted nicely and i'm currently sitting in barebox:
+> >
+> >   barebox@Texas Instrument's Beagle:/ version
+> >
+> >   barebox 2012.10.0-00283-gd65d9df #2 Thu Nov 15 06:45:21 EST 2012
+> >
+> > thing is, this build has a good deal of NAND-related functionality
+> > that is of no use whatsoever on the current beagle xMs, so i'm
+> > interested in how little work it would take to add an extra config
+> > that would deselect everything related to NAND.  (obviously, having
+> > that functionality there doesn't *hurt*, but i'm planning to use
+> > barebox in my new embedded linux courses and it would be nice to be
+> > able to build for an xM and have it *totally* correspond to the actual
+> > hardware.)  it shouldn't be hard -- simply deselecting anything
+> > related to NAND, MTD or JFFS2 should do the trick.
+>
+> Disable MTD support and if you want also the protect/erase commands:
+>
+> make menuconfig
+>
+> Drivers                         --->
+>   [ ] Memory Technology Device (MTD) support  --->
+>
+> commands                        --->
+>   flash                           --->
+>     [ ] protect/erase
+>
+> Saves you around 35Kb of binary space
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/boards/at91rm9200ek/init.c     |   49 +++++++++++++++++++++++++++++++
- arch/arm/configs/at91rm9200ek_defconfig |   10 ++++++-
- arch/arm/mach-at91/Kconfig              |   10 +++++++
- 3 files changed, 68 insertions(+), 1 deletion(-)
+  yup, i'm testing that shortly, but my question was more along the
+lines of, rather than having to disable all NAND-related
+functionality *manually*, how easy/worthwhile would it be to create an
+additional make target that reflects a beagle *without* NAND flash?
 
-diff --git a/arch/arm/boards/at91rm9200ek/init.c b/arch/arm/boards/at91rm9200ek/init.c
-index 20e9ad1..439ee9e 100644
---- a/arch/arm/boards/at91rm9200ek/init.c
-+++ b/arch/arm/boards/at91rm9200ek/init.c
-@@ -30,6 +30,7 @@
- #include <mach/board.h>
- #include <mach/gpio.h>
- #include <mach/io.h>
-+#include <spi/spi.h>
- 
- static struct at91_ether_platform_data ether_pdata = {
- 	.flags = AT91SAM_ETHER_RMII,
-@@ -103,6 +104,53 @@ static void ek_add_device_udc(void)
- static void ek_add_device_udc(void) {}
- #endif
- 
-+static struct spi_board_info ek_dataflash_spi_devices[] = {
-+	{	/* DataFlash chip */
-+		.name		= "mtd_dataflash",
-+		.chip_select	= 0,
-+		.max_speed_hz	= 15 * 1000 * 1000,
-+	},
-+#ifdef CONFIG_MTD_AT91_DATAFLASH_CARD
-+	{	/* DataFlash card */
-+		.name		= "mtd_dataflash",
-+		.chip_select	= 1,
-+		.max_speed_hz	= 15 * 1000 * 1000,
-+	},
-+#endif
-+};
-+
-+static struct spi_board_info ek_mmc_spi_devices[] = {
-+#if !defined(CONFIG_MTD_DATAFLASH)
-+	{
-+		.name		= "spi_mci",
-+		.chip_select	= 0,
-+		.max_speed_hz	= 20 * 1000 * 1000,
-+	},
-+#endif
-+#if !defined(CONFIG_MTD_AT91_DATAFLASH_CARD)
-+	{
-+		.name		= "spi_mci",
-+		.chip_select	= 1,
-+		.max_speed_hz	= 20 * 1000 * 1000,
-+	},
-+#endif
-+};
-+
-+static unsigned spi0_standard_cs[] = { AT91_PIN_PA3, AT91_PIN_PA6 };
-+static struct at91_spi_platform_data spi_pdata = {
-+	.chipselect = spi0_standard_cs,
-+	.num_chipselect = ARRAY_SIZE(spi0_standard_cs),
-+};
-+
-+static void ek_add_device_spi(void)
-+{
-+	/* select mci0 as spi */
-+	at91_set_gpio_output(AT91_PIN_PB22, 0);
-+	spi_register_board_info(ek_dataflash_spi_devices, ARRAY_SIZE(ek_dataflash_spi_devices));
-+	spi_register_board_info(ek_mmc_spi_devices, ARRAY_SIZE(ek_mmc_spi_devices));
-+	at91_add_device_spi(0, &spi_pdata);
-+}
-+
- static int at91rm9200ek_devices_init(void)
- {
- 	/*
-@@ -118,6 +166,7 @@ static int at91rm9200ek_devices_init(void)
- 	at91_add_device_usbh_ohci(&ek_usbh_data);
- 	ek_device_add_leds();
- 	ek_add_device_udc();
-+	ek_add_device_spi();
- 
- #if defined(CONFIG_DRIVER_CFI) || defined(CONFIG_DRIVER_CFI_OLD)
- 	devfs_add_partition("nor0", 0x00000, 0x40000, DEVFS_PARTITION_FIXED, "self");
-diff --git a/arch/arm/configs/at91rm9200ek_defconfig b/arch/arm/configs/at91rm9200ek_defconfig
-index 2bcade9..cc63445 100644
---- a/arch/arm/configs/at91rm9200ek_defconfig
-+++ b/arch/arm/configs/at91rm9200ek_defconfig
-@@ -44,6 +44,7 @@ CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
- CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_SPI=y
- CONFIG_CMD_LED=y
- CONFIG_CMD_LED_TRIGGER=y
- CONFIG_NET=y
-@@ -55,14 +56,21 @@ CONFIG_FS_TFTP=y
- CONFIG_NET_NETCONSOLE=y
- CONFIG_NET_RESOLV=y
- CONFIG_DRIVER_NET_AT91_ETHER=y
--# CONFIG_SPI is not set
-+CONFIG_DRIVER_SPI_ATMEL=y
- CONFIG_DRIVER_CFI=y
- # CONFIG_DRIVER_CFI_INTEL is not set
- # CONFIG_DRIVER_CFI_BANK_WIDTH_1 is not set
- # CONFIG_DRIVER_CFI_BANK_WIDTH_4 is not set
- CONFIG_CFI_BUFFER_WRITE=y
-+CONFIG_MTD=y
-+# CONFIG_MTD_OOB_DEVICE is not set
-+CONFIG_MTD_DATAFLASH=y
- CONFIG_USB_GADGET=y
- CONFIG_USB_GADGET_SERIAL=y
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+CONFIG_MCI_SPI=y
-+CONFIG_MMC_SPI_CRC_ON=y
- CONFIG_LED=y
- CONFIG_LED_GPIO=y
- CONFIG_LED_TRIGGERS=y
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index b3f1885..3a985f7 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -31,6 +31,9 @@ config BOARDINFO
- config HAVE_NAND_ATMEL_BUSWIDTH_16
- 	bool
- 
-+config HAVE_AT91_DATAFLASH_CARD
-+	bool
-+
- config AT91SAM9_RESET
- 	bool
- 
-@@ -119,6 +122,7 @@ choice
- config MACH_AT91RM9200EK
- 	bool "Atmel AT91RM9200-EK Evaluation Kit"
- 	help
-+	select HAVE_AT91_DATAFLASH_CARD
- 	  Select this if you are using Atmel's AT91RM9200-EK Evaluation Kit.
- 	  <http://www.atmel.com/dyn/products/tools_card.asp?tool_id=3507>
- 
-@@ -334,6 +338,12 @@ endif
- 
- comment "AT91 Board Options"
- 
-+config MTD_AT91_DATAFLASH_CARD
-+	bool "Enable DataFlash Card support"
-+	depends on HAVE_AT91_DATAFLASH_CARD
-+	help
-+	  Enable support for the DataFlash card.
-+
- config MTD_NAND_ATMEL_BUSWIDTH_16
- 	bool "Enable 16-bit data bus interface to NAND flash"
- 	depends on HAVE_NAND_ATMEL_BUSWIDTH_16
+  one significant difference between a classic beagle and a current xM
+is the total lack of NAND flash, and that's not a minor difference.
+it means you can remove all barebox functionality related to that --
+NAND routines and support, MTD stuff, JFFS2(?) support, and so on.
+this could be automated by creating a couple new configs, say:
+
+  make dm3730_beaglexm_xload_defconfig
+  make dm3730_beaglexm_defconfig
+
+so that the result really matches the underlying board.
+
+  is this worth doing?  it would seem to be fairly easy, i can whip
+something up and test it.
+
+rday
+
+p.s.  there are other significant differences as well -- onboard
+ethernet, 4-port USB hub.  it seems to me that there is enough of a
+difference to warrant a separate configuration.  thoughts?
+
 -- 
-1.7.10.4
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 
 _______________________________________________
