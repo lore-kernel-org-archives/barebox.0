@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TYuAo-0004YG-9z
- for barebox@lists.infradead.org; Thu, 15 Nov 2012 07:47:42 +0000
-Date: Thu, 15 Nov 2012 08:47:40 +0100
+ id 1TYuOX-0005aL-Es
+ for barebox@lists.infradead.org; Thu, 15 Nov 2012 08:01:54 +0000
+Date: Thu, 15 Nov 2012 09:01:51 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121115074740.GU10369@pengutronix.de>
-References: <1352931813-2817-1-git-send-email-franck.jullien@gmail.com>
+Message-ID: <20121115080150.GV10369@pengutronix.de>
+References: <1352926999-14981-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1352931813-2817-1-git-send-email-franck.jullien@gmail.com>
+In-Reply-To: <1352926999-14981-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,65 +22,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] nios2: use barebox_add_memory_bank in generic.c
-To: Franck Jullien <franck.jullien@gmail.com>
+Subject: Re: [PATCH 1/1] phy: if the link partner just ack us wait the end of
+ the autoneg
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Nov 14, 2012 at 11:23:32PM +0100, Franck Jullien wrote:
-> In the nios2 generic board generic.c file, use the
-> new barebox_add_memory_bank to init ram memory.
-> 
-> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
-
-Applied, thanks
-
-Sascha
-
+On Wed, Nov 14, 2012 at 10:03:19PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  arch/nios2/boards/generic/generic.c |   11 +++++++++--
->  1 files changed, 9 insertions(+), 2 deletions(-)
+>  drivers/net/phy/phy.c |   12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 > 
-> diff --git a/arch/nios2/boards/generic/generic.c b/arch/nios2/boards/generic/generic.c
-> index 66eb856..499d93b 100644
-> --- a/arch/nios2/boards/generic/generic.c
-> +++ b/arch/nios2/boards/generic/generic.c
-> @@ -3,6 +3,7 @@
->  #include <driver.h>
->  #include <partition.h>
->  #include <fs.h>
-> +#include <memory.h>
+> diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+> index 43738c2..daa657f 100644
+> --- a/drivers/net/phy/phy.c
+> +++ b/drivers/net/phy/phy.c
+> @@ -578,6 +578,18 @@ int genphy_read_status(struct phy_device *phydev)
+>  		if (lpa < 0)
+>  			return lpa;
 >  
->  static int phy_address = 1;
->  
-> @@ -32,11 +33,17 @@ static struct device_d mac_dev = {
->  	.platform_data = &phy_address,
->  };
->  
-> +static int mem_init(void)
-> +{
-> +	barebox_add_memory_bank("ram0", NIOS_SOPC_MEMORY_BASE, NIOS_SOPC_MEMORY_SIZE);
+> +		if (lpa & LPA_LPACK) {
+> +			int ret;
 > +
-> +	return 0;
-> +}
-> +mem_initcall(mem_init);
+> +			ret = phy_aneg_done(phydev);
+> +			if (ret)
+> +				return ret;
 > +
->  static int generic_devices_init(void)
->  {
->  	add_cfi_flash_device(DEVICE_ID_DYNAMIC, NIOS_SOPC_FLASH_BASE, NIOS_SOPC_FLASH_SIZE, 0);
-> -	add_mem_device("ram0", NIOS_SOPC_MEMORY_BASE, NIOS_SOPC_MEMORY_SIZE,
-> -		       IORESOURCE_MEM_WRITEABLE);
->  	platform_device_register(&mac_dev);
->  	/*register_device(&epcs_flash_device);*/
->  
-> -- 
-> 1.7.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+> +			lpa = phy_read(phydev, MII_LPA);
+> +			if (lpa < 0)
+> +				return lpa;
+> +		}
+> +
+
+Still does not work:
+
+barebox@Freescale i.MX53 LOCO:/ while [ ${done} != 0 ]; do dhcp;
+done=$?; msleep 500; done
+genphy_read_status MII_LPA 0x0001
+dhcp failed: Network is down
+dhcp: Network is down
+dhcp failed: Network is down
+dhcp: Network is down
+dhcp failed: Network is down
+dhcp: Network is down
+dhcp failed: Network is down
+dhcp: Network is down
+dhcp failed: Network is down
+dhcp: Network is down
+dhcp failed: Network is down
+dhcp: Network is down
+dhcp failed: Network is down
+dhcp: Network is down
+dhcp failed: Network is down
+dhcp: Network is down
+dhcp failed: Network is down
+dhcp: Network is down
+dhcp failed: Network is down
+dhcp: Network is down
+genphy_read_status MII_LPA 0x45e1
+100Mbps full duplex link detected
+DHCP client bound to address 192.168.24.118
+
 
 -- 
 Pengutronix e.K.                           |                             |
