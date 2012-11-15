@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pb0-f49.google.com ([209.85.160.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TYsWg-0008AQ-NU
- for barebox@lists.infradead.org; Thu, 15 Nov 2012 06:02:11 +0000
-Received: by mail-pb0-f49.google.com with SMTP id un15so864482pbc.36
- for <barebox@lists.infradead.org>; Wed, 14 Nov 2012 22:02:09 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <CAA4bVAFqCPkRGrz1oENQ3s9k99o=wPVq1RWSdiRJjeY1Mgkt3g@mail.gmail.com>
+Received: from m15-114.126.com ([220.181.15.114])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TYsro-0000Lf-7o
+ for barebox@lists.infradead.org; Thu, 15 Nov 2012 06:24:02 +0000
+Date: Thu, 15 Nov 2012 14:30:11 +0800
+From: zzs <zzs213@126.com>
+Message-ID: <20121115063011.GB31296@greatfirst.com>
 References: <20121115031146.GA31296@greatfirst.com>
  <CAA4bVAFqCPkRGrz1oENQ3s9k99o=wPVq1RWSdiRJjeY1Mgkt3g@mail.gmail.com>
-Date: Thu, 15 Nov 2012 10:02:09 +0400
-Message-ID: <CAA4bVAEhhLxXfzNZ_mBP_=W-TNOHOkEnwF=vgBMBy16ezd2_NA@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+ <CAA4bVAEhhLxXfzNZ_mBP_=W-TNOHOkEnwF=vgBMBy16ezd2_NA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAA4bVAEhhLxXfzNZ_mBP_=W-TNOHOkEnwF=vgBMBy16ezd2_NA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,29 +25,39 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: how to download a file to specified mem location using tftp
-To: barebox <barebox@lists.infradead.org>
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On 15 November 2012 09:45, Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> On 15 November 2012 07:11, zzs <zzs213@126.com> wrote:
->> tftp command only have filename args, Now I want
->> download a file to mem loctaion, ex 0x21f00000.
->> How to do that?
+In message <CAA4bVAEhhLxXfzNZ_mBP_=W-TNOHOkEnwF=vgBMBy16ezd2_NA@mail.gmail.com> Antony Pavlov wrote:
+> >> tftp command only have filename args, Now I want
+> >> download a file to mem loctaion, ex 0x21f00000.
+> >> How to do that?
+> >
+> > AFAIR,
+> >  memcpy -s /mnt/tftp/file -d /dev/mem 0 <memaddr> <size>
+> >
+> > (but /dev/mem is default value for -d).
+> >
 >
-> AFAIR,
->  memcpy -s /mnt/tftp/file -d /dev/mem 0 <memaddr> <size>
+> If you have tftp command only (old barebox without tftp filesystem support)
+> then use
 >
-> (but /dev/mem is default value for -d).
+>  barebox:/ tftp your_file
+>  barebox:/ memcpy -s your_file 0 0x21f00000 <file size>
 >
 
-If you have tftp command only (old barebox without tftp filesystem support)
-then use
+Thanks, I'm a barebox beginner.
 
- barebox:/ tftp your_file
- barebox:/ memcpy -s your_file 0 0x21f00000 <file size>
+So how to mount tftp to /mnt/tftp
+
+my barebox version is 2012.10.0
+
 
 -- 
-Best regards,
-  Antony Pavlov
+Best Regards,
+zzs
+
+
 
 _______________________________________________
 barebox mailing list
