@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo5.mail-out.ovh.net ([178.32.116.78]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TYyrR-00029x-Fv
- for barebox@lists.infradead.org; Thu, 15 Nov 2012 12:48:03 +0000
-Received: from mail629.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 19D56FFB237
- for <barebox@lists.infradead.org>; Thu, 15 Nov 2012 13:55:40 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 15 Nov 2012 13:45:58 +0100
-Message-Id: <1352983558-29740-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TYzg5-00047o-DP
+ for barebox@lists.infradead.org; Thu, 15 Nov 2012 13:40:22 +0000
+Date: Thu, 15 Nov 2012 14:40:19 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121115134019.GE10369@pengutronix.de>
+References: <1352980562-25383-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1352980562-25383-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +18,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] mci-core: fix debug Capacity cast
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1] mx53 loco: enable smsc phy driver
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-so we print the correct size
+On Thu, Nov 15, 2012 at 12:56:02PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/configs/freescale_mx53_loco_defconfig |    1 +
+>  1 file changed, 1 insertion(+)
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/mci/mci-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+We're getting closer \o/
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index b01b7ec..b6f9076 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -753,7 +753,7 @@ static void mci_extract_card_capacity_from_csd(struct mci *mci)
- 
- 	mci->capacity = (csize + 1) << (cmult + 2);
- 	mci->capacity *= mci->read_bl_len;
--	dev_dbg(mci->mci_dev, "Capacity: %u MiB\n", (unsigned)mci->capacity >> 20);
-+	dev_dbg(mci->mci_dev, "Capacity: %u MiB\n", (unsigned)(mci->capacity >> 20));
- }
- 
- static int mmc_compare_ext_csds(struct mci *mci, unsigned bus_width)
+With this the LOCO correctly waits for a link, unfortunately during
+board init time. This is due to:
+
+commit 3a17af33c01fd066ab3939c8218037c87ba26eed
+Author: Sascha Hauer <s.hauer@pengutronix.de>
+Date:   Fri Oct 26 16:16:54 2012 +0200
+
+    net fec: connect phy at probe time
+    
+    Several i.MX boards (all i.MX6 boards) need to do some adjustments
+    to phy registers. If barebox itself does not use network, networking
+    won't work in the kernel if the kernel does not have the fixups. Connect
+    the phy at probe time so that these tweaks are done during probe so that
+    the kernel works without phy register tweaks. Also this has the effect
+    that the phy device is present and introspectable without doing fake
+    network transfers beforehand.
+
+We could revert it which fixes things for the LOCO, but then we also
+lose the phy fixups which this commit intentionally pushed to probe
+time.
+
+It would be nice to separate phy registration from actually waiting for
+a link. I find it rather inconvenient anyway that the phy device pops
+up during the first network transfer.
+
+Sascha
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
