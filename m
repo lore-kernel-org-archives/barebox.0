@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from m15-111.126.com ([220.181.15.111])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TYpmD-0001Va-15
- for barebox@lists.infradead.org; Thu, 15 Nov 2012 03:06:02 +0000
-Date: Thu, 15 Nov 2012 10:40:18 +0800
+ id 1TYqFx-0002XU-Oy
+ for barebox@lists.infradead.org; Thu, 15 Nov 2012 03:36:46 +0000
+Date: Thu, 15 Nov 2012 11:11:46 +0800
 From: zzs <zzs213@126.com>
-Message-ID: <20121115024018.GA30674@greatfirst.com>
+Message-ID: <20121115031146.GA31296@greatfirst.com>
 MIME-Version: 1.0
 Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
@@ -20,25 +20,12 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: why eth0 not in /dev
+Subject: how to download a file to specified mem location using tftp
 To: barebox <barebox@lists.infradead.org>
 
-When barebox starts, devinfo can show eth0's info
-like this
-
-9200-EK:/dev devinfo eth0
-resources:
-driver: none
-bus: platform
-
-Parameters:
-          ipaddr = 192.168.0.109
-         ethaddr =
-         gateway =
-         netmask =
-        serverip =
-
-But I can't see it in /dev, Why?
+tftp command only have filename args, Now I want
+download a file to mem loctaion, ex 0x21f00000.
+How to do that?
 
 -- 
 Best Regards,
