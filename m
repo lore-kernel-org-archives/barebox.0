@@ -1,22 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TZ3EY-0007Gb-0I
- for barebox@lists.infradead.org; Thu, 15 Nov 2012 17:28:12 +0000
-Received: from ptx.hi.pengutronix.de ([2001:6f8:1178:2:5054:ff:fec0:8e10]
- ident=Debian-exim) by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <mol@pengutronix.de>) id 1TZ3EU-0005EC-O1
- for barebox@lists.infradead.org; Thu, 15 Nov 2012 18:28:06 +0100
-Received: from mol by ptx.hi.pengutronix.de with local (Exim 4.72)
- (envelope-from <mol@pengutronix.de>) id 1TZ3EU-0004pp-Mj
- for barebox@lists.infradead.org; Thu, 15 Nov 2012 18:28:06 +0100
-Date: Thu, 15 Nov 2012 18:28:06 +0100
-From: Michael Olbrich <m.olbrich@pengutronix.de>
-Message-ID: <20121115172806.GD8330@pengutronix.de>
-References: <1352881301-9744-1-git-send-email-s.hauer@pengutronix.de>
+Received: from 12.mo4.mail-out.ovh.net ([178.33.104.253]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TZ53A-0008Es-F4
+ for barebox@lists.infradead.org; Thu, 15 Nov 2012 19:24:33 +0000
+Received: from mail92.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 764811050F56
+ for <barebox@lists.infradead.org>; Thu, 15 Nov 2012 20:32:06 +0100 (CET)
+Date: Thu, 15 Nov 2012 20:22:29 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121115192229.GI31820@game.jcrosoft.org>
+References: <alpine.DEB.2.02.1211150924030.1247@oneiric>
+ <20121115161615.GI10369@pengutronix.de>
+ <alpine.DEB.2.02.1211151128470.5359@oneiric>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1352881301-9744-1-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <alpine.DEB.2.02.1211151128470.5359@oneiric>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,81 +28,105 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] replace barebox* in .gitignore with individual files
-To: barebox@lists.infradead.org
+Subject: Re: how easy to add extra config for NAND-less beagle?
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Wed, Nov 14, 2012 at 09:21:41AM +0100, Sascha Hauer wrote:
-> This effectively reverts:
+On 11:39 Thu 15 Nov     , Robert P. J. Day wrote:
+> On Thu, 15 Nov 2012, Sascha Hauer wrote:
 > 
-> | commit f9df22b002af99532b66360e08128ea3e7e82a97
-> | Author: Alexander Shiyan <shc_work@mail.ru>
-> | Date:   Mon Oct 8 10:35:04 2012 +0400
-> |
-> |    Add more generated files to .gitignore
+> > Hi Robert,
+> >
+> > On Thu, Nov 15, 2012 at 09:36:37AM -0500, Robert P. J. Day wrote:
+> > >
+> > >   returning to playing with barebox after lengthy hiatus and i asked
+> > > an equivalent question on the u-boot list, let's see if it's relevant
+> > > here.
+> > >
+> > >   i did a regular configure and build for my beagle xM (rev C) which,
+> > > unlike the beagle classic, has no NAND flash:
+> > >
+> > > $ make omap3530_beagle_xload_defconfig ; make
+> > > $ make omap3530_beagle_defconfig ; make
+> > >
+> > > then copied MLO and barebox.bin to an appropriate card and, lo, it
+> > > booted nicely and i'm currently sitting in barebox:
+> > >
+> > >   barebox@Texas Instrument's Beagle:/ version
+> > >
+> > >   barebox 2012.10.0-00283-gd65d9df #2 Thu Nov 15 06:45:21 EST 2012
+> > >
+> > > thing is, this build has a good deal of NAND-related functionality
+> > > that is of no use whatsoever on the current beagle xMs, so i'm
+> > > interested in how little work it would take to add an extra config
+> > > that would deselect everything related to NAND.  (obviously, having
+> > > that functionality there doesn't *hurt*, but i'm planning to use
+> > > barebox in my new embedded linux courses and it would be nice to be
+> > > able to build for an xM and have it *totally* correspond to the actual
+> > > hardware.)  it shouldn't be hard -- simply deselecting anything
+> > > related to NAND, MTD or JFFS2 should do the trick.
+> >
+> > Disable MTD support and if you want also the protect/erase commands:
+> >
+> > make menuconfig
+> >
+> > Drivers                         --->
+> >   [ ] Memory Technology Device (MTD) support  --->
+> >
+> > commands                        --->
+> >   flash                           --->
+> >     [ ] protect/erase
+> >
+> > Saves you around 35Kb of binary space
 > 
-> barebox* is not limited to the toplevel directory, so this ignores
-> all files starting with 'barebox' from which we have several we do
-> not wish to ignore. Add barebox-flash-image to the ignore list which
-> seemed to be the motivation for the original patch.
-
-You could use:
-
-/barebox*
-
-This will not match any files in sub-directories.
-
-Michael
-
-
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Alexander Shiyan <shc_work@mail.ru>
-> ---
->  .gitignore |   13 ++++++++++++-
->  1 file changed, 12 insertions(+), 1 deletion(-)
+>   yup, i'm testing that shortly, but my question was more along the
+> lines of, rather than having to disable all NAND-related
+> functionality *manually*, how easy/worthwhile would it be to create an
+> additional make target that reflects a beagle *without* NAND flash?
 > 
-> diff --git a/.gitignore b/.gitignore
-> index 81e74a0..064753d 100644
-> --- a/.gitignore
-> +++ b/.gitignore
-> @@ -26,11 +26,22 @@
->  #
->  tags
->  TAGS
-> -barebox*
->  cross_arch
->  cross_compile
-> +barebox
-> +barebox.S
-> +barebox.bin
-> +barebox.srec
-> +barebox.netx
-> +barebox.s5p
-> +barebox.spi
-> +barebox.ubl
-> +barebox.uimage
-> +barebox.map
-> +barebox-flash-image
->  System.map
->  Module.symvers
-> +barebox_default_env*
->  
->  #
->  # Generated include files
+>   one significant difference between a classic beagle and a current xM
+> is the total lack of NAND flash, and that's not a minor difference.
+> it means you can remove all barebox functionality related to that --
+> NAND routines and support, MTD stuff, JFFS2(?) support, and so on.
+> this could be automated by creating a couple new configs, say:
+> 
+>   make dm3730_beaglexm_xload_defconfig
+>   make dm3730_beaglexm_defconfig
+> 
+> so that the result really matches the underlying board.
+> 
+>   is this worth doing?  it would seem to be fairly easy, i can whip
+> something up and test it.
+> 
+> rday
+> 
+> p.s.  there are other significant differences as well -- onboard
+> ethernet, 4-port USB hub.  it seems to me that there is enough of a
+> difference to warrant a separate configuration.  thoughts?
+no can you detect it?
+
+on at91 we have teh 9x5ek which can a 5 different soc with different daughter
+
+which we detetct
+
+Best Regards,
+J.
+> 
 > -- 
-> 1.7.10.4
+> 
+> ========================================================================
+> Robert P. J. Day                                 Ottawa, Ontario, CANADA
+>                         http://crashcourse.ca
+> 
+> Twitter:                                       http://twitter.com/rpjday
+> LinkedIn:                               http://ca.linkedin.com/in/rpjday
+> ========================================================================
 > 
 > 
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
