@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TZPLr-0007YC-Rf
- for barebox@lists.infradead.org; Fri, 16 Nov 2012 17:05:14 +0000
+ id 1TZPc6-0002N2-NI
+ for barebox@lists.infradead.org; Fri, 16 Nov 2012 17:22:00 +0000
 Received: from mail406.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 4295DDC2FE0
- for <barebox@lists.infradead.org>; Fri, 16 Nov 2012 18:12:47 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 30830DC4388
+ for <barebox@lists.infradead.org>; Fri, 16 Nov 2012 18:29:33 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 16 Nov 2012 18:03:03 +0100
-Message-Id: <1353085385-14090-5-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1353085385-14090-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20121116165729.GA8327@game.jcrosoft.org>
- <1353085385-14090-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 16 Nov 2012 18:19:51 +0100
+Message-Id: <1353086393-16213-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1353086393-16213-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1353086393-16213-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,40 +25,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] at91sam9263: add wathdog support
+Subject: [PATCH 1/3] phylib: export phy_id via param
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/at91sam9263_devices.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/phy/mdio_bus.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/mach-at91/at91sam9263_devices.c b/arch/arm/mach-at91/at91sam9263_devices.c
-index e686480..0386d79 100644
---- a/arch/arm/mach-at91/at91sam9263_devices.c
-+++ b/arch/arm/mach-at91/at91sam9263_devices.c
-@@ -10,6 +10,7 @@
-  *
-  */
- #include <common.h>
-+#include <init.h>
- #include <sizes.h>
- #include <asm/armlinux.h>
- #include <asm/hardware.h>
-@@ -351,3 +352,13 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
- void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data) {}
- #endif
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index e36641e..b0c6231 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -191,6 +191,9 @@ static int mdio_bus_probe(struct device_d *_dev)
+ 	sprintf(str, "%d", dev->addr);
+ 	dev_add_param_fixed(&dev->dev, "phy_addr", str);
  
-+#ifdef CONFIG_WATCHDOG_AT91SAM9X
-+static int at91_add_device_watchdog(void)
-+{
-+	add_generic_device("at91sam9_wdt", DEVICE_ID_SINGLE, NULL,
-+		AT91_WDT + AT91_BASE_SYS, 16, IORESOURCE_MEM, NULL);
++	sprintf(str, "0x%08x", dev->phy_id);
++	dev_add_param_fixed(&dev->dev, "phy_id", str);
 +
-+	return 0;
-+}
-+coredevice_initcall(at91_add_device_watchdog);
-+#endif
+ 	dev->cdev.name = asprintf("phy%d", _dev->id);
+ 	dev->cdev.size = 64;
+ 	dev->cdev.ops = &phydev_ops;
 -- 
 1.7.10.4
 
