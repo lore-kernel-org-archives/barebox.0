@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from astoria.ccjclearline.com ([64.235.106.9])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TZJvw-0004Kn-RP
- for barebox@lists.infradead.org; Fri, 16 Nov 2012 11:18:06 +0000
-Date: Fri, 16 Nov 2012 12:18:02 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121116111802.GN10369@pengutronix.de>
+ id 1TZKAY-0004cS-4C
+ for barebox@lists.infradead.org; Fri, 16 Nov 2012 11:33:10 +0000
+Date: Fri, 16 Nov 2012 06:33:05 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+In-Reply-To: <20121116111802.GN10369@pengutronix.de>
+Message-ID: <alpine.DEB.2.02.1211160632050.4136@oneiric>
 References: <alpine.DEB.2.02.1211160557150.3959@oneiric>
+ <20121116111802.GN10369@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.02.1211160557150.3959@oneiric>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,32 +23,41 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: pedantry alert -- what is the proper spelling of "barebox"?
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Fri, Nov 16, 2012 at 06:01:10AM -0500, Robert P. J. Day wrote:
-> 
->   sascha already knows that i'm going to be poking around the wiki
-> documentation and doing some editing, so what is the proper spelling
-> of barebox, particularly in the middle of a sentence? i'm asking this
-> publicly so that others can see the answer in case they were going to
-> do any writing, for the sake of consistency.
-> 
->   for example, in the very first section of the wiki, it's spelled
-> both as "barebox" and "Barebox".  it really should be consistent.
+On Fri, 16 Nov 2012, Sascha Hauer wrote:
 
-It's 'barebox'. barebox even has a small letter when at the beginning of
-a sentence. I'm normally after this, but espially office programs are
-sometimes hard to convince that this is correct.
+> On Fri, Nov 16, 2012 at 06:01:10AM -0500, Robert P. J. Day wrote:
+> >
+> >   sascha already knows that i'm going to be poking around the wiki
+> > documentation and doing some editing, so what is the proper spelling
+> > of barebox, particularly in the middle of a sentence? i'm asking this
+> > publicly so that others can see the answer in case they were going to
+> > do any writing, for the sake of consistency.
+> >
+> >   for example, in the very first section of the wiki, it's spelled
+> > both as "barebox" and "Barebox".  it really should be consistent.
+>
+> It's 'barebox'. barebox even has a small letter when at the
+> beginning of a sentence. I'm normally after this, but espially
+> office programs are sometimes hard to convince that this is correct.
 
-Sascha
+  ok, thanks for the clarification, i'll even add that note to the
+wiki early on.
+
+rday
 
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
