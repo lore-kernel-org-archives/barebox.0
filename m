@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TZS6k-0003Ng-Iv
- for barebox@lists.infradead.org; Fri, 16 Nov 2012 20:01:47 +0000
-Date: Fri, 16 Nov 2012 15:01:41 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <20121116195703.GC8327@game.jcrosoft.org>
-Message-ID: <alpine.DEB.2.02.1211161501001.5043@oneiric>
-References: <alpine.DEB.2.02.1211161416260.30355@oneiric>
- <20121116195703.GC8327@game.jcrosoft.org>
+Received: from 15.mo1.mail-out.ovh.net ([188.165.38.232]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TZSMY-0003Vh-Ob
+ for barebox@lists.infradead.org; Fri, 16 Nov 2012 20:18:08 +0000
+Received: from mail405.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 7B930FF9AFA
+ for <barebox@lists.infradead.org>; Fri, 16 Nov 2012 21:29:11 +0100 (CET)
+Date: Fri, 16 Nov 2012 21:16:04 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121116201604.GD8327@game.jcrosoft.org>
+References: <20121031120122.GF29599@game.jcrosoft.org>
+ <20121115101150.GF31820@game.jcrosoft.org>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20121115101150.GF31820@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,48 +27,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: after "git pull", building for beagle complains about missing
- "lzop"
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 0/2] m25p80: re-import it againt mtd_add_host
+To: barebox@lists.infradead.org
 
-On Fri, 16 Nov 2012, Jean-Christophe PLAGNIOL-VILLARD wrote:
+HI,
 
-> On 14:18 Fri 16 Nov     , Robert P. J. Day wrote:
-> >
-> >   after i "git pull"ed all the recent updates and tried to rebuild
-> > from scratch for my beagle xm, the barebox build failed with:
-> >
-> >   OBJCOPY barebox.bin
-> >   LDS     arch/arm/pbl/zbarebox.lds
-> >   LZO     arch/arm/pbl/piggy.lzo
-> > /bin/sh: lzop: command not found
-> > make[2]: *** [arch/arm/pbl/piggy.lzo] Error 1
-> > make[1]: *** [zbarebox.bin] Error 2
-> > make: *** [_all] Error 2
-> > $
-> >
-> >   i've never had "lzop" installed on this system before and never had
-> > a complaint, so i'm assuming something about the default config has
-> > changed that suddenly requires lzop, is that correct?
->
-> yes because we now compress barebox
-> as you see in the log LZO
+	just retested on master on sam9x5ek work fine
 
-  yes, i did notice that shortly thereafter, should have perused the
-log first before asking.
+	can you check on sabrelite too
 
-rday
-
--- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+Best Regards,
+J.
+On 11:11 Thu 15 Nov     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> ping
+> 
+> work on next
+> On 13:01 Wed 31 Oct     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Hi,
+> > 
+> > 	so we now create the cdev via mtd
+> > 
+> > 	This will also simplify sync with linux
+> > 
+> > 	to avoid the m25p8000 or m25p00 the cdev is still named name m25p and the
+> > 	drivers m25p80
+> > 
+> > 	sync with linux too
+> > 
+> > 	this patch series is agianst mtd_dataflash support
+> > 
+> > The following changes since commit 9428c386f876fa3a8871eeea4725a805cea5c367:
+> > 
+> >   mtd: add dataflash support (2012-10-31 04:48:39 +0800)
+> > 
+> > are available in the git repository at:
+> > 
+> >   git://git.jcrosoft.org/barebox.git delivery/m25p80
+> > 
+> > for you to fetch changes up to 35b8b98230dbcfe25973d5ed52a874027b4f3f05:
+> > 
+> >   m25p80: sync flash support with the kernel (2012-10-31 04:51:08 +0800)
+> > 
+> > ----------------------------------------------------------------
+> > Jean-Christophe PLAGNIOL-VILLARD (2):
+> >       m25p80: re-import it againt mtd_add_host
+> >       m25p80: sync flash support with the kernel
+> > 
+> >  arch/arm/boards/freescale-mx6-sabrelite/board.c |    2 +-
+> >  drivers/mtd/devices/Kconfig                     |   27 ++++++++++++
+> >  drivers/mtd/devices/Makefile                    |    1 +
+> >  drivers/{nor => mtd/devices}/m25p80.c           |  512 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------------------------------------------------------------------------------------
+> >  drivers/nor/Kconfig                             |   27 ------------
+> >  drivers/nor/Makefile                            |    1 -
+> >  drivers/nor/m25p80.h                            |   84 ------------------------------------
+> >  include/linux/mtd/cfi.h                         |   65 ++++++++++++++++++++++++++++
+> >  8 files changed, 371 insertions(+), 348 deletions(-)
+> >  rename drivers/{nor => mtd/devices}/m25p80.c (65%)
+> >  delete mode 100644 drivers/nor/m25p80.h
+> >  create mode 100644 include/linux/mtd/cfi.h
+> > 
+> > Best Regards,
+> > J.
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
