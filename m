@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo1.mail-out.ovh.net ([178.32.97.215]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TZS4B-0003EJ-Vo
- for barebox@lists.infradead.org; Fri, 16 Nov 2012 19:59:08 +0000
-Received: from mail405.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 80DADFF9D6F
- for <barebox@lists.infradead.org>; Fri, 16 Nov 2012 21:10:12 +0100 (CET)
-Date: Fri, 16 Nov 2012 20:57:03 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121116195703.GC8327@game.jcrosoft.org>
+Received: from astoria.ccjclearline.com ([64.235.106.9])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TZS6k-0003Ng-Iv
+ for barebox@lists.infradead.org; Fri, 16 Nov 2012 20:01:47 +0000
+Date: Fri, 16 Nov 2012 15:01:41 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+In-Reply-To: <20121116195703.GC8327@game.jcrosoft.org>
+Message-ID: <alpine.DEB.2.02.1211161501001.5043@oneiric>
 References: <alpine.DEB.2.02.1211161416260.30355@oneiric>
+ <20121116195703.GC8327@game.jcrosoft.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.02.1211161416260.30355@oneiric>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,32 +24,46 @@ Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: after "git pull", building for beagle complains about missing
  "lzop"
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On 14:18 Fri 16 Nov     , Robert P. J. Day wrote:
-> 
->   after i "git pull"ed all the recent updates and tried to rebuild
-> from scratch for my beagle xm, the barebox build failed with:
-> 
->   OBJCOPY barebox.bin
->   LDS     arch/arm/pbl/zbarebox.lds
->   LZO     arch/arm/pbl/piggy.lzo
-> /bin/sh: lzop: command not found
-> make[2]: *** [arch/arm/pbl/piggy.lzo] Error 1
-> make[1]: *** [zbarebox.bin] Error 2
-> make: *** [_all] Error 2
-> $
-> 
->   i've never had "lzop" installed on this system before and never had
-> a complaint, so i'm assuming something about the default config has
-> changed that suddenly requires lzop, is that correct?
+On Fri, 16 Nov 2012, Jean-Christophe PLAGNIOL-VILLARD wrote:
 
-yes because we now compress barebox
-as you see in the log LZO
+> On 14:18 Fri 16 Nov     , Robert P. J. Day wrote:
+> >
+> >   after i "git pull"ed all the recent updates and tried to rebuild
+> > from scratch for my beagle xm, the barebox build failed with:
+> >
+> >   OBJCOPY barebox.bin
+> >   LDS     arch/arm/pbl/zbarebox.lds
+> >   LZO     arch/arm/pbl/piggy.lzo
+> > /bin/sh: lzop: command not found
+> > make[2]: *** [arch/arm/pbl/piggy.lzo] Error 1
+> > make[1]: *** [zbarebox.bin] Error 2
+> > make: *** [_all] Error 2
+> > $
+> >
+> >   i've never had "lzop" installed on this system before and never had
+> > a complaint, so i'm assuming something about the default config has
+> > changed that suddenly requires lzop, is that correct?
+>
+> yes because we now compress barebox
+> as you see in the log LZO
 
-Best Regards,
-J.
+  yes, i did notice that shortly thereafter, should have perused the
+log first before asking.
+
+rday
+
+-- 
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
