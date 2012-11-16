@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qa0-f42.google.com ([209.85.216.42])
+Received: from astoria.ccjclearline.com ([64.235.106.9])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TZFw6-0005XI-3e
- for barebox@lists.infradead.org; Fri, 16 Nov 2012 07:01:58 +0000
-Received: by mail-qa0-f42.google.com with SMTP id b33so3967206qad.15
- for <barebox@lists.infradead.org>; Thu, 15 Nov 2012 23:01:56 -0800 (PST)
+ id 1TZJff-0003Y4-2J
+ for barebox@lists.infradead.org; Fri, 16 Nov 2012 11:01:16 +0000
+Received: from cpebcc8100fb8db-cmbcc8100fb8d8.cpe.net.cable.rogers.com
+ ([174.116.196.46]:58493 helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+ (Exim 4.77) (envelope-from <rpjday@crashcourse.ca>)
+ id 1TZJfd-0007RZ-6K
+ for barebox@lists.infradead.org; Fri, 16 Nov 2012 06:01:13 -0500
+Date: Fri, 16 Nov 2012 06:01:10 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.DEB.2.02.1211160557150.3959@oneiric>
 MIME-Version: 1.0
-Date: Fri, 16 Nov 2012 15:01:55 +0800
-Message-ID: <CAG9dEfJuCxdatiXCK-iWK=hOFEPJ8rjwB_SfC0uOBH5WT_tyzQ@mail.gmail.com>
-From: Kevin Huanpeng Du <q24688@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,55 +25,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: common.h dependence leak
-To: barebox@lists.infradead.org
+Subject: pedantry alert -- what is the proper spelling of "barebox"?
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Hi, all:
-I am study barebox, I want to remove all files not used, so I write this script.
-here is a part of removing header (.h) files.
-firstly, I didnot add LINE22 for speed.
-but it not works for common.h.
-I guess the file 'include/common.h' is leak of dependence in Makefiles.
-Is anyone can check.
 
- 1
-  2 git checkout -f
-  3 git clean -dfx
-  4
-  5
-  6 hh=`find -name "*.h"`
-  7
-  8
-  9 echo "CLEAN"
- 10 make distclean  2>/dev/null 1>/dev/null
- 11 wait
- 12 echo "CONFIG"
- 13 make -s omap3530_beagle_xload_defconfig  2>/dev/null 1>/dev/null
- 14 wait
- 15
- 16 echo "START"
- 17 for f in $hh
- 18 do
- 19
- 20   rm $f
- 21   echo -n -e "        $f\r"
- 22   make clean 2>/dev/null 1>/dev/null   # LINE 22
- 23   wait
- 24   make -s -j24 2>/dev/null 1>/dev/null
- 25   r=$?
- 26   wait
- 27
- 28   if [ $r != 0 ]
- 29   then
- 30     echo "[KEEP]"
- 31     git checkout $f
- 32   else
- 33     echo "[DEL]"
- 34   fi
- 35
- 36
- 37 done
- 38
+  sascha already knows that i'm going to be poking around the wiki
+documentation and doing some editing, so what is the proper spelling
+of barebox, particularly in the middle of a sentence? i'm asking this
+publicly so that others can see the answer in case they were going to
+do any writing, for the sake of consistency.
+
+  for example, in the very first section of the wiki, it's spelled
+both as "barebox" and "Barebox".  it really should be consistent.
+
+rday
+
+p.s.  just to be annoying, from a technical writing point of view, if
+the proper name is "barebox", then it should be rendered that way,
+even if it's the first word in a sentence, which will look weird but
+them's the rules. :-)
+
+-- 
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
