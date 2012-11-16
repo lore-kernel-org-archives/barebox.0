@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TZQAm-0007W9-DA
+ id 1TZQAm-0007W7-DC
  for barebox@lists.infradead.org; Fri, 16 Nov 2012 17:57:49 +0000
 Received: from mail406.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id E9F43DC4556
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id EE0ACDC4021
  for <barebox@lists.infradead.org>; Fri, 16 Nov 2012 19:05:24 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 16 Nov 2012 18:55:41 +0100
-Message-Id: <1353088545-19406-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 16 Nov 2012 18:55:43 +0100
+Message-Id: <1353088545-19406-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1353088545-19406-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121116175355.GB8327@game.jcrosoft.org>
  <1353088545-19406-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,18 +26,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/7] at91sam9260/9g20: add wathdog support
+Subject: [PATCH 5/7] at91sam9263: add wathdog support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/at91sam9260_devices.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/arm/mach-at91/at91sam9263_devices.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
-index 9c9534e..e781de0 100644
---- a/arch/arm/mach-at91/at91sam9260_devices.c
-+++ b/arch/arm/mach-at91/at91sam9260_devices.c
+diff --git a/arch/arm/mach-at91/at91sam9263_devices.c b/arch/arm/mach-at91/at91sam9263_devices.c
+index e686480..0386d79 100644
+--- a/arch/arm/mach-at91/at91sam9263_devices.c
++++ b/arch/arm/mach-at91/at91sam9263_devices.c
 @@ -10,6 +10,7 @@
   *
   */
@@ -46,11 +46,10 @@ index 9c9534e..e781de0 100644
  #include <sizes.h>
  #include <asm/armlinux.h>
  #include <asm/hardware.h>
-@@ -356,3 +357,14 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
- #else
+@@ -351,3 +352,13 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
  void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data) {}
  #endif
-+
+ 
 +#ifdef CONFIG_WATCHDOG_AT91SAM9X
 +static int at91_add_device_watchdog(void)
 +{
