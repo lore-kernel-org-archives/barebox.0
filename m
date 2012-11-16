@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-qa0-f42.google.com ([209.85.216.42])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TZ556-0008TD-Um
- for barebox@lists.infradead.org; Thu, 15 Nov 2012 19:26:34 +0000
-Date: Thu, 15 Nov 2012 20:26:30 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121115192630.GJ10369@pengutronix.de>
-References: <alpine.DEB.2.02.1211150924030.1247@oneiric>
- <20121115161615.GI10369@pengutronix.de>
- <alpine.DEB.2.02.1211151128470.5359@oneiric>
+ id 1TZFw6-0005XI-3e
+ for barebox@lists.infradead.org; Fri, 16 Nov 2012 07:01:58 +0000
+Received: by mail-qa0-f42.google.com with SMTP id b33so3967206qad.15
+ for <barebox@lists.infradead.org>; Thu, 15 Nov 2012 23:01:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.02.1211151128470.5359@oneiric>
+Date: Fri, 16 Nov 2012 15:01:55 +0800
+Message-ID: <CAG9dEfJuCxdatiXCK-iWK=hOFEPJ8rjwB_SfC0uOBH5WT_tyzQ@mail.gmail.com>
+From: Kevin Huanpeng Du <q24688@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,43 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: how easy to add extra config for NAND-less beagle?
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: common.h dependence leak
+To: barebox@lists.infradead.org
 
-On Thu, Nov 15, 2012 at 11:39:58AM -0500, Robert P. J. Day wrote:
-> 
->   yup, i'm testing that shortly, but my question was more along the
-> lines of, rather than having to disable all NAND-related
-> functionality *manually*, how easy/worthwhile would it be to create an
-> additional make target that reflects a beagle *without* NAND flash?
-> 
->   one significant difference between a classic beagle and a current xM
-> is the total lack of NAND flash, and that's not a minor difference.
-> it means you can remove all barebox functionality related to that --
-> NAND routines and support, MTD stuff, JFFS2(?) support, and so on.
-> this could be automated by creating a couple new configs, say:
-> 
->   make dm3730_beaglexm_xload_defconfig
->   make dm3730_beaglexm_defconfig
-> 
-> so that the result really matches the underlying board.
-> 
->   is this worth doing?  it would seem to be fairly easy, i can whip
-> something up and test it.
+Hi, all:
+I am study barebox, I want to remove all files not used, so I write this script.
+here is a part of removing header (.h) files.
+firstly, I didnot add LINE22 for speed.
+but it not works for common.h.
+I guess the file 'include/common.h' is leak of dependence in Makefiles.
+Is anyone can check.
 
-I don't think this is worth it. We should rather keep the number of
-defconfigs low. Splitting them means we have to maintain them and
-keep them in sync. Also it means to increase the time needed to compile
-all defconfigs (which I do routinely, currently on every commit).
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+ 1
+  2 git checkout -f
+  3 git clean -dfx
+  4
+  5
+  6 hh=`find -name "*.h"`
+  7
+  8
+  9 echo "CLEAN"
+ 10 make distclean  2>/dev/null 1>/dev/null
+ 11 wait
+ 12 echo "CONFIG"
+ 13 make -s omap3530_beagle_xload_defconfig  2>/dev/null 1>/dev/null
+ 14 wait
+ 15
+ 16 echo "START"
+ 17 for f in $hh
+ 18 do
+ 19
+ 20   rm $f
+ 21   echo -n -e "        $f\r"
+ 22   make clean 2>/dev/null 1>/dev/null   # LINE 22
+ 23   wait
+ 24   make -s -j24 2>/dev/null 1>/dev/null
+ 25   r=$?
+ 26   wait
+ 27
+ 28   if [ $r != 0 ]
+ 29   then
+ 30     echo "[KEEP]"
+ 31     git checkout $f
+ 32   else
+ 33     echo "[DEL]"
+ 34   fi
+ 35
+ 36
+ 37 done
+ 38
 
 _______________________________________________
 barebox mailing list
