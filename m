@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f49.google.com ([209.85.215.49])
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TZefL-0004Mi-6P
- for barebox@lists.infradead.org; Sat, 17 Nov 2012 09:26:19 +0000
-Received: by mail-la0-f49.google.com with SMTP id r15so2524470lag.36
- for <barebox@lists.infradead.org>; Sat, 17 Nov 2012 01:26:17 -0800 (PST)
+ id 1TZhEW-0003up-8S
+ for barebox@lists.infradead.org; Sat, 17 Nov 2012 12:10:49 +0000
+Received: by mail-lb0-f177.google.com with SMTP id n10so927387lbo.36
+ for <barebox@lists.infradead.org>; Sat, 17 Nov 2012 04:10:45 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat, 17 Nov 2012 13:26:00 +0400
-Message-Id: <1353144361-9089-3-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1353144361-9089-1-git-send-email-antonynpavlov@gmail.com>
-References: <1353144361-9089-1-git-send-email-antonynpavlov@gmail.com>
+Date: Sat, 17 Nov 2012 16:10:36 +0400
+Message-Id: <1353154239-31574-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,30 +21,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: start-pbl.c: make errorfn() static
+Subject: [RFC 0/3] MIPS: add pre-bootloader (pbl) image support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/arm/cpu/start-pbl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This patch series is based on ARM pbl support and allows
+creating a pre-bootloader binary for compressed image.
 
-diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index 609aedb..79a3cdd 100644
---- a/arch/arm/cpu/start-pbl.c
-+++ b/arch/arm/cpu/start-pbl.c
-@@ -127,7 +127,7 @@ static void mmu_disable(void)
- 	__mmu_cache_off();
- }
- 
--void noinline errorfn(char *error)
-+static void noinline errorfn(char *error)
- {
- 	while (1);
- }
--- 
-1.7.10.4
+TODO:
+ * add lowlevel init;
+ * current MIPS pbl run only on qemu-malta; make it work
+on other boards (e.g. add mmc/nand boot support on Ingenic SOCs).
 
+[RFC 1/3] MIPS: add pre-bootloader (pbl) image support
+[RFC 2/3] MIPS: boot: realize _start in C
+[RFC 3/3] MIPS: qemu-malta_defconfig: use pbl
 
 _______________________________________________
 barebox mailing list
