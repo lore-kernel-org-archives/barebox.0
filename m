@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f49.google.com ([209.85.215.49])
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TZed2-0004Ho-NA
- for barebox@lists.infradead.org; Sat, 17 Nov 2012 09:23:57 +0000
-Received: by mail-la0-f49.google.com with SMTP id r15so2524034lag.36
- for <barebox@lists.infradead.org>; Sat, 17 Nov 2012 01:23:50 -0800 (PST)
+ id 1TZefI-0004M7-NI
+ for barebox@lists.infradead.org; Sat, 17 Nov 2012 09:26:17 +0000
+Received: by mail-lb0-f177.google.com with SMTP id n10so887605lbo.36
+ for <barebox@lists.infradead.org>; Sat, 17 Nov 2012 01:26:14 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat, 17 Nov 2012 13:23:43 +0400
-Message-Id: <1353144223-9047-1-git-send-email-antonynpavlov@gmail.com>
+Date: Sat, 17 Nov 2012 13:25:58 +0400
+Message-Id: <1353144361-9089-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,29 +21,12 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MIPS: main_entry.c: fix typo
+Subject: ARM: pbl: short patches
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/boot/main_entry.c |    1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/mips/boot/main_entry.c b/arch/mips/boot/main_entry.c
-index c221288..0a33c45 100644
---- a/arch/mips/boot/main_entry.c
-+++ b/arch/mips/boot/main_entry.c
-@@ -14,7 +14,6 @@
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
-  *
-- *
-  */
- 
- #include <common.h>
--- 
-1.7.10.4
-
+[PATCH 1/3] ARM: pbl: remove zbarebox.map during 'make clean'
+[PATCH 2/3] ARM: start-pbl.c: make errorfn() static
+[PATCH 3/3] ARM: start-pbl.c: unificate path to lib/decompress_*.c
 
 _______________________________________________
 barebox mailing list
