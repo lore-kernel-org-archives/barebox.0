@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from astoria.ccjclearline.com ([64.235.106.9])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Ta4xX-0001hA-2c
- for barebox@lists.infradead.org; Sun, 18 Nov 2012 13:30:51 +0000
+ id 1Ta56I-0001l9-PT
+ for barebox@lists.infradead.org; Sun, 18 Nov 2012 13:39:55 +0000
 Received: from cpebcc8100fb8db-cmbcc8100fb8d8.cpe.net.cable.rogers.com
- ([174.116.196.46]:55724 helo=crashcourse.ca)
+ ([174.116.196.46]:55732 helo=crashcourse.ca)
  by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
  (Exim 4.77) (envelope-from <rpjday@crashcourse.ca>)
- id 1Ta4xT-0003fp-2a
- for barebox@lists.infradead.org; Sun, 18 Nov 2012 08:30:47 -0500
-Date: Sun, 18 Nov 2012 08:30:44 -0500 (EST)
+ id 1Ta56H-0003um-LN
+ for barebox@lists.infradead.org; Sun, 18 Nov 2012 08:39:53 -0500
+Date: Sun, 18 Nov 2012 08:39:51 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.DEB.2.02.1211180828470.17933@oneiric>
+Message-ID: <alpine.DEB.2.02.1211180836390.17973@oneiric>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,45 +25,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mach-imx: Comment typo fix, "enviroment" -> "environment"
+Subject: [PATCH] arm lib: Remove redundant boot usage info from boot[uz].c
 To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
 
-A couple trivial spelling fixes.
+There is no need to add the command name to the "usage" info when
+defining a command.
 
 Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
 
-  i thought i'd sent this in already but don't see it in outbox so
-just playing it safe.
+  fairly sure the command name is superfluous in the usage string,
+yes?
 
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index cdddbe5..ae7c48b 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -77,7 +77,7 @@ static const enum imx_bootsource locations[4][4] = {
- };
+diff --git a/arch/arm/lib/bootu.c b/arch/arm/lib/bootu.c
+index 0d155cb..75e0de3 100644
+--- a/arch/arm/lib/bootu.c
++++ b/arch/arm/lib/bootu.c
+@@ -36,7 +36,7 @@ static const __maybe_unused char cmd_bootu_help[] =
 
- /*
-- * Saves the boot source media into the $barebox_loc enviroment variable
-+ * Saves the boot source media into the $barebox_loc environment variable
-  *
-  * This information is useful for barebox init scripts as we can then easily
-  * use a kernel image stored on the same media that we launch barebox with
-diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
-index f5a867b..4b0786b 100644
---- a/arch/arm/mach-imx/imx51.c
-+++ b/arch/arm/mach-imx/imx51.c
-@@ -75,7 +75,7 @@ static int imx51_init(void)
- postcore_initcall(imx51_init);
+ BAREBOX_CMD_START(bootu)
+ 	.cmd            = do_bootu,
+-	.usage          = "bootu - start a raw linux image",
++	.usage          = "start a raw linux image",
+ 	BAREBOX_CMD_HELP(cmd_bootu_help)
+ BAREBOX_CMD_END
 
- /*
-- * Saves the boot source media into the $barebox_loc enviroment variable
-+ * Saves the boot source media into the $barebox_loc environment variable
-  *
-  * This information is useful for barebox init scripts as we can then easily
-  * use a kernel image stored on the same media that we launch barebox with
+diff --git a/arch/arm/lib/bootz.c b/arch/arm/lib/bootz.c
+index f069127..9f5b3b4 100644
+--- a/arch/arm/lib/bootz.c
++++ b/arch/arm/lib/bootz.c
+@@ -133,7 +133,7 @@ static const __maybe_unused char cmd_bootz_help[] =
+
+ BAREBOX_CMD_START(bootz)
+ 	.cmd            = do_bootz,
+-	.usage          = "bootz - start a zImage",
++	.usage          = "start a zImage",
+ 	BAREBOX_CMD_HELP(cmd_bootz_help)
+ BAREBOX_CMD_END
+
+
 -- 
 
 ========================================================================
