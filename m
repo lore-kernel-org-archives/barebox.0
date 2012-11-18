@@ -2,16 +2,17 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Ta4Lj-0001AU-GR
+ id 1Ta4Lj-0001AX-GS
  for barebox@lists.infradead.org; Sun, 18 Nov 2012 12:51:48 +0000
 Received: from mail406.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 00B64DC397D
- for <barebox@lists.infradead.org>; Sun, 18 Nov 2012 13:59:27 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 2EA00DC3992
+ for <barebox@lists.infradead.org>; Sun, 18 Nov 2012 13:59:28 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 18 Nov 2012 13:49:39 +0100
-Message-Id: <1353242985-7539-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20121118124627.GE8327@game.jcrosoft.org>
+Date: Sun, 18 Nov 2012 13:49:42 +0100
+Message-Id: <1353242985-7539-4-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1353242985-7539-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121118124627.GE8327@game.jcrosoft.org>
+ <1353242985-7539-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,76 +26,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] driver: introduce device_probe to manully probe a device
+Subject: [PATCH 4/7] phylib: export phy_id via param
 To: barebox@lists.infradead.org
-
-This will expect a driver to be specified
-This is needed by the phylib the probe the generic phy if not driver found
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/base/driver.c |   23 +++++++++++++++++------
- include/driver.h      |    5 +++++
- 2 files changed, 22 insertions(+), 6 deletions(-)
+ drivers/net/phy/mdio_bus.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index dc2df91..1f4031a 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -75,6 +75,21 @@ int get_free_deviceid(const char *name_template)
- 	};
- }
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 762adfe..41c8a96 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -193,6 +193,9 @@ static int mdio_bus_probe(struct device_d *_dev)
+ 	sprintf(str, "%d", dev->addr);
+ 	dev_add_param_fixed(&dev->dev, "phy_addr", str);
  
-+int device_probe(struct device_d *dev)
-+{
-+	int ret;
++	sprintf(str, "0x%08x", dev->phy_id);
++	dev_add_param_fixed(&dev->dev, "phy_id", str);
 +
-+	ret = dev->bus->probe(dev);
-+	if (ret) {
-+		dev_err(dev, "probe failed: %s\n", strerror(-ret));
-+		return ret;
-+	}
-+
-+	list_add(&dev->active, &active);
-+
-+	return 0;
-+}
-+
- static int match(struct driver_d *drv, struct device_d *dev)
- {
- 	int ret;
-@@ -86,13 +101,9 @@ static int match(struct driver_d *drv, struct device_d *dev)
- 
- 	if (dev->bus->match(dev, drv))
- 		goto err_out;
--	ret = dev->bus->probe(dev);
--	if (ret) {
--		dev_err(dev, "probe failed: %s\n", strerror(-ret));
-+	ret = device_probe(dev);
-+	if (ret)
- 		goto err_out;
--	}
--
--	list_add(&dev->active, &active);
- 
- 	return 0;
- err_out:
-diff --git a/include/driver.h b/include/driver.h
-index f8d815c..a085981 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -148,6 +148,11 @@ struct driver_d {
- int register_driver(struct driver_d *);
- int register_device(struct device_d *);
- 
-+/* manualy probe a device
-+ * the driver need to be specified
-+ */
-+int device_probe(struct device_d *dev);
-+
- /* Unregister a device. This function can fail, e.g. when the device
-  * has children.
-  */
+ 	dev->cdev.name = asprintf("phy%d", _dev->id);
+ 	dev->cdev.size = 64;
+ 	dev->cdev.ops = &phydev_ops;
 -- 
 1.7.10.4
 
