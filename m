@@ -1,14 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from astoria.ccjclearline.com ([64.235.106.9])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Ta9Y5-0001RF-0W
- for barebox@lists.infradead.org; Sun, 18 Nov 2012 18:24:54 +0000
-Date: Sun, 18 Nov 2012 13:24:47 -0500 (EST)
+ id 1Ta9eA-0001zI-HS
+ for barebox@lists.infradead.org; Sun, 18 Nov 2012 18:31:11 +0000
+Received: from cpebcc8100fb8db-cmbcc8100fb8d8.cpe.net.cable.rogers.com
+ ([174.116.196.46]:60353 helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+ (Exim 4.77) (envelope-from <rpjday@crashcourse.ca>)
+ id 1Ta9e9-0004AF-TI
+ for barebox@lists.infradead.org; Sun, 18 Nov 2012 13:31:09 -0500
+Date: Sun, 18 Nov 2012 13:31:06 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <CAA4bVAEpXjiv-DAG=aF9OfmJBOqHZKadr6xpXOznEB6MPdQMkA@mail.gmail.com>
-Message-ID: <alpine.DEB.2.02.1211181322590.680@oneiric>
+In-Reply-To: <alpine.DEB.2.02.1211181240360.32651@oneiric>
+Message-ID: <alpine.DEB.2.02.1211181326250.704@oneiric>
 References: <alpine.DEB.2.02.1211181240360.32651@oneiric>
- <CAA4bVAEpXjiv-DAG=aF9OfmJBOqHZKadr6xpXOznEB6MPdQMkA@mail.gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,54 +28,36 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: shouldn't asm-generic/barebox.lds.h be arch-independent?
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Sun, 18 Nov 2012, Antony Pavlov wrote:
 
-> On 18 November 2012 21:52, Robert P. J. Day <rpjday@crashcourse.ca> wrote:
+  there is one more oddity(?) with the way the linker "lds" files are
+set up.  if i read this correctly (and i could be wrong), here's
+arch/x86/lib/barebox.lds.S:
 
-... snip ...
+#undef i386
+#include <asm-generic/barebox.lds.h>
 
-> >   the fact that the current approach is prone to "error" can be seen
-> > in the file arch/mips/lib/barebox.lds.S:
-> >
-> > #include <asm-generic/barebox.lds.h>
-> >
-> > OUTPUT_ARCH(mips)
-> > ENTRY(_start)
-> > SECTIONS
-> > {
-> >         . = TEXT_BASE;
-> >
-> >         . = ALIGN(4);
-> >         .text      :
-> >         {
-> >                 _start = .;
-> >                 *(.text_entry*)
-> >                 _stext = .;
-> >                 _text = .;
-> >                 __bare_init_start = .;
-> >                 *(.text_bare_init*)
-> >                 __bare_init_end = .;
-> >                 *(.text*)
-> >         }
-> >         BAREBOX_BARE_INIT_SIZE
-> >
-> >         PRE_IMAGE  <--- ?????
-> >
-> > apparently, the MIPS architecture is including the "PRE_IMAGE"
-> > content, despite the fact that it can't possibly be defined.
-> > it's not wrong, it's just pointless and potentially confusing.
->
-> Unfortunately nowadays MIPS lacks lowlevel initialization support.
-> Yesterday I mailed RFC about pbl (prebootloader) support. It needs
-> much work, but IMHO after incorporating MIPS pbl support the status
-> of "PRE_IMAGE" will be more clear.
+  which gets us to that included file, which contains:
 
-  ok, but that still doesn't address the bigger issue that the
-allegedly "generic" barebox.lds.h file really shouldn't be checking
-for individual machines or architectures.  IMHO.
+#if defined CONFIG_ARCH_IMX25 || \
+        defined CONFIG_ARCH_IMX35 || \
+        defined CONFIG_ARCH_IMX51 || \
+        defined CONFIG_ARCH_IMX53 || \
+        defined CONFIG_ARCH_IMX6 || \
+        defined CONFIG_X86 || \       <-- that will be true, correct?
+        defined CONFIG_ARCH_EP93XX
+#include <mach/barebox.lds.h>
+#endif
+
+  which finally takes us to
+arch/x86/mach-i386/include/mach/barebox.lds.h, which is nothing more
+than a collection of macro definitions.  there's no "pre-image"
+content to be incorporated into the final image -- it's just
+preprocessor content.  so why isn't all that simply at the beginning
+of the main x86 barebox.lds.S file?
+
+  or am i missing something?
 
 rday
 
