@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Ta4Lj-0001AY-GT
+ id 1Ta4Lj-0001AW-GO
  for barebox@lists.infradead.org; Sun, 18 Nov 2012 12:51:49 +0000
 Received: from mail406.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 370F8DC3ADB
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 1C31EDC398C
  for <barebox@lists.infradead.org>; Sun, 18 Nov 2012 13:59:28 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 18 Nov 2012 13:49:43 +0100
-Message-Id: <1353242985-7539-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 18 Nov 2012 13:49:41 +0100
+Message-Id: <1353242985-7539-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1353242985-7539-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121118124627.GE8327@game.jcrosoft.org>
  <1353242985-7539-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,43 +26,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] phylib: introduction of forced 100Mbps
+Subject: [PATCH 3/7] mdio_bus: fix match
 To: barebox@lists.infradead.org
+
+on barebox we have the weird way the return 0 true on bus match
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/net/phy/mdio_bus.c |    4 ++++
- include/linux/phy.h        |    3 ++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/phy/mdio_bus.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 41c8a96..3e79345 100644
+index 35319b4..762adfe 100644
 --- a/drivers/net/phy/mdio_bus.c
 +++ b/drivers/net/phy/mdio_bus.c
-@@ -175,6 +175,10 @@ static int mdio_bus_probe(struct device_d *_dev)
- 			dev->speed = SPEED_10;
- 			dev->duplex = DUPLEX_FULL;
- 			dev->autoneg = !AUTONEG_ENABLE;
-+		} else if (dev->dev_flags & PHYLIB_FORCE_100) {
-+			dev->speed = SPEED_100;
-+			dev->duplex = DUPLEX_FULL;
-+			dev->autoneg = !AUTONEG_ENABLE;
- 		}
- 	}
+@@ -106,7 +106,7 @@ static int mdio_bus_match(struct device_d *dev, struct driver_d *drv)
+ 	struct phy_device *phydev = to_phy_device(dev);
+ 	struct phy_driver *phydrv = to_phy_driver(drv);
  
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 4f14dae..791d657 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -60,7 +60,8 @@ typedef enum {
- #define MII_BUS_ID_SIZE	(20 - 3)
- 
- #define PHYLIB_FORCE_10		(1 << 0)
--#define PHYLIB_FORCE_LINK	(1 << 1)
-+#define PHYLIB_FORCE_100	(1 << 1)
-+#define PHYLIB_FORCE_LINK	(1 << 2)
- 
- #define PHYLIB_CAPABLE_1000M	(1 << 0)
+-	return ((phydrv->phy_id & phydrv->phy_id_mask) ==
++	return ((phydrv->phy_id & phydrv->phy_id_mask) !=
+ 		(phydev->phy_id & phydrv->phy_id_mask));
+ }
  
 -- 
 1.7.10.4
