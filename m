@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Ta4Lj-0001AV-GQ
- for barebox@lists.infradead.org; Sun, 18 Nov 2012 12:51:51 +0000
+ id 1Ta4Ll-0001Bo-10
+ for barebox@lists.infradead.org; Sun, 18 Nov 2012 12:51:52 +0000
 Received: from mail406.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 1215EDC398A
- for <barebox@lists.infradead.org>; Sun, 18 Nov 2012 13:59:28 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 07376DC3C65
+ for <barebox@lists.infradead.org>; Sun, 18 Nov 2012 13:59:30 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 18 Nov 2012 13:49:40 +0100
-Message-Id: <1353242985-7539-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 18 Nov 2012 13:49:45 +0100
+Message-Id: <1353242985-7539-7-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1353242985-7539-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121118124627.GE8327@game.jcrosoft.org>
  <1353242985-7539-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,169 +26,259 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] phylib: fix generic phy driver probe
+Subject: [PATCH 7/7] phylib: add micrel support
 To: barebox@lists.infradead.org
-
-the generic phy driver is used if no driver are found
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/net/phy/Kconfig   |    8 ++------
- drivers/net/phy/Makefile  |    1 -
- drivers/net/phy/generic.c |   36 ------------------------------------
- drivers/net/phy/phy.c     |   34 ++++++++++++++++++++++++++++++++--
- 4 files changed, 34 insertions(+), 45 deletions(-)
- delete mode 100644 drivers/net/phy/generic.c
+ drivers/net/phy/Kconfig    |    5 ++
+ drivers/net/phy/Makefile   |    1 +
+ drivers/net/phy/micrel.c   |  174 ++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/micrel_phy.h |   30 ++++++++
+ 4 files changed, 210 insertions(+)
+ create mode 100644 drivers/net/phy/micrel.c
+ create mode 100644 include/linux/micrel_phy.h
 
 diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 616b539..3f7c150 100644
+index 3f7c150..c75d73d 100644
 --- a/drivers/net/phy/Kconfig
 +++ b/drivers/net/phy/Kconfig
-@@ -8,15 +8,11 @@ if PHYLIB
+@@ -8,6 +8,11 @@ if PHYLIB
  
  comment "MII PHY device drivers"
  
--config GENERIC_PHY
--	bool "Drivers for the Generic PHYs"
--	default y
--
--endif
--
++config MICREL_PHY
++	bool "Driver for Micrel PHYs"
++	---help---
++	  Supports the KSZ9021, VSC8201, KS8001 PHYs.
++
  config SMSC_PHY
  	bool "Drivers for SMSC PHYs"
  	---help---
- 	  Currently supports the LAN83C185, LAN8187 and LAN8700 PHYs
- 
-+endif
-+
- endmenu
 diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index 0caeb70..dfc709a 100644
+index dfc709a..5f8191d 100644
 --- a/drivers/net/phy/Makefile
 +++ b/drivers/net/phy/Makefile
-@@ -1,3 +1,2 @@
+@@ -1,2 +1,3 @@
  obj-y += phy.o mdio_bus.o
--obj-$(CONFIG_GENERIC_PHY) += generic.o
++obj-$(CONFIG_MICREL_PHY)	+= micrel.o
  obj-$(CONFIG_SMSC_PHY)		+= smsc.o
-diff --git a/drivers/net/phy/generic.c b/drivers/net/phy/generic.c
-deleted file mode 100644
-index 3f5f127..0000000
---- a/drivers/net/phy/generic.c
-+++ /dev/null
-@@ -1,36 +0,0 @@
--/*
-- * Copyright (c) 2009 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-- * MA 02111-1307 USA
-- *
-- */
--
--#include <common.h>
--#include <linux/phy.h>
--#include <init.h>
--
--static struct phy_driver generic_phy = {
--	.drv.name = "Generic PHY",
--	.phy_id = PHY_ANY_UID,
--	.phy_id_mask = PHY_ANY_UID,
--	.features = 0,
--};
--
--static int generic_phy_register(void)
--{
--	return phy_driver_register(&generic_phy);
--}
--device_initcall(generic_phy_register);
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 4478d9f..2fd0440 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -19,6 +19,7 @@
- 
- #include <common.h>
- #include <driver.h>
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+new file mode 100644
+index 0000000..0c6d43e
+--- /dev/null
++++ b/drivers/net/phy/micrel.c
+@@ -0,0 +1,174 @@
++/*
++ * drivers/net/phy/micrel.c
++ *
++ * Driver for Micrel PHYs
++ *
++ * Author: David J. Choi
++ *
++ * Copyright (c) 2010 Micrel, Inc.
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ *
++ * Support : ksz9021 1000/100/10 phy from Micrel
++ *		ks8001, ks8737, ks8721, ks8041, ks8051 100/10 phy
++ */
++
++#include <common.h>
 +#include <init.h>
- #include <net.h>
- #include <malloc.h>
- #include <linux/phy.h>
-@@ -27,6 +28,7 @@
- 
- #define PHY_AN_TIMEOUT	10
- 
-+static struct phy_driver genphy_driver;
- static int genphy_config_init(struct phy_device *phydev);
- 
- int phy_update_status(struct phy_device *dev)
-@@ -142,6 +144,21 @@ struct phy_device *get_phy_device(struct mii_bus *bus, int addr)
- 	return dev;
- }
- 
-+static int phy_register_device(struct phy_device* dev)
++#include <linux/mii.h>
++#include <linux/ethtool.h>
++#include <linux/phy.h>
++#include <linux/micrel_phy.h>
++
++/* Operation Mode Strap Override */
++#define MII_KSZPHY_OMSO				0x16
++#define KSZPHY_OMSO_B_CAST_OFF			(1 << 9)
++#define KSZPHY_OMSO_RMII_OVERRIDE		(1 << 1)
++#define KSZPHY_OMSO_MII_OVERRIDE		(1 << 0)
++
++/* general PHY control reg in vendor specific block. */
++#define	MII_KSZPHY_CTRL			0x1F
++/* bitmap of PHY register to set interrupt mode */
++#define KSZPHY_CTRL_INT_ACTIVE_HIGH		(1 << 9)
++#define KSZ9021_CTRL_INT_ACTIVE_HIGH		(1 << 14)
++#define KS8737_CTRL_INT_ACTIVE_HIGH		(1 << 14)
++#define KSZ8051_RMII_50MHZ_CLK			(1 << 7)
++
++static int kszphy_config_init(struct phy_device *phydev)
 +{
-+	int ret;
-+
-+	ret = register_device(&dev->dev);
-+	if (ret)
-+		return ret;
-+
-+	if (dev->dev.driver)
-+		return 0;
-+
-+	dev->dev.driver = &genphy_driver.drv;
-+	return device_probe(&dev->dev);
++	return 0;
 +}
 +
- /* Automatically gets and returns the PHY device */
- int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
- 		       void (*adjust_link) (struct eth_device *edev),
-@@ -164,7 +181,7 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
- 			dev->interface = interface;
- 			dev->dev_flags = flags;
- 
--			ret = register_device(&dev->dev);
-+			ret = phy_register_device(dev);
- 			if (ret)
- 				goto fail;
- 		} else {
-@@ -181,7 +198,7 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
- 				dev->interface = interface;
- 				dev->dev_flags = flags;
- 
--				ret = register_device(&dev->dev);
-+				ret = phy_register_device(dev);
- 				if (ret)
- 					goto fail;
- 
-@@ -597,3 +614,16 @@ int phy_drivers_register(struct phy_driver *new_driver, int n)
- 	}
- 	return ret;
- }
-+
-+static struct phy_driver genphy_driver = {
-+	.drv.name = "Generic PHY",
-+	.phy_id = PHY_ANY_UID,
-+	.phy_id_mask = PHY_ANY_UID,
-+	.features = 0,
-+};
-+
-+static int generic_phy_register(void)
++static int ksz8021_config_init(struct phy_device *phydev)
 +{
-+	return phy_driver_register(&genphy_driver);
++	const u16 val = KSZPHY_OMSO_B_CAST_OFF | KSZPHY_OMSO_RMII_OVERRIDE;
++	phy_write(phydev, MII_KSZPHY_OMSO, val);
++	return 0;
 +}
-+device_initcall(generic_phy_register);
++
++static int ks8051_config_init(struct phy_device *phydev)
++{
++	int regval;
++
++	if (phydev->dev_flags & MICREL_PHY_50MHZ_CLK) {
++		regval = phy_read(phydev, MII_KSZPHY_CTRL);
++		regval |= KSZ8051_RMII_50MHZ_CLK;
++		phy_write(phydev, MII_KSZPHY_CTRL, regval);
++	}
++
++	return 0;
++}
++
++#define KSZ8873MLL_GLOBAL_CONTROL_4	0x06
++#define KSZ8873MLL_GLOBAL_CONTROL_4_DUPLEX	(1 << 6)
++#define KSZ8873MLL_GLOBAL_CONTROL_4_SPEED	(1 << 4)
++int ksz8873mll_read_status(struct phy_device *phydev)
++{
++	int regval;
++
++	/* dummy read */
++	regval = phy_read(phydev, KSZ8873MLL_GLOBAL_CONTROL_4);
++
++	regval = phy_read(phydev, KSZ8873MLL_GLOBAL_CONTROL_4);
++
++	if (regval & KSZ8873MLL_GLOBAL_CONTROL_4_DUPLEX)
++		phydev->duplex = DUPLEX_HALF;
++	else
++		phydev->duplex = DUPLEX_FULL;
++
++	if (regval & KSZ8873MLL_GLOBAL_CONTROL_4_SPEED)
++		phydev->speed = SPEED_10;
++	else
++		phydev->speed = SPEED_100;
++
++	phydev->link = 1;
++	phydev->pause = phydev->asym_pause = 0;
++
++	return 0;
++}
++
++static int ksz8873mll_config_aneg(struct phy_device *phydev)
++{
++	return 0;
++}
++
++static int ksz8873mll_config_init(struct phy_device *phydev)
++{
++	phydev->autoneg = AUTONEG_DISABLE;
++	phydev->link = 1;
++
++	return 0;
++}
++
++static struct phy_driver ksphy_driver[] = {
++{
++	.phy_id		= PHY_ID_KS8737,
++	.phy_id_mask	= 0x00fffff0,
++	.drv.name	= "Micrel KS8737",
++	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause),
++	.config_init	= kszphy_config_init,
++	.config_aneg	= genphy_config_aneg,
++	.read_status	= genphy_read_status,
++}, {
++	.phy_id		= PHY_ID_KSZ8021,
++	.phy_id_mask	= 0x00ffffff,
++	.drv.name	= "Micrel KSZ8021",
++	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause |
++			   SUPPORTED_Asym_Pause),
++	.config_init	= ksz8021_config_init,
++	.config_aneg	= genphy_config_aneg,
++	.read_status	= genphy_read_status,
++}, {
++	.phy_id		= PHY_ID_KSZ8041,
++	.phy_id_mask	= 0x00fffff0,
++	.drv.name	= "Micrel KSZ8041",
++	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause
++				| SUPPORTED_Asym_Pause),
++	.config_init	= kszphy_config_init,
++	.config_aneg	= genphy_config_aneg,
++	.read_status	= genphy_read_status,
++}, {
++	.phy_id		= PHY_ID_KSZ8051,
++	.phy_id_mask	= 0x00fffff0,
++	.drv.name		= "Micrel KSZ8051",
++	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause
++				| SUPPORTED_Asym_Pause),
++	.config_init	= ks8051_config_init,
++	.config_aneg	= genphy_config_aneg,
++	.read_status	= genphy_read_status,
++}, {
++	.phy_id		= PHY_ID_KSZ8001,
++	.drv.name	= "Micrel KSZ8001 or KS8721",
++	.phy_id_mask	= 0x00ffffff,
++	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause),
++	.config_init	= kszphy_config_init,
++	.config_aneg	= genphy_config_aneg,
++	.read_status	= genphy_read_status,
++}, {
++	.phy_id		= PHY_ID_KSZ9021,
++	.phy_id_mask	= 0x000ffffe,
++	.drv.name	= "Micrel KSZ9021 Gigabit PHY",
++	.features	= (PHY_GBIT_FEATURES | SUPPORTED_Pause
++				| SUPPORTED_Asym_Pause),
++	.config_init	= kszphy_config_init,
++	.config_aneg	= genphy_config_aneg,
++	.read_status	= genphy_read_status,
++}, {
++	.phy_id		= PHY_ID_KSZ8873MLL,
++	.phy_id_mask	= 0x00fffff0,
++	.drv.name	= "Micrel KSZ8873MLL Swithch",
++	.features	= (SUPPORTED_Pause | SUPPORTED_Asym_Pause),
++	.config_init	= ksz8873mll_config_init,
++	.config_aneg	= ksz8873mll_config_aneg,
++	.read_status	= ksz8873mll_read_status,
++} };
++
++static int ksphy_init(void)
++{
++	return phy_drivers_register(ksphy_driver,
++		ARRAY_SIZE(ksphy_driver));
++}
++fs_initcall(ksphy_init);
+diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
+new file mode 100644
+index 0000000..adfe8c0
+--- /dev/null
++++ b/include/linux/micrel_phy.h
+@@ -0,0 +1,30 @@
++/*
++ * include/linux/micrel_phy.h
++ *
++ * Micrel PHY IDs
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ *
++ */
++
++#ifndef _MICREL_PHY_H
++#define _MICREL_PHY_H
++
++#define MICREL_PHY_ID_MASK	0x00fffff0
++
++#define PHY_ID_KSZ8873MLL	0x000e7237
++#define PHY_ID_KSZ9021		0x00221610
++#define PHY_ID_KS8737		0x00221720
++#define PHY_ID_KSZ8021		0x00221555
++#define PHY_ID_KSZ8041		0x00221510
++#define PHY_ID_KSZ8051		0x00221550
++/* both for ks8001 Rev. A/B, and for ks8721 Rev 3. */
++#define PHY_ID_KSZ8001		0x0022161A
++
++/* struct phy_device dev_flags definitions */
++#define MICREL_PHY_50MHZ_CLK	0x00000001
++
++#endif /* _MICREL_PHY_H */
 -- 
 1.7.10.4
 
