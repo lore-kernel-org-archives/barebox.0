@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from m15-112.126.com ([220.181.15.112])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TaMRV-0002Vk-Dc
- for barebox@lists.infradead.org; Mon, 19 Nov 2012 08:11:00 +0000
-Date: Mon, 19 Nov 2012 16:18:16 +0800
-From: zzs <zzs213@126.com>
-Message-ID: <20121119081815.GA8572@greatfirst.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TaMaa-00032y-LP
+ for barebox@lists.infradead.org; Mon, 19 Nov 2012 08:20:22 +0000
+Date: Mon, 19 Nov 2012 09:20:15 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121119082015.GZ10369@pengutronix.de>
+References: <alpine.DEB.2.02.1211161526150.8404@oneiric>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.02.1211161526150.8404@oneiric>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,37 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: howto cp to flash
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: are there still issues with building sandbox on x86_64?
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-After download zbarebox.bin to /, I wrote it to flash
+On Fri, Nov 16, 2012 at 03:27:55PM -0500, Robert P. J. Day wrote:
+> 
+>   perusing the page in the wiki discussing sandbox:
+> 
+> http://wiki.barebox.org/doku.php?id=user:building
+> 
+> which mentions problems with sandbox on x86_64.  i've had no trouble
+> building and running sandbox under ubuntu on my 64-bit asus laptop.
+> are there specific known issues?  thanks.
 
-   tftp barebox.bin
-   memcpy -b -s./zbarebox.bin -d/dev/nor0.root 0 0
+Not that I know of. It should be fine now.
 
-Then I dump both:
+Sascha
 
-# md -s /dev/nor0.root
-00000000: ffffffff ffffffff ffffffff ffffffff                ................
-00000010: ffffffff ffffffff ffffffff ffffffff                ................
-00000020: ffffffff ffffffff ffffffff ffffffff                ................
-
-# md -s ./zbarebox.bin
-00000000: ea00000a eafffffe eafffffe eafffffe                ................
-00000010: eafffffe 0000016c eafffffe eafffffe                ....l...........
-00000020: 65726162 00786f62 23b00000 0002389c                barebox....#.8..
-
-No contents in flash, Why?
-
-Another question:
-
-How can I get file size in script?
 
 -- 
-Best Regards,
-zzs
-
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
