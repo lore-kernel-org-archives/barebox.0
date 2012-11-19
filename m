@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo1.mail-out.ovh.net ([178.32.96.102]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TaMmi-0003Z4-B1
- for barebox@lists.infradead.org; Mon, 19 Nov 2012 08:32:53 +0000
-Received: from mail405.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 49905FF9FAA
- for <barebox@lists.infradead.org>; Mon, 19 Nov 2012 09:44:04 +0100 (CET)
-Date: Mon, 19 Nov 2012 09:32:47 +0100
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20121119093247.6ae12da4@eb-e6520>
-In-Reply-To: <20121119081815.GA8572@greatfirst.com>
-References: <20121119081815.GA8572@greatfirst.com>
-Mime-Version: 1.0
+Received: from astoria.ccjclearline.com ([64.235.106.9])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TaNPc-0005ai-1G
+ for barebox@lists.infradead.org; Mon, 19 Nov 2012 09:13:04 +0000
+Date: Mon, 19 Nov 2012 04:12:56 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+In-Reply-To: <20121119082015.GZ10369@pengutronix.de>
+Message-ID: <alpine.DEB.2.02.1211190412330.7224@oneiric>
+References: <alpine.DEB.2.02.1211161526150.8404@oneiric>
+ <20121119082015.GZ10369@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,37 +18,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: howto cp to flash
-To: barebox@lists.infradead.org
+Subject: Re: are there still issues with building sandbox on x86_64?
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Hi,
+On Mon, 19 Nov 2012, Sascha Hauer wrote:
 
-Le Mon, 19 Nov 2012 16:18:16 +0800,
-zzs <zzs213@126.com> a =E9crit :
+> On Fri, Nov 16, 2012 at 03:27:55PM -0500, Robert P. J. Day wrote:
+> >
+> >   perusing the page in the wiki discussing sandbox:
+> >
+> > http://wiki.barebox.org/doku.php?id=user:building
+> >
+> > which mentions problems with sandbox on x86_64.  i've had no trouble
+> > building and running sandbox under ubuntu on my 64-bit asus laptop.
+> > are there specific known issues?  thanks.
+>
+> Not that I know of. It should be fine now.
 
-> After download zbarebox.bin to /, I wrote it to flash
-> =
+  ok, i'll remove the warning about x86_64 from that page.
 
->    tftp barebox.bin
->    memcpy -b -s./zbarebox.bin -d/dev/nor0.root 0 0
-> =
+rday
 
-this should work :
-tftp barebox.bin
-unprotect /dev/nor0.root
-erase /dev/nor0.root
-cp barebox.bin /dev/nor0.root
+-- 
 
-or with less operations :
-unprotect /dev/nor0.root
-erase /dev/nor0.root
-tftp barebox.bin /dev/nor0.root
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
 
-Eric
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
