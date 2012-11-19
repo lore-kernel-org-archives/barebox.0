@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-qc0-f177.google.com ([209.85.216.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TaMaa-00032y-LP
- for barebox@lists.infradead.org; Mon, 19 Nov 2012 08:20:22 +0000
-Date: Mon, 19 Nov 2012 09:20:15 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121119082015.GZ10369@pengutronix.de>
-References: <alpine.DEB.2.02.1211161526150.8404@oneiric>
+ id 1TaMeI-00036v-9H
+ for barebox@lists.infradead.org; Mon, 19 Nov 2012 08:24:10 +0000
+Received: by mail-qc0-f177.google.com with SMTP id u28so2978242qcs.36
+ for <barebox@lists.infradead.org>; Mon, 19 Nov 2012 00:24:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.02.1211161526150.8404@oneiric>
+In-Reply-To: <20121119081815.GA8572@greatfirst.com>
+References: <20121119081815.GA8572@greatfirst.com>
+Date: Mon, 19 Nov 2012 09:24:07 +0100
+Message-ID: <CAJfOKByh0QaW_UwoXVztcwR8VmZp8M3w+_95q=xTYYgorTNCxw@mail.gmail.com>
+From: Franck Jullien <franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +23,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: are there still issues with building sandbox on x86_64?
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: howto cp to flash
+To: barebox <barebox@lists.infradead.org>
 
-On Fri, Nov 16, 2012 at 03:27:55PM -0500, Robert P. J. Day wrote:
-> 
->   perusing the page in the wiki discussing sandbox:
-> 
-> http://wiki.barebox.org/doku.php?id=user:building
-> 
-> which mentions problems with sandbox on x86_64.  i've had no trouble
-> building and running sandbox under ubuntu on my 64-bit asus laptop.
-> are there specific known issues?  thanks.
+2012/11/19 zzs <zzs213@126.com>:
+> After download zbarebox.bin to /, I wrote it to flash
+>
+>    tftp barebox.bin
+>    memcpy -b -s./zbarebox.bin -d/dev/nor0.root 0 0
+>
+> Then I dump both:
+>
+> # md -s /dev/nor0.root
+> 00000000: ffffffff ffffffff ffffffff ffffffff                ................
+> 00000010: ffffffff ffffffff ffffffff ffffffff                ................
+> 00000020: ffffffff ffffffff ffffffff ffffffff                ................
+>
+> # md -s ./zbarebox.bin
+> 00000000: ea00000a eafffffe eafffffe eafffffe                ................
+> 00000010: eafffffe 0000016c eafffffe eafffffe                ....l...........
+> 00000020: 65726162 00786f62 23b00000 0002389c                barebox....#.8..
+>
+> No contents in flash, Why?
+>
+> Another question:
+>
+> How can I get file size in script?
+>
+> --
+> Best Regards,
+> zzs
+>
+>
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
-Not that I know of. It should be fine now.
+Hi,
 
-Sascha
+Did you erase the flash ?
+You can also directly do a tftp barebox.bin /dev/nor0.your_partition
 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Franck.
 
 _______________________________________________
 barebox mailing list
