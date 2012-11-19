@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TaNw2-0003Cc-CZ
- for barebox@lists.infradead.org; Mon, 19 Nov 2012 09:46:35 +0000
-Date: Mon, 19 Nov 2012 04:46:29 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <20121119094101.GK10369@pengutronix.de>
-Message-ID: <alpine.DEB.2.02.1211190445360.7567@oneiric>
-References: <alpine.DEB.2.02.1211180844430.18098@oneiric>
- <20121118162637.GF8327@game.jcrosoft.org>
- <alpine.DEB.2.02.1211181139290.32036@oneiric>
- <20121119094101.GK10369@pengutronix.de>
+Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TaO7I-0004tZ-JH
+ for barebox@lists.infradead.org; Mon, 19 Nov 2012 09:58:13 +0000
+Received: from mail606.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 1B89CDC4CB3
+ for <barebox@lists.infradead.org>; Mon, 19 Nov 2012 11:05:52 +0100 (CET)
+Date: Mon, 19 Nov 2012 10:56:11 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121119095611.GG8327@game.jcrosoft.org>
+References: <1353086393-16213-1-git-send-email-plagnioj@jcrosoft.com>
+ <20121119092046.GH10369@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20121119092046.GH10369@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,59 +27,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: is there a standard for putting the name of a source file in
- the file?
+Subject: Re: [PATCH 1/1] at91sam9260ek: specify mach entry
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
 
-On Mon, 19 Nov 2012, Sascha Hauer wrote:
+On 10:20 Mon 19 Nov     , Sascha Hauer wrote:
+> 
+> On Fri, Nov 16, 2012 at 06:19:50PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > as the sam9260ek may not be the first one in the list
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  arch/arm/configs/at91sam9260ek_defconfig |    1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/arch/arm/configs/at91sam9260ek_defconfig b/arch/arm/configs/at91sam9260ek_defconfig
+> > index b746bc8..9c5c7d5 100644
+> > --- a/arch/arm/configs/at91sam9260ek_defconfig
+> > +++ b/arch/arm/configs/at91sam9260ek_defconfig
+> > @@ -1,4 +1,5 @@
+> >  CONFIG_ARCH_AT91SAM9260=y
+> > +CONFIG_MACH_AT91SAM9260EK=y
+> 
+> Won't this be removed again when we regenerate this file with make
+> safedefconfig? It seems a bit fragile to keep this change manually. I
+> have no good idea how to do this better though.
+> 
+the isssue that I'm going to add a new board that will be named animeo-ip
 
-> On Sun, Nov 18, 2012 at 11:39:48AM -0500, Robert P. J. Day wrote:
-> > On Sun, 18 Nov 2012, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> >
-> > > On 08:48 Sun 18 Nov     , Robert P. J. Day wrote:
-> > > >
-> > > >   as i'm working my way thru the lib/ routines in barebox, i notice
-> > > > that some source files there, like getopt.c, conveniently have the
-> > > > filename right at the top:
-> > > >
-> > > > /*
-> > > >  * getopt.c - a simple getopt(3) implementation. See getopt.h for explanation.
-> > > > ...
-> > > >
-> > > > i really like this habit as it makes it easy to send a file to the
-> > > > printer and not forget what the file was.
-> > > >
-> > > >   however, most of the files in lib/ don't have that.  as i work my
-> > > > way through the files, i'd be happy to add something like that to each
-> > > > file, and submit the changes all as one patch.  is there a standard?
-> > > > from what i can see, there's quite the variety in how people add that
-> > > > to a source file.
-> > > >
-> > > >   i'm open to guidance and i can take it from there.
-> > > no this is a pain in the ass to maintian when we move file
-> > >
-> > > I' drop it and I'm against it
-> >
-> >   ok, that logic makes sense, i'm good with that.
->
-> Me aswell. Tools like a2ps also print the filename ;)
+so the at91sam9260ek will be broken as it will be configured as the animeo-ip
 
-  yes, i agree, it was a silly idea, i only brought it up since some
-of the files under lib/ were doing that and some weren't and i didn't
-know if there was a standard of some kind.  movin' on ...
-
-rday
-
--- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+Best Regards,
+J.
+> 
+> Applied the rest of this series for now.
+> 
+> Sascha
+> 
+> >  CONFIG_AEABI=y
+> >  # CONFIG_CMD_ARM_CPUINFO is not set
+> >  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+> > -- 
+> > 1.7.10.4
+> > 
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> > 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
