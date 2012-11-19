@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TaNTW-0005vU-73
- for barebox@lists.infradead.org; Mon, 19 Nov 2012 09:17:07 +0000
-Date: Mon, 19 Nov 2012 10:17:04 +0100
+ id 1TaNX6-000676-HH
+ for barebox@lists.infradead.org; Mon, 19 Nov 2012 09:20:49 +0000
+Date: Mon, 19 Nov 2012 10:20:46 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121119091704.GG10369@pengutronix.de>
-References: <1353144223-9047-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20121119092046.GH10369@pengutronix.de>
+References: <1353086393-16213-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1353144223-9047-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1353086393-16213-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +22,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: main_entry.c: fix typo
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH 1/1] at91sam9260ek: specify mach entry
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Nov 17, 2012 at 01:23:43PM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+On Fri, Nov 16, 2012 at 06:19:50PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> as the sam9260ek may not be the first one in the list
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/configs/at91sam9260ek_defconfig |    1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/arm/configs/at91sam9260ek_defconfig b/arch/arm/configs/at91sam9260ek_defconfig
+> index b746bc8..9c5c7d5 100644
+> --- a/arch/arm/configs/at91sam9260ek_defconfig
+> +++ b/arch/arm/configs/at91sam9260ek_defconfig
+> @@ -1,4 +1,5 @@
+>  CONFIG_ARCH_AT91SAM9260=y
+> +CONFIG_MACH_AT91SAM9260EK=y
 
-Applied, thanks
+Won't this be removed again when we regenerate this file with make
+safedefconfig? It seems a bit fragile to keep this change manually. I
+have no good idea how to do this better though.
+
+
+Applied the rest of this series for now.
 
 Sascha
 
-> ---
->  arch/mips/boot/main_entry.c |    1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/arch/mips/boot/main_entry.c b/arch/mips/boot/main_entry.c
-> index c221288..0a33c45 100644
-> --- a/arch/mips/boot/main_entry.c
-> +++ b/arch/mips/boot/main_entry.c
-> @@ -14,7 +14,6 @@
->   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
->   * GNU General Public License for more details.
->   *
-> - *
->   */
->  
->  #include <common.h>
+>  CONFIG_AEABI=y
+>  # CONFIG_CMD_ARM_CPUINFO is not set
+>  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
 > -- 
 > 1.7.10.4
 > 
