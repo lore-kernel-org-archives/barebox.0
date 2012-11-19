@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qc0-f177.google.com ([209.85.216.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TaMeI-00036v-9H
- for barebox@lists.infradead.org; Mon, 19 Nov 2012 08:24:10 +0000
-Received: by mail-qc0-f177.google.com with SMTP id u28so2978242qcs.36
- for <barebox@lists.infradead.org>; Mon, 19 Nov 2012 00:24:07 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20121119081815.GA8572@greatfirst.com>
+Received: from m15-113.126.com ([220.181.15.113])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TaMiy-0003CV-Q2
+ for barebox@lists.infradead.org; Mon, 19 Nov 2012 08:29:02 +0000
+Date: Mon, 19 Nov 2012 16:36:22 +0800
+From: zzs <zzs213@126.com>
+Message-ID: <20121119083622.GB8572@greatfirst.com>
 References: <20121119081815.GA8572@greatfirst.com>
-Date: Mon, 19 Nov 2012 09:24:07 +0100
-Message-ID: <CAJfOKByh0QaW_UwoXVztcwR8VmZp8M3w+_95q=xTYYgorTNCxw@mail.gmail.com>
-From: Franck Jullien <franck.jullien@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20121119081815.GA8572@greatfirst.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,47 +25,28 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: howto cp to flash
 To: barebox <barebox@lists.infradead.org>
 
-2012/11/19 zzs <zzs213@126.com>:
-> After download zbarebox.bin to /, I wrote it to flash
->
->    tftp barebox.bin
->    memcpy -b -s./zbarebox.bin -d/dev/nor0.root 0 0
->
-> Then I dump both:
->
-> # md -s /dev/nor0.root
-> 00000000: ffffffff ffffffff ffffffff ffffffff                ................
-> 00000010: ffffffff ffffffff ffffffff ffffffff                ................
-> 00000020: ffffffff ffffffff ffffffff ffffffff                ................
->
-> # md -s ./zbarebox.bin
-> 00000000: ea00000a eafffffe eafffffe eafffffe                ................
-> 00000010: eafffffe 0000016c eafffffe eafffffe                ....l...........
-> 00000020: 65726162 00786f62 23b00000 0002389c                barebox....#.8..
->
-> No contents in flash, Why?
->
-> Another question:
->
-> How can I get file size in script?
->
-> --
-> Best Regards,
-> zzs
->
->
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+I use cp command, the result is same
 
-Hi,
+cp ./zbarebox.bin /dev/nor0.root
 
-Did you erase the flash ?
-You can also directly do a tftp barebox.bin /dev/nor0.your_partition
+md -s /dev/nor0.root
+00000000: ffffffff ffffffff ffffffff ffffffff                ................
+00000010: ffffffff ffffffff ffffffff ffffffff                ................
+00000020: ffffffff ffffffff ffffffff ffffffff                ................
 
-Franck.
+ls /dev/nor0.* -l
+crw-------    4849664 /dev/nor0.root
+crw-------    3145728 /dev/nor0.kernel
+crw-------     131072 /dev/nor0.bareboxenv
+crw-------     262144 /dev/nor0.barebox
+
+My flash write OK in u-boot
+
+-- 
+Best Regards,
+zzs
+
+
 
 _______________________________________________
 barebox mailing list
