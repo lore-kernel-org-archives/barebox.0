@@ -1,23 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TaOEb-0006tx-Ub
- for barebox@lists.infradead.org; Mon, 19 Nov 2012 10:05:48 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1TaOEa-0006Li-EK
- for barebox@lists.infradead.org; Mon, 19 Nov 2012 11:05:44 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1TaOEa-0007Ra-Cs
- for barebox@lists.infradead.org; Mon, 19 Nov 2012 11:05:44 +0100
-Date: Mon, 19 Nov 2012 11:05:44 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121119100544.GM10369@pengutronix.de>
-References: <20121119081815.GA8572@greatfirst.com>
- <20121119083622.GB8572@greatfirst.com>
+Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TaOIm-0000WA-6J
+ for barebox@lists.infradead.org; Mon, 19 Nov 2012 10:10:07 +0000
+Received: from mail606.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id A7FEEDC15B6
+ for <barebox@lists.infradead.org>; Mon, 19 Nov 2012 11:17:44 +0100 (CET)
+Date: Mon, 19 Nov 2012 11:08:02 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121119100802.GI8327@game.jcrosoft.org>
+References: <20121116175355.GB8327@game.jcrosoft.org>
+ <1353088545-19406-1-git-send-email-plagnioj@jcrosoft.com>
+ <20121119093844.GJ10369@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121119083622.GB8572@greatfirst.com>
+In-Reply-To: <20121119093844.GJ10369@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,29 +28,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: howto cp to flash
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/7] watchdog: add keep alive support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, Nov 19, 2012 at 04:36:22PM +0800, zzs wrote:
-> I use cp command, the result is same
+On 10:38 Mon 19 Nov     , Sascha Hauer wrote:
 > 
-> cp ./zbarebox.bin /dev/nor0.root
+> On Fri, Nov 16, 2012 at 06:55:39PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > this will allow to ping the watchdog via poller
+> > 
+> >  /*
+> >   * Note: this simple framework supports one watchdog only.
+> >   */
+> >  static struct watchdog *watchdog;
+> >  
+> > +static void watchdog_poller_func(struct poller_struct *poller)
+> > +{
+> > +	watchdog->keep_alive(watchdog);
+> > +}
+> > +
+> > +static struct poller_struct watchdog_poller = {
+> > +	.func = watchdog_poller_func,
+> > +};
+> > +
+> >  int watchdog_register(struct watchdog *wd)
+> >  {
+> >  	if (watchdog != NULL)
+> >  		return -EBUSY;
+> >  
+> >  	watchdog = wd;
+> > +
+> > +	if (watchdog->keep_alive) {
+> > +		int ret;
+> > +
+> > +		ret = poller_register(&watchdog_poller);
+> > +		if (ret) {
+> > +			watchdog = NULL;
+> > +			return ret;
+> > +		}
+> > +	}
 > 
-> md -s /dev/nor0.root
-> 00000000: ffffffff ffffffff ffffffff ffffffff                ................
-> 00000010: ffffffff ffffffff ffffffff ffffffff                ................
-> 00000020: ffffffff ffffffff ffffffff ffffffff                ................
+> Currently the watchdog is supposed to be kept alive with periodically
+> calling the watchdog (or wd) command. A user may decide to just
+> periodically ping the watchdog from C code, but this should be a users
+> decision (i.e. some enhancement to the wd command) and should be
+> available for i.MX aswell.
 
-Have you tried the unprotect command like Eric suggested?
+no this is broken
 
-Sascha
+this should be completly automatic I agree that the user need to control it
 
+we are not going to add 100s of call in barebox for this
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+like did U-Boot
+
+Barebox need to ping the wtach automticly via poler
+and manage soft timeout
+
+as some watchdog have short timeout so this will make the soft tiemout (user
+timeout) hw indepedant as in linux
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
