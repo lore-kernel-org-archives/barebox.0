@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TaOch-0006wP-5o
- for barebox@lists.infradead.org; Mon, 19 Nov 2012 10:30:40 +0000
-Date: Mon, 19 Nov 2012 11:30:37 +0100
+ id 1TaOeE-0007Ds-W1
+ for barebox@lists.infradead.org; Mon, 19 Nov 2012 10:32:15 +0000
+Date: Mon, 19 Nov 2012 11:32:12 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121119103037.GR10369@pengutronix.de>
-References: <1353144361-9089-1-git-send-email-antonynpavlov@gmail.com>
- <1353144361-9089-4-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20121119103212.GS10369@pengutronix.de>
+References: <1352976671-17492-1-git-send-email-christian.kapeller@cmotion.eu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1353144361-9089-4-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1352976671-17492-1-git-send-email-christian.kapeller@cmotion.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,31 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] ARM: start-pbl.c: unificate path to lib/decompress_*.c
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] imx53: implement imx53_add_kpp
+To: Christian Kapeller <christian.kapeller@cmotion.eu>
 Cc: barebox@lists.infradead.org
 
-On Sat, Nov 17, 2012 at 01:26:01PM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  arch/arm/cpu/start-pbl.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-> index 79a3cdd..c5f9705 100644
-> --- a/arch/arm/cpu/start-pbl.c
-> +++ b/arch/arm/cpu/start-pbl.c
-> @@ -66,7 +66,7 @@ extern void *input_data_end;
->  #endif
->  
->  #ifdef CONFIG_IMAGE_COMPRESSION_GZIP
-> -#include "../../../../lib/decompress_inflate.c"
-> +#include "../../../lib/decompress_inflate.c"
+On Thu, Nov 15, 2012 at 11:51:11AM +0100, Christian Kapeller wrote:
+> Allows usage of imx keypad driver in imx53 platforms
 
-This is strange. Why did this work beforehand?
+Applied, thanks
 
 Sascha
 
+> 
+> ---
+>  arch/arm/mach-imx/include/mach/devices-imx53.h |    5 +++++
+>  1 files changed, 5 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/include/mach/devices-imx53.h b/arch/arm/mach-imx/include/mach/devices-imx53.h
+> index 5f967ea..6692396 100644
+> --- a/arch/arm/mach-imx/include/mach/devices-imx53.h
+> +++ b/arch/arm/mach-imx/include/mach/devices-imx53.h
+> @@ -82,3 +82,8 @@ static inline struct device_d *imx53_add_nand(struct imx_nand_platform_data *pda
+>  
+>  	return dev;
+>  }
+> +
+> +static inline struct device_d *imx53_add_kpp(struct matrix_keymap_data *pdata)
+> +{
+> +	return imx_add_kpp((void *)MX53_KPP_BASE_ADDR, pdata);
+> +}
+> -- 
+> 1.7.5.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
