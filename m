@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TaNR3-0005l7-Jv
- for barebox@lists.infradead.org; Mon, 19 Nov 2012 09:14:34 +0000
-Date: Mon, 19 Nov 2012 10:14:31 +0100
+ id 1TaNRE-0005mY-Ct
+ for barebox@lists.infradead.org; Mon, 19 Nov 2012 09:14:44 +0000
+Date: Mon, 19 Nov 2012 10:14:43 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121119091431.GD10369@pengutronix.de>
-References: <alpine.DEB.2.02.1211180828470.17933@oneiric>
+Message-ID: <20121119091443.GE10369@pengutronix.de>
+References: <alpine.DEB.2.02.1211180836390.17973@oneiric>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.02.1211180828470.17933@oneiric>
+In-Reply-To: <alpine.DEB.2.02.1211180836390.17973@oneiric>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,13 +22,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mach-imx: Comment typo fix, "enviroment" -> "environment"
+Subject: Re: [PATCH] arm lib: Remove redundant boot usage info from boot[uz].c
 To: "Robert P. J. Day" <rpjday@crashcourse.ca>
 Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Sun, Nov 18, 2012 at 08:30:44AM -0500, Robert P. J. Day wrote:
+On Sun, Nov 18, 2012 at 08:39:51AM -0500, Robert P. J. Day wrote:
 > 
-> A couple trivial spelling fixes.
+> There is no need to add the command name to the "usage" info when
+> defining a command.
 > 
 > Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
@@ -39,35 +40,36 @@ Sascha
 > 
 > ---
 > 
->   i thought i'd sent this in already but don't see it in outbox so
-> just playing it safe.
+>   fairly sure the command name is superfluous in the usage string,
+> yes?
 > 
-> diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-> index cdddbe5..ae7c48b 100644
-> --- a/arch/arm/mach-imx/boot.c
-> +++ b/arch/arm/mach-imx/boot.c
-> @@ -77,7 +77,7 @@ static const enum imx_bootsource locations[4][4] = {
->  };
+> diff --git a/arch/arm/lib/bootu.c b/arch/arm/lib/bootu.c
+> index 0d155cb..75e0de3 100644
+> --- a/arch/arm/lib/bootu.c
+> +++ b/arch/arm/lib/bootu.c
+> @@ -36,7 +36,7 @@ static const __maybe_unused char cmd_bootu_help[] =
 > 
->  /*
-> - * Saves the boot source media into the $barebox_loc enviroment variable
-> + * Saves the boot source media into the $barebox_loc environment variable
->   *
->   * This information is useful for barebox init scripts as we can then easily
->   * use a kernel image stored on the same media that we launch barebox with
-> diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
-> index f5a867b..4b0786b 100644
-> --- a/arch/arm/mach-imx/imx51.c
-> +++ b/arch/arm/mach-imx/imx51.c
-> @@ -75,7 +75,7 @@ static int imx51_init(void)
->  postcore_initcall(imx51_init);
+>  BAREBOX_CMD_START(bootu)
+>  	.cmd            = do_bootu,
+> -	.usage          = "bootu - start a raw linux image",
+> +	.usage          = "start a raw linux image",
+>  	BAREBOX_CMD_HELP(cmd_bootu_help)
+>  BAREBOX_CMD_END
 > 
->  /*
-> - * Saves the boot source media into the $barebox_loc enviroment variable
-> + * Saves the boot source media into the $barebox_loc environment variable
->   *
->   * This information is useful for barebox init scripts as we can then easily
->   * use a kernel image stored on the same media that we launch barebox with
+> diff --git a/arch/arm/lib/bootz.c b/arch/arm/lib/bootz.c
+> index f069127..9f5b3b4 100644
+> --- a/arch/arm/lib/bootz.c
+> +++ b/arch/arm/lib/bootz.c
+> @@ -133,7 +133,7 @@ static const __maybe_unused char cmd_bootz_help[] =
+> 
+>  BAREBOX_CMD_START(bootz)
+>  	.cmd            = do_bootz,
+> -	.usage          = "bootz - start a zImage",
+> +	.usage          = "start a zImage",
+>  	BAREBOX_CMD_HELP(cmd_bootz_help)
+>  BAREBOX_CMD_END
+> 
+> 
 > -- 
 > 
 > ========================================================================
