@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TajMX-000507-EV
- for barebox@lists.infradead.org; Tue, 20 Nov 2012 08:39:22 +0000
-Date: Tue, 20 Nov 2012 09:39:19 +0100
+ id 1TajOA-0005FL-73
+ for barebox@lists.infradead.org; Tue, 20 Nov 2012 08:41:02 +0000
+Date: Tue, 20 Nov 2012 09:41:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121120083919.GH10369@pengutronix.de>
-References: <20121118124627.GE8327@game.jcrosoft.org>
+Message-ID: <20121120084100.GI10369@pengutronix.de>
+References: <20121031120122.GF29599@game.jcrosoft.org>
+ <20121115101150.GF31820@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121118124627.GE8327@game.jcrosoft.org>
+In-Reply-To: <20121115101150.GF31820@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,64 +23,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/7] phylib: fix + drivers
+Subject: Re: [PATCH 0/2] m25p80: re-import it againt mtd_add_host
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Nov 18, 2012 at 01:46:27PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> HI,
+On Thu, Nov 15, 2012 at 11:11:50AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> ping
 > 
-> 	Today we have a bug on the match the logic is inverted.
-> 	We are lucky as the generic Phy driver is not suppoed to match with
-> 	any device it work so fix it. Ensure the generic phy driver is
-> 	probe last if needed.
-> 
-> 	for mx53-loco we are lucky too the first phy found is the right one
-> 
-> The following changes since commit 272a5d738ab152347d67be062e8a4e771825493a:
-> 
->   at91rm9200ek: add spi support (2012-11-16 15:33:50 +0100)
-> 
-> are available in the git repository at:
-> 
->   git://git.jcrosoft.org/barebox.git delivery/phylib_fix
-> 
-> for you to fetch changes up to 5ea00036e330ea58293774a36d3ee5f9c1fbe895:
-> 
->   phylib: add micrel support (2012-11-16 23:11:16 +0800)
+> work on next
+> On 13:01 Wed 31 Oct     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Hi,
+> > 
+> > 	so we now create the cdev via mtd
+> > 
+> > 	This will also simplify sync with linux
+> > 
+> > 	to avoid the m25p8000 or m25p00 the cdev is still named name m25p and the
+> > 	drivers m25p80
+> > 
+> > 	sync with linux too
+> > 
+> > 	this patch series is agianst mtd_dataflash support
+> > 
+> > The following changes since commit 9428c386f876fa3a8871eeea4725a805cea5c367:
+> > 
+> >   mtd: add dataflash support (2012-10-31 04:48:39 +0800)
+> > 
+> > are available in the git repository at:
+> > 
+> >   git://git.jcrosoft.org/barebox.git delivery/m25p80
 
 Applied, thanks
 
 Sascha
 
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (7):
->       driver: introduce device_probe to manully probe a device
->       phylib: fix generic phy driver probe
->       mdio_bus: fix match
->       phylib: export phy_id via param
->       phylib: introduction of forced 100Mbps
->       phylib: add fixup support
->       phylib: add micrel support
-> 
->  drivers/base/driver.c      |   23 +++++++++----
->  drivers/net/phy/Kconfig    |   11 +++---
->  drivers/net/phy/Makefile   |    2 +-
->  drivers/net/phy/generic.c  |   36 --------------------
->  drivers/net/phy/mdio_bus.c |   28 ++++++++++-----
->  drivers/net/phy/micrel.c   |  174 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/net/phy/phy.c      |  130 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
->  include/driver.h           |    5 +++
->  include/linux/micrel_phy.h |   30 ++++++++++++++++
->  include/linux/phy.h        |   21 +++++++++++-
->  10 files changed, 400 insertions(+), 60 deletions(-)
->  delete mode 100644 drivers/net/phy/generic.c
->  create mode 100644 drivers/net/phy/micrel.c
->  create mode 100644 include/linux/micrel_phy.h
-> 
-> Best Regards,
-> J.
+> > 
+> > for you to fetch changes up to 35b8b98230dbcfe25973d5ed52a874027b4f3f05:
+> > 
+> >   m25p80: sync flash support with the kernel (2012-10-31 04:51:08 +0800)
+> > 
+> > ----------------------------------------------------------------
+> > Jean-Christophe PLAGNIOL-VILLARD (2):
+> >       m25p80: re-import it againt mtd_add_host
+> >       m25p80: sync flash support with the kernel
+> > 
+> >  arch/arm/boards/freescale-mx6-sabrelite/board.c |    2 +-
+> >  drivers/mtd/devices/Kconfig                     |   27 ++++++++++++
+> >  drivers/mtd/devices/Makefile                    |    1 +
+> >  drivers/{nor => mtd/devices}/m25p80.c           |  512 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------------------------------------------------------------------------------------
+> >  drivers/nor/Kconfig                             |   27 ------------
+> >  drivers/nor/Makefile                            |    1 -
+> >  drivers/nor/m25p80.h                            |   84 ------------------------------------
+> >  include/linux/mtd/cfi.h                         |   65 ++++++++++++++++++++++++++++
+> >  8 files changed, 371 insertions(+), 348 deletions(-)
+> >  rename drivers/{nor => mtd/devices}/m25p80.c (65%)
+> >  delete mode 100644 drivers/nor/m25p80.h
+> >  create mode 100644 include/linux/mtd/cfi.h
+> > 
+> > Best Regards,
+> > J.
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
 > 
 > _______________________________________________
 > barebox mailing list
