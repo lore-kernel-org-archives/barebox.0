@@ -1,19 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oa0-f49.google.com ([209.85.219.49])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TampV-0000RB-7P
- for barebox@lists.infradead.org; Tue, 20 Nov 2012 12:21:29 +0000
-Received: by mail-oa0-f49.google.com with SMTP id l10so5707810oag.36
- for <barebox@lists.infradead.org>; Tue, 20 Nov 2012 04:21:27 -0800 (PST)
+Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Tan7A-0003a9-Fr
+ for barebox@lists.infradead.org; Tue, 20 Nov 2012 12:39:46 +0000
+Received: from mail621.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id C5507DC5055
+ for <barebox@lists.infradead.org>; Tue, 20 Nov 2012 13:47:24 +0100 (CET)
+Date: Tue, 20 Nov 2012 13:37:38 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121120123738.GK8327@game.jcrosoft.org>
+References: <20121031120122.GF29599@game.jcrosoft.org>
+ <20121115101150.GF31820@game.jcrosoft.org>
+ <20121120084100.GI10369@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20121114081051.GG10369@pengutronix.de>
-References: <CAHkwnC-dDfPesg5vy5V2rj7vdY_DH9cjfJ3gCVsm8xY-DPf35A@mail.gmail.com>
- <20121112075536.GP10369@pengutronix.de>
- <CAHkwnC_FXJ3reNcwDuxhsC=fSG-dDSgg+7njS5sy7aCG5QCRoQ@mail.gmail.com>
- <20121114081051.GG10369@pengutronix.de>
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-Date: Tue, 20 Nov 2012 13:21:06 +0100
-Message-ID: <CAHkwnC8VEYf_DvsywSZ2cUM7QAN0EtRpmd2gKGOuXLaT-4+y9g@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20121120084100.GI10369@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,130 +24,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============4170133661106468831=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: defaultenv-2: how to update a flash partition?
+Subject: Re: [PATCH 0/2] m25p80: re-import it againt mtd_add_host
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
---===============4170133661106468831==
-Content-Type: multipart/alternative; boundary=e89a8fb1f84ae8225d04ceec454e
+On 09:41 Tue 20 Nov     , Sascha Hauer wrote:
+> On Thu, Nov 15, 2012 at 11:11:50AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > ping
+> > 
+> > work on next
+> > On 13:01 Wed 31 Oct     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > Hi,
+> > > 
+> > > 	so we now create the cdev via mtd
+> > > 
+> > > 	This will also simplify sync with linux
+> > > 
+> > > 	to avoid the m25p8000 or m25p00 the cdev is still named name m25p and the
+> > > 	drivers m25p80
+> > > 
+> > > 	sync with linux too
+> > > 
+> > > 	this patch series is agianst mtd_dataflash support
+> > > 
+> > > The following changes since commit 9428c386f876fa3a8871eeea4725a805cea5c367:
+> > > 
+> > >   mtd: add dataflash support (2012-10-31 04:48:39 +0800)
+> > > 
+> > > are available in the git repository at:
+> > > 
+> > >   git://git.jcrosoft.org/barebox.git delivery/m25p80
+> 
+> Applied, thanks
+can we have this one on master it's there for a while
 
---e89a8fb1f84ae8225d04ceec454e
-Content-Type: text/plain; charset=ISO-8859-1
-
-On Wed, Nov 14, 2012 at 9:10 AM, Sascha Hauer <s.hauer@pengutronix.de>wrote:
-
-> On Tue, Nov 13, 2012 at 12:10:45PM +0100, Fabio Porcedda wrote:
-> > On Mon, Nov 12, 2012 at 8:55 AM, Sascha Hauer <s.hauer@pengutronix.de
-> >wrote:
-> >
-> > > On Fri, Nov 09, 2012 at 12:06:38PM +0100, Fabio Porcedda wrote:
-> > > > ...
-> > > ...
-> > ...
-> > > (I was thinking about adding a -e parameter to cp to eventually skip
-> the
-> > > first step)
-> > >
-> >
-> > It seems a nice addition for me.
->
-> I'll look into it.
->
->
-Thanks.
-
-
-> >
-> > There is some plane in the future to add a "update" command, like in
-> > "defaultenv"?
->
-> I have no plans doing so. Basically not because I do not want such a
-> command, but because I do not know what such should do. The old command
-> took parameters like 'mmc' or 'net' which was hard to dispatch into
-> the different files and does not work with multiple mmc cards, so I
-> thought doing it completely on file level would be enough (with the
-> above additions added, maybe).
->
->
-Thanks for the explanation.
-
-
-> ...
->
-
-I hope to submit soon the support for the Telit EVK-PRO3.
-
-Best regards
--- 
-Fabio Porcedda
-
---e89a8fb1f84ae8225d04ceec454e
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<div class=3D"gmail_extra"><div class=3D"gmail_quote">On Wed, Nov 14, 2012 =
-at 9:10 AM, Sascha Hauer <span dir=3D"ltr">&lt;<a href=3D"mailto:s.hauer@pe=
-ngutronix.de" target=3D"_blank">s.hauer@pengutronix.de</a>&gt;</span> wrote=
-:<br><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-le=
-ft:1px #ccc solid;padding-left:1ex">
-
-<div class=3D"im">On Tue, Nov 13, 2012 at 12:10:45PM +0100, Fabio Porcedda =
-wrote:<br>
-&gt; On Mon, Nov 12, 2012 at 8:55 AM, Sascha Hauer &lt;<a href=3D"mailto:s.=
-hauer@pengutronix.de">s.hauer@pengutronix.de</a>&gt;wrote:<br>
-&gt;<br>
-&gt; &gt; On Fri, Nov 09, 2012 at 12:06:38PM +0100, Fabio Porcedda wrote:<b=
-r>
-&gt; &gt; &gt; ...<br>
-&gt; &gt; ...<br>
-&gt; ...<br>
-&gt; &gt; (I was thinking about adding a -e parameter to cp to eventually s=
-kip the<br>
-&gt; &gt; first step)<br>
-&gt; &gt;<br>
-&gt;<br>
-&gt; It seems a nice addition for me.<br>
-<br>
-</div>I&#39;ll look into it.<br>
-<div class=3D"im"><br></div></blockquote><div><br>Thanks.<br>=A0<br></div><=
-blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px=
- #ccc solid;padding-left:1ex"><div class=3D"im">
-&gt;<br>
-&gt; There is some plane in the future to add a &quot;update&quot; command,=
- like in<br>
-&gt; &quot;defaultenv&quot;?<br>
-<br>
-</div>I have no plans doing so. Basically not because I do not want such a<=
-br>
-command, but because I do not know what such should do. The old command<br>
-took parameters like &#39;mmc&#39; or &#39;net&#39; which was hard to dispa=
-tch into<br>
-the different files and does not work with multiple mmc cards, so I<br>
-thought doing it completely on file level would be enough (with the<br>
-above additions added, maybe).<br>
-<div class=3D"im"><br></div></blockquote><div><br>Thanks for the explanatio=
-n.<br>=A0<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 =
-.8ex;border-left:1px #ccc solid;padding-left:1ex"><div class=3D"im">
-...<br></div></blockquote></div><br>I hope to submit soon the support for t=
-he Telit EVK-PRO3.<br><br clear=3D"all">Best regards<br>-- <br>Fabio Porced=
-da<br><br>
-</div>
-
---e89a8fb1f84ae8225d04ceec454e--
-
-
---===============4170133661106468831==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Best Regards,
+J.
+> 
+> Sascha
+> 
+> > > 
+> > > for you to fetch changes up to 35b8b98230dbcfe25973d5ed52a874027b4f3f05:
+> > > 
+> > >   m25p80: sync flash support with the kernel (2012-10-31 04:51:08 +0800)
+> > > 
+> > > ----------------------------------------------------------------
+> > > Jean-Christophe PLAGNIOL-VILLARD (2):
+> > >       m25p80: re-import it againt mtd_add_host
+> > >       m25p80: sync flash support with the kernel
+> > > 
+> > >  arch/arm/boards/freescale-mx6-sabrelite/board.c |    2 +-
+> > >  drivers/mtd/devices/Kconfig                     |   27 ++++++++++++
+> > >  drivers/mtd/devices/Makefile                    |    1 +
+> > >  drivers/{nor => mtd/devices}/m25p80.c           |  512 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------------------------------------------------------------------------------------
+> > >  drivers/nor/Kconfig                             |   27 ------------
+> > >  drivers/nor/Makefile                            |    1 -
+> > >  drivers/nor/m25p80.h                            |   84 ------------------------------------
+> > >  include/linux/mtd/cfi.h                         |   65 ++++++++++++++++++++++++++++
+> > >  8 files changed, 371 insertions(+), 348 deletions(-)
+> > >  rename drivers/{nor => mtd/devices}/m25p80.c (65%)
+> > >  delete mode 100644 drivers/nor/m25p80.h
+> > >  create mode 100644 include/linux/mtd/cfi.h
+> > > 
+> > > Best Regards,
+> > > J.
+> > > 
+> > > _______________________________________________
+> > > barebox mailing list
+> > > barebox@lists.infradead.org
+> > > http://lists.infradead.org/mailman/listinfo/barebox
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> > 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============4170133661106468831==--
