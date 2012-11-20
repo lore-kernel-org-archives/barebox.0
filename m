@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
+Received: from mail-oa0-f49.google.com ([209.85.219.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TamYg-0006qZ-LW
- for barebox@lists.infradead.org; Tue, 20 Nov 2012 12:04:08 +0000
-Date: Tue, 20 Nov 2012 07:03:58 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <20121120080831.GE10369@pengutronix.de>
-Message-ID: <alpine.DEB.2.02.1211200702001.26129@oneiric>
-References: <alpine.DEB.2.02.1211190946120.13661@oneiric>
- <20121120080831.GE10369@pengutronix.de>
+ id 1TampV-0000RB-7P
+ for barebox@lists.infradead.org; Tue, 20 Nov 2012 12:21:29 +0000
+Received: by mail-oa0-f49.google.com with SMTP id l10so5707810oag.36
+ for <barebox@lists.infradead.org>; Tue, 20 Nov 2012 04:21:27 -0800 (PST)
 MIME-Version: 1.0
+In-Reply-To: <20121114081051.GG10369@pengutronix.de>
+References: <CAHkwnC-dDfPesg5vy5V2rj7vdY_DH9cjfJ3gCVsm8xY-DPf35A@mail.gmail.com>
+ <20121112075536.GP10369@pengutronix.de>
+ <CAHkwnC_FXJ3reNcwDuxhsC=fSG-dDSgg+7njS5sy7aCG5QCRoQ@mail.gmail.com>
+ <20121114081051.GG10369@pengutronix.de>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Tue, 20 Nov 2012 13:21:06 +0100
+Message-ID: <CAHkwnC8VEYf_DvsywSZ2cUM7QAN0EtRpmd2gKGOuXLaT-4+y9g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,48 +22,130 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============4170133661106468831=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: where is tftp mounting documented in the source code?
+Subject: Re: defaultenv-2: how to update a flash partition?
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
 
-On Tue, 20 Nov 2012, Sascha Hauer wrote:
+--===============4170133661106468831==
+Content-Type: multipart/alternative; boundary=e89a8fb1f84ae8225d04ceec454e
 
-> On Mon, Nov 19, 2012 at 09:48:41AM -0500, Robert P. J. Day wrote:
+--e89a8fb1f84ae8225d04ceec454e
+Content-Type: text/plain; charset=ISO-8859-1
+
+On Wed, Nov 14, 2012 at 9:10 AM, Sascha Hauer <s.hauer@pengutronix.de>wrote:
+
+> On Tue, Nov 13, 2012 at 12:10:45PM +0100, Fabio Porcedda wrote:
+> > On Mon, Nov 12, 2012 at 8:55 AM, Sascha Hauer <s.hauer@pengutronix.de
+> >wrote:
 > >
-> >   perusing the wiki and ran across page on TFTP support:
-> > http://wiki.barebox.org/doku.php?id=filesystems:tftp which suggests:
+> > > On Fri, Nov 09, 2012 at 12:06:38PM +0100, Fabio Porcedda wrote:
+> > > > ...
+> > > ...
+> > ...
+> > > (I was thinking about adding a -e parameter to cp to eventually skip
+> the
+> > > first step)
+> > >
 > >
-> >   mount 192.168.1.1 tftp /mnt/tftp
+> > It seems a nice addition for me.
 >
-> This was the original mount behaviour. This was recently changed to
-> mount -t fstype <ip> /dir, mainly to allow making the fstype option
-> optional for autodetecting the type. The wiki page is out of date
-> here. As a sidenote I brought back the old behaviour as a
-> compatibility option to not break old environments.
+> I'll look into it.
+>
+>
+Thanks.
 
-  so ... the wiki page should be updated to show both the old and new
-behaviour?  and the "help mount" content should be extended as well?
-what's the proper fix here?
 
-rday
+> >
+> > There is some plane in the future to add a "update" command, like in
+> > "defaultenv"?
+>
+> I have no plans doing so. Basically not because I do not want such a
+> command, but because I do not know what such should do. The old command
+> took parameters like 'mmc' or 'net' which was hard to dispatch into
+> the different files and does not work with multiple mmc cards, so I
+> thought doing it completely on file level would be enough (with the
+> above additions added, maybe).
+>
+>
+Thanks for the explanation.
 
+
+> ...
+>
+
+I hope to submit soon the support for the Telit EVK-PRO3.
+
+Best regards
 -- 
+Fabio Porcedda
 
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
+--e89a8fb1f84ae8225d04ceec454e
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+<div class=3D"gmail_extra"><div class=3D"gmail_quote">On Wed, Nov 14, 2012 =
+at 9:10 AM, Sascha Hauer <span dir=3D"ltr">&lt;<a href=3D"mailto:s.hauer@pe=
+ngutronix.de" target=3D"_blank">s.hauer@pengutronix.de</a>&gt;</span> wrote=
+:<br><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-le=
+ft:1px #ccc solid;padding-left:1ex">
+
+<div class=3D"im">On Tue, Nov 13, 2012 at 12:10:45PM +0100, Fabio Porcedda =
+wrote:<br>
+&gt; On Mon, Nov 12, 2012 at 8:55 AM, Sascha Hauer &lt;<a href=3D"mailto:s.=
+hauer@pengutronix.de">s.hauer@pengutronix.de</a>&gt;wrote:<br>
+&gt;<br>
+&gt; &gt; On Fri, Nov 09, 2012 at 12:06:38PM +0100, Fabio Porcedda wrote:<b=
+r>
+&gt; &gt; &gt; ...<br>
+&gt; &gt; ...<br>
+&gt; ...<br>
+&gt; &gt; (I was thinking about adding a -e parameter to cp to eventually s=
+kip the<br>
+&gt; &gt; first step)<br>
+&gt; &gt;<br>
+&gt;<br>
+&gt; It seems a nice addition for me.<br>
+<br>
+</div>I&#39;ll look into it.<br>
+<div class=3D"im"><br></div></blockquote><div><br>Thanks.<br>=A0<br></div><=
+blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px=
+ #ccc solid;padding-left:1ex"><div class=3D"im">
+&gt;<br>
+&gt; There is some plane in the future to add a &quot;update&quot; command,=
+ like in<br>
+&gt; &quot;defaultenv&quot;?<br>
+<br>
+</div>I have no plans doing so. Basically not because I do not want such a<=
+br>
+command, but because I do not know what such should do. The old command<br>
+took parameters like &#39;mmc&#39; or &#39;net&#39; which was hard to dispa=
+tch into<br>
+the different files and does not work with multiple mmc cards, so I<br>
+thought doing it completely on file level would be enough (with the<br>
+above additions added, maybe).<br>
+<div class=3D"im"><br></div></blockquote><div><br>Thanks for the explanatio=
+n.<br>=A0<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 =
+.8ex;border-left:1px #ccc solid;padding-left:1ex"><div class=3D"im">
+...<br></div></blockquote></div><br>I hope to submit soon the support for t=
+he Telit EVK-PRO3.<br><br clear=3D"all">Best regards<br>-- <br>Fabio Porced=
+da<br><br>
+</div>
+
+--e89a8fb1f84ae8225d04ceec454e--
 
 
+--===============4170133661106468831==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============4170133661106468831==--
