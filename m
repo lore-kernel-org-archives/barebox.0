@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TaSoD-0004ib-5Q
- for barebox@lists.infradead.org; Mon, 19 Nov 2012 14:58:50 +0000
-Received: from cpebcc8100fb8db-cmbcc8100fb8d8.cpe.net.cable.rogers.com
- ([174.116.196.46]:59358 helo=crashcourse.ca)
- by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
- (Exim 4.77) (envelope-from <rpjday@crashcourse.ca>)
- id 1TaSoB-0005G2-Tg
- for barebox@lists.infradead.org; Mon, 19 Nov 2012 09:58:47 -0500
-Date: Mon, 19 Nov 2012 09:58:45 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.DEB.2.02.1211190956260.13911@oneiric>
+Received: from m50-112.126.com ([123.125.50.112])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TaenL-0007en-Fg
+ for barebox@lists.infradead.org; Tue, 20 Nov 2012 03:46:46 +0000
+Date: Tue, 20 Nov 2012 11:54:12 +0800
+From: zzs <zzs213@126.com>
+Message-ID: <20121120035412.GC8572@greatfirst.com>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,53 +20,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mach-imx: Add/correct help info in mach-imx/Kconfig
-To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: wrong cfi flash device id
+To: barebox <barebox@lists.infradead.org>
 
+My board is very similar to at91rm9200ek but using
+a 8MB cfi flash AT49BV642D.
 
-Update help info, it's slightly out of date, and a grammatical fix.
-No functional change.
+When barebox started, the flash info as blow:
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+# devinfo cfi_flash0
+CFI conformant FLASH (16 x 16)  Size: 8 MB in 135 Sectors
+  AMD Standard command set, Manufacturer ID: 0x1F, Device ID: 0xD6
+  Erase timeout: 8192 ms, write timeout: 256 us
+  Buffer write timeout: 64 us, buffer size: 4 bytes
 
----
+  Sector Start Addresses:
+  10000000        10010000        10020000        10030000        10040000
+  10050000        10060000        10070000        10080000        10090000
+  100A0000        100B0000        100C0000        100D0000        100E0000
 
-  are there any other updates that can be made to that help info?
+Barebox said the device id is 0xD6, But it should be 0x1D6.
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index cca8394..3f4b452 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -65,15 +65,15 @@ choice
- 	  used to setup SDRAM. The internal ROM code then initializes SDRAM
- 	  using the register/value table, loads the whole barebox image to
- 	  SDRAM and starts it. The internal boot mode is available on newer
--	  i.MX processors (i.MX25, i.MX35, i.MX51 and i.MX53). and supports
--	  booting from NOR, NAND, MMC/SD and serial ROMs.
--	  The external boot mode only supports booting from NAND and NOR. With
-+	  i.MX processors (i.MX25, i.MX35, i.MX51, i.MX53 and i.MX6), and
-+	  supports booting from NOR, NAND, MMC/SD and serial ROMs.
-+	  The external boot mode supports booting only from NAND and NOR. With
- 	  NOR flash the image is just started in NOR flash. With NAND flash
- 	  the NAND controller loads the first 2kbyte from NAND into the NAND
- 	  controllers internal SRAM where it is then started. It's the
- 	  responsibility of these 2kbyte to load the rest of the boot image.
- 	  The external boot mode is supported on older i.MX processors (i.MX1,
--	  i.MX21, i.MX25, i.MX27, i.MX21, i.MX35).
-+	  i.MX21, i.MX25, i.MX27, i.MX31, i.MX35).
+Because of this wrong ID, In function drivers/nor/cfi_flash_amd.c:flash_fixup_atmel()
+the erase region were reversed.
 
- config ARCH_IMX_INTERNAL_BOOT
- 	bool "support internal boot mode"
+So I can't erase the first few sectors
+
+I think it should use read8 or read16 according the portwidth like
+u-boot does.
+
+Am I right?
 
 -- 
+Best Regards,
+zzs
 
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
 
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
 
 _______________________________________________
 barebox mailing list
