@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tai09-0008Na-SZ
- for barebox@lists.infradead.org; Tue, 20 Nov 2012 07:12:10 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 34342BF0E0
- for <barebox@lists.infradead.org>; Wed, 21 Nov 2012 13:48:37 +0100 (CET)
-From: Christian Hemp <c.hemp@phytec.de>
-Date: Tue, 20 Nov 2012 08:12:00 +0100
-Message-Id: <1353395520-13679-1-git-send-email-c.hemp@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TaiC0-0000xl-OL
+ for barebox@lists.infradead.org; Tue, 20 Nov 2012 07:24:26 +0000
+Date: Tue, 20 Nov 2012 08:24:22 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121120072422.GY10369@pengutronix.de>
+References: <1353144361-9089-1-git-send-email-antonynpavlov@gmail.com>
+ <1353144361-9089-4-git-send-email-antonynpavlov@gmail.com>
+ <20121119103037.GR10369@pengutronix.de>
+ <CAA4bVAEmibj5RkfNr8yRjaApEwABB-jaKQUP8SiZOzp4fhpezg@mail.gmail.com>
+ <20121119120701.GW10369@pengutronix.de>
+ <CAA4bVAEhKuc3FdpqV5VNxXw7PKw9k0Qd-Ssnjpxjru6=A37Ncw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAA4bVAEhKuc3FdpqV5VNxXw7PKw9k0Qd-Ssnjpxjru6=A37Ncw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,41 +23,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM pcm043: Fix macro name
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/3] ARM: start-pbl.c: unificate path to lib/decompress_*.c
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Since commit dc9d70e2 the define CCM_PDR4 is called MX35_CCM_PDR4.
+On Mon, Nov 19, 2012 at 04:37:38PM +0400, Antony Pavlov wrote:
+> >> The files decompress_inflate.c and decompress_unlzo.c are in the same
+> >> directory. Why we use different prefixes to address them?
+> >
+> > I understand the patch and why it's correct. I just wondered why it
+> > works correctly without this patch.
+> >
+> > ls arch/arm/cpu/../../../../lib/decompress_inflate.c
+> > ls: cannot access arch/arm/cpu/../../../../lib/decompress_inflate.c: No such file or directory
+> >
+> > This is correct, we only have to go three directories up. Still it
+> > compiles fine.
+> 
+> IMHO we use very many '-I' options when running C compiler. Some of
+> them make possible to include the decompres-related files with the
+> '../../../../' prefix,
+> the other ones make possible to use '../../../'.
 
-Signed-off-by: Christian Hemp <c.hemp@phytec.de>
----
- arch/arm/boards/pcm043/lowlevel.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+I wasn't aware that files included with "" also evaluate the -i options.
 
-diff --git a/arch/arm/boards/pcm043/lowlevel.c b/arch/arm/boards/pcm043/lowlevel.c
-index 06f05ab..751f6ae 100644
---- a/arch/arm/boards/pcm043/lowlevel.c
-+++ b/arch/arm/boards/pcm043/lowlevel.c
-@@ -46,10 +46,10 @@ static void __bare_init __naked insdram(void)
- 	uint32_t r;
- 
- 	/* Speed up NAND controller by adjusting the NFC divider */
--	r = readl(MX35_CCM_BASE_ADDR + CCM_PDR4);
-+	r = readl(MX35_CCM_BASE_ADDR + MX35_CCM_PDR4);
- 	r &= ~(0xf << 28);
- 	r |= 0x1 << 28;
--	writel(r, MX35_CCM_BASE_ADDR + CCM_PDR4);
-+	writel(r, MX35_CCM_BASE_ADDR + MX35_CCM_PDR4);
- 
- 	/* setup a stack to be able to call imx_nand_load_image() */
- 	arm_setup_stack(STACK_BASE + STACK_SIZE - 12);
+Applied, thanks.
+
+Sascha
+
 -- 
-1.7.0.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
