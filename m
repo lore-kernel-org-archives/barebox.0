@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TaiC0-0000xl-OL
- for barebox@lists.infradead.org; Tue, 20 Nov 2012 07:24:26 +0000
-Date: Tue, 20 Nov 2012 08:24:22 +0100
+ id 1TaiCv-0001Ol-Sv
+ for barebox@lists.infradead.org; Tue, 20 Nov 2012 07:25:22 +0000
+Date: Tue, 20 Nov 2012 08:25:20 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121120072422.GY10369@pengutronix.de>
-References: <1353144361-9089-1-git-send-email-antonynpavlov@gmail.com>
- <1353144361-9089-4-git-send-email-antonynpavlov@gmail.com>
- <20121119103037.GR10369@pengutronix.de>
- <CAA4bVAEmibj5RkfNr8yRjaApEwABB-jaKQUP8SiZOzp4fhpezg@mail.gmail.com>
- <20121119120701.GW10369@pengutronix.de>
- <CAA4bVAEhKuc3FdpqV5VNxXw7PKw9k0Qd-Ssnjpxjru6=A37Ncw@mail.gmail.com>
+Message-ID: <20121120072520.GZ10369@pengutronix.de>
+References: <1353331325-6778-1-git-send-email-J.Kilb@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAA4bVAEhKuc3FdpqV5VNxXw7PKw9k0Qd-Ssnjpxjru6=A37Ncw@mail.gmail.com>
+In-Reply-To: <1353331325-6778-1-git-send-email-J.Kilb@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,33 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] ARM: start-pbl.c: unificate path to lib/decompress_*.c
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] nand-bb: Fix remove of nand-bb device.
+To: Juergen Kilb <J.Kilb@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Nov 19, 2012 at 04:37:38PM +0400, Antony Pavlov wrote:
-> >> The files decompress_inflate.c and decompress_unlzo.c are in the same
-> >> directory. Why we use different prefixes to address them?
-> >
-> > I understand the patch and why it's correct. I just wondered why it
-> > works correctly without this patch.
-> >
-> > ls arch/arm/cpu/../../../../lib/decompress_inflate.c
-> > ls: cannot access arch/arm/cpu/../../../../lib/decompress_inflate.c: No such file or directory
-> >
-> > This is correct, we only have to go three directories up. Still it
-> > compiles fine.
+On Mon, Nov 19, 2012 at 02:22:05PM +0100, Juergen Kilb wrote:
+> Fixed possible crashs if nand-bb device is removed
+> and the list entry was not deleted from the list.
 > 
-> IMHO we use very many '-I' options when running C compiler. Some of
-> them make possible to include the decompres-related files with the
-> '../../../../' prefix,
-> the other ones make possible to use '../../../'.
+> Signed-off-by: Juergen Kilb <J.Kilb@phytec.de>
 
-I wasn't aware that files included with "" also evaluate the -i options.
-
-Applied, thanks.
+Applied, thanks
 
 Sascha
+
+> ---
+>  drivers/mtd/nand/nand-bb.c |    1 +
+>  1 files changed, 1 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/mtd/nand/nand-bb.c b/drivers/mtd/nand/nand-bb.c
+> index cdb4663..0292f2f 100644
+> --- a/drivers/mtd/nand/nand-bb.c
+> +++ b/drivers/mtd/nand/nand-bb.c
+> @@ -314,6 +314,7 @@ int dev_remove_bb_dev(const char *name)
+>  		if (!strcmp(bb->cdev.name, name)) {
+>  			devfs_remove(&bb->cdev);
+>  			cdev_close(bb->cdev_parent);
+> +			list_del_init(&bb->list);
+>  			free(bb);
+>  			return 0;
+>  		}
+> -- 
+> 1.7.0.4
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
