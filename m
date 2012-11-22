@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from m15-113.126.com ([220.181.15.113])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TbLv3-0007V2-9q
- for barebox@lists.infradead.org; Thu, 22 Nov 2012 01:49:35 +0000
-From: =?UTF-8?q?=E5=BC=A0=E5=BF=A0=E5=B1=B1?= <zzs213@126.com>
-Date: Thu, 22 Nov 2012 09:48:16 +0800
-Message-Id: <1353548896-5506-1-git-send-email-zzs213@126.com>
+ id 1TbNwB-0001oM-Vv
+ for barebox@lists.infradead.org; Thu, 22 Nov 2012 03:58:53 +0000
+Date: Thu, 22 Nov 2012 11:59:41 +0800
+From: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
+Message-ID: <20121122035941.GC3022@greatfirst.com>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,38 +16,23 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] read cfi device id according the bus width
-To: barebox@lists.infradead.org
+Subject: Can I use NAND_ATMEL on at91rm9200 board
+To: barebox <barebox@lists.infradead.org>
 
-U2lnbmVkLW9mZi1ieTog5byg5b+g5bGxIDx6enMyMTNAMTI2LmNvbT4KLS0tCiBkcml2ZXJzL25v
-ci9jZmlfZmxhc2hfYW1kLmMgfCAgIDIyICsrKysrKysrKysrKystLS0tLS0tLS0KIDEgZmlsZXMg
-Y2hhbmdlZCwgMTMgaW5zZXJ0aW9ucygrKSwgOSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9k
-cml2ZXJzL25vci9jZmlfZmxhc2hfYW1kLmMgYi9kcml2ZXJzL25vci9jZmlfZmxhc2hfYW1kLmMK
-aW5kZXggNDVjNTliOS4uODM4NGY0NiAxMDA2NDQKLS0tIGEvZHJpdmVycy9ub3IvY2ZpX2ZsYXNo
-X2FtZC5jCisrKyBiL2RyaXZlcnMvbm9yL2NmaV9mbGFzaF9hbWQuYwpAQCAtNjIsMTUgKzYyLDE5
-IEBAIHN0YXRpYyB2b2lkIGFtZF9yZWFkX2plZGVjX2lkcyAoc3RydWN0IGZsYXNoX2luZm8gKmlu
-Zm8pCiAJdWRlbGF5KDEwMDApOyAvKiBzb21lIGZsYXNoIGFyZSBzbG93IHRvIHJlc3BvbmQgKi8K
-IAogCWluZm8tPm1hbnVmYWN0dXJlcl9pZCA9IGplZGVjX3JlYWRfbWZyKGluZm8pOwotCWluZm8t
-PmRldmljZV9pZCA9IGZsYXNoX3JlYWRfdWNoYXIgKGluZm8sCi0JCQkJCUZMQVNIX09GRlNFVF9E
-RVZJQ0VfSUQpOwotCWlmIChpbmZvLT5kZXZpY2VfaWQgPT0gMHg3RSkgewotCQkvKiBBTUQgMy1i
-eXRlIChleHBhbmRlZCkgZGV2aWNlIGlkcyAqLwotCQlpbmZvLT5kZXZpY2VfaWQyID0gZmxhc2hf
-cmVhZF91Y2hhciAoaW5mbywKLQkJCQkJRkxBU0hfT0ZGU0VUX0RFVklDRV9JRDIpOwotCQlpbmZv
-LT5kZXZpY2VfaWQyIDw8PSA4OwotCQlpbmZvLT5kZXZpY2VfaWQyIHw9IGZsYXNoX3JlYWRfdWNo
-YXIgKGluZm8sCi0JCQkJCUZMQVNIX09GRlNFVF9ERVZJQ0VfSUQzKTsKKwlpZihpbmZvLT5jaGlw
-d2lkdGggPT0gRkxBU0hfQ0ZJX0JZMTYpIHsKKwkJaW5mby0+ZGV2aWNlX2lkID0gZmxhc2hfcmVh
-ZDE2KGZsYXNoX21ha2VfYWRkcihpbmZvLCAwLCBGTEFTSF9PRkZTRVRfREVWSUNFX0lEKSk7CisJ
-fSBlbHNlIHsKKwkJaW5mby0+ZGV2aWNlX2lkID0gZmxhc2hfcmVhZF91Y2hhciAoaW5mbywKKwkJ
-CQkJCUZMQVNIX09GRlNFVF9ERVZJQ0VfSUQpOworCQlpZiAoaW5mby0+ZGV2aWNlX2lkID09IDB4
-N0UpIHsKKwkJCS8qIEFNRCAzLWJ5dGUgKGV4cGFuZGVkKSBkZXZpY2UgaWRzICovCisJCQlpbmZv
-LT5kZXZpY2VfaWQyID0gZmxhc2hfcmVhZF91Y2hhciAoaW5mbywKKwkJCQkJCUZMQVNIX09GRlNF
-VF9ERVZJQ0VfSUQyKTsKKwkJCWluZm8tPmRldmljZV9pZDIgPDw9IDg7CisJCQlpbmZvLT5kZXZp
-Y2VfaWQyIHw9IGZsYXNoX3JlYWRfdWNoYXIgKGluZm8sCisJCQkJCQlGTEFTSF9PRkZTRVRfREVW
-SUNFX0lEMyk7CisJCX0KIAl9CiAJZmxhc2hfd3JpdGVfY21kKGluZm8sIDAsIDAsIGluZm8tPmNt
-ZF9yZXNldCk7CiB9Ci0tIAoxLjcuNC40CgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
-cmVib3gK
+config menu says that NAND_ATMEL is for AT91SAM9xxx
+Can I use it on at91rm9200 boards?
+
+-- 
+Best Regards,
+zzs
+
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
