@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-f177.google.com ([74.125.82.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TbC2G-0008Fz-BP
- for barebox@lists.infradead.org; Wed, 21 Nov 2012 15:16:20 +0000
-Received: by mail-we0-f177.google.com with SMTP id x48so2108642wey.36
- for <barebox@lists.infradead.org>; Wed, 21 Nov 2012 07:16:17 -0800 (PST)
+Received: from m15-111.126.com ([220.181.15.111])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TbLTy-0007Ib-U3
+ for barebox@lists.infradead.org; Thu, 22 Nov 2012 01:21:38 +0000
+Date: Thu, 22 Nov 2012 09:22:19 +0800
+From: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
+Message-ID: <20121122012219.GA3022@greatfirst.com>
 MIME-Version: 1.0
-In-Reply-To: <20121121145829.GO8327@game.jcrosoft.org>
-References: <CACQ1gAiZgvEkppTdJheWxsDYGW8LpiAPe6eU-jO9x3i5x9Q+sQ@mail.gmail.com>
- <20121121145829.GO8327@game.jcrosoft.org>
-From: Richard Genoud <richard.genoud@gmail.com>
-Date: Wed, 21 Nov 2012 16:15:57 +0100
-Message-ID: <CACQ1gAiOu8LRcyeACSwFiiPUYw=AfLZzys2f7MD0-rq55mHsBw@mail.gmail.com>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,24 +20,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: USB host Unrecoverable Error on AT91SAM9x5-ek
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: test
+To: zzs213@126.com
+Cc: barebox <barebox@lists.infradead.org>
 
-2012/11/21 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>:
->
-> I known this issue thats why we do not have it yet the USB supprot on sam9x5
-> and other Atmel soc
->
-> This is a ohci core issue O do not yet get the time and the tools to debug it
->
-> Best Regards,
-> J.
+test
 
-ok. I'll try to have a look, but I'm not familiar with usb...
-Thanks !
+-- 
+Best Regards,
+zzs
 
-Richard
+
 
 _______________________________________________
 barebox mailing list
