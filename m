@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo4.mail-out.ovh.net ([46.105.40.29]
- helo=mo4.mail-out.ovh.net)
+Received: from m15-112.126.com ([220.181.15.112])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TbRBg-0007PQ-Ad
- for barebox@lists.infradead.org; Thu, 22 Nov 2012 07:27:05 +0000
-Received: from mail187.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 256791054988
- for <barebox@lists.infradead.org>; Thu, 22 Nov 2012 08:34:49 +0100 (CET)
-Date: Thu, 22 Nov 2012 08:25:03 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121122072503.GT8327@game.jcrosoft.org>
+ id 1TbRpF-0006en-36
+ for barebox@lists.infradead.org; Thu, 22 Nov 2012 08:08:00 +0000
+Date: Thu, 22 Nov 2012 16:06:14 +0800
+From: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
+Message-ID: <20121122080614.GE3022@greatfirst.com>
 References: <1353566987-20609-1-git-send-email-zzs213@126.com>
+ <20121122072503.GT8327@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1353566987-20609-1-git-send-email-zzs213@126.com>
+In-Reply-To: <20121122072503.GT8327@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +19,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] read cfi device id according the bus width
-To: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
-Cc: barebox@lists.infradead.org
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-T24gMTQ6NDkgVGh1IDIyIE5vdiAgICAgLCDlvKDlv6DlsbEgd3JvdGU6Cj4gU2lnbmVkLW9mZi1i
-eTog5byg5b+g5bGxIDx6enMyMTNAMTI2LmNvbT4KPiAtLS0KPiAgZHJpdmVycy9ub3IvY2ZpX2Zs
-YXNoX2FtZC5jICAgfCAgICA3ICsrKysrLS0KPiAgZHJpdmVycy9ub3IvY2ZpX2ZsYXNoX2ludGVs
-LmMgfCAgICA3ICsrKysrLS0KPiAgMiBmaWxlcyBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspLCA0
-IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25vci9jZmlfZmxhc2hfYW1k
-LmMgYi9kcml2ZXJzL25vci9jZmlfZmxhc2hfYW1kLmMKPiBpbmRleCA0NWM1OWI5Li4zYWI0YmUw
-IDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvbm9yL2NmaV9mbGFzaF9hbWQuYwo+ICsrKyBiL2RyaXZl
-cnMvbm9yL2NmaV9mbGFzaF9hbWQuYwo+IEBAIC02Miw4ICs2MiwxMSBAQCBzdGF0aWMgdm9pZCBh
-bWRfcmVhZF9qZWRlY19pZHMgKHN0cnVjdCBmbGFzaF9pbmZvICppbmZvKQo+ICAJdWRlbGF5KDEw
-MDApOyAvKiBzb21lIGZsYXNoIGFyZSBzbG93IHRvIHJlc3BvbmQgKi8KPiAgCj4gIAlpbmZvLT5t
-YW51ZmFjdHVyZXJfaWQgPSBqZWRlY19yZWFkX21mcihpbmZvKTsKPiAtCWluZm8tPmRldmljZV9p
-ZCA9IGZsYXNoX3JlYWRfdWNoYXIgKGluZm8sCj4gLQkJCQkJRkxBU0hfT0ZGU0VUX0RFVklDRV9J
-RCk7Cj4gKwlpZihpbmZvLT5jaGlwd2lkdGggPT0gRkxBU0hfQ0ZJX0JZMTYpCj4gKwkJaW5mby0+
-ZGV2aWNlX2lkID0gZmxhc2hfcmVhZDE2KGZsYXNoX21ha2VfYWRkcihpbmZvLCAwLCBGTEFTSF9P
-RkZTRVRfREVWSUNFX0lEKSk7Cj4gKwllbHNlCj4gKwkJaW5mby0+ZGV2aWNlX2lkID0gZmxhc2hf
-cmVhZF91Y2hhciAoaW5mbywKPiArCQkJCQkJRkxBU0hfT0ZGU0VUX0RFVklDRV9JRCk7Cj4gIAlp
-ZiAoaW5mby0+ZGV2aWNlX2lkID09IDB4N0UpIHsKPiAgCQkvKiBBTUQgMy1ieXRlIChleHBhbmRl
-ZCkgZGV2aWNlIGlkcyAqLwo+ICAJCWluZm8tPmRldmljZV9pZDIgPSBmbGFzaF9yZWFkX3VjaGFy
-IChpbmZvLAo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25vci9jZmlfZmxhc2hfaW50ZWwuYyBiL2Ry
-aXZlcnMvbm9yL2NmaV9mbGFzaF9pbnRlbC5jCj4gaW5kZXggMzJlNTgxYS4uNzVkYzVhOCAxMDA2
-NDQKPiAtLS0gYS9kcml2ZXJzL25vci9jZmlfZmxhc2hfaW50ZWwuYwo+ICsrKyBiL2RyaXZlcnMv
-bm9yL2NmaV9mbGFzaF9pbnRlbC5jCj4gQEAgLTE5LDggKzE5LDExIEBAIHN0YXRpYyB2b2lkIGlu
-dGVsX3JlYWRfamVkZWNfaWRzIChzdHJ1Y3QgZmxhc2hfaW5mbyAqaW5mbykKPiAgCXVkZWxheSgx
-MDAwKTsgLyogc29tZSBmbGFzaCBhcmUgc2xvdyB0byByZXNwb25kICovCj4gIAo+ICAJaW5mby0+
-bWFudWZhY3R1cmVyX2lkID0gamVkZWNfcmVhZF9tZnIoaW5mbyk7Cj4gLQlpbmZvLT5kZXZpY2Vf
-aWQgPSBmbGFzaF9yZWFkX3VjaGFyIChpbmZvLAo+IC0JCQkJCUZMQVNIX09GRlNFVF9ERVZJQ0Vf
-SUQpOwo+ICsJaWYoaW5mby0+Y2hpcHdpZHRoID09IEZMQVNIX0NGSV9CWTE2KQo+ICsJCWluZm8t
-PmRldmljZV9pZCA9IGZsYXNoX3JlYWQxNihmbGFzaF9tYWtlX2FkZHIoaW5mbywgMCwgRkxBU0hf
-T0ZGU0VUX0RFVklDRV9JRCkpOwo+ICsJZWxzZQo+ICsJCWluZm8tPmRldmljZV9pZCA9IGZsYXNo
-X3JlYWRfdWNoYXIgKGluZm8sCj4gKwkJCQkJCUZMQVNIX09GRlNFVF9ERVZJQ0VfSUQpOwo+ICAJ
-Zmxhc2hfd3JpdGVfY21kKGluZm8sIDAsIDAsIGluZm8tPmNtZF9yZXNldCk7CgpJIHNhaWQgZmFj
-dG9yaXplIG5vdCBkdXBsaWNhdGUKCmFuZCB5b3UgbmVlZCB0byBoYW5kbGUgYWxsIHRoZSB3aXRo
-IG5vdCBvbmx5IDggYW5kIDE2CgpCZXN0IFJlZ2FyZHMsCkouCj4gIH0KPiAgCj4gLS0gCj4gMS43
-LjQuNAo+IAo+IAo+IAo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCj4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+> I said factorize not duplicate
+>
+> and you need to handle all the with not only 8 and 16
+>
+I check the kernel code, th id defined in cfi_private is "int",
+but in barebox is a ushort.
+
+When width is 32, How to save the id?
+
+-- 
+Best Regards,
+zzs
+
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
