@@ -2,18 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 18.mo3.mail-out.ovh.net ([87.98.172.162]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TbuxW-0008PJ-Qi
- for barebox@lists.infradead.org; Fri, 23 Nov 2012 15:14:31 +0000
+ id 1Tbva9-0004eb-Hu
+ for barebox@lists.infradead.org; Fri, 23 Nov 2012 15:54:24 +0000
 Received: from mail607.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 064C5FF9D08
- for <barebox@lists.infradead.org>; Fri, 23 Nov 2012 16:25:32 +0100 (CET)
-Date: Fri, 23 Nov 2012 16:12:28 +0100
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 30A2BFF9B5F
+ for <barebox@lists.infradead.org>; Fri, 23 Nov 2012 17:05:27 +0100 (CET)
+Date: Fri, 23 Nov 2012 16:52:24 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121123151228.GU8327@game.jcrosoft.org>
-References: <20121123091753.GF3022@greatfirst.com>
+Message-ID: <20121123155224.GV8327@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121123091753.GF3022@greatfirst.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,91 +20,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: NAND_ATMEL strange behavior on at91rm9200 board
-To: barebox <barebox@lists.infradead.org>
+Subject: [PATCH 0/4] at91: some fixes
+To: barebox@lists.infradead.org
 
-T24gMTc6MTcgRnJpIDIzIE5vdiAgICAgLCDlvKDlv6DlsbEgd3JvdGU6Cj4gd2hlbiBOQU5EX0FU
-TUVMIHVzZWQgb24gYXQ5MXJtOTIwMCwgaXQncyBiZWhhdmlvciB2ZXJ5IHN0cmFuZ2UKPiAKPiB3
-cml0ZSB0byBuYW5kIGhhdmUgbm8gZWZmZWN0LCBSZWFkIG91dCBvZiBuYW5kLCB0aGUgY29udGVu
-dHMKPiB2ZXJ5IHN0cmFuZ2UuCj4gCj4gU28gSSB3cml0ZSBzb21lIGRhdGUgdG8gbmFuZCB1c2lu
-ZyB1LWJvb3QgYW5kIHRoZW4gc3RhcnQgYmFyZWJveAppZiB5b3UgZG8gbm90IHNlZG4geW91IGNv
-ZGUgd2UgY2FuIG5vdCBoZWxwCgpCZXN0IFJlZ2FyZHMsCkouCj4gCj4gLS0tLS0tLS0tLQo+ICMg
-bWQgLXMvZGV2L25hbmQwIDArMHg0MDAKPiAwMDAwMDAwMDogZWEwMDAwMGEgZWFmZmZmZmUgZWFm
-ZmZmZmUgZWFmZmZmZmUgICAgICAgICAgICAgICAgLi4uLi4uLi4uLi4uLi4uLgo+IDAwMDAwMDEw
-OiBlYWZmZmZmZSAwMDAwMDE2YyBlYWZmZmZmZSBlYWZmZmZmZSAgICAgICAgICAgICAgICAuLi4u
-bC4uLi4uLi4uLi4uCj4gMDAwMDAwMjA6IDY1NzI2MTYyIDAwNzg2ZjYyIDIzYjAwMDAwIDAwMDIw
-ZWE5ICAgICAgICAgICAgICAgIGJhcmVib3guLi4uIy4uLi4KPiAwMDAwMDAzMDogZTEwZjMwMDAg
-ZTNjMzMwMWYgZTM4MzMwZDMgZTEyOWYwMDMgICAgICAgICAgICAgICAgLjAuLi4wLi4uMC4uLi4p
-Lgo+IDAwMDAwMDQwOiAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDQwMCAgICAgICAg
-ICAgICAgICAuLi4uLi4uLi4uLi4uLi4uCj4gMDAwMDAwNTA6IDAwMDAwMDAwIDAwMDAwMDAwIDAw
-MDAwMDAwIDAwMDAwMDAwICAgICAgICAgICAgICAgIC4uLi4uLi4uLi4uLi4uLi4KPiAwMDAwMDA2
-MDogMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgICAgICAgICAgICAgICAgLi4u
-Li4uLi4uLi4uLi4uLgo+IDAwMDAwMDcwOiAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMCAwMDAw
-MDAwMCAgICAgICAgICAgICAgICAuLi4uLi4uLi4uLi4uLi4uCj4gMDAwMDAwODA6IDAwMDAwMDAw
-IDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwICAgICAgICAgICAgICAgIC4uLi4uLi4uLi4uLi4u
-Li4KPiAwMDAwMDA5MDogMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgICAgICAg
-ICAgICAgICAgLi4uLi4uLi4uLi4uLi4uLgo+IDAwMDAwMGEwOiAwMDAwMDAwMCAwMDAwMDAwMCAw
-MDAwMDAwMCAwMDAwMDAwMCAgICAgICAgICAgICAgICAuLi4uLi4uLi4uLi4uLi4uCj4gMDAwMDAw
-YjA6IDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwICAgICAgICAgICAgICAgIC4u
-Li4uLi4uLi4uLi4uLi4KPiAwMDAwMDBjMDogMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAw
-MDAwMDAgICAgICAgICAgICAgICAgLi4uLi4uLi4uLi4uLi4uLgo+IDAwMDAwMGQwOiAwMDAwMDAw
-MCAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMCAgICAgICAgICAgICAgICAuLi4uLi4uLi4uLi4u
-Li4uCj4gMDAwMDAwZTA6IDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwICAgICAg
-ICAgICAgICAgIC4uLi4uLi4uLi4uLi4uLi4KPiAwMDAwMDBmMDogMDAwMDAwMDAgMDAwMDAwMDAg
-MDAwMDAwMDAgMDAwMDAwMDAgICAgICAgICAgICAgICAgLi4uLi4uLi4uLi4uLi4uLgo+IDAwMDAw
-MTAwOiBlMWEwNDAwMCBlNTBjMzA2ZiBlMWEwMTAwMiBlMWEwMzAwMiAgICAgICAgICAgICAgICAu
-QC4ubzAuLi4uLi4uMC4uCj4gMDAwMDAxMTA6IGUyOGVlMDAxIGUzNWUwMDA4IGU1ODQzMDAwIDFh
-ZmZmZmZiICAgICAgICAgICAgICAgIC4uLi4uLl4uLjAuLi4uLi4KPiAwMDAwMDEyMDogZTNlMDIw
-MDAgZTNhMDMwMDMgZTUwMjMwNmYgZTNhMDNlMmUgICAgICAgICAgICAgICAgLiAuLi4wLi5vMC4u
-Lj4uLgo+IDAwMDAwMTMwOiBlNTg0MTAwMCBlNTAyMzA2YiBlNTg0MTAwMCBlNTAyMTA2ZiAgICAg
-ICAgICAgICAgICAuLi4uazAuLi4uLi5vLi4uCj4gMDAwMDAxNDA6IDAwMDAwMDAwIDAwMDAwMDAw
-IDAwMDAwMDAwIDAwMDAwMDAwICAgICAgICAgICAgICAgIC4uLi4uLi4uLi4uLi4uLi4KPiAwMDAw
-MDE1MDogMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgICAgICAgICAgICAgICAg
-Li4uLi4uLi4uLi4uLi4uLgo+IDAwMDAwMTYwOiAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMCAw
-MDAwMDAwMCAgICAgICAgICAgICAgICAuLi4uLi4uLi4uLi4uLi4uCj4gMDAwMDAxNzA6IDAwMDAw
-MDAwIDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwICAgICAgICAgICAgICAgIC4uLi4uLi4uLi4u
-Li4uLi4KPiAwMDAwMDE4MDogMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDQgICAg
-ICAgICAgICAgICAgLi4uLi4uLi4uLi4uLi4uLgo+IDAwMDAwMTkwOiAwMDAwMDAwMCAwMDAwMDAw
-MCAwMDAwMDAwMCAwMDAwMDAwMCAgICAgICAgICAgICAgICAuLi4uLi4uLi4uLi4uLi4uCj4gLi4u
-Lgo+IAo+IEJ1dCB0aGUgZGF0YXMgc2hvdWxkIGJlOgo+IDAwMDAwMDAwOiBlYTAwMDAwYSBlYWZm
-ZmZmZSBlYWZmZmZmZSBlYWZmZmZmZSAgICAgICAgICAgICAgICAuLi4uLi4uLi4uLi4uLi4uCj4g
-MDAwMDAwMTA6IGVhZmZmZmZlIDAwMDAwMTZjIGVhZmZmZmZlIGVhZmZmZmZlICAgICAgICAgICAg
-ICAgIC4uLi5sLi4uLi4uLi4uLi4KPiAwMDAwMDAyMDogNjU3MjYxNjIgMDA3ODZmNjIgMjNiMDAw
-MDAgMDAwMjAwZmEgICAgICAgICAgICAgICAgYmFyZWJveC4uLi4jLi4uLgo+IDAwMDAwMDMwOiBl
-MTBmMzAwMCBlM2MzMzAxZiBlMzgzMzBkMyBlMTI5ZjAwMyAgICAgICAgICAgICAgICAuMC4uLjAu
-Li4wLi4uLikuCj4gMDAwMDAwNDA6IGVlMTEzZjEwIGUzYzMzZDhlIGUzYzMzMDA1IGUzODMzYTAx
-ICAgICAgICAgICAgICAgIC4/Li4uPS4uLjAuLi46Li4KPiAwMDAwMDA1MDogZTM4MzMwMDIgZWUw
-MTNmMTAgZTNlMDIwMDAgZTUxMjMzY2YgICAgICAgICAgICAgICAgLjAuLi4/Li4uIC4uLjMuLgo+
-IDAwMDAwMDYwOiBlMzEzMDAwMyAxYTAwMDAzOSBlNTlmMzBlNCBlMWEwMTAwMiAgICAgICAgICAg
-ICAgICAuLi4uOS4uLi4wLi4uLi4uCj4gMDAwMDAwNzA6IGU1MDIzM2RmIGU1MTEzMzk3IGUzMTMw
-MDAxIDBhZmZmZmZjICAgICAgICAgICAgICAgIC4zLi4uMy4uLi4uLi4uLi4KPiAwMDAwMDA4MDog
-ZTNhMDMwMDAgZTUwMTMwOWIgZTU5ZjMwYzggZTNlMDIwMDAgICAgICAgICAgICAgICAgLjAuLi4w
-Li4uMC4uLiAuLgo+IDAwMDAwMDkwOiBlNTAxMzA4ZiBlNTlmMzBjMCBlNTAxMzNkNyBlNTEyMzM5
-NyAgICAgICAgICAgICAgICAuMC4uLjAuLi4zLi4uMy4uCj4gMDAwMDAwYTA6IGUzMTMwMDAyIDBh
-ZmZmZmZjIGUzYTAzYzAxIGU1MDIzM2NmICAgICAgICAgICAgICAgIC4uLi4uLi4uLjwuLi4zLi4K
-PiAwMDAwMDBiMDogZTU5ZjMwYTggZTNlMGMwMDAgZTUwMjMzY2YgZTUxYzMzOTcgICAgICAgICAg
-ICAgICAgLjAuLi4uLi4uMy4uLjMuLgo+IDAwMDAwMGMwOiBlMzEzMDAwOCAwYWZmZmZmYyBlNTlm
-MzA5NCBlM2EwMjAwMCAgICAgICAgICAgICAgICAuLi4uLi4uLi4wLi4uIC4uCj4gMDAwMDAwZDA6
-IGU1MGMzNzhmIGU1MGMyNzhiIGU1MGMzN2ZiIGU1OWYzMDg0ICAgICAgICAgICAgICAgIC43Li4u
-Jy4uLjcuLi4wLi4KPiAwMDAwMDBlMDogZTNhMDEwMDIgZTUwYzEwOWYgZTNhMDAyMDIgZTUwYzMw
-NjcgICAgICAgICAgICAgICAgLi4uLi4uLi4uLi4uZzAuLgo+IDAwMDAwMGYwOiBlM2EwMzAwNCBl
-NTBjMTA2ZiBlMWEwZTAwMiBlNTgwMjAwMCAgICAgICAgICAgICAgICAuMC4uby4uLi4uLi4uIC4u
-Cj4gLi4uLi4uCj4gCj4gSXQgbG9va3MgbGlrZSB0aGVyZSBhcmUgNjRieXRlcyBjb3JyZWN0IGRh
-dGEgaW4gZXZlcnkgMjU2IGJ5dGVzLiBJdCdzIHNvCj4gc3RyYW5nZSEhCj4gCj4gQWZ0ZXIgc3R1
-ZHkgYmFyZWJveCBzb3VyY2UgY29kZXMuIEkgZm91bmQgYXRtZWxfcmVhZF9idWYgdXNlCj4gbWVt
-Y3B5X2Zyb21pbyB0byByZWFkLiBJIGNhbid0IHVuZGVyc3RhbmQgaXQuIE1heSBiZSBvbiBhdDkx
-c2FteHh4IGNwdQo+IGl0J3MgcmlnaHQuCj4gCj4gU28gSSBsZXQgIm5hbmRfY2hpcC0+cmVhZF9i
-dWYgPSBOVUxMIiB0byBsZXQgaXQgdXNlIHRoZSBkZWZhdWx0IHJlYWQKPiBmdW5jdGlvbi4KPiAK
-PiBBZnRlciB0aGlzICwgSXQncyBPSwo+IAo+IEkgaGFzIG5vIGF0OTFzYW0gYm9hcmQsIFNvIGFu
-eWJvZHkgdGVsbCBtZSBpcyB0aGlzIGJlaGF2aW9yIHNwZWNpZmljIHRvCj4gYXQ5MXJtOTIwMD8K
-PiAKPiAtLSAKPiBCZXN0IFJlZ2FyZHMsCj4genpzCj4gCj4gCj4gCj4gX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+
-IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+HI,
+
+	some fixe for at91
+
+	they are needed for at91sam9n12 support
+
+The following changes since commit c7a729aefe13104b6f3a9f2150a9e993bb510d43:
+
+  Merge branch 'for-next/m25p80' (2012-11-21 11:54:34 +0100)
+
+are available in the git repository at:
+
+
+  git://git.jcrosoft.org/barebox.git delivery/at91_fixes
+
+for you to fetch changes up to 02d37b5d4598cd3ffea4730aa027c8c04ab1f58d:
+
+  Revert "mtd: atmel_nand: optimize read/write buffer functions" (2012-11-22 02:21:14 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (4):
+      at91: fix timer rate
+      atmel_nand: fix pmecc timeout
+      at91: clock: check overclock for sam9260/9261/9263/9rl
+      Revert "mtd: atmel_nand: optimize read/write buffer functions"
+
+ arch/arm/mach-at91/at91sam926x_time.c |    7 ++++++-
+ arch/arm/mach-at91/clock.c            |   12 ++++++++++++
+ drivers/mtd/nand/atmel_nand.c         |   33 +++++++++++++++++++++++++--------
+ drivers/mtd/nand/atmel_nand_ecc.h     |    2 +-
+ 4 files changed, 44 insertions(+), 10 deletions(-)
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
