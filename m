@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f49.google.com ([209.85.215.49])
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tc0Wv-00085w-Nh
- for barebox@lists.infradead.org; Fri, 23 Nov 2012 21:11:23 +0000
-Received: by mail-la0-f49.google.com with SMTP id r15so6827139lag.36
- for <barebox@lists.infradead.org>; Fri, 23 Nov 2012 13:11:10 -0800 (PST)
+ id 1Tc0Wk-00085u-KG
+ for barebox@lists.infradead.org; Fri, 23 Nov 2012 21:11:16 +0000
+Received: by mail-lb0-f177.google.com with SMTP id n10so5173292lbo.36
+ for <barebox@lists.infradead.org>; Fri, 23 Nov 2012 13:11:06 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat, 24 Nov 2012 01:10:58 +0400
-Message-Id: <1353705059-7792-3-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1353705059-7792-1-git-send-email-antonynpavlov@gmail.com>
-References: <1353705059-7792-1-git-send-email-antonynpavlov@gmail.com>
+Date: Sat, 24 Nov 2012 01:10:56 +0400
+Message-Id: <1353705059-7792-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,112 +21,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 2/3] commands: md: add '-x' option (swap bytes)
+Subject: [RFC 0/3] commands: md, mw: add '-x' option (swap bytes)
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- commands/mem.c |   24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+Most of my MIPS boards run barebox in big-endian mode, but
+sometimes I need see state of little-endian registers
+(e.g. registers of PCI-connected peripherals) and it is not
+very hande to swap bytes manually.
 
-diff --git a/commands/mem.c b/commands/mem.c
-index a42b7ba..9873e52 100644
---- a/commands/mem.c
-+++ b/commands/mem.c
-@@ -136,7 +136,7 @@ static int open_and_lseek(const char *filename, int mode, loff_t pos)
- }
- 
- static int mem_parse_options(int argc, char *argv[], char *optstr, int *mode,
--		char **sourcefile, char **destfile)
-+		char **sourcefile, char **destfile, int *swab)
- {
- 	int opt;
- 
-@@ -157,6 +157,9 @@ static int mem_parse_options(int argc, char *argv[], char *optstr, int *mode,
- 		case 'd':
- 			*destfile = optarg;
- 			break;
-+		case 'x':
-+			*swab = 1;
-+			break;
- 		default:
- 			return -1;
- 		}
-@@ -173,11 +176,13 @@ static int do_mem_md(int argc, char *argv[])
- 	int fd;
- 	char *filename = DEVMEM;
- 	int mode = O_RWSIZE_4;
-+	int swab = 0;
- 
- 	if (argc < 2)
- 		return COMMAND_ERROR_USAGE;
- 
--	if (mem_parse_options(argc, argv, "bwls:", &mode, &filename, NULL) < 0)
-+	if (mem_parse_options(argc, argv, "bwls:x", &mode, &filename, NULL,
-+			&swab) < 0)
- 		return 1;
- 
- 	if (optind < argc) {
-@@ -204,7 +209,7 @@ static int do_mem_md(int argc, char *argv[])
- 			goto out;
- 
- 		if ((ret = memory_display(rw_buf, start, r,
--				mode >> O_RWSIZE_SHIFT, 0)))
-+				mode >> O_RWSIZE_SHIFT, swab)))
- 			goto out;
- 
- 		start += r;
-@@ -225,6 +230,7 @@ static const __maybe_unused char cmd_md_help[] =
- "  -b          output in bytes\n"
- "  -w          output in halfwords (16bit)\n"
- "  -l          output in words (32bit)\n"
-+"  -x          swap bytes at output\n"
- "\n"
- "Memory regions:\n"
- "Memory regions can be specified in two different forms: start+size\n"
-@@ -250,7 +256,8 @@ static int do_mem_mw(int argc, char *argv[])
- 	int mode = O_RWSIZE_4;
- 	loff_t adr;
- 
--	if (mem_parse_options(argc, argv, "bwld:", &mode, NULL, &filename) < 0)
-+	if (mem_parse_options(argc, argv, "bwld:", &mode, NULL, &filename,
-+			NULL) < 0)
- 		return 1;
- 
- 	if (optind + 1 >= argc)
-@@ -318,7 +325,8 @@ static int do_mem_cmp(int argc, char *argv[])
- 	int     offset = 0;
- 	struct  stat statbuf;
- 
--	if (mem_parse_options(argc, argv, "bwls:d:", &mode, &sourcefile, &destfile) < 0)
-+	if (mem_parse_options(argc, argv, "bwls:d:", &mode, &sourcefile,
-+			&destfile, NULL) < 0)
- 		return 1;
- 
- 	if (optind + 2 > argc)
-@@ -425,7 +433,8 @@ static int do_mem_cp(int argc, char *argv[])
- 	struct stat statbuf;
- 	int ret = 0;
- 
--	if (mem_parse_options(argc, argv, "bwls:d:", &mode, &sourcefile, &destfile) < 0)
-+	if (mem_parse_options(argc, argv, "bwls:d:", &mode, &sourcefile,
-+			&destfile, NULL) < 0)
- 		return 1;
- 
- 	if (optind + 2 > argc)
-@@ -530,7 +539,8 @@ static int do_memset(int argc, char *argv[])
- 	int     ret = 1;
- 	char	*file = DEVMEM;
- 
--	if (mem_parse_options(argc, argv, "bwld:", &mode, NULL, &file) < 0)
-+	if (mem_parse_options(argc, argv, "bwld:", &mode, NULL, &file,
-+			NULL) < 0)
- 		return 1;
- 
- 	if (optind + 3 > argc)
--- 
-1.7.10.4
+This patch series add to memory commands (md and mw) ability
+to swap bytes "on the fly".
 
+[RFC 1/3] add swab (swap bytes) option to memory_display()
+[RFC 2/3] commands: md: add '-x' option (swap bytes)
+[RFC 3/3] commands: mw: add '-x' option (swap bytes)
 
 _______________________________________________
 barebox mailing list
