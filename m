@@ -1,21 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo4.mail-out.ovh.net ([178.32.228.4])
+Received: from 9.mo4.mail-out.ovh.net ([46.105.40.176]
+ helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TcBOp-00085s-Cu
- for barebox@lists.infradead.org; Sat, 24 Nov 2012 08:47:44 +0000
+ id 1TcBOG-000854-UF
+ for barebox@lists.infradead.org; Sat, 24 Nov 2012 08:47:11 +0000
 Received: from mail34.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 4931E1058354
- for <barebox@lists.infradead.org>; Sat, 24 Nov 2012 09:55:34 +0100 (CET)
-Date: Sat, 24 Nov 2012 09:45:44 +0100
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 72A2C1058365
+ for <barebox@lists.infradead.org>; Sat, 24 Nov 2012 09:54:56 +0100 (CET)
+Date: Sat, 24 Nov 2012 09:45:07 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121124084544.GY8327@game.jcrosoft.org>
-References: <20121123155224.GV8327@game.jcrosoft.org>
- <1353686104-31295-1-git-send-email-plagnioj@jcrosoft.com>
- <1353686104-31295-4-git-send-email-plagnioj@jcrosoft.com>
- <20121124034241.GA19824@greatfirst.com>
+Message-ID: <20121124084507.GX8327@game.jcrosoft.org>
+References: <1353727464-15175-1-git-send-email-vicencb@gmail.com>
+ <1353727464-15175-2-git-send-email-vicencb@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121124034241.GA19824@greatfirst.com>
+In-Reply-To: <1353727464-15175-2-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,61 +23,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] Revert "mtd: atmel_nand: optimize read/write
- buffer functions"
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/2] uimage: fix misunderstanding in common/uimage.c
+To: Vicente Bergas <vicencb@gmail.com>
+Cc: barebox@lists.infradead.org
 
-T24gMTE6NDIgU2F0IDI0IE5vdiAgICAgLCDlvKDlv6DlsbEgd3JvdGU6Cj4gSW4gbWVzc2FnZSA8
-MTM1MzY4NjEwNC0zMTI5NS00LWdpdC1zZW5kLWVtYWlsLXBsYWduaW9qQGpjcm9zb2Z0LmNvbT4g
-SmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9MLVZJTExBUkQgd3JvdGU6Cj4gPiBBcyBpbiB0aGUga2Vy
-bmVsIHdlIHJldmVydCBhcyB0aGlzIHdhcyBzdXBwb3NlZCB0byB3b3JrIGJ1dCBkb2VzIG5vdCB5
-ZXQKPiA+IHRoaXMgbWF5IG5lZWQgbW9yZSB3b3JrIG9uIHRoZSBzbWMgdG8gYmUgYWJsZSB0byB1
-c2UgaXQKPiA+IFNvIGZvciBub3cgcmV2ZXJ0IGl0Cj4gPgo+ID4gVGhpcyByZXZlcnRzIGNvbW1p
-dCA4MDlmMGY2MzI3MjQxNTA0YjUwNzE2MjJhOGQ1NzMyNTVmOTFhODc1Lgo+ID4KPiA+IFNpZ25l
-ZC1vZmYtYnk6IEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIDxwbGFnbmlvakBqY3Jv
-c29mdC5jb20+Cj4gPiAtLS0KPiA+ICBkcml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYyB8ICAg
-MzMgKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tCj4gPiAgMSBmaWxlIGNoYW5nZWQs
-IDI1IGluc2VydGlvbnMoKyksIDggZGVsZXRpb25zKC0pCj4gPgo+ID4gZGlmZiAtLWdpdCBhL2Ry
-aXZlcnMvbXRkL25hbmQvYXRtZWxfbmFuZC5jIGIvZHJpdmVycy9tdGQvbmFuZC9hdG1lbF9uYW5k
-LmMKPiA+IGluZGV4IDA0NzcxNzguLjY5ZTgxNzEgMTAwNjQ0Cj4gPiAtLS0gYS9kcml2ZXJzL210
-ZC9uYW5kL2F0bWVsX25hbmQuYwo+ID4gKysrIGIvZHJpdmVycy9tdGQvbmFuZC9hdG1lbF9uYW5k
-LmMKPiA+IEBAIC0xNTksMTYgKzE1OSwzMCBAQCBzdGF0aWMgaW50IGF0bWVsX25hbmRfZGV2aWNl
-X3JlYWR5KHN0cnVjdCBtdGRfaW5mbyAqbXRkKQo+ID4gICAqLwo+ID4gIHN0YXRpYyB2b2lkIGF0
-bWVsX3JlYWRfYnVmKHN0cnVjdCBtdGRfaW5mbyAqbXRkLCB1OCAqYnVmLCBpbnQgbGVuKQo+ID4g
-IHsKPiA+IC0Jc3RydWN0IG5hbmRfY2hpcCAqY2hpcCA9IG10ZC0+cHJpdjsKPiA+ICsJc3RydWN0
-IG5hbmRfY2hpcAkqbmFuZF9jaGlwID0gbXRkLT5wcml2Owo+ID4KPiA+IC0JbWVtY3B5X2Zyb21p
-byhidWYsIGNoaXAtPklPX0FERFJfUiwgbGVuKTsKPiA+ICsJcmVhZHNiKG5hbmRfY2hpcC0+SU9f
-QUREUl9SLCBidWYsIGxlbik7Cj4gPiArfQo+ID4gKwo+ID4gK3N0YXRpYyB2b2lkIGF0bWVsX3Jl
-YWRfYnVmMTYoc3RydWN0IG10ZF9pbmZvICptdGQsIHU4ICpidWYsIGludCBsZW4pCj4gPiArewo+
-ID4gKwlzdHJ1Y3QgbmFuZF9jaGlwCSpuYW5kX2NoaXAgPSBtdGQtPnByaXY7Cj4gPiArCj4gPiAr
-CXJlYWRzdyhuYW5kX2NoaXAtPklPX0FERFJfUiwgYnVmLCBsZW4gLyAyKTsKPiA+ICB9Cj4gPgo+
-ID4gIHN0YXRpYyB2b2lkIGF0bWVsX3dyaXRlX2J1ZihzdHJ1Y3QgbXRkX2luZm8gKm10ZCwgY29u
-c3QgdTggKmJ1ZiwgaW50IGxlbikKPiA+ICB7Cj4gPiAtCXN0cnVjdCBuYW5kX2NoaXAgKmNoaXAg
-PSBtdGQtPnByaXY7Cj4gPiArCXN0cnVjdCBuYW5kX2NoaXAJKm5hbmRfY2hpcCA9IG10ZC0+cHJp
-djsKPiA+Cj4gPiAtCW1lbWNweV90b2lvKGNoaXAtPklPX0FERFJfVywgYnVmLCBsZW4pOwo+ID4g
-Kwl3cml0ZXNiKG5hbmRfY2hpcC0+SU9fQUREUl9XLCBidWYsIGxlbik7Cj4gPiArfQo+ID4gKwo+
-ID4gK3N0YXRpYyB2b2lkIGF0bWVsX3dyaXRlX2J1ZjE2KHN0cnVjdCBtdGRfaW5mbyAqbXRkLCBj
-b25zdCB1OCAqYnVmLCBpbnQgbGVuKQo+ID4gK3sKPiA+ICsJc3RydWN0IG5hbmRfY2hpcAkqbmFu
-ZF9jaGlwID0gbXRkLT5wcml2Owo+ID4gKwo+ID4gKwl3cml0ZXN3KG5hbmRfY2hpcC0+SU9fQURE
-Ul9XLCBidWYsIGxlbiAvIDIpOwo+ID4gIH0KPiA+Cj4gPiAgLyoKPiA+IEBAIC0xMTEyLDExICsx
-MTI2LDE0IEBAIHN0YXRpYyBpbnQgX19pbml0IGF0bWVsX25hbmRfcHJvYmUoc3RydWN0IGRldmlj
-ZV9kICpkZXYpCj4gPgo+ID4gIAluYW5kX2NoaXAtPmNoaXBfZGVsYXkgPSAyMDsJCS8qIDIwdXMg
-Y29tbWFuZCBkZWxheSB0aW1lICovCj4gPgo+ID4gLQlpZiAoaG9zdC0+Ym9hcmQtPmJ1c193aWR0
-aF8xNikJCS8qIDE2LWJpdCBidXMgd2lkdGggKi8KPiA+ICsJaWYgKGhvc3QtPmJvYXJkLT5idXNf
-d2lkdGhfMTYpIHsJLyogMTYtYml0IGJ1cyB3aWR0aCAqLwo+ID4gIAkJbmFuZF9jaGlwLT5vcHRp
-b25zIHw9IE5BTkRfQlVTV0lEVEhfMTY7Cj4gPiAtCj4gPiAtCW5hbmRfY2hpcC0+cmVhZF9idWYg
-PSBhdG1lbF9yZWFkX2J1ZjsKPiA+IC0JbmFuZF9jaGlwLT53cml0ZV9idWYgPSBhdG1lbF93cml0
-ZV9idWY7Cj4gPiArCQluYW5kX2NoaXAtPnJlYWRfYnVmID0gYXRtZWxfcmVhZF9idWYxNjsKPiA+
-ICsJCW5hbmRfY2hpcC0+d3JpdGVfYnVmID0gYXRtZWxfd3JpdGVfYnVmMTY7Cj4gPiArCX0gZWxz
-ZSB7Cj4gPiArCQluYW5kX2NoaXAtPnJlYWRfYnVmID0gYXRtZWxfcmVhZF9idWY7Cj4gPiArCQlu
-YW5kX2NoaXAtPndyaXRlX2J1ZiA9IGF0bWVsX3dyaXRlX2J1ZjsKPiA+ICsJfQo+ID4KPiA+ICAJ
-YXRtZWxfbmFuZF9lbmFibGUoaG9zdCk7Cj4gPgo+ID4gLS0KPiA+IDEuNy4xMC40Cj4gPgo+IAo+
-IFRoaXMgcGF0Y2ggcmVzb2x2ZXMgbXkgcHJvYmxlbQpJJ20gZXhwZWN0aW5nIHRvIHNlZSB5b3Vy
-IHBhdGNoZXMKCkJlc3QgUmVnYXJkcywKSi4KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
-cmVib3gK
+On 04:24 Sat 24 Nov     , Vicente Bergas wrote:
+> The option of reading the file at once was discarded because
+> the option of increasing the buffer size provided almost the
+> same benefit.
+nack
+
+this is mandatory for tftp fs support
+
+Best Regarfd,
+J.
+> 
+> Signed-off-by: Vicente Bergas <vicencb@gmail.com>
+> ---
+>  common/uimage.c | 24 ------------------------
+>  1 file changed, 24 deletions(-)
+> 
+> diff --git a/common/uimage.c b/common/uimage.c
+> index 3f5a3d5..8bcbfdd 100644
+> --- a/common/uimage.c
+> +++ b/common/uimage.c
+> @@ -28,8 +28,6 @@
+>  #include <rtc.h>
+>  #include <filetype.h>
+>  #include <memory.h>
+> -#include <linux/stat.h>
+> -#include <sizes.h>
+>  
+>  #ifdef CONFIG_UIMAGE_MULTI
+>  static inline int uimage_is_multi_image(struct uimage_handle *handle)
+> @@ -384,33 +382,11 @@ struct resource *file_to_sdram(const char *filename, unsigned long adr)
+>  	size_t ofs = 0;
+>  	size_t now;
+>  	int fd;
+> -	struct stat s;
+>  
+>  	fd = open(filename, O_RDONLY);
+>  	if (fd < 0)
+>  		return NULL;
+>  
+> -	/* TODO: use fstat(fd, &s) when implemented and avoid reopening file */
+> -	if (stat(filename, &s) == 0 && s.st_size <= SZ_1G) {
+> -		/*
+> -		 * As the file size is known we can read it at once and improve
+> -		 * transfer speed.
+> -		 */
+> -		size = s.st_size;
+> -		res = request_sdram_region("image", adr, size);
+> -		if (!res) {
+> -			printf("unable to request SDRAM 0x%08lx-0x%08lx\n",
+> -				adr, adr + size - 1);
+> -			goto out;
+> -		}
+> -
+> -		now = read_full(fd, (void *)(res->start), size);
+> -		if (now < size) {
+> -			release_sdram_region(res);
+> -			res = NULL;
+> -		}
+> -		goto out;
+> -	}
+>  	while (1) {
+>  		res = request_sdram_region("image", adr, size);
+>  		if (!res) {
+> -- 
+> 1.8.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
