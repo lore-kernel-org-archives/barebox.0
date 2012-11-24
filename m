@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-f177.google.com ([209.85.212.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tc6MK-0006EO-Hm
- for barebox@lists.infradead.org; Sat, 24 Nov 2012 03:24:49 +0000
-Received: by mail-wi0-f177.google.com with SMTP id c10so1468505wiw.0
- for <barebox@lists.infradead.org>; Fri, 23 Nov 2012 19:24:45 -0800 (PST)
-From: Vicente Bergas <vicencb@gmail.com>
-Date: Sat, 24 Nov 2012 04:24:23 +0100
-Message-Id: <1353727464-15175-2-git-send-email-vicencb@gmail.com>
-In-Reply-To: <1353727464-15175-1-git-send-email-vicencb@gmail.com>
-References: <1353727464-15175-1-git-send-email-vicencb@gmail.com>
+Received: from m50-112.126.com ([123.125.50.112])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Tc6fV-0006T0-VW
+ for barebox@lists.infradead.org; Sat, 24 Nov 2012 03:44:42 +0000
+Date: Sat, 24 Nov 2012 11:42:42 +0800
+From: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
+Message-ID: <20121124034241.GA19824@greatfirst.com>
+References: <20121123155224.GV8327@game.jcrosoft.org>
+ <1353686104-31295-1-git-send-email-plagnioj@jcrosoft.com>
+ <1353686104-31295-4-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1353686104-31295-4-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,73 +20,95 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] uimage: fix misunderstanding in common/uimage.c
-To: barebox@lists.infradead.org
-Cc: Vicente Bergas <vicencb@gmail.com>
+Subject: Re: [PATCH 4/4] Revert "mtd: atmel_nand: optimize read/write buffer
+ functions"
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-The option of reading the file at once was discarded because
-the option of increasing the buffer size provided almost the
-same benefit.
+In message <1353686104-31295-4-git-send-email-plagnioj@jcrosoft.com> Jean-Christophe PLAGNIOL-VILLARD wrote:
+> As in the kernel we revert as this was supposed to work but does not yet
+> this may need more work on the smc to be able to use it
+> So for now revert it
+>
+> This reverts commit 809f0f6327241504b5071622a8d573255f91a875.
+>
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  drivers/mtd/nand/atmel_nand.c |   33 +++++++++++++++++++++++++--------
+>  1 file changed, 25 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
+> index 0477178..69e8171 100644
+> --- a/drivers/mtd/nand/atmel_nand.c
+> +++ b/drivers/mtd/nand/atmel_nand.c
+> @@ -159,16 +159,30 @@ static int atmel_nand_device_ready(struct mtd_info *mtd)
+>   */
+>  static void atmel_read_buf(struct mtd_info *mtd, u8 *buf, int len)
+>  {
+> -	struct nand_chip *chip = mtd->priv;
+> +	struct nand_chip	*nand_chip = mtd->priv;
+>
+> -	memcpy_fromio(buf, chip->IO_ADDR_R, len);
+> +	readsb(nand_chip->IO_ADDR_R, buf, len);
+> +}
+> +
+> +static void atmel_read_buf16(struct mtd_info *mtd, u8 *buf, int len)
+> +{
+> +	struct nand_chip	*nand_chip = mtd->priv;
+> +
+> +	readsw(nand_chip->IO_ADDR_R, buf, len / 2);
+>  }
+>
+>  static void atmel_write_buf(struct mtd_info *mtd, const u8 *buf, int len)
+>  {
+> -	struct nand_chip *chip = mtd->priv;
+> +	struct nand_chip	*nand_chip = mtd->priv;
+>
+> -	memcpy_toio(chip->IO_ADDR_W, buf, len);
+> +	writesb(nand_chip->IO_ADDR_W, buf, len);
+> +}
+> +
+> +static void atmel_write_buf16(struct mtd_info *mtd, const u8 *buf, int len)
+> +{
+> +	struct nand_chip	*nand_chip = mtd->priv;
+> +
+> +	writesw(nand_chip->IO_ADDR_W, buf, len / 2);
+>  }
+>
+>  /*
+> @@ -1112,11 +1126,14 @@ static int __init atmel_nand_probe(struct device_d *dev)
+>
+>  	nand_chip->chip_delay = 20;		/* 20us command delay time */
+>
+> -	if (host->board->bus_width_16)		/* 16-bit bus width */
+> +	if (host->board->bus_width_16) {	/* 16-bit bus width */
+>  		nand_chip->options |= NAND_BUSWIDTH_16;
+> -
+> -	nand_chip->read_buf = atmel_read_buf;
+> -	nand_chip->write_buf = atmel_write_buf;
+> +		nand_chip->read_buf = atmel_read_buf16;
+> +		nand_chip->write_buf = atmel_write_buf16;
+> +	} else {
+> +		nand_chip->read_buf = atmel_read_buf;
+> +		nand_chip->write_buf = atmel_write_buf;
+> +	}
+>
+>  	atmel_nand_enable(host);
+>
+> --
+> 1.7.10.4
+>
 
-Signed-off-by: Vicente Bergas <vicencb@gmail.com>
----
- common/uimage.c | 24 ------------------------
- 1 file changed, 24 deletions(-)
+This patch resolves my problem
 
-diff --git a/common/uimage.c b/common/uimage.c
-index 3f5a3d5..8bcbfdd 100644
---- a/common/uimage.c
-+++ b/common/uimage.c
-@@ -28,8 +28,6 @@
- #include <rtc.h>
- #include <filetype.h>
- #include <memory.h>
--#include <linux/stat.h>
--#include <sizes.h>
- 
- #ifdef CONFIG_UIMAGE_MULTI
- static inline int uimage_is_multi_image(struct uimage_handle *handle)
-@@ -384,33 +382,11 @@ struct resource *file_to_sdram(const char *filename, unsigned long adr)
- 	size_t ofs = 0;
- 	size_t now;
- 	int fd;
--	struct stat s;
- 
- 	fd = open(filename, O_RDONLY);
- 	if (fd < 0)
- 		return NULL;
- 
--	/* TODO: use fstat(fd, &s) when implemented and avoid reopening file */
--	if (stat(filename, &s) == 0 && s.st_size <= SZ_1G) {
--		/*
--		 * As the file size is known we can read it at once and improve
--		 * transfer speed.
--		 */
--		size = s.st_size;
--		res = request_sdram_region("image", adr, size);
--		if (!res) {
--			printf("unable to request SDRAM 0x%08lx-0x%08lx\n",
--				adr, adr + size - 1);
--			goto out;
--		}
--
--		now = read_full(fd, (void *)(res->start), size);
--		if (now < size) {
--			release_sdram_region(res);
--			res = NULL;
--		}
--		goto out;
--	}
- 	while (1) {
- 		res = request_sdram_region("image", adr, size);
- 		if (!res) {
 -- 
-1.8.0
+Best Regards,
+zzs
+
 
 
 _______________________________________________
