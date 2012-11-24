@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f49.google.com ([74.125.82.49])
+Received: from mail-wi0-f177.google.com ([209.85.212.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tc6ML-0006EN-6X
+ id 1Tc6MK-0006EO-Hm
  for barebox@lists.infradead.org; Sat, 24 Nov 2012 03:24:49 +0000
-Received: by mail-wg0-f49.google.com with SMTP id gg4so801567wgb.18
- for <barebox@lists.infradead.org>; Fri, 23 Nov 2012 19:24:44 -0800 (PST)
+Received: by mail-wi0-f177.google.com with SMTP id c10so1468505wiw.0
+ for <barebox@lists.infradead.org>; Fri, 23 Nov 2012 19:24:45 -0800 (PST)
 From: Vicente Bergas <vicencb@gmail.com>
-Date: Sat, 24 Nov 2012 04:24:22 +0100
-Message-Id: <1353727464-15175-1-git-send-email-vicencb@gmail.com>
+Date: Sat, 24 Nov 2012 04:24:23 +0100
+Message-Id: <1353727464-15175-2-git-send-email-vicencb@gmail.com>
+In-Reply-To: <1353727464-15175-1-git-send-email-vicencb@gmail.com>
+References: <1353727464-15175-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,28 +23,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/2] Some corrections on archosG9
+Subject: [PATCH 1/2] uimage: fix misunderstanding in common/uimage.c
 To: barebox@lists.infradead.org
 Cc: Vicente Bergas <vicencb@gmail.com>
 
-In the patch series for archosG9 there were an attempt to improve file
-transfers by reading files at once, but finally this solution was discarded.
-Today I've checked the repository and found this solution there, perhaps this
-is a misunderstanding and it's corrected here.
-Sorry for not checking before.
+The option of reading the file at once was discarded because
+the option of increasing the buffer size provided almost the
+same benefit.
 
-The other change is just the inverse: a submitted patch that was not applied.
+Signed-off-by: Vicente Bergas <vicencb@gmail.com>
+---
+ common/uimage.c | 24 ------------------------
+ 1 file changed, 24 deletions(-)
 
-Vicente Bergas (2):
-  uimage: fix misunderstanding in common/uimage.c
-  archosg9: improve configuration
-
- arch/arm/boards/archosg9/env/config       |  4 +++-
- arch/arm/boards/archosg9/env/init/usbboot |  9 +++++----
- arch/arm/configs/archosg9_defconfig       |  2 +-
- common/uimage.c                           | 24 ------------------------
- 4 files changed, 9 insertions(+), 30 deletions(-)
-
+diff --git a/common/uimage.c b/common/uimage.c
+index 3f5a3d5..8bcbfdd 100644
+--- a/common/uimage.c
++++ b/common/uimage.c
+@@ -28,8 +28,6 @@
+ #include <rtc.h>
+ #include <filetype.h>
+ #include <memory.h>
+-#include <linux/stat.h>
+-#include <sizes.h>
+ 
+ #ifdef CONFIG_UIMAGE_MULTI
+ static inline int uimage_is_multi_image(struct uimage_handle *handle)
+@@ -384,33 +382,11 @@ struct resource *file_to_sdram(const char *filename, unsigned long adr)
+ 	size_t ofs = 0;
+ 	size_t now;
+ 	int fd;
+-	struct stat s;
+ 
+ 	fd = open(filename, O_RDONLY);
+ 	if (fd < 0)
+ 		return NULL;
+ 
+-	/* TODO: use fstat(fd, &s) when implemented and avoid reopening file */
+-	if (stat(filename, &s) == 0 && s.st_size <= SZ_1G) {
+-		/*
+-		 * As the file size is known we can read it at once and improve
+-		 * transfer speed.
+-		 */
+-		size = s.st_size;
+-		res = request_sdram_region("image", adr, size);
+-		if (!res) {
+-			printf("unable to request SDRAM 0x%08lx-0x%08lx\n",
+-				adr, adr + size - 1);
+-			goto out;
+-		}
+-
+-		now = read_full(fd, (void *)(res->start), size);
+-		if (now < size) {
+-			release_sdram_region(res);
+-			res = NULL;
+-		}
+-		goto out;
+-	}
+ 	while (1) {
+ 		res = request_sdram_region("image", adr, size);
+ 		if (!res) {
 -- 
 1.8.0
 
