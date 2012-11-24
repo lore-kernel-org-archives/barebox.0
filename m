@@ -1,17 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from m50-112.126.com ([123.125.50.112])
+Received: from mo4.mail-out.ovh.net ([178.32.228.4])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tc6fV-0006T0-VW
- for barebox@lists.infradead.org; Sat, 24 Nov 2012 03:44:42 +0000
-Date: Sat, 24 Nov 2012 11:42:42 +0800
-From: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
-Message-ID: <20121124034241.GA19824@greatfirst.com>
+ id 1TcBOp-00085s-Cu
+ for barebox@lists.infradead.org; Sat, 24 Nov 2012 08:47:44 +0000
+Received: from mail34.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 4931E1058354
+ for <barebox@lists.infradead.org>; Sat, 24 Nov 2012 09:55:34 +0100 (CET)
+Date: Sat, 24 Nov 2012 09:45:44 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121124084544.GY8327@game.jcrosoft.org>
 References: <20121123155224.GV8327@game.jcrosoft.org>
  <1353686104-31295-1-git-send-email-plagnioj@jcrosoft.com>
  <1353686104-31295-4-git-send-email-plagnioj@jcrosoft.com>
+ <20121124034241.GA19824@greatfirst.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1353686104-31295-4-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20121124034241.GA19824@greatfirst.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,98 +24,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] Revert "mtd: atmel_nand: optimize read/write buffer
- functions"
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 4/4] Revert "mtd: atmel_nand: optimize read/write
+ buffer functions"
+To: barebox <barebox@lists.infradead.org>
 
-In message <1353686104-31295-4-git-send-email-plagnioj@jcrosoft.com> Jean-Christophe PLAGNIOL-VILLARD wrote:
-> As in the kernel we revert as this was supposed to work but does not yet
-> this may need more work on the smc to be able to use it
-> So for now revert it
->
-> This reverts commit 809f0f6327241504b5071622a8d573255f91a875.
->
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  drivers/mtd/nand/atmel_nand.c |   33 +++++++++++++++++++++++++--------
->  1 file changed, 25 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
-> index 0477178..69e8171 100644
-> --- a/drivers/mtd/nand/atmel_nand.c
-> +++ b/drivers/mtd/nand/atmel_nand.c
-> @@ -159,16 +159,30 @@ static int atmel_nand_device_ready(struct mtd_info *mtd)
->   */
->  static void atmel_read_buf(struct mtd_info *mtd, u8 *buf, int len)
->  {
-> -	struct nand_chip *chip = mtd->priv;
-> +	struct nand_chip	*nand_chip = mtd->priv;
->
-> -	memcpy_fromio(buf, chip->IO_ADDR_R, len);
-> +	readsb(nand_chip->IO_ADDR_R, buf, len);
-> +}
-> +
-> +static void atmel_read_buf16(struct mtd_info *mtd, u8 *buf, int len)
-> +{
-> +	struct nand_chip	*nand_chip = mtd->priv;
-> +
-> +	readsw(nand_chip->IO_ADDR_R, buf, len / 2);
->  }
->
->  static void atmel_write_buf(struct mtd_info *mtd, const u8 *buf, int len)
->  {
-> -	struct nand_chip *chip = mtd->priv;
-> +	struct nand_chip	*nand_chip = mtd->priv;
->
-> -	memcpy_toio(chip->IO_ADDR_W, buf, len);
-> +	writesb(nand_chip->IO_ADDR_W, buf, len);
-> +}
-> +
-> +static void atmel_write_buf16(struct mtd_info *mtd, const u8 *buf, int len)
-> +{
-> +	struct nand_chip	*nand_chip = mtd->priv;
-> +
-> +	writesw(nand_chip->IO_ADDR_W, buf, len / 2);
->  }
->
->  /*
-> @@ -1112,11 +1126,14 @@ static int __init atmel_nand_probe(struct device_d *dev)
->
->  	nand_chip->chip_delay = 20;		/* 20us command delay time */
->
-> -	if (host->board->bus_width_16)		/* 16-bit bus width */
-> +	if (host->board->bus_width_16) {	/* 16-bit bus width */
->  		nand_chip->options |= NAND_BUSWIDTH_16;
-> -
-> -	nand_chip->read_buf = atmel_read_buf;
-> -	nand_chip->write_buf = atmel_write_buf;
-> +		nand_chip->read_buf = atmel_read_buf16;
-> +		nand_chip->write_buf = atmel_write_buf16;
-> +	} else {
-> +		nand_chip->read_buf = atmel_read_buf;
-> +		nand_chip->write_buf = atmel_write_buf;
-> +	}
->
->  	atmel_nand_enable(host);
->
-> --
-> 1.7.10.4
->
-
-This patch resolves my problem
-
--- 
-Best Regards,
-zzs
-
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMTE6NDIgU2F0IDI0IE5vdiAgICAgLCDlvKDlv6DlsbEgd3JvdGU6Cj4gSW4gbWVzc2FnZSA8
+MTM1MzY4NjEwNC0zMTI5NS00LWdpdC1zZW5kLWVtYWlsLXBsYWduaW9qQGpjcm9zb2Z0LmNvbT4g
+SmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9MLVZJTExBUkQgd3JvdGU6Cj4gPiBBcyBpbiB0aGUga2Vy
+bmVsIHdlIHJldmVydCBhcyB0aGlzIHdhcyBzdXBwb3NlZCB0byB3b3JrIGJ1dCBkb2VzIG5vdCB5
+ZXQKPiA+IHRoaXMgbWF5IG5lZWQgbW9yZSB3b3JrIG9uIHRoZSBzbWMgdG8gYmUgYWJsZSB0byB1
+c2UgaXQKPiA+IFNvIGZvciBub3cgcmV2ZXJ0IGl0Cj4gPgo+ID4gVGhpcyByZXZlcnRzIGNvbW1p
+dCA4MDlmMGY2MzI3MjQxNTA0YjUwNzE2MjJhOGQ1NzMyNTVmOTFhODc1Lgo+ID4KPiA+IFNpZ25l
+ZC1vZmYtYnk6IEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIDxwbGFnbmlvakBqY3Jv
+c29mdC5jb20+Cj4gPiAtLS0KPiA+ICBkcml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYyB8ICAg
+MzMgKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tCj4gPiAgMSBmaWxlIGNoYW5nZWQs
+IDI1IGluc2VydGlvbnMoKyksIDggZGVsZXRpb25zKC0pCj4gPgo+ID4gZGlmZiAtLWdpdCBhL2Ry
+aXZlcnMvbXRkL25hbmQvYXRtZWxfbmFuZC5jIGIvZHJpdmVycy9tdGQvbmFuZC9hdG1lbF9uYW5k
+LmMKPiA+IGluZGV4IDA0NzcxNzguLjY5ZTgxNzEgMTAwNjQ0Cj4gPiAtLS0gYS9kcml2ZXJzL210
+ZC9uYW5kL2F0bWVsX25hbmQuYwo+ID4gKysrIGIvZHJpdmVycy9tdGQvbmFuZC9hdG1lbF9uYW5k
+LmMKPiA+IEBAIC0xNTksMTYgKzE1OSwzMCBAQCBzdGF0aWMgaW50IGF0bWVsX25hbmRfZGV2aWNl
+X3JlYWR5KHN0cnVjdCBtdGRfaW5mbyAqbXRkKQo+ID4gICAqLwo+ID4gIHN0YXRpYyB2b2lkIGF0
+bWVsX3JlYWRfYnVmKHN0cnVjdCBtdGRfaW5mbyAqbXRkLCB1OCAqYnVmLCBpbnQgbGVuKQo+ID4g
+IHsKPiA+IC0Jc3RydWN0IG5hbmRfY2hpcCAqY2hpcCA9IG10ZC0+cHJpdjsKPiA+ICsJc3RydWN0
+IG5hbmRfY2hpcAkqbmFuZF9jaGlwID0gbXRkLT5wcml2Owo+ID4KPiA+IC0JbWVtY3B5X2Zyb21p
+byhidWYsIGNoaXAtPklPX0FERFJfUiwgbGVuKTsKPiA+ICsJcmVhZHNiKG5hbmRfY2hpcC0+SU9f
+QUREUl9SLCBidWYsIGxlbik7Cj4gPiArfQo+ID4gKwo+ID4gK3N0YXRpYyB2b2lkIGF0bWVsX3Jl
+YWRfYnVmMTYoc3RydWN0IG10ZF9pbmZvICptdGQsIHU4ICpidWYsIGludCBsZW4pCj4gPiArewo+
+ID4gKwlzdHJ1Y3QgbmFuZF9jaGlwCSpuYW5kX2NoaXAgPSBtdGQtPnByaXY7Cj4gPiArCj4gPiAr
+CXJlYWRzdyhuYW5kX2NoaXAtPklPX0FERFJfUiwgYnVmLCBsZW4gLyAyKTsKPiA+ICB9Cj4gPgo+
+ID4gIHN0YXRpYyB2b2lkIGF0bWVsX3dyaXRlX2J1ZihzdHJ1Y3QgbXRkX2luZm8gKm10ZCwgY29u
+c3QgdTggKmJ1ZiwgaW50IGxlbikKPiA+ICB7Cj4gPiAtCXN0cnVjdCBuYW5kX2NoaXAgKmNoaXAg
+PSBtdGQtPnByaXY7Cj4gPiArCXN0cnVjdCBuYW5kX2NoaXAJKm5hbmRfY2hpcCA9IG10ZC0+cHJp
+djsKPiA+Cj4gPiAtCW1lbWNweV90b2lvKGNoaXAtPklPX0FERFJfVywgYnVmLCBsZW4pOwo+ID4g
+Kwl3cml0ZXNiKG5hbmRfY2hpcC0+SU9fQUREUl9XLCBidWYsIGxlbik7Cj4gPiArfQo+ID4gKwo+
+ID4gK3N0YXRpYyB2b2lkIGF0bWVsX3dyaXRlX2J1ZjE2KHN0cnVjdCBtdGRfaW5mbyAqbXRkLCBj
+b25zdCB1OCAqYnVmLCBpbnQgbGVuKQo+ID4gK3sKPiA+ICsJc3RydWN0IG5hbmRfY2hpcAkqbmFu
+ZF9jaGlwID0gbXRkLT5wcml2Owo+ID4gKwo+ID4gKwl3cml0ZXN3KG5hbmRfY2hpcC0+SU9fQURE
+Ul9XLCBidWYsIGxlbiAvIDIpOwo+ID4gIH0KPiA+Cj4gPiAgLyoKPiA+IEBAIC0xMTEyLDExICsx
+MTI2LDE0IEBAIHN0YXRpYyBpbnQgX19pbml0IGF0bWVsX25hbmRfcHJvYmUoc3RydWN0IGRldmlj
+ZV9kICpkZXYpCj4gPgo+ID4gIAluYW5kX2NoaXAtPmNoaXBfZGVsYXkgPSAyMDsJCS8qIDIwdXMg
+Y29tbWFuZCBkZWxheSB0aW1lICovCj4gPgo+ID4gLQlpZiAoaG9zdC0+Ym9hcmQtPmJ1c193aWR0
+aF8xNikJCS8qIDE2LWJpdCBidXMgd2lkdGggKi8KPiA+ICsJaWYgKGhvc3QtPmJvYXJkLT5idXNf
+d2lkdGhfMTYpIHsJLyogMTYtYml0IGJ1cyB3aWR0aCAqLwo+ID4gIAkJbmFuZF9jaGlwLT5vcHRp
+b25zIHw9IE5BTkRfQlVTV0lEVEhfMTY7Cj4gPiAtCj4gPiAtCW5hbmRfY2hpcC0+cmVhZF9idWYg
+PSBhdG1lbF9yZWFkX2J1ZjsKPiA+IC0JbmFuZF9jaGlwLT53cml0ZV9idWYgPSBhdG1lbF93cml0
+ZV9idWY7Cj4gPiArCQluYW5kX2NoaXAtPnJlYWRfYnVmID0gYXRtZWxfcmVhZF9idWYxNjsKPiA+
+ICsJCW5hbmRfY2hpcC0+d3JpdGVfYnVmID0gYXRtZWxfd3JpdGVfYnVmMTY7Cj4gPiArCX0gZWxz
+ZSB7Cj4gPiArCQluYW5kX2NoaXAtPnJlYWRfYnVmID0gYXRtZWxfcmVhZF9idWY7Cj4gPiArCQlu
+YW5kX2NoaXAtPndyaXRlX2J1ZiA9IGF0bWVsX3dyaXRlX2J1ZjsKPiA+ICsJfQo+ID4KPiA+ICAJ
+YXRtZWxfbmFuZF9lbmFibGUoaG9zdCk7Cj4gPgo+ID4gLS0KPiA+IDEuNy4xMC40Cj4gPgo+IAo+
+IFRoaXMgcGF0Y2ggcmVzb2x2ZXMgbXkgcHJvYmxlbQpJJ20gZXhwZWN0aW5nIHRvIHNlZSB5b3Vy
+IHBhdGNoZXMKCkJlc3QgUmVnYXJkcywKSi4KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
+cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
+cmVib3gK
