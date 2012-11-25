@@ -1,19 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from m50-110.126.com ([123.125.50.110])
+Received: from 1.mo4.mail-out.ovh.net ([178.33.248.196]
+ helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TcXLg-0003bq-NL
- for barebox@lists.infradead.org; Sun, 25 Nov 2012 08:14:00 +0000
-Date: Sun, 25 Nov 2012 16:11:49 +0800
-From: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
-Message-ID: <20121125081149.GB19824@greatfirst.com>
+ id 1Tchxx-0002FK-L9
+ for barebox@lists.infradead.org; Sun, 25 Nov 2012 19:34:12 +0000
+Received: from mail177.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id D14BA104FFBE
+ for <barebox@lists.infradead.org>; Sun, 25 Nov 2012 20:42:00 +0100 (CET)
+Date: Sun, 25 Nov 2012 20:32:08 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121125193208.GZ8327@game.jcrosoft.org>
 References: <20121123155224.GV8327@game.jcrosoft.org>
  <1353686104-31295-1-git-send-email-plagnioj@jcrosoft.com>
  <1353686104-31295-4-git-send-email-plagnioj@jcrosoft.com>
  <20121124034241.GA19824@greatfirst.com>
  <20121124084544.GY8327@game.jcrosoft.org>
+ <20121125081149.GB19824@greatfirst.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121124084544.GY8327@game.jcrosoft.org>
+In-Reply-To: <20121125081149.GB19824@greatfirst.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,108 +27,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] Revert "mtd: atmel_nand: optimize read/write buffer
- functions"
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 4/4] Revert "mtd: atmel_nand: optimize read/write
+ buffer functions"
+To: barebox <barebox@lists.infradead.org>
 
-> >
-> > This patch resolves my problem
-> I'm expecting to see your patches
->
-
-My first patch very simple:
-
-------------------
-diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
-index 0477178..a111463 100644
---- a/drivers/mtd/nand/atmel_nand.c
-+++ b/drivers/mtd/nand/atmel_nand.c
-@@ -155,23 +155,6 @@ static int atmel_nand_device_ready(struct mtd_info *mtd)
- }
-
- /*
-- * Minimal-overhead PIO for data access.
-- */
--static void atmel_read_buf(struct mtd_info *mtd, u8 *buf, int len)
--{
--       struct nand_chip *chip = mtd->priv;
--
--       memcpy_fromio(buf, chip->IO_ADDR_R, len);
--}
--
--static void atmel_write_buf(struct mtd_info *mtd, const u8 *buf, int len)
--{
--       struct nand_chip *chip = mtd->priv;
--
--       memcpy_toio(chip->IO_ADDR_W, buf, len);
--}
--
--/*
-  * Return number of ecc bytes per sector according to sector size and
-  * correction capability
-  *
-@@ -1115,8 +1098,9 @@ static int __init atmel_nand_probe(struct device_d *dev)
-        if (host->board->bus_width_16)          /* 16-bit bus width */
-                nand_chip->options |= NAND_BUSWIDTH_16;
-
--       nand_chip->read_buf = atmel_read_buf;
--       nand_chip->write_buf = atmel_write_buf;
-+       /* use default */
-+       nand_chip->read_buf = NULL;
-+       nand_chip->write_buf = NULL;
-
-        atmel_nand_enable(host);
-------------------
-
-After seeing your patch, I suppose the flowing patch may be works.
-The idea is use optimized read/write function when 2**ale >= pagesize
-and 2**cle >= pagesize.
-
-I can't test it because the ale = a7, cle = a6 on my board, but
-pagesize is 2048
-
-------------------
-diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
-index 0477178..66cf5db 100644
---- a/drivers/mtd/nand/atmel_nand.c
-+++ b/drivers/mtd/nand/atmel_nand.c
-@@ -1115,8 +1115,8 @@ static int __init atmel_nand_probe(struct device_d *dev)
-        if (host->board->bus_width_16)          /* 16-bit bus width */
-                nand_chip->options |= NAND_BUSWIDTH_16;
-
--       nand_chip->read_buf = atmel_read_buf;
--       nand_chip->write_buf = atmel_write_buf;
-+       nand_chip->read_buf = NULL;
-+       nand_chip->write_buf = NULL;
-
-        atmel_nand_enable(host);
-
-@@ -1151,6 +1151,11 @@ static int __init atmel_nand_probe(struct device_d *dev)
-                        goto err_hw_ecc;
-        }
-
-+       if((1 << pdata->ale) >= mtd->writesize && (1 << pdata->cle) >= mtd->writesize) {
-+               nand_chip->read_buf = atmel_read_buf;
-+               nand_chip->write_buf = atmel_write_buf;
-+       }
-+
-        /* second phase scan */
-        if (nand_scan_tail(mtd)) {
-                res = -ENXIO;
-------------------
-
--- 
-Best Regards,
-zzs
-
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMTY6MTEgU3VuIDI1IE5vdiAgICAgLCDlvKDlv6DlsbEgd3JvdGU6Cj4gPiA+Cj4gPiA+IFRo
+aXMgcGF0Y2ggcmVzb2x2ZXMgbXkgcHJvYmxlbQo+ID4gSSdtIGV4cGVjdGluZyB0byBzZWUgeW91
+ciBwYXRjaGVzCj4gPgo+IAo+IE15IGZpcnN0IHBhdGNoIHZlcnkgc2ltcGxlOgp5b3VyIGJvYXJk
+IHBhdGNoCgpJJ2xsIGJlIGF0IHRoZSBlbGVjdHJvbmljIG1hcmtldCBpbiBTSCB0b21vcnJvdwoK
+QmVzdCBSZWdhcmRzLApKLgo+IAo+IC0tLS0tLS0tLS0tLS0tLS0tLQo+IGRpZmYgLS1naXQgYS9k
+cml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYyBiL2RyaXZlcnMvbXRkL25hbmQvYXRtZWxfbmFu
+ZC5jCj4gaW5kZXggMDQ3NzE3OC4uYTExMTQ2MyAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL210ZC9u
+YW5kL2F0bWVsX25hbmQuYwo+ICsrKyBiL2RyaXZlcnMvbXRkL25hbmQvYXRtZWxfbmFuZC5jCj4g
+QEAgLTE1NSwyMyArMTU1LDYgQEAgc3RhdGljIGludCBhdG1lbF9uYW5kX2RldmljZV9yZWFkeShz
+dHJ1Y3QgbXRkX2luZm8gKm10ZCkKPiAgfQo+IAo+ICAvKgo+IC0gKiBNaW5pbWFsLW92ZXJoZWFk
+IFBJTyBmb3IgZGF0YSBhY2Nlc3MuCj4gLSAqLwo+IC1zdGF0aWMgdm9pZCBhdG1lbF9yZWFkX2J1
+ZihzdHJ1Y3QgbXRkX2luZm8gKm10ZCwgdTggKmJ1ZiwgaW50IGxlbikKPiAtewo+IC0gICAgICAg
+c3RydWN0IG5hbmRfY2hpcCAqY2hpcCA9IG10ZC0+cHJpdjsKPiAtCj4gLSAgICAgICBtZW1jcHlf
+ZnJvbWlvKGJ1ZiwgY2hpcC0+SU9fQUREUl9SLCBsZW4pOwo+IC19Cj4gLQo+IC1zdGF0aWMgdm9p
+ZCBhdG1lbF93cml0ZV9idWYoc3RydWN0IG10ZF9pbmZvICptdGQsIGNvbnN0IHU4ICpidWYsIGlu
+dCBsZW4pCj4gLXsKPiAtICAgICAgIHN0cnVjdCBuYW5kX2NoaXAgKmNoaXAgPSBtdGQtPnByaXY7
+Cj4gLQo+IC0gICAgICAgbWVtY3B5X3RvaW8oY2hpcC0+SU9fQUREUl9XLCBidWYsIGxlbik7Cj4g
+LX0KPiAtCj4gLS8qCj4gICAqIFJldHVybiBudW1iZXIgb2YgZWNjIGJ5dGVzIHBlciBzZWN0b3Ig
+YWNjb3JkaW5nIHRvIHNlY3RvciBzaXplIGFuZAo+ICAgKiBjb3JyZWN0aW9uIGNhcGFiaWxpdHkK
+PiAgICoKPiBAQCAtMTExNSw4ICsxMDk4LDkgQEAgc3RhdGljIGludCBfX2luaXQgYXRtZWxfbmFu
+ZF9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKPiAgICAgICAgIGlmIChob3N0LT5ib2FyZC0+
+YnVzX3dpZHRoXzE2KSAgICAgICAgICAvKiAxNi1iaXQgYnVzIHdpZHRoICovCj4gICAgICAgICAg
+ICAgICAgIG5hbmRfY2hpcC0+b3B0aW9ucyB8PSBOQU5EX0JVU1dJRFRIXzE2Owo+IAo+IC0gICAg
+ICAgbmFuZF9jaGlwLT5yZWFkX2J1ZiA9IGF0bWVsX3JlYWRfYnVmOwo+IC0gICAgICAgbmFuZF9j
+aGlwLT53cml0ZV9idWYgPSBhdG1lbF93cml0ZV9idWY7Cj4gKyAgICAgICAvKiB1c2UgZGVmYXVs
+dCAqLwo+ICsgICAgICAgbmFuZF9jaGlwLT5yZWFkX2J1ZiA9IE5VTEw7Cj4gKyAgICAgICBuYW5k
+X2NoaXAtPndyaXRlX2J1ZiA9IE5VTEw7Cj4gCj4gICAgICAgICBhdG1lbF9uYW5kX2VuYWJsZSho
+b3N0KTsKPiAtLS0tLS0tLS0tLS0tLS0tLS0KPiAKPiBBZnRlciBzZWVpbmcgeW91ciBwYXRjaCwg
+SSBzdXBwb3NlIHRoZSBmbG93aW5nIHBhdGNoIG1heSBiZSB3b3Jrcy4KPiBUaGUgaWRlYSBpcyB1
+c2Ugb3B0aW1pemVkIHJlYWQvd3JpdGUgZnVuY3Rpb24gd2hlbiAyKiphbGUgPj0gcGFnZXNpemUK
+PiBhbmQgMioqY2xlID49IHBhZ2VzaXplLgo+IAo+IEkgY2FuJ3QgdGVzdCBpdCBiZWNhdXNlIHRo
+ZSBhbGUgPSBhNywgY2xlID0gYTYgb24gbXkgYm9hcmQsIGJ1dAo+IHBhZ2VzaXplIGlzIDIwNDgK
+PiAKPiAtLS0tLS0tLS0tLS0tLS0tLS0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvbmFuZC9h
+dG1lbF9uYW5kLmMgYi9kcml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYwo+IGluZGV4IDA0Nzcx
+NzguLjY2Y2Y1ZGIgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9tdGQvbmFuZC9hdG1lbF9uYW5kLmMK
+PiArKysgYi9kcml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYwo+IEBAIC0xMTE1LDggKzExMTUs
+OCBAQCBzdGF0aWMgaW50IF9faW5pdCBhdG1lbF9uYW5kX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAq
+ZGV2KQo+ICAgICAgICAgaWYgKGhvc3QtPmJvYXJkLT5idXNfd2lkdGhfMTYpICAgICAgICAgIC8q
+IDE2LWJpdCBidXMgd2lkdGggKi8KPiAgICAgICAgICAgICAgICAgbmFuZF9jaGlwLT5vcHRpb25z
+IHw9IE5BTkRfQlVTV0lEVEhfMTY7Cj4gCj4gLSAgICAgICBuYW5kX2NoaXAtPnJlYWRfYnVmID0g
+YXRtZWxfcmVhZF9idWY7Cj4gLSAgICAgICBuYW5kX2NoaXAtPndyaXRlX2J1ZiA9IGF0bWVsX3dy
+aXRlX2J1ZjsKPiArICAgICAgIG5hbmRfY2hpcC0+cmVhZF9idWYgPSBOVUxMOwo+ICsgICAgICAg
+bmFuZF9jaGlwLT53cml0ZV9idWYgPSBOVUxMOwo+IAo+ICAgICAgICAgYXRtZWxfbmFuZF9lbmFi
+bGUoaG9zdCk7Cj4gCj4gQEAgLTExNTEsNiArMTE1MSwxMSBAQCBzdGF0aWMgaW50IF9faW5pdCBh
+dG1lbF9uYW5kX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQo+ICAgICAgICAgICAgICAgICAg
+ICAgICAgIGdvdG8gZXJyX2h3X2VjYzsKPiAgICAgICAgIH0KPiAKPiArICAgICAgIGlmKCgxIDw8
+IHBkYXRhLT5hbGUpID49IG10ZC0+d3JpdGVzaXplICYmICgxIDw8IHBkYXRhLT5jbGUpID49IG10
+ZC0+d3JpdGVzaXplKSB7Cj4gKyAgICAgICAgICAgICAgIG5hbmRfY2hpcC0+cmVhZF9idWYgPSBh
+dG1lbF9yZWFkX2J1ZjsKPiArICAgICAgICAgICAgICAgbmFuZF9jaGlwLT53cml0ZV9idWYgPSBh
+dG1lbF93cml0ZV9idWY7Cj4gKyAgICAgICB9Cj4gKwo+ICAgICAgICAgLyogc2Vjb25kIHBoYXNl
+IHNjYW4gKi8KPiAgICAgICAgIGlmIChuYW5kX3NjYW5fdGFpbChtdGQpKSB7Cj4gICAgICAgICAg
+ICAgICAgIHJlcyA9IC1FTlhJTzsKPiAtLS0tLS0tLS0tLS0tLS0tLS0KPiAKPiAtLSAKPiBCZXN0
+IFJlZ2FyZHMsCj4genpzCj4gCj4gCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
+ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
+Cg==
