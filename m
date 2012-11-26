@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tctiz-0008Gw-0P
- for barebox@lists.infradead.org; Mon, 26 Nov 2012 08:07:29 +0000
-Date: Mon, 26 Nov 2012 09:07:27 +0100
+ id 1TctrI-0000Lw-Kl
+ for barebox@lists.infradead.org; Mon, 26 Nov 2012 08:16:05 +0000
+Date: Mon, 26 Nov 2012 09:16:02 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121126080727.GV10369@pengutronix.de>
-References: <1353775562-2747-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20121126081602.GW10369@pengutronix.de>
+References: <1353783209-16451-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1353775562-2747-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1353783209-16451-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +18,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] phylib: fix compiler warning
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] Cleanup Kconfig files
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-T24gU2F0LCBOb3YgMjQsIDIwMTIgYXQgMDg6NDY6MDJQTSArMDQwMCwgQW50b255IFBhdmxvdiB3
-cm90ZToKPiBmaXhlczoKPiAgZHJpdmVycy9uZXQvcGh5L3BoeS5jOjU3OiB3YXJuaW5nOiBubyBw
-cmV2aW91cyBwcm90b3R5cGUgZm9yIOKAmHBoeV9kZXZpY2VfY3JlYXRl4oCZCj4gCj4gU2lnbmVk
-LW9mZi1ieTogQW50b255IFBhdmxvdiA8YW50b255bnBhdmxvdkBnbWFpbC5jb20+CgpBcHBsaWVk
-LCB0aGFua3MKClNhc2NoYQoKPiAtLS0KPiAgZHJpdmVycy9uZXQvcGh5L3BoeS5jIHwgICAgMiAr
-LQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKPiAKPiBk
-aWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvcGh5L3BoeS5jIGIvZHJpdmVycy9uZXQvcGh5L3BoeS5j
-Cj4gaW5kZXggNTlkZjc0Mi4uZWQxODVlMSAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL25ldC9waHkv
-cGh5LmMKPiArKysgYi9kcml2ZXJzL25ldC9waHkvcGh5LmMKPiBAQCAtMTM2LDcgKzEzNiw3IEBA
-IGludCBwaHlfc2Nhbl9maXh1cHMoc3RydWN0IHBoeV9kZXZpY2UgKnBoeWRldikKPiAgCXJldHVy
-biAwOwo+ICB9Cj4gIAo+IC1zdHJ1Y3QgcGh5X2RldmljZSAqcGh5X2RldmljZV9jcmVhdGUoc3Ry
-dWN0IG1paV9idXMgKmJ1cywgaW50IGFkZHIsIGludCBwaHlfaWQpCj4gK3N0YXRpYyBzdHJ1Y3Qg
-cGh5X2RldmljZSAqcGh5X2RldmljZV9jcmVhdGUoc3RydWN0IG1paV9idXMgKmJ1cywgaW50IGFk
-ZHIsIGludCBwaHlfaWQpCj4gIHsKPiAgCXN0cnVjdCBwaHlfZGV2aWNlICpkZXY7Cj4gIAo+IC0t
-IAo+IDEuNy4xMC40Cj4gCj4gCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAg
-ICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIu
-IDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTct
-MCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDog
-ICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
-ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
-Ym94Cg==
+On Sat, Nov 24, 2012 at 10:53:29PM +0400, Alexander Shiyan wrote:
+> This patch provides a global cleanup barebox Kconfig files. This includes
+> replacing spaces to tabs, formatting in accordance format, removing
+> extraneous lines and spaces. No functional changes.
+> 
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 3afd885..01fe9de 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -19,7 +19,7 @@ config ARM_LINUX
+>  config HAVE_MACH_ARM_HEAD
+>  	bool
+>  
+> -menu "System Type                   "
+> +menu "System Type"
+
+These whitespaces are present on purpose. They are there for aligning
+the arrows in menus in make menuconfig. I tend to say that this is a
+good change anyway, because counting the spaces to align line lengths
+is something which hurts during review (and I can't remember having
+done this before).
+
+If nobody objects I'll apply it. If somebody objects, I probably say him
+that he should provide a patch for Kconfig instead.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
