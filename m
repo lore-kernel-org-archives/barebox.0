@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f49.google.com ([209.85.215.49])
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TcvM2-0003Gd-9q
- for barebox@lists.infradead.org; Mon, 26 Nov 2012 09:51:55 +0000
-Received: by mail-la0-f49.google.com with SMTP id r15so7822093lag.36
- for <barebox@lists.infradead.org>; Mon, 26 Nov 2012 01:51:52 -0800 (PST)
+ id 1TcvLy-0003Fp-A4
+ for barebox@lists.infradead.org; Mon, 26 Nov 2012 09:51:51 +0000
+Received: by mail-lb0-f177.google.com with SMTP id n10so6167178lbo.36
+ for <barebox@lists.infradead.org>; Mon, 26 Nov 2012 01:51:47 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 26 Nov 2012 13:51:41 +0400
-Message-Id: <1353923501-13372-4-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1353923501-13372-1-git-send-email-antonynpavlov@gmail.com>
-References: <1353923501-13372-1-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 26 Nov 2012 13:51:38 +0400
+Message-Id: <1353923501-13372-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,49 +21,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] commands: mw: add the '-x' option (swap bytes)
+Subject: commands: md, mw: add the '-x' option (swap bytes)
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- commands/mem.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+Most of my MIPS boards run barebox in big-endian mode, but
+sometimes I need see state of little-endian registers
+(e.g. registers of PCI-connected peripherals) and it is not
+very handy to swap bytes manually.
 
-diff --git a/commands/mem.c b/commands/mem.c
-index 9873e52..51aa04d 100644
---- a/commands/mem.c
-+++ b/commands/mem.c
-@@ -255,9 +255,10 @@ static int do_mem_mw(int argc, char *argv[])
- 	char *filename = DEVMEM;
- 	int mode = O_RWSIZE_4;
- 	loff_t adr;
-+	int swab = 0;
- 
--	if (mem_parse_options(argc, argv, "bwld:", &mode, NULL, &filename,
--			NULL) < 0)
-+	if (mem_parse_options(argc, argv, "bwld:x", &mode, NULL, &filename,
-+			&swab) < 0)
- 		return 1;
- 
- 	if (optind + 1 >= argc)
-@@ -280,10 +281,14 @@ static int do_mem_mw(int argc, char *argv[])
- 			break;
- 		case O_RWSIZE_2:
- 			val16 = simple_strtoul(argv[optind], NULL, 0);
-+			if (swab)
-+				val16 = __swab16(val16);
- 			ret = write(fd, &val16, 2);
- 			break;
- 		case O_RWSIZE_4:
- 			val32 = simple_strtoul(argv[optind], NULL, 0);
-+			if (swab)
-+				val32 = __swab32(val32);
- 			ret = write(fd, &val32, 4);
- 			break;
- 		}
--- 
-1.7.10.4
+This patch series adds to memory commands md and mw the ability
+to swap bytes "on the fly".
 
+[PATCH 1/3] mem: add the swab (swap bytes) option to
+[PATCH 2/3] commands: md: add the '-x' option (swap bytes)
+[PATCH 3/3] commands: mw: add the '-x' option (swap bytes)
 
 _______________________________________________
 barebox mailing list
