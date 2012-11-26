@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TcvLy-0003Fq-Ai
- for barebox@lists.infradead.org; Mon, 26 Nov 2012 09:51:51 +0000
-Received: by mail-lb0-f177.google.com with SMTP id n10so6167193lbo.36
- for <barebox@lists.infradead.org>; Mon, 26 Nov 2012 01:51:49 -0800 (PST)
+ id 1TcvLz-0003GG-VH
+ for barebox@lists.infradead.org; Mon, 26 Nov 2012 09:51:52 +0000
+Received: by mail-lb0-f177.google.com with SMTP id n10so6167215lbo.36
+ for <barebox@lists.infradead.org>; Mon, 26 Nov 2012 01:51:50 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 26 Nov 2012 13:51:39 +0400
-Message-Id: <1353923501-13372-2-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 26 Nov 2012 13:51:40 +0400
+Message-Id: <1353923501-13372-3-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1353923501-13372-1-git-send-email-antonynpavlov@gmail.com>
 References: <1353923501-13372-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,119 +23,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] mem: add the swab (swap bytes) option to memory_display()
+Subject: [PATCH 2/3] commands: md: add the '-x' option (swap bytes)
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- commands/mem.c   |   17 +++++++++++++----
- commands/spi.c   |    4 ++--
- fs/tftp.c        |    2 +-
- include/common.h |    2 +-
- net/net.c        |    2 +-
- 5 files changed, 18 insertions(+), 9 deletions(-)
+ commands/mem.c |   24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
 diff --git a/commands/mem.c b/commands/mem.c
-index 6fbc7cc..a42b7ba 100644
+index a42b7ba..9873e52 100644
 --- a/commands/mem.c
 +++ b/commands/mem.c
-@@ -51,7 +51,7 @@ static char *DEVMEM = "/dev/mem";
-  */
- #define DISP_LINE_LEN	16
+@@ -136,7 +136,7 @@ static int open_and_lseek(const char *filename, int mode, loff_t pos)
+ }
  
--int memory_display(char *addr, loff_t offs, ulong nbytes, int size)
-+int memory_display(char *addr, loff_t offs, ulong nbytes, int size, int swab)
+ static int mem_parse_options(int argc, char *argv[], char *optstr, int *mode,
+-		char **sourcefile, char **destfile)
++		char **sourcefile, char **destfile, int *swab)
  {
- 	ulong linebytes, i;
- 	u_char	*cp;
-@@ -73,9 +73,17 @@ int memory_display(char *addr, loff_t offs, ulong nbytes, int size)
+ 	int opt;
  
- 		for (i = 0; i < linebytes; i += size) {
- 			if (size == 4) {
--				count -= printf(" %08x", (*uip++ = *((uint *)addr)));
-+				u32 res;
-+				res = (*uip++ = *((uint *)addr));
-+				if (swab)
-+					res = __swab32(res);
-+				count -= printf(" %08x", res);
- 			} else if (size == 2) {
--				count -= printf(" %04x", (*usp++ = *((ushort *)addr)));
-+				u16 res;
-+				res = (*usp++ = *((ushort *)addr));
-+				if (swab)
-+					res = __swab16(res);
-+				count -= printf(" %04x", res);
- 			} else {
- 				count -= printf(" %02x", (*ucp++ = *((u_char *)addr)));
- 			}
-@@ -195,7 +203,8 @@ static int do_mem_md(int argc, char *argv[])
- 		if (!r)
+@@ -157,6 +157,9 @@ static int mem_parse_options(int argc, char *argv[], char *optstr, int *mode,
+ 		case 'd':
+ 			*destfile = optarg;
+ 			break;
++		case 'x':
++			*swab = 1;
++			break;
+ 		default:
+ 			return -1;
+ 		}
+@@ -173,11 +176,13 @@ static int do_mem_md(int argc, char *argv[])
+ 	int fd;
+ 	char *filename = DEVMEM;
+ 	int mode = O_RWSIZE_4;
++	int swab = 0;
+ 
+ 	if (argc < 2)
+ 		return COMMAND_ERROR_USAGE;
+ 
+-	if (mem_parse_options(argc, argv, "bwls:", &mode, &filename, NULL) < 0)
++	if (mem_parse_options(argc, argv, "bwls:x", &mode, &filename, NULL,
++			&swab) < 0)
+ 		return 1;
+ 
+ 	if (optind < argc) {
+@@ -204,7 +209,7 @@ static int do_mem_md(int argc, char *argv[])
  			goto out;
  
--		if ((ret = memory_display(rw_buf, start, r, mode >> O_RWSIZE_SHIFT)))
-+		if ((ret = memory_display(rw_buf, start, r,
-+				mode >> O_RWSIZE_SHIFT, 0)))
+ 		if ((ret = memory_display(rw_buf, start, r,
+-				mode >> O_RWSIZE_SHIFT, 0)))
++				mode >> O_RWSIZE_SHIFT, swab)))
  			goto out;
  
  		start += r;
-diff --git a/commands/spi.c b/commands/spi.c
-index 899bf62..2f6b430 100644
---- a/commands/spi.c
-+++ b/commands/spi.c
-@@ -101,12 +101,12 @@ static int do_spi(int argc, char *argv[])
- 		printf("\n");
+@@ -225,6 +230,7 @@ static const __maybe_unused char cmd_md_help[] =
+ "  -b          output in bytes\n"
+ "  -w          output in halfwords (16bit)\n"
+ "  -l          output in words (32bit)\n"
++"  -x          swap bytes at output\n"
+ "\n"
+ "Memory regions:\n"
+ "Memory regions can be specified in two different forms: start+size\n"
+@@ -250,7 +256,8 @@ static int do_mem_mw(int argc, char *argv[])
+ 	int mode = O_RWSIZE_4;
+ 	loff_t adr;
  
- 		printf("wrote %i bytes\n", count);
--		memory_display(tx_buf, 0, count, byte_per_word);
-+		memory_display(tx_buf, 0, count, byte_per_word, 0);
+-	if (mem_parse_options(argc, argv, "bwld:", &mode, NULL, &filename) < 0)
++	if (mem_parse_options(argc, argv, "bwld:", &mode, NULL, &filename,
++			NULL) < 0)
+ 		return 1;
  
- 		printf("read %i bytes\n", read);
- 	}
+ 	if (optind + 1 >= argc)
+@@ -318,7 +325,8 @@ static int do_mem_cmp(int argc, char *argv[])
+ 	int     offset = 0;
+ 	struct  stat statbuf;
  
--	memory_display(rx_buf, 0, read, byte_per_word);
-+	memory_display(rx_buf, 0, read, byte_per_word, 0);
+-	if (mem_parse_options(argc, argv, "bwls:d:", &mode, &sourcefile, &destfile) < 0)
++	if (mem_parse_options(argc, argv, "bwls:d:", &mode, &sourcefile,
++			&destfile, NULL) < 0)
+ 		return 1;
  
- out:
- 	free(rx_buf);
-diff --git a/fs/tftp.c b/fs/tftp.c
-index dff41e9..98cbb37 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -227,7 +227,7 @@ static void tftp_parse_oack(struct file_priv *priv, unsigned char *pkt, int len)
+ 	if (optind + 2 > argc)
+@@ -425,7 +433,8 @@ static int do_mem_cp(int argc, char *argv[])
+ 	struct stat statbuf;
+ 	int ret = 0;
  
- 	debug("got OACK\n");
- #ifdef DEBUG
--	memory_display(pkt, 0, len, 1);
-+	memory_display(pkt, 0, len, 1, 0);
- #endif
+-	if (mem_parse_options(argc, argv, "bwls:d:", &mode, &sourcefile, &destfile) < 0)
++	if (mem_parse_options(argc, argv, "bwls:d:", &mode, &sourcefile,
++			&destfile, NULL) < 0)
+ 		return 1;
  
- 	s = pkt;
-diff --git a/include/common.h b/include/common.h
-index e30774a..6256879 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -226,7 +226,7 @@ int run_shell(void);
- #define PAGE_SIZE	4096
- #define PAGE_SHIFT	12
+ 	if (optind + 2 > argc)
+@@ -530,7 +539,8 @@ static int do_memset(int argc, char *argv[])
+ 	int     ret = 1;
+ 	char	*file = DEVMEM;
  
--int memory_display(char *addr, loff_t offs, ulong nbytes, int size);
-+int memory_display(char *addr, loff_t offs, ulong nbytes, int size, int swab);
+-	if (mem_parse_options(argc, argv, "bwld:", &mode, NULL, &file) < 0)
++	if (mem_parse_options(argc, argv, "bwld:", &mode, NULL, &file,
++			NULL) < 0)
+ 		return 1;
  
- extern const char version_string[];
- #ifdef CONFIG_BANNER
-diff --git a/net/net.c b/net/net.c
-index 3ac098f..639bc2d 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -511,7 +511,7 @@ static void net_bad_packet(unsigned char *pkt, int len)
- 	 * We received a bad packet. for now just dump it.
- 	 * We could add more sophisticated debugging here
- 	 */
--	memory_display(pkt, 0, len, 1);
-+	memory_display(pkt, 0, len, 1, 0);
- #endif
- }
- 
+ 	if (optind + 3 > argc)
 -- 
 1.7.10.4
 
