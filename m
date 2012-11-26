@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tcvgx-0001UH-SW
+ id 1Tcvgx-0001U6-ST
  for barebox@lists.infradead.org; Mon, 26 Nov 2012 10:13:33 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 26 Nov 2012 11:13:27 +0100
-Message-Id: <1353924807-519-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1353924807-519-1-git-send-email-s.hauer@pengutronix.de>
-References: <1353924807-519-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 26 Nov 2012 11:13:25 +0100
+Message-Id: <1353924807-519-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,85 +19,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] i.MX debug_ll support
+Subject: [PATCH 1/3] debug_ll: Let architectures define PUTC_LL directly
 To: barebox@lists.infradead.org
 
-This adds lowlevel debug functions for i.MX. As we have a great variety
-of different UARTs on i.MX currently no Kconfig support for chosing the
-correct one is added. Instead we expect the user to add the correct
-define and issue a compiler warning if he hasn't.
+putc already is a regular barebox function. To avoid conflicts and
+confusions just let architectures define PUTC_LL directly instead
+of going through this addiotional redirection.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig                          |    1 +
- arch/arm/mach-imx/include/mach/debug_ll.h |   46 +++++++++++++++++++++++++++++
- 2 files changed, 47 insertions(+)
- create mode 100644 arch/arm/mach-imx/include/mach/debug_ll.h
+ arch/arm/mach-omap/include/mach/debug_ll.h      |    2 +-
+ arch/arm/mach-tegra/include/mach/debug_ll.h     |    2 +-
+ arch/arm/mach-versatile/include/mach/debug_ll.h |    2 +-
+ arch/mips/include/debug_ll_ns16550.h            |    2 +-
+ arch/mips/mach-bcm47xx/include/mach/debug_ll.h  |    2 +-
+ include/debug_ll.h                              |    1 -
+ 6 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 3afd885..cdb5081 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -57,6 +57,7 @@ config ARCH_IMX
- 	select COMMON_CLK
- 	select CLKDEV_LOOKUP
- 	select WATCHDOG_IMX_RESET_SOURCE
-+	select HAS_DEBUG_LL
+diff --git a/arch/arm/mach-omap/include/mach/debug_ll.h b/arch/arm/mach-omap/include/mach/debug_ll.h
+index c1fcc9d..b2714c5 100644
+--- a/arch/arm/mach-omap/include/mach/debug_ll.h
++++ b/arch/arm/mach-omap/include/mach/debug_ll.h
+@@ -39,7 +39,7 @@
+ #define LSR		(5 << 2)
+ #define THR		(0 << 2)
  
- config ARCH_MXS
- 	bool "Freescale i.MX23/28 (mxs) based"
-diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
-new file mode 100644
-index 0000000..cb6dd03
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/debug_ll.h
-@@ -0,0 +1,46 @@
-+#ifndef __MACH_DEBUG_LL_H__
-+#define __MACH_DEBUG_LL_H__
-+
-+#include <io.h>
-+#include <config.h>
-+#include <mach/imx1-regs.h>
-+#include <mach/imx21-regs.h>
-+#include <mach/imx25-regs.h>
-+#include <mach/imx27-regs.h>
-+#include <mach/imx31-regs.h>
-+#include <mach/imx35-regs.h>
-+#include <mach/imx51-regs.h>
-+#include <mach/imx53-regs.h>
-+#include <mach/imx6-regs.h>
-+
-+/* #define IMX_DEBUG_LL_UART_BASE MXxy_UARTx_BASE_ADDR */
-+
-+#ifndef IMX_DEBUG_LL_UART_BASE
-+#warning define IMX_DEBUG_LL_UART_BASE properly for debug_ll
-+#define IMX_DEBUG_LL_UART_BASE 0
-+#endif
-+
-+#define URTX0		0x40		/* Transmitter Register */
-+
-+#define UCR1		0x80		/* Control Register 1 */
-+#define UCR1_UARTEN	(1 << 0)	/* UART enabled */
-+
-+#define USR2		0x98		/* Status Register 2 */
-+#define USR2_TXDC	(1 << 3)	/* Transmitter complete */
-+
-+static inline void PUTC_LL(int c)
-+{
-+	void __iomem *base = (void *)IMX_DEBUG_LL_UART_BASE;
-+
-+	if (!base)
-+		return;
-+
-+	if (!(readl(base + UCR1) & UCR1_UARTEN))
-+		return;
-+
-+	while (!(readl(base + USR2) & USR2_TXDC));
-+
-+	writel(c, base + URTX0);
-+}
-+
-+#endif /* __MACH_DEBUG_LL_H__ */
+-static inline void putc(char c)
++static inline void PUTC_LL(char c)
+ {
+ 	/* Wait until there is space in the FIFO */
+ 	while ((readb(UART_BASE + LSR) & LSR_THRE) == 0);
+diff --git a/arch/arm/mach-tegra/include/mach/debug_ll.h b/arch/arm/mach-tegra/include/mach/debug_ll.h
+index 18024eb..290ad58 100644
+--- a/arch/arm/mach-tegra/include/mach/debug_ll.h
++++ b/arch/arm/mach-tegra/include/mach/debug_ll.h
+@@ -31,7 +31,7 @@
+ #define lsr		(5 << DEBUG_LL_UART_RSHFT)
+ #define LSR_THRE	0x20	/* Xmit holding register empty */
+ 
+-static inline void putc(char ch)
++static inline void PUTC_LL(char ch)
+ {
+ 	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE))
+ 		;
+diff --git a/arch/arm/mach-versatile/include/mach/debug_ll.h b/arch/arm/mach-versatile/include/mach/debug_ll.h
+index 20fbc7c..f91812b 100644
+--- a/arch/arm/mach-versatile/include/mach/debug_ll.h
++++ b/arch/arm/mach-versatile/include/mach/debug_ll.h
+@@ -19,7 +19,7 @@
+ #include <linux/amba/serial.h>
+ #include <io.h>
+ 
+-static inline void putc(char c)
++static inline void PUTC_LL(char c)
+ {
+ 	/* Wait until there is space in the FIFO */
+ 	while (readl(0x101F1000 + UART01x_FR) & UART01x_FR_TXFF);
+diff --git a/arch/mips/include/debug_ll_ns16550.h b/arch/mips/include/debug_ll_ns16550.h
+index a8b74d2..e9c7ecf 100644
+--- a/arch/mips/include/debug_ll_ns16550.h
++++ b/arch/mips/include/debug_ll_ns16550.h
+@@ -28,7 +28,7 @@
+ 
+ #define LSR_THRE	0x20	/* Xmit holding register empty */
+ 
+-static __inline__ void putc(char ch)
++static __inline__ void PUTC_LL(char ch)
+ {
+ 	while (!(__raw_readb((u8 *)DEBUG_LL_UART_ADDR + lsr) & LSR_THRE));
+ 	__raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + rbr);
+diff --git a/arch/mips/mach-bcm47xx/include/mach/debug_ll.h b/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
+index 4bf1817..0703bb0 100644
+--- a/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
++++ b/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
+@@ -28,7 +28,7 @@
+ #define lsr		5
+ #define LSR_THRE	0x20	/* Xmit holding register empty */
+ 
+-static __inline__ void putc(char ch)
++static __inline__ void PUTC_LL(char ch)
+ {
+ 	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE));
+ 	__raw_writeb(ch, DEBUG_LL_UART_ADDR + rbr);
+diff --git a/include/debug_ll.h b/include/debug_ll.h
+index c744573..c5f2df4 100644
+--- a/include/debug_ll.h
++++ b/include/debug_ll.h
+@@ -22,7 +22,6 @@
+ #if defined (CONFIG_DEBUG_LL)
+ # include <mach/debug_ll.h>
+ 
+-#define PUTC_LL(x) putc(x)
+ # define PUTHEX_LL(value)  ({ unsigned long v = (unsigned long) (value); \
+ 			     int i; unsigned char ch; \
+ 			     for (i = 8; i--; ) {\
 -- 
 1.7.10.4
 
