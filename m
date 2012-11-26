@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tcvgx-0001U6-ST
- for barebox@lists.infradead.org; Mon, 26 Nov 2012 10:13:33 +0000
+ id 1Tcvgx-0001UB-SV
+ for barebox@lists.infradead.org; Mon, 26 Nov 2012 10:13:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 26 Nov 2012 11:13:25 +0100
-Message-Id: <1353924807-519-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 26 Nov 2012 11:13:26 +0100
+Message-Id: <1353924807-519-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1353924807-519-1-git-send-email-s.hauer@pengutronix.de>
+References: <1353924807-519-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,100 +21,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] debug_ll: Let architectures define PUTC_LL directly
+Subject: [PATCH 2/3] debug_ll: Add some usage comments
 To: barebox@lists.infradead.org
-
-putc already is a regular barebox function. To avoid conflicts and
-confusions just let architectures define PUTC_LL directly instead
-of going through this addiotional redirection.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/include/mach/debug_ll.h      |    2 +-
- arch/arm/mach-tegra/include/mach/debug_ll.h     |    2 +-
- arch/arm/mach-versatile/include/mach/debug_ll.h |    2 +-
- arch/mips/include/debug_ll_ns16550.h            |    2 +-
- arch/mips/mach-bcm47xx/include/mach/debug_ll.h  |    2 +-
- include/debug_ll.h                              |    1 -
- 6 files changed, 5 insertions(+), 6 deletions(-)
+ common/Kconfig     |    2 ++
+ include/debug_ll.h |   16 +++++++++++++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-omap/include/mach/debug_ll.h b/arch/arm/mach-omap/include/mach/debug_ll.h
-index c1fcc9d..b2714c5 100644
---- a/arch/arm/mach-omap/include/mach/debug_ll.h
-+++ b/arch/arm/mach-omap/include/mach/debug_ll.h
-@@ -39,7 +39,7 @@
- #define LSR		(5 << 2)
- #define THR		(0 << 2)
+diff --git a/common/Kconfig b/common/Kconfig
+index d60db80..57119dc 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -667,6 +667,8 @@ config DEBUG_LL
+ 	prompt "low level debug messages"
+ 	help
+ 	  Enable this to get low level debug messages during barebox initialization.
++	  This requires SoC specific support. Most SoCs require the debug UART to be
++	  initialized by a debugger or first stage bootloader.
  
--static inline void putc(char c)
-+static inline void PUTC_LL(char c)
- {
- 	/* Wait until there is space in the FIFO */
- 	while ((readb(UART_BASE + LSR) & LSR_THRE) == 0);
-diff --git a/arch/arm/mach-tegra/include/mach/debug_ll.h b/arch/arm/mach-tegra/include/mach/debug_ll.h
-index 18024eb..290ad58 100644
---- a/arch/arm/mach-tegra/include/mach/debug_ll.h
-+++ b/arch/arm/mach-tegra/include/mach/debug_ll.h
-@@ -31,7 +31,7 @@
- #define lsr		(5 << DEBUG_LL_UART_RSHFT)
- #define LSR_THRE	0x20	/* Xmit holding register empty */
+ endmenu
  
--static inline void putc(char ch)
-+static inline void PUTC_LL(char ch)
- {
- 	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE))
- 		;
-diff --git a/arch/arm/mach-versatile/include/mach/debug_ll.h b/arch/arm/mach-versatile/include/mach/debug_ll.h
-index 20fbc7c..f91812b 100644
---- a/arch/arm/mach-versatile/include/mach/debug_ll.h
-+++ b/arch/arm/mach-versatile/include/mach/debug_ll.h
-@@ -19,7 +19,7 @@
- #include <linux/amba/serial.h>
- #include <io.h>
- 
--static inline void putc(char c)
-+static inline void PUTC_LL(char c)
- {
- 	/* Wait until there is space in the FIFO */
- 	while (readl(0x101F1000 + UART01x_FR) & UART01x_FR_TXFF);
-diff --git a/arch/mips/include/debug_ll_ns16550.h b/arch/mips/include/debug_ll_ns16550.h
-index a8b74d2..e9c7ecf 100644
---- a/arch/mips/include/debug_ll_ns16550.h
-+++ b/arch/mips/include/debug_ll_ns16550.h
-@@ -28,7 +28,7 @@
- 
- #define LSR_THRE	0x20	/* Xmit holding register empty */
- 
--static __inline__ void putc(char ch)
-+static __inline__ void PUTC_LL(char ch)
- {
- 	while (!(__raw_readb((u8 *)DEBUG_LL_UART_ADDR + lsr) & LSR_THRE));
- 	__raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + rbr);
-diff --git a/arch/mips/mach-bcm47xx/include/mach/debug_ll.h b/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
-index 4bf1817..0703bb0 100644
---- a/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
-+++ b/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
-@@ -28,7 +28,7 @@
- #define lsr		5
- #define LSR_THRE	0x20	/* Xmit holding register empty */
- 
--static __inline__ void putc(char ch)
-+static __inline__ void PUTC_LL(char ch)
- {
- 	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE));
- 	__raw_writeb(ch, DEBUG_LL_UART_ADDR + rbr);
 diff --git a/include/debug_ll.h b/include/debug_ll.h
-index c744573..c5f2df4 100644
+index c5f2df4..f0034ba 100644
 --- a/include/debug_ll.h
 +++ b/include/debug_ll.h
-@@ -22,7 +22,6 @@
+@@ -1,4 +1,5 @@
+-/* debug_ll.h
++/*
++ * debug_ll.h
+  *
+  *  written by Marc Singer
+  *  12 Feb 2005
+@@ -20,6 +21,14 @@
+ #define   __INCLUDE_DEBUG_LL_H__
+ 
  #if defined (CONFIG_DEBUG_LL)
++
++/*
++ * mach/debug_ll.h should implement PUTC_LL. This can be a macro or a static
++ * inline function. Note that several SoCs expect the UART to be initialized
++ * by a debugger or a first stage bootloader. You won't see anything without
++ * this initialization. Depending on the PUTC_LL implementation the board might
++ * also hang in PUTC_LL without proper initialization.
++ */
  # include <mach/debug_ll.h>
  
--#define PUTC_LL(x) putc(x)
  # define PUTHEX_LL(value)  ({ unsigned long v = (unsigned long) (value); \
- 			     int i; unsigned char ch; \
- 			     for (i = 8; i--; ) {\
+@@ -29,6 +38,11 @@
+ 			     ch += (ch >= 10) ? 'a' - 10 : '0';\
+ 			     PUTC_LL (ch); }})
+ 
++/*
++ * Be careful with PUTS_LL, it only works if the binary is running at the
++ * link address which often is not the case during early startup. If in doubt
++ * don't use it.
++ */
+ static __inline__ void PUTS_LL(const char * str)
+ {
+ 	while (*str) {
 -- 
 1.7.10.4
 
