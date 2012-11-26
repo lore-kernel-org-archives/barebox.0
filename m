@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TctDK-0003K1-Pw
- for barebox@lists.infradead.org; Mon, 26 Nov 2012 07:34:48 +0000
-Date: Mon, 26 Nov 2012 08:34:45 +0100
+ id 1TctYj-0007d9-8R
+ for barebox@lists.infradead.org; Mon, 26 Nov 2012 07:56:55 +0000
+Date: Mon, 26 Nov 2012 08:56:51 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121126073445.GQ10369@pengutronix.de>
-References: <20121123155945.GW8327@game.jcrosoft.org>
+Message-ID: <20121126075651.GS10369@pengutronix.de>
+References: <1353770926-24496-1-git-send-email-antonynpavlov@gmail.com>
+ <87lidq3gnb.fsf@free.fr>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121123155945.GW8327@game.jcrosoft.org>
+In-Reply-To: <87lidq3gnb.fsf@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,96 +19,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] at91: at91sam9n12 support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] xymodem.c: fix compiler warning
+To: Robert Jarzmik <robert.jarzmik@free.fr>
 Cc: barebox@lists.infradead.org
 
-On Fri, Nov 23, 2012 at 04:59:45PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,
-> 
-> 	this patch serie add the support of the at91sam9n12 with it's
-> 	reference board the n12ek
-> 
-> 	we do not switch to the defaultenv-2 as I need nfs boot with symlink
-> 	and this is not support yet in it
-> 
-> 	I'll switch all my platform when we will have it
-> 
-> 	This patch serie depends on the at91_fixes send just before
-> 
-> 
-> wing changes since commit 02d37b5d4598cd3ffea4730aa027c8c04ab1f58d:
-> 
->   Revert "mtd: atmel_nand: optimize read/write buffer functions" (2012-11-22 02:21:14 +0800)
-> 
-> are available in the git repository at:
-> 
->   git://git.jcrosoft.org/barebox.git delivery/at91sam9n12
-
-Applied, thanks
-
-Sascha
-
-> 
-> for you to fetch changes up to 96a5ef4e557a816e50e66d9f708934e68b49ea76:
-> 
->   at91: add at91sam9n12ek board support (2012-11-22 02:24:59 +0800)
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (2):
->       arm: at91: add at91sam9n12 support
->       at91: add at91sam9n12ek board support
-> 
->  arch/arm/Makefile                                    |    1 +
->  arch/arm/boards/at91sam9n12ek/Makefile               |    1 +
->  arch/arm/boards/at91sam9n12ek/config.h               |    6 ++
->  arch/arm/boards/at91sam9n12ek/env/bin/init_board     |   50 +++++++++++++
->  arch/arm/boards/at91sam9n12ek/env/config             |   41 +++++++++++
->  arch/arm/boards/at91sam9n12ek/init.c                 |  270 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  arch/arm/configs/at91sam9n12ek_defconfig             |   87 +++++++++++++++++++++++
->  arch/arm/mach-at91/Kconfig                           |   23 ++++++
->  arch/arm/mach-at91/Makefile                          |    1 +
->  arch/arm/mach-at91/at91sam9n12.c                     |  233 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  arch/arm/mach-at91/at91sam9n12_devices.c             |  374 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  arch/arm/mach-at91/clock.c                           |   15 ++--
->  arch/arm/mach-at91/gpio.c                            |    2 +-
->  arch/arm/mach-at91/include/mach/at91sam9n12.h        |  166 ++++++++++++++++++++++++++++++++++++++++++++
->  arch/arm/mach-at91/include/mach/at91sam9n12_matrix.h |   98 ++++++++++++++++++++++++++
->  arch/arm/mach-at91/include/mach/board.h              |    1 +
->  arch/arm/mach-at91/include/mach/cpu.h                |    7 ++
->  arch/arm/mach-at91/include/mach/hardware.h           |    2 +
->  18 files changed, 1372 insertions(+), 6 deletions(-)
->  create mode 100644 arch/arm/boards/at91sam9n12ek/Makefile
->  create mode 100644 arch/arm/boards/at91sam9n12ek/config.h
->  create mode 100644 arch/arm/boards/at91sam9n12ek/env/bin/init_board
->  create mode 100644 arch/arm/boards/at91sam9n12ek/env/config
->  create mode 100644 arch/arm/boards/at91sam9n12ek/init.c
->  create mode 100644 arch/arm/configs/at91sam9n12ek_defconfig
->  create mode 100644 arch/arm/mach-at91/at91sam9n12.c
->  create mode 100644 arch/arm/mach-at91/at91sam9n12_devices.c
->  create mode 100644 arch/arm/mach-at91/include/mach/at91sam9n12.h
->  create mode 100644 arch/arm/mach-at91/include/mach/at91sam9n12_matrix.h
-> 
-> Best Regards,
-> J.
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gU2F0LCBOb3YgMjQsIDIwMTIgYXQgMDk6MTE6MzZQTSArMDEwMCwgUm9iZXJ0IEphcnptaWsg
+d3JvdGU6Cj4gQW50b255IFBhdmxvdiA8YW50b255bnBhdmxvdkBnbWFpbC5jb20+IHdyaXRlczoK
+CkFwcGxpZWQsIHRoYW5rcwoKU2FzY2hhCgo+IAo+ID4gRml4ZXM6Cj4gPiAgbGliL3h5bW9kZW0u
+Yzo1NTg6IHdhcm5pbmc6IG5vIHByZXZpb3VzIHByb3RvdHlwZSBmb3Ig4oCYZG9fbG9hZF9zZXJp
+YWxfeG1vZGVt4oCZCj4gPiAgbGliL3h5bW9kZW0uYzo1NzI6IHdhcm5pbmc6IG5vIHByZXZpb3Vz
+IHByb3RvdHlwZSBmb3Ig4oCYZG9fbG9hZF9zZXJpYWxfeW1vZGVt4oCZCj4gPiAgbGliL3h5bW9k
+ZW0uYzo1ODY6IHdhcm5pbmc6IG5vIHByZXZpb3VzIHByb3RvdHlwZSBmb3Ig4oCYZG9fbG9hZF9z
+ZXJpYWxfeW1vZGVtZ+KAmQo+ID4KPiA+IFNpZ25lZC1vZmYtYnk6IEFudG9ueSBQYXZsb3YgPGFu
+dG9ueW5wYXZsb3ZAZ21haWwuY29tPgo+IEluZGVlZC4KPiBBY2tlZC1ieTogUm9iZXJ0IEphcnpt
+aWsgPHJvYmVydC5qYXJ6bWlrQGZyZWUuZnI+Cj4gCj4gLS0gCj4gUm9iZXJ0Cj4gCj4gX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxp
+bmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKLS0gClBlbmd1dHJvbml4IGUuSy4g
+ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
+CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cu
+cGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2Vy
+bWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
+aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
