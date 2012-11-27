@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TdS5Q-00072b-6p
- for barebox@lists.infradead.org; Tue, 27 Nov 2012 20:48:56 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1TdS5O-0004gM-JC
- for barebox@lists.infradead.org; Tue, 27 Nov 2012 21:48:54 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1TdS5O-0000xV-I5
- for barebox@lists.infradead.org; Tue, 27 Nov 2012 21:48:54 +0100
+ id 1TdS5Y-00073w-4c
+ for barebox@lists.infradead.org; Tue, 27 Nov 2012 20:49:04 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 27 Nov 2012 21:48:45 +0100
-Message-Id: <1354049328-3534-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 27 Nov 2012 21:48:47 +0100
+Message-Id: <1354049328-3534-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1354049328-3534-1-git-send-email-s.hauer@pengutronix.de>
+References: <1354049328-3534-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,56 +21,107 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i.MX sdram controller driver support
+Subject: [PATCH 2/3] ARM i.MX: register esdctl controller device
 To: barebox@lists.infradead.org
 
-This adds a driver which reads back the SDRAM controller
-configured values and registers the memory found with barebox.
-This makes board code a bit easier.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/imx1.c  |    1 +
+ arch/arm/mach-imx/imx25.c |    1 +
+ arch/arm/mach-imx/imx27.c |    1 +
+ arch/arm/mach-imx/imx31.c |    1 +
+ arch/arm/mach-imx/imx35.c |    1 +
+ arch/arm/mach-imx/imx51.c |    1 +
+ arch/arm/mach-imx/imx53.c |    1 +
+ 7 files changed, 7 insertions(+)
 
-Sascha
+diff --git a/arch/arm/mach-imx/imx1.c b/arch/arm/mach-imx/imx1.c
+index 59cff28..588ac02 100644
+--- a/arch/arm/mach-imx/imx1.c
++++ b/arch/arm/mach-imx/imx1.c
+@@ -63,6 +63,7 @@ static int imx1_init(void)
+ 	add_generic_device("imx1-gpio", 2, NULL, MX1_GPIO3_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx1-gpio", 3, NULL, MX1_GPIO4_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx1-wdt", 0, NULL, MX1_WDT_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
++	add_generic_device("imx1-sdramc", 0, NULL, MX1_SDRAMC_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-imx/imx25.c b/arch/arm/mach-imx/imx25.c
+index 3bd95c1..e2ef374 100644
+--- a/arch/arm/mach-imx/imx25.c
++++ b/arch/arm/mach-imx/imx25.c
+@@ -75,6 +75,7 @@ static int imx25_init(void)
+ 	add_generic_device("imx31-gpio", 2, NULL, MX25_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx31-gpio", 3, NULL, MX25_GPIO4_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx21-wdt", 0, NULL, MX25_WDOG_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx25-esdctl", 0, NULL, MX25_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-imx/imx27.c b/arch/arm/mach-imx/imx27.c
+index a0a510f..31117f4 100644
+--- a/arch/arm/mach-imx/imx27.c
++++ b/arch/arm/mach-imx/imx27.c
+@@ -117,6 +117,7 @@ static int imx27_init(void)
+ 	add_generic_device("imx1-gpio", 4, NULL, MX27_GPIO5_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx1-gpio", 5, NULL, MX27_GPIO6_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx21-wdt", 0, NULL, MX27_WDOG_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx27-esdctl", 0, NULL, MX27_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-imx/imx31.c b/arch/arm/mach-imx/imx31.c
+index b2f0724..52be541 100644
+--- a/arch/arm/mach-imx/imx31.c
++++ b/arch/arm/mach-imx/imx31.c
+@@ -38,6 +38,7 @@ static int imx31_init(void)
+ 	add_generic_device("imx-gpio", 1, NULL, MX31_GPIO2_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx-gpio", 2, NULL, MX31_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx21-wdt", 0, NULL, MX31_WDOG_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx31-esdctl", 0, NULL, MX31_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-imx/imx35.c b/arch/arm/mach-imx/imx35.c
+index 737eb3a..21c7e90 100644
+--- a/arch/arm/mach-imx/imx35.c
++++ b/arch/arm/mach-imx/imx35.c
+@@ -77,6 +77,7 @@ static int imx35_init(void)
+ 	add_generic_device("imx-gpio", 1, NULL, MX35_GPIO2_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx-gpio", 2, NULL, MX35_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx21-wdt", 0, NULL, MX35_WDOG_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx35-esdctl", 0, NULL, MX35_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
+index 4b0786b..3d0520a 100644
+--- a/arch/arm/mach-imx/imx51.c
++++ b/arch/arm/mach-imx/imx51.c
+@@ -69,6 +69,7 @@ static int imx51_init(void)
+ 	add_generic_device("imx31-gpio", 2, NULL, MX51_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx31-gpio", 3, NULL, MX51_GPIO4_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx21-wdt", 0, NULL, MX51_WDOG_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx51-esdctl", 0, NULL, MX51_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-imx/imx53.c b/arch/arm/mach-imx/imx53.c
+index e424e7d..2d6557f 100644
+--- a/arch/arm/mach-imx/imx53.c
++++ b/arch/arm/mach-imx/imx53.c
+@@ -69,6 +69,7 @@ static int imx53_init(void)
+ 	add_generic_device("imx31-gpio", 5, NULL, MX53_GPIO6_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx31-gpio", 6, NULL, MX53_GPIO7_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx21-wdt", 0, NULL, MX53_WDOG1_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx53-esdctl", 0, NULL, MX53_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 
+ 	return 0;
+ }
+-- 
+1.7.10.4
 
-----------------------------------------------------------------
-Sascha Hauer (3):
-      ARM i.MX: Add driver to get sdram base and size
-      ARM i.MX: register esdctl controller device
-      ARM i.MX boards: use esdctl code to detect sdram size
-
- arch/arm/boards/ccxmx51/ccxmx51.c                 |    9 -
- arch/arm/boards/eukrea_cpuimx25/eukrea_cpuimx25.c |    8 -
- arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |   14 -
- arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c |    8 -
- arch/arm/boards/eukrea_cpuimx51/eukrea_cpuimx51.c |    8 -
- arch/arm/boards/freescale-mx25-3-stack/3stack.c   |   18 +-
- arch/arm/boards/freescale-mx35-3-stack/3stack.c   |    9 -
- arch/arm/boards/freescale-mx51-pdk/board.c        |    8 -
- arch/arm/boards/freescale-mx53-loco/board.c       |    9 -
- arch/arm/boards/freescale-mx53-smd/board.c        |    9 -
- arch/arm/boards/guf-cupid/board.c                 |    8 -
- arch/arm/boards/guf-neso/board.c                  |    8 -
- arch/arm/boards/imx27ads/imx27ads.c               |    8 -
- arch/arm/boards/karo-tx25/board.c                 |   14 +-
- arch/arm/boards/karo-tx51/tx51.c                  |    8 -
- arch/arm/boards/karo-tx53/board.c                 |   11 -
- arch/arm/boards/pcm037/pcm037.c                   |   11 -
- arch/arm/boards/pcm038/pcm038.c                   |   14 +-
- arch/arm/boards/pcm043/pcm043.c                   |    8 -
- arch/arm/boards/phycard-i.MX27/pca100.c           |    8 -
- arch/arm/boards/scb9328/scb9328.c                 |    8 -
- arch/arm/boards/tqma53/board.c                    |   11 -
- arch/arm/mach-imx/Makefile                        |    3 +-
- arch/arm/mach-imx/esdctl.c                        |  348 +++++++++++++++++++++
- arch/arm/mach-imx/imx1.c                          |    3 +
- arch/arm/mach-imx/imx25.c                         |    1 +
- arch/arm/mach-imx/imx27.c                         |    1 +
- arch/arm/mach-imx/imx31.c                         |    1 +
- arch/arm/mach-imx/imx35.c                         |    1 +
- arch/arm/mach-imx/imx51.c                         |    1 +
- arch/arm/mach-imx/imx53.c                         |    1 +
- arch/arm/mach-imx/include/mach/esdctl.h           |    1 +
- arch/arm/mach-imx/include/mach/imx1-regs.h        |    3 +
- 33 files changed, 372 insertions(+), 209 deletions(-)
- create mode 100644 arch/arm/mach-imx/esdctl.c
 
 _______________________________________________
 barebox mailing list
