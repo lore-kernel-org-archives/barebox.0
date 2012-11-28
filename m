@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TdeOl-0002rP-On
- for barebox@lists.infradead.org; Wed, 28 Nov 2012 09:57:45 +0000
+ id 1TdeOT-0002ql-JT
+ for barebox@lists.infradead.org; Wed, 28 Nov 2012 09:57:26 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 28 Nov 2012 10:57:39 +0100
-Message-Id: <1354096660-14174-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 28 Nov 2012 10:57:19 +0100
+Message-Id: <1354096639-13936-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,169 +19,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM i.MX bbu: Allow to overwrite app_dest
+Subject: [PATCH] clk: check for invalid clocks
 To: barebox@lists.infradead.org
+
+Checking for invalid clocks on function entry allows users
+to for example do a clk_set_rate(clk_lookup("myclk"), x) without
+checking for validity of the result of clk_lookup first.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx51-pdk/board.c |    2 +-
- arch/arm/boards/karo-tx53/board.c          |    5 +++--
- arch/arm/mach-imx/imx-bbu-internal.c       |   29 ++++++++++++++++++++++------
- arch/arm/mach-imx/include/mach/bbu.h       |   16 +++++++++------
- 4 files changed, 37 insertions(+), 15 deletions(-)
+ drivers/clk/clk.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
-index cb190ef..831ed0e 100644
---- a/arch/arm/boards/freescale-mx51-pdk/board.c
-+++ b/arch/arm/boards/freescale-mx51-pdk/board.c
-@@ -254,7 +254,7 @@ static int f3s_devices_init(void)
- 	armlinux_set_architecture(MACH_TYPE_MX51_BABBAGE);
- 
- 	imx51_bbu_internal_mmc_register_handler("mmc", "/dev/disk0",
--		BBU_HANDLER_FLAG_DEFAULT, dcd_entry, sizeof(dcd_entry));
-+		BBU_HANDLER_FLAG_DEFAULT, dcd_entry, sizeof(dcd_entry), 0);
- 
- 	return 0;
- }
-diff --git a/arch/arm/boards/karo-tx53/board.c b/arch/arm/boards/karo-tx53/board.c
-index 581b6fa..8a69e99 100644
---- a/arch/arm/boards/karo-tx53/board.c
-+++ b/arch/arm/boards/karo-tx53/board.c
-@@ -218,11 +218,12 @@ static int tx53_devices_init(void)
- 
- 	/* rev xx30 can boot from nand or USB */
- 	imx53_bbu_internal_nand_register_handler("nand-xx30",
--		BBU_HANDLER_FLAG_DEFAULT, (void *)dcd_entry_xx30, sizeof(dcd_entry_xx30), SZ_512K);
-+		BBU_HANDLER_FLAG_DEFAULT, (void *)dcd_entry_xx30,
-+		sizeof(dcd_entry_xx30), SZ_512K, 0);
- 
- 	/* rev 1011 can boot from MMC/SD, other bootsource currently unknown */
- 	imx53_bbu_internal_mmc_register_handler("mmc-1011", "/dev/disk0",
--		0, (void *)dcd_entry_1011, sizeof(dcd_entry_1011));
-+		0, (void *)dcd_entry_1011, sizeof(dcd_entry_1011), 0);
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-index c34f86f..4300b63 100644
---- a/arch/arm/mach-imx/imx-bbu-internal.c
-+++ b/arch/arm/mach-imx/imx-bbu-internal.c
-@@ -453,7 +453,8 @@ static int __register_handler(struct imx_internal_bbu_handler *imx_handler)
-  * Register a i.MX51 internal boot update handler for MMC/SD
-  */
- int imx51_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
--		unsigned long flags, struct imx_dcd_entry *dcd, int dcdsize)
-+		unsigned long flags, struct imx_dcd_entry *dcd, int dcdsize,
-+		unsigned long app_dest)
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index bf61e5d..ea93ff8 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -43,6 +43,9 @@ int clk_enable(struct clk *clk)
  {
- 	struct imx_internal_bbu_handler *imx_handler;
+ 	int ret;
  
-@@ -461,7 +462,12 @@ int imx51_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
- 	imx_handler->dcd = dcd;
- 	imx_handler->dcdsize = dcdsize;
- 	imx_handler->flash_header_offset = FLASH_HEADER_OFFSET_MMC;
--	imx_handler->app_dest = 0x90000000;
++	if (IS_ERR(clk))
++		return PTR_ERR(clk);
 +
-+	if (app_dest)
-+		imx_handler->app_dest = app_dest;
-+	else
-+		imx_handler->app_dest = 0x90000000;
-+
- 	imx_handler->flags = IMX_INTERNAL_FLAG_KEEP_DOSPART;
- 	imx_handler->handler.handler = imx_bbu_internal_v1_update;
+ 	if (!clk->enable_count) {
+ 		ret = clk_parent_enable(clk);
+ 		if (ret)
+@@ -64,6 +67,9 @@ int clk_enable(struct clk *clk)
  
-@@ -507,14 +513,20 @@ static int imx53_bbu_internal_init_dcd(struct imx_internal_bbu_handler *imx_hand
-  * Register a i.MX53 internal boot update handler for MMC/SD
-  */
- int imx53_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
--		unsigned long flags, struct imx_dcd_v2_entry *dcd, int dcdsize)
-+		unsigned long flags, struct imx_dcd_v2_entry *dcd, int dcdsize,
-+		unsigned long app_dest)
+ void clk_disable(struct clk *clk)
  {
- 	struct imx_internal_bbu_handler *imx_handler;
- 
- 	imx_handler = __init_handler(name, devicefile, flags);
- 	imx53_bbu_internal_init_dcd(imx_handler, dcd, dcdsize);
- 	imx_handler->flash_header_offset = FLASH_HEADER_OFFSET_MMC;
--	imx_handler->app_dest = 0x70000000;
++	if (IS_ERR(clk))
++		return;
 +
-+	if (app_dest)
-+		imx_handler->app_dest = app_dest;
-+	else
-+		imx_handler->app_dest = 0x70000000;
-+
- 	imx_handler->flags = IMX_INTERNAL_FLAG_KEEP_DOSPART;
- 	imx_handler->handler.handler = imx_bbu_internal_v2_update;
+ 	if (!clk->enable_count)
+ 		return;
  
-@@ -526,14 +538,19 @@ int imx53_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
-  */
- int imx53_bbu_internal_nand_register_handler(const char *name,
- 		unsigned long flags, struct imx_dcd_v2_entry *dcd, int dcdsize,
--		int partition_size)
-+		int partition_size, unsigned long app_dest)
+@@ -82,6 +88,9 @@ unsigned long clk_get_rate(struct clk *clk)
+ 	struct clk *parent;
+ 	unsigned long parent_rate = 0;
+ 
++	if (IS_ERR(clk))
++		return 0;
++
+ 	parent = clk_get_parent(clk);
+ 	if (!IS_ERR_OR_NULL(parent))
+ 		parent_rate = clk_get_rate(parent);
+@@ -94,6 +103,9 @@ unsigned long clk_get_rate(struct clk *clk)
+ 
+ long clk_round_rate(struct clk *clk, unsigned long rate)
  {
- 	struct imx_internal_bbu_handler *imx_handler;
- 
- 	imx_handler = __init_handler(name, NULL, flags);
- 	imx53_bbu_internal_init_dcd(imx_handler, dcd, dcdsize);
- 	imx_handler->flash_header_offset = 0x400;
--	imx_handler->app_dest = 0x70000000;
++	if (IS_ERR(clk))
++		return 0;
 +
-+	if (app_dest)
-+		imx_handler->app_dest = app_dest;
-+	else
-+		imx_handler->app_dest = 0x70000000;
-+
- 	imx_handler->handler.handler = imx_bbu_internal_v2_update;
- 	imx_handler->flags = IMX_INTERNAL_FLAG_NAND;
- 	imx_handler->handler.devicefile = "/dev/nand0";
-diff --git a/arch/arm/mach-imx/include/mach/bbu.h b/arch/arm/mach-imx/include/mach/bbu.h
-index f9ec1cc..dd3eefc 100644
---- a/arch/arm/mach-imx/include/mach/bbu.h
-+++ b/arch/arm/mach-imx/include/mach/bbu.h
-@@ -9,32 +9,36 @@ struct imx_dcd_v2_entry;
- #ifdef CONFIG_BAREBOX_UPDATE
- 
- int imx51_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
--		unsigned long flags, struct imx_dcd_entry *, int dcdsize);
-+		unsigned long flags, struct imx_dcd_entry *, int dcdsize,
-+		unsigned long app_dest);
- 
- int imx53_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
--		unsigned long flags, struct imx_dcd_v2_entry *, int dcdsize);
-+		unsigned long flags, struct imx_dcd_v2_entry *, int dcdsize,
-+		unsigned long app_dest);
- 
- int imx53_bbu_internal_nand_register_handler(const char *name,
- 		unsigned long flags, struct imx_dcd_v2_entry *, int dcdsize,
--		int partition_size);
-+		int partition_size, unsigned long app_dest);
- 
- #else
- 
- static inline int imx51_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
--		unsigned long flags, struct imx_dcd_entry *dcd, int dcdsize)
-+		unsigned long flags, struct imx_dcd_entry *dcd, int dcdsize,
-+		unsigned long app_dest)
- {
- 	return -ENOSYS;
+ 	return clk_get_rate(clk);
  }
  
- static inline int imx53_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
--		unsigned long flags, struct imx_dcd_v2_entry *dcd, int dcdsize)
-+		unsigned long flags, struct imx_dcd_v2_entry *dcd, int dcdsize,
-+		unsigned long app_dest)
- {
- 	return -ENOSYS;
- }
+@@ -102,6 +114,9 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
+ 	struct clk *parent;
+ 	unsigned long parent_rate = 0;
  
- static inline int imx53_bbu_internal_nand_register_handler(const char *name,
- 		unsigned long flags, struct imx_dcd_v2_entry *dcd, int dcdsize,
--		int partition_size)
-+		int partition_size, unsigned long app_dest)
++	if (IS_ERR(clk))
++		return PTR_ERR(clk);
++
+ 	parent = clk_get_parent(clk);
+ 	if (parent)
+ 		parent_rate = clk_get_rate(parent);
+@@ -131,6 +146,11 @@ int clk_set_parent(struct clk *clk, struct clk *parent)
  {
- 	return -ENOSYS;
- }
+ 	int i;
+ 
++	if (IS_ERR(clk))
++		return PTR_ERR(clk);
++	if (IS_ERR(parent))
++		return PTR_ERR(parent);
++
+ 	if (!clk->num_parents)
+ 		return -EINVAL;
+ 	if (!clk->ops->set_parent)
+@@ -155,6 +175,9 @@ struct clk *clk_get_parent(struct clk *clk)
+ {
+ 	int idx;
+ 
++	if (IS_ERR(clk))
++		return clk;
++
+ 	if (!clk->num_parents)
+ 		return ERR_PTR(-ENODEV);
+ 
 -- 
 1.7.10.4
 
