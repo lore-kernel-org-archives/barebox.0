@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TdeOT-0002ql-JT
- for barebox@lists.infradead.org; Wed, 28 Nov 2012 09:57:26 +0000
+ id 1TdeOl-0002rQ-Ov
+ for barebox@lists.infradead.org; Wed, 28 Nov 2012 09:57:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 28 Nov 2012 10:57:19 +0100
-Message-Id: <1354096639-13936-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 28 Nov 2012 10:57:40 +0100
+Message-Id: <1354096660-14174-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1354096660-14174-1-git-send-email-s.hauer@pengutronix.de>
+References: <1354096660-14174-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,94 +21,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clk: check for invalid clocks
+Subject: [PATCH 2/2] ARM i.MX bbu: Allow to have no DCD
 To: barebox@lists.infradead.org
 
-Checking for invalid clocks on function entry allows users
-to for example do a clk_set_rate(clk_lookup("myclk"), x) without
-checking for validity of the result of clk_lookup first.
+Some boards do not have a DCD table since they initialize everything
+in code, so allow to skip it and leave the corresponding pointers
+empty.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/clk.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ arch/arm/mach-imx/imx-bbu-internal.c |   22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index bf61e5d..ea93ff8 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -43,6 +43,9 @@ int clk_enable(struct clk *clk)
- {
- 	int ret;
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index 4300b63..05aa5f1 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -357,8 +357,9 @@ static int imx_bbu_internal_v2_update(struct bbu_handler *handler, struct bbu_da
+ 	flash_header->header.version = IVT_VERSION;
  
-+	if (IS_ERR(clk))
-+		return PTR_ERR(clk);
-+
- 	if (!clk->enable_count) {
- 		ret = clk_parent_enable(clk);
- 		if (ret)
-@@ -64,6 +67,9 @@ int clk_enable(struct clk *clk)
+ 	flash_header->entry = imx_handler->app_dest + imx_pre_image_size;
+-	flash_header->dcd_ptr = imx_handler->app_dest + flash_header_offset +
+-		offsetof(struct imx_flash_header_v2, dcd);
++	if (imx_handler->dcdsize)
++		flash_header->dcd_ptr = imx_handler->app_dest + flash_header_offset +
++			offsetof(struct imx_flash_header_v2, dcd);
+ 	flash_header->boot_data_ptr = imx_handler->app_dest +
+ 		flash_header_offset + offsetof(struct imx_flash_header_v2, boot_data);
+ 	flash_header->self = imx_handler->app_dest + flash_header_offset;
+@@ -366,10 +367,12 @@ static int imx_bbu_internal_v2_update(struct bbu_handler *handler, struct bbu_da
+ 	flash_header->boot_data.start = imx_handler->app_dest;
+ 	flash_header->boot_data.size = ALIGN(imx_pre_image_size + data->len, 4096);;
  
- void clk_disable(struct clk *clk)
- {
-+	if (IS_ERR(clk))
-+		return;
-+
- 	if (!clk->enable_count)
- 		return;
+-	flash_header->dcd.header.tag = DCD_HEADER_TAG;
+-	flash_header->dcd.header.length = cpu_to_be16(sizeof(struct imx_dcd) +
+-			imx_handler->dcdsize);
+-	flash_header->dcd.header.version = DCD_VERSION;
++	if (imx_handler->dcdsize) {
++		flash_header->dcd.header.tag = DCD_HEADER_TAG;
++		flash_header->dcd.header.length = cpu_to_be16(sizeof(struct imx_dcd) +
++				imx_handler->dcdsize);
++		flash_header->dcd.header.version = DCD_VERSION;
++	}
  
-@@ -82,6 +88,9 @@ unsigned long clk_get_rate(struct clk *clk)
- 	struct clk *parent;
- 	unsigned long parent_rate = 0;
+ 	/* Add dcd data */
+ 	memcpy((void *)flash_header + sizeof(*flash_header), imx_handler->dcd, imx_handler->dcdsize);
+@@ -482,6 +485,13 @@ static int imx53_bbu_internal_init_dcd(struct imx_internal_bbu_handler *imx_hand
+ 	uint32_t *dcd32 = dcd;
  
-+	if (IS_ERR(clk))
+ 	/*
++	 * For boards which do not have a dcd (i.e. they do their SDRAM
++	 * setup in C code)
++	 */
++	if (!dcd || !dcdsize)
 +		return 0;
 +
- 	parent = clk_get_parent(clk);
- 	if (!IS_ERR_OR_NULL(parent))
- 		parent_rate = clk_get_rate(parent);
-@@ -94,6 +103,9 @@ unsigned long clk_get_rate(struct clk *clk)
- 
- long clk_round_rate(struct clk *clk, unsigned long rate)
- {
-+	if (IS_ERR(clk))
-+		return 0;
-+
- 	return clk_get_rate(clk);
- }
- 
-@@ -102,6 +114,9 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
- 	struct clk *parent;
- 	unsigned long parent_rate = 0;
- 
-+	if (IS_ERR(clk))
-+		return PTR_ERR(clk);
-+
- 	parent = clk_get_parent(clk);
- 	if (parent)
- 		parent_rate = clk_get_rate(parent);
-@@ -131,6 +146,11 @@ int clk_set_parent(struct clk *clk, struct clk *parent)
- {
- 	int i;
- 
-+	if (IS_ERR(clk))
-+		return PTR_ERR(clk);
-+	if (IS_ERR(parent))
-+		return PTR_ERR(parent);
-+
- 	if (!clk->num_parents)
- 		return -EINVAL;
- 	if (!clk->ops->set_parent)
-@@ -155,6 +175,9 @@ struct clk *clk_get_parent(struct clk *clk)
- {
- 	int idx;
- 
-+	if (IS_ERR(clk))
-+		return clk;
-+
- 	if (!clk->num_parents)
- 		return ERR_PTR(-ENODEV);
- 
++	/*
+ 	 * The DCD data we have compiled in does not have a DCD_WR_CMD at
+ 	 * the beginning. Instead it is contained in struct imx_flash_header_v2.
+ 	 * This is necessary to generate the DCD size at compile time. If
 -- 
 1.7.10.4
 
