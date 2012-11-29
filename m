@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Te9OA-0000C0-IO
- for barebox@lists.infradead.org; Thu, 29 Nov 2012 19:03:15 +0000
+ id 1Te9NX-0008PK-LD
+ for barebox@lists.infradead.org; Thu, 29 Nov 2012 19:02:38 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 29 Nov 2012 20:03:06 +0100
-Message-Id: <1354215786-25615-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1354215786-25615-1-git-send-email-s.hauer@pengutronix.de>
-References: <1354215786-25615-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 29 Nov 2012 20:02:27 +0100
+Message-Id: <1354215748-25394-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1354215748-25394-1-git-send-email-s.hauer@pengutronix.de>
+References: <1354215748-25394-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,93 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] mtd core: call driver write function with complete buffer
+Subject: [PATCH 4/5] mci i.MX esdhc: Allow to specify devicename from
+ platformdata
 To: barebox@lists.infradead.org
 
-mtd->write is supposed to loop around pages internally, no need
-to do this in mtd_write. This fixes a huge write performance drop
-with the m25p80 driver when it was converted to a mtd driver recently.
-Since mtd->writesize is 1 for this driver mtd_write ended up doing
-single byte writes on the flash.
+For boards which need to have persistent names for the device file.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/core.c |   56 +++-------------------------------------------------
- 1 file changed, 3 insertions(+), 53 deletions(-)
+ arch/arm/mach-imx/include/mach/esdhc.h |    1 +
+ drivers/mci/imx-esdhc.c                |    3 +++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 8601787..b5916da 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -62,65 +62,15 @@ static 	ssize_t mtd_read(struct cdev *cdev, void* buf, size_t count,
- #define MTDPGALG(x) ((x) & ~(mtd->writesize - 1))
+diff --git a/arch/arm/mach-imx/include/mach/esdhc.h b/arch/arm/mach-imx/include/mach/esdhc.h
+index b4c1aa9..06863c8 100644
+--- a/arch/arm/mach-imx/include/mach/esdhc.h
++++ b/arch/arm/mach-imx/include/mach/esdhc.h
+@@ -41,5 +41,6 @@ struct esdhc_platform_data {
+ 	enum wp_types wp_type;
+ 	enum cd_types cd_type;
+ 	unsigned caps;
++	char *devname;
+ };
+ #endif /* __ASM_ARCH_IMX_ESDHC_H */
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index dccffc6..eced162 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -552,6 +552,9 @@ static int fsl_esdhc_probe(struct device_d *dev)
+ 	else
+ 		mci->host_caps = MMC_MODE_4BIT;
  
- #ifdef CONFIG_MTD_WRITE
--static int all_ff(const void *buf, int len)
--{
--	int i;
--	const uint8_t *p = buf;
--
--	for (i = 0; i < len; i++)
--		if (p[i] != 0xFF)
--			return 0;
--	return 1;
--}
--
- static ssize_t mtd_write(struct cdev* cdev, const void *buf, size_t _count,
- 			  loff_t _offset, ulong flags)
- {
- 	struct mtd_info *mtd = cdev->priv;
--	size_t retlen, now;
--	int ret = 0;
--	void *wrbuf = NULL;
--	size_t count = _count;
--	unsigned long offset = _offset;
--
--	if (NOTALIGNED(offset)) {
--		printf("offset 0x%0lx not page aligned\n", offset);
--		return -EINVAL;
--	}
--
--	dev_dbg(cdev->dev, "write: offset: 0x%08lx count: 0x%zx\n", offset, count);
--	while (count) {
--		now = count > mtd->writesize ? mtd->writesize : count;
--
--		if (NOTALIGNED(now)) {
--			dev_dbg(cdev->dev, "not aligned: %d %ld\n",
--				mtd->writesize,
--				(offset % mtd->writesize));
--			wrbuf = xmalloc(mtd->writesize);
--			memset(wrbuf, 0xff, mtd->writesize);
--			memcpy(wrbuf + (offset % mtd->writesize), buf, now);
--			if (!all_ff(wrbuf, mtd->writesize))
--				ret = mtd->write(mtd, MTDPGALG(offset),
--						  mtd->writesize, &retlen,
--						  wrbuf);
--			free(wrbuf);
--		} else {
--			if (!all_ff(buf, mtd->writesize))
--				ret = mtd->write(mtd, offset, now, &retlen,
--						  buf);
--			dev_dbg(cdev->dev,
--				"offset: 0x%08lx now: 0x%zx retlen: 0x%zx\n",
--				offset, now, retlen);
--		}
--		if (ret)
--			goto out;
-+	size_t retlen;
-+	int ret;
++	if (pdata && pdata->devname)
++		mci->devname = pdata->devname;
++
+ 	if (caps & ESDHC_HOSTCAPBLT_HSS)
+ 		mci->host_caps |= MMC_MODE_HS_52MHz | MMC_MODE_HS;
  
--		offset += now;
--		count -= now;
--		buf += now;
--	}
-+	ret = mtd->write(mtd, _offset, _count, &retlen, buf);
- 
--out:
- 	return ret ? ret : _count;
- }
- #endif
 -- 
 1.7.10.4
 
