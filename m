@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Te9NX-0008PL-LG
- for barebox@lists.infradead.org; Thu, 29 Nov 2012 19:02:38 +0000
+ id 1Te9OA-0000C0-IO
+ for barebox@lists.infradead.org; Thu, 29 Nov 2012 19:03:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 29 Nov 2012 20:02:26 +0100
-Message-Id: <1354215748-25394-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1354215748-25394-1-git-send-email-s.hauer@pengutronix.de>
-References: <1354215748-25394-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 29 Nov 2012 20:03:06 +0100
+Message-Id: <1354215786-25615-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1354215786-25615-1-git-send-email-s.hauer@pengutronix.de>
+References: <1354215786-25615-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,60 +21,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] mci: Allow to specify device name
+Subject: [PATCH 2/2] mtd core: call driver write function with complete buffer
 To: barebox@lists.infradead.org
 
-When multiple MMC/SD cards are present in the system we often
-have to have persistent names to identify them during runtime.
-This patch allows to overwrite the devicename which is used.
+mtd->write is supposed to loop around pages internally, no need
+to do this in mtd_write. This fixes a huge write performance drop
+with the m25p80 driver when it was converted to a mtd driver recently.
+Since mtd->writesize is 1 for this driver mtd_write ended up doing
+single byte writes on the flash.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/mci-core.c |   10 +++++++---
- include/mci.h          |    1 +
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/mtd/core.c |   56 +++-------------------------------------------------
+ 1 file changed, 3 insertions(+), 53 deletions(-)
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 942d126..6e556a8 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -1397,9 +1397,13 @@ static int mci_card_probe(struct mci *mci)
- 	mci->blk.dev = mci->mci_dev;
- 	mci->blk.ops = &mci_ops;
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index 8601787..b5916da 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -62,65 +62,15 @@ static 	ssize_t mtd_read(struct cdev *cdev, void* buf, size_t count,
+ #define MTDPGALG(x) ((x) & ~(mtd->writesize - 1))
  
--	disknum = cdev_find_free_index("disk");
-+	if (host->devname) {
-+		mci->blk.cdev.name = strdup(host->devname);
-+	} else {
-+		disknum = cdev_find_free_index("disk");
-+		mci->blk.cdev.name = asprintf("disk%d", disknum);
-+	}
+ #ifdef CONFIG_MTD_WRITE
+-static int all_ff(const void *buf, int len)
+-{
+-	int i;
+-	const uint8_t *p = buf;
+-
+-	for (i = 0; i < len; i++)
+-		if (p[i] != 0xFF)
+-			return 0;
+-	return 1;
+-}
+-
+ static ssize_t mtd_write(struct cdev* cdev, const void *buf, size_t _count,
+ 			  loff_t _offset, ulong flags)
+ {
+ 	struct mtd_info *mtd = cdev->priv;
+-	size_t retlen, now;
+-	int ret = 0;
+-	void *wrbuf = NULL;
+-	size_t count = _count;
+-	unsigned long offset = _offset;
+-
+-	if (NOTALIGNED(offset)) {
+-		printf("offset 0x%0lx not page aligned\n", offset);
+-		return -EINVAL;
+-	}
+-
+-	dev_dbg(cdev->dev, "write: offset: 0x%08lx count: 0x%zx\n", offset, count);
+-	while (count) {
+-		now = count > mtd->writesize ? mtd->writesize : count;
+-
+-		if (NOTALIGNED(now)) {
+-			dev_dbg(cdev->dev, "not aligned: %d %ld\n",
+-				mtd->writesize,
+-				(offset % mtd->writesize));
+-			wrbuf = xmalloc(mtd->writesize);
+-			memset(wrbuf, 0xff, mtd->writesize);
+-			memcpy(wrbuf + (offset % mtd->writesize), buf, now);
+-			if (!all_ff(wrbuf, mtd->writesize))
+-				ret = mtd->write(mtd, MTDPGALG(offset),
+-						  mtd->writesize, &retlen,
+-						  wrbuf);
+-			free(wrbuf);
+-		} else {
+-			if (!all_ff(buf, mtd->writesize))
+-				ret = mtd->write(mtd, offset, now, &retlen,
+-						  buf);
+-			dev_dbg(cdev->dev,
+-				"offset: 0x%08lx now: 0x%zx retlen: 0x%zx\n",
+-				offset, now, retlen);
+-		}
+-		if (ret)
+-			goto out;
++	size_t retlen;
++	int ret;
  
--	mci->blk.cdev.name = asprintf("disk%d", disknum);
- 	mci->blk.blockbits = SECTOR_SHIFT;
- 	mci->blk.num_blocks = mci_calc_blk_cnt(mci->capacity, mci->blk.blockbits);
+-		offset += now;
+-		count -= now;
+-		buf += now;
+-	}
++	ret = mtd->write(mtd, _offset, _count, &retlen, buf);
  
-@@ -1409,7 +1413,7 @@ static int mci_card_probe(struct mci *mci)
- 		goto on_error;
- 	}
- 
--	dev_info(mci->mci_dev, "registered disk%d\n", disknum);
-+	dev_info(mci->mci_dev, "registered %s\n", mci->blk.cdev.name);
- 
- 	/* create partitions on demand */
- 	rc = parse_partition_table(&mci->blk);
-diff --git a/include/mci.h b/include/mci.h
-index db78b9c..0041e27 100644
---- a/include/mci.h
-+++ b/include/mci.h
-@@ -286,6 +286,7 @@ struct mci_ios {
- /** host information */
- struct mci_host {
- 	struct device_d *hw_dev;	/**< the host MCI hardware device */
-+	char *devname;			/**< the devicename for the card, defaults to disk%d */
- 	unsigned voltages;
- 	unsigned host_caps;	/**< Host's interface capabilities, refer MMC_VDD_* */
- 	unsigned f_min;		/**< host interface lower limit */
+-out:
+ 	return ret ? ret : _count;
+ }
+ #endif
 -- 
 1.7.10.4
 
