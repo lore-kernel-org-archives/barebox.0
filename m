@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Te9NX-0008PJ-Ip
- for barebox@lists.infradead.org; Thu, 29 Nov 2012 19:02:36 +0000
+ id 1Te9Nf-0008Rs-I0
+ for barebox@lists.infradead.org; Thu, 29 Nov 2012 19:02:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 29 Nov 2012 20:02:24 +0100
-Message-Id: <1354215748-25394-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 29 Nov 2012 20:02:25 +0100
+Message-Id: <1354215748-25394-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1354215748-25394-1-git-send-email-s.hauer@pengutronix.de>
+References: <1354215748-25394-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,105 +21,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] mci: Add STUFF_BITS and use it
+Subject: [PATCH 2/5] mci: Fix capacity calculation for high capacity MMC cards
 To: barebox@lists.infradead.org
 
-This adds the STUFF_BITS macro from the kernel to extract numbers
-from the csd. This also fixes several places where the csd fields
-in SD cards differ from MMC cards.
+For these cards we have to calculate the size using the ext csd
+sector count fields.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/mci-core.c |   41 ++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 36 insertions(+), 5 deletions(-)
+ drivers/mci/mci-core.c |   20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index bf2b0f8..0d601e3 100644
+index 0d601e3..942d126 100644
 --- a/drivers/mci/mci-core.c
 +++ b/drivers/mci/mci-core.c
-@@ -37,6 +37,20 @@
+@@ -758,14 +758,21 @@ static void mci_extract_card_capacity_from_csd(struct mci *mci)
+ 	uint64_t csize, cmult;
  
- #define MAX_BUFFER_NUMBER 0xffffffff
+ 	if (mci->high_capacity) {
+-		csize = (mci->csd[1] & 0x3f) << 16 | (mci->csd[2] & 0xffff0000) >> 16;
+-		cmult = 8;
++		if (IS_SD(mci)) {
++			csize = UNSTUFF_BITS(mci->csd, 48, 22);
++			mci->capacity = (1 + csize) << 10;
++		} else {
++			mci->capacity = mci->ext_csd[EXT_CSD_SEC_CNT] << 0 |
++				mci->ext_csd[EXT_CSD_SEC_CNT + 1] << 8 |
++				mci->ext_csd[EXT_CSD_SEC_CNT + 2] << 16 |
++				mci->ext_csd[EXT_CSD_SEC_CNT + 3] << 24;
++		}
+ 	} else {
+-		csize = (mci->csd[1] & 0x3ff) << 2 | (mci->csd[2] & 0xc0000000) >> 30;
+-		cmult = (mci->csd[2] & 0x00038000) >> 15;
++		cmult = UNSTUFF_BITS(mci->csd, 47, 3);
++		csize = UNSTUFF_BITS(mci->csd, 62, 12);
++		mci->capacity = (csize + 1) << (cmult + 2);
+ 	}
  
-+#define UNSTUFF_BITS(resp,start,size)					\
-+	({								\
-+		const int __size = size;				\
-+		const u32 __mask = (__size < 32 ? 1 << __size : 0) - 1;	\
-+		const int __off = 3 - ((start) / 32);			\
-+		const int __shft = (start) & 31;			\
-+		u32 __res;						\
-+									\
-+		__res = resp[__off] >> __shft;				\
-+		if (__size + __shft > 32)				\
-+			__res |= resp[__off-1] << ((32 - __shft) % 32);	\
-+		__res & __mask;						\
-+	})
+-	mci->capacity = (csize + 1) << (cmult + 2);
+ 	mci->capacity *= mci->read_bl_len;
+ 	dev_dbg(mci->mci_dev, "Capacity: %u MiB\n", (unsigned)(mci->capacity >> 20));
+ }
+@@ -996,7 +1003,6 @@ static int mci_startup(struct mci *mci)
+ 	mci_detect_version_from_csd(mci);
+ 	mci_extract_max_tran_speed_from_csd(mci);
+ 	mci_extract_block_lengths_from_csd(mci);
+-	mci_extract_card_capacity_from_csd(mci);
+ 
+ 	/* sanitiy? */
+ 	if (mci->read_bl_len > SECTOR_SIZE) {
+@@ -1032,6 +1038,8 @@ static int mci_startup(struct mci *mci)
+ 	if (err)
+ 		return err;
+ 
++	mci_extract_card_capacity_from_csd(mci);
 +
- /**
-  * @file
-  * @brief Memory Card framework
-@@ -724,7 +738,7 @@ static void mci_extract_max_tran_speed_from_csd(struct mci *mci)
-  */
- static void mci_extract_block_lengths_from_csd(struct mci *mci)
- {
--	mci->read_bl_len = 1 << ((mci->csd[1] >> 16) & 0xf);
-+	mci->read_bl_len = 1 << UNSTUFF_BITS(mci->csd, 80, 4);
+ 	/* Restrict card's capabilities by what the host can do */
+ 	mci->card_caps &= host->host_caps;
  
- 	if (IS_SD(mci))
- 		mci->write_bl_len = mci->read_bl_len;	/* FIXME why? */
-@@ -1165,7 +1179,10 @@ static int mci_sd_read(struct block_device *blk, void *buffer, int block,
-  */
- static unsigned extract_mid(struct mci *mci)
- {
--	return mci->cid[0] >> 24;
-+	if (!IS_SD(mci) && mci->version <= MMC_VERSION_1_4)
-+		return UNSTUFF_BITS(mci->cid, 104, 24);
-+	else
-+		return UNSTUFF_BITS(mci->cid, 120, 8);
- }
- 
- /**
-@@ -1198,7 +1215,15 @@ static unsigned extract_prv(struct mci *mci)
-  */
- static unsigned extract_psn(struct mci *mci)
- {
--	return (mci->cid[2] << 8) | (mci->cid[3] >> 24);
-+	if (IS_SD(mci)) {
-+		return UNSTUFF_BITS(mci->csd, 24, 32);
-+	} else {
-+		if (mci->version > MMC_VERSION_1_4)
-+			return UNSTUFF_BITS(mci->cid, 16, 32);
-+		else
-+			return UNSTUFF_BITS(mci->cid, 16, 24);
-+	}
-+
- }
- 
- /**
-@@ -1209,7 +1234,10 @@ static unsigned extract_psn(struct mci *mci)
-  */
- static unsigned extract_mtd_month(struct mci *mci)
- {
--	return (mci->cid[3] >> 8) & 0xf;
-+	if (IS_SD(mci))
-+		return UNSTUFF_BITS(mci->cid, 8, 4);
-+	else
-+		return UNSTUFF_BITS(mci->cid, 12, 4);
- }
- 
- /**
-@@ -1221,7 +1249,10 @@ static unsigned extract_mtd_month(struct mci *mci)
-  */
- static unsigned extract_mtd_year(struct mci *mci)
- {
--	return ((mci->cid[3] >> 12) & 0xff) + 2000U;
-+	if (IS_SD(mci))
-+		return UNSTUFF_BITS(mci->cid, 12, 8) + 2000;
-+	else
-+		return UNSTUFF_BITS(mci->cid, 8, 4) + 1997;
- }
- 
- /**
 -- 
 1.7.10.4
 
