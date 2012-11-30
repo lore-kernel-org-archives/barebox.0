@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TeLaM-0003CL-8d
- for barebox@lists.infradead.org; Fri, 30 Nov 2012 08:04:35 +0000
-Date: Fri, 30 Nov 2012 09:04:30 +0100
+ id 1TeLcV-0003T4-Du
+ for barebox@lists.infradead.org; Fri, 30 Nov 2012 08:06:48 +0000
+Date: Fri, 30 Nov 2012 09:06:46 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121130080430.GS10369@pengutronix.de>
-References: <CAAfyv341yF=MSJg+CWpJSRy1deOsaz3DHH1=WKo8VLeyYKUWjQ@mail.gmail.com>
+Message-ID: <20121130080646.GU10369@pengutronix.de>
+References: <1354215748-25394-1-git-send-email-s.hauer@pengutronix.de>
+ <1354215748-25394-3-git-send-email-s.hauer@pengutronix.de>
+ <20121130045732.GA8327@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAAfyv341yF=MSJg+CWpJSRy1deOsaz3DHH1=WKo8VLeyYKUWjQ@mail.gmail.com>
+In-Reply-To: <20121130045732.GA8327@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +24,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: loading uImage from FAT partition
-To: Belisko Marek <marek.belisko@gmail.com>
+Subject: Re: [PATCH 3/5] mci: Allow to specify device name
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Nov 29, 2012 at 11:49:56PM +0100, Belisko Marek wrote:
-> Hi,
-> 
-> I'm trying to use barebox on pandaboard and change default env config to boot
-> from SD card (as this is mostly what user want).
-> 
-> I'm curious how to add boot support from SD card properly.
-> I'm using currently command: bootm /boot/uImage in
-> boot script. Is this approach correct or is there some simple way how
-> to make it?
+On Fri, Nov 30, 2012 at 05:57:32AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 20:02 Thu 29 Nov     , Sascha Hauer wrote:
+> > When multiple MMC/SD cards are present in the system we often
+> > have to have persistent names to identify them during runtime.
+> > This patch allows to overwrite the devicename which is used.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  drivers/mci/mci-core.c |   10 +++++++---
+> >  include/mci.h          |    1 +
+> >  2 files changed, 8 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+> > index 942d126..6e556a8 100644
+> > --- a/drivers/mci/mci-core.c
+> > +++ b/drivers/mci/mci-core.c
+> > @@ -1397,9 +1397,13 @@ static int mci_card_probe(struct mci *mci)
+> >  	mci->blk.dev = mci->mci_dev;
+> >  	mci->blk.ops = &mci_ops;
+> >  
+> > -	disknum = cdev_find_free_index("disk");
+> > +	if (host->devname) {
+> > +		mci->blk.cdev.name = strdup(host->devname);
+> 		can you use is a based name not the name
 
-As of current master with the panda board switched to the new
-environment this would be:
-
-boot mmc
-
-You can adjust /env/boot/mmc to your needs beforehand.
+I don't understand this. What do you mean?
 
 Sascha
 
