@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo1.mail-out.ovh.net ([178.32.96.102]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TeIhF-0000E5-3B
- for barebox@lists.infradead.org; Fri, 30 Nov 2012 04:59:30 +0000
-Received: from mail630.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id D22F6FF8EBB
- for <barebox@lists.infradead.org>; Fri, 30 Nov 2012 06:11:09 +0100 (CET)
-Date: Fri, 30 Nov 2012 05:57:32 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121130045732.GA8327@game.jcrosoft.org>
-References: <1354215748-25394-1-git-send-email-s.hauer@pengutronix.de>
- <1354215748-25394-3-git-send-email-s.hauer@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TeLaM-0003CL-8d
+ for barebox@lists.infradead.org; Fri, 30 Nov 2012 08:04:35 +0000
+Date: Fri, 30 Nov 2012 09:04:30 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121130080430.GS10369@pengutronix.de>
+References: <CAAfyv341yF=MSJg+CWpJSRy1deOsaz3DHH1=WKo8VLeyYKUWjQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1354215748-25394-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <CAAfyv341yF=MSJg+CWpJSRy1deOsaz3DHH1=WKo8VLeyYKUWjQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,71 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] mci: Allow to specify device name
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: loading uImage from FAT partition
+To: Belisko Marek <marek.belisko@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 20:02 Thu 29 Nov     , Sascha Hauer wrote:
-> When multiple MMC/SD cards are present in the system we often
-> have to have persistent names to identify them during runtime.
-> This patch allows to overwrite the devicename which is used.
+On Thu, Nov 29, 2012 at 11:49:56PM +0100, Belisko Marek wrote:
+> Hi,
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  drivers/mci/mci-core.c |   10 +++++++---
->  include/mci.h          |    1 +
->  2 files changed, 8 insertions(+), 3 deletions(-)
+> I'm trying to use barebox on pandaboard and change default env config to boot
+> from SD card (as this is mostly what user want).
 > 
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index 942d126..6e556a8 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -1397,9 +1397,13 @@ static int mci_card_probe(struct mci *mci)
->  	mci->blk.dev = mci->mci_dev;
->  	mci->blk.ops = &mci_ops;
->  
-> -	disknum = cdev_find_free_index("disk");
-> +	if (host->devname) {
-> +		mci->blk.cdev.name = strdup(host->devname);
-		can you use is a based name not the name
-> +	} else {
-> +		disknum = cdev_find_free_index("disk");
-> +		mci->blk.cdev.name = asprintf("disk%d", disknum);
-> +	}
->  
-> -	mci->blk.cdev.name = asprintf("disk%d", disknum);
->  	mci->blk.blockbits = SECTOR_SHIFT;
->  	mci->blk.num_blocks = mci_calc_blk_cnt(mci->capacity, mci->blk.blockbits);
->  
-> @@ -1409,7 +1413,7 @@ static int mci_card_probe(struct mci *mci)
->  		goto on_error;
->  	}
->  
-> -	dev_info(mci->mci_dev, "registered disk%d\n", disknum);
-> +	dev_info(mci->mci_dev, "registered %s\n", mci->blk.cdev.name);
->  
->  	/* create partitions on demand */
->  	rc = parse_partition_table(&mci->blk);
-> diff --git a/include/mci.h b/include/mci.h
-> index db78b9c..0041e27 100644
-> --- a/include/mci.h
-> +++ b/include/mci.h
-> @@ -286,6 +286,7 @@ struct mci_ios {
->  /** host information */
->  struct mci_host {
->  	struct device_d *hw_dev;	/**< the host MCI hardware device */
-> +	char *devname;			/**< the devicename for the card, defaults to disk%d */
->  	unsigned voltages;
->  	unsigned host_caps;	/**< Host's interface capabilities, refer MMC_VDD_* */
->  	unsigned f_min;		/**< host interface lower limit */
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> I'm curious how to add boot support from SD card properly.
+> I'm using currently command: bootm /boot/uImage in
+> boot script. Is this approach correct or is there some simple way how
+> to make it?
+
+As of current master with the panda board switched to the new
+environment this would be:
+
+boot mmc
+
+You can adjust /env/boot/mmc to your needs beforehand.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
