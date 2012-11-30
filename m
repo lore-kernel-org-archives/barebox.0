@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ia0-f177.google.com ([209.85.210.177])
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TeCvd-0008Mh-Tf
- for barebox@lists.infradead.org; Thu, 29 Nov 2012 22:49:58 +0000
-Received: by mail-ia0-f177.google.com with SMTP id u21so10827822ial.36
- for <barebox@lists.infradead.org>; Thu, 29 Nov 2012 14:49:56 -0800 (PST)
-MIME-Version: 1.0
-Date: Thu, 29 Nov 2012 23:49:56 +0100
-Message-ID: <CAAfyv341yF=MSJg+CWpJSRy1deOsaz3DHH1=WKo8VLeyYKUWjQ@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+ id 1TeGjt-0007sS-0P
+ for barebox@lists.infradead.org; Fri, 30 Nov 2012 02:54:05 +0000
+Received: by mail-lb0-f177.google.com with SMTP id n10so106353lbo.36
+ for <barebox@lists.infradead.org>; Thu, 29 Nov 2012 18:54:02 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri, 30 Nov 2012 06:53:53 +0400
+Message-Id: <1354244033-9664-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,38 +16,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: loading uImage from FAT partition
+Subject: [PATCH] MIPS: fix out-of-tree build
 To: barebox@lists.infradead.org
 
-Hi,
+The commit
 
-I'm trying to use barebox on pandaboard and change default env config to boot
-from SD card (as this is mostly what user want).
+  commit d25d94bea67308e29db895d418f3f1f8153ae2ea
+  Author: Antony Pavlov <antonynpavlov@gmail.com>
+  Date:   Fri Jun 1 13:23:20 2012 +0400
 
-I'm curious how to add boot support from SD card properly.
-I'm using currently command: bootm /boot/uImage in
-boot script. Is this approach correct or is there some simple way how
-to make it?
+      MIPS: make possible board-specific header files
 
-Thanks,
+      This patch makes possible to put a board-specific
+      header file (e. g. foobar.h) to arch/mips/boards/*/include/board/.
 
-mbe
+breaks the out-of-tree build for the boards that use it (rzx50).
 
+Reported-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/mips/Makefile |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 5e40de7..f32089d 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -88,14 +88,18 @@ else
+ BOARD :=
+ endif
+ 
++ifeq ($(KBUILD_SRC),)
++CPPFLAGS += -I$(BOARD)/include
++else
++CPPFLAGS += -I$(srctree)/$(BOARD)/include
++endif
++
+ ifneq ($(machine-y),)
+ MACH  := arch/mips/mach-$(machine-y)/
+ else
+ MACH  :=
+ endif
+ 
+-CPPFLAGS += -I$(BOARD)/include
+-
+ common-y += $(BOARD) $(MACH)
+ common-y += arch/mips/lib/
+ common-y += arch/mips/boot/
 -- 
-as simple and primitive as possible
--------------------------------------------------
-Marek Belisko - OPEN-NANDRA
-Freelance Developer
+1.7.10.4
 
-Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
-Tel: +421 915 052 184
-skype: marekwhite
-twitter: #opennandra
-web: http://open-nandra.com
 
 _______________________________________________
 barebox mailing list
