@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from m50-111.126.com ([123.125.50.111])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TeONS-00084P-V5
- for barebox@lists.infradead.org; Fri, 30 Nov 2012 11:03:28 +0000
-Date: Fri, 30 Nov 2012 19:03:36 +0800
-From: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
-Message-ID: <20121130110336.GB7099@greatfirst.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TeOaB-0003WG-VG
+ for barebox@lists.infradead.org; Fri, 30 Nov 2012 11:16:37 +0000
+Received: from isonoe.hi.pengutronix.de ([10.1.0.76])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jbe@pengutronix.de>) id 1TeOa9-0004wC-Pr
+ for barebox@lists.infradead.org; Fri, 30 Nov 2012 12:16:33 +0100
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Fri, 30 Nov 2012 12:14:04 +0100
 MIME-Version: 1.0
 Content-Disposition: inline
+Message-Id: <201211301214.05014.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,18 +24,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Howto known uncompressed length when uncompress_fd_to_buf
-To: barebox <barebox@lists.infradead.org>
+Subject: [Patch] ARM/MXS/i.MX28: distinguish POR and wake-up event correctly
+To: barebox@lists.infradead.org
 
-the function uncompress_fd_to_buf has no parameter to return
-the uncompressed length, How to get the uncompressed content
-length?
+When the built-in RTC in the i.MX28 is programmed to wake-up the SoC, the RTC
+reports two events: RST and WAKE. RST is okay in this case, because the PMIC
+was really powered down. But the real event is the WAKE from the RTC and
+should have precedence over the RST event. So, report the WAKE event for this
+special case.
+
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+
+diff --git a/drivers/watchdog/im28wd.c b/drivers/watchdog/im28wd.c
+index ca32a72..bc19369 100644
+--- a/drivers/watchdog/im28wd.c
++++ b/drivers/watchdog/im28wd.c
+@@ -82,6 +82,17 @@ static void __maybe_unused imx28_detect_reset_source(const struct imx28_wd *p)
+ 	if (reg & MXS_RTC_PERSISTENT0_EXT_RST) {
+ 		writel(MXS_RTC_PERSISTENT0_EXT_RST,
+ 			p->regs + MXS_RTC_PERSISTENT0 + MXS_RTC_CLR_ADDR);
++		/*
++		 * if the RTC has woken up the SoC, additionally the ALARM_WAKE
++		 * bit is set. This bit should have precedence, because it
++		 * reports the real event, why we are here.
++		 */
++		if (reg & MXS_RTC_PERSISTENT0_ALARM_WAKE) {
++			writel(MXS_RTC_PERSISTENT0_ALARM_WAKE,
++				p->regs + MXS_RTC_PERSISTENT0 + MXS_RTC_CLR_ADDR);
++			set_reset_source(RESET_WKE);
++			return;
++		}
+ 		set_reset_source(RESET_POR);
+ 		return;
+ 	}
+
 
 -- 
-Best Regards,
-zzs
-
-
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
