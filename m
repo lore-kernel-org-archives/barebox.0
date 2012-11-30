@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TeOaB-0003WG-VG
- for barebox@lists.infradead.org; Fri, 30 Nov 2012 11:16:37 +0000
-Received: from isonoe.hi.pengutronix.de ([10.1.0.76])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1TeOa9-0004wC-Pr
- for barebox@lists.infradead.org; Fri, 30 Nov 2012 12:16:33 +0100
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 30 Nov 2012 12:14:04 +0100
+Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TeOwu-0005Q4-Ly
+ for barebox@lists.infradead.org; Fri, 30 Nov 2012 11:40:05 +0000
+Received: from mail180.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 3B015DC5593
+ for <barebox@lists.infradead.org>; Fri, 30 Nov 2012 12:48:05 +0100 (CET)
+Date: Fri, 30 Nov 2012 12:38:09 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121130113809.GC8327@game.jcrosoft.org>
+References: <20121130110029.GA7099@greatfirst.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201211301214.05014.jbe@pengutronix.de>
+In-Reply-To: <20121130110029.GA7099@greatfirst.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,50 +22,17 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [Patch] ARM/MXS/i.MX28: distinguish POR and wake-up event correctly
-To: barebox@lists.infradead.org
+Subject: Re: gunzip error when uncompress to buf
+To: barebox <barebox@lists.infradead.org>
 
-When the built-in RTC in the i.MX28 is programmed to wake-up the SoC, the RTC
-reports two events: RST and WAKE. RST is okay in this case, because the PMIC
-was really powered down. But the real event is the WAKE from the RTC and
-should have precedence over the RST event. So, report the WAKE event for this
-special case.
-
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-
-diff --git a/drivers/watchdog/im28wd.c b/drivers/watchdog/im28wd.c
-index ca32a72..bc19369 100644
---- a/drivers/watchdog/im28wd.c
-+++ b/drivers/watchdog/im28wd.c
-@@ -82,6 +82,17 @@ static void __maybe_unused imx28_detect_reset_source(const struct imx28_wd *p)
- 	if (reg & MXS_RTC_PERSISTENT0_EXT_RST) {
- 		writel(MXS_RTC_PERSISTENT0_EXT_RST,
- 			p->regs + MXS_RTC_PERSISTENT0 + MXS_RTC_CLR_ADDR);
-+		/*
-+		 * if the RTC has woken up the SoC, additionally the ALARM_WAKE
-+		 * bit is set. This bit should have precedence, because it
-+		 * reports the real event, why we are here.
-+		 */
-+		if (reg & MXS_RTC_PERSISTENT0_ALARM_WAKE) {
-+			writel(MXS_RTC_PERSISTENT0_ALARM_WAKE,
-+				p->regs + MXS_RTC_PERSISTENT0 + MXS_RTC_CLR_ADDR);
-+			set_reset_source(RESET_WKE);
-+			return;
-+		}
- 		set_reset_source(RESET_POR);
- 		return;
- 	}
-
-
--- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMTk6MDAgRnJpIDMwIE5vdiAgICAgLCDlvKDlv6DlsbEgd3JvdGU6Cj4gT24gaG9zdCB1c2Ug
+dGhlIGZsb3d3aW5nIGNtZCBidWlsZCBhIGd6aXBlZCBmaWxlCj4gCj4gLS0tLS0tLS0tLS0tLS0t
+LQo+ICQgZ3ppcCAtYzkgemJhcmVib3guYmluID4geHh4CnRoaXMgaXMgYSBiaW5hcnkgd2l0aCBh
+IGRlY29tcHJlc3NvciBpbnNvZGUgeW91IGp1c3QgbmVlZCB0byBmbGFzaCBpdAoKQmVzdCBSZWdh
+cmRzLApKLgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
+aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
