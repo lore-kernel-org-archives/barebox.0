@@ -1,11 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TeNZ6-00022s-JZ
- for barebox@lists.infradead.org; Fri, 30 Nov 2012 10:11:26 +0000
-From: Jan Luebbe <jlu@pengutronix.de>
-Date: Fri, 30 Nov 2012 11:11:12 +0100
-Message-Id: <1354270272-6626-1-git-send-email-jlu@pengutronix.de>
+Received: from mo4.mail-out.ovh.net ([178.32.228.4])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TeNaF-0002Tb-1K
+ for barebox@lists.infradead.org; Fri, 30 Nov 2012 10:12:36 +0000
+Received: from mail172.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id D6316104F54F
+ for <barebox@lists.infradead.org>; Fri, 30 Nov 2012 11:20:26 +0100 (CET)
+Date: Fri, 30 Nov 2012 11:10:30 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121130101030.GB8327@game.jcrosoft.org>
+References: <1354215748-25394-1-git-send-email-s.hauer@pengutronix.de>
+ <1354215748-25394-3-git-send-email-s.hauer@pengutronix.de>
+ <20121130045732.GA8327@game.jcrosoft.org>
+ <20121130080646.GU10369@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20121130080646.GU10369@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,72 +24,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] omap: gpmc: mark hex debug values as such
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/5] mci: Allow to specify device name
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Also use %p for pointers.
+On 09:06 Fri 30 Nov     , Sascha Hauer wrote:
+> On Fri, Nov 30, 2012 at 05:57:32AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 20:02 Thu 29 Nov     , Sascha Hauer wrote:
+> > > When multiple MMC/SD cards are present in the system we often
+> > > have to have persistent names to identify them during runtime.
+> > > This patch allows to overwrite the devicename which is used.
+> > > 
+> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > ---
+> > >  drivers/mci/mci-core.c |   10 +++++++---
+> > >  include/mci.h          |    1 +
+> > >  2 files changed, 8 insertions(+), 3 deletions(-)
+> > > 
+> > > diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+> > > index 942d126..6e556a8 100644
+> > > --- a/drivers/mci/mci-core.c
+> > > +++ b/drivers/mci/mci-core.c
+> > > @@ -1397,9 +1397,13 @@ static int mci_card_probe(struct mci *mci)
+> > >  	mci->blk.dev = mci->mci_dev;
+> > >  	mci->blk.ops = &mci_ops;
+> > >  
+> > > -	disknum = cdev_find_free_index("disk");
+> > > +	if (host->devname) {
+> > > +		mci->blk.cdev.name = strdup(host->devname);
+> > 		can you use is a based name not the name
+> 
+> I don't understand this. What do you mean?
+<name><id>
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
----
- arch/arm/mach-omap/gpmc.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+instead of disk0 mmc0 as exmaple
 
-diff --git a/arch/arm/mach-omap/gpmc.c b/arch/arm/mach-omap/gpmc.c
-index ff8b58b..73d8c44 100644
---- a/arch/arm/mach-omap/gpmc.c
-+++ b/arch/arm/mach-omap/gpmc.c
-@@ -50,7 +50,7 @@ void gpmc_generic_init(unsigned int cfg)
- 	unsigned int reg = GPMC_REG(CONFIG7_0);
- 	char x = 0;
- 
--	debug("gpmccfg=%x\n", cfg);
-+	debug("gpmccfg=0x%x\n", cfg);
- 	/* Generic Configurations */
- 	/* reset gpmc */
- 	start = get_time_ns();
-@@ -73,7 +73,7 @@ void gpmc_generic_init(unsigned int cfg)
- 	 * But NEVER run me in XIP mode! I will Die!
- 	 */
- 	while (x < GPMC_NUM_CS) {
--		debug("gpmccs=%d Reg:%x <-0x0\n", x, reg);
-+		debug("gpmccs=%d Reg:0x%x <-0x0\n", x, reg);
- 		writel(0x0, reg);
- 		reg += GPMC_CONFIG_CS_SIZE;
- 		x++;
-@@ -95,7 +95,7 @@ void gpmc_cs_config(char cs, struct gpmc_config *config)
- {
- 	unsigned int reg = GPMC_REG(CONFIG1_0) + (cs * GPMC_CONFIG_CS_SIZE);
- 	unsigned char x = 0;
--	debug("gpmccs=%x cfg=%x\n", cs, (unsigned int)config);
-+	debug("gpmccs=0x%x cfg=0x%p\n", cs, config);
- 
- 	/* Disable the CS before reconfiguring */
- 	writel(0x0, GPMC_REG(CONFIG7_0) + (cs * GPMC_CONFIG_CS_SIZE));
-@@ -103,14 +103,14 @@ void gpmc_cs_config(char cs, struct gpmc_config *config)
- 
- 	/* Write the CFG1-6 regs */
- 	while (x < 6) {
--		debug("gpmccfg=%d Reg:%x <-0x%x\n",
-+		debug("gpmccfg%d Reg:0x%x <-0x%08x\n",
- 				x, reg, config->cfg[x]);
- 		writel(config->cfg[x], reg);
- 		reg += GPMC_CONFIG_REG_OFF;
- 		x++;
- 	}
- 	/* reg now points to CFG7 */
--	debug("gpmccfg=%d Reg:%x <-0x%x\n",
-+	debug("gpmccfg%d Reg:0x%x <-0x%08x\n",
- 			x, reg, (0x1 << 6) |		/* CS enable */
- 		     ((config->size & 0xF) << 8) |	/* Size */
- 		     ((config->base >> 24) & 0x3F));
--- 
-1.7.10.4
-
+Best Regards,
+J.
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
