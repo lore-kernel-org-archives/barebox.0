@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qa0-f49.google.com ([209.85.216.49])
+Received: from astoria.ccjclearline.com ([64.235.106.9])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TeThG-0003te-DS
- for barebox@lists.infradead.org; Fri, 30 Nov 2012 16:44:15 +0000
-Received: by mail-qa0-f49.google.com with SMTP id r4so668244qaq.15
- for <barebox@lists.infradead.org>; Fri, 30 Nov 2012 08:44:12 -0800 (PST)
+ id 1TemrY-0005n2-MJ
+ for barebox@lists.infradead.org; Sat, 01 Dec 2012 13:12:09 +0000
+Received: from cpebcc81008dd2c-cmbcc81008dd29.cpe.net.cable.rogers.com
+ ([99.253.156.71]:55167 helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+ (Exim 4.77) (envelope-from <rpjday@crashcourse.ca>)
+ id 1TemrT-0000jJ-He
+ for barebox@lists.infradead.org; Sat, 01 Dec 2012 08:12:03 -0500
+Date: Sat, 1 Dec 2012 08:12:01 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.DEB.2.02.1212010809040.13064@oneiric>
 MIME-Version: 1.0
-In-Reply-To: <50B8DE02.1030209@ge.com>
-References: <CA+pW49qF1gN6Ty=T44MJzCXkmfwhJC0Lj72-zG+ng=mvX7VRgw@mail.gmail.com>
- <50B8DE02.1030209@ge.com>
-Date: Fri, 30 Nov 2012 17:44:12 +0100
-Message-ID: <CAJfOKByMy3p1c3ouVjFc+apur8kW2mqiHU8bo+Cob5cewa_J3A@mail.gmail.com>
-From: Franck Jullien <franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,24 +25,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: How to read a file in UBIFS file system from barebox
-To: Renaud Barbier <renaud.barbier@ge.com>
-Cc: barebox@lists.infradead.org
+Subject: how does barebox deal with more than one environment?
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-2012/11/30 Renaud Barbier <renaud.barbier@ge.com>:
-> On 30/11/2012 14:00, Madhu koriginja wrote:
->
-> Hi All,
->             I am using UBIFS file system. My kernel is placed in the file
-> system (/boot/uImage). I want to read the kernel(uImage) from UBIFS file
-> system at barebox to load the kernel and boot it.
-> Please give me some ideas how to get this functionality.
->
-> I have ported UBIFS from U-boot.
-> I can send patches.
->
 
-Sure that would be great. I was thinking to port any flash fs.
+  writing up a simple barebox exercise for students and on this page:
+
+http://wiki.barebox.org/doku.php?id=user:first_steps
+
+it seems clear(?) that you can define multiple environments that will
+appear at /dev/env0, /dev/env1, etc, but that page also claims that
+*only* the configuration on /dev/env0 will be executed automatically
+if barebox finds that it's a valid configuration sector.
+
+  so what happens with the additional environments?  that page doesn't
+make it clear.  i'm just about to read the source to see if i can
+figure this out.
+
+rday
+
+-- 
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
