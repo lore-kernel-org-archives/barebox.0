@@ -1,21 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo3.mail-out.ovh.net ([46.105.75.36]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tenja-0000ST-6d
- for barebox@lists.infradead.org; Sat, 01 Dec 2012 14:07:59 +0000
-Received: from mail96.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 2A0B4FF98B1
- for <barebox@lists.infradead.org>; Sat,  1 Dec 2012 15:19:22 +0100 (CET)
-Date: Sat, 1 Dec 2012 15:06:01 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121201140601.GE8327@game.jcrosoft.org>
-References: <20121130110029.GA7099@greatfirst.com>
- <20121130113809.GC8327@game.jcrosoft.org>
- <20121130114916.GC7099@greatfirst.com>
+Received: from astoria.ccjclearline.com ([64.235.106.9])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TenjZ-0000Sc-0Q
+ for barebox@lists.infradead.org; Sat, 01 Dec 2012 14:07:57 +0000
+Date: Sat, 1 Dec 2012 09:07:53 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+In-Reply-To: <CAA4bVAHj_Q12r087kYOvwXj+9vRb1cFANa7nMUKTQzH+qmmEAw@mail.gmail.com>
+Message-ID: <alpine.DEB.2.02.1212010906080.13744@oneiric>
+References: <alpine.DEB.2.02.1212010809040.13064@oneiric>
+ <alpine.DEB.2.02.1212010818090.13158@oneiric>
+ <CAA4bVAHj_Q12r087kYOvwXj+9vRb1cFANa7nMUKTQzH+qmmEAw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20121130114916.GC7099@greatfirst.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,25 +19,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: gunzip error when uncompress to buf
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: how does barebox deal with more than one environment?
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-T24gMTk6NDkgRnJpIDMwIE5vdiAgICAgLCDlvKDlv6DlsbEgd3JvdGU6Cj4gSW4gbWVzc2FnZSA8
-MjAxMjExMzAxMTM4MDkuR0M4MzI3QGdhbWUuamNyb3NvZnQub3JnPiBKZWFuLUNocmlzdG9waGUg
-UExBR05JT0wtVklMTEFSRCB3cm90ZToKPiA+IE9uIDE5OjAwIEZyaSAzMCBOb3YgICAgICwg5byg
-5b+g5bGxIHdyb3RlOgo+ID4gPiBPbiBob3N0IHVzZSB0aGUgZmxvd3dpbmcgY21kIGJ1aWxkIGEg
-Z3ppcGVkIGZpbGUKPiA+ID4KPiA+ID4gLS0tLS0tLS0tLS0tLS0tLQo+ID4gPiAkIGd6aXAgLWM5
-IHpiYXJlYm94LmJpbiA+IHh4eAo+ID4gdGhpcyBpcyBhIGJpbmFyeSB3aXRoIGEgZGVjb21wcmVz
-c29yIGluc29kZSB5b3UganVzdCBuZWVkIHRvIGZsYXNoIGl0Cj4gPgo+IAo+IEkga25vd24gemJh
-cmVib3guYmluIGlzIGEgY29tcHJlc3NlZCBpbWFnZS4gSSBqdXN0IHVzZSB0aGlzIGZpbGUgdG8K
-PiB0ZXN0IHVuY29tcHJlc3NfZmRfdG9fYnVmLgo+IAo+IEkgd2lsbCBjb21wcmVzcyBteSBmcGdh
-IGZpcm13YXJlIGFuZCBmbGFzaCBpdCwgU28gSSBuZWVkIHRvIHVuY29tcHJlc3MKPiB0aGlzIGlt
-YWdlIHRvIGEgYnVmLCB0aGVuIHVzZSBpdCB0byBjb25maWcgZnBnYQo+IAo+IEJ1dCB1bmNvbXBy
-ZXNzX2ZkX3RvX2J1ZiB3b3JrcyB3cm9uZyEKc28gZGVidWcgaXQKCkJlc3QgUmVnYXJkcywKSi4K
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Sat, 1 Dec 2012, Antony Pavlov wrote:
+
+> On 1 December 2012 17:19, Robert P. J. Day <rpjday@crashcourse.ca> wrote:
+> > On Sat, 1 Dec 2012, Robert P. J. Day wrote:
+> >
+> >>
+> >>   writing up a simple barebox exercise for students and on this page:
+> >>
+> >> http://wiki.barebox.org/doku.php?id=user:first_steps
+> >>
+> >> it seems clear(?) that you can define multiple environments that will
+> >> appear at /dev/env0, /dev/env1, etc, but that page also claims that
+> >> *only* the configuration on /dev/env0 will be executed automatically
+> >> if barebox finds that it's a valid configuration sector.
+> >>
+> >>   so what happens with the additional environments?  that page doesn't
+> >> make it clear.  i'm just about to read the source to see if i can
+> >> figure this out.
+> >
+> >   oh, wait, i think i see ... the "loadenv" command will load a given
+> > environment into a directory so i'm *assuming* that additional
+> > environments are simply available to be loaded, but /dev/env0 is the
+> > only one treated special.  or feel free to correct me if i'm
+> > hopelessly wrong.
+>
+> See common/startup.c:110
+>
+> #ifdef CONFIG_ENV_HANDLING
+>         if (envfs_load(default_environment_path, "/env")) {
+> #ifdef CONFIG_DEFAULT_ENVIRONMENT
+>                 printf("no valid environment found on %s. "
+>                         "Using default environment\n",
+>                         default_environment_path);
+>                 envfs_load("/dev/defaultenv", "/env");
+> #endif
+>
+> By default  default_environment_path="/dev/env0", but it can be
+> overwritten in a board code (e.g. see arch/arm/boards/panda/board.c).
+
+  i realize that -- what i was asking about were the possible
+*additional* environments (/dev/env1, /dev/env2, ...) that are
+mentioned on that page.
+
+rday
+
+-- 
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
