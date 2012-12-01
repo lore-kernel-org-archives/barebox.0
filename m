@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from astoria.ccjclearline.com ([64.235.106.9])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TepvK-0005Ro-Bm
- for barebox@lists.infradead.org; Sat, 01 Dec 2012 16:28:14 +0000
-Received: from cpebcc81008dd2c-cmbcc81008dd29.cpe.net.cable.rogers.com
- ([99.253.156.71]:56349 helo=crashcourse.ca)
+ id 1TeuRy-0007jJ-EA
+ for barebox@lists.infradead.org; Sat, 01 Dec 2012 21:18:14 +0000
+Received: from cpec03f0ed08c7f-cm001ac318e826.cpe.net.cable.rogers.com
+ ([174.115.5.73]:42302 helo=crashcourse.ca)
  by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
  (Exim 4.77) (envelope-from <rpjday@crashcourse.ca>)
- id 1TepvJ-0006sX-5V
- for barebox@lists.infradead.org; Sat, 01 Dec 2012 11:28:13 -0500
-Date: Sat, 1 Dec 2012 11:28:08 -0500 (EST)
+ id 1TeuRv-0008Ic-ES
+ for barebox@lists.infradead.org; Sat, 01 Dec 2012 16:18:11 -0500
+Date: Sat, 1 Dec 2012 16:18:08 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.DEB.2.02.1212011123210.14847@oneiric>
+Message-ID: <alpine.DEB.2.02.1212011607040.13954@oneiric>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,59 +25,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: should i expect trying to mount a cramfs fs to give me a segmentation
- fault?
+Subject: suddenly, i can't boot barebox on my beagle xM anymore
 To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
 
-  again, just following along here:
+  a bit embarrassed but, all of a sudden, what used to work just fine
+in terms of building and booting barebox on my beagleboard xM (rev C)
+doesn't work anymore.
 
-http://wiki.barebox.org/doku.php?id=user:first_steps
+  not that long ago, i documented how easy this was here:
 
-i created a small cramfs filesystem image:
+http://www.crashcourse.ca/wiki/index.php/BeagleBoard-xM#Barebox_for_the_xM
 
-$ ls -l crypto.cramfs
--rw-rw-r-- 1 rpjday rpjday 24576 Dec  1 11:19 crypto.cramfs
-$ file crypto.cramfs
-crypto.cramfs: Linux Compressed ROM File System data, little endian size 24576 version #2 sorted_dirs CRC 0x969356bc, edition 0, 24
-blocks, 13 files
-$
+absolutely nothing out of the ordinary as i remember it.  so, when
+this worked, the boot looked like what you see here:
 
-started barebox:
+http://www.crashcourse.ca/wiki/index.php/BeagleBoard-xM#Booting_to_Barebox_on_your_xM_--_it_actually_works
 
-$ ./barebox -i crypto.cramfs
-add file crypto.cramfs()
+now, the boot process produces:
 
-
-barebox 2012.11.0-00305-g159109f #1 Sat Dec 1 07:46:38 EST 2012
+barebox 2012.11.0-00305-g159109f #1 Sat Dec 1 15:51:00 EST 2012
 
 
-Board: sandbox
-could not get tap device: Operation not permitted
-tap tap0: probe failed: Operation not permitted
-malloc space: 0x7f0f1cb3c010 -> 0x7f0f1d33c00f (size  8 MB)
-Open /dev/env0 No such file or directory
-no valid environment found on /dev/env0. Using default environment
-running /env/bin/init...
-set parameter: No such device
-set parameter: No such device
-set parameter: No such device
-set parameter: No such device
-set parameter: No such device
-barebox:/
+Board: Texas Instrument's Beagle
+NAND type unknown: ff,ff
+No NAND device found (-19)!
+gpmc_nand gpmc_nand0: probe failed: error 6
+omap-hsmmc omap-hsmmc0: registered as omap-hsmmc0
+mci mci0: registered disk0
+malloc space: 0x87bfff10 -> 0x87ffff0f (size  4 MB)
+stack space:  0x4020f000 -> 0x4020fc00 (size  3 kB)
+booting from MMC1
 
-  then tried to mount it as that page suggests:
+... and hangs, suggesting that the MLO file is fine, but it's
+barebox.bin that simply fails.
 
-barebox:/ mkdir mnt
-barebox:/ mount /dev/fd0 cramfs /mnt
-Segmentation fault (core dumped)
-rpjday@oneiric:~/OE/dist/barebox/git$
-
-  i also tried the variation:
-
-barebox> mount -t cramfs /dev/fd0 /mnt
-
-same result.  help?
+  am i missing something painfully obvious?
 
 rday
 
