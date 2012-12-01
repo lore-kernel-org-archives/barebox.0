@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
+Received: from mail-ia0-f177.google.com ([209.85.210.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Temyf-0006SS-Nr
- for barebox@lists.infradead.org; Sat, 01 Dec 2012 13:19:30 +0000
-Received: from cpebcc81008dd2c-cmbcc81008dd29.cpe.net.cable.rogers.com
- ([99.253.156.71]:55466 helo=crashcourse.ca)
- by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
- (Exim 4.77) (envelope-from <rpjday@crashcourse.ca>)
- id 1Temyf-0000tu-5h
- for barebox@lists.infradead.org; Sat, 01 Dec 2012 08:19:29 -0500
-Date: Sat, 1 Dec 2012 08:19:26 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <alpine.DEB.2.02.1212010809040.13064@oneiric>
-Message-ID: <alpine.DEB.2.02.1212010818090.13158@oneiric>
-References: <alpine.DEB.2.02.1212010809040.13064@oneiric>
+ id 1TenP6-0007nD-QJ
+ for barebox@lists.infradead.org; Sat, 01 Dec 2012 13:46:49 +0000
+Received: by mail-ia0-f177.google.com with SMTP id u21so1038020ial.36
+ for <barebox@lists.infradead.org>; Sat, 01 Dec 2012 05:46:45 -0800 (PST)
 MIME-Version: 1.0
+In-Reply-To: <alpine.DEB.2.02.1212010818090.13158@oneiric>
+References: <alpine.DEB.2.02.1212010809040.13064@oneiric>
+ <alpine.DEB.2.02.1212010818090.13158@oneiric>
+Date: Sat, 1 Dec 2012 17:46:45 +0400
+Message-ID: <CAA4bVAHj_Q12r087kYOvwXj+9vRb1cFANa7nMUKTQzH+qmmEAw@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,41 +25,49 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: how does barebox deal with more than one environment?
-To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Sat, 1 Dec 2012, Robert P. J. Day wrote:
+On 1 December 2012 17:19, Robert P. J. Day <rpjday@crashcourse.ca> wrote:
+> On Sat, 1 Dec 2012, Robert P. J. Day wrote:
+>
+>>
+>>   writing up a simple barebox exercise for students and on this page:
+>>
+>> http://wiki.barebox.org/doku.php?id=user:first_steps
+>>
+>> it seems clear(?) that you can define multiple environments that will
+>> appear at /dev/env0, /dev/env1, etc, but that page also claims that
+>> *only* the configuration on /dev/env0 will be executed automatically
+>> if barebox finds that it's a valid configuration sector.
+>>
+>>   so what happens with the additional environments?  that page doesn't
+>> make it clear.  i'm just about to read the source to see if i can
+>> figure this out.
+>
+>   oh, wait, i think i see ... the "loadenv" command will load a given
+> environment into a directory so i'm *assuming* that additional
+> environments are simply available to be loaded, but /dev/env0 is the
+> only one treated special.  or feel free to correct me if i'm
+> hopelessly wrong.
 
->
->   writing up a simple barebox exercise for students and on this page:
->
-> http://wiki.barebox.org/doku.php?id=user:first_steps
->
-> it seems clear(?) that you can define multiple environments that will
-> appear at /dev/env0, /dev/env1, etc, but that page also claims that
-> *only* the configuration on /dev/env0 will be executed automatically
-> if barebox finds that it's a valid configuration sector.
->
->   so what happens with the additional environments?  that page doesn't
-> make it clear.  i'm just about to read the source to see if i can
-> figure this out.
+See common/startup.c:110
 
-  oh, wait, i think i see ... the "loadenv" command will load a given
-environment into a directory so i'm *assuming* that additional
-environments are simply available to be loaded, but /dev/env0 is the
-only one treated special.  or feel free to correct me if i'm
-hopelessly wrong.
+#ifdef CONFIG_ENV_HANDLING
+        if (envfs_load(default_environment_path, "/env")) {
+#ifdef CONFIG_DEFAULT_ENVIRONMENT
+                printf("no valid environment found on %s. "
+                        "Using default environment\n",
+                        default_environment_path);
+                envfs_load("/dev/defaultenv", "/env");
+#endif
 
-rday
+By default  default_environment_path="/dev/env0", but it can be
+overwritten in a board code (e.g. see arch/arm/boards/panda/board.c).
 
 -- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
