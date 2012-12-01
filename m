@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from astoria.ccjclearline.com ([64.235.106.9])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TemrY-0005n2-MJ
- for barebox@lists.infradead.org; Sat, 01 Dec 2012 13:12:09 +0000
+ id 1Temyf-0006SS-Nr
+ for barebox@lists.infradead.org; Sat, 01 Dec 2012 13:19:30 +0000
 Received: from cpebcc81008dd2c-cmbcc81008dd29.cpe.net.cable.rogers.com
- ([99.253.156.71]:55167 helo=crashcourse.ca)
+ ([99.253.156.71]:55466 helo=crashcourse.ca)
  by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
  (Exim 4.77) (envelope-from <rpjday@crashcourse.ca>)
- id 1TemrT-0000jJ-He
- for barebox@lists.infradead.org; Sat, 01 Dec 2012 08:12:03 -0500
-Date: Sat, 1 Dec 2012 08:12:01 -0500 (EST)
+ id 1Temyf-0000tu-5h
+ for barebox@lists.infradead.org; Sat, 01 Dec 2012 08:19:29 -0500
+Date: Sat, 1 Dec 2012 08:19:26 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.DEB.2.02.1212010809040.13064@oneiric>
+In-Reply-To: <alpine.DEB.2.02.1212010809040.13064@oneiric>
+Message-ID: <alpine.DEB.2.02.1212010818090.13158@oneiric>
+References: <alpine.DEB.2.02.1212010809040.13064@oneiric>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,22 +27,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: how does barebox deal with more than one environment?
+Subject: Re: how does barebox deal with more than one environment?
 To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
+On Sat, 1 Dec 2012, Robert P. J. Day wrote:
 
-  writing up a simple barebox exercise for students and on this page:
+>
+>   writing up a simple barebox exercise for students and on this page:
+>
+> http://wiki.barebox.org/doku.php?id=user:first_steps
+>
+> it seems clear(?) that you can define multiple environments that will
+> appear at /dev/env0, /dev/env1, etc, but that page also claims that
+> *only* the configuration on /dev/env0 will be executed automatically
+> if barebox finds that it's a valid configuration sector.
+>
+>   so what happens with the additional environments?  that page doesn't
+> make it clear.  i'm just about to read the source to see if i can
+> figure this out.
 
-http://wiki.barebox.org/doku.php?id=user:first_steps
-
-it seems clear(?) that you can define multiple environments that will
-appear at /dev/env0, /dev/env1, etc, but that page also claims that
-*only* the configuration on /dev/env0 will be executed automatically
-if barebox finds that it's a valid configuration sector.
-
-  so what happens with the additional environments?  that page doesn't
-make it clear.  i'm just about to read the source to see if i can
-figure this out.
+  oh, wait, i think i see ... the "loadenv" command will load a given
+environment into a directory so i'm *assuming* that additional
+environments are simply available to be loaded, but /dev/env0 is the
+only one treated special.  or feel free to correct me if i'm
+hopelessly wrong.
 
 rday
 
