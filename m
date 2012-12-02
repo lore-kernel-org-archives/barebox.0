@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TfD9f-0004kE-38
- for barebox@lists.infradead.org; Sun, 02 Dec 2012 17:16:35 +0000
-Received: from cpec03f0ed08c7f-cm001ac318e826.cpe.net.cable.rogers.com
- ([174.115.5.73]:59639 helo=crashcourse.ca)
- by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
- (Exim 4.77) (envelope-from <rpjday@crashcourse.ca>)
- id 1TfD9b-0005Lj-Pl
- for barebox@lists.infradead.org; Sun, 02 Dec 2012 12:16:31 -0500
-Date: Sun, 2 Dec 2012 12:16:28 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.DEB.2.02.1212021214320.32338@oneiric>
-MIME-Version: 1.0
+ id 1TfGN9-0000jV-7b
+ for barebox@lists.infradead.org; Sun, 02 Dec 2012 20:42:44 +0000
+Received: by mail-lb0-f177.google.com with SMTP id n10so1611563lbo.36
+ for <barebox@lists.infradead.org>; Sun, 02 Dec 2012 12:42:39 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon,  3 Dec 2012 00:42:24 +0400
+Message-Id: <1354480945-19214-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1354480945-19214-1-git-send-email-antonynpavlov@gmail.com>
+References: <1354480945-19214-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +18,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: what is the function of "__barebox_early_initcalls_end"?
-To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] clk: add always enabled clocks
+To: barebox@lists.infradead.org
 
+Current barebox clk framework allow disable any clock
+and there is no means to prevent that.
 
+But there are the clocks that can't be disabled
+by software at all.
 
-  while perusing common/startup.c, i noticed:
+This patch allow registration of a clock immune to clk_disable().
 
-extern initcall_t __barebox_initcalls_start[], __barebox_early_initcalls_end[],
-                  __barebox_initcalls_end[];
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/clk/clk.c   |   10 ++++++++++
+ include/linux/clk.h |    3 +++
+ 2 files changed, 13 insertions(+)
 
-but i don't see any other reference to that "early" initcall variable,
-and it doesn't show up in System.map.
-
-  what is it used for?  thanks.
-
-rday
-
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index ea93ff8..2ff7586 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -46,6 +46,9 @@ int clk_enable(struct clk *clk)
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
+ 
++	if (clk->flags & CLK_ALWAYS_ENABLED)
++		return 0;
++
+ 	if (!clk->enable_count) {
+ 		ret = clk_parent_enable(clk);
+ 		if (ret)
+@@ -70,6 +73,9 @@ void clk_disable(struct clk *clk)
+ 	if (IS_ERR(clk))
+ 		return;
+ 
++	if (clk->flags & CLK_ALWAYS_ENABLED)
++		return;
++
+ 	if (!clk->enable_count)
+ 		return;
+ 
+@@ -205,6 +211,10 @@ int clk_register(struct clk *clk)
+ 
+ 	list_add_tail(&clk->list, &clks);
+ 
++	if (clk->flags & CLK_ALWAYS_ENABLED) {
++		clk->enable_count = 1;
++	}
++
+ 	return 0;
+ }
+ 
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 00588bf..1030b50 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -179,8 +179,11 @@ struct clk {
+ 	int num_parents;
+ 
+ 	struct clk **parents;
++	unsigned long flags;
+ };
+ 
++#define CLK_ALWAYS_ENABLED	(1 << 0)
++
+ struct clk *clk_fixed(const char *name, int rate);
+ struct clk *clk_divider(const char *name, const char *parent,
+ 		void __iomem *reg, u8 shift, u8 width);
 -- 
+1.7.10.4
 
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
 
 _______________________________________________
 barebox mailing list
