@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from astoria.ccjclearline.com ([64.235.106.9])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TfVV2-0002YK-0i
- for barebox@lists.infradead.org; Mon, 03 Dec 2012 12:51:52 +0000
-Date: Mon, 3 Dec 2012 07:51:50 -0500 (EST)
+ id 1TfYDJ-000883-9R
+ for barebox@lists.infradead.org; Mon, 03 Dec 2012 15:45:46 +0000
+Received: from cpebcc81008dd2c-cmbcc81008dd29.cpe.net.cable.rogers.com
+ ([99.253.156.71]:53847 helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+ (Exim 4.77) (envelope-from <rpjday@crashcourse.ca>)
+ id 1TfYDI-0000Xw-39
+ for barebox@lists.infradead.org; Mon, 03 Dec 2012 10:45:44 -0500
+Date: Mon, 3 Dec 2012 10:45:41 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <20121203092701.GI10369@pengutronix.de>
-Message-ID: <alpine.DEB.2.02.1212030748510.23376@oneiric>
-References: <alpine.DEB.2.02.1212011123210.14847@oneiric>
- <20121203092701.GI10369@pengutronix.de>
+Message-ID: <alpine.DEB.2.02.1212031041250.19977@oneiric>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,27 +25,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: should i expect trying to mount a cramfs fs to give me a
- segmentation fault?
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: how does one enable barebox's low-level debugging?
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Mon, 3 Dec 2012, Sascha Hauer wrote:
 
-> cramfs was present in barebox very early. I think in some places the
-> implementation still assumes that the filesystem image is directly
-> memory mapped. Probably we should investigate and either add a big
-> warning somewhere or fix it.
+  looking through common/startup.c and decided i wanted to see
+confirmation of all the initcalls running here:
 
-  ok, good to know ... i deleted my wiki page regarding barebox and
-cramfs since it's clear i didn't understand it.  only suggestion
-would be to update this page:
+        for (initcall = __barebox_initcalls_start;
+                        initcall < __barebox_initcalls_end; initcall++) {
+                debug("initcall-> %pS\n", *initcall);
+                result = (*initcall)();
+                if (result)
+                        pr_err("initcall %pS failed: %s\n", *initcall,
+                                        strerror(-result));
+        }
 
-  http://wiki.barebox.org/doku.php?id=user:first_steps
 
-so users don't trip over the same thing i did.  onward ...
+so i started from scratch, ran "make menuconfig" for both the x-loader
+and barebox to enable "low level debug messages", but i don't see any
+difference in the boot output.
+
+  i've perused the barebox wiki and don't see anything regarding that
+setting.  am i doing something wrong?
 
 rday
+
+p.s.  this is on a beagle xM, for which i am now happily building both
+the x-loader and barebox, which boots successfully.
 
 -- 
 
