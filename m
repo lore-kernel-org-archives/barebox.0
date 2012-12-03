@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TfbWh-0005Ah-Lv
- for barebox@lists.infradead.org; Mon, 03 Dec 2012 19:18:01 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1354558114-28799-1-git-send-email-renaud.barbier@ge.com>
-Date: Mon, 03 Dec 2012 20:17:50 +0100
-In-Reply-To: <1354558114-28799-1-git-send-email-renaud.barbier@ge.com> (Renaud
- Barbier's message of "Mon, 3 Dec 2012 18:08:16 +0000")
-Message-ID: <87txs3ymg1.fsf@free.fr>
+Received: from astoria.ccjclearline.com ([64.235.106.9])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TfbaZ-0005Sj-7f
+ for barebox@lists.infradead.org; Mon, 03 Dec 2012 19:21:59 +0000
+Received: from cpebcc81008dd2c-cmbcc81008dd29.cpe.net.cable.rogers.com
+ ([99.253.156.71]:58020 helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+ (Exim 4.77) (envelope-from <rpjday@crashcourse.ca>)
+ id 1TfbaX-0002Np-W8
+ for barebox@lists.infradead.org; Mon, 03 Dec 2012 14:21:58 -0500
+Date: Mon, 3 Dec 2012 14:21:54 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.DEB.2.02.1212031418350.1932@oneiric>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,29 +25,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/18] UBIFS support
-To: Renaud Barbier <renaud.barbier@ge.com>
-Cc: barebox@lists.infradead.org
+Subject: barebox initcalls for a beagle xM
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Renaud Barbier <renaud.barbier@ge.com> writes:
 
-> This patchset adds UBIFS support to Barebox. It includes the core UBIFS
-> support and more recent patches found in the U-boot git tree.
-> It has been tested on a PPC system  by mounting a NOR flash UBI volume,
-> copying the kernel to memory and booting it.
+  for possible teaching purposes, i posted the initcalls invoked both
+for MLO and barebox.bin on my beagle xM:
 
-Hi Renaud,
+http://www.crashcourse.ca/wiki/index.php/Barebox_initcalls_for_the_xM
 
-That's a really huge piece of a patchset.
+to perhaps walk folks through the steps of barebox booting.  given
+time, i might expand on that page later to dig into the initcalls
+themselves, but just seeing the list has some value for people trying
+to follow along what it takes to get to a prompt.
 
-Please tell me that almost 100% of the code was taken out of the linux
-kernel. Even better, are there any patches in there that are linux kernel
-copies, so that review is not necessary ?
+rday
 
-Cheers.
+p.s.  i'm still not sure what the value is of the "early_initcalls"
+variable here:
 
---
-Robert
+$ grep -r early_initcall *
+common/startup.c:extern initcall_t __barebox_initcalls_start[],
+__barebox_early_initcalls_end[],
+$
+
+it's declared as external but it doesn't seem to be used anywhere.  is
+it a leftover from earlier?
+
+-- 
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
