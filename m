@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f49.google.com ([209.85.215.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TfOrr-0006NV-Sr
- for barebox@lists.infradead.org; Mon, 03 Dec 2012 05:47:00 +0000
-Received: by mail-la0-f49.google.com with SMTP id r15so1689792lag.36
- for <barebox@lists.infradead.org>; Sun, 02 Dec 2012 21:46:57 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  3 Dec 2012 09:46:52 +0400
-Message-Id: <1354513612-32271-1-git-send-email-antonynpavlov@gmail.com>
+ id 1TfRFi-0004PS-QV
+ for barebox@lists.infradead.org; Mon, 03 Dec 2012 08:19:47 +0000
+Message-ID: <1354522782.3772.3.camel@coredoba.hi.pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Mon, 03 Dec 2012 09:19:42 +0100
+In-Reply-To: <alpine.DEB.2.02.1212020418020.6898@oneiric>
+References: <alpine.DEB.2.02.1212011607040.13954@oneiric>
+ <alpine.DEB.2.02.1212011733350.24134@oneiric>
+ <alpine.DEB.2.02.1212020418020.6898@oneiric>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,42 +19,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] at25: use dev_lseek_default as at24 does
-To: barebox@lists.infradead.org
+Subject: Re: suddenly, i can't boot barebox on my beagle xM anymore [ISOLATED]
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/eeprom/at25.c |    7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+Hi,
 
-diff --git a/drivers/eeprom/at25.c b/drivers/eeprom/at25.c
-index 5578c78..9bd7748 100644
---- a/drivers/eeprom/at25.c
-+++ b/drivers/eeprom/at25.c
-@@ -232,15 +232,10 @@ static ssize_t at25_ee_write(struct cdev *cdev,
- 	return written ? written : status;
- }
- 
--static loff_t at25_ee_lseek(struct cdev *cdev, loff_t off)
--{
--	return off;
--}
--
- static struct file_operations at25_fops = {
- 	.read	= at25_ee_read,
- 	.write	= at25_ee_write,
--	.lseek	= at25_ee_lseek,
-+	.lseek	= dev_lseek_default,
- };
- 
- static int at25_probe(struct device_d *dev)
+On Sun, 2012-12-02 at 04:24 -0500, Robert P. J. Day wrote:
+> i've isolated the commit that introduces the apparent booting
+> problem on my xM:
+> 
+> $ git show 154496f
+> commit 154496f736db54123c3f6daaba18809fab54ed9b
+> Merge: 05d251f bd6d12b
+> Author: Sascha Hauer <s.hauer@pengutronix.de>
+> Date:   Fri Nov 16 14:02:49 2012 +0100
+> 
+>     Merge branch 'for-next/omap'
+
+*snip*
+
+>   so something in that omap merge is causing this.
+
+The merge itself does not actually introduce new code.
+
+Could you try finding the commit with git bisect?
+
+~/git/barebox $ git bisect start
+~/git/barebox $ git bisect bad 154496f736db54123c3f6daaba18809fab54ed9b
+~/git/barebox $ git bisect good 05d251f
+Bisecting: 3 revisions left to test after this (roughly 2 steps)
+[663c466794382f803a69414c935cf0a13d4f0761] ARM OMAP4 panda: switch to new environment
+~/git/barebox $
+
+Then test this checkout and tell git using "git bisect good" or "git
+bisect bad".
+
+Thanks,
+Jan
 -- 
-1.7.10.4
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 _______________________________________________
