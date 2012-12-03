@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og113.obsmtp.com ([64.18.0.26])
- by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TfaSD-0004yZ-66
- for barebox@lists.infradead.org; Mon, 03 Dec 2012 18:09:21 +0000
-From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Mon,  3 Dec 2012 18:08:33 +0000
-Message-Id: <1354558114-28799-18-git-send-email-renaud.barbier@ge.com>
-In-Reply-To: <1354558114-28799-1-git-send-email-renaud.barbier@ge.com>
-References: <1354558114-28799-1-git-send-email-renaud.barbier@ge.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TfbKO-0003B6-Vp
+ for barebox@lists.infradead.org; Mon, 03 Dec 2012 19:05:17 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon,  3 Dec 2012 20:05:13 +0100
+Message-Id: <1354561513-4025-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,49 +19,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/18] UBIFS: Improve error message when reading superblock
- failed
+Subject: [PATCH] ARM i.MX bbu: Fix wrong buffer free
 To: barebox@lists.infradead.org
-Cc: Thomas Weber <weber@corscience.de>, Bernhard Walle <walle@corscience.de>
 
-From: Bernhard Walle <walle@corscience.de>
+buf is still needed, instead mbr should be freed.
 
-In addition to the error message also display the error code. I had the
-problem that my malloc memory was not enough (ENOMEM), and if u-boot
-had displayed the error code immediately that would have saved me some
-debugging.
-
-Signed-off-by: Bernhard Walle <walle@corscience.de>
-
-Use ubifs_err instead of printf.
-Add "errno=%d" in output as suggested by Albert Aribaud.
-
-Signed-off-by: Thomas Weber <weber@corscience.de>
-
-Use priv->vol_name instead of "name".
-
-Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/ubifs/super.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-imx/imx-bbu-internal.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
-index 118d728..a77b73a 100644
---- a/fs/ubifs/super.c
-+++ b/fs/ubifs/super.c
-@@ -1189,8 +1189,8 @@ int ubifs_mount(struct ubifs_priv *priv)
- 	mnt = NULL;
- 	ret = ubifs_get_sb(&ubifs_fs_type, flags, priv->vol_name, data, mnt);
- 	if (ret) {
--		printf("Error reading superblock on volume '%s'!\n",
--				priv->vol_name);
-+		ubifs_err("Error reading superblock on volume '%s' errno=%d!\n",
-+				priv->vol_name, ret);
- 		return -1;
- 	}
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index c34f86f..a36a427 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -72,7 +72,7 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
+ 		}
  
+ 		memcpy(buf + 0x1b8, mbr + 0x1b8, 0x48);
+-		free(buf);
++		free(mbr);
+ 
+ 		ret = lseek(fd, 0, SEEK_SET);
+ 		if (ret)
 -- 
-1.7.1
+1.7.10.4
 
 
 _______________________________________________
