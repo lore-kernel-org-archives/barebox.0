@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og112.obsmtp.com ([64.18.0.24])
+Received: from exprod5og109.obsmtp.com ([64.18.0.188])
  by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TfaRw-0004uh-M2
- for barebox@lists.infradead.org; Mon, 03 Dec 2012 18:09:14 +0000
+ id 1TfaRr-0004t9-DN
+ for barebox@lists.infradead.org; Mon, 03 Dec 2012 18:09:05 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Mon,  3 Dec 2012 18:08:23 +0000
-Message-Id: <1354558114-28799-8-git-send-email-renaud.barbier@ge.com>
+Date: Mon,  3 Dec 2012 18:08:26 +0000
+Message-Id: <1354558114-28799-11-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1354558114-28799-1-git-send-email-renaud.barbier@ge.com>
 References: <1354558114-28799-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -17,31 +17,31 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8266512599541606884=="
+Content-Type: multipart/mixed; boundary="===============4029591014083146164=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/18] UBIFS: journal
+Subject: [PATCH 10/18] UBIFS: master node
 To: barebox@lists.infradead.org
 
---===============8266512599541606884==
+--===============4029591014083146164==
 Content-Type: text/plain
 
-This code supports the journal manipulation and replay.
+This patch deals with reading/writing the master node and orphan inodes.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- fs/ubifs/log.c    |  104 ++++++
- fs/ubifs/replay.c | 1070 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 1174 insertions(+), 0 deletions(-)
- create mode 100644 fs/ubifs/log.c
- create mode 100644 fs/ubifs/replay.c
+ fs/ubifs/master.c |  341 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ fs/ubifs/orphan.c |  316 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 657 insertions(+), 0 deletions(-)
+ create mode 100644 fs/ubifs/master.c
+ create mode 100644 fs/ubifs/orphan.c
 
-diff --git a/fs/ubifs/log.c b/fs/ubifs/log.c
+diff --git a/fs/ubifs/master.c b/fs/ubifs/master.c
 new file mode 100644
-index 0000000..68a9bd9
+index 0000000..3f2926e
 --- /dev/null
-+++ b/fs/ubifs/log.c
-@@ -0,0 +1,104 @@
++++ b/fs/ubifs/master.c
+@@ -0,0 +1,341 @@
 +/*
 + * This file is part of UBIFS.
 + *
@@ -64,94 +64,331 @@ index 0000000..68a9bd9
 + *          Adrian Hunter
 + */
 +
-+/*
-+ * This file is a part of UBIFS journal implementation and contains various
-+ * functions which manipulate the log. The log is a fixed area on the flash
-+ * which does not contain any data but refers to buds. The log is a part of the
-+ * journal.
-+ */
++/* This file implements reading and writing the master node */
 +
 +#include "ubifs.h"
 +
 +/**
-+ * ubifs_search_bud - search bud LEB.
++ * scan_for_master - search the valid master node.
 + * @c: UBIFS file-system description object
-+ * @lnum: logical eraseblock number to search
 + *
-+ * This function searches bud LEB @lnum. Returns bud description object in case
-+ * of success and %NULL if there is no bud with this LEB number.
++ * This function scans the master node LEBs and search for the latest master
++ * node. Returns zero in case of success and a negative error code in case of
++ * failure.
 + */
-+struct ubifs_bud *ubifs_search_bud(struct ubifs_info *c, int lnum)
++static int scan_for_master(struct ubifs_info *c)
 +{
-+	struct rb_node *p;
-+	struct ubifs_bud *bud;
++	struct ubifs_scan_leb *sleb;
++	struct ubifs_scan_node *snod;
++	int lnum, offs = 0, nodes_cnt;
 +
-+	spin_lock(&c->buds_lock);
-+	p = c->buds.rb_node;
-+	while (p) {
-+		bud = rb_entry(p, struct ubifs_bud, rb);
-+		if (lnum < bud->lnum)
-+			p = p->rb_left;
-+		else if (lnum > bud->lnum)
-+			p = p->rb_right;
-+		else {
-+			spin_unlock(&c->buds_lock);
-+			return bud;
-+		}
++	lnum = UBIFS_MST_LNUM;
++
++	sleb = ubifs_scan(c, lnum, 0, c->sbuf);
++	if (IS_ERR(sleb))
++		return PTR_ERR(sleb);
++	nodes_cnt = sleb->nodes_cnt;
++	if (nodes_cnt > 0) {
++		snod = list_entry(sleb->nodes.prev, struct ubifs_scan_node,
++				  list);
++		if (snod->type != UBIFS_MST_NODE)
++			goto out;
++		memcpy(c->mst_node, snod->node, snod->len);
++		offs = snod->offs;
 +	}
-+	spin_unlock(&c->buds_lock);
-+	return NULL;
++	ubifs_scan_destroy(sleb);
++
++	lnum += 1;
++
++	sleb = ubifs_scan(c, lnum, 0, c->sbuf);
++	if (IS_ERR(sleb))
++		return PTR_ERR(sleb);
++	if (sleb->nodes_cnt != nodes_cnt)
++		goto out;
++	if (!sleb->nodes_cnt)
++		goto out;
++	snod = list_entry(sleb->nodes.prev, struct ubifs_scan_node, list);
++	if (snod->type != UBIFS_MST_NODE)
++		goto out;
++	if (snod->offs != offs)
++		goto out;
++	if (memcmp((void *)c->mst_node + UBIFS_CH_SZ,
++		   (void *)snod->node + UBIFS_CH_SZ,
++		   UBIFS_MST_NODE_SZ - UBIFS_CH_SZ))
++		goto out;
++	c->mst_offs = offs;
++	ubifs_scan_destroy(sleb);
++	return 0;
++
++out:
++	ubifs_scan_destroy(sleb);
++	return -EINVAL;
 +}
 +
 +/**
-+ * ubifs_add_bud - add bud LEB to the tree of buds and its journal head list.
++ * validate_master - validate master node.
 + * @c: UBIFS file-system description object
-+ * @bud: the bud to add
++ *
++ * This function validates data which was read from master node. Returns zero
++ * if the data is all right and %-EINVAL if not.
 + */
-+void ubifs_add_bud(struct ubifs_info *c, struct ubifs_bud *bud)
++static int validate_master(const struct ubifs_info *c)
 +{
-+	struct rb_node **p, *parent = NULL;
-+	struct ubifs_bud *b;
-+	struct ubifs_jhead *jhead;
++	long long main_sz;
++	int err;
 +
-+	spin_lock(&c->buds_lock);
-+	p = &c->buds.rb_node;
-+	while (*p) {
-+		parent = *p;
-+		b = rb_entry(parent, struct ubifs_bud, rb);
-+		ubifs_assert(bud->lnum != b->lnum);
-+		if (bud->lnum < b->lnum)
-+			p = &(*p)->rb_left;
-+		else
-+			p = &(*p)->rb_right;
++	if (c->max_sqnum >= SQNUM_WATERMARK) {
++		err = 1;
++		goto out;
 +	}
 +
-+	rb_link_node(&bud->rb, parent, p);
-+	rb_insert_color(&bud->rb, &c->buds);
-+	if (c->jheads) {
-+		jhead = &c->jheads[bud->jhead];
-+		list_add_tail(&bud->list, &jhead->buds_list);
-+	} else
-+		ubifs_assert(c->replaying && (c->vfs_sb->s_flags & MS_RDONLY));
++	if (c->cmt_no >= c->max_sqnum) {
++		err = 2;
++		goto out;
++	}
 +
-+	/*
-+	 * Note, although this is a new bud, we anyway account this space now,
-+	 * before any data has been written to it, because this is about to
-+	 * guarantee fixed mount time, and this bud will anyway be read and
-+	 * scanned.
-+	 */
-+	c->bud_bytes += c->leb_size - bud->start;
++	if (c->highest_inum >= INUM_WATERMARK) {
++		err = 3;
++		goto out;
++	}
 +
-+	dbg_log("LEB %d:%d, jhead %d, bud_bytes %lld", bud->lnum,
-+		bud->start, bud->jhead, c->bud_bytes);
-+	spin_unlock(&c->buds_lock);
++	if (c->lhead_lnum < UBIFS_LOG_LNUM ||
++	    c->lhead_lnum >= UBIFS_LOG_LNUM + c->log_lebs ||
++	    c->lhead_offs < 0 || c->lhead_offs >= c->leb_size ||
++	    c->lhead_offs & (c->min_io_size - 1)) {
++		err = 4;
++		goto out;
++	}
++
++	if (c->zroot.lnum >= c->leb_cnt || c->zroot.lnum < c->main_first ||
++	    c->zroot.offs >= c->leb_size || c->zroot.offs & 7) {
++		err = 5;
++		goto out;
++	}
++
++	if (c->zroot.len < c->ranges[UBIFS_IDX_NODE].min_len ||
++	    c->zroot.len > c->ranges[UBIFS_IDX_NODE].max_len) {
++		err = 6;
++		goto out;
++	}
++
++	if (c->gc_lnum >= c->leb_cnt || c->gc_lnum < c->main_first) {
++		err = 7;
++		goto out;
++	}
++
++	if (c->ihead_lnum >= c->leb_cnt || c->ihead_lnum < c->main_first ||
++	    c->ihead_offs % c->min_io_size || c->ihead_offs < 0 ||
++	    c->ihead_offs > c->leb_size || c->ihead_offs & 7) {
++		err = 8;
++		goto out;
++	}
++
++	main_sz = (long long)c->main_lebs * c->leb_size;
++	if (c->old_idx_sz & 7 || c->old_idx_sz >= main_sz) {
++		err = 9;
++		goto out;
++	}
++
++	if (c->lpt_lnum < c->lpt_first || c->lpt_lnum > c->lpt_last ||
++	    c->lpt_offs < 0 || c->lpt_offs + c->nnode_sz > c->leb_size) {
++		err = 10;
++		goto out;
++	}
++
++	if (c->nhead_lnum < c->lpt_first || c->nhead_lnum > c->lpt_last ||
++	    c->nhead_offs < 0 || c->nhead_offs % c->min_io_size ||
++	    c->nhead_offs > c->leb_size) {
++		err = 11;
++		goto out;
++	}
++
++	if (c->ltab_lnum < c->lpt_first || c->ltab_lnum > c->lpt_last ||
++	    c->ltab_offs < 0 ||
++	    c->ltab_offs + c->ltab_sz > c->leb_size) {
++		err = 12;
++		goto out;
++	}
++
++	if (c->big_lpt && (c->lsave_lnum < c->lpt_first ||
++	    c->lsave_lnum > c->lpt_last || c->lsave_offs < 0 ||
++	    c->lsave_offs + c->lsave_sz > c->leb_size)) {
++		err = 13;
++		goto out;
++	}
++
++	if (c->lscan_lnum < c->main_first || c->lscan_lnum >= c->leb_cnt) {
++		err = 14;
++		goto out;
++	}
++
++	if (c->lst.empty_lebs < 0 || c->lst.empty_lebs > c->main_lebs - 2) {
++		err = 15;
++		goto out;
++	}
++
++	if (c->lst.idx_lebs < 0 || c->lst.idx_lebs > c->main_lebs - 1) {
++		err = 16;
++		goto out;
++	}
++
++	if (c->lst.total_free < 0 || c->lst.total_free > main_sz ||
++	    c->lst.total_free & 7) {
++		err = 17;
++		goto out;
++	}
++
++	if (c->lst.total_dirty < 0 || (c->lst.total_dirty & 7)) {
++		err = 18;
++		goto out;
++	}
++
++	if (c->lst.total_used < 0 || (c->lst.total_used & 7)) {
++		err = 19;
++		goto out;
++	}
++
++	if (c->lst.total_free + c->lst.total_dirty +
++	    c->lst.total_used > main_sz) {
++		err = 20;
++		goto out;
++	}
++
++	if (c->lst.total_dead + c->lst.total_dark +
++	    c->lst.total_used + c->old_idx_sz > main_sz) {
++		err = 21;
++		goto out;
++	}
++
++	if (c->lst.total_dead < 0 ||
++	    c->lst.total_dead > c->lst.total_free + c->lst.total_dirty ||
++	    c->lst.total_dead & 7) {
++		err = 22;
++		goto out;
++	}
++
++	if (c->lst.total_dark < 0 ||
++	    c->lst.total_dark > c->lst.total_free + c->lst.total_dirty ||
++	    c->lst.total_dark & 7) {
++		err = 23;
++		goto out;
++	}
++
++	return 0;
++
++out:
++	ubifs_err("bad master node at offset %d error %d", c->mst_offs, err);
++	dbg_dump_node(c, c->mst_node);
++	return -EINVAL;
 +}
-diff --git a/fs/ubifs/replay.c b/fs/ubifs/replay.c
++
++/**
++ * ubifs_read_master - read master node.
++ * @c: UBIFS file-system description object
++ *
++ * This function finds and reads the master node during file-system mount. If
++ * the flash is empty, it creates default master node as well. Returns zero in
++ * case of success and a negative error code in case of failure.
++ */
++int ubifs_read_master(struct ubifs_info *c)
++{
++	int err, old_leb_cnt;
++
++	c->mst_node = kzalloc(c->mst_node_alsz, GFP_KERNEL);
++	if (!c->mst_node)
++		return -ENOMEM;
++
++	err = scan_for_master(c);
++	if (err) {
++		err = ubifs_recover_master_node(c);
++		if (err)
++			/*
++			 * Note, we do not free 'c->mst_node' here because the
++			 * unmount routine will take care of this.
++			 */
++			return err;
++	}
++
++	/* Make sure that the recovery flag is clear */
++	c->mst_node->flags &= cpu_to_le32(~UBIFS_MST_RCVRY);
++
++	c->max_sqnum       = le64_to_cpu(c->mst_node->ch.sqnum);
++	c->highest_inum    = le64_to_cpu(c->mst_node->highest_inum);
++	c->cmt_no          = le64_to_cpu(c->mst_node->cmt_no);
++	c->zroot.lnum      = le32_to_cpu(c->mst_node->root_lnum);
++	c->zroot.offs      = le32_to_cpu(c->mst_node->root_offs);
++	c->zroot.len       = le32_to_cpu(c->mst_node->root_len);
++	c->lhead_lnum      = le32_to_cpu(c->mst_node->log_lnum);
++	c->gc_lnum         = le32_to_cpu(c->mst_node->gc_lnum);
++	c->ihead_lnum      = le32_to_cpu(c->mst_node->ihead_lnum);
++	c->ihead_offs      = le32_to_cpu(c->mst_node->ihead_offs);
++	c->old_idx_sz      = le64_to_cpu(c->mst_node->index_size);
++	c->lpt_lnum        = le32_to_cpu(c->mst_node->lpt_lnum);
++	c->lpt_offs        = le32_to_cpu(c->mst_node->lpt_offs);
++	c->nhead_lnum      = le32_to_cpu(c->mst_node->nhead_lnum);
++	c->nhead_offs      = le32_to_cpu(c->mst_node->nhead_offs);
++	c->ltab_lnum       = le32_to_cpu(c->mst_node->ltab_lnum);
++	c->ltab_offs       = le32_to_cpu(c->mst_node->ltab_offs);
++	c->lsave_lnum      = le32_to_cpu(c->mst_node->lsave_lnum);
++	c->lsave_offs      = le32_to_cpu(c->mst_node->lsave_offs);
++	c->lscan_lnum      = le32_to_cpu(c->mst_node->lscan_lnum);
++	c->lst.empty_lebs  = le32_to_cpu(c->mst_node->empty_lebs);
++	c->lst.idx_lebs    = le32_to_cpu(c->mst_node->idx_lebs);
++	old_leb_cnt        = le32_to_cpu(c->mst_node->leb_cnt);
++	c->lst.total_free  = le64_to_cpu(c->mst_node->total_free);
++	c->lst.total_dirty = le64_to_cpu(c->mst_node->total_dirty);
++	c->lst.total_used  = le64_to_cpu(c->mst_node->total_used);
++	c->lst.total_dead  = le64_to_cpu(c->mst_node->total_dead);
++	c->lst.total_dark  = le64_to_cpu(c->mst_node->total_dark);
++
++	c->calc_idx_sz = c->old_idx_sz;
++
++	if (c->mst_node->flags & cpu_to_le32(UBIFS_MST_NO_ORPHS))
++		c->no_orphs = 1;
++
++	if (old_leb_cnt != c->leb_cnt) {
++		/* The file system has been resized */
++		int growth = c->leb_cnt - old_leb_cnt;
++
++		if (c->leb_cnt < old_leb_cnt ||
++		    c->leb_cnt < UBIFS_MIN_LEB_CNT) {
++			ubifs_err("bad leb_cnt on master node");
++			dbg_dump_node(c, c->mst_node);
++			return -EINVAL;
++		}
++
++		dbg_mnt("Auto resizing (master) from %d LEBs to %d LEBs",
++			old_leb_cnt, c->leb_cnt);
++		c->lst.empty_lebs += growth;
++		c->lst.total_free += growth * (long long)c->leb_size;
++		c->lst.total_dark += growth * (long long)c->dark_wm;
++
++		/*
++		 * Reflect changes back onto the master node. N.B. the master
++		 * node gets written immediately whenever mounting (or
++		 * remounting) in read-write mode, so we do not need to write it
++		 * here.
++		 */
++		c->mst_node->leb_cnt = cpu_to_le32(c->leb_cnt);
++		c->mst_node->empty_lebs = cpu_to_le32(c->lst.empty_lebs);
++		c->mst_node->total_free = cpu_to_le64(c->lst.total_free);
++		c->mst_node->total_dark = cpu_to_le64(c->lst.total_dark);
++	}
++
++	err = validate_master(c);
++	if (err)
++		return err;
++
++	err = dbg_old_index_check_init(c, &c->zroot);
++
++	return err;
++}
+diff --git a/fs/ubifs/orphan.c b/fs/ubifs/orphan.c
 new file mode 100644
-index 0000000..da33a14
+index 0000000..d091031
 --- /dev/null
-+++ b/fs/ubifs/replay.c
-@@ -0,0 +1,1070 @@
++++ b/fs/ubifs/orphan.c
+@@ -0,0 +1,316 @@
 +/*
 + * This file is part of UBIFS.
 + *
@@ -170,1056 +407,302 @@ index 0000000..da33a14
 + * this program; if not, write to the Free Software Foundation, Inc., 51
 + * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 + *
-+ * Authors: Adrian Hunter
-+ *          Artem Bityutskiy (���������������� ����������)
-+ */
-+
-+/*
-+ * This file contains journal replay code. It runs when the file-system is being
-+ * mounted and requires no locking.
-+ *
-+ * The larger is the journal, the longer it takes to scan it, so the longer it
-+ * takes to mount UBIFS. This is why the journal has limited size which may be
-+ * changed depending on the system requirements. But a larger journal gives
-+ * faster I/O speed because it writes the index less frequently. So this is a
-+ * trade-off. Also, the journal is indexed by the in-memory index (TNC), so the
-+ * larger is the journal, the more memory its index may consume.
++ * Author: Adrian Hunter
 + */
 +
 +#include "ubifs.h"
 +
 +/*
-+ * Replay flags.
++ * An orphan is an inode number whose inode node has been committed to the index
++ * with a link count of zero. That happens when an open file is deleted
++ * (unlinked) and then a commit is run. In the normal course of events the inode
++ * would be deleted when the file is closed. However in the case of an unclean
++ * unmount, orphans need to be accounted for. After an unclean unmount, the
++ * orphans' inodes must be deleted which means either scanning the entire index
++ * looking for them, or keeping a list on flash somewhere. This unit implements
++ * the latter approach.
 + *
-+ * REPLAY_DELETION: node was deleted
-+ * REPLAY_REF: node is a reference node
-+ */
-+enum {
-+	REPLAY_DELETION = 1,
-+	REPLAY_REF = 2,
-+};
-+
-+/**
-+ * struct replay_entry - replay tree entry.
-+ * @lnum: logical eraseblock number of the node
-+ * @offs: node offset
-+ * @len: node length
-+ * @sqnum: node sequence number
-+ * @flags: replay flags
-+ * @rb: links the replay tree
-+ * @key: node key
-+ * @nm: directory entry name
-+ * @old_size: truncation old size
-+ * @new_size: truncation new size
-+ * @free: amount of free space in a bud
-+ * @dirty: amount of dirty space in a bud from padding and deletion nodes
++ * The orphan area is a fixed number of LEBs situated between the LPT area and
++ * the main area. The number of orphan area LEBs is specified when the file
++ * system is created. The minimum number is 1. The size of the orphan area
++ * should be so that it can hold the maximum number of orphans that are expected
++ * to ever exist at one time.
 + *
-+ * UBIFS journal replay must compare node sequence numbers, which means it must
-+ * build a tree of node information to insert into the TNC.
++ * The number of orphans that can fit in a LEB is:
++ *
++ *         (c->leb_size - UBIFS_ORPH_NODE_SZ) / sizeof(__le64)
++ *
++ * For example: a 15872 byte LEB can fit 1980 orphans so 1 LEB may be enough.
++ *
++ * Orphans are accumulated in a rb-tree. When an inode's link count drops to
++ * zero, the inode number is added to the rb-tree. It is removed from the tree
++ * when the inode is deleted.  Any new orphans that are in the orphan tree when
++ * the commit is run, are written to the orphan area in 1 or more orphan nodes.
++ * If the orphan area is full, it is consolidated to make space.  There is
++ * always enough space because validation prevents the user from creating more
++ * than the maximum number of orphans allowed.
 + */
-+struct replay_entry {
-+	int lnum;
-+	int offs;
-+	int len;
-+	unsigned long long sqnum;
-+	int flags;
-+	struct rb_node rb;
-+	union ubifs_key key;
-+	union {
-+		struct qstr nm;
-+		struct {
-+			loff_t old_size;
-+			loff_t new_size;
-+		};
-+		struct {
-+			int free;
-+			int dirty;
-+		};
-+	};
-+};
 +
 +/**
-+ * struct bud_entry - entry in the list of buds to replay.
-+ * @list: next bud in the list
-+ * @bud: bud description object
-+ * @free: free bytes in the bud
-+ * @sqnum: reference node sequence number
-+ */
-+struct bud_entry {
-+	struct list_head list;
-+	struct ubifs_bud *bud;
-+	int free;
-+	unsigned long long sqnum;
-+};
-+
-+/**
-+ * set_bud_lprops - set free and dirty space used by a bud.
++ * tot_avail_orphs - calculate total space.
 + * @c: UBIFS file-system description object
-+ * @r: replay entry of bud
++ *
++ * This function returns the number of orphans that can be written in half
++ * the total space. That leaves half the space for adding new orphans.
 + */
-+static int set_bud_lprops(struct ubifs_info *c, struct replay_entry *r)
++static int tot_avail_orphs(struct ubifs_info *c)
 +{
-+	const struct ubifs_lprops *lp;
-+	int err = 0, dirty;
++	int avail_lebs, avail;
 +
-+	ubifs_get_lprops(c);
-+
-+	lp = ubifs_lpt_lookup_dirty(c, r->lnum);
-+	if (IS_ERR(lp)) {
-+		err = PTR_ERR(lp);
-+		goto out;
-+	}
-+
-+	dirty = lp->dirty;
-+	if (r->offs == 0 && (lp->free != c->leb_size || lp->dirty != 0)) {
-+		/*
-+		 * The LEB was added to the journal with a starting offset of
-+		 * zero which means the LEB must have been empty. The LEB
-+		 * property values should be lp->free == c->leb_size and
-+		 * lp->dirty == 0, but that is not the case. The reason is that
-+		 * the LEB was garbage collected. The garbage collector resets
-+		 * the free and dirty space without recording it anywhere except
-+		 * lprops, so if there is not a commit then lprops does not have
-+		 * that information next time the file system is mounted.
-+		 *
-+		 * We do not need to adjust free space because the scan has told
-+		 * us the exact value which is recorded in the replay entry as
-+		 * r->free.
-+		 *
-+		 * However we do need to subtract from the dirty space the
-+		 * amount of space that the garbage collector reclaimed, which
-+		 * is the whole LEB minus the amount of space that was free.
-+		 */
-+		dbg_mnt("bud LEB %d was GC'd (%d free, %d dirty)", r->lnum,
-+			lp->free, lp->dirty);
-+		dbg_gc("bud LEB %d was GC'd (%d free, %d dirty)", r->lnum,
-+			lp->free, lp->dirty);
-+		dirty -= c->leb_size - lp->free;
-+		/*
-+		 * If the replay order was perfect the dirty space would now be
-+		 * zero. The order is not perfect because the the journal heads
-+		 * race with each other. This is not a problem but is does mean
-+		 * that the dirty space may temporarily exceed c->leb_size
-+		 * during the replay.
-+		 */
-+		if (dirty != 0)
-+			dbg_msg("LEB %d lp: %d free %d dirty "
-+				"replay: %d free %d dirty", r->lnum, lp->free,
-+				lp->dirty, r->free, r->dirty);
-+	}
-+	lp = ubifs_change_lp(c, lp, r->free, dirty + r->dirty,
-+			     lp->flags | LPROPS_TAKEN, 0);
-+	if (IS_ERR(lp)) {
-+		err = PTR_ERR(lp);
-+		goto out;
-+	}
-+out:
-+	ubifs_release_lprops(c);
-+	return err;
++	avail_lebs = c->orph_lebs;
++	avail = avail_lebs *
++	       ((c->leb_size - UBIFS_ORPH_NODE_SZ) / sizeof(__le64));
++	return avail / 2;
 +}
 +
 +/**
-+ * trun_remove_range - apply a replay entry for a truncation to the TNC.
++ * ubifs_clear_orphans - erase all LEBs used for orphans.
 + * @c: UBIFS file-system description object
-+ * @r: replay entry of truncation
-+ */
-+static int trun_remove_range(struct ubifs_info *c, struct replay_entry *r)
-+{
-+	unsigned min_blk, max_blk;
-+	union ubifs_key min_key, max_key;
-+	ino_t ino;
-+
-+	min_blk = r->new_size / UBIFS_BLOCK_SIZE;
-+	if (r->new_size & (UBIFS_BLOCK_SIZE - 1))
-+		min_blk += 1;
-+
-+	max_blk = r->old_size / UBIFS_BLOCK_SIZE;
-+	if ((r->old_size & (UBIFS_BLOCK_SIZE - 1)) == 0)
-+		max_blk -= 1;
-+
-+	ino = key_inum(c, &r->key);
-+
-+	data_key_init(c, &min_key, ino, min_blk);
-+	data_key_init(c, &max_key, ino, max_blk);
-+
-+	return ubifs_tnc_remove_range(c, &min_key, &max_key);
-+}
-+
-+/**
-+ * apply_replay_entry - apply a replay entry to the TNC.
-+ * @c: UBIFS file-system description object
-+ * @r: replay entry to apply
 + *
-+ * Apply a replay entry to the TNC.
++ * If recovery is not required, then the orphans from the previous session
++ * are not needed. This function locates the LEBs used to record
++ * orphans, and un-maps them.
 + */
-+static int apply_replay_entry(struct ubifs_info *c, struct replay_entry *r)
++int ubifs_clear_orphans(struct ubifs_info *c)
 +{
-+	int err, deletion = ((r->flags & REPLAY_DELETION) != 0);
++	int lnum, err;
 +
-+	dbg_mnt("LEB %d:%d len %d flgs %d sqnum %llu %s", r->lnum,
-+		r->offs, r->len, r->flags, r->sqnum, DBGKEY(&r->key));
-+
-+	/* Set c->replay_sqnum to help deal with dangling branches. */
-+	c->replay_sqnum = r->sqnum;
-+
-+	if (r->flags & REPLAY_REF)
-+		err = set_bud_lprops(c, r);
-+	else if (is_hash_key(c, &r->key)) {
-+		if (deletion)
-+			err = ubifs_tnc_remove_nm(c, &r->key, &r->nm);
-+		else
-+			err = ubifs_tnc_add_nm(c, &r->key, r->lnum, r->offs,
-+					       r->len, &r->nm);
-+	} else {
-+		if (deletion)
-+			switch (key_type(c, &r->key)) {
-+			case UBIFS_INO_KEY:
-+			{
-+				ino_t inum = key_inum(c, &r->key);
-+
-+				err = ubifs_tnc_remove_ino(c, inum);
-+				break;
-+			}
-+			case UBIFS_TRUN_KEY:
-+				err = trun_remove_range(c, r);
-+				break;
-+			default:
-+				err = ubifs_tnc_remove(c, &r->key);
-+				break;
-+			}
-+		else
-+			err = ubifs_tnc_add(c, &r->key, r->lnum, r->offs,
-+					    r->len);
++	for (lnum = c->orph_first; lnum <= c->orph_last; lnum++) {
++		err = ubifs_leb_unmap(c, lnum);
 +		if (err)
 +			return err;
-+
-+		if (c->need_recovery)
-+			err = ubifs_recover_size_accum(c, &r->key, deletion,
-+						       r->new_size);
 +	}
-+
-+	return err;
-+}
-+
-+/**
-+ * destroy_replay_tree - destroy the replay.
-+ * @c: UBIFS file-system description object
-+ *
-+ * Destroy the replay tree.
-+ */
-+static void destroy_replay_tree(struct ubifs_info *c)
-+{
-+	struct rb_node *this = c->replay_tree.rb_node;
-+	struct replay_entry *r;
-+
-+	while (this) {
-+		if (this->rb_left) {
-+			this = this->rb_left;
-+			continue;
-+		} else if (this->rb_right) {
-+			this = this->rb_right;
-+			continue;
-+		}
-+		r = rb_entry(this, struct replay_entry, rb);
-+		this = rb_parent(this);
-+		if (this) {
-+			if (this->rb_left == &r->rb)
-+				this->rb_left = NULL;
-+			else
-+				this->rb_right = NULL;
-+		}
-+		if (is_hash_key(c, &r->key))
-+			kfree((void *)r->nm.name);
-+		kfree(r);
-+	}
-+	c->replay_tree = RB_ROOT;
-+}
-+
-+/**
-+ * apply_replay_tree - apply the replay tree to the TNC.
-+ * @c: UBIFS file-system description object
-+ *
-+ * Apply the replay tree.
-+ * Returns zero in case of success and a negative error code in case of
-+ * failure.
-+ */
-+static int apply_replay_tree(struct ubifs_info *c)
-+{
-+	struct rb_node *this = rb_first(&c->replay_tree);
-+
-+	while (this) {
-+		struct replay_entry *r;
-+		int err;
-+
-+		cond_resched();
-+
-+		r = rb_entry(this, struct replay_entry, rb);
-+		err = apply_replay_entry(c, r);
-+		if (err)
-+			return err;
-+		this = rb_next(this);
-+	}
++	c->ohead_lnum = c->orph_first;
++	c->ohead_offs = 0;
 +	return 0;
 +}
 +
 +/**
-+ * insert_node - insert a node to the replay tree.
++ * insert_dead_orphan - insert an orphan.
 + * @c: UBIFS file-system description object
-+ * @lnum: node logical eraseblock number
-+ * @offs: node offset
-+ * @len: node length
-+ * @key: node key
-+ * @sqnum: sequence number
-+ * @deletion: non-zero if this is a deletion
-+ * @used: number of bytes in use in a LEB
-+ * @old_size: truncation old size
-+ * @new_size: truncation new size
++ * @inum: orphan inode number
 + *
-+ * This function inserts a scanned non-direntry node to the replay tree. The
-+ * replay tree is an RB-tree containing @struct replay_entry elements which are
-+ * indexed by the sequence number. The replay tree is applied at the very end
-+ * of the replay process. Since the tree is sorted in sequence number order,
-+ * the older modifications are applied first. This function returns zero in
-+ * case of success and a negative error code in case of failure.
++ * This function is a helper to the 'do_kill_orphans()' function. The orphan
++ * must be kept until the next commit, so it is added to the rb-tree and the
++ * deletion list.
 + */
-+static int insert_node(struct ubifs_info *c, int lnum, int offs, int len,
-+		       union ubifs_key *key, unsigned long long sqnum,
-+		       int deletion, int *used, loff_t old_size,
-+		       loff_t new_size)
++static int insert_dead_orphan(struct ubifs_info *c, ino_t inum)
 +{
-+	struct rb_node **p = &c->replay_tree.rb_node, *parent = NULL;
-+	struct replay_entry *r;
++	struct ubifs_orphan *orphan, *o;
++	struct rb_node **p, *parent = NULL;
 +
-+	if (key_inum(c, key) >= c->highest_inum)
-+		c->highest_inum = key_inum(c, key);
++	orphan = kzalloc(sizeof(struct ubifs_orphan), GFP_KERNEL);
++	if (!orphan)
++		return -ENOMEM;
++	orphan->inum = inum;
 +
-+	dbg_mnt("add LEB %d:%d, key %s", lnum, offs, DBGKEY(key));
++	p = &c->orph_tree.rb_node;
 +	while (*p) {
 +		parent = *p;
-+		r = rb_entry(parent, struct replay_entry, rb);
-+		if (sqnum < r->sqnum) {
++		o = rb_entry(parent, struct ubifs_orphan, rb);
++		if (inum < o->inum)
 +			p = &(*p)->rb_left;
-+			continue;
-+		} else if (sqnum > r->sqnum) {
++		else if (inum > o->inum)
 +			p = &(*p)->rb_right;
-+			continue;
++		else {
++			/* Already added - no problem */
++			kfree(orphan);
++			return 0;
 +		}
-+		ubifs_err("duplicate sqnum in replay");
-+		return -EINVAL;
 +	}
-+
-+	r = kzalloc(sizeof(struct replay_entry), GFP_KERNEL);
-+	if (!r)
-+		return -ENOMEM;
-+
-+	if (!deletion)
-+		*used += ALIGN(len, 8);
-+	r->lnum = lnum;
-+	r->offs = offs;
-+	r->len = len;
-+	r->sqnum = sqnum;
-+	r->flags = (deletion ? REPLAY_DELETION : 0);
-+	r->old_size = old_size;
-+	r->new_size = new_size;
-+	key_copy(c, key, &r->key);
-+
-+	rb_link_node(&r->rb, parent, p);
-+	rb_insert_color(&r->rb, &c->replay_tree);
++	c->tot_orphans += 1;
++	rb_link_node(&orphan->rb, parent, p);
++	rb_insert_color(&orphan->rb, &c->orph_tree);
++	list_add_tail(&orphan->list, &c->orph_list);
++	orphan->dnext = c->orph_dnext;
++	c->orph_dnext = orphan;
++	dbg_mnt("ino %lu, new %d, tot %d", (unsigned long)inum,
++		c->new_orphans, c->tot_orphans);
 +	return 0;
 +}
 +
 +/**
-+ * insert_dent - insert a directory entry node into the replay tree.
++ * do_kill_orphans - remove orphan inodes from the index.
 + * @c: UBIFS file-system description object
-+ * @lnum: node logical eraseblock number
-+ * @offs: node offset
-+ * @len: node length
-+ * @key: node key
-+ * @name: directory entry name
-+ * @nlen: directory entry name length
-+ * @sqnum: sequence number
-+ * @deletion: non-zero if this is a deletion
-+ * @used: number of bytes in use in a LEB
++ * @sleb: scanned LEB
++ * @last_cmt_no: cmt_no of last orphan node read is passed and returned here
++ * @outofdate: whether the LEB is out of date is returned here
++ * @last_flagged: whether the end orphan node is encountered
 + *
-+ * This function inserts a scanned directory entry node to the replay tree.
-+ * Returns zero in case of success and a negative error code in case of
-+ * failure.
-+ *
-+ * This function is also used for extended attribute entries because they are
-+ * implemented as directory entry nodes.
++ * This function is a helper to the 'kill_orphans()' function. It goes through
++ * every orphan node in a LEB and for every inode number recorded, removes
++ * all keys for that inode from the TNC.
 + */
-+static int insert_dent(struct ubifs_info *c, int lnum, int offs, int len,
-+		       union ubifs_key *key, const char *name, int nlen,
-+		       unsigned long long sqnum, int deletion, int *used)
++static int do_kill_orphans(struct ubifs_info *c, struct ubifs_scan_leb *sleb,
++			   unsigned long long *last_cmt_no, int *outofdate,
++			   int *last_flagged)
 +{
-+	struct rb_node **p = &c->replay_tree.rb_node, *parent = NULL;
-+	struct replay_entry *r;
-+	char *nbuf;
-+
-+	if (key_inum(c, key) >= c->highest_inum)
-+		c->highest_inum = key_inum(c, key);
-+
-+	dbg_mnt("add LEB %d:%d, key %s", lnum, offs, DBGKEY(key));
-+	while (*p) {
-+		parent = *p;
-+		r = rb_entry(parent, struct replay_entry, rb);
-+		if (sqnum < r->sqnum) {
-+			p = &(*p)->rb_left;
-+			continue;
-+		}
-+		if (sqnum > r->sqnum) {
-+			p = &(*p)->rb_right;
-+			continue;
-+		}
-+		ubifs_err("duplicate sqnum in replay");
-+		return -EINVAL;
-+	}
-+
-+	r = kzalloc(sizeof(struct replay_entry), GFP_KERNEL);
-+	if (!r)
-+		return -ENOMEM;
-+	nbuf = kmalloc(nlen + 1, GFP_KERNEL);
-+	if (!nbuf) {
-+		kfree(r);
-+		return -ENOMEM;
-+	}
-+
-+	if (!deletion)
-+		*used += ALIGN(len, 8);
-+	r->lnum = lnum;
-+	r->offs = offs;
-+	r->len = len;
-+	r->sqnum = sqnum;
-+	r->nm.len = nlen;
-+	memcpy(nbuf, name, nlen);
-+	nbuf[nlen] = '\0';
-+	r->nm.name = nbuf;
-+	r->flags = (deletion ? REPLAY_DELETION : 0);
-+	key_copy(c, key, &r->key);
-+
-+	ubifs_assert(!*p);
-+	rb_link_node(&r->rb, parent, p);
-+	rb_insert_color(&r->rb, &c->replay_tree);
-+	return 0;
-+}
-+
-+/**
-+ * ubifs_validate_entry - validate directory or extended attribute entry node.
-+ * @c: UBIFS file-system description object
-+ * @dent: the node to validate
-+ *
-+ * This function validates directory or extended attribute entry node @dent.
-+ * Returns zero if the node is all right and a %-EINVAL if not.
-+ */
-+int ubifs_validate_entry(struct ubifs_info *c,
-+			 const struct ubifs_dent_node *dent)
-+{
-+	int key_type = key_type_flash(c, dent->key);
-+	int nlen = le16_to_cpu(dent->nlen);
-+
-+	if (le32_to_cpu(dent->ch.len) != nlen + UBIFS_DENT_NODE_SZ + 1 ||
-+	    dent->type >= UBIFS_ITYPES_CNT ||
-+	    nlen > UBIFS_MAX_NLEN || dent->name[nlen] != 0 ||
-+	    strnlen((char *)dent->name, nlen) != nlen ||
-+	    le64_to_cpu(dent->inum) > MAX_INUM) {
-+		ubifs_err("bad %s node", key_type == UBIFS_DENT_KEY ?
-+			  "directory entry" : "extended attribute entry");
-+		return -EINVAL;
-+	}
-+
-+	if (key_type != UBIFS_DENT_KEY && key_type != UBIFS_XENT_KEY) {
-+		ubifs_err("bad key type %d", key_type);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * replay_bud - replay a bud logical eraseblock.
-+ * @c: UBIFS file-system description object
-+ * @lnum: bud logical eraseblock number to replay
-+ * @offs: bud start offset
-+ * @jhead: journal head to which this bud belongs
-+ * @free: amount of free space in the bud is returned here
-+ * @dirty: amount of dirty space from padding and deletion nodes is returned
-+ * here
-+ *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure.
-+ */
-+static int replay_bud(struct ubifs_info *c, int lnum, int offs, int jhead,
-+		      int *free, int *dirty)
-+{
-+	int err = 0, used = 0;
-+	struct ubifs_scan_leb *sleb;
 +	struct ubifs_scan_node *snod;
-+	struct ubifs_bud *bud;
-+
-+	dbg_mnt("replay bud LEB %d, head %d", lnum, jhead);
-+	if (c->need_recovery)
-+		sleb = ubifs_recover_leb(c, lnum, offs, c->sbuf, jhead != GCHD);
-+	else
-+		sleb = ubifs_scan(c, lnum, offs, c->sbuf);
-+	if (IS_ERR(sleb))
-+		return PTR_ERR(sleb);
-+
-+	/*
-+	 * The bud does not have to start from offset zero - the beginning of
-+	 * the 'lnum' LEB may contain previously committed data. One of the
-+	 * things we have to do in replay is to correctly update lprops with
-+	 * newer information about this LEB.
-+	 *
-+	 * At this point lprops thinks that this LEB has 'c->leb_size - offs'
-+	 * bytes of free space because it only contain information about
-+	 * committed data.
-+	 *
-+	 * But we know that real amount of free space is 'c->leb_size -
-+	 * sleb->endpt', and the space in the 'lnum' LEB between 'offs' and
-+	 * 'sleb->endpt' is used by bud data. We have to correctly calculate
-+	 * how much of these data are dirty and update lprops with this
-+	 * information.
-+	 *
-+	 * The dirt in that LEB region is comprised of padding nodes, deletion
-+	 * nodes, truncation nodes and nodes which are obsoleted by subsequent
-+	 * nodes in this LEB. So instead of calculating clean space, we
-+	 * calculate used space ('used' variable).
-+	 */
++	struct ubifs_orph_node *orph;
++	unsigned long long cmt_no;
++	ino_t inum;
++	int i, n, err, first = 1;
 +
 +	list_for_each_entry(snod, &sleb->nodes, list) {
-+		int deletion = 0;
-+
-+		cond_resched();
-+
-+		if (snod->sqnum >= SQNUM_WATERMARK) {
-+			ubifs_err("file system's life ended");
-+			goto out_dump;
++		if (snod->type != UBIFS_ORPH_NODE) {
++			ubifs_err("invalid node type %d in orphan area at "
++				  "%d:%d", snod->type, sleb->lnum, snod->offs);
++			dbg_dump_node(c, snod->node);
++			return -EINVAL;
 +		}
 +
-+		if (snod->sqnum > c->max_sqnum)
-+			c->max_sqnum = snod->sqnum;
++		orph = snod->node;
 +
-+		switch (snod->type) {
-+		case UBIFS_INO_NODE:
-+		{
-+			struct ubifs_ino_node *ino = snod->node;
-+			loff_t new_size = le64_to_cpu(ino->size);
-+
-+			if (le32_to_cpu(ino->nlink) == 0)
-+				deletion = 1;
-+			err = insert_node(c, lnum, snod->offs, snod->len,
-+					  &snod->key, snod->sqnum, deletion,
-+					  &used, 0, new_size);
-+			break;
-+		}
-+		case UBIFS_DATA_NODE:
-+		{
-+			struct ubifs_data_node *dn = snod->node;
-+			loff_t new_size = le32_to_cpu(dn->size) +
-+					  key_block(c, &snod->key) *
-+					  UBIFS_BLOCK_SIZE;
-+
-+			err = insert_node(c, lnum, snod->offs, snod->len,
-+					  &snod->key, snod->sqnum, deletion,
-+					  &used, 0, new_size);
-+			break;
-+		}
-+		case UBIFS_DENT_NODE:
-+		case UBIFS_XENT_NODE:
-+		{
-+			struct ubifs_dent_node *dent = snod->node;
-+
-+			err = ubifs_validate_entry(c, dent);
-+			if (err)
-+				goto out_dump;
-+
-+			err = insert_dent(c, lnum, snod->offs, snod->len,
-+					  &snod->key, (char *)dent->name,
-+					  le16_to_cpu(dent->nlen), snod->sqnum,
-+					  !le64_to_cpu(dent->inum), &used);
-+			break;
-+		}
-+		case UBIFS_TRUN_NODE:
-+		{
-+			struct ubifs_trun_node *trun = snod->node;
-+			loff_t old_size = le64_to_cpu(trun->old_size);
-+			loff_t new_size = le64_to_cpu(trun->new_size);
-+			union ubifs_key key;
-+
-+			/* Validate truncation node */
-+			if (old_size < 0 || old_size > c->max_inode_sz ||
-+			    new_size < 0 || new_size > c->max_inode_sz ||
-+			    old_size <= new_size) {
-+				ubifs_err("bad truncation node");
-+				goto out_dump;
-+			}
-+
++		/* Check commit number */
++		cmt_no = le64_to_cpu(orph->cmt_no) & LLONG_MAX;
++		/*
++		 * The commit number on the master node may be less, because
++		 * of a failed commit. If there are several failed commits in a
++		 * row, the commit number written on orphan nodes will continue
++		 * to increase (because the commit number is adjusted here) even
++		 * though the commit number on the master node stays the same
++		 * because the master node has not been re-written.
++		 */
++		if (cmt_no > c->cmt_no)
++			c->cmt_no = cmt_no;
++		if (cmt_no < *last_cmt_no && *last_flagged) {
 +			/*
-+			 * Create a fake truncation key just to use the same
-+			 * functions which expect nodes to have keys.
++			 * The last orphan node had a higher commit number and
++			 * was flagged as the last written for that commit
++			 * number. That makes this orphan node, out of date.
 +			 */
-+			trun_key_init(c, &key, le32_to_cpu(trun->inum));
-+			err = insert_node(c, lnum, snod->offs, snod->len,
-+					  &key, snod->sqnum, 1, &used,
-+					  old_size, new_size);
-+			break;
++			if (!first) {
++				ubifs_err("out of order commit number %llu in "
++					  "orphan node at %d:%d",
++					  cmt_no, sleb->lnum, snod->offs);
++				dbg_dump_node(c, snod->node);
++				return -EINVAL;
++			}
++			dbg_rcvry("out of date LEB %d", sleb->lnum);
++			*outofdate = 1;
++			return 0;
 +		}
-+		default:
-+			ubifs_err("unexpected node type %d in bud LEB %d:%d",
-+				  snod->type, lnum, snod->offs);
-+			err = -EINVAL;
-+			goto out_dump;
++
++		if (first)
++			first = 0;
++
++		n = (le32_to_cpu(orph->ch.len) - UBIFS_ORPH_NODE_SZ) >> 3;
++		for (i = 0; i < n; i++) {
++			inum = le64_to_cpu(orph->inos[i]);
++			dbg_rcvry("deleting orphaned inode %lu",
++				  (unsigned long)inum);
++			err = ubifs_tnc_remove_ino(c, inum);
++			if (err)
++				return err;
++			err = insert_dead_orphan(c, inum);
++			if (err)
++				return err;
 +		}
-+		if (err)
-+			goto out;
-+	}
 +
-+	bud = ubifs_search_bud(c, lnum);
-+	if (!bud)
-+		BUG();
-+
-+	ubifs_assert(sleb->endpt - offs >= used);
-+	ubifs_assert(sleb->endpt % c->min_io_size == 0);
-+
-+	*dirty = sleb->endpt - offs - used;
-+	*free = c->leb_size - sleb->endpt;
-+
-+out:
-+	ubifs_scan_destroy(sleb);
-+	return err;
-+
-+out_dump:
-+	ubifs_err("bad node is at LEB %d:%d", lnum, snod->offs);
-+	dbg_dump_node(c, snod->node);
-+	ubifs_scan_destroy(sleb);
-+	return -EINVAL;
-+}
-+
-+/**
-+ * insert_ref_node - insert a reference node to the replay tree.
-+ * @c: UBIFS file-system description object
-+ * @lnum: node logical eraseblock number
-+ * @offs: node offset
-+ * @sqnum: sequence number
-+ * @free: amount of free space in bud
-+ * @dirty: amount of dirty space from padding and deletion nodes
-+ *
-+ * This function inserts a reference node to the replay tree and returns zero
-+ * in case of success or a negative error code in case of failure.
-+ */
-+static int insert_ref_node(struct ubifs_info *c, int lnum, int offs,
-+			   unsigned long long sqnum, int free, int dirty)
-+{
-+	struct rb_node **p = &c->replay_tree.rb_node, *parent = NULL;
-+	struct replay_entry *r;
-+
-+	dbg_mnt("add ref LEB %d:%d", lnum, offs);
-+	while (*p) {
-+		parent = *p;
-+		r = rb_entry(parent, struct replay_entry, rb);
-+		if (sqnum < r->sqnum) {
-+			p = &(*p)->rb_left;
-+			continue;
-+		} else if (sqnum > r->sqnum) {
-+			p = &(*p)->rb_right;
-+			continue;
-+		}
-+		ubifs_err("duplicate sqnum in replay tree");
-+		return -EINVAL;
-+	}
-+
-+	r = kzalloc(sizeof(struct replay_entry), GFP_KERNEL);
-+	if (!r)
-+		return -ENOMEM;
-+
-+	r->lnum = lnum;
-+	r->offs = offs;
-+	r->sqnum = sqnum;
-+	r->flags = REPLAY_REF;
-+	r->free = free;
-+	r->dirty = dirty;
-+
-+	rb_link_node(&r->rb, parent, p);
-+	rb_insert_color(&r->rb, &c->replay_tree);
-+	return 0;
-+}
-+
-+/**
-+ * replay_buds - replay all buds.
-+ * @c: UBIFS file-system description object
-+ *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure.
-+ */
-+static int replay_buds(struct ubifs_info *c)
-+{
-+	struct bud_entry *b;
-+	int err, uninitialized_var(free), uninitialized_var(dirty);
-+
-+	list_for_each_entry(b, &c->replay_buds, list) {
-+		err = replay_bud(c, b->bud->lnum, b->bud->start, b->bud->jhead,
-+				 &free, &dirty);
-+		if (err)
-+			return err;
-+		err = insert_ref_node(c, b->bud->lnum, b->bud->start, b->sqnum,
-+				      free, dirty);
-+		if (err)
-+			return err;
++		*last_cmt_no = cmt_no;
++		if (le64_to_cpu(orph->cmt_no) & (1ULL << 63)) {
++			dbg_rcvry("last orph node for commit %llu at %d:%d",
++				  cmt_no, sleb->lnum, snod->offs);
++			*last_flagged = 1;
++		} else
++			*last_flagged = 0;
 +	}
 +
 +	return 0;
 +}
 +
 +/**
-+ * destroy_bud_list - destroy the list of buds to replay.
++ * kill_orphans - remove all orphan inodes from the index.
 + * @c: UBIFS file-system description object
-+ */
-+static void destroy_bud_list(struct ubifs_info *c)
-+{
-+	struct bud_entry *b;
-+
-+	while (!list_empty(&c->replay_buds)) {
-+		b = list_entry(c->replay_buds.next, struct bud_entry, list);
-+		list_del(&b->list);
-+		kfree(b);
-+	}
-+}
-+
-+/**
-+ * add_replay_bud - add a bud to the list of buds to replay.
-+ * @c: UBIFS file-system description object
-+ * @lnum: bud logical eraseblock number to replay
-+ * @offs: bud start offset
-+ * @jhead: journal head to which this bud belongs
-+ * @sqnum: reference node sequence number
 + *
-+ * This function returns zero in case of success and a negative error code in
-+ * case of failure.
++ * If recovery is required, then orphan inodes recorded during the previous
++ * session (which ended with an unclean unmount) must be deleted from the index.
++ * This is done by updating the TNC, but since the index is not updated until
++ * the next commit, the LEBs where the orphan information is recorded are not
++ * erased until the next commit.
 + */
-+static int add_replay_bud(struct ubifs_info *c, int lnum, int offs, int jhead,
-+			  unsigned long long sqnum)
++static int kill_orphans(struct ubifs_info *c)
 +{
-+	struct ubifs_bud *bud;
-+	struct bud_entry *b;
++	unsigned long long last_cmt_no = 0;
++	int lnum, err = 0, outofdate = 0, last_flagged = 0;
 +
-+	dbg_mnt("add replay bud LEB %d:%d, head %d", lnum, offs, jhead);
-+
-+	bud = kmalloc(sizeof(struct ubifs_bud), GFP_KERNEL);
-+	if (!bud)
-+		return -ENOMEM;
-+
-+	b = kmalloc(sizeof(struct bud_entry), GFP_KERNEL);
-+	if (!b) {
-+		kfree(bud);
-+		return -ENOMEM;
++	c->ohead_lnum = c->orph_first;
++	c->ohead_offs = 0;
++	/* Check no-orphans flag and skip this if no orphans */
++	if (c->no_orphs) {
++		dbg_rcvry("no orphans");
++		return 0;
 +	}
-+
-+	bud->lnum = lnum;
-+	bud->start = offs;
-+	bud->jhead = jhead;
-+	ubifs_add_bud(c, bud);
-+
-+	b->bud = bud;
-+	b->sqnum = sqnum;
-+	list_add_tail(&b->list, &c->replay_buds);
-+
-+	return 0;
-+}
-+
-+/**
-+ * validate_ref - validate a reference node.
-+ * @c: UBIFS file-system description object
-+ * @ref: the reference node to validate
-+ * @ref_lnum: LEB number of the reference node
-+ * @ref_offs: reference node offset
-+ *
-+ * This function returns %1 if a bud reference already exists for the LEB. %0 is
-+ * returned if the reference node is new, otherwise %-EINVAL is returned if
-+ * validation failed.
-+ */
-+static int validate_ref(struct ubifs_info *c, const struct ubifs_ref_node *ref)
-+{
-+	struct ubifs_bud *bud;
-+	int lnum = le32_to_cpu(ref->lnum);
-+	unsigned int offs = le32_to_cpu(ref->offs);
-+	unsigned int jhead = le32_to_cpu(ref->jhead);
-+
 +	/*
-+	 * ref->offs may point to the end of LEB when the journal head points
-+	 * to the end of LEB and we write reference node for it during commit.
-+	 * So this is why we require 'offs > c->leb_size'.
++	 * Orph nodes always start at c->orph_first and are written to each
++	 * successive LEB in turn. Generally unused LEBs will have been unmapped
++	 * but may contain out of date orphan nodes if the unmap didn't go
++	 * through. In addition, the last orphan node written for each commit is
++	 * marked (top bit of orph->cmt_no is set to 1). It is possible that
++	 * there are orphan nodes from the next commit (i.e. the commit did not
++	 * complete successfully). In that case, no orphans will have been lost
++	 * due to the way that orphans are written, and any orphans added will
++	 * be valid orphans anyway and so can be deleted.
 +	 */
-+	if (jhead >= c->jhead_cnt || lnum >= c->leb_cnt ||
-+	    lnum < c->main_first || offs > c->leb_size ||
-+	    offs & (c->min_io_size - 1))
-+		return -EINVAL;
++	for (lnum = c->orph_first; lnum <= c->orph_last; lnum++) {
++		struct ubifs_scan_leb *sleb;
 +
-+	/* Make sure we have not already looked at this bud */
-+	bud = ubifs_search_bud(c, lnum);
-+	if (bud) {
-+		if (bud->jhead == jhead && bud->start <= offs)
-+			return 1;
-+		ubifs_err("bud at LEB %d:%d was already referred", lnum, offs);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * replay_log_leb - replay a log logical eraseblock.
-+ * @c: UBIFS file-system description object
-+ * @lnum: log logical eraseblock to replay
-+ * @offs: offset to start replaying from
-+ * @sbuf: scan buffer
-+ *
-+ * This function replays a log LEB and returns zero in case of success, %1 if
-+ * this is the last LEB in the log, and a negative error code in case of
-+ * failure.
-+ */
-+static int replay_log_leb(struct ubifs_info *c, int lnum, int offs, void *sbuf)
-+{
-+	int err;
-+	struct ubifs_scan_leb *sleb;
-+	struct ubifs_scan_node *snod;
-+	const struct ubifs_cs_node *node;
-+
-+	dbg_mnt("replay log LEB %d:%d", lnum, offs);
-+	sleb = ubifs_scan(c, lnum, offs, sbuf);
-+	if (IS_ERR(sleb)) {
-+		if (c->need_recovery)
-+			sleb = ubifs_recover_log_leb(c, lnum, offs, sbuf);
-+		if (IS_ERR(sleb))
-+			return PTR_ERR(sleb);
-+	}
-+
-+	if (sleb->nodes_cnt == 0) {
-+		err = 1;
-+		goto out;
-+	}
-+
-+	node = sleb->buf;
-+
-+	snod = list_entry(sleb->nodes.next, struct ubifs_scan_node, list);
-+	if (c->cs_sqnum == 0) {
-+		/*
-+		 * This is the first log LEB we are looking at, make sure that
-+		 * the first node is a commit start node. Also record its
-+		 * sequence number so that UBIFS can determine where the log
-+		 * ends, because all nodes which were have higher sequence
-+		 * numbers.
-+		 */
-+		if (snod->type != UBIFS_CS_NODE) {
-+			dbg_err("first log node at LEB %d:%d is not CS node",
-+				lnum, offs);
-+			goto out_dump;
-+		}
-+		if (le64_to_cpu(node->cmt_no) != c->cmt_no) {
-+			dbg_err("first CS node at LEB %d:%d has wrong "
-+				"commit number %llu expected %llu",
-+				lnum, offs,
-+				(unsigned long long)le64_to_cpu(node->cmt_no),
-+				c->cmt_no);
-+			goto out_dump;
-+		}
-+
-+		c->cs_sqnum = le64_to_cpu(node->ch.sqnum);
-+		dbg_mnt("commit start sqnum %llu", c->cs_sqnum);
-+	}
-+
-+	if (snod->sqnum < c->cs_sqnum) {
-+		/*
-+		 * This means that we reached end of log and now
-+		 * look to the older log data, which was already
-+		 * committed but the eraseblock was not erased (UBIFS
-+		 * only un-maps it). So this basically means we have to
-+		 * exit with "end of log" code.
-+		 */
-+		err = 1;
-+		goto out;
-+	}
-+
-+	/* Make sure the first node sits at offset zero of the LEB */
-+	if (snod->offs != 0) {
-+		dbg_err("first node is not at zero offset");
-+		goto out_dump;
-+	}
-+
-+	list_for_each_entry(snod, &sleb->nodes, list) {
-+
-+		cond_resched();
-+
-+		if (snod->sqnum >= SQNUM_WATERMARK) {
-+			ubifs_err("file system's life ended");
-+			goto out_dump;
-+		}
-+
-+		if (snod->sqnum < c->cs_sqnum) {
-+			dbg_err("bad sqnum %llu, commit sqnum %llu",
-+				snod->sqnum, c->cs_sqnum);
-+			goto out_dump;
-+		}
-+
-+		if (snod->sqnum > c->max_sqnum)
-+			c->max_sqnum = snod->sqnum;
-+
-+		switch (snod->type) {
-+		case UBIFS_REF_NODE: {
-+			const struct ubifs_ref_node *ref = snod->node;
-+
-+			err = validate_ref(c, ref);
-+			if (err == 1)
-+				break; /* Already have this bud */
-+			if (err)
-+				goto out_dump;
-+
-+			err = add_replay_bud(c, le32_to_cpu(ref->lnum),
-+					     le32_to_cpu(ref->offs),
-+					     le32_to_cpu(ref->jhead),
-+					     snod->sqnum);
-+			if (err)
-+				goto out;
-+
-+			break;
-+		}
-+		case UBIFS_CS_NODE:
-+			/* Make sure it sits at the beginning of LEB */
-+			if (snod->offs != 0) {
-+				ubifs_err("unexpected node in log");
-+				goto out_dump;
++		dbg_rcvry("LEB %d", lnum);
++		sleb = ubifs_scan(c, lnum, 0, c->sbuf);
++		if (IS_ERR(sleb)) {
++			sleb = ubifs_recover_leb(c, lnum, 0, c->sbuf, 0);
++			if (IS_ERR(sleb)) {
++				err = PTR_ERR(sleb);
++				break;
 +			}
-+			break;
-+		default:
-+			ubifs_err("unexpected node in log");
-+			goto out_dump;
 +		}
++		err = do_kill_orphans(c, sleb, &last_cmt_no, &outofdate,
++				      &last_flagged);
++		if (err || outofdate) {
++			ubifs_scan_destroy(sleb);
++			break;
++		}
++		if (sleb->endpt) {
++			c->ohead_lnum = lnum;
++			c->ohead_offs = sleb->endpt;
++		}
++		ubifs_scan_destroy(sleb);
 +	}
-+
-+	if (sleb->endpt || c->lhead_offs >= c->leb_size) {
-+		c->lhead_lnum = lnum;
-+		c->lhead_offs = sleb->endpt;
-+	}
-+
-+	err = !sleb->endpt;
-+out:
-+	ubifs_scan_destroy(sleb);
-+	return err;
-+
-+out_dump:
-+	ubifs_err("log error detected while replying the log at LEB %d:%d",
-+		  lnum, offs + snod->offs);
-+	dbg_dump_node(c, snod->node);
-+	ubifs_scan_destroy(sleb);
-+	return -EINVAL;
-+}
-+
-+/**
-+ * take_ihead - update the status of the index head in lprops to 'taken'.
-+ * @c: UBIFS file-system description object
-+ *
-+ * This function returns the amount of free space in the index head LEB or a
-+ * negative error code.
-+ */
-+static int take_ihead(struct ubifs_info *c)
-+{
-+	const struct ubifs_lprops *lp;
-+	int err, free;
-+
-+	ubifs_get_lprops(c);
-+
-+	lp = ubifs_lpt_lookup_dirty(c, c->ihead_lnum);
-+	if (IS_ERR(lp)) {
-+		err = PTR_ERR(lp);
-+		goto out;
-+	}
-+
-+	free = lp->free;
-+
-+	lp = ubifs_change_lp(c, lp, LPROPS_NC, LPROPS_NC,
-+			     lp->flags | LPROPS_TAKEN, 0);
-+	if (IS_ERR(lp)) {
-+		err = PTR_ERR(lp);
-+		goto out;
-+	}
-+
-+	err = free;
-+out:
-+	ubifs_release_lprops(c);
 +	return err;
 +}
 +
 +/**
-+ * ubifs_replay_journal - replay journal.
++ * ubifs_mount_orphans - delete orphan inodes and erase LEBs that recorded them.
 + * @c: UBIFS file-system description object
++ * @unclean: indicates recovery from unclean unmount
++ * @read_only: indicates read only mount
 + *
-+ * This function scans the journal, replays and cleans it up. It makes sure all
-+ * memory data structures related to uncommitted journal are built (dirty TNC
-+ * tree, tree of buds, modified lprops, etc).
++ * This function is called when mounting to erase orphans from the previous
++ * session. If UBIFS was not unmounted cleanly, then the inodes recorded as
++ * orphans are deleted.
 + */
-+int ubifs_replay_journal(struct ubifs_info *c)
++int ubifs_mount_orphans(struct ubifs_info *c, int unclean, int read_only)
 +{
-+	int err, i, lnum, offs, _free;
-+	void *sbuf = NULL;
++	int err = 0;
 +
-+	BUILD_BUG_ON(UBIFS_TRUN_KEY > 5);
++	c->max_orphans = tot_avail_orphs(c);
 +
-+	/* Update the status of the index head in lprops to 'taken' */
-+	_free = take_ihead(c);
-+	if (_free < 0)
-+		return _free; /* Error code */
-+
-+	if (c->ihead_offs != c->leb_size - _free) {
-+		ubifs_err("bad index head LEB %d:%d", c->ihead_lnum,
-+			  c->ihead_offs);
-+		return -EINVAL;
++	if (!read_only) {
++		c->orph_buf = vmalloc(c->leb_size);
++		if (!c->orph_buf)
++			return -ENOMEM;
 +	}
 +
-+	sbuf = vmalloc(c->leb_size);
-+	if (!sbuf)
-+		return -ENOMEM;
++	if (unclean)
++		err = kill_orphans(c);
++	else if (!read_only)
++		err = ubifs_clear_orphans(c);
 +
-+	dbg_mnt("start replaying the journal");
-+
-+	c->replaying = 1;
-+
-+	lnum = c->ltail_lnum = c->lhead_lnum;
-+	offs = c->lhead_offs;
-+
-+	for (i = 0; i < c->log_lebs; i++, lnum++) {
-+		if (lnum >= UBIFS_LOG_LNUM + c->log_lebs) {
-+			/*
-+			 * The log is logically circular, we reached the last
-+			 * LEB, switch to the first one.
-+			 */
-+			lnum = UBIFS_LOG_LNUM;
-+			offs = 0;
-+		}
-+		err = replay_log_leb(c, lnum, offs, sbuf);
-+		if (err == 1)
-+			/* We hit the end of the log */
-+			break;
-+		if (err)
-+			goto out;
-+		offs = 0;
-+	}
-+
-+	err = replay_buds(c);
-+	if (err)
-+		goto out;
-+
-+	err = apply_replay_tree(c);
-+	if (err)
-+		goto out;
-+
-+	ubifs_assert(c->bud_bytes <= c->max_bud_bytes || c->need_recovery);
-+	dbg_mnt("finished, log head LEB %d:%d, max_sqnum %llu, "
-+		"highest_inum %lu", c->lhead_lnum, c->lhead_offs, c->max_sqnum,
-+		(unsigned long)c->highest_inum);
-+out:
-+	destroy_replay_tree(c);
-+	destroy_bud_list(c);
-+	vfree(sbuf);
-+	c->replaying = 0;
 +	return err;
 +}
 -- 
@@ -1227,7 +710,7 @@ index 0000000..da33a14
 
 
 
---===============8266512599541606884==
+--===============4029591014083146164==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -1238,4 +721,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============8266512599541606884==--
+--===============4029591014083146164==--
