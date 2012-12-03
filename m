@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og107.obsmtp.com ([64.18.0.184])
+Received: from exprod5og115.obsmtp.com ([64.18.0.246])
  by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TfaSM-00050l-EV
- for barebox@lists.infradead.org; Mon, 03 Dec 2012 18:09:37 +0000
+ id 1TfaRl-0004sP-HZ
+ for barebox@lists.infradead.org; Mon, 03 Dec 2012 18:08:58 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Mon,  3 Dec 2012 18:08:28 +0000
-Message-Id: <1354558114-28799-13-git-send-email-renaud.barbier@ge.com>
+Date: Mon,  3 Dec 2012 18:08:20 +0000
+Message-Id: <1354558114-28799-5-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1354558114-28799-1-git-send-email-renaud.barbier@ge.com>
 References: <1354558114-28799-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -17,36 +17,36 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8638472518892515822=="
+Content-Type: multipart/mixed; boundary="===============7074821753046268722=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/18] UBIFS: tree node cache
+Subject: [PATCH 04/18] UBIFS: header files (2/2)
 To: barebox@lists.infradead.org
 
---===============8638472518892515822==
+--===============7074821753046268722==
 Content-Type: text/plain
 
-This patch implements the tree node cache support. This caches indexing
-nodes of the UBIFS B-tree.
+Second set of header files to support UBIFS.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- fs/ubifs/tnc.c      | 2767 +++++++++++++++++++++++++++++++++++++++++++++++++++
- fs/ubifs/tnc_misc.c |  435 ++++++++
- 2 files changed, 3202 insertions(+), 0 deletions(-)
- create mode 100644 fs/ubifs/tnc.c
- create mode 100644 fs/ubifs/tnc_misc.c
+ fs/ubifs/ubifs.h | 2159 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 2159 insertions(+), 0 deletions(-)
+ create mode 100644 fs/ubifs/ubifs.h
 
-diff --git a/fs/ubifs/tnc.c b/fs/ubifs/tnc.c
+diff --git a/fs/ubifs/ubifs.h b/fs/ubifs/ubifs.h
 new file mode 100644
-index 0000000..e3b67ea
+index 0000000..388555e
 --- /dev/null
-+++ b/fs/ubifs/tnc.c
-@@ -0,0 +1,2767 @@
++++ b/fs/ubifs/ubifs.h
+@@ -0,0 +1,2159 @@
 +/*
 + * This file is part of UBIFS.
 + *
-+ * Copyright (C) 2006-2008 Nokia Corporation.
++ * Copyright (C) 2006-2008 Nokia Corporation
++ *
++ * (C) Copyright 2008-2009
++ * Stefan Roese, DENX Software Engineering, sr@denx.de.
 + *
 + * This program is free software; you can redistribute it and/or modify it
 + * under the terms of the GNU General Public License version 2 as published by
@@ -61,3202 +61,2150 @@ index 0000000..e3b67ea
 + * this program; if not, write to the Free Software Foundation, Inc., 51
 + * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 + *
-+ * Authors: Adrian Hunter
-+ *          Artem Bityutskiy (���������������� ����������)
++ * Authors: Artem Bityutskiy (���������������� ����������)
++ *          Adrian Hunter
 + */
 +
++#ifndef __UBIFS_H__
++#define __UBIFS_H__
++
++#if 0	/* Enable for debugging output */
++#define CONFIG_UBIFS_FS_DEBUG
++#define CONFIG_UBIFS_FS_DEBUG_MSG_LVL	3
++#endif
++
++#include "../../drivers/mtd/ubi/ubi-barebox.h"
++#include <fs.h>
++#include <linux/ctype.h>
++#include <linux/string.h>
++#include <linux/time.h>
++#include <linux/math64.h>
++#include "ubifs-media.h"
++
++
++/* private data. */
++struct ubifs_priv {
++	char *vol_name;				/* volume name		*/
++	struct  super_block *sb;		/* root super block	*/
++	struct cdev *cdev;
++	struct ubi_volume_desc *ubi_desc;	/* volume descriptor	*/
++	struct file *file;
++	struct dentry *dentry;
++	struct inode *inode;
++	DIR *dir;
++};
++
++struct dentry;
++struct file;
++struct iattr;
++struct kstat;
++struct vfsmount;
++
++extern struct super_block *ubifs_sb;
++
++extern unsigned int ubifs_msg_flags;
++extern unsigned int ubifs_chk_flags;
++extern unsigned int ubifs_tst_flags;
++
++#define pgoff_t		unsigned long
++
 +/*
-+ * This file implements TNC (Tree Node Cache) which caches indexing nodes of
-+ * the UBIFS B-tree.
-+ *
-+ * At the moment the locking rules of the TNC tree are quite simple and
-+ * straightforward. We just have a mutex and lock it when we traverse the
-+ * tree. If a znode is not in memory, we read it from flash while still having
-+ * the mutex locked.
++ * We "simulate" the Linux page struct much simpler here
 + */
++struct page {
++	pgoff_t index;
++	void *addr;
++	struct inode *inode;
++};
 +
-+#include "ubifs.h"
++void iput(struct inode *inode);
 +
 +/*
-+ * Returned codes of 'matches_name()' and 'fallible_matches_name()' functions.
-+ * @NAME_LESS: name corresponding to the first argument is less than second
-+ * @NAME_MATCHES: names match
-+ * @NAME_GREATER: name corresponding to the second argument is greater than
-+ *                first
-+ * @NOT_ON_MEDIA: node referred by zbranch does not exist on the media
++ * The atomic operations are used for budgeting etc which is not
++ * needed for the read-only U-Boot implementation:
++ */
++#define atomic_long_inc(a)
++#define atomic_long_dec(a)
++#define	atomic_long_sub(a, b)
++
++/* linux/include/time.h */
++
++struct timespec {
++	time_t	tv_sec;		/* seconds */
++	long	tv_nsec;	/* nanoseconds */
++};
++
++/* linux/include/dcache.h */
++
++/*
++ * "quick string" -- eases parameter passing, but more importantly
++ * saves "metadata" about the string (ie length and the hash).
 + *
-+ * These constants were introduce to improve readability.
++ * hash comes first so it snuggles against d_parent in the
++ * dentry.
++ */
++struct qstr {
++	unsigned int hash;
++	unsigned int len;
++	const char *name;
++};
++
++struct inode {
++	struct hlist_node	i_hash;
++	struct list_head	i_list;
++	struct list_head	i_sb_list;
++	struct list_head	i_dentry;
++	unsigned long		i_ino;
++	unsigned int		i_nlink;
++	uid_t			i_uid;
++	gid_t			i_gid;
++	dev_t			i_rdev;
++	u64			i_version;
++	loff_t			i_size;
++#ifdef __NEED_I_SIZE_ORDERED
++	seqcount_t		i_size_seqcount;
++#endif
++	struct timespec		i_atime;
++	struct timespec		i_mtime;
++	struct timespec		i_ctime;
++	unsigned int		i_blkbits;
++	unsigned short          i_bytes;
++	umode_t			i_mode;
++	spinlock_t		i_lock;	/* i_blocks, i_bytes, maybe i_size */
++	struct mutex		i_mutex;
++	struct rw_semaphore	i_alloc_sem;
++	const struct inode_operations	*i_op;
++	/* former ->i_op->default_file_ops */
++	const struct file_operations	*i_fop;
++	struct super_block	*i_sb;
++	struct file_lock	*i_flock;
++#ifdef CONFIG_QUOTA
++	struct dquot		*i_dquot[MAXQUOTAS];
++#endif
++	struct list_head	i_devices;
++	int			i_cindex;
++
++	__u32			i_generation;
++
++#ifdef CONFIG_DNOTIFY
++	unsigned long		i_dnotify_mask; /* Directory notify events */
++	struct dnotify_struct	*i_dnotify; /* for directory notifications */
++#endif
++
++#ifdef CONFIG_INOTIFY
++	struct list_head	inotify_watches; /* watches on this inode */
++	struct mutex		inotify_mutex;	/* protects the watches list */
++#endif
++
++	unsigned long		i_state;
++	unsigned long		dirtied_when;	/* jiffies of first dirtying */
++
++	unsigned int		i_flags;
++
++#ifdef CONFIG_SECURITY
++	void			*i_security;
++#endif
++	void			*i_private; /* fs or device private pointer */
++};
++
++struct super_block {
++	struct list_head	s_list;		/* Keep this first */
++	dev_t			s_dev;		/* search index; _not_ kdev_t */
++	unsigned long		s_blocksize;
++	unsigned char		s_blocksize_bits;
++	unsigned char		s_dirt;
++	unsigned long long	s_maxbytes;	/* Max file size */
++	struct file_system_type	*s_type;
++	const struct super_operations	*s_op;
++	struct dquot_operations	*dq_op;
++	struct quotactl_ops	*s_qcop;
++	const struct export_operations *s_export_op;
++	unsigned long		s_flags;
++	unsigned long		s_magic;
++	struct dentry		*s_root;
++	struct rw_semaphore	s_umount;
++	struct mutex		s_lock;
++	int			s_count;
++	int			s_syncing;
++	int			s_need_sync_fs;
++#ifdef CONFIG_SECURITY
++	void                    *s_security;
++#endif
++	struct xattr_handler	**s_xattr;
++
++	struct list_head	s_inodes;	/* all inodes */
++	struct list_head	s_dirty;	/* dirty inodes */
++	struct list_head	s_io;		/* parked for writeback */
++	struct list_head	s_more_io;	/* parked for more writeback */
++	struct hlist_head	s_anon;		/* anonymous dentries for */
++						/*(nfs) exporting */
++	struct list_head	s_files;
++	/* s_dentry_lru and s_nr_dentry_unused are protected by dcache_lock */
++	struct list_head	s_dentry_lru;	/* unused dentry lru */
++	int			s_nr_dentry_unused;	/* # of dentry on lru */
++
++	struct block_device	*s_bdev;
++	struct mtd_info		*s_mtd;
++	struct list_head	s_instances;
++
++	int			s_frozen;
++	wait_queue_head_t	s_wait_unfrozen;
++
++	char s_id[32];				/* Informational name */
++
++	void			*s_fs_info;	/* Filesystem private info */
++
++	/*
++	 * The next field is for VFS *only*. No filesystems have any business
++	 * even looking at it. You had been warned.
++	 */
++	struct mutex s_vfs_rename_mutex;	/* Kludge */
++
++	/* Granularity of c/m/atime in ns.
++	   Cannot be worse than a second */
++	u32		   s_time_gran;
++
++	/*
++	 * Filesystem subtype.  If non-empty the filesystem type field
++	 * in /proc/mounts will be "type.subtype"
++	 */
++	char *s_subtype;
++
++	/*
++	 * Saved mount options for lazy filesystems using
++	 * generic_show_options()
++	 */
++	char *s_options;
++};
++
++struct file_system_type {
++	const char *name;
++	int fs_flags;
++	int (*get_sb) (struct file_system_type *, int,
++		       const char *, void *, struct vfsmount *);
++	void (*kill_sb) (struct super_block *);
++	struct module *owner;
++	struct file_system_type *next;
++	struct list_head fs_supers;
++};
++
++struct vfsmount {
++	struct list_head mnt_hash;
++	struct vfsmount *mnt_parent;	/* fs we are mounted on */
++	struct dentry *mnt_mountpoint;	/* dentry of mountpoint */
++	struct dentry *mnt_root;	/* root of the mounted tree */
++	struct super_block *mnt_sb;	/* pointer to superblock */
++	struct list_head mnt_mounts;	/* list of children, anchored here */
++	struct list_head mnt_child;	/* and going through their mnt_child */
++	int mnt_flags;
++	/* 4 bytes hole on 64bits arches */
++	const char *mnt_devname;	/* Name of device e.g. /dev/dsk/hda1 */
++	struct list_head mnt_list;
++	struct list_head mnt_expire;	/* link in fs-specific expiry list */
++	struct list_head mnt_share;	/* circular list of shared mounts */
++	struct list_head mnt_slave_list;/* list of slave mounts */
++	struct list_head mnt_slave;	/* slave list entry */
++	struct vfsmount *mnt_master;	/* slave is on master->mnt_slave_list */
++	struct mnt_namespace *mnt_ns;	/* containing namespace */
++	int mnt_id;			/* mount identifier */
++	int mnt_group_id;		/* peer group identifier */
++	/*
++	 * We put mnt_count & mnt_expiry_mark at the end of struct vfsmount
++	 * to let these frequently modified fields in a separate cache line
++	 * (so that reads of mnt_flags wont ping-pong on SMP machines)
++	 */
++	int mnt_expiry_mark;		/* true if marked for expiry */
++	int mnt_pinned;
++	int mnt_ghosts;
++	/*
++	 * This value is not stable unless all of the mnt_writers[] spinlocks
++	 * are held, and all mnt_writer[]s on this mount have 0 as their ->count
++	 */
++};
++
++struct path {
++	struct vfsmount *mnt;
++	struct dentry *dentry;
++};
++
++struct file {
++	struct path		f_path;
++#define f_dentry	f_path.dentry
++#define f_vfsmnt	f_path.mnt
++	const struct file_operations	*f_op;
++	unsigned int		f_flags;
++	loff_t			f_pos;
++	unsigned int		f_uid, f_gid;
++
++	u64			f_version;
++#ifdef CONFIG_SECURITY
++	void			*f_security;
++#endif
++	/* needed for tty driver, and maybe others */
++	void			*private_data;
++
++#ifdef CONFIG_EPOLL
++	/* Used by fs/eventpoll.c to link all the hooks to this file */
++	struct list_head	f_ep_links;
++	spinlock_t		f_ep_lock;
++#endif /* #ifdef CONFIG_EPOLL */
++#ifdef CONFIG_DEBUG_WRITECOUNT
++	unsigned long f_mnt_write_state;
++#endif
++};
++
++/*
++ * get_seconds() not really needed in the read-only implmentation
++ */
++#define get_seconds()		0
++
++/* 4k page size */
++#define PAGE_CACHE_SHIFT	12
++#define PAGE_CACHE_SIZE		(1 << PAGE_CACHE_SHIFT)
++
++/* Page cache limit. The filesystems should put that into their s_maxbytes
++   limits, otherwise bad things can happen in VM. */
++#if BITS_PER_LONG == 32
++#define MAX_LFS_FILESIZE	(((u64)PAGE_CACHE_SIZE << (BITS_PER_LONG-1))-1)
++#elif BITS_PER_LONG == 64
++#define MAX_LFS_FILESIZE	0x7fffffffffffffffUL
++#endif
++
++#define INT_MAX		((int)(~0U>>1))
++#define INT_MIN		(-INT_MAX - 1)
++#define LLONG_MAX	((long long)(~0ULL>>1))
++
++/*
++ * These are the fs-independent mount-flags: up to 32 flags are supported
++ */
++#define MS_RDONLY	 1	/* Mount read-only */
++#define MS_NOSUID	 2	/* Ignore suid and sgid bits */
++#define MS_NODEV	 4	/* Disallow access to device special files */
++#define MS_NOEXEC	 8	/* Disallow program execution */
++#define MS_SYNCHRONOUS	16	/* Writes are synced at once */
++#define MS_REMOUNT	32	/* Alter flags of a mounted FS */
++#define MS_MANDLOCK	64	/* Allow mandatory locks on an FS */
++#define MS_DIRSYNC	128	/* Directory modifications are synchronous */
++#define MS_NOATIME	1024	/* Do not update access times. */
++#define MS_NODIRATIME	2048	/* Do not update directory access times */
++#define MS_BIND		4096
++#define MS_MOVE		8192
++#define MS_REC		16384
++#define MS_VERBOSE	32768	/* War is peace. Verbosity is silence.
++				   MS_VERBOSE is deprecated. */
++#define MS_SILENT	32768
++#define MS_POSIXACL	(1<<16)	/* VFS does not apply the umask */
++#define MS_UNBINDABLE	(1<<17)	/* change to unbindable */
++#define MS_PRIVATE	(1<<18)	/* change to private */
++#define MS_SLAVE	(1<<19)	/* change to slave */
++#define MS_SHARED	(1<<20)	/* change to shared */
++#define MS_RELATIME	(1<<21)	/* Update atime relative to mtime/ctime. */
++#define MS_KERNMOUNT	(1<<22) /* this is a kern_mount call */
++#define MS_I_VERSION	(1<<23) /* Update inode I_version field */
++#define MS_ACTIVE	(1<<30)
++#define MS_NOUSER	(1<<31)
++
++#define I_NEW			8
++
++/* Inode flags - they have nothing to superblock flags now */
++
++#define S_SYNC		1	/* Writes are synced at once */
++#define S_NOATIME	2	/* Do not update access times */
++#define S_APPEND	4	/* Append-only file */
++#define S_IMMUTABLE	8	/* Immutable file */
++#define S_DEAD		16	/* removed, but still open directory */
++#define S_NOQUOTA	32	/* Inode is not counted to quota */
++#define S_DIRSYNC	64	/* Directory modifications are synchronous */
++#define S_NOCMTIME	128	/* Do not update file c/mtime */
++#define S_SWAPFILE	256	/* Do not truncate: swapon got its bmaps */
++#define S_PRIVATE	512	/* Inode is fs-internal */
++
++/* include/linux/stat.h */
++
++#define S_IFMT  00170000
++#define S_IFSOCK 0140000
++#define S_IFLNK	 0120000
++#define S_IFREG  0100000
++#define S_IFBLK  0060000
++#define S_IFDIR  0040000
++#define S_IFCHR  0020000
++#define S_IFIFO  0010000
++#define S_ISUID  0004000
++#define S_ISGID  0002000
++#define S_ISVTX  0001000
++
++/* include/linux/fs.h */
++
++/*
++ * File types
++ *
++ * NOTE! These match bits 12..15 of stat.st_mode
++ * (ie "(i_mode >> 12) & 15").
++ */
++#define DT_UNKNOWN	0
++#define DT_FIFO		1
++#define DT_CHR		2
++#define DT_DIR		4
++#define DT_BLK		6
++#define DT_REG		8
++#define DT_LNK		10
++#define DT_SOCK		12
++#define DT_WHT		14
++
++#define I_DIRTY_SYNC		1
++#define I_DIRTY_DATASYNC	2
++#define I_DIRTY_PAGES		4
++#define I_NEW			8
++#define I_WILL_FREE		16
++#define I_FREEING		32
++#define I_CLEAR			64
++#define __I_LOCK		7
++#define I_LOCK			(1 << __I_LOCK)
++#define __I_SYNC		8
++#define I_SYNC			(1 << __I_SYNC)
++
++#define I_DIRTY (I_DIRTY_SYNC | I_DIRTY_DATASYNC | I_DIRTY_PAGES)
++
++/* linux/include/dcache.h */
++
++#define DNAME_INLINE_LEN_MIN 36
++
++struct dentry {
++	unsigned int d_flags;		/* protected by d_lock */
++	spinlock_t d_lock;		/* per dentry lock */
++	struct inode *d_inode;		/* Where the name belongs to - NULL is
++					 * negative */
++	/*
++	 * The next three fields are touched by __d_lookup.  Place them here
++	 * so they all fit in a cache line.
++	 */
++	struct hlist_node d_hash;	/* lookup hash list */
++	struct dentry *d_parent;	/* parent directory */
++	struct qstr d_name;
++
++	struct list_head d_lru;		/* LRU list */
++	/*
++	 * d_child and d_rcu can share memory
++	 */
++	struct list_head d_subdirs;	/* our children */
++	struct list_head d_alias;	/* inode alias list */
++	unsigned long d_time;		/* used by d_revalidate */
++	struct super_block *d_sb;	/* The root of the dentry tree */
++	void *d_fsdata;			/* fs-specific data */
++#ifdef CONFIG_PROFILING
++	struct dcookie_struct *d_cookie; /* cookie, if any */
++#endif
++	int d_mounted;
++	unsigned char d_iname[DNAME_INLINE_LEN_MIN];	/* small names */
++};
++
++static inline ino_t parent_ino(struct dentry *dentry)
++{
++	ino_t res;
++
++	spin_lock(&dentry->d_lock);
++	res = dentry->d_parent->d_inode->i_ino;
++	spin_unlock(&dentry->d_lock);
++	return res;
++}
++
++/* debug.c */
++
++#define DEFINE_SPINLOCK(...)
++#define module_param_named(...)
++
++/* misc.h */
++#define mutex_lock_nested(...)
++#define mutex_unlock_nested(...)
++#define mutex_is_locked(...)	0
++
++/* Version of this UBIFS implementation */
++#define UBIFS_VERSION 1
++
++/* Normal UBIFS messages */
++#define ubifs_msg(fmt, ...) \
++		printk(KERN_NOTICE "UBIFS: " fmt "\n", ##__VA_ARGS__)
++/* UBIFS error messages */
++#define ubifs_err(fmt, ...)                                                  \
++	printk(KERN_ERR "UBIFS error (pid %d): %s: " fmt "\n", 0, \
++	       __func__, ##__VA_ARGS__)
++/* UBIFS warning messages */
++#define ubifs_warn(fmt, ...)                                         \
++	printk(KERN_WARNING "UBIFS warning (pid %d): %s: " fmt "\n", \
++	       0, __func__, ##__VA_ARGS__)
++
++/* UBIFS file system VFS magic number */
++#define UBIFS_SUPER_MAGIC 0x24051905
++
++/* Number of UBIFS blocks per VFS page */
++#define UBIFS_BLOCKS_PER_PAGE (PAGE_CACHE_SIZE / UBIFS_BLOCK_SIZE)
++#define UBIFS_BLOCKS_PER_PAGE_SHIFT (PAGE_CACHE_SHIFT - UBIFS_BLOCK_SHIFT)
++
++/* "File system end of life" sequence number watermark */
++#define SQNUM_WARN_WATERMARK 0xFFFFFFFF00000000ULL
++#define SQNUM_WATERMARK      0xFFFFFFFFFF000000ULL
++
++/*
++ * Minimum amount of LEBs reserved for the index. At present the index needs at
++ * least 2 LEBs: one for the index head and one for in-the-gaps method (which
++ * currently does not cater for the index head and so excludes it from
++ * consideration).
++ */
++#define MIN_INDEX_LEBS 2
++
++/* Minimum amount of data UBIFS writes to the flash */
++#define MIN_WRITE_SZ (UBIFS_DATA_NODE_SZ + 8)
++
++/*
++ * Currently we do not support inode number overlapping and re-using, so this
++ * watermark defines dangerous inode number level. This should be fixed later,
++ * although it is difficult to exceed current limit. Another option is to use
++ * 64-bit inode numbers, but this means more overhead.
++ */
++#define INUM_WARN_WATERMARK 0xFFF00000
++#define INUM_WATERMARK      0xFFFFFF00
++
++/* Largest key size supported in this implementation */
++#define CUR_MAX_KEY_LEN UBIFS_SK_LEN
++
++/* Maximum number of entries in each LPT (LEB category) heap */
++#define LPT_HEAP_SZ 256
++
++/*
++ * Background thread name pattern. The numbers are UBI device and volume
++ * numbers.
++ */
++#define BGT_NAME_PATTERN "ubifs_bgt%d_%d"
++
++/* Default write-buffer synchronization timeout (5 secs) */
++#define DEFAULT_WBUF_TIMEOUT (5 * HZ)
++
++/* Maximum possible inode number (only 32-bit inodes are supported now) */
++#define MAX_INUM 0xFFFFFFFF
++
++/* Number of non-data journal heads */
++#define NONDATA_JHEADS_CNT 2
++
++/* Garbage collector head */
++#define GCHD   0
++/* Base journal head number */
++#define BASEHD 1
++/* First "general purpose" journal head */
++#define DATAHD 2
++
++/* 'No change' value for 'ubifs_change_lp()' */
++#define LPROPS_NC 0x80000001
++
++/*
++ * There is no notion of truncation key because truncation nodes do not exist
++ * in TNC. However, when replaying, it is handy to introduce fake "truncation"
++ * keys for truncation nodes because the code becomes simpler. So we define
++ * %UBIFS_TRUN_KEY type.
++ */
++#define UBIFS_TRUN_KEY UBIFS_KEY_TYPES_CNT
++
++/*
++ * How much a directory entry/extended attribute entry adds to the parent/host
++ * inode.
++ */
++#define CALC_DENT_SIZE(name_len) ALIGN(UBIFS_DENT_NODE_SZ + (name_len) + 1, 8)
++
++/* How much an extended attribute adds to the host inode */
++#define CALC_XATTR_BYTES(data_len) ALIGN(UBIFS_INO_NODE_SZ + (data_len) + 1, 8)
++
++/*
++ * Znodes which were not touched for 'OLD_ZNODE_AGE' seconds are considered
++ * "old", and znode which were touched last 'YOUNG_ZNODE_AGE' seconds ago are
++ * considered "young". This is used by shrinker when selecting znode to trim
++ * off.
++ */
++#define OLD_ZNODE_AGE 20
++#define YOUNG_ZNODE_AGE 5
++
++/*
++ * Some compressors, like LZO, may end up with more data then the input buffer.
++ * So UBIFS always allocates larger output buffer, to be sure the compressor
++ * will not corrupt memory in case of worst case compression.
++ */
++#define WORST_COMPR_FACTOR 2
++
++/* Maximum expected tree height for use by bottom_up_buf */
++#define BOTTOM_UP_HEIGHT 64
++
++/* Maximum number of data nodes to bulk-read */
++#define UBIFS_MAX_BULK_READ 32
++
++/*
++ * Lockdep classes for UBIFS inode @ui_mutex.
 + */
 +enum {
-+	NAME_LESS    = 0,
-+	NAME_MATCHES = 1,
-+	NAME_GREATER = 2,
-+	NOT_ON_MEDIA = 3,
++	WB_MUTEX_1 = 0,
++	WB_MUTEX_2 = 1,
++	WB_MUTEX_3 = 2,
++};
++
++/*
++ * Znode flags (actually, bit numbers which store the flags).
++ *
++ * DIRTY_ZNODE: znode is dirty
++ * COW_ZNODE: znode is being committed and a new instance of this znode has to
++ *            be created before changing this znode
++ * OBSOLETE_ZNODE: znode is obsolete, which means it was deleted, but it is
++ *                 still in the commit list and the ongoing commit operation
++ *                 will commit it, and delete this znode after it is done
++ */
++enum {
++	DIRTY_ZNODE    = 0,
++	COW_ZNODE      = 1,
++	OBSOLETE_ZNODE = 2,
++};
++
++/*
++ * Commit states.
++ *
++ * COMMIT_RESTING: commit is not wanted
++ * COMMIT_BACKGROUND: background commit has been requested
++ * COMMIT_REQUIRED: commit is required
++ * COMMIT_RUNNING_BACKGROUND: background commit is running
++ * COMMIT_RUNNING_REQUIRED: commit is running and it is required
++ * COMMIT_BROKEN: commit failed
++ */
++enum {
++	COMMIT_RESTING = 0,
++	COMMIT_BACKGROUND,
++	COMMIT_REQUIRED,
++	COMMIT_RUNNING_BACKGROUND,
++	COMMIT_RUNNING_REQUIRED,
++	COMMIT_BROKEN,
++};
++
++/*
++ * 'ubifs_scan_a_node()' return values.
++ *
++ * SCANNED_GARBAGE:  scanned garbage
++ * SCANNED_EMPTY_SPACE: scanned empty space
++ * SCANNED_A_NODE: scanned a valid node
++ * SCANNED_A_CORRUPT_NODE: scanned a corrupted node
++ * SCANNED_A_BAD_PAD_NODE: scanned a padding node with invalid pad length
++ *
++ * Greater than zero means: 'scanned that number of padding bytes'
++ */
++enum {
++	SCANNED_GARBAGE        = 0,
++	SCANNED_EMPTY_SPACE    = -1,
++	SCANNED_A_NODE         = -2,
++	SCANNED_A_CORRUPT_NODE = -3,
++	SCANNED_A_BAD_PAD_NODE = -4,
++};
++
++/*
++ * LPT cnode flag bits.
++ *
++ * DIRTY_CNODE: cnode is dirty
++ * COW_CNODE: cnode is being committed and must be copied before writing
++ * OBSOLETE_CNODE: cnode is being committed and has been copied (or deleted),
++ * so it can (and must) be freed when the commit is finished
++ */
++enum {
++	DIRTY_CNODE    = 0,
++	COW_CNODE      = 1,
++	OBSOLETE_CNODE = 2,
++};
++
++/*
++ * Dirty flag bits (lpt_drty_flgs) for LPT special nodes.
++ *
++ * LTAB_DIRTY: ltab node is dirty
++ * LSAVE_DIRTY: lsave node is dirty
++ */
++enum {
++	LTAB_DIRTY  = 1,
++	LSAVE_DIRTY = 2,
++};
++
++/*
++ * Return codes used by the garbage collector.
++ * @LEB_FREED: the logical eraseblock was freed and is ready to use
++ * @LEB_FREED_IDX: indexing LEB was freed and can be used only after the commit
++ * @LEB_RETAINED: the logical eraseblock was freed and retained for GC purposes
++ */
++enum {
++	LEB_FREED,
++	LEB_FREED_IDX,
++	LEB_RETAINED,
 +};
 +
 +/**
-+ * insert_old_idx - record an index node obsoleted since the last commit start.
-+ * @c: UBIFS file-system description object
++ * struct ubifs_old_idx - index node obsoleted since last commit start.
++ * @rb: rb-tree node
 + * @lnum: LEB number of obsoleted index node
 + * @offs: offset of obsoleted index node
-+ *
-+ * Returns %0 on success, and a negative error code on failure.
-+ *
-+ * For recovery, there must always be a complete intact version of the index on
-+ * flash at all times. That is called the "old index". It is the index as at the
-+ * time of the last successful commit. Many of the index nodes in the old index
-+ * may be dirty, but they must not be erased until the next successful commit
-+ * (at which point that index becomes the old index).
-+ *
-+ * That means that the garbage collection and the in-the-gaps method of
-+ * committing must be able to determine if an index node is in the old index.
-+ * Most of the old index nodes can be found by looking up the TNC using the
-+ * 'lookup_znode()' function. However, some of the old index nodes may have
-+ * been deleted from the current index or may have been changed so much that
-+ * they cannot be easily found. In those cases, an entry is added to an RB-tree.
-+ * That is what this function does. The RB-tree is ordered by LEB number and
-+ * offset because they uniquely identify the old index node.
 + */
-+static int insert_old_idx(struct ubifs_info *c, int lnum, int offs)
-+{
-+	struct ubifs_old_idx *old_idx, *o;
-+	struct rb_node **p, *parent = NULL;
++struct ubifs_old_idx {
++	struct rb_node rb;
++	int lnum;
++	int offs;
++};
 +
-+	old_idx = kmalloc(sizeof(struct ubifs_old_idx), GFP_NOFS);
-+	if (unlikely(!old_idx))
-+		return -ENOMEM;
-+	old_idx->lnum = lnum;
-+	old_idx->offs = offs;
-+
-+	p = &c->old_idx.rb_node;
-+	while (*p) {
-+		parent = *p;
-+		o = rb_entry(parent, struct ubifs_old_idx, rb);
-+		if (lnum < o->lnum)
-+			p = &(*p)->rb_left;
-+		else if (lnum > o->lnum)
-+			p = &(*p)->rb_right;
-+		else if (offs < o->offs)
-+			p = &(*p)->rb_left;
-+		else if (offs > o->offs)
-+			p = &(*p)->rb_right;
-+		else {
-+			ubifs_err("old idx added twice!");
-+			kfree(old_idx);
-+			return 0;
-+		}
-+	}
-+	rb_link_node(&old_idx->rb, parent, p);
-+	rb_insert_color(&old_idx->rb, &c->old_idx);
-+	return 0;
-+}
++/* The below union makes it easier to deal with keys */
++union ubifs_key {
++	uint8_t u8[CUR_MAX_KEY_LEN];
++	uint32_t u32[CUR_MAX_KEY_LEN/4];
++	uint64_t u64[CUR_MAX_KEY_LEN/8];
++	__le32 j32[CUR_MAX_KEY_LEN/4];
++};
 +
 +/**
-+ * insert_old_idx_znode - record a znode obsoleted since last commit start.
-+ * @c: UBIFS file-system description object
-+ * @znode: znode of obsoleted index node
-+ *
-+ * Returns %0 on success, and a negative error code on failure.
++ * struct ubifs_scan_node - UBIFS scanned node information.
++ * @list: list of scanned nodes
++ * @key: key of node scanned (if it has one)
++ * @sqnum: sequence number
++ * @type: type of node scanned
++ * @offs: offset with LEB of node scanned
++ * @len: length of node scanned
++ * @node: raw node
 + */
-+int insert_old_idx_znode(struct ubifs_info *c, struct ubifs_znode *znode)
-+{
-+	if (znode->parent) {
-+		struct ubifs_zbranch *zbr;
-+
-+		zbr = &znode->parent->zbranch[znode->iip];
-+		if (zbr->len)
-+			return insert_old_idx(c, zbr->lnum, zbr->offs);
-+	} else
-+		if (c->zroot.len)
-+			return insert_old_idx(c, c->zroot.lnum,
-+					      c->zroot.offs);
-+	return 0;
-+}
++struct ubifs_scan_node {
++	struct list_head list;
++	union ubifs_key key;
++	unsigned long long sqnum;
++	int type;
++	int offs;
++	int len;
++	void *node;
++};
 +
 +/**
-+ * ins_clr_old_idx_znode - record a znode obsoleted since last commit start.
-+ * @c: UBIFS file-system description object
-+ * @znode: znode of obsoleted index node
-+ *
-+ * Returns %0 on success, and a negative error code on failure.
++ * struct ubifs_scan_leb - UBIFS scanned LEB information.
++ * @lnum: logical eraseblock number
++ * @nodes_cnt: number of nodes scanned
++ * @nodes: list of struct ubifs_scan_node
++ * @endpt: end point (and therefore the start of empty space)
++ * @ecc: read returned -EBADMSG
++ * @buf: buffer containing entire LEB scanned
 + */
-+static int ins_clr_old_idx_znode(struct ubifs_info *c,
-+				 struct ubifs_znode *znode)
-+{
-+	int err;
-+
-+	if (znode->parent) {
-+		struct ubifs_zbranch *zbr;
-+
-+		zbr = &znode->parent->zbranch[znode->iip];
-+		if (zbr->len) {
-+			err = insert_old_idx(c, zbr->lnum, zbr->offs);
-+			if (err)
-+				return err;
-+			zbr->lnum = 0;
-+			zbr->offs = 0;
-+			zbr->len = 0;
-+		}
-+	} else
-+		if (c->zroot.len) {
-+			err = insert_old_idx(c, c->zroot.lnum, c->zroot.offs);
-+			if (err)
-+				return err;
-+			c->zroot.lnum = 0;
-+			c->zroot.offs = 0;
-+			c->zroot.len = 0;
-+		}
-+	return 0;
-+}
-+
-+/**
-+ * destroy_old_idx - destroy the old_idx RB-tree.
-+ * @c: UBIFS file-system description object
-+ *
-+ * During start commit, the old_idx RB-tree is used to avoid overwriting index
-+ * nodes that were in the index last commit but have since been deleted.  This
-+ * is necessary for recovery i.e. the old index must be kept intact until the
-+ * new index is successfully written.  The old-idx RB-tree is used for the
-+ * in-the-gaps method of writing index nodes and is destroyed every commit.
-+ */
-+void destroy_old_idx(struct ubifs_info *c)
-+{
-+	struct rb_node *this = c->old_idx.rb_node;
-+	struct ubifs_old_idx *old_idx;
-+
-+	while (this) {
-+		if (this->rb_left) {
-+			this = this->rb_left;
-+			continue;
-+		} else if (this->rb_right) {
-+			this = this->rb_right;
-+			continue;
-+		}
-+		old_idx = rb_entry(this, struct ubifs_old_idx, rb);
-+		this = rb_parent(this);
-+		if (this) {
-+			if (this->rb_left == &old_idx->rb)
-+				this->rb_left = NULL;
-+			else
-+				this->rb_right = NULL;
-+		}
-+		kfree(old_idx);
-+	}
-+	c->old_idx = RB_ROOT;
-+}
-+
-+/**
-+ * copy_znode - copy a dirty znode.
-+ * @c: UBIFS file-system description object
-+ * @znode: znode to copy
-+ *
-+ * A dirty znode being committed may not be changed, so it is copied.
-+ */
-+static struct ubifs_znode *copy_znode(struct ubifs_info *c,
-+				      struct ubifs_znode *znode)
-+{
-+	struct ubifs_znode *zn;
-+
-+	zn = kmalloc(c->max_znode_sz, GFP_NOFS);
-+	if (unlikely(!zn))
-+		return ERR_PTR(-ENOMEM);
-+
-+	memcpy(zn, znode, c->max_znode_sz);
-+	zn->cnext = NULL;
-+	__set_bit(DIRTY_ZNODE, &zn->flags);
-+	__clear_bit(COW_ZNODE, &zn->flags);
-+
-+	ubifs_assert(!test_bit(OBSOLETE_ZNODE, &znode->flags));
-+	__set_bit(OBSOLETE_ZNODE, &znode->flags);
-+
-+	if (znode->level != 0) {
-+		int i;
-+		const int n = zn->child_cnt;
-+
-+		/* The children now have new parent */
-+		for (i = 0; i < n; i++) {
-+			struct ubifs_zbranch *zbr = &zn->zbranch[i];
-+
-+			if (zbr->znode)
-+				zbr->znode->parent = zn;
-+		}
-+	}
-+
-+	atomic_long_inc(&c->dirty_zn_cnt);
-+	return zn;
-+}
-+
-+/**
-+ * add_idx_dirt - add dirt due to a dirty znode.
-+ * @c: UBIFS file-system description object
-+ * @lnum: LEB number of index node
-+ * @dirt: size of index node
-+ *
-+ * This function updates lprops dirty space and the new size of the index.
-+ */
-+static int add_idx_dirt(struct ubifs_info *c, int lnum, int dirt)
-+{
-+	c->calc_idx_sz -= ALIGN(dirt, 8);
-+	return ubifs_add_dirt(c, lnum, dirt);
-+}
-+
-+/**
-+ * dirty_cow_znode - ensure a znode is not being committed.
-+ * @c: UBIFS file-system description object
-+ * @zbr: branch of znode to check
-+ *
-+ * Returns dirtied znode on success or negative error code on failure.
-+ */
-+static struct ubifs_znode *dirty_cow_znode(struct ubifs_info *c,
-+					   struct ubifs_zbranch *zbr)
-+{
-+	struct ubifs_znode *znode = zbr->znode;
-+	struct ubifs_znode *zn;
-+	int err;
-+
-+	if (!test_bit(COW_ZNODE, &znode->flags)) {
-+		/* znode is not being committed */
-+		if (!test_and_set_bit(DIRTY_ZNODE, &znode->flags)) {
-+			atomic_long_inc(&c->dirty_zn_cnt);
-+			atomic_long_dec(&c->clean_zn_cnt);
-+			atomic_long_dec(&ubifs_clean_zn_cnt);
-+			err = add_idx_dirt(c, zbr->lnum, zbr->len);
-+			if (unlikely(err))
-+				return ERR_PTR(err);
-+		}
-+		return znode;
-+	}
-+
-+	zn = copy_znode(c, znode);
-+	if (IS_ERR(zn))
-+		return zn;
-+
-+	if (zbr->len) {
-+		err = insert_old_idx(c, zbr->lnum, zbr->offs);
-+		if (unlikely(err))
-+			return ERR_PTR(err);
-+		err = add_idx_dirt(c, zbr->lnum, zbr->len);
-+	} else
-+		err = 0;
-+
-+	zbr->znode = zn;
-+	zbr->lnum = 0;
-+	zbr->offs = 0;
-+	zbr->len = 0;
-+
-+	if (unlikely(err))
-+		return ERR_PTR(err);
-+	return zn;
-+}
-+
-+/**
-+ * lnc_add - add a leaf node to the leaf node cache.
-+ * @c: UBIFS file-system description object
-+ * @zbr: zbranch of leaf node
-+ * @node: leaf node
-+ *
-+ * Leaf nodes are non-index nodes directory entry nodes or data nodes. The
-+ * purpose of the leaf node cache is to save re-reading the same leaf node over
-+ * and over again. Most things are cached by VFS, however the file system must
-+ * cache directory entries for readdir and for resolving hash collisions. The
-+ * present implementation of the leaf node cache is extremely simple, and
-+ * allows for error returns that are not used but that may be needed if a more
-+ * complex implementation is created.
-+ *
-+ * Note, this function does not add the @node object to LNC directly, but
-+ * allocates a copy of the object and adds the copy to LNC. The reason for this
-+ * is that @node has been allocated outside of the TNC subsystem and will be
-+ * used with @c->tnc_mutex unlock upon return from the TNC subsystem. But LNC
-+ * may be changed at any time, e.g. freed by the shrinker.
-+ */
-+static int lnc_add(struct ubifs_info *c, struct ubifs_zbranch *zbr,
-+		   const void *node)
-+{
-+	int err;
-+	void *lnc_node;
-+	const struct ubifs_dent_node *dent = node;
-+
-+	ubifs_assert(!zbr->leaf);
-+	ubifs_assert(zbr->len != 0);
-+	ubifs_assert(is_hash_key(c, &zbr->key));
-+
-+	err = ubifs_validate_entry(c, dent);
-+	if (err) {
-+		dbg_dump_stack();
-+		dbg_dump_node(c, dent);
-+		return err;
-+	}
-+
-+	lnc_node = kmalloc(zbr->len, GFP_NOFS);
-+	if (!lnc_node)
-+		/* We don't have to have the cache, so no error */
-+		return 0;
-+
-+	memcpy(lnc_node, node, zbr->len);
-+	zbr->leaf = lnc_node;
-+	return 0;
-+}
-+
-+ /**
-+ * lnc_add_directly - add a leaf node to the leaf-node-cache.
-+ * @c: UBIFS file-system description object
-+ * @zbr: zbranch of leaf node
-+ * @node: leaf node
-+ *
-+ * This function is similar to 'lnc_add()', but it does not create a copy of
-+ * @node but inserts @node to TNC directly.
-+ */
-+static int lnc_add_directly(struct ubifs_info *c, struct ubifs_zbranch *zbr,
-+			    void *node)
-+{
-+	int err;
-+
-+	ubifs_assert(!zbr->leaf);
-+	ubifs_assert(zbr->len != 0);
-+
-+	err = ubifs_validate_entry(c, node);
-+	if (err) {
-+		dbg_dump_stack();
-+		dbg_dump_node(c, node);
-+		return err;
-+	}
-+
-+	zbr->leaf = node;
-+	return 0;
-+}
-+
-+/**
-+ * lnc_free - remove a leaf node from the leaf node cache.
-+ * @zbr: zbranch of leaf node
-+ * @node: leaf node
-+ */
-+static void lnc_free(struct ubifs_zbranch *zbr)
-+{
-+	if (!zbr->leaf)
-+		return;
-+	kfree(zbr->leaf);
-+	zbr->leaf = NULL;
-+}
-+
-+/**
-+ * tnc_read_node_nm - read a "hashed" leaf node.
-+ * @c: UBIFS file-system description object
-+ * @zbr: key and position of the node
-+ * @node: node is returned here
-+ *
-+ * This function reads a "hashed" node defined by @zbr from the leaf node cache
-+ * (in it is there) or from the hash media, in which case the node is also
-+ * added to LNC. Returns zero in case of success or a negative negative error
-+ * code in case of failure.
-+ */
-+static int tnc_read_node_nm(struct ubifs_info *c, struct ubifs_zbranch *zbr,
-+			    void *node)
-+{
-+	int err;
-+
-+	ubifs_assert(is_hash_key(c, &zbr->key));
-+
-+	if (zbr->leaf) {
-+		/* Read from the leaf node cache */
-+		ubifs_assert(zbr->len != 0);
-+		memcpy(node, zbr->leaf, zbr->len);
-+		return 0;
-+	}
-+
-+	err = ubifs_tnc_read_node(c, zbr, node);
-+	if (err)
-+		return err;
-+
-+	/* Add the node to the leaf node cache */
-+	err = lnc_add(c, zbr, node);
-+	return err;
-+}
-+
-+/**
-+ * try_read_node - read a node if it is a node.
-+ * @c: UBIFS file-system description object
-+ * @buf: buffer to read to
-+ * @type: node type
-+ * @len: node length (not aligned)
-+ * @lnum: LEB number of node to read
-+ * @offs: offset of node to read
-+ *
-+ * This function tries to read a node of known type and length, checks it and
-+ * stores it in @buf. This function returns %1 if a node is present and %0 if
-+ * a node is not present. A negative error code is returned for I/O errors.
-+ * This function performs that same function as ubifs_read_node except that
-+ * it does not require that there is actually a node present and instead
-+ * the return code indicates if a node was read.
-+ *
-+ * Note, this function does not check CRC of data nodes if @c->no_chk_data_crc
-+ * is true (it is controlled by corresponding mount option). However, if
-+ * @c->always_chk_crc is true, @c->no_chk_data_crc is ignored and CRC is always
-+ * checked.
-+ */
-+static int try_read_node(const struct ubifs_info *c, void *buf, int type,
-+			 int len, int lnum, int offs)
-+{
-+	int err, node_len;
-+	struct ubifs_ch *ch = buf;
-+	uint32_t crc, node_crc;
-+
-+	dbg_io("LEB %d:%d, %s, length %d", lnum, offs, dbg_ntype(type), len);
-+
-+	err = ubi_read(c->ubi, lnum, buf, offs, len);
-+	if (err) {
-+		ubifs_err("cannot read node type %d from LEB %d:%d, error %d",
-+			  type, lnum, offs, err);
-+		return err;
-+	}
-+
-+	if (le32_to_cpu(ch->magic) != UBIFS_NODE_MAGIC)
-+		return 0;
-+
-+	if (ch->node_type != type)
-+		return 0;
-+
-+	node_len = le32_to_cpu(ch->len);
-+	if (node_len != len)
-+		return 0;
-+
-+	if (type == UBIFS_DATA_NODE && !c->always_chk_crc && c->no_chk_data_crc)
-+		return 1;
-+
-+	crc = crc32(UBIFS_CRC32_INIT, buf + 8, node_len - 8);
-+	node_crc = le32_to_cpu(ch->crc);
-+	if (crc != node_crc)
-+		return 0;
-+
-+	return 1;
-+}
-+
-+/**
-+ * fallible_read_node - try to read a leaf node.
-+ * @c: UBIFS file-system description object
-+ * @key:  key of node to read
-+ * @zbr:  position of node
-+ * @node: node returned
-+ *
-+ * This function tries to read a node and returns %1 if the node is read, %0
-+ * if the node is not present, and a negative error code in the case of error.
-+ */
-+static int fallible_read_node(struct ubifs_info *c, const union ubifs_key *key,
-+			      struct ubifs_zbranch *zbr, void *node)
-+{
-+	int ret;
-+
-+	dbg_tnc("LEB %d:%d, key %s", zbr->lnum, zbr->offs, DBGKEY(key));
-+
-+	ret = try_read_node(c, node, key_type(c, key), zbr->len, zbr->lnum,
-+			    zbr->offs);
-+	if (ret == 1) {
-+		union ubifs_key node_key;
-+		struct ubifs_dent_node *dent = node;
-+
-+		/* All nodes have key in the same place */
-+		key_read(c, &dent->key, &node_key);
-+		if (keys_cmp(c, key, &node_key) != 0)
-+			ret = 0;
-+	}
-+	if (ret == 0 && c->replaying)
-+		dbg_mnt("dangling branch LEB %d:%d len %d, key %s",
-+			zbr->lnum, zbr->offs, zbr->len, DBGKEY(key));
-+	return ret;
-+}
-+
-+/**
-+ * matches_name - determine if a direntry or xattr entry matches a given name.
-+ * @c: UBIFS file-system description object
-+ * @zbr: zbranch of dent
-+ * @nm: name to match
-+ *
-+ * This function checks if xentry/direntry referred by zbranch @zbr matches name
-+ * @nm. Returns %NAME_MATCHES if it does, %NAME_LESS if the name referred by
-+ * @zbr is less than @nm, and %NAME_GREATER if it is greater than @nm. In case
-+ * of failure, a negative error code is returned.
-+ */
-+static int matches_name(struct ubifs_info *c, struct ubifs_zbranch *zbr,
-+			const struct qstr *nm)
-+{
-+	struct ubifs_dent_node *dent;
-+	int nlen, err;
-+
-+	/* If possible, match against the dent in the leaf node cache */
-+	if (!zbr->leaf) {
-+		dent = kmalloc(zbr->len, GFP_NOFS);
-+		if (!dent)
-+			return -ENOMEM;
-+
-+		err = ubifs_tnc_read_node(c, zbr, dent);
-+		if (err)
-+			goto out_free;
-+
-+		/* Add the node to the leaf node cache */
-+		err = lnc_add_directly(c, zbr, dent);
-+		if (err)
-+			goto out_free;
-+	} else
-+		dent = zbr->leaf;
-+
-+	nlen = le16_to_cpu(dent->nlen);
-+	err = memcmp(dent->name, nm->name, min_t(int, nlen, nm->len));
-+	if (err == 0) {
-+		if (nlen == nm->len)
-+			return NAME_MATCHES;
-+		else if (nlen < nm->len)
-+			return NAME_LESS;
-+		else
-+			return NAME_GREATER;
-+	} else if (err < 0)
-+		return NAME_LESS;
-+	else
-+		return NAME_GREATER;
-+
-+out_free:
-+	kfree(dent);
-+	return err;
-+}
-+
-+/**
-+ * get_znode - get a TNC znode that may not be loaded yet.
-+ * @c: UBIFS file-system description object
-+ * @znode: parent znode
-+ * @n: znode branch slot number
-+ *
-+ * This function returns the znode or a negative error code.
-+ */
-+static struct ubifs_znode *get_znode(struct ubifs_info *c,
-+				     struct ubifs_znode *znode, int n)
-+{
-+	struct ubifs_zbranch *zbr;
-+
-+	zbr = &znode->zbranch[n];
-+	if (zbr->znode)
-+		znode = zbr->znode;
-+	else
-+		znode = ubifs_load_znode(c, zbr, znode, n);
-+	return znode;
-+}
-+
-+/**
-+ * tnc_next - find next TNC entry.
-+ * @c: UBIFS file-system description object
-+ * @zn: znode is passed and returned here
-+ * @n: znode branch slot number is passed and returned here
-+ *
-+ * This function returns %0 if the next TNC entry is found, %-ENOENT if there is
-+ * no next entry, or a negative error code otherwise.
-+ */
-+static int tnc_next(struct ubifs_info *c, struct ubifs_znode **zn, int *n)
-+{
-+	struct ubifs_znode *znode = *zn;
-+	int nn = *n;
-+
-+	nn += 1;
-+	if (nn < znode->child_cnt) {
-+		*n = nn;
-+		return 0;
-+	}
-+	while (1) {
-+		struct ubifs_znode *zp;
-+
-+		zp = znode->parent;
-+		if (!zp)
-+			return -ENOENT;
-+		nn = znode->iip + 1;
-+		znode = zp;
-+		if (nn < znode->child_cnt) {
-+			znode = get_znode(c, znode, nn);
-+			if (IS_ERR(znode))
-+				return PTR_ERR(znode);
-+			while (znode->level != 0) {
-+				znode = get_znode(c, znode, 0);
-+				if (IS_ERR(znode))
-+					return PTR_ERR(znode);
-+			}
-+			nn = 0;
-+			break;
-+		}
-+	}
-+	*zn = znode;
-+	*n = nn;
-+	return 0;
-+}
-+
-+/**
-+ * tnc_prev - find previous TNC entry.
-+ * @c: UBIFS file-system description object
-+ * @zn: znode is returned here
-+ * @n: znode branch slot number is passed and returned here
-+ *
-+ * This function returns %0 if the previous TNC entry is found, %-ENOENT if
-+ * there is no next entry, or a negative error code otherwise.
-+ */
-+static int tnc_prev(struct ubifs_info *c, struct ubifs_znode **zn, int *n)
-+{
-+	struct ubifs_znode *znode = *zn;
-+	int nn = *n;
-+
-+	if (nn > 0) {
-+		*n = nn - 1;
-+		return 0;
-+	}
-+	while (1) {
-+		struct ubifs_znode *zp;
-+
-+		zp = znode->parent;
-+		if (!zp)
-+			return -ENOENT;
-+		nn = znode->iip - 1;
-+		znode = zp;
-+		if (nn >= 0) {
-+			znode = get_znode(c, znode, nn);
-+			if (IS_ERR(znode))
-+				return PTR_ERR(znode);
-+			while (znode->level != 0) {
-+				nn = znode->child_cnt - 1;
-+				znode = get_znode(c, znode, nn);
-+				if (IS_ERR(znode))
-+					return PTR_ERR(znode);
-+			}
-+			nn = znode->child_cnt - 1;
-+			break;
-+		}
-+	}
-+	*zn = znode;
-+	*n = nn;
-+	return 0;
-+}
-+
-+/**
-+ * resolve_collision - resolve a collision.
-+ * @c: UBIFS file-system description object
-+ * @key: key of a directory or extended attribute entry
-+ * @zn: znode is returned here
-+ * @n: zbranch number is passed and returned here
-+ * @nm: name of the entry
-+ *
-+ * This function is called for "hashed" keys to make sure that the found key
-+ * really corresponds to the looked up node (directory or extended attribute
-+ * entry). It returns %1 and sets @zn and @n if the collision is resolved.
-+ * %0 is returned if @nm is not found and @zn and @n are set to the previous
-+ * entry, i.e. to the entry after which @nm could follow if it were in TNC.
-+ * This means that @n may be set to %-1 if the leftmost key in @zn is the
-+ * previous one. A negative error code is returned on failures.
-+ */
-+static int resolve_collision(struct ubifs_info *c, const union ubifs_key *key,
-+			     struct ubifs_znode **zn, int *n,
-+			     const struct qstr *nm)
-+{
-+	int err;
-+
-+	err = matches_name(c, &(*zn)->zbranch[*n], nm);
-+	if (unlikely(err < 0))
-+		return err;
-+	if (err == NAME_MATCHES)
-+		return 1;
-+
-+	if (err == NAME_GREATER) {
-+		/* Look left */
-+		while (1) {
-+			err = tnc_prev(c, zn, n);
-+			if (err == -ENOENT) {
-+				ubifs_assert(*n == 0);
-+				*n = -1;
-+				return 0;
-+			}
-+			if (err < 0)
-+				return err;
-+			if (keys_cmp(c, &(*zn)->zbranch[*n].key, key)) {
-+				/*
-+				 * We have found the branch after which we would
-+				 * like to insert, but inserting in this znode
-+				 * may still be wrong. Consider the following 3
-+				 * znodes, in the case where we are resolving a
-+				 * collision with Key2.
-+				 *
-+				 *                  znode zp
-+				 *            ----------------------
-+				 * level 1     |  Key0  |  Key1  |
-+				 *            -----------------------
-+				 *                 |            |
-+				 *       znode za  |            |  znode zb
-+				 *          ------------      ------------
-+				 * level 0  |  Key0  |        |  Key2  |
-+				 *          ------------      ------------
-+				 *
-+				 * The lookup finds Key2 in znode zb. Lets say
-+				 * there is no match and the name is greater so
-+				 * we look left. When we find Key0, we end up
-+				 * here. If we return now, we will insert into
-+				 * znode za at slot n = 1.  But that is invalid
-+				 * according to the parent's keys.  Key2 must
-+				 * be inserted into znode zb.
-+				 *
-+				 * Note, this problem is not relevant for the
-+				 * case when we go right, because
-+				 * 'tnc_insert()' would correct the parent key.
-+				 */
-+				if (*n == (*zn)->child_cnt - 1) {
-+					err = tnc_next(c, zn, n);
-+					if (err) {
-+						/* Should be impossible */
-+						ubifs_assert(0);
-+						if (err == -ENOENT)
-+							err = -EINVAL;
-+						return err;
-+					}
-+					ubifs_assert(*n == 0);
-+					*n = -1;
-+				}
-+				return 0;
-+			}
-+			err = matches_name(c, &(*zn)->zbranch[*n], nm);
-+			if (err < 0)
-+				return err;
-+			if (err == NAME_LESS)
-+				return 0;
-+			if (err == NAME_MATCHES)
-+				return 1;
-+			ubifs_assert(err == NAME_GREATER);
-+		}
-+	} else {
-+		int nn = *n;
-+		struct ubifs_znode *znode = *zn;
-+
-+		/* Look right */
-+		while (1) {
-+			err = tnc_next(c, &znode, &nn);
-+			if (err == -ENOENT)
-+				return 0;
-+			if (err < 0)
-+				return err;
-+			if (keys_cmp(c, &znode->zbranch[nn].key, key))
-+				return 0;
-+			err = matches_name(c, &znode->zbranch[nn], nm);
-+			if (err < 0)
-+				return err;
-+			if (err == NAME_GREATER)
-+				return 0;
-+			*zn = znode;
-+			*n = nn;
-+			if (err == NAME_MATCHES)
-+				return 1;
-+			ubifs_assert(err == NAME_LESS);
-+		}
-+	}
-+}
-+
-+/**
-+ * fallible_matches_name - determine if a dent matches a given name.
-+ * @c: UBIFS file-system description object
-+ * @zbr: zbranch of dent
-+ * @nm: name to match
-+ *
-+ * This is a "fallible" version of 'matches_name()' function which does not
-+ * panic if the direntry/xentry referred by @zbr does not exist on the media.
-+ *
-+ * This function checks if xentry/direntry referred by zbranch @zbr matches name
-+ * @nm. Returns %NAME_MATCHES it does, %NAME_LESS if the name referred by @zbr
-+ * is less than @nm, %NAME_GREATER if it is greater than @nm, and @NOT_ON_MEDIA
-+ * if xentry/direntry referred by @zbr does not exist on the media. A negative
-+ * error code is returned in case of failure.
-+ */
-+static int fallible_matches_name(struct ubifs_info *c,
-+				 struct ubifs_zbranch *zbr,
-+				 const struct qstr *nm)
-+{
-+	struct ubifs_dent_node *dent;
-+	int nlen, err;
-+
-+	/* If possible, match against the dent in the leaf node cache */
-+	if (!zbr->leaf) {
-+		dent = kmalloc(zbr->len, GFP_NOFS);
-+		if (!dent)
-+			return -ENOMEM;
-+
-+		err = fallible_read_node(c, &zbr->key, zbr, dent);
-+		if (err < 0)
-+			goto out_free;
-+		if (err == 0) {
-+			/* The node was not present */
-+			err = NOT_ON_MEDIA;
-+			goto out_free;
-+		}
-+		ubifs_assert(err == 1);
-+
-+		err = lnc_add_directly(c, zbr, dent);
-+		if (err)
-+			goto out_free;
-+	} else
-+		dent = zbr->leaf;
-+
-+	nlen = le16_to_cpu(dent->nlen);
-+	err = memcmp(dent->name, nm->name, min_t(int, nlen, nm->len));
-+	if (err == 0) {
-+		if (nlen == nm->len)
-+			return NAME_MATCHES;
-+		else if (nlen < nm->len)
-+			return NAME_LESS;
-+		else
-+			return NAME_GREATER;
-+	} else if (err < 0)
-+		return NAME_LESS;
-+	else
-+		return NAME_GREATER;
-+
-+out_free:
-+	kfree(dent);
-+	return err;
-+}
-+
-+/**
-+ * fallible_resolve_collision - resolve a collision even if nodes are missing.
-+ * @c: UBIFS file-system description object
-+ * @key: key
-+ * @zn: znode is returned here
-+ * @n: branch number is passed and returned here
-+ * @nm: name of directory entry
-+ * @adding: indicates caller is adding a key to the TNC
-+ *
-+ * This is a "fallible" version of the 'resolve_collision()' function which
-+ * does not panic if one of the nodes referred to by TNC does not exist on the
-+ * media. This may happen when replaying the journal if a deleted node was
-+ * Garbage-collected and the commit was not done. A branch that refers to a node
-+ * that is not present is called a dangling branch. The following are the return
-+ * codes for this function:
-+ *  o if @nm was found, %1 is returned and @zn and @n are set to the found
-+ *    branch;
-+ *  o if we are @adding and @nm was not found, %0 is returned;
-+ *  o if we are not @adding and @nm was not found, but a dangling branch was
-+ *    found, then %1 is returned and @zn and @n are set to the dangling branch;
-+ *  o a negative error code is returned in case of failure.
-+ */
-+static int fallible_resolve_collision(struct ubifs_info *c,
-+				      const union ubifs_key *key,
-+				      struct ubifs_znode **zn, int *n,
-+				      const struct qstr *nm, int adding)
-+{
-+	struct ubifs_znode *o_znode = NULL, *znode = *zn;
-+	int uninitialized_var(o_n), err, cmp, unsure = 0, nn = *n;
-+
-+	cmp = fallible_matches_name(c, &znode->zbranch[nn], nm);
-+	if (unlikely(cmp < 0))
-+		return cmp;
-+	if (cmp == NAME_MATCHES)
-+		return 1;
-+	if (cmp == NOT_ON_MEDIA) {
-+		o_znode = znode;
-+		o_n = nn;
-+		/*
-+		 * We are unlucky and hit a dangling branch straight away.
-+		 * Now we do not really know where to go to find the needed
-+		 * branch - to the left or to the right. Well, let's try left.
-+		 */
-+		unsure = 1;
-+	} else if (!adding)
-+		unsure = 1; /* Remove a dangling branch wherever it is */
-+
-+	if (cmp == NAME_GREATER || unsure) {
-+		/* Look left */
-+		while (1) {
-+			err = tnc_prev(c, zn, n);
-+			if (err == -ENOENT) {
-+				ubifs_assert(*n == 0);
-+				*n = -1;
-+				break;
-+			}
-+			if (err < 0)
-+				return err;
-+			if (keys_cmp(c, &(*zn)->zbranch[*n].key, key)) {
-+				/* See comments in 'resolve_collision()' */
-+				if (*n == (*zn)->child_cnt - 1) {
-+					err = tnc_next(c, zn, n);
-+					if (err) {
-+						/* Should be impossible */
-+						ubifs_assert(0);
-+						if (err == -ENOENT)
-+							err = -EINVAL;
-+						return err;
-+					}
-+					ubifs_assert(*n == 0);
-+					*n = -1;
-+				}
-+				break;
-+			}
-+			err = fallible_matches_name(c, &(*zn)->zbranch[*n], nm);
-+			if (err < 0)
-+				return err;
-+			if (err == NAME_MATCHES)
-+				return 1;
-+			if (err == NOT_ON_MEDIA) {
-+				o_znode = *zn;
-+				o_n = *n;
-+				continue;
-+			}
-+			if (!adding)
-+				continue;
-+			if (err == NAME_LESS)
-+				break;
-+			else
-+				unsure = 0;
-+		}
-+	}
-+
-+	if (cmp == NAME_LESS || unsure) {
-+		/* Look right */
-+		*zn = znode;
-+		*n = nn;
-+		while (1) {
-+			err = tnc_next(c, &znode, &nn);
-+			if (err == -ENOENT)
-+				break;
-+			if (err < 0)
-+				return err;
-+			if (keys_cmp(c, &znode->zbranch[nn].key, key))
-+				break;
-+			err = fallible_matches_name(c, &znode->zbranch[nn], nm);
-+			if (err < 0)
-+				return err;
-+			if (err == NAME_GREATER)
-+				break;
-+			*zn = znode;
-+			*n = nn;
-+			if (err == NAME_MATCHES)
-+				return 1;
-+			if (err == NOT_ON_MEDIA) {
-+				o_znode = znode;
-+				o_n = nn;
-+			}
-+		}
-+	}
-+
-+	/* Never match a dangling branch when adding */
-+	if (adding || !o_znode)
-+		return 0;
-+
-+	dbg_mnt("dangling match LEB %d:%d len %d %s",
-+		o_znode->zbranch[o_n].lnum, o_znode->zbranch[o_n].offs,
-+		o_znode->zbranch[o_n].len, DBGKEY(key));
-+	*zn = o_znode;
-+	*n = o_n;
-+	return 1;
-+}
-+
-+/**
-+ * matches_position - determine if a zbranch matches a given position.
-+ * @zbr: zbranch of dent
-+ * @lnum: LEB number of dent to match
-+ * @offs: offset of dent to match
-+ *
-+ * This function returns %1 if @lnum:@offs matches, and %0 otherwise.
-+ */
-+static int matches_position(struct ubifs_zbranch *zbr, int lnum, int offs)
-+{
-+	if (zbr->lnum == lnum && zbr->offs == offs)
-+		return 1;
-+	else
-+		return 0;
-+}
-+
-+/**
-+ * resolve_collision_directly - resolve a collision directly.
-+ * @c: UBIFS file-system description object
-+ * @key: key of directory entry
-+ * @zn: znode is passed and returned here
-+ * @n: zbranch number is passed and returned here
-+ * @lnum: LEB number of dent node to match
-+ * @offs: offset of dent node to match
-+ *
-+ * This function is used for "hashed" keys to make sure the found directory or
-+ * extended attribute entry node is what was looked for. It is used when the
-+ * flash address of the right node is known (@lnum:@offs) which makes it much
-+ * easier to resolve collisions (no need to read entries and match full
-+ * names). This function returns %1 and sets @zn and @n if the collision is
-+ * resolved, %0 if @lnum:@offs is not found and @zn and @n are set to the
-+ * previous directory entry. Otherwise a negative error code is returned.
-+ */
-+static int resolve_collision_directly(struct ubifs_info *c,
-+				      const union ubifs_key *key,
-+				      struct ubifs_znode **zn, int *n,
-+				      int lnum, int offs)
-+{
-+	struct ubifs_znode *znode;
-+	int nn, err;
-+
-+	znode = *zn;
-+	nn = *n;
-+	if (matches_position(&znode->zbranch[nn], lnum, offs))
-+		return 1;
-+
-+	/* Look left */
-+	while (1) {
-+		err = tnc_prev(c, &znode, &nn);
-+		if (err == -ENOENT)
-+			break;
-+		if (err < 0)
-+			return err;
-+		if (keys_cmp(c, &znode->zbranch[nn].key, key))
-+			break;
-+		if (matches_position(&znode->zbranch[nn], lnum, offs)) {
-+			*zn = znode;
-+			*n = nn;
-+			return 1;
-+		}
-+	}
-+
-+	/* Look right */
-+	znode = *zn;
-+	nn = *n;
-+	while (1) {
-+		err = tnc_next(c, &znode, &nn);
-+		if (err == -ENOENT)
-+			return 0;
-+		if (err < 0)
-+			return err;
-+		if (keys_cmp(c, &znode->zbranch[nn].key, key))
-+			return 0;
-+		*zn = znode;
-+		*n = nn;
-+		if (matches_position(&znode->zbranch[nn], lnum, offs))
-+			return 1;
-+	}
-+}
-+
-+/**
-+ * dirty_cow_bottom_up - dirty a znode and its ancestors.
-+ * @c: UBIFS file-system description object
-+ * @znode: znode to dirty
-+ *
-+ * If we do not have a unique key that resides in a znode, then we cannot
-+ * dirty that znode from the top down (i.e. by using lookup_level0_dirty)
-+ * This function records the path back to the last dirty ancestor, and then
-+ * dirties the znodes on that path.
-+ */
-+static struct ubifs_znode *dirty_cow_bottom_up(struct ubifs_info *c,
-+					       struct ubifs_znode *znode)
-+{
-+	struct ubifs_znode *zp;
-+	int *path = c->bottom_up_buf, p = 0;
-+
-+	ubifs_assert(c->zroot.znode);
-+	ubifs_assert(znode);
-+	if (c->zroot.znode->level > BOTTOM_UP_HEIGHT) {
-+		kfree(c->bottom_up_buf);
-+		c->bottom_up_buf = kmalloc(c->zroot.znode->level * sizeof(int),
-+					   GFP_NOFS);
-+		if (!c->bottom_up_buf)
-+			return ERR_PTR(-ENOMEM);
-+		path = c->bottom_up_buf;
-+	}
-+	if (c->zroot.znode->level) {
-+		/* Go up until parent is dirty */
-+		while (1) {
-+			int n;
-+
-+			zp = znode->parent;
-+			if (!zp)
-+				break;
-+			n = znode->iip;
-+			ubifs_assert(p < c->zroot.znode->level);
-+			path[p++] = n;
-+			if (!zp->cnext && ubifs_zn_dirty(znode))
-+				break;
-+			znode = zp;
-+		}
-+	}
-+
-+	/* Come back down, dirtying as we go */
-+	while (1) {
-+		struct ubifs_zbranch *zbr;
-+
-+		zp = znode->parent;
-+		if (zp) {
-+			ubifs_assert(path[p - 1] >= 0);
-+			ubifs_assert(path[p - 1] < zp->child_cnt);
-+			zbr = &zp->zbranch[path[--p]];
-+			znode = dirty_cow_znode(c, zbr);
-+		} else {
-+			ubifs_assert(znode == c->zroot.znode);
-+			znode = dirty_cow_znode(c, &c->zroot);
-+		}
-+		if (IS_ERR(znode) || !p)
-+			break;
-+		ubifs_assert(path[p - 1] >= 0);
-+		ubifs_assert(path[p - 1] < znode->child_cnt);
-+		znode = znode->zbranch[path[p - 1]].znode;
-+	}
-+
-+	return znode;
-+}
-+
-+/**
-+ * ubifs_lookup_level0 - search for zero-level znode.
-+ * @c: UBIFS file-system description object
-+ * @key:  key to lookup
-+ * @zn: znode is returned here
-+ * @n: znode branch slot number is returned here
-+ *
-+ * This function looks up the TNC tree and search for zero-level znode which
-+ * refers key @key. The found zero-level znode is returned in @zn. There are 3
-+ * cases:
-+ *   o exact match, i.e. the found zero-level znode contains key @key, then %1
-+ *     is returned and slot number of the matched branch is stored in @n;
-+ *   o not exact match, which means that zero-level znode does not contain
-+ *     @key, then %0 is returned and slot number of the closed branch is stored
-+ *     in  @n;
-+ *   o @key is so small that it is even less than the lowest key of the
-+ *     leftmost zero-level node, then %0 is returned and %0 is stored in @n.
-+ *
-+ * Note, when the TNC tree is traversed, some znodes may be absent, then this
-+ * function reads corresponding indexing nodes and inserts them to TNC. In
-+ * case of failure, a negative error code is returned.
-+ */
-+int ubifs_lookup_level0(struct ubifs_info *c, const union ubifs_key *key,
-+			struct ubifs_znode **zn, int *n)
-+{
-+	int err, exact;
-+	struct ubifs_znode *znode;
-+	unsigned long time = get_seconds();
-+
-+	dbg_tnc("search key %s", DBGKEY(key));
-+
-+	znode = c->zroot.znode;
-+	if (unlikely(!znode)) {
-+		znode = ubifs_load_znode(c, &c->zroot, NULL, 0);
-+		if (IS_ERR(znode))
-+			return PTR_ERR(znode);
-+	}
-+
-+	znode->time = time;
-+
-+	while (1) {
-+		struct ubifs_zbranch *zbr;
-+
-+		exact = ubifs_search_zbranch(c, znode, key, n);
-+
-+		if (znode->level == 0)
-+			break;
-+
-+		if (*n < 0)
-+			*n = 0;
-+		zbr = &znode->zbranch[*n];
-+
-+		if (zbr->znode) {
-+			znode->time = time;
-+			znode = zbr->znode;
-+			continue;
-+		}
-+
-+		/* znode is not in TNC cache, load it from the media */
-+		znode = ubifs_load_znode(c, zbr, znode, *n);
-+		if (IS_ERR(znode))
-+			return PTR_ERR(znode);
-+	}
-+
-+	*zn = znode;
-+	if (exact || !is_hash_key(c, key) || *n != -1) {
-+		dbg_tnc("found %d, lvl %d, n %d", exact, znode->level, *n);
-+		return exact;
-+	}
-+
-+	/*
-+	 * Here is a tricky place. We have not found the key and this is a
-+	 * "hashed" key, which may collide. The rest of the code deals with
-+	 * situations like this:
-+	 *
-+	 *                  | 3 | 5 |
-+	 *                  /       \
-+	 *          | 3 | 5 |      | 6 | 7 | (x)
-+	 *
-+	 * Or more a complex example:
-+	 *
-+	 *                | 1 | 5 |
-+	 *                /       \
-+	 *       | 1 | 3 |         | 5 | 8 |
-+	 *              \           /
-+	 *          | 5 | 5 |   | 6 | 7 | (x)
-+	 *
-+	 * In the examples, if we are looking for key "5", we may reach nodes
-+	 * marked with "(x)". In this case what we have do is to look at the
-+	 * left and see if there is "5" key there. If there is, we have to
-+	 * return it.
-+	 *
-+	 * Note, this whole situation is possible because we allow to have
-+	 * elements which are equivalent to the next key in the parent in the
-+	 * children of current znode. For example, this happens if we split a
-+	 * znode like this: | 3 | 5 | 5 | 6 | 7 |, which results in something
-+	 * like this:
-+	 *                      | 3 | 5 |
-+	 *                       /     \
-+	 *                | 3 | 5 |   | 5 | 6 | 7 |
-+	 *                              ^
-+	 * And this becomes what is at the first "picture" after key "5" marked
-+	 * with "^" is removed. What could be done is we could prohibit
-+	 * splitting in the middle of the colliding sequence. Also, when
-+	 * removing the leftmost key, we would have to correct the key of the
-+	 * parent node, which would introduce additional complications. Namely,
-+	 * if we changed the the leftmost key of the parent znode, the garbage
-+	 * collector would be unable to find it (GC is doing this when GC'ing
-+	 * indexing LEBs). Although we already have an additional RB-tree where
-+	 * we save such changed znodes (see 'ins_clr_old_idx_znode()') until
-+	 * after the commit. But anyway, this does not look easy to implement
-+	 * so we did not try this.
-+	 */
-+	err = tnc_prev(c, &znode, n);
-+	if (err == -ENOENT) {
-+		dbg_tnc("found 0, lvl %d, n -1", znode->level);
-+		*n = -1;
-+		return 0;
-+	}
-+	if (unlikely(err < 0))
-+		return err;
-+	if (keys_cmp(c, key, &znode->zbranch[*n].key)) {
-+		dbg_tnc("found 0, lvl %d, n -1", znode->level);
-+		*n = -1;
-+		return 0;
-+	}
-+
-+	dbg_tnc("found 1, lvl %d, n %d", znode->level, *n);
-+	*zn = znode;
-+	return 1;
-+}
-+
-+/**
-+ * lookup_level0_dirty - search for zero-level znode dirtying.
-+ * @c: UBIFS file-system description object
-+ * @key:  key to lookup
-+ * @zn: znode is returned here
-+ * @n: znode branch slot number is returned here
-+ *
-+ * This function looks up the TNC tree and search for zero-level znode which
-+ * refers key @key. The found zero-level znode is returned in @zn. There are 3
-+ * cases:
-+ *   o exact match, i.e. the found zero-level znode contains key @key, then %1
-+ *     is returned and slot number of the matched branch is stored in @n;
-+ *   o not exact match, which means that zero-level znode does not contain @key
-+ *     then %0 is returned and slot number of the closed branch is stored in
-+ *     @n;
-+ *   o @key is so small that it is even less than the lowest key of the
-+ *     leftmost zero-level node, then %0 is returned and %-1 is stored in @n.
-+ *
-+ * Additionally all znodes in the path from the root to the located zero-level
-+ * znode are marked as dirty.
-+ *
-+ * Note, when the TNC tree is traversed, some znodes may be absent, then this
-+ * function reads corresponding indexing nodes and inserts them to TNC. In
-+ * case of failure, a negative error code is returned.
-+ */
-+static int lookup_level0_dirty(struct ubifs_info *c, const union ubifs_key *key,
-+			       struct ubifs_znode **zn, int *n)
-+{
-+	int err, exact;
-+	struct ubifs_znode *znode;
-+	unsigned long time = get_seconds();
-+
-+	dbg_tnc("search and dirty key %s", DBGKEY(key));
-+
-+	znode = c->zroot.znode;
-+	if (unlikely(!znode)) {
-+		znode = ubifs_load_znode(c, &c->zroot, NULL, 0);
-+		if (IS_ERR(znode))
-+			return PTR_ERR(znode);
-+	}
-+
-+	znode = dirty_cow_znode(c, &c->zroot);
-+	if (IS_ERR(znode))
-+		return PTR_ERR(znode);
-+
-+	znode->time = time;
-+
-+	while (1) {
-+		struct ubifs_zbranch *zbr;
-+
-+		exact = ubifs_search_zbranch(c, znode, key, n);
-+
-+		if (znode->level == 0)
-+			break;
-+
-+		if (*n < 0)
-+			*n = 0;
-+		zbr = &znode->zbranch[*n];
-+
-+		if (zbr->znode) {
-+			znode->time = time;
-+			znode = dirty_cow_znode(c, zbr);
-+			if (IS_ERR(znode))
-+				return PTR_ERR(znode);
-+			continue;
-+		}
-+
-+		/* znode is not in TNC cache, load it from the media */
-+		znode = ubifs_load_znode(c, zbr, znode, *n);
-+		if (IS_ERR(znode))
-+			return PTR_ERR(znode);
-+		znode = dirty_cow_znode(c, zbr);
-+		if (IS_ERR(znode))
-+			return PTR_ERR(znode);
-+	}
-+
-+	*zn = znode;
-+	if (exact || !is_hash_key(c, key) || *n != -1) {
-+		dbg_tnc("found %d, lvl %d, n %d", exact, znode->level, *n);
-+		return exact;
-+	}
-+
-+	/*
-+	 * See huge comment at 'lookup_level0_dirty()' what is the rest of the
-+	 * code.
-+	 */
-+	err = tnc_prev(c, &znode, n);
-+	if (err == -ENOENT) {
-+		*n = -1;
-+		dbg_tnc("found 0, lvl %d, n -1", znode->level);
-+		return 0;
-+	}
-+	if (unlikely(err < 0))
-+		return err;
-+	if (keys_cmp(c, key, &znode->zbranch[*n].key)) {
-+		*n = -1;
-+		dbg_tnc("found 0, lvl %d, n -1", znode->level);
-+		return 0;
-+	}
-+
-+	if (znode->cnext || !ubifs_zn_dirty(znode)) {
-+		znode = dirty_cow_bottom_up(c, znode);
-+		if (IS_ERR(znode))
-+			return PTR_ERR(znode);
-+	}
-+
-+	dbg_tnc("found 1, lvl %d, n %d", znode->level, *n);
-+	*zn = znode;
-+	return 1;
-+}
-+
-+/**
-+ * maybe_leb_gced - determine if a LEB may have been garbage collected.
-+ * @c: UBIFS file-system description object
-+ * @lnum: LEB number
-+ * @gc_seq1: garbage collection sequence number
-+ *
-+ * This function determines if @lnum may have been garbage collected since
-+ * sequence number @gc_seq1. If it may have been then %1 is returned, otherwise
-+ * %0 is returned.
-+ */
-+static int maybe_leb_gced(struct ubifs_info *c, int lnum, int gc_seq1)
-+{
-+	/*
-+	 * No garbage collection in the read-only U-Boot implementation
-+	 */
-+	return 0;
-+}
-+
-+/**
-+ * ubifs_tnc_locate - look up a file-system node and return it and its location.
-+ * @c: UBIFS file-system description object
-+ * @key: node key to lookup
-+ * @node: the node is returned here
-+ * @lnum: LEB number is returned here
-+ * @offs: offset is returned here
-+ *
-+ * This function look up and reads node with key @key. The caller has to make
-+ * sure the @node buffer is large enough to fit the node. Returns zero in case
-+ * of success, %-ENOENT if the node was not found, and a negative error code in
-+ * case of failure. The node location can be returned in @lnum and @offs.
-+ */
-+int ubifs_tnc_locate(struct ubifs_info *c, const union ubifs_key *key,
-+		     void *node, int *lnum, int *offs)
-+{
-+	int found, n, err, safely = 0, gc_seq1;
-+	struct ubifs_znode *znode;
-+	struct ubifs_zbranch zbr, *zt;
-+
-+again:
-+	mutex_lock(&c->tnc_mutex);
-+	found = ubifs_lookup_level0(c, key, &znode, &n);
-+	if (!found) {
-+		err = -ENOENT;
-+		goto out;
-+	} else if (found < 0) {
-+		err = found;
-+		goto out;
-+	}
-+	zt = &znode->zbranch[n];
-+	if (lnum) {
-+		*lnum = zt->lnum;
-+		*offs = zt->offs;
-+	}
-+	if (is_hash_key(c, key)) {
-+		/*
-+		 * In this case the leaf node cache gets used, so we pass the
-+		 * address of the zbranch and keep the mutex locked
-+		 */
-+		err = tnc_read_node_nm(c, zt, node);
-+		goto out;
-+	}
-+	if (safely) {
-+		err = ubifs_tnc_read_node(c, zt, node);
-+		goto out;
-+	}
-+	/* Drop the TNC mutex prematurely and race with garbage collection */
-+	zbr = znode->zbranch[n];
-+	gc_seq1 = c->gc_seq;
-+	mutex_unlock(&c->tnc_mutex);
-+
-+	err = fallible_read_node(c, key, &zbr, node);
-+	if (err <= 0 || maybe_leb_gced(c, zbr.lnum, gc_seq1)) {
-+		/*
-+		 * The node may have been GC'ed out from under us so try again
-+		 * while keeping the TNC mutex locked.
-+		 */
-+		safely = 1;
-+		goto again;
-+	}
-+	return 0;
-+
-+out:
-+	mutex_unlock(&c->tnc_mutex);
-+	return err;
-+}
-+
-+/**
-+ * ubifs_tnc_get_bu_keys - lookup keys for bulk-read.
-+ * @c: UBIFS file-system description object
-+ * @bu: bulk-read parameters and results
-+ *
-+ * Lookup consecutive data node keys for the same inode that reside
-+ * consecutively in the same LEB. This function returns zero in case of success
-+ * and a negative error code in case of failure.
-+ *
-+ * Note, if the bulk-read buffer length (@bu->buf_len) is known, this function
-+ * makes sure bulk-read nodes fit the buffer. Otherwise, this function prepares
-+ * maximum possible amount of nodes for bulk-read.
-+ */
-+int ubifs_tnc_get_bu_keys(struct ubifs_info *c, struct bu_info *bu)
-+{
-+	int n, err = 0, lnum = -1, uninitialized_var(offs);
-+	int uninitialized_var(len);
-+	unsigned int block = key_block(c, &bu->key);
-+	struct ubifs_znode *znode;
-+
-+	bu->cnt = 0;
-+	bu->blk_cnt = 0;
-+	bu->eof = 0;
-+
-+	mutex_lock(&c->tnc_mutex);
-+	/* Find first key */
-+	err = ubifs_lookup_level0(c, &bu->key, &znode, &n);
-+	if (err < 0)
-+		goto out;
-+	if (err) {
-+		/* Key found */
-+		len = znode->zbranch[n].len;
-+		/* The buffer must be big enough for at least 1 node */
-+		if (len > bu->buf_len) {
-+			err = -EINVAL;
-+			goto out;
-+		}
-+		/* Add this key */
-+		bu->zbranch[bu->cnt++] = znode->zbranch[n];
-+		bu->blk_cnt += 1;
-+		lnum = znode->zbranch[n].lnum;
-+		offs = ALIGN(znode->zbranch[n].offs + len, 8);
-+	}
-+	while (1) {
-+		struct ubifs_zbranch *zbr;
-+		union ubifs_key *key;
-+		unsigned int next_block;
-+
-+		/* Find next key */
-+		err = tnc_next(c, &znode, &n);
-+		if (err)
-+			goto out;
-+		zbr = &znode->zbranch[n];
-+		key = &zbr->key;
-+		/* See if there is another data key for this file */
-+		if (key_inum(c, key) != key_inum(c, &bu->key) ||
-+		    key_type(c, key) != UBIFS_DATA_KEY) {
-+			err = -ENOENT;
-+			goto out;
-+		}
-+		if (lnum < 0) {
-+			/* First key found */
-+			lnum = zbr->lnum;
-+			offs = ALIGN(zbr->offs + zbr->len, 8);
-+			len = zbr->len;
-+			if (len > bu->buf_len) {
-+				err = -EINVAL;
-+				goto out;
-+			}
-+		} else {
-+			/*
-+			 * The data nodes must be in consecutive positions in
-+			 * the same LEB.
-+			 */
-+			if (zbr->lnum != lnum || zbr->offs != offs)
-+				goto out;
-+			offs += ALIGN(zbr->len, 8);
-+			len = ALIGN(len, 8) + zbr->len;
-+			/* Must not exceed buffer length */
-+			if (len > bu->buf_len)
-+				goto out;
-+		}
-+		/* Allow for holes */
-+		next_block = key_block(c, key);
-+		bu->blk_cnt += (next_block - block - 1);
-+		if (bu->blk_cnt >= UBIFS_MAX_BULK_READ)
-+			goto out;
-+		block = next_block;
-+		/* Add this key */
-+		bu->zbranch[bu->cnt++] = *zbr;
-+		bu->blk_cnt += 1;
-+		/* See if we have room for more */
-+		if (bu->cnt >= UBIFS_MAX_BULK_READ)
-+			goto out;
-+		if (bu->blk_cnt >= UBIFS_MAX_BULK_READ)
-+			goto out;
-+	}
-+out:
-+	if (err == -ENOENT) {
-+		bu->eof = 1;
-+		err = 0;
-+	}
-+	bu->gc_seq = c->gc_seq;
-+	mutex_unlock(&c->tnc_mutex);
-+	if (err)
-+		return err;
-+	/*
-+	 * An enormous hole could cause bulk-read to encompass too many
-+	 * page cache pages, so limit the number here.
-+	 */
-+	if (bu->blk_cnt > UBIFS_MAX_BULK_READ)
-+		bu->blk_cnt = UBIFS_MAX_BULK_READ;
-+	/*
-+	 * Ensure that bulk-read covers a whole number of page cache
-+	 * pages.
-+	 */
-+	if (UBIFS_BLOCKS_PER_PAGE == 1 ||
-+	    !(bu->blk_cnt & (UBIFS_BLOCKS_PER_PAGE - 1)))
-+		return 0;
-+	if (bu->eof) {
-+		/* At the end of file we can round up */
-+		bu->blk_cnt += UBIFS_BLOCKS_PER_PAGE - 1;
-+		return 0;
-+	}
-+	/* Exclude data nodes that do not make up a whole page cache page */
-+	block = key_block(c, &bu->key) + bu->blk_cnt;
-+	block &= ~(UBIFS_BLOCKS_PER_PAGE - 1);
-+	while (bu->cnt) {
-+		if (key_block(c, &bu->zbranch[bu->cnt - 1].key) < block)
-+			break;
-+		bu->cnt -= 1;
-+	}
-+	return 0;
-+}
-+
-+/**
-+ * validate_data_node - validate data nodes for bulk-read.
-+ * @c: UBIFS file-system description object
-+ * @buf: buffer containing data node to validate
-+ * @zbr: zbranch of data node to validate
-+ *
-+ * This functions returns %0 on success or a negative error code on failure.
-+ */
-+static int validate_data_node(struct ubifs_info *c, void *buf,
-+			      struct ubifs_zbranch *zbr)
-+{
-+	union ubifs_key key1;
-+	struct ubifs_ch *ch = buf;
-+	int err, len;
-+
-+	if (ch->node_type != UBIFS_DATA_NODE) {
-+		ubifs_err("bad node type (%d but expected %d)",
-+			  ch->node_type, UBIFS_DATA_NODE);
-+		goto out_err;
-+	}
-+
-+	err = ubifs_check_node(c, buf, zbr->lnum, zbr->offs, 0, 0);
-+	if (err) {
-+		ubifs_err("expected node type %d", UBIFS_DATA_NODE);
-+		goto out;
-+	}
-+
-+	len = le32_to_cpu(ch->len);
-+	if (len != zbr->len) {
-+		ubifs_err("bad node length %d, expected %d", len, zbr->len);
-+		goto out_err;
-+	}
-+
-+	/* Make sure the key of the read node is correct */
-+	key_read(c, buf + UBIFS_KEY_OFFSET, &key1);
-+	if (!keys_eq(c, &zbr->key, &key1)) {
-+		ubifs_err("bad key in node at LEB %d:%d",
-+			  zbr->lnum, zbr->offs);
-+		dbg_tnc("looked for key %s found node's key %s",
-+			DBGKEY(&zbr->key), DBGKEY1(&key1));
-+		goto out_err;
-+	}
-+
-+	return 0;
-+
-+out_err:
-+	err = -EINVAL;
-+out:
-+	ubifs_err("bad node at LEB %d:%d", zbr->lnum, zbr->offs);
-+	dbg_dump_node(c, buf);
-+	dbg_dump_stack();
-+	return err;
-+}
-+
-+/**
-+ * ubifs_tnc_bulk_read - read a number of data nodes in one go.
-+ * @c: UBIFS file-system description object
-+ * @bu: bulk-read parameters and results
-+ *
-+ * This functions reads and validates the data nodes that were identified by the
-+ * 'ubifs_tnc_get_bu_keys()' function. This functions returns %0 on success,
-+ * -EAGAIN to indicate a race with GC, or another negative error code on
-+ * failure.
-+ */
-+int ubifs_tnc_bulk_read(struct ubifs_info *c, struct bu_info *bu)
-+{
-+	int lnum = bu->zbranch[0].lnum, offs = bu->zbranch[0].offs, len, err, i;
++struct ubifs_scan_leb {
++	int lnum;
++	int nodes_cnt;
++	struct list_head nodes;
++	int endpt;
++	int ecc;
 +	void *buf;
-+
-+	len = bu->zbranch[bu->cnt - 1].offs;
-+	len += bu->zbranch[bu->cnt - 1].len - offs;
-+	if (len > bu->buf_len) {
-+		ubifs_err("buffer too small %d vs %d", bu->buf_len, len);
-+		return -EINVAL;
-+	}
-+
-+	/* Do the read */
-+	err = ubi_read(c->ubi, lnum, bu->buf, offs, len);
-+
-+	/* Check for a race with GC */
-+	if (maybe_leb_gced(c, lnum, bu->gc_seq))
-+		return -EAGAIN;
-+
-+	if (err && err != -EBADMSG) {
-+		ubifs_err("failed to read from LEB %d:%d, error %d",
-+			  lnum, offs, err);
-+		dbg_dump_stack();
-+		dbg_tnc("key %s", DBGKEY(&bu->key));
-+		return err;
-+	}
-+
-+	/* Validate the nodes read */
-+	buf = bu->buf;
-+	for (i = 0; i < bu->cnt; i++) {
-+		err = validate_data_node(c, buf, &bu->zbranch[i]);
-+		if (err)
-+			return err;
-+		buf = buf + ALIGN(bu->zbranch[i].len, 8);
-+	}
-+
-+	return 0;
-+}
++};
 +
 +/**
-+ * do_lookup_nm- look up a "hashed" node.
-+ * @c: UBIFS file-system description object
-+ * @key: node key to lookup
-+ * @node: the node is returned here
-+ * @nm: node name
++ * struct ubifs_gced_idx_leb - garbage-collected indexing LEB.
++ * @list: list
++ * @lnum: LEB number
++ * @unmap: OK to unmap this LEB
 + *
-+ * This function look up and reads a node which contains name hash in the key.
-+ * Since the hash may have collisions, there may be many nodes with the same
-+ * key, so we have to sequentially look to all of them until the needed one is
-+ * found. This function returns zero in case of success, %-ENOENT if the node
-+ * was not found, and a negative error code in case of failure.
++ * This data structure is used to temporary store garbage-collected indexing
++ * LEBs - they are not released immediately, but only after the next commit.
++ * This is needed to guarantee recoverability.
 + */
-+static int do_lookup_nm(struct ubifs_info *c, const union ubifs_key *key,
-+			void *node, const struct qstr *nm)
-+{
-+	int found, n, err;
-+	struct ubifs_znode *znode;
-+
-+	dbg_tnc("name '%.*s' key %s", nm->len, nm->name, DBGKEY(key));
-+	mutex_lock(&c->tnc_mutex);
-+	found = ubifs_lookup_level0(c, key, &znode, &n);
-+	if (!found) {
-+		err = -ENOENT;
-+		goto out_unlock;
-+	} else if (found < 0) {
-+		err = found;
-+		goto out_unlock;
-+	}
-+
-+	ubifs_assert(n >= 0);
-+
-+	err = resolve_collision(c, key, &znode, &n, nm);
-+	dbg_tnc("rc returned %d, znode %p, n %d", err, znode, n);
-+	if (unlikely(err < 0))
-+		goto out_unlock;
-+	if (err == 0) {
-+		err = -ENOENT;
-+		goto out_unlock;
-+	}
-+
-+	err = tnc_read_node_nm(c, &znode->zbranch[n], node);
-+
-+out_unlock:
-+	mutex_unlock(&c->tnc_mutex);
-+	return err;
-+}
++struct ubifs_gced_idx_leb {
++	struct list_head list;
++	int lnum;
++	int unmap;
++};
 +
 +/**
-+ * ubifs_tnc_lookup_nm - look up a "hashed" node.
-+ * @c: UBIFS file-system description object
-+ * @key: node key to lookup
-+ * @node: the node is returned here
-+ * @nm: node name
++ * struct ubifs_inode - UBIFS in-memory inode description.
++ * @vfs_inode: VFS inode description object
++ * @creat_sqnum: sequence number at time of creation
++ * @del_cmtno: commit number corresponding to the time the inode was deleted,
++ *             protected by @c->commit_sem;
++ * @xattr_size: summarized size of all extended attributes in bytes
++ * @xattr_cnt: count of extended attributes this inode has
++ * @xattr_names: sum of lengths of all extended attribute names belonging to
++ *               this inode
++ * @dirty: non-zero if the inode is dirty
++ * @xattr: non-zero if this is an extended attribute inode
++ * @bulk_read: non-zero if bulk-read should be used
++ * @ui_mutex: serializes inode write-back with the rest of VFS operations,
++ *            serializes "clean <-> dirty" state changes, serializes bulk-read,
++ *            protects @dirty, @bulk_read, @ui_size, and @xattr_size
++ * @ui_lock: protects @synced_i_size
++ * @synced_i_size: synchronized size of inode, i.e. the value of inode size
++ *                 currently stored on the flash; used only for regular file
++ *                 inodes
++ * @ui_size: inode size used by UBIFS when writing to flash
++ * @flags: inode flags (@UBIFS_COMPR_FL, etc)
++ * @compr_type: default compression type used for this inode
++ * @last_page_read: page number of last page read (for bulk read)
++ * @read_in_a_row: number of consecutive pages read in a row (for bulk read)
++ * @data_len: length of the data attached to the inode
++ * @data: inode's data
 + *
-+ * This function look up and reads a node which contains name hash in the key.
-+ * Since the hash may have collisions, there may be many nodes with the same
-+ * key, so we have to sequentially look to all of them until the needed one is
-+ * found. This function returns zero in case of success, %-ENOENT if the node
-+ * was not found, and a negative error code in case of failure.
++ * @ui_mutex exists for two main reasons. At first it prevents inodes from
++ * being written back while UBIFS changing them, being in the middle of an VFS
++ * operation. This way UBIFS makes sure the inode fields are consistent. For
++ * example, in 'ubifs_rename()' we change 3 inodes simultaneously, and
++ * write-back must not write any of them before we have finished.
++ *
++ * The second reason is budgeting - UBIFS has to budget all operations. If an
++ * operation is going to mark an inode dirty, it has to allocate budget for
++ * this. It cannot just mark it dirty because there is no guarantee there will
++ * be enough flash space to write the inode back later. This means UBIFS has
++ * to have full control over inode "clean <-> dirty" transitions (and pages
++ * actually). But unfortunately, VFS marks inodes dirty in many places, and it
++ * does not ask the file-system if it is allowed to do so (there is a notifier,
++ * but it is not enough), i.e., there is no mechanism to synchronize with this.
++ * So UBIFS has its own inode dirty flag and its own mutex to serialize
++ * "clean <-> dirty" transitions.
++ *
++ * The @synced_i_size field is used to make sure we never write pages which are
++ * beyond last synchronized inode size. See 'ubifs_writepage()' for more
++ * information.
++ *
++ * The @ui_size is a "shadow" variable for @inode->i_size and UBIFS uses
++ * @ui_size instead of @inode->i_size. The reason for this is that UBIFS cannot
++ * make sure @inode->i_size is always changed under @ui_mutex, because it
++ * cannot call 'vmtruncate()' with @ui_mutex locked, because it would deadlock
++ * with 'ubifs_writepage()' (see file.c). All the other inode fields are
++ * changed under @ui_mutex, so they do not need "shadow" fields. Note, one
++ * could consider to rework locking and base it on "shadow" fields.
 + */
++struct ubifs_inode {
++	struct inode vfs_inode;
++	unsigned long long creat_sqnum;
++	unsigned long long del_cmtno;
++	unsigned int xattr_size;
++	unsigned int xattr_cnt;
++	unsigned int xattr_names;
++	unsigned int dirty:1;
++	unsigned int xattr:1;
++	unsigned int bulk_read:1;
++	unsigned int compr_type:2;
++	struct mutex ui_mutex;
++	spinlock_t ui_lock;
++	loff_t synced_i_size;
++	loff_t ui_size;
++	int flags;
++	pgoff_t last_page_read;
++	pgoff_t read_in_a_row;
++	int data_len;
++	void *data;
++};
++
++/**
++ * struct ubifs_unclean_leb - records a LEB recovered under read-only mode.
++ * @list: list
++ * @lnum: LEB number of recovered LEB
++ * @endpt: offset where recovery ended
++ *
++ * This structure records a LEB identified during recovery that needs to be
++ * cleaned but was not because UBIFS was mounted read-only. The information
++ * is used to clean the LEB when remounting to read-write mode.
++ */
++struct ubifs_unclean_leb {
++	struct list_head list;
++	int lnum;
++	int endpt;
++};
++
++/*
++ * LEB properties flags.
++ *
++ * LPROPS_UNCAT: not categorized
++ * LPROPS_DIRTY: dirty > free, dirty >= @c->dead_wm, not index
++ * LPROPS_DIRTY_IDX: dirty + free > @c->min_idx_node_sze and index
++ * LPROPS_FREE: free > 0, dirty < @c->dead_wm, not empty, not index
++ * LPROPS_HEAP_CNT: number of heaps used for storing categorized LEBs
++ * LPROPS_EMPTY: LEB is empty, not taken
++ * LPROPS_FREEABLE: free + dirty == leb_size, not index, not taken
++ * LPROPS_FRDI_IDX: free + dirty == leb_size and index, may be taken
++ * LPROPS_CAT_MASK: mask for the LEB categories above
++ * LPROPS_TAKEN: LEB was taken (this flag is not saved on the media)
++ * LPROPS_INDEX: LEB contains indexing nodes (this flag also exists on flash)
++ */
++enum {
++	LPROPS_UNCAT     =  0,
++	LPROPS_DIRTY     =  1,
++	LPROPS_DIRTY_IDX =  2,
++	LPROPS_FREE      =  3,
++	LPROPS_HEAP_CNT  =  3,
++	LPROPS_EMPTY     =  4,
++	LPROPS_FREEABLE  =  5,
++	LPROPS_FRDI_IDX  =  6,
++	LPROPS_CAT_MASK  = 15,
++	LPROPS_TAKEN     = 16,
++	LPROPS_INDEX     = 32,
++};
++
++/**
++ * struct ubifs_lprops - logical eraseblock properties.
++ * @free: amount of free space in bytes
++ * @dirty: amount of dirty space in bytes
++ * @flags: LEB properties flags (see above)
++ * @lnum: LEB number
++ * @list: list of same-category lprops (for LPROPS_EMPTY and LPROPS_FREEABLE)
++ * @hpos: heap position in heap of same-category lprops (other categories)
++ */
++struct ubifs_lprops {
++	int free;
++	int dirty;
++	int flags;
++	int lnum;
++	union {
++		struct list_head list;
++		int hpos;
++	};
++};
++
++/**
++ * struct ubifs_lpt_lprops - LPT logical eraseblock properties.
++ * @free: amount of free space in bytes
++ * @dirty: amount of dirty space in bytes
++ * @tgc: trivial GC flag (1 => unmap after commit end)
++ * @cmt: commit flag (1 => reserved for commit)
++ */
++struct ubifs_lpt_lprops {
++	int free;
++	int dirty;
++	unsigned tgc:1;
++	unsigned cmt:1;
++};
++
++/**
++ * struct ubifs_lp_stats - statistics of eraseblocks in the main area.
++ * @empty_lebs: number of empty LEBs
++ * @taken_empty_lebs: number of taken LEBs
++ * @idx_lebs: number of indexing LEBs
++ * @total_free: total free space in bytes (includes all LEBs)
++ * @total_dirty: total dirty space in bytes (includes all LEBs)
++ * @total_used: total used space in bytes (does not include index LEBs)
++ * @total_dead: total dead space in bytes (does not include index LEBs)
++ * @total_dark: total dark space in bytes (does not include index LEBs)
++ *
++ * The @taken_empty_lebs field counts the LEBs that are in the transient state
++ * of having been "taken" for use but not yet written to. @taken_empty_lebs is
++ * needed to account correctly for @gc_lnum, otherwise @empty_lebs could be
++ * used by itself (in which case 'unused_lebs' would be a better name). In the
++ * case of @gc_lnum, it is "taken" at mount time or whenever a LEB is retained
++ * by GC, but unlike other empty LEBs that are "taken", it may not be written
++ * straight away (i.e. before the next commit start or unmount), so either
++ * @gc_lnum must be specially accounted for, or the current approach followed
++ * i.e. count it under @taken_empty_lebs.
++ *
++ * @empty_lebs includes @taken_empty_lebs.
++ *
++ * @total_used, @total_dead and @total_dark fields do not account indexing
++ * LEBs.
++ */
++struct ubifs_lp_stats {
++	int empty_lebs;
++	int taken_empty_lebs;
++	int idx_lebs;
++	long long total_free;
++	long long total_dirty;
++	long long total_used;
++	long long total_dead;
++	long long total_dark;
++};
++
++struct ubifs_nnode;
++
++/**
++ * struct ubifs_cnode - LEB Properties Tree common node.
++ * @parent: parent nnode
++ * @cnext: next cnode to commit
++ * @flags: flags (%DIRTY_LPT_NODE or %OBSOLETE_LPT_NODE)
++ * @iip: index in parent
++ * @level: level in the tree (zero for pnodes, greater than zero for nnodes)
++ * @num: node number
++ */
++struct ubifs_cnode {
++	struct ubifs_nnode *parent;
++	struct ubifs_cnode *cnext;
++	unsigned long flags;
++	int iip;
++	int level;
++	int num;
++};
++
++/**
++ * struct ubifs_pnode - LEB Properties Tree leaf node.
++ * @parent: parent nnode
++ * @cnext: next cnode to commit
++ * @flags: flags (%DIRTY_LPT_NODE or %OBSOLETE_LPT_NODE)
++ * @iip: index in parent
++ * @level: level in the tree (always zero for pnodes)
++ * @num: node number
++ * @lprops: LEB properties array
++ */
++struct ubifs_pnode {
++	struct ubifs_nnode *parent;
++	struct ubifs_cnode *cnext;
++	unsigned long flags;
++	int iip;
++	int level;
++	int num;
++	struct ubifs_lprops lprops[UBIFS_LPT_FANOUT];
++};
++
++/**
++ * struct ubifs_nbranch - LEB Properties Tree internal node branch.
++ * @lnum: LEB number of child
++ * @offs: offset of child
++ * @nnode: nnode child
++ * @pnode: pnode child
++ * @cnode: cnode child
++ */
++struct ubifs_nbranch {
++	int lnum;
++	int offs;
++	union {
++		struct ubifs_nnode *nnode;
++		struct ubifs_pnode *pnode;
++		struct ubifs_cnode *cnode;
++	};
++};
++
++/**
++ * struct ubifs_nnode - LEB Properties Tree internal node.
++ * @parent: parent nnode
++ * @cnext: next cnode to commit
++ * @flags: flags (%DIRTY_LPT_NODE or %OBSOLETE_LPT_NODE)
++ * @iip: index in parent
++ * @level: level in the tree (always greater than zero for nnodes)
++ * @num: node number
++ * @nbranch: branches to child nodes
++ */
++struct ubifs_nnode {
++	struct ubifs_nnode *parent;
++	struct ubifs_cnode *cnext;
++	unsigned long flags;
++	int iip;
++	int level;
++	int num;
++	struct ubifs_nbranch nbranch[UBIFS_LPT_FANOUT];
++};
++
++/**
++ * struct ubifs_lpt_heap - heap of categorized lprops.
++ * @arr: heap array
++ * @cnt: number in heap
++ * @max_cnt: maximum number allowed in heap
++ *
++ * There are %LPROPS_HEAP_CNT heaps.
++ */
++struct ubifs_lpt_heap {
++	struct ubifs_lprops **arr;
++	int cnt;
++	int max_cnt;
++};
++
++/*
++ * Return codes for LPT scan callback function.
++ *
++ * LPT_SCAN_CONTINUE: continue scanning
++ * LPT_SCAN_ADD: add the LEB properties scanned to the tree in memory
++ * LPT_SCAN_STOP: stop scanning
++ */
++enum {
++	LPT_SCAN_CONTINUE = 0,
++	LPT_SCAN_ADD = 1,
++	LPT_SCAN_STOP = 2,
++};
++
++struct ubifs_info;
++
++/* Callback used by the 'ubifs_lpt_scan_nolock()' function */
++typedef int (*ubifs_lpt_scan_callback)(struct ubifs_info *c,
++				       const struct ubifs_lprops *lprops,
++				       int in_tree, void *data);
++
++/**
++ * struct ubifs_wbuf - UBIFS write-buffer.
++ * @c: UBIFS file-system description object
++ * @buf: write-buffer (of min. flash I/O unit size)
++ * @lnum: logical eraseblock number the write-buffer points to
++ * @offs: write-buffer offset in this logical eraseblock
++ * @avail: number of bytes available in the write-buffer
++ * @used:  number of used bytes in the write-buffer
++ * @dtype: type of data stored in this LEB (%UBI_LONGTERM, %UBI_SHORTTERM,
++ * %UBI_UNKNOWN)
++ * @jhead: journal head the mutex belongs to (note, needed only to shut lockdep
++ *         up by 'mutex_lock_nested()).
++ * @sync_callback: write-buffer synchronization callback
++ * @io_mutex: serializes write-buffer I/O
++ * @lock: serializes @buf, @lnum, @offs, @avail, @used, @next_ino and @inodes
++ *        fields
++ * @timer: write-buffer timer
++ * @timeout: timer expire interval in jiffies
++ * @need_sync: it is set if its timer expired and needs sync
++ * @next_ino: points to the next position of the following inode number
++ * @inodes: stores the inode numbers of the nodes which are in wbuf
++ *
++ * The write-buffer synchronization callback is called when the write-buffer is
++ * synchronized in order to notify how much space was wasted due to
++ * write-buffer padding and how much free space is left in the LEB.
++ *
++ * Note: the fields @buf, @lnum, @offs, @avail and @used can be read under
++ * spin-lock or mutex because they are written under both mutex and spin-lock.
++ * @buf is appended to under mutex but overwritten under both mutex and
++ * spin-lock. Thus the data between @buf and @buf + @used can be read under
++ * spinlock.
++ */
++struct ubifs_wbuf {
++	struct ubifs_info *c;
++	void *buf;
++	int lnum;
++	int offs;
++	int avail;
++	int used;
++	int dtype;
++	int jhead;
++	int (*sync_callback)(struct ubifs_info *c, int lnum, int free, int pad);
++	struct mutex io_mutex;
++	spinlock_t lock;
++	int timeout;
++	int need_sync;
++	int next_ino;
++	ino_t *inodes;
++};
++
++/**
++ * struct ubifs_bud - bud logical eraseblock.
++ * @lnum: logical eraseblock number
++ * @start: where the (uncommitted) bud data starts
++ * @jhead: journal head number this bud belongs to
++ * @list: link in the list buds belonging to the same journal head
++ * @rb: link in the tree of all buds
++ */
++struct ubifs_bud {
++	int lnum;
++	int start;
++	int jhead;
++	struct list_head list;
++	struct rb_node rb;
++};
++
++/**
++ * struct ubifs_jhead - journal head.
++ * @wbuf: head's write-buffer
++ * @buds_list: list of bud LEBs belonging to this journal head
++ *
++ * Note, the @buds list is protected by the @c->buds_lock.
++ */
++struct ubifs_jhead {
++	struct ubifs_wbuf wbuf;
++	struct list_head buds_list;
++};
++
++/**
++ * struct ubifs_zbranch - key/coordinate/length branch stored in znodes.
++ * @key: key
++ * @znode: znode address in memory
++ * @lnum: LEB number of the target node (indexing node or data node)
++ * @offs: target node offset within @lnum
++ * @len: target node length
++ */
++struct ubifs_zbranch {
++	union ubifs_key key;
++	union {
++		struct ubifs_znode *znode;
++		void *leaf;
++	};
++	int lnum;
++	int offs;
++	int len;
++};
++
++/**
++ * struct ubifs_znode - in-memory representation of an indexing node.
++ * @parent: parent znode or NULL if it is the root
++ * @cnext: next znode to commit
++ * @flags: znode flags (%DIRTY_ZNODE, %COW_ZNODE or %OBSOLETE_ZNODE)
++ * @time: last access time (seconds)
++ * @level: level of the entry in the TNC tree
++ * @child_cnt: count of child znodes
++ * @iip: index in parent's zbranch array
++ * @alt: lower bound of key range has altered i.e. child inserted at slot 0
++ * @lnum: LEB number of the corresponding indexing node
++ * @offs: offset of the corresponding indexing node
++ * @len: length  of the corresponding indexing node
++ * @zbranch: array of znode branches (@c->fanout elements)
++ */
++struct ubifs_znode {
++	struct ubifs_znode *parent;
++	struct ubifs_znode *cnext;
++	unsigned long flags;
++	unsigned long time;
++	int level;
++	int child_cnt;
++	int iip;
++	int alt;
++#ifdef CONFIG_UBIFS_FS_DEBUG
++	int lnum, offs, len;
++#endif
++	struct ubifs_zbranch zbranch[];
++};
++
++/**
++ * struct bu_info - bulk-read information.
++ * @key: first data node key
++ * @zbranch: zbranches of data nodes to bulk read
++ * @buf: buffer to read into
++ * @buf_len: buffer length
++ * @gc_seq: GC sequence number to detect races with GC
++ * @cnt: number of data nodes for bulk read
++ * @blk_cnt: number of data blocks including holes
++ * @oef: end of file reached
++ */
++struct bu_info {
++	union ubifs_key key;
++	struct ubifs_zbranch zbranch[UBIFS_MAX_BULK_READ];
++	void *buf;
++	int buf_len;
++	int gc_seq;
++	int cnt;
++	int blk_cnt;
++	int eof;
++};
++
++/**
++ * struct ubifs_node_range - node length range description data structure.
++ * @len: fixed node length
++ * @min_len: minimum possible node length
++ * @max_len: maximum possible node length
++ *
++ * If @max_len is %0, the node has fixed length @len.
++ */
++struct ubifs_node_range {
++	union {
++		int len;
++		int min_len;
++	};
++	int max_len;
++};
++
++/**
++ * struct ubifs_compressor - UBIFS compressor description structure.
++ * @compr_type: compressor type (%UBIFS_COMPR_LZO, etc)
++ * @cc: cryptoapi compressor handle
++ * @comp_mutex: mutex used during compression
++ * @decomp_mutex: mutex used during decompression
++ * @name: compressor name
++ * @capi_name: cryptoapi compressor name
++ */
++struct ubifs_compressor {
++	int compr_type;
++	char *name;
++	char *capi_name;
++	int (*decompress)(const unsigned char *in, size_t in_len,
++			  unsigned char *out, size_t *out_len);
++};
++
++/**
++ * struct ubifs_budget_req - budget requirements of an operation.
++ *
++ * @fast: non-zero if the budgeting should try to acquire budget quickly and
++ *        should not try to call write-back
++ * @recalculate: non-zero if @idx_growth, @data_growth, and @dd_growth fields
++ *               have to be re-calculated
++ * @new_page: non-zero if the operation adds a new page
++ * @dirtied_page: non-zero if the operation makes a page dirty
++ * @new_dent: non-zero if the operation adds a new directory entry
++ * @mod_dent: non-zero if the operation removes or modifies an existing
++ *            directory entry
++ * @new_ino: non-zero if the operation adds a new inode
++ * @new_ino_d: now much data newly created inode contains
++ * @dirtied_ino: how many inodes the operation makes dirty
++ * @dirtied_ino_d: now much data dirtied inode contains
++ * @idx_growth: how much the index will supposedly grow
++ * @data_growth: how much new data the operation will supposedly add
++ * @dd_growth: how much data that makes other data dirty the operation will
++ *             supposedly add
++ *
++ * @idx_growth, @data_growth and @dd_growth are not used in budget request. The
++ * budgeting subsystem caches index and data growth values there to avoid
++ * re-calculating them when the budget is released. However, if @idx_growth is
++ * %-1, it is calculated by the release function using other fields.
++ *
++ * An inode may contain 4KiB of data at max., thus the widths of @new_ino_d
++ * is 13 bits, and @dirtied_ino_d - 15, because up to 4 inodes may be made
++ * dirty by the re-name operation.
++ *
++ * Note, UBIFS aligns node lengths to 8-bytes boundary, so the requester has to
++ * make sure the amount of inode data which contribute to @new_ino_d and
++ * @dirtied_ino_d fields are aligned.
++ */
++struct ubifs_budget_req {
++	unsigned int fast:1;
++	unsigned int recalculate:1;
++#ifndef UBIFS_DEBUG
++	unsigned int new_page:1;
++	unsigned int dirtied_page:1;
++	unsigned int new_dent:1;
++	unsigned int mod_dent:1;
++	unsigned int new_ino:1;
++	unsigned int new_ino_d:13;
++	unsigned int dirtied_ino:4;
++	unsigned int dirtied_ino_d:15;
++#else
++	/* Not bit-fields to check for overflows */
++	unsigned int new_page;
++	unsigned int dirtied_page;
++	unsigned int new_dent;
++	unsigned int mod_dent;
++	unsigned int new_ino;
++	unsigned int new_ino_d;
++	unsigned int dirtied_ino;
++	unsigned int dirtied_ino_d;
++#endif
++	int idx_growth;
++	int data_growth;
++	int dd_growth;
++};
++
++/**
++ * struct ubifs_orphan - stores the inode number of an orphan.
++ * @rb: rb-tree node of rb-tree of orphans sorted by inode number
++ * @list: list head of list of orphans in order added
++ * @new_list: list head of list of orphans added since the last commit
++ * @cnext: next orphan to commit
++ * @dnext: next orphan to delete
++ * @inum: inode number
++ * @new: %1 => added since the last commit, otherwise %0
++ */
++struct ubifs_orphan {
++	struct rb_node rb;
++	struct list_head list;
++	struct list_head new_list;
++	struct ubifs_orphan *cnext;
++	struct ubifs_orphan *dnext;
++	ino_t inum;
++	int new;
++};
++
++/**
++ * struct ubifs_mount_opts - UBIFS-specific mount options information.
++ * @unmount_mode: selected unmount mode (%0 default, %1 normal, %2 fast)
++ * @bulk_read: enable/disable bulk-reads (%0 default, %1 disabe, %2 enable)
++ * @chk_data_crc: enable/disable CRC data checking when reading data nodes
++ *                (%0 default, %1 disabe, %2 enable)
++ * @override_compr: override default compressor (%0 - do not override and use
++ *                  superblock compressor, %1 - override and use compressor
++ *                  specified in @compr_type)
++ * @compr_type: compressor type to override the superblock compressor with
++ *              (%UBIFS_COMPR_NONE, etc)
++ */
++struct ubifs_mount_opts {
++	unsigned int unmount_mode:2;
++	unsigned int bulk_read:2;
++	unsigned int chk_data_crc:2;
++	unsigned int override_compr:1;
++	unsigned int compr_type:2;
++};
++
++struct ubifs_debug_info;
++
++/**
++ * struct ubifs_info - UBIFS file-system description data structure
++ * (per-superblock).
++ * @vfs_sb: VFS @struct super_block object
++ * @bdi: backing device info object to make VFS happy and disable read-ahead
++ *
++ * @highest_inum: highest used inode number
++ * @max_sqnum: current global sequence number
++ * @cmt_no: commit number of the last successfully completed commit, protected
++ *          by @commit_sem
++ * @cnt_lock: protects @highest_inum and @max_sqnum counters
++ * @fmt_version: UBIFS on-flash format version
++ * @ro_compat_version: R/O compatibility version
++ * @uuid: UUID from super block
++ *
++ * @lhead_lnum: log head logical eraseblock number
++ * @lhead_offs: log head offset
++ * @ltail_lnum: log tail logical eraseblock number (offset is always 0)
++ * @log_mutex: protects the log, @lhead_lnum, @lhead_offs, @ltail_lnum, and
++ *             @bud_bytes
++ * @min_log_bytes: minimum required number of bytes in the log
++ * @cmt_bud_bytes: used during commit to temporarily amount of bytes in
++ *                 committed buds
++ *
++ * @buds: tree of all buds indexed by bud LEB number
++ * @bud_bytes: how many bytes of flash is used by buds
++ * @buds_lock: protects the @buds tree, @bud_bytes, and per-journal head bud
++ *             lists
++ * @jhead_cnt: count of journal heads
++ * @jheads: journal heads (head zero is base head)
++ * @max_bud_bytes: maximum number of bytes allowed in buds
++ * @bg_bud_bytes: number of bud bytes when background commit is initiated
++ * @old_buds: buds to be released after commit ends
++ * @max_bud_cnt: maximum number of buds
++ *
++ * @commit_sem: synchronizes committer with other processes
++ * @cmt_state: commit state
++ * @cs_lock: commit state lock
++ * @cmt_wq: wait queue to sleep on if the log is full and a commit is running
++ *
++ * @big_lpt: flag that LPT is too big to write whole during commit
++ * @no_chk_data_crc: do not check CRCs when reading data nodes (except during
++ *                   recovery)
++ * @bulk_read: enable bulk-reads
++ * @default_compr: default compression algorithm (%UBIFS_COMPR_LZO, etc)
++ * @rw_incompat: the media is not R/W compatible
++ *
++ * @tnc_mutex: protects the Tree Node Cache (TNC), @zroot, @cnext, @enext, and
++ *             @calc_idx_sz
++ * @zroot: zbranch which points to the root index node and znode
++ * @cnext: next znode to commit
++ * @enext: next znode to commit to empty space
++ * @gap_lebs: array of LEBs used by the in-gaps commit method
++ * @cbuf: commit buffer
++ * @ileb_buf: buffer for commit in-the-gaps method
++ * @ileb_len: length of data in ileb_buf
++ * @ihead_lnum: LEB number of index head
++ * @ihead_offs: offset of index head
++ * @ilebs: pre-allocated index LEBs
++ * @ileb_cnt: number of pre-allocated index LEBs
++ * @ileb_nxt: next pre-allocated index LEBs
++ * @old_idx: tree of index nodes obsoleted since the last commit start
++ * @bottom_up_buf: a buffer which is used by 'dirty_cow_bottom_up()' in tnc.c
++ *
++ * @mst_node: master node
++ * @mst_offs: offset of valid master node
++ * @mst_mutex: protects the master node area, @mst_node, and @mst_offs
++ *
++ * @max_bu_buf_len: maximum bulk-read buffer length
++ * @bu_mutex: protects the pre-allocated bulk-read buffer and @c->bu
++ * @bu: pre-allocated bulk-read information
++ *
++ * @log_lebs: number of logical eraseblocks in the log
++ * @log_bytes: log size in bytes
++ * @log_last: last LEB of the log
++ * @lpt_lebs: number of LEBs used for lprops table
++ * @lpt_first: first LEB of the lprops table area
++ * @lpt_last: last LEB of the lprops table area
++ * @orph_lebs: number of LEBs used for the orphan area
++ * @orph_first: first LEB of the orphan area
++ * @orph_last: last LEB of the orphan area
++ * @main_lebs: count of LEBs in the main area
++ * @main_first: first LEB of the main area
++ * @main_bytes: main area size in bytes
++ *
++ * @key_hash_type: type of the key hash
++ * @key_hash: direntry key hash function
++ * @key_fmt: key format
++ * @key_len: key length
++ * @fanout: fanout of the index tree (number of links per indexing node)
++ *
++ * @min_io_size: minimal input/output unit size
++ * @min_io_shift: number of bits in @min_io_size minus one
++ * @leb_size: logical eraseblock size in bytes
++ * @half_leb_size: half LEB size
++ * @leb_cnt: count of logical eraseblocks
++ * @max_leb_cnt: maximum count of logical eraseblocks
++ * @old_leb_cnt: count of logical eraseblocks before re-size
++ * @ro_media: the underlying UBI volume is read-only
++ *
++ * @dirty_pg_cnt: number of dirty pages (not used)
++ * @dirty_zn_cnt: number of dirty znodes
++ * @clean_zn_cnt: number of clean znodes
++ *
++ * @budg_idx_growth: amount of bytes budgeted for index growth
++ * @budg_data_growth: amount of bytes budgeted for cached data
++ * @budg_dd_growth: amount of bytes budgeted for cached data that will make
++ *                  other data dirty
++ * @budg_uncommitted_idx: amount of bytes were budgeted for growth of the index,
++ *                        but which still have to be taken into account because
++ *                        the index has not been committed so far
++ * @space_lock: protects @budg_idx_growth, @budg_data_growth, @budg_dd_growth,
++ *              @budg_uncommited_idx, @min_idx_lebs, @old_idx_sz, @lst,
++ *              @nospace, and @nospace_rp;
++ * @min_idx_lebs: minimum number of LEBs required for the index
++ * @old_idx_sz: size of index on flash
++ * @calc_idx_sz: temporary variable which is used to calculate new index size
++ *               (contains accurate new index size at end of TNC commit start)
++ * @lst: lprops statistics
++ * @nospace: non-zero if the file-system does not have flash space (used as
++ *           optimization)
++ * @nospace_rp: the same as @nospace, but additionally means that even reserved
++ *              pool is full
++ *
++ * @page_budget: budget for a page
++ * @inode_budget: budget for an inode
++ * @dent_budget: budget for a directory entry
++ *
++ * @ref_node_alsz: size of the LEB reference node aligned to the min. flash
++ * I/O unit
++ * @mst_node_alsz: master node aligned size
++ * @min_idx_node_sz: minimum indexing node aligned on 8-bytes boundary
++ * @max_idx_node_sz: maximum indexing node aligned on 8-bytes boundary
++ * @max_inode_sz: maximum possible inode size in bytes
++ * @max_znode_sz: size of znode in bytes
++ *
++ * @leb_overhead: how many bytes are wasted in an LEB when it is filled with
++ *                data nodes of maximum size - used in free space reporting
++ * @dead_wm: LEB dead space watermark
++ * @dark_wm: LEB dark space watermark
++ * @block_cnt: count of 4KiB blocks on the FS
++ *
++ * @ranges: UBIFS node length ranges
++ * @ubi: UBI volume descriptor
++ * @di: UBI device information
++ * @vi: UBI volume information
++ *
++ * @orph_tree: rb-tree of orphan inode numbers
++ * @orph_list: list of orphan inode numbers in order added
++ * @orph_new: list of orphan inode numbers added since last commit
++ * @orph_cnext: next orphan to commit
++ * @orph_dnext: next orphan to delete
++ * @orphan_lock: lock for orph_tree and orph_new
++ * @orph_buf: buffer for orphan nodes
++ * @new_orphans: number of orphans since last commit
++ * @cmt_orphans: number of orphans being committed
++ * @tot_orphans: number of orphans in the rb_tree
++ * @max_orphans: maximum number of orphans allowed
++ * @ohead_lnum: orphan head LEB number
++ * @ohead_offs: orphan head offset
++ * @no_orphs: non-zero if there are no orphans
++ *
++ * @bgt: UBIFS background thread
++ * @bgt_name: background thread name
++ * @need_bgt: if background thread should run
++ * @need_wbuf_sync: if write-buffers have to be synchronized
++ *
++ * @gc_lnum: LEB number used for garbage collection
++ * @sbuf: a buffer of LEB size used by GC and replay for scanning
++ * @idx_gc: list of index LEBs that have been garbage collected
++ * @idx_gc_cnt: number of elements on the idx_gc list
++ * @gc_seq: incremented for every non-index LEB garbage collected
++ * @gced_lnum: last non-index LEB that was garbage collected
++ *
++ * @infos_list: links all 'ubifs_info' objects
++ * @umount_mutex: serializes shrinker and un-mount
++ * @shrinker_run_no: shrinker run number
++ *
++ * @space_bits: number of bits needed to record free or dirty space
++ * @lpt_lnum_bits: number of bits needed to record a LEB number in the LPT
++ * @lpt_offs_bits: number of bits needed to record an offset in the LPT
++ * @lpt_spc_bits: number of bits needed to space in the LPT
++ * @pcnt_bits: number of bits needed to record pnode or nnode number
++ * @lnum_bits: number of bits needed to record LEB number
++ * @nnode_sz: size of on-flash nnode
++ * @pnode_sz: size of on-flash pnode
++ * @ltab_sz: size of on-flash LPT lprops table
++ * @lsave_sz: size of on-flash LPT save table
++ * @pnode_cnt: number of pnodes
++ * @nnode_cnt: number of nnodes
++ * @lpt_hght: height of the LPT
++ * @pnodes_have: number of pnodes in memory
++ *
++ * @lp_mutex: protects lprops table and all the other lprops-related fields
++ * @lpt_lnum: LEB number of the root nnode of the LPT
++ * @lpt_offs: offset of the root nnode of the LPT
++ * @nhead_lnum: LEB number of LPT head
++ * @nhead_offs: offset of LPT head
++ * @lpt_drty_flgs: dirty flags for LPT special nodes e.g. ltab
++ * @dirty_nn_cnt: number of dirty nnodes
++ * @dirty_pn_cnt: number of dirty pnodes
++ * @check_lpt_free: flag that indicates LPT GC may be needed
++ * @lpt_sz: LPT size
++ * @lpt_nod_buf: buffer for an on-flash nnode or pnode
++ * @lpt_buf: buffer of LEB size used by LPT
++ * @nroot: address in memory of the root nnode of the LPT
++ * @lpt_cnext: next LPT node to commit
++ * @lpt_heap: array of heaps of categorized lprops
++ * @dirty_idx: a (reverse sorted) copy of the LPROPS_DIRTY_IDX heap as at
++ *             previous commit start
++ * @uncat_list: list of un-categorized LEBs
++ * @empty_list: list of empty LEBs
++ * @freeable_list: list of freeable non-index LEBs (free + dirty == leb_size)
++ * @frdi_idx_list: list of freeable index LEBs (free + dirty == leb_size)
++ * @freeable_cnt: number of freeable LEBs in @freeable_list
++ *
++ * @ltab_lnum: LEB number of LPT's own lprops table
++ * @ltab_offs: offset of LPT's own lprops table
++ * @ltab: LPT's own lprops table
++ * @ltab_cmt: LPT's own lprops table (commit copy)
++ * @lsave_cnt: number of LEB numbers in LPT's save table
++ * @lsave_lnum: LEB number of LPT's save table
++ * @lsave_offs: offset of LPT's save table
++ * @lsave: LPT's save table
++ * @lscan_lnum: LEB number of last LPT scan
++ *
++ * @rp_size: size of the reserved pool in bytes
++ * @report_rp_size: size of the reserved pool reported to user-space
++ * @rp_uid: reserved pool user ID
++ * @rp_gid: reserved pool group ID
++ *
++ * @empty: if the UBI device is empty
++ * @replay_tree: temporary tree used during journal replay
++ * @replay_list: temporary list used during journal replay
++ * @replay_buds: list of buds to replay
++ * @cs_sqnum: sequence number of first node in the log (commit start node)
++ * @replay_sqnum: sequence number of node currently being replayed
++ * @need_recovery: file-system needs recovery
++ * @replaying: set to %1 during journal replay
++ * @unclean_leb_list: LEBs to recover when mounting ro to rw
++ * @rcvrd_mst_node: recovered master node to write when mounting ro to rw
++ * @size_tree: inode size information for recovery
++ * @remounting_rw: set while remounting from ro to rw (sb flags have MS_RDONLY)
++ * @always_chk_crc: always check CRCs (while mounting and remounting rw)
++ * @mount_opts: UBIFS-specific mount options
++ *
++ * @dbg: debugging-related information
++ */
++struct ubifs_info {
++	struct super_block *vfs_sb;
++
++	ino_t highest_inum;
++	unsigned long long max_sqnum;
++	unsigned long long cmt_no;
++	spinlock_t cnt_lock;
++	int fmt_version;
++	int ro_compat_version;
++	unsigned char uuid[16];
++
++	int lhead_lnum;
++	int lhead_offs;
++	int ltail_lnum;
++	struct mutex log_mutex;
++	int min_log_bytes;
++	long long cmt_bud_bytes;
++
++	struct rb_root buds;
++	long long bud_bytes;
++	spinlock_t buds_lock;
++	int jhead_cnt;
++	struct ubifs_jhead *jheads;
++	long long max_bud_bytes;
++	long long bg_bud_bytes;
++	struct list_head old_buds;
++	int max_bud_cnt;
++
++	struct rw_semaphore commit_sem;
++	int cmt_state;
++	spinlock_t cs_lock;
++	wait_queue_head_t cmt_wq;
++
++	unsigned int big_lpt:1;
++	unsigned int no_chk_data_crc:1;
++	unsigned int bulk_read:1;
++	unsigned int default_compr:2;
++	unsigned int rw_incompat:1;
++
++	struct mutex tnc_mutex;
++	struct ubifs_zbranch zroot;
++	struct ubifs_znode *cnext;
++	struct ubifs_znode *enext;
++	int *gap_lebs;
++	void *cbuf;
++	void *ileb_buf;
++	int ileb_len;
++	int ihead_lnum;
++	int ihead_offs;
++	int *ilebs;
++	int ileb_cnt;
++	int ileb_nxt;
++	struct rb_root old_idx;
++	int *bottom_up_buf;
++
++	struct ubifs_mst_node *mst_node;
++	int mst_offs;
++	struct mutex mst_mutex;
++
++	int max_bu_buf_len;
++	struct mutex bu_mutex;
++	struct bu_info bu;
++
++	int log_lebs;
++	long long log_bytes;
++	int log_last;
++	int lpt_lebs;
++	int lpt_first;
++	int lpt_last;
++	int orph_lebs;
++	int orph_first;
++	int orph_last;
++	int main_lebs;
++	int main_first;
++	long long main_bytes;
++
++	uint8_t key_hash_type;
++	uint32_t (*key_hash)(const char *str, int len);
++	int key_fmt;
++	int key_len;
++	int fanout;
++
++	int min_io_size;
++	int min_io_shift;
++	int leb_size;
++	int half_leb_size;
++	int leb_cnt;
++	int max_leb_cnt;
++	int old_leb_cnt;
++	int ro_media;
++
++	long long budg_idx_growth;
++	long long budg_data_growth;
++	long long budg_dd_growth;
++	long long budg_uncommitted_idx;
++	spinlock_t space_lock;
++	int min_idx_lebs;
++	unsigned long long old_idx_sz;
++	unsigned long long calc_idx_sz;
++	struct ubifs_lp_stats lst;
++	unsigned int nospace:1;
++	unsigned int nospace_rp:1;
++
++	int page_budget;
++	int inode_budget;
++	int dent_budget;
++
++	int ref_node_alsz;
++	int mst_node_alsz;
++	int min_idx_node_sz;
++	int max_idx_node_sz;
++	long long max_inode_sz;
++	int max_znode_sz;
++
++	int leb_overhead;
++	int dead_wm;
++	int dark_wm;
++	int block_cnt;
++
++	struct ubifs_node_range ranges[UBIFS_NODE_TYPES_CNT];
++	struct ubi_volume_desc *ubi;
++	struct ubi_device_info di;
++	struct ubi_volume_info vi;
++
++	struct rb_root orph_tree;
++	struct list_head orph_list;
++	struct list_head orph_new;
++	struct ubifs_orphan *orph_cnext;
++	struct ubifs_orphan *orph_dnext;
++	spinlock_t orphan_lock;
++	void *orph_buf;
++	int new_orphans;
++	int cmt_orphans;
++	int tot_orphans;
++	int max_orphans;
++	int ohead_lnum;
++	int ohead_offs;
++	int no_orphs;
++
++	struct task_struct *bgt;
++	char bgt_name[sizeof(BGT_NAME_PATTERN) + 9];
++	int need_bgt;
++	int need_wbuf_sync;
++
++	int gc_lnum;
++	void *sbuf;
++	struct list_head idx_gc;
++	int idx_gc_cnt;
++	int gc_seq;
++	int gced_lnum;
++
++	struct list_head infos_list;
++	struct mutex umount_mutex;
++	unsigned int shrinker_run_no;
++
++	int space_bits;
++	int lpt_lnum_bits;
++	int lpt_offs_bits;
++	int lpt_spc_bits;
++	int pcnt_bits;
++	int lnum_bits;
++	int nnode_sz;
++	int pnode_sz;
++	int ltab_sz;
++	int lsave_sz;
++	int pnode_cnt;
++	int nnode_cnt;
++	int lpt_hght;
++	int pnodes_have;
++
++	struct mutex lp_mutex;
++	int lpt_lnum;
++	int lpt_offs;
++	int nhead_lnum;
++	int nhead_offs;
++	int lpt_drty_flgs;
++	int dirty_nn_cnt;
++	int dirty_pn_cnt;
++	int check_lpt_free;
++	long long lpt_sz;
++	void *lpt_nod_buf;
++	void *lpt_buf;
++	struct ubifs_nnode *nroot;
++	struct ubifs_cnode *lpt_cnext;
++	struct ubifs_lpt_heap lpt_heap[LPROPS_HEAP_CNT];
++	struct ubifs_lpt_heap dirty_idx;
++	struct list_head uncat_list;
++	struct list_head empty_list;
++	struct list_head freeable_list;
++	struct list_head frdi_idx_list;
++	int freeable_cnt;
++
++	int ltab_lnum;
++	int ltab_offs;
++	struct ubifs_lpt_lprops *ltab;
++	struct ubifs_lpt_lprops *ltab_cmt;
++	int lsave_cnt;
++	int lsave_lnum;
++	int lsave_offs;
++	int *lsave;
++	int lscan_lnum;
++
++	long long rp_size;
++	long long report_rp_size;
++	uid_t rp_uid;
++	gid_t rp_gid;
++
++	/* The below fields are used only during mounting and re-mounting */
++	int empty;
++	struct rb_root replay_tree;
++	struct list_head replay_list;
++	struct list_head replay_buds;
++	unsigned long long cs_sqnum;
++	unsigned long long replay_sqnum;
++	int need_recovery;
++	int replaying;
++	struct list_head unclean_leb_list;
++	struct ubifs_mst_node *rcvrd_mst_node;
++	struct rb_root size_tree;
++	int remounting_rw;
++	int always_chk_crc;
++	struct ubifs_mount_opts mount_opts;
++
++#ifdef CONFIG_UBIFS_FS_DEBUG
++	struct ubifs_debug_info *dbg;
++#endif
++};
++
++extern spinlock_t ubifs_infos_lock;
++extern struct kmem_cache *ubifs_inode_slab;
++extern const struct super_operations ubifs_super_operations;
++extern const struct address_space_operations ubifs_file_address_operations;
++extern const struct file_operations ubifs_file_operations;
++extern const struct inode_operations ubifs_file_inode_operations;
++extern const struct file_operations ubifs_dir_operations;
++extern const struct inode_operations ubifs_dir_inode_operations;
++extern const struct inode_operations ubifs_symlink_inode_operations;
++extern struct backing_dev_info ubifs_backing_dev_info;
++extern struct ubifs_compressor *ubifs_compressors[UBIFS_COMPR_TYPES_CNT];
++
++/* io.c */
++void ubifs_ro_mode(struct ubifs_info *c, int err);
++int ubifs_wbuf_write_nolock(struct ubifs_wbuf *wbuf, void *buf, int len);
++int ubifs_wbuf_seek_nolock(struct ubifs_wbuf *wbuf, int lnum, int offs,
++			   int dtype);
++int ubifs_wbuf_init(struct ubifs_info *c, struct ubifs_wbuf *wbuf);
++int ubifs_read_node(const struct ubifs_info *c, void *buf, int type, int len,
++		    int lnum, int offs);
++int ubifs_read_node_wbuf(struct ubifs_wbuf *wbuf, void *buf, int type, int len,
++			 int lnum, int offs);
++int ubifs_write_node(struct ubifs_info *c, void *node, int len, int lnum,
++		     int offs, int dtype);
++int ubifs_check_node(const struct ubifs_info *c, const void *buf, int lnum,
++		     int offs, int quiet, int must_chk_crc);
++void ubifs_prepare_node(struct ubifs_info *c, void *buf, int len, int pad);
++void ubifs_prep_grp_node(struct ubifs_info *c, void *node, int len, int last);
++int ubifs_io_init(struct ubifs_info *c);
++void ubifs_pad(const struct ubifs_info *c, void *buf, int pad);
++int ubifs_wbuf_sync_nolock(struct ubifs_wbuf *wbuf);
++int ubifs_bg_wbufs_sync(struct ubifs_info *c);
++void ubifs_wbuf_add_ino_nolock(struct ubifs_wbuf *wbuf, ino_t inum);
++int ubifs_sync_wbufs_by_inode(struct ubifs_info *c, struct inode *inode);
++
++/* scan.c */
++struct ubifs_scan_leb *ubifs_scan(const struct ubifs_info *c, int lnum,
++				  int offs, void *sbuf);
++void ubifs_scan_destroy(struct ubifs_scan_leb *sleb);
++int ubifs_scan_a_node(const struct ubifs_info *c, void *buf, int len, int lnum,
++		      int offs, int quiet);
++struct ubifs_scan_leb *ubifs_start_scan(const struct ubifs_info *c, int lnum,
++					int offs, void *sbuf);
++void ubifs_end_scan(const struct ubifs_info *c, struct ubifs_scan_leb *sleb,
++		    int lnum, int offs);
++int ubifs_add_snod(const struct ubifs_info *c, struct ubifs_scan_leb *sleb,
++		   void *buf, int offs);
++void ubifs_scanned_corruption(const struct ubifs_info *c, int lnum, int offs,
++			      void *buf);
++
++/* log.c */
++void ubifs_add_bud(struct ubifs_info *c, struct ubifs_bud *bud);
++void ubifs_create_buds_lists(struct ubifs_info *c);
++int ubifs_add_bud_to_log(struct ubifs_info *c, int jhead, int lnum, int offs);
++struct ubifs_bud *ubifs_search_bud(struct ubifs_info *c, int lnum);
++struct ubifs_wbuf *ubifs_get_wbuf(struct ubifs_info *c, int lnum);
++int ubifs_log_start_commit(struct ubifs_info *c, int *ltail_lnum);
++int ubifs_log_end_commit(struct ubifs_info *c, int new_ltail_lnum);
++int ubifs_log_post_commit(struct ubifs_info *c, int old_ltail_lnum);
++int ubifs_consolidate_log(struct ubifs_info *c);
++
++/* journal.c */
++int ubifs_jnl_update(struct ubifs_info *c, const struct inode *dir,
++		     const struct qstr *nm, const struct inode *inode,
++		     int deletion, int xent);
++int ubifs_jnl_write_data(struct ubifs_info *c, const struct inode *inode,
++			 const union ubifs_key *key, const void *buf, int len);
++int ubifs_jnl_write_inode(struct ubifs_info *c, const struct inode *inode);
++int ubifs_jnl_delete_inode(struct ubifs_info *c, const struct inode *inode);
++int ubifs_jnl_rename(struct ubifs_info *c, const struct inode *old_dir,
++		     const struct dentry *old_dentry,
++		     const struct inode *new_dir,
++		     const struct dentry *new_dentry, int sync);
++int ubifs_jnl_truncate(struct ubifs_info *c, const struct inode *inode,
++		       loff_t old_size, loff_t new_size);
++int ubifs_jnl_delete_xattr(struct ubifs_info *c, const struct inode *host,
++			   const struct inode *inode, const struct qstr *nm);
++int ubifs_jnl_change_xattr(struct ubifs_info *c, const struct inode *inode1,
++			   const struct inode *inode2);
++
++/* budget.c */
++int ubifs_budget_space(struct ubifs_info *c, struct ubifs_budget_req *req);
++void ubifs_release_budget(struct ubifs_info *c, struct ubifs_budget_req *req);
++void ubifs_release_dirty_inode_budget(struct ubifs_info *c,
++				      struct ubifs_inode *ui);
++int ubifs_budget_inode_op(struct ubifs_info *c, struct inode *inode,
++			  struct ubifs_budget_req *req);
++void ubifs_release_ino_dirty(struct ubifs_info *c, struct inode *inode,
++				struct ubifs_budget_req *req);
++void ubifs_cancel_ino_op(struct ubifs_info *c, struct inode *inode,
++			 struct ubifs_budget_req *req);
++long long ubifs_get_free_space(struct ubifs_info *c);
++long long ubifs_get_free_space_nolock(struct ubifs_info *c);
++int ubifs_calc_min_idx_lebs(struct ubifs_info *c);
++void ubifs_convert_page_budget(struct ubifs_info *c);
++long long ubifs_reported_space(const struct ubifs_info *c, long long free);
++long long ubifs_calc_available(const struct ubifs_info *c, int min_idx_lebs);
++
++/* find.c */
++int ubifs_find_free_space(struct ubifs_info *c, int min_space, int *free,
++			  int squeeze);
++int ubifs_find_free_leb_for_idx(struct ubifs_info *c);
++int ubifs_find_dirty_leb(struct ubifs_info *c, struct ubifs_lprops *ret_lp,
++			 int min_space, int pick_free);
++int ubifs_find_dirty_idx_leb(struct ubifs_info *c);
++int ubifs_save_dirty_idx_lnums(struct ubifs_info *c);
++
++/* tnc.c */
++int ubifs_lookup_level0(struct ubifs_info *c, const union ubifs_key *key,
++			struct ubifs_znode **zn, int *n);
 +int ubifs_tnc_lookup_nm(struct ubifs_info *c, const union ubifs_key *key,
-+			void *node, const struct qstr *nm)
-+{
-+	int err, len;
-+	const struct ubifs_dent_node *dent = node;
-+
-+	/*
-+	 * We assume that in most of the cases there are no name collisions and
-+	 * 'ubifs_tnc_lookup()' returns us the right direntry.
-+	 */
-+	err = ubifs_tnc_lookup(c, key, node);
-+	if (err)
-+		return err;
-+
-+	len = le16_to_cpu(dent->nlen);
-+	if (nm->len == len && !memcmp(dent->name, nm->name, len))
-+		return 0;
-+
-+	/*
-+	 * Unluckily, there are hash collisions and we have to iterate over
-+	 * them look at each direntry with colliding name hash sequentially.
-+	 */
-+	return do_lookup_nm(c, key, node, nm);
-+}
-+
-+/**
-+ * correct_parent_keys - correct parent znodes' keys.
-+ * @c: UBIFS file-system description object
-+ * @znode: znode to correct parent znodes for
-+ *
-+ * This is a helper function for 'tnc_insert()'. When the key of the leftmost
-+ * zbranch changes, keys of parent znodes have to be corrected. This helper
-+ * function is called in such situations and corrects the keys if needed.
-+ */
-+static void correct_parent_keys(const struct ubifs_info *c,
-+				struct ubifs_znode *znode)
-+{
-+	union ubifs_key *key, *key1;
-+
-+	ubifs_assert(znode->parent);
-+	ubifs_assert(znode->iip == 0);
-+
-+	key = &znode->zbranch[0].key;
-+	key1 = &znode->parent->zbranch[0].key;
-+
-+	while (keys_cmp(c, key, key1) < 0) {
-+		key_copy(c, key, key1);
-+		znode = znode->parent;
-+		znode->alt = 1;
-+		if (!znode->parent || znode->iip)
-+			break;
-+		key1 = &znode->parent->zbranch[0].key;
-+	}
-+}
-+
-+/**
-+ * insert_zbranch - insert a zbranch into a znode.
-+ * @znode: znode into which to insert
-+ * @zbr: zbranch to insert
-+ * @n: slot number to insert to
-+ *
-+ * This is a helper function for 'tnc_insert()'. UBIFS does not allow "gaps" in
-+ * znode's array of zbranches and keeps zbranches consolidated, so when a new
-+ * zbranch has to be inserted to the @znode->zbranches[]' array at the @n-th
-+ * slot, zbranches starting from @n have to be moved right.
-+ */
-+static void insert_zbranch(struct ubifs_znode *znode,
-+			   const struct ubifs_zbranch *zbr, int n)
-+{
-+	int i;
-+
-+	ubifs_assert(ubifs_zn_dirty(znode));
-+
-+	if (znode->level) {
-+		for (i = znode->child_cnt; i > n; i--) {
-+			znode->zbranch[i] = znode->zbranch[i - 1];
-+			if (znode->zbranch[i].znode)
-+				znode->zbranch[i].znode->iip = i;
-+		}
-+		if (zbr->znode)
-+			zbr->znode->iip = n;
-+	} else
-+		for (i = znode->child_cnt; i > n; i--)
-+			znode->zbranch[i] = znode->zbranch[i - 1];
-+
-+	znode->zbranch[n] = *zbr;
-+	znode->child_cnt += 1;
-+
-+	/*
-+	 * After inserting at slot zero, the lower bound of the key range of
-+	 * this znode may have changed. If this znode is subsequently split
-+	 * then the upper bound of the key range may change, and furthermore
-+	 * it could change to be lower than the original lower bound. If that
-+	 * happens, then it will no longer be possible to find this znode in the
-+	 * TNC using the key from the index node on flash. That is bad because
-+	 * if it is not found, we will assume it is obsolete and may overwrite
-+	 * it. Then if there is an unclean unmount, we will start using the
-+	 * old index which will be broken.
-+	 *
-+	 * So we first mark znodes that have insertions at slot zero, and then
-+	 * if they are split we add their lnum/offs to the old_idx tree.
-+	 */
-+	if (n == 0)
-+		znode->alt = 1;
-+}
-+
-+/**
-+ * tnc_insert - insert a node into TNC.
-+ * @c: UBIFS file-system description object
-+ * @znode: znode to insert into
-+ * @zbr: branch to insert
-+ * @n: slot number to insert new zbranch to
-+ *
-+ * This function inserts a new node described by @zbr into znode @znode. If
-+ * znode does not have a free slot for new zbranch, it is split. Parent znodes
-+ * are splat as well if needed. Returns zero in case of success or a negative
-+ * error code in case of failure.
-+ */
-+static int tnc_insert(struct ubifs_info *c, struct ubifs_znode *znode,
-+		      struct ubifs_zbranch *zbr, int n)
-+{
-+	struct ubifs_znode *zn, *zi, *zp;
-+	int i, keep, move, appending = 0;
-+	union ubifs_key *key = &zbr->key, *key1;
-+
-+	ubifs_assert(n >= 0 && n <= c->fanout);
-+
-+	/* Implement naive insert for now */
-+again:
-+	zp = znode->parent;
-+	if (znode->child_cnt < c->fanout) {
-+		ubifs_assert(n != c->fanout);
-+		dbg_tnc("inserted at %d level %d, key %s", n, znode->level,
-+			DBGKEY(key));
-+
-+		insert_zbranch(znode, zbr, n);
-+
-+		/* Ensure parent's key is correct */
-+		if (n == 0 && zp && znode->iip == 0)
-+			correct_parent_keys(c, znode);
-+
-+		return 0;
-+	}
-+
-+	/*
-+	 * Unfortunately, @znode does not have more empty slots and we have to
-+	 * split it.
-+	 */
-+	dbg_tnc("splitting level %d, key %s", znode->level, DBGKEY(key));
-+
-+	if (znode->alt)
-+		/*
-+		 * We can no longer be sure of finding this znode by key, so we
-+		 * record it in the old_idx tree.
-+		 */
-+		ins_clr_old_idx_znode(c, znode);
-+
-+	zn = kzalloc(c->max_znode_sz, GFP_NOFS);
-+	if (!zn)
-+		return -ENOMEM;
-+	zn->parent = zp;
-+	zn->level = znode->level;
-+
-+	/* Decide where to split */
-+	if (znode->level == 0 && key_type(c, key) == UBIFS_DATA_KEY) {
-+		/* Try not to split consecutive data keys */
-+		if (n == c->fanout) {
-+			key1 = &znode->zbranch[n - 1].key;
-+			if (key_inum(c, key1) == key_inum(c, key) &&
-+			    key_type(c, key1) == UBIFS_DATA_KEY)
-+				appending = 1;
-+		} else
-+			goto check_split;
-+	} else if (appending && n != c->fanout) {
-+		/* Try not to split consecutive data keys */
-+		appending = 0;
-+check_split:
-+		if (n >= (c->fanout + 1) / 2) {
-+			key1 = &znode->zbranch[0].key;
-+			if (key_inum(c, key1) == key_inum(c, key) &&
-+			    key_type(c, key1) == UBIFS_DATA_KEY) {
-+				key1 = &znode->zbranch[n].key;
-+				if (key_inum(c, key1) != key_inum(c, key) ||
-+				    key_type(c, key1) != UBIFS_DATA_KEY) {
-+					keep = n;
-+					move = c->fanout - keep;
-+					zi = znode;
-+					goto do_split;
-+				}
-+			}
-+		}
-+	}
-+
-+	if (appending) {
-+		keep = c->fanout;
-+		move = 0;
-+	} else {
-+		keep = (c->fanout + 1) / 2;
-+		move = c->fanout - keep;
-+	}
-+
-+	/*
-+	 * Although we don't at present, we could look at the neighbors and see
-+	 * if we can move some zbranches there.
-+	 */
-+
-+	if (n < keep) {
-+		/* Insert into existing znode */
-+		zi = znode;
-+		move += 1;
-+		keep -= 1;
-+	} else {
-+		/* Insert into new znode */
-+		zi = zn;
-+		n -= keep;
-+		/* Re-parent */
-+		if (zn->level != 0)
-+			zbr->znode->parent = zn;
-+	}
-+
-+do_split:
-+
-+	__set_bit(DIRTY_ZNODE, &zn->flags);
-+	atomic_long_inc(&c->dirty_zn_cnt);
-+
-+	zn->child_cnt = move;
-+	znode->child_cnt = keep;
-+
-+	dbg_tnc("moving %d, keeping %d", move, keep);
-+
-+	/* Move zbranch */
-+	for (i = 0; i < move; i++) {
-+		zn->zbranch[i] = znode->zbranch[keep + i];
-+		/* Re-parent */
-+		if (zn->level != 0)
-+			if (zn->zbranch[i].znode) {
-+				zn->zbranch[i].znode->parent = zn;
-+				zn->zbranch[i].znode->iip = i;
-+			}
-+	}
-+
-+	/* Insert new key and branch */
-+	dbg_tnc("inserting at %d level %d, key %s", n, zn->level, DBGKEY(key));
-+
-+	insert_zbranch(zi, zbr, n);
-+
-+	/* Insert new znode (produced by spitting) into the parent */
-+	if (zp) {
-+		if (n == 0 && zi == znode && znode->iip == 0)
-+			correct_parent_keys(c, znode);
-+
-+		/* Locate insertion point */
-+		n = znode->iip + 1;
-+
-+		/* Tail recursion */
-+		zbr->key = zn->zbranch[0].key;
-+		zbr->znode = zn;
-+		zbr->lnum = 0;
-+		zbr->offs = 0;
-+		zbr->len = 0;
-+		znode = zp;
-+
-+		goto again;
-+	}
-+
-+	/* We have to split root znode */
-+	dbg_tnc("creating new zroot at level %d", znode->level + 1);
-+
-+	zi = kzalloc(c->max_znode_sz, GFP_NOFS);
-+	if (!zi)
-+		return -ENOMEM;
-+
-+	zi->child_cnt = 2;
-+	zi->level = znode->level + 1;
-+
-+	__set_bit(DIRTY_ZNODE, &zi->flags);
-+	atomic_long_inc(&c->dirty_zn_cnt);
-+
-+	zi->zbranch[0].key = znode->zbranch[0].key;
-+	zi->zbranch[0].znode = znode;
-+	zi->zbranch[0].lnum = c->zroot.lnum;
-+	zi->zbranch[0].offs = c->zroot.offs;
-+	zi->zbranch[0].len = c->zroot.len;
-+	zi->zbranch[1].key = zn->zbranch[0].key;
-+	zi->zbranch[1].znode = zn;
-+
-+	c->zroot.lnum = 0;
-+	c->zroot.offs = 0;
-+	c->zroot.len = 0;
-+	c->zroot.znode = zi;
-+
-+	zn->parent = zi;
-+	zn->iip = 1;
-+	znode->parent = zi;
-+	znode->iip = 0;
-+
-+	return 0;
-+}
-+
-+/**
-+ * ubifs_tnc_add - add a node to TNC.
-+ * @c: UBIFS file-system description object
-+ * @key: key to add
-+ * @lnum: LEB number of node
-+ * @offs: node offset
-+ * @len: node length
-+ *
-+ * This function adds a node with key @key to TNC. The node may be new or it may
-+ * obsolete some existing one. Returns %0 on success or negative error code on
-+ * failure.
-+ */
++			void *node, const struct qstr *nm);
++int ubifs_tnc_locate(struct ubifs_info *c, const union ubifs_key *key,
++		     void *node, int *lnum, int *offs);
 +int ubifs_tnc_add(struct ubifs_info *c, const union ubifs_key *key, int lnum,
-+		  int offs, int len)
-+{
-+	int found, n, err = 0;
-+	struct ubifs_znode *znode;
-+
-+	mutex_lock(&c->tnc_mutex);
-+	dbg_tnc("%d:%d, len %d, key %s", lnum, offs, len, DBGKEY(key));
-+	found = lookup_level0_dirty(c, key, &znode, &n);
-+	if (!found) {
-+		struct ubifs_zbranch zbr;
-+
-+		zbr.znode = NULL;
-+		zbr.lnum = lnum;
-+		zbr.offs = offs;
-+		zbr.len = len;
-+		key_copy(c, key, &zbr.key);
-+		err = tnc_insert(c, znode, &zbr, n + 1);
-+	} else if (found == 1) {
-+		struct ubifs_zbranch *zbr = &znode->zbranch[n];
-+
-+		lnc_free(zbr);
-+		err = ubifs_add_dirt(c, zbr->lnum, zbr->len);
-+		zbr->lnum = lnum;
-+		zbr->offs = offs;
-+		zbr->len = len;
-+	} else
-+		err = found;
-+	if (!err)
-+		err = dbg_check_tnc(c, 0);
-+	mutex_unlock(&c->tnc_mutex);
-+
-+	return err;
-+}
-+
-+/**
-+ * ubifs_tnc_replace - replace a node in the TNC only if the old node is found.
-+ * @c: UBIFS file-system description object
-+ * @key: key to add
-+ * @old_lnum: LEB number of old node
-+ * @old_offs: old node offset
-+ * @lnum: LEB number of node
-+ * @offs: node offset
-+ * @len: node length
-+ *
-+ * This function replaces a node with key @key in the TNC only if the old node
-+ * is found.  This function is called by garbage collection when node are moved.
-+ * Returns %0 on success or negative error code on failure.
-+ */
++		  int offs, int len);
 +int ubifs_tnc_replace(struct ubifs_info *c, const union ubifs_key *key,
-+		      int old_lnum, int old_offs, int lnum, int offs, int len)
-+{
-+	int found, n, err = 0;
-+	struct ubifs_znode *znode;
-+
-+	mutex_lock(&c->tnc_mutex);
-+	dbg_tnc("old LEB %d:%d, new LEB %d:%d, len %d, key %s", old_lnum,
-+		old_offs, lnum, offs, len, DBGKEY(key));
-+	found = lookup_level0_dirty(c, key, &znode, &n);
-+	if (found < 0) {
-+		err = found;
-+		goto out_unlock;
-+	}
-+
-+	if (found == 1) {
-+		struct ubifs_zbranch *zbr = &znode->zbranch[n];
-+
-+		found = 0;
-+		if (zbr->lnum == old_lnum && zbr->offs == old_offs) {
-+			lnc_free(zbr);
-+			err = ubifs_add_dirt(c, zbr->lnum, zbr->len);
-+			if (err)
-+				goto out_unlock;
-+			zbr->lnum = lnum;
-+			zbr->offs = offs;
-+			zbr->len = len;
-+			found = 1;
-+		} else if (is_hash_key(c, key)) {
-+			found = resolve_collision_directly(c, key, &znode, &n,
-+							   old_lnum, old_offs);
-+			dbg_tnc("rc returned %d, znode %p, n %d, LEB %d:%d",
-+				found, znode, n, old_lnum, old_offs);
-+			if (found < 0) {
-+				err = found;
-+				goto out_unlock;
-+			}
-+
-+			if (found) {
-+				/* Ensure the znode is dirtied */
-+				if (znode->cnext || !ubifs_zn_dirty(znode)) {
-+					znode = dirty_cow_bottom_up(c, znode);
-+					if (IS_ERR(znode)) {
-+						err = PTR_ERR(znode);
-+						goto out_unlock;
-+					}
-+				}
-+				zbr = &znode->zbranch[n];
-+				lnc_free(zbr);
-+				err = ubifs_add_dirt(c, zbr->lnum,
-+						     zbr->len);
-+				if (err)
-+					goto out_unlock;
-+				zbr->lnum = lnum;
-+				zbr->offs = offs;
-+				zbr->len = len;
-+			}
-+		}
-+	}
-+
-+	if (!found)
-+		err = ubifs_add_dirt(c, lnum, len);
-+
-+	if (!err)
-+		err = dbg_check_tnc(c, 0);
-+
-+out_unlock:
-+	mutex_unlock(&c->tnc_mutex);
-+	return err;
-+}
-+
-+/**
-+ * ubifs_tnc_add_nm - add a "hashed" node to TNC.
-+ * @c: UBIFS file-system description object
-+ * @key: key to add
-+ * @lnum: LEB number of node
-+ * @offs: node offset
-+ * @len: node length
-+ * @nm: node name
-+ *
-+ * This is the same as 'ubifs_tnc_add()' but it should be used with keys which
-+ * may have collisions, like directory entry keys.
-+ */
++		      int old_lnum, int old_offs, int lnum, int offs, int len);
 +int ubifs_tnc_add_nm(struct ubifs_info *c, const union ubifs_key *key,
-+		     int lnum, int offs, int len, const struct qstr *nm)
-+{
-+	int found, n, err = 0;
-+	struct ubifs_znode *znode;
-+
-+	mutex_lock(&c->tnc_mutex);
-+	dbg_tnc("LEB %d:%d, name '%.*s', key %s", lnum, offs, nm->len, nm->name,
-+		DBGKEY(key));
-+	found = lookup_level0_dirty(c, key, &znode, &n);
-+	if (found < 0) {
-+		err = found;
-+		goto out_unlock;
-+	}
-+
-+	if (found == 1) {
-+		if (c->replaying)
-+			found = fallible_resolve_collision(c, key, &znode, &n,
-+							   nm, 1);
-+		else
-+			found = resolve_collision(c, key, &znode, &n, nm);
-+		dbg_tnc("rc returned %d, znode %p, n %d", found, znode, n);
-+		if (found < 0) {
-+			err = found;
-+			goto out_unlock;
-+		}
-+
-+		/* Ensure the znode is dirtied */
-+		if (znode->cnext || !ubifs_zn_dirty(znode)) {
-+			znode = dirty_cow_bottom_up(c, znode);
-+			if (IS_ERR(znode)) {
-+				err = PTR_ERR(znode);
-+				goto out_unlock;
-+			}
-+		}
-+
-+		if (found == 1) {
-+			struct ubifs_zbranch *zbr = &znode->zbranch[n];
-+
-+			lnc_free(zbr);
-+			err = ubifs_add_dirt(c, zbr->lnum, zbr->len);
-+			zbr->lnum = lnum;
-+			zbr->offs = offs;
-+			zbr->len = len;
-+			goto out_unlock;
-+		}
-+	}
-+
-+	if (!found) {
-+		struct ubifs_zbranch zbr;
-+
-+		zbr.znode = NULL;
-+		zbr.lnum = lnum;
-+		zbr.offs = offs;
-+		zbr.len = len;
-+		key_copy(c, key, &zbr.key);
-+		err = tnc_insert(c, znode, &zbr, n + 1);
-+		if (err)
-+			goto out_unlock;
-+		if (c->replaying) {
-+			/*
-+			 * We did not find it in the index so there may be a
-+			 * dangling branch still in the index. So we remove it
-+			 * by passing 'ubifs_tnc_remove_nm()' the same key but
-+			 * an unmatchable name.
-+			 */
-+			struct qstr noname = { .len = 0, .name = "" };
-+
-+			err = dbg_check_tnc(c, 0);
-+			mutex_unlock(&c->tnc_mutex);
-+			if (err)
-+				return err;
-+			return ubifs_tnc_remove_nm(c, key, &noname);
-+		}
-+	}
-+
-+out_unlock:
-+	if (!err)
-+		err = dbg_check_tnc(c, 0);
-+	mutex_unlock(&c->tnc_mutex);
-+	return err;
-+}
-+
-+/**
-+ * tnc_delete - delete a znode form TNC.
-+ * @c: UBIFS file-system description object
-+ * @znode: znode to delete from
-+ * @n: zbranch slot number to delete
-+ *
-+ * This function deletes a leaf node from @n-th slot of @znode. Returns zero in
-+ * case of success and a negative error code in case of failure.
-+ */
-+static int tnc_delete(struct ubifs_info *c, struct ubifs_znode *znode, int n)
-+{
-+	struct ubifs_zbranch *zbr;
-+	struct ubifs_znode *zp;
-+	int i, err;
-+
-+	/* Delete without merge for now */
-+	ubifs_assert(znode->level == 0);
-+	ubifs_assert(n >= 0 && n < c->fanout);
-+	dbg_tnc("deleting %s", DBGKEY(&znode->zbranch[n].key));
-+
-+	zbr = &znode->zbranch[n];
-+	lnc_free(zbr);
-+
-+	err = ubifs_add_dirt(c, zbr->lnum, zbr->len);
-+	if (err) {
-+		dbg_dump_znode(c, znode);
-+		return err;
-+	}
-+
-+	/* We do not "gap" zbranch slots */
-+	for (i = n; i < znode->child_cnt - 1; i++)
-+		znode->zbranch[i] = znode->zbranch[i + 1];
-+	znode->child_cnt -= 1;
-+
-+	if (znode->child_cnt > 0)
-+		return 0;
-+
-+	/*
-+	 * This was the last zbranch, we have to delete this znode from the
-+	 * parent.
-+	 */
-+
-+	do {
-+		ubifs_assert(!test_bit(OBSOLETE_ZNODE, &znode->flags));
-+		ubifs_assert(ubifs_zn_dirty(znode));
-+
-+		zp = znode->parent;
-+		n = znode->iip;
-+
-+		atomic_long_dec(&c->dirty_zn_cnt);
-+
-+		err = insert_old_idx_znode(c, znode);
-+		if (err)
-+			return err;
-+
-+		if (znode->cnext) {
-+			__set_bit(OBSOLETE_ZNODE, &znode->flags);
-+			atomic_long_inc(&c->clean_zn_cnt);
-+			atomic_long_inc(&ubifs_clean_zn_cnt);
-+		} else
-+			kfree(znode);
-+		znode = zp;
-+	} while (znode->child_cnt == 1); /* while removing last child */
-+
-+	/* Remove from znode, entry n - 1 */
-+	znode->child_cnt -= 1;
-+	ubifs_assert(znode->level != 0);
-+	for (i = n; i < znode->child_cnt; i++) {
-+		znode->zbranch[i] = znode->zbranch[i + 1];
-+		if (znode->zbranch[i].znode)
-+			znode->zbranch[i].znode->iip = i;
-+	}
-+
-+	/*
-+	 * If this is the root and it has only 1 child then
-+	 * collapse the tree.
-+	 */
-+	if (!znode->parent) {
-+		while (znode->child_cnt == 1 && znode->level != 0) {
-+			zp = znode;
-+			zbr = &znode->zbranch[0];
-+			znode = get_znode(c, znode, 0);
-+			if (IS_ERR(znode))
-+				return PTR_ERR(znode);
-+			znode = dirty_cow_znode(c, zbr);
-+			if (IS_ERR(znode))
-+				return PTR_ERR(znode);
-+			znode->parent = NULL;
-+			znode->iip = 0;
-+			if (c->zroot.len) {
-+				err = insert_old_idx(c, c->zroot.lnum,
-+						     c->zroot.offs);
-+				if (err)
-+					return err;
-+			}
-+			c->zroot.lnum = zbr->lnum;
-+			c->zroot.offs = zbr->offs;
-+			c->zroot.len = zbr->len;
-+			c->zroot.znode = znode;
-+			ubifs_assert(!test_bit(OBSOLETE_ZNODE,
-+				     &zp->flags));
-+			ubifs_assert(test_bit(DIRTY_ZNODE, &zp->flags));
-+			atomic_long_dec(&c->dirty_zn_cnt);
-+
-+			if (zp->cnext) {
-+				__set_bit(OBSOLETE_ZNODE, &zp->flags);
-+				atomic_long_inc(&c->clean_zn_cnt);
-+				atomic_long_inc(&ubifs_clean_zn_cnt);
-+			} else
-+				kfree(zp);
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * ubifs_tnc_remove - remove an index entry of a node.
-+ * @c: UBIFS file-system description object
-+ * @key: key of node
-+ *
-+ * Returns %0 on success or negative error code on failure.
-+ */
-+int ubifs_tnc_remove(struct ubifs_info *c, const union ubifs_key *key)
-+{
-+	int found, n, err = 0;
-+	struct ubifs_znode *znode;
-+
-+	mutex_lock(&c->tnc_mutex);
-+	dbg_tnc("key %s", DBGKEY(key));
-+	found = lookup_level0_dirty(c, key, &znode, &n);
-+	if (found < 0) {
-+		err = found;
-+		goto out_unlock;
-+	}
-+	if (found == 1)
-+		err = tnc_delete(c, znode, n);
-+	if (!err)
-+		err = dbg_check_tnc(c, 0);
-+
-+out_unlock:
-+	mutex_unlock(&c->tnc_mutex);
-+	return err;
-+}
-+
-+/**
-+ * ubifs_tnc_remove_nm - remove an index entry for a "hashed" node.
-+ * @c: UBIFS file-system description object
-+ * @key: key of node
-+ * @nm: directory entry name
-+ *
-+ * Returns %0 on success or negative error code on failure.
-+ */
++		     int lnum, int offs, int len, const struct qstr *nm);
++int ubifs_tnc_remove(struct ubifs_info *c, const union ubifs_key *key);
 +int ubifs_tnc_remove_nm(struct ubifs_info *c, const union ubifs_key *key,
-+			const struct qstr *nm)
-+{
-+	int n, err;
-+	struct ubifs_znode *znode;
-+
-+	mutex_lock(&c->tnc_mutex);
-+	dbg_tnc("%.*s, key %s", nm->len, nm->name, DBGKEY(key));
-+	err = lookup_level0_dirty(c, key, &znode, &n);
-+	if (err < 0)
-+		goto out_unlock;
-+
-+	if (err) {
-+		if (c->replaying)
-+			err = fallible_resolve_collision(c, key, &znode, &n,
-+							 nm, 0);
-+		else
-+			err = resolve_collision(c, key, &znode, &n, nm);
-+		dbg_tnc("rc returned %d, znode %p, n %d", err, znode, n);
-+		if (err < 0)
-+			goto out_unlock;
-+		if (err) {
-+			/* Ensure the znode is dirtied */
-+			if (znode->cnext || !ubifs_zn_dirty(znode)) {
-+				znode = dirty_cow_bottom_up(c, znode);
-+				if (IS_ERR(znode)) {
-+					err = PTR_ERR(znode);
-+					goto out_unlock;
-+				}
-+			}
-+			err = tnc_delete(c, znode, n);
-+		}
-+	}
-+
-+out_unlock:
-+	if (!err)
-+		err = dbg_check_tnc(c, 0);
-+	mutex_unlock(&c->tnc_mutex);
-+	return err;
-+}
-+
-+/**
-+ * key_in_range - determine if a key falls within a range of keys.
-+ * @c: UBIFS file-system description object
-+ * @key: key to check
-+ * @from_key: lowest key in range
-+ * @to_key: highest key in range
-+ *
-+ * This function returns %1 if the key is in range and %0 otherwise.
-+ */
-+static int key_in_range(struct ubifs_info *c, union ubifs_key *key,
-+			union ubifs_key *from_key, union ubifs_key *to_key)
-+{
-+	if (keys_cmp(c, key, from_key) < 0)
-+		return 0;
-+	if (keys_cmp(c, key, to_key) > 0)
-+		return 0;
-+	return 1;
-+}
-+
-+/**
-+ * ubifs_tnc_remove_range - remove index entries in range.
-+ * @c: UBIFS file-system description object
-+ * @from_key: lowest key to remove
-+ * @to_key: highest key to remove
-+ *
-+ * This function removes index entries starting at @from_key and ending at
-+ * @to_key.  This function returns zero in case of success and a negative error
-+ * code in case of failure.
-+ */
++			const struct qstr *nm);
 +int ubifs_tnc_remove_range(struct ubifs_info *c, union ubifs_key *from_key,
-+			   union ubifs_key *to_key)
-+{
-+	int i, n, k, err = 0;
-+	struct ubifs_znode *znode;
-+	union ubifs_key *key;
-+
-+	mutex_lock(&c->tnc_mutex);
-+	while (1) {
-+		/* Find first level 0 znode that contains keys to remove */
-+		err = ubifs_lookup_level0(c, from_key, &znode, &n);
-+		if (err < 0)
-+			goto out_unlock;
-+
-+		if (err)
-+			key = from_key;
-+		else {
-+			err = tnc_next(c, &znode, &n);
-+			if (err == -ENOENT) {
-+				err = 0;
-+				goto out_unlock;
-+			}
-+			if (err < 0)
-+				goto out_unlock;
-+			key = &znode->zbranch[n].key;
-+			if (!key_in_range(c, key, from_key, to_key)) {
-+				err = 0;
-+				goto out_unlock;
-+			}
-+		}
-+
-+		/* Ensure the znode is dirtied */
-+		if (znode->cnext || !ubifs_zn_dirty(znode)) {
-+			znode = dirty_cow_bottom_up(c, znode);
-+			if (IS_ERR(znode)) {
-+				err = PTR_ERR(znode);
-+				goto out_unlock;
-+			}
-+		}
-+
-+		/* Remove all keys in range except the first */
-+		for (i = n + 1, k = 0; i < znode->child_cnt; i++, k++) {
-+			key = &znode->zbranch[i].key;
-+			if (!key_in_range(c, key, from_key, to_key))
-+				break;
-+			lnc_free(&znode->zbranch[i]);
-+			err = ubifs_add_dirt(c, znode->zbranch[i].lnum,
-+					     znode->zbranch[i].len);
-+			if (err) {
-+				dbg_dump_znode(c, znode);
-+				goto out_unlock;
-+			}
-+			dbg_tnc("removing %s", DBGKEY(key));
-+		}
-+		if (k) {
-+			for (i = n + 1 + k; i < znode->child_cnt; i++)
-+				znode->zbranch[i - k] = znode->zbranch[i];
-+			znode->child_cnt -= k;
-+		}
-+
-+		/* Now delete the first */
-+		err = tnc_delete(c, znode, n);
-+		if (err)
-+			goto out_unlock;
-+	}
-+
-+out_unlock:
-+	if (!err)
-+		err = dbg_check_tnc(c, 0);
-+	mutex_unlock(&c->tnc_mutex);
-+	return err;
-+}
-+
-+/**
-+ * ubifs_tnc_remove_ino - remove an inode from TNC.
-+ * @c: UBIFS file-system description object
-+ * @inum: inode number to remove
-+ *
-+ * This function remove inode @inum and all the extended attributes associated
-+ * with the anode from TNC and returns zero in case of success or a negative
-+ * error code in case of failure.
-+ */
-+int ubifs_tnc_remove_ino(struct ubifs_info *c, ino_t inum)
-+{
-+	union ubifs_key key1, key2;
-+	struct ubifs_dent_node *xent, *pxent = NULL;
-+	struct qstr nm = { .name = NULL };
-+
-+	dbg_tnc("ino %lu", (unsigned long)inum);
-+
-+	/*
-+	 * Walk all extended attribute entries and remove them together with
-+	 * corresponding extended attribute inodes.
-+	 */
-+	lowest_xent_key(c, &key1, inum);
-+	while (1) {
-+		ino_t xattr_inum;
-+		int err;
-+
-+		xent = ubifs_tnc_next_ent(c, &key1, &nm);
-+		if (IS_ERR(xent)) {
-+			err = PTR_ERR(xent);
-+			if (err == -ENOENT)
-+				break;
-+			return err;
-+		}
-+
-+		xattr_inum = le64_to_cpu(xent->inum);
-+		dbg_tnc("xent '%s', ino %lu", xent->name,
-+			(unsigned long)xattr_inum);
-+
-+		nm.name = (char *)xent->name;
-+		nm.len = le16_to_cpu(xent->nlen);
-+		err = ubifs_tnc_remove_nm(c, &key1, &nm);
-+		if (err) {
-+			kfree(xent);
-+			return err;
-+		}
-+
-+		lowest_ino_key(c, &key1, xattr_inum);
-+		highest_ino_key(c, &key2, xattr_inum);
-+		err = ubifs_tnc_remove_range(c, &key1, &key2);
-+		if (err) {
-+			kfree(xent);
-+			return err;
-+		}
-+
-+		kfree(pxent);
-+		pxent = xent;
-+		key_read(c, &xent->key, &key1);
-+	}
-+
-+	kfree(pxent);
-+	lowest_ino_key(c, &key1, inum);
-+	highest_ino_key(c, &key2, inum);
-+
-+	return ubifs_tnc_remove_range(c, &key1, &key2);
-+}
-+
-+/**
-+ * ubifs_tnc_next_ent - walk directory or extended attribute entries.
-+ * @c: UBIFS file-system description object
-+ * @key: key of last entry
-+ * @nm: name of last entry found or %NULL
-+ *
-+ * This function finds and reads the next directory or extended attribute entry
-+ * after the given key (@key) if there is one. @nm is used to resolve
-+ * collisions.
-+ *
-+ * If the name of the current entry is not known and only the key is known,
-+ * @nm->name has to be %NULL. In this case the semantics of this function is a
-+ * little bit different and it returns the entry corresponding to this key, not
-+ * the next one. If the key was not found, the closest "right" entry is
-+ * returned.
-+ *
-+ * If the fist entry has to be found, @key has to contain the lowest possible
-+ * key value for this inode and @name has to be %NULL.
-+ *
-+ * This function returns the found directory or extended attribute entry node
-+ * in case of success, %-ENOENT is returned if no entry was found, and a
-+ * negative error code is returned in case of failure.
-+ */
++			   union ubifs_key *to_key);
++int ubifs_tnc_remove_ino(struct ubifs_info *c, ino_t inum);
 +struct ubifs_dent_node *ubifs_tnc_next_ent(struct ubifs_info *c,
 +					   union ubifs_key *key,
-+					   const struct qstr *nm)
-+{
-+	int n, err, type = key_type(c, key);
-+	struct ubifs_znode *znode;
-+	struct ubifs_dent_node *dent;
-+	struct ubifs_zbranch *zbr;
-+	union ubifs_key *dkey;
++					   const struct qstr *nm);
++void ubifs_tnc_close(struct ubifs_info *c);
++int ubifs_tnc_has_node(struct ubifs_info *c, union ubifs_key *key, int level,
++		       int lnum, int offs, int is_idx);
++int ubifs_dirty_idx_node(struct ubifs_info *c, union ubifs_key *key, int level,
++			 int lnum, int offs);
++/* Shared by tnc.c for tnc_commit.c */
++void destroy_old_idx(struct ubifs_info *c);
++int is_idx_node_in_tnc(struct ubifs_info *c, union ubifs_key *key, int level,
++		       int lnum, int offs);
++int insert_old_idx_znode(struct ubifs_info *c, struct ubifs_znode *znode);
++int ubifs_tnc_get_bu_keys(struct ubifs_info *c, struct bu_info *bu);
++int ubifs_tnc_bulk_read(struct ubifs_info *c, struct bu_info *bu);
 +
-+	dbg_tnc("%s %s", nm->name ? (char *)nm->name : "(lowest)", DBGKEY(key));
-+	ubifs_assert(is_hash_key(c, key));
-+
-+	mutex_lock(&c->tnc_mutex);
-+	err = ubifs_lookup_level0(c, key, &znode, &n);
-+	if (unlikely(err < 0))
-+		goto out_unlock;
-+
-+	if (nm->name) {
-+		if (err) {
-+			/* Handle collisions */
-+			err = resolve_collision(c, key, &znode, &n, nm);
-+			dbg_tnc("rc returned %d, znode %p, n %d",
-+				err, znode, n);
-+			if (unlikely(err < 0))
-+				goto out_unlock;
-+		}
-+
-+		/* Now find next entry */
-+		err = tnc_next(c, &znode, &n);
-+		if (unlikely(err))
-+			goto out_unlock;
-+	} else {
-+		/*
-+		 * The full name of the entry was not given, in which case the
-+		 * behavior of this function is a little different and it
-+		 * returns current entry, not the next one.
-+		 */
-+		if (!err) {
-+			/*
-+			 * However, the given key does not exist in the TNC
-+			 * tree and @znode/@n variables contain the closest
-+			 * "preceding" element. Switch to the next one.
-+			 */
-+			err = tnc_next(c, &znode, &n);
-+			if (err)
-+				goto out_unlock;
-+		}
-+	}
-+
-+	zbr = &znode->zbranch[n];
-+	dent = kmalloc(zbr->len, GFP_NOFS);
-+	if (unlikely(!dent)) {
-+		err = -ENOMEM;
-+		goto out_unlock;
-+	}
-+
-+	/*
-+	 * The above 'tnc_next()' call could lead us to the next inode, check
-+	 * this.
-+	 */
-+	dkey = &zbr->key;
-+	if (key_inum(c, dkey) != key_inum(c, key) ||
-+	    key_type(c, dkey) != type) {
-+		err = -ENOENT;
-+		goto out_free;
-+	}
-+
-+	err = tnc_read_node_nm(c, zbr, dent);
-+	if (unlikely(err))
-+		goto out_free;
-+
-+	mutex_unlock(&c->tnc_mutex);
-+	return dent;
-+
-+out_free:
-+	kfree(dent);
-+out_unlock:
-+	mutex_unlock(&c->tnc_mutex);
-+	return ERR_PTR(err);
-+}
-diff --git a/fs/ubifs/tnc_misc.c b/fs/ubifs/tnc_misc.c
-new file mode 100644
-index 0000000..955219f
---- /dev/null
-+++ b/fs/ubifs/tnc_misc.c
-@@ -0,0 +1,435 @@
-+/*
-+ * This file is part of UBIFS.
-+ *
-+ * Copyright (C) 2006-2008 Nokia Corporation.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published by
-+ * the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program; if not, write to the Free Software Foundation, Inc., 51
-+ * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-+ *
-+ * Authors: Adrian Hunter
-+ *          Artem Bityutskiy (���������������� ����������)
-+ */
-+
-+/*
-+ * This file contains miscelanious TNC-related functions shared betweend
-+ * different files. This file does not form any logically separate TNC
-+ * sub-system. The file was created because there is a lot of TNC code and
-+ * putting it all in one file would make that file too big and unreadable.
-+ */
-+
-+#include "ubifs.h"
-+
-+/**
-+ * ubifs_tnc_levelorder_next - next TNC tree element in levelorder traversal.
-+ * @zr: root of the subtree to traverse
-+ * @znode: previous znode
-+ *
-+ * This function implements levelorder TNC traversal. The LNC is ignored.
-+ * Returns the next element or %NULL if @znode is already the last one.
-+ */
++/* tnc_misc.c */
 +struct ubifs_znode *ubifs_tnc_levelorder_next(struct ubifs_znode *zr,
-+					      struct ubifs_znode *znode)
-+{
-+	int level, iip, level_search = 0;
-+	struct ubifs_znode *zn;
-+
-+	ubifs_assert(zr);
-+
-+	if (unlikely(!znode))
-+		return zr;
-+
-+	if (unlikely(znode == zr)) {
-+		if (znode->level == 0)
-+			return NULL;
-+		return ubifs_tnc_find_child(zr, 0);
-+	}
-+
-+	level = znode->level;
-+
-+	iip = znode->iip;
-+	while (1) {
-+		ubifs_assert(znode->level <= zr->level);
-+
-+		/*
-+		 * First walk up until there is a znode with next branch to
-+		 * look at.
-+		 */
-+		while (znode->parent != zr && iip >= znode->parent->child_cnt) {
-+			znode = znode->parent;
-+			iip = znode->iip;
-+		}
-+
-+		if (unlikely(znode->parent == zr &&
-+			     iip >= znode->parent->child_cnt)) {
-+			/* This level is done, switch to the lower one */
-+			level -= 1;
-+			if (level_search || level < 0)
-+				/*
-+				 * We were already looking for znode at lower
-+				 * level ('level_search'). As we are here
-+				 * again, it just does not exist. Or all levels
-+				 * were finished ('level < 0').
-+				 */
-+				return NULL;
-+
-+			level_search = 1;
-+			iip = -1;
-+			znode = ubifs_tnc_find_child(zr, 0);
-+			ubifs_assert(znode);
-+		}
-+
-+		/* Switch to the next index */
-+		zn = ubifs_tnc_find_child(znode->parent, iip + 1);
-+		if (!zn) {
-+			/* No more children to look at, we have walk up */
-+			iip = znode->parent->child_cnt;
-+			continue;
-+		}
-+
-+		/* Walk back down to the level we came from ('level') */
-+		while (zn->level != level) {
-+			znode = zn;
-+			zn = ubifs_tnc_find_child(zn, 0);
-+			if (!zn) {
-+				/*
-+				 * This path is not too deep so it does not
-+				 * reach 'level'. Try next path.
-+				 */
-+				iip = znode->iip;
-+				break;
-+			}
-+		}
-+
-+		if (zn) {
-+			ubifs_assert(zn->level >= 0);
-+			return zn;
-+		}
-+	}
-+}
-+
-+/**
-+ * ubifs_search_zbranch - search znode branch.
-+ * @c: UBIFS file-system description object
-+ * @znode: znode to search in
-+ * @key: key to search for
-+ * @n: znode branch slot number is returned here
-+ *
-+ * This is a helper function which search branch with key @key in @znode using
-+ * binary search. The result of the search may be:
-+ *   o exact match, then %1 is returned, and the slot number of the branch is
-+ *     stored in @n;
-+ *   o no exact match, then %0 is returned and the slot number of the left
-+ *     closest branch is returned in @n; the slot if all keys in this znode are
-+ *     greater than @key, then %-1 is returned in @n.
-+ */
++					      struct ubifs_znode *znode);
 +int ubifs_search_zbranch(const struct ubifs_info *c,
 +			 const struct ubifs_znode *znode,
-+			 const union ubifs_key *key, int *n)
-+{
-+	int beg = 0, end = znode->child_cnt, uninitialized_var(mid);
-+	int uninitialized_var(cmp);
-+	const struct ubifs_zbranch *zbr = &znode->zbranch[0];
-+
-+	ubifs_assert(end > beg);
-+
-+	while (end > beg) {
-+		mid = (beg + end) >> 1;
-+		cmp = keys_cmp(c, key, &zbr[mid].key);
-+		if (cmp > 0)
-+			beg = mid + 1;
-+		else if (cmp < 0)
-+			end = mid;
-+		else {
-+			*n = mid;
-+			return 1;
-+		}
-+	}
-+
-+	*n = end - 1;
-+
-+	/* The insert point is after *n */
-+	ubifs_assert(*n >= -1 && *n < znode->child_cnt);
-+	if (*n == -1)
-+		ubifs_assert(keys_cmp(c, key, &zbr[0].key) < 0);
-+	else
-+		ubifs_assert(keys_cmp(c, key, &zbr[*n].key) > 0);
-+	if (*n + 1 < znode->child_cnt)
-+		ubifs_assert(keys_cmp(c, key, &zbr[*n + 1].key) < 0);
-+
-+	return 0;
-+}
-+
-+/**
-+ * ubifs_tnc_postorder_first - find first znode to do postorder tree traversal.
-+ * @znode: znode to start at (root of the sub-tree to traverse)
-+ *
-+ * Find the lowest leftmost znode in a subtree of the TNC tree. The LNC is
-+ * ignored.
-+ */
-+struct ubifs_znode *ubifs_tnc_postorder_first(struct ubifs_znode *znode)
-+{
-+	if (unlikely(!znode))
-+		return NULL;
-+
-+	while (znode->level > 0) {
-+		struct ubifs_znode *child;
-+
-+		child = ubifs_tnc_find_child(znode, 0);
-+		if (!child)
-+			return znode;
-+		znode = child;
-+	}
-+
-+	return znode;
-+}
-+
-+/**
-+ * ubifs_tnc_postorder_next - next TNC tree element in postorder traversal.
-+ * @znode: previous znode
-+ *
-+ * This function implements postorder TNC traversal. The LNC is ignored.
-+ * Returns the next element or %NULL if @znode is already the last one.
-+ */
-+struct ubifs_znode *ubifs_tnc_postorder_next(struct ubifs_znode *znode)
-+{
-+	struct ubifs_znode *zn;
-+
-+	ubifs_assert(znode);
-+	if (unlikely(!znode->parent))
-+		return NULL;
-+
-+	/* Switch to the next index in the parent */
-+	zn = ubifs_tnc_find_child(znode->parent, znode->iip + 1);
-+	if (!zn)
-+		/* This is in fact the last child, return parent */
-+		return znode->parent;
-+
-+	/* Go to the first znode in this new subtree */
-+	return ubifs_tnc_postorder_first(zn);
-+}
-+
-+/**
-+ * read_znode - read an indexing node from flash and fill znode.
-+ * @c: UBIFS file-system description object
-+ * @lnum: LEB of the indexing node to read
-+ * @offs: node offset
-+ * @len: node length
-+ * @znode: znode to read to
-+ *
-+ * This function reads an indexing node from the flash media and fills znode
-+ * with the read data. Returns zero in case of success and a negative error
-+ * code in case of failure. The read indexing node is validated and if anything
-+ * is wrong with it, this function prints complaint messages and returns
-+ * %-EINVAL.
-+ */
-+static int read_znode(struct ubifs_info *c, int lnum, int offs, int len,
-+		      struct ubifs_znode *znode)
-+{
-+	int i, err, type, cmp;
-+	struct ubifs_idx_node *idx;
-+
-+	idx = kmalloc(c->max_idx_node_sz, GFP_NOFS);
-+	if (!idx)
-+		return -ENOMEM;
-+
-+	err = ubifs_read_node(c, idx, UBIFS_IDX_NODE, len, lnum, offs);
-+	if (err < 0) {
-+		kfree(idx);
-+		return err;
-+	}
-+
-+	znode->child_cnt = le16_to_cpu(idx->child_cnt);
-+	znode->level = le16_to_cpu(idx->level);
-+
-+	dbg_tnc("LEB %d:%d, level %d, %d branch",
-+		lnum, offs, znode->level, znode->child_cnt);
-+
-+	if (znode->child_cnt > c->fanout || znode->level > UBIFS_MAX_LEVELS) {
-+		dbg_err("current fanout %d, branch count %d",
-+			c->fanout, znode->child_cnt);
-+		dbg_err("max levels %d, znode level %d",
-+			UBIFS_MAX_LEVELS, znode->level);
-+		err = 1;
-+		goto out_dump;
-+	}
-+
-+	for (i = 0; i < znode->child_cnt; i++) {
-+		const struct ubifs_branch *br = ubifs_idx_branch(c, idx, i);
-+		struct ubifs_zbranch *zbr = &znode->zbranch[i];
-+
-+		key_read(c, &br->key, &zbr->key);
-+		zbr->lnum = le32_to_cpu(br->lnum);
-+		zbr->offs = le32_to_cpu(br->offs);
-+		zbr->len  = le32_to_cpu(br->len);
-+		zbr->znode = NULL;
-+
-+		/* Validate branch */
-+
-+		if (zbr->lnum < c->main_first ||
-+		    zbr->lnum >= c->leb_cnt || zbr->offs < 0 ||
-+		    zbr->offs + zbr->len > c->leb_size || zbr->offs & 7) {
-+			dbg_err("bad branch %d", i);
-+			err = 2;
-+			goto out_dump;
-+		}
-+
-+		switch (key_type(c, &zbr->key)) {
-+		case UBIFS_INO_KEY:
-+		case UBIFS_DATA_KEY:
-+		case UBIFS_DENT_KEY:
-+		case UBIFS_XENT_KEY:
-+			break;
-+		default:
-+			dbg_msg("bad key type at slot %d: %s", i,
-+				DBGKEY(&zbr->key));
-+			err = 3;
-+			goto out_dump;
-+		}
-+
-+		if (znode->level)
-+			continue;
-+
-+		type = key_type(c, &zbr->key);
-+		if (c->ranges[type].max_len == 0) {
-+			if (zbr->len != c->ranges[type].len) {
-+				dbg_err("bad target node (type %d) length (%d)",
-+					type, zbr->len);
-+				dbg_err("have to be %d", c->ranges[type].len);
-+				err = 4;
-+				goto out_dump;
-+			}
-+		} else if (zbr->len < c->ranges[type].min_len ||
-+			   zbr->len > c->ranges[type].max_len) {
-+			dbg_err("bad target node (type %d) length (%d)",
-+				type, zbr->len);
-+			dbg_err("have to be in range of %d-%d",
-+				c->ranges[type].min_len,
-+				c->ranges[type].max_len);
-+			err = 5;
-+			goto out_dump;
-+		}
-+	}
-+
-+	/*
-+	 * Ensure that the next key is greater or equivalent to the
-+	 * previous one.
-+	 */
-+	for (i = 0; i < znode->child_cnt - 1; i++) {
-+		const union ubifs_key *key1, *key2;
-+
-+		key1 = &znode->zbranch[i].key;
-+		key2 = &znode->zbranch[i + 1].key;
-+
-+		cmp = keys_cmp(c, key1, key2);
-+		if (cmp > 0) {
-+			dbg_err("bad key order (keys %d and %d)", i, i + 1);
-+			err = 6;
-+			goto out_dump;
-+		} else if (cmp == 0 && !is_hash_key(c, key1)) {
-+			/* These can only be keys with colliding hash */
-+			dbg_err("keys %d and %d are not hashed but equivalent",
-+				i, i + 1);
-+			err = 7;
-+			goto out_dump;
-+		}
-+	}
-+
-+	kfree(idx);
-+	return 0;
-+
-+out_dump:
-+	ubifs_err("bad indexing node at LEB %d:%d, error %d", lnum, offs, err);
-+	dbg_dump_node(c, idx);
-+	kfree(idx);
-+	return -EINVAL;
-+}
-+
-+/**
-+ * ubifs_load_znode - load znode to TNC cache.
-+ * @c: UBIFS file-system description object
-+ * @zbr: znode branch
-+ * @parent: znode's parent
-+ * @iip: index in parent
-+ *
-+ * This function loads znode pointed to by @zbr into the TNC cache and
-+ * returns pointer to it in case of success and a negative error code in case
-+ * of failure.
-+ */
++			 const union ubifs_key *key, int *n);
++struct ubifs_znode *ubifs_tnc_postorder_first(struct ubifs_znode *znode);
++struct ubifs_znode *ubifs_tnc_postorder_next(struct ubifs_znode *znode);
++long ubifs_destroy_tnc_subtree(struct ubifs_znode *zr);
 +struct ubifs_znode *ubifs_load_znode(struct ubifs_info *c,
 +				     struct ubifs_zbranch *zbr,
-+				     struct ubifs_znode *parent, int iip)
-+{
-+	int err;
-+	struct ubifs_znode *znode;
-+
-+	ubifs_assert(!zbr->znode);
-+	/*
-+	 * A slab cache is not presently used for znodes because the znode size
-+	 * depends on the fanout which is stored in the superblock.
-+	 */
-+	znode = kzalloc(c->max_znode_sz, GFP_NOFS);
-+	if (!znode)
-+		return ERR_PTR(-ENOMEM);
-+
-+	err = read_znode(c, zbr->lnum, zbr->offs, zbr->len, znode);
-+	if (err)
-+		goto out;
-+
-+	zbr->znode = znode;
-+	znode->parent = parent;
-+	znode->time = get_seconds();
-+	znode->iip = iip;
-+
-+	return znode;
-+
-+out:
-+	kfree(znode);
-+	return ERR_PTR(err);
-+}
-+
-+/**
-+ * ubifs_tnc_read_node - read a leaf node from the flash media.
-+ * @c: UBIFS file-system description object
-+ * @zbr: key and position of the node
-+ * @node: node is returned here
-+ *
-+ * This function reads a node defined by @zbr from the flash media. Returns
-+ * zero in case of success or a negative negative error code in case of
-+ * failure.
-+ */
++				     struct ubifs_znode *parent, int iip);
 +int ubifs_tnc_read_node(struct ubifs_info *c, struct ubifs_zbranch *zbr,
-+			void *node)
-+{
-+	union ubifs_key key1, *key = &zbr->key;
-+	int err, type = key_type(c, key);
++			void *node);
 +
-+	err = ubifs_read_node(c, node, type, zbr->len, zbr->lnum, zbr->offs);
++/* tnc_commit.c */
++int ubifs_tnc_start_commit(struct ubifs_info *c, struct ubifs_zbranch *zroot);
++int ubifs_tnc_end_commit(struct ubifs_info *c);
 +
-+	if (err) {
-+		dbg_tnc("key %s", DBGKEY(key));
-+		return err;
-+	}
++/* shrinker.c */
++int ubifs_shrinker(int nr_to_scan, gfp_t gfp_mask);
 +
-+	/* Make sure the key of the read node is correct */
-+	key_read(c, node + UBIFS_KEY_OFFSET, &key1);
-+	if (!keys_eq(c, key, &key1)) {
-+		ubifs_err("bad key in node at LEB %d:%d",
-+			  zbr->lnum, zbr->offs);
-+		dbg_tnc("looked for key %s found node's key %s",
-+			DBGKEY(key), DBGKEY1(&key1));
-+		dbg_dump_node(c, node);
-+		return -EINVAL;
-+	}
++/* commit.c */
++int ubifs_bg_thread(void *info);
++void ubifs_commit_required(struct ubifs_info *c);
++void ubifs_request_bg_commit(struct ubifs_info *c);
++int ubifs_run_commit(struct ubifs_info *c);
++void ubifs_recovery_commit(struct ubifs_info *c);
++int ubifs_gc_should_commit(struct ubifs_info *c);
++void ubifs_wait_for_commit(struct ubifs_info *c);
 +
-+	return 0;
-+}
++/* master.c */
++int ubifs_read_master(struct ubifs_info *c);
++int ubifs_write_master(struct ubifs_info *c);
++
++/* sb.c */
++int ubifs_read_superblock(struct ubifs_info *c);
++struct ubifs_sb_node *ubifs_read_sb_node(struct ubifs_info *c);
++int ubifs_write_sb_node(struct ubifs_info *c, struct ubifs_sb_node *sup);
++
++/* replay.c */
++int ubifs_validate_entry(struct ubifs_info *c,
++			 const struct ubifs_dent_node *dent);
++int ubifs_replay_journal(struct ubifs_info *c);
++
++/* gc.c */
++int ubifs_garbage_collect(struct ubifs_info *c, int anyway);
++int ubifs_gc_start_commit(struct ubifs_info *c);
++int ubifs_gc_end_commit(struct ubifs_info *c);
++void ubifs_destroy_idx_gc(struct ubifs_info *c);
++int ubifs_get_idx_gc_leb(struct ubifs_info *c);
++int ubifs_garbage_collect_leb(struct ubifs_info *c, struct ubifs_lprops *lp);
++
++/* orphan.c */
++int ubifs_add_orphan(struct ubifs_info *c, ino_t inum);
++void ubifs_delete_orphan(struct ubifs_info *c, ino_t inum);
++int ubifs_orphan_start_commit(struct ubifs_info *c);
++int ubifs_orphan_end_commit(struct ubifs_info *c);
++int ubifs_mount_orphans(struct ubifs_info *c, int unclean, int read_only);
++int ubifs_clear_orphans(struct ubifs_info *c);
++
++/* lpt.c */
++int ubifs_calc_lpt_geom(struct ubifs_info *c);
++int ubifs_create_dflt_lpt(struct ubifs_info *c, int *main_lebs, int lpt_first,
++			  int *lpt_lebs, int *big_lpt);
++int ubifs_lpt_init(struct ubifs_info *c, int rd, int wr);
++struct ubifs_lprops *ubifs_lpt_lookup(struct ubifs_info *c, int lnum);
++struct ubifs_lprops *ubifs_lpt_lookup_dirty(struct ubifs_info *c, int lnum);
++int ubifs_lpt_scan_nolock(struct ubifs_info *c, int start_lnum, int end_lnum,
++			  ubifs_lpt_scan_callback scan_cb, void *data);
++
++/* Shared by lpt.c for lpt_commit.c */
++void ubifs_pack_lsave(struct ubifs_info *c, void *buf, int *lsave);
++void ubifs_pack_ltab(struct ubifs_info *c, void *buf,
++		     struct ubifs_lpt_lprops *ltab);
++void ubifs_pack_pnode(struct ubifs_info *c, void *buf,
++		      struct ubifs_pnode *pnode);
++void ubifs_pack_nnode(struct ubifs_info *c, void *buf,
++		      struct ubifs_nnode *nnode);
++struct ubifs_pnode *ubifs_get_pnode(struct ubifs_info *c,
++				    struct ubifs_nnode *parent, int iip);
++struct ubifs_nnode *ubifs_get_nnode(struct ubifs_info *c,
++				    struct ubifs_nnode *parent, int iip);
++int ubifs_read_nnode(struct ubifs_info *c, struct ubifs_nnode *parent, int iip);
++void ubifs_add_lpt_dirt(struct ubifs_info *c, int lnum, int dirty);
++void ubifs_add_nnode_dirt(struct ubifs_info *c, struct ubifs_nnode *nnode);
++uint32_t ubifs_unpack_bits(uint8_t **addr, int *pos, int nrbits);
++struct ubifs_nnode *ubifs_first_nnode(struct ubifs_info *c, int *hght);
++/* Needed only in debugging code in lpt_commit.c */
++int ubifs_unpack_nnode(const struct ubifs_info *c, void *buf,
++		       struct ubifs_nnode *nnode);
++
++/* lpt_commit.c */
++int ubifs_lpt_start_commit(struct ubifs_info *c);
++int ubifs_lpt_end_commit(struct ubifs_info *c);
++int ubifs_lpt_post_commit(struct ubifs_info *c);
++void ubifs_lpt_free(struct ubifs_info *c, int wr_only);
++
++/* lprops.c */
++const struct ubifs_lprops *ubifs_change_lp(struct ubifs_info *c,
++					   const struct ubifs_lprops *lp,
++					   int free, int dirty, int flags,
++					   int idx_gc_cnt);
++void ubifs_get_lp_stats(struct ubifs_info *c, struct ubifs_lp_stats *lst);
++void ubifs_add_to_cat(struct ubifs_info *c, struct ubifs_lprops *lprops,
++		      int cat);
++void ubifs_replace_cat(struct ubifs_info *c, struct ubifs_lprops *old_lprops,
++		       struct ubifs_lprops *new_lprops);
++void ubifs_ensure_cat(struct ubifs_info *c, struct ubifs_lprops *lprops);
++int ubifs_categorize_lprops(const struct ubifs_info *c,
++			    const struct ubifs_lprops *lprops);
++int ubifs_change_one_lp(struct ubifs_info *c, int lnum, int free, int dirty,
++			int flags_set, int flags_clean, int idx_gc_cnt);
++int ubifs_update_one_lp(struct ubifs_info *c, int lnum, int free, int dirty,
++			int flags_set, int flags_clean);
++int ubifs_read_one_lp(struct ubifs_info *c, int lnum, struct ubifs_lprops *lp);
++const struct ubifs_lprops *ubifs_fast_find_free(struct ubifs_info *c);
++const struct ubifs_lprops *ubifs_fast_find_empty(struct ubifs_info *c);
++const struct ubifs_lprops *ubifs_fast_find_freeable(struct ubifs_info *c);
++const struct ubifs_lprops *ubifs_fast_find_frdi_idx(struct ubifs_info *c);
++
++/* file.c */
++int ubifs_fsync(struct file *file, struct dentry *dentry, int datasync);
++int ubifs_setattr(struct dentry *dentry, struct iattr *attr);
++
++/* dir.c */
++struct inode *ubifs_new_inode(struct ubifs_info *c, const struct inode *dir,
++			      int mode);
++int ubifs_getattr(struct vfsmount *mnt, struct dentry *dentry,
++		  struct kstat *stat);
++
++/* xattr.c */
++int ubifs_setxattr(struct dentry *dentry, const char *name,
++		   const void *value, size_t size, int flags);
++ssize_t ubifs_getxattr(struct dentry *dentry, const char *name, void *buf,
++		       size_t size);
++ssize_t ubifs_listxattr(struct dentry *dentry, char *buffer, size_t size);
++int ubifs_removexattr(struct dentry *dentry, const char *name);
++
++/* super.c */
++struct inode *ubifs_iget(struct super_block *sb, unsigned long inum);
++int ubifs_iput(struct inode *inode);
++
++/* recovery.c */
++int ubifs_recover_master_node(struct ubifs_info *c);
++int ubifs_write_rcvrd_mst_node(struct ubifs_info *c);
++struct ubifs_scan_leb *ubifs_recover_leb(struct ubifs_info *c, int lnum,
++					 int offs, void *sbuf, int grouped);
++struct ubifs_scan_leb *ubifs_recover_log_leb(struct ubifs_info *c, int lnum,
++					     int offs, void *sbuf);
++int ubifs_recover_inl_heads(const struct ubifs_info *c, void *sbuf);
++int ubifs_clean_lebs(const struct ubifs_info *c, void *sbuf);
++int ubifs_rcvry_gc_commit(struct ubifs_info *c);
++int ubifs_recover_size_accum(struct ubifs_info *c, union ubifs_key *key,
++			     int deletion, loff_t new_size);
++int ubifs_recover_size(struct ubifs_info *c);
++void ubifs_destroy_size_tree(struct ubifs_info *c);
++
++/* ioctl.c */
++long ubifs_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
++void ubifs_set_inode_flags(struct inode *inode);
++#ifdef CONFIG_COMPAT
++long ubifs_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
++#endif
++
++/* compressor.c */
++int __init ubifs_compressors_init(void);
++void __exit ubifs_compressors_exit(void);
++void ubifs_compress(const void *in_buf, int in_len, void *out_buf, int *out_len,
++		    int *compr_type);
++int ubifs_decompress(const void *buf, int len, void *out, int *out_len,
++		     int compr_type);
++
++int ubifs_init(void);
++int ubifs_mount(struct ubifs_priv *priv);
++
++#include "debug.h"
++#include "misc.h"
++#include "key.h"
++#endif /* !__UBIFS_H__ */
 -- 
 1.7.1
 
 
 
---===============8638472518892515822==
+--===============7074821753046268722==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -3267,4 +2215,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============8638472518892515822==--
+--===============7074821753046268722==--
