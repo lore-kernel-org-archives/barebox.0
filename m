@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TfbPV-0003OC-Ig
- for barebox@lists.infradead.org; Mon, 03 Dec 2012 19:10:35 +0000
+ id 1TfbWh-0005Ah-Lv
+ for barebox@lists.infradead.org; Mon, 03 Dec 2012 19:18:01 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1354215786-25615-1-git-send-email-s.hauer@pengutronix.de>
- <1354215786-25615-2-git-send-email-s.hauer@pengutronix.de>
-Date: Mon, 03 Dec 2012 20:10:08 +0100
-In-Reply-To: <1354215786-25615-2-git-send-email-s.hauer@pengutronix.de>
- (Sascha Hauer's message of "Thu, 29 Nov 2012 20:03:06 +0100")
-Message-ID: <87y5hfymsv.fsf@free.fr>
+References: <1354558114-28799-1-git-send-email-renaud.barbier@ge.com>
+Date: Mon, 03 Dec 2012 20:17:50 +0100
+In-Reply-To: <1354558114-28799-1-git-send-email-renaud.barbier@ge.com> (Renaud
+ Barbier's message of "Mon, 3 Dec 2012 18:08:16 +0000")
+Message-ID: <87txs3ymg1.fsf@free.fr>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,25 +22,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] mtd core: call driver write function with complete
- buffer
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 00/18] UBIFS support
+To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
+Renaud Barbier <renaud.barbier@ge.com> writes:
 
-> mtd->write is supposed to loop around pages internally, no need
-> to do this in mtd_write. This fixes a huge write performance drop
-> with the m25p80 driver when it was converted to a mtd driver recently.
-> Since mtd->writesize is 1 for this driver mtd_write ended up doing
-> single byte writes on the flash.
+> This patchset adds UBIFS support to Barebox. It includes the core UBIFS
+> support and more recent patches found in the U-boot git tree.
+> It has been tested on a PPC system  by mounting a NOR flash UBI volume,
+> copying the kernel to memory and booting it.
 
-Both patches look good to me.
-Of course they change a bit the behaviour, as previously mtd_write() was
-skipping "all 0xff" pages writes, and it doesn't do it anymore. But I don't see
-any negative impact out of my head here.
+Hi Renaud,
 
-As they are already in -next, no need for an Acked-by :)
+That's a really huge piece of a patchset.
+
+Please tell me that almost 100% of the code was taken out of the linux
+kernel. Even better, are there any patches in there that are linux kernel
+copies, so that review is not necessary ?
 
 Cheers.
 
