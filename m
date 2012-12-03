@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TfTOV-0006Rv-EU
+ id 1TfTOV-0006Rw-EV
  for barebox@lists.infradead.org; Mon, 03 Dec 2012 10:37:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  3 Dec 2012 11:36:56 +0100
-Message-Id: <1354531016-22069-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1354531016-22069-1-git-send-email-s.hauer@pengutronix.de>
-References: <1354531016-22069-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  3 Dec 2012 11:36:55 +0100
+Message-Id: <1354531016-22069-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,65 +19,254 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM i.MX: Add i.MX51 PATA device support
+Subject: [PATCH 1/2] ata: Add i.MX PATA driver support
 To: barebox@lists.infradead.org
+
+Straight forward driver, we only have to configure some additional
+bits and then use the generic ide support.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/clk-imx5.c                   |    1 +
- arch/arm/mach-imx/devices.c                    |    5 +++++
- arch/arm/mach-imx/include/mach/devices-imx51.h |    5 +++++
- arch/arm/mach-imx/include/mach/devices.h       |    2 +-
- 4 files changed, 12 insertions(+), 1 deletion(-)
+ drivers/ata/Kconfig    |    7 ++
+ drivers/ata/Makefile   |    1 +
+ drivers/ata/pata-imx.c |  203 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 211 insertions(+)
+ create mode 100644 drivers/ata/pata-imx.c
 
-diff --git a/arch/arm/mach-imx/clk-imx5.c b/arch/arm/mach-imx/clk-imx5.c
-index 050842d..22ca21a 100644
---- a/arch/arm/mach-imx/clk-imx5.c
-+++ b/arch/arm/mach-imx/clk-imx5.c
-@@ -219,6 +219,7 @@ int __init mx51_clocks_init(void __iomem *regs, unsigned long rate_ckil, unsigne
- 	clkdev_add_physbase(clks[esdhc_b_podf], MX51_MMC_SDHC2_BASE_ADDR, NULL);
- 	clkdev_add_physbase(clks[esdhc_c_s], MX51_MMC_SDHC3_BASE_ADDR, NULL);
- 	clkdev_add_physbase(clks[esdhc_d_s], MX51_MMC_SDHC4_BASE_ADDR, NULL);
-+	clkdev_add_physbase(clks[ipg], MX51_ATA_BASE_ADDR, NULL);
+diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
+index fe6f5e6..459fac3 100644
+--- a/drivers/ata/Kconfig
++++ b/drivers/ata/Kconfig
+@@ -39,4 +39,11 @@ config DISK_INTF_PLATFORM_IDE
+ 	  Generic platform driver for simple IDE like interfaces to a connected
+ 	  ATA device.
  
- 	return 0;
- }
-diff --git a/arch/arm/mach-imx/devices.c b/arch/arm/mach-imx/devices.c
-index 4ee4e6c..d82fbf7 100644
---- a/arch/arm/mach-imx/devices.c
-+++ b/arch/arm/mach-imx/devices.c
-@@ -67,3 +67,8 @@ struct device_d *imx_add_kpp(void *base, struct matrix_keymap_data *pdata)
- {
-        return imx_add_device("imx-kpp", -1, base, 0x1000, pdata);
- }
++config DISK_PATA_IMX
++	bool "i.MX PATA driver"
++	depends on ARCH_IMX
++	select DISK_ATA
++	help
++	  select this to enable support for the i.MX PATA driver
 +
-+struct device_d *imx_add_pata(void *base)
-+{
-+	return imx_add_device("imx-pata", -1, base, 0x1000, NULL);
-+}
-diff --git a/arch/arm/mach-imx/include/mach/devices-imx51.h b/arch/arm/mach-imx/include/mach/devices-imx51.h
-index 8ee3c17..95497fa 100644
---- a/arch/arm/mach-imx/include/mach/devices-imx51.h
-+++ b/arch/arm/mach-imx/include/mach/devices-imx51.h
-@@ -93,3 +93,8 @@ static inline struct device_d *imx51_add_kpp(struct matrix_keymap_data *pdata)
- {
- 	return imx_add_kpp((void *)MX51_KPP_BASE_ADDR, pdata);
- }
+ endif
+diff --git a/drivers/ata/Makefile b/drivers/ata/Makefile
+index 2560076..eaeddae 100644
+--- a/drivers/ata/Makefile
++++ b/drivers/ata/Makefile
+@@ -6,3 +6,4 @@ obj-$(CONFIG_DISK_ATA) += disk_ata_drive.o
+ # interface types
+ 
+ obj-$(CONFIG_DISK_INTF_PLATFORM_IDE) += intf_platform_ide.o
++obj-$(CONFIG_DISK_PATA_IMX) += pata-imx.o
+diff --git a/drivers/ata/pata-imx.c b/drivers/ata/pata-imx.c
+new file mode 100644
+index 0000000..29531cb
+--- /dev/null
++++ b/drivers/ata/pata-imx.c
+@@ -0,0 +1,203 @@
++/*
++ * Copyright (C) 2011 Juergen Beisert, Pengutronix
++ * Copyright (C) 2012 Sascha Hauer, Pengutronix
++ *
++ * Derived from the Linux kernel: Generic platform device PATA driver
++ *  Copyright (C) 2006 - 2007  Paul Mundt
++ *  Based on pata_pcmcia:
++ *  Copyright 2005-2006 Red Hat Inc, all rights reserved.
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
 +
-+static inline struct device_d *imx51_add_pata(void)
++#include <common.h>
++#include <init.h>
++#include <xfuncs.h>
++#include <malloc.h>
++#include <errno.h>
++#include <ata_drive.h>
++#include <platform_ide.h>
++#include <io.h>
++#include <linux/err.h>
++#include <linux/clk.h>
++
++#define PATA_IMX_ATA_TIME_OFF		0x0
++#define PATA_IMX_ATA_TIME_ON		0x1
++#define PATA_IMX_ATA_TIME_1		0x2
++#define PATA_IMX_ATA_TIME_2W		0x3
++#define PATA_IMX_ATA_TIME_2R		0x4
++#define PATA_IMX_ATA_TIME_AX		0x5
++#define PATA_IMX_ATA_TIME_PIO_RDX	0x6
++#define PATA_IMX_ATA_TIME_4		0x7
++#define PATA_IMX_ATA_TIME_9		0x8
++#define PATA_IMX_ATA_TIME_M		0x9
++#define PATA_IMX_ATA_TIME_JN		0xa
++#define PATA_IMX_ATA_TIME_D		0xb
++#define PATA_IMX_ATA_TIME_K		0xc
++#define PATA_IMX_ATA_TIME_ACK		0xd
++#define PATA_IMX_ATA_TIME_ENV		0xe
++#define PATA_IMX_ATA_TIME_UDMA_RDX	0xf
++#define PATA_IMX_ATA_TIME_ZAH		0x10
++#define PATA_IMX_ATA_TIME_MLIX		0x11
++#define PATA_IMX_ATA_TIME_DVH		0x12
++#define PATA_IMX_ATA_TIME_DZFS		0x13
++#define PATA_IMX_ATA_TIME_DVS		0x14
++#define PATA_IMX_ATA_TIME_CVH		0x15
++#define PATA_IMX_ATA_TIME_SS		0x16
++#define PATA_IMX_ATA_TIME_CYC		0x17
++#define PATA_IMX_ATA_CONTROL		0x24
++#define PATA_IMX_ATA_CTRL_FIFO_RST_B	(1<<7)
++#define PATA_IMX_ATA_CTRL_ATA_RST_B	(1<<6)
++#define PATA_IMX_ATA_CTRL_IORDY_EN	(1<<0)
++#define PATA_IMX_ATA_INT_EN		0x2C
++#define PATA_IMX_ATA_INTR_ATA_INTRQ2	(1<<3)
++#define PATA_IMX_DRIVE_DATA		0xA0
++#define PATA_IMX_DRIVE_CONTROL		0xD8
++
++static uint16_t pio_t1[]    = { 70,  50,  30,  30,  25 };
++static uint16_t pio_t2_8[]  = { 290, 290, 290, 80,  70 };
++static uint16_t pio_t4[]    = { 30,  20,  15,  10,  10 };
++static uint16_t pio_t9[]    = { 20,  15,  10,  10,  10 };
++static uint16_t pio_tA[]    = { 50,  50,  50,  50,  50 };
++
++static void pata_imx_set_bus_timing(void __iomem *base, unsigned long clkrate,
++		unsigned char mode)
 +{
-+	return imx_add_pata((void *)MX51_ATA_BASE_ADDR);
++	uint32_t T = 1000000000 / clkrate;
++
++	struct mxc_ata_config_regs *ata_regs;
++	ata_regs = (struct mxc_ata_config_regs *)base;
++
++	if (mode >= ARRAY_SIZE(pio_t1))
++		return;
++
++	/* Write TIME_OFF/ON/1/2W */
++	writeb(3,  base + PATA_IMX_ATA_TIME_OFF);
++	writeb(3,  base + PATA_IMX_ATA_TIME_ON);
++	writeb((pio_t1[mode] + T) / T, base + PATA_IMX_ATA_TIME_1);
++	writeb((pio_t2_8[mode] + T) / T, base + PATA_IMX_ATA_TIME_2W);
++
++	/* Write TIME_2R/AX/RDX/4 */
++	writeb((pio_t2_8[mode] + T) / T,  base + PATA_IMX_ATA_TIME_2R);
++	writeb((pio_tA[mode] + T) / T + 2,  base + PATA_IMX_ATA_TIME_AX);
++	writeb(1,  base + PATA_IMX_ATA_TIME_PIO_RDX);
++	writeb((pio_t4[mode] + T) / T,  base + PATA_IMX_ATA_TIME_4);
++
++	/* Write TIME_9 ; the rest of timing registers is irrelevant for PIO */
++	writeb((pio_t9[mode] + T) / T,  base + PATA_IMX_ATA_TIME_9);
 +}
-diff --git a/arch/arm/mach-imx/include/mach/devices.h b/arch/arm/mach-imx/include/mach/devices.h
-index f7824f5..016778a 100644
---- a/arch/arm/mach-imx/include/mach/devices.h
-+++ b/arch/arm/mach-imx/include/mach/devices.h
-@@ -20,4 +20,4 @@ struct device_d *imx_add_ipufb(void *base, struct imx_ipu_fb_platform_data *pdat
- struct device_d *imx_add_mmc(void *base, int id, void *pdata);
- struct device_d *imx_add_esdhc(void *base, int id, struct esdhc_platform_data *pdata);
- struct device_d *imx_add_kpp(void *base, struct matrix_keymap_data *pdata);
--
-+struct device_d *imx_add_pata(void *base);
++
++/**
++ * Setup the register specific addresses for an ATA like divice
++ * @param reg_base Base address of the standard ATA like registers
++ * @param alt_base Base address of the alternate ATA like registers
++ * @param ioaddr Register file structure to setup
++ * @param shift Shift offset between registers
++ *
++ * Some of the registers have different names but use the same offset. This is
++ * due to the fact read or write access at the same offset reaches different
++ * registers.
++ */
++static void imx_pata_setup_port(void *reg_base, void *alt_base,
++			struct ata_ioports *ioaddr, unsigned shift)
++{
++	/* standard registers (0 ... 7) */
++	ioaddr->cmd_addr = reg_base;
++
++	ioaddr->data_addr = reg_base + (IDE_REG_DATA << shift);
++
++	ioaddr->error_addr = reg_base + (IDE_REG_ERR << shift);
++	ioaddr->feature_addr = reg_base + (IDE_REG_FEATURE << shift);
++
++	ioaddr->nsect_addr = reg_base + (IDE_REG_NSECT << shift);
++
++	ioaddr->lbal_addr = reg_base + (IDE_REG_LBAL << shift);
++
++	ioaddr->lbam_addr = reg_base + (IDE_REG_LBAM << shift);
++
++	ioaddr->lbah_addr = reg_base + (IDE_REG_LBAH << shift);
++
++	ioaddr->device_addr = reg_base + (IDE_REG_DEVICE << shift);
++
++	ioaddr->status_addr = reg_base + (IDE_REG_STATUS << shift);
++	ioaddr->command_addr = reg_base + (IDE_REG_CMD << shift);
++
++	if (alt_base) {
++		ioaddr->altstatus_addr = alt_base + (IDE_REG_ALT_STATUS << shift);
++		ioaddr->ctl_addr = alt_base + (IDE_REG_DEV_CTL << shift);
++
++		ioaddr->alt_dev_addr = alt_base + (IDE_REG_DRV_ADDR << shift);
++	} else {
++		ioaddr->altstatus_addr = ioaddr->status_addr;
++		ioaddr->ctl_addr = ioaddr->status_addr;
++		/* ioaddr->alt_dev_addr not used in driver */
++	}
++}
++
++static int imx_pata_probe(struct device_d *dev)
++{
++	struct ata_ioports *io;
++	struct clk *clk;
++	void __iomem *base;
++	int ret;
++
++	io = xzalloc(sizeof(struct ata_ioports));
++	base = dev_request_mem_region(dev, 0);
++
++	clk = clk_get(dev, NULL);
++	if (IS_ERR(clk)) {
++		ret = PTR_ERR(clk);
++		goto out_free;
++	}
++
++	imx_pata_setup_port(base + PATA_IMX_DRIVE_DATA,
++			base + PATA_IMX_DRIVE_CONTROL, io, 2);
++
++	/* deassert resets */
++	writel(PATA_IMX_ATA_CTRL_FIFO_RST_B |
++			PATA_IMX_ATA_CTRL_ATA_RST_B,
++			base + PATA_IMX_ATA_CONTROL);
++
++	pata_imx_set_bus_timing(base, clk_get_rate(clk), 4);
++
++	ret= register_ata_drive(dev, io);
++	if (ret) {
++		dev_err(dev, "Cannot register IDE interface: %s\n",
++				strerror(-ret));
++		goto out_free_clk;
++	}
++
++	return 0;
++
++out_free_clk:
++	clk_put(clk);
++
++out_free:
++	free(io);
++
++	return ret;
++}
++
++static struct driver_d imx_pata_driver = {
++	.name   = "imx-pata",
++	.probe  = imx_pata_probe,
++};
++
++static int imx_pata_init(void)
++{
++	return platform_driver_register(&imx_pata_driver);
++}
++
++device_initcall(imx_pata_init);
 -- 
 1.7.10.4
 
