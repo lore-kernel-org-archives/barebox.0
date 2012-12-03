@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tfa6i-0000Z9-Oa
- for barebox@lists.infradead.org; Mon, 03 Dec 2012 17:47:07 +0000
-Date: Mon, 3 Dec 2012 12:46:58 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <20121203162121.GT10369@pengutronix.de>
-Message-ID: <alpine.DEB.2.02.1212031243060.27270@oneiric>
-References: <alpine.DEB.2.02.1212031041250.19977@oneiric>
- <20121203162121.GT10369@pengutronix.de>
-MIME-Version: 1.0
+Received: from exprod5og112.obsmtp.com ([64.18.0.24])
+ by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TfaRg-0004rY-P7
+ for barebox@lists.infradead.org; Mon, 03 Dec 2012 18:08:46 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Mon,  3 Dec 2012 18:08:17 +0000
+Message-Id: <1354558114-28799-2-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1354558114-28799-1-git-send-email-renaud.barbier@ge.com>
+References: <1354558114-28799-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,77 +16,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: how does one enable barebox's low-level debugging?
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: [PATCH 01/18] fs/fs.c: check that fsdev->cdev->dev is not NULL
+To: barebox@lists.infradead.org
 
-On Mon, 3 Dec 2012, Sascha Hauer wrote:
+Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+---
+ fs/fs.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
-> On Mon, Dec 03, 2012 at 10:45:41AM -0500, Robert P. J. Day wrote:
-> >
-> >   looking through common/startup.c and decided i wanted to see
-> > confirmation of all the initcalls running here:
-> >
-> >         for (initcall = __barebox_initcalls_start;
-> >                         initcall < __barebox_initcalls_end; initcall++) {
-> >                 debug("initcall-> %pS\n", *initcall);
-> >                 result = (*initcall)();
-> >                 if (result)
-> >                         pr_err("initcall %pS failed: %s\n", *initcall,
-> >                                         strerror(-result));
-> >         }
-> >
-> >
-> > so i started from scratch, ran "make menuconfig" for both the x-loader
-> > and barebox to enable "low level debug messages", but i don't see any
-> > difference in the boot output.
-> >
-> >   i've perused the barebox wiki and don't see anything regarding that
-> > setting.  am i doing something wrong?
->
-> You have to add a "#define DEBUG" to the file you want to have the
-> debug messages from. Add this *above* the includes, just like in the
-> kernel.
-
-  ah, got it ... for some reason, i thought it was that menuconfig
-setting that was responsible but now i see they're actually
-independent features.
-
-  so, as i read it, using "#define DEBUG" causes this to kick in for a
-given source file:
-
-#ifdef DEBUG
-#define pr_debug(fmt, arg...)   printf(fmt, ##arg)
-#else
-#define pr_debug(fmt, arg...)   do {} while(0)
-#endif
-
-#define debug(fmt, arg...)      pr_debug(fmt, ##arg)
-
-  while that menuconfig setting for "low-level messages" defines
-operations for these (totally independent of DEBUG, right?)
-
-# define PUTC_LL(c) do {} while (0)
-# define PUTHEX_LL(v) do {} while (0)
-# define PUTS_LL(c) do {} while (0)
-
-  thanks.
-
-rday
-
+diff --git a/fs/fs.c b/fs/fs.c
+index dc3a6e3..3065440 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -1108,7 +1108,8 @@ static int fs_probe(struct device_d *dev)
+ 		return ret;
+ 
+ 	if (fsdev->cdev) {
+-		dev_add_child(fsdev->cdev->dev, &fsdev->dev);
++		if (fsdev->cdev->dev)
++			dev_add_child(fsdev->cdev->dev, &fsdev->dev);
+ 		fsdev->parent_device = fsdev->cdev->dev;
+ 	}
+ 
 -- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+1.7.1
 
 
 _______________________________________________
