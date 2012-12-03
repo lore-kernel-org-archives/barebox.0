@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TfSfY-00015K-P8
- for barebox@lists.infradead.org; Mon, 03 Dec 2012 09:50:33 +0000
-Date: Mon, 3 Dec 2012 04:50:24 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <20121203094625.GJ10369@pengutronix.de>
-Message-ID: <alpine.DEB.2.02.1212030449190.9853@oneiric>
-References: <alpine.DEB.2.02.1212011607040.13954@oneiric>
- <20121203094625.GJ10369@pengutronix.de>
+Received: from m15-113.126.com ([220.181.15.113])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TfSgw-0001AQ-C1
+ for barebox@lists.infradead.org; Mon, 03 Dec 2012 09:52:04 +0000
+Date: Mon, 3 Dec 2012 17:51:50 +0800
+From: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
+Message-ID: <20121203095150.GA20812@greatfirst.com>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,21 +20,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: suddenly, i can't boot barebox on my beagle xM anymore
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: kbuild can't build foo/xxx.o
+To: barebox <barebox@lists.infradead.org>
 
-On Mon, 3 Dec 2012, Sascha Hauer wrote:
+kbuild in barebox can't built when
 
-> I just rechecked, current master works fine for me on my beagle (no
-> xM though). Just a guess, have you used the barebox-flash-image link
-> instead of barebox.bin? Since the image is compressed now it becomes
-> important to use the link (which points to the compressed image).
+obj-y += foo/xxx.o
 
-  whoops, no, i didn't ... will test right this instant.  what *name*
-do i copy it to the SD card under?
+But in kernel, It's OK
 
-rday
+Maybe it should:
+
+----------------------------------------------------------
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index cb46db2..14e471d 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -55,10 +55,10 @@ multi-objs-y := $(foreach m, $(multi-used-y), $($(m:.o=-objs)) $($(m:.o=-y)))
+ multi-objs-m := $(foreach m, $(multi-used-m), $($(m:.o=-objs)) $($(m:.o=-y)))
+ multi-objs   := $(multi-objs-y) $(multi-objs-m)
+
+-# $(subdir-obj-y) is the list of objects in $(obj-y) which do not live
+-# in the local directory
+-__subdir-obj-y := $(foreach o,$(pbl-y),$(if $(filter-out $(o),$(notdir $(o))),$(o)))
+-subdir-obj-y := $(foreach o,$(obj-y),$(if $(filter-out $(o),$(notdir $(o))),$(o)))
++# $(subdir-obj-y) is the list of objects in $(obj-y) which uses dir/ to
++# tell kbuild to descend
++__subdir-obj-y := $(filter %/built-in-pbl.o, $(pbl-y))
++subdir-obj-y := $(filter %/built-in.o, $(obj-y))
+ subdir-obj-y += $(__subdir-obj-y)
+
+ # $(obj-dirs) is a list of directories that contain object files
+----------------------------------------------------------
+
+
+-- 
+Best Regards,
+zzs
+
+
 
 _______________________________________________
 barebox mailing list
