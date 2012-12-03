@@ -1,15 +1,25 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TfRbJ-0006O5-02
- for barebox@lists.infradead.org; Mon, 03 Dec 2012 08:42:05 +0000
-Date: Mon, 3 Dec 2012 09:42:03 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121203084203.GE10369@pengutronix.de>
-References: <1354270272-6626-1-git-send-email-jlu@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1354270272-6626-1-git-send-email-jlu@pengutronix.de>
+ id 1TfRdE-0006Ty-1a
+ for barebox@lists.infradead.org; Mon, 03 Dec 2012 08:44:04 +0000
+Received: from coredoba.hi.pengutronix.de ([2001:6f8:1178:2:219:99ff:fe56:8d7])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jlu@pengutronix.de>) id 1TfRdC-0002ej-Ph
+ for barebox@lists.infradead.org; Mon, 03 Dec 2012 09:44:02 +0100
+Received: from jlu by coredoba.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <jlu@pengutronix.de>) id 1TfRdC-0001nQ-JR
+ for barebox@lists.infradead.org; Mon, 03 Dec 2012 09:44:02 +0100
+Message-ID: <1354524242.3772.11.camel@coredoba.hi.pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Mon, 03 Dec 2012 09:44:02 +0100
+In-Reply-To: <alpine.DEB.2.02.1212030327430.6352@oneiric>
+References: <alpine.DEB.2.02.1212011607040.13954@oneiric>
+ <alpine.DEB.2.02.1212011733350.24134@oneiric>
+ <alpine.DEB.2.02.1212020418020.6898@oneiric>
+ <1354522782.3772.3.camel@coredoba.hi.pengutronix.de>
+ <alpine.DEB.2.02.1212030327430.6352@oneiric>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,86 +32,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] omap: gpmc: mark hex debug values as such
-To: Jan Luebbe <jlu@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: suddenly, i can't boot barebox on my beagle xM anymore [ISOLATED]
+To: Barebox List <barebox@lists.infradead.org>
 
-On Fri, Nov 30, 2012 at 11:11:12AM +0100, Jan Luebbe wrote:
-> Also use %p for pointers.
+On Mon, 2012-12-03 at 03:31 -0500, Robert P. J. Day wrote:
+> *sigh* ... i *think* i figured out what's happening.  in order to
+> play with barebox on my xM, until recently, i'd done nothing more than
+> create a single FAT partition on a micro SD card, put MLO and
+> barebox.bin on it, put it in my xM, and let it boot.  until that OMAP
+> merge, it worked fine.
 > 
-> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
-> ---
+>   as i read it, the new default environment for the xM *requires* a
+> second (ext3) partition or the boot process simply hangs, am i reading
+> that right?  if that's true, how can i adjust that so i can once again
+> just boot to barebox without having a kernel and root fs created yet?
 
-Applied, thanks
+Only the kernel uses the second partition for its rootfs, barebox should
+get to the prompt where you can interrupt autoboot anyway.
 
-Sascha
+So figuring out the exact commit would be useful. The bisection should
+take only a few steps. Sascha build-checks every revision, so all the
+bisection steps should build fine.
 
->  arch/arm/mach-omap/gpmc.c |   10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/arm/mach-omap/gpmc.c b/arch/arm/mach-omap/gpmc.c
-> index ff8b58b..73d8c44 100644
-> --- a/arch/arm/mach-omap/gpmc.c
-> +++ b/arch/arm/mach-omap/gpmc.c
-> @@ -50,7 +50,7 @@ void gpmc_generic_init(unsigned int cfg)
->  	unsigned int reg = GPMC_REG(CONFIG7_0);
->  	char x = 0;
->  
-> -	debug("gpmccfg=%x\n", cfg);
-> +	debug("gpmccfg=0x%x\n", cfg);
->  	/* Generic Configurations */
->  	/* reset gpmc */
->  	start = get_time_ns();
-> @@ -73,7 +73,7 @@ void gpmc_generic_init(unsigned int cfg)
->  	 * But NEVER run me in XIP mode! I will Die!
->  	 */
->  	while (x < GPMC_NUM_CS) {
-> -		debug("gpmccs=%d Reg:%x <-0x0\n", x, reg);
-> +		debug("gpmccs=%d Reg:0x%x <-0x0\n", x, reg);
->  		writel(0x0, reg);
->  		reg += GPMC_CONFIG_CS_SIZE;
->  		x++;
-> @@ -95,7 +95,7 @@ void gpmc_cs_config(char cs, struct gpmc_config *config)
->  {
->  	unsigned int reg = GPMC_REG(CONFIG1_0) + (cs * GPMC_CONFIG_CS_SIZE);
->  	unsigned char x = 0;
-> -	debug("gpmccs=%x cfg=%x\n", cs, (unsigned int)config);
-> +	debug("gpmccs=0x%x cfg=0x%p\n", cs, config);
->  
->  	/* Disable the CS before reconfiguring */
->  	writel(0x0, GPMC_REG(CONFIG7_0) + (cs * GPMC_CONFIG_CS_SIZE));
-> @@ -103,14 +103,14 @@ void gpmc_cs_config(char cs, struct gpmc_config *config)
->  
->  	/* Write the CFG1-6 regs */
->  	while (x < 6) {
-> -		debug("gpmccfg=%d Reg:%x <-0x%x\n",
-> +		debug("gpmccfg%d Reg:0x%x <-0x%08x\n",
->  				x, reg, config->cfg[x]);
->  		writel(config->cfg[x], reg);
->  		reg += GPMC_CONFIG_REG_OFF;
->  		x++;
->  	}
->  	/* reg now points to CFG7 */
-> -	debug("gpmccfg=%d Reg:%x <-0x%x\n",
-> +	debug("gpmccfg%d Reg:0x%x <-0x%08x\n",
->  			x, reg, (0x1 << 6) |		/* CS enable */
->  		     ((config->size & 0xF) << 8) |	/* Size */
->  		     ((config->base >> 24) & 0x3F));
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+Regards,
+Jan
 -- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 _______________________________________________
 barebox mailing list
