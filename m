@@ -1,11 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from astoria.ccjclearline.com ([64.235.106.9])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TfTOV-0006Rw-EV
- for barebox@lists.infradead.org; Mon, 03 Dec 2012 10:37:00 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  3 Dec 2012 11:36:55 +0100
-Message-Id: <1354531016-22069-1-git-send-email-s.hauer@pengutronix.de>
+ id 1TfUjt-0005ro-My
+ for barebox@lists.infradead.org; Mon, 03 Dec 2012 12:03:10 +0000
+Date: Mon, 3 Dec 2012 07:02:58 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+In-Reply-To: <20121203100446.GQ10369@pengutronix.de>
+Message-ID: <alpine.DEB.2.02.1212030701030.16355@oneiric>
+References: <alpine.DEB.2.02.1212011607040.13954@oneiric>
+ <20121203094625.GJ10369@pengutronix.de>
+ <alpine.DEB.2.02.1212030449190.9853@oneiric>
+ <20121203095649.GM10369@pengutronix.de>
+ <alpine.DEB.2.02.1212030458310.14230@oneiric>
+ <20121203100446.GQ10369@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,262 +22,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ata: Add i.MX PATA driver support
-To: barebox@lists.infradead.org
+Subject: Re: suddenly, i can't boot barebox on my beagle xM anymore
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Straight forward driver, we only have to configure some additional
-bits and then use the generic ide support.
+On Mon, 3 Dec 2012, Sascha Hauer wrote:
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/ata/Kconfig    |    7 ++
- drivers/ata/Makefile   |    1 +
- drivers/ata/pata-imx.c |  203 ++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 211 insertions(+)
- create mode 100644 drivers/ata/pata-imx.c
+> make omap3530_beagle_xload_defconfig && make
+>
+> > > xload: cp barebox-flash-image /mnt/MLO
+>
+> make omap3530_beagle_defconfig && make
+>
+> > > barebox: cp barebox-flash-image /mnt/barebox.bin
+> >
+> >   i did that second copy, but are you sure i should copy that new
+> > flash image to MLO?  i'm not convinced...
+>
+> Not the same binary of course. I clarified this a bit above.
 
-diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index fe6f5e6..459fac3 100644
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -39,4 +39,11 @@ config DISK_INTF_PLATFORM_IDE
- 	  Generic platform driver for simple IDE like interfaces to a connected
- 	  ATA device.
- 
-+config DISK_PATA_IMX
-+	bool "i.MX PATA driver"
-+	depends on ARCH_IMX
-+	select DISK_ATA
-+	help
-+	  select this to enable support for the i.MX PATA driver
-+
- endif
-diff --git a/drivers/ata/Makefile b/drivers/ata/Makefile
-index 2560076..eaeddae 100644
---- a/drivers/ata/Makefile
-+++ b/drivers/ata/Makefile
-@@ -6,3 +6,4 @@ obj-$(CONFIG_DISK_ATA) += disk_ata_drive.o
- # interface types
- 
- obj-$(CONFIG_DISK_INTF_PLATFORM_IDE) += intf_platform_ide.o
-+obj-$(CONFIG_DISK_PATA_IMX) += pata-imx.o
-diff --git a/drivers/ata/pata-imx.c b/drivers/ata/pata-imx.c
-new file mode 100644
-index 0000000..29531cb
---- /dev/null
-+++ b/drivers/ata/pata-imx.c
-@@ -0,0 +1,203 @@
-+/*
-+ * Copyright (C) 2011 Juergen Beisert, Pengutronix
-+ * Copyright (C) 2012 Sascha Hauer, Pengutronix
-+ *
-+ * Derived from the Linux kernel: Generic platform device PATA driver
-+ *  Copyright (C) 2006 - 2007  Paul Mundt
-+ *  Based on pata_pcmcia:
-+ *  Copyright 2005-2006 Red Hat Inc, all rights reserved.
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <xfuncs.h>
-+#include <malloc.h>
-+#include <errno.h>
-+#include <ata_drive.h>
-+#include <platform_ide.h>
-+#include <io.h>
-+#include <linux/err.h>
-+#include <linux/clk.h>
-+
-+#define PATA_IMX_ATA_TIME_OFF		0x0
-+#define PATA_IMX_ATA_TIME_ON		0x1
-+#define PATA_IMX_ATA_TIME_1		0x2
-+#define PATA_IMX_ATA_TIME_2W		0x3
-+#define PATA_IMX_ATA_TIME_2R		0x4
-+#define PATA_IMX_ATA_TIME_AX		0x5
-+#define PATA_IMX_ATA_TIME_PIO_RDX	0x6
-+#define PATA_IMX_ATA_TIME_4		0x7
-+#define PATA_IMX_ATA_TIME_9		0x8
-+#define PATA_IMX_ATA_TIME_M		0x9
-+#define PATA_IMX_ATA_TIME_JN		0xa
-+#define PATA_IMX_ATA_TIME_D		0xb
-+#define PATA_IMX_ATA_TIME_K		0xc
-+#define PATA_IMX_ATA_TIME_ACK		0xd
-+#define PATA_IMX_ATA_TIME_ENV		0xe
-+#define PATA_IMX_ATA_TIME_UDMA_RDX	0xf
-+#define PATA_IMX_ATA_TIME_ZAH		0x10
-+#define PATA_IMX_ATA_TIME_MLIX		0x11
-+#define PATA_IMX_ATA_TIME_DVH		0x12
-+#define PATA_IMX_ATA_TIME_DZFS		0x13
-+#define PATA_IMX_ATA_TIME_DVS		0x14
-+#define PATA_IMX_ATA_TIME_CVH		0x15
-+#define PATA_IMX_ATA_TIME_SS		0x16
-+#define PATA_IMX_ATA_TIME_CYC		0x17
-+#define PATA_IMX_ATA_CONTROL		0x24
-+#define PATA_IMX_ATA_CTRL_FIFO_RST_B	(1<<7)
-+#define PATA_IMX_ATA_CTRL_ATA_RST_B	(1<<6)
-+#define PATA_IMX_ATA_CTRL_IORDY_EN	(1<<0)
-+#define PATA_IMX_ATA_INT_EN		0x2C
-+#define PATA_IMX_ATA_INTR_ATA_INTRQ2	(1<<3)
-+#define PATA_IMX_DRIVE_DATA		0xA0
-+#define PATA_IMX_DRIVE_CONTROL		0xD8
-+
-+static uint16_t pio_t1[]    = { 70,  50,  30,  30,  25 };
-+static uint16_t pio_t2_8[]  = { 290, 290, 290, 80,  70 };
-+static uint16_t pio_t4[]    = { 30,  20,  15,  10,  10 };
-+static uint16_t pio_t9[]    = { 20,  15,  10,  10,  10 };
-+static uint16_t pio_tA[]    = { 50,  50,  50,  50,  50 };
-+
-+static void pata_imx_set_bus_timing(void __iomem *base, unsigned long clkrate,
-+		unsigned char mode)
-+{
-+	uint32_t T = 1000000000 / clkrate;
-+
-+	struct mxc_ata_config_regs *ata_regs;
-+	ata_regs = (struct mxc_ata_config_regs *)base;
-+
-+	if (mode >= ARRAY_SIZE(pio_t1))
-+		return;
-+
-+	/* Write TIME_OFF/ON/1/2W */
-+	writeb(3,  base + PATA_IMX_ATA_TIME_OFF);
-+	writeb(3,  base + PATA_IMX_ATA_TIME_ON);
-+	writeb((pio_t1[mode] + T) / T, base + PATA_IMX_ATA_TIME_1);
-+	writeb((pio_t2_8[mode] + T) / T, base + PATA_IMX_ATA_TIME_2W);
-+
-+	/* Write TIME_2R/AX/RDX/4 */
-+	writeb((pio_t2_8[mode] + T) / T,  base + PATA_IMX_ATA_TIME_2R);
-+	writeb((pio_tA[mode] + T) / T + 2,  base + PATA_IMX_ATA_TIME_AX);
-+	writeb(1,  base + PATA_IMX_ATA_TIME_PIO_RDX);
-+	writeb((pio_t4[mode] + T) / T,  base + PATA_IMX_ATA_TIME_4);
-+
-+	/* Write TIME_9 ; the rest of timing registers is irrelevant for PIO */
-+	writeb((pio_t9[mode] + T) / T,  base + PATA_IMX_ATA_TIME_9);
-+}
-+
-+/**
-+ * Setup the register specific addresses for an ATA like divice
-+ * @param reg_base Base address of the standard ATA like registers
-+ * @param alt_base Base address of the alternate ATA like registers
-+ * @param ioaddr Register file structure to setup
-+ * @param shift Shift offset between registers
-+ *
-+ * Some of the registers have different names but use the same offset. This is
-+ * due to the fact read or write access at the same offset reaches different
-+ * registers.
-+ */
-+static void imx_pata_setup_port(void *reg_base, void *alt_base,
-+			struct ata_ioports *ioaddr, unsigned shift)
-+{
-+	/* standard registers (0 ... 7) */
-+	ioaddr->cmd_addr = reg_base;
-+
-+	ioaddr->data_addr = reg_base + (IDE_REG_DATA << shift);
-+
-+	ioaddr->error_addr = reg_base + (IDE_REG_ERR << shift);
-+	ioaddr->feature_addr = reg_base + (IDE_REG_FEATURE << shift);
-+
-+	ioaddr->nsect_addr = reg_base + (IDE_REG_NSECT << shift);
-+
-+	ioaddr->lbal_addr = reg_base + (IDE_REG_LBAL << shift);
-+
-+	ioaddr->lbam_addr = reg_base + (IDE_REG_LBAM << shift);
-+
-+	ioaddr->lbah_addr = reg_base + (IDE_REG_LBAH << shift);
-+
-+	ioaddr->device_addr = reg_base + (IDE_REG_DEVICE << shift);
-+
-+	ioaddr->status_addr = reg_base + (IDE_REG_STATUS << shift);
-+	ioaddr->command_addr = reg_base + (IDE_REG_CMD << shift);
-+
-+	if (alt_base) {
-+		ioaddr->altstatus_addr = alt_base + (IDE_REG_ALT_STATUS << shift);
-+		ioaddr->ctl_addr = alt_base + (IDE_REG_DEV_CTL << shift);
-+
-+		ioaddr->alt_dev_addr = alt_base + (IDE_REG_DRV_ADDR << shift);
-+	} else {
-+		ioaddr->altstatus_addr = ioaddr->status_addr;
-+		ioaddr->ctl_addr = ioaddr->status_addr;
-+		/* ioaddr->alt_dev_addr not used in driver */
-+	}
-+}
-+
-+static int imx_pata_probe(struct device_d *dev)
-+{
-+	struct ata_ioports *io;
-+	struct clk *clk;
-+	void __iomem *base;
-+	int ret;
-+
-+	io = xzalloc(sizeof(struct ata_ioports));
-+	base = dev_request_mem_region(dev, 0);
-+
-+	clk = clk_get(dev, NULL);
-+	if (IS_ERR(clk)) {
-+		ret = PTR_ERR(clk);
-+		goto out_free;
-+	}
-+
-+	imx_pata_setup_port(base + PATA_IMX_DRIVE_DATA,
-+			base + PATA_IMX_DRIVE_CONTROL, io, 2);
-+
-+	/* deassert resets */
-+	writel(PATA_IMX_ATA_CTRL_FIFO_RST_B |
-+			PATA_IMX_ATA_CTRL_ATA_RST_B,
-+			base + PATA_IMX_ATA_CONTROL);
-+
-+	pata_imx_set_bus_timing(base, clk_get_rate(clk), 4);
-+
-+	ret= register_ata_drive(dev, io);
-+	if (ret) {
-+		dev_err(dev, "Cannot register IDE interface: %s\n",
-+				strerror(-ret));
-+		goto out_free_clk;
-+	}
-+
-+	return 0;
-+
-+out_free_clk:
-+	clk_put(clk);
-+
-+out_free:
-+	free(io);
-+
-+	return ret;
-+}
-+
-+static struct driver_d imx_pata_driver = {
-+	.name   = "imx-pata",
-+	.probe  = imx_pata_probe,
-+};
-+
-+static int imx_pata_init(void)
-+{
-+	return platform_driver_register(&imx_pata_driver);
-+}
-+
-+device_initcall(imx_pata_init);
+  and i tossed all this into one of my wiki pages:
+
+http://www.crashcourse.ca/wiki/index.php/Barebox_on_the_xM
+
+thanks for clearing that up.
+
+rday
+
 -- 
-1.7.10.4
 
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
