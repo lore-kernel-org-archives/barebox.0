@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TfSrU-00023F-2J
- for barebox@lists.infradead.org; Mon, 03 Dec 2012 10:02:52 +0000
-Date: Mon, 3 Dec 2012 11:02:50 +0100
+ id 1TfStM-0002C0-Ou
+ for barebox@lists.infradead.org; Mon, 03 Dec 2012 10:04:49 +0000
+Date: Mon, 3 Dec 2012 11:04:46 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121203100250.GP10369@pengutronix.de>
-References: <1354513612-32271-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20121203100446.GQ10369@pengutronix.de>
+References: <alpine.DEB.2.02.1212011607040.13954@oneiric>
+ <20121203094625.GJ10369@pengutronix.de>
+ <alpine.DEB.2.02.1212030449190.9853@oneiric>
+ <20121203095649.GM10369@pengutronix.de>
+ <alpine.DEB.2.02.1212030458310.14230@oneiric>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1354513612-32271-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <alpine.DEB.2.02.1212030458310.14230@oneiric>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +26,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] at25: use dev_lseek_default as at24 does
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: suddenly, i can't boot barebox on my beagle xM anymore
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Mon, Dec 03, 2012 at 09:46:52AM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  drivers/eeprom/at25.c |    7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
+On Mon, Dec 03, 2012 at 05:01:43AM -0500, Robert P. J. Day wrote:
+> On Mon, 3 Dec 2012, Sascha Hauer wrote:
+> 
+> > On Mon, Dec 03, 2012 at 04:50:24AM -0500, Robert P. J. Day wrote:
+> > > On Mon, 3 Dec 2012, Sascha Hauer wrote:
+> > >
+> > > > I just rechecked, current master works fine for me on my beagle (no
+> > > > xM though). Just a guess, have you used the barebox-flash-image link
+> > > > instead of barebox.bin? Since the image is compressed now it becomes
+> > > > important to use the link (which points to the compressed image).
+> > >
+> > >   whoops, no, i didn't ... will test right this instant.  what *name*
+> > > do i copy it to the SD card under?
+> >
 
-Applied, thanks
+make omap3530_beagle_xload_defconfig && make
+
+> > xload: cp barebox-flash-image /mnt/MLO
+
+make omap3530_beagle_defconfig && make
+
+> > barebox: cp barebox-flash-image /mnt/barebox.bin
+> 
+>   i did that second copy, but are you sure i should copy that new
+> flash image to MLO?  i'm not convinced...
+
+Not the same binary of course. I clarified this a bit above.
 
 Sascha
 
-> 
-> diff --git a/drivers/eeprom/at25.c b/drivers/eeprom/at25.c
-> index 5578c78..9bd7748 100644
-> --- a/drivers/eeprom/at25.c
-> +++ b/drivers/eeprom/at25.c
-> @@ -232,15 +232,10 @@ static ssize_t at25_ee_write(struct cdev *cdev,
->  	return written ? written : status;
->  }
->  
-> -static loff_t at25_ee_lseek(struct cdev *cdev, loff_t off)
-> -{
-> -	return off;
-> -}
-> -
->  static struct file_operations at25_fops = {
->  	.read	= at25_ee_read,
->  	.write	= at25_ee_write,
-> -	.lseek	= at25_ee_lseek,
-> +	.lseek	= dev_lseek_default,
->  };
->  
->  static int at25_probe(struct device_d *dev)
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
