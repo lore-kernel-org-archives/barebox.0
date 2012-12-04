@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from astoria.ccjclearline.com ([64.235.106.9])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TfroC-0008Bk-HS
- for barebox@lists.infradead.org; Tue, 04 Dec 2012 12:41:09 +0000
+ id 1Tfv81-0007LR-SW
+ for barebox@lists.infradead.org; Tue, 04 Dec 2012 16:13:50 +0000
 Received: from cpebcc81008dd2c-cmbcc81008dd29.cpe.net.cable.rogers.com
- ([99.253.156.71]:39214 helo=crashcourse.ca)
+ ([99.253.156.71]:41755 helo=crashcourse.ca)
  by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
  (Exim 4.77) (envelope-from <rpjday@crashcourse.ca>)
- id 1TfroA-00015y-OA
- for barebox@lists.infradead.org; Tue, 04 Dec 2012 07:41:06 -0500
-Date: Tue, 4 Dec 2012 07:41:04 -0500 (EST)
+ id 1Tfv80-0004LG-99
+ for barebox@lists.infradead.org; Tue, 04 Dec 2012 11:13:48 -0500
+Date: Tue, 4 Dec 2012 11:13:41 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.DEB.2.02.1212040735210.5342@oneiric>
+Message-ID: <alpine.DEB.2.02.1212041048580.29673@oneiric>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,31 +25,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: confused about "__PBL__" macro and whether it's actually used
+Subject: lots of inaccurate references to "FileName: include/asm-arm ..."
 To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
 
-  perusing arch/arm/mach-omap/omap3_generic.c and i noticed that the
-initcall "omap3_gpio_init" is apparently invoked by the TI X-loader,
-even though it *appears* to be protected by the macro:
+  while roaming around in the arm/omap files, i noticed that numerous
+files have obsolete "FileName:" values, given that stuff that was once
+in "include/asm-arm" has clearly moved, so you find header files like
+arch/arm/mach-omap/include/mach/gpmc_nand.h that contain:
 
-#ifndef __PBL__
-static int omap3_gpio_init(void)
-{
-... snip ...
-}
-coredevice_initcall(omap3_gpio_init);
-#endif
+ * FileName: include/asm-arm/arch-omap/gpmc_nand.h
+ *
+ * OMAP's General Purpose Memory Controller (GPMC) has a NAND controller
+ * embedded. this file provides the platform data structure required to
+ * hook on to it.
+ *
+ */
+/*
+ * (C) Copyright 2008
+ * Texas Instruments, <www.ti.com>
+ * Nishanth Menon <x0nishan@ti.com>
+ *
+ * Originally from Linux kernel:
+ * http://linux.omap.com/pub/kernel/3430zoom/linux-ldp-v1.3.tar.gz
+ * include/asm-arm/arch-omap/nand.h
 
-  i assume __PBL__ is meant to refer to the "primary bootloader" --
-that would be X-loader -- which suggests that that initcall shouldn't
-be invoked by the X-loader as long as that macro is being defined
-correctly.
-
-  am i misunderstanding something here?  i'm going to check the
-makefiles to see if i'm just confused.
+so the later comment as to the *origin* of the file is fine, but the
+earlier "FileName" value is obviously incorrect.  does that matter?
+is that value used for any sort of documentation processing?
 
 rday
+
+p.s.  you can see the number of these with a simple:
+
+$ grep -r "include/asm-arm" *
+
+since i'm working with a number of the ARM files, i'd be happy to
+"fix" that stuff for some reasonable definition of "fix". :-)
 
 -- 
 
