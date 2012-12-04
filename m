@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og102.obsmtp.com ([64.18.0.143])
- by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tfpqm-0007Y6-7M
- for barebox@lists.infradead.org; Tue, 04 Dec 2012 10:35:41 +0000
-Message-ID: <50BDD1F7.6070706@ge.com>
-Date: Tue, 04 Dec 2012 10:35:35 +0000
-From: Renaud Barbier <renaud.barbier@ge.com>
+Received: from 7.mo5.mail-out.ovh.net ([178.32.124.100]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Tfr5J-00042V-1S
+ for barebox@lists.infradead.org; Tue, 04 Dec 2012 11:54:46 +0000
+Received: from mail419.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 6BA0710241B5
+ for <barebox@lists.infradead.org>; Tue,  4 Dec 2012 13:02:54 +0100 (CET)
+Date: Tue, 4 Dec 2012 12:52:46 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121204115246.GF8327@game.jcrosoft.org>
+References: <alpine.DEB.2.02.1212031041250.19977@oneiric>
+ <20121203162121.GT10369@pengutronix.de>
 MIME-Version: 1.0
-References: <1354558114-28799-1-git-send-email-renaud.barbier@ge.com>
- <87txs3ymg1.fsf@free.fr>
-In-Reply-To: <87txs3ymg1.fsf@free.fr>
+Content-Disposition: inline
+In-Reply-To: <20121203162121.GT10369@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +23,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/18] UBIFS support
-To: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: barebox@lists.infradead.org
+Subject: Re: how does one enable barebox's low-level debugging?
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On 03/12/2012 19:17, Robert Jarzmik wrote:
-> Hi Renaud,
->
-> That's a really huge piece of a patchset.
->
-> Please tell me that almost 100% of the code was taken out of the linux
-> kernel. Even better, are there any patches in there that are linux kernel
-> copies, so that review is not necessary ?
-It is actually derived from U-boot which derive it from Linux.  It would 
-not be
-as recent as the Linux code.
-If you need the code to be fully derived from Linux, then ignore it. 
-This is something
-I hopefully can work on in the future (N months).
-I submitted it as I saw a couple people needing ubifs support.
-They may be willing to work on it.
+On 17:21 Mon 03 Dec     , Sascha Hauer wrote:
+> On Mon, Dec 03, 2012 at 10:45:41AM -0500, Robert P. J. Day wrote:
+> > 
+> >   looking through common/startup.c and decided i wanted to see
+> > confirmation of all the initcalls running here:
+> > 
+> >         for (initcall = __barebox_initcalls_start;
+> >                         initcall < __barebox_initcalls_end; initcall++) {
+> >                 debug("initcall-> %pS\n", *initcall);
+> >                 result = (*initcall)();
+> >                 if (result)
+> >                         pr_err("initcall %pS failed: %s\n", *initcall,
+> >                                         strerror(-result));
+> >         }
+> > 
+> > 
+> > so i started from scratch, ran "make menuconfig" for both the x-loader
+> > and barebox to enable "low level debug messages", but i don't see any
+> > difference in the boot output.
+> > 
+> >   i've perused the barebox wiki and don't see anything regarding that
+> > setting.  am i doing something wrong?
+> 
+> You have to add a "#define DEBUG" to the file you want to have the debug
+> messages from. Add this *above* the includes, just like in the kernel.
+> 
+> Something not mentioned in the wiki is that before the first console is
+> initialized barebox will print the messages into a ring buffer which it
+> will dump when the first console is initialized.
+but also print on the debug console if enabled
 
+on the current barebox
 
-
-
-
-
-
-
-
-
-
-
-
->
-> Cheers.
->
-> --
-> Robert
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
