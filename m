@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TfyVD-00012m-5e
- for barebox@lists.infradead.org; Tue, 04 Dec 2012 19:50:01 +0000
-Date: Tue, 4 Dec 2012 14:49:55 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <CAGo_u6p3R837Kqmt+EqfXjc4Lger6LK4JNfR6Crtd=s9ZzE7_A@mail.gmail.com>
-Message-ID: <alpine.DEB.2.02.1212041446140.3594@oneiric>
-References: <alpine.DEB.2.02.1212041048580.29673@oneiric>
- <CAGo_u6q97PTW+FAUnTOw1h-Jx=ZbO_hqqfAyP-d8_7DkVZEnkQ@mail.gmail.com>
- <alpine.DEB.2.02.1212041429450.3234@oneiric>
- <CAGo_u6p3R837Kqmt+EqfXjc4Lger6LK4JNfR6Crtd=s9ZzE7_A@mail.gmail.com>
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Tfynt-00025F-49
+ for barebox@lists.infradead.org; Tue, 04 Dec 2012 20:09:18 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1354558114-28799-1-git-send-email-renaud.barbier@ge.com>
+ <87txs3ymg1.fsf@free.fr> <50BDD1F7.6070706@ge.com>
+Date: Tue, 04 Dec 2012 21:09:06 +0100
+In-Reply-To: <50BDD1F7.6070706@ge.com> (Renaud Barbier's message of "Tue, 04
+ Dec 2012 10:35:35 +0000")
+Message-ID: <87k3sxzijh.fsf@free.fr>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,79 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: lots of inaccurate references to "FileName: include/asm-arm ..."
-To: "menon.nishanth@gmail.com" <menon.nishanth@gmail.com>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 00/18] UBIFS support
+To: Renaud Barbier <renaud.barbier@ge.com>
+Cc: barebox@lists.infradead.org
 
-On Tue, 4 Dec 2012, menon.nishanth@gmail.com wrote:
+Renaud Barbier <renaud.barbier@ge.com> writes:
 
-> Hi,
-> On Tue, Dec 4, 2012 at 1:30 PM, Robert P. J. Day <rpjday@crashcourse.ca> wrote:
-> > the obvious cleanup is to just delete all those "FileName" lines.
-> > it *is* useful info to know where a file came from in the linux
-> > kernel, i would definitely leave that in.  but (as was explained to me
-> > recently) it's pointless to have a file contain its own alleged name,
-> > especially if files can be moved.
-> >
-> >   so unless those "FileName" lines have some value, i would just
-> > remove all of them.
+> On 03/12/2012 19:17, Robert Jarzmik wrote:
+>> Hi Renaud,
+>>
+>> That's a really huge piece of a patchset.
+>>
+>> Please tell me that almost 100% of the code was taken out of the linux
+>> kernel. Even better, are there any patches in there that are linux kernel
+>> copies, so that review is not necessary ?
+> It is actually derived from U-boot which derive it from Linux.  It would not be
+> as recent as the Linux code.
+> If you need the code to be fully derived from Linux, then ignore it. This is
+> something
+> I hopefully can work on in the future (N months).
 
-> Sounds good to me.
-> Regards,
-> Nishanth Menon
+It's up to Sascha, but I think out of U-boot is fine too.  So are all the
+patches a full copy paste of U-boot, or are there specific parts (adaptation) to
+barebox ? 
 
-  if i don't hear differently, i can submit a patch tomorrow.  as you
-can see, almost all of that content is arm-related:
+I'd think that if you tested the patches succesfully in barebox, and if the
+adaptation is very small, we will review only the adaptation ... hence the
+question, where is the adaptation ?
 
-arch/arm/mach-omap/devices-gpmc-nand.c: * FileName: arch/arm/boards/omap/devices-gpmc-nand.c
-arch/arm/mach-omap/omap3_clock.c: * FileName: arch/arm/mach-omap/omap3_clock.c
-arch/arm/mach-omap/s32k_clksource.c: * FileName: arch/arm/mach-omap/s32k_clksource.c
-arch/arm/mach-omap/syslib.c: * FileName: arch/arm/mach-omap/syslib.c
-arch/arm/mach-omap/omap3_core.S: * FileName: arch/arm/mach-omap/omap3_core.S
-arch/arm/mach-omap/gpmc.c: * FileName: arch/arm/mach-omap/gpmc.c
-arch/arm/mach-omap/include/mach/omap3-mux.h: * FileName: include/asm-arm/arch-omap/omap3-mux.h
-arch/arm/mach-omap/include/mach/syslib.h: * FileName: include/asm-arm/arch-omap/syslib.h
-arch/arm/mach-omap/include/mach/sys_info.h: * FileName: include/asm-arm/arch-omap/sys_info.h
-arch/arm/mach-omap/include/mach/gpmc.h: * FileName: include/asm-arm/arch-omap/gpmc.h
-arch/arm/mach-omap/include/mach/control.h: * FileName: include/asm-arm/arch-omap/control.h
-arch/arm/mach-omap/include/mach/intc.h: * FileName: include/asm-arm/arch-omap/intc.h
-arch/arm/mach-omap/include/mach/sdrc.h: * FileName: include/asm-arm/arch-omap/sdrc.h
-arch/arm/mach-omap/include/mach/gpmc_nand.h: * FileName: include/asm-arm/arch-omap/gpmc_nand.h
-arch/arm/mach-omap/include/mach/omap3-clock.h: * FileName: include/asm-arm/arch-omap/omap3-clock.h
-arch/arm/mach-omap/include/mach/omap3-silicon.h: * FileName: include/asm-arm/arch-omap/omap3-silicon.h
-arch/arm/mach-omap/include/mach/timers.h: * FileName: include/asm-arm/arch-omap/timers.h
-arch/arm/mach-omap/include/mach/omap3-smx.h: * FileName: include/asm-arm/arch-omap/omap3-smx.h
-arch/arm/mach-omap/include/mach/omap_hsmmc.h: * FileName: include/asm-arm/arch-omap/omap_hsmmc.h
-arch/arm/mach-omap/include/mach/clocks.h: * FileName: include/asm-arm/arch-omap/clocks.h
-arch/arm/mach-omap/include/mach/wdt.h: * FileName: include/asm-arm/arch-omap/wdt.h
-arch/arm/mach-omap/omap3_generic.c: * FileName: arch/arm/mach-omap/omap3_generic.c
-arch/arm/boards/omap3evm/board.c: * FileName: arch/arm/boards/omap/board-omap3evm.c
-arch/arm/boards/omap343xdsp/board.c: * FileName: arch/arm/boards/omap/board-sdp343x.c
-arch/arm/boards/beagle/board.c: * FileName: arch/arm/boards/omap/board-beagle.c
-arch/arm/boards/phycard-a-l1/pca-a-l1.c: * FileName: arch/arm/boards/phycard-a-l1/pca-a-l1.c
-arch/arm/boards/phycard-a-l1/pca-a-l1.h: * FileName: arch/arm/boards/phycard-a-l1/board.h
-commands/loadxy.c: * FileName: commands/loadxy.c
-commands/loadb.c: * FileName: commands/loadb.c
-drivers/mtd/nand/nand_omap_gpmc.c: * FileName: arch/arm/mach-omap/gpmc_nand.c
-drivers/serial/serial_ns16550.c: * FileName: drivers/serial/serial_ns16550.c
-drivers/serial/serial_ns16550.h: * FileName: drivers/serial/serial_ns16550.h
-include/ns16550.h: * FileName: include/ns16550.h
-scripts/mk-am35xx-spi-image.c: * FileName: scripts/mk-am35xx-spi-image.c
+Cheers.
 
-  i'll restrict the patch to just the arch/asm stuff, someone else is
-welcome to clean up the other bits.
-
-rday
-
--- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+--
+Robert
 
 _______________________________________________
 barebox mailing list
