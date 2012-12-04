@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from astoria.ccjclearline.com ([64.235.106.9])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TfwAn-0005gU-0m
- for barebox@lists.infradead.org; Tue, 04 Dec 2012 17:20:45 +0000
-From: Jan Luebbe <jlu@pengutronix.de>
-Date: Tue,  4 Dec 2012 18:20:36 +0100
-Message-Id: <1354641636-23483-1-git-send-email-jlu@pengutronix.de>
+ id 1TfwhP-0000OC-V6
+ for barebox@lists.infradead.org; Tue, 04 Dec 2012 17:54:28 +0000
+Received: from cpebcc81008dd2c-cmbcc81008dd29.cpe.net.cable.rogers.com
+ ([99.253.156.71]:43329 helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+ (Exim 4.77) (envelope-from <rpjday@crashcourse.ca>)
+ id 1TfwhN-0001zG-7U
+ for barebox@lists.infradead.org; Tue, 04 Dec 2012 12:54:25 -0500
+Date: Tue, 4 Dec 2012 12:54:22 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.DEB.2.02.1212041251330.7280@oneiric>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,41 +21,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: phy: mdio_bus: fix inverted logic in mdio_bus_match
-To: barebox@lists.infradead.org
+Subject: [PATCH] OMAP3: Replace magic GPIO numbers in omap3_generic.c with
+ macros.
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-The bus match functions return 0 on success.
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+Based on following lines in omap3-silicon.h:
+
+#define OMAP_L4_WKUP_BASE       0x48300000
+#define OMAP_L4_PER_BASE        0x49000000
+... snip ...
+#define OMAP_GPIO1_BASE         (OMAP_L4_WKUP_BASE + 0x10000)
+#define OMAP_GPIO2_BASE         (OMAP_L4_PER_BASE + 0x50000)
+#define OMAP_GPIO3_BASE         (OMAP_L4_PER_BASE + 0x52000)
+#define OMAP_GPIO4_BASE         (OMAP_L4_PER_BASE + 0x54000)
+#define OMAP_GPIO5_BASE         (OMAP_L4_PER_BASE + 0x56000)
+#define OMAP_GPIO6_BASE         (OMAP_L4_PER_BASE + 0x58000)
+
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+
 ---
- drivers/net/phy/mdio_bus.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 9424179..aaac559 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -126,7 +126,11 @@ static int mdio_bus_match(struct device_d *dev, struct driver_d *drv)
- 	struct phy_device *phydev = to_phy_device(dev);
- 	struct phy_driver *phydrv = to_phy_driver(drv);
- 
--	return ((phydrv->phy_id & phydrv->phy_id_mask) ==
-+	pr_debug("%s: trying to match driver %s: (0x%08x & 0x%08x) ~ 0x%08x\n",
-+		dev->name, drv->name,
-+		phydev->phy_id, phydrv->phy_id_mask, phydrv->phy_id);
-+
-+	return ((phydrv->phy_id & phydrv->phy_id_mask) !=
- 		(phydev->phy_id & phydrv->phy_id_mask));
- }
- 
+diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
+index 1e1308e..7b6f1f9 100644
+--- a/arch/arm/mach-omap/omap3_generic.c
++++ b/arch/arm/mach-omap/omap3_generic.c
+@@ -515,17 +515,17 @@ const struct gpmc_config omap3_nand_cfg = {
+ #ifndef __PBL__
+ static int omap3_gpio_init(void)
+ {
+-	add_generic_device("omap-gpio", 0, NULL, 0x48310000,
++	add_generic_device("omap-gpio", 0, NULL, OMAP_GPIO1_BASE,
+ 					0xf00, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-gpio", 1, NULL, 0x49050000,
++	add_generic_device("omap-gpio", 1, NULL, OMAP_GPIO2_BASE,
+ 					0xf00, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-gpio", 2, NULL, 0x49052000,
++	add_generic_device("omap-gpio", 2, NULL, OMAP_GPIO3_BASE,
+ 					0xf00, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-gpio", 3, NULL, 0x49054000,
++	add_generic_device("omap-gpio", 3, NULL, OMAP_GPIO4_BASE,
+ 					0xf00, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-gpio", 4, NULL, 0x49056000,
++	add_generic_device("omap-gpio", 4, NULL, OMAP_GPIO5_BASE,
+ 					0xf00, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-gpio", 5, NULL, 0x49058000,
++	add_generic_device("omap-gpio", 5, NULL, OMAP_GPIO6_BASE,
+ 					0xf00, IORESOURCE_MEM, NULL);
+
+ 	return 0;
+
 -- 
-1.7.10.4
 
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
