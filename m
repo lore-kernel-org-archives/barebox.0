@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TfzeL-00088T-Jv
- for barebox@lists.infradead.org; Tue, 04 Dec 2012 21:03:30 +0000
-Date: Tue, 4 Dec 2012 16:03:24 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <CAGo_u6q6N3pz=32hrs86Xkew2GiTdWMgwng89WrpAccDV0N5uw@mail.gmail.com>
-Message-ID: <alpine.DEB.2.02.1212041602250.3941@oneiric>
-References: <alpine.DEB.2.02.1212041048580.29673@oneiric>
- <CAGo_u6q97PTW+FAUnTOw1h-Jx=ZbO_hqqfAyP-d8_7DkVZEnkQ@mail.gmail.com>
- <alpine.DEB.2.02.1212041429450.3234@oneiric>
- <CAGo_u6p3R837Kqmt+EqfXjc4Lger6LK4JNfR6Crtd=s9ZzE7_A@mail.gmail.com>
- <alpine.DEB.2.02.1212041446140.3594@oneiric>
- <alpine.DEB.2.02.1212041551300.3794@oneiric>
- <CAGo_u6q6N3pz=32hrs86Xkew2GiTdWMgwng89WrpAccDV0N5uw@mail.gmail.com>
+Received: from 1.mo1.mail-out.ovh.net ([178.32.127.22]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TfzoK-00017Q-5D
+ for barebox@lists.infradead.org; Tue, 04 Dec 2012 21:13:49 +0000
+Received: from mail189.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id CF11BFF9272
+ for <barebox@lists.infradead.org>; Tue,  4 Dec 2012 22:25:42 +0100 (CET)
+Date: Tue, 4 Dec 2012 22:11:55 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121204211155.GI8327@game.jcrosoft.org>
+References: <1354641636-23483-1-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1354641636-23483-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,45 +26,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: lots of inaccurate references to "FileName: include/asm-arm ..."
-To: "menon.nishanth@gmail.com" <menon.nishanth@gmail.com>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] net: phy: mdio_bus: fix inverted logic in mdio_bus_match
+To: Jan Luebbe <jlu@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, 4 Dec 2012, menon.nishanth@gmail.com wrote:
+On 18:20 Tue 04 Dec     , Jan Luebbe wrote:
+> The bus match functions return 0 on success.
+> 
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+already fix in next
 
-> Seems at least inside TI, we do have a copyright template that has
-> been aligned on:
-> /*
->  * Function of the file
->  *
->  * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
->  *      Nishanth Menon
->  *
->  * This program is free software; you can redistribute it and/or modify
->  * it under the terms of the GNU General Public License version 2 as
->  * published by the Free Software Foundation.
->
->  * This program is distributed "as is" WITHOUT ANY WARRANTY of any
->  * kind, whether express or implied; without even the implied warranty
->  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
->  * GNU General Public License for more details.
->  */
-
- ok, i'll just collapse those two comment sections together and ditch
-the FileName line -- everything else will remain.  i just hate cruft,
-especially when it's incorrect cruft.
-
-rday
-
--- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+Best Regards,
+J.
+> ---
+>  drivers/net/phy/mdio_bus.c |    6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+> index 9424179..aaac559 100644
+> --- a/drivers/net/phy/mdio_bus.c
+> +++ b/drivers/net/phy/mdio_bus.c
+> @@ -126,7 +126,11 @@ static int mdio_bus_match(struct device_d *dev, struct driver_d *drv)
+>  	struct phy_device *phydev = to_phy_device(dev);
+>  	struct phy_driver *phydrv = to_phy_driver(drv);
+>  
+> -	return ((phydrv->phy_id & phydrv->phy_id_mask) ==
+> +	pr_debug("%s: trying to match driver %s: (0x%08x & 0x%08x) ~ 0x%08x\n",
+> +		dev->name, drv->name,
+> +		phydev->phy_id, phydrv->phy_id_mask, phydrv->phy_id);
+> +
+> +	return ((phydrv->phy_id & phydrv->phy_id_mask) !=
+>  		(phydev->phy_id & phydrv->phy_id_mask));
+>  }
+>  
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
