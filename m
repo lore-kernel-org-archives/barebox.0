@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tfynt-00025F-49
- for barebox@lists.infradead.org; Tue, 04 Dec 2012 20:09:18 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1354558114-28799-1-git-send-email-renaud.barbier@ge.com>
- <87txs3ymg1.fsf@free.fr> <50BDD1F7.6070706@ge.com>
-Date: Tue, 04 Dec 2012 21:09:06 +0100
-In-Reply-To: <50BDD1F7.6070706@ge.com> (Renaud Barbier's message of "Tue, 04
- Dec 2012 10:35:35 +0000")
-Message-ID: <87k3sxzijh.fsf@free.fr>
+Received: from astoria.ccjclearline.com ([64.235.106.9])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TfzUW-00074o-1R
+ for barebox@lists.infradead.org; Tue, 04 Dec 2012 20:53:20 +0000
+Date: Tue, 4 Dec 2012 15:53:12 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+In-Reply-To: <alpine.DEB.2.02.1212041446140.3594@oneiric>
+Message-ID: <alpine.DEB.2.02.1212041551300.3794@oneiric>
+References: <alpine.DEB.2.02.1212041048580.29673@oneiric>
+ <CAGo_u6q97PTW+FAUnTOw1h-Jx=ZbO_hqqfAyP-d8_7DkVZEnkQ@mail.gmail.com>
+ <alpine.DEB.2.02.1212041429450.3234@oneiric>
+ <CAGo_u6p3R837Kqmt+EqfXjc4Lger6LK4JNfR6Crtd=s9ZzE7_A@mail.gmail.com>
+ <alpine.DEB.2.02.1212041446140.3594@oneiric>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,38 +25,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/18] UBIFS support
-To: Renaud Barbier <renaud.barbier@ge.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: lots of inaccurate references to "FileName: include/asm-arm ..."
+To: "menon.nishanth@gmail.com" <menon.nishanth@gmail.com>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Renaud Barbier <renaud.barbier@ge.com> writes:
+On Tue, 4 Dec 2012, Robert P. J. Day wrote:
 
-> On 03/12/2012 19:17, Robert Jarzmik wrote:
->> Hi Renaud,
->>
->> That's a really huge piece of a patchset.
->>
->> Please tell me that almost 100% of the code was taken out of the linux
->> kernel. Even better, are there any patches in there that are linux kernel
->> copies, so that review is not necessary ?
-> It is actually derived from U-boot which derive it from Linux.  It would not be
-> as recent as the Linux code.
-> If you need the code to be fully derived from Linux, then ignore it. This is
-> something
-> I hopefully can work on in the future (N months).
+>   if i don't hear differently, i can submit a patch tomorrow.  as you
+> can see, almost all of that content is arm-related:
+>
+> arch/arm/mach-omap/devices-gpmc-nand.c: * FileName: arch/arm/boards/omap/devices-gpmc-nand.c
 
-It's up to Sascha, but I think out of U-boot is fine too.  So are all the
-patches a full copy paste of U-boot, or are there specific parts (adaptation) to
-barebox ? 
+  simple aesthetic question for this cleanup.  here's the top of one
+of those sample files:
 
-I'd think that if you tested the patches succesfully in barebox, and if the
-adaptation is very small, we will review only the adaptation ... hence the
-question, where is the adaptation ?
+/**
+ * @file
+ * @brief GPMC specific NAND devices
+ *
+ * FileName: arch/arm/boards/omap/devices-gpmc-nand.c
+ *
+ */
+/*
+ * (C) Copyright 2006-2008
+ * Texas Instruments, <www.ti.com>
+ * Nishanth Menon <x0nishan@ti.com>
+ ... snip ...
 
-Cheers.
+  what would you like the final result to be?  collapse the two
+comment blocks into one?  just show me what *this* file should end up
+looking like and i'll apply that to all of them.
 
---
-Robert
+rday
+
+-- 
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
