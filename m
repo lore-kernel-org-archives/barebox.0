@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from m15-111.126.com ([220.181.15.111])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TfnZZ-0005lJ-MG
- for barebox@lists.infradead.org; Tue, 04 Dec 2012 08:09:49 +0000
-Date: Tue, 4 Dec 2012 16:09:32 +0800
-From: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
-Message-ID: <20121204080932.GD20812@greatfirst.com>
-References: <20121130110336.GB7099@greatfirst.com>
- <20121203095534.GL10369@pengutronix.de>
- <20121204014242.GB20812@greatfirst.com>
- <20121204074431.GV10369@pengutronix.de>
+Received: from exprod5og102.obsmtp.com ([64.18.0.143])
+ by merlin.infradead.org with smtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Tfpqm-0007Y6-7M
+ for barebox@lists.infradead.org; Tue, 04 Dec 2012 10:35:41 +0000
+Message-ID: <50BDD1F7.6070706@ge.com>
+Date: Tue, 04 Dec 2012 10:35:35 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20121204074431.GV10369@pengutronix.de>
+References: <1354558114-28799-1-git-send-email-renaud.barbier@ge.com>
+ <87txs3ymg1.fsf@free.fr>
+In-Reply-To: <87txs3ymg1.fsf@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,24 +18,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Howto known uncompressed length when uncompress_fd_to_buf
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 00/18] UBIFS support
+To: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: barebox@lists.infradead.org
 
-> Why don't you uncompress to a regular file (i.e. /tmp/foo) rather than
-> to the device file?
+On 03/12/2012 19:17, Robert Jarzmik wrote:
+> Hi Renaud,
 >
-My fireware will be a huge file: about 12M bytes. I don't known How much
-a regular file's size.
+> That's a really huge piece of a patchset.
+>
+> Please tell me that almost 100% of the code was taken out of the linux
+> kernel. Even better, are there any patches in there that are linux kernel
+> copies, so that review is not necessary ?
+It is actually derived from U-boot which derive it from Linux.  It would 
+not be
+as recent as the Linux code.
+If you need the code to be fully derived from Linux, then ignore it. 
+This is something
+I hopefully can work on in the future (N months).
+I submitted it as I saw a couple people needing ubifs support.
+They may be willing to work on it.
 
--- 
-Best Regards,
-zzs
 
+
+
+
+
+
+
+
+
+
+
+
+>
+> Cheers.
+>
+> --
+> Robert
 
 
 _______________________________________________
