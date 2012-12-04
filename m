@@ -1,26 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from astoria.ccjclearline.com ([64.235.106.9])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tg1gM-0008ND-2n
- for barebox@lists.infradead.org; Tue, 04 Dec 2012 23:13:42 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1Tg1gK-0006lJ-CQ
- for barebox@lists.infradead.org; Wed, 05 Dec 2012 00:13:40 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1Tg1gK-0001b9-BH
- for barebox@lists.infradead.org; Wed, 05 Dec 2012 00:13:40 +0100
-Date: Wed, 5 Dec 2012 00:13:40 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121204231340.GX10369@pengutronix.de>
-References: <20121130110336.GB7099@greatfirst.com>
- <20121203095534.GL10369@pengutronix.de>
- <20121204014242.GB20812@greatfirst.com>
- <20121204074431.GV10369@pengutronix.de>
- <20121204080932.GD20812@greatfirst.com>
+ id 1Tg1kC-0008U0-32
+ for barebox@lists.infradead.org; Tue, 04 Dec 2012 23:17:40 +0000
+Received: from cpe78cd8ec96008-cm78cd8ec96005.cpe.net.cable.rogers.com
+ ([72.137.5.185]:43375 helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:DHE-RSA-AES256-SHA:256)
+ (Exim 4.80) (envelope-from <rpjday@crashcourse.ca>)
+ id 1Tg1k9-0006Oo-VJ
+ for barebox@lists.infradead.org; Tue, 04 Dec 2012 18:17:38 -0500
+Date: Tue, 4 Dec 2012 18:17:30 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.DEB.2.02.1212041816280.7694@oneiric>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20121204080932.GD20812@greatfirst.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,28 +21,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Howto known uncompressed length when uncompress_fd_to_buf
-To: barebox <barebox@lists.infradead.org>
+Subject: [PATCH] mach-omap/Kconfig: Some spelling fixes and indentation.
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-T24gVHVlLCBEZWMgMDQsIDIwMTIgYXQgMDQ6MDk6MzJQTSArMDgwMCwg5byg5b+g5bGxIHdyb3Rl
-Ogo+ID4gV2h5IGRvbid0IHlvdSB1bmNvbXByZXNzIHRvIGEgcmVndWxhciBmaWxlIChpLmUuIC90
-bXAvZm9vKSByYXRoZXIgdGhhbgo+ID4gdG8gdGhlIGRldmljZSBmaWxlPwo+ID4KPiBNeSBmaXJl
-d2FyZSB3aWxsIGJlIGEgaHVnZSBmaWxlOiBhYm91dCAxMk0gYnl0ZXMuIEkgZG9uJ3Qga25vd24g
-SG93IG11Y2gKPiBhIHJlZ3VsYXIgZmlsZSdzIHNpemUuCgpiYXJlYm94IHdpbGwgaGFuZGxlIHRo
-ZXNlIGZpbGUgc2l6ZXMganVzdCBmaW5lIGdpdmVuIHRoYXQgeW91ciBtYWxsb2MKYXJlYSBzaXpl
-IGlzIGNvbmZpZ3VyZWQgYmlnIGVub3VnaC4gVGhlIG9ubHkgdGhpbmcgdGhhdCBjb3VsZCBoYXBw
-ZW4gaXMKdGhhdCB0aGUgcGVyZm9ybWFuY2Ugb2YgdGhlIG1lbW9yeSBhbGxvY2F0b3Igd2lsbCBk
-ZWNyZWFzZSB3aXRoIHRoYXQKbWFueSBhbGxvY2F0aW9ucy4gWW91IGNhbiB3b3JrIGFyb3VuZCB0
-aGlzIGJ5IGluY3JlYXNpbmcgQ0hVTktfU0laRSBpbgpmcy9yYW1mcy5jLgoKU2FzY2hhCgotLSAK
-UGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAg
-ICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEz
-NyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10
-c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIx
-LTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+
+---
+
+diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+index 81f6127..b9f3dff 100644
+--- a/arch/arm/mach-omap/Kconfig
++++ b/arch/arm/mach-omap/Kconfig
+@@ -75,7 +75,7 @@ config OMAP_BUILD_SPI
+ 	bool
+ 	help
+ 	  Say Y here if you want to build an barebox.spi image as used
+-	  on the AM35xx chips when booting form SPI NOR flash.
++	  on the AM35xx chips when booting from SPI NOR flash.
+
+ config ARCH_TEXT_BASE
+ 	hex
+@@ -89,7 +89,7 @@ config OMAP4_USBBOOT
+ 	help
+ 	  Say Y here if you want to be able to boot an OMAP4 cpu from USB.
+ 	  You need the utility program omap4_usbboot to boot from USB.
+-	  Please read oamp4_usb_booting.txt for more information.
++	  Please read omap4_usb_booting.txt for more information.
+
+ config BOARDINFO
+ 	default "Archos G9" if MACH_ARCHOSG9
+@@ -115,14 +115,14 @@ config MACH_BEAGLE
+ 	select HAVE_NOSHELL
+ 	select HAVE_DEFAULT_ENVIRONMENT_NEW
+ 	depends on ARCH_OMAP3
+-	  help
++	help
+ 	  Say Y here if you are using Beagle Board
+
+ config MACH_OMAP3EVM
+ 	bool "Texas Instrument's OMAP3 EVM"
+ 	select HAVE_NOSHELL
+ 	depends on ARCH_OMAP3
+-	  help
++	help
+ 	  Say Y here if you are using OMAP3EVM
+
+ config MACH_PANDA
+@@ -155,7 +155,7 @@ config MACH_PCAAL1
+ 	bool "Phytec phyCARD-A-L1"
+ 	select HAVE_NOSHELL
+ 	depends on ARCH_OMAP3
+-	  help
++	help
+ 	  Say Y here if you are using a phyCARD-A-L1 PCA-A-L1
+
+ config MACH_PCAAXL2
+
+-- 
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
