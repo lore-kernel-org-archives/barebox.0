@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgBQP-0005YV-Ld
- for barebox@lists.infradead.org; Wed, 05 Dec 2012 09:37:54 +0000
-Date: Wed, 5 Dec 2012 10:37:50 +0100
+ id 1TgBRB-0005fm-LI
+ for barebox@lists.infradead.org; Wed, 05 Dec 2012 09:38:42 +0000
+Date: Wed, 5 Dec 2012 10:38:40 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121205093750.GA10369@pengutronix.de>
-References: <alpine.DEB.2.02.1212041251330.7280@oneiric>
+Message-ID: <20121205093840.GB10369@pengutronix.de>
+References: <1354622665-7824-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.02.1212041251330.7280@oneiric>
+In-Reply-To: <1354622665-7824-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,72 +22,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] OMAP3: Replace magic GPIO numbers in omap3_generic.c
- with macros.
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] password: fixed underflow on <backspace>
+To: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, Dec 04, 2012 at 12:54:22PM -0500, Robert P. J. Day wrote:
+On Tue, Dec 04, 2012 at 01:04:25PM +0100, Enrico Scholz wrote:
+> due to missing/misplaced boundary check, deleting characters could
+> underflow the password buffer.
 > 
-> Based on following lines in omap3-silicon.h:
+> Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 
 Applied, thanks
 
 Sascha
 
-> 
-> #define OMAP_L4_WKUP_BASE       0x48300000
-> #define OMAP_L4_PER_BASE        0x49000000
-> ... snip ...
-> #define OMAP_GPIO1_BASE         (OMAP_L4_WKUP_BASE + 0x10000)
-> #define OMAP_GPIO2_BASE         (OMAP_L4_PER_BASE + 0x50000)
-> #define OMAP_GPIO3_BASE         (OMAP_L4_PER_BASE + 0x52000)
-> #define OMAP_GPIO4_BASE         (OMAP_L4_PER_BASE + 0x54000)
-> #define OMAP_GPIO5_BASE         (OMAP_L4_PER_BASE + 0x56000)
-> #define OMAP_GPIO6_BASE         (OMAP_L4_PER_BASE + 0x58000)
-> 
-> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-> 
 > ---
+>  common/password.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
 > 
-> diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
-> index 1e1308e..7b6f1f9 100644
-> --- a/arch/arm/mach-omap/omap3_generic.c
-> +++ b/arch/arm/mach-omap/omap3_generic.c
-> @@ -515,17 +515,17 @@ const struct gpmc_config omap3_nand_cfg = {
->  #ifndef __PBL__
->  static int omap3_gpio_init(void)
->  {
-> -	add_generic_device("omap-gpio", 0, NULL, 0x48310000,
-> +	add_generic_device("omap-gpio", 0, NULL, OMAP_GPIO1_BASE,
->  					0xf00, IORESOURCE_MEM, NULL);
-> -	add_generic_device("omap-gpio", 1, NULL, 0x49050000,
-> +	add_generic_device("omap-gpio", 1, NULL, OMAP_GPIO2_BASE,
->  					0xf00, IORESOURCE_MEM, NULL);
-> -	add_generic_device("omap-gpio", 2, NULL, 0x49052000,
-> +	add_generic_device("omap-gpio", 2, NULL, OMAP_GPIO3_BASE,
->  					0xf00, IORESOURCE_MEM, NULL);
-> -	add_generic_device("omap-gpio", 3, NULL, 0x49054000,
-> +	add_generic_device("omap-gpio", 3, NULL, OMAP_GPIO4_BASE,
->  					0xf00, IORESOURCE_MEM, NULL);
-> -	add_generic_device("omap-gpio", 4, NULL, 0x49056000,
-> +	add_generic_device("omap-gpio", 4, NULL, OMAP_GPIO5_BASE,
->  					0xf00, IORESOURCE_MEM, NULL);
-> -	add_generic_device("omap-gpio", 5, NULL, 0x49058000,
-> +	add_generic_device("omap-gpio", 5, NULL, OMAP_GPIO6_BASE,
->  					0xf00, IORESOURCE_MEM, NULL);
-> 
->  	return 0;
-> 
+> diff --git a/common/password.c b/common/password.c
+> index a03e1db..d157a11 100644
+> --- a/common/password.c
+> +++ b/common/password.c
+> @@ -66,11 +66,14 @@ int password(unsigned char *passwd, size_t length, int flags, int timeout)
+>  			case CTL_CH('h'):
+>  			case KEY_DEL7:
+>  			case KEY_DEL:
+> -				if (flags & STAR && pos > 0)
+> -					puts("\b \b");
+> -				*buf = '\0';
+> -				buf--;
+> -				pos--;
+> +				if (pos > 0) {
+> +					if (flags & STAR)
+> +						puts("\b \b");
+> +
+> +					*buf = '\0';
+> +					buf--;
+> +					pos--;
+> +				}
+>  				continue;
+>  			default:
+>  				if (pos < length - 1) {
 > -- 
+> 1.7.11.7
 > 
-> ========================================================================
-> Robert P. J. Day                                 Ottawa, Ontario, CANADA
->                         http://crashcourse.ca
-> 
-> Twitter:                                       http://twitter.com/rpjday
-> LinkedIn:                               http://ca.linkedin.com/in/rpjday
-> ========================================================================
 > 
 > _______________________________________________
 > barebox mailing list
