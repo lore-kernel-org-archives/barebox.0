@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.cvg.de ([62.153.82.30])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgCZE-0005pB-5j
- for barebox@lists.infradead.org; Wed, 05 Dec 2012 10:51:06 +0000
-From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-References: <1354622643-7777-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
- <20121205094344.GC10369@pengutronix.de>
-Date: Wed, 05 Dec 2012 11:50:56 +0100
-In-Reply-To: <20121205094344.GC10369@pengutronix.de> (Sascha Hauer's message
- of "Wed, 5 Dec 2012 10:43:44 +0100")
-Message-ID: <lyd2yo3h7z.fsf@ensc-virt.intern.sigma-chemnitz.de>
-MIME-Version: 1.0
+ id 1TgD9s-00087z-SJ
+ for barebox@lists.infradead.org; Wed, 05 Dec 2012 11:28:57 +0000
+From: Wolfram Sang <w.sang@pengutronix.de>
+Date: Wed,  5 Dec 2012 12:28:45 +0100
+Message-Id: <1354706925-13432-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,65 +14,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: give more detailed information about data aborts
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mxs: get_fecclk is hclk, not a constant
+To: barebox@lists.infradead.org
+Cc: jbe@pengutronix.de, Wolfram Sang <w.sang@pengutronix.de>
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
+The rate is not constant as the comment said, but is hclk. The result
+was that MII clock was often calculated wrong.
 
->> -	asm volatile ("mrc     p15, 0, %0, c6, c0, 0" : "=r" (far) : : "cc");
->> -
->> -	printf("unable to handle %s at address 0x%08x\n",
->> -			far < PAGE_SIZE ? "NULL pointer dereference" :
->> -			"paging request", far);
->> +	if (!IS_ENABLED(CONFIG_VERBOSE_EXCEPTIONS)) {
->> +		printf("data abort\n");
->
-> Why don't you keep the original message here? The fault address is a very
-> useful information.
+Reported-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+---
+ arch/arm/mach-mxs/speed-imx28.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-I think it is cleaner to implement a minimal + verbose variant, than a
-little-bit-minimal + verbose variant.
+diff --git a/arch/arm/mach-mxs/speed-imx28.c b/arch/arm/mach-mxs/speed-imx28.c
+index df55f64..2cab42d 100644
+--- a/arch/arm/mach-mxs/speed-imx28.c
++++ b/arch/arm/mach-mxs/speed-imx28.c
+@@ -121,8 +121,7 @@ unsigned imx_get_xtalclk(void)
+ 
+ unsigned imx_get_fecclk(void)
+ {
+-	/* this PLL always runs at 50 MHz */
+-	return 50000000;
++	return imx_get_hclk();
+ }
+ 
+ 
+-- 
+1.7.10.4
 
-I am not sure since when (ARM architecture wise) FAR and DFSR (introduced
-by my patch) are available.  Value of FAR depends on the fault reason
-(e.g. it is invalid for imprecise external aborts or debug events) so
-printing FAR without DFSR might be misleading.
-
-
->> --- a/common/Kconfig
->> +++ b/common/Kconfig
->> @@ -668,6 +668,12 @@ config DEBUG_LL
->>  	help
->>  	  Enable this to get low level debug messages during barebox initialization.
->>  
->> +config VERBOSE_EXCEPTIONS
->> +	bool "decode processor specific exceptions"
->> +	default y
->> +	help
->> +	  Enable this to give out more detailed information about data aborts.
->
-> This option should be in arch/arm/Kconfig since it's ARM specific.
-
-I do not think that verbose exception messages are an ARM-only thing.
-atm, it is implemented for ARM only but similar code can be written for
-other architectures probably.
-
-Having this option in the "Debugging" section of 'menuconfig' is expected
-probably by the most users.  Making it architecture dependent requires
-more or less invasive changes in the Kconfig infrastructure.
-
-
-> Also it should depend on ARM_EXCEPTIONS.
-
-ok
-
-
-Enrico
 
 _______________________________________________
 barebox mailing list
