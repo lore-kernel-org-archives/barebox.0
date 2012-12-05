@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.cvg.de ([62.153.82.30])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgDEK-0008Dd-6Z
- for barebox@lists.infradead.org; Wed, 05 Dec 2012 11:33:33 +0000
-From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-References: <1354622569-7673-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
- <1354622569-7673-2-git-send-email-enrico.scholz@sigma-chemnitz.de>
- <20121205104627.GD10369@pengutronix.de>
-Date: Wed, 05 Dec 2012 12:33:26 +0100
-In-Reply-To: <20121205104627.GD10369@pengutronix.de> (Sascha Hauer's message
- of "Wed, 5 Dec 2012 11:46:27 +0100")
-Message-ID: <ly8v9c3f95.fsf@ensc-virt.intern.sigma-chemnitz.de>
+ id 1TgDGL-0008Ik-Eh
+ for barebox@lists.infradead.org; Wed, 05 Dec 2012 11:35:38 +0000
+Date: Wed, 5 Dec 2012 12:35:33 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121205113533.GE10369@pengutronix.de>
+References: <1354622643-7777-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
+ <20121205094344.GC10369@pengutronix.de>
+ <lyd2yo3h7z.fsf@ensc-virt.intern.sigma-chemnitz.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <lyd2yo3h7z.fsf@ensc-virt.intern.sigma-chemnitz.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,104 +24,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] OMAP: disable unaligned access when building the IFT
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] ARM: give more detailed information about data aborts
+To: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 Cc: barebox@lists.infradead.org
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
+On Wed, Dec 05, 2012 at 11:50:56AM +0100, Enrico Scholz wrote:
+> Sascha Hauer <s.hauer@pengutronix.de> writes:
+> 
+> >> -	asm volatile ("mrc     p15, 0, %0, c6, c0, 0" : "=r" (far) : : "cc");
+> >> -
+> >> -	printf("unable to handle %s at address 0x%08x\n",
+> >> -			far < PAGE_SIZE ? "NULL pointer dereference" :
+> >> -			"paging request", far);
+> >> +	if (!IS_ENABLED(CONFIG_VERBOSE_EXCEPTIONS)) {
+> >> +		printf("data abort\n");
+> >
+> > Why don't you keep the original message here? The fault address is a very
+> > useful information.
+> 
+> I think it is cleaner to implement a minimal + verbose variant, than a
+> little-bit-minimal + verbose variant.
 
->>  config OMAP_BUILD_IFT
->>  	prompt "build ift binary"
->> +	select ARM_NOUNALIGNED
->
-> This needs more investigation. Coupling this to OMAP_BUILD_IFT does
-> not seem to be correct. Unaligned accesses work for cached memory once
-> the MMU is enabled,
+The faulting address shouldn't be dropped from the message. Also I like
+to keep the "NULL pointer dereference" string. Please do not change the
+message above at all, only print additional information if configured
+in.
 
-It depends on the type of accessed memory.  E.g.
+> 
+> I am not sure since when (ARM architecture wise) FAR and DFSR (introduced
+> by my patch) are available.  Value of FAR depends on the fault reason
+> (e.g. it is invalid for imprecise external aborts or debug events) so
+> printing FAR without DFSR might be misleading.
 
-OMAP4 SDRAM
-| :/ md -w 0x80000001+2
-| 80000001: 0000                                               ..
+That of course must be checked. This option shouldn't be enabled when
+not available on that CPU
 
-OMAP4 SRAM
-| :/ md -w 0x40300000+2
-| 40300000: 9001                                               
-| 
-| :/ md -w 0x40300001+2
-| alignment fault at address 0x40300001
-| pc : [<8f02a684>]    lr : [<8f02a654>]
+> 
+> 
+> >> --- a/common/Kconfig
+> >> +++ b/common/Kconfig
+> >> @@ -668,6 +668,12 @@ config DEBUG_LL
+> >>  	help
+> >>  	  Enable this to get low level debug messages during barebox initialization.
+> >>  
+> >> +config VERBOSE_EXCEPTIONS
+> >> +	bool "decode processor specific exceptions"
+> >> +	default y
+> >> +	help
+> >> +	  Enable this to give out more detailed information about data aborts.
+> >
+> > This option should be in arch/arm/Kconfig since it's ARM specific.
+> 
+> I do not think that verbose exception messages are an ARM-only thing.
+> atm, it is implemented for ARM only but similar code can be written for
+> other architectures probably.
 
-I guess, the OMAP4 SRAM is strongly ordered memory which does not allow
-unaligned access.
+It could, but until this happens it should be ARM specific. We can
+consolidate this should other architectures implement something like
+this, but until then we shouldn't bother users with no-op options.
 
-Similar problems might arise when accessing device memory unaligned.
-But this should not be an issue because such operations are usually
-expressed explicitly with readX() + writeX() macros.
-
-
-Coupling the -mno-unaligned-access to the TEXT_BASE and the used processor
-might be a better solution.  But I have only a very limited overview about
-all the possible variants, so I decided to:
-
-1. make it configurable
-
-2. enable it for known cases (OMAP4 IFT is such a case because it is
-   usually executed in SRAM)
-
-
-> it won't work with MMU disabled though. 
-
-no; unaligned access works on ARMv6+ without MMU too.
-
-
->> commit b823fd9ba56d56e3cbb5b05e7a4815fb0914204a
->> Author: Albert ARIBAUD <albert.u.boot@aribaud.net>
->> Date:   Tue Oct 9 09:28:15 2012 +0000
->>     ARM: prevent misaligned array inits
->>     
->>     Under option -munaligned-access, gcc can perform local char
->>     or 16-bit array initializations using misaligned native
->>     accesses which will throw a data abort exception. Fix files
->>     where these array initializations were unneeded, and for
->>     files known to contain such initializations, enforce gcc
->>     option -mno-unaligned-access.
-> ...
-> This patch explicitely mentions char arrays initialized on the stack
-> like this:
-
-I do not know the backgrounds of this patch but without additional
-context, I think it is wrong.  It might fix problems of a specific
-processor or in cases where u-boot is executed in SRAM or so.  But
-unaligned access on ARMv6+ is generally ok.
+Sascha
 
 
-> function foo()
-> {
->        char buffer[] = "initial value";
-> /* or */
->        char buffer[] = { 'i', 'n', 'i', 't', 0 };
->        ...
-> }
->
-> Is this the place where you see problems?
-
-no; I saw the problem when the MLO accessed attributes of an oddly
-located __packed structure with 'ldrh'.
-
-"OMAP4: removed __packed__ annotation from pad_conf_entry" (see previous
-postings) was an immediate (and for other reasons still correct) fix for
-this issue.
-
-
-> barebox is written to not contain unaligned accesses, everything else
-> will fail on earlier ARM CPUs. I think we should pass the
-> -mno-unaligned-access unconditionally.
-
-I do not see a reason to do this unconditionally.
-
-
-Enrico
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
