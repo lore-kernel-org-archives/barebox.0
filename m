@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgK5c-0006ii-Mo
- for barebox@lists.infradead.org; Wed, 05 Dec 2012 18:53:01 +0000
-Date: Wed, 5 Dec 2012 19:52:59 +0100
+ id 1TgK6o-0006v1-ET
+ for barebox@lists.infradead.org; Wed, 05 Dec 2012 18:54:15 +0000
+Date: Wed, 5 Dec 2012 19:54:13 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121205185259.GO10369@pengutronix.de>
-References: <alpine.DEB.2.02.1212041816280.7694@oneiric>
+Message-ID: <20121205185413.GP10369@pengutronix.de>
+References: <1354727739-31360-1-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.02.1212041816280.7694@oneiric>
+In-Reply-To: <1354727739-31360-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,79 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mach-omap/Kconfig: Some spelling fixes and indentation.
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] net: phy: micrel: fix typo in driver name
+To: Jan Luebbe <jlu@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, Dec 04, 2012 at 06:17:30PM -0500, Robert P. J. Day wrote:
+On Wed, Dec 05, 2012 at 06:15:39PM +0100, Jan Luebbe wrote:
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+> ---
 > 
-> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-> 
+> This applies to the next branch (for-next/phylib).
 
 Applied, thanks
 
 Sascha
 
-> ---
 > 
-> diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-> index 81f6127..b9f3dff 100644
-> --- a/arch/arm/mach-omap/Kconfig
-> +++ b/arch/arm/mach-omap/Kconfig
-> @@ -75,7 +75,7 @@ config OMAP_BUILD_SPI
->  	bool
->  	help
->  	  Say Y here if you want to build an barebox.spi image as used
-> -	  on the AM35xx chips when booting form SPI NOR flash.
-> +	  on the AM35xx chips when booting from SPI NOR flash.
+>  drivers/net/phy/micrel.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
->  config ARCH_TEXT_BASE
->  	hex
-> @@ -89,7 +89,7 @@ config OMAP4_USBBOOT
->  	help
->  	  Say Y here if you want to be able to boot an OMAP4 cpu from USB.
->  	  You need the utility program omap4_usbboot to boot from USB.
-> -	  Please read oamp4_usb_booting.txt for more information.
-> +	  Please read omap4_usb_booting.txt for more information.
-> 
->  config BOARDINFO
->  	default "Archos G9" if MACH_ARCHOSG9
-> @@ -115,14 +115,14 @@ config MACH_BEAGLE
->  	select HAVE_NOSHELL
->  	select HAVE_DEFAULT_ENVIRONMENT_NEW
->  	depends on ARCH_OMAP3
-> -	  help
-> +	help
->  	  Say Y here if you are using Beagle Board
-> 
->  config MACH_OMAP3EVM
->  	bool "Texas Instrument's OMAP3 EVM"
->  	select HAVE_NOSHELL
->  	depends on ARCH_OMAP3
-> -	  help
-> +	help
->  	  Say Y here if you are using OMAP3EVM
-> 
->  config MACH_PANDA
-> @@ -155,7 +155,7 @@ config MACH_PCAAL1
->  	bool "Phytec phyCARD-A-L1"
->  	select HAVE_NOSHELL
->  	depends on ARCH_OMAP3
-> -	  help
-> +	help
->  	  Say Y here if you are using a phyCARD-A-L1 PCA-A-L1
-> 
->  config MACH_PCAAXL2
-> 
+> diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+> index 0c6d43e..ed5abf8 100644
+> --- a/drivers/net/phy/micrel.c
+> +++ b/drivers/net/phy/micrel.c
+> @@ -159,7 +159,7 @@ static struct phy_driver ksphy_driver[] = {
+>  }, {
+>  	.phy_id		= PHY_ID_KSZ8873MLL,
+>  	.phy_id_mask	= 0x00fffff0,
+> -	.drv.name	= "Micrel KSZ8873MLL Swithch",
+> +	.drv.name	= "Micrel KSZ8873MLL Switch",
+>  	.features	= (SUPPORTED_Pause | SUPPORTED_Asym_Pause),
+>  	.config_init	= ksz8873mll_config_init,
+>  	.config_aneg	= ksz8873mll_config_aneg,
 > -- 
+> 1.7.10.4
 > 
-> ========================================================================
-> Robert P. J. Day                                 Ottawa, Ontario, CANADA
->                         http://crashcourse.ca
-> 
-> Twitter:                                       http://twitter.com/rpjday
-> LinkedIn:                               http://ca.linkedin.com/in/rpjday
-> ========================================================================
 > 
 > _______________________________________________
 > barebox mailing list
