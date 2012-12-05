@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgK27-00063e-BM
- for barebox@lists.infradead.org; Wed, 05 Dec 2012 18:49:24 +0000
-Date: Wed, 5 Dec 2012 19:49:21 +0100
+ id 1TgK3K-0006Ge-8R
+ for barebox@lists.infradead.org; Wed, 05 Dec 2012 18:50:38 +0000
+Date: Wed, 5 Dec 2012 19:50:36 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121205184921.GL10369@pengutronix.de>
-References: <1354714769-5177-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20121205185036.GM10369@pengutronix.de>
+References: <1354719233-28847-1-git-send-email-w.sang@pengutronix.de>
+ <20121205183732.GK10369@pengutronix.de>
+ <20121205184210.GA9329@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1354714769-5177-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20121205184210.GA9329@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +24,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] at91: fix debug_ll
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] mtd: nand: mxs: reset BCH earlier to avoid NAND startup
+ problems
+To: Wolfram Sang <w.sang@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Dec 05, 2012 at 02:39:29PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> since 9d1bcab50454e06c74dc9fda42a05cd8a43265c6
-> debug_ll: Let architectures define PUTC_LL directly
+On Wed, Dec 05, 2012 at 07:42:10PM +0100, Wolfram Sang wrote:
+> On Wed, Dec 05, 2012 at 07:37:32PM +0100, Sascha Hauer wrote:
+> > On Wed, Dec 05, 2012 at 03:53:53PM +0100, Wolfram Sang wrote:
+> > > It could happen (1 out of 100 times) that NAND did not start up
+> > > correctly after warm rebooting, so barebox could not find its
+> > > environment or DMA timed out due to a stalled BCH. When resetting BCH
+> > > together with GPMI, the issue could not be observed anymore. We probably
+> > > need the consistent state already before sending commands to NAND.
+> > 
+> > The subject suggests that the BCH engine is resetted earlier, but
+> > instead of moving the reset this patch adds another reset. Is this
+> > intended?
+> 
+> Yes, I wanted to keep resetting BCH before applying a new layout. Maybe
+> the subject should have been named "earlier, too,". I can drop the other
+> check and rerun my tests if this seems overcautios to you.
 
-Sorry, missed at91. Applied.
+change the patch or the subject, either way is fine with me.
 
-Thanks
- Sascha
-
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/arm/mach-at91/include/mach/debug_ll.h |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/mach-at91/include/mach/debug_ll.h b/arch/arm/mach-at91/include/mach/debug_ll.h
-> index ee824cb..a85fdee 100644
-> --- a/arch/arm/mach-at91/include/mach/debug_ll.h
-> +++ b/arch/arm/mach-at91/include/mach/debug_ll.h
-> @@ -25,7 +25,7 @@
->   *
->   * This does not append a newline
->   */
-> -static void putc(int c)
-> +static inline void PUTC_LL(char c)
->  {
->  	while (!(__raw_readl(UART_BASE + ATMEL_US_CSR) & ATMEL_US_TXRDY))
->  		barrier();
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
