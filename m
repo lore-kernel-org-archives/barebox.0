@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tg9Zb-0002Tu-3E
- for barebox@lists.infradead.org; Wed, 05 Dec 2012 07:39:16 +0000
-Date: Wed, 5 Dec 2012 08:39:11 +0100
+ id 1TgBQP-0005YV-Ld
+ for barebox@lists.infradead.org; Wed, 05 Dec 2012 09:37:54 +0000
+Date: Wed, 5 Dec 2012 10:37:50 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121205073911.GZ10369@pengutronix.de>
-References: <1354622611-7731-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
+Message-ID: <20121205093750.GA10369@pengutronix.de>
+References: <alpine.DEB.2.02.1212041251330.7280@oneiric>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1354622611-7731-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
+In-Reply-To: <alpine.DEB.2.02.1212041251330.7280@oneiric>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +22,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] OMAP4: removed __packed__ annotation from pad_conf_entry
-To: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] OMAP3: Replace magic GPIO numbers in omap3_generic.c
+ with macros.
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Tue, Dec 04, 2012 at 01:03:31PM +0100, Enrico Scholz wrote:
-> structure is used within barebox only and there is no need to pack it.
-> As this option has a negative performance impact, remove it.
+On Tue, Dec 04, 2012 at 12:54:22PM -0500, Robert P. J. Day wrote:
 > 
-> Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+> Based on following lines in omap3-silicon.h:
 
 Applied, thanks
 
 Sascha
 
+> 
+> #define OMAP_L4_WKUP_BASE       0x48300000
+> #define OMAP_L4_PER_BASE        0x49000000
+> ... snip ...
+> #define OMAP_GPIO1_BASE         (OMAP_L4_WKUP_BASE + 0x10000)
+> #define OMAP_GPIO2_BASE         (OMAP_L4_PER_BASE + 0x50000)
+> #define OMAP_GPIO3_BASE         (OMAP_L4_PER_BASE + 0x52000)
+> #define OMAP_GPIO4_BASE         (OMAP_L4_PER_BASE + 0x54000)
+> #define OMAP_GPIO5_BASE         (OMAP_L4_PER_BASE + 0x56000)
+> #define OMAP_GPIO6_BASE         (OMAP_L4_PER_BASE + 0x58000)
+> 
+> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+> 
 > ---
->  arch/arm/mach-omap/include/mach/omap4-mux.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/arm/mach-omap/include/mach/omap4-mux.h b/arch/arm/mach-omap/include/mach/omap4-mux.h
-> index 9088631..db92a61 100644
-> --- a/arch/arm/mach-omap/include/mach/omap4-mux.h
-> +++ b/arch/arm/mach-omap/include/mach/omap4-mux.h
-> @@ -30,7 +30,7 @@ struct pad_conf_entry {
->  
->  	u16 val;
->  
-> -} __attribute__ ((packed));
-> +};
->  
->  #define WAKEUP_EN       (1 << 14)
->  #ifdef CONFIG_OFF_PADCONF
+> diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
+> index 1e1308e..7b6f1f9 100644
+> --- a/arch/arm/mach-omap/omap3_generic.c
+> +++ b/arch/arm/mach-omap/omap3_generic.c
+> @@ -515,17 +515,17 @@ const struct gpmc_config omap3_nand_cfg = {
+>  #ifndef __PBL__
+>  static int omap3_gpio_init(void)
+>  {
+> -	add_generic_device("omap-gpio", 0, NULL, 0x48310000,
+> +	add_generic_device("omap-gpio", 0, NULL, OMAP_GPIO1_BASE,
+>  					0xf00, IORESOURCE_MEM, NULL);
+> -	add_generic_device("omap-gpio", 1, NULL, 0x49050000,
+> +	add_generic_device("omap-gpio", 1, NULL, OMAP_GPIO2_BASE,
+>  					0xf00, IORESOURCE_MEM, NULL);
+> -	add_generic_device("omap-gpio", 2, NULL, 0x49052000,
+> +	add_generic_device("omap-gpio", 2, NULL, OMAP_GPIO3_BASE,
+>  					0xf00, IORESOURCE_MEM, NULL);
+> -	add_generic_device("omap-gpio", 3, NULL, 0x49054000,
+> +	add_generic_device("omap-gpio", 3, NULL, OMAP_GPIO4_BASE,
+>  					0xf00, IORESOURCE_MEM, NULL);
+> -	add_generic_device("omap-gpio", 4, NULL, 0x49056000,
+> +	add_generic_device("omap-gpio", 4, NULL, OMAP_GPIO5_BASE,
+>  					0xf00, IORESOURCE_MEM, NULL);
+> -	add_generic_device("omap-gpio", 5, NULL, 0x49058000,
+> +	add_generic_device("omap-gpio", 5, NULL, OMAP_GPIO6_BASE,
+>  					0xf00, IORESOURCE_MEM, NULL);
+> 
+>  	return 0;
+> 
 > -- 
-> 1.7.11.7
 > 
+> ========================================================================
+> Robert P. J. Day                                 Ottawa, Ontario, CANADA
+>                         http://crashcourse.ca
+> 
+> Twitter:                                       http://twitter.com/rpjday
+> LinkedIn:                               http://ca.linkedin.com/in/rpjday
+> ========================================================================
 > 
 > _______________________________________________
 > barebox mailing list
