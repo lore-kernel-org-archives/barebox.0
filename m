@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgJmk-0002sG-J0
- for barebox@lists.infradead.org; Wed, 05 Dec 2012 18:33:31 +0000
-Date: Wed, 5 Dec 2012 19:33:28 +0100
+ id 1TgJqf-0003hp-OF
+ for barebox@lists.infradead.org; Wed, 05 Dec 2012 18:37:34 +0000
+Date: Wed, 5 Dec 2012 19:37:32 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121205183328.GJ10369@pengutronix.de>
-References: <1354718562-24328-1-git-send-email-w.sang@pengutronix.de>
+Message-ID: <20121205183732.GK10369@pengutronix.de>
+References: <1354719233-28847-1-git-send-email-w.sang@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1354718562-24328-1-git-send-email-w.sang@pengutronix.de>
+In-Reply-To: <1354719233-28847-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +22,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mxs: tx28: fix NAND usage
+Subject: Re: [PATCH] mtd: nand: mxs: reset BCH earlier to avoid NAND startup
+ problems
 To: Wolfram Sang <w.sang@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Dec 05, 2012 at 03:42:42PM +0100, Wolfram Sang wrote:
-> Pinmuxing was wrong and no GPMI device was created.
-> 
-> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+On Wed, Dec 05, 2012 at 03:53:53PM +0100, Wolfram Sang wrote:
+> It could happen (1 out of 100 times) that NAND did not start up
+> correctly after warm rebooting, so barebox could not find its
+> environment or DMA timed out due to a stalled BCH. When resetting BCH
+> together with GPMI, the issue could not be observed anymore. We probably
+> need the consistent state already before sending commands to NAND.
 
-Applied, thanks
+The subject suggests that the BCH engine is resetted earlier, but
+instead of moving the reset this patch adds another reset. Is this
+intended?
 
 Sascha
 
-> ---
->  arch/arm/boards/karo-tx28/tx28.c |    6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/arm/boards/karo-tx28/tx28.c b/arch/arm/boards/karo-tx28/tx28.c
-> index a62cb82..6e8da15 100644
-> --- a/arch/arm/boards/karo-tx28/tx28.c
-> +++ b/arch/arm/boards/karo-tx28/tx28.c
-> @@ -35,11 +35,12 @@ static const uint32_t tx28_pad_setup[] = {
->  	GPMI_D6 | VE_3_3V | PULLUP(1),
->  	GPMI_D7 | VE_3_3V | PULLUP(1),
->  	GPMI_READY0 | VE_3_3V | PULLUP(0),	/* external PU */
-> +	GPMI_CE0N | VE_3_3V | PULLUP(1),
->  	GPMI_RDN | VE_3_3V | PULLUP(1),
->  	GPMI_WRN | VE_3_3V | BITKEEPER(1),
->  	GPMI_ALE | VE_3_3V | PULLUP(1),
->  	GPMI_CLE | VE_3_3V | PULLUP(1),
-> -	GPMI_RESETN_GPIO | VE_3_3V | GPIO_IN,	/* act as WP, external PU */
-> +	GPMI_RESETN | VE_3_3V | PULLUP(0),	/* external PU */
+> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+> ---
+>  drivers/mtd/nand/nand_mxs.c |   13 ++++++++++---
+>  1 file changed, 10 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+> index 975a44f..c4509d3 100644
+> --- a/drivers/mtd/nand/nand_mxs.c
+> +++ b/drivers/mtd/nand/nand_mxs.c
+> @@ -1128,6 +1128,7 @@ int mxs_nand_alloc_buffers(struct mxs_nand_info *nand_info)
+>  int mxs_nand_hw_init(struct mxs_nand_info *info)
+>  {
+>  	void __iomem *gpmi_regs = (void *)MXS_GPMI_BASE;
+> +	void __iomem *bch_regs = (void __iomem *)MXS_BCH_BASE;
+>  	int i = 0, ret;
+>  	u32 val;
 >  
->  	/* Network interface */
+> @@ -1153,6 +1154,15 @@ int mxs_nand_hw_init(struct mxs_nand_info *info)
+>  	if (ret)
+>  		return ret;
 >  
-> @@ -91,6 +92,9 @@ static int tx28_devices_init(void)
->  
->  	base_board_init();
->  
-> +	add_generic_device("mxs_nand", 0, NULL, MXS_GPMI_BASE, 0x2000,
-> +			   IORESOURCE_MEM, NULL);
+> +	val = readl(gpmi_regs + GPMI_VERSION);
+> +	info->version = val >> GPMI_VERSION_MINOR_OFFSET;
 > +
->  	return 0;
->  }
+> +	/* Reset BCH. Don't use SFTRST on MX23 due to Errata #2847 */
+> +	ret = mxs_reset_block(bch_regs + BCH_CTRL,
+> +				info->version == GPMI_VERSION_TYPE_MX23);
+> +	if (ret)
+> +		return ret;
+> +
+>  	/*
+>  	 * Choose NAND mode, set IRQ polarity, disable write protection and
+>  	 * select BCH ECC.
+> @@ -1163,9 +1173,6 @@ int mxs_nand_hw_init(struct mxs_nand_info *info)
+>  		GPMI_CTRL1_BCH_MODE;
+>  	writel(val, gpmi_regs + GPMI_CTRL1);
 >  
+> -	val = readl(gpmi_regs + GPMI_VERSION);
+> -	info->version = val >> GPMI_VERSION_MINOR_OFFSET;
+> -
+>  	return 0;
+>  
+>  err2:
 > -- 
 > 1.7.10.4
 > 
