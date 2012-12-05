@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.cvg.de ([62.153.82.30])
+Received: from astoria.ccjclearline.com ([64.235.106.9])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgEzT-0006Vu-Cx
- for barebox@lists.infradead.org; Wed, 05 Dec 2012 13:26:20 +0000
-From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-References: <1354622569-7673-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
- <1354622569-7673-2-git-send-email-enrico.scholz@sigma-chemnitz.de>
- <20121205104627.GD10369@pengutronix.de>
- <ly8v9c3f95.fsf@ensc-virt.intern.sigma-chemnitz.de>
- <20121205121513.GG10369@pengutronix.de>
-Date: Wed, 05 Dec 2012 14:25:54 +0100
-In-Reply-To: <20121205121513.GG10369@pengutronix.de> (Sascha Hauer's message
- of "Wed, 5 Dec 2012 13:15:13 +0100")
-Message-ID: <lytxs08wbh.fsf@ensc-virt.intern.sigma-chemnitz.de>
+ id 1TgF2f-0006dD-5G
+ for barebox@lists.infradead.org; Wed, 05 Dec 2012 13:29:39 +0000
+Date: Wed, 5 Dec 2012 08:29:33 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+In-Reply-To: <20121205125830.GH10369@pengutronix.de>
+Message-ID: <alpine.DEB.2.02.1212050815500.10503@oneiric>
+References: <alpine.DEB.2.02.1212050751380.5832@oneiric>
+ <20121205125830.GH10369@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -26,40 +22,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] OMAP: disable unaligned access when building the IFT
+Subject: Re: what is the rationale for funny "0x100" offset for OMAP4 GPIO
+ addresses?
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
+On Wed, 5 Dec 2012, Sascha Hauer wrote:
 
->> Coupling the -mno-unaligned-access to the TEXT_BASE and the used processor
->> might be a better solution.
+> On Wed, Dec 05, 2012 at 07:54:51AM -0500, Robert P. J. Day wrote:
+> >
+> >   i was going to submit a patch to replace magic constants for OMAP4
+> > with more meaningful names but i ran into an oddity.  here's
+> > omap4-silicon.h:
+> >
+> > #define OMAP44XX_L4_WKUP_BASE           0x4A300000
+> > #define OMAP44XX_L4_PER_BASE            0x48000000
+> >
+> > and here's part of an old posting to the linux-omap mailing list:
+> >
+> > +/* GPIO controller*/
+> > +#define OMAP44XX_GPIO1_BASE             (L4_WK_44XX_BASE  + 0x10000)
+> > +#define OMAP44XX_GPIO2_BASE             (L4_PER_44XX_BASE + 0x55000)
+> > +#define OMAP44XX_GPIO3_BASE             (L4_PER_44XX_BASE + 0x57000)
+> > +#define OMAP44XX_GPIO4_BASE             (L4_PER_44XX_BASE + 0x59000)
+> > +#define OMAP44XX_GPIO5_BASE             (L4_PER_44XX_BASE + 0x5B000)
+> > +#define OMAP44XX_GPIO6_BASE             (L4_PER_44XX_BASE + 0x5D000)
+> >
+> > but here's the tail end of omap4-generic.c:
+> >
+> > static int omap4_gpio_init(void)
+> > {
+> >         add_generic_device("omap-gpio", 0, NULL, 0x4a310100,
+> >                                 0xf00, IORESOURCE_MEM, NULL);
+> >         add_generic_device("omap-gpio", 1, NULL, 0x48055100,
+> >                                 0xf00, IORESOURCE_MEM, NULL);
+> >         add_generic_device("omap-gpio", 2, NULL, 0x48057100,
+> >                                 0xf00, IORESOURCE_MEM, NULL);
+> >         add_generic_device("omap-gpio", 3, NULL, 0x48059100,
+> >                                 0xf00, IORESOURCE_MEM, NULL);
+> >         add_generic_device("omap-gpio", 4, NULL, 0x4805b100,
+> >                                 0xf00, IORESOURCE_MEM, NULL);
+> >         add_generic_device("omap-gpio", 5, NULL, 0x4805d100,
+> >                                 0xf00, IORESOURCE_MEM, NULL);
+> >
+> >         return 0;
+> > }
+> >
+> >   as you can see, the numbers don't add up exactly -- the constants in
+> > that final file are all 0x100 larger than a simple addition.  anyone
+> > know where that comes from?
 >
-> No, unaligned accesses are handled by the cache. They won't work when
-> the MMU is disabled, but barebox has to work with MMU disabled.
+> This comes from the hardware. The GPIO controller is the same as on
+> omap3, but the base addresses have an additional 0x100 offset.
 
-ok; this stuff seems to be really processor dependent then.  E.g. unaligned
-access works on Cortex-M3 which is ARMv7 but has neither an MMU nor an MPU.
+  can you point me at a link that mentions that?  i'd like to add that
+info to the patch so readers have confirmation as to where that extra
+offset comes from as a quick google shows pages that don't mention it,
+like this one:
 
-Perhaps 'CONFIG_ARM_NOUNALIGNED' should default to yes when !MMU, and/or
-it should be selected by other problematic configurations.  Of course,
-there is still the problem that some C code is executed before MMU will
-be enabled and unaligned access can happen there.
+https://code.google.com/p/omapboot/source/browse/arch/omap4/gpio.c?spec=svnffa661ab10b10f9d1a20b8542ba1354e1f8ec8e1&r=ffa661ab10b10f9d1a20b8542ba1354e1f8ec8e1
 
+i have no doubt it's true, but a lot of pages just don't say anything
+about it.
 
-While thinking about it... cause of the core problem (unaligned access
-exception when executed in SRAM) might be that SRAM memory mapped as
-strongly ordered memory:
+rday
 
-| :/ mmuinfo 0x40300000
-|   ...
-|   Inner mem. attr. [6:4]:   0x1 (0b001 Strongly-ordered)
+-- 
 
-Perhaps, this memory can be remapped as normal memory.
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
 
-
-
-Enrico
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
