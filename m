@@ -1,24 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.cvg.de ([62.153.82.30])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgGCm-0001fJ-Pq
- for barebox@lists.infradead.org; Wed, 05 Dec 2012 14:44:09 +0000
-Received: from ensc-virt.intern.sigma-chemnitz.de
- (ensc-virt.intern.sigma-chemnitz.de [192.168.3.24])
- by mail.cvg.de (8.14.4/8.14.4) with ESMTP id qB5EhwkW032355
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
- for <barebox@lists.infradead.org>; Wed, 5 Dec 2012 15:43:59 +0100
-Received: from ensc by ensc-virt.intern.sigma-chemnitz.de with local (Exim
- 4.76) (envelope-from <ensc@sigma-chemnitz.de>) id 1TgGCc-0003XB-IA
- for barebox@lists.infradead.org; Wed, 05 Dec 2012 15:43:58 +0100
-From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-References: <1354622569-7673-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
- <1354622569-7673-2-git-send-email-enrico.scholz@sigma-chemnitz.de>
-Date: Wed, 05 Dec 2012 15:43:58 +0100
-In-Reply-To: <1354622569-7673-2-git-send-email-enrico.scholz@sigma-chemnitz.de>
- (Enrico Scholz's message of "Tue, 4 Dec 2012 13:02:49 +0100")
-Message-ID: <lyobi88spd.fsf@ensc-virt.intern.sigma-chemnitz.de>
-MIME-Version: 1.0
+ id 1TgGMG-0001q3-A7
+ for barebox@lists.infradead.org; Wed, 05 Dec 2012 14:53:57 +0000
+From: Wolfram Sang <w.sang@pengutronix.de>
+Date: Wed,  5 Dec 2012 15:53:53 +0100
+Message-Id: <1354719233-28847-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,62 +14,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] OMAP: disable unaligned access when building the IFT
+Subject: [PATCH] mtd: nand: mxs: reset BCH earlier to avoid NAND startup
+ problems
 To: barebox@lists.infradead.org
+Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-Enrico Scholz
-<enrico.scholz-wttK6gPy29v+Hn7q9Vec/7NAH6kLmebB@public.gmane.org>
-writes:
+It could happen (1 out of 100 times) that NAND did not start up
+correctly after warm rebooting, so barebox could not find its
+environment or DMA timed out due to a stalled BCH. When resetting BCH
+together with GPMI, the issue could not be observed anymore. We probably
+need the consistent state already before sending commands to NAND.
 
-> Patch sets the ARM_NOUNALIGNED option introduced by a previous patch.
+Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+---
+ drivers/mtd/nand/nand_mxs.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-just for the record: difference between both aligned/unaligned variants
-is
+diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+index 975a44f..c4509d3 100644
+--- a/drivers/mtd/nand/nand_mxs.c
++++ b/drivers/mtd/nand/nand_mxs.c
+@@ -1128,6 +1128,7 @@ int mxs_nand_alloc_buffers(struct mxs_nand_info *nand_info)
+ int mxs_nand_hw_init(struct mxs_nand_info *info)
+ {
+ 	void __iomem *gpmi_regs = (void *)MXS_GPMI_BASE;
++	void __iomem *bch_regs = (void __iomem *)MXS_BCH_BASE;
+ 	int i = 0, ret;
+ 	u32 val;
+ 
+@@ -1153,6 +1154,15 @@ int mxs_nand_hw_init(struct mxs_nand_info *info)
+ 	if (ret)
+ 		return ret;
+ 
++	val = readl(gpmi_regs + GPMI_VERSION);
++	info->version = val >> GPMI_VERSION_MINOR_OFFSET;
++
++	/* Reset BCH. Don't use SFTRST on MX23 due to Errata #2847 */
++	ret = mxs_reset_block(bch_regs + BCH_CTRL,
++				info->version == GPMI_VERSION_TYPE_MX23);
++	if (ret)
++		return ret;
++
+ 	/*
+ 	 * Choose NAND mode, set IRQ polarity, disable write protection and
+ 	 * select BCH ECC.
+@@ -1163,9 +1173,6 @@ int mxs_nand_hw_init(struct mxs_nand_info *info)
+ 		GPMI_CTRL1_BCH_MODE;
+ 	writel(val, gpmi_regs + GPMI_CTRL1);
+ 
+-	val = readl(gpmi_regs + GPMI_VERSION);
+-	info->version = val >> GPMI_VERSION_MINOR_OFFSET;
+-
+ 	return 0;
+ 
+ err2:
+-- 
+1.7.10.4
 
-$ bloat-o-meter barebox barebox.unaligned 
-add/remove: 0/0 grow/shrink: 1/32 up/down: 4/-2648 (-2644)
-function                                     old     new   delta
-show_progress                                292     296      +4
-usb_new_device                              1980    1972      -8
-usb_get_configuration_no                     156     148      -8
-rpc_req                                      232     220     -12
-ping_send                                    152     140     -12
-parse_partition_table                        776     764     -12
-net_icmp_send                                 64      52     -12
-dhcp_handler                                 700     684     -16
-net_udp_send                                  56      36     -20
-usb_control_msg                              164     140     -24
-ubi_io_write_vid_hdr                         140     116     -24
-ubi_eba_read_leb                             640     616     -24
-ubi_change_vtbl_record                       208     184     -24
-net_udp_new                                  136     112     -24
-net_ip_send                                  156     120     -36
-erase_worker                                 900     856     -44
-ubi_scan_erase_peb                           220     172     -48
-tftp_handler                                 752     688     -64
-validate_vid_hdr                             212     140     -72
-ubi_io_write_ec_hdr                          208     136     -72
-net_receive                                  920     848     -72
-ubi_scan                                    1596    1504     -92
-ubi_cdev_ioctl                               236     140     -96
-ubi_read_volume_table                       2072    1968    -104
-create_vtbl                                  664     560    -104
-vtbl_check                                   816     696    -120
-ubi_io_read_ec_hdr                           660     516    -144
-ubi_create_volume                           1276    1108    -168
-ubi_eba_copy_leb                             904     712    -192
-ubi_io_read_vid_hdr                          856     660    -196
-ubi_eba_write_leb                           1628    1412    -216
-ubi_eba_write_leb_st                         944     704    -240
-ubi_scan_add_used                           1872    1524    -348
-
-
-
-Enrico
 
 _______________________________________________
 barebox mailing list
