@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo5.mail-out.ovh.net ([178.32.124.100]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TgFE3-0007lv-8f
- for barebox@lists.infradead.org; Wed, 05 Dec 2012 13:41:24 +0000
-Received: from mail634.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 0568B10383BD
- for <barebox@lists.infradead.org>; Wed,  5 Dec 2012 14:49:38 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed,  5 Dec 2012 14:39:29 +0100
-Message-Id: <1354714769-5177-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from astoria.ccjclearline.com ([64.235.106.9])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TgFhi-0000It-6p
+ for barebox@lists.infradead.org; Wed, 05 Dec 2012 14:12:02 +0000
+Date: Wed, 5 Dec 2012 09:11:54 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+In-Reply-To: <20121205125830.GH10369@pengutronix.de>
+Message-ID: <alpine.DEB.2.02.1212050907470.12782@oneiric>
+References: <alpine.DEB.2.02.1212050751380.5832@oneiric>
+ <20121205125830.GH10369@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,38 +18,104 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] at91: fix debug_ll
-To: barebox@lists.infradead.org
+Subject: Re: what is the rationale for funny "0x100" offset for OMAP4 GPIO
+ addresses?
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-since 9d1bcab50454e06c74dc9fda42a05cd8a43265c6
-debug_ll: Let architectures define PUTC_LL directly
+On Wed, 5 Dec 2012, Sascha Hauer wrote:
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/mach-at91/include/mach/debug_ll.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> On Wed, Dec 05, 2012 at 07:54:51AM -0500, Robert P. J. Day wrote:
+> >
+> >   i was going to submit a patch to replace magic constants for OMAP4
+> > with more meaningful names but i ran into an oddity.  here's
+> > omap4-silicon.h:
+> >
+> > #define OMAP44XX_L4_WKUP_BASE           0x4A300000
+> > #define OMAP44XX_L4_PER_BASE            0x48000000
+> >
+> > and here's part of an old posting to the linux-omap mailing list:
+> >
+> > +/* GPIO controller*/
+> > +#define OMAP44XX_GPIO1_BASE             (L4_WK_44XX_BASE  + 0x10000)
+> > +#define OMAP44XX_GPIO2_BASE             (L4_PER_44XX_BASE + 0x55000)
+> > +#define OMAP44XX_GPIO3_BASE             (L4_PER_44XX_BASE + 0x57000)
+> > +#define OMAP44XX_GPIO4_BASE             (L4_PER_44XX_BASE + 0x59000)
+> > +#define OMAP44XX_GPIO5_BASE             (L4_PER_44XX_BASE + 0x5B000)
+> > +#define OMAP44XX_GPIO6_BASE             (L4_PER_44XX_BASE + 0x5D000)
+> >
+> > but here's the tail end of omap4-generic.c:
+> >
+> > static int omap4_gpio_init(void)
+> > {
+> >         add_generic_device("omap-gpio", 0, NULL, 0x4a310100,
+> >                                 0xf00, IORESOURCE_MEM, NULL);
+> >         add_generic_device("omap-gpio", 1, NULL, 0x48055100,
+> >                                 0xf00, IORESOURCE_MEM, NULL);
+> >         add_generic_device("omap-gpio", 2, NULL, 0x48057100,
+> >                                 0xf00, IORESOURCE_MEM, NULL);
+> >         add_generic_device("omap-gpio", 3, NULL, 0x48059100,
+> >                                 0xf00, IORESOURCE_MEM, NULL);
+> >         add_generic_device("omap-gpio", 4, NULL, 0x4805b100,
+> >                                 0xf00, IORESOURCE_MEM, NULL);
+> >         add_generic_device("omap-gpio", 5, NULL, 0x4805d100,
+> >                                 0xf00, IORESOURCE_MEM, NULL);
+> >
+> >         return 0;
+> > }
+> >
+> >   as you can see, the numbers don't add up exactly -- the constants in
+> > that final file are all 0x100 larger than a simple addition.  anyone
+> > know where that comes from?
+>
+> This comes from the hardware. The GPIO controller is the same as on
+> omap3, but the base addresses have an additional 0x100 offset.
 
-diff --git a/arch/arm/mach-at91/include/mach/debug_ll.h b/arch/arm/mach-at91/include/mach/debug_ll.h
-index ee824cb..a85fdee 100644
---- a/arch/arm/mach-at91/include/mach/debug_ll.h
-+++ b/arch/arm/mach-at91/include/mach/debug_ll.h
-@@ -25,7 +25,7 @@
-  *
-  * This does not append a newline
-  */
--static void putc(int c)
-+static inline void PUTC_LL(char c)
- {
- 	while (!(__raw_readl(UART_BASE + ATMEL_US_CSR) & ATMEL_US_TXRDY))
- 		barrier();
+  ok, i finally satisfied myself as to how this is being done, and why
+it was so hard to find other evidence of this.  i checked what was
+happening in u-boot and found this:
+
+$ grep -r GPIO_CLEARDATAOUT *
+arch/arm/include/asm/arch-omap5/cpu.h:#define OMAP_GPIO_CLEARDATAOUT		0x0190
+arch/arm/include/asm/arch-omap4/cpu.h:#define OMAP_GPIO_CLEARDATAOUT		0x0190
+arch/arm/include/asm/arch-omap3/cpu.h:#define OMAP_GPIO_CLEARDATAOUT		0x0090
+arch/arm/include/asm/arch-am33xx/cpu.h:#define OMAP_GPIO_CLEARDATAOUT		0x0190
+drivers/gpio/omap_gpio.c:			reg += OMAP_GPIO_CLEARDATAOUT;
+
+and suddenly it all makes sense.
+
+  so u-boot defines and uses the *non*-adding-0x100 offset addresses
+for GPIO BASE addresses, but makes up for it by adding that necessary
+offset into the subsequent macros (as you can see above).
+
+  barebox, on the other hand, has a single definition for stuff like
+that:
+
+$ grep -r CLEARDATAOUT *
+mach-omap/gpio.c:#define OMAP_GPIO_CLEARDATAOUT	0x0090
+mach-omap/gpio.c:		base += OMAP_GPIO_CLEARDATAOUT;
+$
+
+so the offset has to be added to the base address to come out the
+same.
+
+  sorry for being so confused about this.
+
+rday
+
 -- 
-1.7.10.4
 
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
