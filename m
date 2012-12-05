@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgK7x-00075u-SP
- for barebox@lists.infradead.org; Wed, 05 Dec 2012 18:55:26 +0000
-Date: Wed, 5 Dec 2012 19:55:24 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121205185524.GQ10369@pengutronix.de>
-References: <alpine.DEB.2.02.1212050932001.13598@oneiric>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.02.1212050932001.13598@oneiric>
+ id 1TgKFB-0007sj-2W
+ for barebox@lists.infradead.org; Wed, 05 Dec 2012 19:02:53 +0000
+From: Wolfram Sang <w.sang@pengutronix.de>
+Date: Wed,  5 Dec 2012 20:02:47 +0100
+Message-Id: <1354734167-13486-1-git-send-email-w.sang@pengutronix.de>
+In-Reply-To: <20121205185036.GM10369@pengutronix.de>
+References: <20121205185036.GM10369@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,105 +16,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Define and use OMAP4 GPIO macros rather than magic
- constants.
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: [PATCH V2] mtd: nand: mxs: reset BCH earlier, too,
+ to avoid NAND startup problems
+To: barebox@lists.infradead.org
+Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-On Wed, Dec 05, 2012 at 09:34:12AM -0500, Robert P. J. Day wrote:
-> 
-> Add and use meaningful macro names for OMAP4 GPIO addresses, and add a
-> comment to explain the 0x100 offset for OMAP4.
-> 
-> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+It could happen (1 out of 100 times) that NAND did not start up
+correctly after warm rebooting, so barebox could not find its
+environment or DMA timed out due to a stalled BCH. When resetting BCH
+together with GPMI, the issue could not be observed anymore. We probably
+need the consistent state already before sending commands to NAND.
 
-Applied, thanks
+Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+---
+ drivers/mtd/nand/nand_mxs.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-Sascha
-
-> 
-> ---
-> 
-> diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
-> index 71ffe39..008eafb 100644
-> --- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
-> +++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
-> @@ -101,6 +101,21 @@
->  #define OMAP44XX_MMC4_BASE		(OMAP44XX_L4_PER_BASE + 0x0D1100)
->  #define OMAP44XX_MMC5_BASE		(OMAP44XX_L4_PER_BASE + 0x0D5100)
-> 
-> +/* GPIO
-> + *
-> + *  Note that, while the GPIO controller is the same as on an OMAP3,
-> + * the base address has an additional offset of 0x100, which you can
-> + * see being added here so that the OMAP_GPIO_* macros you see in
-> + * mach-omap/gpio.c don't need to be adjusted based on the platform.
-> + */
-> +
-> +#define OMAP44XX_GPIO1_BASE		(OMAP44XX_L4_WKUP_BASE + 0x10100)
-> +#define OMAP44XX_GPIO2_BASE		(OMAP44XX_L4_PER_BASE  + 0x55100)
-> +#define OMAP44XX_GPIO3_BASE		(OMAP44XX_L4_PER_BASE  + 0x57100)
-> +#define OMAP44XX_GPIO4_BASE		(OMAP44XX_L4_PER_BASE  + 0x59100)
-> +#define OMAP44XX_GPIO5_BASE		(OMAP44XX_L4_PER_BASE  + 0x5B100)
-> +#define OMAP44XX_GPIO6_BASE		(OMAP44XX_L4_PER_BASE  + 0x5D100)
-> +
->  /* GPMC */
->  #define OMAP_GPMC_BASE		0x50000000
-> 
-> diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
-> index c756664..dc1dbae 100644
-> --- a/arch/arm/mach-omap/omap4_generic.c
-> +++ b/arch/arm/mach-omap/omap4_generic.c
-> @@ -611,17 +611,17 @@ const struct gpmc_config omap4_nand_cfg = {
-> 
->  static int omap4_gpio_init(void)
->  {
-> -	add_generic_device("omap-gpio", 0, NULL, 0x4a310100,
-> +	add_generic_device("omap-gpio", 0, NULL, OMAP44XX_GPIO1_BASE,
->  				0xf00, IORESOURCE_MEM, NULL);
-> -	add_generic_device("omap-gpio", 1, NULL, 0x48055100,
-> +	add_generic_device("omap-gpio", 1, NULL, OMAP44XX_GPIO2_BASE,
->  				0xf00, IORESOURCE_MEM, NULL);
-> -	add_generic_device("omap-gpio", 2, NULL, 0x48057100,
-> +	add_generic_device("omap-gpio", 2, NULL, OMAP44XX_GPIO3_BASE,
->  				0xf00, IORESOURCE_MEM, NULL);
-> -	add_generic_device("omap-gpio", 3, NULL, 0x48059100,
-> +	add_generic_device("omap-gpio", 3, NULL, OMAP44XX_GPIO4_BASE,
->  				0xf00, IORESOURCE_MEM, NULL);
-> -	add_generic_device("omap-gpio", 4, NULL, 0x4805b100,
-> +	add_generic_device("omap-gpio", 4, NULL, OMAP44XX_GPIO5_BASE,
->  				0xf00, IORESOURCE_MEM, NULL);
-> -	add_generic_device("omap-gpio", 5, NULL, 0x4805d100,
-> +	add_generic_device("omap-gpio", 5, NULL, OMAP44XX_GPIO6_BASE,
->  				0xf00, IORESOURCE_MEM, NULL);
-> 
->  	return 0;
-> 
-> -- 
-> 
-> ========================================================================
-> Robert P. J. Day                                 Ottawa, Ontario, CANADA
->                         http://crashcourse.ca
-> 
-> Twitter:                                       http://twitter.com/rpjday
-> LinkedIn:                               http://ca.linkedin.com/in/rpjday
-> ========================================================================
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+index 975a44f..c4509d3 100644
+--- a/drivers/mtd/nand/nand_mxs.c
++++ b/drivers/mtd/nand/nand_mxs.c
+@@ -1128,6 +1128,7 @@ int mxs_nand_alloc_buffers(struct mxs_nand_info *nand_info)
+ int mxs_nand_hw_init(struct mxs_nand_info *info)
+ {
+ 	void __iomem *gpmi_regs = (void *)MXS_GPMI_BASE;
++	void __iomem *bch_regs = (void __iomem *)MXS_BCH_BASE;
+ 	int i = 0, ret;
+ 	u32 val;
+ 
+@@ -1153,6 +1154,15 @@ int mxs_nand_hw_init(struct mxs_nand_info *info)
+ 	if (ret)
+ 		return ret;
+ 
++	val = readl(gpmi_regs + GPMI_VERSION);
++	info->version = val >> GPMI_VERSION_MINOR_OFFSET;
++
++	/* Reset BCH. Don't use SFTRST on MX23 due to Errata #2847 */
++	ret = mxs_reset_block(bch_regs + BCH_CTRL,
++				info->version == GPMI_VERSION_TYPE_MX23);
++	if (ret)
++		return ret;
++
+ 	/*
+ 	 * Choose NAND mode, set IRQ polarity, disable write protection and
+ 	 * select BCH ECC.
+@@ -1163,9 +1173,6 @@ int mxs_nand_hw_init(struct mxs_nand_info *info)
+ 		GPMI_CTRL1_BCH_MODE;
+ 	writel(val, gpmi_regs + GPMI_CTRL1);
+ 
+-	val = readl(gpmi_regs + GPMI_VERSION);
+-	info->version = val >> GPMI_VERSION_MINOR_OFFSET;
+-
+ 	return 0;
+ 
+ err2:
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
