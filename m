@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgJhU-0002hV-7F
- for barebox@lists.infradead.org; Wed, 05 Dec 2012 18:28:05 +0000
-Date: Wed, 5 Dec 2012 19:28:01 +0100
+ id 1TgJmk-0002sG-J0
+ for barebox@lists.infradead.org; Wed, 05 Dec 2012 18:33:31 +0000
+Date: Wed, 5 Dec 2012 19:33:28 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121205182801.GI10369@pengutronix.de>
-References: <20121205165337.GJ8327@game.jcrosoft.org>
- <1354727720-23063-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20121205183328.GJ10369@pengutronix.de>
+References: <1354718562-24328-1-git-send-email-w.sang@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1354727720-23063-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1354718562-24328-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,59 +22,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] mtd: nand: fix unaligned write support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] mxs: tx28: fix NAND usage
+To: Wolfram Sang <w.sang@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Dec 05, 2012 at 06:15:20PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> via cdev we may write unaligned data the code was drop in the commit
-> 0a4b1c7e440a81819eb2137f923573a3055dc7a2
-> mtd core: call driver write function with complete buffer
+On Wed, Dec 05, 2012 at 03:42:42PM +0100, Wolfram Sang wrote:
+> Pinmuxing was wrong and no GPMI device was created.
 > 
-> which is true for spi flashes but the code is still mandatory on nand
+> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 
-I suggest the following simpler approach.
+Applied, thanks
 
 Sascha
 
-
-From 5248abe7e59f60085b9a2affd3db11a6ac0a9da9 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 5 Dec 2012 19:24:41 +0100
-Subject: [PATCH] mtd nand: allow partial page writes
-
-The nand layer handles partial page writes just fine. If the start or
-end of the data is not page aligned, the nand layer will copy the data
-to a temporary page buffer.
-Remove the check which disallows partial page writes since this is what
-we want to do on barebox when for example an image is written to nand
-which is not padded to page size.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mtd/nand/nand_write.c |    7 -------
- 1 file changed, 7 deletions(-)
-
-diff --git a/drivers/mtd/nand/nand_write.c b/drivers/mtd/nand/nand_write.c
-index 5ed04ce..9997127 100644
---- a/drivers/mtd/nand/nand_write.c
-+++ b/drivers/mtd/nand/nand_write.c
-@@ -273,13 +273,6 @@ int nand_do_write_ops(struct mtd_info *mtd, loff_t to,
- 	if (!writelen)
- 		return 0;
- 
--	/* reject writes, which are not page aligned */
--	if (NOTALIGNED(to) || NOTALIGNED(ops->len)) {
--		printk(KERN_NOTICE "nand_write: "
--		       "Attempt to write not page aligned data\n");
--		return -EINVAL;
--	}
--
- 	column = to & (mtd->writesize - 1);
- 	subpage = column || (writelen & (mtd->writesize - 1));
- 
--- 
-1.7.10.4
+> ---
+>  arch/arm/boards/karo-tx28/tx28.c |    6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/boards/karo-tx28/tx28.c b/arch/arm/boards/karo-tx28/tx28.c
+> index a62cb82..6e8da15 100644
+> --- a/arch/arm/boards/karo-tx28/tx28.c
+> +++ b/arch/arm/boards/karo-tx28/tx28.c
+> @@ -35,11 +35,12 @@ static const uint32_t tx28_pad_setup[] = {
+>  	GPMI_D6 | VE_3_3V | PULLUP(1),
+>  	GPMI_D7 | VE_3_3V | PULLUP(1),
+>  	GPMI_READY0 | VE_3_3V | PULLUP(0),	/* external PU */
+> +	GPMI_CE0N | VE_3_3V | PULLUP(1),
+>  	GPMI_RDN | VE_3_3V | PULLUP(1),
+>  	GPMI_WRN | VE_3_3V | BITKEEPER(1),
+>  	GPMI_ALE | VE_3_3V | PULLUP(1),
+>  	GPMI_CLE | VE_3_3V | PULLUP(1),
+> -	GPMI_RESETN_GPIO | VE_3_3V | GPIO_IN,	/* act as WP, external PU */
+> +	GPMI_RESETN | VE_3_3V | PULLUP(0),	/* external PU */
+>  
+>  	/* Network interface */
+>  
+> @@ -91,6 +92,9 @@ static int tx28_devices_init(void)
+>  
+>  	base_board_init();
+>  
+> +	add_generic_device("mxs_nand", 0, NULL, MXS_GPMI_BASE, 0x2000,
+> +			   IORESOURCE_MEM, NULL);
+> +
+>  	return 0;
+>  }
+>  
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
