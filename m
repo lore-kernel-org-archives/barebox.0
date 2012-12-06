@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
+Received: from mail-ea0-f177.google.com ([209.85.215.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgYIu-0004zU-8f
- for barebox@lists.infradead.org; Thu, 06 Dec 2012 10:03:40 +0000
-Received: by mail-lb0-f177.google.com with SMTP id n10so4746129lbo.36
- for <barebox@lists.infradead.org>; Thu, 06 Dec 2012 02:03:37 -0800 (PST)
+ id 1TgYj1-0007Gi-Nl
+ for barebox@lists.infradead.org; Thu, 06 Dec 2012 10:30:40 +0000
+Received: by mail-ea0-f177.google.com with SMTP id c10so2399787eaa.36
+ for <barebox@lists.infradead.org>; Thu, 06 Dec 2012 02:30:38 -0800 (PST)
 From: Fabio Porcedda <fabio.porcedda@gmail.com>
-Date: Thu,  6 Dec 2012 11:03:34 +0100
-Message-Id: <1354788214-11192-1-git-send-email-fabio.porcedda@gmail.com>
+Date: Thu,  6 Dec 2012 11:30:34 +0100
+Message-Id: <1354789834-12000-1-git-send-email-fabio.porcedda@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,27 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] at91sam9260ek: fix BOARDINFO text
+Subject: [PATCH] at91: reorder BOARDINFO alphabetically
 To: barebox@lists.infradead.org
+
+This is to have a nicely ordered list and to decrease the
+likelihood of a conflict when adding a new board.
 
 Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
 ---
- arch/arm/mach-at91/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-at91/Kconfig | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 3a985f7..3de6061 100644
+index 6fea903..91ba2c8 100644
 --- a/arch/arm/mach-at91/Kconfig
 +++ b/arch/arm/mach-at91/Kconfig
-@@ -8,7 +8,7 @@ config ARCH_TEXT_BASE
+@@ -7,6 +7,7 @@ config ARCH_TEXT_BASE
+ 	default 0x23f00000
  
  config BOARDINFO
++	default "Aizo dSS11" if MACH_DSS11
  	default "Atmel at91rm9200-ek" if MACH_AT91RM9200EK
--	default "Atmel 91SAM9260-EK" if MACH_AT91SAM9260EK
-+	default "Atmel at91sam9260-ek" if MACH_AT91SAM9260EK
+ 	default "Atmel at91sam9260-ek" if MACH_AT91SAM9260EK
  	default "Atmel at91sam9261-ek" if MACH_AT91SAM9261EK
- 	default "Atmel at91sam9263-ek" if MACH_AT91SAM9263EK
- 	default "Atmel at91sam9g10-ek" if MACH_AT91SAM9G10EK
+@@ -17,17 +18,16 @@ config BOARDINFO
+ 	default "Atmel at91sam9n12-ek" if MACH_AT91SAM9N12EK
+ 	default "Atmel at91sam9x5-ek" if MACH_AT91SAM9X5EK
+ 	default "Bucyrus MMC-CPU" if MACH_MMCCPU
++	default "Calao QIL-A9260" if MACH_QIL_A9260
++	default "Calao TNY-A9260" if MACH_TNY_A9260
++	default "Calao TNY-A9263" if MACH_TNY_A9263
++	default "Calao TNY-A9G20" if MACH_TNY_A9G20
+ 	default "Calao USB-A9260" if MACH_USB_A9260
+ 	default "Calao USB-A9263" if MACH_USB_A9263
+ 	default "Calao USB-A9G20" if MACH_USB_A9G20
+ 	default "Ronetix PM9261" if MACH_PM9261
+ 	default "Ronetix PM9263" if MACH_PM9263
+ 	default "Ronetix PM9G45" if MACH_PM9G45
+-	default "Aizo dSS11" if MACH_DSS11
+-	default "Calao TNY-A9260" if MACH_TNY_A9260
+-	default "Calao TNY-A9263" if MACH_TNY_A9263
+-	default "Calao TNY-A9G20" if MACH_TNY_A9G20
+-	default "Calao QIL-A9260" if MACH_QIL_A9260
+ 
+ config HAVE_NAND_ATMEL_BUSWIDTH_16
+ 	bool
 -- 
 1.8.0
 
