@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgbWS-0007ID-Pa
+ id 1TgbWS-0007IG-Ok
  for barebox@lists.infradead.org; Thu, 06 Dec 2012 13:29:55 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  6 Dec 2012 14:29:45 +0100
-Message-Id: <1354800588-23053-4-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  6 Dec 2012 14:29:48 +0100
+Message-Id: <1354800588-23053-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1354800588-23053-1-git-send-email-s.hauer@pengutronix.de>
 References: <1354800588-23053-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,177 +21,101 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] clk: Add clk table based divider support
+Subject: [PATCH 6/6] ARM i.MX6: Add sata device
 To: barebox@lists.infradead.org
 
-For easy support of table based dividers.
+This also adds and enables the clocks needed for SATA.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/Makefile            |    2 +-
- drivers/clk/clk-divider-table.c |  119 +++++++++++++++++++++++++++++++++++++++
- include/linux/clk.h             |   10 ++++
- 3 files changed, 130 insertions(+), 1 deletion(-)
- create mode 100644 drivers/clk/clk-divider-table.c
+ arch/arm/mach-imx/clk-imx6.c                  |   20 ++++++++++++++++++++
+ arch/arm/mach-imx/include/mach/devices-imx6.h |    5 +++++
+ arch/arm/mach-imx/include/mach/imx6-regs.h    |    2 ++
+ 3 files changed, 27 insertions(+)
 
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index 3cc7163..656b859 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -1,3 +1,3 @@
- obj-$(CONFIG_COMMON_CLK)	+= clk.o clk-fixed.o clk-divider.o clk-fixed-factor.o \
--				clk-mux.o clk-gate.o
-+				clk-mux.o clk-gate.o clk-divider-table.o
- obj-$(CONFIG_CLKDEV_LOOKUP)	+= clkdev.o
-diff --git a/drivers/clk/clk-divider-table.c b/drivers/clk/clk-divider-table.c
-new file mode 100644
-index 0000000..204e24d
---- /dev/null
-+++ b/drivers/clk/clk-divider-table.c
-@@ -0,0 +1,119 @@
-+/*
-+ * clk-divider-table.c - generic barebox clock support. Based on Linux clk support
-+ *
-+ * Copyright (c) 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+#include <common.h>
-+#include <io.h>
-+#include <malloc.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+
-+struct clk_divider_table {
-+	struct clk clk;
-+	u8 shift;
-+	u8 width;
-+	void __iomem *reg;
-+	const char *parent;
-+	const struct clk_div_table *table;
-+	int table_size;
-+	int max_div_index;
-+};
-+
-+static int clk_divider_set_rate(struct clk *clk, unsigned long rate,
-+		unsigned long parent_rate)
-+{
-+	struct clk_divider_table *div =
-+		container_of(clk, struct clk_divider_table, clk);
-+	unsigned int val;
-+	int i, div_index = -1;
-+	unsigned long best = 0;
-+
-+	if (rate > parent_rate)
-+		rate = parent_rate;
-+	if (rate < parent_rate / div->table[div->max_div_index].div)
-+		rate = parent_rate / div->table[div->max_div_index].div;
-+
-+	for (i = 0; i < div->table_size; i++) {
-+		unsigned long now = parent_rate / div->table[i].div;
-+
-+		if (now <= rate && now >= best) {
-+			best = now;
-+			div_index = i;
-+		}
-+	}
-+
-+	val = readl(div->reg);
-+	val &= ~(((1 << div->width) - 1) << div->shift);
-+	val |= div_index << div->shift;
-+	writel(val, div->reg);
-+
-+	return 0;
-+}
-+
-+static unsigned long clk_divider_recalc_rate(struct clk *clk,
-+		unsigned long parent_rate)
-+{
-+	struct clk_divider_table *div =
-+		container_of(clk, struct clk_divider_table, clk);
-+	unsigned int val;
-+
-+	val = readl(div->reg) >> div->shift;
-+	val &= (1 << div->width) - 1;
-+
-+	if (val >= div->table_size)
-+		return 0;
-+
-+	return parent_rate / div->table[val].div;
-+}
-+
-+struct clk_ops clk_divider_table_ops = {
-+	.set_rate = clk_divider_set_rate,
-+	.recalc_rate = clk_divider_recalc_rate,
-+};
-+
-+struct clk *clk_divider_table(const char *name,
-+		const char *parent, void __iomem *reg, u8 shift, u8 width,
-+		const struct clk_div_table *table)
-+{
-+	struct clk_divider_table *div = xzalloc(sizeof(*div));
-+	const struct clk_div_table *clkt;
-+	int ret, max_div = 0;
-+
-+	div->shift = shift;
-+	div->reg = reg;
-+	div->width = width;
-+	div->parent = parent;
-+	div->clk.ops = &clk_divider_table_ops;
-+	div->clk.name = name;
-+	div->clk.parent_names = &div->parent;
-+	div->clk.num_parents = 1;
-+	div->table = table;
-+
-+	for (clkt = div->table; clkt->div; clkt++) {
-+		if (clkt->div > max_div) {
-+			max_div = clkt->div;
-+			div->max_div_index = div->table_size;
-+		}
-+		div->table_size++;
-+	}
-+
-+	ret = clk_register(&div->clk);
-+	if (ret) {
-+		free(div);
-+		return ERR_PTR(ret);
-+	}
-+
-+	return &div->clk;
-+}
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 00588bf..91574f2 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -181,9 +181,19 @@ struct clk {
- 	struct clk **parents;
+diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
+index 6f2df17..f78d3d2 100644
+--- a/arch/arm/mach-imx/clk-imx6.c
++++ b/arch/arm/mach-imx/clk-imx6.c
+@@ -83,6 +83,7 @@ enum mx6q_clks {
+ 	usdhc4, vdo_axi, vpu_axi, cko1, pll1_sys, pll2_bus, pll3_usb_otg,
+ 	pll4_audio, pll5_video, pll8_mlb, pll7_usb_host, pll6_enet, ssi1_ipg,
+ 	ssi2_ipg, ssi3_ipg, rom, usbphy1, usbphy2, ldb_di0_div_3_5, ldb_di1_div_3_5,
++	sata_ref, pcie_ref, sata_ref_100m, pcie_ref_125m, enet_ref,
+ 	clk_max
  };
  
-+#define CLK_ALWAYS_ENABLED	(1 << 0)
-+
-+struct clk_div_table {
-+	unsigned int	val;
-+	unsigned int	div;
+@@ -169,6 +170,14 @@ static const char *cko1_sels[] = {
+ 	"pll4_audio",
+ };
+ 
++static struct clk_div_table clk_enet_ref_table[] = {
++	{ .val = 0, .div = 20, },
++	{ .val = 1, .div = 10, },
++	{ .val = 2, .div = 5, },
++	{ .val = 3, .div = 4, },
++	{ },
 +};
 +
- struct clk *clk_fixed(const char *name, int rate);
- struct clk *clk_divider(const char *name, const char *parent,
- 		void __iomem *reg, u8 shift, u8 width);
-+struct clk *clk_divider_table(const char *name,
-+		const char *parent, void __iomem *reg, u8 shift, u8 width,
-+		const struct clk_div_table *table);
- struct clk *clk_fixed_factor(const char *name,
- 		const char *parent, unsigned int mult, unsigned int div);
- struct clk *clk_mux(const char *name, void __iomem *reg,
+ static int imx6_ccm_probe(struct device_d *dev)
+ {
+ 	void __iomem *base, *anatop_base, *ccm_base;
+@@ -196,6 +205,13 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 	clks[pll7_usb_host] = imx_clk_pllv3(IMX_PLLV3_USB,	"pll7_usb_host","osc", base + 0x20, 0x3);
+ 	clks[pll6_enet]     = imx_clk_pllv3(IMX_PLLV3_ENET,	"pll6_enet",	"osc", base + 0xe0, 0x3);
+ 
++	clks[sata_ref] = imx_clk_fixed_factor("sata_ref", "pll6_enet", 1, 5);
++	clks[pcie_ref] = imx_clk_fixed_factor("pcie_ref", "pll6_enet", 1, 4);
++	clks[sata_ref_100m] = imx_clk_gate("sata_ref_100m", "sata_ref", base + 0xe0, 20);
++	clks[pcie_ref_125m] = imx_clk_gate("pcie_ref_125m", "pcie_ref", base + 0xe0, 19);
++
++	clks[enet_ref] = clk_divider_table("enet_ref", "pll6_enet", base + 0xe0, 0, 2, clk_enet_ref_table);
++
+ 	/*                                name               parent_name         reg          idx */
+ 	clks[pll2_pfd0_352m] = imx_clk_pfd("pll2_pfd0_352m", "pll2_bus",     base + 0x100, 0);
+ 	clks[pll2_pfd1_594m] = imx_clk_pfd("pll2_pfd1_594m", "pll2_bus",     base + 0x100, 1);
+@@ -281,6 +297,7 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 	clkdev_add_physbase(clks[ipg_per], MX6_I2C1_BASE_ADDR, NULL);
+ 	clkdev_add_physbase(clks[ipg_per], MX6_I2C2_BASE_ADDR, NULL);
+ 	clkdev_add_physbase(clks[ipg_per], MX6_I2C3_BASE_ADDR, NULL);
++	clkdev_add_physbase(clks[ahb], MX6_SATA_BASE_ADDR, NULL);
+ 
+ 	writel(0xffffffff, ccm_base + CCGR0);
+ 	writel(0xffffffff, ccm_base + CCGR1);
+@@ -291,6 +308,9 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 	writel(0xffffffff, ccm_base + CCGR6);
+ 	writel(0xffffffff, ccm_base + CCGR7);
+ 
++	clk_enable(clks[pll6_enet]);
++	clk_enable(clks[sata_ref_100m]);
++
+ 	return 0;
+ }
+ 
+diff --git a/arch/arm/mach-imx/include/mach/devices-imx6.h b/arch/arm/mach-imx/include/mach/devices-imx6.h
+index f8282e7..0f17016 100644
+--- a/arch/arm/mach-imx/include/mach/devices-imx6.h
++++ b/arch/arm/mach-imx/include/mach/devices-imx6.h
+@@ -64,3 +64,8 @@ static inline struct device_d *imx6_add_i2c2(struct i2c_platform_data *pdata)
+ {
+ 	return imx_add_i2c((void *)MX6_I2C3_BASE_ADDR, 2, pdata);
+ }
++
++static inline struct device_d *imx6_add_sata(void)
++{
++	return add_generic_device("imx6-sata", 0, NULL, MX6_SATA_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++}
+diff --git a/arch/arm/mach-imx/include/mach/imx6-regs.h b/arch/arm/mach-imx/include/mach/imx6-regs.h
+index 716e6b4..7c72cba 100644
+--- a/arch/arm/mach-imx/include/mach/imx6-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx6-regs.h
+@@ -105,4 +105,6 @@
+ #define MX6_IP2APB_USBPHY1_BASE_ADDR    (MX6_AIPS2_OFF_BASE_ADDR + 0x78000)
+ #define MX6_IP2APB_USBPHY2_BASE_ADDR    (MX6_AIPS2_OFF_BASE_ADDR + 0x7C000)
+ 
++#define MX6_SATA_BASE_ADDR		0x02200000
++
+ #endif /* __MACH_IMX6_REGS_H */
 -- 
 1.7.10.4
 
