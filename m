@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ea0-f177.google.com ([209.85.215.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgZB4-0001pv-Q3
- for barebox@lists.infradead.org; Thu, 06 Dec 2012 10:59:39 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 6 Dec 2012 11:56:58 +0100
-References: <10036346.7roAWQEoPH@yiqingliang-pc>
- <201212060909.10852.jbe@pengutronix.de> <8798196.eT9tp0tzHY@yiqingliang-pc>
-In-Reply-To: <8798196.eT9tp0tzHY@yiqingliang-pc>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201212061156.58566.jbe@pengutronix.de>
+ id 1TgZRh-0002XT-Qc
+ for barebox@lists.infradead.org; Thu, 06 Dec 2012 11:16:50 +0000
+Received: by mail-ea0-f177.google.com with SMTP id c10so2415051eaa.36
+ for <barebox@lists.infradead.org>; Thu, 06 Dec 2012 03:16:47 -0800 (PST)
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Thu,  6 Dec 2012 12:16:43 +0100
+Message-Id: <1354792603-15915-1-git-send-email-fabio.porcedda@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,37 +16,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: about the dm9000 in mini2440
+Subject: [PATCH v2] at91: reorder BOARDINFO alphabetically
 To: barebox@lists.infradead.org
 
-Yi Qingliang wrote:
-> indeed, I encountered follow error when boot barebox (compiled with default
-> cfg):
-> dm9000@dm90000: Wrong databus width defined at compile time
->
-> and can't use it for tftp
->
-> I have printed out the context, found that is 32bit in the dm9000 register
-> (read only), but in mini2440 initialize code is 16bit.
->
-> any suggestion?
+This is to have a nicely ordered list and to decrease the
+likelihood of a conflict when adding a new board.
 
-This would mean the EED0 pin of the DM9000 has a pull up connected, which is 
-not the case for the Mini2440. Are you sure, you are using an original 
-Mini2440?
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+v2:
+ - add Cc: Jean-Christophe
+ - add comment to remember the ordering
 
-Regards,
-Juergen
+ arch/arm/mach-at91/Kconfig | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 6fea903..a192f7c 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -6,7 +6,9 @@ config ARCH_TEXT_BASE
+ 	default 0x26f00000 if ARCH_AT91SAM9X5
+ 	default 0x23f00000
+ 
++# This list is sorted alphanumerically
+ config BOARDINFO
++	default "Aizo dSS11" if MACH_DSS11
+ 	default "Atmel at91rm9200-ek" if MACH_AT91RM9200EK
+ 	default "Atmel at91sam9260-ek" if MACH_AT91SAM9260EK
+ 	default "Atmel at91sam9261-ek" if MACH_AT91SAM9261EK
+@@ -17,17 +19,16 @@ config BOARDINFO
+ 	default "Atmel at91sam9n12-ek" if MACH_AT91SAM9N12EK
+ 	default "Atmel at91sam9x5-ek" if MACH_AT91SAM9X5EK
+ 	default "Bucyrus MMC-CPU" if MACH_MMCCPU
++	default "Calao QIL-A9260" if MACH_QIL_A9260
++	default "Calao TNY-A9260" if MACH_TNY_A9260
++	default "Calao TNY-A9263" if MACH_TNY_A9263
++	default "Calao TNY-A9G20" if MACH_TNY_A9G20
+ 	default "Calao USB-A9260" if MACH_USB_A9260
+ 	default "Calao USB-A9263" if MACH_USB_A9263
+ 	default "Calao USB-A9G20" if MACH_USB_A9G20
+ 	default "Ronetix PM9261" if MACH_PM9261
+ 	default "Ronetix PM9263" if MACH_PM9263
+ 	default "Ronetix PM9G45" if MACH_PM9G45
+-	default "Aizo dSS11" if MACH_DSS11
+-	default "Calao TNY-A9260" if MACH_TNY_A9260
+-	default "Calao TNY-A9263" if MACH_TNY_A9263
+-	default "Calao TNY-A9G20" if MACH_TNY_A9G20
+-	default "Calao QIL-A9260" if MACH_QIL_A9260
+ 
+ config HAVE_NAND_ATMEL_BUSWIDTH_16
+ 	bool
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | Phone: +49-5121-206917-5128 |
-Peiner Str. 6-8, 31137 Hildesheim, Germany    | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
+1.8.0
+
 
 _______________________________________________
 barebox mailing list
