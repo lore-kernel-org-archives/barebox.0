@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tgbaz-00081S-3X
- for barebox@lists.infradead.org; Thu, 06 Dec 2012 13:34:36 +0000
+ id 1Tgbay-000818-Ra
+ for barebox@lists.infradead.org; Thu, 06 Dec 2012 13:34:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  6 Dec 2012 14:34:30 +0100
-Message-Id: <1354800870-28385-10-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  6 Dec 2012 14:34:23 +0100
+Message-Id: <1354800870-28385-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1354800870-28385-1-git-send-email-s.hauer@pengutronix.de>
 References: <1354800870-28385-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,56 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] ARM i.MX5: Add SATA support
+Subject: [PATCH 2/9] ata: fix status flags
 To: barebox@lists.infradead.org
 
-Add the convenience wrappers for registering the SATA device.
+Some status flags are wrong, fix them. All of them are currently unused,
+so no functional change included.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/clk-imx5.c                   |    1 +
- arch/arm/mach-imx/include/mach/devices-imx53.h |    5 +++++
- arch/arm/mach-imx/include/mach/imx53-regs.h    |    2 ++
- 3 files changed, 8 insertions(+)
+ drivers/ata/disk_ata_drive.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-imx/clk-imx5.c b/arch/arm/mach-imx/clk-imx5.c
-index 050842d..1ff6859 100644
---- a/arch/arm/mach-imx/clk-imx5.c
-+++ b/arch/arm/mach-imx/clk-imx5.c
-@@ -280,6 +280,7 @@ int __init mx53_clocks_init(void __iomem *regs, unsigned long rate_ckil, unsigne
- 	clkdev_add_physbase(clks[esdhc_c_s], MX53_ESDHC2_BASE_ADDR, NULL);
- 	clkdev_add_physbase(clks[esdhc_b_podf], MX53_ESDHC3_BASE_ADDR, NULL);
- 	clkdev_add_physbase(clks[esdhc_d_s], MX53_ESDHC4_BASE_ADDR, NULL);
-+	clkdev_add_physbase(clks[ahb], MX53_SATA_BASE_ADDR, NULL);
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-imx/include/mach/devices-imx53.h b/arch/arm/mach-imx/include/mach/devices-imx53.h
-index 5f967ea..a49678e 100644
---- a/arch/arm/mach-imx/include/mach/devices-imx53.h
-+++ b/arch/arm/mach-imx/include/mach/devices-imx53.h
-@@ -82,3 +82,8 @@ static inline struct device_d *imx53_add_nand(struct imx_nand_platform_data *pda
- 
- 	return dev;
- }
-+
-+static inline struct device_d *imx53_add_sata(void)
-+{
-+	return add_generic_device("imx53-sata", 0, NULL, MX53_SATA_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
-+}
-diff --git a/arch/arm/mach-imx/include/mach/imx53-regs.h b/arch/arm/mach-imx/include/mach/imx53-regs.h
-index 8025e97..473b942 100644
---- a/arch/arm/mach-imx/include/mach/imx53-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx53-regs.h
-@@ -3,6 +3,8 @@
- 
- #define MX53_IROM_BASE_ADDR	0x0
- 
-+#define MX53_SATA_BASE_ADDR	0x10000000
-+
- /*
-  * SPBA global module enabled #0
-  */
+diff --git a/drivers/ata/disk_ata_drive.c b/drivers/ata/disk_ata_drive.c
+index 303d6d0..b65a660 100644
+--- a/drivers/ata/disk_ata_drive.c
++++ b/drivers/ata/disk_ata_drive.c
+@@ -61,9 +61,11 @@ struct ata_drive_access {
+ #define ATA_STATUS_BUSY (1 << 7)
+ #define ATA_STATUS_READY (1 << 6)
+ #define ATA_STATUS_WR_FLT (1 << 5)
+-#define ATA_STATUS_DRQ (1 << 4)
+-#define ATA_STATUS_CORR (1 << 3)
+-#define ATA_STATUS_ERROR (1 << 1)
++#define ATA_STATUS_DSC (1 << 4)
++#define ATA_STATUS_DRQ (1 << 3)
++#define ATA_STATUS_CORR (1 << 2)
++#define ATA_STATUS_IDX (1 << 1)
++#define ATA_STATUS_ERROR (1 << 0)
+ /* command flags */
+ #define LBA_FLAG (1 << 6)
+ #define ATA_DEVCTL_SOFT_RESET (1 << 2)
 -- 
 1.7.10.4
 
