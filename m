@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f49.google.com ([209.85.215.49])
+Received: from mail-pa0-f49.google.com ([209.85.220.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgWmA-00005B-DP
- for barebox@lists.infradead.org; Thu, 06 Dec 2012 08:25:47 +0000
-Received: by mail-la0-f49.google.com with SMTP id r15so4584595lag.36
- for <barebox@lists.infradead.org>; Thu, 06 Dec 2012 00:25:45 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  6 Dec 2012 12:25:35 +0400
-Message-Id: <1354782336-16239-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1354782336-16239-1-git-send-email-antonynpavlov@gmail.com>
-References: <1354782336-16239-1-git-send-email-antonynpavlov@gmail.com>
+ id 1TgWmN-00007c-Le
+ for barebox@lists.infradead.org; Thu, 06 Dec 2012 08:26:00 +0000
+Received: by mail-pa0-f49.google.com with SMTP id bi1so3791574pad.36
+ for <barebox@lists.infradead.org>; Thu, 06 Dec 2012 00:25:58 -0800 (PST)
+From: Yi Qingliang <niqingliang2003@gmail.com>
+Date: Thu, 06 Dec 2012 16:24:39 +0000
+Message-ID: <8798196.eT9tp0tzHY@yiqingliang-pc>
+In-Reply-To: <201212060909.10852.jbe@pengutronix.de>
+References: <10036346.7roAWQEoPH@yiqingliang-pc>
+ <201212060909.10852.jbe@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,60 +20,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 1/2] clk: pass the 'flags' parameter to clk_fixed()
-To: barebox@lists.infradead.org
+Subject: Re: about the dm9000 in mini2440
+To: Juergen Beisert <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The 'flags' parameter make possible creation
-of a 'CLK_ALWAYS_ENABLED' clock without code overhead.
+indeed, I encountered follow error when boot barebox (compiled with default 
+cfg):
+dm9000@dm90000: Wrong databus width defined at compile time
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/clk/clk-fixed.c |    3 ++-
- include/linux/clk.h     |    2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+and can't use it for tftp
 
-diff --git a/drivers/clk/clk-fixed.c b/drivers/clk/clk-fixed.c
-index fa89cb2..5ac5663 100644
---- a/drivers/clk/clk-fixed.c
-+++ b/drivers/clk/clk-fixed.c
-@@ -36,7 +36,7 @@ struct clk_ops clk_fixed_ops = {
- 	.recalc_rate = clk_fixed_recalc_rate,
- };
- 
--struct clk *clk_fixed(const char *name, int rate)
-+struct clk *clk_fixed(const char *name, int rate, unsigned long flags)
- {
- 	struct clk_fixed *fix = xzalloc(sizeof *fix);
- 	int ret;
-@@ -44,6 +44,7 @@ struct clk *clk_fixed(const char *name, int rate)
- 	fix->rate = rate;
- 	fix->clk.ops = &clk_fixed_ops;
- 	fix->clk.name = name;
-+	fix->clk.flags = flags;
- 
- 	ret = clk_register(&fix->clk);
- 	if (ret) {
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 1030b50..9d89a21 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -184,7 +184,7 @@ struct clk {
- 
- #define CLK_ALWAYS_ENABLED	(1 << 0)
- 
--struct clk *clk_fixed(const char *name, int rate);
-+struct clk *clk_fixed(const char *name, int rate, unsigned long flags);
- struct clk *clk_divider(const char *name, const char *parent,
- 		void __iomem *reg, u8 shift, u8 width);
- struct clk *clk_fixed_factor(const char *name,
--- 
-1.7.10.4
+I have printed out the context, found that is 32bit in the dm9000 register 
+(read only), but in mini2440 initialize code is 16bit.
 
+any suggestion?
+
+
+On Thursday, December 06, 2012 09:09:10 AM Juergen Beisert wrote:
+> Yi Qingliang wrote:
+> > the address of dm9000 is 0x28000000, it should be cs5, but in function
+> > "mini2440_devices_init", it set the cs4 instead, why??
+> 
+> Hmm, the schematics of the Mini2440 board tells me, the processor's GCS4
+> (ball D3) is in use for the DM9000.
+> 
+> GCS5 is connected to the CON5 instead.
+> 
+> Regards,
+> Juergen
 
 _______________________________________________
 barebox mailing list
