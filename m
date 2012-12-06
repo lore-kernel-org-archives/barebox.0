@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-la0-f49.google.com ([209.85.215.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgbkN-0000PG-71
- for barebox@lists.infradead.org; Thu, 06 Dec 2012 13:44:15 +0000
-Date: Thu, 6 Dec 2012 14:44:13 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121206134413.GX10369@pengutronix.de>
-References: <1354782336-16239-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1354782336-16239-1-git-send-email-antonynpavlov@gmail.com>
+ id 1Tgfsi-00049c-Uj
+ for barebox@lists.infradead.org; Thu, 06 Dec 2012 18:09:09 +0000
+Received: by mail-la0-f49.google.com with SMTP id r15so5015012lag.36
+ for <barebox@lists.infradead.org>; Thu, 06 Dec 2012 10:09:06 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu,  6 Dec 2012 22:08:57 +0400
+Message-Id: <1354817337-23659-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +16,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 0/2] clk: pass the 'flags' parameter to clk_fixed()
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] clk: use the 'CLK_ALWAYS_ENABLED' flag for clk-fixed by
+ default
+To: barebox@lists.infradead.org
 
-Hi Antony,
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/clk/clk-fixed.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-On Thu, Dec 06, 2012 at 12:25:34PM +0400, Antony Pavlov wrote:
-> The 'flags' parameter make possible creation
-> of a 'CLK_ALWAYS_ENABLED' clock without code overhead.
-> 
-> So it is possible to create clock this way
->  clk_fixed("main_clock", 24000000, 0);
-> or that way
->  clk_fixed("main_clock", 24000000, CLK_ALWAYS_ENABLED);
-> 
-> I can't check my clk_fixed-related changes for ARM-based
-> boards, so please consider, do we need CLK_ALWAYS_ENABLED
-> in the patch '[RFC 2/2]' or we need '0'.
-
-Nice move to be able to pass the flags to clk_fixed. For this special
-clock and flag we won't need it though: The fixed clock by definition
-always is enabled. We should rather set this flag unconditionally for
-them.
-
-Sascha
-
-
+diff --git a/drivers/clk/clk-fixed.c b/drivers/clk/clk-fixed.c
+index fa89cb2..5e81e72 100644
+--- a/drivers/clk/clk-fixed.c
++++ b/drivers/clk/clk-fixed.c
+@@ -44,6 +44,7 @@ struct clk *clk_fixed(const char *name, int rate)
+ 	fix->rate = rate;
+ 	fix->clk.ops = &clk_fixed_ops;
+ 	fix->clk.name = name;
++	fix->clk.flags = CLK_ALWAYS_ENABLED;
+ 
+ 	ret = clk_register(&fix->clk);
+ 	if (ret) {
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
