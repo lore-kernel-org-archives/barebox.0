@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-f177.google.com ([209.85.215.177])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgZRh-0002XT-Qc
- for barebox@lists.infradead.org; Thu, 06 Dec 2012 11:16:50 +0000
-Received: by mail-ea0-f177.google.com with SMTP id c10so2415051eaa.36
- for <barebox@lists.infradead.org>; Thu, 06 Dec 2012 03:16:47 -0800 (PST)
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-Date: Thu,  6 Dec 2012 12:16:43 +0100
-Message-Id: <1354792603-15915-1-git-send-email-fabio.porcedda@gmail.com>
+Received: from 7.mo4.mail-out.ovh.net ([178.33.253.54]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TgZcM-0002m7-I5
+ for barebox@lists.infradead.org; Thu, 06 Dec 2012 11:27:51 +0000
+Received: from mail97.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 00AD010508EB
+ for <barebox@lists.infradead.org>; Thu,  6 Dec 2012 12:36:02 +0100 (CET)
+Date: Thu, 6 Dec 2012 12:27:45 +0100
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20121206122745.6175c7e6@eb-e6520>
+In-Reply-To: <10036346.7roAWQEoPH@yiqingliang-pc>
+References: <10036346.7roAWQEoPH@yiqingliang-pc>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,66 +21,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] at91: reorder BOARDINFO alphabetically
-To: barebox@lists.infradead.org
+Subject: Re: about the dm9000 in mini2440
+To: Yi Qingliang <niqingliang2003@gmail.com>
+Cc: barebox@lists.infradead.org
 
-This is to have a nicely ordered list and to decrease the
-likelihood of a conflict when adding a new board.
+Hi,
 
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
-v2:
- - add Cc: Jean-Christophe
- - add comment to remember the ordering
+Le Thu, 06 Dec 2012 15:55:23 +0000,
+Yi Qingliang <niqingliang2003@gmail.com> a =E9crit :
 
- arch/arm/mach-at91/Kconfig | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+> the address of dm9000 is 0x28000000, it should be cs5, but in function =
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 6fea903..a192f7c 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -6,7 +6,9 @@ config ARCH_TEXT_BASE
- 	default 0x26f00000 if ARCH_AT91SAM9X5
- 	default 0x23f00000
- 
-+# This list is sorted alphanumerically
- config BOARDINFO
-+	default "Aizo dSS11" if MACH_DSS11
- 	default "Atmel at91rm9200-ek" if MACH_AT91RM9200EK
- 	default "Atmel at91sam9260-ek" if MACH_AT91SAM9260EK
- 	default "Atmel at91sam9261-ek" if MACH_AT91SAM9261EK
-@@ -17,17 +19,16 @@ config BOARDINFO
- 	default "Atmel at91sam9n12-ek" if MACH_AT91SAM9N12EK
- 	default "Atmel at91sam9x5-ek" if MACH_AT91SAM9X5EK
- 	default "Bucyrus MMC-CPU" if MACH_MMCCPU
-+	default "Calao QIL-A9260" if MACH_QIL_A9260
-+	default "Calao TNY-A9260" if MACH_TNY_A9260
-+	default "Calao TNY-A9263" if MACH_TNY_A9263
-+	default "Calao TNY-A9G20" if MACH_TNY_A9G20
- 	default "Calao USB-A9260" if MACH_USB_A9260
- 	default "Calao USB-A9263" if MACH_USB_A9263
- 	default "Calao USB-A9G20" if MACH_USB_A9G20
- 	default "Ronetix PM9261" if MACH_PM9261
- 	default "Ronetix PM9263" if MACH_PM9263
- 	default "Ronetix PM9G45" if MACH_PM9G45
--	default "Aizo dSS11" if MACH_DSS11
--	default "Calao TNY-A9260" if MACH_TNY_A9260
--	default "Calao TNY-A9263" if MACH_TNY_A9263
--	default "Calao TNY-A9G20" if MACH_TNY_A9G20
--	default "Calao QIL-A9260" if MACH_QIL_A9260
- 
- config HAVE_NAND_ATMEL_BUSWIDTH_16
- 	bool
--- 
-1.8.0
+> "mini2440_devices_init", it set the cs4 instead, why??
+> =
 
+The mini2440 supported in Barebox is this one and maybe not the one
+your are using ;-)
+http://www.friendlyarm.net/products/mini2440
+
+Eric
 
 _______________________________________________
 barebox mailing list
