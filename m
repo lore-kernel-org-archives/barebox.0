@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgtVn-0002S2-Dq
- for barebox@lists.infradead.org; Fri, 07 Dec 2012 08:42:23 +0000
+ id 1TgtbC-0002aB-86
+ for barebox@lists.infradead.org; Fri, 07 Dec 2012 08:47:59 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 7 Dec 2012 09:39:44 +0100
+Date: Fri, 7 Dec 2012 09:45:17 +0100
 References: <10036346.7roAWQEoPH@yiqingliang-pc>
- <201212060909.10852.jbe@pengutronix.de> <3052285.ENgbPHB0bd@yiqingliang-pc>
-In-Reply-To: <3052285.ENgbPHB0bd@yiqingliang-pc>
+ <20121206122745.6175c7e6@eb-e6520> <3321499.8IcqMiOG7l@yiqingliang-pc>
+In-Reply-To: <3321499.8IcqMiOG7l@yiqingliang-pc>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201212070939.44380.jbe@pengutronix.de>
+Message-Id: <201212070945.17917.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,26 +19,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: about the dm9000 in mini2440
 To: barebox@lists.infradead.org
 
-Yi Qingliang wrote:
-> and if connected jtager, the ON switch does not work some time.
-
-Seems your jtager powers the system by accident.
-
-Regards,
-Juergen
-
--- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+WWkgUWluZ2xpYW5nIHdyb3RlOgo+IE9uIFRodXJzZGF5LCBEZWNlbWJlciAwNiwgMjAxMiAxMjoy
+Nzo0NSBQTSBFcmljIELDqW5hcmQgd3JvdGU6Cj4gPiBMZSBUaHUsIDA2IERlYyAyMDEyIDE1OjU1
+OjIzICswMDAwLAo+ID4KPiA+IFlpIFFpbmdsaWFuZyA8bmlxaW5nbGlhbmcyMDAzQGdtYWlsLmNv
+bT4gYSDDqWNyaXQgOgo+ID4gPiB0aGUgYWRkcmVzcyBvZiBkbTkwMDAgaXMgMHgyODAwMDAwMCwg
+aXQgc2hvdWxkIGJlIGNzNSwgYnV0IGluIGZ1bmN0aW9uCj4gPiA+ICJtaW5pMjQ0MF9kZXZpY2Vz
+X2luaXQiLCBpdCBzZXQgdGhlIGNzNCBpbnN0ZWFkLCB3aHk/Pwo+ID4KPiA+IFRoZSBtaW5pMjQ0
+MCBzdXBwb3J0ZWQgaW4gQmFyZWJveCBpcyB0aGlzIG9uZSBhbmQgbWF5YmUgbm90IHRoZSBvbmUK
+PiA+IHlvdXIgYXJlIHVzaW5nIDstKQo+ID4gaHR0cDovL3d3dy5mcmllbmRseWFybS5uZXQvcHJv
+ZHVjdHMvbWluaTI0NDAKPgo+IHRoZXJlIGlzICJtaW5pMjQ0MCBmcmllbmRseUFSTSIgb24gbXkg
+Ym9hcmQsIHdob3NlIGNvbG9yIGlzIHdoaXRlLgo+IGJsdWUgcGNiLCBtYXliZSBmcmllbmRseUFS
+TSBoYXMgbXVsdGkgdmVyc2lvbiBtaW5pMjQ0MD8KCkZyaWVuZGx5QVJNIGhhcyBzb21lIGNvcHlp
+c3QuIEEgYmx1ZSBQQ0IgSSBoYXZlIG5ldmVyIHNlZW4geWV0LgoKPiBJIHNheSB0aGUgMHgyODAw
+MDAwMCBpcyBjczUsIGJhc2VkIG9uIHRoZSBtZW1vcnkgbGF5b3V0IHBpY3R1cmUgaW4gdGhlCj4g
+bWFudWFsLiBhbHRob3VnaCB0aGUgc2NoZW1hdGljcyBpcyBzYW1lIGFzIEp1ZXJnZW4gQmVpc2Vy
+dCdzLgoKQW5kIHRoZSBzY2hlbWF0aWNzIHNheXMgaXQgaXMgQ1M0LgoKPiBJIGNhbid0IGdldCB0
+aGUgb3JpZ2luYWwgZGlzaywgb25seSB0aGUgYm9hcmQuIFNvIGhvdyB0byBjaGVjayB0aGUgRUVE
+MD8KPiBwczogSW4gdGhlIG1hbnVhbCBvZiBkbTkwMDAsIGl0IHNhaWQgdGhhdCBFRUQwIGlzIHB1
+bGxlZCBkb3duIGludGVybmFseS4KClN1cmUuIEJ1dCBpZiB5b3UgaGF2ZSBzb21lIHBvd2VyIGZs
+b2F0aW5nIGFyb3VuZCB5b3VyIGJvYXJkIHRoZSBjaGlwIG1pZ2h0IApkZXRlY3QgYSBoaWdoIGxl
+dmVsIGF0IHN5c3RlbSBzdGFydC4gQnV0IHRoaXMgaWRlYSBpcyBqdXN0IGEgc2hvdCBpbnRvIHRo
+ZSAKZGFyay4KClJlZ2FyZHMsCkp1ZXJnZW4KCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgfCBKdWVyZ2VuIEJlaXNlcnQgICAgICAgICAgICAgfApMaW51
+eCBTb2x1dGlvbnMgZm9yIFNjaWVuY2UgYW5kIEluZHVzdHJ5ICAgICAgfCBodHRwOi8vd3d3LnBl
+bmd1dHJvbml4LmRlLyAgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
