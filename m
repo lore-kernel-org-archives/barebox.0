@@ -1,13 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from m15-113.126.com ([220.181.15.113])
+Received: from 11.mo1.mail-out.ovh.net ([188.165.48.29]
+ helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tguk0-0000cl-Re
- for barebox@lists.infradead.org; Fri, 07 Dec 2012 10:01:11 +0000
-Date: Fri, 7 Dec 2012 18:00:33 +0800
-From: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
-Message-ID: <20121207100033.GA2605@greatfirst.com>
+ id 1TgxpR-00050o-P0
+ for barebox@lists.infradead.org; Fri, 07 Dec 2012 13:19:01 +0000
+Received: from mail184.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 20B51FFB751
+ for <barebox@lists.infradead.org>; Fri,  7 Dec 2012 14:31:00 +0100 (CET)
+Date: Fri, 7 Dec 2012 14:17:05 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121207131705.GL8327@game.jcrosoft.org>
+References: <20121205165337.GJ8327@game.jcrosoft.org>
+ <1354727720-23063-1-git-send-email-plagnioj@jcrosoft.com>
+ <20121205182801.GI10369@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <20121205182801.GI10369@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,27 +28,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: mdio_bus_match() bug
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/1] mtd: nand: fix unaligned write support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-In drivers/net/phy/mdio_bus.c: mdio_bus_match(), It compare
-phy_id between driver and device.
+On 19:28 Wed 05 Dec     , Sascha Hauer wrote:
+> On Wed, Dec 05, 2012 at 06:15:20PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > via cdev we may write unaligned data the code was drop in the commit
+> > 0a4b1c7e440a81819eb2137f923573a3055dc7a2
+> > mtd core: call driver write function with complete buffer
+> > 
+> > which is true for spi flashes but the code is still mandatory on nand
+> 
+> I suggest the following simpler approach.
+> 
+> Sascha
+> 
+yes it work here
 
-In drivers/net/phy/generic.c set generic phy driver's phy_id
-to PHY_ANY_UID
-
-My phy is DM9161E, it's id is 0x181b881.
-
-Of course they won't match! But the generic phy driver indeed
-can works with DM9161E
-
-Maybe the match logic should be fixed
-
--- 
 Best Regards,
-zzs
-
-
+J.
+> 
+> From 5248abe7e59f60085b9a2affd3db11a6ac0a9da9 Mon Sep 17 00:00:00 2001
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> Date: Wed, 5 Dec 2012 19:24:41 +0100
+> Subject: [PATCH] mtd nand: allow partial page writes
+> 
+> The nand layer handles partial page writes just fine. If the start or
+> end of the data is not page aligned, the nand layer will copy the data
+> to a temporary page buffer.
+> Remove the check which disallows partial page writes since this is what
+> we want to do on barebox when for example an image is written to nand
+> which is not padded to page size.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/mtd/nand/nand_write.c |    7 -------
+>  1 file changed, 7 deletions(-)
+> 
+> diff --git a/drivers/mtd/nand/nand_write.c b/drivers/mtd/nand/nand_write.c
+> index 5ed04ce..9997127 100644
+> --- a/drivers/mtd/nand/nand_write.c
+> +++ b/drivers/mtd/nand/nand_write.c
+> @@ -273,13 +273,6 @@ int nand_do_write_ops(struct mtd_info *mtd, loff_t to,
+>  	if (!writelen)
+>  		return 0;
+>  
+> -	/* reject writes, which are not page aligned */
+> -	if (NOTALIGNED(to) || NOTALIGNED(ops->len)) {
+> -		printk(KERN_NOTICE "nand_write: "
+> -		       "Attempt to write not page aligned data\n");
+> -		return -EINVAL;
+> -	}
+> -
+>  	column = to & (mtd->writesize - 1);
+>  	subpage = column || (writelen & (mtd->writesize - 1));
+>  
+> -- 
+> 1.7.10.4
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
