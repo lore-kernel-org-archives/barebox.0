@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgtUi-0002OI-D9
- for barebox@lists.infradead.org; Fri, 07 Dec 2012 08:41:17 +0000
+ id 1TgtVn-0002S2-Dq
+ for barebox@lists.infradead.org; Fri, 07 Dec 2012 08:42:23 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 7 Dec 2012 09:38:35 +0100
+Date: Fri, 7 Dec 2012 09:39:44 +0100
 References: <10036346.7roAWQEoPH@yiqingliang-pc>
- <201212060909.10852.jbe@pengutronix.de> <5693537.UlV3N7R00O@yiqingliang-pc>
-In-Reply-To: <5693537.UlV3N7R00O@yiqingliang-pc>
+ <201212060909.10852.jbe@pengutronix.de> <3052285.ENgbPHB0bd@yiqingliang-pc>
+In-Reply-To: <3052285.ENgbPHB0bd@yiqingliang-pc>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201212070938.35716.jbe@pengutronix.de>
+Message-Id: <201212070939.44380.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,22 +27,9 @@ Subject: Re: about the dm9000 in mini2440
 To: barebox@lists.infradead.org
 
 Yi Qingliang wrote:
-> I got it finally, but not root cause.
-> reproduce:
->
-> 1. connect jtag with openjtag(not the official openjtag, but 100ask.net
-> produced based on openmoko's).
-> 2. use ON/OFF switch on the board
->
-> then I got "Wrong databus"
-> but if I disconnect the power line, and reconnect it, everything OK.
-> and if not connect jtager, and use ON/OFF switch, everyghing OK.
->
-> what's the fuck problem?
+> and if connected jtager, the ON switch does not work some time.
 
-Good question. The DM9000 uses the EED0 pin to decide if a 16 or 32 bit data 
-bus is in use, when the reset signal is gone. Maybe your system does 
-not "see" a correct reset.
+Seems your jtager powers the system by accident.
 
 Regards,
 Juergen
