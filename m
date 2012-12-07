@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-f67.google.com ([209.85.220.67])
+Received: from mail-pb0-f49.google.com ([209.85.160.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tgq9Q-0000uS-Ah
- for barebox@lists.infradead.org; Fri, 07 Dec 2012 05:07:05 +0000
-Received: by mail-pa0-f67.google.com with SMTP id fb11so145273pad.6
- for <barebox@lists.infradead.org>; Thu, 06 Dec 2012 21:07:01 -0800 (PST)
+ id 1TgqEW-00010b-BS
+ for barebox@lists.infradead.org; Fri, 07 Dec 2012 05:12:21 +0000
+Received: by mail-pb0-f49.google.com with SMTP id un15so92295pbc.36
+ for <barebox@lists.infradead.org>; Thu, 06 Dec 2012 21:12:18 -0800 (PST)
 From: Yi Qingliang <niqingliang2003@gmail.com>
-Date: Fri, 07 Dec 2012 13:05:39 +0000
-Message-ID: <5693537.UlV3N7R00O@yiqingliang-pc>
+Date: Fri, 07 Dec 2012 13:10:57 +0000
+Message-ID: <3052285.ENgbPHB0bd@yiqingliang-pc>
 In-Reply-To: <201212060909.10852.jbe@pengutronix.de>
 References: <10036346.7roAWQEoPH@yiqingliang-pc>
  <201212060909.10852.jbe@pengutronix.de>
@@ -28,21 +28,9 @@ Subject: Re: about the dm9000 in mini2440
 To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-I got it finally, but not root cause.
+and if connected jtager, the ON switch does not work some time.
 
-
-reproduce:
-
-1. connect jtag with openjtag(not the official openjtag, but 100ask.net produced 
-based on openmoko's).
-2. use ON/OFF switch on the board
-
-then I got "Wrong databus"
-but if I disconnect the power line, and reconnect it, everything OK.
-and if not connect jtager, and use ON/OFF switch, everyghing OK.
-
-what's the fuck problem?
-
+of cause the jtagger is connected to PC, but I have not use it with 'openocd'.
 
 On Thursday, December 06, 2012 09:09:10 AM Juergen Beisert wrote:
 > Yi Qingliang wrote:
