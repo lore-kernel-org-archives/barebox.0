@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ob0-f177.google.com ([209.85.214.177])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TgtbC-0002aB-86
- for barebox@lists.infradead.org; Fri, 07 Dec 2012 08:47:59 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 7 Dec 2012 09:45:17 +0100
-References: <10036346.7roAWQEoPH@yiqingliang-pc>
- <20121206122745.6175c7e6@eb-e6520> <3321499.8IcqMiOG7l@yiqingliang-pc>
-In-Reply-To: <3321499.8IcqMiOG7l@yiqingliang-pc>
+ id 1Tgtd9-0002fM-MD
+ for barebox@lists.infradead.org; Fri, 07 Dec 2012 08:50:00 +0000
+Received: by mail-ob0-f177.google.com with SMTP id uo13so194170obb.36
+ for <barebox@lists.infradead.org>; Fri, 07 Dec 2012 00:49:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201212070945.17917.jbe@pengutronix.de>
+In-Reply-To: <20121207083012.GB10369@pengutronix.de>
+References: <1354792603-15915-1-git-send-email-fabio.porcedda@gmail.com>
+ <20121207065249.GK8327@game.jcrosoft.org>
+ <20121207083012.GB10369@pengutronix.de>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Fri, 7 Dec 2012 09:49:38 +0100
+Message-ID: <CAHkwnC8bGPMuC+QJOeTQsRabtGkwkvkrxLhAL-Q53YxoBRMAcg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,36 +21,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: about the dm9000 in mini2440
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] at91: reorder BOARDINFO alphabetically
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-WWkgUWluZ2xpYW5nIHdyb3RlOgo+IE9uIFRodXJzZGF5LCBEZWNlbWJlciAwNiwgMjAxMiAxMjoy
-Nzo0NSBQTSBFcmljIELDqW5hcmQgd3JvdGU6Cj4gPiBMZSBUaHUsIDA2IERlYyAyMDEyIDE1OjU1
-OjIzICswMDAwLAo+ID4KPiA+IFlpIFFpbmdsaWFuZyA8bmlxaW5nbGlhbmcyMDAzQGdtYWlsLmNv
-bT4gYSDDqWNyaXQgOgo+ID4gPiB0aGUgYWRkcmVzcyBvZiBkbTkwMDAgaXMgMHgyODAwMDAwMCwg
-aXQgc2hvdWxkIGJlIGNzNSwgYnV0IGluIGZ1bmN0aW9uCj4gPiA+ICJtaW5pMjQ0MF9kZXZpY2Vz
-X2luaXQiLCBpdCBzZXQgdGhlIGNzNCBpbnN0ZWFkLCB3aHk/Pwo+ID4KPiA+IFRoZSBtaW5pMjQ0
-MCBzdXBwb3J0ZWQgaW4gQmFyZWJveCBpcyB0aGlzIG9uZSBhbmQgbWF5YmUgbm90IHRoZSBvbmUK
-PiA+IHlvdXIgYXJlIHVzaW5nIDstKQo+ID4gaHR0cDovL3d3dy5mcmllbmRseWFybS5uZXQvcHJv
-ZHVjdHMvbWluaTI0NDAKPgo+IHRoZXJlIGlzICJtaW5pMjQ0MCBmcmllbmRseUFSTSIgb24gbXkg
-Ym9hcmQsIHdob3NlIGNvbG9yIGlzIHdoaXRlLgo+IGJsdWUgcGNiLCBtYXliZSBmcmllbmRseUFS
-TSBoYXMgbXVsdGkgdmVyc2lvbiBtaW5pMjQ0MD8KCkZyaWVuZGx5QVJNIGhhcyBzb21lIGNvcHlp
-c3QuIEEgYmx1ZSBQQ0IgSSBoYXZlIG5ldmVyIHNlZW4geWV0LgoKPiBJIHNheSB0aGUgMHgyODAw
-MDAwMCBpcyBjczUsIGJhc2VkIG9uIHRoZSBtZW1vcnkgbGF5b3V0IHBpY3R1cmUgaW4gdGhlCj4g
-bWFudWFsLiBhbHRob3VnaCB0aGUgc2NoZW1hdGljcyBpcyBzYW1lIGFzIEp1ZXJnZW4gQmVpc2Vy
-dCdzLgoKQW5kIHRoZSBzY2hlbWF0aWNzIHNheXMgaXQgaXMgQ1M0LgoKPiBJIGNhbid0IGdldCB0
-aGUgb3JpZ2luYWwgZGlzaywgb25seSB0aGUgYm9hcmQuIFNvIGhvdyB0byBjaGVjayB0aGUgRUVE
-MD8KPiBwczogSW4gdGhlIG1hbnVhbCBvZiBkbTkwMDAsIGl0IHNhaWQgdGhhdCBFRUQwIGlzIHB1
-bGxlZCBkb3duIGludGVybmFseS4KClN1cmUuIEJ1dCBpZiB5b3UgaGF2ZSBzb21lIHBvd2VyIGZs
-b2F0aW5nIGFyb3VuZCB5b3VyIGJvYXJkIHRoZSBjaGlwIG1pZ2h0IApkZXRlY3QgYSBoaWdoIGxl
-dmVsIGF0IHN5c3RlbSBzdGFydC4gQnV0IHRoaXMgaWRlYSBpcyBqdXN0IGEgc2hvdCBpbnRvIHRo
-ZSAKZGFyay4KClJlZ2FyZHMsCkp1ZXJnZW4KCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgfCBKdWVyZ2VuIEJlaXNlcnQgICAgICAgICAgICAgfApMaW51
-eCBTb2x1dGlvbnMgZm9yIFNjaWVuY2UgYW5kIEluZHVzdHJ5ICAgICAgfCBodHRwOi8vd3d3LnBl
-bmd1dHJvbml4LmRlLyAgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Fri, Dec 7, 2012 at 9:30 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Fri, Dec 07, 2012 at 07:52:49AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+>> On 12:16 Thu 06 Dec     , Fabio Porcedda wrote:
+>> > This is to have a nicely ordered list and to decrease the
+>> > likelihood of a conflict when adding a new board.
+>> >
+>> > Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+>> > Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+>> > ---
+>> > v2:
+>> NAK
+>>
+>> I order them by Kconfig keepo  it that way
+>
+> I'd say it makes more sense to keep them in the order the user actually
+> sees them, it makes it easier to find the entries. What's the value in
+> ordering them by Kconfig name?
+> If you order them by Kconfig name, the Calao boards end up in three
+> different places in the user visible view.
+
+IMHO it's easier and nicer to order by text, in fact the entries were not even
+completely ordered by Kconfig.
+
+--
+Fabio Porcedda
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
