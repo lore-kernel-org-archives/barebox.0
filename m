@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ThIAU-0000cK-TD
- for barebox@lists.infradead.org; Sat, 08 Dec 2012 11:02:04 +0000
-Date: Sat, 8 Dec 2012 12:01:58 +0100
+ id 1ThINC-0000ke-BI
+ for barebox@lists.infradead.org; Sat, 08 Dec 2012 11:15:11 +0000
+Date: Sat, 8 Dec 2012 12:15:03 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121208110158.GE10369@pengutronix.de>
-References: <1354792603-15915-1-git-send-email-fabio.porcedda@gmail.com>
- <20121207065249.GK8327@game.jcrosoft.org>
- <20121207083012.GB10369@pengutronix.de>
- <20121207200657.GM8327@game.jcrosoft.org>
+Message-ID: <20121208111503.GF10369@pengutronix.de>
+References: <1354931932-28300-1-git-send-email-zzs213@126.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121207200657.GM8327@game.jcrosoft.org>
+In-Reply-To: <1354931932-28300-1-git-send-email-zzs213@126.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,49 +18,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] at91: reorder BOARDINFO alphabetically
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] fix GENERIC_PHY match nothing
+To: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Dec 07, 2012 at 09:06:57PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 09:30 Fri 07 Dec     , Sascha Hauer wrote:
-> > On Fri, Dec 07, 2012 at 07:52:49AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 12:16 Thu 06 Dec     , Fabio Porcedda wrote:
-> > > > This is to have a nicely ordered list and to decrease the
-> > > > likelihood of a conflict when adding a new board.
-> > > > 
-> > > > Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-> > > > Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > > ---
-> > > > v2:
-> > > NAK
-> > > 
-> > > I order them by Kconfig keepo  it that way
-> > 
-> > I'd say it makes more sense to keep them in the order the user actually
-> > sees them, it makes it easier to find the entries. What's the value in
-> > ordering them by Kconfig name?
-> > If you order them by Kconfig name, the Calao boards end up in three
-> > different places in the user visible view.
-> 
-> I do it the same we do on the kernel
-> and I do want to keep that way the board are order by Kconfig
-
-'keep' the way implies that they are ordered, they are not.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gU2F0LCBEZWMgMDgsIDIwMTIgYXQgMDk6NTg6NTJBTSArMDgwMCwg5byg5b+g5bGxIHdyb3Rl
+Ogo+IEFjY29yZGluZyB0aGUgbWF0Y2ggbG9naWMgaW4gZnVuY3Rpb24gbWRpb19idXNfbWF0Y2gK
+PiBnZW5lcmljIHBoeSBkcml2ZXIgbWF0Y2hzIG5vdGhpbmcuCgpUaGlzIGlzIGRvbmUgb24gcHVy
+cG9zZS4gVGhlIGdlbmVyaWMgcGh5IGRyaXZlciBpcyBwcm9iZWQgbWFudWFsbHkKd2hlbiBubyBv
+dGhlciBwaHkgbWF0Y2hlcywgc2VlOgoKPiBzdGF0aWMgaW50IHBoeV9yZWdpc3Rlcl9kZXZpY2Uo
+c3RydWN0IHBoeV9kZXZpY2UqIGRldikKPiB7Cj4gICAgICAgIGludCByZXQ7Cj4gCj4gICAgICAg
+IHJldCA9IHJlZ2lzdGVyX2RldmljZSgmZGV2LT5kZXYpOwo+ICAgICAgICBpZiAocmV0KQo+ICAg
+ICAgICAgICAgICAgIHJldHVybiByZXQ7CgpyZWdpc3RlciBkZXZpY2UuLi4KCj4gCj4gICAgICAg
+IGlmIChkZXYtPmRldi5kcml2ZXIpCj4gICAgICAgICAgICAgICAgcmV0dXJuIDA7CgouLi4gd2Ug
+aGF2ZSBhIGRyaXZlciBzcGVjaWZpYyB0byB0aGlzIHBoeSwgLT4gcmV0dXJuCgo+IAo+ICAgICAg
+ICBkZXYtPmRldi5kcml2ZXIgPSAmZ2VucGh5X2RyaXZlci5kcnY7Cj4gICAgICAgIHJldHVybiBk
+ZXZpY2VfcHJvYmUoJmRldi0+ZGV2KTsKCk5vIGRyaXZlciwgdXNlIGdlbmVyaWMgcGh5IGRyaXZl
+ci4KCj59CgpUaGUgcHJvYmxlbSB0aGlzIHNvbHZlcyAoYW5kIHRoYXQgeW91IHJlaW50cm9kdWNl
+IHdpdGggdGhpcyBwYXRjaCkgaXMKdGhhdCBpZiB0aGUgcGh5IGRyaXZlciBtYXRjaGVzIGV2ZXJ5
+IGRldmljZSwgYSBtb3JlIHNwZWNpZmljIHBoeSBkcml2ZXIKd2lsbCBub3QgYmUgdXNlZCBpZiB0
+aGUgZ2VuZXJpYyBkcml2ZXIgaXMgcmVnaXN0ZXJlZCBmaXJzdC4KClNhc2NoYQoKPiAKPiBJZiB3
+ZSB3YW50IGl0IG1hdGNoIGFueXRoaW5nLCBXZSBtdXN0IGxldCBpdCdzIHBoeV9pZF9tYXNrCj4g
+YmUgYWxsIHplcm9zCj4gCj4gU2lnbmVkLW9mZi1ieTog5byg5b+g5bGxIDx6enMyMTNAMTI2LmNv
+bT4KPiAtLS0KPiAgZHJpdmVycy9uZXQvcGh5L2dlbmVyaWMuYyB8ICAgIDIgKy0KPiAgMSBmaWxl
+cyBjaGFuZ2VkLCAxIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdp
+dCBhL2RyaXZlcnMvbmV0L3BoeS9nZW5lcmljLmMgYi9kcml2ZXJzL25ldC9waHkvZ2VuZXJpYy5j
+Cj4gaW5kZXggM2Y1ZjEyNy4uYzM3NDNiOSAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL25ldC9waHkv
+Z2VuZXJpYy5jCj4gKysrIGIvZHJpdmVycy9uZXQvcGh5L2dlbmVyaWMuYwo+IEBAIC0yNSw3ICsy
+NSw3IEBACj4gIHN0YXRpYyBzdHJ1Y3QgcGh5X2RyaXZlciBnZW5lcmljX3BoeSA9IHsKPiAgCS5k
+cnYubmFtZSA9ICJHZW5lcmljIFBIWSIsCj4gIAkucGh5X2lkID0gUEhZX0FOWV9VSUQsCj4gLQku
+cGh5X2lkX21hc2sgPSBQSFlfQU5ZX1VJRCwKPiArCS5waHlfaWRfbWFzayA9IDAsCj4gIAkuZmVh
+dHVyZXMgPSAwLAo+ICB9Owo+ICAKPiAtLSAKPiAxLjcuNC40Cj4gCj4gCj4gCj4gX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcg
+bGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAg
+ICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8Cklu
+ZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVu
+Z3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFu
+eSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0s
+IEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
+bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
+ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
