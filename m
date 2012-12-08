@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp52.i.mail.ru ([94.100.177.112])
+Received: from smtp45.i.mail.ru ([94.100.177.105])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ThEG8-0004G3-FX
- for barebox@lists.infradead.org; Sat, 08 Dec 2012 06:51:37 +0000
-Date: Sat, 8 Dec 2012 10:51:28 +0400
+ id 1ThEHs-0004LN-6f
+ for barebox@lists.infradead.org; Sat, 08 Dec 2012 06:53:25 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Message-Id: <20121208105128.7bef421fcb1fb9ed6132b28f@mail.ru>
-In-Reply-To: <20121126081602.GW10369@pengutronix.de>
-References: <1353783209-16451-1-git-send-email-shc_work@mail.ru>
- <20121126081602.GW10369@pengutronix.de>
-Mime-Version: 1.0
+Date: Sat,  8 Dec 2012 10:51:25 +0400
+Message-Id: <1354949486-12917-7-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1354949486-12917-1-git-send-email-shc_work@mail.ru>
+References: <1354949486-12917-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,29 +16,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Cleanup Kconfig files
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 7/8] Remove bad Kconfig reference to MTD_NAND
+To: barebox@lists.infradead.org
 
-On Mon, 26 Nov 2012 09:16:02 +0100
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Barebox not contain symbol MTD_NAND, so remove all references to it.
 
-> On Sat, Nov 24, 2012 at 10:53:29PM +0400, Alexander Shiyan wrote:
-> > This patch provides a global cleanup barebox Kconfig files. This includes
-> > replacing spaces to tabs, formatting in accordance format, removing
-> > extraneous lines and spaces. No functional changes.
-...
-> If nobody objects I'll apply it. If somebody objects, I probably say him
-> that he should provide a patch for Kconfig instead.
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ drivers/mtd/nand/Kconfig |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
 
-I re-submit the updated cleanup patch based on v2012.12.0.
-
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index aa3ea34..49daabf 100644
+--- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -104,7 +104,6 @@ config MTD_NAND_ECC_SMC
+ 
+ config MTD_NAND_MUSEUM_IDS
+ 	bool "Enable chip ids for obsolete ancient NAND devices"
+-	depends on MTD_NAND
+ 	default n
+ 	help
+ 	  Enable this option only when your board has first generation
 -- 
-Alexander Shiyan <shc_work@mail.ru>
+1.7.8.6
+
 
 _______________________________________________
 barebox mailing list
