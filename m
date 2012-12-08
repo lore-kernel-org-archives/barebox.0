@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp45.i.mail.ru ([94.100.177.105])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ThEHo-0004K4-AM
- for barebox@lists.infradead.org; Sat, 08 Dec 2012 06:53:20 +0000
+ id 1ThEHq-0004L1-Nc
+ for barebox@lists.infradead.org; Sat, 08 Dec 2012 06:53:23 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat,  8 Dec 2012 10:51:22 +0400
-Message-Id: <1354949486-12917-4-git-send-email-shc_work@mail.ru>
+Date: Sat,  8 Dec 2012 10:51:24 +0400
+Message-Id: <1354949486-12917-6-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1354949486-12917-1-git-send-email-shc_work@mail.ru>
 References: <1354949486-12917-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,28 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/8] Remove bad Kconfig reference to HAVE_CLK
+Subject: [PATCH 6/8] Remove bad Kconfig reference to HAS_PCI
 To: barebox@lists.infradead.org
 
-Barebox not contain symbol HAVE_CLK, so remove all references to it.
+Barebox not contain symbol HAS_PCI, so remove all references to it.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/clk/Kconfig |    1 -
+ arch/x86/mach-i386/Kconfig |    1 -
  1 files changed, 0 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
-index 66c1c46..4589128 100644
---- a/drivers/clk/Kconfig
-+++ b/drivers/clk/Kconfig
-@@ -1,7 +1,6 @@
+diff --git a/arch/x86/mach-i386/Kconfig b/arch/x86/mach-i386/Kconfig
+index cb12b9c..b64d21f 100644
+--- a/arch/x86/mach-i386/Kconfig
++++ b/arch/x86/mach-i386/Kconfig
+@@ -10,7 +10,6 @@ config X86_GENERIC_HAS_ISA
  
- config CLKDEV_LOOKUP
- 	bool
--	select HAVE_CLK
+ config X86_GENERIC_HAS_PCI
+ 	bool "PCI support"
+-	select HAS_PCI
+ 	help
+ 	  Say Y here if the target supports a PCI bus
  
- config COMMON_CLK
- 	bool
 -- 
 1.7.8.6
 
