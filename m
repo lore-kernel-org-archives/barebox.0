@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ThNjO-0002O8-LK
- for barebox@lists.infradead.org; Sat, 08 Dec 2012 16:58:27 +0000
+ id 1ThNjV-0002PI-Qh
+ for barebox@lists.infradead.org; Sat, 08 Dec 2012 16:58:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat,  8 Dec 2012 17:58:19 +0100
-Message-Id: <1354985902-11317-2-git-send-email-s.hauer@pengutronix.de>
+Date: Sat,  8 Dec 2012 17:58:20 +0100
+Message-Id: <1354985902-11317-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1354985902-11317-1-git-send-email-s.hauer@pengutronix.de>
 References: <1354985902-11317-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,38 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] ARM startup: Ensure CR_A flag is cleared on architectures
- >= ARMv6
+Subject: [PATCH 2/4] ARM omap3: Call common_reset
 To: barebox@lists.infradead.org
 
-We allow unaligned accesses on ARMv6 onwards, make sure the CR_A
-flag is cleared so that unaligned accesses do not trap.
+omap3 has a soc specific reset function, make sure it calls common_reset
+so that the proper CPU flags are set.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/include/asm/barebox-arm-head.h |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/mach-omap/omap3_core.S |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/include/asm/barebox-arm-head.h b/arch/arm/include/asm/barebox-arm-head.h
-index eafad4e..bf00ff0 100644
---- a/arch/arm/include/asm/barebox-arm-head.h
-+++ b/arch/arm/include/asm/barebox-arm-head.h
-@@ -22,6 +22,7 @@ static inline void common_reset(void)
- 
- #if __LINUX_ARM_ARCH__ >= 6
- 	r |= CR_U;
-+	r &= CR_A;
- #else
- 	r |= CR_A;
- #endif
-@@ -91,6 +92,7 @@ static inline void barebox_arm_head(void)
- 
- #if __LINUX_ARM_ARCH__ >= 6
- 	orr	\scratch, \scratch, #CR_U
-+	bic	\scratch, \scratch, #CR_A
- #else
- 	orr	\scratch, \scratch, #CR_A
- #endif
+diff --git a/arch/arm/mach-omap/omap3_core.S b/arch/arm/mach-omap/omap3_core.S
+index ea55efd..38a8cb4 100644
+--- a/arch/arm/mach-omap/omap3_core.S
++++ b/arch/arm/mach-omap/omap3_core.S
+@@ -83,6 +83,7 @@ finished_inval:
+ 	mcr	p15, 2, r10, c0, c0, 0	/* select current cache level in cssr */
+ 	isb
+ #endif /* CONFIG_CPU_V7_DCACHE_SKIP */
++	common_reset r0
+ 	/* back to arch calling code */
+ 	b board_init_lowlevel_return
+ ENDPROC(reset)
 -- 
 1.7.10.4
 
