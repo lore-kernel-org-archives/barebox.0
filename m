@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ThIOx-0000pe-V5
- for barebox@lists.infradead.org; Sat, 08 Dec 2012 11:17:00 +0000
-Date: Sat, 8 Dec 2012 12:16:58 +0100
+ id 1ThIRC-000180-Rf
+ for barebox@lists.infradead.org; Sat, 08 Dec 2012 11:19:19 +0000
+Date: Sat, 8 Dec 2012 12:19:17 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121208111658.GH10369@pengutronix.de>
-References: <1353783209-16451-1-git-send-email-shc_work@mail.ru>
- <20121126081602.GW10369@pengutronix.de>
- <20121208105128.7bef421fcb1fb9ed6132b28f@mail.ru>
+Message-ID: <20121208111917.GI10369@pengutronix.de>
+References: <1354584647-28220-1-git-send-email-zzs213@126.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121208105128.7bef421fcb1fb9ed6132b28f@mail.ru>
+In-Reply-To: <1354584647-28220-1-git-send-email-zzs213@126.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,44 +18,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Cleanup Kconfig files
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] let kbuild build foo/bar.o correctly
+To: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Dec 08, 2012 at 10:51:28AM +0400, Alexander Shiyan wrote:
-> On Mon, 26 Nov 2012 09:16:02 +0100
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> > On Sat, Nov 24, 2012 at 10:53:29PM +0400, Alexander Shiyan wrote:
-> > > This patch provides a global cleanup barebox Kconfig files. This includes
-> > > replacing spaces to tabs, formatting in accordance format, removing
-> > > extraneous lines and spaces. No functional changes.
-> ...
-> > If nobody objects I'll apply it. If somebody objects, I probably say him
-> > that he should provide a patch for Kconfig instead.
-> 
-> I re-submit the updated cleanup patch based on v2012.12.0.
-
-Thanks
-
-Sascha
-
-> 
-> -- 
-> Alexander Shiyan <shc_work@mail.ru>
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVHVlLCBEZWMgMDQsIDIwMTIgYXQgMDk6MzA6NDdBTSArMDgwMCwg5byg5b+g5bGxIHdyb3Rl
+Ogo+IFdoZW4gb2JqLXkgaGFzIGZvby9iYXIubywga2J1aWxkIGNhbid0IGdlbmVyYXRlCj4gZm9v
+L2Jhci5vIGFjY29yZGluZyBmb28vYmFyLmMuIEZpeCB0aGlzCj4gCj4gdGhpcyBwYXRjaCBiYXNl
+ZCBvbiBsaW51eCBrZXJuZWwKPiBjb21taXQgNTIxY2I0MGIwYzQ0NDE4YTRmZDM2ZGM2MzNmNTc1
+ODEzZDU5YTQzZAo+IAo+IFNpZ25lZC1vZmYtYnk6IOW8oOW/oOWxsSA8enpzMjEzQDEyNi5jb20+
+CgpBcHBsaWVkLCB0aGFua3MuCgpTYXNjaGEKCj4gLS0tCj4gIHNjcmlwdHMvTWFrZWZpbGUubGli
+IHwgICAgOCArKysrLS0tLQo+ICAxIGZpbGVzIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgNCBk
+ZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvc2NyaXB0cy9NYWtlZmlsZS5saWIgYi9zY3Jp
+cHRzL01ha2VmaWxlLmxpYgo+IGluZGV4IGNiNDZkYjIuLjE0ZTQ3MWQgMTAwNjQ0Cj4gLS0tIGEv
+c2NyaXB0cy9NYWtlZmlsZS5saWIKPiArKysgYi9zY3JpcHRzL01ha2VmaWxlLmxpYgo+IEBAIC01
+NSwxMCArNTUsMTAgQEAgbXVsdGktb2Jqcy15IDo9ICQoZm9yZWFjaCBtLCAkKG11bHRpLXVzZWQt
+eSksICQoJChtOi5vPS1vYmpzKSkgJCgkKG06Lm89LXkpKSkKPiAgbXVsdGktb2Jqcy1tIDo9ICQo
+Zm9yZWFjaCBtLCAkKG11bHRpLXVzZWQtbSksICQoJChtOi5vPS1vYmpzKSkgJCgkKG06Lm89LXkp
+KSkKPiAgbXVsdGktb2JqcyAgIDo9ICQobXVsdGktb2Jqcy15KSAkKG11bHRpLW9ianMtbSkKPiAg
+Cj4gLSMgJChzdWJkaXItb2JqLXkpIGlzIHRoZSBsaXN0IG9mIG9iamVjdHMgaW4gJChvYmoteSkg
+d2hpY2ggZG8gbm90IGxpdmUKPiAtIyBpbiB0aGUgbG9jYWwgZGlyZWN0b3J5Cj4gLV9fc3ViZGly
+LW9iai15IDo9ICQoZm9yZWFjaCBvLCQocGJsLXkpLCQoaWYgJChmaWx0ZXItb3V0ICQobyksJChu
+b3RkaXIgJChvKSkpLCQobykpKQo+IC1zdWJkaXItb2JqLXkgOj0gJChmb3JlYWNoIG8sJChvYmot
+eSksJChpZiAkKGZpbHRlci1vdXQgJChvKSwkKG5vdGRpciAkKG8pKSksJChvKSkpCj4gKyMgJChz
+dWJkaXItb2JqLXkpIGlzIHRoZSBsaXN0IG9mIG9iamVjdHMgaW4gJChvYmoteSkgd2hpY2ggdXNl
+cyBkaXIvIHRvCj4gKyMgdGVsbCBrYnVpbGQgdG8gZGVzY2VuZAo+ICtfX3N1YmRpci1vYmoteSA6
+PSAkKGZpbHRlciAlL2J1aWx0LWluLXBibC5vLCAkKHBibC15KSkKPiArc3ViZGlyLW9iai15IDo9
+ICQoZmlsdGVyICUvYnVpbHQtaW4ubywgJChvYmoteSkpCj4gIHN1YmRpci1vYmoteSArPSAkKF9f
+c3ViZGlyLW9iai15KQo+ICAKPiAgIyAkKG9iai1kaXJzKSBpcyBhIGxpc3Qgb2YgZGlyZWN0b3Jp
+ZXMgdGhhdCBjb250YWluIG9iamVjdCBmaWxlcwo+IC0tIAo+IDEuNy40LjQKPiAKPiAKPiAKPiBf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+IGJhcmVib3gg
+bWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94CgotLSAKUGVuZ3V0cm9uaXgg
+ZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDov
+L3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWlt
+LCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGls
+ZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1
+IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
+b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
+aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
