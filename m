@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ThNjO-0002O7-LI
+ id 1ThNjO-0002O6-LH
  for barebox@lists.infradead.org; Sat, 08 Dec 2012 16:58:27 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1ThNjM-0005qx-7r
+ for barebox@lists.infradead.org; Sat, 08 Dec 2012 17:58:24 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1ThNjL-0002zb-T8
+ for barebox@lists.infradead.org; Sat, 08 Dec 2012 17:58:23 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat,  8 Dec 2012 17:58:22 +0100
-Message-Id: <1354985902-11317-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1354985902-11317-1-git-send-email-s.hauer@pengutronix.de>
-References: <1354985902-11317-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sat,  8 Dec 2012 17:58:18 +0100
+Message-Id: <1354985902-11317-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,39 +26,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] net phylib: Call phy_update_status when no link is present
+Subject: [PATCH] fixes
 To: barebox@lists.infradead.org
 
-We call phy_update_status only once in 5 seconds. This makes
-sure we do not have great overhead when using ethernet devices.
-However, if phylib tells us the link is down anyway, there won't
-be ethernet transfers, so it doesn't hurt to call phy_update_status
-in this case. This makes sure we can use the ethernet device when
-the link comes up and do not have an additional 5 second penalty
-in this case.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- net/eth.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Some fixes, two omap3 related for toolchains which produce unaligned
+accesses, two phylib fixes.
 
-diff --git a/net/eth.c b/net/eth.c
-index 0a1850f..101fc10 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -138,7 +138,8 @@ static int eth_carrier_check(int force)
- 	if (!eth_current->phydev)
- 		return 0;
- 
--	if (force || is_timeout(last_link_check, 5 * SECOND)) {
-+	if (force || is_timeout(last_link_check, 5 * SECOND) ||
-+			!eth_current->phydev->link) {
- 		ret = phy_update_status(eth_current->phydev);
- 		if (ret)
- 			return ret;
--- 
-1.7.10.4
+Sascha
 
+----------------------------------------------------------------
+Sascha Hauer (4):
+      ARM startup: Ensure CR_A flag is cleared on architectures >= ARMv6
+      ARM omap3: Call common_reset
+      net phylib: Clear BMCR_PDOWN bit
+      net phylib: Call phy_update_status when no link is present
+
+ arch/arm/include/asm/barebox-arm-head.h |    2 ++
+ arch/arm/mach-omap/omap3_core.S         |    1 +
+ drivers/net/phy/phy.c                   |    3 +++
+ net/eth.c                               |    3 ++-
+ 4 files changed, 8 insertions(+), 1 deletion(-)
 
 _______________________________________________
 barebox mailing list
