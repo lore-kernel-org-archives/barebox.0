@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp45.i.mail.ru ([94.100.177.105])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ThEHp-0004KP-9O
- for barebox@lists.infradead.org; Sat, 08 Dec 2012 06:53:22 +0000
+ id 1ThEHt-0004Lr-Jx
+ for barebox@lists.infradead.org; Sat, 08 Dec 2012 06:53:26 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat,  8 Dec 2012 10:51:23 +0400
-Message-Id: <1354949486-12917-5-git-send-email-shc_work@mail.ru>
+Date: Sat,  8 Dec 2012 10:51:26 +0400
+Message-Id: <1354949486-12917-8-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1354949486-12917-1-git-send-email-shc_work@mail.ru>
 References: <1354949486-12917-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,28 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] Remove bad Kconfig reference to DISK_DRIVE
+Subject: [PATCH 8/8] Fix wrong Kconfig reference to ARCH_IMX31
 To: barebox@lists.infradead.org
 
-Barebox not contain symbol DISK_DRIVE, so remove all references to it.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/ata/Kconfig |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+ drivers/video/Kconfig |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index 2e80c3e..636ae6c 100644
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -26,7 +26,6 @@ config DISK_BIOS
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index f09ffdf..354e68b 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -15,14 +15,14 @@ config IMXFB_DRIVER_VIDEO_IMX_OVERLAY
  
- config DISK_ATA
- 	bool "ATA type drives"
--	select DISK_DRIVE
+ config DRIVER_VIDEO_IMX_IPU
+ 	bool "i.MX31/35 framebuffer driver"
+-	depends on ARCH_IMX35 || ARCH_IMX_31
++	depends on ARCH_IMX35 || ARCH_IMX31
  	help
- 	  Support for native ATA/IDE drives
+ 	  Add support for the IPU framebuffer device found on
+ 	  i.MX31 and i.MX35 CPUs.
  
+ config DRIVER_VIDEO_IMX_IPU_OVERLAY
+ 	bool "i.MX31/35 framebuffer overlay support"
+-	depends on DRIVER_VIDEO_IMX_IPU && (ARCH_IMX35 || ARCH_IMX_31)
++	depends on DRIVER_VIDEO_IMX_IPU && (ARCH_IMX35 || ARCH_IMX31)
+ 
+ config DRIVER_VIDEO_STM
+ 	bool "i.MX23/28 framebuffer driver"
 -- 
 1.7.8.6
 
