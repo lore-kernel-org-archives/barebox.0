@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ThyVK-0004cH-0n
- for barebox@lists.infradead.org; Mon, 10 Dec 2012 08:14:26 +0000
+ id 1ThyVJ-0004cM-EF
+ for barebox@lists.infradead.org; Mon, 10 Dec 2012 08:14:32 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Mon, 10 Dec 2012 09:14:05 +0100
-Message-Id: <1355127255-24797-1-git-send-email-w.sang@pengutronix.de>
+Date: Mon, 10 Dec 2012 09:14:11 +0100
+Message-Id: <1355127255-24797-7-git-send-email-w.sang@pengutronix.de>
+In-Reply-To: <1355127255-24797-1-git-send-email-w.sang@pengutronix.de>
+References: <1355127255-24797-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,69 +21,208 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/10] add ubiformat command
+Subject: [PATCH 06/10] lib: add ubiutils-common
 To: barebox@lists.infradead.org
 Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-Hi,
+Imported from mtd-utils and stripped down to needed functionality for
+ubiformat.
 
-here is the ubiformat series rebased against v2012.12.0. All comments I have
-received have been addressed. The command has been tested on a MX35 based
-board. Please help testing.
-
-Regards,
-
-   Wolfram Sang
-
-Wolfram Sang (10):
-  mtd: move is_power_of_2() to a public place
-  ubi: consolidate ubi-media.h
-  ubi: bump ubi-media.h to newest version
-  devfs & mtd: add MEMERASE ioctl support
-  mtd: utils: apply macros for message printouts
-  lib: add ubiutils-common
-  lib: add libscan
-  lib: add libubigen
-  lib: add barebox version of libmtd
-  commands: add ubiformat
-
- commands/Kconfig              |    9 +
- commands/Makefile             |    1 +
- commands/ubi.c                |    2 +-
- commands/ubiformat.c          |  794 +++++++++++++++++++++++++++++++++++++++++
- drivers/mtd/core.c            |   68 ++--
- drivers/mtd/ubi/ubi-barebox.h |    5 +-
- drivers/mtd/ubi/ubi-media.h   |  369 -------------------
- drivers/mtd/ubi/ubi.h         |    3 +-
- fs/devfs-core.c               |    3 +-
- include/mtd/libmtd.h          |  154 ++++++++
- include/mtd/libscan.h         |  105 ++++++
- include/mtd/libubigen.h       |  186 ++++++++++
- include/mtd/ubi-media.h       |  378 ++++++++++++++++++++
- include/mtd/ubiutils-common.h |   26 ++
- include/mtd/utils.h           |   52 +++
- include/ubi-media.h           |  370 -------------------
- lib/Kconfig                   |   12 +
- lib/Makefile                  |    4 +
- lib/libmtd.c                  |  371 +++++++++++++++++++
- lib/libscan.c                 |  223 ++++++++++++
- lib/libubigen.c               |  316 ++++++++++++++++
- lib/ubiutils-common.c         |  122 +++++++
- 22 files changed, 2794 insertions(+), 779 deletions(-)
- create mode 100644 commands/ubiformat.c
- delete mode 100644 drivers/mtd/ubi/ubi-media.h
- create mode 100644 include/mtd/libmtd.h
- create mode 100644 include/mtd/libscan.h
- create mode 100644 include/mtd/libubigen.h
- create mode 100644 include/mtd/ubi-media.h
+Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+---
+ include/mtd/ubiutils-common.h |   26 +++++++++
+ lib/Kconfig                   |    3 +
+ lib/Makefile                  |    1 +
+ lib/ubiutils-common.c         |  122 +++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 152 insertions(+)
  create mode 100644 include/mtd/ubiutils-common.h
- create mode 100644 include/mtd/utils.h
- delete mode 100644 include/ubi-media.h
- create mode 100644 lib/libmtd.c
- create mode 100644 lib/libscan.c
- create mode 100644 lib/libubigen.c
  create mode 100644 lib/ubiutils-common.c
 
+diff --git a/include/mtd/ubiutils-common.h b/include/mtd/ubiutils-common.h
+new file mode 100644
+index 0000000..3a16617
+--- /dev/null
++++ b/include/mtd/ubiutils-common.h
+@@ -0,0 +1,26 @@
++/*
++ * Copyright (c) Artem Bityutskiy, 2007, 2008
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
++ * the GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#ifndef __UBI_UTILS_COMMON_H__
++#define __UBI_UTILS_COMMON_H__
++
++long long ubiutils_get_bytes(const char *str);
++void ubiutils_print_bytes(long long bytes, int bracket);
++
++#endif /* !__UBI_UTILS_COMMON_H__ */
++
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 13ecab0..b2d72df 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -41,6 +41,9 @@ config QSORT
+ config XYMODEM
+ 	bool
+ 
++config UBIUTILS
++	bool
++
+ source lib/gui/Kconfig
+ 
+ endmenu
+diff --git a/lib/Makefile b/lib/Makefile
+index eb0af92..76ca1db 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -34,5 +34,6 @@ obj-$(CONFIG_UNCOMPRESS)	+= uncompress.o
+ obj-$(CONFIG_BCH)	+= bch.o
+ obj-$(CONFIG_BITREV)	+= bitrev.o
+ obj-$(CONFIG_QSORT)	+= qsort.o
++obj-$(CONFIG_UBIUTILS)	+= ubiutils-common.o
+ obj-y			+= gui/
+ obj-$(CONFIG_XYMODEM)	+= xymodem.o
+diff --git a/lib/ubiutils-common.c b/lib/ubiutils-common.c
+new file mode 100644
+index 0000000..d01e723
+--- /dev/null
++++ b/lib/ubiutils-common.c
+@@ -0,0 +1,122 @@
++/*
++ * Copyright (C) 2007, 2008 Nokia Corporation
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
++ * the GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++/*
++ * This file contains various common stuff used by UBI utilities.
++ *
++ * Authors: Artem Bityutskiy
++ *          Adrian Hunter
++ */
++
++#include <common.h>
++#include <stdlib.h>
++#include <string.h>
++
++/**
++ * get_multiplier - convert size specifier to an integer multiplier.
++ * @str: the size specifier string
++ *
++ * This function parses the @str size specifier, which may be one of
++ * 'KiB', 'MiB', or 'GiB' into an integer multiplier. Returns positive
++ * size multiplier in case of success and %-1 in case of failure.
++ */
++static int get_multiplier(const char *str)
++{
++	if (!str)
++		return 1;
++
++	/* Remove spaces before the specifier */
++	while (*str == ' ' || *str == '\t')
++		str += 1;
++
++	if (!strcmp(str, "KiB"))
++		return 1024;
++	if (!strcmp(str, "MiB"))
++		return 1024 * 1024;
++	if (!strcmp(str, "GiB"))
++		return 1024 * 1024 * 1024;
++
++	return -1;
++}
++
++/**
++ * ubiutils_get_bytes - convert a string containing amount of bytes into an
++ * integer
++ * @str: string to convert
++ *
++ * This function parses @str which may have one of 'KiB', 'MiB', or 'GiB'
++ * size specifiers. Returns positive amount of bytes in case of success and %-1
++ * in case of failure.
++ */
++long long ubiutils_get_bytes(const char *str)
++{
++	char *endp;
++	long long bytes = simple_strtoull(str, &endp, 0);
++
++	if (endp == str || bytes < 0) {
++		fprintf(stderr, "incorrect amount of bytes: \"%s\"\n", str);
++		return -1;
++	}
++
++	if (*endp != '\0') {
++		int mult = get_multiplier(endp);
++
++		if (mult == -1) {
++			fprintf(stderr, "bad size specifier: \"%s\" - "
++			        "should be 'KiB', 'MiB' or 'GiB'\n", endp);
++			return -1;
++		}
++		bytes *= mult;
++	}
++
++	return bytes;
++}
++
++/**
++ * ubiutils_print_bytes - print bytes.
++ * @bytes: variable to print
++ * @bracket: whether brackets have to be put or not
++ *
++ * This is a helper function which prints amount of bytes in a human-readable
++ * form, i.e., it prints the exact amount of bytes following by the approximate
++ * amount of Kilobytes, Megabytes, or Gigabytes, depending on how big @bytes
++ * is.
++ */
++void ubiutils_print_bytes(long long bytes, int bracket)
++{
++	const char *p;
++
++	if (bracket)
++		p = " (";
++	else
++		p = ", ";
++
++	printf("%lld bytes", bytes);
++
++	if (bytes > 1024 * 1024 * 1024)
++		printf("%s%lld GiB", p, bytes / (1024 * 1024 * 1024));
++	else if (bytes > 1024 * 1024)
++		printf("%s%lld MiB", p, bytes / (1024 * 1024));
++	else if (bytes > 1024 && bytes != 0)
++		printf("%s%lld KiB", p, bytes / 1024);
++	else
++		return;
++
++	if (bracket)
++		printf(")");
++}
 -- 
 1.7.10.4
 
