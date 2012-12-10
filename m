@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from m15-114.126.com ([220.181.15.114])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tht2r-0004qJ-7b
- for barebox@lists.infradead.org; Mon, 10 Dec 2012 02:24:38 +0000
-Date: Mon, 10 Dec 2012 09:52:25 +0800
-From: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
-Message-ID: <20121210015225.GC2605@greatfirst.com>
-References: <1354931932-28300-1-git-send-email-zzs213@126.com>
- <20121208111503.GF10369@pengutronix.de>
- <20121208123830.GM24458@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20121208123830.GM24458@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1ThyVJ-0004cK-8V
+ for barebox@lists.infradead.org; Mon, 10 Dec 2012 08:14:23 +0000
+From: Wolfram Sang <w.sang@pengutronix.de>
+Date: Mon, 10 Dec 2012 09:14:09 +0100
+Message-Id: <1355127255-24797-5-git-send-email-w.sang@pengutronix.de>
+In-Reply-To: <1355127255-24797-1-git-send-email-w.sang@pengutronix.de>
+References: <1355127255-24797-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,36 +16,149 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fix GENERIC_PHY match nothing
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH 04/10] devfs & mtd: add MEMERASE ioctl support
+To: barebox@lists.infradead.org
+Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-SW4gbWVzc2FnZSA8MjAxMjEyMDgxMjM4MzAuR00yNDQ1OEBwZW5ndXRyb25peC5kZT4gU2FzY2hh
-IEhhdWVyIHdyb3RlOgo+IE9uIFNhdCwgRGVjIDA4LCAyMDEyIGF0IDEyOjE1OjAzUE0gKzAxMDAs
-IFNhc2NoYSBIYXVlciB3cm90ZToKPiA+IE9uIFNhdCwgRGVjIDA4LCAyMDEyIGF0IDA5OjU4OjUy
-QU0gKzA4MDAsIOW8oOW/oOWxsSB3cm90ZToKPiA+ID4gQWNjb3JkaW5nIHRoZSBtYXRjaCBsb2dp
-YyBpbiBmdW5jdGlvbiBtZGlvX2J1c19tYXRjaAo+ID4gPiBnZW5lcmljIHBoeSBkcml2ZXIgbWF0
-Y2hzIG5vdGhpbmcuCj4gPgo+ID4gVGhpcyBpcyBkb25lIG9uIHB1cnBvc2UuIFRoZSBnZW5lcmlj
-IHBoeSBkcml2ZXIgaXMgcHJvYmVkIG1hbnVhbGx5Cj4gPiB3aGVuIG5vIG90aGVyIHBoeSBtYXRj
-aGVzLCBzZWU6Cj4gPgo+ID4gPiBzdGF0aWMgaW50IHBoeV9yZWdpc3Rlcl9kZXZpY2Uoc3RydWN0
-IHBoeV9kZXZpY2UqIGRldikKPiA+ID4gewo+ID4gPiAgICAgICAgaW50IHJldDsKPiA+ID4KPiA+
-ID4gICAgICAgIHJldCA9IHJlZ2lzdGVyX2RldmljZSgmZGV2LT5kZXYpOwo+ID4gPiAgICAgICAg
-aWYgKHJldCkKPiA+ID4gICAgICAgICAgICAgICAgcmV0dXJuIHJldDsKPiA+Cj4gPiByZWdpc3Rl
-ciBkZXZpY2UuLi4KPiA+Cj4gPiA+Cj4gPiA+ICAgICAgICBpZiAoZGV2LT5kZXYuZHJpdmVyKQo+
-ID4gPiAgICAgICAgICAgICAgICByZXR1cm4gMDsKPiA+Cj4gPiAuLi4gd2UgaGF2ZSBhIGRyaXZl
-ciBzcGVjaWZpYyB0byB0aGlzIHBoeSwgLT4gcmV0dXJuCj4gPgo+ID4gPgo+ID4gPiAgICAgICAg
-ZGV2LT5kZXYuZHJpdmVyID0gJmdlbnBoeV9kcml2ZXIuZHJ2Owo+ID4gPiAgICAgICAgcmV0dXJu
-IGRldmljZV9wcm9iZSgmZGV2LT5kZXYpOwo+ID4KPiA+IE5vIGRyaXZlciwgdXNlIGdlbmVyaWMg
-cGh5IGRyaXZlci4KPiA+Cj4gPiA+fQo+ID4KPiA+IFRoZSBwcm9ibGVtIHRoaXMgc29sdmVzIChh
-bmQgdGhhdCB5b3UgcmVpbnRyb2R1Y2Ugd2l0aCB0aGlzIHBhdGNoKSBpcwo+ID4gdGhhdCBpZiB0
-aGUgcGh5IGRyaXZlciBtYXRjaGVzIGV2ZXJ5IGRldmljZSwgYSBtb3JlIHNwZWNpZmljIHBoeSBk
-cml2ZXIKPiA+IHdpbGwgbm90IGJlIHVzZWQgaWYgdGhlIGdlbmVyaWMgZHJpdmVyIGlzIHJlZ2lz
-dGVyZWQgZmlyc3QuCj4KPiBOb3cgSSB1bmRlcnN0YW5kIHdoYXQgeW91IG1lYW4uCj4KClNvcnJ5
-IGZvciBub3QgbWVudGlvbiB0aGUgc291cmNlIGNvZGUgdmVyc2lvbgoKLS0gCkJlc3QgUmVnYXJk
-cywKenpzCgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+To make that, we need to shift mtd_erase before mtd_ioctl.
+ubi-utils need that, especially ubiformat.
+
+Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+---
+ drivers/mtd/core.c |   68 +++++++++++++++++++++++++++-------------------------
+ fs/devfs-core.c    |    3 ++-
+ 2 files changed, 37 insertions(+), 34 deletions(-)
+
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index 8601787..83e1a39 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -123,7 +123,37 @@ static ssize_t mtd_write(struct cdev* cdev, const void *buf, size_t _count,
+ out:
+ 	return ret ? ret : _count;
+ }
+-#endif
++
++static int mtd_erase(struct cdev *cdev, size_t count, loff_t offset)
++{
++	struct mtd_info *mtd = cdev->priv;
++	struct erase_info erase;
++	int ret;
++
++	memset(&erase, 0, sizeof(erase));
++	erase.mtd = mtd;
++	erase.addr = offset;
++	erase.len = mtd->erasesize;
++
++	while (count > 0) {
++		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
++
++		ret = mtd_block_isbad(mtd, erase.addr);
++		if (ret > 0) {
++			printf("Skipping bad block at 0x%08x\n", erase.addr);
++		} else {
++			ret = mtd->erase(mtd, &erase);
++			if (ret)
++				return ret;
++		}
++
++		erase.addr += mtd->erasesize;
++		count -= count > mtd->erasesize ? mtd->erasesize : count;
++	}
++
++	return 0;
++}
++#endif /* CONFIG_MTD_WRITE */
+ 
+ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+ {
+@@ -134,6 +164,7 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+ 	struct mtd_ecc_stats *ecc = buf;
+ #endif
+ 	struct region_info_user *reg = buf;
++	struct erase_info_user *ei = buf;
+ 	loff_t *offset = buf;
+ 
+ 	switch (request) {
+@@ -146,6 +177,9 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+ 		dev_dbg(cdev->dev, "MEMSETBADBLOCK: 0x%08llx\n", *offset);
+ 		ret = mtd->block_markbad(mtd, *offset);
+ 		break;
++	case MEMERASE:
++		ret = mtd_erase(cdev, ei->length, ei->start + cdev->offset);
++		break;
+ #endif
+ 	case MEMGETINFO:
+ 		user->type	= mtd->type;
+@@ -183,38 +217,6 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+ 	return ret;
+ }
+ 
+-#ifdef CONFIG_MTD_WRITE
+-static int mtd_erase(struct cdev *cdev, size_t count, loff_t offset)
+-{
+-	struct mtd_info *mtd = cdev->priv;
+-	struct erase_info erase;
+-	int ret;
+-
+-	memset(&erase, 0, sizeof(erase));
+-	erase.mtd = mtd;
+-	erase.addr = offset;
+-	erase.len = mtd->erasesize;
+-
+-	while (count > 0) {
+-		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
+-
+-		ret = mtd_block_isbad(mtd, erase.addr);
+-		if (ret > 0) {
+-			printf("Skipping bad block at 0x%08x\n", erase.addr);
+-		} else {
+-			ret = mtd->erase(mtd, &erase);
+-			if (ret)
+-				return ret;
+-		}
+-
+-		erase.addr += mtd->erasesize;
+-		count -= count > mtd->erasesize ? mtd->erasesize : count;
+-	}
+-
+-	return 0;
+-}
+-#endif
+-
+ static struct file_operations mtd_ops = {
+ 	.read   = mtd_read,
+ #ifdef CONFIG_MTD_WRITE
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index 0d2f75a..262e0a2 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -152,13 +152,14 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
+ 		break;
+ #if (defined(CONFIG_NAND_ECC_HW) || defined(CONFIG_NAND_ECC_SOFT))
+ 	case ECCGETSTATS:
++#endif
++	case MEMERASE:
+ 		if (!cdev->ops->ioctl) {
+ 			ret = -EINVAL;
+ 			break;
+ 		}
+ 		ret = cdev->ops->ioctl(cdev, request, buf);
+ 		break;
+-#endif
+ #ifdef CONFIG_PARTITION
+ 	case MEMGETREGIONINFO:
+ 		if (cdev->mtd) {
+-- 
+1.7.10.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
