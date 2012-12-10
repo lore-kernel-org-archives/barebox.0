@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([88.190.12.23])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1ThyhG-0006Y8-NZ
- for barebox@lists.infradead.org; Mon, 10 Dec 2012 08:26:43 +0000
-Date: Mon, 10 Dec 2012 09:26:27 +0100
-From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Message-ID: <20121210092627.1f4e9cbf@skate>
-In-Reply-To: <20121210081626.GN8327@game.jcrosoft.org>
-References: <20121207074925.GZ10369@pengutronix.de>
- <20121208225427.440970a8@skate>
- <20121210081626.GN8327@game.jcrosoft.org>
+Received: from mail-la0-f49.google.com ([209.85.215.49])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Ti1TD-0003ks-4n
+ for barebox@lists.infradead.org; Mon, 10 Dec 2012 11:24:23 +0000
+Received: by mail-la0-f49.google.com with SMTP id r15so1784859lag.36
+ for <barebox@lists.infradead.org>; Mon, 10 Dec 2012 03:24:20 -0800 (PST)
+From: Christoph Fritz <chf.fritz@googlemail.com>
+In-Reply-To: <1348408629.3795.1.camel@mars>
+References: <1348328517.25235.5.camel@mars>
+ <1348338458-30735-1-git-send-email-plagnioj@jcrosoft.com>
+ <1348341957.24868.6.camel@mars> <20120922201637.GZ26553@game.jcrosoft.org>
+ <20120923121139.GA10871@mars>  <20120923132946.GB26553@game.jcrosoft.org>
+ <1348408629.3795.1.camel@mars>
+Date: Mon, 10 Dec 2012 12:23:30 +0100
+Message-ID: <1355138610.3662.77.camel@mars>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,33 +27,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: v2012.12.0
+Subject: Re: [PATCH] net: add multiple nameserver support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Dear Jean-Christophe PLAGNIOL-VILLARD,
-
-On Mon, 10 Dec 2012 09:16:26 +0100, Jean-Christophe PLAGNIOL-VILLARD
-
-> > FWIW, I have published
-> > http://www.emlinews.net/2012/12/barebox-2012-12-released/ that attempts
-> > to summarize the most important changes in this release.
-> please fix my name inside
+On Sun, 2012-09-23 at 15:57 +0200, Christoph Fritz wrote:
+> On Sun, 2012-09-23 at 15:29 +0200, Jean-Christophe PLAGNIOL-VILLARD
+> wrote:
+> > On 14:11 Sun 23 Sep     , Christoph Fritz wrote:
+> > > Today limit it to 2
+> > > 
+> > > Update dhcp support as option 6 allow to get n nameserver
+> > > If more than 2 nameserver are provided by the DHCP server ignore them.
+> > I rethink about it and no I do not want wo check it the format here
+> > 
+> > as I plan to make the globalvar more commoon and swtich net to it too
+> > 
 > 
-> it's PLAGNIOL-VILLARD so PLAGNOL-VILLARD
+> I'm fine when the not modified version gets applied.
 > 
-> I'm not Marcel ;)
+> You can add a
+> Tested-by: Christoph Fritz <chf.fritz@googlemail.com>
 
-Indeed, sorry. I've fixed it now.
+*ping*, has this patch gotten lost?
 
-Thanks,
 
-Thomas
--- 
-Thomas Petazzoni, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
