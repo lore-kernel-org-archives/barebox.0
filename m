@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ThyVK-0004cO-7n
- for barebox@lists.infradead.org; Mon, 10 Dec 2012 08:14:33 +0000
+ id 1ThyVJ-0004cJ-Ch
+ for barebox@lists.infradead.org; Mon, 10 Dec 2012 08:14:26 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Mon, 10 Dec 2012 09:14:12 +0100
-Message-Id: <1355127255-24797-8-git-send-email-w.sang@pengutronix.de>
+Date: Mon, 10 Dec 2012 09:14:08 +0100
+Message-Id: <1355127255-24797-4-git-send-email-w.sang@pengutronix.de>
 In-Reply-To: <1355127255-24797-1-git-send-email-w.sang@pengutronix.de>
 References: <1355127255-24797-1-git-send-email-w.sang@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,398 +17,150 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/10] lib: add libscan
+Subject: =?UTF-8?q?=5BPATCH=2003/10=5D=20ubi=3A=20bump=20ubi-media=2Eh=20to=20newest=20version?=
 To: barebox@lists.infradead.org
 Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-Imported from mtd-utils and stripped down to needed functionality.
-Add prefix to functions so we have a clean namespace.
-
-Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
----
- include/mtd/libscan.h |  105 +++++++++++++++++++++++
- lib/Kconfig           |    3 +
- lib/Makefile          |    1 +
- lib/libscan.c         |  223 +++++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 332 insertions(+)
- create mode 100644 include/mtd/libscan.h
- create mode 100644 lib/libscan.c
-
-diff --git a/include/mtd/libscan.h b/include/mtd/libscan.h
-new file mode 100644
-index 0000000..193b07b
---- /dev/null
-+++ b/include/mtd/libscan.h
-@@ -0,0 +1,105 @@
-+/*
-+ * Copyright (C) 2008 Nokia Corporation
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ * Author: Artem Bityutskiy
-+ *
-+ * UBI scanning library.
-+ */
-+
-+#ifndef __LIBSCAN_H__
-+#define __LIBSCAN_H__
-+
-+#include <mtd/ubi-media.h>
-+
-+/*
-+ * If an eraseblock does not contain an erase counter, this value is used
-+ * instead of the erase counter.
-+ */
-+#define NO_EC 0xFFFFFFFF
-+
-+/*
-+ * If an eraseblock contains a corrupted erase counter, this value is used
-+ * instead of the erase counter.
-+ */
-+#define CORRUPT_EC 0xFFFFFFFE
-+
-+/*
-+ * If an eraseblock does not contain an erase counter, one of these values is
-+ * used.
-+ *
-+ * @EB_EMPTY: the eraseblock appeared to be empty
-+ * @EB_CORRUPTED: the eraseblock contains corrupted erase counter header
-+ * @EB_ALIEN: the eraseblock contains some non-UBI data
-+ * @EC_MAX: maximum allowed erase counter value
-+ */
-+enum
-+{
-+	EB_EMPTY     = 0xFFFFFFFF,
-+	EB_CORRUPTED = 0xFFFFFFFE,
-+	EB_ALIEN     = 0xFFFFFFFD,
-+	EB_BAD       = 0xFFFFFFFC,
-+	EC_MAX       = UBI_MAX_ERASECOUNTER,
-+};
-+
-+/**
-+ * struct ubi_scan_info - UBI scanning information.
-+ * @ec: erase counters or eraseblock status for all eraseblocks
-+ * @mean_ec: mean erase counter
-+ * @ok_cnt: count of eraseblock with correct erase counter header
-+ * @empty_cnt: count of supposedly eraseblocks
-+ * @corrupted_cnt: count of eraseblocks with corrupted erase counter header
-+ * @alien_cnt: count of eraseblock containing non-ubi data
-+ * @bad_cnt: count of bad eraseblocks
-+ * @bad_cnt: count of non-bad eraseblocks
-+ * @vid_hdr_offs: volume ID header offset from the found EC headers (%-1 means
-+ *                undefined)
-+ * @data_offs: data offset from the found EC headers (%-1 means undefined)
-+ */
-+struct ubi_scan_info
-+{
-+	uint32_t *ec;
-+	long long mean_ec;
-+	int ok_cnt;
-+	int empty_cnt;
-+	int corrupted_cnt;
-+	int alien_cnt;
-+	int bad_cnt;
-+	int good_cnt;
-+	int vid_hdr_offs;
-+	int data_offs;
-+};
-+
-+struct mtd_dev_info;
-+
-+/**
-+ * ubi_scan - scan an MTD device.
-+ * @mtd: information about the MTD device to scan
-+ * @fd: MTD device node file descriptor
-+ * @info: the result of the scanning is returned here
-+ * @verbose: verbose mode: %0 - be silent, %1 - output progress information,
-+ *           2 - debugging output mode
-+ */
-+int libscan_ubi_scan(struct mtd_dev_info *mtd, int fd, struct ubi_scan_info **info,
-+	     int verbose);
-+
-+/**
-+ * ubi_scan_free - free scanning information.
-+ * @si: scanning information to free
-+ */
-+void libscan_ubi_scan_free(struct ubi_scan_info *si);
-+
-+#endif /* __LIBSCAN_H__ */
-diff --git a/lib/Kconfig b/lib/Kconfig
-index b2d72df..1a283d6 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -44,6 +44,9 @@ config XYMODEM
- config UBIUTILS
- 	bool
- 
-+config LIBSCAN
-+	bool
-+
- source lib/gui/Kconfig
- 
- endmenu
-diff --git a/lib/Makefile b/lib/Makefile
-index 76ca1db..72306f8 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -35,5 +35,6 @@ obj-$(CONFIG_BCH)	+= bch.o
- obj-$(CONFIG_BITREV)	+= bitrev.o
- obj-$(CONFIG_QSORT)	+= qsort.o
- obj-$(CONFIG_UBIUTILS)	+= ubiutils-common.o
-+obj-$(CONFIG_LIBSCAN)	+= libscan.o
- obj-y			+= gui/
- obj-$(CONFIG_XYMODEM)	+= xymodem.o
-diff --git a/lib/libscan.c b/lib/libscan.c
-new file mode 100644
-index 0000000..951e0e7
---- /dev/null
-+++ b/lib/libscan.c
-@@ -0,0 +1,223 @@
-+/*
-+ * Copyright (C) 2008 Nokia Corporation
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-+ * the GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ * Author: Artem Bityutskiy
-+ *
-+ * UBI scanning library.
-+ */
-+
-+#define PROGRAM_NAME "libscan"
-+
-+#include <common.h>
-+#include <fcntl.h>
-+#include <crc.h>
-+#include <stdlib.h>
-+#include <malloc.h>
-+#include <linux/mtd/mtd.h>
-+#include <linux/stat.h>
-+#include <linux/mtd/mtd-abi.h>
-+#include <mtd/libmtd.h>
-+#include <mtd/libscan.h>
-+#include <mtd/ubi-user.h>
-+#include <mtd/utils.h>
-+#include <mtd/ubi-media.h>
-+#include <asm-generic/div64.h>
-+
-+static int all_ff(const void *buf, int len)
-+{
-+	int i;
-+	const uint8_t *p = buf;
-+
-+	for (i = 0; i < len; i++)
-+		if (p[i] != 0xFF)
-+			return 0;
-+	return 1;
-+}
-+
-+int libscan_ubi_scan(struct mtd_dev_info *mtd, int fd, struct ubi_scan_info **info,
-+	     int verbose)
-+{
-+	int eb, v = (verbose == 2), pr = (verbose == 1);
-+	struct ubi_scan_info *si;
-+	unsigned long long sum = 0;
-+
-+	si = calloc(1, sizeof(struct ubi_scan_info));
-+	if (!si)
-+		return sys_errmsg("cannot allocate %zd bytes of memory",
-+				  sizeof(struct ubi_scan_info));
-+
-+	si->ec = calloc(mtd->eb_cnt, sizeof(uint32_t));
-+	if (!si->ec) {
-+		sys_errmsg("cannot allocate %zd bytes of memory",
-+			   sizeof(struct ubi_scan_info));
-+		goto out_si;
-+	}
-+
-+	si->vid_hdr_offs = si->data_offs = -1;
-+
-+	verbose(v, "start scanning eraseblocks 0-%d", mtd->eb_cnt);
-+	for (eb = 0; eb < mtd->eb_cnt; eb++) {
-+		int ret;
-+		uint32_t crc;
-+		struct ubi_ec_hdr ech;
-+		unsigned long long ec;
-+
-+		if (v)
-+			normsg_cont("scanning eraseblock %d", eb);
-+		if (pr) {
-+			printf("\r" PROGRAM_NAME ": scanning eraseblock %d -- %2u %% complete  ",
-+			       eb, (eb + 1) * 100 / mtd->eb_cnt);
-+		}
-+
-+		ret = mtd_is_bad(mtd, fd, eb);
-+		if (ret == -1)
-+			goto out_ec;
-+		if (ret) {
-+			si->bad_cnt += 1;
-+			si->ec[eb] = EB_BAD;
-+			if (v)
-+				printf(": bad\n");
-+			continue;
-+		}
-+
-+		ret = mtd_read(mtd, fd, eb, 0, &ech, sizeof(struct ubi_ec_hdr));
-+		if (ret < 0)
-+			goto out_ec;
-+
-+		if (be32_to_cpu(ech.magic) != UBI_EC_HDR_MAGIC) {
-+			if (all_ff(&ech, sizeof(struct ubi_ec_hdr))) {
-+				si->empty_cnt += 1;
-+				si->ec[eb] = EB_EMPTY;
-+				if (v)
-+					printf(": empty\n");
-+			} else {
-+				si->alien_cnt += 1;
-+				si->ec[eb] = EB_ALIEN;
-+				if (v)
-+					printf(": alien\n");
-+			}
-+			continue;
-+		}
-+
-+		crc = crc32_no_comp(UBI_CRC32_INIT, &ech, UBI_EC_HDR_SIZE_CRC);
-+		if (be32_to_cpu(ech.hdr_crc) != crc) {
-+			si->corrupted_cnt += 1;
-+			si->ec[eb] = EB_CORRUPTED;
-+			if (v)
-+				printf(": bad CRC %#08x, should be %#08x\n",
-+				       crc, be32_to_cpu(ech.hdr_crc));
-+			continue;
-+		}
-+
-+		ec = be64_to_cpu(ech.ec);
-+		if (ec > EC_MAX) {
-+			if (pr)
-+				printf("\n");
-+			errmsg("erase counter in EB %d is %llu, while this "
-+			       "program expects them to be less than %u",
-+			       eb, ec, EC_MAX);
-+			goto out_ec;
-+		}
-+
-+		if (si->vid_hdr_offs == -1) {
-+			si->vid_hdr_offs = be32_to_cpu(ech.vid_hdr_offset);
-+			si->data_offs = be32_to_cpu(ech.data_offset);
-+			if (si->data_offs % mtd->min_io_size) {
-+				if (pr)
-+					printf("\n");
-+				if (v)
-+					printf(": corrupted because of the below\n");
-+				warnmsg("bad data offset %d at eraseblock %d (n"
-+					"of multiple of min. I/O unit size %d)",
-+					si->data_offs, eb, mtd->min_io_size);
-+				warnmsg("treat eraseblock %d as corrupted", eb);
-+				si->corrupted_cnt += 1;
-+				si->ec[eb] = EB_CORRUPTED;
-+				continue;
-+
-+			}
-+		} else {
-+			if ((int)be32_to_cpu(ech.vid_hdr_offset) != si->vid_hdr_offs) {
-+				if (pr)
-+					printf("\n");
-+				if (v)
-+					printf(": corrupted because of the below\n");
-+				warnmsg("inconsistent VID header offset: was "
-+					"%d, but is %d in eraseblock %d",
-+					si->vid_hdr_offs,
-+					be32_to_cpu(ech.vid_hdr_offset), eb);
-+				warnmsg("treat eraseblock %d as corrupted", eb);
-+				si->corrupted_cnt += 1;
-+				si->ec[eb] = EB_CORRUPTED;
-+				continue;
-+			}
-+			if ((int)be32_to_cpu(ech.data_offset) != si->data_offs) {
-+				if (pr)
-+					printf("\n");
-+				if (v)
-+					printf(": corrupted because of the below\n");
-+				warnmsg("inconsistent data offset: was %d, but"
-+					" is %d in eraseblock %d",
-+					si->data_offs,
-+					be32_to_cpu(ech.data_offset), eb);
-+				warnmsg("treat eraseblock %d as corrupted", eb);
-+				si->corrupted_cnt += 1;
-+				si->ec[eb] = EB_CORRUPTED;
-+				continue;
-+			}
-+		}
-+
-+		si->ok_cnt += 1;
-+		si->ec[eb] = ec;
-+		if (v)
-+			printf(": OK, erase counter %u\n", si->ec[eb]);
-+	}
-+
-+	if (si->ok_cnt != 0) {
-+		/* Calculate mean erase counter */
-+		for (eb = 0; eb < mtd->eb_cnt; eb++) {
-+			if (si->ec[eb] > EC_MAX)
-+				continue;
-+			sum += si->ec[eb];
-+		}
-+		do_div(sum, si->ok_cnt);
-+		si->mean_ec = sum;
-+	}
-+
-+	si->good_cnt = mtd->eb_cnt - si->bad_cnt;
-+	verbose(v, "finished, mean EC %lld, %d OK, %d corrupted, %d empty, %d "
-+		"alien, bad %d", si->mean_ec, si->ok_cnt, si->corrupted_cnt,
-+		si->empty_cnt, si->alien_cnt, si->bad_cnt);
-+
-+	*info = si;
-+	if (pr)
-+		printf("\n");
-+	return 0;
-+
-+out_ec:
-+	free(si->ec);
-+out_si:
-+	free(si);
-+	*info = NULL;
-+	return -1;
-+}
-+
-+void libscan_ubi_scan_free(struct ubi_scan_info *si)
-+{
-+	free(si->ec);
-+	free(si);
-+}
--- 
-1.7.10.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+TmVlZGVkIGZvciB1Ymlmb3JtYXQsIHdlIGFyZSBpbnRlcmVzdGVkIGluIGltYWdlX3NlcSBlc3Bl
+Y2lhbGx5LgoKU2lnbmVkLW9mZi1ieTogV29sZnJhbSBTYW5nIDx3LnNhbmdAcGVuZ3V0cm9uaXgu
+ZGU+Ci0tLQogaW5jbHVkZS9tdGQvdWJpLW1lZGlhLmggfCAgIDU3ICsrKysrKysrKysrKysrKysr
+KysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMzMgaW5zZXJ0
+aW9ucygrKSwgMjQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9tdGQvdWJpLW1l
+ZGlhLmggYi9pbmNsdWRlL210ZC91YmktbWVkaWEuaAppbmRleCBjZDFiZDhlLi4wOGJlYzNlIDEw
+MDY0NAotLS0gYS9pbmNsdWRlL210ZC91YmktbWVkaWEuaAorKysgYi9pbmNsdWRlL210ZC91Ymkt
+bWVkaWEuaApAQCAtMTEsNiArMTEsOSBAQAogICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1Mg
+Rk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiBTZWUKICAqIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMg
+TGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgogICoKKyAqIFlvdSBzaG91bGQgaGF2ZSByZWNlaXZl
+ZCBhIGNvcHkgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlCisgKiBhbG9uZyB3aXRo
+IHRoaXMgcHJvZ3JhbTsgaWYgbm90LCB3cml0ZSB0byB0aGUgRnJlZSBTb2Z0d2FyZQorICogRm91
+bmRhdGlvbiwgSW5jLiwgNTkgVGVtcGxlIFBsYWNlLCBTdWl0ZSAzMzAsIEJvc3RvbiwgTUEgMDIx
+MTEtMTMwNyBVU0EKICAqCiAgKiBBdXRob3JzOiBBcnRlbSBCaXR5dXRza2l5ICjQkdC40YLRjtGG
+0LrQuNC5INCQ0YDRgtGR0LwpCiAgKiAgICAgICAgICBUaG9tYXMgR2xlaXhuZXIKQEAgLTk1LDEw
+ICs5OCwxMSBAQCBlbnVtIHsKICAqIENvbXBhdGliaWxpdHkgY29uc3RhbnRzIHVzZWQgYnkgaW50
+ZXJuYWwgdm9sdW1lcy4KICAqCiAgKiBAVUJJX0NPTVBBVF9ERUxFVEU6IGRlbGV0ZSB0aGlzIGlu
+dGVybmFsIHZvbHVtZSBiZWZvcmUgYW55dGhpbmcgaXMgd3JpdHRlbgotICogdG8gdGhlIGZsYXNo
+CisgKiAgICAgICAgICAgICAgICAgICAgIHRvIHRoZSBmbGFzaAogICogQFVCSV9DT01QQVRfUk86
+IGF0dGFjaCB0aGlzIGRldmljZSBpbiByZWFkLW9ubHkgbW9kZQogICogQFVCSV9DT01QQVRfUFJF
+U0VSVkU6IHByZXNlcnZlIHRoaXMgaW50ZXJuYWwgdm9sdW1lIC0gZG8gbm90IHRvdWNoIGl0cwot
+ICogcGh5c2ljYWwgZXJhc2VibG9ja3MsIGRvbid0IGFsbG93IHRoZSB3ZWFyLWxldmVsaW5nIHVu
+aXQgdG8gbW92ZSB0aGVtCisgKiAgICAgICAgICAgICAgICAgICAgICAgcGh5c2ljYWwgZXJhc2Vi
+bG9ja3MsIGRvbid0IGFsbG93IHRoZSB3ZWFyLWxldmVsaW5nCisgKiAgICAgICAgICAgICAgICAg
+ICAgICAgc3ViLXN5c3RlbSB0byBtb3ZlIHRoZW0KICAqIEBVQklfQ09NUEFUX1JFSkVDVDogcmVq
+ZWN0IHRoaXMgVUJJIGltYWdlCiAgKi8KIGVudW0gewpAQCAtMTIwLDE4ICsxMjQsMTkgQEAgZW51
+bSB7CiAgKiBzdHJ1Y3QgdWJpX2VjX2hkciAtIFVCSSBlcmFzZSBjb3VudGVyIGhlYWRlci4KICAq
+IEBtYWdpYzogZXJhc2UgY291bnRlciBoZWFkZXIgbWFnaWMgbnVtYmVyICglVUJJX0VDX0hEUl9N
+QUdJQykKICAqIEB2ZXJzaW9uOiB2ZXJzaW9uIG9mIFVCSSBpbXBsZW1lbnRhdGlvbiB3aGljaCBp
+cyBzdXBwb3NlZCB0byBhY2NlcHQgdGhpcwotICogVUJJIGltYWdlCisgKiAgICAgICAgICAgVUJJ
+IGltYWdlCiAgKiBAcGFkZGluZzE6IHJlc2VydmVkIGZvciBmdXR1cmUsIHplcm9lcwogICogQGVj
+OiB0aGUgZXJhc2UgY291bnRlcgogICogQHZpZF9oZHJfb2Zmc2V0OiB3aGVyZSB0aGUgVklEIGhl
+YWRlciBzdGFydHMKICAqIEBkYXRhX29mZnNldDogd2hlcmUgdGhlIHVzZXIgZGF0YSBzdGFydAor
+ICogQGltYWdlX3NlcTogaW1hZ2Ugc2VxdWVuY2UgbnVtYmVyCiAgKiBAcGFkZGluZzI6IHJlc2Vy
+dmVkIGZvciBmdXR1cmUsIHplcm9lcwogICogQGhkcl9jcmM6IGVyYXNlIGNvdW50ZXIgaGVhZGVy
+IENSQyBjaGVja3N1bQogICoKICAqIFRoZSBlcmFzZSBjb3VudGVyIGhlYWRlciB0YWtlcyA2NCBi
+eXRlcyBhbmQgaGFzIGEgcGxlbnR5IG9mIHVudXNlZCBzcGFjZSBmb3IKICAqIGZ1dHVyZSB1c2Fn
+ZS4gVGhlIHVudXNlZCBmaWVsZHMgYXJlIHplcm9lZC4gVGhlIEB2ZXJzaW9uIGZpZWxkIGlzIHVz
+ZWQgdG8KICAqIGluZGljYXRlIHRoZSB2ZXJzaW9uIG9mIFVCSSBpbXBsZW1lbnRhdGlvbiB3aGlj
+aCBpcyBzdXBwb3NlZCB0byBiZSBhYmxlIHRvCi0gKiB3b3JrIHdpdGggdGhpcyBVQkkgaW1hZ2Uu
+IElmIEB2ZXJzaW9uIGlzIGdyZWF0ZXIgdGhlbiB0aGUgY3VycmVudCBVQkkKKyAqIHdvcmsgd2l0
+aCB0aGlzIFVCSSBpbWFnZS4gSWYgQHZlcnNpb24gaXMgZ3JlYXRlciB0aGFuIHRoZSBjdXJyZW50
+IFVCSQogICogdmVyc2lvbiwgdGhlIGltYWdlIGlzIHJlamVjdGVkLiBUaGlzIG1heSBiZSB1c2Vm
+dWwgaW4gZnV0dXJlIGlmIHNvbWV0aGluZwogICogaXMgY2hhbmdlZCByYWRpY2FsbHkuIFRoaXMg
+ZmllbGQgaXMgZHVwbGljYXRlZCBpbiB0aGUgdm9sdW1lIGlkZW50aWZpZXIKICAqIGhlYWRlci4K
+QEAgLTE0MCw2ICsxNDUsMTQgQEAgZW51bSB7CiAgKiB2b2x1bWUgaWRlbnRpZmllciBoZWFkZXIg
+YW5kIHVzZXIgZGF0YSwgcmVsYXRpdmUgdG8gdGhlIGJlZ2lubmluZyBvZiB0aGUKICAqIHBoeXNp
+Y2FsIGVyYXNlYmxvY2suIFRoZXNlIHZhbHVlcyBoYXZlIHRvIGJlIHRoZSBzYW1lIGZvciBhbGwg
+cGh5c2ljYWwKICAqIGVyYXNlYmxvY2tzLgorICoKKyAqIFRoZSBAaW1hZ2Vfc2VxIGZpZWxkIGlz
+IHVzZWQgdG8gdmFsaWRhdGUgYSBVQkkgaW1hZ2UgdGhhdCBoYXMgYmVlbiBwcmVwYXJlZAorICog
+Zm9yIGEgVUJJIGRldmljZS4gVGhlIEBpbWFnZV9zZXEgdmFsdWUgY2FuIGJlIGFueSB2YWx1ZSwg
+YnV0IGl0IG11c3QgYmUgdGhlCisgKiBzYW1lIG9uIGFsbCBlcmFzZWJsb2Nrcy4gVUJJIHdpbGwg
+ZW5zdXJlIHRoYXQgYWxsIG5ldyBlcmFzZSBjb3VudGVyIGhlYWRlcnMKKyAqIGFsc28gY29udGFp
+biB0aGlzIHZhbHVlLCBhbmQgd2lsbCBjaGVjayB0aGUgdmFsdWUgd2hlbiBzY2FubmluZyBhdCBz
+dGFydC11cC4KKyAqIE9uZSB3YXkgdG8gbWFrZSB1c2Ugb2YgQGltYWdlX3NlcSBpcyB0byBpbmNy
+ZWFzZSBpdHMgdmFsdWUgYnkgb25lIGV2ZXJ5IHRpbWUKKyAqIGFuIGltYWdlIGlzIGZsYXNoZWQg
+b3ZlciBhbiBleGlzdGluZyBpbWFnZSwgdGhlbiwgaWYgdGhlIGZsYXNoaW5nIGRvZXMgbm90Cisg
+KiBjb21wbGV0ZSwgVUJJIHdpbGwgZGV0ZWN0IHRoZSBlcnJvciB3aGVuIHNjYW5uaW5nLgogICov
+CiBzdHJ1Y3QgdWJpX2VjX2hkciB7CiAJX19iZTMyICBtYWdpYzsKQEAgLTE0OCw3ICsxNjEsOCBA
+QCBzdHJ1Y3QgdWJpX2VjX2hkciB7CiAJX19iZTY0ICBlYzsgLyogV2FybmluZzogdGhlIGN1cnJl
+bnQgbGltaXQgaXMgMzEtYml0IGFueXdheSEgKi8KIAlfX2JlMzIgIHZpZF9oZHJfb2Zmc2V0Owog
+CV9fYmUzMiAgZGF0YV9vZmZzZXQ7Ci0JX191OCAgICBwYWRkaW5nMlszNl07CisJX19iZTMyICBp
+bWFnZV9zZXE7CisJX191OCAgICBwYWRkaW5nMlszMl07CiAJX19iZTMyICBoZHJfY3JjOwogfSBf
+X2F0dHJpYnV0ZV9fICgocGFja2VkKSk7CiAKQEAgLTE1NiwyNCArMTcwLDIzIEBAIHN0cnVjdCB1
+YmlfZWNfaGRyIHsKICAqIHN0cnVjdCB1YmlfdmlkX2hkciAtIG9uLWZsYXNoIFVCSSB2b2x1bWUg
+aWRlbnRpZmllciBoZWFkZXIuCiAgKiBAbWFnaWM6IHZvbHVtZSBpZGVudGlmaWVyIGhlYWRlciBt
+YWdpYyBudW1iZXIgKCVVQklfVklEX0hEUl9NQUdJQykKICAqIEB2ZXJzaW9uOiBVQkkgaW1wbGVt
+ZW50YXRpb24gdmVyc2lvbiB3aGljaCBpcyBzdXBwb3NlZCB0byBhY2NlcHQgdGhpcyBVQkkKLSAq
+IGltYWdlICglVUJJX1ZFUlNJT04pCisgKiAgICAgICAgICAgaW1hZ2UgKCVVQklfVkVSU0lPTikK
+ICAqIEB2b2xfdHlwZTogdm9sdW1lIHR5cGUgKCVVQklfVklEX0RZTkFNSUMgb3IgJVVCSV9WSURf
+U1RBVElDKQogICogQGNvcHlfZmxhZzogaWYgdGhpcyBsb2dpY2FsIGVyYXNlYmxvY2sgd2FzIGNv
+cGllZCBmcm9tIGFub3RoZXIgcGh5c2ljYWwKLSAqIGVyYXNlYmxvY2sgKGZvciB3ZWFyLWxldmVs
+aW5nIHJlYXNvbnMpCisgKiAgICAgICAgICAgICBlcmFzZWJsb2NrIChmb3Igd2Vhci1sZXZlbGlu
+ZyByZWFzb25zKQogICogQGNvbXBhdDogY29tcGF0aWJpbGl0eSBvZiB0aGlzIHZvbHVtZSAoJTAs
+ICVVQklfQ09NUEFUX0RFTEVURSwKLSAqICVVQklfQ09NUEFUX0lHTk9SRSwgJVVCSV9DT01QQVRf
+UFJFU0VSVkUsIG9yICVVQklfQ09NUEFUX1JFSkVDVCkKKyAqICAgICAgICAgICVVQklfQ09NUEFU
+X0lHTk9SRSwgJVVCSV9DT01QQVRfUFJFU0VSVkUsIG9yICVVQklfQ09NUEFUX1JFSkVDVCkKICAq
+IEB2b2xfaWQ6IElEIG9mIHRoaXMgdm9sdW1lCiAgKiBAbG51bTogbG9naWNhbCBlcmFzZWJsb2Nr
+IG51bWJlcgotICogQGxlYl92ZXI6IHZlcnNpb24gb2YgdGhpcyBsb2dpY2FsIGVyYXNlYmxvY2sg
+KElNUE9SVEFOVDogb2Jzb2xldGUsIHRvIGJlCi0gKiByZW1vdmVkLCBrZXB0IG9ubHkgZm9yIG5v
+dCBicmVha2luZyBvbGRlciBVQkkgdXNlcnMpCisgKiBAcGFkZGluZzE6IHJlc2VydmVkIGZvciBm
+dXR1cmUsIHplcm9lcwogICogQGRhdGFfc2l6ZTogaG93IG1hbnkgYnl0ZXMgb2YgZGF0YSB0aGlz
+IGxvZ2ljYWwgZXJhc2VibG9jayBjb250YWlucwogICogQHVzZWRfZWJzOiB0b3RhbCBudW1iZXIg
+b2YgdXNlZCBsb2dpY2FsIGVyYXNlYmxvY2tzIGluIHRoaXMgdm9sdW1lCiAgKiBAZGF0YV9wYWQ6
+IGhvdyBtYW55IGJ5dGVzIGF0IHRoZSBlbmQgb2YgdGhpcyBwaHlzaWNhbCBlcmFzZWJsb2NrIGFy
+ZSBub3QKLSAqIHVzZWQKKyAqICAgICAgICAgICAgdXNlZAogICogQGRhdGFfY3JjOiBDUkMgY2hl
+Y2tzdW0gb2YgdGhlIGRhdGEgc3RvcmVkIGluIHRoaXMgbG9naWNhbCBlcmFzZWJsb2NrCi0gKiBA
+cGFkZGluZzE6IHJlc2VydmVkIGZvciBmdXR1cmUsIHplcm9lcwotICogQHNxbnVtOiBzZXF1ZW5j
+ZSBudW1iZXIKICAqIEBwYWRkaW5nMjogcmVzZXJ2ZWQgZm9yIGZ1dHVyZSwgemVyb2VzCisgKiBA
+c3FudW06IHNlcXVlbmNlIG51bWJlcgorICogQHBhZGRpbmczOiByZXNlcnZlZCBmb3IgZnV0dXJl
+LCB6ZXJvZXMKICAqIEBoZHJfY3JjOiB2b2x1bWUgaWRlbnRpZmllciBoZWFkZXIgQ1JDIGNoZWNr
+c3VtCiAgKgogICogVGhlIEBzcW51bSBpcyB0aGUgdmFsdWUgb2YgdGhlIGdsb2JhbCBzZXF1ZW5j
+ZSBjb3VudGVyIGF0IHRoZSB0aW1lIHdoZW4gdGhpcwpAQCAtMTg0LDcgKzE5Nyw3IEBAIHN0cnVj
+dCB1YmlfZWNfaGRyIHsKICAqIChzZXF1ZW5jZSBudW1iZXIpIGlzIHVzZWQgdG8gZGlzdGluZ3Vp
+c2ggYmV0d2VlbiBvbGRlciBhbmQgbmV3ZXIgdmVyc2lvbnMgb2YKICAqIGxvZ2ljYWwgZXJhc2Vi
+bG9ja3MuCiAgKgotICogVGhlcmUgYXJlIDIgc2l0dWF0aW9ucyB3aGVuIHRoZXJlIG1heSBiZSBt
+b3JlIHRoZW4gb25lIHBoeXNpY2FsIGVyYXNlYmxvY2sKKyAqIFRoZXJlIGFyZSAyIHNpdHVhdGlv
+bnMgd2hlbiB0aGVyZSBtYXkgYmUgbW9yZSB0aGFuIG9uZSBwaHlzaWNhbCBlcmFzZWJsb2NrCiAg
+KiBjb3JyZXNwb25kaW5nIHRvIHRoZSBzYW1lIGxvZ2ljYWwgZXJhc2VibG9jaywgaS5lLiwgaGF2
+aW5nIHRoZSBzYW1lIEB2b2xfaWQKICAqIGFuZCBAbG51bSB2YWx1ZXMgaW4gdGhlIHZvbHVtZSBp
+ZGVudGlmaWVyIGhlYWRlci4gU3VwcG9zZSB3ZSBoYXZlIGEgbG9naWNhbAogICogZXJhc2VibG9j
+ayBMIGFuZCBpdCBpcyBtYXBwZWQgdG8gdGhlIHBoeXNpY2FsIGVyYXNlYmxvY2sgUC4KQEAgLTIy
+MSwxMCArMjM0LDYgQEAgc3RydWN0IHViaV9lY19oZHIgewogICogY2hlY2tzdW0gaXMgY29ycmVj
+dCwgdGhpcyBwaHlzaWNhbCBlcmFzZWJsb2NrIGlzIHNlbGVjdGVkIChQMSkuIE90aGVyd2lzZQog
+ICogdGhlIG9sZGVyIG9uZSAoUCkgaXMgc2VsZWN0ZWQuCiAgKgotICogTm90ZSwgdGhlcmUgaXMg
+YW4gb2Jzb2xldGUgQGxlYl92ZXIgZmllbGQgd2hpY2ggd2FzIHVzZWQgaW5zdGVhZCBvZiBAc3Fu
+dW0KLSAqIGluIHRoZSBwYXN0LiBCdXQgaXQgaXMgbm90IHVzZWQgYW55bW9yZSBhbmQgd2Uga2Vl
+cCBpdCBpbiBvcmRlciB0byBiZSBhYmxlCi0gKiB0byBkZWFsIHdpdGggb2xkIFVCSSBpbWFnZXMu
+IEl0IHdpbGwgYmUgcmVtb3ZlZCBhdCBzb21lIHBvaW50LgotICoKICAqIFRoZXJlIGFyZSAyIHNv
+cnRzIG9mIHZvbHVtZXMgaW4gVUJJOiB1c2VyIHZvbHVtZXMgYW5kIGludGVybmFsIHZvbHVtZXMu
+CiAgKiBJbnRlcm5hbCB2b2x1bWVzIGFyZSBub3Qgc2VlbiBmcm9tIG91dHNpZGUgYW5kIGFyZSB1
+c2VkIGZvciB2YXJpb3VzIGludGVybmFsCiAgKiBVQkkgcHVycG9zZXMuIEluIHRoaXMgaW1wbGVt
+ZW50YXRpb24gdGhlcmUgaXMgb25seSBvbmUgaW50ZXJuYWwgdm9sdW1lIC0gdGhlCkBAIC0yNDUs
+OSArMjU0LDkgQEAgc3RydWN0IHViaV9lY19oZHIgewogICogVGhlIEBkYXRhX2NyYyBmaWVsZCBj
+b250YWlucyB0aGUgQ1JDIGNoZWNrc3VtIG9mIHRoZSBjb250ZW50cyBvZiB0aGUgbG9naWNhbAog
+ICogZXJhc2VibG9jayBpZiB0aGlzIGlzIGEgc3RhdGljIHZvbHVtZS4gSW4gY2FzZSBvZiBkeW5h
+bWljIHZvbHVtZXMsIGl0IGRvZXMKICAqIG5vdCBjb250YWluIHRoZSBDUkMgY2hlY2tzdW0gYXMg
+YSBydWxlLiBUaGUgb25seSBleGNlcHRpb24gaXMgd2hlbiB0aGUKLSAqIGRhdGEgb2YgdGhlIHBo
+eXNpY2FsIGVyYXNlYmxvY2sgd2FzIG1vdmVkIGJ5IHRoZSB3ZWFyLWxldmVsaW5nIHVuaXQsIHRo
+ZW4KLSAqIHRoZSB3ZWFyLWxldmVsaW5nIHVuaXQgY2FsY3VsYXRlcyB0aGUgZGF0YSBDUkMgYW5k
+IHN0b3JlcyBpdCBpbiB0aGUKLSAqIEBkYXRhX2NyYyBmaWVsZC4gQW5kIG9mIGNvdXJzZSwgdGhl
+IEBjb3B5X2ZsYWcgaXMgJWluIHRoaXMgY2FzZS4KKyAqIGRhdGEgb2YgdGhlIHBoeXNpY2FsIGVy
+YXNlYmxvY2sgd2FzIG1vdmVkIGJ5IHRoZSB3ZWFyLWxldmVsaW5nIHN1Yi1zeXN0ZW0sCisgKiB0
+aGVuIHRoZSB3ZWFyLWxldmVsaW5nIHN1Yi1zeXN0ZW0gY2FsY3VsYXRlcyB0aGUgZGF0YSBDUkMg
+YW5kIHN0b3JlcyBpdCBpbgorICogdGhlIEBkYXRhX2NyYyBmaWVsZC4gQW5kIG9mIGNvdXJzZSwg
+dGhlIEBjb3B5X2ZsYWcgaXMgJWluIHRoaXMgY2FzZS4KICAqCiAgKiBUaGUgQGRhdGFfc2l6ZSBm
+aWVsZCBpcyB1c2VkIG9ubHkgZm9yIHN0YXRpYyB2b2x1bWVzIGJlY2F1c2UgVUJJIGhhcyB0byBr
+bm93CiAgKiBob3cgbWFueSBieXRlcyBvZiBkYXRhIGFyZSBzdG9yZWQgaW4gdGhpcyBlcmFzZWJs
+b2NrLiBGb3IgZHluYW1pYyB2b2x1bWVzLApAQCAtMjc0LDE0ICsyODMsMTQgQEAgc3RydWN0IHVi
+aV92aWRfaGRyIHsKIAlfX3U4ICAgIGNvbXBhdDsKIAlfX2JlMzIgIHZvbF9pZDsKIAlfX2JlMzIg
+IGxudW07Ci0JX19iZTMyICBsZWJfdmVyOyAvKiBvYnNvbGV0ZSwgdG8gYmUgcmVtb3ZlZCwgZG9u
+J3QgdXNlICovCisJX19iZTMyICBsZWJfdmVyOwogCV9fYmUzMiAgZGF0YV9zaXplOwogCV9fYmUz
+MiAgdXNlZF9lYnM7CiAJX19iZTMyICBkYXRhX3BhZDsKIAlfX2JlMzIgIGRhdGFfY3JjOwotCV9f
+dTggICAgcGFkZGluZzFbNF07CisJX191OCAgICBwYWRkaW5nMls0XTsKIAlfX2JlNjQgIHNxbnVt
+OwotCV9fdTggICAgcGFkZGluZzJbMTJdOworCV9fdTggICAgcGFkZGluZzNbMTJdOwogCV9fYmUz
+MiAgaGRyX2NyYzsKIH0gX19hdHRyaWJ1dGVfXyAoKHBhY2tlZCkpOwogCi0tIAoxLjcuMTAuNAoK
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
+bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
+cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
