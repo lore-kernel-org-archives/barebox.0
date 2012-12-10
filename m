@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1ThyVJ-0004cN-AG
- for barebox@lists.infradead.org; Mon, 10 Dec 2012 08:14:23 +0000
+ id 1ThyVK-0004cH-0n
+ for barebox@lists.infradead.org; Mon, 10 Dec 2012 08:14:26 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Mon, 10 Dec 2012 09:14:10 +0100
-Message-Id: <1355127255-24797-6-git-send-email-w.sang@pengutronix.de>
-In-Reply-To: <1355127255-24797-1-git-send-email-w.sang@pengutronix.de>
-References: <1355127255-24797-1-git-send-email-w.sang@pengutronix.de>
+Date: Mon, 10 Dec 2012 09:14:05 +0100
+Message-Id: <1355127255-24797-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,56 +19,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/10] mtd: utils: apply macros for message printouts
+Subject: [PATCH 00/10] add ubiformat command
 To: barebox@lists.infradead.org
 Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-mtd-utils have a few macros for printouts. Provide the wrappers to make
-it easier to import them.
+Hi,
 
-Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
----
- include/mtd/utils.h |   27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+here is the ubiformat series rebased against v2012.12.0. All comments I have
+received have been addressed. The command has been tested on a MX35 based
+board. Please help testing.
 
-diff --git a/include/mtd/utils.h b/include/mtd/utils.h
-index 229fb34..05a3405 100644
---- a/include/mtd/utils.h
-+++ b/include/mtd/utils.h
-@@ -17,6 +17,33 @@
- #ifndef INCLUDE_MTD_UTILS_H
- # define INCLUDE_MTD_UTILS_H
- 
-+/* Messages as used in mtd-utils */
-+
-+#define bareverbose(verbose, fmt, ...) do {                        \
-+	if (verbose)                                               \
-+		printf(fmt, ##__VA_ARGS__);                        \
-+} while(0)
-+#define verbose(verbose, fmt, ...) \
-+	bareverbose(verbose, "%s: " fmt "\n", PROGRAM_NAME, ##__VA_ARGS__)
-+
-+#define normsg_cont(fmt, ...) do {                                 \
-+	printf("%s: " fmt, PROGRAM_NAME, ##__VA_ARGS__);           \
-+} while(0)
-+
-+#define normsg(fmt, ...) do {                                      \
-+	normsg_cont(fmt "\n", ##__VA_ARGS__);                      \
-+} while(0)
-+
-+#define errmsg(fmt, ...)  ({                                                \
-+	printf("%s: error!: " fmt "\n", PROGRAM_NAME, ##__VA_ARGS__); \
-+	-1;                                                                 \
-+})
-+#define sys_errmsg errmsg
-+
-+#define warnmsg(fmt, ...) do {                                                \
-+	fprintf(stderr, "%s: warning!: " fmt "\n", PROGRAM_NAME, ##__VA_ARGS__); \
-+} while(0)
-+
- static inline int is_power_of_2(unsigned long n)
- {
- 	return (n != 0 && ((n & (n - 1)) == 0));
+Regards,
+
+   Wolfram Sang
+
+Wolfram Sang (10):
+  mtd: move is_power_of_2() to a public place
+  ubi: consolidate ubi-media.h
+  ubi: bump ubi-media.h to newest version
+  devfs & mtd: add MEMERASE ioctl support
+  mtd: utils: apply macros for message printouts
+  lib: add ubiutils-common
+  lib: add libscan
+  lib: add libubigen
+  lib: add barebox version of libmtd
+  commands: add ubiformat
+
+ commands/Kconfig              |    9 +
+ commands/Makefile             |    1 +
+ commands/ubi.c                |    2 +-
+ commands/ubiformat.c          |  794 +++++++++++++++++++++++++++++++++++++++++
+ drivers/mtd/core.c            |   68 ++--
+ drivers/mtd/ubi/ubi-barebox.h |    5 +-
+ drivers/mtd/ubi/ubi-media.h   |  369 -------------------
+ drivers/mtd/ubi/ubi.h         |    3 +-
+ fs/devfs-core.c               |    3 +-
+ include/mtd/libmtd.h          |  154 ++++++++
+ include/mtd/libscan.h         |  105 ++++++
+ include/mtd/libubigen.h       |  186 ++++++++++
+ include/mtd/ubi-media.h       |  378 ++++++++++++++++++++
+ include/mtd/ubiutils-common.h |   26 ++
+ include/mtd/utils.h           |   52 +++
+ include/ubi-media.h           |  370 -------------------
+ lib/Kconfig                   |   12 +
+ lib/Makefile                  |    4 +
+ lib/libmtd.c                  |  371 +++++++++++++++++++
+ lib/libscan.c                 |  223 ++++++++++++
+ lib/libubigen.c               |  316 ++++++++++++++++
+ lib/ubiutils-common.c         |  122 +++++++
+ 22 files changed, 2794 insertions(+), 779 deletions(-)
+ create mode 100644 commands/ubiformat.c
+ delete mode 100644 drivers/mtd/ubi/ubi-media.h
+ create mode 100644 include/mtd/libmtd.h
+ create mode 100644 include/mtd/libscan.h
+ create mode 100644 include/mtd/libubigen.h
+ create mode 100644 include/mtd/ubi-media.h
+ create mode 100644 include/mtd/ubiutils-common.h
+ create mode 100644 include/mtd/utils.h
+ delete mode 100644 include/ubi-media.h
+ create mode 100644 lib/libmtd.c
+ create mode 100644 lib/libscan.c
+ create mode 100644 lib/libubigen.c
+ create mode 100644 lib/ubiutils-common.c
+
 -- 
 1.7.10.4
 
