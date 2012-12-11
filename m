@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TiRa8-0002Ot-58
- for barebox@lists.infradead.org; Tue, 11 Dec 2012 15:17:16 +0000
-Date: Tue, 11 Dec 2012 16:17:14 +0100
+ id 1TiVKs-0004di-BZ
+ for barebox@lists.infradead.org; Tue, 11 Dec 2012 19:17:47 +0000
+Date: Tue, 11 Dec 2012 20:17:42 +0100
 From: Wolfram Sang <w.sang@pengutronix.de>
-Message-ID: <20121211151714.GD4117@pengutronix.de>
+Message-ID: <20121211191742.GA24155@pengutronix.de>
 References: <1355127255-24797-1-git-send-email-w.sang@pengutronix.de>
- <1355127255-24797-4-git-send-email-w.sang@pengutronix.de>
- <20121211092430.GQ10369@pengutronix.de>
+ <1355127255-24797-7-git-send-email-w.sang@pengutronix.de>
+ <20121211093528.GR10369@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20121211092430.GQ10369@pengutronix.de>
+In-Reply-To: <20121211093528.GR10369@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,57 +19,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============3006185850833757347=="
+Content-Type: multipart/mixed; boundary="===============3348838376356307812=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 03/10] ubi: bump ubi-media.h to newest version
+Subject: Re: [PATCH 06/10] lib: add ubiutils-common
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
 
---===============3006185850833757347==
+--===============3348838376356307812==
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="c3bfwLpm8qysLVxt"
+	protocol="application/pgp-signature"; boundary="82I3+IH0IqGh5yIs"
 Content-Disposition: inline
 
 
---c3bfwLpm8qysLVxt
+--82I3+IH0IqGh5yIs
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 
-> > + * You should have received a copy of the GNU General Public License
-> > + * along with this program; if not, write to the Free Software
-> > + * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307=
- USA
->=20
-> Could you drop this hunk? I just patched out all addresses of the FSF.
-> The above is outdated anyway.
+> In barebox we have the strtoull_suffix function. We normally accept 'G',
+> 'M' and 'k' suffixes. Restricting the ubi functions to '*iB' suffixes
+> might be confusing for barebox users. Not accepting '*iB' suffixes might
+> be confusing to UBI tool users. How about extending strtoull_suffix to
+> accept '*iB' suffixes and use it here? It seems the all that's missing
+> is to adjust *endp to skip the additional 'iB'
 
-Dropped it from the whole series.
+OK. It probably makes sense to move the ubiutils_print_bytes() function
+then to misc.c also and completely get rif of ubiutils-common? What
+would be a proper name for the function, printull_suffix? Or
+ulltostr_suffix? :)
 
 --=20
 Pengutronix e.K.                           | Wolfram Sang                |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
---c3bfwLpm8qysLVxt
+--82I3+IH0IqGh5yIs
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
-Content-Disposition: inline
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
+Version: GnuPG v1.4.12 (GNU/Linux)
 
-iEYEARECAAYFAlDHTnoACgkQD27XaX1/VRsSZwCgptv8O8DiyrFOeLMBdbgL+CTL
-uOkAniTcOSGDreKorjsAaRrPw6g3KNEc
-=e2v9
+iEYEARECAAYFAlDHhtYACgkQD27XaX1/VRsKBACfVhjsufQ/JHBexIxK+FpUXqxR
+EuMAniFR8/ag2D1qP1oflC7yE6k8S0Fn
+=W/t1
 -----END PGP SIGNATURE-----
 
---c3bfwLpm8qysLVxt--
+--82I3+IH0IqGh5yIs--
 
 
---===============3006185850833757347==
+--===============3348838376356307812==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,4 +81,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============3006185850833757347==--
+--===============3348838376356307812==--
