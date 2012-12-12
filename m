@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TisPd-0002tq-Dc
- for barebox@lists.infradead.org; Wed, 12 Dec 2012 19:56:18 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1TisPa-0002u6-HZ
- for barebox@lists.infradead.org; Wed, 12 Dec 2012 20:56:10 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1TisPa-0000YL-Gf
- for barebox@lists.infradead.org; Wed, 12 Dec 2012 20:56:10 +0100
-Date: Wed, 12 Dec 2012 20:56:10 +0100
+ id 1Tisct-00051c-1k
+ for barebox@lists.infradead.org; Wed, 12 Dec 2012 20:09:56 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121212195610.GA10369@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Wed, 12 Dec 2012 21:09:42 +0100
+Message-Id: <1355342991-549-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1355342991-549-1-git-send-email-s.hauer@pengutronix.de>
+References: <1355342991-549-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +16,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: stable update: v2012.12.1
+Subject: [PATCH 01/10] ARM i.MX31: Fix gpio device names
 To: barebox@lists.infradead.org
 
-We have a fixup release for december. This fixes the generic phy
-support
+Has to be imx31-gpio, not imx-gpio.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/imx31.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-----------------------------------------------------------------
-Release v2012.12.1
-
-Fixup release:
-
-- Fix generic phy match no device making networkin nonfunctional
-  on most boards
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (2):
-      driver: introduce device_probe to manully probe a device
-      phylib: fix generic phy driver probe
-
- drivers/base/driver.c     |   23 +++++++++++++++++------
- drivers/net/phy/Kconfig   |    8 ++------
- drivers/net/phy/Makefile  |    1 -
- drivers/net/phy/generic.c |   36 ------------------------------------
- drivers/net/phy/phy.c     |   34 ++++++++++++++++++++++++++++++++--
- include/driver.h          |    5 +++++
- 6 files changed, 56 insertions(+), 51 deletions(-)
- delete mode 100644 drivers/net/phy/generic.c
+diff --git a/arch/arm/mach-imx/imx31.c b/arch/arm/mach-imx/imx31.c
+index 52be541..2882675 100644
+--- a/arch/arm/mach-imx/imx31.c
++++ b/arch/arm/mach-imx/imx31.c
+@@ -34,9 +34,9 @@ static int imx31_init(void)
+ 	add_generic_device("imx31-iomux", 0, NULL, MX31_IOMUXC_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx31-ccm", 0, NULL, MX31_CCM_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx31-gpt", 0, NULL, MX31_GPT1_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
+-	add_generic_device("imx-gpio", 0, NULL, MX31_GPIO1_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+-	add_generic_device("imx-gpio", 1, NULL, MX31_GPIO2_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+-	add_generic_device("imx-gpio", 2, NULL, MX31_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx31-gpio", 0, NULL, MX31_GPIO1_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx31-gpio", 1, NULL, MX31_GPIO2_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx31-gpio", 2, NULL, MX31_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx21-wdt", 0, NULL, MX31_WDOG_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx31-esdctl", 0, NULL, MX31_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
