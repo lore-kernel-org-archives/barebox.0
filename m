@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tisct-00051i-Fq
- for barebox@lists.infradead.org; Wed, 12 Dec 2012 20:10:06 +0000
+ id 1TitIF-0000Zw-Iy
+ for barebox@lists.infradead.org; Wed, 12 Dec 2012 20:52:40 +0000
+Date: Wed, 12 Dec 2012 21:52:36 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 12 Dec 2012 21:09:48 +0100
-Message-Id: <1355342991-549-8-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1355342991-549-1-git-send-email-s.hauer@pengutronix.de>
-References: <1355342991-549-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20121212205236.GC10369@pengutronix.de>
+References: <1355321456-6334-1-git-send-email-maxime.ripard@free-electrons.com>
+ <1355321456-6334-3-git-send-email-maxime.ripard@free-electrons.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1355321456-6334-3-git-send-email-maxime.ripard@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,394 +19,192 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/10] ARM i.MX31: sync iomux with kernel
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/3] ARM: cfa10036: Retrieve the board variant from the
+ AT24
+To: Maxime Ripard <maxime.ripard@free-electrons.com>
+Cc: barebox@lists.infradead.org, Brian Lilly <brian@crystalfontz.com>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/include/mach/iomux-mx31.h |  253 +++++++++++++++++++++++----
- arch/arm/mach-imx/iomux-v2.c                |   12 +-
- 2 files changed, 227 insertions(+), 38 deletions(-)
+On Wed, Dec 12, 2012 at 03:10:55PM +0100, Maxime Ripard wrote:
+> The AT24 found on the expansion boards store the variant of the board it
+> is soldered onto.
+> 
+> That means that we are that way able to determine what expansion board
+> is currently plugged in if any. If we can't communicate with the EEPROM,
+> we just assume that only the CFA-10036 is there.
+> 
+> Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+> ---
+>  arch/arm/boards/crystalfontz-cfa10036/Makefile   |    2 +-
+>  arch/arm/boards/crystalfontz-cfa10036/cfa10036.c |    4 +
+>  arch/arm/boards/crystalfontz-cfa10036/hwdetect.c |   97 ++++++++++++++++++++++
+>  arch/arm/boards/crystalfontz-cfa10036/hwdetect.h |   22 +++++
+>  4 files changed, 124 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/arm/boards/crystalfontz-cfa10036/hwdetect.c
+>  create mode 100644 arch/arm/boards/crystalfontz-cfa10036/hwdetect.h
+> 
+> diff --git a/arch/arm/boards/crystalfontz-cfa10036/Makefile b/arch/arm/boards/crystalfontz-cfa10036/Makefile
+> index 75f0020..7e8d5e2 100644
+> --- a/arch/arm/boards/crystalfontz-cfa10036/Makefile
+> +++ b/arch/arm/boards/crystalfontz-cfa10036/Makefile
+> @@ -1 +1 @@
+> -obj-y += cfa10036.o
+> +obj-y += cfa10036.o hwdetect.o
+> diff --git a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+> index df0ead9..b59dbab 100644
+> --- a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+> +++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+> @@ -42,6 +42,8 @@
+>  
+>  #include <generated/mach-types.h>
+>  
+> +#include "hwdetect.h"
+> +
+>  /* setup the CPU card internal signals */
+>  static const uint32_t cfa10036_pads[] = {
+>  	/* duart */
+> @@ -120,6 +122,8 @@ static int cfa10036_devices_init(void)
+>  	i2c_register_board_info(0, cfa10036_i2c_devices, ARRAY_SIZE(cfa10036_i2c_devices));
+>  	add_generic_device_res("i2c-gpio", 0, NULL, 0, &i2c_gpio_pdata);
+>  
+> +	cfa10036_detect_hw();
+> +
+>  	return 0;
+>  }
+>  device_initcall(cfa10036_devices_init);
+> diff --git a/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c b/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c
+> new file mode 100644
+> index 0000000..535a75f
+> --- /dev/null
+> +++ b/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c
+> @@ -0,0 +1,97 @@
+> +/*
+> + * Copyright (C) 2012 Free Electrons
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + *
+> + */
+> +
+> +#include <common.h>
+> +
+> +#include <environment.h>
+> +#include <fcntl.h>
+> +#include <fs.h>
+> +#include <libbb.h>
+> +
+> +#include <asm/armlinux.h>
+> +
+> +enum board_type {
+> +	BOARD_ID_CFA10036 = 0,
+> +	BOARD_ID_CFA10037 = 1,
+> +	BOARD_ID_CFA10049 = 2,
+> +};
+> +
+> +struct cfa_eeprom_info {
+> +	u8 board_id;
+> +}__attribute__ ((packed));
+> +
+> +static int cfa10036_read_eeprom(const char *file, struct cfa_eeprom_info *info)
+> +{
+> +	int fd;
+> +	int ret;
+> +
+> +	fd = open(file, O_RDONLY);
+> +	if (fd < 0) {
+> +		ret = fd;
+> +		goto err;
+> +	}
+> +
+> +	ret = read_full(fd, info, sizeof(*info));
+> +	if (ret < 0)
+> +		goto err_open;
+> +
+> +	if (ret < sizeof(*info)) {
+> +		ret =  -EINVAL;
+> +		goto err_open;
+> +	}
 
-diff --git a/arch/arm/mach-imx/include/mach/iomux-mx31.h b/arch/arm/mach-imx/include/mach/iomux-mx31.h
-index afb6fba..258ccee 100644
---- a/arch/arm/mach-imx/include/mach/iomux-mx31.h
-+++ b/arch/arm/mach-imx/include/mach/iomux-mx31.h
-@@ -12,12 +12,10 @@
-  * GNU General Public License for more details.
-  *
-  */
--
--#ifndef __MACH_MX31_IOMUX_H__
--#define __MACH_MX31_IOMUX_H__
-+#ifndef __MACH_IOMUX_MX3_H__
-+#define __MACH_IOMUX_MX3_H__
- 
- #include <linux/types.h>
--
- /*
-  * various IOMUX output functions
-  */
-@@ -30,7 +28,7 @@
- #define	IOMUX_OCONFIG_ALT4 (5 << 4)	/* used as alternate function 4 */
- #define	IOMUX_OCONFIG_ALT5 (6 << 4)	/* used as alternate function 5 */
- #define	IOMUX_OCONFIG_ALT6 (7 << 4)	/* used as alternate function 6 */
--#define	IOMUX_ICONFIG_NONE  0	 	/* not configured for input */
-+#define	IOMUX_ICONFIG_NONE  0		/* not configured for input */
- #define	IOMUX_ICONFIG_GPIO  1		/* used as GPIO */
- #define	IOMUX_ICONFIG_FUNC  2		/* used as function */
- #define	IOMUX_ICONFIG_ALT1  4		/* used as alternate function 1 */
-@@ -88,7 +86,7 @@ enum iomux_gp_func {
- 	MUX_EXTDMAREQ2_MBX_SEL		= 1 << 15,
- 	MUX_TAMPER_DETECT_EN		= 1 << 16,
- 	MUX_PGP_USB_4WIRE		= 1 << 17,
--	MUX_PGB_USB_COMMON		= 1 << 18,
-+	MUX_PGP_USB_COMMON		= 1 << 18,
- 	MUX_SDHC_MEMSTICK1		= 1 << 19,
- 	MUX_SDHC_MEMSTICK2		= 1 << 20,
- 	MUX_PGP_SPLL_BYP		= 1 << 21,
-@@ -105,21 +103,23 @@ enum iomux_gp_func {
- };
- 
- /*
-- * This function enables/disables the general purpose function for a particular
-- * signal.
-+ * setups mutliple pins
-+ * convenient way to call the above function with tables
-  */
--void iomux_config_gpr(enum iomux_gp_func , int);
-+int imx_iomux_setup_multiple_pins(const unsigned int *pin_list, unsigned count);
- 
- /*
-- * set the mode for a IOMUX pin.
-+ * This function enables/disables the general purpose function for a particular
-+ * signal.
-  */
--int mxc_iomux_mode(unsigned int);
-+void imx_iomux_set_gpr(enum iomux_gp_func, bool en);
- 
- /*
-- * This function enables/disables the general purpose function for a particular
-- * signal.
-+ * This function only configures the iomux hardware.
-+ * It is called by the setup functions and should not be called directly anymore.
-+ * It is here visible for backward compatibility
-  */
--void mxc_iomux_set_gpr(enum iomux_gp_func, int);
-+int imx_iomux_mode(unsigned int pin_mode);
- 
- #define IOMUX_PADNUM_MASK	0x1ff
- #define IOMUX_GPIONUM_SHIFT	9
-@@ -135,9 +135,6 @@ void mxc_iomux_set_gpr(enum iomux_gp_func, int);
- 
- #define IOMUX_TO_GPIO(iomux_pin) \
- 	((iomux_pin & IOMUX_GPIONUM_MASK) >> IOMUX_GPIONUM_SHIFT)
--#define IOMUX_TO_IRQ(iomux_pin) \
--	(((iomux_pin & IOMUX_GPIONUM_MASK) >> IOMUX_GPIONUM_SHIFT) + \
--	MXC_GPIO_INT_BASE)
- 
- /*
-  * This enumeration is constructed based on the Section
-@@ -476,6 +473,9 @@ enum iomux_pins {
- 	MX31_PIN_CAPTURE	= IOMUX_PIN( 7,   327),
- };
- 
-+#define PIN_MAX 327
-+#define NB_PORTS 12 /* NB_PINS/32, we chose 32 pins per "PORT" */
-+
- /*
-  * Convenience values for use with mxc_iomux_mode()
-  *
-@@ -483,14 +483,28 @@ enum iomux_pins {
-  */
- #define MX31_PIN_CSPI3_MOSI__RXD3	IOMUX_MODE(MX31_PIN_CSPI3_MOSI, IOMUX_CONFIG_ALT1)
- #define MX31_PIN_CSPI3_MISO__TXD3	IOMUX_MODE(MX31_PIN_CSPI3_MISO, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_CSPI3_SCLK__RTS3	IOMUX_MODE(MX31_PIN_CSPI3_SCLK, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_CSPI3_SPI_RDY__CTS3	IOMUX_MODE(MX31_PIN_CSPI3_SPI_RDY, IOMUX_CONFIG_ALT1)
- #define MX31_PIN_CTS1__CTS1		IOMUX_MODE(MX31_PIN_CTS1, IOMUX_CONFIG_FUNC)
- #define MX31_PIN_RTS1__RTS1		IOMUX_MODE(MX31_PIN_RTS1, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_RTS1__SFS		IOMUX_MODE(MX31_PIN_RTS1, IOMUX_CONFIG_ALT2)
- #define MX31_PIN_TXD1__TXD1		IOMUX_MODE(MX31_PIN_TXD1, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_TXD1__SCK		IOMUX_MODE(MX31_PIN_TXD1, IOMUX_CONFIG_ALT2)
- #define MX31_PIN_RXD1__RXD1		IOMUX_MODE(MX31_PIN_RXD1, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_RXD1__STXDA		IOMUX_MODE(MX31_PIN_RXD1, IOMUX_CONFIG_ALT2)
-+#define MX31_PIN_DCD_DCE1__DCD_DCE1	IOMUX_MODE(MX31_PIN_DCD_DCE1, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_RI_DCE1__RI_DCE1	IOMUX_MODE(MX31_PIN_RI_DCE1, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_DSR_DCE1__DSR_DCE1	IOMUX_MODE(MX31_PIN_DSR_DCE1, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_DTR_DCE1__DTR_DCE1	IOMUX_MODE(MX31_PIN_DTR_DCE1, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_DTR_DCE1__SRXDA	IOMUX_MODE(MX31_PIN_DTR_DCE1, IOMUX_CONFIG_ALT2)
- #define MX31_PIN_CTS2__CTS2		IOMUX_MODE(MX31_PIN_CTS2, IOMUX_CONFIG_FUNC)
- #define MX31_PIN_RTS2__RTS2		IOMUX_MODE(MX31_PIN_RTS2, IOMUX_CONFIG_FUNC)
- #define MX31_PIN_TXD2__TXD2		IOMUX_MODE(MX31_PIN_TXD2, IOMUX_CONFIG_FUNC)
- #define MX31_PIN_RXD2__RXD2		IOMUX_MODE(MX31_PIN_RXD2, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_DCD_DTE1__DCD_DTE2	IOMUX_MODE(MX31_PIN_DCD_DTE1, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_RI_DTE1__RI_DTE2	IOMUX_MODE(MX31_PIN_RI_DTE1, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_DSR_DTE1__DSR_DTE2	IOMUX_MODE(MX31_PIN_DSR_DTE1, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_DTR_DTE1__DTR_DTE2	IOMUX_MODE(MX31_PIN_DTR_DTE1, IOMUX_OCONFIG_ALT3 | IOMUX_ICONFIG_NONE)
- #define MX31_PIN_PC_RST__CTS5		IOMUX_MODE(MX31_PIN_PC_RST, IOMUX_CONFIG_ALT2)
- #define MX31_PIN_PC_VS2__RTS5		IOMUX_MODE(MX31_PIN_PC_VS2, IOMUX_CONFIG_ALT2)
- #define MX31_PIN_PC_BVD2__TXD5		IOMUX_MODE(MX31_PIN_PC_BVD2, IOMUX_CONFIG_ALT2)
-@@ -503,7 +517,9 @@ enum iomux_pins {
- #define MX31_PIN_CSPI1_SS1__SS1		IOMUX_MODE(MX31_PIN_CSPI1_SS1, IOMUX_CONFIG_FUNC)
- #define MX31_PIN_CSPI1_SS2__SS2		IOMUX_MODE(MX31_PIN_CSPI1_SS2, IOMUX_CONFIG_FUNC)
- #define MX31_PIN_CSPI2_MOSI__MOSI	IOMUX_MODE(MX31_PIN_CSPI2_MOSI, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSPI2_MOSI__SCL	IOMUX_MODE(MX31_PIN_CSPI2_MOSI, IOMUX_CONFIG_ALT1)
- #define MX31_PIN_CSPI2_MISO__MISO	IOMUX_MODE(MX31_PIN_CSPI2_MISO, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSPI2_MISO__SDA	IOMUX_MODE(MX31_PIN_CSPI2_MISO, IOMUX_CONFIG_ALT1)
- #define MX31_PIN_CSPI2_SCLK__SCLK	IOMUX_MODE(MX31_PIN_CSPI2_SCLK, IOMUX_CONFIG_FUNC)
- #define MX31_PIN_CSPI2_SPI_RDY__SPI_RDY	IOMUX_MODE(MX31_PIN_CSPI2_SPI_RDY, IOMUX_CONFIG_FUNC)
- #define MX31_PIN_CSPI2_SS0__SS0		IOMUX_MODE(MX31_PIN_CSPI2_SS0, IOMUX_CONFIG_FUNC)
-@@ -521,29 +537,192 @@ enum iomux_pins {
- #define MX31_PIN_SD1_DATA0__SD1_DATA0	IOMUX_MODE(MX31_PIN_SD1_DATA0, IOMUX_CONFIG_FUNC)
- #define MX31_PIN_SD1_CLK__SD1_CLK	IOMUX_MODE(MX31_PIN_SD1_CLK, IOMUX_CONFIG_FUNC)
- #define MX31_PIN_SD1_CMD__SD1_CMD	IOMUX_MODE(MX31_PIN_SD1_CMD, IOMUX_CONFIG_FUNC)
--#define MX31_PIN_USBOTG_DATA0__USBOTG_DATA0    IOMUX_MODE(MX31_PIN_USBOTG_DATA0, IOMUX_CONFIG_FUNC)
--#define MX31_PIN_USBOTG_DATA1__USBOTG_DATA1    IOMUX_MODE(MX31_PIN_USBOTG_DATA1, IOMUX_CONFIG_FUNC)
--#define MX31_PIN_USBOTG_DATA2__USBOTG_DATA2    IOMUX_MODE(MX31_PIN_USBOTG_DATA2, IOMUX_CONFIG_FUNC)
--#define MX31_PIN_USBOTG_DATA3__USBOTG_DATA3    IOMUX_MODE(MX31_PIN_USBOTG_DATA3, IOMUX_CONFIG_FUNC)
--#define MX31_PIN_USBOTG_DATA4__USBOTG_DATA4    IOMUX_MODE(MX31_PIN_USBOTG_DATA4, IOMUX_CONFIG_FUNC)
--#define MX31_PIN_USBOTG_DATA5__USBOTG_DATA5    IOMUX_MODE(MX31_PIN_USBOTG_DATA5, IOMUX_CONFIG_FUNC)
--#define MX31_PIN_USBOTG_DATA6__USBOTG_DATA6    IOMUX_MODE(MX31_PIN_USBOTG_DATA6, IOMUX_CONFIG_FUNC)
--#define MX31_PIN_USBOTG_DATA7__USBOTG_DATA7    IOMUX_MODE(MX31_PIN_USBOTG_DATA7, IOMUX_CONFIG_FUNC)
--#define MX31_PIN_USBOTG_CLK__USBOTG_CLK        IOMUX_MODE(MX31_PIN_USBOTG_CLK, IOMUX_CONFIG_FUNC)
--#define MX31_PIN_USBOTG_DIR__USBOTG_DIR        IOMUX_MODE(MX31_PIN_USBOTG_DIR, IOMUX_CONFIG_FUNC)
--#define MX31_PIN_USBOTG_NXT__USBOTG_NXT        IOMUX_MODE(MX31_PIN_USBOTG_NXT, IOMUX_CONFIG_FUNC)
--#define MX31_PIN_USBOTG_STP__USBOTG_STP        IOMUX_MODE(MX31_PIN_USBOTG_STP, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_ATA_CS0__GPIO3_26	IOMUX_MODE(MX31_PIN_ATA_CS0, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_ATA_CS1__GPIO3_27	IOMUX_MODE(MX31_PIN_ATA_CS1, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_PC_PWRON__SD2_DATA3	IOMUX_MODE(MX31_PIN_PC_PWRON, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_PC_VS1__SD2_DATA2	IOMUX_MODE(MX31_PIN_PC_VS1, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_PC_READY__SD2_DATA1	IOMUX_MODE(MX31_PIN_PC_READY, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_PC_WAIT_B__SD2_DATA0	IOMUX_MODE(MX31_PIN_PC_WAIT_B, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_PC_CD2_B__SD2_CLK	IOMUX_MODE(MX31_PIN_PC_CD2_B, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_PC_CD1_B__SD2_CMD	IOMUX_MODE(MX31_PIN_PC_CD1_B, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_ATA_DIOR__GPIO3_28	IOMUX_MODE(MX31_PIN_ATA_DIOR, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_ATA_DIOW__GPIO3_29	IOMUX_MODE(MX31_PIN_ATA_DIOW, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_LD0__LD0		IOMUX_MODE(MX31_PIN_LD0, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD1__LD1		IOMUX_MODE(MX31_PIN_LD1, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD2__LD2		IOMUX_MODE(MX31_PIN_LD2, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD3__LD3		IOMUX_MODE(MX31_PIN_LD3, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD4__LD4		IOMUX_MODE(MX31_PIN_LD4, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD5__LD5		IOMUX_MODE(MX31_PIN_LD5, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD6__LD6		IOMUX_MODE(MX31_PIN_LD6, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD7__LD7		IOMUX_MODE(MX31_PIN_LD7, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD8__LD8		IOMUX_MODE(MX31_PIN_LD8, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD9__LD9		IOMUX_MODE(MX31_PIN_LD9, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD10__LD10		IOMUX_MODE(MX31_PIN_LD10, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD11__LD11		IOMUX_MODE(MX31_PIN_LD11, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD12__LD12		IOMUX_MODE(MX31_PIN_LD12, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD13__LD13		IOMUX_MODE(MX31_PIN_LD13, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD14__LD14		IOMUX_MODE(MX31_PIN_LD14, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD15__LD15		IOMUX_MODE(MX31_PIN_LD15, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD16__LD16		IOMUX_MODE(MX31_PIN_LD16, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LD17__LD17		IOMUX_MODE(MX31_PIN_LD17, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_VSYNC3__VSYNC3		IOMUX_MODE(MX31_PIN_VSYNC3, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_HSYNC__HSYNC		IOMUX_MODE(MX31_PIN_HSYNC, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_FPSHIFT__FPSHIFT	IOMUX_MODE(MX31_PIN_FPSHIFT, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_DRDY0__DRDY0		IOMUX_MODE(MX31_PIN_DRDY0, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_D3_REV__D3_REV		IOMUX_MODE(MX31_PIN_D3_REV, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CONTRAST__CONTRAST	IOMUX_MODE(MX31_PIN_CONTRAST, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_D3_SPL__D3_SPL		IOMUX_MODE(MX31_PIN_D3_SPL, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_D3_CLS__D3_CLS		IOMUX_MODE(MX31_PIN_D3_CLS, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_LCS0__GPI03_23		IOMUX_MODE(MX31_PIN_LCS0, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_GPIO1_1__GPIO          IOMUX_MODE(MX31_PIN_GPIO1_1, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_I2C_CLK__SCL		IOMUX_MODE(MX31_PIN_I2C_CLK, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_I2C_DAT__SDA		IOMUX_MODE(MX31_PIN_I2C_DAT, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_DCD_DTE1__I2C2_SDA	IOMUX_MODE(MX31_PIN_DCD_DTE1, IOMUX_CONFIG_ALT2)
-+#define MX31_PIN_RI_DTE1__I2C2_SCL	IOMUX_MODE(MX31_PIN_RI_DTE1, IOMUX_CONFIG_ALT2)
-+#define MX31_PIN_CSPI2_SS2__I2C3_SDA	IOMUX_MODE(MX31_PIN_CSPI2_SS2, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_CSPI2_SCLK__I2C3_SCL	IOMUX_MODE(MX31_PIN_CSPI2_SCLK, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_CSI_D4__CSI_D4		IOMUX_MODE(MX31_PIN_CSI_D4, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D5__CSI_D5		IOMUX_MODE(MX31_PIN_CSI_D5, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D6__CSI_D6		IOMUX_MODE(MX31_PIN_CSI_D6, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D7__CSI_D7		IOMUX_MODE(MX31_PIN_CSI_D7, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D8__CSI_D8		IOMUX_MODE(MX31_PIN_CSI_D8, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D9__CSI_D9		IOMUX_MODE(MX31_PIN_CSI_D9, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D10__CSI_D10	IOMUX_MODE(MX31_PIN_CSI_D10, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D11__CSI_D11	IOMUX_MODE(MX31_PIN_CSI_D11, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D12__CSI_D12	IOMUX_MODE(MX31_PIN_CSI_D12, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D13__CSI_D13	IOMUX_MODE(MX31_PIN_CSI_D13, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D14__CSI_D14	IOMUX_MODE(MX31_PIN_CSI_D14, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D15__CSI_D15	IOMUX_MODE(MX31_PIN_CSI_D15, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_HSYNC__CSI_HSYNC	IOMUX_MODE(MX31_PIN_CSI_HSYNC, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_MCLK__CSI_MCLK	IOMUX_MODE(MX31_PIN_CSI_MCLK, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_PIXCLK__CSI_PIXCLK	IOMUX_MODE(MX31_PIN_CSI_PIXCLK, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_VSYNC__CSI_VSYNC	IOMUX_MODE(MX31_PIN_CSI_VSYNC, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_GPIO3_0__GPIO3_0	IOMUX_MODE(MX31_PIN_GPIO3_0, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_GPIO3_1__GPIO3_1	IOMUX_MODE(MX31_PIN_GPIO3_1, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_TXD2__GPIO1_28		IOMUX_MODE(MX31_PIN_TXD2, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_CSI_D4__GPIO3_4	IOMUX_MODE(MX31_PIN_CSI_D4, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_CSI_D5__GPIO3_5	IOMUX_MODE(MX31_PIN_CSI_D5, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_USBOTG_DATA0__USBOTG_DATA0	IOMUX_MODE(MX31_PIN_USBOTG_DATA0, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_USBOTG_DATA1__USBOTG_DATA1	IOMUX_MODE(MX31_PIN_USBOTG_DATA1, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_USBOTG_DATA2__USBOTG_DATA2	IOMUX_MODE(MX31_PIN_USBOTG_DATA2, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_USBOTG_DATA3__USBOTG_DATA3	IOMUX_MODE(MX31_PIN_USBOTG_DATA3, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_USBOTG_DATA4__USBOTG_DATA4	IOMUX_MODE(MX31_PIN_USBOTG_DATA4, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_USBOTG_DATA5__USBOTG_DATA5	IOMUX_MODE(MX31_PIN_USBOTG_DATA5, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_USBOTG_DATA6__USBOTG_DATA6	IOMUX_MODE(MX31_PIN_USBOTG_DATA6, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_USBOTG_DATA7__USBOTG_DATA7	IOMUX_MODE(MX31_PIN_USBOTG_DATA7, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_USBOTG_CLK__USBOTG_CLK		IOMUX_MODE(MX31_PIN_USBOTG_CLK, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_USBOTG_DIR__USBOTG_DIR		IOMUX_MODE(MX31_PIN_USBOTG_DIR, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_USBOTG_NXT__USBOTG_NXT		IOMUX_MODE(MX31_PIN_USBOTG_NXT, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_USBOTG_STP__USBOTG_STP		IOMUX_MODE(MX31_PIN_USBOTG_STP, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSPI1_MOSI__USBH1_RXDM		IOMUX_MODE(MX31_PIN_CSPI1_MOSI, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_CSPI1_MISO__USBH1_RXDP		IOMUX_MODE(MX31_PIN_CSPI1_MISO, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_CSPI1_SS0__USBH1_TXDM		IOMUX_MODE(MX31_PIN_CSPI1_SS0, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_CSPI1_SS1__USBH1_TXDP		IOMUX_MODE(MX31_PIN_CSPI1_SS1, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_CSPI1_SS2__USBH1_RCV		IOMUX_MODE(MX31_PIN_CSPI1_SS2, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_CSPI1_SCLK__USBH1_OEB		IOMUX_MODE(MX31_PIN_CSPI1_SCLK, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_CSPI1_SPI_RDY__USBH1_FS	IOMUX_MODE(MX31_PIN_CSPI1_SPI_RDY, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_SFS6__USBH1_SUSPEND	IOMUX_MODE(MX31_PIN_SFS6, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_NFRE_B__GPIO1_11	IOMUX_MODE(MX31_PIN_NFRE_B, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_NFALE__GPIO1_12	IOMUX_MODE(MX31_PIN_NFALE, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_USBH2_DATA0__USBH2_DATA0	IOMUX_MODE(MX31_PIN_USBH2_DATA0, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_USBH2_DATA1__USBH2_DATA1	IOMUX_MODE(MX31_PIN_USBH2_DATA1, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_STXD3__USBH2_DATA2	IOMUX_MODE(MX31_PIN_STXD3, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_SRXD3__USBH2_DATA3	IOMUX_MODE(MX31_PIN_SRXD3, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_SCK3__USBH2_DATA4	IOMUX_MODE(MX31_PIN_SCK3, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_SFS3__USBH2_DATA5	IOMUX_MODE(MX31_PIN_SFS3, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_STXD6__USBH2_DATA6	IOMUX_MODE(MX31_PIN_STXD6, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_SRXD6__USBH2_DATA7	IOMUX_MODE(MX31_PIN_SRXD6, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_USBH2_CLK__USBH2_CLK		IOMUX_MODE(MX31_PIN_USBH2_CLK, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_USBH2_DIR__USBH2_DIR		IOMUX_MODE(MX31_PIN_USBH2_DIR, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_USBH2_NXT__USBH2_NXT		IOMUX_MODE(MX31_PIN_USBH2_NXT, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_USBH2_STP__USBH2_STP		IOMUX_MODE(MX31_PIN_USBH2_STP, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_SCK6__GPIO1_25		IOMUX_MODE(MX31_PIN_SCK6, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_USB_OC__GPIO1_30	IOMUX_MODE(MX31_PIN_USB_OC, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_I2C_DAT__I2C1_SDA	IOMUX_MODE(MX31_PIN_I2C_DAT, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_I2C_CLK__I2C1_SCL	IOMUX_MODE(MX31_PIN_I2C_CLK, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_DCD_DTE1__I2C2_SDA	IOMUX_MODE(MX31_PIN_DCD_DTE1, IOMUX_CONFIG_ALT2)
-+#define MX31_PIN_RI_DTE1__I2C2_SCL	IOMUX_MODE(MX31_PIN_RI_DTE1, IOMUX_CONFIG_ALT2)
-+#define MX31_PIN_ATA_CS0__GPIO3_26	IOMUX_MODE(MX31_PIN_ATA_CS0, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_ATA_CS1__GPIO3_27	IOMUX_MODE(MX31_PIN_ATA_CS1, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_PC_PWRON__SD2_DATA3	IOMUX_MODE(MX31_PIN_PC_PWRON, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_PC_VS1__SD2_DATA2	IOMUX_MODE(MX31_PIN_PC_VS1, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_PC_READY__SD2_DATA1	IOMUX_MODE(MX31_PIN_PC_READY, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_PC_WAIT_B__SD2_DATA0	IOMUX_MODE(MX31_PIN_PC_WAIT_B, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_PC_CD2_B__SD2_CLK	IOMUX_MODE(MX31_PIN_PC_CD2_B, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_PC_CD1_B__SD2_CMD	IOMUX_MODE(MX31_PIN_PC_CD1_B, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_ATA_DIOR__GPIO3_28	IOMUX_MODE(MX31_PIN_ATA_DIOR, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_ATA_DIOW__GPIO3_29	IOMUX_MODE(MX31_PIN_ATA_DIOW, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_CSI_D4__CSI_D4		IOMUX_MODE(MX31_PIN_CSI_D4, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D5__CSI_D5		IOMUX_MODE(MX31_PIN_CSI_D5, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D6__CSI_D6		IOMUX_MODE(MX31_PIN_CSI_D6, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D7__CSI_D7		IOMUX_MODE(MX31_PIN_CSI_D7, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D8__CSI_D8		IOMUX_MODE(MX31_PIN_CSI_D8, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D9__CSI_D9		IOMUX_MODE(MX31_PIN_CSI_D9, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D10__CSI_D10	IOMUX_MODE(MX31_PIN_CSI_D10, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D11__CSI_D11	IOMUX_MODE(MX31_PIN_CSI_D11, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D12__CSI_D12	IOMUX_MODE(MX31_PIN_CSI_D12, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D13__CSI_D13	IOMUX_MODE(MX31_PIN_CSI_D13, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D14__CSI_D14	IOMUX_MODE(MX31_PIN_CSI_D14, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_D15__CSI_D15	IOMUX_MODE(MX31_PIN_CSI_D15, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_HSYNC__CSI_HSYNC	IOMUX_MODE(MX31_PIN_CSI_HSYNC, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_MCLK__CSI_MCLK	IOMUX_MODE(MX31_PIN_CSI_MCLK, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_PIXCLK__CSI_PIXCLK	IOMUX_MODE(MX31_PIN_CSI_PIXCLK, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_CSI_VSYNC__CSI_VSYNC	IOMUX_MODE(MX31_PIN_CSI_VSYNC, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_GPIO3_0__GPIO3_0	IOMUX_MODE(MX31_PIN_GPIO3_0, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_GPIO3_1__GPIO3_1	IOMUX_MODE(MX31_PIN_GPIO3_1, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_TXD2__GPIO1_28		IOMUX_MODE(MX31_PIN_TXD2, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_GPIO1_0__GPIO1_0	IOMUX_MODE(MX31_PIN_GPIO1_0, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_SVEN0__GPIO2_0		IOMUX_MODE(MX31_PIN_SVEN0, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_STX0__GPIO2_1		IOMUX_MODE(MX31_PIN_STX0, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_SRX0__GPIO2_2		IOMUX_MODE(MX31_PIN_SRX0, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_SIMPD0__GPIO2_3	IOMUX_MODE(MX31_PIN_SIMPD0, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_DTR_DCE1__GPIO2_8	IOMUX_MODE(MX31_PIN_DTR_DCE1, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_DSR_DCE1__GPIO2_9	IOMUX_MODE(MX31_PIN_DSR_DCE1, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_RI_DCE1__GPIO2_10	IOMUX_MODE(MX31_PIN_RI_DCE1, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_DCD_DCE1__GPIO2_11	IOMUX_MODE(MX31_PIN_DCD_DCE1, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_STXD5__GPIO1_21	IOMUX_MODE(MX31_PIN_STXD5, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_SRXD5__GPIO1_22	IOMUX_MODE(MX31_PIN_SRXD5, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_GPIO1_3__GPIO1_3	IOMUX_MODE(MX31_PIN_GPIO1_3, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_CSPI2_SS1__CSPI3_SS1	IOMUX_MODE(MX31_PIN_CSPI2_SS1, IOMUX_CONFIG_ALT1)
-+#define MX31_PIN_RTS1__GPIO2_6		IOMUX_MODE(MX31_PIN_RTS1, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_CTS1__GPIO2_7		IOMUX_MODE(MX31_PIN_CTS1, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_LCS0__GPIO3_23		IOMUX_MODE(MX31_PIN_LCS0, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_STXD4__STXD4		IOMUX_MODE(MX31_PIN_STXD4, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_SRXD4__SRXD4		IOMUX_MODE(MX31_PIN_SRXD4, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_SCK4__SCK4		IOMUX_MODE(MX31_PIN_SCK4, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_SFS4__SFS4		IOMUX_MODE(MX31_PIN_SFS4, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_STXD5__STXD5		IOMUX_MODE(MX31_PIN_STXD5, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_SRXD5__SRXD5		IOMUX_MODE(MX31_PIN_SRXD5, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_SCK5__SCK5		IOMUX_MODE(MX31_PIN_SCK5, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_SFS5__SFS5		IOMUX_MODE(MX31_PIN_SFS5, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_KEY_ROW0_KEY_ROW0	IOMUX_MODE(MX31_PIN_KEY_ROW0, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_KEY_ROW1_KEY_ROW1	IOMUX_MODE(MX31_PIN_KEY_ROW1, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_KEY_ROW2_KEY_ROW2	IOMUX_MODE(MX31_PIN_KEY_ROW2, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_KEY_ROW3_KEY_ROW3	IOMUX_MODE(MX31_PIN_KEY_ROW3, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_KEY_ROW4_KEY_ROW4	IOMUX_MODE(MX31_PIN_KEY_ROW4, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_KEY_ROW4_GPIO		IOMUX_MODE(MX31_PIN_KEY_ROW4, IOMUX_CONFIG_GPIO)
-+#define MX31_PIN_KEY_ROW5_KEY_ROW5	IOMUX_MODE(MX31_PIN_KEY_ROW5, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_KEY_ROW6_KEY_ROW6	IOMUX_MODE(MX31_PIN_KEY_ROW6, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_KEY_ROW7_KEY_ROW7	IOMUX_MODE(MX31_PIN_KEY_ROW7, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_KEY_COL0_KEY_COL0	IOMUX_MODE(MX31_PIN_KEY_COL0, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_KEY_COL1_KEY_COL1	IOMUX_MODE(MX31_PIN_KEY_COL1, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_KEY_COL2_KEY_COL2	IOMUX_MODE(MX31_PIN_KEY_COL2, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_KEY_COL3_KEY_COL3	IOMUX_MODE(MX31_PIN_KEY_COL3, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_KEY_COL4_KEY_COL4	IOMUX_MODE(MX31_PIN_KEY_COL4, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_KEY_COL5_KEY_COL5	IOMUX_MODE(MX31_PIN_KEY_COL5, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_KEY_COL6_KEY_COL6	IOMUX_MODE(MX31_PIN_KEY_COL6, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_KEY_COL7_KEY_COL7	IOMUX_MODE(MX31_PIN_KEY_COL7, IOMUX_CONFIG_FUNC)
-+#define MX31_PIN_WATCHDOG_RST__WATCHDOG_RST	IOMUX_MODE(MX31_PIN_WATCHDOG_RST, IOMUX_CONFIG_FUNC)
- 
--/*XXX: The SS0, SS1, SS2, SS3 lines of spi3 are multiplexed by cspi2_ss0, cspi2_ss1, cspi1_ss0
-- * cspi1_ss1*/
- 
- /*
-- * This function configures the pad value for a IOMUX pin.
-+ * XXX: The SS0, SS1, SS2, SS3 lines of spi3 are multiplexed with cspi2_ss0,
-+ * cspi2_ss1, cspi1_ss0 cspi1_ss1
-  */
--int imx_iomux_mode(unsigned int pin_mode);
--void imx_iomux_set_pad(enum iomux_pins pin, u32 config);
--void imx_iomux_set_gpr(enum iomux_gp_func gp, int en);
--
--#endif
- 
-+/*
-+ * This function configures the pad value for a IOMUX pin.
-+ */
-+void imx_iomux_set_pad(enum iomux_pins, u32);
- 
-+#endif /* ifndef __MACH_IOMUX_MX3_H__ */
-diff --git a/arch/arm/mach-imx/iomux-v2.c b/arch/arm/mach-imx/iomux-v2.c
-index dbbb8a2..cef0340 100644
---- a/arch/arm/mach-imx/iomux-v2.c
-+++ b/arch/arm/mach-imx/iomux-v2.c
-@@ -88,7 +88,7 @@ EXPORT_SYMBOL(mxc_iomux_set_pad);
-  * This function enables/disables the general purpose function for a particular
-  * signal.
-  */
--void imx_iomux_set_gpr(enum iomux_gp_func gp, int en)
-+void imx_iomux_set_gpr(enum iomux_gp_func gp, bool en)
- {
- 	u32 l;
- 
-@@ -105,6 +105,16 @@ void imx_iomux_set_gpr(enum iomux_gp_func gp, int en)
- }
- EXPORT_SYMBOL(mxc_iomux_set_gpr);
- 
-+int imx_iomux_setup_multiple_pins(const unsigned int *pin_list, unsigned count)
-+{
-+	int i;
-+
-+	for (i = 0; i < count; i++)
-+		imx_iomux_mode(pin_list[i]);
-+
-+	return 0;
-+}
-+
- static int imx_iomux_probe(struct device_d *dev)
- {
- 	base = dev_request_mem_region(dev, 0);
+This will never happen. read_full makes that sure.
+
+> +
+> +	ret = 0;
+> +
+> +err_open:
+> +	close(fd);
+> +err:
+> +	if (ret)
+> +		pr_err("can not read eeprom %s (%s)\n", file, strerror(ret));
+> +	return ret;
+> +}
+> +
+> +void cfa10036_detect_hw(void)
+> +{
+> +	enum board_type cfa_type;
+> +	struct cfa_eeprom_info info;
+> +	char *board_name;
+> +	int ret;
+> +
+> +	ret = cfa10036_read_eeprom("/dev/eeprom0", &info);
+> +	if (ret)
+> +		cfa_type = BOARD_ID_CFA10036;
+> +	else
+> +		cfa_type = info.board_id;
+> +
+> +	switch (cfa_type) {
+> +	case BOARD_ID_CFA10036:
+> +		board_name = "cfa10036";
+> +		break;
+> +	case BOARD_ID_CFA10037:
+> +		board_name = "cfa10037";
+> +		break;
+> +	case BOARD_ID_CFA10049:
+> +		board_name = "cfa10049";
+> +		break;
+> +	default:
+> +		pr_err("Board ID not supported\n");
+> +		return;
+> +	}
+> +
+> +	setenv("cfa_variant", board_name);
+> +	export("cfa_variant");
+
+I rather suggest:
+
+	globalvar_add_simple("board.variant");
+	setenv("global.board.variant", board_name);
+
+(the name is debatable)
+
+This way makes sure that the variable is available in every context
+and shows up in 'devinfo global' which I think is a good place to
+collect this kind of global information.
+
+Additionally a:
+
+BAREBOX_MAGICVAR_NAMED(global_board_variant, global.board.variant, "The board variant")
+
+gives you the chance to describe the meaning of this variable.
+
+Sascha
+
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
