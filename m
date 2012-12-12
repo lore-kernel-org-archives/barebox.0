@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tisct-00051c-1k
- for barebox@lists.infradead.org; Wed, 12 Dec 2012 20:09:56 +0000
+ id 1Tisct-00051j-G9
+ for barebox@lists.infradead.org; Wed, 12 Dec 2012 20:09:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 12 Dec 2012 21:09:42 +0100
-Message-Id: <1355342991-549-2-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 12 Dec 2012 21:09:51 +0100
+Message-Id: <1355342991-549-11-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1355342991-549-1-git-send-email-s.hauer@pengutronix.de>
 References: <1355342991-549-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,33 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/10] ARM i.MX31: Fix gpio device names
+Subject: [PATCH 10/10] ARM i.MX31 pcm037: add mmc support
 To: barebox@lists.infradead.org
-
-Has to be imx31-gpio, not imx-gpio.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/imx31.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/boards/pcm037/pcm037.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/mach-imx/imx31.c b/arch/arm/mach-imx/imx31.c
-index 52be541..2882675 100644
---- a/arch/arm/mach-imx/imx31.c
-+++ b/arch/arm/mach-imx/imx31.c
-@@ -34,9 +34,9 @@ static int imx31_init(void)
- 	add_generic_device("imx31-iomux", 0, NULL, MX31_IOMUXC_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx31-ccm", 0, NULL, MX31_CCM_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx31-gpt", 0, NULL, MX31_GPT1_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
--	add_generic_device("imx-gpio", 0, NULL, MX31_GPIO1_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
--	add_generic_device("imx-gpio", 1, NULL, MX31_GPIO2_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
--	add_generic_device("imx-gpio", 2, NULL, MX31_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
-+	add_generic_device("imx31-gpio", 0, NULL, MX31_GPIO1_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
-+	add_generic_device("imx31-gpio", 1, NULL, MX31_GPIO2_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
-+	add_generic_device("imx31-gpio", 2, NULL, MX31_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx21-wdt", 0, NULL, MX31_WDOG_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx31-esdctl", 0, NULL, MX31_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+diff --git a/arch/arm/boards/pcm037/pcm037.c b/arch/arm/boards/pcm037/pcm037.c
+index cd911b7..7894ff3 100644
+--- a/arch/arm/boards/pcm037/pcm037.c
++++ b/arch/arm/boards/pcm037/pcm037.c
+@@ -163,6 +163,8 @@ static int imx31_devices_init(void)
+ 	 */
+ 	add_cfi_flash_device(DEVICE_ID_DYNAMIC, MX31_CS0_BASE_ADDR, 32 * 1024 * 1024, 0);
  
++	imx31_add_mmc0(NULL);
++
+ 	/*
+ 	 * Create partitions that should be
+ 	 * not touched by any regular user
 -- 
 1.7.10.4
 
