@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tiku7-0006vn-4g
- for barebox@lists.infradead.org; Wed, 12 Dec 2012 11:55:12 +0000
-Received: from coredoba.hi.pengutronix.de ([2001:6f8:1178:2:219:99ff:fe56:8d7])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jlu@pengutronix.de>) id 1Tiku3-0007w6-8m
- for barebox@lists.infradead.org; Wed, 12 Dec 2012 12:55:07 +0100
-Received: from jlu by coredoba.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <jlu@pengutronix.de>) id 1Tiku3-0005xl-1S
- for barebox@lists.infradead.org; Wed, 12 Dec 2012 12:55:07 +0100
+ id 1Tiku6-0006vo-TV
+ for barebox@lists.infradead.org; Wed, 12 Dec 2012 11:55:13 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Wed, 12 Dec 2012 12:54:23 +0100
-Message-Id: <1355313267-22859-1-git-send-email-jlu@pengutronix.de>
+Date: Wed, 12 Dec 2012 12:54:24 +0100
+Message-Id: <1355313267-22859-2-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1355313267-22859-1-git-send-email-jlu@pengutronix.de>
+References: <1355313267-22859-1-git-send-email-jlu@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,23 +17,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Add AM335x & BeagleBone support
+Subject: [PATCH 1/4] arm: omap: clocks: move CM_REG and PRM_REG macros
 To: barebox@lists.infradead.org
 
-Yesterday's patches were based on v2012.12.0, please disregard them.
-
-This series has been rebased onto the current master branch.
-
-Thanks,
-Jan
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlc2UgbWFjcm9zIHdpbGwgYmUgdXNlZCBieSBBTTMzeHggYXMgd2VsbCwgc28gbW92ZSB0aGVt
+IHRvIGNsb2Nrcy5oLgoKQmFzZWQgb24gYSBwYXRjaCBieSBUZXJlc2EgR8OhbWV6IDx0LmdhbWV6
+QHBoeXRlYy5kZT4uCgpTaWduZWQtb2ZmLWJ5OiBKYW4gTHVlYmJlIDxqbHVAcGVuZ3V0cm9uaXgu
+ZGU+Ci0tLQogYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9jbG9ja3MuaCAgICAgIHwg
+ICAgMyArKysKIGFyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvb21hcDMtY2xvY2suaCB8
+ICAgIDMgLS0tCiAyIGZpbGVzIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMo
+LSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2Nsb2Nrcy5o
+IGIvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9jbG9ja3MuaAppbmRleCBjYmFkZWM3
+Li5hYjZmMTVkIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2Ns
+b2Nrcy5oCisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvY2xvY2tzLmgKQEAg
+LTM0LDYgKzM0LDkgQEAKICNkZWZpbmUgUzI2TQkJMjYwMDAwMDAKICNkZWZpbmUgUzM4XzRNCQkz
+ODQwMDAwMAogCisjZGVmaW5lIENNX1JFRyhSRUdOQU1FKQkJKE9NQVBfQ01fQkFTRSArIENNXyMj
+UkVHTkFNRSkKKyNkZWZpbmUgUFJNX1JFRyhSRUdOQU1FKQkoT01BUF9QUk1fQkFTRSArIFBSTV8j
+I1JFR05BTUUpCisKICNpZmRlZiBDT05GSUdfQVJDSF9PTUFQMwogI2luY2x1ZGUgPG1hY2gvb21h
+cDMtY2xvY2suaD4KICNlbmRpZgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1
+ZGUvbWFjaC9vbWFwMy1jbG9jay5oIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9v
+bWFwMy1jbG9jay5oCmluZGV4IDAwY2U2YTUuLmY0MWUwNTIgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJt
+L21hY2gtb21hcC9pbmNsdWRlL21hY2gvb21hcDMtY2xvY2suaAorKysgYi9hcmNoL2FybS9tYWNo
+LW9tYXAvaW5jbHVkZS9tYWNoL29tYXAzLWNsb2NrLmgKQEAgLTIzLDggKzIzLDYgQEAKICNkZWZp
+bmUgX09NQVAzNDNYX0NMT0NLU19IXwogCiAvKiogQ00gQ2xvY2sgUmVncyBXcmFwcGVyICovCi0j
+ZGVmaW5lIENNX1JFRyhSRUdOQU1FKQkoT01BUF9DTV9CQVNFICsgQ01fIyNSRUdOQU1FKQotCiAj
+ZGVmaW5lIENNX0ZDTEtFTl9JVkEyCQkwWDAwMDAKICNkZWZpbmUgQ01fQ0xLRU5fUExMX0lWQTIJ
+MFgwMDA0CiAjZGVmaW5lIENNX0lETEVTVF9QTExfSVZBMgkwWDAwMjQKQEAgLTczLDcgKzcxLDYg
+QEAKICNkZWZpbmUgQ01fQ0xLU1RDVFJMX1VTQkgJMHgxNDQ4CiAKIC8qKiBQUk0gQ2xvY2sgUmVn
+cyAqLwotI2RlZmluZSBQUk1fUkVHKFJFR05BTUUpCShPTUFQX1BSTV9CQVNFICsgUFJNXyMjUkVH
+TkFNRSkKICNkZWZpbmUgUFJNX0NMS1NFTAkJMHgwRDQwCiAjZGVmaW5lIFBSTV9SU1RDVFJMCQkw
+eDEyNTAKICNkZWZpbmUgUFJNX0NMS1NSQ19DVFJMCQkweDEyNzAKLS0gCjEuNy4xMC40CgoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
+aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
