@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TirVm-0008Hl-5L
- for barebox@lists.infradead.org; Wed, 12 Dec 2012 18:58:31 +0000
-Date: Wed, 12 Dec 2012 19:58:28 +0100
+ id 1Tirek-0000VT-GZ
+ for barebox@lists.infradead.org; Wed, 12 Dec 2012 19:07:47 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121212185828.GY10369@pengutronix.de>
-References: <1355223567-12671-1-git-send-email-jlu@pengutronix.de>
- <1355223567-12671-3-git-send-email-jlu@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1355223567-12671-3-git-send-email-jlu@pengutronix.de>
+Date: Wed, 12 Dec 2012 20:07:43 +0100
+Message-Id: <1355339263-1295-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,57 +14,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] ARM OMAP AM33XX: create new ARCH for AM33xx
-To: Jan Luebbe <jlu@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] net phylib: force to wait for link
+To: barebox@lists.infradead.org
 
-On Tue, Dec 11, 2012 at 11:59:27AM +0100, Jan Luebbe wrote:
-> From: Teresa G=E1mez <t.gamez@phytec.de>
-> =
+When starting a network device wait until the link is up. Otherwise
+autobooting does not work with little timeout and several attempts
+have to be made until the network is finally up.
 
-> Created ARCH for AM33xx boards as second stage bootloader.
-> This includes:
-> - Added dmtimer0
-> - Created basic header files
-> - Added MMC support for ARCH_AM33XX
-> - Added reset function
-> =
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/net/phy/phy.c |    7 +++++--
+ include/linux/phy.h   |    1 +
+ net/eth.c             |    3 +++
+ 3 files changed, 9 insertions(+), 2 deletions(-)
 
-> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
-> =
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index 58546f8..d7e6b3d 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -400,11 +400,14 @@ int genphy_setup_forced(struct phy_device *phydev)
+ 	return err;
+ }
+ 
+-static int phy_aneg_done(struct phy_device *phydev)
++int phy_wait_aneg_done(struct phy_device *phydev)
+ {
+ 	uint64_t start = get_time_ns();
+ 	int ctl;
+ 
++	if (phydev->autoneg == AUTONEG_DISABLE)
++		return 0;
++
+ 	while (!is_timeout(start, PHY_AN_TIMEOUT * SECOND)) {
+ 		ctl = phy_read(phydev, MII_BMSR);
+ 		if (ctl & BMSR_ANEGCOMPLETE) {
+@@ -451,7 +454,7 @@ int genphy_restart_aneg(struct phy_device *phydev)
+ 	if (ctl < 0)
+ 		return ctl;
+ 
+-	return phy_aneg_done(phydev);
++	return 0;
+ }
+ 
+ /**
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index b39eca5..6c9cac9 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -267,6 +267,7 @@ int phy_device_connect(struct eth_device *dev, struct mii_bus *bus, int addr,
+ 		       u32 flags, phy_interface_t interface);
+ 
+ int phy_update_status(struct phy_device *phydev);
++int phy_wait_aneg_done(struct phy_device *phydev);
+ 
+ /* Generic PHY support and helper functions */
+ int genphy_restart_aneg(struct phy_device *phydev);
+diff --git a/net/eth.c b/net/eth.c
+index 101fc10..abb2eaf 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -138,6 +138,9 @@ static int eth_carrier_check(int force)
+ 	if (!eth_current->phydev)
+ 		return 0;
+ 
++	if (force)
++		phy_wait_aneg_done(eth_current->phydev);
++
+ 	if (force || is_timeout(last_link_check, 5 * SECOND) ||
+ 			!eth_current->phydev->link) {
+ 		ret = phy_update_status(eth_current->phydev);
+-- 
+1.7.10.4
 
-
-[...]
-
-> diff --git a/arch/arm/mach-omap/include/mach/clocks.h b/arch/arm/mach-oma=
-p/include/mach/clocks.h
-> index 9e47a9e..ed1b368 100644
-> --- a/arch/arm/mach-omap/include/mach/clocks.h
-> +++ b/arch/arm/mach-omap/include/mach/clocks.h
-> @@ -46,5 +46,8 @@
->  #ifdef CONFIG_ARCH_OMAP4
->  #include <mach/omap4-clock.h>
->  #endif
-> +#ifdef CONFIG_ARCH_AM33XX
-> +#include <mach/am33xx-clock.h>
-> +#endif
-
-We should really get rid of such things. Compiling for different SoCs by
-creating conflicting defines is easy first and very painful later.
-Please clean this up before more SoCs are added.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
