@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TjBrC-0007rO-MS
- for barebox@lists.infradead.org; Thu, 13 Dec 2012 16:42:03 +0000
-Received: from mail426.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 5BAF9DC1D26
- for <barebox@lists.infradead.org>; Thu, 13 Dec 2012 17:50:26 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 13 Dec 2012 17:40:07 +0100
-Message-Id: <1355416810-26555-6-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1355416810-26555-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20121213163758.GB26483@game.jcrosoft.org>
- <1355416810-26555-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TjC9R-0001nd-55
+ for barebox@lists.infradead.org; Thu, 13 Dec 2012 17:00:52 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 13 Dec 2012 18:00:40 +0100
+Message-Id: <1355418044-27452-6-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1355418044-27452-1-git-send-email-s.hauer@pengutronix.de>
+References: <1355418044-27452-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,59 +21,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/9] console: allow to specify ouput kfifo size via
- CONSOLE_KFIFO_OUTPUT_SIZE
+Subject: [PATCH 5/9] ARM i.MX31: Add USB device functions
 To: barebox@lists.infradead.org
 
-1024 by default
-4096 if DEBUG_INFO
-
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/Kconfig   |    7 +++++++
- common/console.c |    4 ++--
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ arch/arm/mach-imx/imx31.c                      |    1 +
+ arch/arm/mach-imx/include/mach/devices-imx31.h |   15 +++++++++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 57119dc..6a0c345 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -477,6 +477,13 @@ config CONSOLE_FULL
- 	  once the first console is registered. Recommended for most
- 	  usecases.
+diff --git a/arch/arm/mach-imx/imx31.c b/arch/arm/mach-imx/imx31.c
+index 2882675..f0954b5 100644
+--- a/arch/arm/mach-imx/imx31.c
++++ b/arch/arm/mach-imx/imx31.c
+@@ -39,6 +39,7 @@ static int imx31_init(void)
+ 	add_generic_device("imx31-gpio", 2, NULL, MX31_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx21-wdt", 0, NULL, MX31_WDOG_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx31-esdctl", 0, NULL, MX31_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx31-usb-misc", 0, NULL, MX31_USB_OTG_BASE_ADDR + 0x600, 0x100, IORESOURCE_MEM, NULL);
  
-+config CONSOLE_KFIFO_OUTPUT_SIZE
-+	prompt "kfifo output size"
-+	depends on CONSOLE_FULL
-+	int
-+	default 4086 if DEBUG_INFO
-+	default 1024
-+
- choice
- 	prompt "Console activation strategy"
- 	depends on CONSOLE_FULL
-diff --git a/common/console.c b/common/console.c
-index d8fe5b6..aeef0a2 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -48,7 +48,7 @@ static int initialized = 0;
- #define CONSOLE_BUFFER_SIZE	1024
- 
- static char console_input_buffer[CONSOLE_BUFFER_SIZE];
--static char console_output_buffer[CONSOLE_BUFFER_SIZE];
-+static char console_output_buffer[CONFIG_CONSOLE_KFIFO_OUTPUT_SIZE];
- 
- static struct kfifo __console_input_fifo;
- static struct kfifo __console_output_fifo;
-@@ -138,7 +138,7 @@ static void console_init_early(void)
- 	kfifo_init(console_input_fifo, console_input_buffer,
- 			CONSOLE_BUFFER_SIZE);
- 	kfifo_init(console_output_fifo, console_output_buffer,
--			CONSOLE_BUFFER_SIZE);
-+			CONFIG_CONSOLE_KFIFO_OUTPUT_SIZE);
- 
- 	initialized = CONSOLE_INITIALIZED_BUFFER;
+ 	return 0;
  }
+diff --git a/arch/arm/mach-imx/include/mach/devices-imx31.h b/arch/arm/mach-imx/include/mach/devices-imx31.h
+index fe71930..15ceb34 100644
+--- a/arch/arm/mach-imx/include/mach/devices-imx31.h
++++ b/arch/arm/mach-imx/include/mach/devices-imx31.h
+@@ -51,3 +51,18 @@ static inline struct device_d *imx31_add_fb(struct imx_ipu_fb_platform_data *pda
+ {
+ 	return imx_add_ipufb((void *)MX31_IPU_CTRL_BASE_ADDR, pdata);
+ }
++
++static inline struct device_d *imx31_add_usbotg(void *pdata)
++{
++	return imx_add_usb((void *)MX31_USB_OTG_BASE_ADDR, 0, pdata);
++}
++
++static inline struct device_d *imx31_add_usbh1(void *pdata)
++{
++	return imx_add_usb((void *)MX31_USB_OTG_BASE_ADDR + 0x200, 1, pdata);
++}
++
++static inline struct device_d *imx31_add_usbh2(void *pdata)
++{
++	return imx_add_usb((void *)MX31_USB_OTG_BASE_ADDR + 0x400, 2, pdata);
++}
 -- 
 1.7.10.4
 
