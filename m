@@ -1,11 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([88.190.12.23])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tj60G-0001sp-W5
- for barebox@lists.infradead.org; Thu, 13 Dec 2012 10:26:57 +0000
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
-Date: Thu, 13 Dec 2012 11:26:42 +0100
-Message-Id: <1355394405-18814-1-git-send-email-maxime.ripard@free-electrons.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TjAzg-00022b-Jq
+ for barebox@lists.infradead.org; Thu, 13 Dec 2012 15:46:41 +0000
+Received: from katana.hi.pengutronix.de ([2001:6f8:1178:2:221:70ff:fe71:1890]
+ helo=pengutronix.de)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <w.sang@pengutronix.de>) id 1TjAzf-0001Su-B9
+ for barebox@lists.infradead.org; Thu, 13 Dec 2012 16:46:39 +0100
+Date: Thu, 13 Dec 2012 16:46:39 +0100
+From: Wolfram Sang <w.sang@pengutronix.de>
+Message-ID: <20121213154639.GB2632@pengutronix.de>
+References: <1355413554-16312-1-git-send-email-w.sang@pengutronix.de>
+MIME-Version: 1.0
+In-Reply-To: <1355413554-16312-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,62 +22,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============6006164366479230717=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv2 0/3] ARM: cfa10036: Load a different DTB depending on
- variants
+Subject: Re: [PATCH] commands: add scrub
 To: barebox@lists.infradead.org
-Cc: Brian Lilly <brian@crystalfontz.com>
 
-Hi,
 
-The CFA-10036 is actually a module that can be plugged in an expansion board.
+--===============6006164366479230717==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="eAbsdosE1cNLO4uF"
+Content-Disposition: inline
 
-For now, there is only two of these expansion boards, the CFA-10037 and the
-CFA-10049, with different features, muxing and so on.
 
-So, at boot time, the cfa-10036 has to be aware that it runs on an expansion
-board and if so, which expansion board it is currently plugged in, so that it
-can load the right device tree.
+--eAbsdosE1cNLO4uF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This is done thanks to an eeprom found at the same address on the same bus on
-the expansion boards, that holds the expansion board id, so we can know all of
-this.
+On Thu, Dec 13, 2012 at 04:45:54PM +0100, Wolfram Sang wrote:
+> Allows erasing a whole NAND device including the bad blocks. Only meant
+> for development where one might accidently overwrite real bad block
+> information.
+>=20
+> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 
-This patchset does exactly that. It first adds support for the AT24, and then
-the needed bits to retrieve the board variants from the eeprom if any and load
-the right DTB.
+Ooops, wrong one. Please discard until I post the whole series later.
 
-Thanks,
-Maxime
+--=20
+Pengutronix e.K.                           | Wolfram Sang                |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
-Changes from v2:
-  - Changed the environment variable name and change it to a global variable
+--eAbsdosE1cNLO4uF
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
 
-Maxime Ripard (3):
-  ARM: cfa10036: Add the AT24HC02 I2C EEPROM
-  ARM: cfa10036: Retrieve the board variant from the AT24
-  ARM: cfa10036: Use the board variant to load a different device tree
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
 
- arch/arm/boards/crystalfontz-cfa10036/Makefile     |    2 +-
- arch/arm/boards/crystalfontz-cfa10036/cfa10036.c   |   27 ++++++
- .../boards/crystalfontz-cfa10036/env/boot/mmc-ext3 |    4 +-
- arch/arm/boards/crystalfontz-cfa10036/hwdetect.c   |   96 ++++++++++++++++++++
- arch/arm/boards/crystalfontz-cfa10036/hwdetect.h   |   22 +++++
- arch/arm/configs/cfa10036_defconfig                |    3 +-
- arch/arm/mach-mxs/Kconfig                          |    3 +
- 7 files changed, 153 insertions(+), 4 deletions(-)
- create mode 100644 arch/arm/boards/crystalfontz-cfa10036/hwdetect.c
- create mode 100644 arch/arm/boards/crystalfontz-cfa10036/hwdetect.h
+iEYEARECAAYFAlDJ+F8ACgkQD27XaX1/VRtyEQCfRY50uiLUxhFVh8cFR5LkxVDt
+T/wAn3osZNGYJaZ4Crf/PkqbOjdSkAMN
+=F3OL
+-----END PGP SIGNATURE-----
 
--- 
-1.7.9.5
+--eAbsdosE1cNLO4uF--
 
+
+--===============6006164366479230717==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============6006164366479230717==--
