@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TitIF-0000Zw-Iy
- for barebox@lists.infradead.org; Wed, 12 Dec 2012 20:52:40 +0000
-Date: Wed, 12 Dec 2012 21:52:36 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121212205236.GC10369@pengutronix.de>
-References: <1355321456-6334-1-git-send-email-maxime.ripard@free-electrons.com>
- <1355321456-6334-3-git-send-email-maxime.ripard@free-electrons.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1355321456-6334-3-git-send-email-maxime.ripard@free-electrons.com>
+Received: from mail.free-electrons.com ([88.190.12.23])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Tj60N-0001tz-MN
+ for barebox@lists.infradead.org; Thu, 13 Dec 2012 10:27:04 +0000
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Date: Thu, 13 Dec 2012 11:26:43 +0100
+Message-Id: <1355394405-18814-2-git-send-email-maxime.ripard@free-electrons.com>
+In-Reply-To: <1355394405-18814-1-git-send-email-maxime.ripard@free-electrons.com>
+References: <1355394405-18814-1-git-send-email-maxime.ripard@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,192 +16,122 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] ARM: cfa10036: Retrieve the board variant from the
- AT24
-To: Maxime Ripard <maxime.ripard@free-electrons.com>
-Cc: barebox@lists.infradead.org, Brian Lilly <brian@crystalfontz.com>
+Subject: [PATCH 1/3] ARM: cfa10036: Add the AT24HC02 I2C EEPROM
+To: barebox@lists.infradead.org
+Cc: Brian Lilly <brian@crystalfontz.com>
 
-On Wed, Dec 12, 2012 at 03:10:55PM +0100, Maxime Ripard wrote:
-> The AT24 found on the expansion boards store the variant of the board it
-> is soldered onto.
-> 
-> That means that we are that way able to determine what expansion board
-> is currently plugged in if any. If we can't communicate with the EEPROM,
-> we just assume that only the CFA-10036 is there.
-> 
-> Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
-> ---
->  arch/arm/boards/crystalfontz-cfa10036/Makefile   |    2 +-
->  arch/arm/boards/crystalfontz-cfa10036/cfa10036.c |    4 +
->  arch/arm/boards/crystalfontz-cfa10036/hwdetect.c |   97 ++++++++++++++++++++++
->  arch/arm/boards/crystalfontz-cfa10036/hwdetect.h |   22 +++++
->  4 files changed, 124 insertions(+), 1 deletion(-)
->  create mode 100644 arch/arm/boards/crystalfontz-cfa10036/hwdetect.c
->  create mode 100644 arch/arm/boards/crystalfontz-cfa10036/hwdetect.h
-> 
-> diff --git a/arch/arm/boards/crystalfontz-cfa10036/Makefile b/arch/arm/boards/crystalfontz-cfa10036/Makefile
-> index 75f0020..7e8d5e2 100644
-> --- a/arch/arm/boards/crystalfontz-cfa10036/Makefile
-> +++ b/arch/arm/boards/crystalfontz-cfa10036/Makefile
-> @@ -1 +1 @@
-> -obj-y += cfa10036.o
-> +obj-y += cfa10036.o hwdetect.o
-> diff --git a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
-> index df0ead9..b59dbab 100644
-> --- a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
-> +++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
-> @@ -42,6 +42,8 @@
->  
->  #include <generated/mach-types.h>
->  
-> +#include "hwdetect.h"
-> +
->  /* setup the CPU card internal signals */
->  static const uint32_t cfa10036_pads[] = {
->  	/* duart */
-> @@ -120,6 +122,8 @@ static int cfa10036_devices_init(void)
->  	i2c_register_board_info(0, cfa10036_i2c_devices, ARRAY_SIZE(cfa10036_i2c_devices));
->  	add_generic_device_res("i2c-gpio", 0, NULL, 0, &i2c_gpio_pdata);
->  
-> +	cfa10036_detect_hw();
-> +
->  	return 0;
->  }
->  device_initcall(cfa10036_devices_init);
-> diff --git a/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c b/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c
-> new file mode 100644
-> index 0000000..535a75f
-> --- /dev/null
-> +++ b/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c
-> @@ -0,0 +1,97 @@
-> +/*
-> + * Copyright (C) 2012 Free Electrons
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + *
-> + */
-> +
-> +#include <common.h>
-> +
-> +#include <environment.h>
-> +#include <fcntl.h>
-> +#include <fs.h>
-> +#include <libbb.h>
-> +
-> +#include <asm/armlinux.h>
-> +
-> +enum board_type {
-> +	BOARD_ID_CFA10036 = 0,
-> +	BOARD_ID_CFA10037 = 1,
-> +	BOARD_ID_CFA10049 = 2,
-> +};
-> +
-> +struct cfa_eeprom_info {
-> +	u8 board_id;
-> +}__attribute__ ((packed));
-> +
-> +static int cfa10036_read_eeprom(const char *file, struct cfa_eeprom_info *info)
-> +{
-> +	int fd;
-> +	int ret;
-> +
-> +	fd = open(file, O_RDONLY);
-> +	if (fd < 0) {
-> +		ret = fd;
-> +		goto err;
-> +	}
-> +
-> +	ret = read_full(fd, info, sizeof(*info));
-> +	if (ret < 0)
-> +		goto err_open;
-> +
-> +	if (ret < sizeof(*info)) {
-> +		ret =  -EINVAL;
-> +		goto err_open;
-> +	}
+This EEPROM is found on the expansion boards available for the 10036
+module. Since we won't need to do anything fancy except reading/writing
+from it, use bitbanging to communicate with it.
 
-This will never happen. read_full makes that sure.
+This EEPROM will hold mostly the board_id so that we can determine if
+there is an expansion board plugged in and what expansion board it is.
 
-> +
-> +	ret = 0;
-> +
-> +err_open:
-> +	close(fd);
-> +err:
-> +	if (ret)
-> +		pr_err("can not read eeprom %s (%s)\n", file, strerror(ret));
-> +	return ret;
-> +}
-> +
-> +void cfa10036_detect_hw(void)
-> +{
-> +	enum board_type cfa_type;
-> +	struct cfa_eeprom_info info;
-> +	char *board_name;
-> +	int ret;
-> +
-> +	ret = cfa10036_read_eeprom("/dev/eeprom0", &info);
-> +	if (ret)
-> +		cfa_type = BOARD_ID_CFA10036;
-> +	else
-> +		cfa_type = info.board_id;
-> +
-> +	switch (cfa_type) {
-> +	case BOARD_ID_CFA10036:
-> +		board_name = "cfa10036";
-> +		break;
-> +	case BOARD_ID_CFA10037:
-> +		board_name = "cfa10037";
-> +		break;
-> +	case BOARD_ID_CFA10049:
-> +		board_name = "cfa10049";
-> +		break;
-> +	default:
-> +		pr_err("Board ID not supported\n");
-> +		return;
-> +	}
-> +
-> +	setenv("cfa_variant", board_name);
-> +	export("cfa_variant");
+Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+---
+ arch/arm/boards/crystalfontz-cfa10036/cfa10036.c |   23 ++++++++++++++++++++++
+ arch/arm/configs/cfa10036_defconfig              |    3 ++-
+ arch/arm/mach-mxs/Kconfig                        |    3 +++
+ 3 files changed, 28 insertions(+), 1 deletion(-)
 
-I rather suggest:
-
-	globalvar_add_simple("board.variant");
-	setenv("global.board.variant", board_name);
-
-(the name is debatable)
-
-This way makes sure that the variable is available in every context
-and shows up in 'devinfo global' which I think is a good place to
-collect this kind of global information.
-
-Additionally a:
-
-BAREBOX_MAGICVAR_NAMED(global_board_variant, global.board.variant, "The board variant")
-
-gives you the chance to describe the meaning of this variable.
-
-Sascha
-
-
+diff --git a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+index 522d2d7..df0ead9 100644
+--- a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
++++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+@@ -26,6 +26,10 @@
+ #include <net.h>
+ #include <sizes.h>
+ 
++#include <i2c/i2c.h>
++#include <i2c/i2c-gpio.h>
++#include <i2c/at24.h>
++
+ #include <mach/clock.h>
+ #include <mach/imx-regs.h>
+ #include <mach/iomux-imx28.h>
+@@ -58,6 +62,10 @@ static const uint32_t cfa10036_pads[] = {
+ 	SSP0_SCK | VE_3_3V | BITKEEPER(0),
+ 	/* MCI slot power control 1 = off */
+ 	PWM3_GPIO | VE_3_3V | GPIO_OUT | GPIO_VALUE(0),
++
++	/* i2c0 */
++	AUART0_TX_GPIO | VE_3_3V | PULLUP(1),
++	AUART0_RX_GPIO | VE_3_3V | PULLUP(1),
+ };
+ 
+ static struct mxs_mci_platform_data mci_pdata = {
+@@ -67,6 +75,18 @@ static struct mxs_mci_platform_data mci_pdata = {
+ 	.f_max = 25000000,
+ };
+ 
++static struct i2c_board_info cfa10036_i2c_devices[] = {
++	{
++		I2C_BOARD_INFO("24c02", 0x50)
++	},
++};
++
++static struct i2c_gpio_platform_data i2c_gpio_pdata = {
++	.sda_pin		= 3 * 32 + 1,
++	.scl_pin		= 3 * 32 + 0,
++	.udelay			= 5,		/* ~100 kHz */
++};
++
+ static int cfa10036_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", IMX_MEMORY_BASE, 128 * 1024 * 1024);
+@@ -97,6 +117,9 @@ static int cfa10036_devices_init(void)
+ 	add_generic_device("ocotp", 0, NULL, IMX_OCOTP_BASE, SZ_8K,
+ 			   IORESOURCE_MEM, NULL);
+ 
++	i2c_register_board_info(0, cfa10036_i2c_devices, ARRAY_SIZE(cfa10036_i2c_devices));
++	add_generic_device_res("i2c-gpio", 0, NULL, 0, &i2c_gpio_pdata);
++
+ 	return 0;
+ }
+ device_initcall(cfa10036_devices_init);
+diff --git a/arch/arm/configs/cfa10036_defconfig b/arch/arm/configs/cfa10036_defconfig
+index 67a0e8f..c55d50d 100644
+--- a/arch/arm/configs/cfa10036_defconfig
++++ b/arch/arm/configs/cfa10036_defconfig
+@@ -11,7 +11,7 @@ CONFIG_LONGHELP=y
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+-CONFIG_MENU=y
++CONFIG_CONSOLE_ACTIVATE_ALL=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/crystalfontz-cfa10036/env"
+ CONFIG_DEBUG_INFO=y
+@@ -35,6 +35,7 @@ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_GPIO=y
+ # CONFIG_SPI is not set
++CONFIG_I2C=y
+ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+ CONFIG_MCI_MXS=y
+diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
+index ff295f1..4e7e750 100644
+--- a/arch/arm/mach-mxs/Kconfig
++++ b/arch/arm/mach-mxs/Kconfig
+@@ -77,6 +77,9 @@ config MACH_MX28EVK
+ config MACH_CFA10036
+ 	bool "cfa-10036"
+ 	select HAVE_DEFAULT_ENVIRONMENT_NEW
++	select MXS_OCOTP
++	select I2C_GPIO
++	select EEPROM_AT24
+ 	help
+ 	  Say Y here if you are using the Crystalfontz CFA-10036 module
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.9.5
+
 
 _______________________________________________
 barebox mailing list
