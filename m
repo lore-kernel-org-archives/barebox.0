@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
+Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TjBp3-0007eh-4e
- for barebox@lists.infradead.org; Thu, 13 Dec 2012 16:39:46 +0000
+ id 1TjBrB-0007qu-6f
+ for barebox@lists.infradead.org; Thu, 13 Dec 2012 16:42:00 +0000
 Received: from mail426.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 264A1DC0CF8
- for <barebox@lists.infradead.org>; Thu, 13 Dec 2012 17:48:13 +0100 (CET)
-Date: Thu, 13 Dec 2012 17:37:58 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id CC6E6DC1FBA
+ for <barebox@lists.infradead.org>; Thu, 13 Dec 2012 17:50:24 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121213163758.GB26483@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Thu, 13 Dec 2012 17:40:06 +0100
+Message-Id: <1355416810-26555-5-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1355416810-26555-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20121213163758.GB26483@game.jcrosoft.org>
+ <1355416810-26555-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,77 +21,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/9] introduction of dmesg support
+Subject: [PATCH 5/9] startup: switch to pr_xxx
 To: barebox@lists.infradead.org
 
-HI,
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ common/startup.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-	we currently have 2 fifo at comsole level one for input one for output
-	we fill the output fifo before any console is registered and then
-	empty it
+diff --git a/common/startup.c b/common/startup.c
+index 14409a2..1a6352d 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -98,19 +98,19 @@ void start_barebox (void)
+ 
+ 	for (initcall = __barebox_initcalls_start;
+ 			initcall < __barebox_initcalls_end; initcall++) {
+-		debug("initcall-> %pS\n", *initcall);
++		pr_debug("initcall-> %pS\n", *initcall);
+ 		result = (*initcall)();
+ 		if (result)
+ 			pr_err("initcall %pS failed: %s\n", *initcall,
+ 					strerror(-result));
+ 	}
+ 
+-	debug("initcalls done\n");
++	pr_debug("initcalls done\n");
+ 
+ #ifdef CONFIG_ENV_HANDLING
+ 	if (envfs_load(default_environment_path, "/env", 0)) {
+ #ifdef CONFIG_DEFAULT_ENVIRONMENT
+-		printf("no valid environment found on %s. "
++		pr_info("no valid environment found on %s. "
+ 			"Using default environment\n",
+ 			default_environment_path);
+ 		envfs_load("/dev/defaultenv", "/env", 0);
+@@ -118,12 +118,12 @@ void start_barebox (void)
+ 	}
+ #endif
+ #ifdef CONFIG_COMMAND_SUPPORT
+-	printf("running /env/bin/init...\n");
++	pr_info("running /env/bin/init...\n");
+ 
+ 	if (!stat("/env/bin/init", &s)) {
+ 		run_command("source /env/bin/init", 0);
+ 	} else {
+-		printf("not found\n");
++		pr_err("not found\n");
+ 	}
+ #endif
+ 	/* main_loop() can return to retry autoboot, if so just run it again. */
+-- 
+1.7.10.4
 
-	Now we introduce a new mecanism as in the kernel dmesg
-
-	we will always fill the output kfifo with drivers output
-
-	as in barebox we have 2 world
-
-	device/drivers and applicaiotn (commands)
-
-	so for now on drivers will have to use pr_xxx and dev_xxx and
-	application will use printf
-
-	dmesg will print the kfifo at any time
-
-	we will extend this later with more control of what the drivers output
-	on the console or just in the fifo
-
-	This new eature is optionnal if dmes is disable we continue as before
-
-The following changes since commit e7509bfbabc46e15e66193efac64440b48e5e88f:
-
-  Merge branch 'for-next/tftp' (2012-12-07 16:43:24 +0100)
-
-are available in the git repository at:
-
-
-  git://git.jcrosoft.org/barebox.git delivery/dmesg
-
-for you to fetch changes up to 33c060981c15f453d88752eab8c9743c18a78247:
-
-  dev_printf: switch to pr_info (2012-12-12 02:28:41 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (9):
-      kfifo: introduce kfifo_dump_str to dump the fifo
-      console: switch to kfifo_dump_str
-      intoduce dmesg to print the barebox output ring buffer
-      introduce printk support
-      startup: switch to pr_xxx
-      console: allow to specify ouput kfifo size via CONSOLE_KFIFO_OUTPUT_SIZE
-      at91: clock switch to pr_info
-      meminfo: switch to pr_xxx
-      dev_printf: switch to pr_info
-
- arch/arm/mach-at91/clock.c      |    2 +-
- commands/Kconfig                |    6 ++++++
- common/Kconfig                  |    7 +++++++
- common/console.c                |   80 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
- common/meminfo.c                |    8 ++++----
- common/startup.c                |   10 +++++-----
- drivers/base/driver.c           |    6 +++---
- include/common.h                |   28 ++++++++++++++++++----------
- include/kfifo.h                 |    2 ++
- include/linux/barebox-wrapper.h |    2 --
- lib/kfifo.c                     |   21 +++++++++++++++++++++
- 11 files changed, 142 insertions(+), 30 deletions(-)
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
