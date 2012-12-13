@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TjC9R-0001nd-55
- for barebox@lists.infradead.org; Thu, 13 Dec 2012 17:00:52 +0000
+ id 1TjC9R-0001nf-4J
+ for barebox@lists.infradead.org; Thu, 13 Dec 2012 17:00:49 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Dec 2012 18:00:40 +0100
-Message-Id: <1355418044-27452-6-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 13 Dec 2012 18:00:43 +0100
+Message-Id: <1355418044-27452-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1355418044-27452-1-git-send-email-s.hauer@pengutronix.de>
 References: <1355418044-27452-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,50 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/9] ARM i.MX31: Add USB device functions
+Subject: [PATCH 8/9] fixup! USB i.MX: Add chipidea driver support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/imx31.c                      |    1 +
- arch/arm/mach-imx/include/mach/devices-imx31.h |   15 +++++++++++++++
- 2 files changed, 16 insertions(+)
+ drivers/usb/imx/chipidea-imx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/imx31.c b/arch/arm/mach-imx/imx31.c
-index 2882675..f0954b5 100644
---- a/arch/arm/mach-imx/imx31.c
-+++ b/arch/arm/mach-imx/imx31.c
-@@ -39,6 +39,7 @@ static int imx31_init(void)
- 	add_generic_device("imx31-gpio", 2, NULL, MX31_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx21-wdt", 0, NULL, MX31_WDOG_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx31-esdctl", 0, NULL, MX31_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
-+	add_generic_device("imx31-usb-misc", 0, NULL, MX31_USB_OTG_BASE_ADDR + 0x600, 0x100, IORESOURCE_MEM, NULL);
+diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
+index 66eb1ad..5b4c081 100644
+--- a/drivers/usb/imx/chipidea-imx.c
++++ b/drivers/usb/imx/chipidea-imx.c
+@@ -52,7 +52,7 @@ static int imx_chipidea_probe(struct device_d *dev)
  
- 	return 0;
- }
-diff --git a/arch/arm/mach-imx/include/mach/devices-imx31.h b/arch/arm/mach-imx/include/mach/devices-imx31.h
-index fe71930..15ceb34 100644
---- a/arch/arm/mach-imx/include/mach/devices-imx31.h
-+++ b/arch/arm/mach-imx/include/mach/devices-imx31.h
-@@ -51,3 +51,18 @@ static inline struct device_d *imx31_add_fb(struct imx_ipu_fb_platform_data *pda
- {
- 	return imx_add_ipufb((void *)MX31_IPU_CTRL_BASE_ADDR, pdata);
- }
-+
-+static inline struct device_d *imx31_add_usbotg(void *pdata)
-+{
-+	return imx_add_usb((void *)MX31_USB_OTG_BASE_ADDR, 0, pdata);
-+}
-+
-+static inline struct device_d *imx31_add_usbh1(void *pdata)
-+{
-+	return imx_add_usb((void *)MX31_USB_OTG_BASE_ADDR + 0x200, 1, pdata);
-+}
-+
-+static inline struct device_d *imx31_add_usbh2(void *pdata)
-+{
-+	return imx_add_usb((void *)MX31_USB_OTG_BASE_ADDR + 0x400, 2, pdata);
-+}
+ 	if ((pdata->flags & MXC_EHCI_PORTSC_MASK) == MXC_EHCI_MODE_ULPI) {
+ 		dev_dbg(dev, "using ULPI phy\n");
+-		if (IS_ENABLED(CONFIG_USB_ULPPI)) {
++		if (IS_ENABLED(CONFIG_USB_ULPI)) {
+ 			ret = ulpi_setup(base + 0x170, 1);
+ 		} else {
+ 			dev_err(dev, "no ULPI support available\n");
 -- 
 1.7.10.4
 
