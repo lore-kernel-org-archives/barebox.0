@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
+Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TjBrC-0007rP-MQ
- for barebox@lists.infradead.org; Thu, 13 Dec 2012 16:42:05 +0000
+ id 1TjBrB-0007qo-6h
+ for barebox@lists.infradead.org; Thu, 13 Dec 2012 16:42:02 +0000
 Received: from mail426.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 68F47DC2081
- for <barebox@lists.infradead.org>; Thu, 13 Dec 2012 17:50:26 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 92CCCDC1CBA
+ for <barebox@lists.infradead.org>; Thu, 13 Dec 2012 17:50:24 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 13 Dec 2012 17:40:08 +0100
-Message-Id: <1355416810-26555-7-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 13 Dec 2012 17:40:04 +0100
+Message-Id: <1355416810-26555-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1355416810-26555-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121213163758.GB26483@game.jcrosoft.org>
  <1355416810-26555-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,27 +26,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/9] at91: clock switch to pr_info
+Subject: [PATCH 3/9] intoduce dmesg to print the barebox output ring buffer
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/clock.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ commands/Kconfig |    6 ++++++
+ common/console.c |   20 ++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/arch/arm/mach-at91/clock.c b/arch/arm/mach-at91/clock.c
-index e911270..23e4dd4 100644
---- a/arch/arm/mach-at91/clock.c
-+++ b/arch/arm/mach-at91/clock.c
-@@ -717,7 +717,7 @@ static int at91_clock_display(void)
- 	if (pll_overclock)
- 		pr_info("Clocks: PLLA overclocked, %ld MHz\n", plla.rate_hz / 1000000);
+diff --git a/commands/Kconfig b/commands/Kconfig
+index ac9b797..55a9840 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -115,6 +115,12 @@ config CMD_TIME
+ 	  checking for ctrl-c, so the time command can be used with commands
+ 	  which are interruptible with ctrl-c.
  
--	printf("Clocks: CPU %u MHz, master %u MHz, main %u.%03u MHz\n",
-+	pr_info("Clocks: CPU %u MHz, master %u MHz, main %u.%03u MHz\n",
- 		cpu_freq / 1000000, (unsigned) mck.rate_hz / 1000000,
- 		(unsigned) main_clk.rate_hz / 1000000,
- 		((unsigned) main_clk.rate_hz % 1000000) / 1000);
++config CMD_DMESG
++	bool "dmesg"
++	depends on CONSOLE_FULL
++	  help
++	  print the barebox output ring buffer
++
+ config CMD_LINUX_EXEC
+ 	bool "linux exec"
+ 	depends on LINUX
+diff --git a/common/console.c b/common/console.c
+index 96e1396..2d2d20a 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -434,3 +434,23 @@ int ctrlc (void)
+ }
+ EXPORT_SYMBOL(ctrlc);
+ #endif /* ARCH_HAS_CTRC */
++
++#include <command.h>
++#include <complete.h>
++
++static int do_dmesg(int argc, char *argv[])
++{
++	kfifo_dump_str(console_output_fifo, console_output_dump);
++
++	return 0;
++}
++
++static const __maybe_unused char cmd_dmesg_help[] =
++"print the barebox output ring buffer\n";
++
++BAREBOX_CMD_START(dmesg)
++	.cmd		= do_dmesg,
++	.usage		= "dmesg",
++	BAREBOX_CMD_HELP(cmd_dmesg_help)
++	BAREBOX_CMD_COMPLETE(empty_complete)
++BAREBOX_CMD_END
 -- 
 1.7.10.4
 
