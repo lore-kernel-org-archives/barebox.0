@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TjBUS-0004FR-NI
- for barebox@lists.infradead.org; Thu, 13 Dec 2012 16:18:30 +0000
-From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Thu, 13 Dec 2012 17:18:22 +0100
-Message-Id: <1355415502-30673-3-git-send-email-w.sang@pengutronix.de>
-In-Reply-To: <1355415502-30673-1-git-send-email-w.sang@pengutronix.de>
-References: <1355415502-30673-1-git-send-email-w.sang@pengutronix.de>
+ id 1TjBgW-0004vr-MO
+ for barebox@lists.infradead.org; Thu, 13 Dec 2012 16:31:00 +0000
+From: Jan Luebbe <jlu@pengutronix.de>
+Date: Thu, 13 Dec 2012 17:30:37 +0100
+Message-Id: <1355416249-22364-3-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1355416249-22364-1-git-send-email-jlu@pengutronix.de>
+References: <1355416249-22364-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,181 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] commands: add scrub
+Subject: [PATCH 02/14] ARM omap4: remove unused struct
 To: barebox@lists.infradead.org
-Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-Allows erasing a whole NAND device including the bad blocks. Only meant
-for development where one might accidently overwrite real bad block
-information. Make sure you understood the help text!
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig            |    8 +++++
- commands/flash.c            |   68 ++++++++++++++++++++++++++++++++++++++++++-
- drivers/mtd/core.c          |    6 ++++
- include/linux/mtd/mtd-abi.h |    1 +
- 4 files changed, 82 insertions(+), 1 deletion(-)
+ arch/arm/mach-omap/include/mach/omap4-silicon.h |    9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index ac9b797..32ba35f 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -341,6 +341,14 @@ config CMD_FLASH
- 	tristate
- 	prompt "protect/erase"
+diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+index 008eafb..8ce1882 100644
+--- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
++++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+@@ -153,15 +153,6 @@
+ #define PRM_RSTCTRL		PRM_DEVICE_BASE
+ #define PRM_RSTCTRL_RESET	0x01
  
-+config CMD_SCRUB
-+	tristate
-+	depends on CMD_FLASH && EXPERIMENTAL
-+	prompt "scrub"
-+	help
-+	  DANGEROUS! Like erase, but will erase badblocks, too!
-+	  Only meant for development!
-+
- config CMD_UBI
- 	tristate
- 	default y if UBI
-diff --git a/commands/flash.c b/commands/flash.c
-index d22d6a0..7cdc86d 100644
---- a/commands/flash.c
-+++ b/commands/flash.c
-@@ -28,9 +28,13 @@
- #include <command.h>
- #include <errno.h>
- #include <getopt.h>
-+#include <malloc.h>
- #include <fs.h>
- #include <fcntl.h>
-+#include <ioctl.h>
- #include <linux/stat.h>
-+#include <linux/mtd/mtd-abi.h>
-+#include <linux/mtd/nand.h>
- 
- static int do_flerase(int argc, char *argv[])
- {
-@@ -38,11 +42,14 @@ static int do_flerase(int argc, char *argv[])
- 	char *filename = NULL;
- 	struct stat s;
- 	loff_t start = 0, size = ~0;
--	int ret = 0;
-+	int ret = 0, do_scrub;
- 
- 	if (argc == 1)
- 		return COMMAND_ERROR_USAGE;
- 
-+	/* was 'scrub' called? */
-+	do_scrub = (*argv[0] == 's');
-+
- 	filename = argv[1];
- 
- 	if (stat(filename, &s)) {
-@@ -64,10 +71,50 @@ static int do_flerase(int argc, char *argv[])
- 		goto out;
- 	}
- 
-+	if (do_scrub) {
-+		ret = ioctl(fd, MEMIGNOREBAD, (void *)1);
-+		if (ret) {
-+			perror("activating scrub");
-+			printf("Currently, scrub only works with whole NAND devices, not partitions.\n");
-+			goto out;
-+		}
-+	}
-+
- 	if (erase(fd, size, start)) {
- 		perror("erase");
- 		ret = 1;
- 	}
-+
-+	if (do_scrub) {
-+		struct mtd_info_user user;
-+		int tmp_ret;
-+
-+		/* Always clear 'MEMIGNOREBAD', even when erase failed! */
-+		tmp_ret = ioctl(fd, MEMIGNOREBAD, (void *)0);
-+		if (tmp_ret) {
-+			perror("deactivating scrub");
-+			ret = tmp_ret;
-+		}
-+
-+		/* Bail out on erase error or ioctl error */
-+		if (ret)
-+			goto out;
-+
-+		/* After scrubbing, recreate BBTs */
-+		ret = ioctl(fd, MEMGETINFO, &user);
-+		if (ret) {
-+			perror("ioctl");
-+			goto out;
-+		}
-+
-+		if (user.type == MTD_NANDFLASH) {
-+			struct nand_chip *chip = user.mtd->priv;
-+
-+			kfree(chip->bbt);
-+			chip->bbt = NULL;
-+			ret = chip->scan_bbt(user.mtd);
-+		}
-+	}
- out:
- 	close(fd);
- 
-@@ -99,6 +146,25 @@ devinfo_command for partition handling.
- 
-  */
- 
-+#ifdef CONFIG_CMD_SCRUB
-+
-+BAREBOX_CMD_HELP_START(scrub)
-+BAREBOX_CMD_HELP_USAGE("scrub <device>\n")
-+BAREBOX_CMD_HELP_SHORT("Scrub a NAND device. DANGEROUS! Make sure you read all help text.\n")
-+BAREBOX_CMD_HELP_TEXT("This is similar to erase but will erase badblocks, too!\n")
-+BAREBOX_CMD_HELP_TEXT("That will also erase factory written badblock information, but might\n")
-+BAREBOX_CMD_HELP_TEXT("restore blocks you accidently marked bad. USE ONLY WHEN YOU ARE SURE!\n")
-+BAREBOX_CMD_HELP_TEXT("It will always scrub the whole device, areas are not supported (yet).\n")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(scrub)
-+	.cmd		= do_flerase,
-+	.usage		= "scrub FLASH memory (DANGEROUS!)",
-+	BAREBOX_CMD_HELP(cmd_scrub_help)
-+BAREBOX_CMD_END
-+
-+#endif /* CONFIG_CMD_SCRUB */
-+
- static int do_protect(int argc, char *argv[])
- {
- 	int fd;
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 95db1d6..9c68b89 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -148,6 +148,12 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
- 		ret = mtd->block_markbad(mtd, *offset);
- 		break;
- #endif
-+	case MEMIGNOREBAD:
-+		dev_dbg(cdev->dev, "MEMINGNOREBAD: %d\n", (bool)buf);
-+		mtd->flags &= ~MTD_IGNORE_BB;
-+		if ((bool)buf)
-+			mtd->flags |= MTD_IGNORE_BB;
-+		break;
- 	case MEMGETINFO:
- 		user->type	= mtd->type;
- 		user->flags	= mtd->flags;
-diff --git a/include/linux/mtd/mtd-abi.h b/include/linux/mtd/mtd-abi.h
-index 49eb8e6..a1b2eb4 100644
---- a/include/linux/mtd/mtd-abi.h
-+++ b/include/linux/mtd/mtd-abi.h
-@@ -99,6 +99,7 @@ struct otp_info {
- #define ECCGETLAYOUT		_IOR('M', 17, struct nand_ecclayout)
- #define ECCGETSTATS		_IOR('M', 18, struct mtd_ecc_stats)
- #define MTDFILEMODE		_IO('M', 19)
-+#define MEMIGNOREBAD		_IOW('M', 64, int)
- 
+-#ifndef __ASSEMBLY__
+-
+-struct s32ktimer {
+-	unsigned char res[0x10];
+-	unsigned int s32k_cr;	/* 0x10 */
+-};
+-
+-#endif /* __ASSEMBLY__ */
+-
  /*
-  * Obsolete legacy interface. Keep it in order not to break userspace
+  * Non-secure SRAM Addresses
+  * Non-secure RAM starts at 0x40300000 for GP devices. But we keep SRAM_BASE
 -- 
 1.7.10.4
 
