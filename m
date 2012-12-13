@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TjBrB-0007qi-6T
+ id 1TjBrC-0007rO-MS
  for barebox@lists.infradead.org; Thu, 13 Dec 2012 16:42:03 +0000
 Received: from mail426.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 62EDADC0A59
- for <barebox@lists.infradead.org>; Thu, 13 Dec 2012 17:50:24 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 5BAF9DC1D26
+ for <barebox@lists.infradead.org>; Thu, 13 Dec 2012 17:50:26 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 13 Dec 2012 17:40:02 +0100
-Message-Id: <1355416810-26555-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20121213163758.GB26483@game.jcrosoft.org>
+Date: Thu, 13 Dec 2012 17:40:07 +0100
+Message-Id: <1355416810-26555-6-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1355416810-26555-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121213163758.GB26483@game.jcrosoft.org>
+ <1355416810-26555-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,58 +26,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] kfifo: introduce kfifo_dump_str to dump the fifo
+Subject: [PATCH 6/9] console: allow to specify ouput kfifo size via
+ CONSOLE_KFIFO_OUTPUT_SIZE
 To: barebox@lists.infradead.org
 
-This will allow to implement a dmesg mecanism in barebox
+1024 by default
+4096 if DEBUG_INFO
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/kfifo.h |    2 ++
- lib/kfifo.c     |   21 +++++++++++++++++++++
- 2 files changed, 23 insertions(+)
+ common/Kconfig   |    7 +++++++
+ common/console.c |    4 ++--
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/include/kfifo.h b/include/kfifo.h
-index 25880f4..9dbbe0d 100644
---- a/include/kfifo.h
-+++ b/include/kfifo.h
-@@ -74,5 +74,7 @@ static inline unsigned int kfifo_len(struct kfifo *fifo)
- void kfifo_putc(struct kfifo *fifo, unsigned char c);
- unsigned int kfifo_getc(struct kfifo *fifo, unsigned char *c);
+diff --git a/common/Kconfig b/common/Kconfig
+index 57119dc..6a0c345 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -477,6 +477,13 @@ config CONSOLE_FULL
+ 	  once the first console is registered. Recommended for most
+ 	  usecases.
  
-+void kfifo_dump_str(struct kfifo *fifo, void (*dump)(unsigned char c));
++config CONSOLE_KFIFO_OUTPUT_SIZE
++	prompt "kfifo output size"
++	depends on CONSOLE_FULL
++	int
++	default 4086 if DEBUG_INFO
++	default 1024
 +
- #endif
+ choice
+ 	prompt "Console activation strategy"
+ 	depends on CONSOLE_FULL
+diff --git a/common/console.c b/common/console.c
+index d8fe5b6..aeef0a2 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -48,7 +48,7 @@ static int initialized = 0;
+ #define CONSOLE_BUFFER_SIZE	1024
  
-diff --git a/lib/kfifo.c b/lib/kfifo.c
-index afd3894..7892aed 100644
---- a/lib/kfifo.c
-+++ b/lib/kfifo.c
-@@ -154,3 +154,24 @@ unsigned int kfifo_getc(struct kfifo *fifo, unsigned char *c)
- 	return 0;
+ static char console_input_buffer[CONSOLE_BUFFER_SIZE];
+-static char console_output_buffer[CONSOLE_BUFFER_SIZE];
++static char console_output_buffer[CONFIG_CONSOLE_KFIFO_OUTPUT_SIZE];
+ 
+ static struct kfifo __console_input_fifo;
+ static struct kfifo __console_output_fifo;
+@@ -138,7 +138,7 @@ static void console_init_early(void)
+ 	kfifo_init(console_input_fifo, console_input_buffer,
+ 			CONSOLE_BUFFER_SIZE);
+ 	kfifo_init(console_output_fifo, console_output_buffer,
+-			CONSOLE_BUFFER_SIZE);
++			CONFIG_CONSOLE_KFIFO_OUTPUT_SIZE);
+ 
+ 	initialized = CONSOLE_INITIALIZED_BUFFER;
  }
- 
-+void kfifo_dump_str(struct kfifo *fifo, void (*dump)(unsigned char c))
-+{
-+	int i;
-+	unsigned char *c;
-+	unsigned int l;
-+	unsigned int len;
-+
-+	len = fifo->in - fifo->out;
-+
-+	/* first get the data from fifo->out until the end of the buffer */
-+	l = min(len, fifo->size - (fifo->out & (fifo->size - 1)));
-+	c = fifo->buffer + (fifo->out & (fifo->size - 1));
-+	for (i = 0; i < l; i++)
-+		dump(c[i]);
-+
-+	/* then get the rest (if any) from the beginning of the buffer */
-+	c = fifo->buffer;
-+	l = len - l;
-+	for (i = 0; i < l; i++)
-+		dump(c[i]);
-+}
 -- 
 1.7.10.4
 
