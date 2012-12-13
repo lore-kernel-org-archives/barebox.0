@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TjBgX-0004wH-RA
- for barebox@lists.infradead.org; Thu, 13 Dec 2012 16:31:10 +0000
+ id 1TjBgX-0004wM-S1
+ for barebox@lists.infradead.org; Thu, 13 Dec 2012 16:31:11 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Thu, 13 Dec 2012 17:30:45 +0100
-Message-Id: <1355416249-22364-11-git-send-email-jlu@pengutronix.de>
+Date: Thu, 13 Dec 2012 17:30:46 +0100
+Message-Id: <1355416249-22364-12-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1355416249-22364-1-git-send-email-jlu@pengutronix.de>
 References: <1355416249-22364-1-git-send-email-jlu@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,315 +17,182 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/14] ARM omap: include individual SoC files
+Subject: [PATCH 11/14] ARM OMAP AM33XX: create new ARCH for AM33xx
 To: barebox@lists.infradead.org
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-- remove mach/silicon.h and include omap?-silicon.h directly
-- include mach/omap?-clock.h directly where needed
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/archosg9/board.c                |    2 +-
- arch/arm/boards/beagle/board.c                  |    2 +-
- arch/arm/boards/omap343xdsp/board.c             |    2 +-
- arch/arm/boards/omap3evm/board.c                |    2 +-
- arch/arm/boards/panda/board.c                   |    2 +-
- arch/arm/boards/pcm049/board.c                  |    2 +-
- arch/arm/boards/phycard-a-l1/pca-a-l1.c         |    2 +-
- arch/arm/boards/phycard-a-xl2/pca-a-xl2.c       |    2 +-
- arch/arm/mach-omap/devices-gpmc-nand.c          |    1 -
- arch/arm/mach-omap/include/mach/clocks.h        |    7 -----
- arch/arm/mach-omap/include/mach/omap3-silicon.h |    5 ++++
- arch/arm/mach-omap/include/mach/silicon.h       |   33 -----------------------
- arch/arm/mach-omap/omap3_clock.c                |    2 +-
- arch/arm/mach-omap/omap3_core.S                 |    2 +-
- arch/arm/mach-omap/omap3_generic.c              |    3 ++-
- arch/arm/mach-omap/omap4_clock.c                |    2 +-
- arch/arm/mach-omap/omap4_generic.c              |    2 +-
- drivers/mtd/nand/nand_omap_gpmc.c               |    1 -
- 18 files changed, 19 insertions(+), 55 deletions(-)
- delete mode 100644 arch/arm/mach-omap/include/mach/silicon.h
-
-diff --git a/arch/arm/boards/archosg9/board.c b/arch/arm/boards/archosg9/board.c
-index 7076c6f..dab0a36 100644
---- a/arch/arm/boards/archosg9/board.c
-+++ b/arch/arm/boards/archosg9/board.c
-@@ -15,7 +15,7 @@
- #include <ns16550.h>
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
--#include <mach/silicon.h>
-+#include <mach/omap4-silicon.h>
- #include <sizes.h>
- #include <i2c/i2c.h>
- #include <gpio.h>
-diff --git a/arch/arm/boards/beagle/board.c b/arch/arm/boards/beagle/board.c
-index de8206b..f6d9d3f 100644
---- a/arch/arm/boards/beagle/board.c
-+++ b/arch/arm/boards/beagle/board.c
-@@ -55,7 +55,7 @@
- #include <ns16550.h>
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
--#include <mach/silicon.h>
-+#include <mach/omap3-silicon.h>
- #include <mach/sdrc.h>
- #include <mach/sys_info.h>
- #include <mach/syslib.h>
-diff --git a/arch/arm/boards/omap343xdsp/board.c b/arch/arm/boards/omap343xdsp/board.c
-index 8b8e0b2..fc50eb1 100644
---- a/arch/arm/boards/omap343xdsp/board.c
-+++ b/arch/arm/boards/omap343xdsp/board.c
-@@ -48,7 +48,7 @@
- #include <io.h>
- #include <ns16550.h>
- #include <asm/armlinux.h>
--#include <mach/silicon.h>
-+#include <mach/omap3-silicon.h>
- #include <mach/sdrc.h>
- #include <mach/sys_info.h>
- #include <mach/syslib.h>
-diff --git a/arch/arm/boards/omap3evm/board.c b/arch/arm/boards/omap3evm/board.c
-index d18cf39..a5faf56 100644
---- a/arch/arm/boards/omap3evm/board.c
-+++ b/arch/arm/boards/omap3evm/board.c
-@@ -46,7 +46,7 @@
- #include <sizes.h>
- #include <ns16550.h>
- #include <asm/armlinux.h>
--#include <mach/silicon.h>
-+#include <mach/omap3-silicon.h>
- #include <mach/sdrc.h>
- #include <mach/sys_info.h>
- #include <mach/syslib.h>
-diff --git a/arch/arm/boards/panda/board.c b/arch/arm/boards/panda/board.c
-index 98c05b2..99222d2 100644
---- a/arch/arm/boards/panda/board.c
-+++ b/arch/arm/boards/panda/board.c
-@@ -8,7 +8,7 @@
- #include <asm/armlinux.h>
- #include <linux/stat.h>
- #include <generated/mach-types.h>
--#include <mach/silicon.h>
-+#include <mach/omap4-silicon.h>
- #include <mach/sdrc.h>
- #include <mach/sys_info.h>
- #include <mach/syslib.h>
-diff --git a/arch/arm/boards/pcm049/board.c b/arch/arm/boards/pcm049/board.c
-index 3159457..859ce3b 100644
---- a/arch/arm/boards/pcm049/board.c
-+++ b/arch/arm/boards/pcm049/board.c
-@@ -22,7 +22,7 @@
- #include <ns16550.h>
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
--#include <mach/silicon.h>
-+#include <mach/omap4-silicon.h>
- #include <mach/sdrc.h>
- #include <mach/sys_info.h>
- #include <mach/syslib.h>
-diff --git a/arch/arm/boards/phycard-a-l1/pca-a-l1.c b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
-index e35db18..c6a7e60 100644
---- a/arch/arm/boards/phycard-a-l1/pca-a-l1.c
-+++ b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
-@@ -58,7 +58,7 @@
- #include <mach/xload.h>
- #include <mach/omap3-mux.h>
- #include <mach/sdrc.h>
--#include <mach/silicon.h>
-+#include <mach/omap3-silicon.h>
- #include <mach/sys_info.h>
- #include <mach/syslib.h>
- 
-diff --git a/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c b/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
-index 64e6d94..26b31dd 100644
---- a/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
-+++ b/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
-@@ -22,7 +22,7 @@
- #include <ns16550.h>
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
--#include <mach/silicon.h>
-+#include <mach/omap4-silicon.h>
- #include <mach/sdrc.h>
- #include <mach/sys_info.h>
- #include <mach/syslib.h>
-diff --git a/arch/arm/mach-omap/devices-gpmc-nand.c b/arch/arm/mach-omap/devices-gpmc-nand.c
-index b2a2b0f..c4ddc95 100644
---- a/arch/arm/mach-omap/devices-gpmc-nand.c
-+++ b/arch/arm/mach-omap/devices-gpmc-nand.c
-@@ -24,7 +24,6 @@
- #include <clock.h>
- #include <io.h>
- 
--#include <mach/silicon.h>
- #include <mach/gpmc.h>
- #include <mach/gpmc_nand.h>
- 
-diff --git a/arch/arm/mach-omap/include/mach/clocks.h b/arch/arm/mach-omap/include/mach/clocks.h
-index cbadec7..e44d98b 100644
---- a/arch/arm/mach-omap/include/mach/clocks.h
-+++ b/arch/arm/mach-omap/include/mach/clocks.h
-@@ -34,11 +34,4 @@
- #define S26M		26000000
- #define S38_4M		38400000
- 
--#ifdef CONFIG_ARCH_OMAP3
--#include <mach/omap3-clock.h>
--#endif
--#ifdef CONFIG_ARCH_OMAP4
--#include <mach/omap4-clock.h>
--#endif
--
- #endif /* __OMAP_CLOCKS_H_ */
-diff --git a/arch/arm/mach-omap/include/mach/omap3-silicon.h b/arch/arm/mach-omap/include/mach/omap3-silicon.h
-index 5843027..0cf43bd 100644
---- a/arch/arm/mach-omap/include/mach/omap3-silicon.h
-+++ b/arch/arm/mach-omap/include/mach/omap3-silicon.h
-@@ -130,4 +130,9 @@
- /* PRM */
- #define OMAP3_PRM_RSTCTRL_RESET	0x04
- 
-+/* If Architecture specific init functions are present */
-+#ifndef __ASSEMBLY__
-+void omap3_core_init(void);
-+#endif /* __ASSEMBLY__ */
-+
- #endif /* __ASM_ARCH_OMAP3_H */
-diff --git a/arch/arm/mach-omap/include/mach/silicon.h b/arch/arm/mach-omap/include/mach/silicon.h
-deleted file mode 100644
-index 5ee1931..0000000
---- a/arch/arm/mach-omap/include/mach/silicon.h
-+++ /dev/null
-@@ -1,33 +0,0 @@
--/*
-- * (C) Copyright 2008
-- * Texas Instruments, <www.ti.com>
-- * Nishanth Menon <x0nishan@ti.com>
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR /PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
--  */
--#ifndef __ASM_ARCH_OMAP_SILICON_H
--#define __ASM_ARCH_OMAP_SILICON_H
--
--/* Each platform silicon header comes here */
--#ifdef CONFIG_ARCH_OMAP3
--#include <mach/omap3-silicon.h>
--#endif
--#ifdef CONFIG_ARCH_OMAP4
--#include <mach/omap4-silicon.h>
--#endif
--
--/* If Architecture specific init functions are present */
--#ifndef __ASSEMBLY__
--void omap3_core_init(void);
--#endif /* __ASSEMBLY__ */
--
--#endif /* __ASM_ARCH_OMAP_SILICON_H */
-diff --git a/arch/arm/mach-omap/omap3_clock.c b/arch/arm/mach-omap/omap3_clock.c
-index 11f5117..5cf2747 100644
---- a/arch/arm/mach-omap/omap3_clock.c
-+++ b/arch/arm/mach-omap/omap3_clock.c
-@@ -32,7 +32,7 @@
- 
- #include <common.h>
- #include <io.h>
--#include <mach/silicon.h>
-+#include <mach/omap3-silicon.h>
- #include <mach/clocks.h>
- #include <mach/omap3-clock.h>
- #include <mach/timers.h>
-diff --git a/arch/arm/mach-omap/omap3_core.S b/arch/arm/mach-omap/omap3_core.S
-index 38a8cb4..bc32f55 100644
---- a/arch/arm/mach-omap/omap3_core.S
-+++ b/arch/arm/mach-omap/omap3_core.S
-@@ -28,7 +28,7 @@
- #include <config.h>
- #include <linux/linkage.h>
- #include <asm/assembler.h>
--#include <mach/silicon.h>
-+#include <mach/omap3-silicon.h>
- #include <mach/wdt.h>
- #include <mach/clocks.h>
- #include <asm/barebox-arm-head.h>
-diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
-index 9932103..a209129 100644
---- a/arch/arm/mach-omap/omap3_generic.c
-+++ b/arch/arm/mach-omap/omap3_generic.c
-@@ -30,12 +30,13 @@
- #include <common.h>
- #include <init.h>
- #include <io.h>
--#include <mach/silicon.h>
-+#include <mach/omap3-silicon.h>
- #include <mach/gpmc.h>
- #include <mach/sdrc.h>
- #include <mach/control.h>
- #include <mach/omap3-smx.h>
- #include <mach/clocks.h>
-+#include <mach/omap3-clock.h>
- #include <mach/wdt.h>
- #include <mach/sys_info.h>
- #include <mach/syslib.h>
-diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
-index c86e4e5..0621fd3 100644
---- a/arch/arm/mach-omap/omap4_clock.c
-+++ b/arch/arm/mach-omap/omap4_clock.c
-@@ -1,7 +1,7 @@
- #include <common.h>
- #include <io.h>
- #include <mach/syslib.h>
--#include <mach/silicon.h>
-+#include <mach/omap4-silicon.h>
- #include <mach/clocks.h>
- #include <mach/omap4-clock.h>
- 
-diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
-index f4841a6..2a09eb6 100644
---- a/arch/arm/mach-omap/omap4_generic.c
-+++ b/arch/arm/mach-omap/omap4_generic.c
-@@ -2,7 +2,7 @@
- #include <init.h>
- #include <io.h>
- #include <mach/omap4-clock.h>
--#include <mach/silicon.h>
-+#include <mach/omap4-silicon.h>
- #include <mach/omap4-mux.h>
- #include <mach/syslib.h>
- #include <mach/xload.h>
-diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-index 4df5a1e..9050a8d 100644
---- a/drivers/mtd/nand/nand_omap_gpmc.c
-+++ b/drivers/mtd/nand/nand_omap_gpmc.c
-@@ -68,7 +68,6 @@
- #include <linux/mtd/nand.h>
- #include <linux/mtd/nand_ecc.h>
- #include <io.h>
--#include <mach/silicon.h>
- #include <mach/gpmc.h>
- #include <mach/gpmc_nand.h>
- 
--- 
-1.7.10.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+CgpDcmVhdGVkIEFSQ0ggZm9y
+IEFNMzN4eCBib2FyZHMgYXMgc2Vjb25kIHN0YWdlIGJvb3Rsb2FkZXIuClRoaXMgaW5jbHVkZXM6
+Ci0gQWRkZWQgZG10aW1lcjAKLSBDcmVhdGVkIGJhc2ljIGhlYWRlciBmaWxlcwotIEFkZGVkIE1N
+QyBzdXBwb3J0IGZvciBBUkNIX0FNMzNYWAotIEFkZGVkIHJlc2V0IGZ1bmN0aW9uCgpTaWduZWQt
+b2ZmLWJ5OiBUZXJlc2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5kZT4KClNvbWUgaGVhZGVyIGZp
+bGUgY2xlYW51cCBieToKU2lnbmVkLW9mZi1ieTogSmFuIEx1ZWJiZSA8amx1QHBlbmd1dHJvbml4
+LmRlPgotLS0KIGFyY2gvYXJtL21hY2gtb21hcC9LY29uZmlnICAgICAgICAgICAgICAgICAgICAg
+ICB8ICAgMTEgKysrCiBhcmNoL2FybS9tYWNoLW9tYXAvTWFrZWZpbGUgICAgICAgICAgICAgICAg
+ICAgICAgfCAgICAyICsKIGFyY2gvYXJtL21hY2gtb21hcC9hbTMzeHhfZ2VuZXJpYy5jICAgICAg
+ICAgICAgICB8ICAgMjkgKysrKysrKwogYXJjaC9hcm0vbWFjaC1vbWFwL2RtdGltZXIwLmMgICAg
+ICAgICAgICAgICAgICAgIHwgICA4OSArKysrKysrKysrKysrKysrKysrKysrCiBhcmNoL2FybS9t
+YWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1jbG9jay5oICAgfCAgIDIzICsrKysrKwogYXJj
+aC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtc2lsaWNvbi5oIHwgICA0OSArKysr
+KysrKysrKysKIGRyaXZlcnMvbWNpL0tjb25maWcgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICB8ICAgIDIgKy0KIDcgZmlsZXMgY2hhbmdlZCwgMjA0IGluc2VydGlvbnMoKyksIDEgZGVsZXRp
+b24oLSkKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9tYWNoLW9tYXAvYW0zM3h4X2dlbmVy
+aWMuYwogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtb21hcC9kbXRpbWVyMC5jCiBj
+cmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgt
+Y2xvY2suaAogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21h
+Y2gvYW0zM3h4LXNpbGljb24uaAoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9LY29u
+ZmlnIGIvYXJjaC9hcm0vbWFjaC1vbWFwL0tjb25maWcKaW5kZXggNDUxNzgzZS4uYjk0NTAwYSAx
+MDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL0tjb25maWcKKysrIGIvYXJjaC9hcm0vbWFj
+aC1vbWFwL0tjb25maWcKQEAgLTQyLDEyICs0MiwyMyBAQCBjb25maWcgQVJDSF9PTUFQNAogCWhl
+bHAKIAkgIFNheSBZIGhlcmUgaWYgeW91IGFyZSB1c2luZyBUZXhhcyBJbnN0cnVtZW50J3MgT01B
+UDQgYmFzZWQgcGxhdGZvcm0KIAorY29uZmlnIEFSQ0hfQU0zM1hYCisJYm9vbCAiQU0zM3h4Igor
+CXNlbGVjdCBDUFVfVjcKKwlzZWxlY3QgR0VORVJJQ19HUElPCisJc2VsZWN0IE9NQVBfQ0xPQ0tf
+U09VUkNFX0RNVElNRVIwCisJaGVscAorCSAgU2F5IFkgaGVyZSBpZiB5b3UgYXJlIHVzaW5nIFRl
+eGFzIEluc3RydW1lbnQncyBBTTMzeHggYmFzZWQgcGxhdGZvcm0KKwogZW5kY2hvaWNlCiAKICMg
+QmxpbmQgZW5hYmxlIGFsbCBwb3NzaWJsZSBjbG9ja3MuLiB0aGluayB0d2ljZSBiZWZvcmUgeW91
+IGRvIHRoaXMuCiBjb25maWcgT01BUF9DTE9DS19TT1VSQ0VfUzMySwogCWJvb2wKIAorY29uZmln
+IE9NQVBfQ0xPQ0tfU09VUkNFX0RNVElNRVIwCisJYm9vbAorCiBjb25maWcgT01BUDNfQ0xPQ0tf
+Q09ORklHCiAJcHJvbXB0ICJDbG9jayBDb25maWd1cmF0aW9uIgogCWJvb2wKZGlmZiAtLWdpdCBh
+L2FyY2gvYXJtL21hY2gtb21hcC9NYWtlZmlsZSBiL2FyY2gvYXJtL21hY2gtb21hcC9NYWtlZmls
+ZQppbmRleCAyYWM3ZmIyLi4yOTAwMzRlIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW9tYXAv
+TWFrZWZpbGUKKysrIGIvYXJjaC9hcm0vbWFjaC1vbWFwL01ha2VmaWxlCkBAIC0xOCwxMCArMTgs
+MTIgQEAKIG9iai0kKENPTkZJR19BUkNIX09NQVApICs9IHN5c2xpYi5vCiBwYmwtJChDT05GSUdf
+QVJDSF9PTUFQKSArPSBzeXNsaWIubwogb2JqLSQoQ09ORklHX09NQVBfQ0xPQ0tfU09VUkNFX1Mz
+MkspICs9IHMzMmtfY2xrc291cmNlLm8KK29iai0kKENPTkZJR19PTUFQX0NMT0NLX1NPVVJDRV9E
+TVRJTUVSMCkgKz0gZG10aW1lcjAubwogb2JqLSQoQ09ORklHX0FSQ0hfT01BUDMpICs9IG9tYXAz
+X2NvcmUubyBvbWFwM19nZW5lcmljLm8gYXV4Y3IubwogcGJsLSQoQ09ORklHX0FSQ0hfT01BUDMp
+ICs9IG9tYXAzX2NvcmUubyBvbWFwM19nZW5lcmljLm8gYXV4Y3Iubwogb2JqLSQoQ09ORklHX0FS
+Q0hfT01BUDQpICs9IG9tYXA0X2dlbmVyaWMubyBvbWFwNF9jbG9jay5vCiBwYmwtJChDT05GSUdf
+QVJDSF9PTUFQNCkgKz0gb21hcDRfZ2VuZXJpYy5vIG9tYXA0X2Nsb2NrLm8KK29iai0kKENPTkZJ
+R19BUkNIX0FNMzNYWCkgKz0gYW0zM3h4X2dlbmVyaWMubwogb2JqLSQoQ09ORklHX09NQVAzX0NM
+T0NLX0NPTkZJRykgKz0gb21hcDNfY2xvY2subwogcGJsLSQoQ09ORklHX09NQVAzX0NMT0NLX0NP
+TkZJRykgKz0gb21hcDNfY2xvY2subwogb2JqLSQoQ09ORklHX09NQVBfR1BNQykgKz0gZ3BtYy5v
+IGRldmljZXMtZ3BtYy1uYW5kLm8KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9hbTMz
+eHhfZ2VuZXJpYy5jIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9nZW5lcmljLmMKbmV3IGZp
+bGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uZjczZjk0NgotLS0gL2Rldi9udWxsCisrKyBi
+L2FyY2gvYXJtL21hY2gtb21hcC9hbTMzeHhfZ2VuZXJpYy5jCkBAIC0wLDAgKzEsMjkgQEAKKy8q
+CisgKiAoQykgQ29weXJpZ2h0IDIwMTIgVGVyZXNhIEfDoW1leiwgUGh5dGVjIE1lc3N0ZWNobmlr
+IEdtYkgKKyAqCisgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRp
+c3RyaWJ1dGUgaXQgYW5kL29yCisgKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBH
+TlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcworICogcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNv
+ZnR3YXJlIEZvdW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIgb2YKKyAqIHRoZSBMaWNlbnNlLCBv
+ciAoYXQgeW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgorICoKKyAqIFRoaXMgcHJvZ3Jh
+bSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAorICog
+YnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFu
+dHkgb2YKKyAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVS
+UE9TRS4gIFNlZSB0aGUKKyAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBtb3JlIGRl
+dGFpbHMuCisgKgorICogWW91IHNob3VsZCBoYXZlIHJlY2VpdmVkIGEgY29weSBvZiB0aGUgR05V
+IEdlbmVyYWwgUHVibGljIExpY2Vuc2UKKyAqIGFsb25nIHdpdGggdGhpcyBwcm9ncmFtOyBpZiBu
+b3QsIHdyaXRlIHRvIHRoZSBGcmVlIFNvZnR3YXJlCisgKiBGb3VuZGF0aW9uLCBJbmMuLCA1OSBU
+ZW1wbGUgUGxhY2UsIFN1aXRlIDMzMCwgQm9zdG9uLAorICogTUEgMDIxMTEtMTMwNyBVU0EKKyAq
+LworCisjaW5jbHVkZSA8aW8uaD4KKyNpbmNsdWRlIDxtYWNoL2FtMzN4eC1zaWxpY29uLmg+Cisj
+aW5jbHVkZSA8bWFjaC9hbTMzeHgtY2xvY2suaD4KKwordm9pZCBfX25vcmV0dXJuIHJlc2V0X2Nw
+dSh1bnNpZ25lZCBsb25nIGFkZHIpCit7CisJd3JpdGVsKEFNMzNYWF9QUk1fUlNUQ1RSTF9SRVNF
+VCwgQU0zM1hYX1BSTV9SU1RDVFJMKTsKKworCXdoaWxlICgxKTsKK30KZGlmZiAtLWdpdCBhL2Fy
+Y2gvYXJtL21hY2gtb21hcC9kbXRpbWVyMC5jIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2RtdGltZXIw
+LmMKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uYjBiZDY3MAotLS0gL2Rldi9u
+dWxsCisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9kbXRpbWVyMC5jCkBAIC0wLDAgKzEsODkgQEAK
+Ky8qKgorICogQGZpbGUKKyAqIEBicmllZiBTdXBwb3J0IERNVGltZXIwIGNvdW50ZXIKKyAqCisg
+KiBGaWxlTmFtZTogYXJjaC9hcm0vbWFjaC1vbWFwL2RtdGltZXIwLmMKKyAqLworLyoKKyAqIFRo
+aXMgRmlsZSBpcyBiYXNlZCBvbiBhcmNoL2FybS9tYWNoLW9tYXAvczMya19jbGtzb3VyY2UuYwor
+ICogKEMpIENvcHlyaWdodCAyMDA4CisgKiBUZXhhcyBJbnN0cnVtZW50cywgPHd3dy50aS5jb20+
+CisgKiBOaXNoYW50aCBNZW5vbiA8eDBuaXNoYW5AdGkuY29tPgorICoKKyAqIChDKSBDb3B5cmln
+aHQgMjAxMiBUZXJlc2EgR8OhbWV6LCBQaHl0ZWMgTWVzc3RlY2huaWsgR21iSAorICoKKyAqIFRo
+aXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQv
+b3IKKyAqIG1vZGlmeSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1Ymxp
+YyBMaWNlbnNlIGFzCisgKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlv
+bjsgZWl0aGVyIHZlcnNpb24gMiBvZgorICogdGhlIExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlv
+bikgYW55IGxhdGVyIHZlcnNpb24uCisgKgorICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVk
+IGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCisgKiBidXQgV0lUSE9VVCBBTlkg
+V0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgorICogTUVSQ0hB
+TlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQor
+ICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KKyAqCisgKiBZ
+b3Ugc2hvdWxkIGhhdmUgcmVjZWl2ZWQgYSBjb3B5IG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMg
+TGljZW5zZQorICogYWxvbmcgd2l0aCB0aGlzIHByb2dyYW07IGlmIG5vdCwgd3JpdGUgdG8gdGhl
+IEZyZWUgU29mdHdhcmUKKyAqIEZvdW5kYXRpb24sIEluYy4sIDU5IFRlbXBsZSBQbGFjZSwgU3Vp
+dGUgMzMwLCBCb3N0b24sCisgKiBNQSAwMjExMS0xMzA3IFVTQQorICovCisKKyNpbmNsdWRlIDxj
+bG9jay5oPgorI2luY2x1ZGUgPGluaXQuaD4KKyNpbmNsdWRlIDxpby5oPgorI2luY2x1ZGUgPG1h
+Y2gvYW0zM3h4LXNpbGljb24uaD4KKworI2RlZmluZSBDTEtfUkMzMksJMzI3NjgKKworI2RlZmlu
+ZSBUSURSCQkJMHgwCisjZGVmaW5lIFRJT0NQX0NGRwkJMHgxMAorI2RlZmluZSBJUlFfRU9JCQkJ
+MHgyMAorI2RlZmluZSBJUlFTVEFUVVNfUkFXCQkweDI0CisjZGVmaW5lIElSUVNUQVRVUwkJMHgy
+OAorI2RlZmluZSBJUlFTVEFUVVNfU0VUCQkweDJjCisjZGVmaW5lIElSUVNUQVRVU19DTFIJCTB4
+MzAKKyNkZWZpbmUgSVJRV0FLRUVOCQkweDM0CisjZGVmaW5lIFRDTFIJCQkweDM4CisjZGVmaW5l
+IFRDUlIJCQkweDNDCisjZGVmaW5lIFRMRFIJCQkweDQwCisjZGVmaW5lIFRUR1IJCQkweDQ0Cisj
+ZGVmaW5lIFRXUFMJCQkweDQ4CisjZGVmaW5lIFRNQVIJCQkweDRDCisjZGVmaW5lIFRDQVIxCQkJ
+MHg1MAorI2RlZmluZSBUU0lDUgkJCTB4NTQKKyNkZWZpbmUgVENBUjIJCQkweDU4CisKKy8qKgor
+ICogQGJyaWVmIFByb3ZpZGUgYSBzaW1wbGUgY291bnRlciByZWFkCisgKgorICogQHJldHVybiBE
+TVRpbWVyMCBjb3VudGVyCisgKi8KK3N0YXRpYyB1aW50NjRfdCBkbXRpbWVyMF9yZWFkKHZvaWQp
+Cit7CisJcmV0dXJuIHJlYWRsKEFNMzNYWF9ETVRJTUVSMF9CQVNFICsgVENSUik7Cit9CisKK3N0
+YXRpYyBzdHJ1Y3QgY2xvY2tzb3VyY2UgZG10aW1lcjBfY3MgPSB7CisJLnJlYWQJPSBkbXRpbWVy
+MF9yZWFkLAorCS5tYXNrCT0gQ0xPQ0tTT1VSQ0VfTUFTSygzMiksCisJLnNoaWZ0CT0gMTAsCit9
+OworCisvKioKKyAqIEBicmllZiBJbml0aWFsaXplIHRoZSBDbG9jaworICoKKyAqIEVuYWJsZSBk
+bXRpbWVyMC4KKyAqCisgKiBAcmV0dXJuIHJlc3VsdCBvZiBAcmVmIGluaXRfY2xvY2sKKyAqLwor
+c3RhdGljIGludCBkbXRpbWVyMF9pbml0KHZvaWQpCit7CisJZG10aW1lcjBfY3MubXVsdCA9IGNs
+b2Nrc291cmNlX2h6Mm11bHQoQ0xLX1JDMzJLLCBkbXRpbWVyMF9jcy5zaGlmdCk7CisJLyogRW5h
+YmxlIGNvdW50ZXIgKi8KKwl3cml0ZWwoMHgzLCBBTTMzWFhfRE1USU1FUjBfQkFTRSArIFRDTFIp
+OworCisJcmV0dXJuIGluaXRfY2xvY2soJmRtdGltZXIwX2NzKTsKK30KKworLyogUnVuIG1lIGF0
+IGJvb3QgdGltZSAqLworY29yZV9pbml0Y2FsbChkbXRpbWVyMF9pbml0KTsKZGlmZiAtLWdpdCBh
+L2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LWNsb2NrLmggYi9hcmNoL2Fy
+bS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1jbG9jay5oCm5ldyBmaWxlIG1vZGUgMTAw
+NjQ0CmluZGV4IDAwMDAwMDAuLjY4NDU0MTIKLS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9t
+YWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1jbG9jay5oCkBAIC0wLDAgKzEsMjMgQEAKKy8q
+CisgKiAoQykgQ29weXJpZ2h0IDIwMTIgVGVyZXNhIEfDoW1leiwgUGh5dGVjIE1lc3N0ZWNobmlr
+IEdtYkgKKyAqCisgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRp
+c3RyaWJ1dGUgaXQgYW5kL29yCisgKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBH
+TlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcworICogcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNv
+ZnR3YXJlIEZvdW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIgb2YKKyAqIHRoZSBMaWNlbnNlLCBv
+ciAoYXQgeW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgorICoKKyAqIFRoaXMgcHJvZ3Jh
+bSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAorICog
+YnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFu
+dHkgb2YKKyAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVS
+UE9TRS4gIFNlZSB0aGUKKyAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBtb3JlIGRl
+dGFpbHMuCisgKgorICogWW91IHNob3VsZCBoYXZlIHJlY2VpdmVkIGEgY29weSBvZiB0aGUgR05V
+IEdlbmVyYWwgUHVibGljIExpY2Vuc2UKKyAqIGFsb25nIHdpdGggdGhpcyBwcm9ncmFtOyBpZiBu
+b3QsIHdyaXRlIHRvIHRoZSBGcmVlIFNvZnR3YXJlCisgKiBGb3VuZGF0aW9uLCBJbmMuLCA1OSBU
+ZW1wbGUgUGxhY2UsIFN1aXRlIDMzMCwgQm9zdG9uLAorICogTUEgMDIxMTEtMTMwNyBVU0EKKyAq
+LworI2lmbmRlZiBfQU0zM1hYX0NMT0NLU19IXworI2RlZmluZSBfQU0zM1hYX0NMT0NLU19IXwor
+CisKKyNlbmRpZiAgLyogZW5kaWYgX0FNMzNYWF9DTE9DS1NfSF8gKi8KZGlmZiAtLWdpdCBhL2Fy
+Y2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LXNpbGljb24uaCBiL2FyY2gvYXJt
+L21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LXNpbGljb24uaApuZXcgZmlsZSBtb2RlIDEw
+MDY0NAppbmRleCAwMDAwMDAwLi4xODU4NzU2Ci0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0v
+bWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtc2lsaWNvbi5oCkBAIC0wLDAgKzEsNDkgQEAK
+Ky8qCisgKiBUaGlzIGZpbGUgY29udGFpbnMgdGhlIGFkZHJlc3MgaW5mbyBmb3IgdmFyaW91cyBB
+TTMzWFggbW9kdWxlcy4KKyAqCisgKiBDb3B5cmlnaHQgKEMpIDIwMTIgVGVyZXNhIEfDoW1leiA8
+dC5nYW1lekBwaHl0ZWMuZGU+LAorICoJCSBQaHl0ZWMgTWVzc3RlY2huaWsgR21iSAorICoKKyAq
+IFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBh
+bmQvb3IKKyAqIG1vZGlmeSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1
+YmxpYyBMaWNlbnNlIGFzCisgKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRh
+dGlvbiB2ZXJzaW9uIDIuCisgKgorICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkICJhcyBp
+cyIgV0lUSE9VVCBBTlkgV0FSUkFOVFkgb2YgYW55CisgKiBraW5kLCB3aGV0aGVyIGV4cHJlc3Mg
+b3IgaW1wbGllZDsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5CisgKiBvZiBNRVJD
+SEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhl
+CisgKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgorICovCisK
+KyNpZm5kZWYgX19BU01fQVJDSF9BTTMzWFhfSAorI2RlZmluZSBfX0FTTV9BUkNIX0FNMzNYWF9I
+CisKKy8qKiBBTTMzNXggSW50ZXJuYWwgQnVzIEJhc2UgYWRkcmVzc2VzICovCisjZGVmaW5lIEFN
+MzNYWF9MNF9XS1VQX0JBU0UJCTB4NDRDMDAwMDAKKyNkZWZpbmUgQU0zM1hYX0w0X1BFUl9CQVNF
+CQkweDQ4MDAwMDAwCisjZGVmaW5lIEFNMzNYWF9MNF9GQVNUX0JBU0UJCTB4NEEwMDAwMDAKKwor
+LyogVUFSVCAqLworI2RlZmluZSBBTTMzWFhfVUFSVDBfQkFTRQkJKEFNMzNYWF9MNF9XS1VQX0JB
+U0UgKyAweDIwOTAwMCkKKyNkZWZpbmUgQU0zM1hYX1VBUlQxX0JBU0UJCShBTTMzWFhfTDRfUEVS
+X0JBU0UgKyAweDIyMDAwKQorI2RlZmluZSBBTTMzWFhfVUFSVDJfQkFTRQkJKEFNMzNYWF9MNF9Q
+RVJfQkFTRSArIDB4MjQwMDApCisKKy8qIEVNRkkgUmVnaXN0ZXJzICovCisjZGVmaW5lIEFNMzNY
+WF9FTUZJMF9CQVNFCQkweDRDMDAwMDAwCisKKyNkZWZpbmUgQU0zM1hYX0RSQU1fQUREUl9TUEFD
+RV9TVEFSVAkweDgwMDAwMDAwCisjZGVmaW5lIEFNMzNYWF9EUkFNX0FERFJfU1BBQ0VfRU5ECTB4
+QzAwMDAwMDAKKworLyogR1BNQyAqLworI2RlZmluZSBBTTMzWFhfR1BNQ19CQVNFCQkweDUwMDAw
+MDAwCisKKy8qIE1NQyAqLworI2RlZmluZSBBTTMzWFhfTU1DSFMwX0JBU0UJCShBTTMzWFhfTDRf
+UEVSX0JBU0UgKyAweDYwMDAwKQorCisvKiBEVE1UaW1lcjAgKi8KKyNkZWZpbmUgQU0zM1hYX0RN
+VElNRVIwX0JBU0UJCShBTTMzWFhfTDRfV0tVUF9CQVNFICsgMHgyMDUwMDApCisKKy8qIFBSTSAq
+LworI2RlZmluZSBPTUFQX1BSTV9CQVNFCQkJKEFNMzNYWF9MNF9XS1VQX0JBU0UgKyAweDIwMDAw
+MCkKKworCisjZW5kaWYKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbWNpL0tjb25maWcgYi9kcml2ZXJz
+L21jaS9LY29uZmlnCmluZGV4IDY4NzYxMTcuLjk1NThmMjggMTAwNjQ0Ci0tLSBhL2RyaXZlcnMv
+bWNpL0tjb25maWcKKysrIGIvZHJpdmVycy9tY2kvS2NvbmZpZwpAQCAtNjcsNyArNjcsNyBAQCBj
+b25maWcgTUNJX0lNWF9FU0RIQ19QSU8KIAogY29uZmlnIE1DSV9PTUFQX0hTTU1DCiAJYm9vbCAi
+T01BUCBIU01NQyIKLQlkZXBlbmRzIG9uIEFSQ0hfT01BUDQgfHwgQVJDSF9PTUFQMworCWRlcGVu
+ZHMgb24gQVJDSF9PTUFQNCB8fCBBUkNIX09NQVAzIHx8IEFSQ0hfQU0zM1hYCiAJaGVscAogCSAg
+RW5hYmxlIHRoaXMgZW50cnkgdG8gYWRkIHN1cHBvcnQgdG8gcmVhZCBhbmQgd3JpdGUgU0QgY2Fy
+ZHMgb24KIAkgIGJvdGggT01BUDMgYW5kIE9NQVA0IGJhc2VkIHN5c3RlbXMuCi0tIAoxLjcuMTAu
+NAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
+b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
+aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
