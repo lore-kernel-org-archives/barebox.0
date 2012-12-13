@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TjC9R-0001nc-82
- for barebox@lists.infradead.org; Thu, 13 Dec 2012 17:00:51 +0000
+ id 1TjC9R-0001nW-0v
+ for barebox@lists.infradead.org; Thu, 13 Dec 2012 17:00:50 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1TjC9N-0004wb-OJ
+ for barebox@lists.infradead.org; Thu, 13 Dec 2012 18:00:45 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1TjC9N-0007Ks-NK
+ for barebox@lists.infradead.org; Thu, 13 Dec 2012 18:00:45 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Dec 2012 18:00:39 +0100
-Message-Id: <1355418044-27452-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1355418044-27452-1-git-send-email-s.hauer@pengutronix.de>
-References: <1355418044-27452-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 13 Dec 2012 18:00:35 +0100
+Message-Id: <1355418044-27452-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,53 +26,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/9] ARM i.MX51: Add USB device functions
+Subject: [PATCH] i.MX chipidea support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
+
+The following adds support for the chipidea core of the i.MX SoCs.
+It is somewhat designed after the kernel chipidea driver. A usb-misc
+driver matches to the misc registers and allows a driver which binds
+to the usb devices themselves to configure the misc registers. If ULPI
+support is selected, the ULPI phy will be configured automatically.
+This is done to simplify the board code for USB. Currently no support
+for USB device is available, that could be added later. This series
+also contains a patch which allows it to register a EHCI HCD without
+matching to a device, which is needed for the chipidea support.
+
+Sascha
+
+----------------------------------------------------------------
+Sascha Hauer (9):
+      USB ehci: Allow to register independently from device
+      USB i.MX: Add chipidea driver support
+      ARM i.MX27: Add USB device functions
+      ARM i.MX51: Add USB device functions
+      ARM i.MX31: Add USB device functions
+      ARM i.MX pcm038: switch to chipidea support
+      pcm038: Stop ongoing ULPI transfers before registering the transceiver
+      fixup! USB i.MX: Add chipidea driver support
+      ARM i.MX pcm038: Update defconfig for chipidea driver
+
+ arch/arm/boards/pcm038/pcm970.c                |   42 +--
+ arch/arm/configs/pcm038_defconfig              |   10 +-
+ arch/arm/mach-imx/devices.c                    |    5 +
+ arch/arm/mach-imx/imx27.c                      |    1 +
+ arch/arm/mach-imx/imx31.c                      |    1 +
  arch/arm/mach-imx/imx51.c                      |    1 +
- arch/arm/mach-imx/include/mach/devices-imx51.h |   15 +++++++++++++++
- 2 files changed, 16 insertions(+)
-
-diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
-index a62daf8..cffcca3 100644
---- a/arch/arm/mach-imx/imx51.c
-+++ b/arch/arm/mach-imx/imx51.c
-@@ -70,6 +70,7 @@ static int imx51_init(void)
- 	add_generic_device("imx31-gpio", 3, NULL, MX51_GPIO4_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx21-wdt", 0, NULL, MX51_WDOG_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx51-esdctl", 0, NULL, MX51_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
-+	add_generic_device("imx51-usb-misc", 0, NULL, MX51_OTG_BASE_ADDR + 0x800, 0x100, IORESOURCE_MEM, NULL);
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-imx/include/mach/devices-imx51.h b/arch/arm/mach-imx/include/mach/devices-imx51.h
-index 95497fa..ec8467a 100644
---- a/arch/arm/mach-imx/include/mach/devices-imx51.h
-+++ b/arch/arm/mach-imx/include/mach/devices-imx51.h
-@@ -98,3 +98,18 @@ static inline struct device_d *imx51_add_pata(void)
- {
- 	return imx_add_pata((void *)MX51_ATA_BASE_ADDR);
- }
-+
-+static inline struct device_d *imx51_add_usbotg(void *pdata)
-+{
-+	return imx_add_usb((void *)MX51_OTG_BASE_ADDR, 0, pdata);
-+}
-+
-+static inline struct device_d *imx51_add_usbh1(void *pdata)
-+{
-+	return imx_add_usb((void *)MX51_OTG_BASE_ADDR + 0x200, 1, pdata);
-+}
-+
-+static inline struct device_d *imx51_add_usbh2(void *pdata)
-+{
-+	return imx_add_usb((void *)MX51_OTG_BASE_ADDR + 0x400, 2, pdata);
-+}
--- 
-1.7.10.4
-
+ arch/arm/mach-imx/include/mach/devices-imx27.h |   15 +
+ arch/arm/mach-imx/include/mach/devices-imx31.h |   15 +
+ arch/arm/mach-imx/include/mach/devices-imx51.h |   15 +
+ arch/arm/mach-imx/include/mach/devices.h       |    2 +
+ drivers/usb/Kconfig                            |    2 +
+ drivers/usb/Makefile                           |    1 +
+ drivers/usb/host/ehci-hcd.c                    |   46 +--
+ drivers/usb/imx/Kconfig                        |   15 +
+ drivers/usb/imx/Makefile                       |    1 +
+ drivers/usb/imx/chipidea-imx.c                 |   91 ++++++
+ drivers/usb/imx/imx-usb-misc.c                 |  410 ++++++++++++++++++++++++
+ include/usb/chipidea-imx.h                     |   46 +++
+ include/usb/ehci.h                             |   17 +-
+ 19 files changed, 683 insertions(+), 53 deletions(-)
+ create mode 100644 drivers/usb/imx/Kconfig
+ create mode 100644 drivers/usb/imx/Makefile
+ create mode 100644 drivers/usb/imx/chipidea-imx.c
+ create mode 100644 drivers/usb/imx/imx-usb-misc.c
+ create mode 100644 include/usb/chipidea-imx.h
 
 _______________________________________________
 barebox mailing list
