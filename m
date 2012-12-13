@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TjGex-0006hv-4r
- for barebox@lists.infradead.org; Thu, 13 Dec 2012 21:49:40 +0000
+ id 1TjGex-0006hz-4t
+ for barebox@lists.infradead.org; Thu, 13 Dec 2012 21:49:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Dec 2012 22:49:05 +0100
-Message-Id: <1355435350-20348-3-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 13 Dec 2012 22:49:10 +0100
+Message-Id: <1355435350-20348-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1355435350-20348-1-git-send-email-s.hauer@pengutronix.de>
 References: <1355435350-20348-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,60 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] mci: Allow to specify device name
+Subject: [PATCH 7/7] USB ehci: Add powerup fixup for EfikaSB
 To: barebox@lists.infradead.org
 
-When multiple MMC/SD cards are present in the system we often
-have to have persistent names to identify them during runtime.
-This patch allows to overwrite the devicename which is used.
+The EfikaSB has a bug requiring to write to an ULPI register after
+powerup. It doesn't seem that this this bug is present on any other
+hardware, so add a workaround directly into the driver.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/mci-core.c |   10 +++++++---
- include/mci.h          |    1 +
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/usb/host/ehci-hcd.c |   23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index e29bd2e..559f8ab 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -1397,9 +1397,13 @@ static int mci_card_probe(struct mci *mci)
- 	mci->blk.dev = mci->mci_dev;
- 	mci->blk.ops = &mci_ops;
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 02ec714..9b9e049 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -426,6 +426,27 @@ static inline int min3(int a, int b, int c)
+ 	return a;
+ }
  
--	disknum = cdev_find_free_index("disk");
-+	if (host->devname) {
-+		mci->blk.cdev.name = strdup(host->devname);
-+	} else {
-+		disknum = cdev_find_free_index("disk");
-+		mci->blk.cdev.name = asprintf("disk%d", disknum);
-+	}
++#ifdef CONFIG_MACH_EFIKA_MX_SMARTBOOK
++#include <usb/ulpi.h>
++/*
++ * Add support for setting CHRGVBUS to workaround a hardware bug on efika mx/sb
++ * boards.
++ * See http://lists.infradead.org/pipermail/linux-arm-kernel/2011-January/037341.html
++ */
++void ehci_powerup_fixup(struct ehci_priv *ehci)
++{
++	void *viewport = (void *)ehci->hcor + 0x30;
++
++	if (ehci->dev->id > 0)
++		ulpi_write(ULPI_OTG_CHRG_VBUS, ULPI_OTGCTL + ULPI_REG_SET,
++				viewport);
++}
++#else
++static inline void ehci_powerup_fixup(struct ehci_priv *ehci)
++{
++}
++#endif
++
+ static int
+ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 		 int length, struct devrequest *req)
+@@ -611,7 +632,7 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 				 * usb 2.0 specification say 50 ms resets on
+ 				 * root
+ 				 */
+-				ehci_powerup_fixup(ehci->dev, &reg);
++				ehci_powerup_fixup(ehci);
  
--	mci->blk.cdev.name = asprintf("disk%d", disknum);
- 	mci->blk.blockbits = SECTOR_SHIFT;
- 	mci->blk.num_blocks = mci_calc_blk_cnt(mci->capacity, mci->blk.blockbits);
+ 				wait_ms(50);
  
-@@ -1409,7 +1413,7 @@ static int mci_card_probe(struct mci *mci)
- 		goto on_error;
- 	}
- 
--	dev_info(mci->mci_dev, "registered disk%d\n", disknum);
-+	dev_info(mci->mci_dev, "registered %s\n", mci->blk.cdev.name);
- 
- 	/* create partitions on demand */
- 	rc = parse_partition_table(&mci->blk);
-diff --git a/include/mci.h b/include/mci.h
-index db78b9c..0041e27 100644
---- a/include/mci.h
-+++ b/include/mci.h
-@@ -286,6 +286,7 @@ struct mci_ios {
- /** host information */
- struct mci_host {
- 	struct device_d *hw_dev;	/**< the host MCI hardware device */
-+	char *devname;			/**< the devicename for the card, defaults to disk%d */
- 	unsigned voltages;
- 	unsigned host_caps;	/**< Host's interface capabilities, refer MMC_VDD_* */
- 	unsigned f_min;		/**< host interface lower limit */
 -- 
 1.7.10.4
 
