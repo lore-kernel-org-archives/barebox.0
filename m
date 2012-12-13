@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TjC9R-0001ne-6j
- for barebox@lists.infradead.org; Thu, 13 Dec 2012 17:00:53 +0000
+ id 1TjC9R-0001nb-7Z
+ for barebox@lists.infradead.org; Thu, 13 Dec 2012 17:00:54 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Dec 2012 18:00:41 +0100
-Message-Id: <1355418044-27452-7-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 13 Dec 2012 18:00:38 +0100
+Message-Id: <1355418044-27452-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1355418044-27452-1-git-send-email-s.hauer@pengutronix.de>
 References: <1355418044-27452-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,91 +21,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/9] ARM i.MX pcm038: switch to chipidea support
+Subject: [PATCH 3/9] ARM i.MX27: Add USB device functions
 To: barebox@lists.infradead.org
+
+Register the USB misc devices and provide convenience wrappers to
+register the USB ports for i.MX27.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/pcm038/pcm970.c   |   34 ++++++++--------------------------
- arch/arm/configs/pcm038_defconfig |    1 +
- 2 files changed, 9 insertions(+), 26 deletions(-)
+ arch/arm/mach-imx/devices.c                    |    5 +++++
+ arch/arm/mach-imx/imx27.c                      |    1 +
+ arch/arm/mach-imx/include/mach/devices-imx27.h |   15 +++++++++++++++
+ arch/arm/mach-imx/include/mach/devices.h       |    2 ++
+ 4 files changed, 23 insertions(+)
 
-diff --git a/arch/arm/boards/pcm038/pcm970.c b/arch/arm/boards/pcm038/pcm970.c
-index 93a1839..7b25110 100644
---- a/arch/arm/boards/pcm038/pcm970.c
-+++ b/arch/arm/boards/pcm038/pcm970.c
-@@ -21,34 +21,12 @@
- #include <mach/weim.h>
- #include <mach/gpio.h>
- #include <mach/devices-imx27.h>
--#include <usb/ulpi.h>
+diff --git a/arch/arm/mach-imx/devices.c b/arch/arm/mach-imx/devices.c
+index d82fbf7..682f39a 100644
+--- a/arch/arm/mach-imx/devices.c
++++ b/arch/arm/mach-imx/devices.c
+@@ -72,3 +72,8 @@ struct device_d *imx_add_pata(void *base)
+ {
+ 	return imx_add_device("imx-pata", -1, base, 0x1000, NULL);
+ }
++
++struct device_d *imx_add_usb(void *base, int id, struct imxusb_platformdata *pdata)
++{
++	return imx_add_device("imx-usb", id, base, 0x200, pdata);
++}
+diff --git a/arch/arm/mach-imx/imx27.c b/arch/arm/mach-imx/imx27.c
+index 31117f4..6d30276 100644
+--- a/arch/arm/mach-imx/imx27.c
++++ b/arch/arm/mach-imx/imx27.c
+@@ -118,6 +118,7 @@ static int imx27_init(void)
+ 	add_generic_device("imx1-gpio", 5, NULL, MX27_GPIO6_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx21-wdt", 0, NULL, MX27_WDOG_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx27-esdctl", 0, NULL, MX27_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx27-usb-misc", 0, NULL, MX27_USB_OTG_BASE_ADDR + 0x600, 0x100, IORESOURCE_MEM, NULL);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-imx/include/mach/devices-imx27.h b/arch/arm/mach-imx/include/mach/devices-imx27.h
+index 79da935..d6c884a 100644
+--- a/arch/arm/mach-imx/include/mach/devices-imx27.h
++++ b/arch/arm/mach-imx/include/mach/devices-imx27.h
+@@ -70,3 +70,18 @@ static inline struct device_d *imx27_add_mmc2(void *pdata)
+ {
+ 	return imx_add_mmc((void *)MX27_SDHC3_BASE_ADDR, 2, pdata);
+ }
++
++static inline struct device_d *imx27_add_usbotg(void *pdata)
++{
++	return imx_add_usb((void *)MX27_USB_OTG_BASE_ADDR, 0, pdata);
++}
++
++static inline struct device_d *imx27_add_usbh1(void *pdata)
++{
++	return imx_add_usb((void *)MX27_USB_OTG_BASE_ADDR + 0x200, 1, pdata);
++}
++
++static inline struct device_d *imx27_add_usbh2(void *pdata)
++{
++	return imx_add_usb((void *)MX27_USB_OTG_BASE_ADDR + 0x400, 2, pdata);
++}
+diff --git a/arch/arm/mach-imx/include/mach/devices.h b/arch/arm/mach-imx/include/mach/devices.h
+index 016778a..5929658 100644
+--- a/arch/arm/mach-imx/include/mach/devices.h
++++ b/arch/arm/mach-imx/include/mach/devices.h
+@@ -7,6 +7,7 @@
+ #include <mach/imxfb.h>
+ #include <mach/imx-ipu-fb.h>
+ #include <mach/esdhc.h>
 +#include <usb/chipidea-imx.h>
  
- #define GPIO_IDE_POWER	(GPIO_PORTE + 18)
- #define GPIO_IDE_PCOE	(GPIO_PORTF + 7)
- #define GPIO_IDE_RESET	(GPIO_PORTF + 10)
- 
--#ifdef CONFIG_USB
--static void pcm970_usbh2_init(void)
--{
--	uint32_t temp;
--
--	temp = readl(MX27_USB_OTG_BASE_ADDR + 0x600);
--	temp &= ~((3 << 21) | 1);
--	temp |= (1 << 5) | (1 << 16) | (1 << 19) | (1 << 20);
--	writel(temp, MX27_USB_OTG_BASE_ADDR + 0x600);
--
--	temp = readl(MX27_USB_OTG_BASE_ADDR + 0x584);
--	temp &= ~(3 << 30);
--	temp |= 2 << 30;
--	writel(temp, MX27_USB_OTG_BASE_ADDR + 0x584);
--
--	mdelay(10);
--
--	if (!ulpi_setup((void *)(MX27_USB_OTG_BASE_ADDR + 0x570), 1))
--		add_generic_usb_ehci_device(DEVICE_ID_DYNAMIC, MX27_USB_OTG_BASE_ADDR + 0x400, NULL);
--}
--#endif
--
- #ifdef CONFIG_DISK_INTF_PLATFORM_IDE
- static struct resource pcm970_ide_resources[] = {
- 	{
-@@ -168,6 +146,11 @@ static void pcm970_mmc_init(void)
- 	imx27_add_mmc1(NULL);
- }
- 
-+struct imxusb_platformdata pcm970_usbh2_pdata = {
-+	.flags = MXC_EHCI_MODE_ULPI | MXC_EHCI_INTERFACE_DIFF_UNI,
-+	.mode = IMX_USB_MODE_HOST,
-+};
-+
- static int pcm970_init(void)
- {
- 	int i;
-@@ -193,9 +176,8 @@ static int pcm970_init(void)
- 	/* Configure SJA1000 on cs4 */
- 	imx27_setup_weimcs(4, 0x0000DCF6, 0x444A0301, 0x44443302);
- 
--#ifdef CONFIG_USB
--	pcm970_usbh2_init();
--#endif
-+	if (IS_ENABLED(CONFIG_USB))
-+		imx27_add_usbh2(&pcm970_usbh2_pdata);
- 
- #ifdef CONFIG_DISK_INTF_PLATFORM_IDE
- 	pcm970_ide_init();
-diff --git a/arch/arm/configs/pcm038_defconfig b/arch/arm/configs/pcm038_defconfig
-index bab4002..13e2451 100644
---- a/arch/arm/configs/pcm038_defconfig
-+++ b/arch/arm/configs/pcm038_defconfig
-@@ -68,6 +68,7 @@ CONFIG_NAND=y
- # CONFIG_NAND_ECC_HW_SYNDROME is not set
- CONFIG_NAND_IMX=y
- CONFIG_USB=y
-+CONFIG_USB_IMX_CHIPIDEA=y
- CONFIG_USB_EHCI=y
- CONFIG_USB_ULPI=y
- CONFIG_VIDEO=y
+ struct device_d *imx_add_fec_imx27(void *base, struct fec_platform_data *pdata);
+ struct device_d *imx_add_fec_imx6(void *base, struct fec_platform_data *pdata);
+@@ -21,3 +22,4 @@ struct device_d *imx_add_mmc(void *base, int id, void *pdata);
+ struct device_d *imx_add_esdhc(void *base, int id, struct esdhc_platform_data *pdata);
+ struct device_d *imx_add_kpp(void *base, struct matrix_keymap_data *pdata);
+ struct device_d *imx_add_pata(void *base);
++struct device_d *imx_add_usb(void *base, int id, struct imxusb_platformdata *pdata);
 -- 
 1.7.10.4
 
