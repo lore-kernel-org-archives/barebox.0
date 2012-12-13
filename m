@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TjC9R-0001nb-7Z
- for barebox@lists.infradead.org; Thu, 13 Dec 2012 17:00:54 +0000
+ id 1TjC9R-0001ng-5e
+ for barebox@lists.infradead.org; Thu, 13 Dec 2012 17:00:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Dec 2012 18:00:38 +0100
-Message-Id: <1355418044-27452-4-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 13 Dec 2012 18:00:44 +0100
+Message-Id: <1355418044-27452-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1355418044-27452-1-git-send-email-s.hauer@pengutronix.de>
 References: <1355418044-27452-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,85 +21,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/9] ARM i.MX27: Add USB device functions
+Subject: [PATCH 9/9] ARM i.MX pcm038: Update defconfig for chipidea driver
 To: barebox@lists.infradead.org
-
-Register the USB misc devices and provide convenience wrappers to
-register the USB ports for i.MX27.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/devices.c                    |    5 +++++
- arch/arm/mach-imx/imx27.c                      |    1 +
- arch/arm/mach-imx/include/mach/devices-imx27.h |   15 +++++++++++++++
- arch/arm/mach-imx/include/mach/devices.h       |    2 ++
- 4 files changed, 23 insertions(+)
+ arch/arm/configs/pcm038_defconfig |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-imx/devices.c b/arch/arm/mach-imx/devices.c
-index d82fbf7..682f39a 100644
---- a/arch/arm/mach-imx/devices.c
-+++ b/arch/arm/mach-imx/devices.c
-@@ -72,3 +72,8 @@ struct device_d *imx_add_pata(void *base)
- {
- 	return imx_add_device("imx-pata", -1, base, 0x1000, NULL);
- }
-+
-+struct device_d *imx_add_usb(void *base, int id, struct imxusb_platformdata *pdata)
-+{
-+	return imx_add_device("imx-usb", id, base, 0x200, pdata);
-+}
-diff --git a/arch/arm/mach-imx/imx27.c b/arch/arm/mach-imx/imx27.c
-index 31117f4..6d30276 100644
---- a/arch/arm/mach-imx/imx27.c
-+++ b/arch/arm/mach-imx/imx27.c
-@@ -118,6 +118,7 @@ static int imx27_init(void)
- 	add_generic_device("imx1-gpio", 5, NULL, MX27_GPIO6_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx21-wdt", 0, NULL, MX27_WDOG_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx27-esdctl", 0, NULL, MX27_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
-+	add_generic_device("imx27-usb-misc", 0, NULL, MX27_USB_OTG_BASE_ADDR + 0x600, 0x100, IORESOURCE_MEM, NULL);
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-imx/include/mach/devices-imx27.h b/arch/arm/mach-imx/include/mach/devices-imx27.h
-index 79da935..d6c884a 100644
---- a/arch/arm/mach-imx/include/mach/devices-imx27.h
-+++ b/arch/arm/mach-imx/include/mach/devices-imx27.h
-@@ -70,3 +70,18 @@ static inline struct device_d *imx27_add_mmc2(void *pdata)
- {
- 	return imx_add_mmc((void *)MX27_SDHC3_BASE_ADDR, 2, pdata);
- }
-+
-+static inline struct device_d *imx27_add_usbotg(void *pdata)
-+{
-+	return imx_add_usb((void *)MX27_USB_OTG_BASE_ADDR, 0, pdata);
-+}
-+
-+static inline struct device_d *imx27_add_usbh1(void *pdata)
-+{
-+	return imx_add_usb((void *)MX27_USB_OTG_BASE_ADDR + 0x200, 1, pdata);
-+}
-+
-+static inline struct device_d *imx27_add_usbh2(void *pdata)
-+{
-+	return imx_add_usb((void *)MX27_USB_OTG_BASE_ADDR + 0x400, 2, pdata);
-+}
-diff --git a/arch/arm/mach-imx/include/mach/devices.h b/arch/arm/mach-imx/include/mach/devices.h
-index 016778a..5929658 100644
---- a/arch/arm/mach-imx/include/mach/devices.h
-+++ b/arch/arm/mach-imx/include/mach/devices.h
-@@ -7,6 +7,7 @@
- #include <mach/imxfb.h>
- #include <mach/imx-ipu-fb.h>
- #include <mach/esdhc.h>
-+#include <usb/chipidea-imx.h>
- 
- struct device_d *imx_add_fec_imx27(void *base, struct fec_platform_data *pdata);
- struct device_d *imx_add_fec_imx6(void *base, struct fec_platform_data *pdata);
-@@ -21,3 +22,4 @@ struct device_d *imx_add_mmc(void *base, int id, void *pdata);
- struct device_d *imx_add_esdhc(void *base, int id, struct esdhc_platform_data *pdata);
- struct device_d *imx_add_kpp(void *base, struct matrix_keymap_data *pdata);
- struct device_d *imx_add_pata(void *base);
-+struct device_d *imx_add_usb(void *base, int id, struct imxusb_platformdata *pdata);
+diff --git a/arch/arm/configs/pcm038_defconfig b/arch/arm/configs/pcm038_defconfig
+index 13e2451..e2f5388 100644
+--- a/arch/arm/configs/pcm038_defconfig
++++ b/arch/arm/configs/pcm038_defconfig
+@@ -2,7 +2,6 @@ CONFIG_ARCH_IMX=y
+ CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND=y
+ CONFIG_ARCH_IMX27=y
+ CONFIG_MACH_PCM038=y
+-CONFIG_IMX_CLKO=y
+ CONFIG_AEABI=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_UNWIND=y
+@@ -16,8 +15,6 @@ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+ CONFIG_MENU=y
+-CONFIG_PARTITION=y
+-CONFIG_PARTITION_DISK=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/pcm038/env"
+ CONFIG_CMD_EDIT=y
+@@ -32,7 +29,6 @@ CONFIG_CMD_TIME=y
+ CONFIG_CMD_ECHO_E=y
+ CONFIG_CMD_MEMINFO=y
+ CONFIG_CMD_IOMEM=y
+-CONFIG_CMD_MTEST=y
+ CONFIG_CMD_FLASH=y
+ CONFIG_CMD_BOOTM_SHOW_TYPE=y
+ CONFIG_CMD_BOOTM_VERBOSE=y
+@@ -40,16 +36,16 @@ CONFIG_CMD_BOOTM_INITRD=y
+ CONFIG_CMD_BOOTM_OFTREE=y
+ CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
+ CONFIG_CMD_UIMAGE=y
+-# CONFIG_CMD_BOOTZ is not set
+ # CONFIG_CMD_BOOTU is not set
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_GO=y
+ CONFIG_CMD_OFTREE=y
++CONFIG_CMD_MTEST=y
++CONFIG_CMD_SPLASH=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_MAGICVAR=y
+ CONFIG_CMD_MAGICVAR_HELP=y
+-CONFIG_CMD_SPLASH=y
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_UNCOMPRESS=y
+ CONFIG_NET=y
+@@ -71,6 +67,7 @@ CONFIG_USB=y
+ CONFIG_USB_IMX_CHIPIDEA=y
+ CONFIG_USB_EHCI=y
+ CONFIG_USB_ULPI=y
++CONFIG_USB_STORAGE=y
+ CONFIG_VIDEO=y
+ CONFIG_DRIVER_VIDEO_IMX=y
+ CONFIG_IMXFB_DRIVER_VIDEO_IMX_OVERLAY=y
 -- 
 1.7.10.4
 
