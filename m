@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TjBgY-0004wN-4N
- for barebox@lists.infradead.org; Thu, 13 Dec 2012 16:31:03 +0000
+ id 1TjBgX-0004wH-RA
+ for barebox@lists.infradead.org; Thu, 13 Dec 2012 16:31:10 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Thu, 13 Dec 2012 17:30:47 +0100
-Message-Id: <1355416249-22364-13-git-send-email-jlu@pengutronix.de>
+Date: Thu, 13 Dec 2012 17:30:45 +0100
+Message-Id: <1355416249-22364-11-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1355416249-22364-1-git-send-email-jlu@pengutronix.de>
 References: <1355416249-22364-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,305 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/14] arm: omap: am33xx: add support for low level debug
+Subject: [PATCH 10/14] ARM omap: include individual SoC files
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
----
- arch/arm/mach-omap/include/mach/debug_ll.h |    5 +++++
- 1 file changed, 5 insertions(+)
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-diff --git a/arch/arm/mach-omap/include/mach/debug_ll.h b/arch/arm/mach-omap/include/mach/debug_ll.h
-index b2714c5..142f01a 100644
---- a/arch/arm/mach-omap/include/mach/debug_ll.h
-+++ b/arch/arm/mach-omap/include/mach/debug_ll.h
-@@ -35,6 +35,11 @@
- #define UART_BASE	OMAP44XX_UART3_BASE
- #endif
+- remove mach/silicon.h and include omap?-silicon.h directly
+- include mach/omap?-clock.h directly where needed
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/archosg9/board.c                |    2 +-
+ arch/arm/boards/beagle/board.c                  |    2 +-
+ arch/arm/boards/omap343xdsp/board.c             |    2 +-
+ arch/arm/boards/omap3evm/board.c                |    2 +-
+ arch/arm/boards/panda/board.c                   |    2 +-
+ arch/arm/boards/pcm049/board.c                  |    2 +-
+ arch/arm/boards/phycard-a-l1/pca-a-l1.c         |    2 +-
+ arch/arm/boards/phycard-a-xl2/pca-a-xl2.c       |    2 +-
+ arch/arm/mach-omap/devices-gpmc-nand.c          |    1 -
+ arch/arm/mach-omap/include/mach/clocks.h        |    7 -----
+ arch/arm/mach-omap/include/mach/omap3-silicon.h |    5 ++++
+ arch/arm/mach-omap/include/mach/silicon.h       |   33 -----------------------
+ arch/arm/mach-omap/omap3_clock.c                |    2 +-
+ arch/arm/mach-omap/omap3_core.S                 |    2 +-
+ arch/arm/mach-omap/omap3_generic.c              |    3 ++-
+ arch/arm/mach-omap/omap4_clock.c                |    2 +-
+ arch/arm/mach-omap/omap4_generic.c              |    2 +-
+ drivers/mtd/nand/nand_omap_gpmc.c               |    1 -
+ 18 files changed, 19 insertions(+), 55 deletions(-)
+ delete mode 100644 arch/arm/mach-omap/include/mach/silicon.h
+
+diff --git a/arch/arm/boards/archosg9/board.c b/arch/arm/boards/archosg9/board.c
+index 7076c6f..dab0a36 100644
+--- a/arch/arm/boards/archosg9/board.c
++++ b/arch/arm/boards/archosg9/board.c
+@@ -15,7 +15,7 @@
+ #include <ns16550.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <mach/silicon.h>
++#include <mach/omap4-silicon.h>
+ #include <sizes.h>
+ #include <i2c/i2c.h>
+ #include <gpio.h>
+diff --git a/arch/arm/boards/beagle/board.c b/arch/arm/boards/beagle/board.c
+index de8206b..f6d9d3f 100644
+--- a/arch/arm/boards/beagle/board.c
++++ b/arch/arm/boards/beagle/board.c
+@@ -55,7 +55,7 @@
+ #include <ns16550.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <mach/silicon.h>
++#include <mach/omap3-silicon.h>
+ #include <mach/sdrc.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+diff --git a/arch/arm/boards/omap343xdsp/board.c b/arch/arm/boards/omap343xdsp/board.c
+index 8b8e0b2..fc50eb1 100644
+--- a/arch/arm/boards/omap343xdsp/board.c
++++ b/arch/arm/boards/omap343xdsp/board.c
+@@ -48,7 +48,7 @@
+ #include <io.h>
+ #include <ns16550.h>
+ #include <asm/armlinux.h>
+-#include <mach/silicon.h>
++#include <mach/omap3-silicon.h>
+ #include <mach/sdrc.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+diff --git a/arch/arm/boards/omap3evm/board.c b/arch/arm/boards/omap3evm/board.c
+index d18cf39..a5faf56 100644
+--- a/arch/arm/boards/omap3evm/board.c
++++ b/arch/arm/boards/omap3evm/board.c
+@@ -46,7 +46,7 @@
+ #include <sizes.h>
+ #include <ns16550.h>
+ #include <asm/armlinux.h>
+-#include <mach/silicon.h>
++#include <mach/omap3-silicon.h>
+ #include <mach/sdrc.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+diff --git a/arch/arm/boards/panda/board.c b/arch/arm/boards/panda/board.c
+index 98c05b2..99222d2 100644
+--- a/arch/arm/boards/panda/board.c
++++ b/arch/arm/boards/panda/board.c
+@@ -8,7 +8,7 @@
+ #include <asm/armlinux.h>
+ #include <linux/stat.h>
+ #include <generated/mach-types.h>
+-#include <mach/silicon.h>
++#include <mach/omap4-silicon.h>
+ #include <mach/sdrc.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+diff --git a/arch/arm/boards/pcm049/board.c b/arch/arm/boards/pcm049/board.c
+index 3159457..859ce3b 100644
+--- a/arch/arm/boards/pcm049/board.c
++++ b/arch/arm/boards/pcm049/board.c
+@@ -22,7 +22,7 @@
+ #include <ns16550.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <mach/silicon.h>
++#include <mach/omap4-silicon.h>
+ #include <mach/sdrc.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+diff --git a/arch/arm/boards/phycard-a-l1/pca-a-l1.c b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+index e35db18..c6a7e60 100644
+--- a/arch/arm/boards/phycard-a-l1/pca-a-l1.c
++++ b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+@@ -58,7 +58,7 @@
+ #include <mach/xload.h>
+ #include <mach/omap3-mux.h>
+ #include <mach/sdrc.h>
+-#include <mach/silicon.h>
++#include <mach/omap3-silicon.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
  
-+#ifdef CONFIG_ARCH_AM33XX
-+#include <mach/am33xx-silicon.h>
-+#define UART_BASE	AM33XX_UART0_BASE
-+#endif
+diff --git a/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c b/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
+index 64e6d94..26b31dd 100644
+--- a/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
++++ b/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
+@@ -22,7 +22,7 @@
+ #include <ns16550.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <mach/silicon.h>
++#include <mach/omap4-silicon.h>
+ #include <mach/sdrc.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+diff --git a/arch/arm/mach-omap/devices-gpmc-nand.c b/arch/arm/mach-omap/devices-gpmc-nand.c
+index b2a2b0f..c4ddc95 100644
+--- a/arch/arm/mach-omap/devices-gpmc-nand.c
++++ b/arch/arm/mach-omap/devices-gpmc-nand.c
+@@ -24,7 +24,6 @@
+ #include <clock.h>
+ #include <io.h>
+ 
+-#include <mach/silicon.h>
+ #include <mach/gpmc.h>
+ #include <mach/gpmc_nand.h>
+ 
+diff --git a/arch/arm/mach-omap/include/mach/clocks.h b/arch/arm/mach-omap/include/mach/clocks.h
+index cbadec7..e44d98b 100644
+--- a/arch/arm/mach-omap/include/mach/clocks.h
++++ b/arch/arm/mach-omap/include/mach/clocks.h
+@@ -34,11 +34,4 @@
+ #define S26M		26000000
+ #define S38_4M		38400000
+ 
+-#ifdef CONFIG_ARCH_OMAP3
+-#include <mach/omap3-clock.h>
+-#endif
+-#ifdef CONFIG_ARCH_OMAP4
+-#include <mach/omap4-clock.h>
+-#endif
+-
+ #endif /* __OMAP_CLOCKS_H_ */
+diff --git a/arch/arm/mach-omap/include/mach/omap3-silicon.h b/arch/arm/mach-omap/include/mach/omap3-silicon.h
+index 5843027..0cf43bd 100644
+--- a/arch/arm/mach-omap/include/mach/omap3-silicon.h
++++ b/arch/arm/mach-omap/include/mach/omap3-silicon.h
+@@ -130,4 +130,9 @@
+ /* PRM */
+ #define OMAP3_PRM_RSTCTRL_RESET	0x04
+ 
++/* If Architecture specific init functions are present */
++#ifndef __ASSEMBLY__
++void omap3_core_init(void);
++#endif /* __ASSEMBLY__ */
 +
- #define LSR_THRE	0x20	/* Xmit holding register empty */
- #define LSR		(5 << 2)
- #define THR		(0 << 2)
+ #endif /* __ASM_ARCH_OMAP3_H */
+diff --git a/arch/arm/mach-omap/include/mach/silicon.h b/arch/arm/mach-omap/include/mach/silicon.h
+deleted file mode 100644
+index 5ee1931..0000000
+--- a/arch/arm/mach-omap/include/mach/silicon.h
++++ /dev/null
+@@ -1,33 +0,0 @@
+-/*
+- * (C) Copyright 2008
+- * Texas Instruments, <www.ti.com>
+- * Nishanth Menon <x0nishan@ti.com>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR /PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+-  */
+-#ifndef __ASM_ARCH_OMAP_SILICON_H
+-#define __ASM_ARCH_OMAP_SILICON_H
+-
+-/* Each platform silicon header comes here */
+-#ifdef CONFIG_ARCH_OMAP3
+-#include <mach/omap3-silicon.h>
+-#endif
+-#ifdef CONFIG_ARCH_OMAP4
+-#include <mach/omap4-silicon.h>
+-#endif
+-
+-/* If Architecture specific init functions are present */
+-#ifndef __ASSEMBLY__
+-void omap3_core_init(void);
+-#endif /* __ASSEMBLY__ */
+-
+-#endif /* __ASM_ARCH_OMAP_SILICON_H */
+diff --git a/arch/arm/mach-omap/omap3_clock.c b/arch/arm/mach-omap/omap3_clock.c
+index 11f5117..5cf2747 100644
+--- a/arch/arm/mach-omap/omap3_clock.c
++++ b/arch/arm/mach-omap/omap3_clock.c
+@@ -32,7 +32,7 @@
+ 
+ #include <common.h>
+ #include <io.h>
+-#include <mach/silicon.h>
++#include <mach/omap3-silicon.h>
+ #include <mach/clocks.h>
+ #include <mach/omap3-clock.h>
+ #include <mach/timers.h>
+diff --git a/arch/arm/mach-omap/omap3_core.S b/arch/arm/mach-omap/omap3_core.S
+index 38a8cb4..bc32f55 100644
+--- a/arch/arm/mach-omap/omap3_core.S
++++ b/arch/arm/mach-omap/omap3_core.S
+@@ -28,7 +28,7 @@
+ #include <config.h>
+ #include <linux/linkage.h>
+ #include <asm/assembler.h>
+-#include <mach/silicon.h>
++#include <mach/omap3-silicon.h>
+ #include <mach/wdt.h>
+ #include <mach/clocks.h>
+ #include <asm/barebox-arm-head.h>
+diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
+index 9932103..a209129 100644
+--- a/arch/arm/mach-omap/omap3_generic.c
++++ b/arch/arm/mach-omap/omap3_generic.c
+@@ -30,12 +30,13 @@
+ #include <common.h>
+ #include <init.h>
+ #include <io.h>
+-#include <mach/silicon.h>
++#include <mach/omap3-silicon.h>
+ #include <mach/gpmc.h>
+ #include <mach/sdrc.h>
+ #include <mach/control.h>
+ #include <mach/omap3-smx.h>
+ #include <mach/clocks.h>
++#include <mach/omap3-clock.h>
+ #include <mach/wdt.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
+index c86e4e5..0621fd3 100644
+--- a/arch/arm/mach-omap/omap4_clock.c
++++ b/arch/arm/mach-omap/omap4_clock.c
+@@ -1,7 +1,7 @@
+ #include <common.h>
+ #include <io.h>
+ #include <mach/syslib.h>
+-#include <mach/silicon.h>
++#include <mach/omap4-silicon.h>
+ #include <mach/clocks.h>
+ #include <mach/omap4-clock.h>
+ 
+diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+index f4841a6..2a09eb6 100644
+--- a/arch/arm/mach-omap/omap4_generic.c
++++ b/arch/arm/mach-omap/omap4_generic.c
+@@ -2,7 +2,7 @@
+ #include <init.h>
+ #include <io.h>
+ #include <mach/omap4-clock.h>
+-#include <mach/silicon.h>
++#include <mach/omap4-silicon.h>
+ #include <mach/omap4-mux.h>
+ #include <mach/syslib.h>
+ #include <mach/xload.h>
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index 4df5a1e..9050a8d 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -68,7 +68,6 @@
+ #include <linux/mtd/nand.h>
+ #include <linux/mtd/nand_ecc.h>
+ #include <io.h>
+-#include <mach/silicon.h>
+ #include <mach/gpmc.h>
+ #include <mach/gpmc_nand.h>
+ 
 -- 
 1.7.10.4
 
