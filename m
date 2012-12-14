@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tje5A-0003kK-C4
- for barebox@lists.infradead.org; Fri, 14 Dec 2012 22:50:20 +0000
-Date: Fri, 14 Dec 2012 23:49:07 +0100
+ id 1TjeLW-0005qc-Sy
+ for barebox@lists.infradead.org; Fri, 14 Dec 2012 23:07:16 +0000
+Date: Sat, 15 Dec 2012 00:07:07 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121214224907.GA26326@pengutronix.de>
+Message-ID: <20121214230707.GB26326@pengutronix.de>
 References: <20121213163758.GB26483@game.jcrosoft.org>
  <1355416810-26555-1-git-send-email-plagnioj@jcrosoft.com>
+ <1355416810-26555-4-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1355416810-26555-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1355416810-26555-4-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,71 +24,136 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/9] kfifo: introduce kfifo_dump_str to dump the fifo
+Subject: Re: [PATCH 4/9] introduce printk support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Dec 13, 2012 at 05:40:02PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> This will allow to implement a dmesg mecanism in barebox
+On Thu, Dec 13, 2012 at 05:40:05PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> this will allow to fill the output buffer
+> 
+> and now have 2 output mode pr_xxx for drivers and printf for application
 > 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  include/kfifo.h |    2 ++
->  lib/kfifo.c     |   21 +++++++++++++++++++++
->  2 files changed, 23 insertions(+)
+>  common/console.c                |   47 +++++++++++++++++++++++++++++++++++++++
+>  include/common.h                |   28 ++++++++++++++---------
+>  include/linux/barebox-wrapper.h |    2 --
+>  3 files changed, 65 insertions(+), 12 deletions(-)
 > 
-> diff --git a/include/kfifo.h b/include/kfifo.h
-> index 25880f4..9dbbe0d 100644
-> --- a/include/kfifo.h
-> +++ b/include/kfifo.h
-> @@ -74,5 +74,7 @@ static inline unsigned int kfifo_len(struct kfifo *fifo)
->  void kfifo_putc(struct kfifo *fifo, unsigned char c);
->  unsigned int kfifo_getc(struct kfifo *fifo, unsigned char *c);
+> diff --git a/common/console.c b/common/console.c
+> index 2d2d20a..d8fe5b6 100644
+> --- a/common/console.c
+> +++ b/common/console.c
+> @@ -435,6 +435,7 @@ int ctrlc (void)
+>  EXPORT_SYMBOL(ctrlc);
+>  #endif /* ARCH_HAS_CTRC */
 >  
-> +void kfifo_dump_str(struct kfifo *fifo, void (*dump)(unsigned char c));
+> +#ifdef CONFIG_CMD_DMESG
+>  #include <command.h>
+>  #include <complete.h>
+>  
+> @@ -454,3 +455,49 @@ BAREBOX_CMD_START(dmesg)
+>  	BAREBOX_CMD_HELP(cmd_dmesg_help)
+>  	BAREBOX_CMD_COMPLETE(empty_complete)
+>  BAREBOX_CMD_END
 > +
+> +int vprintk (const char *fmt, va_list args)
+> +{
+> +	uint i;
+> +	char printbuffer[CFG_PBSIZE];
+> +	char *s = printbuffer;
+> +
+> +	/* For this to work, printbuffer must be larger than
+> +	 * anything we ever want to print.
+> +	 */
+> +	i = vsprintf (printbuffer, fmt, args);
+> +
+> +	/* Print the string */
+> +	puts (printbuffer);
+
+So when the console is not initialized the characters end up in the
+console_output_fifo which is emptied when the first console is
+initialized. This means it's lost from the dmesg buffer afterwards.
+
+> +
+> +	if (initialized < CONSOLE_INIT_FULL)
+> +		return i;
+> +
+> +	while (*s) {
+> +		if (*s == '\n')
+> +			kfifo_putc(console_output_fifo, '\r');
+> +		kfifo_putc(console_output_fifo, *s);
+> +		s++;
+> +	}
+
+You shouldn't use the same buffer for printk messages, use a different
+one instead.
+
+> +
+> +	return i;
+> +}
+> +EXPORT_SYMBOL(vprintk);
+> +
+> +int printk (const char *fmt, ...)
+> +{
+> +	va_list args;
+> +	uint i;
+> +
+> +	va_start (args, fmt);
+> +
+> +	i = vprintk(fmt, args);
+> +	/* For this to work, printbuffer must be larger than
+> +	 * anything we ever want to print.
+> +	 */
+
+This comment seems inappropriate here.
+
+> +	va_end (args);
+> +
+> +	return i;
+> +}
+> +EXPORT_SYMBOL(printk);
+> +#endif
+> diff --git a/include/common.h b/include/common.h
+> index 6256879..168bfd1 100644
+> --- a/include/common.h
+> +++ b/include/common.h
+> @@ -48,22 +48,30 @@
+>  #error "None of __LITTLE_ENDIAN and __BIG_ENDIAN are defined"
 >  #endif
 >  
-> diff --git a/lib/kfifo.c b/lib/kfifo.c
-> index afd3894..7892aed 100644
-> --- a/lib/kfifo.c
-> +++ b/lib/kfifo.c
-> @@ -154,3 +154,24 @@ unsigned int kfifo_getc(struct kfifo *fifo, unsigned char *c)
->  	return 0;
->  }
+> -#define pr_info(fmt, arg...)	printf(fmt, ##arg)
+> -#define pr_notice(fmt, arg...)	printf(fmt, ##arg)
+> -#define pr_err(fmt, arg...)	printf(fmt, ##arg)
+> -#define pr_warning(fmt, arg...)	printf(fmt, ##arg)
+> -#define pr_crit(fmt, arg...)	printf(fmt, ##arg)
+> -#define pr_alert(fmt, arg...)	printf(fmt, ##arg)
+> -#define pr_emerg(fmt, arg...)	printf(fmt, ##arg)
+> +#ifdef CONFIG_CMD_DMESG
+> +int	printk(const char *fmt, ...) __attribute__ ((format(__printf__, 1, 2)));
+> +int	vprintk(const char *fmt, va_list args);
+> +#else
+> +#define printk			printf
+> +#define vprintk			vprintf
+> +#endif
+> +
+> +#define pr_info(fmt, arg...)	printk(fmt, ##arg)
+> +#define pr_notice(fmt, arg...)	printk(fmt, ##arg)
+> +#define pr_err(fmt, arg...)	printk(fmt, ##arg)
+> +#define pr_warning(fmt, arg...)	printk(fmt, ##arg)
+> +#define pr_crit(fmt, arg...)	printk(fmt, ##arg)
+> +#define pr_alert(fmt, arg...)	printk(fmt, ##arg)
+> +#define pr_emerg(fmt, arg...)	printk(fmt, ##arg)
 >  
-> +void kfifo_dump_str(struct kfifo *fifo, void (*dump)(unsigned char c))
-> +{
-> +	int i;
-> +	unsigned char *c;
-> +	unsigned int l;
-> +	unsigned int len;
-> +
-> +	len = fifo->in - fifo->out;
-> +
-> +	/* first get the data from fifo->out until the end of the buffer */
-> +	l = min(len, fifo->size - (fifo->out & (fifo->size - 1)));
-> +	c = fifo->buffer + (fifo->out & (fifo->size - 1));
-> +	for (i = 0; i < l; i++)
-> +		dump(c[i]);
-> +
-> +	/* then get the rest (if any) from the beginning of the buffer */
-> +	c = fifo->buffer;
-> +	l = len - l;
-> +	for (i = 0; i < l; i++)
-> +		dump(c[i]);
-> +}
+>  #ifdef DEBUG
+> -#define pr_debug(fmt, arg...)	printf(fmt, ##arg)
+> +#define pr_debug(fmt, arg...)	printk(fmt, ##arg)
+> +#define debug(fmt, arg...)	printf(fmt, ##arg)
 
-This function works in the innards of the fifo implementation and
-replaces these two lines of code:
-
-	while (kfifo_getc(console_output_fifo, &ch) == 0)
-		console_putc(CONSOLE_STDOUT, ch);
-
-You do not provide a reason why we should do this, so: no.
+'debug' is used in a huge amount of drivers, this would have to be fixed
+when the two functions get a different meaning.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
