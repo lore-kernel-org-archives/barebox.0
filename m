@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([92.198.50.35])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TjPwA-00059t-O9
- for barebox@lists.infradead.org; Fri, 14 Dec 2012 07:44:03 +0000
-Date: Fri, 14 Dec 2012 08:44:01 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121214074401.GN10369@pengutronix.de>
-References: <1355413606-18097-1-git-send-email-w.sang@pengutronix.de>
+Received: from mx2.rafi.de ([178.15.151.13])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TjQCo-0006Mw-3v
+ for barebox@lists.infradead.org; Fri, 14 Dec 2012 08:01:15 +0000
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1355413606-18097-1-git-send-email-w.sang@pengutronix.de>
+Message-ID: <OFA6201BB7.A232B0B4-ONC1257AD4.002BB797-C1257AD4.002C0CE1@o0802.rafi.inhouse>
+From: guenter.gebhardt@rafi.de
+Date: Fri, 14 Dec 2012 09:01:08 +0100
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,65 +15,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============7379693527846681990=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: flash: add missing newlines to error messages
-To: Wolfram Sang <w.sang@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: hush command output string
+To: barebox@lists.infradead.org
 
-On Thu, Dec 13, 2012 at 04:46:46PM +0100, Wolfram Sang wrote:
-> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
-> ---
+Dies ist eine mehrteilige Nachricht im MIME-Format.
+--===============7379693527846681990==
+Content-Type: multipart/alternative; boundary="=_alternative 002C0CDEC1257AD4_="
 
-Applied, thanks
+Dies ist eine mehrteilige Nachricht im MIME-Format.
+--=_alternative 002C0CDEC1257AD4_=
+Content-Type: text/plain; charset="US-ASCII"
 
-Sascha
+Hello,
+
+I want to write a hush script which evaluates standard output of some 
+command, e.g.:
+
+VARIABLE=$(command)
+
+or
+
+VARIABLE=`command`
+
+How can this be done within hush?
+--=_alternative 002C0CDEC1257AD4_=
+Content-Type: text/html; charset="US-ASCII"
+
+<font size=2 face="sans-serif">Hello,</font>
+<br>
+<br><font size=2 face="sans-serif">I want to write a hush script which
+evaluates standard output of some command, e.g.:</font>
+<br>
+<br><font size=2 face="sans-serif">VARIABLE=$(command)</font>
+<br>
+<br><font size=2 face="sans-serif">or</font>
+<br>
+<br><font size=2 face="sans-serif">VARIABLE=`command`</font>
+<br>
+<br><font size=2 face="sans-serif">How can this be done within hush?</font>
+--=_alternative 002C0CDEC1257AD4_=--
 
 
->  commands/flash.c |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/commands/flash.c b/commands/flash.c
-> index b1673de..d22d6a0 100644
-> --- a/commands/flash.c
-> +++ b/commands/flash.c
-> @@ -54,7 +54,7 @@ static int do_flerase(int argc, char *argv[])
->  
->  	fd = open(filename, O_WRONLY);
->  	if (fd < 0) {
-> -		printf("open %s: %s", filename, errno_str());
-> +		printf("open %s: %s\n", filename, errno_str());
->  		return 1;
->  	}
->  
-> @@ -125,7 +125,7 @@ static int do_protect(int argc, char *argv[])
->  
->  	fd = open(filename, O_WRONLY);
->  	if (fd < 0) {
-> -		printf("open %s: %s", filename, errno_str());
-> +		printf("open %s: %s\n", filename, errno_str());
->  		return 1;
->  	}
->  
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--===============7379693527846681990==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============7379693527846681990==--
