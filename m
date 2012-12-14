@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TjPpJ-00040f-IT
- for barebox@lists.infradead.org; Fri, 14 Dec 2012 07:36:58 +0000
-Date: Fri, 14 Dec 2012 08:36:53 +0100
+ id 1TjPwA-00059t-O9
+ for barebox@lists.infradead.org; Fri, 14 Dec 2012 07:44:03 +0000
+Date: Fri, 14 Dec 2012 08:44:01 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121214073653.GM10369@pengutronix.de>
-References: <1355394405-18814-1-git-send-email-maxime.ripard@free-electrons.com>
+Message-ID: <20121214074401.GN10369@pengutronix.de>
+References: <1355413606-18097-1-git-send-email-w.sang@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1355394405-18814-1-git-send-email-maxime.ripard@free-electrons.com>
+In-Reply-To: <1355413606-18097-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv2 0/3] ARM: cfa10036: Load a different DTB depending on
- variants
-To: Maxime Ripard <maxime.ripard@free-electrons.com>
-Cc: barebox@lists.infradead.org, Brian Lilly <brian@crystalfontz.com>
+Subject: Re: [PATCH] commands: flash: add missing newlines to error messages
+To: Wolfram Sang <w.sang@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Thu, Dec 13, 2012 at 11:26:42AM +0100, Maxime Ripard wrote:
-> Hi,
-> 
-> The CFA-10036 is actually a module that can be plugged in an expansion board.
-> 
-> For now, there is only two of these expansion boards, the CFA-10037 and the
-> CFA-10049, with different features, muxing and so on.
-> 
-> So, at boot time, the cfa-10036 has to be aware that it runs on an expansion
-> board and if so, which expansion board it is currently plugged in, so that it
-> can load the right device tree.
-> 
-> This is done thanks to an eeprom found at the same address on the same bus on
-> the expansion boards, that holds the expansion board id, so we can know all of
-> this.
-> 
-> This patchset does exactly that. It first adds support for the AT24, and then
-> the needed bits to retrieve the board variants from the eeprom if any and load
-> the right DTB.
-> 
-> Thanks,
-> Maxime
-> 
-> Changes from v2:
->   - Changed the environment variable name and change it to a global variable
-> 
-> Maxime Ripard (3):
->   ARM: cfa10036: Add the AT24HC02 I2C EEPROM
->   ARM: cfa10036: Retrieve the board variant from the AT24
->   ARM: cfa10036: Use the board variant to load a different device tree
+On Thu, Dec 13, 2012 at 04:46:46PM +0100, Wolfram Sang wrote:
+> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+> ---
 
 Applied, thanks
 
 Sascha
+
+
+>  commands/flash.c |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/commands/flash.c b/commands/flash.c
+> index b1673de..d22d6a0 100644
+> --- a/commands/flash.c
+> +++ b/commands/flash.c
+> @@ -54,7 +54,7 @@ static int do_flerase(int argc, char *argv[])
+>  
+>  	fd = open(filename, O_WRONLY);
+>  	if (fd < 0) {
+> -		printf("open %s: %s", filename, errno_str());
+> +		printf("open %s: %s\n", filename, errno_str());
+>  		return 1;
+>  	}
+>  
+> @@ -125,7 +125,7 @@ static int do_protect(int argc, char *argv[])
+>  
+>  	fd = open(filename, O_WRONLY);
+>  	if (fd < 0) {
+> -		printf("open %s: %s", filename, errno_str());
+> +		printf("open %s: %s\n", filename, errno_str());
+>  		return 1;
+>  	}
+>  
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
