@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tkcke-0003SK-0l
- for barebox@lists.infradead.org; Mon, 17 Dec 2012 15:37:09 +0000
+ id 1Tkcvk-0003zR-UG
+ for barebox@lists.infradead.org; Mon, 17 Dec 2012 15:48:37 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Mon, 17 Dec 2012 16:36:57 +0100
-Message-Id: <1355758617-21175-1-git-send-email-w.sang@pengutronix.de>
+Date: Mon, 17 Dec 2012 16:48:23 +0100
+Message-Id: <1355759313-23329-2-git-send-email-w.sang@pengutronix.de>
+In-Reply-To: <1355759313-23329-1-git-send-email-w.sang@pengutronix.de>
+References: <1355759313-23329-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] nand: mxs: NO_SUBPAGE_WRITE flag was overwritten
+Subject: [PATCH V3 01/11] mtd: drop custom is_power_of_2()
 To: barebox@lists.infradead.org
 Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-It is not the chip, but this controller which cannot do subpage writes.
-So, make sure we add the flag at the proper place, so it doesn't get
-overwritten by flash detection anymore.
+We have proper version in log2.h these days.
 
 Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 ---
- drivers/mtd/nand/nand_mxs.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/mtd/ubi/ubi-barebox.h |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
-index c4509d3..bc34526 100644
---- a/drivers/mtd/nand/nand_mxs.c
-+++ b/drivers/mtd/nand/nand_mxs.c
-@@ -1217,7 +1217,6 @@ static int mxs_nand_probe(struct device_d *dev)
- 	mtd->parent = dev;
+diff --git a/drivers/mtd/ubi/ubi-barebox.h b/drivers/mtd/ubi/ubi-barebox.h
+index 72f29a6..7574607 100644
+--- a/drivers/mtd/ubi/ubi-barebox.h
++++ b/drivers/mtd/ubi/ubi-barebox.h
+@@ -25,6 +25,7 @@
+ #include <linux/string.h>
+ #include <linux/mtd/mtd.h>
+ #include <linux/mtd/ubi.h>
++#include <linux/log2.h>
  
- 	nand->priv = nand_info;
--	nand->options |= NAND_NO_SUBPAGE_WRITE;
+ #define crc32(seed, data, length)  crc32_no_comp(seed, (unsigned char const *)data, length)
  
- 	nand->cmd_ctrl		= mxs_nand_cmd_ctrl;
+@@ -53,10 +54,6 @@ do {									\
+ #define put_device(...)
+ #define ubi_sysfs_init(...)		0
+ #define ubi_sysfs_close(...)		do { } while (0)
+-static inline int is_power_of_2(unsigned long n)
+-{
+-	return (n != 0 && ((n & (n - 1)) == 0));
+-}
  
-@@ -1241,8 +1240,15 @@ static int mxs_nand_probe(struct device_d *dev)
- 	nand->ecc.bytes		= 9;
- 	nand->ecc.size		= 512;
- 
--	/* Scan to find existence of the device */
--	err = nand_scan(mtd, 1);
-+	/* first scan to find the device and get the page size */
-+	err = nand_scan_ident(mtd, 1);
-+	if (err)
-+		goto err2;
-+
-+	nand->options |= NAND_NO_SUBPAGE_WRITE;
-+
-+	/* second phase scan */
-+	err = nand_scan_tail(mtd);
- 	if (err)
- 		goto err2;
- 
+ /* FIXME */
+ #define MKDEV(...)			0
 -- 
 1.7.10.4
 
