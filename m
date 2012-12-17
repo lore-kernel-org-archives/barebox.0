@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tkcvk-0003zV-UE
- for barebox@lists.infradead.org; Mon, 17 Dec 2012 15:48:47 +0000
+ id 1Tkcvk-0003zX-UC
+ for barebox@lists.infradead.org; Mon, 17 Dec 2012 15:48:41 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Mon, 17 Dec 2012 16:48:27 +0100
-Message-Id: <1355759313-23329-6-git-send-email-w.sang@pengutronix.de>
+Date: Mon, 17 Dec 2012 16:48:28 +0100
+Message-Id: <1355759313-23329-7-git-send-email-w.sang@pengutronix.de>
 In-Reply-To: <1355759313-23329-1-git-send-email-w.sang@pengutronix.de>
 References: <1355759313-23329-1-git-send-email-w.sang@pengutronix.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,147 +16,149 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?q?=5BPATCH=20V3=2005/11=5D=20ubi=3A=20bump=20ubi-media=2Eh=20to=20newest=20version?=
+Subject: [PATCH V3 06/11] devfs & mtd: add MEMERASE ioctl support
 To: barebox@lists.infradead.org
 Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-TmVlZGVkIGZvciB1Ymlmb3JtYXQsIHdlIGFyZSBpbnRlcmVzdGVkIGluIGltYWdlX3NlcSBlc3Bl
-Y2lhbGx5LgoKU2lnbmVkLW9mZi1ieTogV29sZnJhbSBTYW5nIDx3LnNhbmdAcGVuZ3V0cm9uaXgu
-ZGU+Ci0tLQogaW5jbHVkZS9tdGQvdWJpLW1lZGlhLmggfCAgIDU1ICsrKysrKysrKysrKysrKysr
-KysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMzAgaW5zZXJ0
-aW9ucygrKSwgMjUgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9tdGQvdWJpLW1l
-ZGlhLmggYi9pbmNsdWRlL210ZC91YmktbWVkaWEuaAppbmRleCBjZDFiZDhlLi5kNTUyZGI4IDEw
-MDY0NAotLS0gYS9pbmNsdWRlL210ZC91YmktbWVkaWEuaAorKysgYi9pbmNsdWRlL210ZC91Ymkt
-bWVkaWEuaApAQCAtMTEsNyArMTEsNiBAQAogICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1Mg
-Rk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiBTZWUKICAqIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMg
-TGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgogICoKLSAqCiAgKiBBdXRob3JzOiBBcnRlbSBCaXR5
-dXRza2l5ICjQkdC40YLRjtGG0LrQuNC5INCQ0YDRgtGR0LwpCiAgKiAgICAgICAgICBUaG9tYXMg
-R2xlaXhuZXIKICAqICAgICAgICAgIEZyYW5rIEhhdmVya2FtcApAQCAtOTUsMTAgKzk0LDExIEBA
-IGVudW0gewogICogQ29tcGF0aWJpbGl0eSBjb25zdGFudHMgdXNlZCBieSBpbnRlcm5hbCB2b2x1
-bWVzLgogICoKICAqIEBVQklfQ09NUEFUX0RFTEVURTogZGVsZXRlIHRoaXMgaW50ZXJuYWwgdm9s
-dW1lIGJlZm9yZSBhbnl0aGluZyBpcyB3cml0dGVuCi0gKiB0byB0aGUgZmxhc2gKKyAqICAgICAg
-ICAgICAgICAgICAgICAgdG8gdGhlIGZsYXNoCiAgKiBAVUJJX0NPTVBBVF9STzogYXR0YWNoIHRo
-aXMgZGV2aWNlIGluIHJlYWQtb25seSBtb2RlCiAgKiBAVUJJX0NPTVBBVF9QUkVTRVJWRTogcHJl
-c2VydmUgdGhpcyBpbnRlcm5hbCB2b2x1bWUgLSBkbyBub3QgdG91Y2ggaXRzCi0gKiBwaHlzaWNh
-bCBlcmFzZWJsb2NrcywgZG9uJ3QgYWxsb3cgdGhlIHdlYXItbGV2ZWxpbmcgdW5pdCB0byBtb3Zl
-IHRoZW0KKyAqICAgICAgICAgICAgICAgICAgICAgICBwaHlzaWNhbCBlcmFzZWJsb2NrcywgZG9u
-J3QgYWxsb3cgdGhlIHdlYXItbGV2ZWxpbmcKKyAqICAgICAgICAgICAgICAgICAgICAgICBzdWIt
-c3lzdGVtIHRvIG1vdmUgdGhlbQogICogQFVCSV9DT01QQVRfUkVKRUNUOiByZWplY3QgdGhpcyBV
-QkkgaW1hZ2UKICAqLwogZW51bSB7CkBAIC0xMjAsMTggKzEyMCwxOSBAQCBlbnVtIHsKICAqIHN0
-cnVjdCB1YmlfZWNfaGRyIC0gVUJJIGVyYXNlIGNvdW50ZXIgaGVhZGVyLgogICogQG1hZ2ljOiBl
-cmFzZSBjb3VudGVyIGhlYWRlciBtYWdpYyBudW1iZXIgKCVVQklfRUNfSERSX01BR0lDKQogICog
-QHZlcnNpb246IHZlcnNpb24gb2YgVUJJIGltcGxlbWVudGF0aW9uIHdoaWNoIGlzIHN1cHBvc2Vk
-IHRvIGFjY2VwdCB0aGlzCi0gKiBVQkkgaW1hZ2UKKyAqICAgICAgICAgICBVQkkgaW1hZ2UKICAq
-IEBwYWRkaW5nMTogcmVzZXJ2ZWQgZm9yIGZ1dHVyZSwgemVyb2VzCiAgKiBAZWM6IHRoZSBlcmFz
-ZSBjb3VudGVyCiAgKiBAdmlkX2hkcl9vZmZzZXQ6IHdoZXJlIHRoZSBWSUQgaGVhZGVyIHN0YXJ0
-cwogICogQGRhdGFfb2Zmc2V0OiB3aGVyZSB0aGUgdXNlciBkYXRhIHN0YXJ0CisgKiBAaW1hZ2Vf
-c2VxOiBpbWFnZSBzZXF1ZW5jZSBudW1iZXIKICAqIEBwYWRkaW5nMjogcmVzZXJ2ZWQgZm9yIGZ1
-dHVyZSwgemVyb2VzCiAgKiBAaGRyX2NyYzogZXJhc2UgY291bnRlciBoZWFkZXIgQ1JDIGNoZWNr
-c3VtCiAgKgogICogVGhlIGVyYXNlIGNvdW50ZXIgaGVhZGVyIHRha2VzIDY0IGJ5dGVzIGFuZCBo
-YXMgYSBwbGVudHkgb2YgdW51c2VkIHNwYWNlIGZvcgogICogZnV0dXJlIHVzYWdlLiBUaGUgdW51
-c2VkIGZpZWxkcyBhcmUgemVyb2VkLiBUaGUgQHZlcnNpb24gZmllbGQgaXMgdXNlZCB0bwogICog
-aW5kaWNhdGUgdGhlIHZlcnNpb24gb2YgVUJJIGltcGxlbWVudGF0aW9uIHdoaWNoIGlzIHN1cHBv
-c2VkIHRvIGJlIGFibGUgdG8KLSAqIHdvcmsgd2l0aCB0aGlzIFVCSSBpbWFnZS4gSWYgQHZlcnNp
-b24gaXMgZ3JlYXRlciB0aGVuIHRoZSBjdXJyZW50IFVCSQorICogd29yayB3aXRoIHRoaXMgVUJJ
-IGltYWdlLiBJZiBAdmVyc2lvbiBpcyBncmVhdGVyIHRoYW4gdGhlIGN1cnJlbnQgVUJJCiAgKiB2
-ZXJzaW9uLCB0aGUgaW1hZ2UgaXMgcmVqZWN0ZWQuIFRoaXMgbWF5IGJlIHVzZWZ1bCBpbiBmdXR1
-cmUgaWYgc29tZXRoaW5nCiAgKiBpcyBjaGFuZ2VkIHJhZGljYWxseS4gVGhpcyBmaWVsZCBpcyBk
-dXBsaWNhdGVkIGluIHRoZSB2b2x1bWUgaWRlbnRpZmllcgogICogaGVhZGVyLgpAQCAtMTQwLDYg
-KzE0MSwxNCBAQCBlbnVtIHsKICAqIHZvbHVtZSBpZGVudGlmaWVyIGhlYWRlciBhbmQgdXNlciBk
-YXRhLCByZWxhdGl2ZSB0byB0aGUgYmVnaW5uaW5nIG9mIHRoZQogICogcGh5c2ljYWwgZXJhc2Vi
-bG9jay4gVGhlc2UgdmFsdWVzIGhhdmUgdG8gYmUgdGhlIHNhbWUgZm9yIGFsbCBwaHlzaWNhbAog
-ICogZXJhc2VibG9ja3MuCisgKgorICogVGhlIEBpbWFnZV9zZXEgZmllbGQgaXMgdXNlZCB0byB2
-YWxpZGF0ZSBhIFVCSSBpbWFnZSB0aGF0IGhhcyBiZWVuIHByZXBhcmVkCisgKiBmb3IgYSBVQkkg
-ZGV2aWNlLiBUaGUgQGltYWdlX3NlcSB2YWx1ZSBjYW4gYmUgYW55IHZhbHVlLCBidXQgaXQgbXVz
-dCBiZSB0aGUKKyAqIHNhbWUgb24gYWxsIGVyYXNlYmxvY2tzLiBVQkkgd2lsbCBlbnN1cmUgdGhh
-dCBhbGwgbmV3IGVyYXNlIGNvdW50ZXIgaGVhZGVycworICogYWxzbyBjb250YWluIHRoaXMgdmFs
-dWUsIGFuZCB3aWxsIGNoZWNrIHRoZSB2YWx1ZSB3aGVuIHNjYW5uaW5nIGF0IHN0YXJ0LXVwLgor
-ICogT25lIHdheSB0byBtYWtlIHVzZSBvZiBAaW1hZ2Vfc2VxIGlzIHRvIGluY3JlYXNlIGl0cyB2
-YWx1ZSBieSBvbmUgZXZlcnkgdGltZQorICogYW4gaW1hZ2UgaXMgZmxhc2hlZCBvdmVyIGFuIGV4
-aXN0aW5nIGltYWdlLCB0aGVuLCBpZiB0aGUgZmxhc2hpbmcgZG9lcyBub3QKKyAqIGNvbXBsZXRl
-LCBVQkkgd2lsbCBkZXRlY3QgdGhlIGVycm9yIHdoZW4gc2Nhbm5pbmcuCiAgKi8KIHN0cnVjdCB1
-YmlfZWNfaGRyIHsKIAlfX2JlMzIgIG1hZ2ljOwpAQCAtMTQ4LDcgKzE1Nyw4IEBAIHN0cnVjdCB1
-YmlfZWNfaGRyIHsKIAlfX2JlNjQgIGVjOyAvKiBXYXJuaW5nOiB0aGUgY3VycmVudCBsaW1pdCBp
-cyAzMS1iaXQgYW55d2F5ISAqLwogCV9fYmUzMiAgdmlkX2hkcl9vZmZzZXQ7CiAJX19iZTMyICBk
-YXRhX29mZnNldDsKLQlfX3U4ICAgIHBhZGRpbmcyWzM2XTsKKwlfX2JlMzIgIGltYWdlX3NlcTsK
-KwlfX3U4ICAgIHBhZGRpbmcyWzMyXTsKIAlfX2JlMzIgIGhkcl9jcmM7CiB9IF9fYXR0cmlidXRl
-X18gKChwYWNrZWQpKTsKIApAQCAtMTU2LDI0ICsxNjYsMjMgQEAgc3RydWN0IHViaV9lY19oZHIg
-ewogICogc3RydWN0IHViaV92aWRfaGRyIC0gb24tZmxhc2ggVUJJIHZvbHVtZSBpZGVudGlmaWVy
-IGhlYWRlci4KICAqIEBtYWdpYzogdm9sdW1lIGlkZW50aWZpZXIgaGVhZGVyIG1hZ2ljIG51bWJl
-ciAoJVVCSV9WSURfSERSX01BR0lDKQogICogQHZlcnNpb246IFVCSSBpbXBsZW1lbnRhdGlvbiB2
-ZXJzaW9uIHdoaWNoIGlzIHN1cHBvc2VkIHRvIGFjY2VwdCB0aGlzIFVCSQotICogaW1hZ2UgKCVV
-QklfVkVSU0lPTikKKyAqICAgICAgICAgICBpbWFnZSAoJVVCSV9WRVJTSU9OKQogICogQHZvbF90
-eXBlOiB2b2x1bWUgdHlwZSAoJVVCSV9WSURfRFlOQU1JQyBvciAlVUJJX1ZJRF9TVEFUSUMpCiAg
-KiBAY29weV9mbGFnOiBpZiB0aGlzIGxvZ2ljYWwgZXJhc2VibG9jayB3YXMgY29waWVkIGZyb20g
-YW5vdGhlciBwaHlzaWNhbAotICogZXJhc2VibG9jayAoZm9yIHdlYXItbGV2ZWxpbmcgcmVhc29u
-cykKKyAqICAgICAgICAgICAgIGVyYXNlYmxvY2sgKGZvciB3ZWFyLWxldmVsaW5nIHJlYXNvbnMp
-CiAgKiBAY29tcGF0OiBjb21wYXRpYmlsaXR5IG9mIHRoaXMgdm9sdW1lICglMCwgJVVCSV9DT01Q
-QVRfREVMRVRFLAotICogJVVCSV9DT01QQVRfSUdOT1JFLCAlVUJJX0NPTVBBVF9QUkVTRVJWRSwg
-b3IgJVVCSV9DT01QQVRfUkVKRUNUKQorICogICAgICAgICAgJVVCSV9DT01QQVRfSUdOT1JFLCAl
-VUJJX0NPTVBBVF9QUkVTRVJWRSwgb3IgJVVCSV9DT01QQVRfUkVKRUNUKQogICogQHZvbF9pZDog
-SUQgb2YgdGhpcyB2b2x1bWUKICAqIEBsbnVtOiBsb2dpY2FsIGVyYXNlYmxvY2sgbnVtYmVyCi0g
-KiBAbGViX3ZlcjogdmVyc2lvbiBvZiB0aGlzIGxvZ2ljYWwgZXJhc2VibG9jayAoSU1QT1JUQU5U
-OiBvYnNvbGV0ZSwgdG8gYmUKLSAqIHJlbW92ZWQsIGtlcHQgb25seSBmb3Igbm90IGJyZWFraW5n
-IG9sZGVyIFVCSSB1c2VycykKKyAqIEBwYWRkaW5nMTogcmVzZXJ2ZWQgZm9yIGZ1dHVyZSwgemVy
-b2VzCiAgKiBAZGF0YV9zaXplOiBob3cgbWFueSBieXRlcyBvZiBkYXRhIHRoaXMgbG9naWNhbCBl
-cmFzZWJsb2NrIGNvbnRhaW5zCiAgKiBAdXNlZF9lYnM6IHRvdGFsIG51bWJlciBvZiB1c2VkIGxv
-Z2ljYWwgZXJhc2VibG9ja3MgaW4gdGhpcyB2b2x1bWUKICAqIEBkYXRhX3BhZDogaG93IG1hbnkg
-Ynl0ZXMgYXQgdGhlIGVuZCBvZiB0aGlzIHBoeXNpY2FsIGVyYXNlYmxvY2sgYXJlIG5vdAotICog
-dXNlZAorICogICAgICAgICAgICB1c2VkCiAgKiBAZGF0YV9jcmM6IENSQyBjaGVja3N1bSBvZiB0
-aGUgZGF0YSBzdG9yZWQgaW4gdGhpcyBsb2dpY2FsIGVyYXNlYmxvY2sKLSAqIEBwYWRkaW5nMTog
-cmVzZXJ2ZWQgZm9yIGZ1dHVyZSwgemVyb2VzCi0gKiBAc3FudW06IHNlcXVlbmNlIG51bWJlcgog
-ICogQHBhZGRpbmcyOiByZXNlcnZlZCBmb3IgZnV0dXJlLCB6ZXJvZXMKKyAqIEBzcW51bTogc2Vx
-dWVuY2UgbnVtYmVyCisgKiBAcGFkZGluZzM6IHJlc2VydmVkIGZvciBmdXR1cmUsIHplcm9lcwog
-ICogQGhkcl9jcmM6IHZvbHVtZSBpZGVudGlmaWVyIGhlYWRlciBDUkMgY2hlY2tzdW0KICAqCiAg
-KiBUaGUgQHNxbnVtIGlzIHRoZSB2YWx1ZSBvZiB0aGUgZ2xvYmFsIHNlcXVlbmNlIGNvdW50ZXIg
-YXQgdGhlIHRpbWUgd2hlbiB0aGlzCkBAIC0xODQsNyArMTkzLDcgQEAgc3RydWN0IHViaV9lY19o
-ZHIgewogICogKHNlcXVlbmNlIG51bWJlcikgaXMgdXNlZCB0byBkaXN0aW5ndWlzaCBiZXR3ZWVu
-IG9sZGVyIGFuZCBuZXdlciB2ZXJzaW9ucyBvZgogICogbG9naWNhbCBlcmFzZWJsb2Nrcy4KICAq
-Ci0gKiBUaGVyZSBhcmUgMiBzaXR1YXRpb25zIHdoZW4gdGhlcmUgbWF5IGJlIG1vcmUgdGhlbiBv
-bmUgcGh5c2ljYWwgZXJhc2VibG9jaworICogVGhlcmUgYXJlIDIgc2l0dWF0aW9ucyB3aGVuIHRo
-ZXJlIG1heSBiZSBtb3JlIHRoYW4gb25lIHBoeXNpY2FsIGVyYXNlYmxvY2sKICAqIGNvcnJlc3Bv
-bmRpbmcgdG8gdGhlIHNhbWUgbG9naWNhbCBlcmFzZWJsb2NrLCBpLmUuLCBoYXZpbmcgdGhlIHNh
-bWUgQHZvbF9pZAogICogYW5kIEBsbnVtIHZhbHVlcyBpbiB0aGUgdm9sdW1lIGlkZW50aWZpZXIg
-aGVhZGVyLiBTdXBwb3NlIHdlIGhhdmUgYSBsb2dpY2FsCiAgKiBlcmFzZWJsb2NrIEwgYW5kIGl0
-IGlzIG1hcHBlZCB0byB0aGUgcGh5c2ljYWwgZXJhc2VibG9jayBQLgpAQCAtMjIxLDEwICsyMzAs
-NiBAQCBzdHJ1Y3QgdWJpX2VjX2hkciB7CiAgKiBjaGVja3N1bSBpcyBjb3JyZWN0LCB0aGlzIHBo
-eXNpY2FsIGVyYXNlYmxvY2sgaXMgc2VsZWN0ZWQgKFAxKS4gT3RoZXJ3aXNlCiAgKiB0aGUgb2xk
-ZXIgb25lIChQKSBpcyBzZWxlY3RlZC4KICAqCi0gKiBOb3RlLCB0aGVyZSBpcyBhbiBvYnNvbGV0
-ZSBAbGViX3ZlciBmaWVsZCB3aGljaCB3YXMgdXNlZCBpbnN0ZWFkIG9mIEBzcW51bQotICogaW4g
-dGhlIHBhc3QuIEJ1dCBpdCBpcyBub3QgdXNlZCBhbnltb3JlIGFuZCB3ZSBrZWVwIGl0IGluIG9y
-ZGVyIHRvIGJlIGFibGUKLSAqIHRvIGRlYWwgd2l0aCBvbGQgVUJJIGltYWdlcy4gSXQgd2lsbCBi
-ZSByZW1vdmVkIGF0IHNvbWUgcG9pbnQuCi0gKgogICogVGhlcmUgYXJlIDIgc29ydHMgb2Ygdm9s
-dW1lcyBpbiBVQkk6IHVzZXIgdm9sdW1lcyBhbmQgaW50ZXJuYWwgdm9sdW1lcy4KICAqIEludGVy
-bmFsIHZvbHVtZXMgYXJlIG5vdCBzZWVuIGZyb20gb3V0c2lkZSBhbmQgYXJlIHVzZWQgZm9yIHZh
-cmlvdXMgaW50ZXJuYWwKICAqIFVCSSBwdXJwb3Nlcy4gSW4gdGhpcyBpbXBsZW1lbnRhdGlvbiB0
-aGVyZSBpcyBvbmx5IG9uZSBpbnRlcm5hbCB2b2x1bWUgLSB0aGUKQEAgLTI0NSw5ICsyNTAsOSBA
-QCBzdHJ1Y3QgdWJpX2VjX2hkciB7CiAgKiBUaGUgQGRhdGFfY3JjIGZpZWxkIGNvbnRhaW5zIHRo
-ZSBDUkMgY2hlY2tzdW0gb2YgdGhlIGNvbnRlbnRzIG9mIHRoZSBsb2dpY2FsCiAgKiBlcmFzZWJs
-b2NrIGlmIHRoaXMgaXMgYSBzdGF0aWMgdm9sdW1lLiBJbiBjYXNlIG9mIGR5bmFtaWMgdm9sdW1l
-cywgaXQgZG9lcwogICogbm90IGNvbnRhaW4gdGhlIENSQyBjaGVja3N1bSBhcyBhIHJ1bGUuIFRo
-ZSBvbmx5IGV4Y2VwdGlvbiBpcyB3aGVuIHRoZQotICogZGF0YSBvZiB0aGUgcGh5c2ljYWwgZXJh
-c2VibG9jayB3YXMgbW92ZWQgYnkgdGhlIHdlYXItbGV2ZWxpbmcgdW5pdCwgdGhlbgotICogdGhl
-IHdlYXItbGV2ZWxpbmcgdW5pdCBjYWxjdWxhdGVzIHRoZSBkYXRhIENSQyBhbmQgc3RvcmVzIGl0
-IGluIHRoZQotICogQGRhdGFfY3JjIGZpZWxkLiBBbmQgb2YgY291cnNlLCB0aGUgQGNvcHlfZmxh
-ZyBpcyAlaW4gdGhpcyBjYXNlLgorICogZGF0YSBvZiB0aGUgcGh5c2ljYWwgZXJhc2VibG9jayB3
-YXMgbW92ZWQgYnkgdGhlIHdlYXItbGV2ZWxpbmcgc3ViLXN5c3RlbSwKKyAqIHRoZW4gdGhlIHdl
-YXItbGV2ZWxpbmcgc3ViLXN5c3RlbSBjYWxjdWxhdGVzIHRoZSBkYXRhIENSQyBhbmQgc3RvcmVz
-IGl0IGluCisgKiB0aGUgQGRhdGFfY3JjIGZpZWxkLiBBbmQgb2YgY291cnNlLCB0aGUgQGNvcHlf
-ZmxhZyBpcyAlaW4gdGhpcyBjYXNlLgogICoKICAqIFRoZSBAZGF0YV9zaXplIGZpZWxkIGlzIHVz
-ZWQgb25seSBmb3Igc3RhdGljIHZvbHVtZXMgYmVjYXVzZSBVQkkgaGFzIHRvIGtub3cKICAqIGhv
-dyBtYW55IGJ5dGVzIG9mIGRhdGEgYXJlIHN0b3JlZCBpbiB0aGlzIGVyYXNlYmxvY2suIEZvciBk
-eW5hbWljIHZvbHVtZXMsCkBAIC0yNzQsMTQgKzI3OSwxNCBAQCBzdHJ1Y3QgdWJpX3ZpZF9oZHIg
-ewogCV9fdTggICAgY29tcGF0OwogCV9fYmUzMiAgdm9sX2lkOwogCV9fYmUzMiAgbG51bTsKLQlf
-X2JlMzIgIGxlYl92ZXI7IC8qIG9ic29sZXRlLCB0byBiZSByZW1vdmVkLCBkb24ndCB1c2UgKi8K
-KwlfX2JlMzIgIGxlYl92ZXI7CiAJX19iZTMyICBkYXRhX3NpemU7CiAJX19iZTMyICB1c2VkX2Vi
-czsKIAlfX2JlMzIgIGRhdGFfcGFkOwogCV9fYmUzMiAgZGF0YV9jcmM7Ci0JX191OCAgICBwYWRk
-aW5nMVs0XTsKKwlfX3U4ICAgIHBhZGRpbmcyWzRdOwogCV9fYmU2NCAgc3FudW07Ci0JX191OCAg
-ICBwYWRkaW5nMlsxMl07CisJX191OCAgICBwYWRkaW5nM1sxMl07CiAJX19iZTMyICBoZHJfY3Jj
-OwogfSBfX2F0dHJpYnV0ZV9fICgocGFja2VkKSk7CiAKLS0gCjEuNy4xMC40CgoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
-c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+To make that, we need to shift mtd_erase before mtd_ioctl.
+ubi-utils need that, especially ubiformat.
+
+Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+---
+ drivers/mtd/core.c |   68 +++++++++++++++++++++++++++-------------------------
+ fs/devfs-core.c    |    3 ++-
+ 2 files changed, 37 insertions(+), 34 deletions(-)
+
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index 8601787..83e1a39 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -123,7 +123,37 @@ static ssize_t mtd_write(struct cdev* cdev, const void *buf, size_t _count,
+ out:
+ 	return ret ? ret : _count;
+ }
+-#endif
++
++static int mtd_erase(struct cdev *cdev, size_t count, loff_t offset)
++{
++	struct mtd_info *mtd = cdev->priv;
++	struct erase_info erase;
++	int ret;
++
++	memset(&erase, 0, sizeof(erase));
++	erase.mtd = mtd;
++	erase.addr = offset;
++	erase.len = mtd->erasesize;
++
++	while (count > 0) {
++		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
++
++		ret = mtd_block_isbad(mtd, erase.addr);
++		if (ret > 0) {
++			printf("Skipping bad block at 0x%08x\n", erase.addr);
++		} else {
++			ret = mtd->erase(mtd, &erase);
++			if (ret)
++				return ret;
++		}
++
++		erase.addr += mtd->erasesize;
++		count -= count > mtd->erasesize ? mtd->erasesize : count;
++	}
++
++	return 0;
++}
++#endif /* CONFIG_MTD_WRITE */
+ 
+ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+ {
+@@ -134,6 +164,7 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+ 	struct mtd_ecc_stats *ecc = buf;
+ #endif
+ 	struct region_info_user *reg = buf;
++	struct erase_info_user *ei = buf;
+ 	loff_t *offset = buf;
+ 
+ 	switch (request) {
+@@ -146,6 +177,9 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+ 		dev_dbg(cdev->dev, "MEMSETBADBLOCK: 0x%08llx\n", *offset);
+ 		ret = mtd->block_markbad(mtd, *offset);
+ 		break;
++	case MEMERASE:
++		ret = mtd_erase(cdev, ei->length, ei->start + cdev->offset);
++		break;
+ #endif
+ 	case MEMGETINFO:
+ 		user->type	= mtd->type;
+@@ -183,38 +217,6 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+ 	return ret;
+ }
+ 
+-#ifdef CONFIG_MTD_WRITE
+-static int mtd_erase(struct cdev *cdev, size_t count, loff_t offset)
+-{
+-	struct mtd_info *mtd = cdev->priv;
+-	struct erase_info erase;
+-	int ret;
+-
+-	memset(&erase, 0, sizeof(erase));
+-	erase.mtd = mtd;
+-	erase.addr = offset;
+-	erase.len = mtd->erasesize;
+-
+-	while (count > 0) {
+-		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
+-
+-		ret = mtd_block_isbad(mtd, erase.addr);
+-		if (ret > 0) {
+-			printf("Skipping bad block at 0x%08x\n", erase.addr);
+-		} else {
+-			ret = mtd->erase(mtd, &erase);
+-			if (ret)
+-				return ret;
+-		}
+-
+-		erase.addr += mtd->erasesize;
+-		count -= count > mtd->erasesize ? mtd->erasesize : count;
+-	}
+-
+-	return 0;
+-}
+-#endif
+-
+ static struct file_operations mtd_ops = {
+ 	.read   = mtd_read,
+ #ifdef CONFIG_MTD_WRITE
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index 0d2f75a..262e0a2 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -152,13 +152,14 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
+ 		break;
+ #if (defined(CONFIG_NAND_ECC_HW) || defined(CONFIG_NAND_ECC_SOFT))
+ 	case ECCGETSTATS:
++#endif
++	case MEMERASE:
+ 		if (!cdev->ops->ioctl) {
+ 			ret = -EINVAL;
+ 			break;
+ 		}
+ 		ret = cdev->ops->ioctl(cdev, request, buf);
+ 		break;
+-#endif
+ #ifdef CONFIG_PARTITION
+ 	case MEMGETREGIONINFO:
+ 		if (cdev->mtd) {
+-- 
+1.7.10.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
