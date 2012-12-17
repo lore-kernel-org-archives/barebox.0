@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tkcvk-0003zX-UC
- for barebox@lists.infradead.org; Mon, 17 Dec 2012 15:48:41 +0000
+ id 1Tkcvk-0003zT-UB
+ for barebox@lists.infradead.org; Mon, 17 Dec 2012 15:48:39 +0000
 From: Wolfram Sang <w.sang@pengutronix.de>
-Date: Mon, 17 Dec 2012 16:48:28 +0100
-Message-Id: <1355759313-23329-7-git-send-email-w.sang@pengutronix.de>
+Date: Mon, 17 Dec 2012 16:48:25 +0100
+Message-Id: <1355759313-23329-4-git-send-email-w.sang@pengutronix.de>
 In-Reply-To: <1355759313-23329-1-git-send-email-w.sang@pengutronix.de>
 References: <1355759313-23329-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,139 +21,103 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH V3 06/11] devfs & mtd: add MEMERASE ioctl support
+Subject: [PATCH V3 03/11] lib: update size_human_readable to latest version
 To: barebox@lists.infradead.org
 Cc: Wolfram Sang <w.sang@pengutronix.de>
 
-To make that, we need to shift mtd_erase before mtd_ioctl.
-ubi-utils need that, especially ubiformat.
+Copy over the latest version from u-boot which handles bigger sizes now
+and does arithmetic with shifts instead of divisions.
 
 Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
 ---
- drivers/mtd/core.c |   68 +++++++++++++++++++++++++++-------------------------
- fs/devfs-core.c    |    3 ++-
- 2 files changed, 37 insertions(+), 34 deletions(-)
+ include/common.h      |    2 +-
+ lib/display_options.c |   47 +++++++++++++++++++++++++++++++----------------
+ 2 files changed, 32 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 8601787..83e1a39 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -123,7 +123,37 @@ static ssize_t mtd_write(struct cdev* cdev, const void *buf, size_t _count,
- out:
- 	return ret ? ret : _count;
- }
--#endif
-+
-+static int mtd_erase(struct cdev *cdev, size_t count, loff_t offset)
-+{
-+	struct mtd_info *mtd = cdev->priv;
-+	struct erase_info erase;
-+	int ret;
-+
-+	memset(&erase, 0, sizeof(erase));
-+	erase.mtd = mtd;
-+	erase.addr = offset;
-+	erase.len = mtd->erasesize;
-+
-+	while (count > 0) {
-+		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
-+
-+		ret = mtd_block_isbad(mtd, erase.addr);
-+		if (ret > 0) {
-+			printf("Skipping bad block at 0x%08x\n", erase.addr);
-+		} else {
-+			ret = mtd->erase(mtd, &erase);
-+			if (ret)
-+				return ret;
+diff --git a/include/common.h b/include/common.h
+index e30774a..1939427 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -105,7 +105,7 @@ void reginfo(void);
+ void __noreturn hang (void);
+ void __noreturn panic(const char *fmt, ...);
+ 
+-char *size_human_readable(ulong size);
++char *size_human_readable(unsigned long long size);
+ 
+ /* common/main.c */
+ int	run_command	(const char *cmd, int flag);
+diff --git a/lib/display_options.c b/lib/display_options.c
+index a6050cb..0871552 100644
+--- a/lib/display_options.c
++++ b/lib/display_options.c
+@@ -21,35 +21,50 @@
+ 
+ /*
+  * return a pointer to a string containing the size
+- * as "xxx kB", "xxx.y kB", "xxx MB" or "xxx.y MB" as needed;
++ *"as xxx KiB", "xxx.y KiB", "xxx MiB", "xxx.y MiB",
++ * xxx GiB, xxx.y GiB, etc as needed;
+  */
+-char *size_human_readable(ulong size)
++char *size_human_readable(unsigned long long size)
+ {
+ 	static char buf[20];
+-	ulong m, n;
+-	ulong d = 1 << 20;		/* 1 MB */
+-	char  c = 'M';
++	unsigned long m = 0, n;
++	unsigned long long f;
++	static const char names[] = {'E', 'P', 'T', 'G', 'M', 'K'};
++	unsigned long d = 10 * ARRAY_SIZE(names);
++	char c = 0;
++	unsigned int i;
+ 	char *ptr = buf;
+ 
+-	if (size < d) {			/* print in kB */
+-		c = 'k';
+-		d = 1 << 10;
++	for (i = 0; i < ARRAY_SIZE(names); i++, d -= 10) {
++		if (size >> d) {
++			c = names[i];
++			break;
 +		}
-+
-+		erase.addr += mtd->erasesize;
-+		count -= count > mtd->erasesize ? mtd->erasesize : count;
+ 	}
+ 
+-	n = size / d;
++	if (!c) {
++		sprintf(buf, "%llu Bytes", size);
++		return buf;
 +	}
 +
-+	return 0;
-+}
-+#endif /* CONFIG_MTD_WRITE */
++	n = size >> d;
++	f = size & ((1ULL << d) - 1);
  
- int mtd_ioctl(struct cdev *cdev, int request, void *buf)
- {
-@@ -134,6 +164,7 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
- 	struct mtd_ecc_stats *ecc = buf;
- #endif
- 	struct region_info_user *reg = buf;
-+	struct erase_info_user *ei = buf;
- 	loff_t *offset = buf;
+-	m = (10 * (size - (n * d)) + (d / 2) ) / d;
++	/* If there's a remainder, deal with it */
++	if (f) {
++		m = (10ULL * f + (1ULL << (d - 1))) >> d;
  
- 	switch (request) {
-@@ -146,6 +177,9 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
- 		dev_dbg(cdev->dev, "MEMSETBADBLOCK: 0x%08llx\n", *offset);
- 		ret = mtd->block_markbad(mtd, *offset);
- 		break;
-+	case MEMERASE:
-+		ret = mtd_erase(cdev, ei->length, ei->start + cdev->offset);
-+		break;
- #endif
- 	case MEMGETINFO:
- 		user->type	= mtd->type;
-@@ -183,38 +217,6 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
- 	return ret;
+-	if (m >= 10) {
+-		m -= 10;
+-		n += 1;
++		if (m >= 10) {
++			m -= 10;
++			n += 1;
++		}
+ 	}
+ 
+-	ptr += sprintf(buf, "%2ld", n);
++	ptr += sprintf(buf, "%lu", n);
+ 	if (m) {
+-		ptr += sprintf (ptr,".%ld", m);
++		ptr += sprintf(ptr, ".%ld", m);
+ 	}
+-	sprintf(ptr, " %cB", c);
++	sprintf(ptr, " %ciB", c);
+ 
+ 	return buf;
  }
- 
--#ifdef CONFIG_MTD_WRITE
--static int mtd_erase(struct cdev *cdev, size_t count, loff_t offset)
--{
--	struct mtd_info *mtd = cdev->priv;
--	struct erase_info erase;
--	int ret;
--
--	memset(&erase, 0, sizeof(erase));
--	erase.mtd = mtd;
--	erase.addr = offset;
--	erase.len = mtd->erasesize;
--
--	while (count > 0) {
--		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
--
--		ret = mtd_block_isbad(mtd, erase.addr);
--		if (ret > 0) {
--			printf("Skipping bad block at 0x%08x\n", erase.addr);
--		} else {
--			ret = mtd->erase(mtd, &erase);
--			if (ret)
--				return ret;
--		}
--
--		erase.addr += mtd->erasesize;
--		count -= count > mtd->erasesize ? mtd->erasesize : count;
--	}
--
--	return 0;
--}
--#endif
--
- static struct file_operations mtd_ops = {
- 	.read   = mtd_read,
- #ifdef CONFIG_MTD_WRITE
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 0d2f75a..262e0a2 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -152,13 +152,14 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
- 		break;
- #if (defined(CONFIG_NAND_ECC_HW) || defined(CONFIG_NAND_ECC_SOFT))
- 	case ECCGETSTATS:
-+#endif
-+	case MEMERASE:
- 		if (!cdev->ops->ioctl) {
- 			ret = -EINVAL;
- 			break;
- 		}
- 		ret = cdev->ops->ioctl(cdev, request, buf);
- 		break;
--#endif
- #ifdef CONFIG_PARTITION
- 	case MEMGETREGIONINFO:
- 		if (cdev->mtd) {
 -- 
 1.7.10.4
 
