@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tky4P-0001iQ-2n
- for barebox@lists.infradead.org; Tue, 18 Dec 2012 14:23:02 +0000
+ id 1Tky4P-0001iT-2d
+ for barebox@lists.infradead.org; Tue, 18 Dec 2012 14:23:07 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Tue, 18 Dec 2012 15:22:30 +0100
-Message-Id: <1355840561-11552-9-git-send-email-jlu@pengutronix.de>
+Date: Tue, 18 Dec 2012 15:22:31 +0100
+Message-Id: <1355840561-11552-10-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1355840561-11552-1-git-send-email-jlu@pengutronix.de>
 References: <1355840561-11552-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,43 +21,135 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/19] ARM omap3: make PRM defines SoC specific
+Subject: [PATCH 09/19] ARM omap: Use SoC specific defines for gpmc and timer
+ base
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/include/mach/omap3-silicon.h |    3 +--
- arch/arm/mach-omap/omap3_generic.c              |    2 +-
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ arch/arm/mach-omap/gpmc.c                       |   11 +++++++++--
+ arch/arm/mach-omap/include/mach/omap3-silicon.h |    4 ++--
+ arch/arm/mach-omap/include/mach/omap4-silicon.h |    4 ++--
+ arch/arm/mach-omap/omap3_clock.c                |    2 +-
+ arch/arm/mach-omap/s32k_clksource.c             |   10 ++++++++--
+ 5 files changed, 22 insertions(+), 9 deletions(-)
 
+diff --git a/arch/arm/mach-omap/gpmc.c b/arch/arm/mach-omap/gpmc.c
+index d2b7024..4f54a10 100644
+--- a/arch/arm/mach-omap/gpmc.c
++++ b/arch/arm/mach-omap/gpmc.c
+@@ -24,7 +24,8 @@
+ #include <init.h>
+ #include <io.h>
+ #include <errno.h>
+-#include <mach/silicon.h>
++#include <mach/omap3-silicon.h>
++#include <mach/omap4-silicon.h>
+ #include <mach/gpmc.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+@@ -33,7 +34,13 @@ void __iomem *omap_gpmc_base;
+ 
+ static int gpmc_init(void)
+ {
+-	omap_gpmc_base = (void *)OMAP_GPMC_BASE;
++#if defined(CONFIG_ARCH_OMAP3)
++	omap_gpmc_base = (void *)OMAP3_GPMC_BASE;
++#elif defined(CONFIG_ARCH_OMAP4)
++	omap_gpmc_base = (void *)OMAP44XX_GPMC_BASE;
++#else
++#error "Unknown ARCH"
++#endif
+ 
+ 	return 0;
+ }
 diff --git a/arch/arm/mach-omap/include/mach/omap3-silicon.h b/arch/arm/mach-omap/include/mach/omap3-silicon.h
-index a655729..1921923 100644
+index 1921923..5843027 100644
 --- a/arch/arm/mach-omap/include/mach/omap3-silicon.h
 +++ b/arch/arm/mach-omap/include/mach/omap3-silicon.h
-@@ -128,7 +128,6 @@
- #define OMAP_SDRC_CS1		0xA0000000
+@@ -44,7 +44,7 @@
+ #define OMAP_SMX_APE_BASE	0x68000000
+ #define OMAP_SMS_BASE		0x6C000000
+ #define OMAP_SDRC_BASE		0x6D000000
+-#define OMAP_GPMC_BASE		0x6E000000
++#define OMAP3_GPMC_BASE		0x6E000000
  
- /* PRM */
--#define PRM_RSTCTRL_RESET       0x04
-+#define OMAP3_PRM_RSTCTRL_RESET	0x04
+ /** Peripheral Base Addresses */
+ #define OMAP_CTRL_BASE		(OMAP_L4_CORE_BASE + 0x02000)
+@@ -74,7 +74,7 @@
+ #define OMAP_WDTIMER2_BASE	(OMAP_L4_WKUP_BASE + 0x14000)
+ #define OMAP_WDTIMER3_BASE	(OMAP_L4_PER_BASE + 0x30000)
  
- #endif /* __ASM_ARCH_OMAP3_H */
--
-diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
-index cbac06f..9932103 100644
---- a/arch/arm/mach-omap/omap3_generic.c
-+++ b/arch/arm/mach-omap/omap3_generic.c
-@@ -52,7 +52,7 @@
+-#define OMAP_32KTIMER_BASE	(OMAP_L4_WKUP_BASE + 0x20000)
++#define OMAP3_32KTIMER_BASE	(OMAP_L4_WKUP_BASE + 0x20000)
+ 
+ #define OMAP_MMC1_BASE		(OMAP_L4_CORE_BASE + 0x9C000)
+ #define OMAP_MMC2_BASE		(OMAP_L4_CORE_BASE + 0xB4000)
+diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+index 0f0d88d..5755856 100644
+--- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
++++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+@@ -92,7 +92,7 @@
+ #define OMAP44XX_SCRM_AUXCLK3           (OMAP44XX_SCRM_BASE + 0x31c)
+ 
+ /* 32KTIMER */
+-#define OMAP_32KTIMER_BASE		(OMAP44XX_L4_WKUP_BASE + 0x4000)
++#define OMAP44XX_32KTIMER_BASE		(OMAP44XX_L4_WKUP_BASE + 0x4000)
+ 
+ /* MMC */
+ #define OMAP44XX_MMC1_BASE		(OMAP44XX_L4_PER_BASE + 0x09C100)
+@@ -117,7 +117,7 @@
+ #define OMAP44XX_GPIO6_BASE		(OMAP44XX_L4_PER_BASE  + 0x5D100)
+ 
+ /* GPMC */
+-#define OMAP_GPMC_BASE		0x50000000
++#define OMAP44XX_GPMC_BASE		0x50000000
+ 
+ /* DMM */
+ #define OMAP44XX_DMM_BASE		0x4E000000
+diff --git a/arch/arm/mach-omap/omap3_clock.c b/arch/arm/mach-omap/omap3_clock.c
+index 2a5e6f2..11f5117 100644
+--- a/arch/arm/mach-omap/omap3_clock.c
++++ b/arch/arm/mach-omap/omap3_clock.c
+@@ -39,7 +39,7 @@
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+ 
+-#define S32K_CR			(OMAP_32KTIMER_BASE + 0x10)
++#define S32K_CR			(OMAP3_32KTIMER_BASE + 0x10)
+ 
+ /* Following functions are exported from omap3_clock_core.S */
+ /* Helper functions */
+diff --git a/arch/arm/mach-omap/s32k_clksource.c b/arch/arm/mach-omap/s32k_clksource.c
+index ca73753..7def8b1 100644
+--- a/arch/arm/mach-omap/s32k_clksource.c
++++ b/arch/arm/mach-omap/s32k_clksource.c
+@@ -25,7 +25,8 @@
+ #include <clock.h>
+ #include <init.h>
+ #include <io.h>
+-#include <mach/silicon.h>
++#include <mach/omap3-silicon.h>
++#include <mach/omap4-silicon.h>
+ #include <mach/clocks.h>
+ #include <mach/timers.h>
+ #include <mach/sys_info.h>
+@@ -68,7 +69,12 @@ static struct clocksource s32k_cs = {
   */
- void __noreturn reset_cpu(unsigned long addr)
+ static int s32k_clocksource_init(void)
  {
--	writel(PRM_RSTCTRL_RESET, PRM_REG(RSTCTRL));
-+	writel(OMAP3_PRM_RSTCTRL_RESET, PRM_REG(RSTCTRL));
+-	timerbase = (void *)OMAP_32KTIMER_BASE;
++	if (IS_ENABLED(CONFIG_ARCH_OMAP3))
++		timerbase = (void *)OMAP3_32KTIMER_BASE;
++	else if (IS_ENABLED(CONFIG_ARCH_OMAP4))
++		timerbase = (void *)OMAP44XX_32KTIMER_BASE;
++	else
++		BUG();
  
- 	while (1);
- }
+ 	s32k_cs.mult = clocksource_hz2mult(S32K_FREQUENCY, s32k_cs.shift);
+ 
 -- 
 1.7.10.4
 
