@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tky4P-0001ij-2e
- for barebox@lists.infradead.org; Tue, 18 Dec 2012 14:23:02 +0000
+ id 1Tky4P-0001iL-2l
+ for barebox@lists.infradead.org; Tue, 18 Dec 2012 14:23:00 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Tue, 18 Dec 2012 15:22:39 +0100
-Message-Id: <1355840561-11552-18-git-send-email-jlu@pengutronix.de>
+Date: Tue, 18 Dec 2012 15:22:26 +0100
+Message-Id: <1355840561-11552-5-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1355840561-11552-1-git-send-email-jlu@pengutronix.de>
 References: <1355840561-11552-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,31 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/19] arm: omap: am33xx: add support for low level debug
+Subject: [PATCH 04/19] ARM omap4: Add missing double include protection
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+From: Sascha Hauer <s.hauer@pengutronix.de>
+
+missing in omap4-clock.h
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/include/mach/debug_ll.h |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm/mach-omap/include/mach/omap4-clock.h |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-omap/include/mach/debug_ll.h b/arch/arm/mach-omap/include/mach/debug_ll.h
-index b2714c5..142f01a 100644
---- a/arch/arm/mach-omap/include/mach/debug_ll.h
-+++ b/arch/arm/mach-omap/include/mach/debug_ll.h
-@@ -35,6 +35,11 @@
- #define UART_BASE	OMAP44XX_UART3_BASE
- #endif
- 
-+#ifdef CONFIG_ARCH_AM33XX
-+#include <mach/am33xx-silicon.h>
-+#define UART_BASE	AM33XX_UART0_BASE
-+#endif
+diff --git a/arch/arm/mach-omap/include/mach/omap4-clock.h b/arch/arm/mach-omap/include/mach/omap4-clock.h
+index e5302d6..469c716 100644
+--- a/arch/arm/mach-omap/include/mach/omap4-clock.h
++++ b/arch/arm/mach-omap/include/mach/omap4-clock.h
+@@ -1,4 +1,7 @@
+-  /* PRCM */
++#ifndef __MACH_OMAP4_CLOCK_H
++#define __MACH_OMAP4_CLOCK_H
 +
- #define LSR_THRE	0x20	/* Xmit holding register empty */
- #define LSR		(5 << 2)
- #define THR		(0 << 2)
++/* PRCM */
+ #define CM_SYS_CLKSEL				0x4a306110
+ 
+ #define CM_SYS_CLKSEL_19M2		0x4
+@@ -337,3 +340,4 @@ void omap4_enable_gpio_clocks(void);
+ void omap4_enable_all_clocks(void);
+ void omap4_do_scale_tps62361(u32 reg, u32 volt_mv);
+ 
++#endif /* __MACH_OMAP4_CLOCK_H */
 -- 
 1.7.10.4
 
