@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tky4P-0001ih-2Z
+ id 1Tky4S-0001ia-VY
  for barebox@lists.infradead.org; Tue, 18 Dec 2012 14:23:15 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Tue, 18 Dec 2012 15:22:38 +0100
-Message-Id: <1355840561-11552-17-git-send-email-jlu@pengutronix.de>
+Date: Tue, 18 Dec 2012 15:22:34 +0100
+Message-Id: <1355840561-11552-13-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1355840561-11552-1-git-send-email-jlu@pengutronix.de>
 References: <1355840561-11552-1-git-send-email-jlu@pengutronix.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,183 +16,232 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 16/19] ARM OMAP AM33XX: create new ARCH for AM33xx
+Subject: [PATCH 12/19] ARM omap3: Use device register functions in boards
 To: barebox@lists.infradead.org
 
-RnJvbTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+CgpDcmVhdGVkIEFSQ0ggZm9y
-IEFNMzN4eCBib2FyZHMgYXMgc2Vjb25kIHN0YWdlIGJvb3Rsb2FkZXIuClRoaXMgaW5jbHVkZXM6
-Ci0gQWRkZWQgZG10aW1lcjAKLSBDcmVhdGVkIGJhc2ljIGhlYWRlciBmaWxlcwotIEFkZGVkIE1N
-QyBzdXBwb3J0IGZvciBBUkNIX0FNMzNYWAotIEFkZGVkIHJlc2V0IGZ1bmN0aW9uCgpTaWduZWQt
-b2ZmLWJ5OiBUZXJlc2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5kZT4KClNvbWUgaGVhZGVyIGZp
-bGUgY2xlYW51cCBieToKU2lnbmVkLW9mZi1ieTogSmFuIEx1ZWJiZSA8amx1QHBlbmd1dHJvbml4
-LmRlPgpTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+
-Ci0tLQogYXJjaC9hcm0vbWFjaC1vbWFwL0tjb25maWcgICAgICAgICAgICAgICAgICAgICAgIHwg
-ICAxMSArKysKIGFyY2gvYXJtL21hY2gtb21hcC9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAg
-ICB8ICAgIDIgKwogYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9nZW5lcmljLmMgICAgICAgICAg
-ICAgIHwgICAyOSArKysrKysrCiBhcmNoL2FybS9tYWNoLW9tYXAvZG10aW1lcjAuYyAgICAgICAg
-ICAgICAgICAgICAgfCAgIDg5ICsrKysrKysrKysrKysrKysrKysrKysKIGFyY2gvYXJtL21hY2gt
-b21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LWNsb2NrLmggICB8ICAgMjMgKysrKysrCiBhcmNoL2Fy
-bS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1zaWxpY29uLmggfCAgIDQ5ICsrKysrKysr
-KysrKwogZHJpdmVycy9tY2kvS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwg
-ICAgMiArLQogNyBmaWxlcyBjaGFuZ2VkLCAyMDQgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigt
-KQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtb21hcC9hbTMzeHhfZ2VuZXJpYy5j
-CiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1vbWFwL2RtdGltZXIwLmMKIGNyZWF0
-ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1jbG9j
-ay5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9h
-bTMzeHgtc2lsaWNvbi5oCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1vbWFwL0tjb25maWcg
-Yi9hcmNoL2FybS9tYWNoLW9tYXAvS2NvbmZpZwppbmRleCA0NTE3ODNlLi5iOTQ1MDBhIDEwMDY0
-NAotLS0gYS9hcmNoL2FybS9tYWNoLW9tYXAvS2NvbmZpZworKysgYi9hcmNoL2FybS9tYWNoLW9t
-YXAvS2NvbmZpZwpAQCAtNDIsMTIgKzQyLDIzIEBAIGNvbmZpZyBBUkNIX09NQVA0CiAJaGVscAog
-CSAgU2F5IFkgaGVyZSBpZiB5b3UgYXJlIHVzaW5nIFRleGFzIEluc3RydW1lbnQncyBPTUFQNCBi
-YXNlZCBwbGF0Zm9ybQogCitjb25maWcgQVJDSF9BTTMzWFgKKwlib29sICJBTTMzeHgiCisJc2Vs
-ZWN0IENQVV9WNworCXNlbGVjdCBHRU5FUklDX0dQSU8KKwlzZWxlY3QgT01BUF9DTE9DS19TT1VS
-Q0VfRE1USU1FUjAKKwloZWxwCisJICBTYXkgWSBoZXJlIGlmIHlvdSBhcmUgdXNpbmcgVGV4YXMg
-SW5zdHJ1bWVudCdzIEFNMzN4eCBiYXNlZCBwbGF0Zm9ybQorCiBlbmRjaG9pY2UKIAogIyBCbGlu
-ZCBlbmFibGUgYWxsIHBvc3NpYmxlIGNsb2Nrcy4uIHRoaW5rIHR3aWNlIGJlZm9yZSB5b3UgZG8g
-dGhpcy4KIGNvbmZpZyBPTUFQX0NMT0NLX1NPVVJDRV9TMzJLCiAJYm9vbAogCitjb25maWcgT01B
-UF9DTE9DS19TT1VSQ0VfRE1USU1FUjAKKwlib29sCisKIGNvbmZpZyBPTUFQM19DTE9DS19DT05G
-SUcKIAlwcm9tcHQgIkNsb2NrIENvbmZpZ3VyYXRpb24iCiAJYm9vbApkaWZmIC0tZ2l0IGEvYXJj
-aC9hcm0vbWFjaC1vbWFwL01ha2VmaWxlIGIvYXJjaC9hcm0vbWFjaC1vbWFwL01ha2VmaWxlCmlu
-ZGV4IGI3YTVlNGEuLjQ4YTk1MWIgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtb21hcC9NYWtl
-ZmlsZQorKysgYi9hcmNoL2FybS9tYWNoLW9tYXAvTWFrZWZpbGUKQEAgLTE4LDEwICsxOCwxMiBA
-QAogb2JqLSQoQ09ORklHX0FSQ0hfT01BUCkgKz0gc3lzbGliLm8gb21hcF9kZXZpY2VzLm8KIHBi
-bC0kKENPTkZJR19BUkNIX09NQVApICs9IHN5c2xpYi5vCiBvYmotJChDT05GSUdfT01BUF9DTE9D
-S19TT1VSQ0VfUzMySykgKz0gczMya19jbGtzb3VyY2Uubworb2JqLSQoQ09ORklHX09NQVBfQ0xP
-Q0tfU09VUkNFX0RNVElNRVIwKSArPSBkbXRpbWVyMC5vCiBvYmotJChDT05GSUdfQVJDSF9PTUFQ
-MykgKz0gb21hcDNfY29yZS5vIG9tYXAzX2dlbmVyaWMubyBhdXhjci5vCiBwYmwtJChDT05GSUdf
-QVJDSF9PTUFQMykgKz0gb21hcDNfY29yZS5vIG9tYXAzX2dlbmVyaWMubyBhdXhjci5vCiBvYmot
-JChDT05GSUdfQVJDSF9PTUFQNCkgKz0gb21hcDRfZ2VuZXJpYy5vIG9tYXA0X2Nsb2NrLm8KIHBi
-bC0kKENPTkZJR19BUkNIX09NQVA0KSArPSBvbWFwNF9nZW5lcmljLm8gb21hcDRfY2xvY2subwor
-b2JqLSQoQ09ORklHX0FSQ0hfQU0zM1hYKSArPSBhbTMzeHhfZ2VuZXJpYy5vCiBvYmotJChDT05G
-SUdfT01BUDNfQ0xPQ0tfQ09ORklHKSArPSBvbWFwM19jbG9jay5vCiBwYmwtJChDT05GSUdfT01B
-UDNfQ0xPQ0tfQ09ORklHKSArPSBvbWFwM19jbG9jay5vCiBvYmotJChDT05GSUdfT01BUF9HUE1D
-KSArPSBncG1jLm8gZGV2aWNlcy1ncG1jLW5hbmQubwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFj
-aC1vbWFwL2FtMzN4eF9nZW5lcmljLmMgYi9hcmNoL2FybS9tYWNoLW9tYXAvYW0zM3h4X2dlbmVy
-aWMuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwLi5mNzNmOTQ2Ci0tLSAvZGV2
-L251bGwKKysrIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9nZW5lcmljLmMKQEAgLTAsMCAr
-MSwyOSBAQAorLyoKKyAqIChDKSBDb3B5cmlnaHQgMjAxMiBUZXJlc2EgR8OhbWV6LCBQaHl0ZWMg
-TWVzc3RlY2huaWsgR21iSAorICoKKyAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5
-b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IKKyAqIG1vZGlmeSBpdCB1bmRlciB0aGUgdGVy
-bXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzCisgKiBwdWJsaXNoZWQgYnkg
-dGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgorICogdGhl
-IExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCisgKgorICog
-VGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1
-c2VmdWwsCisgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1w
-bGllZCB3YXJyYW50eSBvZgorICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFS
-VElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQorICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2Ug
-Zm9yIG1vcmUgZGV0YWlscy4KKyAqCisgKiBZb3Ugc2hvdWxkIGhhdmUgcmVjZWl2ZWQgYSBjb3B5
-IG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZQorICogYWxvbmcgd2l0aCB0aGlzIHBy
-b2dyYW07IGlmIG5vdCwgd3JpdGUgdG8gdGhlIEZyZWUgU29mdHdhcmUKKyAqIEZvdW5kYXRpb24s
-IEluYy4sIDU5IFRlbXBsZSBQbGFjZSwgU3VpdGUgMzMwLCBCb3N0b24sCisgKiBNQSAwMjExMS0x
-MzA3IFVTQQorICovCisKKyNpbmNsdWRlIDxpby5oPgorI2luY2x1ZGUgPG1hY2gvYW0zM3h4LXNp
-bGljb24uaD4KKyNpbmNsdWRlIDxtYWNoL2FtMzN4eC1jbG9jay5oPgorCit2b2lkIF9fbm9yZXR1
-cm4gcmVzZXRfY3B1KHVuc2lnbmVkIGxvbmcgYWRkcikKK3sKKwl3cml0ZWwoQU0zM1hYX1BSTV9S
-U1RDVFJMX1JFU0VULCBBTTMzWFhfUFJNX1JTVENUUkwpOworCisJd2hpbGUgKDEpOworfQpkaWZm
-IC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1vbWFwL2RtdGltZXIwLmMgYi9hcmNoL2FybS9tYWNoLW9t
-YXAvZG10aW1lcjAuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwLi5iMGJkNjcw
-Ci0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2RtdGltZXIwLmMKQEAgLTAs
-MCArMSw4OSBAQAorLyoqCisgKiBAZmlsZQorICogQGJyaWVmIFN1cHBvcnQgRE1UaW1lcjAgY291
-bnRlcgorICoKKyAqIEZpbGVOYW1lOiBhcmNoL2FybS9tYWNoLW9tYXAvZG10aW1lcjAuYworICov
-CisvKgorICogVGhpcyBGaWxlIGlzIGJhc2VkIG9uIGFyY2gvYXJtL21hY2gtb21hcC9zMzJrX2Ns
-a3NvdXJjZS5jCisgKiAoQykgQ29weXJpZ2h0IDIwMDgKKyAqIFRleGFzIEluc3RydW1lbnRzLCA8
-d3d3LnRpLmNvbT4KKyAqIE5pc2hhbnRoIE1lbm9uIDx4MG5pc2hhbkB0aS5jb20+CisgKgorICog
-KEMpIENvcHlyaWdodCAyMDEyIFRlcmVzYSBHw6FtZXosIFBoeXRlYyBNZXNzdGVjaG5payBHbWJI
-CisgKgorICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmli
-dXRlIGl0IGFuZC9vcgorICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdl
-bmVyYWwgUHVibGljIExpY2Vuc2UgYXMKKyAqIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2Fy
-ZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mCisgKiB0aGUgTGljZW5zZSwgb3IgKGF0
-IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KKyAqCisgKiBUaGlzIHByb2dyYW0gaXMg
-ZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKKyAqIGJ1dCBX
-SVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9m
-CisgKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0Uu
-ICBTZWUgdGhlCisgKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxz
-LgorICoKKyAqIFlvdSBzaG91bGQgaGF2ZSByZWNlaXZlZCBhIGNvcHkgb2YgdGhlIEdOVSBHZW5l
-cmFsIFB1YmxpYyBMaWNlbnNlCisgKiBhbG9uZyB3aXRoIHRoaXMgcHJvZ3JhbTsgaWYgbm90LCB3
-cml0ZSB0byB0aGUgRnJlZSBTb2Z0d2FyZQorICogRm91bmRhdGlvbiwgSW5jLiwgNTkgVGVtcGxl
-IFBsYWNlLCBTdWl0ZSAzMzAsIEJvc3RvbiwKKyAqIE1BIDAyMTExLTEzMDcgVVNBCisgKi8KKwor
-I2luY2x1ZGUgPGNsb2NrLmg+CisjaW5jbHVkZSA8aW5pdC5oPgorI2luY2x1ZGUgPGlvLmg+Cisj
-aW5jbHVkZSA8bWFjaC9hbTMzeHgtc2lsaWNvbi5oPgorCisjZGVmaW5lIENMS19SQzMySwkzMjc2
-OAorCisjZGVmaW5lIFRJRFIJCQkweDAKKyNkZWZpbmUgVElPQ1BfQ0ZHCQkweDEwCisjZGVmaW5l
-IElSUV9FT0kJCQkweDIwCisjZGVmaW5lIElSUVNUQVRVU19SQVcJCTB4MjQKKyNkZWZpbmUgSVJR
-U1RBVFVTCQkweDI4CisjZGVmaW5lIElSUVNUQVRVU19TRVQJCTB4MmMKKyNkZWZpbmUgSVJRU1RB
-VFVTX0NMUgkJMHgzMAorI2RlZmluZSBJUlFXQUtFRU4JCTB4MzQKKyNkZWZpbmUgVENMUgkJCTB4
-MzgKKyNkZWZpbmUgVENSUgkJCTB4M0MKKyNkZWZpbmUgVExEUgkJCTB4NDAKKyNkZWZpbmUgVFRH
-UgkJCTB4NDQKKyNkZWZpbmUgVFdQUwkJCTB4NDgKKyNkZWZpbmUgVE1BUgkJCTB4NEMKKyNkZWZp
-bmUgVENBUjEJCQkweDUwCisjZGVmaW5lIFRTSUNSCQkJMHg1NAorI2RlZmluZSBUQ0FSMgkJCTB4
-NTgKKworLyoqCisgKiBAYnJpZWYgUHJvdmlkZSBhIHNpbXBsZSBjb3VudGVyIHJlYWQKKyAqCisg
-KiBAcmV0dXJuIERNVGltZXIwIGNvdW50ZXIKKyAqLworc3RhdGljIHVpbnQ2NF90IGRtdGltZXIw
-X3JlYWQodm9pZCkKK3sKKwlyZXR1cm4gcmVhZGwoQU0zM1hYX0RNVElNRVIwX0JBU0UgKyBUQ1JS
-KTsKK30KKworc3RhdGljIHN0cnVjdCBjbG9ja3NvdXJjZSBkbXRpbWVyMF9jcyA9IHsKKwkucmVh
-ZAk9IGRtdGltZXIwX3JlYWQsCisJLm1hc2sJPSBDTE9DS1NPVVJDRV9NQVNLKDMyKSwKKwkuc2hp
-ZnQJPSAxMCwKK307CisKKy8qKgorICogQGJyaWVmIEluaXRpYWxpemUgdGhlIENsb2NrCisgKgor
-ICogRW5hYmxlIGRtdGltZXIwLgorICoKKyAqIEByZXR1cm4gcmVzdWx0IG9mIEByZWYgaW5pdF9j
-bG9jaworICovCitzdGF0aWMgaW50IGRtdGltZXIwX2luaXQodm9pZCkKK3sKKwlkbXRpbWVyMF9j
-cy5tdWx0ID0gY2xvY2tzb3VyY2VfaHoybXVsdChDTEtfUkMzMkssIGRtdGltZXIwX2NzLnNoaWZ0
-KTsKKwkvKiBFbmFibGUgY291bnRlciAqLworCXdyaXRlbCgweDMsIEFNMzNYWF9ETVRJTUVSMF9C
-QVNFICsgVENMUik7CisKKwlyZXR1cm4gaW5pdF9jbG9jaygmZG10aW1lcjBfY3MpOworfQorCisv
-KiBSdW4gbWUgYXQgYm9vdCB0aW1lICovCitjb3JlX2luaXRjYWxsKGRtdGltZXIwX2luaXQpOwpk
-aWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtY2xvY2su
-aCBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LWNsb2NrLmgKbmV3IGZp
-bGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uNjg0NTQxMgotLS0gL2Rldi9udWxsCisrKyBi
-L2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LWNsb2NrLmgKQEAgLTAsMCAr
-MSwyMyBAQAorLyoKKyAqIChDKSBDb3B5cmlnaHQgMjAxMiBUZXJlc2EgR8OhbWV6LCBQaHl0ZWMg
-TWVzc3RlY2huaWsgR21iSAorICoKKyAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5
-b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IKKyAqIG1vZGlmeSBpdCB1bmRlciB0aGUgdGVy
-bXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzCisgKiBwdWJsaXNoZWQgYnkg
-dGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgorICogdGhl
-IExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCisgKgorICog
-VGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1
-c2VmdWwsCisgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1w
-bGllZCB3YXJyYW50eSBvZgorICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFS
-VElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQorICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2Ug
-Zm9yIG1vcmUgZGV0YWlscy4KKyAqCisgKiBZb3Ugc2hvdWxkIGhhdmUgcmVjZWl2ZWQgYSBjb3B5
-IG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZQorICogYWxvbmcgd2l0aCB0aGlzIHBy
-b2dyYW07IGlmIG5vdCwgd3JpdGUgdG8gdGhlIEZyZWUgU29mdHdhcmUKKyAqIEZvdW5kYXRpb24s
-IEluYy4sIDU5IFRlbXBsZSBQbGFjZSwgU3VpdGUgMzMwLCBCb3N0b24sCisgKiBNQSAwMjExMS0x
-MzA3IFVTQQorICovCisjaWZuZGVmIF9BTTMzWFhfQ0xPQ0tTX0hfCisjZGVmaW5lIF9BTTMzWFhf
-Q0xPQ0tTX0hfCisKKworI2VuZGlmICAvKiBlbmRpZiBfQU0zM1hYX0NMT0NLU19IXyAqLwpkaWZm
-IC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtc2lsaWNvbi5o
-IGIvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtc2lsaWNvbi5oCm5ldyBm
-aWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAuLjA5MDQ4OWMKLS0tIC9kZXYvbnVsbAorKysg
-Yi9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1zaWxpY29uLmgKQEAgLTAs
-MCArMSw0OSBAQAorLyoKKyAqIFRoaXMgZmlsZSBjb250YWlucyB0aGUgYWRkcmVzcyBpbmZvIGZv
-ciB2YXJpb3VzIEFNMzNYWCBtb2R1bGVzLgorICoKKyAqIENvcHlyaWdodCAoQykgMjAxMiBUZXJl
-c2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5kZT4sCisgKgkJIFBoeXRlYyBNZXNzdGVjaG5payBH
-bWJICisgKgorICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0
-cmlidXRlIGl0IGFuZC9vcgorICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05V
-IEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMKKyAqIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0
-d2FyZSBGb3VuZGF0aW9uIHZlcnNpb24gMi4KKyAqCisgKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJp
-YnV0ZWQgImFzIGlzIiBXSVRIT1VUIEFOWSBXQVJSQU5UWSBvZiBhbnkKKyAqIGtpbmQsIHdoZXRo
-ZXIgZXhwcmVzcyBvciBpbXBsaWVkOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkK
-KyAqIG9mIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9T
-RS4gIFNlZSB0aGUKKyAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBtb3JlIGRldGFp
-bHMuCisgKi8KKworI2lmbmRlZiBfX0FTTV9BUkNIX0FNMzNYWF9ICisjZGVmaW5lIF9fQVNNX0FS
-Q0hfQU0zM1hYX0gKKworLyoqIEFNMzM1eCBJbnRlcm5hbCBCdXMgQmFzZSBhZGRyZXNzZXMgKi8K
-KyNkZWZpbmUgQU0zM1hYX0w0X1dLVVBfQkFTRQkJMHg0NEMwMDAwMAorI2RlZmluZSBBTTMzWFhf
-TDRfUEVSX0JBU0UJCTB4NDgwMDAwMDAKKyNkZWZpbmUgQU0zM1hYX0w0X0ZBU1RfQkFTRQkJMHg0
-QTAwMDAwMAorCisvKiBVQVJUICovCisjZGVmaW5lIEFNMzNYWF9VQVJUMF9CQVNFCQkoQU0zM1hY
-X0w0X1dLVVBfQkFTRSArIDB4MjA5MDAwKQorI2RlZmluZSBBTTMzWFhfVUFSVDFfQkFTRQkJKEFN
-MzNYWF9MNF9QRVJfQkFTRSArIDB4MjIwMDApCisjZGVmaW5lIEFNMzNYWF9VQVJUMl9CQVNFCQko
-QU0zM1hYX0w0X1BFUl9CQVNFICsgMHgyNDAwMCkKKworLyogRU1GSSBSZWdpc3RlcnMgKi8KKyNk
-ZWZpbmUgQU0zM1hYX0VNRkkwX0JBU0UJCTB4NEMwMDAwMDAKKworI2RlZmluZSBBTTMzWFhfRFJB
-TV9BRERSX1NQQUNFX1NUQVJUCTB4ODAwMDAwMDAKKyNkZWZpbmUgQU0zM1hYX0RSQU1fQUREUl9T
-UEFDRV9FTkQJMHhDMDAwMDAwMAorCisvKiBHUE1DICovCisjZGVmaW5lIEFNMzNYWF9HUE1DX0JB
-U0UJCTB4NTAwMDAwMDAKKworLyogTU1DICovCisjZGVmaW5lIEFNMzNYWF9NTUNIUzBfQkFTRQkJ
-KEFNMzNYWF9MNF9QRVJfQkFTRSArIDB4NjAwMDApCisKKy8qIERUTVRpbWVyMCAqLworI2RlZmlu
-ZSBBTTMzWFhfRE1USU1FUjBfQkFTRQkJKEFNMzNYWF9MNF9XS1VQX0JBU0UgKyAweDIwNTAwMCkK
-KworLyogUFJNICovCisjZGVmaW5lIEFNMzNYWF9QUk1fQkFTRQkJCShBTTMzWFhfTDRfV0tVUF9C
-QVNFICsgMHgyMDAwMDApCisKKworI2VuZGlmCmRpZmYgLS1naXQgYS9kcml2ZXJzL21jaS9LY29u
-ZmlnIGIvZHJpdmVycy9tY2kvS2NvbmZpZwppbmRleCA2ODc2MTE3Li45NTU4ZjI4IDEwMDY0NAot
-LS0gYS9kcml2ZXJzL21jaS9LY29uZmlnCisrKyBiL2RyaXZlcnMvbWNpL0tjb25maWcKQEAgLTY3
-LDcgKzY3LDcgQEAgY29uZmlnIE1DSV9JTVhfRVNESENfUElPCiAKIGNvbmZpZyBNQ0lfT01BUF9I
-U01NQwogCWJvb2wgIk9NQVAgSFNNTUMiCi0JZGVwZW5kcyBvbiBBUkNIX09NQVA0IHx8IEFSQ0hf
-T01BUDMKKwlkZXBlbmRzIG9uIEFSQ0hfT01BUDQgfHwgQVJDSF9PTUFQMyB8fCBBUkNIX0FNMzNY
-WAogCWhlbHAKIAkgIEVuYWJsZSB0aGlzIGVudHJ5IHRvIGFkZCBzdXBwb3J0IHRvIHJlYWQgYW5k
-IHdyaXRlIFNEIGNhcmRzIG9uCiAJICBib3RoIE9NQVAzIGFuZCBPTUFQNCBiYXNlZCBzeXN0ZW1z
-LgotLSAKMS43LjEwLjQKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+From: Sascha Hauer <s.hauer@pengutronix.de>
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/beagle/board.c          |   16 ++++------------
+ arch/arm/boards/omap343xdsp/board.c     |   11 ++---------
+ arch/arm/boards/omap3evm/board.c        |   23 +++++++----------------
+ arch/arm/boards/phycard-a-l1/pca-a-l1.c |   15 +++------------
+ 4 files changed, 16 insertions(+), 49 deletions(-)
+
+diff --git a/arch/arm/boards/beagle/board.c b/arch/arm/boards/beagle/board.c
+index f6d9d3f..6004566 100644
+--- a/arch/arm/boards/beagle/board.c
++++ b/arch/arm/boards/beagle/board.c
+@@ -64,6 +64,7 @@
+ #include <mach/gpmc.h>
+ #include <mach/gpmc_nand.h>
+ #include <mach/ehci.h>
++#include <mach/omap3-devices.h>
+ #include <i2c/i2c.h>
+ #include <linux/err.h>
+ #include <usb/ehci.h>
+@@ -234,11 +235,6 @@ pure_initcall(beagle_board_init);
+ 
+ #ifdef CONFIG_DRIVER_SERIAL_NS16550
+ 
+-static struct NS16550_plat serial_plat = {
+-	.clock = 48000000,      /* 48MHz (APLL96/2) */
+-	.shift = 2,
+-};
+-
+ /**
+  * @brief UART serial port initialization - remember to enable COM clocks in
+  * arch
+@@ -247,9 +243,7 @@ static struct NS16550_plat serial_plat = {
+  */
+ static int beagle_console_init(void)
+ {
+-	/* Register the serial port */
+-	add_ns16550_device(DEVICE_ID_DYNAMIC, OMAP_UART3_BASE, 1024, IORESOURCE_MEM_8BIT,
+-			   &serial_plat);
++	omap3_add_uart3();
+ 
+ 	return 0;
+ }
+@@ -295,8 +289,7 @@ mem_initcall(beagle_mem_init);
+ static int beagle_devices_init(void)
+ {
+ 	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
+-	add_generic_device("i2c-omap", DEVICE_ID_DYNAMIC, NULL, OMAP_I2C1_BASE, SZ_4K,
+-			   IORESOURCE_MEM, NULL);
++	omap3_add_i2c1(NULL);
+ 
+ #ifdef CONFIG_USB_EHCI_OMAP
+ 	if (ehci_omap_init(&omap_ehci_pdata) >= 0)
+@@ -309,8 +302,7 @@ static int beagle_devices_init(void)
+ #endif
+ 	omap_add_gpmc_nand_device(&nand_plat);
+ 
+-	add_generic_device("omap-hsmmc", DEVICE_ID_DYNAMIC, NULL, OMAP_MMC1_BASE, SZ_4K,
+-			   IORESOURCE_MEM, NULL);
++	omap3_add_mmc1(NULL);
+ 
+ 	armlinux_set_bootparams((void *)0x80000100);
+ 	armlinux_set_architecture(MACH_TYPE_OMAP3_BEAGLE);
+diff --git a/arch/arm/boards/omap343xdsp/board.c b/arch/arm/boards/omap343xdsp/board.c
+index fc50eb1..6de86f4 100644
+--- a/arch/arm/boards/omap343xdsp/board.c
++++ b/arch/arm/boards/omap343xdsp/board.c
+@@ -49,6 +49,7 @@
+ #include <ns16550.h>
+ #include <asm/armlinux.h>
+ #include <mach/omap3-silicon.h>
++#include <mach/omap3-devices.h>
+ #include <mach/sdrc.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+@@ -602,12 +603,6 @@ static void mux_config(void)
+ /*-----------------------CONSOLE  Devices -----------------------------------*/
+ 
+ #ifdef CONFIG_DRIVER_SERIAL_NS16550
+-
+-static struct NS16550_plat serial_plat = {
+-	.clock = 48000000,	/* 48MHz (APLL96/2) */
+-	.shift = 2,
+-};
+-
+ /**
+  * @brief UART serial port initialization - remember to enable COM clocks in arch
+  *
+@@ -615,9 +610,7 @@ static struct NS16550_plat serial_plat = {
+  */
+ static int sdp3430_console_init(void)
+ {
+-	/* Register the serial port */
+-	add_ns16550_device(DEVICE_ID_DYNAMIC, OMAP_UART3_BASE, 1024, IORESOURCE_MEM_8BIT,
+-			   &serial_plat);
++	omap3_add_uart3();
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/boards/omap3evm/board.c b/arch/arm/boards/omap3evm/board.c
+index a5faf56..179450f 100644
+--- a/arch/arm/boards/omap3evm/board.c
++++ b/arch/arm/boards/omap3evm/board.c
+@@ -55,6 +55,7 @@
+ #include <mach/gpmc.h>
+ #include <errno.h>
+ #include <generated/mach-types.h>
++#include <mach/omap3-devices.h>
+ 
+ 
+ /*
+@@ -212,11 +213,6 @@ pure_initcall(omap3_evm_board_init);
+ 
+ #ifdef CONFIG_DRIVER_SERIAL_NS16550
+ 
+-static struct NS16550_plat serial_plat = {
+-	.clock		= 48000000,      /* 48MHz (APLL96/2) */
+-	.shift		= 2,
+-};
+-
+ /**
+  * @brief Initialize the serial port to be used as console.
+  *
+@@ -224,13 +220,10 @@ static struct NS16550_plat serial_plat = {
+  */
+ static int omap3evm_init_console(void)
+ {
+-	add_ns16550_device(DEVICE_ID_DYNAMIC,
+-#if defined(CONFIG_OMAP3EVM_UART1)
+-			OMAP_UART1_BASE,
+-#elif defined(CONFIG_OMAP3EVM_UART3)
+-			OMAP_UART3_BASE,
+-#endif
+-			1024, IORESOURCE_MEM_8BIT, &serial_plat);
++	if (IS_ENABLED(CONFIG_OMAP3EVM_UART1))
++		omap3_add_uart1();
++	if (IS_ENABLED(CONFIG_OMAP3EVM_UART3))
++		omap3_add_uart3();
+ 
+ 	return 0;
+ }
+@@ -253,10 +246,8 @@ static int omap3evm_init_devices(void)
+ 	 */
+ 	gpmc_generic_init(0x10);
+ #endif
+-#ifdef CONFIG_MCI_OMAP_HSMMC
+-	add_generic_device("omap-hsmmc", DEVICE_ID_DYNAMIC, NULL, OMAP_MMC1_BASE, SZ_4K,
+-				IORESOURCE_MEM, NULL);
+-#endif
++	omap3_add_mmc1(NULL);
++
+         armlinux_set_bootparams((void *)0x80000100);
+         armlinux_set_architecture(MACH_TYPE_OMAP3EVM);
+ 
+diff --git a/arch/arm/boards/phycard-a-l1/pca-a-l1.c b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+index c6a7e60..3b89631 100644
+--- a/arch/arm/boards/phycard-a-l1/pca-a-l1.c
++++ b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+@@ -61,6 +61,7 @@
+ #include <mach/omap3-silicon.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
++#include <mach/omap3-devices.h>
+ 
+ #define SMC911X_BASE 0x2c000000
+ 
+@@ -307,10 +308,6 @@ pure_initcall(pcaal1_board_init);
+ /*
+  * Run-time initialization(s)
+  */
+-static struct NS16550_plat serial_plat = {
+-	.clock	= 48000000,      /* 48MHz (APLL96/2) */
+-	.shift	= 2,
+-};
+ 
+ /**
+  * @brief Initialize the serial port to be used as console.
+@@ -319,8 +316,7 @@ static struct NS16550_plat serial_plat = {
+  */
+ static int pcaal1_init_console(void)
+ {
+-	add_ns16550_device(DEVICE_ID_DYNAMIC, OMAP_UART3_BASE, 1024, IORESOURCE_MEM_8BIT,
+-			   &serial_plat);
++	omap3_add_uart3();
+ 
+ 	return 0;
+ }
+@@ -377,11 +373,9 @@ static int pcaal1_mem_init(void)
+ }
+ mem_initcall(pcaal1_mem_init);
+ 
+-#ifdef CONFIG_MCI_OMAP_HSMMC
+ struct omap_hsmmc_platform_data pcaal1_hsmmc_plat = {
+ 	.f_max = 26000000,
+ };
+-#endif
+ 
+ static struct gpmc_nand_platform_data nand_plat = {
+ 	.device_width = 16,
+@@ -393,10 +387,7 @@ static int pcaal1_init_devices(void)
+ {
+ 	omap_add_gpmc_nand_device(&nand_plat);
+ 
+-#ifdef CONFIG_MCI_OMAP_HSMMC
+-	add_generic_device("omap-hsmmc", DEVICE_ID_DYNAMIC, NULL, OMAP_MMC1_BASE, SZ_4K,
+-			   IORESOURCE_MEM, &pcaal1_hsmmc_plat);
+-#endif
++	omap3_add_mmc1(&pcaal1_hsmmc_plat);
+ 
+ #ifdef CONFIG_DRIVER_NET_SMC911X
+ 	pcaal1_setup_net_chip();
+-- 
+1.7.10.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
