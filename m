@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tky4S-0001ia-VY
- for barebox@lists.infradead.org; Tue, 18 Dec 2012 14:23:15 +0000
+ id 1Tky4S-0001iW-Pn
+ for barebox@lists.infradead.org; Tue, 18 Dec 2012 14:23:22 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Tue, 18 Dec 2012 15:22:34 +0100
-Message-Id: <1355840561-11552-13-git-send-email-jlu@pengutronix.de>
+Date: Tue, 18 Dec 2012 15:22:32 +0100
+Message-Id: <1355840561-11552-11-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1355840561-11552-1-git-send-email-jlu@pengutronix.de>
 References: <1355840561-11552-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,222 +21,305 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/19] ARM omap3: Use device register functions in boards
+Subject: [PATCH 10/19] ARM omap: include individual SoC files
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
+- remove mach/silicon.h and include omap?-silicon.h directly
+- include mach/omap?-clock.h directly where needed
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/beagle/board.c          |   16 ++++------------
- arch/arm/boards/omap343xdsp/board.c     |   11 ++---------
- arch/arm/boards/omap3evm/board.c        |   23 +++++++----------------
- arch/arm/boards/phycard-a-l1/pca-a-l1.c |   15 +++------------
- 4 files changed, 16 insertions(+), 49 deletions(-)
+ arch/arm/boards/archosg9/board.c                |    2 +-
+ arch/arm/boards/beagle/board.c                  |    2 +-
+ arch/arm/boards/omap343xdsp/board.c             |    2 +-
+ arch/arm/boards/omap3evm/board.c                |    2 +-
+ arch/arm/boards/panda/board.c                   |    2 +-
+ arch/arm/boards/pcm049/board.c                  |    2 +-
+ arch/arm/boards/phycard-a-l1/pca-a-l1.c         |    2 +-
+ arch/arm/boards/phycard-a-xl2/pca-a-xl2.c       |    2 +-
+ arch/arm/mach-omap/devices-gpmc-nand.c          |    1 -
+ arch/arm/mach-omap/include/mach/clocks.h        |    7 -----
+ arch/arm/mach-omap/include/mach/omap3-silicon.h |    5 ++++
+ arch/arm/mach-omap/include/mach/silicon.h       |   33 -----------------------
+ arch/arm/mach-omap/omap3_clock.c                |    2 +-
+ arch/arm/mach-omap/omap3_core.S                 |    2 +-
+ arch/arm/mach-omap/omap3_generic.c              |    3 ++-
+ arch/arm/mach-omap/omap4_clock.c                |    2 +-
+ arch/arm/mach-omap/omap4_generic.c              |    2 +-
+ drivers/mtd/nand/nand_omap_gpmc.c               |    1 -
+ 18 files changed, 19 insertions(+), 55 deletions(-)
+ delete mode 100644 arch/arm/mach-omap/include/mach/silicon.h
 
-diff --git a/arch/arm/boards/beagle/board.c b/arch/arm/boards/beagle/board.c
-index f6d9d3f..6004566 100644
---- a/arch/arm/boards/beagle/board.c
-+++ b/arch/arm/boards/beagle/board.c
-@@ -64,6 +64,7 @@
- #include <mach/gpmc.h>
- #include <mach/gpmc_nand.h>
- #include <mach/ehci.h>
-+#include <mach/omap3-devices.h>
- #include <i2c/i2c.h>
- #include <linux/err.h>
- #include <usb/ehci.h>
-@@ -234,11 +235,6 @@ pure_initcall(beagle_board_init);
- 
- #ifdef CONFIG_DRIVER_SERIAL_NS16550
- 
--static struct NS16550_plat serial_plat = {
--	.clock = 48000000,      /* 48MHz (APLL96/2) */
--	.shift = 2,
--};
--
- /**
-  * @brief UART serial port initialization - remember to enable COM clocks in
-  * arch
-@@ -247,9 +243,7 @@ static struct NS16550_plat serial_plat = {
-  */
- static int beagle_console_init(void)
- {
--	/* Register the serial port */
--	add_ns16550_device(DEVICE_ID_DYNAMIC, OMAP_UART3_BASE, 1024, IORESOURCE_MEM_8BIT,
--			   &serial_plat);
-+	omap3_add_uart3();
- 
- 	return 0;
- }
-@@ -295,8 +289,7 @@ mem_initcall(beagle_mem_init);
- static int beagle_devices_init(void)
- {
- 	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
--	add_generic_device("i2c-omap", DEVICE_ID_DYNAMIC, NULL, OMAP_I2C1_BASE, SZ_4K,
--			   IORESOURCE_MEM, NULL);
-+	omap3_add_i2c1(NULL);
- 
- #ifdef CONFIG_USB_EHCI_OMAP
- 	if (ehci_omap_init(&omap_ehci_pdata) >= 0)
-@@ -309,8 +302,7 @@ static int beagle_devices_init(void)
- #endif
- 	omap_add_gpmc_nand_device(&nand_plat);
- 
--	add_generic_device("omap-hsmmc", DEVICE_ID_DYNAMIC, NULL, OMAP_MMC1_BASE, SZ_4K,
--			   IORESOURCE_MEM, NULL);
-+	omap3_add_mmc1(NULL);
- 
- 	armlinux_set_bootparams((void *)0x80000100);
- 	armlinux_set_architecture(MACH_TYPE_OMAP3_BEAGLE);
-diff --git a/arch/arm/boards/omap343xdsp/board.c b/arch/arm/boards/omap343xdsp/board.c
-index fc50eb1..6de86f4 100644
---- a/arch/arm/boards/omap343xdsp/board.c
-+++ b/arch/arm/boards/omap343xdsp/board.c
-@@ -49,6 +49,7 @@
+diff --git a/arch/arm/boards/archosg9/board.c b/arch/arm/boards/archosg9/board.c
+index 7076c6f..dab0a36 100644
+--- a/arch/arm/boards/archosg9/board.c
++++ b/arch/arm/boards/archosg9/board.c
+@@ -15,7 +15,7 @@
  #include <ns16550.h>
  #include <asm/armlinux.h>
- #include <mach/omap3-silicon.h>
-+#include <mach/omap3-devices.h>
+ #include <generated/mach-types.h>
+-#include <mach/silicon.h>
++#include <mach/omap4-silicon.h>
+ #include <sizes.h>
+ #include <i2c/i2c.h>
+ #include <gpio.h>
+diff --git a/arch/arm/boards/beagle/board.c b/arch/arm/boards/beagle/board.c
+index de8206b..f6d9d3f 100644
+--- a/arch/arm/boards/beagle/board.c
++++ b/arch/arm/boards/beagle/board.c
+@@ -55,7 +55,7 @@
+ #include <ns16550.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <mach/silicon.h>
++#include <mach/omap3-silicon.h>
  #include <mach/sdrc.h>
  #include <mach/sys_info.h>
  #include <mach/syslib.h>
-@@ -602,12 +603,6 @@ static void mux_config(void)
- /*-----------------------CONSOLE  Devices -----------------------------------*/
- 
- #ifdef CONFIG_DRIVER_SERIAL_NS16550
--
--static struct NS16550_plat serial_plat = {
--	.clock = 48000000,	/* 48MHz (APLL96/2) */
--	.shift = 2,
--};
--
- /**
-  * @brief UART serial port initialization - remember to enable COM clocks in arch
-  *
-@@ -615,9 +610,7 @@ static struct NS16550_plat serial_plat = {
-  */
- static int sdp3430_console_init(void)
- {
--	/* Register the serial port */
--	add_ns16550_device(DEVICE_ID_DYNAMIC, OMAP_UART3_BASE, 1024, IORESOURCE_MEM_8BIT,
--			   &serial_plat);
-+	omap3_add_uart3();
- 
- 	return 0;
- }
-diff --git a/arch/arm/boards/omap3evm/board.c b/arch/arm/boards/omap3evm/board.c
-index a5faf56..179450f 100644
---- a/arch/arm/boards/omap3evm/board.c
-+++ b/arch/arm/boards/omap3evm/board.c
-@@ -55,6 +55,7 @@
- #include <mach/gpmc.h>
- #include <errno.h>
- #include <generated/mach-types.h>
-+#include <mach/omap3-devices.h>
- 
- 
- /*
-@@ -212,11 +213,6 @@ pure_initcall(omap3_evm_board_init);
- 
- #ifdef CONFIG_DRIVER_SERIAL_NS16550
- 
--static struct NS16550_plat serial_plat = {
--	.clock		= 48000000,      /* 48MHz (APLL96/2) */
--	.shift		= 2,
--};
--
- /**
-  * @brief Initialize the serial port to be used as console.
-  *
-@@ -224,13 +220,10 @@ static struct NS16550_plat serial_plat = {
-  */
- static int omap3evm_init_console(void)
- {
--	add_ns16550_device(DEVICE_ID_DYNAMIC,
--#if defined(CONFIG_OMAP3EVM_UART1)
--			OMAP_UART1_BASE,
--#elif defined(CONFIG_OMAP3EVM_UART3)
--			OMAP_UART3_BASE,
--#endif
--			1024, IORESOURCE_MEM_8BIT, &serial_plat);
-+	if (IS_ENABLED(CONFIG_OMAP3EVM_UART1))
-+		omap3_add_uart1();
-+	if (IS_ENABLED(CONFIG_OMAP3EVM_UART3))
-+		omap3_add_uart3();
- 
- 	return 0;
- }
-@@ -253,10 +246,8 @@ static int omap3evm_init_devices(void)
- 	 */
- 	gpmc_generic_init(0x10);
- #endif
--#ifdef CONFIG_MCI_OMAP_HSMMC
--	add_generic_device("omap-hsmmc", DEVICE_ID_DYNAMIC, NULL, OMAP_MMC1_BASE, SZ_4K,
--				IORESOURCE_MEM, NULL);
--#endif
-+	omap3_add_mmc1(NULL);
-+
-         armlinux_set_bootparams((void *)0x80000100);
-         armlinux_set_architecture(MACH_TYPE_OMAP3EVM);
- 
-diff --git a/arch/arm/boards/phycard-a-l1/pca-a-l1.c b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
-index c6a7e60..3b89631 100644
---- a/arch/arm/boards/phycard-a-l1/pca-a-l1.c
-+++ b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
-@@ -61,6 +61,7 @@
- #include <mach/omap3-silicon.h>
+diff --git a/arch/arm/boards/omap343xdsp/board.c b/arch/arm/boards/omap343xdsp/board.c
+index 8b8e0b2..fc50eb1 100644
+--- a/arch/arm/boards/omap343xdsp/board.c
++++ b/arch/arm/boards/omap343xdsp/board.c
+@@ -48,7 +48,7 @@
+ #include <io.h>
+ #include <ns16550.h>
+ #include <asm/armlinux.h>
+-#include <mach/silicon.h>
++#include <mach/omap3-silicon.h>
+ #include <mach/sdrc.h>
  #include <mach/sys_info.h>
  #include <mach/syslib.h>
-+#include <mach/omap3-devices.h>
+diff --git a/arch/arm/boards/omap3evm/board.c b/arch/arm/boards/omap3evm/board.c
+index d18cf39..a5faf56 100644
+--- a/arch/arm/boards/omap3evm/board.c
++++ b/arch/arm/boards/omap3evm/board.c
+@@ -46,7 +46,7 @@
+ #include <sizes.h>
+ #include <ns16550.h>
+ #include <asm/armlinux.h>
+-#include <mach/silicon.h>
++#include <mach/omap3-silicon.h>
+ #include <mach/sdrc.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+diff --git a/arch/arm/boards/panda/board.c b/arch/arm/boards/panda/board.c
+index 98c05b2..99222d2 100644
+--- a/arch/arm/boards/panda/board.c
++++ b/arch/arm/boards/panda/board.c
+@@ -8,7 +8,7 @@
+ #include <asm/armlinux.h>
+ #include <linux/stat.h>
+ #include <generated/mach-types.h>
+-#include <mach/silicon.h>
++#include <mach/omap4-silicon.h>
+ #include <mach/sdrc.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+diff --git a/arch/arm/boards/pcm049/board.c b/arch/arm/boards/pcm049/board.c
+index 3159457..859ce3b 100644
+--- a/arch/arm/boards/pcm049/board.c
++++ b/arch/arm/boards/pcm049/board.c
+@@ -22,7 +22,7 @@
+ #include <ns16550.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <mach/silicon.h>
++#include <mach/omap4-silicon.h>
+ #include <mach/sdrc.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+diff --git a/arch/arm/boards/phycard-a-l1/pca-a-l1.c b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+index e35db18..c6a7e60 100644
+--- a/arch/arm/boards/phycard-a-l1/pca-a-l1.c
++++ b/arch/arm/boards/phycard-a-l1/pca-a-l1.c
+@@ -58,7 +58,7 @@
+ #include <mach/xload.h>
+ #include <mach/omap3-mux.h>
+ #include <mach/sdrc.h>
+-#include <mach/silicon.h>
++#include <mach/omap3-silicon.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
  
- #define SMC911X_BASE 0x2c000000
+diff --git a/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c b/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
+index 64e6d94..26b31dd 100644
+--- a/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
++++ b/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
+@@ -22,7 +22,7 @@
+ #include <ns16550.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <mach/silicon.h>
++#include <mach/omap4-silicon.h>
+ #include <mach/sdrc.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+diff --git a/arch/arm/mach-omap/devices-gpmc-nand.c b/arch/arm/mach-omap/devices-gpmc-nand.c
+index b2a2b0f..c4ddc95 100644
+--- a/arch/arm/mach-omap/devices-gpmc-nand.c
++++ b/arch/arm/mach-omap/devices-gpmc-nand.c
+@@ -24,7 +24,6 @@
+ #include <clock.h>
+ #include <io.h>
  
-@@ -307,10 +308,6 @@ pure_initcall(pcaal1_board_init);
- /*
-  * Run-time initialization(s)
-  */
--static struct NS16550_plat serial_plat = {
--	.clock	= 48000000,      /* 48MHz (APLL96/2) */
--	.shift	= 2,
--};
+-#include <mach/silicon.h>
+ #include <mach/gpmc.h>
+ #include <mach/gpmc_nand.h>
  
- /**
-  * @brief Initialize the serial port to be used as console.
-@@ -319,8 +316,7 @@ static struct NS16550_plat serial_plat = {
-  */
- static int pcaal1_init_console(void)
- {
--	add_ns16550_device(DEVICE_ID_DYNAMIC, OMAP_UART3_BASE, 1024, IORESOURCE_MEM_8BIT,
--			   &serial_plat);
-+	omap3_add_uart3();
+diff --git a/arch/arm/mach-omap/include/mach/clocks.h b/arch/arm/mach-omap/include/mach/clocks.h
+index cbadec7..e44d98b 100644
+--- a/arch/arm/mach-omap/include/mach/clocks.h
++++ b/arch/arm/mach-omap/include/mach/clocks.h
+@@ -34,11 +34,4 @@
+ #define S26M		26000000
+ #define S38_4M		38400000
  
- 	return 0;
- }
-@@ -377,11 +373,9 @@ static int pcaal1_mem_init(void)
- }
- mem_initcall(pcaal1_mem_init);
- 
--#ifdef CONFIG_MCI_OMAP_HSMMC
- struct omap_hsmmc_platform_data pcaal1_hsmmc_plat = {
- 	.f_max = 26000000,
- };
+-#ifdef CONFIG_ARCH_OMAP3
+-#include <mach/omap3-clock.h>
 -#endif
- 
- static struct gpmc_nand_platform_data nand_plat = {
- 	.device_width = 16,
-@@ -393,10 +387,7 @@ static int pcaal1_init_devices(void)
- {
- 	omap_add_gpmc_nand_device(&nand_plat);
- 
--#ifdef CONFIG_MCI_OMAP_HSMMC
--	add_generic_device("omap-hsmmc", DEVICE_ID_DYNAMIC, NULL, OMAP_MMC1_BASE, SZ_4K,
--			   IORESOURCE_MEM, &pcaal1_hsmmc_plat);
+-#ifdef CONFIG_ARCH_OMAP4
+-#include <mach/omap4-clock.h>
 -#endif
-+	omap3_add_mmc1(&pcaal1_hsmmc_plat);
+-
+ #endif /* __OMAP_CLOCKS_H_ */
+diff --git a/arch/arm/mach-omap/include/mach/omap3-silicon.h b/arch/arm/mach-omap/include/mach/omap3-silicon.h
+index 5843027..0cf43bd 100644
+--- a/arch/arm/mach-omap/include/mach/omap3-silicon.h
++++ b/arch/arm/mach-omap/include/mach/omap3-silicon.h
+@@ -130,4 +130,9 @@
+ /* PRM */
+ #define OMAP3_PRM_RSTCTRL_RESET	0x04
  
- #ifdef CONFIG_DRIVER_NET_SMC911X
- 	pcaal1_setup_net_chip();
++/* If Architecture specific init functions are present */
++#ifndef __ASSEMBLY__
++void omap3_core_init(void);
++#endif /* __ASSEMBLY__ */
++
+ #endif /* __ASM_ARCH_OMAP3_H */
+diff --git a/arch/arm/mach-omap/include/mach/silicon.h b/arch/arm/mach-omap/include/mach/silicon.h
+deleted file mode 100644
+index 5ee1931..0000000
+--- a/arch/arm/mach-omap/include/mach/silicon.h
++++ /dev/null
+@@ -1,33 +0,0 @@
+-/*
+- * (C) Copyright 2008
+- * Texas Instruments, <www.ti.com>
+- * Nishanth Menon <x0nishan@ti.com>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR /PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+-  */
+-#ifndef __ASM_ARCH_OMAP_SILICON_H
+-#define __ASM_ARCH_OMAP_SILICON_H
+-
+-/* Each platform silicon header comes here */
+-#ifdef CONFIG_ARCH_OMAP3
+-#include <mach/omap3-silicon.h>
+-#endif
+-#ifdef CONFIG_ARCH_OMAP4
+-#include <mach/omap4-silicon.h>
+-#endif
+-
+-/* If Architecture specific init functions are present */
+-#ifndef __ASSEMBLY__
+-void omap3_core_init(void);
+-#endif /* __ASSEMBLY__ */
+-
+-#endif /* __ASM_ARCH_OMAP_SILICON_H */
+diff --git a/arch/arm/mach-omap/omap3_clock.c b/arch/arm/mach-omap/omap3_clock.c
+index 11f5117..5cf2747 100644
+--- a/arch/arm/mach-omap/omap3_clock.c
++++ b/arch/arm/mach-omap/omap3_clock.c
+@@ -32,7 +32,7 @@
+ 
+ #include <common.h>
+ #include <io.h>
+-#include <mach/silicon.h>
++#include <mach/omap3-silicon.h>
+ #include <mach/clocks.h>
+ #include <mach/omap3-clock.h>
+ #include <mach/timers.h>
+diff --git a/arch/arm/mach-omap/omap3_core.S b/arch/arm/mach-omap/omap3_core.S
+index 38a8cb4..bc32f55 100644
+--- a/arch/arm/mach-omap/omap3_core.S
++++ b/arch/arm/mach-omap/omap3_core.S
+@@ -28,7 +28,7 @@
+ #include <config.h>
+ #include <linux/linkage.h>
+ #include <asm/assembler.h>
+-#include <mach/silicon.h>
++#include <mach/omap3-silicon.h>
+ #include <mach/wdt.h>
+ #include <mach/clocks.h>
+ #include <asm/barebox-arm-head.h>
+diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
+index 9932103..a209129 100644
+--- a/arch/arm/mach-omap/omap3_generic.c
++++ b/arch/arm/mach-omap/omap3_generic.c
+@@ -30,12 +30,13 @@
+ #include <common.h>
+ #include <init.h>
+ #include <io.h>
+-#include <mach/silicon.h>
++#include <mach/omap3-silicon.h>
+ #include <mach/gpmc.h>
+ #include <mach/sdrc.h>
+ #include <mach/control.h>
+ #include <mach/omap3-smx.h>
+ #include <mach/clocks.h>
++#include <mach/omap3-clock.h>
+ #include <mach/wdt.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
+index c86e4e5..0621fd3 100644
+--- a/arch/arm/mach-omap/omap4_clock.c
++++ b/arch/arm/mach-omap/omap4_clock.c
+@@ -1,7 +1,7 @@
+ #include <common.h>
+ #include <io.h>
+ #include <mach/syslib.h>
+-#include <mach/silicon.h>
++#include <mach/omap4-silicon.h>
+ #include <mach/clocks.h>
+ #include <mach/omap4-clock.h>
+ 
+diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+index f4841a6..2a09eb6 100644
+--- a/arch/arm/mach-omap/omap4_generic.c
++++ b/arch/arm/mach-omap/omap4_generic.c
+@@ -2,7 +2,7 @@
+ #include <init.h>
+ #include <io.h>
+ #include <mach/omap4-clock.h>
+-#include <mach/silicon.h>
++#include <mach/omap4-silicon.h>
+ #include <mach/omap4-mux.h>
+ #include <mach/syslib.h>
+ #include <mach/xload.h>
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index 4df5a1e..9050a8d 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -68,7 +68,6 @@
+ #include <linux/mtd/nand.h>
+ #include <linux/mtd/nand_ecc.h>
+ #include <io.h>
+-#include <mach/silicon.h>
+ #include <mach/gpmc.h>
+ #include <mach/gpmc_nand.h>
+ 
 -- 
 1.7.10.4
 
