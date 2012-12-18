@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tky4S-0001iY-Sx
- for barebox@lists.infradead.org; Tue, 18 Dec 2012 14:23:12 +0000
+ id 1Tky4T-0001ic-40
+ for barebox@lists.infradead.org; Tue, 18 Dec 2012 14:23:20 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Tue, 18 Dec 2012 15:22:33 +0100
-Message-Id: <1355840561-11552-12-git-send-email-jlu@pengutronix.de>
+Date: Tue, 18 Dec 2012 15:22:35 +0100
+Message-Id: <1355840561-11552-14-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1355840561-11552-1-git-send-email-jlu@pengutronix.de>
 References: <1355840561-11552-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,234 +21,199 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/19] ARM omap: Add device register convenience functions
+Subject: [PATCH 13/19] ARM omap4: Use device register functions in boards
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/Makefile                     |    2 +-
- arch/arm/mach-omap/include/mach/devices.h       |   13 +++++
- arch/arm/mach-omap/include/mach/omap3-devices.h |   54 ++++++++++++++++-
- arch/arm/mach-omap/include/mach/omap4-devices.h |   71 +++++++++++++++++++++++
- arch/arm/mach-omap/omap_devices.c               |   27 +++++++++
- 5 files changed, 165 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/mach-omap/include/mach/devices.h
- create mode 100644 arch/arm/mach-omap/include/mach/omap4-devices.h
- create mode 100644 arch/arm/mach-omap/omap_devices.c
+ arch/arm/boards/archosg9/board.c          |   17 +++++------------
+ arch/arm/boards/panda/board.c             |   18 ++++--------------
+ arch/arm/boards/pcm049/board.c            |   17 ++++-------------
+ arch/arm/boards/phycard-a-xl2/pca-a-xl2.c |   16 ++++------------
+ 4 files changed, 17 insertions(+), 51 deletions(-)
 
-diff --git a/arch/arm/mach-omap/Makefile b/arch/arm/mach-omap/Makefile
-index 2ac7fb2..b7a5e4a 100644
---- a/arch/arm/mach-omap/Makefile
-+++ b/arch/arm/mach-omap/Makefile
-@@ -15,7 +15,7 @@
- # GNU General Public License for more details.
- #
- #
--obj-$(CONFIG_ARCH_OMAP) += syslib.o
-+obj-$(CONFIG_ARCH_OMAP) += syslib.o omap_devices.o
- pbl-$(CONFIG_ARCH_OMAP) += syslib.o
- obj-$(CONFIG_OMAP_CLOCK_SOURCE_S32K) += s32k_clksource.o
- obj-$(CONFIG_ARCH_OMAP3) += omap3_core.o omap3_generic.o auxcr.o
-diff --git a/arch/arm/mach-omap/include/mach/devices.h b/arch/arm/mach-omap/include/mach/devices.h
-new file mode 100644
-index 0000000..9881604
---- /dev/null
-+++ b/arch/arm/mach-omap/include/mach/devices.h
-@@ -0,0 +1,13 @@
-+#ifndef __MACH_OMAP_DEVICES_H
-+#define __MACH_OMAP_DEVICES_H
-+
-+#include <mach/omap_hsmmc.h>
-+
-+struct device_d *omap_add_uart(int id, unsigned long base);
-+
-+struct device_d *omap_add_mmc(int id, unsigned long base,
-+		struct omap_hsmmc_platform_data *pdata);
-+
-+struct device_d *omap_add_i2c(int id, unsigned long base, void *pdata);
-+
-+#endif /* __MACH_OMAP_DEVICES_H */
-diff --git a/arch/arm/mach-omap/include/mach/omap3-devices.h b/arch/arm/mach-omap/include/mach/omap3-devices.h
-index 8a6b324..dd6826a 100644
---- a/arch/arm/mach-omap/include/mach/omap3-devices.h
-+++ b/arch/arm/mach-omap/include/mach/omap3-devices.h
-@@ -1,7 +1,12 @@
-+#ifndef __MACH_OMAP3_DEVICES_H
-+#define __MACH_OMAP3_DEVICES_H
-+
- #include <driver.h>
+diff --git a/arch/arm/boards/archosg9/board.c b/arch/arm/boards/archosg9/board.c
+index dab0a36..5f62748 100644
+--- a/arch/arm/boards/archosg9/board.c
++++ b/arch/arm/boards/archosg9/board.c
+@@ -16,14 +16,11 @@
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+ #include <mach/omap4-silicon.h>
++#include <mach/omap4-devices.h>
  #include <sizes.h>
--
-+#include <mach/omap3-silicon.h>
-+#include <mach/devices.h>
- #include <mach/mcspi.h>
-+#include <mach/omap_hsmmc.h>
+ #include <i2c/i2c.h>
+ #include <gpio.h>
  
- /* the device numbering is the same as in the device tree */
- 
-@@ -30,3 +35,50 @@ static inline struct device_d *omap3_add_spi4(void)
- {
- 	return omap3_add_spi(4, OMAP3_MCSPI4_BASE);
+-static struct NS16550_plat serial_plat = {
+-	.clock = 48000000, /* 48MHz (APLL96/2) */
+-	.shift = 2,
+-};
+ static int archosg9_console_init(void){
+ 	if (IS_ENABLED(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT))
+ 		add_generic_device("serial_omap4_usbboot", DEVICE_ID_DYNAMIC
+@@ -31,8 +28,7 @@ static int archosg9_console_init(void){
+ 	if (IS_ENABLED(CONFIG_DRIVER_SERIAL_NS16550)) {
+ 		gpio_direction_output(41, 0); /* gps_disable */
+ 		gpio_direction_output(34, 1); /* 1v8_pwron */
+-		add_ns16550_device(DEVICE_ID_DYNAMIC, OMAP44XX_UART1_BASE, 1024,
+-			IORESOURCE_MEM_8BIT, &serial_plat);
++		omap44xx_add_uart1();
+ 	}
+ 	return 0;
  }
-+
-+static inline struct device_d *omap3_add_uart1(void)
-+{
-+	return omap_add_uart(0, OMAP_UART1_BASE);
-+}
-+
-+static inline struct device_d *omap3_add_uart2(void)
-+{
-+	return omap_add_uart(1, OMAP_UART2_BASE);
-+}
-+
-+static inline struct device_d *omap3_add_uart3(void)
-+{
-+	return omap_add_uart(2, OMAP_UART3_BASE);
-+}
-+
-+static inline struct device_d *omap3_add_mmc1(struct omap_hsmmc_platform_data *pdata)
-+{
-+	return omap_add_mmc(0, OMAP_MMC1_BASE + 0x100, pdata);
-+}
-+
-+static inline struct device_d *omap3_add_mmc2(struct omap_hsmmc_platform_data *pdata)
-+{
-+	return omap_add_mmc(1, OMAP_MMC2_BASE + 0x100, pdata);
-+}
-+
-+static inline struct device_d *omap3_add_mmc3(struct omap_hsmmc_platform_data *pdata)
-+{
-+	return omap_add_mmc(2, OMAP_MMC3_BASE + 0x100, pdata);
-+}
-+
-+static inline struct device_d *omap3_add_i2c1(void *pdata)
-+{
-+	return omap_add_i2c(0, OMAP_I2C1_BASE, pdata);
-+}
-+
-+static inline struct device_d *omap3_add_i2c2(void *pdata)
-+{
-+	return omap_add_i2c(1, OMAP_I2C2_BASE, pdata);
-+}
-+
-+static inline struct device_d *omap3_add_i2c3(void *pdata)
-+{
-+	return omap_add_i2c(2, OMAP_I2C3_BASE, pdata);
-+}
-+
-+#endif /* __MACH_OMAP3_DEVICES_H */
-diff --git a/arch/arm/mach-omap/include/mach/omap4-devices.h b/arch/arm/mach-omap/include/mach/omap4-devices.h
-new file mode 100644
-index 0000000..448de68
---- /dev/null
-+++ b/arch/arm/mach-omap/include/mach/omap4-devices.h
-@@ -0,0 +1,71 @@
-+#ifndef __MACH_OMAP4_DEVICES_H
-+#define __MACH_OMAP4_DEVICES_H
-+
-+#include <driver.h>
-+#include <sizes.h>
-+#include <mach/devices.h>
-+#include <mach/omap4-silicon.h>
-+#include <mach/mcspi.h>
-+#include <mach/omap_hsmmc.h>
-+
-+static inline struct device_d *omap44xx_add_uart1(void)
-+{
-+	return omap_add_uart(0, OMAP44XX_UART1_BASE);
-+}
-+
-+static inline struct device_d *omap44xx_add_uart2(void)
-+{
-+	return omap_add_uart(1, OMAP44XX_UART2_BASE);
-+}
-+
-+static inline struct device_d *omap44xx_add_uart3(void)
-+{
-+	return omap_add_uart(2, OMAP44XX_UART3_BASE);
-+}
-+
-+static inline struct device_d *omap44xx_add_mmc1(struct omap_hsmmc_platform_data *pdata)
-+{
-+	return omap_add_mmc(0, OMAP44XX_MMC1_BASE, pdata);
-+}
-+
-+static inline struct device_d *omap44xx_add_mmc2(struct omap_hsmmc_platform_data *pdata)
-+{
-+	return omap_add_mmc(1, OMAP44XX_MMC2_BASE, pdata);
-+}
-+
-+static inline struct device_d *omap44xx_add_mmc3(struct omap_hsmmc_platform_data *pdata)
-+{
-+	return omap_add_mmc(2, OMAP44XX_MMC3_BASE, pdata);
-+}
-+
-+static inline struct device_d *omap44xx_add_mmc4(struct omap_hsmmc_platform_data *pdata)
-+{
-+	return omap_add_mmc(3, OMAP44XX_MMC4_BASE, pdata);
-+}
-+
-+static inline struct device_d *omap44xx_add_mmc5(struct omap_hsmmc_platform_data *pdata)
-+{
-+	return omap_add_mmc(4, OMAP44XX_MMC5_BASE, pdata);
-+}
-+
-+static inline struct device_d *omap44xx_add_i2c1(void *pdata)
-+{
-+	return omap_add_i2c(0, OMAP44XX_I2C1_BASE, pdata);
-+}
-+
-+static inline struct device_d *omap44xx_add_i2c2(void *pdata)
-+{
-+	return omap_add_i2c(1, OMAP44XX_I2C2_BASE, pdata);
-+}
-+
-+static inline struct device_d *omap44xx_add_i2c3(void *pdata)
-+{
-+	return omap_add_i2c(2, OMAP44XX_I2C3_BASE, pdata);
-+}
-+
-+static inline struct device_d *omap44xx_add_i2c4(void *pdata)
-+{
-+	return omap_add_i2c(3, OMAP44XX_I2C4_BASE, pdata);
-+}
-+
-+#endif /* __MACH_OMAP4_DEVICES_H */
-diff --git a/arch/arm/mach-omap/omap_devices.c b/arch/arm/mach-omap/omap_devices.c
-new file mode 100644
-index 0000000..acf029d
---- /dev/null
-+++ b/arch/arm/mach-omap/omap_devices.c
-@@ -0,0 +1,27 @@
-+#include <driver.h>
-+#include <ns16550.h>
-+#include <mach/omap3-devices.h>
-+
-+static struct NS16550_plat serial_plat = {
-+	.clock = 48000000,      /* 48MHz (APLL96/2) */
-+	.shift = 2,
-+};
-+
-+struct device_d *omap_add_uart(int id, unsigned long base)
-+{
-+	return add_ns16550_device(id, base, 1024,
-+			IORESOURCE_MEM_8BIT, &serial_plat);
-+}
-+
-+struct device_d *omap_add_mmc(int id, unsigned long base,
-+		struct omap_hsmmc_platform_data *pdata)
-+{
-+	return add_generic_device("omap-hsmmc", id, NULL,
-+			base, SZ_4K, IORESOURCE_MEM, pdata);
-+}
-+
-+struct device_d *omap_add_i2c(int id, unsigned long base, void *pdata)
-+{
-+	return add_generic_device("i2c-omap", id, NULL, base, SZ_4K,
-+			   IORESOURCE_MEM, pdata);
-+}
+@@ -50,12 +46,9 @@ static struct i2c_board_info i2c_devices[] = {
+ 
+ static int archosg9_devices_init(void){
+ 	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
+-	add_generic_device("i2c-omap"  , DEVICE_ID_DYNAMIC, NULL,
+-		OMAP44XX_I2C1_BASE, 0x100, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-hsmmc", DEVICE_ID_DYNAMIC, NULL,
+-		OMAP44XX_MMC1_BASE, SZ_4K, IORESOURCE_MEM, NULL);
+-	add_generic_device("omap-hsmmc", DEVICE_ID_DYNAMIC, NULL,
+-		OMAP44XX_MMC2_BASE, SZ_4K, IORESOURCE_MEM, NULL);
++	omap44xx_add_i2c1(NULL);
++	omap44xx_add_mmc1(NULL);
++	omap44xx_add_mmc2(NULL);
+ 
+ 	armlinux_set_bootparams((void *)0x80000100);
+ 	/*
+diff --git a/arch/arm/boards/panda/board.c b/arch/arm/boards/panda/board.c
+index 99222d2..5b27f46 100644
+--- a/arch/arm/boards/panda/board.c
++++ b/arch/arm/boards/panda/board.c
+@@ -9,6 +9,7 @@
+ #include <linux/stat.h>
+ #include <generated/mach-types.h>
+ #include <mach/omap4-silicon.h>
++#include <mach/omap4-devices.h>
+ #include <mach/sdrc.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+@@ -33,16 +34,9 @@ static int board_revision;
+ #define GPIO_BOARD_ID1 101
+ #define GPIO_BOARD_ID2 171
+ 
+-static struct NS16550_plat serial_plat = {
+-	.clock = 48000000,      /* 48MHz (APLL96/2) */
+-	.shift = 2,
+-};
+-
+ static int panda_console_init(void)
+ {
+-	/* Register the serial port */
+-	add_ns16550_device(DEVICE_ID_DYNAMIC, OMAP44XX_UART3_BASE, 1024,
+-			IORESOURCE_MEM_8BIT, &serial_plat);
++	omap44xx_add_uart3();
+ 
+ 	return 0;
+ }
+@@ -160,13 +154,9 @@ static int panda_devices_init(void)
+ 	}
+ 
+ 	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
+-	add_generic_device("i2c-omap", DEVICE_ID_DYNAMIC,
+-				NULL, 0x48070000, 0x1000,
+-				IORESOURCE_MEM, NULL);
+-
++	omap44xx_add_i2c1(NULL);
++	omap44xx_add_mmc1(NULL);
+ 
+-	add_generic_device("omap-hsmmc", DEVICE_ID_DYNAMIC, NULL, 0x4809C100, SZ_4K,
+-			   IORESOURCE_MEM, NULL);
+ 	panda_ehci_init();
+ 
+ 	panda_led_init();
+diff --git a/arch/arm/boards/pcm049/board.c b/arch/arm/boards/pcm049/board.c
+index 859ce3b..ca3f906 100644
+--- a/arch/arm/boards/pcm049/board.c
++++ b/arch/arm/boards/pcm049/board.c
+@@ -23,6 +23,7 @@
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+ #include <mach/omap4-silicon.h>
++#include <mach/omap4-devices.h>
+ #include <mach/sdrc.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
+@@ -38,16 +39,9 @@
+ #include <mach/xload.h>
+ #include <i2c/i2c.h>
+ 
+-static struct NS16550_plat serial_plat = {
+-	.clock = 48000000,      /* 48MHz (APLL96/2) */
+-	.shift = 2,
+-};
+-
+ static int pcm049_console_init(void)
+ {
+-	/* Register the serial port */
+-	add_ns16550_device(DEVICE_ID_DYNAMIC, OMAP44XX_UART3_BASE, 1024,
+-			IORESOURCE_MEM_8BIT, &serial_plat);
++	omap44xx_add_uart3();
+ 
+ 	return 0;
+ }
+@@ -99,11 +93,8 @@ static struct gpmc_nand_platform_data nand_plat = {
+ static int pcm049_devices_init(void)
+ {
+ 	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
+-	add_generic_device("i2c-omap", DEVICE_ID_DYNAMIC, NULL, 0x48070000, 0x1000,
+-				IORESOURCE_MEM, NULL);
+-
+-	add_generic_device("omap-hsmmc", DEVICE_ID_DYNAMIC, NULL, 0x4809C100, SZ_4K,
+-			   IORESOURCE_MEM, NULL);
++	omap44xx_add_i2c1(NULL);
++	omap44xx_add_mmc1(NULL);
+ 
+ 	gpmc_generic_init(0x10);
+ 
+diff --git a/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c b/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
+index 26b31dd..3931f57 100644
+--- a/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
++++ b/arch/arm/boards/phycard-a-xl2/pca-a-xl2.c
+@@ -37,18 +37,12 @@
+ #include <mach/gpmc_nand.h>
+ #include <mach/xload.h>
+ #include <mach/omap_hsmmc.h>
++#include <mach/omap4-devices.h>
+ #include <i2c/i2c.h>
+ 
+-static struct NS16550_plat serial_plat = {
+-	.clock = 48000000,      /* 48MHz (APLL96/2) */
+-	.shift = 2,
+-};
+-
+ static int pcaaxl2_console_init(void)
+ {
+-	/* Register the serial port */
+-	add_ns16550_device(DEVICE_ID_DYNAMIC, OMAP44XX_UART3_BASE, 1024,
+-		IORESOURCE_MEM_8BIT, &serial_plat);
++	omap44xx_add_uart3();
+ 
+ 	return 0;
+ }
+@@ -111,16 +105,14 @@ static int pcaaxl2_devices_init(void)
+ 	u32 value;
+ 
+ 	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
+-	add_generic_device("i2c-omap", DEVICE_ID_DYNAMIC, NULL, 0x48070000, 0x1000,
+-				IORESOURCE_MEM, NULL);
++	omap44xx_add_i2c1(NULL);
+ 
+ 	value = readl(OMAP4_CONTROL_PBIASLITE);
+ 	value &= ~OMAP4_MMC1_PBIASLITE_VMODE;
+ 	value |= (OMAP4_MMC1_PBIASLITE_PWRDNZ |	OMAP4_MMC1_PWRDNZ);
+ 	writel(value, OMAP4_CONTROL_PBIASLITE);
+ 
+-	add_generic_device("omap-hsmmc", DEVICE_ID_DYNAMIC, NULL, 0x4809C100, SZ_4K,
+-			   IORESOURCE_MEM, &mmc_device);
++	omap44xx_add_mmc1(&mmc_device);
+ 
+ 	gpmc_generic_init(0x10);
+ 
 -- 
 1.7.10.4
 
