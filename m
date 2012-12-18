@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tky4P-0001iP-2a
- for barebox@lists.infradead.org; Tue, 18 Dec 2012 14:22:58 +0000
+ id 1Tky4P-0001iN-2k
+ for barebox@lists.infradead.org; Tue, 18 Dec 2012 14:23:06 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Tue, 18 Dec 2012 15:22:29 +0100
-Message-Id: <1355840561-11552-8-git-send-email-jlu@pengutronix.de>
+Date: Tue, 18 Dec 2012 15:22:28 +0100
+Message-Id: <1355840561-11552-7-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1355840561-11552-1-git-send-email-jlu@pengutronix.de>
 References: <1355840561-11552-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,50 +21,111 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/19] ARM omap4: make PRM defines SoC specific
+Subject: [PATCH 06/19] ARM omap: Make timer base runtime configurable
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/include/mach/omap4-silicon.h |    8 ++++----
- arch/arm/mach-omap/omap4_generic.c              |    2 +-
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/mach-omap/include/mach/timers.h |    4 ----
+ arch/arm/mach-omap/omap3_clock.c         |    3 +++
+ arch/arm/mach-omap/omap4_clock.c         |    1 +
+ arch/arm/mach-omap/omap4_generic.c       |    2 +-
+ arch/arm/mach-omap/s32k_clksource.c      |   10 +++++++++-
+ 5 files changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
-index 127257d..0f0d88d 100644
---- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
-+++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
-@@ -147,11 +147,11 @@
-  */
+diff --git a/arch/arm/mach-omap/include/mach/timers.h b/arch/arm/mach-omap/include/mach/timers.h
+index 2df507d..8e4cb92 100644
+--- a/arch/arm/mach-omap/include/mach/timers.h
++++ b/arch/arm/mach-omap/include/mach/timers.h
+@@ -47,8 +47,4 @@
+ /* Enable sys_clk NO-prescale /1 */
+ #define GPT_EN			((0 << 2) | (0x1 << 1) | (0x1 << 0))
  
- /* PRM */
--#define PRM_BASE		0x4A306000
--#define PRM_DEVICE_BASE		(PRM_BASE + 0x1B00)
-+#define OMAP44XX_PRM_BASE		0x4A306000
-+#define OMAP44XX_PRM_DEVICE_BASE	(OMAP44XX_PRM_BASE + 0x1B00)
+-/** Sync 32Khz Timer registers */
+-#define S32K_CR			(OMAP_32KTIMER_BASE + 0x10)
+-#define S32K_FREQUENCY		32768
+-
+ #endif /*__ASM_ARCH_GPT_H */
+diff --git a/arch/arm/mach-omap/omap3_clock.c b/arch/arm/mach-omap/omap3_clock.c
+index 975bf45..2a5e6f2 100644
+--- a/arch/arm/mach-omap/omap3_clock.c
++++ b/arch/arm/mach-omap/omap3_clock.c
+@@ -34,10 +34,13 @@
+ #include <io.h>
+ #include <mach/silicon.h>
+ #include <mach/clocks.h>
++#include <mach/omap3-clock.h>
+ #include <mach/timers.h>
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
  
--#define PRM_RSTCTRL		PRM_DEVICE_BASE
--#define PRM_RSTCTRL_RESET	0x01
-+#define OMAP44XX_PRM_RSTCTRL		OMAP44XX_PRM_DEVICE_BASE
-+#define OMAP44XX_PRM_RSTCTRL_RESET	0x01
++#define S32K_CR			(OMAP_32KTIMER_BASE + 0x10)
++
+ /* Following functions are exported from omap3_clock_core.S */
+ /* Helper functions */
+ static u32 get_osc_clk_speed(void);
+diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
+index b489d59..c86e4e5 100644
+--- a/arch/arm/mach-omap/omap4_clock.c
++++ b/arch/arm/mach-omap/omap4_clock.c
+@@ -3,6 +3,7 @@
+ #include <mach/syslib.h>
+ #include <mach/silicon.h>
+ #include <mach/clocks.h>
++#include <mach/omap4-clock.h>
  
- /*
-  * Non-secure SRAM Addresses
+ #define LDELAY	12000000
+ 
 diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
-index 4653b17..f4841a6 100644
+index dc1dbae..4653b17 100644
 --- a/arch/arm/mach-omap/omap4_generic.c
 +++ b/arch/arm/mach-omap/omap4_generic.c
-@@ -36,7 +36,7 @@
+@@ -1,7 +1,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <io.h>
+-#include <mach/clocks.h>
++#include <mach/omap4-clock.h>
+ #include <mach/silicon.h>
+ #include <mach/omap4-mux.h>
+ #include <mach/syslib.h>
+diff --git a/arch/arm/mach-omap/s32k_clksource.c b/arch/arm/mach-omap/s32k_clksource.c
+index 2cfcfa9..ca73753 100644
+--- a/arch/arm/mach-omap/s32k_clksource.c
++++ b/arch/arm/mach-omap/s32k_clksource.c
+@@ -31,6 +31,12 @@
+ #include <mach/sys_info.h>
+ #include <mach/syslib.h>
  
- void __noreturn reset_cpu(unsigned long addr)
++/** Sync 32Khz Timer registers */
++#define S32K_CR			0x10
++#define S32K_FREQUENCY		32768
++
++static void __iomem *timerbase;
++
+ /**
+  * @brief Provide a simple clock read
+  *
+@@ -41,7 +47,7 @@
+  */
+ static uint64_t s32k_clocksource_read(void)
  {
--	writel(PRM_RSTCTRL_RESET, PRM_RSTCTRL);
-+	writel(OMAP44XX_PRM_RSTCTRL_RESET, OMAP44XX_PRM_RSTCTRL);
- 
- 	while (1);
+-	return readl(S32K_CR);
++	return readl(timerbase + S32K_CR);
  }
+ 
+ /* A bit obvious isn't it? */
+@@ -62,6 +68,8 @@ static struct clocksource s32k_cs = {
+  */
+ static int s32k_clocksource_init(void)
+ {
++	timerbase = (void *)OMAP_32KTIMER_BASE;
++
+ 	s32k_cs.mult = clocksource_hz2mult(S32K_FREQUENCY, s32k_cs.shift);
+ 
+ 	return init_clock(&s32k_cs);
 -- 
 1.7.10.4
 
