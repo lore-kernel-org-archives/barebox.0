@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TlQRA-0007j0-Pb
- for barebox@lists.infradead.org; Wed, 19 Dec 2012 20:40:21 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1TlQR9-0002Hk-FH
- for barebox@lists.infradead.org; Wed, 19 Dec 2012 21:40:19 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1TlQR9-0006bJ-EP
- for barebox@lists.infradead.org; Wed, 19 Dec 2012 21:40:19 +0100
-Date: Wed, 19 Dec 2012 21:40:19 +0100
+ id 1TlQVf-0000Dp-27
+ for barebox@lists.infradead.org; Wed, 19 Dec 2012 20:44:59 +0000
+Date: Wed, 19 Dec 2012 21:44:57 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121219204019.GH26326@pengutronix.de>
-References: <1355820338-5911-1-git-send-email-barebox@lists.infradead.org>
+Message-ID: <20121219204457.GI26326@pengutronix.de>
+References: <1355643775-4981-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1355820338-5911-1-git-send-email-barebox@lists.infradead.org>
+In-Reply-To: <1355643775-4981-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,42 +22,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM OMAP: add help text for OMAP_BUILD_IFT
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/3] x86: Add formal Kconfig parameter "X86_BOOTLOADER"
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-On Tue, Dec 18, 2012 at 09:45:38AM +0100, barebox@lists.infradead.org wrote:
-> From: Jan Luebbe <jlu@pengutronix.de>
+On Sun, Dec 16, 2012 at 11:42:53AM +0400, Alexander Shiyan wrote:
 > 
-> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-Applied, thanks
+Applied 1/3 and 3/3. Please add a more descriptive message next time,
+something like symbol X86_BOOTLOADER is used but never defined
 
 Sascha
 
 > ---
->  arch/arm/mach-omap/Kconfig |    6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  arch/x86/Kconfig |    3 +++
+>  1 files changed, 3 insertions(+), 0 deletions(-)
 > 
-> diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-> index 451783e..27626a2 100644
-> --- a/arch/arm/mach-omap/Kconfig
-> +++ b/arch/arm/mach-omap/Kconfig
-> @@ -67,8 +67,12 @@ config OMAP_GPMC
->  	  NAND, OneNAND etc.
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 777604f..6589ae7 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -25,6 +25,9 @@ config X86
+>  	select HAVE_CONFIGURABLE_TEXT_BASE
+>  	default y
 >  
->  config OMAP_BUILD_IFT
-> -	prompt "build ift binary"
-> +	prompt "build ift binary (MLO)"
->  	bool
-> +	help
-> +	  Say Y here if you want to build an MLO binary. On TI SoCs, this
-> +	  binary is loaded to SRAM. It is responsible for initializing
-> +	  the SDRAM and possibly chainloading a full-featured barebox.
+> +config X86_BOOTLOADER
+> +	bool
+> +
+>  choice
+>  	prompt "Select your board"
 >  
->  config OMAP_BUILD_SPI
->  	prompt "build SPI binary"
 > -- 
-> 1.7.10.4
+> 1.7.8.6
 > 
 > 
 > _______________________________________________
