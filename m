@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TlFw7-0002iB-5G
- for barebox@lists.infradead.org; Wed, 19 Dec 2012 09:27:36 +0000
-Date: Wed, 19 Dec 2012 10:27:33 +0100
+ id 1TlIAK-0006DI-Cf
+ for barebox@lists.infradead.org; Wed, 19 Dec 2012 11:50:25 +0000
+Date: Wed, 19 Dec 2012 12:50:22 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121219092733.GZ26326@pengutronix.de>
-References: <1355758617-21175-1-git-send-email-w.sang@pengutronix.de>
+Message-ID: <20121219115022.GB26326@pengutronix.de>
+References: <1355759313-23329-1-git-send-email-w.sang@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1355758617-21175-1-git-send-email-w.sang@pengutronix.de>
+In-Reply-To: <1355759313-23329-1-git-send-email-w.sang@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,55 +22,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] nand: mxs: NO_SUBPAGE_WRITE flag was overwritten
+Subject: Re: [PATCH V3 00/11] ubiformat for barebox
 To: Wolfram Sang <w.sang@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Dec 17, 2012 at 04:36:57PM +0100, Wolfram Sang wrote:
-> It is not the chip, but this controller which cannot do subpage writes.
-> So, make sure we add the flag at the proper place, so it doesn't get
-> overwritten by flash detection anymore.
+On Mon, Dec 17, 2012 at 04:48:22PM +0100, Wolfram Sang wrote:
+> Another round of ubiformat for barebox. Tested on various MX28 based hardware.
+> I could create and attach empty UBIs or flashed files successfully. I also
+> tried flashing /dev/mem and /dev/c64 which failed correctly.
 > 
-> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+> Changes since V1 (V2 was only internal):
+> 
+> * update strtoull_suffix() and size_human_readable()
+> * use those and get rid of libubiutils completely \o/
+> * use read_full instead of custom read_all
+> * dropped all long commandline options and references
+> * reworked the help to BAREBOX_CMD_HELP_* usage
+> * dropped FSF addresses all over
+> * simply quit in dubious situations instead of doing something
+> * add '-y' to do something in dubious situations :)
+> * quite some bugfixes
+> (* verified subpage-size handling, found a bug in nand_mxs driver)
+> 
+> Please test, comment, apply...
 
 Applied, thanks
 
 Sascha
 
-> ---
->  drivers/mtd/nand/nand_mxs.c |   12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
-> index c4509d3..bc34526 100644
-> --- a/drivers/mtd/nand/nand_mxs.c
-> +++ b/drivers/mtd/nand/nand_mxs.c
-> @@ -1217,7 +1217,6 @@ static int mxs_nand_probe(struct device_d *dev)
->  	mtd->parent = dev;
->  
->  	nand->priv = nand_info;
-> -	nand->options |= NAND_NO_SUBPAGE_WRITE;
->  
->  	nand->cmd_ctrl		= mxs_nand_cmd_ctrl;
->  
-> @@ -1241,8 +1240,15 @@ static int mxs_nand_probe(struct device_d *dev)
->  	nand->ecc.bytes		= 9;
->  	nand->ecc.size		= 512;
->  
-> -	/* Scan to find existence of the device */
-> -	err = nand_scan(mtd, 1);
-> +	/* first scan to find the device and get the page size */
-> +	err = nand_scan_ident(mtd, 1);
-> +	if (err)
-> +		goto err2;
-> +
-> +	nand->options |= NAND_NO_SUBPAGE_WRITE;
-> +
-> +	/* second phase scan */
-> +	err = nand_scan_tail(mtd);
->  	if (err)
->  		goto err2;
->  
+> Thanks,
+> 
+>    Wolfram
+> 
+> 
+> Wolfram Sang (11):
+>   mtd: drop custom is_power_of_2()
+>   lib: misc: add 'iB' suffixes to strtoull_suffix
+>   lib: update size_human_readable to latest version
+>   ubi: consolidate ubi-media.h
+>   ubi: bump ubi-media.h to newest version
+>   devfs & mtd: add MEMERASE ioctl support
+>   mtd: utils: apply macros for message printouts
+>   lib: add libscan
+>   lib: add libubigen
+>   lib: add barebox version of libmtd
+>   commands: add ubiformat
+> 
+>  commands/Kconfig              |    8 +
+>  commands/Makefile             |    1 +
+>  commands/ubi.c                |    2 +-
+>  commands/ubiformat.c          |  784 +++++++++++++++++++++++++++++++++++++++++
+>  drivers/mtd/core.c            |   68 ++--
+>  drivers/mtd/ubi/ubi-barebox.h |    5 +-
+>  drivers/mtd/ubi/ubi-media.h   |  369 -------------------
+>  drivers/mtd/ubi/ubi.h         |    3 +-
+>  fs/devfs-core.c               |    3 +-
+>  include/common.h              |    2 +-
+>  include/mtd/libmtd.h          |  149 ++++++++
+>  include/mtd/libscan.h         |  101 ++++++
+>  include/mtd/libubigen.h       |  182 ++++++++++
+>  include/mtd/ubi-media.h       |  374 ++++++++++++++++++++
+>  include/mtd/utils.h           |   47 +++
+>  include/ubi-media.h           |  370 -------------------
+>  lib/Kconfig                   |    9 +
+>  lib/Makefile                  |    3 +
+>  lib/display_options.c         |   47 ++-
+>  lib/libmtd.c                  |  368 +++++++++++++++++++
+>  lib/libscan.c                 |  219 ++++++++++++
+>  lib/libubigen.c               |  312 ++++++++++++++++
+>  lib/misc.c                    |    5 +-
+>  23 files changed, 2634 insertions(+), 797 deletions(-)
+>  create mode 100644 commands/ubiformat.c
+>  delete mode 100644 drivers/mtd/ubi/ubi-media.h
+>  create mode 100644 include/mtd/libmtd.h
+>  create mode 100644 include/mtd/libscan.h
+>  create mode 100644 include/mtd/libubigen.h
+>  create mode 100644 include/mtd/ubi-media.h
+>  create mode 100644 include/mtd/utils.h
+>  delete mode 100644 include/ubi-media.h
+>  create mode 100644 lib/libmtd.c
+>  create mode 100644 lib/libscan.c
+>  create mode 100644 lib/libubigen.c
+> 
 > -- 
 > 1.7.10.4
 > 
