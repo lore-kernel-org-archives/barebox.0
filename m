@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f46.google.com ([209.85.214.46])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tlgtv-0005oP-VD
- for barebox@lists.infradead.org; Thu, 20 Dec 2012 14:15:08 +0000
-Received: by mail-bk0-f46.google.com with SMTP id q16so1723070bkw.33
- for <barebox@lists.infradead.org>; Thu, 20 Dec 2012 06:15:04 -0800 (PST)
-From: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
-Date: Thu, 20 Dec 2012 15:14:50 +0100
-Message-Id: <1356012890-14822-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Tlh1G-0005vV-5B
+ for barebox@lists.infradead.org; Thu, 20 Dec 2012 14:22:43 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id A0367BF0E9
+ for <barebox@lists.infradead.org>; Fri, 21 Dec 2012 22:38:38 +0100 (CET)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Thu, 20 Dec 2012 15:22:29 +0100
+Message-Id: <1356013354-25832-2-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1356013354-25832-1-git-send-email-t.gamez@phytec.de>
+References: <1356013354-25832-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,71 +20,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MFD MC34708: Add dependence on SPI
+Subject: [PATCHv2 1/6] ARM AM33XX: Add mmc0 pin mux function
 To: barebox@lists.infradead.org
 
-From: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
-
-MC34708 depend on I2C or SPI, so let driver depend on SPI too
-and rename config option name to MFD_MC34708.
-
-Signed-off-by: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
----
- arch/arm/configs/freescale_mx53_loco_defconfig |    2 +-
- drivers/mfd/Kconfig                            |    4 ++--
- drivers/mfd/Makefile                           |    2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/arm/configs/freescale_mx53_loco_defconfig b/arch/arm/configs/freescale_mx53_loco_defconfig
-index b61f0cf..fb6fcf8 100644
---- a/arch/arm/configs/freescale_mx53_loco_defconfig
-+++ b/arch/arm/configs/freescale_mx53_loco_defconfig
-@@ -79,7 +79,7 @@ CONFIG_USB_STORAGE=y
- CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
- CONFIG_MCI_IMX_ESDHC=y
--CONFIG_I2C_MC34708=y
-+CONFIG_MFD_MC34708=y
- CONFIG_WATCHDOG=y
- CONFIG_WATCHDOG_IMX=y
- CONFIG_FS_TFTP=y
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index 20eef86..a253de3 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -8,8 +8,8 @@ config I2C_MC34704
- 	depends on I2C
- 	bool "MC34704 PMIC driver"
- 
--config I2C_MC34708
--	depends on I2C
-+config MFD_MC34708
-+	depends on I2C || SPI
- 	bool "MC34708 PMIC driver"
- 
- config I2C_MC9SDZ60
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index 792ae2d..a242eaf 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -1,6 +1,6 @@
- obj-$(CONFIG_MFD_MC13XXX) += mc13xxx.o
- obj-$(CONFIG_I2C_MC34704) += mc34704.o
--obj-$(CONFIG_I2C_MC34708) += mc34708.o
-+obj-$(CONFIG_MFD_MC34708) += mc34708.o
- obj-$(CONFIG_I2C_MC9SDZ60) += mc9sdz60.o
- obj-$(CONFIG_I2C_LP3972) += lp3972.o
- obj-$(CONFIG_I2C_TWLCORE) += twl-core.o
--- 
-1.7.9.5
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+ClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KIGFy
+Y2gvYXJtL21hY2gtb21hcC9hbTMzeHhfbXV4LmMgICAgICAgICAgICAgIHwgICAgNSArKysrKwog
+YXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtbXV4LmggfCAgICAxICsKIDIg
+ZmlsZXMgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspLCAwIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdp
+dCBhL2FyY2gvYXJtL21hY2gtb21hcC9hbTMzeHhfbXV4LmMgYi9hcmNoL2FybS9tYWNoLW9tYXAv
+YW0zM3h4X211eC5jCmluZGV4IDIyYmYzMTcuLjNkN2YyNDUgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJt
+L21hY2gtb21hcC9hbTMzeHhfbXV4LmMKKysrIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9t
+dXguYwpAQCAtNTA0LDMgKzUwNCw4IEBAIHZvaWQgZW5hYmxlX3VhcnQwX3Bpbl9tdXgodm9pZCkK
+IHsKIAljb25maWd1cmVfbW9kdWxlX3Bpbl9tdXgodWFydDBfcGluX211eCk7CiB9CisKK3ZvaWQg
+ZW5hYmxlX21tYzBfcGluX211eCh2b2lkKQoreworCWNvbmZpZ3VyZV9tb2R1bGVfcGluX211eCht
+bWMwX3Bpbl9tdXgpOworfQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUv
+bWFjaC9hbTMzeHgtbXV4LmggYi9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4
+eC1tdXguaAppbmRleCBlZDMyOGY1Li42MDc4YjNhIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNo
+LW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1tdXguaAorKysgYi9hcmNoL2FybS9tYWNoLW9tYXAv
+aW5jbHVkZS9tYWNoL2FtMzN4eC1tdXguaApAQCAtMTgsNSArMTgsNiBAQCBleHRlcm4gdm9pZCBl
+bmFibGVfaTJjMF9waW5fbXV4KHZvaWQpOwogZXh0ZXJuIHZvaWQgZW5hYmxlX2kyYzFfcGluX211
+eCh2b2lkKTsKIGV4dGVybiB2b2lkIGVuYWJsZV9pMmMyX3Bpbl9tdXgodm9pZCk7CiBleHRlcm4g
+dm9pZCBlbmFibGVfdWFydDBfcGluX211eCh2b2lkKTsKK2V4dGVybiB2b2lkIGVuYWJsZV9tbWMw
+X3Bpbl9tdXgodm9pZCk7CiAKICNlbmRpZiAvKl9fQU0zM1hYX01VWF9IX18gKi8KLS0gCjEuNy4w
+LjQKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
+Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
