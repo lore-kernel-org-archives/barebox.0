@@ -2,16 +2,17 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 20.mo4.mail-out.ovh.net ([46.105.33.73]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tlh4D-0006O6-BH
+ id 1Tlh4D-0006O7-BI
  for barebox@lists.infradead.org; Thu, 20 Dec 2012 14:25:46 +0000
 Received: from mail638.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 16192104EEA9
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 23362104EED6
  for <barebox@lists.infradead.org>; Thu, 20 Dec 2012 15:34:25 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 20 Dec 2012 15:23:59 +0100
-Message-Id: <1356013440-23651-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20121220131250.GG26483@game.jcrosoft.org>
+Date: Thu, 20 Dec 2012 15:24:00 +0100
+Message-Id: <1356013440-23651-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1356013440-23651-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121220131250.GG26483@game.jcrosoft.org>
+ <1356013440-23651-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,207 +26,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] gpiolib: add gpio_request and gpio_free support
+Subject: [PATCH 2/2] gpiolib: add command to dump the current gpio status
 To: barebox@lists.infradead.org
 
-as today if no request or free provided do not complain
-
-if the gpio is not request auto requested at first use
+This will allow to known which gpio is requested by what
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/gpio/gpio.c |   87 ++++++++++++++++++++++++++++++++++++++++++++++-----
- include/gpio.h      |    7 +++++
- 2 files changed, 87 insertions(+), 7 deletions(-)
+ drivers/gpio/gpio.c |   37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
 diff --git a/drivers/gpio/gpio.c b/drivers/gpio/gpio.c
-index 042a062..e29f0ba 100644
+index e29f0ba..4c68819 100644
 --- a/drivers/gpio/gpio.c
 +++ b/drivers/gpio/gpio.c
-@@ -1,19 +1,71 @@
+@@ -1,4 +1,6 @@
  #include <common.h>
++#include <command.h>
++#include <complete.h>
  #include <gpio.h>
  #include <errno.h>
-+#include <malloc.h>
+ #include <malloc.h>
+@@ -196,3 +198,38 @@ int gpio_get_num(struct device_d *dev, int gpio)
  
- static LIST_HEAD(chip_list);
- 
--static struct gpio_chip *gpio_desc[ARCH_NR_GPIOS];
-+struct gpio_info {
-+	struct gpio_chip *chip;
-+	bool requested;
-+	char *label;
-+};
+ 	return -ENODEV;
+ }
 +
-+static struct gpio_info gpio_desc[ARCH_NR_GPIOS];
-+
-+int gpio_request(unsigned gpio, const char *label)
++#ifdef CONFIG_CMD_GPIO
++static int do_gpiolib(int argc, char *argv[])
 +{
-+	struct gpio_info *gi = &gpio_desc[gpio];
-+	struct gpio_chip *chip = gi->chip;
-+	int ret;
++	int i;
 +
-+	if (!gpio_is_valid(gpio))
-+		return -EINVAL;
-+	if (!chip)
-+		return -EINVAL;
-+	if (gi->requested)
-+		return -ENODEV;
-+	if (chip->ops->request) {
-+		ret = chip->ops->request(chip, gpio - chip->base);
-+		if (ret)
-+			return ret;
++	printf("gpiolib: gpio lists\n");
++	printf("%*crequested  label\n", 11, ' ');
++
++	for (i = 0; i < ARCH_NR_GPIOS; i++) {
++		struct gpio_info *gi = &gpio_desc[i];
++
++		if (!gi->chip)
++			continue;
++
++		printf("gpio %*d: %*s  %s\n", 4,
++			i, 9, gi->requested ? "true" : "false",
++			gi->label ? gi->label : "");
 +	}
-+
-+	gi->requested = true;
-+	gi->label = xstrdup(label);
 +
 +	return 0;
 +}
 +
-+void gpio_free(unsigned gpio)
-+{
-+	struct gpio_info *gi = &gpio_desc[gpio];
-+	struct gpio_chip *chip = gi->chip;
++BAREBOX_CMD_HELP_START(gpiolib)
++BAREBOX_CMD_HELP_USAGE("gpiolib\n")
++BAREBOX_CMD_HELP_SHORT("dump current registered gpio\n");
++BAREBOX_CMD_HELP_END
 +
-+	if (!gpio_is_valid(gpio))
-+		return;
-+	if (!chip)
-+		return;
-+	if (!gi->requested)
-+		return;
-+	if (chip->ops->free)
-+		chip->ops->free(chip, gpio - chip->base);
-+
-+	gi->requested = false;
-+	free(gi->label);
-+}
- 
- void gpio_set_value(unsigned gpio, int value)
- {
--	struct gpio_chip *chip = gpio_desc[gpio];
-+	struct gpio_info *gi = &gpio_desc[gpio];
-+	struct gpio_chip *chip = gi->chip;
- 
- 	if (!gpio_is_valid(gpio))
- 		return;
- 	if (!chip)
- 		return;
-+	if (!gi->requested && gpio_request(gpio, "gpio"))
-+		return;
- 	if (!chip->ops->set)
- 		return;
- 	chip->ops->set(chip, gpio - chip->base, value);
-@@ -22,12 +74,19 @@ EXPORT_SYMBOL(gpio_set_value);
- 
- int gpio_get_value(unsigned gpio)
- {
--	struct gpio_chip *chip = gpio_desc[gpio];
-+	struct gpio_info *gi = &gpio_desc[gpio];
-+	struct gpio_chip *chip = gi->chip;
-+	int ret;
- 
- 	if (!gpio_is_valid(gpio))
- 		return -EINVAL;
- 	if (!chip)
- 		return -ENODEV;
-+	if (!gi->requested) {
-+		ret = gpio_request(gpio, "gpio");
-+		if (ret)
-+			return ret;
-+	}
- 	if (!chip->ops->get)
- 		return -ENOSYS;
- 	return chip->ops->get(chip, gpio - chip->base);
-@@ -36,12 +95,19 @@ EXPORT_SYMBOL(gpio_get_value);
- 
- int gpio_direction_output(unsigned gpio, int value)
- {
--	struct gpio_chip *chip = gpio_desc[gpio];
-+	struct gpio_info *gi = &gpio_desc[gpio];
-+	struct gpio_chip *chip = gi->chip;
-+	int ret;
- 
- 	if (!gpio_is_valid(gpio))
- 		return -EINVAL;
- 	if (!chip)
- 		return -ENODEV;
-+	if (!gi->requested) {
-+		ret = gpio_request(gpio, "gpio");
-+		if (ret)
-+			return ret;
-+	}
- 	if (!chip->ops->direction_output)
- 		return -ENOSYS;
- 	return chip->ops->direction_output(chip, gpio - chip->base, value);
-@@ -50,12 +116,19 @@ EXPORT_SYMBOL(gpio_direction_output);
- 
- int gpio_direction_input(unsigned gpio)
- {
--	struct gpio_chip *chip = gpio_desc[gpio];
-+	struct gpio_info *gi = &gpio_desc[gpio];
-+	struct gpio_chip *chip = gi->chip;
-+	int ret;
- 
- 	if (!gpio_is_valid(gpio))
- 		return -EINVAL;
- 	if (!chip)
- 		return -ENODEV;
-+	if (!gi->requested) {
-+		ret = gpio_request(gpio, "gpio");
-+		if (ret)
-+			return ret;
-+	}
- 	if (!chip->ops->direction_input)
- 		return -ENOSYS;
- 	return chip->ops->direction_input(chip, gpio - chip->base);
-@@ -72,7 +145,7 @@ static int gpiochip_find_base(int start, int ngpio)
- 		start = 0;
- 
- 	for (i = start; i < ARCH_NR_GPIOS; i++) {
--		struct gpio_chip *chip = gpio_desc[i];
-+		struct gpio_chip *chip = gpio_desc[i].chip;
- 
- 		if (!chip) {
- 			spare++;
-@@ -107,7 +180,7 @@ int gpiochip_add(struct gpio_chip *chip)
- 	list_add_tail(&chip->list, &chip_list);
- 
- 	for (i = chip->base; i < chip->base + chip->ngpio; i++)
--		gpio_desc[i] = chip;
-+		gpio_desc[i].chip = chip;
- 
- 	return 0;
- }
-diff --git a/include/gpio.h b/include/gpio.h
-index 9fb11c3..eedb980 100644
---- a/include/gpio.h
-+++ b/include/gpio.h
-@@ -3,6 +3,7 @@
- 
- #include <asm/gpio.h>
- 
-+#ifndef CONFIG_GPIOLIB
- static inline int gpio_request(unsigned gpio, const char *label)
- {
-        return 0;
-@@ -11,10 +12,16 @@ static inline int gpio_request(unsigned gpio, const char *label)
- static inline void gpio_free(unsigned gpio)
- {
- }
-+#else
-+int gpio_request(unsigned gpio, const char *label);
-+void gpio_free(unsigned gpio);
++BAREBOX_CMD_START(gpiolib)
++	.cmd		= do_gpiolib,
++	.usage		= "dump current registered gpio",
++	BAREBOX_CMD_HELP(cmd_gpiolib_help)
++	BAREBOX_CMD_COMPLETE(empty_complete)
++BAREBOX_CMD_END
 +#endif
- 
- struct gpio_chip;
- 
- struct gpio_ops {
-+	int (*request)(struct gpio_chip *chip, unsigned offset);
-+	void (*free)(struct gpio_chip *chip, unsigned offset);
- 	int (*direction_input)(struct gpio_chip *chip, unsigned offset);
- 	int (*direction_output)(struct gpio_chip *chip, unsigned offset, int value);
- 	int (*get)(struct gpio_chip *chip, unsigned offset);
 -- 
 1.7.10.4
 
