@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+Received: from 20.mo4.mail-out.ovh.net ([46.105.33.73]
+ helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tlh1H-0005xH-SY
- for barebox@lists.infradead.org; Thu, 20 Dec 2012 14:22:47 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id DE7C2BF0F7
- for <barebox@lists.infradead.org>; Fri, 21 Dec 2012 22:38:38 +0100 (CET)
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Thu, 20 Dec 2012 15:22:34 +0100
-Message-Id: <1356013354-25832-7-git-send-email-t.gamez@phytec.de>
-In-Reply-To: <1356013354-25832-1-git-send-email-t.gamez@phytec.de>
-References: <1356013354-25832-1-git-send-email-t.gamez@phytec.de>
-MIME-Version: 1.0
+ id 1Tlh4D-0006O6-BH
+ for barebox@lists.infradead.org; Thu, 20 Dec 2012 14:25:46 +0000
+Received: from mail638.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 16192104EEA9
+ for <barebox@lists.infradead.org>; Thu, 20 Dec 2012 15:34:25 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Thu, 20 Dec 2012 15:23:59 +0100
+Message-Id: <1356013440-23651-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20121220131250.GG26483@game.jcrosoft.org>
+References: <20121220131250.GG26483@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,152 +20,217 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv2 6/6] pcm051: Add inital support
+Subject: [PATCH 1/2] gpiolib: add gpio_request and gpio_free support
 To: barebox@lists.infradead.org
 
-QWRkZWQgaW5pdGlhbCBzdXBwb3J0IGZvciBQaHl0ZWMgcGh5Q09SRS1BTTMzNXguCgpTaWduZWQt
-b2ZmLWJ5OiBUZXJlc2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5kZT4KLS0tCiBhcmNoL2FybS9N
-YWtlZmlsZSAgICAgICAgICAgICAgICAgIHwgICAgMSArCiBhcmNoL2FybS9ib2FyZHMvcGNtMDUx
-L01ha2VmaWxlICAgIHwgICAgMSArCiBhcmNoL2FybS9ib2FyZHMvcGNtMDUxL2JvYXJkLmMgICAg
-IHwgICA2NCArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKIGFyY2gvYXJtL2Jv
-YXJkcy9wY20wNTEvY29uZmlnLmggICAgfCAgIDIxICsrKysrKysrKysrKwogYXJjaC9hcm0vYm9h
-cmRzL3BjbTA1MS9lbnYvYm9vdC9zZCB8ICAgMTAgKysrKysrCiBhcmNoL2FybS9ib2FyZHMvcGNt
-MDUxL2Vudi9jb25maWcgIHwgICAyMiArKysrKysrKysrKysKIGFyY2gvYXJtL2NvbmZpZ3MvcGNt
-MDUxX2RlZmNvbmZpZyAgfCAgIDU2ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKIGFy
-Y2gvYXJtL21hY2gtb21hcC9LY29uZmlnICAgICAgICAgfCAgIDEwICsrKysrKwogOCBmaWxlcyBj
-aGFuZ2VkLCAxODUgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkKIGNyZWF0ZSBtb2RlIDEw
-MDY0NCBhcmNoL2FybS9ib2FyZHMvcGNtMDUxL01ha2VmaWxlCiBjcmVhdGUgbW9kZSAxMDA2NDQg
-YXJjaC9hcm0vYm9hcmRzL3BjbTA1MS9ib2FyZC5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9h
-cm0vYm9hcmRzL3BjbTA1MS9jb25maWcuaAogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2Jv
-YXJkcy9wY20wNTEvZW52L2Jvb3Qvc2QKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2Fy
-ZHMvcGNtMDUxL2Vudi9jb25maWcKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9jb25maWdz
-L3BjbTA1MV9kZWZjb25maWcKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9NYWtlZmlsZSBiL2FyY2gv
-YXJtL01ha2VmaWxlCmluZGV4IDUwODJhMTMuLjQ4N2NjNjQgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJt
-L01ha2VmaWxlCisrKyBiL2FyY2gvYXJtL01ha2VmaWxlCkBAIC0xMTUsNiArMTE1LDcgQEAgYm9h
-cmQtJChDT05GSUdfTUFDSF9QQ00wMjcpCQkJOj0gcGNtMDI3CiBib2FyZC0kKENPTkZJR19NQUNI
-X1BDTTAzNykJCQk6PSBwY20wMzcKIGJvYXJkLSQoQ09ORklHX01BQ0hfUENNMDM4KQkJCTo9IHBj
-bTAzOAogYm9hcmQtJChDT05GSUdfTUFDSF9QQ00wNDMpCQkJOj0gcGNtMDQzCitib2FyZC0kKENP
-TkZJR19NQUNIX1BDTTA1MSkJCQk6PSBwY20wNTEKIGJvYXJkLSQoQ09ORklHX01BQ0hfUE05MjYx
-KQkJCTo9IHBtOTI2MQogYm9hcmQtJChDT05GSUdfTUFDSF9QTTkyNjMpCQkJOj0gcG05MjYzCiBi
-b2FyZC0kKENPTkZJR19NQUNIX1BNOUc0NSkJCQk6PSBwbTlnNDUKZGlmZiAtLWdpdCBhL2FyY2gv
-YXJtL2JvYXJkcy9wY20wNTEvTWFrZWZpbGUgYi9hcmNoL2FybS9ib2FyZHMvcGNtMDUxL01ha2Vm
-aWxlCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAuLmRjZmMyOTMKLS0tIC9kZXYv
-bnVsbAorKysgYi9hcmNoL2FybS9ib2FyZHMvcGNtMDUxL01ha2VmaWxlCkBAIC0wLDAgKzEgQEAK
-K29iai15ICs9IGJvYXJkLm8KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9wY20wNTEvYm9h
-cmQuYyBiL2FyY2gvYXJtL2JvYXJkcy9wY20wNTEvYm9hcmQuYwpuZXcgZmlsZSBtb2RlIDEwMDY0
-NAppbmRleCAwMDAwMDAwLi45NzM5YTJjCi0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vYm9h
-cmRzL3BjbTA1MS9ib2FyZC5jCkBAIC0wLDAgKzEsNjQgQEAKKy8qCisgKiBwY20wNTEgLSBwaHlD
-T1JFLUFNMzM1eCBCb2FyZCBJbml0YWxpemF0aW9uIENvZGUKKyAqCisgKiBDb3B5cmlnaHQgKEMp
-IDIwMTIgVGVyZXNhIEfDoW1leiwgUGh5dGVjIE1lc3N0ZWNobmlrIEdtYkgKKyAqCisgKiBCYXNl
-ZCBvbiBhcmNoL2FybS9ib2FyZHMvb21hcC9ib2FyZC1iZWFnbGUuYworICoKKyAqIFRoaXMgcHJv
-Z3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IKKyAq
-IG1vZGlmeSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNl
-bnNlIGFzCisgKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0
-aGVyIHZlcnNpb24gMiBvZgorICogdGhlIExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlvbikgYW55
-IGxhdGVyIHZlcnNpb24uCisgKgorICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRo
-ZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCisgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFO
-VFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgorICogTUVSQ0hBTlRBQklM
-SVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQorICogR05V
-IEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KKyAqCisgKi8KKworI2lu
-Y2x1ZGUgPGNvbW1vbi5oPgorI2luY2x1ZGUgPGluaXQuaD4KKyNpbmNsdWRlIDxzaXplcy5oPgor
-I2luY2x1ZGUgPG5zMTY1NTAuaD4KKyNpbmNsdWRlIDxhc20vYXJtbGludXguaD4KKyNpbmNsdWRl
-IDxnZW5lcmF0ZWQvbWFjaC10eXBlcy5oPgorI2luY2x1ZGUgPG1hY2gvYW0zM3h4LWRldmljZXMu
-aD4KKyNpbmNsdWRlIDxtYWNoL2FtMzN4eC1tdXguaD4KKyNpbmNsdWRlIDxtYWNoL2FtMzN4eC1z
-aWxpY29uLmg+CisKKy8qKgorICogQGJyaWVmIFVBUlQgc2VyaWFsIHBvcnQgaW5pdGlhbGl6YXRp
-b24KKyAqIGFyY2gKKyAqCisgKiBAcmV0dXJuIHJlc3VsdCBvZiBkZXZpY2UgcmVnaXN0cmF0aW9u
-CisgKi8KK3N0YXRpYyBpbnQgcGNtMDUxX2NvbnNvbGVfaW5pdCh2b2lkKQoreworCS8qIFJlZ2lz
-dGVyIHRoZSBzZXJpYWwgcG9ydCAqLworCWFtMzN4eF9hZGRfdWFydDAoKTsKKworCXJldHVybiAw
-OworfQorY29uc29sZV9pbml0Y2FsbChwY20wNTFfY29uc29sZV9pbml0KTsKKworc3RhdGljIGlu
-dCBwY20wNTFfbWVtX2luaXQodm9pZCkKK3sKKwlvbWFwX2FkZF9yYW0wKFNaXzUxMk0pOworCisJ
-cmV0dXJuIDA7Cit9CittZW1faW5pdGNhbGwocGNtMDUxX21lbV9pbml0KTsKKworc3RhdGljIGlu
-dCBwY20wNTFfZGV2aWNlc19pbml0KHZvaWQpCit7CisJZW5hYmxlX21tYzBfcGluX211eCgpOwor
-CisJYW0zM3h4X2FkZF9tbWMwKE5VTEwpOworCisJYXJtbGludXhfc2V0X2Jvb3RwYXJhbXMoKHZv
-aWQgKikoQU0zM1hYX0RSQU1fQUREUl9TUEFDRV9TVEFSVCArIDB4MTAwKSk7CisJYXJtbGludXhf
-c2V0X2FyY2hpdGVjdHVyZShNQUNIX1RZUEVfUENNMDUxKTsKKworCXJldHVybiAwOworfQorZGV2
-aWNlX2luaXRjYWxsKHBjbTA1MV9kZXZpY2VzX2luaXQpOwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
-Ym9hcmRzL3BjbTA1MS9jb25maWcuaCBiL2FyY2gvYXJtL2JvYXJkcy9wY20wNTEvY29uZmlnLmgK
-bmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uOGIyYjg3NgotLS0gL2Rldi9udWxs
-CisrKyBiL2FyY2gvYXJtL2JvYXJkcy9wY20wNTEvY29uZmlnLmgKQEAgLTAsMCArMSwyMSBAQAor
-LyoqCisgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1
-dGUgaXQgYW5kL29yCisgKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2Vu
-ZXJhbCBQdWJsaWMgTGljZW5zZSBhcworICogcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJl
-IEZvdW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIgb2YKKyAqIHRoZSBMaWNlbnNlLCBvciAoYXQg
-eW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgorICoKKyAqIFRoaXMgcHJvZ3JhbSBpcyBk
-aXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVsLAorICogYnV0IFdJ
-VEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFudHkgb2YK
-KyAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRS4g
-U2VlIHRoZQorICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4K
-KyAqCisgKiBZb3Ugc2hvdWxkIGhhdmUgcmVjZWl2ZWQgYSBjb3B5IG9mIHRoZSBHTlUgR2VuZXJh
-bCBQdWJsaWMgTGljZW5zZQorICogYWxvbmcgd2l0aCB0aGlzIHByb2dyYW07IGlmIG5vdCwgd3Jp
-dGUgdG8gdGhlIEZyZWUgU29mdHdhcmUKKyAqIEZvdW5kYXRpb24sIEluYy4sIDU5IFRlbXBsZSBQ
-bGFjZSwgU3VpdGUgMzMwLCBCb3N0b24sCisgKiBNQSAwMjExMS0xMzA3IFVTQQorICovCisKKyNp
-Zm5kZWYgX19DT05GSUdfSAorI2RlZmluZSBfX0NPTkZJR19ICisKKyNlbmRpZgkvKiBfX0NPTkZJ
-R19IICovCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcGNtMDUxL2Vudi9ib290L3NkIGIv
-YXJjaC9hcm0vYm9hcmRzL3BjbTA1MS9lbnYvYm9vdC9zZApuZXcgZmlsZSBtb2RlIDEwMDY0NApp
-bmRleCAwMDAwMDAwLi5mMzAzYzEwCi0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vYm9hcmRz
-L3BjbTA1MS9lbnYvYm9vdC9zZApAQCAtMCwwICsxLDEwIEBACisjIS9iaW4vc2gKKworaWYgWyAi
-JDEiID0gbWVudSBdOyB0aGVuCisJYm9vdC1tZW51LWFkZC1lbnRyeSAiJDAiICJrZXJuZWwgJiBy
-b290ZnMgb24gU0QgY2FyZCIKKwlleGl0CitmaQorCitnbG9iYWwuYm9vdG0uaW1hZ2U9L2Jvb3Qv
-dUltYWdlCitnbG9iYWwuYm9vdG0ub2Z0cmVlPS9ib290L29mdHJlZQorZ2xvYmFsLmxpbnV4LmJv
-b3RhcmdzLmR5bi5yb290PSJyb290PS9kZXYvbW1jYmxrMHAyIHJvb3Rmc3R5cGU9ZXh0MyByb290
-d2FpdCIKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9wY20wNTEvZW52L2NvbmZpZyBiL2Fy
-Y2gvYXJtL2JvYXJkcy9wY20wNTEvZW52L2NvbmZpZwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRl
-eCAwMDAwMDAwLi5kZDM1ZmY0Ci0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3Bj
-bTA1MS9lbnYvY29uZmlnCkBAIC0wLDAgKzEsMjIgQEAKKyMhL2Jpbi9zaAorCisjIGNoYW5nZSBu
-ZXR3b3JrIHNldHRpbmdzIGluIC9lbnYvbmV0d29yay9ldGgwCisjIGNoYW5nZSBtdGQgcGFydGl0
-aW9uIHNldHRpbmdzIGFuZCBhdXRvbW91bnRwb2ludHMgaW4gL2Vudi9pbml0LyoKKworZ2xvYmFs
-Lmhvc3RuYW1lPXBjbTA1MQorCisjIHNldCB0byBmYWxzZSBpZiB5b3UgZG8gbm90IHdhbnQgdG8g
-aGF2ZSBjb2xvcnMKK2dsb2JhbC5hbGxvd19jb2xvcj10cnVlCisKKyMgdXNlciAodXNlZCBmb3Ig
-bmV0d29yayBmaWxlbmFtZXMpCitnbG9iYWwudXNlcj1ub25lCisKKyMgdGltZW91dCBpbiBzZWNv
-bmRzIGJlZm9yZSB0aGUgZGVmYXVsdCBib290IGVudHJ5IGlzIHN0YXJ0ZWQKK2dsb2JhbC5hdXRv
-Ym9vdF90aW1lb3V0PTMKKworIyBkZWZhdWx0IGJvb3QgZW50cnkgKG9uZSBvZiAvZW52L2Jvb3Qv
-KikKK2dsb2JhbC5ib290LmRlZmF1bHQ9c2QKKworIyBiYXNlIGJvb3RhcmdzCitnbG9iYWwubGlu
-dXguYm9vdGFyZ3MuYmFzZT0iY29uc29sZT10dHlPMCwxMTUyMDBuOCIKKwpkaWZmIC0tZ2l0IGEv
-YXJjaC9hcm0vY29uZmlncy9wY20wNTFfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmlncy9wY20w
-NTFfZGVmY29uZmlnCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAuLjRkYTBlZDQK
-LS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9jb25maWdzL3BjbTA1MV9kZWZjb25maWcKQEAg
-LTAsMCArMSw1NiBAQAorQ09ORklHX0FSQ0hfT01BUD15CitDT05GSUdfQVJDSF9BTTMzWFg9eQor
-Q09ORklHX09NQVBfQlVJTERfSUZUPXkKK0NPTkZJR19NQUNIX1BDTTA1MT15CitDT05GSUdfQUVB
-Qkk9eQorQ09ORklHX0FSTV9PUFRJTVpFRF9TVFJJTkdfRlVOQ1RJT05TPXkKK0NPTkZJR19BUk1f
-VU5XSU5EPXkKK0NPTkZJR19URVhUX0JBU0U9MHg4MTAwMDAwMAorQ09ORklHX1BST01QVD0iYmFy
-ZWJveEBwY20wNTE+IgorQ09ORklHX0xPTkdIRUxQPXkKK0NPTkZJR19IVVNIX0ZBTkNZX1BST01Q
-VD15CitDT05GSUdfQ01ETElORV9FRElUSU5HPXkKK0NPTkZJR19BVVRPX0NPTVBMRVRFPXkKK0NP
-TkZJR19NRU5VPXkKKyMgQ09ORklHX1RJTUVTVEFNUCBpcyBub3Qgc2V0CitDT05GSUdfREVGQVVM
-VF9FTlZJUk9OTUVOVF9HRU5FUklDX05FVz15CitDT05GSUdfREVGQVVMVF9FTlZJUk9OTUVOVF9Q
-QVRIPSJhcmNoL2FybS9ib2FyZHMvcGNtMDUxL2VudiIKK0NPTkZJR19ERUJVR19JTkZPPXkKK0NP
-TkZJR19FTkFCTEVfRkxBU0hfTk9JU0U9eQorQ09ORklHX0VOQUJMRV9QQVJUSVRJT05fTk9JU0U9
-eQorQ09ORklHX0VOQUJMRV9ERVZJQ0VfTk9JU0U9eQorQ09ORklHX0NNRF9FRElUPXkKK0NPTkZJ
-R19DTURfU0xFRVA9eQorQ09ORklHX0NNRF9TQVZFRU5WPXkKK0NPTkZJR19DTURfRVhQT1JUPXkK
-K0NPTkZJR19DTURfUFJJTlRFTlY9eQorQ09ORklHX0NNRF9SRUFETElORT15CitDT05GSUdfQ01E
-X01FTlU9eQorQ09ORklHX0NNRF9NRU5VX01BTkFHRU1FTlQ9eQorQ09ORklHX0NNRF9FQ0hPX0U9
-eQorQ09ORklHX0NNRF9MT0FEQj15CitDT05GSUdfQ01EX0NSQz15CitDT05GSUdfQ01EX0NSQ19D
-TVA9eQorQ09ORklHX0NNRF9NRDVTVU09eQorQ09ORklHX0NNRF9GTEFTSD15CitDT05GSUdfQ01E
-X0JPT1RNX1NIT1dfVFlQRT15CitDT05GSUdfQ01EX1VJTUFHRT15CitDT05GSUdfQ01EX0JPT1Ra
-PXkKK0NPTkZJR19DTURfUkVTRVQ9eQorQ09ORklHX0NNRF9HTz15CitDT05GSUdfQ01EX1RJTUVP
-VVQ9eQorQ09ORklHX0NNRF9QQVJUSVRJT049eQorQ09ORklHX0NNRF9HUElPPXkKK0NPTkZJR19D
-TURfVU5DT01QUkVTUz15CitDT05GSUdfRFJJVkVSX1NFUklBTF9OUzE2NTUwPXkKK0NPTkZJR19E
-UklWRVJfU0VSSUFMX05TMTY1NTBfT01BUF9FWFRFTlNJT05TPXkKKyMgQ09ORklHX1NQSSBpcyBu
-b3Qgc2V0CitDT05GSUdfTVREPXkKK0NPTkZJR19OQU5EPXkKK0NPTkZJR19VU0I9eQorQ09ORklH
-X01DST15CitDT05GSUdfTUNJX1NUQVJUVVA9eQorQ09ORklHX01DSV9PTUFQX0hTTU1DPXkKK0NP
-TkZJR19GU19GQVQ9eQorQ09ORklHX0ZTX0ZBVF9XUklURT15CitDT05GSUdfRlNfRkFUX0xGTj15
-CmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvS2NvbmZpZyBiL2FyY2gvYXJtL21hY2gt
-b21hcC9LY29uZmlnCmluZGV4IGFlMWUwN2UuLmM1YmIzYTMgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJt
-L21hY2gtb21hcC9LY29uZmlnCisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9LY29uZmlnCkBAIC0x
-MTIsNiArMTEyLDcgQEAgY29uZmlnIEJPQVJESU5GTwogCWRlZmF1bHQgIlBoeXRlYyBwaHlDT1JF
-IHBjbTA0OSIgaWYgTUFDSF9QQ00wNDkKIAlkZWZhdWx0ICJQaHl0ZWMgcGh5Q0FSRC1BLUwxIiBp
-ZiBNQUNIX1BDQUFMMQogCWRlZmF1bHQgIlBoeXRlYyBwaHlDQVJELUEtWEwyIiBpZiBNQUNIX1BD
-QUFYTDIKKwlkZWZhdWx0ICJQaHl0ZWMgcGh5Q09SRS1BTTMzNXgiIGlmIE1BQ0hfUENNMDUxCiAK
-IGNob2ljZQogCXByb21wdCAiU2VsZWN0IE9NQVAgYm9hcmQiCkBAIC0xODYsNiArMTg3LDE1IEBA
-IGNvbmZpZyBNQUNIX1BDQUFYTDIKIAloZWxwCiAJICBTYXkgWSBoZXJlIGlmIHlvdSBhcmUgdXNp
-bmcgYSBwaHlDQVJELUEtWEwxIFBDQS1BLVhMMQogCitjb25maWcgTUFDSF9QQ00wNTEKKwlib29s
-ICJQaHl0ZWMgcGh5Q09SRSBwY20wNTEiCisJc2VsZWN0IE9NQVBfQ0xPQ0tfQUxMCisJc2VsZWN0
-IEhBVkVfTk9TSEVMTAorCXNlbGVjdCBIQVZFX0RFRkFVTFRfRU5WSVJPTk1FTlRfTkVXCisJZGVw
-ZW5kcyBvbiBBUkNIX0FNMzNYWAorCWhlbHAKKwkgIFNheSBZIGhlcmUgaWYgeW91IGFyZSB1c2lu
-ZyBQaHl0ZWNzIHBoeUNPUkUgcGNtMDUxIGJvYXJkCisKIGVuZGNob2ljZQogCiBpZiBNQUNIX09N
-QVAzRVZNCi0tIAoxLjcuMC40CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
-b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+as today if no request or free provided do not complain
+
+if the gpio is not request auto requested at first use
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/gpio/gpio.c |   87 ++++++++++++++++++++++++++++++++++++++++++++++-----
+ include/gpio.h      |    7 +++++
+ 2 files changed, 87 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/gpio/gpio.c b/drivers/gpio/gpio.c
+index 042a062..e29f0ba 100644
+--- a/drivers/gpio/gpio.c
++++ b/drivers/gpio/gpio.c
+@@ -1,19 +1,71 @@
+ #include <common.h>
+ #include <gpio.h>
+ #include <errno.h>
++#include <malloc.h>
+ 
+ static LIST_HEAD(chip_list);
+ 
+-static struct gpio_chip *gpio_desc[ARCH_NR_GPIOS];
++struct gpio_info {
++	struct gpio_chip *chip;
++	bool requested;
++	char *label;
++};
++
++static struct gpio_info gpio_desc[ARCH_NR_GPIOS];
++
++int gpio_request(unsigned gpio, const char *label)
++{
++	struct gpio_info *gi = &gpio_desc[gpio];
++	struct gpio_chip *chip = gi->chip;
++	int ret;
++
++	if (!gpio_is_valid(gpio))
++		return -EINVAL;
++	if (!chip)
++		return -EINVAL;
++	if (gi->requested)
++		return -ENODEV;
++	if (chip->ops->request) {
++		ret = chip->ops->request(chip, gpio - chip->base);
++		if (ret)
++			return ret;
++	}
++
++	gi->requested = true;
++	gi->label = xstrdup(label);
++
++	return 0;
++}
++
++void gpio_free(unsigned gpio)
++{
++	struct gpio_info *gi = &gpio_desc[gpio];
++	struct gpio_chip *chip = gi->chip;
++
++	if (!gpio_is_valid(gpio))
++		return;
++	if (!chip)
++		return;
++	if (!gi->requested)
++		return;
++	if (chip->ops->free)
++		chip->ops->free(chip, gpio - chip->base);
++
++	gi->requested = false;
++	free(gi->label);
++}
+ 
+ void gpio_set_value(unsigned gpio, int value)
+ {
+-	struct gpio_chip *chip = gpio_desc[gpio];
++	struct gpio_info *gi = &gpio_desc[gpio];
++	struct gpio_chip *chip = gi->chip;
+ 
+ 	if (!gpio_is_valid(gpio))
+ 		return;
+ 	if (!chip)
+ 		return;
++	if (!gi->requested && gpio_request(gpio, "gpio"))
++		return;
+ 	if (!chip->ops->set)
+ 		return;
+ 	chip->ops->set(chip, gpio - chip->base, value);
+@@ -22,12 +74,19 @@ EXPORT_SYMBOL(gpio_set_value);
+ 
+ int gpio_get_value(unsigned gpio)
+ {
+-	struct gpio_chip *chip = gpio_desc[gpio];
++	struct gpio_info *gi = &gpio_desc[gpio];
++	struct gpio_chip *chip = gi->chip;
++	int ret;
+ 
+ 	if (!gpio_is_valid(gpio))
+ 		return -EINVAL;
+ 	if (!chip)
+ 		return -ENODEV;
++	if (!gi->requested) {
++		ret = gpio_request(gpio, "gpio");
++		if (ret)
++			return ret;
++	}
+ 	if (!chip->ops->get)
+ 		return -ENOSYS;
+ 	return chip->ops->get(chip, gpio - chip->base);
+@@ -36,12 +95,19 @@ EXPORT_SYMBOL(gpio_get_value);
+ 
+ int gpio_direction_output(unsigned gpio, int value)
+ {
+-	struct gpio_chip *chip = gpio_desc[gpio];
++	struct gpio_info *gi = &gpio_desc[gpio];
++	struct gpio_chip *chip = gi->chip;
++	int ret;
+ 
+ 	if (!gpio_is_valid(gpio))
+ 		return -EINVAL;
+ 	if (!chip)
+ 		return -ENODEV;
++	if (!gi->requested) {
++		ret = gpio_request(gpio, "gpio");
++		if (ret)
++			return ret;
++	}
+ 	if (!chip->ops->direction_output)
+ 		return -ENOSYS;
+ 	return chip->ops->direction_output(chip, gpio - chip->base, value);
+@@ -50,12 +116,19 @@ EXPORT_SYMBOL(gpio_direction_output);
+ 
+ int gpio_direction_input(unsigned gpio)
+ {
+-	struct gpio_chip *chip = gpio_desc[gpio];
++	struct gpio_info *gi = &gpio_desc[gpio];
++	struct gpio_chip *chip = gi->chip;
++	int ret;
+ 
+ 	if (!gpio_is_valid(gpio))
+ 		return -EINVAL;
+ 	if (!chip)
+ 		return -ENODEV;
++	if (!gi->requested) {
++		ret = gpio_request(gpio, "gpio");
++		if (ret)
++			return ret;
++	}
+ 	if (!chip->ops->direction_input)
+ 		return -ENOSYS;
+ 	return chip->ops->direction_input(chip, gpio - chip->base);
+@@ -72,7 +145,7 @@ static int gpiochip_find_base(int start, int ngpio)
+ 		start = 0;
+ 
+ 	for (i = start; i < ARCH_NR_GPIOS; i++) {
+-		struct gpio_chip *chip = gpio_desc[i];
++		struct gpio_chip *chip = gpio_desc[i].chip;
+ 
+ 		if (!chip) {
+ 			spare++;
+@@ -107,7 +180,7 @@ int gpiochip_add(struct gpio_chip *chip)
+ 	list_add_tail(&chip->list, &chip_list);
+ 
+ 	for (i = chip->base; i < chip->base + chip->ngpio; i++)
+-		gpio_desc[i] = chip;
++		gpio_desc[i].chip = chip;
+ 
+ 	return 0;
+ }
+diff --git a/include/gpio.h b/include/gpio.h
+index 9fb11c3..eedb980 100644
+--- a/include/gpio.h
++++ b/include/gpio.h
+@@ -3,6 +3,7 @@
+ 
+ #include <asm/gpio.h>
+ 
++#ifndef CONFIG_GPIOLIB
+ static inline int gpio_request(unsigned gpio, const char *label)
+ {
+        return 0;
+@@ -11,10 +12,16 @@ static inline int gpio_request(unsigned gpio, const char *label)
+ static inline void gpio_free(unsigned gpio)
+ {
+ }
++#else
++int gpio_request(unsigned gpio, const char *label);
++void gpio_free(unsigned gpio);
++#endif
+ 
+ struct gpio_chip;
+ 
+ struct gpio_ops {
++	int (*request)(struct gpio_chip *chip, unsigned offset);
++	void (*free)(struct gpio_chip *chip, unsigned offset);
+ 	int (*direction_input)(struct gpio_chip *chip, unsigned offset);
+ 	int (*direction_output)(struct gpio_chip *chip, unsigned offset, int value);
+ 	int (*get)(struct gpio_chip *chip, unsigned offset);
+-- 
+1.7.10.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
