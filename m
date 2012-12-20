@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo4.mail-out.ovh.net ([46.105.57.129]
+Received: from 9.mo4.mail-out.ovh.net ([46.105.40.176]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TlhBl-0006kD-UF
- for barebox@lists.infradead.org; Thu, 20 Dec 2012 14:33:41 +0000
+ id 1TlhBl-0006kA-Je
+ for barebox@lists.infradead.org; Thu, 20 Dec 2012 14:33:43 +0000
 Received: from mail638.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id A08D1104ED4D
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 2A388104ED30
  for <barebox@lists.infradead.org>; Thu, 20 Dec 2012 15:42:14 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 20 Dec 2012 15:31:50 +0100
-Message-Id: <1356013910-30196-6-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 20 Dec 2012 15:31:47 +0100
+Message-Id: <1356013910-30196-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1356013910-30196-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121220142902.GI26483@game.jcrosoft.org>
  <1356013910-30196-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,337 +26,574 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] at91: switch to gpiolib
+Subject: [PATCH 3/6] at91: drop PIN_BASE offset for gpio
 To: barebox@lists.infradead.org
+
+so 0 is a valid gpio as cleanned in the kernel
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/Kconfig                       |    2 +-
- arch/arm/boards/at91sam9263ek/init.c   |    2 +-
- arch/arm/boards/mmccpu/init.c          |    2 +-
- arch/arm/boards/pm9263/init.c          |    2 +-
- arch/arm/boards/pm9g45/init.c          |    2 +-
- arch/arm/mach-at91/gpio.c              |  118 +++++++++++++++++++-------------
- arch/arm/mach-at91/include/mach/gpio.h |   25 +------
- drivers/usb/gadget/at91_udc.c          |    2 +-
- 8 files changed, 78 insertions(+), 77 deletions(-)
+ arch/arm/mach-at91/gpio.c              |    2 -
+ arch/arm/mach-at91/include/mach/gpio.h |  530 ++++++++++++++++----------------
+ 2 files changed, 263 insertions(+), 269 deletions(-)
+ rewrite arch/arm/mach-at91/include/mach/gpio.h (73%)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 2b5446b..f567531 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -26,7 +26,7 @@ choice
- 
- config ARCH_AT91
- 	bool "Atmel AT91"
--	select GENERIC_GPIO
-+	select GPIOLIB
- 	select CLKDEV_LOOKUP
- 	select HAS_DEBUG_LL
- 	select HAVE_MACH_ARM_HEAD
-diff --git a/arch/arm/boards/at91sam9263ek/init.c b/arch/arm/boards/at91sam9263ek/init.c
-index 50e4009..7334bae 100644
---- a/arch/arm/boards/at91sam9263ek/init.c
-+++ b/arch/arm/boards/at91sam9263ek/init.c
-@@ -176,7 +176,7 @@ static int at91sam9263ek_devices_init(void)
- 	 * 0 - disable
- 	 */
- 	at91_set_gpio_output(AT91_PIN_PB27, 1);
--	at91_set_gpio_value(AT91_PIN_PB27, 1); /* 1- enable, 0 - disable */
-+	gpio_set_value(AT91_PIN_PB27, 1); /* 1- enable, 0 - disable */
- 
- 	ek_add_device_nand();
- 	at91_add_device_eth(0, &macb_pdata);
-diff --git a/arch/arm/boards/mmccpu/init.c b/arch/arm/boards/mmccpu/init.c
-index 67bfcea..1e6bbab 100644
---- a/arch/arm/boards/mmccpu/init.c
-+++ b/arch/arm/boards/mmccpu/init.c
-@@ -54,7 +54,7 @@ static int mmccpu_devices_init(void)
- 	 * 0 - disable
- 	 */
- 	at91_set_gpio_output(AT91_PIN_PB27, 1);
--	at91_set_gpio_value(AT91_PIN_PB27, 1); /* 1- enable, 0 - disable */
-+	gpio_set_value(AT91_PIN_PB27, 1); /* 1- enable, 0 - disable */
- 
- 	at91_add_device_eth(0, &macb_pdata);
- 	add_cfi_flash_device(0, AT91_CHIPSELECT_0, 0, 0);
-diff --git a/arch/arm/boards/pm9263/init.c b/arch/arm/boards/pm9263/init.c
-index 6a92a67..f719c65 100644
---- a/arch/arm/boards/pm9263/init.c
-+++ b/arch/arm/boards/pm9263/init.c
-@@ -102,7 +102,7 @@ static void pm9263_phy_init(void)
- 	 * 0 - disable
- 	 */
- 	at91_set_gpio_output(AT91_PIN_PB27, 1);
--	at91_set_gpio_value(AT91_PIN_PB27, 1); /* 1- enable, 0 - disable */
-+	gpio_set_value(AT91_PIN_PB27, 1); /* 1- enable, 0 - disable */
- }
- 
- static void pm9263_add_device_eth(void)
-diff --git a/arch/arm/boards/pm9g45/init.c b/arch/arm/boards/pm9g45/init.c
-index a974139..fabe97b 100644
---- a/arch/arm/boards/pm9g45/init.c
-+++ b/arch/arm/boards/pm9g45/init.c
-@@ -126,7 +126,7 @@ static void pm9g45_phy_init(void)
- 	 * 0 - disable
- 	 */
- 	at91_set_gpio_output(AT91_PIN_PD2, 1);
--	at91_set_gpio_value(AT91_PIN_PD2, 1);
-+	gpio_set_value(AT91_PIN_PD2, 1);
- }
- 
- static void pm9g45_add_device_eth(void)
 diff --git a/arch/arm/mach-at91/gpio.c b/arch/arm/mach-at91/gpio.c
-index 5962b2a..9e71324 100644
+index c35f00e..cd0136f 100644
 --- a/arch/arm/mach-at91/gpio.c
 +++ b/arch/arm/mach-at91/gpio.c
-@@ -38,11 +38,13 @@ static int gpio_banks = 0;
-  * Functionnality can change with newer chips
-  */
- struct at91_gpio_chip {
--	struct device_d		*dev;
-+	struct gpio_chip	chip;
- 	void __iomem		*regbase;	/* PIO bank virtual address */
- 	struct at91_pinctrl_mux_ops *ops;	/* ops */
- };
+@@ -38,7 +38,6 @@ static struct at91_gpio_bank *gpio;
  
-+#define to_at91_gpio_chip(c) container_of(c, struct at91_gpio_chip, chip)
-+
- static struct at91_gpio_chip gpio_chip[MAX_GPIO_BANKS];
- 
- static inline unsigned pin_to_bank(unsigned pin)
-@@ -221,7 +223,7 @@ int at91_mux_pin(unsigned pin, enum at91_mux mux, int use_pullup)
- 	void __iomem *pio = at91_gpio->regbase;
- 	unsigned mask = pin_to_mask(pin);
- 	int bank = pin_to_bank(pin);
--	struct device_d *dev = at91_gpio->dev;
-+	struct device_d *dev = at91_gpio->chip.dev;
- 
- 	if (!at91_gpio)
- 		return -EINVAL;
-@@ -287,7 +289,7 @@ int at91_set_gpio_input(unsigned pin, int use_pullup)
- 	if (ret)
- 		return ret;
- 
--	dev_dbg(at91_gpio->dev, "pio%c%d configured as input\n",
-+	dev_dbg(at91_gpio->chip.dev, "pio%c%d configured as input\n",
- 		pin_to_bank(pin) + 'A', pin_to_bank_offset(pin));
- 
- 	at91_mux_gpio_input(pio, mask, true);
-@@ -310,7 +312,7 @@ int at91_set_gpio_output(unsigned pin, int value)
- 	if (ret)
- 		return ret;
- 
--	dev_dbg(at91_gpio->dev, "pio%c%d configured as output val = %d\n",
-+	dev_dbg(at91_gpio->chip.dev, "pio%c%d configured as output val = %d\n",
- 		pin_to_bank(pin) + 'A', pin_to_bank_offset(pin), value);
- 
- 	at91_mux_gpio_input(pio, mask, false);
-@@ -408,67 +410,79 @@ int at91_disable_schmitt_trig(unsigned pin)
- }
- EXPORT_SYMBOL(at91_disable_schmitt_trig);
- 
--/*
-- * assuming the pin is muxed as a gpio output, set its value.
-- */
--int at91_set_gpio_value(unsigned pin, int value)
-+/*--------------------------------------------------------------------------*/
-+
-+static int at91_gpio_get(struct gpio_chip *chip, unsigned offset)
+ static inline void __iomem *pin_to_controller(unsigned pin)
  {
--	struct at91_gpio_chip *at91_gpio = pin_to_controller(pin);
--	void __iomem	*pio = at91_gpio->regbase;
--	unsigned	mask = pin_to_mask(pin);
-+	struct at91_gpio_chip *at91_gpio = to_at91_gpio_chip(chip);
-+	void __iomem *pio = at91_gpio->regbase;
-+	unsigned mask = 1 << offset;
-+	u32 pdsr;
-+
-+	pdsr = __raw_readl(pio + PIO_PDSR);
-+	return (pdsr & mask) != 0;
-+}
-+
-+static void at91_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
-+{
-+	struct at91_gpio_chip *at91_gpio = to_at91_gpio_chip(chip);
-+	void __iomem *pio = at91_gpio->regbase;
-+	unsigned mask = 1 << offset;
+-	pin -= PIN_BASE;
+ 	pin /= 32;
+ 	if (likely(pin < gpio_banks))
+ 		return gpio[pin].regbase;
+@@ -48,7 +47,6 @@ static inline void __iomem *pin_to_controller(unsigned pin)
  
--	if (!pio)
--		return -EINVAL;
- 	__raw_writel(mask, pio + (value ? PIO_SODR : PIO_CODR));
--	return 0;
- }
--EXPORT_SYMBOL(at91_set_gpio_value);
- 
--/*
-- * read the pin's value (works even if it's not muxed as a gpio).
-- */
--int at91_get_gpio_value(unsigned pin)
-+static int at91_gpio_direction_output(struct gpio_chip *chip, unsigned offset,
-+		int value)
+ static inline unsigned pin_to_mask(unsigned pin)
  {
--	struct at91_gpio_chip *at91_gpio = pin_to_controller(pin);
--	void __iomem	*pio = at91_gpio->regbase;
--	unsigned	mask = pin_to_mask(pin);
--	u32		pdsr;
-+	struct at91_gpio_chip *at91_gpio = to_at91_gpio_chip(chip);
-+	void __iomem *pio = at91_gpio->regbase;
-+	unsigned mask = 1 << offset;
- 
--	if (!pio)
--		return -EINVAL;
--	pdsr = __raw_readl(pio + PIO_PDSR);
--	return (pdsr & mask) != 0;
-+	__raw_writel(mask, pio + (value ? PIO_SODR : PIO_CODR));
-+	__raw_writel(mask, pio + PIO_OER);
-+
-+	return 0;
- }
--EXPORT_SYMBOL(at91_get_gpio_value);
- 
--int gpio_direction_input(unsigned pin)
-+static int at91_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
- {
--	struct at91_gpio_chip *at91_gpio = pin_to_controller(pin);
--	void __iomem	*pio = at91_gpio->regbase;
--	unsigned	mask = pin_to_mask(pin);
-+	struct at91_gpio_chip *at91_gpio = to_at91_gpio_chip(chip);
-+	void __iomem *pio = at91_gpio->regbase;
-+	unsigned mask = 1 << offset;
-+
-+	__raw_writel(mask, pio + PIO_ODR);
- 
--	if (!pio || !(__raw_readl(pio + PIO_PSR) & mask))
--		return -EINVAL;
--	at91_mux_gpio_input(pio, mask, true);
- 	return 0;
- }
--EXPORT_SYMBOL(gpio_direction_input);
- 
--int gpio_direction_output(unsigned pin, int value)
-+static int at91_gpio_request(struct gpio_chip *chip, unsigned offset)
- {
--	struct at91_gpio_chip *at91_gpio = pin_to_controller(pin);
--	void __iomem	*pio = at91_gpio->regbase;
--	unsigned	mask = pin_to_mask(pin);
-+	struct at91_gpio_chip *at91_gpio = to_at91_gpio_chip(chip);
-+	void __iomem *pio = at91_gpio->regbase;
-+	unsigned mask = 1 << offset;
-+
-+	dev_dbg(chip->dev, "%s:%d pio%c%d(%d)\n", __func__, __LINE__,
-+		 'A' + pin_to_bank(chip->base), offset, chip->base + offset);
-+	at91_mux_gpio_enable(pio, mask);
- 
--	if (!pio || !(__raw_readl(pio + PIO_PSR) & mask))
--		return -EINVAL;
--	__raw_writel(mask, pio + (value ? PIO_SODR : PIO_CODR));
--	at91_mux_gpio_input(pio, mask, false);
- 	return 0;
- }
--EXPORT_SYMBOL(gpio_direction_output);
- 
--/*--------------------------------------------------------------------------*/
-+static void at91_gpio_free(struct gpio_chip *chip, unsigned offset)
-+{
-+	dev_dbg(chip->dev, "%s:%d pio%c%d(%d)\n", __func__, __LINE__,
-+		 'A' + pin_to_bank(chip->base), offset, chip->base + offset);
-+}
-+
-+static struct gpio_ops at91_gpio_ops = {
-+	.request = at91_gpio_request,
-+	.free = at91_gpio_free,
-+	.direction_input = at91_gpio_direction_input,
-+	.direction_output = at91_gpio_direction_output,
-+	.get = at91_gpio_get,
-+	.set = at91_gpio_set,
-+};
- 
- static int at91_gpio_probe(struct device_d *dev)
- {
-@@ -500,10 +514,20 @@ static int at91_gpio_probe(struct device_d *dev)
- 		return ret;
- 	}
- 
--	at91_gpio->dev = dev;
- 	gpio_banks = max(gpio_banks, dev->id + 1);
- 	at91_gpio->regbase = dev_request_mem_region(dev, 0);
- 
-+	at91_gpio->chip.ops = &at91_gpio_ops;
-+	at91_gpio->chip.ngpio = MAX_NB_GPIO_PER_BANK;
-+	at91_gpio->chip.dev = dev;
-+	at91_gpio->chip.base = dev->id * MAX_NB_GPIO_PER_BANK;
-+
-+	ret = gpiochip_add(&at91_gpio->chip);
-+	if (ret) {
-+		dev_err(dev, "couldn't add gpiochip, ret = %d\n", ret);
-+		return ret;
-+	}
-+
- 	return 0;
+-	pin -= PIN_BASE;
+ 	return 1 << (pin % 32);
  }
  
 diff --git a/arch/arm/mach-at91/include/mach/gpio.h b/arch/arm/mach-at91/include/mach/gpio.h
-index 16060b1..eb64bd4 100644
+dissimilarity index 73%
+index fa695a6..200a852 100644
 --- a/arch/arm/mach-at91/include/mach/gpio.h
 +++ b/arch/arm/mach-at91/include/mach/gpio.h
-@@ -17,18 +17,10 @@
- #include <asm-generic/errno.h>
- #include <mach/at91_pio.h>
- #include <mach/hardware.h>
-+#include <asm-generic/gpio.h>
- 
- #define ARCH_NR_GPIOS 256
- 
+@@ -1,267 +1,263 @@
+-/*
+- * [origin: Linux kernel include/asm-arm/arch-at91/gpio.h]
+- *
+- *  Copyright (C) 2005 HP Labs
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- */
+-
+-#ifndef __ASM_ARCH_AT91_GPIO_H
+-#define __ASM_ARCH_AT91_GPIO_H
+-
+-#include <io.h>
+-#include <asm-generic/errno.h>
+-#include <mach/at91_pio.h>
+-#include <mach/hardware.h>
+-
+-#define PIN_BASE		32
+-
+-/* these pin numbers double as IRQ numbers, like AT91xxx_ID_* values */
+-
+-#define ARCH_NR_GPIOS 256
+-
 -static inline int gpio_is_valid(int gpio)
 -{
--	if (gpio < 0)
+-	if (gpio < 1)
 -		return 0;
 -	if (gpio < ARCH_NR_GPIOS)
 -		return 1;
 -	return 0;
 -}
 -
- #define	AT91_PIN_PA0	(0x00 + 0)
- #define	AT91_PIN_PA1	(0x00 + 1)
- #define	AT91_PIN_PA2	(0x00 + 2)
-@@ -270,23 +262,8 @@ int at91_set_deglitch(unsigned pin, int is_on);
-  */
- int at91_set_multi_drive(unsigned pin, int is_on);
- 
+-#define	AT91_PIN_PA0	(PIN_BASE + 0x00 + 0)
+-#define	AT91_PIN_PA1	(PIN_BASE + 0x00 + 1)
+-#define	AT91_PIN_PA2	(PIN_BASE + 0x00 + 2)
+-#define	AT91_PIN_PA3	(PIN_BASE + 0x00 + 3)
+-#define	AT91_PIN_PA4	(PIN_BASE + 0x00 + 4)
+-#define	AT91_PIN_PA5	(PIN_BASE + 0x00 + 5)
+-#define	AT91_PIN_PA6	(PIN_BASE + 0x00 + 6)
+-#define	AT91_PIN_PA7	(PIN_BASE + 0x00 + 7)
+-#define	AT91_PIN_PA8	(PIN_BASE + 0x00 + 8)
+-#define	AT91_PIN_PA9	(PIN_BASE + 0x00 + 9)
+-#define	AT91_PIN_PA10	(PIN_BASE + 0x00 + 10)
+-#define	AT91_PIN_PA11	(PIN_BASE + 0x00 + 11)
+-#define	AT91_PIN_PA12	(PIN_BASE + 0x00 + 12)
+-#define	AT91_PIN_PA13	(PIN_BASE + 0x00 + 13)
+-#define	AT91_PIN_PA14	(PIN_BASE + 0x00 + 14)
+-#define	AT91_PIN_PA15	(PIN_BASE + 0x00 + 15)
+-#define	AT91_PIN_PA16	(PIN_BASE + 0x00 + 16)
+-#define	AT91_PIN_PA17	(PIN_BASE + 0x00 + 17)
+-#define	AT91_PIN_PA18	(PIN_BASE + 0x00 + 18)
+-#define	AT91_PIN_PA19	(PIN_BASE + 0x00 + 19)
+-#define	AT91_PIN_PA20	(PIN_BASE + 0x00 + 20)
+-#define	AT91_PIN_PA21	(PIN_BASE + 0x00 + 21)
+-#define	AT91_PIN_PA22	(PIN_BASE + 0x00 + 22)
+-#define	AT91_PIN_PA23	(PIN_BASE + 0x00 + 23)
+-#define	AT91_PIN_PA24	(PIN_BASE + 0x00 + 24)
+-#define	AT91_PIN_PA25	(PIN_BASE + 0x00 + 25)
+-#define	AT91_PIN_PA26	(PIN_BASE + 0x00 + 26)
+-#define	AT91_PIN_PA27	(PIN_BASE + 0x00 + 27)
+-#define	AT91_PIN_PA28	(PIN_BASE + 0x00 + 28)
+-#define	AT91_PIN_PA29	(PIN_BASE + 0x00 + 29)
+-#define	AT91_PIN_PA30	(PIN_BASE + 0x00 + 30)
+-#define	AT91_PIN_PA31	(PIN_BASE + 0x00 + 31)
+-
+-#define	AT91_PIN_PB0	(PIN_BASE + 0x20 + 0)
+-#define	AT91_PIN_PB1	(PIN_BASE + 0x20 + 1)
+-#define	AT91_PIN_PB2	(PIN_BASE + 0x20 + 2)
+-#define	AT91_PIN_PB3	(PIN_BASE + 0x20 + 3)
+-#define	AT91_PIN_PB4	(PIN_BASE + 0x20 + 4)
+-#define	AT91_PIN_PB5	(PIN_BASE + 0x20 + 5)
+-#define	AT91_PIN_PB6	(PIN_BASE + 0x20 + 6)
+-#define	AT91_PIN_PB7	(PIN_BASE + 0x20 + 7)
+-#define	AT91_PIN_PB8	(PIN_BASE + 0x20 + 8)
+-#define	AT91_PIN_PB9	(PIN_BASE + 0x20 + 9)
+-#define	AT91_PIN_PB10	(PIN_BASE + 0x20 + 10)
+-#define	AT91_PIN_PB11	(PIN_BASE + 0x20 + 11)
+-#define	AT91_PIN_PB12	(PIN_BASE + 0x20 + 12)
+-#define	AT91_PIN_PB13	(PIN_BASE + 0x20 + 13)
+-#define	AT91_PIN_PB14	(PIN_BASE + 0x20 + 14)
+-#define	AT91_PIN_PB15	(PIN_BASE + 0x20 + 15)
+-#define	AT91_PIN_PB16	(PIN_BASE + 0x20 + 16)
+-#define	AT91_PIN_PB17	(PIN_BASE + 0x20 + 17)
+-#define	AT91_PIN_PB18	(PIN_BASE + 0x20 + 18)
+-#define	AT91_PIN_PB19	(PIN_BASE + 0x20 + 19)
+-#define	AT91_PIN_PB20	(PIN_BASE + 0x20 + 20)
+-#define	AT91_PIN_PB21	(PIN_BASE + 0x20 + 21)
+-#define	AT91_PIN_PB22	(PIN_BASE + 0x20 + 22)
+-#define	AT91_PIN_PB23	(PIN_BASE + 0x20 + 23)
+-#define	AT91_PIN_PB24	(PIN_BASE + 0x20 + 24)
+-#define	AT91_PIN_PB25	(PIN_BASE + 0x20 + 25)
+-#define	AT91_PIN_PB26	(PIN_BASE + 0x20 + 26)
+-#define	AT91_PIN_PB27	(PIN_BASE + 0x20 + 27)
+-#define	AT91_PIN_PB28	(PIN_BASE + 0x20 + 28)
+-#define	AT91_PIN_PB29	(PIN_BASE + 0x20 + 29)
+-#define	AT91_PIN_PB30	(PIN_BASE + 0x20 + 30)
+-#define	AT91_PIN_PB31	(PIN_BASE + 0x20 + 31)
+-
+-#define	AT91_PIN_PC0	(PIN_BASE + 0x40 + 0)
+-#define	AT91_PIN_PC1	(PIN_BASE + 0x40 + 1)
+-#define	AT91_PIN_PC2	(PIN_BASE + 0x40 + 2)
+-#define	AT91_PIN_PC3	(PIN_BASE + 0x40 + 3)
+-#define	AT91_PIN_PC4	(PIN_BASE + 0x40 + 4)
+-#define	AT91_PIN_PC5	(PIN_BASE + 0x40 + 5)
+-#define	AT91_PIN_PC6	(PIN_BASE + 0x40 + 6)
+-#define	AT91_PIN_PC7	(PIN_BASE + 0x40 + 7)
+-#define	AT91_PIN_PC8	(PIN_BASE + 0x40 + 8)
+-#define	AT91_PIN_PC9	(PIN_BASE + 0x40 + 9)
+-#define	AT91_PIN_PC10	(PIN_BASE + 0x40 + 10)
+-#define	AT91_PIN_PC11	(PIN_BASE + 0x40 + 11)
+-#define	AT91_PIN_PC12	(PIN_BASE + 0x40 + 12)
+-#define	AT91_PIN_PC13	(PIN_BASE + 0x40 + 13)
+-#define	AT91_PIN_PC14	(PIN_BASE + 0x40 + 14)
+-#define	AT91_PIN_PC15	(PIN_BASE + 0x40 + 15)
+-#define	AT91_PIN_PC16	(PIN_BASE + 0x40 + 16)
+-#define	AT91_PIN_PC17	(PIN_BASE + 0x40 + 17)
+-#define	AT91_PIN_PC18	(PIN_BASE + 0x40 + 18)
+-#define	AT91_PIN_PC19	(PIN_BASE + 0x40 + 19)
+-#define	AT91_PIN_PC20	(PIN_BASE + 0x40 + 20)
+-#define	AT91_PIN_PC21	(PIN_BASE + 0x40 + 21)
+-#define	AT91_PIN_PC22	(PIN_BASE + 0x40 + 22)
+-#define	AT91_PIN_PC23	(PIN_BASE + 0x40 + 23)
+-#define	AT91_PIN_PC24	(PIN_BASE + 0x40 + 24)
+-#define	AT91_PIN_PC25	(PIN_BASE + 0x40 + 25)
+-#define	AT91_PIN_PC26	(PIN_BASE + 0x40 + 26)
+-#define	AT91_PIN_PC27	(PIN_BASE + 0x40 + 27)
+-#define	AT91_PIN_PC28	(PIN_BASE + 0x40 + 28)
+-#define	AT91_PIN_PC29	(PIN_BASE + 0x40 + 29)
+-#define	AT91_PIN_PC30	(PIN_BASE + 0x40 + 30)
+-#define	AT91_PIN_PC31	(PIN_BASE + 0x40 + 31)
+-
+-#define	AT91_PIN_PD0	(PIN_BASE + 0x60 + 0)
+-#define	AT91_PIN_PD1	(PIN_BASE + 0x60 + 1)
+-#define	AT91_PIN_PD2	(PIN_BASE + 0x60 + 2)
+-#define	AT91_PIN_PD3	(PIN_BASE + 0x60 + 3)
+-#define	AT91_PIN_PD4	(PIN_BASE + 0x60 + 4)
+-#define	AT91_PIN_PD5	(PIN_BASE + 0x60 + 5)
+-#define	AT91_PIN_PD6	(PIN_BASE + 0x60 + 6)
+-#define	AT91_PIN_PD7	(PIN_BASE + 0x60 + 7)
+-#define	AT91_PIN_PD8	(PIN_BASE + 0x60 + 8)
+-#define	AT91_PIN_PD9	(PIN_BASE + 0x60 + 9)
+-#define	AT91_PIN_PD10	(PIN_BASE + 0x60 + 10)
+-#define	AT91_PIN_PD11	(PIN_BASE + 0x60 + 11)
+-#define	AT91_PIN_PD12	(PIN_BASE + 0x60 + 12)
+-#define	AT91_PIN_PD13	(PIN_BASE + 0x60 + 13)
+-#define	AT91_PIN_PD14	(PIN_BASE + 0x60 + 14)
+-#define	AT91_PIN_PD15	(PIN_BASE + 0x60 + 15)
+-#define	AT91_PIN_PD16	(PIN_BASE + 0x60 + 16)
+-#define	AT91_PIN_PD17	(PIN_BASE + 0x60 + 17)
+-#define	AT91_PIN_PD18	(PIN_BASE + 0x60 + 18)
+-#define	AT91_PIN_PD19	(PIN_BASE + 0x60 + 19)
+-#define	AT91_PIN_PD20	(PIN_BASE + 0x60 + 20)
+-#define	AT91_PIN_PD21	(PIN_BASE + 0x60 + 21)
+-#define	AT91_PIN_PD22	(PIN_BASE + 0x60 + 22)
+-#define	AT91_PIN_PD23	(PIN_BASE + 0x60 + 23)
+-#define	AT91_PIN_PD24	(PIN_BASE + 0x60 + 24)
+-#define	AT91_PIN_PD25	(PIN_BASE + 0x60 + 25)
+-#define	AT91_PIN_PD26	(PIN_BASE + 0x60 + 26)
+-#define	AT91_PIN_PD27	(PIN_BASE + 0x60 + 27)
+-#define	AT91_PIN_PD28	(PIN_BASE + 0x60 + 28)
+-#define	AT91_PIN_PD29	(PIN_BASE + 0x60 + 29)
+-#define	AT91_PIN_PD30	(PIN_BASE + 0x60 + 30)
+-#define	AT91_PIN_PD31	(PIN_BASE + 0x60 + 31)
+-
+-#define	AT91_PIN_PE0	(PIN_BASE + 0x80 + 0)
+-#define	AT91_PIN_PE1	(PIN_BASE + 0x80 + 1)
+-#define	AT91_PIN_PE2	(PIN_BASE + 0x80 + 2)
+-#define	AT91_PIN_PE3	(PIN_BASE + 0x80 + 3)
+-#define	AT91_PIN_PE4	(PIN_BASE + 0x80 + 4)
+-#define	AT91_PIN_PE5	(PIN_BASE + 0x80 + 5)
+-#define	AT91_PIN_PE6	(PIN_BASE + 0x80 + 6)
+-#define	AT91_PIN_PE7	(PIN_BASE + 0x80 + 7)
+-#define	AT91_PIN_PE8	(PIN_BASE + 0x80 + 8)
+-#define	AT91_PIN_PE9	(PIN_BASE + 0x80 + 9)
+-#define	AT91_PIN_PE10	(PIN_BASE + 0x80 + 10)
+-#define	AT91_PIN_PE11	(PIN_BASE + 0x80 + 11)
+-#define	AT91_PIN_PE12	(PIN_BASE + 0x80 + 12)
+-#define	AT91_PIN_PE13	(PIN_BASE + 0x80 + 13)
+-#define	AT91_PIN_PE14	(PIN_BASE + 0x80 + 14)
+-#define	AT91_PIN_PE15	(PIN_BASE + 0x80 + 15)
+-#define	AT91_PIN_PE16	(PIN_BASE + 0x80 + 16)
+-#define	AT91_PIN_PE17	(PIN_BASE + 0x80 + 17)
+-#define	AT91_PIN_PE18	(PIN_BASE + 0x80 + 18)
+-#define	AT91_PIN_PE19	(PIN_BASE + 0x80 + 19)
+-#define	AT91_PIN_PE20	(PIN_BASE + 0x80 + 20)
+-#define	AT91_PIN_PE21	(PIN_BASE + 0x80 + 21)
+-#define	AT91_PIN_PE22	(PIN_BASE + 0x80 + 22)
+-#define	AT91_PIN_PE23	(PIN_BASE + 0x80 + 23)
+-#define	AT91_PIN_PE24	(PIN_BASE + 0x80 + 24)
+-#define	AT91_PIN_PE25	(PIN_BASE + 0x80 + 25)
+-#define	AT91_PIN_PE26	(PIN_BASE + 0x80 + 26)
+-#define	AT91_PIN_PE27	(PIN_BASE + 0x80 + 27)
+-#define	AT91_PIN_PE28	(PIN_BASE + 0x80 + 28)
+-#define	AT91_PIN_PE29	(PIN_BASE + 0x80 + 29)
+-#define	AT91_PIN_PE30	(PIN_BASE + 0x80 + 30)
+-#define	AT91_PIN_PE31	(PIN_BASE + 0x80 + 31)
+-
+-/*
+- * mux the pin to the "GPIO" peripheral role.
+- */
+-int at91_set_GPIO_periph(unsigned pin, int use_pullup);
+-
+-
+-/*
+- * mux the pin to the "A" internal peripheral role.
+- */
+-int at91_set_A_periph(unsigned pin, int use_pullup);
+-
+-/*
+- * mux the pin to the "B" internal peripheral role.
+- */
+-int at91_set_B_periph(unsigned pin, int use_pullup);
+-/*
+- * mux the pin to the gpio controller (instead of "A" or "B" peripheral), and
+- * configure it for an input.
+- */
+-int at91_set_gpio_input(unsigned pin, int use_pullup);
+-
+-/*
+- * mux the pin to the gpio controller (instead of "A" or "B" peripheral),
+- * and configure it for an output.
+- */
+-int at91_set_gpio_output(unsigned pin, int value);
+-
+-/*
+- * enable/disable the glitch filter; mostly used with IRQ handling.
+- */
+-int at91_set_deglitch(unsigned pin, int is_on);
+-
+-/*
+- * enable/disable the multi-driver; This is only valid for output and
+- * allows the output pin to run as an open collector output.
+- */
+-int at91_set_multi_drive(unsigned pin, int is_on);
+-
 -/*
 - * assuming the pin is muxed as a gpio output, set its value.
 - */
 -int at91_set_gpio_value(unsigned pin, int value);
 -
- extern int at91_set_debounce(unsigned pin, int is_on, int div);
- extern int at91_set_pulldown(unsigned pin, int is_on);
- extern int at91_disable_schmitt_trig(unsigned pin);
- 
+-extern int at91_set_C_periph(unsigned pin, int use_pullup);
+-extern int at91_set_D_periph(unsigned pin, int use_pullup);
+-extern int at91_set_debounce(unsigned pin, int is_on, int div);
+-extern int at91_set_pulldown(unsigned pin, int is_on);
+-extern int at91_disable_schmitt_trig(unsigned pin);
+-
 -/*
 - * read the pin's value (works even if it's not muxed as a gpio).
 - */
 -int at91_get_gpio_value(unsigned pin);
+-
+-struct at91_gpio_bank {
+-	void __iomem *regbase;		/* base of register bank */
+-	struct clk *clock;
+-};
+-
+-extern int at91_gpio_init(struct at91_gpio_bank *data, int nr_banks);
 -
 -extern int gpio_direction_input(unsigned gpio);
 -extern int gpio_direction_output(unsigned gpio, int value);
 -#define gpio_get_value at91_get_gpio_value
 -#define gpio_set_value at91_set_gpio_value
 -
- #endif /* __ASM_ARCH_AT91SAM9_GPIO_H */
-diff --git a/drivers/usb/gadget/at91_udc.c b/drivers/usb/gadget/at91_udc.c
-index a2cd99b..8a678f9 100644
---- a/drivers/usb/gadget/at91_udc.c
-+++ b/drivers/usb/gadget/at91_udc.c
-@@ -1501,7 +1501,7 @@ static int __init at91udc_probe(struct device_d *dev)
- 		 * Get the initial state of VBUS - we cannot expect
- 		 * a pending interrupt.
- 		 */
--		udc->vbus = at91_get_gpio_value(udc->board.vbus_pin);
-+		udc->vbus = gpio_get_value(udc->board.vbus_pin);
- 		DBG(udc, "VBUS detection: host:%s \n",
- 			udc->vbus ? "present":"absent");
- 	} else {
+-#endif /* __ASM_ARCH_AT91SAM9_GPIO_H */
++/*
++ * [origin: Linux kernel include/asm-arm/arch-at91/gpio.h]
++ *
++ *  Copyright (C) 2005 HP Labs
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ */
++
++#ifndef __ASM_ARCH_AT91_GPIO_H
++#define __ASM_ARCH_AT91_GPIO_H
++
++#include <io.h>
++#include <asm-generic/errno.h>
++#include <mach/at91_pio.h>
++#include <mach/hardware.h>
++
++#define ARCH_NR_GPIOS 256
++
++static inline int gpio_is_valid(int gpio)
++{
++	if (gpio < 0)
++		return 0;
++	if (gpio < ARCH_NR_GPIOS)
++		return 1;
++	return 0;
++}
++
++#define	AT91_PIN_PA0	(0x00 + 0)
++#define	AT91_PIN_PA1	(0x00 + 1)
++#define	AT91_PIN_PA2	(0x00 + 2)
++#define	AT91_PIN_PA3	(0x00 + 3)
++#define	AT91_PIN_PA4	(0x00 + 4)
++#define	AT91_PIN_PA5	(0x00 + 5)
++#define	AT91_PIN_PA6	(0x00 + 6)
++#define	AT91_PIN_PA7	(0x00 + 7)
++#define	AT91_PIN_PA8	(0x00 + 8)
++#define	AT91_PIN_PA9	(0x00 + 9)
++#define	AT91_PIN_PA10	(0x00 + 10)
++#define	AT91_PIN_PA11	(0x00 + 11)
++#define	AT91_PIN_PA12	(0x00 + 12)
++#define	AT91_PIN_PA13	(0x00 + 13)
++#define	AT91_PIN_PA14	(0x00 + 14)
++#define	AT91_PIN_PA15	(0x00 + 15)
++#define	AT91_PIN_PA16	(0x00 + 16)
++#define	AT91_PIN_PA17	(0x00 + 17)
++#define	AT91_PIN_PA18	(0x00 + 18)
++#define	AT91_PIN_PA19	(0x00 + 19)
++#define	AT91_PIN_PA20	(0x00 + 20)
++#define	AT91_PIN_PA21	(0x00 + 21)
++#define	AT91_PIN_PA22	(0x00 + 22)
++#define	AT91_PIN_PA23	(0x00 + 23)
++#define	AT91_PIN_PA24	(0x00 + 24)
++#define	AT91_PIN_PA25	(0x00 + 25)
++#define	AT91_PIN_PA26	(0x00 + 26)
++#define	AT91_PIN_PA27	(0x00 + 27)
++#define	AT91_PIN_PA28	(0x00 + 28)
++#define	AT91_PIN_PA29	(0x00 + 29)
++#define	AT91_PIN_PA30	(0x00 + 30)
++#define	AT91_PIN_PA31	(0x00 + 31)
++
++#define	AT91_PIN_PB0	(0x20 + 0)
++#define	AT91_PIN_PB1	(0x20 + 1)
++#define	AT91_PIN_PB2	(0x20 + 2)
++#define	AT91_PIN_PB3	(0x20 + 3)
++#define	AT91_PIN_PB4	(0x20 + 4)
++#define	AT91_PIN_PB5	(0x20 + 5)
++#define	AT91_PIN_PB6	(0x20 + 6)
++#define	AT91_PIN_PB7	(0x20 + 7)
++#define	AT91_PIN_PB8	(0x20 + 8)
++#define	AT91_PIN_PB9	(0x20 + 9)
++#define	AT91_PIN_PB10	(0x20 + 10)
++#define	AT91_PIN_PB11	(0x20 + 11)
++#define	AT91_PIN_PB12	(0x20 + 12)
++#define	AT91_PIN_PB13	(0x20 + 13)
++#define	AT91_PIN_PB14	(0x20 + 14)
++#define	AT91_PIN_PB15	(0x20 + 15)
++#define	AT91_PIN_PB16	(0x20 + 16)
++#define	AT91_PIN_PB17	(0x20 + 17)
++#define	AT91_PIN_PB18	(0x20 + 18)
++#define	AT91_PIN_PB19	(0x20 + 19)
++#define	AT91_PIN_PB20	(0x20 + 20)
++#define	AT91_PIN_PB21	(0x20 + 21)
++#define	AT91_PIN_PB22	(0x20 + 22)
++#define	AT91_PIN_PB23	(0x20 + 23)
++#define	AT91_PIN_PB24	(0x20 + 24)
++#define	AT91_PIN_PB25	(0x20 + 25)
++#define	AT91_PIN_PB26	(0x20 + 26)
++#define	AT91_PIN_PB27	(0x20 + 27)
++#define	AT91_PIN_PB28	(0x20 + 28)
++#define	AT91_PIN_PB29	(0x20 + 29)
++#define	AT91_PIN_PB30	(0x20 + 30)
++#define	AT91_PIN_PB31	(0x20 + 31)
++
++#define	AT91_PIN_PC0	(0x40 + 0)
++#define	AT91_PIN_PC1	(0x40 + 1)
++#define	AT91_PIN_PC2	(0x40 + 2)
++#define	AT91_PIN_PC3	(0x40 + 3)
++#define	AT91_PIN_PC4	(0x40 + 4)
++#define	AT91_PIN_PC5	(0x40 + 5)
++#define	AT91_PIN_PC6	(0x40 + 6)
++#define	AT91_PIN_PC7	(0x40 + 7)
++#define	AT91_PIN_PC8	(0x40 + 8)
++#define	AT91_PIN_PC9	(0x40 + 9)
++#define	AT91_PIN_PC10	(0x40 + 10)
++#define	AT91_PIN_PC11	(0x40 + 11)
++#define	AT91_PIN_PC12	(0x40 + 12)
++#define	AT91_PIN_PC13	(0x40 + 13)
++#define	AT91_PIN_PC14	(0x40 + 14)
++#define	AT91_PIN_PC15	(0x40 + 15)
++#define	AT91_PIN_PC16	(0x40 + 16)
++#define	AT91_PIN_PC17	(0x40 + 17)
++#define	AT91_PIN_PC18	(0x40 + 18)
++#define	AT91_PIN_PC19	(0x40 + 19)
++#define	AT91_PIN_PC20	(0x40 + 20)
++#define	AT91_PIN_PC21	(0x40 + 21)
++#define	AT91_PIN_PC22	(0x40 + 22)
++#define	AT91_PIN_PC23	(0x40 + 23)
++#define	AT91_PIN_PC24	(0x40 + 24)
++#define	AT91_PIN_PC25	(0x40 + 25)
++#define	AT91_PIN_PC26	(0x40 + 26)
++#define	AT91_PIN_PC27	(0x40 + 27)
++#define	AT91_PIN_PC28	(0x40 + 28)
++#define	AT91_PIN_PC29	(0x40 + 29)
++#define	AT91_PIN_PC30	(0x40 + 30)
++#define	AT91_PIN_PC31	(0x40 + 31)
++
++#define	AT91_PIN_PD0	(0x60 + 0)
++#define	AT91_PIN_PD1	(0x60 + 1)
++#define	AT91_PIN_PD2	(0x60 + 2)
++#define	AT91_PIN_PD3	(0x60 + 3)
++#define	AT91_PIN_PD4	(0x60 + 4)
++#define	AT91_PIN_PD5	(0x60 + 5)
++#define	AT91_PIN_PD6	(0x60 + 6)
++#define	AT91_PIN_PD7	(0x60 + 7)
++#define	AT91_PIN_PD8	(0x60 + 8)
++#define	AT91_PIN_PD9	(0x60 + 9)
++#define	AT91_PIN_PD10	(0x60 + 10)
++#define	AT91_PIN_PD11	(0x60 + 11)
++#define	AT91_PIN_PD12	(0x60 + 12)
++#define	AT91_PIN_PD13	(0x60 + 13)
++#define	AT91_PIN_PD14	(0x60 + 14)
++#define	AT91_PIN_PD15	(0x60 + 15)
++#define	AT91_PIN_PD16	(0x60 + 16)
++#define	AT91_PIN_PD17	(0x60 + 17)
++#define	AT91_PIN_PD18	(0x60 + 18)
++#define	AT91_PIN_PD19	(0x60 + 19)
++#define	AT91_PIN_PD20	(0x60 + 20)
++#define	AT91_PIN_PD21	(0x60 + 21)
++#define	AT91_PIN_PD22	(0x60 + 22)
++#define	AT91_PIN_PD23	(0x60 + 23)
++#define	AT91_PIN_PD24	(0x60 + 24)
++#define	AT91_PIN_PD25	(0x60 + 25)
++#define	AT91_PIN_PD26	(0x60 + 26)
++#define	AT91_PIN_PD27	(0x60 + 27)
++#define	AT91_PIN_PD28	(0x60 + 28)
++#define	AT91_PIN_PD29	(0x60 + 29)
++#define	AT91_PIN_PD30	(0x60 + 30)
++#define	AT91_PIN_PD31	(0x60 + 31)
++
++#define	AT91_PIN_PE0	(0x80 + 0)
++#define	AT91_PIN_PE1	(0x80 + 1)
++#define	AT91_PIN_PE2	(0x80 + 2)
++#define	AT91_PIN_PE3	(0x80 + 3)
++#define	AT91_PIN_PE4	(0x80 + 4)
++#define	AT91_PIN_PE5	(0x80 + 5)
++#define	AT91_PIN_PE6	(0x80 + 6)
++#define	AT91_PIN_PE7	(0x80 + 7)
++#define	AT91_PIN_PE8	(0x80 + 8)
++#define	AT91_PIN_PE9	(0x80 + 9)
++#define	AT91_PIN_PE10	(0x80 + 10)
++#define	AT91_PIN_PE11	(0x80 + 11)
++#define	AT91_PIN_PE12	(0x80 + 12)
++#define	AT91_PIN_PE13	(0x80 + 13)
++#define	AT91_PIN_PE14	(0x80 + 14)
++#define	AT91_PIN_PE15	(0x80 + 15)
++#define	AT91_PIN_PE16	(0x80 + 16)
++#define	AT91_PIN_PE17	(0x80 + 17)
++#define	AT91_PIN_PE18	(0x80 + 18)
++#define	AT91_PIN_PE19	(0x80 + 19)
++#define	AT91_PIN_PE20	(0x80 + 20)
++#define	AT91_PIN_PE21	(0x80 + 21)
++#define	AT91_PIN_PE22	(0x80 + 22)
++#define	AT91_PIN_PE23	(0x80 + 23)
++#define	AT91_PIN_PE24	(0x80 + 24)
++#define	AT91_PIN_PE25	(0x80 + 25)
++#define	AT91_PIN_PE26	(0x80 + 26)
++#define	AT91_PIN_PE27	(0x80 + 27)
++#define	AT91_PIN_PE28	(0x80 + 28)
++#define	AT91_PIN_PE29	(0x80 + 29)
++#define	AT91_PIN_PE30	(0x80 + 30)
++#define	AT91_PIN_PE31	(0x80 + 31)
++
++/*
++ * mux the pin to the "GPIO" peripheral role.
++ */
++int at91_set_GPIO_periph(unsigned pin, int use_pullup);
++
++
++/*
++ * mux the pin to the "A" internal peripheral role.
++ */
++int at91_set_A_periph(unsigned pin, int use_pullup);
++
++/*
++ * mux the pin to the "B" internal peripheral role.
++ */
++int at91_set_B_periph(unsigned pin, int use_pullup);
++/*
++ * mux the pin to the gpio controller (instead of "A" or "B" peripheral), and
++ * configure it for an input.
++ */
++int at91_set_gpio_input(unsigned pin, int use_pullup);
++
++/*
++ * mux the pin to the gpio controller (instead of "A" or "B" peripheral),
++ * and configure it for an output.
++ */
++int at91_set_gpio_output(unsigned pin, int value);
++
++/*
++ * enable/disable the glitch filter; mostly used with IRQ handling.
++ */
++int at91_set_deglitch(unsigned pin, int is_on);
++
++/*
++ * enable/disable the multi-driver; This is only valid for output and
++ * allows the output pin to run as an open collector output.
++ */
++int at91_set_multi_drive(unsigned pin, int is_on);
++
++/*
++ * assuming the pin is muxed as a gpio output, set its value.
++ */
++int at91_set_gpio_value(unsigned pin, int value);
++
++extern int at91_set_C_periph(unsigned pin, int use_pullup);
++extern int at91_set_D_periph(unsigned pin, int use_pullup);
++extern int at91_set_debounce(unsigned pin, int is_on, int div);
++extern int at91_set_pulldown(unsigned pin, int is_on);
++extern int at91_disable_schmitt_trig(unsigned pin);
++
++/*
++ * read the pin's value (works even if it's not muxed as a gpio).
++ */
++int at91_get_gpio_value(unsigned pin);
++
++struct at91_gpio_bank {
++	void __iomem *regbase;		/* base of register bank */
++	struct clk *clock;
++};
++
++extern int at91_gpio_init(struct at91_gpio_bank *data, int nr_banks);
++
++extern int gpio_direction_input(unsigned gpio);
++extern int gpio_direction_output(unsigned gpio, int value);
++#define gpio_get_value at91_get_gpio_value
++#define gpio_set_value at91_set_gpio_value
++
++#endif /* __ASM_ARCH_AT91SAM9_GPIO_H */
 -- 
 1.7.10.4
 
