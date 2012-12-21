@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tm0gj-0000nm-6s
- for barebox@lists.infradead.org; Fri, 21 Dec 2012 11:22:49 +0000
-Date: Fri, 21 Dec 2012 12:22:47 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121221112247.GP26326@pengutronix.de>
-References: <1356013354-25832-1-git-send-email-t.gamez@phytec.de>
+Received: from 17.mo3.mail-out.ovh.net ([87.98.178.58]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Tm2d7-0005gT-PG
+ for barebox@lists.infradead.org; Fri, 21 Dec 2012 13:27:15 +0000
+Received: from mail607.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 0E787FF973D
+ for <barebox@lists.infradead.org>; Fri, 21 Dec 2012 14:39:32 +0100 (CET)
+Date: Fri, 21 Dec 2012 14:25:30 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20121221132530.GB3406@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1356013354-25832-1-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +20,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv2 0/6] Add PCM051 support
-To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/2 v2] gpiolib: add request and free support
+To: barebox@lists.infradead.org
 
-On Thu, Dec 20, 2012 at 03:22:28PM +0100, Teresa G=E1mez wrote:
-> This is rebased on the new AM33XX patch stack of Jan Luebbe.
-> It adds phyCORE-AM335x (pcm051) support.
-> Added also device register functions for SRAM, RAM and EHCI.
-> =
+HI,
 
-> Teresa G=E1mez (6):
->   ARM AM33XX: Add mmc0 pin mux function
->   ARM OMAP: Add SRAM and DRAM to device register functions
->   ARM OMAP: Apply RAM device register functions to boards
->   ARM OMAP: Add EHCI to device register functions
->   ARM OMAP: Apply EHCI device register functions
->   pcm051: Add inital support
+	v2:
+	introduce gpio_ensure_requested
 
-Applied, thanks. The autodetection of the SDRAM indeed would be nice,
-but not necessary now. This could be added later.
+	This allow to trac which gpio is used for what
+	and allow drivers to have custom request and free
 
-Jan, Teresa, please check if the result is ok.
+	as example on at91 mux the pin as gpio on request
 
-Sascha
+The following changes since commit b46b57f35a27090cfbac4900d1a3d522d7898e53:
 
+  MFD MC34708: Add dependence on SPI (2012-12-21 12:18:08 +0100)
 
--- =
+are available in the git repository at:
 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+  git://git.jcrosoft.org/barebox.git delivery/gpiolib
+
+for you to fetch changes up to 56685f7f8f617724c320013a4ca4946b92b00f67:
+
+  gpiolib: add command to dump the current gpio status (2012-12-21 21:10:25 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (2):
+      gpiolib: add gpio_request and gpio_free support
+      gpiolib: add command to dump the current gpio status
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
