@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-da0-f48.google.com ([209.85.210.48])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TloI8-0003xG-7j
- for barebox@lists.infradead.org; Thu, 20 Dec 2012 22:08:37 +0000
-Received: by mail-da0-f48.google.com with SMTP id k18so1743527dae.21
- for <barebox@lists.infradead.org>; Thu, 20 Dec 2012 14:08:34 -0800 (PST)
-From: Marc Reilly <marc@cpdesign.com.au>
-Date: Fri, 21 Dec 2012 09:06:04 +1100
-Message-ID: <5677378.zGTgKWBU2t@dev1.cpdesign>
-In-Reply-To: <1355415502-30673-1-git-send-email-w.sang@pengutronix.de>
-References: <1355415502-30673-1-git-send-email-w.sang@pengutronix.de>
+ id 1TlwmS-0005X5-Jo
+ for barebox@lists.infradead.org; Fri, 21 Dec 2012 07:12:29 +0000
+Date: Fri, 21 Dec 2012 08:12:23 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20121221071223.GK26326@pengutronix.de>
+References: <20121220131250.GG26483@game.jcrosoft.org>
+ <1356013440-23651-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
-Reply-To: Marc Reilly <marc@cpdesign.com.au>
+Content-Disposition: inline
+In-Reply-To: <1356013440-23651-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,41 +23,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] allow scrubbing (erasing of bad blocks)
-To: barebox@lists.infradead.org
-Cc: Wolfram Sang <w.sang@pengutronix.de>
+Subject: Re: [PATCH 1/2] gpiolib: add gpio_request and gpio_free support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
-
-
-On Thursday, December 13, 2012 05:18:20 PM Wolfram Sang wrote:
-> This patch series first adds a flag to mtd devices which disables special
-> treatment for bad blocks. That means, they are handled like every other good
-> block. The second one then adds a scrub command which is basically a simple
-> erase, only that bad blocks are treated like good blocks and are trying to
-> be erased (which may succeed or not). This is really *not recommended*,
-> except for certain development use cases!
-
-
-Much nicer than the hacks I did to clear the BBT !
-
-(unfortunately, don't have any boards that I can test on at the moment).
-
-Cheers,
-Marc
-
+On Thu, Dec 20, 2012 at 03:23:59PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> as today if no request or free provided do not complain
 > 
-> Wolfram Sang (2):
->   mtd: nand: add flag to allow erasing of bad blocks
->   commands: add scrub
+> if the gpio is not request auto requested at first use
 > 
->  commands/Kconfig              |    8 +++++
->  commands/flash.c              |   68
-> ++++++++++++++++++++++++++++++++++++++++- drivers/mtd/core.c            |  
->  9 +++++-
->  drivers/mtd/nand/nand_write.c |   37 +++++++++++-----------
->  include/linux/mtd/mtd-abi.h   |    2 ++
->  5 files changed, 105 insertions(+), 19 deletions(-)
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  drivers/gpio/gpio.c |   87 ++++++++++++++++++++++++++++++++++++++++++++++-----
+>  include/gpio.h      |    7 +++++
+>  2 files changed, 87 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/gpio/gpio.c b/drivers/gpio/gpio.c
+> index 042a062..e29f0ba 100644
+> --- a/drivers/gpio/gpio.c
+> +++ b/drivers/gpio/gpio.c
+> @@ -1,19 +1,71 @@
+>  #include <common.h>
+>  #include <gpio.h>
+>  #include <errno.h>
+> +#include <malloc.h>
+>  
+>  static LIST_HEAD(chip_list);
+>  
+> -static struct gpio_chip *gpio_desc[ARCH_NR_GPIOS];
+> +struct gpio_info {
+> +	struct gpio_chip *chip;
+> +	bool requested;
+> +	char *label;
+> +};
+> +
+> +static struct gpio_info gpio_desc[ARCH_NR_GPIOS];
+> +
+> +int gpio_request(unsigned gpio, const char *label)
+> +{
+> +	struct gpio_info *gi = &gpio_desc[gpio];
+> +	struct gpio_chip *chip = gi->chip;
+> +	int ret;
+> +
+> +	if (!gpio_is_valid(gpio))
+> +		return -EINVAL;
+> +	if (!chip)
+> +		return -EINVAL;
+> +	if (gi->requested)
+> +		return -ENODEV;
+
+-EBUSY?
+
+>  void gpio_set_value(unsigned gpio, int value)
+>  {
+> -	struct gpio_chip *chip = gpio_desc[gpio];
+> +	struct gpio_info *gi = &gpio_desc[gpio];
+> +	struct gpio_chip *chip = gi->chip;
+>  
+>  	if (!gpio_is_valid(gpio))
+>  		return;
+>  	if (!chip)
+>  		return;
+> +	if (!gi->requested && gpio_request(gpio, "gpio"))
+> +		return;
+
+Could you factor out this into a gpio_ensure_requested function? This
+way we would have a single point where the implicit gpio_request calls
+are handled.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
