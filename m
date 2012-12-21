@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TlxMW-0006eC-ON
- for barebox@lists.infradead.org; Fri, 21 Dec 2012 07:49:45 +0000
-Date: Fri, 21 Dec 2012 08:49:39 +0100
+ id 1TlxQB-0006j4-G4
+ for barebox@lists.infradead.org; Fri, 21 Dec 2012 07:53:32 +0000
+Date: Fri, 21 Dec 2012 08:53:28 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20121221074939.GL26326@pengutronix.de>
+Message-ID: <20121221075328.GM26326@pengutronix.de>
 References: <1355952595-1432-1-git-send-email-antonynpavlov@gmail.com>
- <1355952595-1432-3-git-send-email-antonynpavlov@gmail.com>
+ <1355952595-1432-4-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1355952595-1432-3-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1355952595-1432-4-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,184 +23,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 2/5] bootm: add very basic ELF support (stolen from kexec)
+Subject: Re: [RFC 3/5] MIPS: add ELF support
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Dec 20, 2012 at 01:29:52AM +0400, Antony Pavlov wrote:
+On Thu, Dec 20, 2012 at 01:29:53AM +0400, Antony Pavlov wrote:
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  commands/Kconfig           |    7 +
->  common/Kconfig             |    3 +
->  common/filetype.c          |    5 +
->  include/filetype.h         |    1 +
->  lib/Makefile               |    1 +
->  lib/kexec/Makefile         |    1 +
->  lib/kexec/kexec-elf-exec.c |   85 ++++
->  lib/kexec/kexec-elf.c      |  927 ++++++++++++++++++++++++++++++++++++++++++++
->  lib/kexec/kexec-elf.h      |  110 ++++++
->  lib/kexec/kexec.c          |  251 ++++++++++++
->  lib/kexec/kexec.h          |  117 ++++++
->  11 files changed, 1508 insertions(+)
->  create mode 100644 lib/kexec/Makefile
->  create mode 100644 lib/kexec/kexec-elf-exec.c
->  create mode 100644 lib/kexec/kexec-elf.c
->  create mode 100644 lib/kexec/kexec-elf.h
->  create mode 100644 lib/kexec/kexec.c
->  create mode 100644 lib/kexec/kexec.h
+>  arch/mips/Kconfig               |    1 +
+>  arch/mips/include/asm/elf.h     |    8 ++-
+>  arch/mips/include/asm/io.h      |   18 ++++++
+>  arch/mips/lib/Makefile          |    3 +
+>  arch/mips/lib/kexec-elf-mips.c  |   83 +++++++++++++++++++++++++
+>  arch/mips/lib/kexec-mips.c      |  130 +++++++++++++++++++++++++++++++++++++++
+>  arch/mips/lib/kexec-mips.h      |   24 ++++++++
+>  arch/mips/lib/relocate_kernel.S |   77 +++++++++++++++++++++++
+>  8 files changed, 343 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/mips/lib/kexec-elf-mips.c
+>  create mode 100644 arch/mips/lib/kexec-mips.c
+>  create mode 100644 arch/mips/lib/kexec-mips.h
+>  create mode 100644 arch/mips/lib/relocate_kernel.S
 > 
-> diff --git a/commands/Kconfig b/commands/Kconfig
-> index 75ebfb8..aef4ecb 100644
-> --- a/commands/Kconfig
-> +++ b/commands/Kconfig
-> @@ -403,6 +403,13 @@ config CMD_BOOTM_AIMAGE
->  	help
->  	  Support using Android Images.
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 947edcf..3a7f775 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -6,6 +6,7 @@ config MIPS
+>  	select HAS_KALLSYMS
+>  	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
+>  	select HAVE_CONFIGURABLE_TEXT_BASE
+> +	select HAS_KEXEC
+>  	default y
 >  
-> +config KEXEC
-> +	bool
-> +	prompt "bootm ELF image support"
-> +	depends on CMD_BOOTM && HAS_KEXEC
-> +	help
-> +	  Support using ELF Images.
+>  config SYS_SUPPORTS_BIG_ENDIAN
+> diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
+> index b8b8219..bf974f5 100644
+> --- a/arch/mips/include/asm/elf.h
+> +++ b/arch/mips/include/asm/elf.h
+> @@ -17,12 +17,18 @@
+>  
+>  #ifndef ELF_ARCH
+>  
+> +/* Legal values for e_machine (architecture).  */
 > +
->  config CMD_UIMAGE
->  	select UIMAGE
->  	tristate
-> diff --git a/common/Kconfig b/common/Kconfig
-> index b60b78b..84cfc70 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -674,3 +674,6 @@ endmenu
->  
->  config HAS_DEBUG_LL
->  	bool
+> +#define EM_MIPS		 8		/* MIPS R3000 big-endian */
+> +#define EM_MIPS_RS4_BE	10		/* MIPS R4000 big-endian */
 > +
-> +config HAS_KEXEC
-> +	bool
-> diff --git a/common/filetype.c b/common/filetype.c
-> index 748e364..1bb9cac 100644
-> --- a/common/filetype.c
-> +++ b/common/filetype.c
-> @@ -23,6 +23,7 @@
->  #include <fs.h>
->  #include <malloc.h>
->  #include <errno.h>
-> +#include <elf.h>
+>  #ifdef CONFIG_32BIT
 >  
->  struct filetype_str {
->  	const char *name;	/* human readable filetype */
-> @@ -48,6 +49,7 @@ static const struct filetype_str filetype_str[] = {
->  	[filetype_bmp] = { "BMP image", "bmp" },
->  	[filetype_png] = { "PNG image", "png" },
->  	[filetype_ext] = { "ext filesystem", "ext" },
-> +	[filetype_elf] = { "ELF", "elf" },
->  };
->  
->  const char *file_type_to_string(enum filetype f)
-> @@ -169,6 +171,9 @@ enum filetype file_detect_type(void *_buf, size_t bufsize)
->  	if (buf16[512 + 28] == le16_to_cpu(0xef53))
->  		return filetype_ext;
->  
-> +	if (strncmp(buf8, ELFMAG, 4) == 0)
-> +		return filetype_elf;
+>  /*
+>   * This is used to ensure we don't load something for the wrong architecture.
+>   */
+> -#define elf_check_arch(hdr)						\
+> +#define elf_check_arch(x) ((x)->e_machine == EM_MIPS)
 > +
-
-The filetypes are sorted by size in this function. I think this should
-go some positions up.
-
+>  /*
+>   * These are used to set parameters in the core dumps.
+>   */
+> diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+> index 4100e1e..f22ef6f 100644
+> --- a/arch/mips/include/asm/io.h
+> +++ b/arch/mips/include/asm/io.h
+> @@ -14,6 +14,24 @@
+>  #include <asm/types.h>
+>  #include <asm/byteorder.h>
+>  
 > +/*
-> + *	Load the new kernel
+> + *     virt_to_phys    -       map virtual addresses to physical
+> + *     @address: address to remap
+> + *
+> + *     The returned physical address is the physical (CPU) mapping for
+> + *     the memory address given. It is only valid to use this function on
+> + *     addresses directly mapped or allocated via kmalloc.
+> + *
+> + *     This function does not give bus mappings for DMA transfers. In
+> + *     almost all conceivable cases a device driver should not be using
+> + *     this function
 > + */
-> +static int my_load(char *kernel, unsigned long kexec_flags)
+> +static inline unsigned long virt_to_phys(volatile const void *address)
 > +{
-> +	char *kernel_buf;
-> +	off_t kernel_size;
-> +	int i = 0;
-> +	int result;
-> +	struct kexec_info info;
-> +	long native_arch;
-> +
-> +	memset(&info, 0, sizeof(info));
-> +	info.segment = NULL;
-> +	info.nr_segments = 0;
-> +	info.entry = NULL;
-> +	info.kexec_flags = kexec_flags;
-> +
-> +	result = 0;
-> +	/* slurp in the input kernel */
-> +	/* FIXME: add a decompresion routines insted of read_file() */
-> +	kernel_buf = read_file(kernel, &kernel_size);
-> +
-> +	for (i = 0; i < kexec_file_types; i++) {
-> +		if (kexec_file_type[i].probe(kernel_buf, kernel_size) >= 0)
-> +			break;
-> +	}
-> +
-> +	if (i == kexec_file_types) {
-> +		printf("Cannot determine the file type "
-> +				"of %s\n", kernel);
-> +		return -1;
-> +	}
-> +
-> +	/* Figure out our native architecture before load */
-> +#if 0
-> +	native_arch = physical_arch();
-> +	if (native_arch < 0) {
-> +		return -1;
-> +	}
-> +#endif
-> +	native_arch = 0;
-> +	info.kexec_flags |= native_arch;
-> +
-> +	result = kexec_file_type[i].load(kernel_buf, kernel_size, &info);
-> +	if (result < 0) {
-> +		switch (result) {
-> +		case EFAILED:
-> +		default:
-> +			printf("Cannot load %s\n", kernel);
-> +			break;
-> +		}
-> +		return result;
-> +	}
-> +
-> +	/* Verify all of the segments load to a valid location in memory */
-> +
-> +	/* Sort the segments and verify we don't have overlaps */
-> +	if (sort_segments(&info) < 0) {
-> +		return -1;
-> +	}
-> +
-> +	result = kexec_load(info.entry,
-> +		info.nr_segments, info.segment, info.kexec_flags);
-> +
-> +	if (result != 0) {
-> +		/* The load failed, print some debugging information */
-> +		printf("kexec_load failed: %s\n",
-> +			strerror(errno));
-> +		printf("entry       = %p flags = %lx\n",
-> +			info.entry, info.kexec_flags);
-> +		print_segments(&info);
-> +	}
-> +
-> +	return result;
-> +}
-> +
-> +#include <boot.h>
-> +#include <init.h>
-> +#include <binfmt.h>
-> +
-> +static int do_bootm_elf(struct image_data *data)
-> +{
-> +	my_load(data->os_file, 0);
-> +
-> +	/* unreachable(); */
+> +	//return (unsigned long)address - PAGE_OFFSET + PHYS_OFFSET;
+> +	return (unsigned long)address & 0x1fffffff;
 
-This is not unreachable. my_load can return errors. Unfortunately they
-are all -1 (which would be nice to have fixed)
+Why this? I would assume that you have a 1:1 mapping on Mips?
+
+> +
+> +#define _GNU_SOURCE
+> +#include <stdio.h>
+> +#include <string.h>
+> +#include <stdlib.h>
+> +#include <errno.h>
+> +#include <asm/io.h>
+> +#include <linux/types.h>
+> +#include <fcntl.h>
+> +#include <elf.h>
+> +#include "../../../lib/kexec/kexec.h"
+> +#include "../../../lib/kexec/kexec-elf.h"
+
+So the they should be better in include/kexec/
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
