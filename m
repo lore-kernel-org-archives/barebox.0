@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 8.mo3.mail-out.ovh.net ([87.98.172.249]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TofRH-0004Gl-Vn
- for barebox@lists.infradead.org; Fri, 28 Dec 2012 19:17:56 +0000
+ id 1TofRI-0004Gr-9R
+ for barebox@lists.infradead.org; Fri, 28 Dec 2012 19:17:58 +0000
 Received: from mail637.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 1FF63FF9728
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 6687DFF972C
  for <barebox@lists.infradead.org>; Fri, 28 Dec 2012 20:30:32 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 28 Dec 2012 20:16:04 +0100
-Message-Id: <1356722174-22598-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 28 Dec 2012 20:16:06 +0100
+Message-Id: <1356722174-22598-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1356722174-22598-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121228191327.GC7216@game.jcrosoft.org>
  <1356722174-22598-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,119 +26,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/13] at91: factoryse PMC address as it's the same on every
- soc
+Subject: [PATCH 05/13] at91: introduce Kconfig to select the dbgu for lowlevel
+ debug
 To: barebox@lists.infradead.org
+
+so we can drop AT91_BASE_SYS too
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/include/mach/at91rm9200.h  |    1 -
- arch/arm/mach-at91/include/mach/at91sam9260.h |    1 -
- arch/arm/mach-at91/include/mach/at91sam9261.h |    1 -
- arch/arm/mach-at91/include/mach/at91sam9263.h |    1 -
- arch/arm/mach-at91/include/mach/at91sam9g45.h |    1 -
- arch/arm/mach-at91/include/mach/at91sam9n12.h |    1 -
- arch/arm/mach-at91/include/mach/at91sam9x5.h  |    1 -
- arch/arm/mach-at91/include/mach/hardware.h    |    2 ++
- 8 files changed, 2 insertions(+), 7 deletions(-)
+ arch/arm/mach-at91/Kconfig                 |   15 +++++++++++++++
+ arch/arm/mach-at91/include/mach/debug_ll.h |    6 +++++-
+ 2 files changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-at91/include/mach/at91rm9200.h b/arch/arm/mach-at91/include/mach/at91rm9200.h
-index 2850f0d..69ebaab 100644
---- a/arch/arm/mach-at91/include/mach/at91rm9200.h
-+++ b/arch/arm/mach-at91/include/mach/at91rm9200.h
-@@ -84,7 +84,6 @@
-  */
- #define AT91_AIC	(0xfffff000 - AT91_BASE_SYS)	/* Advanced Interrupt Controller */
- #define AT91_DBGU	(0xfffff200 - AT91_BASE_SYS)	/* Debug Unit */
--#define AT91_PMC	(0xfffffc00 - AT91_BASE_SYS)	/* Power Management Controller */
- #define AT91_ST		(0xfffffd00 - AT91_BASE_SYS)	/* System Timer */
- #define AT91_RTC	(0xfffffe00 - AT91_BASE_SYS)	/* Real-Time Clock */
- #define AT91_MC		(0xffffff00 - AT91_BASE_SYS)	/* Memory Controllers */
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9260.h b/arch/arm/mach-at91/include/mach/at91sam9260.h
-index be07e57..e1ec7e5 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9260.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9260.h
-@@ -87,7 +87,6 @@
- #define AT91_CCFG	(0xffffef10 - AT91_BASE_SYS)
- #define AT91_AIC	(0xfffff000 - AT91_BASE_SYS)
- #define AT91_DBGU	(0xfffff200 - AT91_BASE_SYS)
--#define AT91_PMC	(0xfffffc00 - AT91_BASE_SYS)
- #define AT91_RSTC	(0xfffffd00 - AT91_BASE_SYS)
- #define AT91_SHDWC	(0xfffffd10 - AT91_BASE_SYS)
- #define AT91_RTT	(0xfffffd20 - AT91_BASE_SYS)
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9261.h b/arch/arm/mach-at91/include/mach/at91sam9261.h
-index d51673e..17a3949 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9261.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9261.h
-@@ -73,7 +73,6 @@
- #define AT91_MATRIX	(0xffffee00 - AT91_BASE_SYS)
- #define AT91_AIC	(0xfffff000 - AT91_BASE_SYS)
- #define AT91_DBGU	(0xfffff200 - AT91_BASE_SYS)
--#define AT91_PMC	(0xfffffc00 - AT91_BASE_SYS)
- #define AT91_RSTC	(0xfffffd00 - AT91_BASE_SYS)
- #define AT91_SHDWC	(0xfffffd10 - AT91_BASE_SYS)
- #define AT91_RTT	(0xfffffd20 - AT91_BASE_SYS)
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9263.h b/arch/arm/mach-at91/include/mach/at91sam9263.h
-index c8374a7..c887b38 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9263.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9263.h
-@@ -87,7 +87,6 @@
- #define AT91_CCFG	(0xffffed10 - AT91_BASE_SYS)
- #define AT91_DBGU	(0xffffee00 - AT91_BASE_SYS)
- #define AT91_AIC	(0xfffff000 - AT91_BASE_SYS)
--#define AT91_PMC	(0xfffffc00 - AT91_BASE_SYS)
- #define AT91_RSTC	(0xfffffd00 - AT91_BASE_SYS)
- #define AT91_SHDWC	(0xfffffd10 - AT91_BASE_SYS)
- #define AT91_RTT0	(0xfffffd20 - AT91_BASE_SYS)
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9g45.h b/arch/arm/mach-at91/include/mach/at91sam9g45.h
-index 10f3170..1c98491 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9g45.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9g45.h
-@@ -97,7 +97,6 @@
- #define AT91_DMA	(0xffffec00 - AT91_BASE_SYS)
- #define AT91_DBGU	(0xffffee00 - AT91_BASE_SYS)
- #define AT91_AIC	(0xfffff000 - AT91_BASE_SYS)
--#define AT91_PMC	(0xfffffc00 - AT91_BASE_SYS)
- #define AT91_RSTC	(0xfffffd00 - AT91_BASE_SYS)
- #define AT91_SHDWC	(0xfffffd10 - AT91_BASE_SYS)
- #define AT91_RTT	(0xfffffd20 - AT91_BASE_SYS)
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9n12.h b/arch/arm/mach-at91/include/mach/at91sam9n12.h
-index dcbdb1b..afe0034 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9n12.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9n12.h
-@@ -93,7 +93,6 @@
- #define AT91_DMA	(0xffffec00 - AT91_BASE_SYS)
- #define AT91_AIC	(0xfffff000 - AT91_BASE_SYS)
- #define AT91_DBGU	(0xfffff200 - AT91_BASE_SYS)
--#define AT91_PMC	(0xfffffc00 - AT91_BASE_SYS)
- #define AT91_RSTC	(0xfffffe00 - AT91_BASE_SYS)
- #define AT91_SHDWC	(0xfffffe10 - AT91_BASE_SYS)
- #define AT91_PIT	(0xfffffe30 - AT91_BASE_SYS)
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9x5.h b/arch/arm/mach-at91/include/mach/at91sam9x5.h
-index 2240710..ca778fb 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9x5.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9x5.h
-@@ -100,7 +100,6 @@
- #define AT91_DMA1	(0xffffee00 - AT91_BASE_SYS)
- #define AT91_AIC	(0xfffff000 - AT91_BASE_SYS)
- #define AT91_DBGU	(0xfffff200 - AT91_BASE_SYS)
--#define AT91_PMC	(0xfffffc00 - AT91_BASE_SYS)
- #define AT91_RSTC	(0xfffffe00 - AT91_BASE_SYS)
- #define AT91_SHDWC	(0xfffffe10 - AT91_BASE_SYS)
- #define AT91_PIT	(0xfffffe30 - AT91_BASE_SYS)
-diff --git a/arch/arm/mach-at91/include/mach/hardware.h b/arch/arm/mach-at91/include/mach/hardware.h
-index 64efb2a..b4e24af 100644
---- a/arch/arm/mach-at91/include/mach/hardware.h
-+++ b/arch/arm/mach-at91/include/mach/hardware.h
-@@ -20,6 +20,8 @@
- /* 9263, 9g45 */
- #define AT91_BASE_DBGU1	0xffffee00
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 4c2e319..0ab7e7e 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -1,5 +1,11 @@
+ if ARCH_AT91
  
-+#define AT91_PMC	(0xfffffc00 - AT91_BASE_SYS)
++config HAVE_AT91_DBGU0
++	bool
 +
- #if defined(CONFIG_ARCH_AT91RM9200)
- #include <mach/at91rm9200.h>
- #elif defined(CONFIG_ARCH_AT91SAM9260) || defined(CONFIG_ARCH_AT91SAM9G20)
++config HAVE_AT91_DBGU1
++	bool
++
+ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0x73f00000 if ARCH_AT91SAM9G45
+@@ -49,6 +55,7 @@ choice
+ config ARCH_AT91RM9200
+ 	bool "AT91RM9200"
+ 	select CPU_ARM920T
++	select HAVE_AT91_DBGU0
+ 	select HAS_AT91_ETHER
+ 	select MACH_HAS_LOWLEVEL_INIT
+ 	select MACH_DO_LOWLEVEL_INIT
+@@ -56,46 +63,54 @@ config ARCH_AT91RM9200
+ config ARCH_AT91SAM9260
+ 	bool "AT91SAM9260"
+ 	select CPU_ARM926T
++	select HAVE_AT91_DBGU0
+ 	select HAS_MACB
+ 	select AT91SAM9_RESET
+ 
+ config ARCH_AT91SAM9261
+ 	bool "AT91SAM9261"
+ 	select CPU_ARM926T
++	select HAVE_AT91_DBGU0
+ 	select AT91SAM9_RESET
+ 
+ config ARCH_AT91SAM9263
+ 	bool "AT91SAM9263"
+ 	select CPU_ARM926T
++	select HAVE_AT91_DBGU1
+ 	select HAS_MACB
+ 	select AT91SAM9_RESET
+ 
+ config ARCH_AT91SAM9G10
+ 	bool "AT91SAM9G10"
+ 	select CPU_ARM926T
++	select HAVE_AT91_DBGU0
+ 	select AT91SAM9_RESET
+ 
+ config ARCH_AT91SAM9G20
+ 	bool "AT91SAM9G20"
+ 	select CPU_ARM926T
++	select HAVE_AT91_DBGU0
+ 	select HAS_MACB
+ 	select AT91SAM9_RESET
+ 
+ config ARCH_AT91SAM9G45
+ 	bool "AT91SAM9G45 or AT91SAM9M10"
+ 	select CPU_ARM926T
++	select HAVE_AT91_DBGU1
+ 	select HAS_MACB
+ 	select AT91SAM9G45_RESET
+ 
+ config ARCH_AT91SAM9X5
+ 	bool "AT91SAM9X5"
+ 	select CPU_ARM926T
++	select HAVE_AT91_DBGU0
+ 	select HAS_MACB
+ 	select AT91SAM9G45_RESET
+ 
+ config ARCH_AT91SAM9N12
+ 	bool "AT91SAM9N12"
+ 	select CPU_ARM926T
++	select HAVE_AT91_DBGU0
+ 	select AT91SAM9G45_RESET
+ 
+ endchoice
+diff --git a/arch/arm/mach-at91/include/mach/debug_ll.h b/arch/arm/mach-at91/include/mach/debug_ll.h
+index a85fdee..1a85ae4 100644
+--- a/arch/arm/mach-at91/include/mach/debug_ll.h
++++ b/arch/arm/mach-at91/include/mach/debug_ll.h
+@@ -11,7 +11,11 @@
+ #include <asm/io.h>
+ #include <mach/hardware.h>
+ 
+-#define UART_BASE	(AT91_BASE_SYS + AT91_DBGU)
++#ifdef COFNIG_HAVE_AT91_DBGU0
++#define UART_BASE	AT91_BASE_DBGU0
++#else
++#define UART_BASE	AT91_BASE_DBGU1
++#endif
+ 
+ #define ATMEL_US_CSR		0x0014
+ #define ATMEL_US_THR		0x001c
 -- 
 1.7.10.4
 
