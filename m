@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo3.mail-out.ovh.net ([46.105.57.200]
+Received: from 17.mo3.mail-out.ovh.net ([87.98.178.58]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tod3R-0003j1-SO
- for barebox@lists.infradead.org; Fri, 28 Dec 2012 16:45:07 +0000
+ id 1Tod6Q-0003pc-B1
+ for barebox@lists.infradead.org; Fri, 28 Dec 2012 16:48:10 +0000
 Received: from mail632.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id C6A8DFF981E
- for <barebox@lists.infradead.org>; Fri, 28 Dec 2012 17:57:42 +0100 (CET)
-Date: Fri, 28 Dec 2012 17:43:27 +0100
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id D5C66FF9B4E
+ for <barebox@lists.infradead.org>; Fri, 28 Dec 2012 18:00:48 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20121228164327.GB7216@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Fri, 28 Dec 2012 17:46:31 +0100
+Message-Id: <1356713191-9614-3-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1356713191-9614-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20121228164327.GB7216@game.jcrosoft.org>
+ <1356713191-9614-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,46 +21,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] atmel nand/spi/udc: request gpio
+Subject: [PATCH 3/3] spi: atmel: request cs pin via gpiolib
 To: barebox@lists.infradead.org
 
-Hi,
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/spi/atmel_spi.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-	request and configure gpio via gpiolib for some of the Atmel drivers:
+diff --git a/drivers/spi/atmel_spi.c b/drivers/spi/atmel_spi.c
+index 793933e..08cb416 100644
+--- a/drivers/spi/atmel_spi.c
++++ b/drivers/spi/atmel_spi.c
+@@ -371,6 +371,7 @@ err:
+ static int atmel_spi_probe(struct device_d *dev)
+ {
+ 	int ret = 0;
++	int i;
+ 	struct spi_master *master;
+ 	struct atmel_spi *as;
+ 	struct at91_spi_platform_data *pdata = dev->platform_data;
+@@ -399,6 +400,12 @@ static int atmel_spi_probe(struct device_d *dev)
+ 	as->cs_pins = pdata->chipselect;
+ 	as->regs = dev_request_mem_region(dev, 0);
+ 
++	for (i = 0; i <= master->num_chipselect; i++) {
++		ret = gpio_request(as->cs_pins[i], dev_name(dev));
++		if (ret)
++			goto out_gpio;
++	}
++
+ 	/* Initialize the hardware */
+ 	clk_enable(as->clk);
+ 	spi_writel(as, CR, SPI_BIT(SWRST));
+@@ -418,6 +425,7 @@ static int atmel_spi_probe(struct device_d *dev)
+ out_reset_hw:
+ 	spi_writel(as, CR, SPI_BIT(SWRST));
+ 	spi_writel(as, CR, SPI_BIT(SWRST)); /* AT91SAM9263 Rev B workaround */
++out_gpio:
+ 	clk_disable(as->clk);
+ 	clk_put(as->clk);
+ out_free:
+-- 
+1.7.10.4
 
-	 - Nand
-	 - SPI
-	 - at91 udc
-
-The following changes since commit 95bc1eacae260a56c233179bc0fbd6245f2c68ed:
-
-  qil-a9260-64: ser2net config (2012-12-28 00:33:06 +0800)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/at91_gpio
-
-for you to fetch changes up to 52f0cda71c7e10a8bdf4a0976c7f7dee3a4f9678:
-
-  spi: atmel: request cs pin via gpiolib (2012-12-29 00:29:39 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (3):
-      mtd: atmel_nand: request and configure pio via gpiolib
-      usb: at91_udc: request and configure vbus pin via gpiolib
-      spi: atmel: request cs pin via gpiolib
-
- drivers/mtd/nand/atmel_nand.c |   53 +++++++++++++++++++++++++++++++++++++++++++++++++++--
- drivers/spi/atmel_spi.c       |    8 ++++++++
- drivers/usb/gadget/at91_udc.c |    7 +++++++
- 3 files changed, 66 insertions(+), 2 deletions(-)
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
