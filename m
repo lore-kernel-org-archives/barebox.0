@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo3.mail-out.ovh.net ([87.98.172.249]
+Received: from 18.mo3.mail-out.ovh.net ([87.98.172.162]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TofRI-0004HB-Ht
- for barebox@lists.infradead.org; Fri, 28 Dec 2012 19:17:58 +0000
+ id 1TofRK-0004I3-3i
+ for barebox@lists.infradead.org; Fri, 28 Dec 2012 19:18:01 +0000
 Received: from mail637.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id A50A8FF9735
- for <barebox@lists.infradead.org>; Fri, 28 Dec 2012 20:30:32 +0100 (CET)
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 79D7EFF975A
+ for <barebox@lists.infradead.org>; Fri, 28 Dec 2012 20:30:33 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 28 Dec 2012 20:16:08 +0100
-Message-Id: <1356722174-22598-7-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 28 Dec 2012 20:16:13 +0100
+Message-Id: <1356722174-22598-12-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1356722174-22598-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121228191327.GC7216@game.jcrosoft.org>
  <1356722174-22598-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,91 +26,124 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/13] at91: at91sam9: provide its own clkdev for pit
+Subject: [PATCH 12/13] at91: introduce AT91SAM9_SMC and AT91SAM9_TIMER
 To: barebox@lists.infradead.org
+
+to select the smc and timer for at91sam9 soc
+
+This will allow to simplify the Makefile
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/at91sam9260.c |    1 +
- arch/arm/mach-at91/at91sam9261.c |    1 +
- arch/arm/mach-at91/at91sam9263.c |    1 +
- arch/arm/mach-at91/at91sam9g45.c |    1 +
- arch/arm/mach-at91/at91sam9n12.c |    1 +
- arch/arm/mach-at91/at91sam9x5.c  |    1 +
- 6 files changed, 6 insertions(+)
+ arch/arm/mach-at91/Kconfig  |   24 ++++++++++++++++++------
+ arch/arm/mach-at91/Makefile |   19 +++++++++++--------
+ 2 files changed, 29 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm/mach-at91/at91sam9260.c b/arch/arm/mach-at91/at91sam9260.c
-index 6c741f8..fdda9c6 100644
---- a/arch/arm/mach-at91/at91sam9260.c
-+++ b/arch/arm/mach-at91/at91sam9260.c
-@@ -175,6 +175,7 @@ static struct clk_lookup periph_clocks_lookups[] = {
- 	CLKDEV_DEV_ID("at91rm9200-gpio0", &pioA_clk),
- 	CLKDEV_DEV_ID("at91rm9200-gpio1", &pioB_clk),
- 	CLKDEV_DEV_ID("at91rm9200-gpio2", &pioC_clk),
-+	CLKDEV_DEV_ID("at91-pit", &mck),
- };
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index d470e5c..fcba7fb 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -6,6 +6,18 @@ config HAVE_AT91_DBGU0
+ config HAVE_AT91_DBGU1
+ 	bool
  
- static struct clk_lookup usart_clocks_lookups[] = {
-diff --git a/arch/arm/mach-at91/at91sam9261.c b/arch/arm/mach-at91/at91sam9261.c
-index b57e119..ac635d7 100644
---- a/arch/arm/mach-at91/at91sam9261.c
-+++ b/arch/arm/mach-at91/at91sam9261.c
-@@ -139,6 +139,7 @@ static struct clk_lookup periph_clocks_lookups[] = {
- 	CLKDEV_DEV_ID("at91rm9200-gpio0", &pioA_clk),
- 	CLKDEV_DEV_ID("at91rm9200-gpio1", &pioB_clk),
- 	CLKDEV_DEV_ID("at91rm9200-gpio2", &pioC_clk),
-+	CLKDEV_DEV_ID("at91-pit", &mck),
- };
++config AT91SAM9_SMC
++	bool
++
++config AT91SAM9_TIMER
++	bool
++
++config SOC_AT91SAM9
++	bool
++	select CPU_ARM926T
++	select AT91SAM9_SMC
++	select AT91SAM9_TIMER
++
+ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0x73f00000 if ARCH_AT91SAM9G45
+@@ -58,7 +70,7 @@ config SOC_AT91RM9200
  
- static struct clk_lookup usart_clocks_lookups[] = {
-diff --git a/arch/arm/mach-at91/at91sam9263.c b/arch/arm/mach-at91/at91sam9263.c
-index a4387ee..84c986f 100644
---- a/arch/arm/mach-at91/at91sam9263.c
-+++ b/arch/arm/mach-at91/at91sam9263.c
-@@ -173,6 +173,7 @@ static struct clk_lookup periph_clocks_lookups[] = {
- 	CLKDEV_DEV_ID("at91rm9200-gpio2", &pioCDE_clk),
- 	CLKDEV_DEV_ID("at91rm9200-gpio3", &pioCDE_clk),
- 	CLKDEV_DEV_ID("at91rm9200-gpio4", &pioCDE_clk),
-+	CLKDEV_DEV_ID("at91-pit", &mck),
- };
+ config SOC_AT91SAM9260
+ 	bool
+-	select CPU_ARM926T
++	select SOC_AT91SAM9
+ 	select HAVE_AT91_DBGU0
+ 	select HAS_MACB
+ 	select AT91SAM9_RESET
+@@ -68,7 +80,7 @@ config SOC_AT91SAM9260
  
- static struct clk_lookup usart_clocks_lookups[] = {
-diff --git a/arch/arm/mach-at91/at91sam9g45.c b/arch/arm/mach-at91/at91sam9g45.c
-index c3a3158..0affc67 100644
---- a/arch/arm/mach-at91/at91sam9g45.c
-+++ b/arch/arm/mach-at91/at91sam9g45.c
-@@ -195,6 +195,7 @@ static struct clk_lookup periph_clocks_lookups[] = {
- 	CLKDEV_DEV_ID("at91rm9200-gpio2", &pioC_clk),
- 	CLKDEV_DEV_ID("at91rm9200-gpio3", &pioDE_clk),
- 	CLKDEV_DEV_ID("at91rm9200-gpio4", &pioDE_clk),
-+	CLKDEV_DEV_ID("at91-pit", &mck),
- };
+ config SOC_AT91SAM9261
+ 	bool
+-	select CPU_ARM926T
++	select SOC_AT91SAM9
+ 	select HAVE_AT91_DBGU0
+ 	select AT91SAM9_RESET
+ 	help
+@@ -76,14 +88,14 @@ config SOC_AT91SAM9261
  
- static struct clk_lookup usart_clocks_lookups[] = {
-diff --git a/arch/arm/mach-at91/at91sam9n12.c b/arch/arm/mach-at91/at91sam9n12.c
-index 3ddaa7d..f4a981e 100644
---- a/arch/arm/mach-at91/at91sam9n12.c
-+++ b/arch/arm/mach-at91/at91sam9n12.c
-@@ -154,6 +154,7 @@ static struct clk_lookup periph_clocks_lookups[] = {
- 	CLKDEV_DEV_ID("at91sam9x5-gpio1", &pioAB_clk),
- 	CLKDEV_DEV_ID("at91sam9x5-gpio2", &pioCD_clk),
- 	CLKDEV_DEV_ID("at91sam9x5-gpio3", &pioCD_clk),
-+	CLKDEV_DEV_ID("at91-pit", &mck),
- };
+ config SOC_AT91SAM9263
+ 	bool
+-	select CPU_ARM926T
++	select SOC_AT91SAM9
+ 	select HAVE_AT91_DBGU1
+ 	select HAS_MACB
+ 	select AT91SAM9_RESET
  
- static struct clk_lookup usart_clocks_lookups[] = {
-diff --git a/arch/arm/mach-at91/at91sam9x5.c b/arch/arm/mach-at91/at91sam9x5.c
-index b4c582f..a6d2b9d 100644
---- a/arch/arm/mach-at91/at91sam9x5.c
-+++ b/arch/arm/mach-at91/at91sam9x5.c
-@@ -213,6 +213,7 @@ static struct clk_lookup periph_clocks_lookups[] = {
- 	CLKDEV_DEV_ID("at91sam9x5-gpio1", &pioAB_clk),
- 	CLKDEV_DEV_ID("at91sam9x5-gpio2", &pioCD_clk),
- 	CLKDEV_DEV_ID("at91sam9x5-gpio3", &pioCD_clk),
-+	CLKDEV_DEV_ID("at91-pit", &mck),
- };
+ config SOC_AT91SAM9G45
+ 	bool
+-	select CPU_ARM926T
++	select SOC_AT91SAM9
+ 	select HAVE_AT91_DBGU1
+ 	select HAS_MACB
+ 	select AT91SAM9G45_RESET
+@@ -93,7 +105,7 @@ config SOC_AT91SAM9G45
  
- static struct clk_lookup usart_clocks_lookups[] = {
+ config SOC_AT91SAM9X5
+ 	bool
+-	select CPU_ARM926T
++	select SOC_AT91SAM9
+ 	select HAVE_AT91_DBGU0
+ 	select HAS_MACB
+ 	select AT91SAM9G45_RESET
+@@ -106,7 +118,7 @@ config SOC_AT91SAM9X5
+ 
+ config SOC_AT91SAM9N12
+ 	bool
+-	select CPU_ARM926T
++	select SOC_AT91SAM9
+ 	select HAVE_AT91_DBGU0
+ 	select AT91SAM9G45_RESET
+ 	help
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 865988e..53b4dd8 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -9,13 +9,16 @@ pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
+ obj-$(CONFIG_AT91SAM9_RESET) += at91sam9_reset.o
+ obj-$(CONFIG_AT91SAM9G45_RESET) += at91sam9g45_reset.o
+ 
++obj-$(CONFIG_AT91SAM9_SMC) += sam9_smc.o
++obj-$(CONFIG_AT91SAM9_TIMER) += at91sam926x_time.o
++
+ # CPU-specific support
+ obj-$(CONFIG_ARCH_AT91RM9200)	+= at91rm9200.o at91rm9200_time.o at91rm9200_devices.o
+-obj-$(CONFIG_ARCH_AT91SAM9260) += at91sam9260.o at91sam926x_time.o at91sam9260_devices.o sam9_smc.o
+-obj-$(CONFIG_ARCH_AT91SAM9261) += at91sam9261.o at91sam926x_time.o at91sam9261_devices.o sam9_smc.o
+-obj-$(CONFIG_ARCH_AT91SAM9263) += at91sam9263.o at91sam926x_time.o at91sam9263_devices.o sam9_smc.o
+-obj-$(CONFIG_ARCH_AT91SAM9G10) += at91sam9261.o at91sam926x_time.o at91sam9261_devices.o sam9_smc.o
+-obj-$(CONFIG_ARCH_AT91SAM9G20) += at91sam9260.o at91sam926x_time.o at91sam9260_devices.o sam9_smc.o
+-obj-$(CONFIG_ARCH_AT91SAM9G45) += at91sam9g45.o at91sam926x_time.o at91sam9g45_devices.o sam9_smc.o
+-obj-$(CONFIG_ARCH_AT91SAM9X5)	+= at91sam9x5.o at91sam926x_time.o at91sam9x5_devices.o sam9_smc.o
+-obj-$(CONFIG_ARCH_AT91SAM9N12)	+= at91sam9n12.o at91sam926x_time.o at91sam9n12_devices.o sam9_smc.o
++obj-$(CONFIG_ARCH_AT91SAM9260) += at91sam9260.o at91sam9260_devices.o
++obj-$(CONFIG_ARCH_AT91SAM9261) += at91sam9261.o at91sam9261_devices.o
++obj-$(CONFIG_ARCH_AT91SAM9263) += at91sam9263.o at91sam9263_devices.o
++obj-$(CONFIG_ARCH_AT91SAM9G10) += at91sam9261.o at91sam9261_devices.o
++obj-$(CONFIG_ARCH_AT91SAM9G20) += at91sam9260.o at91sam9260_devices.o
++obj-$(CONFIG_ARCH_AT91SAM9G45) += at91sam9g45.o at91sam9g45_devices.o
++obj-$(CONFIG_ARCH_AT91SAM9X5)	+= at91sam9x5.o at91sam9x5_devices.o
++obj-$(CONFIG_ARCH_AT91SAM9N12)	+= at91sam9n12.o at91sam9n12_devices.o
 -- 
 1.7.10.4
 
