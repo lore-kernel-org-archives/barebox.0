@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 8.mo3.mail-out.ovh.net ([87.98.172.249]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TofRK-0004Ic-BU
- for barebox@lists.infradead.org; Fri, 28 Dec 2012 19:18:07 +0000
+ id 1TofRI-0004H0-En
+ for barebox@lists.infradead.org; Fri, 28 Dec 2012 19:18:04 +0000
 Received: from mail637.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id E02B6FF9741
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 8D400FF972F
  for <barebox@lists.infradead.org>; Fri, 28 Dec 2012 20:30:32 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 28 Dec 2012 20:16:09 +0100
-Message-Id: <1356722174-22598-8-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 28 Dec 2012 20:16:07 +0100
+Message-Id: <1356722174-22598-6-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1356722174-22598-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121228191327.GC7216@game.jcrosoft.org>
  <1356722174-22598-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,300 +26,416 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/13] at91: PIT: switch to platfrom_driver
+Subject: [PATCH 06/13] at91: sync with the kernel address base
 To: barebox@lists.infradead.org
+
+add non AT91_SYS_BASE offset base address define
+
+This will prepare for multi arch support
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/at91sam9260.c              |    1 +
- arch/arm/mach-at91/at91sam9261.c              |    1 +
- arch/arm/mach-at91/at91sam9263.c              |    1 +
- arch/arm/mach-at91/at91sam926x_time.c         |   47 +++++++++++++++++++++----
- arch/arm/mach-at91/at91sam9g45.c              |    1 +
- arch/arm/mach-at91/at91sam9n12.c              |    1 +
- arch/arm/mach-at91/at91sam9x5.c               |    1 +
- arch/arm/mach-at91/generic.h                  |    6 ++++
- arch/arm/mach-at91/include/mach/at91_pit.h    |    8 ++---
- arch/arm/mach-at91/include/mach/at91sam9260.h |    1 -
- arch/arm/mach-at91/include/mach/at91sam9261.h |    1 -
- arch/arm/mach-at91/include/mach/at91sam9263.h |    1 -
- arch/arm/mach-at91/include/mach/at91sam9g45.h |    1 -
- arch/arm/mach-at91/include/mach/at91sam9n12.h |    1 -
- arch/arm/mach-at91/include/mach/at91sam9x5.h  |    1 -
- 15 files changed, 56 insertions(+), 17 deletions(-)
+ arch/arm/mach-at91/include/mach/at91rm9200.h  |   21 +++++++++---
+ arch/arm/mach-at91/include/mach/at91sam9260.h |   28 +++++++++++----
+ arch/arm/mach-at91/include/mach/at91sam9261.h |   26 ++++++++++----
+ arch/arm/mach-at91/include/mach/at91sam9263.h |   45 +++++++++++++++++--------
+ arch/arm/mach-at91/include/mach/at91sam9g45.h |   38 +++++++++++++++------
+ arch/arm/mach-at91/include/mach/at91sam9n12.h |   37 +++++++++++++++-----
+ arch/arm/mach-at91/include/mach/at91sam9x5.h  |   37 +++++++++++++++-----
+ 7 files changed, 172 insertions(+), 60 deletions(-)
 
-diff --git a/arch/arm/mach-at91/at91sam9260.c b/arch/arm/mach-at91/at91sam9260.c
-index fdda9c6..b76bfb2 100644
---- a/arch/arm/mach-at91/at91sam9260.c
-+++ b/arch/arm/mach-at91/at91sam9260.c
-@@ -239,6 +239,7 @@ static int at91sam9260_gpio_init(void)
- 	at91_add_rm9200_gpio(0, AT91_BASE_PIOA);
- 	at91_add_rm9200_gpio(1, AT91_BASE_PIOB);
- 	at91_add_rm9200_gpio(2, AT91_BASE_PIOC);
-+	at91_add_pit(AT91SAM9260_BASE_PIT);
+diff --git a/arch/arm/mach-at91/include/mach/at91rm9200.h b/arch/arm/mach-at91/include/mach/at91rm9200.h
+index 69ebaab..36e940d 100644
+--- a/arch/arm/mach-at91/include/mach/at91rm9200.h
++++ b/arch/arm/mach-at91/include/mach/at91rm9200.h
+@@ -78,20 +78,31 @@
+ #define AT91RM9200_BASE_SPI	0xfffe0000
+ #define AT91_BASE_SYS		0xfffff000
  
- 	return 0;
- }
-diff --git a/arch/arm/mach-at91/at91sam9261.c b/arch/arm/mach-at91/at91sam9261.c
-index ac635d7..b449236 100644
---- a/arch/arm/mach-at91/at91sam9261.c
-+++ b/arch/arm/mach-at91/at91sam9261.c
-@@ -231,6 +231,7 @@ static int at91sam9261_gpio_init(void)
- 	at91_add_rm9200_gpio(0, AT91_BASE_PIOA);
- 	at91_add_rm9200_gpio(1, AT91_BASE_PIOB);
- 	at91_add_rm9200_gpio(2, AT91_BASE_PIOC);
-+	at91_add_pit(AT91SAM9261_BASE_PIT);
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-at91/at91sam9263.c b/arch/arm/mach-at91/at91sam9263.c
-index 84c986f..b1522ba 100644
---- a/arch/arm/mach-at91/at91sam9263.c
-+++ b/arch/arm/mach-at91/at91sam9263.c
-@@ -250,6 +250,7 @@ static int at91sam9263_gpio_init(void)
- 	at91_add_rm9200_gpio(2, AT91_BASE_PIOC);
- 	at91_add_rm9200_gpio(3, AT91_BASE_PIOD);
- 	at91_add_rm9200_gpio(4, AT91_BASE_PIOE);
-+	at91_add_pit(AT91SAM9263_BASE_PIT);
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-at91/at91sam926x_time.c b/arch/arm/mach-at91/at91sam926x_time.c
-index 1ce8d30..e18458a 100644
---- a/arch/arm/mach-at91/at91sam926x_time.c
-+++ b/arch/arm/mach-at91/at91sam926x_time.c
-@@ -30,15 +30,20 @@
- #include <clock.h>
- #include <asm/hardware.h>
- #include <mach/at91_pit.h>
--#include <mach/at91_rstc.h>
- #include <mach/io.h>
- #include <io.h>
- #include <linux/clk.h>
- #include <linux/err.h>
- 
-+#define PIT_CPIV(x)	((x) & AT91_PIT_CPIV)
-+#define pit_write(reg, val)	__raw_writel(val, pit_base + reg)
-+#define pit_read(reg)		__raw_readl(pit_base + reg)
++/*
++ * System Peripherals
++ */
++#define AT91RM9200_BASE_DBGU	AT91_BASE_DBGU0	/* Debug Unit */
++#define AT91RM9200_BASE_PIOA	0xfffff400	/* PIO Controller A */
++#define AT91RM9200_BASE_PIOB	0xfffff600	/* PIO Controller B */
++#define AT91RM9200_BASE_PIOC	0xfffff800	/* PIO Controller C */
++#define AT91RM9200_BASE_PIOD	0xfffffa00	/* PIO Controller D */
++#define AT91RM9200_BASE_ST	0xfffffd00	/* System Timer */
++#define AT91RM9200_BASE_RTC	0xfffffe00	/* Real-Time Clock */
++#define AT91RM9200_BASE_MC	0xffffff00	/* Memory Controllers */
 +
-+static __iomem void *pit_base;
-+
- uint64_t at91sam9_clocksource_read(void)
- {
--	return at91_sys_read(AT91_PIT_PIIR);
-+	return pit_read(AT91_PIT_PIIR);
- }
  
- static struct clocksource cs = {
-@@ -47,12 +52,30 @@ static struct clocksource cs = {
- 	.shift	= 10,
- };
+ /*
+  * System Peripherals (offset from AT91_BASE_SYS)
+  */
+-#define AT91_AIC	(0xfffff000 - AT91_BASE_SYS)	/* Advanced Interrupt Controller */
+ #define AT91_DBGU	(0xfffff200 - AT91_BASE_SYS)	/* Debug Unit */
+ #define AT91_ST		(0xfffffd00 - AT91_BASE_SYS)	/* System Timer */
+ #define AT91_RTC	(0xfffffe00 - AT91_BASE_SYS)	/* Real-Time Clock */
+ #define AT91_MC		(0xffffff00 - AT91_BASE_SYS)	/* Memory Controllers */
  
--static int clocksource_init (void)
-+static void at91_pit_stop(void)
-+{
-+	/* Disable timer and irqs */
-+	pit_write(AT91_PIT_MR, 0);
-+
-+	/* Clear any pending interrupts, wait for PIT to stop counting */
-+	while (PIT_CPIV(pit_read(AT91_PIT_PIVR)) != 0);
-+}
-+
-+static void at91sam926x_pit_reset(void)
-+{
-+	at91_pit_stop();
-+
-+	/* Start PIT but don't enable IRQ */
-+	pit_write(AT91_PIT_MR, 0xfffff | AT91_PIT_PITEN);
-+}
-+
-+static int at91_pit_probe(struct device_d *dev)
- {
- 	struct clk *clk;
- 	u32 pit_rate;
-+	int ret;
+-#define AT91_BASE_PIOA	0xfffff400	/* PIO Controller A */
+-#define AT91_BASE_PIOB	0xfffff600	/* PIO Controller B */
+-#define AT91_BASE_PIOC	0xfffff800	/* PIO Controller C */
+-#define AT91_BASE_PIOD	0xfffffa00	/* PIO Controller D */
++#define AT91_BASE_PIOA	AT91RM9200_BASE_PIOA	/* PIO Controller A */
++#define AT91_BASE_PIOB	AT91RM9200_BASE_PIOB	/* PIO Controller B */
++#define AT91_BASE_PIOC	AT91RM9200_BASE_PIOC	/* PIO Controller C */
++#define AT91_BASE_PIOD	AT91RM9200_BASE_PIOD	/* PIO Controller D */
  
--	clk = clk_get(NULL, "mck");
-+	clk = clk_get(dev, NULL);
- 	if (IS_ERR(clk)) {
- 		ret = PTR_ERR(clk);
- 		dev_err(dev, "clock not found: %d\n", ret);
-@@ -66,10 +89,11 @@ static int clocksource_init (void)
- 		return ret;
- 	}
- 
-+	pit_base = dev_request_mem_region(dev, 0);
-+
- 	pit_rate = clk_get_rate(clk) / 16;
- 
--	/* Enable PITC */
--	at91_sys_write(AT91_PIT_MR, 0xfffff | AT91_PIT_PITEN);
-+	at91sam926x_pit_reset();
- 
- 	cs.mult = clocksource_hz2mult(pit_rate, cs.shift);
- 
-@@ -78,4 +102,13 @@ static int clocksource_init (void)
- 	return 0;
- }
- 
--core_initcall(clocksource_init);
-+static struct driver_d at91_pit_driver = {
-+	.name = "at91-pit",
-+	.probe = at91_pit_probe,
-+};
-+
-+static int at91_pit_init(void)
-+{
-+	return platform_driver_register(&at91_pit_driver);
-+}
-+postcore_initcall(at91_pit_init);
-diff --git a/arch/arm/mach-at91/at91sam9g45.c b/arch/arm/mach-at91/at91sam9g45.c
-index 0affc67..7dcf93e 100644
---- a/arch/arm/mach-at91/at91sam9g45.c
-+++ b/arch/arm/mach-at91/at91sam9g45.c
-@@ -263,6 +263,7 @@ static int at91sam9g45_gpio_init(void)
- 	at91_add_rm9200_gpio(2, AT91_BASE_PIOC);
- 	at91_add_rm9200_gpio(3, AT91_BASE_PIOD);
- 	at91_add_rm9200_gpio(4, AT91_BASE_PIOE);
-+	at91_add_pit(AT91SAM9G45_BASE_PIT);
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-at91/at91sam9n12.c b/arch/arm/mach-at91/at91sam9n12.c
-index f4a981e..3777f70 100644
---- a/arch/arm/mach-at91/at91sam9n12.c
-+++ b/arch/arm/mach-at91/at91sam9n12.c
-@@ -222,6 +222,7 @@ static int at91sam9n12_gpio_init(void)
- 	at91_add_sam9x5_gpio(1, AT91_BASE_PIOB);
- 	at91_add_sam9x5_gpio(2, AT91_BASE_PIOC);
- 	at91_add_sam9x5_gpio(3, AT91_BASE_PIOD);
-+	at91_add_pit(AT91SAM9N12_BASE_PIT);
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-at91/at91sam9x5.c b/arch/arm/mach-at91/at91sam9x5.c
-index a6d2b9d..306d3f3 100644
---- a/arch/arm/mach-at91/at91sam9x5.c
-+++ b/arch/arm/mach-at91/at91sam9x5.c
-@@ -307,6 +307,7 @@ static int at91sam9x5_gpio_init(void)
- 	at91_add_sam9x5_gpio(1, AT91_BASE_PIOB);
- 	at91_add_sam9x5_gpio(2, AT91_BASE_PIOC);
- 	at91_add_sam9x5_gpio(3, AT91_BASE_PIOD);
-+	at91_add_pit(AT91SAM9X5_BASE_PIT);
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-at91/generic.h b/arch/arm/mach-at91/generic.h
-index 57f2a84..490cf3c 100644
---- a/arch/arm/mach-at91/generic.h
-+++ b/arch/arm/mach-at91/generic.h
-@@ -22,3 +22,9 @@ static inline struct device_d *at91_add_sam9x5_gpio(int id, resource_size_t star
- 	return add_generic_device("at91sam9x5-gpio", id, NULL, start, 512,
- 				  IORESOURCE_MEM, NULL);
- }
-+
-+static inline struct device_d *at91_add_pit(resource_size_t start)
-+{
-+	return add_generic_device("at91-pit", DEVICE_ID_SINGLE, NULL, start, 16,
-+				  IORESOURCE_MEM, NULL);
-+}
-diff --git a/arch/arm/mach-at91/include/mach/at91_pit.h b/arch/arm/mach-at91/include/mach/at91_pit.h
-index 94dd242..8581efa 100644
---- a/arch/arm/mach-at91/include/mach/at91_pit.h
-+++ b/arch/arm/mach-at91/include/mach/at91_pit.h
-@@ -16,16 +16,16 @@
- #ifndef AT91_PIT_H
- #define AT91_PIT_H
- 
--#define AT91_PIT_MR		(AT91_PIT + 0x00)	/* Mode Register */
-+#define AT91_PIT_MR		0x00			/* Mode Register */
- #define		AT91_PIT_PITIEN		(1 << 25)		/* Timer Interrupt Enable */
- #define		AT91_PIT_PITEN		(1 << 24)		/* Timer Enabled */
- #define		AT91_PIT_PIV		(0xfffff)		/* Periodic Interval Value */
- 
--#define AT91_PIT_SR		(AT91_PIT + 0x04)	/* Status Register */
-+#define AT91_PIT_SR		0x04			/* Status Register */
- #define		AT91_PIT_PITS		(1 << 0)		/* Timer Status */
- 
--#define AT91_PIT_PIVR		(AT91_PIT + 0x08)	/* Periodic Interval Value Register */
--#define AT91_PIT_PIIR		(AT91_PIT + 0x0c)	/* Periodic Interval Image Register */
-+#define AT91_PIT_PIVR		0x08			/* Periodic Interval Value Register */
-+#define AT91_PIT_PIIR		0x0c			/* Periodic Interval Image Register */
- #define		AT91_PIT_PICNT		(0xfff << 20)		/* Interval Counter */
- #define		AT91_PIT_CPIV		(0xfffff)		/* Inverval Value */
- 
+ #define AT91_USART0	AT91RM9200_BASE_US0
+ #define AT91_USART1	AT91RM9200_BASE_US1
 diff --git a/arch/arm/mach-at91/include/mach/at91sam9260.h b/arch/arm/mach-at91/include/mach/at91sam9260.h
-index 3dad806..5d1b376 100644
+index e1ec7e5..3dad806 100644
 --- a/arch/arm/mach-at91/include/mach/at91sam9260.h
 +++ b/arch/arm/mach-at91/include/mach/at91sam9260.h
-@@ -105,7 +105,6 @@
+@@ -78,25 +78,39 @@
+ #define AT91_BASE_SYS			0xffffe800
+ 
+ /*
++ * System Peripherals
++ */
++#define AT91SAM9260_BASE_ECC	0xffffe800
++#define AT91SAM9260_BASE_SDRAMC	0xffffea00
++#define AT91SAM9260_BASE_SMC	0xffffec00
++#define AT91SAM9260_BASE_MATRIX	0xffffee00
++#define AT91SAM9260_BASE_DBGU	AT91_BASE_DBGU0
++#define AT91SAM9260_BASE_PIOA	0xfffff400
++#define AT91SAM9260_BASE_PIOB	0xfffff600
++#define AT91SAM9260_BASE_PIOC	0xfffff800
++#define AT91SAM9260_BASE_RSTC	0xfffffd00
++#define AT91SAM9260_BASE_SHDWC	0xfffffd10
++#define AT91SAM9260_BASE_RTT	0xfffffd20
++#define AT91SAM9260_BASE_PIT	0xfffffd30
++#define AT91SAM9260_BASE_WDT	0xfffffd40
++#define AT91SAM9260_BASE_GPBR	0xfffffd50
++
++/*
+  * System Peripherals (offset from AT91_BASE_SYS)
+  */
+ #define AT91_ECC	(0xffffe800 - AT91_BASE_SYS)
+ #define AT91_SDRAMC	(0xffffea00 - AT91_BASE_SYS)
+ #define AT91_SMC	(0xffffec00 - AT91_BASE_SYS)
+ #define AT91_MATRIX	(0xffffee00 - AT91_BASE_SYS)
+-#define AT91_CCFG	(0xffffef10 - AT91_BASE_SYS)
+-#define AT91_AIC	(0xfffff000 - AT91_BASE_SYS)
  #define AT91_DBGU	(0xfffff200 - AT91_BASE_SYS)
  #define AT91_RSTC	(0xfffffd00 - AT91_BASE_SYS)
  #define AT91_SHDWC	(0xfffffd10 - AT91_BASE_SYS)
--#define AT91_PIT	(0xfffffd30 - AT91_BASE_SYS)
+-#define AT91_RTT	(0xfffffd20 - AT91_BASE_SYS)
+ #define AT91_PIT	(0xfffffd30 - AT91_BASE_SYS)
  #define AT91_WDT	(0xfffffd40 - AT91_BASE_SYS)
+-#define AT91_GPBR	(0xfffffd50 - AT91_BASE_SYS)
  
- #define AT91_BASE_PIOA	AT91SAM9260_BASE_PIOA
+-#define AT91_BASE_PIOA	0xfffff400
+-#define AT91_BASE_PIOB	0xfffff600
+-#define AT91_BASE_PIOC	0xfffff800
++#define AT91_BASE_PIOA	AT91SAM9260_BASE_PIOA
++#define AT91_BASE_PIOB	AT91SAM9260_BASE_PIOB
++#define AT91_BASE_PIOC	AT91SAM9260_BASE_PIOC
+ 
+ #define AT91_USART0	AT91SAM9260_BASE_US0
+ #define AT91_USART1	AT91SAM9260_BASE_US1
 diff --git a/arch/arm/mach-at91/include/mach/at91sam9261.h b/arch/arm/mach-at91/include/mach/at91sam9261.h
-index 591ae29..1469f7e 100644
+index 17a3949..591ae29 100644
 --- a/arch/arm/mach-at91/include/mach/at91sam9261.h
 +++ b/arch/arm/mach-at91/include/mach/at91sam9261.h
-@@ -91,7 +91,6 @@
+@@ -66,23 +66,37 @@
+ 
+ 
+ /*
++ * System Peripherals
++ */
++#define AT91SAM9261_BASE_SMC	0xffffec00
++#define AT91SAM9261_BASE_MATRIX	0xffffee00
++#define AT91SAM9261_BASE_SDRAMC	0xffffea00
++#define AT91SAM9261_BASE_DBGU	AT91_BASE_DBGU0
++#define AT91SAM9261_BASE_PIOA	0xfffff400
++#define AT91SAM9261_BASE_PIOB	0xfffff600
++#define AT91SAM9261_BASE_PIOC	0xfffff800
++#define AT91SAM9261_BASE_RSTC	0xfffffd00
++#define AT91SAM9261_BASE_SHDWC	0xfffffd10
++#define AT91SAM9261_BASE_RTT	0xfffffd20
++#define AT91SAM9261_BASE_PIT	0xfffffd30
++#define AT91SAM9261_BASE_WDT	0xfffffd40
++#define AT91SAM9261_BASE_GPBR	0xfffffd50
++
++/*
+  * System Peripherals (offset from AT91_BASE_SYS)
+  */
+ #define AT91_SDRAMC	(0xffffea00 - AT91_BASE_SYS)
+ #define AT91_SMC	(0xffffec00 - AT91_BASE_SYS)
+ #define AT91_MATRIX	(0xffffee00 - AT91_BASE_SYS)
+-#define AT91_AIC	(0xfffff000 - AT91_BASE_SYS)
  #define AT91_DBGU	(0xfffff200 - AT91_BASE_SYS)
  #define AT91_RSTC	(0xfffffd00 - AT91_BASE_SYS)
  #define AT91_SHDWC	(0xfffffd10 - AT91_BASE_SYS)
--#define AT91_PIT	(0xfffffd30 - AT91_BASE_SYS)
+-#define AT91_RTT	(0xfffffd20 - AT91_BASE_SYS)
+ #define AT91_PIT	(0xfffffd30 - AT91_BASE_SYS)
  #define AT91_WDT	(0xfffffd40 - AT91_BASE_SYS)
+-#define AT91_GPBR	(0xfffffd50 - AT91_BASE_SYS)
  
- #define AT91_BASE_PIOA	AT91SAM9261_BASE_PIOA
+-#define AT91_BASE_PIOA	0xfffff400
+-#define AT91_BASE_PIOB	0xfffff600
+-#define AT91_BASE_PIOC	0xfffff800
++#define AT91_BASE_PIOA	AT91SAM9261_BASE_PIOA
++#define AT91_BASE_PIOB	AT91SAM9261_BASE_PIOB
++#define AT91_BASE_PIOC	AT91SAM9261_BASE_PIOC
+ 
+ #define AT91_USART0	AT91SAM9261_BASE_US0
+ #define AT91_USART1	AT91SAM9261_BASE_US1
 diff --git a/arch/arm/mach-at91/include/mach/at91sam9263.h b/arch/arm/mach-at91/include/mach/at91sam9263.h
-index a0ed231..a8c067a 100644
+index c887b38..a0ed231 100644
 --- a/arch/arm/mach-at91/include/mach/at91sam9263.h
 +++ b/arch/arm/mach-at91/include/mach/at91sam9263.h
-@@ -109,7 +109,6 @@
+@@ -74,32 +74,49 @@
+ #define AT91SAM9263_BASE_2DGE		0xfffc8000
+ #define AT91_BASE_SYS			0xffffe000
+ 
++
++/*
++ * System Peripherals
++ */
++#define AT91SAM9263_BASE_ECC0	0xffffe000
++#define AT91SAM9263_BASE_SDRAMC0 0xffffe200
++#define AT91SAM9263_BASE_SMC0	0xffffe400
++#define AT91SAM9263_BASE_ECC1	0xffffe600
++#define AT91SAM9263_BASE_SDRAMC1 0xffffe800
++#define AT91SAM9263_BASE_SMC1	0xffffea00
++#define AT91SAM9263_BASE_MATRIX	0xffffec00
++#define AT91SAM9263_BASE_DBGU	AT91_BASE_DBGU1
++#define AT91SAM9263_BASE_PIOA	0xfffff200
++#define AT91SAM9263_BASE_PIOB	0xfffff400
++#define AT91SAM9263_BASE_PIOC	0xfffff600
++#define AT91SAM9263_BASE_PIOD	0xfffff800
++#define AT91SAM9263_BASE_PIOE	0xfffffa00
++#define AT91SAM9263_BASE_RSTC	0xfffffd00
++#define AT91SAM9263_BASE_SHDWC	0xfffffd10
++#define AT91SAM9263_BASE_RTT0	0xfffffd20
++#define AT91SAM9263_BASE_PIT	0xfffffd30
++#define AT91SAM9263_BASE_WDT	0xfffffd40
++#define AT91SAM9263_BASE_RTT1	0xfffffd50
++#define AT91SAM9263_BASE_GPBR	0xfffffd60
++
+ /*
+  * System Peripherals (offset from AT91_BASE_SYS)
+  */
+ #define AT91_ECC0	(0xffffe000 - AT91_BASE_SYS)
+ #define AT91_SDRAMC0	(0xffffe200 - AT91_BASE_SYS)
+ #define AT91_SMC0	(0xffffe400 - AT91_BASE_SYS)
+-#define AT91_ECC1	(0xffffe600 - AT91_BASE_SYS)
+-#define AT91_SDRAMC1	(0xffffe800 - AT91_BASE_SYS)
+-#define AT91_SMC1	(0xffffea00 - AT91_BASE_SYS)
+ #define AT91_MATRIX	(0xffffec00 - AT91_BASE_SYS)
+-#define AT91_CCFG	(0xffffed10 - AT91_BASE_SYS)
  #define AT91_DBGU	(0xffffee00 - AT91_BASE_SYS)
+-#define AT91_AIC	(0xfffff000 - AT91_BASE_SYS)
  #define AT91_RSTC	(0xfffffd00 - AT91_BASE_SYS)
  #define AT91_SHDWC	(0xfffffd10 - AT91_BASE_SYS)
--#define AT91_PIT	(0xfffffd30 - AT91_BASE_SYS)
+-#define AT91_RTT0	(0xfffffd20 - AT91_BASE_SYS)
+ #define AT91_PIT	(0xfffffd30 - AT91_BASE_SYS)
  #define AT91_WDT	(0xfffffd40 - AT91_BASE_SYS)
+-#define AT91_RTT1	(0xfffffd50 - AT91_BASE_SYS)
+-#define AT91_GPBR	(0xfffffd60 - AT91_BASE_SYS)
+-
+-#define AT91_BASE_PIOA	0xfffff200
+-#define AT91_BASE_PIOB	0xfffff400
+-#define AT91_BASE_PIOC	0xfffff600
+-#define AT91_BASE_PIOD	0xfffff800
+-#define AT91_BASE_PIOE	0xfffffa00
++
++#define AT91_BASE_PIOA	AT91SAM9263_BASE_PIOA
++#define AT91_BASE_PIOB	AT91SAM9263_BASE_PIOB
++#define AT91_BASE_PIOC	AT91SAM9263_BASE_PIOC
++#define AT91_BASE_PIOD	AT91SAM9263_BASE_PIOD
++#define AT91_BASE_PIOE	AT91SAM9263_BASE_PIOE
  
- #define AT91_BASE_PIOA	AT91SAM9263_BASE_PIOA
+ #define AT91_USART0	AT91SAM9263_BASE_US0
+ #define AT91_USART1	AT91SAM9263_BASE_US1
 diff --git a/arch/arm/mach-at91/include/mach/at91sam9g45.h b/arch/arm/mach-at91/include/mach/at91sam9g45.h
-index 961a70f..85ed129 100644
+index 1c98491..961a70f 100644
 --- a/arch/arm/mach-at91/include/mach/at91sam9g45.h
 +++ b/arch/arm/mach-at91/include/mach/at91sam9g45.h
-@@ -120,7 +120,6 @@
+@@ -87,6 +87,29 @@
+ #define AT91_BASE_SYS			0xffffe200
+ 
+ /*
++ * System Peripherals
++ */
++#define AT91SAM9G45_BASE_ECC	0xffffe200
++#define AT91SAM9G45_BASE_DDRSDRC1 0xffffe400
++#define AT91SAM9G45_BASE_DDRSDRC0 0xffffe600
++#define AT91SAM9G45_BASE_DMA	0xffffec00
++#define AT91SAM9G45_BASE_SMC	0xffffe800
++#define AT91SAM9G45_BASE_MATRIX	0xffffea00
++#define AT91SAM9G45_BASE_DBGU	AT91_BASE_DBGU1
++#define AT91SAM9G45_BASE_PIOA	0xfffff200
++#define AT91SAM9G45_BASE_PIOB	0xfffff400
++#define AT91SAM9G45_BASE_PIOC	0xfffff600
++#define AT91SAM9G45_BASE_PIOD	0xfffff800
++#define AT91SAM9G45_BASE_PIOE	0xfffffa00
++#define AT91SAM9G45_BASE_RSTC	0xfffffd00
++#define AT91SAM9G45_BASE_SHDWC	0xfffffd10
++#define AT91SAM9G45_BASE_RTT	0xfffffd20
++#define AT91SAM9G45_BASE_PIT	0xfffffd30
++#define AT91SAM9G45_BASE_WDT	0xfffffd40
++#define AT91SAM9G45_BASE_RTC	0xfffffdb0
++#define AT91SAM9G45_BASE_GPBR	0xfffffd60
++
++/*
+  * System Peripherals (offset from AT91_BASE_SYS)
+  */
+ #define AT91_ECC	(0xffffe200 - AT91_BASE_SYS)
+@@ -94,22 +117,17 @@
+ #define AT91_DDRSDRC0	(0xffffe600 - AT91_BASE_SYS)
+ #define AT91_SMC	(0xffffe800 - AT91_BASE_SYS)
+ #define AT91_MATRIX	(0xffffea00 - AT91_BASE_SYS)
+-#define AT91_DMA	(0xffffec00 - AT91_BASE_SYS)
  #define AT91_DBGU	(0xffffee00 - AT91_BASE_SYS)
+-#define AT91_AIC	(0xfffff000 - AT91_BASE_SYS)
  #define AT91_RSTC	(0xfffffd00 - AT91_BASE_SYS)
  #define AT91_SHDWC	(0xfffffd10 - AT91_BASE_SYS)
--#define AT91_PIT	(0xfffffd30 - AT91_BASE_SYS)
+-#define AT91_RTT	(0xfffffd20 - AT91_BASE_SYS)
+ #define AT91_PIT	(0xfffffd30 - AT91_BASE_SYS)
  #define AT91_WDT	(0xfffffd40 - AT91_BASE_SYS)
+-#define AT91_GPBR	(0xfffffd60 - AT91_BASE_SYS)
+-#define AT91_RTC	(0xfffffdb0 - AT91_BASE_SYS)
  
- #define AT91_BASE_PIOA	AT91SAM9G45_BASE_PIOA
+-#define AT91_BASE_PIOA	0xfffff200
+-#define AT91_BASE_PIOB	0xfffff400
+-#define AT91_BASE_PIOC	0xfffff600
+-#define AT91_BASE_PIOD	0xfffff800
+-#define AT91_BASE_PIOE	0xfffffa00
++#define AT91_BASE_PIOA	AT91SAM9G45_BASE_PIOA
++#define AT91_BASE_PIOB	AT91SAM9G45_BASE_PIOB
++#define AT91_BASE_PIOC	AT91SAM9G45_BASE_PIOC
++#define AT91_BASE_PIOD	AT91SAM9G45_BASE_PIOD
++#define AT91_BASE_PIOE	AT91SAM9G45_BASE_PIOE
+ 
+ #define AT91_USART0	AT91SAM9G45_BASE_US0
+ #define AT91_USART1	AT91SAM9G45_BASE_US1
 diff --git a/arch/arm/mach-at91/include/mach/at91sam9n12.h b/arch/arm/mach-at91/include/mach/at91sam9n12.h
-index 706005c..59d7030 100644
+index afe0034..706005c 100644
 --- a/arch/arm/mach-at91/include/mach/at91sam9n12.h
 +++ b/arch/arm/mach-at91/include/mach/at91sam9n12.h
-@@ -116,7 +116,6 @@
+@@ -82,28 +82,47 @@
+ #define AT91_BASE_SYS			0xffffc000
+ 
+ /*
++ * System Peripherals
++ */
++#define AT91SAM9N12_BASE_FUSE		0xffffdc00
++#define AT91SAM9N12_BASE_MATRIX		0xffffde00
++#define AT91SAM9N12_BASE_PMECC		0xffffe000
++#define AT91SAM9N12_BASE_PMERRLOC	0xffffe600
++#define AT91SAM9N12_BASE_DDRSDRC0	0xffffe800
++#define AT91SAM9N12_BASE_SMC		0xffffea00
++#define AT91SAM9N12_BASE_DMA		0xffffec00
++#define AT91SAM9N12_BASE_AIC		0xfffff000
++#define AT91SAM9N12_BASE_DBGU		0xfffff200
++#define AT91SAM9N12_BASE_PIOA		0xfffff400
++#define AT91SAM9N12_BASE_PIOB		0xfffff600
++#define AT91SAM9N12_BASE_PIOC		0xfffff800
++#define AT91SAM9N12_BASE_PIOD		0xfffffa00
++#define AT91SAM9N12_BASE_PMC		0xfffffc00
++#define AT91SAM9N12_BASE_RSTC		0xfffffe00
++#define AT91SAM9N12_BASE_SHDWC		0xfffffe10
++#define AT91SAM9N12_BASE_PIT		0xfffffe30
++#define AT91SAM9N12_BASE_WDT		0xfffffe40
++#define AT91SAM9N12_BASE_GPBR		0xfffffe60
++#define AT91SAM9N12_BASE_RTC		0xfffffeb0
++
++/*
+  * System Peripherals (offset from AT91_BASE_SYS)
+  */
+-#define AT91_FUSE	(0xffffdc00 - AT91_BASE_SYS)
+ #define AT91_MATRIX	(0xffffde00 - AT91_BASE_SYS)
+ #define AT91_PMECC	(0xffffe000 - AT91_BASE_SYS)
+ #define AT91_PMERRLOC	(0xffffe600 - AT91_BASE_SYS)
+ #define AT91_DDRSDRC0	(0xffffe800 - AT91_BASE_SYS)
+ #define AT91_SMC	(0xffffea00 - AT91_BASE_SYS)
+-#define AT91_DMA	(0xffffec00 - AT91_BASE_SYS)
+-#define AT91_AIC	(0xfffff000 - AT91_BASE_SYS)
  #define AT91_DBGU	(0xfffff200 - AT91_BASE_SYS)
  #define AT91_RSTC	(0xfffffe00 - AT91_BASE_SYS)
  #define AT91_SHDWC	(0xfffffe10 - AT91_BASE_SYS)
--#define AT91_PIT	(0xfffffe30 - AT91_BASE_SYS)
+ #define AT91_PIT	(0xfffffe30 - AT91_BASE_SYS)
  #define AT91_WDT	(0xfffffe40 - AT91_BASE_SYS)
+-#define AT91_GPBR	(0xfffffe60 - AT91_BASE_SYS)
+-#define AT91_RTC	(0xfffffeb0 - AT91_BASE_SYS)
  
- #define AT91_BASE_PIOA	AT91SAM9N12_BASE_PIOA
+-#define AT91_BASE_PIOA	0xfffff400
+-#define AT91_BASE_PIOB	0xfffff600
+-#define AT91_BASE_PIOC	0xfffff800
+-#define AT91_BASE_PIOD	0xfffffa00
++#define AT91_BASE_PIOA	AT91SAM9N12_BASE_PIOA
++#define AT91_BASE_PIOB	AT91SAM9N12_BASE_PIOB
++#define AT91_BASE_PIOC	AT91SAM9N12_BASE_PIOC
++#define AT91_BASE_PIOD	AT91SAM9N12_BASE_PIOD
+ 
+ #define AT91_USART0	AT91SAM9X5_BASE_US0
+ #define AT91_USART1	AT91SAM9X5_BASE_US1
 diff --git a/arch/arm/mach-at91/include/mach/at91sam9x5.h b/arch/arm/mach-at91/include/mach/at91sam9x5.h
-index b47e3cb..63a5138 100644
+index ca778fb..b47e3cb 100644
 --- a/arch/arm/mach-at91/include/mach/at91sam9x5.h
 +++ b/arch/arm/mach-at91/include/mach/at91sam9x5.h
-@@ -123,7 +123,6 @@
+@@ -89,6 +89,30 @@
+ #define AT91_BASE_SYS			0xffffc000
+ 
+ /*
++ * System Peripherals
++ */
++#define AT91SAM9X5_BASE_MATRIX		0xffffde00
++#define AT9SAM9X5_BASE1_PMECC		0xffffe000
++#define AT91SAM9X5_BASE_PMERRLOC	0xffffe600
++#define AT91SAM9X5_BASE_DDRSDRC0	0xffffe800
++#define AT91SAM9X5_BASE_SMC		0xffffea00
++#define AT91SAM9X5_BASE_DMA0		0xffffec00
++#define AT91SAM9X5_BASE_DMA1		0xffffee00
++#define AT91SAM9X5_BASE_AIC		0xfffff000
++#define AT91SAM9X5_BASE_DBGU		0xfffff200
++#define AT91SAM9X5_BASE_PIOA		0xfffff400
++#define AT91SAM9X5_BASE_PIOB		0xfffff600
++#define AT91SAM9X5_BASE_PIOC		0xfffff800
++#define AT91SAM9X5_BASE_PIOD		0xfffffa00
++#define AT91SAM9X5_BASE_PMC		0xfffffc00
++#define AT91SAM9X5_BASE_RSTC		0xfffffe00
++#define AT91SAM9X5_BASE_SHDWC		0xfffffe10
++#define AT91SAM9X5_BASE_PIT		0xfffffe30
++#define AT91SAM9X5_BASE_WDT		0xfffffe40
++#define AT91SAM9X5_BASE_GPBR		0xfffffe60
++#define AT91SAM9X5_BASE_RTC		0xfffffeb0
++
++/*
+  * System Peripherals (offset from AT91_BASE_SYS)
+  */
+ #define AT91_MATRIX	(0xffffde00 - AT91_BASE_SYS)
+@@ -96,21 +120,16 @@
+ #define AT91_PMERRLOC	(0xffffe600 - AT91_BASE_SYS)
+ #define AT91_DDRSDRC0	(0xffffe800 - AT91_BASE_SYS)
+ #define AT91_SMC	(0xffffea00 - AT91_BASE_SYS)
+-#define AT91_DMA0	(0xffffec00 - AT91_BASE_SYS)
+-#define AT91_DMA1	(0xffffee00 - AT91_BASE_SYS)
+-#define AT91_AIC	(0xfffff000 - AT91_BASE_SYS)
  #define AT91_DBGU	(0xfffff200 - AT91_BASE_SYS)
  #define AT91_RSTC	(0xfffffe00 - AT91_BASE_SYS)
  #define AT91_SHDWC	(0xfffffe10 - AT91_BASE_SYS)
--#define AT91_PIT	(0xfffffe30 - AT91_BASE_SYS)
+ #define AT91_PIT	(0xfffffe30 - AT91_BASE_SYS)
  #define AT91_WDT	(0xfffffe40 - AT91_BASE_SYS)
+-#define AT91_GPBR	(0xfffffe60 - AT91_BASE_SYS)
+-#define AT91_RTC	(0xfffffeb0 - AT91_BASE_SYS)
  
- #define AT91_BASE_PIOA	AT91SAM9X5_BASE_PIOA
+-#define AT91_BASE_PIOA	0xfffff400
+-#define AT91_BASE_PIOB	0xfffff600
+-#define AT91_BASE_PIOC	0xfffff800
+-#define AT91_BASE_PIOD	0xfffffa00
++#define AT91_BASE_PIOA	AT91SAM9X5_BASE_PIOA
++#define AT91_BASE_PIOB	AT91SAM9X5_BASE_PIOB
++#define AT91_BASE_PIOC	AT91SAM9X5_BASE_PIOC
++#define AT91_BASE_PIOD	AT91SAM9X5_BASE_PIOD
+ 
+ #define AT91_USART0	AT91SAM9X5_BASE_US0
+ #define AT91_USART1	AT91SAM9X5_BASE_US1
 -- 
 1.7.10.4
 
