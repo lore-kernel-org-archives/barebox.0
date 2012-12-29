@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo3.mail-out.ovh.net ([87.98.172.162]
+Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TofRK-0004IS-3y
- for barebox@lists.infradead.org; Fri, 28 Dec 2012 19:18:03 +0000
-Received: from mail637.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id EB322FF974B
- for <barebox@lists.infradead.org>; Fri, 28 Dec 2012 20:30:33 +0100 (CET)
+ id 1TotIV-0006Ak-DE
+ for barebox@lists.infradead.org; Sat, 29 Dec 2012 10:05:44 +0000
+Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id EB0C1FF94D3
+ for <barebox@lists.infradead.org>; Sat, 29 Dec 2012 11:18:22 +0100 (CET)
+Date: Sat, 29 Dec 2012 11:04:04 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 28 Dec 2012 20:16:14 +0100
-Message-Id: <1356722174-22598-13-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1356722174-22598-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20121228191327.GC7216@game.jcrosoft.org>
- <1356722174-22598-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20121229100404.GA22953@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,162 +20,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/13] at91: drop AT91_BASE_PIOx for soc specific one for none
- boot code
+Subject: [PATCH 0/7] at91: add bootstrap support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/mach-at91/at91rm9200.c  |    8 ++++----
- arch/arm/mach-at91/at91sam9260.c |    6 +++---
- arch/arm/mach-at91/at91sam9261.c |    6 +++---
- arch/arm/mach-at91/at91sam9263.c |   10 +++++-----
- arch/arm/mach-at91/at91sam9g45.c |   10 +++++-----
- arch/arm/mach-at91/at91sam9n12.c |    8 ++++----
- arch/arm/mach-at91/at91sam9x5.c  |    8 ++++----
- 7 files changed, 28 insertions(+), 28 deletions(-)
+Hi,
 
-diff --git a/arch/arm/mach-at91/at91rm9200.c b/arch/arm/mach-at91/at91rm9200.c
-index d3aedea..8eeaa55 100644
---- a/arch/arm/mach-at91/at91rm9200.c
-+++ b/arch/arm/mach-at91/at91rm9200.c
-@@ -232,10 +232,10 @@ static void __init at91rm9200_initialize(void)
- 	at91rm9200_register_clocks();
- 
- 	/* Register GPIO subsystem */
--	at91_add_rm9200_gpio(0, AT91_BASE_PIOA);
--	at91_add_rm9200_gpio(1, AT91_BASE_PIOB);
--	at91_add_rm9200_gpio(2, AT91_BASE_PIOC);
--	at91_add_rm9200_gpio(3, AT91_BASE_PIOD);
-+	at91_add_rm9200_gpio(0, AT91RM9200_BASE_PIOA);
-+	at91_add_rm9200_gpio(1, AT91RM9200_BASE_PIOB);
-+	at91_add_rm9200_gpio(2, AT91RM9200_BASE_PIOC);
-+	at91_add_rm9200_gpio(3, AT91RM9200_BASE_PIOD);
- }
- 
- AT91_SOC_START(rm9200)
-diff --git a/arch/arm/mach-at91/at91sam9260.c b/arch/arm/mach-at91/at91sam9260.c
-index 2a06f0d..fa65fe7 100644
---- a/arch/arm/mach-at91/at91sam9260.c
-+++ b/arch/arm/mach-at91/at91sam9260.c
-@@ -231,9 +231,9 @@ static void at91sam9260_initialize(void)
- 	at91sam9260_register_clocks();
- 
- 	/* Register GPIO subsystem */
--	at91_add_rm9200_gpio(0, AT91_BASE_PIOA);
--	at91_add_rm9200_gpio(1, AT91_BASE_PIOB);
--	at91_add_rm9200_gpio(2, AT91_BASE_PIOC);
-+	at91_add_rm9200_gpio(0, AT91SAM9260_BASE_PIOA);
-+	at91_add_rm9200_gpio(1, AT91SAM9260_BASE_PIOB);
-+	at91_add_rm9200_gpio(2, AT91SAM9260_BASE_PIOC);
- 
- 	at91_add_pit(AT91SAM9260_BASE_PIT);
- 	at91_add_sam9_smc(DEVICE_ID_SINGLE, AT91SAM9260_BASE_SMC, 0x200);
-diff --git a/arch/arm/mach-at91/at91sam9261.c b/arch/arm/mach-at91/at91sam9261.c
-index c801d9d..edac177 100644
---- a/arch/arm/mach-at91/at91sam9261.c
-+++ b/arch/arm/mach-at91/at91sam9261.c
-@@ -223,9 +223,9 @@ static void at91sam9261_initialize(void)
- 	at91sam9261_register_clocks();
- 
- 	/* Register GPIO subsystem */
--	at91_add_rm9200_gpio(0, AT91_BASE_PIOA);
--	at91_add_rm9200_gpio(1, AT91_BASE_PIOB);
--	at91_add_rm9200_gpio(2, AT91_BASE_PIOC);
-+	at91_add_rm9200_gpio(0, AT91SAM9261_BASE_PIOA);
-+	at91_add_rm9200_gpio(1, AT91SAM9261_BASE_PIOB);
-+	at91_add_rm9200_gpio(2, AT91SAM9261_BASE_PIOC);
- 
- 	at91_add_pit(AT91SAM9261_BASE_PIT);
- 	at91_add_sam9_smc(DEVICE_ID_SINGLE, AT91SAM9261_BASE_SMC, 0x200);
-diff --git a/arch/arm/mach-at91/at91sam9263.c b/arch/arm/mach-at91/at91sam9263.c
-index 42777d0..eeea1ce 100644
---- a/arch/arm/mach-at91/at91sam9263.c
-+++ b/arch/arm/mach-at91/at91sam9263.c
-@@ -240,11 +240,11 @@ static void at91sam9263_initialize(void)
- 	at91sam9263_register_clocks();
- 
- 	/* Register GPIO subsystem */
--	at91_add_rm9200_gpio(0, AT91_BASE_PIOA);
--	at91_add_rm9200_gpio(1, AT91_BASE_PIOB);
--	at91_add_rm9200_gpio(2, AT91_BASE_PIOC);
--	at91_add_rm9200_gpio(3, AT91_BASE_PIOD);
--	at91_add_rm9200_gpio(4, AT91_BASE_PIOE);
-+	at91_add_rm9200_gpio(0, AT91SAM9263_BASE_PIOA);
-+	at91_add_rm9200_gpio(1, AT91SAM9263_BASE_PIOB);
-+	at91_add_rm9200_gpio(2, AT91SAM9263_BASE_PIOC);
-+	at91_add_rm9200_gpio(3, AT91SAM9263_BASE_PIOD);
-+	at91_add_rm9200_gpio(4, AT91SAM9263_BASE_PIOE);
- 
- 	at91_add_pit(AT91SAM9263_BASE_PIT);
- 	at91_add_sam9_smc(0, AT91SAM9263_BASE_SMC0, 0x200);
-diff --git a/arch/arm/mach-at91/at91sam9g45.c b/arch/arm/mach-at91/at91sam9g45.c
-index 7ca1f3b..7118efe 100644
---- a/arch/arm/mach-at91/at91sam9g45.c
-+++ b/arch/arm/mach-at91/at91sam9g45.c
-@@ -252,11 +252,11 @@ static void at91sam9g45_initialize(void)
- 	at91sam9g45_register_clocks();
- 
- 	/* Register GPIO subsystem */
--	at91_add_rm9200_gpio(0, AT91_BASE_PIOA);
--	at91_add_rm9200_gpio(1, AT91_BASE_PIOB);
--	at91_add_rm9200_gpio(2, AT91_BASE_PIOC);
--	at91_add_rm9200_gpio(3, AT91_BASE_PIOD);
--	at91_add_rm9200_gpio(4, AT91_BASE_PIOE);
-+	at91_add_rm9200_gpio(0, AT91SAM9G45_BASE_PIOA);
-+	at91_add_rm9200_gpio(1, AT91SAM9G45_BASE_PIOB);
-+	at91_add_rm9200_gpio(2, AT91SAM9G45_BASE_PIOC);
-+	at91_add_rm9200_gpio(3, AT91SAM9G45_BASE_PIOD);
-+	at91_add_rm9200_gpio(4, AT91SAM9G45_BASE_PIOE);
- 
- 	at91_add_pit(AT91SAM9G45_BASE_PIT);
- 	at91_add_sam9_smc(DEVICE_ID_SINGLE, AT91SAM9G45_BASE_SMC, 0x200);
-diff --git a/arch/arm/mach-at91/at91sam9n12.c b/arch/arm/mach-at91/at91sam9n12.c
-index 967885a..c177975 100644
---- a/arch/arm/mach-at91/at91sam9n12.c
-+++ b/arch/arm/mach-at91/at91sam9n12.c
-@@ -213,10 +213,10 @@ static void at91sam9n12_initialize(void)
- 	at91sam9n12_register_clocks();
- 
- 	/* Register GPIO subsystem */
--	at91_add_sam9x5_gpio(0, AT91_BASE_PIOA);
--	at91_add_sam9x5_gpio(1, AT91_BASE_PIOB);
--	at91_add_sam9x5_gpio(2, AT91_BASE_PIOC);
--	at91_add_sam9x5_gpio(3, AT91_BASE_PIOD);
-+	at91_add_sam9x5_gpio(0, AT91SAM9N12_BASE_PIOA);
-+	at91_add_sam9x5_gpio(1, AT91SAM9N12_BASE_PIOB);
-+	at91_add_sam9x5_gpio(2, AT91SAM9N12_BASE_PIOC);
-+	at91_add_sam9x5_gpio(3, AT91SAM9N12_BASE_PIOD);
- 
- 	at91_add_pit(AT91SAM9N12_BASE_PIT);
- 	at91_add_sam9_smc(DEVICE_ID_SINGLE, AT91SAM9N12_BASE_SMC, 0x200);
-diff --git a/arch/arm/mach-at91/at91sam9x5.c b/arch/arm/mach-at91/at91sam9x5.c
-index 090d9dd..5d43423 100644
---- a/arch/arm/mach-at91/at91sam9x5.c
-+++ b/arch/arm/mach-at91/at91sam9x5.c
-@@ -298,10 +298,10 @@ static void at91sam9x5_initialize(void)
- 	at91sam9x5_register_clocks();
- 
- 	/* Register GPIO subsystem */
--	at91_add_sam9x5_gpio(0, AT91_BASE_PIOA);
--	at91_add_sam9x5_gpio(1, AT91_BASE_PIOB);
--	at91_add_sam9x5_gpio(2, AT91_BASE_PIOC);
--	at91_add_sam9x5_gpio(3, AT91_BASE_PIOD);
-+	at91_add_sam9x5_gpio(0, AT91SAM9X5_BASE_PIOA);
-+	at91_add_sam9x5_gpio(1, AT91SAM9X5_BASE_PIOB);
-+	at91_add_sam9x5_gpio(2, AT91SAM9X5_BASE_PIOC);
-+	at91_add_sam9x5_gpio(3, AT91SAM9X5_BASE_PIOD);
- 
- 	at91_add_pit(AT91SAM9X5_BASE_PIT);
- 	at91_add_sam9_smc(DEVICE_ID_SINGLE, AT91SAM9X5_BASE_SMC, 0x200);
--- 
-1.7.10.4
+	This patch serie introduce a common bootstrap code
+	aka xloder for TI and at91bootstrap for Atmel
+	to barebox
 
+	As I do not have with me right now a TI platform I did not switch
+	it to the new generic bootstrap code.
+
+	On at91 add it on the calao usb-a9263 test on nand and spi
+	This patch serie depends on the previous at91 patch series
+
+The following changes since commit 9f7f67ca887b26a4488edf5fa171a78e142e0a5b:
+
+  at91: drop AT91_BASE_PIOx for soc specific one for none boot code (2012-12-29 01:37:47 +0800)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/at91_bootstrap
+
+for you to fetch changes up to 44bfbedb17c35a99aa0f9a2a16330d2928b9ba31:
+
+  at91: usb_a9263: add bootstrap version (2012-12-29 17:56:45 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (7):
+      at91: add test commamd to emulate bootrom boot
+      at91sam926x: lowlevel add external boot support
+      at91: sam926x: switch lowlevel param to c code
+      at91: usb-a9263 add lowlevel init
+      introduce common bootstrap code
+      at91: add bootstrap version
+      at91: usb_a9263: add bootstrap version
+
+ arch/arm/boards/at91sam9263ek/Makefile                |    5 ++
+ arch/arm/boards/at91sam9263ek/config.h                |   87 -------------------------------
+ arch/arm/boards/at91sam9263ek/lowlevel_init.c         |  104 +++++++++++++++++++++++++++++++++++++
+ arch/arm/boards/mmccpu/Makefile                       |    5 ++
+ arch/arm/boards/mmccpu/config.h                       |  118 ------------------------------------------
+ arch/arm/boards/mmccpu/lowlevel_init.c                |  135 ++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/boards/pm9261/Makefile                       |    5 ++
+ arch/arm/boards/pm9261/config.h                       |   87 -------------------------------
+ arch/arm/boards/pm9261/lowlevel_init.c                |  102 ++++++++++++++++++++++++++++++++++++
+ arch/arm/boards/pm9263/Makefile                       |    5 ++
+ arch/arm/boards/pm9263/config.h                       |  103 ------------------------------------
+ arch/arm/boards/usb-a926x/Makefile                    |    9 ++++
+ arch/arm/boards/usb-a926x/config.h                    |   97 ++++++++++++++++++++++++++++++++++
+ arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c       |   16 ++++++
+ arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c   |  111 +++++++++++++++++++++++++++++++++++++++
+ arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig |   24 +++++++++
+ arch/arm/configs/usb_a9263_bootstrap_defconfig        |   23 +++++++++
+ arch/arm/mach-at91/Kconfig                            |    7 +++
+ arch/arm/mach-at91/Makefile                           |    2 +
+ arch/arm/mach-at91/at91sam926x_lowlevel_init.c        |   84 +++++++++++++++++++++---------
+ arch/arm/mach-at91/boot_test_cmd.c                    |   97 ++++++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/bootstrap.c                        |   86 ++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/include/mach/at91_lowlevel_init.h  |   33 ++++++++++++
+ arch/arm/mach-at91/include/mach/bootstrap.h           |   28 ++++++++++
+ include/bootstrap.h                                   |   34 ++++++++++++
+ lib/Kconfig                                           |    2 +
+ lib/Makefile                                          |    1 +
+ lib/bootstrap/Kconfig                                 |   13 +++++
+ lib/bootstrap/Makefile                                |    3 ++
+ lib/bootstrap/common.c                                |   21 ++++++++
+ lib/bootstrap/devfs.c                                 |   98 +++++++++++++++++++++++++++++++++++
+ lib/bootstrap/disk.c                                  |   36 +++++++++++++
+ 32 files changed, 1161 insertions(+), 420 deletions(-)
+ create mode 100644 arch/arm/boards/at91sam9263ek/lowlevel_init.c
+ create mode 100644 arch/arm/boards/mmccpu/lowlevel_init.c
+ create mode 100644 arch/arm/boards/pm9261/lowlevel_init.c
+ create mode 100644 arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c
+ create mode 100644 arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c
+ create mode 100644 arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig
+ create mode 100644 arch/arm/configs/usb_a9263_bootstrap_defconfig
+ create mode 100644 arch/arm/mach-at91/boot_test_cmd.c
+ create mode 100644 arch/arm/mach-at91/bootstrap.c
+ create mode 100644 arch/arm/mach-at91/include/mach/at91_lowlevel_init.h
+ create mode 100644 arch/arm/mach-at91/include/mach/bootstrap.h
+ create mode 100644 include/bootstrap.h
+ create mode 100644 lib/bootstrap/Kconfig
+ create mode 100644 lib/bootstrap/Makefile
+ create mode 100644 lib/bootstrap/common.c
+ create mode 100644 lib/bootstrap/devfs.c
+ create mode 100644 lib/bootstrap/disk.c
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
