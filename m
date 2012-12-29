@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 13.mo3.mail-out.ovh.net ([188.165.33.202]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TotMa-0006H5-JT
+ id 1TotMZ-0006Fr-4Y
  for barebox@lists.infradead.org; Sat, 29 Dec 2012 10:10:00 +0000
 Received: from mail91.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 28CBFFF92F0
- for <barebox@lists.infradead.org>; Sat, 29 Dec 2012 11:22:37 +0100 (CET)
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id C0FCFFF92A1
+ for <barebox@lists.infradead.org>; Sat, 29 Dec 2012 11:22:36 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 29 Dec 2012 11:08:16 +0100
-Message-Id: <1356775697-1849-6-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat, 29 Dec 2012 11:08:14 +0100
+Message-Id: <1356775697-1849-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1356775697-1849-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20121229100404.GA22953@game.jcrosoft.org>
  <1356775697-1849-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,173 +26,265 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] at91: add bootstrap version
+Subject: [PATCH 4/7] at91: usb-a9263 add lowlevel init
 To: barebox@lists.infradead.org
-
-This will allow to boot from NAND/MMC and others.
-This version of bootstrap is a non shell version of barebox compressed by the
-pbl.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/Kconfig                  |    1 +
- arch/arm/mach-at91/Makefile                 |    1 +
- arch/arm/mach-at91/bootstrap.c              |   86 +++++++++++++++++++++++++++
- arch/arm/mach-at91/include/mach/bootstrap.h |   28 +++++++++
- 4 files changed, 116 insertions(+)
- create mode 100644 arch/arm/mach-at91/bootstrap.c
- create mode 100644 arch/arm/mach-at91/include/mach/bootstrap.h
+ arch/arm/boards/usb-a926x/Makefile                 |    6 ++
+ arch/arm/boards/usb-a926x/config.h                 |   97 +++++++++++++++++
+ .../arm/boards/usb-a926x/usb_a9263_lowlevel_init.c |  111 ++++++++++++++++++++
+ arch/arm/mach-at91/Kconfig                         |    1 +
+ 4 files changed, 215 insertions(+)
+ create mode 100644 arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 7740de5..c1c4aaf 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -92,6 +92,7 @@ config SOC_AT91SAM9263
- 	select HAVE_AT91_DBGU1
- 	select HAS_MACB
- 	select AT91SAM9_RESET
-+	select HAVE_NOSHELL
+diff --git a/arch/arm/boards/usb-a926x/Makefile b/arch/arm/boards/usb-a926x/Makefile
+index eb072c0..9511a76 100644
+--- a/arch/arm/boards/usb-a926x/Makefile
++++ b/arch/arm/boards/usb-a926x/Makefile
+@@ -1 +1,7 @@
+ obj-y += init.o
++
++lowlevel_init-$(CONFIG_MACH_USB_A9263) = usb_a9263_lowlevel_init.o
++
++obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
++
++pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
+diff --git a/arch/arm/boards/usb-a926x/config.h b/arch/arm/boards/usb-a926x/config.h
+index d971810..bb1498f 100644
+--- a/arch/arm/boards/usb-a926x/config.h
++++ b/arch/arm/boards/usb-a926x/config.h
+@@ -3,4 +3,101 @@
  
- config SOC_AT91SAM9G45
- 	bool
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 4404d23..e582f1a 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -1,6 +1,7 @@
- obj-y += setup.o clock.o gpio.o
- obj-$(CONFIG_CMD_AT91_BOOT_TEST) += boot_test_cmd.o
+ #define AT91_MAIN_CLOCK		12000000	/* 12 MHz crystal */
  
-+obj-$(CONFIG_SHELL_NONE) += bootstrap.o
- lowlevel_init-y = at91sam926x_lowlevel_init.o
- lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
- obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-diff --git a/arch/arm/mach-at91/bootstrap.c b/arch/arm/mach-at91/bootstrap.c
++#ifdef CONFIG_MACH_USB_A9263
++#define MASTER_CLOCK		180
++
++#if MASTER_CLOCK == 200
++#define MASTER_PLL_MUL		100
++#else
++#define MASTER_PLL_MUL		90
++#endif
++#define MASTER_PLL_DIV		6
++
++/* clocks */
++#define CONFIG_SYS_MOR_VAL		AT91_PMC_OSCBYPASS
++#define CONFIG_SYS_PLLAR_VAL						\
++		(AT91_PMC_PLLA_WR_ERRATA | /* Bit 29 must be 1 when prog */ \
++		 AT91_PMC_PLLCOUNT |	/* PLL Counter */		\
++		 (0 << 28) |		/* PLL Clock Frequency Range */ \
++		 ((MASTER_PLL_MUL - 1) << 16) | (MASTER_PLL_DIV))
++
++/* PCK/2 = MCK Master Clock from PLLA */
++#define	CONFIG_SYS_MCKR1_VAL		\
++		(AT91_PMC_CSS_SLOW |	\
++		 AT91_PMC_PRES_1 |	\
++		 AT91SAM9_PMC_MDIV_2 |	\
++		 AT91_PMC_PDIV_1)
++/* PCK/2 = MCK Master Clock from PLLA */
++#define	CONFIG_SYS_MCKR2_VAL		\
++		(AT91_PMC_CSS_PLLA |	\
++		 AT91_PMC_PRES_1 |	\
++		 AT91SAM9_PMC_MDIV_2 |	\
++		 AT91_PMC_PDIV_1)
++
++/* define PDC[31:16] as DATA[31:16] */
++#define CONFIG_SYS_PIOD_PDR_VAL1	0xFFFF0000
++/* no pull-up for D[31:16] */
++#define CONFIG_SYS_PIOD_PPUDR_VAL	0xFFFF0000
++/* EBI0_CSA, CS1 SDRAM, CS3 NAND Flash, 3.3V memories */
++#define CONFIG_SYS_MATRIX_EBI0CSA_VAL					\
++	(AT91_MATRIX_EBI0_DBPUC | AT91_MATRIX_EBI0_VDDIOMSEL_3_3V |	\
++	 AT91_MATRIX_EBI0_CS1A_SDRAMC)
++
++/* SDRAM */
++/* SDRAMC_TR - Refresh Timer register */
++#define CONFIG_SYS_SDRC_TR_VAL1		0x13C
++/* SDRAMC_CR - Configuration register*/
++#ifdef CONFIG_AT91_HAVE_SRAM_128M
++#define BOARD_NC	AT91_SDRAMC_NC_10
++#else
++#define BOARD_NC	AT91_SDRAMC_NC_9
++#endif
++#define CONFIG_SYS_SDRC_CR_VAL							\
++		(BOARD_NC |							\
++		 AT91_SDRAMC_NR_13 |						\
++		 AT91_SDRAMC_NB_4 |						\
++		 AT91_SDRAMC_CAS_2 |						\
++		 AT91_SDRAMC_DBW_32 |						\
++		 (2 <<  8) |		/* Write Recovery Delay */		\
++		 (7 << 12) |		/* Row Cycle Delay */			\
++		 (2 << 16) |		/* Row Precharge Delay */		\
++		 (2 << 20) |		/* Row to Column Delay */		\
++		 (5 << 24) |		/* Active to Precharge Delay */		\
++		 (8 << 28))		/* Exit Self Refresh to Active Delay */
++
++/* Memory Device Register -> SDRAM */
++#define CONFIG_SYS_SDRC_MDR_VAL		AT91_SDRAMC_MD_SDRAM
++#define CONFIG_SYS_SDRC_TR_VAL2		(MASTER_CLOCK * 7) /* SDRAM_TR */
++
++/* setup SMC3, Nand Flash */
++#define CONFIG_SYS_SMC_CS	3
++#define CONFIG_SYS_SMC_SETUP_VAL					\
++		(AT91_SMC_NWESETUP_(1) | AT91_SMC_NCS_WRSETUP_(0) |	\
++		 AT91_SMC_NRDSETUP_(1) | AT91_SMC_NCS_RDSETUP_(0))
++#define CONFIG_SYS_SMC_PULSE_VAL					\
++		(AT91_SMC_NWEPULSE_(3) | AT91_SMC_NCS_WRPULSE_(3) |	\
++		 AT91_SMC_NRDPULSE_(3) | AT91_SMC_NCS_RDPULSE_(3))
++#define CONFIG_SYS_SMC_CYCLE_VAL	\
++		(AT91_SMC_NWECYCLE_(5) | AT91_SMC_NRDCYCLE_(5))
++#define CONFIG_SYS_SMC_MODE_VAL					\
++		(AT91_SMC_READMODE | AT91_SMC_WRITEMODE |	\
++		 AT91_SMC_DBW_8 |				\
++		 AT91_SMC_EXNWMODE_DISABLE |			\
++		 AT91_SMC_TDF_(2))
++#endif
++
++/* user reset enable */
++#define CONFIG_SYS_RSTC_RMR_VAL			\
++		(AT91_RSTC_KEY |		\
++		AT91_RSTC_PROCRST |		\
++		AT91_RSTC_RSTTYP_WAKEUP |	\
++		AT91_RSTC_RSTTYP_WATCHDOG)
++
++/* Disable Watchdog */
++#define CONFIG_SYS_WDTC_WDMR_VAL				\
++		(AT91_WDT_WDIDLEHLT | AT91_WDT_WDDBGHLT |	\
++		 AT91_WDT_WDV |					\
++		 AT91_WDT_WDDIS |				\
++		 AT91_WDT_WDD)
++
+ #endif	/* __CONFIG_H */
+diff --git a/arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c b/arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c
 new file mode 100644
-index 0000000..2ec16f1
+index 0000000..f6dc58e
 --- /dev/null
-+++ b/arch/arm/mach-at91/bootstrap.c
-@@ -0,0 +1,86 @@
++++ b/arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c
+@@ -0,0 +1,111 @@
 +/*
-+ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ * Copyright (C) 2009-2011 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 + *
 + * Under GPLv2
 + */
 +
 +#include <common.h>
-+#include <bootstrap.h>
-+#include <mach/bootstrap.h>
-+#include <sizes.h>
-+#include <malloc.h>
++#include <init.h>
++#include <mach/hardware.h>
++#include <mach/at91_rstc.h>
++#include <mach/at91_wdt.h>
++#include <mach/at91_pmc.h>
++#include <mach/at91sam9_smc.h>
++#include <mach/at91sam9_sdramc.h>
++#include <mach/at91sam9_matrix.h>
++#include <mach/at91_lowlevel_init.h>
 +
-+#if defined(CONFIG_MCI_ATMEL)
-+#define is_mmc() 1
++#define MASTER_CLOCK		180
++
++#if MASTER_CLOCK == 200
++#define MASTER_PLL_MUL		100
 +#else
-+#define is_mmc() 0
++#define MASTER_PLL_MUL		90
 +#endif
++#define MASTER_PLL_DIV		6
 +
-+#ifdef CONFIG_NAND_ATMEL
-+#define is_nand() 1
-+#else
-+#define is_nand() 0
-+#endif
-+
-+#ifdef CONFIG_MTD_M25P80
-+#define is_m25p80() 1
-+#else
-+#define is_m25p80() 0
-+#endif
-+
-+#ifdef CONFIG_MTD_DATAFLASH
-+#define is_dataflash() 1
-+#else
-+#define is_dataflash() 0
-+#endif
-+
-+static void boot_seq(bool is_barebox)
++void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_cfg *cfg)
 +{
-+	char *name = is_barebox ? "barebox" : "unknown";
-+	int (*func)(void) = NULL;
++	/* Disable Watchdog */
++	cfg->wdt_mr =
++		AT91_WDT_WDIDLEHLT | AT91_WDT_WDDBGHLT |
++		AT91_WDT_WDV |
++		AT91_WDT_WDDIS |
++		AT91_WDT_WDD;
 +
-+	if (is_m25p80()) {
-+		func = bootstrap_board_read_m25p80();
-+		printf("Boot %s from m25p80\n", name);
-+		bootstrap_boot(func, is_barebox);
-+		bootstrap_err("... failled\n");
-+		free(func);
-+	}
-+	if (is_dataflash()) {
-+		printf("Boot %s from dataflash\n", name);
-+		func = bootstrap_board_read_dataflash();
-+		bootstrap_boot(func, is_barebox);
-+		bootstrap_err("... failled\n");
-+		free(func);
-+	}
-+	if (is_nand()) {
-+		printf("Boot %s from nand\n", name);
-+		func = bootstrap_read_devfs("nand0", true, SZ_128K, SZ_256K, SZ_1M);
-+		bootstrap_boot(func, is_barebox);
-+		bootstrap_err("... failled\n");
-+		free(func);
-+	}
++	/* define PDC[31:16] as DATA[31:16] */
++	cfg->ebi_pio_pdr = 0xFFFF0000;
++	/* no pull-up for D[31:16] */
++	cfg->ebi_pio_ppudr = 0xFFFF0000;
++	/* EBI0_CSA, CS1 SDRAM, CS3 NAND Flash, 3.3V memories */
++	cfg->ebi_csa =
++		AT91_MATRIX_EBI0_DBPUC | AT91_MATRIX_EBI0_VDDIOMSEL_3_3V |
++		AT91_MATRIX_EBI0_CS1A_SDRAMC;
++
++	cfg->smc_cs = 3;
++	cfg->smc_mode =
++		AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
++		AT91_SMC_DBW_8 |
++		AT91_SMC_EXNWMODE_DISABLE |
++		AT91_SMC_TDF_(2);
++	cfg->smc_cycle =
++		AT91_SMC_NWECYCLE_(5) | AT91_SMC_NRDCYCLE_(5);
++	cfg->smc_pulse =
++		AT91_SMC_NWEPULSE_(3) | AT91_SMC_NCS_WRPULSE_(3) |
++		AT91_SMC_NRDPULSE_(3) | AT91_SMC_NCS_RDPULSE_(3);
++	cfg->smc_setup =
++		AT91_SMC_NWESETUP_(1) | AT91_SMC_NCS_WRSETUP_(0) |
++		AT91_SMC_NRDSETUP_(1) | AT91_SMC_NCS_RDSETUP_(0);
++
++	cfg->pmc_mor = AT91_PMC_OSCBYPASS;
++	cfg->pmc_pllar =
++		AT91_PMC_PLLA_WR_ERRATA | /* Bit 29 must be 1 when prog */
++		AT91_PMC_PLLCOUNT |	/* PLL Counter */
++		(0 << 28) |		/* PLL Clock Frequency Range */
++		((MASTER_PLL_MUL - 1) << 16) | (MASTER_PLL_DIV);
++	/* PCK/2 = MCK Master Clock from PLLA */
++	cfg->pmc_mckr1 =
++		AT91_PMC_CSS_SLOW |
++		AT91_PMC_PRES_1 |
++		AT91SAM9_PMC_MDIV_2 |
++		AT91_PMC_PDIV_1;
++	/* PCK/2 = MCK Master Clock from PLLA */
++	cfg->pmc_mckr2 =
++		AT91_PMC_CSS_PLLA |
++		AT91_PMC_PRES_1 |
++		AT91SAM9_PMC_MDIV_2 |
++		AT91_PMC_PDIV_1;
++
++	/* SDRAM */
++	/* SDRAMC_TR - Refresh Timer register */
++	cfg->sdrc_tr1 = 0x13C;
++	/* SDRAMC_CR - Configuration register*/
++	cfg->sdrc_cr =
++		AT91_SDRAMC_NR_13 |
++		AT91_SDRAMC_NB_4 |
++		AT91_SDRAMC_CAS_2 |
++		AT91_SDRAMC_DBW_32 |
++		(2 <<  8) |		/* Write Recovery Delay */
++		(7 << 12) |		/* Row Cycle Delay */
++		(2 << 16) |		/* Row Precharge Delay */
++		(2 << 20) |		/* Row to Column Delay */
++		(5 << 24) |		/* Active to Precharge Delay */
++		(8 << 28);		/* Exit Self Refresh to Active Delay */
++
++	if (IS_ENABLED(CONFIG_AT91_HAVE_SRAM_128M))
++		cfg->sdrc_cr |= AT91_SDRAMC_NC_10;
++	else
++		cfg->sdrc_cr |= AT91_SDRAMC_NC_9;
++
++	/* Memory Device Register -> SDRAM */
++	cfg->sdrc_mdr = AT91_SDRAMC_MD_SDRAM;
++	/* SDRAM_TR */
++	cfg->sdrc_tr2 = (MASTER_CLOCK * 7);
++
++	/* user reset enable */
++	cfg->rstc_rmr =
++		AT91_RSTC_KEY |
++		AT91_RSTC_PROCRST |
++		AT91_RSTC_RSTTYP_WAKEUP |
++		AT91_RSTC_RSTTYP_WATCHDOG;
 +}
-+
-+int run_shell(void)
-+{
-+	int (*func)(void) = NULL;
-+
-+	if (is_mmc()) {
-+		printf("Boot from mmc\n");
-+		func = bootstrap_read_disk("disk0.0");
-+		bootstrap_boot(func, false);
-+		bootstrap_err("... failled\n");
-+		free(func);
-+	}
-+
-+	/* First only bootstrap_boot a barebox */
-+	boot_seq(true);
-+	/* Second bootstrap_boot any */
-+	boot_seq(false);
-+
-+	bootstrap_err("bootstrap_booting failed\n");
-+	while (1);
-+
-+	return 0;
-+}
-diff --git a/arch/arm/mach-at91/include/mach/bootstrap.h b/arch/arm/mach-at91/include/mach/bootstrap.h
-new file mode 100644
-index 0000000..a3d19dd
---- /dev/null
-+++ b/arch/arm/mach-at91/include/mach/bootstrap.h
-@@ -0,0 +1,28 @@
-+/*
-+ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+ */
-+
-+#ifndef __MACH_BOOTSTRAP_H__
-+#define __MACH_BOOTSTRAP_H__
-+
-+#ifdef CONFIG_MTD_M25P80
-+void * bootstrap_board_read_m25p80(void);
-+#else
-+static inline void * bootstrap_board_read_m25p80(void)
-+{
-+	return NULL;
-+}
-+#endif
-+
-+#ifdef CONFIG_MTD_DATAFLASH
-+void * bootstrap_board_read_dataflash(void);
-+#else
-+static inline void * bootstrap_board_read_dataflash(void)
-+{
-+	return NULL;
-+}
-+#endif
-+
-+#endif /* __MACH_BOOTSTRAP_H__ */
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 264b975..7740de5 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -357,6 +357,7 @@ config MACH_TNY_A9263
+ 
+ config MACH_USB_A9263
+ 	bool "CALAO USB-A9263"
++	select MACH_HAS_LOWLEVEL_INIT
+ 	help
+ 	  Select this if you are using a Calao Systems USB-A9263.
+ 	  <http://www.calao-systems.com>
 -- 
 1.7.10.4
 
