@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TqLDx-0006vz-Ik
- for barebox@lists.infradead.org; Wed, 02 Jan 2013 10:07:02 +0000
-Date: Wed, 2 Jan 2013 11:07:00 +0100
+ id 1TqLEB-0006xT-KT
+ for barebox@lists.infradead.org; Wed, 02 Jan 2013 10:07:16 +0000
+Date: Wed, 2 Jan 2013 11:07:14 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130102100700.GB26326@pengutronix.de>
-References: <20121228164327.GB7216@game.jcrosoft.org>
+Message-ID: <20130102100714.GC26326@pengutronix.de>
+References: <20121228191327.GC7216@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20121228164327.GB7216@game.jcrosoft.org>
+In-Reply-To: <20121228191327.GC7216@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +22,104 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] atmel nand/spi/udc: request gpio
+Subject: Re: [PATCH 00/13] at91: cleanup and switch core driver to
+ device/driver
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Dec 28, 2012 at 05:43:27PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,
+On Fri, Dec 28, 2012 at 08:13:27PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> HI,
 > 
-> 	request and configure gpio via gpiolib for some of the Atmel drivers:
+> 	cleanup base addresses and start to drop AT91_BASE_SYS to allow
+> 	multiple arch at a time
 > 
-> 	 - Nand
-> 	 - SPI
-> 	 - at91 udc
+> 	switch code drivers to device/drivers
 > 
-> The following changes since commit 95bc1eacae260a56c233179bc0fbd6245f2c68ed:
+> 	detect soc a at run time
 > 
->   qil-a9260-64: ser2net config (2012-12-28 00:33:06 +0800)
+> The following changes since commit adbdc7cd87971b126838950e2dc5eaedfff943d7:
+> 
+>   spi: atmel: request cs pin via gpiolib (2012-12-29 00:35:08 +0800)
 > 
 > are available in the git repository at:
 > 
->   git://git.jcrosoft.org/barebox.git delivery/at91_gpio
+>   git://git.jcrosoft.org/barebox.git delivery/at91_cleanup
 > 
 
 Applied, thanks
 
 Sascha
 
-> for you to fetch changes up to 52f0cda71c7e10a8bdf4a0976c7f7dee3a4f9678:
+> for you to fetch changes up to 9f7f67ca887b26a4488edf5fa171a78e142e0a5b:
 > 
->   spi: atmel: request cs pin via gpiolib (2012-12-29 00:29:39 +0800)
+>   at91: drop AT91_BASE_PIOx for soc specific one for none boot code (2012-12-29 01:37:47 +0800)
 > 
 > ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (3):
->       mtd: atmel_nand: request and configure pio via gpiolib
->       usb: at91_udc: request and configure vbus pin via gpiolib
->       spi: atmel: request cs pin via gpiolib
+> Jean-Christophe PLAGNIOL-VILLARD (13):
+>       at91: factorise dbgu address
+>       at91: enable clock via clock framework
+>       at91: factoryse PMC address as it's the same on every soc
+>       at91: pmc: drop AT91_BASE_SYS
+>       at91: introduce Kconfig to select the dbgu for lowlevel debug
+>       at91: sync with the kernel address base
+>       at91: at91sam9: provide its own clkdev for pit
+>       at91: PIT: switch to platfrom_driver
+>       at91: autodetect the soc one time at postcore_initcall
+>       at91: SMC: switch to platfrom_driver
+>       at91: wdt: drop AT91_SYS_BASE
+>       at91: introduce AT91SAM9_SMC and AT91SAM9_TIMER
+>       at91: drop AT91_BASE_PIOx for soc specific one for none boot code
 > 
->  drivers/mtd/nand/atmel_nand.c |   53 +++++++++++++++++++++++++++++++++++++++++++++++++++--
->  drivers/spi/atmel_spi.c       |    8 ++++++++
->  drivers/usb/gadget/at91_udc.c |    7 +++++++
->  3 files changed, 66 insertions(+), 2 deletions(-)
+>  arch/arm/boards/at91sam9260ek/init.c           |    5 +-
+>  arch/arm/boards/at91sam9261ek/init.c           |    5 +-
+>  arch/arm/boards/at91sam9263ek/init.c           |    3 +-
+>  arch/arm/boards/at91sam9m10g45ek/init.c        |    3 +-
+>  arch/arm/boards/at91sam9n12ek/init.c           |    5 +-
+>  arch/arm/boards/at91sam9x5ek/init.c            |    3 +-
+>  arch/arm/boards/dss11/init.c                   |    9 ++-
+>  arch/arm/boards/pm9261/init.c                  |    5 +-
+>  arch/arm/boards/pm9263/init.c                  |    3 +-
+>  arch/arm/boards/pm9g45/init.c                  |    3 +-
+>  arch/arm/boards/qil-a9260/init.c               |    3 +-
+>  arch/arm/boards/tny-a926x/init.c               |    5 +-
+>  arch/arm/boards/usb-a926x/init.c               |    5 +-
+>  arch/arm/mach-at91/Kconfig                     |  114 ++++++++++++++++++++++------
+>  arch/arm/mach-at91/Makefile                    |   21 +++---
+>  arch/arm/mach-at91/at91rm9200.c                |   25 +++---
+>  arch/arm/mach-at91/at91rm9200_lowlevel_init.c  |   18 +++--
+>  arch/arm/mach-at91/at91sam9260.c               |   24 +++---
+>  arch/arm/mach-at91/at91sam9261.c               |   24 +++---
+>  arch/arm/mach-at91/at91sam9263.c               |   29 +++----
+>  arch/arm/mach-at91/at91sam926x_lowlevel_init.c |   28 +++----
+>  arch/arm/mach-at91/at91sam926x_time.c          |   68 +++++++++++++----
+>  arch/arm/mach-at91/at91sam9g45.c               |   29 ++++---
+>  arch/arm/mach-at91/at91sam9n12.c               |   26 +++----
+>  arch/arm/mach-at91/at91sam9x5.c                |   26 +++----
+>  arch/arm/mach-at91/clock.c                     |   50 ++++++------
+>  arch/arm/mach-at91/generic.h                   |   13 ++++
+>  arch/arm/mach-at91/include/mach/at91_dbgu.h    |   26 +++----
+>  arch/arm/mach-at91/include/mach/at91_pit.h     |    8 +-
+>  arch/arm/mach-at91/include/mach/at91_pmc.h     |   48 ++++++------
+>  arch/arm/mach-at91/include/mach/at91_wdt.h     |    6 +-
+>  arch/arm/mach-at91/include/mach/at91rm9200.h   |   22 ++++--
+>  arch/arm/mach-at91/include/mach/at91sam9260.h  |   37 ++++++---
+>  arch/arm/mach-at91/include/mach/at91sam9261.h  |   34 ++++++---
+>  arch/arm/mach-at91/include/mach/at91sam9263.h  |   52 ++++++++-----
+>  arch/arm/mach-at91/include/mach/at91sam9_smc.h |   50 +++++++++---
+>  arch/arm/mach-at91/include/mach/at91sam9g45.h  |   44 +++++++----
+>  arch/arm/mach-at91/include/mach/at91sam9n12.h  |   43 +++++++----
+>  arch/arm/mach-at91/include/mach/at91sam9x5.h   |   43 +++++++----
+>  arch/arm/mach-at91/include/mach/cpu.h          |  190 ++++++++++++++++++++++------------------------
+>  arch/arm/mach-at91/include/mach/debug_ll.h     |    6 +-
+>  arch/arm/mach-at91/include/mach/hardware.h     |    8 ++
+>  arch/arm/mach-at91/include/mach/sam9_smc.h     |   33 --------
+>  arch/arm/mach-at91/sam9_smc.c                  |  146 +++++++++++++++++++++++++++++------
+>  arch/arm/mach-at91/setup.c                     |  226 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  arch/arm/mach-at91/soc.h                       |   66 ++++++++++++++++
+>  46 files changed, 1127 insertions(+), 513 deletions(-)
+>  delete mode 100644 arch/arm/mach-at91/include/mach/sam9_smc.h
+>  create mode 100644 arch/arm/mach-at91/setup.c
+>  create mode 100644 arch/arm/mach-at91/soc.h
 > 
 > Best Regards,
 > J.
