@@ -1,16 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TqMhV-0001tE-Ac
- for barebox@lists.infradead.org; Wed, 02 Jan 2013 11:41:38 +0000
-Message-ID: <1357126891.3863.2.camel@coredoba.hi.pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Wed, 02 Jan 2013 12:41:31 +0100
-In-Reply-To: <1356775697-1849-6-git-send-email-plagnioj@jcrosoft.com>
-References: <20121229100404.GA22953@game.jcrosoft.org>
- <1356775697-1849-1-git-send-email-plagnioj@jcrosoft.com>
- <1356775697-1849-6-git-send-email-plagnioj@jcrosoft.com>
-Mime-Version: 1.0
+Received: from poutre.ipv6.nerim.net ([2001:7a8:1:1::124]
+ helo=poutre.nerim.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Tr3Hu-0001NS-Ka
+ for barebox@lists.infradead.org; Fri, 04 Jan 2013 09:10:03 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by poutre.nerim.net (Postfix) with ESMTP id 17A3B39DED0
+ for <barebox@lists.infradead.org>; Fri,  4 Jan 2013 10:09:55 +0100 (CET)
+Received: from poutre.nerim.net ([127.0.0.1])
+ by localhost (poutre.nerim.net [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id kzXCh8XcSmOJ for <barebox@lists.infradead.org>;
+ Fri,  4 Jan 2013 10:09:53 +0100 (CET)
+Received: from SERVEUR0.nvp.local (navocap.net2.nerim.net [213.41.131.28])
+ by poutre.nerim.net (Postfix) with ESMTP id 4B8D939F40A
+ for <barebox@lists.infradead.org>; Fri,  4 Jan 2013 10:09:53 +0100 (CET)
+MIME-Version: 1.0
+Content-class: urn:content-classes:message
+Date: Fri, 4 Jan 2013 10:09:05 +0100
+Message-ID: <CA78C307B8F06747967D122FC656B15377433D@SERVEUR0.nvp.local>
+From: "Mylene Josserand" <Mylene.Josserand@navocap.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,94 +27,152 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/7] at91: add bootstrap version
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [help] PHY driver : Unable to find a PHY (unknown ID?)
+To: barebox mailist <barebox@lists.infradead.org>
 
-On Sat, 2012-12-29 at 11:08 +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> diff --git a/arch/arm/mach-at91/bootstrap.c b/arch/arm/mach-at91/bootstrap.c
-> new file mode 100644
-> index 0000000..2ec16f1
-> --- /dev/null
-> +++ b/arch/arm/mach-at91/bootstrap.c
-> @@ -0,0 +1,86 @@
-> +/*
-> + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-> + *
-> + * Under GPLv2
-> + */
-> +
-> +#include <common.h>
-> +#include <bootstrap.h>
-> +#include <mach/bootstrap.h>
-> +#include <sizes.h>
-> +#include <malloc.h>
-> +
-> +#if defined(CONFIG_MCI_ATMEL)
-> +#define is_mmc() 1
-> +#else
-> +#define is_mmc() 0
-> +#endif
-> +
-> +#ifdef CONFIG_NAND_ATMEL
-> +#define is_nand() 1
-> +#else
-> +#define is_nand() 0
-> +#endif
-> +
-> +#ifdef CONFIG_MTD_M25P80
-> +#define is_m25p80() 1
-> +#else
-> +#define is_m25p80() 0
-> +#endif
-> +
-> +#ifdef CONFIG_MTD_DATAFLASH
-> +#define is_dataflash() 1
-> +#else
-> +#define is_dataflash() 0
-> +#endif
-> +
-> +static void boot_seq(bool is_barebox)
-> +{
-> +	char *name = is_barebox ? "barebox" : "unknown";
-> +	int (*func)(void) = NULL;
-> +
-> +	if (is_m25p80()) {
-> +		func = bootstrap_board_read_m25p80();
-> +		printf("Boot %s from m25p80\n", name);
-> +		bootstrap_boot(func, is_barebox);
-> +		bootstrap_err("... failled\n");
-> +		free(func);
-> +	}
-> +	if (is_dataflash()) {
-> +		printf("Boot %s from dataflash\n", name);
-> +		func = bootstrap_board_read_dataflash();
-> +		bootstrap_boot(func, is_barebox);
-> +		bootstrap_err("... failled\n");
-> +		free(func);
-> +	}
-> +	if (is_nand()) {
-> +		printf("Boot %s from nand\n", name);
-> +		func = bootstrap_read_devfs("nand0", true, SZ_128K, SZ_256K, SZ_1M);
-> +		bootstrap_boot(func, is_barebox);
-> +		bootstrap_err("... failled\n");
-> +		free(func);
-> +	}
-> +}
-
-Why can't you use IS_ENABLED(CONFIG_xxx) here?
+Hi everyone !
 
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I am new in compiling Barebox (with OE-core) and I need your help.
 
+I am using the master branch (maybe I need to checkout a tag ?). The =
+
+ethernet of my board is a SMSC LAN8700 and the microchip is iMX27.
+
+I have configured the new source of barebox to use the Phylib and MII =
+
+drivers. When my barebox starts, I have an error about the PHY driver :
+
+"
+Unable to find a PHY (unknown ID?)
+dhcp failed: I/O error
+dhcp: I/O error
+"
+
+My devinfo :
+
+"
+barebox:/ devinfo
+devices:
+`---- platform
+    `---- imx_iim0
+    `---- imx27-ccm0
+    `---- imx1-gpt0
+    `---- imx1-gpio0
+    `---- imx1-gpio1
+    `---- imx1-gpio2
+    `---- imx1-gpio3
+    `---- imx1-gpio4
+    `---- imx1-gpio5
+    `---- imx21-wdt0
+    `---- imx27-esdctl0
+    `---- imx21-uart0
+       `---- cs0
+    `---- mem0
+       `---- 0x00000000-0x07ffffff: /dev/ram0
+    `---- mem1
+       `---- 0x00000000-0xfffffffe: /dev/mem
+    `---- cfi_flash0
+       `---- 0x00000000-0x01ffffff: /dev/nor0
+       `---- 0x00000000-0x0003ffff: /dev/self0
+       `---- 0x00040000-0x0005ffff: /dev/env0
+       `---- 0x00000000-0x0003ffff: /dev/nor0.barebox
+       `---- 0x00040000-0x0005ffff: /dev/nor0.bareboxenv
+       `---- 0x00060000-0x002bffff: /dev/nor0.kernel
+       `---- 0x002c0000-0x01ffffff: /dev/nor0.root
+    `---- cfi_flash1
+       `---- 0x00000000-0x01ffffff: /dev/nor1
+    `---- imx_nand
+       `---- nand0
+       `---- 0x00000000-0x1fffffff: /dev/nand0
+       `---- 0x00000000-0x00ffffff: /dev/nand_oob0
+    `---- i2c-fsl0
+       `---- i2c0
+          `---- lp39720
+             `---- 0x00000000-0x000000ff: /dev/lp3972
+          `---- ds133x0
+             `---- 0x00000000-0x000000ff: /dev/ds133x
+          `---- pca95350
+             `---- 0x00000000-0x000000ff: /dev/pca9535
+    `---- i2c-fsl1
+       `---- i2c1
+    `---- imxfb
+    `---- imx27-fec
+       `---- miibus0
+       `---- eth0
+`---- mdio_bus
+`---- i2c
+`---- fb
+    `---- fb0
+       `---- 0x00000000-0x000bb7ff: /dev/fb0
+`---- fs
+    `---- ramfs0
+    `---- devfs0
+`---- net
+`---- global
+
+drivers:
+imx27-ccm
+imx_serial
+imx-esdctl
+ramfs
+devfs
+tftp
+imx-gpt
+imx-gpio
+SMSC LAN83C185
+SMSC LAN8187
+SMSC LAN8700
+SMSC LAN911x Internal PHY
+SMSC LAN8710/LAN8720
+fec_imx
+Generic PHY
+imx_nand
+cfi_flash
+i2c-gpio
+i2c-fsl
+fb
+imxfb
+lp3972
+ds133x
+pca9535
+imx-watchdog
+mem
+"
+
+The SMSC LAN8700 is here but I can not make it work !
+
+I have added some prints on the phy.c and the problem is in the fonction =
+
+"mdiobus_scan" :
+
+if (!edev->phydev) {
+	if (addr >=3D 0) {
+		dev =3D mdiobus_scan(bus, addr);
+		if (!dev) {                     << Failed here
+			ret =3D -EIO;
+			goto fail;
+		}
+
+Did I miss something ?
+Did I have to specify something in the board info ?
+Is it correct to use the master branch ? I tried the v2012.12.1 tag but =
+
+I get some errors before starting barebox ("no stack data available" and =
+
+other errors).
+
+
+Thank you in advance for any help and happy new year !
+
+
+-- =
+
+Myl=E8ne JOSSERAND
 
 _______________________________________________
 barebox mailing list
