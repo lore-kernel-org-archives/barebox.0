@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TsEDc-0000bw-EU
- for barebox@lists.infradead.org; Mon, 07 Jan 2013 15:02:30 +0000
-Message-ID: <50EAE379.2020702@phytec.de>
-Date: Mon, 07 Jan 2013 16:02:17 +0100
-From: =?ISO-8859-15?Q?J=FCrgen_Kilb?= <J.Kilb@phytec.de>
-MIME-Version: 1.0
-References: <1357315992-18896-1-git-send-email-J.Kilb@phytec.de>
- <20130107092324.GH1906@pengutronix.de>
-In-Reply-To: <20130107092324.GH1906@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TsasE-0008I2-Kz
+ for barebox@lists.infradead.org; Tue, 08 Jan 2013 15:13:55 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Tue,  8 Jan 2013 16:13:43 +0100
+Message-Id: <1357658023-31893-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,35 +14,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-15"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM omap hsmmc: Fix adding iobase for OMAP3
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] stringlist: fix cpp macro in header
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Hi Sascha,
+Both include/string.h and include/stringlist.h define the c preprocessor macro
+__STRING_H. This leads to a compile time error, in case both files are
+(indirectly) included.
 
-On 07.01.2013 10:23, Sascha Hauer wrote:
-> Hi J=FCrgen,
->
-> On Fri, Jan 04, 2013 at 05:13:12PM +0100, Juergen Kilb wrote:
->> Only the OMAP4 hsmmc module has an offset of 0x100 from its register
->> base address. With commit 416a991 the offset was added for all SOCs
->> which use the omap_hsmmc driver.
-> The offset was present before 416a991 aswell. It seems that the device
-> convenience functions introduced with bc872dbe79 did it wrong for OMAP3.
-> When then the boards started using the convenience functions with
-> 5a12f45 it became broken.
-OK, I've not dug deeper...
-> I prefer to fix this properly. Does the following fix it for you?
-Yes, your patch looks better then my simple version.
-Your patch fixed it for me.
-You can add my "Tested-by: J.Kilb@Phytec.de" line.
+Rename the macro to __STRINGLIST_H in stringlist.h.
 
-thanks,
-J=FCrgen
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ include/stringlist.h |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/include/stringlist.h b/include/stringlist.h
+index dd3f623..8738137 100644
+--- a/include/stringlist.h
++++ b/include/stringlist.h
+@@ -1,5 +1,5 @@
+-#ifndef __STRING_H
+-#define __STRING_H
++#ifndef __STRINGLIST_H
++#define __STRINGLIST_H
+ 
+ #include <linux/list.h>
+ 
+@@ -29,4 +29,4 @@ static inline void string_list_free(struct string_list *sl)
+ 	}
+ }
+ 
+-#endif /* __STRING_H */
++#endif /* __STRINGLIST_H */
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
