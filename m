@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-pb0-f49.google.com ([209.85.160.49])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TtEiv-0001dh-LL
- for barebox@lists.infradead.org; Thu, 10 Jan 2013 09:46:58 +0000
-Received: by mail-pb0-f49.google.com with SMTP id un15so202095pbc.22
- for <barebox@lists.infradead.org>; Thu, 10 Jan 2013 01:46:56 -0800 (PST)
+ id 1TtEsG-0002gI-RE
+ for barebox@lists.infradead.org; Thu, 10 Jan 2013 09:56:37 +0000
+Received: by mail-pb0-f49.google.com with SMTP id un15so207083pbc.36
+ for <barebox@lists.infradead.org>; Thu, 10 Jan 2013 01:56:34 -0800 (PST)
 From: Yi Qingliang <niqingliang2003@gmail.com>
-Date: Thu, 10 Jan 2013 17:45:10 +0000
-Message-ID: <1982990.BKj08KPbd8@yiqingliang-pc>
+Date: Thu, 10 Jan 2013 17:54:51 +0000
+Message-ID: <3804216.AriCkFqt9P@yiqingliang-pc>
 In-Reply-To: <201301101014.08015.jbe@pengutronix.de>
 References: <1974332.EjF16fPj1U@yiqingliang-pc>
  <2237706.NjDrlknk66@yiqingliang-pc> <201301101014.08015.jbe@pengutronix.de>
@@ -27,6 +27,13 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: about s3c2442
 To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
+
+I got it:
+CONFIG_S3C_SDRAM_INIT
+This adds generic code to configure the SDRAM controller after reset.                                                                        
+The initialisation will be skipped if the code is already running                                               
+from SDRAM.
+the low level skipped?
 
 On Thursday, January 10, 2013 10:14:07 AM Juergen Beisert wrote:
 > Hi Yi,
@@ -53,12 +60,6 @@ On Thursday, January 10, 2013 10:14:07 AM Juergen Beisert wrote:
 > > > 
 > > > There is no autodetection possible. Take a look into
 > > > the "arch/arm/boards/friendlyarm-mini2440/lowlevel_init.S": This is the
-I found it,
-but:
-md 0x48000028
-48000028: 000000b2 (represents is 128)
-it looks like the lowlevel_init is not executed, what's the problem.
-
 > > > code which runs immediately after reset. It calls the
 > > > function "s3c24x0_sdram_init" from the generic part, and uses hard coded
 > > > values from "arch/arm/boards/friendlyarm-mini2440/config.h" to setup the
