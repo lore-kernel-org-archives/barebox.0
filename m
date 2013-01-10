@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-pb0-f51.google.com ([209.85.160.51])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TszOO-0008Ad-Dj
- for barebox@lists.infradead.org; Wed, 09 Jan 2013 17:24:45 +0000
-Date: Wed, 9 Jan 2013 18:24:39 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130109172439.GU1906@pengutronix.de>
-References: <50ED6A73.2060608@phytec.de>
+ id 1TtCFv-0005Kf-NX
+ for barebox@lists.infradead.org; Thu, 10 Jan 2013 07:08:52 +0000
+Received: by mail-pb0-f51.google.com with SMTP id ro12so137609pbb.24
+ for <barebox@lists.infradead.org>; Wed, 09 Jan 2013 23:08:50 -0800 (PST)
+From: Yi Qingliang <niqingliang2003@gmail.com>
+Date: Thu, 10 Jan 2013 15:07:04 +0000
+Message-ID: <1974332.EjF16fPj1U@yiqingliang-pc>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <50ED6A73.2060608@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,34 +17,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: ubiformat.c is missing
-To: =?iso-8859-15?Q?J=FCrgen?= Kilb <J.Kilb@phytec.de>
-Cc: barebox@lists.infradead.org, Wolfram Sang <w.sang@pengutronix.de>
+Subject: about s3c2442
+To: barebox <barebox@lists.infradead.org>
 
-On Wed, Jan 09, 2013 at 02:02:43PM +0100, J=FCrgen Kilb wrote:
-> Hi Sascha,
-> it seems that commit 5a29d4ae in master tree is missing the file
-> ubiformat.c.
-> =
+Hello,
+	I'm using barebox (based on mini2440) on my s3c2442 board,
+1. flash barebox into nand: can't start normally, but can see early output on 
+serial.
+2. load it in sdram: can start normally into shell, and then I use it to boot 
+kernel (also in sdram, also based on mini2440).
+the kernel hang, no output.
 
+after dig into it, I found something: add "mem=64M" into the kernel paramer, 
+then the kernel can start.
 
-Grumpf. 1 Cent for each time this happens...
+BUT:
+the barebox doesn't pass that paramert to kernel for mini2440,
+why the mini2440 kernel can start normally?
 
-Added now.
+how does the kernel on 2440 get the sdram size?
 
-Sascha
+THANKS!
 
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Nanjing Jilong
+Yi Qingliang
 
 _______________________________________________
 barebox mailing list
