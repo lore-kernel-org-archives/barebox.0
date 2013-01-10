@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pb0-f51.google.com ([209.85.160.51])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TtCFv-0005Kf-NX
- for barebox@lists.infradead.org; Thu, 10 Jan 2013 07:08:52 +0000
-Received: by mail-pb0-f51.google.com with SMTP id ro12so137609pbb.24
- for <barebox@lists.infradead.org>; Wed, 09 Jan 2013 23:08:50 -0800 (PST)
-From: Yi Qingliang <niqingliang2003@gmail.com>
-Date: Thu, 10 Jan 2013 15:07:04 +0000
-Message-ID: <1974332.EjF16fPj1U@yiqingliang-pc>
+ id 1TtDdj-0001fJ-GD
+ for barebox@lists.infradead.org; Thu, 10 Jan 2013 08:37:33 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Thu, 10 Jan 2013 09:36:36 +0100
+References: <1974332.EjF16fPj1U@yiqingliang-pc>
+In-Reply-To: <1974332.EjF16fPj1U@yiqingliang-pc>
 MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201301100936.36908.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,30 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: about s3c2442
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: about s3c2442
+To: barebox@lists.infradead.org
 
-Hello,
-	I'm using barebox (based on mini2440) on my s3c2442 board,
-1. flash barebox into nand: can't start normally, but can see early output on 
-serial.
-2. load it in sdram: can start normally into shell, and then I use it to boot 
-kernel (also in sdram, also based on mini2440).
-the kernel hang, no output.
+Hi Yi,
 
-after dig into it, I found something: add "mem=64M" into the kernel paramer, 
-then the kernel can start.
+Yi Qingliang wrote:
+> 	I'm using barebox (based on mini2440) on my s3c2442 board,
+> 1. flash barebox into nand: can't start normally, but can see early output
+> on serial.
+> 2. load it in sdram: can start normally into shell, and then I use it to
+> boot kernel (also in sdram, also based on mini2440).
+> the kernel hang, no output.
+>
+> after dig into it, I found something: add "mem=64M" into the kernel
+> paramer, then the kernel can start.
+>
+> BUT:
+> the barebox doesn't pass that paramert to kernel for mini2440,
+> why the mini2440 kernel can start normally?
+>
+> how does the kernel on 2440 get the sdram size?
 
-BUT:
-the barebox doesn't pass that paramert to kernel for mini2440,
-why the mini2440 kernel can start normally?
+There is no autodetection possible. Take a look into 
+the "arch/arm/boards/friendlyarm-mini2440/lowlevel_init.S": This is the code 
+which runs immediately after reset. It calls the 
+function "s3c24x0_sdram_init" from the generic part, and uses hard coded 
+values from "arch/arm/boards/friendlyarm-mini2440/config.h" to setup the 
+SDRAM controller according to the attached SDRAM type.
+When the SDRAM is up and running, it is very easy to read back the SDRAM size 
+from the SDRAM controller's registers (which is done in the 
+function "s3c24xx_get_memory_size").
 
-how does the kernel on 2440 get the sdram size?
+So you need routines which do the same job for your S3C2442 CPU.
 
-THANKS!
+Regards,
+Juergen
 
-Nanjing Jilong
-Yi Qingliang
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
