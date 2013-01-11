@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TtebB-0000qd-6M
- for barebox@lists.infradead.org; Fri, 11 Jan 2013 13:24:45 +0000
+ id 1TtebA-0000qW-Kp
+ for barebox@lists.infradead.org; Fri, 11 Jan 2013 13:24:47 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 11 Jan 2013 14:24:31 +0100
-Message-Id: <1357910676-4231-12-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 11 Jan 2013 14:24:24 +0100
+Message-Id: <1357910676-4231-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1357910676-4231-1-git-send-email-s.hauer@pengutronix.de>
 References: <1357910676-4231-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,81 +21,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/16] of: unflatten: allow overlay dtbs
+Subject: [PATCH 04/16] of: of_free fixes
 To: barebox@lists.infradead.org
 
-This implements overlaying a currently loaded dtb with another dtb.
-We used to return -EBUSY when a oftree is currently loaded. Instead
-of doing this, check if a node already exists before creating a new
-one. Similarly, if a property already exists, just overwrite the
-value instead of creating a new property.
+- Add missing prototype for of_free()
+- When root node is freed set root_node to NULL
+- (re)scan aliases after freeing a node. This is necessary because
+  the freed node may be an alias or point to an alias
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/base.c |   33 ++++++++++++++++++++++-----------
- 1 file changed, 22 insertions(+), 11 deletions(-)
+ drivers/of/base.c |   11 +++++++++++
+ include/of.h      |    1 +
+ 2 files changed, 12 insertions(+)
 
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 3307f41..527121d 100644
+index 399adc8..6c1ccd7 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -845,13 +845,11 @@ int of_unflatten_dtb(struct fdt_header *fdt)
- 	const struct fdt_property *fdt_prop;
- 	const char *pathp;
- 	int depth = 10000;
--	struct device_node *node = NULL;
-+	struct device_node *node = NULL, *n;
-+	struct property *p;
- 	char buf[1024];
- 	int ret;
- 
--	if (root_node)
--		return -EBUSY;
--
- 	nodeoffset = fdt_path_offset(fdt, "/");
- 	if (nodeoffset < 0) {
- 		/*
-@@ -875,12 +873,17 @@ int of_unflatten_dtb(struct fdt_header *fdt)
- 			if (ret)
- 				return -EINVAL;
- 
--			node = new_device_node(node);
--			if (!node->parent)
--				root_node = node;
--			node->full_name = xstrdup(buf);
--			node->name = xstrdup(pathp);
--			list_add_tail(&node->list, &allnodes);
-+			n = of_find_node_by_path(buf);
-+			if (n) {
-+				node = n;
-+			} else {
-+				node = new_device_node(node);
-+				if (!node->parent)
-+					root_node = node;
-+				node->full_name = xstrdup(buf);
-+				node->name = xstrdup(pathp);
-+				list_add_tail(&node->list, &allnodes);
-+			}
- 			break;
- 		case FDT_END_NODE:
- 			node = node->parent;
-@@ -892,7 +895,15 @@ int of_unflatten_dtb(struct fdt_header *fdt)
- 					fdt32_to_cpu(fdt_prop->nameoff));
- 			len      = fdt32_to_cpu(fdt_prop->len);
- 			nodep    = fdt_prop->data;
--			new_property(node, pathp, nodep, len);
+@@ -138,6 +138,12 @@ static void of_alias_add(struct alias_prop *ap, struct device_node *np,
+ void of_alias_scan(void)
+ {
+ 	struct property *pp;
++	struct alias_prop *app, *tmp;
 +
-+			p = of_find_property(node, pathp);
-+			if (p) {
-+				free(p->value);
-+				p->value = xzalloc(len);
-+				memcpy(p->value, nodep, len);
-+			} else {
-+				new_property(node, pathp, nodep, len);
-+			}
- 			break;
- 		case FDT_NOP:
- 			break;
++	list_for_each_entry_safe(app, tmp, &aliases_lookup, link)
++		free(app);
++
++	INIT_LIST_HEAD(&aliases_lookup);
+ 
+ 	of_aliases = of_find_node_by_path("/aliases");
+ 	if (!of_aliases)
+@@ -777,6 +783,11 @@ void of_free(struct device_node *node)
+ 	free(node->name);
+ 	free(node->full_name);
+ 	free(node);
++
++	if (node == root_node)
++		root_node = NULL;
++
++	of_alias_scan();
+ }
+ 
+ static void __of_probe(struct device_node *node)
+diff --git a/include/of.h b/include/of.h
+index 3999ded..4054917 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -107,6 +107,7 @@ int of_machine_is_compatible(const char *compat);
+ void of_print_nodes(struct device_node *node, int indent);
+ int of_probe(void);
+ int of_parse_dtb(struct fdt_header *fdt);
++void of_free(struct device_node *node);
+ 
+ int of_property_read_string(struct device_node *np, const char *propname,
+ 				const char **out_string);
 -- 
 1.7.10.4
 
