@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tteb9-0000q2-Us
- for barebox@lists.infradead.org; Fri, 11 Jan 2013 13:24:48 +0000
+ id 1TtebB-0000qb-6I
+ for barebox@lists.infradead.org; Fri, 11 Jan 2013 13:24:49 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 11 Jan 2013 14:24:21 +0100
-Message-Id: <1357910676-4231-2-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 11 Jan 2013 14:24:33 +0100
+Message-Id: <1357910676-4231-14-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1357910676-4231-1-git-send-email-s.hauer@pengutronix.de>
 References: <1357910676-4231-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,207 +21,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/16] of: make of_get_fixed_tree more universally usable
+Subject: [PATCH 13/16] of: add of_delete_property
 To: barebox@lists.infradead.org
 
-Currently the bootm code uses of_fix_tree to apply the fixups
-to the devicetree given on the command line. This function assumes
-that there is enough space for the fixups available. Also on ARM
-we have to make sure the tree does not cross 1Mib boundaries.
-
-This patch moves the space allocation and alignment ensurance
-to of_get_fixed_tree and uses it in bootm. This is the first
-step for making of_get_fixed_tree the single point of devicetree
-handling in barebox.
-of_get_fixed_tree now takes an argument of the input fdt. If it is
-given, this one is used, otherwise an internal oftree is used which
-will be created in subsequent patches.
+This adds a function to delete a property from the currently loaded
+devicetree. Also export new_property as of_new_property.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib/bootu.c |    2 +-
- arch/arm/lib/bootz.c |    2 +-
- commands/bootm.c     |   32 ++++++++------------------------
- common/oftree.c      |   50 +++++++++++++++++++++++++++++++++++++++++++++-----
- include/of.h         |    2 +-
- 5 files changed, 56 insertions(+), 32 deletions(-)
+ drivers/of/base.c |   13 +++++++++++--
+ include/of.h      |    3 +++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/lib/bootu.c b/arch/arm/lib/bootu.c
-index 75e0de3..fdb0362 100644
---- a/arch/arm/lib/bootu.c
-+++ b/arch/arm/lib/bootu.c
-@@ -23,7 +23,7 @@ static int do_bootu(int argc, char *argv[])
- 		kernel = (void *)simple_strtoul(argv[1], NULL, 0);
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 527121d..5910b40 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -600,7 +600,7 @@ static struct device_node *new_device_node(struct device_node *parent)
+ 	return node;
+ }
  
- #ifdef CONFIG_OFTREE
--	oftree = of_get_fixed_tree();
-+	oftree = of_get_fixed_tree(NULL);
- #endif
- 
- 	start_linux(kernel, 0, 0, 0, oftree);
-diff --git a/arch/arm/lib/bootz.c b/arch/arm/lib/bootz.c
-index 9f5b3b4..e32a77b 100644
---- a/arch/arm/lib/bootz.c
-+++ b/arch/arm/lib/bootz.c
-@@ -109,7 +109,7 @@ static int do_bootz(int argc, char *argv[])
- 
- 	printf("loaded zImage from %s with size %d\n", argv[1], end);
- #ifdef CONFIG_OFTREE
--	oftree = of_get_fixed_tree();
-+	oftree = of_get_fixed_tree(NULL);
- #endif
- 
- 	start_linux(zimage, swap, 0, 0, oftree);
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 483e6a1..d8b8469 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -139,9 +139,7 @@ static int bootm_open_oftree(struct image_data *data, const char *oftree, int nu
+-static struct property *new_property(struct device_node *node, const char *name,
++struct property *of_new_property(struct device_node *node, const char *name,
+ 		const void *data, int len)
  {
- 	enum filetype ft;
- 	struct fdt_header *fdt, *fixfdt;
--	int ret;
- 	size_t size;
--	unsigned int align;
- 
- 	if (bootm_verbose(data))
- 		printf("Loading oftree from '%s'\n", oftree);
-@@ -190,36 +188,18 @@ static int bootm_open_oftree(struct image_data *data, const char *oftree, int nu
- 				file_type_to_string(ft));
- 	}
- 
--	/*
--	 * ARM Linux uses a single 1MiB section (with 1MiB alignment)
--	 * for mapping the devicetree, so we are not allowed to cross
--	 * 1MiB boundaries.
--	 */
--	align = 1 << fls(size + OFTREE_SIZE_INCREASE - 1);
--
--	fixfdt = xmemalign(align, size + OFTREE_SIZE_INCREASE);
--	memcpy(fixfdt, fdt, size);
--
--
--	ret = fdt_open_into(fdt, fixfdt, size + OFTREE_SIZE_INCREASE);
-+	fixfdt = of_get_fixed_tree(fdt);
-+	if (!fixfdt)
-+		return -EINVAL;
- 
- 	free(fdt);
- 
--	if (ret) {
--		printf("unable to parse %s\n", oftree);
--		return -ENODEV;
--	}
--
--	ret = of_fix_tree(fixfdt);
--	if (ret)
--		return ret;
--
- 	if (bootm_verbose(data) > 1)
- 		fdt_print(fixfdt, "/");
- 
- 	data->oftree = fixfdt;
- 
--	return ret;
-+	return 0;
- }
- #endif
- 
-@@ -420,6 +400,10 @@ static int do_bootm(int argc, char *argv[])
- 		ret = bootm_open_oftree(&data, oftree, oftree_num);
- 		if (ret)
- 			goto err_out;
-+	} else {
-+		data.oftree = of_get_fixed_tree(NULL);
-+		if (bootm_verbose(&data) && data.oftree)
-+			printf("using internal devicetree\n");
- 	}
- #endif
- 	if (data.os_address == UIMAGE_SOME_ADDRESS)
-diff --git a/common/oftree.c b/common/oftree.c
-index 3e8c6f8..0dd6d5c 100644
---- a/common/oftree.c
-+++ b/common/oftree.c
-@@ -294,6 +294,10 @@ int of_register_fixup(int (*fixup)(struct fdt_header *))
- 	return 0;
+ 	struct property *prop;
+@@ -617,6 +617,15 @@ static struct property *new_property(struct device_node *node, const char *name,
+ 	return prop;
  }
  
-+/*
-+ * Apply registered fixups for the given fdt. The fdt must have
-+ * enough free space to apply the fixups.
-+ */
- int of_fix_tree(struct fdt_header *fdt)
++void of_delete_property(struct property *pp)
++{
++	list_del(&pp->list);
++
++	free(pp->name);
++	free(pp->value);
++	free(pp);
++}
++
+ static struct device_d *add_of_device(struct device_node *node)
  {
- 	struct of_fixup *of_fixup;
-@@ -308,14 +312,50 @@ int of_fix_tree(struct fdt_header *fdt)
- 	return 0;
- }
- 
--struct fdt_header *of_get_fixed_tree(void)
-+/*
-+ * The size by which we increase the dtb to have space for additional
-+ * fixups. Ideally this would be done by libfdt automatically
-+ */
-+#define OFTREE_SIZE_INCREASE 0x8000
-+
-+/*
-+ * Get the fixed fdt. This function uses the fdt input pointer
-+ * if provided or the barebox internal devicetree if not.
-+ * It increases the size of the tree and applies the registered
-+ * fixups.
-+ */
-+struct fdt_header *of_get_fixed_tree(struct fdt_header *fdt)
- {
- 	int ret;
-+	void *fixfdt;
-+	int size, align;
- 
--	if (!barebox_fdt)
-+	if (!fdt)
- 		return NULL;
--	ret = of_fix_tree(barebox_fdt);
-+
-+	size = fdt_totalsize(fdt);
-+
-+	/*
-+	 * ARM Linux uses a single 1MiB section (with 1MiB alignment)
-+	 * for mapping the devicetree, so we are not allowed to cross
-+	 * 1MiB boundaries.
-+	 */
-+	align = 1 << fls(size + OFTREE_SIZE_INCREASE - 1);
-+
-+	fixfdt = xmemalign(align, size + OFTREE_SIZE_INCREASE);
-+	ret = fdt_open_into(fdt, fixfdt, size + OFTREE_SIZE_INCREASE);
-+
- 	if (ret)
--		return NULL;
--	return barebox_fdt;
-+		goto out_free;
-+
-+	ret = of_fix_tree(fixfdt);
-+	if (ret)
-+		goto out_free;
-+
-+	return fixfdt;
-+
-+out_free:
-+	free(fixfdt);
-+
-+	return NULL;
- }
+ 	struct device_d *dev;
+@@ -902,7 +911,7 @@ int of_unflatten_dtb(struct fdt_header *fdt)
+ 				p->value = xzalloc(len);
+ 				memcpy(p->value, nodep, len);
+ 			} else {
+-				new_property(node, pathp, nodep, len);
++				of_new_property(node, pathp, nodep, len);
+ 			}
+ 			break;
+ 		case FDT_NOP:
 diff --git a/include/of.h b/include/of.h
-index 58b4590..3999ded 100644
+index e1a778d..e53f94c 100644
 --- a/include/of.h
 +++ b/include/of.h
-@@ -9,7 +9,7 @@ extern struct fdt_header *barebox_fdt;
+@@ -108,6 +108,9 @@ int of_parse_dtb(struct fdt_header *fdt);
+ void of_free(struct device_node *node);
+ int of_unflatten_dtb(struct fdt_header *fdt);
+ void *of_flatten_dtb(void);
++struct property *of_new_property(struct device_node *node, const char *name,
++		const void *data, int len);
++void of_delete_property(struct property *pp);
  
- int fdt_print(struct fdt_header *working_fdt, const char *pathp);
- 
--struct fdt_header *of_get_fixed_tree(void);
-+struct fdt_header *of_get_fixed_tree(struct fdt_header *fdt);
- int of_fix_tree(struct fdt_header *fdt);
- int of_register_fixup(int (*fixup)(struct fdt_header *));
- 
+ int of_property_read_string(struct device_node *np, const char *propname,
+ 				const char **out_string);
 -- 
 1.7.10.4
 
