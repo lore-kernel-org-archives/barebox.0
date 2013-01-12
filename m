@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-gg0-f169.google.com ([209.85.161.169])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TtebQ-00016V-Ot
- for barebox@lists.infradead.org; Fri, 11 Jan 2013 13:25:01 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 11 Jan 2013 14:24:26 +0100
-Message-Id: <1357910676-4231-7-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1357910676-4231-1-git-send-email-s.hauer@pengutronix.de>
-References: <1357910676-4231-1-git-send-email-s.hauer@pengutronix.de>
+ id 1TtqJK-0006ED-Rv
+ for barebox@lists.infradead.org; Sat, 12 Jan 2013 01:55:03 +0000
+Received: by mail-gg0-f169.google.com with SMTP id u4so446882ggl.0
+ for <barebox@lists.infradead.org>; Fri, 11 Jan 2013 17:55:00 -0800 (PST)
+From: niqingliang2003@gmail.com
+Date: Sat, 12 Jan 2013 09:53:01 +0000
+Message-ID: <5908839.6Wy9GUm0p4@yiqingliang-pc>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,35 +17,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/16] of: return root node when looking for a node with path /
-To: barebox@lists.infradead.org
+Subject: s3c2440's register: MRSR6
+To: barebox <barebox@lists.infradead.org>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/of/base.c |    3 +++
- 1 file changed, 3 insertions(+)
+Hello, I compiled barebox (based on mini2440).
+and start from nand, can't start normally,
+after changed MRSRB6 to 0x30, ok.
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 3e91e36..69fbf9a 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -491,6 +491,9 @@ struct device_node *of_find_node_by_path(const char *path)
- {
- 	struct device_node *np;
- 
-+	if (!strcmp(path, "/"))
-+		return root_node;
-+
- 	list_for_each_entry(np, &allnodes, list) {
- 		if (np->full_name && (strcmp(np->full_name, path) == 0))
- 			return np;
--- 
-1.7.10.4
+I have checked uboot, it does use 0x30 for mini2440.
+but barebox use 0x20 (work on mini2440, but not work on my 2442 
+board).
+
+what does it depend on?
+in other words, what does the CL value depend on?
+
+'BOARD_SPECIFIC_MRSRB6'
+
+Nanjing Jilong
+Yi Qingliang
 
 
 _______________________________________________
