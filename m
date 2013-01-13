@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ea0-f174.google.com ([209.85.215.174])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TuLFA-00024Y-Bz
- for barebox@lists.infradead.org; Sun, 13 Jan 2013 10:56:48 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sun, 13 Jan 2013 11:55:59 +0100
-References: <5908839.6Wy9GUm0p4@yiqingliang-pc>
-In-Reply-To: <5908839.6Wy9GUm0p4@yiqingliang-pc>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201301131156.00055.jbe@pengutronix.de>
+ id 1TuRZI-0002Nk-Hi
+ for barebox@lists.infradead.org; Sun, 13 Jan 2013 17:42:01 +0000
+Received: by mail-ea0-f174.google.com with SMTP id e13so1366294eaa.5
+ for <barebox@lists.infradead.org>; Sun, 13 Jan 2013 09:41:59 -0800 (PST)
+From: Alexander Aring <alex.aring@gmail.com>
+Date: Sun, 13 Jan 2013 18:42:18 +0100
+Message-Id: <1358098943-18928-5-git-send-email-alex.aring@gmail.com>
+In-Reply-To: <1358098943-18928-1-git-send-email-alex.aring@gmail.com>
+References: <1358098943-18928-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: s3c2440's register: MRSR6
+Subject: [PATCH 4/9] arm-mmu: remove semicolon in arm mmu.c
 To: barebox@lists.infradead.org
+Cc: marc@cpdesign.com
 
-Hi Yi,
+Remove semicolon in PAGE_ALIGN macro.
 
-niqingliang2003@gmail.com wrote:
-> Hello, I compiled barebox (based on mini2440).
-> and start from nand, can't start normally,
-> after changed MRSRB6 to 0x30, ok.
->
-> I have checked uboot, it does use 0x30 for mini2440.
-> but barebox use 0x20 (work on mini2440, but not work on my 2442
-> board).
->
-> what does it depend on?
-> in other words, what does the CL value depend on?
+Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+---
+ arch/arm/cpu/mmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-You should read the manual of the used SDRAM. As SDRAM is a synchronous 
-memory, the SDRAM device and the SDRAM controller must be programmed in the 
-same way (same CL value).
-
-The CL value in MRSRB6 must correspond with the Trcd in the BANKCON* register.
-
-Note: the impact of higher CL values is huge. Data throughput with 100 MHz @ 
-CL2 is higher than at 133 MHz @ CL3.
-
-Regards,
-Juergen
-
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index 068e0ea..40b7ec4 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -294,7 +294,7 @@ void mmu_disable(void)
+ 	__mmu_cache_off();
+ }
+ 
+-#define PAGE_ALIGN(s) ((s) + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1);
++#define PAGE_ALIGN(s) (((s) + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1))
+ 
+ void *dma_alloc_coherent(size_t size)
+ {
 -- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
+1.8.1
+
 
 _______________________________________________
 barebox mailing list
