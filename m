@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TuL6f-0001fS-Q0
- for barebox@lists.infradead.org; Sun, 13 Jan 2013 10:48:03 +0000
+ id 1TuLFA-00024Y-Bz
+ for barebox@lists.infradead.org; Sun, 13 Jan 2013 10:56:48 +0000
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Sun, 13 Jan 2013 11:47:10 +0100
-References: <50F228E8.8050000@acm.org> <50F243F7.4080009@acm.org>
-In-Reply-To: <50F243F7.4080009@acm.org>
+Date: Sun, 13 Jan 2013 11:55:59 +0100
+References: <5908839.6Wy9GUm0p4@yiqingliang-pc>
+In-Reply-To: <5908839.6Wy9GUm0p4@yiqingliang-pc>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201301131147.10661.jbe@pengutronix.de>
+Message-Id: <201301131156.00055.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,38 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx23evk NAND support
+Subject: Re: s3c2440's register: MRSR6
 To: barebox@lists.infradead.org
 
-Hi Paul,
+Hi Yi,
 
-Paul B. Henson wrote:
-> On 1/12/2013 7:24 PM, Paul B. Henson wrote:
-> > My understanding is that the SD card and the NAND chip cannot be used at
-> > the same time due to a pin conflict.
+niqingliang2003@gmail.com wrote:
+> Hello, I compiled barebox (based on mini2440).
+> and start from nand, can't start normally,
+> after changed MRSRB6 to 0x30, ok.
 >
-> Hmm, it seems what I read on this wasn't entirely correct. I ended up
-> booting the BSP linux kernel and root file system off of SD, and it was
-> able to access the NAND device while simultaneously using the SD device
-> (as the root filesystem source) so there doesn't seem to be any inherent
-> hardware limitation preventing bareboot from accessing it.
+> I have checked uboot, it does use 0x30 for mini2440.
+> but barebox use 0x20 (work on mini2440, but not work on my 2442
+> board).
 >
-> Just for fun, I tried to use the kobs-ng freescale tool from within the
-> linux environment to burn the bareboot bootstream to NAND. However,
-> after trying to boot, I receive the error code 0x80501003 from the ROM
-> loader, which evidently indicates "The file signature or file version is
-> incorrect". The exact same bootstream on an SD card boots fine, so I
-> don't think there's anything wrong with it. I also tried to burn the BSP
-> linux kernel bootstream, with the same result. (Side question, what's
-> the difference in the bootstream files that contain "ivt" in the
-> filename? I used the non-ivt versions on SD, I tried both on NAND with
-> neither working).
+> what does it depend on?
+> in other words, what does the CL value depend on?
 
-IIRC ivt/non-ivt is relevant for the i.MX28 firmware, not for i.MX23. On the 
-other hand, for some i.MX23 based systems the encryption must be enabled for 
-the bootstream, but with an empty key.
+You should read the manual of the used SDRAM. As SDRAM is a synchronous 
+memory, the SDRAM device and the SDRAM controller must be programmed in the 
+same way (same CL value).
 
-Hope it helps.
+The CL value in MRSRB6 must correspond with the Trcd in the BANKCON* register.
+
+Note: the impact of higher CL values is huge. Data throughput with 100 MHz @ 
+CL2 is higher than at 133 MHz @ CL3.
+
+Regards,
 Juergen
 
 -- 
