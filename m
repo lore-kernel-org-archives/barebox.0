@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-f54.google.com ([74.125.83.54])
+Received: from mail-ea0-f169.google.com ([209.85.215.169])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TuRZM-0002P8-Vy
- for barebox@lists.infradead.org; Sun, 13 Jan 2013 17:42:06 +0000
-Received: by mail-ee0-f54.google.com with SMTP id c13so1659945eek.13
- for <barebox@lists.infradead.org>; Sun, 13 Jan 2013 09:42:02 -0800 (PST)
+ id 1TuRZP-0002Pz-Qy
+ for barebox@lists.infradead.org; Sun, 13 Jan 2013 17:42:11 +0000
+Received: by mail-ea0-f169.google.com with SMTP id d13so200102eaa.0
+ for <barebox@lists.infradead.org>; Sun, 13 Jan 2013 09:42:05 -0800 (PST)
 From: Alexander Aring <alex.aring@gmail.com>
-Date: Sun, 13 Jan 2013 18:42:21 +0100
-Message-Id: <1358098943-18928-8-git-send-email-alex.aring@gmail.com>
+Date: Sun, 13 Jan 2013 18:42:23 +0100
+Message-Id: <1358098943-18928-10-git-send-email-alex.aring@gmail.com>
 In-Reply-To: <1358098943-18928-1-git-send-email-alex.aring@gmail.com>
 References: <1358098943-18928-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,223 +23,780 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/9] barebox-data: add barebox-data sections
+Subject: [PATCH 9/9] memtest: add rewritten memtest command
 To: barebox@lists.infradead.org
 Cc: marc@cpdesign.com
 
-Add barebox-data section in arm branch to get complete
-barebox regions in sdram regions tree.
+Rewrite memtest command:
+	- Skip barebox sdram regions.
+	- Uncache unused mem regions while testing.
+	- Add iteration parameter.
+	- Add parameter to do only bus testing.
+	- Check start and end addresses.
+	- Testing all banks if no start and end
+	  address are given.
+
+	- Add sha changes (thanks):
+	- fix calculation of regions to test. When we use PAGE_ALIGN on
+	  size, size can be to high.
+	  - start address has to be aligned up
+	  - end address has to be aligned down
+	  - then size can be calculated as end - start + 1
+	- Add ctrlc() to the longer loops
+	- Add a progress bar to give some visual feedback that something
+	  issues
+	  still going on.
+
+	- Change to use end element instead of size in region struct.
+	- Fix some newline issues.
+
+	- Add '-c' parameter if CONFIG_MMU enabled
+	  to test with enabled cache.
+	- Fix some size calculation.
+	- set start address to 0xffffffff
 
 Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- arch/arm/lib/barebox.lds.S                       | 6 +++++-
- arch/blackfin/boards/ipe337/barebox.lds.S        | 6 +++++-
- arch/mips/lib/barebox.lds.S                      | 5 ++++-
- arch/nios2/cpu/barebox.lds.S                     | 5 +++--
- arch/ppc/boards/freescale-p2020rdb/barebox.lds.S | 6 ++++--
- arch/ppc/boards/pcm030/barebox.lds.S             | 5 +++--
- arch/x86/lib/barebox.lds.S                       | 5 ++++-
- common/memory.c                                  | 4 ++++
- include/asm-generic/sections.h                   | 1 +
- 9 files changed, 33 insertions(+), 10 deletions(-)
+ commands/Kconfig   |   9 +
+ commands/Makefile  |   1 +
+ commands/memtest.c | 696 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 706 insertions(+)
+ create mode 100644 commands/memtest.c
 
-diff --git a/arch/arm/lib/barebox.lds.S b/arch/arm/lib/barebox.lds.S
-index bac1a04..6cad804 100644
---- a/arch/arm/lib/barebox.lds.S
-+++ b/arch/arm/lib/barebox.lds.S
-@@ -65,7 +65,9 @@ SECTIONS
- 		__stop_unwind_tab = .;
- 	}
- #endif
--	_etext = .;			/* End of text and rodata section */
-+	_etext = . - 1;			/* End of text and rodata section */
+diff --git a/commands/Kconfig b/commands/Kconfig
+index fc0e448..f027a7e 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -496,6 +496,15 @@ config CMD_NANDTEST
+ 	select PARTITION_NEED_MTD
+ 	prompt "nandtest"
+ 
++config CMD_MEMTEST
++    tristate
++    prompt "memtest"
++	help
++	  This command enables a memtest to test installed memory.
++	  During this test allocated iomem regions will be skipped.
++	  If tested architecture has MMU with PTE flags support,
++	  caching can be set enabled or disabled.
 +
-+	_sdata = .;
+ endmenu
  
- 	. = ALIGN(4);
- 	.data : { *(.data*) }
-@@ -87,6 +89,8 @@ SECTIONS
- 	__usymtab : { BAREBOX_SYMS }
- 	__usymtab_end = .;
- 
-+	_edata = . - 1;
+ menu "video command"
+diff --git a/commands/Makefile b/commands/Makefile
+index 3145685..6b4d9cb 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -7,6 +7,7 @@ obj-$(CONFIG_CMD_LOADY)		+= loadxy.o
+ obj-$(CONFIG_CMD_LOADS)		+= loads.o
+ obj-$(CONFIG_CMD_ECHO)		+= echo.o
+ obj-$(CONFIG_CMD_MEMORY)	+= mem.o
++obj-$(CONFIG_CMD_MEMTEST)   += memtest.o
+ obj-$(CONFIG_CMD_EDIT)		+= edit.o
+ obj-$(CONFIG_CMD_EXEC)		+= exec.o
+ obj-$(CONFIG_CMD_SLEEP)		+= sleep.o
+diff --git a/commands/memtest.c b/commands/memtest.c
+new file mode 100644
+index 0000000..33aa7e0
+--- /dev/null
++++ b/commands/memtest.c
+@@ -0,0 +1,696 @@
++/*
++ * memtest - Perform a memory test
++ *
++ * (C) Copyright 2013
++ * Alexander Aring <a.aring@gmail.com>
++ *
++ * (C) Copyright 2000
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
 +
- 	. = ALIGN(4);
- 	__bss_start = .;
- 	.bss : { *(.bss*) }
-diff --git a/arch/blackfin/boards/ipe337/barebox.lds.S b/arch/blackfin/boards/ipe337/barebox.lds.S
-index 6a07b43..29f5d9e 100644
---- a/arch/blackfin/boards/ipe337/barebox.lds.S
-+++ b/arch/blackfin/boards/ipe337/barebox.lds.S
-@@ -54,7 +54,9 @@ SECTIONS
- 	. = ALIGN(4);
- 	.rodata : { *(.rodata) }
- 
--	__etext = .;			/* End of text and rodata section */
-+	__etext = . - 1;	/* End of text and rodata section */
++#include <common.h>
++#include <command.h>
++#include <types.h>
++#include <getopt.h>
++#include <memory.h>
++#include <errno.h>
++#include <progress.h>
++#include <asm/mmu.h>
 +
-+	_sdata = .;
- 
- 	. = ALIGN(4);
- 	.data : { *(.data) }
-@@ -79,6 +81,8 @@ SECTIONS
- 	__usymtab : { BAREBOX_SYMS }
- 	___usymtab_end = .;
- 
-+	_edata - . -1;
++/*
++ * PTE flags variables to set cached and
++ * uncached regions.
++ */
++static uint32_t PTE_FLAGS_CACHED;
++static uint32_t PTE_FLAGS_UNCACHED;
 +
- 	. = ALIGN(4);
- 	___bss_start = .;
- 	.bss : { *(.bss) }
-diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
-index 0cbf2d7..6f05513 100644
---- a/arch/mips/lib/barebox.lds.S
-+++ b/arch/mips/lib/barebox.lds.S
-@@ -43,7 +43,8 @@ SECTIONS
- 	. = ALIGN(4);
- 	.rodata : { *(.rodata*) }
- 
--	_etext = .;			/* End of text and rodata section */
-+	_etext = . - 1;			/* End of text and rodata section */
-+	_sdata = .;
- 
- 	. = ALIGN(4);
- 	.data : { *(.data*) }
-@@ -68,6 +69,8 @@ SECTIONS
- 	__usymtab : { BAREBOX_SYMS }
- 	__usymtab_end = .;
- 
-+	_edata = . - 1;
++static const vu_long bitpattern[] = {
++	0x00000001,	/* single bit */
++	0x00000003,	/* two adjacent bits */
++	0x00000007,	/* three adjacent bits */
++	0x0000000F,	/* four adjacent bits */
++	0x00000005,	/* two non-adjacent bits */
++	0x00000015,	/* three non-adjacent bits */
++	0x00000055,	/* four non-adjacent bits */
++	0xAAAAAAAA,	/* alternating 1/0 */
++};
 +
- 	. = ALIGN(4);
- 	__bss_start = .;
- 	.bss : { *(.bss*) }
-diff --git a/arch/nios2/cpu/barebox.lds.S b/arch/nios2/cpu/barebox.lds.S
-index af7be4d..ac4cc8a 100644
---- a/arch/nios2/cpu/barebox.lds.S
-+++ b/arch/nios2/cpu/barebox.lds.S
-@@ -67,13 +67,14 @@ SECTIONS
- 	__usymtab : { BAREBOX_SYMS }
- 	___usymtab_end = .;
- 
--	_etext = .; /* End of text and rodata section */
-+	_etext = . - 1; /* End of text and rodata section */
- 
- 	/* INIT DATA sections - "Small" data (see the gcc -G option)
- 	 * is always gp-relative. Here we make all init data sections
- 	 * adjacent to simplify the startup code -- and provide
- 	 * the global pointer for gp-relative access.
- 	 */
-+	_sdata = .;
- 	_data = .;
- 	.data :
- 	{
-@@ -94,7 +95,7 @@ SECTIONS
- 	}
- 	. = ALIGN(4);
- 
--	_edata = .;
-+	_edata = . - 1;
- 	PROVIDE (edata = .);
- 
- 	/* UNINIT DATA - Small uninitialized data is first so it's
-diff --git a/arch/ppc/boards/freescale-p2020rdb/barebox.lds.S b/arch/ppc/boards/freescale-p2020rdb/barebox.lds.S
-index 95033d4..e9b0679 100644
---- a/arch/ppc/boards/freescale-p2020rdb/barebox.lds.S
-+++ b/arch/ppc/boards/freescale-p2020rdb/barebox.lds.S
-@@ -39,7 +39,9 @@ SECTIONS
-     *(.text*)
-   } :text
- 
--  _etext = .;
-+  _etext = . - 1;
++/*
++ * In CONFIG_MMU we have a special c flag.
++ */
++#ifdef CONFIG_MMU
++static char optstr[] = "s:e:i:cb";
++#else
++static char optstr[] = "s:e:i:b";
++#endif
 +
-+  _sdata = .;
-   PROVIDE (etext = .);
- 
-   .rodata    :
-@@ -74,7 +76,7 @@ SECTIONS
-     *(.dynamic*)
-     CONSTRUCTORS
-   }
--  _edata  =  .;
-+  _edata  =  . - 1;
-   PROVIDE (edata = .);
- 
-   . = .;
-diff --git a/arch/ppc/boards/pcm030/barebox.lds.S b/arch/ppc/boards/pcm030/barebox.lds.S
-index cc86d82..bfc646b 100644
---- a/arch/ppc/boards/pcm030/barebox.lds.S
-+++ b/arch/ppc/boards/pcm030/barebox.lds.S
-@@ -67,7 +67,8 @@ SECTIONS
- 
-   /* Read-write section, merged into data segment: */
-   . = (. + 0x0FFF) & 0xFFFFF000;
--  _etext = .;
-+  _etext = . - 1;
-+  _sdata = .;
-   PROVIDE (erotext = .);
-   .reloc   :
-   {
-@@ -90,7 +91,7 @@ SECTIONS
-     *(.dynamic*)
-     CONSTRUCTORS
-   }
--  _edata  =  .;
-+  _edata  =  . - 1;
-   PROVIDE (edata = .);
- 
-   . = .;
-diff --git a/arch/x86/lib/barebox.lds.S b/arch/x86/lib/barebox.lds.S
-index 8bd2a7b..5826fb2 100644
---- a/arch/x86/lib/barebox.lds.S
-+++ b/arch/x86/lib/barebox.lds.S
-@@ -149,7 +149,8 @@ SECTIONS
- 		. = ALIGN(4);
- 		*(.rodata*)
- 		. = ALIGN(4);
--		_etext = .;			/* End of text and rodata section */
-+		_etext = . - 1;	/* End of text and rodata section */
-+		_sdata = .;
- 	} > barebox
- 	BAREBOX_BARE_INIT_SIZE
- 
-@@ -191,6 +192,8 @@ SECTIONS
- 		. = ALIGN(4);
- 	} > barebox
- 
-+	_edata = . - 1;
++/*
++ * Perform a memory test. The complete test
++ * loops until interrupted by ctrl-c.
++ */
++static int mem_test(vu_long _start, vu_long _end,
++		int bus_only)
++{
++	vu_long *start = (vu_long *)_start;
++	/* Point the dummy to start[1] */
++	vu_long *dummy = start+1;
 +
- 	.bss : {
- 		__bss_start = .;
- 		*(.bss*);
-diff --git a/common/memory.c b/common/memory.c
-index 24dd0dd..1748d78 100644
---- a/common/memory.c
-+++ b/common/memory.c
-@@ -75,6 +75,10 @@ static int mem_malloc_resource(void)
- 			(unsigned long)&_stext,
- 			(unsigned long)&_etext -
- 			(unsigned long)&_stext);
-+	request_sdram_region("barebox data",
-+			(unsigned long)&_sdata,
-+			(unsigned long)&_edata -
-+			(unsigned long)&_sdata);
- 	request_sdram_region("bss",
- 			(unsigned long)&__bss_start,
- 			(unsigned long)&__bss_stop -
-diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
-index 17d5fd1..5492aa4 100644
---- a/include/asm-generic/sections.h
-+++ b/include/asm-generic/sections.h
-@@ -3,6 +3,7 @@
- 
- extern char _text[], _stext[], _etext[];
- extern char __bss_start[], __bss_stop[];
-+extern char _sdata[], _edata[];
- extern char __bare_init_start[], __bare_init_end[];
- extern char _end[];
- extern void *_barebox_image_size;
++	vu_long val;
++	vu_long readback;
++	vu_long offset;
++	vu_long pattern;
++	vu_long test_offset;
++	vu_long temp;
++	vu_long anti_pattern;
++	vu_long num_words;
++
++	int i;
++	int ret;
++
++	if (!IS_ALIGNED(_end - _start + 1, sizeof(vu_long))) {
++		printf("Testing memarea size (0x%08lx) not a multiple"
++				"of size 0x%x, please change start or end address.",
++				_end - _start + 1, sizeof(vu_long));
++		return -1;
++	}
++
++	num_words = (_end - _start + 1)/sizeof(vu_long);
++
++	printf("Starting data line test.\n");
++
++	/*
++	 * Data line test: write a pattern to the first
++	 * location, write the 1's complement to a 'parking'
++	 * address (changes the state of the data bus so a
++	 * floating bus doen't give a false OK), and then
++	 * read the value back. Note that we read it back
++	 * into a variable because the next time we read it,
++	 * it might be right (been there, tough to explain to
++	 * the quality guys why it prints a failure when the
++	 * "is" and "should be" are obviously the same in the
++	 * error message).
++	 *
++	 * Rather than exhaustively testing, we test some
++	 * patterns by shifting '1' bits through a field of
++	 * '0's and '0' bits through a field of '1's (i.e.
++	 * pattern and ~pattern).
++	 */
++	for (i = 0; i < sizeof(bitpattern)/
++			sizeof(bitpattern[0]); i++) {
++		ret = address_in_sdram_regions((vu_long)start);
++		if (ret) {
++			printf("WARNING (data line): "
++					"address 0x%08lx is in sdram regions.\n"
++					"Will skip this memory address.\n",
++					(vu_long)start);
++			break;
++		}
++
++		ret = address_in_sdram_regions((vu_long)dummy);
++		if (ret) {
++			printf("WARNING (data line): "
++					"address 0x%08lx is in sdram regions.\n"
++					"Will skip this memory address.\n",
++					(vu_long)dummy);
++			break;
++		}
++
++		val = bitpattern[i];
++
++		for (; val != 0; val <<= 1) {
++			*start = val;
++			/* clear the test data off of the bus */
++			*dummy = ~val;
++			readback = *start;
++
++			if (readback != val) {
++				printf("FAILURE (data line): "
++					"expected 0x%08lx, actual 0x%08lx at address 0x%08lx.\n",
++					val, readback, (vu_long)start);
++				return -1;
++			}
++
++			*start = ~val;
++			*dummy = val;
++			readback = *start;
++			if (readback != ~val) {
++				printf("FAILURE (data line): "
++					"Is 0x%08lx, should be 0x%08lx at address 0x%08lx.\n",
++					readback,
++					~val, (vu_long)start);
++				return -1;
++			}
++		}
++	}
++
++
++	/*
++	 * Based on code whose Original Author and Copyright
++	 * information follows: Copyright (c) 1998 by Michael
++	 * Barr. This software is placed into the public
++	 * domain and may be used for any purpose. However,
++	 * this notice must not be changed or removed and no
++	 * warranty is either expressed or implied by its
++	 * publication or distribution.
++	 */
++
++	/*
++	 * Address line test
++	 *
++	 * Description: Test the address bus wiring in a
++	 *              memory region by performing a walking
++	 *              1's test on the relevant bits of the
++	 *              address and checking for aliasing.
++	 *              This test will find single-bit
++	 *              address failures such as stuck -high,
++	 *              stuck-low, and shorted pins. The base
++	 *              address and size of the region are
++	 *              selected by the caller.
++	 *
++	 * Notes:	For best results, the selected base
++	 *              address should have enough LSB 0's to
++	 *              guarantee single address bit changes.
++	 *              For example, to test a 64-Kbyte
++	 *              region, select a base address on a
++	 *              64-Kbyte boundary. Also, select the
++	 *              region size as a power-of-two if at
++	 *              all possible.
++	 *
++	 * ## NOTE ##	Be sure to specify start and end
++	 *              addresses such that num_words has
++	 *              lots of bits set. For example an
++	 *              address range of 01000000 02000000 is
++	 *              bad while a range of 01000000
++	 *              01ffffff is perfect.
++	 */
++
++	pattern = 0xAAAAAAAA;
++	anti_pattern = 0x55555555;
++
++	/*
++	 * Write the default pattern at each of the
++	 * power-of-two offsets.
++	 */
++	for (offset = 1; (offset & num_words) != 0; offset <<= 1) {
++		ret = address_in_sdram_regions((vu_long)&start[offset]);
++		if (ret) {
++			printf("WARNING (stuck high): "
++					"address 0x%08lx is in sdram regions.\n",
++					(vu_long)&start[offset]);
++			continue;
++		}
++
++		start[offset] = pattern;
++	}
++
++	printf("Check for address bits stuck high.\n");
++
++	/*
++	 * Check for address bits stuck high.
++	 */
++	test_offset = 0;
++
++	ret = address_in_sdram_regions((vu_long)&start[test_offset]);
++	if (ret)
++		printf("WARNING (stuck high): "
++				"address 0x%08lx is in sdram regions.\n",
++				(vu_long)&start[test_offset]);
++	else
++		start[test_offset] = anti_pattern;
++
++	for (offset = 1; (offset & num_words) != 0; offset <<= 1) {
++		ret = address_in_sdram_regions((vu_long)&start[offset]);
++		if (ret) {
++			printf("WARNING (stuck high): "
++					"address 0x%08lx is in sdram regions.\n",
++					(vu_long)&start[offset]);
++			continue;
++		}
++
++		temp = start[offset];
++
++		if (temp != pattern) {
++			printf("FAILURE: Address bit "
++					"stuck high @ 0x%08lx:"
++					" expected 0x%08lx, actual 0x%08lx.\n",
++					(vu_long)&start[offset],
++					pattern, temp);
++			return -1;
++		}
++	}
++
++	ret = address_in_sdram_regions((vu_long)&start[test_offset]);
++	if (ret)
++		printf("WARNING (stuck high): "
++				"address 0x%08lx is in sdram regions.\n",
++				(vu_long)&start[test_offset]);
++	else
++		start[test_offset] = pattern;
++
++	printf("Check for address bits stuck "
++			"low or shorted.");
++
++	/*
++	 * Check for address bits stuck low or shorted.
++	 */
++	for (test_offset = 1;
++			(test_offset & num_words) != 0;
++			test_offset <<= 1) {
++		ret = address_in_sdram_regions(
++				(vu_long)&start[test_offset]);
++		if (ret) {
++			printf("\nWARNING (low high): "
++					"address 0x%08lx is in barebox regions.\n",
++					(vu_long)&start[test_offset]);
++			continue;
++		}
++
++		start[test_offset] = anti_pattern;
++
++		for (offset = 1; (offset & num_words) != 0; offset <<= 1) {
++			ret = address_in_sdram_regions(
++					(vu_long)&start[offset]);
++			if (ret) {
++				printf("\nWARNING (low high): "
++					"address 0x%08lx is in barebox regions.\n",
++					(vu_long)&start[test_offset]);
++				continue;
++			}
++
++			temp = start[offset];
++
++			if ((temp != pattern) &&
++					(offset != test_offset)) {
++				printf("\nFAILURE: Address bit stuck"
++						" low or shorted @"
++						" 0x%08lx: expected 0x%08lx, actual 0x%08lx.\n",
++						(vu_long)&start[offset],
++						pattern, temp);
++				return -1;
++			}
++		}
++		start[test_offset] = pattern;
++	}
++
++	/* We tested only the bus if != 0
++	 * leaving here */
++	if (bus_only)
++		return 0;
++
++	printf("\nStarting integrity check of physicaly ram.\n"
++			"Filling ram with patterns...\n");
++
++	/*
++	 * Description: Test the integrity of a physical
++	 *		memory device by performing an
++	 *		increment/decrement test over the
++	 *		entire region. In the process every
++	 *		storage bit in the device is tested
++	 *		as a zero and a one. The base address
++	 *		and the size of the region are
++	 *		selected by the caller.
++	 */
++
++	/*
++	 * Fill memory with a known pattern.
++	 */
++	init_progression_bar(num_words);
++	for (offset = 0; offset < num_words; offset++) {
++		if (!(offset & 0xfff)) {
++			if (ctrlc())
++				return -EINTR;
++			show_progress(offset);
++		}
++
++		ret = address_in_sdram_regions((vu_long)&start[offset]);
++		if (ret)
++			continue;
++
++		start[offset] = offset + 1;
++	}
++
++	show_progress(offset);
++
++	printf("\nCompare written patterns...\n");
++
++	/*
++	 * Check each location and invert it for the second pass.
++	 */
++	init_progression_bar(num_words - 1);
++	for (offset = 0; offset < num_words; offset++) {
++		if (!(offset & 0xfff)) {
++			if (ctrlc())
++				return -EINTR;
++			show_progress(offset);
++		}
++
++		ret = address_in_sdram_regions((vu_long)&start[offset]);
++		if (ret)
++			continue;
++
++		temp = start[offset];
++		if (temp != (offset + 1)) {
++			printf("\nFAILURE (read/write) @ 0x%08lx:"
++					" expected 0x%08lx, actual 0x%08lx.\n",
++					(vu_long)&start[offset],
++					(offset + 1), temp);
++			return -1;
++		}
++
++		anti_pattern = ~(offset + 1);
++		start[offset] = anti_pattern;
++	}
++
++	show_progress(offset);
++
++	printf("\nFilling ram with inverted pattern and compare it...\n");
++
++	/*
++	 * Check each location for the inverted pattern and zero it.
++	 */
++	init_progression_bar(num_words - 1);
++	for (offset = 0; offset < num_words; offset++) {
++		if (!(offset & 0xfff)) {
++			if (ctrlc())
++				return -EINTR;
++			show_progress(offset);
++		}
++
++		ret = address_in_sdram_regions((vu_long)&start[offset]);
++		/* Step over barebox mem usage */
++		if (ret)
++			continue;
++
++		anti_pattern = ~(offset + 1);
++		temp = start[offset];
++
++		if (temp != anti_pattern) {
++			printf("\nFAILURE (read/write): @ 0x%08lx:"
++					" expected 0x%08lx, actual 0x%08lx.\n",
++					(vu_long)&start[offset],
++					anti_pattern, temp);
++			return -1;
++		}
++
++		start[offset] = 0;
++	}
++
++	show_progress(offset);
++
++	return 0;
++}
++
++#ifdef CONFIG_MMU
++static void print_region(vu_long start, vu_long size, uint32_t flags)
++{
++	if (!size)
++		return;
++
++	if (flags == PTE_FLAGS_UNCACHED) {
++		printf("Set non caching region at 0x%08lx - "
++				"0x%08lx size 0x%08lx.\n",
++				start, start + size - 1, size);
++		return;
++	}
++
++	if (flags == PTE_FLAGS_CACHED)
++		printf("Set caching region at 0x%08lx - "
++				"0x%08lx size 0x%08lx.\n",
++				start, start + size - 1, size);
++}
++
++static void do_remap_range(struct memory_bank *bank, uint32_t flags)
++{
++	struct resource *r = NULL;
++	struct resource *r_prev = NULL;
++
++	vu_long size;
++	vu_long start;
++	vu_long end;
++
++	/* We assume that the regions are sorted in this list */
++	list_for_each_entry(r, &bank->res->children, sibling) {
++		/* Do on head element for bank boundary */
++		if (r->sibling.prev == &bank->res->children) {
++			/* remember last used element */
++			r_prev = r;
++
++			start = PAGE_ALIGN(bank->start);
++			end = PAGE_ALIGN_DOWN(r->start) - 1;
++			if (start >= end)
++				continue;
++			size = end - start + 1;
++
++			print_region(start, size, flags);
++			remap_range((void *)start, size, flags);
++
++			continue;
++		}
++		/* Between used regions */
++		start = PAGE_ALIGN(r_prev->end);
++		end = PAGE_ALIGN_DOWN(r->start) - 1;
++		if (start < end) {
++			size = end - start + 1;
++			print_region(start, size, flags);
++			remap_range((void *)start, size, flags);
++		}
++
++		r_prev = r;
++		/* Do on head element for bank boundary */
++		if (list_is_last(&r->sibling, &bank->res->children)) {
++			start = PAGE_ALIGN(r->end);
++			end = PAGE_ALIGN_DOWN(bank->start + bank->size) - 1;
++			if (start >= end)
++				continue;
++			size = end - start + 1;
++
++			print_region(start, size, flags);
++			remap_range((void *)start, size, flags);
++		}
++	}
++}
++#endif
++
++static int do_mem_memtest(int argc, char *argv[])
++{
++	/* Set start address to 0xffffffff which
++	 * can't be. */
++	vu_long start = 0xffffffff;
++	vu_long end = 0;
++
++	uint i;
++	uint max_i = 1;
++
++#ifdef CONFIG_MMU
++	int cache = 0;
++#endif
++	int bus_only = 0;
++	int err = 0;
++	int cnt = 0;
++	int opt;
++
++	struct memory_bank *bank = NULL;
++	struct resource *r = NULL;
++
++	while ((opt = getopt(argc, argv, optstr)) > 0) {
++		switch (opt) {
++		case 's':
++			start = simple_strtoul(optarg, NULL, 0);
++			break;
++		case 'e':
++			end = simple_strtoul(optarg, NULL, 0);
++			break;
++		case 'i':
++			max_i = simple_strtoul(optarg, NULL, 0);
++			break;
++#ifdef CONFIG_MMU
++		case 'c':
++			cache = 1;
++			break;
++#endif
++		case 'b':
++			bus_only = 1;
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
++	}
++
++	if (optind > argc)
++		return COMMAND_ERROR_USAGE;
++
++	/* Error if no end address */
++	if (start != 0xffffffff && !end) {
++		printf("Please add an end address.\n");
++		return 1;
++	}
++
++	/* Error if no start address */
++	if (end && start == 0xffffffff) {
++		printf("Please add a start address.\n");
++		return 1;
++	}
++
++	/* Check parameters */
++	if (end && start != 0xffffffff) {
++		if (end <= start) {
++			printf("End address less than or"
++					" equal start address.\n");
++			return 1;
++		}
++
++		/* Check if given start and end address are in any banks */
++		for_each_memory_bank(bank) {
++			if (ADDRESS_IN_REGIONS(start, bank->start,
++						bank->start + bank->size))
++				cnt++;
++
++			if (ADDRESS_IN_REGIONS(end, bank->start,
++						bank->start + bank->size))
++				cnt++;
++		}
++
++		if (cnt != 2) {
++			printf("Start or end addresses are"
++					" not in any ram bank.\n");
++			return 1;
++		}
++	}
++
++	/*
++	 * Get pte flags. Which are configured at
++	 * runtime at booting.
++	 */
++	PTE_FLAGS_CACHED = mmu_get_pte_cached_flags();
++	PTE_FLAGS_UNCACHED = mmu_get_pte_uncached_flags();
++
++	for_each_memory_bank(bank) {
++		list_for_each_entry(r, &bank->res->children, sibling)
++			printf("Skipping region at 0x%08x - "
++					"0x%08x, size 0x%08x (%s)\n",
++					r->start, r->end,
++					r->end - r->start + 1, r->name);
++#ifdef CONFIG_MMU
++		/* Disable or enable caching */
++		if (cache)
++			do_remap_range(bank, PTE_FLAGS_CACHED);
++		else
++			do_remap_range(bank, PTE_FLAGS_UNCACHED);
++#endif
++	}
++
++	/* Do test if we set a start or end address */
++	if (start != 0xffffffff && end) {
++		printf("Testing address range: 0x%08lx - 0x%08lx,"
++				" size 0x%08lx.\n",
++				start, end, end - start + 1);
++
++		for (i = 1; (i <= max_i) || !max_i; i++) {
++			printf("Iteration: %u\n", i);
++
++			/* Do the memtest */
++			err = mem_test(start, end, bus_only);
++			if (err == -EINTR) {
++				printf("\nTest interrupted.\n");
++				goto err;
++			}
++
++			if (err < 0) {
++				printf("\nTest failed.\n");
++				goto err;
++			}
++			printf("\nTested %u iteration(s) without errors.\n", i);
++		}
++#ifdef CONFIG_MMU
++		/* Renable caching */
++		if (!cache)
++			for_each_memory_bank(bank)
++				do_remap_range(bank, PTE_FLAGS_CACHED);
++#endif
++		printf("Memtest done.\n");
++
++		return 0;
++	}
++
++	/* If we set no start or end address
++	 * we do the test on all ram banks */
++	for (i = 1; (i <= max_i) || !max_i; i++) {
++		for_each_memory_bank(bank) {
++			start = bank->start;
++			end = bank->start + bank->size - 1;
++
++			printf("Testing address range: 0x%08lx - "
++					"0x%08lx, size 0x%08lx on bank /dev/%s.\n",
++					start, end, bank->size,
++					bank->res->name);
++
++			printf("Iteration: %u\n", i);
++
++			err = mem_test(start, end, bus_only);
++			if (err == -EINTR) {
++				printf("\nTest interrupted.\n");
++				goto err;
++			}
++
++			if (err < 0) {
++				printf("\nTest on bank /dev/%s failed.\n",
++						bank->res->name);
++				goto err;
++			}
++			printf("\nTested %u iteration(s) without errors.\n", i);
++		}
++	}
++#ifdef CONFIG_MMU
++		/* Renable caching */
++	if (!cache)
++		for_each_memory_bank(bank)
++			do_remap_range(bank, PTE_FLAGS_CACHED);
++#endif
++	printf("Memtest done.\n");
++
++	return 0;
++
++err:
++#ifdef CONFIG_MMU
++	/* Enable caching */
++	for_each_memory_bank(bank)
++		do_remap_range(bank, PTE_FLAGS_CACHED);
++#endif
++
++	return 1;
++}
++
++static const __maybe_unused char cmd_memtest_help[] =
++"Usage: memtest [OPTION]...\n"
++"memtest related commands\n"
++"	-s	<start>		start address to begin memtest.\n"
++"	-e	<end>		end address to stop memtest.\n"
++"	-i	<iterations>	iterations [default=1, endless=0].\n"
++#ifdef CONFIG_MMU
++"	-c			run test with enable cache.\n"
++#endif
++"	-b			only test bus datalines.";
++
++BAREBOX_CMD_START(memtest)
++	.cmd		= do_mem_memtest,
++	.usage		= "Memory Test",
++	BAREBOX_CMD_HELP(cmd_memtest_help)
++BAREBOX_CMD_END
 -- 
 1.8.1
 
