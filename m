@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-f51.google.com ([74.125.83.51])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TuRZO-0002Pc-Q9
- for barebox@lists.infradead.org; Sun, 13 Jan 2013 17:42:10 +0000
-Received: by mail-ee0-f51.google.com with SMTP id d17so487811eek.38
- for <barebox@lists.infradead.org>; Sun, 13 Jan 2013 09:42:03 -0800 (PST)
-From: Alexander Aring <alex.aring@gmail.com>
-Date: Sun, 13 Jan 2013 18:42:22 +0100
-Message-Id: <1358098943-18928-9-git-send-email-alex.aring@gmail.com>
-In-Reply-To: <1358098943-18928-1-git-send-email-alex.aring@gmail.com>
-References: <1358098943-18928-1-git-send-email-alex.aring@gmail.com>
+Received: from smtp.eta-ori.net ([2001:41d0:8:140a::5] helo=orion.eta-ori.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TuZFz-0005Bd-OX
+ for barebox@lists.infradead.org; Mon, 14 Jan 2013 01:54:38 +0000
+Received: from localhost.localdomain (p5B06EB72.dip.t-dialin.net
+ [91.6.235.114])
+ by orion.eta-ori.net (Postfix) with ESMTPSA id 36151600C2
+ for <barebox@lists.infradead.org>; Mon, 14 Jan 2013 02:54:32 +0100 (CET)
+From: Daniel Mierswa <d.mierswa@phytec.de>
+Date: Mon, 14 Jan 2013 02:54:14 +0100
+Message-Id: <0b191bed8e3ea8b450b6990b76e0463558996b05.1358127379.git.d.mierswa@phytec.de>
+In-Reply-To: <cover.1358127379.git.d.mierswa@phytec.de>
+References: <cover.1358127379.git.d.mierswa@phytec.de>
+In-Reply-To: <cover.1358127379.git.d.mierswa@phytec.de>
+References: <cover.1358127379.git.d.mierswa@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,409 +27,209 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/9] memtest: remove memtest command
+Subject: [PATCH 2/4] i.MX21/27: don't enable lcd bus clocks too early
 To: barebox@lists.infradead.org
-Cc: marc@cpdesign.com
 
-Remove memtest command.
+On the MX27 based board phycard-i.MX27 the display won't properly
+come up.
+Before removing imx-regs.h and the code that sets the register
+in the i.MX video driver, the PCCR registers were set _after_
+the screen start (LSSAR) was set.
+This restores that old behaviour and makes the display come up
+properly again.
+I did not have a chance to test this on any other i.MX27 or i.MX21
+hardware though I assume that the "old" order is required there
+too.
 
-Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+Signed-off-by: Daniel Mierswa <d.mierswa@phytec.de>
 ---
- commands/Kconfig   |   9 --
- commands/Makefile  |   1 -
- commands/memtest.c | 351 -----------------------------------------------------
- 3 files changed, 361 deletions(-)
- delete mode 100644 commands/memtest.c
+ arch/arm/mach-imx/clk-imx21.c |  7 ++++--
+ arch/arm/mach-imx/clk-imx27.c | 14 +++++++-----
+ drivers/video/imx.c           | 51 +++++++++++++++++++++++++++++++++++++------
+ 3 files changed, 58 insertions(+), 14 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 53cee5c..fc0e448 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -496,15 +496,6 @@ config CMD_NANDTEST
- 	select PARTITION_NEED_MTD
- 	prompt "nandtest"
+diff --git a/arch/arm/mach-imx/clk-imx21.c b/arch/arm/mach-imx/clk-imx21.c
+index 784951d..7404177 100644
+--- a/arch/arm/mach-imx/clk-imx21.c
++++ b/arch/arm/mach-imx/clk-imx21.c
+@@ -89,7 +89,8 @@
  
--config CMD_MTEST
--	tristate
--	prompt "mtest"
--
--config CMD_MTEST_ALTERNATIVE
--	bool
--	depends on CMD_MTEST
--	prompt "alternative mtest implementation"
--
- endmenu
+ enum imx21_clks {
+ 	ckil, ckih, fpm, mpll_sel, spll_sel, mpll, spll, fclk, hclk, ipg, per1,
+-	per2, per3, per4, usb_div, nfc_div, lcdc_per_gate, clk_max
++	per2, per3, per4, usb_div, nfc_div, lcdc_per_gate, lcdc_ahb_gate,
++	clk_max
+ };
  
- menu "video command"
-diff --git a/commands/Makefile b/commands/Makefile
-index 359f566..3145685 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -7,7 +7,6 @@ obj-$(CONFIG_CMD_LOADY)		+= loadxy.o
- obj-$(CONFIG_CMD_LOADS)		+= loads.o
- obj-$(CONFIG_CMD_ECHO)		+= echo.o
- obj-$(CONFIG_CMD_MEMORY)	+= mem.o
--obj-$(CONFIG_CMD_MTEST)		+= memtest.o
- obj-$(CONFIG_CMD_EDIT)		+= edit.o
- obj-$(CONFIG_CMD_EXEC)		+= exec.o
- obj-$(CONFIG_CMD_SLEEP)		+= sleep.o
-diff --git a/commands/memtest.c b/commands/memtest.c
-deleted file mode 100644
-index 2d64d00..0000000
---- a/commands/memtest.c
-+++ /dev/null
-@@ -1,351 +0,0 @@
--/*
-- * mtest - Perform a memory test
-- *
-- * (C) Copyright 2000
-- * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
-- *
-- * See file CREDITS for list of people who contributed to this
-- * project.
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- */
--
--#include <common.h>
--#include <command.h>
--#include <types.h>
--
--/*
-- * Perform a memory test. A more complete alternative test can be
-- * configured using CONFIG_CMD_MTEST_ALTERNATIVE. The complete test
-- * loops until interrupted by ctrl-c or by a failure of one of the
-- * sub-tests.
-- */
--#ifdef CONFIG_CMD_MTEST_ALTERNATIVE
--static int mem_test(ulong _start, ulong _end, ulong pattern_unused)
--{
--	vu_long *start = (vu_long *)_start;
--	vu_long *end   = (vu_long *)_end;
--	vu_long *addr;
--	ulong	val;
--	ulong	readback;
--	vu_long	addr_mask;
--	vu_long	offset;
--	vu_long	test_offset;
--	vu_long	pattern;
--	vu_long	temp;
--	vu_long	anti_pattern;
--	vu_long	num_words;
--#ifdef CFG_MEMTEST_SCRATCH
--	vu_long *dummy = (vu_long*)CFG_MEMTEST_SCRATCH;
--#else
--	vu_long *dummy = start;
--#endif
--	int	j;
--	int iterations = 1;
--
--	static const ulong bitpattern[] = {
--		0x00000001,	/* single bit */
--		0x00000003,	/* two adjacent bits */
--		0x00000007,	/* three adjacent bits */
--		0x0000000F,	/* four adjacent bits */
--		0x00000005,	/* two non-adjacent bits */
--		0x00000015,	/* three non-adjacent bits */
--		0x00000055,	/* four non-adjacent bits */
--		0xaaaaaaaa,	/* alternating 1/0 */
--	};
--
--	/* XXX: enforce alignment of start and end? */
--	for (;;) {
--		if (ctrlc()) {
--			putchar ('\n');
--			return 1;
--		}
--
--		printf("Iteration: %6d\r", iterations);
--		iterations++;
--
--		/*
--		 * Data line test: write a pattern to the first
--		 * location, write the 1's complement to a 'parking'
--		 * address (changes the state of the data bus so a
--		 * floating bus doen't give a false OK), and then
--		 * read the value back. Note that we read it back
--		 * into a variable because the next time we read it,
--		 * it might be right (been there, tough to explain to
--		 * the quality guys why it prints a failure when the
--		 * "is" and "should be" are obviously the same in the
--		 * error message).
--		 *
--		 * Rather than exhaustively testing, we test some
--		 * patterns by shifting '1' bits through a field of
--		 * '0's and '0' bits through a field of '1's (i.e.
--		 * pattern and ~pattern).
--		 */
--		addr = start;
--		/* XXX */
--		if (addr == dummy) ++addr;
--		for (j = 0; j < sizeof(bitpattern)/sizeof(bitpattern[0]); j++) {
--		    val = bitpattern[j];
--		    for(; val != 0; val <<= 1) {
--			*addr  = val;
--			*dummy  = ~val; /* clear the test data off of the bus */
--			readback = *addr;
--			if(readback != val) {
--			     printf ("FAILURE (data line): "
--				"expected 0x%08lx, actual 0x%08lx at address 0x%p\n",
--					  val, readback, addr);
--			}
--			*addr  = ~val;
--			*dummy  = val;
--			readback = *addr;
--			if(readback != ~val) {
--			    printf ("FAILURE (data line): "
--				"Is 0x%08lx, should be 0x%08lx at address 0x%p\n",
--					readback, ~val, addr);
--			}
--		    }
--		}
--
--		/*
--		 * Based on code whose Original Author and Copyright
--		 * information follows: Copyright (c) 1998 by Michael
--		 * Barr. This software is placed into the public
--		 * domain and may be used for any purpose. However,
--		 * this notice must not be changed or removed and no
--		 * warranty is either expressed or implied by its
--		 * publication or distribution.
--		 */
--
--		/*
--		 * Address line test
--		 *
--		 * Description: Test the address bus wiring in a
--		 *              memory region by performing a walking
--		 *              1's test on the relevant bits of the
--		 *              address and checking for aliasing.
--		 *              This test will find single-bit
--		 *              address failures such as stuck -high,
--		 *              stuck-low, and shorted pins. The base
--		 *              address and size of the region are
--		 *              selected by the caller.
--		 *
--		 * Notes:	For best results, the selected base
--		 *              address should have enough LSB 0's to
--		 *              guarantee single address bit changes.
--		 *              For example, to test a 64-Kbyte
--		 *              region, select a base address on a
--		 *              64-Kbyte boundary. Also, select the
--		 *              region size as a power-of-two if at
--		 *              all possible.
--		 *
--		 * Returns:     0 if the test succeeds, 1 if the test fails.
--		 *
--		 * ## NOTE ##	Be sure to specify start and end
--		 *              addresses such that addr_mask has
--		 *              lots of bits set. For example an
--		 *              address range of 01000000 02000000 is
--		 *              bad while a range of 01000000
--		 *              01ffffff is perfect.
--		 */
--		addr_mask = ((ulong)end - (ulong)start)/sizeof(vu_long);
--		pattern = (vu_long) 0xaaaaaaaa;
--		anti_pattern = (vu_long) 0x55555555;
--
--		debug("%s:%d: addr mask = 0x%.8lx\n",
--			__FUNCTION__, __LINE__,
--			addr_mask);
--		/*
--		 * Write the default pattern at each of the
--		 * power-of-two offsets.
--		 */
--		for (offset = 1; (offset & addr_mask) != 0; offset <<= 1)
--			start[offset] = pattern;
--
--		/*
--		 * Check for address bits stuck high.
--		 */
--		test_offset = 0;
--		start[test_offset] = anti_pattern;
--
--		for (offset = 1; (offset & addr_mask) != 0; offset <<= 1) {
--		    temp = start[offset];
--		    if (temp != pattern) {
--			printf ("\nFAILURE: Address bit stuck high @ 0x%.8lx:"
--				" expected 0x%.8lx, actual 0x%.8lx\n",
--				(ulong)&start[offset], pattern, temp);
--			return 1;
--		    }
--		}
--		start[test_offset] = pattern;
--
--		/*
--		 * Check for addr bits stuck low or shorted.
--		 */
--		for (test_offset = 1; (test_offset & addr_mask) != 0; test_offset <<= 1) {
--		    start[test_offset] = anti_pattern;
--
--		    for (offset = 1; (offset & addr_mask) != 0; offset <<= 1) {
--			temp = start[offset];
--			if ((temp != pattern) && (offset != test_offset)) {
--			    printf ("\nFAILURE: Address bit stuck low or shorted @"
--				" 0x%.8lx: expected 0x%.8lx, actual 0x%.8lx\n",
--				(ulong)&start[offset], pattern, temp);
--			    return 1;
--			}
--		    }
--		    start[test_offset] = pattern;
--		}
--
--		/*
--		 * Description: Test the integrity of a physical
--		 *		memory device by performing an
--		 *		increment/decrement test over the
--		 *		entire region. In the process every
--		 *		storage bit in the device is tested
--		 *		as a zero and a one. The base address
--		 *		and the size of the region are
--		 *		selected by the caller.
--		 *
--		 * Returns:     0 if the test succeeds, 1 if the test fails.
--		 */
--		num_words = ((ulong)end - (ulong)start)/sizeof(vu_long) + 1;
--
--		/*
--		 * Fill memory with a known pattern.
--		 */
--		for (pattern = 1, offset = 0; offset < num_words; pattern++, offset++) {
--			start[offset] = pattern;
--		}
--
--		/*
--		 * Check each location and invert it for the second pass.
--		 */
--		for (pattern = 1, offset = 0; offset < num_words; pattern++, offset++) {
--		    temp = start[offset];
--		    if (temp != pattern) {
--			printf ("\nFAILURE (read/write) @ 0x%.8lx:"
--				" expected 0x%.8lx, actual 0x%.8lx)\n",
--				(ulong)&start[offset], pattern, temp);
--			return 1;
--		    }
--
--		    anti_pattern = ~pattern;
--		    start[offset] = anti_pattern;
--		}
--
--		/*
--		 * Check each location for the inverted pattern and zero it.
--		 */
--		for (pattern = 1, offset = 0; offset < num_words; pattern++, offset++) {
--		    anti_pattern = ~pattern;
--		    temp = start[offset];
--		    if (temp != anti_pattern) {
--			printf ("\nFAILURE (read/write): @ 0x%.8lx:"
--				" expected 0x%.8lx, actual 0x%.8lx)\n",
--				(ulong)&start[offset], anti_pattern, temp);
--			return 1;
--		    }
--		    start[offset] = 0;
--		}
--	}
--
--}
--#else
--static int mem_test(ulong _start, ulong _end, ulong pattern)
--{
--	vu_long	*addr;
--	vu_long *start = (vu_long *)_start;
--	vu_long *end   = (vu_long *)_end;
--	ulong	val;
--	ulong	readback;
--	ulong	incr;
--	int rcode;
--
--	incr = 1;
--	for (;;) {
--		if (ctrlc()) {
--			putchar('\n');
--			return 1;
--		}
--
--		printf ("\rPattern 0x%08lX  Writing..."
--			"%12s"
--			"\b\b\b\b\b\b\b\b\b\b",
--			pattern, "");
--
--		for (addr=start,val=pattern; addr<end; addr++) {
--			*addr = val;
--			val  += incr;
--		}
--
--		puts ("Reading...");
--
--		for (addr=start,val=pattern; addr<end; addr++) {
--			readback = *addr;
--			if (readback != val) {
--				printf ("\nMem error @ 0x%08X: "
--					"found 0x%08lX, expected 0x%08lX\n",
--					(uint)addr, readback, val);
--				rcode = 1;
--			}
--			val += incr;
--		}
--
--		/*
--		 * Flip the pattern each time to make lots of zeros and
--		 * then, the next time, lots of ones.  We decrement
--		 * the "negative" patterns and increment the "positive"
--		 * patterns to preserve this feature.
--		 */
--		if(pattern & 0x80000000) {
--			pattern = -pattern;	/* complement & increment */
--		}
--		else {
--			pattern = ~pattern;
--		}
--		incr = -incr;
--	}
--	return rcode;
--}
--#endif
--
--static int do_mem_mtest(int argc, char *argv[])
--{
--	ulong start, end, pattern = 0;
--
--	if (argc < 3)
--		return COMMAND_ERROR_USAGE;
--
--	start = simple_strtoul(argv[1], NULL, 0);
--	end = simple_strtoul(argv[2], NULL, 0);
--
--	if (argc > 3)
--		pattern = simple_strtoul(argv[3], NULL, 0);
--
--	printf ("Testing 0x%08x ... 0x%08x:\n", (uint)start, (uint)end);
--	
--	return mem_test(start, end, pattern);
--}
--
--static const __maybe_unused char cmd_mtest_help[] =
--"Usage: <start> <end> "
--#ifdef CONFIG_CMD_MTEST_ALTERNATIVE
--"[pattern]"
--#endif
--"\nsimple RAM read/write test\n";
--
--BAREBOX_CMD_START(mtest)
--	.cmd		= do_mem_mtest,
--	.usage		= "simple RAM test",
--	BAREBOX_CMD_HELP(cmd_mtest_help)
--BAREBOX_CMD_END
--
+ static struct clk *clks[clk_max];
+@@ -116,7 +117,7 @@ static int imx21_ccm_probe(struct device_d *dev)
+ 			PCCR0_CSPI1_EN | PCCR0_CSPI2_EN | PCCR0_SDHC1_EN |
+ 			PCCR0_SDHC2_EN | PCCR0_GPIO_EN | PCCR0_I2C_EN | PCCR0_DMA_EN |
+ 			PCCR0_USBOTG_EN | PCCR0_NFC_EN | PCCR0_PERCLK4_EN |
+-			PCCR0_HCLK_USBOTG_EN | PCCR0_HCLK_LCDC_EN | PCCR0_HCLK_DMA_EN,
++			PCCR0_HCLK_USBOTG_EN | PCCR0_HCLK_DMA_EN,
+ 			base + CCM_PCCR0);
+ 
+ 	writel(PCCR1_CSPI3_EN | PCCR1_WDT_EN | PCCR1_GPT1_EN | PCCR1_GPT2_EN |
+@@ -143,6 +144,7 @@ static int imx21_ccm_probe(struct device_d *dev)
+ 	clks[usb_div] = imx_clk_divider("usb_div", "spll", base + CCM_CSCR, 26, 3);
+ 	clks[nfc_div] = imx_clk_divider("nfc_div", "ipg", base + CCM_PCDR0, 12, 4);
+ 	clks[lcdc_per_gate] = imx_clk_gate("lcdc_per_gate", "per3", base + CCM_PCCR0, 18);
++	clks[lcdc_ahb_gate] = imx_clk_gate("lcdc_ahb_gate", "ahb", base + CCM_PCCR0, 26);
+ 
+ 	clkdev_add_physbase(clks[per1], MX21_GPT1_BASE_ADDR, NULL);
+ 	clkdev_add_physbase(clks[per1], MX21_GPT2_BASE_ADDR, NULL);
+@@ -158,6 +160,7 @@ static int imx21_ccm_probe(struct device_d *dev)
+ 	clkdev_add_physbase(clks[ipg], MX21_SDHC1_BASE_ADDR, NULL);
+ 	clkdev_add_physbase(clks[ipg], MX21_SDHC2_BASE_ADDR, NULL);
+ 	clkdev_add_physbase(clks[lcdc_per_gate], MX21_LCDC_BASE_ADDR, NULL);
++	clkdev_add_physbase(clks[lcdc_ahb_gate], MX21_LCDC_BASE_ADDR, "ahb");
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-imx/clk-imx27.c b/arch/arm/mach-imx/clk-imx27.c
+index 222d2a6..958495e 100644
+--- a/arch/arm/mach-imx/clk-imx27.c
++++ b/arch/arm/mach-imx/clk-imx27.c
+@@ -93,7 +93,7 @@
+ enum mx27_clks {
+ 	dummy, ckih, ckil, mpll, spll, mpll_main2, ahb, ipg, nfc_div, per1_div,
+ 	per2_div, per3_div, per4_div, usb_div, cpu_sel,	clko_sel, cpu_div, clko_div,
+-	clko_en, lcdc_per_gate, clk_max
++	clko_en, lcdc_per_gate, lcdc_ahb_gate, lcdc_ipg_gate, clk_max
+ };
+ 
+ static struct clk *clks[clk_max];
+@@ -136,7 +136,7 @@ static int imx27_ccm_probe(struct device_d *dev)
+ 	base = dev_request_mem_region(dev, 0);
+ 
+ 	writel(PCCR0_SDHC3_EN | PCCR0_SDHC2_EN | PCCR0_SDHC1_EN |
+-			PCCR0_PWM_EN | PCCR0_KPP_EN | PCCR0_LCDC_EN | PCCR0_IIM_EN |
++			PCCR0_PWM_EN | PCCR0_KPP_EN | PCCR0_IIM_EN |
+ 			PCCR0_I2C2_EN | PCCR0_I2C1_EN | PCCR0_GPT6_EN | PCCR0_GPT5_EN |
+ 			PCCR0_GPT4_EN | PCCR0_GPT3_EN | PCCR0_GPT2_EN | PCCR0_GPT1_EN |
+ 			PCCR0_GPIO_EN | PCCR0_FEC_EN | PCCR0_CSPI3_EN | PCCR0_CSPI2_EN |
+@@ -144,9 +144,9 @@ static int imx27_ccm_probe(struct device_d *dev)
+ 			base + CCM_PCCR0);
+ 
+ 	writel(PCCR1_NFC_BAUDEN | PCCR1_PERCLK4_EN | PCCR1_PERCLK2_EN | PCCR1_PERCLK1_EN |
+-			PCCR1_HCLK_USB | PCCR1_HCLK_LCDC | PCCR1_HCLK_FEC | PCCR1_HCLK_EMI |
+-			PCCR1_WDT_EN | PCCR1_USB_EN | PCCR1_UART6_EN | PCCR1_UART5_EN |
+-			PCCR1_UART4_EN | PCCR1_UART3_EN | PCCR1_UART2_EN | PCCR1_UART1_EN,
++			PCCR1_HCLK_USB | PCCR1_HCLK_FEC | PCCR1_HCLK_EMI | PCCR1_WDT_EN |
++			PCCR1_USB_EN | PCCR1_UART6_EN | PCCR1_UART5_EN | PCCR1_UART4_EN |
++			PCCR1_UART3_EN | PCCR1_UART2_EN | PCCR1_UART1_EN,
+ 			base + CCM_PCCR1);
+ 
+ 	clks[dummy] = clk_fixed("dummy", 0);
+@@ -180,6 +180,8 @@ static int imx27_ccm_probe(struct device_d *dev)
+ 		clks[cpu_div] = imx_clk_divider("cpu_div", "cpu_sel", base + CCM_CSCR, 13, 3);
+ 	clks[clko_div] = imx_clk_divider("clko_div", "clko_sel", base + CCM_PCDR0, 22, 3);
+ 	clks[lcdc_per_gate] = imx_clk_gate("lcdc_per_gate", "per3_div", base + CCM_PCCR1, 7);
++	clks[lcdc_ahb_gate] = imx_clk_gate("lcdc_ahb_gate", "ahb", base + CCM_PCCR1, 15);
++	clks[lcdc_ipg_gate] = imx_clk_gate("lcdc_ipg_gate", "ipg", base + CCM_PCCR0, 14);
+ 
+ 	clkdev_add_physbase(clks[per1_div], MX27_GPT1_BASE_ADDR, NULL);
+ 	clkdev_add_physbase(clks[per1_div], MX27_GPT2_BASE_ADDR, NULL);
+@@ -202,6 +204,8 @@ static int imx27_ccm_probe(struct device_d *dev)
+ 	clkdev_add_physbase(clks[per2_div], MX27_SDHC2_BASE_ADDR, NULL);
+ 	clkdev_add_physbase(clks[per2_div], MX27_SDHC3_BASE_ADDR, NULL);
+ 	clkdev_add_physbase(clks[lcdc_per_gate], MX27_LCDC_BASE_ADDR, NULL);
++	clkdev_add_physbase(clks[lcdc_ahb_gate], MX27_LCDC_BASE_ADDR, "ahb");
++	clkdev_add_physbase(clks[lcdc_ipg_gate], MX27_LCDC_BASE_ADDR, "ipg");
+ 	clkdev_add_physbase(clks[ipg], MX27_FEC_BASE_ADDR, NULL);
+ 
+ 	return 0;
+diff --git a/drivers/video/imx.c b/drivers/video/imx.c
+index 8381690..18e1243 100644
+--- a/drivers/video/imx.c
++++ b/drivers/video/imx.c
+@@ -138,7 +138,16 @@ struct imxfb_rgb {
+ 
+ struct imxfb_info {
+ 	void __iomem		*regs;
+-	struct clk		*clk;
++
++#if defined(CONFIG_ARCH_IMX21) || defined(CONFIG_ARCH_IMX27)
++	struct clk		*ahb_clk;
++#endif
++
++#ifdef CONFIG_ARCH_IMX27
++	struct clk		*ipg_clk;
++#endif
++
++	struct clk		*per_clk;
+ 
+ 	u_int			pcr;
+ 	u_int			pwmr;
+@@ -252,7 +261,15 @@ static void imxfb_enable_controller(struct fb_info *info)
+ 
+ 	writel(RMCR_LCDC_EN, fbi->regs + LCDC_RMCR);
+ 
+-	clk_enable(fbi->clk);
++#if defined(CONFIG_ARCH_IMX21) || defined(CONFIG_ARCH_IMX27)
++	clk_enable(fbi->ahb_clk);
++#endif
++
++#ifdef CONFIG_ARCH_IMX27
++	clk_enable(fbi->ipg_clk);
++#endif
++
++	clk_enable(fbi->per_clk);
+ 
+ 	if (fbi->enable)
+ 		fbi->enable(1);
+@@ -267,7 +284,15 @@ static void imxfb_disable_controller(struct fb_info *info)
+ 
+ 	writel(0, fbi->regs + LCDC_RMCR);
+ 
+-	clk_disable(fbi->clk);
++	clk_disable(fbi->per_clk);
++
++#ifdef CONFIG_ARCH_IMX27
++	clk_disable(fbi->ipg_clk);
++#endif
++
++#if defined(CONFIG_ARCH_IMX21) || defined(CONFIG_ARCH_IMX27)
++	clk_disable(fbi->ahb_clk);
++#endif
+ }
+ 
+ static void set_reg_overlay(struct fb_info *overlay)
+@@ -335,7 +360,7 @@ static int imxfb_activate_var(struct fb_info *info)
+ 	writel(readl(fbi->regs + LCDC_CPOS) & ~(CPOS_CC0 | CPOS_CC1),
+ 		fbi->regs + LCDC_CPOS);
+ 
+-	lcd_clk = clk_get_rate(fbi->clk);
++	lcd_clk = clk_get_rate(fbi->per_clk);
+ 
+ 	tmp = mode->pixclock * (unsigned long long)lcd_clk;
+ 
+@@ -549,9 +574,21 @@ static int imxfb_probe(struct device_d *dev)
+ 	fbi = xzalloc(sizeof(*fbi));
+ 	info = &fbi->info;
+ 
+-	fbi->clk = clk_get(dev, NULL);
+-	if (IS_ERR(fbi->clk))
+-		return PTR_ERR(fbi->clk);
++	fbi->per_clk = clk_get(dev, NULL);
++	if (IS_ERR(fbi->per_clk))
++		return PTR_ERR(fbi->per_clk);
++
++#if defined(CONFIG_ARCH_IMX21) || defined(CONFIG_ARCH_IMX27)
++	fbi->ahb_clk = clk_get(dev, "ahb");
++	if (IS_ERR(fbi->ahb_clk))
++		return PTR_ERR(fbi->ahb_clk);
++#endif
++
++#ifdef CONFIG_ARCH_IMX27
++	fbi->ipg_clk = clk_get(dev, "ipg");
++	if (IS_ERR(fbi->ipg_clk))
++		return PTR_ERR(fbi->ipg_clk);
++#endif
+ 
+ 	fbi->mode = pdata->mode;
+ 	fbi->regs = dev_request_mem_region(dev, 0);
 -- 
 1.8.1
 
