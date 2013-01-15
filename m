@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-f171.google.com ([209.85.215.171])
+Received: from mail-ee0-f50.google.com ([74.125.83.50])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tv6se-0003u9-Q1
- for barebox@lists.infradead.org; Tue, 15 Jan 2013 13:48:46 +0000
-Received: by mail-ea0-f171.google.com with SMTP id n10so51209eaa.2
- for <barebox@lists.infradead.org>; Tue, 15 Jan 2013 05:48:43 -0800 (PST)
+ id 1Tv6sg-0003vJ-Oa
+ for barebox@lists.infradead.org; Tue, 15 Jan 2013 13:48:50 +0000
+Received: by mail-ee0-f50.google.com with SMTP id e51so64471eek.9
+ for <barebox@lists.infradead.org>; Tue, 15 Jan 2013 05:48:45 -0800 (PST)
 From: Alexander Aring <alex.aring@gmail.com>
-Date: Tue, 15 Jan 2013 14:48:43 +0100
-Message-Id: <1358257730-20579-2-git-send-email-alex.aring@gmail.com>
+Date: Tue, 15 Jan 2013 14:48:46 +0100
+Message-Id: <1358257730-20579-5-git-send-email-alex.aring@gmail.com>
 In-Reply-To: <1358257730-20579-1-git-send-email-alex.aring@gmail.com>
 References: <1358257730-20579-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,175 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] remap_range: make function 'remap_range' global
+Subject: [PATCH 4/8] common: add PAGE_ALIGN_DOWN macro
 To: barebox@lists.infradead.org
 
-Change function remap_range in arm architecture to make it
-global accessable. For example command 'memtest' can change
-pte flags to enable or disable cache.
-
-Add dummy function for others architectures that doesn't
-have mmu or pte support.
+Add PAGE_ALIGN_DOWN macro, which is like PAGE_ALIGN macro but
+returns the lower page boundary of address.
 
 Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- arch/arm/cpu/mmu.c              | 2 +-
- arch/arm/include/asm/mmu.h      | 5 +++++
- arch/blackfin/include/asm/mmu.h | 9 +++++++++
- arch/mips/include/asm/mmu.h     | 9 +++++++++
- arch/nios2/include/asm/mmu.h    | 9 +++++++++
- arch/openrisc/include/asm/mmu.h | 9 +++++++++
- arch/ppc/include/asm/mmu.h      | 5 +++++
- arch/sandbox/include/asm/mmu.h  | 9 +++++++++
- arch/x86/include/asm/mmu.h      | 9 +++++++++
- 9 files changed, 65 insertions(+), 1 deletion(-)
- create mode 100644 arch/blackfin/include/asm/mmu.h
- create mode 100644 arch/mips/include/asm/mmu.h
- create mode 100644 arch/nios2/include/asm/mmu.h
- create mode 100644 arch/openrisc/include/asm/mmu.h
- create mode 100644 arch/sandbox/include/asm/mmu.h
- create mode 100644 arch/x86/include/asm/mmu.h
+ include/common.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 40b7ec4..b5c9c60 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -93,7 +93,7 @@ static u32 *find_pte(unsigned long adr)
- 	return &table[(adr >> PAGE_SHIFT) & 0xff];
- }
+diff --git a/include/common.h b/include/common.h
+index 9533344..3e67164 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -226,6 +226,7 @@ int run_shell(void);
+ #define PAGE_SIZE	4096
+ #define PAGE_SHIFT	12
+ #define PAGE_ALIGN(s) (((s) + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1))
++#define PAGE_ALIGN_DOWN(x) ((x) & ~(PAGE_SIZE - 1))
  
--static void remap_range(void *_start, size_t size, uint32_t flags)
-+void remap_range(void *_start, size_t size, uint32_t flags)
- {
- 	unsigned long start = (unsigned long)_start;
- 	u32 *p;
-diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
-index a66da8c..ae1686b 100644
---- a/arch/arm/include/asm/mmu.h
-+++ b/arch/arm/include/asm/mmu.h
-@@ -41,6 +41,7 @@ void dma_flush_range(unsigned long, unsigned long);
- void dma_inv_range(unsigned long, unsigned long);
- unsigned long virt_to_phys(void *virt);
- void *phys_to_virt(unsigned long phys);
-+void remap_range(void *_start, size_t size, uint32_t flags);
- void *map_io_sections(unsigned long physaddr, void *start, size_t size);
+ int memory_display(char *addr, loff_t offs, ulong nbytes, int size, int swab);
  
- #else
-@@ -76,6 +77,10 @@ static inline void dma_inv_range(unsigned long s, unsigned long e)
- {
- }
- 
-+static inline void remap_range(void *_start, size_t size, uint32_t flags)
-+{
-+}
-+
- static inline void *map_io_sections(unsigned long phys, void *start, size_t size)
- {
- 	return (void *)phys;
-diff --git a/arch/blackfin/include/asm/mmu.h b/arch/blackfin/include/asm/mmu.h
-new file mode 100644
-index 0000000..0485a43
---- /dev/null
-+++ b/arch/blackfin/include/asm/mmu.h
-@@ -0,0 +1,9 @@
-+#ifndef __ASM_MMU_H
-+#define __ASM_MMU_H
-+
-+static inline void remap_range(void *_start, size_t size, uint32_t flags)
-+{
-+}
-+
-+#endif /* __ASM_MMU_H */
-+
-diff --git a/arch/mips/include/asm/mmu.h b/arch/mips/include/asm/mmu.h
-new file mode 100644
-index 0000000..0485a43
---- /dev/null
-+++ b/arch/mips/include/asm/mmu.h
-@@ -0,0 +1,9 @@
-+#ifndef __ASM_MMU_H
-+#define __ASM_MMU_H
-+
-+static inline void remap_range(void *_start, size_t size, uint32_t flags)
-+{
-+}
-+
-+#endif /* __ASM_MMU_H */
-+
-diff --git a/arch/nios2/include/asm/mmu.h b/arch/nios2/include/asm/mmu.h
-new file mode 100644
-index 0000000..0485a43
---- /dev/null
-+++ b/arch/nios2/include/asm/mmu.h
-@@ -0,0 +1,9 @@
-+#ifndef __ASM_MMU_H
-+#define __ASM_MMU_H
-+
-+static inline void remap_range(void *_start, size_t size, uint32_t flags)
-+{
-+}
-+
-+#endif /* __ASM_MMU_H */
-+
-diff --git a/arch/openrisc/include/asm/mmu.h b/arch/openrisc/include/asm/mmu.h
-new file mode 100644
-index 0000000..0485a43
---- /dev/null
-+++ b/arch/openrisc/include/asm/mmu.h
-@@ -0,0 +1,9 @@
-+#ifndef __ASM_MMU_H
-+#define __ASM_MMU_H
-+
-+static inline void remap_range(void *_start, size_t size, uint32_t flags)
-+{
-+}
-+
-+#endif /* __ASM_MMU_H */
-+
-diff --git a/arch/ppc/include/asm/mmu.h b/arch/ppc/include/asm/mmu.h
-index b2dd0b7..af263ae 100644
---- a/arch/ppc/include/asm/mmu.h
-+++ b/arch/ppc/include/asm/mmu.h
-@@ -540,4 +540,9 @@ extern int write_bat(ppc_bat_t bat, unsigned long upper, unsigned long lower);
- 					(rt<<21)|(ra<<16)|(ws<<11)|(946<<1)
- 
- #endif
-+
-+static inline void remap_range(void *_start, size_t size, uint32_t flags)
-+{
-+}
-+
- #endif /* _PPC_MMU_H_ */
-diff --git a/arch/sandbox/include/asm/mmu.h b/arch/sandbox/include/asm/mmu.h
-new file mode 100644
-index 0000000..0485a43
---- /dev/null
-+++ b/arch/sandbox/include/asm/mmu.h
-@@ -0,0 +1,9 @@
-+#ifndef __ASM_MMU_H
-+#define __ASM_MMU_H
-+
-+static inline void remap_range(void *_start, size_t size, uint32_t flags)
-+{
-+}
-+
-+#endif /* __ASM_MMU_H */
-+
-diff --git a/arch/x86/include/asm/mmu.h b/arch/x86/include/asm/mmu.h
-new file mode 100644
-index 0000000..0485a43
---- /dev/null
-+++ b/arch/x86/include/asm/mmu.h
-@@ -0,0 +1,9 @@
-+#ifndef __ASM_MMU_H
-+#define __ASM_MMU_H
-+
-+static inline void remap_range(void *_start, size_t size, uint32_t flags)
-+{
-+}
-+
-+#endif /* __ASM_MMU_H */
-+
 -- 
 1.8.1
 
