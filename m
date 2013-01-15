@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo5.mail-out.ovh.net ([178.33.107.29]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tun2c-0007FX-0m
- for barebox@lists.infradead.org; Mon, 14 Jan 2013 16:37:45 +0000
-Received: from mail439.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 532D4FF9442
- for <barebox@lists.infradead.org>; Mon, 14 Jan 2013 17:47:13 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 14 Jan 2013 17:36:12 +0100
-Message-Id: <1358181372-24547-5-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1358181372-24547-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20130114163253.GD22953@game.jcrosoft.org>
- <1358181372-24547-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-ea0-f182.google.com ([209.85.215.182])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Tv6sg-0003ue-3M
+ for barebox@lists.infradead.org; Tue, 15 Jan 2013 13:48:47 +0000
+Received: by mail-ea0-f182.google.com with SMTP id a12so48028eaa.41
+ for <barebox@lists.infradead.org>; Tue, 15 Jan 2013 05:48:44 -0800 (PST)
+From: Alexander Aring <alex.aring@gmail.com>
+Date: Tue, 15 Jan 2013 14:48:45 +0100
+Message-Id: <1358257730-20579-4-git-send-email-alex.aring@gmail.com>
+In-Reply-To: <1358257730-20579-1-git-send-email-alex.aring@gmail.com>
+References: <1358257730-20579-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,39 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] qt1070: init default key code first
+Subject: [PATCH 3/8] arm-mmu: move PAGE_ALIGN macro to common.h
 To: barebox@lists.infradead.org
 
-So the key code provided by platform_data are not overwrited
+PAGE_ALIGN macro is needed to align addresses to page boundaries.
+Move this macro to another PAGE_* defines.
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Commands which uses remap_range function needs this macro.
+
+Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- drivers/input/qt1070.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/cpu/mmu.c | 2 --
+ include/common.h   | 1 +
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/input/qt1070.c b/drivers/input/qt1070.c
-index c66189e..ebe2b81 100644
---- a/drivers/input/qt1070.c
-+++ b/drivers/input/qt1070.c
-@@ -244,6 +244,8 @@ static int qt1070_probe(struct device_d *dev)
- 	sprintf(buf, "0x%x", chip_id);
- 	dev_add_param_fixed(dev, "chip_ip", buf);
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index 6e2ecca..6e24356 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -308,8 +308,6 @@ void mmu_disable(void)
+ 	__mmu_cache_off();
+ }
  
-+	memcpy(data->code, default_code, sizeof(int) * ARRAY_SIZE(default_code));
-+
- 	ret = qt1070_pdata_init(dev, data);
- 	if (ret) {
- 		dev_err(dev, "can not get pdata (%d)\n", ret);
-@@ -258,7 +260,6 @@ static int qt1070_probe(struct device_d *dev)
- 	}
- 	data->start = get_time_ns();
+-#define PAGE_ALIGN(s) (((s) + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1))
+-
+ void *dma_alloc_coherent(size_t size)
+ {
+ 	void *ret;
+diff --git a/include/common.h b/include/common.h
+index b1c96de..9533344 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -225,6 +225,7 @@ int run_shell(void);
  
--	memcpy(data->code, default_code, sizeof(int) * ARRAY_SIZE(default_code));
+ #define PAGE_SIZE	4096
+ #define PAGE_SHIFT	12
++#define PAGE_ALIGN(s) (((s) + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1))
  
- 	data->fifo_size = 50;
- 	data->recv_fifo = kfifo_alloc(data->fifo_size);
+ int memory_display(char *addr, loff_t offs, ulong nbytes, int size, int swab);
+ 
 -- 
-1.7.10.4
+1.8.1
 
 
 _______________________________________________
