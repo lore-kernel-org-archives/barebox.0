@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TvZfA-0007zg-Vi
- for barebox@lists.infradead.org; Wed, 16 Jan 2013 20:32:45 +0000
-Date: Wed, 16 Jan 2013 21:32:41 +0100
+ id 1TvZgD-00082R-Fk
+ for barebox@lists.infradead.org; Wed, 16 Jan 2013 20:33:50 +0000
+Date: Wed, 16 Jan 2013 21:33:48 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130116203241.GY1906@pengutronix.de>
-References: <1358282612-3140-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130116203348.GZ1906@pengutronix.de>
+References: <1358308944-5842-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1358282612-3140-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1358308944-5842-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,13 +22,11 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] defaultenv-2: execute init/* before timeout
+Subject: Re: [PATCH 1/1] graphic_utils/fb_open: fix fbsize
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jan 15, 2013 at 09:43:32PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> so we can have splash, usb serial, etc...
-> 
+On Wed, Jan 16, 2013 at 05:02:24AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
 Applied, thanks
@@ -36,39 +34,22 @@ Applied, thanks
 Sascha
 
 > ---
->  defaultenv-2/base/bin/init |   12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
+>  lib/gui/graphic_utils.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/defaultenv-2/base/bin/init b/defaultenv-2/base/bin/init
-> index 2a1f6a1..b606b63 100644
-> --- a/defaultenv-2/base/bin/init
-> +++ b/defaultenv-2/base/bin/init
-> @@ -21,8 +21,9 @@ else
->  	echo -e -n "\nHit any key to stop autoboot: "
->  fi
+> diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
+> index 3800ee2..95687df 100644
+> --- a/lib/gui/graphic_utils.c
+> +++ b/lib/gui/graphic_utils.c
+> @@ -219,7 +219,7 @@ int fb_open(const char * fbdev, struct screen *sc, bool offscreen)
+>  	sc->s.y = 0;
+>  	sc->s.width = sc->info.xres;
+>  	sc->s.height = sc->info.yres;
+> -	sc->fbsize = sc->s.x * sc->s.x * (sc->info.bits_per_pixel >> 3);
+> +	sc->fbsize = sc->s.width * sc->s.height * (sc->info.bits_per_pixel >> 3);
 >  
-> -timeout -a $global.autoboot_timeout -v key
-> -autoboot="$?"
-> +# allow to stop the boot before execute the /env/init/*
-> +# but without waiting
-> +timeout -s -a -v key 0
->  
->  if [ "${key}" = "q" ]; then
->  	exit
-> @@ -32,6 +33,13 @@ for i in /env/init/*; do
->  	. $i
->  done
->  
-> +timeout -a $global.autoboot_timeout -v key
-> +autoboot="$?"
-> +
-> +if [ "${key}" = "q" ]; then
-> +	exit
-> +fi
-> +
->  if [ "$autoboot" = 0 ]; then
->  	boot
->  fi
+>  	if (offscreen) {
+>  		/* Don't fail if malloc fails, just continue rendering directly
 > -- 
 > 1.7.10.4
 > 
