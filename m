@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
- helo=mo2.mail-out.ovh.net)
+Received: from 17.mo5.mail-out.ovh.net ([46.105.56.132]
+ helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TvDWJ-0005CY-20
- for barebox@lists.infradead.org; Tue, 15 Jan 2013 20:54:09 +0000
-Received: from mail626.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 3F681DC2891
- for <barebox@lists.infradead.org>; Tue, 15 Jan 2013 21:54:31 +0100 (CET)
+ id 1TvKEE-0000my-2w
+ for barebox@lists.infradead.org; Wed, 16 Jan 2013 04:03:55 +0000
+Received: from mail644.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 1212DFFA7DB
+ for <barebox@lists.infradead.org>; Wed, 16 Jan 2013 05:13:28 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 15 Jan 2013 21:43:32 +0100
-Message-Id: <1358282612-3140-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 16 Jan 2013 05:02:24 +0100
+Message-Id: <1358308944-5842-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,46 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] defaultenv-2: execute init/* before timeout
+Subject: [PATCH 1/1] graphic_utils/fb_open: fix fbsize
 To: barebox@lists.infradead.org
-
-so we can have splash, usb serial, etc...
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- defaultenv-2/base/bin/init |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ lib/gui/graphic_utils.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/defaultenv-2/base/bin/init b/defaultenv-2/base/bin/init
-index 2a1f6a1..b606b63 100644
---- a/defaultenv-2/base/bin/init
-+++ b/defaultenv-2/base/bin/init
-@@ -21,8 +21,9 @@ else
- 	echo -e -n "\nHit any key to stop autoboot: "
- fi
+diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
+index 3800ee2..95687df 100644
+--- a/lib/gui/graphic_utils.c
++++ b/lib/gui/graphic_utils.c
+@@ -219,7 +219,7 @@ int fb_open(const char * fbdev, struct screen *sc, bool offscreen)
+ 	sc->s.y = 0;
+ 	sc->s.width = sc->info.xres;
+ 	sc->s.height = sc->info.yres;
+-	sc->fbsize = sc->s.x * sc->s.x * (sc->info.bits_per_pixel >> 3);
++	sc->fbsize = sc->s.width * sc->s.height * (sc->info.bits_per_pixel >> 3);
  
--timeout -a $global.autoboot_timeout -v key
--autoboot="$?"
-+# allow to stop the boot before execute the /env/init/*
-+# but without waiting
-+timeout -s -a -v key 0
- 
- if [ "${key}" = "q" ]; then
- 	exit
-@@ -32,6 +33,13 @@ for i in /env/init/*; do
- 	. $i
- done
- 
-+timeout -a $global.autoboot_timeout -v key
-+autoboot="$?"
-+
-+if [ "${key}" = "q" ]; then
-+	exit
-+fi
-+
- if [ "$autoboot" = 0 ]; then
- 	boot
- fi
+ 	if (offscreen) {
+ 		/* Don't fail if malloc fails, just continue rendering directly
 -- 
 1.7.10.4
 
