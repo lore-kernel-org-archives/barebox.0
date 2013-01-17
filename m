@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tvlv2-0001wT-6D
- for barebox@lists.infradead.org; Thu, 17 Jan 2013 09:37:59 +0000
+ id 1TvmB7-0004IN-PY
+ for barebox@lists.infradead.org; Thu, 17 Jan 2013 09:54:35 +0000
+Date: Thu, 17 Jan 2013 10:54:31 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 17 Jan 2013 10:37:44 +0100
-Message-Id: <1358415464-4657-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1358415464-4657-1-git-send-email-s.hauer@pengutronix.de>
-References: <1358415464-4657-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20130117095431.GB1906@pengutronix.de>
+References: <1358257730-20579-1-git-send-email-alex.aring@gmail.com>
+ <1358257730-20579-9-git-send-email-alex.aring@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1358257730-20579-9-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,260 +19,236 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] ARM Ka-Ro Tx25: Switch to new environment
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 8/8] memtest: add rewritten memtest command
+To: Alexander Aring <alex.aring@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Also update config for supporting external NAND boot.
+On Tue, Jan 15, 2013 at 02:48:50PM +0100, Alexander Aring wrote:
+> Rewrite memtest command:
+> 	- Skip barebox sdram regions.
+> 	- Uncache unused mem regions while testing.
+> 	- Add iteration parameter.
+> 	- Add parameter to do only bus testing.
+> 	- Check start and end addresses.
+> 	- Testing all banks if no start and end
+> 	  address are given.
+> 
+> 	- Add sha changes (thanks):
+> 	- fix calculation of regions to test. When we use PAGE_ALIGN on
+> 	  size, size can be to high.
+> 	  - start address has to be aligned up
+> 	  - end address has to be aligned down
+> 	  - then size can be calculated as end - start + 1
+> 	- Add ctrlc() to the longer loops
+> 	- Add a progress bar to give some visual feedback that something
+> 	  issues
+> 	  still going on.
+> 
+> 	- Change to use end element instead of size in region struct.
+> 	- Fix some newline issues.
+> 
+> 	- Add '-c' parameter if CONFIG_MMU enabled
+> 	  to test with enabled cache.
+> 	- Fix some size calculation.
+> 	- set start address to 0xffffffff
+> 
+> Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+> ---
+>  commands/Kconfig   |   9 +
+>  commands/Makefile  |   1 +
+>  commands/memtest.c | 698 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 708 insertions(+)
+>  create mode 100644 commands/memtest.c
+> 
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index fc0e448..f027a7e 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -496,6 +496,15 @@ config CMD_NANDTEST
+>  	select PARTITION_NEED_MTD
+>  	prompt "nandtest"
+>  
+> +config CMD_MEMTEST
+> +    tristate
+> +    prompt "memtest"
+> +	help
+> +	  This command enables a memtest to test installed memory.
+> +	  During this test allocated iomem regions will be skipped.
+> +	  If tested architecture has MMU with PTE flags support,
+> +	  caching can be set enabled or disabled.
+> +
+>  endmenu
+>  
+>  menu "video command"
+> diff --git a/commands/Makefile b/commands/Makefile
+> index 3145685..6b4d9cb 100644
+> --- a/commands/Makefile
+> +++ b/commands/Makefile
+> @@ -7,6 +7,7 @@ obj-$(CONFIG_CMD_LOADY)		+= loadxy.o
+>  obj-$(CONFIG_CMD_LOADS)		+= loads.o
+>  obj-$(CONFIG_CMD_ECHO)		+= echo.o
+>  obj-$(CONFIG_CMD_MEMORY)	+= mem.o
+> +obj-$(CONFIG_CMD_MEMTEST)   += memtest.o
+>  obj-$(CONFIG_CMD_EDIT)		+= edit.o
+>  obj-$(CONFIG_CMD_EXEC)		+= exec.o
+>  obj-$(CONFIG_CMD_SLEEP)		+= sleep.o
+> diff --git a/commands/memtest.c b/commands/memtest.c
+> new file mode 100644
+> index 0000000..c31e553
+> --- /dev/null
+> +++ b/commands/memtest.c
+> @@ -0,0 +1,698 @@
+> +/*
+> + * memtest - Perform a memory test
+> + *
+> + * (C) Copyright 2013
+> + * Alexander Aring <a.aring@gmail.com>
+> + *
+> + * (C) Copyright 2000
+> + * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+> + *
+> + * See file CREDITS for list of people who contributed to this
+> + * project.
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> + * MA 02111-1307 USA
+> + */
+> +
+> +#include <common.h>
+> +#include <command.h>
+> +#include <types.h>
+> +#include <getopt.h>
+> +#include <memory.h>
+> +#include <errno.h>
+> +#include <progress.h>
+> +#include <asm/mmu.h>
+> +
+> +static const vu_long bitpattern[] = {
+> +	0x00000001,	/* single bit */
+> +	0x00000003,	/* two adjacent bits */
+> +	0x00000007,	/* three adjacent bits */
+> +	0x0000000F,	/* four adjacent bits */
+> +	0x00000005,	/* two non-adjacent bits */
+> +	0x00000015,	/* three non-adjacent bits */
+> +	0x00000055,	/* four non-adjacent bits */
+> +	0xAAAAAAAA,	/* alternating 1/0 */
+> +};
+> +
+> +/*
+> + * In CONFIG_MMU we have a special c flag.
+> + */
+> +#ifdef CONFIG_MMU
+> +static char optstr[] = "s:e:i:cb";
+> +
+> +/*
+> + * PTE flags variables to set cached and
+> + * uncached regions.
+> + */
+> +static uint32_t PTE_FLAGS_CACHED;
+> +static uint32_t PTE_FLAGS_UNCACHED;
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/karo-tx25/env/bin/init_board     |    6 ---
- arch/arm/boards/karo-tx25/env/boot/nand-ubi      |   10 +++++
- arch/arm/boards/karo-tx25/env/config             |   48 ----------------------
- arch/arm/boards/karo-tx25/env/init/config-board  |    7 ++++
- arch/arm/boards/karo-tx25/env/init/mtdparts-nand |   11 +++++
- arch/arm/configs/tx25stk5_defconfig              |   42 ++++++++++++++-----
- arch/arm/mach-imx/Kconfig                        |    1 +
- 7 files changed, 61 insertions(+), 64 deletions(-)
- delete mode 100644 arch/arm/boards/karo-tx25/env/bin/init_board
- create mode 100644 arch/arm/boards/karo-tx25/env/boot/nand-ubi
- delete mode 100644 arch/arm/boards/karo-tx25/env/config
- create mode 100644 arch/arm/boards/karo-tx25/env/init/config-board
- create mode 100644 arch/arm/boards/karo-tx25/env/init/mtdparts-nand
+Please no uppercase letters for variable names.
 
-diff --git a/arch/arm/boards/karo-tx25/env/bin/init_board b/arch/arm/boards/karo-tx25/env/bin/init_board
-deleted file mode 100644
-index 1f35c96..0000000
---- a/arch/arm/boards/karo-tx25/env/bin/init_board
-+++ /dev/null
-@@ -1,6 +0,0 @@
--
--if [ -e /dev/fb0 -a -e /env/splash.bmp ]; then
--	splash /env/splash.bmp
--	fb0.enable=1
--fi
--
-diff --git a/arch/arm/boards/karo-tx25/env/boot/nand-ubi b/arch/arm/boards/karo-tx25/env/boot/nand-ubi
-new file mode 100644
-index 0000000..67b0cb4
---- /dev/null
-+++ b/arch/arm/boards/karo-tx25/env/boot/nand-ubi
-@@ -0,0 +1,10 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	boot-menu-add-entry "$0" "nand (UBI)"
-+	exit
-+fi
-+
-+global.bootm.image="/dev/nand0.kernel.bb"
-+#global.bootm.oftree="/env/oftree"
-+global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rootfstype=ubifs"
-diff --git a/arch/arm/boards/karo-tx25/env/config b/arch/arm/boards/karo-tx25/env/config
-deleted file mode 100644
-index 4ccf082..0000000
---- a/arch/arm/boards/karo-tx25/env/config
-+++ /dev/null
-@@ -1,48 +0,0 @@
--
--global.hostname=tx25
--baseboard=tx28stk5
--user=
--
--# use 'dhcp' to do dhcp in barebox and in kernel
--# use 'none' if you want to skip kernel ip autoconfiguration
--ip=dhcp
--
--# or set your networking parameters here
--#eth0.ipaddr=a.b.c.d
--#eth0.ethaddr=de:ad:be:ef:00:00
--#eth0.netmask=a.b.c.d
--#eth0.serverip=a.b.c.d
--#eth0.gateway=a.b.c.d
--
--# can be either 'nfs' or 'tftp'
--kernel_loc=tftp
--# can be either 'net' or 'initrd'
--rootfs_loc=net
--
--# can be either 'jffs2' or 'ubifs'
--rootfs_type=ubifs
--rootfsimage=root-${global.hostname}.$rootfs_type
--
--kernelimage=zImage-${global.hostname}
--#kernelimage=uImage-${global.hostname}
--#kernelimage=Image-${global.hostname}
--#kernelimage=Image-${global.hostname}.lzo
--
--if [ -n $user ]; then
--	kernelimage="$user"-"$kernelimage"
--	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
--	rootfsimage="$user"-"$rootfsimage"
--else
--	nfsroot="$eth0.serverip:/path/to/nfs/root"
--fi
--
--autoboot_timeout=3
--
--bootargs="console=ttymxc0,115200 tx25_base=$baseboard"
--
--nand_parts="512k(barebox)ro,512k(bareboxenv),4M(kernel),-(root)"
--nand_device=mxc_nand
--rootfs_mtdblock_nand=3
--
--PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
--
-diff --git a/arch/arm/boards/karo-tx25/env/init/config-board b/arch/arm/boards/karo-tx25/env/init/config-board
-new file mode 100644
-index 0000000..943b002
---- /dev/null
-+++ b/arch/arm/boards/karo-tx25/env/init/config-board
-@@ -0,0 +1,7 @@
-+#!/bin/sh
-+
-+# board defaults, do not change in running system. Change /env/config
-+# instead
-+
-+global.hostname=tx25
-+global.linux.bootargs.base="console=ttymxc0,115200"
-diff --git a/arch/arm/boards/karo-tx25/env/init/mtdparts-nand b/arch/arm/boards/karo-tx25/env/init/mtdparts-nand
-new file mode 100644
-index 0000000..4fffefc
---- /dev/null
-+++ b/arch/arm/boards/karo-tx25/env/init/mtdparts-nand
-@@ -0,0 +1,11 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	init-menu-add-entry "$0" "NAND partitions"
-+	exit
-+fi
-+
-+mtdparts="512k(nand0.barebox)ro,512k(nand0.bareboxenv),4M(nand0.kernel),-(nand0.root)"
-+kernelname="mxc_nand"
-+
-+mtdparts-add -b -d nand0 -k ${kernelname} -p ${mtdparts}
-diff --git a/arch/arm/configs/tx25stk5_defconfig b/arch/arm/configs/tx25stk5_defconfig
-index 8ec5178..365a940 100644
---- a/arch/arm/configs/tx25stk5_defconfig
-+++ b/arch/arm/configs/tx25stk5_defconfig
-@@ -1,58 +1,71 @@
- CONFIG_ARCH_IMX=y
-+CONFIG_ARCH_IMX_EXTERNAL_BOOT=y
-+CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND=y
- CONFIG_ARCH_IMX25=y
- CONFIG_MACH_TX25=y
- CONFIG_IMX_IIM=y
- CONFIG_AEABI=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_ARM_UNWIND=y
-+CONFIG_PBL_IMAGE=y
- CONFIG_MMU=y
-+CONFIG_TEXT_BASE=0x91d00000
- CONFIG_MALLOC_SIZE=0x1000000
- CONFIG_MALLOC_TLSF=y
- CONFIG_KALLSYMS=y
- CONFIG_LONGHELP=y
--CONFIG_GLOB=y
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
--CONFIG_PARTITION=y
--CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/karo-tx25/env"
-+CONFIG_RESET_SOURCE=y
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_MSLEEP=y
- CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_LOADENV=y
- CONFIG_CMD_EXPORT=y
- CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_READLINE=y
- CONFIG_CMD_TIME=y
-+CONFIG_CMD_DIRNAME=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_READLINK=y
-+CONFIG_CMD_TFTP=y
-+CONFIG_CMD_FILETYPE=y
- CONFIG_CMD_ECHO_E=y
- CONFIG_CMD_MEMINFO=y
- CONFIG_CMD_IOMEM=y
--CONFIG_CMD_MTEST=y
--CONFIG_CMD_MTEST_ALTERNATIVE=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
-+CONFIG_CMD_MD5SUM=y
- CONFIG_CMD_FLASH=y
-+CONFIG_CMD_UBIFORMAT=y
- CONFIG_CMD_BOOTM_SHOW_TYPE=y
- CONFIG_CMD_BOOTM_VERBOSE=y
- CONFIG_CMD_BOOTM_INITRD=y
- CONFIG_CMD_BOOTM_OFTREE=y
- CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
- CONFIG_CMD_UIMAGE=y
--# CONFIG_CMD_BOOTZ is not set
- # CONFIG_CMD_BOOTU is not set
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_OFTREE_PROBE=y
-+CONFIG_CMD_MTEST=y
-+CONFIG_CMD_MTEST_ALTERNATIVE=y
-+CONFIG_CMD_SPLASH=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_MAGICVAR=y
- CONFIG_CMD_MAGICVAR_HELP=y
--CONFIG_CMD_SPLASH=y
- CONFIG_CMD_GPIO=y
- CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_CLK=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_PING=y
--CONFIG_CMD_TFTP=y
--CONFIG_FS_TFTP=y
- CONFIG_NET_NETCONSOLE=y
- CONFIG_DRIVER_NET_FEC_IMX=y
- # CONFIG_SPI is not set
-@@ -62,5 +75,14 @@ CONFIG_NAND_IMX=y
- CONFIG_UBI=y
- CONFIG_VIDEO=y
- CONFIG_DRIVER_VIDEO_IMX=y
-+CONFIG_MCI=y
-+CONFIG_MCI_IMX_ESDHC=y
-+CONFIG_WATCHDOG=y
-+CONFIG_WATCHDOG_IMX=y
-+CONFIG_FS_TFTP=y
-+CONFIG_FS_NFS=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
- CONFIG_ZLIB=y
- CONFIG_LZO_DECOMPRESS=y
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index feef9ad..3cb35a0 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -259,6 +259,7 @@ config MACH_FREESCALE_MX25_3STACK
- config MACH_TX25
- 	bool "Ka-Ro TX25"
- 	select MACH_HAS_LOWLEVEL_INIT
-+	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 	help
- 	  Say Y here if you are using the Ka-Ro tx25 board
- 
+> +#else
+> +static char optstr[] = "s:e:i:b";
+> +#endif
+> +
+> +/*
+> + * Perform a memory test. The complete test
+> + * loops until interrupted by ctrl-c.
+> + */
+> +static int mem_test(vu_long _start, vu_long _end,
+> +		int bus_only)
+
+It would be good to move this function to common/memory_test.c. This way
+it could be called from C. Especially testing memory might be called
+from some early small (no shell) development binaries which are running from some
+internal SRAM.
+
+> +{
+> +	vu_long *start = (vu_long *)_start;
+> +	/* Point the dummy to start[1] */
+> +	vu_long *dummy = start+1;
+> +
+> +	vu_long val;
+> +	vu_long readback;
+> +	vu_long offset;
+> +	vu_long pattern;
+> +	vu_long test_offset;
+> +	vu_long temp;
+> +	vu_long anti_pattern;
+> +	vu_long num_words;
+> +
+> +	int i;
+> +	int ret;
+> +
+> +	if (!IS_ALIGNED(_end - _start + 1, sizeof(vu_long))) {
+> +		printf("Testing memarea size (0x%08lx) not a multiple"
+> +				"of size 0x%x, please change start or end address.",
+> +				_end - _start + 1, sizeof(vu_long));
+> +		return -1;
+> +	}
+
+I think this is both too restrictive and not restitrictive enough. How
+about quietly aligning up the start to a multiple-of-4 boundary and the
+end down to a multiple-of-4 boundary?
+
+The above requires me to enter a address containing a lot of 'f's and it
+will happily crash my system if I pass 0xa0000001 as start address.
+
+> +
+> +	num_words = (_end - _start + 1)/sizeof(vu_long);
+> +
+> +	printf("Starting data line test.\n");
+> +
+> +	/*
+> +	 * Data line test: write a pattern to the first
+> +	 * location, write the 1's complement to a 'parking'
+> +	 * address (changes the state of the data bus so a
+> +	 * floating bus doen't give a false OK), and then
+> +	 * read the value back. Note that we read it back
+> +	 * into a variable because the next time we read it,
+> +	 * it might be right (been there, tough to explain to
+> +	 * the quality guys why it prints a failure when the
+> +	 * "is" and "should be" are obviously the same in the
+> +	 * error message).
+> +	 *
+> +	 * Rather than exhaustively testing, we test some
+> +	 * patterns by shifting '1' bits through a field of
+> +	 * '0's and '0' bits through a field of '1's (i.e.
+> +	 * pattern and ~pattern).
+> +	 */
+> +	for (i = 0; i < sizeof(bitpattern)/
+> +			sizeof(bitpattern[0]); i++) {
+> +		ret = address_in_sdram_regions((vu_long)start);
+
+Can't you just call request_sdram_region at the beginning of this
+function? Then you can be sure that you exclusivly own the region and do
+not have to test for it on and on again here.
+
+Sascha
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
