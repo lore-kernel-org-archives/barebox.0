@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oa0-f43.google.com ([209.85.219.43])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tvlth-0001OZ-7J
- for barebox@lists.infradead.org; Thu, 17 Jan 2013 09:36:34 +0000
-Received: by mail-oa0-f43.google.com with SMTP id k1so2414187oag.30
- for <barebox@lists.infradead.org>; Thu, 17 Jan 2013 01:36:31 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20121116175355.GB8327@game.jcrosoft.org>
-References: <20121116175355.GB8327@game.jcrosoft.org>
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-Date: Thu, 17 Jan 2013 10:36:11 +0100
-Message-ID: <CAHkwnC_jQS_0GX7WGJX6xMm-eNG7x+pbmZgdtHBxUFBsfCdHiw@mail.gmail.com>
+ id 1Tvlut-0001sL-VF
+ for barebox@lists.infradead.org; Thu, 17 Jan 2013 09:37:48 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1Tvlus-0000aC-Jm
+ for barebox@lists.infradead.org; Thu, 17 Jan 2013 10:37:46 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1Tvlus-000256-Ik
+ for barebox@lists.infradead.org; Thu, 17 Jan 2013 10:37:46 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 17 Jan 2013 10:37:40 +0100
+Message-Id: <1358415464-4657-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,89 +21,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/7 v2] at91sam9 add watchdog support with keep alive
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Ka-Ro TX25 updates
+To: barebox@lists.infradead.org
 
-Hi Jean-Christophe ,
+Some updates for the Ka-Ro TX25. First two patches are fixes, the remaining
+update to the new environment.
 
-On Fri, Nov 16, 2012 at 6:53 PM, Jean-Christophe PLAGNIOL-VILLARD
-<plagnioj@jcrosoft.com> wrote:
-> HI,
->
->         v2:
->
->          found a bug on MMU platform the watchdodog need to init before the
->          poll register on non-MMU it work fine
->
->          btw register the wdt drvier as coredevice asame as the device
->
->         The following patch series add the at91sam9 watchdog present on
->         sam9260/9g20/9261/9g10/9g45/9x5
->
->         and introdudce the kep a live support so we can reset the watchdog via
->         poller
->
-> The following changes since commit 281b927f44ae94280648714e3587efa4419f6ce3:
->
->   Release v2012.11.0 (2012-11-16 13:54:49 +0100)
->
-> are available in the git repository at:
->
->   git://git.jcrosoft.org/barebox.git delivery/at91sam9_wdt
->
-> for you to fetch changes up to 4b4830060956d58f924fc14020609ba5c4fe44ca:
->
->   at91sam9x5: add wathdog support (2012-11-15 04:20:49 +0800)
->
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (7):
->       watchdog: add keep alive support
->       watchdog: add at91sam9 watchdog support
->       at91sam9260/9g20: add wathdog support
->       at91sam9261/9g10: add wathdog support
->       at91sam9263: add wathdog support
->       at91sam9g45: add wathdog support
->       at91sam9x5: add wathdog support
->
->  arch/arm/mach-at91/at91sam9260_devices.c |   12 ++++++++++++
->  arch/arm/mach-at91/at91sam9261_devices.c |   12 ++++++++++++
->  arch/arm/mach-at91/at91sam9263_devices.c |   11 +++++++++++
->  arch/arm/mach-at91/at91sam9g45_devices.c |   12 ++++++++++++
->  arch/arm/mach-at91/at91sam9x5_devices.c  |   12 ++++++++++++
->  drivers/watchdog/Kconfig                 |    8 ++++++++
->  drivers/watchdog/Makefile                |    1 +
->  drivers/watchdog/at91sam9_wdt.c          |  131 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/watchdog/at91sam9_wdt.h          |   38 ++++++++++++++++++++++++++++++++++++++
->  drivers/watchdog/wd_core.c               |   21 +++++++++++++++++++++
->  include/watchdog.h                       |    2 ++
->  11 files changed, 260 insertions(+)
->  create mode 100644 drivers/watchdog/at91sam9_wdt.c
->  create mode 100644 drivers/watchdog/at91sam9_wdt.h
->
-> Best Regards,
-> J.
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Sascha
 
-Thanks for the work.
+----------------------------------------------------------------
+Sascha Hauer (4):
+      ARM Ka-Ro TX25: fix running in SDRAM test
+      ARM Ka-Ro TX25: fix compilation with external NAND boot enabled
+      ARM Ka-Ro TX25: Increase NAND partitions
+      ARM Ka-Ro Tx25: Switch to new environment
 
-I'd love to have the watchdog support for at91.
-
-Are you still working on it?
-
-Can I help?
-
-Best regards
---
-Fabio Porcedda
+ arch/arm/boards/karo-tx25/board.c                |    5 ++-
+ arch/arm/boards/karo-tx25/env/bin/init_board     |    6 ---
+ arch/arm/boards/karo-tx25/env/boot/nand-ubi      |   10 +++++
+ arch/arm/boards/karo-tx25/env/config             |   48 ----------------------
+ arch/arm/boards/karo-tx25/env/init/config-board  |    7 ++++
+ arch/arm/boards/karo-tx25/env/init/mtdparts-nand |   11 +++++
+ arch/arm/boards/karo-tx25/lowlevel.c             |    5 +--
+ arch/arm/configs/tx25stk5_defconfig              |   42 ++++++++++++++-----
+ arch/arm/mach-imx/Kconfig                        |    1 +
+ 9 files changed, 66 insertions(+), 69 deletions(-)
+ delete mode 100644 arch/arm/boards/karo-tx25/env/bin/init_board
+ create mode 100644 arch/arm/boards/karo-tx25/env/boot/nand-ubi
+ delete mode 100644 arch/arm/boards/karo-tx25/env/config
+ create mode 100644 arch/arm/boards/karo-tx25/env/init/config-board
+ create mode 100644 arch/arm/boards/karo-tx25/env/init/mtdparts-nand
 
 _______________________________________________
 barebox mailing list
