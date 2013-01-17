@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tvluu-0001sS-CF
+ id 1Tvluu-0001sU-CG
  for barebox@lists.infradead.org; Thu, 17 Jan 2013 09:37:49 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 17 Jan 2013 10:37:41 +0100
-Message-Id: <1358415464-4657-2-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 17 Jan 2013 10:37:43 +0100
+Message-Id: <1358415464-4657-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1358415464-4657-1-git-send-email-s.hauer@pengutronix.de>
 References: <1358415464-4657-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] ARM Ka-Ro TX25: fix running in SDRAM test
+Subject: [PATCH 3/4] ARM Ka-Ro TX25: Increase NAND partitions
 To: barebox@lists.infradead.org
-
-The end of SDRAM is at 0x9fffffff, not at 0x8fffffff. This fixes starting
-barebox when it is located in the second SDRAM bank.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/karo-tx25/lowlevel.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boards/karo-tx25/board.c    |    5 +++--
+ arch/arm/boards/karo-tx25/env/config |    2 +-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boards/karo-tx25/lowlevel.c b/arch/arm/boards/karo-tx25/lowlevel.c
-index 9c5cc5c..d0afad2 100644
---- a/arch/arm/boards/karo-tx25/lowlevel.c
-+++ b/arch/arm/boards/karo-tx25/lowlevel.c
-@@ -130,7 +130,7 @@ void __bare_init __naked reset(void)
+diff --git a/arch/arm/boards/karo-tx25/board.c b/arch/arm/boards/karo-tx25/board.c
+index 98140b3..fba5e6a 100644
+--- a/arch/arm/boards/karo-tx25/board.c
++++ b/arch/arm/boards/karo-tx25/board.c
+@@ -20,6 +20,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <driver.h>
++#include <sizes.h>
+ #include <environment.h>
+ #include <mach/imx25-regs.h>
+ #include <asm/armlinux.h>
+@@ -102,10 +103,10 @@ static int tx25_devices_init(void)
  
- 	/* Skip SDRAM initialization if we run from RAM */
- 	r = get_pc();
--	if (r > 0x80000000 && r < 0x90000000)
-+	if (r > 0x80000000 && r < 0xa0000000)
- 		board_init_lowlevel_return();
+ 	imx25_add_nand(&nand_info);
  
- 	/* set to 3.3v SDRAM */
+-	devfs_add_partition("nand0", 0x00000, 0x40000, DEVFS_PARTITION_FIXED, "self_raw");
++	devfs_add_partition("nand0", 0x00000, SZ_512K, DEVFS_PARTITION_FIXED, "self_raw");
+ 	dev_add_bb_dev("self_raw", "self0");
+ 
+-	devfs_add_partition("nand0", 0x40000, 0x80000, DEVFS_PARTITION_FIXED, "env_raw");
++	devfs_add_partition("nand0", SZ_512K, SZ_512K, DEVFS_PARTITION_FIXED, "env_raw");
+ 	dev_add_bb_dev("env_raw", "env0");
+ 
+ 	add_mem_device("sram0", 0x78000000, 128 * 1024,
+diff --git a/arch/arm/boards/karo-tx25/env/config b/arch/arm/boards/karo-tx25/env/config
+index 87beb6d..4ccf082 100644
+--- a/arch/arm/boards/karo-tx25/env/config
++++ b/arch/arm/boards/karo-tx25/env/config
+@@ -40,7 +40,7 @@ autoboot_timeout=3
+ 
+ bootargs="console=ttymxc0,115200 tx25_base=$baseboard"
+ 
+-nand_parts="256k(barebox)ro,512k(bareboxenv),2M(kernel),-(root)"
++nand_parts="512k(barebox)ro,512k(bareboxenv),4M(kernel),-(root)"
+ nand_device=mxc_nand
+ rootfs_mtdblock_nand=3
+ 
 -- 
 1.7.10.4
 
