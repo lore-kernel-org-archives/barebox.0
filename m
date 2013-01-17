@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TvtYF-0004vD-9k
- for barebox@lists.infradead.org; Thu, 17 Jan 2013 17:46:59 +0000
-Date: Thu, 17 Jan 2013 18:46:53 +0100
+ id 1TvtgG-0005sn-Nn
+ for barebox@lists.infradead.org; Thu, 17 Jan 2013 17:55:17 +0000
+Date: Thu, 17 Jan 2013 18:55:11 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130117174653.GC1906@pengutronix.de>
-References: <1358386760-9249-1-git-send-email-vicencb@gmail.com>
+Message-ID: <20130117175511.GD1906@pengutronix.de>
+References: <cover.1358400153.git.d.mierswa@phytec.de>
+ <6bf1089855588c8d227009989b54c826ac8e245e.1358400153.git.d.mierswa@phytec.de>
+ <20130117115625.GE22953@game.jcrosoft.org>
+ <50F7F6D6.8080008@impulze.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1358386760-9249-1-git-send-email-vicencb@gmail.com>
+In-Reply-To: <50F7F6D6.8080008@impulze.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +25,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] improvements in: omap4 OPP, omap4 usb booting and
- archosg9
-To: Vicente Bergas <vicencb@gmail.com>
+Subject: Re: [PATCH 4/4] video/imx: always initialize offscreenbuf member
+To: Daniel Mierswa <impulze@impulze.org>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jan 17, 2013 at 02:39:17AM +0100, Vicente Bergas wrote:
->  .- in omap4 OPP use recommended values from datasheet
->  .- when booting an omap4 through usb it failed from time to time
->     this patch solves this problem
->  .- on archos g9 tablet, use the same pad_conf values readden from linux
->     when booting with avboot (archos own bootloader)
->  .- also on archos g9 tablet reorder initialization: first voltages then clocks
+On Thu, Jan 17, 2013 at 02:04:22PM +0100, Daniel Mierswa wrote:
+> On 01/17/2013 12:56 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 07:32 Thu 17 Jan     , Daniel Mierswa wrote:
+> >> +	/*
+> >> +	 * sc.offscreenbuf is dangling here, if no offscreen buffer was
+> >> +	 * requested, so set it to NULL otherwise the free in fd_close
+> >> +	 * will cause undefined behaviour
+> >> +	 */
+> >> +	if (!offscreen)
+> >> +		sc.offscreenbuf = NULL;
+> >> +
+> > NAck
+> > 
+> > this is already done by memset
+> > 
+> > Best Regards,
+> > J.
+> >>  	if (sc.offscreenbuf) {
+> >>  		if (do_bg)
+> >>  			memset_pixel(&info, sc.offscreenbuf, bg_color,
 > 
-> Vicente Bergas (3):
->   OMAP4: use OPPs recommended in datasheet
->   OMAP4_USB: more stable communications
->   ARCHOS: use manufacturer values for pad_conf and reorder
->     initialization
+> Huh? I don't get it.
 
-Applied, thanks
+sc is initialized to 0 in do_splash:
+
+	memset(&s, 0, sizeof(s));
+	memset(&sc, 0, sizeof(sc));
+	memset(&info, 0, sizeof(info));
+
+so sc.offscreenbuf = NULL is a no-op.
 
 Sascha
 
-> 
->  arch/arm/boards/archosg9/board.c              |   1 +
->  arch/arm/boards/archosg9/lowlevel.c           |  18 +-
->  arch/arm/boards/archosg9/mux.c                | 654 +++++++++-----------------
->  arch/arm/mach-omap/include/mach/omap4-clock.h |  12 +-
->  scripts/omap4_usbboot.c                       |  68 ++-
->  scripts/usb_linux.c                           |   4 +-
->  6 files changed, 295 insertions(+), 462 deletions(-)
-> 
-> -- 
-> 1.8.1.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
