@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.eta-ori.net ([2001:41d0:8:140a::5] helo=orion.eta-ori.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tw3Tg-0006iz-5L
- for barebox@lists.infradead.org; Fri, 18 Jan 2013 04:22:53 +0000
-Received: from [10.0.0.138] (p5DC36D5E.dip.t-dialin.net [93.195.109.94])
- by orion.eta-ori.net (Postfix) with ESMTPSA id DDA5A60055
- for <barebox@lists.infradead.org>; Fri, 18 Jan 2013 05:22:48 +0100 (CET)
-Message-ID: <50F8CE69.9010708@impulze.org>
-Date: Fri, 18 Jan 2013 05:24:09 +0100
-From: Daniel Mierswa <impulze@impulze.org>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Tw96a-0004wk-6n
+ for barebox@lists.infradead.org; Fri, 18 Jan 2013 10:23:26 +0000
+Date: Fri, 18 Jan 2013 11:23:19 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130118102319.GE1906@pengutronix.de>
 References: <cover.1358400153.git.d.mierswa@phytec.de>
- <6bf1089855588c8d227009989b54c826ac8e245e.1358400153.git.d.mierswa@phytec.de>
- <20130117115625.GE22953@game.jcrosoft.org> <50F7F6D6.8080008@impulze.org>
- <20130117175511.GD1906@pengutronix.de>
-In-Reply-To: <20130117175511.GD1906@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <cover.1358400153.git.d.mierswa@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,27 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] video/imx: always initialize offscreenbuf member
-To: barebox@lists.infradead.org
+Subject: Re: [RESEND PATCH] framebuffer work (especially i.MX)
+To: Daniel Mierswa <d.mierswa@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On 01/17/2013 06:55 PM, Sascha Hauer wrote:
-> sc is initialized to 0 in do_splash:
+On Thu, Jan 17, 2013 at 07:32:55AM +0100, Daniel Mierswa wrote:
+> I adjusted the patch series and added the fixes as discussed on the
+> mailinglist.
 > 
-> 	memset(&s, 0, sizeof(s));
-> 	memset(&sc, 0, sizeof(sc));
-> 	memset(&info, 0, sizeof(info));
+> I still somehow feel that the offscreenbuf member should be set by
+> the fd_open routine because I expect fd_close to always work with the
+> struct set by fd_open no matter what offscreen parameter the function
+> got.
 > 
-> so sc.offscreenbuf = NULL is a no-op.
-Oh bugger. My working copy didn't have the allocate commit
-d179981b2ddace3dfbf79f828c592a970cd2f009.
-Ignore this one then. :)
+> Daniel Mierswa (4):
+>   i.MX21: Add periph. clock register name macros
+>   i.MX21/27: don't enable lcd bus clocks too early
+>   i.MX27: fix shift amount for PCCR1_PERCLK3_EN
 
+Applied up to this patch.
+
+Thanks
+ Sascha
+
+>   video/imx: initialize offscreenbuf member
+> 
+>  arch/arm/mach-imx/clk-imx21.c               | 67 ++++++++++++++++++++++++++---
+>  arch/arm/mach-imx/clk-imx27.c               | 16 ++++---
+>  arch/arm/mach-imx/include/mach/imx21-regs.h |  6 ---
+>  commands/splash.c                           |  8 ++++
+>  drivers/video/imx.c                         | 40 ++++++++++++++---
+>  5 files changed, 111 insertions(+), 26 deletions(-)
+> 
+> -- 
+> 1.8.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
-Mierswa, Daniel
-
-If you still don't like it, that's ok: that's why I'm boss. I simply know better than you do.
-               --- Linus Torvalds, comp.os.linux.advocacy, 1996/07/22
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
