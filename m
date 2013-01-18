@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-wg0-f51.google.com ([74.125.82.51])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TvtgG-0005sn-Nn
- for barebox@lists.infradead.org; Thu, 17 Jan 2013 17:55:17 +0000
-Date: Thu, 17 Jan 2013 18:55:11 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130117175511.GD1906@pengutronix.de>
-References: <cover.1358400153.git.d.mierswa@phytec.de>
- <6bf1089855588c8d227009989b54c826ac8e245e.1358400153.git.d.mierswa@phytec.de>
- <20130117115625.GE22953@game.jcrosoft.org>
- <50F7F6D6.8080008@impulze.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <50F7F6D6.8080008@impulze.org>
+ id 1Tw0oN-0001YC-L9
+ for barebox@lists.infradead.org; Fri, 18 Jan 2013 01:32:04 +0000
+Received: by mail-wg0-f51.google.com with SMTP id 8so217298wgl.6
+ for <barebox@lists.infradead.org>; Thu, 17 Jan 2013 17:32:01 -0800 (PST)
+From: Vicente Bergas <vicencb@gmail.com>
+Date: Fri, 18 Jan 2013 02:31:21 +0100
+Message-Id: <1358472682-14333-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,53 +16,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] video/imx: always initialize offscreenbuf member
-To: Daniel Mierswa <impulze@impulze.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] feature_list: a way to pass hardware info to the kernel
+To: barebox@lists.infradead.org
+Cc: Vicente Bergas <vicencb@gmail.com>
 
-On Thu, Jan 17, 2013 at 02:04:22PM +0100, Daniel Mierswa wrote:
-> On 01/17/2013 12:56 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 07:32 Thu 17 Jan     , Daniel Mierswa wrote:
-> >> +	/*
-> >> +	 * sc.offscreenbuf is dangling here, if no offscreen buffer was
-> >> +	 * requested, so set it to NULL otherwise the free in fd_close
-> >> +	 * will cause undefined behaviour
-> >> +	 */
-> >> +	if (!offscreen)
-> >> +		sc.offscreenbuf = NULL;
-> >> +
-> > NAck
-> > 
-> > this is already done by memset
-> > 
-> > Best Regards,
-> > J.
-> >>  	if (sc.offscreenbuf) {
-> >>  		if (do_bg)
-> >>  			memset_pixel(&info, sc.offscreenbuf, bg_color,
-> 
-> Huh? I don't get it.
+The feature list is a non-standard alternative to the device tree
+to pass the hardware description to the kernel.
+This is the way used by Archos on it's android kernel, so it's required
+to boot such a kernel.
 
-sc is initialized to 0 in do_splash:
+This patch is submitted with two intentions:
+ 1) receive feedback
+ 2) request for inclusion
+The feedback is always appreciated.
+Regarding inclusion, I know this is a very Archos specific patch, so I'll
+understand if it's rejected.
 
-	memset(&s, 0, sizeof(s));
-	memset(&sc, 0, sizeof(sc));
-	memset(&info, 0, sizeof(info));
+Vicente Bergas (1):
+  feature_list: a way to pass hardware info to the kernel
 
-so sc.offscreenbuf = NULL is a no-op.
-
-Sascha
-
+ arch/arm/Kconfig                           |  12 +
+ arch/arm/boards/archosg9/Makefile          |   1 +
+ arch/arm/boards/archosg9/archos_features.c | 196 ++++++++++++++++
+ arch/arm/boards/archosg9/archos_features.h |   6 +
+ arch/arm/boards/archosg9/board.c           |   2 +
+ arch/arm/configs/archosg9_defconfig        |   1 +
+ arch/arm/include/asm/armlinux.h            |   9 +
+ arch/arm/include/asm/feature_list.h        | 346 +++++++++++++++++++++++++++++
+ arch/arm/include/asm/setup.h               |  23 +-
+ arch/arm/lib/armlinux.c                    |  38 +++-
+ 10 files changed, 627 insertions(+), 7 deletions(-)
+ create mode 100644 arch/arm/boards/archosg9/archos_features.c
+ create mode 100644 arch/arm/boards/archosg9/archos_features.h
+ create mode 100644 arch/arm/include/asm/feature_list.h
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.1.1
+
 
 _______________________________________________
 barebox mailing list
