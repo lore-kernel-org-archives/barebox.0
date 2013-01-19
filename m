@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo3.mail-out.ovh.net ([87.98.172.249]
+Received: from 14.mo3.mail-out.ovh.net ([188.165.43.98]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TwbPV-0003lU-7K
- for barebox@lists.infradead.org; Sat, 19 Jan 2013 16:36:50 +0000
+ id 1TwbRS-0003q5-69
+ for barebox@lists.infradead.org; Sat, 19 Jan 2013 16:38:50 +0000
 Received: from mail412.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 8C4E5FF860C
- for <barebox@lists.infradead.org>; Sat, 19 Jan 2013 17:50:25 +0100 (CET)
-Date: Sat, 19 Jan 2013 17:35:24 +0100
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 19B3AFF8639
+ for <barebox@lists.infradead.org>; Sat, 19 Jan 2013 17:52:27 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130119163524.GC26329@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Sat, 19 Jan 2013 17:37:18 +0100
+Message-Id: <1358613446-1168-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130119163524.GC26329@game.jcrosoft.org>
+References: <20130119163524.GC26329@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,119 +20,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/9 v4] at91: add bootstrap support
+Subject: [PATCH 1/9] filetype: add is_barebox_mips_head support
 To: barebox@lists.infradead.org
 
-Hi,
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ common/filetype.c  |    2 +-
+ include/filetype.h |   16 ++++++++++++++++
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-	v4:
-	 make the code arm & mips supported for barebox head detection
+diff --git a/common/filetype.c b/common/filetype.c
+index 748e364..bafdc31 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -145,7 +145,7 @@ enum filetype file_detect_type(void *_buf, size_t bufsize)
+ 		return filetype_aimage;
+ 	if (buf64[0] == le64_to_cpu(0x0a1a0a0d474e5089ull))
+ 		return filetype_png;
+-	if (strncmp(buf8 + 0x10, "barebox", 7) == 0)
++	if (is_barebox_mips_head(_buf))
+ 		return filetype_mips_barebox;
+ 
+ 	if (bufsize < 64)
+diff --git a/include/filetype.h b/include/filetype.h
+index 91139db..c2af917 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -50,4 +50,20 @@ static inline int is_barebox_arm_head(const char *head)
+ }
+ #endif
+ 
++#define MIPS_HEAD_SIZE			0x20
++#define MIPS_HEAD_MAGICWORD_OFFSET	0x10
++#define MIPS_HEAD_SIZE_OFFSET		0x1C
++
++#ifdef CONFIG_MIPS
++static inline int is_barebox_mips_head(const char *head)
++{
++	return !strcmp(head + MIPS_HEAD_MAGICWORD_OFFSET, "barebox");
++}
++#else
++static inline int is_barebox_mips_head(const char *head)
++{
++	return 0;
++}
++#endif
++
+ #endif /* __FILE_TYPE_H */
+-- 
+1.7.10.4
 
-	v3:
-
-	send correct patch series and pull
-
-	can we have it on master the v2 does not cange much since v1
-
-	v2:
-	 fix whitesapce
-	 fix comment
-	 fix command default
-
-	This patch serie introduce a common bootstrap code
-	aka xloder for TI and at91bootstrap for Atmel
-	to barebox
-
-	As I do not have with me right now a TI platform I did not switch
-	it to the new generic bootstrap code.
-
-	On at91 add it on the calao usb-a9263 test on nand and spi
-	This patch serie depends on the previous at91 patch series
-
-The following changes since commit cef34886b745cf3f6dff55bf326e29a5857b2206:
-
-  graphic_utils/fb_open: fix fbsize (2013-01-16 21:33:14 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/at91_bootstrap
-
-for you to fetch changes up to dfb8584a950895f3e264ad3ee1c13a626c4e979a:
-
-  at91: usb_a9263: add bootstrap version (2013-01-17 01:22:43 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (9):
-      filetype: add is_barebox_mips_head support
-      filetype: add is_barebox_head
-      at91: add test commamd to emulate bootrom boot
-      at91sam926x: lowlevel add external boot support
-      at91: sam926x: switch lowlevel param to c code
-      at91: usb-a9263 add lowlevel init
-      introduce common bootstrap code
-      at91: add bootstrap version
-      at91: usb_a9263: add bootstrap version
-
- arch/arm/boards/at91sam9263ek/Makefile                |    5 +++++
- arch/arm/boards/at91sam9263ek/config.h                |   87 ---------------------------------------------------------------------------------------
- arch/arm/boards/at91sam9263ek/lowlevel_init.c         |  104 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/boards/mmccpu/Makefile                       |    5 +++++
- arch/arm/boards/mmccpu/config.h                       |  118 ----------------------------------------------------------------------------------------------------------------------
- arch/arm/boards/mmccpu/lowlevel_init.c                |  135 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/boards/pm9261/Makefile                       |    5 +++++
- arch/arm/boards/pm9261/config.h                       |   87 ---------------------------------------------------------------------------------------
- arch/arm/boards/pm9261/lowlevel_init.c                |  102 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/boards/pm9263/Makefile                       |    5 +++++
- arch/arm/boards/pm9263/config.h                       |  103 -------------------------------------------------------------------------------------------------------
- arch/arm/boards/pm9263/lowlevel_init.c                |  121 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/boards/usb-a926x/Makefile                    |    9 +++++++++
- arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c       |   16 ++++++++++++++++
- arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c   |  111 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig |   26 ++++++++++++++++++++++++++
- arch/arm/configs/usb_a9263_bootstrap_defconfig        |   25 +++++++++++++++++++++++++
- arch/arm/mach-at91/Kconfig                            |   13 +++++++++++++
- arch/arm/mach-at91/Makefile                           |    2 ++
- arch/arm/mach-at91/at91sam926x_lowlevel_init.c        |   84 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------------
- arch/arm/mach-at91/boot_test_cmd.c                    |   99 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/mach-at91/bootstrap.c                        |   86 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/mach-at91/include/mach/at91_lowlevel_init.h  |   33 +++++++++++++++++++++++++++++++++
- arch/arm/mach-at91/include/mach/bootstrap.h           |   28 ++++++++++++++++++++++++++++
- common/filetype.c                                     |    2 +-
- include/bootstrap.h                                   |   34 ++++++++++++++++++++++++++++++++++
- include/filetype.h                                    |   21 +++++++++++++++++++++
- lib/Kconfig                                           |    2 ++
- lib/Makefile                                          |    1 +
- lib/bootstrap/Kconfig                                 |   13 +++++++++++++
- lib/bootstrap/Makefile                                |    3 +++
- lib/bootstrap/common.c                                |   21 +++++++++++++++++++++
- lib/bootstrap/devfs.c                                 |  118 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/bootstrap/disk.c                                  |   37 +++++++++++++++++++++++++++++++++++++
- 34 files changed, 1240 insertions(+), 421 deletions(-)
- create mode 100644 arch/arm/boards/at91sam9263ek/lowlevel_init.c
- create mode 100644 arch/arm/boards/mmccpu/lowlevel_init.c
- create mode 100644 arch/arm/boards/pm9261/lowlevel_init.c
- create mode 100644 arch/arm/boards/pm9263/lowlevel_init.c
- create mode 100644 arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c
- create mode 100644 arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c
- create mode 100644 arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig
- create mode 100644 arch/arm/configs/usb_a9263_bootstrap_defconfig
- create mode 100644 arch/arm/mach-at91/boot_test_cmd.c
- create mode 100644 arch/arm/mach-at91/bootstrap.c
- create mode 100644 arch/arm/mach-at91/include/mach/at91_lowlevel_init.h
- create mode 100644 arch/arm/mach-at91/include/mach/bootstrap.h
- create mode 100644 include/bootstrap.h
- create mode 100644 lib/bootstrap/Kconfig
- create mode 100644 lib/bootstrap/Makefile
- create mode 100644 lib/bootstrap/common.c
- create mode 100644 lib/bootstrap/devfs.c
- create mode 100644 lib/bootstrap/disk.c
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
