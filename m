@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 11.mo3.mail-out.ovh.net ([87.98.184.158]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Twbad-00046o-6X
- for barebox@lists.infradead.org; Sat, 19 Jan 2013 16:48:28 +0000
-Received: from mail412.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 3C774FF8649
- for <barebox@lists.infradead.org>; Sat, 19 Jan 2013 17:52:29 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 19 Jan 2013 17:37:22 +0100
-Message-Id: <1358613446-1168-5-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1358613446-1168-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20130119163524.GC26329@game.jcrosoft.org>
- <1358613446-1168-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-wi0-f171.google.com ([209.85.212.171])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Twc9P-00053q-Fd
+ for barebox@lists.infradead.org; Sat, 19 Jan 2013 17:24:17 +0000
+Received: by mail-wi0-f171.google.com with SMTP id hn14so6047621wib.16
+ for <barebox@lists.infradead.org>; Sat, 19 Jan 2013 09:24:11 -0800 (PST)
+From: Vicente Bergas <vicencb@gmail.com>
+Date: Sat, 19 Jan 2013 18:23:27 +0100
+Message-Id: <1358616207-2233-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,1234 +21,781 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/9] at91: sam926x: switch lowlevel param to c code
+Subject: [PATCH] feature_list: a way to pass hardware info to the kernel
 To: barebox@lists.infradead.org
+Cc: Vicente Bergas <vicencb@gmail.com>
 
-Instead of hardcode define use a struct that the board fill
+Hi Sascha,
+I've made the changes you suggested in this resent patch.
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Everything related to custom ATAGs has been moved to the board
+directory.
+
+The generic code does not make any references to feature lists or
+bootloader versions.
+
+About the setup_feature_list prototype:
+ it has been renamed to atag_appender
+ it's not a function, it's a pointer to a function. Can it have a
+prototype other than it's own declaration?
+
+All non-related changes has been dropped. They were checkpatch.pl
+warnings unrelated to this patch.
+
+Regards,
+  Vicente.
+
+Signed-off-by: Vicente Bergas <vicencb@gmail.com>
 ---
- arch/arm/boards/at91sam9263ek/Makefile             |    5 +
- arch/arm/boards/at91sam9263ek/config.h             |   99 +-------------
- arch/arm/boards/at91sam9263ek/lowlevel_init.c      |  104 +++++++++++++++
- arch/arm/boards/mmccpu/Makefile                    |    5 +
- arch/arm/boards/mmccpu/config.h                    |  130 +------------------
- arch/arm/boards/mmccpu/lowlevel_init.c             |  135 ++++++++++++++++++++
- arch/arm/boards/pm9261/Makefile                    |    5 +
- arch/arm/boards/pm9261/config.h                    |   99 +-------------
- arch/arm/boards/pm9261/lowlevel_init.c             |  102 +++++++++++++++
- arch/arm/boards/pm9263/Makefile                    |    5 +
- arch/arm/boards/pm9263/config.h                    |  115 +----------------
- arch/arm/boards/pm9263/lowlevel_init.c             |  121 ++++++++++++++++++
- arch/arm/mach-at91/at91sam926x_lowlevel_init.c     |   64 ++++++----
- .../mach-at91/include/mach/at91_lowlevel_init.h    |   33 +++++
- 14 files changed, 580 insertions(+), 442 deletions(-)
- rewrite arch/arm/boards/at91sam9263ek/config.h (95%)
- create mode 100644 arch/arm/boards/at91sam9263ek/lowlevel_init.c
- rewrite arch/arm/boards/mmccpu/config.h (97%)
- create mode 100644 arch/arm/boards/mmccpu/lowlevel_init.c
- rewrite arch/arm/boards/pm9261/config.h (95%)
- create mode 100644 arch/arm/boards/pm9261/lowlevel_init.c
- rewrite arch/arm/boards/pm9263/config.h (97%)
- create mode 100644 arch/arm/boards/pm9263/lowlevel_init.c
- create mode 100644 arch/arm/mach-at91/include/mach/at91_lowlevel_init.h
+ arch/arm/Kconfig                           |   7 +
+ arch/arm/boards/archosg9/Makefile          |   1 +
+ arch/arm/boards/archosg9/archos_features.c | 225 ++++++++++++++++++
+ arch/arm/boards/archosg9/archos_features.h |  22 ++
+ arch/arm/boards/archosg9/board.c           |   2 +
+ arch/arm/boards/archosg9/feature_list.h    | 352 +++++++++++++++++++++++++++++
+ arch/arm/configs/archosg9_defconfig        |   1 +
+ arch/arm/include/asm/armlinux.h            |   9 +
+ arch/arm/lib/armlinux.c                    |  12 +
+ 9 files changed, 631 insertions(+)
+ create mode 100644 arch/arm/boards/archosg9/archos_features.c
+ create mode 100644 arch/arm/boards/archosg9/archos_features.h
+ create mode 100644 arch/arm/boards/archosg9/feature_list.h
 
-diff --git a/arch/arm/boards/at91sam9263ek/Makefile b/arch/arm/boards/at91sam9263ek/Makefile
-index eb072c0..aecbc5a 100644
---- a/arch/arm/boards/at91sam9263ek/Makefile
-+++ b/arch/arm/boards/at91sam9263ek/Makefile
-@@ -1 +1,6 @@
- obj-y += init.o
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index f567531..6f7a71f 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -152,6 +152,13 @@ config THUMB2_BAREBOX
+ 	  your board lowlevel init code may break in thumb-2 mode. You have been
+ 	  warned.
+ 
++config ARM_BOARD_APPEND_ATAG
++	bool "Let board specific code to add ATAGs to be passed to the kernel"
++	depends on ARM_LINUX
++	help
++	  This option is purely to start some vendor provided kernels.
++	  ** DO NOT USE FOR YOUR OWN DESIGNS! **
 +
-+lowlevel_init-y = lowlevel_init.o
-+obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-+
-+pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-diff --git a/arch/arm/boards/at91sam9263ek/config.h b/arch/arm/boards/at91sam9263ek/config.h
-dissimilarity index 95%
-index 14eb4fe..cc12040 100644
---- a/arch/arm/boards/at91sam9263ek/config.h
-+++ b/arch/arm/boards/at91sam9263ek/config.h
-@@ -1,93 +1,6 @@
--#ifndef __CONFIG_H
--#define __CONFIG_H
--
--#define AT91_MAIN_CLOCK		16367660	/* 16.367 MHz crystal */
--
--#define MASTER_PLL_MUL		171
--#define MASTER_PLL_DIV		14
--
--/* clocks */
--#define CONFIG_SYS_MOR_VAL						\
--		(AT91_PMC_MOSCEN |					\
--		 (255 << 8))		/* Main Oscillator Start-up Time */
--#define CONFIG_SYS_PLLAR_VAL						\
--		(AT91_PMC_PLLA_WR_ERRATA | /* Bit 29 must be 1 when prog */ \
--		 AT91_PMC_OUT |						\
--		 AT91_PMC_PLLCOUNT |	/* PLL Counter */		\
--		 (2 << 28) |		/* PLL Clock Frequency Range */	\
--		 ((MASTER_PLL_MUL - 1) << 16) | (MASTER_PLL_DIV))
--
--/* PCK/2 = MCK Master Clock from PLLA */
--#define	CONFIG_SYS_MCKR1_VAL		\
--		(AT91_PMC_CSS_SLOW |	\
--		 AT91_PMC_PRES_1 |	\
--		 AT91SAM9_PMC_MDIV_2 |	\
--		 AT91_PMC_PDIV_1)
--/* PCK/2 = MCK Master Clock from PLLA */
--#define	CONFIG_SYS_MCKR2_VAL		\
--		(AT91_PMC_CSS_PLLA |	\
--		 AT91_PMC_PRES_1 |	\
--		 AT91SAM9_PMC_MDIV_2 |	\
--		 AT91_PMC_PDIV_1)
--
--/* define PDC[31:16] as DATA[31:16] */
--#define CONFIG_SYS_PIOD_PDR_VAL1	0xFFFF0000
--/* no pull-up for D[31:16] */
--#define CONFIG_SYS_PIOD_PPUDR_VAL	0xFFFF0000
--/* EBI0_CSA, CS1 SDRAM, CS3 NAND Flash, 3.3V memories */
--#define CONFIG_SYS_MATRIX_EBI0CSA_VAL					\
--	(AT91_MATRIX_EBI0_DBPUC | AT91_MATRIX_EBI0_VDDIOMSEL_3_3V |	\
--	 AT91_MATRIX_EBI0_CS1A_SDRAMC)
--
--/* SDRAM */
--/* SDRAMC_TR - Refresh Timer register */
--#define CONFIG_SYS_SDRC_TR_VAL1		0x13C
--/* SDRAMC_CR - Configuration register*/
--#define CONFIG_SYS_SDRC_CR_VAL							\
--		(AT91_SDRAMC_NC_9 |						\
--		 AT91_SDRAMC_NR_13 |						\
--		 AT91_SDRAMC_NB_4 |						\
--		 AT91_SDRAMC_CAS_3 |						\
--		 AT91_SDRAMC_DBW_32 |						\
--		 (1 <<  8) |		/* Write Recovery Delay */		\
--		 (7 << 12) |		/* Row Cycle Delay */			\
--		 (2 << 16) |		/* Row Precharge Delay */		\
--		 (2 << 20) |		/* Row to Column Delay */		\
--		 (5 << 24) |		/* Active to Precharge Delay */		\
--		 (1 << 28))		/* Exit Self Refresh to Active Delay */
--
--/* Memory Device Register -> SDRAM */
--#define CONFIG_SYS_SDRC_MDR_VAL		AT91_SDRAMC_MD_SDRAM
--#define CONFIG_SYS_SDRC_TR_VAL2		1200		/* SDRAM_TR */
--
--/* setup SMC0, CS0 (NOR Flash) - 16-bit, 15 WS */
--#define CONFIG_SYS_SMC_CS	0
--#define CONFIG_SYS_SMC_SETUP_VAL					\
--		(AT91_SMC_NWESETUP_(10) | AT91_SMC_NCS_WRSETUP_(10) |	\
--		 AT91_SMC_NRDSETUP_(10) | AT91_SMC_NCS_RDSETUP_(10))
--#define CONFIG_SYS_SMC_PULSE_VAL					\
--		(AT91_SMC_NWEPULSE_(11) | AT91_SMC_NCS_WRPULSE_(11) |	\
--		 AT91_SMC_NRDPULSE_(11) | AT91_SMC_NCS_RDPULSE_(11))
--#define CONFIG_SYS_SMC_CYCLE_VAL	\
--		(AT91_SMC_NWECYCLE_(22) | AT91_SMC_NRDCYCLE_(22))
--#define CONFIG_SYS_SMC_MODE_VAL					\
--		(AT91_SMC_READMODE | AT91_SMC_WRITEMODE |	\
--		 AT91_SMC_DBW_16 |				\
--		 AT91_SMC_TDFMODE |				\
--		 AT91_SMC_TDF_(6))
--
--/* user reset enable */
--#define CONFIG_SYS_RSTC_RMR_VAL			\
--		(AT91_RSTC_KEY |		\
--		AT91_RSTC_PROCRST |		\
--		AT91_RSTC_RSTTYP_WAKEUP |	\
--		AT91_RSTC_RSTTYP_WATCHDOG)
--
--/* Disable Watchdog */
--#define CONFIG_SYS_WDTC_WDMR_VAL				\
--		(AT91_WDT_WDIDLEHLT | AT91_WDT_WDDBGHLT |	\
--		 AT91_WDT_WDV |					\
--		 AT91_WDT_WDDIS |				\
--		 AT91_WDT_WDD)
--
--#endif	/* __CONFIG_H */
-+#ifndef __CONFIG_H
-+#define __CONFIG_H
-+
-+#define AT91_MAIN_CLOCK		16367660	/* 16.367 MHz crystal */
-+
-+#endif	/* __CONFIG_H */
-diff --git a/arch/arm/boards/at91sam9263ek/lowlevel_init.c b/arch/arm/boards/at91sam9263ek/lowlevel_init.c
+ endmenu
+ 
+ menu "Arm specific settings"
+diff --git a/arch/arm/boards/archosg9/Makefile b/arch/arm/boards/archosg9/Makefile
+index 256eaf6..450c03f 100644
+--- a/arch/arm/boards/archosg9/Makefile
++++ b/arch/arm/boards/archosg9/Makefile
+@@ -1,3 +1,4 @@
+ obj-y += board.o
++obj-$(CONFIG_ARM_BOARD_APPEND_ATAG) += archos_features.o
+ obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel.o mux.o
+ pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel.o mux.o
+diff --git a/arch/arm/boards/archosg9/archos_features.c b/arch/arm/boards/archosg9/archos_features.c
 new file mode 100644
-index 0000000..2f8b312
+index 0000000..cd20984
 --- /dev/null
-+++ b/arch/arm/boards/at91sam9263ek/lowlevel_init.c
-@@ -0,0 +1,104 @@
++++ b/arch/arm/boards/archosg9/archos_features.c
+@@ -0,0 +1,225 @@
 +/*
-+ * Copyright (C) 2009-2011 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
 + *
-+ * Under GPLv2
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
 + */
 +
-+#include <common.h>
-+#include <init.h>
-+#include <mach/hardware.h>
-+#include <mach/at91_rstc.h>
-+#include <mach/at91_wdt.h>
-+#include <mach/at91_pmc.h>
-+#include <mach/at91sam9_smc.h>
-+#include <mach/at91sam9_sdramc.h>
-+#include <mach/at91sam9_matrix.h>
-+#include <mach/at91_lowlevel_init.h>
++#include <boot.h>
++#include <asm/setup.h>
++#include "archos_features.h"
++#include "feature_list.h"
 +
-+#define MASTER_PLL_MUL		171
-+#define MASTER_PLL_DIV		14
-+
-+void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_cfg *cfg)
++static inline void *atag_data(struct tag *t)
 +{
-+	/* Disable Watchdog */
-+	cfg->wdt_mr =
-+		AT91_WDT_WDIDLEHLT | AT91_WDT_WDDBGHLT |
-+		AT91_WDT_WDV |
-+		AT91_WDT_WDDIS |
-+		AT91_WDT_WDD;
-+
-+	/* define PDC[31:16] as DATA[31:16] */
-+	cfg->ebi_pio_pdr = 0xFFFF0000;
-+	/* no pull-up for D[31:16] */
-+	cfg->ebi_pio_ppudr = 0xFFFF0000;
-+	/* EBI0_CSA, CS1 SDRAM, CS3 NAND Flash, 3.3V memories */
-+	cfg->ebi_csa =
-+		AT91_MATRIX_EBI0_DBPUC | AT91_MATRIX_EBI0_VDDIOMSEL_3_3V |
-+		AT91_MATRIX_EBI0_CS1A_SDRAMC;
-+
-+	cfg->smc_cs = 0;
-+	cfg->smc_mode =
-+		AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
-+		AT91_SMC_DBW_16 |
-+		AT91_SMC_TDFMODE |
-+		AT91_SMC_TDF_(6);
-+	cfg->smc_cycle =
-+		AT91_SMC_NWECYCLE_(22) | AT91_SMC_NRDCYCLE_(22);
-+	cfg->smc_pulse =
-+		AT91_SMC_NWEPULSE_(11) | AT91_SMC_NCS_WRPULSE_(11) |
-+		AT91_SMC_NRDPULSE_(11) | AT91_SMC_NCS_RDPULSE_(11);
-+	cfg->smc_setup =
-+		AT91_SMC_NWESETUP_(10) | AT91_SMC_NCS_WRSETUP_(10) |
-+		AT91_SMC_NRDSETUP_(10) | AT91_SMC_NCS_RDSETUP_(10);
-+
-+	cfg->pmc_mor =
-+		AT91_PMC_MOSCEN |
-+		(255 << 8);		/* Main Oscillator Start-up Time */
-+	cfg->pmc_pllar =
-+		AT91_PMC_PLLA_WR_ERRATA | /* Bit 29 must be 1 when prog */
-+		AT91_PMC_OUT |
-+		AT91_PMC_PLLCOUNT |	/* PLL Counter */
-+		(2 << 28) |		/* PLL Clock Frequency Range */
-+		((MASTER_PLL_MUL - 1) << 16) | (MASTER_PLL_DIV);
-+	/* PCK/2 = MCK Master Clock from PLLA */
-+	cfg->pmc_mckr1 =
-+		AT91_PMC_CSS_SLOW |
-+		AT91_PMC_PRES_1 |
-+		AT91SAM9_PMC_MDIV_2 |
-+		AT91_PMC_PDIV_1;
-+	/* PCK/2 = MCK Master Clock from PLLA */
-+	cfg->pmc_mckr2 =
-+		AT91_PMC_CSS_PLLA |
-+		AT91_PMC_PRES_1 |
-+		AT91SAM9_PMC_MDIV_2 |
-+		AT91_PMC_PDIV_1;
-+
-+	/* SDRAM */
-+	/* SDRAMC_TR - Refresh Timer register */
-+	cfg->sdrc_tr1 = 0x13C;
-+	/* SDRAMC_CR - Configuration register*/
-+	cfg->sdrc_cr =
-+		AT91_SDRAMC_NC_9 |
-+		AT91_SDRAMC_NR_13 |
-+		AT91_SDRAMC_NB_4 |
-+		AT91_SDRAMC_CAS_3 |
-+		AT91_SDRAMC_DBW_32 |
-+		(1 <<  8) |		/* Write Recovery Delay */
-+		(7 << 12) |		/* Row Cycle Delay */
-+		(2 << 16) |		/* Row Precharge Delay */
-+		(2 << 20) |		/* Row to Column Delay */
-+		(5 << 24) |		/* Active to Precharge Delay */
-+		(1 << 28);		/* Exit Self Refresh to Active Delay */
-+
-+	/* Memory Device Register -> SDRAM */
-+	cfg->sdrc_mdr = AT91_SDRAMC_MD_SDRAM;
-+	/* SDRAM_TR */
-+	cfg->sdrc_tr2 = 1200;
-+
-+	/* user reset enable */
-+	cfg->rstc_rmr =
-+		AT91_RSTC_KEY |
-+		AT91_RSTC_PROCRST |
-+		AT91_RSTC_RSTTYP_WAKEUP |
-+		AT91_RSTC_RSTTYP_WATCHDOG;
++	return ((void *)t) + sizeof(struct tag_header);
 +}
-diff --git a/arch/arm/boards/mmccpu/Makefile b/arch/arm/boards/mmccpu/Makefile
-index eb072c0..aecbc5a 100644
---- a/arch/arm/boards/mmccpu/Makefile
-+++ b/arch/arm/boards/mmccpu/Makefile
-@@ -1 +1,6 @@
- obj-y += init.o
 +
-+lowlevel_init-y = lowlevel_init.o
-+obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
++static struct feature_tag *features;
 +
-+pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-diff --git a/arch/arm/boards/mmccpu/config.h b/arch/arm/boards/mmccpu/config.h
-dissimilarity index 97%
-index e6215dc..c896a93 100644
---- a/arch/arm/boards/mmccpu/config.h
-+++ b/arch/arm/boards/mmccpu/config.h
-@@ -1,124 +1,6 @@
--#ifndef __CONFIG_H
--#define __CONFIG_H
--
--#define AT91_MAIN_CLOCK		18432000
--
--/* values */
--#define MASTER_PLL_MUL		54
--#define MASTER_PLL_DIV		4
--
--/* clocks */
--#define CONFIG_SYS_MOR_VAL						\
--		(AT91_PMC_MOSCEN |					\
--		 (255 << 8))		/* Main Oscillator Start-up Time */
--#define CONFIG_SYS_PLLAR_VAL						\
--		(AT91_PMC_PLLA_WR_ERRATA | /* Bit 29 must be 1 when prog */ \
--		 AT91_PMC_OUT |						\
--		 AT91_PMC_PLLCOUNT |	/* PLL Counter */		\
--		 (2 << 28) |		/* PLL Clock Frequency Range */	\
--		 ((MASTER_PLL_MUL - 1) << 16) | (MASTER_PLL_DIV))
--
--/* PCK/2 = MCK Master Clock from PLLA */
--#define	CONFIG_SYS_MCKR1_VAL		\
--		(AT91_PMC_CSS_SLOW |	\
--		 AT91_PMC_PRES_1 |	\
--		 AT91SAM9_PMC_MDIV_2 |	\
--		 AT91_PMC_PDIV_1)
--/* PCK/2 = MCK Master Clock from PLLA */
--#define	CONFIG_SYS_MCKR2_VAL		\
--		(AT91_PMC_CSS_PLLA |	\
--		 AT91_PMC_PRES_1 |	\
--		 AT91SAM9_PMC_MDIV_2 |	\
--		 AT91_PMC_PDIV_1)
--
--/* define PDC[31:16] as DATA[31:16] */
--#define CONFIG_SYS_PIOD_PDR_VAL1	0xFFFF0000
--/* no pull-up for D[31:16] */
--#define CONFIG_SYS_PIOD_PPUDR_VAL	0xFFFF0000
--/* EBI0_CSA, CS1 SDRAM, CS3 NAND Flash, 1.8V memories */
--#define CONFIG_SYS_MATRIX_EBI0CSA_VAL					\
--	(AT91_MATRIX_EBI0_DBPUC | AT91_MATRIX_EBI0_VDDIOMSEL_1_8V |	\
--	 AT91_MATRIX_EBI0_CS1A_SDRAMC | AT91_MATRIX_EBI0_CS3A_SMC_SMARTMEDIA)
--
--/* SDRAM */
--/* SDRAMC_TR - Refresh Timer register */
--#define CONFIG_SYS_SDRC_TR_VAL1		0x13c
--/* SDRAMC_CR - Configuration register*/
--#define CONFIG_SYS_SDRC_CR_VAL							\
--		(AT91_SDRAMC_NC_9 |						\
--		 AT91_SDRAMC_NR_13 |						\
--		 AT91_SDRAMC_NB_4 |						\
--		 AT91_SDRAMC_CAS_3 |						\
--		 AT91_SDRAMC_DBW_32 |						\
--		 (2 <<  8) |	/* tWR -  Write Recovery Delay */		\
--		 (8 << 12) |	/* tRC -  Row Cycle Delay */			\
--		 (2 << 16) |	/* tRP -  Row Precharge Delay */		\
--		 (2 << 20) |	/* tRCD - Row to Column Delay */		\
--		 (5 << 24) |	/* tRAS - Active to Precharge Delay */		\
--		 (12 << 28))	/* tXSR - Exit Self Refresh to Active Delay */
--
--/* Memory Device Register -> SDRAM */
--#define CONFIG_SYS_SDRC_MDR_VAL		AT91_SDRAMC_MD_SDRAM
--#define CONFIG_SYS_SDRC_TR_VAL2		780		/* SDRAM_TR */
--
--/* setup CS0 (NOR Flash) - 16-bit */
--#define CONFIG_SYS_SMC_CS	0
--#if 1
--#define CONFIG_SYS_SMC_SETUP_VAL					\
--		(AT91_SMC_NWESETUP_(3) | AT91_SMC_NCS_WRSETUP_(2) |	\
--		 AT91_SMC_NRDSETUP_(8) | AT91_SMC_NCS_RDSETUP_(0))
--#define CONFIG_SYS_SMC_PULSE_VAL					\
--		(AT91_SMC_NWEPULSE_(5) | AT91_SMC_NCS_WRPULSE_(7) |	\
--		 AT91_SMC_NRDPULSE_(5) | AT91_SMC_NCS_RDPULSE_(13))
--#define CONFIG_SYS_SMC_CYCLE_VAL	\
--		(AT91_SMC_NWECYCLE_(16) | AT91_SMC_NRDCYCLE_(16))
--#define CONFIG_SYS_SMC_MODE_VAL					\
--		(AT91_SMC_READMODE | AT91_SMC_WRITEMODE |	\
--		 AT91_SMC_DBW_16 |				\
--		 AT91_SMC_TDFMODE |				\
--		 AT91_SMC_TDF_(6))
--#elif 0	/* slow setup */
--#define CONFIG_SYS_SMC_SETUP_VAL					\
--		(AT91_SMC_NWESETUP_(3) | AT91_SMC_NCS_WRSETUP_(2) |	\
--		 AT91_SMC_NRDSETUP_(8) | AT91_SMC_NCS_RDSETUP_(0))
--#define CONFIG_SYS_SMC_PULSE_VAL					\
--		(AT91_SMC_NWEPULSE_(5) | AT91_SMC_NCS_WRPULSE_(7) |	\
--		 AT91_SMC_NRDPULSE_(5) | AT91_SMC_NCS_RDPULSE_(13))
--#define CONFIG_SYS_SMC_CYCLE_VAL	\
--		(AT91_SMC_NWECYCLE_(0xd00) | AT91_SMC_NRDCYCLE_(0xd00))
--#define CONFIG_SYS_SMC_MODE_VAL					\
--		(AT91_SMC_READMODE | AT91_SMC_WRITEMODE |	\
--		 AT91_SMC_DBW_16 |				\
--		 AT91_SMC_TDFMODE |				\
--		 AT91_SMC_TDF_(1))
--#else	/* RONETIX' original values */
--#define CONFIG_SYS_SMC_SETUP_VAL					\
--		(AT91_SMC_NWESETUP_(10) | AT91_SMC_NCS_WRSETUP_(10) |	\
--		 AT91_SMC_NRDSETUP_(10) | AT91_SMC_NCS_RDSETUP_(10))
--#define CONFIG_SYS_SMC_PULSE_VAL					\
--		(AT91_SMC_NWEPULSE_(11) | AT91_SMC_NCS_WRPULSE_(11) |	\
--		 AT91_SMC_NRDPULSE_(11) | AT91_SMC_NCS_RDPULSE_(11))
--#define CONFIG_SYS_SMC_CYCLE_VAL	\
--		(AT91_SMC_NWECYCLE_(22) | AT91_SMC_NRDCYCLE_(22))
--#define CONFIG_SYS_SMC_MODE_VAL					\
--		(AT91_SMC_READMODE | AT91_SMC_WRITEMODE |	\
--		 AT91_SMC_DBW_16 |				\
--		 AT91_SMC_TDFMODE |				\
--		 AT91_SMC_TDF_(6))
--#endif
--
--/* user reset enable */
--#define CONFIG_SYS_RSTC_RMR_VAL			\
--		(AT91_RSTC_KEY |		\
--		AT91_RSTC_PROCRST |		\
--		AT91_RSTC_RSTTYP_WAKEUP |	\
--		AT91_RSTC_RSTTYP_WATCHDOG)
--
--/* Disable Watchdog */
--#define CONFIG_SYS_WDTC_WDMR_VAL				\
--		(AT91_WDT_WDIDLEHLT | AT91_WDT_WDDBGHLT |	\
--		 AT91_WDT_WDV |					\
--		 AT91_WDT_WDDIS |				\
--		 AT91_WDT_WDD)
--
--#endif	/* __CONFIG_H */
-+#ifndef __CONFIG_H
-+#define __CONFIG_H
++static void setup_feature_core(void)
++{
++	features->hdr.tag = FTAG_CORE;
++	features->hdr.size = feature_tag_size(feature_tag_core);
 +
-+#define AT91_MAIN_CLOCK		18432000
++	features->u.core.magic = FEATURE_LIST_MAGIC;
++	features->u.core.list_revision = FEATURE_LIST_REV;
++	features->u.core.flags = 0;
 +
-+#endif	/* __CONFIG_H */
-diff --git a/arch/arm/boards/mmccpu/lowlevel_init.c b/arch/arm/boards/mmccpu/lowlevel_init.c
++	features = feature_tag_next(features);
++}
++static void setup_feature_product_name(void)
++{
++	features->hdr.tag = FTAG_PRODUCT_NAME;
++	features->hdr.size = feature_tag_size(feature_tag_product_name);
++
++	memset(features->u.product_name.name, 0,
++		sizeof(features->u.product_name.name));
++	sprintf(features->u.product_name.name, "A80S");
++	features->u.product_name.id = 0x13A8;
++
++	features = feature_tag_next(features);
++}
++static void setup_feature_product_serial_number(void)
++{
++	features->hdr.tag = FTAG_PRODUCT_SERIAL_NUMBER;
++	features->hdr.size = feature_tag_size(feature_tag_product_serial);
++
++	features->u.product_serial.serial[0] = 0;
++	features->u.product_serial.serial[1] = 0;
++	features->u.product_serial.serial[2] = 0;
++	features->u.product_serial.serial[3] = 0;
++
++	features = feature_tag_next(features);
++}
++static void setup_feature_product_mac_address(void)
++{
++	features->hdr.tag = FTAG_PRODUCT_MAC_ADDRESS;
++	features->hdr.size = feature_tag_size(feature_tag_product_mac_address);
++
++	features->u.mac_address.addr[0] = 0;
++	features->u.mac_address.addr[1] = 0;
++	features->u.mac_address.addr[2] = 0;
++	features->u.mac_address.addr[3] = 0;
++	features->u.mac_address.addr[4] = 0;
++	features->u.mac_address.addr[5] = 0;
++	features->u.mac_address.reserved1 = 0;
++	features->u.mac_address.reserved2 = 0;
++
++	features = feature_tag_next(features);
++}
++static void setup_feature_board_pcb_revision(void)
++{
++	features->hdr.tag = FTAG_BOARD_PCB_REVISION;
++	features->hdr.size = feature_tag_size(feature_tag_board_revision);
++
++	features->u.board_revision.revision = 5;
++
++	features = feature_tag_next(features);
++}
++static void setup_feature_sdram(void)
++{
++	features->hdr.tag = FTAG_SDRAM;
++	features->hdr.size = feature_tag_size(feature_tag_sdram);
++
++	memset(features->u.sdram.vendor, 0, sizeof(features->u.sdram.vendor));
++	memset(features->u.sdram.product, 0,
++		sizeof(features->u.sdram.product));
++	sprintf(features->u.sdram.vendor , "elpida");
++	sprintf(features->u.sdram.product, "EDB8064B1PB"/*"EDB4064B2PB"*/);
++	features->u.sdram.type     = 0;
++	features->u.sdram.revision = 0;
++	features->u.sdram.flags    = 0;
++	features->u.sdram.clock    = 400;
++	features->u.sdram.param_0  = 0;
++	features->u.sdram.param_1  = 0;
++	features->u.sdram.param_2  = 0;
++	features->u.sdram.param_3  = 0;
++	features->u.sdram.param_4  = 0;
++	features->u.sdram.param_5  = 0;
++	features->u.sdram.param_6  = 0;
++	features->u.sdram.param_7  = 0;
++
++	features = feature_tag_next(features);
++}
++static void setup_feature_pmic(void)
++{
++	features->hdr.tag = FTAG_PMIC;
++	features->hdr.size = feature_tag_size(feature_tag_pmic);
++
++	features->u.pmic.flags = FTAG_PMIC_TPS62361;
++
++	features = feature_tag_next(features);
++}
++static void setup_feature_serial_port(void)
++{
++	features->hdr.tag = FTAG_SERIAL_PORT;
++	features->hdr.size = feature_tag_size(feature_tag_serial_port);
++
++	features->u.serial_port.uart_id = 1;
++	features->u.serial_port.speed = 115200;
++
++	features = feature_tag_next(features);
++}
++static void setup_feature_has_gpio_volume_keys(void)
++{
++	features->hdr.tag = FTAG_HAS_GPIO_VOLUME_KEYS;
++	features->hdr.size = feature_tag_size(feature_tag_gpio_volume_keys);
++
++	features->u.gpio_volume_keys.gpio_vol_up   = 0x2B;
++	features->u.gpio_volume_keys.gpio_vol_down = 0x2C;
++	features->u.gpio_volume_keys.flags = 0;
++
++	features = feature_tag_next(features);
++}
++static void setup_feature_screen(void)
++{
++	features->hdr.tag = FTAG_SCREEN;
++	features->hdr.size = feature_tag_size(feature_tag_screen);
++
++	memset(features->u.screen.vendor, 0,
++		sizeof(features->u.screen.vendor));
++	sprintf(features->u.screen.vendor, "CMI");
++	features->u.screen.type = 0;
++	features->u.screen.revision = 0;
++	features->u.screen.vcom = 0;
++	features->u.screen.backlight = 0xC8;
++	features->u.screen.reserved[0] = 0;
++	features->u.screen.reserved[1] = 0;
++	features->u.screen.reserved[2] = 0;
++	features->u.screen.reserved[3] = 0;
++	features->u.screen.reserved[4] = 0;
++
++	features = feature_tag_next(features);
++}
++static void setup_feature_turbo(void)
++{
++	features->hdr.tag = FTAG_TURBO;
++	features->hdr.size = feature_tag_size(feature_tag_turbo);
++
++	features->u.turbo.flag = 1;
++
++	features = feature_tag_next(features);
++}
++static void setup_feature_none(void)
++{
++	features->hdr.tag = FTAG_NONE;
++	features->hdr.size = sizeof(struct feature_tag_header) >> 2;
++
++	features = feature_tag_next(features);
++}
++static struct tag *setup_feature_list(struct tag * params)
++{
++	struct tag_feature_list *fl;
++
++	fl = atag_data(params);
++	features = (struct feature_tag *)fl->data;
++
++	setup_feature_core();
++	setup_feature_product_name();
++	setup_feature_product_serial_number();
++	setup_feature_product_mac_address();
++	setup_feature_board_pcb_revision();
++	setup_feature_sdram();
++	setup_feature_pmic();
++	setup_feature_serial_port();
++	setup_feature_has_gpio_volume_keys();
++	setup_feature_screen();
++	setup_feature_turbo();
++	setup_feature_none();
++
++	fl->size = ((u32)features) - ((u32)(fl->data));
++
++	params->hdr.tag = ATAG_FEATURE_LIST;
++	params->hdr.size = (sizeof(struct tag_feature_list) + fl->size) >> 2;
++
++	return tag_next(params);
++}
++
++static struct tag *setup_boot_version(struct tag *params)
++{
++	struct tag_boot_version *bv;
++
++	bv = atag_data(params);
++
++	params->hdr.tag = ATAG_BOOT_VERSION;
++	params->hdr.size = tag_size(tag_boot_version);
++
++	bv->major = 5;
++	bv->minor = 5;
++	bv->extra = 3;
++
++	return tag_next(params);
++}
++
++struct tag *archos_append_atags(struct tag *params)
++{
++	params = setup_feature_list(params);
++	params = setup_boot_version(params);
++	return params;
++}
+diff --git a/arch/arm/boards/archosg9/archos_features.h b/arch/arm/boards/archosg9/archos_features.h
 new file mode 100644
-index 0000000..68c609f
+index 0000000..5769c6c
 --- /dev/null
-+++ b/arch/arm/boards/mmccpu/lowlevel_init.c
-@@ -0,0 +1,135 @@
-+/*
-+ * Copyright (C) 2009-2011 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+ */
++++ b/arch/arm/boards/archosg9/archos_features.h
+@@ -0,0 +1,22 @@
++#ifndef __ARCHOS_FEATURES_H
++#define __ARCHOS_FEATURES_H
 +
-+#include <common.h>
-+#include <init.h>
-+#include <mach/hardware.h>
-+#include <mach/at91_rstc.h>
-+#include <mach/at91_wdt.h>
-+#include <mach/at91_pmc.h>
-+#include <mach/at91sam9_smc.h>
-+#include <mach/at91sam9_sdramc.h>
-+#include <mach/at91sam9_matrix.h>
-+#include <mach/at91_lowlevel_init.h>
++/* bootloader version */
++#define ATAG_BOOT_VERSION	0x5441000A
 +
-+#define MASTER_PLL_MUL		54
-+#define MASTER_PLL_DIV		4
-+
-+void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_cfg *cfg)
-+{
-+	/* Disable Watchdog */
-+	cfg->wdt_mr =
-+		AT91_WDT_WDIDLEHLT | AT91_WDT_WDDBGHLT |
-+		AT91_WDT_WDV |
-+		AT91_WDT_WDDIS |
-+		AT91_WDT_WDD;
-+
-+	/* define PDC[31:16] as DATA[31:16] */
-+	cfg->ebi_pio_pdr = 0xFFFF0000;
-+	/* no pull-up for D[31:16] */
-+	cfg->ebi_pio_ppudr = 0xFFFF0000;
-+	/* EBI0_CSA, CS1 SDRAM, CS3 NAND Flash, 3.3V memories */
-+	cfg->ebi_csa =
-+		AT91_MATRIX_EBI0_DBPUC | AT91_MATRIX_EBI0_VDDIOMSEL_1_8V |
-+		AT91_MATRIX_EBI0_CS1A_SDRAMC |
-+		AT91_MATRIX_EBI0_CS3A_SMC_SMARTMEDIA;
-+
-+	cfg->smc_cs = 0;
-+#if 1
-+	cfg->smc_mode =
-+		AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
-+		AT91_SMC_DBW_16 |
-+		AT91_SMC_TDFMODE |
-+		AT91_SMC_TDF_(6);
-+	cfg->smc_cycle =
-+		AT91_SMC_NWECYCLE_(16) | AT91_SMC_NRDCYCLE_(16);
-+	cfg->smc_pulse =
-+		AT91_SMC_NWEPULSE_(5) | AT91_SMC_NCS_WRPULSE_(7) |
-+		AT91_SMC_NRDPULSE_(5) | AT91_SMC_NCS_RDPULSE_(13);
-+	cfg->smc_setup =
-+		AT91_SMC_NWESETUP_(3) | AT91_SMC_NCS_WRSETUP_(2) |
-+		AT91_SMC_NRDSETUP_(8) | AT91_SMC_NCS_RDSETUP_(0);
-+#elif 0	/* slow setup */
-+	cfg->smc_mode =
-+		AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
-+		AT91_SMC_DBW_16 |
-+		AT91_SMC_TDFMODE |
-+		AT91_SMC_TDF_(1);
-+	cfg->smc_cycle =
-+		AT91_SMC_NWECYCLE_(0xd00) | AT91_SMC_NRDCYCLE_(0xd00);
-+	cfg->smc_pulse =
-+		AT91_SMC_NWEPULSE_(5) | AT91_SMC_NCS_WRPULSE_(7) |
-+		AT91_SMC_NRDPULSE_(5) | AT91_SMC_NCS_RDPULSE_(13);
-+	cfg->smc_setup =
-+		AT91_SMC_NWESETUP_(3) | AT91_SMC_NCS_WRSETUP_(2) |
-+		AT91_SMC_NRDSETUP_(8) | AT91_SMC_NCS_RDSETUP_(0);
-+#else	/* RONETIX' original values */
-+	cfg->smc_mode =
-+		AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
-+		AT91_SMC_DBW_16 |
-+		AT91_SMC_TDFMODE |
-+		AT91_SMC_TDF_(6);
-+	cfg->smc_cycle =
-+		AT91_SMC_NWECYCLE_(22) | AT91_SMC_NRDCYCLE_(22);
-+	cfg->smc_pulse =
-+		AT91_SMC_NWEPULSE_(11) | AT91_SMC_NCS_WRPULSE_(11) |
-+		AT91_SMC_NRDPULSE_(11) | AT91_SMC_NCS_RDPULSE_(11);
-+	cfg->smc_setup =
-+		AT91_SMC_NWESETUP_(10) | AT91_SMC_NCS_WRSETUP_(10) |
-+		AT91_SMC_NRDSETUP_(10) | AT91_SMC_NCS_RDSETUP_(10);
-+#endif
-+
-+	cfg->pmc_mor =
-+		AT91_PMC_MSCEN |
-+		(255 << 8);		/* Main Oscillator Start-up Time */
-+	cfg->pmc_pllar =
-+		AT91_PMC_PLLA_WR_ERRATA | /* Bit 29 must be 1 when prog */
-+		AT91_PMC_OUT |
-+		AT91_PMC_PLLCOUNT |	/* PLL Counter */
-+		(2 << 28) |		/* PLL Clock Frequency Range */
-+		((MASTER_PLL_MUL - 1) << 16) | (MASTER_PLL_DIV);
-+	/* PCK/2 = MCK Master Clock from PLLA */
-+	cfg->pmc_mckr1 =
-+		AT91_PMC_CSS_SLOW |
-+		AT91_PMC_PRES_1 |
-+		AT91SAM9_PMC_MDIV_2 |
-+		AT91_PMC_PDIV_1;
-+	/* PCK/2 = MCK Master Clock from PLLA */
-+	cfg->pmc_mckr2 =
-+		AT91_PMC_CSS_PLLA |
-+		AT91_PMC_PRES_1 |
-+		AT91SAM9_PMC_MDIV_2 |
-+		AT91_PMC_PDIV_1;
-+
-+	/* SDRAM */
-+	/* SDRAMC_TR - Refresh Timer register */
-+	cfg->sdrc_tr1 = 0x13C;
-+	/* SDRAMC_CR - Configuration register*/
-+	cfg->sdrc_cr =
-+		AT91_SDRAMC_NC_9 |
-+		AT91_SDRAMC_NR_13 |
-+		AT91_SDRAMC_NB_4 |
-+		AT91_SDRAMC_CAS_3 |
-+		AT91_SDRAMC_DBW_32 |
-+		(2 <<  8) |	/* tWR -  Write Recovery Delay */
-+		(8 << 12) |	/* tRC -  Row Cycle Delay */
-+		(2 << 16) |	/* tRP -  Row Precharge Delay */
-+		(2 << 20) |	/* tRCD - Row to Column Delay */
-+		(5 << 24) |	/* tRAS - Active to Precharge Delay */
-+		(12 << 28);	/* tXSR - Exit Self Refresh to Active Delay */
-+
-+	/* Memory Device Register -> SDRAM */
-+	cfg->sdrc_mdr = AT91_SDRAMC_MD_SDRAM;
-+	/* SDRAM_TR */
-+	cfg->sdrc_tr2 = 780;
-+
-+	/* user reset enable */
-+	cfg->rstc_rmr =
-+		AT91_RSTC_KEY |
-+		AT91_RSTC_PROCRST |
-+		AT91_RSTC_RSTTYP_WAKEUP |
-+		AT91_RSTC_RSTTYP_WATCHDOG;
-+}
-diff --git a/arch/arm/boards/pm9261/Makefile b/arch/arm/boards/pm9261/Makefile
-index eb072c0..aecbc5a 100644
---- a/arch/arm/boards/pm9261/Makefile
-+++ b/arch/arm/boards/pm9261/Makefile
-@@ -1 +1,6 @@
- obj-y += init.o
-+
-+lowlevel_init-y = lowlevel_init.o
-+obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-+
-+pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-diff --git a/arch/arm/boards/pm9261/config.h b/arch/arm/boards/pm9261/config.h
-dissimilarity index 95%
-index 4602aa7..006820c 100644
---- a/arch/arm/boards/pm9261/config.h
-+++ b/arch/arm/boards/pm9261/config.h
-@@ -1,93 +1,6 @@
--#ifndef __CONFIG_H
--#define __CONFIG_H
--
--#define AT91_MAIN_CLOCK		18432000	/* 18.432 MHz crystal */
--
--#define MASTER_PLL_DIV		15
--#define MASTER_PLL_MUL		162
--#define MAIN_PLL_DIV		2
--
--/* clocks */
--#define CONFIG_SYS_MOR_VAL						\
--		(AT91_PMC_MOSCEN |					\
--		 (255 << 8))		/* Main Oscillator Start-up Time */
--#define CONFIG_SYS_PLLAR_VAL						\
--		(AT91_PMC_PLLA_WR_ERRATA | /* Bit 29 must be 1 when prog */ \
--		 AT91_PMC_OUT |						\
--		 ((MASTER_PLL_MUL - 1) << 16) | (MASTER_PLL_DIV))
--
--/* PCK/2 = MCK Master Clock from PLLA */
--#define	CONFIG_SYS_MCKR1_VAL		\
--		(AT91_PMC_CSS_SLOW |	\
--		 AT91_PMC_PRES_1 |	\
--		 AT91SAM9_PMC_MDIV_2 |	\
--		 AT91_PMC_PDIV_1)
--
--/* PCK/2 = MCK Master Clock from PLLA */
--#define	CONFIG_SYS_MCKR2_VAL		\
--		(AT91_PMC_CSS_PLLA |	\
--		 AT91_PMC_PRES_1 |	\
--		 AT91SAM9_PMC_MDIV_2 |	\
--		 AT91_PMC_PDIV_1)
--
--/* define PDC[31:16] as DATA[31:16] */
--#define CONFIG_SYS_PIOC_PDR_VAL1	0xFFFF0000
--/* no pull-up for D[31:16] */
--#define CONFIG_SYS_PIOC_PPUDR_VAL	0xFFFF0000
--
--/* EBI_CSA, no pull-ups for D[15:0], CS1 SDRAM, CS3 NAND Flash */
--#define CONFIG_SYS_MATRIX_EBICSA_VAL		\
--       (AT91_MATRIX_DBPUC | AT91_MATRIX_CS1A_SDRAMC)
--
--/* SDRAM */
--/* SDRAMC_TR - Refresh Timer register */
--#define CONFIG_SYS_SDRC_TR_VAL1		0x13C
--/* SDRAMC_CR - Configuration register*/
--#define CONFIG_SYS_SDRC_CR_VAL							\
--		(AT91_SDRAMC_NC_9 |						\
--		 AT91_SDRAMC_NR_13 |						\
--		 AT91_SDRAMC_NB_4 |						\
--		 AT91_SDRAMC_CAS_3 |						\
--		 AT91_SDRAMC_DBW_32 |						\
--		 (1 <<  8) |		/* Write Recovery Delay */		\
--		 (7 << 12) |		/* Row Cycle Delay */			\
--		 (3 << 16) |		/* Row Precharge Delay */		\
--		 (2 << 20) |		/* Row to Column Delay */		\
--		 (5 << 24) |		/* Active to Precharge Delay */		\
--		 (1 << 28))		/* Exit Self Refresh to Active Delay */
--
--/* Memory Device Register -> SDRAM */
--#define CONFIG_SYS_SDRC_MDR_VAL		AT91_SDRAMC_MD_SDRAM
--#define CONFIG_SYS_SDRC_TR_VAL2		1200		/* SDRAM_TR */
--
--/* setup SMC0, CS0 (NOR Flash) - 16-bit, 15 WS */
--#define CONFIG_SYS_SMC_CS	0
--#define CONFIG_SYS_SMC_SETUP_VAL					\
--		(AT91_SMC_NWESETUP_(10) | AT91_SMC_NCS_WRSETUP_(10) |	\
--		 AT91_SMC_NRDSETUP_(10) | AT91_SMC_NCS_RDSETUP_(10))
--#define CONFIG_SYS_SMC_PULSE_VAL					\
--		(AT91_SMC_NWEPULSE_(11) | AT91_SMC_NCS_WRPULSE_(11) |	\
--		 AT91_SMC_NRDPULSE_(11) | AT91_SMC_NCS_RDPULSE_(11))
--#define CONFIG_SYS_SMC_CYCLE_VAL	\
--		(AT91_SMC_NWECYCLE_(22) | AT91_SMC_NRDCYCLE_(22))
--#define CONFIG_SYS_SMC_MODE_VAL					\
--		(AT91_SMC_READMODE | AT91_SMC_WRITEMODE |	\
--		 AT91_SMC_DBW_16 |				\
--		 AT91_SMC_TDFMODE |				\
--		 AT91_SMC_TDF_(6))
--
--/* user reset enable */
--#define CONFIG_SYS_RSTC_RMR_VAL			\
--		(AT91_RSTC_KEY |		\
--		AT91_RSTC_PROCRST |		\
--		AT91_RSTC_RSTTYP_WAKEUP |	\
--		AT91_RSTC_RSTTYP_WATCHDOG)
--
--/* Disable Watchdog */
--#define CONFIG_SYS_WDTC_WDMR_VAL				\
--		(AT91_WDT_WDIDLEHLT | AT91_WDT_WDDBGHLT |	\
--		 AT91_WDT_WDV |					\
--		 AT91_WDT_WDDIS |				\
--		 AT91_WDT_WDD)
--
--#endif	/* __CONFIG_H */
-+#ifndef __CONFIG_H
-+#define __CONFIG_H
-+
-+#define AT91_MAIN_CLOCK		18432000	/* 18.432 MHz crystal */
-+
-+#endif	/* __CONFIG_H */
-diff --git a/arch/arm/boards/pm9261/lowlevel_init.c b/arch/arm/boards/pm9261/lowlevel_init.c
-new file mode 100644
-index 0000000..91a64b4
---- /dev/null
-+++ b/arch/arm/boards/pm9261/lowlevel_init.c
-@@ -0,0 +1,102 @@
-+/*
-+ * Copyright (C) 2009-2011 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <mach/hardware.h>
-+#include <mach/at91_rstc.h>
-+#include <mach/at91_wdt.h>
-+#include <mach/at91_pmc.h>
-+#include <mach/at91sam9_smc.h>
-+#include <mach/at91sam9_sdramc.h>
-+#include <mach/at91sam9_matrix.h>
-+#include <mach/at91_lowlevel_init.h>
-+
-+#define MASTER_PLL_DIV		15
-+#define MASTER_PLL_MUL		162
-+#define MAIN_PLL_DIV		2
-+
-+void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_cfg *cfg)
-+{
-+	/* Disable Watchdog */
-+	cfg->wdt_mr =
-+		AT91_WDT_WDIDLEHLT | AT91_WDT_WDDBGHLT |
-+		AT91_WDT_WDV |
-+		AT91_WDT_WDDIS |
-+		AT91_WDT_WDD;
-+
-+	/* define PDC[31:16] as DATA[31:16] */
-+	cfg->ebi_pio_pdr = 0xFFFF0000;
-+	/* no pull-up for D[31:16] */
-+	cfg->ebi_pio_ppudr = 0xFFFF0000;
-+	/* EBI0_CSA, CS1 SDRAM, CS3 NAND Flash, 3.3V memories */
-+	cfg->ebi_csa =
-+		AT91_MATRIX_DBPUC | AT91_MATRIX_CS1A_SDRAMC;
-+
-+	cfg->smc_cs = 0;
-+	cfg->smc_mode =
-+		AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
-+		AT91_SMC_DBW_16 |
-+		AT91_SMC_TDFMODE |
-+		AT91_SMC_TDF_(6);
-+	cfg->smc_cycle =
-+		AT91_SMC_NWECYCLE_(22) | AT91_SMC_NRDCYCLE_(22);
-+	cfg->smc_pulse =
-+		AT91_SMC_NWEPULSE_(11) | AT91_SMC_NCS_WRPULSE_(11) |
-+		AT91_SMC_NRDPULSE_(11) | AT91_SMC_NCS_RDPULSE_(11);
-+	cfg->smc_setup =
-+		AT91_SMC_NWESETUP_(10) | AT91_SMC_NCS_WRSETUP_(10) |
-+		AT91_SMC_NRDSETUP_(10) | AT91_SMC_NCS_RDSETUP_(10);
-+
-+	cfg->pmc_mor =
-+		AT91_PMC_MOSCEN |
-+		(255 << 8);		/* Main Oscillator Start-up Time */
-+	cfg->pmc_pllar =
-+		AT91_PMC_PLLA_WR_ERRATA | /* Bit 29 must be 1 when prog */
-+		AT91_PMC_OUT |
-+		((MASTER_PLL_MUL - 1) << 16) | (MASTER_PLL_DIV);
-+	/* PCK/2 = MCK Master Clock from PLLA */
-+	cfg->pmc_mckr1 =
-+		AT91_PMC_CSS_SLOW |
-+		AT91_PMC_PRES_1 |
-+		AT91SAM9_PMC_MDIV_2 |
-+		AT91_PMC_PDIV_1;
-+	/* PCK/2 = MCK Master Clock from PLLA */
-+	cfg->pmc_mckr2 =
-+		AT91_PMC_CSS_PLLA |
-+		AT91_PMC_PRES_1 |
-+		AT91SAM9_PMC_MDIV_2 |
-+		AT91_PMC_PDIV_1;
-+
-+	/* SDRAM */
-+	/* SDRAMC_TR - Refresh Timer register */
-+	cfg->sdrc_tr1 = 0x13C;
-+	/* SDRAMC_CR - Configuration register*/
-+	cfg->sdrc_cr =
-+		AT91_SDRAMC_NC_9 |
-+		AT91_SDRAMC_NR_13 |
-+		AT91_SDRAMC_NB_4 |
-+		AT91_SDRAMC_CAS_3 |
-+		AT91_SDRAMC_DBW_32 |
-+		(1 <<  8) |		/* Write Recovery Delay */
-+		(7 << 12) |		/* Row Cycle Delay */
-+		(3 << 16) |		/* Row Precharge Delay */
-+		(2 << 20) |		/* Row to Column Delay */
-+		(5 << 24) |		/* Active to Precharge Delay */
-+		(1 << 28);		/* Exit Self Refresh to Active Delay */
-+
-+	/* Memory Device Register -> SDRAM */
-+	cfg->sdrc_mdr = AT91_SDRAMC_MD_SDRAM;
-+	/* SDRAM_TR */
-+	cfg->sdrc_tr2 = 1200;
-+
-+	/* user reset enable */
-+	cfg->rstc_rmr =
-+		AT91_RSTC_KEY |
-+		AT91_RSTC_PROCRST |
-+		AT91_RSTC_RSTTYP_WAKEUP |
-+		AT91_RSTC_RSTTYP_WATCHDOG;
-+}
-diff --git a/arch/arm/boards/pm9263/Makefile b/arch/arm/boards/pm9263/Makefile
-index eb072c0..aecbc5a 100644
---- a/arch/arm/boards/pm9263/Makefile
-+++ b/arch/arm/boards/pm9263/Makefile
-@@ -1 +1,6 @@
- obj-y += init.o
-+
-+lowlevel_init-y = lowlevel_init.o
-+obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-+
-+pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-diff --git a/arch/arm/boards/pm9263/config.h b/arch/arm/boards/pm9263/config.h
-dissimilarity index 97%
-index 322c1f3..9066613 100644
---- a/arch/arm/boards/pm9263/config.h
-+++ b/arch/arm/boards/pm9263/config.h
-@@ -1,109 +1,6 @@
--#ifndef __CONFIG_H
--#define __CONFIG_H
--
--#define AT91_MAIN_CLOCK	18432000
--
--#define MASTER_PLL_DIV		6
--#define MASTER_PLL_MUL		65
--#define MAIN_PLL_DIV		2	/* 2 or 4 */
--
--/* clocks */
--#define CONFIG_SYS_MOR_VAL						\
--		(AT91_PMC_MOSCEN |					\
--		 (255 << 8))		/* Main Oscillator Start-up Time */
--#define CONFIG_SYS_PLLAR_VAL						\
--		(AT91_PMC_PLLA_WR_ERRATA | /* Bit 29 must be 1 when prog */ \
--		 AT91_PMC_OUT |						\
--		 AT91_PMC_PLLCOUNT |	/* PLL Counter */		\
--		 (2 << 28) |		/* PLL Clock Frequency Range */	\
--		 ((MASTER_PLL_MUL - 1) << 16) | (MASTER_PLL_DIV))
--
--#if (MAIN_PLL_DIV == 2)
--/* PCK/2 = MCK Master Clock from PLLA */
--#define	CONFIG_SYS_MCKR1_VAL		\
--		(AT91_PMC_CSS_SLOW |	\
--		 AT91_PMC_PRES_1 |	\
--		 AT91SAM9_PMC_MDIV_2 |	\
--		 AT91_PMC_PDIV_1)
--/* PCK/2 = MCK Master Clock from PLLA */
--#define	CONFIG_SYS_MCKR2_VAL		\
--		(AT91_PMC_CSS_PLLA |	\
--		 AT91_PMC_PRES_1 |	\
--		 AT91SAM9_PMC_MDIV_2 |	\
--		 AT91_PMC_PDIV_1)
--#else
--/* PCK/4 = MCK Master Clock from PLLA */
--#define	CONFIG_SYS_MCKR1_VAL			\
--		(AT91_PMC_CSS_SLOW |		\
--		 AT91_PMC_PRES_1 |		\
--		 AT91RM9200_PMC_MDIV_3 |	\
--		 AT91_PMC_PDIV_1)
--/* PCK/4 = MCK Master Clock from PLLA */
--#define	CONFIG_SYS_MCKR2_VAL			\
--		(AT91_PMC_CSS_PLLA |		\
--		 AT91_PMC_PRES_1 |		\
--		 AT91RM9200_PMC_MDIV_3 |	\
--		 AT91_PMC_PDIV_1)
--#endif
--/* define PDC[31:16] as DATA[31:16] */
--#define CONFIG_SYS_PIOD_PDR_VAL1	0xFFFF0000
--/* no pull-up for D[31:16] */
--#define CONFIG_SYS_PIOD_PPUDR_VAL	0xFFFF0000
--/* EBI0_CSA, CS1 SDRAM, CS3 NAND Flash, 3.3V memories */
--#define CONFIG_SYS_MATRIX_EBI0CSA_VAL					\
--	(AT91_MATRIX_EBI0_DBPUC | AT91_MATRIX_EBI0_VDDIOMSEL_3_3V |	\
--	 AT91_MATRIX_EBI0_CS1A_SDRAMC)
--
--/* SDRAM */
--/* SDRAMC_TR - Refresh Timer register */
--#define CONFIG_SYS_SDRC_TR_VAL1		0x3AA
--/* SDRAMC_CR - Configuration register*/
--#define CONFIG_SYS_SDRC_CR_VAL							\
--		(AT91_SDRAMC_NC_9 |						\
--		 AT91_SDRAMC_NR_13 |						\
--		 AT91_SDRAMC_NB_4 |						\
--		 AT91_SDRAMC_CAS_2 |						\
--		 AT91_SDRAMC_DBW_32 |						\
--		 (2 <<  8) |	/* tWR -  Write Recovery Delay */		\
--		 (7 << 12) |	/* tRC -  Row Cycle Delay */			\
--		 (2 << 16) |	/* tRP -  Row Precharge Delay */		\
--		 (2 << 20) |	/* tRCD - Row to Column Delay */		\
--		 (5 << 24) |	/* tRAS - Active to Precharge Delay */		\
--		 (8 << 28))	/* tXSR - Exit Self Refresh to Active Delay */
--
--/* Memory Device Register -> SDRAM */
--#define CONFIG_SYS_SDRC_MDR_VAL		AT91_SDRAMC_MD_SDRAM
--#define CONFIG_SYS_SDRC_TR_VAL2		1200		/* SDRAM_TR */
--
--/* setup SMC0, CS0 (NOR Flash) - 16-bit, 15 WS */
--#define CONFIG_SYS_SMC_CS	0
--#define CONFIG_SYS_SMC_SETUP_VAL					\
--		(AT91_SMC_NWESETUP_(10) | AT91_SMC_NCS_WRSETUP_(10) |	\
--		 AT91_SMC_NRDSETUP_(10) | AT91_SMC_NCS_RDSETUP_(10))
--#define CONFIG_SYS_SMC_PULSE_VAL					\
--		(AT91_SMC_NWEPULSE_(11) | AT91_SMC_NCS_WRPULSE_(11) |	\
--		 AT91_SMC_NRDPULSE_(11) | AT91_SMC_NCS_RDPULSE_(11))
--#define CONFIG_SYS_SMC_CYCLE_VAL	\
--		(AT91_SMC_NWECYCLE_(22) | AT91_SMC_NRDCYCLE_(22))
--#define CONFIG_SYS_SMC_MODE_VAL					\
--		(AT91_SMC_READMODE | AT91_SMC_WRITEMODE |	\
--		 AT91_SMC_DBW_16 |				\
--		 AT91_SMC_TDFMODE |				\
--		 AT91_SMC_TDF_(6))
--
--/* user reset enable */
--#define CONFIG_SYS_RSTC_RMR_VAL			\
--		(AT91_RSTC_KEY |		\
--		AT91_RSTC_PROCRST |		\
--		AT91_RSTC_RSTTYP_WAKEUP |	\
--		AT91_RSTC_RSTTYP_WATCHDOG)
--
--/* Disable Watchdog */
--#define CONFIG_SYS_WDTC_WDMR_VAL				\
--		(AT91_WDT_WDIDLEHLT | AT91_WDT_WDDBGHLT |	\
--		 AT91_WDT_WDV |					\
--		 AT91_WDT_WDDIS |				\
--		 AT91_WDT_WDD)
--
--
--#endif	/* __CONFIG_H */
-+#ifndef __CONFIG_H
-+#define __CONFIG_H
-+
-+#define AT91_MAIN_CLOCK	18432000
-+
-+#endif	/* __CONFIG_H */
-diff --git a/arch/arm/boards/pm9263/lowlevel_init.c b/arch/arm/boards/pm9263/lowlevel_init.c
-new file mode 100644
-index 0000000..6336d51
---- /dev/null
-+++ b/arch/arm/boards/pm9263/lowlevel_init.c
-@@ -0,0 +1,121 @@
-+/*
-+ * Copyright (C) 2009-2011 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <mach/hardware.h>
-+#include <mach/at91_rstc.h>
-+#include <mach/at91_wdt.h>
-+#include <mach/at91_pmc.h>
-+#include <mach/at91sam9_smc.h>
-+#include <mach/at91sam9_sdramc.h>
-+#include <mach/at91sam9_matrix.h>
-+#include <mach/at91_lowlevel_init.h>
-+
-+#define MASTER_PLL_DIV		6
-+#define MASTER_PLL_MUL		65
-+#define MAIN_PLL_DIV		2	/* 2 or 4 */
-+
-+void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_cfg *cfg)
-+{
-+	/* Disable Watchdog */
-+	cfg->wdt_mr =
-+		AT91_WDT_WDIDLEHLT | AT91_WDT_WDDBGHLT |
-+		AT91_WDT_WDV |
-+		AT91_WDT_WDDIS |
-+		AT91_WDT_WDD;
-+
-+	/* define PDC[31:16] as DATA[31:16] */
-+	cfg->ebi_pio_pdr = 0xFFFF0000;
-+	/* no pull-up for D[31:16] */
-+	cfg->ebi_pio_ppudr = 0xFFFF0000;
-+	/* EBI0_CSA, CS1 SDRAM, CS3 NAND Flash, 3.3V memories */
-+	cfg->ebi_csa =
-+		AT91_MATRIX_EBI0_DBPUC | AT91_MATRIX_EBI0_VDDIOMSEL_3_3V |
-+		AT91_MATRIX_EBI0_CS1A_SDRAMC;
-+
-+	cfg->smc_cs = 0;
-+	cfg->smc_mode =
-+		AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
-+		AT91_SMC_DBW_16 |
-+		AT91_SMC_TDFMODE |
-+		AT91_SMC_TDF_(6);
-+	cfg->smc_cycle =
-+		AT91_SMC_NWECYCLE_(22) | AT91_SMC_NRDCYCLE_(22);
-+	cfg->smc_pulse =
-+		AT91_SMC_NWEPULSE_(11) | AT91_SMC_NCS_WRPULSE_(11) |
-+		AT91_SMC_NRDPULSE_(11) | AT91_SMC_NCS_RDPULSE_(11);
-+	cfg->smc_setup =
-+		AT91_SMC_NWESETUP_(10) | AT91_SMC_NCS_WRSETUP_(10) |
-+		AT91_SMC_NRDSETUP_(10) | AT91_SMC_NCS_RDSETUP_(10);
-+
-+	cfg->pmc_mor =
-+		AT91_PMC_MOSCEN |
-+		(255 << 8);		/* Main Oscillator Start-up Time */
-+	cfg->pmc_pllar =
-+		AT91_PMC_PLLA_WR_ERRATA | /* Bit 29 must be 1 when prog */
-+		AT91_PMC_OUT |
-+		AT91_PMC_PLLCOUNT |	/* PLL Counter */
-+		(2 << 28) |		/* PLL Clock Frequency Range */
-+		((MASTER_PLL_MUL - 1) << 16) | (MASTER_PLL_DIV);
-+
-+	if (MAIN_PLL_DIV == 2) {
-+		/* PCK/2 = MCK Master Clock from PLLA */
-+		cfg->pmc_mckr1 =
-+			AT91_PMC_CSS_SLOW |
-+			AT91_PMC_PRES_1 |
-+			AT91SAM9_PMC_MDIV_2 |
-+			AT91_PMC_PDIV_1;
-+		/* PCK/2 = MCK Master Clock from PLLA */
-+		cfg->pmc_mckr2 =
-+			AT91_PMC_CSS_PLLA |
-+			AT91_PMC_PRES_1 |
-+			AT91SAM9_PMC_MDIV_2 |
-+			AT91_PMC_PDIV_1;
-+	} else {
-+		/* PCK/2 = MCK Master Clock from PLLA */
-+		cfg->pmc_mckr1 =
-+			AT91_PMC_CSS_SLOW |
-+			AT91_PMC_PRES_1 |
-+			AT91RM9200_PMC_MDIV_3 |
-+			AT91_PMC_PDIV_1;
-+		/* PCK/2 = MCK Master Clock from PLLA */
-+		cfg->pmc_mckr2 =
-+			AT91_PMC_CSS_PLLA |
-+			AT91_PMC_PRES_1 |
-+			AT91RM9200_PMC_MDIV_3 |
-+			AT91_PMC_PDIV_1;
-+	}
-+
-+	/* SDRAM */
-+	/* SDRAMC_TR - Refresh Timer register */
-+	cfg->sdrc_tr1 = 0x3AA;
-+	/* SDRAMC_CR - Configuration register*/
-+	cfg->sdrc_cr =
-+		AT91_SDRAMC_NC_9 |
-+		AT91_SDRAMC_NR_13 |
-+		AT91_SDRAMC_NB_4 |
-+		AT91_SDRAMC_CAS_2 |
-+		AT91_SDRAMC_DBW_32 |
-+		(2 <<  8) |	/* tWR -  Write Recovery Delay */
-+		(7 << 12) |	/* tRC -  Row Cycle Delay */
-+		(2 << 16) |	/* tRP -  Row Precharge Delay */
-+		(2 << 20) |	/* tRCD - Row to Column Delay */
-+		(5 << 24) |	/* tRAS - Active to Precharge Delay */
-+		(8 << 28);	/* tXSR - Exit Self Refresh to Active Delay */
-+
-+	/* Memory Device Register -> SDRAM */
-+	cfg->sdrc_mdr = AT91_SDRAMC_MD_SDRAM;
-+	/* SDRAM_TR */
-+	cfg->sdrc_tr2 = 1200;
-+
-+	/* user reset enable */
-+	cfg->rstc_rmr =
-+		AT91_RSTC_KEY |
-+		AT91_RSTC_PROCRST |
-+		AT91_RSTC_RSTTYP_WAKEUP |
-+		AT91_RSTC_RSTTYP_WATCHDOG;
-+}
-diff --git a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-index 4dec275..e7145b4 100644
---- a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-+++ b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-@@ -19,8 +19,10 @@
- #include <mach/at91sam9_matrix.h>
- #include <mach/at91sam9_sdramc.h>
- #include <mach/at91sam9_smc.h>
-+#include <mach/at91_lowlevel_init.h>
- #include <mach/io.h>
- #include <init.h>
-+#include <sizes.h>
- 
- static void inline access_sdram(void)
- {
-@@ -44,40 +46,41 @@ static int inline running_in_sram(void)
- 	return addr == 0;
- }
- 
--void __naked __bare_init reset(void)
-+void __bare_init at91sam926x_lowlevel_init(void)
- {
- 	u32 r;
- 	int i;
- 	int in_sram = running_in_sram();
-+	struct at91sam926x_lowlevel_cfg cfg;
- 
--	common_reset();
-+	at91sam926x_lowlevel_board_config(&cfg);
- 
--	__raw_writel(CONFIG_SYS_WDTC_WDMR_VAL, AT91_BASE_WDT + AT91_WDT_MR);
-+	__raw_writel(cfg.wdt_mr, AT91_BASE_WDT + AT91_WDT_MR);
- 
- 	/* configure PIOx as EBI0 D[16-31] */
- #ifdef CONFIG_ARCH_AT91SAM9263
--	__raw_writel(CONFIG_SYS_PIOD_PDR_VAL1, AT91_BASE_PIOD + PIO_PDR);
--	__raw_writel(CONFIG_SYS_PIOD_PPUDR_VAL, AT91_BASE_PIOD + PIO_PUDR);
--	__raw_writel(CONFIG_SYS_PIOD_PPUDR_VAL, AT91_BASE_PIOD + PIO_ASR);
-+	__raw_writel(cfg.ebi_pio_pdr, AT91_BASE_PIOD + PIO_PDR);
-+	__raw_writel(cfg.ebi_pio_ppudr, AT91_BASE_PIOD + PIO_PUDR);
-+	__raw_writel(cfg.ebi_pio_ppudr, AT91_BASE_PIOD + PIO_ASR);
- #else
--	__raw_writel(CONFIG_SYS_PIOC_PDR_VAL1, AT91_BASE_PIOC + PIO_PDR);
--	__raw_writel(CONFIG_SYS_PIOC_PPUDR_VAL, AT91_BASE_PIOC + PIO_PUDR);
-+	__raw_writel(cfg.ebi_pio_pdr, AT91_BASE_PIOC + PIO_PDR);
-+	__raw_writel(cfg.ebi_pio_ppudrL, AT91_BASE_PIOC + PIO_PUDR);
- #endif
- 
- #if defined(AT91_MATRIX_EBI0CSA)
--	at91_sys_write(AT91_MATRIX_EBI0CSA, CONFIG_SYS_MATRIX_EBI0CSA_VAL);
-+	at91_sys_write(AT91_MATRIX_EBI0CSA, cfg.ebi_csa);
- #else /* AT91_MATRIX_EBICSA */
--	at91_sys_write(AT91_MATRIX_EBICSA, CONFIG_SYS_MATRIX_EBICSA_VAL);
-+	at91_sys_write(AT91_MATRIX_EBICSA, cfg.ebi_csa);
- #endif
- 
- 	/* flash */
--	at91_smc_write(CONFIG_SYS_SMC_CS, AT91_SMC_MODE, CONFIG_SYS_SMC_MODE_VAL);
-+	at91_smc_write(cfg.smc_cs, AT91_SMC_MODE, cfg.smc_mode);
- 
--	at91_smc_write(CONFIG_SYS_SMC_CS, AT91_SMC_CYCLE, CONFIG_SYS_SMC_CYCLE_VAL);
-+	at91_smc_write(cfg.smc_cs, AT91_SMC_CYCLE, cfg.smc_cycle);
- 
--	at91_smc_write(CONFIG_SYS_SMC_CS, AT91_SMC_PULSE, CONFIG_SYS_SMC_PULSE_VAL);
-+	at91_smc_write(cfg.smc_cs, AT91_SMC_PULSE, cfg.smc_pulse);
- 
--	at91_smc_write(CONFIG_SYS_SMC_CS, AT91_SMC_SETUP, CONFIG_SYS_SMC_SETUP_VAL);
-+	at91_smc_write(cfg.smc_cs, AT91_SMC_SETUP, cfg.smc_setup);
- 
- 	/*
- 	 * PMC Check if the PLL is already initialized
-@@ -89,7 +92,7 @@ void __naked __bare_init reset(void)
- 	/*
- 	 * Enable the Main Oscillator
- 	 */
--	at91_pmc_write(AT91_CKGR_MOR, CONFIG_SYS_MOR_VAL);
-+	at91_pmc_write(AT91_CKGR_MOR, cfg.pmc_mor);
- 
- 	do {
- 		r = at91_pmc_read(AT91_PMC_SR);
-@@ -98,7 +101,7 @@ void __naked __bare_init reset(void)
- 	/*
- 	 * PLLAR: x MHz for PCK
- 	 */
--	at91_pmc_write(AT91_CKGR_PLLAR, CONFIG_SYS_PLLAR_VAL);
-+	at91_pmc_write(AT91_CKGR_PLLAR, cfg.pmc_pllar);
- 
- 	do {
- 		r = at91_pmc_read(AT91_PMC_SR);
-@@ -107,14 +110,14 @@ void __naked __bare_init reset(void)
- 	/*
- 	 * PCK/x = MCK Master Clock from SLOW
- 	 */
--	at91_pmc_write(AT91_PMC_MCKR, CONFIG_SYS_MCKR1_VAL);
-+	at91_pmc_write(AT91_PMC_MCKR, cfg.pmc_mckr1);
- 
- 	pmc_check_mckrdy();
- 
- 	/*
- 	 * PCK/x = MCK Master Clock from PLLA
- 	 */
--	at91_pmc_write(AT91_PMC_MCKR, CONFIG_SYS_MCKR2_VAL);
-+	at91_pmc_write(AT91_PMC_MCKR, cfg.pmc_mckr2);
- 
- 	pmc_check_mckrdy();
- 
-@@ -133,13 +136,13 @@ void __naked __bare_init reset(void)
- 	at91_sys_write(AT91_SDRAMC_MR, AT91_SDRAMC_MODE_NORMAL);
- 
- 	/* SDRAMC_TR - Refresh Timer register */
--	at91_sys_write(AT91_SDRAMC_TR, CONFIG_SYS_SDRC_TR_VAL1);
-+	at91_sys_write(AT91_SDRAMC_TR, cfg.sdrc_tr1);
- 
- 	/* SDRAMC_CR - Configuration register*/
--	at91_sys_write(AT91_SDRAMC_CR, CONFIG_SYS_SDRC_CR_VAL);
-+	at91_sys_write(AT91_SDRAMC_CR, cfg.sdrc_cr);
- 
- 	/* Memory Device Type */
--	at91_sys_write(AT91_SDRAMC_MDR, CONFIG_SYS_SDRC_MDR_VAL);
-+	at91_sys_write(AT91_SDRAMC_MDR, cfg.sdrc_mdr);
- 
- 	/* SDRAMC_MR : Precharge All */
- 	at91_sys_write(AT91_SDRAMC_MR, AT91_SDRAMC_MODE_PRECHARGE);
-@@ -167,13 +170,13 @@ void __naked __bare_init reset(void)
- 	access_sdram();
- 
- 	/* SDRAMC_TR : Refresh Timer Counter */
--	at91_sys_write(AT91_SDRAMC_TR, CONFIG_SYS_SDRC_TR_VAL2);
-+	at91_sys_write(AT91_SDRAMC_TR, cfg.sdrc_tr2);
- 
- 	/* access SDRAM */
- 	access_sdram();
- 
- 	/* User reset enable*/
--	at91_sys_write(AT91_RSTC_MR, CONFIG_SYS_RSTC_RMR_VAL);
-+	at91_sys_write(AT91_RSTC_MR, cfg.rstc_rmr);
- 
- #ifdef CONFIG_SYS_MATRIX_MCFG_REMAP
- 	/* MATRIX_MCFG - REMAP all masters */
-@@ -190,3 +193,18 @@ void __naked __bare_init reset(void)
- end:
- 	board_init_lowlevel_return();
- }
-+
-+void __naked __bare_init reset(void)
-+{
-+	common_reset();
-+
-+#ifdef CONFIG_ARCH_AT91SAM9263
-+	arm_setup_stack(AT91SAM9263_SRAM0_BASE + AT91SAM9263_SRAM0_SIZE - 16);
-+#elif defined(CONFIG_ARCH_AT91SAM9261) || defined(CONFIG_ARCH_AT91SAM9G10)
-+	arm_setup_stack(AT91SAM9261_SRAM_BASE + AT91SAM9261_SRAM_SIZE - 16);
-+#elif defined(CONFIG_ARCH_AT91SAM9260) || defined(CONFIG_ARCH_AT91SAM9G20)
-+	arm_setup_stack(AT91SAM9260_SRAM_BASE + AT91SAM9260_SRAM_SIZE - 16);
-+#endif
-+
-+	at91sam926x_lowlevel_init();
-+}
-diff --git a/arch/arm/mach-at91/include/mach/at91_lowlevel_init.h b/arch/arm/mach-at91/include/mach/at91_lowlevel_init.h
-new file mode 100644
-index 0000000..29d9628
---- /dev/null
-+++ b/arch/arm/mach-at91/include/mach/at91_lowlevel_init.h
-@@ -0,0 +1,33 @@
-+/*
-+ * Copyright (C) 2009-2011 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+ */
-+
-+#ifndef __AT91_LOWLEVEL_INIT_H__
-+#define __AT91_LOWLEVEL_INIT_H__
-+
-+struct at91sam926x_lowlevel_cfg {
-+	u32 wdt_mr;
-+	u32 ebi_pio_pdr;
-+	u32 ebi_pio_ppudr;
-+	u32 ebi_csa;
-+	u32 smc_cs;
-+	u32 smc_mode;
-+	u32 smc_cycle;
-+	u32 smc_pulse;
-+	u32 smc_setup;
-+	u32 pmc_mor;
-+	u32 pmc_pllar;
-+	u32 pmc_mckr1;
-+	u32 pmc_mckr2;
-+	u32 sdrc_cr;
-+	u32 sdrc_tr1;
-+	u32 sdrc_mdr;
-+	u32 sdrc_tr2;
-+	u32 rstc_rmr;
++struct tag_boot_version {
++	u32		major;
++	u32		minor;
++	u32		extra;
 +};
 +
-+void at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_cfg *cfg);
++#define ATAG_FEATURE_LIST	0x5441000B
 +
-+#endif /* __AT91_LOWLEVEL_INIT_H__ */
++struct tag_feature_list {
++	u32	size;
++	u8	data[0];
++};
++
++struct tag *archos_append_atags(struct tag * params);
++
++#endif /* __ARCHOS_FEATURES_H */
+diff --git a/arch/arm/boards/archosg9/board.c b/arch/arm/boards/archosg9/board.c
+index 200fe92..8366cca 100644
+--- a/arch/arm/boards/archosg9/board.c
++++ b/arch/arm/boards/archosg9/board.c
+@@ -20,6 +20,7 @@
+ #include <sizes.h>
+ #include <i2c/i2c.h>
+ #include <gpio.h>
++#include "archos_features.h"
+ 
+ static int archosg9_console_init(void){
+ 	if (IS_ENABLED(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT))
+@@ -59,6 +60,7 @@ static int archosg9_devices_init(void){
+ 	 */
+ 	armlinux_set_architecture(5032);
+ 	armlinux_set_revision(5);
++	armlinux_set_atag_appender(archos_append_atags);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/boards/archosg9/feature_list.h b/arch/arm/boards/archosg9/feature_list.h
+new file mode 100644
+index 0000000..51f33ab
+--- /dev/null
++++ b/arch/arm/boards/archosg9/feature_list.h
+@@ -0,0 +1,352 @@
++#ifndef _FEATURE_LIST_H
++#define _FEATURE_LIST_H
++
++/*
++ This file comes from:
++ http://gitorious.org/archos/archos-gpl-gen9-kernel-ics/blobs/raw/master/
++ arch/arm/include/asm/feature_list.h
++*/
++
++#define FEATURE_LIST_MAGIC		0xFEA01234
++
++#define FEATURE_LIST_REV		0x00000001
++
++struct feature_tag_header {
++	u32 size;
++	u32 tag;
++};
++
++struct feature_tag_generic {
++	u32 vendor;
++	u32 product;
++	u32 type;
++	u32 revision;
++	u32 flags;
++};
++
++#define FTAG_NONE			0x00000000
++
++#define FTAG_CORE			0x00000001
++struct feature_tag_core {
++	u32 magic;
++	u32 list_revision;
++	u32 flags;
++};
++
++/* product specific */
++#define FTAG_PRODUCT_NAME		0x00000002
++struct feature_tag_product_name {
++	char name[64];
++	u32 id;
++};
++#define FTAG_PRODUCT_SERIAL_NUMBER	0x00000003
++struct feature_tag_product_serial {
++	u32 serial[4];
++};
++
++#define FTAG_PRODUCT_MAC_ADDRESS	0x00000004
++struct feature_tag_product_mac_address {
++	u8 addr[6];
++	u8 reserved1;
++	u8 reserved2;
++};
++
++#define FTAG_PRODUCT_OEM		0x00000005
++struct feature_tag_product_oem {
++	char name[16];
++	u32 id;
++};
++
++#define FTAG_PRODUCT_ZONE		0x00000006
++struct feature_tag_product_zone {
++	char name[16];
++	u32 id;
++};
++
++/* board pcb specific */
++#define FTAG_BOARD_PCB_REVISION		0x00000010
++struct feature_tag_board_revision {
++	u32 revision;
++};
++
++/* clock and ram setup */
++#define FTAG_CLOCK			0x00000011
++struct feature_tag_clock {
++	u32 clock;
++};
++
++#define FTAG_SDRAM			0x00000012
++struct feature_tag_sdram {
++	char vendor[16];
++	char product[32];
++	u32 type;
++	u32 revision;
++	u32 flags;
++	u32 clock;
++	/* custom params */
++	u32 param_0;
++	u32 param_1;
++	u32 param_2;
++	u32 param_3;
++	u32 param_4;
++	u32 param_5;
++	u32 param_6;
++	u32 param_7;
++};
++
++/* PMIC */
++#define FTAG_PMIC			0x00000013
++#define FTAG_PMIC_TPS62361		0x00000001
++struct feature_tag_pmic {
++	u32 flags;
++};
++
++/* serial port */
++#define FTAG_SERIAL_PORT		0x00000020
++struct feature_tag_serial_port {
++	u32 uart_id;
++	u32 speed;
++};
++
++/* turbo bit */
++#define FTAG_TURBO			0x00000014
++struct feature_tag_turbo {
++	u32 flag;
++};
++
++/*** features ****/
++#define FTAG_HAS_GPIO_VOLUME_KEYS	0x00010001
++struct feature_tag_gpio_volume_keys {
++	u32 gpio_vol_up;
++	u32 gpio_vol_down;
++	u32 flags;
++};
++
++#define FTAG_HAS_ELECTRICAL_SHORTCUT	0x00010002
++#define FTAG_HAS_DCIN			0x00010003
++struct feature_tag_dcin {
++	u32 autodetect;
++};
++
++/* external screen support */
++#define FTAG_HAS_EXT_SCREEN		0x00010004
++
++#define EXT_SCREEN_TYPE_TVOUT	0x00000001
++#define EXT_SCREEN_TYPE_HDMI	0x00000002
++#define EXT_SCREEN_TYPE_VGA	0x00000004
++struct feature_tag_ext_screen {
++	u32 type;
++	u32 revision;
++};
++
++/* wireless lan */
++#define FTAG_HAS_WIFI			0x00010005
++
++#define WIFI_TYPE_TIWLAN	0x00000001
++struct feature_tag_wifi {
++	u32 vendor;
++	u32 product;
++	u32 type;
++	u32 revision;
++	u32 flags;
++};
++
++/* bluetooth */
++#define FTAG_HAS_BLUETOOTH		0x00010006
++
++#define BLUETOOTH_TYPE_TIWLAN	0x00000001
++struct feature_tag_bluetooth {
++	u32 vendor;
++	u32 product;
++	u32 type;
++	u32 revision;
++	u32 flags;
++};
++
++/* accelerometer */
++#define FTAG_HAS_ACCELEROMETER		0x00010007
++struct feature_tag_accelerometer {
++	u32 vendor;
++	u32 product;
++	u32 type;
++	u32 revision;
++	u32 flags;
++};
++
++/* gyroscope */
++#define FTAG_HAS_GYROSCOPE		0x00010008
++
++/* compass */
++#define FTAG_HAS_COMPASS		0x00010009
++
++/* gps */
++#define FTAG_HAS_GPS			0x0001000a
++#define GPS_FLAG_DISABLED		0x00000001
++struct feature_tag_gps {
++	u32 vendor;
++	u32 product;
++	u32 revision;
++	u32 flags;
++};
++
++/* camera */
++#define FTAG_HAS_CAMERA			0x0001000b
++
++/* harddisk controller */
++#define FTAG_HAS_HARDDISK_CONTROLLER	0x0001000c
++#define HDCONTROLLER_TYPE_SATA	0x00000001
++struct feature_tag_harddisk_controller {
++	u32 vendor;
++	u32 product;
++	u32 type;
++	u32 revision;
++	u32 flags;
++};
++
++/* harddisk */
++#define FTAG_HAS_HARDDISK		0x0001000d
++
++#define HARDDISK_TYPE_SATA	0x00000001
++#define HARDDISK_TYPE_PATA	0x00000002
++struct feature_tag_harddisk {
++	u32 vendor;
++	u32 product;
++	u32 type;
++	u32 revision;
++	u32 flags;
++};
++
++/* touchscreen */
++#define FTAG_HAS_TOUCHSCREEN		0x0001000e
++
++#define TOUCHSCREEN_TYPE_CAPACITIVE 0x00000001
++#define TOUCHSCREEN_TYPE_RESISTIVE  0x00000002
++
++#define TOUCHSCREEN_FLAG_MULTITOUCH 0x00000001
++struct feature_tag_touchscreen {
++	u32 vendor;
++	u32 product;
++	u32 type;
++	u32 revision;
++	u32 flags;
++};
++
++/* microphone */
++#define FTAG_HAS_MICROPHONE		0x0001000f
++
++/* external SDMMC slot */
++#define FTAG_HAS_EXT_MMCSD_SLOT		0x00010010
++#define MMCSD_FLAG_CARDDETECT    0x00000001
++#define MMCSD_FLAG_CARDPREDETECT 0x00000002
++
++struct feature_tag_mmcsd {
++	u32 width;
++	u32 voltagemask;
++	u32 revision;
++	u32 flags;
++};
++
++/* ambient light sensor */
++#define FTAG_HAS_AMBIENT_LIGHT_SENSOR	0x00010011
++
++/* proximity sensor */
++#define FTAG_HAS_PROXIMITY_SENSOR	0x00010012
++
++/* gps */
++#define FTAG_HAS_GSM			0x00010013
++
++/* dect */
++#define FTAG_HAS_DECT			0x00010014
++
++/* hsdpa data modem */
++#define FTAG_HAS_HSDPA			0x00010015
++
++/* near field communication */
++#define FTAG_HAS_NFC			0x00010016
++
++#define FTAG_GPIO_KEYS			0x00010017
++struct feature_tag_gpio_keys {
++#define GPIO_KEYS_LONG_PRESS		0x00010000
++	u32 vol_up;
++	u32 vol_down;
++	u32 ok;
++	u32 reserved[5];
++};
++
++#define FTAG_SCREEN			0x00010018
++struct feature_tag_screen {
++	char vendor[16];
++	u32 type;
++	u32 revision;
++	u32 vcom;
++	u32 backlight;
++	u32 reserved[5];
++};
++
++#define FTAG_WIFI_PA			0x00010019
++struct feature_tag_wifi_pa {
++	char vendor[16];
++	u32 type;
++};
++
++/* loudspeaker */
++#define FTAG_HAS_SPEAKER		0x0001001a
++
++#define SPEAKER_FLAG_STEREO	 0x00000001
++#define SPEAKER_FLAG_OWN_VOLCTRL 0x00000002
++struct feature_tag_speaker {
++	u32 flags;
++};
++
++#define FTAG_BATTERY			0x0001001b
++struct feature_tag_battery {
++	u32 type;
++};
++#define BATTERY_TYPE_HIGHRS	 0x00000000
++#define BATTERY_TYPE_LOWRS	 0x00000001
++
++
++#define feature_tag_next(t) \
++	((struct feature_tag *)((u32 *)(t) + (t)->hdr.size))
++#define feature_tag_size(type) \
++	((sizeof(struct feature_tag_header) + sizeof(struct type)) >> 2)
++#define for_each_feature_tag(t, base) \
++	for (t = base; t->hdr.size; t = feature_tag_next(t))
++
++
++struct feature_tag {
++	struct feature_tag_header hdr;
++	union {
++		struct feature_tag_core			core;
++		struct feature_tag_generic		generic;
++		struct feature_tag_product_name		product_name;
++		struct feature_tag_product_serial	product_serial;
++		struct feature_tag_product_oem		product_oem;
++		struct feature_tag_product_zone		product_zone;
++		struct feature_tag_product_mac_address	mac_address;
++		struct feature_tag_board_revision	board_revision;
++		struct feature_tag_clock		clock;
++		struct feature_tag_sdram		sdram;
++		struct feature_tag_pmic			pmic;
++		struct feature_tag_turbo		turbo;
++		struct feature_tag_serial_port		serial_port;
++		struct feature_tag_gpio_volume_keys	gpio_volume_keys;
++		struct feature_tag_dcin			dcin;
++		struct feature_tag_ext_screen		ext_screen;
++		struct feature_tag_wifi			wifi;
++		struct feature_tag_bluetooth		bluetooth;
++		struct feature_tag_accelerometer	accelerometer;
++		struct feature_tag_harddisk_controller	harddisk_controller;
++		struct feature_tag_harddisk		harddisk;
++		struct feature_tag_touchscreen		touchscreen;
++		struct feature_tag_gps			gps;
++		struct feature_tag_speaker		speaker;
++		struct feature_tag_mmcsd		mmcsd;
++		struct feature_tag_gpio_keys		gpio_keys;
++		struct feature_tag_screen		screen;
++		struct feature_tag_wifi_pa		wifi_pa;
++		struct feature_tag_battery		battery;
++	} u;
++};
++
++#endif /* _FEATURE_LIST_H */
+diff --git a/arch/arm/configs/archosg9_defconfig b/arch/arm/configs/archosg9_defconfig
+index 2a20dd7..1f3d105 100644
+--- a/arch/arm/configs/archosg9_defconfig
++++ b/arch/arm/configs/archosg9_defconfig
+@@ -11,6 +11,7 @@ CONFIG_TEXT_BASE=0xa0000000
+ CONFIG_MALLOC_BASE=0x90000000
+ CONFIG_MALLOC_SIZE=0x10000000
+ CONFIG_KALLSYMS=y
++CONFIG_ARM_BOARD_APPEND_ATAG=y
+ CONFIG_PROMPT="barebox> "
+ CONFIG_LONGHELP=y
+ CONFIG_GLOB=y
+diff --git a/arch/arm/include/asm/armlinux.h b/arch/arm/include/asm/armlinux.h
+index 8ec8c4d..07479fb 100644
+--- a/arch/arm/include/asm/armlinux.h
++++ b/arch/arm/include/asm/armlinux.h
+@@ -2,6 +2,7 @@
+ #define __ARCH_ARMLINUX_H
+ 
+ #include <asm/memory.h>
++#include <asm/setup.h>
+ 
+ #if defined CONFIG_ARM_LINUX
+ void armlinux_set_bootparams(void *params);
+@@ -26,6 +27,14 @@ static inline void armlinux_set_serial(u64 serial)
+ }
+ #endif
+ 
++#if defined CONFIG_ARM_BOARD_APPEND_ATAG
++void armlinux_set_atag_appender(struct tag *(*)(struct tag *));
++#else
++static inline void armlinux_set_atag_appender(struct tag *(*func)(struct tag *))
++{
++}
++#endif
++
+ struct image_data;
+ 
+ void start_linux(void *adr, int swap, unsigned long initrd_address,
+diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
+index 9c134ed..40a63ea 100644
+--- a/arch/arm/lib/armlinux.c
++++ b/arch/arm/lib/armlinux.c
+@@ -106,6 +106,14 @@ u64 armlinux_get_serial(void)
+ #endif
+ }
+ 
++#ifdef CONFIG_ARM_BOARD_APPEND_ATAG
++static struct tag *(*atag_appender)(struct tag *);
++void armlinux_set_atag_appender(struct tag *(*func)(struct tag *))
++{
++	atag_appender = func;
++}
++#endif
++
+ static void setup_start_tag(void)
+ {
+ 	params = (struct tag *)armlinux_bootparams;
+@@ -233,6 +241,10 @@ static void setup_tags(unsigned long initrd_address,
+ 
+ 	setup_revision_tag();
+ 	setup_serial_tag();
++#ifdef CONFIG_ARM_BOARD_APPEND_ATAG
++	if (atag_appender != NULL)
++		params = atag_appender(params);
++#endif
+ 	setup_end_tag();
+ 
+ 	printf("commandline: %s\n"
 -- 
-1.7.10.4
+1.8.1.1
 
 
 _______________________________________________
