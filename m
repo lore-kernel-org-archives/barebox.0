@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from gw6.ovh.net ([213.251.189.206] helo=mail403.ha.ovh.net)
- by merlin.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TwT1L-0002Mz-He
- for barebox@lists.infradead.org; Sat, 19 Jan 2013 07:39:20 +0000
+Received: from 2.mo1.mail-out.ovh.net ([178.32.119.250]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TwWGm-0005Xx-9s
+ for barebox@lists.infradead.org; Sat, 19 Jan 2013 11:07:29 +0000
+Received: from mail405.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 9DDB8FF9126
+ for <barebox@lists.infradead.org>; Sat, 19 Jan 2013 12:21:34 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 19 Jan 2013 08:37:55 +0100
-Message-Id: <1358581075-22223-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat, 19 Jan 2013 12:06:00 +0100
+Message-Id: <1358593560-6307-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +23,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] defaultenv-2: move ps1 to base/init/ps1
+Subject: [For master PATCH 1/1] Makefile: move cmd_check_file_size to
+ Makefile.lib
 To: barebox@lists.infradead.org
 
-so we can overwrite it
+so we can use to check pbl
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- defaultenv-2/base/bin/init |    6 ------
- defaultenv-2/base/init/ps1 |    9 +++++++++
- 2 files changed, 9 insertions(+), 6 deletions(-)
- create mode 100644 defaultenv-2/base/init/ps1
+ Makefile             |   11 -----------
+ scripts/Makefile.lib |   11 +++++++++++
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/defaultenv-2/base/bin/init b/defaultenv-2/base/bin/init
-index bb4abcd..2a1f6a1 100644
---- a/defaultenv-2/base/bin/init
-+++ b/defaultenv-2/base/bin/init
-@@ -15,12 +15,6 @@ global editcmd=sedit
+diff --git a/Makefile b/Makefile
+index 0c07463..8e15c03 100644
+--- a/Makefile
++++ b/Makefile
+@@ -547,17 +547,6 @@ quiet_cmd_barebox_version = GEN     .version
+ 	fi;						\
+ 	$(MAKE) $(build)=common
  
- /env/config
- 
--if [ ${global.allow_color} = "true" ]; then
--        export PS1="\e[1;32mbarebox@\e[1;36m\h:\w\e[0m "
--else
--        export PS1="barebox@\h:\w "
--fi
+-# Check size of a file
+-quiet_cmd_check_file_size = CHKSIZE $@
+-      cmd_check_file_size = set -e;					\
+-	size=`stat -c%s $@`;						\
+-	max_size=`printf "%d" $2`;					\
+-	if [ $$size -gt $$max_size ] ;					\
+-	then								\
+-		echo "$@ size $$size > of the maximum size $$max_size" >&2;	\
+-		exit 1 ;						\
+-	fi;
 -
- if [ -e /env/menu ]; then
- 	echo -e -n "\nHit m for menu or any other key to stop autoboot: "
- else
-diff --git a/defaultenv-2/base/init/ps1 b/defaultenv-2/base/init/ps1
-new file mode 100644
-index 0000000..fcbf4b6
---- /dev/null
-+++ b/defaultenv-2/base/init/ps1
-@@ -0,0 +1,9 @@
-+#!/bin/sh
+ # Generate System.map
+ quiet_cmd_sysmap = SYSMAP
+       cmd_sysmap = $(CONFIG_SHELL) $(srctree)/scripts/mksysmap
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 14e471d..f7d6721 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -248,3 +248,14 @@ cmd_disasm = $(OBJDUMP) -d $< > $@
+ 
+ quiet_cmd_ln = LN      $@
+ cmd_ln = ln -sf $< $@
 +
-+/env/config
-+
-+if [ ${global.allow_color} = "true" ]; then
-+        export PS1="\e[1;32mbarebox@\e[1;36m\h:\w\e[0m "
-+else
-+        export PS1="barebox@\h:\w "
-+fi
++# Check size of a file
++quiet_cmd_check_file_size = CHKSIZE $@
++      cmd_check_file_size = set -e;					\
++	size=`stat -c%s $@`;						\
++	max_size=`printf "%d" $2`;					\
++	if [ $$size -gt $$max_size ] ;					\
++	then								\
++		echo "$@ size $$size > of the maximum size $$max_size" >&2;	\
++		exit 1 ;						\
++	fi;
 -- 
 1.7.10.4
 
