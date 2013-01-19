@@ -1,22 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo3.mail-out.ovh.net ([188.165.43.173]
+Received: from 17.mo3.mail-out.ovh.net ([87.98.178.58]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TwYZs-0008Mv-OK
- for barebox@lists.infradead.org; Sat, 19 Jan 2013 13:35:21 +0000
+ id 1TwYcC-0008SC-3F
+ for barebox@lists.infradead.org; Sat, 19 Jan 2013 13:37:45 +0000
 Received: from mail412.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 47FBFFF87EF
- for <barebox@lists.infradead.org>; Sat, 19 Jan 2013 14:48:57 +0100 (CET)
-Date: Sat, 19 Jan 2013 14:33:56 +0100
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 09ADDFF884A
+ for <barebox@lists.infradead.org>; Sat, 19 Jan 2013 14:51:21 +0100 (CET)
+Date: Sat, 19 Jan 2013 14:36:21 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130119133356.GA18803@game.jcrosoft.org>
-References: <20130119112125.GH22953@game.jcrosoft.org>
- <1358594814-8297-1-git-send-email-plagnioj@jcrosoft.com>
- <1358594814-8297-7-git-send-email-plagnioj@jcrosoft.com>
- <20130119113307.GJ1906@pengutronix.de>
+Message-ID: <20130119133621.GB18803@game.jcrosoft.org>
+References: <20130119073309.GG22953@game.jcrosoft.org>
+ <1358580914-21443-1-git-send-email-plagnioj@jcrosoft.com>
+ <1358580914-21443-5-git-send-email-plagnioj@jcrosoft.com>
+ <20130119112910.GH1906@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130119113307.GJ1906@pengutronix.de>
+In-Reply-To: <20130119112910.GH1906@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,43 +29,132 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/7] at91: usb_a9263: add bootstrap version
+Subject: Re: [PATCH 5/7] introduce common bootstrap code
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 12:33 Sat 19 Jan     , Sascha Hauer wrote:
-> On Sat, Jan 19, 2013 at 12:26:54PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On 12:29 Sat 19 Jan     , Sascha Hauer wrote:
+> On Sat, Jan 19, 2013 at 08:35:12AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > This will allow to have a generic code to create different bootstrap
+> > 
+> > As example
+> > Barebox as TI Xloader
+> > Barebox as AT91 Bootstrap
+> > 
 > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > > ---
-> >  arch/arm/boards/usb-a926x/Makefile                 |    3 +++
-> >  arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c    |   16 ++++++++++++
-> >  .../configs/usb_a9263_128mib_bootstrap_defconfig   |   26 ++++++++++++++++++++
-> >  arch/arm/configs/usb_a9263_bootstrap_defconfig     |   25 +++++++++++++++++++
-> >  4 files changed, 70 insertions(+)
-> >  create mode 100644 arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c
-> >  create mode 100644 arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig
-> >  create mode 100644 arch/arm/configs/usb_a9263_bootstrap_defconfig
+> >  include/bootstrap.h    |   34 +++++++++++++++++
+> >  lib/Kconfig            |    2 +
+> >  lib/Makefile           |    1 +
+> >  lib/bootstrap/Kconfig  |   13 +++++++
+> >  lib/bootstrap/Makefile |    3 ++
+> >  lib/bootstrap/common.c |   21 +++++++++++
+> >  lib/bootstrap/devfs.c  |   98 ++++++++++++++++++++++++++++++++++++++++++++++++
+> >  lib/bootstrap/disk.c   |   36 ++++++++++++++++++
+> >  8 files changed, 208 insertions(+)
+> >  create mode 100644 include/bootstrap.h
+> >  create mode 100644 lib/bootstrap/Kconfig
+> >  create mode 100644 lib/bootstrap/Makefile
+> >  create mode 100644 lib/bootstrap/common.c
+> >  create mode 100644 lib/bootstrap/devfs.c
+> >  create mode 100644 lib/bootstrap/disk.c
 > > 
-> > diff --git a/arch/arm/boards/usb-a926x/Makefile b/arch/arm/boards/usb-a926x/Makefile
-> > index 9511a76..4c8cd64 100644
-> > --- a/arch/arm/boards/usb-a926x/Makefile
-> > +++ b/arch/arm/boards/usb-a926x/Makefile
-> > @@ -1,5 +1,8 @@
-> >  obj-y += init.o
-> >  
-> > +bootstrap-$(CONFIG_MACH_USB_A9263) = usb_a9263_bootstrap.o
-> > +obj-$(CONFIG_BOOTSTRAP) += $(bootstrap-y)
-> > +
-> >  lowlevel_init-$(CONFIG_MACH_USB_A9263) = usb_a9263_lowlevel_init.o
-> >  
-> >  obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> > diff --git a/arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c b/arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c
+> > diff --git a/include/bootstrap.h b/include/bootstrap.h
 > > new file mode 100644
-> > index 0000000..368c677
+> > index 0000000..26e9dbc
 > > --- /dev/null
-> > +++ b/arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c
-> > @@ -0,0 +1,16 @@
+> > +++ b/include/bootstrap.h
+> > @@ -0,0 +1,34 @@
 > > +/*
+> > + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
+> > + *
+> > + * Under GPLv2
+> > + */
+> > +
+> > +#ifndef __BOOSTRAP_H__
+> > +#define __BOOSTRAP_H__
+> > +
+> > +#define bootstrap_err(fmt, arg...) printf(fmt, ##arg)
+> > +
+> > +void bootstrap_boot(int (*func)(void), bool barebox);
+> > +
+> > +#ifdef CONFIG_BOOTSTRAP_DEVFS
+> > +void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
+> > +			   int default_size, int max_size);
+> > +#else
+> > +static inline void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
+> > +			   int default_size, int max_size)
+> > +{
+> > +	return NULL;
+> > +}
+> > +#endif
+> > +
+> > +#ifdef CONFIG_BOOTSTRAP_DISK
+> > +void* bootstrap_read_disk(char *devname);
+> > +#else
+> > +static inline void* bootstrap_read_disk(char *devname)
+> > +{
+> > +	return NULL;
+> > +}
+> > +#endif
+> > +
+> > +#endif /* __BOOSTRAP_H__ */
+> > diff --git a/lib/Kconfig b/lib/Kconfig
+> > index db8a6ad..4578353 100644
+> > --- a/lib/Kconfig
+> > +++ b/lib/Kconfig
+> > @@ -52,4 +52,6 @@ config LIBMTD
+> >  
+> >  source lib/gui/Kconfig
+> >  
+> > +source lib/bootstrap/Kconfig
+> > +
+> >  endmenu
+> > diff --git a/lib/Makefile b/lib/Makefile
+> > index 85f4ec9..43f6ea3 100644
+> > --- a/lib/Makefile
+> > +++ b/lib/Makefile
+> > @@ -1,3 +1,4 @@
+> > +obj-$(CONFIG_BOOTSTRAP)	+= bootstrap/
+> >  obj-y			+= ctype.o
+> >  obj-y			+= rbtree.o
+> >  obj-y			+= display_options.o
+> > diff --git a/lib/bootstrap/Kconfig b/lib/bootstrap/Kconfig
+> > new file mode 100644
+> > index 0000000..558da00
+> > --- /dev/null
+> > +++ b/lib/bootstrap/Kconfig
+> > @@ -0,0 +1,13 @@
+> > +menuconfig BOOTSTRAP
+> > +	bool "Library bootstrap routines           "
+> > +	depends on SHELL_NONE
+> > +
+> > +if BOOTSTRAP
+> > +
+> > +config BOOTSTRAP_DEVFS
+> > +	bool "devfs support"
+> > +
+> > +config BOOTSTRAP_DISK
+> > +	bool "disk support"
+> > +
+> > +endif
+> > diff --git a/lib/bootstrap/Makefile b/lib/bootstrap/Makefile
+> > new file mode 100644
+> > index 0000000..cbaa49f
+> > --- /dev/null
+> > +++ b/lib/bootstrap/Makefile
+> > @@ -0,0 +1,3 @@
+> > +obj-y				+= common.o
+> > +obj-$(CONFIG_BOOTSTRAP_DEVFS)	+= devfs.o
+> > +obj-$(CONFIG_BOOTSTRAP_DISK)	+= disk.o
+> > diff --git a/lib/bootstrap/common.c b/lib/bootstrap/common.c
+> > new file mode 100644
+> > index 0000000..bca3eb7
+> > --- /dev/null
+> > +++ b/lib/bootstrap/common.c
+> > @@ -0,0 +1,21 @@
+> > +/*
+> > + * Copyright (C) 2011 Sascha Hauer, Pengutronix
 > > + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
 > > + *
 > > + * Under GPLv2
@@ -73,91 +162,59 @@ On 12:33 Sat 19 Jan     , Sascha Hauer wrote:
 > > +
 > > +#include <common.h>
 > > +#include <bootstrap.h>
-> > +#include <mach/bootstrap.h>
+> > +#include <filetype.h>
 > > +
-> > +#ifdef CONFIG_MTD_DATAFLASH
-> > +void * bootstrap_board_read_dataflash(void)
+> > +void bootstrap_boot(int (*func)(void), bool barebox)
 > > +{
-> > +	return bootstrap_read_devfs("dataflash0", false, 0xffc0, 204864, 204864);
-> > +}
-> > +#endif
-> > diff --git a/arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig b/arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig
-> > new file mode 100644
-> > index 0000000..e71a3c5
-> > --- /dev/null
-> > +++ b/arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig
-> > @@ -0,0 +1,26 @@
-> > +CONFIG_ARCH_AT91SAM9263=y
-> > +CONFIG_MACH_USB_A9263=y
-> > +CONFIG_AT91_HAVE_SRAM_128M=y
-> > +CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x12000
-> > +CONFIG_AEABI=y
-> > +# CONFIG_CMD_ARM_CPUINFO is not set
-> > +CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-> > +CONFIG_ENVIRONMENT_VARIABLES=y
-> > +CONFIG_PBL_IMAGE=y
-> > +CONFIG_MMU=y
-> > +CONFIG_MALLOC_DUMMY=y
-> > +CONFIG_PROMPT="USB-9263:"
-> > +CONFIG_SHELL_NONE=y
-> > +# CONFIG_DEFAULT_ENVIRONMENT is not set
-> > +# CONFIG_SPI is not set
-> > +CONFIG_MTD=y
-> > +# CONFIG_MTD_WRITE is not set
-> > +# CONFIG_MTD_OOB_DEVICE is not set
-> > +CONFIG_NAND=y
-> > +# CONFIG_NAND_ECC_HW is not set
-> > +# CONFIG_NAND_ECC_HW_SYNDROME is not set
-> > +# CONFIG_NAND_ECC_HW_NONE is not set
-> > +CONFIG_NAND_ATMEL=y
-> > +# CONFIG_FS_RAMFS is not set
-> > +CONFIG_BOOTSTRAP=y
-> > +CONFIG_BOOTSTRAP_DEVFS=y
-> > diff --git a/arch/arm/configs/usb_a9263_bootstrap_defconfig b/arch/arm/configs/usb_a9263_bootstrap_defconfig
-> > new file mode 100644
-> > index 0000000..c4b31ba
-> > --- /dev/null
-> > +++ b/arch/arm/configs/usb_a9263_bootstrap_defconfig
-> > @@ -0,0 +1,25 @@
-> > +CONFIG_ARCH_AT91SAM9263=y
-> > +CONFIG_MACH_USB_A9263=y
-> > +CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x12000
-> > +CONFIG_AEABI=y
-> > +# CONFIG_CMD_ARM_CPUINFO is not set
-> > +CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-> > +CONFIG_ENVIRONMENT_VARIABLES=y
-> > +CONFIG_PBL_IMAGE=y
-> > +CONFIG_MMU=y
-> > +CONFIG_MALLOC_DUMMY=y
-> > +CONFIG_PROMPT="USB-9263:"
-> > +CONFIG_SHELL_NONE=y
-> > +# CONFIG_DEFAULT_ENVIRONMENT is not set
-> > +# CONFIG_SPI is not set
-> > +CONFIG_MTD=y
-> > +# CONFIG_MTD_WRITE is not set
-> > +# CONFIG_MTD_OOB_DEVICE is not set
-> > +CONFIG_NAND=y
-> > +# CONFIG_NAND_ECC_HW is not set
-> > +# CONFIG_NAND_ECC_HW_SYNDROME is not set
-> > +# CONFIG_NAND_ECC_HW_NONE is not set
-> > +CONFIG_NAND_ATMEL=y
-> > +# CONFIG_FS_RAMFS is not set
-> > +CONFIG_BOOTSTRAP=y
-> > +CONFIG_BOOTSTRAP_DEVFS=y
+> > +	if (barebox && !is_barebox_arm_head((void*)func))
+> > +		return;
 > 
-> These configs still fail with
+> This is ARM specific.
 > 
-> arch/arm/mach-at91/built-in.o: In function `boot_seq':
-> at91sam9263_devices.c:(.text.boot_seq+0x28): undefined reference to `bootstrap_boot'
+> > +
+> > +	ret = cdev_read(cdev, header, ARM_HEAD_SIZE, 0, 0);
 > 
-> When CONFIG_BOOTSTRAP is disabled in make menuconfig. Should it be
-> selected?
-yes BOOTSTRAP is mandatory
+> Also ARM specific.
+yes if not arm is_barebox_arm return 0 so shoud compile too
 
-for this config
+and the code will be drop
+
+we can move the code to arch/arm but did not see the point too much
 
 Best Regards,
 J.
+> 
+> 
+> > +	cdev_close(cdev);
+> > +
+> > +	if (ret != ARM_HEAD_SIZE) {
+> > +		bootstrap_err("failed to read from partition\n");
+> > +		return NULL;
+> > +	}
+> > +
+> > +	return header;
+> > +}
+> > +
+> > +static unsigned int get_image_size(void *head)
+> > +{
+> > +	unsigned int ret = 0;
+> > +	unsigned int *psize = head + ARM_HEAD_SIZE_OFFSET;
+> > +
+> > +	if (is_barebox_arm_head(head))
+> > +		ret = *psize;
+> 
+> ARM specific.
+> 
+> Given the amount of ARM specific code I doubt this currently should be
+> in a non ARM specific place.
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
