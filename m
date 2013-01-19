@@ -1,22 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 17.mo3.mail-out.ovh.net ([87.98.178.58]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TwYcC-0008SC-3F
- for barebox@lists.infradead.org; Sat, 19 Jan 2013 13:37:45 +0000
-Received: from mail412.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 09ADDFF884A
- for <barebox@lists.infradead.org>; Sat, 19 Jan 2013 14:51:21 +0100 (CET)
-Date: Sat, 19 Jan 2013 14:36:21 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130119133621.GB18803@game.jcrosoft.org>
-References: <20130119073309.GG22953@game.jcrosoft.org>
- <1358580914-21443-1-git-send-email-plagnioj@jcrosoft.com>
- <1358580914-21443-5-git-send-email-plagnioj@jcrosoft.com>
- <20130119112910.GH1906@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TwYhC-00007h-7Z
+ for barebox@lists.infradead.org; Sat, 19 Jan 2013 13:42:55 +0000
+Date: Sat, 19 Jan 2013 14:42:51 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130119134251.GL1906@pengutronix.de>
+References: <20130119112125.GH22953@game.jcrosoft.org>
+ <1358594814-8297-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130119114231.GK1906@pengutronix.de>
+ <20130119133206.GK22953@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130119112910.GH1906@pengutronix.de>
+In-Reply-To: <20130119133206.GK22953@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,192 +25,158 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/7] introduce common bootstrap code
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 1/7] at91: add test commamd to emulate bootrom boot
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 12:29 Sat 19 Jan     , Sascha Hauer wrote:
-> On Sat, Jan 19, 2013 at 08:35:12AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > This will allow to have a generic code to create different bootstrap
+On Sat, Jan 19, 2013 at 02:32:06PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 12:42 Sat 19 Jan     , Sascha Hauer wrote:
+> > On Sat, Jan 19, 2013 at 12:26:48PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > ---
+> > >  arch/arm/mach-at91/Kconfig         |    6 +++
+> > >  arch/arm/mach-at91/Makefile        |    1 +
+> > >  arch/arm/mach-at91/boot_test_cmd.c |   99 ++++++++++++++++++++++++++++++++++++
+> > >  3 files changed, 106 insertions(+)
+> > >  create mode 100644 arch/arm/mach-at91/boot_test_cmd.c
+> > > 
+> > > diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+> > > index fcba7fb..e703b3d 100644
+> > > --- a/arch/arm/mach-at91/Kconfig
+> > > +++ b/arch/arm/mach-at91/Kconfig
+> > > @@ -483,4 +483,10 @@ config CMD_AT91MUX
+> > >  	bool "at91mux dump command"
+> > >  	default y
+> > >  
+> > > +config CONFIG_CMD_AT91_BOOT_TEST
+> > > +	bool "at91_boot_test"
+> > > +	help
+> > > +	  allow to upload a boot binary to sram and execute it
+> > > +	  usefull to test bootstrap or barebox lowlevel init
 > > 
-> > As example
-> > Barebox as TI Xloader
-> > Barebox as AT91 Bootstrap
+> > s/usefull/useful/
 > > 
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  include/bootstrap.h    |   34 +++++++++++++++++
-> >  lib/Kconfig            |    2 +
-> >  lib/Makefile           |    1 +
-> >  lib/bootstrap/Kconfig  |   13 +++++++
-> >  lib/bootstrap/Makefile |    3 ++
-> >  lib/bootstrap/common.c |   21 +++++++++++
-> >  lib/bootstrap/devfs.c  |   98 ++++++++++++++++++++++++++++++++++++++++++++++++
-> >  lib/bootstrap/disk.c   |   36 ++++++++++++++++++
-> >  8 files changed, 208 insertions(+)
-> >  create mode 100644 include/bootstrap.h
-> >  create mode 100644 lib/bootstrap/Kconfig
-> >  create mode 100644 lib/bootstrap/Makefile
-> >  create mode 100644 lib/bootstrap/common.c
-> >  create mode 100644 lib/bootstrap/devfs.c
-> >  create mode 100644 lib/bootstrap/disk.c
+> > > +
+> > >  endif
+> > > diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+> > > index 53b4dd8..4404d23 100644
+> > > --- a/arch/arm/mach-at91/Makefile
+> > > +++ b/arch/arm/mach-at91/Makefile
+> > > @@ -1,4 +1,5 @@
+> > >  obj-y += setup.o clock.o gpio.o
+> > > +obj-$(CONFIG_CMD_AT91_BOOT_TEST) += boot_test_cmd.o
+> > >  
+> > >  lowlevel_init-y = at91sam926x_lowlevel_init.o
+> > >  lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
+> > > diff --git a/arch/arm/mach-at91/boot_test_cmd.c b/arch/arm/mach-at91/boot_test_cmd.c
+> > > new file mode 100644
+> > > index 0000000..02e16fd
+> > > --- /dev/null
+> > > +++ b/arch/arm/mach-at91/boot_test_cmd.c
+> > > @@ -0,0 +1,99 @@
+> > > +/*
+> > > + * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > + *
+> > > + * Under GPLv2 only
+> > > + */
+> > > +
+> > > +#include <common.h>
+> > > +#include <command.h>
+> > > +#include <libbb.h>
+> > > +#include <getopt.h>
+> > > +#include <fs.h>
+> > > +#include <fcntl.h>
+> > > +#include <malloc.h>
+> > > +#include <errno.h>
+> > > +
+> > > +static int do_at91_boot_test(int argc, char *argv[])
+> > > +{
+> > > +	int opt;
+> > > +	u32 *buf32;
+> > > +	void *buf;
+> > > +	u32 jump = 0;
+> > > +	int fd;
+> > > +	int ret = 1;
+> > > +	char *sram = "/dev/sram0";
+> > > +	u32 read_size, write_size;
+> > > +	u32 tmp = 0;
+> > > +
+> > > +	while ((opt = getopt(argc, argv, "j:s:")) > 0) {
+> > > +		switch (opt) {
+> > > +		case 'j':
+> > > +			jump = simple_strtoul(optarg, NULL, 0);
+> > > +			break;
 > > 
-> > diff --git a/include/bootstrap.h b/include/bootstrap.h
-> > new file mode 100644
-> > index 0000000..26e9dbc
-> > --- /dev/null
-> > +++ b/include/bootstrap.h
-> > @@ -0,0 +1,34 @@
-> > +/*
-> > + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-> > + *
-> > + * Under GPLv2
-> > + */
-> > +
-> > +#ifndef __BOOSTRAP_H__
-> > +#define __BOOSTRAP_H__
-> > +
-> > +#define bootstrap_err(fmt, arg...) printf(fmt, ##arg)
-> > +
-> > +void bootstrap_boot(int (*func)(void), bool barebox);
-> > +
-> > +#ifdef CONFIG_BOOTSTRAP_DEVFS
-> > +void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
-> > +			   int default_size, int max_size);
-> > +#else
-> > +static inline void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
-> > +			   int default_size, int max_size)
-> > +{
-> > +	return NULL;
-> > +}
-> > +#endif
-> > +
-> > +#ifdef CONFIG_BOOTSTRAP_DISK
-> > +void* bootstrap_read_disk(char *devname);
-> > +#else
-> > +static inline void* bootstrap_read_disk(char *devname)
-> > +{
-> > +	return NULL;
-> > +}
-> > +#endif
-> > +
-> > +#endif /* __BOOSTRAP_H__ */
-> > diff --git a/lib/Kconfig b/lib/Kconfig
-> > index db8a6ad..4578353 100644
-> > --- a/lib/Kconfig
-> > +++ b/lib/Kconfig
-> > @@ -52,4 +52,6 @@ config LIBMTD
-> >  
-> >  source lib/gui/Kconfig
-> >  
-> > +source lib/bootstrap/Kconfig
-> > +
-> >  endmenu
-> > diff --git a/lib/Makefile b/lib/Makefile
-> > index 85f4ec9..43f6ea3 100644
-> > --- a/lib/Makefile
-> > +++ b/lib/Makefile
-> > @@ -1,3 +1,4 @@
-> > +obj-$(CONFIG_BOOTSTRAP)	+= bootstrap/
-> >  obj-y			+= ctype.o
-> >  obj-y			+= rbtree.o
-> >  obj-y			+= display_options.o
-> > diff --git a/lib/bootstrap/Kconfig b/lib/bootstrap/Kconfig
-> > new file mode 100644
-> > index 0000000..558da00
-> > --- /dev/null
-> > +++ b/lib/bootstrap/Kconfig
-> > @@ -0,0 +1,13 @@
-> > +menuconfig BOOTSTRAP
-> > +	bool "Library bootstrap routines           "
-> > +	depends on SHELL_NONE
-> > +
-> > +if BOOTSTRAP
-> > +
-> > +config BOOTSTRAP_DEVFS
-> > +	bool "devfs support"
-> > +
-> > +config BOOTSTRAP_DISK
-> > +	bool "disk support"
-> > +
-> > +endif
-> > diff --git a/lib/bootstrap/Makefile b/lib/bootstrap/Makefile
-> > new file mode 100644
-> > index 0000000..cbaa49f
-> > --- /dev/null
-> > +++ b/lib/bootstrap/Makefile
-> > @@ -0,0 +1,3 @@
-> > +obj-y				+= common.o
-> > +obj-$(CONFIG_BOOTSTRAP_DEVFS)	+= devfs.o
-> > +obj-$(CONFIG_BOOTSTRAP_DISK)	+= disk.o
-> > diff --git a/lib/bootstrap/common.c b/lib/bootstrap/common.c
-> > new file mode 100644
-> > index 0000000..bca3eb7
-> > --- /dev/null
-> > +++ b/lib/bootstrap/common.c
-> > @@ -0,0 +1,21 @@
-> > +/*
-> > + * Copyright (C) 2011 Sascha Hauer, Pengutronix
-> > + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-> > + *
-> > + * Under GPLv2
-> > + */
-> > +
-> > +#include <common.h>
-> > +#include <bootstrap.h>
-> > +#include <filetype.h>
-> > +
-> > +void bootstrap_boot(int (*func)(void), bool barebox)
-> > +{
-> > +	if (barebox && !is_barebox_arm_head((void*)func))
-> > +		return;
-> 
-> This is ARM specific.
-> 
-> > +
-> > +	ret = cdev_read(cdev, header, ARM_HEAD_SIZE, 0, 0);
-> 
-> Also ARM specific.
-yes if not arm is_barebox_arm return 0 so shoud compile too
+> > Without the 'j' option given the code will jump to 0x0. Is this
+> > intended?
+> yes at91 we start at 0x0 for the code that run in sram
+> > 
+> > > +		case 's':
+> > > +			sram = optarg;
+> > > +			break;
+> > > +		default:
+> > > +			return COMMAND_ERROR_USAGE;
+> > > +		}
+> > > +	}
+> > > +
+> > > +	if (argc < optind + 1)
+> > > +		return COMMAND_ERROR_USAGE;
+> > > +
+> > > +	buf32 = buf = read_file(argv[optind], &read_size);
+> > > +	if (!buf)
+> > > +		return -EINVAL;
+> > > +
+> > > +	write_size = buf32[5];
+> > > +
+> > > +	printf("size of the size %d\n", read_size);
+> > > +	printf("size to load in sram %d\n", write_size);
+> > > +
+> > > +	if (write_size > read_size) {
+> > > +		printf("file smaller than requested sram loading size (%d < %d)\n", write_size, read_size);
+> > > +		goto err;
+> > > +	}
+> > > +
+> > > +	fd = open(sram, O_WRONLY);
+> > > +	if (fd < 0) {
+> > > +		printf("could not open %s: %s\n", sram, errno_str());
+> > > +		ret = fd;
+> > > +		goto err;
+> > > +	}
+> > > +
+> > > +	while(write_size) {
+> > > +		tmp = write(fd, buf, write_size);
+> > > +		if (tmp < 0) {
+> > > +			perror("write");
+> > > +			goto err_open;
+> > > +		}
+> > > +		buf += tmp;
+> > > +		write_size -= tmp;
+> > > +	}
+> > > +
+> > > +	shutdown_barebox();
+> > > +
+> > > +	__asm__ __volatile__(
+> > > +		"mov pc, %0\n"
+> > > +		:
+> > > +		: "r"(jump)
+> > > +		:);
+> > 
+> > Is this inline assemble needed? Why not
+> > 
+> > 	void (*jump)(void);
+> > 
+> > 	jump();
+> jump can be NULL
 
-and the code will be drop
+But that's not a reason for inline assembly.
 
-we can move the code to arch/arm but did not see the point too much
+Sascha
 
-Best Regards,
-J.
-> 
-> 
-> > +	cdev_close(cdev);
-> > +
-> > +	if (ret != ARM_HEAD_SIZE) {
-> > +		bootstrap_err("failed to read from partition\n");
-> > +		return NULL;
-> > +	}
-> > +
-> > +	return header;
-> > +}
-> > +
-> > +static unsigned int get_image_size(void *head)
-> > +{
-> > +	unsigned int ret = 0;
-> > +	unsigned int *psize = head + ARM_HEAD_SIZE_OFFSET;
-> > +
-> > +	if (is_barebox_arm_head(head))
-> > +		ret = *psize;
-> 
-> ARM specific.
-> 
-> Given the amount of ARM specific code I doubt this currently should be
-> in a non ARM specific place.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
