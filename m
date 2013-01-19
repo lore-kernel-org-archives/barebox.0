@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TwWbo-0006SJ-T8
- for barebox@lists.infradead.org; Sat, 19 Jan 2013 11:29:14 +0000
-Date: Sat, 19 Jan 2013 12:29:10 +0100
+ id 1TwWe1-0006kC-5l
+ for barebox@lists.infradead.org; Sat, 19 Jan 2013 11:31:29 +0000
+Date: Sat, 19 Jan 2013 12:31:27 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130119112910.GH1906@pengutronix.de>
-References: <20130119073309.GG22953@game.jcrosoft.org>
- <1358580914-21443-1-git-send-email-plagnioj@jcrosoft.com>
- <1358580914-21443-5-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130119113127.GI1906@pengutronix.de>
+References: <20130119112125.GH22953@game.jcrosoft.org>
+ <1358594814-8297-1-git-send-email-plagnioj@jcrosoft.com>
+ <1358594814-8297-6-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1358580914-21443-5-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1358594814-8297-6-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,131 +24,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/7] introduce common bootstrap code
+Subject: Re: [PATCH 6/7] at91: add bootstrap version
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Jan 19, 2013 at 08:35:12AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> This will allow to have a generic code to create different bootstrap
-> 
-> As example
-> Barebox as TI Xloader
-> Barebox as AT91 Bootstrap
+On Sat, Jan 19, 2013 at 12:26:53PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> This will allow to boot from NAND/MMC and others.
+> This version of bootstrap is a non shell version of barebox compressed by the
+> pbl.
 > 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  include/bootstrap.h    |   34 +++++++++++++++++
->  lib/Kconfig            |    2 +
->  lib/Makefile           |    1 +
->  lib/bootstrap/Kconfig  |   13 +++++++
->  lib/bootstrap/Makefile |    3 ++
->  lib/bootstrap/common.c |   21 +++++++++++
->  lib/bootstrap/devfs.c  |   98 ++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/bootstrap/disk.c   |   36 ++++++++++++++++++
->  8 files changed, 208 insertions(+)
->  create mode 100644 include/bootstrap.h
->  create mode 100644 lib/bootstrap/Kconfig
->  create mode 100644 lib/bootstrap/Makefile
->  create mode 100644 lib/bootstrap/common.c
->  create mode 100644 lib/bootstrap/devfs.c
->  create mode 100644 lib/bootstrap/disk.c
+>  arch/arm/mach-at91/Kconfig                  |    1 +
+>  arch/arm/mach-at91/Makefile                 |    1 +
+>  arch/arm/mach-at91/bootstrap.c              |   86 +++++++++++++++++++++++++++
+>  arch/arm/mach-at91/include/mach/bootstrap.h |   28 +++++++++
+>  4 files changed, 116 insertions(+)
+>  create mode 100644 arch/arm/mach-at91/bootstrap.c
+>  create mode 100644 arch/arm/mach-at91/include/mach/bootstrap.h
 > 
-> diff --git a/include/bootstrap.h b/include/bootstrap.h
-> new file mode 100644
-> index 0000000..26e9dbc
-> --- /dev/null
-> +++ b/include/bootstrap.h
-> @@ -0,0 +1,34 @@
-> +/*
-> + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-> + *
-> + * Under GPLv2
-> + */
-> +
-> +#ifndef __BOOSTRAP_H__
-> +#define __BOOSTRAP_H__
-> +
-> +#define bootstrap_err(fmt, arg...) printf(fmt, ##arg)
-> +
-> +void bootstrap_boot(int (*func)(void), bool barebox);
-> +
-> +#ifdef CONFIG_BOOTSTRAP_DEVFS
-> +void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
-> +			   int default_size, int max_size);
-> +#else
-> +static inline void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
-> +			   int default_size, int max_size)
-> +{
-> +	return NULL;
-> +}
-> +#endif
-> +
-> +#ifdef CONFIG_BOOTSTRAP_DISK
-> +void* bootstrap_read_disk(char *devname);
-> +#else
-> +static inline void* bootstrap_read_disk(char *devname)
-> +{
-> +	return NULL;
-> +}
-> +#endif
-> +
-> +#endif /* __BOOSTRAP_H__ */
-> diff --git a/lib/Kconfig b/lib/Kconfig
-> index db8a6ad..4578353 100644
-> --- a/lib/Kconfig
-> +++ b/lib/Kconfig
-> @@ -52,4 +52,6 @@ config LIBMTD
+> diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+> index 2925b1f..484d076 100644
+> --- a/arch/arm/mach-at91/Kconfig
+> +++ b/arch/arm/mach-at91/Kconfig
+> @@ -92,6 +92,7 @@ config SOC_AT91SAM9263
+>  	select HAVE_AT91_DBGU1
+>  	select HAS_MACB
+>  	select AT91SAM9_RESET
+> +	select HAVE_NOSHELL
 >  
->  source lib/gui/Kconfig
+>  config SOC_AT91SAM9G45
+>  	bool
+> diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+> index 4404d23..e582f1a 100644
+> --- a/arch/arm/mach-at91/Makefile
+> +++ b/arch/arm/mach-at91/Makefile
+> @@ -1,6 +1,7 @@
+>  obj-y += setup.o clock.o gpio.o
+>  obj-$(CONFIG_CMD_AT91_BOOT_TEST) += boot_test_cmd.o
 >  
-> +source lib/bootstrap/Kconfig
-> +
->  endmenu
-> diff --git a/lib/Makefile b/lib/Makefile
-> index 85f4ec9..43f6ea3 100644
-> --- a/lib/Makefile
-> +++ b/lib/Makefile
-> @@ -1,3 +1,4 @@
-> +obj-$(CONFIG_BOOTSTRAP)	+= bootstrap/
->  obj-y			+= ctype.o
->  obj-y			+= rbtree.o
->  obj-y			+= display_options.o
-> diff --git a/lib/bootstrap/Kconfig b/lib/bootstrap/Kconfig
+> +obj-$(CONFIG_SHELL_NONE) += bootstrap.o
+>  lowlevel_init-y = at91sam926x_lowlevel_init.o
+>  lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
+>  obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
+> diff --git a/arch/arm/mach-at91/bootstrap.c b/arch/arm/mach-at91/bootstrap.c
 > new file mode 100644
-> index 0000000..558da00
+> index 0000000..2ec16f1
 > --- /dev/null
-> +++ b/lib/bootstrap/Kconfig
-> @@ -0,0 +1,13 @@
-> +menuconfig BOOTSTRAP
-> +	bool "Library bootstrap routines           "
-> +	depends on SHELL_NONE
-> +
-> +if BOOTSTRAP
-> +
-> +config BOOTSTRAP_DEVFS
-> +	bool "devfs support"
-> +
-> +config BOOTSTRAP_DISK
-> +	bool "disk support"
-> +
-> +endif
-> diff --git a/lib/bootstrap/Makefile b/lib/bootstrap/Makefile
-> new file mode 100644
-> index 0000000..cbaa49f
-> --- /dev/null
-> +++ b/lib/bootstrap/Makefile
-> @@ -0,0 +1,3 @@
-> +obj-y				+= common.o
-> +obj-$(CONFIG_BOOTSTRAP_DEVFS)	+= devfs.o
-> +obj-$(CONFIG_BOOTSTRAP_DISK)	+= disk.o
-> diff --git a/lib/bootstrap/common.c b/lib/bootstrap/common.c
-> new file mode 100644
-> index 0000000..bca3eb7
-> --- /dev/null
-> +++ b/lib/bootstrap/common.c
-> @@ -0,0 +1,21 @@
+> +++ b/arch/arm/mach-at91/bootstrap.c
+> @@ -0,0 +1,86 @@
 > +/*
-> + * Copyright (C) 2011 Sascha Hauer, Pengutronix
 > + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
 > + *
 > + * Under GPLv2
@@ -156,43 +81,82 @@ On Sat, Jan 19, 2013 at 08:35:12AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote
 > +
 > +#include <common.h>
 > +#include <bootstrap.h>
-> +#include <filetype.h>
+> +#include <mach/bootstrap.h>
+> +#include <sizes.h>
+> +#include <malloc.h>
 > +
-> +void bootstrap_boot(int (*func)(void), bool barebox)
+> +#if defined(CONFIG_MCI_ATMEL)
+> +#define is_mmc() 1
+> +#else
+> +#define is_mmc() 0
+> +#endif
+> +
+> +#ifdef CONFIG_NAND_ATMEL
+> +#define is_nand() 1
+> +#else
+> +#define is_nand() 0
+> +#endif
+> +
+> +#ifdef CONFIG_MTD_M25P80
+> +#define is_m25p80() 1
+> +#else
+> +#define is_m25p80() 0
+> +#endif
+> +
+> +#ifdef CONFIG_MTD_DATAFLASH
+> +#define is_dataflash() 1
+> +#else
+> +#define is_dataflash() 0
+> +#endif
+> +
+> +static void boot_seq(bool is_barebox)
 > +{
-> +	if (barebox && !is_barebox_arm_head((void*)func))
-> +		return;
-
-This is ARM specific.
-
+> +	char *name = is_barebox ? "barebox" : "unknown";
+> +	int (*func)(void) = NULL;
 > +
-> +	ret = cdev_read(cdev, header, ARM_HEAD_SIZE, 0, 0);
+> +	if (is_m25p80()) {
+> +		func = bootstrap_board_read_m25p80();
+> +		printf("Boot %s from m25p80\n", name);
+> +		bootstrap_boot(func, is_barebox);
+> +		bootstrap_err("... failled\n");
 
-Also ARM specific.
+s/failled/failed/
 
-
-> +	cdev_close(cdev);
-> +
-> +	if (ret != ARM_HEAD_SIZE) {
-> +		bootstrap_err("failed to read from partition\n");
-> +		return NULL;
+> +		free(func);
 > +	}
-> +
-> +	return header;
+> +	if (is_dataflash()) {
+> +		printf("Boot %s from dataflash\n", name);
+> +		func = bootstrap_board_read_dataflash();
+> +		bootstrap_boot(func, is_barebox);
+> +		bootstrap_err("... failled\n");
+
+ditto
+
+> +		free(func);
+> +	}
+> +	if (is_nand()) {
+> +		printf("Boot %s from nand\n", name);
+> +		func = bootstrap_read_devfs("nand0", true, SZ_128K, SZ_256K, SZ_1M);
+> +		bootstrap_boot(func, is_barebox);
+> +		bootstrap_err("... failled\n");
+
+ditto
+
+> +		free(func);
+> +	}
 > +}
 > +
-> +static unsigned int get_image_size(void *head)
+> +int run_shell(void)
 > +{
-> +	unsigned int ret = 0;
-> +	unsigned int *psize = head + ARM_HEAD_SIZE_OFFSET;
+> +	int (*func)(void) = NULL;
 > +
-> +	if (is_barebox_arm_head(head))
-> +		ret = *psize;
+> +	if (is_mmc()) {
+> +		printf("Boot from mmc\n");
+> +		func = bootstrap_read_disk("disk0.0");
+> +		bootstrap_boot(func, false);
+> +		bootstrap_err("... failled\n");
 
-ARM specific.
-
-Given the amount of ARM specific code I doubt this currently should be
-in a non ARM specific place.
+ditto
 
 Sascha
 
