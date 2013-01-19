@@ -2,17 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 6.mo1.mail-out.ovh.net ([46.105.43.205]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TwWay-0006B2-87
- for barebox@lists.infradead.org; Sat, 19 Jan 2013 11:28:21 +0000
+ id 1TwWay-0006B1-84
+ for barebox@lists.infradead.org; Sat, 19 Jan 2013 11:28:22 +0000
 Received: from mail405.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 43591FF9199
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 303FDFF9196
  for <barebox@lists.infradead.org>; Sat, 19 Jan 2013 12:42:28 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 19 Jan 2013 12:26:49 +0100
-Message-Id: <1358594814-8297-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1358594814-8297-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat, 19 Jan 2013 12:26:48 +0100
+Message-Id: <1358594814-8297-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130119112125.GH22953@game.jcrosoft.org>
 References: <20130119112125.GH22953@game.jcrosoft.org>
- <1358594814-8297-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,70 +25,147 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] at91sam926x: lowlevel add external boot support
+Subject: [PATCH 1/7] at91: add test commamd to emulate bootrom boot
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/at91sam926x_lowlevel_init.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ arch/arm/mach-at91/Kconfig         |    6 +++
+ arch/arm/mach-at91/Makefile        |    1 +
+ arch/arm/mach-at91/boot_test_cmd.c |   99 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 106 insertions(+)
+ create mode 100644 arch/arm/mach-at91/boot_test_cmd.c
 
-diff --git a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-index cfae982..4dec275 100644
---- a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-+++ b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-@@ -36,10 +36,19 @@ static void inline pmc_check_mckrdy(void)
- 	} while (!(r & AT91_PMC_MCKRDY));
- }
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index fcba7fb..e703b3d 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -483,4 +483,10 @@ config CMD_AT91MUX
+ 	bool "at91mux dump command"
+ 	default y
  
-+static int inline running_in_sram(void)
-+{
-+	u32 addr = get_pc();
++config CONFIG_CMD_AT91_BOOT_TEST
++	bool "at91_boot_test"
++	help
++	  allow to upload a boot binary to sram and execute it
++	  usefull to test bootstrap or barebox lowlevel init
 +
-+	addr >>= 28;
-+	return addr == 0;
+ endif
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 53b4dd8..4404d23 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -1,4 +1,5 @@
+ obj-y += setup.o clock.o gpio.o
++obj-$(CONFIG_CMD_AT91_BOOT_TEST) += boot_test_cmd.o
+ 
+ lowlevel_init-y = at91sam926x_lowlevel_init.o
+ lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
+diff --git a/arch/arm/mach-at91/boot_test_cmd.c b/arch/arm/mach-at91/boot_test_cmd.c
+new file mode 100644
+index 0000000..02e16fd
+--- /dev/null
++++ b/arch/arm/mach-at91/boot_test_cmd.c
+@@ -0,0 +1,99 @@
++/*
++ * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * Under GPLv2 only
++ */
++
++#include <common.h>
++#include <command.h>
++#include <libbb.h>
++#include <getopt.h>
++#include <fs.h>
++#include <fcntl.h>
++#include <malloc.h>
++#include <errno.h>
++
++static int do_at91_boot_test(int argc, char *argv[])
++{
++	int opt;
++	u32 *buf32;
++	void *buf;
++	u32 jump = 0;
++	int fd;
++	int ret = 1;
++	char *sram = "/dev/sram0";
++	u32 read_size, write_size;
++	u32 tmp = 0;
++
++	while ((opt = getopt(argc, argv, "j:s:")) > 0) {
++		switch (opt) {
++		case 'j':
++			jump = simple_strtoul(optarg, NULL, 0);
++			break;
++		case 's':
++			sram = optarg;
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
++	}
++
++	if (argc < optind + 1)
++		return COMMAND_ERROR_USAGE;
++
++	buf32 = buf = read_file(argv[optind], &read_size);
++	if (!buf)
++		return -EINVAL;
++
++	write_size = buf32[5];
++
++	printf("size of the size %d\n", read_size);
++	printf("size to load in sram %d\n", write_size);
++
++	if (write_size > read_size) {
++		printf("file smaller than requested sram loading size (%d < %d)\n", write_size, read_size);
++		goto err;
++	}
++
++	fd = open(sram, O_WRONLY);
++	if (fd < 0) {
++		printf("could not open %s: %s\n", sram, errno_str());
++		ret = fd;
++		goto err;
++	}
++
++	while(write_size) {
++		tmp = write(fd, buf, write_size);
++		if (tmp < 0) {
++			perror("write");
++			goto err_open;
++		}
++		buf += tmp;
++		write_size -= tmp;
++	}
++
++	shutdown_barebox();
++
++	__asm__ __volatile__(
++		"mov pc, %0\n"
++		:
++		: "r"(jump)
++		:);
++
++err_open:
++	close(fd);
++err:
++	free(buf);
++	return ret;
 +}
 +
- void __naked __bare_init reset(void)
- {
- 	u32 r;
- 	int i;
-+	int in_sram = running_in_sram();
- 
- 	common_reset();
- 
-@@ -74,7 +83,7 @@ void __naked __bare_init reset(void)
- 	 * PMC Check if the PLL is already initialized
- 	 */
- 	r = at91_pmc_read(AT91_PMC_MCKR);
--	if (r & AT91_PMC_CSS)
-+	if (r & AT91_PMC_CSS && !in_sram)
- 		goto end;
- 
- 	/*
-@@ -117,7 +126,7 @@ void __naked __bare_init reset(void)
- 	 * SDRAMC Check if Refresh Timer Counter is already initialized
- 	 */
- 	r = at91_sys_read(AT91_SDRAMC_TR);
--	if (r)
-+	if (r && !in_sram)
- 		goto end;
- 
- 	/* SDRAMC_MR : Normal Mode */
-@@ -170,6 +179,13 @@ void __naked __bare_init reset(void)
- 	/* MATRIX_MCFG - REMAP all masters */
- 	at91_sys_write(AT91_MATRIX_MCFG0, 0x1FF);
- #endif
-+	/*
-+	 * When boot from external boot
-+	 * we need to enable mck and ohter clock
-+	 * so enable all of them
-+	 * We will shutdown what we don't need later
-+	 */
-+	at91_pmc_write(AT91_PMC_PCER, 0xffffffff);
- 
- end:
- 	board_init_lowlevel_return();
++BAREBOX_CMD_HELP_START(at91_boot_test)
++BAREBOX_CMD_HELP_USAGE("at91_boot_test [-j <jump addr>] [-s <sram>] file\n")
++BAREBOX_CMD_HELP_SHORT("upload the binary to sram and jump as will do the romcode\n")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(at91_boot_test)
++	.cmd		= do_at91_boot_test,
++	.usage		= "upload the binary to sram and jump as will do the romcode",
++	BAREBOX_CMD_HELP(cmd_at91_boot_test_help)
++BAREBOX_CMD_END
 -- 
 1.7.10.4
 
