@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from gw6.ovh.net ([213.251.189.206] helo=mail403.ha.ovh.net)
  by merlin.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TwSwi-0001qH-L9
- for barebox@lists.infradead.org; Sat, 19 Jan 2013 07:34:33 +0000
-Date: Sat, 19 Jan 2013 08:33:09 +0100
+ id 1TwSyl-0001uv-9a
+ for barebox@lists.infradead.org; Sat, 19 Jan 2013 07:36:40 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130119073309.GG22953@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Sat, 19 Jan 2013 08:35:08 +0100
+Message-Id: <1358580914-21443-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130119073309.GG22953@game.jcrosoft.org>
+References: <20130119073309.GG22953@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,112 +16,155 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/7 v2] at91: add bootstrap support
+Subject: [PATCH 1/7] at91: add test commamd to emulate bootrom boot
 To: barebox@lists.infradead.org
 
-Hi,
-
-	can we have it on master the v2 does not cange much since v1
-
-	v2:
-	 fix whitesapce
-	 fix comment
-	 fix command default
-
-	This patch serie introduce a common bootstrap code
-	aka xloder for TI and at91bootstrap for Atmel
-	to barebox
-
-	As I do not have with me right now a TI platform I did not switch
-	it to the new generic bootstrap code.
-
-	On at91 add it on the calao usb-a9263 test on nand and spi
-	This patch serie depends on the previous at91 patch series
-
-The following changes since commit 9f7f67ca887b26a4488edf5fa171a78e142e0a5b:
-
-  at91: drop AT91_BASE_PIOx for soc specific one for none boot code (2012-12-29 01:37:47 +0800)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/at91_bootstrap
-
-for you to fetch changes up to 44bfbedb17c35a99aa0f9a2a16330d2928b9ba31:
-
-  at91: usb_a9263: add bootstrap version (2012-12-29 17:56:45 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (7):
-      at91: add test commamd to emulate bootrom boot
-      at91sam926x: lowlevel add external boot support
-      at91: sam926x: switch lowlevel param to c code
-      at91: usb-a9263 add lowlevel init
-      introduce common bootstrap code
-      at91: add bootstrap version
-      at91: usb_a9263: add bootstrap version
-
- arch/arm/boards/at91sam9263ek/Makefile                |    5 ++
- arch/arm/boards/at91sam9263ek/config.h                |   87 -------------------------------
- arch/arm/boards/at91sam9263ek/lowlevel_init.c         |  104 +++++++++++++++++++++++++++++++++++++
- arch/arm/boards/mmccpu/Makefile                       |    5 ++
- arch/arm/boards/mmccpu/config.h                       |  118 ------------------------------------------
- arch/arm/boards/mmccpu/lowlevel_init.c                |  135 ++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/boards/pm9261/Makefile                       |    5 ++
- arch/arm/boards/pm9261/config.h                       |   87 -------------------------------
- arch/arm/boards/pm9261/lowlevel_init.c                |  102 ++++++++++++++++++++++++++++++++++++
- arch/arm/boards/pm9263/Makefile                       |    5 ++
- arch/arm/boards/pm9263/config.h                       |  103 ------------------------------------
- arch/arm/boards/usb-a926x/Makefile                    |    9 ++++
- arch/arm/boards/usb-a926x/config.h                    |   97 ++++++++++++++++++++++++++++++++++
- arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c       |   16 ++++++
- arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c   |  111 +++++++++++++++++++++++++++++++++++++++
- arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig |   24 +++++++++
- arch/arm/configs/usb_a9263_bootstrap_defconfig        |   23 +++++++++
- arch/arm/mach-at91/Kconfig                            |    7 +++
- arch/arm/mach-at91/Makefile                           |    2 +
- arch/arm/mach-at91/at91sam926x_lowlevel_init.c        |   84 +++++++++++++++++++++---------
- arch/arm/mach-at91/boot_test_cmd.c                    |   97 ++++++++++++++++++++++++++++++++++
- arch/arm/mach-at91/bootstrap.c                        |   86 ++++++++++++++++++++++++++++++
- arch/arm/mach-at91/include/mach/at91_lowlevel_init.h  |   33 ++++++++++++
- arch/arm/mach-at91/include/mach/bootstrap.h           |   28 ++++++++++
- include/bootstrap.h                                   |   34 ++++++++++++
- lib/Kconfig                                           |    2 +
- lib/Makefile                                          |    1 +
- lib/bootstrap/Kconfig                                 |   13 +++++
- lib/bootstrap/Makefile                                |    3 ++
- lib/bootstrap/common.c                                |   21 ++++++++
- lib/bootstrap/devfs.c                                 |   98 +++++++++++++++++++++++++++++++++++
- lib/bootstrap/disk.c                                  |   36 +++++++++++++
- 32 files changed, 1161 insertions(+), 420 deletions(-)
- create mode 100644 arch/arm/boards/at91sam9263ek/lowlevel_init.c
- create mode 100644 arch/arm/boards/mmccpu/lowlevel_init.c
- create mode 100644 arch/arm/boards/pm9261/lowlevel_init.c
- create mode 100644 arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c
- create mode 100644 arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c
- create mode 100644 arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig
- create mode 100644 arch/arm/configs/usb_a9263_bootstrap_defconfig
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/mach-at91/Kconfig         |    6 +++
+ arch/arm/mach-at91/Makefile        |    1 +
+ arch/arm/mach-at91/boot_test_cmd.c |   99 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 106 insertions(+)
  create mode 100644 arch/arm/mach-at91/boot_test_cmd.c
- create mode 100644 arch/arm/mach-at91/bootstrap.c
- create mode 100644 arch/arm/mach-at91/include/mach/at91_lowlevel_init.h
- create mode 100644 arch/arm/mach-at91/include/mach/bootstrap.h
- create mode 100644 include/bootstrap.h
- create mode 100644 lib/bootstrap/Kconfig
- create mode 100644 lib/bootstrap/Makefile
- create mode 100644 lib/bootstrap/common.c
- create mode 100644 lib/bootstrap/devfs.c
- create mode 100644 lib/bootstrap/disk.c
 
-Best Regards,
-J.
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index fcba7fb..e703b3d 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -483,4 +483,10 @@ config CMD_AT91MUX
+ 	bool "at91mux dump command"
+ 	default y
+ 
++config CONFIG_CMD_AT91_BOOT_TEST
++	bool "at91_boot_test"
++	help
++	  allow to upload a boot binary to sram and execute it
++	  usefull to test bootstrap or barebox lowlevel init
++
+ endif
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 53b4dd8..4404d23 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -1,4 +1,5 @@
+ obj-y += setup.o clock.o gpio.o
++obj-$(CONFIG_CMD_AT91_BOOT_TEST) += boot_test_cmd.o
+ 
+ lowlevel_init-y = at91sam926x_lowlevel_init.o
+ lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
+diff --git a/arch/arm/mach-at91/boot_test_cmd.c b/arch/arm/mach-at91/boot_test_cmd.c
+new file mode 100644
+index 0000000..02e16fd
+--- /dev/null
++++ b/arch/arm/mach-at91/boot_test_cmd.c
+@@ -0,0 +1,99 @@
++/*
++ * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * Under GPLv2 only
++ */
++
++#include <common.h>
++#include <command.h>
++#include <libbb.h>
++#include <getopt.h>
++#include <fs.h>
++#include <fcntl.h>
++#include <malloc.h>
++#include <errno.h>
++
++static int do_at91_boot_test(int argc, char *argv[])
++{
++	int opt;
++	u32 *buf32;
++	void *buf;
++	u32 jump = 0;
++	int fd;
++	int ret = 1;
++	char *sram = "/dev/sram0";
++	u32 read_size, write_size;
++	u32 tmp = 0;
++
++	while ((opt = getopt(argc, argv, "j:s:")) > 0) {
++		switch (opt) {
++		case 'j':
++			jump = simple_strtoul(optarg, NULL, 0);
++			break;
++		case 's':
++			sram = optarg;
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
++	}
++
++	if (argc < optind + 1)
++		return COMMAND_ERROR_USAGE;
++
++	buf32 = buf = read_file(argv[optind], &read_size);
++	if (!buf)
++		return -EINVAL;
++
++	write_size = buf32[5];
++
++	printf("size of the size %d\n", read_size);
++	printf("size to load in sram %d\n", write_size);
++
++	if (write_size > read_size) {
++		printf("file smaller than requested sram loading size (%d < %d)\n", write_size, read_size);
++		goto err;
++	}
++
++	fd = open(sram, O_WRONLY);
++	if (fd < 0) {
++		printf("could not open %s: %s\n", sram, errno_str());
++		ret = fd;
++		goto err;
++	}
++
++	while(write_size) {
++		tmp = write(fd, buf, write_size);
++		if (tmp < 0) {
++			perror("write");
++			goto err_open;
++		}
++		buf += tmp;
++		write_size -= tmp;
++	}
++
++	shutdown_barebox();
++
++	__asm__ __volatile__(
++		"mov pc, %0\n"
++		:
++		: "r"(jump)
++		:);
++
++err_open:
++	close(fd);
++err:
++	free(buf);
++	return ret;
++}
++
++BAREBOX_CMD_HELP_START(at91_boot_test)
++BAREBOX_CMD_HELP_USAGE("at91_boot_test [-j <jump addr>] [-s <sram>] file\n")
++BAREBOX_CMD_HELP_SHORT("upload the binary to sram and jump as will do the romcode\n")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(at91_boot_test)
++	.cmd		= do_at91_boot_test,
++	.usage		= "upload the binary to sram and jump as will do the romcode",
++	BAREBOX_CMD_HELP(cmd_at91_boot_test_help)
++BAREBOX_CMD_END
+-- 
+1.7.10.4
 
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
