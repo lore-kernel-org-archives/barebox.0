@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TwrPl-00065k-LF
- for barebox@lists.infradead.org; Sun, 20 Jan 2013 09:42:10 +0000
-Date: Sun, 20 Jan 2013 10:41:56 +0100
+ id 1Twrfq-0006Fs-Ua
+ for barebox@lists.infradead.org; Sun, 20 Jan 2013 09:58:48 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130120094156.GO1906@pengutronix.de>
-References: <20130119112125.GH22953@game.jcrosoft.org>
- <1358594814-8297-1-git-send-email-plagnioj@jcrosoft.com>
- <20130119114231.GK1906@pengutronix.de>
- <20130119133206.GK22953@game.jcrosoft.org>
- <20130119134251.GL1906@pengutronix.de>
- <20130119163208.GB26329@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130119163208.GB26329@game.jcrosoft.org>
+Date: Sun, 20 Jan 2013 10:58:43 +0100
+Message-Id: <1358675923-13628-6-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1358675923-13628-1-git-send-email-s.hauer@pengutronix.de>
+References: <1358675923-13628-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +16,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] at91: add test commamd to emulate bootrom boot
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 5/5] mci atmel: implement card_present callback
+To: barebox@lists.infradead.org
 
-On Sat, Jan 19, 2013 at 05:32:08PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > > +	shutdown_barebox();
-> > > > > +
-> > > > > +	__asm__ __volatile__(
-> > > > > +		"mov pc, %0\n"
-> > > > > +		:
-> > > > > +		: "r"(jump)
-> > > > > +		:);
-> > > > 
-> > > > Is this inline assemble needed? Why not
-> > > > 
-> > > > 	void (*jump)(void);
-> > > > 
-> > > > 	jump();
-> > > jump can be NULL
-> > 
-> > But that's not a reason for inline assembly.
-> except if use call we get a NULL exception
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mci/atmel_mci.c |   21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-You won't get a NULL pointer exception when the MMU is disabled (which
-is the case after shutdown_basebox()), no matter which method you choose
-to jump to 0x0.
-
-Sascha
-
+diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
+index 4065355..222cd4a 100644
+--- a/drivers/mci/atmel_mci.c
++++ b/drivers/mci/atmel_mci.c
+@@ -331,18 +331,26 @@ static int atmel_start_cmd(struct atmel_mci_host *host, struct mci_cmd *cmd,
+ 	return 0;
+ }
+ 
+-/** init the host interface */
+-static int mci_reset(struct mci_host *mci, struct device_d *mci_dev)
++
++static int mci_card_present(struct mci_host *mci)
+ {
+-	int ret;
+ 	struct atmel_mci_host *host = to_mci_host(mci);
+ 	struct atmel_mci_platform_data *pd = host->hw_dev->platform_data;
++	int ret;
++
++	/* No gpio, assume card is present */
++	if (!gpio_is_valid(pd->detect_pin))
++		return 1;
+ 
+ 	ret = gpio_get_value(pd->detect_pin);
+-	dev_dbg(host->hw_dev, "card %sdetected\n", ret != 0 ? "not " : "");
+ 
+-	if (pd->detect_pin && ret == 1)
+-		return -ENODEV;
++	return ret == 0 ? 1 : 0;
++}
++
++/** init the host interface */
++static int mci_reset(struct mci_host *mci, struct device_d *mci_dev)
++{
++	struct atmel_mci_host *host = to_mci_host(mci);
+ 
+ 	clk_enable(host->clk);
+ 	atmel_mci_reset(host);
+@@ -454,6 +462,7 @@ static int mci_probe(struct device_d *hw_dev)
+ 	host->mci.send_cmd = mci_request;
+ 	host->mci.set_ios = mci_set_ios;
+ 	host->mci.init = mci_reset;
++	host->mci.card_present = mci_card_present;
+ 	host->mci.hw_dev = hw_dev;
+ 
+ 	host->mci.host_caps = pd->host_caps;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
