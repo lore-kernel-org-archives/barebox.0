@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tws0a-00074u-Ui
- for barebox@lists.infradead.org; Sun, 20 Jan 2013 10:20:13 +0000
+ id 1Tws0f-00075h-OG
+ for barebox@lists.infradead.org; Sun, 20 Jan 2013 10:20:18 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1Tws0J-0001Zq-Lo
+ for barebox@lists.infradead.org; Sun, 20 Jan 2013 11:19:55 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1Tws0J-00068a-Kp
+ for barebox@lists.infradead.org; Sun, 20 Jan 2013 11:19:55 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 20 Jan 2013 11:19:52 +0100
-Message-Id: <1358677194-23423-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1358677194-23423-1-git-send-email-s.hauer@pengutronix.de>
-References: <1358677194-23423-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 20 Jan 2013 11:19:49 +0100
+Message-Id: <1358677194-23423-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,40 +26,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] ARM i.MX6: Add usbphy clocks
+Subject: [PATCH] i.MX6 USB phy support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/clk-imx6.c |    5 +++++
- 1 file changed, 5 insertions(+)
+This i.MX6 support for the i.MX chipidea driver, or more specifically:
 
-diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
-index f78d3d2..f1b167a 100644
---- a/arch/arm/mach-imx/clk-imx6.c
-+++ b/arch/arm/mach-imx/clk-imx6.c
-@@ -205,6 +205,9 @@ static int imx6_ccm_probe(struct device_d *dev)
- 	clks[pll7_usb_host] = imx_clk_pllv3(IMX_PLLV3_USB,	"pll7_usb_host","osc", base + 0x20, 0x3);
- 	clks[pll6_enet]     = imx_clk_pllv3(IMX_PLLV3_ENET,	"pll6_enet",	"osc", base + 0xe0, 0x3);
- 
-+	clks[usbphy1] = imx_clk_gate("usbphy1", "pll3_usb_otg", base + 0x10, 6);
-+	clks[usbphy2] = imx_clk_gate("usbphy2", "pll7_usb_host", base + 0x20, 6);
-+
- 	clks[sata_ref] = imx_clk_fixed_factor("sata_ref", "pll6_enet", 1, 5);
- 	clks[pcie_ref] = imx_clk_fixed_factor("pcie_ref", "pll6_enet", 1, 4);
- 	clks[sata_ref_100m] = imx_clk_gate("sata_ref_100m", "sata_ref", base + 0xe0, 20);
-@@ -298,6 +301,8 @@ static int imx6_ccm_probe(struct device_d *dev)
- 	clkdev_add_physbase(clks[ipg_per], MX6_I2C2_BASE_ADDR, NULL);
- 	clkdev_add_physbase(clks[ipg_per], MX6_I2C3_BASE_ADDR, NULL);
- 	clkdev_add_physbase(clks[ahb], MX6_SATA_BASE_ADDR, NULL);
-+	clkdev_add_physbase(clks[usbphy1], MX6_USBPHY1_BASE_ADDR, NULL);
-+	clkdev_add_physbase(clks[usbphy2], MX6_USBPHY2_BASE_ADDR, NULL);
- 
- 	writel(0xffffffff, ccm_base + CCGR0);
- 	writel(0xffffffff, ccm_base + CCGR1);
--- 
-1.7.10.4
+- a USB phy driver
+- device registration convenience wrappers
+- clock support
 
+With this the imx6_usb_phy* functions should no longer be used. These
+can be removed once the sabrelite is converted to the chipidea driver.
+
+Sascha
+
+----------------------------------------------------------------
+Sascha Hauer (5):
+      ARM i.MX6 USB phy: Fix phy function names
+      ARM i.MX6: Fix usb phy base addresses
+      ARM i.MX6: Add usbphy clocks
+      USB: Add usb phy driver for i.MX
+      ARM i.MX6: Add Chipidea support
+
+ arch/arm/boards/freescale-mx6-sabrelite/board.c |    4 +-
+ arch/arm/mach-imx/clk-imx6.c                    |    5 ++
+ arch/arm/mach-imx/imx6.c                        |    1 +
+ arch/arm/mach-imx/include/mach/devices-imx6.h   |   26 ++++++
+ arch/arm/mach-imx/include/mach/imx6-regs.h      |    3 +-
+ arch/arm/mach-imx/include/mach/usb.h            |    4 +-
+ arch/arm/mach-imx/usb-imx6.c                    |   14 +--
+ drivers/usb/imx/Kconfig                         |    5 ++
+ drivers/usb/imx/Makefile                        |    1 +
+ drivers/usb/imx/imx-usb-misc.c                  |   12 +++
+ drivers/usb/imx/imx-usb-phy.c                   |  105 +++++++++++++++++++++++
+ 11 files changed, 168 insertions(+), 12 deletions(-)
+ create mode 100644 drivers/usb/imx/imx-usb-phy.c
 
 _______________________________________________
 barebox mailing list
