@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tws1J-00078V-8I
- for barebox@lists.infradead.org; Sun, 20 Jan 2013 10:20:57 +0000
+ id 1Tws2M-0007LI-Td
+ for barebox@lists.infradead.org; Sun, 20 Jan 2013 10:22:03 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 20 Jan 2013 11:20:54 +0100
-Message-Id: <1358677254-24171-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 20 Jan 2013 11:22:00 +0100
+Message-Id: <1358677320-24306-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,26 +19,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd m25p80: Add support for w25q80bl
+Subject: [PATCH] ARM: Add errata support
 To: barebox@lists.infradead.org
+
+Recently the Kernel disabled some errata fixups for multiplatform
+support, these have to be done in the bootloader now. This adds
+support for fixups for errata 743622 and 751472 present on i.MX6
+and enables them for this SoC.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/devices/m25p80.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/include/asm/errata.h |   28 ++++++++++++++++++++++++++++
+ arch/arm/mach-imx/imx6.c      |    4 ++++
+ 2 files changed, 32 insertions(+)
+ create mode 100644 arch/arm/include/asm/errata.h
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index 428d126..2a1933a 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -742,6 +742,7 @@ static const struct spi_device_id m25p_ids[] = {
- 	{ "w25x64", INFO(0xef3017, 0, 64 * 1024, 128, SECT_4K) },
- 	{ "w25q64", INFO(0xef4017, 0, 64 * 1024, 128, SECT_4K) },
- 	{ "w25q80", INFO(0xef5014, 0, 64 * 1024,  16, SECT_4K) },
-+	{ "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16, SECT_4K) },
+diff --git a/arch/arm/include/asm/errata.h b/arch/arm/include/asm/errata.h
+new file mode 100644
+index 0000000..e7d0d6b
+--- /dev/null
++++ b/arch/arm/include/asm/errata.h
+@@ -0,0 +1,28 @@
++#ifndef __ARM_ERRATA_H
++#define __ARM_ERRATA_H
++
++static inline void arm_errata_743622(void)
++{
++	__asm__ __volatile__(
++		"mrc	p15, 0, r0, c15, c0, 1;"	/* read diagnostic register */
++		"orr	r0, r0, #1 << 6;"		/* set bit #6 */
++		"mcr	p15, 0, r0, c15, c0, 1;"	/* write diagnostic register */
++		:
++		:
++		: "r0"
++	);
++}
++
++static inline void arm_errata_751472(void)
++{
++	__asm__ __volatile__(
++		"mrc	p15, 0, r0, c15, c0, 1;"	/* read diagnostic register */
++		"orr	r0, r0, #1 << 11;"		/* set bit #11 */
++		"mcr	p15, 0, r0, c15, c0, 1;"	/* write diagnostic register */
++		:
++		:
++		: "r0"
++	);
++}
++
++#endif /* __ARM_ERRATA_H */
+diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+index 37ee5d8..5c35732 100644
+--- a/arch/arm/mach-imx/imx6.c
++++ b/arch/arm/mach-imx/imx6.c
+@@ -15,6 +15,7 @@
+ #include <common.h>
+ #include <io.h>
+ #include <sizes.h>
++#include <asm/errata.h>
+ #include <mach/generic.h>
+ #include <mach/imx6-regs.h>
  
- 	/* Catalyst / On Semiconductor -- non-JEDEC */
- 	{ "cat25c11", CAT25_INFO(  16, 8, 16, 1) },
+@@ -23,6 +24,9 @@ void imx6_init_lowlevel(void)
+ 	void __iomem *aips1 = (void *)MX6_AIPS1_ON_BASE_ADDR;
+ 	void __iomem *aips2 = (void *)MX6_AIPS2_ON_BASE_ADDR;
+ 
++	arm_errata_743622();
++	arm_errata_751472();
++
+ 	/*
+ 	 * Set all MPROTx to be non-bufferable, trusted for R/W,
+ 	 * not forced to user-mode.
 -- 
 1.7.10.4
 
