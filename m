@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tws0L-00072M-Er
- for barebox@lists.infradead.org; Sun, 20 Jan 2013 10:20:02 +0000
+ id 1Tws0T-00073t-0X
+ for barebox@lists.infradead.org; Sun, 20 Jan 2013 10:20:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 20 Jan 2013 11:19:53 +0100
-Message-Id: <1358677194-23423-5-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 20 Jan 2013 11:19:54 +0100
+Message-Id: <1358677194-23423-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1358677194-23423-1-git-send-email-s.hauer@pengutronix.de>
 References: <1358677194-23423-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,152 +21,96 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] USB: Add usb phy driver for i.MX
+Subject: [PATCH 5/5] ARM i.MX6: Add Chipidea support
 To: barebox@lists.infradead.org
 
-This phy is found on i.MX6 and i.MX23/28. Currently tested only on i.MX6.
-For now we take the easy way out. The phy is enabled upon registration.
-More elaborated handling can be added later.
+This allows to register the USB ports for the chipidea driver. For
+now the otg/h1 register functions also register the corresponding
+USB phys.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/imx/Kconfig       |    5 ++
- drivers/usb/imx/Makefile      |    1 +
- drivers/usb/imx/imx-usb-phy.c |  105 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 111 insertions(+)
- create mode 100644 drivers/usb/imx/imx-usb-phy.c
+ arch/arm/mach-imx/imx6.c                      |    1 +
+ arch/arm/mach-imx/include/mach/devices-imx6.h |   26 +++++++++++++++++++++++++
+ drivers/usb/imx/imx-usb-misc.c                |   12 ++++++++++++
+ 3 files changed, 39 insertions(+)
 
-diff --git a/drivers/usb/imx/Kconfig b/drivers/usb/imx/Kconfig
-index 2c52e72..b1ce682 100644
---- a/drivers/usb/imx/Kconfig
-+++ b/drivers/usb/imx/Kconfig
-@@ -13,3 +13,8 @@ config USB_IMX_CHIPIDEA
- 	  This driver is recommended for new designs, but it needs board
- 	  support to work.
- 	  It's safe to say yes here. Also select EHCI support for USB host.
+diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+index 37ee5d8..b62f412 100644
+--- a/arch/arm/mach-imx/imx6.c
++++ b/arch/arm/mach-imx/imx6.c
+@@ -68,6 +68,7 @@ static int imx6_init(void)
+ 	add_generic_device("imx31-gpio", 5, NULL, MX6_GPIO6_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx31-gpio", 6, NULL, MX6_GPIO7_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx21-wdt", 0, NULL, MX6_WDOG1_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx6-usb-misc", 0, NULL, MX6_USBOH3_USB_BASE_ADDR + 0x800, 0x100, IORESOURCE_MEM, NULL);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-imx/include/mach/devices-imx6.h b/arch/arm/mach-imx/include/mach/devices-imx6.h
+index 0f17016..a9c7e8d 100644
+--- a/arch/arm/mach-imx/include/mach/devices-imx6.h
++++ b/arch/arm/mach-imx/include/mach/devices-imx6.h
+@@ -69,3 +69,29 @@ static inline struct device_d *imx6_add_sata(void)
+ {
+ 	return add_generic_device("imx6-sata", 0, NULL, MX6_SATA_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ }
 +
-+config USB_IMX_PHY
-+	bool
-+	depends on ARCH_IMX
-+	default y if ARCH_IMX6
-diff --git a/drivers/usb/imx/Makefile b/drivers/usb/imx/Makefile
-index e37361c..e15bc71 100644
---- a/drivers/usb/imx/Makefile
-+++ b/drivers/usb/imx/Makefile
-@@ -1 +1,2 @@
- obj-$(CONFIG_USB_IMX_CHIPIDEA) += imx-usb-misc.o chipidea-imx.o
-+obj-$(CONFIG_USB_IMX_PHY) += imx-usb-phy.o
-diff --git a/drivers/usb/imx/imx-usb-phy.c b/drivers/usb/imx/imx-usb-phy.c
-new file mode 100644
-index 0000000..ce9c93f
---- /dev/null
-+++ b/drivers/usb/imx/imx-usb-phy.c
-@@ -0,0 +1,105 @@
-+/*
-+ * Copyright (c) 2013 Sascha Hauer <s.hauer@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation; either version 2 of the License, or (at your
-+ * option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful, but
-+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-+ * for more details.
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <driver.h>
-+#include <malloc.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+
-+#define SET				0x4
-+#define CLR				0x8
-+
-+#define USBPHY_CTRL			0x30
-+
-+#define USBPHY_CTRL_SFTRST		(1 << 31)
-+#define USBPHY_CTRL_CLKGATE		(1 << 30)
-+#define USBPHY_CTRL_ENUTMILEVEL3	(1 << 15)
-+#define USBPHY_CTRL_ENUTMILEVEL2	(1 << 14)
-+
-+struct imx_usbphy {
-+	void __iomem *base;
-+	struct clk *clk;
-+};
-+
-+static int imx_usbphy_enable(struct imx_usbphy *imxphy)
++static inline struct device_d *imx6_add_usbotg(void *pdata)
 +{
-+	u32 val;
++	add_generic_device("imx-usb-phy", 0, NULL, MX6_USBPHY1_BASE_ADDR, 0x1000,
++			IORESOURCE_MEM, NULL);
 +
-+	clk_enable(imxphy->clk);
++	return imx_add_usb((void *)MX6_USBOH3_USB_BASE_ADDR, 0, pdata);
++}
 +
-+	/* reset usbphy */
-+	writel(USBPHY_CTRL_SFTRST, imxphy->base + USBPHY_CTRL + SET);
++static inline struct device_d *imx6_add_usbh1(void *pdata)
++{
++	add_generic_device("imx-usb-phy", 1, NULL, MX6_USBPHY2_BASE_ADDR, 0x1000,
++			IORESOURCE_MEM, NULL);
 +
-+	udelay(10);
++	return imx_add_usb((void *)MX6_USBOH3_USB_BASE_ADDR + 0x200, 1, pdata);
++}
 +
-+	/* clr reset and clkgate */
-+	writel(USBPHY_CTRL_SFTRST | USBPHY_CTRL_CLKGATE,
-+			imxphy->base + USBPHY_CTRL + CLR);
++static inline struct device_d *imx6_add_usbh2(void *pdata)
++{
++	return imx_add_usb((void *)MX6_USBOH3_USB_BASE_ADDR + 0x400, 2, pdata);
++}
 +
-+	/* clr all pwd bits => power up phy */
-+	writel(0xffffffff, imxphy->base + CLR);
-+
-+	/* set utmilvl2/3 */
-+	val = readl(imxphy->base + USBPHY_CTRL);
-+	val |= USBPHY_CTRL_ENUTMILEVEL3 | USBPHY_CTRL_ENUTMILEVEL2;
-+	writel(val, imxphy->base + USBPHY_CTRL + SET);
-+
++static inline struct device_d *imx6_add_usbh3(void *pdata)
++{
++	return imx_add_usb((void *)MX6_USBOH3_USB_BASE_ADDR + 0x600, 2, pdata);
++}
+diff --git a/drivers/usb/imx/imx-usb-misc.c b/drivers/usb/imx/imx-usb-misc.c
+index 7c0ba5c..4cdf5ab 100644
+--- a/drivers/usb/imx/imx-usb-misc.c
++++ b/drivers/usb/imx/imx-usb-misc.c
+@@ -324,6 +324,12 @@ static __maybe_unused int mx5_initialize_usb_hw(void __iomem *base, int port,
+ 	return 0;
+ }
+ 
++static __maybe_unused int mx6_initialize_usb_hw(void __iomem *base, int port,
++		unsigned int flags)
++{
 +	return 0;
 +}
 +
-+static int imx_usbphy_probe(struct device_d *dev)
-+{
-+	int ret;
-+	struct imx_usbphy *imxphy;
-+
-+	imxphy = xzalloc(sizeof(*imxphy));
-+
-+	imxphy->base = dev_request_mem_region(dev, 0);
-+	if (!imxphy->base) {
-+		ret = -ENODEV;
-+		goto err_free;
-+	}
-+
-+	imxphy->clk = clk_get(dev, NULL);
-+	if (IS_ERR(imxphy->clk)) {
-+		dev_err(dev, "could not get clk: %s\n", strerror(-PTR_ERR(imxphy->clk)));
-+		goto err_clk;
-+	}
-+
-+	imx_usbphy_enable(imxphy);
-+
-+	dev_dbg(dev, "phy enabled\n");
-+
-+	return 0;
-+
-+err_clk:
-+err_free:
-+	free(imxphy);
-+
-+	return ret;
-+};
-+
-+static struct driver_d imx_usbphy_driver = {
-+	.name   = "imx-usb-phy",
-+	.probe  = imx_usbphy_probe,
-+};
-+
-+static int imx_usbphy_init(void)
-+{
-+	return platform_driver_register(&imx_usbphy_driver);
-+}
-+coredevice_initcall(imx_usbphy_init);
+ static struct platform_device_id imx_usbmisc_ids[] = {
+ #ifdef CONFIG_ARCH_IMX25
+ 	{
+@@ -361,6 +367,12 @@ static struct platform_device_id imx_usbmisc_ids[] = {
+ 		.driver_data = (unsigned long)&mx5_initialize_usb_hw,
+ 	},
+ #endif
++#ifdef CONFIG_ARCH_IMX6
++	{
++		.name = "imx6-usb-misc",
++		.driver_data = (unsigned long)&mx6_initialize_usb_hw,
++	},
++#endif
+ 	{
+                 /* sentinel */
+ 	},
 -- 
 1.7.10.4
 
