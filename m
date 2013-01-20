@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Twwvu-00043Z-Re
- for barebox@lists.infradead.org; Sun, 20 Jan 2013 15:35:43 +0000
+ id 1Twwvh-00041u-V0
+ for barebox@lists.infradead.org; Sun, 20 Jan 2013 15:35:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 20 Jan 2013 16:35:12 +0100
-Message-Id: <1358696119-18387-4-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 20 Jan 2013 16:35:18 +0100
+Message-Id: <1358696119-18387-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1358696119-18387-1-git-send-email-s.hauer@pengutronix.de>
 References: <1358696119-18387-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,52 +21,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/10] make file_*_action static
+Subject: [PATCH 09/10] defaultenv loading: rework to use less ifdefs/defines
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/environment.c  |    4 ++--
- include/environment.h |    4 ----
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ common/startup.c |   40 ++++++++++++++++++++++------------------
+ 1 file changed, 22 insertions(+), 18 deletions(-)
 
-diff --git a/common/environment.c b/common/environment.c
-index 9595986..eebccce 100644
---- a/common/environment.c
-+++ b/common/environment.c
-@@ -50,7 +50,7 @@ struct action_data {
+diff --git a/common/startup.c b/common/startup.c
+index ecb5691..52a8996 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -34,6 +34,7 @@
+ #include <linux/stat.h>
+ #include <envfs.h>
+ #include <asm/sections.h>
++#include <uncompress.h>
  
- char *default_environment_path = "/dev/env0";
+ extern initcall_t __barebox_initcalls_start[], __barebox_early_initcalls_end[],
+ 		  __barebox_initcalls_end[];
+@@ -41,32 +42,35 @@ extern initcall_t __barebox_initcalls_start[], __barebox_early_initcalls_end[],
+ #ifdef CONFIG_DEFAULT_ENVIRONMENT
+ #include "barebox_default_env.h"
  
--int file_size_action(const char *filename, struct stat *statbuf,
-+static int file_size_action(const char *filename, struct stat *statbuf,
- 			    void *userdata, int depth)
- {
- 	struct action_data *data = userdata;
-@@ -75,7 +75,7 @@ int file_size_action(const char *filename, struct stat *statbuf,
- 	return 1;
- }
- 
--int file_save_action(const char *filename, struct stat *statbuf,
-+static int file_save_action(const char *filename, struct stat *statbuf,
- 			    void *userdata, int depth)
- {
- 	struct action_data *data = userdata;
-diff --git a/include/environment.h b/include/environment.h
-index 120040e..65f254b 100644
---- a/include/environment.h
-+++ b/include/environment.h
-@@ -77,10 +77,6 @@ extern char *default_environment_path;
- 
- int export(const char *);
- 
--struct stat;
--int file_size_action(const char *, struct stat *, void *, int);
--int file_save_action(const char *, struct stat *, void *, int);
+-#ifdef CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED
+-#include <uncompress.h>
+-void *defaultenv;
+-#else
+-#define defaultenv default_environment
+-#endif
 -
- #endif /* __BAREBOX__ */
+ static int register_default_env(void)
+ {
+-#ifdef CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED
+ 	int ret;
+-	void *tmp;
++	void *defaultenv;
  
- #define ENV_FLAG_NO_OVERWRITE	(1 << 0)
+-	tmp = xzalloc(default_environment_size);
+-	memcpy(tmp, default_environment, default_environment_size);
++	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED)) {
++		void *tmp = malloc(default_environment_size);
+ 
+-	defaultenv = xzalloc(default_environment_uncompress_size);
++		if (!tmp)
++			return -ENOMEM;
+ 
+-	ret = uncompress(tmp, default_environment_size, NULL, NULL,
+-			 defaultenv, NULL, uncompress_err_stdout);
++		memcpy(tmp, default_environment, default_environment_size);
+ 
+-	free(tmp);
++		defaultenv = xzalloc(default_environment_uncompress_size);
++
++		ret = uncompress(tmp, default_environment_size,
++				NULL, NULL,
++				defaultenv, NULL, uncompress_err_stdout);
++
++		free(tmp);
++
++		if (ret) {
++			free(defaultenv);
++			return ret;
++		}
++	} else {
++		defaultenv = (void *)default_environment;
++	}
+ 
+-	if (ret)
+-		return ret;
+-#endif
+ 
+ 	add_mem_device("defaultenv", (unsigned long)defaultenv,
+ 		       default_environment_uncompress_size,
 -- 
 1.7.10.4
 
