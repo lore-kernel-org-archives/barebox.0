@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Twrfq-0006Fs-Ua
+ id 1Twrfq-0006Fq-UX
  for barebox@lists.infradead.org; Sun, 20 Jan 2013 09:58:48 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 20 Jan 2013 10:58:43 +0100
-Message-Id: <1358675923-13628-6-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 20 Jan 2013 10:58:41 +0100
+Message-Id: <1358675923-13628-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1358675923-13628-1-git-send-email-s.hauer@pengutronix.de>
 References: <1358675923-13628-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,59 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] mci atmel: implement card_present callback
+Subject: [PATCH 3/5] mci: Add card_present callback
 To: barebox@lists.infradead.org
+
+Currently there is no common way for the mci host driver to tell
+that there is no card present. This adds a card_present callback
+which is used by the framework to tell whether it's present or not.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/atmel_mci.c |   21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/mci/mci-core.c |    5 +++++
+ include/mci.h          |    2 ++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
-index 4065355..222cd4a 100644
---- a/drivers/mci/atmel_mci.c
-+++ b/drivers/mci/atmel_mci.c
-@@ -331,18 +331,26 @@ static int atmel_start_cmd(struct atmel_mci_host *host, struct mci_cmd *cmd,
- 	return 0;
- }
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 7d43fe3..fd052f1 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -1352,6 +1352,11 @@ static int mci_card_probe(struct mci *mci)
+ 	struct mci_host *host = mci->host;
+ 	int rc, disknum;
  
--/** init the host interface */
--static int mci_reset(struct mci_host *mci, struct device_d *mci_dev)
++	if (host->card_present && !host->card_present(host)) {
++		dev_err(mci->mci_dev, "no card inserted\n");
++		return -ENODEV;
++	}
 +
-+static int mci_card_present(struct mci_host *mci)
- {
--	int ret;
- 	struct atmel_mci_host *host = to_mci_host(mci);
- 	struct atmel_mci_platform_data *pd = host->hw_dev->platform_data;
-+	int ret;
-+
-+	/* No gpio, assume card is present */
-+	if (!gpio_is_valid(pd->detect_pin))
-+		return 1;
+ 	/* start with a host interface reset */
+ 	rc = (host->init)(host, mci->mci_dev);
+ 	if (rc) {
+diff --git a/include/mci.h b/include/mci.h
+index 0041e27..c0d179b 100644
+--- a/include/mci.h
++++ b/include/mci.h
+@@ -300,6 +300,8 @@ struct mci_host {
+ 	void (*set_ios)(struct mci_host*, struct mci_ios *);
+ 	/** handle a command */
+ 	int (*send_cmd)(struct mci_host*, struct mci_cmd*, struct mci_data*);
++	/** check if a card is inserted */
++	int (*card_present)(struct mci_host *);
+ };
  
- 	ret = gpio_get_value(pd->detect_pin);
--	dev_dbg(host->hw_dev, "card %sdetected\n", ret != 0 ? "not " : "");
- 
--	if (pd->detect_pin && ret == 1)
--		return -ENODEV;
-+	return ret == 0 ? 1 : 0;
-+}
-+
-+/** init the host interface */
-+static int mci_reset(struct mci_host *mci, struct device_d *mci_dev)
-+{
-+	struct atmel_mci_host *host = to_mci_host(mci);
- 
- 	clk_enable(host->clk);
- 	atmel_mci_reset(host);
-@@ -454,6 +462,7 @@ static int mci_probe(struct device_d *hw_dev)
- 	host->mci.send_cmd = mci_request;
- 	host->mci.set_ios = mci_set_ios;
- 	host->mci.init = mci_reset;
-+	host->mci.card_present = mci_card_present;
- 	host->mci.hw_dev = hw_dev;
- 
- 	host->mci.host_caps = pd->host_caps;
+ /** MMC/SD and interface instance information */
 -- 
 1.7.10.4
 
