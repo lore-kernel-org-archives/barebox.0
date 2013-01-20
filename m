@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-f53.google.com ([209.85.220.53])
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TwfCi-00017S-UM
- for barebox@lists.infradead.org; Sat, 19 Jan 2013 20:39:53 +0000
-Received: by mail-pa0-f53.google.com with SMTP id hz1so2708827pad.26
- for <barebox@lists.infradead.org>; Sat, 19 Jan 2013 12:39:49 -0800 (PST)
+ id 1TwrPl-00065k-LF
+ for barebox@lists.infradead.org; Sun, 20 Jan 2013 09:42:10 +0000
+Date: Sun, 20 Jan 2013 10:41:56 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130120094156.GO1906@pengutronix.de>
+References: <20130119112125.GH22953@game.jcrosoft.org>
+ <1358594814-8297-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130119114231.GK1906@pengutronix.de>
+ <20130119133206.GK22953@game.jcrosoft.org>
+ <20130119134251.GL1906@pengutronix.de>
+ <20130119163208.GB26329@game.jcrosoft.org>
 MIME-Version: 1.0
-In-Reply-To: <1358613446-1168-2-git-send-email-plagnioj@jcrosoft.com>
-References: <20130119163524.GC26329@game.jcrosoft.org>
- <1358613446-1168-1-git-send-email-plagnioj@jcrosoft.com>
- <1358613446-1168-2-git-send-email-plagnioj@jcrosoft.com>
-Date: Sun, 20 Jan 2013 00:39:49 +0400
-Message-ID: <CAA4bVAEWPR3YcmfN-=AYEfOxR5wHZdAwSFq4necMhtUkkJ_jZQ@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20130119163208.GB26329@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,50 +27,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/9] filetype: add is_barebox_head
+Subject: Re: [PATCH 1/7] at91: add test commamd to emulate bootrom boot
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 19 January 2013 20:37, Jean-Christophe PLAGNIOL-VILLARD
-<plagnioj@jcrosoft.com> wrote:
-> to detect if it's a barebox for the current running arch
->
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  include/filetype.h |    5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/include/filetype.h b/include/filetype.h
-> index c2af917..05b0f5c 100644
-> --- a/include/filetype.h
-> +++ b/include/filetype.h
-> @@ -66,4 +66,9 @@ static inline int is_barebox_mips_head(const char *head)
->  }
->  #endif
->
-> +static inline int is_barebox_head(const char *head)
-> +{
-> +       return is_barebox_mips_head(head) || is_barebox_mips_head(head);
-> +}
-> +
+On Sat, Jan 19, 2013 at 05:32:08PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > > +	shutdown_barebox();
+> > > > > +
+> > > > > +	__asm__ __volatile__(
+> > > > > +		"mov pc, %0\n"
+> > > > > +		:
+> > > > > +		: "r"(jump)
+> > > > > +		:);
+> > > > 
+> > > > Is this inline assemble needed? Why not
+> > > > 
+> > > > 	void (*jump)(void);
+> > > > 
+> > > > 	jump();
+> > > jump can be NULL
+> > 
+> > But that's not a reason for inline assembly.
+> except if use call we get a NULL exception
 
-There are too many MIPSes here!
+You won't get a NULL pointer exception when the MMU is disabled (which
+is the case after shutdown_basebox()), no matter which method you choose
+to jump to 0x0.
 
->  #endif /* __FILE_TYPE_H */
-> --
-> 1.7.10.4
->
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-
+Sascha
 
 -- 
-Best regards,
-  Antony Pavlov
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
