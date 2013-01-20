@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TwrgA-0006Jz-Qf
- for barebox@lists.infradead.org; Sun, 20 Jan 2013 09:59:07 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1Twrfo-0000nc-Ss
- for barebox@lists.infradead.org; Sun, 20 Jan 2013 10:58:44 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1Twrfo-0003ZA-Rk
- for barebox@lists.infradead.org; Sun, 20 Jan 2013 10:58:44 +0100
+ id 1Tws0L-00072L-Ep
+ for barebox@lists.infradead.org; Sun, 20 Jan 2013 10:19:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 20 Jan 2013 10:58:38 +0100
-Message-Id: <1358675923-13628-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 20 Jan 2013 11:19:50 +0100
+Message-Id: <1358677194-23423-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1358677194-23423-1-git-send-email-s.hauer@pengutronix.de>
+References: <1358677194-23423-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,31 +21,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MMC/SD improvements
+Subject: [PATCH 1/5] ARM i.MX6 USB phy: Fix phy function names
 To: barebox@lists.infradead.org
 
-- make sure the mci*.probe parameter is always present and so that scripts
-  can rely on it.
-- let setting of the parameter be succesful when there is a card detected,
-  even when it was present before
-- Add proper card present callback for host drivers so that we can give
-  a meaningful message in the framework.
+The imx6_usb_phy1* functions are misnamed. It's usb phy2 that is configured
+here, so rename the functions accordingly.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/freescale-mx6-sabrelite/board.c |    4 ++--
+ arch/arm/mach-imx/include/mach/usb.h            |    4 ++--
+ arch/arm/mach-imx/usb-imx6.c                    |    4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-----------------------------------------------------------------
-Sascha Hauer (5):
-      mci: return 0 for probe parameter even when already initialized
-      mci: Always add probe parameter for cards
-      mci: Add card_present callback
-      mci i.MX esdhc: implement card_present callback
-      mci atmel: implement card_present callback
+diff --git a/arch/arm/boards/freescale-mx6-sabrelite/board.c b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+index 55087c2..2a12786 100644
+--- a/arch/arm/boards/freescale-mx6-sabrelite/board.c
++++ b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+@@ -231,8 +231,8 @@ static struct esdhc_platform_data sabrelite_sd4_data = {
+ 
+ static void sabrelite_ehci_init(void)
+ {
+-	imx6_usb_phy1_disable_oc();
+-	imx6_usb_phy1_enable();
++	imx6_usb_phy2_disable_oc();
++	imx6_usb_phy2_enable();
+ 
+ 	/* hub reset */
+ 	gpio_direction_output(204, 0);
+diff --git a/arch/arm/mach-imx/include/mach/usb.h b/arch/arm/mach-imx/include/mach/usb.h
+index 0a88e7f..85528d7 100644
+--- a/arch/arm/mach-imx/include/mach/usb.h
++++ b/arch/arm/mach-imx/include/mach/usb.h
+@@ -11,7 +11,7 @@
+ #define MX35_H1_USBTE_BIT	(1 << 4)
+ #define MXC_EHCI_INTERFACE_SINGLE_UNI	(2 << 0)
+ 
+-int imx6_usb_phy1_disable_oc(void);
+-int imx6_usb_phy1_enable(void);
++int imx6_usb_phy2_disable_oc(void);
++int imx6_usb_phy2_enable(void);
+ 
+ #endif /* __MACH_USB_H_*/
+diff --git a/arch/arm/mach-imx/usb-imx6.c b/arch/arm/mach-imx/usb-imx6.c
+index cd234d2..a3c4304 100644
+--- a/arch/arm/mach-imx/usb-imx6.c
++++ b/arch/arm/mach-imx/usb-imx6.c
+@@ -46,7 +46,7 @@
+ #define USBPHY1_PLL_480_CTRL_EN_USB_CLK	(1 <<  6)
+ #define USBPHY1_PLL_480_CTRL_BYPASS	(1 << 16)
+ 
+-int imx6_usb_phy1_disable_oc(void)
++int imx6_usb_phy2_disable_oc(void)
+ {
+ 	int val;
+ 
+@@ -64,7 +64,7 @@ int imx6_usb_phy1_disable_oc(void)
+ 	return 0;
+ }
+ 
+-int imx6_usb_phy1_enable(void)
++int imx6_usb_phy2_enable(void)
+ {
+ 	int val;
+ 
+-- 
+1.7.10.4
 
- drivers/mci/atmel_mci.c |   21 +++++++++++++++------
- drivers/mci/imx-esdhc.c |   14 +++-----------
- drivers/mci/mci-core.c  |   33 +++++++++++----------------------
- include/mci.h           |    2 ++
- 4 files changed, 31 insertions(+), 39 deletions(-)
 
 _______________________________________________
 barebox mailing list
