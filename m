@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tws0f-00075h-OG
- for barebox@lists.infradead.org; Sun, 20 Jan 2013 10:20:18 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1Tws0J-0001Zq-Lo
- for barebox@lists.infradead.org; Sun, 20 Jan 2013 11:19:55 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1Tws0J-00068a-Kp
- for barebox@lists.infradead.org; Sun, 20 Jan 2013 11:19:55 +0100
+ id 1Tws1J-00078V-8I
+ for barebox@lists.infradead.org; Sun, 20 Jan 2013 10:20:57 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 20 Jan 2013 11:19:49 +0100
-Message-Id: <1358677194-23423-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 20 Jan 2013 11:20:54 +0100
+Message-Id: <1358677254-24171-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,41 +19,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i.MX6 USB phy support
+Subject: [PATCH] mtd m25p80: Add support for w25q80bl
 To: barebox@lists.infradead.org
 
-This i.MX6 support for the i.MX chipidea driver, or more specifically:
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/devices/m25p80.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-- a USB phy driver
-- device registration convenience wrappers
-- clock support
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index 428d126..2a1933a 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -742,6 +742,7 @@ static const struct spi_device_id m25p_ids[] = {
+ 	{ "w25x64", INFO(0xef3017, 0, 64 * 1024, 128, SECT_4K) },
+ 	{ "w25q64", INFO(0xef4017, 0, 64 * 1024, 128, SECT_4K) },
+ 	{ "w25q80", INFO(0xef5014, 0, 64 * 1024,  16, SECT_4K) },
++	{ "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16, SECT_4K) },
+ 
+ 	/* Catalyst / On Semiconductor -- non-JEDEC */
+ 	{ "cat25c11", CAT25_INFO(  16, 8, 16, 1) },
+-- 
+1.7.10.4
 
-With this the imx6_usb_phy* functions should no longer be used. These
-can be removed once the sabrelite is converted to the chipidea driver.
-
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (5):
-      ARM i.MX6 USB phy: Fix phy function names
-      ARM i.MX6: Fix usb phy base addresses
-      ARM i.MX6: Add usbphy clocks
-      USB: Add usb phy driver for i.MX
-      ARM i.MX6: Add Chipidea support
-
- arch/arm/boards/freescale-mx6-sabrelite/board.c |    4 +-
- arch/arm/mach-imx/clk-imx6.c                    |    5 ++
- arch/arm/mach-imx/imx6.c                        |    1 +
- arch/arm/mach-imx/include/mach/devices-imx6.h   |   26 ++++++
- arch/arm/mach-imx/include/mach/imx6-regs.h      |    3 +-
- arch/arm/mach-imx/include/mach/usb.h            |    4 +-
- arch/arm/mach-imx/usb-imx6.c                    |   14 +--
- drivers/usb/imx/Kconfig                         |    5 ++
- drivers/usb/imx/Makefile                        |    1 +
- drivers/usb/imx/imx-usb-misc.c                  |   12 +++
- drivers/usb/imx/imx-usb-phy.c                   |  105 +++++++++++++++++++++++
- 11 files changed, 168 insertions(+), 12 deletions(-)
- create mode 100644 drivers/usb/imx/imx-usb-phy.c
 
 _______________________________________________
 barebox mailing list
