@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from gw6.ovh.net ([213.251.189.206] helo=mail431.ha.ovh.net)
  by merlin.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TxNiC-0003NQ-2f
- for barebox@lists.infradead.org; Mon, 21 Jan 2013 20:11:24 +0000
+ id 1TxNiC-0003NR-2o
+ for barebox@lists.infradead.org; Mon, 21 Jan 2013 20:11:25 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 21 Jan 2013 21:09:55 +0100
-Message-Id: <1358798996-26595-8-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 21 Jan 2013 21:09:56 +0100
+Message-Id: <1358798996-26595-9-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1358798996-26595-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130121200712.GJ26329@game.jcrosoft.org>
  <1358798996-26595-1-git-send-email-plagnioj@jcrosoft.com>
@@ -22,60 +22,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/9] at91sam9x5: add ehci support
+Subject: [PATCH 9/9] at91sam9x5ek: add usb support
 To: barebox@lists.infradead.org
+
+warning: the ohci work only without MMU
+
+enable:
+ - ehci
+ - usb strorage
+ - usb net asix
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/at91sam9x5.c         |    1 +
- arch/arm/mach-at91/at91sam9x5_devices.c |   22 ++++++++++++++++++++++
- 2 files changed, 23 insertions(+)
+ arch/arm/boards/at91sam9x5ek/init.c     |   20 +++++++++++++++-----
+ arch/arm/configs/at91sam9x5ek_defconfig |    6 ++++++
+ 2 files changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-at91/at91sam9x5.c b/arch/arm/mach-at91/at91sam9x5.c
-index 5d43423..e6e3a2f 100644
---- a/arch/arm/mach-at91/at91sam9x5.c
-+++ b/arch/arm/mach-at91/at91sam9x5.c
-@@ -206,6 +206,7 @@ static struct clk_lookup periph_clocks_lookups[] = {
- 	CLKDEV_CON_DEV_ID("macb_clk", "macb0", &macb0_clk),
- 	CLKDEV_CON_DEV_ID("macb_clk", "macb1", &macb1_clk),
- 	CLKDEV_CON_ID("ohci_clk", &uhphs_clk),
-+	CLKDEV_CON_DEV_ID("ehci_clk", "atmel-ehci", &uhphs_clk),
- 	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
- 	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
- 	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci0", &mmc0_clk),
-diff --git a/arch/arm/mach-at91/at91sam9x5_devices.c b/arch/arm/mach-at91/at91sam9x5_devices.c
-index 71057a5..8e59fe0 100644
---- a/arch/arm/mach-at91/at91sam9x5_devices.c
-+++ b/arch/arm/mach-at91/at91sam9x5_devices.c
-@@ -56,6 +56,28 @@ void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data)
- void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data) {}
- #endif
+diff --git a/arch/arm/boards/at91sam9x5ek/init.c b/arch/arm/boards/at91sam9x5ek/init.c
+index f230205..5e11241 100644
+--- a/arch/arm/boards/at91sam9x5ek/init.c
++++ b/arch/arm/boards/at91sam9x5ek/init.c
+@@ -192,14 +192,24 @@ static void ek_add_device_spi(void)
+ 	at91_add_device_spi(0, &spi_pdata);
+ }
  
-+#if defined(CONFIG_USB_EHCI)
-+void __init at91_add_device_usbh_ehci(struct at91_usbh_data *data)
++#if defined(CONFIG_USB_OHCI) || defined(CONFIG_USB_EHCI)
+ /*
+- * USB Host port
++ * USB HS Host port (common to OHCI & EHCI)
+  */
+-static struct at91_usbh_data __initdata ek_usbh_data = {
+-	.ports		= 2,
+-	.vbus_pin	= {AT91_PIN_PD20, AT91_PIN_PD19},
++static struct at91_usbh_data ek_usbh_hs_data = {
++	.ports			= 2,
++	.vbus_pin		= {AT91_PIN_PD19, AT91_PIN_PD20},
+ };
+ 
++static void ek_add_device_usb(void)
 +{
-+	int i;
-+
-+	if (!data)
-+		return;
-+
-+	/* Enable VBus control for UHP ports */
-+	for (i = 0; i < data->ports; i++) {
-+		if (gpio_is_valid(data->vbus_pin[i]))
-+			at91_set_gpio_output(data->vbus_pin[i],
-+					     data->vbus_pin_active_low[i]);
-+	}
-+
-+	add_generic_device("atmel-ehci", DEVICE_ID_SINGLE, NULL, AT91SAM9X5_EHCI_BASE,
-+			1024 * 1024, IORESOURCE_MEM, data);
++	at91_add_device_usbh_ohci(&ek_usbh_hs_data);
++	at91_add_device_usbh_ehci(&ek_usbh_hs_data);
 +}
 +#else
-+void __init at91_add_device_usbh_ehci(struct at91_usbh_data *data) {}
++static void ek_add_device_usb(void) {}
 +#endif
 +
- #if defined(CONFIG_DRIVER_NET_MACB)
- void at91_add_device_eth(int id, struct at91_ether_platform_data *data)
- {
+ struct gpio_led leds[] = {
+ 	{
+ 		.gpio	= AT91_PIN_PB18,
+@@ -250,7 +260,7 @@ static int at91sam9x5ek_devices_init(void)
+ 	ek_add_device_eth();
+ 	ek_add_device_spi();
+ 	ek_add_device_mci();
+-	at91_add_device_usbh_ohci(&ek_usbh_data);
++	ek_add_device_usb();
+ 	ek_add_led();
+ 	ek_add_device_i2c();
+ 
+diff --git a/arch/arm/configs/at91sam9x5ek_defconfig b/arch/arm/configs/at91sam9x5ek_defconfig
+index 0df8631..400a35b 100644
+--- a/arch/arm/configs/at91sam9x5ek_defconfig
++++ b/arch/arm/configs/at91sam9x5ek_defconfig
+@@ -52,6 +52,8 @@ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_DRIVER_NET_MACB=y
++CONFIG_NET_USB=y
++CONFIG_NET_USB_ASIX=y
+ CONFIG_DRIVER_SPI_ATMEL=y
+ CONFIG_MTD_M25P80=y
+ CONFIG_I2C=y
+@@ -66,6 +68,10 @@ CONFIG_NAND=y
+ CONFIG_NAND_ATMEL=y
+ CONFIG_NAND_ATMEL_PMECC=y
+ CONFIG_UBI=y
++CONFIG_USB=y
++CONFIG_USB_EHCI=y
++CONFIG_USB_EHCI_ATMEL=y
++CONFIG_USB_STORAGE=y
+ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+ CONFIG_MCI_ATMEL=y
 -- 
 1.7.10.4
 
