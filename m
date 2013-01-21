@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-f175.google.com ([209.85.212.175])
+Received: from mail-ee0-f54.google.com ([74.125.83.54])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TxFBx-00013B-Hc
- for barebox@lists.infradead.org; Mon, 21 Jan 2013 11:05:33 +0000
-Received: by mail-wi0-f175.google.com with SMTP id hm11so7018479wib.2
- for <barebox@lists.infradead.org>; Mon, 21 Jan 2013 03:04:16 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <1358764040-10690-8-git-send-email-plagnioj@jcrosoft.com>
-References: <20130121102319.GE26329@game.jcrosoft.org>
- <1358764040-10690-1-git-send-email-plagnioj@jcrosoft.com>
- <1358764040-10690-8-git-send-email-plagnioj@jcrosoft.com>
-Date: Mon, 21 Jan 2013 12:04:16 +0100
-Message-ID: <CAB_54W76DctVP5c_aeghd+Bh+7Lr86sGLJ=BdGQrg40npCTnYA@mail.gmail.com>
-From: Alexander Aring <alex.aring@gmail.com>
+ id 1TxFYh-00058x-Rs
+ for barebox@lists.infradead.org; Mon, 21 Jan 2013 11:29:04 +0000
+Received: by mail-ee0-f54.google.com with SMTP id c41so2749554eek.27
+ for <barebox@lists.infradead.org>; Mon, 21 Jan 2013 03:27:41 -0800 (PST)
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Mon, 21 Jan 2013 12:27:37 +0100
+Message-Id: <1358767657-3062-1-git-send-email-fabio.porcedda@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,753 +16,444 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0688326851371528376=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 08/10] introduce common bootstrap code
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH v2] ARM: at91: Add Telit EVK-PRO3 board support
+To: barebox@lists.infradead.org
 
---===============0688326851371528376==
-Content-Type: multipart/alternative; boundary=089e0122896c071ca104d3ca6c60
+http://www.telit.com
 
---089e0122896c071ca104d3ca6c60
-Content-Type: text/plain; charset=UTF-8
+Based on at91sam9260ek board support.
 
-hi,
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+---
+v2:
+ - init.c: remove 9260ek and g20ek references
+ - init.c: rename ek_ -> evk_
+ - init.c: cleanup headers
+ - init.c: use clock framework
+ - init.c: remove function ek_set_board_type
+ - init.c: remove bus_width_16 initialization 
 
-found a little 'things'. Maybe it's matter.
+ arch/arm/Makefile                               |   1 +
+ arch/arm/boards/evk-pro3/Makefile               |   1 +
+ arch/arm/boards/evk-pro3/config.h               |   6 +
+ arch/arm/boards/evk-pro3/env/boot/nand-ubi      |  10 ++
+ arch/arm/boards/evk-pro3/env/init/config-board  |   8 +
+ arch/arm/boards/evk-pro3/env/init/mtdparts-nand |  11 ++
+ arch/arm/boards/evk-pro3/env/init/usb           |  10 ++
+ arch/arm/boards/evk-pro3/init.c                 | 185 ++++++++++++++++++++++++
+ arch/arm/configs/evk_pro3_defconfig             |  73 ++++++++++
+ arch/arm/mach-at91/Kconfig                      |   9 ++
+ 10 files changed, 314 insertions(+)
+ create mode 100644 arch/arm/boards/evk-pro3/Makefile
+ create mode 100644 arch/arm/boards/evk-pro3/config.h
+ create mode 100644 arch/arm/boards/evk-pro3/env/boot/nand-ubi
+ create mode 100644 arch/arm/boards/evk-pro3/env/init/config-board
+ create mode 100644 arch/arm/boards/evk-pro3/env/init/mtdparts-nand
+ create mode 100644 arch/arm/boards/evk-pro3/env/init/usb
+ create mode 100644 arch/arm/boards/evk-pro3/init.c
+ create mode 100644 arch/arm/configs/evk_pro3_defconfig
 
-2013/1/21 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index a36adfb..e5c7761 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -94,6 +94,7 @@ board-$(CONFIG_MACH_EUKREA_CPUIMX35)		:= eukrea_cpuimx35
+ board-$(CONFIG_MACH_EUKREA_CPUIMX51SD)		:= eukrea_cpuimx51
+ board-$(CONFIG_MACH_FREESCALE_MX25_3STACK)	:= freescale-mx25-3-stack
+ board-$(CONFIG_MACH_FREESCALE_MX35_3STACK)	:= freescale-mx35-3-stack
++board-$(CONFIG_MACH_GE863)			:= evk-pro3
+ board-$(CONFIG_MACH_IMX21ADS)			:= imx21ads
+ board-$(CONFIG_MACH_IMX27ADS)			:= imx27ads
+ board-$(CONFIG_MACH_IMX233_OLINUXINO)	:= imx233-olinuxino
+diff --git a/arch/arm/boards/evk-pro3/Makefile b/arch/arm/boards/evk-pro3/Makefile
+new file mode 100644
+index 0000000..eb072c0
+--- /dev/null
++++ b/arch/arm/boards/evk-pro3/Makefile
+@@ -0,0 +1 @@
++obj-y += init.o
+diff --git a/arch/arm/boards/evk-pro3/config.h b/arch/arm/boards/evk-pro3/config.h
+new file mode 100644
+index 0000000..7aeff30
+--- /dev/null
++++ b/arch/arm/boards/evk-pro3/config.h
+@@ -0,0 +1,6 @@
++#ifndef __CONFIG_H
++#define __CONFIG_H
++
++#define AT91_MAIN_CLOCK		6000000		/*  6.000 MHz crystal */
++
++#endif	/* __CONFIG_H */
+diff --git a/arch/arm/boards/evk-pro3/env/boot/nand-ubi b/arch/arm/boards/evk-pro3/env/boot/nand-ubi
+new file mode 100644
+index 0000000..8115ced
+--- /dev/null
++++ b/arch/arm/boards/evk-pro3/env/boot/nand-ubi
+@@ -0,0 +1,10 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	boot-menu-add-entry "$0" "nand (UBI)"
++	exit
++fi
++
++global.bootm.image="/dev/nand0.kernel.bb"
++#global.bootm.oftree="/env/oftree"
++global.linux.bootargs.dyn.root="root=ubi0:rootfs ubi.mtd=nand0.root rootfstype=ubifs"
+diff --git a/arch/arm/boards/evk-pro3/env/init/config-board b/arch/arm/boards/evk-pro3/env/init/config-board
+new file mode 100644
+index 0000000..741b902
+--- /dev/null
++++ b/arch/arm/boards/evk-pro3/env/init/config-board
+@@ -0,0 +1,8 @@
++#!/bin/sh
++
++# board defaults, do not change in running system. Change /env/config
++# instead
++
++global.hostname=evk-pro3
++global.linux.bootargs.base="console=ttyS0,115200"
++global.boot.default=nand-ubi
+diff --git a/arch/arm/boards/evk-pro3/env/init/mtdparts-nand b/arch/arm/boards/evk-pro3/env/init/mtdparts-nand
+new file mode 100644
+index 0000000..3ac7289
+--- /dev/null
++++ b/arch/arm/boards/evk-pro3/env/init/mtdparts-nand
+@@ -0,0 +1,11 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "NAND partitions"
++	exit
++fi
++
++mtdparts="0x3C0000(nand0.bootstrap),256k(nand0.barebox)ro,128k(nand0.bareboxenv),3M(nand0.kernel),-(nand0.root)"
++kernelname="atmel_nand"
++
++mtdparts-add -b -d nand0 -k ${kernelname} -p ${mtdparts}
+diff --git a/arch/arm/boards/evk-pro3/env/init/usb b/arch/arm/boards/evk-pro3/env/init/usb
+new file mode 100644
+index 0000000..b682066
+--- /dev/null
++++ b/arch/arm/boards/evk-pro3/env/init/usb
+@@ -0,0 +1,10 @@
++#!/bin/sh
++
++if [ $at91_udc0.vbus = 1 ]
++then
++	global.autoboot_timeout=16
++	echo
++	echo "enable tty over USB Device, increase the boot delay to ${global.autoboot_timeout}s"
++	usbserial
++	exit
++fi
+diff --git a/arch/arm/boards/evk-pro3/init.c b/arch/arm/boards/evk-pro3/init.c
+new file mode 100644
+index 0000000..6998610
+--- /dev/null
++++ b/arch/arm/boards/evk-pro3/init.c
+@@ -0,0 +1,185 @@
++/*
++ * Copyright (C) 2007 Sascha Hauer, Pengutronix
++ * Copyright (C) 2013 Fabio Porcedda <fabio.porcedda@gmail.com>, Telit
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <asm/armlinux.h>
++#include <common.h>
++#include <gpio.h>
++#include <init.h>
++#include <linux/clk.h>
++#include <mach/at91_rstc.h>
++#include <mach/at91sam9_smc.h>
++#include <mach/board.h>
++#include <mach/io.h>
++#include <nand.h>
++
++#define BOOTSTRAP_SIZE 0x3C0000
++
++static struct atmel_nand_data nand_pdata = {
++	.ale		= 21,
++	.cle		= 22,
++	.det_pin	= -EINVAL,
++	.rdy_pin	= AT91_PIN_PC13,
++	.enable_pin	= AT91_PIN_PC14,
++	.on_flash_bbt	= 1,
++};
++
++static struct sam9_smc_config evk_nand_smc_config = {
++	.ncs_read_setup		= 0,
++	.nrd_setup		= 1,
++	.ncs_write_setup	= 0,
++	.nwe_setup		= 1,
++
++	.ncs_read_pulse		= 3,
++	.nrd_pulse		= 3,
++	.ncs_write_pulse	= 3,
++	.nwe_pulse		= 3,
++
++	.read_cycle		= 5,
++	.write_cycle		= 5,
++
++	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
++				  AT91_SMC_EXNWMODE_DISABLE,
++	.tdf_cycles		= 2,
++};
++
++static void evk_add_device_nand(void)
++{
++	struct sam9_smc_config *smc;
++
++	smc = &evk_nand_smc_config;
++
++	smc->mode |= AT91_SMC_DBW_8;
++
++	/* configure chip-select 3 (NAND) */
++	sam9_smc_configure(0, 3, smc);
++
++	at91_add_device_nand(&nand_pdata);
++}
++
++static struct at91_ether_platform_data macb_pdata = {
++	.is_rmii = 1,
++	.phy_addr = 0,
++};
++
++static void evk_phy_reset(void)
++{
++	unsigned long rstc;
++	struct clk *clk = clk_get(NULL, "macb_clk");
++
++	clk_enable(clk);
++
++	at91_set_gpio_input(AT91_PIN_PA14, 0);
++	at91_set_gpio_input(AT91_PIN_PA15, 0);
++	at91_set_gpio_input(AT91_PIN_PA17, 0);
++	at91_set_gpio_input(AT91_PIN_PA25, 0);
++	at91_set_gpio_input(AT91_PIN_PA26, 0);
++	at91_set_gpio_input(AT91_PIN_PA28, 0);
++
++	rstc = at91_sys_read(AT91_RSTC_MR) & AT91_RSTC_ERSTL;
++
++	/* Need to reset PHY -> 500ms reset */
++	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
++				     (AT91_RSTC_ERSTL & (0x0d << 8)) |
++				     AT91_RSTC_URSTEN);
++
++	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_EXTRST);
++
++	/* Wait for end hardware reset */
++	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL))
++		;
++
++	/* Restore NRST value */
++	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
++				     (rstc) |
++				     AT91_RSTC_URSTEN);
++}
++
++/*
++ * MCI (SD/MMC)
++ */
++#if defined(CONFIG_MCI_ATMEL)
++static struct atmel_mci_platform_data __initdata evk_mci_data = {
++	.bus_width	= 4,
++	.slot_b		= 1,
++};
++
++static void evk_usb_add_device_mci(void)
++{
++	at91_add_device_mci(0, &evk_mci_data);
++}
++#else
++static void evk_usb_add_device_mci(void) {}
++#endif
++
++/*
++ * USB Host port
++ */
++static struct at91_usbh_data __initdata evk_usbh_data = {
++	.ports		= 2,
++	.vbus_pin	= { -EINVAL, -EINVAL },
++};
++
++/*
++ * USB Device port
++ */
++static struct at91_udc_data __initdata evk_udc_data = {
++	.vbus_pin	= AT91_PIN_PC4,
++	.pullup_pin	= -EINVAL,		/* pull-up driven by UDC */
++};
++
++static int evk_mem_init(void)
++{
++	at91_add_device_sdram(0);
++
++	return 0;
++}
++mem_initcall(evk_mem_init);
++
++static int evk_devices_init(void)
++{
++	evk_add_device_nand();
++	evk_phy_reset();
++	at91_add_device_eth(0, &macb_pdata);
++	at91_add_device_usbh_ohci(&evk_usbh_data);
++	at91_add_device_udc(&evk_udc_data);
++	evk_usb_add_device_mci();
++
++	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_1 + 0x100));
++
++	devfs_add_partition("nand0", 0x00000, BOOTSTRAP_SIZE,
++			    DEVFS_PARTITION_FIXED, "bootstrap_raw");
++	dev_add_bb_dev("bootstrap_raw", "bootstrap");
++	devfs_add_partition("nand0", BOOTSTRAP_SIZE, SZ_256K,
++			    DEVFS_PARTITION_FIXED, "self_raw");
++	dev_add_bb_dev("self_raw", "self0");
++	devfs_add_partition("nand0", BOOTSTRAP_SIZE + SZ_256K, SZ_128K,
++			    DEVFS_PARTITION_FIXED, "env_raw");
++	dev_add_bb_dev("env_raw", "env0");
++	devfs_add_partition("nand0", BOOTSTRAP_SIZE + SZ_256K + SZ_128K,
++			    SZ_128K, DEVFS_PARTITION_FIXED, "env_raw1");
++	dev_add_bb_dev("env_raw1", "env1");
++
++	return 0;
++}
++
++device_initcall(evk_devices_init);
++
++static int evk_console_init(void)
++{
++	at91_register_uart(0, 0);
++	return 0;
++}
++
++console_initcall(evk_console_init);
+diff --git a/arch/arm/configs/evk_pro3_defconfig b/arch/arm/configs/evk_pro3_defconfig
+new file mode 100644
+index 0000000..c74c934
+--- /dev/null
++++ b/arch/arm/configs/evk_pro3_defconfig
+@@ -0,0 +1,73 @@
++CONFIG_ARCH_AT91SAM9260=y
++CONFIG_MACH_GE863=y
++CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
++CONFIG_AEABI=y
++# CONFIG_CMD_ARM_CPUINFO is not set
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
++CONFIG_MMU=y
++CONFIG_EXPERIMENTAL=y
++CONFIG_PROMPT="EVK-PRO3:"
++CONFIG_LONGHELP=y
++CONFIG_PROMPT_HUSH_PS2="y"
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_CONSOLE_ACTIVATE_ALL=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/evk-pro3/env"
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_TFTP=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_UBIFORMAT=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_BOOTM_INITRD=y
++CONFIG_CMD_BOOTM_OFTREE=y
++CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
++CONFIG_CMD_UIMAGE=y
++# CONFIG_CMD_BOOTU is not set
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_MTEST=y
++CONFIG_CMD_MTEST_ALTERNATIVE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_LED=y
++CONFIG_CMD_LED_TRIGGER=y
++CONFIG_NET=y
++CONFIG_NET_DHCP=y
++CONFIG_NET_NFS=y
++CONFIG_NET_PING=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_DRIVER_NET_MACB=y
++# CONFIG_SPI is not set
++CONFIG_MTD=y
++# CONFIG_MTD_OOB_DEVICE is not set
++CONFIG_NAND=y
++# CONFIG_NAND_ECC_HW is not set
++# CONFIG_NAND_ECC_HW_SYNDROME is not set
++# CONFIG_NAND_ECC_HW_NONE is not set
++CONFIG_NAND_ATMEL=y
++CONFIG_UBI=y
++CONFIG_USB_GADGET=y
++CONFIG_USB_GADGET_DFU=y
++CONFIG_USB_GADGET_SERIAL=y
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++CONFIG_MCI_ATMEL=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_TRIGGERS=y
++CONFIG_FS_TFTP=y
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_LFN=y
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index fcba7fb..a319bd3 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -46,6 +46,7 @@ config BOARDINFO
+ 	default "Calao TNY-A9263" if MACH_TNY_A9263
+ 	default "Calao TNY-A9G20" if MACH_TNY_A9G20
+ 	default "Calao QIL-A9260" if MACH_QIL_A9260
++	default "Telit EVK-PRO3" if MACH_GE863
+ 
+ config HAVE_NAND_ATMEL_BUSWIDTH_16
+ 	bool
+@@ -235,6 +236,14 @@ config MACH_USB_A9260
+ 	  Select this if you are using a Calao Systems USB-A9260.
+ 	  <http://www.calao-systems.com>
+ 
++config MACH_GE863
++	bool "Telit EVK-PRO3"
++	select HAVE_NAND_ATMEL_BUSWIDTH_16
++	select HAVE_DEFAULT_ENVIRONMENT_NEW
++	help
++	  Say y here if you are using Telit EVK-PRO3 with GE863-PRO3
++	  <http://www.telit.com>
++
+ endchoice
+ 
+ endif
+-- 
+1.8.0.3
 
-> This will allow to have a generic code to create different bootstrap
->
-> As example
-> Barebox as TI Xloader
-> Barebox as AT91 Bootstrap
->
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  include/bootstrap.h    |   34 ++++++++++++++
->  lib/Kconfig            |    2 +
->  lib/Makefile           |    1 +
->  lib/bootstrap/Kconfig  |   13 ++++++
->  lib/bootstrap/Makefile |    3 ++
->  lib/bootstrap/common.c |   21 +++++++++
->  lib/bootstrap/devfs.c  |  118
-> ++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/bootstrap/disk.c   |   37 +++++++++++++++
->  8 files changed, 229 insertions(+)
->  create mode 100644 include/bootstrap.h
->  create mode 100644 lib/bootstrap/Kconfig
->  create mode 100644 lib/bootstrap/Makefile
->  create mode 100644 lib/bootstrap/common.c
->  create mode 100644 lib/bootstrap/devfs.c
->  create mode 100644 lib/bootstrap/disk.c
->
-> diff --git a/include/bootstrap.h b/include/bootstrap.h
-> new file mode 100644
-> index 0000000..26e9dbc
-> --- /dev/null
-> +++ b/include/bootstrap.h
-> @@ -0,0 +1,34 @@
-> +/*
-> + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <
-> plagnio@jcrosoft.com>
-> + *
-> + * Under GPLv2
-> + */
-> +
-> +#ifndef __BOOSTRAP_H__
-> +#define __BOOSTRAP_H__
-> +
-> +#define bootstrap_err(fmt, arg...) printf(fmt, ##arg)
-> +
-> +void bootstrap_boot(int (*func)(void), bool barebox);
-> +
-> +#ifdef CONFIG_BOOTSTRAP_DEVFS
-> +void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
-> +                          int default_size, int max_size);
-> +#else
-> +static inline void* bootstrap_read_devfs(char *devname, bool use_bb, int
-> offset,
-> +                          int default_size, int max_size)
-> +{
-> +       return NULL;
-> +}
-> +#endif
-> +
-> +#ifdef CONFIG_BOOTSTRAP_DISK
-> +void* bootstrap_read_disk(char *devname);
-> +#else
-> +static inline void* bootstrap_read_disk(char *devname)
-> +{
-> +       return NULL;
-> +}
-> +#endif
-> +
-> +#endif /* __BOOSTRAP_H__ */
-> diff --git a/lib/Kconfig b/lib/Kconfig
-> index db8a6ad..4578353 100644
-> --- a/lib/Kconfig
-> +++ b/lib/Kconfig
-> @@ -52,4 +52,6 @@ config LIBMTD
->
->  source lib/gui/Kconfig
->
-> +source lib/bootstrap/Kconfig
-> +
->  endmenu
-> diff --git a/lib/Makefile b/lib/Makefile
-> index 85f4ec9..43f6ea3 100644
-> --- a/lib/Makefile
-> +++ b/lib/Makefile
-> @@ -1,3 +1,4 @@
-> +obj-$(CONFIG_BOOTSTRAP)        += bootstrap/
->  obj-y                  += ctype.o
->  obj-y                  += rbtree.o
->  obj-y                  += display_options.o
-> diff --git a/lib/bootstrap/Kconfig b/lib/bootstrap/Kconfig
-> new file mode 100644
-> index 0000000..558da00
-> --- /dev/null
-> +++ b/lib/bootstrap/Kconfig
-> @@ -0,0 +1,13 @@
-> +menuconfig BOOTSTRAP
-> +       bool "Library bootstrap routines           "
-> +       depends on SHELL_NONE
-> +
-> +if BOOTSTRAP
-> +
-> +config BOOTSTRAP_DEVFS
-> +       bool "devfs support"
-> +
-> +config BOOTSTRAP_DISK
-> +       bool "disk support"
-> +
-> +endif
-> diff --git a/lib/bootstrap/Makefile b/lib/bootstrap/Makefile
-> new file mode 100644
-> index 0000000..cbaa49f
-> --- /dev/null
-> +++ b/lib/bootstrap/Makefile
-> @@ -0,0 +1,3 @@
-> +obj-y                          += common.o
-> +obj-$(CONFIG_BOOTSTRAP_DEVFS)  += devfs.o
-> +obj-$(CONFIG_BOOTSTRAP_DISK)   += disk.o
-> diff --git a/lib/bootstrap/common.c b/lib/bootstrap/common.c
-> new file mode 100644
-> index 0000000..3652698
-> --- /dev/null
-> +++ b/lib/bootstrap/common.c
-> @@ -0,0 +1,21 @@
-> +/*
-> + * Copyright (C) 2011 Sascha Hauer, Pengutronix
-> + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <
-> plagnio@jcrosoft.com>
-> + *
-> + * Under GPLv2
-> + */
-> +
-> +#include <common.h>
-> +#include <bootstrap.h>
-> +#include <filetype.h>
-> +
-> +void bootstrap_boot(int (*func)(void), bool barebox)
-> +{
-> +       if (barebox && !is_barebox_head((void*)func))
-> +               return;
-> +
-> +       shutdown_barebox();
-> +       func();
-> +
-> +       while (1);
-> +}
-> diff --git a/lib/bootstrap/devfs.c b/lib/bootstrap/devfs.c
-> new file mode 100644
-> index 0000000..25d07c7
-> --- /dev/null
-> +++ b/lib/bootstrap/devfs.c
-> @@ -0,0 +1,118 @@
-> +/*
-> + * Copyright (C) 2011 Sascha Hauer, Pengutronix
-> + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <
-> plagnio@jcrosoft.com>
-> + *
-> + * Under GPLv2
-> + */
-> +
-> +#include <common.h>
-> +#include <partition.h>
-> +#include <nand.h>
-> +#include <driver.h>
-> +#include <linux/mtd/mtd.h>
-> +#include <fcntl.h>
-> +#include <filetype.h>
-> +#include <sizes.h>
-> +#include <errno.h>
-> +#include <malloc.h>
-> +#include <bootstrap.h>
-> +
-> +#if defined(CONFIG_ARM) || defined(CONFIG_MIPS)
-> +#if defined(CONFIG_ARM)
-> +#define BAREBOX_HEAD_SIZE              ARM_HEAD_SIZE
-> +#define BAREBOX_HEAD_SIZE_OFFSET       ARM_HEAD_SIZE_OFFSET
-> +#elif defined(CONFIG_MIPS)
-> +#define BAREBOX_HEAD_SIZE              MIPS_HEAD_SIZE
-> +#define BAREBOX_HEAD_SIZE_OFFSET       MIPS_HEAD_SIZE_OFFSET
-> +#endif
-> +
-> +static void *read_image_head(const char *name)
-> +{
-> +       void *header = xmalloc(BAREBOX_HEAD_SIZE);
-> +       struct cdev *cdev;
-> +       int ret;
-> +
-> +       cdev = cdev_open(name, O_RDONLY);
-> +       if (!cdev) {
-> +               bootstrap_err("failed to open partition\n");
-> +               return NULL;
-> +       }
-> +
-> +       ret = cdev_read(cdev, header, BAREBOX_HEAD_SIZE, 0, 0);
->
-check on error here?
-
-
-> +       cdev_close(cdev);
-> +
-> +       if (ret != BAREBOX_HEAD_SIZE) {
-> +               bootstrap_err("failed to read from partition\n");
-> +               return NULL;
-> +       }
-> +
-> +       return header;
-> +}
-> +
-> +static unsigned int get_image_size(void *head)
-> +{
-> +       unsigned int ret = 0;
-> +       unsigned int *psize = head + BAREBOX_HEAD_SIZE_OFFSET;
-> +
-> +       if (is_barebox_head(head))
-> +               ret = *psize;
-> +       debug("Detected barebox image size %u\n", ret);
-> +
-> +       return ret;
-> +}
-> +#else
-> +static void *read_image_head(const char *name)
-> +{
-> +       return NULL;
-> +}
-> +
-> +static unsigned int get_image_size(void *head)
-> +{
-> +       return 0;
-> +}
-> +#endif
-> +
-> +void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
-> +                          int default_size, int max_size)
-> +{
-> +       int ret;
-> +       int size = 0;
-> +       void *to, *header;
-> +       struct cdev *cdev;
-> +       char *partname = "x";
-> +
-> +       devfs_add_partition(devname, offset, max_size,
-> DEVFS_PARTITION_FIXED, partname);
-> +       if (use_bb) {
-> +               dev_add_bb_dev(partname, "bbx");
-> +               partname = "bbx";
-> +       }
-> +
-> +       header = read_image_head(partname);
-> +       if (header) {
-> +               size = get_image_size(header);
-> +               if (!size)
-> +                       bootstrap_err("%s: failed to get image size\n",
-> devname);
-> +       }
-> +
-> +       if (!size) {
-> +               size = default_size;
-> +               bootstrap_err("%s: failed to detect barebox and it's image
-> size so use %d\n",
-> +                        devname, size);
-> +       }
-> +
-> +       to = xmalloc(size);
->
-check on null here?
-
-
-> +
-> +       cdev = cdev_open(partname, O_RDONLY);
-> +       if (!cdev) {
-> +               bootstrap_err("%s: failed to open %s\n", devname,
-> partname);
-> +               return NULL;
-> +       }
-> +
-> +       ret = cdev_read(cdev, to, size, 0, 0);
-> +       if (ret != size) {
-> +               bootstrap_err("%s: failed to read from %s\n", devname,
-> partname);
-> +               return NULL;
-> +       }
-> +
-> +       return to;
-> +}
-> diff --git a/lib/bootstrap/disk.c b/lib/bootstrap/disk.c
-> new file mode 100644
-> index 0000000..fad8990
-> --- /dev/null
-> +++ b/lib/bootstrap/disk.c
-> @@ -0,0 +1,37 @@
-> +/*
-> + * Copyright (C) 2011 Sascha Hauer, Pengutronix
-> + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <
-> plagnio@jcrosoft.com>
-> + *
-> + * Under GPLv2
-> + */
-> +
-> +#include <common.h>
-> +#include <fs.h>
-> +#include <fcntl.h>
-> +#include <sizes.h>
-> +#include <errno.h>
-> +#include <malloc.h>
-> +#include <bootstrap.h>
-> +
-> +void* bootstrap_read_disk(char *dev)
-> +{
-> +       int ret;
-> +       void *buf;
-> +       int len;
-> +       char *path = "/";
-> +
-> +       ret = mount(dev, "fat", path);
-> +       if (ret) {
-> +               bootstrap_err("mounting %s failed with %d\n", dev, ret);
-> +               return NULL;
-> +       }
-> +
-> +       buf = read_file("/barebox.bin", &len);
->
-Can be set to read_file("/barebox.bin", null);
-
-
-> +       if (!buf) {
-> +               bootstrap_err("could not read barebox.bin from %s\n", dev);
-> +               umount(path);
-> +               return NULL;
-> +       }
-> +
-> +       return buf;
-> +}
-> --
-> 1.7.10.4
->
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
->
-
---089e0122896c071ca104d3ca6c60
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">hi,<br><div class=3D"gmail_extra"><br>found a little &#39;=
-things&#39;. Maybe it&#39;s matter.<br><br><div class=3D"gmail_quote">2013/=
-1/21 Jean-Christophe PLAGNIOL-VILLARD <span dir=3D"ltr">&lt;<a href=3D"mail=
-to:plagnioj@jcrosoft.com" target=3D"_blank">plagnioj@jcrosoft.com</a>&gt;</=
-span><br>
-<blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1p=
-x #ccc solid;padding-left:1ex">This will allow to have a generic code to cr=
-eate different bootstrap<br>
-<br>
-As example<br>
-Barebox as TI Xloader<br>
-Barebox as AT91 Bootstrap<br>
-<br>
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD &lt;<a href=3D"mailto:plagn=
-ioj@jcrosoft.com">plagnioj@jcrosoft.com</a>&gt;<br>
----<br>
-=C2=A0include/bootstrap.h =C2=A0 =C2=A0| =C2=A0 34 ++++++++++++++<br>
-=C2=A0lib/Kconfig =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| =C2=A0 =C2=A02=
- +<br>
-=C2=A0lib/Makefile =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | =C2=A0 =C2=A01 +<br=
->
-=C2=A0lib/bootstrap/Kconfig =C2=A0| =C2=A0 13 ++++++<br>
-=C2=A0lib/bootstrap/Makefile | =C2=A0 =C2=A03 ++<br>
-=C2=A0lib/bootstrap/common.c | =C2=A0 21 +++++++++<br>
-=C2=A0lib/bootstrap/devfs.c =C2=A0| =C2=A0118 +++++++++++++++++++++++++++++=
-+++++++++++++++++++<br>
-=C2=A0lib/bootstrap/disk.c =C2=A0 | =C2=A0 37 +++++++++++++++<br>
-=C2=A08 files changed, 229 insertions(+)<br>
-=C2=A0create mode 100644 include/bootstrap.h<br>
-=C2=A0create mode 100644 lib/bootstrap/Kconfig<br>
-=C2=A0create mode 100644 lib/bootstrap/Makefile<br>
-=C2=A0create mode 100644 lib/bootstrap/common.c<br>
-=C2=A0create mode 100644 lib/bootstrap/devfs.c<br>
-=C2=A0create mode 100644 lib/bootstrap/disk.c<br>
-<br>
-diff --git a/include/bootstrap.h b/include/bootstrap.h<br>
-new file mode 100644<br>
-index 0000000..26e9dbc<br>
---- /dev/null<br>
-+++ b/include/bootstrap.h<br>
-@@ -0,0 +1,34 @@<br>
-+/*<br>
-+ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD &lt;<a href=3D"mail=
-to:plagnio@jcrosoft.com">plagnio@jcrosoft.com</a>&gt;<br>
-+ *<br>
-+ * Under GPLv2<br>
-+ */<br>
-+<br>
-+#ifndef __BOOSTRAP_H__<br>
-+#define __BOOSTRAP_H__<br>
-+<br>
-+#define bootstrap_err(fmt, arg...) printf(fmt, ##arg)<br>
-+<br>
-+void bootstrap_boot(int (*func)(void), bool barebox);<br>
-+<br>
-+#ifdef CONFIG_BOOTSTRAP_DEVFS<br>
-+void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0int default_size, int max_size);<br>
-+#else<br>
-+static inline void* bootstrap_read_devfs(char *devname, bool use_bb, int o=
-ffset,<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0int default_size, int max_size)<br>
-+{<br>
-+ =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
-+}<br>
-+#endif<br>
-+<br>
-+#ifdef CONFIG_BOOTSTRAP_DISK<br>
-+void* bootstrap_read_disk(char *devname);<br>
-+#else<br>
-+static inline void* bootstrap_read_disk(char *devname)<br>
-+{<br>
-+ =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
-+}<br>
-+#endif<br>
-+<br>
-+#endif /* __BOOSTRAP_H__ */<br>
-diff --git a/lib/Kconfig b/lib/Kconfig<br>
-index db8a6ad..4578353 100644<br>
---- a/lib/Kconfig<br>
-+++ b/lib/Kconfig<br>
-@@ -52,4 +52,6 @@ config LIBMTD<br>
-<br>
-=C2=A0source lib/gui/Kconfig<br>
-<br>
-+source lib/bootstrap/Kconfig<br>
-+<br>
-=C2=A0endmenu<br>
-diff --git a/lib/Makefile b/lib/Makefile<br>
-index 85f4ec9..43f6ea3 100644<br>
---- a/lib/Makefile<br>
-+++ b/lib/Makefile<br>
-@@ -1,3 +1,4 @@<br>
-+obj-$(CONFIG_BOOTSTRAP) =C2=A0 =C2=A0 =C2=A0 =C2=A0+=3D bootstrap/<br>
-=C2=A0obj-y =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0+=
-=3D ctype.o<br>
-=C2=A0obj-y =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0+=
-=3D rbtree.o<br>
-=C2=A0obj-y =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0+=
-=3D display_options.o<br>
-diff --git a/lib/bootstrap/Kconfig b/lib/bootstrap/Kconfig<br>
-new file mode 100644<br>
-index 0000000..558da00<br>
---- /dev/null<br>
-+++ b/lib/bootstrap/Kconfig<br>
-@@ -0,0 +1,13 @@<br>
-+menuconfig BOOTSTRAP<br>
-+ =C2=A0 =C2=A0 =C2=A0 bool &quot;Library bootstrap routines =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 &quot;<br>
-+ =C2=A0 =C2=A0 =C2=A0 depends on SHELL_NONE<br>
-+<br>
-+if BOOTSTRAP<br>
-+<br>
-+config BOOTSTRAP_DEVFS<br>
-+ =C2=A0 =C2=A0 =C2=A0 bool &quot;devfs support&quot;<br>
-+<br>
-+config BOOTSTRAP_DISK<br>
-+ =C2=A0 =C2=A0 =C2=A0 bool &quot;disk support&quot;<br>
-+<br>
-+endif<br>
-diff --git a/lib/bootstrap/Makefile b/lib/bootstrap/Makefile<br>
-new file mode 100644<br>
-index 0000000..cbaa49f<br>
---- /dev/null<br>
-+++ b/lib/bootstrap/Makefile<br>
-@@ -0,0 +1,3 @@<br>
-+obj-y =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0+=3D common.o<br>
-+obj-$(CONFIG_BOOTSTRAP_DEVFS) =C2=A0+=3D devfs.o<br>
-+obj-$(CONFIG_BOOTSTRAP_DISK) =C2=A0 +=3D disk.o<br>
-diff --git a/lib/bootstrap/common.c b/lib/bootstrap/common.c<br>
-new file mode 100644<br>
-index 0000000..3652698<br>
---- /dev/null<br>
-+++ b/lib/bootstrap/common.c<br>
-@@ -0,0 +1,21 @@<br>
-+/*<br>
-+ * Copyright (C) 2011 Sascha Hauer, Pengutronix<br>
-+ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD &lt;<a href=3D"mail=
-to:plagnio@jcrosoft.com">plagnio@jcrosoft.com</a>&gt;<br>
-+ *<br>
-+ * Under GPLv2<br>
-+ */<br>
-+<br>
-+#include &lt;common.h&gt;<br>
-+#include &lt;bootstrap.h&gt;<br>
-+#include &lt;filetype.h&gt;<br>
-+<br>
-+void bootstrap_boot(int (*func)(void), bool barebox)<br>
-+{<br>
-+ =C2=A0 =C2=A0 =C2=A0 if (barebox &amp;&amp; !is_barebox_head((void*)func)=
-)<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 shutdown_barebox();<br>
-+ =C2=A0 =C2=A0 =C2=A0 func();<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 while (1);<br>
-+}<br>
-diff --git a/lib/bootstrap/devfs.c b/lib/bootstrap/devfs.c<br>
-new file mode 100644<br>
-index 0000000..25d07c7<br>
---- /dev/null<br>
-+++ b/lib/bootstrap/devfs.c<br>
-@@ -0,0 +1,118 @@<br>
-+/*<br>
-+ * Copyright (C) 2011 Sascha Hauer, Pengutronix<br>
-+ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD &lt;<a href=3D"mail=
-to:plagnio@jcrosoft.com">plagnio@jcrosoft.com</a>&gt;<br>
-+ *<br>
-+ * Under GPLv2<br>
-+ */<br>
-+<br>
-+#include &lt;common.h&gt;<br>
-+#include &lt;partition.h&gt;<br>
-+#include &lt;nand.h&gt;<br>
-+#include &lt;driver.h&gt;<br>
-+#include &lt;linux/mtd/mtd.h&gt;<br>
-+#include &lt;fcntl.h&gt;<br>
-+#include &lt;filetype.h&gt;<br>
-+#include &lt;sizes.h&gt;<br>
-+#include &lt;errno.h&gt;<br>
-+#include &lt;malloc.h&gt;<br>
-+#include &lt;bootstrap.h&gt;<br>
-+<br>
-+#if defined(CONFIG_ARM) || defined(CONFIG_MIPS)<br>
-+#if defined(CONFIG_ARM)<br>
-+#define BAREBOX_HEAD_SIZE =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
-ARM_HEAD_SIZE<br>
-+#define BAREBOX_HEAD_SIZE_OFFSET =C2=A0 =C2=A0 =C2=A0 ARM_HEAD_SIZE_OFFSET=
-<br>
-+#elif defined(CONFIG_MIPS)<br>
-+#define BAREBOX_HEAD_SIZE =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
-MIPS_HEAD_SIZE<br>
-+#define BAREBOX_HEAD_SIZE_OFFSET =C2=A0 =C2=A0 =C2=A0 MIPS_HEAD_SIZE_OFFSE=
-T<br>
-+#endif<br>
-+<br>
-+static void *read_image_head(const char *name)<br>
-+{<br>
-+ =C2=A0 =C2=A0 =C2=A0 void *header =3D xmalloc(BAREBOX_HEAD_SIZE);<br>
-+ =C2=A0 =C2=A0 =C2=A0 struct cdev *cdev;<br>
-+ =C2=A0 =C2=A0 =C2=A0 int ret;<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 cdev =3D cdev_open(name, O_RDONLY);<br>
-+ =C2=A0 =C2=A0 =C2=A0 if (!cdev) {<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bootstrap_err(&quot;fail=
-ed to open partition\n&quot;);<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
-+ =C2=A0 =C2=A0 =C2=A0 }<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 ret =3D cdev_read(cdev, header, BAREBOX_HEAD_SIZE, 0=
-, 0);<br></blockquote><div>check on error here?<br>=C2=A0<br></div><blockqu=
-ote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc s=
-olid;padding-left:1ex">
-
-+ =C2=A0 =C2=A0 =C2=A0 cdev_close(cdev);<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 if (ret !=3D BAREBOX_HEAD_SIZE) {<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bootstrap_err(&quot;fail=
-ed to read from partition\n&quot;);<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
-+ =C2=A0 =C2=A0 =C2=A0 }<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 return header;<br>
-+}<br>
-+<br>
-+static unsigned int get_image_size(void *head)<br>
-+{<br>
-+ =C2=A0 =C2=A0 =C2=A0 unsigned int ret =3D 0;<br>
-+ =C2=A0 =C2=A0 =C2=A0 unsigned int *psize =3D head + BAREBOX_HEAD_SIZE_OFF=
-SET;<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 if (is_barebox_head(head))<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D *psize;<br>
-+ =C2=A0 =C2=A0 =C2=A0 debug(&quot;Detected barebox image size %u\n&quot;, =
-ret);<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 return ret;<br>
-+}<br>
-+#else<br>
-+static void *read_image_head(const char *name)<br>
-+{<br>
-+ =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
-+}<br>
-+<br>
-+static unsigned int get_image_size(void *head)<br>
-+{<br>
-+ =C2=A0 =C2=A0 =C2=A0 return 0;<br>
-+}<br>
-+#endif<br>
-+<br>
-+void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0int default_size, int max_size)<br>
-+{<br>
-+ =C2=A0 =C2=A0 =C2=A0 int ret;<br>
-+ =C2=A0 =C2=A0 =C2=A0 int size =3D 0;<br>
-+ =C2=A0 =C2=A0 =C2=A0 void *to, *header;<br>
-+ =C2=A0 =C2=A0 =C2=A0 struct cdev *cdev;<br>
-+ =C2=A0 =C2=A0 =C2=A0 char *partname =3D &quot;x&quot;;<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 devfs_add_partition(devname, offset, max_size, DEVFS=
-_PARTITION_FIXED, partname);<br>
-+ =C2=A0 =C2=A0 =C2=A0 if (use_bb) {<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dev_add_bb_dev(partname,=
- &quot;bbx&quot;);<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 partname =3D &quot;bbx&q=
-uot;;<br>
-+ =C2=A0 =C2=A0 =C2=A0 }<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 header =3D read_image_head(partname);<br>
-+ =C2=A0 =C2=A0 =C2=A0 if (header) {<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 size =3D get_image_size(=
-header);<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!size)<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 bootstrap_err(&quot;%s: failed to get image size\n&quot;, devname);<br>
-+ =C2=A0 =C2=A0 =C2=A0 }<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 if (!size) {<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 size =3D default_size;<b=
-r>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bootstrap_err(&quot;%s: =
-failed to detect barebox and it&#39;s image size so use %d\n&quot;,<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0devname, size);<br>
-+ =C2=A0 =C2=A0 =C2=A0 }<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 to =3D xmalloc(size);<br></blockquote><div>check on =
-null here?<br>=C2=A0<br></div><blockquote class=3D"gmail_quote" style=3D"ma=
-rgin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 cdev =3D cdev_open(partname, O_RDONLY);<br>
-+ =C2=A0 =C2=A0 =C2=A0 if (!cdev) {<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bootstrap_err(&quot;%s: =
-failed to open %s\n&quot;, devname, partname);<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
-+ =C2=A0 =C2=A0 =C2=A0 }<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 ret =3D cdev_read(cdev, to, size, 0, 0);<br>
-+ =C2=A0 =C2=A0 =C2=A0 if (ret !=3D size) {<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bootstrap_err(&quot;%s: =
-failed to read from %s\n&quot;, devname, partname);<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
-+ =C2=A0 =C2=A0 =C2=A0 }<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 return to;<br>
-+}<br>
-diff --git a/lib/bootstrap/disk.c b/lib/bootstrap/disk.c<br>
-new file mode 100644<br>
-index 0000000..fad8990<br>
---- /dev/null<br>
-+++ b/lib/bootstrap/disk.c<br>
-@@ -0,0 +1,37 @@<br>
-+/*<br>
-+ * Copyright (C) 2011 Sascha Hauer, Pengutronix<br>
-+ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD &lt;<a href=3D"mail=
-to:plagnio@jcrosoft.com">plagnio@jcrosoft.com</a>&gt;<br>
-+ *<br>
-+ * Under GPLv2<br>
-+ */<br>
-+<br>
-+#include &lt;common.h&gt;<br>
-+#include &lt;fs.h&gt;<br>
-+#include &lt;fcntl.h&gt;<br>
-+#include &lt;sizes.h&gt;<br>
-+#include &lt;errno.h&gt;<br>
-+#include &lt;malloc.h&gt;<br>
-+#include &lt;bootstrap.h&gt;<br>
-+<br>
-+void* bootstrap_read_disk(char *dev)<br>
-+{<br>
-+ =C2=A0 =C2=A0 =C2=A0 int ret;<br>
-+ =C2=A0 =C2=A0 =C2=A0 void *buf;<br>
-+ =C2=A0 =C2=A0 =C2=A0 int len;<br>
-+ =C2=A0 =C2=A0 =C2=A0 char *path =3D &quot;/&quot;;<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 ret =3D mount(dev, &quot;fat&quot;, path);<br>
-+ =C2=A0 =C2=A0 =C2=A0 if (ret) {<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bootstrap_err(&quot;moun=
-ting %s failed with %d\n&quot;, dev, ret);<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
-+ =C2=A0 =C2=A0 =C2=A0 }<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 buf =3D read_file(&quot;/barebox.bin&quot;, &amp;len=
-);<br></blockquote><div>Can be set to read_file(&quot;/barebox.bin&quot;, n=
-ull);<br>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 =
-0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
-
-+ =C2=A0 =C2=A0 =C2=A0 if (!buf) {<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bootstrap_err(&quot;coul=
-d not read barebox.bin from %s\n&quot;, dev);<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 umount(path);<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
-+ =C2=A0 =C2=A0 =C2=A0 }<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 return buf;<br>
-+}<br>
-<span class=3D"HOEnZb"><font color=3D"#888888">--<br>
-1.7.10.4<br>
-<br>
-<br>
-_______________________________________________<br>
-barebox mailing list<br>
-<a href=3D"mailto:barebox@lists.infradead.org">barebox@lists.infradead.org<=
-/a><br>
-<a href=3D"http://lists.infradead.org/mailman/listinfo/barebox" target=3D"_=
-blank">http://lists.infradead.org/mailman/listinfo/barebox</a><br>
-</font></span></blockquote></div><br></div></div>
-
---089e0122896c071ca104d3ca6c60--
-
-
---===============0688326851371528376==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============0688326851371528376==--
