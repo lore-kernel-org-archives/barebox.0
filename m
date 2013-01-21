@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 11.mo5.mail-out.ovh.net ([46.105.47.167]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TxISa-0005Tg-VV
- for barebox@lists.infradead.org; Mon, 21 Jan 2013 14:34:54 +0000
+ id 1TxISb-0005UB-HI
+ for barebox@lists.infradead.org; Mon, 21 Jan 2013 14:34:57 +0000
 Received: from mail178.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 8E2EDFFA5B6
- for <barebox@lists.infradead.org>; Mon, 21 Jan 2013 15:44:39 +0100 (CET)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 1631AFFAE40
+ for <barebox@lists.infradead.org>; Mon, 21 Jan 2013 15:44:40 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 21 Jan 2013 15:33:22 +0100
-Message-Id: <1358778804-31067-8-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 21 Jan 2013 15:33:24 +0100
+Message-Id: <1358778804-31067-10-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1358778804-31067-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130121142836.GI26329@game.jcrosoft.org>
  <1358778804-31067-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,129 +26,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/10] introduce common bootstrap code
+Subject: [PATCH 10/10] at91: usb_a9263: add bootstrap version
 To: barebox@lists.infradead.org
-
-This will allow to have a generic code to create different bootstrap
-
-As example
-Barebox as TI Xloader
-Barebox as AT91 Bootstrap
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/bootstrap.h    |   34 ++++++++++++++
- lib/Kconfig            |    2 +
- lib/Makefile           |    1 +
- lib/bootstrap/Kconfig  |   13 ++++++
- lib/bootstrap/Makefile |    3 ++
- lib/bootstrap/common.c |   24 ++++++++++
- lib/bootstrap/devfs.c  |  118 ++++++++++++++++++++++++++++++++++++++++++++++++
- lib/bootstrap/disk.c   |   37 +++++++++++++++
- 8 files changed, 232 insertions(+)
- create mode 100644 include/bootstrap.h
- create mode 100644 lib/bootstrap/Kconfig
- create mode 100644 lib/bootstrap/Makefile
- create mode 100644 lib/bootstrap/common.c
- create mode 100644 lib/bootstrap/devfs.c
- create mode 100644 lib/bootstrap/disk.c
+ arch/arm/boards/usb-a926x/Makefile                 |    3 +++
+ arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c    |   16 ++++++++++++
+ .../configs/usb_a9263_128mib_bootstrap_defconfig   |   27 ++++++++++++++++++++
+ arch/arm/configs/usb_a9263_bootstrap_defconfig     |   26 +++++++++++++++++++
+ 4 files changed, 72 insertions(+)
+ create mode 100644 arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c
+ create mode 100644 arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig
+ create mode 100644 arch/arm/configs/usb_a9263_bootstrap_defconfig
 
-diff --git a/include/bootstrap.h b/include/bootstrap.h
-new file mode 100644
-index 0000000..0fa6b83
---- /dev/null
-+++ b/include/bootstrap.h
-@@ -0,0 +1,34 @@
-+/*
-+ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+ */
-+
-+#ifndef __BOOSTRAP_H__
-+#define __BOOSTRAP_H__
-+
-+#define bootstrap_err(fmt, arg...) printf(fmt, ##arg)
-+
-+void bootstrap_boot(int (*func)(void), bool barebox);
-+
-+#ifdef CONFIG_BOOTSTRAP_DEVFS
-+void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
-+			   int default_size, int max_size);
-+#else
-+static inline void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
-+			   int default_size, int max_size)
-+{
-+	return NULL;
-+}
-+#endif
-+
-+#ifdef CONFIG_BOOTSTRAP_DISK
-+void* bootstrap_read_disk(char *devname, char *fstype);
-+#else
-+static inline void* bootstrap_read_disk(char *devname, char *fstype)
-+{
-+	return NULL;
-+}
-+#endif
-+
-+#endif /* __BOOSTRAP_H__ */
-diff --git a/lib/Kconfig b/lib/Kconfig
-index db8a6ad..4578353 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -52,4 +52,6 @@ config LIBMTD
+diff --git a/arch/arm/boards/usb-a926x/Makefile b/arch/arm/boards/usb-a926x/Makefile
+index 9511a76..e314dd5 100644
+--- a/arch/arm/boards/usb-a926x/Makefile
++++ b/arch/arm/boards/usb-a926x/Makefile
+@@ -1,5 +1,8 @@
+ obj-y += init.o
  
- source lib/gui/Kconfig
++bootstrap-$(CONFIG_MACH_USB_A9263) = usb_a9263_bootstrap.o
++obj-$(CONFIG_AT91_BOOTSTRAP) += $(bootstrap-y)
++
+ lowlevel_init-$(CONFIG_MACH_USB_A9263) = usb_a9263_lowlevel_init.o
  
-+source lib/bootstrap/Kconfig
-+
- endmenu
-diff --git a/lib/Makefile b/lib/Makefile
-index 85f4ec9..43f6ea3 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -1,3 +1,4 @@
-+obj-$(CONFIG_BOOTSTRAP)	+= bootstrap/
- obj-y			+= ctype.o
- obj-y			+= rbtree.o
- obj-y			+= display_options.o
-diff --git a/lib/bootstrap/Kconfig b/lib/bootstrap/Kconfig
+ obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
+diff --git a/arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c b/arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c
 new file mode 100644
-index 0000000..558da00
+index 0000000..368c677
 --- /dev/null
-+++ b/lib/bootstrap/Kconfig
-@@ -0,0 +1,13 @@
-+menuconfig BOOTSTRAP
-+	bool "Library bootstrap routines           "
-+	depends on SHELL_NONE
-+
-+if BOOTSTRAP
-+
-+config BOOTSTRAP_DEVFS
-+	bool "devfs support"
-+
-+config BOOTSTRAP_DISK
-+	bool "disk support"
-+
-+endif
-diff --git a/lib/bootstrap/Makefile b/lib/bootstrap/Makefile
-new file mode 100644
-index 0000000..cbaa49f
---- /dev/null
-+++ b/lib/bootstrap/Makefile
-@@ -0,0 +1,3 @@
-+obj-y				+= common.o
-+obj-$(CONFIG_BOOTSTRAP_DEVFS)	+= devfs.o
-+obj-$(CONFIG_BOOTSTRAP_DISK)	+= disk.o
-diff --git a/lib/bootstrap/common.c b/lib/bootstrap/common.c
-new file mode 100644
-index 0000000..38ec272
---- /dev/null
-+++ b/lib/bootstrap/common.c
-@@ -0,0 +1,24 @@
++++ b/arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c
+@@ -0,0 +1,16 @@
 +/*
-+ * Copyright (C) 2011 Sascha Hauer, Pengutronix
 + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
 + *
 + * Under GPLv2
@@ -156,188 +67,79 @@ index 0000000..38ec272
 +
 +#include <common.h>
 +#include <bootstrap.h>
-+#include <filetype.h>
++#include <mach/bootstrap.h>
 +
-+void bootstrap_boot(int (*func)(void), bool barebox)
++#ifdef CONFIG_MTD_DATAFLASH
++void * bootstrap_board_read_dataflash(void)
 +{
-+	if (!func)
-+		return;
-+
-+	if (barebox && !is_barebox_head((void*)func))
-+		return;
-+
-+	shutdown_barebox();
-+	func();
-+
-+	while (1);
-+}
-diff --git a/lib/bootstrap/devfs.c b/lib/bootstrap/devfs.c
-new file mode 100644
-index 0000000..25d07c7
---- /dev/null
-+++ b/lib/bootstrap/devfs.c
-@@ -0,0 +1,118 @@
-+/*
-+ * Copyright (C) 2011 Sascha Hauer, Pengutronix
-+ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+ */
-+
-+#include <common.h>
-+#include <partition.h>
-+#include <nand.h>
-+#include <driver.h>
-+#include <linux/mtd/mtd.h>
-+#include <fcntl.h>
-+#include <filetype.h>
-+#include <sizes.h>
-+#include <errno.h>
-+#include <malloc.h>
-+#include <bootstrap.h>
-+
-+#if defined(CONFIG_ARM) || defined(CONFIG_MIPS)
-+#if defined(CONFIG_ARM)
-+#define BAREBOX_HEAD_SIZE		ARM_HEAD_SIZE
-+#define BAREBOX_HEAD_SIZE_OFFSET	ARM_HEAD_SIZE_OFFSET
-+#elif defined(CONFIG_MIPS)
-+#define BAREBOX_HEAD_SIZE		MIPS_HEAD_SIZE
-+#define BAREBOX_HEAD_SIZE_OFFSET	MIPS_HEAD_SIZE_OFFSET
-+#endif
-+
-+static void *read_image_head(const char *name)
-+{
-+	void *header = xmalloc(BAREBOX_HEAD_SIZE);
-+	struct cdev *cdev;
-+	int ret;
-+
-+	cdev = cdev_open(name, O_RDONLY);
-+	if (!cdev) {
-+		bootstrap_err("failed to open partition\n");
-+		return NULL;
-+	}
-+
-+	ret = cdev_read(cdev, header, BAREBOX_HEAD_SIZE, 0, 0);
-+	cdev_close(cdev);
-+
-+	if (ret != BAREBOX_HEAD_SIZE) {
-+		bootstrap_err("failed to read from partition\n");
-+		return NULL;
-+	}
-+
-+	return header;
-+}
-+
-+static unsigned int get_image_size(void *head)
-+{
-+	unsigned int ret = 0;
-+	unsigned int *psize = head + BAREBOX_HEAD_SIZE_OFFSET;
-+
-+	if (is_barebox_head(head))
-+		ret = *psize;
-+	debug("Detected barebox image size %u\n", ret);
-+
-+	return ret;
-+}
-+#else
-+static void *read_image_head(const char *name)
-+{
-+	return NULL;
-+}
-+
-+static unsigned int get_image_size(void *head)
-+{
-+	return 0;
++	return bootstrap_read_devfs("dataflash0", false, 0xffc0, 204864, 204864);
 +}
 +#endif
-+
-+void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
-+			   int default_size, int max_size)
-+{
-+	int ret;
-+	int size = 0;
-+	void *to, *header;
-+	struct cdev *cdev;
-+	char *partname = "x";
-+
-+	devfs_add_partition(devname, offset, max_size, DEVFS_PARTITION_FIXED, partname);
-+	if (use_bb) {
-+		dev_add_bb_dev(partname, "bbx");
-+		partname = "bbx";
-+	}
-+
-+	header = read_image_head(partname);
-+	if (header) {
-+		size = get_image_size(header);
-+		if (!size)
-+			bootstrap_err("%s: failed to get image size\n", devname);
-+	}
-+
-+	if (!size) {
-+		size = default_size;
-+		bootstrap_err("%s: failed to detect barebox and it's image size so use %d\n",
-+			 devname, size);
-+	}
-+
-+	to = xmalloc(size);
-+
-+	cdev = cdev_open(partname, O_RDONLY);
-+	if (!cdev) {
-+		bootstrap_err("%s: failed to open %s\n", devname, partname);
-+		return NULL;
-+	}
-+
-+	ret = cdev_read(cdev, to, size, 0, 0);
-+	if (ret != size) {
-+		bootstrap_err("%s: failed to read from %s\n", devname, partname);
-+		return NULL;
-+	}
-+
-+	return to;
-+}
-diff --git a/lib/bootstrap/disk.c b/lib/bootstrap/disk.c
+diff --git a/arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig b/arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig
 new file mode 100644
-index 0000000..879d331
+index 0000000..0411bd8
 --- /dev/null
-+++ b/lib/bootstrap/disk.c
-@@ -0,0 +1,37 @@
-+/*
-+ * Copyright (C) 2011 Sascha Hauer, Pengutronix
-+ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+ */
-+
-+#include <common.h>
-+#include <fs.h>
-+#include <fcntl.h>
-+#include <sizes.h>
-+#include <errno.h>
-+#include <malloc.h>
-+#include <bootstrap.h>
-+
-+void* bootstrap_read_disk(char *dev, char *fstype)
-+{
-+	int ret;
-+	void *buf;
-+	int len;
-+	char *path = "/";
-+
-+	ret = mount(dev, fstype, path);
-+	if (ret) {
-+		bootstrap_err("mounting %s failed with %d\n", dev, ret);
-+		return NULL;
-+	}
-+
-+	buf = read_file("/barebox.bin", &len);
-+	if (!buf) {
-+		bootstrap_err("could not read barebox.bin from %s\n", dev);
-+		umount(path);
-+		return NULL;
-+	}
-+
-+	return buf;
-+}
++++ b/arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig
+@@ -0,0 +1,27 @@
++CONFIG_ARCH_AT91SAM9263=y
++CONFIG_MACH_USB_A9263=y
++CONFIG_AT91_HAVE_SRAM_128M=y
++CONFIG_AT91_BOOTSTRAP=y
++CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x12000
++CONFIG_AEABI=y
++# CONFIG_CMD_ARM_CPUINFO is not set
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_ENVIRONMENT_VARIABLES=y
++CONFIG_PBL_IMAGE=y
++CONFIG_MMU=y
++CONFIG_MALLOC_DUMMY=y
++CONFIG_PROMPT="USB-9263:"
++CONFIG_SHELL_NONE=y
++# CONFIG_CONSOLE_FULL is not set
++# CONFIG_DEFAULT_ENVIRONMENT is not set
++# CONFIG_SPI is not set
++CONFIG_MTD=y
++# CONFIG_MTD_WRITE is not set
++# CONFIG_MTD_OOB_DEVICE is not set
++CONFIG_NAND=y
++# CONFIG_NAND_ECC_HW is not set
++# CONFIG_NAND_ECC_HW_SYNDROME is not set
++# CONFIG_NAND_ECC_HW_NONE is not set
++CONFIG_NAND_ATMEL=y
++# CONFIG_FS_RAMFS is not set
++CONFIG_BOOTSTRAP_DEVFS=y
+diff --git a/arch/arm/configs/usb_a9263_bootstrap_defconfig b/arch/arm/configs/usb_a9263_bootstrap_defconfig
+new file mode 100644
+index 0000000..78c1c8f
+--- /dev/null
++++ b/arch/arm/configs/usb_a9263_bootstrap_defconfig
+@@ -0,0 +1,26 @@
++CONFIG_ARCH_AT91SAM9263=y
++CONFIG_MACH_USB_A9263=y
++CONFIG_AT91_BOOTSTRAP=y
++CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x12000
++CONFIG_AEABI=y
++# CONFIG_CMD_ARM_CPUINFO is not set
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_ENVIRONMENT_VARIABLES=y
++CONFIG_PBL_IMAGE=y
++CONFIG_MMU=y
++CONFIG_MALLOC_DUMMY=y
++CONFIG_PROMPT="USB-9263:"
++CONFIG_SHELL_NONE=y
++# CONFIG_CONSOLE_FULL is not set
++# CONFIG_DEFAULT_ENVIRONMENT is not set
++# CONFIG_SPI is not set
++CONFIG_MTD=y
++# CONFIG_MTD_WRITE is not set
++# CONFIG_MTD_OOB_DEVICE is not set
++CONFIG_NAND=y
++# CONFIG_NAND_ECC_HW is not set
++# CONFIG_NAND_ECC_HW_SYNDROME is not set
++# CONFIG_NAND_ECC_HW_NONE is not set
++CONFIG_NAND_ATMEL=y
++# CONFIG_FS_RAMFS is not set
++CONFIG_BOOTSTRAP_DEVFS=y
 -- 
 1.7.10.4
 
