@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f53.google.com ([74.125.82.53])
+Received: from mail-wi0-f175.google.com ([209.85.212.175])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TxFBt-00013L-IR
- for barebox@lists.infradead.org; Mon, 21 Jan 2013 11:05:32 +0000
-Received: by mail-wg0-f53.google.com with SMTP id fn15so3558921wgb.8
- for <barebox@lists.infradead.org>; Mon, 21 Jan 2013 03:04:19 -0800 (PST)
+ id 1TxFBx-00013B-Hc
+ for barebox@lists.infradead.org; Mon, 21 Jan 2013 11:05:33 +0000
+Received: by mail-wi0-f175.google.com with SMTP id hm11so7018479wib.2
+ for <barebox@lists.infradead.org>; Mon, 21 Jan 2013 03:04:16 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <1358764040-10690-4-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1358764040-10690-8-git-send-email-plagnioj@jcrosoft.com>
 References: <20130121102319.GE26329@game.jcrosoft.org>
  <1358764040-10690-1-git-send-email-plagnioj@jcrosoft.com>
- <1358764040-10690-4-git-send-email-plagnioj@jcrosoft.com>
-Date: Mon, 21 Jan 2013 12:04:19 +0100
-Message-ID: <CAB_54W5-9sNc7cdLWo_RHK0y7qinJP-0-gGVK9=6rwEtLuya7A@mail.gmail.com>
+ <1358764040-10690-8-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 21 Jan 2013 12:04:16 +0100
+Message-ID: <CAB_54W76DctVP5c_aeghd+Bh+7Lr86sGLJ=BdGQrg40npCTnYA@mail.gmail.com>
 From: Alexander Aring <alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,171 +21,354 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============8769840020172532683=="
+Content-Type: multipart/mixed; boundary="===============0688326851371528376=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/10] at91: add test commamd to emulate bootrom boot
+Subject: Re: [PATCH 08/10] introduce common bootstrap code
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox <barebox@lists.infradead.org>
 
---===============8769840020172532683==
-Content-Type: multipart/alternative; boundary=047d7bfd046e3554f904d3ca6c5f
+--===============0688326851371528376==
+Content-Type: multipart/alternative; boundary=089e0122896c071ca104d3ca6c60
 
---047d7bfd046e3554f904d3ca6c5f
+--089e0122896c071ca104d3ca6c60
 Content-Type: text/plain; charset=UTF-8
 
-hi
+hi,
 
+found a little 'things'. Maybe it's matter.
 
 2013/1/21 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
+> This will allow to have a generic code to create different bootstrap
+>
+> As example
+> Barebox as TI Xloader
+> Barebox as AT91 Bootstrap
+>
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  arch/arm/mach-at91/Kconfig         |    6 +++
->  arch/arm/mach-at91/Makefile        |    1 +
->  arch/arm/mach-at91/boot_test_cmd.c |   95
-> ++++++++++++++++++++++++++++++++++++
->  3 files changed, 102 insertions(+)
->  create mode 100644 arch/arm/mach-at91/boot_test_cmd.c
+>  include/bootstrap.h    |   34 ++++++++++++++
+>  lib/Kconfig            |    2 +
+>  lib/Makefile           |    1 +
+>  lib/bootstrap/Kconfig  |   13 ++++++
+>  lib/bootstrap/Makefile |    3 ++
+>  lib/bootstrap/common.c |   21 +++++++++
+>  lib/bootstrap/devfs.c  |  118
+> ++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/bootstrap/disk.c   |   37 +++++++++++++++
+>  8 files changed, 229 insertions(+)
+>  create mode 100644 include/bootstrap.h
+>  create mode 100644 lib/bootstrap/Kconfig
+>  create mode 100644 lib/bootstrap/Makefile
+>  create mode 100644 lib/bootstrap/common.c
+>  create mode 100644 lib/bootstrap/devfs.c
+>  create mode 100644 lib/bootstrap/disk.c
 >
-> diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-> index 0fd9122..2815d5f 100644
-> --- a/arch/arm/mach-at91/Kconfig
-> +++ b/arch/arm/mach-at91/Kconfig
-> @@ -485,6 +485,12 @@ config CMD_AT91MUX
->         bool "at91mux dump command"
->         default y
->
-> +config CMD_AT91_BOOT_TEST
-> +       bool "at91_boot_test"
-> +       help
-> +         allow to upload a boot binary to sram and execute it
-> +         usefull to test bootstrap or barebox lowlevel init
-> +
->  endif
->
->  endif
-> diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-> index 53b4dd8..4404d23 100644
-> --- a/arch/arm/mach-at91/Makefile
-> +++ b/arch/arm/mach-at91/Makefile
-> @@ -1,4 +1,5 @@
->  obj-y += setup.o clock.o gpio.o
-> +obj-$(CONFIG_CMD_AT91_BOOT_TEST) += boot_test_cmd.o
->
->  lowlevel_init-y = at91sam926x_lowlevel_init.o
->  lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
-> diff --git a/arch/arm/mach-at91/boot_test_cmd.c
-> b/arch/arm/mach-at91/boot_test_cmd.c
+> diff --git a/include/bootstrap.h b/include/bootstrap.h
 > new file mode 100644
-> index 0000000..90093d8
+> index 0000000..26e9dbc
 > --- /dev/null
-> +++ b/arch/arm/mach-at91/boot_test_cmd.c
-> @@ -0,0 +1,95 @@
+> +++ b/include/bootstrap.h
+> @@ -0,0 +1,34 @@
 > +/*
-> + * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <
-> plagnioj@jcrosoft.com>
+> + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <
+> plagnio@jcrosoft.com>
 > + *
-> + * Under GPLv2 only
+> + * Under GPLv2
+> + */
+> +
+> +#ifndef __BOOSTRAP_H__
+> +#define __BOOSTRAP_H__
+> +
+> +#define bootstrap_err(fmt, arg...) printf(fmt, ##arg)
+> +
+> +void bootstrap_boot(int (*func)(void), bool barebox);
+> +
+> +#ifdef CONFIG_BOOTSTRAP_DEVFS
+> +void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
+> +                          int default_size, int max_size);
+> +#else
+> +static inline void* bootstrap_read_devfs(char *devname, bool use_bb, int
+> offset,
+> +                          int default_size, int max_size)
+> +{
+> +       return NULL;
+> +}
+> +#endif
+> +
+> +#ifdef CONFIG_BOOTSTRAP_DISK
+> +void* bootstrap_read_disk(char *devname);
+> +#else
+> +static inline void* bootstrap_read_disk(char *devname)
+> +{
+> +       return NULL;
+> +}
+> +#endif
+> +
+> +#endif /* __BOOSTRAP_H__ */
+> diff --git a/lib/Kconfig b/lib/Kconfig
+> index db8a6ad..4578353 100644
+> --- a/lib/Kconfig
+> +++ b/lib/Kconfig
+> @@ -52,4 +52,6 @@ config LIBMTD
+>
+>  source lib/gui/Kconfig
+>
+> +source lib/bootstrap/Kconfig
+> +
+>  endmenu
+> diff --git a/lib/Makefile b/lib/Makefile
+> index 85f4ec9..43f6ea3 100644
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -1,3 +1,4 @@
+> +obj-$(CONFIG_BOOTSTRAP)        += bootstrap/
+>  obj-y                  += ctype.o
+>  obj-y                  += rbtree.o
+>  obj-y                  += display_options.o
+> diff --git a/lib/bootstrap/Kconfig b/lib/bootstrap/Kconfig
+> new file mode 100644
+> index 0000000..558da00
+> --- /dev/null
+> +++ b/lib/bootstrap/Kconfig
+> @@ -0,0 +1,13 @@
+> +menuconfig BOOTSTRAP
+> +       bool "Library bootstrap routines           "
+> +       depends on SHELL_NONE
+> +
+> +if BOOTSTRAP
+> +
+> +config BOOTSTRAP_DEVFS
+> +       bool "devfs support"
+> +
+> +config BOOTSTRAP_DISK
+> +       bool "disk support"
+> +
+> +endif
+> diff --git a/lib/bootstrap/Makefile b/lib/bootstrap/Makefile
+> new file mode 100644
+> index 0000000..cbaa49f
+> --- /dev/null
+> +++ b/lib/bootstrap/Makefile
+> @@ -0,0 +1,3 @@
+> +obj-y                          += common.o
+> +obj-$(CONFIG_BOOTSTRAP_DEVFS)  += devfs.o
+> +obj-$(CONFIG_BOOTSTRAP_DISK)   += disk.o
+> diff --git a/lib/bootstrap/common.c b/lib/bootstrap/common.c
+> new file mode 100644
+> index 0000000..3652698
+> --- /dev/null
+> +++ b/lib/bootstrap/common.c
+> @@ -0,0 +1,21 @@
+> +/*
+> + * Copyright (C) 2011 Sascha Hauer, Pengutronix
+> + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <
+> plagnio@jcrosoft.com>
+> + *
+> + * Under GPLv2
 > + */
 > +
 > +#include <common.h>
-> +#include <command.h>
-> +#include <libbb.h>
-> +#include <getopt.h>
-> +#include <fs.h>
-> +#include <fcntl.h>
-> +#include <malloc.h>
-> +#include <errno.h>
+> +#include <bootstrap.h>
+> +#include <filetype.h>
 > +
-> +static int do_at91_boot_test(int argc, char *argv[])
+> +void bootstrap_boot(int (*func)(void), bool barebox)
 > +{
-> +       int opt;
-> +       u32 *buf32;
-> +       void *buf;
-> +       void (*jump)(void) = NULL;
-> +       int fd;
-> +       int ret = 1;
-> +       char *sram = "/dev/sram0";
-> +       u32 read_size, write_size;
-> +       u32 tmp = 0;
-> +
-> +       while ((opt = getopt(argc, argv, "j:s:")) > 0) {
-> +               switch (opt) {
-> +               case 'j':
-> +                       jump = (void*)simple_strtoul(optarg, NULL, 0);
-> +                       break;
-> +               case 's':
-> +                       sram = optarg;
-> +                       break;
-> +               default:
-> +                       return COMMAND_ERROR_USAGE;
-> +               }
-> +       }
-> +
-> +       if (argc < optind + 1)
-> +               return COMMAND_ERROR_USAGE;
-> +
-> +       buf32 = buf = read_file(argv[optind], &read_size);
-> +       if (!buf)
-> +               return -EINVAL;
-> +
-> +       write_size = buf32[5];
-> +
-> +       printf("size of the size %d\n", read_size);
-> +       printf("size to load in sram %d\n", write_size);
-> +
-> +       if (write_size > read_size) {
-> +               printf("file smaller than requested sram loading size (%d
-> < %d)\n", write_size, read_size);
-> +               goto err;
-> +       }
-> +
-> +       fd = open(sram, O_WRONLY);
-> +       if (fd < 0) {
-> +               printf("could not open %s: %s\n", sram, errno_str());
-> +               ret = fd;
-> +               goto err;
-> +       }
-> +
-> +       while(write_size) {
->
-while (foo)
-
-
-> +               tmp = write(fd, buf, write_size);
-> +               if (tmp < 0) {
-> +                       perror("write");
-> +                       goto err_open;
-> +               }
-> +               buf += tmp;
-> +               write_size -= tmp;
-> +       }
+> +       if (barebox && !is_barebox_head((void*)func))
+> +               return;
 > +
 > +       shutdown_barebox();
+> +       func();
 > +
-> +       jump();
+> +       while (1);
+> +}
+> diff --git a/lib/bootstrap/devfs.c b/lib/bootstrap/devfs.c
+> new file mode 100644
+> index 0000000..25d07c7
+> --- /dev/null
+> +++ b/lib/bootstrap/devfs.c
+> @@ -0,0 +1,118 @@
+> +/*
+> + * Copyright (C) 2011 Sascha Hauer, Pengutronix
+> + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <
+> plagnio@jcrosoft.com>
+> + *
+> + * Under GPLv2
+> + */
 > +
-> +err_open:
-> +       close(fd);
-> +err:
-> +       free(buf);
-> +       return ret;
+> +#include <common.h>
+> +#include <partition.h>
+> +#include <nand.h>
+> +#include <driver.h>
+> +#include <linux/mtd/mtd.h>
+> +#include <fcntl.h>
+> +#include <filetype.h>
+> +#include <sizes.h>
+> +#include <errno.h>
+> +#include <malloc.h>
+> +#include <bootstrap.h>
+> +
+> +#if defined(CONFIG_ARM) || defined(CONFIG_MIPS)
+> +#if defined(CONFIG_ARM)
+> +#define BAREBOX_HEAD_SIZE              ARM_HEAD_SIZE
+> +#define BAREBOX_HEAD_SIZE_OFFSET       ARM_HEAD_SIZE_OFFSET
+> +#elif defined(CONFIG_MIPS)
+> +#define BAREBOX_HEAD_SIZE              MIPS_HEAD_SIZE
+> +#define BAREBOX_HEAD_SIZE_OFFSET       MIPS_HEAD_SIZE_OFFSET
+> +#endif
+> +
+> +static void *read_image_head(const char *name)
+> +{
+> +       void *header = xmalloc(BAREBOX_HEAD_SIZE);
+> +       struct cdev *cdev;
+> +       int ret;
+> +
+> +       cdev = cdev_open(name, O_RDONLY);
+> +       if (!cdev) {
+> +               bootstrap_err("failed to open partition\n");
+> +               return NULL;
+> +       }
+> +
+> +       ret = cdev_read(cdev, header, BAREBOX_HEAD_SIZE, 0, 0);
+>
+check on error here?
+
+
+> +       cdev_close(cdev);
+> +
+> +       if (ret != BAREBOX_HEAD_SIZE) {
+> +               bootstrap_err("failed to read from partition\n");
+> +               return NULL;
+> +       }
+> +
+> +       return header;
 > +}
 > +
-> +BAREBOX_CMD_HELP_START(at91_boot_test)
-> +BAREBOX_CMD_HELP_USAGE("at91_boot_test [-j <jump addr>] [-s <sram>]
-> file\n")
-> +BAREBOX_CMD_HELP_SHORT("upload the binary to sram and jump as will do the
-> romcode\n")
-> +BAREBOX_CMD_HELP_END
+> +static unsigned int get_image_size(void *head)
+> +{
+> +       unsigned int ret = 0;
+> +       unsigned int *psize = head + BAREBOX_HEAD_SIZE_OFFSET;
 > +
-> +BAREBOX_CMD_START(at91_boot_test)
-> +       .cmd            = do_at91_boot_test,
-> +       .usage          = "upload the binary to sram and jump as will do
-> the romcode",
-> +       BAREBOX_CMD_HELP(cmd_at91_boot_test_help)
-> +BAREBOX_CMD_END
+> +       if (is_barebox_head(head))
+> +               ret = *psize;
+> +       debug("Detected barebox image size %u\n", ret);
+> +
+> +       return ret;
+> +}
+> +#else
+> +static void *read_image_head(const char *name)
+> +{
+> +       return NULL;
+> +}
+> +
+> +static unsigned int get_image_size(void *head)
+> +{
+> +       return 0;
+> +}
+> +#endif
+> +
+> +void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
+> +                          int default_size, int max_size)
+> +{
+> +       int ret;
+> +       int size = 0;
+> +       void *to, *header;
+> +       struct cdev *cdev;
+> +       char *partname = "x";
+> +
+> +       devfs_add_partition(devname, offset, max_size,
+> DEVFS_PARTITION_FIXED, partname);
+> +       if (use_bb) {
+> +               dev_add_bb_dev(partname, "bbx");
+> +               partname = "bbx";
+> +       }
+> +
+> +       header = read_image_head(partname);
+> +       if (header) {
+> +               size = get_image_size(header);
+> +               if (!size)
+> +                       bootstrap_err("%s: failed to get image size\n",
+> devname);
+> +       }
+> +
+> +       if (!size) {
+> +               size = default_size;
+> +               bootstrap_err("%s: failed to detect barebox and it's image
+> size so use %d\n",
+> +                        devname, size);
+> +       }
+> +
+> +       to = xmalloc(size);
+>
+check on null here?
+
+
+> +
+> +       cdev = cdev_open(partname, O_RDONLY);
+> +       if (!cdev) {
+> +               bootstrap_err("%s: failed to open %s\n", devname,
+> partname);
+> +               return NULL;
+> +       }
+> +
+> +       ret = cdev_read(cdev, to, size, 0, 0);
+> +       if (ret != size) {
+> +               bootstrap_err("%s: failed to read from %s\n", devname,
+> partname);
+> +               return NULL;
+> +       }
+> +
+> +       return to;
+> +}
+> diff --git a/lib/bootstrap/disk.c b/lib/bootstrap/disk.c
+> new file mode 100644
+> index 0000000..fad8990
+> --- /dev/null
+> +++ b/lib/bootstrap/disk.c
+> @@ -0,0 +1,37 @@
+> +/*
+> + * Copyright (C) 2011 Sascha Hauer, Pengutronix
+> + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <
+> plagnio@jcrosoft.com>
+> + *
+> + * Under GPLv2
+> + */
+> +
+> +#include <common.h>
+> +#include <fs.h>
+> +#include <fcntl.h>
+> +#include <sizes.h>
+> +#include <errno.h>
+> +#include <malloc.h>
+> +#include <bootstrap.h>
+> +
+> +void* bootstrap_read_disk(char *dev)
+> +{
+> +       int ret;
+> +       void *buf;
+> +       int len;
+> +       char *path = "/";
+> +
+> +       ret = mount(dev, "fat", path);
+> +       if (ret) {
+> +               bootstrap_err("mounting %s failed with %d\n", dev, ret);
+> +               return NULL;
+> +       }
+> +
+> +       buf = read_file("/barebox.bin", &len);
+>
+Can be set to read_file("/barebox.bin", null);
+
+
+> +       if (!buf) {
+> +               bootstrap_err("could not read barebox.bin from %s\n", dev);
+> +               umount(path);
+> +               return NULL;
+> +       }
+> +
+> +       return buf;
+> +}
 > --
 > 1.7.10.4
 >
@@ -196,184 +379,371 @@ while (foo)
 > http://lists.infradead.org/mailman/listinfo/barebox
 >
 
---047d7bfd046e3554f904d3ca6c5f
+--089e0122896c071ca104d3ca6c60
 Content-Type: text/html; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">hi<br><div class=3D"gmail_extra"><br><br><div class=3D"gma=
-il_quote">2013/1/21 Jean-Christophe PLAGNIOL-VILLARD <span dir=3D"ltr">&lt;=
-<a href=3D"mailto:plagnioj@jcrosoft.com" target=3D"_blank">plagnioj@jcrosof=
-t.com</a>&gt;</span><br>
+<div dir=3D"ltr">hi,<br><div class=3D"gmail_extra"><br>found a little &#39;=
+things&#39;. Maybe it&#39;s matter.<br><br><div class=3D"gmail_quote">2013/=
+1/21 Jean-Christophe PLAGNIOL-VILLARD <span dir=3D"ltr">&lt;<a href=3D"mail=
+to:plagnioj@jcrosoft.com" target=3D"_blank">plagnioj@jcrosoft.com</a>&gt;</=
+span><br>
 <blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1p=
-x #ccc solid;padding-left:1ex">Signed-off-by: Jean-Christophe PLAGNIOL-VILL=
-ARD &lt;<a href=3D"mailto:plagnioj@jcrosoft.com">plagnioj@jcrosoft.com</a>&=
-gt;<br>
-
+x #ccc solid;padding-left:1ex">This will allow to have a generic code to cr=
+eate different bootstrap<br>
+<br>
+As example<br>
+Barebox as TI Xloader<br>
+Barebox as AT91 Bootstrap<br>
+<br>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD &lt;<a href=3D"mailto:plagn=
+ioj@jcrosoft.com">plagnioj@jcrosoft.com</a>&gt;<br>
 ---<br>
-=C2=A0arch/arm/mach-at91/Kconfig =C2=A0 =C2=A0 =C2=A0 =C2=A0 | =C2=A0 =C2=
-=A06 +++<br>
-=C2=A0arch/arm/mach-at91/Makefile =C2=A0 =C2=A0 =C2=A0 =C2=A0| =C2=A0 =C2=
-=A01 +<br>
-=C2=A0arch/arm/mach-at91/boot_test_cmd.c | =C2=A0 95 ++++++++++++++++++++++=
-++++++++++++++<br>
-=C2=A03 files changed, 102 insertions(+)<br>
-=C2=A0create mode 100644 arch/arm/mach-at91/boot_test_cmd.c<br>
+=C2=A0include/bootstrap.h =C2=A0 =C2=A0| =C2=A0 34 ++++++++++++++<br>
+=C2=A0lib/Kconfig =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| =C2=A0 =C2=A02=
+ +<br>
+=C2=A0lib/Makefile =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | =C2=A0 =C2=A01 +<br=
+>
+=C2=A0lib/bootstrap/Kconfig =C2=A0| =C2=A0 13 ++++++<br>
+=C2=A0lib/bootstrap/Makefile | =C2=A0 =C2=A03 ++<br>
+=C2=A0lib/bootstrap/common.c | =C2=A0 21 +++++++++<br>
+=C2=A0lib/bootstrap/devfs.c =C2=A0| =C2=A0118 +++++++++++++++++++++++++++++=
++++++++++++++++++++<br>
+=C2=A0lib/bootstrap/disk.c =C2=A0 | =C2=A0 37 +++++++++++++++<br>
+=C2=A08 files changed, 229 insertions(+)<br>
+=C2=A0create mode 100644 include/bootstrap.h<br>
+=C2=A0create mode 100644 lib/bootstrap/Kconfig<br>
+=C2=A0create mode 100644 lib/bootstrap/Makefile<br>
+=C2=A0create mode 100644 lib/bootstrap/common.c<br>
+=C2=A0create mode 100644 lib/bootstrap/devfs.c<br>
+=C2=A0create mode 100644 lib/bootstrap/disk.c<br>
 <br>
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig<br>
-index 0fd9122..2815d5f 100644<br>
---- a/arch/arm/mach-at91/Kconfig<br>
-+++ b/arch/arm/mach-at91/Kconfig<br>
-@@ -485,6 +485,12 @@ config CMD_AT91MUX<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 bool &quot;at91mux dump command&quot;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 default y<br>
-<br>
-+config CMD_AT91_BOOT_TEST<br>
-+ =C2=A0 =C2=A0 =C2=A0 bool &quot;at91_boot_test&quot;<br>
-+ =C2=A0 =C2=A0 =C2=A0 help<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 allow to upload a boot binary to sram and exe=
-cute it<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 usefull to test bootstrap or barebox lowlevel=
- init<br>
-+<br>
-=C2=A0endif<br>
-<br>
-=C2=A0endif<br>
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile<br>
-index 53b4dd8..4404d23 100644<br>
---- a/arch/arm/mach-at91/Makefile<br>
-+++ b/arch/arm/mach-at91/Makefile<br>
-@@ -1,4 +1,5 @@<br>
-=C2=A0obj-y +=3D setup.o clock.o gpio.o<br>
-+obj-$(CONFIG_CMD_AT91_BOOT_TEST) +=3D boot_test_cmd.o<br>
-<br>
-=C2=A0lowlevel_init-y =3D at91sam926x_lowlevel_init.o<br>
-=C2=A0lowlevel_init-$(CONFIG_ARCH_AT91RM9200) =3D at91rm9200_lowlevel_init.=
-o<br>
-diff --git a/arch/arm/mach-at91/boot_test_cmd.c b/arch/arm/mach-at91/boot_t=
-est_cmd.c<br>
+diff --git a/include/bootstrap.h b/include/bootstrap.h<br>
 new file mode 100644<br>
-index 0000000..90093d8<br>
+index 0000000..26e9dbc<br>
 --- /dev/null<br>
-+++ b/arch/arm/mach-at91/boot_test_cmd.c<br>
-@@ -0,0 +1,95 @@<br>
++++ b/include/bootstrap.h<br>
+@@ -0,0 +1,34 @@<br>
 +/*<br>
-+ * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD &lt;<a href=3D"mail=
-to:plagnioj@jcrosoft.com">plagnioj@jcrosoft.com</a>&gt;<br>
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD &lt;<a href=3D"mail=
+to:plagnio@jcrosoft.com">plagnio@jcrosoft.com</a>&gt;<br>
 + *<br>
-+ * Under GPLv2 only<br>
++ * Under GPLv2<br>
++ */<br>
++<br>
++#ifndef __BOOSTRAP_H__<br>
++#define __BOOSTRAP_H__<br>
++<br>
++#define bootstrap_err(fmt, arg...) printf(fmt, ##arg)<br>
++<br>
++void bootstrap_boot(int (*func)(void), bool barebox);<br>
++<br>
++#ifdef CONFIG_BOOTSTRAP_DEVFS<br>
++void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0int default_size, int max_size);<br>
++#else<br>
++static inline void* bootstrap_read_devfs(char *devname, bool use_bb, int o=
+ffset,<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0int default_size, int max_size)<br>
++{<br>
++ =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
++}<br>
++#endif<br>
++<br>
++#ifdef CONFIG_BOOTSTRAP_DISK<br>
++void* bootstrap_read_disk(char *devname);<br>
++#else<br>
++static inline void* bootstrap_read_disk(char *devname)<br>
++{<br>
++ =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
++}<br>
++#endif<br>
++<br>
++#endif /* __BOOSTRAP_H__ */<br>
+diff --git a/lib/Kconfig b/lib/Kconfig<br>
+index db8a6ad..4578353 100644<br>
+--- a/lib/Kconfig<br>
++++ b/lib/Kconfig<br>
+@@ -52,4 +52,6 @@ config LIBMTD<br>
+<br>
+=C2=A0source lib/gui/Kconfig<br>
+<br>
++source lib/bootstrap/Kconfig<br>
++<br>
+=C2=A0endmenu<br>
+diff --git a/lib/Makefile b/lib/Makefile<br>
+index 85f4ec9..43f6ea3 100644<br>
+--- a/lib/Makefile<br>
++++ b/lib/Makefile<br>
+@@ -1,3 +1,4 @@<br>
++obj-$(CONFIG_BOOTSTRAP) =C2=A0 =C2=A0 =C2=A0 =C2=A0+=3D bootstrap/<br>
+=C2=A0obj-y =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0+=
+=3D ctype.o<br>
+=C2=A0obj-y =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0+=
+=3D rbtree.o<br>
+=C2=A0obj-y =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0+=
+=3D display_options.o<br>
+diff --git a/lib/bootstrap/Kconfig b/lib/bootstrap/Kconfig<br>
+new file mode 100644<br>
+index 0000000..558da00<br>
+--- /dev/null<br>
++++ b/lib/bootstrap/Kconfig<br>
+@@ -0,0 +1,13 @@<br>
++menuconfig BOOTSTRAP<br>
++ =C2=A0 =C2=A0 =C2=A0 bool &quot;Library bootstrap routines =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 &quot;<br>
++ =C2=A0 =C2=A0 =C2=A0 depends on SHELL_NONE<br>
++<br>
++if BOOTSTRAP<br>
++<br>
++config BOOTSTRAP_DEVFS<br>
++ =C2=A0 =C2=A0 =C2=A0 bool &quot;devfs support&quot;<br>
++<br>
++config BOOTSTRAP_DISK<br>
++ =C2=A0 =C2=A0 =C2=A0 bool &quot;disk support&quot;<br>
++<br>
++endif<br>
+diff --git a/lib/bootstrap/Makefile b/lib/bootstrap/Makefile<br>
+new file mode 100644<br>
+index 0000000..cbaa49f<br>
+--- /dev/null<br>
++++ b/lib/bootstrap/Makefile<br>
+@@ -0,0 +1,3 @@<br>
++obj-y =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0+=3D common.o<br>
++obj-$(CONFIG_BOOTSTRAP_DEVFS) =C2=A0+=3D devfs.o<br>
++obj-$(CONFIG_BOOTSTRAP_DISK) =C2=A0 +=3D disk.o<br>
+diff --git a/lib/bootstrap/common.c b/lib/bootstrap/common.c<br>
+new file mode 100644<br>
+index 0000000..3652698<br>
+--- /dev/null<br>
++++ b/lib/bootstrap/common.c<br>
+@@ -0,0 +1,21 @@<br>
++/*<br>
++ * Copyright (C) 2011 Sascha Hauer, Pengutronix<br>
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD &lt;<a href=3D"mail=
+to:plagnio@jcrosoft.com">plagnio@jcrosoft.com</a>&gt;<br>
++ *<br>
++ * Under GPLv2<br>
 + */<br>
 +<br>
 +#include &lt;common.h&gt;<br>
-+#include &lt;command.h&gt;<br>
-+#include &lt;libbb.h&gt;<br>
-+#include &lt;getopt.h&gt;<br>
-+#include &lt;fs.h&gt;<br>
-+#include &lt;fcntl.h&gt;<br>
-+#include &lt;malloc.h&gt;<br>
-+#include &lt;errno.h&gt;<br>
++#include &lt;bootstrap.h&gt;<br>
++#include &lt;filetype.h&gt;<br>
 +<br>
-+static int do_at91_boot_test(int argc, char *argv[])<br>
++void bootstrap_boot(int (*func)(void), bool barebox)<br>
 +{<br>
-+ =C2=A0 =C2=A0 =C2=A0 int opt;<br>
-+ =C2=A0 =C2=A0 =C2=A0 u32 *buf32;<br>
-+ =C2=A0 =C2=A0 =C2=A0 void *buf;<br>
-+ =C2=A0 =C2=A0 =C2=A0 void (*jump)(void) =3D NULL;<br>
-+ =C2=A0 =C2=A0 =C2=A0 int fd;<br>
-+ =C2=A0 =C2=A0 =C2=A0 int ret =3D 1;<br>
-+ =C2=A0 =C2=A0 =C2=A0 char *sram =3D &quot;/dev/sram0&quot;;<br>
-+ =C2=A0 =C2=A0 =C2=A0 u32 read_size, write_size;<br>
-+ =C2=A0 =C2=A0 =C2=A0 u32 tmp =3D 0;<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 while ((opt =3D getopt(argc, argv, &quot;j:s:&quot;)=
-) &gt; 0) {<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 switch (opt) {<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 case &#39;j&#39;:<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 jump =3D (void*)simple_strtoul(optarg, NULL, 0);<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 break;<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 case &#39;s&#39;:<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 sram =3D optarg;<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 break;<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 default:<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 return COMMAND_ERROR_USAGE;<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-+ =C2=A0 =C2=A0 =C2=A0 }<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 if (argc &lt; optind + 1)<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return COMMAND_ERROR_USA=
-GE;<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 buf32 =3D buf =3D read_file(argv[optind], &amp;read_=
-size);<br>
-+ =C2=A0 =C2=A0 =C2=A0 if (!buf)<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -EINVAL;<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 write_size =3D buf32[5];<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 printf(&quot;size of the size %d\n&quot;, read_size)=
-;<br>
-+ =C2=A0 =C2=A0 =C2=A0 printf(&quot;size to load in sram %d\n&quot;, write_=
-size);<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 if (write_size &gt; read_size) {<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 printf(&quot;file smalle=
-r than requested sram loading size (%d &lt; %d)\n&quot;, write_size, read_s=
-ize);<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err;<br>
-+ =C2=A0 =C2=A0 =C2=A0 }<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 fd =3D open(sram, O_WRONLY);<br>
-+ =C2=A0 =C2=A0 =C2=A0 if (fd &lt; 0) {<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 printf(&quot;could not o=
-pen %s: %s\n&quot;, sram, errno_str());<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D fd;<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err;<br>
-+ =C2=A0 =C2=A0 =C2=A0 }<br>
-+<br>
-+ =C2=A0 =C2=A0 =C2=A0 while(write_size) {<br></blockquote><div>while (foo)=
-<br>=C2=A0<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0=
- .8ex;border-left:1px #ccc solid;padding-left:1ex">
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 tmp =3D write(fd, buf, w=
-rite_size);<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (tmp &lt; 0) {<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 perror(&quot;write&quot;);<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 goto err_open;<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 buf +=3D tmp;<br>
-+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 write_size -=3D tmp;<br>
-+ =C2=A0 =C2=A0 =C2=A0 }<br>
++ =C2=A0 =C2=A0 =C2=A0 if (barebox &amp;&amp; !is_barebox_head((void*)func)=
+)<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
 +<br>
 + =C2=A0 =C2=A0 =C2=A0 shutdown_barebox();<br>
++ =C2=A0 =C2=A0 =C2=A0 func();<br>
 +<br>
-+ =C2=A0 =C2=A0 =C2=A0 jump();<br>
++ =C2=A0 =C2=A0 =C2=A0 while (1);<br>
++}<br>
+diff --git a/lib/bootstrap/devfs.c b/lib/bootstrap/devfs.c<br>
+new file mode 100644<br>
+index 0000000..25d07c7<br>
+--- /dev/null<br>
++++ b/lib/bootstrap/devfs.c<br>
+@@ -0,0 +1,118 @@<br>
++/*<br>
++ * Copyright (C) 2011 Sascha Hauer, Pengutronix<br>
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD &lt;<a href=3D"mail=
+to:plagnio@jcrosoft.com">plagnio@jcrosoft.com</a>&gt;<br>
++ *<br>
++ * Under GPLv2<br>
++ */<br>
 +<br>
-+err_open:<br>
-+ =C2=A0 =C2=A0 =C2=A0 close(fd);<br>
-+err:<br>
-+ =C2=A0 =C2=A0 =C2=A0 free(buf);<br>
-+ =C2=A0 =C2=A0 =C2=A0 return ret;<br>
++#include &lt;common.h&gt;<br>
++#include &lt;partition.h&gt;<br>
++#include &lt;nand.h&gt;<br>
++#include &lt;driver.h&gt;<br>
++#include &lt;linux/mtd/mtd.h&gt;<br>
++#include &lt;fcntl.h&gt;<br>
++#include &lt;filetype.h&gt;<br>
++#include &lt;sizes.h&gt;<br>
++#include &lt;errno.h&gt;<br>
++#include &lt;malloc.h&gt;<br>
++#include &lt;bootstrap.h&gt;<br>
++<br>
++#if defined(CONFIG_ARM) || defined(CONFIG_MIPS)<br>
++#if defined(CONFIG_ARM)<br>
++#define BAREBOX_HEAD_SIZE =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ARM_HEAD_SIZE<br>
++#define BAREBOX_HEAD_SIZE_OFFSET =C2=A0 =C2=A0 =C2=A0 ARM_HEAD_SIZE_OFFSET=
+<br>
++#elif defined(CONFIG_MIPS)<br>
++#define BAREBOX_HEAD_SIZE =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+MIPS_HEAD_SIZE<br>
++#define BAREBOX_HEAD_SIZE_OFFSET =C2=A0 =C2=A0 =C2=A0 MIPS_HEAD_SIZE_OFFSE=
+T<br>
++#endif<br>
++<br>
++static void *read_image_head(const char *name)<br>
++{<br>
++ =C2=A0 =C2=A0 =C2=A0 void *header =3D xmalloc(BAREBOX_HEAD_SIZE);<br>
++ =C2=A0 =C2=A0 =C2=A0 struct cdev *cdev;<br>
++ =C2=A0 =C2=A0 =C2=A0 int ret;<br>
++<br>
++ =C2=A0 =C2=A0 =C2=A0 cdev =3D cdev_open(name, O_RDONLY);<br>
++ =C2=A0 =C2=A0 =C2=A0 if (!cdev) {<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bootstrap_err(&quot;fail=
+ed to open partition\n&quot;);<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
++ =C2=A0 =C2=A0 =C2=A0 }<br>
++<br>
++ =C2=A0 =C2=A0 =C2=A0 ret =3D cdev_read(cdev, header, BAREBOX_HEAD_SIZE, 0=
+, 0);<br></blockquote><div>check on error here?<br>=C2=A0<br></div><blockqu=
+ote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc s=
+olid;padding-left:1ex">
+
++ =C2=A0 =C2=A0 =C2=A0 cdev_close(cdev);<br>
++<br>
++ =C2=A0 =C2=A0 =C2=A0 if (ret !=3D BAREBOX_HEAD_SIZE) {<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bootstrap_err(&quot;fail=
+ed to read from partition\n&quot;);<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
++ =C2=A0 =C2=A0 =C2=A0 }<br>
++<br>
++ =C2=A0 =C2=A0 =C2=A0 return header;<br>
 +}<br>
 +<br>
-+BAREBOX_CMD_HELP_START(at91_boot_test)<br>
-+BAREBOX_CMD_HELP_USAGE(&quot;at91_boot_test [-j &lt;jump addr&gt;] [-s &lt=
-;sram&gt;] file\n&quot;)<br>
-+BAREBOX_CMD_HELP_SHORT(&quot;upload the binary to sram and jump as will do=
- the romcode\n&quot;)<br>
-+BAREBOX_CMD_HELP_END<br>
++static unsigned int get_image_size(void *head)<br>
++{<br>
++ =C2=A0 =C2=A0 =C2=A0 unsigned int ret =3D 0;<br>
++ =C2=A0 =C2=A0 =C2=A0 unsigned int *psize =3D head + BAREBOX_HEAD_SIZE_OFF=
+SET;<br>
 +<br>
-+BAREBOX_CMD_START(at91_boot_test)<br>
-+ =C2=A0 =C2=A0 =C2=A0 .cmd =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=3D do=
-_at91_boot_test,<br>
-+ =C2=A0 =C2=A0 =C2=A0 .usage =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=3D &quot;u=
-pload the binary to sram and jump as will do the romcode&quot;,<br>
-+ =C2=A0 =C2=A0 =C2=A0 BAREBOX_CMD_HELP(cmd_at91_boot_test_help)<br>
-+BAREBOX_CMD_END<br>
++ =C2=A0 =C2=A0 =C2=A0 if (is_barebox_head(head))<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D *psize;<br>
++ =C2=A0 =C2=A0 =C2=A0 debug(&quot;Detected barebox image size %u\n&quot;, =
+ret);<br>
++<br>
++ =C2=A0 =C2=A0 =C2=A0 return ret;<br>
++}<br>
++#else<br>
++static void *read_image_head(const char *name)<br>
++{<br>
++ =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
++}<br>
++<br>
++static unsigned int get_image_size(void *head)<br>
++{<br>
++ =C2=A0 =C2=A0 =C2=A0 return 0;<br>
++}<br>
++#endif<br>
++<br>
++void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0int default_size, int max_size)<br>
++{<br>
++ =C2=A0 =C2=A0 =C2=A0 int ret;<br>
++ =C2=A0 =C2=A0 =C2=A0 int size =3D 0;<br>
++ =C2=A0 =C2=A0 =C2=A0 void *to, *header;<br>
++ =C2=A0 =C2=A0 =C2=A0 struct cdev *cdev;<br>
++ =C2=A0 =C2=A0 =C2=A0 char *partname =3D &quot;x&quot;;<br>
++<br>
++ =C2=A0 =C2=A0 =C2=A0 devfs_add_partition(devname, offset, max_size, DEVFS=
+_PARTITION_FIXED, partname);<br>
++ =C2=A0 =C2=A0 =C2=A0 if (use_bb) {<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dev_add_bb_dev(partname,=
+ &quot;bbx&quot;);<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 partname =3D &quot;bbx&q=
+uot;;<br>
++ =C2=A0 =C2=A0 =C2=A0 }<br>
++<br>
++ =C2=A0 =C2=A0 =C2=A0 header =3D read_image_head(partname);<br>
++ =C2=A0 =C2=A0 =C2=A0 if (header) {<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 size =3D get_image_size(=
+header);<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!size)<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 bootstrap_err(&quot;%s: failed to get image size\n&quot;, devname);<br>
++ =C2=A0 =C2=A0 =C2=A0 }<br>
++<br>
++ =C2=A0 =C2=A0 =C2=A0 if (!size) {<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 size =3D default_size;<b=
+r>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bootstrap_err(&quot;%s: =
+failed to detect barebox and it&#39;s image size so use %d\n&quot;,<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0devname, size);<br>
++ =C2=A0 =C2=A0 =C2=A0 }<br>
++<br>
++ =C2=A0 =C2=A0 =C2=A0 to =3D xmalloc(size);<br></blockquote><div>check on =
+null here?<br>=C2=A0<br></div><blockquote class=3D"gmail_quote" style=3D"ma=
+rgin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
++<br>
++ =C2=A0 =C2=A0 =C2=A0 cdev =3D cdev_open(partname, O_RDONLY);<br>
++ =C2=A0 =C2=A0 =C2=A0 if (!cdev) {<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bootstrap_err(&quot;%s: =
+failed to open %s\n&quot;, devname, partname);<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
++ =C2=A0 =C2=A0 =C2=A0 }<br>
++<br>
++ =C2=A0 =C2=A0 =C2=A0 ret =3D cdev_read(cdev, to, size, 0, 0);<br>
++ =C2=A0 =C2=A0 =C2=A0 if (ret !=3D size) {<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bootstrap_err(&quot;%s: =
+failed to read from %s\n&quot;, devname, partname);<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
++ =C2=A0 =C2=A0 =C2=A0 }<br>
++<br>
++ =C2=A0 =C2=A0 =C2=A0 return to;<br>
++}<br>
+diff --git a/lib/bootstrap/disk.c b/lib/bootstrap/disk.c<br>
+new file mode 100644<br>
+index 0000000..fad8990<br>
+--- /dev/null<br>
++++ b/lib/bootstrap/disk.c<br>
+@@ -0,0 +1,37 @@<br>
++/*<br>
++ * Copyright (C) 2011 Sascha Hauer, Pengutronix<br>
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD &lt;<a href=3D"mail=
+to:plagnio@jcrosoft.com">plagnio@jcrosoft.com</a>&gt;<br>
++ *<br>
++ * Under GPLv2<br>
++ */<br>
++<br>
++#include &lt;common.h&gt;<br>
++#include &lt;fs.h&gt;<br>
++#include &lt;fcntl.h&gt;<br>
++#include &lt;sizes.h&gt;<br>
++#include &lt;errno.h&gt;<br>
++#include &lt;malloc.h&gt;<br>
++#include &lt;bootstrap.h&gt;<br>
++<br>
++void* bootstrap_read_disk(char *dev)<br>
++{<br>
++ =C2=A0 =C2=A0 =C2=A0 int ret;<br>
++ =C2=A0 =C2=A0 =C2=A0 void *buf;<br>
++ =C2=A0 =C2=A0 =C2=A0 int len;<br>
++ =C2=A0 =C2=A0 =C2=A0 char *path =3D &quot;/&quot;;<br>
++<br>
++ =C2=A0 =C2=A0 =C2=A0 ret =3D mount(dev, &quot;fat&quot;, path);<br>
++ =C2=A0 =C2=A0 =C2=A0 if (ret) {<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bootstrap_err(&quot;moun=
+ting %s failed with %d\n&quot;, dev, ret);<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
++ =C2=A0 =C2=A0 =C2=A0 }<br>
++<br>
++ =C2=A0 =C2=A0 =C2=A0 buf =3D read_file(&quot;/barebox.bin&quot;, &amp;len=
+);<br></blockquote><div>Can be set to read_file(&quot;/barebox.bin&quot;, n=
+ull);<br>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 =
+0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+
++ =C2=A0 =C2=A0 =C2=A0 if (!buf) {<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bootstrap_err(&quot;coul=
+d not read barebox.bin from %s\n&quot;, dev);<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 umount(path);<br>
++ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return NULL;<br>
++ =C2=A0 =C2=A0 =C2=A0 }<br>
++<br>
++ =C2=A0 =C2=A0 =C2=A0 return buf;<br>
++}<br>
 <span class=3D"HOEnZb"><font color=3D"#888888">--<br>
 1.7.10.4<br>
 <br>
@@ -386,10 +756,10 @@ barebox mailing list<br>
 blank">http://lists.infradead.org/mailman/listinfo/barebox</a><br>
 </font></span></blockquote></div><br></div></div>
 
---047d7bfd046e3554f904d3ca6c5f--
+--089e0122896c071ca104d3ca6c60--
 
 
---===============8769840020172532683==
+--===============0688326851371528376==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -400,4 +770,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============8769840020172532683==--
+--===============0688326851371528376==--
