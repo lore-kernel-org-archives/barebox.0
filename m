@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo5.mail-out.ovh.net ([46.105.52.148]
+Received: from 11.mo5.mail-out.ovh.net ([46.105.47.167]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TxINu-0003rk-O7
- for barebox@lists.infradead.org; Mon, 21 Jan 2013 14:30:03 +0000
+ id 1TxISa-0005Tb-QG
+ for barebox@lists.infradead.org; Mon, 21 Jan 2013 14:34:54 +0000
 Received: from mail178.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 3027AFFA8AA
- for <barebox@lists.infradead.org>; Mon, 21 Jan 2013 15:39:45 +0100 (CET)
-Date: Mon, 21 Jan 2013 15:28:36 +0100
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 50197FFAD09
+ for <barebox@lists.infradead.org>; Mon, 21 Jan 2013 15:44:39 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130121142836.GI26329@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Mon, 21 Jan 2013 15:33:21 +0100
+Message-Id: <1358778804-31067-7-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1358778804-31067-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20130121142836.GI26329@game.jcrosoft.org>
+ <1358778804-31067-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,126 +21,166 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/10 v6] at91: add bootstrap support
+Subject: [PATCH 07/10] at91: usb-a9263 add lowlevel init
 To: barebox@lists.infradead.org
 
-Hi,
-
-	v6:
-	 allow to pass the fstype for mount (omap usbfs)
-
-	v5:
-	 rebase on Sacha SHELL_NONE patch
-
-	v4:
-	 make the code arm & mips supported for barebox head detection
-
-	v3:
-
-	send correct patch series and pull
-
-	can we have it on master the v2 does not cange much since v1
-
-	v2:
-	 fix whitesapce
-	 fix comment
-	 fix command default
-
-	This patch serie introduce a common bootstrap code
-	aka xloder for TI and at91bootstrap for Atmel
-	to barebox
-
-	As I do not have with me right now a TI platform I did not switch
-	it to the new generic bootstrap code.
-
-	On at91 add it on the calao usb-a9263 test on nand and spi
-	This patch serie depends on the previous Sacha patch for SHELL_NONE
-
-The following changes since commit a0a9331ba745418f1e7871f5bd707e3cc7e89902:
-
-  startup: call a barebox_main function pointer at the end of the startup (2013-01-17 11:56:24 +0800)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/at91_bootstrap
-
-for you to fetch changes up to a9d1d9ab20117db4ec7b47cb85e4b5ed0dd07c8d:
-
-  at91: usb_a9263: add bootstrap version (2013-01-17 17:05:29 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (10):
-      filetype: add is_barebox_mips_head support
-      filetype: add is_barebox_head
-      at91: dump mux command: make it depends on COMMAND_SUPPORT
-      at91: add test commamd to emulate bootrom boot
-      at91sam926x: lowlevel add external boot support
-      at91: sam926x: switch lowlevel param to c code
-      at91: usb-a9263 add lowlevel init
-      introduce common bootstrap code
-      at91: add bootstrap version
-      at91: usb_a9263: add bootstrap version
-
- arch/arm/boards/at91sam9263ek/Makefile                |    5 +++++
- arch/arm/boards/at91sam9263ek/config.h                |   87 --------------------------------------------------------------------------------------
- arch/arm/boards/at91sam9263ek/lowlevel_init.c         |  104 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/boards/mmccpu/Makefile                       |    5 +++++
- arch/arm/boards/mmccpu/config.h                       |  118 --------------------------------------------------------------------------------------------------------------------
- arch/arm/boards/mmccpu/lowlevel_init.c                |  135 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/boards/pm9261/Makefile                       |    5 +++++
- arch/arm/boards/pm9261/config.h                       |   87 --------------------------------------------------------------------------------------
- arch/arm/boards/pm9261/lowlevel_init.c                |  102 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/boards/pm9263/Makefile                       |    5 +++++
- arch/arm/boards/pm9263/config.h                       |  103 -----------------------------------------------------------------------------------------------------
- arch/arm/boards/pm9263/lowlevel_init.c                |  121 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/boards/usb-a926x/Makefile                    |    9 +++++++++
- arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c       |   16 ++++++++++++++++
- arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c   |  111 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig |   27 +++++++++++++++++++++++++++
- arch/arm/configs/usb_a9263_bootstrap_defconfig        |   26 ++++++++++++++++++++++++++
- arch/arm/mach-at91/Kconfig                            |   16 ++++++++++++++++
- arch/arm/mach-at91/Makefile                           |    2 ++
- arch/arm/mach-at91/at91sam926x_lowlevel_init.c        |   84 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------------
- arch/arm/mach-at91/boot_test_cmd.c                    |   95 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/mach-at91/bootstrap.c                        |   95 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/mach-at91/include/mach/at91_lowlevel_init.h  |   33 +++++++++++++++++++++++++++++++++
- arch/arm/mach-at91/include/mach/bootstrap.h           |   28 ++++++++++++++++++++++++++++
- common/filetype.c                                     |    2 +-
- include/bootstrap.h                                   |   34 ++++++++++++++++++++++++++++++++++
- include/filetype.h                                    |   21 +++++++++++++++++++++
- lib/Kconfig                                           |    2 ++
- lib/Makefile                                          |    1 +
- lib/bootstrap/Kconfig                                 |   13 +++++++++++++
- lib/bootstrap/Makefile                                |    3 +++
- lib/bootstrap/common.c                                |   24 ++++++++++++++++++++++++
- lib/bootstrap/devfs.c                                 |  118 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/bootstrap/disk.c                                  |   37 +++++++++++++++++++++++++++++++++++++
- 34 files changed, 1253 insertions(+), 421 deletions(-)
- create mode 100644 arch/arm/boards/at91sam9263ek/lowlevel_init.c
- create mode 100644 arch/arm/boards/mmccpu/lowlevel_init.c
- create mode 100644 arch/arm/boards/pm9261/lowlevel_init.c
- create mode 100644 arch/arm/boards/pm9263/lowlevel_init.c
- create mode 100644 arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/boards/usb-a926x/Makefile                 |    6 ++
+ .../arm/boards/usb-a926x/usb_a9263_lowlevel_init.c |  111 ++++++++++++++++++++
+ arch/arm/mach-at91/Kconfig                         |    1 +
+ 3 files changed, 118 insertions(+)
  create mode 100644 arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c
- create mode 100644 arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig
- create mode 100644 arch/arm/configs/usb_a9263_bootstrap_defconfig
- create mode 100644 arch/arm/mach-at91/boot_test_cmd.c
- create mode 100644 arch/arm/mach-at91/bootstrap.c
- create mode 100644 arch/arm/mach-at91/include/mach/at91_lowlevel_init.h
- create mode 100644 arch/arm/mach-at91/include/mach/bootstrap.h
- create mode 100644 include/bootstrap.h
- create mode 100644 lib/bootstrap/Kconfig
- create mode 100644 lib/bootstrap/Makefile
- create mode 100644 lib/bootstrap/common.c
- create mode 100644 lib/bootstrap/devfs.c
- create mode 100644 lib/bootstrap/disk.c
 
-Best Regards,
-J.
+diff --git a/arch/arm/boards/usb-a926x/Makefile b/arch/arm/boards/usb-a926x/Makefile
+index eb072c0..9511a76 100644
+--- a/arch/arm/boards/usb-a926x/Makefile
++++ b/arch/arm/boards/usb-a926x/Makefile
+@@ -1 +1,7 @@
+ obj-y += init.o
++
++lowlevel_init-$(CONFIG_MACH_USB_A9263) = usb_a9263_lowlevel_init.o
++
++obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
++
++pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
+diff --git a/arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c b/arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c
+new file mode 100644
+index 0000000..f6dc58e
+--- /dev/null
++++ b/arch/arm/boards/usb-a926x/usb_a9263_lowlevel_init.c
+@@ -0,0 +1,111 @@
++/*
++ * Copyright (C) 2009-2011 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * Under GPLv2
++ */
++
++#include <common.h>
++#include <init.h>
++#include <mach/hardware.h>
++#include <mach/at91_rstc.h>
++#include <mach/at91_wdt.h>
++#include <mach/at91_pmc.h>
++#include <mach/at91sam9_smc.h>
++#include <mach/at91sam9_sdramc.h>
++#include <mach/at91sam9_matrix.h>
++#include <mach/at91_lowlevel_init.h>
++
++#define MASTER_CLOCK		180
++
++#if MASTER_CLOCK == 200
++#define MASTER_PLL_MUL		100
++#else
++#define MASTER_PLL_MUL		90
++#endif
++#define MASTER_PLL_DIV		6
++
++void __bare_init at91sam926x_lowlevel_board_config(struct at91sam926x_lowlevel_cfg *cfg)
++{
++	/* Disable Watchdog */
++	cfg->wdt_mr =
++		AT91_WDT_WDIDLEHLT | AT91_WDT_WDDBGHLT |
++		AT91_WDT_WDV |
++		AT91_WDT_WDDIS |
++		AT91_WDT_WDD;
++
++	/* define PDC[31:16] as DATA[31:16] */
++	cfg->ebi_pio_pdr = 0xFFFF0000;
++	/* no pull-up for D[31:16] */
++	cfg->ebi_pio_ppudr = 0xFFFF0000;
++	/* EBI0_CSA, CS1 SDRAM, CS3 NAND Flash, 3.3V memories */
++	cfg->ebi_csa =
++		AT91_MATRIX_EBI0_DBPUC | AT91_MATRIX_EBI0_VDDIOMSEL_3_3V |
++		AT91_MATRIX_EBI0_CS1A_SDRAMC;
++
++	cfg->smc_cs = 3;
++	cfg->smc_mode =
++		AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
++		AT91_SMC_DBW_8 |
++		AT91_SMC_EXNWMODE_DISABLE |
++		AT91_SMC_TDF_(2);
++	cfg->smc_cycle =
++		AT91_SMC_NWECYCLE_(5) | AT91_SMC_NRDCYCLE_(5);
++	cfg->smc_pulse =
++		AT91_SMC_NWEPULSE_(3) | AT91_SMC_NCS_WRPULSE_(3) |
++		AT91_SMC_NRDPULSE_(3) | AT91_SMC_NCS_RDPULSE_(3);
++	cfg->smc_setup =
++		AT91_SMC_NWESETUP_(1) | AT91_SMC_NCS_WRSETUP_(0) |
++		AT91_SMC_NRDSETUP_(1) | AT91_SMC_NCS_RDSETUP_(0);
++
++	cfg->pmc_mor = AT91_PMC_OSCBYPASS;
++	cfg->pmc_pllar =
++		AT91_PMC_PLLA_WR_ERRATA | /* Bit 29 must be 1 when prog */
++		AT91_PMC_PLLCOUNT |	/* PLL Counter */
++		(0 << 28) |		/* PLL Clock Frequency Range */
++		((MASTER_PLL_MUL - 1) << 16) | (MASTER_PLL_DIV);
++	/* PCK/2 = MCK Master Clock from PLLA */
++	cfg->pmc_mckr1 =
++		AT91_PMC_CSS_SLOW |
++		AT91_PMC_PRES_1 |
++		AT91SAM9_PMC_MDIV_2 |
++		AT91_PMC_PDIV_1;
++	/* PCK/2 = MCK Master Clock from PLLA */
++	cfg->pmc_mckr2 =
++		AT91_PMC_CSS_PLLA |
++		AT91_PMC_PRES_1 |
++		AT91SAM9_PMC_MDIV_2 |
++		AT91_PMC_PDIV_1;
++
++	/* SDRAM */
++	/* SDRAMC_TR - Refresh Timer register */
++	cfg->sdrc_tr1 = 0x13C;
++	/* SDRAMC_CR - Configuration register*/
++	cfg->sdrc_cr =
++		AT91_SDRAMC_NR_13 |
++		AT91_SDRAMC_NB_4 |
++		AT91_SDRAMC_CAS_2 |
++		AT91_SDRAMC_DBW_32 |
++		(2 <<  8) |		/* Write Recovery Delay */
++		(7 << 12) |		/* Row Cycle Delay */
++		(2 << 16) |		/* Row Precharge Delay */
++		(2 << 20) |		/* Row to Column Delay */
++		(5 << 24) |		/* Active to Precharge Delay */
++		(8 << 28);		/* Exit Self Refresh to Active Delay */
++
++	if (IS_ENABLED(CONFIG_AT91_HAVE_SRAM_128M))
++		cfg->sdrc_cr |= AT91_SDRAMC_NC_10;
++	else
++		cfg->sdrc_cr |= AT91_SDRAMC_NC_9;
++
++	/* Memory Device Register -> SDRAM */
++	cfg->sdrc_mdr = AT91_SDRAMC_MD_SDRAM;
++	/* SDRAM_TR */
++	cfg->sdrc_tr2 = (MASTER_CLOCK * 7);
++
++	/* user reset enable */
++	cfg->rstc_rmr =
++		AT91_RSTC_KEY |
++		AT91_RSTC_PROCRST |
++		AT91_RSTC_RSTTYP_WAKEUP |
++		AT91_RSTC_RSTTYP_WATCHDOG;
++}
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 2815d5f..101b2b7 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -357,6 +357,7 @@ config MACH_TNY_A9263
+ 
+ config MACH_USB_A9263
+ 	bool "CALAO USB-A9263"
++	select MACH_HAS_LOWLEVEL_INIT
+ 	help
+ 	  Select this if you are using a Calao Systems USB-A9263.
+ 	  <http://www.calao-systems.com>
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
