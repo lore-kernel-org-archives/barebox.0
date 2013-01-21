@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 18.mo5.mail-out.ovh.net ([178.33.45.10]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TxEcU-0003Nw-80
+ id 1TxEcU-0003Nx-81
  for barebox@lists.infradead.org; Mon, 21 Jan 2013 10:28:57 +0000
 Received: from mail609.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 0BE9FFFA85C
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 3BAD2FFA8EC
  for <barebox@lists.infradead.org>; Mon, 21 Jan 2013 11:38:32 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 21 Jan 2013 11:27:19 +0100
-Message-Id: <1358764040-10690-9-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 21 Jan 2013 11:27:20 +0100
+Message-Id: <1358764040-10690-10-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1358764040-10690-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130121102319.GE26329@game.jcrosoft.org>
  <1358764040-10690-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,55 +26,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/10] at91: add bootstrap version
+Subject: [PATCH 10/10] at91: usb_a9263: add bootstrap version
 To: barebox@lists.infradead.org
-
-This will allow to boot from NAND/MMC and others.
-This version of bootstrap is a non shell version of barebox compressed by the
-pbl.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/Kconfig                  |    5 ++
- arch/arm/mach-at91/Makefile                 |    1 +
- arch/arm/mach-at91/bootstrap.c              |   95 +++++++++++++++++++++++++++
- arch/arm/mach-at91/include/mach/bootstrap.h |   28 ++++++++
- 4 files changed, 129 insertions(+)
- create mode 100644 arch/arm/mach-at91/bootstrap.c
- create mode 100644 arch/arm/mach-at91/include/mach/bootstrap.h
+ arch/arm/boards/usb-a926x/Makefile                 |    3 +++
+ arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c    |   16 ++++++++++++
+ .../configs/usb_a9263_128mib_bootstrap_defconfig   |   27 ++++++++++++++++++++
+ arch/arm/configs/usb_a9263_bootstrap_defconfig     |   26 +++++++++++++++++++
+ 4 files changed, 72 insertions(+)
+ create mode 100644 arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c
+ create mode 100644 arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig
+ create mode 100644 arch/arm/configs/usb_a9263_bootstrap_defconfig
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 101b2b7..f2d434b 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -494,4 +494,9 @@ config CMD_AT91_BOOT_TEST
+diff --git a/arch/arm/boards/usb-a926x/Makefile b/arch/arm/boards/usb-a926x/Makefile
+index 9511a76..e314dd5 100644
+--- a/arch/arm/boards/usb-a926x/Makefile
++++ b/arch/arm/boards/usb-a926x/Makefile
+@@ -1,5 +1,8 @@
+ obj-y += init.o
  
- endif
- 
-+config AT91_BOOTSTRAP
-+	bool "at91 bootstrap"
-+	depends on MACH_HAS_LOWLEVEL_INIT
-+	select BOOTSTRAP
++bootstrap-$(CONFIG_MACH_USB_A9263) = usb_a9263_bootstrap.o
++obj-$(CONFIG_AT91_BOOTSTRAP) += $(bootstrap-y)
 +
- endif
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 4404d23..634b160 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -1,6 +1,7 @@
- obj-y += setup.o clock.o gpio.o
- obj-$(CONFIG_CMD_AT91_BOOT_TEST) += boot_test_cmd.o
+ lowlevel_init-$(CONFIG_MACH_USB_A9263) = usb_a9263_lowlevel_init.o
  
-+obj-$(CONFIG_AT91_BOOTSTRAP) += bootstrap.o
- lowlevel_init-y = at91sam926x_lowlevel_init.o
- lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
  obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-diff --git a/arch/arm/mach-at91/bootstrap.c b/arch/arm/mach-at91/bootstrap.c
+diff --git a/arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c b/arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c
 new file mode 100644
-index 0000000..657e3cc
+index 0000000..368c677
 --- /dev/null
-+++ b/arch/arm/mach-at91/bootstrap.c
-@@ -0,0 +1,95 @@
++++ b/arch/arm/boards/usb-a926x/usb_a9263_bootstrap.c
+@@ -0,0 +1,16 @@
 +/*
 + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
 + *
@@ -84,126 +68,78 @@ index 0000000..657e3cc
 +#include <common.h>
 +#include <bootstrap.h>
 +#include <mach/bootstrap.h>
-+#include <sizes.h>
-+#include <malloc.h>
-+#include <init.h>
-+
-+#if defined(CONFIG_MCI_ATMEL)
-+#define is_mmc() 1
-+#else
-+#define is_mmc() 0
-+#endif
-+
-+#ifdef CONFIG_NAND_ATMEL
-+#define is_nand() 1
-+#else
-+#define is_nand() 0
-+#endif
-+
-+#ifdef CONFIG_MTD_M25P80
-+#define is_m25p80() 1
-+#else
-+#define is_m25p80() 0
-+#endif
 +
 +#ifdef CONFIG_MTD_DATAFLASH
-+#define is_dataflash() 1
-+#else
-+#define is_dataflash() 0
++void * bootstrap_board_read_dataflash(void)
++{
++	return bootstrap_read_devfs("dataflash0", false, 0xffc0, 204864, 204864);
++}
 +#endif
-+
-+static void boot_seq(bool is_barebox)
-+{
-+	char *name = is_barebox ? "barebox" : "unknown";
-+	int (*func)(void) = NULL;
-+
-+	if (is_m25p80()) {
-+		func = bootstrap_board_read_m25p80();
-+		printf("Boot %s from m25p80\n", name);
-+		bootstrap_boot(func, is_barebox);
-+		bootstrap_err("... failed\n");
-+		free(func);
-+	}
-+	if (is_dataflash()) {
-+		printf("Boot %s from dataflash\n", name);
-+		func = bootstrap_board_read_dataflash();
-+		bootstrap_boot(func, is_barebox);
-+		bootstrap_err("... failed\n");
-+		free(func);
-+	}
-+	if (is_nand()) {
-+		printf("Boot %s from nand\n", name);
-+		func = bootstrap_read_devfs("nand0", true, SZ_128K, SZ_256K, SZ_1M);
-+		bootstrap_boot(func, is_barebox);
-+		bootstrap_err("... failed\n");
-+		free(func);
-+	}
-+}
-+
-+static int at91_bootstrap(void)
-+{
-+	int (*func)(void) = NULL;
-+
-+	if (is_mmc()) {
-+		printf("Boot from mmc\n");
-+		func = bootstrap_read_disk("disk0.0");
-+		bootstrap_boot(func, false);
-+		bootstrap_err("... failed\n");
-+		free(func);
-+	}
-+
-+	/* First only bootstrap_boot a barebox */
-+	boot_seq(true);
-+	/* Second bootstrap_boot any */
-+	boot_seq(false);
-+
-+	bootstrap_err("bootstrap_booting failed\n");
-+	while (1);
-+
-+	return 0;
-+}
-+
-+static int at91_set_bootstrap(void)
-+{
-+	barebox_main = at91_bootstrap;
-+
-+	return 0;
-+}
-+late_initcall(at91_set_bootstrap);
-diff --git a/arch/arm/mach-at91/include/mach/bootstrap.h b/arch/arm/mach-at91/include/mach/bootstrap.h
+diff --git a/arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig b/arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig
 new file mode 100644
-index 0000000..a3d19dd
+index 0000000..0411bd8
 --- /dev/null
-+++ b/arch/arm/mach-at91/include/mach/bootstrap.h
-@@ -0,0 +1,28 @@
-+/*
-+ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+ */
-+
-+#ifndef __MACH_BOOTSTRAP_H__
-+#define __MACH_BOOTSTRAP_H__
-+
-+#ifdef CONFIG_MTD_M25P80
-+void * bootstrap_board_read_m25p80(void);
-+#else
-+static inline void * bootstrap_board_read_m25p80(void)
-+{
-+	return NULL;
-+}
-+#endif
-+
-+#ifdef CONFIG_MTD_DATAFLASH
-+void * bootstrap_board_read_dataflash(void);
-+#else
-+static inline void * bootstrap_board_read_dataflash(void)
-+{
-+	return NULL;
-+}
-+#endif
-+
-+#endif /* __MACH_BOOTSTRAP_H__ */
++++ b/arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig
+@@ -0,0 +1,27 @@
++CONFIG_ARCH_AT91SAM9263=y
++CONFIG_MACH_USB_A9263=y
++CONFIG_AT91_HAVE_SRAM_128M=y
++CONFIG_AT91_BOOTSTRAP=y
++CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x12000
++CONFIG_AEABI=y
++# CONFIG_CMD_ARM_CPUINFO is not set
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_ENVIRONMENT_VARIABLES=y
++CONFIG_PBL_IMAGE=y
++CONFIG_MMU=y
++CONFIG_MALLOC_DUMMY=y
++CONFIG_PROMPT="USB-9263:"
++CONFIG_SHELL_NONE=y
++# CONFIG_CONSOLE_FULL is not set
++# CONFIG_DEFAULT_ENVIRONMENT is not set
++# CONFIG_SPI is not set
++CONFIG_MTD=y
++# CONFIG_MTD_WRITE is not set
++# CONFIG_MTD_OOB_DEVICE is not set
++CONFIG_NAND=y
++# CONFIG_NAND_ECC_HW is not set
++# CONFIG_NAND_ECC_HW_SYNDROME is not set
++# CONFIG_NAND_ECC_HW_NONE is not set
++CONFIG_NAND_ATMEL=y
++# CONFIG_FS_RAMFS is not set
++CONFIG_BOOTSTRAP_DEVFS=y
+diff --git a/arch/arm/configs/usb_a9263_bootstrap_defconfig b/arch/arm/configs/usb_a9263_bootstrap_defconfig
+new file mode 100644
+index 0000000..78c1c8f
+--- /dev/null
++++ b/arch/arm/configs/usb_a9263_bootstrap_defconfig
+@@ -0,0 +1,26 @@
++CONFIG_ARCH_AT91SAM9263=y
++CONFIG_MACH_USB_A9263=y
++CONFIG_AT91_BOOTSTRAP=y
++CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x12000
++CONFIG_AEABI=y
++# CONFIG_CMD_ARM_CPUINFO is not set
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_ENVIRONMENT_VARIABLES=y
++CONFIG_PBL_IMAGE=y
++CONFIG_MMU=y
++CONFIG_MALLOC_DUMMY=y
++CONFIG_PROMPT="USB-9263:"
++CONFIG_SHELL_NONE=y
++# CONFIG_CONSOLE_FULL is not set
++# CONFIG_DEFAULT_ENVIRONMENT is not set
++# CONFIG_SPI is not set
++CONFIG_MTD=y
++# CONFIG_MTD_WRITE is not set
++# CONFIG_MTD_OOB_DEVICE is not set
++CONFIG_NAND=y
++# CONFIG_NAND_ECC_HW is not set
++# CONFIG_NAND_ECC_HW_SYNDROME is not set
++# CONFIG_NAND_ECC_HW_NONE is not set
++CONFIG_NAND_ATMEL=y
++# CONFIG_FS_RAMFS is not set
++CONFIG_BOOTSTRAP_DEVFS=y
 -- 
 1.7.10.4
 
