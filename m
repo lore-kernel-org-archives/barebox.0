@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from gw6.ovh.net ([213.251.189.206] helo=mail431.ha.ovh.net)
  by merlin.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TxNiB-0003NG-Nd
- for barebox@lists.infradead.org; Mon, 21 Jan 2013 20:11:20 +0000
+ id 1TxNiB-0003NE-Nf
+ for barebox@lists.infradead.org; Mon, 21 Jan 2013 20:11:22 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 21 Jan 2013 21:09:50 +0100
-Message-Id: <1358798996-26595-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 21 Jan 2013 21:09:49 +0100
+Message-Id: <1358798996-26595-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1358798996-26595-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130121200712.GJ26329@game.jcrosoft.org>
  <1358798996-26595-1-git-send-email-plagnioj@jcrosoft.com>
@@ -22,55 +22,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/9] ehci: if caps ressource is not provided discover it via
- cr_capbase
+Subject: [PATCH 2/9] usb: fix for USB_ST_STALLED status reporting in
+ ehci_submit_async()
 To: barebox@lists.infradead.org
 
+Checking the status field of the qTD token in the current code
+do not take into acount cases where endpoint stall (halted) bit
+is set together with XactErr status bit. As a result clearing
+stall on an endpoint won't be done if this status bit was also
+set. Check for halted bit and report USB_ST_STALLED status
+if the host controller also indicates endpoit stall condition.
+
+From u-boot by Anatolij Gustschin <agust@denx.de>
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/usb/host/ehci-hcd.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/usb/host/ehci-hcd.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 35b4f71..9315fe3 100644
+index ad8cf2f..35b4f71 100644
 --- a/drivers/usb/host/ehci-hcd.c
 +++ b/drivers/usb/host/ehci-hcd.c
-@@ -843,9 +843,14 @@ int ehci_register(struct device_d *dev, struct ehci_data *data)
- 	dev->priv = ehci;
- 	ehci->flags = data->flags;
- 	ehci->hccr = data->hccr;
--	ehci->hcor = data->hcor;
- 	ehci->dev = dev;
- 
-+	if (data->hcor)
-+		ehci->hcor = data->hcor;
-+	else
-+		ehci->hcor = (void __iomem *)ehci->hccr +
-+			HC_LENGTH(ehci_readl(&ehci->hccr->cr_capbase));
-+
- 	ehci->qh_list = dma_alloc_coherent(sizeof(struct QH) * NUM_TD);
- 	ehci->td = dma_alloc_coherent(sizeof(struct qTD) * NUM_TD);
- 
-@@ -879,13 +884,16 @@ static int ehci_probe(struct device_d *dev)
- 	else
- 		data.flags = EHCI_HAS_TT;
- 
--	if (dev->num_resources < 2) {
--		printf("echi: need 2 resources base and data");
-+	if (dev->num_resources < 1) {
-+		printf("echi: need 1 resources base and data");
- 		return -ENODEV;
- 	}
- 
- 	data.hccr = dev_request_mem_region(dev, 0);
--	data.hcor = dev_request_mem_region(dev, 1);
-+	if (dev->num_resources > 1)
-+		data.hcor = dev_request_mem_region(dev, 1);
-+	else
-+		data.hcor = NULL;
- 
- 	return ehci_register(dev, &data);
- }
+@@ -393,6 +393,8 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 			break;
+ 		default:
+ 			dev->status = USB_ST_CRC_ERR;
++			if ((token & 0x40) == 0x40)
++				dev->status |= USB_ST_STALLED;
+ 			break;
+ 		}
+ 		dev->act_len = length - ((token >> 16) & 0x7fff);
 -- 
 1.7.10.4
 
