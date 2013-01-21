@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TxCNR-0006Ut-92
- for barebox@lists.infradead.org; Mon, 21 Jan 2013 08:05:10 +0000
-Date: Mon, 21 Jan 2013 09:04:56 +0100
+ id 1TxCO6-0006W7-VA
+ for barebox@lists.infradead.org; Mon, 21 Jan 2013 08:05:52 +0000
+Date: Mon, 21 Jan 2013 09:05:49 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130121080456.GT1906@pengutronix.de>
-References: <1358581075-22223-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130121080549.GU1906@pengutronix.de>
+References: <1358685918-562-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1358581075-22223-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1358685918-562-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,13 +22,11 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] defaultenv-2: move ps1 to base/init/ps1
+Subject: Re: [PATCH] w1: add ds28ec20 eeprom support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Jan 19, 2013 at 08:37:55AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> so we can overwrite it
-> 
+On Sun, Jan 20, 2013 at 01:45:18PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
 Applied, thanks
@@ -36,43 +34,131 @@ Applied, thanks
 Sascha
 
 > ---
->  defaultenv-2/base/bin/init |    6 ------
->  defaultenv-2/base/init/ps1 |    9 +++++++++
->  2 files changed, 9 insertions(+), 6 deletions(-)
->  create mode 100644 defaultenv-2/base/init/ps1
+>  drivers/w1/slaves/Kconfig     |    4 ++--
+>  drivers/w1/slaves/w1_ds2433.c |   43 ++++++++++++++++++++++++++++++-----------
+>  2 files changed, 34 insertions(+), 13 deletions(-)
 > 
-> diff --git a/defaultenv-2/base/bin/init b/defaultenv-2/base/bin/init
-> index bb4abcd..2a1f6a1 100644
-> --- a/defaultenv-2/base/bin/init
-> +++ b/defaultenv-2/base/bin/init
-> @@ -15,12 +15,6 @@ global editcmd=sedit
+> diff --git a/drivers/w1/slaves/Kconfig b/drivers/w1/slaves/Kconfig
+> index 946a0b3..19942ad 100644
+> --- a/drivers/w1/slaves/Kconfig
+> +++ b/drivers/w1/slaves/Kconfig
+> @@ -15,10 +15,10 @@ config W1_SLAVE_DS2431_WRITE
+>  	depends on W1_SLAVE_DS2431
 >  
->  /env/config
+>  config W1_SLAVE_DS2433
+> -	bool "4kb EEPROM family support (DS2433)"
+> +	bool "EEPROM family support (DS2433 4Kb or DS28EC20 20kb)"
+>  	help
+>  	  Say Y here if you want to use a 1-wire
+> -	  4kb EEPROM family device (DS2433).
+> +	  EEPROM family device (DS2433 4Kb or DS28EC20 20kb).
 >  
-> -if [ ${global.allow_color} = "true" ]; then
-> -        export PS1="\e[1;32mbarebox@\e[1;36m\h:\w\e[0m "
-> -else
-> -        export PS1="barebox@\h:\w "
-> -fi
+>  config W1_SLAVE_DS2433_WRITE
+>  	bool "write support"
+> diff --git a/drivers/w1/slaves/w1_ds2433.c b/drivers/w1/slaves/w1_ds2433.c
+> index 51279fb..a840d9a 100644
+> --- a/drivers/w1/slaves/w1_ds2433.c
+> +++ b/drivers/w1/slaves/w1_ds2433.c
+> @@ -10,8 +10,6 @@
+>  #include <init.h>
+>  #include "../w1.h"
+>  
+> -#define W1_EEPROM_SIZE		512
+> -#define W1_PAGE_COUNT		16
+>  #define W1_PAGE_SIZE		32
+>  #define W1_PAGE_BITS		5
+>  #define W1_PAGE_MASK		0x1F
+> @@ -23,9 +21,8 @@
+>  #define W1_F23_READ_SCRATCH	0xAA
+>  #define W1_F23_COPY_SCRATCH	0x55
+>  
+> -#define DRIVERNAME	"ds2433"
 > -
->  if [ -e /env/menu ]; then
->  	echo -e -n "\nHit m for menu or any other key to stop autoboot: "
->  else
-> diff --git a/defaultenv-2/base/init/ps1 b/defaultenv-2/base/init/ps1
-> new file mode 100644
-> index 0000000..fcbf4b6
-> --- /dev/null
-> +++ b/defaultenv-2/base/init/ps1
-> @@ -0,0 +1,9 @@
-> +#!/bin/sh
+>  static int ds2433_count = 0;
+> +static int ds28ec20_count = 0;
+>  
+>  /**
+>   * Check the file size bounds and adjusts count as needed.
+> @@ -49,7 +46,7 @@ static ssize_t ds2433_cdev_read(struct cdev *cdev, void *buf, size_t count,
+>  	struct w1_bus *bus = dev->bus;
+>  	u8 wrbuf[3];
+>  
+> -	if ((count = ds2433_fix_count(off, count, W1_EEPROM_SIZE)) == 0)
+> +	if ((count = ds2433_fix_count(off, count, cdev->size)) == 0)
+>  		return 0;
+>  
+>  	/* read directly from the EEPROM */
+> @@ -134,7 +131,7 @@ static ssize_t ds2433_cdev_write(struct cdev *cdev, const void *buf, size_t coun
+>  	int addr, len, idx;
+>  	const u8 *buf8 = buf;
+>  
+> -	if ((count = ds2433_fix_count(off, count, W1_EEPROM_SIZE)) == 0)
+> +	if ((count = ds2433_fix_count(off, count, cdev->size)) == 0)
+>  		return 0;
+>  
+>  	/* Can only write data to one page at a time */
+> @@ -165,7 +162,7 @@ static struct file_operations ds2433_ops = {
+>  	.lseek	= dev_lseek_default,
+>  };
+>  
+> -static int ds2433_probe(struct w1_device *dev)
+> +static int ds2433_cdev_create(struct w1_device *dev, int size, int id)
+>  {
+>  	struct cdev *cdev;
+>  
+> @@ -173,24 +170,48 @@ static int ds2433_probe(struct w1_device *dev)
+>  	cdev->dev	= &dev->dev;
+>  	cdev->priv	= dev;
+>  	cdev->ops	= &ds2433_ops;
+> -	cdev->size	= W1_EEPROM_SIZE;
+> -	cdev->name	= asprintf(DRIVERNAME"%d", ds2433_count++);
+> +	cdev->size	= size;
+> +	cdev->name	= asprintf("%s%d", dev->dev.driver->name, id);
+>  	if (cdev->name == NULL)
+>  		return -ENOMEM;
+>  
+>  	return devfs_create(cdev);
+>  }
+>  
+> +static int ds2433_probe(struct w1_device *dev)
+> +{
+> +	return ds2433_cdev_create(dev, 512, ds2433_count++);
+> +}
 > +
-> +/env/config
+> +static int ds28ec20_probe(struct w1_device *dev)
+> +{
+> +	return ds2433_cdev_create(dev, 2560, ds28ec20_count++);
+> +}
 > +
-> +if [ ${global.allow_color} = "true" ]; then
-> +        export PS1="\e[1;32mbarebox@\e[1;36m\h:\w\e[0m "
-> +else
-> +        export PS1="barebox@\h:\w "
-> +fi
+>  struct w1_driver ds2433_driver = {
+>  	.drv = {
+> -		.name = DRIVERNAME,
+> +		.name = "ds2433",
+>  	},
+>  	.probe		= ds2433_probe,
+>  	.fid		= 0x23,
+>  };
+>  
+> +struct w1_driver ds28ec20_driver = {
+> +	.drv = {
+> +		.name = "ds28ec20",
+> +	},
+> +	.probe		= ds28ec20_probe,
+> +	.fid		= 0x43,
+> +};
+> +
+>  static int w1_ds2433_init(void)
+>  {
+> -	return w1_driver_register(&ds2433_driver);
+> +	int ret;
+> +
+> +	ret = w1_driver_register(&ds2433_driver);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return w1_driver_register(&ds28ec20_driver);
+>  }
+>  device_initcall(w1_ds2433_init);
 > -- 
 > 1.7.10.4
 > 
