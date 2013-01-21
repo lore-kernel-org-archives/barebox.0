@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from gw6.ovh.net ([213.251.189.206] helo=mail431.ha.ovh.net)
  by merlin.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TxNiB-0003NE-Nf
- for barebox@lists.infradead.org; Mon, 21 Jan 2013 20:11:22 +0000
+ id 1TxNiC-0003NQ-2f
+ for barebox@lists.infradead.org; Mon, 21 Jan 2013 20:11:24 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 21 Jan 2013 21:09:49 +0100
-Message-Id: <1358798996-26595-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 21 Jan 2013 21:09:55 +0100
+Message-Id: <1358798996-26595-8-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1358798996-26595-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130121200712.GJ26329@game.jcrosoft.org>
  <1358798996-26595-1-git-send-email-plagnioj@jcrosoft.com>
@@ -22,36 +22,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/9] usb: fix for USB_ST_STALLED status reporting in
- ehci_submit_async()
+Subject: [PATCH 8/9] at91sam9x5: add ehci support
 To: barebox@lists.infradead.org
 
-Checking the status field of the qTD token in the current code
-do not take into acount cases where endpoint stall (halted) bit
-is set together with XactErr status bit. As a result clearing
-stall on an endpoint won't be done if this status bit was also
-set. Check for halted bit and report USB_ST_STALLED status
-if the host controller also indicates endpoit stall condition.
-
-From u-boot by Anatolij Gustschin <agust@denx.de>
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/usb/host/ehci-hcd.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/mach-at91/at91sam9x5.c         |    1 +
+ arch/arm/mach-at91/at91sam9x5_devices.c |   22 ++++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index ad8cf2f..35b4f71 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -393,6 +393,8 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
- 			break;
- 		default:
- 			dev->status = USB_ST_CRC_ERR;
-+			if ((token & 0x40) == 0x40)
-+				dev->status |= USB_ST_STALLED;
- 			break;
- 		}
- 		dev->act_len = length - ((token >> 16) & 0x7fff);
+diff --git a/arch/arm/mach-at91/at91sam9x5.c b/arch/arm/mach-at91/at91sam9x5.c
+index 5d43423..e6e3a2f 100644
+--- a/arch/arm/mach-at91/at91sam9x5.c
++++ b/arch/arm/mach-at91/at91sam9x5.c
+@@ -206,6 +206,7 @@ static struct clk_lookup periph_clocks_lookups[] = {
+ 	CLKDEV_CON_DEV_ID("macb_clk", "macb0", &macb0_clk),
+ 	CLKDEV_CON_DEV_ID("macb_clk", "macb1", &macb1_clk),
+ 	CLKDEV_CON_ID("ohci_clk", &uhphs_clk),
++	CLKDEV_CON_DEV_ID("ehci_clk", "atmel-ehci", &uhphs_clk),
+ 	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
+ 	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
+ 	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci0", &mmc0_clk),
+diff --git a/arch/arm/mach-at91/at91sam9x5_devices.c b/arch/arm/mach-at91/at91sam9x5_devices.c
+index 71057a5..8e59fe0 100644
+--- a/arch/arm/mach-at91/at91sam9x5_devices.c
++++ b/arch/arm/mach-at91/at91sam9x5_devices.c
+@@ -56,6 +56,28 @@ void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data)
+ void __init at91_add_device_usbh_ohci(struct at91_usbh_data *data) {}
+ #endif
+ 
++#if defined(CONFIG_USB_EHCI)
++void __init at91_add_device_usbh_ehci(struct at91_usbh_data *data)
++{
++	int i;
++
++	if (!data)
++		return;
++
++	/* Enable VBus control for UHP ports */
++	for (i = 0; i < data->ports; i++) {
++		if (gpio_is_valid(data->vbus_pin[i]))
++			at91_set_gpio_output(data->vbus_pin[i],
++					     data->vbus_pin_active_low[i]);
++	}
++
++	add_generic_device("atmel-ehci", DEVICE_ID_SINGLE, NULL, AT91SAM9X5_EHCI_BASE,
++			1024 * 1024, IORESOURCE_MEM, data);
++}
++#else
++void __init at91_add_device_usbh_ehci(struct at91_usbh_data *data) {}
++#endif
++
+ #if defined(CONFIG_DRIVER_NET_MACB)
+ void at91_add_device_eth(int id, struct at91_ether_platform_data *data)
+ {
 -- 
 1.7.10.4
 
