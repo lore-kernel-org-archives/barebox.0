@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo5.mail-out.ovh.net ([188.165.51.82]
+Received: from 8.mo5.mail-out.ovh.net ([178.32.116.78]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TxEcR-0003NL-FR
- for barebox@lists.infradead.org; Mon, 21 Jan 2013 10:28:49 +0000
+ id 1TxEcU-0003NO-P8
+ for barebox@lists.infradead.org; Mon, 21 Jan 2013 10:28:56 +0000
 Received: from mail609.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 30E9DFFA64B
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 4C9FDFFA8B8
  for <barebox@lists.infradead.org>; Mon, 21 Jan 2013 11:38:29 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 21 Jan 2013 11:27:11 +0100
-Message-Id: <1358764040-10690-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20130121102319.GE26329@game.jcrosoft.org>
+Date: Mon, 21 Jan 2013 11:27:12 +0100
+Message-Id: <1358764040-10690-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1358764040-10690-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130121102319.GE26329@game.jcrosoft.org>
+ <1358764040-10690-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,51 +26,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/10] filetype: add is_barebox_mips_head support
+Subject: [PATCH 02/10] filetype: add is_barebox_head
 To: barebox@lists.infradead.org
+
+to detect if it's a barebox for the current running arch
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/filetype.c  |    2 +-
- include/filetype.h |   16 ++++++++++++++++
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ include/filetype.h |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index 748e364..bafdc31 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -145,7 +145,7 @@ enum filetype file_detect_type(void *_buf, size_t bufsize)
- 		return filetype_aimage;
- 	if (buf64[0] == le64_to_cpu(0x0a1a0a0d474e5089ull))
- 		return filetype_png;
--	if (strncmp(buf8 + 0x10, "barebox", 7) == 0)
-+	if (is_barebox_mips_head(_buf))
- 		return filetype_mips_barebox;
- 
- 	if (bufsize < 64)
 diff --git a/include/filetype.h b/include/filetype.h
-index 91139db..c2af917 100644
+index c2af917..a5de4f7 100644
 --- a/include/filetype.h
 +++ b/include/filetype.h
-@@ -50,4 +50,20 @@ static inline int is_barebox_arm_head(const char *head)
+@@ -66,4 +66,9 @@ static inline int is_barebox_mips_head(const char *head)
  }
  #endif
  
-+#define MIPS_HEAD_SIZE			0x20
-+#define MIPS_HEAD_MAGICWORD_OFFSET	0x10
-+#define MIPS_HEAD_SIZE_OFFSET		0x1C
-+
-+#ifdef CONFIG_MIPS
-+static inline int is_barebox_mips_head(const char *head)
++static inline int is_barebox_head(const char *head)
 +{
-+	return !strcmp(head + MIPS_HEAD_MAGICWORD_OFFSET, "barebox");
++	return is_barebox_arm_head(head) || is_barebox_mips_head(head);
 +}
-+#else
-+static inline int is_barebox_mips_head(const char *head)
-+{
-+	return 0;
-+}
-+#endif
 +
  #endif /* __FILE_TYPE_H */
 -- 
