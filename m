@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TxMQD-00007c-UN
- for barebox@lists.infradead.org; Mon, 21 Jan 2013 18:48:43 +0000
-Date: Mon, 21 Jan 2013 19:48:39 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130121184839.GE1906@pengutronix.de>
-References: <1358779722-322-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from gw6.ovh.net ([213.251.189.206] helo=mail431.ha.ovh.net)
+ by merlin.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TxNfW-0002dU-Hs
+ for barebox@lists.infradead.org; Mon, 21 Jan 2013 20:08:35 +0000
+Date: Mon, 21 Jan 2013 21:07:12 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130121200712.GJ26329@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1358779722-322-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,66 +20,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] introduce console none support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/9] atmel: add ehci support
+To: barebox@lists.infradead.org
 
-On Mon, Jan 21, 2013 at 03:48:42PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> this will allow to have no console support
-> 
-> Use full for bootstrap as we can save 900bytes (barebox.bin) and
-> 500bytes (zbarebox.bin lzo) on at91sam9263 as example.
-> 
-> As on bootstrap we have often very limited size.
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  common/Kconfig        |    6 ++++
->  common/Makefile       |    1 +
->  common/console_none.c |   85 +++++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 92 insertions(+)
->  create mode 100644 common/console_none.c
-> 
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 9d26abb..8704a42 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -506,10 +506,16 @@ config CONSOLE_ACTIVATE_NONE
->  endchoice
->  
->  config CONSOLE_SIMPLE
-> +	prompt "Enable simple console support"
->  	bool
->  	default y
->  	depends on !CONSOLE_FULL
->  
-> +config CONSOLE_NONE
-> +	bool
-> +	default y
-> +	depends on !CONSOLE_FULL && !CONSOLE_SIMPLE
-> +
+HI,
 
-This is probably a good moment to convert this to a choice.
+	the following patch series add the ehci support to atmel
 
-> +
-> +int printf (const char *fmt, ...)
-> +{
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL(printf);
+	it also allow to discover the caps resources via cr_capbase
+	so no need to hardcode it anymore
 
-Have you tried providing static inline wrappers for these? I would
-assume that a lot more space could be saved when gcc is able to optimize
-the function calls away.
+The following changes since commit 3de3b677ee3adc4e10235b623a8e0aa45be48893:
 
-Sascha
+  Makefile: move cmd_check_file_size to Makefile.lib (2013-01-20 12:51:28 +0100)
 
+are available in the git repository at:
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+  git://git.jcrosoft.org/barebox.git delivery/atmel_usb_ehci
+
+for you to fetch changes up to 44aea6f57969984648a0686ce698b14e55e55752:
+
+  at91sam9x5ek: add usb support (2013-01-17 22:45:45 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (9):
+      usb: add parameters info on usb device
+      usb: fix for USB_ST_STALLED status reporting in ehci_submit_async()
+      ehci: if caps ressource is not provided discover it via cr_capbase
+      ehci: add atmel support
+      at91: usb: allow to specicfy inverted vbus
+      at91sam9g45: add ehci support
+      at91sam9m10g45ek: add usb support
+      at91sam9x5: add ehci support
+      at91sam9x5ek: add usb support
+
+ arch/arm/boards/at91sam9m10g45ek/init.c     |   20 ++++++++++++++++++++
+ arch/arm/boards/at91sam9x5ek/init.c         |   20 +++++++++++++++-----
+ arch/arm/configs/at91sam9m10g45ek_defconfig |    6 ++++++
+ arch/arm/configs/at91sam9x5ek_defconfig     |    6 ++++++
+ arch/arm/mach-at91/at91rm9200_devices.c     |    9 +++++++++
+ arch/arm/mach-at91/at91sam9260_devices.c    |    9 +++++++++
+ arch/arm/mach-at91/at91sam9261_devices.c    |    9 +++++++++
+ arch/arm/mach-at91/at91sam9263_devices.c    |    3 ++-
+ arch/arm/mach-at91/at91sam9g45.c            |    1 +
+ arch/arm/mach-at91/at91sam9g45_devices.c    |   25 ++++++++++++++++++++++++-
+ arch/arm/mach-at91/at91sam9n12_devices.c    |    3 ++-
+ arch/arm/mach-at91/at91sam9x5.c             |    1 +
+ arch/arm/mach-at91/at91sam9x5_devices.c     |   25 ++++++++++++++++++++++++-
+ arch/arm/mach-at91/include/mach/board.h     |    2 ++
+ drivers/usb/core/usb.c                      |   14 ++++++++++++++
+ drivers/usb/host/Kconfig                    |    5 +++++
+ drivers/usb/host/Makefile                   |    1 +
+ drivers/usb/host/ehci-atmel.c               |   96 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/usb/host/ehci-hcd.c                 |   18 ++++++++++++++----
+ 19 files changed, 260 insertions(+), 13 deletions(-)
+ create mode 100644 drivers/usb/host/ehci-atmel.c
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
