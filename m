@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from gw6.ovh.net ([213.251.189.206] helo=mail431.ha.ovh.net)
  by merlin.infradead.org with smtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TxNiB-0003NO-Uz
- for barebox@lists.infradead.org; Mon, 21 Jan 2013 20:11:23 +0000
+ id 1TxNiB-0003NH-No
+ for barebox@lists.infradead.org; Mon, 21 Jan 2013 20:11:24 +0000
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 21 Jan 2013 21:09:54 +0100
-Message-Id: <1358798996-26595-7-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 21 Jan 2013 21:09:51 +0100
+Message-Id: <1358798996-26595-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1358798996-26595-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130121200712.GJ26329@game.jcrosoft.org>
  <1358798996-26595-1-git-send-email-plagnioj@jcrosoft.com>
@@ -22,84 +22,145 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/9] at91sam9m10g45ek: add usb support
+Subject: [PATCH 4/9] ehci: add atmel support
 To: barebox@lists.infradead.org
-
-warning: the ohci work only without MMU
-
-enable:
- - ehci
- - usb strorage
- - usb net asix
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/at91sam9m10g45ek/init.c     |   20 ++++++++++++++++++++
- arch/arm/configs/at91sam9m10g45ek_defconfig |    6 ++++++
- 2 files changed, 26 insertions(+)
+ drivers/usb/host/Kconfig      |    5 +++
+ drivers/usb/host/Makefile     |    1 +
+ drivers/usb/host/ehci-atmel.c |   96 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 102 insertions(+)
+ create mode 100644 drivers/usb/host/ehci-atmel.c
 
-diff --git a/arch/arm/boards/at91sam9m10g45ek/init.c b/arch/arm/boards/at91sam9m10g45ek/init.c
-index d77b2bf..214de96 100644
---- a/arch/arm/boards/at91sam9m10g45ek/init.c
-+++ b/arch/arm/boards/at91sam9m10g45ek/init.c
-@@ -209,6 +209,25 @@ static void ek_device_add_keyboard(void)
- static void ek_device_add_keyboard(void) {}
- #endif
+diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
+index 439d8eb..3927d3a 100644
+--- a/drivers/usb/host/Kconfig
++++ b/drivers/usb/host/Kconfig
+@@ -6,6 +6,11 @@ config USB_EHCI_OMAP
+ 	depends on USB_TWL4030
+ 	bool "OMAP EHCI driver"
  
-+#if defined(CONFIG_USB_OHCI) || defined(CONFIG_USB_EHCI)
++config USB_EHCI_ATMEL
++	depends on ARCH_AT91
++	depends on USB_EHCI
++	bool "Atmel EHCI driver"
++
+ config USB_OHCI
+ 	bool "OHCI driver"
+ 
+diff --git a/drivers/usb/host/Makefile b/drivers/usb/host/Makefile
+index 00f5e24..156fc7f 100644
+--- a/drivers/usb/host/Makefile
++++ b/drivers/usb/host/Makefile
+@@ -1,4 +1,5 @@
+ obj-$(CONFIG_USB_EHCI)		+= ehci-hcd.o
+ obj-$(CONFIG_USB_EHCI_OMAP)	+= ehci-omap.o
++obj-$(CONFIG_USB_EHCI_ATMEL)	+= ehci-atmel.o
+ obj-$(CONFIG_USB_OHCI)		+= ohci-hcd.o
+ obj-$(CONFIG_USB_OHCI_AT91)	+= ohci-at91.o
+diff --git a/drivers/usb/host/ehci-atmel.c b/drivers/usb/host/ehci-atmel.c
+new file mode 100644
+index 0000000..5957b8e
+--- /dev/null
++++ b/drivers/usb/host/ehci-atmel.c
+@@ -0,0 +1,96 @@
 +/*
-+ * USB HS Host port (common to OHCI & EHCI)
++ * (C) Copyright 2010 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; version 2 of
++ * the License.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
 + */
-+static struct at91_usbh_data ek_usbh_hs_data = {
-+	.ports			= 2,
-+	.vbus_pin		= {AT91_PIN_PD1, AT91_PIN_PD3},
-+	.vbus_pin_active_low	= {1, 1},
++
++#include <common.h>
++#include <linux/clk.h>
++#include <linux/err.h>
++#include <driver.h>
++#include <init.h>
++#include <usb/usb.h>
++#include <usb/usb_defs.h>
++#include <usb/ehci.h>
++#include <errno.h>
++#include <io.h>
++
++#include "ehci.h"
++
++/* interface and function clocks; sometimes also an AHB clock */
++static struct clk *iclk, *fclk;
++
++static void atmel_start_clock(void)
++{
++	clk_enable(iclk);
++	clk_enable(fclk);
++}
++
++static void atmel_stop_clock(void)
++{
++	clk_disable(fclk);
++	clk_disable(iclk);
++}
++
++static int atmel_ehci_probe(struct device_d *dev)
++{
++	struct ehci_data data;
++
++	iclk = clk_get(dev, "ehci_clk");
++	if (IS_ERR(iclk)) {
++		dev_err(dev, "Error getting interface clock\n");
++		return -ENOENT;
++	}
++
++	fclk = clk_get(dev, "uhpck");
++	if (IS_ERR(fclk)) {
++		dev_err(dev, "Error getting function clock\n");
++		return -ENOENT;
++	}
++
++	/*
++	 * Start the USB clocks.
++	 */
++	atmel_start_clock();
++
++	data.flags = 0;
++
++	data.hccr = dev_request_mem_region(dev, 0);
++
++	ehci_register(dev, &data);
++
++	return 0;
++}
++
++static void atmel_ehci_remove(struct device_d *dev)
++{
++	/*
++	 * Stop the USB clocks.
++	 */
++	atmel_stop_clock();
++}
++
++static struct driver_d atmel_ehci_driver = {
++	.name = "atmel-ehci",
++	.probe = atmel_ehci_probe,
++	.remove = atmel_ehci_remove,
 +};
 +
-+static void ek_add_device_usb(void)
++static int atmel_ehci_init(void)
 +{
-+	at91_add_device_usbh_ohci(&ek_usbh_hs_data);
-+	at91_add_device_usbh_ehci(&ek_usbh_hs_data);
++	platform_driver_register(&atmel_ehci_driver);
++	return 0;
 +}
-+#else
-+static void ek_add_device_usb(void) {}
-+#endif
-+
- static int at91sam9m10g45ek_mem_init(void)
- {
- 	at91_add_device_sdram(128 * 1024 * 1024);
-@@ -222,6 +241,7 @@ static int at91sam9m10g45ek_devices_init(void)
- 	ek_add_device_nand();
- 	at91_add_device_eth(0, &macb_pdata);
- 	ek_add_device_mci();
-+	ek_add_device_usb();
- 	ek_device_add_leds();
- 	ek_device_add_keyboard();
- 
-diff --git a/arch/arm/configs/at91sam9m10g45ek_defconfig b/arch/arm/configs/at91sam9m10g45ek_defconfig
-index 0929f8e..1e35787 100644
---- a/arch/arm/configs/at91sam9m10g45ek_defconfig
-+++ b/arch/arm/configs/at91sam9m10g45ek_defconfig
-@@ -58,6 +58,8 @@ CONFIG_FS_TFTP=y
- CONFIG_NET_NETCONSOLE=y
- CONFIG_NET_RESOLV=y
- CONFIG_DRIVER_NET_MACB=y
-+CONFIG_NET_USB=y
-+CONFIG_NET_USB_ASIX=y
- # CONFIG_SPI is not set
- CONFIG_MTD=y
- CONFIG_NAND=y
-@@ -66,6 +68,10 @@ CONFIG_NAND=y
- # CONFIG_NAND_ECC_HW_NONE is not set
- CONFIG_NAND_ATMEL=y
- CONFIG_UBI=y
-+CONFIG_USB=y
-+CONFIG_USB_EHCI=y
-+CONFIG_USB_EHCI_ATMEL=y
-+CONFIG_USB_STORAGE=y
- CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
- CONFIG_MCI_ATMEL=y
++device_initcall(atmel_ehci_init);
 -- 
 1.7.10.4
 
