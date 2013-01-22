@@ -1,17 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
+Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Txf7w-0007zR-3j
- for barebox@lists.infradead.org; Tue, 22 Jan 2013 14:47:04 +0000
+ id 1Txf9B-0008Au-VD
+ for barebox@lists.infradead.org; Tue, 22 Jan 2013 14:48:23 +0000
 Received: from mail170.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 9871FDC1840
- for <barebox@lists.infradead.org>; Tue, 22 Jan 2013 15:56:44 +0100 (CET)
-Date: Tue, 22 Jan 2013 15:45:40 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 97ECEDC17CB
+ for <barebox@lists.infradead.org>; Tue, 22 Jan 2013 15:58:03 +0100 (CET)
+Date: Tue, 22 Jan 2013 15:46:57 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130122144540.GN26329@game.jcrosoft.org>
+Message-ID: <20130122144657.GO26329@game.jcrosoft.org>
+References: <20130121200712.GJ26329@game.jcrosoft.org>
+ <1358798996-26595-1-git-send-email-plagnioj@jcrosoft.com>
+ <1358798996-26595-7-git-send-email-plagnioj@jcrosoft.com>
+ <20130122083012.GK1906@pengutronix.de>
+ <20130122141523.GK26329@game.jcrosoft.org>
+ <20130122142447.GM1906@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <20130122142447.GM1906@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,38 +31,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/2] ohci: fixes
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 7/9] at91sam9m10g45ek: add usb support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi,
+On 15:24 Tue 22 Jan     , Sascha Hauer wrote:
+> On Tue, Jan 22, 2013 at 03:15:23PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 09:30 Tue 22 Jan     , Sascha Hauer wrote:
+> > > On Mon, Jan 21, 2013 at 09:09:54PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > warning: the ohci work only without MMU
+> > > 
+> > > This should give a compilation warning at minimum given that MMU is
+> > > enabled in the defconfig
+> > I was thinking to put a depend ont he driver
+> 
+> Fine with me.
 
-	the current divers is bugged on the mmu support so until it's fixed do
-	not allow it wih mmu
-
-	make ohci driver depends on OHCI enabled
-
-The following changes since commit 3de3b677ee3adc4e10235b623a8e0aa45be48893:
-
-  Makefile: move cmd_check_file_size to Makefile.lib (2013-01-20 12:51:28 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/ohci_fixes
-
-for you to fetch changes up to 2e5068d9b3bd9457fde68665b42dc2251f12f925:
-
-  ohci: only enable drivers if ohci is enabled (2013-01-18 17:24:45 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (2):
-      ohci: make it depends on !MMU
-      ohci: only enable drivers if ohci is enabled
-
- drivers/usb/host/Kconfig |    5 +++++
- 1 file changed, 5 insertions(+)
+send in other pull request for master
 
 Best Regards,
 J.
+> 
+> Sascha
+> 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
