@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
+Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Txf3L-0006y9-Al
- for barebox@lists.infradead.org; Tue, 22 Jan 2013 14:42:23 +0000
+ id 1Txf3N-0006zm-79
+ for barebox@lists.infradead.org; Tue, 22 Jan 2013 14:42:26 +0000
 Received: from mail170.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 100EEDC1754
- for <barebox@lists.infradead.org>; Tue, 22 Jan 2013 15:52:01 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 64557DC142B
+ for <barebox@lists.infradead.org>; Tue, 22 Jan 2013 15:52:04 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 22 Jan 2013 15:40:39 +0100
-Message-Id: <1358865645-22631-4-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 22 Jan 2013 15:40:43 +0100
+Message-Id: <1358865645-22631-8-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1358865645-22631-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130122143833.GM26329@game.jcrosoft.org>
  <1358865645-22631-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,145 +26,318 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/10] at91: add test commamd to emulate bootrom boot
+Subject: [PATCH 08/10] introduce common bootstrap code
 To: barebox@lists.infradead.org
+
+This will allow to have a generic code to create different bootstrap
+
+As example
+Barebox as TI Xloader
+Barebox as AT91 Bootstrap
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/Kconfig         |    6 +++
- arch/arm/mach-at91/Makefile        |    1 +
- arch/arm/mach-at91/boot_test_cmd.c |   95 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 102 insertions(+)
- create mode 100644 arch/arm/mach-at91/boot_test_cmd.c
+ include/bootstrap.h    |   34 ++++++++++++++
+ lib/Kconfig            |    2 +
+ lib/Makefile           |    1 +
+ lib/bootstrap/Kconfig  |   13 ++++++
+ lib/bootstrap/Makefile |    3 ++
+ lib/bootstrap/common.c |   24 ++++++++++
+ lib/bootstrap/devfs.c  |  118 ++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/bootstrap/disk.c   |   37 +++++++++++++++
+ 8 files changed, 232 insertions(+)
+ create mode 100644 include/bootstrap.h
+ create mode 100644 lib/bootstrap/Kconfig
+ create mode 100644 lib/bootstrap/Makefile
+ create mode 100644 lib/bootstrap/common.c
+ create mode 100644 lib/bootstrap/devfs.c
+ create mode 100644 lib/bootstrap/disk.c
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 0fd9122..567c9d1 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -485,6 +485,12 @@ config CMD_AT91MUX
- 	bool "at91mux dump command"
- 	default y
- 
-+config CMD_AT91_BOOT_TEST
-+	bool "at91_boot_test"
-+	help
-+	  allow to upload a boot binary to sram and execute it
-+	  useful to test bootstrap or barebox lowlevel init
-+
- endif
- 
- endif
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 53b4dd8..4404d23 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -1,4 +1,5 @@
- obj-y += setup.o clock.o gpio.o
-+obj-$(CONFIG_CMD_AT91_BOOT_TEST) += boot_test_cmd.o
- 
- lowlevel_init-y = at91sam926x_lowlevel_init.o
- lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
-diff --git a/arch/arm/mach-at91/boot_test_cmd.c b/arch/arm/mach-at91/boot_test_cmd.c
+diff --git a/include/bootstrap.h b/include/bootstrap.h
 new file mode 100644
-index 0000000..aa5c020
+index 0000000..0fa6b83
 --- /dev/null
-+++ b/arch/arm/mach-at91/boot_test_cmd.c
-@@ -0,0 +1,95 @@
++++ b/include/bootstrap.h
+@@ -0,0 +1,34 @@
 +/*
-+ * Copyright (c) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
 + *
-+ * Under GPLv2 only
++ * Under GPLv2
++ */
++
++#ifndef __BOOSTRAP_H__
++#define __BOOSTRAP_H__
++
++#define bootstrap_err(fmt, arg...) printf(fmt, ##arg)
++
++void bootstrap_boot(int (*func)(void), bool barebox);
++
++#ifdef CONFIG_BOOTSTRAP_DEVFS
++void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
++			   int default_size, int max_size);
++#else
++static inline void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
++			   int default_size, int max_size)
++{
++	return NULL;
++}
++#endif
++
++#ifdef CONFIG_BOOTSTRAP_DISK
++void* bootstrap_read_disk(char *devname, char *fstype);
++#else
++static inline void* bootstrap_read_disk(char *devname, char *fstype)
++{
++	return NULL;
++}
++#endif
++
++#endif /* __BOOSTRAP_H__ */
+diff --git a/lib/Kconfig b/lib/Kconfig
+index db8a6ad..4578353 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -52,4 +52,6 @@ config LIBMTD
+ 
+ source lib/gui/Kconfig
+ 
++source lib/bootstrap/Kconfig
++
+ endmenu
+diff --git a/lib/Makefile b/lib/Makefile
+index 85f4ec9..43f6ea3 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -1,3 +1,4 @@
++obj-$(CONFIG_BOOTSTRAP)	+= bootstrap/
+ obj-y			+= ctype.o
+ obj-y			+= rbtree.o
+ obj-y			+= display_options.o
+diff --git a/lib/bootstrap/Kconfig b/lib/bootstrap/Kconfig
+new file mode 100644
+index 0000000..558da00
+--- /dev/null
++++ b/lib/bootstrap/Kconfig
+@@ -0,0 +1,13 @@
++menuconfig BOOTSTRAP
++	bool "Library bootstrap routines           "
++	depends on SHELL_NONE
++
++if BOOTSTRAP
++
++config BOOTSTRAP_DEVFS
++	bool "devfs support"
++
++config BOOTSTRAP_DISK
++	bool "disk support"
++
++endif
+diff --git a/lib/bootstrap/Makefile b/lib/bootstrap/Makefile
+new file mode 100644
+index 0000000..cbaa49f
+--- /dev/null
++++ b/lib/bootstrap/Makefile
+@@ -0,0 +1,3 @@
++obj-y				+= common.o
++obj-$(CONFIG_BOOTSTRAP_DEVFS)	+= devfs.o
++obj-$(CONFIG_BOOTSTRAP_DISK)	+= disk.o
+diff --git a/lib/bootstrap/common.c b/lib/bootstrap/common.c
+new file mode 100644
+index 0000000..38ec272
+--- /dev/null
++++ b/lib/bootstrap/common.c
+@@ -0,0 +1,24 @@
++/*
++ * Copyright (C) 2011 Sascha Hauer, Pengutronix
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ *
++ * Under GPLv2
 + */
 +
 +#include <common.h>
-+#include <command.h>
-+#include <libbb.h>
-+#include <getopt.h>
-+#include <fs.h>
-+#include <fcntl.h>
-+#include <malloc.h>
-+#include <errno.h>
++#include <bootstrap.h>
++#include <filetype.h>
 +
-+static int do_at91_boot_test(int argc, char *argv[])
++void bootstrap_boot(int (*func)(void), bool barebox)
 +{
-+	int opt;
-+	u32 *buf32;
-+	void *buf;
-+	void (*jump)(void) = NULL;
-+	int fd;
-+	int ret = 1;
-+	char *sram = "/dev/sram0";
-+	u32 read_size, write_size;
-+	u32 tmp = 0;
++	if (!func)
++		return;
 +
-+	while ((opt = getopt(argc, argv, "j:s:")) > 0) {
-+		switch (opt) {
-+		case 'j':
-+			jump = (void*)simple_strtoul(optarg, NULL, 0);
-+			break;
-+		case 's':
-+			sram = optarg;
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
-+	if (argc < optind + 1)
-+		return COMMAND_ERROR_USAGE;
-+
-+	buf32 = buf = read_file(argv[optind], &read_size);
-+	if (!buf)
-+		return -EINVAL;
-+
-+	write_size = buf32[5];
-+
-+	printf("size of the size %d\n", read_size);
-+	printf("size to load in sram %d\n", write_size);
-+
-+	if (write_size > read_size) {
-+		printf("file smaller than requested sram loading size (%d < %d)\n", write_size, read_size);
-+		goto err;
-+	}
-+
-+	fd = open(sram, O_WRONLY);
-+	if (fd < 0) {
-+		printf("could not open %s: %s\n", sram, errno_str());
-+		ret = fd;
-+		goto err;
-+	}
-+
-+	while (write_size) {
-+		tmp = write(fd, buf, write_size);
-+		if (tmp < 0) {
-+			perror("write");
-+			goto err_open;
-+		}
-+		buf += tmp;
-+		write_size -= tmp;
-+	}
++	if (barebox && !is_barebox_head((void*)func))
++		return;
 +
 +	shutdown_barebox();
++	func();
 +
-+	jump();
++	while (1);
++}
+diff --git a/lib/bootstrap/devfs.c b/lib/bootstrap/devfs.c
+new file mode 100644
+index 0000000..25d07c7
+--- /dev/null
++++ b/lib/bootstrap/devfs.c
+@@ -0,0 +1,118 @@
++/*
++ * Copyright (C) 2011 Sascha Hauer, Pengutronix
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ *
++ * Under GPLv2
++ */
 +
-+err_open:
-+	close(fd);
-+err:
-+	free(buf);
-+	return ret;
++#include <common.h>
++#include <partition.h>
++#include <nand.h>
++#include <driver.h>
++#include <linux/mtd/mtd.h>
++#include <fcntl.h>
++#include <filetype.h>
++#include <sizes.h>
++#include <errno.h>
++#include <malloc.h>
++#include <bootstrap.h>
++
++#if defined(CONFIG_ARM) || defined(CONFIG_MIPS)
++#if defined(CONFIG_ARM)
++#define BAREBOX_HEAD_SIZE		ARM_HEAD_SIZE
++#define BAREBOX_HEAD_SIZE_OFFSET	ARM_HEAD_SIZE_OFFSET
++#elif defined(CONFIG_MIPS)
++#define BAREBOX_HEAD_SIZE		MIPS_HEAD_SIZE
++#define BAREBOX_HEAD_SIZE_OFFSET	MIPS_HEAD_SIZE_OFFSET
++#endif
++
++static void *read_image_head(const char *name)
++{
++	void *header = xmalloc(BAREBOX_HEAD_SIZE);
++	struct cdev *cdev;
++	int ret;
++
++	cdev = cdev_open(name, O_RDONLY);
++	if (!cdev) {
++		bootstrap_err("failed to open partition\n");
++		return NULL;
++	}
++
++	ret = cdev_read(cdev, header, BAREBOX_HEAD_SIZE, 0, 0);
++	cdev_close(cdev);
++
++	if (ret != BAREBOX_HEAD_SIZE) {
++		bootstrap_err("failed to read from partition\n");
++		return NULL;
++	}
++
++	return header;
 +}
 +
-+BAREBOX_CMD_HELP_START(at91_boot_test)
-+BAREBOX_CMD_HELP_USAGE("at91_boot_test [-j <jump addr>] [-s <sram>] file\n")
-+BAREBOX_CMD_HELP_SHORT("upload the binary to sram and jump as will do the romcode\n")
-+BAREBOX_CMD_HELP_END
++static unsigned int get_image_size(void *head)
++{
++	unsigned int ret = 0;
++	unsigned int *psize = head + BAREBOX_HEAD_SIZE_OFFSET;
 +
-+BAREBOX_CMD_START(at91_boot_test)
-+	.cmd		= do_at91_boot_test,
-+	.usage		= "upload the binary to sram and jump as will do the romcode",
-+	BAREBOX_CMD_HELP(cmd_at91_boot_test_help)
-+BAREBOX_CMD_END
++	if (is_barebox_head(head))
++		ret = *psize;
++	debug("Detected barebox image size %u\n", ret);
++
++	return ret;
++}
++#else
++static void *read_image_head(const char *name)
++{
++	return NULL;
++}
++
++static unsigned int get_image_size(void *head)
++{
++	return 0;
++}
++#endif
++
++void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
++			   int default_size, int max_size)
++{
++	int ret;
++	int size = 0;
++	void *to, *header;
++	struct cdev *cdev;
++	char *partname = "x";
++
++	devfs_add_partition(devname, offset, max_size, DEVFS_PARTITION_FIXED, partname);
++	if (use_bb) {
++		dev_add_bb_dev(partname, "bbx");
++		partname = "bbx";
++	}
++
++	header = read_image_head(partname);
++	if (header) {
++		size = get_image_size(header);
++		if (!size)
++			bootstrap_err("%s: failed to get image size\n", devname);
++	}
++
++	if (!size) {
++		size = default_size;
++		bootstrap_err("%s: failed to detect barebox and it's image size so use %d\n",
++			 devname, size);
++	}
++
++	to = xmalloc(size);
++
++	cdev = cdev_open(partname, O_RDONLY);
++	if (!cdev) {
++		bootstrap_err("%s: failed to open %s\n", devname, partname);
++		return NULL;
++	}
++
++	ret = cdev_read(cdev, to, size, 0, 0);
++	if (ret != size) {
++		bootstrap_err("%s: failed to read from %s\n", devname, partname);
++		return NULL;
++	}
++
++	return to;
++}
+diff --git a/lib/bootstrap/disk.c b/lib/bootstrap/disk.c
+new file mode 100644
+index 0000000..879d331
+--- /dev/null
++++ b/lib/bootstrap/disk.c
+@@ -0,0 +1,37 @@
++/*
++ * Copyright (C) 2011 Sascha Hauer, Pengutronix
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ *
++ * Under GPLv2
++ */
++
++#include <common.h>
++#include <fs.h>
++#include <fcntl.h>
++#include <sizes.h>
++#include <errno.h>
++#include <malloc.h>
++#include <bootstrap.h>
++
++void* bootstrap_read_disk(char *dev, char *fstype)
++{
++	int ret;
++	void *buf;
++	int len;
++	char *path = "/";
++
++	ret = mount(dev, fstype, path);
++	if (ret) {
++		bootstrap_err("mounting %s failed with %d\n", dev, ret);
++		return NULL;
++	}
++
++	buf = read_file("/barebox.bin", &len);
++	if (!buf) {
++		bootstrap_err("could not read barebox.bin from %s\n", dev);
++		umount(path);
++		return NULL;
++	}
++
++	return buf;
++}
 -- 
 1.7.10.4
 
