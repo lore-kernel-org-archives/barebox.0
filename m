@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
+Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Txf3K-0006y2-ME
+ id 1Txf3L-0006y8-Ak
  for barebox@lists.infradead.org; Tue, 22 Jan 2013 14:42:19 +0000
 Received: from mail170.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 1219DDC16AC
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 8A414DC170A
  for <barebox@lists.infradead.org>; Tue, 22 Jan 2013 15:52:00 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 22 Jan 2013 15:40:37 +0100
-Message-Id: <1358865645-22631-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 22 Jan 2013 15:40:38 +0100
+Message-Id: <1358865645-22631-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1358865645-22631-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130122143833.GM26329@game.jcrosoft.org>
  <1358865645-22631-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,30 +26,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/10] filetype: add is_barebox_head
+Subject: [PATCH 03/10] at91: dump mux command: make it depends on
+ COMMAND_SUPPORT
 To: barebox@lists.infradead.org
 
-to detect if it's a barebox for the current running arch
+so in bootstrap we do not compile it
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/filetype.h |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm/mach-at91/Kconfig |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/filetype.h b/include/filetype.h
-index c2af917..a5de4f7 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -66,4 +66,9 @@ static inline int is_barebox_mips_head(const char *head)
- }
- #endif
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index fcba7fb..0fd9122 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -479,8 +479,12 @@ config CALAO_MB_QIL_A9260
+ 	bool "MB-QIL A9260 Motherboard Board support"
+ 	depends on MACH_QIL_A9260
  
-+static inline int is_barebox_head(const char *head)
-+{
-+	return is_barebox_arm_head(head) || is_barebox_mips_head(head);
-+}
++if COMMAND_SUPPORT
 +
- #endif /* __FILE_TYPE_H */
+ config CMD_AT91MUX
+ 	bool "at91mux dump command"
+ 	default y
+ 
+ endif
++
++endif
 -- 
 1.7.10.4
 
