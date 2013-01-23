@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo3.mail-out.ovh.net ([178.32.228.3])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TxwWn-0003n8-5t
- for barebox@lists.infradead.org; Wed, 23 Jan 2013 09:21:54 +0000
-Received: from mail176.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id AB413FF9937
- for <barebox@lists.infradead.org>; Wed, 23 Jan 2013 10:35:38 +0100 (CET)
-Date: Wed, 23 Jan 2013 10:20:28 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130123092028.GP26329@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Txws1-0007fa-6C
+ for barebox@lists.infradead.org; Wed, 23 Jan 2013 09:43:49 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 23 Jan 2013 10:43:45 +0100
+Message-Id: <1358934225-5101-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,63 +14,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/2] console none support
+Subject: [PATCH] ARM v7: Fix register corruption in v7_mmu_cache_off
 To: barebox@lists.infradead.org
 
-HI,
+v7_mmu_cache_flush stores registers on the stack and restores
+them afterwards. Additionally v7_mmu_cache_flush is called
+from v7_mmu_cache_off *after* disabling the MMU. With this
+the following can happen:
 
-	This patch serie introduce the console none support
+- v7_mmu_cache_off disables the MMU. From now on no new values
+  go to the data cache.
+- v7_mmu_cache_off calls v7_mmu_cache_flush which in turn puts
+  registers on the stack. Due to the MMU being disabled they
+  do not go into the data cache.
+- In v7_mmu_cache_flush the memory the stack is pointing to is
+  overwritten with the values currently being in the cache.
+- v7_mmu_cache_flush restores the registers from the stack with
+  values from the cache and not the memory where the values have
+  previously been written to.
 
-	this will allow to reduce the barebox significantly special for
-	bootstrap
+Fix this by storing the registers on the stack *before* we disable
+the MMU and restore them after we have called v7_mmu_cache_flush.
+This way v7_mmu_cache_flush still restores corrupt register values
+for the case when the MMU has been disabled, but we will restore
+correct values afterwards.
 
-	As example on at91sam9263 console none vs console simple
+This has been first observed when switching to gcc-4.7.2 when compiling
+in Thumb2 mode, but could explain earlier problems also. The result
+here was that the register holding the kernel address in start_linux()
+was corrupted so that the kernel could not be started.
 
-	barebox.bin		=> 6.5 KiB
-	zbarebox.bin lzo	=> 3.8 KiB
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/cpu/cache-armv7.S |    2 ++
+ 1 file changed, 2 insertions(+)
 
-The following changes since commit b290fa88fb2c97a1d5b08ded3554c0a464a4562f:
+diff --git a/arch/arm/cpu/cache-armv7.S b/arch/arm/cpu/cache-armv7.S
+index 2d68f27..13542d9 100644
+--- a/arch/arm/cpu/cache-armv7.S
++++ b/arch/arm/cpu/cache-armv7.S
+@@ -34,6 +34,7 @@ ENDPROC(v7_mmu_cache_on)
+ 
+ .section .text.v7_mmu_cache_off
+ ENTRY(v7_mmu_cache_off)
++		stmfd	sp!, {r0-r7, r9-r11}
+ 		mrc	p15, 0, r0, c1, c0
+ #ifdef CONFIG_MMU
+ 		bic	r0, r0, #0x000d
+@@ -50,6 +51,7 @@ ENTRY(v7_mmu_cache_off)
+ 		mcr	p15, 0, r0, c7, c5, 6	@ invalidate BTC
+ 		mcr	p15, 0, r0, c7, c10, 4	@ DSB
+ 		mcr	p15, 0, r0, c7, c5, 4	@ ISB
++		ldmfd	sp!, {r0-r7, r9-r11}
+ 		mov	pc, r12
+ ENDPROC(v7_mmu_cache_off)
+ 
+-- 
+1.7.10.4
 
-  at91: usb_a9263: add bootstrap version (2013-01-18 17:17:11 +0800)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/console_none
-
-for you to fetch changes up to e75f727c6e048c9978cb47cb8af92488a8251569:
-
-  introduce console none support (2013-01-19 11:51:53 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (2):
-      console: switch select to choice
-      introduce console none support
-
- arch/arm/configs/archosg9_xload_defconfig             |    2 +-
- arch/arm/configs/omap3530_beagle_xload_defconfig      |    2 +-
- arch/arm/configs/panda_xload_defconfig                |    2 +-
- arch/arm/configs/pcm049_xload_defconfig               |    2 +-
- arch/arm/configs/phycard_a_l1_xload_defconfig         |    2 +-
- arch/arm/configs/phycard_a_xl2_xload_defconfig        |    2 +-
- arch/arm/configs/usb_a9263_128mib_bootstrap_defconfig |    2 +-
- arch/arm/configs/usb_a9263_bootstrap_defconfig        |    2 +-
- commands/Kconfig                                      |    3 +++
- common/Kconfig                                        |   22 +++++++++++++++-------
- common/Makefile                                       |    1 +
- common/console_none.c                                 |   42 ++++++++++++++++++++++++++++++++++++++++++
- drivers/serial/Kconfig                                |    1 +
- drivers/usb/gadget/Kconfig                            |    2 +-
- include/stdio.h                                       |   64 ++++++++++++++++++++++++++++++++++++++++++++++++++++++----------
- net/Kconfig                                           |    1 +
- 16 files changed, 126 insertions(+), 26 deletions(-)
- create mode 100644 common/console_none.c
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
