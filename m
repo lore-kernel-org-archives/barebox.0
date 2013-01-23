@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oa0-f42.google.com ([209.85.219.42])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Ty0Dd-0008Cb-5n
- for barebox@lists.infradead.org; Wed, 23 Jan 2013 13:18:21 +0000
-Received: by mail-oa0-f42.google.com with SMTP id j1so8501252oag.1
- for <barebox@lists.infradead.org>; Wed, 23 Jan 2013 05:18:20 -0800 (PST)
-MIME-Version: 1.0
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-Date: Wed, 23 Jan 2013 14:17:59 +0100
-Message-ID: <CAHkwnC-GnpSVxs-Apoka3LWLtcqYD5PrswtxnuqB_bEKTCH4ZA@mail.gmail.com>
+Received: from 9.mo3.mail-out.ovh.net ([87.98.184.141]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Ty0Zz-0002Xc-C3
+ for barebox@lists.infradead.org; Wed, 23 Jan 2013 13:41:28 +0000
+Received: from mail637.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id B45F9FF9925
+ for <barebox@lists.infradead.org>; Wed, 23 Jan 2013 14:55:12 +0100 (CET)
+Date: Wed, 23 Jan 2013 14:41:22 +0100
+From: Eric =?UTF-8?B?QsOpbmFyZA==?= <eric@eukrea.com>
+Message-ID: <20130123144122.0bbc6b91@e6520eb>
+In-Reply-To: <CAHkwnC-GnpSVxs-Apoka3LWLtcqYD5PrswtxnuqB_bEKTCH4ZA@mail.gmail.com>
+References: <CAHkwnC-GnpSVxs-Apoka3LWLtcqYD5PrswtxnuqB_bEKTCH4ZA@mail.gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,61 +21,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: AT91SAM9260EK DFU - Error using dfu-util
-To: barebox@lists.infradead.org
+Subject: Re: AT91SAM9260EK DFU - Error using dfu-util
+To: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi All,
-I'm trying the dfu support for AT91SAM9260EK.
-
-I've succefully activated it using th bp button, but
-the dfu-util give me the error "Cannot open device".
-I'm doing something wrong?
-Can someone help me?
-
------
-I'm using:
- - Barebox 2013.01.0 - at91sam9260ek_defconfig
- - Ubuntu 12.10
-
-
--------
-AT91SAM9260EK serial output:
-dfu_bp pressed detected wait 5s
-
-Start DFU Mode
-
-dfu: register alt0(barebox) with device /dev/nand0.barebox.bb
-dfu: register alt1(kernel) with device /dev/nand0.kernel.bb
-dfu: register alt2(rootfs) with device /dev/nand0.rootfs.bb
-
-
--------
-$ dfu-util -l
-dfu-util 0.7
-...
-Found Runtime: [4321:1234] devnum=0, cfg=1, intf=0, alt=0, name="UNDEFINED"
-Found Runtime: [4321:1234] devnum=0, cfg=1, intf=0, alt=1, name="UNDEFINED"
-Found Runtime: [4321:1234] devnum=0, cfg=1, intf=0, alt=2, name="UNDEFINED"
-
-
--------
-$ dfu-util -a 1 -D zImage
-dfu-util 0.7
-...
-Cannot open device
-Opening DFU capable USB device...
-
-
-
-Best regards
---
-Fabio Porcedda
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgRmFiaW8sCgpMZSBXZWQsIDIzIEphbiAyMDEzIDE0OjE3OjU5ICswMTAwLApGYWJpbyBQb3Jj
+ZWRkYSA8ZmFiaW8ucG9yY2VkZGFAZ21haWwuY29tPiBhIMOpY3JpdCA6Cj4gJCBkZnUtdXRpbCAt
+bAo+IGRmdS11dGlsIDAuNwo+IC4uLgo+IEZvdW5kIFJ1bnRpbWU6IFs0MzIxOjEyMzRdIGRldm51
+bT0wLCBjZmc9MSwgaW50Zj0wLCBhbHQ9MCwgbmFtZT0iVU5ERUZJTkVEIgo+IEZvdW5kIFJ1bnRp
+bWU6IFs0MzIxOjEyMzRdIGRldm51bT0wLCBjZmc9MSwgaW50Zj0wLCBhbHQ9MSwgbmFtZT0iVU5E
+RUZJTkVEIgo+IEZvdW5kIFJ1bnRpbWU6IFs0MzIxOjEyMzRdIGRldm51bT0wLCBjZmc9MSwgaW50
+Zj0wLCBhbHQ9MiwgbmFtZT0iVU5ERUZJTkVEIgo+IApoZXJlIHlvdSBzaG91bGQgZ2V0IHRoZSBu
+YW1lIG9mIHRoZSBwYXJ0aXRpb25zLCBlbHNlIHRoYXQgbWVhbnMgeW91CmhhdmUgYSByaWdodCBw
+cm9ibGVtIG9uIHRoZSBVU0IgZGV2aWNlLgoKPiAKPiAtLS0tLS0tCj4gJCBkZnUtdXRpbCAtYSAx
+IC1EIHpJbWFnZQo+IGRmdS11dGlsIDAuNwo+IC4uLgo+IENhbm5vdCBvcGVuIGRldmljZQo+IE9w
+ZW5pbmcgREZVIGNhcGFibGUgVVNCIGRldmljZS4uLgo+IAp0cnkgdGhlIHNhbWUgdGhpbmcgd2l0
+aCByb290IHJpZ2h0cyAoc3VkbyBkZnUtdXRpbCkuCgpCZXN0IHJlZ2FyZHMsCkVyaWMKCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
+ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
