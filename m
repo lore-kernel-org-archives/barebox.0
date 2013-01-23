@@ -1,20 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Ty7AX-0006vm-DO
- for barebox@lists.infradead.org; Wed, 23 Jan 2013 20:43:38 +0000
-Received: from mail416.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 01D2CDC11E6
- for <barebox@lists.infradead.org>; Wed, 23 Jan 2013 21:53:21 +0100 (CET)
-Date: Wed, 23 Jan 2013 21:42:15 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130123204215.GR26329@game.jcrosoft.org>
-References: <20130123092028.GP26329@game.jcrosoft.org>
- <20130123204051.GB1906@pengutronix.de>
+Received: from mail-bk0-f50.google.com ([209.85.214.50])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Ty79h-0006mZ-RE
+ for barebox@lists.infradead.org; Wed, 23 Jan 2013 20:42:46 +0000
+Received: by mail-bk0-f50.google.com with SMTP id jf3so4757052bkc.37
+ for <barebox@lists.infradead.org>; Wed, 23 Jan 2013 12:42:44 -0800 (PST)
+Date: Wed, 23 Jan 2013 21:43:19 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20130123204318.GD3427@x61s.8.8.8.8>
+References: <1358257730-20579-1-git-send-email-alex.aring@gmail.com>
+ <1358257730-20579-9-git-send-email-alex.aring@gmail.com>
+ <20130117095431.GB1906@pengutronix.de>
+ <20130123200134.GA3427@x61s.8.8.8.8>
+ <20130123201844.GY1906@pengutronix.de>
+ <20130123202501.GC3427@x61s.8.8.8.8>
+ <20130123203051.GQ26329@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130123204051.GB1906@pengutronix.de>
+In-Reply-To: <20130123203051.GQ26329@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,46 +30,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] console none support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 8/8] memtest: add rewritten memtest command
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 21:40 Wed 23 Jan     , Sascha Hauer wrote:
-> On Wed, Jan 23, 2013 at 10:20:28AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > HI,
+On Wed, Jan 23, 2013 at 09:30:51PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 21:25 Wed 23 Jan     , Alexander Aring wrote:
+> > Hi Sascha,
 > > 
-> > 	This patch serie introduce the console none support
-> > 
-> > 	this will allow to reduce the barebox significantly special for
-> > 	bootstrap
-> > 
-> > 	As example on at91sam9263 console none vs console simple
-> > 
-> > 	barebox.bin		=> 6.5 KiB
-> > 	zbarebox.bin lzo	=> 3.8 KiB
-> > 
-> > The following changes since commit b290fa88fb2c97a1d5b08ded3554c0a464a4562f:
-> > 
-> >   at91: usb_a9263: add bootstrap version (2013-01-18 17:17:11 +0800)
-> > 
-> > are available in the git repository at:
-> > 
-> >   git://git.jcrosoft.org/barebox.git delivery/console_none
-> > 
+> > On Wed, Jan 23, 2013 at 09:18:44PM +0100, Sascha Hauer wrote:
+> > > Hi Alexander,
+> > > 
+> > > On Wed, Jan 23, 2013 at 09:01:36PM +0100, Alexander Aring wrote:
+> > > > > > +/*
+> > > > > > + * PTE flags variables to set cached and
+> > > > > > + * uncached regions.
+> > > > > > + */
+> > > > > > +static uint32_t PTE_FLAGS_CACHED;
+> > > > > > +static uint32_t PTE_FLAGS_UNCACHED;
+> > > > > 
+> > > > > Please no uppercase letters for variable names.
+> > > > >
+> > > > Ok. I took it from mach/arm/cpu/mmu.c, should I create a patch which
+> > > > rename it in arch/arm/cpu/mmu.c lower case, too?
+> > > 
+> > > Yes, that would be great. I must have forgotten reviewing my own patch
+> > > ;)
+> > > 
+> > > > 
+> > > > > > +#else
+> > > > > > +static char optstr[] = "s:e:i:b";
+> > > > > > +#endif
+> > > > > > +
+> > > > > > +/*
+> > > > > > + * Perform a memory test. The complete test
+> > > > > > + * loops until interrupted by ctrl-c.
+> > > > > > + */
+> > > > > > +static int mem_test(vu_long _start, vu_long _end,
+> > > > > > +		int bus_only)
+> > > > > 
+> > > > > It would be good to move this function to common/memory_test.c. This way
+> > > > > it could be called from C. Especially testing memory might be called
+> > > > > from some early small (no shell) development binaries which are running from some
+> > > > > internal SRAM.
+> > > > > 
+> > > > Ok.
+> > > > Maybe we can do a menu entry via Kconfig or something else to run a
+> > > > memtest after booting automatically.
+> > > 
+> > > Maybe this could be added as an init script in the environment, but
+> > > personally I don't think I'll run it by default on our boards. We are
+> > > more into booting fast.
+> > But how will you run the memtest command in a (no shell) environment? :)
+> make as an option but this will be board specific
 > 
-> Applied, thanks
+> I do not want it by default too
 > 
-> BTW for the pcm038_defconfig this saves around 30k which is about 10% of
-> the binary size. Well, this configuration is not particularly useful,
-> but still it successfully boots the kernel.
+> booting time are critical for a lost of client
+> 
+> Best Regards,
+> J.
+Ok, hold on.
+We want this to move it in common/memory_test.c to call memtest in a
+(no shell) environment for a small barebox which running in the internal
+sram(like omap MLO), not in the connected "ram".
 
-for production boot where the boot time is critical it could be
+This can be useful to test the complete "connected ram" without allocated
+barebox regions.
 
-I'll take a look to finish the dmesg support
-as this will help too on the boot time
+But to do this in a (no shell) environment, somebody need to modify some
+code to call memtest at barebox boot. Or?
 
-Best Regards,
-J.
+Regards
+Alex
+> > 
+> > > 
+> > > Sascha
+> > > 
+> > > -- 
+> > > Pengutronix e.K.                           |                             |
+> > > Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> > > Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> > > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
