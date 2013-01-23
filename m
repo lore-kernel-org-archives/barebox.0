@@ -1,21 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f45.google.com ([209.85.214.45])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Ty6s3-00061I-MB
- for barebox@lists.infradead.org; Wed, 23 Jan 2013 20:24:33 +0000
-Received: by mail-bk0-f45.google.com with SMTP id i18so1033451bkv.18
- for <barebox@lists.infradead.org>; Wed, 23 Jan 2013 12:24:29 -0800 (PST)
-Date: Wed, 23 Jan 2013 21:25:03 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130123202501.GC3427@x61s.8.8.8.8>
+Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Ty6za-0006Be-GB
+ for barebox@lists.infradead.org; Wed, 23 Jan 2013 20:32:22 +0000
+Received: from mail416.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 7E748DC11ED
+ for <barebox@lists.infradead.org>; Wed, 23 Jan 2013 21:41:56 +0100 (CET)
+Date: Wed, 23 Jan 2013 21:30:51 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130123203051.GQ26329@game.jcrosoft.org>
 References: <1358257730-20579-1-git-send-email-alex.aring@gmail.com>
  <1358257730-20579-9-git-send-email-alex.aring@gmail.com>
  <20130117095431.GB1906@pengutronix.de>
  <20130123200134.GA3427@x61s.8.8.8.8>
  <20130123201844.GY1906@pengutronix.de>
+ <20130123202501.GC3427@x61s.8.8.8.8>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130123201844.GY1906@pengutronix.de>
+In-Reply-To: <20130123202501.GC3427@x61s.8.8.8.8>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,64 +32,78 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 8/8] memtest: add rewritten memtest command
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Alexander Aring <alex.aring@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
-
-On Wed, Jan 23, 2013 at 09:18:44PM +0100, Sascha Hauer wrote:
-> Hi Alexander,
+On 21:25 Wed 23 Jan     , Alexander Aring wrote:
+> Hi Sascha,
 > 
-> On Wed, Jan 23, 2013 at 09:01:36PM +0100, Alexander Aring wrote:
-> > > > +/*
-> > > > + * PTE flags variables to set cached and
-> > > > + * uncached regions.
-> > > > + */
-> > > > +static uint32_t PTE_FLAGS_CACHED;
-> > > > +static uint32_t PTE_FLAGS_UNCACHED;
+> On Wed, Jan 23, 2013 at 09:18:44PM +0100, Sascha Hauer wrote:
+> > Hi Alexander,
+> > 
+> > On Wed, Jan 23, 2013 at 09:01:36PM +0100, Alexander Aring wrote:
+> > > > > +/*
+> > > > > + * PTE flags variables to set cached and
+> > > > > + * uncached regions.
+> > > > > + */
+> > > > > +static uint32_t PTE_FLAGS_CACHED;
+> > > > > +static uint32_t PTE_FLAGS_UNCACHED;
+> > > > 
+> > > > Please no uppercase letters for variable names.
+> > > >
+> > > Ok. I took it from mach/arm/cpu/mmu.c, should I create a patch which
+> > > rename it in arch/arm/cpu/mmu.c lower case, too?
+> > 
+> > Yes, that would be great. I must have forgotten reviewing my own patch
+> > ;)
+> > 
 > > > 
-> > > Please no uppercase letters for variable names.
-> > >
-> > Ok. I took it from mach/arm/cpu/mmu.c, should I create a patch which
-> > rename it in arch/arm/cpu/mmu.c lower case, too?
-> 
-> Yes, that would be great. I must have forgotten reviewing my own patch
-> ;)
+> > > > > +#else
+> > > > > +static char optstr[] = "s:e:i:b";
+> > > > > +#endif
+> > > > > +
+> > > > > +/*
+> > > > > + * Perform a memory test. The complete test
+> > > > > + * loops until interrupted by ctrl-c.
+> > > > > + */
+> > > > > +static int mem_test(vu_long _start, vu_long _end,
+> > > > > +		int bus_only)
+> > > > 
+> > > > It would be good to move this function to common/memory_test.c. This way
+> > > > it could be called from C. Especially testing memory might be called
+> > > > from some early small (no shell) development binaries which are running from some
+> > > > internal SRAM.
+> > > > 
+> > > Ok.
+> > > Maybe we can do a menu entry via Kconfig or something else to run a
+> > > memtest after booting automatically.
+> > 
+> > Maybe this could be added as an init script in the environment, but
+> > personally I don't think I'll run it by default on our boards. We are
+> > more into booting fast.
+> But how will you run the memtest command in a (no shell) environment? :)
+make as an option but this will be board specific
+
+I do not want it by default too
+
+booting time are critical for a lost of client
+
+Best Regards,
+J.
 > 
 > > 
-> > > > +#else
-> > > > +static char optstr[] = "s:e:i:b";
-> > > > +#endif
-> > > > +
-> > > > +/*
-> > > > + * Perform a memory test. The complete test
-> > > > + * loops until interrupted by ctrl-c.
-> > > > + */
-> > > > +static int mem_test(vu_long _start, vu_long _end,
-> > > > +		int bus_only)
-> > > 
-> > > It would be good to move this function to common/memory_test.c. This way
-> > > it could be called from C. Especially testing memory might be called
-> > > from some early small (no shell) development binaries which are running from some
-> > > internal SRAM.
-> > > 
-> > Ok.
-> > Maybe we can do a menu entry via Kconfig or something else to run a
-> > memtest after booting automatically.
+> > Sascha
+> > 
+> > -- 
+> > Pengutronix e.K.                           |                             |
+> > Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> > Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 > 
-> Maybe this could be added as an init script in the environment, but
-> personally I don't think I'll run it by default on our boards. We are
-> more into booting fast.
-But how will you run the memtest command in a (no shell) environment? :)
-
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
