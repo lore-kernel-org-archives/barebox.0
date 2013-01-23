@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Ty7GP-0007eK-9G
- for barebox@lists.infradead.org; Wed, 23 Jan 2013 20:49:41 +0000
-Date: Wed, 23 Jan 2013 21:49:39 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130123204939.GC1906@pengutronix.de>
-References: <20130123092028.GP26329@game.jcrosoft.org>
- <20130123204051.GB1906@pengutronix.de>
- <20130123204215.GR26329@game.jcrosoft.org>
+Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Ty7HL-0007uw-VA
+ for barebox@lists.infradead.org; Wed, 23 Jan 2013 20:50:41 +0000
+Received: from mail416.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id DDBE2DC0FFF
+ for <barebox@lists.infradead.org>; Wed, 23 Jan 2013 22:00:22 +0100 (CET)
+Date: Wed, 23 Jan 2013 21:49:16 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130123204916.GS26329@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130123204215.GR26329@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,58 +24,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] console none support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/2] tny-a9263: add spi + bootstrap support
+To: barebox@lists.infradead.org
 
-On Wed, Jan 23, 2013 at 09:42:15PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 21:40 Wed 23 Jan     , Sascha Hauer wrote:
-> > On Wed, Jan 23, 2013 at 10:20:28AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > HI,
-> > > 
-> > > 	This patch serie introduce the console none support
-> > > 
-> > > 	this will allow to reduce the barebox significantly special for
-> > > 	bootstrap
-> > > 
-> > > 	As example on at91sam9263 console none vs console simple
-> > > 
-> > > 	barebox.bin		=> 6.5 KiB
-> > > 	zbarebox.bin lzo	=> 3.8 KiB
-> > > 
-> > > The following changes since commit b290fa88fb2c97a1d5b08ded3554c0a464a4562f:
-> > > 
-> > >   at91: usb_a9263: add bootstrap version (2013-01-18 17:17:11 +0800)
-> > > 
-> > > are available in the git repository at:
-> > > 
-> > >   git://git.jcrosoft.org/barebox.git delivery/console_none
-> > > 
-> > 
-> > Applied, thanks
-> > 
-> > BTW for the pcm038_defconfig this saves around 30k which is about 10% of
-> > the binary size. Well, this configuration is not particularly useful,
-> > but still it successfully boots the kernel.
-> 
-> for production boot where the boot time is critical it could be
+HI,
 
-Yes, indeed. I just meant that in such a case I would disable a lot
-of other features which are useless without console.
+	depends on console none
 
-> 
-> I'll take a look to finish the dmesg support
-> as this will help too on the boot time
+The following changes since commit e75f727c6e048c9978cb47cb8af92488a8251569:
 
-Great ;)
+  introduce console none support (2013-01-19 11:51:53 +0800)
 
-Sascha
+are available in the git repository at:
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+  git://git.jcrosoft.org/barebox.git delivery/tny_a9263
+
+for you to fetch changes up to 5b41b075420e3547a9dfa7ef1bc0ba015af9db98:
+
+  tny_a9263: add bootstrop support (2013-01-19 14:41:24 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (2):
+      tny-a9263: add dataflash support
+      tny_a9263: add bootstrop support
+
+ arch/arm/boards/tny-a926x/Makefile                  |    9 +++++++++
+ arch/arm/boards/tny-a926x/init.c                    |   43 ++++++++++++++++++++++++++++++-------------
+ arch/arm/boards/tny-a926x/tny_a9263_bootstrap.c     |   16 ++++++++++++++++
+ arch/arm/boards/tny-a926x/tny_a9263_lowlevel_init.c |  107 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/configs/tny_a9263_bootstrap_defconfig      |   26 ++++++++++++++++++++++++++
+ arch/arm/configs/tny_a9263_defconfig                |    1 +
+ arch/arm/mach-at91/Kconfig                          |    1 +
+ 7 files changed, 190 insertions(+), 13 deletions(-)
+ create mode 100644 arch/arm/boards/tny-a926x/tny_a9263_bootstrap.c
+ create mode 100644 arch/arm/boards/tny-a926x/tny_a9263_lowlevel_init.c
+ create mode 100644 arch/arm/configs/tny_a9263_bootstrap_defconfig
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
