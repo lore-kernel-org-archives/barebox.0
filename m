@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo3.mail-out.ovh.net ([178.32.98.231]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TyP74-0000DN-Te
- for barebox@lists.infradead.org; Thu, 24 Jan 2013 15:53:17 +0000
-Received: from mail417.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 243BEFF8483
- for <barebox@lists.infradead.org>; Thu, 24 Jan 2013 17:07:04 +0100 (CET)
-Date: Thu, 24 Jan 2013 16:51:52 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130124155152.GW26329@game.jcrosoft.org>
-References: <1359038535-6051-1-git-send-email-fabio.porcedda@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1359038535-6051-1-git-send-email-fabio.porcedda@gmail.com>
+Received: from mail-lb0-f170.google.com ([209.85.217.170])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TyRm6-0001sN-Ks
+ for barebox@lists.infradead.org; Thu, 24 Jan 2013 18:43:47 +0000
+Received: by mail-lb0-f170.google.com with SMTP id ge1so4139208lbb.1
+ for <barebox@lists.infradead.org>; Thu, 24 Jan 2013 10:43:42 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 24 Jan 2013 22:55:40 +0400
+Message-Id: <1359053740-4793-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,61 +16,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] ARM: at91: Add Telit EVK-PRO3 board support
-To: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM OMAP: use SZ_*M constants in RAM device register functions
+To: barebox@lists.infradead.org
 
-> diff --git a/arch/arm/boards/telit-evk-pro3/init.c b/arch/arm/boards/telit-evk-pro3/init.c
-> new file mode 100644
-> index 0000000..06e6508
-> --- /dev/null
-> +++ b/arch/arm/boards/telit-evk-pro3/init.c
-> @@ -0,0 +1,178 @@
-> +/*
-> + * Copyright (C) 2007 Sascha Hauer, Pengutronix
-> + * Copyright (C) 2013 Fabio Porcedda <fabio.porcedda@gmail.com>, Telit
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + */
-> +
-> +#include <asm/armlinux.h>
-> +#include <common.h>
-> +#include <gpio.h>
-> +#include <init.h>
-> +#include <linux/clk.h>
-> +#include <mach/at91_rstc.h>
-> +#include <mach/at91sam9_smc.h>
-> +#include <mach/board.h>
-> +#include <mach/io.h>
-> +#include <nand.h>
-> +
-> +#define BOOTSTRAP_SIZE 0xC0000
-this is really wired
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/arm/boards/beaglebone/board.c  |    2 +-
+ arch/arm/boards/omap343xdsp/board.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-on 9260 you have anly 4KiB of sram so you bootstrap will be 4KiB MAX
+diff --git a/arch/arm/boards/beaglebone/board.c b/arch/arm/boards/beaglebone/board.c
+index 830ff47..fda8031 100644
+--- a/arch/arm/boards/beaglebone/board.c
++++ b/arch/arm/boards/beaglebone/board.c
+@@ -311,7 +311,7 @@ console_initcall(beaglebone_console_init);
+ 
+ static int beaglebone_mem_init(void)
+ {
+-	omap_add_ram0(256 * 1024 * 1024);
++	omap_add_ram0(SZ_256M);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/boards/omap343xdsp/board.c b/arch/arm/boards/omap343xdsp/board.c
+index 6dbbc4c..d894104 100644
+--- a/arch/arm/boards/omap343xdsp/board.c
++++ b/arch/arm/boards/omap343xdsp/board.c
+@@ -620,7 +620,7 @@ console_initcall(sdp3430_console_init);
+ 
+ static int sdp3430_mem_init(void)
+ {
+-	omap_add_ram0(128 * 1024 * 1024);
++	omap_add_ram0(SZ_128M);
+ 
+ 	return 0;
+ }
+-- 
+1.7.10.4
 
-and as on 9260 the ROM code does not manage the bbt or even ECC correction
-
-you just need to reserve the first block of the NAND for it
-
-except this
-
-Acked-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
