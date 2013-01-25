@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 13.mo5.mail-out.ovh.net ([87.98.182.191]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tyt8f-0006RF-KC
- for barebox@lists.infradead.org; Fri, 25 Jan 2013 23:56:54 +0000
+ id 1Tyt8g-0006SZ-OK
+ for barebox@lists.infradead.org; Fri, 25 Jan 2013 23:56:57 +0000
 Received: from mail414.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 239C0FFA75F
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 66662FFA76B
  for <barebox@lists.infradead.org>; Sat, 26 Jan 2013 01:06:47 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 26 Jan 2013 00:55:27 +0100
-Message-Id: <1359158132-8023-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat, 26 Jan 2013 00:55:31 +0100
+Message-Id: <1359158132-8023-6-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1359158132-8023-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130125235326.GG26329@game.jcrosoft.org>
  <1359158132-8023-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,87 +26,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] globalvar: add it's own bus
+Subject: [PATCH 6/7] bootm: switch globalvar to it's own device
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/globalvar.c |   31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+ commands/bootm.c |   20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/common/globalvar.c b/common/globalvar.c
-index a8aaa72..f275a38 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -3,17 +3,14 @@
- #include <globalvar.h>
- #include <init.h>
+diff --git a/commands/bootm.c b/commands/bootm.c
+index 483e6a1..830def4 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -48,6 +48,12 @@
+ #include <asm-generic/memory_layout.h>
  
--static struct device_d global_device = {
--	.name = "global",
--	.id = DEVICE_ID_SINGLE,
--};
-+static struct device_d *global_device;
- 
- int globalvar_add(const char *name,
- 		int (*set)(struct device_d *dev, struct param_d *p, const char *val),
- 		const char *(*get)(struct device_d *, struct param_d *p),
- 		unsigned long flags)
- {
--	return dev_add_param(&global_device, name, set, get, flags);
-+	return dev_add_param(global_device, name, set, get, flags);
- }
+ static LIST_HEAD(handler_list);
++static struct device_d *bootm_dev;
++
++static const char* bootm_get_global(const char * var)
++{
++	return dev_get_param(bootm_dev, var);
++}
  
  /*
-@@ -27,9 +24,9 @@ char *globalvar_get_match(const char *match, const char *seperator)
- 	char *val = NULL;
- 	struct param_d *param;
+  * Additional oftree size for the fixed tree
+@@ -286,10 +292,10 @@ static int do_bootm(int argc, char *argv[])
+ 	data.verify = 0;
+ 	data.verbose = 0;
  
--	list_for_each_entry(param, &global_device.parameters, list) {
-+	list_for_each_entry(param, global_device.parameters, list) {
- 		if (!strncmp(match, param->name, strlen(match))) {
--			const char *p = dev_get_param(&global_device, param->name);
-+			const char *p = dev_get_param(global_device, param->name);
- 			if (val) {
- 				char *new = asprintf("%s%s%s", val, seperator, p);
- 				free(val);
-@@ -50,9 +47,9 @@ void globalvar_set_match(const char *match, const char *val)
+-	oftree = getenv("global.bootm.oftree");
+-	os_file = getenv("global.bootm.image");
++	oftree = bootm_get_global("oftree");
++	os_file = bootm_get_global("image");
+ 	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD))
+-		initrd_file = getenv("global.bootm.initrd");
++		initrd_file = bootm_get_global("initrd");
+ 
+ 	while ((opt = getopt(argc, argv, BOOTM_OPTS)) > 0) {
+ 		switch(opt) {
+@@ -459,11 +465,11 @@ err_out:
+ 
+ static int bootm_init(void)
  {
- 	struct param_d *param;
- 
--	list_for_each_entry(param, &global_device.parameters, list) {
-+	list_for_each_entry(param, global_device.parameters, list) {
- 		if (!strncmp(match, param->name, strlen(match)))
--			dev_set_param(&global_device, param->name, val);
-+			dev_set_param(global_device, param->name, val);
- 	}
- }
- 
-@@ -66,10 +63,22 @@ int globalvar_add_simple(const char *name)
- 	return globalvar_add(name, NULL, NULL, 0);
- }
- 
-+static int global_match(struct device_d *dev, struct driver_d *drv)
-+{
-+	return 1;
-+}
-+
-+static struct bus_type global_bus = {
-+	.name = "global",
-+	.match = global_match,
-+	.probe = dummy_probe,
-+};
-+
- static int globalvar_init(void)
- {
--	register_device(&global_device);
-+	bus_register(&global_bus);
-+	global_device = &global_bus->dev;
+-
+-	globalvar_add_simple("bootm.image");
+-	globalvar_add_simple("bootm.oftree");
++	bootm_dev = global_add_device("bootm");
++	global_add_simple(bootm_dev, "image");
++	global_add_simple(bootm_dev, "oftree");
+ 	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD))
+-		globalvar_add_simple("bootm.initrd");
++		global_add_simple(bootm_dev, "initrd");
  
  	return 0;
  }
--postconsole_initcall(globalvar_init);
-+pure_initcall(globalvar_init);
 -- 
 1.7.10.4
 
