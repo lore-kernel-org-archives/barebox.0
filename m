@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
+ helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tyl3n-0007po-7f
- for barebox@lists.infradead.org; Fri, 25 Jan 2013 15:19:30 +0000
+ id 1Tyl3o-0007pl-76
+ for barebox@lists.infradead.org; Fri, 25 Jan 2013 15:19:32 +0000
 Received: from mail436.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 39CA4DC1D0C
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 15D6CDC1D02
  for <barebox@lists.infradead.org>; Fri, 25 Jan 2013 16:29:08 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 25 Jan 2013 16:17:47 +0100
-Message-Id: <1359127067-30079-14-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 25 Jan 2013 16:17:45 +0100
+Message-Id: <1359127067-30079-12-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1359127067-30079-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130125151448.GD26329@game.jcrosoft.org>
  <1359127067-30079-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,79 +26,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/14] atmel_mci: gpio: request and configure card detect
+Subject: [PATCH 12/14] atmel_mci: update the SD/SDIO Card Register at request
+ time
 To: barebox@lists.infradead.org
+
+as we need to reset the IP
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/mci/atmel_mci.c |   27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ drivers/mci/atmel_mci.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
-index 647683b..9de079d 100644
+index 3f24217..8ad0e8a 100644
 --- a/drivers/mci/atmel_mci.c
 +++ b/drivers/mci/atmel_mci.c
-@@ -481,7 +481,7 @@ static void atmci_info(struct device_d *mci_dev)
- 		printf("- %u Hz upper limit", host->mci.f_max);
+@@ -51,6 +51,7 @@ struct atmel_mci {
+ 	unsigned long		bus_hz;
+ 	u32			mode_reg;
+ 	u32			cfg_reg;
++	u32			sdc_reg;
+ 	bool			need_reset;
+ };
  
- 	printf("\n  Card detection support: %s\n",
--		pd->detect_pin != 0 ? "yes" : "no");
-+		gpio_is_valid(pd->detect_pin) ? "yes" : "no");
+@@ -382,21 +383,20 @@ static void atmci_set_ios(struct mci_host *mci, struct mci_ios *ios)
+ 	dev_dbg(host->hw_dev, "atmel_mci_set_ios: bus_width=%d clk=%d\n",
+ 		ios->bus_width, ios->clock);
  
- }
- #endif /* CONFIG_MCI_INFO */
-@@ -527,12 +527,28 @@ static int atmci_probe(struct device_d *hw_dev)
- {
- 	struct atmel_mci *host;
- 	struct atmel_mci_platform_data *pd = hw_dev->platform_data;
-+	int ret;
- 
- 	if (!pd) {
- 		dev_err(hw_dev, "missing platform data\n");
- 		return -EINVAL;
++	host->sdc_reg &= ~ATMCI_SDCBUS_MASK;
+ 	switch (ios->bus_width) {
+ 	case MMC_BUS_WIDTH_4:
+-		atmci_writel(host, ATMCI_SDCR, ATMCI_SDCBUS_4BIT);
++		host->sdc_reg |= ATMCI_SDCBUS_4BIT;
+ 		break;
+ 	case MMC_BUS_WIDTH_8:
+-		atmci_writel(host, ATMCI_SDCR, ATMCI_SDCBUS_8BIT);
++		host->sdc_reg |= ATMCI_SDCBUS_8BIT;
+ 		break;
+ 	case MMC_BUS_WIDTH_1:
+-		atmci_writel(host, ATMCI_SDCR, ATMCI_SDCBUS_1BIT);
++		host->sdc_reg |= ATMCI_SDCBUS_1BIT;
+ 		break;
+ 	default:
+ 		return;
  	}
+-	atmci_writel(host, ATMCI_SDCR, atmci_readl(host, ATMCI_SDCR)
+-		| host->slot_b);
  
-+	if (gpio_is_valid(pd->detect_pin)) {
-+		ret = gpio_request(pd->detect_pin, "mci_cd");
-+		if (ret) {
-+			dev_err(hw_dev, "Impossible to request CD gpio %d (%d)\n",
-+				ret, pd->detect_pin);
-+			return ret;
-+		}
+ 	if (ios->clock) {
+ 		atmci_set_clk_rate(host, ios->clock);
+@@ -437,6 +437,7 @@ static int atmci_request(struct mci_host *mci, struct mci_cmd *cmd, struct mci_d
+ 			atmci_writel(host, ATMCI_CFG, host->cfg_reg);
+ 		host->need_reset = false;
+ 	}
++	atmci_writel(host, ATMCI_SDCR, host->sdc_reg);
+ 
+ 	if (cmd->resp_type != MMC_RSP_NONE)
+ 		cmdat |= ATMCI_CMDR_MAXLAT_64CYC;
+@@ -571,6 +572,11 @@ static int atmci_probe(struct device_d *hw_dev)
+ 	if (host->caps.has_highspeed)
+ 		host->mci.host_caps |= MMC_MODE_HS;
+ 
++	if (host->slot_b)
++		host->sdc_reg = ATMCI_SDCSEL_SLOT_B;
++	else
++		host->sdc_reg = ATMCI_SDCSEL_SLOT_A;
 +
-+		ret = gpio_direction_input(pd->detect_pin);
-+		if (ret) {
-+			dev_err(hw_dev, "Impossible to configure CD gpio %d as input (%d)\n",
-+				ret, pd->detect_pin);
-+			goto err_gpio_cd_request;
-+		}
-+	}
- 
- 	host = xzalloc(sizeof(*host));
- 	host->mci.send_cmd = atmci_request;
-@@ -552,7 +568,8 @@ static int atmci_probe(struct device_d *hw_dev)
- 	host->clk = clk_get(hw_dev, "mci_clk");
- 	if (IS_ERR(host->clk)) {
- 		dev_err(hw_dev, "no mci_clk\n");
--		return PTR_ERR(host->clk);
-+		ret = PTR_ERR(host->clk);
-+		goto err_gpio_cd_request;
- 	}
- 
- 	clk_enable(host->clk);
-@@ -579,6 +596,12 @@ static int atmci_probe(struct device_d *hw_dev)
  	mci_register(&host->mci);
  
  	return 0;
-+
-+err_gpio_cd_request:
-+	if (gpio_is_valid(pd->detect_pin))
-+		gpio_free(pd->detect_pin);
-+
-+	return ret;
- }
- 
- static struct driver_d atmci_driver = {
 -- 
 1.7.10.4
 
