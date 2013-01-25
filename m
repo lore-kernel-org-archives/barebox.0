@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TynCz-0002VM-7R
- for barebox@lists.infradead.org; Fri, 25 Jan 2013 17:36:58 +0000
-Received: from mail436.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id E04CFDC1A45
- for <barebox@lists.infradead.org>; Fri, 25 Jan 2013 18:46:43 +0100 (CET)
-Date: Fri, 25 Jan 2013 18:35:35 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130125173535.GF26329@game.jcrosoft.org>
-References: <20130125151448.GD26329@game.jcrosoft.org>
- <1359127067-30079-1-git-send-email-plagnioj@jcrosoft.com>
- <1359127067-30079-8-git-send-email-plagnioj@jcrosoft.com>
- <20130125173119.GL1906@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TynZZ-0005OS-Hb
+ for barebox@lists.infradead.org; Fri, 25 Jan 2013 18:00:18 +0000
+Date: Fri, 25 Jan 2013 19:00:15 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130125180015.GO1906@pengutronix.de>
+References: <1359106650-12290-1-git-send-email-m.olbrich@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130125173119.GL1906@pengutronix.de>
+In-Reply-To: <1359106650-12290-1-git-send-email-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,66 +22,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 08/14] atmel_mci: rwproof is only needed since IP
- version 0x200
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] defenv-2: source /env/config after /env/init/*
+To: Michael Olbrich <m.olbrich@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 18:31 Fri 25 Jan     , Sascha Hauer wrote:
-> On Fri, Jan 25, 2013 at 04:17:41PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  drivers/mci/atmel_mci.c |   10 +++++++++-
-> >  1 file changed, 9 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
-> > index d5fdd1d..bf0adb0 100644
-> > --- a/drivers/mci/atmel_mci.c
-> > +++ b/drivers/mci/atmel_mci.c
-> > @@ -28,6 +28,7 @@
-> >  #include "atmel-mci-regs.h"
-> >  
-> >  struct atmel_mci_caps {
-> > +	bool    has_rwproof;
-> >  	bool	has_odd_clk_div;
-> >  };
-> >  
-> > @@ -94,7 +95,13 @@ static void atmci_set_clk_rate(struct atmel_mci *host,
-> >  	dev_dbg(host->hw_dev, "atmel_set_clk_rate: clkIn=%ld clkIos=%d divider=%d\n",
-> >  		host->bus_hz, clock_min, clkdiv);
-> >  
-> > -	host->mode_reg |= ATMCI_MR_RDPROOF | ATMCI_MR_WRPROOF;
-> > +	/*
-> > +	 * WRPROOF and RDPROOF prevent overruns/underruns by
-> > +	 * stopping the clock when the FIFO is full/empty.
-> > +	 * This state is not expected to last for long.
-> > +	 */
-> > +	if (host->caps.has_rwproof)
-> > +		host->mode_reg |= ATMCI_MR_RDPROOF | ATMCI_MR_WRPROOF;
-> >  
-> >  	atmci_writel(host, ATMCI_MR, host->mode_reg);
-> >  }
-> > @@ -470,6 +477,7 @@ static void atmci_get_cap(struct atmel_mci *host)
-> >  	case 0x400:
-> >  	case 0x300:
-> >  	case 0x200:
-> > +		host->caps.has_rwproof = 1;
-> >  	case 0x100:
-> >  	case 0x0:
+On Fri, Jan 25, 2013 at 10:37:30AM +0100, Michael Olbrich wrote:
+> This way variables in /env/config can actually overwrite things from
+> e.g. /env/init/config-board.
 > 
-> By 'since' in the subject do you mean 'up to'?
-yeah to code is right no the subject
+> Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+> ---
+> 
+> This is really confusing right now. The comment in config-board says
+> "Change /env/config instead" and that doesn't work.
+> 
+> I'd like to see this in master as well, but that only works if these
+> commits are applied first:
+> 
+> f19a924 defaultenv-2: move ps1 to base/init/ps1
+> b26c1c3 defaultenv-2: execute init/* before timeout
+> 
+> otherwise global.autoboot_timeout and global.allow_color are set too late.
 
-Best Regards,
-J.
+I stumbled upon this aswell. I think we need another solution though.
+This patch does not apply to master. Currently the problem is that we
+need the variables from /env/config before the init sequence, which
+means that we have to source /env/config once, then the init sequence
+and then /env/config again.
+
+I think we have to move /env/init/config-board to /env/config-board for
+each board and source it manually in /env/init. Better ideas?
+
+Sascha
+
+
 > 
-> Sascha
+> Michael
 > 
+>  defaultenv-2/base/bin/init |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/defaultenv-2/base/bin/init b/defaultenv-2/base/bin/init
+> index b606b63..4a1b22e 100644
+> --- a/defaultenv-2/base/bin/init
+> +++ b/defaultenv-2/base/bin/init
+> @@ -13,8 +13,6 @@ global linux.bootargs.dyn.ip
+>  global linux.bootargs.dyn.root
+>  global editcmd=sedit
+>  
+> -/env/config
+> -
+>  if [ -e /env/menu ]; then
+>  	echo -e -n "\nHit m for menu or any other key to stop autoboot: "
+>  else
+> @@ -33,6 +31,8 @@ for i in /env/init/*; do
+>  	. $i
+>  done
+>  
+> +/env/config
+> +
+>  timeout -a $global.autoboot_timeout -v key
+>  autoboot="$?"
+>  
 > -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
