@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tyfbz-0007LP-7x
- for barebox@lists.infradead.org; Fri, 25 Jan 2013 09:30:16 +0000
+ id 1Tyfj6-00082Q-23
+ for barebox@lists.infradead.org; Fri, 25 Jan 2013 09:37:36 +0000
 From: Michael Olbrich <m.olbrich@pengutronix.de>
-Date: Fri, 25 Jan 2013 10:30:08 +0100
-Message-Id: <1359106208-8041-1-git-send-email-m.olbrich@pengutronix.de>
+Date: Fri, 25 Jan 2013 10:37:30 +0100
+Message-Id: <1359106650-12290-1-git-send-email-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,60 +19,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] defenv-2: migrate guf-vincell to config-board
+Subject: [PATCH] defenv-2: source /env/config after /env/init/*
 To: barebox@lists.infradead.org
+
+This way variables in /env/config can actually overwrite things from
+e.g. /env/init/config-board.
 
 Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 ---
- arch/arm/boards/guf-vincell/env/init/bootargs-base |    8 --------
- arch/arm/boards/guf-vincell/env/init/config-board  |    7 +++++++
- arch/arm/boards/guf-vincell/env/init/hostname      |    8 --------
- 3 files changed, 7 insertions(+), 16 deletions(-)
- delete mode 100644 arch/arm/boards/guf-vincell/env/init/bootargs-base
- create mode 100644 arch/arm/boards/guf-vincell/env/init/config-board
- delete mode 100644 arch/arm/boards/guf-vincell/env/init/hostname
 
-diff --git a/arch/arm/boards/guf-vincell/env/init/bootargs-base b/arch/arm/boards/guf-vincell/env/init/bootargs-base
-deleted file mode 100644
-index d869754..0000000
---- a/arch/arm/boards/guf-vincell/env/init/bootargs-base
-+++ /dev/null
-@@ -1,8 +0,0 @@
--#!/bin/sh
+This is really confusing right now. The comment in config-board says
+"Change /env/config instead" and that doesn't work.
+
+I'd like to see this in master as well, but that only works if these
+commits are applied first:
+
+f19a924 defaultenv-2: move ps1 to base/init/ps1
+b26c1c3 defaultenv-2: execute init/* before timeout
+
+otherwise global.autoboot_timeout and global.allow_color are set too late.
+
+Michael
+
+ defaultenv-2/base/bin/init |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/defaultenv-2/base/bin/init b/defaultenv-2/base/bin/init
+index b606b63..4a1b22e 100644
+--- a/defaultenv-2/base/bin/init
++++ b/defaultenv-2/base/bin/init
+@@ -13,8 +13,6 @@ global linux.bootargs.dyn.ip
+ global linux.bootargs.dyn.root
+ global editcmd=sedit
+ 
+-/env/config
 -
--if [ "$1" = menu ]; then
--	init-menu-add-entry "$0" "Base bootargs"
--	exit
--fi
--
--global.linux.bootargs.base="console=ttymxc0,115200"
-diff --git a/arch/arm/boards/guf-vincell/env/init/config-board b/arch/arm/boards/guf-vincell/env/init/config-board
-new file mode 100644
-index 0000000..77e9fc8
---- /dev/null
-+++ b/arch/arm/boards/guf-vincell/env/init/config-board
-@@ -0,0 +1,7 @@
-+#!/bin/sh
+ if [ -e /env/menu ]; then
+ 	echo -e -n "\nHit m for menu or any other key to stop autoboot: "
+ else
+@@ -33,6 +31,8 @@ for i in /env/init/*; do
+ 	. $i
+ done
+ 
++/env/config
 +
-+# board defaults, do not change in running system. Change /env/config
-+# instead
-+
-+global.hostname=vincell
-+global.linux.bootargs.base="console=ttymxc0,115200"
-diff --git a/arch/arm/boards/guf-vincell/env/init/hostname b/arch/arm/boards/guf-vincell/env/init/hostname
-deleted file mode 100644
-index ca2789d..0000000
---- a/arch/arm/boards/guf-vincell/env/init/hostname
-+++ /dev/null
-@@ -1,8 +0,0 @@
--#!/bin/sh
--
--if [ "$1" = menu ]; then
--	init-menu-add-entry "$0" "hostname"
--	exit
--fi
--
--global.hostname=vincell
+ timeout -a $global.autoboot_timeout -v key
+ autoboot="$?"
+ 
 -- 
 1.7.10.4
 
