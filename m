@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TynZZ-0005OS-Hb
- for barebox@lists.infradead.org; Fri, 25 Jan 2013 18:00:18 +0000
-Date: Fri, 25 Jan 2013 19:00:15 +0100
+ id 1Tynxu-0008Jq-2q
+ for barebox@lists.infradead.org; Fri, 25 Jan 2013 18:25:26 +0000
+Date: Fri, 25 Jan 2013 19:25:24 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130125180015.GO1906@pengutronix.de>
-References: <1359106650-12290-1-git-send-email-m.olbrich@pengutronix.de>
+Message-ID: <20130125182524.GP1906@pengutronix.de>
+References: <1359113609-14606-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1359106650-12290-1-git-send-email-m.olbrich@pengutronix.de>
+In-Reply-To: <1359113609-14606-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +22,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] defenv-2: source /env/config after /env/init/*
-To: Michael Olbrich <m.olbrich@pengutronix.de>
+Subject: Re: [PATCH] of: Fix of_find_node_by_path breakage
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jan 25, 2013 at 10:37:30AM +0100, Michael Olbrich wrote:
-> This way variables in /env/config can actually overwrite things from
-> e.g. /env/init/config-board.
+On Fri, Jan 25, 2013 at 03:33:29PM +0400, Alexander Shiyan wrote:
+> This patch fixes breakage of of_find_node_by_path when
+> node not found in tree. This fault is caused, for example,
+> when no aliases is present in dtb.
 > 
-> Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
-> ---
+> barebox@ConnectCore i.MX51:/ oftree -d /env/mm.dtb
+> / {
+>         model = "Freescale i.MX51 CCMX51";
+>         compatible = "fsl,imx51-ccmx51", "fsl,imx51";
+>         chosen {
+>         };
+>         cpus {
+>                 cpu@0 {
+>                         compatible = "arm,cortex-a8";
+>                 };
+>         };
+> };
+> barebox@ConnectCore i.MX51:/ oftree -p /env/mm.dtb
+> unable to handle NULL pointer dereference at address 0x00000000
+> pc : [<97f1f3f0>]    lr : [<97f19438>]
+> sp : 95eff988  ip : 00000001  fp : 97f43080
+> r10: 00000000  r9 : 97f4304c  r8 : 00000000
+> r7 : 00000000  r6 : e3510034  r5 : 00000001  r4 : 95f0eb28
+> r3 : 97f43054  r2 : 00000000  r1 : e1a0000b  r0 : 00000000
+> Flags: nzCv  IRQs off  FIQs off  Mode SVC_32
 > 
-> This is really confusing right now. The comment in config-board says
-> "Change /env/config instead" and that doesn't work.
+> no stack data available
 > 
-> I'd like to see this in master as well, but that only works if these
-> commits are applied first:
-> 
-> f19a924 defaultenv-2: move ps1 to base/init/ps1
-> b26c1c3 defaultenv-2: execute init/* before timeout
-> 
-> otherwise global.autoboot_timeout and global.allow_color are set too late.
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-I stumbled upon this aswell. I think we need another solution though.
-This patch does not apply to master. Currently the problem is that we
-need the variables from /env/config before the init sequence, which
-means that we have to source /env/config once, then the init sequence
-and then /env/config again.
-
-I think we have to move /env/init/config-board to /env/config-board for
-each board and source it manually in /env/init. Better ideas?
+Applied, thanks
 
 Sascha
 
-
+> ---
+>  drivers/of/base.c |    4 ++--
+>  1 files changed, 2 insertions(+), 2 deletions(-)
 > 
-> Michael
-> 
->  defaultenv-2/base/bin/init |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/defaultenv-2/base/bin/init b/defaultenv-2/base/bin/init
-> index b606b63..4a1b22e 100644
-> --- a/defaultenv-2/base/bin/init
-> +++ b/defaultenv-2/base/bin/init
-> @@ -13,8 +13,6 @@ global linux.bootargs.dyn.ip
->  global linux.bootargs.dyn.root
->  global editcmd=sedit
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index 7a41618..576841d 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -487,9 +487,9 @@ struct device_node *of_find_node_by_path(const char *path)
 >  
-> -/env/config
-> -
->  if [ -e /env/menu ]; then
->  	echo -e -n "\nHit m for menu or any other key to stop autoboot: "
->  else
-> @@ -33,6 +31,8 @@ for i in /env/init/*; do
->  	. $i
->  done
->  
-> +/env/config
-> +
->  timeout -a $global.autoboot_timeout -v key
->  autoboot="$?"
+>  	list_for_each_entry(np, &allnodes, list) {
+>  		if (np->full_name && (strcmp(np->full_name, path) == 0))
+> -			break;
+> +			return np;
+>  	}
+> -	return np;
+> +	return NULL;
+>  }
+>  EXPORT_SYMBOL(of_find_node_by_path);
 >  
 > -- 
-> 1.7.10.4
+> 1.7.3.4
 > 
 > 
 > _______________________________________________
