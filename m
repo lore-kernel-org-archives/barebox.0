@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
- helo=mo2.mail-out.ovh.net)
+Received: from mo2.mail-out.ovh.net ([178.32.228.2])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tyl0i-0007Te-Pi
- for barebox@lists.infradead.org; Fri, 25 Jan 2013 15:16:10 +0000
+ id 1Tyl3m-0007od-8Q
+ for barebox@lists.infradead.org; Fri, 25 Jan 2013 15:19:24 +0000
 Received: from mail436.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 226BEDC1BB2
- for <barebox@lists.infradead.org>; Fri, 25 Jan 2013 16:25:56 +0100 (CET)
-Date: Fri, 25 Jan 2013 16:14:48 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 11C4CDC1D06
+ for <barebox@lists.infradead.org>; Fri, 25 Jan 2013 16:29:06 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130125151448.GD26329@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Fri, 25 Jan 2013 16:17:41 +0100
+Message-Id: <1359127067-30079-8-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1359127067-30079-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20130125151448.GD26329@game.jcrosoft.org>
+ <1359127067-30079-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,66 +20,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [for master PATCH 00/14] atmel_mci: fixes and cleanup
+Subject: [PATCH 08/14] atmel_mci: rwproof is only needed since IP version 0x200
 To: barebox@lists.infradead.org
 
-HI,
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/mci/atmel_mci.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-	the following patche series clean and fixes the atmel mci driver
+diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
+index d5fdd1d..bf0adb0 100644
+--- a/drivers/mci/atmel_mci.c
++++ b/drivers/mci/atmel_mci.c
+@@ -28,6 +28,7 @@
+ #include "atmel-mci-regs.h"
+ 
+ struct atmel_mci_caps {
++	bool    has_rwproof;
+ 	bool	has_odd_clk_div;
+ };
+ 
+@@ -94,7 +95,13 @@ static void atmci_set_clk_rate(struct atmel_mci *host,
+ 	dev_dbg(host->hw_dev, "atmel_set_clk_rate: clkIn=%ld clkIos=%d divider=%d\n",
+ 		host->bus_hz, clock_min, clkdiv);
+ 
+-	host->mode_reg |= ATMCI_MR_RDPROOF | ATMCI_MR_WRPROOF;
++	/*
++	 * WRPROOF and RDPROOF prevent overruns/underruns by
++	 * stopping the clock when the FIFO is full/empty.
++	 * This state is not expected to last for long.
++	 */
++	if (host->caps.has_rwproof)
++		host->mode_reg |= ATMCI_MR_RDPROOF | ATMCI_MR_WRPROOF;
+ 
+ 	atmci_writel(host, ATMCI_MR, host->mode_reg);
+ }
+@@ -470,6 +477,7 @@ static void atmci_get_cap(struct atmel_mci *host)
+ 	case 0x400:
+ 	case 0x300:
+ 	case 0x200:
++		host->caps.has_rwproof = 1;
+ 	case 0x100:
+ 	case 0x0:
+ 		break;
+-- 
+1.7.10.4
 
-	 - highspeed support
-	 - use fixup for each IP version
-	 - fix new IP clk div
-	 - sync with linux
-	 - request and configure cd gpio
-
-	 the atmel mci still does not work on rm9200
-
-The following changes since commit 50d1b2de8ea0f3b8d89fe3a97ce64315996ed4cb:
-
-  ARM v7: Fix register corruption in v7_mmu_cache_off (2013-01-23 20:37:56 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/atmel_mci
-
-for you to fetch changes up to 282d19eb0d93141fcc50e5c68039a4d1452771d4:
-
-  atmel_mci: gpio: request and configure card detect (2013-01-21 16:36:13 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (14):
-      atmel_mci: rename atmel_mci_host tp atmel_mci
-      atmel_mci: rename atmel_mci_readl/writel to atmci_readl/writel
-      atmel_mci: rename all function to start with atmci
-      atmel_mci: use linux regs define
-      atmel_mci: detect IP version
-      atmel_mci: version 0x5xx of the IP have a different clk div
-      atmel_mci: fix host init
-      atmel_mci: rwproof is only needed since IP version 0x200
-      atmel_mci: on version 0x0 we need to reset the IP at each request
-      atmel_mci: after a software timeout the IP need to be reset
-      atmel_mci: support the SD highspeed since IP version 0x300
-      atmel_mci: update the SD/SDIO Card Register at request time
-      atmel_mci: drop board host caps
-      atmel_mci: gpio: request and configure card detect
-
- arch/arm/boards/at91sam9m10g45ek/init.c |    1 -
- arch/arm/boards/dss11/init.c            |    1 -
- arch/arm/mach-at91/include/mach/board.h |    1 -
- drivers/mci/at91_mci.h                  |  121 ----------------------------------
- drivers/mci/atmel-mci-regs.h            |  166 ++++++++++++++++++++++++++++++++++++++++++++++
- drivers/mci/atmel_mci.c                 |  391 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------------------------------------
- 6 files changed, 421 insertions(+), 260 deletions(-)
- delete mode 100644 drivers/mci/at91_mci.h
- create mode 100644 drivers/mci/atmel-mci-regs.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
