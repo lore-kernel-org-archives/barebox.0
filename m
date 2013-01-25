@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mo2.mail-out.ovh.net ([178.32.228.2])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tyl3n-0007pm-6v
- for barebox@lists.infradead.org; Fri, 25 Jan 2013 15:19:32 +0000
+ id 1Tyl3n-0007po-7f
+ for barebox@lists.infradead.org; Fri, 25 Jan 2013 15:19:30 +0000
 Received: from mail436.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 30BD9DC1D0B
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 39CA4DC1D0C
  for <barebox@lists.infradead.org>; Fri, 25 Jan 2013 16:29:08 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 25 Jan 2013 16:17:46 +0100
-Message-Id: <1359127067-30079-13-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 25 Jan 2013 16:17:47 +0100
+Message-Id: <1359127067-30079-14-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1359127067-30079-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130125151448.GD26329@game.jcrosoft.org>
  <1359127067-30079-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,67 +25,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/14] atmel_mci: drop board host caps
+Subject: [PATCH 14/14] atmel_mci: gpio: request and configure card detect
 To: barebox@lists.infradead.org
-
-as it's handle by detecting the IP version and bus with
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/at91sam9m10g45ek/init.c |    1 -
- arch/arm/boards/dss11/init.c            |    1 -
- arch/arm/mach-at91/include/mach/board.h |    1 -
- drivers/mci/atmel_mci.c                 |    1 -
- 4 files changed, 4 deletions(-)
+ drivers/mci/atmel_mci.c |   27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/at91sam9m10g45ek/init.c b/arch/arm/boards/at91sam9m10g45ek/init.c
-index d77b2bf..053c85b 100644
---- a/arch/arm/boards/at91sam9m10g45ek/init.c
-+++ b/arch/arm/boards/at91sam9m10g45ek/init.c
-@@ -113,7 +113,6 @@ static struct at91_ether_platform_data macb_pdata = {
- #if defined(CONFIG_MCI_ATMEL)
- static struct atmel_mci_platform_data ek_mci_data = {
- 	.bus_width	= 4,
--	.host_caps	= MMC_MODE_HS,
- 	.detect_pin	= AT91_PIN_PD10,
- };
- 
-diff --git a/arch/arm/boards/dss11/init.c b/arch/arm/boards/dss11/init.c
-index a2e9825..2920d5e 100644
---- a/arch/arm/boards/dss11/init.c
-+++ b/arch/arm/boards/dss11/init.c
-@@ -113,7 +113,6 @@ static void dss11_phy_reset(void)
- static struct atmel_mci_platform_data dss11_mci_data = {
- 	.slot_b		= 1,
- 	.bus_width	= 4,
--	.host_caps	= MMC_MODE_HS,
- };
- 
- static struct at91_usbh_data dss11_usbh_data = {
-diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
-index b18f1c0..9a72474 100644
---- a/arch/arm/mach-at91/include/mach/board.h
-+++ b/arch/arm/mach-at91/include/mach/board.h
-@@ -147,7 +147,6 @@ static inline struct device_d * at91_register_uart(unsigned id, unsigned pins)
- struct atmel_mci_platform_data {
- 	unsigned slot_b;
- 	unsigned bus_width;
--	unsigned host_caps; /* MCI_MODE_* from mci.h */
- 	int detect_pin;
- 	int wp_pin;
- };
 diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
-index 8ad0e8a..647683b 100644
+index 647683b..9de079d 100644
 --- a/drivers/mci/atmel_mci.c
 +++ b/drivers/mci/atmel_mci.c
-@@ -540,7 +540,6 @@ static int atmci_probe(struct device_d *hw_dev)
- 	host->mci.init = atmci_reset;
- 	host->mci.hw_dev = hw_dev;
+@@ -481,7 +481,7 @@ static void atmci_info(struct device_d *mci_dev)
+ 		printf("- %u Hz upper limit", host->mci.f_max);
  
--	host->mci.host_caps = pd->host_caps;
- 	if (pd->bus_width >= 4)
- 		host->mci.host_caps |= MMC_MODE_4BIT;
- 	if (pd->bus_width == 8)
+ 	printf("\n  Card detection support: %s\n",
+-		pd->detect_pin != 0 ? "yes" : "no");
++		gpio_is_valid(pd->detect_pin) ? "yes" : "no");
+ 
+ }
+ #endif /* CONFIG_MCI_INFO */
+@@ -527,12 +527,28 @@ static int atmci_probe(struct device_d *hw_dev)
+ {
+ 	struct atmel_mci *host;
+ 	struct atmel_mci_platform_data *pd = hw_dev->platform_data;
++	int ret;
+ 
+ 	if (!pd) {
+ 		dev_err(hw_dev, "missing platform data\n");
+ 		return -EINVAL;
+ 	}
+ 
++	if (gpio_is_valid(pd->detect_pin)) {
++		ret = gpio_request(pd->detect_pin, "mci_cd");
++		if (ret) {
++			dev_err(hw_dev, "Impossible to request CD gpio %d (%d)\n",
++				ret, pd->detect_pin);
++			return ret;
++		}
++
++		ret = gpio_direction_input(pd->detect_pin);
++		if (ret) {
++			dev_err(hw_dev, "Impossible to configure CD gpio %d as input (%d)\n",
++				ret, pd->detect_pin);
++			goto err_gpio_cd_request;
++		}
++	}
+ 
+ 	host = xzalloc(sizeof(*host));
+ 	host->mci.send_cmd = atmci_request;
+@@ -552,7 +568,8 @@ static int atmci_probe(struct device_d *hw_dev)
+ 	host->clk = clk_get(hw_dev, "mci_clk");
+ 	if (IS_ERR(host->clk)) {
+ 		dev_err(hw_dev, "no mci_clk\n");
+-		return PTR_ERR(host->clk);
++		ret = PTR_ERR(host->clk);
++		goto err_gpio_cd_request;
+ 	}
+ 
+ 	clk_enable(host->clk);
+@@ -579,6 +596,12 @@ static int atmci_probe(struct device_d *hw_dev)
+ 	mci_register(&host->mci);
+ 
+ 	return 0;
++
++err_gpio_cd_request:
++	if (gpio_is_valid(pd->detect_pin))
++		gpio_free(pd->detect_pin);
++
++	return ret;
+ }
+ 
+ static struct driver_d atmci_driver = {
 -- 
 1.7.10.4
 
