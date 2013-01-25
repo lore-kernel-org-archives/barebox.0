@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tyn7b-00005V-EA
- for barebox@lists.infradead.org; Fri, 25 Jan 2013 17:31:24 +0000
-Date: Fri, 25 Jan 2013 18:31:19 +0100
+ id 1TynCM-000202-Uw
+ for barebox@lists.infradead.org; Fri, 25 Jan 2013 17:36:19 +0000
+Date: Fri, 25 Jan 2013 18:36:17 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130125173119.GL1906@pengutronix.de>
-References: <20130125151448.GD26329@game.jcrosoft.org>
- <1359127067-30079-1-git-send-email-plagnioj@jcrosoft.com>
- <1359127067-30079-8-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130125173617.GM1906@pengutronix.de>
+References: <20130123204916.GS26329@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1359127067-30079-8-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130123204916.GS26329@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,55 +22,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 08/14] atmel_mci: rwproof is only needed since IP version
- 0x200
+Subject: Re: [PATCH 0/2] tny-a9263: add spi + bootstrap support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jan 25, 2013 at 04:17:41PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  drivers/mci/atmel_mci.c |   10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
+On Wed, Jan 23, 2013 at 09:49:16PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> HI,
 > 
-> diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
-> index d5fdd1d..bf0adb0 100644
-> --- a/drivers/mci/atmel_mci.c
-> +++ b/drivers/mci/atmel_mci.c
-> @@ -28,6 +28,7 @@
->  #include "atmel-mci-regs.h"
->  
->  struct atmel_mci_caps {
-> +	bool    has_rwproof;
->  	bool	has_odd_clk_div;
->  };
->  
-> @@ -94,7 +95,13 @@ static void atmci_set_clk_rate(struct atmel_mci *host,
->  	dev_dbg(host->hw_dev, "atmel_set_clk_rate: clkIn=%ld clkIos=%d divider=%d\n",
->  		host->bus_hz, clock_min, clkdiv);
->  
-> -	host->mode_reg |= ATMCI_MR_RDPROOF | ATMCI_MR_WRPROOF;
-> +	/*
-> +	 * WRPROOF and RDPROOF prevent overruns/underruns by
-> +	 * stopping the clock when the FIFO is full/empty.
-> +	 * This state is not expected to last for long.
-> +	 */
-> +	if (host->caps.has_rwproof)
-> +		host->mode_reg |= ATMCI_MR_RDPROOF | ATMCI_MR_WRPROOF;
->  
->  	atmci_writel(host, ATMCI_MR, host->mode_reg);
->  }
-> @@ -470,6 +477,7 @@ static void atmci_get_cap(struct atmel_mci *host)
->  	case 0x400:
->  	case 0x300:
->  	case 0x200:
-> +		host->caps.has_rwproof = 1;
->  	case 0x100:
->  	case 0x0:
+> 	depends on console none
+> 
+> The following changes since commit e75f727c6e048c9978cb47cb8af92488a8251569:
+> 
+>   introduce console none support (2013-01-19 11:51:53 +0800)
+> 
+> are available in the git repository at:
+> 
+>   git://git.jcrosoft.org/barebox.git delivery/tny_a9263
 
-By 'since' in the subject do you mean 'up to'?
+Applied, thanks
 
 Sascha
+
+> 
+> for you to fetch changes up to 5b41b075420e3547a9dfa7ef1bc0ba015af9db98:
+> 
+>   tny_a9263: add bootstrop support (2013-01-19 14:41:24 +0800)
+> 
+> ----------------------------------------------------------------
+> Jean-Christophe PLAGNIOL-VILLARD (2):
+>       tny-a9263: add dataflash support
+>       tny_a9263: add bootstrop support
+> 
+>  arch/arm/boards/tny-a926x/Makefile                  |    9 +++++++++
+>  arch/arm/boards/tny-a926x/init.c                    |   43 ++++++++++++++++++++++++++++++-------------
+>  arch/arm/boards/tny-a926x/tny_a9263_bootstrap.c     |   16 ++++++++++++++++
+>  arch/arm/boards/tny-a926x/tny_a9263_lowlevel_init.c |  107 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  arch/arm/configs/tny_a9263_bootstrap_defconfig      |   26 ++++++++++++++++++++++++++
+>  arch/arm/configs/tny_a9263_defconfig                |    1 +
+>  arch/arm/mach-at91/Kconfig                          |    1 +
+>  7 files changed, 190 insertions(+), 13 deletions(-)
+>  create mode 100644 arch/arm/boards/tny-a926x/tny_a9263_bootstrap.c
+>  create mode 100644 arch/arm/boards/tny-a926x/tny_a9263_lowlevel_init.c
+>  create mode 100644 arch/arm/configs/tny_a9263_bootstrap_defconfig
+> 
+> Best Regards,
+> J.
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
