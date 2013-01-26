@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f170.google.com ([209.85.217.170])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tz8oA-0000XI-05
- for barebox@lists.infradead.org; Sat, 26 Jan 2013 16:40:46 +0000
-Received: by mail-lb0-f170.google.com with SMTP id ge1so2212353lbb.15
- for <barebox@lists.infradead.org>; Sat, 26 Jan 2013 08:40:44 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat, 26 Jan 2013 20:52:39 +0400
-Message-Id: <1359219160-18500-4-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1359219160-18500-1-git-send-email-antonynpavlov@gmail.com>
-References: <1359219160-18500-1-git-send-email-antonynpavlov@gmail.com>
+Received: from 12.mo5.mail-out.ovh.net ([46.105.39.65]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TzAHU-0004cU-Oe
+ for barebox@lists.infradead.org; Sat, 26 Jan 2013 18:15:10 +0000
+Received: from mail609.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 31FABFFA2A3
+ for <barebox@lists.infradead.org>; Sat, 26 Jan 2013 19:25:04 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Sat, 26 Jan 2013 19:13:45 +0100
+Message-Id: <1359224025-32325-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,41 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] MIPS: rzx50: use mips_add_ram0()
+Subject: [PATCH 1/1] at91sam9261: fix max bare_init it's 156KiB
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/mips/boards/rzx50/Makefile |    1 +
- arch/mips/boards/rzx50/board.c  |   12 ++++++++++++
- 2 files changed, 13 insertions(+)
- create mode 100644 arch/mips/boards/rzx50/board.c
+ arch/arm/mach-at91/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/boards/rzx50/Makefile b/arch/mips/boards/rzx50/Makefile
-index ff1a655..9e14763 100644
---- a/arch/mips/boards/rzx50/Makefile
-+++ b/arch/mips/boards/rzx50/Makefile
-@@ -1 +1,2 @@
-+obj-y += board.o
- obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial.o
-diff --git a/arch/mips/boards/rzx50/board.c b/arch/mips/boards/rzx50/board.c
-new file mode 100644
-index 0000000..9e655ab
---- /dev/null
-+++ b/arch/mips/boards/rzx50/board.c
-@@ -0,0 +1,12 @@
-+#include <common.h>
-+#include <init.h>
-+#include <sizes.h>
-+#include <asm/memory.h>
-+
-+static int mem_init(void)
-+{
-+	mips_add_ram0(SZ_64M);
-+
-+	return 0;
-+}
-+mem_initcall(mem_init);
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 9d4359e..a3b2aba 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -172,7 +172,7 @@ endchoice
+ config ARCH_BAREBOX_MAX_BARE_INIT_SIZE
+ 	hex
+ 	default 0x1000 if ARCH_AT91SAM9260
+-	default 0x270000 if ARCH_AT91SAM9261
++	default 0x27000 if ARCH_AT91SAM9261
+ 	default 0x12000 if ARCH_AT91SAM9263
+ 	default 0x4000 if ARCH_AT91SAM9G20
+ 	default 0x3000 if ARCH_AT91SAM9G10
 -- 
 1.7.10.4
 
