@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tz3rP-0004Wd-5r
- for barebox@lists.infradead.org; Sat, 26 Jan 2013 11:23:47 +0000
+ id 1Tz3rA-0004Ux-Ss
+ for barebox@lists.infradead.org; Sat, 26 Jan 2013 11:23:33 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat, 26 Jan 2013 12:23:23 +0100
-Message-Id: <1359199403-27664-4-git-send-email-s.hauer@pengutronix.de>
+Date: Sat, 26 Jan 2013 12:23:21 +0100
+Message-Id: <1359199403-27664-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359199403-27664-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359199403-27664-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,53 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] pbl string: Fix no previous prototype warnings
+Subject: [PATCH 1/3] ARM bcm2835: Fix noreturn function does return
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- pbl/string.c |   10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ arch/arm/mach-bcm2835/core.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/pbl/string.c b/pbl/string.c
-index 6787e82..b773f5c 100644
---- a/pbl/string.c
-+++ b/pbl/string.c
-@@ -5,6 +5,7 @@
-  */
- 
- #include <linux/types.h>
-+#include <linux/string.h>
- 
- void *memcpy(void *__dest, __const void *__src, size_t __n)
- {
-@@ -103,7 +104,7 @@ void *memchr(const void *s, int c, size_t count)
- 	return NULL;
+diff --git a/arch/arm/mach-bcm2835/core.c b/arch/arm/mach-bcm2835/core.c
+index b0fec8b..f44ecd5 100644
+--- a/arch/arm/mach-bcm2835/core.c
++++ b/arch/arm/mach-bcm2835/core.c
+@@ -97,5 +97,7 @@ void __noreturn reset_cpu (unsigned long addr)
+ 	rstc |= PM_RSTC_WRCFG_FULL_RESET;
+ 	writel(PM_PASSWORD | RESET_TIMEOUT, PM_WDOG);
+ 	writel(PM_PASSWORD | rstc, PM_RSTC);
++
++	while (1);
  }
- 
--char *strchr(const char *s, int c)
-+char *_strchr(const char *s, int c)
- {
- 	while (*s != (char)c)
- 		if (*s++ == '\0')
-@@ -111,8 +112,6 @@ char *strchr(const char *s, int c)
- 	return (char *)s;
- }
- 
--#undef memset
--
- void *memset(void *s, int c, size_t count)
- {
- 	char *xs = s;
-@@ -120,8 +119,3 @@ void *memset(void *s, int c, size_t count)
- 		*xs++ = c;
- 	return s;
- }
--
--void __memzero(void *s, size_t count)
--{
--	memset(s, 0, count);
--}
+ EXPORT_SYMBOL(reset_cpu);
 -- 
 1.7.10.4
 
