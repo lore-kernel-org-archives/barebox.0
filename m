@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo1.mail-out.ovh.net ([178.32.97.215]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tz6xB-0006XU-U8
- for barebox@lists.infradead.org; Sat, 26 Jan 2013 14:41:59 +0000
-Received: from mail174.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id C0814FF88AE
- for <barebox@lists.infradead.org>; Sat, 26 Jan 2013 15:56:21 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 26 Jan 2013 15:40:29 +0100
-Message-Id: <1359211229-15058-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-lb0-f179.google.com ([209.85.217.179])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1Tz8o3-0000WO-Sw
+ for barebox@lists.infradead.org; Sat, 26 Jan 2013 16:40:40 +0000
+Received: by mail-lb0-f179.google.com with SMTP id j14so2215421lbo.38
+ for <barebox@lists.infradead.org>; Sat, 26 Jan 2013 08:40:38 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Sat, 26 Jan 2013 20:52:36 +0400
+Message-Id: <1359219160-18500-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,31 +21,13 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] gpio_keys: fix loop on buttons for request and
- configuration
+Subject: [PATCH 0/4] MIPS: introduce ram0 regions register function
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/input/gpio_keys.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/input/gpio_keys.c b/drivers/input/gpio_keys.c
-index 6f3c912..543ad1a 100644
---- a/drivers/input/gpio_keys.c
-+++ b/drivers/input/gpio_keys.c
-@@ -79,7 +79,7 @@ static int __init gpio_keys_probe(struct device_d *dev)
- 	pdata->recv_fifo = kfifo_alloc(pdata->fifo_size);
- 
- 	for (i = 0; i < pdata->nbuttons; i++) {
--		gpio = pdata->buttons->gpio;
-+		gpio = pdata->buttons[i].gpio;
- 		ret = gpio_request(gpio, "gpio_keys");
- 		if (ret) {
- 			pr_err("gpio_keys: (%d) can not be requested\n", gpio);
--- 
-1.7.10.4
-
+[PATCH 1/4] MIPS: introduce ram0 regions register function
+[PATCH 2/4] MIPS: qemu-malta: use mips_add_ram0()
+[PATCH 3/4] MIPS: rzx50: use mips_add_ram0()
+[PATCH 4/4] MIPS: dlink-dir-320: use mips_add_ram0()
 
 _______________________________________________
 barebox mailing list
