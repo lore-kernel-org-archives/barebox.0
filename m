@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tz3tq-0004lv-TA
- for barebox@lists.infradead.org; Sat, 26 Jan 2013 11:26:19 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat, 26 Jan 2013 12:26:16 +0100
-Message-Id: <1359199576-27947-1-git-send-email-s.hauer@pengutronix.de>
+Received: from 14.mo1.mail-out.ovh.net ([178.32.97.215]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1Tz6xB-0006XU-U8
+ for barebox@lists.infradead.org; Sat, 26 Jan 2013 14:41:59 +0000
+Received: from mail174.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id C0814FF88AE
+ for <barebox@lists.infradead.org>; Sat, 26 Jan 2013 15:56:21 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Sat, 26 Jan 2013 15:40:29 +0100
+Message-Id: <1359211229-15058-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM AT91 pm9263: Fix phy address
+Subject: [PATCH 1/1] gpio_keys: fix loop on buttons for request and
+ configuration
 To: barebox@lists.infradead.org
 
-The ethernet phy address is wrong so no phy is found. Autodetect it.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/pm9263/init.c |    2 +-
+ drivers/input/gpio_keys.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/pm9263/init.c b/arch/arm/boards/pm9263/init.c
-index f7ef148..0be5cf5 100644
---- a/arch/arm/boards/pm9263/init.c
-+++ b/arch/arm/boards/pm9263/init.c
-@@ -90,7 +90,7 @@ static void pm_add_device_nand(void)
+diff --git a/drivers/input/gpio_keys.c b/drivers/input/gpio_keys.c
+index 6f3c912..543ad1a 100644
+--- a/drivers/input/gpio_keys.c
++++ b/drivers/input/gpio_keys.c
+@@ -79,7 +79,7 @@ static int __init gpio_keys_probe(struct device_d *dev)
+ 	pdata->recv_fifo = kfifo_alloc(pdata->fifo_size);
  
- static struct at91_ether_platform_data macb_pdata = {
- 	.is_rmii = 1,
--	.phy_addr = 0,
-+	.phy_addr = -1,
- };
- 
- static void pm9263_phy_init(void)
+ 	for (i = 0; i < pdata->nbuttons; i++) {
+-		gpio = pdata->buttons->gpio;
++		gpio = pdata->buttons[i].gpio;
+ 		ret = gpio_request(gpio, "gpio_keys");
+ 		if (ret) {
+ 			pr_err("gpio_keys: (%d) can not be requested\n", gpio);
 -- 
 1.7.10.4
 
