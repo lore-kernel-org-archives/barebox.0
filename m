@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x230.google.com ([2a00:1450:4010:c03::230])
+Received: from mail-lb0-f181.google.com ([209.85.217.181])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tz8oC-0000Xo-AF
- for barebox@lists.infradead.org; Sat, 26 Jan 2013 16:40:48 +0000
-Received: by mail-la0-f48.google.com with SMTP id fq13so251419lab.7
- for <barebox@lists.infradead.org>; Sat, 26 Jan 2013 08:40:46 -0800 (PST)
+ id 1Tz8o8-0000Wx-1x
+ for barebox@lists.infradead.org; Sat, 26 Jan 2013 16:40:44 +0000
+Received: by mail-lb0-f181.google.com with SMTP id gm6so2154913lbb.26
+ for <barebox@lists.infradead.org>; Sat, 26 Jan 2013 08:40:42 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat, 26 Jan 2013 20:52:40 +0400
-Message-Id: <1359219160-18500-5-git-send-email-antonynpavlov@gmail.com>
+Date: Sat, 26 Jan 2013 20:52:38 +0400
+Message-Id: <1359219160-18500-3-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1359219160-18500-1-git-send-email-antonynpavlov@gmail.com>
 References: <1359219160-18500-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,41 +23,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] MIPS: dlink-dir-320: use mips_add_ram0()
+Subject: [PATCH 2/4] MIPS: qemu-malta: use mips_add_ram0()
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/boards/dlink-dir-320/Makefile |    1 +
- arch/mips/boards/dlink-dir-320/board.c  |   12 ++++++++++++
- 2 files changed, 13 insertions(+)
- create mode 100644 arch/mips/boards/dlink-dir-320/board.c
+ arch/mips/boards/qemu-malta/init.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/boards/dlink-dir-320/Makefile b/arch/mips/boards/dlink-dir-320/Makefile
-index ff1a655..9e14763 100644
---- a/arch/mips/boards/dlink-dir-320/Makefile
-+++ b/arch/mips/boards/dlink-dir-320/Makefile
-@@ -1 +1,2 @@
-+obj-y += board.o
- obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial.o
-diff --git a/arch/mips/boards/dlink-dir-320/board.c b/arch/mips/boards/dlink-dir-320/board.c
-new file mode 100644
-index 0000000..3eed6f0
---- /dev/null
-+++ b/arch/mips/boards/dlink-dir-320/board.c
-@@ -0,0 +1,12 @@
-+#include <common.h>
-+#include <init.h>
-+#include <sizes.h>
+diff --git a/arch/mips/boards/qemu-malta/init.c b/arch/mips/boards/qemu-malta/init.c
+index 28c23aa..fb4472f 100644
+--- a/arch/mips/boards/qemu-malta/init.c
++++ b/arch/mips/boards/qemu-malta/init.c
+@@ -20,7 +20,7 @@
+ #include <types.h>
+ #include <driver.h>
+ #include <init.h>
+-#include <memory.h>
 +#include <asm/memory.h>
-+
-+static int mem_init(void)
-+{
-+	mips_add_ram0(SZ_32M);
-+
-+	return 0;
-+}
-+mem_initcall(mem_init);
+ #include <ns16550.h>
+ #include <mach/hardware.h>
+ #include <io.h>
+@@ -30,7 +30,7 @@
+ 
+ static int malta_mem_init(void)
+ {
+-	barebox_add_memory_bank("ram0", 0xa0000000, SZ_256M);
++	mips_add_ram0(SZ_256M);
+ 
+ 	return 0;
+ }
 -- 
 1.7.10.4
 
