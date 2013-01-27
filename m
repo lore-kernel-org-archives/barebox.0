@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f46.google.com ([209.85.214.46])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TzTcU-0008Im-Im
- for barebox@lists.infradead.org; Sun, 27 Jan 2013 14:54:08 +0000
-Received: by mail-bk0-f46.google.com with SMTP id j5so929498bkw.33
- for <barebox@lists.infradead.org>; Sun, 27 Jan 2013 06:54:04 -0800 (PST)
-Date: Sun, 27 Jan 2013 15:54:35 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130127145433.GA1217@x61s.8.8.8.8>
+Received: from 6.mo5.mail-out.ovh.net ([178.32.119.138]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TzV32-00060O-7D
+ for barebox@lists.infradead.org; Sun, 27 Jan 2013 16:25:39 +0000
+Received: from mail178.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 23E6AFFA537
+ for <barebox@lists.infradead.org>; Sun, 27 Jan 2013 17:35:32 +0100 (CET)
+Date: Sun, 27 Jan 2013 17:24:16 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130127162416.GM26329@game.jcrosoft.org>
 References: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
- <1359283623-1782-30-git-send-email-s.hauer@pengutronix.de>
+ <1359283623-1782-22-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1359283623-1782-30-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1359283623-1782-22-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,217 +27,222 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 29/34] ARM: Factor out early mmu code
+Subject: Re: [PATCH 21/34] ARM AT91: switch remaining boards to
+ barebox_arm_entry
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi,
+On 11:46 Sun 27 Jan     , Sascha Hauer wrote:
+> For At91 boards which do not have a SDRAM size detection function
+> we create a lowlevel reset function which calls barebox_arm_entry
+> manually with the known memory size.
 
-On Sun, Jan 27, 2013 at 11:46:58AM +0100, Sascha Hauer wrote:
-> Move early mmu code to a separate file so that it can be
-> used from the pbl and the regular image. Disabling the mmu
-> can be dropped since the regular mmu code is now able to
-> pickup an enabled mmu.
+I'll send a patch serie to add it
+
+Best Regards,
+J.
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  arch/arm/cpu/Makefile    |    4 +--
->  arch/arm/cpu/mmu-early.c |   53 ++++++++++++++++++++++++++++++++++
->  arch/arm/cpu/mmu-early.h |    6 ++++
->  arch/arm/cpu/start-pbl.c |   72 ----------------------------------------------
->  4 files changed, 61 insertions(+), 74 deletions(-)
->  create mode 100644 arch/arm/cpu/mmu-early.c
->  create mode 100644 arch/arm/cpu/mmu-early.h
+>  arch/arm/Kconfig                            |    2 ++
+>  arch/arm/boards/at91sam9m10g45ek/Makefile   |    2 ++
+>  arch/arm/boards/at91sam9m10g45ek/lowlevel.c |   11 +++++++++++
+>  arch/arm/boards/at91sam9m10ihd/Makefile     |    2 ++
+>  arch/arm/boards/at91sam9m10ihd/lowlevel.c   |   11 +++++++++++
+>  arch/arm/boards/at91sam9n12ek/Makefile      |    2 ++
+>  arch/arm/boards/at91sam9n12ek/lowlevel.c    |   11 +++++++++++
+>  arch/arm/boards/at91sam9x5ek/Makefile       |    2 ++
+>  arch/arm/boards/at91sam9x5ek/lowlevel.c     |   11 +++++++++++
+>  arch/arm/boards/pm9g45/Makefile             |    2 ++
+>  arch/arm/boards/pm9g45/lowlevel.c           |   11 +++++++++++
+>  arch/arm/mach-at91/Kconfig                  |    8 --------
+>  12 files changed, 67 insertions(+), 8 deletions(-)
+>  create mode 100644 arch/arm/boards/at91sam9m10g45ek/lowlevel.c
+>  create mode 100644 arch/arm/boards/at91sam9m10ihd/lowlevel.c
+>  create mode 100644 arch/arm/boards/at91sam9n12ek/lowlevel.c
+>  create mode 100644 arch/arm/boards/at91sam9x5ek/lowlevel.c
+>  create mode 100644 arch/arm/boards/pm9g45/lowlevel.c
 > 
-> diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-> index 4b0259c..44410ee 100644
-> --- a/arch/arm/cpu/Makefile
-> +++ b/arch/arm/cpu/Makefile
-> @@ -8,8 +8,8 @@ obj-y += start.o setupc.o
->  #
->  obj-$(CONFIG_CMD_ARM_CPUINFO) += cpuinfo.o
->  obj-$(CONFIG_CMD_ARM_MMUINFO) += mmuinfo.o
-> -obj-$(CONFIG_MMU) += mmu.o cache.o
-> -pbl-$(CONFIG_MMU) += cache.o
-> +obj-$(CONFIG_MMU) += mmu.o cache.o mmu-early.o
-> +pbl-$(CONFIG_MMU) += cache.o mmu-early.o
->  obj-$(CONFIG_CPU_32v4T) += cache-armv4.o
->  pbl-$(CONFIG_CPU_32v4T) += cache-armv4.o
->  obj-$(CONFIG_CPU_32v5) += cache-armv5.o
-> diff --git a/arch/arm/cpu/mmu-early.c b/arch/arm/cpu/mmu-early.c
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index c7daebe..0d5e004 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -30,6 +30,8 @@ config ARCH_AT91
+>  	select CLKDEV_LOOKUP
+>  	select HAS_DEBUG_LL
+>  	select HAVE_MACH_ARM_HEAD
+> +	select MACH_HAS_LOWLEVEL_INIT
+> +	select MACH_DO_LOWLEVEL_INIT
+>  
+>  config ARCH_BCM2835
+>  	bool "Broadcom BCM2835 boards"
+> diff --git a/arch/arm/boards/at91sam9m10g45ek/Makefile b/arch/arm/boards/at91sam9m10g45ek/Makefile
+> index eb072c0..47ab803 100644
+> --- a/arch/arm/boards/at91sam9m10g45ek/Makefile
+> +++ b/arch/arm/boards/at91sam9m10g45ek/Makefile
+> @@ -1 +1,3 @@
+>  obj-y += init.o
+> +obj-y += lowlevel.o
+> +pbl-y += lowlevel.o
+> diff --git a/arch/arm/boards/at91sam9m10g45ek/lowlevel.c b/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
 > new file mode 100644
-> index 0000000..b8b30df
+> index 0000000..65259bb
 > --- /dev/null
-> +++ b/arch/arm/cpu/mmu-early.c
-> @@ -0,0 +1,53 @@
+> +++ b/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
+> @@ -0,0 +1,11 @@
 > +#include <common.h>
-> +#include <asm/mmu.h>
-> +#include <errno.h>
 > +#include <sizes.h>
-> +#include <asm/memory.h>
-> +#include <asm/system.h>
-> +#include <asm/cache.h>
+> +#include <asm/barebox-arm-head.h>
+> +#include <asm/barebox-arm.h>
+> +#include <mach/hardware.h>
 > +
-> +#include "mmu.h"
-> +
-> +static uint32_t *ttb;
-> +
-> +static void create_sections(unsigned long addr, int size_m, unsigned int flags)
+> +void __naked reset(void)
 > +{
-> +	int i;
-> +
-> +	addr >>= 20;
-> +
-> +	for (i = size_m; i > 0; i--, addr++)
-> +		ttb[addr] = (addr << 20) | flags;
+> +	common_reset();
+> +	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
 > +}
-> +
-> +static void map_cachable(unsigned long start, unsigned long size)
-> +{
-> +	start &= ~(SZ_1M - 1);
-> +	size = (size + (SZ_1M - 1)) & ~(SZ_1M - 1);
-Maybe we can use ALIGN macro from common.h here?
-Only a small change, but it's easier to understand code.
-I can send a patch for this, if you like that idea.
-
-Similar we can create a macro ALIGN_DOWN for start.
-
-Regards
-Alex
-> +
-> +	create_sections(start, size >> 20, PMD_SECT_AP_WRITE |
-> +			PMD_SECT_AP_READ | PMD_TYPE_SECT | PMD_SECT_WB);
-> +}
-> +
-> +void mmu_early_enable(uint32_t membase, uint32_t memsize, uint32_t _ttb)
-> +{
-> +	int i;
-> +
-> +	ttb = (uint32_t *)_ttb;
-> +
-> +	arm_set_cache_functions();
-> +
-> +	/* Set the ttb register */
-> +	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
-> +
-> +	/* Set the Domain Access Control Register */
-> +	i = 0x3;
-> +	asm volatile ("mcr  p15,0,%0,c3,c0,0" : : "r"(i) /*:*/);
-> +
-> +	create_sections(0, 4096, PMD_SECT_AP_WRITE |
-> +			PMD_SECT_AP_READ | PMD_TYPE_SECT);
-> +
-> +	map_cachable(membase, memsize);
-> +
-> +	__mmu_cache_on();
-> +}
-> diff --git a/arch/arm/cpu/mmu-early.h b/arch/arm/cpu/mmu-early.h
+> diff --git a/arch/arm/boards/at91sam9m10ihd/Makefile b/arch/arm/boards/at91sam9m10ihd/Makefile
+> index f2acf20..4ec0b36 100644
+> --- a/arch/arm/boards/at91sam9m10ihd/Makefile
+> +++ b/arch/arm/boards/at91sam9m10ihd/Makefile
+> @@ -1,2 +1,4 @@
+>  obj-y += init.o
+>  obj-y += hw_version.o
+> +obj-y += lowlevel.o
+> +pbl-y += lowlevel.o
+> diff --git a/arch/arm/boards/at91sam9m10ihd/lowlevel.c b/arch/arm/boards/at91sam9m10ihd/lowlevel.c
 > new file mode 100644
-> index 0000000..af21f52
+> index 0000000..65259bb
 > --- /dev/null
-> +++ b/arch/arm/cpu/mmu-early.h
-> @@ -0,0 +1,6 @@
-> +#ifndef __ARM_CPU_MMU_EARLY_H
-> +#define __ARM_CPU_MMU_EARLY_H
+> +++ b/arch/arm/boards/at91sam9m10ihd/lowlevel.c
+> @@ -0,0 +1,11 @@
+> +#include <common.h>
+> +#include <sizes.h>
+> +#include <asm/barebox-arm-head.h>
+> +#include <asm/barebox-arm.h>
+> +#include <mach/hardware.h>
 > +
-> +void mmu_early_enable(uint32_t membase, uint32_t memsize, uint32_t ttb);
+> +void __naked reset(void)
+> +{
+> +	common_reset();
+> +	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
+> +}
+> diff --git a/arch/arm/boards/at91sam9n12ek/Makefile b/arch/arm/boards/at91sam9n12ek/Makefile
+> index eb072c0..6c1a61f 100644
+> --- a/arch/arm/boards/at91sam9n12ek/Makefile
+> +++ b/arch/arm/boards/at91sam9n12ek/Makefile
+> @@ -1 +1,3 @@
+> +obj-y += lowlevel.o
+> +pbl-y += lowlevel.o
+>  obj-y += init.o
+> diff --git a/arch/arm/boards/at91sam9n12ek/lowlevel.c b/arch/arm/boards/at91sam9n12ek/lowlevel.c
+> new file mode 100644
+> index 0000000..65259bb
+> --- /dev/null
+> +++ b/arch/arm/boards/at91sam9n12ek/lowlevel.c
+> @@ -0,0 +1,11 @@
+> +#include <common.h>
+> +#include <sizes.h>
+> +#include <asm/barebox-arm-head.h>
+> +#include <asm/barebox-arm.h>
+> +#include <mach/hardware.h>
 > +
-> +#endif /* __ARM_CPU_MMU_EARLY_H */
-> diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-> index 6610be6..96a9dcf 100644
-> --- a/arch/arm/cpu/start-pbl.c
-> +++ b/arch/arm/cpu/start-pbl.c
-> @@ -57,64 +57,6 @@ extern void *input_data_end;
->  #include "../../../lib/decompress_inflate.c"
->  #endif
+> +void __naked reset(void)
+> +{
+> +	common_reset();
+> +	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
+> +}
+> diff --git a/arch/arm/boards/at91sam9x5ek/Makefile b/arch/arm/boards/at91sam9x5ek/Makefile
+> index f2acf20..4ec0b36 100644
+> --- a/arch/arm/boards/at91sam9x5ek/Makefile
+> +++ b/arch/arm/boards/at91sam9x5ek/Makefile
+> @@ -1,2 +1,4 @@
+>  obj-y += init.o
+>  obj-y += hw_version.o
+> +obj-y += lowlevel.o
+> +pbl-y += lowlevel.o
+> diff --git a/arch/arm/boards/at91sam9x5ek/lowlevel.c b/arch/arm/boards/at91sam9x5ek/lowlevel.c
+> new file mode 100644
+> index 0000000..65259bb
+> --- /dev/null
+> +++ b/arch/arm/boards/at91sam9x5ek/lowlevel.c
+> @@ -0,0 +1,11 @@
+> +#include <common.h>
+> +#include <sizes.h>
+> +#include <asm/barebox-arm-head.h>
+> +#include <asm/barebox-arm.h>
+> +#include <mach/hardware.h>
+> +
+> +void __naked reset(void)
+> +{
+> +	common_reset();
+> +	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
+> +}
+> diff --git a/arch/arm/boards/pm9g45/Makefile b/arch/arm/boards/pm9g45/Makefile
+> index eb072c0..47ab803 100644
+> --- a/arch/arm/boards/pm9g45/Makefile
+> +++ b/arch/arm/boards/pm9g45/Makefile
+> @@ -1 +1,3 @@
+>  obj-y += init.o
+> +obj-y += lowlevel.o
+> +pbl-y += lowlevel.o
+> diff --git a/arch/arm/boards/pm9g45/lowlevel.c b/arch/arm/boards/pm9g45/lowlevel.c
+> new file mode 100644
+> index 0000000..65259bb
+> --- /dev/null
+> +++ b/arch/arm/boards/pm9g45/lowlevel.c
+> @@ -0,0 +1,11 @@
+> +#include <common.h>
+> +#include <sizes.h>
+> +#include <asm/barebox-arm-head.h>
+> +#include <asm/barebox-arm.h>
+> +#include <mach/hardware.h>
+> +
+> +void __naked reset(void)
+> +{
+> +	common_reset();
+> +	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
+> +}
+> diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+> index ec9e88b..13f4f21 100644
+> --- a/arch/arm/mach-at91/Kconfig
+> +++ b/arch/arm/mach-at91/Kconfig
+> @@ -72,8 +72,6 @@ config SOC_AT91RM9200
+>  	select CPU_ARM920T
+>  	select HAVE_AT91_DBGU0
+>  	select HAS_AT91_ETHER
+> -	select MACH_HAS_LOWLEVEL_INIT
+> -	select MACH_DO_LOWLEVEL_INIT
 >  
-> -static unsigned long *ttb;
-> -
-> -static void create_sections(unsigned long addr, int size_m, unsigned int flags)
-> -{
-> -	int i;
-> -
-> -	addr >>= 20;
-> -
-> -	for (i = size_m; i > 0; i--, addr++)
-> -		ttb[addr] = (addr << 20) | flags;
-> -}
-> -
-> -static void map_cachable(unsigned long start, unsigned long size)
-> -{
-> -	start &= ~(SZ_1M - 1);
-> -	size = (size + (SZ_1M - 1)) & ~(SZ_1M - 1);
-> -
-> -	create_sections(start, size >> 20, PMD_SECT_AP_WRITE |
-> -			PMD_SECT_AP_READ | PMD_TYPE_SECT | PMD_SECT_WB);
-> -}
-> -
-> -static void mmu_enable(unsigned long compressed_start, unsigned int len)
-> -{
-> -	int i;
-> -
-> -	/* Set the ttb register */
-> -	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
-> -
-> -	/* Set the Domain Access Control Register */
-> -	i = 0x3;
-> -	asm volatile ("mcr  p15,0,%0,c3,c0,0" : : "r"(i) /*:*/);
-> -
-> -	create_sections(0, 4096, PMD_SECT_AP_WRITE |
-> -			PMD_SECT_AP_READ | PMD_TYPE_SECT);
-> -	/*
-> -	 * Setup all regions we need cacheable, namely:
-> -	 * - the stack
-> -	 * - the decompressor code
-> -	 * - the compressed image
-> -	 * - the uncompressed image
-> -	 * - the early malloc space
-> -	 */
-> -	map_cachable(STACK_BASE, STACK_SIZE);
-> -	map_cachable((unsigned long)&_text,
-> -			(unsigned long)&_end - (unsigned long)&_text);
-> -	map_cachable((unsigned long)compressed_start, len);
-> -	map_cachable(TEXT_BASE, len * 4);
-> -	map_cachable(free_mem_ptr, free_mem_end_ptr - free_mem_ptr);
-> -
-> -	__mmu_cache_on();
-> -}
-> -
-> -static void mmu_disable(void)
-> -{
-> -	__mmu_cache_flush();
-> -	__mmu_cache_off();
-> -}
-> -
->  static void noinline errorfn(char *error)
->  {
->  	while (1);
-> @@ -122,25 +64,11 @@ static void noinline errorfn(char *error)
+>  config SOC_AT91SAM9260
+>  	bool
+> @@ -81,8 +79,6 @@ config SOC_AT91SAM9260
+>  	select HAVE_AT91_DBGU0
+>  	select HAS_MACB
+>  	select AT91SAM9_RESET
+> -	select MACH_HAS_LOWLEVEL_INIT
+> -	select MACH_DO_LOWLEVEL_INIT
+>  	help
+>  	  Select this if you are using one of Atmel's AT91SAM9260, AT91SAM9XE
+>  	  or AT91SAM9G20 SoC.
+> @@ -92,8 +88,6 @@ config SOC_AT91SAM9261
+>  	select SOC_AT91SAM9
+>  	select HAVE_AT91_DBGU0
+>  	select AT91SAM9_RESET
+> -	select MACH_HAS_LOWLEVEL_INIT
+> -	select MACH_DO_LOWLEVEL_INIT
+>  	help
+>  	  Select this if you are using one of Atmel's AT91SAM9261 or AT91SAM9G10 SoC.
 >  
->  static void barebox_uncompress(void *compressed_start, unsigned int len)
->  {
-> -	/*
-> -	 * remap_cached currently does not work rendering the feature
-> -	 * of enabling the MMU in the PBL useless. disable for now.
-> -	 */
-> -	int use_mmu = 0;
-> -
-> -	ttb = (void *)((free_mem_ptr - 0x4000) & ~0x3fff);
-> -
-> -	if (use_mmu)
-> -		mmu_enable((unsigned long)compressed_start, len);
-> -
->  	decompress((void *)compressed_start,
->  			len,
->  			NULL, NULL,
->  			(void *)TEXT_BASE, NULL, errorfn);
+> @@ -103,8 +97,6 @@ config SOC_AT91SAM9263
+>  	select HAVE_AT91_DBGU1
+>  	select HAS_MACB
+>  	select AT91SAM9_RESET
+> -	select MACH_HAS_LOWLEVEL_INIT
+> -	select MACH_DO_LOWLEVEL_INIT
 >  
-> -	if (use_mmu)
-> -		mmu_disable();
-> -
->  	flush_icache();
->  }
->  
+>  config SOC_AT91SAM9G45
+>  	bool
 > -- 
 > 1.7.10.4
 > 
