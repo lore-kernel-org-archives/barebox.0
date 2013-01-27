@@ -2,17 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 17.mo5.mail-out.ovh.net ([46.105.56.132]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TzWjH-0003dd-5c
+ id 1TzWjH-0003dc-5a
  for barebox@lists.infradead.org; Sun, 27 Jan 2013 18:13:19 +0000
 Received: from mail178.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 02657FFA4E0
- for <barebox@lists.infradead.org>; Sun, 27 Jan 2013 19:23:15 +0100 (CET)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id E6D8AFFA4B7
+ for <barebox@lists.infradead.org>; Sun, 27 Jan 2013 19:23:14 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 27 Jan 2013 19:11:56 +0100
-Message-Id: <1359310316-20121-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1359310316-20121-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 27 Jan 2013 19:11:55 +0100
+Message-Id: <1359310316-20121-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130127180957.GO26329@game.jcrosoft.o>
 References: <20130127180957.GO26329@game.jcrosoft.o>
- <1359310316-20121-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,27 +25,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] at91rm9200ek: auto detect sdram size
+Subject: [PATCH 1/2] at91rm9200: add autodetect sdram size
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/at91rm9200ek/init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-at91/at91rm9200_devices.c         |    3 +++
+ arch/arm/mach-at91/include/mach/at91rm9200_mc.h |   30 +++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/arch/arm/boards/at91rm9200ek/init.c b/arch/arm/boards/at91rm9200ek/init.c
-index 0a360ae..66ea6b7 100644
---- a/arch/arm/boards/at91rm9200ek/init.c
-+++ b/arch/arm/boards/at91rm9200ek/init.c
-@@ -39,7 +39,7 @@ static struct at91_ether_platform_data ether_pdata = {
+diff --git a/arch/arm/mach-at91/at91rm9200_devices.c b/arch/arm/mach-at91/at91rm9200_devices.c
+index 84d4c15..0f2ec1f 100644
+--- a/arch/arm/mach-at91/at91rm9200_devices.c
++++ b/arch/arm/mach-at91/at91rm9200_devices.c
+@@ -25,6 +25,9 @@
  
- static int at91rm9200ek_mem_init(void)
+ void at91_add_device_sdram(u32 size)
  {
--	at91_add_device_sdram(32 * 1024 * 1024);
-+	at91_add_device_sdram(0);
++	if (!size)
++		size = at91rm9200_get_sdram_size();
++
+ 	arm_add_mem_device("ram0", AT91_CHIPSELECT_1, size);
+ 	add_mem_device("sram0", AT91RM9200_SRAM_BASE, AT91RM9200_SRAM_SIZE,
+ 			IORESOURCE_MEM_WRITEABLE);
+diff --git a/arch/arm/mach-at91/include/mach/at91rm9200_mc.h b/arch/arm/mach-at91/include/mach/at91rm9200_mc.h
+index d34e4ed..fc44a61 100644
+--- a/arch/arm/mach-at91/include/mach/at91rm9200_mc.h
++++ b/arch/arm/mach-at91/include/mach/at91rm9200_mc.h
+@@ -157,4 +157,34 @@
+ #define		AT91_BFC_MUXEN		(1   << 18)		/* Multiplexed Bus Enable */
+ #define		AT91_BFC_RDYEN		(1   << 19)		/* Ready Enable Mode */
  
- 	return 0;
- }
++#ifndef __ASSEMBLY__
++#include <mach/io.h>
++static inline u32 at91rm9200_get_sdram_size(void)
++{
++	u32 cr, mr;
++	u32 size;
++
++	cr = at91_sys_read(AT91_SDRAMC_CR);
++	mr = at91_sys_read(AT91_SDRAMC_MR);
++
++	/* Formula:
++	 * size = bank << (col + row + 1);
++	 * if (bandwidth == 32 bits)
++	 *	size <<= 1;
++	 */
++	size = 1;
++	/* COL */
++	size += (cr & AT91_SDRAMC_NC) + 8;
++	/* ROW */
++	size += ((cr & AT91_SDRAMC_NR) >> 2) + 11;
++	/* BANK */
++	size = ((cr & AT91_SDRAMC_NB) ? 4 : 2) << size;
++	/* bandwidth */
++	if (!(mr & AT91_SDRAMC_DBW))
++		size <<= 1;
++
++	return size;
++}
++#endif
++
+ #endif
 -- 
 1.7.10.4
 
