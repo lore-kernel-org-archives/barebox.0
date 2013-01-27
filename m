@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TzPlT-00063X-HZ
- for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:47:29 +0000
+ id 1TzQ6l-0001No-Cz
+ for barebox@lists.infradead.org; Sun, 27 Jan 2013 11:09:10 +0000
+Date: Sun, 27 Jan 2013 12:09:05 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 27 Jan 2013 11:46:37 +0100
-Message-Id: <1359283623-1782-9-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20130127110905.GW1906@pengutronix.de>
 References: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
+ <1359283623-1782-20-git-send-email-s.hauer@pengutronix.de>
+ <20130127105135.GK26329@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130127105135.GK26329@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,440 +20,285 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/34] ARM OMAP boards: switch to barebox_arm_entry
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 19/34] ARM AT91: switch to barebox_arm_entry part1
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-All boards use hardcoded SDRAM addresses, copied from the board init file.
-OMAP3 boards are a bit special, they had a SoC specific reset() function. This
-is renamed to omap3_invalidate_dcache() and called from the board lowlevel init
-code now.
+On Sun, Jan 27, 2013 at 11:51:35AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 11:46 Sun 27 Jan     , Sascha Hauer wrote:
+> > This switches the at91sam926x, 9g10 and 9g20 over to barebox_arm_entry.
+> > For these SoCs we currently support reading back the memory size from
+> > the SDRAM controller, so all of these can have a common reset() function.
+> 
+> can we wait after the cleanup on lowlevel
+> 
+> as I'm cleaning the AT91_BASE_SYS
+> 
+> patch send with 9261ek boostrao support
+> 
+> can you rebase over
+> 
+> at91sam9260/9g20/9261/9g10/9263: split soc lowlevel_init from generic
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/Kconfig                                |    2 ++
- arch/arm/boards/archosg9/Makefile               |    4 ++--
- arch/arm/boards/archosg9/lowlevel.c             |    3 ++-
- arch/arm/boards/beagle/Makefile                 |    2 ++
- arch/arm/boards/beagle/lowlevel.c               |   14 ++++++++++++++
- arch/arm/boards/beaglebone/Makefile             |    2 ++
- arch/arm/boards/beaglebone/lowlevel.c           |   11 +++++++++++
- arch/arm/boards/omap343xdsp/Makefile            |    2 ++
- arch/arm/boards/omap343xdsp/lowlevel.c          |   14 ++++++++++++++
- arch/arm/boards/omap3evm/Makefile               |    2 ++
- arch/arm/boards/omap3evm/lowlevel.c             |   10 ++++++++++
- arch/arm/boards/panda/lowlevel.c                |    7 ++++---
- arch/arm/boards/pcm049/lowlevel.c               |    7 ++++---
- arch/arm/boards/pcm051/Makefile                 |    2 ++
- arch/arm/boards/pcm051/lowlevel.c               |   11 +++++++++++
- arch/arm/boards/phycard-a-l1/Makefile           |    2 ++
- arch/arm/boards/phycard-a-l1/lowlevel.c         |   11 +++++++++++
- arch/arm/boards/phycard-a-xl2/lowlevel.c        |    7 ++++---
- arch/arm/mach-omap/Kconfig                      |    5 -----
- arch/arm/mach-omap/include/mach/omap3-silicon.h |    1 +
- arch/arm/mach-omap/omap3_core.S                 |   11 ++++-------
- 21 files changed, 106 insertions(+), 24 deletions(-)
- create mode 100644 arch/arm/boards/beagle/lowlevel.c
- create mode 100644 arch/arm/boards/beaglebone/lowlevel.c
- create mode 100644 arch/arm/boards/omap343xdsp/lowlevel.c
- create mode 100644 arch/arm/boards/omap3evm/lowlevel.c
- create mode 100644 arch/arm/boards/pcm051/lowlevel.c
- create mode 100644 arch/arm/boards/phycard-a-l1/lowlevel.c
+Since this is based on -next I will have to rebase it anyway. I will
+rebase this after the next merge flood on whatever is there.
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 627c1b5..96ee516 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -82,6 +82,8 @@ config ARCH_OMAP
- 	bool "TI OMAP"
- 	select HAS_DEBUG_LL
- 	select GPIOLIB
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select MACH_DO_LOWLEVEL_INIT
- 
- config ARCH_PXA
- 	bool "Intel/Marvell PXA based"
-diff --git a/arch/arm/boards/archosg9/Makefile b/arch/arm/boards/archosg9/Makefile
-index 450c03f..4cc5a2e 100644
---- a/arch/arm/boards/archosg9/Makefile
-+++ b/arch/arm/boards/archosg9/Makefile
-@@ -1,4 +1,4 @@
- obj-y += board.o
- obj-$(CONFIG_ARM_BOARD_APPEND_ATAG) += archos_features.o
--obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel.o mux.o
--pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel.o mux.o
-+obj-y += lowlevel.o mux.o
-+pbl-y += lowlevel.o mux.o
-diff --git a/arch/arm/boards/archosg9/lowlevel.c b/arch/arm/boards/archosg9/lowlevel.c
-index aea6342..26808f6 100644
---- a/arch/arm/boards/archosg9/lowlevel.c
-+++ b/arch/arm/boards/archosg9/lowlevel.c
-@@ -13,6 +13,7 @@
- #include <common.h>
- #include <io.h>
- #include <init.h>
-+#include <sizes.h>
- #include <mach/omap4-mux.h>
- #include <mach/omap4-silicon.h>
- #include <mach/omap4-clock.h>
-@@ -63,7 +64,7 @@ static noinline void archosg9_init_lowlevel(void)
- 
- 	omap4_ddr_init(&ddr_regs_400_mhz_2cs, &core);
- 
--	board_init_lowlevel_return();
-+	barebox_arm_entry(0x80000000, SZ_1G, 0);
- }
- 
- void __naked __bare_init reset(void)
-diff --git a/arch/arm/boards/beagle/Makefile b/arch/arm/boards/beagle/Makefile
-index dcfc293..88c223a 100644
---- a/arch/arm/boards/beagle/Makefile
-+++ b/arch/arm/boards/beagle/Makefile
-@@ -1 +1,3 @@
- obj-y += board.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/beagle/lowlevel.c b/arch/arm/boards/beagle/lowlevel.c
-new file mode 100644
-index 0000000..50a6680
---- /dev/null
-+++ b/arch/arm/boards/beagle/lowlevel.c
-@@ -0,0 +1,14 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/omap3-silicon.h>
-+
-+void __naked reset(void)
-+{
-+	omap3_invalidate_dcache();
-+
-+	common_reset();
-+
-+	barebox_arm_entry(0x80000000, SZ_128M, 0);
-+}
-diff --git a/arch/arm/boards/beaglebone/Makefile b/arch/arm/boards/beaglebone/Makefile
-index dcfc293..8a571d9 100644
---- a/arch/arm/boards/beaglebone/Makefile
-+++ b/arch/arm/boards/beaglebone/Makefile
-@@ -1 +1,3 @@
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
- obj-y += board.o
-diff --git a/arch/arm/boards/beaglebone/lowlevel.c b/arch/arm/boards/beaglebone/lowlevel.c
-new file mode 100644
-index 0000000..5c55d4e
---- /dev/null
-+++ b/arch/arm/boards/beaglebone/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+
-+void __naked reset(void)
-+{
-+	common_reset();
-+
-+	barebox_arm_entry(0x80000000, SZ_256M, 0);
-+}
-diff --git a/arch/arm/boards/omap343xdsp/Makefile b/arch/arm/boards/omap343xdsp/Makefile
-index dcfc293..88c223a 100644
---- a/arch/arm/boards/omap343xdsp/Makefile
-+++ b/arch/arm/boards/omap343xdsp/Makefile
-@@ -1 +1,3 @@
- obj-y += board.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/omap343xdsp/lowlevel.c b/arch/arm/boards/omap343xdsp/lowlevel.c
-new file mode 100644
-index 0000000..50a6680
---- /dev/null
-+++ b/arch/arm/boards/omap343xdsp/lowlevel.c
-@@ -0,0 +1,14 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/omap3-silicon.h>
-+
-+void __naked reset(void)
-+{
-+	omap3_invalidate_dcache();
-+
-+	common_reset();
-+
-+	barebox_arm_entry(0x80000000, SZ_128M, 0);
-+}
-diff --git a/arch/arm/boards/omap3evm/Makefile b/arch/arm/boards/omap3evm/Makefile
-index dcfc293..88c223a 100644
---- a/arch/arm/boards/omap3evm/Makefile
-+++ b/arch/arm/boards/omap3evm/Makefile
-@@ -1 +1,3 @@
- obj-y += board.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/omap3evm/lowlevel.c b/arch/arm/boards/omap3evm/lowlevel.c
-new file mode 100644
-index 0000000..ede3829
---- /dev/null
-+++ b/arch/arm/boards/omap3evm/lowlevel.c
-@@ -0,0 +1,10 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(0x80000000, SZ_128M, 0);
-+}
-diff --git a/arch/arm/boards/panda/lowlevel.c b/arch/arm/boards/panda/lowlevel.c
-index 36e2bc5..df0f9c1 100644
---- a/arch/arm/boards/panda/lowlevel.c
-+++ b/arch/arm/boards/panda/lowlevel.c
-@@ -18,6 +18,7 @@
-  */
- #include <common.h>
- #include <io.h>
-+#include <sizes.h>
- #include <mach/omap4-mux.h>
- #include <mach/omap4-silicon.h>
- #include <mach/omap4-clock.h>
-@@ -70,8 +71,6 @@ static void noinline panda_init_lowlevel(void)
- 
- 	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
- 	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
--
--	board_init_lowlevel_return();
- }
- 
- void reset(void)
-@@ -79,9 +78,11 @@ void reset(void)
- 	common_reset();
- 
- 	if (get_pc() > 0x80000000)
--		board_init_lowlevel_return();
-+		goto out;
- 
- 	arm_setup_stack(0x4030d000);
- 
- 	panda_init_lowlevel();
-+out:
-+	barebox_arm_entry(0x80000000, SZ_1G, 0);
- }
-diff --git a/arch/arm/boards/pcm049/lowlevel.c b/arch/arm/boards/pcm049/lowlevel.c
-index b64244c..8ecf81a 100644
---- a/arch/arm/boards/pcm049/lowlevel.c
-+++ b/arch/arm/boards/pcm049/lowlevel.c
-@@ -18,6 +18,7 @@
-  */
- #include <common.h>
- #include <io.h>
-+#include <sizes.h>
- #include <mach/omap4-mux.h>
- #include <mach/omap4-silicon.h>
- #include <mach/omap4-clock.h>
-@@ -80,8 +81,6 @@ static void noinline pcm049_init_lowlevel(void)
- 	sr32(0x4A30a31C, 16, 4, 0x0); /* set divisor to 1 */
- 	sr32(0x4A30a110, 0, 1, 0x1);  /* set the clock source to active */
- 	sr32(0x4A30a110, 2, 2, 0x3);  /* enable clocks */
--
--	board_init_lowlevel_return();
- }
- 
- void reset(void)
-@@ -89,9 +88,11 @@ void reset(void)
- 	common_reset();
- 
- 	if (get_pc() > 0x80000000)
--		board_init_lowlevel_return();
-+		goto out;
- 
- 	arm_setup_stack(0x4030d000);
- 
- 	pcm049_init_lowlevel();
-+out:
-+	barebox_arm_entry(0x80000000, SZ_512M, 0);
- }
-diff --git a/arch/arm/boards/pcm051/Makefile b/arch/arm/boards/pcm051/Makefile
-index dcfc293..8a571d9 100644
---- a/arch/arm/boards/pcm051/Makefile
-+++ b/arch/arm/boards/pcm051/Makefile
-@@ -1 +1,3 @@
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
- obj-y += board.o
-diff --git a/arch/arm/boards/pcm051/lowlevel.c b/arch/arm/boards/pcm051/lowlevel.c
-new file mode 100644
-index 0000000..683fdce
---- /dev/null
-+++ b/arch/arm/boards/pcm051/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+
-+void __naked reset(void)
-+{
-+	common_reset();
-+
-+	barebox_arm_entry(0x80000000, SZ_512M, 0);
-+}
-diff --git a/arch/arm/boards/phycard-a-l1/Makefile b/arch/arm/boards/phycard-a-l1/Makefile
-index 7041e11..5565c3d 100644
---- a/arch/arm/boards/phycard-a-l1/Makefile
-+++ b/arch/arm/boards/phycard-a-l1/Makefile
-@@ -15,3 +15,5 @@
- #
- 
- obj-y += pca-a-l1.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/phycard-a-l1/lowlevel.c b/arch/arm/boards/phycard-a-l1/lowlevel.c
-new file mode 100644
-index 0000000..5c55d4e
---- /dev/null
-+++ b/arch/arm/boards/phycard-a-l1/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+
-+void __naked reset(void)
-+{
-+	common_reset();
-+
-+	barebox_arm_entry(0x80000000, SZ_256M, 0);
-+}
-diff --git a/arch/arm/boards/phycard-a-xl2/lowlevel.c b/arch/arm/boards/phycard-a-xl2/lowlevel.c
-index 5d8693a..f8f4db5 100644
---- a/arch/arm/boards/phycard-a-xl2/lowlevel.c
-+++ b/arch/arm/boards/phycard-a-xl2/lowlevel.c
-@@ -18,6 +18,7 @@
-  */
- #include <common.h>
- #include <io.h>
-+#include <sizes.h>
- #include <mach/omap4-mux.h>
- #include <mach/omap4-silicon.h>
- #include <mach/omap4-clock.h>
-@@ -80,8 +81,6 @@ static noinline void pcaaxl2_init_lowlevel(void)
- 	sr32(0x4A30a31C, 16, 4, 0x0); /* set divisor to 1 */
- 	sr32(0x4A30a110, 0, 1, 0x1);  /* set the clock source to active */
- 	sr32(0x4A30a110, 2, 2, 0x3);  /* enable clocks */
--
--	board_init_lowlevel_return();
- }
- 
- void reset(void)
-@@ -89,9 +88,11 @@ void reset(void)
- 	common_reset();
- 
- 	if (get_pc() > 0x80000000)
--		board_init_lowlevel_return();
-+		goto out;
- 
- 	arm_setup_stack(0x4030d000);
- 
- 	pcaaxl2_init_lowlevel();
-+out:
-+	barebox_arm_entry(0x80000000, SZ_512M, 0);
- }
-diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-index f659184..a87fc4b 100644
---- a/arch/arm/mach-omap/Kconfig
-+++ b/arch/arm/mach-omap/Kconfig
-@@ -29,7 +29,6 @@ config ARCH_OMAP3
- 	bool "OMAP3"
- 	select CPU_V7
- 	select GENERIC_GPIO
--	select MACH_HAS_LOWLEVEL_INIT
- 	select OMAP_CLOCK_SOURCE_S32K
- 	help
- 	  Say Y here if you are using Texas Instrument's OMAP343x based platform
-@@ -148,7 +147,6 @@ config MACH_OMAP3EVM
- 
- config MACH_PANDA
- 	bool "Texas Instrument's Panda Board"
--	select MACH_HAS_LOWLEVEL_INIT
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 	depends on ARCH_OMAP4
- 	help
-@@ -156,7 +154,6 @@ config MACH_PANDA
- 
- config MACH_ARCHOSG9
- 	bool "Archos G9 tablets"
--	select MACH_HAS_LOWLEVEL_INIT
- 	depends on ARCH_OMAP4
- 	help
- 	  Say Y here if you are using OMAP4-based Archos G9 tablet
-@@ -164,7 +161,6 @@ config MACH_ARCHOSG9
- config MACH_PCM049
- 	bool "Phytec phyCORE pcm049"
- 	depends on ARCH_OMAP4
--	select MACH_HAS_LOWLEVEL_INIT
- 	help
- 	  Say Y here if you are using Phytecs phyCORE pcm049 board
- 	  based on OMAP4
-@@ -177,7 +173,6 @@ config MACH_PCAAL1
- 
- config MACH_PCAAXL2
- 	bool "Phytec phyCARD XL2"
--	select MACH_HAS_LOWLEVEL_INIT
- 	depends on ARCH_OMAP4
- 	help
- 	  Say Y here if you are using a phyCARD-A-XL1 PCA-A-XL1
-diff --git a/arch/arm/mach-omap/include/mach/omap3-silicon.h b/arch/arm/mach-omap/include/mach/omap3-silicon.h
-index 282b587..43b2953 100644
---- a/arch/arm/mach-omap/include/mach/omap3-silicon.h
-+++ b/arch/arm/mach-omap/include/mach/omap3-silicon.h
-@@ -133,6 +133,7 @@
- /* If Architecture specific init functions are present */
- #ifndef __ASSEMBLY__
- void omap3_core_init(void);
-+void omap3_invalidate_dcache(void);
- #endif /* __ASSEMBLY__ */
- 
- #endif /* __ASM_ARCH_OMAP3_H */
-diff --git a/arch/arm/mach-omap/omap3_core.S b/arch/arm/mach-omap/omap3_core.S
-index bc32f55..a47e248 100644
---- a/arch/arm/mach-omap/omap3_core.S
-+++ b/arch/arm/mach-omap/omap3_core.S
-@@ -33,9 +33,8 @@
- #include <mach/clocks.h>
- #include <asm/barebox-arm-head.h>
- 
--#ifdef CONFIG_MACH_DO_LOWLEVEL_INIT
--.section .text.__reset
--ENTRY(reset)
-+.section .text.__omap3_invalidate_dcache
-+ENTRY(omap3_invalidate_dcache)
- 	/* Invalidate all Dcaches */
- #ifndef CONFIG_CPU_V7_DCACHE_SKIP
- 	/* If Arch specific ROM code SMI handling does not exist */
-@@ -83,8 +82,6 @@ finished_inval:
- 	mcr	p15, 2, r10, c0, c0, 0	/* select current cache level in cssr */
- 	isb
- #endif /* CONFIG_CPU_V7_DCACHE_SKIP */
--	common_reset r0
- 	/* back to arch calling code */
--	b board_init_lowlevel_return
--ENDPROC(reset)
--#endif
-+	bx lr
-+ENDPROC(omap3_invalidate_dcache)
+Sascha
+
+> 
+> Best Regards,
+> J.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  arch/arm/boards/at91sam9263ek/Makefile         |    4 ++--
+> >  arch/arm/boards/mmccpu/Makefile                |    4 ++--
+> >  arch/arm/boards/pm9261/Makefile                |    4 ++--
+> >  arch/arm/boards/pm9263/Makefile                |    4 ++--
+> >  arch/arm/boards/tny-a926x/Makefile             |    4 ++--
+> >  arch/arm/boards/usb-a926x/Makefile             |    4 ++--
+> >  arch/arm/mach-at91/Kconfig                     |   19 ++++++++++++++-----
+> >  arch/arm/mach-at91/Makefile                    |   10 +++++++---
+> >  arch/arm/mach-at91/at91sam926x_lowlevel_init.c |   11 ++++++++++-
+> >  9 files changed, 43 insertions(+), 21 deletions(-)
+> > 
+> > diff --git a/arch/arm/boards/at91sam9263ek/Makefile b/arch/arm/boards/at91sam9263ek/Makefile
+> > index b6460c3..1702783 100644
+> > --- a/arch/arm/boards/at91sam9263ek/Makefile
+> > +++ b/arch/arm/boards/at91sam9263ek/Makefile
+> > @@ -1,5 +1,5 @@
+> >  obj-y += init.o
+> >  
+> > -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
+> > +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
+> >  
+> > -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
+> > +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
+> > diff --git a/arch/arm/boards/mmccpu/Makefile b/arch/arm/boards/mmccpu/Makefile
+> > index b6460c3..1702783 100644
+> > --- a/arch/arm/boards/mmccpu/Makefile
+> > +++ b/arch/arm/boards/mmccpu/Makefile
+> > @@ -1,5 +1,5 @@
+> >  obj-y += init.o
+> >  
+> > -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
+> > +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
+> >  
+> > -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
+> > +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
+> > diff --git a/arch/arm/boards/pm9261/Makefile b/arch/arm/boards/pm9261/Makefile
+> > index b6460c3..1702783 100644
+> > --- a/arch/arm/boards/pm9261/Makefile
+> > +++ b/arch/arm/boards/pm9261/Makefile
+> > @@ -1,5 +1,5 @@
+> >  obj-y += init.o
+> >  
+> > -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
+> > +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
+> >  
+> > -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
+> > +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
+> > diff --git a/arch/arm/boards/pm9263/Makefile b/arch/arm/boards/pm9263/Makefile
+> > index b6460c3..1702783 100644
+> > --- a/arch/arm/boards/pm9263/Makefile
+> > +++ b/arch/arm/boards/pm9263/Makefile
+> > @@ -1,5 +1,5 @@
+> >  obj-y += init.o
+> >  
+> > -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
+> > +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
+> >  
+> > -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
+> > +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
+> > diff --git a/arch/arm/boards/tny-a926x/Makefile b/arch/arm/boards/tny-a926x/Makefile
+> > index 36ea09f..caa7163 100644
+> > --- a/arch/arm/boards/tny-a926x/Makefile
+> > +++ b/arch/arm/boards/tny-a926x/Makefile
+> > @@ -5,6 +5,6 @@ obj-$(CONFIG_AT91_BOOTSTRAP) += $(bootstrap-y)
+> >  
+> >  lowlevel_init-$(CONFIG_MACH_TNY_A9263) = tny_a9263_lowlevel_init.o
+> >  
+> > -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
+> > +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += $(lowlevel_init-y)
+> >  
+> > -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
+> > +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += $(lowlevel_init-y)
+> > diff --git a/arch/arm/boards/usb-a926x/Makefile b/arch/arm/boards/usb-a926x/Makefile
+> > index e314dd5..88f163f 100644
+> > --- a/arch/arm/boards/usb-a926x/Makefile
+> > +++ b/arch/arm/boards/usb-a926x/Makefile
+> > @@ -5,6 +5,6 @@ obj-$(CONFIG_AT91_BOOTSTRAP) += $(bootstrap-y)
+> >  
+> >  lowlevel_init-$(CONFIG_MACH_USB_A9263) = usb_a9263_lowlevel_init.o
+> >  
+> > -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
+> > +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += $(lowlevel_init-y)
+> >  
+> > -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
+> > +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += $(lowlevel_init-y)
+> > diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+> > index 9d4359e..4f30650 100644
+> > --- a/arch/arm/mach-at91/Kconfig
+> > +++ b/arch/arm/mach-at91/Kconfig
+> > @@ -6,6 +6,9 @@ config HAVE_AT91_DBGU0
+> >  config HAVE_AT91_DBGU1
+> >  	bool
+> >  
+> > +config HAVE_AT91_LOWLEVEL_INIT
+> > +	bool
+> > +
+> >  config AT91SAM9_SMC
+> >  	bool
+> >  
+> > @@ -77,6 +80,8 @@ config SOC_AT91SAM9260
+> >  	select HAVE_AT91_DBGU0
+> >  	select HAS_MACB
+> >  	select AT91SAM9_RESET
+> > +	select MACH_HAS_LOWLEVEL_INIT
+> > +	select MACH_DO_LOWLEVEL_INIT
+> >  	help
+> >  	  Select this if you are using one of Atmel's AT91SAM9260, AT91SAM9XE
+> >  	  or AT91SAM9G20 SoC.
+> > @@ -86,6 +91,8 @@ config SOC_AT91SAM9261
+> >  	select SOC_AT91SAM9
+> >  	select HAVE_AT91_DBGU0
+> >  	select AT91SAM9_RESET
+> > +	select MACH_HAS_LOWLEVEL_INIT
+> > +	select MACH_DO_LOWLEVEL_INIT
+> >  	help
+> >  	  Select this if you are using one of Atmel's AT91SAM9261 or AT91SAM9G10 SoC.
+> >  
+> > @@ -95,6 +102,8 @@ config SOC_AT91SAM9263
+> >  	select HAVE_AT91_DBGU1
+> >  	select HAS_MACB
+> >  	select AT91SAM9_RESET
+> > +	select MACH_HAS_LOWLEVEL_INIT
+> > +	select MACH_DO_LOWLEVEL_INIT
+> >  
+> >  config SOC_AT91SAM9G45
+> >  	bool
+> > @@ -263,7 +272,7 @@ config MACH_AT91SAM9261EK
+> >  config MACH_PM9261
+> >  	bool "Ronetix PM9261"
+> >  	select HAS_DM9000
+> > -	select MACH_HAS_LOWLEVEL_INIT
+> > +	select HAVE_AT91_LOWLEVEL_INIT
+> >  	help
+> >  	  Say y here if you are using the Ronetix PM9261 Board
+> >  
+> > @@ -338,7 +347,7 @@ choice
+> >  
+> >  config MACH_AT91SAM9263EK
+> >  	bool "Atmel AT91SAM9263-EK"
+> > -	select MACH_HAS_LOWLEVEL_INIT
+> > +	select HAVE_AT91_LOWLEVEL_INIT
+> >  	select HAVE_NAND_ATMEL_BUSWIDTH_16
+> >  	help
+> >  	  Say y here if you are using Atmel's AT91SAM9263-EK Evaluation board
+> > @@ -350,7 +359,7 @@ config MACH_MMCCPU
+> >  
+> >  config MACH_PM9263
+> >  	bool "Ronetix PM9263"
+> > -	select MACH_HAS_LOWLEVEL_INIT
+> > +	select HAVE_AT91_LOWLEVEL_INIT
+> >  	help
+> >  	  Say y here if you are using the Ronetix PM9263 Board
+> >  
+> > @@ -364,7 +373,7 @@ config MACH_TNY_A9263
+> >  
+> >  config MACH_USB_A9263
+> >  	bool "CALAO USB-A9263"
+> > -	select MACH_HAS_LOWLEVEL_INIT
+> > +	select HAVE_AT91_LOWLEVEL_INIT
+> >  	help
+> >  	  Select this if you are using a Calao Systems USB-A9263.
+> >  	  <http://www.calao-systems.com>
+> > @@ -508,7 +517,7 @@ endif
+> >  
+> >  config AT91_BOOTSTRAP
+> >  	bool "at91 bootstrap"
+> > -	depends on MACH_HAS_LOWLEVEL_INIT
+> > +	depends on HAVE_AT91_LOWLEVEL_INIT
+> >  	select BOOTSTRAP
+> >  
+> >  endif
+> > diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+> > index 634b160..b94424e 100644
+> > --- a/arch/arm/mach-at91/Makefile
+> > +++ b/arch/arm/mach-at91/Makefile
+> > @@ -2,11 +2,15 @@ obj-y += setup.o clock.o gpio.o
+> >  obj-$(CONFIG_CMD_AT91_BOOT_TEST) += boot_test_cmd.o
+> >  
+> >  obj-$(CONFIG_AT91_BOOTSTRAP) += bootstrap.o
+> > -lowlevel_init-y = at91sam926x_lowlevel_init.o
+> > +lowlevel_init-$(CONFIG_ARCH_AT91SAM9260) = at91sam926x_lowlevel_init.o
+> > +lowlevel_init-$(CONFIG_ARCH_AT91SAM9261) = at91sam926x_lowlevel_init.o
+> > +lowlevel_init-$(CONFIG_ARCH_AT91SAM9263) = at91sam926x_lowlevel_init.o
+> > +lowlevel_init-$(CONFIG_ARCH_AT91SAM9G10) = at91sam926x_lowlevel_init.o
+> > +lowlevel_init-$(CONFIG_ARCH_AT91SAM9G20) = at91sam926x_lowlevel_init.o
+> >  lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
+> > -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
+> > +obj-y += $(lowlevel_init-y)
+> >  
+> > -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
+> > +pbl-y += $(lowlevel_init-y)
+> >  
+> >  obj-$(CONFIG_AT91SAM9_RESET) += at91sam9_reset.o
+> >  obj-$(CONFIG_AT91SAM9G45_RESET) += at91sam9g45_reset.o
+> > diff --git a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
+> > index 14afbc9..31e9f54 100644
+> > --- a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
+> > +++ b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
+> > @@ -46,6 +46,7 @@ static int inline running_in_sram(void)
+> >  	return addr == 0;
+> >  }
+> >  
+> > +#ifdef CONFIG_HAVE_AT91_LOWLEVEL_INIT
+> >  void __bare_init at91sam926x_lowlevel_init(void)
+> >  {
+> >  	u32 r;
+> > @@ -191,8 +192,14 @@ void __bare_init at91sam926x_lowlevel_init(void)
+> >  	at91_pmc_write(AT91_PMC_PCER, 0xffffffff);
+> >  
+> >  end:
+> > -	board_init_lowlevel_return();
+> > +	barebox_arm_entry(AT91_SDRAM_BASE, at91_get_sdram_size(), 0);
+> >  }
+> > +#else
+> > +static inline void at91sam926x_lowlevel_init(void)
+> > +{
+> > +}
+> > +#endif
+> > +
+> >  
+> >  void __naked __bare_init reset(void)
+> >  {
+> > @@ -207,4 +214,6 @@ void __naked __bare_init reset(void)
+> >  #endif
+> >  
+> >  	at91sam926x_lowlevel_init();
+> > +
+> > +	barebox_arm_entry(AT91_SDRAM_BASE, at91_get_sdram_size(), 0);
+> >  }
+> > -- 
+> > 1.7.10.4
+> > 
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
