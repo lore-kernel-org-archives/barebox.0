@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TzEyu-0005re-7g
- for barebox@lists.infradead.org; Sat, 26 Jan 2013 23:16:17 +0000
-Received: from mail406.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 56C22DC0DCA
- for <barebox@lists.infradead.org>; Sun, 27 Jan 2013 00:26:05 +0100 (CET)
-Date: Sun, 27 Jan 2013 00:14:54 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130126231454.GI26329@game.jcrosoft.org>
-References: <20130126181809.GH26329@game.jcrosoft.org>
- <1359224399-569-1-git-send-email-plagnioj@jcrosoft.com>
- <1359224399-569-5-git-send-email-plagnioj@jcrosoft.com>
- <20130126215949.GR1906@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TzP9t-0001Qj-BW
+ for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:08:19 +0000
+Date: Sun, 27 Jan 2013 11:08:13 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130127100813.GU1906@pengutronix.de>
+References: <20130125235326.GG26329@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130126215949.GR1906@pengutronix.de>
+In-Reply-To: <20130125235326.GG26329@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,95 +22,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/5] at91sam9261ek: add first stage support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 0/7] globalvar: add multiple device support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 22:59 Sat 26 Jan     , Sascha Hauer wrote:
-> On Sat, Jan 26, 2013 at 07:19:59PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  arch/arm/boards/at91sam9261ek/env/config           |   10 ++-
-> >  arch/arm/boards/at91sam9261ek/init.c               |   15 ++++-
-> >  .../configs/at91sam9261ek_first_stage_defconfig    |   71 ++++++++++++++++++++
-> >  3 files changed, 92 insertions(+), 4 deletions(-)
-> >  create mode 100644 arch/arm/configs/at91sam9261ek_first_stage_defconfig
-> > 
-> > diff --git a/arch/arm/boards/at91sam9261ek/env/config b/arch/arm/boards/at91sam9261ek/env/config
-> > index 7d85577..cb3e847 100644
-> > --- a/arch/arm/boards/at91sam9261ek/env/config
-> > +++ b/arch/arm/boards/at91sam9261ek/env/config
-> > @@ -34,8 +34,14 @@ kernelimage=zImage
-> >  #kernelimage=Image.lzo
-> >  
-> >  nand_device=atmel_nand
-> > -nand_parts="128k(at91bootstrap),256k(barebox)ro,128k(bareboxenv),128k(bareboxenv2),128k(oftree),4M(kernel),120M(rootfs),-(data)"
-> > -rootfs_mtdblock_nand=6
-> > +if [ x$borebox_first_stage = x1 ]
+On Sat, Jan 26, 2013 at 12:53:26AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> HI,
 > 
-> LOL ;) Found a new name for the project?
-typo
+> 	this will allow to reduce the scope of device and params to search
+> 	during boot time
 > 
-> > +then
-> > +	nand_parts="384k(barebox)ro,128k(bareboxenv),128k(bareboxenv2),128k(oftree),4M(kernel),120M(rootfs),-(data)"
-> > +	rootfs_mtdblock_nand=5
-> > +else
-> > +	nand_parts="128k(at91bootstrap),256k(barebox)ro,128k(bareboxenv),128k(bareboxenv2),128k(oftree),4M(kernel),120M(rootfs),-(data)"
-> > +	rootfs_mtdblock_nand=6
-> > +fi
+> 	we keep the retro compatibility
 > 
-> I find this rather confusing. Now we have a bootstrap config, a first
-> stage config and a regular config, two different partition layouts and
-> no indication how these play together.
+> The following changes since commit 2c93912f34ce06585c4ede0298aef7225e096df2:
 > 
-> I think it's dangerous to have two different partition layouts. What's
-> the reason to concatenate the at91bootstrap and barebox partition
-> together for the first stage case?
-yes because the 9261 can only load 156K into sram
+>   atmel_mci: gpio: request and configure card detect (2013-01-25 19:52:44 +0100)
+> 
+> are available in the git repository at:
+> 
+>   git://git.jcrosoft.org/barebox.git delivery/globalvar
 
-so it's more than the first block
-> 
-> What I would understand is:
-> 
-> - have a 128k first stage barebox which either
->   - loads the kernel directly
->   - or loads the second stage (bigger) barebox
-> 
->   The decision could be made by the environment or maybe a button/key
-> 
-> However, this makes for two defconfigs, not three.
-> 
-> BTW your at91 bootstrap code has:
-> 
-> 	bootstrap_read_devfs("nand0", true, SZ_128K, SZ_256K, SZ_1M);
-> 
-> Which means that you will use up to 1MB of Nand if you have bad blocks.
-> This conflicts with your partition layout above.
-> 
-> I suggest that you combine the first stage and bootstrap config into one
-> by adding some switch in the environment to optionally start the second
-> stage loader or directly boot through to the kernel.
+When compiling this I get:
 
-if you do this the first stage will be limited artificially at 128KiB where we
-can go to 156KiB
+common/bootargs.c: In function 'linux_bootargs_get':
+common/bootargs.c:50:2: warning: passing argument 1 of 'global_get_match' from incompatible pointer type [enabled by default]
+In file included from common/bootargs.c:23:0:
+include/globalvar.h:19:7: note: expected 'struct device_d *' but argument is of type 'char *'
+common/bootargs.c:54:2: warning: passing argument 1 of 'global_get_match' from incompatible pointer type [enabled by default]
+In file included from common/bootargs.c:23:0:
+include/globalvar.h:19:7: note: expected 'struct device_d *' but argument is of type 'char *'
+common/bootargs.c: In function 'bootargs_init':
+common/bootargs.c:83:19: warning: assignment from incompatible pointer type [enabled by default]
 
-and later
-when we can have the support of the mini nand laod we will use the 384KiB for
-barebox first stage
+When starting this I get:
 
-so I prefer to have 2 layout onthe ref board
-as it's here for dev not production
+unable to handle NULL pointer dereference at address 0x00000068
+pc : [<a7f1f928>]    lr : [<a7f1faf8>]
+sp : a6effc18  ip : 00000002  fp : 00000000
+r10: a6ffdf2c  r9 : a6ffd704  r8 : a6ffb009
+r7 : 00000000  r6 : 00000000  r5 : 00000000  r4 : 00000000
+r3 : 00000000  r2 : 00000000  r1 : a6ffb009  r0 : 00000000
+Flags: nZCv  IRQs off  FIQs off  Mode SVC_32
+[<a7f1f928>] (get_param_by_name+0xc/0xb4) from [<a7f1faf8>] (dev_add_param+0x18/0x94)
+[<a7f1faf8>] (dev_add_param+0x18/0x94) from [<a7f07800>] (global_add_simple+0x14/0x18)
+[<a7f07800>] (global_add_simple+0x14/0x18) from [<a7f0789c>] (globalvar_add_simple+0x98/0xb0)
+[<a7f0789c>] (globalvar_add_simple+0x98/0xb0) from [<a7f1e438>] (do_global+0x110/0x188)
+[<a7f1e438>] (do_global+0x110/0x188) from [<a7f05940>] (execute_command+0x38/0x78)
+[<a7f05940>] (execute_command+0x38/0x78) from [<a7f02150>] (run_list_real+0x7e0/0x938)
+[<a7f02150>] (run_list_real+0x7e0/0x938) from [<a7f01798>] (parse_stream_outer+0x198/0x270)
+[<a7f01798>] (parse_stream_outer+0x198/0x270) from [<a7f0190c>] (parse_string_outer+0x9c/0x100)
+[<a7f0190c>] (parse_string_outer+0x9c/0x100) from [<a7f022e8>] (source_script+0x40/0x78)
+...
 
-Best Regards,
-J.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Overall I'm not sure this is worth it. I did some measurements on a
+400MHz ARM9 board. From startup until booting the kernel barebox spends
+about 5.5ms in getenv/setenv. This can be reduced quite easily to 3ms
+by moving globalvar_init to a core_initcall.
+
+Anyway, the series is not mergable as is. Also the search through subdevices
+of the globalvar device seems to have some undesirable side effects.
+
+Sascha
+
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
