@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TzQ6l-0001No-Cz
- for barebox@lists.infradead.org; Sun, 27 Jan 2013 11:09:10 +0000
-Date: Sun, 27 Jan 2013 12:09:05 +0100
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TzPuv-000147-TR
+ for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:56:54 +0000
+Date: Sun, 27 Jan 2013 11:56:51 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130127110905.GW1906@pengutronix.de>
-References: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
- <1359283623-1782-20-git-send-email-s.hauer@pengutronix.de>
- <20130127105135.GK26329@game.jcrosoft.org>
+Message-ID: <20130127105651.GV1906@pengutronix.de>
+References: <20130125235326.GG26329@game.jcrosoft.org>
+ <20130127100813.GU1906@pengutronix.de>
+ <20130127103856.GJ26329@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130127105135.GK26329@game.jcrosoft.org>
+In-Reply-To: <20130127103856.GJ26329@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,275 +24,119 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 19/34] ARM AT91: switch to barebox_arm_entry part1
+Subject: Re: [PATCH 0/7] globalvar: add multiple device support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Jan 27, 2013 at 11:51:35AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 11:46 Sun 27 Jan     , Sascha Hauer wrote:
-> > This switches the at91sam926x, 9g10 and 9g20 over to barebox_arm_entry.
-> > For these SoCs we currently support reading back the memory size from
-> > the SDRAM controller, so all of these can have a common reset() function.
+On Sun, Jan 27, 2013 at 11:38:56AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 11:08 Sun 27 Jan     , Sascha Hauer wrote:
+> > On Sat, Jan 26, 2013 at 12:53:26AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > HI,
+> > > 
+> > > 	this will allow to reduce the scope of device and params to search
+> > > 	during boot time
+> > > 
+> > > 	we keep the retro compatibility
+> > > 
+> > > The following changes since commit 2c93912f34ce06585c4ede0298aef7225e096df2:
+> > > 
+> > >   atmel_mci: gpio: request and configure card detect (2013-01-25 19:52:44 +0100)
+> > > 
+> > > are available in the git repository at:
+> > > 
+> > >   git://git.jcrosoft.org/barebox.git delivery/globalvar
+> > 
+> > When compiling this I get:
+> > 
+> > common/bootargs.c: In function 'linux_bootargs_get':
+> > common/bootargs.c:50:2: warning: passing argument 1 of 'global_get_match' from incompatible pointer type [enabled by default]
+> > In file included from common/bootargs.c:23:0:
+> > include/globalvar.h:19:7: note: expected 'struct device_d *' but argument is of type 'char *'
+> > common/bootargs.c:54:2: warning: passing argument 1 of 'global_get_match' from incompatible pointer type [enabled by default]
+> > In file included from common/bootargs.c:23:0:
+> > include/globalvar.h:19:7: note: expected 'struct device_d *' but argument is of type 'char *'
+> > common/bootargs.c: In function 'bootargs_init':
+> > common/bootargs.c:83:19: warning: assignment from incompatible pointer type [enabled by default]
+> > 
+> > When starting this I get:
+> > 
+> > unable to handle NULL pointer dereference at address 0x00000068
+> > pc : [<a7f1f928>]    lr : [<a7f1faf8>]
+> > sp : a6effc18  ip : 00000002  fp : 00000000
+> > r10: a6ffdf2c  r9 : a6ffd704  r8 : a6ffb009
+> > r7 : 00000000  r6 : 00000000  r5 : 00000000  r4 : 00000000
+> > r3 : 00000000  r2 : 00000000  r1 : a6ffb009  r0 : 00000000
+> > Flags: nZCv  IRQs off  FIQs off  Mode SVC_32
+> > [<a7f1f928>] (get_param_by_name+0xc/0xb4) from [<a7f1faf8>] (dev_add_param+0x18/0x94)
+> > [<a7f1faf8>] (dev_add_param+0x18/0x94) from [<a7f07800>] (global_add_simple+0x14/0x18)
+> > [<a7f07800>] (global_add_simple+0x14/0x18) from [<a7f0789c>] (globalvar_add_simple+0x98/0xb0)
+> > [<a7f0789c>] (globalvar_add_simple+0x98/0xb0) from [<a7f1e438>] (do_global+0x110/0x188)
+> > [<a7f1e438>] (do_global+0x110/0x188) from [<a7f05940>] (execute_command+0x38/0x78)
+> > [<a7f05940>] (execute_command+0x38/0x78) from [<a7f02150>] (run_list_real+0x7e0/0x938)
+> > [<a7f02150>] (run_list_real+0x7e0/0x938) from [<a7f01798>] (parse_stream_outer+0x198/0x270)
+> > [<a7f01798>] (parse_stream_outer+0x198/0x270) from [<a7f0190c>] (parse_string_outer+0x9c/0x100)
+> > [<a7f0190c>] (parse_string_outer+0x9c/0x100) from [<a7f022e8>] (source_script+0x40/0x78)
+> > ...
+> > 
+> > Overall I'm not sure this is worth it. I did some measurements on a
+> > 400MHz ARM9 board. From startup until booting the kernel barebox spends
+> > about 5.5ms in getenv/setenv. This can be reduced quite easily to 3ms
+> > by moving globalvar_init to a core_initcall.
+> > 
+> > Anyway, the series is not mergable as is. Also the search through subdevices
+> > of the globalvar device seems to have some undesirable side effects.
+>  
+> I test here no issue wired
 > 
-> can we wait after the cleanup on lowlevel
+> I test also here with more global ar about 100
 > 
-> as I'm cleaning the AT91_BASE_SYS
+> I found 200ms diff on the all boot (cold start)
 > 
-> patch send with 9261ek boostrao support
+> which for my case is critical
 > 
-> can you rebase over
-> 
-> at91sam9260/9g20/9261/9g10/9263: split soc lowlevel_init from generic
+> which config do you use?
 
-Since this is based on -next I will have to rebase it anyway. I will
-rebase this after the next merge flood on whatever is there.
+pcm038_defconfig
 
-Sascha
+See the attached patch
 
-> 
-> Best Regards,
-> J.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/boards/at91sam9263ek/Makefile         |    4 ++--
-> >  arch/arm/boards/mmccpu/Makefile                |    4 ++--
-> >  arch/arm/boards/pm9261/Makefile                |    4 ++--
-> >  arch/arm/boards/pm9263/Makefile                |    4 ++--
-> >  arch/arm/boards/tny-a926x/Makefile             |    4 ++--
-> >  arch/arm/boards/usb-a926x/Makefile             |    4 ++--
-> >  arch/arm/mach-at91/Kconfig                     |   19 ++++++++++++++-----
-> >  arch/arm/mach-at91/Makefile                    |   10 +++++++---
-> >  arch/arm/mach-at91/at91sam926x_lowlevel_init.c |   11 ++++++++++-
-> >  9 files changed, 43 insertions(+), 21 deletions(-)
-> > 
-> > diff --git a/arch/arm/boards/at91sam9263ek/Makefile b/arch/arm/boards/at91sam9263ek/Makefile
-> > index b6460c3..1702783 100644
-> > --- a/arch/arm/boards/at91sam9263ek/Makefile
-> > +++ b/arch/arm/boards/at91sam9263ek/Makefile
-> > @@ -1,5 +1,5 @@
-> >  obj-y += init.o
-> >  
-> > -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-> > +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
-> >  
-> > -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-> > +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
-> > diff --git a/arch/arm/boards/mmccpu/Makefile b/arch/arm/boards/mmccpu/Makefile
-> > index b6460c3..1702783 100644
-> > --- a/arch/arm/boards/mmccpu/Makefile
-> > +++ b/arch/arm/boards/mmccpu/Makefile
-> > @@ -1,5 +1,5 @@
-> >  obj-y += init.o
-> >  
-> > -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-> > +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
-> >  
-> > -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-> > +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
-> > diff --git a/arch/arm/boards/pm9261/Makefile b/arch/arm/boards/pm9261/Makefile
-> > index b6460c3..1702783 100644
-> > --- a/arch/arm/boards/pm9261/Makefile
-> > +++ b/arch/arm/boards/pm9261/Makefile
-> > @@ -1,5 +1,5 @@
-> >  obj-y += init.o
-> >  
-> > -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-> > +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
-> >  
-> > -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-> > +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
-> > diff --git a/arch/arm/boards/pm9263/Makefile b/arch/arm/boards/pm9263/Makefile
-> > index b6460c3..1702783 100644
-> > --- a/arch/arm/boards/pm9263/Makefile
-> > +++ b/arch/arm/boards/pm9263/Makefile
-> > @@ -1,5 +1,5 @@
-> >  obj-y += init.o
-> >  
-> > -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-> > +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
-> >  
-> > -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-> > +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
-> > diff --git a/arch/arm/boards/tny-a926x/Makefile b/arch/arm/boards/tny-a926x/Makefile
-> > index 36ea09f..caa7163 100644
-> > --- a/arch/arm/boards/tny-a926x/Makefile
-> > +++ b/arch/arm/boards/tny-a926x/Makefile
-> > @@ -5,6 +5,6 @@ obj-$(CONFIG_AT91_BOOTSTRAP) += $(bootstrap-y)
-> >  
-> >  lowlevel_init-$(CONFIG_MACH_TNY_A9263) = tny_a9263_lowlevel_init.o
-> >  
-> > -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> > +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> >  
-> > -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> > +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> > diff --git a/arch/arm/boards/usb-a926x/Makefile b/arch/arm/boards/usb-a926x/Makefile
-> > index e314dd5..88f163f 100644
-> > --- a/arch/arm/boards/usb-a926x/Makefile
-> > +++ b/arch/arm/boards/usb-a926x/Makefile
-> > @@ -5,6 +5,6 @@ obj-$(CONFIG_AT91_BOOTSTRAP) += $(bootstrap-y)
-> >  
-> >  lowlevel_init-$(CONFIG_MACH_USB_A9263) = usb_a9263_lowlevel_init.o
-> >  
-> > -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> > +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> >  
-> > -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> > +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> > diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-> > index 9d4359e..4f30650 100644
-> > --- a/arch/arm/mach-at91/Kconfig
-> > +++ b/arch/arm/mach-at91/Kconfig
-> > @@ -6,6 +6,9 @@ config HAVE_AT91_DBGU0
-> >  config HAVE_AT91_DBGU1
-> >  	bool
-> >  
-> > +config HAVE_AT91_LOWLEVEL_INIT
-> > +	bool
-> > +
-> >  config AT91SAM9_SMC
-> >  	bool
-> >  
-> > @@ -77,6 +80,8 @@ config SOC_AT91SAM9260
-> >  	select HAVE_AT91_DBGU0
-> >  	select HAS_MACB
-> >  	select AT91SAM9_RESET
-> > +	select MACH_HAS_LOWLEVEL_INIT
-> > +	select MACH_DO_LOWLEVEL_INIT
-> >  	help
-> >  	  Select this if you are using one of Atmel's AT91SAM9260, AT91SAM9XE
-> >  	  or AT91SAM9G20 SoC.
-> > @@ -86,6 +91,8 @@ config SOC_AT91SAM9261
-> >  	select SOC_AT91SAM9
-> >  	select HAVE_AT91_DBGU0
-> >  	select AT91SAM9_RESET
-> > +	select MACH_HAS_LOWLEVEL_INIT
-> > +	select MACH_DO_LOWLEVEL_INIT
-> >  	help
-> >  	  Select this if you are using one of Atmel's AT91SAM9261 or AT91SAM9G10 SoC.
-> >  
-> > @@ -95,6 +102,8 @@ config SOC_AT91SAM9263
-> >  	select HAVE_AT91_DBGU1
-> >  	select HAS_MACB
-> >  	select AT91SAM9_RESET
-> > +	select MACH_HAS_LOWLEVEL_INIT
-> > +	select MACH_DO_LOWLEVEL_INIT
-> >  
-> >  config SOC_AT91SAM9G45
-> >  	bool
-> > @@ -263,7 +272,7 @@ config MACH_AT91SAM9261EK
-> >  config MACH_PM9261
-> >  	bool "Ronetix PM9261"
-> >  	select HAS_DM9000
-> > -	select MACH_HAS_LOWLEVEL_INIT
-> > +	select HAVE_AT91_LOWLEVEL_INIT
-> >  	help
-> >  	  Say y here if you are using the Ronetix PM9261 Board
-> >  
-> > @@ -338,7 +347,7 @@ choice
-> >  
-> >  config MACH_AT91SAM9263EK
-> >  	bool "Atmel AT91SAM9263-EK"
-> > -	select MACH_HAS_LOWLEVEL_INIT
-> > +	select HAVE_AT91_LOWLEVEL_INIT
-> >  	select HAVE_NAND_ATMEL_BUSWIDTH_16
-> >  	help
-> >  	  Say y here if you are using Atmel's AT91SAM9263-EK Evaluation board
-> > @@ -350,7 +359,7 @@ config MACH_MMCCPU
-> >  
-> >  config MACH_PM9263
-> >  	bool "Ronetix PM9263"
-> > -	select MACH_HAS_LOWLEVEL_INIT
-> > +	select HAVE_AT91_LOWLEVEL_INIT
-> >  	help
-> >  	  Say y here if you are using the Ronetix PM9263 Board
-> >  
-> > @@ -364,7 +373,7 @@ config MACH_TNY_A9263
-> >  
-> >  config MACH_USB_A9263
-> >  	bool "CALAO USB-A9263"
-> > -	select MACH_HAS_LOWLEVEL_INIT
-> > +	select HAVE_AT91_LOWLEVEL_INIT
-> >  	help
-> >  	  Select this if you are using a Calao Systems USB-A9263.
-> >  	  <http://www.calao-systems.com>
-> > @@ -508,7 +517,7 @@ endif
-> >  
-> >  config AT91_BOOTSTRAP
-> >  	bool "at91 bootstrap"
-> > -	depends on MACH_HAS_LOWLEVEL_INIT
-> > +	depends on HAVE_AT91_LOWLEVEL_INIT
-> >  	select BOOTSTRAP
-> >  
-> >  endif
-> > diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-> > index 634b160..b94424e 100644
-> > --- a/arch/arm/mach-at91/Makefile
-> > +++ b/arch/arm/mach-at91/Makefile
-> > @@ -2,11 +2,15 @@ obj-y += setup.o clock.o gpio.o
-> >  obj-$(CONFIG_CMD_AT91_BOOT_TEST) += boot_test_cmd.o
-> >  
-> >  obj-$(CONFIG_AT91_BOOTSTRAP) += bootstrap.o
-> > -lowlevel_init-y = at91sam926x_lowlevel_init.o
-> > +lowlevel_init-$(CONFIG_ARCH_AT91SAM9260) = at91sam926x_lowlevel_init.o
-> > +lowlevel_init-$(CONFIG_ARCH_AT91SAM9261) = at91sam926x_lowlevel_init.o
-> > +lowlevel_init-$(CONFIG_ARCH_AT91SAM9263) = at91sam926x_lowlevel_init.o
-> > +lowlevel_init-$(CONFIG_ARCH_AT91SAM9G10) = at91sam926x_lowlevel_init.o
-> > +lowlevel_init-$(CONFIG_ARCH_AT91SAM9G20) = at91sam926x_lowlevel_init.o
-> >  lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
-> > -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> > +obj-y += $(lowlevel_init-y)
-> >  
-> > -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> > +pbl-y += $(lowlevel_init-y)
-> >  
-> >  obj-$(CONFIG_AT91SAM9_RESET) += at91sam9_reset.o
-> >  obj-$(CONFIG_AT91SAM9G45_RESET) += at91sam9g45_reset.o
-> > diff --git a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-> > index 14afbc9..31e9f54 100644
-> > --- a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-> > +++ b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-> > @@ -46,6 +46,7 @@ static int inline running_in_sram(void)
-> >  	return addr == 0;
-> >  }
-> >  
-> > +#ifdef CONFIG_HAVE_AT91_LOWLEVEL_INIT
-> >  void __bare_init at91sam926x_lowlevel_init(void)
-> >  {
-> >  	u32 r;
-> > @@ -191,8 +192,14 @@ void __bare_init at91sam926x_lowlevel_init(void)
-> >  	at91_pmc_write(AT91_PMC_PCER, 0xffffffff);
-> >  
-> >  end:
-> > -	board_init_lowlevel_return();
-> > +	barebox_arm_entry(AT91_SDRAM_BASE, at91_get_sdram_size(), 0);
-> >  }
-> > +#else
-> > +static inline void at91sam926x_lowlevel_init(void)
-> > +{
-> > +}
-> > +#endif
-> > +
-> >  
-> >  void __naked __bare_init reset(void)
-> >  {
-> > @@ -207,4 +214,6 @@ void __naked __bare_init reset(void)
-> >  #endif
-> >  
-> >  	at91sam926x_lowlevel_init();
-> > +
-> > +	barebox_arm_entry(AT91_SDRAM_BASE, at91_get_sdram_size(), 0);
-> >  }
-> > -- 
-> > 1.7.10.4
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> 
+commit 3bbc0037970e35dab9838980bbd5dfb67cf2dada
+Author: Sascha Hauer <s.hauer@pengutronix.de>
+Date:   Sun Jan 27 00:53:14 2013 +0100
+
+    fix
+    
+    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+diff --git a/common/bootargs.c b/common/bootargs.c
+index d82d853..e9248ab 100644
+--- a/common/bootargs.c
++++ b/common/bootargs.c
+@@ -26,7 +26,7 @@
+ 
+ static char *linux_bootargs;
+ static int linux_bootargs_overwritten;
+-static char *global_linux_dev;
++static struct device_d *global_linux_dev;
+ 
+ /*
+  * This returns the Linux bootargs
+diff --git a/common/globalvar.c b/common/globalvar.c
+index d0aa2a3..aa4f8a0 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -135,6 +135,11 @@ int globalvar_add_simple(const char *name)
+ 		subname = ++data;
+ 
+ 		dev = global_get_child_by_name(tmp);
++		if (!dev) {
++			dev = global_device;
++			subname = name;
++		}
++
+ 	}
+ 
+ 	ret = global_add_simple(dev, subname);
 
 -- 
 Pengutronix e.K.                           |                             |
