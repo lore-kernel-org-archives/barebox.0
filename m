@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TzQGg-0002pc-RY
- for barebox@lists.infradead.org; Sun, 27 Jan 2013 11:19:23 +0000
-Date: Sun, 27 Jan 2013 12:19:20 +0100
+ id 1TzQH0-0002to-IF
+ for barebox@lists.infradead.org; Sun, 27 Jan 2013 11:19:42 +0000
+Date: Sun, 27 Jan 2013 12:19:41 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130127111920.GX1906@pengutronix.de>
-References: <1359158934-9369-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130127111941.GY1906@pengutronix.de>
+References: <1359224025-32325-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1359158934-9369-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1359224025-32325-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,97 +22,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] Animeo IP: use gpiolib ip to detect the hw version
+Subject: Re: [PATCH 1/1] at91sam9261: fix max bare_init it's 156KiB
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Jan 26, 2013 at 01:08:54AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> if err assume
-> SubCo
-> SDN
-> 
+On Sat, Jan 26, 2013 at 07:13:45PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/mach-at91/Kconfig |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
 
 Applied, thanks
 
 Sascha
 
-> ---
->  arch/arm/boards/animeo_ip/init.c |   50 +++++++++++++++++++++++++++++---------
->  1 file changed, 39 insertions(+), 11 deletions(-)
-> 
-> diff --git a/arch/arm/boards/animeo_ip/init.c b/arch/arm/boards/animeo_ip/init.c
-> index e5e8694..9063567 100644
-> --- a/arch/arm/boards/animeo_ip/init.c
-> +++ b/arch/arm/boards/animeo_ip/init.c
-> @@ -29,28 +29,56 @@
->  static bool animeo_ip_is_buco;
->  static bool animeo_ip_is_io;
->  
-> +static int animeo_ip_get_pio_revision(int gpio, char *name)
-> +{
-> +	int ret;
-> +
-> +	ret = gpio_request(gpio, name);
-> +	if (ret) {
-> +		pr_err("animeo_ip: can not request gpio %d as %s (%d)\n",
-> +			gpio, name, ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = gpio_direction_input(gpio);
-> +
-> +	if (ret) {
-> +		pr_err("animeo_ip: can configure gpio %d (%s) as input (%d)\n",
-> +			gpio, name, ret);
-> +		return ret;
-> +	}
-> +
-> +	return gpio_get_value(gpio);
-> +}
-> +
->  static void animeo_ip_detect_version(void)
->  {
->  	struct device_d *dev = NULL;
->  	char *model, *version;
-> +	int val;
->  
-> -	at91_set_gpio_input(AT91_PIN_PC20, 0);
-> -	at91_set_gpio_input(AT91_PIN_PC21, 0);
-> -
-> -	animeo_ip_is_buco = !!gpio_get_value(AT91_PIN_PC20);
-> -	animeo_ip_is_io = !!gpio_get_value(AT91_PIN_PC21);
-> +	animeo_ip_is_io = false;
-> +	animeo_ip_is_buco = false;
-> +	model = "SubCo";
-> +	version = "SDN";
->  
->  	dev = add_generic_device_res("animeo_ip", DEVICE_ID_SINGLE, NULL, 0, NULL);
->  
-> -	if (animeo_ip_is_buco)
-> -		model = "BuCo";
-> -	else
-> +	val = animeo_ip_get_pio_revision(AT91_PIN_PC20, "is_buco");
-> +	if (val < 0) {
-> +		pr_warn("Can not detect model use %s by default\n", model);
-> +	} else if (val) {
-> +		animeo_ip_is_buco = true;
->  		model = "SubCo";
-> +	}
->  
-> -	if (animeo_ip_is_io)
-> +	val = animeo_ip_get_pio_revision(AT91_PIN_PC21, "is_io");
-> +	if (val < 0) {
-> +		pr_warn("Can not detect version use %s by default\n", model);
-> +	} else if (val) {
-> +		animeo_ip_is_io = true;
->  		version = "IO";
-> -	else
-> -		version = "SDN";
-> +	}
->  
->  	dev_add_param_fixed(dev, "model", model);
->  	dev_add_param_fixed(dev, "version", version);
+> index 9d4359e..a3b2aba 100644
+> --- a/arch/arm/mach-at91/Kconfig
+> +++ b/arch/arm/mach-at91/Kconfig
+> @@ -172,7 +172,7 @@ endchoice
+>  config ARCH_BAREBOX_MAX_BARE_INIT_SIZE
+>  	hex
+>  	default 0x1000 if ARCH_AT91SAM9260
+> -	default 0x270000 if ARCH_AT91SAM9261
+> +	default 0x27000 if ARCH_AT91SAM9261
+>  	default 0x12000 if ARCH_AT91SAM9263
+>  	default 0x4000 if ARCH_AT91SAM9G20
+>  	default 0x3000 if ARCH_AT91SAM9G10
 > -- 
 > 1.7.10.4
 > 
