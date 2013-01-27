@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TzPlU-00063Y-8j
- for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:47:14 +0000
+ id 1TzPlU-000648-8l
+ for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:47:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 27 Jan 2013 11:46:39 +0100
-Message-Id: <1359283623-1782-11-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 27 Jan 2013 11:46:49 +0100
+Message-Id: <1359283623-1782-21-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,79 +21,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/34] ARM PXA boards: switch to barebox_arm_entry
+Subject: [PATCH 20/34] ARM AT91: switch at91rm9200 board to barebox_arm_entry
 To: barebox@lists.infradead.org
-
-All boards use hardcoded base addresses.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig                       |    2 ++
- arch/arm/boards/mioa701/Makefile       |    2 ++
- arch/arm/boards/mioa701/lowlevel.c     |   10 ++++++++++
- arch/arm/boards/pcm027/lowlevel_init.S |    7 +++++--
- 4 files changed, 19 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/boards/mioa701/lowlevel.c
+ arch/arm/boards/at91rm9200ek/Makefile         |    2 ++
+ arch/arm/boards/at91rm9200ek/lowlevel.c       |   14 ++++++++++++++
+ arch/arm/mach-at91/Kconfig                    |    1 +
+ arch/arm/mach-at91/at91rm9200_lowlevel_init.c |    5 +++--
+ arch/arm/mach-at91/include/mach/board.h       |    3 +++
+ 5 files changed, 23 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/boards/at91rm9200ek/lowlevel.c
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 1e509a4..dd8f01e 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -88,6 +88,8 @@ config ARCH_OMAP
- config ARCH_PXA
- 	bool "Intel/Marvell PXA based"
- 	select GENERIC_GPIO
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select MACH_DO_LOWLEVEL_INIT
- 
- config ARCH_S3C24xx
- 	bool "Samsung S3C2410, S3C2440"
-diff --git a/arch/arm/boards/mioa701/Makefile b/arch/arm/boards/mioa701/Makefile
-index dcfc293..88c223a 100644
---- a/arch/arm/boards/mioa701/Makefile
-+++ b/arch/arm/boards/mioa701/Makefile
+diff --git a/arch/arm/boards/at91rm9200ek/Makefile b/arch/arm/boards/at91rm9200ek/Makefile
+index eb072c0..47ab803 100644
+--- a/arch/arm/boards/at91rm9200ek/Makefile
++++ b/arch/arm/boards/at91rm9200ek/Makefile
 @@ -1 +1,3 @@
- obj-y += board.o
+ obj-y += init.o
 +obj-y += lowlevel.o
 +pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/mioa701/lowlevel.c b/arch/arm/boards/mioa701/lowlevel.c
+diff --git a/arch/arm/boards/at91rm9200ek/lowlevel.c b/arch/arm/boards/at91rm9200ek/lowlevel.c
 new file mode 100644
-index 0000000..6d48c97
+index 0000000..a6c8f13
 --- /dev/null
-+++ b/arch/arm/boards/mioa701/lowlevel.c
-@@ -0,0 +1,10 @@
++++ b/arch/arm/boards/at91rm9200ek/lowlevel.c
+@@ -0,0 +1,14 @@
 +#include <common.h>
++#include <init.h>
 +#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
 +#include <asm/barebox-arm.h>
++#include <asm/barebox-arm-head.h>
++#include <mach/hardware.h>
++#include <mach/board.h>
 +
-+void __naked reset(void)
++void __naked __bare_init reset(void)
 +{
 +	common_reset();
-+	barebox_arm_entry(0xa0000000, SZ_64M, 0);
++
++	at91rm9200_entry(SZ_64M, 0);
 +}
-diff --git a/arch/arm/boards/pcm027/lowlevel_init.S b/arch/arm/boards/pcm027/lowlevel_init.S
-index cf5fcd9..b90682c 100644
---- a/arch/arm/boards/pcm027/lowlevel_init.S
-+++ b/arch/arm/boards/pcm027/lowlevel_init.S
-@@ -24,6 +24,7 @@
-  */
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 4f30650..ec9e88b 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -73,6 +73,7 @@ config SOC_AT91RM9200
+ 	select HAVE_AT91_DBGU0
+ 	select HAS_AT91_ETHER
+ 	select MACH_HAS_LOWLEVEL_INIT
++	select MACH_DO_LOWLEVEL_INIT
  
- #include <config.h>
-+#include <sizes.h>
- #include <mach/pxa-regs.h>
- #include <mach/regs-ost.h>
- #include <mach/regs-intc.h>
-@@ -452,5 +453,7 @@ initclks:
- 	/* -------------------------------------------------------------------- */
+ config SOC_AT91SAM9260
+ 	bool
+diff --git a/arch/arm/mach-at91/at91rm9200_lowlevel_init.c b/arch/arm/mach-at91/at91rm9200_lowlevel_init.c
+index 4add3d9..c4b6155 100644
+--- a/arch/arm/mach-at91/at91rm9200_lowlevel_init.c
++++ b/arch/arm/mach-at91/at91rm9200_lowlevel_init.c
+@@ -23,7 +23,8 @@ void static inline access_sdram(void)
+ 	writel(0x00000000, AT91_SDRAM_BASE);
+ }
  
- endlowlevel_init:
--	b board_init_lowlevel_return
--
-+	mov	r0, #0xa0000000
-+	mov	r1, #SZ_64M
-+	mov	r2, #0
-+	b	barebox_arm_entry
+-void __naked __bare_init reset(void)
++void __naked __bare_init at91rm9200_entry(unsigned long sdram_size,
++		unsigned long board_data)
+ {
+ 	u32 r;
+ 	int i;
+@@ -129,5 +130,5 @@ void __naked __bare_init reset(void)
+ 	set_cr(r);
+ 
+ end:
+-	board_init_lowlevel_return();
++	barebox_arm_entry(AT91_SDRAM_BASE, sdram_size, board_data);
+ }
+diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
+index b0afcf9..eefe389 100644
+--- a/arch/arm/mach-at91/include/mach/board.h
++++ b/arch/arm/mach-at91/include/mach/board.h
+@@ -163,4 +163,7 @@ struct at91_spi_platform_data {
+ };
+ 
+ void at91_add_device_spi(int spi_id, struct at91_spi_platform_data *pdata);
++
++void at91rm9200_entry(unsigned long sdram_size, unsigned long board_data);
++
+ #endif
 -- 
 1.7.10.4
 
