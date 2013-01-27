@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TzPlS-00063E-JE
- for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:47:10 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TzPlX-0008Vu-Eu
+ for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:47:12 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 27 Jan 2013 11:46:30 +0100
-Message-Id: <1359283623-1782-2-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 27 Jan 2013 11:47:01 +0100
+Message-Id: <1359283623-1782-33-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,75 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/34] ARM: Add new entry point for barebox
+Subject: [PATCH 32/34] generic memory layout: fix deps for [MALLOC|STACK]_BASE
 To: barebox@lists.infradead.org
 
-Memory is a precious resource, so it makes sense to make it available as
-early as possible. By definition the lowlevel init code already knows where
-to find memory because it's the lowlevel init code which sets up the memory.
-Until all boards are converted this new entry is just a fallback to the old
-entry point.
+Defining STACK_BASE and MALLOC_BASE only makes sense when
+either CONFIG_MEMORY_LAYOUT_DEFAULT or CONFIG_MEMORY_LAYOUT_FIXED
+is set, so use separate #ifdefs instead ot #if/#else
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start-pbl.c           |   13 +++++++++++++
- arch/arm/cpu/start.c               |   13 +++++++++++++
- arch/arm/include/asm/barebox-arm.h |    1 +
- 3 files changed, 27 insertions(+)
+ include/asm-generic/memory_layout.h |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index c5f9705..0778fb5 100644
---- a/arch/arm/cpu/start-pbl.c
-+++ b/arch/arm/cpu/start-pbl.c
-@@ -200,3 +200,16 @@ void __naked board_init_lowlevel_return(void)
+diff --git a/include/asm-generic/memory_layout.h b/include/asm-generic/memory_layout.h
+index eb1607f..45e0ed8 100644
+--- a/include/asm-generic/memory_layout.h
++++ b/include/asm-generic/memory_layout.h
+@@ -2,15 +2,13 @@
+ #define __ASM_GENERIC_MEMORY_LAYOUT_H
  
- 	barebox_uncompress((void *)pg_start, pg_len);
- }
-+
-+/*
-+ * Main ARM entry point in the compressed image. Call this with the memory
-+ * region you can spare for barebox. This doesn't necessarily have to be the
-+ * full SDRAM. The currently running binary can be inside or outside of this
-+ * region. TEXT_BASE can be inside or outside of this region. boarddata will
-+ * be preserved and can be accessed later with barebox_arm_boarddata().
-+ */
-+void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
-+		uint32_t boarddata)
-+{
-+	board_init_lowlevel_return();
-+}
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 793445a..0b7eee8 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -63,3 +63,16 @@ void __naked board_init_lowlevel_return(void)
+ #ifdef CONFIG_MEMORY_LAYOUT_DEFAULT
+-
+ #define MALLOC_BASE (TEXT_BASE - CONFIG_MALLOC_SIZE)
+ #define STACK_BASE (TEXT_BASE - CONFIG_MALLOC_SIZE - CONFIG_STACK_SIZE)
++#endif
  
- 	start_barebox();
- }
-+
-+/*
-+ * Main ARM entry point in the uncompressed image. Call this with the memory
-+ * region you can spare for barebox. This doesn't necessarily have to be the
-+ * full SDRAM. The currently running binary can be inside or outside of this
-+ * region. TEXT_BASE can be inside or outside of this region. boarddata will
-+ * be preserved and can be accessed later with barebox_arm_boarddata().
-+ */
-+void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
-+                uint32_t boarddata)
-+{
-+	board_init_lowlevel_return();
-+}
-diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-index 993130d..4ccf938 100644
---- a/arch/arm/include/asm/barebox-arm.h
-+++ b/arch/arm/include/asm/barebox-arm.h
-@@ -39,5 +39,6 @@ void board_init_lowlevel_return(void);
- uint32_t get_runtime_offset(void);
+-#else
+-
++#ifdef CONFIG_MEMORY_LAYOUT_FIXED
+ #define STACK_BASE CONFIG_STACK_BASE
+ #define MALLOC_BASE CONFIG_MALLOC_BASE
+-
+ #endif
  
- void setup_c(void);
-+void __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize, uint32_t boarddata);
- 
- #endif	/* _BAREBOX_ARM_H_ */
+ #define HEAD_TEXT_BASE MALLOC_BASE
 -- 
 1.7.10.4
 
