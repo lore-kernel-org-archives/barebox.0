@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TzPlX-0008Vv-Es
- for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:47:13 +0000
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TzPlS-00063D-Gd
+ for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:47:07 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 27 Jan 2013 11:46:56 +0100
-Message-Id: <1359283623-1782-28-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 27 Jan 2013 11:46:31 +0100
+Message-Id: <1359283623-1782-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,64 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 27/34] ARM pbl: Use dynamic parameters for early malloc space
+Subject: [PATCH 02/34] ARM: add __noreturn to board_init_lowlevel_return
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start-pbl.c |   12 ++++++++----
- arch/arm/cpu/start.c     |    1 +
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ arch/arm/cpu/start-pbl.c           |    6 +++---
+ arch/arm/cpu/start.c               |    2 +-
+ arch/arm/include/asm/barebox-arm.h |    2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index 1900daa..6610be6 100644
+index 0778fb5..4a83181 100644
 --- a/arch/arm/cpu/start-pbl.c
 +++ b/arch/arm/cpu/start-pbl.c
-@@ -128,10 +128,6 @@ static void barebox_uncompress(void *compressed_start, unsigned int len)
- 	 */
- 	int use_mmu = 0;
+@@ -132,9 +132,9 @@ static void noinline errorfn(char *error)
+ 	while (1);
+ }
  
--	/* set 128 KiB at the end of the MALLOC_BASE for early malloc */
--	free_mem_ptr = MALLOC_BASE + MALLOC_SIZE - SZ_128K;
--	free_mem_end_ptr = free_mem_ptr + SZ_128K;
--
- 	ttb = (void *)((free_mem_ptr - 0x4000) & ~0x3fff);
- 
- 	if (use_mmu)
-@@ -154,6 +150,10 @@ static noinline __noreturn void __barebox_arm_entry(uint32_t membase,
+-static void barebox_uncompress(void *compressed_start, unsigned int len)
++static void __noreturn barebox_uncompress(void *compressed_start, unsigned int len)
+ {
+-	void (*barebox)(void);
++	void __noreturn (*barebox)(void);
+ 	/*
+ 	 * remap_cached currently does not work rendering the feature
+ 	 * of enabling the MMU in the PBL useless. disable for now.
+@@ -172,7 +172,7 @@ static void barebox_uncompress(void *compressed_start, unsigned int len)
+  * Board code can jump here by either returning from board_init_lowlevel
+  * or by calling this function directly.
+  */
+-void __naked board_init_lowlevel_return(void)
++void __naked __noreturn board_init_lowlevel_return(void)
+ {
  	uint32_t offset;
  	uint32_t pg_start, pg_end, pg_len;
- 	void __noreturn (*barebox)(uint32_t, uint32_t, uint32_t);
-+	uint32_t endmem = membase + memsize;
-+
-+	endmem -= ARM_RESERVE_MEM_SIZE;
-+	endmem -= STACK_SIZE; /* stack */
- 
- 	/* Get offset between linked address and runtime address */
- 	offset = get_runtime_offset();
-@@ -173,6 +173,10 @@ static noinline __noreturn void __barebox_arm_entry(uint32_t membase,
- 
- 	setup_c();
- 
-+	endmem -= SZ_128K; /* early malloc */
-+	free_mem_ptr = endmem;
-+	free_mem_end_ptr = free_mem_ptr + SZ_128K;
-+
- 	barebox_uncompress((void *)pg_start, pg_len);
- 
- 	if (IS_ENABLED(CONFIG_THUMB2_BAREBOX))
 diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 530fb09..b77b070 100644
+index 0b7eee8..f212b61 100644
 --- a/arch/arm/cpu/start.c
 +++ b/arch/arm/cpu/start.c
-@@ -35,6 +35,7 @@ static noinline __noreturn void __start(uint32_t membase, uint32_t memsize,
+@@ -55,7 +55,7 @@ void __naked __bare_init reset(void)
+  * Board code can jump here by either returning from board_init_lowlevel
+  * or by calling this function directly.
+  */
+-void __naked board_init_lowlevel_return(void)
++void __naked __noreturn board_init_lowlevel_return(void)
+ {
+ 	arm_setup_stack(STACK_BASE + STACK_SIZE - 16);
  
- 	setup_c();
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 4ccf938..0574f34 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -35,7 +35,7 @@ int	dram_init (void);
+ extern char __exceptions_start[], __exceptions_stop[];
  
-+	endmem -= ARM_RESERVE_MEM_SIZE;
- 	arm_stack_top = endmem;
- 	endmem -= STACK_SIZE; /* Stack */
+ void board_init_lowlevel(void);
+-void board_init_lowlevel_return(void);
++void __noreturn board_init_lowlevel_return(void);
+ uint32_t get_runtime_offset(void);
  
+ void setup_c(void);
 -- 
 1.7.10.4
 
