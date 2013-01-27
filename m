@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TzPlX-0008Vt-F0
- for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:47:14 +0000
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TzPlT-00063H-Fn
+ for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:47:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 27 Jan 2013 11:46:58 +0100
-Message-Id: <1359283623-1782-30-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 27 Jan 2013 11:46:34 +0100
+Message-Id: <1359283623-1782-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,205 +21,165 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 29/34] ARM: Factor out early mmu code
+Subject: [PATCH 05/34] ARM i.MX: prepare external nand boot for SoC specific
+ entry
 To: barebox@lists.infradead.org
 
-Move early mmu code to a separate file so that it can be
-used from the pbl and the regular image. Disabling the mmu
-can be dropped since the regular mmu code is now able to
-pickup an enabled mmu.
+i.MX will get SoC specific entry points for barebox. To find the
+correct one we have to call these from the SoC specific
+imx*_barebox_boot_nand_external functions.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/Makefile    |    4 +--
- arch/arm/cpu/mmu-early.c |   53 ++++++++++++++++++++++++++++++++++
- arch/arm/cpu/mmu-early.h |    6 ++++
- arch/arm/cpu/start-pbl.c |   72 ----------------------------------------------
- 4 files changed, 61 insertions(+), 74 deletions(-)
- create mode 100644 arch/arm/cpu/mmu-early.c
- create mode 100644 arch/arm/cpu/mmu-early.h
+ arch/arm/mach-imx/external-nand-boot.c    |   73 +++++++++++++++++++++--------
+ arch/arm/mach-imx/include/mach/imx-nand.h |    1 -
+ 2 files changed, 53 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-index 4b0259c..44410ee 100644
---- a/arch/arm/cpu/Makefile
-+++ b/arch/arm/cpu/Makefile
-@@ -8,8 +8,8 @@ obj-y += start.o setupc.o
- #
- obj-$(CONFIG_CMD_ARM_CPUINFO) += cpuinfo.o
- obj-$(CONFIG_CMD_ARM_MMUINFO) += mmuinfo.o
--obj-$(CONFIG_MMU) += mmu.o cache.o
--pbl-$(CONFIG_MMU) += cache.o
-+obj-$(CONFIG_MMU) += mmu.o cache.o mmu-early.o
-+pbl-$(CONFIG_MMU) += cache.o mmu-early.o
- obj-$(CONFIG_CPU_32v4T) += cache-armv4.o
- pbl-$(CONFIG_CPU_32v4T) += cache-armv4.o
- obj-$(CONFIG_CPU_32v5) += cache-armv5.o
-diff --git a/arch/arm/cpu/mmu-early.c b/arch/arm/cpu/mmu-early.c
-new file mode 100644
-index 0000000..b8b30df
---- /dev/null
-+++ b/arch/arm/cpu/mmu-early.c
-@@ -0,0 +1,53 @@
-+#include <common.h>
-+#include <asm/mmu.h>
-+#include <errno.h>
-+#include <sizes.h>
-+#include <asm/memory.h>
-+#include <asm/system.h>
-+#include <asm/cache.h>
-+
-+#include "mmu.h"
-+
-+static uint32_t *ttb;
-+
-+static void create_sections(unsigned long addr, int size_m, unsigned int flags)
-+{
-+	int i;
-+
-+	addr >>= 20;
-+
-+	for (i = size_m; i > 0; i--, addr++)
-+		ttb[addr] = (addr << 20) | flags;
-+}
-+
-+static void map_cachable(unsigned long start, unsigned long size)
-+{
-+	start &= ~(SZ_1M - 1);
-+	size = (size + (SZ_1M - 1)) & ~(SZ_1M - 1);
-+
-+	create_sections(start, size >> 20, PMD_SECT_AP_WRITE |
-+			PMD_SECT_AP_READ | PMD_TYPE_SECT | PMD_SECT_WB);
-+}
-+
-+void mmu_early_enable(uint32_t membase, uint32_t memsize, uint32_t _ttb)
-+{
-+	int i;
-+
-+	ttb = (uint32_t *)_ttb;
-+
-+	arm_set_cache_functions();
-+
-+	/* Set the ttb register */
-+	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
-+
-+	/* Set the Domain Access Control Register */
-+	i = 0x3;
-+	asm volatile ("mcr  p15,0,%0,c3,c0,0" : : "r"(i) /*:*/);
-+
-+	create_sections(0, 4096, PMD_SECT_AP_WRITE |
-+			PMD_SECT_AP_READ | PMD_TYPE_SECT);
-+
-+	map_cachable(membase, memsize);
-+
-+	__mmu_cache_on();
-+}
-diff --git a/arch/arm/cpu/mmu-early.h b/arch/arm/cpu/mmu-early.h
-new file mode 100644
-index 0000000..af21f52
---- /dev/null
-+++ b/arch/arm/cpu/mmu-early.h
-@@ -0,0 +1,6 @@
-+#ifndef __ARM_CPU_MMU_EARLY_H
-+#define __ARM_CPU_MMU_EARLY_H
-+
-+void mmu_early_enable(uint32_t membase, uint32_t memsize, uint32_t ttb);
-+
-+#endif /* __ARM_CPU_MMU_EARLY_H */
-diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index 6610be6..96a9dcf 100644
---- a/arch/arm/cpu/start-pbl.c
-+++ b/arch/arm/cpu/start-pbl.c
-@@ -57,64 +57,6 @@ extern void *input_data_end;
- #include "../../../lib/decompress_inflate.c"
- #endif
- 
--static unsigned long *ttb;
--
--static void create_sections(unsigned long addr, int size_m, unsigned int flags)
--{
--	int i;
--
--	addr >>= 20;
--
--	for (i = size_m; i > 0; i--, addr++)
--		ttb[addr] = (addr << 20) | flags;
--}
--
--static void map_cachable(unsigned long start, unsigned long size)
--{
--	start &= ~(SZ_1M - 1);
--	size = (size + (SZ_1M - 1)) & ~(SZ_1M - 1);
--
--	create_sections(start, size >> 20, PMD_SECT_AP_WRITE |
--			PMD_SECT_AP_READ | PMD_TYPE_SECT | PMD_SECT_WB);
--}
--
--static void mmu_enable(unsigned long compressed_start, unsigned int len)
--{
--	int i;
--
--	/* Set the ttb register */
--	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
--
--	/* Set the Domain Access Control Register */
--	i = 0x3;
--	asm volatile ("mcr  p15,0,%0,c3,c0,0" : : "r"(i) /*:*/);
--
--	create_sections(0, 4096, PMD_SECT_AP_WRITE |
--			PMD_SECT_AP_READ | PMD_TYPE_SECT);
--	/*
--	 * Setup all regions we need cacheable, namely:
--	 * - the stack
--	 * - the decompressor code
--	 * - the compressed image
--	 * - the uncompressed image
--	 * - the early malloc space
--	 */
--	map_cachable(STACK_BASE, STACK_SIZE);
--	map_cachable((unsigned long)&_text,
--			(unsigned long)&_end - (unsigned long)&_text);
--	map_cachable((unsigned long)compressed_start, len);
--	map_cachable(TEXT_BASE, len * 4);
--	map_cachable(free_mem_ptr, free_mem_end_ptr - free_mem_ptr);
--
--	__mmu_cache_on();
--}
--
--static void mmu_disable(void)
--{
--	__mmu_cache_flush();
--	__mmu_cache_off();
--}
--
- static void noinline errorfn(char *error)
- {
- 	while (1);
-@@ -122,25 +64,11 @@ static void noinline errorfn(char *error)
- 
- static void barebox_uncompress(void *compressed_start, unsigned int len)
- {
--	/*
--	 * remap_cached currently does not work rendering the feature
--	 * of enabling the MMU in the PBL useless. disable for now.
--	 */
--	int use_mmu = 0;
--
--	ttb = (void *)((free_mem_ptr - 0x4000) & ~0x3fff);
--
--	if (use_mmu)
--		mmu_enable((unsigned long)compressed_start, len);
--
- 	decompress((void *)compressed_start,
- 			len,
- 			NULL, NULL,
- 			(void *)TEXT_BASE, NULL, errorfn);
- 
--	if (use_mmu)
--		mmu_disable();
--
- 	flush_icache();
+diff --git a/arch/arm/mach-imx/external-nand-boot.c b/arch/arm/mach-imx/external-nand-boot.c
+index 39ffb94..c97fec9 100644
+--- a/arch/arm/mach-imx/external-nand-boot.c
++++ b/arch/arm/mach-imx/external-nand-boot.c
+@@ -259,14 +259,19 @@ void __bare_init imx_nand_load_image(void *dest, int size)
  }
  
+ /*
+- * We are now running at the address we are linked at. Now load the image from
+- * NAND to SDRAM and continue booting.
++ * This function assumes the currently running binary has been
++ * copied from its current position to an offset. It returns
++ * to the calling function - offset.
++ * NOTE: The calling function may not return itself since it still
++ * works on the old content of the lr register. Only call this
++ * from a __noreturn function.
+  */
+-static void __bare_init __naked insdram(void)
++static __bare_init __naked void jump_sdram(unsigned long offset)
+ {
+-	imx_nand_load_image((void *)_text, barebox_image_size);
+-
+-	board_init_lowlevel_return();
++	__asm__ __volatile__ (
++			"sub lr, lr, %0;"
++			"mov pc, lr;" : : "r"(offset)
++			);
+ }
+ 
+ /*
+@@ -274,7 +279,7 @@ static void __bare_init __naked insdram(void)
+  * running inside the NFC address space. If not, barebox is started from the
+  * currently running address without loading anything from NAND.
+  */
+-void __bare_init __noreturn imx_barebox_boot_nand_external(unsigned long nfc_base)
++void __bare_init imx_barebox_boot_nand_external(unsigned long nfc_base)
+ {
+ 	u32 r;
+ 	u32 *src, *trg;
+@@ -283,7 +288,7 @@ void __bare_init __noreturn imx_barebox_boot_nand_external(unsigned long nfc_bas
+ 	/* skip NAND boot if not running from NFC space */
+ 	r = get_pc();
+ 	if (r < nfc_base || r > nfc_base + 0x800)
+-		board_init_lowlevel_return();
++		return;
+ 
+ 	src = (unsigned int *)nfc_base;
+ 	trg = (unsigned int *)_text;
+@@ -291,13 +296,6 @@ void __bare_init __noreturn imx_barebox_boot_nand_external(unsigned long nfc_bas
+ 	/* Move ourselves out of NFC SRAM */
+ 	for (i = 0; i < 0x800 / sizeof(int); i++)
+ 		*trg++ = *src++;
+-
+-	/* Jump to SDRAM */
+-	r = (unsigned int)&insdram;
+-	__asm__ __volatile__("mov pc, %0" : : "r"(r));
+-
+-	/* not reached */
+-	while (1);
+ }
+ 
+ /*
+@@ -306,30 +304,65 @@ void __bare_init __noreturn imx_barebox_boot_nand_external(unsigned long nfc_bas
+  * NAND. In this case the booting is continued without loading an image from
+  * NAND. This function needs a stack to be set up.
+  */
++#ifdef CONFIG_ARCH_IMX21
+ void __bare_init __noreturn imx21_barebox_boot_nand_external(void)
+ {
+-	imx_barebox_boot_nand_external(MX21_NFC_BASE_ADDR);
++	unsigned long nfc_base = MX21_NFC_BASE_ADDR;
++
++	imx_barebox_boot_nand_external(nfc_base);
++	jump_sdram(nfc_base - (unsigned long)_text);
++	imx_nand_load_image((void *)_text, barebox_image_size);
++	board_init_lowlevel_return();
+ }
++#endif
+ 
++#ifdef CONFIG_ARCH_IMX25
+ void __bare_init __noreturn imx25_barebox_boot_nand_external(void)
+ {
+-	imx_barebox_boot_nand_external(MX25_NFC_BASE_ADDR);
++	unsigned long nfc_base = MX25_NFC_BASE_ADDR;
++
++	imx_barebox_boot_nand_external(nfc_base);
++	jump_sdram(nfc_base - (unsigned long)_text);
++	imx_nand_load_image((void *)_text, barebox_image_size);
++	board_init_lowlevel_return();
+ }
++#endif
+ 
++#ifdef CONFIG_ARCH_IMX27
+ void __bare_init __noreturn imx27_barebox_boot_nand_external(void)
+ {
+-	imx_barebox_boot_nand_external(MX27_NFC_BASE_ADDR);
++	unsigned long nfc_base = MX27_NFC_BASE_ADDR;
++
++	imx_barebox_boot_nand_external(nfc_base);
++	jump_sdram(nfc_base - (unsigned long)_text);
++	imx_nand_load_image((void *)_text, barebox_image_size);
++	board_init_lowlevel_return();
+ }
++#endif
+ 
++#ifdef CONFIG_ARCH_IMX31
+ void __bare_init __noreturn imx31_barebox_boot_nand_external(void)
+ {
+-	imx_barebox_boot_nand_external(MX31_NFC_BASE_ADDR);
++	unsigned long nfc_base = MX31_NFC_BASE_ADDR;
++
++	imx_barebox_boot_nand_external(nfc_base);
++	jump_sdram(nfc_base - (unsigned long)_text);
++	imx_nand_load_image((void *)_text, barebox_image_size);
++	board_init_lowlevel_return();
+ }
++#endif
+ 
++#ifdef CONFIG_ARCH_IMX35
+ void __bare_init __noreturn imx35_barebox_boot_nand_external(void)
+ {
+-	imx_barebox_boot_nand_external(MX35_NFC_BASE_ADDR);
++	unsigned long nfc_base = MX35_NFC_BASE_ADDR;
++
++	imx_barebox_boot_nand_external(nfc_base);
++	jump_sdram(nfc_base - (unsigned long)_text);
++	imx_nand_load_image((void *)_text, barebox_image_size);
++	board_init_lowlevel_return();
+ }
++#endif
+ 
+ #define CONFIG_NAND_IMX_BOOT_DEBUG
+ #ifdef CONFIG_NAND_IMX_BOOT_DEBUG
+diff --git a/arch/arm/mach-imx/include/mach/imx-nand.h b/arch/arm/mach-imx/include/mach/imx-nand.h
+index a1f209e..8352d79 100644
+--- a/arch/arm/mach-imx/include/mach/imx-nand.h
++++ b/arch/arm/mach-imx/include/mach/imx-nand.h
+@@ -3,7 +3,6 @@
+ 
+ #include <linux/mtd/mtd.h>
+ 
+-void imx_nand_load_image(void *dest, int size);
+ void imx21_barebox_boot_nand_external(void);
+ void imx25_barebox_boot_nand_external(void);
+ void imx27_barebox_boot_nand_external(void);
 -- 
 1.7.10.4
 
