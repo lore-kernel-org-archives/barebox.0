@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TzSmM-0001wW-JT
+ id 1TzSmM-0001wV-JM
  for barebox@lists.infradead.org; Sun, 27 Jan 2013 14:00:15 +0000
 Received: from mail240.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 45320DC0ABC
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 42309DC0A4B
  for <barebox@lists.infradead.org>; Sun, 27 Jan 2013 15:10:02 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 27 Jan 2013 14:58:50 +0100
-Message-Id: <1359295130-31690-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1359295130-31690-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1359295130-31690-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 27 Jan 2013 14:58:49 +0100
+Message-Id: <1359295130-31690-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,35 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [For-master PATCH 2/2] at91sam9x5ek: fix wp_pin and detect_pin pin
- invalid value
+Subject: [For-master PATCH 1/2] at91sam9n12: fix wp_pin invalid value
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/at91sam9x5ek/init.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boards/at91sam9n12ek/init.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/at91sam9x5ek/init.c b/arch/arm/boards/at91sam9x5ek/init.c
-index 5e11241..2cbaa8c 100644
---- a/arch/arm/boards/at91sam9x5ek/init.c
-+++ b/arch/arm/boards/at91sam9x5ek/init.c
-@@ -125,13 +125,13 @@ static void ek_add_device_eth(void)
+diff --git a/arch/arm/boards/at91sam9n12ek/init.c b/arch/arm/boards/at91sam9n12ek/init.c
+index 310f418..2fe7a11 100644
+--- a/arch/arm/boards/at91sam9n12ek/init.c
++++ b/arch/arm/boards/at91sam9n12ek/init.c
+@@ -131,7 +131,7 @@ static void __init ek_add_device_ks8851(void) {}
  static struct atmel_mci_platform_data mci0_data = {
  	.bus_width	= 4,
- 	.detect_pin	= AT91_PIN_PD15,
+ 	.detect_pin	= AT91_PIN_PA7,
 -	.wp_pin		= 0,
 +	.wp_pin		= -EINVAL,
  };
  
  static void ek_add_device_mci(void)
- {
- 	if (at91sam9x5ek_cm_is_vendor(VENDOR_COGENT))
--		mci0_data.detect_pin = 0;
-+		mci0_data.detect_pin = -EINVAL;
- 
- 	/* MMC0 */
- 	at91_add_device_mci(0, &mci0_data);
 -- 
 1.7.10.4
 
