@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TzPlb-0007Jl-RO
- for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:47:16 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TzPlb-00006E-Jb
+ for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:47:19 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 27 Jan 2013 11:46:50 +0100
-Message-Id: <1359283623-1782-22-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 27 Jan 2013 11:46:57 +0100
+Message-Id: <1359283623-1782-29-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,214 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 21/34] ARM AT91: switch remaining boards to barebox_arm_entry
+Subject: [PATCH 28/34] ARM mmu: pickup already enabled mmu
 To: barebox@lists.infradead.org
-
-For At91 boards which do not have a SDRAM size detection function
-we create a lowlevel reset function which calls barebox_arm_entry
-manually with the known memory size.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig                            |    2 ++
- arch/arm/boards/at91sam9m10g45ek/Makefile   |    2 ++
- arch/arm/boards/at91sam9m10g45ek/lowlevel.c |   11 +++++++++++
- arch/arm/boards/at91sam9m10ihd/Makefile     |    2 ++
- arch/arm/boards/at91sam9m10ihd/lowlevel.c   |   11 +++++++++++
- arch/arm/boards/at91sam9n12ek/Makefile      |    2 ++
- arch/arm/boards/at91sam9n12ek/lowlevel.c    |   11 +++++++++++
- arch/arm/boards/at91sam9x5ek/Makefile       |    2 ++
- arch/arm/boards/at91sam9x5ek/lowlevel.c     |   11 +++++++++++
- arch/arm/boards/pm9g45/Makefile             |    2 ++
- arch/arm/boards/pm9g45/lowlevel.c           |   11 +++++++++++
- arch/arm/mach-at91/Kconfig                  |    8 --------
- 12 files changed, 67 insertions(+), 8 deletions(-)
- create mode 100644 arch/arm/boards/at91sam9m10g45ek/lowlevel.c
- create mode 100644 arch/arm/boards/at91sam9m10ihd/lowlevel.c
- create mode 100644 arch/arm/boards/at91sam9n12ek/lowlevel.c
- create mode 100644 arch/arm/boards/at91sam9x5ek/lowlevel.c
- create mode 100644 arch/arm/boards/pm9g45/lowlevel.c
+ arch/arm/cpu/mmu.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index c7daebe..0d5e004 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -30,6 +30,8 @@ config ARCH_AT91
- 	select CLKDEV_LOOKUP
- 	select HAS_DEBUG_LL
- 	select HAVE_MACH_ARM_HEAD
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select MACH_DO_LOWLEVEL_INIT
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index 7b5f4ee..2f058e1 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -255,7 +255,14 @@ static int mmu_init(void)
+ 		pte_flags_uncached = PTE_FLAGS_UNCACHED_V4;
+ 	}
  
- config ARCH_BCM2835
- 	bool "Broadcom BCM2835 boards"
-diff --git a/arch/arm/boards/at91sam9m10g45ek/Makefile b/arch/arm/boards/at91sam9m10g45ek/Makefile
-index eb072c0..47ab803 100644
---- a/arch/arm/boards/at91sam9m10g45ek/Makefile
-+++ b/arch/arm/boards/at91sam9m10g45ek/Makefile
-@@ -1 +1,3 @@
- obj-y += init.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/at91sam9m10g45ek/lowlevel.c b/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
-new file mode 100644
-index 0000000..65259bb
---- /dev/null
-+++ b/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/hardware.h>
+-	ttb = memalign(0x10000, 0x4000);
++	if (get_cr() & CR_M) {
++		asm volatile ("mrc  p15,0,%0,c2,c0,0" : "=r"(ttb));
 +
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
-+}
-diff --git a/arch/arm/boards/at91sam9m10ihd/Makefile b/arch/arm/boards/at91sam9m10ihd/Makefile
-index f2acf20..4ec0b36 100644
---- a/arch/arm/boards/at91sam9m10ihd/Makefile
-+++ b/arch/arm/boards/at91sam9m10ihd/Makefile
-@@ -1,2 +1,4 @@
- obj-y += init.o
- obj-y += hw_version.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/at91sam9m10ihd/lowlevel.c b/arch/arm/boards/at91sam9m10ihd/lowlevel.c
-new file mode 100644
-index 0000000..65259bb
---- /dev/null
-+++ b/arch/arm/boards/at91sam9m10ihd/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/hardware.h>
-+
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
-+}
-diff --git a/arch/arm/boards/at91sam9n12ek/Makefile b/arch/arm/boards/at91sam9n12ek/Makefile
-index eb072c0..6c1a61f 100644
---- a/arch/arm/boards/at91sam9n12ek/Makefile
-+++ b/arch/arm/boards/at91sam9n12ek/Makefile
-@@ -1 +1,3 @@
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
- obj-y += init.o
-diff --git a/arch/arm/boards/at91sam9n12ek/lowlevel.c b/arch/arm/boards/at91sam9n12ek/lowlevel.c
-new file mode 100644
-index 0000000..65259bb
---- /dev/null
-+++ b/arch/arm/boards/at91sam9n12ek/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/hardware.h>
-+
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
-+}
-diff --git a/arch/arm/boards/at91sam9x5ek/Makefile b/arch/arm/boards/at91sam9x5ek/Makefile
-index f2acf20..4ec0b36 100644
---- a/arch/arm/boards/at91sam9x5ek/Makefile
-+++ b/arch/arm/boards/at91sam9x5ek/Makefile
-@@ -1,2 +1,4 @@
- obj-y += init.o
- obj-y += hw_version.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/at91sam9x5ek/lowlevel.c b/arch/arm/boards/at91sam9x5ek/lowlevel.c
-new file mode 100644
-index 0000000..65259bb
---- /dev/null
-+++ b/arch/arm/boards/at91sam9x5ek/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/hardware.h>
-+
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
-+}
-diff --git a/arch/arm/boards/pm9g45/Makefile b/arch/arm/boards/pm9g45/Makefile
-index eb072c0..47ab803 100644
---- a/arch/arm/boards/pm9g45/Makefile
-+++ b/arch/arm/boards/pm9g45/Makefile
-@@ -1 +1,3 @@
- obj-y += init.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/pm9g45/lowlevel.c b/arch/arm/boards/pm9g45/lowlevel.c
-new file mode 100644
-index 0000000..65259bb
---- /dev/null
-+++ b/arch/arm/boards/pm9g45/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/hardware.h>
-+
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
-+}
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index ec9e88b..13f4f21 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -72,8 +72,6 @@ config SOC_AT91RM9200
- 	select CPU_ARM920T
- 	select HAVE_AT91_DBGU0
- 	select HAS_AT91_ETHER
--	select MACH_HAS_LOWLEVEL_INIT
--	select MACH_DO_LOWLEVEL_INIT
++		if (!request_sdram_region("ttb", (unsigned long)ttb, SZ_16K))
++			pr_err("Error: Can't request SDRAM region for ttb\n");
++	} else {
++		ttb = memalign(0x10000, 0x4000);
++	}
  
- config SOC_AT91SAM9260
- 	bool
-@@ -81,8 +79,6 @@ config SOC_AT91SAM9260
- 	select HAVE_AT91_DBGU0
- 	select HAS_MACB
- 	select AT91SAM9_RESET
--	select MACH_HAS_LOWLEVEL_INIT
--	select MACH_DO_LOWLEVEL_INIT
- 	help
- 	  Select this if you are using one of Atmel's AT91SAM9260, AT91SAM9XE
- 	  or AT91SAM9G20 SoC.
-@@ -92,8 +88,6 @@ config SOC_AT91SAM9261
- 	select SOC_AT91SAM9
- 	select HAVE_AT91_DBGU0
- 	select AT91SAM9_RESET
--	select MACH_HAS_LOWLEVEL_INIT
--	select MACH_DO_LOWLEVEL_INIT
- 	help
- 	  Select this if you are using one of Atmel's AT91SAM9261 or AT91SAM9G10 SoC.
+ 	debug("ttb: 0x%p\n", ttb);
  
-@@ -103,8 +97,6 @@ config SOC_AT91SAM9263
- 	select HAVE_AT91_DBGU1
- 	select HAS_MACB
- 	select AT91SAM9_RESET
--	select MACH_HAS_LOWLEVEL_INIT
--	select MACH_DO_LOWLEVEL_INIT
- 
- config SOC_AT91SAM9G45
- 	bool
 -- 
 1.7.10.4
 
