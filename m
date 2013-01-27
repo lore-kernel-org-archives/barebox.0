@@ -2,16 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 4.mo5.mail-out.ovh.net ([178.33.111.247]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TzWfS-0003Ql-Pm
+ id 1TzWfS-0003Qk-Pl
  for barebox@lists.infradead.org; Sun, 27 Jan 2013 18:09:24 +0000
 Received: from mail178.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 060C5FFA4B9
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 06103FFA501
  for <barebox@lists.infradead.org>; Sun, 27 Jan 2013 19:19:19 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 27 Jan 2013 19:07:59 +0100
-Message-Id: <1359310079-19688-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1359310079-19688-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1359310079-19688-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 27 Jan 2013 19:07:58 +0100
+Message-Id: <1359310079-19688-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,30 +23,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] at91rm9200ek: fix mem size
+Subject: [PATCH 1/2] at91rm9200: fix default TEXT_BASE to 15MiB
 To: barebox@lists.infradead.org
-
-we have only 32MiB of sdram
-by luck it was working
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/at91rm9200ek/init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-at91/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boards/at91rm9200ek/init.c b/arch/arm/boards/at91rm9200ek/init.c
-index a40d3b9..0a360ae 100644
---- a/arch/arm/boards/at91rm9200ek/init.c
-+++ b/arch/arm/boards/at91rm9200ek/init.c
-@@ -39,7 +39,7 @@ static struct at91_ether_platform_data ether_pdata = {
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 9d4359e..955328f 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -23,6 +23,7 @@ config ARCH_TEXT_BASE
+ 	default 0x73f00000 if ARCH_AT91SAM9G45
+ 	default 0x26f00000 if ARCH_AT91SAM9X5
+ 	default 0x21f00000 if MACH_ANIMEO_IP
++	default 0x20f00000 if ARCH_AT91RM9200
+ 	default 0x23f00000
  
- static int at91rm9200ek_mem_init(void)
- {
--	at91_add_device_sdram(64 * 1024 * 1024);
-+	at91_add_device_sdram(32 * 1024 * 1024);
- 
- 	return 0;
- }
+ config BOARDINFO
 -- 
 1.7.10.4
 
