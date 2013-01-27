@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
+Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TzQJV-0003M0-Pw
- for barebox@lists.infradead.org; Sun, 27 Jan 2013 11:22:19 +0000
+ id 1TzQJX-0003Lw-30
+ for barebox@lists.infradead.org; Sun, 27 Jan 2013 11:22:20 +0000
 Received: from mail195.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id B3835DC0C97
- for <barebox@lists.infradead.org>; Sun, 27 Jan 2013 12:32:08 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id EDC73DC0C81
+ for <barebox@lists.infradead.org>; Sun, 27 Jan 2013 12:32:06 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 27 Jan 2013 12:20:47 +0100
-Message-Id: <1359285649-18717-6-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 27 Jan 2013 12:20:43 +0100
+Message-Id: <1359285649-18717-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1359285649-18717-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130127110714.GL26329@game.jcrosoft.org>
  <1359285649-18717-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,148 +26,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/8] at91sam9m10ihd: add lcd support
+Subject: [PATCH 2/8] at91sam9263: add atmel lcdc frambuffer support
 To: barebox@lists.infradead.org
+Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
 ---
- arch/arm/boards/at91sam9m10ihd/env/init/splash |    8 +++
- arch/arm/boards/at91sam9m10ihd/init.c          |   65 ++++++++++++++++++++++++
- arch/arm/configs/at91sam9m10ihd_defconfig      |    5 ++
- 3 files changed, 78 insertions(+)
- create mode 100644 arch/arm/boards/at91sam9m10ihd/env/init/splash
+ arch/arm/mach-at91/at91sam9263.c         |    1 +
+ arch/arm/mach-at91/at91sam9263_devices.c |   42 ++++++++++++++++++++++++++++++
+ 2 files changed, 43 insertions(+)
 
-diff --git a/arch/arm/boards/at91sam9m10ihd/env/init/splash b/arch/arm/boards/at91sam9m10ihd/env/init/splash
-new file mode 100644
-index 0000000..18e74df
---- /dev/null
-+++ b/arch/arm/boards/at91sam9m10ihd/env/init/splash
-@@ -0,0 +1,8 @@
-+#!/bin/sh
-+
-+splash=/env/splash.png
-+
-+if [ -f ${splash} -a -e /dev/fb0 ]; then
-+	splash -o ${splash}
-+	fb0.enable=1
-+fi
-diff --git a/arch/arm/boards/at91sam9m10ihd/init.c b/arch/arm/boards/at91sam9m10ihd/init.c
-index beede0b..da32a04 100644
---- a/arch/arm/boards/at91sam9m10ihd/init.c
-+++ b/arch/arm/boards/at91sam9m10ihd/init.c
-@@ -173,6 +173,70 @@ static int at91sam9m10g45ek_mem_init(void)
- }
- mem_initcall(at91sam9m10g45ek_mem_init);
+diff --git a/arch/arm/mach-at91/at91sam9263.c b/arch/arm/mach-at91/at91sam9263.c
+index eeea1ce..49d280d 100644
+--- a/arch/arm/mach-at91/at91sam9263.c
++++ b/arch/arm/mach-at91/at91sam9263.c
+@@ -175,6 +175,7 @@ static struct clk_lookup periph_clocks_lookups[] = {
+ 	CLKDEV_DEV_ID("at91rm9200-gpio3", &pioCDE_clk),
+ 	CLKDEV_DEV_ID("at91rm9200-gpio4", &pioCDE_clk),
+ 	CLKDEV_DEV_ID("at91-pit", &mck),
++	CLKDEV_CON_DEV_ID("hck1", "atmel_lcdfb", &lcdc_clk),
+ };
  
+ static struct clk_lookup usart_clocks_lookups[] = {
+diff --git a/arch/arm/mach-at91/at91sam9263_devices.c b/arch/arm/mach-at91/at91sam9263_devices.c
+index c5efe9f..8f06821 100644
+--- a/arch/arm/mach-at91/at91sam9263_devices.c
++++ b/arch/arm/mach-at91/at91sam9263_devices.c
+@@ -250,6 +250,48 @@ void at91_add_device_spi(int spi_id, struct at91_spi_platform_data *pdata)
+ void __init at91_add_device_spi(int spi_id, struct at91_spi_platform_data *pdata) {}
+ #endif
+ 
++
++/* --------------------------------------------------------------------
++ *  LCD Controller
++ * -------------------------------------------------------------------- */
++
 +#if defined(CONFIG_DRIVER_VIDEO_ATMEL)
-+static int ek_gpio_request_output(int gpio, const char *name)
++void __init at91_add_device_lcdc(struct atmel_lcdfb_platform_data *data)
 +{
-+	int ret;
++	BUG_ON(!data);
 +
-+	ret = gpio_request(gpio, name);
-+	if (ret) {
-+		pr_err("%s: can not request gpio %d (%d)\n", name, gpio, ret);
-+		return ret;
-+	}
++	data->have_intensity_bit = true;
 +
-+	ret = gpio_direction_output(gpio, 1);
-+	if (ret)
-+		pr_err("%s: can not configure gpio %d as output (%d)\n", name, gpio, ret);
-+	return ret;
-+}
++	at91_set_A_periph(AT91_PIN_PC1, 0);	/* LCDHSYNC */
++	at91_set_A_periph(AT91_PIN_PC2, 0);	/* LCDDOTCK */
++	at91_set_A_periph(AT91_PIN_PC3, 0);	/* LCDDEN */
++	at91_set_B_periph(AT91_PIN_PB9, 0);	/* LCDCC */
++	at91_set_A_periph(AT91_PIN_PC6, 0);	/* LCDD2 */
++	at91_set_A_periph(AT91_PIN_PC7, 0);	/* LCDD3 */
++	at91_set_A_periph(AT91_PIN_PC8, 0);	/* LCDD4 */
++	at91_set_A_periph(AT91_PIN_PC9, 0);	/* LCDD5 */
++	at91_set_A_periph(AT91_PIN_PC10, 0);	/* LCDD6 */
++	at91_set_A_periph(AT91_PIN_PC11, 0);	/* LCDD7 */
++	at91_set_A_periph(AT91_PIN_PC14, 0);	/* LCDD10 */
++	at91_set_A_periph(AT91_PIN_PC15, 0);	/* LCDD11 */
++	at91_set_A_periph(AT91_PIN_PC16, 0);	/* LCDD12 */
++	at91_set_B_periph(AT91_PIN_PC12, 0);	/* LCDD13 */
++	at91_set_A_periph(AT91_PIN_PC18, 0);	/* LCDD14 */
++	at91_set_A_periph(AT91_PIN_PC19, 0);	/* LCDD15 */
++	at91_set_A_periph(AT91_PIN_PC22, 0);	/* LCDD18 */
++	at91_set_A_periph(AT91_PIN_PC23, 0);	/* LCDD19 */
++	at91_set_A_periph(AT91_PIN_PC24, 0);	/* LCDD20 */
++	at91_set_B_periph(AT91_PIN_PC17, 0);	/* LCDD21 */
++	at91_set_A_periph(AT91_PIN_PC26, 0);	/* LCDD22 */
++	at91_set_A_periph(AT91_PIN_PC27, 0);	/* LCDD23 */
 +
-+static struct fb_videomode at91fb_default_monspecs[] = {
-+	{
-+		.name		= "MULTEK",
-+		.refresh	= 60,
-+		.xres		= 800,		.yres		= 480,
-+		.pixclock	= KHZ2PICOS(15000),
-+
-+		.left_margin	= 40,		.right_margin	= 40,
-+		.upper_margin	= 29,		.lower_margin	= 13,
-+		.hsync_len	= 48,		.vsync_len	= 3,
-+
-+		.sync		= 0,
-+		.vmode		= FB_VMODE_NONINTERLACED,
-+	},
-+};
-+
-+#define AT91SAM9G45_DEFAULT_LCDCON2	(ATMEL_LCDC_MEMOR_LITTLE \
-+					| ATMEL_LCDC_DISTYPE_TFT \
-+					| ATMEL_LCDC_CLKMOD_ALWAYSACTIVE)
-+
-+static void at91_lcdc_power_control(int on)
-+{
-+	gpio_set_value(AT91_PIN_PE6, on);
-+}
-+
-+/* Driver datas */
-+static struct atmel_lcdfb_platform_data ek_lcdc_data = {
-+	.lcdcon_is_backlight		= true,
-+	.default_bpp			= 16,
-+	.default_dmacon			= ATMEL_LCDC_DMAEN,
-+	.default_lcdcon2		= AT91SAM9G45_DEFAULT_LCDCON2,
-+	.guard_time			= 9,
-+	.lcd_wiring_mode		= ATMEL_LCDC_WIRING_RGB,
-+	.mode_list			= at91fb_default_monspecs,
-+	.num_modes			= ARRAY_SIZE(at91fb_default_monspecs),
-+};
-+
-+static void ek_add_device_lcd(void)
-+{
-+	if (ek_gpio_request_output(AT91_PIN_PE6, "lcdc_power"))
-+		return;
-+
-+	at91_add_device_lcdc(&ek_lcdc_data);
++	add_generic_device("atmel_lcdfb", DEVICE_ID_SINGLE, NULL, AT91SAM9263_LCDC_BASE, SZ_4K,
++			   IORESOURCE_MEM, data);
 +}
 +#else
-+static void ek_add_device_lcd(void) {}
++void __init at91_add_device_lcdc(struct atmel_lcdfb_platform_data *data) {}
++#endif
 +
- static void ek_add_device_w1(void)
+ resource_size_t __init at91_configure_dbgu(void)
  {
- 	at91_set_gpio_input(w1_pdata.pin, 0);
-@@ -191,6 +255,7 @@ static int at91sam9m10ihd_devices_init(void)
- 	ek_add_device_spi();
- 	ek_add_device_i2c();
- 	ek_add_device_usb();
-+	ek_add_device_lcd();
- 
- 	devfs_add_partition("nand0", 0x00000, SZ_128K, DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
- 	dev_add_bb_dev("at91bootstrap_raw", "at91bootstrap");
-diff --git a/arch/arm/configs/at91sam9m10ihd_defconfig b/arch/arm/configs/at91sam9m10ihd_defconfig
-index f6c3ef7..2faaa68 100644
---- a/arch/arm/configs/at91sam9m10ihd_defconfig
-+++ b/arch/arm/configs/at91sam9m10ihd_defconfig
-@@ -6,6 +6,7 @@ CONFIG_AEABI=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_PBL_IMAGE=y
- CONFIG_MMU=y
-+CONFIG_MALLOC_SIZE=0xa00000
- CONFIG_MALLOC_TLSF=y
- CONFIG_PROMPT="9M10IHD:"
- CONFIG_LONGHELP=y
-@@ -45,6 +46,7 @@ CONFIG_CMD_GO=y
- CONFIG_CMD_OFTREE=y
- CONFIG_CMD_MTEST=y
- CONFIG_CMD_MTEST_ALTERNATIVE=y
-+CONFIG_CMD_SPLASH=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_MAGICVAR=y
-@@ -78,6 +80,8 @@ CONFIG_USB=y
- CONFIG_USB_EHCI=y
- CONFIG_USB_EHCI_ATMEL=y
- CONFIG_USB_STORAGE=y
-+CONFIG_VIDEO=y
-+CONFIG_DRIVER_VIDEO_ATMEL=y
- CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
- CONFIG_MCI_ATMEL=y
-@@ -92,3 +96,4 @@ CONFIG_FS_TFTP=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_WRITE=y
- CONFIG_FS_FAT_LFN=y
-+CONFIG_PNG=y
+ 	at91_set_A_periph(AT91_PIN_PC30, 0);		/* DRXD */
 -- 
 1.7.10.4
 
