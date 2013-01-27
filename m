@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TzPlS-00063G-T9
- for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:47:15 +0000
+ id 1TzPlS-00063F-Q6
+ for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:47:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 27 Jan 2013 11:46:33 +0100
-Message-Id: <1359283623-1782-5-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 27 Jan 2013 11:46:32 +0100
+Message-Id: <1359283623-1782-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,243 +21,239 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/34] ARM i.MX: Add i.MX specific entry point for barebox
+Subject: [PATCH 03/34] ARM i.MX: Use SRAM stack in lowlevel code
 To: barebox@lists.infradead.org
 
-Additionally to the generic entry point the i.MX specific ones
-calculate the SDRAM size automatically so the boards do not have
-to care.
+Several i.MX boards setup a temporary stack in their lowlevel code.
+Instead of using STACK_BASE use a stack in internal SRAM to get rid
+of the STACK_BASE compile time dependency.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start-pbl.c                |   12 +++
- arch/arm/cpu/start.c                    |   12 +++
- arch/arm/mach-imx/esdctl.c              |  136 ++++++++++++++++++++++++++-----
- arch/arm/mach-imx/include/mach/esdctl.h |   11 +++
- 4 files changed, 150 insertions(+), 21 deletions(-)
+ arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S        |    3 ++-
+ arch/arm/boards/eukrea_cpuimx35/lowlevel.c             |    2 +-
+ arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S |    3 ++-
+ arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S |    3 ++-
+ arch/arm/boards/guf-cupid/lowlevel.c                   |    2 +-
+ arch/arm/boards/guf-neso/lowlevel.c                    |    2 +-
+ arch/arm/boards/imx21ads/lowlevel_init.S               |    3 ++-
+ arch/arm/boards/karo-tx25/lowlevel.c                   |    3 ++-
+ arch/arm/boards/pcm037/lowlevel.c                      |    2 +-
+ arch/arm/boards/pcm038/lowlevel.c                      |    2 +-
+ arch/arm/boards/pcm043/lowlevel.c                      |    2 +-
+ arch/arm/mach-imx/include/mach/imx21-regs.h            |    1 +
+ arch/arm/mach-imx/include/mach/imx25-regs.h            |    3 +++
+ arch/arm/mach-imx/include/mach/imx27-regs.h            |    1 +
+ arch/arm/mach-imx/include/mach/imx31-regs.h            |    3 +++
+ 15 files changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index 4a83181..8a4232d 100644
---- a/arch/arm/cpu/start-pbl.c
-+++ b/arch/arm/cpu/start-pbl.c
-@@ -207,6 +207,18 @@ void __naked __noreturn board_init_lowlevel_return(void)
-  * full SDRAM. The currently running binary can be inside or outside of this
-  * region. TEXT_BASE can be inside or outside of this region. boarddata will
-  * be preserved and can be accessed later with barebox_arm_boarddata().
-+ *
-+ * -> membase + memsize
-+ *   ARM_RESERVE_MEM_SIZE    - reserved for board usage. Will not be touched
-+ *                             by barebox
-+ *   STACK_SIZE              - stack
-+ *   16KiB, aligned to 16KiB - First level page table if early MMU support
-+ *                             is enabled
-+ *   128KiB                  - early memory space
-+ * -> maximum end of barebox binary
-+ *
-+ * Usually a TEXT_BASE of 1MiB below your lowest possible end of memory should
-+ * be fine.
+diff --git a/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S b/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S
+index 4e69aac..287b513 100644
+--- a/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S
++++ b/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S
+@@ -124,7 +124,8 @@ reset:
+ 	sdram_init
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
+-	ldr	sp, =STACK_BASE + STACK_SIZE - 12	/* Setup a temporary stack in SDRAM */
++	/* Setup a temporary stack in SDRAM */
++	ldr	sp, =MX27_IRAM_BASE_ADDR + MX27_IRAM_SIZE - 4;
+ 
+ 	b	imx27_barebox_boot_nand_external
+ #endif /* CONFIG_NAND_IMX_BOOT */
+diff --git a/arch/arm/boards/eukrea_cpuimx35/lowlevel.c b/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
+index 8f4615a..c43f7fe 100644
+--- a/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
++++ b/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
+@@ -138,7 +138,7 @@ void __bare_init __naked reset(void)
+ 	writel(r, MX35_CCM_BASE_ADDR + MX35_CCM_PDR4);
+ 
+ 	/* setup a stack to be able to call imx35_barebox_boot_nand_external() */
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 12);
++	arm_setup_stack(MX35_IRAM_BASE_ADDR + MX35_IRAM_SIZE - 8);
+ 
+ 	imx35_barebox_boot_nand_external();
+ #else
+diff --git a/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S b/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S
+index 595c485..2e49e6e 100644
+--- a/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S
++++ b/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S
+@@ -98,7 +98,8 @@ reset:
+ 	str r3, [r0, #0x30]
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
+-	ldr	sp, =STACK_BASE + STACK_SIZE - 12 /* Setup a temporary stack in SDRAM */
++	/* Setup a temporary stack in SRAM */
++	ldr	sp, =MX25_IRAM_BASE_ADDR + MX25_IRAM_SIZE - 4
+ 
+ 	b	imx25_barebox_boot_nand_external
+ #endif /* CONFIG_NAND_IMX_BOOT */
+diff --git a/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S b/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
+index 5461b61..c63c953 100644
+--- a/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
++++ b/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
+@@ -155,7 +155,8 @@ reset:
+ 	str	r3, [r0, #0x30]
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
+-	ldr	sp, =STACK_BASE + STACK_SIZE - 12		/* Setup a temporary stack in SDRAM */
++	/* Setup a temporary stack in internal SRAM */
++	ldr	sp, =MX35_IRAM_BASE_ADDR + MX35_IRAM_SIZE - 4
+ 
+ 	b	imx35_barebox_boot_nand_external
+ #endif /* CONFIG_NAND_IMX_BOOT */
+diff --git a/arch/arm/boards/guf-cupid/lowlevel.c b/arch/arm/boards/guf-cupid/lowlevel.c
+index f2994eb..c141b54 100644
+--- a/arch/arm/boards/guf-cupid/lowlevel.c
++++ b/arch/arm/boards/guf-cupid/lowlevel.c
+@@ -314,7 +314,7 @@ void __bare_init __naked reset(void)
+ 	writel(r0, MX35_CCM_BASE_ADDR + MX35_CCM_PDR4);
+ 
+ 	/* setup a stack to be able to call imx35_barebox_boot_nand_external() */
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 12);
++	arm_setup_stack(MX35_IRAM_BASE_ADDR + MX35_IRAM_SIZE - 8);
+ 
+ 	imx35_barebox_boot_nand_external();
+ #else
+diff --git a/arch/arm/boards/guf-neso/lowlevel.c b/arch/arm/boards/guf-neso/lowlevel.c
+index 7a366d9..ca44607 100644
+--- a/arch/arm/boards/guf-neso/lowlevel.c
++++ b/arch/arm/boards/guf-neso/lowlevel.c
+@@ -88,7 +88,7 @@ void __bare_init __naked reset(void)
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
+ 	/* setup a stack to be able to call imx27_barebox_boot_nand_external() */
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 12);
++	arm_setup_stack(MX27_IRAM_BASE_ADDR + MX27_IRAM_SIZE - 8);
+ 
+ 	imx27_barebox_boot_nand_external();
+ #else
+diff --git a/arch/arm/boards/imx21ads/lowlevel_init.S b/arch/arm/boards/imx21ads/lowlevel_init.S
+index f06c964..5be4995 100644
+--- a/arch/arm/boards/imx21ads/lowlevel_init.S
++++ b/arch/arm/boards/imx21ads/lowlevel_init.S
+@@ -118,7 +118,8 @@ reset:
+ 	str	r1, [r0]
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
+-	ldr	sp, =STACK_BASE + STACK_SIZE - 12	/* Setup a temporary stack in SDRAM */
++	/* Setup a temporary stack in SRAM */
++	ldr	sp, =MX21_IRAM_BASE_ADDR + MX21_IRAM_SIZE - 4
+ 
+ 	b	imx21_barebox_boot_nand_external
+ #endif /* CONFIG_NAND_IMX_BOOT */
+diff --git a/arch/arm/boards/karo-tx25/lowlevel.c b/arch/arm/boards/karo-tx25/lowlevel.c
+index b1afe18..9e96e39 100644
+--- a/arch/arm/boards/karo-tx25/lowlevel.c
++++ b/arch/arm/boards/karo-tx25/lowlevel.c
+@@ -21,6 +21,7 @@
+ #include <mach/imx25-regs.h>
+ #include <mach/esdctl.h>
+ #include <io.h>
++#include <sizes.h>
+ #include <mach/imx-nand.h>
+ #include <asm/barebox-arm.h>
+ #include <asm/barebox-arm-head.h>
+@@ -134,7 +135,7 @@ void __bare_init __naked reset(void)
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
+ 	/* setup a stack to be able to call imx25_barebox_boot_nand_external() */
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 12);
++	arm_setup_stack(MX25_IRAM_BASE_ADDR + MX25_IRAM_SIZE - 8);
+ 
+ 	imx25_barebox_boot_nand_external();
+ #else
+diff --git a/arch/arm/boards/pcm037/lowlevel.c b/arch/arm/boards/pcm037/lowlevel.c
+index da01732..b531615 100644
+--- a/arch/arm/boards/pcm037/lowlevel.c
++++ b/arch/arm/boards/pcm037/lowlevel.c
+@@ -127,7 +127,7 @@ void __bare_init __naked reset(void)
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
+ 	/* setup a stack to be able to call imx31_barebox_boot_nand_external() */
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 12);
++	arm_setup_stack(MX31_IRAM_BASE_ADDR + MX31_IRAM_SIZE - 12);
+ 
+ 	imx31_barebox_boot_nand_external();
+ #else
+diff --git a/arch/arm/boards/pcm038/lowlevel.c b/arch/arm/boards/pcm038/lowlevel.c
+index 4515107..aecdbf3 100644
+--- a/arch/arm/boards/pcm038/lowlevel.c
++++ b/arch/arm/boards/pcm038/lowlevel.c
+@@ -95,7 +95,7 @@ void __bare_init __naked reset(void)
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
+ 	/* setup a stack to be able to call mx27_barebox_boot_nand_external() */
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 12);
++	arm_setup_stack(MX27_IRAM_BASE_ADDR + MX27_IRAM_SIZE - 8);
+ 
+ 	imx27_barebox_boot_nand_external();
+ #else
+diff --git a/arch/arm/boards/pcm043/lowlevel.c b/arch/arm/boards/pcm043/lowlevel.c
+index 639064f..a9832e2 100644
+--- a/arch/arm/boards/pcm043/lowlevel.c
++++ b/arch/arm/boards/pcm043/lowlevel.c
+@@ -190,7 +190,7 @@ void __bare_init __naked reset(void)
+ 	writel(r, MX35_CCM_BASE_ADDR + MX35_CCM_PDR4);
+ 
+ 	/* setup a stack to be able to call imx35_barebox_boot_nand_external() */
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 12);
++	arm_setup_stack(MX35_IRAM_BASE_ADDR + MX35_IRAM_SIZE - 8);
+ 
+ 	imx35_barebox_boot_nand_external();
+ #else
+diff --git a/arch/arm/mach-imx/include/mach/imx21-regs.h b/arch/arm/mach-imx/include/mach/imx21-regs.h
+index 87bd99c..1fa463a 100644
+--- a/arch/arm/mach-imx/include/mach/imx21-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx21-regs.h
+@@ -70,6 +70,7 @@
+ #define MX21_NFC_BASE_ADDR		(MX21_X_MEMC_BASE_ADDR + 0x3000)
+ 
+ #define MX21_IRAM_BASE_ADDR		0xffffe800	/* internal ram */
++#define MX21_IRAM_SIZE			0x00001800
+ 
+ /* AIPI (base MX21_AIPI_BASE_ADDR) */
+ #define MX21_AIPI1_PSR0	0x00
+diff --git a/arch/arm/mach-imx/include/mach/imx25-regs.h b/arch/arm/mach-imx/include/mach/imx25-regs.h
+index b8ae45a..9ab0fb3 100644
+--- a/arch/arm/mach-imx/include/mach/imx25-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx25-regs.h
+@@ -76,6 +76,9 @@
+ #define MX25_USB_HS_BASE_ADDR			(MX25_USB_BASE_ADDR + 0x0400)
+ #define MX25_CSI_BASE_ADDR		0x53ff8000
+ 
++#define MX25_IRAM_BASE_ADDR		0x78000000	/* internal ram */
++#define MX25_IRAM_SIZE			SZ_128K
++
+ /*
+  * Clock Controller Module (CCM)
   */
- void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
- 		uint32_t boarddata)
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index f212b61..df22cde 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -70,6 +70,18 @@ void __naked __noreturn board_init_lowlevel_return(void)
-  * full SDRAM. The currently running binary can be inside or outside of this
-  * region. TEXT_BASE can be inside or outside of this region. boarddata will
-  * be preserved and can be accessed later with barebox_arm_boarddata().
-+ *
-+ * -> membase + memsize
-+ *   ARM_RESERVE_MEM_SIZE    - reserved for board usage. Will not be touched
-+ *                             by barebox
-+ *   STACK_SIZE              - stack
-+ *   16KiB, aligned to 16KiB - First level page table if early MMU support
-+ *                             is enabled
-+ *   128KiB                  - early memory space
-+ * -> maximum end of barebox binary
-+ *
-+ * Usually a TEXT_BASE of 1MiB below your lowest possible end of memory should
-+ * be fine.
-  */
- void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
-                 uint32_t boarddata)
-diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
-index dd70e6d..7224699 100644
---- a/arch/arm/mach-imx/esdctl.c
-+++ b/arch/arm/mach-imx/esdctl.c
-@@ -127,32 +127,18 @@ static inline unsigned long imx_v4_sdram_size(void __iomem *esdctlbase, int cs)
- 		return 0;
- 	if (cs == 1 && !(ctlval & ESDCTL_V4_ESDCTLx_SDE1))
- 		return 0;
--
- 	/* one 2GiB cs, memory is returned for cs0 only */
- 	if (cs == 1 && (esdmisc & ESDCTL_V4_ESDMISC_ONE_CS))
--		return 9;
--
-+		return 0;
- 	rows = ((ctlval >> 24) & 0x7) + 11;
--	switch ((ctlval >> 20) & 0x7) {
--	case 0:
--		cols = 9;
--		break;
--	case 1:
--		cols = 10;
--		break;
--	case 2:
--		cols = 11;
--		break;
--	case 3:
-+
-+	cols = (ctlval >> 20) & 0x7;
-+	if (cols == 3)
- 		cols = 8;
--		break;
--	case 4:
-+	else if (cols == 4)
- 		cols = 12;
--		break;
--	default:
--		cols = 0;
--		break;
--	}
-+	else
-+		cols += 9;
+diff --git a/arch/arm/mach-imx/include/mach/imx27-regs.h b/arch/arm/mach-imx/include/mach/imx27-regs.h
+index 44bc1d3..c45befb 100644
+--- a/arch/arm/mach-imx/include/mach/imx27-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx27-regs.h
+@@ -100,6 +100,7 @@
  
- 	if (ctlval & ESDCTL_V4_ESDCTLx_DSIZ_32B)
- 		width = 4;
-@@ -353,3 +339,111 @@ static int imx_esdctl_init(void)
- }
+ /* IRAM */
+ #define MX27_IRAM_BASE_ADDR		0xffff4c00	/* internal ram */
++#define MX27_IRAM_SIZE			0x0000b400
  
- mem_initcall(imx_esdctl_init);
-+
-+/*
-+ * The i.MX SoCs usually have two SDRAM chipselects. The following
-+ * SoC specific functions return:
-+ *
-+ * - cs0 disabled, cs1 disabled: 0
-+ * - cs0 enabled, cs1 disabled: SDRAM size for cs0
-+ * - cs0 disabled, c1 enabled: 0 (currently assumed that no hardware does this)
-+ * - cs0 enabled, cs1 enabled: The largest continuous region, that is, cs0 + cs1
-+ *                             if cs0 is taking the whole address space.
-+ */
-+void __naked __noreturn imx1_barebox_entry(uint32_t boarddata)
-+{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = 0x08000000;
-+
-+	size = imx_v1_sdram_size((void *)MX1_SDRAMC_BASE_ADDR, 0);
-+	if (size == SZ_64M)
-+		size += imx_v1_sdram_size((void *)MX1_SDRAMC_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
-+}
-+
-+void __naked __noreturn imx25_barebox_entry(uint32_t boarddata)
-+{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX25_CSD0_BASE_ADDR;
-+
-+	size = imx_v2_sdram_size((void *)MX25_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_256M)
-+		size += imx_v2_sdram_size((void *)MX25_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
-+}
-+
-+void __naked __noreturn imx27_barebox_entry(uint32_t boarddata)
-+{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX27_CSD0_BASE_ADDR;
-+
-+	size = imx_v2_sdram_size((void *)MX27_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_256M)
-+		size += imx_v2_sdram_size((void *)MX27_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
-+}
-+
-+void __naked __noreturn imx31_barebox_entry(uint32_t boarddata)
-+{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX31_CSD0_BASE_ADDR;
-+
-+	size = imx_v2_sdram_size((void *)MX31_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_256M)
-+		size += imx_v2_sdram_size((void *)MX31_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
-+}
-+
-+void __naked __noreturn imx35_barebox_entry(uint32_t boarddata)
-+{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX35_CSD0_BASE_ADDR;
-+
-+	size = imx_v2_sdram_size((void *)MX35_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_256M)
-+		size += imx_v2_sdram_size((void *)MX35_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
-+}
-+
-+void __naked __noreturn imx51_barebox_entry(uint32_t boarddata)
-+{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX51_CSD0_BASE_ADDR;
-+
-+	size = imx_v3_sdram_size((void *)MX51_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_256M)
-+		size += imx_v3_sdram_size((void *)MX51_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
-+}
-+
-+void __naked __noreturn imx53_barebox_entry(uint32_t boarddata)
-+{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX53_CSD0_BASE_ADDR;
-+
-+	size = imx_v4_sdram_size((void *)MX53_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_1G)
-+		size += imx_v4_sdram_size((void *)MX53_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
-+}
-diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
-index 1a265c8..26436d9 100644
---- a/arch/arm/mach-imx/include/mach/esdctl.h
-+++ b/arch/arm/mach-imx/include/mach/esdctl.h
-@@ -127,4 +127,15 @@
- //#define ESDCFGx_tRC_14		0x0000000e	// 15 seems to not exist
- #define ESDCFGx_tRC_16			0x0000000f
+ /* PCMCIA (base: MX27_PCMCIA_CTL_BASE_ADDR) */
+ #define MX27_PCMCIA_PIPR	0x00
+diff --git a/arch/arm/mach-imx/include/mach/imx31-regs.h b/arch/arm/mach-imx/include/mach/imx31-regs.h
+index f641fe6..be3e4c1 100644
+--- a/arch/arm/mach-imx/include/mach/imx31-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx31-regs.h
+@@ -21,6 +21,9 @@
  
-+#ifndef __ASSEMBLY__
-+void __naked __noreturn imx1_barebox_entry(uint32_t boarddata);
-+void __naked __noreturn imx25_barebox_entry(uint32_t boarddata);
-+void __naked __noreturn imx27_barebox_entry(uint32_t boarddata);
-+void __naked __noreturn imx31_barebox_entry(uint32_t boarddata);
-+void __naked __noreturn imx35_barebox_entry(uint32_t boarddata);
-+void __naked __noreturn imx51_barebox_entry(uint32_t boarddata);
-+void __naked __noreturn imx53_barebox_entry(uint32_t boarddata);
-+void __naked __noreturn imx6_barebox_entry(uint32_t boarddata);
-+#endif
+ #include <sizes.h>
+ 
++#define MX31_IRAM_BASE_ADDR		0x1fffc000
++#define MX31_IRAM_SIZE			0x00004000
 +
- #endif /* __MACH_ESDCTL_V2_H */
+ #define MX31_AIPS1_BASE_ADDR		0x43f00000
+ #define MX31_AIPS1_SIZE			SZ_1M
+ #define MX31_MAX_BASE_ADDR			(MX31_AIPS1_BASE_ADDR + 0x04000)
 -- 
 1.7.10.4
 
