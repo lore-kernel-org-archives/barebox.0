@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TzPlU-00063y-0T
- for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:47:23 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1TzPlb-00006D-Jv
+ for barebox@lists.infradead.org; Sun, 27 Jan 2013 10:47:17 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 27 Jan 2013 11:46:42 +0100
-Message-Id: <1359283623-1782-14-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 27 Jan 2013 11:46:52 +0100
+Message-Id: <1359283623-1782-24-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359283623-1782-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,56 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/34] ARM nomadik boards: switch to barebox_arm_entry
+Subject: [PATCH 23/34] ARM start-pbl: make board_init_lowlevel_return static
 To: barebox@lists.infradead.org
-
-Only one board, the nhk8815. This uses hardcoded SDRAM values.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig                   |    2 ++
- arch/arm/boards/nhk8815/Makefile   |    2 ++
- arch/arm/boards/nhk8815/lowlevel.c |   10 ++++++++++
- 3 files changed, 14 insertions(+)
- create mode 100644 arch/arm/boards/nhk8815/lowlevel.c
+ arch/arm/cpu/start-pbl.c |   14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 5f5b965..dcd48a9 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -77,6 +77,8 @@ config ARCH_NOMADIK
- 	bool "STMicroelectronics Nomadik"
- 	select CPU_ARM926T
- 	select CLOCKSOURCE_NOMADIK
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select MACH_DO_LOWLEVEL_INIT
- 	help
- 	  Support for the Nomadik platform by ST-Ericsson
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index d80ff9d..71732d6 100644
+--- a/arch/arm/cpu/start-pbl.c
++++ b/arch/arm/cpu/start-pbl.c
+@@ -156,18 +156,12 @@ static void __noreturn barebox_uncompress(void *compressed_start, unsigned int l
+ 	barebox();
+ }
  
-diff --git a/arch/arm/boards/nhk8815/Makefile b/arch/arm/boards/nhk8815/Makefile
-index 2b9dba4..dbb2a71 100644
---- a/arch/arm/boards/nhk8815/Makefile
-+++ b/arch/arm/boards/nhk8815/Makefile
-@@ -1 +1,3 @@
- obj-y += setup.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/nhk8815/lowlevel.c b/arch/arm/boards/nhk8815/lowlevel.c
-new file mode 100644
-index 0000000..3956347
---- /dev/null
-+++ b/arch/arm/boards/nhk8815/lowlevel.c
-@@ -0,0 +1,10 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
+-/*
+- * Board code can jump here by either returning from board_init_lowlevel
+- * or by calling this function directly.
+- */
+-void __naked __noreturn board_init_lowlevel_return(void)
++static noinline __noreturn void __barebox_arm_entry(uint32_t membase,
++		uint32_t memsize, uint32_t boarddata)
+ {
+ 	uint32_t offset;
+ 	uint32_t pg_start, pg_end, pg_len;
+ 
+-	/* Setup the stack */
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 16);
+-
+ 	/* Get offset between linked address and runtime address */
+ 	offset = get_runtime_offset();
+ 
+@@ -211,5 +205,7 @@ void __naked __noreturn board_init_lowlevel_return(void)
+ void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
+ 		uint32_t boarddata)
+ {
+-	board_init_lowlevel_return();
++	arm_setup_stack(STACK_BASE + STACK_SIZE - 16);
 +
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(0x0, SZ_64M, 0);
-+}
++	__barebox_arm_entry(membase, memsize, boarddata);
+ }
 -- 
 1.7.10.4
 
