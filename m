@@ -1,18 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
+Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1Tzkzz-0007Gb-Ey
- for barebox@lists.infradead.org; Mon, 28 Jan 2013 09:27:32 +0000
+ id 1Tzl0T-0007Q1-7p
+ for barebox@lists.infradead.org; Mon, 28 Jan 2013 09:28:01 +0000
 Received: from mail416.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id B7B69DC10D7
- for <barebox@lists.infradead.org>; Mon, 28 Jan 2013 10:37:24 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id B197DDC10D4
+ for <barebox@lists.infradead.org>; Mon, 28 Jan 2013 10:37:54 +0100 (CET)
+Date: Mon, 28 Jan 2013 10:26:43 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 28 Jan 2013 10:26:12 +0100
-Message-Id: <1359365172-30549-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1359365172-30549-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20130128092320.GQ26329@game.jcrosoft.org>
- <1359365172-30549-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130128092643.GR26329@game.jcrosoft.org>
+References: <20130127110714.GL26329@game.jcrosoft.org>
+ <1359285649-18717-1-git-send-email-plagnioj@jcrosoft.com>
+ <1359285649-18717-6-git-send-email-plagnioj@jcrosoft.com>
+ <20130128084807.GB23543@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130128084807.GB23543@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,132 +25,131 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] pbl: add none compression support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 6/8] at91sam9m10ihd: add lcd support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/pbl/Makefile         |    3 ++-
- arch/arm/pbl/piggy.shipped.S  |    6 ++++++
- arch/mips/pbl/Makefile        |    3 ++-
- arch/mips/pbl/piggy.shipped.S |    6 ++++++
- pbl/Kconfig                   |    3 +++
- pbl/decomp.c                  |   12 ++++++++++++
- 6 files changed, 31 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/pbl/piggy.shipped.S
- create mode 100644 arch/mips/pbl/piggy.shipped.S
+On 09:48 Mon 28 Jan     , Sascha Hauer wrote:
+> On Sun, Jan 27, 2013 at 12:20:47PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  arch/arm/boards/at91sam9m10ihd/env/init/splash |    8 +++
+> >  arch/arm/boards/at91sam9m10ihd/init.c          |   65 ++++++++++++++++++++++++
+> >  arch/arm/configs/at91sam9m10ihd_defconfig      |    5 ++
+> >  3 files changed, 78 insertions(+)
+> >  create mode 100644 arch/arm/boards/at91sam9m10ihd/env/init/splash
+> > 
+> > diff --git a/arch/arm/boards/at91sam9m10ihd/env/init/splash b/arch/arm/boards/at91sam9m10ihd/env/init/splash
+> > new file mode 100644
+> > index 0000000..18e74df
+> > --- /dev/null
+> > +++ b/arch/arm/boards/at91sam9m10ihd/env/init/splash
+> > @@ -0,0 +1,8 @@
+> > +#!/bin/sh
+> > +
+> > +splash=/env/splash.png
+> > +
+> > +if [ -f ${splash} -a -e /dev/fb0 ]; then
+> > +	splash -o ${splash}
+> > +	fb0.enable=1
+> > +fi
+> > diff --git a/arch/arm/boards/at91sam9m10ihd/init.c b/arch/arm/boards/at91sam9m10ihd/init.c
+> > index beede0b..da32a04 100644
+> > --- a/arch/arm/boards/at91sam9m10ihd/init.c
+> > +++ b/arch/arm/boards/at91sam9m10ihd/init.c
+> > @@ -173,6 +173,70 @@ static int at91sam9m10g45ek_mem_init(void)
+> >  }
+> >  mem_initcall(at91sam9m10g45ek_mem_init);
+> >  
+> > +#if defined(CONFIG_DRIVER_VIDEO_ATMEL)
+> > +static int ek_gpio_request_output(int gpio, const char *name)
+> > +{
+> > +	int ret;
+> > +
+> > +	ret = gpio_request(gpio, name);
+> > +	if (ret) {
+> > +		pr_err("%s: can not request gpio %d (%d)\n", name, gpio, ret);
+> > +		return ret;
+> > +	}
+> > +
+> > +	ret = gpio_direction_output(gpio, 1);
+> > +	if (ret)
+> > +		pr_err("%s: can not configure gpio %d as output (%d)\n", name, gpio, ret);
+> > +	return ret;
+> > +}
+> > +
+> > +static struct fb_videomode at91fb_default_monspecs[] = {
+> > +	{
+> > +		.name		= "MULTEK",
+> > +		.refresh	= 60,
+> > +		.xres		= 800,		.yres		= 480,
+> > +		.pixclock	= KHZ2PICOS(15000),
+> > +
+> > +		.left_margin	= 40,		.right_margin	= 40,
+> > +		.upper_margin	= 29,		.lower_margin	= 13,
+> > +		.hsync_len	= 48,		.vsync_len	= 3,
+> > +
+> > +		.sync		= 0,
+> > +		.vmode		= FB_VMODE_NONINTERLACED,
+> > +	},
+> > +};
+> > +
+> > +#define AT91SAM9G45_DEFAULT_LCDCON2	(ATMEL_LCDC_MEMOR_LITTLE \
+> > +					| ATMEL_LCDC_DISTYPE_TFT \
+> > +					| ATMEL_LCDC_CLKMOD_ALWAYSACTIVE)
+> > +
+> > +static void at91_lcdc_power_control(int on)
+> > +{
+> > +	gpio_set_value(AT91_PIN_PE6, on);
+> > +}
+> 
+> This function is unused.
+> 
+> > +
+> > +/* Driver datas */
+> > +static struct atmel_lcdfb_platform_data ek_lcdc_data = {
+> > +	.lcdcon_is_backlight		= true,
+> > +	.default_bpp			= 16,
+> > +	.default_dmacon			= ATMEL_LCDC_DMAEN,
+> > +	.default_lcdcon2		= AT91SAM9G45_DEFAULT_LCDCON2,
+> > +	.guard_time			= 9,
+> > +	.lcd_wiring_mode		= ATMEL_LCDC_WIRING_RGB,
+> > +	.mode_list			= at91fb_default_monspecs,
+> > +	.num_modes			= ARRAY_SIZE(at91fb_default_monspecs),
+> > +};
+> > +
+> > +static void ek_add_device_lcd(void)
+> > +{
+> > +	if (ek_gpio_request_output(AT91_PIN_PE6, "lcdc_power"))
+> > +		return;
+> > +
+> > +	at91_add_device_lcdc(&ek_lcdc_data);
+> > +}
+> > +#else
+> > +static void ek_add_device_lcd(void) {}
+> > +
+> 
+> unterminated ifdef. I fixed this while applying.
+> 
+> This leaves the unused function producing a compiler warning. Can you
+> provide a fixup patch?
+ok
 
-diff --git a/arch/arm/pbl/Makefile b/arch/arm/pbl/Makefile
-index 7faa51a..6eeee73 100644
---- a/arch/arm/pbl/Makefile
-+++ b/arch/arm/pbl/Makefile
-@@ -1,6 +1,7 @@
- 
- suffix_$(CONFIG_IMAGE_COMPRESSION_GZIP) = gzip
- suffix_$(CONFIG_IMAGE_COMPRESSION_LZO)	= lzo
-+suffix_$(CONFIG_IMAGE_COMPRESSION_NONE)	= shipped
- 
- OBJCOPYFLAGS_zbarebox.bin = -O binary
- piggy_o := piggy.$(suffix_y).o
-@@ -9,7 +10,7 @@ targets := zbarebox.lds zbarebox zbarebox.bin zbarebox.S \
- 	   $(piggy_o) piggy.$(suffix_y)
- 
- # Make sure files are removed during clean
--extra-y       += piggy.gzip piggy.lzo piggy.lzma piggy.xzkern zbarebox.map
-+extra-y       += piggy.gzip piggy.lzo piggy.lzma piggy.xzkern piggy.shipped zbarebox.map
- 
- $(obj)/zbarebox.bin:	$(obj)/zbarebox FORCE
- 	$(call if_changed,objcopy)
-diff --git a/arch/arm/pbl/piggy.shipped.S b/arch/arm/pbl/piggy.shipped.S
-new file mode 100644
-index 0000000..dbc2569
---- /dev/null
-+++ b/arch/arm/pbl/piggy.shipped.S
-@@ -0,0 +1,6 @@
-+	.section .piggydata,#alloc
-+	.globl  input_data
-+input_data:
-+	.incbin "arch/arm/pbl/piggy.shipped"
-+	.globl  input_data_end
-+input_data_end:
-diff --git a/arch/mips/pbl/Makefile b/arch/mips/pbl/Makefile
-index 7faa51a..6eeee73 100644
---- a/arch/mips/pbl/Makefile
-+++ b/arch/mips/pbl/Makefile
-@@ -1,6 +1,7 @@
- 
- suffix_$(CONFIG_IMAGE_COMPRESSION_GZIP) = gzip
- suffix_$(CONFIG_IMAGE_COMPRESSION_LZO)	= lzo
-+suffix_$(CONFIG_IMAGE_COMPRESSION_NONE)	= shipped
- 
- OBJCOPYFLAGS_zbarebox.bin = -O binary
- piggy_o := piggy.$(suffix_y).o
-@@ -9,7 +10,7 @@ targets := zbarebox.lds zbarebox zbarebox.bin zbarebox.S \
- 	   $(piggy_o) piggy.$(suffix_y)
- 
- # Make sure files are removed during clean
--extra-y       += piggy.gzip piggy.lzo piggy.lzma piggy.xzkern zbarebox.map
-+extra-y       += piggy.gzip piggy.lzo piggy.lzma piggy.xzkern piggy.shipped zbarebox.map
- 
- $(obj)/zbarebox.bin:	$(obj)/zbarebox FORCE
- 	$(call if_changed,objcopy)
-diff --git a/arch/mips/pbl/piggy.shipped.S b/arch/mips/pbl/piggy.shipped.S
-new file mode 100644
-index 0000000..963262d
---- /dev/null
-+++ b/arch/mips/pbl/piggy.shipped.S
-@@ -0,0 +1,6 @@
-+	.section .piggydata,#alloc
-+	.globl  input_data
-+input_data:
-+	.incbin "arch/mips/pbl/piggy.shipped"
-+	.globl  input_data_end
-+input_data_end:
-diff --git a/pbl/Kconfig b/pbl/Kconfig
-index ea7d227..37e4c4a 100644
---- a/pbl/Kconfig
-+++ b/pbl/Kconfig
-@@ -34,6 +34,9 @@ config IMAGE_COMPRESSION_LZO
- config IMAGE_COMPRESSION_GZIP
- 	bool "gzip"
- 
-+config IMAGE_COMPRESSION_NONE
-+	bool "none"
-+
- endchoice
- 
- endif
-diff --git a/pbl/decomp.c b/pbl/decomp.c
-index bd67ed8..aa6a31e 100644
---- a/pbl/decomp.c
-+++ b/pbl/decomp.c
-@@ -18,6 +18,18 @@
- #include "../../../lib/decompress_inflate.c"
- #endif
- 
-+#ifdef CONFIG_IMAGE_COMPRESSION_NONE
-+STATIC int decompress(u8 *input, int in_len,
-+				int (*fill) (void *, unsigned int),
-+				int (*flush) (void *, unsigned int),
-+				u8 *output, int *posp,
-+				void (*error) (char *x))
-+{
-+	memcpy(output, input, in_len);
-+	return 0;
-+}
-+#endif
-+
- static void noinline errorfn(char *error)
- {
- 	while (1);
--- 
-1.7.10.4
-
+Best Regards,
+J.
+> 
+> Sascha
+> 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
