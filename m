@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-da0-f43.google.com ([209.85.210.43])
+Received: from mail-lb0-f182.google.com ([209.85.217.182])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tzkjg-0005el-1z
- for barebox@lists.infradead.org; Mon, 28 Jan 2013 09:10:41 +0000
-Received: by mail-da0-f43.google.com with SMTP id u36so1160451dak.30
- for <barebox@lists.infradead.org>; Mon, 28 Jan 2013 01:10:28 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <CAA4bVAFEMoEheftB=qJ7d1+yVOJDGMJG9+1xbGpPsQFTetWa_w@mail.gmail.com>
-References: <1359219160-18500-1-git-send-email-antonynpavlov@gmail.com>
- <1359219160-18500-2-git-send-email-antonynpavlov@gmail.com>
- <20130127112330.GZ1906@pengutronix.de>
- <CAA4bVAFEMoEheftB=qJ7d1+yVOJDGMJG9+1xbGpPsQFTetWa_w@mail.gmail.com>
-Date: Mon, 28 Jan 2013 13:10:28 +0400
-Message-ID: <CAA4bVAFwniQDwp=7U81rsF0MjDLfQC0mN_6PygF+t9DL4-LAjw@mail.gmail.com>
+ id 1Tzknc-0006Bw-DC
+ for barebox@lists.infradead.org; Mon, 28 Jan 2013 09:14:45 +0000
+Received: by mail-lb0-f182.google.com with SMTP id gg6so3587630lbb.13
+ for <barebox@lists.infradead.org>; Mon, 28 Jan 2013 01:14:42 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon, 28 Jan 2013 13:26:40 +0400
+Message-Id: <1359365200-21604-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,104 +16,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Fwd: [PATCH 1/4] MIPS: introduce ram0 regions register function
-To: barebox <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: efika-mx-smartbook: clean up whitespaces
+To: barebox@lists.infradead.org
 
-Sorry, I have used "Reply-To" instead of "Reply-to-All".
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/arm/boards/efika-mx-smartbook/board.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
----------- Forwarded message ----------
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: 27 January 2013 19:52
-Subject: Re: [PATCH 1/4] MIPS: introduce ram0 regions register function
-To: Sascha Hauer <s.hauer@pengutronix.de>
-
-
-On 27 January 2013 15:23, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Sat, Jan 26, 2013 at 08:52:37PM +0400, Antony Pavlov wrote:
->> On MIPS there are two segments in CPU address space that
->> can be used for untranslated memory access: KSEG0 and KSEG1.
->> KSEG0 is used for cached access and KSEG1 is used for
->> uncached one.
->>
->> The instroduced mips_add_ram0() function registers two
->> address regions for memory access: one in KSEG0 and
->> the other one in KSEG1.
->>
->> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
->> ---
->>  arch/mips/include/asm/memory.h |   12 ++++++++++++
->>  1 file changed, 12 insertions(+)
->>  create mode 100644 arch/mips/include/asm/memory.h
->>
->> diff --git a/arch/mips/include/asm/memory.h b/arch/mips/include/asm/memory.h
->> new file mode 100644
->> index 0000000..2aa28b7
->> --- /dev/null
->> +++ b/arch/mips/include/asm/memory.h
->> @@ -0,0 +1,12 @@
->> +#ifndef __ASM_MIPS_MEMORY_H
->> +#define __ASM_MIPS_MEMORY_H
->> +
->> +#include <memory.h>
->> +#include <asm/addrspace.h>
->> +
->> +static inline void mips_add_ram0(resource_size_t size)
->> +{
->> +     barebox_add_memory_bank("kseg0_ram0", KSEG0, size);
->> +     barebox_add_memory_bank("kseg1_ram0", KSEG1, size);
->> +}
->
-> Is kseg0/1 a common name under MIPS, or in other words, do users know
-> what they have here?
-
-The kseg0 and kseg1 are well-known names under MIPS.
-They are described in the official MIPS specification
-(see chapter 4.3 Virtual Address Spaces of the document
- MIPS Architecture For Programmers Volume III:
- The MIPS32 and microMIPS32 Privileged Resource Architecture
- Revision 3.12, April 28, 2011).
-
-> Why should I use the uncached RAM as a user? Is this for debugging or
-> does it have apractical usecase?
-
-Of cause kseg1 cached region is favourable for running program code
-and during normal work there is no need for user to know about
-uncached region;
-on the other hand kseg1 is usable for debugging.
-
-But just now MIPS barebox works in the kseg1 region.
-Adding
-  barebox_add_memory_bank("kseg1_ram0", KSEG1, size);
-makes possible to know barebox link area by using iomem command.
-E.g. here is the iomem command output on MIPS qemu-malta
-
-barebox:/ iomem
-0x00000000 - 0xffffffff (size 0x00000000) iomem
-  0x1e000000 - 0x1e3fffff (size 0x00400000) cfi_flash0
-  0x80000000 - 0x8fffffff (size 0x10000000) kseg0_ram0
-  0xa0000000 - 0xafffffff (size 0x10000000) kseg1_ram0
-    0xa03f9000 - 0xa03fffff (size 0x00007000) stack
-    0xa0400000 - 0xa07fffff (size 0x00400000) malloc space
-    0xa0800000 - 0xa0833cf0 (size 0x00033cf1) barebox
-    0xa08359d0 - 0xa083c438 (size 0x00006a69) bss
-  0xb00003f8 - 0xb00003ff (size 0x00000008) ns16550_serial0
-
-We can switch to kseg0 cached region after adding cache support routines.
-I have done this for mips-malta, but I have not yet done it for others
-boards in the barebox git repository.
-
---
-Best regards,
-  Antony Pavlov
-
-
+diff --git a/arch/arm/boards/efika-mx-smartbook/board.c b/arch/arm/boards/efika-mx-smartbook/board.c
+index a455c55..5c02689 100644
+--- a/arch/arm/boards/efika-mx-smartbook/board.c
++++ b/arch/arm/boards/efika-mx-smartbook/board.c
+@@ -198,7 +198,7 @@ static int efikamx_mem_init(void)
+ {
+ 	arm_add_mem_device("ram0", 0x90000000, SZ_512M);
+ 
+-        return 0;
++	return 0;
+ }
+ mem_initcall(efikamx_mem_init);
+ 
+@@ -220,7 +220,7 @@ static const struct spi_board_info efikamx_spi_board_info[] = {
+ 		.chip_select = 1,
+ 		.max_speed_hz = 20 * 1000 * 1000,
+ 		.bus_num = 0,
+-        },
++	},
+ };
+ 
+ static void efikamx_power_init(void)
+@@ -294,11 +294,11 @@ static void efikamx_power_init(void)
+ 	/* Set VDIG to 1.8V, VGEN3 to 1.8V, VCAM to 2.6V */
+ 	mc13xxx_reg_read(mc, MC13892_REG_SETTING_0, &val);
+ 	val &= ~(MC13892_SETTING_0_VCAM_MASK |
+-                        MC13892_SETTING_0_VGEN3_MASK |
+-                        MC13892_SETTING_0_VDIG_MASK);
++		MC13892_SETTING_0_VGEN3_MASK |
++		MC13892_SETTING_0_VDIG_MASK);
+ 	val |= MC13892_SETTING_0_VDIG_1_8 |
+-                MC13892_SETTING_0_VGEN3_1_8 |
+-                MC13892_SETTING_0_VCAM_2_6;
++		MC13892_SETTING_0_VGEN3_1_8 |
++		MC13892_SETTING_0_VCAM_2_6;
+ 	mc13xxx_reg_write(mc, MC13892_REG_SETTING_0, val);
+ 
+ 	/* Set VVIDEO to 2.775V, VAUDIO to 3V, VSD to 3.15V */
+@@ -455,7 +455,7 @@ static int efikamx_devices_init(void)
+ 	imx51_add_mmc1(&efikasb_sd2_data);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(leds); i++)
+-                led_gpio_register(&leds[i]);
++		led_gpio_register(&leds[i]);
+ 
+ 	imx51_add_i2c1(NULL);
+ 
 -- 
-Best regards,
-  Antony Pavlov
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
