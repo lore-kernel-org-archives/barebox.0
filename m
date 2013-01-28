@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f182.google.com ([209.85.217.182])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1Tzknc-0006Bw-DC
- for barebox@lists.infradead.org; Mon, 28 Jan 2013 09:14:45 +0000
-Received: by mail-lb0-f182.google.com with SMTP id gg6so3587630lbb.13
- for <barebox@lists.infradead.org>; Mon, 28 Jan 2013 01:14:42 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 28 Jan 2013 13:26:40 +0400
-Message-Id: <1359365200-21604-1-git-send-email-antonynpavlov@gmail.com>
+Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1TzkxD-0006yT-Go
+ for barebox@lists.infradead.org; Mon, 28 Jan 2013 09:24:40 +0000
+Received: from mail416.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id A6B12DC0860
+ for <barebox@lists.infradead.org>; Mon, 28 Jan 2013 10:34:32 +0100 (CET)
+Date: Mon, 28 Jan 2013 10:23:20 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130128092320.GQ26329@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,69 +20,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: efika-mx-smartbook: clean up whitespaces
+Subject: [PATCH 0/3] pbl: factorise decompress code and add none compress
+ support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/arm/boards/efika-mx-smartbook/board.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+HI,
 
-diff --git a/arch/arm/boards/efika-mx-smartbook/board.c b/arch/arm/boards/efika-mx-smartbook/board.c
-index a455c55..5c02689 100644
---- a/arch/arm/boards/efika-mx-smartbook/board.c
-+++ b/arch/arm/boards/efika-mx-smartbook/board.c
-@@ -198,7 +198,7 @@ static int efikamx_mem_init(void)
- {
- 	arm_add_mem_device("ram0", 0x90000000, SZ_512M);
- 
--        return 0;
-+	return 0;
- }
- mem_initcall(efikamx_mem_init);
- 
-@@ -220,7 +220,7 @@ static const struct spi_board_info efikamx_spi_board_info[] = {
- 		.chip_select = 1,
- 		.max_speed_hz = 20 * 1000 * 1000,
- 		.bus_num = 0,
--        },
-+	},
- };
- 
- static void efikamx_power_init(void)
-@@ -294,11 +294,11 @@ static void efikamx_power_init(void)
- 	/* Set VDIG to 1.8V, VGEN3 to 1.8V, VCAM to 2.6V */
- 	mc13xxx_reg_read(mc, MC13892_REG_SETTING_0, &val);
- 	val &= ~(MC13892_SETTING_0_VCAM_MASK |
--                        MC13892_SETTING_0_VGEN3_MASK |
--                        MC13892_SETTING_0_VDIG_MASK);
-+		MC13892_SETTING_0_VGEN3_MASK |
-+		MC13892_SETTING_0_VDIG_MASK);
- 	val |= MC13892_SETTING_0_VDIG_1_8 |
--                MC13892_SETTING_0_VGEN3_1_8 |
--                MC13892_SETTING_0_VCAM_2_6;
-+		MC13892_SETTING_0_VGEN3_1_8 |
-+		MC13892_SETTING_0_VCAM_2_6;
- 	mc13xxx_reg_write(mc, MC13892_REG_SETTING_0, val);
- 
- 	/* Set VVIDEO to 2.775V, VAUDIO to 3V, VSD to 3.15V */
-@@ -455,7 +455,7 @@ static int efikamx_devices_init(void)
- 	imx51_add_mmc1(&efikasb_sd2_data);
- 
- 	for (i = 0; i < ARRAY_SIZE(leds); i++)
--                led_gpio_register(&leds[i]);
-+		led_gpio_register(&leds[i]);
- 
- 	imx51_add_i2c1(NULL);
- 
--- 
-1.7.10.4
+The following changes since commit cd1c289b2a4949e8acb235d4847419bde784a9d6:
 
+  Merge branch 'for-next/misc' into next (2013-01-25 19:51:11 +0100)
+
+are available in the git repository at:
+
+
+  git://git.jcrosoft.org/barebox.git delivery/pbl
+
+for you to fetch changes up to c71c520fe4fc180c4546a37105ce2ed4fc674383:
+
+  pbl: add none compression support (2013-01-24 06:30:57 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (3):
+      pbl: move configs to pbl/Kconfig
+      pbl: factorise decompressor
+      pbl: add none compression support
+
+ arch/arm/cpu/start-pbl.c        |   21 ++-------------------
+ arch/arm/pbl/Makefile           |    3 ++-
+ arch/arm/pbl/piggy.shipped.S    |    6 ++++++
+ arch/mips/boot/main_entry-pbl.c |   23 +----------------------
+ arch/mips/pbl/Makefile          |    3 ++-
+ arch/mips/pbl/piggy.shipped.S   |    6 ++++++
+ common/Kconfig                  |   42 +-----------------------------------------
+ include/pbl.h                   |   15 +++++++++++++++
+ pbl/Kconfig                     |   46 ++++++++++++++++++++++++++++++++++++++++++++++
+ pbl/Makefile                    |    1 +
+ pbl/decomp.c                    |   44 ++++++++++++++++++++++++++++++++++++++++++++
+ 11 files changed, 126 insertions(+), 84 deletions(-)
+ create mode 100644 arch/arm/pbl/piggy.shipped.S
+ create mode 100644 arch/mips/pbl/piggy.shipped.S
+ create mode 100644 include/pbl.h
+ create mode 100644 pbl/Kconfig
+ create mode 100644 pbl/decomp.c
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
