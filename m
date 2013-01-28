@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TzkxD-0006yT-Go
- for barebox@lists.infradead.org; Mon, 28 Jan 2013 09:24:40 +0000
+ id 1Tzkzz-0007Gd-Ez
+ for barebox@lists.infradead.org; Mon, 28 Jan 2013 09:27:32 +0000
 Received: from mail416.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id A6B12DC0860
- for <barebox@lists.infradead.org>; Mon, 28 Jan 2013 10:34:32 +0100 (CET)
-Date: Mon, 28 Jan 2013 10:23:20 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id B3311DC10C8
+ for <barebox@lists.infradead.org>; Mon, 28 Jan 2013 10:37:24 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130128092320.GQ26329@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Mon, 28 Jan 2013 10:26:10 +0100
+Message-Id: <1359365172-30549-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130128092320.GQ26329@game.jcrosoft.org>
+References: <20130128092320.GQ26329@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,55 +20,128 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] pbl: factorise decompress code and add none compress
- support
+Subject: [PATCH 1/3] pbl: move configs to pbl/Kconfig
 To: barebox@lists.infradead.org
 
-HI,
+so it more easy to add new entry and to maintain
 
-The following changes since commit cd1c289b2a4949e8acb235d4847419bde784a9d6:
-
-  Merge branch 'for-next/misc' into next (2013-01-25 19:51:11 +0100)
-
-are available in the git repository at:
-
-
-  git://git.jcrosoft.org/barebox.git delivery/pbl
-
-for you to fetch changes up to c71c520fe4fc180c4546a37105ce2ed4fc674383:
-
-  pbl: add none compression support (2013-01-24 06:30:57 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (3):
-      pbl: move configs to pbl/Kconfig
-      pbl: factorise decompressor
-      pbl: add none compression support
-
- arch/arm/cpu/start-pbl.c        |   21 ++-------------------
- arch/arm/pbl/Makefile           |    3 ++-
- arch/arm/pbl/piggy.shipped.S    |    6 ++++++
- arch/mips/boot/main_entry-pbl.c |   23 +----------------------
- arch/mips/pbl/Makefile          |    3 ++-
- arch/mips/pbl/piggy.shipped.S   |    6 ++++++
- common/Kconfig                  |   42 +-----------------------------------------
- include/pbl.h                   |   15 +++++++++++++++
- pbl/Kconfig                     |   46 ++++++++++++++++++++++++++++++++++++++++++++++
- pbl/Makefile                    |    1 +
- pbl/decomp.c                    |   44 ++++++++++++++++++++++++++++++++++++++++++++
- 11 files changed, 126 insertions(+), 84 deletions(-)
- create mode 100644 arch/arm/pbl/piggy.shipped.S
- create mode 100644 arch/mips/pbl/piggy.shipped.S
- create mode 100644 include/pbl.h
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ common/Kconfig |   42 +-----------------------------------------
+ pbl/Kconfig    |   43 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 44 insertions(+), 41 deletions(-)
  create mode 100644 pbl/Kconfig
- create mode 100644 pbl/decomp.c
 
-Best Regards,
-J.
+diff --git a/common/Kconfig b/common/Kconfig
+index eccae4c..21c061c 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -105,47 +105,7 @@ config ENVIRONMENT_VARIABLES
+ 
+ menu "memory layout"
+ 
+-config HAVE_PBL_IMAGE
+-	bool
+-
+-config HAVE_IMAGE_COMPRESSION
+-	bool
+-
+-config PBL_IMAGE
+-	bool "Pre-Bootloader image"
+-	depends on HAVE_PBL_IMAGE
+-
+-config PBL_FORCE_PIGGYDATA_COPY
+-	bool
+-	help
+-	  In some case we need to copy the PIGGYDATA as the link address
+-	  as example we run from SRAM and shutdown the SDRAM/DDR for
+-	  reconfiguration but most of the time we just need to copy the
+-	  executable code.
+-
+-if PBL_IMAGE
+-
+-config IMAGE_COMPRESSION
+-	bool
+-	depends on HAVE_IMAGE_COMPRESSION
+-	default y
+-
+-if IMAGE_COMPRESSION
+-
+-choice
+-	prompt "Compression"
+-
+-config IMAGE_COMPRESSION_LZO
+-	bool "lzo"
+-
+-config IMAGE_COMPRESSION_GZIP
+-	bool "gzip"
+-
+-endchoice
+-
+-endif
+-
+-endif
++source "pbl/Kconfig"
+ 
+ config MMU
+ 	bool "Enable MMU"
+diff --git a/pbl/Kconfig b/pbl/Kconfig
+new file mode 100644
+index 0000000..ea7d227
+--- /dev/null
++++ b/pbl/Kconfig
+@@ -0,0 +1,43 @@
++config HAVE_PBL_IMAGE
++	bool
++
++config HAVE_IMAGE_COMPRESSION
++	bool
++
++config PBL_IMAGE
++	bool "Pre-Bootloader image"
++	depends on HAVE_PBL_IMAGE
++
++config PBL_FORCE_PIGGYDATA_COPY
++	bool
++	help
++	  In some case we need to copy the PIGGYDATA as the link address
++	  as example we run from SRAM and shutdown the SDRAM/DDR for
++	  reconfiguration but most of the time we just need to copy the
++	  executable code.
++
++if PBL_IMAGE
++
++config IMAGE_COMPRESSION
++	bool
++	depends on HAVE_IMAGE_COMPRESSION
++	default y
++
++if IMAGE_COMPRESSION
++
++choice
++	prompt "Compression"
++
++config IMAGE_COMPRESSION_LZO
++	bool "lzo"
++
++config IMAGE_COMPRESSION_GZIP
++	bool "gzip"
++
++endchoice
++
++endif
++
++endif
++
++
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
