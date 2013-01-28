@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-da0-f43.google.com ([209.85.210.43])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1TzkNt-00032P-A0
- for barebox@lists.infradead.org; Mon, 28 Jan 2013 08:48:10 +0000
-Date: Mon, 28 Jan 2013 09:48:07 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130128084807.GB23543@pengutronix.de>
-References: <20130127110714.GL26329@game.jcrosoft.org>
- <1359285649-18717-1-git-send-email-plagnioj@jcrosoft.com>
- <1359285649-18717-6-git-send-email-plagnioj@jcrosoft.com>
+ id 1Tzkjg-0005el-1z
+ for barebox@lists.infradead.org; Mon, 28 Jan 2013 09:10:41 +0000
+Received: by mail-da0-f43.google.com with SMTP id u36so1160451dak.30
+ for <barebox@lists.infradead.org>; Mon, 28 Jan 2013 01:10:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1359285649-18717-6-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <CAA4bVAFEMoEheftB=qJ7d1+yVOJDGMJG9+1xbGpPsQFTetWa_w@mail.gmail.com>
+References: <1359219160-18500-1-git-send-email-antonynpavlov@gmail.com>
+ <1359219160-18500-2-git-send-email-antonynpavlov@gmail.com>
+ <20130127112330.GZ1906@pengutronix.de>
+ <CAA4bVAFEMoEheftB=qJ7d1+yVOJDGMJG9+1xbGpPsQFTetWa_w@mail.gmail.com>
+Date: Mon, 28 Jan 2013 13:10:28 +0400
+Message-ID: <CAA4bVAFwniQDwp=7U81rsF0MjDLfQC0mN_6PygF+t9DL4-LAjw@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,122 +26,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/8] at91sam9m10ihd: add lcd support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Fwd: [PATCH 1/4] MIPS: introduce ram0 regions register function
+To: barebox <barebox@lists.infradead.org>
 
-On Sun, Jan 27, 2013 at 12:20:47PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/arm/boards/at91sam9m10ihd/env/init/splash |    8 +++
->  arch/arm/boards/at91sam9m10ihd/init.c          |   65 ++++++++++++++++++++++++
->  arch/arm/configs/at91sam9m10ihd_defconfig      |    5 ++
->  3 files changed, 78 insertions(+)
->  create mode 100644 arch/arm/boards/at91sam9m10ihd/env/init/splash
-> 
-> diff --git a/arch/arm/boards/at91sam9m10ihd/env/init/splash b/arch/arm/boards/at91sam9m10ihd/env/init/splash
-> new file mode 100644
-> index 0000000..18e74df
-> --- /dev/null
-> +++ b/arch/arm/boards/at91sam9m10ihd/env/init/splash
-> @@ -0,0 +1,8 @@
-> +#!/bin/sh
-> +
-> +splash=/env/splash.png
-> +
-> +if [ -f ${splash} -a -e /dev/fb0 ]; then
-> +	splash -o ${splash}
-> +	fb0.enable=1
-> +fi
-> diff --git a/arch/arm/boards/at91sam9m10ihd/init.c b/arch/arm/boards/at91sam9m10ihd/init.c
-> index beede0b..da32a04 100644
-> --- a/arch/arm/boards/at91sam9m10ihd/init.c
-> +++ b/arch/arm/boards/at91sam9m10ihd/init.c
-> @@ -173,6 +173,70 @@ static int at91sam9m10g45ek_mem_init(void)
->  }
->  mem_initcall(at91sam9m10g45ek_mem_init);
->  
-> +#if defined(CONFIG_DRIVER_VIDEO_ATMEL)
-> +static int ek_gpio_request_output(int gpio, const char *name)
-> +{
-> +	int ret;
-> +
-> +	ret = gpio_request(gpio, name);
-> +	if (ret) {
-> +		pr_err("%s: can not request gpio %d (%d)\n", name, gpio, ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = gpio_direction_output(gpio, 1);
-> +	if (ret)
-> +		pr_err("%s: can not configure gpio %d as output (%d)\n", name, gpio, ret);
-> +	return ret;
-> +}
-> +
-> +static struct fb_videomode at91fb_default_monspecs[] = {
-> +	{
-> +		.name		= "MULTEK",
-> +		.refresh	= 60,
-> +		.xres		= 800,		.yres		= 480,
-> +		.pixclock	= KHZ2PICOS(15000),
-> +
-> +		.left_margin	= 40,		.right_margin	= 40,
-> +		.upper_margin	= 29,		.lower_margin	= 13,
-> +		.hsync_len	= 48,		.vsync_len	= 3,
-> +
-> +		.sync		= 0,
-> +		.vmode		= FB_VMODE_NONINTERLACED,
-> +	},
-> +};
-> +
-> +#define AT91SAM9G45_DEFAULT_LCDCON2	(ATMEL_LCDC_MEMOR_LITTLE \
-> +					| ATMEL_LCDC_DISTYPE_TFT \
-> +					| ATMEL_LCDC_CLKMOD_ALWAYSACTIVE)
-> +
-> +static void at91_lcdc_power_control(int on)
-> +{
-> +	gpio_set_value(AT91_PIN_PE6, on);
-> +}
+Sorry, I have used "Reply-To" instead of "Reply-to-All".
 
-This function is unused.
+---------- Forwarded message ----------
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: 27 January 2013 19:52
+Subject: Re: [PATCH 1/4] MIPS: introduce ram0 regions register function
+To: Sascha Hauer <s.hauer@pengutronix.de>
 
-> +
-> +/* Driver datas */
-> +static struct atmel_lcdfb_platform_data ek_lcdc_data = {
-> +	.lcdcon_is_backlight		= true,
-> +	.default_bpp			= 16,
-> +	.default_dmacon			= ATMEL_LCDC_DMAEN,
-> +	.default_lcdcon2		= AT91SAM9G45_DEFAULT_LCDCON2,
-> +	.guard_time			= 9,
-> +	.lcd_wiring_mode		= ATMEL_LCDC_WIRING_RGB,
-> +	.mode_list			= at91fb_default_monspecs,
-> +	.num_modes			= ARRAY_SIZE(at91fb_default_monspecs),
-> +};
-> +
-> +static void ek_add_device_lcd(void)
-> +{
-> +	if (ek_gpio_request_output(AT91_PIN_PE6, "lcdc_power"))
-> +		return;
-> +
-> +	at91_add_device_lcdc(&ek_lcdc_data);
-> +}
-> +#else
-> +static void ek_add_device_lcd(void) {}
-> +
 
-unterminated ifdef. I fixed this while applying.
+On 27 January 2013 15:23, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Sat, Jan 26, 2013 at 08:52:37PM +0400, Antony Pavlov wrote:
+>> On MIPS there are two segments in CPU address space that
+>> can be used for untranslated memory access: KSEG0 and KSEG1.
+>> KSEG0 is used for cached access and KSEG1 is used for
+>> uncached one.
+>>
+>> The instroduced mips_add_ram0() function registers two
+>> address regions for memory access: one in KSEG0 and
+>> the other one in KSEG1.
+>>
+>> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+>> ---
+>>  arch/mips/include/asm/memory.h |   12 ++++++++++++
+>>  1 file changed, 12 insertions(+)
+>>  create mode 100644 arch/mips/include/asm/memory.h
+>>
+>> diff --git a/arch/mips/include/asm/memory.h b/arch/mips/include/asm/memory.h
+>> new file mode 100644
+>> index 0000000..2aa28b7
+>> --- /dev/null
+>> +++ b/arch/mips/include/asm/memory.h
+>> @@ -0,0 +1,12 @@
+>> +#ifndef __ASM_MIPS_MEMORY_H
+>> +#define __ASM_MIPS_MEMORY_H
+>> +
+>> +#include <memory.h>
+>> +#include <asm/addrspace.h>
+>> +
+>> +static inline void mips_add_ram0(resource_size_t size)
+>> +{
+>> +     barebox_add_memory_bank("kseg0_ram0", KSEG0, size);
+>> +     barebox_add_memory_bank("kseg1_ram0", KSEG1, size);
+>> +}
+>
+> Is kseg0/1 a common name under MIPS, or in other words, do users know
+> what they have here?
 
-This leaves the unused function producing a compiler warning. Can you
-provide a fixup patch?
+The kseg0 and kseg1 are well-known names under MIPS.
+They are described in the official MIPS specification
+(see chapter 4.3 Virtual Address Spaces of the document
+ MIPS Architecture For Programmers Volume III:
+ The MIPS32 and microMIPS32 Privileged Resource Architecture
+ Revision 3.12, April 28, 2011).
 
-Sascha
+> Why should I use the uncached RAM as a user? Is this for debugging or
+> does it have apractical usecase?
+
+Of cause kseg1 cached region is favourable for running program code
+and during normal work there is no need for user to know about
+uncached region;
+on the other hand kseg1 is usable for debugging.
+
+But just now MIPS barebox works in the kseg1 region.
+Adding
+  barebox_add_memory_bank("kseg1_ram0", KSEG1, size);
+makes possible to know barebox link area by using iomem command.
+E.g. here is the iomem command output on MIPS qemu-malta
+
+barebox:/ iomem
+0x00000000 - 0xffffffff (size 0x00000000) iomem
+  0x1e000000 - 0x1e3fffff (size 0x00400000) cfi_flash0
+  0x80000000 - 0x8fffffff (size 0x10000000) kseg0_ram0
+  0xa0000000 - 0xafffffff (size 0x10000000) kseg1_ram0
+    0xa03f9000 - 0xa03fffff (size 0x00007000) stack
+    0xa0400000 - 0xa07fffff (size 0x00400000) malloc space
+    0xa0800000 - 0xa0833cf0 (size 0x00033cf1) barebox
+    0xa08359d0 - 0xa083c438 (size 0x00006a69) bss
+  0xb00003f8 - 0xb00003ff (size 0x00000008) ns16550_serial0
+
+We can switch to kseg0 cached region after adding cache support routines.
+I have done this for mips-malta, but I have not yet done it for others
+boards in the barebox git repository.
+
+--
+Best regards,
+  Antony Pavlov
 
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
