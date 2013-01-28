@@ -2,16 +2,17 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1TzxC2-00056p-If
+ id 1TzxC2-00056r-Ie
  for barebox@lists.infradead.org; Mon, 28 Jan 2013 22:28:48 +0000
 Received: from mail606.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 9EC2FDC1C35
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id B6443DC1C36
  for <barebox@lists.infradead.org>; Mon, 28 Jan 2013 23:38:40 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 28 Jan 2013 23:27:26 +0100
-Message-Id: <1359412047-30677-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20130128222510.GS26329@game.jcrosoft.org>
+Date: Mon, 28 Jan 2013 23:27:27 +0100
+Message-Id: <1359412047-30677-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1359412047-30677-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130128222510.GS26329@game.jcrosoft.org>
+ <1359412047-30677-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,234 +26,289 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] macb: sync register access and clock with the kernel
+Subject: [PATCH 2/2] macb: allow to pass the phy interface
 To: barebox@lists.infradead.org
+
+as we will add later the GMAC IP verion support (GEM)
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/net/macb.c |   63 ++++++++++++++++++++++------------------------------
- drivers/net/macb.h |    6 +++++
- 2 files changed, 33 insertions(+), 36 deletions(-)
+ arch/arm/boards/at91rm9200ek/init.c      |    2 +-
+ arch/arm/boards/at91sam9260ek/init.c     |    2 +-
+ arch/arm/boards/at91sam9263ek/init.c     |    2 +-
+ arch/arm/boards/at91sam9m10g45ek/init.c  |    2 +-
+ arch/arm/boards/at91sam9x5ek/init.c      |    2 +-
+ arch/arm/boards/pm9263/init.c            |    2 +-
+ arch/arm/boards/pm9g45/init.c            |    2 +-
+ arch/arm/boards/qil-a9260/init.c         |    2 +-
+ arch/arm/boards/tny-a926x/init.c         |    2 +-
+ arch/arm/boards/usb-a926x/init.c         |    2 +-
+ arch/arm/mach-at91/at91rm9200_devices.c  |    2 +-
+ arch/arm/mach-at91/at91sam9260_devices.c |    2 +-
+ arch/arm/mach-at91/at91sam9263_devices.c |    2 +-
+ arch/arm/mach-at91/at91sam9g45_devices.c |    2 +-
+ arch/arm/mach-at91/at91sam9x5_devices.c  |    4 ++--
+ arch/arm/mach-at91/include/mach/board.h  |    3 ++-
+ drivers/net/at91_ether.c                 |    2 +-
+ drivers/net/macb.c                       |    6 +++---
+ 18 files changed, 22 insertions(+), 21 deletions(-)
 
+diff --git a/arch/arm/boards/at91rm9200ek/init.c b/arch/arm/boards/at91rm9200ek/init.c
+index 66ea6b7..eec71bb 100644
+--- a/arch/arm/boards/at91rm9200ek/init.c
++++ b/arch/arm/boards/at91rm9200ek/init.c
+@@ -33,7 +33,7 @@
+ #include <spi/spi.h>
+ 
+ static struct at91_ether_platform_data ether_pdata = {
+-	.is_rmii = 1,
++	.phy_interface = PHY_INTERFACE_MODE_RMII,
+ 	.phy_addr = 0,
+ };
+ 
+diff --git a/arch/arm/boards/at91sam9260ek/init.c b/arch/arm/boards/at91sam9260ek/init.c
+index 7bd0279..2d52f5a 100644
+--- a/arch/arm/boards/at91sam9260ek/init.c
++++ b/arch/arm/boards/at91sam9260ek/init.c
+@@ -127,7 +127,7 @@ static void ek_add_device_nand(void)
+ }
+ 
+ static struct at91_ether_platform_data macb_pdata = {
+-	.is_rmii = 1,
++	.phy_interface = PHY_INTERFACE_MODE_RMII,
+ 	.phy_addr = 0,
+ };
+ 
+diff --git a/arch/arm/boards/at91sam9263ek/init.c b/arch/arm/boards/at91sam9263ek/init.c
+index 6db6a5b..90fdbec 100644
+--- a/arch/arm/boards/at91sam9263ek/init.c
++++ b/arch/arm/boards/at91sam9263ek/init.c
+@@ -83,7 +83,7 @@ static void ek_add_device_nand(void)
+ }
+ 
+ static struct at91_ether_platform_data macb_pdata = {
+-	.is_rmii = 1,
++	.phy_interface = PHY_INTERFACE_MODE_RMII,
+ 	.phy_addr = 0,
+ };
+ 
+diff --git a/arch/arm/boards/at91sam9m10g45ek/init.c b/arch/arm/boards/at91sam9m10g45ek/init.c
+index bae5924..5b5e31b 100644
+--- a/arch/arm/boards/at91sam9m10g45ek/init.c
++++ b/arch/arm/boards/at91sam9m10g45ek/init.c
+@@ -106,7 +106,7 @@ static void ek_add_device_nand(void)
+ }
+ 
+ static struct at91_ether_platform_data macb_pdata = {
+-	.is_rmii = 1,
++	.phy_interface = PHY_INTERFACE_MODE_RMII,
+ 	.phy_addr = 0,
+ };
+ 
+diff --git a/arch/arm/boards/at91sam9x5ek/init.c b/arch/arm/boards/at91sam9x5ek/init.c
+index 02c3b30..9c45d31 100644
+--- a/arch/arm/boards/at91sam9x5ek/init.c
++++ b/arch/arm/boards/at91sam9x5ek/init.c
+@@ -106,7 +106,7 @@ static void ek_add_device_nand(void)
+ }
+ 
+ static struct at91_ether_platform_data macb_pdata = {
+-	.is_rmii = 1,
++	.phy_interface = PHY_INTERFACE_MODE_RMII,
+ 	.phy_addr = 0,
+ };
+ 
+diff --git a/arch/arm/boards/pm9263/init.c b/arch/arm/boards/pm9263/init.c
+index 0be5cf5..4afa095 100644
+--- a/arch/arm/boards/pm9263/init.c
++++ b/arch/arm/boards/pm9263/init.c
+@@ -89,7 +89,7 @@ static void pm_add_device_nand(void)
+ }
+ 
+ static struct at91_ether_platform_data macb_pdata = {
+-	.is_rmii = 1,
++	.phy_interface = PHY_INTERFACE_MODE_RMII,
+ 	.phy_addr = -1,
+ };
+ 
+diff --git a/arch/arm/boards/pm9g45/init.c b/arch/arm/boards/pm9g45/init.c
+index db1c551..720099b 100644
+--- a/arch/arm/boards/pm9g45/init.c
++++ b/arch/arm/boards/pm9g45/init.c
+@@ -113,7 +113,7 @@ static void __init pm9g45_add_device_usbh(void) {}
+ #endif
+ 
+ static struct at91_ether_platform_data macb_pdata = {
+-	.is_rmii = 1,
++	.phy_interface = PHY_INTERFACE_MODE_RMII,
+ 	.phy_addr = 0,
+ };
+ 
+diff --git a/arch/arm/boards/qil-a9260/init.c b/arch/arm/boards/qil-a9260/init.c
+index 4977d3b..2e131fe 100644
+--- a/arch/arm/boards/qil-a9260/init.c
++++ b/arch/arm/boards/qil-a9260/init.c
+@@ -78,7 +78,7 @@ static void qil_a9260_add_device_mci(void) {}
+ 
+ #ifdef CONFIG_CALAO_MB_QIL_A9260
+ static struct at91_ether_platform_data macb_pdata = {
+-	.is_rmii	= 1,
++	.phy_interface	= PHY_INTERFACE_MODE_RMII,
+ 	.phy_addr	= -1,
+ };
+ 
+diff --git a/arch/arm/boards/tny-a926x/init.c b/arch/arm/boards/tny-a926x/init.c
+index 027186a..4228254 100644
+--- a/arch/arm/boards/tny-a926x/init.c
++++ b/arch/arm/boards/tny-a926x/init.c
+@@ -113,7 +113,7 @@ static void tny_a9260_add_device_nand(void)
+ 
+ #ifdef CONFIG_DRIVER_NET_MACB
+ static struct at91_ether_platform_data macb_pdata = {
+-	.is_rmii	= 1,
++	.phy_interface	= PHY_INTERFACE_MODE_RMII,
+ 	.phy_addr	= -1,
+ };
+ 
+diff --git a/arch/arm/boards/usb-a926x/init.c b/arch/arm/boards/usb-a926x/init.c
+index 95ac6a8..a5beeed 100644
+--- a/arch/arm/boards/usb-a926x/init.c
++++ b/arch/arm/boards/usb-a926x/init.c
+@@ -113,7 +113,7 @@ static void usb_a9260_add_device_nand(void)
+ }
+ 
+ static struct at91_ether_platform_data macb_pdata = {
+-	.is_rmii	= 1,
++	.phy_interface	= PHY_INTERFACE_MODE_RMII,
+ 	.phy_addr	= -1,
+ };
+ 
+diff --git a/arch/arm/mach-at91/at91rm9200_devices.c b/arch/arm/mach-at91/at91rm9200_devices.c
+index 0f2ec1f..82862d7 100644
+--- a/arch/arm/mach-at91/at91rm9200_devices.c
++++ b/arch/arm/mach-at91/at91rm9200_devices.c
+@@ -103,7 +103,7 @@ void __init at91_add_device_eth(int id, struct at91_ether_platform_data *data)
+ 	at91_set_A_periph(AT91_PIN_PA8, 0);	/* ETXEN */
+ 	at91_set_A_periph(AT91_PIN_PA7, 0);	/* ETXCK_EREFCK */
+ 
+-	if (!data->is_rmii) {
++	if (data->phy_interface != PHY_INTERFACE_MODE_RMII) {
+ 		at91_set_B_periph(AT91_PIN_PB19, 0);	/* ERXCK */
+ 		at91_set_B_periph(AT91_PIN_PB18, 0);	/* ECOL */
+ 		at91_set_B_periph(AT91_PIN_PB17, 0);	/* ERXDV */
+diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
+index 5ee0b11..6e8c37b 100644
+--- a/arch/arm/mach-at91/at91sam9260_devices.c
++++ b/arch/arm/mach-at91/at91sam9260_devices.c
+@@ -98,7 +98,7 @@ void at91_add_device_eth(int id, struct at91_ether_platform_data *data)
+ 	at91_set_A_periph(AT91_PIN_PA21, 0);	/* EMDIO */
+ 	at91_set_A_periph(AT91_PIN_PA20, 0);	/* EMDC */
+ 
+-	if (!data->is_rmii) {
++	if (data->phy_interface != PHY_INTERFACE_MODE_RMII) {
+ 		at91_set_B_periph(AT91_PIN_PA28, 0);	/* ECRS */
+ 		at91_set_B_periph(AT91_PIN_PA29, 0);	/* ECOL */
+ 		at91_set_B_periph(AT91_PIN_PA25, 0);	/* ERX2 */
+diff --git a/arch/arm/mach-at91/at91sam9263_devices.c b/arch/arm/mach-at91/at91sam9263_devices.c
+index 8f06821..528a07b 100644
+--- a/arch/arm/mach-at91/at91sam9263_devices.c
++++ b/arch/arm/mach-at91/at91sam9263_devices.c
+@@ -97,7 +97,7 @@ void at91_add_device_eth(int id, struct at91_ether_platform_data *data)
+ 	at91_set_A_periph(AT91_PIN_PE30, 0);	/* EMDIO */
+ 	at91_set_A_periph(AT91_PIN_PE29, 0);	/* EMDC */
+ 
+-	if (!data->is_rmii) {
++	if (data->phy_interface != PHY_INTERFACE_MODE_RMII) {
+ 		at91_set_A_periph(AT91_PIN_PE22, 0);	/* ECRS */
+ 		at91_set_B_periph(AT91_PIN_PC26, 0);	/* ECOL */
+ 		at91_set_B_periph(AT91_PIN_PC22, 0);	/* ERX2 */
+diff --git a/arch/arm/mach-at91/at91sam9g45_devices.c b/arch/arm/mach-at91/at91sam9g45_devices.c
+index d3de348..bde3429 100644
+--- a/arch/arm/mach-at91/at91sam9g45_devices.c
++++ b/arch/arm/mach-at91/at91sam9g45_devices.c
+@@ -99,7 +99,7 @@ void at91_add_device_eth(int id, struct at91_ether_platform_data *data)
+ 	at91_set_A_periph(AT91_PIN_PA19, 0);	/* EMDIO */
+ 	at91_set_A_periph(AT91_PIN_PA18, 0);	/* EMDC */
+ 
+-	if (!data->is_rmii) {
++	if (data->phy_interface != PHY_INTERFACE_MODE_RMII) {
+ 		at91_set_B_periph(AT91_PIN_PA29, 0);	/* ECRS */
+ 		at91_set_B_periph(AT91_PIN_PA30, 0);	/* ECOL */
+ 		at91_set_B_periph(AT91_PIN_PA8,  0);	/* ERX2 */
+diff --git a/arch/arm/mach-at91/at91sam9x5_devices.c b/arch/arm/mach-at91/at91sam9x5_devices.c
+index 90d8756..21aead9 100644
+--- a/arch/arm/mach-at91/at91sam9x5_devices.c
++++ b/arch/arm/mach-at91/at91sam9x5_devices.c
+@@ -111,7 +111,7 @@ void at91_add_device_eth(int id, struct at91_ether_platform_data *data)
+ 		at91_set_A_periph(AT91_PIN_PB5,  0);	/* EMDIO */
+ 		at91_set_A_periph(AT91_PIN_PB6,  0);	/* EMDC */
+ 
+-		if (!data->is_rmii) {
++		if (data->phy_interface != PHY_INTERFACE_MODE_RMII) {
+ 			at91_set_A_periph(AT91_PIN_PB16, 0);	/* ECRS */
+ 			at91_set_A_periph(AT91_PIN_PB17, 0);	/* ECOL */
+ 			at91_set_A_periph(AT91_PIN_PB13, 0);	/* ERX2 */
+@@ -124,7 +124,7 @@ void at91_add_device_eth(int id, struct at91_ether_platform_data *data)
+ 		break;
+ 	case 1:
+ 		start = AT91SAM9X5_BASE_EMAC1;
+-		if (!data->is_rmii)
++		if (data->phy_interface != PHY_INTERFACE_MODE_RMII)
+ 			pr_warn("AT91: Only RMII available on interface macb%d.\n", id);
+ 
+ 		/* Pins used for RMII */
+diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
+index 1ad412b..e7b1171 100644
+--- a/arch/arm/mach-at91/include/mach/board.h
++++ b/arch/arm/mach-at91/include/mach/board.h
+@@ -26,6 +26,7 @@
+ #include <linux/mtd/mtd.h>
+ #include <fb.h>
+ #include <video/atmel_lcdc.h>
++#include <linux/phy.h>
+ 
+  /* USB Host */
+ struct at91_usbh_data {
+@@ -74,7 +75,7 @@ struct at91_ether_platform_data {
+ 	unsigned int phy_flags;
+ 	unsigned int flags;
+ 	int phy_addr;
+-	int is_rmii;
++	phy_interface_t phy_interface;
+ 	int (*get_ethaddr)(struct eth_device*, unsigned char *adr);
+ };
+ 
+diff --git a/drivers/net/at91_ether.c b/drivers/net/at91_ether.c
+index 2e3a271..a0854df 100644
+--- a/drivers/net/at91_ether.c
++++ b/drivers/net/at91_ether.c
+@@ -342,7 +342,7 @@ static int at91_ether_probe(struct device_d *dev)
+ 
+ 	mac_cfg |= AT91_EMAC_CLK_DIV32 | AT91_EMAC_BIG;
+ 
+-	if (pdata->is_rmii) {
++	if (pdata->phy_interface == PHY_INTERFACE_MODE_RMII) {
+ 		ether_dev->interface = PHY_INTERFACE_MODE_RGMII;
+ 		mac_cfg |= AT91_EMAC_RMII;
+ 	} else {
 diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index 35e5e58..cd977c1 100644
+index cd977c1..18ac3f8 100644
 --- a/drivers/net/macb.c
 +++ b/drivers/net/macb.c
-@@ -121,7 +121,7 @@ static int macb_send(struct eth_device *edev, void *packet,
- 	macb->tx_ring[0].addr = (ulong)packet;
- 	barrier();
- 	dma_flush_range((ulong) packet, (ulong)packet + length);
--	writel(MACB_BIT(TE) | MACB_BIT(RE) | MACB_BIT(TSTART), macb->regs + MACB_NCR);
-+	macb_writel(macb, NCR, MACB_BIT(TE) | MACB_BIT(RE) | MACB_BIT(TSTART));
+@@ -436,10 +436,10 @@ static int macb_probe(struct device_d *dev)
+ 	macb->miibus.priv = macb;
+ 	macb->miibus.parent = dev;
  
- 	wait_on_timeout(100 * MSECOND,
- 		!(macb->tx_ring[0].ctrl & TXBUF_USED));
-@@ -220,7 +220,7 @@ static void macb_adjust_link(struct eth_device *edev)
- 	struct macb_device *macb = edev->priv;
- 	u32 reg;
+-	if (pdata->is_rmii)
+-		macb->interface = PHY_INTERFACE_MODE_RMII;
+-	else
++	if (pdata->phy_interface == PHY_INTERFACE_MODE_NA)
+ 		macb->interface = PHY_INTERFACE_MODE_MII;
++	else
++		macb->interface = pdata->phy_interface;
  
--	reg = readl(macb->regs + MACB_NCFGR);
-+	reg = macb_readl(macb, NCFGR);
- 	reg &= ~(MACB_BIT(SPD) | MACB_BIT(FD));
+ 	macb->phy_flags = pdata->phy_flags;
  
- 	if (edev->phydev->duplex)
-@@ -228,7 +228,7 @@ static void macb_adjust_link(struct eth_device *edev)
- 	if (edev->phydev->speed == SPEED_100)
- 		reg |= MACB_BIT(SPD);
- 
--	writel(reg, macb->regs + MACB_NCFGR);
-+	macb_writel(macb, NCFGR, reg);
- }
- 
- static int macb_open(struct eth_device *edev)
-@@ -271,8 +271,8 @@ static int macb_init(struct eth_device *edev)
- 
- 	macb->rx_tail = macb->tx_tail = 0;
- 
--	writel((ulong)macb->rx_ring, macb->regs + MACB_RBQP);
--	writel((ulong)macb->tx_ring, macb->regs + MACB_TBQP);
-+	macb_writel(macb, RBQP, (ulong)macb->rx_ring);
-+	macb_writel(macb, TBQP, (ulong)macb->tx_ring);
- 
- 	if (macb->interface == PHY_INTERFACE_MODE_RMII)
- 		val |= MACB_BIT(RMII);
-@@ -282,10 +282,10 @@ static int macb_init(struct eth_device *edev)
- #if defined(CONFIG_ARCH_AT91)
- 	val |= MACB_BIT(CLKEN);
- #endif
--	writel(val, macb->regs + MACB_USRIO);
-+	macb_writel(macb, USRIO, val);
- 
- 	/* Enable TX and RX */
--	writel(MACB_BIT(TE) | MACB_BIT(RE), macb->regs + MACB_NCR);
-+	macb_writel(macb, NCR, MACB_BIT(TE) | MACB_BIT(RE));
- 
- 	return 0;
- }
-@@ -296,16 +296,16 @@ static void macb_halt(struct eth_device *edev)
- 	u32 ncr, tsr;
- 
- 	/* Halt the controller and wait for any ongoing transmission to end. */
--	ncr = readl(macb->regs + MACB_NCR);
-+	ncr = macb_readl(macb, NCR);
- 	ncr |= MACB_BIT(THALT);
--	writel(ncr, macb->regs + MACB_NCR);
-+	macb_writel(macb, NCR, ncr);
- 
- 	do {
--		tsr = readl(macb->regs + MACB_TSR);
-+		tsr = macb_readl(macb, TSR);
- 	} while (tsr & MACB_BIT(TGO));
- 
- 	/* Disable TX and RX, and clear statistics */
--	writel(MACB_BIT(CLRSTAT), macb->regs + MACB_NCR);
-+	macb_writel(macb, NCR, MACB_BIT(CLRSTAT));
- }
- 
- static int macb_phy_read(struct mii_bus *bus, int addr, int reg)
-@@ -320,32 +320,32 @@ static int macb_phy_read(struct mii_bus *bus, int addr, int reg)
- 
- 	debug("%s\n", __func__);
- 
--	netctl = readl(macb->regs + MACB_NCR);
-+	netctl = macb_readl(macb, NCR);
- 	netctl |= MACB_BIT(MPE);
--	writel(netctl, macb->regs + MACB_NCR);
-+	macb_writel(macb, NCR, netctl);
- 
- 	frame = (MACB_BF(SOF, 1)
- 		 | MACB_BF(RW, 2)
- 		 | MACB_BF(PHYA, addr)
- 		 | MACB_BF(REGA, reg)
- 		 | MACB_BF(CODE, 2));
--	writel(frame, macb->regs + MACB_MAN);
-+	macb_writel(macb, MAN, frame);
- 
- 	start = get_time_ns();
- 	do {
--		netstat = readl(macb->regs + MACB_NSR);
-+		netstat = macb_readl(macb, NSR);
- 		if (is_timeout(start, SECOND)) {
- 			printf("phy read timed out\n");
- 			return -1;
- 		}
- 	} while (!(netstat & MACB_BIT(IDLE)));
- 
--	frame = readl(macb->regs + MACB_MAN);
-+	frame = macb_readl(macb, MAN);
- 	value = MACB_BFEXT(DATA, frame);
- 
--	netctl = readl(macb->regs + MACB_NCR);
-+	netctl = macb_readl(macb, NCR);
- 	netctl &= ~MACB_BIT(MPE);
--	writel(netctl, macb->regs + MACB_NCR);
-+	macb_writel(macb, NCR, netctl);
- 
- 	return value;
- }
-@@ -359,9 +359,9 @@ static int macb_phy_write(struct mii_bus *bus, int addr, int reg, u16 value)
- 
- 	debug("%s\n", __func__);
- 
--	netctl = readl(macb->regs + MACB_NCR);
-+	netctl = macb_readl(macb, NCR);
- 	netctl |= MACB_BIT(MPE);
--	writel(netctl, macb->regs + MACB_NCR);
-+	macb_writel(macb, NCR, netctl);
- 
- 	frame = (MACB_BF(SOF, 1)
- 		 | MACB_BF(RW, 1)
-@@ -369,15 +369,15 @@ static int macb_phy_write(struct mii_bus *bus, int addr, int reg, u16 value)
- 		 | MACB_BF(REGA, reg)
- 		 | MACB_BF(CODE, 2)
- 		 | MACB_BF(DATA, value));
--	writel(frame, macb->regs + MACB_MAN);
-+	macb_writel(macb, MAN, frame);
- 
- 	do {
--		netstat = readl(macb->regs + MACB_NSR);
-+		netstat = macb_readl(macb, NSR);
- 	} while (!(netstat & MACB_BIT(IDLE)));
- 
--	netctl = readl(macb->regs + MACB_NCR);
-+	netctl = macb_readl(macb, NCR);
- 	netctl &= ~MACB_BIT(MPE);
--	writel(netctl, macb->regs + MACB_NCR);
-+	macb_writel(macb, NCR, netctl);
- 
- 	return 0;
- }
-@@ -396,9 +396,8 @@ static int macb_set_ethaddr(struct eth_device *edev, unsigned char *adr)
- 	debug("%s\n", __func__);
- 
- 	/* set hardware address */
--
--	writel(adr[0] | adr[1] << 8 | adr[2] << 16 | adr[3] << 24, macb->regs + MACB_SA1B);
--	writel(adr[4] | adr[5] << 8, macb->regs + MACB_SA1T);
-+	macb_writel(macb, SA1B, adr[0] | adr[1] << 8 | adr[2] << 16 | adr[3] << 24);
-+	macb_writel(macb, SA1T, adr[4] | adr[5] << 8);
- 
- 	return 0;
- }
-@@ -410,9 +409,7 @@ static int macb_probe(struct device_d *dev)
- 	unsigned long macb_hz;
- 	u32 ncfgr;
- 	struct at91_ether_platform_data *pdata;
--#if defined(CONFIG_ARCH_AT91)
- 	struct clk *pclk;
--#endif
- 
- 	if (!dev->platform_data) {
- 		printf("macb: no platform_data\n");
-@@ -456,7 +453,6 @@ static int macb_probe(struct device_d *dev)
- 	 * Do some basic initialization so that we at least can talk
- 	 * to the PHY
- 	 */
--#if defined(CONFIG_ARCH_AT91)
- 	pclk = clk_get(dev, "macb_clk");
- 	if (IS_ERR(pclk)) {
- 		dev_err(dev, "no macb_clk\n");
-@@ -465,9 +461,6 @@ static int macb_probe(struct device_d *dev)
- 
- 	clk_enable(pclk);
- 	macb_hz = clk_get_rate(pclk);
--#else
--	macb_hz = get_macb_pclk_rate(0);
--#endif
- 	if (macb_hz < 20000000)
- 		ncfgr = MACB_BF(CLK, MACB_CLK_DIV8);
- 	else if (macb_hz < 40000000)
-@@ -477,7 +470,7 @@ static int macb_probe(struct device_d *dev)
- 	else
- 		ncfgr = MACB_BF(CLK, MACB_CLK_DIV64);
- 
--	writel(ncfgr, macb->regs + MACB_NCFGR);
-+	macb_writel(macb, NCFGR, ncfgr);
- 
- 	mdiobus_register(&macb->miibus);
- 	eth_register(edev);
-@@ -496,6 +489,4 @@ static int macb_driver_init(void)
- 	platform_driver_register(&macb_driver);
- 	return 0;
- }
--
- device_initcall(macb_driver_init);
--
-diff --git a/drivers/net/macb.h b/drivers/net/macb.h
-index 1447daa..5d9c534 100644
---- a/drivers/net/macb.h
-+++ b/drivers/net/macb.h
-@@ -262,4 +262,10 @@
- 		    << MACB_##name##_OFFSET))		\
- 	 | MACB_BF(name,value))
- 
-+/* Register access macros */
-+#define macb_readl(port,reg)				\
-+	__raw_readl((port)->regs + MACB_##reg)
-+#define macb_writel(port,reg,value)			\
-+	__raw_writel((value), (port)->regs + MACB_##reg)
-+
- #endif /* __DRIVERS_MACB_H__ */
 -- 
 1.7.10.4
 
