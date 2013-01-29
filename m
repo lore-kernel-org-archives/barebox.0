@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U078f-0008UB-BE
- for barebox@lists.infradead.org; Tue, 29 Jan 2013 09:05:58 +0000
-Date: Tue, 29 Jan 2013 10:05:48 +0100
-From: Eric =?UTF-8?B?QsOpbmFyZA==?= <eric@eukrea.com>
-Message-ID: <20130129100548.7f3d9dce@e6520eb>
-In-Reply-To: <1359412606-31787-2-git-send-email-plagnioj@jcrosoft.com>
-References: <20130128222926.GT26329@game.jcrosoft.org>
- <1359412606-31787-1-git-send-email-plagnioj@jcrosoft.com>
- <1359412606-31787-2-git-send-email-plagnioj@jcrosoft.com>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U07x3-0005AG-BE
+ for barebox@lists.infradead.org; Tue, 29 Jan 2013 09:58:01 +0000
+From: Jan Luebbe <jlu@pengutronix.de>
+Date: Tue, 29 Jan 2013 10:58:02 +0100
+Message-Id: <1359453482-6583-2-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1359453482-6583-1-git-send-email-jlu@pengutronix.de>
+References: <1359453482-6583-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,32 +16,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] at91: add sama5d3xek board support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] nand_omap_gpmc: use 0x00 for ECC padding in BCH ROM mode
+To: barebox@lists.infradead.org
 
-SGkgSmVhbi1DaHJpc3RvcGhlLAoKTGUgTW9uLCAyOCBKYW4gMjAxMyAyMzozNjo0NiArMDEwMCwK
-SmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9MLVZJTExBUkQgPHBsYWduaW9qQGpjcm9zb2Z0LmNvbT4g
-YSDDqWNyaXQgOgo+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9zYW1hNWQzeGVrL2luaXQuYwo+IEBA
-IC0wLDAgKzEsMzI4IEBACj4gKy8qCj4gKyAqIENvcHlyaWdodCAoQykgMjAxMiBKZWFuLUNocmlz
-dG9waGUgUExBR05JT0wtVklMTEFSRCA8cGxhZ25pb2pAamNyb3NvZnQuY29tPgo+ICsgKgo+ICsg
-KiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQg
-YW5kL29yCj4gKyAqIG1vZGlmeSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFs
-IFB1YmxpYyBMaWNlbnNlIGFzCj4gKyAqIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBG
-b3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mCj4gKyAqIHRoZSBMaWNlbnNlLCBvciAoYXQg
-eW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgo+ICsgKgo+ICsgKiBUaGlzIHByb2dyYW0g
-aXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKPiArICog
-YnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQgd2FycmFu
-dHkgb2YKPiArICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQ
-VVJQT1NFLiAgU2VlIHRoZQo+ICsgKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9y
-ZSBkZXRhaWxzLgo+ICsgKgo+ICsgKgo+ICsgKi8KPiArCj4gKyNpbmNsdWRlIDxjb21tb24uaD4K
-PiArI2luY2x1ZGUgPG5ldC5oPgo+ICsjaW5jbHVkZSA8aW5pdC5oPgo+ICsjaW5jbHVkZSA8ZW52
-aXJvbm1lbnQuaD4KPiArI2luY2x1ZGUgPGZlYy5oPgoKd2h5IGRvIHlvdSBuZWVkIGZlYy5oIG9u
-IGFuIEF0bWVsIGJvYXJkID8KCkVyaWMKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+The kernel uses these bytes to differentiate between erased/programmed
+pages.
+
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+---
+ drivers/mtd/nand/nand_omap_gpmc.c |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index 9050a8d..b81ad53 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -751,6 +751,35 @@ static int omap_gpmc_read_page_bch_rom_mode(struct mtd_info *mtd,
+ 	return 0;
+ }
+ 
++static void omap_gpmc_write_page_bch_rom_mode(struct mtd_info *mtd, struct nand_chip *chip,
++				  const uint8_t *buf)
++{
++	int i, eccsize = chip->ecc.size;
++	int eccbytes = chip->ecc.bytes;
++	int eccsteps = chip->ecc.steps;
++	uint8_t *ecc_calc = chip->buffers->ecccalc;
++	const uint8_t *p = buf;
++	uint32_t *eccpos = chip->ecc.layout->eccpos;
++
++	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
++		chip->ecc.hwctl(mtd, NAND_ECC_WRITE);
++		chip->write_buf(mtd, p, eccsize);
++		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
++	}
++
++	for (i = 0; i < chip->ecc.total; i++)
++		chip->oob_poi[eccpos[i]] = ecc_calc[i];
++
++	/*
++	 * set padding byte for each subpage to 0x00, so the kernel
++	 * can detect erased pages
++	 */
++	for (i = 0; i < 4; i++) {
++		chip->oob_poi[1+14*(i+1)] = 0x00;
++	}
++
++	chip->write_buf(mtd, chip->oob_poi, mtd->oobsize);
++}
+ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+ 		enum gpmc_ecc_mode mode)
+ {
+@@ -823,6 +852,7 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+ 		oinfo->nand.ecc.bytes    = 4 * 13;
+ 		oinfo->nand.ecc.size     = 4 * 512;
+ 		nand->ecc.read_page = omap_gpmc_read_page_bch_rom_mode;
++		nand->ecc.write_page = omap_gpmc_write_page_bch_rom_mode;
+ 		omap_oobinfo.oobfree->length = 0;
+ 		j = 0;
+ 		for (i = 2; i < 15; i++)
+-- 
+1.7.10.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
