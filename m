@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-lb0-f181.google.com ([209.85.217.181])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U07x2-0005A1-1p
- for barebox@lists.infradead.org; Tue, 29 Jan 2013 09:58:00 +0000
-From: Jan Luebbe <jlu@pengutronix.de>
-Date: Tue, 29 Jan 2013 10:58:01 +0100
-Message-Id: <1359453482-6583-1-git-send-email-jlu@pengutronix.de>
+ id 1U08mO-0006sZ-UX
+ for barebox@lists.infradead.org; Tue, 29 Jan 2013 10:51:05 +0000
+Received: by mail-lb0-f181.google.com with SMTP id gm6so526641lbb.40
+ for <barebox@lists.infradead.org>; Tue, 29 Jan 2013 02:51:02 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue, 29 Jan 2013 15:03:05 +0400
+Message-Id: <1359457385-24232-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,41 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] nand_write: initialize OOB buffer for each page
+Subject: [PATCH] commands: reset: add shutdown_barebox() before reset_cpu()
 To: barebox@lists.infradead.org
 
-Previously, during a multi-page write, chip->oob_poi would not be
-reinitialized.
+Some of controlled by barebox peripheral devices may be
+not affected by CPU reset, so we need call shutdown_barebox()
+to stop them.
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/mtd/nand/nand_write.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ commands/reset.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/mtd/nand/nand_write.c b/drivers/mtd/nand/nand_write.c
-index 9997127..f4f2fed 100644
---- a/drivers/mtd/nand/nand_write.c
-+++ b/drivers/mtd/nand/nand_write.c
-@@ -296,15 +296,15 @@ int nand_do_write_ops(struct mtd_info *mtd, loff_t to,
- 	    (chip->pagebuf << chip->page_shift) < (to + ops->len))
- 		chip->pagebuf = -1;
+diff --git a/commands/reset.c b/commands/reset.c
+index 835926b..79885f4 100644
+--- a/commands/reset.c
++++ b/commands/reset.c
+@@ -20,17 +20,40 @@
+ #include <common.h>
+ #include <command.h>
+ #include <complete.h>
++#include <getopt.h>
  
--	/* Initialize to all 0xFF, to avoid the possibility of
--	   left over OOB data from a previous OOB read. */
--	memset(chip->oob_poi, 0xff, mtd->oobsize);
--
- 	while(1) {
- 		int bytes = mtd->writesize;
- 		int cached = writelen > bytes && page != blockmask;
- 		uint8_t *wbuf = buf;
- 
-+		/* Initialize to all 0xFF, to avoid the possibility of
-+		   left over OOB data from a previous OOB read or write. */
-+		memset(chip->oob_poi, 0xff, mtd->oobsize);
+ static int cmd_reset(int argc, char *argv[])
+ {
++	int opt, shutdown_flag;
 +
- 		/* Partial page write ? */
- 		if (unlikely(column || writelen < (mtd->writesize - 1))) {
- 			cached = 0;
++	shutdown_flag = 1;
++
++	while ((opt = getopt(argc, argv, "f")) > 0) {
++		switch (opt) {
++		case 'f':
++			shutdown_flag = 0;
++			break;
++		}
++	}
++
++	if (shutdown_flag)
++		shutdown_barebox();
++
+ 	reset_cpu(0);
+ 
+ 	/* Not reached */
+ 	return 1;
+ }
+ 
++BAREBOX_CMD_HELP_START(reset)
++BAREBOX_CMD_HELP_USAGE("reset [-f]\n")
++BAREBOX_CMD_HELP_SHORT("Perform RESET of the CPU.\n")
++BAREBOX_CMD_HELP_OPT("-f",  "force RESET, don't call shutdown\n")
++BAREBOX_CMD_HELP_END
++
+ BAREBOX_CMD_START(reset)
+ 	.cmd		= cmd_reset,
+ 	.usage		= "Perform RESET of the CPU",
++	BAREBOX_CMD_HELP(cmd_reset_help)
+ 	BAREBOX_CMD_COMPLETE(empty_complete)
+ BAREBOX_CMD_END
 -- 
 1.7.10.4
 
