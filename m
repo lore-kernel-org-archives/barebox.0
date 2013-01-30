@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mikroweb.hu ([194.152.143.74])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U0WXz-00048z-Gb
- for barebox@lists.infradead.org; Wed, 30 Jan 2013 12:13:48 +0000
-Date: Wed, 30 Jan 2013 13:13:44 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130130121344.GY1906@pengutronix.de>
-References: <20130129205640.GW26329@game.jcrosoft.org>
+ id 1U0cXY-0004a9-MQ
+ for barebox@lists.infradead.org; Wed, 30 Jan 2013 18:37:45 +0000
+Received: from [10.1.205.4] (helo=[172.1.1.112])
+ by mikroweb.hu with esmtp (Exim 4.77)
+ (envelope-from <sales@pingbrother.com>) id 1U0cXU-0003tR-8L
+ for barebox@lists.infradead.org; Wed, 30 Jan 2013 19:37:40 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130129205640.GW26329@game.jcrosoft.org>
+From: PingBrother Networking <sales@pingbrother.com>
+Date: Wed, 30 Jan 2013 19:37:52 +0100
+Message-ID: <E1U0cXU-0003tR-8L@mikroweb.hu>
+Reply-To: sales1@pingbrother.com
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,105 +20,302 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============5960482886342601589=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2 v2] at91: add sama5d3 support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: smooth BrOperator
+To: barebox@lists.infradead.org
 
-On Tue, Jan 29, 2013 at 09:56:40PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> HI,
-> 
-> 	v3:
-> 	 update clock periph divider
-> 	 some of the IP require to be down clocked to work perfectly
-> 	 update all of them
-> 
-> 	v2:
-> 	 update clock support
-> 	 drop fec.h
-> 
-> 	this patch serie add the support of the new Cortex-A5 of Atmel the
-> 	sama5d3x series
-> 
-> 	This patch serie depends on the w1 dual scan and the macb prepare for
-> 	gmac
-> 
-> The following changes since commit 1be4806dcc68d6999a07e93ec83c6b12a213dffa:
-> 
->   at91: add clock dump command (2013-01-29 04:16:21 +0800)
-> 
-> are available in the git repository at:
-> 
->   git://git.jcrosoft.org/barebox.git delivery/sama5
+You will not see this in a MIME-aware mail reader.
+--===============5960482886342601589==
+Content-Type: multipart/alternative; boundary="===============0488708781=="
 
-Appied, thanks
+You will not see this in a MIME-aware mail reader.
+--===============0488708781==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
 
-Sascha
+      =
 
-> 
-> for you to fetch changes up to 8a1a53fd5e7e4d38d064a3b079181bf5d6a462a7:
-> 
->   at91: add sama5d3xek board support (2013-01-30 03:17:33 +0800)
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (2):
->       at91: add sama5d3 support
->       at91: add sama5d3xek board support
-> 
->  arch/arm/Makefile                                 |    1 +
->  arch/arm/boards/sama5d3xek/Makefile               |    2 +
->  arch/arm/boards/sama5d3xek/config.h               |    6 +
->  arch/arm/boards/sama5d3xek/env/config             |   44 +++++++
->  arch/arm/boards/sama5d3xek/hw_version.c           |  251 ++++++++++++++++++++++++++++++++++++
->  arch/arm/boards/sama5d3xek/hw_version.h           |   53 ++++++++
->  arch/arm/boards/sama5d3xek/init.c                 |  358 ++++++++++++++++++++++++++++++++++++++++++++++++++
->  arch/arm/configs/sama5d3xek_defconfig             |   91 +++++++++++++
->  arch/arm/mach-at91/Kconfig                        |   31 +++++
->  arch/arm/mach-at91/Makefile                       |    1 +
->  arch/arm/mach-at91/clock.c                        |  113 ++++++++++++----
->  arch/arm/mach-at91/clock.h                        |    2 +
->  arch/arm/mach-at91/include/mach/at91_pmc.h        |   14 +-
->  arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h |   37 ++++++
->  arch/arm/mach-at91/include/mach/cpu.h             |   27 ++++
->  arch/arm/mach-at91/include/mach/hardware.h        |    8 ++
->  arch/arm/mach-at91/include/mach/sama5d3.h         |  152 ++++++++++++++++++++++
->  arch/arm/mach-at91/include/mach/sama5d3_matrix.h  |   15 +++
->  arch/arm/mach-at91/sama5d3.c                      |  396 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  arch/arm/mach-at91/sama5d3_devices.c              |  444 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  arch/arm/mach-at91/setup.c                        |   27 ++++
->  arch/arm/mach-at91/soc.h                          |    5 +
->  22 files changed, 2050 insertions(+), 28 deletions(-)
->  create mode 100644 arch/arm/boards/sama5d3xek/Makefile
->  create mode 100644 arch/arm/boards/sama5d3xek/config.h
->  create mode 100644 arch/arm/boards/sama5d3xek/env/config
->  create mode 100644 arch/arm/boards/sama5d3xek/hw_version.c
->  create mode 100644 arch/arm/boards/sama5d3xek/hw_version.h
->  create mode 100644 arch/arm/boards/sama5d3xek/init.c
->  create mode 100644 arch/arm/configs/sama5d3xek_defconfig
->  create mode 100644 arch/arm/mach-at91/include/mach/sama5d3.h
->  create mode 100644 arch/arm/mach-at91/include/mach/sama5d3_matrix.h
->  create mode 100644 arch/arm/mach-at91/sama5d3.c
->  create mode 100644 arch/arm/mach-at91/sama5d3_devices.c
-> 
-> Best Regards,
-> J.
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+    	   www.pingbrother.com  	 =
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+    =
+
+ Free remote management software for PingBrother devices =
+
+ 	   - MONITORING
+- CONTROL
+- WATCHDOG
+ =
+
+ 	 =
+
+    Using this application you can have an overview of the measured tempera=
+tures, consumption, power supply values and channel statuses in an hourly, =
+daily, weekly, monthly and yearly breakdown. You can view the log entries o=
+f your specific devices, and switch off the status of the channels. If you =
+operate a larger network, this little software application can be an essent=
+ial tool for you to remotely manage up to hundreds of devices sorted by var=
+ious field or logical groups on a clear interface. =
+
+ download here 	   =
+
+ PingBrother is =
+
+  a 4 port industrial 10/100 passive POE ethernet switch and IP watchdog wi=
+th built in web based GUI. It is an intelligent device, which monitors inpu=
+t voltage, temperature, current consumption of the connected POE devices, o=
+perability of any network devices (ping, http availability), water leakage =
+or condensation. It gives a user defined response, for example turns off /o=
+n or reset the power of the POE ethernet ports, controls any connected devi=
+ce by its relay contact, and/or sends an email. =
+
+ 	 =
+
+    	 =
+
+   =
+
+     Order your sample now at sales@pingbrother.com =
+
+  EPIW 104 for 109 EUR =
+
+  EPIW 104P for 135 EUR =
+
+  For quantity based discount prices please see our product comparison tabl=
+e =96 USD / EUR =
+
+  For more information on our products and services please visit our websit=
+e:
+ pingbrother.com
+ =
+
+ Mikroweb Internet Ltd. 2013, All Rights Reserved. =
+
+  subscribe   unsubscribe =
+
+  =
+
+ 	 =
+
+  =20
+--===============0488708781==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+
+<HTML>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"/>
+</head>
+<BODY style=3D"margin-top:0; background-color:#d3d8ba">
+<center>
+<table style=3D"width:640px;border:0;padding:0;margin:0;" cellpadding=3D"0"=
+ cellspacing=3D"0">
+	<tr>
+		<td style=3D"background-color:#fff;width:440px;height:90px;">
+			<a href=3D"http://www.pingbrother.com" target=3D"_blank"><img style=3D"p=
+adding:0;margin:0;width:440px;height:90px;border:0px solid #fff;" src=3D"ht=
+tp://pingbrother.com/images/l-images/001/001.jpg" width=3D"440" height=3D"9=
+0" border=3D"0"></a>
+		</td>
+		<td style=3D"background-color: #046380; text-align:center;">
+			<a style=3D"font-family: 'Trebuchet MS'; color: #fff; font-size: 15px; t=
+ext-decoration:none; font-weight:bold;" href=3D"http://www.pingbrother.com"=
+ target=3D"_blank">
+				www.pingbrother.com
+			</a>
+		</td>
+	</tr>
+	<tr>	=
+
+		<td style=3D"background-color:#fff;">
+			<img width=3D"440" height=3D"92" src=3D"http://pingbrother.com/images/l-=
+images/001/002.jpg">
+			<h2 style=3D"margin:20px 20px 10px 20px;font-size:16px; color: #fa6908; =
+font-family: 'Trebuchet MS'; font-weight:normal;text-align:left;">
+				Free remote management software for PingBrother devices
+			</h2>
+			=
+
+			=
+
+		</td>
+		<td style=3D"background:#343434;">
+		<p style=3D"margin-left:20px;color:#fff;font-weight:bold; font-size:22px;=
+ font-family: 'Trebuchet MS', 'sans-serif';text-align:left;">
+			- MONITORING<br>- CONTROL<br>- WATCHDOG<br>
+		</p>
+		</td>
+	</tr>
+	=
+
+	<tr>	=
+
+		<td style=3D"background-color:#fff;vertical-align:top;">
+			<p style=3D"margin:0px 20px 0px 20px;color:#424242;font-family: 'Trebuch=
+et MS';font-size:11px; text-align:justify;vertical-align:top; ">
+			Using this application you can have an overview of the measured =
+
+temperatures, consumption, power supply values and channel statuses =
+
+in an hourly, daily, weekly, monthly and yearly breakdown. =
+
+You can view the log entries of your specific devices, and switch off =
+
+the status of the channels.
+If you operate a larger network, this little software application can be =
+
+an essential tool for you to remotely manage up to hundreds of =
+
+devices sorted by various field or logical groups on a clear interface.
+			</p>
+			<center><a style=3D"color:#1f497d;font-family: 'Trebuchet MS';font-size:=
+11px;text-decoration:none;" href=3D"http://www.pingbrother.com/services" ta=
+rget=3D"_blank">download here</a></center>
+
+		</td>
+		<td rowspan=3D"3" style=3D"background:#046380;vertical-align:top;">
+		<center><img src=3D"http://pingbrother.com/images/l-images/3dev.png" bord=
+er=3D"0" style=3D"border:0px solid #fff;margin-top:20px;"></center>
+		<h2 style=3D"margin-left:20px;color:#fff;font-weight:bold; font-size:18px=
+; font-family: 'Trebuchet MS', 'sans-serif';">
+			PingBrother is
+		</h2>
+		=
+
+		<p style=3D"margin:0px 20px 0px 20px;color:#fff;font-family: 'Trebuchet M=
+S';font-size:11px; text-align:justify; ">
+			a 4 port industrial 10/100 passive POE ethernet switch and IP watchdog w=
+ith built in web based GUI. It is an intelligent device, which monitors inp=
+ut voltage, temperature, current consumption of the connected POE devices, =
+operability of any network devices (ping, http availability), water leakage=
+ or condensation. It gives a user defined response, for example turns off /=
+on or reset the power of the POE ethernet ports, controls any connected dev=
+ice by its relay contact, and/or sends an email. =
+
+
+		</p>
+		</td>
+	</tr>
+	=
+
+	<tr>	=
+
+		<td style=3D"background-color:#fff;width:440px;height:150px;">
+			<a href=3D"http://www.pingbrother.com" target=3D"_blank"><img style=3D"p=
+adding:0;margin:0;width:440px;height:150px;border:0px solid #fff;" src=3D"h=
+ttp://pingbrother.com/images/l-images/001/003.jpg" width=3D"440" height=3D"=
+150" border=3D"0"></a>
+		</td>
+		=
+
+
+	</tr>
+	=
+
+	<tr>	=
+
+		<td style=3D"background-color:#fff;width:440px;vertical-align:top;">
+		<br>
+		<center>
+			<a href=3D"http://www.youtube.com/watch?v=3Dx8n5xaeov9Y" target=3D"_blan=
+k"><img style=3D"padding:0;margin:0;width:345px;height:208px;border:0px sol=
+id #fff;" src=3D"http://pingbrother.com/images/l-images/001/movie.jpg" widt=
+h=3D"345" height=3D"208" border=3D"0"></a>
+		</center>
+		=
+
+		<p style=3D"margin:10px 0px 0px 0px;color:#ff0000;font-family: 'Trebuchet=
+ MS';font-size:11px; text-align:center; ">
+				Order your sample now at <a style=3D"color:#ff0000;font-family: 'Trebuc=
+het MS';font-size:11px;" href=3D"mailto:sales@pingbrother.com">sales@pingbr=
+other.com</a>
+			</p>
+			=
+
+			<p style=3D"margin:10px 0px 0px 0px;font-family: 'Trebuchet MS';font-siz=
+e:11px;color:#1f497d; text-align:center; ">
+				EPIW 104 for 109 EUR =
+
+			</p>
+			<p style=3D"margin:10px 0px 0px 0px;font-family: 'Trebuchet MS';font-siz=
+e:11px;color:#1f497d; text-align:center; ">
+				EPIW 104P for 135 EUR =
+
+			</p>
+			=
+
+			<p style=3D"margin:10px 20px 0px 20px;color:#424242;font-family: 'Trebuc=
+het MS';font-size:11px; text-align:center; ">
+				For quantity based discount prices please see our product comparison ta=
+ble =E2=80=93 =
+
+				=
+
+				<a style=3D"color:#ff0000;font-family: 'Trebuchet MS';font-size:11px;te=
+xt-decoration:none;" href=3D"http://pingbrother.com/downloads/product-price=
+matrix-usd-0113.pdf">USD</a> / =
+
+				<a style=3D"color:#ff0000;font-family: 'Trebuchet MS';font-size:11px;te=
+xt-decoration:none;" href=3D"http://pingbrother.com/downloads/product-price=
+matrix-eur-0113.pdf">EUR<a>
+			</p>
+			=
+
+			<p style=3D"margin:10px 20px 0px 20px;color:#424242;font-family: 'Trebuc=
+het MS';font-size:11px; text-align:center; ">
+				For more information on our products and services please visit our webs=
+ite:<br>
+				<a style=3D"color:#ff0000;font-family: 'Trebuchet MS';font-size:11px;te=
+xt-decoration:none;" href=3D"http://www.pingbrother.com">pingbrother.com</a=
+><br>
+				<br>
+				Mikroweb Internet Ltd. 2013, All Rights Reserved.
+			</p>
+		<p style=3D"margin:10px 30px 0px 0px;font-family: 'Trebuchet MS';font-siz=
+e:11px;color:#1f497d; text-align:right; ">
+			<a style=3D"color:#1f497d;font-family: 'Trebuchet MS';font-size:11px;tex=
+t-decoration:none;" href=3D"http://pingbrother.com/newsletter-subscribe">su=
+bscribe</a>&nbsp;&nbsp;
+			<a style=3D"color:#1f497d;font-family: 'Trebuchet MS';font-size:11px;tex=
+t-decoration:none;" href=3D"http://pingbrother.com/newsletter-unsubscribe">=
+unsubscribe</a>
+			</p>
+			=
+
+			<p>&nbsp;</p>
+			=
+
+		</td>
+		=
+
+
+	</tr>
+	=
+
+			=
+
+	=
+
+</table>
+</html>
+
+--===============0488708781==--
+
+
+--===============5960482886342601589==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============5960482886342601589==--
