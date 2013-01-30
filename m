@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U0STd-000089-EZ
- for barebox@lists.infradead.org; Wed, 30 Jan 2013 07:53:02 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 10F3CBF0F6
- for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 16:07:22 +0100 (CET)
-From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Wed, 30 Jan 2013 08:52:53 +0100
-Message-Id: <1359532373-24086-1-git-send-email-j.weitzel@phytec.de>
+Received: from mikroweb.hu ([194.152.143.74])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U0TDc-0004pi-Mw
+ for barebox@lists.infradead.org; Wed, 30 Jan 2013 08:40:34 +0000
+Received: from [10.1.205.4] (helo=[172.1.1.112])
+ by mikroweb.hu with esmtp (Exim 4.77)
+ (envelope-from <sales@pingbrother.com>) id 1U0TDV-0000Ko-80
+ for barebox@lists.infradead.org; Wed, 30 Jan 2013 09:40:25 +0100
+MIME-Version: 1.0
+From: PingBrother Networking <sales@pingbrother.com>
+Date: Wed, 30 Jan 2013 09:40:37 +0100
+Message-ID: <E1U0TDV-0000Ko-80@mikroweb.hu>
+Reply-To: sales1@pingbrother.com
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,120 +20,302 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============6538778013886538046=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] pcm049: clean up defconfig
+Subject: smooth BrOperator
 To: barebox@lists.infradead.org
 
-add BAREBOX_MAX_IMAGE_SIZE and rebuild defconfig with savedefconfig
+You will not see this in a MIME-aware mail reader.
+--===============6538778013886538046==
+Content-Type: multipart/alternative; boundary="===============0501191837=="
 
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
----
- arch/arm/configs/pcm049_defconfig       |   19 +++++++++++--------
- arch/arm/configs/pcm049_xload_defconfig |    3 ++-
- 2 files changed, 13 insertions(+), 9 deletions(-)
+You will not see this in a MIME-aware mail reader.
+--===============0501191837==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
 
-diff --git a/arch/arm/configs/pcm049_defconfig b/arch/arm/configs/pcm049_defconfig
-index adb600f..19df95a 100644
---- a/arch/arm/configs/pcm049_defconfig
-+++ b/arch/arm/configs/pcm049_defconfig
-@@ -1,13 +1,12 @@
- CONFIG_ARCH_OMAP=y
-+CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x80000
- CONFIG_ARCH_OMAP4=y
- CONFIG_MACH_PCM049=y
- CONFIG_AEABI=y
--CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_ARM_UNWIND=y
- CONFIG_MMU=y
- CONFIG_TEXT_BASE=0x8f000000
- CONFIG_MALLOC_SIZE=0x2000000
--CONFIG_MALLOC_TLSF=y
- CONFIG_KALLSYMS=y
- CONFIG_PROMPT="barebox> "
- CONFIG_LONGHELP=y
-@@ -21,11 +20,12 @@ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/pcm049/env"
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
- CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_LOADENV=y
- CONFIG_CMD_EXPORT=y
- CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_READLINE=y
- CONFIG_CMD_TIME=y
-+CONFIG_CMD_AUTOMOUNT=y
-+CONFIG_CMD_TFTP=y
- CONFIG_CMD_ECHO_E=y
- CONFIG_CMD_LOADB=y
- CONFIG_CMD_IOMEM=y
-@@ -36,7 +36,6 @@ CONFIG_CMD_BOOTM_INITRD=y
- CONFIG_CMD_BOOTM_OFTREE=y
- CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
- CONFIG_CMD_UIMAGE=y
--# CONFIG_CMD_BOOTZ is not set
- # CONFIG_CMD_BOOTU is not set
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
-@@ -45,25 +44,29 @@ CONFIG_CMD_PARTITION=y
- CONFIG_CMD_MAGICVAR=y
- CONFIG_CMD_MAGICVAR_HELP=y
- CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_I2C=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
- CONFIG_NET_PING=y
--CONFIG_CMD_TFTP=y
--CONFIG_FS_TFTP=y
- CONFIG_DRIVER_SERIAL_NS16550=y
- CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
-+CONFIG_SMSC_PHY=y
- CONFIG_DRIVER_NET_SMC911X=y
- # CONFIG_SPI is not set
-+CONFIG_I2C=y
-+CONFIG_I2C_OMAP=y
- CONFIG_MTD=y
- CONFIG_NAND=y
- CONFIG_NAND_OMAP_GPMC=y
- CONFIG_UBI=y
-+CONFIG_USB=y
- CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
- CONFIG_MCI_OMAP_HSMMC=y
-+CONFIG_I2C_TWL6030=y
-+CONFIG_FS_TFTP=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_WRITE=y
- CONFIG_FS_FAT_LFN=y
--CONFIG_ZLIB=y
- CONFIG_LZO_DECOMPRESS=y
-diff --git a/arch/arm/configs/pcm049_xload_defconfig b/arch/arm/configs/pcm049_xload_defconfig
-index b6d3a7a..189c040 100644
---- a/arch/arm/configs/pcm049_xload_defconfig
-+++ b/arch/arm/configs/pcm049_xload_defconfig
-@@ -1,11 +1,12 @@
- CONFIG_ARCH_OMAP=y
-+CONFIG_BAREBOX_MAX_IMAGE_SIZE=0xC000
- CONFIG_ARCH_OMAP4=y
- CONFIG_OMAP_BUILD_IFT=y
- CONFIG_MACH_PCM049=y
--CONFIG_AEABI=y
- CONFIG_THUMB2_BAREBOX=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- # CONFIG_ARM_EXCEPTIONS is not set
-+# CONFIG_MEMINFO is not set
- CONFIG_MMU=y
- CONFIG_TEXT_BASE=0x40300000
- CONFIG_MEMORY_LAYOUT_FIXED=y
--- 
-1.7.0.4
+      =
 
+    	   www.pingbrother.com  	 =
+
+    =
+
+ Free remote management software for PingBrother devices =
+
+ 	   - MONITORING
+- CONTROL
+- WATCHDOG
+ =
+
+ 	 =
+
+    Using this application you can have an overview of the measured tempera=
+tures, consumption, power supply values and channel statuses in an hourly, =
+daily, weekly, monthly and yearly breakdown. You can view the log entries o=
+f your specific devices, and switch off the status of the channels. If you =
+operate a larger network, this little software application can be an essent=
+ial tool for you to remotely manage up to hundreds of devices sorted by var=
+ious field or logical groups on a clear interface. =
+
+ download here 	   =
+
+ PingBrother is =
+
+  a 4 port industrial 10/100 passive POE ethernet switch and IP watchdog wi=
+th built in web based GUI. It is an intelligent device, which monitors inpu=
+t voltage, temperature, current consumption of the connected POE devices, o=
+perability of any network devices (ping, http availability), water leakage =
+or condensation. It gives a user defined response, for example turns off /o=
+n or reset the power of the POE ethernet ports, controls any connected devi=
+ce by its relay contact, and/or sends an email. =
+
+ 	 =
+
+    	 =
+
+   =
+
+     Order your sample now at sales@pingbrother.com =
+
+  EPIW 104 for 109 EUR =
+
+  EPIW 104P for 135 EUR =
+
+  For quantity based discount prices please see our product comparison tabl=
+e =96 USD / EUR =
+
+  For more information on our products and services please visit our websit=
+e:
+ pingbrother.com
+ =
+
+ Mikroweb Internet Ltd. 2013, All Rights Reserved. =
+
+  subscribe   unsubscribe =
+
+  =
+
+ 	 =
+
+  =20
+--===============0501191837==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+
+<HTML>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"/>
+</head>
+<BODY style=3D"margin-top:0; background-color:#d3d8ba">
+<center>
+<table style=3D"width:640px;border:0;padding:0;margin:0;" cellpadding=3D"0"=
+ cellspacing=3D"0">
+	<tr>
+		<td style=3D"background-color:#fff;width:440px;height:90px;">
+			<a href=3D"http://www.pingbrother.com" target=3D"_blank"><img style=3D"p=
+adding:0;margin:0;width:440px;height:90px;border:0px solid #fff;" src=3D"ht=
+tp://pingbrother.com/images/l-images/001/001.jpg" width=3D"440" height=3D"9=
+0" border=3D"0"></a>
+		</td>
+		<td style=3D"background-color: #046380; text-align:center;">
+			<a style=3D"font-family: 'Trebuchet MS'; color: #fff; font-size: 15px; t=
+ext-decoration:none; font-weight:bold;" href=3D"http://www.pingbrother.com"=
+ target=3D"_blank">
+				www.pingbrother.com
+			</a>
+		</td>
+	</tr>
+	<tr>	=
+
+		<td style=3D"background-color:#fff;">
+			<img width=3D"440" height=3D"92" src=3D"http://pingbrother.com/images/l-=
+images/001/002.jpg">
+			<h2 style=3D"margin:20px 20px 10px 20px;font-size:16px; color: #fa6908; =
+font-family: 'Trebuchet MS'; font-weight:normal;text-align:left;">
+				Free remote management software for PingBrother devices
+			</h2>
+			=
+
+			=
+
+		</td>
+		<td style=3D"background:#343434;">
+		<p style=3D"margin-left:20px;color:#fff;font-weight:bold; font-size:22px;=
+ font-family: 'Trebuchet MS', 'sans-serif';text-align:left;">
+			- MONITORING<br>- CONTROL<br>- WATCHDOG<br>
+		</p>
+		</td>
+	</tr>
+	=
+
+	<tr>	=
+
+		<td style=3D"background-color:#fff;vertical-align:top;">
+			<p style=3D"margin:0px 20px 0px 20px;color:#424242;font-family: 'Trebuch=
+et MS';font-size:11px; text-align:justify;vertical-align:top; ">
+			Using this application you can have an overview of the measured =
+
+temperatures, consumption, power supply values and channel statuses =
+
+in an hourly, daily, weekly, monthly and yearly breakdown. =
+
+You can view the log entries of your specific devices, and switch off =
+
+the status of the channels.
+If you operate a larger network, this little software application can be =
+
+an essential tool for you to remotely manage up to hundreds of =
+
+devices sorted by various field or logical groups on a clear interface.
+			</p>
+			<center><a style=3D"color:#1f497d;font-family: 'Trebuchet MS';font-size:=
+11px;text-decoration:none;" href=3D"http://www.pingbrother.com/services" ta=
+rget=3D"_blank">download here</a></center>
+
+		</td>
+		<td rowspan=3D"3" style=3D"background:#046380;vertical-align:top;">
+		<center><img src=3D"http://pingbrother.com/images/l-images/3dev.png" bord=
+er=3D"0" style=3D"border:0px solid #fff;margin-top:20px;"></center>
+		<h2 style=3D"margin-left:20px;color:#fff;font-weight:bold; font-size:18px=
+; font-family: 'Trebuchet MS', 'sans-serif';">
+			PingBrother is
+		</h2>
+		=
+
+		<p style=3D"margin:0px 20px 0px 20px;color:#fff;font-family: 'Trebuchet M=
+S';font-size:11px; text-align:justify; ">
+			a 4 port industrial 10/100 passive POE ethernet switch and IP watchdog w=
+ith built in web based GUI. It is an intelligent device, which monitors inp=
+ut voltage, temperature, current consumption of the connected POE devices, =
+operability of any network devices (ping, http availability), water leakage=
+ or condensation. It gives a user defined response, for example turns off /=
+on or reset the power of the POE ethernet ports, controls any connected dev=
+ice by its relay contact, and/or sends an email. =
+
+
+		</p>
+		</td>
+	</tr>
+	=
+
+	<tr>	=
+
+		<td style=3D"background-color:#fff;width:440px;height:150px;">
+			<a href=3D"http://www.pingbrother.com" target=3D"_blank"><img style=3D"p=
+adding:0;margin:0;width:440px;height:150px;border:0px solid #fff;" src=3D"h=
+ttp://pingbrother.com/images/l-images/001/003.jpg" width=3D"440" height=3D"=
+150" border=3D"0"></a>
+		</td>
+		=
+
+
+	</tr>
+	=
+
+	<tr>	=
+
+		<td style=3D"background-color:#fff;width:440px;vertical-align:top;">
+		<br>
+		<center>
+			<a href=3D"http://www.youtube.com/watch?v=3Dx8n5xaeov9Y" target=3D"_blan=
+k"><img style=3D"padding:0;margin:0;width:345px;height:208px;border:0px sol=
+id #fff;" src=3D"http://pingbrother.com/images/l-images/001/movie.jpg" widt=
+h=3D"345" height=3D"208" border=3D"0"></a>
+		</center>
+		=
+
+		<p style=3D"margin:10px 0px 0px 0px;color:#ff0000;font-family: 'Trebuchet=
+ MS';font-size:11px; text-align:center; ">
+				Order your sample now at <a style=3D"color:#ff0000;font-family: 'Trebuc=
+het MS';font-size:11px;" href=3D"mailto:sales@pingbrother.com">sales@pingbr=
+other.com</a>
+			</p>
+			=
+
+			<p style=3D"margin:10px 0px 0px 0px;font-family: 'Trebuchet MS';font-siz=
+e:11px;color:#1f497d; text-align:center; ">
+				EPIW 104 for 109 EUR =
+
+			</p>
+			<p style=3D"margin:10px 0px 0px 0px;font-family: 'Trebuchet MS';font-siz=
+e:11px;color:#1f497d; text-align:center; ">
+				EPIW 104P for 135 EUR =
+
+			</p>
+			=
+
+			<p style=3D"margin:10px 20px 0px 20px;color:#424242;font-family: 'Trebuc=
+het MS';font-size:11px; text-align:center; ">
+				For quantity based discount prices please see our product comparison ta=
+ble =E2=80=93 =
+
+				=
+
+				<a style=3D"color:#ff0000;font-family: 'Trebuchet MS';font-size:11px;te=
+xt-decoration:none;" href=3D"http://pingbrother.com/downloads/product-price=
+matrix-usd-0113.pdf">USD</a> / =
+
+				<a style=3D"color:#ff0000;font-family: 'Trebuchet MS';font-size:11px;te=
+xt-decoration:none;" href=3D"http://pingbrother.com/downloads/product-price=
+matrix-eur-0113.pdf">EUR<a>
+			</p>
+			=
+
+			<p style=3D"margin:10px 20px 0px 20px;color:#424242;font-family: 'Trebuc=
+het MS';font-size:11px; text-align:center; ">
+				For more information on our products and services please visit our webs=
+ite:<br>
+				<a style=3D"color:#ff0000;font-family: 'Trebuchet MS';font-size:11px;te=
+xt-decoration:none;" href=3D"http://www.pingbrother.com">pingbrother.com</a=
+><br>
+				<br>
+				Mikroweb Internet Ltd. 2013, All Rights Reserved.
+			</p>
+		<p style=3D"margin:10px 30px 0px 0px;font-family: 'Trebuchet MS';font-siz=
+e:11px;color:#1f497d; text-align:right; ">
+			<a style=3D"color:#1f497d;font-family: 'Trebuchet MS';font-size:11px;tex=
+t-decoration:none;" href=3D"http://pingbrother.com/newsletter-subscribe">su=
+bscribe</a>&nbsp;&nbsp;
+			<a style=3D"color:#1f497d;font-family: 'Trebuchet MS';font-size:11px;tex=
+t-decoration:none;" href=3D"http://pingbrother.com/newsletter-unsubscribe">=
+unsubscribe</a>
+			</p>
+			=
+
+			<p>&nbsp;</p>
+			=
+
+		</td>
+		=
+
+
+	</tr>
+	=
+
+			=
+
+	=
+
+</table>
+</html>
+
+--===============0501191837==--
+
+
+--===============6538778013886538046==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============6538778013886538046==--
