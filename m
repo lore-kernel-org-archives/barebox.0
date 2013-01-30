@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U0f7h-0005rl-96
- for barebox@lists.infradead.org; Wed, 30 Jan 2013 21:23:13 +0000
-Date: Wed, 30 Jan 2013 22:23:11 +0100
+ id 1U0fI0-0006ge-As
+ for barebox@lists.infradead.org; Wed, 30 Jan 2013 21:33:52 +0000
+Date: Wed, 30 Jan 2013 22:33:49 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130130212311.GC1906@pengutronix.de>
-References: <1359457385-24232-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20130130213349.GD1906@pengutronix.de>
+References: <20130128092320.GQ26329@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1359457385-24232-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <20130128092320.GQ26329@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,73 +22,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: reset: add shutdown_barebox() before reset_cpu()
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH 0/3] pbl: factorise decompress code and add none compress
+ support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jan 29, 2013 at 03:03:05PM +0400, Antony Pavlov wrote:
-> Some of controlled by barebox peripheral devices may be
-> not affected by CPU reset, so we need call shutdown_barebox()
-> to stop them.
+On Mon, Jan 28, 2013 at 10:23:20AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> HI,
 > 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> The following changes since commit cd1c289b2a4949e8acb235d4847419bde784a9d6:
+> 
+>   Merge branch 'for-next/misc' into next (2013-01-25 19:51:11 +0100)
+> 
+> are available in the git repository at:
+> 
+> 
+>   git://git.jcrosoft.org/barebox.git delivery/pbl
 
 Applied, thanks
 
 Sascha
 
-> ---
->  commands/reset.c |   23 +++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
 > 
-> diff --git a/commands/reset.c b/commands/reset.c
-> index 835926b..79885f4 100644
-> --- a/commands/reset.c
-> +++ b/commands/reset.c
-> @@ -20,17 +20,40 @@
->  #include <common.h>
->  #include <command.h>
->  #include <complete.h>
-> +#include <getopt.h>
->  
->  static int cmd_reset(int argc, char *argv[])
->  {
-> +	int opt, shutdown_flag;
-> +
-> +	shutdown_flag = 1;
-> +
-> +	while ((opt = getopt(argc, argv, "f")) > 0) {
-> +		switch (opt) {
-> +		case 'f':
-> +			shutdown_flag = 0;
-> +			break;
-> +		}
-> +	}
-> +
-> +	if (shutdown_flag)
-> +		shutdown_barebox();
-> +
->  	reset_cpu(0);
->  
->  	/* Not reached */
->  	return 1;
->  }
->  
-> +BAREBOX_CMD_HELP_START(reset)
-> +BAREBOX_CMD_HELP_USAGE("reset [-f]\n")
-> +BAREBOX_CMD_HELP_SHORT("Perform RESET of the CPU.\n")
-> +BAREBOX_CMD_HELP_OPT("-f",  "force RESET, don't call shutdown\n")
-> +BAREBOX_CMD_HELP_END
-> +
->  BAREBOX_CMD_START(reset)
->  	.cmd		= cmd_reset,
->  	.usage		= "Perform RESET of the CPU",
-> +	BAREBOX_CMD_HELP(cmd_reset_help)
->  	BAREBOX_CMD_COMPLETE(empty_complete)
->  BAREBOX_CMD_END
-> -- 
-> 1.7.10.4
+> for you to fetch changes up to c71c520fe4fc180c4546a37105ce2ed4fc674383:
 > 
+>   pbl: add none compression support (2013-01-24 06:30:57 +0800)
+> 
+> ----------------------------------------------------------------
+> Jean-Christophe PLAGNIOL-VILLARD (3):
+>       pbl: move configs to pbl/Kconfig
+>       pbl: factorise decompressor
+>       pbl: add none compression support
+> 
+>  arch/arm/cpu/start-pbl.c        |   21 ++-------------------
+>  arch/arm/pbl/Makefile           |    3 ++-
+>  arch/arm/pbl/piggy.shipped.S    |    6 ++++++
+>  arch/mips/boot/main_entry-pbl.c |   23 +----------------------
+>  arch/mips/pbl/Makefile          |    3 ++-
+>  arch/mips/pbl/piggy.shipped.S   |    6 ++++++
+>  common/Kconfig                  |   42 +-----------------------------------------
+>  include/pbl.h                   |   15 +++++++++++++++
+>  pbl/Kconfig                     |   46 ++++++++++++++++++++++++++++++++++++++++++++++
+>  pbl/Makefile                    |    1 +
+>  pbl/decomp.c                    |   44 ++++++++++++++++++++++++++++++++++++++++++++
+>  11 files changed, 126 insertions(+), 84 deletions(-)
+>  create mode 100644 arch/arm/pbl/piggy.shipped.S
+>  create mode 100644 arch/mips/pbl/piggy.shipped.S
+>  create mode 100644 include/pbl.h
+>  create mode 100644 pbl/Kconfig
+>  create mode 100644 pbl/decomp.c
+> 
+> Best Regards,
+> J.
 > 
 > _______________________________________________
 > barebox mailing list
