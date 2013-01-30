@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ob0-f180.google.com ([209.85.214.180])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U0gkq-0006Re-EE
- for barebox@lists.infradead.org; Wed, 30 Jan 2013 23:07:45 +0000
-Received: by mail-ob0-f180.google.com with SMTP id ef5so2197483obb.39
- for <barebox@lists.infradead.org>; Wed, 30 Jan 2013 15:07:42 -0800 (PST)
+Received: from 13.mo1.mail-out.ovh.net ([178.33.253.128]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U0gw3-000839-FO
+ for barebox@lists.infradead.org; Wed, 30 Jan 2013 23:19:20 +0000
+Received: from mail415.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id B0C16FF9AB0
+ for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 00:24:23 +0100 (CET)
+Date: Thu, 31 Jan 2013 00:08:25 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130130230825.GX26329@game.jcrosoft.org>
 MIME-Version: 1.0
-Date: Thu, 31 Jan 2013 00:07:42 +0100
-Message-ID: <CAAfyv370GDsJuAKMdZ4eQsHTqvy+cM_=WPk1Og_UkQDy-+dd=g@mail.gmail.com>
-From: Belisko Marek <marek.belisko@gmail.com>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,42 +24,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: current master pandaboard booting broken
+Subject: [PATCH 0/6] atmel: add Atmel HLCDC support and boards
 To: barebox@lists.infradead.org
 
 Hi,
 
-I'm just build MLO + barebox.bin for panda from actual master
-but booting failed when trying to run barebox.bin:
+The following changes since commit 1164d59f7aa2164569ba46188cfc874cdc0b9a66:
 
-barebox 2013.01.0-00158-g1e8c9c5 #1 Wed Jan 30 23:06:40 CET 2013
+  at91rm9200: fix default TEXT_BASE to 15MiB (2013-01-31 05:17:26 +0800)
 
+are available in the git repository at:
 
-Board: Texas Instrument's Panda
-PandaBoard Revision: 003
-omap-hsmmc omap4-hsmmc0: registered as omap4-hsmmc0
-mci mci0: registered disk0
-malloc space: 0x84000000 -> 0x85ffffff (size 32 MiB)
-stack space:  0x8f000000 -> 0x8f007fff (size 32 KiB)
-booting from MMC1
+  git://git.jcrosoft.org/barebox.git delivery/atmel_hlcdc
 
-Any ideas?
+for you to fetch changes up to 5fa22362f842612da24125fd81d9d3c83e53bb9b:
 
-Thanks,
+  sama5d3xek: add lcd support (2013-01-31 05:17:38 +0800)
 
-marek
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (6):
+      atmel_lcdfb: factorise common code between lcdc and new hlcdc IP
+      video: add Atmel HLCD support
+      at91sam9x5: add lcd support
+      at91sam9x5ek: add lcd support
+      sama5d3: add lcd support
+      sama5d3xek: add lcd support
 
--- 
-as simple and primitive as possible
--------------------------------------------------
-Marek Belisko - OPEN-NANDRA
-Freelance Developer
+ arch/arm/boards/at91sam9x5ek/init.c           |   44 ++++++
+ arch/arm/boards/sama5d3xek/init.c             |   45 ++++++
+ arch/arm/configs/at91sam9x5ek_defconfig       |    4 +-
+ arch/arm/configs/sama5d3xek_defconfig         |    4 +
+ arch/arm/mach-at91/at91sam9x5.c               |    1 +
+ arch/arm/mach-at91/at91sam9x5_devices.c       |   55 +++++++
+ arch/arm/mach-at91/include/mach/atmel_hlcdc.h |  760 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/include/mach/board.h       |    1 +
+ arch/arm/mach-at91/sama5d3.c                  |    1 +
+ arch/arm/mach-at91/sama5d3_devices.c          |   53 +++++++
+ drivers/video/Kconfig                         |    4 +
+ drivers/video/Makefile                        |    3 +-
+ drivers/video/atmel_hlcdfb.c                  |  297 ++++++++++++++++++++++++++++++++++++
+ drivers/video/atmel_lcdfb.c                   |  313 +++++---------------------------------
+ drivers/video/atmel_lcdfb.h                   |   37 +++++
+ drivers/video/atmel_lcdfb_core.c              |  313 ++++++++++++++++++++++++++++++++++++++
+ 16 files changed, 1654 insertions(+), 281 deletions(-)
+ create mode 100644 arch/arm/mach-at91/include/mach/atmel_hlcdc.h
+ create mode 100644 drivers/video/atmel_hlcdfb.c
+ create mode 100644 drivers/video/atmel_lcdfb.h
+ create mode 100644 drivers/video/atmel_lcdfb_core.c
 
-Ruska Nova Ves 219 | Presov, 08005 Slovak Republic
-Tel: +421 915 052 184
-skype: marekwhite
-twitter: #opennandra
-web: http://open-nandra.com
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
