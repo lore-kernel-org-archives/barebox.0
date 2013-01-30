@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U0f7G-0005qf-KX
- for barebox@lists.infradead.org; Wed, 30 Jan 2013 21:22:47 +0000
-Date: Wed, 30 Jan 2013 22:22:42 +0100
+ id 1U0f7h-0005rl-96
+ for barebox@lists.infradead.org; Wed, 30 Jan 2013 21:23:13 +0000
+Date: Wed, 30 Jan 2013 22:23:11 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130130212242.GB1906@pengutronix.de>
-References: <1359053740-4793-1-git-send-email-antonynpavlov@gmail.com>
- <CAA4bVAHF=pyMC_puZJyUCGziExD58jbckDOYoFu_prDP0bOpMw@mail.gmail.com>
+Message-ID: <20130130212311.GC1906@pengutronix.de>
+References: <1359457385-24232-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAA4bVAHF=pyMC_puZJyUCGziExD58jbckDOYoFu_prDP0bOpMw@mail.gmail.com>
+In-Reply-To: <1359457385-24232-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,61 +22,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM OMAP: use SZ_*M constants in RAM device register
- functions
+Subject: Re: [PATCH] commands: reset: add shutdown_barebox() before reset_cpu()
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jan 28, 2013 at 01:29:18PM +0400, Antony Pavlov wrote:
-> ping
+On Tue, Jan 29, 2013 at 03:03:05PM +0400, Antony Pavlov wrote:
+> Some of controlled by barebox peripheral devices may be
+> not affected by CPU reset, so we need call shutdown_barebox()
+> to stop them.
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
-Applied now.
+Applied, thanks
 
 Sascha
 
+> ---
+>  commands/reset.c |   23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
 > 
-> On 24 January 2013 22:55, Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > ---
-> >  arch/arm/boards/beaglebone/board.c  |    2 +-
-> >  arch/arm/boards/omap343xdsp/board.c |    2 +-
-> >  2 files changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/arm/boards/beaglebone/board.c b/arch/arm/boards/beaglebone/board.c
-> > index 830ff47..fda8031 100644
-> > --- a/arch/arm/boards/beaglebone/board.c
-> > +++ b/arch/arm/boards/beaglebone/board.c
-> > @@ -311,7 +311,7 @@ console_initcall(beaglebone_console_init);
-> >
-> >  static int beaglebone_mem_init(void)
-> >  {
-> > -       omap_add_ram0(256 * 1024 * 1024);
-> > +       omap_add_ram0(SZ_256M);
-> >
-> >         return 0;
-> >  }
-> > diff --git a/arch/arm/boards/omap343xdsp/board.c b/arch/arm/boards/omap343xdsp/board.c
-> > index 6dbbc4c..d894104 100644
-> > --- a/arch/arm/boards/omap343xdsp/board.c
-> > +++ b/arch/arm/boards/omap343xdsp/board.c
-> > @@ -620,7 +620,7 @@ console_initcall(sdp3430_console_init);
-> >
-> >  static int sdp3430_mem_init(void)
-> >  {
-> > -       omap_add_ram0(128 * 1024 * 1024);
-> > +       omap_add_ram0(SZ_128M);
-> >
-> >         return 0;
-> >  }
-> > --
-> > 1.7.10.4
-> >
-> 
-> 
-> 
+> diff --git a/commands/reset.c b/commands/reset.c
+> index 835926b..79885f4 100644
+> --- a/commands/reset.c
+> +++ b/commands/reset.c
+> @@ -20,17 +20,40 @@
+>  #include <common.h>
+>  #include <command.h>
+>  #include <complete.h>
+> +#include <getopt.h>
+>  
+>  static int cmd_reset(int argc, char *argv[])
+>  {
+> +	int opt, shutdown_flag;
+> +
+> +	shutdown_flag = 1;
+> +
+> +	while ((opt = getopt(argc, argv, "f")) > 0) {
+> +		switch (opt) {
+> +		case 'f':
+> +			shutdown_flag = 0;
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (shutdown_flag)
+> +		shutdown_barebox();
+> +
+>  	reset_cpu(0);
+>  
+>  	/* Not reached */
+>  	return 1;
+>  }
+>  
+> +BAREBOX_CMD_HELP_START(reset)
+> +BAREBOX_CMD_HELP_USAGE("reset [-f]\n")
+> +BAREBOX_CMD_HELP_SHORT("Perform RESET of the CPU.\n")
+> +BAREBOX_CMD_HELP_OPT("-f",  "force RESET, don't call shutdown\n")
+> +BAREBOX_CMD_HELP_END
+> +
+>  BAREBOX_CMD_START(reset)
+>  	.cmd		= cmd_reset,
+>  	.usage		= "Perform RESET of the CPU",
+> +	BAREBOX_CMD_HELP(cmd_reset_help)
+>  	BAREBOX_CMD_COMPLETE(empty_complete)
+>  BAREBOX_CMD_END
 > -- 
-> Best regards,
->   Antony Pavlov
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
