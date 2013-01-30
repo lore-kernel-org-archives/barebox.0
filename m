@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mikroweb.hu ([194.152.143.74])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U0cXY-0004a9-MQ
- for barebox@lists.infradead.org; Wed, 30 Jan 2013 18:37:45 +0000
-Received: from [10.1.205.4] (helo=[172.1.1.112])
- by mikroweb.hu with esmtp (Exim 4.77)
- (envelope-from <sales@pingbrother.com>) id 1U0cXU-0003tR-8L
- for barebox@lists.infradead.org; Wed, 30 Jan 2013 19:37:40 +0100
+ id 1U0f7G-0005qf-KX
+ for barebox@lists.infradead.org; Wed, 30 Jan 2013 21:22:47 +0000
+Date: Wed, 30 Jan 2013 22:22:42 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130130212242.GB1906@pengutronix.de>
+References: <1359053740-4793-1-git-send-email-antonynpavlov@gmail.com>
+ <CAA4bVAHF=pyMC_puZJyUCGziExD58jbckDOYoFu_prDP0bOpMw@mail.gmail.com>
 MIME-Version: 1.0
-From: PingBrother Networking <sales@pingbrother.com>
-Date: Wed, 30 Jan 2013 19:37:52 +0100
-Message-ID: <E1U0cXU-0003tR-8L@mikroweb.hu>
-Reply-To: sales1@pingbrother.com
+Content-Disposition: inline
+In-Reply-To: <CAA4bVAHF=pyMC_puZJyUCGziExD58jbckDOYoFu_prDP0bOpMw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,302 +19,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============5960482886342601589=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: smooth BrOperator
-To: barebox@lists.infradead.org
-
-You will not see this in a MIME-aware mail reader.
---===============5960482886342601589==
-Content-Type: multipart/alternative; boundary="===============0488708781=="
-
-You will not see this in a MIME-aware mail reader.
---===============0488708781==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-
-      =
-
-    	   www.pingbrother.com  	 =
-
-    =
-
- Free remote management software for PingBrother devices =
-
- 	   - MONITORING
-- CONTROL
-- WATCHDOG
- =
-
- 	 =
-
-    Using this application you can have an overview of the measured tempera=
-tures, consumption, power supply values and channel statuses in an hourly, =
-daily, weekly, monthly and yearly breakdown. You can view the log entries o=
-f your specific devices, and switch off the status of the channels. If you =
-operate a larger network, this little software application can be an essent=
-ial tool for you to remotely manage up to hundreds of devices sorted by var=
-ious field or logical groups on a clear interface. =
-
- download here 	   =
-
- PingBrother is =
-
-  a 4 port industrial 10/100 passive POE ethernet switch and IP watchdog wi=
-th built in web based GUI. It is an intelligent device, which monitors inpu=
-t voltage, temperature, current consumption of the connected POE devices, o=
-perability of any network devices (ping, http availability), water leakage =
-or condensation. It gives a user defined response, for example turns off /o=
-n or reset the power of the POE ethernet ports, controls any connected devi=
-ce by its relay contact, and/or sends an email. =
-
- 	 =
-
-    	 =
-
-   =
-
-     Order your sample now at sales@pingbrother.com =
-
-  EPIW 104 for 109 EUR =
-
-  EPIW 104P for 135 EUR =
-
-  For quantity based discount prices please see our product comparison tabl=
-e =96 USD / EUR =
-
-  For more information on our products and services please visit our websit=
-e:
- pingbrother.com
- =
-
- Mikroweb Internet Ltd. 2013, All Rights Reserved. =
-
-  subscribe   unsubscribe =
-
-  =
-
- 	 =
-
-  =20
---===============0488708781==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-
-<HTML>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"/>
-</head>
-<BODY style=3D"margin-top:0; background-color:#d3d8ba">
-<center>
-<table style=3D"width:640px;border:0;padding:0;margin:0;" cellpadding=3D"0"=
- cellspacing=3D"0">
-	<tr>
-		<td style=3D"background-color:#fff;width:440px;height:90px;">
-			<a href=3D"http://www.pingbrother.com" target=3D"_blank"><img style=3D"p=
-adding:0;margin:0;width:440px;height:90px;border:0px solid #fff;" src=3D"ht=
-tp://pingbrother.com/images/l-images/001/001.jpg" width=3D"440" height=3D"9=
-0" border=3D"0"></a>
-		</td>
-		<td style=3D"background-color: #046380; text-align:center;">
-			<a style=3D"font-family: 'Trebuchet MS'; color: #fff; font-size: 15px; t=
-ext-decoration:none; font-weight:bold;" href=3D"http://www.pingbrother.com"=
- target=3D"_blank">
-				www.pingbrother.com
-			</a>
-		</td>
-	</tr>
-	<tr>	=
-
-		<td style=3D"background-color:#fff;">
-			<img width=3D"440" height=3D"92" src=3D"http://pingbrother.com/images/l-=
-images/001/002.jpg">
-			<h2 style=3D"margin:20px 20px 10px 20px;font-size:16px; color: #fa6908; =
-font-family: 'Trebuchet MS'; font-weight:normal;text-align:left;">
-				Free remote management software for PingBrother devices
-			</h2>
-			=
-
-			=
-
-		</td>
-		<td style=3D"background:#343434;">
-		<p style=3D"margin-left:20px;color:#fff;font-weight:bold; font-size:22px;=
- font-family: 'Trebuchet MS', 'sans-serif';text-align:left;">
-			- MONITORING<br>- CONTROL<br>- WATCHDOG<br>
-		</p>
-		</td>
-	</tr>
-	=
-
-	<tr>	=
-
-		<td style=3D"background-color:#fff;vertical-align:top;">
-			<p style=3D"margin:0px 20px 0px 20px;color:#424242;font-family: 'Trebuch=
-et MS';font-size:11px; text-align:justify;vertical-align:top; ">
-			Using this application you can have an overview of the measured =
-
-temperatures, consumption, power supply values and channel statuses =
-
-in an hourly, daily, weekly, monthly and yearly breakdown. =
-
-You can view the log entries of your specific devices, and switch off =
-
-the status of the channels.
-If you operate a larger network, this little software application can be =
-
-an essential tool for you to remotely manage up to hundreds of =
-
-devices sorted by various field or logical groups on a clear interface.
-			</p>
-			<center><a style=3D"color:#1f497d;font-family: 'Trebuchet MS';font-size:=
-11px;text-decoration:none;" href=3D"http://www.pingbrother.com/services" ta=
-rget=3D"_blank">download here</a></center>
-
-		</td>
-		<td rowspan=3D"3" style=3D"background:#046380;vertical-align:top;">
-		<center><img src=3D"http://pingbrother.com/images/l-images/3dev.png" bord=
-er=3D"0" style=3D"border:0px solid #fff;margin-top:20px;"></center>
-		<h2 style=3D"margin-left:20px;color:#fff;font-weight:bold; font-size:18px=
-; font-family: 'Trebuchet MS', 'sans-serif';">
-			PingBrother is
-		</h2>
-		=
-
-		<p style=3D"margin:0px 20px 0px 20px;color:#fff;font-family: 'Trebuchet M=
-S';font-size:11px; text-align:justify; ">
-			a 4 port industrial 10/100 passive POE ethernet switch and IP watchdog w=
-ith built in web based GUI. It is an intelligent device, which monitors inp=
-ut voltage, temperature, current consumption of the connected POE devices, =
-operability of any network devices (ping, http availability), water leakage=
- or condensation. It gives a user defined response, for example turns off /=
-on or reset the power of the POE ethernet ports, controls any connected dev=
-ice by its relay contact, and/or sends an email. =
-
-
-		</p>
-		</td>
-	</tr>
-	=
-
-	<tr>	=
-
-		<td style=3D"background-color:#fff;width:440px;height:150px;">
-			<a href=3D"http://www.pingbrother.com" target=3D"_blank"><img style=3D"p=
-adding:0;margin:0;width:440px;height:150px;border:0px solid #fff;" src=3D"h=
-ttp://pingbrother.com/images/l-images/001/003.jpg" width=3D"440" height=3D"=
-150" border=3D"0"></a>
-		</td>
-		=
-
-
-	</tr>
-	=
-
-	<tr>	=
-
-		<td style=3D"background-color:#fff;width:440px;vertical-align:top;">
-		<br>
-		<center>
-			<a href=3D"http://www.youtube.com/watch?v=3Dx8n5xaeov9Y" target=3D"_blan=
-k"><img style=3D"padding:0;margin:0;width:345px;height:208px;border:0px sol=
-id #fff;" src=3D"http://pingbrother.com/images/l-images/001/movie.jpg" widt=
-h=3D"345" height=3D"208" border=3D"0"></a>
-		</center>
-		=
-
-		<p style=3D"margin:10px 0px 0px 0px;color:#ff0000;font-family: 'Trebuchet=
- MS';font-size:11px; text-align:center; ">
-				Order your sample now at <a style=3D"color:#ff0000;font-family: 'Trebuc=
-het MS';font-size:11px;" href=3D"mailto:sales@pingbrother.com">sales@pingbr=
-other.com</a>
-			</p>
-			=
-
-			<p style=3D"margin:10px 0px 0px 0px;font-family: 'Trebuchet MS';font-siz=
-e:11px;color:#1f497d; text-align:center; ">
-				EPIW 104 for 109 EUR =
-
-			</p>
-			<p style=3D"margin:10px 0px 0px 0px;font-family: 'Trebuchet MS';font-siz=
-e:11px;color:#1f497d; text-align:center; ">
-				EPIW 104P for 135 EUR =
-
-			</p>
-			=
-
-			<p style=3D"margin:10px 20px 0px 20px;color:#424242;font-family: 'Trebuc=
-het MS';font-size:11px; text-align:center; ">
-				For quantity based discount prices please see our product comparison ta=
-ble =E2=80=93 =
-
-				=
-
-				<a style=3D"color:#ff0000;font-family: 'Trebuchet MS';font-size:11px;te=
-xt-decoration:none;" href=3D"http://pingbrother.com/downloads/product-price=
-matrix-usd-0113.pdf">USD</a> / =
-
-				<a style=3D"color:#ff0000;font-family: 'Trebuchet MS';font-size:11px;te=
-xt-decoration:none;" href=3D"http://pingbrother.com/downloads/product-price=
-matrix-eur-0113.pdf">EUR<a>
-			</p>
-			=
-
-			<p style=3D"margin:10px 20px 0px 20px;color:#424242;font-family: 'Trebuc=
-het MS';font-size:11px; text-align:center; ">
-				For more information on our products and services please visit our webs=
-ite:<br>
-				<a style=3D"color:#ff0000;font-family: 'Trebuchet MS';font-size:11px;te=
-xt-decoration:none;" href=3D"http://www.pingbrother.com">pingbrother.com</a=
-><br>
-				<br>
-				Mikroweb Internet Ltd. 2013, All Rights Reserved.
-			</p>
-		<p style=3D"margin:10px 30px 0px 0px;font-family: 'Trebuchet MS';font-siz=
-e:11px;color:#1f497d; text-align:right; ">
-			<a style=3D"color:#1f497d;font-family: 'Trebuchet MS';font-size:11px;tex=
-t-decoration:none;" href=3D"http://pingbrother.com/newsletter-subscribe">su=
-bscribe</a>&nbsp;&nbsp;
-			<a style=3D"color:#1f497d;font-family: 'Trebuchet MS';font-size:11px;tex=
-t-decoration:none;" href=3D"http://pingbrother.com/newsletter-unsubscribe">=
-unsubscribe</a>
-			</p>
-			=
-
-			<p>&nbsp;</p>
-			=
-
-		</td>
-		=
-
-
-	</tr>
-	=
-
-			=
-
-	=
-
-</table>
-</html>
-
---===============0488708781==--
-
-
---===============5960482886342601589==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Subject: Re: [PATCH] ARM OMAP: use SZ_*M constants in RAM device register
+ functions
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
+
+On Mon, Jan 28, 2013 at 01:29:18PM +0400, Antony Pavlov wrote:
+> ping
+
+Applied now.
+
+Sascha
+
+> 
+> On 24 January 2013 22:55, Antony Pavlov <antonynpavlov@gmail.com> wrote:
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > ---
+> >  arch/arm/boards/beaglebone/board.c  |    2 +-
+> >  arch/arm/boards/omap343xdsp/board.c |    2 +-
+> >  2 files changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/arch/arm/boards/beaglebone/board.c b/arch/arm/boards/beaglebone/board.c
+> > index 830ff47..fda8031 100644
+> > --- a/arch/arm/boards/beaglebone/board.c
+> > +++ b/arch/arm/boards/beaglebone/board.c
+> > @@ -311,7 +311,7 @@ console_initcall(beaglebone_console_init);
+> >
+> >  static int beaglebone_mem_init(void)
+> >  {
+> > -       omap_add_ram0(256 * 1024 * 1024);
+> > +       omap_add_ram0(SZ_256M);
+> >
+> >         return 0;
+> >  }
+> > diff --git a/arch/arm/boards/omap343xdsp/board.c b/arch/arm/boards/omap343xdsp/board.c
+> > index 6dbbc4c..d894104 100644
+> > --- a/arch/arm/boards/omap343xdsp/board.c
+> > +++ b/arch/arm/boards/omap343xdsp/board.c
+> > @@ -620,7 +620,7 @@ console_initcall(sdp3430_console_init);
+> >
+> >  static int sdp3430_mem_init(void)
+> >  {
+> > -       omap_add_ram0(128 * 1024 * 1024);
+> > +       omap_add_ram0(SZ_128M);
+> >
+> >         return 0;
+> >  }
+> > --
+> > 1.7.10.4
+> >
+> 
+> 
+> 
+> -- 
+> Best regards,
+>   Antony Pavlov
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============5960482886342601589==--
