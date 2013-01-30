@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U0fI0-0006ge-As
- for barebox@lists.infradead.org; Wed, 30 Jan 2013 21:33:52 +0000
-Date: Wed, 30 Jan 2013 22:33:49 +0100
+ id 1U0fJk-0007Ag-2O
+ for barebox@lists.infradead.org; Wed, 30 Jan 2013 21:35:40 +0000
+Date: Wed, 30 Jan 2013 22:35:38 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130130213349.GD1906@pengutronix.de>
-References: <20130128092320.GQ26329@game.jcrosoft.org>
+Message-ID: <20130130213538.GE1906@pengutronix.de>
+References: <1359532373-24086-1-git-send-email-j.weitzel@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130128092320.GQ26329@game.jcrosoft.org>
+In-Reply-To: <1359532373-24086-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,58 +22,120 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] pbl: factorise decompress code and add none compress
- support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH v2] pcm049: clean up defconfig
+To: Jan Weitzel <j.weitzel@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jan 28, 2013 at 10:23:20AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> HI,
+On Wed, Jan 30, 2013 at 08:52:53AM +0100, Jan Weitzel wrote:
+> add BAREBOX_MAX_IMAGE_SIZE and rebuild defconfig with savedefconfig
 > 
-> The following changes since commit cd1c289b2a4949e8acb235d4847419bde784a9d6:
-> 
->   Merge branch 'for-next/misc' into next (2013-01-25 19:51:11 +0100)
-> 
-> are available in the git repository at:
-> 
-> 
->   git://git.jcrosoft.org/barebox.git delivery/pbl
+> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 
 Applied, thanks
 
 Sascha
 
+> ---
+>  arch/arm/configs/pcm049_defconfig       |   19 +++++++++++--------
+>  arch/arm/configs/pcm049_xload_defconfig |    3 ++-
+>  2 files changed, 13 insertions(+), 9 deletions(-)
 > 
-> for you to fetch changes up to c71c520fe4fc180c4546a37105ce2ed4fc674383:
+> diff --git a/arch/arm/configs/pcm049_defconfig b/arch/arm/configs/pcm049_defconfig
+> index adb600f..19df95a 100644
+> --- a/arch/arm/configs/pcm049_defconfig
+> +++ b/arch/arm/configs/pcm049_defconfig
+> @@ -1,13 +1,12 @@
+>  CONFIG_ARCH_OMAP=y
+> +CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x80000
+>  CONFIG_ARCH_OMAP4=y
+>  CONFIG_MACH_PCM049=y
+>  CONFIG_AEABI=y
+> -CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+>  CONFIG_ARM_UNWIND=y
+>  CONFIG_MMU=y
+>  CONFIG_TEXT_BASE=0x8f000000
+>  CONFIG_MALLOC_SIZE=0x2000000
+> -CONFIG_MALLOC_TLSF=y
+>  CONFIG_KALLSYMS=y
+>  CONFIG_PROMPT="barebox> "
+>  CONFIG_LONGHELP=y
+> @@ -21,11 +20,12 @@ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/pcm049/env"
+>  CONFIG_CMD_EDIT=y
+>  CONFIG_CMD_SLEEP=y
+>  CONFIG_CMD_SAVEENV=y
+> -CONFIG_CMD_LOADENV=y
+>  CONFIG_CMD_EXPORT=y
+>  CONFIG_CMD_PRINTENV=y
+>  CONFIG_CMD_READLINE=y
+>  CONFIG_CMD_TIME=y
+> +CONFIG_CMD_AUTOMOUNT=y
+> +CONFIG_CMD_TFTP=y
+>  CONFIG_CMD_ECHO_E=y
+>  CONFIG_CMD_LOADB=y
+>  CONFIG_CMD_IOMEM=y
+> @@ -36,7 +36,6 @@ CONFIG_CMD_BOOTM_INITRD=y
+>  CONFIG_CMD_BOOTM_OFTREE=y
+>  CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
+>  CONFIG_CMD_UIMAGE=y
+> -# CONFIG_CMD_BOOTZ is not set
+>  # CONFIG_CMD_BOOTU is not set
+>  CONFIG_CMD_RESET=y
+>  CONFIG_CMD_GO=y
+> @@ -45,25 +44,29 @@ CONFIG_CMD_PARTITION=y
+>  CONFIG_CMD_MAGICVAR=y
+>  CONFIG_CMD_MAGICVAR_HELP=y
+>  CONFIG_CMD_GPIO=y
+> -CONFIG_CMD_UNCOMPRESS=y
+> +CONFIG_CMD_I2C=y
+>  CONFIG_NET=y
+>  CONFIG_NET_DHCP=y
+>  CONFIG_NET_NFS=y
+>  CONFIG_NET_PING=y
+> -CONFIG_CMD_TFTP=y
+> -CONFIG_FS_TFTP=y
+>  CONFIG_DRIVER_SERIAL_NS16550=y
+>  CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+> +CONFIG_SMSC_PHY=y
+>  CONFIG_DRIVER_NET_SMC911X=y
+>  # CONFIG_SPI is not set
+> +CONFIG_I2C=y
+> +CONFIG_I2C_OMAP=y
+>  CONFIG_MTD=y
+>  CONFIG_NAND=y
+>  CONFIG_NAND_OMAP_GPMC=y
+>  CONFIG_UBI=y
+> +CONFIG_USB=y
+>  CONFIG_MCI=y
+> +CONFIG_MCI_STARTUP=y
+>  CONFIG_MCI_OMAP_HSMMC=y
+> +CONFIG_I2C_TWL6030=y
+> +CONFIG_FS_TFTP=y
+>  CONFIG_FS_FAT=y
+>  CONFIG_FS_FAT_WRITE=y
+>  CONFIG_FS_FAT_LFN=y
+> -CONFIG_ZLIB=y
+>  CONFIG_LZO_DECOMPRESS=y
+> diff --git a/arch/arm/configs/pcm049_xload_defconfig b/arch/arm/configs/pcm049_xload_defconfig
+> index b6d3a7a..189c040 100644
+> --- a/arch/arm/configs/pcm049_xload_defconfig
+> +++ b/arch/arm/configs/pcm049_xload_defconfig
+> @@ -1,11 +1,12 @@
+>  CONFIG_ARCH_OMAP=y
+> +CONFIG_BAREBOX_MAX_IMAGE_SIZE=0xC000
+>  CONFIG_ARCH_OMAP4=y
+>  CONFIG_OMAP_BUILD_IFT=y
+>  CONFIG_MACH_PCM049=y
+> -CONFIG_AEABI=y
+>  CONFIG_THUMB2_BAREBOX=y
+>  # CONFIG_CMD_ARM_CPUINFO is not set
+>  # CONFIG_ARM_EXCEPTIONS is not set
+> +# CONFIG_MEMINFO is not set
+>  CONFIG_MMU=y
+>  CONFIG_TEXT_BASE=0x40300000
+>  CONFIG_MEMORY_LAYOUT_FIXED=y
+> -- 
+> 1.7.0.4
 > 
->   pbl: add none compression support (2013-01-24 06:30:57 +0800)
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (3):
->       pbl: move configs to pbl/Kconfig
->       pbl: factorise decompressor
->       pbl: add none compression support
-> 
->  arch/arm/cpu/start-pbl.c        |   21 ++-------------------
->  arch/arm/pbl/Makefile           |    3 ++-
->  arch/arm/pbl/piggy.shipped.S    |    6 ++++++
->  arch/mips/boot/main_entry-pbl.c |   23 +----------------------
->  arch/mips/pbl/Makefile          |    3 ++-
->  arch/mips/pbl/piggy.shipped.S   |    6 ++++++
->  common/Kconfig                  |   42 +-----------------------------------------
->  include/pbl.h                   |   15 +++++++++++++++
->  pbl/Kconfig                     |   46 ++++++++++++++++++++++++++++++++++++++++++++++
->  pbl/Makefile                    |    1 +
->  pbl/decomp.c                    |   44 ++++++++++++++++++++++++++++++++++++++++++++
->  11 files changed, 126 insertions(+), 84 deletions(-)
->  create mode 100644 arch/arm/pbl/piggy.shipped.S
->  create mode 100644 arch/mips/pbl/piggy.shipped.S
->  create mode 100644 include/pbl.h
->  create mode 100644 pbl/Kconfig
->  create mode 100644 pbl/decomp.c
-> 
-> Best Regards,
-> J.
 > 
 > _______________________________________________
 > barebox mailing list
