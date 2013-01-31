@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ea0-f176.google.com ([209.85.215.176])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U0pP2-0000Ui-JA
- for barebox@lists.infradead.org; Thu, 31 Jan 2013 08:21:48 +0000
-From: Jan Luebbe <jlu@pengutronix.de>
-Date: Thu, 31 Jan 2013 09:21:42 +0100
-Message-Id: <1359620502-27551-1-git-send-email-jlu@pengutronix.de>
+ id 1U0rbn-00080M-Ml
+ for barebox@lists.infradead.org; Thu, 31 Jan 2013 10:43:08 +0000
+Received: by mail-ea0-f176.google.com with SMTP id a13so1126541eaa.7
+ for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 02:43:06 -0800 (PST)
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Thu, 31 Jan 2013 11:42:57 +0100
+Message-Id: <1359628977-20069-4-git-send-email-fabio.porcedda@gmail.com>
+In-Reply-To: <1359628977-20069-1-git-send-email-fabio.porcedda@gmail.com>
+References: <1359628977-20069-1-git-send-email-fabio.porcedda@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,51 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] nand_write: initialize OOB buffer for each page
+Subject: [PATCH 3/3] at91sam9260/9g20ek: enable clock via clock framework
 To: barebox@lists.infradead.org
 
-Previously, during a multi-page write, chip->oob_poi would not be
-reinitialized.
-
-See commit f722013ee9fd24623df31dec9a91a6d02c3e2f2f in the kernel
-for an analogous change.
-
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/mtd/nand/nand_write.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/boards/at91sam9260ek/init.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_write.c b/drivers/mtd/nand/nand_write.c
-index 9997127..276728c 100644
---- a/drivers/mtd/nand/nand_write.c
-+++ b/drivers/mtd/nand/nand_write.c
-@@ -296,10 +296,6 @@ int nand_do_write_ops(struct mtd_info *mtd, loff_t to,
- 	    (chip->pagebuf << chip->page_shift) < (to + ops->len))
- 		chip->pagebuf = -1;
+diff --git a/arch/arm/boards/at91sam9260ek/init.c b/arch/arm/boards/at91sam9260ek/init.c
+index 5080f2a..7d4f9be 100644
+--- a/arch/arm/boards/at91sam9260ek/init.c
++++ b/arch/arm/boards/at91sam9260ek/init.c
+@@ -23,8 +23,8 @@
+ #include <mach/at91sam9_smc.h>
+ #include <gpio.h>
+ #include <mach/io.h>
+-#include <mach/at91_pmc.h>
+ #include <mach/at91_rstc.h>
++#include <linux/clk.h>
  
--	/* Initialize to all 0xFF, to avoid the possibility of
--	   left over OOB data from a previous OOB read. */
--	memset(chip->oob_poi, 0xff, mtd->oobsize);
--
- 	while(1) {
- 		int bytes = mtd->writesize;
- 		int cached = writelen > bytes && page != blockmask;
-@@ -315,8 +311,12 @@ int nand_do_write_ops(struct mtd_info *mtd, loff_t to,
- 			wbuf = chip->buffers->databuf;
- 		}
+ /*
+  * board revision encoding
+@@ -124,7 +124,9 @@ static struct at91_ether_platform_data macb_pdata = {
+ static void at91sam9260ek_phy_reset(void)
+ {
+ 	unsigned long rstc;
+-	at91_pmc_write(AT91_PMC_PCER, 1 << AT91SAM9260_ID_EMAC);
++	struct clk *clk = clk_get(NULL, "macb_clk");
++
++	clk_enable(clk);
  
--		if (unlikely(oob))
-+		if (unlikely(oob)) {
- 			oob = nand_fill_oob(chip, oob, ops);
-+		} else {
-+			/* We still need to erase leftover OOB data */
-+			memset(chip->oob_poi, 0xff, mtd->oobsize);
-+		}
- 
- 		ret = chip->write_page(mtd, chip, wbuf, page, cached,
- 				       (ops->mode == MTD_OOB_RAW));
+ 	at91_set_gpio_input(AT91_PIN_PA14, 0);
+ 	at91_set_gpio_input(AT91_PIN_PA15, 0);
 -- 
-1.7.10.4
+1.8.1.1
 
 
 _______________________________________________
