@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo1.mail-out.ovh.net ([178.33.45.107]
+Received: from 20.mo1.mail-out.ovh.net ([188.165.45.168]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U0u5a-00019v-90
- for barebox@lists.infradead.org; Thu, 31 Jan 2013 13:22:02 +0000
+ id 1U0u6K-0001D5-5U
+ for barebox@lists.infradead.org; Thu, 31 Jan 2013 13:22:48 +0000
 Received: from mail610.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 4F9FFFFB0E0
- for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 14:36:46 +0100 (CET)
-Date: Thu, 31 Jan 2013 14:20:45 +0100
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 21C02FFB0E0
+ for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 14:37:32 +0100 (CET)
+Date: Thu, 31 Jan 2013 14:21:31 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130131132045.GC26329@game.jcrosoft.org>
-References: <1358779081-31836-1-git-send-email-plagnioj@jcrosoft.com>
- <20130130221314.GA11480@pengutronix.de>
+Message-ID: <20130131132131.GD26329@game.jcrosoft.org>
+References: <20130124113051.GU26329@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130130221314.GA11480@pengutronix.de>
+In-Reply-To: <20130124113051.GU26329@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,53 +26,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 1/1] omap: xload: switch to generic bootstrap
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/2] at91: bootstrap: add menu support
+To: barebox@lists.infradead.org
 
-On 23:13 Wed 30 Jan     , Sascha Hauer wrote:
-> On Mon, Jan 21, 2013 at 03:38:01PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> > Hi,
-> > 
-> > 	just compiled not tested
-> 
-> Just tested on panda, this does not work.
-> 
-> > +static __noreturn int omap_xload(void)
-> > +{
-> > +	int (*func)(void) = NULL;
-> > +
-> > +	switch (omap_bootsrc())
-> > +	{
-> 
-> { should be in the previous line.
-> 
-> > +	case OMAP_BOOTSRC_MMC1:
-> > +		printf("booting from MMC1\n");
-> > +		func = bootstrap_read_disk("disk0.0", NULL);
-> 
-> For some reason the autodetection does not work, with "fat" it works. I
-> haven't investigated why. Anything else but fat does not make sense
-> anyway since the OMAP ROM code expects a FAT for the MLO here and barebox
-> is on the same partition.
-> 
-> > +		break;
-> > +	case OMAP_BOOTSRC_USB1:
-> > +		if (IS_ENABLED(CONFIG_FS_OMAP4_USBBOOT)) {
-> > +			printf("booting from USB1\n");
-> > +			func = bootstrap_read_disk("omap4_usbboot", "omap4_usbbootfs");
-> 
-> 'func' is set but not used now.
-it's 
+ping
 
-	bootstrap_boot(func, false);
-
-ligne 57
-
-Best Regards,
-J.
+On 12:30 Thu 24 Jan     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> HI,
+> 
+> 	if you enable the menu support and press m you will be able to display
+> 	a menu and then choose from where you want to boot
+> 
+> 	use full as on at91 we can not choose an alternative boot from a pin
+> 
+> The following changes since commit 6d588b9bfd85247f9007c002cec98a7535764ae4:
+> 
+>   Merge branch 'for-next/misc' into next (2013-01-23 20:46:17 +0100)
+> 
+> are available in the git repository at:
+> 
+> 
+>   git://git.jcrosoft.org/barebox.git delivery/at91bootstrap_menu
+> 
+> for you to fetch changes up to 01086f0c0f72e95a0eda5479f7d323ddc02641dd:
+> 
+>   at91: bootstrap: add menu support (2013-01-20 14:09:06 +0800)
+> 
+> ----------------------------------------------------------------
+> Jean-Christophe PLAGNIOL-VILLARD (2):
+>       menu: the dependancy on process escape is wrong drop it
+>       at91: bootstrap: add menu support
+> 
+>  arch/arm/mach-at91/bootstrap.c |  215 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------------
+>  common/Kconfig                 |    1 -
+>  2 files changed, 190 insertions(+), 26 deletions(-)
+> 
+> Best Regards,
+> J.
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
