@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f170.google.com ([209.85.217.170])
+Received: from mail-lb0-f172.google.com ([209.85.217.172])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U11m9-0006DS-Av
- for barebox@lists.infradead.org; Thu, 31 Jan 2013 21:34:30 +0000
-Received: by mail-lb0-f170.google.com with SMTP id ge1so3902542lbb.1
- for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 13:34:27 -0800 (PST)
+ id 1U11mD-0006E3-Up
+ for barebox@lists.infradead.org; Thu, 31 Jan 2013 21:34:35 +0000
+Received: by mail-lb0-f172.google.com with SMTP id n8so3903153lbj.31
+ for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 13:34:28 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri,  1 Feb 2013 01:46:34 +0400
-Message-Id: <1359668796-22835-4-git-send-email-antonynpavlov@gmail.com>
+Date: Fri,  1 Feb 2013 01:46:35 +0400
+Message-Id: <1359668796-22835-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1359668796-22835-1-git-send-email-antonynpavlov@gmail.com>
 References: <1359668796-22835-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,63 +23,124 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/5] gpiolib: gpio_request(): add error message
+Subject: [PATCH v2 4/5] at91sam9*: use gpio_request_output()
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/gpio/gpio.c |   29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
+ arch/arm/boards/at91sam9261ek/init.c  |   18 +-----------------
+ arch/arm/boards/at91sam9263ek/init.c  |   18 +-----------------
+ arch/arm/boards/at91sam9m10ihd/init.c |   18 +-----------------
+ 3 files changed, 3 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/gpio/gpio.c b/drivers/gpio/gpio.c
-index 5876454..179fc7b 100644
---- a/drivers/gpio/gpio.c
-+++ b/drivers/gpio/gpio.c
-@@ -29,22 +29,37 @@ int gpio_request(unsigned gpio, const char *label)
- 	struct gpio_chip *chip = gi->chip;
- 	int ret;
+diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
+index 2597ff8..220dd2f 100644
+--- a/arch/arm/boards/at91sam9261ek/init.c
++++ b/arch/arm/boards/at91sam9261ek/init.c
+@@ -153,22 +153,6 @@ static void ek_add_device_udc(void) {}
+  * LCD Controller
+  */
+ #if defined(CONFIG_DRIVER_VIDEO_ATMEL)
+-static int ek_gpio_request_output(int gpio, const char *name)
+-{
+-	int ret;
+-
+-	ret = gpio_request(gpio, name);
+-	if (ret) {
+-		pr_err("%s: can not request gpio %d (%d)\n", name, gpio, ret);
+-		return ret;
+-	}
+-
+-	ret = gpio_direction_output(gpio, 1);
+-	if (ret)
+-		pr_err("%s: can not configure gpio %d as output (%d)\n", name, gpio, ret);
+-	return ret;
+-}
+-
+ /* TFT */
+ static struct fb_videomode at91_tft_vga_modes[] = {
+ 	{
+@@ -211,7 +195,7 @@ static struct atmel_lcdfb_platform_data ek_lcdc_data = {
  
--	if (!gpio_is_valid(gpio))
--		return -EINVAL;
--	if (!chip)
--		return -EINVAL;
--	if (gi->requested)
--		return -EBUSY;
-+	if (!gpio_is_valid(gpio)) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
-+
-+	if (!chip) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
-+
-+	if (gi->requested) {
-+		ret = -EBUSY;
-+		goto err;
-+	}
-+
- 	if (chip->ops->request) {
- 		ret = chip->ops->request(chip, gpio - chip->base);
- 		if (ret)
--			return ret;
-+			goto err;
- 	}
- 
- 	gi->requested = true;
- 	gi->label = xstrdup(label);
- 
- 	return 0;
-+
-+err:
-+	pr_err("can't request gpio %d as %s (%d)\n",
-+		gpio, label, ret);
-+
-+	return ret;
+ static int at91_lcdc_gpio(void)
+ {
+-	return ek_gpio_request_output(AT91_PIN_PA12, "lcdc_tft_power");
++	return gpio_request_output(AT91_PIN_PA12, "lcdc_tft_power", 1);
  }
  
- int gpio_request_input(unsigned gpio, const char *label)
+ static void ek_add_device_lcdc(void)
+diff --git a/arch/arm/boards/at91sam9263ek/init.c b/arch/arm/boards/at91sam9263ek/init.c
+index 90fdbec..ed133b9 100644
+--- a/arch/arm/boards/at91sam9263ek/init.c
++++ b/arch/arm/boards/at91sam9263ek/init.c
+@@ -153,22 +153,6 @@ static void ek_add_device_udc(void) {}
+  * LCD Controller
+  */
+ #if defined(CONFIG_DRIVER_VIDEO_ATMEL)
+-static int ek_gpio_request_output(int gpio, const char *name)
+-{
+-	int ret;
+-
+-	ret = gpio_request(gpio, name);
+-	if (ret) {
+-		pr_err("%s: can not request gpio %d (%d)\n", name, gpio, ret);
+-		return ret;
+-	}
+-
+-	ret = gpio_direction_output(gpio, 1);
+-	if (ret)
+-		pr_err("%s: can not configure gpio %d as output (%d)\n", name, gpio, ret);
+-	return ret;
+-}
+-
+ static struct fb_videomode at91_tft_vga_modes[] = {
+ 	{
+ 		.name		= "TX09D50VM1CCA @ 60",
+@@ -208,7 +192,7 @@ static struct atmel_lcdfb_platform_data ek_lcdc_data = {
+ 
+ static void ek_add_device_lcdc(void)
+ {
+-	if (ek_gpio_request_output(AT91_PIN_PA30, "lcdc_power"))
++	if (gpio_request_output(AT91_PIN_PA30, "lcdc_power", 1))
+ 		return;
+ 
+ 	at91_add_device_lcdc(&ek_lcdc_data);
+diff --git a/arch/arm/boards/at91sam9m10ihd/init.c b/arch/arm/boards/at91sam9m10ihd/init.c
+index f258caf..6159bfc 100644
+--- a/arch/arm/boards/at91sam9m10ihd/init.c
++++ b/arch/arm/boards/at91sam9m10ihd/init.c
+@@ -174,22 +174,6 @@ static int at91sam9m10g45ek_mem_init(void)
+ mem_initcall(at91sam9m10g45ek_mem_init);
+ 
+ #if defined(CONFIG_DRIVER_VIDEO_ATMEL)
+-static int ek_gpio_request_output(int gpio, const char *name)
+-{
+-	int ret;
+-
+-	ret = gpio_request(gpio, name);
+-	if (ret) {
+-		pr_err("%s: can not request gpio %d (%d)\n", name, gpio, ret);
+-		return ret;
+-	}
+-
+-	ret = gpio_direction_output(gpio, 1);
+-	if (ret)
+-		pr_err("%s: can not configure gpio %d as output (%d)\n", name, gpio, ret);
+-	return ret;
+-}
+-
+ static struct fb_videomode at91fb_default_monspecs[] = {
+ 	{
+ 		.name		= "MULTEK",
+@@ -230,7 +214,7 @@ static struct atmel_lcdfb_platform_data ek_lcdc_data = {
+ 
+ static void ek_add_device_lcd(void)
+ {
+-	if (ek_gpio_request_output(AT91_PIN_PE6, "lcdc_power"))
++	if (gpio_request_output(AT91_PIN_PE6, "lcdc_power", 1))
+ 		return;
+ 
+ 	at91_add_device_lcdc(&ek_lcdc_data);
 -- 
 1.7.10.4
 
