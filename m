@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo1.mail-out.ovh.net ([188.165.45.168]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U0z2C-0006nP-9M
- for barebox@lists.infradead.org; Thu, 31 Jan 2013 18:38:53 +0000
-Received: from mail610.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id B8450FFAC43
- for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 19:53:36 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 31 Jan 2013 19:37:35 +0100
-Message-Id: <1359657455-23895-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-lb0-f170.google.com ([209.85.217.170])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U0zdW-0001r6-Ct
+ for barebox@lists.infradead.org; Thu, 31 Jan 2013 19:17:27 +0000
+Received: by mail-lb0-f170.google.com with SMTP id ge1so3764972lbb.29
+ for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 11:17:23 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 31 Jan 2013 23:29:24 +0400
+Message-Id: <1359660567-12220-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1359660567-12220-1-git-send-email-antonynpavlov@gmail.com>
+References: <1359660567-12220-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,67 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] beagle: add nand partition and boot
+Subject: [PATCH 1/4] gpiolib: fix whitespaces
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/arm/boards/beagle/env/boot/nand-ubi      |    9 +++++++++
- arch/arm/boards/beagle/env/boot/nand-ubi-dt   |   10 ++++++++++
- arch/arm/boards/beagle/env/init/mtdparts-nand |   11 +++++++++++
- 3 files changed, 30 insertions(+)
- create mode 100644 arch/arm/boards/beagle/env/boot/nand-ubi
- create mode 100644 arch/arm/boards/beagle/env/boot/nand-ubi-dt
- create mode 100644 arch/arm/boards/beagle/env/init/mtdparts-nand
+ include/gpio.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/beagle/env/boot/nand-ubi b/arch/arm/boards/beagle/env/boot/nand-ubi
-new file mode 100644
-index 0000000..3037fd4
---- /dev/null
-+++ b/arch/arm/boards/beagle/env/boot/nand-ubi
-@@ -0,0 +1,9 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	boot-menu-add-entry "$0" "nand (UBI)"
-+	exit
-+fi
-+
-+global.bootm.image="/dev/nand0.kernel.bb"
-+global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rootfstype=ubifs"
-diff --git a/arch/arm/boards/beagle/env/boot/nand-ubi-dt b/arch/arm/boards/beagle/env/boot/nand-ubi-dt
-new file mode 100644
-index 0000000..b7a1f19
---- /dev/null
-+++ b/arch/arm/boards/beagle/env/boot/nand-ubi-dt
-@@ -0,0 +1,10 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	boot-menu-add-entry "$0" "nand (UBI)"
-+	exit
-+fi
-+
-+global.bootm.image="/dev/nand0.kernel.bb"
-+global.bootm.oftree="/dev/nand0.oftree.bb"
-+global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rootfstype=ubifs"
-diff --git a/arch/arm/boards/beagle/env/init/mtdparts-nand b/arch/arm/boards/beagle/env/init/mtdparts-nand
-new file mode 100644
-index 0000000..9335bb1
---- /dev/null
-+++ b/arch/arm/boards/beagle/env/init/mtdparts-nand
-@@ -0,0 +1,11 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	init-menu-add-entry "$0" "NAND partitions"
-+	exit
-+fi
-+
-+mtdparts="128k(nand0.xload),256k(nand0.barebox)ro,128k(nand0.bareboxenv),128k(nand0.oftree),4M(nand0.kernel),120M(nand0.rootfs),-(nand0.data)"
-+kernelname="omap2-nand"
-+
-+mtdparts-add -b -d nand0 -k ${kernelname} -p ${mtdparts}
+diff --git a/include/gpio.h b/include/gpio.h
+index eedb980..794d959 100644
+--- a/include/gpio.h
++++ b/include/gpio.h
+@@ -6,7 +6,7 @@
+ #ifndef CONFIG_GPIOLIB
+ static inline int gpio_request(unsigned gpio, const char *label)
+ {
+-       return 0;
++	return 0;
+ }
+ 
+ static inline void gpio_free(unsigned gpio)
 -- 
 1.7.10.4
 
