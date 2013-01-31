@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-ee0-f52.google.com ([74.125.83.52])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U0rbl-0007zU-LV
+ id 1U0rbl-0007zh-Ly
  for barebox@lists.infradead.org; Thu, 31 Jan 2013 10:43:06 +0000
-Received: by mail-ee0-f52.google.com with SMTP id b15so1372286eek.39
- for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 02:43:02 -0800 (PST)
+Received: by mail-ee0-f52.google.com with SMTP id b15so1352989eek.11
+ for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 02:43:04 -0800 (PST)
 From: Fabio Porcedda <fabio.porcedda@gmail.com>
-Date: Thu, 31 Jan 2013 11:42:55 +0100
-Message-Id: <1359628977-20069-2-git-send-email-fabio.porcedda@gmail.com>
+Date: Thu, 31 Jan 2013 11:42:56 +0100
+Message-Id: <1359628977-20069-3-git-send-email-fabio.porcedda@gmail.com>
 In-Reply-To: <1359628977-20069-1-git-send-email-fabio.porcedda@gmail.com>
 References: <1359628977-20069-1-git-send-email-fabio.porcedda@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,119 +23,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] at91sam9260/9g20ek: cleanup coding style
+Subject: [PATCH 2/3] at91sam9260/9g20ek: move sam9_smc_config modification
+ inside definition
 To: barebox@lists.infradead.org
 
-- fix some error and warnings pointed out by checkpatch.
-- join some short lines.
-- remove some empty lines.
-- remove unnecessary headers.
+This is a optimization.
 
 Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
 Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/at91sam9260ek/init.c | 37 +++++++++++++++---------------------
- 1 file changed, 15 insertions(+), 22 deletions(-)
+ arch/arm/boards/at91sam9260ek/init.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
 diff --git a/arch/arm/boards/at91sam9260ek/init.c b/arch/arm/boards/at91sam9260ek/init.c
-index 2d52f5a..f0d8adf 100644
+index f0d8adf..5080f2a 100644
 --- a/arch/arm/boards/at91sam9260ek/init.c
 +++ b/arch/arm/boards/at91sam9260ek/init.c
-@@ -10,25 +10,15 @@
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
-- *
-- *
-  */
- 
- #include <common.h>
--#include <net.h>
- #include <init.h>
- #include <environment.h>
--#include <fec.h>
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
--#include <partition.h>
--#include <fs.h>
--#include <fcntl.h>
--#include <io.h>
--#include <asm/hardware.h>
- #include <nand.h>
- #include <sizes.h>
--#include <linux/mtd/nand.h>
- #include <mach/board.h>
- #include <mach/at91sam9_smc.h>
- #include <gpio.h>
-@@ -83,7 +73,8 @@ static struct sam9_smc_config ek_9260_nand_smc_config = {
- 	.read_cycle		= 5,
+@@ -74,7 +74,11 @@ static struct sam9_smc_config ek_9260_nand_smc_config = {
  	.write_cycle		= 5,
  
--	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE | AT91_SMC_EXNWMODE_DISABLE,
-+	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
-+				  AT91_SMC_EXNWMODE_DISABLE,
+ 	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
+-				  AT91_SMC_EXNWMODE_DISABLE,
++#if defined(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)
++				  AT91_SMC_EXNWMODE_DISABLE | AT91_SMC_DBW_16,
++#else
++				  AT91_SMC_EXNWMODE_DISABLE | AT91_SMC_DBW_8,
++#endif
  	.tdf_cycles		= 2,
  };
  
-@@ -101,7 +92,8 @@ static struct sam9_smc_config ek_9g20_nand_smc_config = {
- 	.read_cycle		= 7,
+@@ -93,27 +97,21 @@ static struct sam9_smc_config ek_9g20_nand_smc_config = {
  	.write_cycle		= 7,
  
--	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE | AT91_SMC_EXNWMODE_DISABLE,
-+	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
-+				  AT91_SMC_EXNWMODE_DISABLE,
+ 	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
+-				  AT91_SMC_EXNWMODE_DISABLE,
++#if defined(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)
++				  AT91_SMC_EXNWMODE_DISABLE | AT91_SMC_DBW_16,
++#else
++				  AT91_SMC_EXNWMODE_DISABLE | AT91_SMC_DBW_8,
++#endif
  	.tdf_cycles		= 3,
  };
  
-@@ -153,12 +145,11 @@ static void at91sam9260ek_phy_reset(void)
- 	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_EXTRST);
- 
- 	/* Wait for end hardware reset */
--	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL));
-+	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL))
-+		;
- 
- 	/* Restore NRST value */
--	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
--				     (rstc) |
--				     AT91_RSTC_URSTEN);
-+	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY | (rstc) | AT91_RSTC_URSTEN);
- }
- 
- /*
-@@ -260,18 +251,21 @@ static int at91sam9260ek_devices_init(void)
- 	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_1 + 0x100));
- 	ek_set_board_type();
- 
--	devfs_add_partition("nand0", 0x00000, SZ_128K, DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
-+	devfs_add_partition("nand0", 0x00000, SZ_128K, DEVFS_PARTITION_FIXED,
-+			    "at91bootstrap_raw");
- 	dev_add_bb_dev("at91bootstrap_raw", "at91bootstrap");
--	devfs_add_partition("nand0", SZ_128K, SZ_256K, DEVFS_PARTITION_FIXED, "self_raw");
-+	devfs_add_partition("nand0", SZ_128K, SZ_256K, DEVFS_PARTITION_FIXED,
-+			    "self_raw");
- 	dev_add_bb_dev("self_raw", "self0");
--	devfs_add_partition("nand0", SZ_256K + SZ_128K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw");
-+	devfs_add_partition("nand0", SZ_256K + SZ_128K, SZ_128K,
-+			    DEVFS_PARTITION_FIXED, "env_raw");
- 	dev_add_bb_dev("env_raw", "env0");
--	devfs_add_partition("nand0", SZ_512K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw1");
-+	devfs_add_partition("nand0", SZ_512K, SZ_128K, DEVFS_PARTITION_FIXED,
-+			    "env_raw1");
- 	dev_add_bb_dev("env_raw1", "env1");
- 
- 	return 0;
- }
+ static void ek_add_device_nand(void)
+ {
+-	struct sam9_smc_config *smc;
 -
- device_initcall(at91sam9260ek_devices_init);
- 
- static int at91sam9260ek_console_init(void)
-@@ -279,5 +273,4 @@ static int at91sam9260ek_console_init(void)
- 	at91_register_uart(0, 0);
- 	return 0;
- }
++	/* configure chip-select 3 (NAND) */
+ 	if (machine_is_at91sam9g20ek())
+-		smc = &ek_9g20_nand_smc_config;
+-	else
+-		smc = &ek_9260_nand_smc_config;
 -
- console_initcall(at91sam9260ek_console_init);
+-	/* setup bus-width (8 or 16) */
+-	if (nand_pdata.bus_width_16)
+-		smc->mode |= AT91_SMC_DBW_16;
++		sam9_smc_configure(0, 3, &ek_9g20_nand_smc_config);
+ 	else
+-		smc->mode |= AT91_SMC_DBW_8;
+-
+-	/* configure chip-select 3 (NAND) */
+-	sam9_smc_configure(0, 3, smc);
++		sam9_smc_configure(0, 3, &ek_9260_nand_smc_config);
+ 
+ 	at91_add_device_nand(&nand_pdata);
+ }
 -- 
 1.8.1.1
 
