@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 5.mo1.mail-out.ovh.net ([178.33.45.107]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U0u1B-0000Au-CL
- for barebox@lists.infradead.org; Thu, 31 Jan 2013 13:17:30 +0000
+ id 1U0u5a-00019v-90
+ for barebox@lists.infradead.org; Thu, 31 Jan 2013 13:22:02 +0000
 Received: from mail610.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id F2AE8FFAEFD
- for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 14:32:11 +0100 (CET)
-Date: Thu, 31 Jan 2013 14:16:11 +0100
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 4F9FFFFB0E0
+ for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 14:36:46 +0100 (CET)
+Date: Thu, 31 Jan 2013 14:20:45 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130131131611.GB26329@game.jcrosoft.org>
+Message-ID: <20130131132045.GC26329@game.jcrosoft.org>
 References: <1358779081-31836-1-git-send-email-plagnioj@jcrosoft.com>
  <20130130221314.GA11480@pengutronix.de>
 MIME-Version: 1.0
@@ -58,13 +58,6 @@ On 23:13 Wed 30 Jan     , Sascha Hauer wrote:
 > haven't investigated why. Anything else but fat does not make sense
 > anyway since the OMAP ROM code expects a FAT for the MLO here and barebox
 > is on the same partition.
-
-and so I update the code and re-resend it
-
-btw the binary is smaller with the new bootstrap code
-
-Best Regards,
-J.
 > 
 > > +		break;
 > > +	case OMAP_BOOTSRC_USB1:
@@ -73,15 +66,14 @@ J.
 > > +			func = bootstrap_read_disk("omap4_usbboot", "omap4_usbbootfs");
 > 
 > 'func' is set but not used now.
-> 
-> Sascha
-> 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+it's 
+
+	bootstrap_boot(func, false);
+
+ligne 57
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
