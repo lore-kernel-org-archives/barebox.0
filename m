@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f170.google.com ([209.85.217.170])
+Received: from mail-lb0-f169.google.com ([209.85.217.169])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U11m8-0006Cq-Iz
+ id 1U11m8-0006D3-J1
  for barebox@lists.infradead.org; Thu, 31 Jan 2013 21:34:29 +0000
-Received: by mail-lb0-f170.google.com with SMTP id ge1so3897965lbb.29
- for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 13:34:25 -0800 (PST)
+Received: by mail-lb0-f169.google.com with SMTP id m4so3900272lbo.28
+ for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 13:34:26 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri,  1 Feb 2013 01:46:31 +0400
-Message-Id: <1359668796-22835-1-git-send-email-antonynpavlov@gmail.com>
+Date: Fri,  1 Feb 2013 01:46:32 +0400
+Message-Id: <1359668796-22835-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1359668796-22835-1-git-send-email-antonynpavlov@gmail.com>
+References: <1359668796-22835-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,17 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/5] gpiolib: add gpio_request_{in,out}put support
+Subject: [PATCH v2 1/5] gpiolib: fix whitespaces
 To: barebox@lists.infradead.org
 
-v2:
- - add error messages to comply with requirements of Jean-Christophe
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ include/gpio.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[PATCH v2 1/5] gpiolib: fix whitespaces
-[PATCH v2 2/5] gpiolib: add gpio_request_{in,out}put support
-[PATCH v2 3/5] gpiolib: gpio_request(): add error message
-[PATCH v2 4/5] at91sam9*: use gpio_request_output()
-[PATCH v2 5/5] animeo_ip: use gpio_request_input()
+diff --git a/include/gpio.h b/include/gpio.h
+index eedb980..794d959 100644
+--- a/include/gpio.h
++++ b/include/gpio.h
+@@ -6,7 +6,7 @@
+ #ifndef CONFIG_GPIOLIB
+ static inline int gpio_request(unsigned gpio, const char *label)
+ {
+-       return 0;
++	return 0;
+ }
+ 
+ static inline void gpio_free(unsigned gpio)
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
