@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f175.google.com ([209.85.217.175])
+Received: from mail-lb0-f174.google.com ([209.85.217.174])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U0zdW-0001r5-DI
- for barebox@lists.infradead.org; Thu, 31 Jan 2013 19:17:27 +0000
-Received: by mail-lb0-f175.google.com with SMTP id n3so3763390lbo.34
- for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 11:17:24 -0800 (PST)
+ id 1U0zdY-0001rH-A7
+ for barebox@lists.infradead.org; Thu, 31 Jan 2013 19:17:29 +0000
+Received: by mail-lb0-f174.google.com with SMTP id l12so3759544lbo.19
+ for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 11:17:26 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 31 Jan 2013 23:29:25 +0400
-Message-Id: <1359660567-12220-3-git-send-email-antonynpavlov@gmail.com>
+Date: Thu, 31 Jan 2013 23:29:27 +0400
+Message-Id: <1359660567-12220-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1359660567-12220-1-git-send-email-antonynpavlov@gmail.com>
 References: <1359660567-12220-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,85 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] gpiolib: add gpio_request_{in,out}put support
+Subject: [PATCH 4/4] animeo_ip: use gpio_request_input()
 To: barebox@lists.infradead.org
-
-gpio_request() followed by gpio_direction_{in,out}put
-is a gpio usage pattern (e.g. the similar functions
-are used in a ARM boards code).
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/gpio/gpio.c |   26 ++++++++++++++++++++++++++
- include/gpio.h      |   13 +++++++++++++
- 2 files changed, 39 insertions(+)
+ arch/arm/boards/animeo_ip/init.c |   15 ++-------------
+ 1 file changed, 2 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpio/gpio.c b/drivers/gpio/gpio.c
-index d37f5a0..f32f304 100644
---- a/drivers/gpio/gpio.c
-+++ b/drivers/gpio/gpio.c
-@@ -47,6 +47,32 @@ int gpio_request(unsigned gpio, const char *label)
- 	return 0;
- }
- 
-+int gpio_request_input(unsigned gpio, const char *label)
-+{
-+	int ret;
-+
-+	ret = gpio_request(gpio, label);
-+	if (ret)
-+		return ret;
-+
-+	ret = gpio_direction_input(gpio);
-+
-+	return ret;
-+}
-+
-+int gpio_request_output(unsigned gpio, const char *label, int value)
-+{
-+	int ret;
-+
-+	ret = gpio_request(gpio, label);
-+	if (ret)
-+		return ret;
-+
-+	ret = gpio_direction_output(gpio, value);
-+
-+	return ret;
-+}
-+
- void gpio_free(unsigned gpio)
+diff --git a/arch/arm/boards/animeo_ip/init.c b/arch/arm/boards/animeo_ip/init.c
+index ada3bb0..a5062f1 100644
+--- a/arch/arm/boards/animeo_ip/init.c
++++ b/arch/arm/boards/animeo_ip/init.c
+@@ -33,20 +33,9 @@ static int animeo_ip_get_pio_revision(int gpio, char *name)
  {
- 	struct gpio_info *gi = &gpio_desc[gpio];
-diff --git a/include/gpio.h b/include/gpio.h
-index 794d959..309c1c5 100644
---- a/include/gpio.h
-+++ b/include/gpio.h
-@@ -9,11 +9,24 @@ static inline int gpio_request(unsigned gpio, const char *label)
- 	return 0;
- }
+ 	int ret;
  
-+static inline int gpio_request_input(unsigned gpio, const char *label)
-+{
-+	return 0;
-+}
-+
-+static inline int gpio_request_output(unsigned gpio, const char *label,
-+		int value)
-+{
-+	return 0;
-+}
-+
- static inline void gpio_free(unsigned gpio)
- {
- }
- #else
- int gpio_request(unsigned gpio, const char *label);
-+int gpio_request_input(unsigned gpio, const char *label);
-+int gpio_request_output(unsigned gpio, const char *label, int value);
- void gpio_free(unsigned gpio);
- #endif
+-	ret = gpio_request(gpio, name);
+-	if (ret) {
+-		pr_err("animeo_ip: can not request gpio %d as %s (%d)\n",
+-			gpio, name, ret);
++	ret = gpio_request_input(gpio, name);
++	if (ret)
+ 		return ret;
+-	}
+-
+-	ret = gpio_direction_input(gpio);
+-
+-	if (ret) {
+-		pr_err("animeo_ip: can configure gpio %d (%s) as input (%d)\n",
+-			gpio, name, ret);
+-		return ret;
+-	}
  
+ 	return gpio_get_value(gpio);
+ }
 -- 
 1.7.10.4
 
