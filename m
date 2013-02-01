@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U1BXM-00045v-VG
- for barebox@lists.infradead.org; Fri, 01 Feb 2013 08:00:10 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U1BXc-0001k7-DJ
+ for barebox@lists.infradead.org; Fri, 01 Feb 2013 08:00:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Feb 2013 08:59:34 +0100
-Message-Id: <1359705587-9762-22-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  1 Feb 2013 08:59:43 +0100
+Message-Id: <1359705587-9762-31-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,187 +21,104 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 21/34] ARM AT91: switch remaining boards to barebox_arm_entry
+Subject: [PATCH 30/34] ARM: Enable mmu early
 To: barebox@lists.infradead.org
 
-For At91 boards which do not have a SDRAM size detection function
-we create a lowlevel reset function which calls barebox_arm_entry
-manually with the known memory size.
+This optionally enabled the MMU in the PBL or during early startup for
+the non PBL case. The regular MMU init code will pickup the already enabled
+MMU later. This might complicate debugging early code, so this has been
+made optional.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig                            |    2 ++
- arch/arm/boards/at91sam9m10g45ek/Makefile   |    2 ++
- arch/arm/boards/at91sam9m10g45ek/lowlevel.c |   11 +++++++++++
- arch/arm/boards/at91sam9m10ihd/Makefile     |    2 ++
- arch/arm/boards/at91sam9m10ihd/lowlevel.c   |   11 +++++++++++
- arch/arm/boards/at91sam9n12ek/Makefile      |    2 ++
- arch/arm/boards/at91sam9n12ek/lowlevel.c    |   11 +++++++++++
- arch/arm/boards/at91sam9x5ek/Makefile       |    2 ++
- arch/arm/boards/at91sam9x5ek/lowlevel.c     |   11 +++++++++++
- arch/arm/boards/pm9g45/Makefile             |    2 ++
- arch/arm/boards/pm9g45/lowlevel.c           |   11 +++++++++++
- arch/arm/mach-at91/Kconfig                  |    2 --
- 12 files changed, 67 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/boards/at91sam9m10g45ek/lowlevel.c
- create mode 100644 arch/arm/boards/at91sam9m10ihd/lowlevel.c
- create mode 100644 arch/arm/boards/at91sam9n12ek/lowlevel.c
- create mode 100644 arch/arm/boards/at91sam9x5ek/lowlevel.c
- create mode 100644 arch/arm/boards/pm9g45/lowlevel.c
+ arch/arm/cpu/start-pbl.c |    8 +++++++-
+ arch/arm/cpu/start.c     |   12 ++++++++++++
+ common/Kconfig           |    9 +++++++++
+ 3 files changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index c7daebe..0d5e004 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -30,6 +30,8 @@ config ARCH_AT91
- 	select CLKDEV_LOOKUP
- 	select HAS_DEBUG_LL
- 	select HAVE_MACH_ARM_HEAD
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select MACH_DO_LOWLEVEL_INIT
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index 0599c57..a825e9f 100644
+--- a/arch/arm/cpu/start-pbl.c
++++ b/arch/arm/cpu/start-pbl.c
+@@ -32,7 +32,7 @@
+ #include <asm/pgtable.h>
+ #include <asm/cache.h>
  
- config ARCH_BCM2835
- 	bool "Broadcom BCM2835 boards"
-diff --git a/arch/arm/boards/at91sam9m10g45ek/Makefile b/arch/arm/boards/at91sam9m10g45ek/Makefile
-index eb072c0..47ab803 100644
---- a/arch/arm/boards/at91sam9m10g45ek/Makefile
-+++ b/arch/arm/boards/at91sam9m10g45ek/Makefile
-@@ -1 +1,3 @@
- obj-y += init.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/at91sam9m10g45ek/lowlevel.c b/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
-new file mode 100644
-index 0000000..65259bb
---- /dev/null
-+++ b/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/hardware.h>
-+
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
-+}
-diff --git a/arch/arm/boards/at91sam9m10ihd/Makefile b/arch/arm/boards/at91sam9m10ihd/Makefile
-index f2acf20..4ec0b36 100644
---- a/arch/arm/boards/at91sam9m10ihd/Makefile
-+++ b/arch/arm/boards/at91sam9m10ihd/Makefile
-@@ -1,2 +1,4 @@
- obj-y += init.o
- obj-y += hw_version.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/at91sam9m10ihd/lowlevel.c b/arch/arm/boards/at91sam9m10ihd/lowlevel.c
-new file mode 100644
-index 0000000..65259bb
---- /dev/null
-+++ b/arch/arm/boards/at91sam9m10ihd/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/hardware.h>
-+
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
-+}
-diff --git a/arch/arm/boards/at91sam9n12ek/Makefile b/arch/arm/boards/at91sam9n12ek/Makefile
-index eb072c0..6c1a61f 100644
---- a/arch/arm/boards/at91sam9n12ek/Makefile
-+++ b/arch/arm/boards/at91sam9n12ek/Makefile
-@@ -1 +1,3 @@
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
- obj-y += init.o
-diff --git a/arch/arm/boards/at91sam9n12ek/lowlevel.c b/arch/arm/boards/at91sam9n12ek/lowlevel.c
-new file mode 100644
-index 0000000..65259bb
---- /dev/null
-+++ b/arch/arm/boards/at91sam9n12ek/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/hardware.h>
-+
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
-+}
-diff --git a/arch/arm/boards/at91sam9x5ek/Makefile b/arch/arm/boards/at91sam9x5ek/Makefile
-index f2acf20..4ec0b36 100644
---- a/arch/arm/boards/at91sam9x5ek/Makefile
-+++ b/arch/arm/boards/at91sam9x5ek/Makefile
-@@ -1,2 +1,4 @@
- obj-y += init.o
- obj-y += hw_version.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/at91sam9x5ek/lowlevel.c b/arch/arm/boards/at91sam9x5ek/lowlevel.c
-new file mode 100644
-index 0000000..65259bb
---- /dev/null
-+++ b/arch/arm/boards/at91sam9x5ek/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/hardware.h>
-+
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
-+}
-diff --git a/arch/arm/boards/pm9g45/Makefile b/arch/arm/boards/pm9g45/Makefile
-index eb072c0..47ab803 100644
---- a/arch/arm/boards/pm9g45/Makefile
-+++ b/arch/arm/boards/pm9g45/Makefile
-@@ -1 +1,3 @@
- obj-y += init.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/pm9g45/lowlevel.c b/arch/arm/boards/pm9g45/lowlevel.c
-new file mode 100644
-index 0000000..65259bb
---- /dev/null
-+++ b/arch/arm/boards/pm9g45/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/hardware.h>
-+
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
-+}
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index da2768a..337d2a6 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -91,8 +91,6 @@ config SOC_AT91RM9200
- 	select CPU_ARM920T
- 	select HAVE_AT91_DBGU0
- 	select HAS_AT91_ETHER
--	select MACH_HAS_LOWLEVEL_INIT
--	select MACH_DO_LOWLEVEL_INIT
+-#include "mmu.h"
++#include "mmu-early.h"
  
- config SOC_AT91SAM9260
+ unsigned long free_mem_ptr;
+ unsigned long free_mem_end_ptr;
+@@ -83,6 +83,12 @@ static noinline __noreturn void __barebox_arm_entry(uint32_t membase,
+ 
+ 	setup_c();
+ 
++	if (IS_ENABLED(CONFIG_MMU_EARLY)) {
++		endmem &= ~0x3fff;
++		endmem -= SZ_16K; /* ttb */
++		mmu_early_enable(membase, memsize, endmem);
++	}
++
+ 	endmem -= SZ_128K; /* early malloc */
+ 	free_mem_ptr = endmem;
+ 	free_mem_end_ptr = free_mem_ptr + SZ_128K;
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index a621161..d90b244 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -19,6 +19,7 @@
+ 
+ #include <common.h>
+ #include <init.h>
++#include <sizes.h>
+ #include <asm/barebox-arm.h>
+ #include <asm/barebox-arm-head.h>
+ #include <asm-generic/memory_layout.h>
+@@ -26,6 +27,8 @@
+ #include <asm/cache.h>
+ #include <memory.h>
+ 
++#include "mmu-early.h"
++
+ unsigned long arm_stack_top;
+ 
+ static noinline __noreturn void __start(uint32_t membase, uint32_t memsize,
+@@ -38,6 +41,15 @@ static noinline __noreturn void __start(uint32_t membase, uint32_t memsize,
+ 	arm_stack_top = endmem;
+ 	endmem -= STACK_SIZE; /* Stack */
+ 
++	if (IS_ENABLED(CONFIG_MMU_EARLY)) {
++
++		endmem &= ~0x3fff;
++		endmem -= SZ_16K; /* ttb */
++
++		if (!IS_ENABLED(CONFIG_PBL_IMAGE))
++			mmu_early_enable(membase, memsize, endmem);
++	}
++
+ 	start_barebox();
+ }
+ 
+diff --git a/common/Kconfig b/common/Kconfig
+index 595e91f..3f6c11e 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -114,6 +114,15 @@ config MMU
+ 	  to enable the data cache which depends on the MMU. See Documentation/mmu.txt
+ 	  for further information.
+ 
++config MMU_EARLY
++	bool "Enable MMU early"
++	depends on ARM
++	depends on MMU
++	default y
++	help
++	  This enables the MMU during early startup. This speeds up things during startup
++	  of barebox, but may lead to harder to debug code. If unsure say yes here.
++
+ config HAVE_CONFIGURABLE_TEXT_BASE
  	bool
+ 
 -- 
 1.7.10.4
 
