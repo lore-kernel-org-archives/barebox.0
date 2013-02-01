@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U1BXO-0004La-A6
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U1BXL-000453-Ig
  for barebox@lists.infradead.org; Fri, 01 Feb 2013 07:59:55 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Feb 2013 08:59:44 +0100
-Message-Id: <1359705587-9762-32-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  1 Feb 2013 08:59:14 +0100
+Message-Id: <1359705587-9762-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,95 +21,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 31/34] ARM: Automatically determine malloc size
+Subject: [PATCH 01/34] ARM: Add new entry point for barebox
 To: barebox@lists.infradead.org
+
+Memory is a precious resource, so it makes sense to make it available as
+early as possible. By definition the lowlevel init code already knows where
+to find memory because it's the lowlevel init code which sets up the memory.
+Until all boards are converted this new entry is just a fallback to the old
+entry point.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start.c  |   28 ++++++++++++++++++++++++++++
- arch/arm/lib/Makefile |    1 -
- arch/arm/lib/arm.c    |   14 --------------
- 3 files changed, 28 insertions(+), 15 deletions(-)
- delete mode 100644 arch/arm/lib/arm.c
+ arch/arm/cpu/start-pbl.c           |   13 +++++++++++++
+ arch/arm/cpu/start.c               |   13 +++++++++++++
+ arch/arm/include/asm/barebox-arm.h |    1 +
+ 3 files changed, 27 insertions(+)
 
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index f506792..f1ce2c5 100644
+--- a/arch/arm/cpu/start-pbl.c
++++ b/arch/arm/cpu/start-pbl.c
+@@ -183,3 +183,16 @@ void __naked board_init_lowlevel_return(void)
+ 
+ 	barebox_uncompress((void *)pg_start, pg_len);
+ }
++
++/*
++ * Main ARM entry point in the compressed image. Call this with the memory
++ * region you can spare for barebox. This doesn't necessarily have to be the
++ * full SDRAM. The currently running binary can be inside or outside of this
++ * region. TEXT_BASE can be inside or outside of this region. boarddata will
++ * be preserved and can be accessed later with barebox_arm_boarddata().
++ */
++void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
++		uint32_t boarddata)
++{
++	board_init_lowlevel_return();
++}
 diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index d90b244..cd34d9c 100644
+index 793445a..0b7eee8 100644
 --- a/arch/arm/cpu/start.c
 +++ b/arch/arm/cpu/start.c
-@@ -35,6 +35,7 @@ static noinline __noreturn void __start(uint32_t membase, uint32_t memsize,
- 		uint32_t boarddata)
- {
- 	unsigned long endmem = membase + memsize;
-+	unsigned long malloc_start, malloc_end;
+@@ -63,3 +63,16 @@ void __naked board_init_lowlevel_return(void)
  
- 	setup_c();
- 
-@@ -50,6 +51,33 @@ static noinline __noreturn void __start(uint32_t membase, uint32_t memsize,
- 			mmu_early_enable(membase, memsize, endmem);
- 	}
- 
-+	if ((unsigned long)_text > membase + memsize ||
-+			(unsigned long)_text < membase)
-+		/*
-+		 * barebox is either outside SDRAM or in another
-+		 * memory bank, so we can use the whole bank for
-+		 * malloc.
-+		 */
-+		malloc_end = endmem;
-+	else
-+		malloc_end = (unsigned long)_text;
-+
-+	/*
-+	 * Maximum malloc space is the Kconfig value if given
-+	 * or 64MB.
-+	 */
-+	if (MALLOC_SIZE > 0) {
-+		malloc_start = malloc_end - MALLOC_SIZE;
-+		if (malloc_start < membase)
-+			malloc_start = membase;
-+	} else {
-+		malloc_start = malloc_end - (malloc_end - membase) / 2;
-+		if (malloc_end - malloc_start > SZ_64M)
-+			malloc_start = malloc_end - SZ_64M;
-+	}
-+
-+	mem_malloc_init((void *)malloc_start, (void *)malloc_end - 1);
-+
  	start_barebox();
  }
++
++/*
++ * Main ARM entry point in the uncompressed image. Call this with the memory
++ * region you can spare for barebox. This doesn't necessarily have to be the
++ * full SDRAM. The currently running binary can be inside or outside of this
++ * region. TEXT_BASE can be inside or outside of this region. boarddata will
++ * be preserved and can be accessed later with barebox_arm_boarddata().
++ */
++void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
++                uint32_t boarddata)
++{
++	board_init_lowlevel_return();
++}
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 993130d..4ccf938 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -39,5 +39,6 @@ void board_init_lowlevel_return(void);
+ uint32_t get_runtime_offset(void);
  
-diff --git a/arch/arm/lib/Makefile b/arch/arm/lib/Makefile
-index 2e624cd..3ea695c 100644
---- a/arch/arm/lib/Makefile
-+++ b/arch/arm/lib/Makefile
-@@ -4,7 +4,6 @@ obj-$(CONFIG_CMD_BOOTZ)	+= bootz.o
- obj-$(CONFIG_CMD_BOOTU)	+= bootu.o
- obj-y	+= div0.o
- obj-y	+= findbit.o
--obj-y	+= arm.o
- obj-y	+= io.o
- obj-y	+= io-readsb.o
- obj-y	+= io-readsw-armv4.o
-diff --git a/arch/arm/lib/arm.c b/arch/arm/lib/arm.c
-deleted file mode 100644
-index 80b62e9..0000000
---- a/arch/arm/lib/arm.c
-+++ /dev/null
-@@ -1,14 +0,0 @@
--#include <common.h>
--#include <init.h>
--#include <memory.h>
--#include <asm/barebox-arm.h>
--#include <asm-generic/memory_layout.h>
--
--static int arm_mem_malloc_init(void)
--{
--	mem_malloc_init((void *)MALLOC_BASE,
--			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
--	return 0;
--}
--
--core_initcall(arm_mem_malloc_init);
+ void setup_c(void);
++void __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize, uint32_t boarddata);
+ 
+ #endif	/* _BAREBOX_ARM_H_ */
 -- 
 1.7.10.4
 
