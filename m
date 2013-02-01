@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo5.mail-out.ovh.net ([178.32.119.138]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U1BKa-0001sA-JH
- for barebox@lists.infradead.org; Fri, 01 Feb 2013 07:46:41 +0000
-Received: from mail409.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 332DD10243A0
- for <barebox@lists.infradead.org>; Fri,  1 Feb 2013 08:56:46 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  1 Feb 2013 08:45:21 +0100
-Message-Id: <1359704721-31125-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U1BXO-0004LY-A4
+ for barebox@lists.infradead.org; Fri, 01 Feb 2013 07:59:55 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri,  1 Feb 2013 08:59:46 +0100
+Message-Id: <1359705587-9762-34-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
+References: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,29 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] sama5d3k: the nand flash is 4 bit ecc capable so use it
+Subject: [PATCH 33/34] ARM: disable HAVE_CONFIGURABLE_MEMORY_LAYOUT
 To: barebox@lists.infradead.org
 
-this will require to update the bootstrap
+HAVE_CONFIGURABLE_MEMORY_LAYOUT was first meant as a feature, now it's a
+feature to remove it. barebox on ARM now completely uses the memory passed
+in from the lowlevel code and configures the malloc area and stack space
+during runtime making it obsolete to hardcode these values.
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/sama5d3xek/init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/Kconfig            |    1 -
+ arch/arm/pbl/zbarebox.lds.S |    8 ++++----
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
-index ae23a31..9a22356 100644
---- a/arch/arm/boards/sama5d3xek/init.c
-+++ b/arch/arm/boards/sama5d3xek/init.c
-@@ -63,7 +63,7 @@ static struct atmel_nand_data nand_pdata = {
- 	.enable_pin	= -EINVAL,
- 	.ecc_mode	= NAND_ECC_HW,
- 	.pmecc_sector_size = 512,
--	.pmecc_corr_cap = 2,
-+	.pmecc_corr_cap = 4,
- #if defined(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)
- 	.bus_width_16	= 1,
- #endif
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 6f7a71f..28332ec 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -2,7 +2,6 @@ config ARM
+ 	bool
+ 	select HAS_KALLSYMS
+ 	select HAS_MODULES
+-	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
+ 	select HAVE_CONFIGURABLE_TEXT_BASE
+ 	select HAVE_PBL_IMAGE
+ 	select HAVE_IMAGE_COMPRESSION
+diff --git a/arch/arm/pbl/zbarebox.lds.S b/arch/arm/pbl/zbarebox.lds.S
+index 37af4e9..564b3c6 100644
+--- a/arch/arm/pbl/zbarebox.lds.S
++++ b/arch/arm/pbl/zbarebox.lds.S
+@@ -20,7 +20,7 @@
+  * MA 02111-1307 USA
+  *
+  */
+-
++#include <sizes.h>
+ #include <asm-generic/barebox.lds.h>
+ #include <asm-generic/memory_layout.h>
+ 
+@@ -29,7 +29,7 @@ OUTPUT_ARCH(arm)
+ ENTRY(pbl_start)
+ SECTIONS
+ {
+-	. = HEAD_TEXT_BASE;
++	. = TEXT_BASE - SZ_2M;
+ 
+ 	PRE_IMAGE
+ 
+@@ -71,6 +71,6 @@ SECTIONS
+ 	}
+ 	__piggydata_end = .;
+ 
+-	_barebox_image_size = __piggydata_end - HEAD_TEXT_BASE;
+-	_barebox_pbl_size = __bss_start - HEAD_TEXT_BASE;
++	_barebox_image_size = __piggydata_end - (TEXT_BASE - SZ_2M);
++	_barebox_pbl_size = __bss_start - (TEXT_BASE - SZ_2M);
+ }
 -- 
 1.7.10.4
 
