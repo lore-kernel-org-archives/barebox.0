@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U1BXM-00045L-H9
- for barebox@lists.infradead.org; Fri, 01 Feb 2013 08:00:05 +0000
+ id 1U1BXM-00045x-VH
+ for barebox@lists.infradead.org; Fri, 01 Feb 2013 08:00:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Feb 2013 08:59:20 +0100
-Message-Id: <1359705587-9762-8-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  1 Feb 2013 08:59:39 +0100
+Message-Id: <1359705587-9762-27-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,199 +21,144 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/34] ARM MXS boards: switch to barebox_arm_entry
+Subject: [PATCH 26/34] ARM: Setup stack at end of SDRAM
 To: barebox@lists.infradead.org
-
-All boards use hardcoded SDRAM addresses, copied from the board init file.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig                                 |    2 ++
- arch/arm/boards/chumby_falconwing/Makefile       |    2 ++
- arch/arm/boards/chumby_falconwing/lowlevel.c     |   11 +++++++++++
- arch/arm/boards/crystalfontz-cfa10036/Makefile   |    2 ++
- arch/arm/boards/crystalfontz-cfa10036/lowlevel.c |   11 +++++++++++
- arch/arm/boards/freescale-mx23-evk/Makefile      |    2 ++
- arch/arm/boards/freescale-mx23-evk/lowlevel.c    |   11 +++++++++++
- arch/arm/boards/freescale-mx28-evk/Makefile      |    2 ++
- arch/arm/boards/freescale-mx28-evk/lowlevel.c    |   11 +++++++++++
- arch/arm/boards/imx233-olinuxino/Makefile        |    2 ++
- arch/arm/boards/imx233-olinuxino/lowlevel.c      |   11 +++++++++++
- arch/arm/boards/karo-tx28/Makefile               |    2 ++
- arch/arm/boards/karo-tx28/lowlevel.c             |   11 +++++++++++
- 13 files changed, 80 insertions(+)
- create mode 100644 arch/arm/boards/chumby_falconwing/lowlevel.c
- create mode 100644 arch/arm/boards/crystalfontz-cfa10036/lowlevel.c
- create mode 100644 arch/arm/boards/freescale-mx23-evk/lowlevel.c
- create mode 100644 arch/arm/boards/freescale-mx28-evk/lowlevel.c
- create mode 100644 arch/arm/boards/imx233-olinuxino/lowlevel.c
- create mode 100644 arch/arm/boards/karo-tx28/lowlevel.c
+ arch/arm/cpu/cpu.c                 |   12 ++++++++++++
+ arch/arm/cpu/start-pbl.c           |    4 +---
+ arch/arm/cpu/start.c               |   18 +++++++++++++++++-
+ arch/arm/include/asm/barebox-arm.h |    2 ++
+ common/meminfo.c                   |    5 -----
+ 5 files changed, 32 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index cac3360..627c1b5 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -64,6 +64,8 @@ config ARCH_IMX
- config ARCH_MXS
- 	bool "Freescale i.MX23/28 (mxs) based"
- 	select GENERIC_GPIO
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select MACH_DO_LOWLEVEL_INIT
+diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
+index 2ca871f..7761f5c 100644
+--- a/arch/arm/cpu/cpu.c
++++ b/arch/arm/cpu/cpu.c
+@@ -28,6 +28,7 @@
+ #include <asm/mmu.h>
+ #include <asm/system.h>
+ #include <asm/memory.h>
++#include <asm-generic/memory_layout.h>
+ #include <asm/system_info.h>
+ #include <asm/cputype.h>
+ #include <asm/cache.h>
+@@ -91,6 +92,17 @@ void arch_shutdown(void)
+ 	__asm__ __volatile__("msr cpsr, %0" : : "r"(r));
+ }
  
- config ARCH_NETX
- 	bool "Hilscher NetX based"
-diff --git a/arch/arm/boards/chumby_falconwing/Makefile b/arch/arm/boards/chumby_falconwing/Makefile
-index 0bc79d9..360b55c 100644
---- a/arch/arm/boards/chumby_falconwing/Makefile
-+++ b/arch/arm/boards/chumby_falconwing/Makefile
-@@ -1 +1,3 @@
- obj-y = falconwing.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/chumby_falconwing/lowlevel.c b/arch/arm/boards/chumby_falconwing/lowlevel.c
-new file mode 100644
-index 0000000..df28ad4
---- /dev/null
-+++ b/arch/arm/boards/chumby_falconwing/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/imx23-regs.h>
++extern unsigned long arm_stack_top;
 +
-+void __naked reset(void)
++static int arm_request_stack(void)
 +{
-+	common_reset();
-+	barebox_arm_entry(IMX_MEMORY_BASE, SZ_64M, 0);
-+}
-diff --git a/arch/arm/boards/crystalfontz-cfa10036/Makefile b/arch/arm/boards/crystalfontz-cfa10036/Makefile
-index 7e8d5e2..0b701ed 100644
---- a/arch/arm/boards/crystalfontz-cfa10036/Makefile
-+++ b/arch/arm/boards/crystalfontz-cfa10036/Makefile
-@@ -1 +1,3 @@
- obj-y += cfa10036.o hwdetect.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/crystalfontz-cfa10036/lowlevel.c b/arch/arm/boards/crystalfontz-cfa10036/lowlevel.c
-new file mode 100644
-index 0000000..467194f
---- /dev/null
-+++ b/arch/arm/boards/crystalfontz-cfa10036/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/imx28-regs.h>
++	if (!request_sdram_region("stack", arm_stack_top - STACK_SIZE, STACK_SIZE))
++		pr_err("Error: Cannot request SDRAM region for stack\n");
 +
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(IMX_MEMORY_BASE, SZ_128M, 0);
++	return 0;
 +}
-diff --git a/arch/arm/boards/freescale-mx23-evk/Makefile b/arch/arm/boards/freescale-mx23-evk/Makefile
-index cffb561..9386603 100644
---- a/arch/arm/boards/freescale-mx23-evk/Makefile
-+++ b/arch/arm/boards/freescale-mx23-evk/Makefile
-@@ -1,2 +1,4 @@
- #
- obj-y := mx23-evk.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/freescale-mx23-evk/lowlevel.c b/arch/arm/boards/freescale-mx23-evk/lowlevel.c
-new file mode 100644
-index 0000000..0c7e665
---- /dev/null
-+++ b/arch/arm/boards/freescale-mx23-evk/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/imx23-regs.h>
++coredevice_initcall(arm_request_stack);
 +
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(IMX_MEMORY_BASE, SZ_32M, 0);
-+}
-diff --git a/arch/arm/boards/freescale-mx28-evk/Makefile b/arch/arm/boards/freescale-mx28-evk/Makefile
-index 3e1f53b..2039610 100644
---- a/arch/arm/boards/freescale-mx28-evk/Makefile
-+++ b/arch/arm/boards/freescale-mx28-evk/Makefile
-@@ -1 +1,3 @@
- obj-y += mx28-evk.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/freescale-mx28-evk/lowlevel.c b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
-new file mode 100644
-index 0000000..467194f
---- /dev/null
-+++ b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/imx28-regs.h>
+ #ifdef CONFIG_THUMB2_BAREBOX
+ static void thumb2_execute(void *func, int argc, char *argv[])
+ {
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index 64cd6ff..89839f0 100644
+--- a/arch/arm/cpu/start-pbl.c
++++ b/arch/arm/cpu/start-pbl.c
+@@ -174,8 +174,6 @@ static noinline __noreturn void __barebox_arm_entry(uint32_t membase,
+  * be preserved and can be accessed later with barebox_arm_boarddata().
+  *
+  * -> membase + memsize
+- *   ARM_RESERVE_MEM_SIZE    - reserved for board usage. Will not be touched
+- *                             by barebox
+  *   STACK_SIZE              - stack
+  *   16KiB, aligned to 16KiB - First level page table if early MMU support
+  *                             is enabled
+@@ -188,7 +186,7 @@ static noinline __noreturn void __barebox_arm_entry(uint32_t membase,
+ void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
+ 		uint32_t boarddata)
+ {
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 16);
++	arm_setup_stack(membase + memsize - 16);
+ 
+ 	__barebox_arm_entry(membase, memsize, boarddata);
+ }
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 9fd1e8d..a621161 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -26,11 +26,18 @@
+ #include <asm/cache.h>
+ #include <memory.h>
+ 
++unsigned long arm_stack_top;
 +
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(IMX_MEMORY_BASE, SZ_128M, 0);
-+}
-diff --git a/arch/arm/boards/imx233-olinuxino/Makefile b/arch/arm/boards/imx233-olinuxino/Makefile
-index 6d71450..b8d9223 100644
---- a/arch/arm/boards/imx233-olinuxino/Makefile
-+++ b/arch/arm/boards/imx233-olinuxino/Makefile
-@@ -1 +1,3 @@
- obj-y = imx23-olinuxino.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/imx233-olinuxino/lowlevel.c b/arch/arm/boards/imx233-olinuxino/lowlevel.c
-new file mode 100644
-index 0000000..df28ad4
---- /dev/null
-+++ b/arch/arm/boards/imx233-olinuxino/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/imx23-regs.h>
+ static noinline __noreturn void __start(uint32_t membase, uint32_t memsize,
+ 		uint32_t boarddata)
+ {
++	unsigned long endmem = membase + memsize;
 +
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(IMX_MEMORY_BASE, SZ_64M, 0);
-+}
-diff --git a/arch/arm/boards/karo-tx28/Makefile b/arch/arm/boards/karo-tx28/Makefile
-index d80ba17..c90bf36 100644
---- a/arch/arm/boards/karo-tx28/Makefile
-+++ b/arch/arm/boards/karo-tx28/Makefile
-@@ -1,2 +1,4 @@
- obj-y += tx28.o
- obj-$(CONFIG_MACH_TX28STK5) += tx28-stk5.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/karo-tx28/lowlevel.c b/arch/arm/boards/karo-tx28/lowlevel.c
-new file mode 100644
-index 0000000..467194f
---- /dev/null
-+++ b/arch/arm/boards/karo-tx28/lowlevel.c
-@@ -0,0 +1,11 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/imx28-regs.h>
+ 	setup_c();
+ 
++	arm_stack_top = endmem;
++	endmem -= STACK_SIZE; /* Stack */
 +
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(IMX_MEMORY_BASE, SZ_128M, 0);
-+}
+ 	start_barebox();
+ }
+ 
+@@ -47,11 +54,20 @@ void __naked __section(.text_entry) start(void)
+  * full SDRAM. The currently running binary can be inside or outside of this
+  * region. TEXT_BASE can be inside or outside of this region. boarddata will
+  * be preserved and can be accessed later with barebox_arm_boarddata().
++ *
++ * -> membase + memsize
++ *   STACK_SIZE              - stack
++ *   16KiB, aligned to 16KiB - First level page table if early MMU support
++ *                             is enabled
++ * -> maximum end of barebox binary
++ *
++ * Usually a TEXT_BASE of 1MiB below your lowest possible end of memory should
++ * be fine.
+  */
+ void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
+                 uint32_t boarddata)
+ {
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 16);
++	arm_setup_stack(membase + memsize - 16);
+ 
+ 	__start(membase, memsize, boarddata);
+ }
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 42b7a3f..9c10e36 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -25,6 +25,8 @@
+ #ifndef _BAREBOX_ARM_H_
+ #define _BAREBOX_ARM_H_
+ 
++#include <sizes.h>
++
+ /* cpu/.../cpu.c */
+ int	cleanup_before_linux(void);
+ 
+diff --git a/common/meminfo.c b/common/meminfo.c
+index a09b2d2..5e3ff71 100644
+--- a/common/meminfo.c
++++ b/common/meminfo.c
+@@ -14,11 +14,6 @@ static int display_meminfo(void)
+ 	debug("bss segment:  0x%p -> 0x%p\n", __bss_start, __bss_stop - 1);
+ 	printf("malloc space: 0x%08lx -> 0x%08lx (size %s)\n",
+ 		mstart, mend, size_human_readable(msize));
+-#ifdef CONFIG_ARM
+-	printf("stack space:  0x%08x -> 0x%08x (size %s)\n",
+-		STACK_BASE, STACK_BASE + STACK_SIZE - 1,
+-		size_human_readable(STACK_SIZE));
+-#endif
+ 	return 0;
+ }
+ late_initcall(display_meminfo);
 -- 
 1.7.10.4
 
