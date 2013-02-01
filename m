@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U1BXM-00045g-I7
- for barebox@lists.infradead.org; Fri, 01 Feb 2013 07:59:59 +0000
+ id 1U1BXM-00045l-Ia
+ for barebox@lists.infradead.org; Fri, 01 Feb 2013 07:59:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Feb 2013 08:59:27 +0100
-Message-Id: <1359705587-9762-15-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  1 Feb 2013 08:59:30 +0100
+Message-Id: <1359705587-9762-18-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,56 +21,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/34] ARM versatile boards: switch to barebox_arm_entry
+Subject: [PATCH 17/34] ARM raspberrypi: switch to barebox_arm_entry
 To: barebox@lists.infradead.org
-
-Only one board, the qemu based Versatile/PB. Uses hardcoded SDRAM settings.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig                     |    2 ++
- arch/arm/boards/versatile/Makefile   |    3 ++-
- arch/arm/boards/versatile/lowlevel.c |   10 ++++++++++
- 3 files changed, 14 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/boards/versatile/lowlevel.c
+ arch/arm/Kconfig                        |    2 ++
+ arch/arm/boards/raspberry-pi/Makefile   |    2 ++
+ arch/arm/boards/raspberry-pi/lowlevel.c |   11 +++++++++++
+ 3 files changed, 15 insertions(+)
+ create mode 100644 arch/arm/boards/raspberry-pi/lowlevel.c
 
 diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index dcd48a9..79f797e 100644
+index 6ed9bf0..c7daebe 100644
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -123,6 +123,8 @@ config ARCH_VERSATILE
- 	bool "ARM Versatile boards (ARM926EJ-S)"
- 	select CPU_ARM926T
- 	select GPIOLIB
+@@ -39,6 +39,8 @@ config ARCH_BCM2835
+ 	select COMMON_CLK
+ 	select CLOCKSOURCE_BCM2835
+ 	select ARM_AMBA
 +	select MACH_HAS_LOWLEVEL_INIT
 +	select MACH_DO_LOWLEVEL_INIT
  
- config ARCH_TEGRA
- 	bool "Nvidia Tegra-based boards"
-diff --git a/arch/arm/boards/versatile/Makefile b/arch/arm/boards/versatile/Makefile
-index a17aed3..9dc6869 100644
---- a/arch/arm/boards/versatile/Makefile
-+++ b/arch/arm/boards/versatile/Makefile
-@@ -1,2 +1,3 @@
--
- obj-$(CONFIG_MACH_VERSATILEPB) += versatilepb.o
+ config ARCH_CLPS711X
+ 	bool "Cirrus Logic EP711x/EP721x/EP731x"
+diff --git a/arch/arm/boards/raspberry-pi/Makefile b/arch/arm/boards/raspberry-pi/Makefile
+index 6ce5ede..825b30b 100644
+--- a/arch/arm/boards/raspberry-pi/Makefile
++++ b/arch/arm/boards/raspberry-pi/Makefile
+@@ -1 +1,3 @@
+ obj-$(CONFIG_MACH_RPI) += rpi.o
 +obj-y += lowlevel.o
 +pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/versatile/lowlevel.c b/arch/arm/boards/versatile/lowlevel.c
+diff --git a/arch/arm/boards/raspberry-pi/lowlevel.c b/arch/arm/boards/raspberry-pi/lowlevel.c
 new file mode 100644
-index 0000000..3956347
+index 0000000..7a09eed
 --- /dev/null
-+++ b/arch/arm/boards/versatile/lowlevel.c
-@@ -0,0 +1,10 @@
++++ b/arch/arm/boards/raspberry-pi/lowlevel.c
+@@ -0,0 +1,11 @@
 +#include <common.h>
 +#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
 +#include <asm/barebox-arm.h>
++#include <asm/barebox-arm-head.h>
++#include <mach/platform.h>
 +
 +void __naked reset(void)
 +{
-+	common_reset();
-+	barebox_arm_entry(0x0, SZ_64M, 0);
++        common_reset();
++        barebox_arm_entry(BCM2835_SDRAM_BASE, SZ_128M, 0);
 +}
 -- 
 1.7.10.4
