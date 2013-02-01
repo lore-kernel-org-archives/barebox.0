@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U1BXM-00045f-HY
- for barebox@lists.infradead.org; Fri, 01 Feb 2013 07:59:59 +0000
+ id 1U1BXL-000454-Ie
+ for barebox@lists.infradead.org; Fri, 01 Feb 2013 07:59:55 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Feb 2013 08:59:25 +0100
-Message-Id: <1359705587-9762-13-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  1 Feb 2013 08:59:15 +0100
+Message-Id: <1359705587-9762-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,57 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/34] ARM tegra boards: switch to barebox_arm_entry
+Subject: [PATCH 02/34] ARM: add __noreturn to board_init_lowlevel_return
 To: barebox@lists.infradead.org
-
-Only one board, Toshiba AC100. This uses hardcoded SDRAM values.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig                         |    2 ++
- arch/arm/boards/toshiba-ac100/Makefile   |    2 ++
- arch/arm/boards/toshiba-ac100/lowlevel.c |   10 ++++++++++
- 3 files changed, 14 insertions(+)
- create mode 100644 arch/arm/boards/toshiba-ac100/lowlevel.c
+ arch/arm/cpu/start-pbl.c           |    6 +++---
+ arch/arm/cpu/start.c               |    2 +-
+ arch/arm/include/asm/barebox-arm.h |    2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 7b0e59a..5f5b965 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -126,6 +126,8 @@ config ARCH_TEGRA
- 	bool "Nvidia Tegra-based boards"
- 	select CPU_ARM926T
- 	select HAS_DEBUG_LL
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select MACH_DO_LOWLEVEL_INIT
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index f1ce2c5..da62111 100644
+--- a/arch/arm/cpu/start-pbl.c
++++ b/arch/arm/cpu/start-pbl.c
+@@ -118,9 +118,9 @@ static void mmu_disable(void)
+ 	__mmu_cache_off();
+ }
  
- endchoice
+-static void barebox_uncompress(void *compressed_start, unsigned int len)
++static void __noreturn barebox_uncompress(void *compressed_start, unsigned int len)
+ {
+-	void (*barebox)(void);
++	void __noreturn (*barebox)(void);
+ 	/*
+ 	 * remap_cached currently does not work rendering the feature
+ 	 * of enabling the MMU in the PBL useless. disable for now.
+@@ -155,7 +155,7 @@ static void barebox_uncompress(void *compressed_start, unsigned int len)
+  * Board code can jump here by either returning from board_init_lowlevel
+  * or by calling this function directly.
+  */
+-void __naked board_init_lowlevel_return(void)
++void __naked __noreturn board_init_lowlevel_return(void)
+ {
+ 	uint32_t offset;
+ 	uint32_t pg_start, pg_end, pg_len;
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 0b7eee8..f212b61 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -55,7 +55,7 @@ void __naked __bare_init reset(void)
+  * Board code can jump here by either returning from board_init_lowlevel
+  * or by calling this function directly.
+  */
+-void __naked board_init_lowlevel_return(void)
++void __naked __noreturn board_init_lowlevel_return(void)
+ {
+ 	arm_setup_stack(STACK_BASE + STACK_SIZE - 16);
  
-diff --git a/arch/arm/boards/toshiba-ac100/Makefile b/arch/arm/boards/toshiba-ac100/Makefile
-index 9e14763..5b74351 100644
---- a/arch/arm/boards/toshiba-ac100/Makefile
-+++ b/arch/arm/boards/toshiba-ac100/Makefile
-@@ -1,2 +1,4 @@
- obj-y += board.o
- obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/toshiba-ac100/lowlevel.c b/arch/arm/boards/toshiba-ac100/lowlevel.c
-new file mode 100644
-index 0000000..68706a5
---- /dev/null
-+++ b/arch/arm/boards/toshiba-ac100/lowlevel.c
-@@ -0,0 +1,10 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+
-+void __naked reset(void)
-+{
-+	common_reset();
-+	barebox_arm_entry(0x0, SZ_512M, 0);
-+}
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 4ccf938..0574f34 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -35,7 +35,7 @@ int	dram_init (void);
+ extern char __exceptions_start[], __exceptions_stop[];
+ 
+ void board_init_lowlevel(void);
+-void board_init_lowlevel_return(void);
++void __noreturn board_init_lowlevel_return(void);
+ uint32_t get_runtime_offset(void);
+ 
+ void setup_c(void);
 -- 
 1.7.10.4
 
