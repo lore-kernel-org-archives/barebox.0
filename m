@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo5.mail-out.ovh.net ([178.32.228.5])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U1Bjw-0006fm-J1
- for barebox@lists.infradead.org; Fri, 01 Feb 2013 08:12:56 +0000
-Received: from mail409.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 0F00410041A3
- for <barebox@lists.infradead.org>; Fri,  1 Feb 2013 09:22:58 +0100 (CET)
-Date: Fri, 1 Feb 2013 09:11:35 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130201081135.GI26329@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U1BXS-0004MN-Um
+ for barebox@lists.infradead.org; Fri, 01 Feb 2013 08:00:01 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri,  1 Feb 2013 08:59:16 +0100
+Message-Id: <1359705587-9762-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
- <1359705587-9762-19-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1359705587-9762-19-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,226 +16,247 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 18/34] ARM AT91: switch to barebox_arm_entry part1
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 03/34] ARM i.MX: Use SRAM stack in lowlevel code
+To: barebox@lists.infradead.org
 
-On 08:59 Fri 01 Feb     , Sascha Hauer wrote:
-> This switches the at91sam926x, 9g10 and 9g20 over to barebox_arm_entry.
-> For these SoCs we currently support reading back the memory size from
-> the SDRAM controller, so all of these can have a common reset() function.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/arm/boards/at91sam9263ek/Makefile         |    4 ++--
->  arch/arm/boards/mmccpu/Makefile                |    4 ++--
->  arch/arm/boards/pm9261/Makefile                |    4 ++--
->  arch/arm/boards/pm9263/Makefile                |    4 ++--
->  arch/arm/boards/tny-a926x/Makefile             |    4 ++--
->  arch/arm/boards/usb-a926x/Makefile             |    4 ++--
->  arch/arm/mach-at91/Kconfig                     |   15 ++++++++++-----
->  arch/arm/mach-at91/Makefile                    |    4 ++--
->  arch/arm/mach-at91/at91sam926x_lowlevel_init.c |    4 +++-
->  9 files changed, 27 insertions(+), 20 deletions(-)
-> 
-> diff --git a/arch/arm/boards/at91sam9263ek/Makefile b/arch/arm/boards/at91sam9263ek/Makefile
-> index b6460c3..1702783 100644
-> --- a/arch/arm/boards/at91sam9263ek/Makefile
-> +++ b/arch/arm/boards/at91sam9263ek/Makefile
-> @@ -1,5 +1,5 @@
->  obj-y += init.o
->  
-> -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-> +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
->  
-> -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-> +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
-> diff --git a/arch/arm/boards/mmccpu/Makefile b/arch/arm/boards/mmccpu/Makefile
-> index b6460c3..1702783 100644
-> --- a/arch/arm/boards/mmccpu/Makefile
-> +++ b/arch/arm/boards/mmccpu/Makefile
-> @@ -1,5 +1,5 @@
->  obj-y += init.o
->  
-> -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-> +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
->  
-> -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-> +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
-> diff --git a/arch/arm/boards/pm9261/Makefile b/arch/arm/boards/pm9261/Makefile
-> index b6460c3..1702783 100644
-> --- a/arch/arm/boards/pm9261/Makefile
-> +++ b/arch/arm/boards/pm9261/Makefile
-> @@ -1,5 +1,5 @@
->  obj-y += init.o
->  
-> -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-> +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
->  
-> -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-> +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
-> diff --git a/arch/arm/boards/pm9263/Makefile b/arch/arm/boards/pm9263/Makefile
-> index b6460c3..1702783 100644
-> --- a/arch/arm/boards/pm9263/Makefile
-> +++ b/arch/arm/boards/pm9263/Makefile
-> @@ -1,5 +1,5 @@
->  obj-y += init.o
->  
-> -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-> +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
->  
-> -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-> +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
-> diff --git a/arch/arm/boards/tny-a926x/Makefile b/arch/arm/boards/tny-a926x/Makefile
-> index 36ea09f..caa7163 100644
-> --- a/arch/arm/boards/tny-a926x/Makefile
-> +++ b/arch/arm/boards/tny-a926x/Makefile
-> @@ -5,6 +5,6 @@ obj-$(CONFIG_AT91_BOOTSTRAP) += $(bootstrap-y)
->  
->  lowlevel_init-$(CONFIG_MACH_TNY_A9263) = tny_a9263_lowlevel_init.o
->  
-> -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += $(lowlevel_init-y)
->  
-> -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> diff --git a/arch/arm/boards/usb-a926x/Makefile b/arch/arm/boards/usb-a926x/Makefile
-> index e314dd5..88f163f 100644
-> --- a/arch/arm/boards/usb-a926x/Makefile
-> +++ b/arch/arm/boards/usb-a926x/Makefile
-> @@ -5,6 +5,6 @@ obj-$(CONFIG_AT91_BOOTSTRAP) += $(bootstrap-y)
->  
->  lowlevel_init-$(CONFIG_MACH_USB_A9263) = usb_a9263_lowlevel_init.o
->  
-> -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> +obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += $(lowlevel_init-y)
->  
-> -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> +pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-> index 14bab55..ac6fd2f 100644
-> --- a/arch/arm/mach-at91/Kconfig
-> +++ b/arch/arm/mach-at91/Kconfig
-> @@ -6,6 +6,9 @@ config HAVE_AT91_DBGU0
->  config HAVE_AT91_DBGU1
->  	bool
->  
-> +config HAVE_AT91_LOWLEVEL_INIT
-> +	bool
-> +
->  config AT91SAM9_SMC
->  	bool
->  
-> @@ -76,6 +79,8 @@ config HAVE_AT91_LOAD_BAREBOX_SRAM
->  
->  config AT91SAM9_LOWLEVEL_INIT
->  	bool
-> +	select MACH_HAS_LOWLEVEL_INIT
-> +	select MACH_DO_LOWLEVEL_INIT
->  
->  comment "Atmel AT91 System-on-Chip"
->  
-> @@ -300,7 +305,7 @@ config MACH_AT91SAM9261EK
->  config MACH_PM9261
->  	bool "Ronetix PM9261"
->  	select HAS_DM9000
-> -	select MACH_HAS_LOWLEVEL_INIT
-> +	select HAVE_AT91_LOWLEVEL_INIT
->  	help
->  	  Say y here if you are using the Ronetix PM9261 Board
->  
-> @@ -375,7 +380,7 @@ choice
->  
->  config MACH_AT91SAM9263EK
->  	bool "Atmel AT91SAM9263-EK"
-> -	select MACH_HAS_LOWLEVEL_INIT
-> +	select HAVE_AT91_LOWLEVEL_INIT
->  	select HAVE_NAND_ATMEL_BUSWIDTH_16
->  	help
->  	  Say y here if you are using Atmel's AT91SAM9263-EK Evaluation board
-> @@ -387,7 +392,7 @@ config MACH_MMCCPU
->  
->  config MACH_PM9263
->  	bool "Ronetix PM9263"
-> -	select MACH_HAS_LOWLEVEL_INIT
-> +	select HAVE_AT91_LOWLEVEL_INIT
->  	help
->  	  Say y here if you are using the Ronetix PM9263 Board
->  
-> @@ -401,7 +406,7 @@ config MACH_TNY_A9263
->  
->  config MACH_USB_A9263
->  	bool "CALAO USB-A9263"
-> -	select MACH_HAS_LOWLEVEL_INIT
-> +	select HAVE_AT91_LOWLEVEL_INIT
->  	help
->  	  Select this if you are using a Calao Systems USB-A9263.
->  	  <http://www.calao-systems.com>
-> @@ -565,7 +570,7 @@ endif
->  
->  config AT91_BOOTSTRAP
->  	bool "at91 bootstrap"
-> -	depends on MACH_HAS_LOWLEVEL_INIT
-> +	depends on HAVE_AT91_LOWLEVEL_INIT
->  	select BOOTSTRAP
->  
->  config AT91_LOAD_BAREBOX_SRAM
-> diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-> index f6c8500..38aeef6 100644
-> --- a/arch/arm/mach-at91/Makefile
-> +++ b/arch/arm/mach-at91/Makefile
-> @@ -7,9 +7,9 @@ lowlevel_init-$(CONFIG_SOC_AT91SAM9260) += at91sam9260_lowlevel_init.o
->  lowlevel_init-$(CONFIG_SOC_AT91SAM9261) += at91sam9261_lowlevel_init.o
->  lowlevel_init-$(CONFIG_SOC_AT91SAM9263) += at91sam9263_lowlevel_init.o
->  lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
-> -obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> +obj-y += $(lowlevel_init-y)
->  
-> -pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-> +pbl-y += $(lowlevel_init-y)
->  
->  obj-$(CONFIG_AT91SAM9_RESET) += at91sam9_reset.o
->  obj-$(CONFIG_AT91SAM9G45_RESET) += at91sam9g45_reset.o
-> diff --git a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-> index 8b9b33e..cda0456 100644
-> --- a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-> +++ b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-> @@ -49,6 +49,7 @@ static int inline running_in_sram(void)
->  void __bare_init at91sam926x_lowlevel_init(void *pio, bool is_pio_asr,
->  					   u32 matrix_csa)
->  {
-> +#ifdef CONFIG_HAVE_AT91_LOWLEVEL_INIT
->  	u32 r;
->  	int i;
->  	int in_sram = running_in_sram();
-> @@ -184,5 +185,6 @@ void __bare_init at91sam926x_lowlevel_init(void *pio, bool is_pio_asr,
->  	at91_pmc_write(AT91_PMC_PCER, 0xffffffff);
->  
->  end:
-> -	board_init_lowlevel_return();
-> +#endif
-> +	barebox_arm_entry(AT91_SDRAM_BASE, at91_get_sdram_size(), 0);
-I send a patch series to split this pleqse rebase on it
+Several i.MX boards setup a temporary stack in their lowlevel code.
+Instead of using STACK_BASE use a stack in internal SRAM to get rid
+of the STACK_BASE compile time dependency.
 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S        |    3 ++-
+ arch/arm/boards/eukrea_cpuimx35/lowlevel.c             |    2 +-
+ arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S |    3 ++-
+ arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S |    3 ++-
+ arch/arm/boards/guf-cupid/lowlevel.c                   |    2 +-
+ arch/arm/boards/guf-neso/lowlevel.c                    |    2 +-
+ arch/arm/boards/imx21ads/lowlevel_init.S               |    3 ++-
+ arch/arm/boards/karo-tx25/lowlevel.c                   |    3 ++-
+ arch/arm/boards/pcm037/lowlevel.c                      |    2 +-
+ arch/arm/boards/pcm038/lowlevel.c                      |    2 +-
+ arch/arm/boards/pcm043/lowlevel.c                      |    2 +-
+ arch/arm/mach-imx/include/mach/imx21-regs.h            |    1 +
+ arch/arm/mach-imx/include/mach/imx25-regs.h            |    3 +++
+ arch/arm/mach-imx/include/mach/imx27-regs.h            |    1 +
+ arch/arm/mach-imx/include/mach/imx31-regs.h            |    3 +++
+ 15 files changed, 24 insertions(+), 11 deletions(-)
 
-at at91_get_sram_size is going to be drop for SOC specific on
+diff --git a/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S b/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S
+index 4e69aac..287b513 100644
+--- a/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S
++++ b/arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S
+@@ -124,7 +124,8 @@ reset:
+ 	sdram_init
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
+-	ldr	sp, =STACK_BASE + STACK_SIZE - 12	/* Setup a temporary stack in SDRAM */
++	/* Setup a temporary stack in SDRAM */
++	ldr	sp, =MX27_IRAM_BASE_ADDR + MX27_IRAM_SIZE - 4;
+ 
+ 	b	imx27_barebox_boot_nand_external
+ #endif /* CONFIG_NAND_IMX_BOOT */
+diff --git a/arch/arm/boards/eukrea_cpuimx35/lowlevel.c b/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
+index 8f4615a..c43f7fe 100644
+--- a/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
++++ b/arch/arm/boards/eukrea_cpuimx35/lowlevel.c
+@@ -138,7 +138,7 @@ void __bare_init __naked reset(void)
+ 	writel(r, MX35_CCM_BASE_ADDR + MX35_CCM_PDR4);
+ 
+ 	/* setup a stack to be able to call imx35_barebox_boot_nand_external() */
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 12);
++	arm_setup_stack(MX35_IRAM_BASE_ADDR + MX35_IRAM_SIZE - 8);
+ 
+ 	imx35_barebox_boot_nand_external();
+ #else
+diff --git a/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S b/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S
+index 595c485..2e49e6e 100644
+--- a/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S
++++ b/arch/arm/boards/freescale-mx25-3-stack/lowlevel_init.S
+@@ -98,7 +98,8 @@ reset:
+ 	str r3, [r0, #0x30]
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
+-	ldr	sp, =STACK_BASE + STACK_SIZE - 12 /* Setup a temporary stack in SDRAM */
++	/* Setup a temporary stack in SRAM */
++	ldr	sp, =MX25_IRAM_BASE_ADDR + MX25_IRAM_SIZE - 4
+ 
+ 	b	imx25_barebox_boot_nand_external
+ #endif /* CONFIG_NAND_IMX_BOOT */
+diff --git a/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S b/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
+index 5461b61..c63c953 100644
+--- a/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
++++ b/arch/arm/boards/freescale-mx35-3-stack/lowlevel_init.S
+@@ -155,7 +155,8 @@ reset:
+ 	str	r3, [r0, #0x30]
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
+-	ldr	sp, =STACK_BASE + STACK_SIZE - 12		/* Setup a temporary stack in SDRAM */
++	/* Setup a temporary stack in internal SRAM */
++	ldr	sp, =MX35_IRAM_BASE_ADDR + MX35_IRAM_SIZE - 4
+ 
+ 	b	imx35_barebox_boot_nand_external
+ #endif /* CONFIG_NAND_IMX_BOOT */
+diff --git a/arch/arm/boards/guf-cupid/lowlevel.c b/arch/arm/boards/guf-cupid/lowlevel.c
+index f2994eb..c141b54 100644
+--- a/arch/arm/boards/guf-cupid/lowlevel.c
++++ b/arch/arm/boards/guf-cupid/lowlevel.c
+@@ -314,7 +314,7 @@ void __bare_init __naked reset(void)
+ 	writel(r0, MX35_CCM_BASE_ADDR + MX35_CCM_PDR4);
+ 
+ 	/* setup a stack to be able to call imx35_barebox_boot_nand_external() */
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 12);
++	arm_setup_stack(MX35_IRAM_BASE_ADDR + MX35_IRAM_SIZE - 8);
+ 
+ 	imx35_barebox_boot_nand_external();
+ #else
+diff --git a/arch/arm/boards/guf-neso/lowlevel.c b/arch/arm/boards/guf-neso/lowlevel.c
+index 7a366d9..ca44607 100644
+--- a/arch/arm/boards/guf-neso/lowlevel.c
++++ b/arch/arm/boards/guf-neso/lowlevel.c
+@@ -88,7 +88,7 @@ void __bare_init __naked reset(void)
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
+ 	/* setup a stack to be able to call imx27_barebox_boot_nand_external() */
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 12);
++	arm_setup_stack(MX27_IRAM_BASE_ADDR + MX27_IRAM_SIZE - 8);
+ 
+ 	imx27_barebox_boot_nand_external();
+ #else
+diff --git a/arch/arm/boards/imx21ads/lowlevel_init.S b/arch/arm/boards/imx21ads/lowlevel_init.S
+index f06c964..5be4995 100644
+--- a/arch/arm/boards/imx21ads/lowlevel_init.S
++++ b/arch/arm/boards/imx21ads/lowlevel_init.S
+@@ -118,7 +118,8 @@ reset:
+ 	str	r1, [r0]
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
+-	ldr	sp, =STACK_BASE + STACK_SIZE - 12	/* Setup a temporary stack in SDRAM */
++	/* Setup a temporary stack in SRAM */
++	ldr	sp, =MX21_IRAM_BASE_ADDR + MX21_IRAM_SIZE - 4
+ 
+ 	b	imx21_barebox_boot_nand_external
+ #endif /* CONFIG_NAND_IMX_BOOT */
+diff --git a/arch/arm/boards/karo-tx25/lowlevel.c b/arch/arm/boards/karo-tx25/lowlevel.c
+index b1afe18..9e96e39 100644
+--- a/arch/arm/boards/karo-tx25/lowlevel.c
++++ b/arch/arm/boards/karo-tx25/lowlevel.c
+@@ -21,6 +21,7 @@
+ #include <mach/imx25-regs.h>
+ #include <mach/esdctl.h>
+ #include <io.h>
++#include <sizes.h>
+ #include <mach/imx-nand.h>
+ #include <asm/barebox-arm.h>
+ #include <asm/barebox-arm-head.h>
+@@ -134,7 +135,7 @@ void __bare_init __naked reset(void)
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
+ 	/* setup a stack to be able to call imx25_barebox_boot_nand_external() */
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 12);
++	arm_setup_stack(MX25_IRAM_BASE_ADDR + MX25_IRAM_SIZE - 8);
+ 
+ 	imx25_barebox_boot_nand_external();
+ #else
+diff --git a/arch/arm/boards/pcm037/lowlevel.c b/arch/arm/boards/pcm037/lowlevel.c
+index da01732..b531615 100644
+--- a/arch/arm/boards/pcm037/lowlevel.c
++++ b/arch/arm/boards/pcm037/lowlevel.c
+@@ -127,7 +127,7 @@ void __bare_init __naked reset(void)
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
+ 	/* setup a stack to be able to call imx31_barebox_boot_nand_external() */
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 12);
++	arm_setup_stack(MX31_IRAM_BASE_ADDR + MX31_IRAM_SIZE - 12);
+ 
+ 	imx31_barebox_boot_nand_external();
+ #else
+diff --git a/arch/arm/boards/pcm038/lowlevel.c b/arch/arm/boards/pcm038/lowlevel.c
+index 4515107..aecdbf3 100644
+--- a/arch/arm/boards/pcm038/lowlevel.c
++++ b/arch/arm/boards/pcm038/lowlevel.c
+@@ -95,7 +95,7 @@ void __bare_init __naked reset(void)
+ 
+ #ifdef CONFIG_NAND_IMX_BOOT
+ 	/* setup a stack to be able to call mx27_barebox_boot_nand_external() */
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 12);
++	arm_setup_stack(MX27_IRAM_BASE_ADDR + MX27_IRAM_SIZE - 8);
+ 
+ 	imx27_barebox_boot_nand_external();
+ #else
+diff --git a/arch/arm/boards/pcm043/lowlevel.c b/arch/arm/boards/pcm043/lowlevel.c
+index 639064f..a9832e2 100644
+--- a/arch/arm/boards/pcm043/lowlevel.c
++++ b/arch/arm/boards/pcm043/lowlevel.c
+@@ -190,7 +190,7 @@ void __bare_init __naked reset(void)
+ 	writel(r, MX35_CCM_BASE_ADDR + MX35_CCM_PDR4);
+ 
+ 	/* setup a stack to be able to call imx35_barebox_boot_nand_external() */
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 12);
++	arm_setup_stack(MX35_IRAM_BASE_ADDR + MX35_IRAM_SIZE - 8);
+ 
+ 	imx35_barebox_boot_nand_external();
+ #else
+diff --git a/arch/arm/mach-imx/include/mach/imx21-regs.h b/arch/arm/mach-imx/include/mach/imx21-regs.h
+index 87bd99c..1fa463a 100644
+--- a/arch/arm/mach-imx/include/mach/imx21-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx21-regs.h
+@@ -70,6 +70,7 @@
+ #define MX21_NFC_BASE_ADDR		(MX21_X_MEMC_BASE_ADDR + 0x3000)
+ 
+ #define MX21_IRAM_BASE_ADDR		0xffffe800	/* internal ram */
++#define MX21_IRAM_SIZE			0x00001800
+ 
+ /* AIPI (base MX21_AIPI_BASE_ADDR) */
+ #define MX21_AIPI1_PSR0	0x00
+diff --git a/arch/arm/mach-imx/include/mach/imx25-regs.h b/arch/arm/mach-imx/include/mach/imx25-regs.h
+index b8ae45a..9ab0fb3 100644
+--- a/arch/arm/mach-imx/include/mach/imx25-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx25-regs.h
+@@ -76,6 +76,9 @@
+ #define MX25_USB_HS_BASE_ADDR			(MX25_USB_BASE_ADDR + 0x0400)
+ #define MX25_CSI_BASE_ADDR		0x53ff8000
+ 
++#define MX25_IRAM_BASE_ADDR		0x78000000	/* internal ram */
++#define MX25_IRAM_SIZE			SZ_128K
++
+ /*
+  * Clock Controller Module (CCM)
+  */
+diff --git a/arch/arm/mach-imx/include/mach/imx27-regs.h b/arch/arm/mach-imx/include/mach/imx27-regs.h
+index 44bc1d3..c45befb 100644
+--- a/arch/arm/mach-imx/include/mach/imx27-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx27-regs.h
+@@ -100,6 +100,7 @@
+ 
+ /* IRAM */
+ #define MX27_IRAM_BASE_ADDR		0xffff4c00	/* internal ram */
++#define MX27_IRAM_SIZE			0x0000b400
+ 
+ /* PCMCIA (base: MX27_PCMCIA_CTL_BASE_ADDR) */
+ #define MX27_PCMCIA_PIPR	0x00
+diff --git a/arch/arm/mach-imx/include/mach/imx31-regs.h b/arch/arm/mach-imx/include/mach/imx31-regs.h
+index f641fe6..be3e4c1 100644
+--- a/arch/arm/mach-imx/include/mach/imx31-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx31-regs.h
+@@ -21,6 +21,9 @@
+ 
+ #include <sizes.h>
+ 
++#define MX31_IRAM_BASE_ADDR		0x1fffc000
++#define MX31_IRAM_SIZE			0x00004000
++
+ #define MX31_AIPS1_BASE_ADDR		0x43f00000
+ #define MX31_AIPS1_SIZE			SZ_1M
+ #define MX31_MAX_BASE_ADDR			(MX31_AIPS1_BASE_ADDR + 0x04000)
+-- 
+1.7.10.4
 
-
-Best Regards,
-J.
->  }
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
