@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U1BXM-00045x-VH
- for barebox@lists.infradead.org; Fri, 01 Feb 2013 08:00:09 +0000
+ id 1U1BXM-00045s-VS
+ for barebox@lists.infradead.org; Fri, 01 Feb 2013 08:00:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Feb 2013 08:59:39 +0100
-Message-Id: <1359705587-9762-27-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  1 Feb 2013 08:59:33 +0100
+Message-Id: <1359705587-9762-21-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,144 +21,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 26/34] ARM: Setup stack at end of SDRAM
+Subject: [PATCH 20/34] ARM AT91: switch sama5d3 to barebox_arm_entry
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/cpu.c                 |   12 ++++++++++++
- arch/arm/cpu/start-pbl.c           |    4 +---
- arch/arm/cpu/start.c               |   18 +++++++++++++++++-
- arch/arm/include/asm/barebox-arm.h |    2 ++
- common/meminfo.c                   |    5 -----
- 5 files changed, 32 insertions(+), 9 deletions(-)
+ arch/arm/mach-at91/Kconfig                 |    2 ++
+ arch/arm/mach-at91/Makefile                |    1 +
+ arch/arm/mach-at91/sama5d3_lowlevel_init.c |   25 +++++++++++++++++++++++++
+ 3 files changed, 28 insertions(+)
+ create mode 100644 arch/arm/mach-at91/sama5d3_lowlevel_init.c
 
-diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
-index 2ca871f..7761f5c 100644
---- a/arch/arm/cpu/cpu.c
-+++ b/arch/arm/cpu/cpu.c
-@@ -28,6 +28,7 @@
- #include <asm/mmu.h>
- #include <asm/system.h>
- #include <asm/memory.h>
-+#include <asm-generic/memory_layout.h>
- #include <asm/system_info.h>
- #include <asm/cputype.h>
- #include <asm/cache.h>
-@@ -91,6 +92,17 @@ void arch_shutdown(void)
- 	__asm__ __volatile__("msr cpsr, %0" : : "r"(r));
- }
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index f7f4cbc..da2768a 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -26,6 +26,8 @@ config SOC_SAMA5
+ 	select CPU_V7
+ 	select AT91SAM9_SMC
+ 	select AT91SAM9_TIMER
++	select MACH_HAS_LOWLEVEL_INIT
++	select MACH_DO_LOWLEVEL_INIT
  
-+extern unsigned long arm_stack_top;
-+
-+static int arm_request_stack(void)
-+{
-+	if (!request_sdram_region("stack", arm_stack_top - STACK_SIZE, STACK_SIZE))
-+		pr_err("Error: Cannot request SDRAM region for stack\n");
-+
-+	return 0;
-+}
-+coredevice_initcall(arm_request_stack);
-+
- #ifdef CONFIG_THUMB2_BAREBOX
- static void thumb2_execute(void *func, int argc, char *argv[])
- {
-diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index 64cd6ff..89839f0 100644
---- a/arch/arm/cpu/start-pbl.c
-+++ b/arch/arm/cpu/start-pbl.c
-@@ -174,8 +174,6 @@ static noinline __noreturn void __barebox_arm_entry(uint32_t membase,
-  * be preserved and can be accessed later with barebox_arm_boarddata().
-  *
-  * -> membase + memsize
-- *   ARM_RESERVE_MEM_SIZE    - reserved for board usage. Will not be touched
-- *                             by barebox
-  *   STACK_SIZE              - stack
-  *   16KiB, aligned to 16KiB - First level page table if early MMU support
-  *                             is enabled
-@@ -188,7 +186,7 @@ static noinline __noreturn void __barebox_arm_entry(uint32_t membase,
- void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
- 		uint32_t boarddata)
- {
--	arm_setup_stack(STACK_BASE + STACK_SIZE - 16);
-+	arm_setup_stack(membase + memsize - 16);
+ config ARCH_TEXT_BASE
+ 	hex
+diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+index 38aeef6..6820f62 100644
+--- a/arch/arm/mach-at91/Makefile
++++ b/arch/arm/mach-at91/Makefile
+@@ -7,6 +7,7 @@ lowlevel_init-$(CONFIG_SOC_AT91SAM9260) += at91sam9260_lowlevel_init.o
+ lowlevel_init-$(CONFIG_SOC_AT91SAM9261) += at91sam9261_lowlevel_init.o
+ lowlevel_init-$(CONFIG_SOC_AT91SAM9263) += at91sam9263_lowlevel_init.o
+ lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
++lowlevel_init-$(CONFIG_ARCH_SAMA5D3) += sama5d3_lowlevel_init.o
+ obj-y += $(lowlevel_init-y)
  
- 	__barebox_arm_entry(membase, memsize, boarddata);
- }
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 9fd1e8d..a621161 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -26,11 +26,18 @@
- #include <asm/cache.h>
- #include <memory.h>
- 
-+unsigned long arm_stack_top;
-+
- static noinline __noreturn void __start(uint32_t membase, uint32_t memsize,
- 		uint32_t boarddata)
- {
-+	unsigned long endmem = membase + memsize;
-+
- 	setup_c();
- 
-+	arm_stack_top = endmem;
-+	endmem -= STACK_SIZE; /* Stack */
-+
- 	start_barebox();
- }
- 
-@@ -47,11 +54,20 @@ void __naked __section(.text_entry) start(void)
-  * full SDRAM. The currently running binary can be inside or outside of this
-  * region. TEXT_BASE can be inside or outside of this region. boarddata will
-  * be preserved and can be accessed later with barebox_arm_boarddata().
+ pbl-y += $(lowlevel_init-y)
+diff --git a/arch/arm/mach-at91/sama5d3_lowlevel_init.c b/arch/arm/mach-at91/sama5d3_lowlevel_init.c
+new file mode 100644
+index 0000000..1d30da6
+--- /dev/null
++++ b/arch/arm/mach-at91/sama5d3_lowlevel_init.c
+@@ -0,0 +1,25 @@
++/*
++ * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 + *
-+ * -> membase + memsize
-+ *   STACK_SIZE              - stack
-+ *   16KiB, aligned to 16KiB - First level page table if early MMU support
-+ *                             is enabled
-+ * -> maximum end of barebox binary
-+ *
-+ * Usually a TEXT_BASE of 1MiB below your lowest possible end of memory should
-+ * be fine.
-  */
- void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
-                 uint32_t boarddata)
- {
--	arm_setup_stack(STACK_BASE + STACK_SIZE - 16);
-+	arm_setup_stack(membase + memsize - 16);
- 
- 	__start(membase, memsize, boarddata);
- }
-diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-index 42b7a3f..9c10e36 100644
---- a/arch/arm/include/asm/barebox-arm.h
-+++ b/arch/arm/include/asm/barebox-arm.h
-@@ -25,6 +25,8 @@
- #ifndef _BAREBOX_ARM_H_
- #define _BAREBOX_ARM_H_
- 
++ * Under GPLv2
++  */
++
++#define __LOWLEVEL_INIT__
++
++#include <common.h>
 +#include <sizes.h>
++#include <init.h>
++#include <asm/system.h>
++#include <asm/barebox-arm.h>
++#include <asm/barebox-arm-head.h>
++#include <mach/hardware.h>
++#include <mach/at91sam9_ddrsdr.h>
 +
- /* cpu/.../cpu.c */
- int	cleanup_before_linux(void);
- 
-diff --git a/common/meminfo.c b/common/meminfo.c
-index a09b2d2..5e3ff71 100644
---- a/common/meminfo.c
-+++ b/common/meminfo.c
-@@ -14,11 +14,6 @@ static int display_meminfo(void)
- 	debug("bss segment:  0x%p -> 0x%p\n", __bss_start, __bss_stop - 1);
- 	printf("malloc space: 0x%08lx -> 0x%08lx (size %s)\n",
- 		mstart, mend, size_human_readable(msize));
--#ifdef CONFIG_ARM
--	printf("stack space:  0x%08x -> 0x%08x (size %s)\n",
--		STACK_BASE, STACK_BASE + STACK_SIZE - 1,
--		size_human_readable(STACK_SIZE));
--#endif
- 	return 0;
- }
- late_initcall(display_meminfo);
++void __naked __bare_init reset(void)
++{
++	common_reset();
++
++	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE - 16);
++
++	barebox_arm_entry(SAMA5_DDRCS, at91sama5_get_ddram_size(), 0);
++}
 -- 
 1.7.10.4
 
