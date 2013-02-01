@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from la-in-x022b.1e100.net ([2a00:1450:4010:c03::22b]
- helo=mail-la0-x22b.google.com)
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U11mD-0006DH-Pm
- for barebox@lists.infradead.org; Thu, 31 Jan 2013 21:34:36 +0000
-Received: by mail-la0-f43.google.com with SMTP id ek20so2327488lab.30
- for <barebox@lists.infradead.org>; Thu, 31 Jan 2013 13:34:27 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri,  1 Feb 2013 01:46:33 +0400
-Message-Id: <1359668796-22835-3-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1359668796-22835-1-git-send-email-antonynpavlov@gmail.com>
-References: <1359668796-22835-1-git-send-email-antonynpavlov@gmail.com>
+Received: from 6.mo5.mail-out.ovh.net ([178.32.119.138]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U1BKa-0001sA-JH
+ for barebox@lists.infradead.org; Fri, 01 Feb 2013 07:46:41 +0000
+Received: from mail409.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 332DD10243A0
+ for <barebox@lists.infradead.org>; Fri,  1 Feb 2013 08:56:46 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Fri,  1 Feb 2013 08:45:21 +0100
+Message-Id: <1359704721-31125-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,93 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/5] gpiolib: add gpio_request_{in,out}put support
+Subject: [PATCH 1/1] sama5d3k: the nand flash is 4 bit ecc capable so use it
 To: barebox@lists.infradead.org
 
-gpio_request() followed by gpio_direction_{in,out}put
-is a gpio usage pattern (e.g. the similar functions
-are used in a ARM boards code).
+this will require to update the bootstrap
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/gpio/gpio.c |   34 ++++++++++++++++++++++++++++++++++
- include/gpio.h      |   13 +++++++++++++
- 2 files changed, 47 insertions(+)
+ arch/arm/boards/sama5d3xek/init.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio.c b/drivers/gpio/gpio.c
-index d37f5a0..5876454 100644
---- a/drivers/gpio/gpio.c
-+++ b/drivers/gpio/gpio.c
-@@ -47,6 +47,40 @@ int gpio_request(unsigned gpio, const char *label)
- 	return 0;
- }
- 
-+int gpio_request_input(unsigned gpio, const char *label)
-+{
-+	int ret;
-+
-+	ret = gpio_request(gpio, label);
-+	if (ret)
-+		return ret;
-+
-+	ret = gpio_direction_input(gpio);
-+	if (ret) {
-+		pr_err("can't configure gpio %d (%s) as input (%d)\n",
-+			gpio, label, ret);
-+	}
-+
-+	return ret;
-+}
-+
-+int gpio_request_output(unsigned gpio, const char *label, int value)
-+{
-+	int ret;
-+
-+	ret = gpio_request(gpio, label);
-+	if (ret)
-+		return ret;
-+
-+	ret = gpio_direction_output(gpio, value);
-+	if (ret) {
-+		pr_err("can't configure gpio %d (%s) as output (%d)\n",
-+			gpio, label, ret);
-+	}
-+
-+	return ret;
-+}
-+
- void gpio_free(unsigned gpio)
- {
- 	struct gpio_info *gi = &gpio_desc[gpio];
-diff --git a/include/gpio.h b/include/gpio.h
-index 794d959..309c1c5 100644
---- a/include/gpio.h
-+++ b/include/gpio.h
-@@ -9,11 +9,24 @@ static inline int gpio_request(unsigned gpio, const char *label)
- 	return 0;
- }
- 
-+static inline int gpio_request_input(unsigned gpio, const char *label)
-+{
-+	return 0;
-+}
-+
-+static inline int gpio_request_output(unsigned gpio, const char *label,
-+		int value)
-+{
-+	return 0;
-+}
-+
- static inline void gpio_free(unsigned gpio)
- {
- }
- #else
- int gpio_request(unsigned gpio, const char *label);
-+int gpio_request_input(unsigned gpio, const char *label);
-+int gpio_request_output(unsigned gpio, const char *label, int value);
- void gpio_free(unsigned gpio);
+diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
+index ae23a31..9a22356 100644
+--- a/arch/arm/boards/sama5d3xek/init.c
++++ b/arch/arm/boards/sama5d3xek/init.c
+@@ -63,7 +63,7 @@ static struct atmel_nand_data nand_pdata = {
+ 	.enable_pin	= -EINVAL,
+ 	.ecc_mode	= NAND_ECC_HW,
+ 	.pmecc_sector_size = 512,
+-	.pmecc_corr_cap = 2,
++	.pmecc_corr_cap = 4,
+ #if defined(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)
+ 	.bus_width_16	= 1,
  #endif
- 
 -- 
 1.7.10.4
 
