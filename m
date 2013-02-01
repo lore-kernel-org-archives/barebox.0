@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f169.google.com ([209.85.217.169])
+Received: from mail-lb0-f170.google.com ([209.85.217.170])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U1L3V-0002Jb-Jv
- for barebox@lists.infradead.org; Fri, 01 Feb 2013 18:09:42 +0000
-Received: by mail-lb0-f169.google.com with SMTP id m4so4873461lbo.0
- for <barebox@lists.infradead.org>; Fri, 01 Feb 2013 10:09:39 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20130201081351.GK26329@game.jcrosoft.org>
-References: <1359668796-22835-1-git-send-email-antonynpavlov@gmail.com>
- <1359668796-22835-4-git-send-email-antonynpavlov@gmail.com>
- <20130201081351.GK26329@game.jcrosoft.org>
-Date: Fri, 1 Feb 2013 22:09:39 +0400
-Message-ID: <CAA4bVAEDnY4JCr6OGYo4hY8o3n6DrZ6sRSHTVfX+VBq_L2v=ng@mail.gmail.com>
+ id 1U1L41-0002Sb-ET
+ for barebox@lists.infradead.org; Fri, 01 Feb 2013 18:10:14 +0000
+Received: by mail-lb0-f170.google.com with SMTP id ge1so4853376lbb.1
+ for <barebox@lists.infradead.org>; Fri, 01 Feb 2013 10:10:12 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri,  1 Feb 2013 22:22:19 +0400
+Message-Id: <1359742941-30516-3-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1359742941-30516-1-git-send-email-antonynpavlov@gmail.com>
+References: <1359742941-30516-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,87 +18,107 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 3/5] gpiolib: gpio_request(): add error message
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v3 2/4] gpiolib: add gpio_request_{in,out}put support
+To: barebox@lists.infradead.org
 
-On 1 February 2013 12:13, Jean-Christophe PLAGNIOL-VILLARD
-<plagnioj@jcrosoft.com> wrote:
-> Nack the is need to handle by the caller not here
+gpio_request() followed by gpio_direction_{in,out}put
+is a gpio usage pattern (e.g. the similar functions
+are used in a ARM boards code).
 
-You want to get duplicated code? Ok, you will get in the "patch v3" series! :)))
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/gpio/gpio.c |   40 ++++++++++++++++++++++++++++++++++++++++
+ include/gpio.h      |   13 +++++++++++++
+ 2 files changed, 53 insertions(+)
 
->
-> Best Regards,
-> J.
->>
->> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
->> ---
->>  drivers/gpio/gpio.c |   29 ++++++++++++++++++++++-------
->>  1 file changed, 22 insertions(+), 7 deletions(-)
->>
->> diff --git a/drivers/gpio/gpio.c b/drivers/gpio/gpio.c
->> index 5876454..179fc7b 100644
->> --- a/drivers/gpio/gpio.c
->> +++ b/drivers/gpio/gpio.c
->> @@ -29,22 +29,37 @@ int gpio_request(unsigned gpio, const char *label)
->>       struct gpio_chip *chip = gi->chip;
->>       int ret;
->>
->> -     if (!gpio_is_valid(gpio))
->> -             return -EINVAL;
->> -     if (!chip)
->> -             return -EINVAL;
->> -     if (gi->requested)
->> -             return -EBUSY;
->> +     if (!gpio_is_valid(gpio)) {
->> +             ret = -EINVAL;
->> +             goto err;
->> +     }
->> +
->> +     if (!chip) {
->> +             ret = -EINVAL;
->> +             goto err;
->> +     }
->> +
->> +     if (gi->requested) {
->> +             ret = -EBUSY;
->> +             goto err;
->> +     }
->> +
->>       if (chip->ops->request) {
->>               ret = chip->ops->request(chip, gpio - chip->base);
->>               if (ret)
->> -                     return ret;
->> +                     goto err;
->>       }
->>
->>       gi->requested = true;
->>       gi->label = xstrdup(label);
->>
->>       return 0;
->> +
->> +err:
->> +     pr_err("can't request gpio %d as %s (%d)\n",
->> +             gpio, label, ret);
->> +
->> +     return ret;
->>  }
->>
->>  int gpio_request_input(unsigned gpio, const char *label)
->> --
->> 1.7.10.4
->>
-
-
-
+diff --git a/drivers/gpio/gpio.c b/drivers/gpio/gpio.c
+index d37f5a0..c0c66ae 100644
+--- a/drivers/gpio/gpio.c
++++ b/drivers/gpio/gpio.c
+@@ -47,6 +47,46 @@ int gpio_request(unsigned gpio, const char *label)
+ 	return 0;
+ }
+ 
++int gpio_request_input(unsigned gpio, const char *label)
++{
++	int ret;
++
++	ret = gpio_request(gpio, label);
++	if (ret) {
++		pr_err("can't request gpio %d as %s (%d)\n",
++			gpio, label, ret);
++		return ret;
++	}
++
++	ret = gpio_direction_input(gpio);
++	if (ret) {
++		pr_err("can't configure gpio %d (%s) as input (%d)\n",
++			gpio, label, ret);
++	}
++
++	return ret;
++}
++
++int gpio_request_output(unsigned gpio, const char *label, int value)
++{
++	int ret;
++
++	ret = gpio_request(gpio, label);
++	if (ret) {
++		pr_err("can't request gpio %d as %s (%d)\n",
++			gpio, label, ret);
++		return ret;
++	}
++
++	ret = gpio_direction_output(gpio, value);
++	if (ret) {
++		pr_err("can't configure gpio %d (%s) as output (%d)\n",
++			gpio, label, ret);
++	}
++
++	return ret;
++}
++
+ void gpio_free(unsigned gpio)
+ {
+ 	struct gpio_info *gi = &gpio_desc[gpio];
+diff --git a/include/gpio.h b/include/gpio.h
+index 794d959..309c1c5 100644
+--- a/include/gpio.h
++++ b/include/gpio.h
+@@ -9,11 +9,24 @@ static inline int gpio_request(unsigned gpio, const char *label)
+ 	return 0;
+ }
+ 
++static inline int gpio_request_input(unsigned gpio, const char *label)
++{
++	return 0;
++}
++
++static inline int gpio_request_output(unsigned gpio, const char *label,
++		int value)
++{
++	return 0;
++}
++
+ static inline void gpio_free(unsigned gpio)
+ {
+ }
+ #else
+ int gpio_request(unsigned gpio, const char *label);
++int gpio_request_input(unsigned gpio, const char *label);
++int gpio_request_output(unsigned gpio, const char *label, int value);
+ void gpio_free(unsigned gpio);
+ #endif
+ 
 -- 
-Best regards,
-  Antony Pavlov
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
