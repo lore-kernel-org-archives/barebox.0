@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f176.google.com ([209.85.217.176])
+Received: from mail-lb0-f169.google.com ([209.85.217.169])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U1L42-0002T0-Sz
- for barebox@lists.infradead.org; Fri, 01 Feb 2013 18:10:15 +0000
-Received: by mail-lb0-f176.google.com with SMTP id s4so4739281lbc.7
- for <barebox@lists.infradead.org>; Fri, 01 Feb 2013 10:10:13 -0800 (PST)
+ id 1U1L3V-0002Jb-Jv
+ for barebox@lists.infradead.org; Fri, 01 Feb 2013 18:09:42 +0000
+Received: by mail-lb0-f169.google.com with SMTP id m4so4873461lbo.0
+ for <barebox@lists.infradead.org>; Fri, 01 Feb 2013 10:09:39 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <20130201081351.GK26329@game.jcrosoft.org>
+References: <1359668796-22835-1-git-send-email-antonynpavlov@gmail.com>
+ <1359668796-22835-4-git-send-email-antonynpavlov@gmail.com>
+ <20130201081351.GK26329@game.jcrosoft.org>
+Date: Fri, 1 Feb 2013 22:09:39 +0400
+Message-ID: <CAA4bVAEDnY4JCr6OGYo4hY8o3n6DrZ6sRSHTVfX+VBq_L2v=ng@mail.gmail.com>
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri,  1 Feb 2013 22:22:20 +0400
-Message-Id: <1359742941-30516-4-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1359742941-30516-1-git-send-email-antonynpavlov@gmail.com>
-References: <1359742941-30516-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,132 +21,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 3/4] at91sam9*: use gpio_request_output()
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 3/5] gpiolib: gpio_request(): add error message
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/arm/boards/at91sam9261ek/init.c  |   18 +-----------------
- arch/arm/boards/at91sam9263ek/init.c  |   18 +-----------------
- arch/arm/boards/at91sam9m10ihd/init.c |   18 +-----------------
- 3 files changed, 3 insertions(+), 51 deletions(-)
+On 1 February 2013 12:13, Jean-Christophe PLAGNIOL-VILLARD
+<plagnioj@jcrosoft.com> wrote:
+> Nack the is need to handle by the caller not here
 
-diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
-index 2597ff8..220dd2f 100644
---- a/arch/arm/boards/at91sam9261ek/init.c
-+++ b/arch/arm/boards/at91sam9261ek/init.c
-@@ -153,22 +153,6 @@ static void ek_add_device_udc(void) {}
-  * LCD Controller
-  */
- #if defined(CONFIG_DRIVER_VIDEO_ATMEL)
--static int ek_gpio_request_output(int gpio, const char *name)
--{
--	int ret;
--
--	ret = gpio_request(gpio, name);
--	if (ret) {
--		pr_err("%s: can not request gpio %d (%d)\n", name, gpio, ret);
--		return ret;
--	}
--
--	ret = gpio_direction_output(gpio, 1);
--	if (ret)
--		pr_err("%s: can not configure gpio %d as output (%d)\n", name, gpio, ret);
--	return ret;
--}
--
- /* TFT */
- static struct fb_videomode at91_tft_vga_modes[] = {
- 	{
-@@ -211,7 +195,7 @@ static struct atmel_lcdfb_platform_data ek_lcdc_data = {
- 
- static int at91_lcdc_gpio(void)
- {
--	return ek_gpio_request_output(AT91_PIN_PA12, "lcdc_tft_power");
-+	return gpio_request_output(AT91_PIN_PA12, "lcdc_tft_power", 1);
- }
- 
- static void ek_add_device_lcdc(void)
-diff --git a/arch/arm/boards/at91sam9263ek/init.c b/arch/arm/boards/at91sam9263ek/init.c
-index 90fdbec..ed133b9 100644
---- a/arch/arm/boards/at91sam9263ek/init.c
-+++ b/arch/arm/boards/at91sam9263ek/init.c
-@@ -153,22 +153,6 @@ static void ek_add_device_udc(void) {}
-  * LCD Controller
-  */
- #if defined(CONFIG_DRIVER_VIDEO_ATMEL)
--static int ek_gpio_request_output(int gpio, const char *name)
--{
--	int ret;
--
--	ret = gpio_request(gpio, name);
--	if (ret) {
--		pr_err("%s: can not request gpio %d (%d)\n", name, gpio, ret);
--		return ret;
--	}
--
--	ret = gpio_direction_output(gpio, 1);
--	if (ret)
--		pr_err("%s: can not configure gpio %d as output (%d)\n", name, gpio, ret);
--	return ret;
--}
--
- static struct fb_videomode at91_tft_vga_modes[] = {
- 	{
- 		.name		= "TX09D50VM1CCA @ 60",
-@@ -208,7 +192,7 @@ static struct atmel_lcdfb_platform_data ek_lcdc_data = {
- 
- static void ek_add_device_lcdc(void)
- {
--	if (ek_gpio_request_output(AT91_PIN_PA30, "lcdc_power"))
-+	if (gpio_request_output(AT91_PIN_PA30, "lcdc_power", 1))
- 		return;
- 
- 	at91_add_device_lcdc(&ek_lcdc_data);
-diff --git a/arch/arm/boards/at91sam9m10ihd/init.c b/arch/arm/boards/at91sam9m10ihd/init.c
-index f258caf..6159bfc 100644
---- a/arch/arm/boards/at91sam9m10ihd/init.c
-+++ b/arch/arm/boards/at91sam9m10ihd/init.c
-@@ -174,22 +174,6 @@ static int at91sam9m10g45ek_mem_init(void)
- mem_initcall(at91sam9m10g45ek_mem_init);
- 
- #if defined(CONFIG_DRIVER_VIDEO_ATMEL)
--static int ek_gpio_request_output(int gpio, const char *name)
--{
--	int ret;
--
--	ret = gpio_request(gpio, name);
--	if (ret) {
--		pr_err("%s: can not request gpio %d (%d)\n", name, gpio, ret);
--		return ret;
--	}
--
--	ret = gpio_direction_output(gpio, 1);
--	if (ret)
--		pr_err("%s: can not configure gpio %d as output (%d)\n", name, gpio, ret);
--	return ret;
--}
--
- static struct fb_videomode at91fb_default_monspecs[] = {
- 	{
- 		.name		= "MULTEK",
-@@ -230,7 +214,7 @@ static struct atmel_lcdfb_platform_data ek_lcdc_data = {
- 
- static void ek_add_device_lcd(void)
- {
--	if (ek_gpio_request_output(AT91_PIN_PE6, "lcdc_power"))
-+	if (gpio_request_output(AT91_PIN_PE6, "lcdc_power", 1))
- 		return;
- 
- 	at91_add_device_lcdc(&ek_lcdc_data);
+You want to get duplicated code? Ok, you will get in the "patch v3" series! :)))
+
+>
+> Best Regards,
+> J.
+>>
+>> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+>> ---
+>>  drivers/gpio/gpio.c |   29 ++++++++++++++++++++++-------
+>>  1 file changed, 22 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/drivers/gpio/gpio.c b/drivers/gpio/gpio.c
+>> index 5876454..179fc7b 100644
+>> --- a/drivers/gpio/gpio.c
+>> +++ b/drivers/gpio/gpio.c
+>> @@ -29,22 +29,37 @@ int gpio_request(unsigned gpio, const char *label)
+>>       struct gpio_chip *chip = gi->chip;
+>>       int ret;
+>>
+>> -     if (!gpio_is_valid(gpio))
+>> -             return -EINVAL;
+>> -     if (!chip)
+>> -             return -EINVAL;
+>> -     if (gi->requested)
+>> -             return -EBUSY;
+>> +     if (!gpio_is_valid(gpio)) {
+>> +             ret = -EINVAL;
+>> +             goto err;
+>> +     }
+>> +
+>> +     if (!chip) {
+>> +             ret = -EINVAL;
+>> +             goto err;
+>> +     }
+>> +
+>> +     if (gi->requested) {
+>> +             ret = -EBUSY;
+>> +             goto err;
+>> +     }
+>> +
+>>       if (chip->ops->request) {
+>>               ret = chip->ops->request(chip, gpio - chip->base);
+>>               if (ret)
+>> -                     return ret;
+>> +                     goto err;
+>>       }
+>>
+>>       gi->requested = true;
+>>       gi->label = xstrdup(label);
+>>
+>>       return 0;
+>> +
+>> +err:
+>> +     pr_err("can't request gpio %d as %s (%d)\n",
+>> +             gpio, label, ret);
+>> +
+>> +     return ret;
+>>  }
+>>
+>>  int gpio_request_input(unsigned gpio, const char *label)
+>> --
+>> 1.7.10.4
+>>
+
+
+
 -- 
-1.7.10.4
-
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
