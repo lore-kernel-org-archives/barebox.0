@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U1BXL-000454-Ie
- for barebox@lists.infradead.org; Fri, 01 Feb 2013 07:59:55 +0000
+ id 1U1BXM-00045R-HK
+ for barebox@lists.infradead.org; Fri, 01 Feb 2013 07:59:56 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Feb 2013 08:59:15 +0100
-Message-Id: <1359705587-9762-3-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  1 Feb 2013 08:59:23 +0100
+Message-Id: <1359705587-9762-11-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,67 +21,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/34] ARM: add __noreturn to board_init_lowlevel_return
+Subject: [PATCH 10/34] ARM PXA boards: switch to barebox_arm_entry
 To: barebox@lists.infradead.org
+
+All boards use hardcoded base addresses.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start-pbl.c           |    6 +++---
- arch/arm/cpu/start.c               |    2 +-
- arch/arm/include/asm/barebox-arm.h |    2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/Kconfig                       |    2 ++
+ arch/arm/boards/mioa701/Makefile       |    2 ++
+ arch/arm/boards/mioa701/lowlevel.c     |   10 ++++++++++
+ arch/arm/boards/pcm027/lowlevel_init.S |    7 +++++--
+ 4 files changed, 19 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/boards/mioa701/lowlevel.c
 
-diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index f1ce2c5..da62111 100644
---- a/arch/arm/cpu/start-pbl.c
-+++ b/arch/arm/cpu/start-pbl.c
-@@ -118,9 +118,9 @@ static void mmu_disable(void)
- 	__mmu_cache_off();
- }
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 1e509a4..dd8f01e 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -88,6 +88,8 @@ config ARCH_OMAP
+ config ARCH_PXA
+ 	bool "Intel/Marvell PXA based"
+ 	select GENERIC_GPIO
++	select MACH_HAS_LOWLEVEL_INIT
++	select MACH_DO_LOWLEVEL_INIT
  
--static void barebox_uncompress(void *compressed_start, unsigned int len)
-+static void __noreturn barebox_uncompress(void *compressed_start, unsigned int len)
- {
--	void (*barebox)(void);
-+	void __noreturn (*barebox)(void);
- 	/*
- 	 * remap_cached currently does not work rendering the feature
- 	 * of enabling the MMU in the PBL useless. disable for now.
-@@ -155,7 +155,7 @@ static void barebox_uncompress(void *compressed_start, unsigned int len)
-  * Board code can jump here by either returning from board_init_lowlevel
-  * or by calling this function directly.
+ config ARCH_S3C24xx
+ 	bool "Samsung S3C2410, S3C2440"
+diff --git a/arch/arm/boards/mioa701/Makefile b/arch/arm/boards/mioa701/Makefile
+index dcfc293..88c223a 100644
+--- a/arch/arm/boards/mioa701/Makefile
++++ b/arch/arm/boards/mioa701/Makefile
+@@ -1 +1,3 @@
+ obj-y += board.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/mioa701/lowlevel.c b/arch/arm/boards/mioa701/lowlevel.c
+new file mode 100644
+index 0000000..6d48c97
+--- /dev/null
++++ b/arch/arm/boards/mioa701/lowlevel.c
+@@ -0,0 +1,10 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++
++void __naked reset(void)
++{
++	common_reset();
++	barebox_arm_entry(0xa0000000, SZ_64M, 0);
++}
+diff --git a/arch/arm/boards/pcm027/lowlevel_init.S b/arch/arm/boards/pcm027/lowlevel_init.S
+index cf5fcd9..b90682c 100644
+--- a/arch/arm/boards/pcm027/lowlevel_init.S
++++ b/arch/arm/boards/pcm027/lowlevel_init.S
+@@ -24,6 +24,7 @@
   */
--void __naked board_init_lowlevel_return(void)
-+void __naked __noreturn board_init_lowlevel_return(void)
- {
- 	uint32_t offset;
- 	uint32_t pg_start, pg_end, pg_len;
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 0b7eee8..f212b61 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -55,7 +55,7 @@ void __naked __bare_init reset(void)
-  * Board code can jump here by either returning from board_init_lowlevel
-  * or by calling this function directly.
-  */
--void __naked board_init_lowlevel_return(void)
-+void __naked __noreturn board_init_lowlevel_return(void)
- {
- 	arm_setup_stack(STACK_BASE + STACK_SIZE - 16);
  
-diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-index 4ccf938..0574f34 100644
---- a/arch/arm/include/asm/barebox-arm.h
-+++ b/arch/arm/include/asm/barebox-arm.h
-@@ -35,7 +35,7 @@ int	dram_init (void);
- extern char __exceptions_start[], __exceptions_stop[];
+ #include <config.h>
++#include <sizes.h>
+ #include <mach/pxa-regs.h>
+ #include <mach/regs-ost.h>
+ #include <mach/regs-intc.h>
+@@ -452,5 +453,7 @@ initclks:
+ 	/* -------------------------------------------------------------------- */
  
- void board_init_lowlevel(void);
--void board_init_lowlevel_return(void);
-+void __noreturn board_init_lowlevel_return(void);
- uint32_t get_runtime_offset(void);
- 
- void setup_c(void);
+ endlowlevel_init:
+-	b board_init_lowlevel_return
+-
++	mov	r0, #0xa0000000
++	mov	r1, #SZ_64M
++	mov	r2, #0
++	b	barebox_arm_entry
 -- 
 1.7.10.4
 
