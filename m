@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U1BXM-00045s-VS
- for barebox@lists.infradead.org; Fri, 01 Feb 2013 08:00:06 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U1BXU-0004Mb-1H
+ for barebox@lists.infradead.org; Fri, 01 Feb 2013 08:00:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Feb 2013 08:59:33 +0100
-Message-Id: <1359705587-9762-21-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  1 Feb 2013 08:59:37 +0100
+Message-Id: <1359705587-9762-25-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,73 +21,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 20/34] ARM AT91: switch sama5d3 to barebox_arm_entry
+Subject: [PATCH 24/34] ARM start-pbl: call uncompressed binary with arguments
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-at91/Kconfig                 |    2 ++
- arch/arm/mach-at91/Makefile                |    1 +
- arch/arm/mach-at91/sama5d3_lowlevel_init.c |   25 +++++++++++++++++++++++++
- 3 files changed, 28 insertions(+)
- create mode 100644 arch/arm/mach-at91/sama5d3_lowlevel_init.c
+ arch/arm/cpu/start-pbl.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index f7f4cbc..da2768a 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -26,6 +26,8 @@ config SOC_SAMA5
- 	select CPU_V7
- 	select AT91SAM9_SMC
- 	select AT91SAM9_TIMER
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select MACH_DO_LOWLEVEL_INIT
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index 0da4fef..64cd6ff 100644
+--- a/arch/arm/cpu/start-pbl.c
++++ b/arch/arm/cpu/start-pbl.c
+@@ -106,9 +106,8 @@ static void mmu_disable(void)
+ 	__mmu_cache_off();
+ }
  
- config ARCH_TEXT_BASE
- 	hex
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 38aeef6..6820f62 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -7,6 +7,7 @@ lowlevel_init-$(CONFIG_SOC_AT91SAM9260) += at91sam9260_lowlevel_init.o
- lowlevel_init-$(CONFIG_SOC_AT91SAM9261) += at91sam9261_lowlevel_init.o
- lowlevel_init-$(CONFIG_SOC_AT91SAM9263) += at91sam9263_lowlevel_init.o
- lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
-+lowlevel_init-$(CONFIG_ARCH_SAMA5D3) += sama5d3_lowlevel_init.o
- obj-y += $(lowlevel_init-y)
+-static void __noreturn barebox_uncompress(void *compressed_start, unsigned int len)
++static void barebox_uncompress(void *compressed_start, unsigned int len)
+ {
+-	void __noreturn (*barebox)(void);
+ 	/*
+ 	 * remap_cached currently does not work rendering the feature
+ 	 * of enabling the MMU in the PBL useless. disable for now.
+@@ -124,19 +123,12 @@ static void __noreturn barebox_uncompress(void *compressed_start, unsigned int l
+ 	if (use_mmu)
+ 		mmu_enable((unsigned long)compressed_start, len);
  
- pbl-y += $(lowlevel_init-y)
-diff --git a/arch/arm/mach-at91/sama5d3_lowlevel_init.c b/arch/arm/mach-at91/sama5d3_lowlevel_init.c
-new file mode 100644
-index 0000000..1d30da6
---- /dev/null
-+++ b/arch/arm/mach-at91/sama5d3_lowlevel_init.c
-@@ -0,0 +1,25 @@
-+/*
-+ * Copyright (C) 2009-2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2
-+  */
+-	if (IS_ENABLED(CONFIG_THUMB2_BAREBOX))
+-		barebox = (void *)(TEXT_BASE + 1);
+-	else
+-		barebox = (void *)TEXT_BASE;
+-
+ 	pbl_barebox_uncompress((void*)TEXT_BASE, compressed_start, len);
+ 
+ 	if (use_mmu)
+ 		mmu_disable();
+ 
+ 	flush_icache();
+-
+-	barebox();
+ }
+ 
+ static noinline __noreturn void __barebox_arm_entry(uint32_t membase,
+@@ -144,6 +136,7 @@ static noinline __noreturn void __barebox_arm_entry(uint32_t membase,
+ {
+ 	uint32_t offset;
+ 	uint32_t pg_start, pg_end, pg_len;
++	void __noreturn (*barebox)(uint32_t, uint32_t, uint32_t);
+ 
+ 	/* Get offset between linked address and runtime address */
+ 	offset = get_runtime_offset();
+@@ -164,6 +157,13 @@ static noinline __noreturn void __barebox_arm_entry(uint32_t membase,
+ 	setup_c();
+ 
+ 	barebox_uncompress((void *)pg_start, pg_len);
 +
-+#define __LOWLEVEL_INIT__
++	if (IS_ENABLED(CONFIG_THUMB2_BAREBOX))
++		barebox = (void *)(TEXT_BASE + 1);
++	else
++		barebox = (void *)TEXT_BASE;
 +
-+#include <common.h>
-+#include <sizes.h>
-+#include <init.h>
-+#include <asm/system.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/barebox-arm-head.h>
-+#include <mach/hardware.h>
-+#include <mach/at91sam9_ddrsdr.h>
-+
-+void __naked __bare_init reset(void)
-+{
-+	common_reset();
-+
-+	arm_setup_stack(SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE - 16);
-+
-+	barebox_arm_entry(SAMA5_DDRCS, at91sama5_get_ddram_size(), 0);
-+}
++	barebox(membase, memsize, boarddata);
+ }
+ 
+ /*
 -- 
 1.7.10.4
 
