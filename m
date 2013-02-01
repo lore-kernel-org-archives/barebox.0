@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U1BXM-00045k-JN
- for barebox@lists.infradead.org; Fri, 01 Feb 2013 08:00:06 +0000
+ by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U1BXU-0004Md-0C
+ for barebox@lists.infradead.org; Fri, 01 Feb 2013 08:00:03 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Feb 2013 08:59:31 +0100
-Message-Id: <1359705587-9762-19-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  1 Feb 2013 08:59:36 +0100
+Message-Id: <1359705587-9762-24-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,203 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/34] ARM AT91: switch to barebox_arm_entry part1
+Subject: [PATCH 23/34] ARM start-pbl: make board_init_lowlevel_return static
 To: barebox@lists.infradead.org
-
-This switches the at91sam926x, 9g10 and 9g20 over to barebox_arm_entry.
-For these SoCs we currently support reading back the memory size from
-the SDRAM controller, so all of these can have a common reset() function.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/at91sam9263ek/Makefile         |    4 ++--
- arch/arm/boards/mmccpu/Makefile                |    4 ++--
- arch/arm/boards/pm9261/Makefile                |    4 ++--
- arch/arm/boards/pm9263/Makefile                |    4 ++--
- arch/arm/boards/tny-a926x/Makefile             |    4 ++--
- arch/arm/boards/usb-a926x/Makefile             |    4 ++--
- arch/arm/mach-at91/Kconfig                     |   15 ++++++++++-----
- arch/arm/mach-at91/Makefile                    |    4 ++--
- arch/arm/mach-at91/at91sam926x_lowlevel_init.c |    4 +++-
- 9 files changed, 27 insertions(+), 20 deletions(-)
+ arch/arm/cpu/start-pbl.c |   14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm/boards/at91sam9263ek/Makefile b/arch/arm/boards/at91sam9263ek/Makefile
-index b6460c3..1702783 100644
---- a/arch/arm/boards/at91sam9263ek/Makefile
-+++ b/arch/arm/boards/at91sam9263ek/Makefile
-@@ -1,5 +1,5 @@
- obj-y += init.o
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index 06c0a17..0da4fef 100644
+--- a/arch/arm/cpu/start-pbl.c
++++ b/arch/arm/cpu/start-pbl.c
+@@ -139,18 +139,12 @@ static void __noreturn barebox_uncompress(void *compressed_start, unsigned int l
+ 	barebox();
+ }
  
--obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-+obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
- 
--pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-+pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
-diff --git a/arch/arm/boards/mmccpu/Makefile b/arch/arm/boards/mmccpu/Makefile
-index b6460c3..1702783 100644
---- a/arch/arm/boards/mmccpu/Makefile
-+++ b/arch/arm/boards/mmccpu/Makefile
-@@ -1,5 +1,5 @@
- obj-y += init.o
- 
--obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-+obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
- 
--pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-+pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
-diff --git a/arch/arm/boards/pm9261/Makefile b/arch/arm/boards/pm9261/Makefile
-index b6460c3..1702783 100644
---- a/arch/arm/boards/pm9261/Makefile
-+++ b/arch/arm/boards/pm9261/Makefile
-@@ -1,5 +1,5 @@
- obj-y += init.o
- 
--obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-+obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
- 
--pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-+pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
-diff --git a/arch/arm/boards/pm9263/Makefile b/arch/arm/boards/pm9263/Makefile
-index b6460c3..1702783 100644
---- a/arch/arm/boards/pm9263/Makefile
-+++ b/arch/arm/boards/pm9263/Makefile
-@@ -1,5 +1,5 @@
- obj-y += init.o
- 
--obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-+obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
- 
--pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += lowlevel_init.o
-+pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += lowlevel_init.o
-diff --git a/arch/arm/boards/tny-a926x/Makefile b/arch/arm/boards/tny-a926x/Makefile
-index 36ea09f..caa7163 100644
---- a/arch/arm/boards/tny-a926x/Makefile
-+++ b/arch/arm/boards/tny-a926x/Makefile
-@@ -5,6 +5,6 @@ obj-$(CONFIG_AT91_BOOTSTRAP) += $(bootstrap-y)
- 
- lowlevel_init-$(CONFIG_MACH_TNY_A9263) = tny_a9263_lowlevel_init.o
- 
--obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-+obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += $(lowlevel_init-y)
- 
--pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-+pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += $(lowlevel_init-y)
-diff --git a/arch/arm/boards/usb-a926x/Makefile b/arch/arm/boards/usb-a926x/Makefile
-index e314dd5..88f163f 100644
---- a/arch/arm/boards/usb-a926x/Makefile
-+++ b/arch/arm/boards/usb-a926x/Makefile
-@@ -5,6 +5,6 @@ obj-$(CONFIG_AT91_BOOTSTRAP) += $(bootstrap-y)
- 
- lowlevel_init-$(CONFIG_MACH_USB_A9263) = usb_a9263_lowlevel_init.o
- 
--obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-+obj-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += $(lowlevel_init-y)
- 
--pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-+pbl-$(CONFIG_HAVE_AT91_LOWLEVEL_INIT) += $(lowlevel_init-y)
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 14bab55..ac6fd2f 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -6,6 +6,9 @@ config HAVE_AT91_DBGU0
- config HAVE_AT91_DBGU1
- 	bool
- 
-+config HAVE_AT91_LOWLEVEL_INIT
-+	bool
-+
- config AT91SAM9_SMC
- 	bool
- 
-@@ -76,6 +79,8 @@ config HAVE_AT91_LOAD_BAREBOX_SRAM
- 
- config AT91SAM9_LOWLEVEL_INIT
- 	bool
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select MACH_DO_LOWLEVEL_INIT
- 
- comment "Atmel AT91 System-on-Chip"
- 
-@@ -300,7 +305,7 @@ config MACH_AT91SAM9261EK
- config MACH_PM9261
- 	bool "Ronetix PM9261"
- 	select HAS_DM9000
--	select MACH_HAS_LOWLEVEL_INIT
-+	select HAVE_AT91_LOWLEVEL_INIT
- 	help
- 	  Say y here if you are using the Ronetix PM9261 Board
- 
-@@ -375,7 +380,7 @@ choice
- 
- config MACH_AT91SAM9263EK
- 	bool "Atmel AT91SAM9263-EK"
--	select MACH_HAS_LOWLEVEL_INIT
-+	select HAVE_AT91_LOWLEVEL_INIT
- 	select HAVE_NAND_ATMEL_BUSWIDTH_16
- 	help
- 	  Say y here if you are using Atmel's AT91SAM9263-EK Evaluation board
-@@ -387,7 +392,7 @@ config MACH_MMCCPU
- 
- config MACH_PM9263
- 	bool "Ronetix PM9263"
--	select MACH_HAS_LOWLEVEL_INIT
-+	select HAVE_AT91_LOWLEVEL_INIT
- 	help
- 	  Say y here if you are using the Ronetix PM9263 Board
- 
-@@ -401,7 +406,7 @@ config MACH_TNY_A9263
- 
- config MACH_USB_A9263
- 	bool "CALAO USB-A9263"
--	select MACH_HAS_LOWLEVEL_INIT
-+	select HAVE_AT91_LOWLEVEL_INIT
- 	help
- 	  Select this if you are using a Calao Systems USB-A9263.
- 	  <http://www.calao-systems.com>
-@@ -565,7 +570,7 @@ endif
- 
- config AT91_BOOTSTRAP
- 	bool "at91 bootstrap"
--	depends on MACH_HAS_LOWLEVEL_INIT
-+	depends on HAVE_AT91_LOWLEVEL_INIT
- 	select BOOTSTRAP
- 
- config AT91_LOAD_BAREBOX_SRAM
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index f6c8500..38aeef6 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -7,9 +7,9 @@ lowlevel_init-$(CONFIG_SOC_AT91SAM9260) += at91sam9260_lowlevel_init.o
- lowlevel_init-$(CONFIG_SOC_AT91SAM9261) += at91sam9261_lowlevel_init.o
- lowlevel_init-$(CONFIG_SOC_AT91SAM9263) += at91sam9263_lowlevel_init.o
- lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
--obj-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-+obj-y += $(lowlevel_init-y)
- 
--pbl-$(CONFIG_MACH_DO_LOWLEVEL_INIT) += $(lowlevel_init-y)
-+pbl-y += $(lowlevel_init-y)
- 
- obj-$(CONFIG_AT91SAM9_RESET) += at91sam9_reset.o
- obj-$(CONFIG_AT91SAM9G45_RESET) += at91sam9g45_reset.o
-diff --git a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-index 8b9b33e..cda0456 100644
---- a/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-+++ b/arch/arm/mach-at91/at91sam926x_lowlevel_init.c
-@@ -49,6 +49,7 @@ static int inline running_in_sram(void)
- void __bare_init at91sam926x_lowlevel_init(void *pio, bool is_pio_asr,
- 					   u32 matrix_csa)
+-/*
+- * Board code can jump here by either returning from board_init_lowlevel
+- * or by calling this function directly.
+- */
+-void __naked __noreturn board_init_lowlevel_return(void)
++static noinline __noreturn void __barebox_arm_entry(uint32_t membase,
++		uint32_t memsize, uint32_t boarddata)
  {
-+#ifdef CONFIG_HAVE_AT91_LOWLEVEL_INIT
- 	u32 r;
- 	int i;
- 	int in_sram = running_in_sram();
-@@ -184,5 +185,6 @@ void __bare_init at91sam926x_lowlevel_init(void *pio, bool is_pio_asr,
- 	at91_pmc_write(AT91_PMC_PCER, 0xffffffff);
+ 	uint32_t offset;
+ 	uint32_t pg_start, pg_end, pg_len;
  
- end:
+-	/* Setup the stack */
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 16);
+-
+ 	/* Get offset between linked address and runtime address */
+ 	offset = get_runtime_offset();
+ 
+@@ -194,5 +188,7 @@ void __naked __noreturn board_init_lowlevel_return(void)
+ void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
+ 		uint32_t boarddata)
+ {
 -	board_init_lowlevel_return();
-+#endif
-+	barebox_arm_entry(AT91_SDRAM_BASE, at91_get_sdram_size(), 0);
++	arm_setup_stack(STACK_BASE + STACK_SIZE - 16);
++
++	__barebox_arm_entry(membase, memsize, boarddata);
  }
 -- 
 1.7.10.4
