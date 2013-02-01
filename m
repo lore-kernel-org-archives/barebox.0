@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U1BXT-0000jp-WE
- for barebox@lists.infradead.org; Fri, 01 Feb 2013 08:00:00 +0000
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U1BXL-000458-WB
+ for barebox@lists.infradead.org; Fri, 01 Feb 2013 07:59:59 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Feb 2013 08:59:26 +0100
-Message-Id: <1359705587-9762-14-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  1 Feb 2013 08:59:17 +0100
+Message-Id: <1359705587-9762-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 References: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,56 +21,219 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/34] ARM nomadik boards: switch to barebox_arm_entry
+Subject: [PATCH 04/34] ARM i.MX: Add i.MX specific entry point for barebox
 To: barebox@lists.infradead.org
 
-Only one board, the nhk8815. This uses hardcoded SDRAM values.
+Additionally to the generic entry point the i.MX specific ones
+calculate the SDRAM size automatically so the boards do not have
+to care.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig                   |    2 ++
- arch/arm/boards/nhk8815/Makefile   |    2 ++
- arch/arm/boards/nhk8815/lowlevel.c |   10 ++++++++++
- 3 files changed, 14 insertions(+)
- create mode 100644 arch/arm/boards/nhk8815/lowlevel.c
+ arch/arm/cpu/start-pbl.c                |   12 +++
+ arch/arm/mach-imx/esdctl.c              |  136 ++++++++++++++++++++++++++-----
+ arch/arm/mach-imx/include/mach/esdctl.h |   11 +++
+ 3 files changed, 138 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 5f5b965..dcd48a9 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -77,6 +77,8 @@ config ARCH_NOMADIK
- 	bool "STMicroelectronics Nomadik"
- 	select CPU_ARM926T
- 	select CLOCKSOURCE_NOMADIK
-+	select MACH_HAS_LOWLEVEL_INIT
-+	select MACH_DO_LOWLEVEL_INIT
- 	help
- 	  Support for the Nomadik platform by ST-Ericsson
- 
-diff --git a/arch/arm/boards/nhk8815/Makefile b/arch/arm/boards/nhk8815/Makefile
-index 2b9dba4..dbb2a71 100644
---- a/arch/arm/boards/nhk8815/Makefile
-+++ b/arch/arm/boards/nhk8815/Makefile
-@@ -1 +1,3 @@
- obj-y += setup.o
-+obj-y += lowlevel.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/nhk8815/lowlevel.c b/arch/arm/boards/nhk8815/lowlevel.c
-new file mode 100644
-index 0000000..3956347
---- /dev/null
-+++ b/arch/arm/boards/nhk8815/lowlevel.c
-@@ -0,0 +1,10 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index da62111..11ab025 100644
+--- a/arch/arm/cpu/start-pbl.c
++++ b/arch/arm/cpu/start-pbl.c
+@@ -190,6 +190,18 @@ void __naked __noreturn board_init_lowlevel_return(void)
+  * full SDRAM. The currently running binary can be inside or outside of this
+  * region. TEXT_BASE can be inside or outside of this region. boarddata will
+  * be preserved and can be accessed later with barebox_arm_boarddata().
++ *
++ * -> membase + memsize
++ *   ARM_RESERVE_MEM_SIZE    - reserved for board usage. Will not be touched
++ *                             by barebox
++ *   STACK_SIZE              - stack
++ *   16KiB, aligned to 16KiB - First level page table if early MMU support
++ *                             is enabled
++ *   128KiB                  - early memory space
++ * -> maximum end of barebox binary
++ *
++ * Usually a TEXT_BASE of 1MiB below your lowest possible end of memory should
++ * be fine.
+  */
+ void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
+ 		uint32_t boarddata)
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index 841a9ed..3585e27 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -127,32 +127,18 @@ static inline unsigned long imx_v4_sdram_size(void __iomem *esdctlbase, int cs)
+ 		return 0;
+ 	if (cs == 1 && !(ctlval & ESDCTL_V4_ESDCTLx_SDE1))
+ 		return 0;
+-
+ 	/* one 2GiB cs, memory is returned for cs0 only */
+ 	if (cs == 1 && (esdmisc & ESDCTL_V4_ESDMISC_ONE_CS))
+-		return 9;
+-
++		return 0;
+ 	rows = ((ctlval >> 24) & 0x7) + 11;
+-	switch ((ctlval >> 20) & 0x7) {
+-	case 0:
+-		cols = 9;
+-		break;
+-	case 1:
+-		cols = 10;
+-		break;
+-	case 2:
+-		cols = 11;
+-		break;
+-	case 3:
 +
-+void __naked reset(void)
++	cols = (ctlval >> 20) & 0x7;
++	if (cols == 3)
+ 		cols = 8;
+-		break;
+-	case 4:
++	else if (cols == 4)
+ 		cols = 12;
+-		break;
+-	default:
+-		cols = 0;
+-		break;
+-	}
++	else
++		cols += 9;
+ 
+ 	if (ctlval & ESDCTL_V4_ESDCTLx_DSIZ_32B)
+ 		width = 4;
+@@ -353,3 +339,111 @@ static int imx_esdctl_init(void)
+ }
+ 
+ mem_initcall(imx_esdctl_init);
++
++/*
++ * The i.MX SoCs usually have two SDRAM chipselects. The following
++ * SoC specific functions return:
++ *
++ * - cs0 disabled, cs1 disabled: 0
++ * - cs0 enabled, cs1 disabled: SDRAM size for cs0
++ * - cs0 disabled, c1 enabled: 0 (currently assumed that no hardware does this)
++ * - cs0 enabled, cs1 enabled: The largest continuous region, that is, cs0 + cs1
++ *                             if cs0 is taking the whole address space.
++ */
++void __naked __noreturn imx1_barebox_entry(uint32_t boarddata)
 +{
-+	common_reset();
-+	barebox_arm_entry(0x0, SZ_64M, 0);
++	unsigned long base;
++	unsigned long size;
++
++	base = 0x08000000;
++
++	size = imx_v1_sdram_size((void *)MX1_SDRAMC_BASE_ADDR, 0);
++	if (size == SZ_64M)
++		size += imx_v1_sdram_size((void *)MX1_SDRAMC_BASE_ADDR, 1);
++
++	barebox_arm_entry(base, size, boarddata);
 +}
++
++void __naked __noreturn imx25_barebox_entry(uint32_t boarddata)
++{
++	unsigned long base;
++	unsigned long size;
++
++	base = MX25_CSD0_BASE_ADDR;
++
++	size = imx_v2_sdram_size((void *)MX25_ESDCTL_BASE_ADDR, 0);
++	if (size == SZ_256M)
++		size += imx_v2_sdram_size((void *)MX25_ESDCTL_BASE_ADDR, 1);
++
++	barebox_arm_entry(base, size, boarddata);
++}
++
++void __naked __noreturn imx27_barebox_entry(uint32_t boarddata)
++{
++	unsigned long base;
++	unsigned long size;
++
++	base = MX27_CSD0_BASE_ADDR;
++
++	size = imx_v2_sdram_size((void *)MX27_ESDCTL_BASE_ADDR, 0);
++	if (size == SZ_256M)
++		size += imx_v2_sdram_size((void *)MX27_ESDCTL_BASE_ADDR, 1);
++
++	barebox_arm_entry(base, size, boarddata);
++}
++
++void __naked __noreturn imx31_barebox_entry(uint32_t boarddata)
++{
++	unsigned long base;
++	unsigned long size;
++
++	base = MX31_CSD0_BASE_ADDR;
++
++	size = imx_v2_sdram_size((void *)MX31_ESDCTL_BASE_ADDR, 0);
++	if (size == SZ_256M)
++		size += imx_v2_sdram_size((void *)MX31_ESDCTL_BASE_ADDR, 1);
++
++	barebox_arm_entry(base, size, boarddata);
++}
++
++void __naked __noreturn imx35_barebox_entry(uint32_t boarddata)
++{
++	unsigned long base;
++	unsigned long size;
++
++	base = MX35_CSD0_BASE_ADDR;
++
++	size = imx_v2_sdram_size((void *)MX35_ESDCTL_BASE_ADDR, 0);
++	if (size == SZ_256M)
++		size += imx_v2_sdram_size((void *)MX35_ESDCTL_BASE_ADDR, 1);
++
++	barebox_arm_entry(base, size, boarddata);
++}
++
++void __naked __noreturn imx51_barebox_entry(uint32_t boarddata)
++{
++	unsigned long base;
++	unsigned long size;
++
++	base = MX51_CSD0_BASE_ADDR;
++
++	size = imx_v3_sdram_size((void *)MX51_ESDCTL_BASE_ADDR, 0);
++	if (size == SZ_256M)
++		size += imx_v3_sdram_size((void *)MX51_ESDCTL_BASE_ADDR, 1);
++
++	barebox_arm_entry(base, size, boarddata);
++}
++
++void __naked __noreturn imx53_barebox_entry(uint32_t boarddata)
++{
++	unsigned long base;
++	unsigned long size;
++
++	base = MX53_CSD0_BASE_ADDR;
++
++	size = imx_v4_sdram_size((void *)MX53_ESDCTL_BASE_ADDR, 0);
++	if (size == SZ_1G)
++		size += imx_v4_sdram_size((void *)MX53_ESDCTL_BASE_ADDR, 1);
++
++	barebox_arm_entry(base, size, boarddata);
++}
+diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
+index 1a265c8..26436d9 100644
+--- a/arch/arm/mach-imx/include/mach/esdctl.h
++++ b/arch/arm/mach-imx/include/mach/esdctl.h
+@@ -127,4 +127,15 @@
+ //#define ESDCFGx_tRC_14		0x0000000e	// 15 seems to not exist
+ #define ESDCFGx_tRC_16			0x0000000f
+ 
++#ifndef __ASSEMBLY__
++void __naked __noreturn imx1_barebox_entry(uint32_t boarddata);
++void __naked __noreturn imx25_barebox_entry(uint32_t boarddata);
++void __naked __noreturn imx27_barebox_entry(uint32_t boarddata);
++void __naked __noreturn imx31_barebox_entry(uint32_t boarddata);
++void __naked __noreturn imx35_barebox_entry(uint32_t boarddata);
++void __naked __noreturn imx51_barebox_entry(uint32_t boarddata);
++void __naked __noreturn imx53_barebox_entry(uint32_t boarddata);
++void __naked __noreturn imx6_barebox_entry(uint32_t boarddata);
++#endif
++
+ #endif /* __MACH_ESDCTL_V2_H */
 -- 
 1.7.10.4
 
