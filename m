@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
+Received: from mo1.mail-out.ovh.net ([178.32.228.1])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U1hWu-0008E2-Jn
- for barebox@lists.infradead.org; Sat, 02 Feb 2013 18:09:33 +0000
-Date: Sat, 2 Feb 2013 19:09:15 +0100
-From: Eric =?UTF-8?B?QsOpbmFyZA==?= <eric@eukrea.com>
-Message-ID: <20130202190915.5e5bb4ed@e6520eb>
-In-Reply-To: <CAA4bVAFm-82XbexDM9sPUmfYUmh8bp9Y2o2eM20PXmqiqDU=Lg@mail.gmail.com>
-References: <009d01ce0163$5629e7a0$027db6e0$@com>
- <CAA4bVAFm-82XbexDM9sPUmfYUmh8bp9Y2o2eM20PXmqiqDU=Lg@mail.gmail.com>
-Mime-Version: 1.0
+ id 1U1kaH-0006XA-DD
+ for barebox@lists.infradead.org; Sat, 02 Feb 2013 21:25:15 +0000
+Received: from mail405.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id BF0EBFF9559
+ for <barebox@lists.infradead.org>; Sat,  2 Feb 2013 22:40:01 +0100 (CET)
+Date: Sat, 2 Feb 2013 22:23:55 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130202212355.GC18068@game.jcrosoft.org>
+References: <1359705587-9762-1-git-send-email-s.hauer@pengutronix.de>
+ <1359705587-9762-22-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1359705587-9762-22-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,19 +22,210 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Lost access to M25Pxx in move to 2013.01
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, George Pontis <GPontis@z9.com>
+Subject: Re: [PATCH 21/34] ARM AT91: switch remaining boards to
+ barebox_arm_entry
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-SGkgQW50b255LCBIaSBHZW9yZ2UsCgpMZSBTYXQsIDIgRmViIDIwMTMgMjE6NTY6MjYgKzA0MDAs
-CkFudG9ueSBQYXZsb3YgPGFudG9ueW5wYXZsb3ZAZ21haWwuY29tPiBhIMOpY3JpdCA6Cj4gSSBj
-aGFuZ2VkIHRoZSAnbmFtZScgZmllbGQgZnJvbSAibTI1cCIgdG8gIm0yNXA4MCIsIGFuZCBpdCB3
-b3JrcyBhZ2FpbiEKPiAKY2hlY2sgdGhlIGNvbW1lbnRzIChhbmQgdGhlIHBhdGNoKSBpbiBjb21t
-aXQKMTMwOGQ5MDhlYTZmMWM2MjY3MDA3YjQ4NWYzZDgzNzNiZWY5Y2Y3Zgpmb3IgbW9yZSBkZXRh
-aWxzLgoKRXJpYwoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
-Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On 08:59 Fri 01 Feb     , Sascha Hauer wrote:
+> For At91 boards which do not have a SDRAM size detection function
+> we create a lowlevel reset function which calls barebox_arm_entry
+> manually with the known memory size.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/Kconfig                            |    2 ++
+>  arch/arm/boards/at91sam9m10g45ek/Makefile   |    2 ++
+>  arch/arm/boards/at91sam9m10g45ek/lowlevel.c |   11 +++++++++++
+>  arch/arm/boards/at91sam9m10ihd/Makefile     |    2 ++
+>  arch/arm/boards/at91sam9m10ihd/lowlevel.c   |   11 +++++++++++
+>  arch/arm/boards/at91sam9n12ek/Makefile      |    2 ++
+>  arch/arm/boards/at91sam9n12ek/lowlevel.c    |   11 +++++++++++
+>  arch/arm/boards/at91sam9x5ek/Makefile       |    2 ++
+>  arch/arm/boards/at91sam9x5ek/lowlevel.c     |   11 +++++++++++
+>  arch/arm/boards/pm9g45/Makefile             |    2 ++
+>  arch/arm/boards/pm9g45/lowlevel.c           |   11 +++++++++++
+>  arch/arm/mach-at91/Kconfig                  |    2 --
+>  12 files changed, 67 insertions(+), 2 deletions(-)
+>  create mode 100644 arch/arm/boards/at91sam9m10g45ek/lowlevel.c
+>  create mode 100644 arch/arm/boards/at91sam9m10ihd/lowlevel.c
+>  create mode 100644 arch/arm/boards/at91sam9n12ek/lowlevel.c
+>  create mode 100644 arch/arm/boards/at91sam9x5ek/lowlevel.c
+>  create mode 100644 arch/arm/boards/pm9g45/lowlevel.c
+> 
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index c7daebe..0d5e004 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -30,6 +30,8 @@ config ARCH_AT91
+>  	select CLKDEV_LOOKUP
+>  	select HAS_DEBUG_LL
+>  	select HAVE_MACH_ARM_HEAD
+> +	select MACH_HAS_LOWLEVEL_INIT
+> +	select MACH_DO_LOWLEVEL_INIT
+>  
+>  config ARCH_BCM2835
+>  	bool "Broadcom BCM2835 boards"
+> diff --git a/arch/arm/boards/at91sam9m10g45ek/Makefile b/arch/arm/boards/at91sam9m10g45ek/Makefile
+> index eb072c0..47ab803 100644
+> --- a/arch/arm/boards/at91sam9m10g45ek/Makefile
+> +++ b/arch/arm/boards/at91sam9m10g45ek/Makefile
+> @@ -1 +1,3 @@
+>  obj-y += init.o
+> +obj-y += lowlevel.o
+> +pbl-y += lowlevel.o
+> diff --git a/arch/arm/boards/at91sam9m10g45ek/lowlevel.c b/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
+> new file mode 100644
+> index 0000000..65259bb
+> --- /dev/null
+> +++ b/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
+> @@ -0,0 +1,11 @@
+> +#include <common.h>
+> +#include <sizes.h>
+> +#include <asm/barebox-arm-head.h>
+> +#include <asm/barebox-arm.h>
+> +#include <mach/hardware.h>
+> +
+> +void __naked reset(void)
+> +{
+> +	common_reset();
+> +	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
+this is wrong as re run from the bank1 so AT91_CHIPSELECT_6
+
+on 9g45
+
+Best Regards,
+J.
+> +}
+> diff --git a/arch/arm/boards/at91sam9m10ihd/Makefile b/arch/arm/boards/at91sam9m10ihd/Makefile
+> index f2acf20..4ec0b36 100644
+> --- a/arch/arm/boards/at91sam9m10ihd/Makefile
+> +++ b/arch/arm/boards/at91sam9m10ihd/Makefile
+> @@ -1,2 +1,4 @@
+>  obj-y += init.o
+>  obj-y += hw_version.o
+> +obj-y += lowlevel.o
+> +pbl-y += lowlevel.o
+> diff --git a/arch/arm/boards/at91sam9m10ihd/lowlevel.c b/arch/arm/boards/at91sam9m10ihd/lowlevel.c
+> new file mode 100644
+> index 0000000..65259bb
+> --- /dev/null
+> +++ b/arch/arm/boards/at91sam9m10ihd/lowlevel.c
+> @@ -0,0 +1,11 @@
+> +#include <common.h>
+> +#include <sizes.h>
+> +#include <asm/barebox-arm-head.h>
+> +#include <asm/barebox-arm.h>
+> +#include <mach/hardware.h>
+> +
+> +void __naked reset(void)
+> +{
+> +	common_reset();
+> +	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
+> +}
+> diff --git a/arch/arm/boards/at91sam9n12ek/Makefile b/arch/arm/boards/at91sam9n12ek/Makefile
+> index eb072c0..6c1a61f 100644
+> --- a/arch/arm/boards/at91sam9n12ek/Makefile
+> +++ b/arch/arm/boards/at91sam9n12ek/Makefile
+> @@ -1 +1,3 @@
+> +obj-y += lowlevel.o
+> +pbl-y += lowlevel.o
+>  obj-y += init.o
+> diff --git a/arch/arm/boards/at91sam9n12ek/lowlevel.c b/arch/arm/boards/at91sam9n12ek/lowlevel.c
+> new file mode 100644
+> index 0000000..65259bb
+> --- /dev/null
+> +++ b/arch/arm/boards/at91sam9n12ek/lowlevel.c
+> @@ -0,0 +1,11 @@
+> +#include <common.h>
+> +#include <sizes.h>
+> +#include <asm/barebox-arm-head.h>
+> +#include <asm/barebox-arm.h>
+> +#include <mach/hardware.h>
+> +
+> +void __naked reset(void)
+> +{
+> +	common_reset();
+> +	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
+> +}
+> diff --git a/arch/arm/boards/at91sam9x5ek/Makefile b/arch/arm/boards/at91sam9x5ek/Makefile
+> index f2acf20..4ec0b36 100644
+> --- a/arch/arm/boards/at91sam9x5ek/Makefile
+> +++ b/arch/arm/boards/at91sam9x5ek/Makefile
+> @@ -1,2 +1,4 @@
+>  obj-y += init.o
+>  obj-y += hw_version.o
+> +obj-y += lowlevel.o
+> +pbl-y += lowlevel.o
+> diff --git a/arch/arm/boards/at91sam9x5ek/lowlevel.c b/arch/arm/boards/at91sam9x5ek/lowlevel.c
+> new file mode 100644
+> index 0000000..65259bb
+> --- /dev/null
+> +++ b/arch/arm/boards/at91sam9x5ek/lowlevel.c
+> @@ -0,0 +1,11 @@
+> +#include <common.h>
+> +#include <sizes.h>
+> +#include <asm/barebox-arm-head.h>
+> +#include <asm/barebox-arm.h>
+> +#include <mach/hardware.h>
+> +
+> +void __naked reset(void)
+> +{
+> +	common_reset();
+> +	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
+> +}
+> diff --git a/arch/arm/boards/pm9g45/Makefile b/arch/arm/boards/pm9g45/Makefile
+> index eb072c0..47ab803 100644
+> --- a/arch/arm/boards/pm9g45/Makefile
+> +++ b/arch/arm/boards/pm9g45/Makefile
+> @@ -1 +1,3 @@
+>  obj-y += init.o
+> +obj-y += lowlevel.o
+> +pbl-y += lowlevel.o
+> diff --git a/arch/arm/boards/pm9g45/lowlevel.c b/arch/arm/boards/pm9g45/lowlevel.c
+> new file mode 100644
+> index 0000000..65259bb
+> --- /dev/null
+> +++ b/arch/arm/boards/pm9g45/lowlevel.c
+> @@ -0,0 +1,11 @@
+> +#include <common.h>
+> +#include <sizes.h>
+> +#include <asm/barebox-arm-head.h>
+> +#include <asm/barebox-arm.h>
+> +#include <mach/hardware.h>
+> +
+> +void __naked reset(void)
+> +{
+> +	common_reset();
+> +	barebox_arm_entry(AT91_SDRAM_BASE, SZ_128M, 0);
+> +}
+> diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+> index da2768a..337d2a6 100644
+> --- a/arch/arm/mach-at91/Kconfig
+> +++ b/arch/arm/mach-at91/Kconfig
+> @@ -91,8 +91,6 @@ config SOC_AT91RM9200
+>  	select CPU_ARM920T
+>  	select HAVE_AT91_DBGU0
+>  	select HAS_AT91_ETHER
+> -	select MACH_HAS_LOWLEVEL_INIT
+> -	select MACH_DO_LOWLEVEL_INIT
+>  
+>  config SOC_AT91SAM9260
+>  	bool
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
