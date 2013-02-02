@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail.z9.com ([64.142.101.243])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U1XrK-0003eJ-0Z
- for barebox@lists.infradead.org; Sat, 02 Feb 2013 07:49:59 +0000
-Date: Sat, 2 Feb 2013 08:49:55 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130202074955.GA1906@pengutronix.de>
-References: <1359654315-19183-1-git-send-email-plagnioj@jcrosoft.com>
- <20130201175536.GZ1906@pengutronix.de>
- <20130201180403.GM26329@game.jcrosoft.org>
+ id 1U1g4F-0007GB-7g
+ for barebox@lists.infradead.org; Sat, 02 Feb 2013 16:35:51 +0000
+Received: from GPontisPC by z9.com (MDaemon PRO v12.5.8)
+ with ESMTP id md50000244442.msg
+ for <barebox@lists.infradead.org>; Sat, 02 Feb 2013 08:35:29 -0800
+From: "George Pontis" <GPontis@z9.com>
+Date: Sat, 2 Feb 2013 08:35:39 -0800
+Message-ID: <009d01ce0163$5629e7a0$027db6e0$@com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130201180403.GM26329@game.jcrosoft.org>
+Content-Language: en-us
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,51 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] omap3: fix debug_ll uart base
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Lost access to M25Pxx in move to 2013.01
+To: barebox@lists.infradead.org
 
-On Fri, Feb 01, 2013 at 07:04:03PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 18:55 Fri 01 Feb     , Sascha Hauer wrote:
-> > On Thu, Jan 31, 2013 at 06:45:15PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > ---
-> > >  arch/arm/mach-omap/include/mach/debug_ll.h |    4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/arch/arm/mach-omap/include/mach/debug_ll.h b/arch/arm/mach-omap/include/mach/debug_ll.h
-> > > index 142f01a..ed1777b 100644
-> > > --- a/arch/arm/mach-omap/include/mach/debug_ll.h
-> > > +++ b/arch/arm/mach-omap/include/mach/debug_ll.h
-> > > @@ -23,9 +23,9 @@
-> > >  #include <mach/omap3-silicon.h>
-> > >  
-> > >  #ifdef CONFIG_OMAP3EVM_UART1
-> > > -#define UART_BASE	OMAP_UART1_BASE
-> > > +#define UART_BASE	OMAP3_UART1_BASE
-> > >  #else
-> > > -#define UART_BASE	OMAP_UART3_BASE
-> > > +#define UART_BASE	OMAP3_UART3_BASE
-> > >  #endif
-> > 
-> > This file is also used for omap4 and am33xx. Probably this used to work
-> > when all shared the same defines. So, the above does not seem to be a
-> > proper fix.
-> it is as this is under as before
-> 
-> you have
-> #ifdef CONFIG_ARCH_OMAP3
-> #include <mach/omap3-silicon.h>
+Under 2012.11 I created a new board support package for custom hardware,
+which included a M25P32. I store barebox and its environment there, and boot
+from it. The board file also defines partitions for it. The first three look
+like this:
 
-Ah, missed that. Applied.
+        devfs_add_partition("m25p0",        0, 0x050000,
+DEVFS_PARTITION_FIXED, "barebox");
+        devfs_add_partition("m25p0", 0x050000, 0x010000,
+DEVFS_PARTITION_FIXED, "env0");
+        devfs_add_partition("m25p0", 0x060000, 0x330000,
+DEVFS_PARTITION_FIXED, "kernel");
 
-Sascha
+This created devices /dev/barebox, /dev/env0, and so on. It also allowed for
+simple commands like "erase /dev/barebox", "tftp barebox.bin /dev/barebox",
+etc.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+More recently I updated to the 2013.01 release. My config file is not much
+different and it still has enabled CONFIG_MTD, CONFIG_MTD_M25P80,
+CONFIG_MTD_WRITE. The new release starts up just fine and boots the kernel
+as usual. However, it does not see the M25P32.
+
+With the earlier release, I saw a line displayed at startup as so:
+
+m25p m25p0: m25p32 (4096 Kbytes)
+
+Also, devinfo listed the partitions on the part. That m25p line is not
+displayed with the 2013.01 release and there are no partitions. Devinfo does
+show one line for the m25p driver.
+
+Any suggestions where to look for a fix ?
+
+
 
 _______________________________________________
 barebox mailing list
