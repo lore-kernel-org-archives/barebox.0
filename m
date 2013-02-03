@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo4.mail-out.ovh.net ([188.165.33.112]
+Received: from 6.mo4.mail-out.ovh.net ([188.165.36.253]
  helo=mo4.mail-out.ovh.net)
- by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U21Gb-0007GA-T0
- for barebox@lists.infradead.org; Sun, 03 Feb 2013 15:14:02 +0000
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U21EX-0000Xe-63
+ for barebox@lists.infradead.org; Sun, 03 Feb 2013 15:11:54 +0000
 Received: from mail403.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 5526E104ED6F
- for <barebox@lists.infradead.org>; Sun,  3 Feb 2013 16:22:03 +0100 (CET)
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 526D0104E9B3
+ for <barebox@lists.infradead.org>; Sun,  3 Feb 2013 16:21:58 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun,  3 Feb 2013 16:10:31 +0100
-Message-Id: <1359904236-11622-31-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun,  3 Feb 2013 16:10:02 +0100
+Message-Id: <1359904236-11622-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1359904236-11622-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130203150333.GE18068@game.jcrosoft.org>
  <1359904236-11622-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,199 +26,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 31/36] ARM: Factor out early mmu code
+Subject: [PATCH 02/36] ARM: add __noreturn to board_init_lowlevel_return
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Move early mmu code to a separate file so that it can be
-used from the pbl and the regular image. Disabling the mmu
-can be dropped since the regular mmu code is now able to
-pickup an enabled mmu.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/Makefile    |    4 +--
- arch/arm/cpu/mmu-early.c |   53 ++++++++++++++++++++++++++++++++++
- arch/arm/cpu/mmu-early.h |    6 ++++
- arch/arm/cpu/start-pbl.c |   72 ----------------------------------------------
- 4 files changed, 61 insertions(+), 74 deletions(-)
- create mode 100644 arch/arm/cpu/mmu-early.c
- create mode 100644 arch/arm/cpu/mmu-early.h
+ arch/arm/cpu/start-pbl.c           |    6 +++---
+ arch/arm/cpu/start.c               |    2 +-
+ arch/arm/include/asm/barebox-arm.h |    2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-index 4b0259c..44410ee 100644
---- a/arch/arm/cpu/Makefile
-+++ b/arch/arm/cpu/Makefile
-@@ -8,8 +8,8 @@ obj-y += start.o setupc.o
- #
- obj-$(CONFIG_CMD_ARM_CPUINFO) += cpuinfo.o
- obj-$(CONFIG_CMD_ARM_MMUINFO) += mmuinfo.o
--obj-$(CONFIG_MMU) += mmu.o cache.o
--pbl-$(CONFIG_MMU) += cache.o
-+obj-$(CONFIG_MMU) += mmu.o cache.o mmu-early.o
-+pbl-$(CONFIG_MMU) += cache.o mmu-early.o
- obj-$(CONFIG_CPU_32v4T) += cache-armv4.o
- pbl-$(CONFIG_CPU_32v4T) += cache-armv4.o
- obj-$(CONFIG_CPU_32v5) += cache-armv5.o
-diff --git a/arch/arm/cpu/mmu-early.c b/arch/arm/cpu/mmu-early.c
-new file mode 100644
-index 0000000..b8b30df
---- /dev/null
-+++ b/arch/arm/cpu/mmu-early.c
-@@ -0,0 +1,53 @@
-+#include <common.h>
-+#include <asm/mmu.h>
-+#include <errno.h>
-+#include <sizes.h>
-+#include <asm/memory.h>
-+#include <asm/system.h>
-+#include <asm/cache.h>
-+
-+#include "mmu.h"
-+
-+static uint32_t *ttb;
-+
-+static void create_sections(unsigned long addr, int size_m, unsigned int flags)
-+{
-+	int i;
-+
-+	addr >>= 20;
-+
-+	for (i = size_m; i > 0; i--, addr++)
-+		ttb[addr] = (addr << 20) | flags;
-+}
-+
-+static void map_cachable(unsigned long start, unsigned long size)
-+{
-+	start &= ~(SZ_1M - 1);
-+	size = (size + (SZ_1M - 1)) & ~(SZ_1M - 1);
-+
-+	create_sections(start, size >> 20, PMD_SECT_AP_WRITE |
-+			PMD_SECT_AP_READ | PMD_TYPE_SECT | PMD_SECT_WB);
-+}
-+
-+void mmu_early_enable(uint32_t membase, uint32_t memsize, uint32_t _ttb)
-+{
-+	int i;
-+
-+	ttb = (uint32_t *)_ttb;
-+
-+	arm_set_cache_functions();
-+
-+	/* Set the ttb register */
-+	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
-+
-+	/* Set the Domain Access Control Register */
-+	i = 0x3;
-+	asm volatile ("mcr  p15,0,%0,c3,c0,0" : : "r"(i) /*:*/);
-+
-+	create_sections(0, 4096, PMD_SECT_AP_WRITE |
-+			PMD_SECT_AP_READ | PMD_TYPE_SECT);
-+
-+	map_cachable(membase, memsize);
-+
-+	__mmu_cache_on();
-+}
-diff --git a/arch/arm/cpu/mmu-early.h b/arch/arm/cpu/mmu-early.h
-new file mode 100644
-index 0000000..af21f52
---- /dev/null
-+++ b/arch/arm/cpu/mmu-early.h
-@@ -0,0 +1,6 @@
-+#ifndef __ARM_CPU_MMU_EARLY_H
-+#define __ARM_CPU_MMU_EARLY_H
-+
-+void mmu_early_enable(uint32_t membase, uint32_t memsize, uint32_t ttb);
-+
-+#endif /* __ARM_CPU_MMU_EARLY_H */
 diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index 9c168b3..0599c57 100644
+index f1ce2c5..da62111 100644
 --- a/arch/arm/cpu/start-pbl.c
 +++ b/arch/arm/cpu/start-pbl.c
-@@ -48,82 +48,10 @@ void __naked __section(.text_head_entry) pbl_start(void)
- extern void *input_data;
- extern void *input_data_end;
- 
--static unsigned long *ttb;
--
--static void create_sections(unsigned long addr, int size_m, unsigned int flags)
--{
--	int i;
--
--	addr >>= 20;
--
--	for (i = size_m; i > 0; i--, addr++)
--		ttb[addr] = (addr << 20) | flags;
--}
--
--static void map_cachable(unsigned long start, unsigned long size)
--{
--	start &= ~(SZ_1M - 1);
--	size = (size + (SZ_1M - 1)) & ~(SZ_1M - 1);
--
--	create_sections(start, size >> 20, PMD_SECT_AP_WRITE |
--			PMD_SECT_AP_READ | PMD_TYPE_SECT | PMD_SECT_WB);
--}
--
--static void mmu_enable(unsigned long compressed_start, unsigned int len)
--{
--	int i;
--
--	/* Set the ttb register */
--	asm volatile ("mcr  p15,0,%0,c2,c0,0" : : "r"(ttb) /*:*/);
--
--	/* Set the Domain Access Control Register */
--	i = 0x3;
--	asm volatile ("mcr  p15,0,%0,c3,c0,0" : : "r"(i) /*:*/);
--
--	create_sections(0, 4096, PMD_SECT_AP_WRITE |
--			PMD_SECT_AP_READ | PMD_TYPE_SECT);
--	/*
--	 * Setup all regions we need cacheable, namely:
--	 * - the stack
--	 * - the decompressor code
--	 * - the compressed image
--	 * - the uncompressed image
--	 * - the early malloc space
--	 */
--	map_cachable(STACK_BASE, STACK_SIZE);
--	map_cachable((unsigned long)&_text,
--			(unsigned long)&_end - (unsigned long)&_text);
--	map_cachable((unsigned long)compressed_start, len);
--	map_cachable(TEXT_BASE, len * 4);
--	map_cachable(free_mem_ptr, free_mem_end_ptr - free_mem_ptr);
--
--	__mmu_cache_on();
--}
--
--static void mmu_disable(void)
--{
--	__mmu_cache_flush();
--	__mmu_cache_off();
--}
--
- static void barebox_uncompress(void *compressed_start, unsigned int len)
- {
--	/*
--	 * remap_cached currently does not work rendering the feature
--	 * of enabling the MMU in the PBL useless. disable for now.
--	 */
--	int use_mmu = 0;
--
--	ttb = (void *)((free_mem_ptr - 0x4000) & ~0x3fff);
--
--	if (use_mmu)
--		mmu_enable((unsigned long)compressed_start, len);
--
- 	pbl_barebox_uncompress((void*)TEXT_BASE, compressed_start, len);
- 
--	if (use_mmu)
--		mmu_disable();
--
- 	flush_icache();
+@@ -118,9 +118,9 @@ static void mmu_disable(void)
+ 	__mmu_cache_off();
  }
  
+-static void barebox_uncompress(void *compressed_start, unsigned int len)
++static void __noreturn barebox_uncompress(void *compressed_start, unsigned int len)
+ {
+-	void (*barebox)(void);
++	void __noreturn (*barebox)(void);
+ 	/*
+ 	 * remap_cached currently does not work rendering the feature
+ 	 * of enabling the MMU in the PBL useless. disable for now.
+@@ -155,7 +155,7 @@ static void barebox_uncompress(void *compressed_start, unsigned int len)
+  * Board code can jump here by either returning from board_init_lowlevel
+  * or by calling this function directly.
+  */
+-void __naked board_init_lowlevel_return(void)
++void __naked __noreturn board_init_lowlevel_return(void)
+ {
+ 	uint32_t offset;
+ 	uint32_t pg_start, pg_end, pg_len;
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 0b7eee8..f212b61 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -55,7 +55,7 @@ void __naked __bare_init reset(void)
+  * Board code can jump here by either returning from board_init_lowlevel
+  * or by calling this function directly.
+  */
+-void __naked board_init_lowlevel_return(void)
++void __naked __noreturn board_init_lowlevel_return(void)
+ {
+ 	arm_setup_stack(STACK_BASE + STACK_SIZE - 16);
+ 
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 4ccf938..0574f34 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -35,7 +35,7 @@ int	dram_init (void);
+ extern char __exceptions_start[], __exceptions_stop[];
+ 
+ void board_init_lowlevel(void);
+-void board_init_lowlevel_return(void);
++void __noreturn board_init_lowlevel_return(void);
+ uint32_t get_runtime_offset(void);
+ 
+ void setup_c(void);
 -- 
 1.7.10.4
 
