@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo4.mail-out.ovh.net ([178.33.104.253]
+Received: from 20.mo4.mail-out.ovh.net ([46.105.33.73]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U21EZ-0000Z4-Kp
- for barebox@lists.infradead.org; Sun, 03 Feb 2013 15:11:59 +0000
+ id 1U21Ea-0000Z5-3f
+ for barebox@lists.infradead.org; Sun, 03 Feb 2013 15:12:05 +0000
 Received: from mail403.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 06613104EA9D
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 17E9C104EAA6
  for <barebox@lists.infradead.org>; Sun,  3 Feb 2013 16:22:01 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun,  3 Feb 2013 16:10:12 +0100
-Message-Id: <1359904236-11622-12-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun,  3 Feb 2013 16:10:13 +0100
+Message-Id: <1359904236-11622-13-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1359904236-11622-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130203150333.GE18068@game.jcrosoft.org>
  <1359904236-11622-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,48 +26,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/36] ARM tegra boards: switch to barebox_arm_entry
+Subject: [PATCH 13/36] ARM nomadik boards: switch to barebox_arm_entry
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Only one board, Toshiba AC100. This uses hardcoded SDRAM values.
+Only one board, the nhk8815. This uses hardcoded SDRAM values.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig                         |    2 ++
- arch/arm/boards/toshiba-ac100/Makefile   |    2 ++
- arch/arm/boards/toshiba-ac100/lowlevel.c |   10 ++++++++++
+ arch/arm/Kconfig                   |    2 ++
+ arch/arm/boards/nhk8815/Makefile   |    2 ++
+ arch/arm/boards/nhk8815/lowlevel.c |   10 ++++++++++
  3 files changed, 14 insertions(+)
- create mode 100644 arch/arm/boards/toshiba-ac100/lowlevel.c
+ create mode 100644 arch/arm/boards/nhk8815/lowlevel.c
 
 diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 7b0e59a..5f5b965 100644
+index 5f5b965..dcd48a9 100644
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -126,6 +126,8 @@ config ARCH_TEGRA
- 	bool "Nvidia Tegra-based boards"
+@@ -77,6 +77,8 @@ config ARCH_NOMADIK
+ 	bool "STMicroelectronics Nomadik"
  	select CPU_ARM926T
- 	select HAS_DEBUG_LL
+ 	select CLOCKSOURCE_NOMADIK
 +	select MACH_HAS_LOWLEVEL_INIT
 +	select MACH_DO_LOWLEVEL_INIT
+ 	help
+ 	  Support for the Nomadik platform by ST-Ericsson
  
- endchoice
- 
-diff --git a/arch/arm/boards/toshiba-ac100/Makefile b/arch/arm/boards/toshiba-ac100/Makefile
-index 9e14763..5b74351 100644
---- a/arch/arm/boards/toshiba-ac100/Makefile
-+++ b/arch/arm/boards/toshiba-ac100/Makefile
-@@ -1,2 +1,4 @@
- obj-y += board.o
- obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial.o
+diff --git a/arch/arm/boards/nhk8815/Makefile b/arch/arm/boards/nhk8815/Makefile
+index 2b9dba4..dbb2a71 100644
+--- a/arch/arm/boards/nhk8815/Makefile
++++ b/arch/arm/boards/nhk8815/Makefile
+@@ -1 +1,3 @@
+ obj-y += setup.o
 +obj-y += lowlevel.o
 +pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/toshiba-ac100/lowlevel.c b/arch/arm/boards/toshiba-ac100/lowlevel.c
+diff --git a/arch/arm/boards/nhk8815/lowlevel.c b/arch/arm/boards/nhk8815/lowlevel.c
 new file mode 100644
-index 0000000..68706a5
+index 0000000..3956347
 --- /dev/null
-+++ b/arch/arm/boards/toshiba-ac100/lowlevel.c
++++ b/arch/arm/boards/nhk8815/lowlevel.c
 @@ -0,0 +1,10 @@
 +#include <common.h>
 +#include <sizes.h>
@@ -77,7 +76,7 @@ index 0000000..68706a5
 +void __naked reset(void)
 +{
 +	common_reset();
-+	barebox_arm_entry(0x0, SZ_512M, 0);
++	barebox_arm_entry(0x0, SZ_64M, 0);
 +}
 -- 
 1.7.10.4
