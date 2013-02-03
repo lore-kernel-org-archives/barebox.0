@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo4.mail-out.ovh.net ([91.121.62.11]
+Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]
  helo=mo4.mail-out.ovh.net)
  by bombadil.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U21GZ-0007G3-Mk
- for barebox@lists.infradead.org; Sun, 03 Feb 2013 15:14:00 +0000
+ id 1U21Gb-0007GB-4A
+ for barebox@lists.infradead.org; Sun, 03 Feb 2013 15:14:01 +0000
 Received: from mail403.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 5FB36104ED82
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 20304104ED15
  for <barebox@lists.infradead.org>; Sun,  3 Feb 2013 16:22:03 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun,  3 Feb 2013 16:10:32 +0100
-Message-Id: <1359904236-11622-32-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun,  3 Feb 2013 16:10:28 +0100
+Message-Id: <1359904236-11622-28-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1359904236-11622-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130203150333.GE18068@game.jcrosoft.org>
  <1359904236-11622-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,106 +26,146 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 32/36] ARM: Enable mmu early
+Subject: [PATCH 28/36] ARM: Setup stack at end of SDRAM
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-This optionally enabled the MMU in the PBL or during early startup for
-the non PBL case. The regular MMU init code will pickup the already enabled
-MMU later. This might complicate debugging early code, so this has been
-made optional.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start-pbl.c |    8 +++++++-
- arch/arm/cpu/start.c     |   12 ++++++++++++
- common/Kconfig           |    9 +++++++++
- 3 files changed, 28 insertions(+), 1 deletion(-)
+ arch/arm/cpu/cpu.c                 |   12 ++++++++++++
+ arch/arm/cpu/start-pbl.c           |    4 +---
+ arch/arm/cpu/start.c               |   18 +++++++++++++++++-
+ arch/arm/include/asm/barebox-arm.h |    2 ++
+ common/meminfo.c                   |    5 -----
+ 5 files changed, 32 insertions(+), 9 deletions(-)
 
+diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
+index 2ca871f..7761f5c 100644
+--- a/arch/arm/cpu/cpu.c
++++ b/arch/arm/cpu/cpu.c
+@@ -28,6 +28,7 @@
+ #include <asm/mmu.h>
+ #include <asm/system.h>
+ #include <asm/memory.h>
++#include <asm-generic/memory_layout.h>
+ #include <asm/system_info.h>
+ #include <asm/cputype.h>
+ #include <asm/cache.h>
+@@ -91,6 +92,17 @@ void arch_shutdown(void)
+ 	__asm__ __volatile__("msr cpsr, %0" : : "r"(r));
+ }
+ 
++extern unsigned long arm_stack_top;
++
++static int arm_request_stack(void)
++{
++	if (!request_sdram_region("stack", arm_stack_top - STACK_SIZE, STACK_SIZE))
++		pr_err("Error: Cannot request SDRAM region for stack\n");
++
++	return 0;
++}
++coredevice_initcall(arm_request_stack);
++
+ #ifdef CONFIG_THUMB2_BAREBOX
+ static void thumb2_execute(void *func, int argc, char *argv[])
+ {
 diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index 0599c57..a825e9f 100644
+index 64cd6ff..89839f0 100644
 --- a/arch/arm/cpu/start-pbl.c
 +++ b/arch/arm/cpu/start-pbl.c
-@@ -32,7 +32,7 @@
- #include <asm/pgtable.h>
- #include <asm/cache.h>
+@@ -174,8 +174,6 @@ static noinline __noreturn void __barebox_arm_entry(uint32_t membase,
+  * be preserved and can be accessed later with barebox_arm_boarddata().
+  *
+  * -> membase + memsize
+- *   ARM_RESERVE_MEM_SIZE    - reserved for board usage. Will not be touched
+- *                             by barebox
+  *   STACK_SIZE              - stack
+  *   16KiB, aligned to 16KiB - First level page table if early MMU support
+  *                             is enabled
+@@ -188,7 +186,7 @@ static noinline __noreturn void __barebox_arm_entry(uint32_t membase,
+ void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
+ 		uint32_t boarddata)
+ {
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 16);
++	arm_setup_stack(membase + memsize - 16);
  
--#include "mmu.h"
-+#include "mmu-early.h"
- 
- unsigned long free_mem_ptr;
- unsigned long free_mem_end_ptr;
-@@ -83,6 +83,12 @@ static noinline __noreturn void __barebox_arm_entry(uint32_t membase,
- 
- 	setup_c();
- 
-+	if (IS_ENABLED(CONFIG_MMU_EARLY)) {
-+		endmem &= ~0x3fff;
-+		endmem -= SZ_16K; /* ttb */
-+		mmu_early_enable(membase, memsize, endmem);
-+	}
-+
- 	endmem -= SZ_128K; /* early malloc */
- 	free_mem_ptr = endmem;
- 	free_mem_end_ptr = free_mem_ptr + SZ_128K;
+ 	__barebox_arm_entry(membase, memsize, boarddata);
+ }
 diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index a621161..d90b244 100644
+index 9fd1e8d..a621161 100644
 --- a/arch/arm/cpu/start.c
 +++ b/arch/arm/cpu/start.c
-@@ -19,6 +19,7 @@
- 
- #include <common.h>
- #include <init.h>
-+#include <sizes.h>
- #include <asm/barebox-arm.h>
- #include <asm/barebox-arm-head.h>
- #include <asm-generic/memory_layout.h>
-@@ -26,6 +27,8 @@
+@@ -26,11 +26,18 @@
  #include <asm/cache.h>
  #include <memory.h>
  
-+#include "mmu-early.h"
++unsigned long arm_stack_top;
 +
- unsigned long arm_stack_top;
- 
  static noinline __noreturn void __start(uint32_t membase, uint32_t memsize,
-@@ -38,6 +41,15 @@ static noinline __noreturn void __start(uint32_t membase, uint32_t memsize,
- 	arm_stack_top = endmem;
- 	endmem -= STACK_SIZE; /* Stack */
+ 		uint32_t boarddata)
+ {
++	unsigned long endmem = membase + memsize;
++
+ 	setup_c();
  
-+	if (IS_ENABLED(CONFIG_MMU_EARLY)) {
-+
-+		endmem &= ~0x3fff;
-+		endmem -= SZ_16K; /* ttb */
-+
-+		if (!IS_ENABLED(CONFIG_PBL_IMAGE))
-+			mmu_early_enable(membase, memsize, endmem);
-+	}
++	arm_stack_top = endmem;
++	endmem -= STACK_SIZE; /* Stack */
 +
  	start_barebox();
  }
  
-diff --git a/common/Kconfig b/common/Kconfig
-index 595e91f..3f6c11e 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -114,6 +114,15 @@ config MMU
- 	  to enable the data cache which depends on the MMU. See Documentation/mmu.txt
- 	  for further information.
+@@ -47,11 +54,20 @@ void __naked __section(.text_entry) start(void)
+  * full SDRAM. The currently running binary can be inside or outside of this
+  * region. TEXT_BASE can be inside or outside of this region. boarddata will
+  * be preserved and can be accessed later with barebox_arm_boarddata().
++ *
++ * -> membase + memsize
++ *   STACK_SIZE              - stack
++ *   16KiB, aligned to 16KiB - First level page table if early MMU support
++ *                             is enabled
++ * -> maximum end of barebox binary
++ *
++ * Usually a TEXT_BASE of 1MiB below your lowest possible end of memory should
++ * be fine.
+  */
+ void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
+                 uint32_t boarddata)
+ {
+-	arm_setup_stack(STACK_BASE + STACK_SIZE - 16);
++	arm_setup_stack(membase + memsize - 16);
  
-+config MMU_EARLY
-+	bool "Enable MMU early"
-+	depends on ARM
-+	depends on MMU
-+	default y
-+	help
-+	  This enables the MMU during early startup. This speeds up things during startup
-+	  of barebox, but may lead to harder to debug code. If unsure say yes here.
+ 	__start(membase, memsize, boarddata);
+ }
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 42b7a3f..9c10e36 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -25,6 +25,8 @@
+ #ifndef _BAREBOX_ARM_H_
+ #define _BAREBOX_ARM_H_
+ 
++#include <sizes.h>
 +
- config HAVE_CONFIGURABLE_TEXT_BASE
- 	bool
+ /* cpu/.../cpu.c */
+ int	cleanup_before_linux(void);
  
+diff --git a/common/meminfo.c b/common/meminfo.c
+index a09b2d2..5e3ff71 100644
+--- a/common/meminfo.c
++++ b/common/meminfo.c
+@@ -14,11 +14,6 @@ static int display_meminfo(void)
+ 	debug("bss segment:  0x%p -> 0x%p\n", __bss_start, __bss_stop - 1);
+ 	printf("malloc space: 0x%08lx -> 0x%08lx (size %s)\n",
+ 		mstart, mend, size_human_readable(msize));
+-#ifdef CONFIG_ARM
+-	printf("stack space:  0x%08x -> 0x%08x (size %s)\n",
+-		STACK_BASE, STACK_BASE + STACK_SIZE - 1,
+-		size_human_readable(STACK_SIZE));
+-#endif
+ 	return 0;
+ }
+ late_initcall(display_meminfo);
 -- 
 1.7.10.4
 
