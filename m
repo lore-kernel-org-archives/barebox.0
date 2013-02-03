@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo4.mail-out.ovh.net ([188.165.55.104]
+Received: from 15.mo4.mail-out.ovh.net ([91.121.62.11]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U1weI-0005Ah-TC
- for barebox@lists.infradead.org; Sun, 03 Feb 2013 10:18:11 +0000
-Received: from mail92.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id DB859104ECC4
- for <barebox@lists.infradead.org>; Sun,  3 Feb 2013 11:28:15 +0100 (CET)
+ id 1U1z0u-0003KN-Lw
+ for barebox@lists.infradead.org; Sun, 03 Feb 2013 12:49:42 +0000
+Received: from mail403.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 352FE104EAC3
+ for <barebox@lists.infradead.org>; Sun,  3 Feb 2013 13:59:45 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun,  3 Feb 2013 11:16:55 +0100
-Message-Id: <1359886615-18302-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun,  3 Feb 2013 13:48:22 +0100
+Message-Id: <1359895702-30597-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,79 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] MAKEALL: add regex support
+Subject: [PATCH 1/1] at91sam9_ddrsdr: fix register on mdr read for ddr size
 To: barebox@lists.infradead.org
 
-this will allow to compile only a subset of defconfig
+it's currently working by luck
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- MAKEALL |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/MAKEALL b/MAKEALL
-index c08e484..18ed862 100755
---- a/MAKEALL
-+++ b/MAKEALL
-@@ -56,6 +56,7 @@ usage() {
- 	echo "JOBS      -j      jobs"
- 	echo "BUILDDIR  -O      build dir"
- 	echo "LOGDIR    -l      log dir"
-+	echo "REGEX     -e      regex"
- 	echo ""
- }
+diff --git a/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h b/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h
+index 2614f97..f728399 100644
+--- a/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h
++++ b/arch/arm/mach-at91/include/mach/at91sam9_ddrsdr.h
+@@ -146,7 +146,7 @@ static inline u32 at91_get_ddram_size(void * __iomem base, bool is_nb)
+ 	bool is_sdram;
  
-@@ -152,8 +153,9 @@ do_build_target() {
+ 	cr = __raw_readl(base + AT91_DDRSDRC_CR);
+-	mdr = __raw_readl(base + AT91_DDRSDRC_CR);
++	mdr = __raw_readl(base + AT91_DDRSDRC_MDR);
  
- do_build() {
- 	local arch=$1
-+	local regex=$2
+ 	is_sdram = (mdr & AT91_DDRSDRC_MD) <= AT91_DDRSDRC_MD_LOW_POWER_SDR;
  
--	for i in arch/${arch}/configs/*_defconfig
-+	find arch/${arch}/configs -name "${regex}_defconfig" | while read i
- 	do
- 		local target=$(basename $i)
- 
-@@ -178,7 +180,7 @@ do_build_all() {
- 	return $build_target
- }
- 
--while getopts "hc:j:O:l:a:" Option
-+while getopts "hc:j:O:l:a:e:" Option
- do
- case $Option in
- 	a )
-@@ -196,6 +198,9 @@ case $Option in
- 	O )
- 		BUILDDIR=${OPTARG}
- 		;;
-+	e )
-+		REGEX=${OPTARG}
-+		;;
- 	h )
- 		usage
- 		exit 0
-@@ -241,6 +246,11 @@ fi
- 
- [ -d "${LOGDIR}" ] || mkdir ${LOGDIR} || exit 1
- 
-+if [ ! "${REGEX}" ]
-+then
-+	REGEX="*"
-+fi
-+
- if [ ! "${CONFIG}" ] && [ ! "${CROSS_COMPILE+set}" ]
- then
- 	echo "You need to specify a CONFIG or a CROSS_COMPILE"
-@@ -262,7 +272,7 @@ fi
- 
- if [ $# -eq 0 ]
- then
--	do_build ${ARCH}
-+	do_build ${ARCH} "${REGEX}"
- else
- 	do_build_target ${ARCH} $1
- fi
 -- 
 1.7.10.4
 
