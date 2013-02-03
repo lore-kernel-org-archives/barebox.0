@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo4.mail-out.ovh.net ([46.105.57.129]
+Received: from 6.mo4.mail-out.ovh.net ([188.165.36.253]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U21Po-0002ys-0S
- for barebox@lists.infradead.org; Sun, 03 Feb 2013 15:23:33 +0000
+ id 1U21EX-0000Xd-64
+ for barebox@lists.infradead.org; Sun, 03 Feb 2013 15:11:54 +0000
 Received: from mail403.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id B4FA2104EAC1
- for <barebox@lists.infradead.org>; Sun,  3 Feb 2013 16:33:36 +0100 (CET)
-Date: Sun, 3 Feb 2013 16:22:18 +0100
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 4059D104E94E
+ for <barebox@lists.infradead.org>; Sun,  3 Feb 2013 16:21:58 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130203152218.GF18068@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Sun,  3 Feb 2013 16:10:01 +0100
+Message-Id: <1359904236-11622-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130203150333.GE18068@game.jcrosoft.org>
+References: <20130203150333.GE18068@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,55 +20,85 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] at91sam926x: drop AT91_BASE_SYS for sdram controller +
- gpio cleanup
+Subject: [PATCH 01/36] ARM: Add new entry point for barebox
 To: barebox@lists.infradead.org
 
-Hi,
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-The following changes since commit cd5f8e8aaf808ae19e7c1d2890f90f7de809a2c5:
+Memory is a precious resource, so it makes sense to make it available as
+early as possible. By definition the lowlevel init code already knows where
+to find memory because it's the lowlevel init code which sets up the memory.
+Until all boards are converted this new entry is just a fallback to the old
+entry point.
 
-  ARM pbl: inline decompress function (2013-02-03 08:27:59 +0800)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/cpu/start-pbl.c           |   13 +++++++++++++
+ arch/arm/cpu/start.c               |   13 +++++++++++++
+ arch/arm/include/asm/barebox-arm.h |    1 +
+ 3 files changed, 27 insertions(+)
 
-are available in the git repository at:
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index f506792..f1ce2c5 100644
+--- a/arch/arm/cpu/start-pbl.c
++++ b/arch/arm/cpu/start-pbl.c
+@@ -183,3 +183,16 @@ void __naked board_init_lowlevel_return(void)
+ 
+ 	barebox_uncompress((void *)pg_start, pg_len);
+ }
++
++/*
++ * Main ARM entry point in the compressed image. Call this with the memory
++ * region you can spare for barebox. This doesn't necessarily have to be the
++ * full SDRAM. The currently running binary can be inside or outside of this
++ * region. TEXT_BASE can be inside or outside of this region. boarddata will
++ * be preserved and can be accessed later with barebox_arm_boarddata().
++ */
++void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
++		uint32_t boarddata)
++{
++	board_init_lowlevel_return();
++}
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 793445a..0b7eee8 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -63,3 +63,16 @@ void __naked board_init_lowlevel_return(void)
+ 
+ 	start_barebox();
+ }
++
++/*
++ * Main ARM entry point in the uncompressed image. Call this with the memory
++ * region you can spare for barebox. This doesn't necessarily have to be the
++ * full SDRAM. The currently running binary can be inside or outside of this
++ * region. TEXT_BASE can be inside or outside of this region. boarddata will
++ * be preserved and can be accessed later with barebox_arm_boarddata().
++ */
++void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
++                uint32_t boarddata)
++{
++	board_init_lowlevel_return();
++}
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 993130d..4ccf938 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -39,5 +39,6 @@ void board_init_lowlevel_return(void);
+ uint32_t get_runtime_offset(void);
+ 
+ void setup_c(void);
++void __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize, uint32_t boarddata);
+ 
+ #endif	/* _BAREBOX_ARM_H_ */
+-- 
+1.7.10.4
 
-  git://git.jcrosoft.org/barebox.git delivery/at91sam926x_lowlevel_arm-entry
-
-for you to fetch changes up to 453bfddd34c1c0babcd8389d63fd34b1bc764a34:
-
-  at91sam9: drop AT91_BASE_SYS for sdram controller (2013-02-03 08:49:16 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (5):
-      usb-a926x: only provide the resource if the driver is enable
-      at91: gpio: split accessor so we can use them for early init
-      at91sam926x_lowlevel_init: use pio macro
-      at91sam926x_lowlevel_init: use struct to pass soc config
-      at91sam9: drop AT91_BASE_SYS for sdram controller
-
- arch/arm/boards/tny-a926x/init.c                     |    2 +-
- arch/arm/boards/usb-a926x/init.c                     |   11 ++++++++-
- arch/arm/mach-at91/at91sam9260_devices.c             |    2 +-
- arch/arm/mach-at91/at91sam9260_lowlevel_init.c       |   19 +++++++++++----
- arch/arm/mach-at91/at91sam9261_devices.c             |    2 +-
- arch/arm/mach-at91/at91sam9261_lowlevel_init.c       |   19 +++++++++++----
- arch/arm/mach-at91/at91sam9263_devices.c             |    2 +-
- arch/arm/mach-at91/at91sam9263_lowlevel_init.c       |   19 +++++++++++----
- arch/arm/mach-at91/at91sam926x_lowlevel_init.c       |  152 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------------------------------------
- arch/arm/mach-at91/at91sam9_reset.S                  |    4 ++--
- arch/arm/mach-at91/gpio.c                            |  131 +++++----------------------------------------------------------------------------------------------
- arch/arm/mach-at91/gpio.h                            |  148 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/mach-at91/include/mach/at91_lowlevel_init.h |   11 +++++++--
- arch/arm/mach-at91/include/mach/at91sam9_sdramc.h    |  108 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------
- 14 files changed, 402 insertions(+), 228 deletions(-)
- create mode 100644 arch/arm/mach-at91/gpio.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
