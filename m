@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo4.mail-out.ovh.net ([188.165.36.253]
+Received: from 12.mo4.mail-out.ovh.net ([178.33.104.253]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U21EY-0000YZ-EI
- for barebox@lists.infradead.org; Sun, 03 Feb 2013 15:11:58 +0000
+ id 1U21EZ-0000Z4-Kp
+ for barebox@lists.infradead.org; Sun, 03 Feb 2013 15:11:59 +0000
 Received: from mail403.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 45B26104EA16
- for <barebox@lists.infradead.org>; Sun,  3 Feb 2013 16:22:00 +0100 (CET)
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 06613104EA9D
+ for <barebox@lists.infradead.org>; Sun,  3 Feb 2013 16:22:01 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun,  3 Feb 2013 16:10:05 +0100
-Message-Id: <1359904236-11622-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun,  3 Feb 2013 16:10:12 +0100
+Message-Id: <1359904236-11622-12-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1359904236-11622-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130203150333.GE18068@game.jcrosoft.org>
  <1359904236-11622-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,167 +26,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/36] ARM i.MX: prepare external nand boot for SoC specific
- entry
+Subject: [PATCH 12/36] ARM tegra boards: switch to barebox_arm_entry
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-i.MX will get SoC specific entry points for barebox. To find the
-correct one we have to call these from the SoC specific
-imx*_barebox_boot_nand_external functions.
+Only one board, Toshiba AC100. This uses hardcoded SDRAM values.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/external-nand-boot.c    |   73 +++++++++++++++++++++--------
- arch/arm/mach-imx/include/mach/imx-nand.h |    1 -
- 2 files changed, 53 insertions(+), 21 deletions(-)
+ arch/arm/Kconfig                         |    2 ++
+ arch/arm/boards/toshiba-ac100/Makefile   |    2 ++
+ arch/arm/boards/toshiba-ac100/lowlevel.c |   10 ++++++++++
+ 3 files changed, 14 insertions(+)
+ create mode 100644 arch/arm/boards/toshiba-ac100/lowlevel.c
 
-diff --git a/arch/arm/mach-imx/external-nand-boot.c b/arch/arm/mach-imx/external-nand-boot.c
-index 39ffb94..c97fec9 100644
---- a/arch/arm/mach-imx/external-nand-boot.c
-+++ b/arch/arm/mach-imx/external-nand-boot.c
-@@ -259,14 +259,19 @@ void __bare_init imx_nand_load_image(void *dest, int size)
- }
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 7b0e59a..5f5b965 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -126,6 +126,8 @@ config ARCH_TEGRA
+ 	bool "Nvidia Tegra-based boards"
+ 	select CPU_ARM926T
+ 	select HAS_DEBUG_LL
++	select MACH_HAS_LOWLEVEL_INIT
++	select MACH_DO_LOWLEVEL_INIT
  
- /*
-- * We are now running at the address we are linked at. Now load the image from
-- * NAND to SDRAM and continue booting.
-+ * This function assumes the currently running binary has been
-+ * copied from its current position to an offset. It returns
-+ * to the calling function - offset.
-+ * NOTE: The calling function may not return itself since it still
-+ * works on the old content of the lr register. Only call this
-+ * from a __noreturn function.
-  */
--static void __bare_init __naked insdram(void)
-+static __bare_init __naked void jump_sdram(unsigned long offset)
- {
--	imx_nand_load_image((void *)_text, barebox_image_size);
--
--	board_init_lowlevel_return();
-+	__asm__ __volatile__ (
-+			"sub lr, lr, %0;"
-+			"mov pc, lr;" : : "r"(offset)
-+			);
- }
+ endchoice
  
- /*
-@@ -274,7 +279,7 @@ static void __bare_init __naked insdram(void)
-  * running inside the NFC address space. If not, barebox is started from the
-  * currently running address without loading anything from NAND.
-  */
--void __bare_init __noreturn imx_barebox_boot_nand_external(unsigned long nfc_base)
-+void __bare_init imx_barebox_boot_nand_external(unsigned long nfc_base)
- {
- 	u32 r;
- 	u32 *src, *trg;
-@@ -283,7 +288,7 @@ void __bare_init __noreturn imx_barebox_boot_nand_external(unsigned long nfc_bas
- 	/* skip NAND boot if not running from NFC space */
- 	r = get_pc();
- 	if (r < nfc_base || r > nfc_base + 0x800)
--		board_init_lowlevel_return();
-+		return;
- 
- 	src = (unsigned int *)nfc_base;
- 	trg = (unsigned int *)_text;
-@@ -291,13 +296,6 @@ void __bare_init __noreturn imx_barebox_boot_nand_external(unsigned long nfc_bas
- 	/* Move ourselves out of NFC SRAM */
- 	for (i = 0; i < 0x800 / sizeof(int); i++)
- 		*trg++ = *src++;
--
--	/* Jump to SDRAM */
--	r = (unsigned int)&insdram;
--	__asm__ __volatile__("mov pc, %0" : : "r"(r));
--
--	/* not reached */
--	while (1);
- }
- 
- /*
-@@ -306,30 +304,65 @@ void __bare_init __noreturn imx_barebox_boot_nand_external(unsigned long nfc_bas
-  * NAND. In this case the booting is continued without loading an image from
-  * NAND. This function needs a stack to be set up.
-  */
-+#ifdef CONFIG_ARCH_IMX21
- void __bare_init __noreturn imx21_barebox_boot_nand_external(void)
- {
--	imx_barebox_boot_nand_external(MX21_NFC_BASE_ADDR);
-+	unsigned long nfc_base = MX21_NFC_BASE_ADDR;
+diff --git a/arch/arm/boards/toshiba-ac100/Makefile b/arch/arm/boards/toshiba-ac100/Makefile
+index 9e14763..5b74351 100644
+--- a/arch/arm/boards/toshiba-ac100/Makefile
++++ b/arch/arm/boards/toshiba-ac100/Makefile
+@@ -1,2 +1,4 @@
+ obj-y += board.o
+ obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial.o
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/toshiba-ac100/lowlevel.c b/arch/arm/boards/toshiba-ac100/lowlevel.c
+new file mode 100644
+index 0000000..68706a5
+--- /dev/null
++++ b/arch/arm/boards/toshiba-ac100/lowlevel.c
+@@ -0,0 +1,10 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
 +
-+	imx_barebox_boot_nand_external(nfc_base);
-+	jump_sdram(nfc_base - (unsigned long)_text);
-+	imx_nand_load_image((void *)_text, barebox_image_size);
-+	board_init_lowlevel_return();
- }
-+#endif
- 
-+#ifdef CONFIG_ARCH_IMX25
- void __bare_init __noreturn imx25_barebox_boot_nand_external(void)
- {
--	imx_barebox_boot_nand_external(MX25_NFC_BASE_ADDR);
-+	unsigned long nfc_base = MX25_NFC_BASE_ADDR;
-+
-+	imx_barebox_boot_nand_external(nfc_base);
-+	jump_sdram(nfc_base - (unsigned long)_text);
-+	imx_nand_load_image((void *)_text, barebox_image_size);
-+	board_init_lowlevel_return();
- }
-+#endif
- 
-+#ifdef CONFIG_ARCH_IMX27
- void __bare_init __noreturn imx27_barebox_boot_nand_external(void)
- {
--	imx_barebox_boot_nand_external(MX27_NFC_BASE_ADDR);
-+	unsigned long nfc_base = MX27_NFC_BASE_ADDR;
-+
-+	imx_barebox_boot_nand_external(nfc_base);
-+	jump_sdram(nfc_base - (unsigned long)_text);
-+	imx_nand_load_image((void *)_text, barebox_image_size);
-+	board_init_lowlevel_return();
- }
-+#endif
- 
-+#ifdef CONFIG_ARCH_IMX31
- void __bare_init __noreturn imx31_barebox_boot_nand_external(void)
- {
--	imx_barebox_boot_nand_external(MX31_NFC_BASE_ADDR);
-+	unsigned long nfc_base = MX31_NFC_BASE_ADDR;
-+
-+	imx_barebox_boot_nand_external(nfc_base);
-+	jump_sdram(nfc_base - (unsigned long)_text);
-+	imx_nand_load_image((void *)_text, barebox_image_size);
-+	board_init_lowlevel_return();
- }
-+#endif
- 
-+#ifdef CONFIG_ARCH_IMX35
- void __bare_init __noreturn imx35_barebox_boot_nand_external(void)
- {
--	imx_barebox_boot_nand_external(MX35_NFC_BASE_ADDR);
-+	unsigned long nfc_base = MX35_NFC_BASE_ADDR;
-+
-+	imx_barebox_boot_nand_external(nfc_base);
-+	jump_sdram(nfc_base - (unsigned long)_text);
-+	imx_nand_load_image((void *)_text, barebox_image_size);
-+	board_init_lowlevel_return();
- }
-+#endif
- 
- #define CONFIG_NAND_IMX_BOOT_DEBUG
- #ifdef CONFIG_NAND_IMX_BOOT_DEBUG
-diff --git a/arch/arm/mach-imx/include/mach/imx-nand.h b/arch/arm/mach-imx/include/mach/imx-nand.h
-index a1f209e..8352d79 100644
---- a/arch/arm/mach-imx/include/mach/imx-nand.h
-+++ b/arch/arm/mach-imx/include/mach/imx-nand.h
-@@ -3,7 +3,6 @@
- 
- #include <linux/mtd/mtd.h>
- 
--void imx_nand_load_image(void *dest, int size);
- void imx21_barebox_boot_nand_external(void);
- void imx25_barebox_boot_nand_external(void);
- void imx27_barebox_boot_nand_external(void);
++void __naked reset(void)
++{
++	common_reset();
++	barebox_arm_entry(0x0, SZ_512M, 0);
++}
 -- 
 1.7.10.4
 
