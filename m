@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo4.mail-out.ovh.net ([178.33.248.196]
+Received: from 6.mo4.mail-out.ovh.net ([188.165.36.253]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U21EX-0000Xg-Gg
- for barebox@lists.infradead.org; Sun, 03 Feb 2013 15:11:57 +0000
+ id 1U21EY-0000YZ-EI
+ for barebox@lists.infradead.org; Sun, 03 Feb 2013 15:11:58 +0000
 Received: from mail403.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 88027104EA00
- for <barebox@lists.infradead.org>; Sun,  3 Feb 2013 16:21:58 +0100 (CET)
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 45B26104EA16
+ for <barebox@lists.infradead.org>; Sun,  3 Feb 2013 16:22:00 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun,  3 Feb 2013 16:10:04 +0100
-Message-Id: <1359904236-11622-4-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun,  3 Feb 2013 16:10:05 +0100
+Message-Id: <1359904236-11622-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1359904236-11622-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130203150333.GE18068@game.jcrosoft.org>
  <1359904236-11622-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,221 +26,167 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/36] ARM i.MX: Add i.MX specific entry point for barebox
+Subject: [PATCH 05/36] ARM i.MX: prepare external nand boot for SoC specific
+ entry
 To: barebox@lists.infradead.org
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Additionally to the generic entry point the i.MX specific ones
-calculate the SDRAM size automatically so the boards do not have
-to care.
+i.MX will get SoC specific entry points for barebox. To find the
+correct one we have to call these from the SoC specific
+imx*_barebox_boot_nand_external functions.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/start-pbl.c                |   12 +++
- arch/arm/mach-imx/esdctl.c              |  136 ++++++++++++++++++++++++++-----
- arch/arm/mach-imx/include/mach/esdctl.h |   11 +++
- 3 files changed, 138 insertions(+), 21 deletions(-)
+ arch/arm/mach-imx/external-nand-boot.c    |   73 +++++++++++++++++++++--------
+ arch/arm/mach-imx/include/mach/imx-nand.h |    1 -
+ 2 files changed, 53 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
-index da62111..11ab025 100644
---- a/arch/arm/cpu/start-pbl.c
-+++ b/arch/arm/cpu/start-pbl.c
-@@ -190,6 +190,18 @@ void __naked __noreturn board_init_lowlevel_return(void)
-  * full SDRAM. The currently running binary can be inside or outside of this
-  * region. TEXT_BASE can be inside or outside of this region. boarddata will
-  * be preserved and can be accessed later with barebox_arm_boarddata().
-+ *
-+ * -> membase + memsize
-+ *   ARM_RESERVE_MEM_SIZE    - reserved for board usage. Will not be touched
-+ *                             by barebox
-+ *   STACK_SIZE              - stack
-+ *   16KiB, aligned to 16KiB - First level page table if early MMU support
-+ *                             is enabled
-+ *   128KiB                  - early memory space
-+ * -> maximum end of barebox binary
-+ *
-+ * Usually a TEXT_BASE of 1MiB below your lowest possible end of memory should
-+ * be fine.
-  */
- void __naked __noreturn barebox_arm_entry(uint32_t membase, uint32_t memsize,
- 		uint32_t boarddata)
-diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
-index 841a9ed..3585e27 100644
---- a/arch/arm/mach-imx/esdctl.c
-+++ b/arch/arm/mach-imx/esdctl.c
-@@ -127,32 +127,18 @@ static inline unsigned long imx_v4_sdram_size(void __iomem *esdctlbase, int cs)
- 		return 0;
- 	if (cs == 1 && !(ctlval & ESDCTL_V4_ESDCTLx_SDE1))
- 		return 0;
--
- 	/* one 2GiB cs, memory is returned for cs0 only */
- 	if (cs == 1 && (esdmisc & ESDCTL_V4_ESDMISC_ONE_CS))
--		return 9;
--
-+		return 0;
- 	rows = ((ctlval >> 24) & 0x7) + 11;
--	switch ((ctlval >> 20) & 0x7) {
--	case 0:
--		cols = 9;
--		break;
--	case 1:
--		cols = 10;
--		break;
--	case 2:
--		cols = 11;
--		break;
--	case 3:
-+
-+	cols = (ctlval >> 20) & 0x7;
-+	if (cols == 3)
- 		cols = 8;
--		break;
--	case 4:
-+	else if (cols == 4)
- 		cols = 12;
--		break;
--	default:
--		cols = 0;
--		break;
--	}
-+	else
-+		cols += 9;
- 
- 	if (ctlval & ESDCTL_V4_ESDCTLx_DSIZ_32B)
- 		width = 4;
-@@ -353,3 +339,111 @@ static int imx_esdctl_init(void)
+diff --git a/arch/arm/mach-imx/external-nand-boot.c b/arch/arm/mach-imx/external-nand-boot.c
+index 39ffb94..c97fec9 100644
+--- a/arch/arm/mach-imx/external-nand-boot.c
++++ b/arch/arm/mach-imx/external-nand-boot.c
+@@ -259,14 +259,19 @@ void __bare_init imx_nand_load_image(void *dest, int size)
  }
  
- mem_initcall(imx_esdctl_init);
-+
-+/*
-+ * The i.MX SoCs usually have two SDRAM chipselects. The following
-+ * SoC specific functions return:
-+ *
-+ * - cs0 disabled, cs1 disabled: 0
-+ * - cs0 enabled, cs1 disabled: SDRAM size for cs0
-+ * - cs0 disabled, c1 enabled: 0 (currently assumed that no hardware does this)
-+ * - cs0 enabled, cs1 enabled: The largest continuous region, that is, cs0 + cs1
-+ *                             if cs0 is taking the whole address space.
-+ */
-+void __naked __noreturn imx1_barebox_entry(uint32_t boarddata)
-+{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = 0x08000000;
-+
-+	size = imx_v1_sdram_size((void *)MX1_SDRAMC_BASE_ADDR, 0);
-+	if (size == SZ_64M)
-+		size += imx_v1_sdram_size((void *)MX1_SDRAMC_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
-+}
-+
-+void __naked __noreturn imx25_barebox_entry(uint32_t boarddata)
-+{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX25_CSD0_BASE_ADDR;
-+
-+	size = imx_v2_sdram_size((void *)MX25_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_256M)
-+		size += imx_v2_sdram_size((void *)MX25_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
-+}
-+
-+void __naked __noreturn imx27_barebox_entry(uint32_t boarddata)
-+{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX27_CSD0_BASE_ADDR;
-+
-+	size = imx_v2_sdram_size((void *)MX27_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_256M)
-+		size += imx_v2_sdram_size((void *)MX27_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
-+}
-+
-+void __naked __noreturn imx31_barebox_entry(uint32_t boarddata)
-+{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX31_CSD0_BASE_ADDR;
-+
-+	size = imx_v2_sdram_size((void *)MX31_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_256M)
-+		size += imx_v2_sdram_size((void *)MX31_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
-+}
-+
-+void __naked __noreturn imx35_barebox_entry(uint32_t boarddata)
-+{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX35_CSD0_BASE_ADDR;
-+
-+	size = imx_v2_sdram_size((void *)MX35_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_256M)
-+		size += imx_v2_sdram_size((void *)MX35_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
-+}
-+
-+void __naked __noreturn imx51_barebox_entry(uint32_t boarddata)
-+{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX51_CSD0_BASE_ADDR;
-+
-+	size = imx_v3_sdram_size((void *)MX51_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_256M)
-+		size += imx_v3_sdram_size((void *)MX51_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
-+}
-+
-+void __naked __noreturn imx53_barebox_entry(uint32_t boarddata)
-+{
-+	unsigned long base;
-+	unsigned long size;
-+
-+	base = MX53_CSD0_BASE_ADDR;
-+
-+	size = imx_v4_sdram_size((void *)MX53_ESDCTL_BASE_ADDR, 0);
-+	if (size == SZ_1G)
-+		size += imx_v4_sdram_size((void *)MX53_ESDCTL_BASE_ADDR, 1);
-+
-+	barebox_arm_entry(base, size, boarddata);
-+}
-diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
-index 1a265c8..26436d9 100644
---- a/arch/arm/mach-imx/include/mach/esdctl.h
-+++ b/arch/arm/mach-imx/include/mach/esdctl.h
-@@ -127,4 +127,15 @@
- //#define ESDCFGx_tRC_14		0x0000000e	// 15 seems to not exist
- #define ESDCFGx_tRC_16			0x0000000f
+ /*
+- * We are now running at the address we are linked at. Now load the image from
+- * NAND to SDRAM and continue booting.
++ * This function assumes the currently running binary has been
++ * copied from its current position to an offset. It returns
++ * to the calling function - offset.
++ * NOTE: The calling function may not return itself since it still
++ * works on the old content of the lr register. Only call this
++ * from a __noreturn function.
+  */
+-static void __bare_init __naked insdram(void)
++static __bare_init __naked void jump_sdram(unsigned long offset)
+ {
+-	imx_nand_load_image((void *)_text, barebox_image_size);
+-
+-	board_init_lowlevel_return();
++	__asm__ __volatile__ (
++			"sub lr, lr, %0;"
++			"mov pc, lr;" : : "r"(offset)
++			);
+ }
  
-+#ifndef __ASSEMBLY__
-+void __naked __noreturn imx1_barebox_entry(uint32_t boarddata);
-+void __naked __noreturn imx25_barebox_entry(uint32_t boarddata);
-+void __naked __noreturn imx27_barebox_entry(uint32_t boarddata);
-+void __naked __noreturn imx31_barebox_entry(uint32_t boarddata);
-+void __naked __noreturn imx35_barebox_entry(uint32_t boarddata);
-+void __naked __noreturn imx51_barebox_entry(uint32_t boarddata);
-+void __naked __noreturn imx53_barebox_entry(uint32_t boarddata);
-+void __naked __noreturn imx6_barebox_entry(uint32_t boarddata);
-+#endif
+ /*
+@@ -274,7 +279,7 @@ static void __bare_init __naked insdram(void)
+  * running inside the NFC address space. If not, barebox is started from the
+  * currently running address without loading anything from NAND.
+  */
+-void __bare_init __noreturn imx_barebox_boot_nand_external(unsigned long nfc_base)
++void __bare_init imx_barebox_boot_nand_external(unsigned long nfc_base)
+ {
+ 	u32 r;
+ 	u32 *src, *trg;
+@@ -283,7 +288,7 @@ void __bare_init __noreturn imx_barebox_boot_nand_external(unsigned long nfc_bas
+ 	/* skip NAND boot if not running from NFC space */
+ 	r = get_pc();
+ 	if (r < nfc_base || r > nfc_base + 0x800)
+-		board_init_lowlevel_return();
++		return;
+ 
+ 	src = (unsigned int *)nfc_base;
+ 	trg = (unsigned int *)_text;
+@@ -291,13 +296,6 @@ void __bare_init __noreturn imx_barebox_boot_nand_external(unsigned long nfc_bas
+ 	/* Move ourselves out of NFC SRAM */
+ 	for (i = 0; i < 0x800 / sizeof(int); i++)
+ 		*trg++ = *src++;
+-
+-	/* Jump to SDRAM */
+-	r = (unsigned int)&insdram;
+-	__asm__ __volatile__("mov pc, %0" : : "r"(r));
+-
+-	/* not reached */
+-	while (1);
+ }
+ 
+ /*
+@@ -306,30 +304,65 @@ void __bare_init __noreturn imx_barebox_boot_nand_external(unsigned long nfc_bas
+  * NAND. In this case the booting is continued without loading an image from
+  * NAND. This function needs a stack to be set up.
+  */
++#ifdef CONFIG_ARCH_IMX21
+ void __bare_init __noreturn imx21_barebox_boot_nand_external(void)
+ {
+-	imx_barebox_boot_nand_external(MX21_NFC_BASE_ADDR);
++	unsigned long nfc_base = MX21_NFC_BASE_ADDR;
 +
- #endif /* __MACH_ESDCTL_V2_H */
++	imx_barebox_boot_nand_external(nfc_base);
++	jump_sdram(nfc_base - (unsigned long)_text);
++	imx_nand_load_image((void *)_text, barebox_image_size);
++	board_init_lowlevel_return();
+ }
++#endif
+ 
++#ifdef CONFIG_ARCH_IMX25
+ void __bare_init __noreturn imx25_barebox_boot_nand_external(void)
+ {
+-	imx_barebox_boot_nand_external(MX25_NFC_BASE_ADDR);
++	unsigned long nfc_base = MX25_NFC_BASE_ADDR;
++
++	imx_barebox_boot_nand_external(nfc_base);
++	jump_sdram(nfc_base - (unsigned long)_text);
++	imx_nand_load_image((void *)_text, barebox_image_size);
++	board_init_lowlevel_return();
+ }
++#endif
+ 
++#ifdef CONFIG_ARCH_IMX27
+ void __bare_init __noreturn imx27_barebox_boot_nand_external(void)
+ {
+-	imx_barebox_boot_nand_external(MX27_NFC_BASE_ADDR);
++	unsigned long nfc_base = MX27_NFC_BASE_ADDR;
++
++	imx_barebox_boot_nand_external(nfc_base);
++	jump_sdram(nfc_base - (unsigned long)_text);
++	imx_nand_load_image((void *)_text, barebox_image_size);
++	board_init_lowlevel_return();
+ }
++#endif
+ 
++#ifdef CONFIG_ARCH_IMX31
+ void __bare_init __noreturn imx31_barebox_boot_nand_external(void)
+ {
+-	imx_barebox_boot_nand_external(MX31_NFC_BASE_ADDR);
++	unsigned long nfc_base = MX31_NFC_BASE_ADDR;
++
++	imx_barebox_boot_nand_external(nfc_base);
++	jump_sdram(nfc_base - (unsigned long)_text);
++	imx_nand_load_image((void *)_text, barebox_image_size);
++	board_init_lowlevel_return();
+ }
++#endif
+ 
++#ifdef CONFIG_ARCH_IMX35
+ void __bare_init __noreturn imx35_barebox_boot_nand_external(void)
+ {
+-	imx_barebox_boot_nand_external(MX35_NFC_BASE_ADDR);
++	unsigned long nfc_base = MX35_NFC_BASE_ADDR;
++
++	imx_barebox_boot_nand_external(nfc_base);
++	jump_sdram(nfc_base - (unsigned long)_text);
++	imx_nand_load_image((void *)_text, barebox_image_size);
++	board_init_lowlevel_return();
+ }
++#endif
+ 
+ #define CONFIG_NAND_IMX_BOOT_DEBUG
+ #ifdef CONFIG_NAND_IMX_BOOT_DEBUG
+diff --git a/arch/arm/mach-imx/include/mach/imx-nand.h b/arch/arm/mach-imx/include/mach/imx-nand.h
+index a1f209e..8352d79 100644
+--- a/arch/arm/mach-imx/include/mach/imx-nand.h
++++ b/arch/arm/mach-imx/include/mach/imx-nand.h
+@@ -3,7 +3,6 @@
+ 
+ #include <linux/mtd/mtd.h>
+ 
+-void imx_nand_load_image(void *dest, int size);
+ void imx21_barebox_boot_nand_external(void);
+ void imx25_barebox_boot_nand_external(void);
+ void imx27_barebox_boot_nand_external(void);
 -- 
 1.7.10.4
 
