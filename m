@@ -1,14 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from la-in-x0232.1e100.net ([2a00:1450:4010:c03::232]
- helo=mail-la0-x232.google.com)
+Received: from mail.z9.com ([64.142.101.243])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U2S1i-0005gr-Df
- for barebox@lists.infradead.org; Mon, 04 Feb 2013 19:48:27 +0000
-Received: by mail-la0-f50.google.com with SMTP id ec20so5003891lab.37
- for <barebox@lists.infradead.org>; Mon, 04 Feb 2013 11:48:23 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue,  5 Feb 2013 00:00:30 +0400
-Message-Id: <1360008030-4169-1-git-send-email-antonynpavlov@gmail.com>
+ id 1U2SSg-0000A5-BI
+ for barebox@lists.infradead.org; Mon, 04 Feb 2013 20:16:20 +0000
+Received: from GPontisPC by z9.com (MDaemon PRO v12.5.8)
+ with ESMTP id md50000244580.msg
+ for <barebox@lists.infradead.org>; Mon, 04 Feb 2013 12:16:13 -0800
+From: "George Pontis" <GPontis@z9.com>
+References: <009d01ce0163$5629e7a0$027db6e0$@com>
+ <CAA4bVAFm-82XbexDM9sPUmfYUmh8bp9Y2o2eM20PXmqiqDU=Lg@mail.gmail.com>
+In-Reply-To: <CAA4bVAFm-82XbexDM9sPUmfYUmh8bp9Y2o2eM20PXmqiqDU=Lg@mail.gmail.com>
+Date: Mon, 4 Feb 2013 12:16:07 -0800
+Message-ID: <004901ce0314$7742f870$65c8e950$@com>
+MIME-Version: 1.0
+Content-Language: en-us
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,46 +22,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MIPS: pbl: fix none compression support
+Subject: RE: Lost access to M25Pxx in move to 2013.01
 To: barebox@lists.infradead.org
 
-Here's the error message:
+> -----Original Message-----
+> From: Antony Pavlov [mailto:antonynpavlov@gmail.com]
+> Sent: Saturday, February 02, 2013 9:56 AM
+> To: George Pontis
+> Cc: barebox@lists.infradead.org
+> Subject: Re: Lost access to M25Pxx in move to 2013.01
+> 
 
-  AS      arch/mips/pbl/piggy.shipped.o
-  arch/mips/pbl/piggy.shipped.S: Assembler messages:
-  arch/mips/pbl/piggy.shipped.S:1: Error: unrecognized opcode `globl input_data'
-  make[1]: *** [arch/mips/pbl/piggy.shipped.o] Error 1
-  make: *** [zbarebox.bin] Error 2
+...
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/pbl/piggy.shipped.S |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/pbl/piggy.shipped.S b/arch/mips/pbl/piggy.shipped.S
-index 963262d..8a35f6b 100644
---- a/arch/mips/pbl/piggy.shipped.S
-+++ b/arch/mips/pbl/piggy.shipped.S
-@@ -1,6 +1,6 @@
--	.section .piggydata,#alloc
--	.globl  input_data
--input_data:
--	.incbin "arch/mips/pbl/piggy.shipped"
--	.globl  input_data_end
--input_data_end:
-+#include <asm/asm.h>
-+
-+	.section .data
-+EXPORT(input_data)
-+	.incbin	"arch/mips/pbl/piggy.shipped"
-+EXPORT(input_data_end)
--- 
-1.7.10.4
+> 
+> Here is part of my board code. It works for old barebox release:
+> 
+> static struct spi_board_info board_spi_devs[] __initdata = {
+>        {
+>                /* Spansion S25FL004A SPI flash */
+>                .name           = "m25p",
+>                .max_speed_hz   = 50000000,
+>                .bus_num        = 0,
+>                .chip_select    = 0,
+>                .mode           = SPI_MODE_3,
+>                .platform_data  = &lig32_spi0_flash_data,
+>        }
+> ...
+>        spi_register_board_info(board_spi_devs,
+> ARRAY_SIZE(board_spi_devs));
+> 
+> I changed the 'name' field from "m25p" to "m25p80", and it works again!
+> 
+> 
+
+This fixed it for me too, thanks for posting. This behavior is different
+from the way that at least some kernels work. I was working with 3.4.6, and
+there it prefers to see the name be the same as the actual hardware device.
+So in my case the kernel expects .name to be "m25p32", and if it gets m25p80
+it squawks a message saying what it really found was "m25p32".
+
+GP
+
 
 
 _______________________________________________
