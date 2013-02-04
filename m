@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U2PoT-0006qF-QR
- for barebox@lists.infradead.org; Mon, 04 Feb 2013 17:26:38 +0000
+ id 1U2PoT-0006qN-QO
+ for barebox@lists.infradead.org; Mon, 04 Feb 2013 17:26:40 +0000
 Received: from alto.hi.pengutronix.de ([2001:6f8:1178:2:219:99ff:fe56:9d4])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <mgr@pengutronix.de>) id 1U2PoR-0004Lw-OY
- for barebox@lists.infradead.org; Mon, 04 Feb 2013 18:26:35 +0100
+ (envelope-from <mgr@pengutronix.de>) id 1U2PoS-0004M2-0L
+ for barebox@lists.infradead.org; Mon, 04 Feb 2013 18:26:36 +0100
 Received: from mgr by alto.hi.pengutronix.de with local (Exim 4.75)
- (envelope-from <mgr@pengutronix.de>) id 1U2PoR-0008KC-LN
+ (envelope-from <mgr@pengutronix.de>) id 1U2PoR-0008KH-Ru
  for barebox@lists.infradead.org; Mon, 04 Feb 2013 18:26:35 +0100
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Mon,  4 Feb 2013 18:26:18 +0100
-Message-Id: <1359998781-31956-1-git-send-email-m.grzeschik@pengutronix.de>
+Date: Mon,  4 Feb 2013 18:26:20 +0100
+Message-Id: <1359998781-31956-3-git-send-email-m.grzeschik@pengutronix.de>
+In-Reply-To: <1359998781-31956-1-git-send-email-m.grzeschik@pengutronix.de>
+References: <1359998781-31956-1-git-send-email-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,37 +28,377 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] Add mxs spi driver and mx28evk as its first user
+Subject: [PATCH 2/3] mxs_spi: initial commit
 To: barebox@lists.infradead.org
 
-this series adds support for the mxs spi driver
-and adds the mx28evk as the first user to use it
-with an m25p80 flash memory.
-
-The driver was tested to work with the pio mode,
-as its implementation has currently no dma support.
-
-The SSP clock needed to be lower than the max possible
-frequency for the flash. Otherwise it sometimes, after
-a lot of spi transactions, the SSP stopped working.
-
-Michael Grzeschik (3):
-  mxs: ssp move to common register layout
-  mxs_spi: initial commit
-  mx28evk: add m25p80 flash via ssp2
-
- arch/arm/boards/freescale-mx28-evk/mx28-evk.c |   28 +++
- arch/arm/mach-mxs/include/mach/imx23-regs.h   |   16 ++
- arch/arm/mach-mxs/include/mach/imx28-regs.h   |   21 ++
- arch/arm/mach-mxs/include/mach/ssp.h          |   79 +++++++
- drivers/mci/mxs.c                             |  118 +---------
- drivers/spi/Kconfig                           |    5 +
- drivers/spi/Makefile                          |    1 +
- drivers/spi/mxs_spi.c                         |  306 +++++++++++++++++++++++++
- 8 files changed, 457 insertions(+), 117 deletions(-)
- create mode 100644 arch/arm/mach-mxs/include/mach/ssp.h
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+---
+ arch/arm/mach-mxs/include/mach/ssp.h |    2 +
+ drivers/spi/Kconfig                  |    5 +
+ drivers/spi/Makefile                 |    1 +
+ drivers/spi/mxs_spi.c                |  306 ++++++++++++++++++++++++++++++++++
+ 4 files changed, 314 insertions(+)
  create mode 100644 drivers/spi/mxs_spi.c
 
+diff --git a/arch/arm/mach-mxs/include/mach/ssp.h b/arch/arm/mach-mxs/include/mach/ssp.h
+index f91770f..067cf12 100644
+--- a/arch/arm/mach-mxs/include/mach/ssp.h
++++ b/arch/arm/mach-mxs/include/mach/ssp.h
+@@ -23,6 +23,7 @@
+ #define SSP_CTRL0_BUS_WIDTH(x)		(((x) & 0x3) << 22)
+ #define SSP_CTRL0_WAIT_FOR_IRQ		(1 << 21)
+ #define SSP_CTRL0_WAIT_FOR_CMD		(1 << 20)
++#define SSP_CTRL0_SSP_ASSERT_OUT(x)	(((x) & 0x3) << 20)
+ #define SSP_CTRL0_LONG_RESP		(1 << 19)
+ #define SSP_CTRL0_GET_RESP		(1 << 17)
+ #define SSP_CTRL0_ENABLE		(1 << 16)
+@@ -51,6 +52,7 @@
+ /* bit definition for register HW_SSP_CTRL1 */
+ #define SSP_CTRL1_POLARITY		(1 << 9)
+ #define SSP_CTRL1_PHASE			(1 << 10)
++#define SSP_CTRL1_DMA_ENABLE		(1 << 13)
+ #define SSP_CTRL1_WORD_LENGTH(x)	(((x) & 0xf) << 4)
+ #define SSP_CTRL1_SSP_MODE(x)		((x) & 0xf)
+ 
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 10b8fea..218c2ff 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -33,6 +33,11 @@ config DRIVER_SPI_IMX_2_3
+ 	depends on ARCH_IMX51 || ARCH_IMX53 || ARCH_IMX6
+ 	default y
+ 
++config DRIVER_SPI_MXS
++	bool "i.MX (23,28) SPI Master driver"
++	depends on ARCH_MXS
++	depends on SPI
++
+ config DRIVER_SPI_OMAP3
+ 	bool "OMAP3 McSPI Master driver"
+ 	depends on ARCH_OMAP3
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index b53061e..642b7ec 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -1,5 +1,6 @@
+ obj-$(CONFIG_SPI) += spi.o
+ obj-$(CONFIG_DRIVER_SPI_IMX) += imx_spi.o
++obj-$(CONFIG_DRIVER_SPI_MXS) += mxs_spi.o
+ obj-$(CONFIG_DRIVER_SPI_ALTERA) += altera_spi.o
+ obj-$(CONFIG_DRIVER_SPI_ATMEL) += atmel_spi.o
+ obj-$(CONFIG_DRIVER_SPI_OMAP3) += omap3_spi.o
+diff --git a/drivers/spi/mxs_spi.c b/drivers/spi/mxs_spi.c
+new file mode 100644
+index 0000000..6fb7f9c
+--- /dev/null
++++ b/drivers/spi/mxs_spi.c
+@@ -0,0 +1,306 @@
++/*
++ * Freescale i.MX28 SPI driver
++ *
++ * Copyright (C) 2013 Michael Grzeschik <mgr@pengutronix.de>
++ *
++ * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
++ * on behalf of DENX Software Engineering GmbH
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ */
++
++#include <common.h>
++#include <init.h>
++#include <malloc.h>
++#include <spi/spi.h>
++#include <clock.h>
++#include <errno.h>
++#include <io.h>
++#include <linux/clk.h>
++#include <asm/mmu.h>
++#include <mach/generic.h>
++#include <mach/imx-regs.h>
++#include <mach/mxs.h>
++#include <mach/clock.h>
++#include <mach/ssp.h>
++
++#define	MXS_SPI_MAX_TIMEOUT		(10 * MSECOND)
++
++#define	SPI_XFER_BEGIN	0x01 /* Assert CS before transfer */
++#define	SPI_XFER_END	0x02 /* Deassert CS after transfer */
++
++struct mxs_spi {
++	struct spi_master	master;
++	uint32_t		max_khz;
++	uint32_t		mode;
++	struct clk		*clk;
++	void __iomem		*regs;
++};
++
++static inline struct mxs_spi *to_mxs(struct spi_master *master)
++{
++	return container_of(master, struct mxs_spi, master);
++}
++
++/*
++ * Set SSP/MMC bus frequency, in kHz
++ */
++static void imx_set_ssp_busclock(struct spi_master *master, uint32_t freq)
++{
++	struct mxs_spi *mxs = to_mxs(master);
++	const uint32_t sspclk = imx_get_sspclk(master->bus_num);
++	uint32_t val;
++	uint32_t divide, rate, tgtclk;
++
++	/*
++	 * SSP bit rate = SSPCLK / (CLOCK_DIVIDE * (1 + CLOCK_RATE)),
++	 * CLOCK_DIVIDE has to be an even value from 2 to 254, and
++	 * CLOCK_RATE could be any integer from 0 to 255.
++	 */
++	for (divide = 2; divide < 254; divide += 2) {
++		rate = sspclk / freq / divide;
++		if (rate <= 256)
++			break;
++	}
++
++	tgtclk = sspclk / divide / rate;
++	while (tgtclk > freq) {
++		rate++;
++		tgtclk = sspclk / divide / rate;
++	}
++	if (rate > 256)
++		rate = 256;
++
++	/* Always set timeout the maximum */
++	val = SSP_TIMING_TIMEOUT_MASK |
++		SSP_TIMING_CLOCK_DIVIDE(divide) |
++		SSP_TIMING_CLOCK_RATE(rate - 1);
++	writel(val, mxs->regs + HW_SSP_TIMING);
++
++	debug("SPI%d: Set freq rate to %d KHz (requested %d KHz)\n",
++		bus, tgtclk, freq);
++}
++
++static int mxs_spi_setup(struct spi_device *spi)
++{
++	struct spi_master *master = spi->master;
++	struct mxs_spi *mxs = to_mxs(master);
++	uint32_t val = 0;
++
++	/* MXS SPI: 4 ports and 3 chip selects maximum */
++	if (master->bus_num > 3 || spi->chip_select > 2) {
++		printf("mxs_spi: invalid bus %d / chip select %d\n",
++			 master->bus_num, spi->chip_select);
++		return -EINVAL;
++	}
++
++	mxs_reset_block(mxs->regs + HW_SSP_CTRL0, 0);
++
++	val |= SSP_CTRL0_SSP_ASSERT_OUT(spi->chip_select);
++	val |= SSP_CTRL0_BUS_WIDTH(0);
++	writel(val, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
++
++	val = SSP_CTRL1_SSP_MODE(0) | SSP_CTRL1_WORD_LENGTH(7);
++	val |= (mxs->mode & SPI_CPOL) ? SSP_CTRL1_POLARITY : 0;
++	val |= (mxs->mode & SPI_CPHA) ? SSP_CTRL1_PHASE : 0;
++	writel(val, mxs->regs + HW_SSP_CTRL1);
++
++	writel(0x0, mxs->regs + HW_SSP_CMD0);
++	writel(0x0, mxs->regs + HW_SSP_CMD1);
++
++	imx_set_ssp_busclock(master, spi->max_speed_hz);
++
++	return 0;
++}
++
++static void mxs_spi_start_xfer(struct mxs_spi *mxs)
++{
++	writel(SSP_CTRL0_LOCK_CS, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
++	writel(SSP_CTRL0_IGNORE_CRC, mxs->regs + HW_SSP_CTRL0 + BIT_CLR);
++}
++
++static void mxs_spi_end_xfer(struct mxs_spi *mxs)
++{
++	writel(SSP_CTRL0_LOCK_CS, mxs->regs + HW_SSP_CTRL0 + BIT_CLR);
++	writel(SSP_CTRL0_IGNORE_CRC, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
++}
++
++static uint32_t mxs_spi_cs_to_reg(unsigned cs)
++{
++	uint32_t select = 0;
++
++	if (cs & 1)
++		select |= SSP_CTRL0_WAIT_FOR_CMD;
++	if (cs & 2)
++		select |= SSP_CTRL0_WAIT_FOR_IRQ;
++
++	return select;
++}
++
++static void mxs_spi_set_cs(struct spi_device *spi)
++{
++	const uint32_t mask = SSP_CTRL0_WAIT_FOR_CMD | SSP_CTRL0_WAIT_FOR_IRQ;
++	uint32_t select;
++	struct mxs_spi *mxs = to_mxs(spi->master);
++
++	writel(mask, mxs->regs + HW_SSP_CTRL0 + BIT_CLR);
++	select = mxs_spi_cs_to_reg(spi->chip_select);
++	writel(select, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
++}
++
++static int mxs_spi_xfer_pio(struct spi_device *spi,
++			char *data, int length, int write, unsigned long flags)
++{
++	struct mxs_spi *mxs = to_mxs(spi->master);
++
++	if (flags & SPI_XFER_BEGIN)
++		mxs_spi_start_xfer(mxs);
++
++	mxs_spi_set_cs(spi);
++
++	while (length--) {
++		if ((flags & SPI_XFER_END) && !length)
++			mxs_spi_end_xfer(mxs);
++
++		/* We transfer 1 byte */
++		writel(1, mxs->regs + HW_SSP_XFER_COUNT);
++
++		if (write)
++			writel(SSP_CTRL0_READ, mxs->regs + HW_SSP_CTRL0 + BIT_CLR);
++		else
++			writel(SSP_CTRL0_READ, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
++
++		writel(SSP_CTRL0_RUN, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
++
++		if (wait_on_timeout(MXS_SPI_MAX_TIMEOUT,
++				(readl(mxs->regs + HW_SSP_CTRL0) & SSP_CTRL0_RUN) == SSP_CTRL0_RUN)) {
++			printf("MXS SPI: Timeout waiting for start\n");
++			return -ETIMEDOUT;
++		}
++
++		if (write)
++			writel(*data++, mxs->regs + HW_SSP_DATA);
++
++		writel(SSP_CTRL0_DATA_XFER, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
++
++		if (!write) {
++			if (wait_on_timeout(MXS_SPI_MAX_TIMEOUT,
++				!(readl(mxs->regs + HW_SSP_STATUS) & SSP_STATUS_FIFO_EMPTY))) {
++				printf("MXS SPI: Timeout waiting for data\n");
++				return -ETIMEDOUT;
++			}
++
++			*data++ = readl(mxs->regs + HW_SSP_DATA) & 0xff;
++		}
++
++		if (wait_on_timeout(MXS_SPI_MAX_TIMEOUT,
++			!(readl(mxs->regs + HW_SSP_CTRL0) & SSP_CTRL0_RUN))) {
++			printf("MXS SPI: Timeout waiting for finish\n");
++			return -ETIMEDOUT;
++		}
++	}
++
++	return 0;
++}
++
++static int mxs_spi_transfer(struct spi_device *spi, struct spi_message *mesg)
++{
++	struct mxs_spi *mxs = to_mxs(spi->master);
++	struct spi_transfer *t = NULL;
++	char dummy;
++	unsigned long flags = 0;
++	int write = 0;
++	char *data = NULL;
++	int ret;
++	mesg->actual_length = 0;
++
++	list_for_each_entry(t, &mesg->transfers, transfer_list) {
++
++		flags = 0;
++
++		if (t->tx_buf) {
++			data = (char *) t->tx_buf;
++			write = 1;
++		} else if (t->rx_buf) {
++			data = (char *) t->rx_buf;
++			write = 0;
++		}
++
++		if (&t->transfer_list == mesg->transfers.next)
++			flags |= SPI_XFER_BEGIN;
++
++		if (&t->transfer_list == mesg->transfers.prev)
++			flags |= SPI_XFER_END;
++
++		if ((t->rx_buf && t->tx_buf)) {
++			printf("Cannot send and receive simultaneously \n");
++			break;
++		}
++
++		if ((!t->rx_buf && !t->tx_buf)) {
++			printf("No Data\n");
++			break;
++		}
++
++		if (t->len == 0) {
++			if (flags == SPI_XFER_END) {
++				t->len = 1;
++				t->rx_buf = (void *) &dummy;
++			} else {
++				return 0;
++			}
++		}
++
++		writel(SSP_CTRL1_DMA_ENABLE, mxs->regs + HW_SSP_CTRL1 + BIT_CLR);
++		ret = mxs_spi_xfer_pio(spi, data, t->len, write, flags);
++		mesg->actual_length += t->len;
++	}
++
++	return 0;
++}
++
++static int mxs_spi_probe(struct device_d *dev)
++{
++	struct spi_master *master;
++	struct mxs_spi *mxs;
++
++	mxs = xzalloc(sizeof(*mxs));
++	if (!mxs)
++		return -ENOMEM;
++
++	master = &mxs->master;
++	master->dev = dev;
++
++	master->bus_num = dev->id;
++	master->setup = mxs_spi_setup;
++	master->transfer = mxs_spi_transfer;
++	master->num_chipselect = 3;
++	mxs->mode = SPI_CPOL | SPI_CPHA;
++
++	mxs->regs = dev_request_mem_region(dev, 0);
++
++	spi_register_master(master);
++
++	return 0;
++}
++
++static struct driver_d mxs_spi_driver = {
++	.name  = "mxs_spi",
++	.probe = mxs_spi_probe,
++};
++
++static int __init mxs_spi_init(void)
++{
++	platform_driver_register(&mxs_spi_driver);
++	return 0;
++}
++
++device_initcall(mxs_spi_init);
++
++MODULE_AUTHOR("Denx Software Engeneering and Michael Grzeschik");
++MODULE_DESCRIPTION("MXS SPI driver");
++MODULE_LICENSE("GPL");
 -- 
 1.7.10.4
 
