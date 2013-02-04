@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f179.google.com ([209.85.217.179])
+Received: from mail-la0-x229.google.com ([2a00:1450:4010:c03::229])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U2USa-0004go-NZ
- for barebox@lists.infradead.org; Mon, 04 Feb 2013 22:24:21 +0000
-Received: by mail-lb0-f179.google.com with SMTP id j14so6925977lbo.24
- for <barebox@lists.infradead.org>; Mon, 04 Feb 2013 14:24:18 -0800 (PST)
+ id 1U2USc-0004gp-7k
+ for barebox@lists.infradead.org; Mon, 04 Feb 2013 22:24:23 +0000
+Received: by mail-la0-f41.google.com with SMTP id fo12so5167630lab.0
+ for <barebox@lists.infradead.org>; Mon, 04 Feb 2013 14:24:19 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue,  5 Feb 2013 02:36:35 +0400
-Message-Id: <1360017396-13321-1-git-send-email-antonynpavlov@gmail.com>
+Date: Tue,  5 Feb 2013 02:36:36 +0400
+Message-Id: <1360017396-13321-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1360017396-13321-1-git-send-email-antonynpavlov@gmail.com>
+References: <1360017396-13321-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,50 +23,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] pbl: fix IMAGE_COMPRESSION_LZO-enabled build on MIPS
+Subject: [PATCH 2/2] pbl: factorise linux/decompress/mm.h inclusion
 To: barebox@lists.infradead.org
-
-Here's the error message:
-
-  LD      arch/mips/pbl/zbarebox
-pbl/built-in-pbl.o: In function `decompress_unlzo':
-/home/antony/barebox.git.rebased.isp/pbl/decomp.c:35: undefined reference to `free'
-pbl/built-in-pbl.o: In function `pbl_barebox_uncompress':
-(.text.pbl_barebox_uncompress+0x6d0): relocation truncated to fit: R_MIPS_26 against `free'
-pbl/built-in-pbl.o: In function `pbl_barebox_uncompress':
-(.text.pbl_barebox_uncompress+0x6e0): undefined reference to `free'
-pbl/built-in-pbl.o: In function `pbl_barebox_uncompress':
-(.text.pbl_barebox_uncompress+0x6e0): relocation truncated to fit: R_MIPS_26 against `free'
-make[1]: *** [arch/mips/pbl/zbarebox] Error 1
-make: *** [zbarebox.bin] Error 2
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- lib/decompress_unlzo.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ lib/decompress_inflate.c |    1 -
+ lib/decompress_unlzo.c   |    1 -
+ pbl/decomp.c             |    2 ++
+ 3 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/lib/decompress_inflate.c b/lib/decompress_inflate.c
+index 5c1ebb6..526d6a1 100644
+--- a/lib/decompress_inflate.c
++++ b/lib/decompress_inflate.c
+@@ -4,7 +4,6 @@
+ /* prevent inclusion of _LINUX_KERNEL_H in pre-boot environment: lots
+  * errors about console_printk etc... on ARM */
+ #define _LINUX_KERNEL_H
+-#include <linux/decompress/mm.h>
+ 
+ #include "zlib_inflate/inftrees.c"
+ #include "zlib_inflate/inffast.c"
 diff --git a/lib/decompress_unlzo.c b/lib/decompress_unlzo.c
-index 776719c..1b2dc9d 100644
+index 1b2dc9d..2b0fbed 100644
 --- a/lib/decompress_unlzo.c
 +++ b/lib/decompress_unlzo.c
-@@ -26,14 +26,16 @@
-  */
- 
- #include <common.h>
--#include <malloc.h>
- #include <linux/types.h>
- #include <errno.h>
- #include <fs.h>
+@@ -32,7 +32,6 @@
  #include <xfuncs.h>
  
  #ifdef STATIC
-+#include <linux/decompress/mm.h>
+-#include <linux/decompress/mm.h>
  #include "lzo/lzo1x_decompress.c"
-+#else
-+#include <malloc.h>
- #endif
+ #else
+ #include <malloc.h>
+diff --git a/pbl/decomp.c b/pbl/decomp.c
+index aa6a31e..17fc01e 100644
+--- a/pbl/decomp.c
++++ b/pbl/decomp.c
+@@ -10,6 +10,8 @@
  
- #include <lzo.h>
+ #define STATIC static
+ 
++#include <linux/decompress/mm.h>
++
+ #ifdef CONFIG_IMAGE_COMPRESSION_LZO
+ #include "../../../lib/decompress_unlzo.c"
+ #endif
 -- 
 1.7.10.4
 
