@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U2eGc-0000Ud-30
- for barebox@lists.infradead.org; Tue, 05 Feb 2013 08:52:38 +0000
-Date: Tue, 5 Feb 2013 09:52:33 +0100
+ id 1U2eL4-0001cI-Uc
+ for barebox@lists.infradead.org; Tue, 05 Feb 2013 08:57:15 +0000
+Date: Tue, 5 Feb 2013 09:57:13 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130205085233.GN1906@pengutronix.de>
-References: <004301ce030a$68506aa0$38f13fe0$@com>
- <1360004939.170907890@f389.i.mail.ru>
- <005301ce0338$1e5e1fe0$5b1a5fa0$@com>
+Message-ID: <20130205085713.GO1906@pengutronix.de>
+References: <1360017396-13321-1-git-send-email-antonynpavlov@gmail.com>
+ <1360017396-13321-2-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <005301ce0338$1e5e1fe0$5b1a5fa0$@com>
+In-Reply-To: <1360017396-13321-2-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,77 +23,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: i.MX53, add access to third I2C peripheral
-To: George Pontis <GPontis@z9.com>
+Subject: Re: [PATCH 2/2] pbl: factorise linux/decompress/mm.h inclusion
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi George,
-
-On Mon, Feb 04, 2013 at 04:31:20PM -0800, George Pontis wrote:
-> > -----Original Message-----
-> > From: Alexander Shiyan [mailto:shc_work@mail.ru]
-> > Sent: Monday, February 04, 2013 11:09 AM
-> > To: George Pontis
-> > Cc: barebox@lists.infradead.org
-> > Subject: Re: i.MX53, add access to third I2C peripheral
-> > 
-> > > All versions of the i.MX53 have three I2C peripherals. This patch
-> > provides
-> > > access to it.
-> > ...
-> > > +static inline struct device_d *imx53_add_i2c2(struct
-> > i2c_platform_data
-> > > *pdata)
-> > > +{
-> > > +       return imx_add_i2c((void *)MX53_I2C2_BASE_ADDR, 2, pdata);
-> > > +}
-> > > +
-> > MX53_I2C3_BASE_ADDR ?
-> > 
-> > ---
+On Tue, Feb 05, 2013 at 02:36:36AM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  lib/decompress_inflate.c |    1 -
+>  lib/decompress_unlzo.c   |    1 -
+>  pbl/decomp.c             |    2 ++
+>  3 files changed, 2 insertions(+), 2 deletions(-)
 > 
-> Thanks for the correction Alex. I also forgot to handle the clock for this new peripheral. With both in place, a device on the third bus is recognized at boot and listed by devinfo.
+> diff --git a/lib/decompress_inflate.c b/lib/decompress_inflate.c
+> index 5c1ebb6..526d6a1 100644
+> --- a/lib/decompress_inflate.c
+> +++ b/lib/decompress_inflate.c
+> @@ -4,7 +4,6 @@
+>  /* prevent inclusion of _LINUX_KERNEL_H in pre-boot environment: lots
+>   * errors about console_printk etc... on ARM */
+>  #define _LINUX_KERNEL_H
+> -#include <linux/decompress/mm.h>
+>  
+>  #include "zlib_inflate/inftrees.c"
+>  #include "zlib_inflate/inffast.c"
+> diff --git a/lib/decompress_unlzo.c b/lib/decompress_unlzo.c
+> index 1b2dc9d..2b0fbed 100644
+> --- a/lib/decompress_unlzo.c
+> +++ b/lib/decompress_unlzo.c
+> @@ -32,7 +32,6 @@
+>  #include <xfuncs.h>
+>  
+>  #ifdef STATIC
+> -#include <linux/decompress/mm.h>
+>  #include "lzo/lzo1x_decompress.c"
+>  #else
+>  #include <malloc.h>
+> diff --git a/pbl/decomp.c b/pbl/decomp.c
+> index aa6a31e..17fc01e 100644
+> --- a/pbl/decomp.c
+> +++ b/pbl/decomp.c
+> @@ -10,6 +10,8 @@
+>  
+>  #define STATIC static
+>  
+> +#include <linux/decompress/mm.h>
+> +
 
-This version looks ok. Please resend with a proper signed-off-by tag.
+Any special reason for this patch? Normally the #include is in the file
+requiring the declarations from the file. In this case decompress_* need
+linux/decompress/mm.h, not pbl/decomp.c.
 
 Sascha
 
-> 
-> diff -Naur bb.a/arch/arm/mach-imx/include/mach/devices-imx53.h bb.b/arch/arm/mach-imx/include/mach/devic
-> es-imx53.h
-> --- bb.a/arch/arm/mach-imx/include/mach/devices-imx53.h 2013-02-04 06:24:51.000000000 -0800
-> +++ bb.b/arch/arm/mach-imx/include/mach/devices-imx53.h 2013-02-03 22:24:26.930091420 -0800
-> @@ -21,6 +21,11 @@
->         return imx_add_i2c((void *)MX53_I2C2_BASE_ADDR, 1, pdata);
->  }
-> 
-> +static inline struct device_d *imx53_add_i2c2(struct i2c_platform_data *pdata)
-> +{
-> +       return imx_add_i2c((void *)MX53_I2C3_BASE_ADDR, 2, pdata);
-> +}
-> +
->  static inline struct device_d *imx53_add_uart0(void)
->  {
->         return imx_add_uart_imx21((void *)MX53_UART1_BASE_ADDR, 0);
-> diff -Naur bb.a/arch/arm/mach-imx/clk-imx5.c bb.b/arch/arm/mach-imx/clk-imx5.c
-> --- bb.a/arch/arm/mach-imx/clk-imx5.c   2013-02-04 06:24:51.000000000 -0800
-> +++ bb.b/arch/arm/mach-imx/clk-imx5.c   2013-02-04 16:14:04.729284183 -0800
-> @@ -272,6 +272,7 @@
->         clkdev_add_physbase(clks[uart_root], MX53_UART3_BASE_ADDR, NULL);
->         clkdev_add_physbase(clks[per_root], MX53_I2C1_BASE_ADDR, NULL);
->         clkdev_add_physbase(clks[per_root], MX53_I2C2_BASE_ADDR, NULL);
-> +       clkdev_add_physbase(clks[per_root], MX53_I2C3_BASE_ADDR, NULL);
->         clkdev_add_physbase(clks[per_root], MX53_GPT1_BASE_ADDR, NULL);
->         clkdev_add_physbase(clks[ipg], MX53_CSPI_BASE_ADDR, NULL);
->         clkdev_add_physbase(clks[ecspi_podf], MX53_ECSPI1_BASE_ADDR, NULL);
-> 
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
