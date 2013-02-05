@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U2eMc-000280-6p
- for barebox@lists.infradead.org; Tue, 05 Feb 2013 08:58:51 +0000
-Date: Tue, 5 Feb 2013 09:58:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130205085848.GP1906@pengutronix.de>
-References: <1360017396-13321-1-git-send-email-antonynpavlov@gmail.com>
+ id 1U2eUf-0003ZB-CJ
+ for barebox@lists.infradead.org; Tue, 05 Feb 2013 09:07:10 +0000
+Received: by mail-la0-f53.google.com with SMTP id fr10so5418336lab.40
+ for <barebox@lists.infradead.org>; Tue, 05 Feb 2013 01:07:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1360017396-13321-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <20130205085713.GO1906@pengutronix.de>
+References: <1360017396-13321-1-git-send-email-antonynpavlov@gmail.com>
+ <1360017396-13321-2-git-send-email-antonynpavlov@gmail.com>
+ <20130205085713.GO1906@pengutronix.de>
+Date: Tue, 5 Feb 2013 13:07:05 +0400
+Message-ID: <CAA4bVAEL+cVXGdMX5SVgrkgurxQuaKqKtfGPAj+QrvQdOr0YYw@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,72 +25,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] pbl: fix IMAGE_COMPRESSION_LZO-enabled build on MIPS
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH 2/2] pbl: factorise linux/decompress/mm.h inclusion
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Feb 05, 2013 at 02:36:35AM +0400, Antony Pavlov wrote:
-> Here's the error message:
-> 
->   LD      arch/mips/pbl/zbarebox
-> pbl/built-in-pbl.o: In function `decompress_unlzo':
-> /home/antony/barebox.git.rebased.isp/pbl/decomp.c:35: undefined reference to `free'
-> pbl/built-in-pbl.o: In function `pbl_barebox_uncompress':
-> (.text.pbl_barebox_uncompress+0x6d0): relocation truncated to fit: R_MIPS_26 against `free'
-> pbl/built-in-pbl.o: In function `pbl_barebox_uncompress':
-> (.text.pbl_barebox_uncompress+0x6e0): undefined reference to `free'
-> pbl/built-in-pbl.o: In function `pbl_barebox_uncompress':
-> (.text.pbl_barebox_uncompress+0x6e0): relocation truncated to fit: R_MIPS_26 against `free'
-> make[1]: *** [arch/mips/pbl/zbarebox] Error 1
-> make: *** [zbarebox.bin] Error 2
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+On 5 February 2013 12:57, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Tue, Feb 05, 2013 at 02:36:36AM +0400, Antony Pavlov wrote:
+>> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+>> ---
+>>  lib/decompress_inflate.c |    1 -
+>>  lib/decompress_unlzo.c   |    1 -
+>>  pbl/decomp.c             |    2 ++
+>>  3 files changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/lib/decompress_inflate.c b/lib/decompress_inflate.c
+>> index 5c1ebb6..526d6a1 100644
+>> --- a/lib/decompress_inflate.c
+>> +++ b/lib/decompress_inflate.c
+>> @@ -4,7 +4,6 @@
+>>  /* prevent inclusion of _LINUX_KERNEL_H in pre-boot environment: lots
+>>   * errors about console_printk etc... on ARM */
+>>  #define _LINUX_KERNEL_H
+>> -#include <linux/decompress/mm.h>
+>>
+>>  #include "zlib_inflate/inftrees.c"
+>>  #include "zlib_inflate/inffast.c"
+>> diff --git a/lib/decompress_unlzo.c b/lib/decompress_unlzo.c
+>> index 1b2dc9d..2b0fbed 100644
+>> --- a/lib/decompress_unlzo.c
+>> +++ b/lib/decompress_unlzo.c
+>> @@ -32,7 +32,6 @@
+>>  #include <xfuncs.h>
+>>
+>>  #ifdef STATIC
+>> -#include <linux/decompress/mm.h>
+>>  #include "lzo/lzo1x_decompress.c"
+>>  #else
+>>  #include <malloc.h>
+>> diff --git a/pbl/decomp.c b/pbl/decomp.c
+>> index aa6a31e..17fc01e 100644
+>> --- a/pbl/decomp.c
+>> +++ b/pbl/decomp.c
+>> @@ -10,6 +10,8 @@
+>>
+>>  #define STATIC static
+>>
+>> +#include <linux/decompress/mm.h>
+>> +
+>
+> Any special reason for this patch? Normally the #include is in the file
+> requiring the declarations from the file. In this case decompress_* need
+> linux/decompress/mm.h, not pbl/decomp.c.
 
-Applied, thanks
-
-Sascha
-
-> ---
->  lib/decompress_unlzo.c |    4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/decompress_unlzo.c b/lib/decompress_unlzo.c
-> index 776719c..1b2dc9d 100644
-> --- a/lib/decompress_unlzo.c
-> +++ b/lib/decompress_unlzo.c
-> @@ -26,14 +26,16 @@
->   */
->  
->  #include <common.h>
-> -#include <malloc.h>
->  #include <linux/types.h>
->  #include <errno.h>
->  #include <fs.h>
->  #include <xfuncs.h>
->  
->  #ifdef STATIC
-> +#include <linux/decompress/mm.h>
->  #include "lzo/lzo1x_decompress.c"
-> +#else
-> +#include <malloc.h>
->  #endif
->  
->  #include <lzo.h>
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+There is no special reason for this patch, just factorisation. If you
+don't like this type of factorisation you can drop this patch :)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
