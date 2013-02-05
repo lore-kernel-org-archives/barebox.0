@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.z9.com ([64.142.101.243])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U2mdh-000713-Sf
- for barebox@lists.infradead.org; Tue, 05 Feb 2013 17:49:02 +0000
-Received: from GPontisPC by z9.com (MDaemon PRO v12.5.8)
- with ESMTP id md50000244658.msg
- for <barebox@lists.infradead.org>; Tue, 05 Feb 2013 09:48:55 -0800
-From: "George Pontis" <GPontis@z9.com>
-References: <004301ce030a$68506aa0$38f13fe0$@com>
- <1360004939.170907890@f389.i.mail.ru> <005301ce0338$1e5e1fe0$5b1a5fa0$@com>
- <20130205085233.GN1906@pengutronix.de>
-In-Reply-To: <20130205085233.GN1906@pengutronix.de>
-Date: Tue, 5 Feb 2013 09:48:51 -0800
-Message-ID: <008301ce03c9$0eedd320$2cc97960$@com>
+Received: from 14.mo4.mail-out.ovh.net ([46.105.40.29]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U2mp0-0008Pl-1s
+ for barebox@lists.infradead.org; Tue, 05 Feb 2013 18:00:43 +0000
+Received: from mail423.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id E02AA1050303
+ for <barebox@lists.infradead.org>; Tue,  5 Feb 2013 19:10:50 +0100 (CET)
+Date: Tue, 5 Feb 2013 18:59:27 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130205175927.GD19322@game.jcrosoft.org>
 MIME-Version: 1.0
-Content-Language: en-us
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,48 +24,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: i.MX53,
- add access to third I2C peripheral ( resubmit with Signed-off tag )
+Subject: [PATCH 0/3] at91: add boot mode detection support
 To: barebox@lists.infradead.org
 
-Subject: i.MX53 i2c, add support for third i2c interface
+Hi,
 
-Signed-off-by: George Pontis <gpontis@spamcop.net>
----
-diff -Naur bb.a/arch/arm/mach-imx/include/mach/devices-imx53.h
-bb.b/arch/arm/mach-imx/include/mach/devic
-es-imx53.h
---- bb.a/arch/arm/mach-imx/include/mach/devices-imx53.h 2013-02-04
-06:24:51.000000000 -0800
-+++ bb.b/arch/arm/mach-imx/include/mach/devices-imx53.h 2013-02-03
-22:24:26.930091420 -0800
-@@ -21,6 +21,11 @@
-        return imx_add_i2c((void *)MX53_I2C2_BASE_ADDR, 1, pdata);
- }
+The following changes since commit e43e1498f65fe03cfc6b2744247eeccf27b26876:
 
-+static inline struct device_d *imx53_add_i2c2(struct i2c_platform_data
-*pdata)
-+{
-+       return imx_add_i2c((void *)MX53_I2C3_BASE_ADDR, 2, pdata);
-+}
-+
- static inline struct device_d *imx53_add_uart0(void)
- {
-        return imx_add_uart_imx21((void *)MX53_UART1_BASE_ADDR, 0);
-diff -Naur bb.a/arch/arm/mach-imx/clk-imx5.c
-bb.b/arch/arm/mach-imx/clk-imx5.c
---- bb.a/arch/arm/mach-imx/clk-imx5.c   2013-02-04 06:24:51.000000000 -0800
-+++ bb.b/arch/arm/mach-imx/clk-imx5.c   2013-02-04 16:14:04.729284183 -0800
-@@ -272,6 +272,7 @@
-        clkdev_add_physbase(clks[uart_root], MX53_UART3_BASE_ADDR, NULL);
-        clkdev_add_physbase(clks[per_root], MX53_I2C1_BASE_ADDR, NULL);
-        clkdev_add_physbase(clks[per_root], MX53_I2C2_BASE_ADDR, NULL);
-+       clkdev_add_physbase(clks[per_root], MX53_I2C3_BASE_ADDR, NULL);
-        clkdev_add_physbase(clks[per_root], MX53_GPT1_BASE_ADDR, NULL);
-        clkdev_add_physbase(clks[ipg], MX53_CSPI_BASE_ADDR, NULL);
-        clkdev_add_physbase(clks[ecspi_podf], MX53_ECSPI1_BASE_ADDR, NULL);
+  MIPS: pbl: fix none compression support (2013-02-05 09:43:17 +0100)
 
+are available in the git repository at:
 
+  git://git.jcrosoft.org/barebox.git delivery/sama5d3_bootmode
+
+for you to fetch changes up to ce538beef9fabea8c461a206bf0335eb582a9eee:
+
+  sama5d3: detect boot mode (2013-02-05 11:29:18 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (3):
+      at91: add boot mode detection support
+      sama5d3: add boot mode supprot
+      sama5d3: detect boot mode
+
+ arch/arm/boards/sama5d3xek/init.c                  |   24 ++++++++++++++++--------
+ arch/arm/mach-at91/Kconfig                         |    9 +++++++++
+ arch/arm/mach-at91/Makefile                        |    2 ++
+ arch/arm/mach-at91/bootmode.c                      |   57 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/include/mach/bootmode.h         |   70 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/include/mach/sama5d3.h          |    1 +
+ arch/arm/mach-at91/include/mach/sama5d3_bootmode.h |   45 +++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/sama5d3.c                       |   81 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/mach-at91/setup.c                         |    3 +++
+ 9 files changed, 284 insertions(+), 8 deletions(-)
+ create mode 100644 arch/arm/mach-at91/bootmode.c
+ create mode 100644 arch/arm/mach-at91/include/mach/bootmode.h
+ create mode 100644 arch/arm/mach-at91/include/mach/sama5d3_bootmode.h
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
