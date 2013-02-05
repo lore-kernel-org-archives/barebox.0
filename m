@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U2eUf-0003ZB-CJ
- for barebox@lists.infradead.org; Tue, 05 Feb 2013 09:07:10 +0000
-Received: by mail-la0-f53.google.com with SMTP id fr10so5418336lab.40
- for <barebox@lists.infradead.org>; Tue, 05 Feb 2013 01:07:06 -0800 (PST)
+ id 1U2eXd-0004H1-GD
+ for barebox@lists.infradead.org; Tue, 05 Feb 2013 09:10:14 +0000
+Date: Tue, 5 Feb 2013 10:10:11 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130205091011.GQ1906@pengutronix.de>
+References: <1359998781-31956-1-git-send-email-m.grzeschik@pengutronix.de>
+ <1359998781-31956-2-git-send-email-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20130205085713.GO1906@pengutronix.de>
-References: <1360017396-13321-1-git-send-email-antonynpavlov@gmail.com>
- <1360017396-13321-2-git-send-email-antonynpavlov@gmail.com>
- <20130205085713.GO1906@pengutronix.de>
-Date: Tue, 5 Feb 2013 13:07:05 +0400
-Message-ID: <CAA4bVAEL+cVXGdMX5SVgrkgurxQuaKqKtfGPAj+QrvQdOr0YYw@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1359998781-31956-2-git-send-email-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,64 +23,96 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] pbl: factorise linux/decompress/mm.h inclusion
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 1/3] mxs: ssp move to common register layout
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 5 February 2013 12:57, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Tue, Feb 05, 2013 at 02:36:36AM +0400, Antony Pavlov wrote:
->> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
->> ---
->>  lib/decompress_inflate.c |    1 -
->>  lib/decompress_unlzo.c   |    1 -
->>  pbl/decomp.c             |    2 ++
->>  3 files changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/lib/decompress_inflate.c b/lib/decompress_inflate.c
->> index 5c1ebb6..526d6a1 100644
->> --- a/lib/decompress_inflate.c
->> +++ b/lib/decompress_inflate.c
->> @@ -4,7 +4,6 @@
->>  /* prevent inclusion of _LINUX_KERNEL_H in pre-boot environment: lots
->>   * errors about console_printk etc... on ARM */
->>  #define _LINUX_KERNEL_H
->> -#include <linux/decompress/mm.h>
->>
->>  #include "zlib_inflate/inftrees.c"
->>  #include "zlib_inflate/inffast.c"
->> diff --git a/lib/decompress_unlzo.c b/lib/decompress_unlzo.c
->> index 1b2dc9d..2b0fbed 100644
->> --- a/lib/decompress_unlzo.c
->> +++ b/lib/decompress_unlzo.c
->> @@ -32,7 +32,6 @@
->>  #include <xfuncs.h>
->>
->>  #ifdef STATIC
->> -#include <linux/decompress/mm.h>
->>  #include "lzo/lzo1x_decompress.c"
->>  #else
->>  #include <malloc.h>
->> diff --git a/pbl/decomp.c b/pbl/decomp.c
->> index aa6a31e..17fc01e 100644
->> --- a/pbl/decomp.c
->> +++ b/pbl/decomp.c
->> @@ -10,6 +10,8 @@
->>
->>  #define STATIC static
->>
->> +#include <linux/decompress/mm.h>
->> +
->
-> Any special reason for this patch? Normally the #include is in the file
-> requiring the declarations from the file. In this case decompress_* need
-> linux/decompress/mm.h, not pbl/decomp.c.
 
-There is no special reason for this patch, just factorisation. If you
-don't like this type of factorisation you can drop this patch :)
+The commit log looks a bit sparse. Subject should include
+
+"ARM mxs:"
+
+Also, why are you doing this? (The next patch makes this clear, but this
+one should contain an explanation)
+
+On Mon, Feb 04, 2013 at 06:26:19PM +0100, Michael Grzeschik wrote:
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+> ---
+>  arch/arm/mach-mxs/include/mach/imx23-regs.h |   16 ++++
+>  arch/arm/mach-mxs/include/mach/imx28-regs.h |   21 +++++
+>  arch/arm/mach-mxs/include/mach/ssp.h        |   77 +++++++++++++++++
+>  drivers/mci/mxs.c                           |  118 +--------------------------
+>  4 files changed, 115 insertions(+), 117 deletions(-)
+>  create mode 100644 arch/arm/mach-mxs/include/mach/ssp.h
+> 
+> diff --git a/arch/arm/mach-mxs/include/mach/imx23-regs.h b/arch/arm/mach-mxs/include/mach/imx23-regs.h
+> index 7fb664b..9e8e86c 100644
+> --- a/arch/arm/mach-mxs/include/mach/imx23-regs.h
+> +++ b/arch/arm/mach-mxs/include/mach/imx23-regs.h
+> @@ -36,4 +36,20 @@
+>  #define IMX_DIGCTL_BASE		0x8001c000
+>  #define IMX_USB_BASE		0x80080000
+>  
+> +#define HW_SSP_CTRL0		0x000
+> +#define HW_SSP_CMD0		0x010
+> +#define HW_SSP_CMD1		0x020
+> +#define HW_SSP_COMPREF		0x030
+> +#define HW_SSP_COMPMASK		0x040
+> +#define HW_SSP_TIMING		0x050
+> +#define HW_SSP_CTRL1		0x060
+> +#define HW_SSP_DATA		0x070
+> +#define HW_SSP_SDRESP0		0x080
+> +#define HW_SSP_SDRESP1		0x090
+> +#define HW_SSP_SDRESP2		0x0A0
+> +#define HW_SSP_SDRESP3		0x0B0
+> +#define HW_SSP_STATUS		0x0C0
+> +#define HW_SSP_DEBUG		0x100
+> +#define HW_SSP_VERSION		0x110
+> +
+>  #endif /* __ASM_ARCH_MX23_REGS_H */
+> diff --git a/arch/arm/mach-mxs/include/mach/imx28-regs.h b/arch/arm/mach-mxs/include/mach/imx28-regs.h
+> index fa8edd7..bbe1848 100644
+> --- a/arch/arm/mach-mxs/include/mach/imx28-regs.h
+> +++ b/arch/arm/mach-mxs/include/mach/imx28-regs.h
+> @@ -45,4 +45,25 @@
+>  #define IMX_FEC0_BASE		0x800F0000
+>  #define IMX_FEC1_BASE		0x800F4000
+>  
+> +#define HW_SSP_CTRL0		0x000
+> +#define HW_SSP_CMD0		0x010
+> +#define HW_SSP_CMD1		0x020
+> +#define HW_SSP_XFER_COUNT	0x030
+> +#define HW_SSP_BLOCK_SIZE	0x040
+> +#define HW_SSP_COMPREF		0x050
+> +#define HW_SSP_COMPMASK		0x060
+> +#define HW_SSP_TIMING		0x070
+> +#define HW_SSP_CTRL1		0x080
+> +#define HW_SSP_DATA		0x090
+> +#define HW_SSP_SDRESP0		0x0A0
+> +#define HW_SSP_SDRESP1		0x0B0
+> +#define HW_SSP_SDRESP2		0x0C0
+> +#define HW_SSP_SDRESP3		0x0D0
+> +#define HW_SSP_DDR_CTRL		0x0E0
+> +#define HW_SSP_DLL_CTRL		0x0F0
+> +#define HW_SSP_STATUS		0x100
+> +#define HW_SSP_DLL_STS		0x110
+> +#define HW_SSP_DEBUG		0x120
+> +#define HW_SSP_VERSION		0x130
+
+I prefer having these in mach/ssp.h. include files should not have
+conflicting defines. Ideally some code working on i.MX23 and i.MX28
+should be able to include both files without errors.
+
+In an even better world there wouldn't be #ifdefs in include files
+at all, but ok, there must remain something to improve for the future...
+
+Sascha
 
 -- 
-Best regards,
-  Antony Pavlov
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
