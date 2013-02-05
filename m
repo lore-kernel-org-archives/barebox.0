@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo4.mail-out.ovh.net ([46.105.40.29]
+Received: from 6.mo4.mail-out.ovh.net ([188.165.36.253]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U2msP-00010y-Jj
- for barebox@lists.infradead.org; Tue, 05 Feb 2013 18:04:15 +0000
+ id 1U2msQ-000111-IC
+ for barebox@lists.infradead.org; Tue, 05 Feb 2013 18:04:18 +0000
 Received: from mail423.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 45199104FDA4
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 6387E104FDC9
  for <barebox@lists.infradead.org>; Tue,  5 Feb 2013 19:14:23 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue,  5 Feb 2013 19:02:58 +0100
-Message-Id: <1360087380-5700-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20130205175927.GD19322@game.jcrosoft.org>
+Date: Tue,  5 Feb 2013 19:02:59 +0100
+Message-Id: <1360087380-5700-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1360087380-5700-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130205175927.GD19322@game.jcrosoft.org>
+ <1360087380-5700-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,217 +26,205 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] at91: add boot mode detection support
+Subject: [PATCH 2/3] sama5d3: add boot mode supprot
 To: barebox@lists.infradead.org
+
+on sama5d3 the bootmode is pass by the rom code via the register r4
+so in the at91bootstrap we save the content of r4 in the 2nd gpbr and repass it
+via r4 to barebox
+
+you need to last at91bootstrap
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/Kconfig                 |    8 ++++
- arch/arm/mach-at91/Makefile                |    2 +
- arch/arm/mach-at91/bootmode.c              |   57 ++++++++++++++++++++++
- arch/arm/mach-at91/include/mach/bootmode.h |   70 ++++++++++++++++++++++++++++
- arch/arm/mach-at91/setup.c                 |    3 ++
- 5 files changed, 140 insertions(+)
- create mode 100644 arch/arm/mach-at91/bootmode.c
- create mode 100644 arch/arm/mach-at91/include/mach/bootmode.h
+ arch/arm/mach-at91/Kconfig                         |    1 +
+ arch/arm/mach-at91/include/mach/sama5d3.h          |    1 +
+ arch/arm/mach-at91/include/mach/sama5d3_bootmode.h |   45 +++++++++++
+ arch/arm/mach-at91/sama5d3.c                       |   81 ++++++++++++++++++++
+ 4 files changed, 128 insertions(+)
+ create mode 100644 arch/arm/mach-at91/include/mach/sama5d3_bootmode.h
 
 diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index b8528d0..f5c995d 100644
+index f5c995d..f6ac9cd 100644
 --- a/arch/arm/mach-at91/Kconfig
 +++ b/arch/arm/mach-at91/Kconfig
-@@ -9,6 +9,9 @@ config HAVE_AT91_DBGU1
- config HAVE_AT91_LOWLEVEL_INIT
- 	bool
+@@ -197,6 +197,7 @@ config ARCH_SAMA5D3
+ 	select HAVE_AT91_DBGU1
+ 	select HAS_MACB
+ 	select AT91SAM9G45_RESET
++	select HAVE_AT91_BOOTMODE
  
-+config HAVE_AT91_BOOTMODE
-+	bool
-+
- config AT91SAM9_SMC
- 	bool
+ endchoice
  
-@@ -573,4 +576,9 @@ config AT91_LOAD_BAREBOX_SRAM
- 	depends on SHELL_NONE || HAVE_AT91_LOAD_BAREBOX_SRAM
- 	default y if SHELL_NONE
+diff --git a/arch/arm/mach-at91/include/mach/sama5d3.h b/arch/arm/mach-at91/include/mach/sama5d3.h
+index 6884ff6..4d1868e 100644
+--- a/arch/arm/mach-at91/include/mach/sama5d3.h
++++ b/arch/arm/mach-at91/include/mach/sama5d3.h
+@@ -102,6 +102,7 @@
+ #define	SAMA5D3_BASE_HSMC	0xffffc000
+ #define SAMA5D3_BASE_PIT	0xfffffe30
+ #define SAMA5D3_BASE_WDT	0xfffffe40
++#define SAMA5D3_BASE_GPBR	0xfffffe60
  
-+config AT91_BOOTMODE
-+	bool "at91 bootmode detect and export"
-+	depends on HAVE_AT91_BOOTMODE
-+	default y
-+
- endif
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 53ca570..82b4e86 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -22,6 +22,8 @@ obj-$(CONFIG_AT91SAM9G45_RESET) += at91sam9g45_reset.o
- obj-$(CONFIG_AT91SAM9_SMC) += sam9_smc.o
- obj-$(CONFIG_AT91SAM9_TIMER) += at91sam926x_time.o
- 
-+obj-$(CONFIG_AT91_BOOTMODE) += bootmode.o
-+
- # CPU-specific support
- obj-$(CONFIG_ARCH_AT91RM9200)	+= at91rm9200.o at91rm9200_time.o at91rm9200_devices.o
- obj-$(CONFIG_ARCH_AT91SAM9260) += at91sam9260.o at91sam9260_devices.o
-diff --git a/arch/arm/mach-at91/bootmode.c b/arch/arm/mach-at91/bootmode.c
+ #define SAMA5D3_BASE_PMECC	0xffffc070
+ #define SAMA5D3_BASE_PMERRLOC	0xffffc500
+diff --git a/arch/arm/mach-at91/include/mach/sama5d3_bootmode.h b/arch/arm/mach-at91/include/mach/sama5d3_bootmode.h
 new file mode 100644
-index 0000000..c731da9
+index 0000000..5ab2895
 --- /dev/null
-+++ b/arch/arm/mach-at91/bootmode.c
-@@ -0,0 +1,57 @@
++++ b/arch/arm/mach-at91/include/mach/sama5d3_bootmode.h
+@@ -0,0 +1,45 @@
 +/*
 + * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 + *
 + * GPLv2 only
 + */
 +
-+#include <common.h>
-+#include <mach/bootmode.h>
++#ifndef __SAMA5D3_BOOTMODE_H__
++#define __SAMA5D3_BOOTMODE_H__
 +
-+struct at91_boot_mode at91_soc_boot_mode;
++#include <mach/sama5d3.h>
 +
-+static const char *soc_boot_from[] = {
-+	[AT91_BOOT_FROM_SPI]		= "spi",
-+	[AT91_BOOT_FROM_MCI]		= "mci",
-+	[AT91_BOOT_FROM_SMC]		= "smc",
-+	[AT91_BOOT_FROM_TWD]		= "twd",
-+	[AT91_BOOT_FROM_UNKNOWN]	= "Unknown"
-+};
++#define SAMA5D3_BOOT_FROM_GPBR		(SAMA5D3_BASE_GPBR + 4)
 +
-+static const char *soc_boot_media[] = {
-+	[AT91_BOOT_MEDIA_SD]		= "SD",
-+	[AT91_BOOT_MEDIA_MMC]		= "MMC",
-+	[AT91_BOOT_MEDIA_EMMC]		= "eMMC",
-+	[AT91_BOOT_MEDIA_AT45]		= "at45",
-+	[AT91_BOOT_MEDIA_AT25]		= "at25",
-+	[AT91_BOOT_MEDIA_NAND]		= "NAND",
-+	[AT91_BOOT_MEDIA_NOR]		= "NOR",
-+	[AT91_BOOT_MEDIA_UNKNOWN]	= "Unknown"
-+};
++#define SAMA5D3_BOOT_FROM_KEY		(0xba << 24)
 +
-+void at91_bootmode_device_register(void)
-+{
-+	struct device_d *dev;
-+	const char *name;
-+	char str[16];
++#define SAMA5D3_BOOT_FROM		(0xf << 0)
++#define		SAMA5D3_BOOT_FROM_SPI		(0 << 0)
++#define		SAMA5D3_BOOT_FROM_MCI		(1 << 0)
++#define		SAMA5D3_BOOT_FROM_SMC		(2 << 0)
++#define		SAMA5D3_BOOT_FROM_TWD		(3 << 0)
 +
-+	dev = add_generic_device_res("bootloc", DEVICE_ID_SINGLE, NULL, 0, NULL);
++#define SAMA5D3_BOOT_FROM_INTERFACE	(0xf << 4)
++#define 	SAMA5D3_BOOT_FROM_INTERFACE_SHIFT	4
++#define		SAMA5D3_BOOT_FROM_INTERFACE_0	(0 << 4)
++#define		SAMA5D3_BOOT_FROM_INTERFACE_1	(1 << 4)
++#define		SAMA5D3_BOOT_FROM_INTERFACE_2	(2 << 4)
++#define		SAMA5D3_BOOT_FROM_INTERFACE_3	(3 << 4)
++#define		SAMA5D3_BOOT_FROM_INTERFACE_4	(4 << 4)
 +
-+	if (at91_soc_boot_mode.from > ARRAY_SIZE(soc_boot_from))
-+		name = soc_boot_from[AT91_BOOT_FROM_UNKNOWN];
-+	else
-+		name = soc_boot_from[at91_soc_boot_mode.from];
++#define SAMA5D3_BOOT_FROM_MEDIA_TYPE	(0xf << 8)
++#define		SAMA5D3_BOOT_FROM_MEDIA_SD	(0 << 8)
++#define		SAMA5D3_BOOT_FROM_MEDIA_MMC	(1 << 8)
++#define		SAMA5D3_BOOT_FROM_MEDIA_EMMC	(2 << 8)
++#define		SAMA5D3_BOOT_FROM_MEDIA_AT25	(0 << 8)
++#define		SAMA5D3_BOOT_FROM_MEDIA_AT45	(1 << 8)
 +
-+	dev_add_param_fixed(dev, "from", (char*)name);
++#define SAMA5D3_BOOT_FROM_CS		(0xf << 12)
++#define 	SAMA5D3_BOOT_FROM_CS_SHIFT	12
++#define		SAMA5D3_BOOT_FROM_CS_0		(0 << 12)
++#define		SAMA5D3_BOOT_FROM_CS_1		(1 << 12)
++#define		SAMA5D3_BOOT_FROM_CS_2		(2 << 12)
++#define		SAMA5D3_BOOT_FROM_CS_3		(3 << 12)
++#define		SAMA5D3_BOOT_FROM_CS_4		(4 << 12)
 +
-+	if (at91_soc_boot_mode.media > ARRAY_SIZE(soc_boot_media))
-+		name = soc_boot_media[AT91_BOOT_MEDIA_UNKNOWN];
-+	else
-+		name = soc_boot_media[at91_soc_boot_mode.media];
-+
-+	dev_add_param_fixed(dev, "media", (char*)name);
-+	sprintf(str, "%d", at91_soc_boot_mode.interface);
-+	dev_add_param_fixed(dev, "interface", str);
-+	sprintf(str, "%d", at91_soc_boot_mode.cs);
-+	dev_add_param_fixed(dev, "cs", str);
-+
-+}
-diff --git a/arch/arm/mach-at91/include/mach/bootmode.h b/arch/arm/mach-at91/include/mach/bootmode.h
-new file mode 100644
-index 0000000..eb2f948
---- /dev/null
-+++ b/arch/arm/mach-at91/include/mach/bootmode.h
-@@ -0,0 +1,70 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * GPLv2 only
-+ */
-+
-+#ifndef __BOOTMODE_H__
-+#define __BOOTMODE_H__
-+
-+extern struct at91_boot_mode at91_soc_boot_mode;
-+
-+struct at91_boot_mode {
-+	u16 from;
-+	u16 interface;
-+	u16 media;
-+	u16 cs;
-+};
-+
-+enum at91_soc_boot_from {
-+	AT91_BOOT_FROM_UNKNOWN,
-+	AT91_BOOT_FROM_SPI,
-+	AT91_BOOT_FROM_MCI,
-+	AT91_BOOT_FROM_SMC,
-+	AT91_BOOT_FROM_TWD,
-+};
-+
-+enum at91_soc_boot_media {
-+	AT91_BOOT_MEDIA_UNKNOWN,
-+	AT91_BOOT_MEDIA_SD,
-+	AT91_BOOT_MEDIA_MMC,
-+	AT91_BOOT_MEDIA_EMMC,
-+	AT91_BOOT_MEDIA_AT45,
-+	AT91_BOOT_MEDIA_AT25,
-+	AT91_BOOT_MEDIA_NAND,
-+	AT91_BOOT_MEDIA_NOR,
-+};
-+
-+#ifdef CONFIG_AT91_BOOTMODE
-+void at91_bootmode_device_register(void);
-+
-+#define at91_boot_from_spi()	(at91_soc_boot_mode.from == AT91_BOOT_FROM_SPI)
-+#define at91_boot_from_mci()	(at91_soc_boot_mode.from == AT91_BOOT_FROM_MCI)
-+#define at91_boot_from_smc()	(at91_soc_boot_mode.from == AT91_BOOT_FROM_SMC)
-+#define at91_boot_from_twd()	(at91_soc_boot_mode.from == AT91_BOOT_FROM_TWD)
-+
-+#define at91_boot_media_sd()	(at91_soc_boot_mode.media == AT91_BOOT_MEDIA_SD)
-+#define at91_boot_media_mmc()	(at91_soc_boot_mode.media == AT91_BOOT_MEDIA_MMC)
-+#define at91_boot_media_emmc()	(at91_soc_boot_mode.media == AT91_BOOT_MEDIA_EMMC)
-+#define at91_boot_media_at45()	(at91_soc_boot_mode.media == AT91_BOOT_MEDIA_AT45)
-+#define at91_boot_media_at25()	(at91_soc_boot_mode.media == AT91_BOOT_MEDIA_AT25)
-+#define at91_boot_media_nand()	(at91_soc_boot_mode.media == AT91_BOOT_MEDIA_NAND)
-+#define at91_boot_media_nor()	(at91_soc_boot_mode.media == AT91_BOOT_MEDIA_NOR)
-+#else
-+static void inline void at91_bootmode_device_register(void) {}
-+
-+#define at91_boot_from_spi()	(0)
-+#define at91_boot_from_mci()	(0)
-+#define at91_boot_from_smc()	(0)
-+#define at91_boot_from_twd()	(0)
-+
-+#define at91_boot_media_sd()	(0)
-+#define at91_boot_media_mmc()	(0)
-+#define at91_boot_media_emmc()	(0)
-+#define at91_boot_media_at45()	(0)
-+#define at91_boot_media_at25()	(0)
-+#define at91_boot_media_nand()	(0)
-+#define at91_boot_media_nor()	(0)
-+#endif
-+
-+#endif /* __BOOTMODE_H__ */
-diff --git a/arch/arm/mach-at91/setup.c b/arch/arm/mach-at91/setup.c
-index 0444a5f..d5dc943 100644
---- a/arch/arm/mach-at91/setup.c
-+++ b/arch/arm/mach-at91/setup.c
-@@ -12,6 +12,7 @@
- #include <mach/hardware.h>
++#endif /* __SAMA5D3_BOOTMODE_H__ */
+diff --git a/arch/arm/mach-at91/sama5d3.c b/arch/arm/mach-at91/sama5d3.c
+index 0eec696..054683b 100644
+--- a/arch/arm/mach-at91/sama5d3.c
++++ b/arch/arm/mach-at91/sama5d3.c
+@@ -5,6 +5,8 @@
+ #include <mach/at91_pmc.h>
+ #include <mach/io.h>
  #include <mach/cpu.h>
- #include <mach/at91_dbgu.h>
 +#include <mach/bootmode.h>
++#include <mach/sama5d3_bootmode.h>
+ #include <linux/clk.h>
  
  #include "soc.h"
- 
-@@ -248,6 +249,8 @@ static int at91_soc_device(void)
- 	dev_add_param_fixed(dev, "name", (char*)at91_get_soc_type(&at91_soc_initdata));
- 	dev_add_param_fixed(dev, "subname", (char*)at91_get_soc_subtype(&at91_soc_initdata));
- 
-+	at91_bootmode_device_register();
-+
- 	return 0;
+@@ -369,6 +371,82 @@ static void __init sama5d3_register_clocks(void)
+ 	//clk_enable(&dma1_clk);
  }
- coredevice_initcall(at91_soc_device);
+ 
++static void sama5_boot_form_mci(uint32_t gpbr)
++{
++	switch (gpbr & SAMA5D3_BOOT_FROM_MEDIA_TYPE) {
++	case SAMA5D3_BOOT_FROM_MEDIA_SD:
++		at91_soc_boot_mode.media = AT91_BOOT_MEDIA_SD;
++		break;
++	case SAMA5D3_BOOT_FROM_MEDIA_MMC:
++		at91_soc_boot_mode.media = AT91_BOOT_MEDIA_MMC;
++		break;
++	case SAMA5D3_BOOT_FROM_MEDIA_EMMC:
++		at91_soc_boot_mode.media = AT91_BOOT_MEDIA_EMMC;
++		break;
++	}
++}
++
++static void sama5_boot_form_smc(void)
++{
++	switch (at91_soc_boot_mode.cs) {
++	case 0:
++		at91_soc_boot_mode.media = AT91_BOOT_MEDIA_NOR;
++		break;
++	case 3:
++		at91_soc_boot_mode.media = AT91_BOOT_MEDIA_NAND;
++		break;
++	}
++}
++
++static void sama5_boot_form_spi(uint32_t gpbr)
++{
++	switch (gpbr & SAMA5D3_BOOT_FROM_MEDIA_TYPE) {
++	case SAMA5D3_BOOT_FROM_MEDIA_SD:
++		at91_soc_boot_mode.media = AT91_BOOT_MEDIA_SD;
++		break;
++	case SAMA5D3_BOOT_FROM_MEDIA_MMC:
++		at91_soc_boot_mode.media = AT91_BOOT_MEDIA_MMC;
++		break;
++	case SAMA5D3_BOOT_FROM_MEDIA_EMMC:
++		at91_soc_boot_mode.media = AT91_BOOT_MEDIA_EMMC;
++		break;
++	}
++}
++
++static void sama5d3_boot_from(void)
++{
++	uint32_t gpbr = __raw_readl(SAMA5D3_BOOT_FROM_GPBR);
++
++	at91_soc_boot_mode.cs = 0;
++	at91_soc_boot_mode.media = AT91_BOOT_MEDIA_UNKNOWN;
++
++	if ((gpbr & SAMA5D3_BOOT_FROM_KEY) != SAMA5D3_BOOT_FROM_KEY) {
++		pr_warn("gpbr: boot from invalid\n");
++		return;
++	}
++
++	at91_soc_boot_mode.interface = (gpbr & SAMA5D3_BOOT_FROM_INTERFACE) >> SAMA5D3_BOOT_FROM_INTERFACE_SHIFT;
++	at91_soc_boot_mode.cs = (gpbr & SAMA5D3_BOOT_FROM_CS) >> SAMA5D3_BOOT_FROM_CS_SHIFT;
++
++	switch (gpbr & SAMA5D3_BOOT_FROM) {
++	case SAMA5D3_BOOT_FROM_SPI:
++		at91_soc_boot_mode.from = AT91_BOOT_FROM_SPI;
++		sama5_boot_form_spi(gpbr);
++		break;
++	case SAMA5D3_BOOT_FROM_MCI:
++		at91_soc_boot_mode.from = AT91_BOOT_FROM_MCI;
++		sama5_boot_form_mci(gpbr);
++		break;
++	case SAMA5D3_BOOT_FROM_SMC:
++		at91_soc_boot_mode.from = AT91_BOOT_FROM_SMC;
++		sama5_boot_form_smc();
++		break;
++	case SAMA5D3_BOOT_FROM_TWD:
++		at91_soc_boot_mode.from = AT91_BOOT_FROM_TWD;
++		break;
++	}
++}
++
+ /* --------------------------------------------------------------------
+  *  AT91SAM9x5 processor initialization
+  * -------------------------------------------------------------------- */
+@@ -381,6 +459,9 @@ static void sama5d3_initialize(void)
+ 	/* Register the processor-specific clocks */
+ 	sama5d3_register_clocks();
+ 
++	if (IS_ENABLED(CONFIG_AT91_BOOTMODE))
++		sama5d3_boot_from();
++
+ 	/* Register GPIO subsystem */
+ 	at91_add_sam9x5_gpio(0, SAMA5D3_BASE_PIOA);
+ 	at91_add_sam9x5_gpio(1, SAMA5D3_BASE_PIOB);
 -- 
 1.7.10.4
 
