@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U2ejb-0007Rv-5H
- for barebox@lists.infradead.org; Tue, 05 Feb 2013 09:22:35 +0000
-Date: Tue, 5 Feb 2013 10:22:33 +0100
+ id 1U2elZ-0008An-Ax
+ for barebox@lists.infradead.org; Tue, 05 Feb 2013 09:24:37 +0000
+Date: Tue, 5 Feb 2013 10:24:35 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130205092233.GR1906@pengutronix.de>
+Message-ID: <20130205092435.GS1906@pengutronix.de>
 References: <1359998781-31956-1-git-send-email-m.grzeschik@pengutronix.de>
- <1359998781-31956-3-git-send-email-m.grzeschik@pengutronix.de>
+ <1359998781-31956-4-git-send-email-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1359998781-31956-3-git-send-email-m.grzeschik@pengutronix.de>
+In-Reply-To: <1359998781-31956-4-git-send-email-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,94 +23,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] mxs_spi: initial commit
+Subject: Re: [PATCH 3/3] mx28evk: add m25p80 flash via ssp2
 To: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-s/$subject/SPI: Add i.MX 23/28 SPI driver support/
+On Mon, Feb 04, 2013 at 06:26:21PM +0100, Michael Grzeschik wrote:
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+> ---
+>  arch/arm/boards/freescale-mx28-evk/mx28-evk.c |   28 +++++++++++++++++++++++++
+>  1 file changed, 28 insertions(+)
+> 
+> diff --git a/arch/arm/boards/freescale-mx28-evk/mx28-evk.c b/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
+> index 4311473..325365b 100644
+> --- a/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
+> +++ b/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
+> @@ -30,6 +30,7 @@
+>  #include <mach/mci.h>
+>  #include <mach/fb.h>
+>  #include <mach/ocotp.h>
+> +#include <spi/spi.h>
+>  
+>  #include <asm/armlinux.h>
+>  #include <asm/mmu.h>
+> @@ -126,6 +127,13 @@ static const uint32_t mx28evk_pads[] = {
+>  	GPMI_ALE | VE_3_3V,
+>  	GPMI_CLE | VE_3_3V,
+>  	GPMI_RESETN,		/* act as WP, external PU */
+> +
+> +	/* SSP */
+> +	SSP2_D0 | VE_3_3V | PULLUP(1) | STRENGTH(S8MA), /* MISO DO */
+> +	SSP2_D3 | VE_3_3V | PULLUP(1) | STRENGTH(S8MA), /* SS0 !CS */
+> +	SSP2_CMD | VE_3_3V | PULLUP(1) | STRENGTH(S8MA), /* MOSI DIO */
+> +	SSP2_SCK | VE_3_3V | PULLUP(1) | STRENGTH(S8MA), /* CLK */
+> +
+>  };
 
-On Mon, Feb 04, 2013 at 06:26:20PM +0100, Michael Grzeschik wrote:
-> +
-> +/*
-> + * Set SSP/MMC bus frequency, in kHz
-> + */
-> +static void imx_set_ssp_busclock(struct spi_master *master, uint32_t freq)
-> +{
-> +	struct mxs_spi *mxs = to_mxs(master);
-> +	const uint32_t sspclk = imx_get_sspclk(master->bus_num);
-> +	uint32_t val;
-> +	uint32_t divide, rate, tgtclk;
-> +
-> +	/*
-> +	 * SSP bit rate = SSPCLK / (CLOCK_DIVIDE * (1 + CLOCK_RATE)),
-> +	 * CLOCK_DIVIDE has to be an even value from 2 to 254, and
-> +	 * CLOCK_RATE could be any integer from 0 to 255.
-> +	 */
-> +	for (divide = 2; divide < 254; divide += 2) {
-> +		rate = sspclk / freq / divide;
-> +		if (rate <= 256)
-> +			break;
-> +	}
-> +
-> +	tgtclk = sspclk / divide / rate;
-> +	while (tgtclk > freq) {
-> +		rate++;
-> +		tgtclk = sspclk / divide / rate;
-> +	}
-> +	if (rate > 256)
-> +		rate = 256;
-> +
-> +	/* Always set timeout the maximum */
-> +	val = SSP_TIMING_TIMEOUT_MASK |
-> +		SSP_TIMING_CLOCK_DIVIDE(divide) |
-> +		SSP_TIMING_CLOCK_RATE(rate - 1);
-> +	writel(val, mxs->regs + HW_SSP_TIMING);
-> +
-> +	debug("SPI%d: Set freq rate to %d KHz (requested %d KHz)\n",
-> +		bus, tgtclk, freq);
+unnecessary blank line.
 
-Use dev_dbg, dev_info, dev_err throughout the driver please.
+>  
+>  static struct mxs_mci_platform_data mci_pdata = {
+> @@ -225,6 +233,17 @@ static int mx28_evk_mem_init(void)
+>  }
+>  mem_initcall(mx28_evk_mem_init);
+>  
+> +static const struct spi_board_info mx28evk_spi_board_info[] = {
+> +	{
+> +		.name = "m25p80",
+> +		/* we leave this with the lower frequency
+> +		   as the ssp unit otherwise locks up */
 
-> +
-> +static int mxs_spi_probe(struct device_d *dev)
-> +{
-> +	struct spi_master *master;
-> +	struct mxs_spi *mxs;
-> +
-> +	mxs = xzalloc(sizeof(*mxs));
-> +	if (!mxs)
-> +		return -ENOMEM;
-
-xzalloc always returns memory.
-
-> +
-> +	master = &mxs->master;
-> +	master->dev = dev;
-> +
-> +	master->bus_num = dev->id;
-> +	master->setup = mxs_spi_setup;
-> +	master->transfer = mxs_spi_transfer;
-> +	master->num_chipselect = 3;
-> +	mxs->mode = SPI_CPOL | SPI_CPHA;
-> +
-> +	mxs->regs = dev_request_mem_region(dev, 0);
-> +
-> +	spi_register_master(master);
-> +
-> +	return 0;
-> +}
-> +
-> +static struct driver_d mxs_spi_driver = {
-> +	.name  = "mxs_spi",
-> +	.probe = mxs_spi_probe,
-> +};
-> +
-> +static int __init mxs_spi_init(void)
-> +{
-> +	platform_driver_register(&mxs_spi_driver);
-> +	return 0;
-
-	return platform_driver_register(&mxs_spi_driver);
+	/*
+	 * multiline
+	 * comment
+	 */
 
 Sascha
 
