@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-f178.google.com ([209.85.212.178])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U2hj8-0001JX-2K
- for barebox@lists.infradead.org; Tue, 05 Feb 2013 12:34:19 +0000
-Received: by mail-wi0-f178.google.com with SMTP id o1so112747wic.11
- for <barebox@lists.infradead.org>; Tue, 05 Feb 2013 04:34:16 -0800 (PST)
-Date: Tue, 5 Feb 2013 13:34:56 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130205123455.GA1135@x61s.8.8.8.8>
+Received: from 17.mo4.mail-out.ovh.net ([46.105.41.16]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U2hnl-00022t-FU
+ for barebox@lists.infradead.org; Tue, 05 Feb 2013 12:39:07 +0000
+Received: from mail608.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id D925C104FE89
+ for <barebox@lists.infradead.org>; Tue,  5 Feb 2013 13:49:12 +0100 (CET)
+Date: Tue, 5 Feb 2013 13:37:48 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130205123748.GC19322@game.jcrosoft.org>
 References: <1360064817-6210-1-git-send-email-m.grzeschik@pengutronix.de>
  <1360064817-6210-3-git-send-email-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
@@ -29,9 +31,7 @@ Subject: Re: [PATCH v2 2/3] SPI: Add i.MX 23/28 SPI driver support
 To: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi,
-
-On Tue, Feb 05, 2013 at 12:46:56PM +0100, Michael Grzeschik wrote:
+On 12:46 Tue 05 Feb     , Michael Grzeschik wrote:
 > Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 > ---
 > changes since v1:
@@ -243,6 +243,8 @@ On Tue, Feb 05, 2013 at 12:46:56PM +0100, Michael Grzeschik wrote:
 > +	if (cs & 2)
 > +		select |= SSP_CTRL0_WAIT_FOR_IRQ;
 > +
+
+this look really wired
 > +	return select;
 > +}
 > +
@@ -254,6 +256,7 @@ On Tue, Feb 05, 2013 at 12:46:56PM +0100, Michael Grzeschik wrote:
 > +
 > +	writel(mask, mxs->regs + HW_SSP_CTRL0 + BIT_CLR);
 > +	select = mxs_spi_cs_to_reg(spi->chip_select);
+handle this at setup and keep it in controller_data
 > +	writel(select, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
 > +}
 > +
@@ -335,6 +338,7 @@ On Tue, Feb 05, 2013 at 12:46:56PM +0100, Michael Grzeschik wrote:
 > +			data = (char *) t->rx_buf;
 > +			write = 0;
 > +		}
+you do not handle cs_change so mmc_cpi will nver work
 > +
 > +		if (&t->transfer_list == mesg->transfers.next)
 > +			flags |= SPI_XFER_BEGIN;
@@ -348,25 +352,9 @@ On Tue, Feb 05, 2013 at 12:46:56PM +0100, Michael Grzeschik wrote:
 > +		}
 > +
 > +		if ((!t->rx_buf && !t->tx_buf)) {
-
-unnessecary bracktes
-
 > +			dev_err(master->dev, "No Data\n");
 > +			return -EIO;
 > +		}
-
-I am not so happy with that. Can we check this at first of this loop?
-With handle in the first if like that:
-
-if (t->tx_buf)
-	...
-else if (r->rx_buf)
-	...
-else if (t->tx_buf && t->rx_buf)
-	...
-else if (!t->tx_buf && !t->rx_buf)
-	...
-
 > +
 > +		if (t->len == 0) {
 > +			if (flags == SPI_XFER_END) {
