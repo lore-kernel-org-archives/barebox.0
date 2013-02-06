@@ -1,19 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3A2b-0007yf-9X
- for barebox@lists.infradead.org; Wed, 06 Feb 2013 18:48:18 +0000
-Date: Wed, 6 Feb 2013 19:48:14 +0100
+ id 1U3AiY-0004Fe-Dh
+ for barebox@lists.infradead.org; Wed, 06 Feb 2013 19:31:39 +0000
+Date: Wed, 6 Feb 2013 20:31:35 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130206184814.GK1906@pengutronix.de>
-References: <004301ce030a$68506aa0$38f13fe0$@com>
- <1360004939.170907890@f389.i.mail.ru>
- <005301ce0338$1e5e1fe0$5b1a5fa0$@com>
- <20130205085233.GN1906@pengutronix.de>
- <008301ce03c9$0eedd320$2cc97960$@com>
+Message-ID: <20130206193135.GA9183@pengutronix.de>
+References: <1359918977-1932-1-git-send-email-antonynpavlov@gmail.com>
+ <20130203211352.GH18068@game.jcrosoft.org>
+ <CAA4bVAGyMJN4ML0xjotrcEtKyVExxmOiZjzodhxCspuwECcZZw@mail.gmail.com>
+ <20130204083759.GB1906@pengutronix.de>
+ <CAA4bVAFFtBSa7j=LQpF1_hwr3y9dQRBsYtwafHR38FhJow7oJQ@mail.gmail.com>
+ <20130205092955.GT1906@pengutronix.de>
+ <20130205101958.GB19322@game.jcrosoft.org>
+ <CAA4bVAHVVX+RpJkCyjZC03fBP3igU31t2j=_5pFpAwBuX54eNg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <008301ce03c9$0eedd320$2cc97960$@com>
+In-Reply-To: <CAA4bVAHVVX+RpJkCyjZC03fBP3igU31t2j=_5pFpAwBuX54eNg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,64 +29,196 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: i.MX53, add access to third I2C peripheral ( resubmit with
- Signed-off tag )
-To: George Pontis <GPontis@z9.com>
+Subject: Re: [RFC] gpiolib: import gpio_request_array() from linux 3.7
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Feb 05, 2013 at 09:48:51AM -0800, George Pontis wrote:
-> Subject: i.MX53 i2c, add support for third i2c interface
+On Tue, Feb 05, 2013 at 03:02:54PM +0400, Antony Pavlov wrote:
+> On 5 February 2013 14:19, Jean-Christophe PLAGNIOL-VILLARD
+> <plagnioj@jcrosoft.com> wrote:
+> > On 10:29 Tue 05 Feb     , Sascha Hauer wrote:
+> >> On Tue, Feb 05, 2013 at 10:10:18AM +0400, Antony Pavlov wrote:
+> >> > On 4 February 2013 12:37, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> >> > > On Mon, Feb 04, 2013 at 01:22:39AM +0400, Antony Pavlov wrote:
+> >> > >> On 4 February 2013 01:13, Jean-Christophe PLAGNIOL-VILLARD
+> >> > >> <plagnioj@jcrosoft.com> wrote:
+> >> > >> > On 23:16 Sun 03 Feb     , Antony Pavlov wrote:
+> >> > >> >> Also import related functions gpio_request_one() and
+> >> > >> >> gpio_free_array().
+> >> > >> >>
+> >> > >> >> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> >> > >> >> ---
+> >> > >> >>  drivers/gpio/gpio.c |   66 +++++++++++++++++++++++++++++++++++++++++++++++++++
+> >> > >> >>  include/gpio.h      |   43 +++++++++++++++++++++++++++++++++
+> >> > >> >>  2 files changed, 109 insertions(+)
+> >> > >> >>
+> >> > >> >> diff --git a/drivers/gpio/gpio.c b/drivers/gpio/gpio.c
+> >> > >> >> index d37f5a0..631168d 100644
+> >> > >> >> --- a/drivers/gpio/gpio.c
+> >> > >> >> +++ b/drivers/gpio/gpio.c
+> >> > >> >> @@ -65,6 +65,72 @@ void gpio_free(unsigned gpio)
+> >> > >> >>       free(gi->label);
+> >> > >> >>  }
+> >> > >> >>
+> >> > >> >> +/**
+> >> > >> >> + * gpio_request_one - request a single GPIO with initial configuration
+> >> > >> >> + * @gpio:    the GPIO number
+> >> > >> >> + * @flags:   GPIO configuration as specified by GPIOF_*
+> >> > >> >> + * @label:   a literal description string of this GPIO
+> >> > >> >> + */
+> >> > >> >> +int gpio_request_one(unsigned gpio, unsigned long flags, const char *label)
+> >> > >> >> +{
+> >> > >> >> +     int err;
+> >> > >> >> +
+> >> > >> >> +     err = gpio_request(gpio, label);
+> >> > >> >> +     if (err)
+> >> > >> >> +             return err;
+> >> > >> >> +
+> >> > >> >> +     if (flags & GPIOF_DIR_IN)
+> >> > >> >> +             err = gpio_direction_input(gpio);
+> >> > >> >> +     else
+> >> > >> >> +             err = gpio_direction_output(gpio,
+> >> > >> >> +                             (flags & GPIOF_INIT_HIGH) ? 1 : 0);
+> >> > >> >> +
+> >> > >> >> +     if (err)
+> >> > >> >> +             goto free_gpio;
+> >> > >> >> +
+> >> > >> >> +     return 0;
+> >> > >> >> +
+> >> > >> >> +free_gpio:
+> >> > >> >> +     gpio_free(gpio);
+> >> > >> >> +     return err;
+> >> > >> >> +}
+> >> > >> >> +EXPORT_SYMBOL(gpio_request_one);
+> >> > >> >> +
+> >> > >> >> +/**
+> >> > >> >> + * gpio_request_array - request multiple GPIOs in a single call
+> >> > >> >> + * @array:   array of the 'struct gpio'
+> >> > >> >> + * @num:     how many GPIOs in the array
+> >> > >> >> + */
+> >> > >> >> +int gpio_request_array(const struct gpio *array, size_t num)
+> >> > >> >> +{
+> >> > >> >> +     int i, err;
+> >> > >> >> +
+> >> > >> >> +     for (i = 0; i < num; i++, array++) {
+> >> > >> >> +             err = gpio_request_one(array->gpio, array->flags, array->label);
+> >> > >> >> +             if (err)
+> >> > >> >> +                     goto err_free;
+> >> > >> >> +     }
+> >> > >> >> +     return 0;
+> >> > >> >> +
+> >> > >> >> +err_free:
+> >> > >> >> +     while (i--)
+> >> > >> >> +             gpio_free((--array)->gpio);
+> >> > >> >> +     return err;
+> >> > >> >> +}
+> >> > >> >> +EXPORT_SYMBOL(gpio_request_array);
+> >> > >> >> +
+> >> > >> >> +/**
+> >> > >> >> + * gpio_free_array - release multiple GPIOs in a single call
+> >> > >> >> + * @array:   array of the 'struct gpio'
+> >> > >> >> + * @num:     how many GPIOs in the array
+> >> > >> >> + */
+> >> > >> >> +void gpio_free_array(const struct gpio *array, size_t num)
+> >> > >> >> +{
+> >> > >> >> +     while (num--)
+> >> > >> >> +             gpio_free((array++)->gpio);
+> >> > >> >> +}
+> >> > >> >> +EXPORT_SYMBOL(gpio_free_array);
+> >> > >> >> +
+> >> > >> >>  void gpio_set_value(unsigned gpio, int value)
+> >> > >> >>  {
+> >> > >> >>       struct gpio_info *gi = &gpio_desc[gpio];
+> >> > >> >> diff --git a/include/gpio.h b/include/gpio.h
+> >> > >> >> index eedb980..37c151d 100644
+> >> > >> >> --- a/include/gpio.h
+> >> > >> >> +++ b/include/gpio.h
+> >> > >> >> @@ -3,6 +3,29 @@
+> >> > >> >>
+> >> > >> >>  #include <asm/gpio.h>
+> >> > >> >>
+> >> > >> >> +/* make these flag values available regardless of GPIO kconfig options */
+> >> > >> >> +#define GPIOF_DIR_OUT        (0 << 0)
+> >> > >> >> +#define GPIOF_DIR_IN (1 << 0)
+> >> > >> >> +
+> >> > >> >> +#define GPIOF_INIT_LOW       (0 << 1)
+> >> > >> >> +#define GPIOF_INIT_HIGH      (1 << 1)
+> >> > >> >> +
+> >> > >> >> +#define GPIOF_IN             (GPIOF_DIR_IN)
+> >> > >> >> +#define GPIOF_OUT_INIT_LOW   (GPIOF_DIR_OUT | GPIOF_INIT_LOW)
+> >> > >> >> +#define GPIOF_OUT_INIT_HIGH  (GPIOF_DIR_OUT | GPIOF_INIT_HIGH)
+> >> > >> >> +
+> >> > >> >> +/**
+> >> > >> >> + * struct gpio - a structure describing a GPIO with configuration
+> >> > >> >> + * @gpio:    the GPIO number
+> >> > >> >> + * @flags:   GPIO configuration as specified by GPIOF_*
+> >> > >> >> + * @label:   a literal description string of this GPIO
+> >> > >> >> + */
+> >> > >> >> +struct gpio {
+> >> > >> >> +     unsigned        gpio;
+> >> > >> >> +     unsigned long   flags;
+> >> > >> >> +     const char      *label;
+> >> > >> >> +};
+> >> > >> >> +
+> >> > >> >>  #ifndef CONFIG_GPIOLIB
+> >> > >> >>  static inline int gpio_request(unsigned gpio, const char *label)
+> >> > >> >>  {
+> >> > >> >> @@ -12,9 +35,29 @@ static inline int gpio_request(unsigned gpio, const char *label)
+> >> > >> >>  static inline void gpio_free(unsigned gpio)
+> >> > >> >>  {
+> >> > >> >>  }
+> >> > >> >> +
+> >> > >> >> +static inline int gpio_request_one(unsigned gpio,
+> >> > >> >> +                                     unsigned long flags, const char *label)
+> >> > >> >> +{
+> >> > >> >> +     return 0;
+> >> > >> >> +}
+> >> > >> >> +
+> >> > >> >> +static inline int gpio_request_array(const struct gpio *array, size_t num)
+> >> > >> >> +{
+> >> > >> >> +     return 0;
+> >> > >> >> +}
+> >> > >> > you can not do this
+> >> > >> >
+> >> > >> > as if we start to use this in generic driver where gpio_direction_input/output
+> >> > >> > work
+> >> > >> >
+> >> > >> > we will endup with no configuration
+> >> > >>
+> >> > >> But now in include/gpio.h we have this:
+> >> > >>
+> >> > >> static inline int gpio_request(unsigned gpio, const char *label)
+> >> > >> {
+> >> > >>     return 0;
+> >> > >> }
+> >> > >>
+> >> > >> Can you explain the difference?
+> >> > >
+> >> > > gpio_request is not implemented without gpiolib, still you have to
+> >> > > configure the direction and value.
+> >> >
+> >> > Can we use this functions only if gpiolib is enabled?
+> >> > Can we skip the function's definiton in the non-gpio situation?
+> >>
+> >> Sounds fine. We should get rid of the !gpiolib drivers anyway, maybe
+> >> this adds some motivation.
+> >
+> > until every driver are swith to gpiolib NACK as if we switch any generic
+> > driver to this as leds, gpio-keys, i2c-gpio etc... we break board support
+> > siliently
 > 
-> Signed-off-by: George Pontis <gpontis@spamcop.net>
+> but leds, gpio-keys, i2c-gpio etc don't  use
+> gpio_request_one()-related functions.
+> If we ristrict the usage of gpio_request_one()-related functions (use
+> it only in board code for gpiolib-enabled machines)
+> we can avoid mentioned problems.
 
-Applied, thanks.
-
-Your mailer wraps lines. I had to apply this manually. Please figure out
-how to send patches correctly next time.
+You should probably just provide a static inline wrapper for the
+!gpiolib case. It's sufficiently easy to do and avoids that someone
+who wants to use the functions in a driver has to fixup all other
+gpio drivers first.
 
 Sascha
-
-> ---
-> diff -Naur bb.a/arch/arm/mach-imx/include/mach/devices-imx53.h
-> bb.b/arch/arm/mach-imx/include/mach/devic
-> es-imx53.h
-> --- bb.a/arch/arm/mach-imx/include/mach/devices-imx53.h 2013-02-04
-> 06:24:51.000000000 -0800
-> +++ bb.b/arch/arm/mach-imx/include/mach/devices-imx53.h 2013-02-03
-> 22:24:26.930091420 -0800
-> @@ -21,6 +21,11 @@
->         return imx_add_i2c((void *)MX53_I2C2_BASE_ADDR, 1, pdata);
->  }
-> 
-> +static inline struct device_d *imx53_add_i2c2(struct i2c_platform_data
-> *pdata)
-> +{
-> +       return imx_add_i2c((void *)MX53_I2C3_BASE_ADDR, 2, pdata);
-> +}
-> +
->  static inline struct device_d *imx53_add_uart0(void)
->  {
->         return imx_add_uart_imx21((void *)MX53_UART1_BASE_ADDR, 0);
-> diff -Naur bb.a/arch/arm/mach-imx/clk-imx5.c
-> bb.b/arch/arm/mach-imx/clk-imx5.c
-> --- bb.a/arch/arm/mach-imx/clk-imx5.c   2013-02-04 06:24:51.000000000 -0800
-> +++ bb.b/arch/arm/mach-imx/clk-imx5.c   2013-02-04 16:14:04.729284183 -0800
-> @@ -272,6 +272,7 @@
->         clkdev_add_physbase(clks[uart_root], MX53_UART3_BASE_ADDR, NULL);
->         clkdev_add_physbase(clks[per_root], MX53_I2C1_BASE_ADDR, NULL);
->         clkdev_add_physbase(clks[per_root], MX53_I2C2_BASE_ADDR, NULL);
-> +       clkdev_add_physbase(clks[per_root], MX53_I2C3_BASE_ADDR, NULL);
->         clkdev_add_physbase(clks[per_root], MX53_GPT1_BASE_ADDR, NULL);
->         clkdev_add_physbase(clks[ipg], MX53_CSPI_BASE_ADDR, NULL);
->         clkdev_add_physbase(clks[ecspi_podf], MX53_ECSPI1_BASE_ADDR, NULL);
-> 
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
