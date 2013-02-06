@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U39iq-0004wi-UW
- for barebox@lists.infradead.org; Wed, 06 Feb 2013 18:27:54 +0000
-Date: Wed, 6 Feb 2013 19:27:50 +0100
+ id 1U39rw-0006Qz-Ez
+ for barebox@lists.infradead.org; Wed, 06 Feb 2013 18:37:17 +0000
+Date: Wed, 6 Feb 2013 19:37:14 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130206182750.GH1906@pengutronix.de>
-References: <20130205175927.GD19322@game.jcrosoft.org>
- <1360087380-5700-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130206183714.GJ1906@pengutronix.de>
+References: <1360083234-8252-1-git-send-email-h.feurstein@gmail.com>
+ <20130205181022.GA27438@pengutronix.de>
+ <CAFfN3gV+ddEDNjzKjKBMnEsoM9csqE3cVj1NHQsLpj_VnbTrJg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1360087380-5700-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <CAFfN3gV+ddEDNjzKjKBMnEsoM9csqE3cVj1NHQsLpj_VnbTrJg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,50 +24,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] at91: add boot mode detection support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [RFC PATCH] ARM i.MX6: Add support for SabreSD board
+To: Hubert Feurstein <h.feurstein@gmail.com>
+Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-+1 for getting something common. On i.MX we currently use the
-barebox_loc environment variable. Not that I you should do the same for
-Atmel, but we should come up with something both i.MX and Atmel can be
-converted to.
+On Wed, Feb 06, 2013 at 04:55:45PM +0100, Hubert Feurstein wrote:
+> Hi Steffen,
+> 
+> 2013/2/5 Steffen Trumtrar <s.trumtrar@pengutronix.de>:
+> >> +static int sabresd_devices_init(void)
+> >> +{
+> >> +     imx6_add_mmc1(&sabresd_sd2_data);
+> >> +     imx6_add_mmc2(&sabresd_sd3_data);
+> >> +     imx6_add_mmc3(&sabresd_sd4_data);
+> >> +
+> >> +     sabresd_enet_setup();
+> >
+> > I think this is not necessary. The SabreSD ethernet works without this
+> > and you can merge the two pinmuxings. On the SabreLite this was necessary
+> > because of remuxing.
+> OK
+> 
+> > The rest of the ethernet looks okay though and should work. I have a v2012.08.0
+> > barebox for the SabreSD that only does ethernet (Forgot to mainline the patches
+> > :-( ). The pinctrl and the rest is almost the same. The only difference is the
+> > rgmii_rework.
+> > I have
+> >         imx6_add_fec(&fec_info);
+> >         mx6_rgmii_rework();
+> I recognized, that my rework code is the same as for the Arm2-board.
+> But ethernet is still not working yet.
 
-> +
-> +	dev = add_generic_device_res("bootloc", DEVICE_ID_SINGLE, NULL, 0, NULL);
+The phy rework code is phy specific. You have to look at the phy
+datasheet to guess the correct values (Or look at the FSL sourcecode)
 
-I know you are concerned about performance when the single 'global'
-device has many variables. I think the performance can be greatly
-improved by making sure the global device is the first one to be
-registered.
+> Hit m for menu or any other key to stop autoboot:  3
+> 
+> type exit to get to the menu
+> barebox@SabreSD:/
+> barebox@SabreSD:/ dhcp
+> 1000Mbps full duplex link detected
 
-IMO adding a new device for every fart in the system does not improve the
-situation.
-
-> +enum at91_soc_boot_from {
-> +	AT91_BOOT_FROM_UNKNOWN,
-> +	AT91_BOOT_FROM_SPI,
-> +	AT91_BOOT_FROM_MCI,
-> +	AT91_BOOT_FROM_SMC,
-> +	AT91_BOOT_FROM_TWD,
-> +};
-> +
-> +enum at91_soc_boot_media {
-> +	AT91_BOOT_MEDIA_UNKNOWN,
-> +	AT91_BOOT_MEDIA_SD,
-> +	AT91_BOOT_MEDIA_MMC,
-> +	AT91_BOOT_MEDIA_EMMC,
-> +	AT91_BOOT_MEDIA_AT45,
-> +	AT91_BOOT_MEDIA_AT25,
-> +	AT91_BOOT_MEDIA_NAND,
-> +	AT91_BOOT_MEDIA_NOR,
-> +};
-
-Hm. For NAND/NOR the first array does not contain useful information,
-for MCI the second array does not contain useful information. For
-I2C/SPI both arrays seem redundant.
-
-Why not merge them into one?
+I have never tested gigabit support under barebox. Maybe connect to a
+100MBit switch for now?
 
 Sascha
 
