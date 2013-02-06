@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f366.mail.ru ([217.69.141.8])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U32l4-0005eS-Pf
- for barebox@lists.infradead.org; Wed, 06 Feb 2013 11:01:44 +0000
-Received: from mail by f366.mail.ru with local (envelope-from
- <shc_work@mail.ru>) id 1U32l0-0001xM-R9
- for barebox@lists.infradead.org; Wed, 06 Feb 2013 15:01:39 +0400
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Wed, 06 Feb 2013 15:01:38 +0400
-Message-ID: <1360148498.214727698@f366.mail.ru>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1U33qj-0002n2-4F
+ for barebox@lists.infradead.org; Wed, 06 Feb 2013 12:11:38 +0000
+Date: Wed, 6 Feb 2013 13:11:34 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130206121134.GE1906@pengutronix.de>
+References: <1360148498.214727698@f366.mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1360148498.214727698@f366.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,41 +22,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?Tk9SIG1lbW9yeSBkcml2ZXIgZmFpbCB3aXRoIE1NVSBlbmFibGVk?=
-To: barebox@lists.infradead.org
+Subject: Re: NOR memory driver fail with MMU enabled
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-Hello.
+On Wed, Feb 06, 2013 at 03:01:38PM +0400, Alexander Shiyan wrote:
+> Hello.
+> 
+> I have a problem with NOR flash when enabling MMU.
+> Probably this happen due NOR start address is 0x0.
+> Should we a remap memory addresses same as we do it for kernel? 
+> Or can someone tell what could be the problem?
 
-I have a problem with NOR flash when enabling MMU.
-Probably this happen due NOR start address is 0x0.
-Should we a remap memory addresses same as we do it for kernel? 
-Or can someone tell what could be the problem?
-Tnanks!
+This is because the zero page is set to faulting so that you can
+catch NULL pointer exceptions. You could disable this (see
+vectors_init), but then you can't catch NULL pointer exceptions
+anymore. So the best you can do is use map_io_sections and map
+your flash to some free region, maybe like this:
 
-...
-register_device: cfi_flash0
-xmalloc c0385f80 (size 592)
-request_region ok: 0x00000000:0x01ffffff
-xmalloc c03861d8 (size 36)
-xmalloc c0386210 (size 4)
-flash detect cfi
-flash_write_cmd: c0385f80 0 0 => 00000000 0x00f0
-flash_write_cmd: c0385f80 0 0 => 00000000 0x00ff
-flash_write_cmd: c0385f80 0 55 => 00000055 0x0098
-is= cmd 51(Q) addr 00000010 flash_write_cmd: c0385f80 0 555 => 00000555 0x0098
-is= cmd 51(Q) addr 00000010 flash_write_cmd: c0385f80 0 0 => 00000000 0xf0f0
-fw addr 00000000 val f0f0
-unable to handle NULL pointer dereference at address 0x00000000
-pc : [<c078932c>]    lr : [<c0789324>]
-sp : c07ffe98  ip : c07ff9ae  fp : 00000000
-r10: 00000000  r9 : 00000000  r8 : 00000000
-r7 : 00000000  r6 : 00000000  r5 : 00000000  r4 : 0000f0f0
-r3 : 00000000  r2 : c03804a0  r1 : 0000000a  r0 : 0000001a
-Flags: nZCv  IRQs off  FIQs off  Mode SVC_32
+map_io_sections(0x0, (void *)SZ_1M, SZ_32M);
 
-no stack data available
+Then register your flash flash with address 1M instead of 0x0.
 
----
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
