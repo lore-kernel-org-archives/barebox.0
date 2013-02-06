@@ -1,16 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f43.mail.ru ([217.69.128.200])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U34ox-00018S-HM
- for barebox@lists.infradead.org; Wed, 06 Feb 2013 13:13:52 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Wed, 06 Feb 2013 17:13:48 +0400
-Message-ID: <1360156428.804491817@f43.mail.ru>
-In-Reply-To: <20130206121134.GE1906@pengutronix.de>
-References: <1360148498.214727698@f366.mail.ru>
- <20130206121134.GE1906@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from 14.mo4.mail-out.ovh.net ([46.105.40.29]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U34r6-0001FE-8t
+ for barebox@lists.infradead.org; Wed, 06 Feb 2013 13:16:05 +0000
+Received: from mail403.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 6437010506A0
+ for <barebox@lists.infradead.org>; Wed,  6 Feb 2013 14:26:06 +0100 (CET)
+Date: Wed, 6 Feb 2013 14:14:43 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130206131443.GE19322@game.jcrosoft.org>
+References: <20130205175927.GD19322@game.jcrosoft.org>
+ <1360087380-5700-1-git-send-email-plagnioj@jcrosoft.com>
+ <1360087380-5700-3-git-send-email-plagnioj@jcrosoft.com>
+ <20130206100548.GA18648@x61s.8.8.8.8>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130206100548.GA18648@x61s.8.8.8.8>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,30 +29,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IE5PUiBtZW1vcnkgZHJpdmVyIGZhaWwgd2l0aCBNTVUgZW5hYmxl?=
- =?UTF-8?B?ZA==?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 3/3] sama5d3: detect boot mode
+To: Alexander Aring <alex.aring@gmail.com>
 Cc: barebox@lists.infradead.org
 
-...
-> > I have a problem with NOR flash when enabling MMU.
-> > Probably this happen due NOR start address is 0x0.
-> > Should we a remap memory addresses same as we do it for kernel? 
-> > Or can someone tell what could be the problem?
+On 11:05 Wed 06 Feb     , Alexander Aring wrote:
+> Hi,
 > 
-> This is because the zero page is set to faulting so that you can
-> catch NULL pointer exceptions. You could disable this (see
-> vectors_init), but then you can't catch NULL pointer exceptions
-> anymore. So the best you can do is use map_io_sections and map
-> your flash to some free region, maybe like this:
+> On Tue, Feb 05, 2013 at 07:03:00PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > and dynamised where we are stored
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  arch/arm/boards/sama5d3xek/init.c |   24 ++++++++++++++++--------
+> >  1 file changed, 16 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
+> > index 110a83f..165aaac 100644
+> > --- a/arch/arm/boards/sama5d3xek/init.c
+> > +++ b/arch/arm/boards/sama5d3xek/init.c
+> > @@ -36,6 +36,7 @@
+> >  #include <mach/at91_pmc.h>
+> >  #include <mach/at91_rstc.h>
+> >  #include <mach/at91sam9x5_matrix.h>
+> > +#include <mach/bootmode.h>
+> >  #include <input/qt1070.h>
+> >  #include <readkey.h>
+> >  #include <poller.h>
+> > @@ -381,14 +382,21 @@ static int at91sama5d3xek_devices_init(void)
+> >  
+> >  	armlinux_set_bootparams((void *)(SAMA5_DDRCS + 0x100));
+> >  
+> > -	devfs_add_partition("nand0", 0x00000, SZ_256K, DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
+> > -	dev_add_bb_dev("at91bootstrap_raw", "at91bootstrap");
+> > -	devfs_add_partition("nand0", SZ_256K, SZ_256K + SZ_128K, DEVFS_PARTITION_FIXED, "self_raw");
+> > -	dev_add_bb_dev("self_raw", "self0");
+> > -	devfs_add_partition("nand0", SZ_512K + SZ_256K, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw");
+> > -	dev_add_bb_dev("env_raw", "env0");
+> > -	devfs_add_partition("nand0", SZ_1M, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw1");
+> > -	dev_add_bb_dev("env_raw1", "env1");
+> > +	if (at91_boot_media_at25() && IS_ENABLED(CONFIG_DRIVER_SPI_ATMEL)) {
 > 
-> map_io_sections(0x0, (void *)SZ_1M, SZ_32M);
-> 
-> Then register your flash flash with address 1M instead of 0x0.
+> I don't know, but is it better to use (at91_boot_media_at25() && at91_boot_from_spi())
+> instead of checking if SPI driver is enabled at compile time?
 
-Thanks Sascha, this has helped me.
+simple I want one binary whtat work when we boot from mmc/spi/nand
 
----
+so all the drivers are enabled
+
+Best Regards,
+J.
+> 
+> Regards
+> Alex
+> 
+> > +		devfs_add_partition("m25p0", 0x00000, SZ_64K, DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
+> > +		devfs_add_partition("m25p0", SZ_64K, SZ_256K + SZ_128K, DEVFS_PARTITION_FIXED, "self_raw");
+> > +		devfs_add_partition("m25p0", SZ_64K + SZ_256K + SZ_128K, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw");
+> > +		devfs_add_partition("m25p0", SZ_64K + SZ_512K + SZ_128K, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw1");
+> > +	} else {
+> > +		devfs_add_partition("nand0", 0x00000, SZ_256K, DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
+> > +		dev_add_bb_dev("at91bootstrap_raw", "at91bootstrap");
+> > +		devfs_add_partition("nand0", SZ_256K, SZ_256K + SZ_128K, DEVFS_PARTITION_FIXED, "self_raw");
+> > +		dev_add_bb_dev("self_raw", "self0");
+> > +		devfs_add_partition("nand0", SZ_512K + SZ_256K, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw");
+> > +		dev_add_bb_dev("env_raw", "env0");
+> > +		devfs_add_partition("nand0", SZ_1M, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw1");
+> > +		dev_add_bb_dev("env_raw1", "env1");
+> > +	}
+> >  
+> >  	return 0;
+> >  }
+> > -- 
+> > 1.7.10.4
+> > 
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
