@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-f42.google.com ([74.125.83.42])
+Received: from f366.mail.ru ([217.69.141.8])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U31sK-0008PK-DS
- for barebox@lists.infradead.org; Wed, 06 Feb 2013 10:05:09 +0000
-Received: by mail-ee0-f42.google.com with SMTP id b47so591300eek.1
- for <barebox@lists.infradead.org>; Wed, 06 Feb 2013 02:05:06 -0800 (PST)
-Date: Wed, 6 Feb 2013 11:05:49 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130206100548.GA18648@x61s.8.8.8.8>
-References: <20130205175927.GD19322@game.jcrosoft.org>
- <1360087380-5700-1-git-send-email-plagnioj@jcrosoft.com>
- <1360087380-5700-3-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1360087380-5700-3-git-send-email-plagnioj@jcrosoft.com>
+ id 1U32l4-0005eS-Pf
+ for barebox@lists.infradead.org; Wed, 06 Feb 2013 11:01:44 +0000
+Received: from mail by f366.mail.ru with local (envelope-from
+ <shc_work@mail.ru>) id 1U32l0-0001xM-R9
+ for barebox@lists.infradead.org; Wed, 06 Feb 2013 15:01:39 +0400
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Wed, 06 Feb 2013 15:01:38 +0400
+Message-ID: <1360148498.214727698@f366.mail.ru>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,78 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] sama5d3: detect boot mode
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: =?UTF-8?B?Tk9SIG1lbW9yeSBkcml2ZXIgZmFpbCB3aXRoIE1NVSBlbmFibGVk?=
+To: barebox@lists.infradead.org
 
-Hi,
+Hello.
 
-On Tue, Feb 05, 2013 at 07:03:00PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> and dynamised where we are stored
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/arm/boards/sama5d3xek/init.c |   24 ++++++++++++++++--------
->  1 file changed, 16 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
-> index 110a83f..165aaac 100644
-> --- a/arch/arm/boards/sama5d3xek/init.c
-> +++ b/arch/arm/boards/sama5d3xek/init.c
-> @@ -36,6 +36,7 @@
->  #include <mach/at91_pmc.h>
->  #include <mach/at91_rstc.h>
->  #include <mach/at91sam9x5_matrix.h>
-> +#include <mach/bootmode.h>
->  #include <input/qt1070.h>
->  #include <readkey.h>
->  #include <poller.h>
-> @@ -381,14 +382,21 @@ static int at91sama5d3xek_devices_init(void)
->  
->  	armlinux_set_bootparams((void *)(SAMA5_DDRCS + 0x100));
->  
-> -	devfs_add_partition("nand0", 0x00000, SZ_256K, DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
-> -	dev_add_bb_dev("at91bootstrap_raw", "at91bootstrap");
-> -	devfs_add_partition("nand0", SZ_256K, SZ_256K + SZ_128K, DEVFS_PARTITION_FIXED, "self_raw");
-> -	dev_add_bb_dev("self_raw", "self0");
-> -	devfs_add_partition("nand0", SZ_512K + SZ_256K, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw");
-> -	dev_add_bb_dev("env_raw", "env0");
-> -	devfs_add_partition("nand0", SZ_1M, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw1");
-> -	dev_add_bb_dev("env_raw1", "env1");
-> +	if (at91_boot_media_at25() && IS_ENABLED(CONFIG_DRIVER_SPI_ATMEL)) {
+I have a problem with NOR flash when enabling MMU.
+Probably this happen due NOR start address is 0x0.
+Should we a remap memory addresses same as we do it for kernel? 
+Or can someone tell what could be the problem?
+Tnanks!
 
-I don't know, but is it better to use (at91_boot_media_at25() && at91_boot_from_spi())
-instead of checking if SPI driver is enabled at compile time?
+...
+register_device: cfi_flash0
+xmalloc c0385f80 (size 592)
+request_region ok: 0x00000000:0x01ffffff
+xmalloc c03861d8 (size 36)
+xmalloc c0386210 (size 4)
+flash detect cfi
+flash_write_cmd: c0385f80 0 0 => 00000000 0x00f0
+flash_write_cmd: c0385f80 0 0 => 00000000 0x00ff
+flash_write_cmd: c0385f80 0 55 => 00000055 0x0098
+is= cmd 51(Q) addr 00000010 flash_write_cmd: c0385f80 0 555 => 00000555 0x0098
+is= cmd 51(Q) addr 00000010 flash_write_cmd: c0385f80 0 0 => 00000000 0xf0f0
+fw addr 00000000 val f0f0
+unable to handle NULL pointer dereference at address 0x00000000
+pc : [<c078932c>]    lr : [<c0789324>]
+sp : c07ffe98  ip : c07ff9ae  fp : 00000000
+r10: 00000000  r9 : 00000000  r8 : 00000000
+r7 : 00000000  r6 : 00000000  r5 : 00000000  r4 : 0000f0f0
+r3 : 00000000  r2 : c03804a0  r1 : 0000000a  r0 : 0000001a
+Flags: nZCv  IRQs off  FIQs off  Mode SVC_32
 
-Regards
-Alex
+no stack data available
 
-> +		devfs_add_partition("m25p0", 0x00000, SZ_64K, DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
-> +		devfs_add_partition("m25p0", SZ_64K, SZ_256K + SZ_128K, DEVFS_PARTITION_FIXED, "self_raw");
-> +		devfs_add_partition("m25p0", SZ_64K + SZ_256K + SZ_128K, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw");
-> +		devfs_add_partition("m25p0", SZ_64K + SZ_512K + SZ_128K, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw1");
-> +	} else {
-> +		devfs_add_partition("nand0", 0x00000, SZ_256K, DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
-> +		dev_add_bb_dev("at91bootstrap_raw", "at91bootstrap");
-> +		devfs_add_partition("nand0", SZ_256K, SZ_256K + SZ_128K, DEVFS_PARTITION_FIXED, "self_raw");
-> +		dev_add_bb_dev("self_raw", "self0");
-> +		devfs_add_partition("nand0", SZ_512K + SZ_256K, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw");
-> +		dev_add_bb_dev("env_raw", "env0");
-> +		devfs_add_partition("nand0", SZ_1M, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw1");
-> +		dev_add_bb_dev("env_raw1", "env1");
-> +	}
->  
->  	return 0;
->  }
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
+---
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
