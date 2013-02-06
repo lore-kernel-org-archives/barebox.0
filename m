@@ -1,22 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo4.mail-out.ovh.net ([46.105.40.29]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U34r6-0001FE-8t
- for barebox@lists.infradead.org; Wed, 06 Feb 2013 13:16:05 +0000
-Received: from mail403.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 6437010506A0
- for <barebox@lists.infradead.org>; Wed,  6 Feb 2013 14:26:06 +0100 (CET)
-Date: Wed, 6 Feb 2013 14:14:43 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130206131443.GE19322@game.jcrosoft.org>
-References: <20130205175927.GD19322@game.jcrosoft.org>
- <1360087380-5700-1-git-send-email-plagnioj@jcrosoft.com>
- <1360087380-5700-3-git-send-email-plagnioj@jcrosoft.com>
- <20130206100548.GA18648@x61s.8.8.8.8>
+Received: from mail-qe0-f51.google.com ([209.85.128.51])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U37Lf-0002fN-E0
+ for barebox@lists.infradead.org; Wed, 06 Feb 2013 15:55:48 +0000
+Received: by mail-qe0-f51.google.com with SMTP id 6so697864qea.24
+ for <barebox@lists.infradead.org>; Wed, 06 Feb 2013 07:55:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130206100548.GA18648@x61s.8.8.8.8>
+In-Reply-To: <20130205181022.GA27438@pengutronix.de>
+References: <1360083234-8252-1-git-send-email-h.feurstein@gmail.com>
+ <20130205181022.GA27438@pengutronix.de>
+Date: Wed, 6 Feb 2013 16:55:45 +0100
+Message-ID: <CAFfN3gV+ddEDNjzKjKBMnEsoM9csqE3cVj1NHQsLpj_VnbTrJg@mail.gmail.com>
+From: Hubert Feurstein <h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,85 +24,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] sama5d3: detect boot mode
-To: Alexander Aring <alex.aring@gmail.com>
+Subject: Re: [RFC PATCH] ARM i.MX6: Add support for SabreSD board
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 11:05 Wed 06 Feb     , Alexander Aring wrote:
-> Hi,
-> 
-> On Tue, Feb 05, 2013 at 07:03:00PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > and dynamised where we are stored
-> > 
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  arch/arm/boards/sama5d3xek/init.c |   24 ++++++++++++++++--------
-> >  1 file changed, 16 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
-> > index 110a83f..165aaac 100644
-> > --- a/arch/arm/boards/sama5d3xek/init.c
-> > +++ b/arch/arm/boards/sama5d3xek/init.c
-> > @@ -36,6 +36,7 @@
-> >  #include <mach/at91_pmc.h>
-> >  #include <mach/at91_rstc.h>
-> >  #include <mach/at91sam9x5_matrix.h>
-> > +#include <mach/bootmode.h>
-> >  #include <input/qt1070.h>
-> >  #include <readkey.h>
-> >  #include <poller.h>
-> > @@ -381,14 +382,21 @@ static int at91sama5d3xek_devices_init(void)
-> >  
-> >  	armlinux_set_bootparams((void *)(SAMA5_DDRCS + 0x100));
-> >  
-> > -	devfs_add_partition("nand0", 0x00000, SZ_256K, DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
-> > -	dev_add_bb_dev("at91bootstrap_raw", "at91bootstrap");
-> > -	devfs_add_partition("nand0", SZ_256K, SZ_256K + SZ_128K, DEVFS_PARTITION_FIXED, "self_raw");
-> > -	dev_add_bb_dev("self_raw", "self0");
-> > -	devfs_add_partition("nand0", SZ_512K + SZ_256K, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw");
-> > -	dev_add_bb_dev("env_raw", "env0");
-> > -	devfs_add_partition("nand0", SZ_1M, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw1");
-> > -	dev_add_bb_dev("env_raw1", "env1");
-> > +	if (at91_boot_media_at25() && IS_ENABLED(CONFIG_DRIVER_SPI_ATMEL)) {
-> 
-> I don't know, but is it better to use (at91_boot_media_at25() && at91_boot_from_spi())
-> instead of checking if SPI driver is enabled at compile time?
+Hi Steffen,
 
-simple I want one binary whtat work when we boot from mmc/spi/nand
+2013/2/5 Steffen Trumtrar <s.trumtrar@pengutronix.de>:
+>> +static int sabresd_devices_init(void)
+>> +{
+>> +     imx6_add_mmc1(&sabresd_sd2_data);
+>> +     imx6_add_mmc2(&sabresd_sd3_data);
+>> +     imx6_add_mmc3(&sabresd_sd4_data);
+>> +
+>> +     sabresd_enet_setup();
+>
+> I think this is not necessary. The SabreSD ethernet works without this
+> and you can merge the two pinmuxings. On the SabreLite this was necessary
+> because of remuxing.
+OK
 
-so all the drivers are enabled
+> The rest of the ethernet looks okay though and should work. I have a v2012.08.0
+> barebox for the SabreSD that only does ethernet (Forgot to mainline the patches
+> :-( ). The pinctrl and the rest is almost the same. The only difference is the
+> rgmii_rework.
+> I have
+>         imx6_add_fec(&fec_info);
+>         mx6_rgmii_rework();
+I recognized, that my rework code is the same as for the Arm2-board.
+But ethernet is still not working yet.
+Btw, what are your clock settings? I'm also a little bit confused
+about that fec_imx.c requests
+the 'ipg' clock (is this the correct one, btw? shouldn't it be
+'enet_ref' ?), but then the clock
+is not enabled. Looks like a bug. But even with enabled clocks it does
+not work ...
 
-Best Regards,
-J.
-> 
-> Regards
-> Alex
-> 
-> > +		devfs_add_partition("m25p0", 0x00000, SZ_64K, DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
-> > +		devfs_add_partition("m25p0", SZ_64K, SZ_256K + SZ_128K, DEVFS_PARTITION_FIXED, "self_raw");
-> > +		devfs_add_partition("m25p0", SZ_64K + SZ_256K + SZ_128K, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw");
-> > +		devfs_add_partition("m25p0", SZ_64K + SZ_512K + SZ_128K, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw1");
-> > +	} else {
-> > +		devfs_add_partition("nand0", 0x00000, SZ_256K, DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
-> > +		dev_add_bb_dev("at91bootstrap_raw", "at91bootstrap");
-> > +		devfs_add_partition("nand0", SZ_256K, SZ_256K + SZ_128K, DEVFS_PARTITION_FIXED, "self_raw");
-> > +		dev_add_bb_dev("self_raw", "self0");
-> > +		devfs_add_partition("nand0", SZ_512K + SZ_256K, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw");
-> > +		dev_add_bb_dev("env_raw", "env0");
-> > +		devfs_add_partition("nand0", SZ_1M, SZ_256K, DEVFS_PARTITION_FIXED, "env_raw1");
-> > +		dev_add_bb_dev("env_raw1", "env1");
-> > +	}
-> >  
-> >  	return 0;
-> >  }
-> > -- 
-> > 1.7.10.4
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
+Here's the boot log:
+
+barebox 2013.01.0-00346-g8aa2579-dirty #112 Wed Feb 6 16:23:37 CET 2013
+Board: SabreSD
+[...]
+fec clock ipg
+mdio_bus: miibus0: probed
+fec probed
+eth0: got preset MAC address: 00:04:9F:02:6F:1C
+malloc space: 0x13800000 -> 0x177fffff (size 64 MiB)
+stack space:  0x137f8000 -> 0x137fffff (size 32 KiB)
+Open /dev/env0 No such file or directory
+no valid environment found on /dev/env0. Using default environment
+running /env/bin/init...
+
+Hit m for menu or any other key to stop autoboot:  3
+
+type exit to get to the menu
+barebox@SabreSD:/
+barebox@SabreSD:/ dhcp
+1000Mbps full duplex link detected
+T T T T T T T T T T T T T T T T T T T T dhcp failed: Connection timed out
+dhcp: Connection timed out
+barebox@SabreSD:/
+
+[...]
+
+>
+> If I see this right, it is not _based_ on freescale-mx6-sabrelite/flash_header.c,
+> but is the SAME file and therefore the same as freescale-mx6-arm2/flash_header.c
+In fact it is the same file as for SabreLite, the Arm2 is slightly
+different. But maybe they
+can be consolidated.
+
+[...]
+
+Regards,
+Hubert
 
 _______________________________________________
 barebox mailing list
