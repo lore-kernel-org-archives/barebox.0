@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-f177.google.com ([209.85.215.177])
+Received: from mail-ee0-f46.google.com ([74.125.83.46])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3Z3j-0006Tb-Pj
- for barebox@lists.infradead.org; Thu, 07 Feb 2013 21:31:09 +0000
-Received: by mail-ea0-f177.google.com with SMTP id n13so1327751eaa.22
- for <barebox@lists.infradead.org>; Thu, 07 Feb 2013 13:31:06 -0800 (PST)
+ id 1U3Z3g-0006Sc-GN
+ for barebox@lists.infradead.org; Thu, 07 Feb 2013 21:31:05 +0000
+Received: by mail-ee0-f46.google.com with SMTP id e49so1679057eek.33
+ for <barebox@lists.infradead.org>; Thu, 07 Feb 2013 13:31:03 -0800 (PST)
 From: Alexander Aring <alex.aring@gmail.com>
-Date: Thu,  7 Feb 2013 22:31:40 +0100
-Message-Id: <1360272701-877-4-git-send-email-alex.aring@gmail.com>
-In-Reply-To: <1360272701-877-1-git-send-email-alex.aring@gmail.com>
-References: <1360272701-877-1-git-send-email-alex.aring@gmail.com>
+Date: Thu,  7 Feb 2013 22:31:37 +0100
+Message-Id: <1360272701-877-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,27 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] sata-imx: fix depends on ARCH_IMX
+Subject: [PATCH v2 0/4] Small fixes in barebox
 To: barebox@lists.infradead.org
 
+First I tried to change getopt optstring argument to "const char *"
+and I test it with an allyesconfig for compiler warnings.
 
-Signed-off-by: Alexander Aring <alex.aring@gmail.com>
----
+Then there popup some compile errors, which I tried to fix.
+
+I am not happy with some of these solutions. Maybe someone have an idea
+how we can make it better.
+
+hush: add getopt only if it enabled
+ - I don't know if this needs a fix. But if we disable getopt there is a
+   no-op getopt implementation in the command list. This patch don't add
+   getopt to the command list at runtime, but the no-op implementation is
+   still there. Maybe a compiletime solution is better to remove the
+   no-op implementation.
+
+sata-imx: fix depends on ARCH_IMX
+ - I am not sure but this looks like ARCH_IMX related things. I got a error
+   that some imx51 header files could'nt be found.
+
+net: fix cpsw depends on ARCH_OMAP
+ - Same thing like sata-imx. I got a compile error that mach/cpsw.h wasn't
+   found. I only found that in the omap implementation.
+
+
+Another (maybe toolchain related issue) is:
+barebox/lib/libubigen.c:105: undefined reference to `__divdi3'
+
+Is it in this line:
+
+tmp = (vi->bytes + ui->leb_size - 1) / ui->leb_size;
+
+If we know that ui->leb_size is a power-of-two, we can use a shift for this
+instead of division. But I don't know if leb_size a power-of-two number.
+
+v2:
+ - fix commit msg in "net: fix cpsw depends on ARCH_OMAP" patch
+
+Alexander Aring (4):
+  hush: add getopt only if it enabled
+  getopt: change optstring to const char*
+  sata-imx: fix depends on ARCH_IMX
+  net: fix cpsw depends on ARCH_OMAP
+
+ common/hush.c       | 3 ++-
  drivers/ata/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/Kconfig | 1 +
+ include/getopt.h    | 2 +-
+ lib/getopt.c        | 4 ++--
+ 5 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index ff6528a..42f2065 100644
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -38,6 +38,7 @@ config DISK_AHCI
- 	select DISK_DRIVE
- 
- config DISK_AHCI_IMX
-+	depends on ARCH_IMX
- 	depends on DISK_AHCI
- 	bool "i.MX AHCI support"
- 
 -- 
 1.8.1.2
 
