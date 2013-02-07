@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ee0-f43.google.com ([74.125.83.43])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3RSu-0007pg-6y
- for barebox@lists.infradead.org; Thu, 07 Feb 2013 13:24:38 +0000
-Received: from alto.hi.pengutronix.de ([2001:6f8:1178:2:219:99ff:fe56:9d4])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <mgr@pengutronix.de>) id 1U3RSs-0001oV-Dj
- for barebox@lists.infradead.org; Thu, 07 Feb 2013 14:24:34 +0100
-Received: from mgr by alto.hi.pengutronix.de with local (Exim 4.75)
- (envelope-from <mgr@pengutronix.de>) id 1U3RSs-0007wf-93
- for barebox@lists.infradead.org; Thu, 07 Feb 2013 14:24:34 +0100
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Thu,  7 Feb 2013 14:24:24 +0100
-Message-Id: <1360243466-30498-2-git-send-email-m.grzeschik@pengutronix.de>
-In-Reply-To: <1360243466-30498-1-git-send-email-m.grzeschik@pengutronix.de>
-References: <1360243466-30498-1-git-send-email-m.grzeschik@pengutronix.de>
+ id 1U3Shh-0005Op-3l
+ for barebox@lists.infradead.org; Thu, 07 Feb 2013 14:43:57 +0000
+Received: by mail-ee0-f43.google.com with SMTP id c50so1402644eek.30
+ for <barebox@lists.infradead.org>; Thu, 07 Feb 2013 06:43:55 -0800 (PST)
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Thu,  7 Feb 2013 15:43:50 +0100
+Message-Id: <1360248231-31561-2-git-send-email-fabio.porcedda@gmail.com>
+In-Reply-To: <1360248231-31561-1-git-send-email-fabio.porcedda@gmail.com>
+References: <1360248231-31561-1-git-send-email-fabio.porcedda@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,283 +23,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 1/3] ARM mxs: ssp move to common register layout
+Subject: [PATCH v2 1/2] at91sam9260/9g20ek: cleanup coding style
 To: barebox@lists.infradead.org
 
-This patch moves the register defines and bit definitions
-into one include file. As the defines are common for ssp
-and mci devices they can be shared.
+- fix some error and warnings pointed out by checkpatch.
+- join some short lines.
+- remove some empty lines.
+- remove unnecessary headers.
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
-changes since v1:
- - added more information in commit header
- - moved register definitions to mach/ssp.h
+ arch/arm/boards/at91sam9260ek/init.c | 25 +++++++------------------
+ 1 file changed, 7 insertions(+), 18 deletions(-)
 
- arch/arm/mach-mxs/include/mach/ssp.h |  118 ++++++++++++++++++++++++++++++++++
- drivers/mci/mxs.c                    |  118 +---------------------------------
- 2 files changed, 119 insertions(+), 117 deletions(-)
- create mode 100644 arch/arm/mach-mxs/include/mach/ssp.h
-
-diff --git a/arch/arm/mach-mxs/include/mach/ssp.h b/arch/arm/mach-mxs/include/mach/ssp.h
-new file mode 100644
-index 0000000..aa2b27a
---- /dev/null
-+++ b/arch/arm/mach-mxs/include/mach/ssp.h
-@@ -0,0 +1,118 @@
-+/*
-+ * Freescale MXS SSP
-+ *
-+ * Copyright (C) 2013 Michael Grzeschik <mgr@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ */
-+
-+#ifndef __SSP_H__
-+#define __SSP_H__
-+
-+#ifdef CONFIG_ARCH_IMX23
-+# define HW_SSP_CTRL0		0x000
-+# define HW_SSP_CMD0		0x010
-+# define HW_SSP_CMD1		0x020
-+# define HW_SSP_COMPREF		0x030
-+# define HW_SSP_COMPMASK	0x040
-+# define HW_SSP_TIMING		0x050
-+# define HW_SSP_CTRL1		0x060
-+# define HW_SSP_DATA		0x070
-+# define HW_SSP_SDRESP0		0x080
-+# define HW_SSP_SDRESP1		0x090
-+# define HW_SSP_SDRESP2		0x0A0
-+# define HW_SSP_SDRESP3		0x0B0
-+# define HW_SSP_STATUS		0x0C0
-+# define HW_SSP_DEBUG		0x100
-+# define HW_SSP_VERSION		0x110
-+#endif
-+
-+#ifdef CONFIG_ARCH_IMX28
-+# define HW_SSP_CTRL0		0x000
-+# define HW_SSP_CMD0		0x010
-+# define HW_SSP_CMD1		0x020
-+# define HW_SSP_XFER_COUNT	0x030
-+# define HW_SSP_BLOCK_SIZE	0x040
-+# define HW_SSP_COMPREF		0x050
-+# define HW_SSP_COMPMASK	0x060
-+# define HW_SSP_TIMING		0x070
-+# define HW_SSP_CTRL1		0x080
-+# define HW_SSP_DATA		0x090
-+# define HW_SSP_SDRESP0		0x0A0
-+# define HW_SSP_SDRESP1		0x0B0
-+# define HW_SSP_SDRESP2		0x0C0
-+# define HW_SSP_SDRESP3		0x0D0
-+# define HW_SSP_DDR_CTRL	0x0E0
-+# define HW_SSP_DLL_CTRL	0x0F0
-+# define HW_SSP_STATUS		0x100
-+# define HW_SSP_DLL_STS		0x110
-+# define HW_SSP_DEBUG		0x120
-+# define HW_SSP_VERSION		0x130
-+#endif
-+
-+#define SSP_CTRL0_SFTRST		(1 << 31)
-+#define SSP_CTRL0_CLKGATE		(1 << 30)
-+#define SSP_CTRL0_RUN			(1 << 29)
-+#define SSP_CTRL0_LOCK_CS		(1 << 27)
-+#define SSP_CTRL0_READ			(1 << 25)
-+#define SSP_CTRL0_IGNORE_CRC		(1 << 26)
-+#define SSP_CTRL0_DATA_XFER		(1 << 24)
-+#define SSP_CTRL0_BUS_WIDTH(x)		(((x) & 0x3) << 22)
-+#define SSP_CTRL0_WAIT_FOR_IRQ		(1 << 21)
-+#define SSP_CTRL0_WAIT_FOR_CMD		(1 << 20)
-+#define SSP_CTRL0_LONG_RESP		(1 << 19)
-+#define SSP_CTRL0_GET_RESP		(1 << 17)
-+#define SSP_CTRL0_ENABLE		(1 << 16)
-+
-+#define SSP_CMD0_SLOW_CLK		(1 << 22)
-+#define SSP_CMD0_CONT_CLK		(1 << 21)
-+#define SSP_CMD0_APPEND_8CYC		(1 << 20)
-+#ifdef CONFIG_ARCH_IMX23
-+# define SSP_CTRL0_XFER_COUNT(x)	((x) & 0xffff)
-+# define SSP_CMD0_BLOCK_SIZE(x)		(((x) & 0xf) << 16)
-+# define SSP_CMD0_BLOCK_COUNT(x)	(((x) & 0xff) << 8)
-+#endif
-+#define SSP_CMD0_CMD(x)			((x) & 0xff)
-+
-+#ifdef CONFIG_ARCH_IMX28
-+# define SSP_BLOCK_SIZE(x)		((x) & 0xf)
-+# define SSP_BLOCK_COUNT(x)		(((x) & 0xffffff) << 4)
-+#endif
-+
-+/* bit definition for register HW_SSP_TIMING */
-+#define SSP_TIMING_TIMEOUT_MASK	(0xffff0000)
-+#define SSP_TIMING_TIMEOUT(x)		((x) << 16)
-+#define SSP_TIMING_CLOCK_DIVIDE(x)	(((x) & 0xff) << 8)
-+#define SSP_TIMING_CLOCK_RATE(x)	((x) & 0xff)
-+
-+/* bit definition for register HW_SSP_CTRL1 */
-+#define SSP_CTRL1_POLARITY		(1 << 9)
-+#define SSP_CTRL1_PHASE			(1 << 10)
-+#define SSP_CTRL1_WORD_LENGTH(x)	(((x) & 0xf) << 4)
-+#define SSP_CTRL1_SSP_MODE(x)		((x) & 0xf)
-+
-+/* bit definition for register HW_SSP_STATUS */
-+# define SSP_STATUS_PRESENT		(1 << 31)
-+# define SSP_STATUS_SD_PRESENT		(1 << 29)
-+# define SSP_STATUS_CARD_DETECT		(1 << 28)
-+# define SSP_STATUS_RESP_CRC_ERR	(1 << 16)
-+# define SSP_STATUS_RESP_ERR		(1 << 15)
-+# define SSP_STATUS_RESP_TIMEOUT	(1 << 14)
-+# define SSP_STATUS_DATA_CRC_ERR	(1 << 13)
-+# define SSP_STATUS_TIMEOUT		(1 << 12)
-+# define SSP_STATUS_FIFO_OVRFLW		(1 << 9)
-+# define SSP_STATUS_FIFO_FULL		(1 << 8)
-+# define SSP_STATUS_FIFO_EMPTY		(1 << 5)
-+# define SSP_STATUS_FIFO_UNDRFLW	(1 << 4)
-+# define SSP_STATUS_CMD_BUSY		(1 << 3)
-+# define SSP_STATUS_DATA_BUSY		(1 << 2)
-+# define SSP_STATUS_BUSY		(1 << 0)
-+# define SSP_STATUS_ERROR		(SSP_STATUS_FIFO_OVRFLW | SSP_STATUS_FIFO_UNDRFLW | \
-+	SSP_STATUS_RESP_CRC_ERR | SSP_STATUS_RESP_ERR | \
-+	SSP_STATUS_RESP_TIMEOUT | SSP_STATUS_DATA_CRC_ERR | SSP_STATUS_TIMEOUT)
-+
-+#endif	/* __SSP_H__ */
-diff --git a/drivers/mci/mxs.c b/drivers/mci/mxs.c
-index ed644d1..5bdcd1b 100644
---- a/drivers/mci/mxs.c
-+++ b/drivers/mci/mxs.c
-@@ -40,127 +40,11 @@
- #include <mach/imx-regs.h>
- #include <mach/mci.h>
- #include <mach/clock.h>
-+#include <mach/ssp.h>
+diff --git a/arch/arm/boards/at91sam9260ek/init.c b/arch/arm/boards/at91sam9260ek/init.c
+index 2d52f5a..e0c03ee 100644
+--- a/arch/arm/boards/at91sam9260ek/init.c
++++ b/arch/arm/boards/at91sam9260ek/init.c
+@@ -10,25 +10,15 @@
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+- *
+- *
+  */
  
- #define CLOCKRATE_MIN (1 * 1000 * 1000)
- #define CLOCKRATE_MAX (480 * 1000 * 1000)
+ #include <common.h>
+-#include <net.h>
+ #include <init.h>
+ #include <environment.h>
+-#include <fec.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+-#include <partition.h>
+-#include <fs.h>
+-#include <fcntl.h>
+-#include <io.h>
+-#include <asm/hardware.h>
+ #include <nand.h>
+ #include <sizes.h>
+-#include <linux/mtd/nand.h>
+ #include <mach/board.h>
+ #include <mach/at91sam9_smc.h>
+ #include <gpio.h>
+@@ -83,7 +73,8 @@ static struct sam9_smc_config ek_9260_nand_smc_config = {
+ 	.read_cycle		= 5,
+ 	.write_cycle		= 5,
  
--#define HW_SSP_CTRL0 0x000
--# define SSP_CTRL0_SFTRST (1 << 31)
--# define SSP_CTRL0_CLKGATE (1 << 30)
--# define SSP_CTRL0_RUN (1 << 29)
--# define SSP_CTRL0_LOCK_CS (1 << 27)
--# define SSP_CTRL0_READ (1 << 25)
--# define SSP_CTRL0_IGNORE_CRC (1 << 26)
--# define SSP_CTRL0_DATA_XFER (1 << 24)
--# define SSP_CTRL0_BUS_WIDTH(x) (((x) & 0x3) << 22)
--# define SSP_CTRL0_WAIT_FOR_IRQ (1 << 21)
--# define SSP_CTRL0_LONG_RESP (1 << 19)
--# define SSP_CTRL0_GET_RESP (1 << 17)
--# define SSP_CTRL0_ENABLE (1 << 16)
--#ifdef CONFIG_ARCH_IMX23
--# define SSP_CTRL0_XFER_COUNT(x) ((x) & 0xffff)
--#endif
+-	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE | AT91_SMC_EXNWMODE_DISABLE,
++	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
++				  AT91_SMC_EXNWMODE_DISABLE,
+ 	.tdf_cycles		= 2,
+ };
+ 
+@@ -101,7 +92,8 @@ static struct sam9_smc_config ek_9g20_nand_smc_config = {
+ 	.read_cycle		= 7,
+ 	.write_cycle		= 7,
+ 
+-	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE | AT91_SMC_EXNWMODE_DISABLE,
++	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
++				  AT91_SMC_EXNWMODE_DISABLE,
+ 	.tdf_cycles		= 3,
+ };
+ 
+@@ -153,12 +145,11 @@ static void at91sam9260ek_phy_reset(void)
+ 	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_EXTRST);
+ 
+ 	/* Wait for end hardware reset */
+-	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL));
++	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL))
++		;
+ 
+ 	/* Restore NRST value */
+-	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
+-				     (rstc) |
+-				     AT91_RSTC_URSTEN);
++	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY | (rstc) | AT91_RSTC_URSTEN);
+ }
+ 
+ /*
+@@ -271,7 +262,6 @@ static int at91sam9260ek_devices_init(void)
+ 
+ 	return 0;
+ }
 -
--#define HW_SSP_CMD0 0x010
--# define SSP_CMD0_SLOW_CLK (1 << 22)
--# define SSP_CMD0_CONT_CLK (1 << 21)
--# define SSP_CMD0_APPEND_8CYC (1 << 20)
--#ifdef CONFIG_ARCH_IMX23
--# define SSP_CMD0_BLOCK_SIZE(x) (((x) & 0xf) << 16)
--# define SSP_CMD0_BLOCK_COUNT(x) (((x) & 0xff) << 8)
--#endif
--# define SSP_CMD0_CMD(x) ((x) & 0xff)
+ device_initcall(at91sam9260ek_devices_init);
+ 
+ static int at91sam9260ek_console_init(void)
+@@ -279,5 +269,4 @@ static int at91sam9260ek_console_init(void)
+ 	at91_register_uart(0, 0);
+ 	return 0;
+ }
 -
--#define HW_SSP_CMD1 0x020
--
--#ifdef CONFIG_ARCH_IMX23
--# define HW_SSP_COMPREF 0x030
--# define HW_SSP_COMPMASK 0x040
--# define HW_SSP_TIMING 0x050
--# define HW_SSP_CTRL1 0x060
--# define HW_SSP_DATA 0x070
--#endif
--#ifdef CONFIG_ARCH_IMX28
--# define HW_SSP_XFER_COUNT 0x30
--# define HW_SSP_BLOCK_SIZE 0x40
--#  define SSP_BLOCK_SIZE(x) ((x) & 0xf)
--#  define SSP_BLOCK_COUNT(x) (((x) & 0xffffff) << 4)
--# define HW_SSP_COMPREF 0x050
--# define HW_SSP_COMPMASK 0x060
--# define HW_SSP_TIMING 0x070
--# define HW_SSP_CTRL1 0x080
--# define HW_SSP_DATA 0x090
--#endif
--/* bit definition for register HW_SSP_TIMING */
--# define SSP_TIMING_TIMEOUT_MASK (0xffff0000)
--# define SSP_TIMING_TIMEOUT(x) ((x) << 16)
--# define SSP_TIMING_CLOCK_DIVIDE(x) (((x) & 0xff) << 8)
--# define SSP_TIMING_CLOCK_RATE(x) ((x) & 0xff)
--
--/* bit definition for register HW_SSP_CTRL1 */
--# define SSP_CTRL1_POLARITY (1 << 9)
--# define SSP_CTRL1_WORD_LENGTH(x) (((x) & 0xf) << 4)
--# define SSP_CTRL1_SSP_MODE(x) ((x) & 0xf)
--
--#ifdef CONFIG_ARCH_IMX23
--# define HW_SSP_SDRESP0 0x080
--# define HW_SSP_SDRESP1 0x090
--# define HW_SSP_SDRESP2 0x0A0
--# define HW_SSP_SDRESP3 0x0B0
--#endif
--#ifdef CONFIG_ARCH_IMX28
--# define HW_SSP_SDRESP0 0x0A0
--# define HW_SSP_SDRESP1 0x0B0
--# define HW_SSP_SDRESP2 0x0C0
--# define HW_SSP_SDRESP3 0x0D0
--#endif
--
--#ifdef CONFIG_ARCH_IMX28
--# define HW_SSP_DDR_CTRL 0x0E0
--# define HW_SSP_DLL_CTRL 0x0F0
--#endif
--
--#ifdef CONFIG_ARCH_IMX23
--# define HW_SSP_STATUS 0x0C0
--#endif
--#ifdef CONFIG_ARCH_IMX28
--# define HW_SSP_STATUS 0x100
--#endif
--
--/* bit definition for register HW_SSP_STATUS */
--# define SSP_STATUS_PRESENT (1 << 31)
--# define SSP_STATUS_SD_PRESENT (1 << 29)
--# define SSP_STATUS_CARD_DETECT (1 << 28)
--# define SSP_STATUS_RESP_CRC_ERR (1 << 16)
--# define SSP_STATUS_RESP_ERR (1 << 15)
--# define SSP_STATUS_RESP_TIMEOUT (1 << 14)
--# define SSP_STATUS_DATA_CRC_ERR (1 << 13)
--# define SSP_STATUS_TIMEOUT (1 << 12)
--# define SSP_STATUS_FIFO_OVRFLW (1 << 9)
--# define SSP_STATUS_FIFO_FULL (1 << 8)
--# define SSP_STATUS_FIFO_EMPTY (1 << 5)
--# define SSP_STATUS_FIFO_UNDRFLW (1 << 4)
--# define SSP_STATUS_CMD_BUSY (1 << 3)
--# define SSP_STATUS_DATA_BUSY (1 << 2)
--# define SSP_STATUS_BUSY (1 << 0)
--# define SSP_STATUS_ERROR (SSP_STATUS_FIFO_OVRFLW | SSP_STATUS_FIFO_UNDRFLW | \
--	SSP_STATUS_RESP_CRC_ERR | SSP_STATUS_RESP_ERR | \
--	SSP_STATUS_RESP_TIMEOUT | SSP_STATUS_DATA_CRC_ERR | SSP_STATUS_TIMEOUT)
--
--#ifdef CONFIG_ARCH_IMX28
--# define HW_SSP_DLL_STS 0x110
--#endif
--
--#ifdef CONFIG_ARCH_IMX23
--# define HW_SSP_DEBUG 0x100
--# define HW_SSP_VERSION 0x110
--#endif
--
--#ifdef CONFIG_ARCH_IMX28
--# define HW_SSP_DEBUG 0x120
--# define HW_SSP_VERSION 0x130
--#endif
--
- struct mxs_mci_host {
- 	struct mci_host	host;
- 	void __iomem	*regs;
+ console_initcall(at91sam9260ek_console_init);
 -- 
-1.7.10.4
+1.8.1.1
 
 
 _______________________________________________
