@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3PMA-00089h-Bw
+ id 1U3PMA-00089o-KO
  for barebox@lists.infradead.org; Thu, 07 Feb 2013 11:09:31 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  7 Feb 2013 12:09:26 +0100
-Message-Id: <1360235367-30530-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  7 Feb 2013 12:09:27 +0100
+Message-Id: <1360235367-30530-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1360235367-30530-1-git-send-email-s.hauer@pengutronix.de>
+References: <1360235367-30530-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,79 +21,187 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] net phy: Add support for finding a mdio bus by its name
+Subject: [PATCH 2/2] miitool: Add support for examing mdio bus
 To: barebox@lists.infradead.org
+
+Current miitool usage is limited to a single phy on a mdio bus.
+
+For debugging purposes it is useful to be able to examine a mdio bus
+instead of a single phy only.
+
+This adds support for this to the miitool command.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/phy/mdio_bus.c |   19 +++++++++++++++++++
- include/linux/phy.h        |    3 +++
- 2 files changed, 22 insertions(+)
+ commands/miitool.c |   94 +++++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 75 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index d1d802b..3c4be1c 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -25,6 +25,8 @@
- #include <linux/phy.h>
- #include <linux/err.h>
+diff --git a/commands/miitool.c b/commands/miitool.c
+index 3a9ac45..b9e2333 100644
+--- a/commands/miitool.c
++++ b/commands/miitool.c
+@@ -37,23 +37,36 @@
+ #include <linux/stat.h>
+ #include <xfuncs.h>
+ #include <linux/mii.h>
++#include <linux/phy.h>
  
-+static LIST_HEAD(mii_bus_list);
+-static u16 mdio_read(int fd, int offset)
++static int phy_fd;
 +
- /**
-  * mdiobus_register - bring up all the PHYs on a given bus and attach them to bus
-  * @bus: target mii_bus
-@@ -57,6 +59,8 @@ int mdiobus_register(struct mii_bus *bus)
- 	if (bus->reset)
- 		bus->reset(bus);
++static u16 mdio_file_read(int offset)
+ {
+ 	int ret;
+ 	u16 buf;
  
-+	list_add_tail(&bus->list, &mii_bus_list);
-+
- 	pr_info("%s: probed\n", dev_name(&bus->dev));
- 	return 0;
+-	ret = lseek(fd, offset << 1, SEEK_SET);
++	ret = lseek(phy_fd, offset << 1, SEEK_SET);
+ 	if (ret < 0)
+ 		return 0;
+ 
+-	ret = read(fd, &buf, sizeof(u16));
++	ret = read(phy_fd, &buf, sizeof(u16));
+ 	if (ret < 0)
+ 		return 0;
+ 
+ 	return buf;
  }
-@@ -71,9 +75,24 @@ void mdiobus_unregister(struct mii_bus *bus)
- 			unregister_device(&bus->phy_map[i]->dev);
- 		bus->phy_map[i] = NULL;
- 	}
-+
-+	list_del(&bus->list);
- }
- EXPORT_SYMBOL(mdiobus_unregister);
  
-+struct mii_bus *mdiobus_find(const char *name)
++static struct mii_bus *mii_bus;
++static int mii_address;
++
++static u16 mdio_bus_read(int offset)
 +{
-+	struct mii_bus *bus;
++	return mdiobus_read(mii_bus, mii_address, offset);
++}
 +
-+	list_for_each_entry(bus, &mii_bus_list, list) {
-+		if (!strcmp(dev_name(&bus->dev), name))
-+			return bus;
++static u16 (*mdio_read)(int offset);
++
+ /* Table of known MII's */
+ static const struct {
+ 	u_short	id1, id2;
+@@ -101,7 +114,7 @@ static char *media_list(int mask, int best)
+ 	return buf;
+ }
+ 
+-static int show_basic_mii(int fd, int verbose)
++static int show_basic_mii(int verbose)
+ {
+ 	char buf[100];
+ 	int i, mii_val[32];
+@@ -109,9 +122,9 @@ static int show_basic_mii(int fd, int verbose)
+ 
+ 	/* Some bits in the BMSR are latched, but we can't rely on being
+ 	   the only reader, so only the current values are meaningful */
+-	mdio_read(fd, MII_BMSR);
++	mdio_read(MII_BMSR);
+ 	for (i = 0; i < ((verbose > 1) ? 32 : 8); i++)
+-		mii_val[i] = mdio_read(fd, i);
++		mii_val[i] = mdio_read(i);
+ 
+ 	if (mii_val[MII_BMCR] == 0xffff) {
+ 		fprintf(stderr, "  No MII transceiver present!.\n");
+@@ -213,18 +226,25 @@ static int show_basic_mii(int fd, int verbose)
+ 
+ static int do_miitool(int argc, char *argv[])
+ {
+-	char *filename;
++	char *filename = NULL;
++	char *devname = NULL;
+ 	int opt;
+ 	int argc_min;
+-	int fd;
+ 	int verbose;
++	int address = -1;
+ 
+ 	verbose = 0;
+-	while ((opt = getopt(argc, argv, "v")) > 0) {
++	while ((opt = getopt(argc, argv, "vd:a:")) > 0) {
+ 		switch (opt) {
+ 		case 'v':
+ 			verbose++;
+ 			break;
++		case 'd':
++			devname = optarg;
++			break;
++		case 'a':
++			address = simple_strtoul(optarg, NULL, 0);
++			break;
+ 		default:
+ 			return COMMAND_ERROR_USAGE;
+ 		}
+@@ -232,27 +252,63 @@ static int do_miitool(int argc, char *argv[])
+ 
+ 	argc_min = optind + 1;
+ 
+-	if (argc < argc_min)
++	if (argc >= argc_min)
++		filename = argv[optind];
++
++	if (filename && devname) {
++		printf("both filename and devicename given\n");
+ 		return COMMAND_ERROR_USAGE;
++	}
+ 
+-	filename = argv[optind];
++	if (!filename && !devname) {
++		printf("no filename or devicename given\n");
++		return COMMAND_ERROR_USAGE;
 +	}
 +
-+	return NULL;
-+}
-+EXPORT_SYMBOL(mdiobus_find);
++	if (filename) {
++		phy_fd = open(filename, O_RDONLY);
++		if (phy_fd < 0) {
++			printf("unable to read %s\n", filename);
++			return COMMAND_ERROR;
++		}
 +
- struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr)
- {
- 	struct phy_device *phydev;
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 6c9cac9..9ab6e06 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -84,11 +84,14 @@ struct mii_bus {
- 
- 	/* PHY addresses to be ignored when probing */
- 	u32 phy_mask;
++		mdio_read = mdio_file_read;
 +
-+	struct list_head list;
- };
- #define to_mii_bus(d) container_of(d, struct mii_bus, dev)
++		show_basic_mii(verbose);
++	} else {
++		mii_bus = mdiobus_find(devname);
++
++		if (!mii_bus)
++			return -ENODEV;
  
- int mdiobus_register(struct mii_bus *bus);
- void mdiobus_unregister(struct mii_bus *bus);
-+struct mii_bus *mdiobus_find(const char *name);
- struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr);
+-	fd = open(filename, O_RDONLY);
+-	if (fd < 0) {
+-		printf("unable to read %s\n", filename);
+-		return COMMAND_ERROR;
++		mdio_read = mdio_bus_read;
++		if (address < 0) {
++			for (mii_address = 0; mii_address < PHY_MAX_ADDR; mii_address++) {
++				printf("`---- phyadr %d:\n",
++						mii_address);
++				show_basic_mii(verbose);
++			}
++		} else {
++			mii_address = address;
++			show_basic_mii(verbose);
++		}
+ 	}
+ 
+-	show_basic_mii(fd, verbose);
+ 
+-	close(fd);
++	if (filename)
++		close(phy_fd);
+ 
+ 	return COMMAND_SUCCESS;
+ }
+ 
+ BAREBOX_CMD_HELP_START(miitool)
+-BAREBOX_CMD_HELP_USAGE("miitool [[[-v] -v] -v] <phy>\n")
+-BAREBOX_CMD_HELP_SHORT("view status for MII <phy>.\n")
++BAREBOX_CMD_HELP_USAGE("miitool [OPTIONS] [phy]\n")
++BAREBOX_CMD_HELP_SHORT("view status mii phy device status\n")
++BAREBOX_CMD_HELP_SHORT("Use [phy] to view a phy connected to an ethernet device\n")
++BAREBOX_CMD_HELP_SHORT("or -d <devname> [-a <phyadr>] to examine a mii bus\n")
++BAREBOX_CMD_HELP_OPT("-v", "\tverbose, may be given multiple times\n")
++BAREBOX_CMD_HELP_OPT("-d <devname>", "work on miibus <devname>\n")
++BAREBOX_CMD_HELP_OPT("-a <phyadr>", "Use phy address <phyadr>, used together with -d\n")
+ BAREBOX_CMD_HELP_END
  
  /**
 -- 
