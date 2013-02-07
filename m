@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ee0-f46.google.com ([74.125.83.46])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3YxH-00069E-29
- for barebox@lists.infradead.org; Thu, 07 Feb 2013 21:24:27 +0000
-Date: Thu, 7 Feb 2013 22:24:25 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130207212425.GB1906@pengutronix.de>
-References: <1360248231-31561-1-git-send-email-fabio.porcedda@gmail.com>
+ id 1U3Yzo-0006E9-EX
+ for barebox@lists.infradead.org; Thu, 07 Feb 2013 21:27:05 +0000
+Received: by mail-ee0-f46.google.com with SMTP id e49so1711726eek.19
+ for <barebox@lists.infradead.org>; Thu, 07 Feb 2013 13:27:03 -0800 (PST)
+Date: Thu, 7 Feb 2013 22:27:49 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20130207212743.GD2572@x61s.8.8.8.8>
+References: <1360269380-28155-1-git-send-email-alex.aring@gmail.com>
+ <1360269380-28155-5-git-send-email-alex.aring@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1360248231-31561-1-git-send-email-fabio.porcedda@gmail.com>
+In-Reply-To: <1360269380-28155-5-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,49 +25,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/2] at91sam9260/9g20ek: some cleanup
-To: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/4] net: fix cpsw depends on ARCH_OMAP
+To: barebox@lists.infradead.org
 
-On Thu, Feb 07, 2013 at 03:43:49PM +0100, Fabio Porcedda wrote:
-> I used some cleanup already done for the evk-pro3 board.
-> 
-> Tested on atsam9260ek.
-> 
-> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> 
-> v2:
->  - removed some parts in patch 1/3 as asked by Jean-Christophe
->  - removed patch 2/3 as asked by Jean-Christophe
+Hi,
 
-Applied, thanks
+On Thu, Feb 07, 2013 at 09:36:20PM +0100, Alexander Aring wrote:
+> drivers/net/cpsw.c:34:23: fatal error: mach/cpsw.h: No such file or directory
 
-Sascha
+grml, I should resend them with an empty commit msg.
+Sorry.
 
-> 
-> 
-> Fabio Porcedda (2):
->   at91sam9260/9g20ek: cleanup coding style
->   at91sam9260/9g20ek: enable clock via clock framework
-> 
->  arch/arm/boards/at91sam9260ek/init.c | 31 +++++++++++--------------------
->  1 file changed, 11 insertions(+), 20 deletions(-)
-> 
-> -- 
-> 1.8.1.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards
+Alex
 
 _______________________________________________
 barebox mailing list
