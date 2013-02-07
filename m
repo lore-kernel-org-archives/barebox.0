@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo5.mail-out.ovh.net ([87.98.173.103]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U3Twy-0008KP-Hp
- for barebox@lists.infradead.org; Thu, 07 Feb 2013 16:03:50 +0000
-Received: from mail419.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 484BA10200F2
- for <barebox@lists.infradead.org>; Thu,  7 Feb 2013 17:14:06 +0100 (CET)
-Date: Thu, 7 Feb 2013 17:02:34 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130207160234.GM19322@game.jcrosoft.org>
-References: <1360248231-31561-1-git-send-email-fabio.porcedda@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U3VVn-0008Ip-37
+ for barebox@lists.infradead.org; Thu, 07 Feb 2013 17:43:52 +0000
+Date: Thu, 7 Feb 2013 18:43:48 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130207174348.GY1906@pengutronix.de>
+References: <1360235367-30530-1-git-send-email-s.hauer@pengutronix.de>
+ <20130207120206.GJ19322@game.jcrosoft.org>
+ <20130207122051.GV1906@pengutronix.de>
+ <20130207122613.GL19322@game.jcrosoft.org>
+ <20130207124646.GW1906@pengutronix.de>
+ <20130207160535.GN19322@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1360248231-31561-1-git-send-email-fabio.porcedda@gmail.com>
+In-Reply-To: <20130207160535.GN19322@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,39 +27,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/2] at91sam9260/9g20ek: some cleanup
-To: Fabio Porcedda <fabio.porcedda@gmail.com>
+Subject: Re: [PATCH 1/2] net phy: Add support for finding a mdio bus by its
+ name
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 15:43 Thu 07 Feb     , Fabio Porcedda wrote:
-> I used some cleanup already done for the evk-pro3 board.
-> 
-> Tested on atsam9260ek.
-> 
-> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> 
-> v2:
->  - removed some parts in patch 1/3 as asked by Jean-Christophe
->  - removed patch 2/3 as asked by Jean-Christophe
+On Thu, Feb 07, 2013 at 05:05:35PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 13:46 Thu 07 Feb     , Sascha Hauer wrote:
+> > On Thu, Feb 07, 2013 at 01:26:13PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > On 13:20 Thu 07 Feb     , Sascha Hauer wrote:
+> > > > On Thu, Feb 07, 2013 at 01:02:06PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > > On 12:09 Thu 07 Feb     , Sascha Hauer wrote:
+> > > > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > > > > ---
+> > > > > >  drivers/net/phy/mdio_bus.c |   19 +++++++++++++++++++
+> > > > > >  include/linux/phy.h        |    3 +++
+> > > > > >  2 files changed, 22 insertions(+)
+> > > > > > 
+> > > > > > diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+> > > > > > index d1d802b..3c4be1c 100644
+> > > > > > --- a/drivers/net/phy/mdio_bus.c
+> > > > > > +++ b/drivers/net/phy/mdio_bus.c
+> > > > > > @@ -25,6 +25,8 @@
+> > > > > >  #include <linux/phy.h>
+> > > > > >  #include <linux/err.h>
+> > > > > >  
+> > > > > > +static LIST_HEAD(mii_bus_list);
+> > > > > > +
+> > > > > >  /**
+> > > > > >   * mdiobus_register - bring up all the PHYs on a given bus and attach them to bus
+> > > > > >   * @bus: target mii_bus
+> > > > > > @@ -57,6 +59,8 @@ int mdiobus_register(struct mii_bus *bus)
+> > > > > >  	if (bus->reset)
+> > > > > >  		bus->reset(bus);
+> > > > > >  
+> > > > > > +	list_add_tail(&bus->list, &mii_bus_list);
+> > > > > > +
+> > > > > >  	pr_info("%s: probed\n", dev_name(&bus->dev));
+> > > > > >  	return 0;
+> > > > > >  }
+> > > > > > @@ -71,9 +75,24 @@ void mdiobus_unregister(struct mii_bus *bus)
+> > > > > >  			unregister_device(&bus->phy_map[i]->dev);
+> > > > > >  		bus->phy_map[i] = NULL;
+> > > > > >  	}
+> > > > > > +
+> > > > > > +	list_del(&bus->list);
+> > > > > >  }
+> > > > > >  EXPORT_SYMBOL(mdiobus_unregister);
+> > > > > >  
+> > > > > > +struct mii_bus *mdiobus_find(const char *name)
+> > > > > > +{
+> > > > > > +	struct mii_bus *bus;
+> > > > > > +
+> > > > > > +	list_for_each_entry(bus, &mii_bus_list, list) {
+> > > > > 	no use bus_for_each
+> > > > 
+> > > > That was my first try until I realized that not the mdio buses are
+> > > > registered on the mdio_bus_type, but instead the phy devices.
+> > > so add bus_type the list is already in the device_d so we jsut hav to populate
+> > > it
+> > 
+> > You want to put both the phys and the buses on mdio_bus_type? Or you
+> > want to introduce a mdio_bus_bus_type?
+> different
 
-on all
+different what?
 
-Acked-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> 
+> I want to be able to use bus_for_each on each of them seperatly
 
-Best Regards,
-J.
-> 
-> 
-> Fabio Porcedda (2):
->   at91sam9260/9g20ek: cleanup coding style
->   at91sam9260/9g20ek: enable clock via clock framework
-> 
->  arch/arm/boards/at91sam9260ek/init.c | 31 +++++++++++--------------------
->  1 file changed, 11 insertions(+), 20 deletions(-)
-> 
-> -- 
-> 1.8.1.1
-> 
+I have no idea what you are talking about.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
