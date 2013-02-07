@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3RSu-0007ph-71
- for barebox@lists.infradead.org; Thu, 07 Feb 2013 13:24:39 +0000
+ id 1U3RSu-0007pg-6y
+ for barebox@lists.infradead.org; Thu, 07 Feb 2013 13:24:38 +0000
 Received: from alto.hi.pengutronix.de ([2001:6f8:1178:2:219:99ff:fe56:9d4])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <mgr@pengutronix.de>) id 1U3RSs-0001oY-IK
+ (envelope-from <mgr@pengutronix.de>) id 1U3RSs-0001oV-Dj
  for barebox@lists.infradead.org; Thu, 07 Feb 2013 14:24:34 +0100
 Received: from mgr by alto.hi.pengutronix.de with local (Exim 4.75)
- (envelope-from <mgr@pengutronix.de>) id 1U3RSs-0007wi-DC
+ (envelope-from <mgr@pengutronix.de>) id 1U3RSs-0007wf-93
  for barebox@lists.infradead.org; Thu, 07 Feb 2013 14:24:34 +0100
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Thu,  7 Feb 2013 14:24:25 +0100
-Message-Id: <1360243466-30498-3-git-send-email-m.grzeschik@pengutronix.de>
+Date: Thu,  7 Feb 2013 14:24:24 +0100
+Message-Id: <1360243466-30498-2-git-send-email-m.grzeschik@pengutronix.de>
 In-Reply-To: <1360243466-30498-1-git-send-email-m.grzeschik@pengutronix.de>
 References: <1360243466-30498-1-git-send-email-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,92 +28,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 2/3] SPI: Add i.MX 23/28 SPI driver support
+Subject: [PATCH v3 1/3] ARM mxs: ssp move to common register layout
 To: barebox@lists.infradead.org
+
+This patch moves the register defines and bit definitions
+into one include file. As the defines are common for ssp
+and mci devices they can be shared.
 
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
-changes since v2:
- - removed unnessecary brackets
- - moved check for buffers are correct in spi_transfer
- - removed mxs_spi_cs_to_reg
-
 changes since v1:
- - renamed patch to more clear subject
- - whitespace fixes
- - catched more error returns, as EIO
- - explicit affected archs as kconfig dependency
- - used dev_{dbg,info,err} instead of printf
- - removed unneded xzalloc failure catch
- - returning value from driver_register on spi_init
+ - added more information in commit header
+ - moved register definitions to mach/ssp.h
 
- arch/arm/mach-mxs/include/mach/ssp.h |    2 +
- drivers/spi/Kconfig                  |    5 +
- drivers/spi/Makefile                 |    1 +
- drivers/spi/mxs_spi.c                |  289 ++++++++++++++++++++++++++++++++++
- 4 files changed, 297 insertions(+)
- create mode 100644 drivers/spi/mxs_spi.c
+ arch/arm/mach-mxs/include/mach/ssp.h |  118 ++++++++++++++++++++++++++++++++++
+ drivers/mci/mxs.c                    |  118 +---------------------------------
+ 2 files changed, 119 insertions(+), 117 deletions(-)
+ create mode 100644 arch/arm/mach-mxs/include/mach/ssp.h
 
 diff --git a/arch/arm/mach-mxs/include/mach/ssp.h b/arch/arm/mach-mxs/include/mach/ssp.h
-index aa2b27a..5eee5c0 100644
---- a/arch/arm/mach-mxs/include/mach/ssp.h
-+++ b/arch/arm/mach-mxs/include/mach/ssp.h
-@@ -64,6 +64,7 @@
- #define SSP_CTRL0_BUS_WIDTH(x)		(((x) & 0x3) << 22)
- #define SSP_CTRL0_WAIT_FOR_IRQ		(1 << 21)
- #define SSP_CTRL0_WAIT_FOR_CMD		(1 << 20)
-+#define SSP_CTRL0_SSP_ASSERT_OUT(x)	(((x) & 0x3) << 20)
- #define SSP_CTRL0_LONG_RESP		(1 << 19)
- #define SSP_CTRL0_GET_RESP		(1 << 17)
- #define SSP_CTRL0_ENABLE		(1 << 16)
-@@ -92,6 +93,7 @@
- /* bit definition for register HW_SSP_CTRL1 */
- #define SSP_CTRL1_POLARITY		(1 << 9)
- #define SSP_CTRL1_PHASE			(1 << 10)
-+#define SSP_CTRL1_DMA_ENABLE		(1 << 13)
- #define SSP_CTRL1_WORD_LENGTH(x)	(((x) & 0xf) << 4)
- #define SSP_CTRL1_SSP_MODE(x)		((x) & 0xf)
- 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 10b8fea..f14e28f 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -33,6 +33,11 @@ config DRIVER_SPI_IMX_2_3
- 	depends on ARCH_IMX51 || ARCH_IMX53 || ARCH_IMX6
- 	default y
- 
-+config DRIVER_SPI_MXS
-+	bool "i.MX (23,28) SPI Master driver"
-+	depends on ARCH_IMX23 || ARCH_IMX28
-+	depends on SPI
-+
- config DRIVER_SPI_OMAP3
- 	bool "OMAP3 McSPI Master driver"
- 	depends on ARCH_OMAP3
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index b53061e..642b7ec 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -1,5 +1,6 @@
- obj-$(CONFIG_SPI) += spi.o
- obj-$(CONFIG_DRIVER_SPI_IMX) += imx_spi.o
-+obj-$(CONFIG_DRIVER_SPI_MXS) += mxs_spi.o
- obj-$(CONFIG_DRIVER_SPI_ALTERA) += altera_spi.o
- obj-$(CONFIG_DRIVER_SPI_ATMEL) += atmel_spi.o
- obj-$(CONFIG_DRIVER_SPI_OMAP3) += omap3_spi.o
-diff --git a/drivers/spi/mxs_spi.c b/drivers/spi/mxs_spi.c
 new file mode 100644
-index 0000000..89b4d19
+index 0000000..aa2b27a
 --- /dev/null
-+++ b/drivers/spi/mxs_spi.c
-@@ -0,0 +1,289 @@
++++ b/arch/arm/mach-mxs/include/mach/ssp.h
+@@ -0,0 +1,118 @@
 +/*
-+ * Freescale i.MX28 SPI driver
++ * Freescale MXS SSP
 + *
 + * Copyright (C) 2013 Michael Grzeschik <mgr@pengutronix.de>
-+ *
-+ * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
-+ * on behalf of DENX Software Engineering GmbH
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -122,280 +64,245 @@ index 0000000..89b4d19
 + *
 + */
 +
-+#include <common.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include <spi/spi.h>
-+#include <clock.h>
-+#include <errno.h>
-+#include <io.h>
-+#include <linux/clk.h>
-+#include <asm/mmu.h>
-+#include <mach/generic.h>
-+#include <mach/imx-regs.h>
-+#include <mach/mxs.h>
-+#include <mach/clock.h>
++#ifndef __SSP_H__
++#define __SSP_H__
++
++#ifdef CONFIG_ARCH_IMX23
++# define HW_SSP_CTRL0		0x000
++# define HW_SSP_CMD0		0x010
++# define HW_SSP_CMD1		0x020
++# define HW_SSP_COMPREF		0x030
++# define HW_SSP_COMPMASK	0x040
++# define HW_SSP_TIMING		0x050
++# define HW_SSP_CTRL1		0x060
++# define HW_SSP_DATA		0x070
++# define HW_SSP_SDRESP0		0x080
++# define HW_SSP_SDRESP1		0x090
++# define HW_SSP_SDRESP2		0x0A0
++# define HW_SSP_SDRESP3		0x0B0
++# define HW_SSP_STATUS		0x0C0
++# define HW_SSP_DEBUG		0x100
++# define HW_SSP_VERSION		0x110
++#endif
++
++#ifdef CONFIG_ARCH_IMX28
++# define HW_SSP_CTRL0		0x000
++# define HW_SSP_CMD0		0x010
++# define HW_SSP_CMD1		0x020
++# define HW_SSP_XFER_COUNT	0x030
++# define HW_SSP_BLOCK_SIZE	0x040
++# define HW_SSP_COMPREF		0x050
++# define HW_SSP_COMPMASK	0x060
++# define HW_SSP_TIMING		0x070
++# define HW_SSP_CTRL1		0x080
++# define HW_SSP_DATA		0x090
++# define HW_SSP_SDRESP0		0x0A0
++# define HW_SSP_SDRESP1		0x0B0
++# define HW_SSP_SDRESP2		0x0C0
++# define HW_SSP_SDRESP3		0x0D0
++# define HW_SSP_DDR_CTRL	0x0E0
++# define HW_SSP_DLL_CTRL	0x0F0
++# define HW_SSP_STATUS		0x100
++# define HW_SSP_DLL_STS		0x110
++# define HW_SSP_DEBUG		0x120
++# define HW_SSP_VERSION		0x130
++#endif
++
++#define SSP_CTRL0_SFTRST		(1 << 31)
++#define SSP_CTRL0_CLKGATE		(1 << 30)
++#define SSP_CTRL0_RUN			(1 << 29)
++#define SSP_CTRL0_LOCK_CS		(1 << 27)
++#define SSP_CTRL0_READ			(1 << 25)
++#define SSP_CTRL0_IGNORE_CRC		(1 << 26)
++#define SSP_CTRL0_DATA_XFER		(1 << 24)
++#define SSP_CTRL0_BUS_WIDTH(x)		(((x) & 0x3) << 22)
++#define SSP_CTRL0_WAIT_FOR_IRQ		(1 << 21)
++#define SSP_CTRL0_WAIT_FOR_CMD		(1 << 20)
++#define SSP_CTRL0_LONG_RESP		(1 << 19)
++#define SSP_CTRL0_GET_RESP		(1 << 17)
++#define SSP_CTRL0_ENABLE		(1 << 16)
++
++#define SSP_CMD0_SLOW_CLK		(1 << 22)
++#define SSP_CMD0_CONT_CLK		(1 << 21)
++#define SSP_CMD0_APPEND_8CYC		(1 << 20)
++#ifdef CONFIG_ARCH_IMX23
++# define SSP_CTRL0_XFER_COUNT(x)	((x) & 0xffff)
++# define SSP_CMD0_BLOCK_SIZE(x)		(((x) & 0xf) << 16)
++# define SSP_CMD0_BLOCK_COUNT(x)	(((x) & 0xff) << 8)
++#endif
++#define SSP_CMD0_CMD(x)			((x) & 0xff)
++
++#ifdef CONFIG_ARCH_IMX28
++# define SSP_BLOCK_SIZE(x)		((x) & 0xf)
++# define SSP_BLOCK_COUNT(x)		(((x) & 0xffffff) << 4)
++#endif
++
++/* bit definition for register HW_SSP_TIMING */
++#define SSP_TIMING_TIMEOUT_MASK	(0xffff0000)
++#define SSP_TIMING_TIMEOUT(x)		((x) << 16)
++#define SSP_TIMING_CLOCK_DIVIDE(x)	(((x) & 0xff) << 8)
++#define SSP_TIMING_CLOCK_RATE(x)	((x) & 0xff)
++
++/* bit definition for register HW_SSP_CTRL1 */
++#define SSP_CTRL1_POLARITY		(1 << 9)
++#define SSP_CTRL1_PHASE			(1 << 10)
++#define SSP_CTRL1_WORD_LENGTH(x)	(((x) & 0xf) << 4)
++#define SSP_CTRL1_SSP_MODE(x)		((x) & 0xf)
++
++/* bit definition for register HW_SSP_STATUS */
++# define SSP_STATUS_PRESENT		(1 << 31)
++# define SSP_STATUS_SD_PRESENT		(1 << 29)
++# define SSP_STATUS_CARD_DETECT		(1 << 28)
++# define SSP_STATUS_RESP_CRC_ERR	(1 << 16)
++# define SSP_STATUS_RESP_ERR		(1 << 15)
++# define SSP_STATUS_RESP_TIMEOUT	(1 << 14)
++# define SSP_STATUS_DATA_CRC_ERR	(1 << 13)
++# define SSP_STATUS_TIMEOUT		(1 << 12)
++# define SSP_STATUS_FIFO_OVRFLW		(1 << 9)
++# define SSP_STATUS_FIFO_FULL		(1 << 8)
++# define SSP_STATUS_FIFO_EMPTY		(1 << 5)
++# define SSP_STATUS_FIFO_UNDRFLW	(1 << 4)
++# define SSP_STATUS_CMD_BUSY		(1 << 3)
++# define SSP_STATUS_DATA_BUSY		(1 << 2)
++# define SSP_STATUS_BUSY		(1 << 0)
++# define SSP_STATUS_ERROR		(SSP_STATUS_FIFO_OVRFLW | SSP_STATUS_FIFO_UNDRFLW | \
++	SSP_STATUS_RESP_CRC_ERR | SSP_STATUS_RESP_ERR | \
++	SSP_STATUS_RESP_TIMEOUT | SSP_STATUS_DATA_CRC_ERR | SSP_STATUS_TIMEOUT)
++
++#endif	/* __SSP_H__ */
+diff --git a/drivers/mci/mxs.c b/drivers/mci/mxs.c
+index ed644d1..5bdcd1b 100644
+--- a/drivers/mci/mxs.c
++++ b/drivers/mci/mxs.c
+@@ -40,127 +40,11 @@
+ #include <mach/imx-regs.h>
+ #include <mach/mci.h>
+ #include <mach/clock.h>
 +#include <mach/ssp.h>
-+
-+#define	MXS_SPI_MAX_TIMEOUT		(10 * MSECOND)
-+
-+#define	SPI_XFER_BEGIN	0x01 /* Assert CS before transfer */
-+#define	SPI_XFER_END	0x02 /* Deassert CS after transfer */
-+
-+struct mxs_spi {
-+	struct spi_master	master;
-+	uint32_t		max_khz;
-+	uint32_t		mode;
-+	struct clk		*clk;
-+	void __iomem		*regs;
-+};
-+
-+static inline struct mxs_spi *to_mxs(struct spi_master *master)
-+{
-+	return container_of(master, struct mxs_spi, master);
-+}
-+
-+/*
-+ * Set SSP/MMC bus frequency, in kHz
-+ */
-+static void imx_set_ssp_busclock(struct spi_master *master, uint32_t freq)
-+{
-+	struct mxs_spi *mxs = to_mxs(master);
-+	const uint32_t sspclk = imx_get_sspclk(master->bus_num);
-+	uint32_t val;
-+	uint32_t divide, rate, tgtclk;
-+
-+	/*
-+	 * SSP bit rate = SSPCLK / (CLOCK_DIVIDE * (1 + CLOCK_RATE)),
-+	 * CLOCK_DIVIDE has to be an even value from 2 to 254, and
-+	 * CLOCK_RATE could be any integer from 0 to 255.
-+	 */
-+	for (divide = 2; divide < 254; divide += 2) {
-+		rate = sspclk / freq / divide;
-+		if (rate <= 256)
-+			break;
-+	}
-+
-+	tgtclk = sspclk / divide / rate;
-+	while (tgtclk > freq) {
-+		rate++;
-+		tgtclk = sspclk / divide / rate;
-+	}
-+	if (rate > 256)
-+		rate = 256;
-+
-+	/* Always set timeout the maximum */
-+	val = SSP_TIMING_TIMEOUT_MASK |
-+		SSP_TIMING_CLOCK_DIVIDE(divide) |
-+		SSP_TIMING_CLOCK_RATE(rate - 1);
-+	writel(val, mxs->regs + HW_SSP_TIMING);
-+
-+	dev_dbg(master->dev, "SPI%d: Set freq rate to %d KHz (requested %d KHz)\n",
-+		master->bus_num, tgtclk, freq);
-+}
-+
-+static int mxs_spi_setup(struct spi_device *spi)
-+{
-+	struct spi_master *master = spi->master;
-+	struct mxs_spi *mxs = to_mxs(master);
-+	uint32_t val = 0;
-+
-+	/* MXS SPI: 4 ports and 3 chip selects maximum */
-+	if (master->bus_num > 3 || spi->chip_select > 2) {
-+		dev_err(master->dev, "mxs_spi: invalid bus %d / chip select %d\n",
-+			 master->bus_num, spi->chip_select);
-+		return -EINVAL;
-+	}
-+
-+	mxs_reset_block(mxs->regs + HW_SSP_CTRL0, 0);
-+
-+	val |= SSP_CTRL0_SSP_ASSERT_OUT(spi->chip_select);
-+	val |= SSP_CTRL0_BUS_WIDTH(0);
-+	writel(val, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
-+
-+	val = SSP_CTRL1_SSP_MODE(0) | SSP_CTRL1_WORD_LENGTH(7);
-+	val |= (mxs->mode & SPI_CPOL) ? SSP_CTRL1_POLARITY : 0;
-+	val |= (mxs->mode & SPI_CPHA) ? SSP_CTRL1_PHASE : 0;
-+	writel(val, mxs->regs + HW_SSP_CTRL1);
-+
-+	writel(0x0, mxs->regs + HW_SSP_CMD0);
-+	writel(0x0, mxs->regs + HW_SSP_CMD1);
-+
-+	imx_set_ssp_busclock(master, spi->max_speed_hz);
-+
-+	return 0;
-+}
-+
-+static void mxs_spi_start_xfer(struct mxs_spi *mxs)
-+{
-+	writel(SSP_CTRL0_LOCK_CS, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
-+	writel(SSP_CTRL0_IGNORE_CRC, mxs->regs + HW_SSP_CTRL0 + BIT_CLR);
-+}
-+
-+static void mxs_spi_end_xfer(struct mxs_spi *mxs)
-+{
-+	writel(SSP_CTRL0_LOCK_CS, mxs->regs + HW_SSP_CTRL0 + BIT_CLR);
-+	writel(SSP_CTRL0_IGNORE_CRC, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
-+}
-+
-+static void mxs_spi_set_cs(struct spi_device *spi)
-+{
-+	struct mxs_spi *mxs = to_mxs(spi->master);
-+	const uint32_t mask = SSP_CTRL0_WAIT_FOR_CMD | SSP_CTRL0_WAIT_FOR_IRQ;
-+	uint32_t select = SSP_CTRL0_SSP_ASSERT_OUT(spi->chip_select);
-+
-+	writel(mask, mxs->regs + HW_SSP_CTRL0 + BIT_CLR);
-+	writel(select, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
-+}
-+
-+static int mxs_spi_xfer_pio(struct spi_device *spi,
-+			char *data, int length, int write, unsigned long flags)
-+{
-+	struct mxs_spi *mxs = to_mxs(spi->master);
-+	struct spi_master *master = spi->master;
-+
-+	if (flags & SPI_XFER_BEGIN)
-+		mxs_spi_start_xfer(mxs);
-+
-+	mxs_spi_set_cs(spi);
-+
-+	while (length--) {
-+		if ((flags & SPI_XFER_END) && !length)
-+			mxs_spi_end_xfer(mxs);
-+
-+		/* We transfer 1 byte */
-+		writel(1, mxs->regs + HW_SSP_XFER_COUNT);
-+
-+		if (write)
-+			writel(SSP_CTRL0_READ, mxs->regs + HW_SSP_CTRL0 + BIT_CLR);
-+		else
-+			writel(SSP_CTRL0_READ, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
-+
-+		writel(SSP_CTRL0_RUN, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
-+
-+		if (wait_on_timeout(MXS_SPI_MAX_TIMEOUT,
-+				(readl(mxs->regs + HW_SSP_CTRL0) & SSP_CTRL0_RUN) == SSP_CTRL0_RUN)) {
-+			dev_err(master->dev, "MXS SPI: Timeout waiting for start\n");
-+			return -ETIMEDOUT;
-+		}
-+
-+		if (write)
-+			writel(*data++, mxs->regs + HW_SSP_DATA);
-+
-+		writel(SSP_CTRL0_DATA_XFER, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
-+
-+		if (!write) {
-+			if (wait_on_timeout(MXS_SPI_MAX_TIMEOUT,
-+				!(readl(mxs->regs + HW_SSP_STATUS) & SSP_STATUS_FIFO_EMPTY))) {
-+				dev_err(master->dev, "MXS SPI: Timeout waiting for data\n");
-+				return -ETIMEDOUT;
-+			}
-+
-+			*data++ = readl(mxs->regs + HW_SSP_DATA) & 0xff;
-+		}
-+
-+		if (wait_on_timeout(MXS_SPI_MAX_TIMEOUT,
-+			!(readl(mxs->regs + HW_SSP_CTRL0) & SSP_CTRL0_RUN))) {
-+			dev_err(master->dev, "MXS SPI: Timeout waiting for finish\n");
-+			return -ETIMEDOUT;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int mxs_spi_transfer(struct spi_device *spi, struct spi_message *mesg)
-+{
-+	struct mxs_spi *mxs = to_mxs(spi->master);
-+	struct spi_master *master = spi->master;
-+	struct spi_transfer *t = NULL;
-+	char dummy;
-+	unsigned long flags = 0;
-+	int write = 0;
-+	char *data = NULL;
-+	int ret;
-+	mesg->actual_length = 0;
-+
-+	list_for_each_entry(t, &mesg->transfers, transfer_list) {
-+		flags = 0;
-+
-+		if (t->tx_buf) {
-+			data = (char *) t->tx_buf;
-+			write = 1;
-+		} else if (t->rx_buf) {
-+			data = (char *) t->rx_buf;
-+			write = 0;
-+		} else if (t->rx_buf && t->tx_buf) {
-+			dev_err(master->dev, "Cannot send and receive simultaneously\n");
-+			return -EIO;
-+		} else if (!t->rx_buf && !t->tx_buf) {
-+			dev_err(master->dev, "No Data\n");
-+			return -EIO;
-+		}
-+
-+		if (&t->transfer_list == mesg->transfers.next)
-+			flags |= SPI_XFER_BEGIN;
-+
-+		if (&t->transfer_list == mesg->transfers.prev)
-+			flags |= SPI_XFER_END;
-+
-+		if (t->len == 0) {
-+			if (flags == SPI_XFER_END) {
-+				t->len = 1;
-+				t->rx_buf = (void *) &dummy;
-+			} else {
-+				return 0;
-+			}
-+		}
-+
-+		writel(SSP_CTRL1_DMA_ENABLE, mxs->regs + HW_SSP_CTRL1 + BIT_CLR);
-+		ret = mxs_spi_xfer_pio(spi, data, t->len, write, flags);
-+		if (ret < 0)
-+			return ret;
-+		mesg->actual_length += t->len;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mxs_spi_probe(struct device_d *dev)
-+{
-+	struct spi_master *master;
-+	struct mxs_spi *mxs;
-+
-+	mxs = xzalloc(sizeof(*mxs));
-+
-+	master = &mxs->master;
-+	master->dev = dev;
-+
-+	master->bus_num = dev->id;
-+	master->setup = mxs_spi_setup;
-+	master->transfer = mxs_spi_transfer;
-+	master->num_chipselect = 3;
-+	mxs->mode = SPI_CPOL | SPI_CPHA;
-+
-+	mxs->regs = dev_request_mem_region(dev, 0);
-+
-+	spi_register_master(master);
-+
-+	return 0;
-+}
-+
-+static struct driver_d mxs_spi_driver = {
-+	.name  = "mxs_spi",
-+	.probe = mxs_spi_probe,
-+};
-+
-+static int __init mxs_spi_init(void)
-+{
-+	return platform_driver_register(&mxs_spi_driver);
-+}
-+
-+device_initcall(mxs_spi_init);
-+
-+MODULE_AUTHOR("Denx Software Engeneering and Michael Grzeschik");
-+MODULE_DESCRIPTION("MXS SPI driver");
-+MODULE_LICENSE("GPL");
+ 
+ #define CLOCKRATE_MIN (1 * 1000 * 1000)
+ #define CLOCKRATE_MAX (480 * 1000 * 1000)
+ 
+-#define HW_SSP_CTRL0 0x000
+-# define SSP_CTRL0_SFTRST (1 << 31)
+-# define SSP_CTRL0_CLKGATE (1 << 30)
+-# define SSP_CTRL0_RUN (1 << 29)
+-# define SSP_CTRL0_LOCK_CS (1 << 27)
+-# define SSP_CTRL0_READ (1 << 25)
+-# define SSP_CTRL0_IGNORE_CRC (1 << 26)
+-# define SSP_CTRL0_DATA_XFER (1 << 24)
+-# define SSP_CTRL0_BUS_WIDTH(x) (((x) & 0x3) << 22)
+-# define SSP_CTRL0_WAIT_FOR_IRQ (1 << 21)
+-# define SSP_CTRL0_LONG_RESP (1 << 19)
+-# define SSP_CTRL0_GET_RESP (1 << 17)
+-# define SSP_CTRL0_ENABLE (1 << 16)
+-#ifdef CONFIG_ARCH_IMX23
+-# define SSP_CTRL0_XFER_COUNT(x) ((x) & 0xffff)
+-#endif
+-
+-#define HW_SSP_CMD0 0x010
+-# define SSP_CMD0_SLOW_CLK (1 << 22)
+-# define SSP_CMD0_CONT_CLK (1 << 21)
+-# define SSP_CMD0_APPEND_8CYC (1 << 20)
+-#ifdef CONFIG_ARCH_IMX23
+-# define SSP_CMD0_BLOCK_SIZE(x) (((x) & 0xf) << 16)
+-# define SSP_CMD0_BLOCK_COUNT(x) (((x) & 0xff) << 8)
+-#endif
+-# define SSP_CMD0_CMD(x) ((x) & 0xff)
+-
+-#define HW_SSP_CMD1 0x020
+-
+-#ifdef CONFIG_ARCH_IMX23
+-# define HW_SSP_COMPREF 0x030
+-# define HW_SSP_COMPMASK 0x040
+-# define HW_SSP_TIMING 0x050
+-# define HW_SSP_CTRL1 0x060
+-# define HW_SSP_DATA 0x070
+-#endif
+-#ifdef CONFIG_ARCH_IMX28
+-# define HW_SSP_XFER_COUNT 0x30
+-# define HW_SSP_BLOCK_SIZE 0x40
+-#  define SSP_BLOCK_SIZE(x) ((x) & 0xf)
+-#  define SSP_BLOCK_COUNT(x) (((x) & 0xffffff) << 4)
+-# define HW_SSP_COMPREF 0x050
+-# define HW_SSP_COMPMASK 0x060
+-# define HW_SSP_TIMING 0x070
+-# define HW_SSP_CTRL1 0x080
+-# define HW_SSP_DATA 0x090
+-#endif
+-/* bit definition for register HW_SSP_TIMING */
+-# define SSP_TIMING_TIMEOUT_MASK (0xffff0000)
+-# define SSP_TIMING_TIMEOUT(x) ((x) << 16)
+-# define SSP_TIMING_CLOCK_DIVIDE(x) (((x) & 0xff) << 8)
+-# define SSP_TIMING_CLOCK_RATE(x) ((x) & 0xff)
+-
+-/* bit definition for register HW_SSP_CTRL1 */
+-# define SSP_CTRL1_POLARITY (1 << 9)
+-# define SSP_CTRL1_WORD_LENGTH(x) (((x) & 0xf) << 4)
+-# define SSP_CTRL1_SSP_MODE(x) ((x) & 0xf)
+-
+-#ifdef CONFIG_ARCH_IMX23
+-# define HW_SSP_SDRESP0 0x080
+-# define HW_SSP_SDRESP1 0x090
+-# define HW_SSP_SDRESP2 0x0A0
+-# define HW_SSP_SDRESP3 0x0B0
+-#endif
+-#ifdef CONFIG_ARCH_IMX28
+-# define HW_SSP_SDRESP0 0x0A0
+-# define HW_SSP_SDRESP1 0x0B0
+-# define HW_SSP_SDRESP2 0x0C0
+-# define HW_SSP_SDRESP3 0x0D0
+-#endif
+-
+-#ifdef CONFIG_ARCH_IMX28
+-# define HW_SSP_DDR_CTRL 0x0E0
+-# define HW_SSP_DLL_CTRL 0x0F0
+-#endif
+-
+-#ifdef CONFIG_ARCH_IMX23
+-# define HW_SSP_STATUS 0x0C0
+-#endif
+-#ifdef CONFIG_ARCH_IMX28
+-# define HW_SSP_STATUS 0x100
+-#endif
+-
+-/* bit definition for register HW_SSP_STATUS */
+-# define SSP_STATUS_PRESENT (1 << 31)
+-# define SSP_STATUS_SD_PRESENT (1 << 29)
+-# define SSP_STATUS_CARD_DETECT (1 << 28)
+-# define SSP_STATUS_RESP_CRC_ERR (1 << 16)
+-# define SSP_STATUS_RESP_ERR (1 << 15)
+-# define SSP_STATUS_RESP_TIMEOUT (1 << 14)
+-# define SSP_STATUS_DATA_CRC_ERR (1 << 13)
+-# define SSP_STATUS_TIMEOUT (1 << 12)
+-# define SSP_STATUS_FIFO_OVRFLW (1 << 9)
+-# define SSP_STATUS_FIFO_FULL (1 << 8)
+-# define SSP_STATUS_FIFO_EMPTY (1 << 5)
+-# define SSP_STATUS_FIFO_UNDRFLW (1 << 4)
+-# define SSP_STATUS_CMD_BUSY (1 << 3)
+-# define SSP_STATUS_DATA_BUSY (1 << 2)
+-# define SSP_STATUS_BUSY (1 << 0)
+-# define SSP_STATUS_ERROR (SSP_STATUS_FIFO_OVRFLW | SSP_STATUS_FIFO_UNDRFLW | \
+-	SSP_STATUS_RESP_CRC_ERR | SSP_STATUS_RESP_ERR | \
+-	SSP_STATUS_RESP_TIMEOUT | SSP_STATUS_DATA_CRC_ERR | SSP_STATUS_TIMEOUT)
+-
+-#ifdef CONFIG_ARCH_IMX28
+-# define HW_SSP_DLL_STS 0x110
+-#endif
+-
+-#ifdef CONFIG_ARCH_IMX23
+-# define HW_SSP_DEBUG 0x100
+-# define HW_SSP_VERSION 0x110
+-#endif
+-
+-#ifdef CONFIG_ARCH_IMX28
+-# define HW_SSP_DEBUG 0x120
+-# define HW_SSP_VERSION 0x130
+-#endif
+-
+ struct mxs_mci_host {
+ 	struct mci_host	host;
+ 	void __iomem	*regs;
 -- 
 1.7.10.4
 
