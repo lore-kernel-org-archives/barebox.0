@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3QsL-00050Q-1S
- for barebox@lists.infradead.org; Thu, 07 Feb 2013 12:46:49 +0000
-Date: Thu, 7 Feb 2013 13:46:46 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130207124646.GW1906@pengutronix.de>
-References: <1360235367-30530-1-git-send-email-s.hauer@pengutronix.de>
- <20130207120206.GJ19322@game.jcrosoft.org>
- <20130207122051.GV1906@pengutronix.de>
- <20130207122613.GL19322@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130207122613.GL19322@game.jcrosoft.org>
+ id 1U3RSu-0007pf-73
+ for barebox@lists.infradead.org; Thu, 07 Feb 2013 13:24:37 +0000
+Received: from alto.hi.pengutronix.de ([2001:6f8:1178:2:219:99ff:fe56:9d4])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <mgr@pengutronix.de>) id 1U3RSs-0001oS-9Y
+ for barebox@lists.infradead.org; Thu, 07 Feb 2013 14:24:34 +0100
+Received: from mgr by alto.hi.pengutronix.de with local (Exim 4.75)
+ (envelope-from <mgr@pengutronix.de>) id 1U3RSs-0007wd-6U
+ for barebox@lists.infradead.org; Thu, 07 Feb 2013 14:24:34 +0100
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Thu,  7 Feb 2013 14:24:23 +0100
+Message-Id: <1360243466-30498-1-git-send-email-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,79 +21,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] net phy: Add support for finding a mdio bus by its
- name
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v3 0/3] Add mxs spi driver and mx28evk as its first user
+To: barebox@lists.infradead.org
 
-On Thu, Feb 07, 2013 at 01:26:13PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 13:20 Thu 07 Feb     , Sascha Hauer wrote:
-> > On Thu, Feb 07, 2013 at 01:02:06PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 12:09 Thu 07 Feb     , Sascha Hauer wrote:
-> > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > > ---
-> > > >  drivers/net/phy/mdio_bus.c |   19 +++++++++++++++++++
-> > > >  include/linux/phy.h        |    3 +++
-> > > >  2 files changed, 22 insertions(+)
-> > > > 
-> > > > diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-> > > > index d1d802b..3c4be1c 100644
-> > > > --- a/drivers/net/phy/mdio_bus.c
-> > > > +++ b/drivers/net/phy/mdio_bus.c
-> > > > @@ -25,6 +25,8 @@
-> > > >  #include <linux/phy.h>
-> > > >  #include <linux/err.h>
-> > > >  
-> > > > +static LIST_HEAD(mii_bus_list);
-> > > > +
-> > > >  /**
-> > > >   * mdiobus_register - bring up all the PHYs on a given bus and attach them to bus
-> > > >   * @bus: target mii_bus
-> > > > @@ -57,6 +59,8 @@ int mdiobus_register(struct mii_bus *bus)
-> > > >  	if (bus->reset)
-> > > >  		bus->reset(bus);
-> > > >  
-> > > > +	list_add_tail(&bus->list, &mii_bus_list);
-> > > > +
-> > > >  	pr_info("%s: probed\n", dev_name(&bus->dev));
-> > > >  	return 0;
-> > > >  }
-> > > > @@ -71,9 +75,24 @@ void mdiobus_unregister(struct mii_bus *bus)
-> > > >  			unregister_device(&bus->phy_map[i]->dev);
-> > > >  		bus->phy_map[i] = NULL;
-> > > >  	}
-> > > > +
-> > > > +	list_del(&bus->list);
-> > > >  }
-> > > >  EXPORT_SYMBOL(mdiobus_unregister);
-> > > >  
-> > > > +struct mii_bus *mdiobus_find(const char *name)
-> > > > +{
-> > > > +	struct mii_bus *bus;
-> > > > +
-> > > > +	list_for_each_entry(bus, &mii_bus_list, list) {
-> > > 	no use bus_for_each
-> > 
-> > That was my first try until I realized that not the mdio buses are
-> > registered on the mdio_bus_type, but instead the phy devices.
-> so add bus_type the list is already in the device_d so we jsut hav to populate
-> it
+this series adds support for the mxs spi driver
+and adds the mx28evk as the first user to use it
+with an m25p80 flash memory.
 
-You want to put both the phys and the buses on mdio_bus_type? Or you
-want to introduce a mdio_bus_bus_type?
+The driver was tested to work with the pio mode,
+as its implementation has currently no dma support.
 
-Sascha
+The SSP clock needed to be lower than the max possible
+frequency for the flash. Otherwise it sometimes, after
+a lot of spi transactions, the SSP stopped working.
 
+Michael Grzeschik (3):
+  ARM mxs: ssp move to common register layout
+  SPI: Add i.MX 23/28 SPI driver support
+  mx28evk: add m25p80 flash via ssp2
+
+ arch/arm/boards/freescale-mx28-evk/mx28-evk.c |   29 +++
+ arch/arm/mach-mxs/include/mach/ssp.h          |  120 ++++++++++
+ drivers/mci/mxs.c                             |  118 +---------
+ drivers/spi/Kconfig                           |    5 +
+ drivers/spi/Makefile                          |    1 +
+ drivers/spi/mxs_spi.c                         |  289 +++++++++++++++++++++++++
+ 6 files changed, 445 insertions(+), 117 deletions(-)
+ create mode 100644 arch/arm/mach-mxs/include/mach/ssp.h
+ create mode 100644 drivers/spi/mxs_spi.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
