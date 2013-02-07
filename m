@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3QAh-0007dl-K2
- for barebox@lists.infradead.org; Thu, 07 Feb 2013 12:01:45 +0000
-Date: Thu, 7 Feb 2013 13:01:41 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130207120141.GU1906@pengutronix.de>
-References: <1360233900-26486-1-git-send-email-alex.aring@gmail.com>
- <1360233900-26486-7-git-send-email-alex.aring@gmail.com>
- <51138847.8080100@pengutronix.de>
- <20130207112004.GE5999@x61s.8.8.8.8>
+Received: from 16.mo4.mail-out.ovh.net ([188.165.55.104]
+ helo=mo4.mail-out.ovh.net)
+ by casper.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U3QCM-0005Ag-Qr
+ for barebox@lists.infradead.org; Thu, 07 Feb 2013 12:03:28 +0000
+Received: from mail34.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id BA0051050241
+ for <barebox@lists.infradead.org>; Thu,  7 Feb 2013 13:13:33 +0100 (CET)
+Date: Thu, 7 Feb 2013 13:02:06 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130207120206.GJ19322@game.jcrosoft.org>
+References: <1360235367-30530-1-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130207112004.GE5999@x61s.8.8.8.8>
+In-Reply-To: <1360235367-30530-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,129 +26,96 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/6] commands: add new memtest command
-To: Alexander Aring <alex.aring@gmail.com>
+Subject: Re: [PATCH 1/2] net phy: Add support for finding a mdio bus by its
+ name
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Feb 07, 2013 at 12:20:06PM +0100, Alexander Aring wrote:
-> On Thu, Feb 07, 2013 at 11:56:07AM +0100, Marc Kleine-Budde wrote:
-> > On 02/07/2013 11:45 AM, Alexander Aring wrote:
-> > > Add new memtest command which can enable or disable caching
-> > > on non allocted barebox regions(test area).
-> > > 
-> > > This command simply parse and check parameters then call
-> > > the mem_test routine.
-> > > 
-> > > If no address parameters are given then mem_test will call
-> > > for each memory bank.
-> > > 
-> > > Signed-off-by: Alexander Aring <alex.aring@gmail.com>
-> > 
-> > A howto-get-rid-of-ifdef nitpick inline
-> > 
-> > > ---
-> > >  commands/Kconfig   |  10 ++
-> > >  commands/Makefile  |   1 +
-> > >  commands/memtest.c | 362 +++++++++++++++++++++++++++++++++++++++++++++++++++++
-> > >  3 files changed, 373 insertions(+)
-> > >  create mode 100644 commands/memtest.c
-> > > 
-> > > diff --git a/commands/Kconfig b/commands/Kconfig
-> > > index 7cc759c..d158c3f 100644
-> > > --- a/commands/Kconfig
-> > > +++ b/commands/Kconfig
-> > > @@ -516,6 +516,16 @@ config CMD_NANDTEST
-> > >  	select PARTITION_NEED_MTD
-> > >  	prompt "nandtest"
-> > >  
-> > > +config CMD_MEMTEST
-> > > +    tristate
-> > > +    select MEMTEST
-> > > +    prompt "memtest"
-> > > +	help
-> > > +	  This command enables a memtest to test installed memory.
-> > > +	  During this test allocated iomem regions will be skipped.
-> > > +	  If tested architecture has MMU with PTE flags support,
-> > > +	  caching can be set enabled or disabled.
-> > > +
-> > >  endmenu
-> > >  
-> > >  menu "video command"
-> > > diff --git a/commands/Makefile b/commands/Makefile
-> > > index 393ba51..b39b489 100644
-> > > --- a/commands/Makefile
-> > > +++ b/commands/Makefile
-> > > @@ -7,6 +7,7 @@ obj-$(CONFIG_CMD_LOADY)		+= loadxy.o
-> > >  obj-$(CONFIG_CMD_LOADS)		+= loads.o
-> > >  obj-$(CONFIG_CMD_ECHO)		+= echo.o
-> > >  obj-$(CONFIG_CMD_MEMORY)	+= mem.o
-> > > +obj-$(CONFIG_CMD_MEMTEST)	+= memtest.o
-> > >  obj-$(CONFIG_CMD_EDIT)		+= edit.o
-> > >  obj-$(CONFIG_CMD_EXEC)		+= exec.o
-> > >  obj-$(CONFIG_CMD_SLEEP)		+= sleep.o
-> > > diff --git a/commands/memtest.c b/commands/memtest.c
-> > > new file mode 100644
-> > > index 0000000..22e8006
-> > > --- /dev/null
-> > > +++ b/commands/memtest.c
-> > > @@ -0,0 +1,362 @@
-> > > +/*
-> > > + * memtest - Perform a memory test
-> > > + *
-> > > + * (C) Copyright 2013
-> > > + * Alexander Aring <aar@pengutronix.de>, Pengutronix
-> > > + *
-> > > + * (C) Copyright 2000
-> > > + * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
-> > > + *
-> > > + * See file CREDITS for list of people who contributed to this
-> > > + * project.
-> > > + *
-> > > + * This program is free software; you can redistribute it and/or
-> > > + * modify it under the terms of the GNU General Public License as
-> > > + * published by the Free Software Foundation; either version 2 of
-> > > + * the License, or (at your option) any later version.
-> > > + *
-> > > + * This program is distributed in the hope that it will be useful,
-> > > + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> > > + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> > > + * GNU General Public License for more details.
-> > > + *
-> > > + * You should have received a copy of the GNU General Public License
-> > > + * along with this program; if not, write to the Free Software
-> > > + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-> > > + * MA 02111-1307 USA
-> > > + */
-> > > +
-> > > +#include <command.h>
-> > > +#include <getopt.h>
-> > > +#include <asm/mmu.h>
-> > > +
-> > > +#include <memory_test.h>
-> > > +
-> > > +/*
-> > > + * In CONFIG_MMU we have a special c flag.
-> > > + */
-> > > +#ifdef CONFIG_MMU
-> > > +static char optstr[] = "s:e:i:cb";
-> > 
-> > const?
-> >
+On 12:09 Thu 07 Feb     , Sascha Hauer wrote:
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/net/phy/mdio_bus.c |   19 +++++++++++++++++++
+>  include/linux/phy.h        |    3 +++
+>  2 files changed, 22 insertions(+)
 > 
-> This will print a compiler warning because the getopt implementation
-> doesn't accept a const char* because getopt will change this string.
+> diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+> index d1d802b..3c4be1c 100644
+> --- a/drivers/net/phy/mdio_bus.c
+> +++ b/drivers/net/phy/mdio_bus.c
+> @@ -25,6 +25,8 @@
+>  #include <linux/phy.h>
+>  #include <linux/err.h>
+>  
+> +static LIST_HEAD(mii_bus_list);
+> +
+>  /**
+>   * mdiobus_register - bring up all the PHYs on a given bus and attach them to bus
+>   * @bus: target mii_bus
+> @@ -57,6 +59,8 @@ int mdiobus_register(struct mii_bus *bus)
+>  	if (bus->reset)
+>  		bus->reset(bus);
+>  
+> +	list_add_tail(&bus->list, &mii_bus_list);
+> +
+>  	pr_info("%s: probed\n", dev_name(&bus->dev));
+>  	return 0;
+>  }
+> @@ -71,9 +75,24 @@ void mdiobus_unregister(struct mii_bus *bus)
+>  			unregister_device(&bus->phy_map[i]->dev);
+>  		bus->phy_map[i] = NULL;
+>  	}
+> +
+> +	list_del(&bus->list);
+>  }
+>  EXPORT_SYMBOL(mdiobus_unregister);
+>  
+> +struct mii_bus *mdiobus_find(const char *name)
+> +{
+> +	struct mii_bus *bus;
+> +
+> +	list_for_each_entry(bus, &mii_bus_list, list) {
+	no use bus_for_each
 
-getopt does not modify this string. The prototype of getopt could be changed to
-take a const char *.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+J.
+> +		if (!strcmp(dev_name(&bus->dev), name))
+> +			return bus;
+> +	}
+> +
+> +	return NULL;
+> +}
+> +EXPORT_SYMBOL(mdiobus_find);
+> +
+>  struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr)
+>  {
+>  	struct phy_device *phydev;
+> diff --git a/include/linux/phy.h b/include/linux/phy.h
+> index 6c9cac9..9ab6e06 100644
+> --- a/include/linux/phy.h
+> +++ b/include/linux/phy.h
+> @@ -84,11 +84,14 @@ struct mii_bus {
+>  
+>  	/* PHY addresses to be ignored when probing */
+>  	u32 phy_mask;
+> +
+> +	struct list_head list;
+>  };
+>  #define to_mii_bus(d) container_of(d, struct mii_bus, dev)
+>  
+>  int mdiobus_register(struct mii_bus *bus);
+>  void mdiobus_unregister(struct mii_bus *bus);
+> +struct mii_bus *mdiobus_find(const char *name);
+>  struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr);
+>  
+>  /**
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
