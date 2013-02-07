@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ee0-f47.google.com ([74.125.83.47])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3ZEE-0007Gf-1F
- for barebox@lists.infradead.org; Thu, 07 Feb 2013 21:41:58 +0000
-Date: Thu, 7 Feb 2013 22:41:56 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130207214156.GD1906@pengutronix.de>
+ id 1U3ZJ8-00084T-HQ
+ for barebox@lists.infradead.org; Thu, 07 Feb 2013 21:47:03 +0000
+Received: by mail-ee0-f47.google.com with SMTP id e52so1665001eek.6
+ for <barebox@lists.infradead.org>; Thu, 07 Feb 2013 13:46:59 -0800 (PST)
+Date: Thu, 7 Feb 2013 22:47:46 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20130207214744.GE2572@x61s.8.8.8.8>
 References: <1360269380-28155-1-git-send-email-alex.aring@gmail.com>
  <20130207213524.GC1906@pengutronix.de>
 MIME-Version: 1.0
@@ -24,8 +26,10 @@ Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 0/4] Small fixes in barebox
-To: Alexander Aring <alex.aring@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
+
+Hi Sascha,
 
 On Thu, Feb 07, 2013 at 10:35:24PM +0100, Sascha Hauer wrote:
 > On Thu, Feb 07, 2013 at 09:36:16PM +0100, Alexander Aring wrote:
@@ -46,17 +50,21 @@ On Thu, Feb 07, 2013 at 10:35:24PM +0100, Sascha Hauer wrote:
 > 
 > I don't understand. getopt is not there if CONFIG_HUSH_GETOPT is
 > disabled. It's ifdeffed out.
+> 
 
-Ah, now I got it. You miss the 'unknown command... message'. Then the
-patch seems fine.
+Yes it's ifdeffed out with an empty no-op getopt implementation. But
+this will be add to the barebox command list.
 
-Sascha
+So if we type "getopt" we don't get a "Unknown command" message, barebox
+run only a no-op getopt implementation.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+This patch will don't add getopt to the command list if we don't enable
+it. I let the no-op getopt implementation there, otherwise we get a
+compiler warning.
+
+Regards
+Alex
+
 
 _______________________________________________
 barebox mailing list
