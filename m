@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ee0-f47.google.com ([74.125.83.47])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3PRx-0000Lk-VB
- for barebox@lists.infradead.org; Thu, 07 Feb 2013 11:15:31 +0000
-Date: Thu, 7 Feb 2013 12:15:27 +0100
-From: Michael Grzeschik <mgr@pengutronix.de>
-Message-ID: <20130207111527.GD32201@pengutronix.de>
-References: <1360064817-6210-1-git-send-email-m.grzeschik@pengutronix.de>
- <1360064817-6210-3-git-send-email-m.grzeschik@pengutronix.de>
- <20130205123748.GC19322@game.jcrosoft.org>
+ id 1U3PSB-0000MV-4K
+ for barebox@lists.infradead.org; Thu, 07 Feb 2013 11:15:44 +0000
+Received: by mail-ee0-f47.google.com with SMTP id e52so1326235eek.20
+ for <barebox@lists.infradead.org>; Thu, 07 Feb 2013 03:15:41 -0800 (PST)
+Date: Thu, 7 Feb 2013 12:16:26 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20130207111623.GD5999@x61s.8.8.8.8>
+References: <1360233900-26486-1-git-send-email-alex.aring@gmail.com>
+ <1360233900-26486-6-git-send-email-alex.aring@gmail.com>
+ <5113877F.1070406@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130205123748.GC19322@game.jcrosoft.org>
+In-Reply-To: <5113877F.1070406@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,418 +26,521 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/3] SPI: Add i.MX 23/28 SPI driver support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 5/6] common: add mem_test routine
+To: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Feb 05, 2013 at 01:37:48PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 12:46 Tue 05 Feb     , Michael Grzeschik wrote:
-> > Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Hi,
+
+On Thu, Feb 07, 2013 at 11:52:47AM +0100, Marc Kleine-Budde wrote:
+> On 02/07/2013 11:44 AM, Alexander Aring wrote:
+> > Useful to detect timing problems if someone porting a new
+> > device to barebox.
+> > 
+> > This test includes a data bus test, address bus test and
+> > integrity check of memory.
+> > 
+> > Allocated barebox regions between start and end will skip
+> > automatically.
+> 
+> Some nitpicking inline.
+> 
+> Is there a nice alternative to usage of the vu_long type?
+
+I can use a volatile version of resource_size_t.
+
+> > 
+> > Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 > > ---
-> > changes since v1:
-> >  - renamed patch to more clear subject
-> >  - whitespace fixes
-> >  - catched more error returns, as EIO
-> >  - explicit affected archs as kconfig dependency
-> >  - used dev_{dbg,info,err} instead of printf
-> >  - removed unneded xzalloc failure catch
-> >  - returning value from driver_register on spi_init
+> >  common/Kconfig        |   7 +
+> >  common/Makefile       |   1 +
+> >  common/memory_test.c  | 399 ++++++++++++++++++++++++++++++++++++++++++++++++++
+> >  include/memory_test.h |  13 ++
+> >  4 files changed, 420 insertions(+)
+> >  create mode 100644 common/memory_test.c
+> >  create mode 100644 include/memory_test.h
 > > 
-> >  arch/arm/mach-mxs/include/mach/ssp.h |    2 +
-> >  drivers/spi/Kconfig                  |    5 +
-> >  drivers/spi/Makefile                 |    1 +
-> >  drivers/spi/mxs_spi.c                |  306 ++++++++++++++++++++++++++++++++++
-> >  4 files changed, 314 insertions(+)
-> >  create mode 100644 drivers/spi/mxs_spi.c
-> > 
-> > diff --git a/arch/arm/mach-mxs/include/mach/ssp.h b/arch/arm/mach-mxs/include/mach/ssp.h
-> > index aa2b27a..5eee5c0 100644
-> > --- a/arch/arm/mach-mxs/include/mach/ssp.h
-> > +++ b/arch/arm/mach-mxs/include/mach/ssp.h
-> > @@ -64,6 +64,7 @@
-> >  #define SSP_CTRL0_BUS_WIDTH(x)		(((x) & 0x3) << 22)
-> >  #define SSP_CTRL0_WAIT_FOR_IRQ		(1 << 21)
-> >  #define SSP_CTRL0_WAIT_FOR_CMD		(1 << 20)
-> > +#define SSP_CTRL0_SSP_ASSERT_OUT(x)	(((x) & 0x3) << 20)
-> >  #define SSP_CTRL0_LONG_RESP		(1 << 19)
-> >  #define SSP_CTRL0_GET_RESP		(1 << 17)
-> >  #define SSP_CTRL0_ENABLE		(1 << 16)
-> > @@ -92,6 +93,7 @@
-> >  /* bit definition for register HW_SSP_CTRL1 */
-> >  #define SSP_CTRL1_POLARITY		(1 << 9)
-> >  #define SSP_CTRL1_PHASE			(1 << 10)
-> > +#define SSP_CTRL1_DMA_ENABLE		(1 << 13)
-> >  #define SSP_CTRL1_WORD_LENGTH(x)	(((x) & 0xf) << 4)
-> >  #define SSP_CTRL1_SSP_MODE(x)		((x) & 0xf)
-> >  
-> > diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> > index 10b8fea..f14e28f 100644
-> > --- a/drivers/spi/Kconfig
-> > +++ b/drivers/spi/Kconfig
-> > @@ -33,6 +33,11 @@ config DRIVER_SPI_IMX_2_3
-> >  	depends on ARCH_IMX51 || ARCH_IMX53 || ARCH_IMX6
+> > diff --git a/common/Kconfig b/common/Kconfig
+> > index 3f6c11e..c6988df 100644
+> > --- a/common/Kconfig
+> > +++ b/common/Kconfig
+> > @@ -100,6 +100,13 @@ config MEMINFO
+> >  	bool "display memory info"
 > >  	default y
 > >  
-> > +config DRIVER_SPI_MXS
-> > +	bool "i.MX (23,28) SPI Master driver"
-> > +	depends on ARCH_IMX23 || ARCH_IMX28
-> > +	depends on SPI
+> > +config MEMTEST
+> > +	bool "Offers routines for memory test"
+> > +	help
+> > +	  Offers memtest routines in common/memory_test.c
+> > +	  This is helpful for porting devices to detect
+> > +	  memory timing problems.
 > > +
-> >  config DRIVER_SPI_OMAP3
-> >  	bool "OMAP3 McSPI Master driver"
-> >  	depends on ARCH_OMAP3
-> > diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-> > index b53061e..642b7ec 100644
-> > --- a/drivers/spi/Makefile
-> > +++ b/drivers/spi/Makefile
-> > @@ -1,5 +1,6 @@
-> >  obj-$(CONFIG_SPI) += spi.o
-> >  obj-$(CONFIG_DRIVER_SPI_IMX) += imx_spi.o
-> > +obj-$(CONFIG_DRIVER_SPI_MXS) += mxs_spi.o
-> >  obj-$(CONFIG_DRIVER_SPI_ALTERA) += altera_spi.o
-> >  obj-$(CONFIG_DRIVER_SPI_ATMEL) += atmel_spi.o
-> >  obj-$(CONFIG_DRIVER_SPI_OMAP3) += omap3_spi.o
-> > diff --git a/drivers/spi/mxs_spi.c b/drivers/spi/mxs_spi.c
+> >  config ENVIRONMENT_VARIABLES
+> >  	bool "environment variables support"
+> >  
+> > diff --git a/common/Makefile b/common/Makefile
+> > index 7206eed..684953c 100644
+> > --- a/common/Makefile
+> > +++ b/common/Makefile
+> > @@ -17,6 +17,7 @@ obj-$(CONFIG_MALLOC_DLMALLOC) += dlmalloc.o
+> >  obj-$(CONFIG_MALLOC_TLSF) += tlsf_malloc.o
+> >  obj-$(CONFIG_MALLOC_TLSF) += tlsf.o
+> >  obj-$(CONFIG_MALLOC_DUMMY) += dummy_malloc.o
+> > +obj-$(CONFIG_MEMTEST) += memory_test.o
+> >  obj-y += clock.o
+> >  obj-$(CONFIG_BANNER) += version.o
+> >  obj-$(CONFIG_MEMINFO) += meminfo.o
+> > diff --git a/common/memory_test.c b/common/memory_test.c
 > > new file mode 100644
-> > index 0000000..3c6c11b
+> > index 0000000..80b4ff4
 > > --- /dev/null
-> > +++ b/drivers/spi/mxs_spi.c
-> > @@ -0,0 +1,306 @@
+> > +++ b/common/memory_test.c
+> > @@ -0,0 +1,399 @@
 > > +/*
-> > + * Freescale i.MX28 SPI driver
+> > + * memory_test.c
 > > + *
-> > + * Copyright (C) 2013 Michael Grzeschik <mgr@pengutronix.de>
+> > + * Copyright (c) 2013 Alexander Aring <aar@pengutronix.de>, Pengutronix
 > > + *
-> > + * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
-> > + * on behalf of DENX Software Engineering GmbH
+> > + * See file CREDITS for list of people who contributed to this
+> > + * project.
 > > + *
-> > + * This program is free software; you can redistribute it and/or
-> > + * modify it under the terms of the GNU General Public License as
-> > + * published by the Free Software Foundation; either version 2 of
-> > + * the License, or (at your option) any later version.
+> > + * This program is free software; you can redistribute it and/or modify
+> > + * it under the terms of the GNU General Public License version 2
+> > + * as published by the Free Software Foundation.
+> > + *
+> > + * This program is distributed in the hope that it will be useful,
+> > + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> > + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> > + * GNU General Public License for more details.
 > > + *
 > > + */
 > > +
-> > +#include <common.h>
-> > +#include <init.h>
-> > +#include <malloc.h>
-> > +#include <spi/spi.h>
-> > +#include <clock.h>
-> > +#include <errno.h>
-> > +#include <io.h>
-> > +#include <linux/clk.h>
-> > +#include <asm/mmu.h>
-> > +#include <mach/generic.h>
-> > +#include <mach/imx-regs.h>
-> > +#include <mach/mxs.h>
-> > +#include <mach/clock.h>
-> > +#include <mach/ssp.h>
+> > +#include <memory_test.h>
 > > +
-> > +#define	MXS_SPI_MAX_TIMEOUT		(10 * MSECOND)
-> > +
-> > +#define	SPI_XFER_BEGIN	0x01 /* Assert CS before transfer */
-> > +#define	SPI_XFER_END	0x02 /* Deassert CS after transfer */
-> > +
-> > +struct mxs_spi {
-> > +	struct spi_master	master;
-> > +	uint32_t		max_khz;
-> > +	uint32_t		mode;
-> > +	struct clk		*clk;
-> > +	void __iomem		*regs;
+> > +static const vu_long bitpattern[] = {
+> > +	0x00000001,	/* single bit */
+> > +	0x00000003,	/* two adjacent bits */
+> > +	0x00000007,	/* three adjacent bits */
+> > +	0x0000000F,	/* four adjacent bits */
+> > +	0x00000005,	/* two non-adjacent bits */
+> > +	0x00000015,	/* three non-adjacent bits */
+> > +	0x00000055,	/* four non-adjacent bits */
+> > +	0xAAAAAAAA,	/* alternating 1/0 */
 > > +};
 > > +
-> > +static inline struct mxs_spi *to_mxs(struct spi_master *master)
-> > +{
-> > +	return container_of(master, struct mxs_spi, master);
-> > +}
-> > +
 > > +/*
-> > + * Set SSP/MMC bus frequency, in kHz
+> > + * Perform a memory test. The complete test
+> > + * loops until interrupted by ctrl-c.
+> > + *
+> > + * Highly recommended to test with disabled and
+> > + * enabled cache.
+> > + *
+> > + * start: start address
+> > + * end: end address
+> > + * bus_only: skip integrity check
 > > + */
-> > +static void imx_set_ssp_busclock(struct spi_master *master, uint32_t freq)
+> > +int mem_test(vu_long _start, vu_long _end,
+> > +		int bus_only)
 > > +{
-> > +	struct mxs_spi *mxs = to_mxs(master);
-> > +	const uint32_t sspclk = imx_get_sspclk(master->bus_num);
-> > +	uint32_t val;
-> > +	uint32_t divide, rate, tgtclk;
+> > +	vu_long *start;
+> > +	vu_long *dummy;
+> > +
+> > +	vu_long val;
+> > +	vu_long readback;
+> > +	vu_long offset;
+> > +	vu_long offset2;
+> > +	vu_long pattern;
+> > +	vu_long temp;
+> > +	vu_long anti_pattern;
+> > +	vu_long num_words;
+> > +
+> > +	int i;
+> > +	int ret;
+> > +
+> > +	if (!IS_ALIGNED(_start, sizeof(vu_long)))
+> > +		_start = ALIGN(_start, sizeof(vu_long));
+> > +	/*
+> > +	 * check if end is a multiple of vu_long.
+> > +	 * need to add 1 because ALIGNED works with
+> > +	 * inclusive byte at end address.
+> > +	 *
+> > +	 * Also check on _end == 0. Otherwise we get a
+> > +	 * underflow.
+> > +	 */
+> > +	if (!IS_ALIGNED(_end + 1, sizeof(vu_long)) && _end)
+> > +		_end = ALIGN_DOWN(_end, sizeof(vu_long)) - 1;
 > > +
 > > +	/*
-> > +	 * SSP bit rate = SSPCLK / (CLOCK_DIVIDE * (1 + CLOCK_RATE)),
-> > +	 * CLOCK_DIVIDE has to be an even value from 2 to 254, and
-> > +	 * CLOCK_RATE could be any integer from 0 to 255.
+> > +	 * TODO
+> > +	 * recheck after align. That's not a quite
+> > +	 * solution now because we already done this
+> > +	 * in memtest command.
 > > +	 */
-> > +	for (divide = 2; divide < 254; divide += 2) {
-> > +		rate = sspclk / freq / divide;
-> > +		if (rate <= 256)
-> > +			break;
+> > +	if (_end <= _start)
+> > +		return -1;
+> > +
+> > +	start = (vu_long *)_start;
+> > +	/*
+> > +	 * Point the dummy to start[1]
+> > +	 */
+> > +	dummy = start+1;
+> > +	num_words = (_end - _start + 1)/sizeof(vu_long);
+> > +
+> > +	/*
+> > +	 * Checking if start and dummy address are in one
+> > +	 * of barebox regions. Otherwise next data line testing
+> > +	 * will maybe fail.
+> > +	 */
+> > +	ret = address_in_sdram_regions((vu_long)start);
+> > +	ret |= address_in_sdram_regions((vu_long)dummy);
+> > +	if (ret) {
+> > +		printf("WARNING (data line): "
+> > +				"address 0x%08lx is in sdram regions.\n"
+> > +				"Try another start address to fix this issue.\n",
+> > +				(vu_long)start);
+> > +		return -1;
 > > +	}
 > > +
-> > +	tgtclk = sspclk / divide / rate;
-> > +	while (tgtclk > freq) {
-> > +		rate++;
-> > +		tgtclk = sspclk / divide / rate;
-> > +	}
-> > +	if (rate > 256)
-> > +		rate = 256;
+> > +	printf("Starting data line test.\n");
 > > +
-> > +	/* Always set timeout the maximum */
-> > +	val = SSP_TIMING_TIMEOUT_MASK |
-> > +		SSP_TIMING_CLOCK_DIVIDE(divide) |
-> > +		SSP_TIMING_CLOCK_RATE(rate - 1);
-> > +	writel(val, mxs->regs + HW_SSP_TIMING);
-> > +
-> > +	dev_dbg(master->dev, "SPI%d: Set freq rate to %d KHz (requested %d KHz)\n",
-> > +		master->bus_num, tgtclk, freq);
-> > +}
-> > +
-> > +static int mxs_spi_setup(struct spi_device *spi)
-> > +{
-> > +	struct spi_master *master = spi->master;
-> > +	struct mxs_spi *mxs = to_mxs(master);
-> > +	uint32_t val = 0;
-> > +
-> > +	/* MXS SPI: 4 ports and 3 chip selects maximum */
-> > +	if (master->bus_num > 3 || spi->chip_select > 2) {
-> > +		dev_err(master->dev, "mxs_spi: invalid bus %d / chip select %d\n",
-> > +			 master->bus_num, spi->chip_select);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	mxs_reset_block(mxs->regs + HW_SSP_CTRL0, 0);
-> > +
-> > +	val |= SSP_CTRL0_SSP_ASSERT_OUT(spi->chip_select);
-> > +	val |= SSP_CTRL0_BUS_WIDTH(0);
-> > +	writel(val, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
-> > +
-> > +	val = SSP_CTRL1_SSP_MODE(0) | SSP_CTRL1_WORD_LENGTH(7);
-> > +	val |= (mxs->mode & SPI_CPOL) ? SSP_CTRL1_POLARITY : 0;
-> > +	val |= (mxs->mode & SPI_CPHA) ? SSP_CTRL1_PHASE : 0;
-> > +	writel(val, mxs->regs + HW_SSP_CTRL1);
-> > +
-> > +	writel(0x0, mxs->regs + HW_SSP_CMD0);
-> > +	writel(0x0, mxs->regs + HW_SSP_CMD1);
-> > +
-> > +	imx_set_ssp_busclock(master, spi->max_speed_hz);
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static void mxs_spi_start_xfer(struct mxs_spi *mxs)
-> > +{
-> > +	writel(SSP_CTRL0_LOCK_CS, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
-> > +	writel(SSP_CTRL0_IGNORE_CRC, mxs->regs + HW_SSP_CTRL0 + BIT_CLR);
-> > +}
-> > +
-> > +static void mxs_spi_end_xfer(struct mxs_spi *mxs)
-> > +{
-> > +	writel(SSP_CTRL0_LOCK_CS, mxs->regs + HW_SSP_CTRL0 + BIT_CLR);
-> > +	writel(SSP_CTRL0_IGNORE_CRC, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
-> > +}
-> > +
-> > +static uint32_t mxs_spi_cs_to_reg(unsigned cs)
-> > +{
-> > +	uint32_t select = 0;
-> > +
-> > +	if (cs & 1)
-> > +		select |= SSP_CTRL0_WAIT_FOR_CMD;
-> > +	if (cs & 2)
-> > +		select |= SSP_CTRL0_WAIT_FOR_IRQ;
-> > +
+> > +	/*
+> > +	 * Data line test: write a pattern to the first
+> > +	 * location, write the 1's complement to a 'parking'
+> > +	 * address (changes the state of the data bus so a
+> > +	 * floating bus doen't give a false OK), and then
+> > +	 * read the value back. Note that we read it back
+> > +	 * into a variable because the next time we read it,
+> > +	 * it might be right (been there, tough to explain to
+> > +	 * the quality guys why it prints a failure when the
+> > +	 * "is" and "should be" are obviously the same in the
+> > +	 * error message).
+> > +	 *
+> > +	 * Rather than exhaustively testing, we test some
+> > +	 * patterns by shifting '1' bits through a field of
+> > +	 * '0's and '0' bits through a field of '1's (i.e.
+> > +	 * pattern and ~pattern).
+> > +	 */
+> > +	for (i = 0; i < sizeof(bitpattern)/
+> > +			sizeof(bitpattern[0]); i++) {
 > 
-> this look really wired
-> > +	return select;
-> > +}
-> > +
-> > +static void mxs_spi_set_cs(struct spi_device *spi)
-> > +{
-> > +	const uint32_t mask = SSP_CTRL0_WAIT_FOR_CMD | SSP_CTRL0_WAIT_FOR_IRQ;
-> > +	uint32_t select;
-> > +	struct mxs_spi *mxs = to_mxs(spi->master);
-> > +
-> > +	writel(mask, mxs->regs + HW_SSP_CTRL0 + BIT_CLR);
-> > +	select = mxs_spi_cs_to_reg(spi->chip_select);
-> handle this at setup and keep it in controller_data
-
-Even better is to use something like this here:
-
-select = SSP_CTRL0_SSP_ASSERT_OUT(spi->chip_select);
-
-So mxs_spi_cs_to_reg can be removed.
-
-> > +	writel(select, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
-> > +}
-> > +
-> > +static int mxs_spi_xfer_pio(struct spi_device *spi,
-> > +			char *data, int length, int write, unsigned long flags)
-> > +{
-> > +	struct mxs_spi *mxs = to_mxs(spi->master);
-> > +	struct spi_master *master = spi->master;
-> > +
-> > +	if (flags & SPI_XFER_BEGIN)
-> > +		mxs_spi_start_xfer(mxs);
-> > +
-> > +	mxs_spi_set_cs(spi);
-> > +
-> > +	while (length--) {
-> > +		if ((flags & SPI_XFER_END) && !length)
-> > +			mxs_spi_end_xfer(mxs);
-> > +
-> > +		/* We transfer 1 byte */
-> > +		writel(1, mxs->regs + HW_SSP_XFER_COUNT);
-> > +
-> > +		if (write)
-> > +			writel(SSP_CTRL0_READ, mxs->regs + HW_SSP_CTRL0 + BIT_CLR);
-> > +		else
-> > +			writel(SSP_CTRL0_READ, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
-> > +
-> > +		writel(SSP_CTRL0_RUN, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
-> > +
-> > +		if (wait_on_timeout(MXS_SPI_MAX_TIMEOUT,
-> > +				(readl(mxs->regs + HW_SSP_CTRL0) & SSP_CTRL0_RUN) == SSP_CTRL0_RUN)) {
-> > +			dev_err(master->dev, "MXS SPI: Timeout waiting for start\n");
-> > +			return -ETIMEDOUT;
-> > +		}
-> > +
-> > +		if (write)
-> > +			writel(*data++, mxs->regs + HW_SSP_DATA);
-> > +
-> > +		writel(SSP_CTRL0_DATA_XFER, mxs->regs + HW_SSP_CTRL0 + BIT_SET);
-> > +
-> > +		if (!write) {
-> > +			if (wait_on_timeout(MXS_SPI_MAX_TIMEOUT,
-> > +				!(readl(mxs->regs + HW_SSP_STATUS) & SSP_STATUS_FIFO_EMPTY))) {
-> > +				dev_err(master->dev, "MXS SPI: Timeout waiting for data\n");
-> > +				return -ETIMEDOUT;
-> > +			}
-> > +
-> > +			*data++ = readl(mxs->regs + HW_SSP_DATA) & 0xff;
-> > +		}
-> > +
-> > +		if (wait_on_timeout(MXS_SPI_MAX_TIMEOUT,
-> > +			!(readl(mxs->regs + HW_SSP_CTRL0) & SSP_CTRL0_RUN))) {
-> > +			dev_err(master->dev, "MXS SPI: Timeout waiting for finish\n");
-> > +			return -ETIMEDOUT;
-> > +		}
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int mxs_spi_transfer(struct spi_device *spi, struct spi_message *mesg)
-> > +{
-> > +	struct mxs_spi *mxs = to_mxs(spi->master);
-> > +	struct spi_master *master = spi->master;
-> > +	struct spi_transfer *t = NULL;
-> > +	char dummy;
-> > +	unsigned long flags = 0;
-> > +	int write = 0;
-> > +	char *data = NULL;
-> > +	int ret;
-> > +	mesg->actual_length = 0;
-> > +
-> > +	list_for_each_entry(t, &mesg->transfers, transfer_list) {
-> > +		flags = 0;
-> > +
-> > +		if (t->tx_buf) {
-> > +			data = (char *) t->tx_buf;
-> > +			write = 1;
-> > +		} else if (t->rx_buf) {
-> > +			data = (char *) t->rx_buf;
-> > +			write = 0;
-> > +		}
-> you do not handle cs_change so mmc_cpi will nver work
-
-Its exactly what mxs_spi_set_cs does in mxs_spi_xfer_pio.
-
-> > +
-> > +		if (&t->transfer_list == mesg->transfers.next)
-> > +			flags |= SPI_XFER_BEGIN;
-> > +
-> > +		if (&t->transfer_list == mesg->transfers.prev)
-> > +			flags |= SPI_XFER_END;
-> > +
-> > +		if ((t->rx_buf && t->tx_buf)) {
-> > +			dev_err(master->dev, "Cannot send and receive simultaneously\n");
-> > +			return -EIO;
-> > +		}
-> > +
-> > +		if ((!t->rx_buf && !t->tx_buf)) {
-> > +			dev_err(master->dev, "No Data\n");
-> > +			return -EIO;
-> > +		}
-> > +
-> > +		if (t->len == 0) {
-> > +			if (flags == SPI_XFER_END) {
-> > +				t->len = 1;
-> > +				t->rx_buf = (void *) &dummy;
-> > +			} else {
-> > +				return 0;
-> > +			}
-> > +		}
-> > +
-> > +		writel(SSP_CTRL1_DMA_ENABLE, mxs->regs + HW_SSP_CTRL1 + BIT_CLR);
-> > +		ret = mxs_spi_xfer_pio(spi, data, t->len, write, flags);
-> > +		if (ret < 0)
-> > +			return ret;
-> > +		mesg->actual_length += t->len;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int mxs_spi_probe(struct device_d *dev)
-> > +{
-> > +	struct spi_master *master;
-> > +	struct mxs_spi *mxs;
-> > +
-> > +	mxs = xzalloc(sizeof(*mxs));
-> > +
-> > +	master = &mxs->master;
-> > +	master->dev = dev;
-> > +
-> > +	master->bus_num = dev->id;
-> > +	master->setup = mxs_spi_setup;
-> > +	master->transfer = mxs_spi_transfer;
-> > +	master->num_chipselect = 3;
-> > +	mxs->mode = SPI_CPOL | SPI_CPHA;
-> > +
-> > +	mxs->regs = dev_request_mem_region(dev, 0);
-> > +
-> > +	spi_register_master(master);
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static struct driver_d mxs_spi_driver = {
-> > +	.name  = "mxs_spi",
-> > +	.probe = mxs_spi_probe,
-> > +};
-> > +
-> > +static int __init mxs_spi_init(void)
-> > +{
-> > +	return platform_driver_register(&mxs_spi_driver);
-> > +}
-> > +
-> > +device_initcall(mxs_spi_init);
-> > +
-> > +MODULE_AUTHOR("Denx Software Engeneering and Michael Grzeschik");
-> > +MODULE_DESCRIPTION("MXS SPI driver");
-> > +MODULE_LICENSE("GPL");
-> > -- 
-> > 1.7.10.4
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
+> ARRAY_SIZE(bitpattern)
 > 
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Ok.
+
+> > +		val = bitpattern[i];
+> > +
+> > +		for (; val != 0; val <<= 1) {
+> > +			*start = val;
+> > +			/* clear the test data off of the bus */
+> > +			*dummy = ~val;
+> > +			readback = *start;
+> > +
+> > +			if (readback != val) {
+> > +				printf("FAILURE (data line): "
+> > +					"expected 0x%08lx, actual 0x%08lx at address 0x%08lx.\n",
+> > +					val, readback, (vu_long)start);
+> > +				return -1;
+> > +			}
+> > +
+> > +			*start = ~val;
+> > +			*dummy = val;
+> > +			readback = *start;
+> > +			if (readback != ~val) {
+> > +				printf("FAILURE (data line): "
+> > +					"Is 0x%08lx, should be 0x%08lx at address 0x%08lx.\n",
+> > +					readback,
+> > +					~val, (vu_long)start);
+> > +				return -1;
+> > +			}
+> > +		}
+> > +	}
+> > +
+> > +
+> > +	/*
+> > +	 * Based on code whose Original Author and Copyright
+> > +	 * information follows: Copyright (c) 1998 by Michael
+> > +	 * Barr. This software is placed into the public
+> > +	 * domain and may be used for any purpose. However,
+> > +	 * this notice must not be changed or removed and no
+> > +	 * warranty is either expressed or implied by its
+> > +	 * publication or distribution.
+> > +	 */
+> > +
+> > +	/*
+> > +	 * Address line test
+> > +	 *
+> > +	 * Description: Test the address bus wiring in a
+> > +	 *              memory region by performing a walking
+> > +	 *              1's test on the relevant bits of the
+> > +	 *              address and checking for aliasing.
+> > +	 *              This test will find single-bit
+> > +	 *              address failures such as stuck -high,
+> > +	 *              stuck-low, and shorted pins. The base
+> > +	 *              address and size of the region are
+> > +	 *              selected by the caller.
+> > +	 *
+> > +	 * Notes:	For best results, the selected base
+> > +	 *              address should have enough LSB 0's to
+> > +	 *              guarantee single address bit changes.
+> > +	 *              For example, to test a 64-Kbyte
+> > +	 *              region, select a base address on a
+> > +	 *              64-Kbyte boundary. Also, select the
+> > +	 *              region size as a power-of-two if at
+> > +	 *              all possible.
+> > +	 *
+> > +	 * ## NOTE ##	Be sure to specify start and end
+> > +	 *              addresses such that num_words has
+> > +	 *              lots of bits set. For example an
+> > +	 *              address range of 01000000 02000000 is
+> > +	 *              bad while a range of 01000000
+> > +	 *              01ffffff is perfect.
+> > +	 */
+> > +
+> > +	pattern = 0xAAAAAAAA;
+> > +	anti_pattern = 0x55555555;
+> > +
+> > +	/*
+> > +	 * Write the default pattern at each of the
+> > +	 * power-of-two offsets.
+> > +	 */
+> > +	for (offset = 1; offset <= num_words; offset <<= 1) {
+> > +		ret = address_in_sdram_regions((vu_long)&start[offset]);
+> > +		if (ret) {
+> > +			printf("WARNING (stuck high): "
+> > +					"address 0x%08lx is in barebox regions.\n",
+> > +					(vu_long)&start[offset]);
+> > +			continue;
+> > +		}
+> > +
+> > +		start[offset] = pattern;
+> > +	}
+> > +
+> > +	printf("Check for address bits stuck high.\n");
+> > +
+> > +	/*
+> > +	 * Check for address bits stuck high.
+> > +	 */
+> > +	for (offset = 1; offset <= num_words; offset <<= 1) {
+> > +		ret = address_in_sdram_regions((vu_long)&start[offset]);
+> > +		if (ret)
+> > +			continue;
+> > +
+> > +		temp = start[offset];
+> > +		if (temp != pattern) {
+> > +			printf("FAILURE: Address bit "
+> > +					"stuck high @ 0x%08lx:"
+> > +					" expected 0x%08lx, actual 0x%08lx.\n",
+> > +					(vu_long)&start[offset],
+> > +					pattern, temp);
+> > +			return -1;
+> > +		}
+> > +	}
+> > +
+> > +	printf("Check for address bits stuck "
+> > +			"low or shorted.\n");
+> > +
+> > +	/*
+> > +	 * Check for address bits stuck low or shorted.
+> > +	 */
+> > +	for (offset2 = 1; offset2 <= num_words; offset2 <<= 1) {
+> > +		ret = address_in_sdram_regions(
+> > +				(vu_long)&start[offset2]);
+> > +		if (ret) {
+> > +			printf("WARNING (low high): "
+> > +					"address 0x%08lx is in barebox regions.\n",
+> > +					(vu_long)&start[offset2]);
+> > +			continue;
+> > +		}
+> > +
+> > +		start[offset2] = anti_pattern;
+> > +
+> > +		for (offset = 1; offset <= num_words; offset <<= 1) {
+> > +			ret = address_in_sdram_regions(
+> > +					(vu_long)&start[offset]);
+> > +			if (ret)
+> > +				continue;
+> > +
+> > +			temp = start[offset];
+> > +
+> > +			/*
+> > +			 * That's some complicated for loop with
+> > +			 * condition offset != test_offset inside. I
+> > +			 * think this is necessary to put some another
+> > +			 * address on the bus.
+> > +			 *
+> > +			 * TODO
+> > +			 * check if loop is necessary.
+> > +			 */
+> > +			if ((temp != pattern) &&
+> > +					(offset != offset2)) {
+> > +				printf("FAILURE: Address bit stuck"
+> > +						" low or shorted @"
+> > +						" 0x%08lx: expected 0x%08lx, actual 0x%08lx.\n",
+> > +						(vu_long)&start[offset],
+> > +						pattern, temp);
+> > +				return -1;
+> > +			}
+> > +		}
+> > +		start[offset2] = pattern;
+> > +	}
+> > +
+> > +	/*
+> > +	 * We tested only the bus if != 0
+> > +	 * leaving here
+> > +	 */
+> > +	if (bus_only)
+> > +		return 0;
+> > +
+> > +	printf("Starting integrity check of physicaly ram.\n"
+> > +			"Filling ram with patterns...\n");
+> > +
+> > +	/*
+> > +	 * Description: Test the integrity of a physical
+> > +	 *		memory device by performing an
+> > +	 *		increment/decrement test over the
+> > +	 *		entire region. In the process every
+> > +	 *		storage bit in the device is tested
+> > +	 *		as a zero and a one. The base address
+> > +	 *		and the size of the region are
+> > +	 *		selected by the caller.
+> > +	 */
+> > +
+> > +	/*
+> > +	 * Fill memory with a known pattern.
+> > +	 */
+> > +	init_progression_bar(num_words);
+> > +	for (offset = 0; offset < num_words; offset++) {
+> > +		if (!(offset & 0xfff)) {
+> > +			if (ctrlc())
+> > +				return -EINTR;
+> > +			show_progress(offset);
+> > +		}
+> > +
+> > +		ret = address_in_sdram_regions((vu_long)&start[offset]);
+> > +		if (ret)
+> > +			continue;
+> > +
+> > +		start[offset] = offset + 1;
+> > +	}
+> > +
+> > +	show_progress(offset);
+> > +
+> > +	printf("\nCompare written patterns...\n");
+> > +
+> > +	/*
+> > +	 * Check each location and invert it for the second pass.
+> > +	 */
+> > +	init_progression_bar(num_words - 1);
+> > +	for (offset = 0; offset < num_words; offset++) {
+> > +		if (!(offset & 0xfff)) {
+> > +			if (ctrlc())
+> > +				return -EINTR;
+> > +			show_progress(offset);
+> > +		}
+> > +
+> > +		ret = address_in_sdram_regions((vu_long)&start[offset]);
+> > +		if (ret)
+> > +			continue;
+> > +
+> > +		temp = start[offset];
+> > +		if (temp != (offset + 1)) {
+> > +			printf("\nFAILURE (read/write) @ 0x%08lx:"
+> > +					" expected 0x%08lx, actual 0x%08lx.\n",
+> > +					(vu_long)&start[offset],
+> > +					(offset + 1), temp);
+> > +			return -1;
+> > +		}
+> > +
+> > +		anti_pattern = ~(offset + 1);
+> > +		start[offset] = anti_pattern;
+> > +	}
+> > +
+> > +	show_progress(offset);
+> > +
+> > +	printf("\nFilling ram with inverted pattern and compare it...\n");
+> > +
+> > +	/*
+> > +	 * Check each location for the inverted pattern and zero it.
+> > +	 */
+> > +	init_progression_bar(num_words - 1);
+> > +	for (offset = 0; offset < num_words; offset++) {
+> > +		if (!(offset & 0xfff)) {
+> > +			if (ctrlc())
+> > +				return -EINTR;
+> > +			show_progress(offset);
+> > +		}
+> > +
+> > +		ret = address_in_sdram_regions((vu_long)&start[offset]);
+> > +		/*
+> > +		 * Step over barebox mem usage
+> > +		 */
+> > +		if (ret)
+> > +			continue;
+> > +
+> > +		anti_pattern = ~(offset + 1);
+> > +		temp = start[offset];
+> > +
+> > +		if (temp != anti_pattern) {
+> > +			printf("\nFAILURE (read/write): @ 0x%08lx:"
+> > +					" expected 0x%08lx, actual 0x%08lx.\n",
+> > +					(vu_long)&start[offset],
+> > +					anti_pattern, temp);
+> > +			return -1;
+> 
+> what about returning an errno?
+> 
+
+Ok. I will change that.
+
+Regards
+Alex
+
+> > +		}
+> > +
+> > +		start[offset] = 0;
+> > +	}
+> > +
+> > +	show_progress(offset);
+> > +
+> > +	/*
+> > +	 * end of progressbar
+> > +	 */
+> > +	printf("\n");
+> > +
+> > +	return 0;
+> > +}
+> > diff --git a/include/memory_test.h b/include/memory_test.h
+> > new file mode 100644
+> > index 0000000..6959dc6
+> > --- /dev/null
+> > +++ b/include/memory_test.h
+> > @@ -0,0 +1,13 @@
+> > +
+> > +#ifndef __MEMORY_TEST_H
+> > +#define __MEMORY_TEST_H
+> > +
+> > +#include <progress.h>
+> > +#include <common.h>
+> > +#include <memory.h>
+> > +#include <types.h>
+> > +
+> > +int mem_test(vu_long _start, vu_long _end,
+> > +		int bus_only);
+> > +
+> > +#endif
+> > 
+> 
+> Marc
+> 
+> -- 
+> Pengutronix e.K.                  | Marc Kleine-Budde           |
+> Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+> Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+> Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+> 
+
+
 
 _______________________________________________
 barebox mailing list
