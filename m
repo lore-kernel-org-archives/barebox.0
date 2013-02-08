@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp30.i.mail.ru ([94.100.177.90])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3knU-0000ar-8z
- for barebox@lists.infradead.org; Fri, 08 Feb 2013 10:03:08 +0000
+ id 1U3kne-0000dM-6p
+ for barebox@lists.infradead.org; Fri, 08 Feb 2013 10:03:18 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri,  8 Feb 2013 14:02:19 +0400
-Message-Id: <1360317743-25975-7-git-send-email-shc_work@mail.ru>
+Date: Fri,  8 Feb 2013 14:02:21 +0400
+Message-Id: <1360317743-25975-9-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
 References: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,49 +21,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/11] ARM: clep7212: Fix NULL pointer exception if MMU is
- enabled
+Subject: [PATCH 09/11] ARM: clps711x: Move memory initialization in common
+ CLPS711X location
 To: barebox@lists.infradead.org
 
-NOR-flash is placed at address 0x0, so if MMU is turned on, initialization
-will fails. This patch fix this problem.
+One memory initialization will be used on any CLPS711X-target,
+so move it in the common location.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/boards/clep7212/clep7212.c |    6 +++++-
- 1 files changed, 5 insertions(+), 1 deletions(-)
+ arch/arm/boards/clep7212/clep7212.c |   10 ----------
+ arch/arm/mach-clps711x/devices.c    |   12 ++++++++++++
+ 2 files changed, 12 insertions(+), 10 deletions(-)
 
 diff --git a/arch/arm/boards/clep7212/clep7212.c b/arch/arm/boards/clep7212/clep7212.c
-index a32337f..b96e480 100644
+index b96e480..ec9a9cb 100644
 --- a/arch/arm/boards/clep7212/clep7212.c
 +++ b/arch/arm/boards/clep7212/clep7212.c
-@@ -14,6 +14,7 @@
- #include <io.h>
- #include <sizes.h>
- #include <asm/armlinux.h>
-+#include <asm/mmu.h>
- #include <generated/mach-types.h>
- 
+@@ -20,16 +20,6 @@
  #include <mach/clps711x.h>
-@@ -32,6 +33,7 @@ mem_initcall(clps711x_mem_init);
+ #include <mach/devices.h>
+ 
+-static int clps711x_mem_init(void)
+-{
+-	ulong memsize = get_ram_size((ulong *)SDRAM0_BASE, SZ_32M);
+-
+-	arm_add_mem_device("ram0", SDRAM0_BASE, memsize);
+-
+-	return 0;
+-}
+-mem_initcall(clps711x_mem_init);
+-
  static int clps711x_devices_init(void)
  {
  	u32 serial_h = 0, serial_l = readl(UNIQID);
-+	void *cfi_io;
+diff --git a/arch/arm/mach-clps711x/devices.c b/arch/arm/mach-clps711x/devices.c
+index de5813a..6c760db 100644
+--- a/arch/arm/mach-clps711x/devices.c
++++ b/arch/arm/mach-clps711x/devices.c
+@@ -9,11 +9,23 @@
  
- 	/* Setup Chipselects */
- 	clps711x_setup_memcfg(0, MEMCFG_WAITSTATE_6_1 | MEMCFG_BUS_WIDTH_16);
-@@ -40,7 +42,9 @@ static int clps711x_devices_init(void)
- 			      MEMCFG_CLKENB);
- 	clps711x_setup_memcfg(3, MEMCFG_WAITSTATE_6_1 | MEMCFG_BUS_WIDTH_32);
+ #include <common.h>
+ #include <init.h>
++#include <sizes.h>
  
--	add_cfi_flash_device(0, CS0_BASE, SZ_32M, 0);
-+	cfi_io = map_io_sections(CS0_BASE, (void *)0x90000000, SZ_32M);
-+	add_cfi_flash_device(DEVICE_ID_DYNAMIC, (unsigned long)cfi_io, SZ_32M,
-+			     IORESOURCE_MEM);
+ #include <asm/io.h>
++#include <asm/memory.h>
  
- 	devfs_add_partition("nor0", 0x00000, SZ_256K, DEVFS_PARTITION_FIXED,
- 			    "self0");
+ #include <mach/clps711x.h>
+ 
++static int clps711x_mem_init(void)
++{
++	ulong memsize = get_ram_size((ulong *)SDRAM0_BASE, SZ_64M);
++
++	arm_add_mem_device("ram0", SDRAM0_BASE, memsize);
++
++	return 0;
++}
++mem_initcall(clps711x_mem_init);
++
+ inline static void _clps711x_setup_memcfg(int bank, u32 addr, u32 val)
+ {
+ 	u32 tmp = readl(addr);
 -- 
 1.7.3.4
 
