@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp30.i.mail.ru ([94.100.177.90])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3knj-0000fF-DC
- for barebox@lists.infradead.org; Fri, 08 Feb 2013 10:03:23 +0000
+ id 1U3kno-0000h5-Gk
+ for barebox@lists.infradead.org; Fri, 08 Feb 2013 10:03:28 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri,  8 Feb 2013 14:02:22 +0400
-Message-Id: <1360317743-25975-10-git-send-email-shc_work@mail.ru>
+Date: Fri,  8 Feb 2013 14:02:23 +0400
+Message-Id: <1360317743-25975-11-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
 References: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,32 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/11] ARM: clps711x: Turn off all peripherals on startup
+Subject: [PATCH 11/11] ARM: clps711x: Update defconfig
 To: barebox@lists.infradead.org
 
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/mach-clps711x/lowlevel.c |    7 +++++++
- 1 files changed, 7 insertions(+), 0 deletions(-)
+ arch/arm/configs/clps711x_defconfig |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-clps711x/lowlevel.c b/arch/arm/mach-clps711x/lowlevel.c
-index 7eed556..752619b 100644
---- a/arch/arm/mach-clps711x/lowlevel.c
-+++ b/arch/arm/mach-clps711x/lowlevel.c
-@@ -53,5 +53,12 @@ void __naked __bare_init barebox_arm_reset_vector(void)
- 	writel(SDCONF_CASLAT_3 | SDCONF_SIZE_256 | SDCONF_WIDTH_16 |
- 	       SDCONF_CLKCTL | SDCONF_ACTIVE, SDCONF);
- 
-+	/* Disable UART1, IrDa, LCD */
-+	writel(0, SYSCON1);
-+	/* Disable PWM */
-+	writew(0, PMPCON);
-+	/* Disable LED flasher */
-+	writew(0, LEDFLSH);
-+
- 	barebox_arm_entry(SDRAM0_BASE, SZ_8M, 0);
- }
+diff --git a/arch/arm/configs/clps711x_defconfig b/arch/arm/configs/clps711x_defconfig
+index cf2b3b6..3cc939e 100644
+--- a/arch/arm/configs/clps711x_defconfig
++++ b/arch/arm/configs/clps711x_defconfig
+@@ -1,13 +1,14 @@
+ CONFIG_ARCH_CLPS711X=y
++CONFIG_CLPS711X_CPU_PLL_MULT=50
+ CONFIG_AEABI=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ # CONFIG_MEMINFO is not set
+-CONFIG_TEXT_BASE=0xc0780000
++CONFIG_PBL_IMAGE=y
++CONFIG_MMU=y
+ CONFIG_EXPERIMENTAL=y
+ CONFIG_BAUDRATE=57600
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+-CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_LZO=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/clep7212/env"
+ CONFIG_CMD_EDIT=y
+@@ -32,6 +33,7 @@ CONFIG_CMD_MAGICVAR_HELP=y
+ CONFIG_DRIVER_CFI=y
+ # CONFIG_DRIVER_CFI_BANK_WIDTH_1 is not set
+ # CONFIG_DRIVER_CFI_BANK_WIDTH_4 is not set
++CONFIG_CFI_BUFFER_WRITE=y
+ CONFIG_MTD=y
+ CONFIG_DISK=y
+ CONFIG_DISK_WRITE=y
 -- 
 1.7.3.4
 
