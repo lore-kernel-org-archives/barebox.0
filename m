@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo5.mail-out.ovh.net ([188.165.51.82]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U3kHN-0006Rh-2M
- for barebox@lists.infradead.org; Fri, 08 Feb 2013 09:29:57 +0000
-Received: from mail634.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id DB5AA101C172
- for <barebox@lists.infradead.org>; Fri,  8 Feb 2013 10:40:17 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  8 Feb 2013 10:28:44 +0100
-Message-Id: <1360315724-24736-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20130208092544.GQ19322@game.jcrosoft.org>
-References: <20130208092544.GQ19322@game.jcrosoft.org>
+Received: from smtp30.i.mail.ru ([94.100.177.90])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U3kn7-0000Vv-LS
+ for barebox@lists.infradead.org; Fri, 08 Feb 2013 10:02:46 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Fri,  8 Feb 2013 14:02:15 +0400
+Message-Id: <1360317743-25975-3-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
+References: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,74 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [For master PATCH 1/1] sama5de3k: add gmacb support
+Subject: [PATCH 03/11] ARM: clps711x: Adds config option for CPU PLL multiplier
 To: barebox@lists.infradead.org
-Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
 
-Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/boards/sama5d3xek/init.c |   31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ arch/arm/mach-clps711x/Kconfig    |   13 +++++++++++++
+ arch/arm/mach-clps711x/lowlevel.c |    4 ++--
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
-index 110a83f..d17e4c2 100644
---- a/arch/arm/boards/sama5d3xek/init.c
-+++ b/arch/arm/boards/sama5d3xek/init.c
-@@ -110,6 +110,11 @@ static void ek_add_device_nand(void) {}
- #endif
+diff --git a/arch/arm/mach-clps711x/Kconfig b/arch/arm/mach-clps711x/Kconfig
+index f0adeda..d2873b4 100644
+--- a/arch/arm/mach-clps711x/Kconfig
++++ b/arch/arm/mach-clps711x/Kconfig
+@@ -10,6 +10,19 @@ config MACH_CLEP7212
  
- #if defined(CONFIG_DRIVER_NET_MACB)
-+static struct at91_ether_platform_data gmac_pdata = {
-+	.phy_interface = PHY_INTERFACE_MODE_RGMII,
-+	.phy_addr = 7,
-+};
-+
- static struct at91_ether_platform_data macb_pdata = {
- 	.phy_interface = PHY_INTERFACE_MODE_RMII,
- 	.phy_addr = 0,
-@@ -138,6 +143,28 @@ static int ek_register_mac_address_43(int id)
- 	return w1_local_mac_address_register(id, "tml", "w1-43-0");
- }
+ endchoice
  
-+static int ksz9021rn_phy_fixup(struct phy_device *phy)
-+{
-+	int value;
++menu "CLPS711X specific settings"
 +
-+#define GMII_RCCPSR	260
-+#define GMII_RRDPSR	261
-+#define GMII_ERCR	11
-+#define GMII_ERDWR	12
++config CLPS711X_CPU_PLL_MULT
++	int "CPU PLL multiplier (20-50)"
++	range 20 50
++	default "40"
++	help
++	  Define CPU PLL multiplier. PLL is calculated by formula:
++	    PLL Frequency = (PLL Multiplier / 2) * 3686400 Hz
++	  Default value is 40, for achieve 73 MHz.
 +
-+	/* Set delay values */
-+	value = GMII_RCCPSR | 0x8000;
-+	phy_write(phy, GMII_ERCR, value);
-+	value = 0xF2F4;
-+	phy_write(phy, GMII_ERDWR, value);
-+	value = GMII_RRDPSR | 0x8000;
-+	phy_write(phy, GMII_ERCR, value);
-+	value = 0x2222;
-+	phy_write(phy, GMII_ERDWR, value);
++endmenu
 +
-+	return 0;
-+}
-+
- static void ek_add_device_eth(void)
- {
- 	if (w1_local_mac_address_register(0, "tml", "w1-2d-0"))
-@@ -147,6 +174,10 @@ static void ek_add_device_eth(void)
- 	if (ek_register_mac_address_23(1))
- 		ek_register_mac_address_43(1);
+ config BOARDINFO
+ 	default "Cirrus Logic CLEP7212" if MACH_CLEP7212
  
-+	phy_register_fixup_for_uid(PHY_ID_KSZ9021, MICREL_PHY_ID_MASK,
-+					   ksz9021rn_phy_fixup);
-+
-+	at91_add_device_eth(0, &gmac_pdata);
- 	at91_add_device_eth(1, &macb_pdata);
- }
- #else
+diff --git a/arch/arm/mach-clps711x/lowlevel.c b/arch/arm/mach-clps711x/lowlevel.c
+index 0249c60..245ac93 100644
+--- a/arch/arm/mach-clps711x/lowlevel.c
++++ b/arch/arm/mach-clps711x/lowlevel.c
+@@ -18,10 +18,10 @@
+ #include <mach/clps711x.h>
+ 
+ #define MAIN_CLOCK		3686400
+-#define CPU_SPEED		92160000
++#define CPU_SPEED		((CONFIG_CLPS711X_CPU_PLL_MULT * MAIN_CLOCK) / 2)
+ #define BUS_SPEED		(CPU_SPEED / 2)
+ 
+-#define PLL_VALUE		(((CPU_SPEED * 2) / MAIN_CLOCK) << 24)
++#define PLL_VALUE		(CONFIG_CLPS711X_CPU_PLL_MULT << 24)
+ #define SDRAM_REFRESH_RATE	(64 * (BUS_SPEED / (8192 * 1000)))
+ 
+ void __naked __bare_init barebox_arm_reset_vector(void)
 -- 
-1.7.10.4
+1.7.3.4
 
 
 _______________________________________________
