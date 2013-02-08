@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp30.i.mail.ru ([94.100.177.90])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3kn1-0000Up-QJ
- for barebox@lists.infradead.org; Fri, 08 Feb 2013 10:02:40 +0000
+ id 1U3knP-0000Z0-1A
+ for barebox@lists.infradead.org; Fri, 08 Feb 2013 10:03:03 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri,  8 Feb 2013 14:02:14 +0400
-Message-Id: <1360317743-25975-2-git-send-email-shc_work@mail.ru>
+Date: Fri,  8 Feb 2013 14:02:18 +0400
+Message-Id: <1360317743-25975-6-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
 References: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,28 +21,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/11] ARM: clps711x: Fix SDRAM setup comment
+Subject: [PATCH 06/11] ARM: clps711x: Mark private functions that not will be
+ used outside as static
 To: barebox@lists.infradead.org
 
-We are set up maximum SDRAM size 64MB, so fix comment text.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/mach-clps711x/lowlevel.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ arch/arm/mach-clps711x/clock.c   |    8 +++-----
+ arch/arm/mach-clps711x/devices.c |    2 +-
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-clps711x/lowlevel.c b/arch/arm/mach-clps711x/lowlevel.c
-index b4d1bf1..0249c60 100644
---- a/arch/arm/mach-clps711x/lowlevel.c
-+++ b/arch/arm/mach-clps711x/lowlevel.c
-@@ -49,7 +49,7 @@ void __naked __bare_init barebox_arm_reset_vector(void)
- 	/* Setup Refresh Rate (64ms 8K Blocks) */
- 	writel(SDRAM_REFRESH_RATE, SDRFPR);
+diff --git a/arch/arm/mach-clps711x/clock.c b/arch/arm/mach-clps711x/clock.c
+index 5cafba9..09cbaf9 100644
+--- a/arch/arm/mach-clps711x/clock.c
++++ b/arch/arm/mach-clps711x/clock.c
+@@ -15,13 +15,11 @@
  
--	/* Setup SDRAM (32MB, 16Bit*2, CAS=3) */
-+	/* Setup SDRAM params (64MB, 16Bit*2, CAS=3) */
- 	writel(SDCONF_CASLAT_3 | SDCONF_SIZE_256 | SDCONF_WIDTH_16 |
- 	       SDCONF_CLKCTL | SDCONF_ACTIVE, SDCONF);
+ #include <mach/clps711x.h>
+ 
+-struct clk {
++static struct clk {
+ 	unsigned long	rate;
+-};
+-
+-static struct clk uart_clk, bus_clk;
++} uart_clk, bus_clk;
+ 
+-uint64_t clocksource_read(void)
++static uint64_t clocksource_read(void)
+ {
+ 	return ~readw(TC2D);
+ }
+diff --git a/arch/arm/mach-clps711x/devices.c b/arch/arm/mach-clps711x/devices.c
+index 08f27d2..de5813a 100644
+--- a/arch/arm/mach-clps711x/devices.c
++++ b/arch/arm/mach-clps711x/devices.c
+@@ -14,7 +14,7 @@
+ 
+ #include <mach/clps711x.h>
+ 
+-inline void _clps711x_setup_memcfg(int bank, u32 addr, u32 val)
++inline static void _clps711x_setup_memcfg(int bank, u32 addr, u32 val)
+ {
+ 	u32 tmp = readl(addr);
  
 -- 
 1.7.3.4
