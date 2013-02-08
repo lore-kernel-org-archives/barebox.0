@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp30.i.mail.ru ([94.100.177.90])
+Received: from eusmtp01.atmel.com ([212.144.249.243])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3kno-0000h5-Gk
- for barebox@lists.infradead.org; Fri, 08 Feb 2013 10:03:28 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri,  8 Feb 2013 14:02:23 +0400
-Message-Id: <1360317743-25975-11-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
-References: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
+ id 1U3l81-0002lU-Hr
+ for barebox@lists.infradead.org; Fri, 08 Feb 2013 10:24:22 +0000
+Message-ID: <5114D248.5030208@atmel.com>
+Date: Fri, 8 Feb 2013 11:24:08 +0100
+From: Nicolas Ferre <nicolas.ferre@atmel.com>
+MIME-Version: 1.0
+References: <20130208092544.GQ19322@game.jcrosoft.org>
+ <1360315724-24736-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1360315724-24736-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,52 +18,85 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/11] ARM: clps711x: Update defconfig
-To: barebox@lists.infradead.org
+Subject: Re: [For master PATCH 1/1] sama5de3k: add gmacb support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
+
+On 02/08/2013 10:28 AM, Jean-Christophe PLAGNIOL-VILLARD :
+> Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
+
+Tested-by: Nicolas Ferre <nicolas.ferre@atmel.com>
+
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/boards/sama5d3xek/init.c |   31 +++++++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+> 
+> diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
+> index 110a83f..d17e4c2 100644
+> --- a/arch/arm/boards/sama5d3xek/init.c
+> +++ b/arch/arm/boards/sama5d3xek/init.c
+> @@ -110,6 +110,11 @@ static void ek_add_device_nand(void) {}
+>  #endif
+>  
+>  #if defined(CONFIG_DRIVER_NET_MACB)
+> +static struct at91_ether_platform_data gmac_pdata = {
+> +	.phy_interface = PHY_INTERFACE_MODE_RGMII,
+> +	.phy_addr = 7,
+> +};
+> +
+>  static struct at91_ether_platform_data macb_pdata = {
+>  	.phy_interface = PHY_INTERFACE_MODE_RMII,
+>  	.phy_addr = 0,
+> @@ -138,6 +143,28 @@ static int ek_register_mac_address_43(int id)
+>  	return w1_local_mac_address_register(id, "tml", "w1-43-0");
+>  }
+>  
+> +static int ksz9021rn_phy_fixup(struct phy_device *phy)
+> +{
+> +	int value;
+> +
+> +#define GMII_RCCPSR	260
+> +#define GMII_RRDPSR	261
+> +#define GMII_ERCR	11
+> +#define GMII_ERDWR	12
+> +
+> +	/* Set delay values */
+> +	value = GMII_RCCPSR | 0x8000;
+> +	phy_write(phy, GMII_ERCR, value);
+> +	value = 0xF2F4;
+> +	phy_write(phy, GMII_ERDWR, value);
+> +	value = GMII_RRDPSR | 0x8000;
+> +	phy_write(phy, GMII_ERCR, value);
+> +	value = 0x2222;
+> +	phy_write(phy, GMII_ERDWR, value);
+> +
+> +	return 0;
+> +}
+> +
+>  static void ek_add_device_eth(void)
+>  {
+>  	if (w1_local_mac_address_register(0, "tml", "w1-2d-0"))
+> @@ -147,6 +174,10 @@ static void ek_add_device_eth(void)
+>  	if (ek_register_mac_address_23(1))
+>  		ek_register_mac_address_43(1);
+>  
+> +	phy_register_fixup_for_uid(PHY_ID_KSZ9021, MICREL_PHY_ID_MASK,
+> +					   ksz9021rn_phy_fixup);
+> +
+> +	at91_add_device_eth(0, &gmac_pdata);
+>  	at91_add_device_eth(1, &macb_pdata);
+>  }
+>  #else
+> 
 
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/configs/clps711x_defconfig |    6 ++++--
- 1 files changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/configs/clps711x_defconfig b/arch/arm/configs/clps711x_defconfig
-index cf2b3b6..3cc939e 100644
---- a/arch/arm/configs/clps711x_defconfig
-+++ b/arch/arm/configs/clps711x_defconfig
-@@ -1,13 +1,14 @@
- CONFIG_ARCH_CLPS711X=y
-+CONFIG_CLPS711X_CPU_PLL_MULT=50
- CONFIG_AEABI=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- # CONFIG_MEMINFO is not set
--CONFIG_TEXT_BASE=0xc0780000
-+CONFIG_PBL_IMAGE=y
-+CONFIG_MMU=y
- CONFIG_EXPERIMENTAL=y
- CONFIG_BAUDRATE=57600
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
--CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_LZO=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/clep7212/env"
- CONFIG_CMD_EDIT=y
-@@ -32,6 +33,7 @@ CONFIG_CMD_MAGICVAR_HELP=y
- CONFIG_DRIVER_CFI=y
- # CONFIG_DRIVER_CFI_BANK_WIDTH_1 is not set
- # CONFIG_DRIVER_CFI_BANK_WIDTH_4 is not set
-+CONFIG_CFI_BUFFER_WRITE=y
- CONFIG_MTD=y
- CONFIG_DISK=y
- CONFIG_DISK_WRITE=y
 -- 
-1.7.3.4
-
+Nicolas Ferre
 
 _______________________________________________
 barebox mailing list
