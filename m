@@ -1,22 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo1.mail-out.ovh.net ([178.33.104.224]
+Received: from 8.mo1.mail-out.ovh.net ([178.33.110.239]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U3o9Q-0003Y8-E3
- for barebox@lists.infradead.org; Fri, 08 Feb 2013 13:38:02 +0000
+ id 1U3oAJ-0003p5-TD
+ for barebox@lists.infradead.org; Fri, 08 Feb 2013 13:38:57 +0000
 Received: from mail615.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 78F40FFC756
- for <barebox@lists.infradead.org>; Fri,  8 Feb 2013 14:53:06 +0100 (CET)
-Date: Fri, 8 Feb 2013 14:36:47 +0100
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id C98AEFFC724
+ for <barebox@lists.infradead.org>; Fri,  8 Feb 2013 14:54:02 +0100 (CET)
+Date: Fri, 8 Feb 2013 14:37:44 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130208133647.GS19322@game.jcrosoft.org>
-References: <20130208090739.GP19322@game.jcrosoft.org>
- <1360315130-23872-1-git-send-email-plagnioj@jcrosoft.com>
- <1360315130-23872-6-git-send-email-plagnioj@jcrosoft.com>
- <20130208122008.GA7330@x61s.8.8.8.8>
+Message-ID: <20130208133744.GT19322@game.jcrosoft.org>
+References: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
+ <1360317743-25975-3-git-send-email-shc_work@mail.ru>
+ <20130208111126.GR19322@game.jcrosoft.org>
+ <1360324732.215067481@f218.mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130208122008.GA7330@x61s.8.8.8.8>
+In-Reply-To: <1360324732.215067481@f218.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,129 +29,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/7] macb: fix tx ring size
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: barebox@lists.infradead.org, Nicolas Ferre <nicolas.ferre@atmel.com>
+Subject: Re: [SPAM] Re[2]: [PATCH 03/11] ARM: clps711x: Adds config option
+ for CPU PLL multiplier
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-On 13:20 Fri 08 Feb     , Alexander Aring wrote:
-> Hi,
+On 15:58 Fri 08 Feb     , Alexander Shiyan wrote:
+> Hello.
 > 
-> On Fri, Feb 08, 2013 at 10:18:49AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > the mininal tx ring size is 2 as if one we wrap on the same descriptor
-> > and can cause IP lock on GEM (gigabit version) this is always the case
+> ...
+> > > +menu "CLPS711X specific settings"
+> > > +
+> > > +config CLPS711X_CPU_PLL_MULT
+> > > +	int "CPU PLL multiplier (20-50)"
+> > > +	range 20 50
+> > > +	default "40"
+> > > +	help
+> > > +	  Define CPU PLL multiplier. PLL is calculated by formula:
+> > > +	    PLL Frequency = (PLL Multiplier / 2) * 3686400 Hz
+> > > +	  Default value is 40, for achieve 73 MHz.
+> > > +
+> > this board specific put this in c code
+> > kconfig is too easy to break
 > > 
-> > Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  drivers/net/macb.c |   50 ++++++++++++++++++++++++++++++++++----------------
-> >  1 file changed, 34 insertions(+), 16 deletions(-)
-> > 
-> > diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-> > index d6b60aa..3a65af7 100644
-> > --- a/drivers/net/macb.c
-> > +++ b/drivers/net/macb.c
-> > @@ -53,15 +53,17 @@
-> >  
-> >  #define MACB_RX_BUFFER_SIZE	128
-> >  #define RX_BUFFER_MULTIPLE	64  /* bytes */
-> > -#define RX_RING_SIZE		32 /* must be power of 2 */
-> > -#define RX_RING_BYTES		(sizeof(struct macb_dma_desc) * RX_RING_SIZE)
-> > +#define RX_NB_PACKET		10
-> > +#define TX_RING_SIZE		2 /* must be power of 2 */
-> >  
-> > -#define TX_RING_BYTES		(sizeof(struct macb_dma_desc))
-> > +#define RX_RING_BYTES(bp)	(sizeof(struct macb_dma_desc) * bp->rx_ring_size)
-> > +#define TX_RING_BYTES		(sizeof(struct macb_dma_desc) * TX_RING_SIZE)
-> >  
-> >  struct macb_device {
-> >  	void			__iomem *regs;
-> >  
-> >  	unsigned int		rx_tail;
-> > +	unsigned int		tx_head;
-> >  	unsigned int		tx_tail;
-> >  
-> >  	void			*rx_buffer;
-> > @@ -86,23 +88,36 @@ static int macb_send(struct eth_device *edev, void *packet,
-> >  {
-> >  	struct macb_device *macb = edev->priv;
-> >  	unsigned long ctrl;
-> > -	int ret;
-> > -
-> > -	dev_dbg(macb->dev, "%s\n", __func__);
-> > +	int ret = 0;
-> > +	uint64_t start;
-> > +	unsigned int tx_head = macb->tx_head;
-> >  
-> >  	ctrl = MACB_BF(TX_FRMLEN, length);
-> > -	ctrl |= MACB_BIT(TX_LAST) | MACB_BIT(TX_WRAP);
-> > +	ctrl |= MACB_BIT(TX_LAST);
-> >  
-> > -	macb->tx_ring[0].ctrl = ctrl;
-> > -	macb->tx_ring[0].addr = (ulong)packet;
-> > +	if (tx_head == (TX_RING_SIZE - 1)) {
-> > +		ctrl |= MACB_BIT(TX_WRAP);
-> > +		macb->tx_head = 0;
-> > +	} else {
-> > +		macb->tx_head++;
-> > +	}
-> > +
-> > +	macb->tx_ring[tx_head].ctrl = ctrl;
-> > +	macb->tx_ring[tx_head].addr = (ulong)packet;
-> >  	barrier();
-> >  	dma_flush_range((ulong) packet, (ulong)packet + length);
-> >  	macb_writel(macb, NCR, MACB_BIT(TE) | MACB_BIT(RE) | MACB_BIT(TSTART));
-> >  
-> > -	ret = wait_on_timeout(100 * MSECOND,
-> > -		!(macb->tx_ring[0].ctrl & MACB_BIT(TX_USED)));
-> > -
-> > -	ctrl = macb->tx_ring[0].ctrl;
-> > +	start = get_time_ns();
-> > +	ret = -ETIMEDOUT;
+> > check how we do on at91
 > 
-> Is this ret ever used?
-for sure we return it if we timeout
+> This is not board-specific, this is CPU-specific. PLL multiplier is set up
+> at the start and we not touch it anymore since all system frequencies is
+> depends on it, including SDRAM refresh.
+> How to place this configurable parameter in C code i am not understand.
+> For Kconfig, we can add additional compile-time checker into lowlevel unit
+> which uses this symbol:
+> 
+> #if (CLPS711X_CPU_PLL_MULT < 20) || (CLPS711X_CPU_PLL_MULT > 50)
+> #error "CPU PLL multiplier out of range"
+> #endif
+so it's even worse
 
-this is the ret of the send
+detect the cpu in c and dorp the Kconfig
 
 Best Regards,
 J.
 > 
-> > +	do {
-> > +		barrier();
-> > +		ctrl = macb->tx_ring[0].ctrl;
-> > +		if (ctrl & MACB_BIT(TX_USED)) {
-> > +			ret = 0;
-> > +			break;
-> > +		}
-> > +	} while (!is_timeout(start, 100 * MSECOND));
-> >  
-> >  	if (ctrl & MACB_BIT(TX_UNDERRUN))
-> >  		dev_err(macb->dev, "TX underrun\n");
-> > @@ -244,10 +259,13 @@ static void macb_init(struct macb_device *macb)
-> >  	}
-> >  	macb->rx_ring[RX_RING_SIZE - 1].addr |= MACB_BIT(RX_WRAP);
-> >  
-> > -	macb->tx_ring[0].addr = 0;
-> > -	macb->tx_ring[0].ctrl = MACB_BIT(TX_USED) | MACB_BIT(TX_WRAP);
-> > +	for (i = 0; i < TX_RING_SIZE; i++) {
-> > +		macb->tx_ring[i].addr = 0;
-> > +		macb->tx_ring[i].ctrl = MACB_BIT(TX_USED);
-> > +	}
-> > +	macb->tx_ring[TX_RING_SIZE - 1].addr |= MACB_BIT(TX_WRAP);
-> >  
-> > -	macb->rx_tail = macb->tx_tail = 0;
-> > +	macb->rx_tail = macb->tx_head = macb->tx_tail = 0;
-> >  
-> >  	macb_writel(macb, RBQP, (ulong)macb->rx_ring);
-> >  	macb_writel(macb, TBQP, (ulong)macb->tx_ring);
-> > -- 
-> > 1.7.10.4
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
+> Thanks!
+> 
+> ---
 
 _______________________________________________
 barebox mailing list
