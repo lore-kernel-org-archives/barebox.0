@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp30.i.mail.ru ([94.100.177.90])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3knE-0000Ww-CJ
- for barebox@lists.infradead.org; Fri, 08 Feb 2013 10:02:52 +0000
+ id 1U3knZ-0000c7-6y
+ for barebox@lists.infradead.org; Fri, 08 Feb 2013 10:03:13 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri,  8 Feb 2013 14:02:16 +0400
-Message-Id: <1360317743-25975-4-git-send-email-shc_work@mail.ru>
+Date: Fri,  8 Feb 2013 14:02:20 +0400
+Message-Id: <1360317743-25975-8-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
 References: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,28 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/11] ARM: clps711x: Decrease initial memory size to 8MB
+Subject: [PATCH 08/11] ARM: mmu: Clear unpredictable bits for translation table
 To: barebox@lists.infradead.org
 
-Minimal known SDRAM size for CLPS711X-target is 8MB, so decrease
-initial memory size to this value.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/mach-clps711x/lowlevel.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ arch/arm/cpu/mmu.c |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/mach-clps711x/lowlevel.c b/arch/arm/mach-clps711x/lowlevel.c
-index 245ac93..7eed556 100644
---- a/arch/arm/mach-clps711x/lowlevel.c
-+++ b/arch/arm/mach-clps711x/lowlevel.c
-@@ -53,5 +53,5 @@ void __naked __bare_init barebox_arm_reset_vector(void)
- 	writel(SDCONF_CASLAT_3 | SDCONF_SIZE_256 | SDCONF_WIDTH_16 |
- 	       SDCONF_CLKCTL | SDCONF_ACTIVE, SDCONF);
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index 73dd0d3..99f12b5 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -279,6 +279,9 @@ static int mmu_init(void)
+ 	if (get_cr() & CR_M) {
+ 		asm volatile ("mrc  p15,0,%0,c2,c0,0" : "=r"(ttb));
  
--	barebox_arm_entry(SDRAM0_BASE, SZ_32M, 0);
-+	barebox_arm_entry(SDRAM0_BASE, SZ_8M, 0);
- }
++		/* Clear unpredictable bits [13:0] */
++		ttb = (unsigned long *)((unsigned long)ttb & ~0x3fff);
++
+ 		if (!request_sdram_region("ttb", (unsigned long)ttb, SZ_16K))
+ 			pr_err("Error: Can't request SDRAM region for ttb\n");
+ 	} else {
 -- 
 1.7.3.4
 
