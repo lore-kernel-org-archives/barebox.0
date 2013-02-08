@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qa0-f42.google.com ([209.85.216.42])
+Received: from smtp31.i.mail.ru ([94.100.177.91])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3r6R-0007Jr-QM
- for barebox@lists.infradead.org; Fri, 08 Feb 2013 16:47:09 +0000
-Received: by mail-qa0-f42.google.com with SMTP id cr7so401196qab.15
- for <barebox@lists.infradead.org>; Fri, 08 Feb 2013 08:47:06 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <1360231566-9514-1-git-send-email-h.feurstein@gmail.com>
-References: <1360231566-9514-1-git-send-email-h.feurstein@gmail.com>
-Date: Fri, 8 Feb 2013 17:47:06 +0100
-Message-ID: <CAFfN3gUJiZ=NNxNJaL4rchWfHwOS9gjM-O_EEPUCK0JToqx5=A@mail.gmail.com>
-From: Hubert Feurstein <h.feurstein@gmail.com>
+ id 1U3r9h-0008E9-Ri
+ for barebox@lists.infradead.org; Fri, 08 Feb 2013 16:50:31 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Fri,  8 Feb 2013 20:50:24 +0400
+Message-Id: <1360342224-30331-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,64 +14,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net fec_imx: add support for i.MX6 1000Mbps mode
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH] net: CPSW: Fix non-OMAP barebox building with DRIVER_NET_CPSW
+ option
+To: barebox@lists.infradead.org
 
-Any comments on this?
+  CC      drivers/net/cpsw.o
+  drivers/net/cpsw.c:34:23: error: mach/cpsw.h: No such file or directory
+  drivers/net/cpsw.c:203: error: field 'data' has incomplete type
+  drivers/net/cpsw.c: In function 'cpsw_open':
+  drivers/net/cpsw.c:773: error: invalid use of undefined type 'struct cpsw_slave_data'
+  drivers/net/cpsw.c:773: error: dereferencing pointer to incomplete type
+  drivers/net/cpsw.c:774: error: invalid use of undefined type 'struct cpsw_slave_data'
+  drivers/net/cpsw.c:774: error: dereferencing pointer to incomplete type
+  drivers/net/cpsw.c: In function 'cpsw_probe':
+  drivers/net/cpsw.c:967: error: dereferencing pointer to incomplete type
+  drivers/net/cpsw.c:969: error: dereferencing pointer to incomplete type
+  make[2]: *** [drivers/net/cpsw.o] Error 1
+  make[1]: *** [drivers/net] Error 2
+  make: *** [drivers] Error 2
 
-2013/2/7 Hubert Feurstein <h.feurstein@gmail.com>:
-> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
-> ---
->  drivers/net/fec_imx.c | 14 ++++++++++----
->  drivers/net/fec_imx.h |  1 +
->  2 files changed, 11 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-> index 2378a19..7320f07 100644
-> --- a/drivers/net/fec_imx.c
-> +++ b/drivers/net/fec_imx.c
-> @@ -361,12 +361,18 @@ static int fec_init(struct eth_device *dev)
->  static void fec_update_linkspeed(struct eth_device *edev)
->  {
->         struct fec_priv *fec = (struct fec_priv *)edev->priv;
-> +       int speed = edev->phydev->speed;
-> +       u32 rcntl = readl(fec->regs + FEC_R_CNTRL) & ~FEC_R_CNTRL_RMII_10T;
-> +       u32 ecntl = readl(fec->regs + FEC_ECNTRL) & ~FEC_ECNTRL_SPEED;
->
-> -       if (edev->phydev->speed == SPEED_10) {
-> -               u32 rcntl = readl(fec->regs + FEC_R_CNTRL);
-> +       if (speed == SPEED_10)
->                 rcntl |= FEC_R_CNTRL_RMII_10T;
-> -               writel(rcntl, fec->regs + FEC_R_CNTRL);
-> -       }
-> +
-> +       if (speed == SPEED_1000)
-> +               ecntl |= FEC_ECNTRL_SPEED;
-> +
-> +       writel(rcntl, fec->regs + FEC_R_CNTRL);
-> +       writel(ecntl, fec->regs + FEC_ECNTRL);
->  }
->
->  /**
-> diff --git a/drivers/net/fec_imx.h b/drivers/net/fec_imx.h
-> index 1eb1eba..29aea85 100644
-> --- a/drivers/net/fec_imx.h
-> +++ b/drivers/net/fec_imx.h
-> @@ -92,6 +92,7 @@
->
->  #define FEC_ECNTRL_RESET                0x00000001     /**< reset the FEC */
->  #define FEC_ECNTRL_ETHER_EN             0x00000002     /**< enable the FEC */
-> +#define FEC_ECNTRL_SPEED                0x00000020     /**< i.MX6: enable 1000Mbps mode */
->
->  /**
->   * @brief Descriptor buffer alignment
-> --
-> 1.8.1
->
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ drivers/net/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index cf6ceee..2b7decd 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -33,6 +33,7 @@ config DRIVER_NET_CS8900
+ 
+ config DRIVER_NET_CPSW
+ 	bool "CPSW ethernet driver"
++	depends on ARCH_OMAP
+ 	select PHYLIB
+ 
+ config DRIVER_NET_SMC911X
+-- 
+1.7.12.4
+
 
 _______________________________________________
 barebox mailing list
