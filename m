@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f51.google.com ([209.85.214.51])
+Received: from smtp30.i.mail.ru ([94.100.177.90])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3mvS-0004kr-Qv
- for barebox@lists.infradead.org; Fri, 08 Feb 2013 12:19:31 +0000
-Received: by mail-bk0-f51.google.com with SMTP id ik5so1658897bkc.10
- for <barebox@lists.infradead.org>; Fri, 08 Feb 2013 04:19:27 -0800 (PST)
-Date: Fri, 8 Feb 2013 13:20:10 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130208122008.GA7330@x61s.8.8.8.8>
-References: <20130208090739.GP19322@game.jcrosoft.org>
- <1360315130-23872-1-git-send-email-plagnioj@jcrosoft.com>
- <1360315130-23872-6-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1360315130-23872-6-git-send-email-plagnioj@jcrosoft.com>
+ id 1U3n5L-0005Pi-78
+ for barebox@lists.infradead.org; Fri, 08 Feb 2013 12:29:43 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Fri,  8 Feb 2013 16:28:27 +0400
+Message-Id: <1360326508-30214-2-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1360326508-30214-1-git-send-email-shc_work@mail.ru>
+References: <1360326508-30214-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,126 +16,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/7] macb: fix tx ring size
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Nicolas Ferre <nicolas.ferre@atmel.com>
+Subject: [PATCH 2/3] ARM: ccmx51: Replace ifdefs with IS_ENABLED
+To: barebox@lists.infradead.org
 
-Hi,
 
-On Fri, Feb 08, 2013 at 10:18:49AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> the mininal tx ring size is 2 as if one we wrap on the same descriptor
-> and can cause IP lock on GEM (gigabit version) this is always the case
-> 
-> Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  drivers/net/macb.c |   50 ++++++++++++++++++++++++++++++++++----------------
->  1 file changed, 34 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-> index d6b60aa..3a65af7 100644
-> --- a/drivers/net/macb.c
-> +++ b/drivers/net/macb.c
-> @@ -53,15 +53,17 @@
->  
->  #define MACB_RX_BUFFER_SIZE	128
->  #define RX_BUFFER_MULTIPLE	64  /* bytes */
-> -#define RX_RING_SIZE		32 /* must be power of 2 */
-> -#define RX_RING_BYTES		(sizeof(struct macb_dma_desc) * RX_RING_SIZE)
-> +#define RX_NB_PACKET		10
-> +#define TX_RING_SIZE		2 /* must be power of 2 */
->  
-> -#define TX_RING_BYTES		(sizeof(struct macb_dma_desc))
-> +#define RX_RING_BYTES(bp)	(sizeof(struct macb_dma_desc) * bp->rx_ring_size)
-> +#define TX_RING_BYTES		(sizeof(struct macb_dma_desc) * TX_RING_SIZE)
->  
->  struct macb_device {
->  	void			__iomem *regs;
->  
->  	unsigned int		rx_tail;
-> +	unsigned int		tx_head;
->  	unsigned int		tx_tail;
->  
->  	void			*rx_buffer;
-> @@ -86,23 +88,36 @@ static int macb_send(struct eth_device *edev, void *packet,
->  {
->  	struct macb_device *macb = edev->priv;
->  	unsigned long ctrl;
-> -	int ret;
-> -
-> -	dev_dbg(macb->dev, "%s\n", __func__);
-> +	int ret = 0;
-> +	uint64_t start;
-> +	unsigned int tx_head = macb->tx_head;
->  
->  	ctrl = MACB_BF(TX_FRMLEN, length);
-> -	ctrl |= MACB_BIT(TX_LAST) | MACB_BIT(TX_WRAP);
-> +	ctrl |= MACB_BIT(TX_LAST);
->  
-> -	macb->tx_ring[0].ctrl = ctrl;
-> -	macb->tx_ring[0].addr = (ulong)packet;
-> +	if (tx_head == (TX_RING_SIZE - 1)) {
-> +		ctrl |= MACB_BIT(TX_WRAP);
-> +		macb->tx_head = 0;
-> +	} else {
-> +		macb->tx_head++;
-> +	}
-> +
-> +	macb->tx_ring[tx_head].ctrl = ctrl;
-> +	macb->tx_ring[tx_head].addr = (ulong)packet;
->  	barrier();
->  	dma_flush_range((ulong) packet, (ulong)packet + length);
->  	macb_writel(macb, NCR, MACB_BIT(TE) | MACB_BIT(RE) | MACB_BIT(TSTART));
->  
-> -	ret = wait_on_timeout(100 * MSECOND,
-> -		!(macb->tx_ring[0].ctrl & MACB_BIT(TX_USED)));
-> -
-> -	ctrl = macb->tx_ring[0].ctrl;
-> +	start = get_time_ns();
-> +	ret = -ETIMEDOUT;
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/boards/ccxmx51/ccxmx51.c |   10 ++--------
+ 1 files changed, 2 insertions(+), 8 deletions(-)
 
-Is this ret ever used?
+diff --git a/arch/arm/boards/ccxmx51/ccxmx51.c b/arch/arm/boards/ccxmx51/ccxmx51.c
+index 5ec304b..01e0204 100644
+--- a/arch/arm/boards/ccxmx51/ccxmx51.c
++++ b/arch/arm/boards/ccxmx51/ccxmx51.c
+@@ -80,12 +80,10 @@ struct imx_nand_platform_data nand_info = {
+ 	.flash_bbt	= 1,
+ };
+ 
+-#ifdef CONFIG_DRIVER_NET_FEC_IMX
+ static struct fec_platform_data fec_info = {
+ 	.xcv_type	= MII100,
+ 	.phy_addr	= 7,
+ };
+-#endif
+ 
+ static iomux_v3_cfg_t ccxmx51_pads[] = {
+ 	/* UART1 */
+@@ -431,15 +429,12 @@ static int ccxmx51_devices_init(void)
+ 	devfs_add_partition("nand0", 0x80000, 0x40000, DEVFS_PARTITION_FIXED, "env_raw");
+ 	dev_add_bb_dev("env_raw", "env0");
+ 
+-#ifdef CONFIG_DRIVER_NET_FEC_IMX
+-	if (ccxmx51_id->eth0 && !pwr) {
++	if (IS_ENABLED(CONFIG_DRIVER_NET_FEC_IMX) && ccxmx51_id->eth0 && !pwr) {
+ 		eth_register_ethaddr(0, hwid);
+ 		imx51_add_fec(&fec_info);
+ 	}
+-#endif
+ 
+-#ifdef CONFIG_DRIVER_NET_SMC911X
+-	if (ccxmx51_id->eth1 && !pwr) {
++	if (IS_ENABLED(CONFIG_DRIVER_NET_SMC911X) && ccxmx51_id->eth1 && !pwr) {
+ 		/* Configure the WEIM CS5 timming, bus width, etc */
+ 		/* 16 bit on DATA[31..16], not multiplexed, async */
+ 		writel(0x00420081, MX51_WEIM_BASE_ADDR + WEIM_CSxGCR1(5));
+@@ -455,7 +450,6 @@ static int ccxmx51_devices_init(void)
+ 		/* LAN9221 network controller */
+ 		add_generic_device("smc911x", 1, NULL, MX51_CS5_BASE_ADDR, SZ_4K, IORESOURCE_MEM, NULL);
+ 	}
+-#endif
+ 
+ 	ccxmx51_otghost_init();
+ 
+-- 
+1.7.3.4
 
-> +	do {
-> +		barrier();
-> +		ctrl = macb->tx_ring[0].ctrl;
-> +		if (ctrl & MACB_BIT(TX_USED)) {
-> +			ret = 0;
-> +			break;
-> +		}
-> +	} while (!is_timeout(start, 100 * MSECOND));
->  
->  	if (ctrl & MACB_BIT(TX_UNDERRUN))
->  		dev_err(macb->dev, "TX underrun\n");
-> @@ -244,10 +259,13 @@ static void macb_init(struct macb_device *macb)
->  	}
->  	macb->rx_ring[RX_RING_SIZE - 1].addr |= MACB_BIT(RX_WRAP);
->  
-> -	macb->tx_ring[0].addr = 0;
-> -	macb->tx_ring[0].ctrl = MACB_BIT(TX_USED) | MACB_BIT(TX_WRAP);
-> +	for (i = 0; i < TX_RING_SIZE; i++) {
-> +		macb->tx_ring[i].addr = 0;
-> +		macb->tx_ring[i].ctrl = MACB_BIT(TX_USED);
-> +	}
-> +	macb->tx_ring[TX_RING_SIZE - 1].addr |= MACB_BIT(TX_WRAP);
->  
-> -	macb->rx_tail = macb->tx_tail = 0;
-> +	macb->rx_tail = macb->tx_head = macb->tx_tail = 0;
->  
->  	macb_writel(macb, RBQP, (ulong)macb->rx_ring);
->  	macb_writel(macb, TBQP, (ulong)macb->tx_ring);
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
