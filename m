@@ -1,22 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo1.mail-out.ovh.net ([178.33.110.239]
- helo=mo1.mail-out.ovh.net)
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U3oAJ-0003p5-TD
- for barebox@lists.infradead.org; Fri, 08 Feb 2013 13:38:57 +0000
-Received: from mail615.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id C98AEFFC724
- for <barebox@lists.infradead.org>; Fri,  8 Feb 2013 14:54:02 +0100 (CET)
-Date: Fri, 8 Feb 2013 14:37:44 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130208133744.GT19322@game.jcrosoft.org>
-References: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
- <1360317743-25975-3-git-send-email-shc_work@mail.ru>
- <20130208111126.GR19322@game.jcrosoft.org>
- <1360324732.215067481@f218.mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1360324732.215067481@f218.mail.ru>
+ id 1U3pmL-0000uN-05
+ for barebox@lists.infradead.org; Fri, 08 Feb 2013 15:22:18 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 7BBA9BF0ED
+ for <barebox@lists.infradead.org>; Sat,  9 Feb 2013 23:36:05 +0100 (CET)
+Message-ID: <1360336929.3798.11.camel@lws-weitzel>
+From: Jan Weitzel <J.Weitzel@phytec.de>
+Date: Fri, 08 Feb 2013 16:22:09 +0100
+Mime-Version: 1.0
+Reply-To: J.Weitzel@phytec.de
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,51 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [SPAM] Re[2]: [PATCH 03/11] ARM: clps711x: Adds config option
- for CPU PLL multiplier
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: v2013.02.0 phyCORE-OMAP4 MLO to big
+To: barebox@lists.infradead.org
 
-On 15:58 Fri 08 Feb     , Alexander Shiyan wrote:
-> Hello.
-> 
-> ...
-> > > +menu "CLPS711X specific settings"
-> > > +
-> > > +config CLPS711X_CPU_PLL_MULT
-> > > +	int "CPU PLL multiplier (20-50)"
-> > > +	range 20 50
-> > > +	default "40"
-> > > +	help
-> > > +	  Define CPU PLL multiplier. PLL is calculated by formula:
-> > > +	    PLL Frequency = (PLL Multiplier / 2) * 3686400 Hz
-> > > +	  Default value is 40, for achieve 73 MHz.
-> > > +
-> > this board specific put this in c code
-> > kconfig is too easy to break
-> > 
-> > check how we do on at91
-> 
-> This is not board-specific, this is CPU-specific. PLL multiplier is set up
-> at the start and we not touch it anymore since all system frequencies is
-> depends on it, including SDRAM refresh.
-> How to place this configurable parameter in C code i am not understand.
-> For Kconfig, we can add additional compile-time checker into lowlevel unit
-> which uses this symbol:
-> 
-> #if (CLPS711X_CPU_PLL_MULT < 20) || (CLPS711X_CPU_PLL_MULT > 50)
-> #error "CPU PLL multiplier out of range"
-> #endif
-so it's even worse
+Hi,
+with the release v2013.02.0 the MLO gets so bit, that it eats the boot
+information in the SRAM.
 
-detect the cpu in c and dorp the Kconfig
+nm --size-sort 
 
-Best Regards,
-J.
-> 
-> Thanks!
-> 
-> ---
+...
+00000630 D nand_flash_ids
+000008c0 t mci_probe
+00000c00 b gpio_desc
+00001400 b files
+
+If I remove  GPIOLIB from MLO it work again. Maybe setting MAX_FILES
+down or find a dynamic way for the big arrays is a better solution.
+Any Ideas?
+
+Jan
+
 
 _______________________________________________
 barebox mailing list
