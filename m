@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo5.mail-out.ovh.net ([188.165.57.91]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U3k7o-0005Ri-57
- for barebox@lists.infradead.org; Fri, 08 Feb 2013 09:20:08 +0000
-Received: from mail634.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 20190102021F
- for <barebox@lists.infradead.org>; Fri,  8 Feb 2013 10:30:24 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  8 Feb 2013 10:18:49 +0100
-Message-Id: <1360315130-23872-6-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1360315130-23872-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20130208090739.GP19322@game.jcrosoft.org>
- <1360315130-23872-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U3kBw-0005wb-GW
+ for barebox@lists.infradead.org; Fri, 08 Feb 2013 09:24:20 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1U3kBu-0000x1-Lh
+ for barebox@lists.infradead.org; Fri, 08 Feb 2013 10:24:18 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1U3kBu-0008GD-KR
+ for barebox@lists.infradead.org; Fri, 08 Feb 2013 10:24:18 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri,  8 Feb 2013 10:24:15 +0100
+Message-Id: <1360315457-30382-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,111 +26,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] macb: fix tx ring size
+Subject: [PATCH v2] add mdio bus support to miitool
 To: barebox@lists.infradead.org
-Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
 
-the mininal tx ring size is 2 as if one we wrap on the same descriptor
-and can cause IP lock on GEM (gigabit version) this is always the case
+2nd version. This adds both the mdio buses and the phy devices
+to the mdio_bus_type. This is in sync with Linux which also
+adds the buses (for example i2c_adapter) and the devices (for example
+i2c devices) to the same bus type. Linux uses a struct device_type
+pointer in struct device to distinguish between both. As we do
+not have this struct, we use the type_data field which has the
+same purpose.
 
-Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/net/macb.c |   50 ++++++++++++++++++++++++++++++++++----------------
- 1 file changed, 34 insertions(+), 16 deletions(-)
+----------------------------------------------------------------
+Sascha Hauer (2):
+      net phy: Add mdio buses to mdio_bus_type
+      miitool: Add support for examing mdio bus
 
-diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index d6b60aa..3a65af7 100644
---- a/drivers/net/macb.c
-+++ b/drivers/net/macb.c
-@@ -53,15 +53,17 @@
- 
- #define MACB_RX_BUFFER_SIZE	128
- #define RX_BUFFER_MULTIPLE	64  /* bytes */
--#define RX_RING_SIZE		32 /* must be power of 2 */
--#define RX_RING_BYTES		(sizeof(struct macb_dma_desc) * RX_RING_SIZE)
-+#define RX_NB_PACKET		10
-+#define TX_RING_SIZE		2 /* must be power of 2 */
- 
--#define TX_RING_BYTES		(sizeof(struct macb_dma_desc))
-+#define RX_RING_BYTES(bp)	(sizeof(struct macb_dma_desc) * bp->rx_ring_size)
-+#define TX_RING_BYTES		(sizeof(struct macb_dma_desc) * TX_RING_SIZE)
- 
- struct macb_device {
- 	void			__iomem *regs;
- 
- 	unsigned int		rx_tail;
-+	unsigned int		tx_head;
- 	unsigned int		tx_tail;
- 
- 	void			*rx_buffer;
-@@ -86,23 +88,36 @@ static int macb_send(struct eth_device *edev, void *packet,
- {
- 	struct macb_device *macb = edev->priv;
- 	unsigned long ctrl;
--	int ret;
--
--	dev_dbg(macb->dev, "%s\n", __func__);
-+	int ret = 0;
-+	uint64_t start;
-+	unsigned int tx_head = macb->tx_head;
- 
- 	ctrl = MACB_BF(TX_FRMLEN, length);
--	ctrl |= MACB_BIT(TX_LAST) | MACB_BIT(TX_WRAP);
-+	ctrl |= MACB_BIT(TX_LAST);
- 
--	macb->tx_ring[0].ctrl = ctrl;
--	macb->tx_ring[0].addr = (ulong)packet;
-+	if (tx_head == (TX_RING_SIZE - 1)) {
-+		ctrl |= MACB_BIT(TX_WRAP);
-+		macb->tx_head = 0;
-+	} else {
-+		macb->tx_head++;
-+	}
-+
-+	macb->tx_ring[tx_head].ctrl = ctrl;
-+	macb->tx_ring[tx_head].addr = (ulong)packet;
- 	barrier();
- 	dma_flush_range((ulong) packet, (ulong)packet + length);
- 	macb_writel(macb, NCR, MACB_BIT(TE) | MACB_BIT(RE) | MACB_BIT(TSTART));
- 
--	ret = wait_on_timeout(100 * MSECOND,
--		!(macb->tx_ring[0].ctrl & MACB_BIT(TX_USED)));
--
--	ctrl = macb->tx_ring[0].ctrl;
-+	start = get_time_ns();
-+	ret = -ETIMEDOUT;
-+	do {
-+		barrier();
-+		ctrl = macb->tx_ring[0].ctrl;
-+		if (ctrl & MACB_BIT(TX_USED)) {
-+			ret = 0;
-+			break;
-+		}
-+	} while (!is_timeout(start, 100 * MSECOND));
- 
- 	if (ctrl & MACB_BIT(TX_UNDERRUN))
- 		dev_err(macb->dev, "TX underrun\n");
-@@ -244,10 +259,13 @@ static void macb_init(struct macb_device *macb)
- 	}
- 	macb->rx_ring[RX_RING_SIZE - 1].addr |= MACB_BIT(RX_WRAP);
- 
--	macb->tx_ring[0].addr = 0;
--	macb->tx_ring[0].ctrl = MACB_BIT(TX_USED) | MACB_BIT(TX_WRAP);
-+	for (i = 0; i < TX_RING_SIZE; i++) {
-+		macb->tx_ring[i].addr = 0;
-+		macb->tx_ring[i].ctrl = MACB_BIT(TX_USED);
-+	}
-+	macb->tx_ring[TX_RING_SIZE - 1].addr |= MACB_BIT(TX_WRAP);
- 
--	macb->rx_tail = macb->tx_tail = 0;
-+	macb->rx_tail = macb->tx_head = macb->tx_tail = 0;
- 
- 	macb_writel(macb, RBQP, (ulong)macb->rx_ring);
- 	macb_writel(macb, TBQP, (ulong)macb->tx_ring);
--- 
-1.7.10.4
-
+ commands/miitool.c         |   94 +++++++++++++++++++++++++++++++++++---------
+ drivers/net/phy/mdio_bus.c |   18 +++++++++
+ drivers/net/phy/phy.c      |    1 +
+ include/linux/phy.h        |    7 ++++
+ 4 files changed, 101 insertions(+), 19 deletions(-)
 
 _______________________________________________
 barebox mailing list
