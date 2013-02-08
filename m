@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp30.i.mail.ru ([94.100.177.90])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U3n5R-0005Qr-5v
- for barebox@lists.infradead.org; Fri, 08 Feb 2013 12:29:49 +0000
+ id 1U3n5F-0005Om-DR
+ for barebox@lists.infradead.org; Fri, 08 Feb 2013 12:29:38 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri,  8 Feb 2013 16:28:28 +0400
-Message-Id: <1360326508-30214-3-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1360326508-30214-1-git-send-email-shc_work@mail.ru>
-References: <1360326508-30214-1-git-send-email-shc_work@mail.ru>
+Date: Fri,  8 Feb 2013 16:28:26 +0400
+Message-Id: <1360326508-30214-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +19,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] ARM: ccmx51: Add powerup delay for LAN9221
+Subject: [PATCH 1/3] ARM: ccmx51: Fix printing board HW-revision
 To: barebox@lists.infradead.org
 
-LAN9221 requires 50ms delay after power up. This patch adds this delay.
+Board hardware revision is 1-based. This patch corrects printed value,
+so now value printed in console is equal value printed on PCB.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/boards/ccxmx51/ccxmx51.c |    4 +++-
- 1 files changed, 3 insertions(+), 1 deletions(-)
+ arch/arm/boards/ccxmx51/ccxmx51.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/arch/arm/boards/ccxmx51/ccxmx51.c b/arch/arm/boards/ccxmx51/ccxmx51.c
-index 01e0204..b1c579b 100644
+index a9bf16a..5ec304b 100644
 --- a/arch/arm/boards/ccxmx51/ccxmx51.c
 +++ b/arch/arm/boards/ccxmx51/ccxmx51.c
-@@ -364,8 +364,10 @@ static int ccxmx51_power_init(void)
- 	/* GP02 - LAN9221 Power */
- 	/* GP03 - FEC Reset */
- 	/* GP04 - Wireless Power */
--	if (IS_ENABLED(CONFIG_DRIVER_NET_SMC911X) && ccxmx51_id->eth1)
-+	if (IS_ENABLED(CONFIG_DRIVER_NET_SMC911X) && ccxmx51_id->eth1) {
- 		val |= (1 << 8);
-+		mdelay(50);
-+	}
- 	if (IS_ENABLED(CONFIG_DRIVER_NET_FEC_IMX) && ccxmx51_id->eth0)
- 		val |= (1 << 10);
- 	if (ccxmx51_id->wless)
+@@ -392,7 +392,7 @@ static int ccxmx51_devices_init(void)
+ 	printf("Module Variant: %s (0x%02x)\n", ccxmx51_id->id_string, hwid[0]);
+ 
+ 	if (hwid[0]) {
+-		printf("Module HW Rev : %02x\n", hwid[1]);
++		printf("Module HW Rev : %02x\n", hwid[1] + 1);
+ 		switch (hwid[2] & 0xc0) {
+ 		case 0x00:
+ 			manloc = 'B';
 -- 
 1.7.3.4
 
