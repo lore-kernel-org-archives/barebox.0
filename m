@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U4ZgH-0005kL-9w
- for barebox@lists.infradead.org; Sun, 10 Feb 2013 16:23:11 +0000
-Received: from localhost.localdomain (unknown [82.233.81.124])
- by smtp3-g21.free.fr (Postfix) with ESMTP id 63262A62DB
- for <barebox@lists.infradead.org>; Sun, 10 Feb 2013 17:23:00 +0100 (CET)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Sun, 10 Feb 2013 17:22:51 +0100
-Message-Id: <1360513371-16470-3-git-send-email-eric@eukrea.com>
-In-Reply-To: <1360513371-16470-1-git-send-email-eric@eukrea.com>
-References: <1360513371-16470-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
+Received: from we-in-x0229.1e100.net ([2a00:1450:400c:c03::229]
+ helo=mail-we0-x229.google.com)
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U4aFo-0008Jh-5P
+ for barebox@lists.infradead.org; Sun, 10 Feb 2013 16:59:49 +0000
+Received: by mail-we0-f169.google.com with SMTP id t11so4518067wey.28
+ for <barebox@lists.infradead.org>; Sun, 10 Feb 2013 08:59:45 -0800 (PST)
+From: Vicente Bergas <vicencb@gmail.com>
+Date: Sun, 10 Feb 2013 17:58:57 +0100
+Message-Id: <1360515537-1703-3-git-send-email-vicencb@gmail.com>
+In-Reply-To: <1360515537-1703-1-git-send-email-vicencb@gmail.com>
+References: <1360515537-1703-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,35 +19,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] mx23-evk: update defconfig
+Subject: [PATCH 2/2] ArchosG9: boot linux kernel with DT
 To: barebox@lists.infradead.org
+Cc: Vicente Bergas <vicencb@gmail.com>
 
-LSBlbmFibGUgVVNCIGdhZGdldCBhbmQgREZVCi0gZW5hYmxlIE1DSSBhbmQgcHJvYmUgYXQgYm9v
-dAotIGVuYWJsZSBFWFQ0IGFuZCBGQVQgZmlsZXN5c3RlbXMKClNpZ25lZC1vZmYtYnk6IEVyaWMg
-QsOpbmFyZCA8ZXJpY0BldWtyZWEuY29tPgotLS0KIGFyY2gvYXJtL2NvbmZpZ3MvaW14MjNldmtf
-ZGVmY29uZmlnIHwgMTcgKysrKysrKysrKysrKy0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAxMyBpbnNl
-cnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2NvbmZpZ3Mv
-aW14MjNldmtfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmlncy9pbXgyM2V2a19kZWZjb25maWcK
-aW5kZXggMmZjNmViZS4uMTUwMmQyMiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vY29uZmlncy9pbXgy
-M2V2a19kZWZjb25maWcKKysrIGIvYXJjaC9hcm0vY29uZmlncy9pbXgyM2V2a19kZWZjb25maWcK
-QEAgLTUsMjAgKzUsMjkgQEAgQ09ORklHX0JST0tFTj15CiBDT05GSUdfTE9OR0hFTFA9eQogQ09O
-RklHX0NNRExJTkVfRURJVElORz15CiBDT05GSUdfQVVUT19DT01QTEVURT15Ci1DT05GSUdfUEFS
-VElUSU9OPXkKLSMgQ09ORklHX0RFRkFVTFRfRU5WSVJPTk1FTlQgaXMgbm90IHNldAorQ09ORklH
-X0RFRkFVTFRfRU5WSVJPTk1FTlRfR0VORVJJQ19ORVc9eQorQ09ORklHX0RFRkFVTFRfRU5WSVJP
-Tk1FTlRfR0VORVJJQz15CitDT05GSUdfUkVTRVRfU09VUkNFPXkKIENPTkZJR19ERUJVR19JTkZP
-PXkKIENPTkZJR19DTURfRURJVD15CiBDT05GSUdfQ01EX1NMRUVQPXkKIENPTkZJR19DTURfU0FW
-RUVOVj15Ci1DT05GSUdfQ01EX0xPQURFTlY9eQogQ09ORklHX0NNRF9FWFBPUlQ9eQogQ09ORklH
-X0NNRF9QUklOVEVOVj15CiBDT05GSUdfQ01EX1JFQURMSU5FPXkKIENPTkZJR19DTURfRUNIT19F
-PXkKK0NPTkZJR19DTURfUkVTRVQ9eQogQ09ORklHX0NNRF9NVEVTVD15CiBDT05GSUdfQ01EX01U
-RVNUX0FMVEVSTkFUSVZFPXkKLUNPTkZJR19DTURfUkVTRVQ9eQogQ09ORklHX0NNRF9USU1FT1VU
-PXkKIENPTkZJR19DTURfUEFSVElUSU9OPXkKICMgQ09ORklHX1NQSSBpcyBub3Qgc2V0CitDT05G
-SUdfVVNCX0dBREdFVD15CitDT05GSUdfVVNCX0dBREdFVF9ERlU9eQorQ09ORklHX01DST15CitD
-T05GSUdfTUNJX1NUQVJUVVA9eQorQ09ORklHX01DSV9NWFM9eQorQ09ORklHX0ZTX0VYVDQ9eQor
-Q09ORklHX0ZTX0ZBVD15CitDT05GSUdfRlNfRkFUX1dSSVRFPXkKK0NPTkZJR19GU19GQVRfTEZO
-PXkKLS0gCjEuNy4xMS43CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Provide a device tree to the OS.
+
+Signed-off-by: Vicente Bergas <vicencb@gmail.com>
+---
+ arch/arm/boards/archosg9/env/config       | 1 +
+ arch/arm/configs/archosg9_defconfig       | 4 ++++
+ arch/arm/configs/archosg9_xload_defconfig | 1 +
+ 3 files changed, 6 insertions(+)
+
+diff --git a/arch/arm/boards/archosg9/env/config b/arch/arm/boards/archosg9/env/config
+index 8f3edb0..60467f6 100644
+--- a/arch/arm/boards/archosg9/env/config
++++ b/arch/arm/boards/archosg9/env/config
+@@ -1,3 +1,4 @@
+ global.bootm.image="${TARGET_ROOT}/boot/zImage"
+ global.bootm.initrd="${TARGET_ROOT}/boot/initrd"
++global.bootm.oftree="${TARGET_ROOT}/boot/omap4-archosg9.dtb"
+ global.linux.bootargs.base="console=ttyO0,115200n8 root=/dev/ram0"
+diff --git a/arch/arm/configs/archosg9_defconfig b/arch/arm/configs/archosg9_defconfig
+index 9a051da..337a7b7 100644
+--- a/arch/arm/configs/archosg9_defconfig
++++ b/arch/arm/configs/archosg9_defconfig
+@@ -45,6 +45,9 @@ CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
+ CONFIG_CMD_BOOTM_AIMAGE=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_GO=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OF_NODE=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_MAGICVAR=y
+@@ -68,3 +71,4 @@ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_WRITE=y
+ CONFIG_FS_FAT_LFN=y
+ CONFIG_FS_OMAP4_USBBOOT=y
++CONFIG_OFDEVICE=y
+diff --git a/arch/arm/configs/archosg9_xload_defconfig b/arch/arm/configs/archosg9_xload_defconfig
+index 83743fa..b25778a 100644
+--- a/arch/arm/configs/archosg9_xload_defconfig
++++ b/arch/arm/configs/archosg9_xload_defconfig
+@@ -21,4 +21,5 @@ CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT=y
+ # CONFIG_SPI is not set
+ # CONFIG_FS_RAMFS is not set
+ # CONFIG_FS_DEVFS is not set
++CONFIG_FS_FAT=y
+ CONFIG_FS_OMAP4_USBBOOT=y
+-- 
+1.8.1.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
