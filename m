@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U4p46-0000cl-Cd
- for barebox@lists.infradead.org; Mon, 11 Feb 2013 08:48:43 +0000
-Date: Mon, 11 Feb 2013 09:48:40 +0100
+ id 1U4p6p-0000hU-M1
+ for barebox@lists.infradead.org; Mon, 11 Feb 2013 08:51:32 +0000
+Date: Mon, 11 Feb 2013 09:51:29 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130211084840.GM1906@pengutronix.de>
-References: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20130211085129.GN1906@pengutronix.de>
+References: <1360231566-9514-1-git-send-email-h.feurstein@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1360231566-9514-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,54 +22,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/11] ARM: clps711x: Move lowlevel initialization in
- common CLPS711X location
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] net fec_imx: add support for i.MX6 1000Mbps mode
+To: Hubert Feurstein <h.feurstein@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Feb 08, 2013 at 02:02:13PM +0400, Alexander Shiyan wrote:
-> One lowlevel initialization will be used on any CLPS711X-target,
-> so move it in the common location.
-> 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+On Thu, Feb 07, 2013 at 11:06:06AM +0100, Hubert Feurstein wrote:
+> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
 > ---
->  arch/arm/boards/clep7212/Makefile   |    3 +-
->  arch/arm/boards/clep7212/lowlevel.c |   57 -----------------------------------
->  arch/arm/mach-clps711x/Makefile     |    3 +-
->  arch/arm/mach-clps711x/lowlevel.c   |   57 +++++++++++++++++++++++++++++++++++
->  4 files changed, 60 insertions(+), 60 deletions(-)
->  delete mode 100644 arch/arm/boards/clep7212/lowlevel.c
->  create mode 100644 arch/arm/mach-clps711x/lowlevel.c
-> 
-> diff --git a/arch/arm/boards/clep7212/Makefile b/arch/arm/boards/clep7212/Makefile
-> index a63aeae..676e867 100644
-> --- a/arch/arm/boards/clep7212/Makefile
-> +++ b/arch/arm/boards/clep7212/Makefile
-> @@ -1,2 +1 @@
-> -obj-y += lowlevel.o clep7212.o
-> -pbl-y += lowlevel.o
-> +obj-y += clep7212.o
-> diff --git a/arch/arm/boards/clep7212/lowlevel.c b/arch/arm/boards/clep7212/lowlevel.c
+>  drivers/net/fec_imx.c | 14 ++++++++++----
+>  drivers/net/fec_imx.h |  1 +
+>  2 files changed, 11 insertions(+), 4 deletions(-)
 
-I think it's better to keep the reset vector in board specific code.
-Then you can have a board specific reset vector, which simply calls
-a SoC specific one. This also solves the Kconfig problem with the
-PLL setup. So you would have this in your board:
-
-void __naked __bare_init barebox_arm_reset_vector(void)
-{
-	arm_cpu_lowlevel_init();
-
-	clps711x_barebox_entry();
-}
-
-You could add different more specific clps711x_* functions which will
-result in different CPU speeds, or you could pass a PLL value to the
-entry function, if that better fits your needs.
-
-The rest of this series looks fine.
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+> index 2378a19..7320f07 100644
+> --- a/drivers/net/fec_imx.c
+> +++ b/drivers/net/fec_imx.c
+> @@ -361,12 +361,18 @@ static int fec_init(struct eth_device *dev)
+>  static void fec_update_linkspeed(struct eth_device *edev)
+>  {
+>  	struct fec_priv *fec = (struct fec_priv *)edev->priv;
+> +	int speed = edev->phydev->speed;
+> +	u32 rcntl = readl(fec->regs + FEC_R_CNTRL) & ~FEC_R_CNTRL_RMII_10T;
+> +	u32 ecntl = readl(fec->regs + FEC_ECNTRL) & ~FEC_ECNTRL_SPEED;
+>  
+> -	if (edev->phydev->speed == SPEED_10) {
+> -		u32 rcntl = readl(fec->regs + FEC_R_CNTRL);
+> +	if (speed == SPEED_10)
+>  		rcntl |= FEC_R_CNTRL_RMII_10T;
+> -		writel(rcntl, fec->regs + FEC_R_CNTRL);
+> -	}
+> +
+> +	if (speed == SPEED_1000)
+> +		ecntl |= FEC_ECNTRL_SPEED;
+> +
+> +	writel(rcntl, fec->regs + FEC_R_CNTRL);
+> +	writel(ecntl, fec->regs + FEC_ECNTRL);
+>  }
+>  
+>  /**
+> diff --git a/drivers/net/fec_imx.h b/drivers/net/fec_imx.h
+> index 1eb1eba..29aea85 100644
+> --- a/drivers/net/fec_imx.h
+> +++ b/drivers/net/fec_imx.h
+> @@ -92,6 +92,7 @@
+>  
+>  #define FEC_ECNTRL_RESET                0x00000001	/**< reset the FEC */
+>  #define FEC_ECNTRL_ETHER_EN             0x00000002	/**< enable the FEC */
+> +#define FEC_ECNTRL_SPEED                0x00000020	/**< i.MX6: enable 1000Mbps mode */
+>  
+>  /**
+>   * @brief Descriptor buffer alignment
+> -- 
+> 1.8.1
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
