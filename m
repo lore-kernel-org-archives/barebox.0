@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo3.mail-out.ovh.net ([178.32.228.3])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U51JX-000840-AX
- for barebox@lists.infradead.org; Mon, 11 Feb 2013 21:53:27 +0000
-Received: from mail622.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 6CCC1FF8A0D
- for <barebox@lists.infradead.org>; Mon, 11 Feb 2013 23:08:06 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 11 Feb 2013 22:52:17 +0100
-Message-Id: <1360619537-2963-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from we-in-x022f.1e100.net ([2a00:1450:400c:c03::22f]
+ helo=mail-we0-x22f.google.com)
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U52RZ-0004l9-2S
+ for barebox@lists.infradead.org; Mon, 11 Feb 2013 23:05:49 +0000
+Received: by mail-we0-f175.google.com with SMTP id x8so5323258wey.6
+ for <barebox@lists.infradead.org>; Mon, 11 Feb 2013 15:05:44 -0800 (PST)
+From: Vicente Bergas <vicencb@gmail.com>
+Date: Tue, 12 Feb 2013 00:04:58 +0100
+Message-Id: <1360623899-10059-2-git-send-email-vicencb@gmail.com>
+In-Reply-To: <1360623899-10059-1-git-send-email-vicencb@gmail.com>
+References: <1360623899-10059-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,122 +24,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] amba: add oftree probe support
+Subject: [PATCH 1/2] ArchosG9: solve regression in second stage lowlevel init
 To: barebox@lists.infradead.org
+Cc: Vicente Bergas <vicencb@gmail.com>
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+ On ArchosG9 the second stage low-level init was the fallback default.
+ Now that the low-level init is forcibly enabled it has to be skipped
+ when already executed from first stage.
+
+Signed-off-by: Vicente Bergas <vicencb@gmail.com>
 ---
-v2: fix platform not platfrom
+ arch/arm/boards/archosg9/lowlevel.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Best Regards,
-J.
- drivers/amba/bus.c |    1 +
- drivers/of/base.c  |   60 +++++++++++++++++++++++++++++++++++++++++++++-------
- 2 files changed, 53 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
-index d1ab53c..dcb52bf 100644
---- a/drivers/amba/bus.c
-+++ b/drivers/amba/bus.c
-@@ -212,6 +212,7 @@ struct amba_device *amba_device_alloc(const char *name, int id, resource_size_t
- 	dev->res.start = base;
- 	dev->res.end = base + size - 1;
- 	dev->res.flags = IORESOURCE_MEM;
-+	dev->dev.resource = &dev->res;
+diff --git a/arch/arm/boards/archosg9/lowlevel.c b/arch/arm/boards/archosg9/lowlevel.c
+index 552268f..0334693 100644
+--- a/arch/arm/boards/archosg9/lowlevel.c
++++ b/arch/arm/boards/archosg9/lowlevel.c
+@@ -63,15 +63,18 @@ static noinline void archosg9_init_lowlevel(void)
+ 	omap4_configure_usb_dpll(&usb);
  
- 	return dev;
- }
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index eaaeaf4..813b26d 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -26,6 +26,7 @@
- #include <memory.h>
- #include <sizes.h>
- #include <linux/ctype.h>
-+#include <linux/amba/bus.h>
- 
- /**
-  * struct alias_prop - Alias property in 'aliases' node
-@@ -641,18 +642,44 @@ void of_delete_property(struct property *pp)
- 	free(pp);
+ 	omap4_ddr_init(&ddr_regs_400_mhz_2cs, &core);
+-
+-	barebox_arm_entry(0x80000000, SZ_1G, 0);
  }
  
--static struct device_d *add_of_device(struct device_node *node)
-+static struct device_d *add_of_amba_device(struct device_node *node)
+ void __naked __bare_init barebox_arm_reset_vector(void)
  {
--	struct device_d *dev;
-+	struct amba_device *dev;
- 	char *name, *at;
--	const struct property *cp;
+ 	arm_cpu_lowlevel_init();
  
--	if (of_node_disabled(node))
--		return NULL;
-+	dev = xzalloc(sizeof(*dev));
++	if (get_pc() > 0x80000000)
++		goto out;
++
+ 	arm_setup_stack(0x4030d000);
  
--	cp = of_get_property(node, "compatible", NULL);
--	if (!cp)
--		return NULL;
-+	name = xstrdup(node->name);
-+	at = strchr(name, '@');
-+	if (at) {
-+		*at = 0;
-+		snprintf(dev->dev.name, MAX_DRIVER_NAME, "%s.%s", at + 1, name);
-+	} else {
-+		strncpy(dev->dev.name, node->name, MAX_DRIVER_NAME);
-+	}
-+
-+	dev->dev.id = DEVICE_ID_SINGLE;
-+	memcpy(&dev->res, &node->resource[0], sizeof(struct resource));
-+	dev->dev.resource = node->resource;
-+	dev->dev.num_resources = 1;
-+	dev->dev.device_node = node;
-+	node->device = &dev->dev;
-+
-+	of_property_read_u32(node, "arm,primecell-periphid", &dev->periphid);
-+
-+	debug("register device 0x%08x\n", node->resource[0].start);
-+
-+	amba_device_add(dev);
-+
-+	free(name);
-+
-+	return &dev->dev;
-+}
-+
-+static struct device_d *add_of_platform_device(struct device_node *node)
-+{
-+	struct device_d *dev;
-+	char *name, *at;
- 
- 	dev = xzalloc(sizeof(*dev));
- 
-@@ -679,6 +706,23 @@ static struct device_d *add_of_device(struct device_node *node)
- 
- 	return dev;
+ 	archosg9_init_lowlevel();
++out:
++	barebox_arm_entry(0x80000000, SZ_1G, 0);
  }
-+
-+static struct device_d *add_of_device(struct device_node *node)
-+{
-+	const struct property *cp;
-+
-+	if (of_node_disabled(node))
-+		return NULL;
-+
-+	cp = of_get_property(node, "compatible", NULL);
-+	if (!cp)
-+		return NULL;
-+
-+	if (of_device_is_compatible(node, "arm,primecell") == 1)
-+		return add_of_amba_device(node);
-+	else
-+		return add_of_platform_device(node);
-+}
- EXPORT_SYMBOL(add_of_device);
- 
- u64 dt_mem_next_cell(int s, const __be32 **cellp)
 -- 
-1.7.10.4
+1.8.1.3
 
 
 _______________________________________________
