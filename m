@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U4oiy-0005Wk-NJ
- for barebox@lists.infradead.org; Mon, 11 Feb 2013 08:27:18 +0000
-Date: Mon, 11 Feb 2013 09:26:50 +0100
+ id 1U4omh-0005dh-6P
+ for barebox@lists.infradead.org; Mon, 11 Feb 2013 08:30:43 +0000
+Date: Mon, 11 Feb 2013 09:30:40 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130211082650.GJ1906@pengutronix.de>
-References: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
- <1360317743-25975-8-git-send-email-shc_work@mail.ru>
+Message-ID: <20130211083040.GK1906@pengutronix.de>
+References: <20130208092544.GQ19322@game.jcrosoft.org>
+ <1360315724-24736-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1360317743-25975-8-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1360315724-24736-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,39 +23,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 08/11] ARM: mmu: Clear unpredictable bits for translation
- table
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: [For master PATCH 1/1] sama5de3k: add gmacb support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org, Nicolas Ferre <nicolas.ferre@atmel.com>
 
-On Fri, Feb 08, 2013 at 02:02:20PM +0400, Alexander Shiyan wrote:
+On Fri, Feb 08, 2013 at 10:28:44AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/boards/sama5d3xek/init.c |   31 +++++++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
 > 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-Applied this one for master.
+Applied, thanks.
+
+> +static int ksz9021rn_phy_fixup(struct phy_device *phy)
+> +{
+> +	int value;
+> +
+> +#define GMII_RCCPSR	260
+> +#define GMII_RRDPSR	261
+> +#define GMII_ERCR	11
+> +#define GMII_ERDWR	12
+> +
+> +	/* Set delay values */
+> +	value = GMII_RCCPSR | 0x8000;
+> +	phy_write(phy, GMII_ERCR, value);
+> +	value = 0xF2F4;
+> +	phy_write(phy, GMII_ERDWR, value);
+> +	value = GMII_RRDPSR | 0x8000;
+> +	phy_write(phy, GMII_ERCR, value);
+> +	value = 0x2222;
+> +	phy_write(phy, GMII_ERDWR, value);
+> +
+> +	return 0;
+
+This delay line setup really needs some generic code. We have this on
+i.MX6 aswell. Currently this means that each board needs to know the
+phy it has, not a really good situation.
 
 Sascha
 
-> ---
->  arch/arm/cpu/mmu.c |    3 +++
->  1 files changed, 3 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-> index 73dd0d3..99f12b5 100644
-> --- a/arch/arm/cpu/mmu.c
-> +++ b/arch/arm/cpu/mmu.c
-> @@ -279,6 +279,9 @@ static int mmu_init(void)
->  	if (get_cr() & CR_M) {
->  		asm volatile ("mrc  p15,0,%0,c2,c0,0" : "=r"(ttb));
->  
-> +		/* Clear unpredictable bits [13:0] */
-> +		ttb = (unsigned long *)((unsigned long)ttb & ~0x3fff);
+> +}
 > +
->  		if (!request_sdram_region("ttb", (unsigned long)ttb, SZ_16K))
->  			pr_err("Error: Can't request SDRAM region for ttb\n");
->  	} else {
+>  static void ek_add_device_eth(void)
+>  {
+>  	if (w1_local_mac_address_register(0, "tml", "w1-2d-0"))
+> @@ -147,6 +174,10 @@ static void ek_add_device_eth(void)
+>  	if (ek_register_mac_address_23(1))
+>  		ek_register_mac_address_43(1);
+>  
+> +	phy_register_fixup_for_uid(PHY_ID_KSZ9021, MICREL_PHY_ID_MASK,
+> +					   ksz9021rn_phy_fixup);
+> +
+> +	at91_add_device_eth(0, &gmac_pdata);
+>  	at91_add_device_eth(1, &macb_pdata);
+>  }
+>  #else
 > -- 
-> 1.7.3.4
+> 1.7.10.4
 > 
 > 
 > _______________________________________________
