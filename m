@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U4pXb-0004Sc-Jl
- for barebox@lists.infradead.org; Mon, 11 Feb 2013 09:19:12 +0000
-Date: Mon, 11 Feb 2013 10:19:05 +0100
+ id 1U4pg8-0004hG-9F
+ for barebox@lists.infradead.org; Mon, 11 Feb 2013 09:28:01 +0000
+Date: Mon, 11 Feb 2013 10:27:58 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130211091905.GQ1906@pengutronix.de>
-References: <20130208200200.IIAE15122.toroondcbmts07-srv.bellnexxia.net@toip55-bus.srvr.bell.ca>
+Message-ID: <20130211092758.GR1906@pengutronix.de>
+References: <034201ce07e7$c23b9e90$46b2dbb0$@com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130208200200.IIAE15122.toroondcbmts07-srv.bellnexxia.net@toip55-bus.srvr.bell.ca>
+In-Reply-To: <034201ce07e7$c23b9e90$46b2dbb0$@com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,75 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] commands/ubi.c: Add support for VID header offset in
- ubiattach
-To: Xavier Douville <barebox@douville.org>
+Subject: Re: Trouble booting kernel since 2012.12.1
+To: George Pontis <GPontis@z9.com>
 Cc: barebox@lists.infradead.org
 
-Hi Xavier,
+On Sun, Feb 10, 2013 at 03:38:41PM -0800, George Pontis wrote:
+> Having some trouble booting Linux from recent versions of barebox, and need
+> some pointers about where to look.
+> 
+> I'm working with custom hardware based on the i.MX53. It is roughly
+> comparable to the i.MX53 LOCO board, and I started with that board support
+> as a base for my own port. Up through barebox 2012.12.1 things were working
+> well. However, with the 2013.01 and 2013.02 releases I can't get the kernel
+> to boot successfully. It always hangs after displaying the arch number, but
+> before posting the message "Booting Linux on physical CPU 0". All the lines
+> displayed up to that point are identical. I have tried booting a kernel via
+> TFTP and root FS via NFS. Also with the rootfs loaded as an initrd. The same
+> barebox environment, kernel, and rootfs works in both modes when I'm running
+> 2012.12.1 or 2012.11.
+> 
+> I see that a new environment has been introduced during this time, but did
+> not do anything to move over to it. Could this be the source of my problem,
+> or need I look elsewhere ?
 
-On Fri, Feb 08, 2013 at 03:01:53PM -0500, Xavier Douville wrote:
-> Hi
-> 
-> On my board I needed to pass a custom VID header offset to ubiattach.
-> This patch adds the required option to the barebox command.
+Try booting with bootm -v -v
 
-I don't know exactly, but I suspect something is wrong on your board
-then. Normally the VID header offset should be detected correctly
-automatically. Does the kernel also need a special VID header offset?
-Have you flashed an UBI image or did you generate the UBI on the target
-directly?
-
-> 
-> I also fixed a bug in the error handling of the return value of
-> ubi_attach_mtd_dev().
-> This function doesn't always return 0 on success, it returns the UBI number.
-> So without this patch, an error message is printed when attaching
-> many UBI devices.
-> 
-> thanks for your work
-> 
-> Xavier Douville
-> 
-> 
->  commands/ubi.c |   25 +++++++++++++++++--------
->  1 file changed, 17 insertions(+), 8 deletions(-)
-> 
-> diff --git a/commands/ubi.c b/commands/ubi.c
-> index 1653eaa..a10ea1c 100644
-> --- a/commands/ubi.c
-> +++ b/commands/ubi.c
-> @@ -60,9 +60,14 @@ static int do_ubiattach(int argc, char *argv[])
->  {
->      struct mtd_info_user user;
->      int fd, ret;
-> +    int vid_hdr_offset = 0;
-> 
-> -    if (argc != 2)
-> -        return COMMAND_ERROR_USAGE;
-> +    if (argc != 2) {
-> +        if (argc == 3)
-> +            vid_hdr_offset = simple_strtol(argv[2], NULL, 0);
-> +        else
-> +            return COMMAND_ERROR_USAGE;
-> +    }
-
-Please use getopt() for additional arguments.
-
-> 
->      fd = open(argv[1], O_RDWR);
->      if (fd < 0) {
-> @@ -71,19 +76,23 @@ static int do_ubiattach(int argc, char *argv[])
->      }
-> 
->      ret = ioctl(fd, MEMGETINFO, &user);
-> -    if (!ret)
-> -        ret = ubi_attach_mtd_dev(user.mtd, UBI_DEV_NUM_AUTO, 0);
-> +    if (!ret) {
-> +        ret = ubi_attach_mtd_dev(user.mtd, UBI_DEV_NUM_AUTO,
-> vid_hdr_offset);
-
-You mailer wraps lines. I won't be able to apply this patch.
+Also you could enable earlyprintk support in the kernel and pass the
+'earlyprintk' parameter on the kernel command line.
 
 Sascha
 
