@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f74.mail.ru ([217.69.129.108])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U4piy-0004mz-Oc
- for barebox@lists.infradead.org; Mon, 11 Feb 2013 09:30:58 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Mon, 11 Feb 2013 13:30:53 +0400
-Message-ID: <1360575053.921797761@f74.mail.ru>
-In-Reply-To: <20130211084840.GM1906@pengutronix.de>
-References: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
- <20130211084840.GM1906@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1U4pjK-0004oN-Ex
+ for barebox@lists.infradead.org; Mon, 11 Feb 2013 09:31:19 +0000
+Date: Mon, 11 Feb 2013 10:31:16 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130211093116.GS1906@pengutronix.de>
+References: <1360513371-16470-1-git-send-email-eric@eukrea.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1360513371-16470-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,51 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCAwMS8xMV0gQVJNOiBjbHBzNzExeDogTW92ZSBsb3ds?=
- =?UTF-8?B?ZXZlbCBpbml0aWFsaXphdGlvbiBpbiBjb21tb24gQ0xQUzcxMVggbG9jYXRp?=
- =?UTF-8?B?b24=?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 1/3] mx23-evk: fix MCI support
+To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-Hello.
+On Sun, Feb 10, 2013 at 05:22:49PM +0100, Eric B=E9nard wrote:
+> - this patch fix MCI support and enable using the SDCard to store
+> the environment.
+> - it is fully copied from imx23-olinuxino.c
+> - tested on i.MX23 EVK RevB1
+> =
 
-...
-> > diff --git a/arch/arm/boards/clep7212/Makefile b/arch/arm/boards/clep7212/Makefile
-> > index a63aeae..676e867 100644
-> > --- a/arch/arm/boards/clep7212/Makefile
-> > +++ b/arch/arm/boards/clep7212/Makefile
-> > @@ -1,2 +1 @@
-> > -obj-y += lowlevel.o clep7212.o
-> > -pbl-y += lowlevel.o
-> > +obj-y += clep7212.o
-> > diff --git a/arch/arm/boards/clep7212/lowlevel.c b/arch/arm/boards/clep7212/lowlevel.c
-> 
-> I think it's better to keep the reset vector in board specific code.
-> Then you can have a board specific reset vector, which simply calls
-> a SoC specific one. This also solves the Kconfig problem with the
-> PLL setup. So you would have this in your board:
-> 
-> void __naked __bare_init barebox_arm_reset_vector(void)
-> {
-> 	arm_cpu_lowlevel_init();
-> 
-> 	clps711x_barebox_entry();
-> }
-> 
-> You could add different more specific clps711x_* functions which will
-> result in different CPU speeds, or you could pass a PLL value to the
-> entry function, if that better fits your needs.
-> 
-> The rest of this series looks fine.
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
 
-Can we leave this basic clps711x_barebox_entry in mach-clps711x/lowlevel.c
-and just additionally mark it as "__weak" for ability to override?
+Applied this series.
 
----
+BTW you might have noticed that I added support for a i.MX specific
+chipidea driver. This is currently used on traditional i.MX only, but
+could be extended for the i.MX23/28 aswell.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
