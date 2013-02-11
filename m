@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo1.mail-out.ovh.net ([87.98.162.229]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U4ylu-0001o2-MF
- for barebox@lists.infradead.org; Mon, 11 Feb 2013 19:10:35 +0000
-Received: from mail194.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 71EB3FFA33B
- for <barebox@lists.infradead.org>; Mon, 11 Feb 2013 20:25:51 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 11 Feb 2013 20:09:25 +0100
-Message-Id: <1360609765-22416-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U4zY8-0001v5-WB
+ for barebox@lists.infradead.org; Mon, 11 Feb 2013 20:00:26 +0000
+Date: Mon, 11 Feb 2013 21:00:21 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130211200021.GH1906@pengutronix.de>
+References: <1360572905-4566-1-git-send-email-h.feurstein@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1360572905-4566-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,124 +18,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] amba: add oftree probe support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] ARM i.MX6: Add support for SabreSD board
+To: Hubert Feurstein <h.feurstein@gmail.com>
+Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/amba/bus.c |    1 +
- drivers/of/base.c  |   60 +++++++++++++++++++++++++++++++++++++++++++++-------
- 2 files changed, 53 insertions(+), 8 deletions(-)
+Hi Hubert,
 
-diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
-index d1ab53c..dcb52bf 100644
---- a/drivers/amba/bus.c
-+++ b/drivers/amba/bus.c
-@@ -212,6 +212,7 @@ struct amba_device *amba_device_alloc(const char *name, int id, resource_size_t
- 	dev->res.start = base;
- 	dev->res.end = base + size - 1;
- 	dev->res.flags = IORESOURCE_MEM;
-+	dev->dev.resource = &dev->res;
- 
- 	return dev;
- }
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index eaaeaf4..c2737ec 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -26,6 +26,7 @@
- #include <memory.h>
- #include <sizes.h>
- #include <linux/ctype.h>
-+#include <linux/amba/bus.h>
- 
- /**
-  * struct alias_prop - Alias property in 'aliases' node
-@@ -641,18 +642,44 @@ void of_delete_property(struct property *pp)
- 	free(pp);
- }
- 
--static struct device_d *add_of_device(struct device_node *node)
-+static struct device_d *add_of_amba_device(struct device_node *node)
- {
--	struct device_d *dev;
-+	struct amba_device *dev;
- 	char *name, *at;
--	const struct property *cp;
- 
--	if (of_node_disabled(node))
--		return NULL;
-+	dev = xzalloc(sizeof(*dev));
- 
--	cp = of_get_property(node, "compatible", NULL);
--	if (!cp)
--		return NULL;
-+	name = xstrdup(node->name);
-+	at = strchr(name, '@');
-+	if (at) {
-+		*at = 0;
-+		snprintf(dev->dev.name, MAX_DRIVER_NAME, "%s.%s", at + 1, name);
-+	} else {
-+		strncpy(dev->dev.name, node->name, MAX_DRIVER_NAME);
-+	}
-+
-+	dev->dev.id = DEVICE_ID_SINGLE;
-+	memcpy(&dev->res, &node->resource[0], sizeof(struct resource));
-+	dev->dev.resource = node->resource;
-+	dev->dev.num_resources = 1;
-+	dev->dev.device_node = node;
-+	node->device = &dev->dev;
-+
-+	of_property_read_u32(node, "arm,primecell-periphid", &dev->periphid);
-+
-+	debug("register device 0x%08x\n", node->resource[0].start);
-+
-+	amba_device_add(dev);
-+
-+	free(name);
-+
-+	return &dev->dev;
-+}
-+
-+static struct device_d *add_of_platfrom_device(struct device_node *node)
-+{
-+	struct device_d *dev;
-+	char *name, *at;
- 
- 	dev = xzalloc(sizeof(*dev));
- 
-@@ -679,6 +706,23 @@ static struct device_d *add_of_device(struct device_node *node)
- 
- 	return dev;
- }
-+
-+static struct device_d *add_of_device(struct device_node *node)
-+{
-+	const struct property *cp;
-+
-+	if (of_node_disabled(node))
-+		return NULL;
-+
-+	cp = of_get_property(node, "compatible", NULL);
-+	if (!cp)
-+		return NULL;
-+
-+	if (of_device_is_compatible(node, "arm,primecell") == 1)
-+		return add_of_amba_device(node);
-+	else
-+		return add_of_platfrom_device(node);
-+}
- EXPORT_SYMBOL(add_of_device);
- 
- u64 dt_mem_next_cell(int s, const __be32 **cellp)
+On Mon, Feb 11, 2013 at 09:55:05AM +0100, Hubert Feurstein wrote:
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+> ---
+>  Changes since V1:
+>  - rebased on latest master with arm-entry changes
+>  - use phy_register_fixup_for_uid to register phy fixup
+>  - register SD4 as first mmc device, so it always becomes disk0
+>  - add self and env partition
+>  - GbE is working with patch 'net fec_imx: add support for i.MX6 1000Mbps mode'
+> 
+
+Applied thanks.
+
+> +
+> +static int sabresd_mem_init(void)
+> +{
+> +	arm_add_mem_device("ram0", 0x10000000, SZ_1G);
+> +
+> +	return 0;
+> +}
+> +mem_initcall(sabresd_mem_init);
+
+This is not necessary anymore. I removed this while applying. Could you
+verify this still works?
+
+Sascha
+
+
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
