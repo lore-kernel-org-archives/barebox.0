@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U4wmd-00012e-Ef
- for barebox@lists.infradead.org; Mon, 11 Feb 2013 17:03:11 +0000
+ id 1U4wur-0001V7-W5
+ for barebox@lists.infradead.org; Mon, 11 Feb 2013 17:11:44 +0000
 Received: from mail401.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 86699DC1A9B
- for <barebox@lists.infradead.org>; Mon, 11 Feb 2013 18:13:31 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 2D9F4DC0134
+ for <barebox@lists.infradead.org>; Mon, 11 Feb 2013 18:22:00 +0100 (CET)
+Date: Mon, 11 Feb 2013 18:10:31 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 11 Feb 2013 18:01:59 +0100
-Message-Id: <1360602120-11241-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130211171031.GZ19322@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,108 +20,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ahci: add generic driver
+Subject: [PATCH 0/3] arm: add Calxeda Highbank support
 To: barebox@lists.infradead.org
+Cc: Rob Herring <rob.herring@calxeda.com>
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/ata/Kconfig        |    4 ++++
- drivers/ata/Makefile       |    2 ++
- drivers/ata/ahci-generic.c |   47 ++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 53 insertions(+)
- create mode 100644 drivers/ata/ahci-generic.c
+Hi,
 
-diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index ff6528a..41dc811 100644
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -37,6 +37,10 @@ config DISK_AHCI
- 	select DISK_ATA
- 	select DISK_DRIVE
- 
-+config DISK_AHCI_GENERIC
-+	depends on DISK_AHCI
-+	bool "AHCI generic support"
-+
- config DISK_AHCI_IMX
- 	depends on DISK_AHCI
- 	bool "i.MX AHCI support"
-diff --git a/drivers/ata/Makefile b/drivers/ata/Makefile
-index c444c4d..802bd61 100644
---- a/drivers/ata/Makefile
-+++ b/drivers/ata/Makefile
-@@ -4,8 +4,10 @@ obj-$(CONFIG_DISK_BIOS) += disk_bios_drive.o
- obj-$(CONFIG_DISK_IDE_SFF) += ide-sff.o
- obj-$(CONFIG_DISK_ATA) += disk_ata_drive.o
- obj-$(CONFIG_DISK_AHCI) += ahci.o
-+obj-$(CONFIG_DISK_AHCI_GENERIC) += ahci-generic.o
- obj-$(CONFIG_DISK_AHCI_IMX) += sata-imx.o
- 
-+
- # interface types
- 
- obj-$(CONFIG_DISK_INTF_PLATFORM_IDE) += intf_platform_ide.o
-diff --git a/drivers/ata/ahci-generic.c b/drivers/ata/ahci-generic.c
-new file mode 100644
-index 0000000..4077627
---- /dev/null
-+++ b/drivers/ata/ahci-generic.c
-@@ -0,0 +1,47 @@
-+/*
-+ * Copyright (C) 2009 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * GPLv2 only
-+ */
-+
-+#include <common.h>
-+#include <ata_drive.h>
-+#include <io.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include "ahci.h"
-+
-+static int ahci_probe(struct device_d *dev)
-+{
-+	struct ahci_device *ahci;
-+	int ret;
-+
-+	ahci = xzalloc(sizeof(*ahci));
-+
-+	ahci->mmio_base = dev_request_mem_region(dev, 0);
-+
-+	ahci->dev = dev;
-+	dev->priv = ahci;
-+	ret = ahci_add_host(ahci);
-+	if (ret)
-+		goto err_free;
-+
-+	return 0;
-+
-+err_free:
-+	free(ahci);
-+
-+	return ret;
-+}
-+
-+static struct driver_d ahci_driver = {
-+	.name	= "ahci",
-+	.probe	= ahci_probe,
-+};
-+
-+static int ahci_init(void)
-+{
-+	return platform_driver_register(&ahci_driver);
-+}
-+device_initcall(ahci_init);
--- 
-1.7.10.4
+	The following patch serie add the support of the Quad Core Cortex-A9
+	Highbank from Calxeda
 
+	As I do not have the real hardware this is only tested on qemu
+
+	Rob could confirm if this work on real hw
+
+	This patch serie depends on the amba sp804 patch and the ahci patch serie
+
+The following changes since commit ad65d793bbaccc4b97422c612322d3d9885c8cfd:
+
+  ahci: handle COMINIT received during spin-up (2013-02-11 07:45:37 +0800)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/highbank
+
+for you to fetch changes up to 4a7b1e47fb54662421ef78d20d2d873d1f12101b:
+
+  highbank: add l2x0 support (2013-02-11 10:01:48 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (3):
+      highbank: add xgmac support
+      arm: add highbank support
+      highbank: add l2x0 support
+
+ arch/arm/Kconfig                               |   12 ++
+ arch/arm/Makefile                              |    2 +
+ arch/arm/boards/highbank/Kconfig               |   10 ++
+ arch/arm/boards/highbank/Makefile              |    4 +
+ arch/arm/boards/highbank/config.h              |    5 +
+ arch/arm/boards/highbank/env/config            |   34 ++++++
+ arch/arm/boards/highbank/init.c                |   46 +++++++
+ arch/arm/boards/highbank/lowlevel.c            |   17 +++
+ arch/arm/configs/highbank_defconfig            |   61 ++++++++++
+ arch/arm/mach-highbank/Kconfig                 |   18 +++
+ arch/arm/mach-highbank/Makefile                |    4 +
+ arch/arm/mach-highbank/cache-l2x0.c            |   45 +++++++
+ arch/arm/mach-highbank/core.c                  |   50 ++++++++
+ arch/arm/mach-highbank/core.h                  |    2 +
+ arch/arm/mach-highbank/devices.c               |   50 ++++++++
+ arch/arm/mach-highbank/include/mach/clkdev.h   |    7 ++
+ arch/arm/mach-highbank/include/mach/debug_ll.h |   26 ++++
+ arch/arm/mach-highbank/include/mach/devices.h  |   16 +++
+ arch/arm/mach-highbank/include/mach/gpio.h     |    1 +
+ arch/arm/mach-highbank/reset.c                 |   22 ++++
+ arch/arm/mach-highbank/smc.S                   |   27 ++++
+ arch/arm/mach-highbank/sysregs.h               |   52 ++++++++
+ drivers/net/Kconfig                            |    3 +
+ drivers/net/Makefile                           |    1 +
+ drivers/net/xgmac.c                            |  731 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 25 files changed, 1246 insertions(+)
+ create mode 100644 arch/arm/boards/highbank/Kconfig
+ create mode 100644 arch/arm/boards/highbank/Makefile
+ create mode 100644 arch/arm/boards/highbank/config.h
+ create mode 100644 arch/arm/boards/highbank/env/config
+ create mode 100644 arch/arm/boards/highbank/init.c
+ create mode 100644 arch/arm/boards/highbank/lowlevel.c
+ create mode 100644 arch/arm/configs/highbank_defconfig
+ create mode 100644 arch/arm/mach-highbank/Kconfig
+ create mode 100644 arch/arm/mach-highbank/Makefile
+ create mode 100644 arch/arm/mach-highbank/cache-l2x0.c
+ create mode 100644 arch/arm/mach-highbank/core.c
+ create mode 100644 arch/arm/mach-highbank/core.h
+ create mode 100644 arch/arm/mach-highbank/devices.c
+ create mode 100644 arch/arm/mach-highbank/include/mach/clkdev.h
+ create mode 100644 arch/arm/mach-highbank/include/mach/debug_ll.h
+ create mode 100644 arch/arm/mach-highbank/include/mach/devices.h
+ create mode 100644 arch/arm/mach-highbank/include/mach/gpio.h
+ create mode 100644 arch/arm/mach-highbank/reset.c
+ create mode 100644 arch/arm/mach-highbank/smc.S
+ create mode 100644 arch/arm/mach-highbank/sysregs.h
+ create mode 100644 drivers/net/xgmac.c
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
