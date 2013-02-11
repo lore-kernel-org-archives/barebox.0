@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U4orP-0005y7-9S
- for barebox@lists.infradead.org; Mon, 11 Feb 2013 08:35:35 +0000
-Date: Mon, 11 Feb 2013 09:35:30 +0100
+ id 1U4p46-0000cl-Cd
+ for barebox@lists.infradead.org; Mon, 11 Feb 2013 08:48:43 +0000
+Date: Mon, 11 Feb 2013 09:48:40 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130211083530.GL1906@pengutronix.de>
-References: <20130208090739.GP19322@game.jcrosoft.org>
+Message-ID: <20130211084840.GM1906@pengutronix.de>
+References: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130208090739.GP19322@game.jcrosoft.org>
+In-Reply-To: <1360317743-25975-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,62 +22,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [For master PATCH 0/7] macb: more fixes + gem (gigabit support)
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Nicolas Ferre <nicolas.ferre@atmel.com>
+Subject: Re: [PATCH 01/11] ARM: clps711x: Move lowlevel initialization in
+ common CLPS711X location
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-On Fri, Feb 08, 2013 at 10:07:39AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> HI,
+On Fri, Feb 08, 2013 at 02:02:13PM +0400, Alexander Shiyan wrote:
+> One lowlevel initialization will be used on any CLPS711X-target,
+> so move it in the common location.
 > 
-> 	This patch serie fixe more issue on the macb and add the GEM support
-> 	(gigabit support) present on Atmel sama5d3x as example
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  arch/arm/boards/clep7212/Makefile   |    3 +-
+>  arch/arm/boards/clep7212/lowlevel.c |   57 -----------------------------------
+>  arch/arm/mach-clps711x/Makefile     |    3 +-
+>  arch/arm/mach-clps711x/lowlevel.c   |   57 +++++++++++++++++++++++++++++++++++
+>  4 files changed, 60 insertions(+), 60 deletions(-)
+>  delete mode 100644 arch/arm/boards/clep7212/lowlevel.c
+>  create mode 100644 arch/arm/mach-clps711x/lowlevel.c
 > 
-> 	The IP version is detected as in linux
-> 
-> 	we now share more code with the kernel and will help to maintain the
-> 	driver
-> 
-> 	tesed on at91 macb & gem
-> 
-> The following changes since commit 15c5fa0467b20c05e9ebea36e049764054a7e308:
-> 
->   macb: drop non used define (2013-02-08 16:55:16 +0800)
-> 
-> are available in the git repository at:
-> 
->   git://git.jcrosoft.org/barebox.git delivery/macb
+> diff --git a/arch/arm/boards/clep7212/Makefile b/arch/arm/boards/clep7212/Makefile
+> index a63aeae..676e867 100644
+> --- a/arch/arm/boards/clep7212/Makefile
+> +++ b/arch/arm/boards/clep7212/Makefile
+> @@ -1,2 +1 @@
+> -obj-y += lowlevel.o clep7212.o
+> -pbl-y += lowlevel.o
+> +obj-y += clep7212.o
+> diff --git a/arch/arm/boards/clep7212/lowlevel.c b/arch/arm/boards/clep7212/lowlevel.c
 
-Applied, thanks
+I think it's better to keep the reset vector in board specific code.
+Then you can have a board specific reset vector, which simply calls
+a SoC specific one. This also solves the Kconfig problem with the
+PLL setup. So you would have this in your board:
+
+void __naked __bare_init barebox_arm_reset_vector(void)
+{
+	arm_cpu_lowlevel_init();
+
+	clps711x_barebox_entry();
+}
+
+You could add different more specific clps711x_* functions which will
+result in different CPU speeds, or you could pass a PLL value to the
+entry function, if that better fits your needs.
+
+The rest of this series looks fine.
 
 Sascha
-
-> 
-> for you to fetch changes up to b7058953abdd014b9626b22d868fb29c1c563514:
-> 
->   macb: add cadence Gigabit GEM support (2013-02-08 16:55:41 +0800)
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (7):
->       macb: call macb_init at probe explecitly
->       macb: sync remaining define with linux
->       macb: use the macro as in linux for tx/rx buffer ring size
->       macb: enable Tramsmit and Receive at open
->       macb: reset the IP at init
->       macb: fix tx ring size
->       macb: add cadence Gigabit GEM support
-> 
->  drivers/net/macb.c |  394 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------------------------
->  drivers/net/macb.h |  179 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 466 insertions(+), 107 deletions(-)
-> 
-> Best Regards,
-> J.
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
