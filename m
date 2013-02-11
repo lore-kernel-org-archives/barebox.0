@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U4rkH-00054S-9Z
- for barebox@lists.infradead.org; Mon, 11 Feb 2013 11:40:25 +0000
-Date: Mon, 11 Feb 2013 12:40:23 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130211114023.GB1906@pengutronix.de>
-References: <1360315457-30382-1-git-send-email-s.hauer@pengutronix.de>
- <1360315457-30382-3-git-send-email-s.hauer@pengutronix.de>
- <20130208110218.GA3049@x61s.8.8.8.8>
+Received: from 5.mo4.mail-out.ovh.net ([188.165.44.50]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U4s5A-0000Vk-Rl
+ for barebox@lists.infradead.org; Mon, 11 Feb 2013 12:02:02 +0000
+Received: from mail428.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 1B623104EA39
+ for <barebox@lists.infradead.org>; Mon, 11 Feb 2013 13:12:20 +0100 (CET)
+Date: Mon, 11 Feb 2013 13:00:49 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130211120049.GX19322@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130208110218.GA3049@x61s.8.8.8.8>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,89 +24,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] miitool: Add support for examing mdio bus
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/3 v2] arm: add ARM Vexpress support
+To: barebox@lists.infradead.org
 
-On Fri, Feb 08, 2013 at 12:02:20PM +0100, Alexander Aring wrote:
-> Hi Sascha,
-> 
-> On Fri, Feb 08, 2013 at 10:24:17AM +0100, Sascha Hauer wrote:
-> > Current miitool usage is limited to a single phy on a mdio bus.
-> > 
-> > For debugging purposes it is useful to be able to examine a mdio bus
-> > instead of a single phy only.
-> > 
-> > This adds support for this to the miitool command.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  commands/miitool.c |   94 +++++++++++++++++++++++++++++++++++++++++-----------
-> >  1 file changed, 75 insertions(+), 19 deletions(-)
-> > 
-> > diff --git a/commands/miitool.c b/commands/miitool.c
-> > index 3a9ac45..b9e2333 100644
-> > --- a/commands/miitool.c
-> > +++ b/commands/miitool.c
-> > @@ -37,23 +37,36 @@
-> >  #include <linux/stat.h>
-> >  #include <xfuncs.h>
-> >  #include <linux/mii.h>
-> > +#include <linux/phy.h>
-> >  
-> > -static u16 mdio_read(int fd, int offset)
-> > +static int phy_fd;
-> > +
-> > +static u16 mdio_file_read(int offset)
-> >  {
-> >  	int ret;
-> >  	u16 buf;
-> >  
-> > -	ret = lseek(fd, offset << 1, SEEK_SET);
-> > +	ret = lseek(phy_fd, offset << 1, SEEK_SET);
-> >  	if (ret < 0)
-> >  		return 0;
-> >  
-> > -	ret = read(fd, &buf, sizeof(u16));
-> > +	ret = read(phy_fd, &buf, sizeof(u16));
-> >  	if (ret < 0)
-> >  		return 0;
-> >  
-> >  	return buf;
-> >  }
-> 
-> I made a similar function in nandtest and I am thinking about to add a
-> pread and pwrite into file operations.
-> Is it welcome to send patches for adding pwrite and pread into file
-> operations? I would implement it like this but with a prototype
-> which looks like:
-> 
-> ssize_t pread(int fildes, void *buf, size_t nbyte, off_t offset);
+Hi,
 
-Sounds good. Just to be sure: With 'file operations' you do not mean
-struct file_operations, right?
+The following changes since commit e43e1498f65fe03cfc6b2744247eeccf27b26876:
 
-> 
-> 
-> Another thing:
-> You drop the errno in this function. I don't know about the driver bus
-> implementation if it can return -EIO or -EBUSY. I know it's not easy to
-> handle it because you return the buffer. But we can change the function
-> like this:
-> 
-> static int mdio_file_read(int offset, u16 *buf); to handle error.
-> 
-> It's only a small thing that I detected.
+  MIPS: pbl: fix none compression support (2013-02-05 09:43:17 +0100)
 
-Ok, can fix this.
+are available in the git repository at:
 
-Sascha
+  git://git.jcrosoft.org/barebox.git delivery/vexpress
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+for you to fetch changes up to b57ea102c02881da1400537d61dbec9e5c6a6ea1:
+
+  arm: add vexpress board support (2013-02-11 04:56:09 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (3):
+      clocksource: add ARM AMBA SP804 support
+      arm: add macro cpu_is_xxx
+      arm: add vexpress board support
+
+ arch/arm/Kconfig                               |   10 ++++++++
+ arch/arm/Makefile                              |    2 ++
+ arch/arm/boards/vexpress/Kconfig               |   10 ++++++++
+ arch/arm/boards/vexpress/Makefile              |    4 ++++
+ arch/arm/boards/vexpress/config.h              |    5 ++++
+ arch/arm/boards/vexpress/env/config            |   41 ++++++++++++++++++++++++++++++++
+ arch/arm/boards/vexpress/init.c                |  142 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/boards/vexpress/lowlevel.c            |   20 ++++++++++++++++
+ arch/arm/configs/vexpress_ca9_defconfig        |   61 +++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/configs/vexpress_defconfig            |   60 ++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/include/asm/hardware/arm_timer.h      |    5 ++++
+ arch/arm/include/asm/hardware/sp810.h          |   68 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/include/asm/system_info.h             |   63 ++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/mach-vexpress/Kconfig                 |   18 ++++++++++++++
+ arch/arm/mach-vexpress/Makefile                |    3 +++
+ arch/arm/mach-vexpress/devices.c               |   73 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/mach-vexpress/include/mach/clkdev.h   |    7 ++++++
+ arch/arm/mach-vexpress/include/mach/debug_ll.h |   33 ++++++++++++++++++++++++++
+ arch/arm/mach-vexpress/include/mach/devices.h  |   22 +++++++++++++++++
+ arch/arm/mach-vexpress/reset.c                 |   22 +++++++++++++++++
+ arch/arm/mach-vexpress/v2m.c                   |   85 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/clocksource/Kconfig                    |    4 ++++
+ drivers/clocksource/Makefile                   |    1 +
+ drivers/clocksource/amba-sp804.c               |   94 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/amba/sp805.h                     |   32 +++++++++++++++++++++++++
+ 25 files changed, 885 insertions(+)
+ create mode 100644 arch/arm/boards/vexpress/Kconfig
+ create mode 100644 arch/arm/boards/vexpress/Makefile
+ create mode 100644 arch/arm/boards/vexpress/config.h
+ create mode 100644 arch/arm/boards/vexpress/env/config
+ create mode 100644 arch/arm/boards/vexpress/init.c
+ create mode 100644 arch/arm/boards/vexpress/lowlevel.c
+ create mode 100644 arch/arm/configs/vexpress_ca9_defconfig
+ create mode 100644 arch/arm/configs/vexpress_defconfig
+ create mode 100644 arch/arm/include/asm/hardware/sp810.h
+ create mode 100644 arch/arm/mach-vexpress/Kconfig
+ create mode 100644 arch/arm/mach-vexpress/Makefile
+ create mode 100644 arch/arm/mach-vexpress/devices.c
+ create mode 100644 arch/arm/mach-vexpress/include/mach/clkdev.h
+ create mode 100644 arch/arm/mach-vexpress/include/mach/debug_ll.h
+ create mode 100644 arch/arm/mach-vexpress/include/mach/devices.h
+ create mode 100644 arch/arm/mach-vexpress/reset.c
+ create mode 100644 arch/arm/mach-vexpress/v2m.c
+ create mode 100644 drivers/clocksource/amba-sp804.c
+ create mode 100644 include/linux/amba/sp805.h
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
