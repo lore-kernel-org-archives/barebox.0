@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
+Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U4wmB-0000zz-05
+ id 1U4wmA-0000zy-Re
  for barebox@lists.infradead.org; Mon, 11 Feb 2013 17:02:46 +0000
 Received: from mail401.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 17725DC19B7
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 1722BDC19AC
  for <barebox@lists.infradead.org>; Mon, 11 Feb 2013 18:13:01 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 11 Feb 2013 18:01:30 +0100
-Message-Id: <1360602090-11095-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1360602090-11095-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1360602090-11095-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 11 Feb 2013 18:01:29 +0100
+Message-Id: <1360602090-11095-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,110 +23,222 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] arm: move outercase to cpu.c as some SoC as the ux500
- always need to flush the l2x0
+Subject: [PATCH 1/2] arm: cache-l2x0 update sync define with Linux 3.5
 To: barebox@lists.infradead.org
+
+Drop copy in cache-l2x0
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/cpu/cpu.c |   22 ++++++++++++++++++++--
- arch/arm/cpu/mmu.c |   15 ---------------
- arch/arm/cpu/mmu.h |    6 ++++++
- 3 files changed, 26 insertions(+), 17 deletions(-)
+ arch/arm/cpu/cache-l2x0.c         |   32 +-------
+ arch/arm/include/asm/cache-l2x0.h |  150 +++++++++++++++++++++++++------------
+ 2 files changed, 102 insertions(+), 80 deletions(-)
+ rewrite arch/arm/include/asm/cache-l2x0.h (67%)
 
-diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
-index 7761f5c..5f697d7 100644
---- a/arch/arm/cpu/cpu.c
-+++ b/arch/arm/cpu/cpu.c
-@@ -34,6 +34,8 @@
- #include <asm/cache.h>
- #include <asm/ptrace.h>
+diff --git a/arch/arm/cpu/cache-l2x0.c b/arch/arm/cpu/cache-l2x0.c
+index b300e6f..2be562d 100644
+--- a/arch/arm/cpu/cache-l2x0.c
++++ b/arch/arm/cpu/cache-l2x0.c
+@@ -2,42 +2,12 @@
+ #include <init.h>
+ #include <io.h>
+ #include <asm/mmu.h>
++#include <asm/cache-l2x0.h>
  
-+#include "mmu.h"
-+
- /**
-  * Enable processor's instruction cache
-  */
-@@ -67,6 +69,24 @@ int icache_status(void)
- 	return (get_cr () & CR_I) != 0;
- }
+ #define CACHE_LINE_SIZE		32
  
-+/*
-+ * SoC like the ux500 have the l2x0 always enable
-+ * with or without MMU enable
-+ */
-+struct outer_cache_fns outer_cache;
-+
-+/*
-+ * Clean and invalide caches, disable MMU
-+ */
-+void mmu_disable(void)
-+{
-+	if (outer_cache.disable)
-+		outer_cache.disable();
-+
-+	__mmu_cache_flush();
-+	__mmu_cache_off();
-+}
-+
- /**
-  * Disable MMU and D-cache, flush caches
-  * @return 0 (always)
-@@ -78,9 +98,7 @@ void arch_shutdown(void)
- {
- 	uint32_t r;
+ static void __iomem *l2x0_base;
  
--#ifdef CONFIG_MMU
- 	mmu_disable();
--#endif
- 	flush_icache();
- 	/*
- 	 * barebox normally does not use interrupts, but some functionalities
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 73dd0d3..e065fb0 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -322,21 +322,6 @@ static int mmu_init(void)
- }
- mmu_initcall(mmu_init);
- 
--struct outer_cache_fns outer_cache;
+-#define L2X0_CACHE_ID			0x000
+-#define L2X0_CACHE_TYPE			0x004
+-#define L2X0_CTRL			0x100
+-#define L2X0_AUX_CTRL			0x104
+-#define L2X0_TAG_LATENCY_CTRL		0x108
+-#define L2X0_DATA_LATENCY_CTRL		0x10C
+-#define L2X0_EVENT_CNT_CTRL		0x200
+-#define L2X0_EVENT_CNT1_CFG		0x204
+-#define L2X0_EVENT_CNT0_CFG		0x208
+-#define L2X0_EVENT_CNT1_VAL		0x20C
+-#define L2X0_EVENT_CNT0_VAL		0x210
+-#define L2X0_INTR_MASK			0x214
+-#define L2X0_MASKED_INTR_STAT		0x218
+-#define L2X0_RAW_INTR_STAT		0x21C
+-#define L2X0_INTR_CLEAR			0x220
+-#define L2X0_CACHE_SYNC			0x730
+-#define L2X0_INV_LINE_PA		0x770
+-#define L2X0_INV_WAY			0x77C
+-#define L2X0_CLEAN_LINE_PA		0x7B0
+-#define L2X0_CLEAN_LINE_IDX		0x7B8
+-#define L2X0_CLEAN_WAY			0x7BC
+-#define L2X0_CLEAN_INV_LINE_PA		0x7F0
+-#define L2X0_CLEAN_INV_LINE_IDX		0x7F8
+-#define L2X0_CLEAN_INV_WAY		0x7FC
+-#define L2X0_LOCKDOWN_WAY_D		0x900
+-#define L2X0_LOCKDOWN_WAY_I		0x904
+-#define L2X0_TEST_OPERATION		0xF00
+-#define L2X0_LINE_DATA			0xF10
+-#define L2X0_LINE_TAG			0xF30
+-#define L2X0_DEBUG_CTRL			0xF40
 -
+ static inline void cache_wait(void __iomem *reg, unsigned long mask)
+ {
+ 	/* wait for the operation to complete */
+diff --git a/arch/arm/include/asm/cache-l2x0.h b/arch/arm/include/asm/cache-l2x0.h
+dissimilarity index 67%
+index e236888..963dd99 100644
+--- a/arch/arm/include/asm/cache-l2x0.h
++++ b/arch/arm/include/asm/cache-l2x0.h
+@@ -1,49 +1,101 @@
 -/*
-- * Clean and invalide caches, disable MMU
+- * arch/arm/include/asm/hardware/cache-l2x0.h
+- *
+- * Copyright (C) 2007 ARM Limited
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2 as
+- * published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
 - */
--void mmu_disable(void)
--{
 -
--	if (outer_cache.disable)
--		outer_cache.disable();
+-#ifndef __ASM_ARM_HARDWARE_L2X0_H
+-#define __ASM_ARM_HARDWARE_L2X0_H
 -
--	__mmu_cache_flush();
--	__mmu_cache_off();
--}
+-#define L2X0_CACHE_ID                   0x000
+-#define L2X0_CACHE_TYPE                 0x004
+-#define L2X0_CTRL                       0x100
+-#define L2X0_AUX_CTRL                   0x104
+-#define L2X0_EVENT_CNT_CTRL             0x200
+-#define L2X0_EVENT_CNT1_CFG             0x204
+-#define L2X0_EVENT_CNT0_CFG             0x208
+-#define L2X0_EVENT_CNT1_VAL             0x20C
+-#define L2X0_EVENT_CNT0_VAL             0x210
+-#define L2X0_INTR_MASK                  0x214
+-#define L2X0_MASKED_INTR_STAT           0x218
+-#define L2X0_RAW_INTR_STAT              0x21C
+-#define L2X0_INTR_CLEAR                 0x220
+-#define L2X0_CACHE_SYNC                 0x730
+-#define L2X0_INV_LINE_PA                0x770
+-#define L2X0_INV_WAY                    0x77C
+-#define L2X0_CLEAN_LINE_PA              0x7B0
+-#define L2X0_CLEAN_LINE_IDX             0x7B8
+-#define L2X0_CLEAN_WAY                  0x7BC
+-#define L2X0_CLEAN_INV_LINE_PA          0x7F0
+-#define L2X0_CLEAN_INV_LINE_IDX         0x7F8
+-#define L2X0_CLEAN_INV_WAY              0x7FC
+-#define L2X0_LOCKDOWN_WAY_D             0x900
+-#define L2X0_LOCKDOWN_WAY_I             0x904
+-#define L2X0_TEST_OPERATION             0xF00
+-#define L2X0_LINE_DATA                  0xF10
+-#define L2X0_LINE_TAG                   0xF30
+-#define L2X0_DEBUG_CTRL                 0xF40
 -
- void *dma_alloc_coherent(size_t size)
- {
- 	void *ret;
-diff --git a/arch/arm/cpu/mmu.h b/arch/arm/cpu/mmu.h
-index 618968b..79ebc80 100644
---- a/arch/arm/cpu/mmu.h
-+++ b/arch/arm/cpu/mmu.h
-@@ -1,8 +1,14 @@
- #ifndef __ARM_MMU_H
- #define __ARM_MMU_H
- 
-+#ifdef CONFIG_MMU
- void __mmu_cache_on(void);
- void __mmu_cache_off(void);
- void __mmu_cache_flush(void);
-+#else
-+static inline void __mmu_cache_on(void) {}
-+static inline void __mmu_cache_off(void) {}
-+static inline void __mmu_cache_flush(void) {}
+-#endif
++/*
++ * arch/arm/include/asm/hardware/cache-l2x0.h
++ *
++ * Copyright (C) 2007 ARM Limited
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#ifndef __ASM_ARM_HARDWARE_L2X0_H
++#define __ASM_ARM_HARDWARE_L2X0_H
++
++#define L2X0_CACHE_ID			0x000
++#define L2X0_CACHE_TYPE			0x004
++#define L2X0_CTRL			0x100
++#define L2X0_AUX_CTRL			0x104
++#define L2X0_TAG_LATENCY_CTRL		0x108
++#define L2X0_DATA_LATENCY_CTRL		0x10C
++#define L2X0_EVENT_CNT_CTRL		0x200
++#define L2X0_EVENT_CNT1_CFG		0x204
++#define L2X0_EVENT_CNT0_CFG		0x208
++#define L2X0_EVENT_CNT1_VAL		0x20C
++#define L2X0_EVENT_CNT0_VAL		0x210
++#define L2X0_INTR_MASK			0x214
++#define L2X0_MASKED_INTR_STAT		0x218
++#define L2X0_RAW_INTR_STAT		0x21C
++#define L2X0_INTR_CLEAR			0x220
++#define L2X0_CACHE_SYNC			0x730
++#define L2X0_DUMMY_REG			0x740
++#define L2X0_INV_LINE_PA		0x770
++#define L2X0_INV_WAY			0x77C
++#define L2X0_CLEAN_LINE_PA		0x7B0
++#define L2X0_CLEAN_LINE_IDX		0x7B8
++#define L2X0_CLEAN_WAY			0x7BC
++#define L2X0_CLEAN_INV_LINE_PA		0x7F0
++#define L2X0_CLEAN_INV_LINE_IDX		0x7F8
++#define L2X0_CLEAN_INV_WAY		0x7FC
++/*
++ * The lockdown registers repeat 8 times for L310, the L210 has only one
++ * D and one I lockdown register at 0x0900 and 0x0904.
++ */
++#define L2X0_LOCKDOWN_WAY_D_BASE	0x900
++#define L2X0_LOCKDOWN_WAY_I_BASE	0x904
++#define L2X0_LOCKDOWN_STRIDE		0x08
++#define L2X0_ADDR_FILTER_START		0xC00
++#define L2X0_ADDR_FILTER_END		0xC04
++#define L2X0_TEST_OPERATION		0xF00
++#define L2X0_LINE_DATA			0xF10
++#define L2X0_LINE_TAG			0xF30
++#define L2X0_DEBUG_CTRL			0xF40
++#define L2X0_PREFETCH_CTRL		0xF60
++#define L2X0_POWER_CTRL			0xF80
++#define   L2X0_DYNAMIC_CLK_GATING_EN	(1 << 1)
++#define   L2X0_STNDBY_MODE_EN		(1 << 0)
++
++/* Registers shifts and masks */
++#define L2X0_CACHE_ID_PART_MASK		(0xf << 6)
++#define L2X0_CACHE_ID_PART_L210		(1 << 6)
++#define L2X0_CACHE_ID_PART_L310		(3 << 6)
++#define L2X0_CACHE_ID_RTL_MASK          0x3f
++#define L2X0_CACHE_ID_RTL_R0P0          0x0
++#define L2X0_CACHE_ID_RTL_R1P0          0x2
++#define L2X0_CACHE_ID_RTL_R2P0          0x4
++#define L2X0_CACHE_ID_RTL_R3P0          0x5
++#define L2X0_CACHE_ID_RTL_R3P1          0x6
++#define L2X0_CACHE_ID_RTL_R3P2          0x8
++
++#define L2X0_AUX_CTRL_MASK			0xc0000fff
++#define L2X0_AUX_CTRL_DATA_RD_LATENCY_SHIFT	0
++#define L2X0_AUX_CTRL_DATA_RD_LATENCY_MASK	0x7
++#define L2X0_AUX_CTRL_DATA_WR_LATENCY_SHIFT	3
++#define L2X0_AUX_CTRL_DATA_WR_LATENCY_MASK	(0x7 << 3)
++#define L2X0_AUX_CTRL_TAG_LATENCY_SHIFT		6
++#define L2X0_AUX_CTRL_TAG_LATENCY_MASK		(0x7 << 6)
++#define L2X0_AUX_CTRL_DIRTY_LATENCY_SHIFT	9
++#define L2X0_AUX_CTRL_DIRTY_LATENCY_MASK	(0x7 << 9)
++#define L2X0_AUX_CTRL_ASSOCIATIVITY_SHIFT	16
++#define L2X0_AUX_CTRL_WAY_SIZE_SHIFT		17
++#define L2X0_AUX_CTRL_WAY_SIZE_MASK		(0x7 << 17)
++#define L2X0_AUX_CTRL_SHARE_OVERRIDE_SHIFT	22
++#define L2X0_AUX_CTRL_NS_LOCKDOWN_SHIFT		26
++#define L2X0_AUX_CTRL_NS_INT_CTRL_SHIFT		27
++#define L2X0_AUX_CTRL_DATA_PREFETCH_SHIFT	28
++#define L2X0_AUX_CTRL_INSTR_PREFETCH_SHIFT	29
++#define L2X0_AUX_CTRL_EARLY_BRESP_SHIFT		30
++
++#define L2X0_LATENCY_CTRL_SETUP_SHIFT	0
++#define L2X0_LATENCY_CTRL_RD_SHIFT	4
++#define L2X0_LATENCY_CTRL_WR_SHIFT	8
++
++#define L2X0_ADDR_FILTER_EN		1
++
++
 +#endif
- 
- #endif /* __ARM_MMU_H */
 -- 
 1.7.10.4
 
