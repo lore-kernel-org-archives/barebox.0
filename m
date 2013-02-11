@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U4q7F-0006wc-7N
- for barebox@lists.infradead.org; Mon, 11 Feb 2013 09:56:02 +0000
-Date: Mon, 11 Feb 2013 10:55:58 +0100
+ id 1U4q9Y-0007kV-PS
+ for barebox@lists.infradead.org; Mon, 11 Feb 2013 09:58:25 +0000
+Date: Mon, 11 Feb 2013 10:58:23 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130211095558.GX1906@pengutronix.de>
-References: <1360515537-1703-1-git-send-email-vicencb@gmail.com>
- <1360515537-1703-2-git-send-email-vicencb@gmail.com>
+Message-ID: <20130211095823.GY1906@pengutronix.de>
+References: <1360313750-21146-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1360515537-1703-2-git-send-email-vicencb@gmail.com>
+In-Reply-To: <1360313750-21146-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,132 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] DeviceTree: add support for initrd in the DT
-To: Vicente Bergas <vicencb@gmail.com>
+Subject: Re: [PATCH 1/1] phy/micrel: KSZ9021 diasable Asym Pause support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Feb 10, 2013 at 05:58:56PM +0100, Vicente Bergas wrote:
-> Add the initrd start and end address to the DT, code comes from u-boot.
+On Fri, Feb 08, 2013 at 09:55:50AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Due to a hw bug do not enable teh Asym_Pause.
+> Otherwise if you ser the bit 11 in 4h you will have to unplug
+> and replug the cable to make the phy work.
 > 
-> Signed-off-by: Vicente Bergas <vicencb@gmail.com>
-> ---
->  arch/arm/lib/armlinux.c |  2 ++
->  common/oftree.c         | 66 +++++++++++++++++++++++++++++++++++++++++++++++++
->  include/of.h            |  1 +
->  3 files changed, 69 insertions(+)
-> 
-> diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
-> index 40a63ea..8052ca4 100644
-> --- a/arch/arm/lib/armlinux.c
-> +++ b/arch/arm/lib/armlinux.c
-> @@ -266,6 +266,8 @@ void start_linux(void *adr, int swap, unsigned long initrd_address,
->  
->  	if (oftree) {
->  		printf("booting Linux kernel with devicetree\n");
-> +		fdt_initrd(oftree, initrd_address,
-> +			initrd_address+initrd_size, 1);
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
-Does this compile with CONFIG_FDT disabled? You probably have to provide
-a static inline function for this case.
-
-Nitpick: Please add spaces left and right from operators.
+Applied, thanks
 
 Sascha
 
->  		params = oftree;
->  	} else {
->  		setup_tags(initrd_address, initrd_size, swap);
-> diff --git a/common/oftree.c b/common/oftree.c
-> index 0df5209..7c118d2 100644
-> --- a/common/oftree.c
-> +++ b/common/oftree.c
-> @@ -246,6 +246,72 @@ int fdt_get_path_or_create(struct fdt_header *fdt, const char *path)
->  	return nodeoffset;
->  }
->  
-> +int fdt_initrd(void *fdt, ulong initrd_start, ulong initrd_end, int force)
-> +{
-> +	int nodeoffset;
-> +	int err, j, total;
-> +	u32 tmp;
-> +	const char *path;
-> +	uint64_t addr, size;
-> +
-> +	/* Find the "chosen" node */
-> +	nodeoffset = fdt_path_offset(fdt, "/chosen");
-> +
-> +	/* If there is no "chosen" node in the blob return */
-> +	if (nodeoffset < 0) {
-> +		printf("fdt_initrd: %s\n", fdt_strerror(nodeoffset));
-> +		return nodeoffset;
-> +	}
-> +
-> +	/* just return if initrd_start/end aren't valid */
-> +	if ((initrd_start == 0) || (initrd_end == 0))
-> +		return 0;
-> +
-> +	total = fdt_num_mem_rsv(fdt);
-> +
+> ---
+>  drivers/net/phy/micrel.c |    8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+> index ed5abf8..c0bcdd1 100644
+> --- a/drivers/net/phy/micrel.c
+> +++ b/drivers/net/phy/micrel.c
+> @@ -148,11 +148,15 @@ static struct phy_driver ksphy_driver[] = {
+>  	.config_aneg	= genphy_config_aneg,
+>  	.read_status	= genphy_read_status,
+>  }, {
 > +	/*
-> +	 * Look for an existing entry and update it. If we don't find
-> +	 * the entry, we will j be the next available slot.
+> +	 * Due to a hw bug do not enable the Asym_Pause.
+> +	 * Otherwise if you set the bit 11 in 4h you will have to unplug
+> +	 * and replug the cable to make the phy work.
 > +	 */
-> +	for (j = 0; j < total; j++) {
-> +		err = fdt_get_mem_rsv(fdt, j, &addr, &size);
-> +		if (addr == initrd_start) {
-> +			fdt_del_mem_rsv(fdt, j);
-> +			break;
-> +		}
-> +	}
-> +
-> +	err = fdt_add_mem_rsv(fdt, initrd_start, initrd_end - initrd_start);
-> +	if (err < 0) {
-> +		printf("fdt_initrd: %s\n", fdt_strerror(err));
-> +		return err;
-> +	}
-> +
-> +	path = fdt_getprop(fdt, nodeoffset, "linux,initrd-start", NULL);
-> +	if (!path || force) {
-> +		tmp = __cpu_to_be32(initrd_start);
-> +		err = fdt_setprop(fdt, nodeoffset,
-> +			"linux,initrd-start", &tmp, sizeof(tmp));
-> +		if (err < 0) {
-> +			printf("WARNING: "
-> +				"could not set linux,initrd-start %s.\n",
-> +				fdt_strerror(err));
-> +			return err;
-> +		}
-> +		tmp = __cpu_to_be32(initrd_end);
-> +		err = fdt_setprop(fdt, nodeoffset,
-> +			"linux,initrd-end", &tmp, sizeof(tmp));
-> +		if (err < 0) {
-> +			printf("WARNING: could not set linux,initrd-end %s.\n",
-> +				fdt_strerror(err));
-> +
-> +			return err;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static int of_fixup_bootargs(struct fdt_header *fdt)
->  {
->  	int nodeoffset;
-> diff --git a/include/of.h b/include/of.h
-> index d3a310f..dcb4c4b 100644
-> --- a/include/of.h
-> +++ b/include/of.h
-> @@ -18,6 +18,7 @@ void do_fixup_by_path(struct fdt_header *fdt, const char *path, const char *prop
->  void do_fixup_by_path_u32(struct fdt_header *fdt, const char *path, const char *prop,
->  			  u32 val, int create);
->  int fdt_get_path_or_create(struct fdt_header *fdt, const char *path);
-> +int fdt_initrd(void *fdt, ulong initrd_start, ulong initrd_end, int force);
->  
->  #define OF_BAD_ADDR      ((u64)-1)
->  
+>  	.phy_id		= PHY_ID_KSZ9021,
+>  	.phy_id_mask	= 0x000ffffe,
+>  	.drv.name	= "Micrel KSZ9021 Gigabit PHY",
+> -	.features	= (PHY_GBIT_FEATURES | SUPPORTED_Pause
+> -				| SUPPORTED_Asym_Pause),
+> +	.features	= (PHY_GBIT_FEATURES | SUPPORTED_Pause),
+>  	.config_init	= kszphy_config_init,
+>  	.config_aneg	= genphy_config_aneg,
+>  	.read_status	= genphy_read_status,
 > -- 
-> 1.8.1.3
+> 1.7.10.4
 > 
 > 
 > _______________________________________________
