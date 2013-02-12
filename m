@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5AsG-0007Nn-UY
- for barebox@lists.infradead.org; Tue, 12 Feb 2013 08:05:58 +0000
-Date: Tue, 12 Feb 2013 09:05:55 +0100
+ id 1U5Ast-0007Ua-Tl
+ for barebox@lists.infradead.org; Tue, 12 Feb 2013 08:06:36 +0000
+Date: Tue, 12 Feb 2013 09:06:34 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130212080555.GO1906@pengutronix.de>
-References: <1360602090-11095-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130212080634.GP1906@pengutronix.de>
+References: <1360602120-11241-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1360602090-11095-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1360602120-11241-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,13 +22,11 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] arm: cache-l2x0 update sync define with Linux 3.5
+Subject: Re: [PATCH 1/2] ahci: add generic driver
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Feb 11, 2013 at 06:01:29PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Drop copy in cache-l2x0
-> 
+On Mon, Feb 11, 2013 at 06:01:59PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
 Applied, thanks
@@ -36,215 +34,95 @@ Applied, thanks
 Sascha
 
 > ---
->  arch/arm/cpu/cache-l2x0.c         |   32 +-------
->  arch/arm/include/asm/cache-l2x0.h |  150 +++++++++++++++++++++++++------------
->  2 files changed, 102 insertions(+), 80 deletions(-)
->  rewrite arch/arm/include/asm/cache-l2x0.h (67%)
+>  drivers/ata/Kconfig        |    4 ++++
+>  drivers/ata/Makefile       |    2 ++
+>  drivers/ata/ahci-generic.c |   47 ++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 53 insertions(+)
+>  create mode 100644 drivers/ata/ahci-generic.c
 > 
-> diff --git a/arch/arm/cpu/cache-l2x0.c b/arch/arm/cpu/cache-l2x0.c
-> index b300e6f..2be562d 100644
-> --- a/arch/arm/cpu/cache-l2x0.c
-> +++ b/arch/arm/cpu/cache-l2x0.c
-> @@ -2,42 +2,12 @@
->  #include <init.h>
->  #include <io.h>
->  #include <asm/mmu.h>
-> +#include <asm/cache-l2x0.h>
+> diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
+> index ff6528a..41dc811 100644
+> --- a/drivers/ata/Kconfig
+> +++ b/drivers/ata/Kconfig
+> @@ -37,6 +37,10 @@ config DISK_AHCI
+>  	select DISK_ATA
+>  	select DISK_DRIVE
 >  
->  #define CACHE_LINE_SIZE		32
+> +config DISK_AHCI_GENERIC
+> +	depends on DISK_AHCI
+> +	bool "AHCI generic support"
+> +
+>  config DISK_AHCI_IMX
+>  	depends on DISK_AHCI
+>  	bool "i.MX AHCI support"
+> diff --git a/drivers/ata/Makefile b/drivers/ata/Makefile
+> index c444c4d..802bd61 100644
+> --- a/drivers/ata/Makefile
+> +++ b/drivers/ata/Makefile
+> @@ -4,8 +4,10 @@ obj-$(CONFIG_DISK_BIOS) += disk_bios_drive.o
+>  obj-$(CONFIG_DISK_IDE_SFF) += ide-sff.o
+>  obj-$(CONFIG_DISK_ATA) += disk_ata_drive.o
+>  obj-$(CONFIG_DISK_AHCI) += ahci.o
+> +obj-$(CONFIG_DISK_AHCI_GENERIC) += ahci-generic.o
+>  obj-$(CONFIG_DISK_AHCI_IMX) += sata-imx.o
 >  
->  static void __iomem *l2x0_base;
+> +
+>  # interface types
 >  
-> -#define L2X0_CACHE_ID			0x000
-> -#define L2X0_CACHE_TYPE			0x004
-> -#define L2X0_CTRL			0x100
-> -#define L2X0_AUX_CTRL			0x104
-> -#define L2X0_TAG_LATENCY_CTRL		0x108
-> -#define L2X0_DATA_LATENCY_CTRL		0x10C
-> -#define L2X0_EVENT_CNT_CTRL		0x200
-> -#define L2X0_EVENT_CNT1_CFG		0x204
-> -#define L2X0_EVENT_CNT0_CFG		0x208
-> -#define L2X0_EVENT_CNT1_VAL		0x20C
-> -#define L2X0_EVENT_CNT0_VAL		0x210
-> -#define L2X0_INTR_MASK			0x214
-> -#define L2X0_MASKED_INTR_STAT		0x218
-> -#define L2X0_RAW_INTR_STAT		0x21C
-> -#define L2X0_INTR_CLEAR			0x220
-> -#define L2X0_CACHE_SYNC			0x730
-> -#define L2X0_INV_LINE_PA		0x770
-> -#define L2X0_INV_WAY			0x77C
-> -#define L2X0_CLEAN_LINE_PA		0x7B0
-> -#define L2X0_CLEAN_LINE_IDX		0x7B8
-> -#define L2X0_CLEAN_WAY			0x7BC
-> -#define L2X0_CLEAN_INV_LINE_PA		0x7F0
-> -#define L2X0_CLEAN_INV_LINE_IDX		0x7F8
-> -#define L2X0_CLEAN_INV_WAY		0x7FC
-> -#define L2X0_LOCKDOWN_WAY_D		0x900
-> -#define L2X0_LOCKDOWN_WAY_I		0x904
-> -#define L2X0_TEST_OPERATION		0xF00
-> -#define L2X0_LINE_DATA			0xF10
-> -#define L2X0_LINE_TAG			0xF30
-> -#define L2X0_DEBUG_CTRL			0xF40
-> -
->  static inline void cache_wait(void __iomem *reg, unsigned long mask)
->  {
->  	/* wait for the operation to complete */
-> diff --git a/arch/arm/include/asm/cache-l2x0.h b/arch/arm/include/asm/cache-l2x0.h
-> dissimilarity index 67%
-> index e236888..963dd99 100644
-> --- a/arch/arm/include/asm/cache-l2x0.h
-> +++ b/arch/arm/include/asm/cache-l2x0.h
-> @@ -1,49 +1,101 @@
-> -/*
-> - * arch/arm/include/asm/hardware/cache-l2x0.h
-> - *
-> - * Copyright (C) 2007 ARM Limited
-> - *
-> - * This program is free software; you can redistribute it and/or modify
-> - * it under the terms of the GNU General Public License version 2 as
-> - * published by the Free Software Foundation.
-> - *
-> - * This program is distributed in the hope that it will be useful,
-> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> - * GNU General Public License for more details.
-> - *
-> - */
-> -
-> -#ifndef __ASM_ARM_HARDWARE_L2X0_H
-> -#define __ASM_ARM_HARDWARE_L2X0_H
-> -
-> -#define L2X0_CACHE_ID                   0x000
-> -#define L2X0_CACHE_TYPE                 0x004
-> -#define L2X0_CTRL                       0x100
-> -#define L2X0_AUX_CTRL                   0x104
-> -#define L2X0_EVENT_CNT_CTRL             0x200
-> -#define L2X0_EVENT_CNT1_CFG             0x204
-> -#define L2X0_EVENT_CNT0_CFG             0x208
-> -#define L2X0_EVENT_CNT1_VAL             0x20C
-> -#define L2X0_EVENT_CNT0_VAL             0x210
-> -#define L2X0_INTR_MASK                  0x214
-> -#define L2X0_MASKED_INTR_STAT           0x218
-> -#define L2X0_RAW_INTR_STAT              0x21C
-> -#define L2X0_INTR_CLEAR                 0x220
-> -#define L2X0_CACHE_SYNC                 0x730
-> -#define L2X0_INV_LINE_PA                0x770
-> -#define L2X0_INV_WAY                    0x77C
-> -#define L2X0_CLEAN_LINE_PA              0x7B0
-> -#define L2X0_CLEAN_LINE_IDX             0x7B8
-> -#define L2X0_CLEAN_WAY                  0x7BC
-> -#define L2X0_CLEAN_INV_LINE_PA          0x7F0
-> -#define L2X0_CLEAN_INV_LINE_IDX         0x7F8
-> -#define L2X0_CLEAN_INV_WAY              0x7FC
-> -#define L2X0_LOCKDOWN_WAY_D             0x900
-> -#define L2X0_LOCKDOWN_WAY_I             0x904
-> -#define L2X0_TEST_OPERATION             0xF00
-> -#define L2X0_LINE_DATA                  0xF10
-> -#define L2X0_LINE_TAG                   0xF30
-> -#define L2X0_DEBUG_CTRL                 0xF40
-> -
-> -#endif
+>  obj-$(CONFIG_DISK_INTF_PLATFORM_IDE) += intf_platform_ide.o
+> diff --git a/drivers/ata/ahci-generic.c b/drivers/ata/ahci-generic.c
+> new file mode 100644
+> index 0000000..4077627
+> --- /dev/null
+> +++ b/drivers/ata/ahci-generic.c
+> @@ -0,0 +1,47 @@
 > +/*
-> + * arch/arm/include/asm/hardware/cache-l2x0.h
+> + * Copyright (C) 2009 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
 > + *
-> + * Copyright (C) 2007 ARM Limited
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2 as
-> + * published by the Free Software Foundation.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
+> + * GPLv2 only
 > + */
 > +
-> +#ifndef __ASM_ARM_HARDWARE_L2X0_H
-> +#define __ASM_ARM_HARDWARE_L2X0_H
+> +#include <common.h>
+> +#include <ata_drive.h>
+> +#include <io.h>
+> +#include <driver.h>
+> +#include <init.h>
+> +#include <malloc.h>
+> +#include "ahci.h"
 > +
-> +#define L2X0_CACHE_ID			0x000
-> +#define L2X0_CACHE_TYPE			0x004
-> +#define L2X0_CTRL			0x100
-> +#define L2X0_AUX_CTRL			0x104
-> +#define L2X0_TAG_LATENCY_CTRL		0x108
-> +#define L2X0_DATA_LATENCY_CTRL		0x10C
-> +#define L2X0_EVENT_CNT_CTRL		0x200
-> +#define L2X0_EVENT_CNT1_CFG		0x204
-> +#define L2X0_EVENT_CNT0_CFG		0x208
-> +#define L2X0_EVENT_CNT1_VAL		0x20C
-> +#define L2X0_EVENT_CNT0_VAL		0x210
-> +#define L2X0_INTR_MASK			0x214
-> +#define L2X0_MASKED_INTR_STAT		0x218
-> +#define L2X0_RAW_INTR_STAT		0x21C
-> +#define L2X0_INTR_CLEAR			0x220
-> +#define L2X0_CACHE_SYNC			0x730
-> +#define L2X0_DUMMY_REG			0x740
-> +#define L2X0_INV_LINE_PA		0x770
-> +#define L2X0_INV_WAY			0x77C
-> +#define L2X0_CLEAN_LINE_PA		0x7B0
-> +#define L2X0_CLEAN_LINE_IDX		0x7B8
-> +#define L2X0_CLEAN_WAY			0x7BC
-> +#define L2X0_CLEAN_INV_LINE_PA		0x7F0
-> +#define L2X0_CLEAN_INV_LINE_IDX		0x7F8
-> +#define L2X0_CLEAN_INV_WAY		0x7FC
-> +/*
-> + * The lockdown registers repeat 8 times for L310, the L210 has only one
-> + * D and one I lockdown register at 0x0900 and 0x0904.
-> + */
-> +#define L2X0_LOCKDOWN_WAY_D_BASE	0x900
-> +#define L2X0_LOCKDOWN_WAY_I_BASE	0x904
-> +#define L2X0_LOCKDOWN_STRIDE		0x08
-> +#define L2X0_ADDR_FILTER_START		0xC00
-> +#define L2X0_ADDR_FILTER_END		0xC04
-> +#define L2X0_TEST_OPERATION		0xF00
-> +#define L2X0_LINE_DATA			0xF10
-> +#define L2X0_LINE_TAG			0xF30
-> +#define L2X0_DEBUG_CTRL			0xF40
-> +#define L2X0_PREFETCH_CTRL		0xF60
-> +#define L2X0_POWER_CTRL			0xF80
-> +#define   L2X0_DYNAMIC_CLK_GATING_EN	(1 << 1)
-> +#define   L2X0_STNDBY_MODE_EN		(1 << 0)
+> +static int ahci_probe(struct device_d *dev)
+> +{
+> +	struct ahci_device *ahci;
+> +	int ret;
 > +
-> +/* Registers shifts and masks */
-> +#define L2X0_CACHE_ID_PART_MASK		(0xf << 6)
-> +#define L2X0_CACHE_ID_PART_L210		(1 << 6)
-> +#define L2X0_CACHE_ID_PART_L310		(3 << 6)
-> +#define L2X0_CACHE_ID_RTL_MASK          0x3f
-> +#define L2X0_CACHE_ID_RTL_R0P0          0x0
-> +#define L2X0_CACHE_ID_RTL_R1P0          0x2
-> +#define L2X0_CACHE_ID_RTL_R2P0          0x4
-> +#define L2X0_CACHE_ID_RTL_R3P0          0x5
-> +#define L2X0_CACHE_ID_RTL_R3P1          0x6
-> +#define L2X0_CACHE_ID_RTL_R3P2          0x8
+> +	ahci = xzalloc(sizeof(*ahci));
 > +
-> +#define L2X0_AUX_CTRL_MASK			0xc0000fff
-> +#define L2X0_AUX_CTRL_DATA_RD_LATENCY_SHIFT	0
-> +#define L2X0_AUX_CTRL_DATA_RD_LATENCY_MASK	0x7
-> +#define L2X0_AUX_CTRL_DATA_WR_LATENCY_SHIFT	3
-> +#define L2X0_AUX_CTRL_DATA_WR_LATENCY_MASK	(0x7 << 3)
-> +#define L2X0_AUX_CTRL_TAG_LATENCY_SHIFT		6
-> +#define L2X0_AUX_CTRL_TAG_LATENCY_MASK		(0x7 << 6)
-> +#define L2X0_AUX_CTRL_DIRTY_LATENCY_SHIFT	9
-> +#define L2X0_AUX_CTRL_DIRTY_LATENCY_MASK	(0x7 << 9)
-> +#define L2X0_AUX_CTRL_ASSOCIATIVITY_SHIFT	16
-> +#define L2X0_AUX_CTRL_WAY_SIZE_SHIFT		17
-> +#define L2X0_AUX_CTRL_WAY_SIZE_MASK		(0x7 << 17)
-> +#define L2X0_AUX_CTRL_SHARE_OVERRIDE_SHIFT	22
-> +#define L2X0_AUX_CTRL_NS_LOCKDOWN_SHIFT		26
-> +#define L2X0_AUX_CTRL_NS_INT_CTRL_SHIFT		27
-> +#define L2X0_AUX_CTRL_DATA_PREFETCH_SHIFT	28
-> +#define L2X0_AUX_CTRL_INSTR_PREFETCH_SHIFT	29
-> +#define L2X0_AUX_CTRL_EARLY_BRESP_SHIFT		30
+> +	ahci->mmio_base = dev_request_mem_region(dev, 0);
 > +
-> +#define L2X0_LATENCY_CTRL_SETUP_SHIFT	0
-> +#define L2X0_LATENCY_CTRL_RD_SHIFT	4
-> +#define L2X0_LATENCY_CTRL_WR_SHIFT	8
+> +	ahci->dev = dev;
+> +	dev->priv = ahci;
+> +	ret = ahci_add_host(ahci);
+> +	if (ret)
+> +		goto err_free;
 > +
-> +#define L2X0_ADDR_FILTER_EN		1
+> +	return 0;
 > +
+> +err_free:
+> +	free(ahci);
 > +
-> +#endif
+> +	return ret;
+> +}
+> +
+> +static struct driver_d ahci_driver = {
+> +	.name	= "ahci",
+> +	.probe	= ahci_probe,
+> +};
+> +
+> +static int ahci_init(void)
+> +{
+> +	return platform_driver_register(&ahci_driver);
+> +}
+> +device_initcall(ahci_init);
 > -- 
 > 1.7.10.4
 > 
