@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5Bkj-0002E1-Oa
- for barebox@lists.infradead.org; Tue, 12 Feb 2013 09:02:17 +0000
-Date: Tue, 12 Feb 2013 10:02:11 +0100
+ id 1U5Bla-0002M9-B1
+ for barebox@lists.infradead.org; Tue, 12 Feb 2013 09:03:06 +0000
+Date: Tue, 12 Feb 2013 10:03:04 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130212090211.GU1906@pengutronix.de>
-References: <1360619537-2963-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130212090304.GV1906@pengutronix.de>
+References: <1360579325-31503-1-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1360619537-2963-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1360579325-31503-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,132 +22,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] amba: add oftree probe support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] ARM i.MX28: change default watchdog reset method
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Feb 11, 2013 at 10:52:17PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+On Mon, Feb 11, 2013 at 11:42:05AM +0100, Steffen Trumtrar wrote:
+> The default setting for the imx28 watchdog is to do a power-off reset. If the
+> SoC is only powered via battery, then the watchdog powers the chip down, though.
+> According to the datasheet it should still be possible to execute a proper POR
+> with battery power, but testing showed otherwise.
+> When the watchdog power-off reset is disabled, a software reset is executed
+> instead. This works with and without battery power.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-This breaks some configs:
-
- config:     arm              imx233-olinuxino_defconfig
-drivers/built-in.o: In function `add_of_amba_device':
-/home/sha/dude/barebox/barebox-test/drivers/of/base.c:672: undefined reference to `amba_device_add'
-make: *** [barebox] Error 1
+Applied, thanks
 
 Sascha
 
 > ---
-> v2: fix platform not platfrom
+>  arch/arm/mach-mxs/soc-imx28.c |   12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 > 
-> Best Regards,
-> J.
->  drivers/amba/bus.c |    1 +
->  drivers/of/base.c  |   60 +++++++++++++++++++++++++++++++++++++++++++++-------
->  2 files changed, 53 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
-> index d1ab53c..dcb52bf 100644
-> --- a/drivers/amba/bus.c
-> +++ b/drivers/amba/bus.c
-> @@ -212,6 +212,7 @@ struct amba_device *amba_device_alloc(const char *name, int id, resource_size_t
->  	dev->res.start = base;
->  	dev->res.end = base + size - 1;
->  	dev->res.flags = IORESOURCE_MEM;
-> +	dev->dev.resource = &dev->res;
+> diff --git a/arch/arm/mach-mxs/soc-imx28.c b/arch/arm/mach-mxs/soc-imx28.c
+> index a181b75..a5f3d68 100644
+> --- a/arch/arm/mach-mxs/soc-imx28.c
+> +++ b/arch/arm/mach-mxs/soc-imx28.c
+> @@ -21,6 +21,7 @@
 >  
->  	return dev;
+>  #define HW_CLKCTRL_RESET 0x1e0
+>  # define HW_CLKCTRL_RESET_CHIP (1 << 1)
+> +#define HW_CLKCTRL_WDOG_POR_DISABLE (1 << 5)
+>  
+>  /* Reset the full i.MX28 SoC via a chipset feature */
+>  void __noreturn reset_cpu(unsigned long addr)
+> @@ -35,3 +36,14 @@ void __noreturn reset_cpu(unsigned long addr)
+>  	/*NOTREACHED*/
 >  }
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index eaaeaf4..813b26d 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -26,6 +26,7 @@
->  #include <memory.h>
->  #include <sizes.h>
->  #include <linux/ctype.h>
-> +#include <linux/amba/bus.h>
->  
->  /**
->   * struct alias_prop - Alias property in 'aliases' node
-> @@ -641,18 +642,44 @@ void of_delete_property(struct property *pp)
->  	free(pp);
->  }
->  
-> -static struct device_d *add_of_device(struct device_node *node)
-> +static struct device_d *add_of_amba_device(struct device_node *node)
->  {
-> -	struct device_d *dev;
-> +	struct amba_device *dev;
->  	char *name, *at;
-> -	const struct property *cp;
->  
-> -	if (of_node_disabled(node))
-> -		return NULL;
-> +	dev = xzalloc(sizeof(*dev));
->  
-> -	cp = of_get_property(node, "compatible", NULL);
-> -	if (!cp)
-> -		return NULL;
-> +	name = xstrdup(node->name);
-> +	at = strchr(name, '@');
-> +	if (at) {
-> +		*at = 0;
-> +		snprintf(dev->dev.name, MAX_DRIVER_NAME, "%s.%s", at + 1, name);
-> +	} else {
-> +		strncpy(dev->dev.name, node->name, MAX_DRIVER_NAME);
-> +	}
+>  EXPORT_SYMBOL(reset_cpu);
 > +
-> +	dev->dev.id = DEVICE_ID_SINGLE;
-> +	memcpy(&dev->res, &node->resource[0], sizeof(struct resource));
-> +	dev->dev.resource = node->resource;
-> +	dev->dev.num_resources = 1;
-> +	dev->dev.device_node = node;
-> +	node->device = &dev->dev;
-> +
-> +	of_property_read_u32(node, "arm,primecell-periphid", &dev->periphid);
-> +
-> +	debug("register device 0x%08x\n", node->resource[0].start);
-> +
-> +	amba_device_add(dev);
-> +
-> +	free(name);
-> +
-> +	return &dev->dev;
-> +}
-> +
-> +static struct device_d *add_of_platform_device(struct device_node *node)
+> +static int imx28_init(void)
 > +{
-> +	struct device_d *dev;
-> +	char *name, *at;
->  
->  	dev = xzalloc(sizeof(*dev));
->  
-> @@ -679,6 +706,23 @@ static struct device_d *add_of_device(struct device_node *node)
->  
->  	return dev;
->  }
-> +
-> +static struct device_d *add_of_device(struct device_node *node)
-> +{
-> +	const struct property *cp;
-> +
-> +	if (of_node_disabled(node))
-> +		return NULL;
-> +
-> +	cp = of_get_property(node, "compatible", NULL);
-> +	if (!cp)
-> +		return NULL;
-> +
-> +	if (of_device_is_compatible(node, "arm,primecell") == 1)
-> +		return add_of_amba_device(node);
-> +	else
-> +		return add_of_platform_device(node);
+> +	/*
+> +	 * The default setting for the WDT is to do a POR. If the SoC is only
+> +	 * powered via battery, then a WDT reset powers the chip down instead
+> +	 * of resetting it. Use a software reset only.
+> +	 */
+> +	writel(HW_CLKCTRL_WDOG_POR_DISABLE, IMX_CCM_BASE + HW_CLKCTRL_RESET);
 > +}
->  EXPORT_SYMBOL(add_of_device);
->  
->  u64 dt_mem_next_cell(int s, const __be32 **cellp)
+> +postcore_initcall(imx28_init);
 > -- 
 > 1.7.10.4
 > 
