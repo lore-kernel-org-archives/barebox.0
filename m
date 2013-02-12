@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
- helo=mo2.mail-out.ovh.net)
+Received: from toroondcbmts05-srv.bellnexxia.net ([207.236.237.39])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U5GZz-0000Dl-HD
- for barebox@lists.infradead.org; Tue, 12 Feb 2013 14:11:28 +0000
-Received: from mail416.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id EFBEADC0858
- for <barebox@lists.infradead.org>; Tue, 12 Feb 2013 15:21:47 +0100 (CET)
-Date: Tue, 12 Feb 2013 15:10:16 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130212141016.GE19322@game.jcrosoft.org>
-References: <1360674608-12732-1-git-send-email-plagnioj@jcrosoft.com>
- <511A4671.2070000@calxeda.com>
+ id 1U5HpV-0002R1-Kb
+ for barebox@lists.infradead.org; Tue, 12 Feb 2013 15:31:37 +0000
+Date: Tue, 12 Feb 2013 10:31:23 -0500
+From: Xavier Douville <barebox@douville.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <511A4671.2070000@calxeda.com>
+References: <20130208200200.IIAE15122.toroondcbmts07-srv.bellnexxia.net@toip55-bus.srvr.bell.ca>
+ <20130211091905.GQ1906@pengutronix.de>
+In-Reply-To: <20130211091905.GQ1906@pengutronix.de>
+Message-Id: <20130212153132.XAZZ26520.toroondcbmts05-srv.bellnexxia.net@toip34-bus.srvr.bell.ca>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,42 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] ahci-generic: add oftree support
-To: Rob Herring <rob.herring@calxeda.com>
+Subject: [PATCH] Do not print error message when successfully attaching more
+ than one UBI device
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 07:41 Tue 12 Feb     , Rob Herring wrote:
-> On 02/12/2013 07:10 AM, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > calxeda use the generic driver but have it's own compatible cf Linux kernel
-> > Documentation
-> > 
-> > Cc: Rob Herring <rob.herring@calxeda.com>
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  drivers/ata/ahci-generic.c |   11 +++++++++++
-> >  1 file changed, 11 insertions(+)
-> > 
-> > diff --git a/drivers/ata/ahci-generic.c b/drivers/ata/ahci-generic.c
-> > index 4077627..62f2a19 100644
-> > --- a/drivers/ata/ahci-generic.c
-> > +++ b/drivers/ata/ahci-generic.c
-> > @@ -35,9 +35,20 @@ err_free:
-> >  	return ret;
-> >  }
-> >  
-> > +static __maybe_unused struct of_device_id ahci_dt_ids[] = {
-> > +	{
-> > +		.compatible = "ahci",
-> 
-> I don't believe this is a documented compatible value.
-I see it
+Hi
 
-Dame out of tree client linux kernel
+This patch fix a bug where an error message is printed when 
+attaching more than one UBI device. ubi_attach_mtd_dev() returns
+the UBI device number (>=0) on success.
 
-I'm sending a path to the dt-ml so we ca have it too
+Signed-off-by: Xavier Douville <barebox@douville.org>
+---
+ commands/ubi.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-Best Regards,
-J.
+diff --git a/commands/ubi.c b/commands/ubi.c
+index 1653eaa..8dc95ee 100644
+--- a/commands/ubi.c
++++ b/commands/ubi.c
+@@ -71,15 +71,19 @@ static int do_ubiattach(int argc, char *argv[])
+ 	}
+ 
+ 	ret = ioctl(fd, MEMGETINFO, &user);
+-	if (!ret)
++	if (!ret) {
+ 		ret = ubi_attach_mtd_dev(user.mtd, UBI_DEV_NUM_AUTO, 0);
++		if (ret >= 0) {
++			close(fd);
++			return 0;
++		}
++	}
+ 
+-	if (ret)
+-		printf("failed to attach: %s\n", strerror(-ret));
++	printf("failed to attach: %s\n", strerror(ret));
+ 
+ 	close(fd);
+ 
+-	return ret ? 1 : 0;
++	return 1;
+ }
+ 
+ static const __maybe_unused char cmd_ubiattach_help[] =
+-- 
+1.7.9.5
 
 _______________________________________________
 barebox mailing list
