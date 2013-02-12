@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5BeG-0001ms-2B
- for barebox@lists.infradead.org; Tue, 12 Feb 2013 08:55:32 +0000
+ id 1U5Bkj-0002E1-Oa
+ for barebox@lists.infradead.org; Tue, 12 Feb 2013 09:02:17 +0000
+Date: Tue, 12 Feb 2013 10:02:11 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 12 Feb 2013 09:55:29 +0100
-Message-Id: <1360659329-30599-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20130212090211.GU1906@pengutronix.de>
+References: <1360619537-2963-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1360619537-2963-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,348 +18,151 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] console: consolidate common console code
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] amba: add oftree probe support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-The full console and the simple console share a good amount of code,
-share this in console_common.c.
+On Mon, Feb 11, 2013 at 10:52:17PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/Makefile         |    4 +--
- common/console.c        |   85 ---------------------------------------------
- common/console_common.c |   87 +++++++++++++++++++++++++++++++++++++++++++++++
- common/console_simple.c |   83 --------------------------------------------
- 4 files changed, 89 insertions(+), 170 deletions(-)
- create mode 100644 common/console_common.c
+This breaks some configs:
 
-diff --git a/common/Makefile b/common/Makefile
-index 7206eed..da96007 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -21,8 +21,8 @@ obj-y += clock.o
- obj-$(CONFIG_BANNER) += version.o
- obj-$(CONFIG_MEMINFO) += meminfo.o
- obj-$(CONFIG_COMMAND_SUPPORT) += command.o
--obj-$(CONFIG_CONSOLE_FULL) += console.o
--obj-$(CONFIG_CONSOLE_SIMPLE) += console_simple.o
-+obj-$(CONFIG_CONSOLE_FULL) += console.o console_common.o
-+obj-$(CONFIG_CONSOLE_SIMPLE) += console_simple.o console_common.o
- obj-$(CONFIG_CONSOLE_NONE) += console_none.o
- obj-$(CONFIG_DIGEST) += digest.o
- obj-$(CONFIG_ENVIRONMENT_VARIABLES) += env.o
-diff --git a/common/console.c b/common/console.c
-index a085e2d..beb37bd 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -305,24 +305,6 @@ void console_putc(unsigned int ch, char c)
- }
- EXPORT_SYMBOL(console_putc);
- 
--int fputc(int fd, char c)
--{
--	if(list_empty(&console_list)) {
--		if(!fd)
--			console_putc(0, c);
--		return 0;
--	}
--
--	if (fd == 1)
--		putchar(c);
--	else if (fd == 2)
--		eputc(c);
--	else
--		return write(fd, &c, 1);
--	return 0;
--}
--EXPORT_SYMBOL(fputc);
--
- int console_puts(unsigned int ch, const char *str)
- {
- 	const char *s = str;
-@@ -341,17 +323,6 @@ int console_puts(unsigned int ch, const char *str)
- }
- EXPORT_SYMBOL(console_puts);
- 
--int fputs(int fd, const char *s)
--{
--	if (fd == 1)
--		return puts(s);
--	else if (fd == 2)
--		return eputs(s);
--	else
--		return write(fd, s, strlen(s));
--}
--EXPORT_SYMBOL(fputs);
--
- void console_flush(void)
- {
- 	struct console_device *cdev;
-@@ -363,62 +334,6 @@ void console_flush(void)
- }
- EXPORT_SYMBOL(console_flush);
- 
--int fprintf(int file, const char *fmt, ...)
--{
--	va_list args;
--	char printbuffer[CFG_PBSIZE];
--
--	va_start (args, fmt);
--
--	/* For this to work, printbuffer must be larger than
--	 * anything we ever want to print.
--	 */
--	vsprintf (printbuffer, fmt, args);
--	va_end (args);
--
--	/* Print the string */
--	return fputs(file, printbuffer);
--}
--EXPORT_SYMBOL(fprintf);
--
--int printf (const char *fmt, ...)
--{
--	va_list args;
--	uint i;
--	char printbuffer[CFG_PBSIZE];
--
--	va_start (args, fmt);
--
--	/* For this to work, printbuffer must be larger than
--	 * anything we ever want to print.
--	 */
--	i = vsprintf (printbuffer, fmt, args);
--	va_end (args);
--
--	/* Print the string */
--	puts (printbuffer);
--
--	return i;
--}
--EXPORT_SYMBOL(printf);
--
--int vprintf (const char *fmt, va_list args)
--{
--	uint i;
--	char printbuffer[CFG_PBSIZE];
--
--	/* For this to work, printbuffer must be larger than
--	 * anything we ever want to print.
--	 */
--	i = vsprintf (printbuffer, fmt, args);
--
--	/* Print the string */
--	puts (printbuffer);
--
--	return i;
--}
--EXPORT_SYMBOL(vprintf);
--
- #ifndef ARCH_HAS_CTRLC
- /* test if ctrl-c was pressed */
- int ctrlc (void)
-diff --git a/common/console_common.c b/common/console_common.c
-new file mode 100644
-index 0000000..ee23f98
---- /dev/null
-+++ b/common/console_common.c
-@@ -0,0 +1,87 @@
-+#include <common.h>
-+#include <fs.h>
-+#include <errno.h>
-+
-+int printf(const char *fmt, ...)
-+{
-+	va_list args;
-+	uint i;
-+	char printbuffer[CFG_PBSIZE];
-+
-+	va_start(args, fmt);
-+
-+	/*
-+	 * For this to work, printbuffer must be larger than
-+	 * anything we ever want to print.
-+	 */
-+	i = vsprintf (printbuffer, fmt, args);
-+	va_end(args);
-+
-+	/* Print the string */
-+	puts(printbuffer);
-+
-+	return i;
-+}
-+EXPORT_SYMBOL(printf);
-+
-+int vprintf(const char *fmt, va_list args)
-+{
-+	uint i;
-+	char printbuffer[CFG_PBSIZE];
-+
-+	/*
-+	 * For this to work, printbuffer must be larger than
-+	 * anything we ever want to print.
-+	 */
-+	i = vsprintf(printbuffer, fmt, args);
-+
-+	/* Print the string */
-+	puts(printbuffer);
-+
-+	return i;
-+}
-+EXPORT_SYMBOL(vprintf);
-+
-+int fprintf(int file, const char *fmt, ...)
-+{
-+	va_list args;
-+	char printbuffer[CFG_PBSIZE];
-+
-+	va_start(args, fmt);
-+
-+	/*
-+	 * For this to work, printbuffer must be larger than
-+	 * anything we ever want to print.
-+	 */
-+	vsprintf(printbuffer, fmt, args);
-+	va_end(args);
-+
-+	/* Print the string */
-+	return fputs(file, printbuffer);
-+}
-+EXPORT_SYMBOL(fprintf);
-+
-+int fputs(int fd, const char *s)
-+{
-+	if (fd == 1)
-+		return puts(s);
-+	else if (fd == 2)
-+		return eputs(s);
-+	else
-+		return write(fd, s, strlen(s));
-+}
-+EXPORT_SYMBOL(fputs);
-+
-+int fputc(int fd, char c)
-+{
-+	if (fd == 1)
-+		putchar(c);
-+	else if (fd == 2)
-+		eputc(c);
-+	else
-+		return write(fd, &c, 1);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(fputc);
-+
-diff --git a/common/console_simple.c b/common/console_simple.c
-index a4d4315..1fe569e 100644
---- a/common/console_simple.c
-+++ b/common/console_simple.c
-@@ -8,65 +8,6 @@ LIST_HEAD(console_list);
- EXPORT_SYMBOL(console_list);
- static struct console_device *console;
- 
--int printf (const char *fmt, ...)
--{
--	va_list args;
--	uint i;
--	char printbuffer[CFG_PBSIZE];
--
--	va_start (args, fmt);
--
--	/* For this to work, printbuffer must be larger than
--	 * anything we ever want to print.
--	 */
--	i = vsprintf (printbuffer, fmt, args);
--	va_end (args);
--
--	/* Print the string */
--	puts(printbuffer);
--
--	return i;
--}
--EXPORT_SYMBOL(printf);
--
--int vprintf (const char *fmt, va_list args)
--{
--	uint i;
--	char printbuffer[CFG_PBSIZE];
--
--	/* For this to work, printbuffer must be larger than
--	 * anything we ever want to print.
--	 */
--	i = vsprintf (printbuffer, fmt, args);
--
--	/* Print the string */
--	puts (printbuffer);
--
--	return i;
--}
--EXPORT_SYMBOL(vprintf);
--
--int fprintf(int file, const char *fmt, ...)
--{
--	va_list args;
--	uint i;
--	char printbuffer[CFG_PBSIZE];
--
--	va_start (args, fmt);
--
--	/* For this to work, printbuffer must be larger than
--	 * anything we ever want to print.
--	 */
--	i = vsprintf (printbuffer, fmt, args);
--	va_end (args);
--
--	/* Print the string */
--	fputs(file, printbuffer);
--
--	return i;
--}
--EXPORT_SYMBOL(fprintf);
--
- int console_puts(unsigned int ch, const char *str)
- {
- 	const char *s = str;
-@@ -97,30 +38,6 @@ void console_putc(unsigned int ch, char c)
- }
- EXPORT_SYMBOL(console_putc);
- 
--int fputc(int fd, char c)
--{
--	if (fd == 1)
--		putchar(c);
--	else if (fd == 2)
--		eputc(c);
--	else
--		return write(fd, &c, 1);
--	return 0;
--}
--EXPORT_SYMBOL(fputc);
--
--int fputs(int fd, const char *s)
--{
--	if (fd == 1)
--		puts(s);
--	else if (fd == 2)
--		eputs(s);
--	else
--		return write(fd, s, strlen(s));
--	return 0;
--}
--EXPORT_SYMBOL(fputs);
--
- int tstc(void)
- {
- 	if (!console)
+ config:     arm              imx233-olinuxino_defconfig
+drivers/built-in.o: In function `add_of_amba_device':
+/home/sha/dude/barebox/barebox-test/drivers/of/base.c:672: undefined reference to `amba_device_add'
+make: *** [barebox] Error 1
+
+Sascha
+
+> ---
+> v2: fix platform not platfrom
+> 
+> Best Regards,
+> J.
+>  drivers/amba/bus.c |    1 +
+>  drivers/of/base.c  |   60 +++++++++++++++++++++++++++++++++++++++++++++-------
+>  2 files changed, 53 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
+> index d1ab53c..dcb52bf 100644
+> --- a/drivers/amba/bus.c
+> +++ b/drivers/amba/bus.c
+> @@ -212,6 +212,7 @@ struct amba_device *amba_device_alloc(const char *name, int id, resource_size_t
+>  	dev->res.start = base;
+>  	dev->res.end = base + size - 1;
+>  	dev->res.flags = IORESOURCE_MEM;
+> +	dev->dev.resource = &dev->res;
+>  
+>  	return dev;
+>  }
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index eaaeaf4..813b26d 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -26,6 +26,7 @@
+>  #include <memory.h>
+>  #include <sizes.h>
+>  #include <linux/ctype.h>
+> +#include <linux/amba/bus.h>
+>  
+>  /**
+>   * struct alias_prop - Alias property in 'aliases' node
+> @@ -641,18 +642,44 @@ void of_delete_property(struct property *pp)
+>  	free(pp);
+>  }
+>  
+> -static struct device_d *add_of_device(struct device_node *node)
+> +static struct device_d *add_of_amba_device(struct device_node *node)
+>  {
+> -	struct device_d *dev;
+> +	struct amba_device *dev;
+>  	char *name, *at;
+> -	const struct property *cp;
+>  
+> -	if (of_node_disabled(node))
+> -		return NULL;
+> +	dev = xzalloc(sizeof(*dev));
+>  
+> -	cp = of_get_property(node, "compatible", NULL);
+> -	if (!cp)
+> -		return NULL;
+> +	name = xstrdup(node->name);
+> +	at = strchr(name, '@');
+> +	if (at) {
+> +		*at = 0;
+> +		snprintf(dev->dev.name, MAX_DRIVER_NAME, "%s.%s", at + 1, name);
+> +	} else {
+> +		strncpy(dev->dev.name, node->name, MAX_DRIVER_NAME);
+> +	}
+> +
+> +	dev->dev.id = DEVICE_ID_SINGLE;
+> +	memcpy(&dev->res, &node->resource[0], sizeof(struct resource));
+> +	dev->dev.resource = node->resource;
+> +	dev->dev.num_resources = 1;
+> +	dev->dev.device_node = node;
+> +	node->device = &dev->dev;
+> +
+> +	of_property_read_u32(node, "arm,primecell-periphid", &dev->periphid);
+> +
+> +	debug("register device 0x%08x\n", node->resource[0].start);
+> +
+> +	amba_device_add(dev);
+> +
+> +	free(name);
+> +
+> +	return &dev->dev;
+> +}
+> +
+> +static struct device_d *add_of_platform_device(struct device_node *node)
+> +{
+> +	struct device_d *dev;
+> +	char *name, *at;
+>  
+>  	dev = xzalloc(sizeof(*dev));
+>  
+> @@ -679,6 +706,23 @@ static struct device_d *add_of_device(struct device_node *node)
+>  
+>  	return dev;
+>  }
+> +
+> +static struct device_d *add_of_device(struct device_node *node)
+> +{
+> +	const struct property *cp;
+> +
+> +	if (of_node_disabled(node))
+> +		return NULL;
+> +
+> +	cp = of_get_property(node, "compatible", NULL);
+> +	if (!cp)
+> +		return NULL;
+> +
+> +	if (of_device_is_compatible(node, "arm,primecell") == 1)
+> +		return add_of_amba_device(node);
+> +	else
+> +		return add_of_platform_device(node);
+> +}
+>  EXPORT_SYMBOL(add_of_device);
+>  
+>  u64 dt_mem_next_cell(int s, const __be32 **cellp)
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
