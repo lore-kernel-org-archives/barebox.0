@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
+Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U5FUA-00034E-PU
- for barebox@lists.infradead.org; Tue, 12 Feb 2013 13:01:24 +0000
+ id 1U5FXI-0003FO-SA
+ for barebox@lists.infradead.org; Tue, 12 Feb 2013 13:04:37 +0000
 Received: from mail416.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 7D20FDC062C
- for <barebox@lists.infradead.org>; Tue, 12 Feb 2013 14:11:43 +0100 (CET)
-Date: Tue, 12 Feb 2013 14:00:12 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 9B9FBDC0C4A
+ for <barebox@lists.infradead.org>; Tue, 12 Feb 2013 14:14:58 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130212130012.GD19322@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Tue, 12 Feb 2013 14:03:25 +0100
+Message-Id: <1360674207-12078-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130212130012.GD19322@game.jcrosoft.org>
+References: <20130212130012.GD19322@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,49 +20,90 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] vexpress: detect the mapping based on the amba devices
+Subject: [PATCH 1/3] amba: introduce amba_device_get_pid/cid
 To: barebox@lists.infradead.org
 
-HI,
+so we can use it on vexpress to detect the hardware mapping
 
-	so we can run on a9 on the non legacy hw
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/amba/bus.c       |   10 +++-------
+ include/linux/amba/bus.h |   28 ++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+), 7 deletions(-)
 
-The following changes since commit 2d91386102612773074832d55e2ef11702fbb432:
+diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
+index d1ab53c..65385be 100644
+--- a/drivers/amba/bus.c
++++ b/drivers/amba/bus.c
+@@ -104,7 +104,7 @@ int amba_device_add(struct amba_device *dev)
+ {
+ 	u32 size;
+ 	void __iomem *tmp;
+-	int i, ret;
++	int ret;
+ 	struct resource *res = NULL;
+ 
+ 	dev->dev.bus = &amba_bustype;
+@@ -135,12 +135,8 @@ int amba_device_add(struct amba_device *dev)
+ 		 * Read pid and cid based on size of resource
+ 		 * they are located at end of region
+ 		 */
+-		for (pid = 0, i = 0; i < 4; i++)
+-			pid |= (readl(tmp + size - 0x20 + 4 * i) & 255) <<
+-				(i * 8);
+-		for (cid = 0, i = 0; i < 4; i++)
+-			cid |= (readl(tmp + size - 0x10 + 4 * i) & 255) <<
+-				(i * 8);
++		pid = amba_device_get_pid(tmp, size);
++		cid = amba_device_get_cid(tmp, size);
+ 
+ 		if (cid == AMBA_CID)
+ 			dev->periphid = pid;
+diff --git a/include/linux/amba/bus.h b/include/linux/amba/bus.h
+index cb3e3bd..a7bbae0 100644
+--- a/include/linux/amba/bus.h
++++ b/include/linux/amba/bus.h
+@@ -150,4 +150,32 @@ struct amba_device name##_device = {				\
+ 	.periphid = id,						\
+ }
+ 
++#include <io.h>
++/*
++ * Read pid and cid based on size of resource
++ * they are located at end of region
++ */
++static inline u32 amba_device_get_pid(void *base, u32 size)
++{
++	int i;
++	u32 pid;
++
++	for (pid = 0, i = 0; i < 4; i++)
++		pid |= (readl(base + size - 0x20 + 4 * i) & 255) <<
++			(i * 8);
++
++	return pid;
++}
++
++static inline u32 amba_device_get_cid(void *base, u32 size)
++{
++	int i;
++	u32 cid;
++
++	for (cid = 0, i = 0; i < 4; i++)
++		cid |= (readl(base + size - 0x10 + 4 * i) & 255) <<
++			(i * 8);
++
++	return cid;
++}
+ #endif
+-- 
+1.7.10.4
 
-  arm: add vexpress board support (2013-02-12 05:53:04 +0800)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/vexpress
-
-for you to fetch changes up to 92b8828ad6b2b01248bd84888b8bbf920df85c31:
-
-  vexpress: detect the board periph mapping and detecting the sp804 mapping (2013-02-12 05:53:04 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (3):
-      amba: introduce amba_device_get_pid/cid
-      sp804: introduce amba_is_arm_sp804 to detect if the sp804 is present at the address
-      vexpress: detect the board periph mapping and detecting the sp804 mapping
-
- arch/arm/boards/vexpress/init.c               |   35 +++++++++++++++++++----------------
- arch/arm/boards/vexpress/lowlevel.c           |    4 +++-
- arch/arm/mach-vexpress/devices.c              |    4 ++--
- arch/arm/mach-vexpress/include/mach/devices.h |    6 +++---
- arch/arm/mach-vexpress/v2m.c                  |    2 +-
- drivers/amba/bus.c                            |   10 +++-------
- drivers/clocksource/amba-sp804.c              |    6 +++---
- include/linux/amba/bus.h                      |   28 ++++++++++++++++++++++++++++
- include/linux/amba/sp804.h                    |   30 ++++++++++++++++++++++++++++++
- 9 files changed, 92 insertions(+), 33 deletions(-)
- create mode 100644 include/linux/amba/sp804.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
