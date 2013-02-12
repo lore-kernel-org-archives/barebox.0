@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo5.mail-out.ovh.net ([188.165.51.82]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U5N9v-0008Sr-Su
- for barebox@lists.infradead.org; Tue, 12 Feb 2013 21:13:00 +0000
-Received: from mail624.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id C06BBFF8649
- for <barebox@lists.infradead.org>; Tue, 12 Feb 2013 22:23:28 +0100 (CET)
-Date: Tue, 12 Feb 2013 22:11:51 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130212211151.GF19322@game.jcrosoft.org>
-References: <1360703460-20379-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U5Ofc-0000Ke-0W
+ for barebox@lists.infradead.org; Tue, 12 Feb 2013 22:49:49 +0000
+Message-ID: <511AC702.8030606@pengutronix.de>
+Date: Tue, 12 Feb 2013 23:49:38 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1360703460-20379-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20130208200200.IIAE15122.toroondcbmts07-srv.bellnexxia.net@toip55-bus.srvr.bell.ca>
+ <20130211091905.GQ1906@pengutronix.de>
+ <20130211151452.DHP25653.toroondcbmts04-srv.bellnexxia.net@toip41-bus.srvr.bell.ca>
+In-Reply-To: <20130211151452.DHP25653.toroondcbmts04-srv.bellnexxia.net@toip41-bus.srvr.bell.ca>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,119 +19,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============0315192123704074845=="
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] highbank: use the provided dtb by the firmware to
- probe barebox device and mem size
-To: barebox@lists.infradead.org
-Cc: Rob Herring <rob.herring@calxeda.com>
+Subject: Re: [PATCH 1/1] commands/ubi.c: Add support for VID header offset
+ in ubiattach
+To: Xavier Douville <barebox@douville.org>
+Cc: barebox@lists.infradead.org
 
-Hi.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============0315192123704074845==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="----enig2FGVRVVQCEIIVWCGPEPOD"
 
-	it's a rfc
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+------enig2FGVRVVQCEIIVWCGPEPOD
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Best Regards,
-J.
-On 22:11 Tue 12 Feb     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> the dtb is at 0x1000
-> 
-> if no dtb present use C code device
-> 
-> kepp in C the timer/gpio/uart
-> 
-> Cc: Rob Herring <rob.herring@calxeda.com>
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/arm/boards/highbank/env/bin/init_board |    7 +++++
->  arch/arm/boards/highbank/init.c             |   44 ++++++++++++++++++++++++---
->  2 files changed, 47 insertions(+), 4 deletions(-)
->  create mode 100644 arch/arm/boards/highbank/env/bin/init_board
-> 
-> diff --git a/arch/arm/boards/highbank/env/bin/init_board b/arch/arm/boards/highbank/env/bin/init_board
-> new file mode 100644
-> index 0000000..610db15
-> --- /dev/null
-> +++ b/arch/arm/boards/highbank/env/bin/init_board
-> @@ -0,0 +1,7 @@
-> +#!/bin/sh
-> +
-> +if [ -e /dev/dtb ]
-> +then
-> +	oftree -l /dev/dtb
-> +	oftree -p
-> +fi
-> diff --git a/arch/arm/boards/highbank/init.c b/arch/arm/boards/highbank/init.c
-> index 9fb7986..a01db5b 100644
-> --- a/arch/arm/boards/highbank/init.c
-> +++ b/arch/arm/boards/highbank/init.c
-> @@ -15,20 +15,56 @@
->  #include <sizes.h>
->  #include <io.h>
->  
-> +struct fdt_header *fdt = NULL;
-> +
->  static int highbank_mem_init(void)
->  {
-> +	struct device_node *np;
-> +	u32 reg[2];
-> +	int ret;
-> +
-> +	/* load by the firmware at 0x1000 */
-> +	fdt = IOMEM(0x1000);
-> +
-> +	ret = of_unflatten_dtb(fdt);
-> +	if (ret) {
-> +		pr_warn("no dtb found at 0x1000 use default configuration\n");
-> +		fdt = NULL;
-> +		goto not_found;
-> +	}
-> +
-> +	np = of_find_node_by_path("/memory");
-> +	if (!np) {
-> +		pr_warn("no memory node use default configuration\n");
-> +		goto not_found;
-> +	}
-> +
-> +	ret = of_property_read_u32_array(np, "reg", reg, 2); 
-> +	if (ret) {
-> +		pr_warn("memory node: no reg property use default configuration\n");
-> +		goto not_found;
-> +	}
-> +
-> +	pr_info("highbank: dtb probed mem_size = 0x%x\n", reg[1]);
-> +
-> +	highbank_add_ddram(reg[1]);
-> +
-> +not_found:
->  	//highbank_add_ddram(4089 << 20);
->  	highbank_add_ddram(SZ_1G);
-> -
->  	return 0;
->  }
->  mem_initcall(highbank_mem_init);
->  
->  static int highbank_devices_init(void)
->  {
-> -	highbank_register_ahci();
-> -	highbank_register_xgmac(0);
-> -	highbank_register_xgmac(1);
-> +	if (!fdt) {
-> +		highbank_register_ahci();
-> +		highbank_register_xgmac(0);
-> +		highbank_register_xgmac(1);
-> +	} else {
-> +		devfs_add_partition("ram1", 0x1000, SZ_64K, DEVFS_PARTITION_FIXED, "dtb");
-> +	}
->  
->  	armlinux_set_bootparams((void *)(0x00000100));
->  
-> -- 
-> 1.7.10.4
-> 
+On 02/11/2013 04:14 PM, Xavier Douville wrote:
+> Hi
+>=20
+> Sascha Hauer wrote:
+>> I don't know exactly, but I suspect something is wrong on your board
+>> then. Normally the VID header offset should be detected correctly
+>> automatically. Does the kernel also need a special VID header offset?
+>> Have you flashed an UBI image or did you generate the UBI on the
+>> target directly?=20
+>=20
+> I also need to specify VID header offset 2048 to the kernel. It came
+> configured as such from the vendor (phytec, board am335x).
+> I flashed an UBI image generated by ptxdist.
+
+Why don't you configure ptxdist to generate an image with the correct
+VID header offset?
+
+Marc
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+
+------enig2FGVRVVQCEIIVWCGPEPOD
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iEYEARECAAYFAlEaxwYACgkQjTAFq1RaXHMchwCdG6JB0DYBfvjnnIYcHiKL0TLd
+wJsAn03W5/uAwO32rbd4+HR5mKNGoUpK
+=dzoZ
+-----END PGP SIGNATURE-----
+
+------enig2FGVRVVQCEIIVWCGPEPOD--
+
+
+--===============0315192123704074845==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============0315192123704074845==--
