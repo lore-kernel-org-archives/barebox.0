@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5Arl-0007KD-A0
- for barebox@lists.infradead.org; Tue, 12 Feb 2013 08:05:26 +0000
-Date: Tue, 12 Feb 2013 09:05:23 +0100
+ id 1U5AsG-0007Nn-UY
+ for barebox@lists.infradead.org; Tue, 12 Feb 2013 08:05:58 +0000
+Date: Tue, 12 Feb 2013 09:05:55 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130212080523.GN1906@pengutronix.de>
-References: <20130211120049.GX19322@game.jcrosoft.org>
+Message-ID: <20130212080555.GO1906@pengutronix.de>
+References: <1360602090-11095-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130211120049.GX19322@game.jcrosoft.org>
+In-Reply-To: <1360602090-11095-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,89 +22,232 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3 v2] arm: add ARM Vexpress support
+Subject: Re: [PATCH 1/2] arm: cache-l2x0 update sync define with Linux 3.5
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Feb 11, 2013 at 01:00:49PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,
+On Mon, Feb 11, 2013 at 06:01:29PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Drop copy in cache-l2x0
 > 
-> The following changes since commit e43e1498f65fe03cfc6b2744247eeccf27b26876:
-> 
->   MIPS: pbl: fix none compression support (2013-02-05 09:43:17 +0100)
-> 
-> are available in the git repository at:
-> 
->   git://git.jcrosoft.org/barebox.git delivery/vexpress
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
 Applied, thanks
 
 Sascha
 
+> ---
+>  arch/arm/cpu/cache-l2x0.c         |   32 +-------
+>  arch/arm/include/asm/cache-l2x0.h |  150 +++++++++++++++++++++++++------------
+>  2 files changed, 102 insertions(+), 80 deletions(-)
+>  rewrite arch/arm/include/asm/cache-l2x0.h (67%)
 > 
-> for you to fetch changes up to b57ea102c02881da1400537d61dbec9e5c6a6ea1:
+> diff --git a/arch/arm/cpu/cache-l2x0.c b/arch/arm/cpu/cache-l2x0.c
+> index b300e6f..2be562d 100644
+> --- a/arch/arm/cpu/cache-l2x0.c
+> +++ b/arch/arm/cpu/cache-l2x0.c
+> @@ -2,42 +2,12 @@
+>  #include <init.h>
+>  #include <io.h>
+>  #include <asm/mmu.h>
+> +#include <asm/cache-l2x0.h>
+>  
+>  #define CACHE_LINE_SIZE		32
+>  
+>  static void __iomem *l2x0_base;
+>  
+> -#define L2X0_CACHE_ID			0x000
+> -#define L2X0_CACHE_TYPE			0x004
+> -#define L2X0_CTRL			0x100
+> -#define L2X0_AUX_CTRL			0x104
+> -#define L2X0_TAG_LATENCY_CTRL		0x108
+> -#define L2X0_DATA_LATENCY_CTRL		0x10C
+> -#define L2X0_EVENT_CNT_CTRL		0x200
+> -#define L2X0_EVENT_CNT1_CFG		0x204
+> -#define L2X0_EVENT_CNT0_CFG		0x208
+> -#define L2X0_EVENT_CNT1_VAL		0x20C
+> -#define L2X0_EVENT_CNT0_VAL		0x210
+> -#define L2X0_INTR_MASK			0x214
+> -#define L2X0_MASKED_INTR_STAT		0x218
+> -#define L2X0_RAW_INTR_STAT		0x21C
+> -#define L2X0_INTR_CLEAR			0x220
+> -#define L2X0_CACHE_SYNC			0x730
+> -#define L2X0_INV_LINE_PA		0x770
+> -#define L2X0_INV_WAY			0x77C
+> -#define L2X0_CLEAN_LINE_PA		0x7B0
+> -#define L2X0_CLEAN_LINE_IDX		0x7B8
+> -#define L2X0_CLEAN_WAY			0x7BC
+> -#define L2X0_CLEAN_INV_LINE_PA		0x7F0
+> -#define L2X0_CLEAN_INV_LINE_IDX		0x7F8
+> -#define L2X0_CLEAN_INV_WAY		0x7FC
+> -#define L2X0_LOCKDOWN_WAY_D		0x900
+> -#define L2X0_LOCKDOWN_WAY_I		0x904
+> -#define L2X0_TEST_OPERATION		0xF00
+> -#define L2X0_LINE_DATA			0xF10
+> -#define L2X0_LINE_TAG			0xF30
+> -#define L2X0_DEBUG_CTRL			0xF40
+> -
+>  static inline void cache_wait(void __iomem *reg, unsigned long mask)
+>  {
+>  	/* wait for the operation to complete */
+> diff --git a/arch/arm/include/asm/cache-l2x0.h b/arch/arm/include/asm/cache-l2x0.h
+> dissimilarity index 67%
+> index e236888..963dd99 100644
+> --- a/arch/arm/include/asm/cache-l2x0.h
+> +++ b/arch/arm/include/asm/cache-l2x0.h
+> @@ -1,49 +1,101 @@
+> -/*
+> - * arch/arm/include/asm/hardware/cache-l2x0.h
+> - *
+> - * Copyright (C) 2007 ARM Limited
+> - *
+> - * This program is free software; you can redistribute it and/or modify
+> - * it under the terms of the GNU General Public License version 2 as
+> - * published by the Free Software Foundation.
+> - *
+> - * This program is distributed in the hope that it will be useful,
+> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - * GNU General Public License for more details.
+> - *
+> - */
+> -
+> -#ifndef __ASM_ARM_HARDWARE_L2X0_H
+> -#define __ASM_ARM_HARDWARE_L2X0_H
+> -
+> -#define L2X0_CACHE_ID                   0x000
+> -#define L2X0_CACHE_TYPE                 0x004
+> -#define L2X0_CTRL                       0x100
+> -#define L2X0_AUX_CTRL                   0x104
+> -#define L2X0_EVENT_CNT_CTRL             0x200
+> -#define L2X0_EVENT_CNT1_CFG             0x204
+> -#define L2X0_EVENT_CNT0_CFG             0x208
+> -#define L2X0_EVENT_CNT1_VAL             0x20C
+> -#define L2X0_EVENT_CNT0_VAL             0x210
+> -#define L2X0_INTR_MASK                  0x214
+> -#define L2X0_MASKED_INTR_STAT           0x218
+> -#define L2X0_RAW_INTR_STAT              0x21C
+> -#define L2X0_INTR_CLEAR                 0x220
+> -#define L2X0_CACHE_SYNC                 0x730
+> -#define L2X0_INV_LINE_PA                0x770
+> -#define L2X0_INV_WAY                    0x77C
+> -#define L2X0_CLEAN_LINE_PA              0x7B0
+> -#define L2X0_CLEAN_LINE_IDX             0x7B8
+> -#define L2X0_CLEAN_WAY                  0x7BC
+> -#define L2X0_CLEAN_INV_LINE_PA          0x7F0
+> -#define L2X0_CLEAN_INV_LINE_IDX         0x7F8
+> -#define L2X0_CLEAN_INV_WAY              0x7FC
+> -#define L2X0_LOCKDOWN_WAY_D             0x900
+> -#define L2X0_LOCKDOWN_WAY_I             0x904
+> -#define L2X0_TEST_OPERATION             0xF00
+> -#define L2X0_LINE_DATA                  0xF10
+> -#define L2X0_LINE_TAG                   0xF30
+> -#define L2X0_DEBUG_CTRL                 0xF40
+> -
+> -#endif
+> +/*
+> + * arch/arm/include/asm/hardware/cache-l2x0.h
+> + *
+> + * Copyright (C) 2007 ARM Limited
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2 as
+> + * published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + */
+> +
+> +#ifndef __ASM_ARM_HARDWARE_L2X0_H
+> +#define __ASM_ARM_HARDWARE_L2X0_H
+> +
+> +#define L2X0_CACHE_ID			0x000
+> +#define L2X0_CACHE_TYPE			0x004
+> +#define L2X0_CTRL			0x100
+> +#define L2X0_AUX_CTRL			0x104
+> +#define L2X0_TAG_LATENCY_CTRL		0x108
+> +#define L2X0_DATA_LATENCY_CTRL		0x10C
+> +#define L2X0_EVENT_CNT_CTRL		0x200
+> +#define L2X0_EVENT_CNT1_CFG		0x204
+> +#define L2X0_EVENT_CNT0_CFG		0x208
+> +#define L2X0_EVENT_CNT1_VAL		0x20C
+> +#define L2X0_EVENT_CNT0_VAL		0x210
+> +#define L2X0_INTR_MASK			0x214
+> +#define L2X0_MASKED_INTR_STAT		0x218
+> +#define L2X0_RAW_INTR_STAT		0x21C
+> +#define L2X0_INTR_CLEAR			0x220
+> +#define L2X0_CACHE_SYNC			0x730
+> +#define L2X0_DUMMY_REG			0x740
+> +#define L2X0_INV_LINE_PA		0x770
+> +#define L2X0_INV_WAY			0x77C
+> +#define L2X0_CLEAN_LINE_PA		0x7B0
+> +#define L2X0_CLEAN_LINE_IDX		0x7B8
+> +#define L2X0_CLEAN_WAY			0x7BC
+> +#define L2X0_CLEAN_INV_LINE_PA		0x7F0
+> +#define L2X0_CLEAN_INV_LINE_IDX		0x7F8
+> +#define L2X0_CLEAN_INV_WAY		0x7FC
+> +/*
+> + * The lockdown registers repeat 8 times for L310, the L210 has only one
+> + * D and one I lockdown register at 0x0900 and 0x0904.
+> + */
+> +#define L2X0_LOCKDOWN_WAY_D_BASE	0x900
+> +#define L2X0_LOCKDOWN_WAY_I_BASE	0x904
+> +#define L2X0_LOCKDOWN_STRIDE		0x08
+> +#define L2X0_ADDR_FILTER_START		0xC00
+> +#define L2X0_ADDR_FILTER_END		0xC04
+> +#define L2X0_TEST_OPERATION		0xF00
+> +#define L2X0_LINE_DATA			0xF10
+> +#define L2X0_LINE_TAG			0xF30
+> +#define L2X0_DEBUG_CTRL			0xF40
+> +#define L2X0_PREFETCH_CTRL		0xF60
+> +#define L2X0_POWER_CTRL			0xF80
+> +#define   L2X0_DYNAMIC_CLK_GATING_EN	(1 << 1)
+> +#define   L2X0_STNDBY_MODE_EN		(1 << 0)
+> +
+> +/* Registers shifts and masks */
+> +#define L2X0_CACHE_ID_PART_MASK		(0xf << 6)
+> +#define L2X0_CACHE_ID_PART_L210		(1 << 6)
+> +#define L2X0_CACHE_ID_PART_L310		(3 << 6)
+> +#define L2X0_CACHE_ID_RTL_MASK          0x3f
+> +#define L2X0_CACHE_ID_RTL_R0P0          0x0
+> +#define L2X0_CACHE_ID_RTL_R1P0          0x2
+> +#define L2X0_CACHE_ID_RTL_R2P0          0x4
+> +#define L2X0_CACHE_ID_RTL_R3P0          0x5
+> +#define L2X0_CACHE_ID_RTL_R3P1          0x6
+> +#define L2X0_CACHE_ID_RTL_R3P2          0x8
+> +
+> +#define L2X0_AUX_CTRL_MASK			0xc0000fff
+> +#define L2X0_AUX_CTRL_DATA_RD_LATENCY_SHIFT	0
+> +#define L2X0_AUX_CTRL_DATA_RD_LATENCY_MASK	0x7
+> +#define L2X0_AUX_CTRL_DATA_WR_LATENCY_SHIFT	3
+> +#define L2X0_AUX_CTRL_DATA_WR_LATENCY_MASK	(0x7 << 3)
+> +#define L2X0_AUX_CTRL_TAG_LATENCY_SHIFT		6
+> +#define L2X0_AUX_CTRL_TAG_LATENCY_MASK		(0x7 << 6)
+> +#define L2X0_AUX_CTRL_DIRTY_LATENCY_SHIFT	9
+> +#define L2X0_AUX_CTRL_DIRTY_LATENCY_MASK	(0x7 << 9)
+> +#define L2X0_AUX_CTRL_ASSOCIATIVITY_SHIFT	16
+> +#define L2X0_AUX_CTRL_WAY_SIZE_SHIFT		17
+> +#define L2X0_AUX_CTRL_WAY_SIZE_MASK		(0x7 << 17)
+> +#define L2X0_AUX_CTRL_SHARE_OVERRIDE_SHIFT	22
+> +#define L2X0_AUX_CTRL_NS_LOCKDOWN_SHIFT		26
+> +#define L2X0_AUX_CTRL_NS_INT_CTRL_SHIFT		27
+> +#define L2X0_AUX_CTRL_DATA_PREFETCH_SHIFT	28
+> +#define L2X0_AUX_CTRL_INSTR_PREFETCH_SHIFT	29
+> +#define L2X0_AUX_CTRL_EARLY_BRESP_SHIFT		30
+> +
+> +#define L2X0_LATENCY_CTRL_SETUP_SHIFT	0
+> +#define L2X0_LATENCY_CTRL_RD_SHIFT	4
+> +#define L2X0_LATENCY_CTRL_WR_SHIFT	8
+> +
+> +#define L2X0_ADDR_FILTER_EN		1
+> +
+> +
+> +#endif
+> -- 
+> 1.7.10.4
 > 
->   arm: add vexpress board support (2013-02-11 04:56:09 +0800)
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (3):
->       clocksource: add ARM AMBA SP804 support
->       arm: add macro cpu_is_xxx
->       arm: add vexpress board support
-> 
->  arch/arm/Kconfig                               |   10 ++++++++
->  arch/arm/Makefile                              |    2 ++
->  arch/arm/boards/vexpress/Kconfig               |   10 ++++++++
->  arch/arm/boards/vexpress/Makefile              |    4 ++++
->  arch/arm/boards/vexpress/config.h              |    5 ++++
->  arch/arm/boards/vexpress/env/config            |   41 ++++++++++++++++++++++++++++++++
->  arch/arm/boards/vexpress/init.c                |  142 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  arch/arm/boards/vexpress/lowlevel.c            |   20 ++++++++++++++++
->  arch/arm/configs/vexpress_ca9_defconfig        |   61 +++++++++++++++++++++++++++++++++++++++++++++++
->  arch/arm/configs/vexpress_defconfig            |   60 ++++++++++++++++++++++++++++++++++++++++++++++
->  arch/arm/include/asm/hardware/arm_timer.h      |    5 ++++
->  arch/arm/include/asm/hardware/sp810.h          |   68 ++++++++++++++++++++++++++++++++++++++++++++++++++++
->  arch/arm/include/asm/system_info.h             |   63 ++++++++++++++++++++++++++++++++++++++++++++++++
->  arch/arm/mach-vexpress/Kconfig                 |   18 ++++++++++++++
->  arch/arm/mach-vexpress/Makefile                |    3 +++
->  arch/arm/mach-vexpress/devices.c               |   73 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  arch/arm/mach-vexpress/include/mach/clkdev.h   |    7 ++++++
->  arch/arm/mach-vexpress/include/mach/debug_ll.h |   33 ++++++++++++++++++++++++++
->  arch/arm/mach-vexpress/include/mach/devices.h  |   22 +++++++++++++++++
->  arch/arm/mach-vexpress/reset.c                 |   22 +++++++++++++++++
->  arch/arm/mach-vexpress/v2m.c                   |   85 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/clocksource/Kconfig                    |    4 ++++
->  drivers/clocksource/Makefile                   |    1 +
->  drivers/clocksource/amba-sp804.c               |   94 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/amba/sp805.h                     |   32 +++++++++++++++++++++++++
->  25 files changed, 885 insertions(+)
->  create mode 100644 arch/arm/boards/vexpress/Kconfig
->  create mode 100644 arch/arm/boards/vexpress/Makefile
->  create mode 100644 arch/arm/boards/vexpress/config.h
->  create mode 100644 arch/arm/boards/vexpress/env/config
->  create mode 100644 arch/arm/boards/vexpress/init.c
->  create mode 100644 arch/arm/boards/vexpress/lowlevel.c
->  create mode 100644 arch/arm/configs/vexpress_ca9_defconfig
->  create mode 100644 arch/arm/configs/vexpress_defconfig
->  create mode 100644 arch/arm/include/asm/hardware/sp810.h
->  create mode 100644 arch/arm/mach-vexpress/Kconfig
->  create mode 100644 arch/arm/mach-vexpress/Makefile
->  create mode 100644 arch/arm/mach-vexpress/devices.c
->  create mode 100644 arch/arm/mach-vexpress/include/mach/clkdev.h
->  create mode 100644 arch/arm/mach-vexpress/include/mach/debug_ll.h
->  create mode 100644 arch/arm/mach-vexpress/include/mach/devices.h
->  create mode 100644 arch/arm/mach-vexpress/reset.c
->  create mode 100644 arch/arm/mach-vexpress/v2m.c
->  create mode 100644 drivers/clocksource/amba-sp804.c
->  create mode 100644 include/linux/amba/sp805.h
-> 
-> Best Regards,
-> J.
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 > _______________________________________________
 > barebox mailing list
