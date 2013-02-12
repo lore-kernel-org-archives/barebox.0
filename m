@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5ERu-0008Fe-28
- for barebox@lists.infradead.org; Tue, 12 Feb 2013 11:54:59 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 12 Feb 2013 12:54:54 +0100
-Message-Id: <1360670094-17131-1-git-send-email-s.hauer@pengutronix.de>
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U5FUA-00034E-PU
+ for barebox@lists.infradead.org; Tue, 12 Feb 2013 13:01:24 +0000
+Received: from mail416.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 7D20FDC062C
+ for <barebox@lists.infradead.org>; Tue, 12 Feb 2013 14:11:43 +0100 (CET)
+Date: Tue, 12 Feb 2013 14:00:12 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130212130012.GD19322@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,419 +20,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] console: consolidate common console code
+Subject: [PATCH 0/3] vexpress: detect the mapping based on the amba devices
 To: barebox@lists.infradead.org
 
-The different console implementations share a good amount of code,
-share this in console_common.c.
+HI,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/Makefile         |    2 +-
- common/console.c        |   85 ------------------------------------
- common/console_common.c |  110 +++++++++++++++++++++++++++++++++++++++++++++++
- common/console_none.c   |   42 ------------------
- common/console_simple.c |   83 -----------------------------------
- 5 files changed, 111 insertions(+), 211 deletions(-)
- create mode 100644 common/console_common.c
- delete mode 100644 common/console_none.c
+	so we can run on a9 on the non legacy hw
 
-diff --git a/common/Makefile b/common/Makefile
-index 7206eed..34eadaf 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -23,7 +23,7 @@ obj-$(CONFIG_MEMINFO) += meminfo.o
- obj-$(CONFIG_COMMAND_SUPPORT) += command.o
- obj-$(CONFIG_CONSOLE_FULL) += console.o
- obj-$(CONFIG_CONSOLE_SIMPLE) += console_simple.o
--obj-$(CONFIG_CONSOLE_NONE) += console_none.o
-+obj-y += console_common.o
- obj-$(CONFIG_DIGEST) += digest.o
- obj-$(CONFIG_ENVIRONMENT_VARIABLES) += env.o
- obj-$(CONFIG_UIMAGE) += image.o
-diff --git a/common/console.c b/common/console.c
-index a085e2d..beb37bd 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -305,24 +305,6 @@ void console_putc(unsigned int ch, char c)
- }
- EXPORT_SYMBOL(console_putc);
- 
--int fputc(int fd, char c)
--{
--	if(list_empty(&console_list)) {
--		if(!fd)
--			console_putc(0, c);
--		return 0;
--	}
--
--	if (fd == 1)
--		putchar(c);
--	else if (fd == 2)
--		eputc(c);
--	else
--		return write(fd, &c, 1);
--	return 0;
--}
--EXPORT_SYMBOL(fputc);
--
- int console_puts(unsigned int ch, const char *str)
- {
- 	const char *s = str;
-@@ -341,17 +323,6 @@ int console_puts(unsigned int ch, const char *str)
- }
- EXPORT_SYMBOL(console_puts);
- 
--int fputs(int fd, const char *s)
--{
--	if (fd == 1)
--		return puts(s);
--	else if (fd == 2)
--		return eputs(s);
--	else
--		return write(fd, s, strlen(s));
--}
--EXPORT_SYMBOL(fputs);
--
- void console_flush(void)
- {
- 	struct console_device *cdev;
-@@ -363,62 +334,6 @@ void console_flush(void)
- }
- EXPORT_SYMBOL(console_flush);
- 
--int fprintf(int file, const char *fmt, ...)
--{
--	va_list args;
--	char printbuffer[CFG_PBSIZE];
--
--	va_start (args, fmt);
--
--	/* For this to work, printbuffer must be larger than
--	 * anything we ever want to print.
--	 */
--	vsprintf (printbuffer, fmt, args);
--	va_end (args);
--
--	/* Print the string */
--	return fputs(file, printbuffer);
--}
--EXPORT_SYMBOL(fprintf);
--
--int printf (const char *fmt, ...)
--{
--	va_list args;
--	uint i;
--	char printbuffer[CFG_PBSIZE];
--
--	va_start (args, fmt);
--
--	/* For this to work, printbuffer must be larger than
--	 * anything we ever want to print.
--	 */
--	i = vsprintf (printbuffer, fmt, args);
--	va_end (args);
--
--	/* Print the string */
--	puts (printbuffer);
--
--	return i;
--}
--EXPORT_SYMBOL(printf);
--
--int vprintf (const char *fmt, va_list args)
--{
--	uint i;
--	char printbuffer[CFG_PBSIZE];
--
--	/* For this to work, printbuffer must be larger than
--	 * anything we ever want to print.
--	 */
--	i = vsprintf (printbuffer, fmt, args);
--
--	/* Print the string */
--	puts (printbuffer);
--
--	return i;
--}
--EXPORT_SYMBOL(vprintf);
--
- #ifndef ARCH_HAS_CTRLC
- /* test if ctrl-c was pressed */
- int ctrlc (void)
-diff --git a/common/console_common.c b/common/console_common.c
-new file mode 100644
-index 0000000..d139d1a
---- /dev/null
-+++ b/common/console_common.c
-@@ -0,0 +1,110 @@
-+/*
-+ * based on code:
-+ *
-+ * (C) Copyright 2000 Paolo Scaffardi, AIRVENT SAM s.p.a -
-+ * RIMINI(ITALY), arsenio@tin.it
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+#include <common.h>
-+#include <fs.h>
-+#include <errno.h>
-+
-+#ifndef CONFIG_CONSOLE_NONE
-+
-+int printf(const char *fmt, ...)
-+{
-+	va_list args;
-+	uint i;
-+	char printbuffer[CFG_PBSIZE];
-+
-+	va_start(args, fmt);
-+
-+	/*
-+	 * For this to work, printbuffer must be larger than
-+	 * anything we ever want to print.
-+	 */
-+	i = vsprintf (printbuffer, fmt, args);
-+	va_end(args);
-+
-+	/* Print the string */
-+	puts(printbuffer);
-+
-+	return i;
-+}
-+EXPORT_SYMBOL(printf);
-+
-+int vprintf(const char *fmt, va_list args)
-+{
-+	uint i;
-+	char printbuffer[CFG_PBSIZE];
-+
-+	/*
-+	 * For this to work, printbuffer must be larger than
-+	 * anything we ever want to print.
-+	 */
-+	i = vsprintf(printbuffer, fmt, args);
-+
-+	/* Print the string */
-+	puts(printbuffer);
-+
-+	return i;
-+}
-+EXPORT_SYMBOL(vprintf);
-+
-+#endif /* !CONFIG_CONSOLE_NONE */
-+
-+int fprintf(int file, const char *fmt, ...)
-+{
-+	va_list args;
-+	char printbuffer[CFG_PBSIZE];
-+
-+	va_start(args, fmt);
-+
-+	/*
-+	 * For this to work, printbuffer must be larger than
-+	 * anything we ever want to print.
-+	 */
-+	vsprintf(printbuffer, fmt, args);
-+	va_end(args);
-+
-+	/* Print the string */
-+	return fputs(file, printbuffer);
-+}
-+EXPORT_SYMBOL(fprintf);
-+
-+int fputs(int fd, const char *s)
-+{
-+	if (fd == 1)
-+		return puts(s);
-+	else if (fd == 2)
-+		return eputs(s);
-+	else
-+		return write(fd, s, strlen(s));
-+}
-+EXPORT_SYMBOL(fputs);
-+
-+int fputc(int fd, char c)
-+{
-+	if (fd == 1)
-+		putchar(c);
-+	else if (fd == 2)
-+		eputc(c);
-+	else
-+		return write(fd, &c, 1);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(fputc);
-diff --git a/common/console_none.c b/common/console_none.c
-deleted file mode 100644
-index b601814..0000000
---- a/common/console_none.c
-+++ /dev/null
-@@ -1,42 +0,0 @@
--#include <config.h>
--#include <common.h>
--#include <fs.h>
--#include <errno.h>
--#include <debug_ll.h>
--
--int fputc(int fd, char c)
--{
--	if (fd != 1 && fd != 2)
--		return write(fd, &c, 1);
--	return 0;
--}
--EXPORT_SYMBOL(fputc);
--
--int fputs(int fd, const char *s)
--{
--	if (fd != 1 && fd != 2)
--		return write(fd, s, strlen(s));
--	return 0;
--}
--EXPORT_SYMBOL(fputs);
--
--int fprintf(int file, const char *fmt, ...)
--{
--	va_list args;
--	uint i;
--	char printbuffer[CFG_PBSIZE];
--
--	va_start (args, fmt);
--
--	/* For this to work, printbuffer must be larger than
--	 * anything we ever want to print.
--	 */
--	i = vsprintf (printbuffer, fmt, args);
--	va_end (args);
--
--	/* Print the string */
--	fputs(file, printbuffer);
--
--	return i;
--}
--EXPORT_SYMBOL(fprintf);
-diff --git a/common/console_simple.c b/common/console_simple.c
-index a4d4315..1fe569e 100644
---- a/common/console_simple.c
-+++ b/common/console_simple.c
-@@ -8,65 +8,6 @@ LIST_HEAD(console_list);
- EXPORT_SYMBOL(console_list);
- static struct console_device *console;
- 
--int printf (const char *fmt, ...)
--{
--	va_list args;
--	uint i;
--	char printbuffer[CFG_PBSIZE];
--
--	va_start (args, fmt);
--
--	/* For this to work, printbuffer must be larger than
--	 * anything we ever want to print.
--	 */
--	i = vsprintf (printbuffer, fmt, args);
--	va_end (args);
--
--	/* Print the string */
--	puts(printbuffer);
--
--	return i;
--}
--EXPORT_SYMBOL(printf);
--
--int vprintf (const char *fmt, va_list args)
--{
--	uint i;
--	char printbuffer[CFG_PBSIZE];
--
--	/* For this to work, printbuffer must be larger than
--	 * anything we ever want to print.
--	 */
--	i = vsprintf (printbuffer, fmt, args);
--
--	/* Print the string */
--	puts (printbuffer);
--
--	return i;
--}
--EXPORT_SYMBOL(vprintf);
--
--int fprintf(int file, const char *fmt, ...)
--{
--	va_list args;
--	uint i;
--	char printbuffer[CFG_PBSIZE];
--
--	va_start (args, fmt);
--
--	/* For this to work, printbuffer must be larger than
--	 * anything we ever want to print.
--	 */
--	i = vsprintf (printbuffer, fmt, args);
--	va_end (args);
--
--	/* Print the string */
--	fputs(file, printbuffer);
--
--	return i;
--}
--EXPORT_SYMBOL(fprintf);
--
- int console_puts(unsigned int ch, const char *str)
- {
- 	const char *s = str;
-@@ -97,30 +38,6 @@ void console_putc(unsigned int ch, char c)
- }
- EXPORT_SYMBOL(console_putc);
- 
--int fputc(int fd, char c)
--{
--	if (fd == 1)
--		putchar(c);
--	else if (fd == 2)
--		eputc(c);
--	else
--		return write(fd, &c, 1);
--	return 0;
--}
--EXPORT_SYMBOL(fputc);
--
--int fputs(int fd, const char *s)
--{
--	if (fd == 1)
--		puts(s);
--	else if (fd == 2)
--		eputs(s);
--	else
--		return write(fd, s, strlen(s));
--	return 0;
--}
--EXPORT_SYMBOL(fputs);
--
- int tstc(void)
- {
- 	if (!console)
--- 
-1.7.10.4
+The following changes since commit 2d91386102612773074832d55e2ef11702fbb432:
 
+  arm: add vexpress board support (2013-02-12 05:53:04 +0800)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/vexpress
+
+for you to fetch changes up to 92b8828ad6b2b01248bd84888b8bbf920df85c31:
+
+  vexpress: detect the board periph mapping and detecting the sp804 mapping (2013-02-12 05:53:04 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (3):
+      amba: introduce amba_device_get_pid/cid
+      sp804: introduce amba_is_arm_sp804 to detect if the sp804 is present at the address
+      vexpress: detect the board periph mapping and detecting the sp804 mapping
+
+ arch/arm/boards/vexpress/init.c               |   35 +++++++++++++++++++----------------
+ arch/arm/boards/vexpress/lowlevel.c           |    4 +++-
+ arch/arm/mach-vexpress/devices.c              |    4 ++--
+ arch/arm/mach-vexpress/include/mach/devices.h |    6 +++---
+ arch/arm/mach-vexpress/v2m.c                  |    2 +-
+ drivers/amba/bus.c                            |   10 +++-------
+ drivers/clocksource/amba-sp804.c              |    6 +++---
+ include/linux/amba/bus.h                      |   28 ++++++++++++++++++++++++++++
+ include/linux/amba/sp804.h                    |   30 ++++++++++++++++++++++++++++++
+ 9 files changed, 92 insertions(+), 33 deletions(-)
+ create mode 100644 include/linux/amba/sp804.h
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
