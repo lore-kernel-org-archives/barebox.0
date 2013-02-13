@@ -1,22 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
+Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U5gdU-00089O-B6
- for barebox@lists.infradead.org; Wed, 13 Feb 2013 18:00:49 +0000
+ id 1U5gfJ-0008SE-63
+ for barebox@lists.infradead.org; Wed, 13 Feb 2013 18:02:42 +0000
 Received: from mail406.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 44213DC12DD
- for <barebox@lists.infradead.org>; Wed, 13 Feb 2013 19:11:09 +0100 (CET)
-Date: Wed, 13 Feb 2013 18:59:37 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 02354DC1033
+ for <barebox@lists.infradead.org>; Wed, 13 Feb 2013 19:13:05 +0100 (CET)
+Date: Wed, 13 Feb 2013 19:01:33 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130213175937.GQ19322@game.jcrosoft.org>
-References: <20130213100249.GL19322@game.jcrosoft.org>
- <1360750004-17713-1-git-send-email-plagnioj@jcrosoft.com>
- <1360750004-17713-2-git-send-email-plagnioj@jcrosoft.com>
- <20130213173134.GG1906@pengutronix.de>
+Message-ID: <20130213180133.GR19322@game.jcrosoft.org>
+References: <1360755704-24105-1-git-send-email-shc_work@mail.ru>
+ <1360755704-24105-3-git-send-email-shc_work@mail.ru>
+ <20130213170652.GD1906@pengutronix.de>
+ <1360776009.524936687@f310.mail.ru>
+ <20130213174051.GH1906@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130213173134.GG1906@pengutronix.de>
+In-Reply-To: <20130213174051.GH1906@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,47 +30,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/6] of: make of_add_memory available for other board
+Subject: Re: [PATCH v2 3/9] ARM: clps711x: Adds config option for CPU PLL
+ multiplier
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Rob Herring <rob.herring@calxeda.com>
+Cc: barebox@lists.infradead.org
 
-On 18:31 Wed 13 Feb     , Sascha Hauer wrote:
-> On Wed, Feb 13, 2013 at 11:06:40AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > so when the first stage booloader of firmware provide the dtb
-> > we can use it to probe the memory
+On 18:40 Wed 13 Feb     , Sascha Hauer wrote:
+> On Wed, Feb 13, 2013 at 09:20:09PM +0400, Alexander Shiyan wrote:
+> > > > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> > > > ---
+> > > >  arch/arm/boards/clep7212/lowlevel.c            |    6 +++++-
+> > > >  arch/arm/mach-clps711x/Kconfig                 |   13 +++++++++++++
+> > > >  arch/arm/mach-clps711x/include/mach/clps711x.h |    2 +-
+> > > >  arch/arm/mach-clps711x/lowlevel.c              |    7 +++++--
+> > > >  4 files changed, 24 insertions(+), 4 deletions(-)
+> > > > 
+> > > > diff --git a/arch/arm/boards/clep7212/lowlevel.c b/arch/arm/boards/clep7212/lowlevel.c
+> > > > index b7d6d1d..fcf8285 100644
+> > > > --- a/arch/arm/boards/clep7212/lowlevel.c
+> > > > +++ b/arch/arm/boards/clep7212/lowlevel.c
+> > > > @@ -14,9 +14,13 @@
+> > > >  
+> > > >  #include <mach/clps711x.h>
+> > > >  
+> > > > +#if (CONFIG_CLPS711X_CPU_PLL_MULT < 20) || (CONFIG_CLPS711X_CPU_PLL_MULT > 50)
+> > > > +# error "CPU PLL multiplier out of range"
+> > > > +#endif
+> > > > +
+> > > >  void __naked __bare_init barebox_arm_reset_vector(void)
+> > > >  {
+> > > >  	arm_cpu_lowlevel_init();
+> > > >  
+> > > > -	clps711x_barebox_entry();
+> > > > +	clps711x_barebox_entry(CONFIG_CLPS711X_CPU_PLL_MULT);
+> > > 
+> > > I don't quite understand why you want to have this configurable. I mean
+> > > this is a single board only, why not simply run it with the maximum
+> > > allowed frequency? Or does this board come with multiple SoCs for which
+> > > different maximum values exist?
 > > 
-> > also allow to print what we probe
-> > 
-> > Cc: Rob Herring <rob.herring@calxeda.com>
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  drivers/of/base.c |   20 ++++++++++++++------
-> >  include/of.h      |    6 ++++++
-> >  2 files changed, 20 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/of/base.c b/drivers/of/base.c
-> > index 1f32bfb..f2986ab 100644
-> > --- a/drivers/of/base.c
-> > +++ b/drivers/of/base.c
-> > @@ -734,18 +734,23 @@ u64 dt_mem_next_cell(int s, const __be32 **cellp)
-> >  	return of_read_number(p, s);
-> >  }
-> >  
-> > -static int of_add_memory(struct device_node *node)
-> > +int of_add_memory(struct device_node *node, bool dump)
-> >  {
-> >  	int na, nc;
-> >  	const __be32 *reg, *endp;
-> >  	int len, r = 0;
-> >  	static char str[6];
-> > +	struct property *type;
-> > +
-> > +	type = of_find_property(node, "device_type");
-> > +	if (!type)
-> > +		return -ENXIO;
+> > Yes. There are 2 versions of the chip. One with a maximum operating
+> > frequency of 74 MHz, second with 90 MHz. The only difference is on the CPU label.
+> > Which version is used, it is impossible to know in runtime.
+> > You can simply reject this patch [3/9], all other should not depend on this one.
+> > Later I'll try to make another different version.
 > 
-> Could you add the missing check here if device_type is 'memory'?
-ok
+> Ok, thanks for explaining. It's really discouraged to put such things in
+> Kconfig, but in this case it seems acceptable: There's no way to detect
+> it during runtime *and* it varies across the same board type. So I
+> applied this series.
+> 
+> One option out of this might be that you could always startup with 74MHz
+> and add a command to switch to 90MHz. You could put this into the
+> environment on boards that you know work with 90MHz. Aynway, I don't
+> want to force you to do this on an Architecture you're probably
+> currently the only user of.
+agress if not possible so use specific KConfig not a value
 
 Best Regards,
 J.
@@ -81,6 +97,11 @@ J.
 > Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 > Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
