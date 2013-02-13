@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f421.i.mail.ru ([185.5.136.92])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5gih-0000qS-B5
- for barebox@lists.infradead.org; Wed, 13 Feb 2013 18:06:12 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Wed, 13 Feb 2013 22:06:03 +0400
-Message-ID: <1360778763.624407113@f421.i.mail.ru>
-In-Reply-To: <20130213174051.GH1906@pengutronix.de>
-References: <1360755704-24105-1-git-send-email-shc_work@mail.ru>
- <1360776009.524936687@f310.mail.ru> <20130213174051.GH1906@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U5gme-0002Cm-R4
+ for barebox@lists.infradead.org; Wed, 13 Feb 2013 18:10:21 +0000
+Received: from mail406.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id B0DB8DC116A
+ for <barebox@lists.infradead.org>; Wed, 13 Feb 2013 19:20:38 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Wed, 13 Feb 2013 19:09:05 +0100
+Message-Id: <1360778945-24743-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130213173134.GG1906@pengutronix.de>
+References: <20130213173134.GG1906@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,41 +20,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCB2MiAzLzldIEFSTTogY2xwczcxMXg6IEFkZHMgY29u?=
- =?UTF-8?B?ZmlnIG9wdGlvbiBmb3IgQ1BVIFBMTCBtdWx0aXBsaWVy?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] of_add_memory: check the device_type is memory
+To: barebox@lists.infradead.org
 
-...
-> > > I don't quite understand why you want to have this configurable. I mean
-> > > this is a single board only, why not simply run it with the maximum
-> > > allowed frequency? Or does this board come with multiple SoCs for which
-> > > different maximum values exist?
-> > 
-> > Yes. There are 2 versions of the chip. One with a maximum operating
-> > frequency of 74 MHz, second with 90 MHz. The only difference is on the CPU label.
-> > Which version is used, it is impossible to know in runtime.
-> > You can simply reject this patch [3/9], all other should not depend on this one.
-> > Later I'll try to make another different version.
-> 
-> Ok, thanks for explaining. It's really discouraged to put such things in
-> Kconfig, but in this case it seems acceptable: There's no way to detect
-> it during runtime *and* it varies across the same board type. So I
-> applied this series.
-> 
-> One option out of this might be that you could always startup with 74MHz
-> and add a command to switch to 90MHz. You could put this into the
-> environment on boards that you know work with 90MHz. Aynway, I don't
-> want to force you to do this on an Architecture you're probably
-> currently the only user of.
-
-OK. Thanks.
-
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
+ drivers/of/base.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index f2986ab..fd9b8e1 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -738,12 +738,15 @@ int of_add_memory(struct device_node *node, bool dump)
+ {
+ 	int na, nc;
+ 	const __be32 *reg, *endp;
+-	int len, r = 0;
++	int len, r = 0, ret;
+ 	static char str[6];
+-	struct property *type;
++	const char *device_type;
+ 
+-	type = of_find_property(node, "device_type");
+-	if (!type)
++	ret = of_property_read_string(node, "device_type", &device_type);
++	if (ret)
++		return -ENXIO;
++
++	if (strcmp(device_type, "memory"))
+ 		return -ENXIO;
+ 
+ 	of_bus_count_cells(node, &na, &nc);
+-- 
+1.7.10.4
+
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
