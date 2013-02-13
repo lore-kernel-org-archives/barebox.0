@@ -1,13 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3.mail.ru ([94.100.176.131])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5aix-0007Dq-KI
- for barebox@lists.infradead.org; Wed, 13 Feb 2013 11:42:05 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Wed, 13 Feb 2013 15:41:43 +0400
-Message-Id: <1360755704-24105-8-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1360755704-24105-1-git-send-email-shc_work@mail.ru>
+Received: from 8.mo1.mail-out.ovh.net ([178.33.110.239]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U5b3m-00017E-76
+ for barebox@lists.infradead.org; Wed, 13 Feb 2013 12:03:35 +0000
+Received: from mail174.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 59E1AFFA543
+ for <barebox@lists.infradead.org>; Wed, 13 Feb 2013 13:18:55 +0100 (CET)
+Date: Wed, 13 Feb 2013 13:02:24 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130213120224.GM19322@game.jcrosoft.org>
 References: <1360755704-24105-1-git-send-email-shc_work@mail.ru>
+ <1360755704-24105-3-git-send-email-shc_work@mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1360755704-24105-3-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,175 +23,120 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 8/9] ARM: clep7212: Update default environment
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 3/9] ARM: clps711x: Adds config option for CPU PLL
+ multiplier
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
+On 15:41 Wed 13 Feb     , Alexander Shiyan wrote:
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  arch/arm/boards/clep7212/lowlevel.c            |    6 +++++-
+>  arch/arm/mach-clps711x/Kconfig                 |   13 +++++++++++++
+>  arch/arm/mach-clps711x/include/mach/clps711x.h |    2 +-
+>  arch/arm/mach-clps711x/lowlevel.c              |    7 +++++--
+>  4 files changed, 24 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/arm/boards/clep7212/lowlevel.c b/arch/arm/boards/clep7212/lowlevel.c
+> index b7d6d1d..fcf8285 100644
+> --- a/arch/arm/boards/clep7212/lowlevel.c
+> +++ b/arch/arm/boards/clep7212/lowlevel.c
+> @@ -14,9 +14,13 @@
+>  
+>  #include <mach/clps711x.h>
+>  
+> +#if (CONFIG_CLPS711X_CPU_PLL_MULT < 20) || (CONFIG_CLPS711X_CPU_PLL_MULT > 50)
+> +# error "CPU PLL multiplier out of range"
+> +#endif
+> +
+>  void __naked __bare_init barebox_arm_reset_vector(void)
+>  {
+>  	arm_cpu_lowlevel_init();
+>  
+> -	clps711x_barebox_entry();
+> +	clps711x_barebox_entry(CONFIG_CLPS711X_CPU_PLL_MULT);
+>  }
+> diff --git a/arch/arm/mach-clps711x/Kconfig b/arch/arm/mach-clps711x/Kconfig
+> index f0adeda..d2873b4 100644
+> --- a/arch/arm/mach-clps711x/Kconfig
+> +++ b/arch/arm/mach-clps711x/Kconfig
+> @@ -10,6 +10,19 @@ config MACH_CLEP7212
+>  
+>  endchoice
+>  
+> +menu "CLPS711X specific settings"
+> +
+> +config CLPS711X_CPU_PLL_MULT
+> +	int "CPU PLL multiplier (20-50)"
+> +	range 20 50
+> +	default "40"
+> +	help
+> +	  Define CPU PLL multiplier. PLL is calculated by formula:
+> +	    PLL Frequency = (PLL Multiplier / 2) * 3686400 Hz
+> +	  Default value is 40, for achieve 73 MHz.
+> +
+Nack NO KConfig for such sensitve value
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/boards/clep7212/env/bin/mtdparts-add   |   21 ---------------------
- arch/arm/boards/clep7212/env/boot/nor           |    2 +-
- arch/arm/boards/clep7212/env/config             |   20 ++++++++++++++++++++
- arch/arm/boards/clep7212/env/init/automount     |    6 ------
- arch/arm/boards/clep7212/env/init/bootargs-base |    8 --------
- arch/arm/boards/clep7212/env/init/general       |   12 ------------
- arch/arm/boards/clep7212/env/init/hostname      |    8 --------
- arch/arm/boards/clep7212/env/init/mtdparts-nor  |   11 +++++++++++
- 8 files changed, 32 insertions(+), 56 deletions(-)
- delete mode 100644 arch/arm/boards/clep7212/env/bin/mtdparts-add
- create mode 100644 arch/arm/boards/clep7212/env/config
- delete mode 100644 arch/arm/boards/clep7212/env/init/automount
- delete mode 100644 arch/arm/boards/clep7212/env/init/bootargs-base
- delete mode 100644 arch/arm/boards/clep7212/env/init/general
- delete mode 100644 arch/arm/boards/clep7212/env/init/hostname
- create mode 100644 arch/arm/boards/clep7212/env/init/mtdparts-nor
+if it's soc detect it I do not have the datasheet but I'm sure you can
 
-diff --git a/arch/arm/boards/clep7212/env/bin/mtdparts-add b/arch/arm/boards/clep7212/env/bin/mtdparts-add
-deleted file mode 100644
-index ef1bc02..0000000
---- a/arch/arm/boards/clep7212/env/bin/mtdparts-add
-+++ /dev/null
-@@ -1,21 +0,0 @@
--#!/bin/sh
--
--if [ "$1" = menu ]; then
--	init-menu-add-entry "$0" "Partitions"
--	exit
--fi
--
--norparts="256k(barebox),256k(bareboxenv),3584k(kernel),-(root)"
--ramparts="-(ramdisk)"
--
--if [ -e /dev/nor0 ]; then
--	addpart -n /dev/nor0 "${norparts}"
--
--	global linux.mtdparts.nor
--	global.linux.mtdparts.nor="physmap-flash.0:${norparts}"
--else
--	echo "NOR Flash not found."
--fi
--
--global linux.mtdparts.ram
--global.linux.mtdparts.ram="mtd-ram.0:${ramparts}"
-diff --git a/arch/arm/boards/clep7212/env/boot/nor b/arch/arm/boards/clep7212/env/boot/nor
-index 5cf1e15..df8c983 100644
---- a/arch/arm/boards/clep7212/env/boot/nor
-+++ b/arch/arm/boards/clep7212/env/boot/nor
-@@ -6,4 +6,4 @@ if [ "$1" = menu ]; then
- fi
- 
- global.bootm.image="/dev/kernel"
--global.linux.bootargs.dyn.root="root=/dev/mtdblock4 ro"
-+global.linux.bootargs.dyn.root="root=/dev/mtdblock3 ro"
-diff --git a/arch/arm/boards/clep7212/env/config b/arch/arm/boards/clep7212/env/config
-new file mode 100644
-index 0000000..e8f2c3a
---- /dev/null
-+++ b/arch/arm/boards/clep7212/env/config
-@@ -0,0 +1,20 @@
-+#!/bin/sh
-+
-+global.hostname=clps711x
-+
-+# set to false if you do not want to have colors
-+global.allow_color=true
-+
-+# user (used for network filenames)
-+global.user=anonymous
-+
-+# timeout in seconds before the default boot entry is started
-+global.autoboot_timeout=2
-+
-+# default boot entry (one of /env/boot/*)
-+if [ -e /dev/nor0 ]; then
-+	global.boot.default=nor
-+fi
-+
-+# default bootargs
-+global.linux.bootargs.base="earlyprintk console=ttyCL0,57600n8"
-diff --git a/arch/arm/boards/clep7212/env/init/automount b/arch/arm/boards/clep7212/env/init/automount
-deleted file mode 100644
-index 978b964..0000000
---- a/arch/arm/boards/clep7212/env/init/automount
-+++ /dev/null
-@@ -1,6 +0,0 @@
--#!/bin/sh
--
--if [ "$1" = menu ]; then
--	init-menu-add-entry "$0" "Automountpoints"
--	exit
--fi
-diff --git a/arch/arm/boards/clep7212/env/init/bootargs-base b/arch/arm/boards/clep7212/env/init/bootargs-base
-deleted file mode 100644
-index ec08e39..0000000
---- a/arch/arm/boards/clep7212/env/init/bootargs-base
-+++ /dev/null
-@@ -1,8 +0,0 @@
--#!/bin/sh
--
--if [ "$1" = menu ]; then
--	init-menu-add-entry "$0" "Base bootargs"
--	exit
--fi
--
--global.linux.bootargs.base="earlyprintk console=ttyCL0,57600n8"
-diff --git a/arch/arm/boards/clep7212/env/init/general b/arch/arm/boards/clep7212/env/init/general
-deleted file mode 100644
-index 77e6a59..0000000
---- a/arch/arm/boards/clep7212/env/init/general
-+++ /dev/null
-@@ -1,12 +0,0 @@
--#!/bin/sh
--
--if [ "$1" = menu ]; then
--	init-menu-add-entry "$0" "general config settings"
--	exit
--fi
--
--global.user=barebox
--global.autoboot_timeout=2
--global.boot.default=nor
--
--/env/bin/mtdparts-add
-diff --git a/arch/arm/boards/clep7212/env/init/hostname b/arch/arm/boards/clep7212/env/init/hostname
-deleted file mode 100644
-index 684ee63..0000000
---- a/arch/arm/boards/clep7212/env/init/hostname
-+++ /dev/null
-@@ -1,8 +0,0 @@
--#!/bin/sh
--
--if [ "$1" = menu ]; then
--	init-menu-add-entry "$0" "hostname"
--	exit
--fi
--
--global.hostname=clep7212
-diff --git a/arch/arm/boards/clep7212/env/init/mtdparts-nor b/arch/arm/boards/clep7212/env/init/mtdparts-nor
-new file mode 100644
-index 0000000..7910299
---- /dev/null
-+++ b/arch/arm/boards/clep7212/env/init/mtdparts-nor
-@@ -0,0 +1,11 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	init-menu-add-entry "$0" "NOR partitions"
-+	exit
-+fi
-+
-+mtdparts="256k(barebox),256k(bareboxenv),3584k(kernel),-(root)"
-+kernelname="physmap-flash.0"
-+
-+mtdparts-add -d nor0 -k ${kernelname} -p ${mtdparts}
--- 
-1.7.3.4
-
+Best Regards,
+J.
+> +endmenu
+> +
+>  config BOARDINFO
+>  	default "Cirrus Logic CLEP7212" if MACH_CLEP7212
+>  
+> diff --git a/arch/arm/mach-clps711x/include/mach/clps711x.h b/arch/arm/mach-clps711x/include/mach/clps711x.h
+> index 5b8fe82..cc65cc8 100644
+> --- a/arch/arm/mach-clps711x/include/mach/clps711x.h
+> +++ b/arch/arm/mach-clps711x/include/mach/clps711x.h
+> @@ -281,6 +281,6 @@
+>  #define MEMCFG_WAITSTATE_2_0	(14 << 2)
+>  #define MEMCFG_WAITSTATE_1_0	(15 << 2)
+>  
+> -void clps711x_barebox_entry(void);
+> +void clps711x_barebox_entry(u32);
+>  
+>  #endif
+> diff --git a/arch/arm/mach-clps711x/lowlevel.c b/arch/arm/mach-clps711x/lowlevel.c
+> index cd3216a..193f61a 100644
+> --- a/arch/arm/mach-clps711x/lowlevel.c
+> +++ b/arch/arm/mach-clps711x/lowlevel.c
+> @@ -17,9 +17,8 @@
+>  
+>  #include <mach/clps711x.h>
+>  
+> -void __naked __bare_init clps711x_barebox_entry(void)
+> +void __naked __bare_init clps711x_barebox_entry(u32 pllmult)
+>  {
+> -	const u32 pllmult = 50;
+>  	u32 cpu, bus;
+>  
+>  	/* Setup base clocking, Enable SDQM pins  */
+> @@ -28,6 +27,10 @@ void __naked __bare_init clps711x_barebox_entry(void)
+>  
+>  	/* Check if we running from external 13 MHz clock */
+>  	if (!(readl(SYSFLG2) & SYSFLG2_CKMODE)) {
+> +		/* Check valid multiplier, default to 74 MHz */
+> +		if ((pllmult < 20) || (pllmult > 50))
+> +			pllmult = 40;
+> +
+>  		/* Setup PLL */
+>  		writel(pllmult << 24, PLLW);
+>  		asm("nop");
+> -- 
+> 1.7.3.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
