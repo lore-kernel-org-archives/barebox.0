@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
- helo=mo2.mail-out.ovh.net)
+Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U5eDc-0002C5-3K
- for barebox@lists.infradead.org; Wed, 13 Feb 2013 15:25:57 +0000
-Received: from mail406.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 5570BDC12D5
- for <barebox@lists.infradead.org>; Wed, 13 Feb 2013 16:36:18 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 13 Feb 2013 16:24:45 +0100
-Message-Id: <1360769085-11062-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1U5fTJ-0005CV-B9
+ for barebox@lists.infradead.org; Wed, 13 Feb 2013 16:46:14 +0000
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Date: Wed, 13 Feb 2013 17:45:17 +0100
+Message-Id: <1360773918-10663-2-git-send-email-maxime.ripard@free-electrons.com>
+In-Reply-To: <1360773918-10663-1-git-send-email-maxime.ripard@free-electrons.com>
+References: <1360773918-10663-1-git-send-email-maxime.ripard@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,37 +21,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] amba: pl011: set RTS during initialization
+Subject: [PATCH 1/2] cfa-10036: Use the second MMC partition to store the
+ environment
 To: barebox@lists.infradead.org
-Cc: Rob Herring <rob.herring@calxeda.com>
+Cc: Brian Lilly <brian@crystalfontz.com>
 
-From: Rob Herring <rob.herring@calxeda.com>
+Since the only storage medium on the cfa-10036 is the MMC card, we need
+to have a registered environment partition on it if we want to be able
+to modify at runtime.
 
-RTS is an output. Either flow control is used and you care about the state or
-it is not used and you don't care. So setting it to active does no harm in
-either case. This is inline with what Linux does.
-
-Mandatory for Highbank as example
-
-Signed-off-by: Rob Herring <rob.herring@calxeda.com>
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
 ---
- drivers/serial/amba-pl011.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boards/crystalfontz-cfa10036/cfa10036.c |   44 +++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/serial/amba-pl011.c b/drivers/serial/amba-pl011.c
-index 58c69e5..0e07588 100644
---- a/drivers/serial/amba-pl011.c
-+++ b/drivers/serial/amba-pl011.c
-@@ -175,7 +175,7 @@ int pl011_init_port (struct console_device *cdev)
- 	/*
- 	 ** Finally, enable the UART
- 	 */
--	writel((UART01x_CR_UARTEN | UART011_CR_TXE | UART011_CR_RXE),
-+	writel((UART01x_CR_UARTEN | UART011_CR_TXE | UART011_CR_RXE | UART011_CR_RTS),
- 	       uart->base + UART011_CR);
+diff --git a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+index b59dbab..1821b10 100644
+--- a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
++++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+@@ -97,9 +97,46 @@ static int cfa10036_mem_init(void)
+ }
+ mem_initcall(cfa10036_mem_init);
  
++/**
++ * Try to register an environment storage on the attached MCI card
++ * @return 0 on success
++ *
++ * We rely on the existence of a usable SD card, already attached to
++ * our system, to get something like a persistent memory for our environment.
++ * If this SD card is also the boot media, we can use the second partition
++ * for our environment purpose (if present!).
++ */
++static int register_persistant_environment(void)
++{
++	struct cdev *cdev;
++
++	/*
++	 * The CFA-10036 only has one MCI card socket.
++	 * So, we expect its name as "disk0".
++	 */
++	cdev = cdev_by_name("disk0");
++	if (cdev == NULL) {
++		pr_err("No SD card found\n");
++		return -ENODEV;
++	}
++
++	/* MCI card is present, also a useable partition on it? */
++	cdev = cdev_by_name("disk0.1");
++	if (cdev == NULL) {
++		pr_err("No second partition available\n");
++		pr_info("Please create at least a second partition with"
++			" 256 kiB...512 kiB in size (your choice)\n");
++		return -ENODEV;
++	}
++
++	/* use the full partition as our persistent environment storage */
++	return devfs_add_partition("disk0.1", 0, cdev->size,
++						DEVFS_PARTITION_FIXED, "env0");
++}
++
+ static int cfa10036_devices_init(void)
+ {
+-	int i;
++	int i, ret;
+ 
+ 	/* initizalize muxing */
+ 	for (i = 0; i < ARRAY_SIZE(cfa10036_pads); i++)
+@@ -124,6 +161,11 @@ static int cfa10036_devices_init(void)
+ 
+ 	cfa10036_detect_hw();
+ 
++	ret = register_persistant_environment();
++	if (ret != 0)
++		printf("Cannot create the 'env0' persistant "
++			 "environment storage (%d)\n", ret);
++
  	return 0;
+ }
+ device_initcall(cfa10036_devices_init);
 -- 
 1.7.10.4
 
