@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo1.mail-out.ovh.net ([178.32.97.215]
+Received: from 19.mo1.mail-out.ovh.net ([178.32.97.206]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U5ZFs-0008L0-Gz
- for barebox@lists.infradead.org; Wed, 13 Feb 2013 10:08:02 +0000
+ id 1U5ZFr-0008Kw-JF
+ for barebox@lists.infradead.org; Wed, 13 Feb 2013 10:07:59 +0000
 Received: from mail239.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 29E7EFFA3DC
- for <barebox@lists.infradead.org>; Wed, 13 Feb 2013 11:23:17 +0100 (CET)
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 7E73EFFA49A
+ for <barebox@lists.infradead.org>; Wed, 13 Feb 2013 11:23:16 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 13 Feb 2013 11:06:44 +0100
-Message-Id: <1360750004-17713-6-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 13 Feb 2013 11:06:42 +0100
+Message-Id: <1360750004-17713-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1360750004-17713-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130213100249.GL19322@game.jcrosoft.org>
  <1360750004-17713-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,200 +26,643 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] highbank: use the provided dtb by the firmware to probe
- barebox device and mem size
+Subject: [PATCH 4/6] arm: add highbank support
 To: barebox@lists.infradead.org
 Cc: Rob Herring <rob.herring@calxeda.com>
 
-the dtb is at 0x1000
+currently only tested under qemu
 
-if no dtb present use C code device
+qemu-system-arm -M highbank -nographic -m 4089 -kernel build/highbank/arch/arm/pbl/zbarebox -tftp "." -drive id=disk,if=ide,file=disk.img -device ide-drive,drive=disk,bus=ide.0
 
-keep in C the timer/gpio/uart
-
-have a nice tree
-
-barebox 2013.02.0-00294-g6802ddf #124 Wed Feb 13 02:31:01 CST 2013
-
-Board: Calxeda Highbank
-memory: ram0: 0xff900000@0x0
-highbank: dtb probed memory size
-registered netconsole as cs1
-malloc space: 0x03500000 -> 0x03efffff (size 10 MiB)
-Open /dev/env0 No such file or directory
-no valid environment found on /dev/env0. Using default environment
-running /env/bin/init...
-ahci ffe08000.sata: port 0: SATA link ok
-ahci ffe08000.sata: port 0: Spinning up device...
-ahci ffe08000.sata: port 0: ok.
-ahci ffe08000.sata: registered /dev/ata0
-eth0: got preset MAC address: 52:54:00:12:34:56
-eth1: got preset MAC address: 52:54:00:12:34:57
-
-Hit any key to stop autoboot:  3
-[barebox@Calxeda Highbank]:/
- # devinfo
-devices:
-`---- platform
-     `---- mem0
-          `---- 0x00000000-0x3fffffff: /dev/ram0
-          `---- 0x00001000-0x00010fff: /dev/dtb
-     `---- mem1
-          `---- 0x00000000-0x000051af: /dev/defaultenv
-     `---- mem2
-          `---- 0x00000000-0xfffffffe: /dev/mem
-     `---- cs1
-     `---- fff10600.timer
-     `---- fff10620.watchdog
-     `---- fff11000.interrupt-controller
-     `---- l2-cache
-     `---- ffe08000.sata
-          `---- 0x00000000-0x3fffffff: /dev/ata0
-          `---- 0x00100000-0x014fffff: /dev/ata0.0
-          `---- 0x01500000-0x3fffffff: /dev/ata0.1
-     `---- ffe0e000.sdhci
-     `---- fff00000.memory-controller
-     `---- mem3
-     `---- fff3c000.sregs
-     `---- fff3c200.sregs
-     `---- fff50000.ethernet
-          `---- eth0
-     `---- fff51000.ethernet
-          `---- eth1
-`---- amba
-     `---- sp804
-     `---- uart-pl011
-          `---- cs0
-     `---- fff30000.gpio
-     `---- fff31000.gpio
-     `---- fff32000.gpio
-     `---- fff33000.gpio
-     `---- fff35000.rtc
-`---- fs
-     `---- ramfs0
-     `---- devfs0
-`---- net
-`---- global
-
-drivers:
-uart-pl011
-sp804
-pl061_gpio
-ramfs
-devfs
-tftp
-hb-xgmac
-ahci
-mem
-[barebox@Calxeda Highbank]:/
- #
+with:
+ - timer (AMBA SP804)
+ - uart (AMBA PL011)
+ - gpio (AMBA PL061)
+ - ahci
+ - net (XGMAC)
 
 Cc: Rob Herring <rob.herring@calxeda.com>
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/highbank/env/bin/init_board |    7 ++++
- arch/arm/boards/highbank/init.c             |   52 ++++++++++++++++++++++-----
- arch/arm/configs/highbank_defconfig         |    1 +
- 3 files changed, 52 insertions(+), 8 deletions(-)
- create mode 100644 arch/arm/boards/highbank/env/bin/init_board
+ arch/arm/Kconfig                               |   11 ++++
+ arch/arm/Makefile                              |    2 +
+ arch/arm/boards/highbank/Makefile              |    4 ++
+ arch/arm/boards/highbank/config.h              |    5 ++
+ arch/arm/boards/highbank/env/config            |   34 +++++++++++
+ arch/arm/boards/highbank/init.c                |   50 ++++++++++++++++
+ arch/arm/boards/highbank/lowlevel.c            |   17 ++++++
+ arch/arm/configs/highbank_defconfig            |   60 +++++++++++++++++++
+ arch/arm/mach-highbank/Kconfig                 |   18 ++++++
+ arch/arm/mach-highbank/Makefile                |    3 +
+ arch/arm/mach-highbank/core.c                  |   49 ++++++++++++++++
+ arch/arm/mach-highbank/devices.c               |   74 ++++++++++++++++++++++++
+ arch/arm/mach-highbank/include/mach/clkdev.h   |    7 +++
+ arch/arm/mach-highbank/include/mach/debug_ll.h |   26 +++++++++
+ arch/arm/mach-highbank/include/mach/devices.h  |   17 ++++++
+ arch/arm/mach-highbank/include/mach/gpio.h     |    1 +
+ arch/arm/mach-highbank/reset.c                 |   21 +++++++
+ arch/arm/mach-highbank/sysregs.h               |   52 +++++++++++++++++
+ 18 files changed, 451 insertions(+)
+ create mode 100644 arch/arm/boards/highbank/Makefile
+ create mode 100644 arch/arm/boards/highbank/config.h
+ create mode 100644 arch/arm/boards/highbank/env/config
+ create mode 100644 arch/arm/boards/highbank/init.c
+ create mode 100644 arch/arm/boards/highbank/lowlevel.c
+ create mode 100644 arch/arm/configs/highbank_defconfig
+ create mode 100644 arch/arm/mach-highbank/Kconfig
+ create mode 100644 arch/arm/mach-highbank/Makefile
+ create mode 100644 arch/arm/mach-highbank/core.c
+ create mode 100644 arch/arm/mach-highbank/devices.c
+ create mode 100644 arch/arm/mach-highbank/include/mach/clkdev.h
+ create mode 100644 arch/arm/mach-highbank/include/mach/debug_ll.h
+ create mode 100644 arch/arm/mach-highbank/include/mach/devices.h
+ create mode 100644 arch/arm/mach-highbank/include/mach/gpio.h
+ create mode 100644 arch/arm/mach-highbank/reset.c
+ create mode 100644 arch/arm/mach-highbank/sysregs.h
 
-diff --git a/arch/arm/boards/highbank/env/bin/init_board b/arch/arm/boards/highbank/env/bin/init_board
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index d9036e7..447f4c9 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -46,6 +46,16 @@ config ARCH_EP93XX
+ 	select CPU_ARM920T
+ 	select GENERIC_GPIO
+ 
++config ARCH_HIGHBANK
++	bool "Calxeda Highbank"
++	select HAS_DEBUG_LL
++	select CPU_V7
++	select ARM_AMBA
++	select AMBA_SP804
++	select CLKDEV_LOOKUP
++	select COMMON_CLK
++	select GPIOLIB
++
+ config ARCH_IMX
+ 	bool "Freescale iMX-based"
+ 	select GENERIC_GPIO
+@@ -123,6 +133,7 @@ source arch/arm/mach-at91/Kconfig
+ source arch/arm/mach-bcm2835/Kconfig
+ source arch/arm/mach-clps711x/Kconfig
+ source arch/arm/mach-ep93xx/Kconfig
++source arch/arm/mach-highbank/Kconfig
+ source arch/arm/mach-imx/Kconfig
+ source arch/arm/mach-mxs/Kconfig
+ source arch/arm/mach-netx/Kconfig
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index efcd0d4..b98d6b8 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -55,6 +55,7 @@ machine-$(CONFIG_ARCH_AT91)		:= at91
+ machine-$(CONFIG_ARCH_BCM2835)		:= bcm2835
+ machine-$(CONFIG_ARCH_CLPS711X)		:= clps711x
+ machine-$(CONFIG_ARCH_EP93XX)		:= ep93xx
++machine-$(CONFIG_ARCH_HIGHBANK)		:= highbank
+ machine-$(CONFIG_ARCH_IMX)		:= imx
+ machine-$(CONFIG_ARCH_MXS)		:= mxs
+ machine-$(CONFIG_ARCH_NOMADIK)		:= nomadik
+@@ -99,6 +100,7 @@ board-$(CONFIG_MACH_EUKREA_CPUIMX51SD)		:= eukrea_cpuimx51
+ board-$(CONFIG_MACH_FREESCALE_MX25_3STACK)	:= freescale-mx25-3-stack
+ board-$(CONFIG_MACH_FREESCALE_MX35_3STACK)	:= freescale-mx35-3-stack
+ board-$(CONFIG_MACH_GE863)			:= telit-evk-pro3
++board-$(CONFIG_MACH_HIGHBANK)			:= highbank
+ board-$(CONFIG_MACH_IMX21ADS)			:= imx21ads
+ board-$(CONFIG_MACH_IMX27ADS)			:= imx27ads
+ board-$(CONFIG_MACH_IMX233_OLINUXINO)	:= imx233-olinuxino
+diff --git a/arch/arm/boards/highbank/Makefile b/arch/arm/boards/highbank/Makefile
 new file mode 100644
-index 0000000..610db15
+index 0000000..98921a4
 --- /dev/null
-+++ b/arch/arm/boards/highbank/env/bin/init_board
-@@ -0,0 +1,7 @@
++++ b/arch/arm/boards/highbank/Makefile
+@@ -0,0 +1,4 @@
++obj-y += init.o
++
++obj-y += lowlevel.o
++pbl-y += lowlevel.o
+diff --git a/arch/arm/boards/highbank/config.h b/arch/arm/boards/highbank/config.h
+new file mode 100644
+index 0000000..25bb18f
+--- /dev/null
++++ b/arch/arm/boards/highbank/config.h
+@@ -0,0 +1,5 @@
++
++#ifndef __CONFIG_H
++#define __CONFIG_H
++
++#endif	/* __CONFIG_H */
+diff --git a/arch/arm/boards/highbank/env/config b/arch/arm/boards/highbank/env/config
+new file mode 100644
+index 0000000..3fec087
+--- /dev/null
++++ b/arch/arm/boards/highbank/env/config
+@@ -0,0 +1,34 @@
 +#!/bin/sh
 +
-+if [ -e /dev/dtb ]
-+then
-+	oftree -l /dev/dtb
-+	oftree -p
-+fi
++# use 'dhcp' to do dhcp in barebox and in kernel
++# use 'none' if you want to skip kernel ip autoconfiguration
++ip=dhcp
++global.dhcp.vendor_id=barebox-highbank
++
++# or set your networking parameters here
++#eth0.ipaddr=a.b.c.d
++#eth0.netmask=a.b.c.d
++#eth0.gateway=a.b.c.d
++#eth0.serverip=a.b.c.d
++
++# can be either 'nfs', 'tftp' or 'nor'
++kernel_loc=tftp
++# can be either 'net', 'nor' or 'initrd'
++rootfs_loc=initrd
++
++# can be either 'jffs2' or 'ubifs'
++rootfs_type=ubifs
++rootfsimage=root.$rootfs_type
++
++kernelimage=zImage
++#kernelimage=uImage
++#kernelimage=Image
++#kernelimage=Image.lzo
++
++autoboot_timeout=3
++
++bootargs="console=ttyAMA0,115200n8 CONSOLE=/dev/ttyAMA0"
++
++# set a fancy prompt (if support is compiled in)
++PS1="\e[1;31m[barebox@\h]:\w\e[0m\n# "
++
 diff --git a/arch/arm/boards/highbank/init.c b/arch/arm/boards/highbank/init.c
-index b793642..bcd2783 100644
---- a/arch/arm/boards/highbank/init.c
+new file mode 100644
+index 0000000..b793642
+--- /dev/null
 +++ b/arch/arm/boards/highbank/init.c
-@@ -15,23 +15,59 @@
- #include <sizes.h>
- #include <io.h>
- 
-+#define FIRMWARE_DTB_BASE	0x1000
+@@ -0,0 +1,50 @@
++/*
++ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ *
++ * GPLv2 only
++ */
 +
-+struct fdt_header *fdt = NULL;
++#include <common.h>
++#include <init.h>
++#include <asm/armlinux.h>
++#include <asm/system_info.h>
++#include <generated/mach-types.h>
++#include <mach/devices.h>
++#include <environment.h>
++#include <partition.h>
++#include <sizes.h>
++#include <io.h>
 +
- static int highbank_mem_init(void)
- {
--	highbank_add_ddram(4089 << 20);
-+	struct device_node *np;
-+	int ret;
-+
-+	/* load by the firmware at 0x1000 */
-+	fdt = IOMEM(FIRMWARE_DTB_BASE);
-+
-+	ret = of_unflatten_dtb(fdt);
-+	if (ret) {
-+		pr_warn("no dtb found at 0x1000 use default configuration\n");
-+		fdt = NULL;
-+		goto not_found;
-+	}
- 
-+	np = of_find_node_by_path("/memory");
-+	if (!np) {
-+		pr_warn("no memory node use default configuration\n");
-+		goto not_found;
-+	}
-+
-+	ret = of_add_memory(np, true);
-+	if (ret) {
-+		pr_warn("memory node: probe failed use default configuration\n");
-+		goto not_found;
-+	}
-+
-+	pr_info("highbank: dtb probed memory size\n");
++static int highbank_mem_init(void)
++{
++	highbank_add_ddram(4089 << 20);
 +
 +	return 0;
-+not_found:
-+	highbank_add_ddram(4089 << 20);
- 	return 0;
- }
- mem_initcall(highbank_mem_init);
- 
- static int highbank_devices_init(void)
- {
--	highbank_register_gpio(0);
--	highbank_register_gpio(1);
--	highbank_register_gpio(2);
--	highbank_register_gpio(3);
--	highbank_register_ahci();
--	highbank_register_xgmac(0);
--	highbank_register_xgmac(1);
-+	if (!fdt) {
-+		highbank_register_gpio(0);
-+		highbank_register_gpio(1);
-+		highbank_register_gpio(2);
-+		highbank_register_gpio(3);
-+		highbank_register_ahci();
-+		highbank_register_xgmac(0);
-+		highbank_register_xgmac(1);
-+	} else {
-+		devfs_add_partition("ram0", FIRMWARE_DTB_BASE, SZ_64K, DEVFS_PARTITION_FIXED, "dtb");
-+	}
- 
- 	armlinux_set_bootparams((void *)(0x00000100));
- 
++}
++mem_initcall(highbank_mem_init);
++
++static int highbank_devices_init(void)
++{
++	highbank_register_gpio(0);
++	highbank_register_gpio(1);
++	highbank_register_gpio(2);
++	highbank_register_gpio(3);
++	highbank_register_ahci();
++	highbank_register_xgmac(0);
++	highbank_register_xgmac(1);
++
++	armlinux_set_bootparams((void *)(0x00000100));
++
++	devfs_add_partition("nvram", 0x00000, SZ_16K, DEVFS_PARTITION_FIXED, "env0");
++
++	return 0;
++}
++device_initcall(highbank_devices_init);
++
++static int highbank_console_init(void)
++{
++	highbank_register_uart();
++
++	return 0;
++}
++console_initcall(highbank_console_init);
+diff --git a/arch/arm/boards/highbank/lowlevel.c b/arch/arm/boards/highbank/lowlevel.c
+new file mode 100644
+index 0000000..b862a1f
+--- /dev/null
++++ b/arch/arm/boards/highbank/lowlevel.c
+@@ -0,0 +1,17 @@
++/*
++ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ *
++ * GPLv2 only
++ */
++
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <asm/system_info.h>
++
++void __naked barebox_arm_reset_vector(void)
++{
++	arm_cpu_lowlevel_init();
++	barebox_arm_entry(0x00000000, SZ_512M, 0);
++}
 diff --git a/arch/arm/configs/highbank_defconfig b/arch/arm/configs/highbank_defconfig
-index 22c1dcd..31ac954 100644
---- a/arch/arm/configs/highbank_defconfig
+new file mode 100644
+index 0000000..22c1dcd
+--- /dev/null
 +++ b/arch/arm/configs/highbank_defconfig
-@@ -37,6 +37,7 @@ CONFIG_CMD_UIMAGE=y
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_OFTREE_PROBE=y
- CONFIG_CMD_MTEST=y
- CONFIG_CMD_MTEST_ALTERNATIVE=y
- CONFIG_CMD_TIMEOUT=y
+@@ -0,0 +1,60 @@
++CONFIG_ARCH_HIGHBANK=y
++CONFIG_AEABI=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
++CONFIG_MMU=y
++CONFIG_MALLOC_SIZE=0xa00000
++CONFIG_MALLOC_TLSF=y
++CONFIG_PROMPT="vexpress: "
++CONFIG_LONGHELP=y
++CONFIG_GLOB=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/highbank/env"
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_PASSWD=y
++CONFIG_CMD_TFTP=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_BOOTM_VERBOSE=y
++CONFIG_CMD_BOOTM_INITRD=y
++CONFIG_CMD_BOOTM_OFTREE=y
++CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
++CONFIG_CMD_UIMAGE=y
++# CONFIG_CMD_BOOTU is not set
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_MTEST=y
++CONFIG_CMD_MTEST_ALTERNATIVE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_CLK=y
++CONFIG_NET=y
++CONFIG_NET_DHCP=y
++CONFIG_NET_NFS=y
++CONFIG_NET_PING=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_NET_RESOLV=y
++CONFIG_SERIAL_AMBA_PL011=y
++CONFIG_DRIVER_NET_CALXEDA_XGMAC=y
++# CONFIG_SPI is not set
++CONFIG_DISK=y
++CONFIG_DISK_AHCI=y
++CONFIG_GPIO_PL061=y
++CONFIG_FS_TFTP=y
++CONFIG_SHA1=y
++CONFIG_SHA256=y
+diff --git a/arch/arm/mach-highbank/Kconfig b/arch/arm/mach-highbank/Kconfig
+new file mode 100644
+index 0000000..47c6405
+--- /dev/null
++++ b/arch/arm/mach-highbank/Kconfig
+@@ -0,0 +1,18 @@
++if ARCH_HIGHBANK
++
++config ARCH_TEXT_BASE
++	hex
++	default 0x03f00000
++
++config BOARDINFO
++	default "Calxeda Highbank" if MACH_HIGHBANK
++
++choice
++	prompt "Calxeda Board type"
++
++config MACH_HIGHBANK
++	bool "Calxeda Highbank"
++
++endchoice
++
++endif
+diff --git a/arch/arm/mach-highbank/Makefile b/arch/arm/mach-highbank/Makefile
+new file mode 100644
+index 0000000..3f01cbb
+--- /dev/null
++++ b/arch/arm/mach-highbank/Makefile
+@@ -0,0 +1,3 @@
++obj-y += core.o
++obj-y += devices.o
++obj-y += reset.o
+diff --git a/arch/arm/mach-highbank/core.c b/arch/arm/mach-highbank/core.c
+new file mode 100644
+index 0000000..09071be
+--- /dev/null
++++ b/arch/arm/mach-highbank/core.c
+@@ -0,0 +1,49 @@
++/*
++ * Copyright (C) 2009 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ *
++ * GPLv2 only
++ */
++
++#include <common.h>
++#include <init.h>
++#include <io.h>
++
++#include <linux/clk.h>
++#include <linux/clkdev.h>
++#include <linux/amba/bus.h>
++
++#include <asm/hardware/arm_timer.h>
++#include <asm/hardware/sp810.h>
++
++#include <mach/devices.h>
++
++#include "sysregs.h"
++
++void __iomem *sregs_base = IOMEM(0xfff3c00);
++
++
++static void highbank_clk_init(void)
++{
++	struct clk *clk;
++
++	clk = clk_fixed("dummy_apb_pclk", 0);
++	clk_register_clkdev(clk, "apb_pclk", NULL);
++
++	clk = clk_fixed("pclk", 150000000);
++	clk_register_clkdev(clk, NULL, "sp804");
++	clk_register_clkdev(clk, NULL, "uart-pl011");
++}
++
++static void highbank_sp804_init(void)
++{
++	amba_apb_device_add(NULL, "sp804", DEVICE_ID_SINGLE, 0xfff34000, 4096, NULL, 0);
++}
++
++static int highbank_init(void)
++{
++	highbank_clk_init();
++	highbank_sp804_init();
++
++	return 0;
++}
++postcore_initcall(highbank_init);
+diff --git a/arch/arm/mach-highbank/devices.c b/arch/arm/mach-highbank/devices.c
+new file mode 100644
+index 0000000..6d75864
+--- /dev/null
++++ b/arch/arm/mach-highbank/devices.c
+@@ -0,0 +1,74 @@
++/*
++ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ *
++ * GPLv2 only
++ */
++
++#include <common.h>
++#include <sizes.h>
++
++#include <linux/amba/bus.h>
++
++#include <asm/memory.h>
++
++#include <mach/devices.h>
++
++void highbank_add_ddram(u32 size)
++{
++	arm_add_mem_device("ram1", 0x00000000, size);
++	add_mem_device("nvram", 0xfff88000, SZ_32K, IORESOURCE_MEM_WRITEABLE);
++}
++
++void highbank_register_uart(void)
++{
++	amba_apb_device_add(NULL, "uart-pl011", DEVICE_ID_SINGLE, 0xfff36000, 4096, NULL, 0);
++}
++
++void highbank_register_ahci(void)
++{
++	add_generic_device("ahci", DEVICE_ID_SINGLE, NULL, 0xffe08000,
++			0x10000, IORESOURCE_MEM, NULL);
++}
++
++void highbank_register_xgmac(unsigned id)
++{
++	resource_size_t start;
++
++	switch (id) {
++	case 0:
++		start = 0xfff50000;
++		break;
++	case 1:
++		start = 0xfff51000;
++		break;
++	default:
++		return;
++	}
++
++	add_generic_device("hb-xgmac", id, NULL, start, 0x1000,
++				IORESOURCE_MEM, NULL);
++}
++
++void highbank_register_gpio(unsigned id)
++{
++	resource_size_t start;
++
++	switch (id) {
++	case 0:
++		start = 0xfff30000;
++		break;
++	case 1:
++		start = 0xfff31000;
++		break;
++	case 2:
++		start = 0xfff32000;
++		break;
++	case 3:
++		start = 0xfff33000;
++		break;
++	default:
++		return;
++	}
++
++	amba_apb_device_add(NULL, "pl061_gpio", id, start, 0x1000, NULL, 0);
++}
+diff --git a/arch/arm/mach-highbank/include/mach/clkdev.h b/arch/arm/mach-highbank/include/mach/clkdev.h
+new file mode 100644
+index 0000000..04b37a8
+--- /dev/null
++++ b/arch/arm/mach-highbank/include/mach/clkdev.h
+@@ -0,0 +1,7 @@
++#ifndef __ASM_MACH_CLKDEV_H
++#define __ASM_MACH_CLKDEV_H
++
++#define __clk_get(clk) ({ 1; })
++#define __clk_put(clk) do { } while (0)
++
++#endif
+diff --git a/arch/arm/mach-highbank/include/mach/debug_ll.h b/arch/arm/mach-highbank/include/mach/debug_ll.h
+new file mode 100644
+index 0000000..4cdbb3c
+--- /dev/null
++++ b/arch/arm/mach-highbank/include/mach/debug_ll.h
+@@ -0,0 +1,26 @@
++/*
++ * Copyright 2013 Jean-Christophe PLAGNIOL-VILLARD <plagniol@jcrosoft.com>
++ *
++ * GPLv2 only
++ */
++
++#ifndef __MACH_DEBUG_LL_H__
++#define   __MACH_DEBUG_LL_H__
++
++#include <linux/amba/serial.h>
++#include <io.h>
++
++#define UART_BASE 0xfff36000
++
++static inline void PUTC_LL(char c)
++{
++	/* Wait until there is space in the FIFO */
++	while (readl(UART_BASE + UART01x_FR) & UART01x_FR_TXFF);
++
++	/* Send the character */
++	writel(c, UART_BASE + UART01x_DR);
++
++	/* Wait to make sure it hits the line, in case we die too soon. */
++	while (readl(UART_BASE + UART01x_FR) & UART01x_FR_TXFF);
++}
++#endif
+diff --git a/arch/arm/mach-highbank/include/mach/devices.h b/arch/arm/mach-highbank/include/mach/devices.h
+new file mode 100644
+index 0000000..2cf2b61
+--- /dev/null
++++ b/arch/arm/mach-highbank/include/mach/devices.h
+@@ -0,0 +1,17 @@
++/*
++ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ *
++ * GPLv2 only
++ */
++
++#ifndef __ASM_ARCH_DEVICES_H__
++#define __ASM_ARCH_DEVICES_H__
++
++void highbank_add_ddram(u32 size);
++
++void highbank_register_uart(void);
++void highbank_register_ahci(void);
++void highbank_register_xgmac(unsigned id);
++void highbank_register_gpio(unsigned id);
++
++#endif /* __ASM_ARCH_DEVICES_H__ */
+diff --git a/arch/arm/mach-highbank/include/mach/gpio.h b/arch/arm/mach-highbank/include/mach/gpio.h
+new file mode 100644
+index 0000000..306ab4c
+--- /dev/null
++++ b/arch/arm/mach-highbank/include/mach/gpio.h
+@@ -0,0 +1 @@
++#include <asm-generic/gpio.h>
+diff --git a/arch/arm/mach-highbank/reset.c b/arch/arm/mach-highbank/reset.c
+new file mode 100644
+index 0000000..8c845a3
+--- /dev/null
++++ b/arch/arm/mach-highbank/reset.c
+@@ -0,0 +1,21 @@
++/*
++ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ *
++ * GPLv2 only
++ */
++
++#include <common.h>
++#include <io.h>
++#include <linux/amba/sp805.h>
++
++#include <mach/devices.h>
++
++#include "sysregs.h"
++
++void __noreturn reset_cpu(ulong addr)
++{
++	hingbank_set_pwr_hard_reset();
++	asm("	wfi");
++
++	while(1);
++}
+diff --git a/arch/arm/mach-highbank/sysregs.h b/arch/arm/mach-highbank/sysregs.h
+new file mode 100644
+index 0000000..c879422
+--- /dev/null
++++ b/arch/arm/mach-highbank/sysregs.h
+@@ -0,0 +1,52 @@
++/*
++ * Copyright 2011 Calxeda, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License along with
++ * this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++#ifndef _MACH_HIGHBANK__SYSREGS_H_
++#define _MACH_HIGHBANK__SYSREGS_H_
++
++#include <io.h>
++
++extern void __iomem *sregs_base;
++
++#define HB_SREG_A9_PWR_REQ		0xf00
++#define HB_SREG_A9_BOOT_STAT		0xf04
++#define HB_SREG_A9_BOOT_DATA		0xf08
++
++#define HB_PWR_SUSPEND			0
++#define HB_PWR_SOFT_RESET		1
++#define HB_PWR_HARD_RESET		2
++#define HB_PWR_SHUTDOWN			3
++
++static inline void hingbank_set_pwr_suspend(void)
++{
++	writel(HB_PWR_SUSPEND, sregs_base + HB_SREG_A9_PWR_REQ);
++}
++
++static inline void hingbank_set_pwr_shutdown(void)
++{
++	writel(HB_PWR_SHUTDOWN, sregs_base + HB_SREG_A9_PWR_REQ);
++}
++
++static inline void hingbank_set_pwr_soft_reset(void)
++{
++	writel(HB_PWR_SOFT_RESET, sregs_base + HB_SREG_A9_PWR_REQ);
++}
++
++static inline void hingbank_set_pwr_hard_reset(void)
++{
++	writel(HB_PWR_HARD_RESET, sregs_base + HB_SREG_A9_PWR_REQ);
++}
++
++#endif
 -- 
 1.7.10.4
 
