@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5fnM-0008K5-5E
- for barebox@lists.infradead.org; Wed, 13 Feb 2013 17:06:56 +0000
-Date: Wed, 13 Feb 2013 18:06:52 +0100
+ id 1U5fqD-0008TF-Bj
+ for barebox@lists.infradead.org; Wed, 13 Feb 2013 17:09:53 +0000
+Date: Wed, 13 Feb 2013 18:09:51 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130213170652.GD1906@pengutronix.de>
-References: <1360755704-24105-1-git-send-email-shc_work@mail.ru>
- <1360755704-24105-3-git-send-email-shc_work@mail.ru>
+Message-ID: <20130213170951.GE1906@pengutronix.de>
+References: <1360602120-11241-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130212080634.GP1906@pengutronix.de>
+ <20130213092921.GJ19322@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1360755704-24105-3-git-send-email-shc_work@mail.ru>
+In-Reply-To: <20130213092921.GJ19322@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,47 +24,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 3/9] ARM: clps711x: Adds config option for CPU PLL
- multiplier
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH 1/2] ahci: add generic driver
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Feb 13, 2013 at 03:41:38PM +0400, Alexander Shiyan wrote:
+On Wed, Feb 13, 2013 at 10:29:21AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 09:06 Tue 12 Feb     , Sascha Hauer wrote:
+> > On Mon, Feb 11, 2013 at 06:01:59PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ---
->  arch/arm/boards/clep7212/lowlevel.c            |    6 +++++-
->  arch/arm/mach-clps711x/Kconfig                 |   13 +++++++++++++
->  arch/arm/mach-clps711x/include/mach/clps711x.h |    2 +-
->  arch/arm/mach-clps711x/lowlevel.c              |    7 +++++--
->  4 files changed, 24 insertions(+), 4 deletions(-)
+> drop the ahci-generic we already have it in ahci.c
 > 
-> diff --git a/arch/arm/boards/clep7212/lowlevel.c b/arch/arm/boards/clep7212/lowlevel.c
-> index b7d6d1d..fcf8285 100644
-> --- a/arch/arm/boards/clep7212/lowlevel.c
-> +++ b/arch/arm/boards/clep7212/lowlevel.c
-> @@ -14,9 +14,13 @@
->  
->  #include <mach/clps711x.h>
->  
-> +#if (CONFIG_CLPS711X_CPU_PLL_MULT < 20) || (CONFIG_CLPS711X_CPU_PLL_MULT > 50)
-> +# error "CPU PLL multiplier out of range"
-> +#endif
-> +
->  void __naked __bare_init barebox_arm_reset_vector(void)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> -	clps711x_barebox_entry();
-> +	clps711x_barebox_entry(CONFIG_CLPS711X_CPU_PLL_MULT);
+> did not see it before
 
-I don't quite understand why you want to have this configurable. I mean
-this is a single board only, why not simply run it with the maximum
-allowed frequency? Or does this board come with multiple SoCs for which
-different maximum values exist?
+Me neither :)
+
+Dropped it.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
