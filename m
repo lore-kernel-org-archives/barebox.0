@@ -1,23 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U5gfJ-0008SE-63
- for barebox@lists.infradead.org; Wed, 13 Feb 2013 18:02:42 +0000
-Received: from mail406.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 02354DC1033
- for <barebox@lists.infradead.org>; Wed, 13 Feb 2013 19:13:05 +0100 (CET)
-Date: Wed, 13 Feb 2013 19:01:33 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130213180133.GR19322@game.jcrosoft.org>
-References: <1360755704-24105-1-git-send-email-shc_work@mail.ru>
- <1360755704-24105-3-git-send-email-shc_work@mail.ru>
- <20130213170652.GD1906@pengutronix.de>
- <1360776009.524936687@f310.mail.ru>
- <20130213174051.GH1906@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
+Received: from f421.i.mail.ru ([185.5.136.92])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U5gih-0000qS-B5
+ for barebox@lists.infradead.org; Wed, 13 Feb 2013 18:06:12 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Wed, 13 Feb 2013 22:06:03 +0400
+Message-ID: <1360778763.624407113@f421.i.mail.ru>
 In-Reply-To: <20130213174051.GH1906@pengutronix.de>
+References: <1360755704-24105-1-git-send-email-shc_work@mail.ru>
+ <1360776009.524936687@f310.mail.ru> <20130213174051.GH1906@pengutronix.de>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,40 +23,12 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 3/9] ARM: clps711x: Adds config option for CPU PLL
- multiplier
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCB2MiAzLzldIEFSTTogY2xwczcxMXg6IEFkZHMgY29u?=
+ =?UTF-8?B?ZmlnIG9wdGlvbiBmb3IgQ1BVIFBMTCBtdWx0aXBsaWVy?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 18:40 Wed 13 Feb     , Sascha Hauer wrote:
-> On Wed, Feb 13, 2013 at 09:20:09PM +0400, Alexander Shiyan wrote:
-> > > > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> > > > ---
-> > > >  arch/arm/boards/clep7212/lowlevel.c            |    6 +++++-
-> > > >  arch/arm/mach-clps711x/Kconfig                 |   13 +++++++++++++
-> > > >  arch/arm/mach-clps711x/include/mach/clps711x.h |    2 +-
-> > > >  arch/arm/mach-clps711x/lowlevel.c              |    7 +++++--
-> > > >  4 files changed, 24 insertions(+), 4 deletions(-)
-> > > > 
-> > > > diff --git a/arch/arm/boards/clep7212/lowlevel.c b/arch/arm/boards/clep7212/lowlevel.c
-> > > > index b7d6d1d..fcf8285 100644
-> > > > --- a/arch/arm/boards/clep7212/lowlevel.c
-> > > > +++ b/arch/arm/boards/clep7212/lowlevel.c
-> > > > @@ -14,9 +14,13 @@
-> > > >  
-> > > >  #include <mach/clps711x.h>
-> > > >  
-> > > > +#if (CONFIG_CLPS711X_CPU_PLL_MULT < 20) || (CONFIG_CLPS711X_CPU_PLL_MULT > 50)
-> > > > +# error "CPU PLL multiplier out of range"
-> > > > +#endif
-> > > > +
-> > > >  void __naked __bare_init barebox_arm_reset_vector(void)
-> > > >  {
-> > > >  	arm_cpu_lowlevel_init();
-> > > >  
-> > > > -	clps711x_barebox_entry();
-> > > > +	clps711x_barebox_entry(CONFIG_CLPS711X_CPU_PLL_MULT);
-> > > 
+...
 > > > I don't quite understand why you want to have this configurable. I mean
 > > > this is a single board only, why not simply run it with the maximum
 > > > allowed frequency? Or does this board come with multiple SoCs for which
@@ -85,24 +50,10 @@ On 18:40 Wed 13 Feb     , Sascha Hauer wrote:
 > environment on boards that you know work with 90MHz. Aynway, I don't
 > want to force you to do this on an Architecture you're probably
 > currently the only user of.
-agress if not possible so use specific KConfig not a value
 
-Best Regards,
-J.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+OK. Thanks.
 
+---
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
