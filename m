@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp3.mail.ru ([94.100.176.131])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5aiw-0007Cy-51
- for barebox@lists.infradead.org; Wed, 13 Feb 2013 11:42:03 +0000
+ id 1U5aiz-0007EV-5v
+ for barebox@lists.infradead.org; Wed, 13 Feb 2013 11:42:06 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Wed, 13 Feb 2013 15:41:42 +0400
-Message-Id: <1360755704-24105-7-git-send-email-shc_work@mail.ru>
+Date: Wed, 13 Feb 2013 15:41:44 +0400
+Message-Id: <1360755704-24105-9-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1360755704-24105-1-git-send-email-shc_work@mail.ru>
 References: <1360755704-24105-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,68 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 7/9] ARM: clps711x: Move memory initialization in common
- CLPS711X location
+Subject: [PATCH v2 9/9] ARM: clps711x: Update defconfig
 To: barebox@lists.infradead.org
 
-One memory initialization will be used on any CLPS711X-target,
-so move it in the common location.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/boards/clep7212/clep7212.c |   10 ----------
- arch/arm/mach-clps711x/devices.c    |   12 ++++++++++++
- 2 files changed, 12 insertions(+), 10 deletions(-)
+ arch/arm/configs/clps711x_defconfig |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/clep7212/clep7212.c b/arch/arm/boards/clep7212/clep7212.c
-index b96e480..ec9a9cb 100644
---- a/arch/arm/boards/clep7212/clep7212.c
-+++ b/arch/arm/boards/clep7212/clep7212.c
-@@ -20,16 +20,6 @@
- #include <mach/clps711x.h>
- #include <mach/devices.h>
- 
--static int clps711x_mem_init(void)
--{
--	ulong memsize = get_ram_size((ulong *)SDRAM0_BASE, SZ_32M);
--
--	arm_add_mem_device("ram0", SDRAM0_BASE, memsize);
--
--	return 0;
--}
--mem_initcall(clps711x_mem_init);
--
- static int clps711x_devices_init(void)
- {
- 	u32 serial_h = 0, serial_l = readl(UNIQID);
-diff --git a/arch/arm/mach-clps711x/devices.c b/arch/arm/mach-clps711x/devices.c
-index de5813a..6c760db 100644
---- a/arch/arm/mach-clps711x/devices.c
-+++ b/arch/arm/mach-clps711x/devices.c
-@@ -9,11 +9,23 @@
- 
- #include <common.h>
- #include <init.h>
-+#include <sizes.h>
- 
- #include <asm/io.h>
-+#include <asm/memory.h>
- 
- #include <mach/clps711x.h>
- 
-+static int clps711x_mem_init(void)
-+{
-+	ulong memsize = get_ram_size((ulong *)SDRAM0_BASE, SZ_64M);
-+
-+	arm_add_mem_device("ram0", SDRAM0_BASE, memsize);
-+
-+	return 0;
-+}
-+mem_initcall(clps711x_mem_init);
-+
- inline static void _clps711x_setup_memcfg(int bank, u32 addr, u32 val)
- {
- 	u32 tmp = readl(addr);
+diff --git a/arch/arm/configs/clps711x_defconfig b/arch/arm/configs/clps711x_defconfig
+index cf2b3b6..3c81776 100644
+--- a/arch/arm/configs/clps711x_defconfig
++++ b/arch/arm/configs/clps711x_defconfig
+@@ -1,13 +1,14 @@
+ CONFIG_ARCH_CLPS711X=y
++CONFIG_CLPS711X_CPU_PLL_MULT=50
+ CONFIG_AEABI=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ # CONFIG_MEMINFO is not set
+-CONFIG_TEXT_BASE=0xc0780000
++CONFIG_PBL_IMAGE=y
++CONFIG_MMU=y
+ CONFIG_EXPERIMENTAL=y
+ CONFIG_BAUDRATE=57600
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+-CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_LZO=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/clep7212/env"
+ CONFIG_CMD_EDIT=y
 -- 
 1.7.3.4
 
