@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f310.mail.ru ([128.140.169.174])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5g0E-0000da-C9
- for barebox@lists.infradead.org; Wed, 13 Feb 2013 17:20:15 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Wed, 13 Feb 2013 21:20:09 +0400
-Message-ID: <1360776009.524936687@f310.mail.ru>
-In-Reply-To: <20130213170652.GD1906@pengutronix.de>
-References: <1360755704-24105-1-git-send-email-shc_work@mail.ru>
- <1360755704-24105-3-git-send-email-shc_work@mail.ru>
- <20130213170652.GD1906@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1U5gBD-0001Mx-VI
+ for barebox@lists.infradead.org; Wed, 13 Feb 2013 17:31:36 +0000
+Date: Wed, 13 Feb 2013 18:31:34 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130213173134.GG1906@pengutronix.de>
+References: <20130213100249.GL19322@game.jcrosoft.org>
+ <1360750004-17713-1-git-send-email-plagnioj@jcrosoft.com>
+ <1360750004-17713-2-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1360750004-17713-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,50 +24,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCB2MiAzLzldIEFSTTogY2xwczcxMXg6IEFkZHMgY29u?=
- =?UTF-8?B?ZmlnIG9wdGlvbiBmb3IgQ1BVIFBMTCBtdWx0aXBsaWVy?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/6] of: make of_add_memory available for other board
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org, Rob Herring <rob.herring@calxeda.com>
 
-> > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> > ---
-> >  arch/arm/boards/clep7212/lowlevel.c            |    6 +++++-
-> >  arch/arm/mach-clps711x/Kconfig                 |   13 +++++++++++++
-> >  arch/arm/mach-clps711x/include/mach/clps711x.h |    2 +-
-> >  arch/arm/mach-clps711x/lowlevel.c              |    7 +++++--
-> >  4 files changed, 24 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/arch/arm/boards/clep7212/lowlevel.c b/arch/arm/boards/clep7212/lowlevel.c
-> > index b7d6d1d..fcf8285 100644
-> > --- a/arch/arm/boards/clep7212/lowlevel.c
-> > +++ b/arch/arm/boards/clep7212/lowlevel.c
-> > @@ -14,9 +14,13 @@
-> >  
-> >  #include <mach/clps711x.h>
-> >  
-> > +#if (CONFIG_CLPS711X_CPU_PLL_MULT < 20) || (CONFIG_CLPS711X_CPU_PLL_MULT > 50)
-> > +# error "CPU PLL multiplier out of range"
-> > +#endif
-> > +
-> >  void __naked __bare_init barebox_arm_reset_vector(void)
-> >  {
-> >  	arm_cpu_lowlevel_init();
-> >  
-> > -	clps711x_barebox_entry();
-> > +	clps711x_barebox_entry(CONFIG_CLPS711X_CPU_PLL_MULT);
+On Wed, Feb 13, 2013 at 11:06:40AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> so when the first stage booloader of firmware provide the dtb
+> we can use it to probe the memory
 > 
-> I don't quite understand why you want to have this configurable. I mean
-> this is a single board only, why not simply run it with the maximum
-> allowed frequency? Or does this board come with multiple SoCs for which
-> different maximum values exist?
+> also allow to print what we probe
+> 
+> Cc: Rob Herring <rob.herring@calxeda.com>
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  drivers/of/base.c |   20 ++++++++++++++------
+>  include/of.h      |    6 ++++++
+>  2 files changed, 20 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index 1f32bfb..f2986ab 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -734,18 +734,23 @@ u64 dt_mem_next_cell(int s, const __be32 **cellp)
+>  	return of_read_number(p, s);
+>  }
+>  
+> -static int of_add_memory(struct device_node *node)
+> +int of_add_memory(struct device_node *node, bool dump)
+>  {
+>  	int na, nc;
+>  	const __be32 *reg, *endp;
+>  	int len, r = 0;
+>  	static char str[6];
+> +	struct property *type;
+> +
+> +	type = of_find_property(node, "device_type");
+> +	if (!type)
+> +		return -ENXIO;
 
-Yes. There are 2 versions of the chip. One with a maximum operating
-frequency of 74 MHz, second with 90 MHz. The only difference is on the CPU label.
-Which version is used, it is impossible to know in runtime.
-You can simply reject this patch [3/9], all other should not depend on this one.
-Later I'll try to make another different version.
+Could you add the missing check here if device_type is 'memory'?
 
----
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
