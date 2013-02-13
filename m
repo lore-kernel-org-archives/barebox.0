@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp5-g21.free.fr ([2a01:e0c:1:1599::14])
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
+ helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U5frV-00005c-K3
- for barebox@lists.infradead.org; Wed, 13 Feb 2013 17:11:15 +0000
-Date: Wed, 13 Feb 2013 18:10:58 +0100
-From: Eric =?UTF-8?B?QsOpbmFyZA==?= <eric@eukrea.com>
-Message-ID: <20130213181058.5bbbf613@e6520eb>
-In-Reply-To: <1360773918-10663-2-git-send-email-maxime.ripard@free-electrons.com>
+ id 1U5ftv-0000Ga-Qc
+ for barebox@lists.infradead.org; Wed, 13 Feb 2013 17:13:44 +0000
+Received: from mail406.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id F0E70DC1228
+ for <barebox@lists.infradead.org>; Wed, 13 Feb 2013 18:24:06 +0100 (CET)
+Date: Wed, 13 Feb 2013 18:12:30 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130213171230.GP19322@game.jcrosoft.org>
 References: <1360773918-10663-1-git-send-email-maxime.ripard@free-electrons.com>
  <1360773918-10663-2-git-send-email-maxime.ripard@free-electrons.com>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1360773918-10663-2-git-send-email-maxime.ripard@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,8 +23,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] cfa-10036: Use the second MMC partition to store
@@ -27,52 +32,94 @@ Subject: Re: [PATCH 1/2] cfa-10036: Use the second MMC partition to store
 To: Maxime Ripard <maxime.ripard@free-electrons.com>
 Cc: barebox@lists.infradead.org, Brian Lilly <brian@crystalfontz.com>
 
-SGkgTWF4aW1lLAoKTGUgV2VkLCAxMyBGZWIgMjAxMyAxNzo0NToxNyArMDEwMCwKTWF4aW1lIFJp
-cGFyZCA8bWF4aW1lLnJpcGFyZEBmcmVlLWVsZWN0cm9ucy5jb20+IGEgw6ljcml0IDoKCj4gU2lu
-Y2UgdGhlIG9ubHkgc3RvcmFnZSBtZWRpdW0gb24gdGhlIGNmYS0xMDAzNiBpcyB0aGUgTU1DIGNh
-cmQsIHdlIG5lZWQKPiB0byBoYXZlIGEgcmVnaXN0ZXJlZCBlbnZpcm9ubWVudCBwYXJ0aXRpb24g
-b24gaXQgaWYgd2Ugd2FudCB0byBiZSBhYmxlCj4gdG8gbW9kaWZ5IGF0IHJ1bnRpbWUuCj4gCm1h
-eWJlIHlvdSBjb3VsZCBhZGQgOgpjb2RlIGNvcGllZCBmcm9tIGlteDIzLW9saW51eGluby5jCgpF
-cmljCgo+IFNpZ25lZC1vZmYtYnk6IE1heGltZSBSaXBhcmQgPG1heGltZS5yaXBhcmRAZnJlZS1l
-bGVjdHJvbnMuY29tPgo+IC0tLQo+ICBhcmNoL2FybS9ib2FyZHMvY3J5c3RhbGZvbnR6LWNmYTEw
-MDM2L2NmYTEwMDM2LmMgfCAgIDQ0ICsrKysrKysrKysrKysrKysrKysrKy0KPiAgMSBmaWxlIGNo
-YW5nZWQsIDQzIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKPiAKPiBkaWZmIC0tZ2l0IGEv
-YXJjaC9hcm0vYm9hcmRzL2NyeXN0YWxmb250ei1jZmExMDAzNi9jZmExMDAzNi5jIGIvYXJjaC9h
-cm0vYm9hcmRzL2NyeXN0YWxmb250ei1jZmExMDAzNi9jZmExMDAzNi5jCj4gaW5kZXggYjU5ZGJh
-Yi4uMTgyMWIxMCAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9ib2FyZHMvY3J5c3RhbGZvbnR6LWNm
-YTEwMDM2L2NmYTEwMDM2LmMKPiArKysgYi9hcmNoL2FybS9ib2FyZHMvY3J5c3RhbGZvbnR6LWNm
-YTEwMDM2L2NmYTEwMDM2LmMKPiBAQCAtOTcsOSArOTcsNDYgQEAgc3RhdGljIGludCBjZmExMDAz
-Nl9tZW1faW5pdCh2b2lkKQo+ICB9Cj4gIG1lbV9pbml0Y2FsbChjZmExMDAzNl9tZW1faW5pdCk7
-Cj4gIAo+ICsvKioKPiArICogVHJ5IHRvIHJlZ2lzdGVyIGFuIGVudmlyb25tZW50IHN0b3JhZ2Ug
-b24gdGhlIGF0dGFjaGVkIE1DSSBjYXJkCj4gKyAqIEByZXR1cm4gMCBvbiBzdWNjZXNzCj4gKyAq
-Cj4gKyAqIFdlIHJlbHkgb24gdGhlIGV4aXN0ZW5jZSBvZiBhIHVzYWJsZSBTRCBjYXJkLCBhbHJl
-YWR5IGF0dGFjaGVkIHRvCj4gKyAqIG91ciBzeXN0ZW0sIHRvIGdldCBzb21ldGhpbmcgbGlrZSBh
-IHBlcnNpc3RlbnQgbWVtb3J5IGZvciBvdXIgZW52aXJvbm1lbnQuCj4gKyAqIElmIHRoaXMgU0Qg
-Y2FyZCBpcyBhbHNvIHRoZSBib290IG1lZGlhLCB3ZSBjYW4gdXNlIHRoZSBzZWNvbmQgcGFydGl0
-aW9uCj4gKyAqIGZvciBvdXIgZW52aXJvbm1lbnQgcHVycG9zZSAoaWYgcHJlc2VudCEpLgo+ICsg
-Ki8KPiArc3RhdGljIGludCByZWdpc3Rlcl9wZXJzaXN0YW50X2Vudmlyb25tZW50KHZvaWQpCj4g
-K3sKPiArCXN0cnVjdCBjZGV2ICpjZGV2Owo+ICsKPiArCS8qCj4gKwkgKiBUaGUgQ0ZBLTEwMDM2
-IG9ubHkgaGFzIG9uZSBNQ0kgY2FyZCBzb2NrZXQuCj4gKwkgKiBTbywgd2UgZXhwZWN0IGl0cyBu
-YW1lIGFzICJkaXNrMCIuCj4gKwkgKi8KPiArCWNkZXYgPSBjZGV2X2J5X25hbWUoImRpc2swIik7
-Cj4gKwlpZiAoY2RldiA9PSBOVUxMKSB7Cj4gKwkJcHJfZXJyKCJObyBTRCBjYXJkIGZvdW5kXG4i
-KTsKPiArCQlyZXR1cm4gLUVOT0RFVjsKPiArCX0KPiArCj4gKwkvKiBNQ0kgY2FyZCBpcyBwcmVz
-ZW50LCBhbHNvIGEgdXNlYWJsZSBwYXJ0aXRpb24gb24gaXQ/ICovCj4gKwljZGV2ID0gY2Rldl9i
-eV9uYW1lKCJkaXNrMC4xIik7Cj4gKwlpZiAoY2RldiA9PSBOVUxMKSB7Cj4gKwkJcHJfZXJyKCJO
-byBzZWNvbmQgcGFydGl0aW9uIGF2YWlsYWJsZVxuIik7Cj4gKwkJcHJfaW5mbygiUGxlYXNlIGNy
-ZWF0ZSBhdCBsZWFzdCBhIHNlY29uZCBwYXJ0aXRpb24gd2l0aCIKPiArCQkJIiAyNTYga2lCLi4u
-NTEyIGtpQiBpbiBzaXplICh5b3VyIGNob2ljZSlcbiIpOwo+ICsJCXJldHVybiAtRU5PREVWOwo+
-ICsJfQo+ICsKPiArCS8qIHVzZSB0aGUgZnVsbCBwYXJ0aXRpb24gYXMgb3VyIHBlcnNpc3RlbnQg
-ZW52aXJvbm1lbnQgc3RvcmFnZSAqLwo+ICsJcmV0dXJuIGRldmZzX2FkZF9wYXJ0aXRpb24oImRp
-c2swLjEiLCAwLCBjZGV2LT5zaXplLAo+ICsJCQkJCQlERVZGU19QQVJUSVRJT05fRklYRUQsICJl
-bnYwIik7Cj4gK30KPiArCj4gIHN0YXRpYyBpbnQgY2ZhMTAwMzZfZGV2aWNlc19pbml0KHZvaWQp
-Cj4gIHsKPiAtCWludCBpOwo+ICsJaW50IGksIHJldDsKPiAgCj4gIAkvKiBpbml0aXphbGl6ZSBt
-dXhpbmcgKi8KPiAgCWZvciAoaSA9IDA7IGkgPCBBUlJBWV9TSVpFKGNmYTEwMDM2X3BhZHMpOyBp
-KyspCj4gQEAgLTEyNCw2ICsxNjEsMTEgQEAgc3RhdGljIGludCBjZmExMDAzNl9kZXZpY2VzX2lu
-aXQodm9pZCkKPiAgCj4gIAljZmExMDAzNl9kZXRlY3RfaHcoKTsKPiAgCj4gKwlyZXQgPSByZWdp
-c3Rlcl9wZXJzaXN0YW50X2Vudmlyb25tZW50KCk7Cj4gKwlpZiAocmV0ICE9IDApCj4gKwkJcHJp
-bnRmKCJDYW5ub3QgY3JlYXRlIHRoZSAnZW52MCcgcGVyc2lzdGFudCAiCj4gKwkJCSAiZW52aXJv
-bm1lbnQgc3RvcmFnZSAoJWQpXG4iLCByZXQpOwo+ICsKPiAgCXJldHVybiAwOwo+ICB9Cj4gIGRl
-dmljZV9pbml0Y2FsbChjZmExMDAzNl9kZXZpY2VzX2luaXQpOwoKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+On 17:45 Wed 13 Feb     , Maxime Ripard wrote:
+> Since the only storage medium on the cfa-10036 is the MMC card, we need
+> to have a registered environment partition on it if we want to be able
+> to modify at runtime.
+> 
+> Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+> ---
+>  arch/arm/boards/crystalfontz-cfa10036/cfa10036.c |   44 +++++++++++++++++++++-
+>  1 file changed, 43 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+> index b59dbab..1821b10 100644
+> --- a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+> +++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+> @@ -97,9 +97,46 @@ static int cfa10036_mem_init(void)
+>  }
+>  mem_initcall(cfa10036_mem_init);
+>  
+> +/**
+> + * Try to register an environment storage on the attached MCI card
+> + * @return 0 on success
+> + *
+> + * We rely on the existence of a usable SD card, already attached to
+> + * our system, to get something like a persistent memory for our environment.
+> + * If this SD card is also the boot media, we can use the second partition
+> + * for our environment purpose (if present!).
+> + */
+> +static int register_persistant_environment(void)
+> +{
+> +	struct cdev *cdev;
+> +
+> +	/*
+> +	 * The CFA-10036 only has one MCI card socket.
+> +	 * So, we expect its name as "disk0".
+> +	 */
+> +	cdev = cdev_by_name("disk0");
+> +	if (cdev == NULL) {
+> +		pr_err("No SD card found\n");
+> +		return -ENODEV;
+> +	}
+> +
+> +	/* MCI card is present, also a useable partition on it? */
+> +	cdev = cdev_by_name("disk0.1");
+> +	if (cdev == NULL) {
+> +		pr_err("No second partition available\n");
+> +		pr_info("Please create at least a second partition with"
+> +			" 256 kiB...512 kiB in size (your choice)\n");
+> +		return -ENODEV;
+> +	}
+> +
+> +	/* use the full partition as our persistent environment storage */
+> +	return devfs_add_partition("disk0.1", 0, cdev->size,
+> +						DEVFS_PARTITION_FIXED, "env0");
+> +}
+it's time to have a common code
+
+Best Regards,
+J.
+> +
+>  static int cfa10036_devices_init(void)
+>  {
+> -	int i;
+> +	int i, ret;
+>  
+>  	/* initizalize muxing */
+>  	for (i = 0; i < ARRAY_SIZE(cfa10036_pads); i++)
+> @@ -124,6 +161,11 @@ static int cfa10036_devices_init(void)
+>  
+>  	cfa10036_detect_hw();
+>  
+> +	ret = register_persistant_environment();
+> +	if (ret != 0)
+> +		printf("Cannot create the 'env0' persistant "
+> +			 "environment storage (%d)\n", ret);
+> +
+>  	return 0;
+>  }
+>  device_initcall(cfa10036_devices_init);
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
