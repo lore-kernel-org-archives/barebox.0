@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo1.mail-out.ovh.net ([46.105.35.72]
+Received: from 1.mo1.mail-out.ovh.net ([178.32.127.22]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U5ZFs-0008Ky-Cw
- for barebox@lists.infradead.org; Wed, 13 Feb 2013 10:07:59 +0000
+ id 1U5ZFs-0008Kz-C7
+ for barebox@lists.infradead.org; Wed, 13 Feb 2013 10:08:01 +0000
 Received: from mail239.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 2381AFFA3A6
- for <barebox@lists.infradead.org>; Wed, 13 Feb 2013 11:23:15 +0100 (CET)
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id D5477FFA4A9
+ for <barebox@lists.infradead.org>; Wed, 13 Feb 2013 11:23:16 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 13 Feb 2013 11:06:40 +0100
-Message-Id: <1360750004-17713-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 13 Feb 2013 11:06:43 +0100
+Message-Id: <1360750004-17713-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1360750004-17713-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130213100249.GL19322@game.jcrosoft.org>
  <1360750004-17713-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,108 +26,138 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] of: make of_add_memory available for other board
+Subject: [PATCH 5/6] highbank: add l2x0 support
 To: barebox@lists.infradead.org
 Cc: Rob Herring <rob.herring@calxeda.com>
 
-so when the first stage booloader of firmware provide the dtb
-we can use it to probe the memory
-
-also allow to print what we probe
+not enable as on qemu this generate a undefined instruction exception
 
 Cc: Rob Herring <rob.herring@calxeda.com>
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/of/base.c |   20 ++++++++++++++------
- include/of.h      |    6 ++++++
- 2 files changed, 20 insertions(+), 6 deletions(-)
+ arch/arm/Kconfig                    |    1 +
+ arch/arm/mach-highbank/Makefile     |    1 +
+ arch/arm/mach-highbank/cache-l2x0.c |   45 +++++++++++++++++++++++++++++++++++
+ arch/arm/mach-highbank/core.h       |    2 ++
+ arch/arm/mach-highbank/smc.S        |   27 +++++++++++++++++++++
+ 5 files changed, 76 insertions(+)
+ create mode 100644 arch/arm/mach-highbank/cache-l2x0.c
+ create mode 100644 arch/arm/mach-highbank/core.h
+ create mode 100644 arch/arm/mach-highbank/smc.S
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 1f32bfb..f2986ab 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -734,18 +734,23 @@ u64 dt_mem_next_cell(int s, const __be32 **cellp)
- 	return of_read_number(p, s);
- }
- 
--static int of_add_memory(struct device_node *node)
-+int of_add_memory(struct device_node *node, bool dump)
- {
- 	int na, nc;
- 	const __be32 *reg, *endp;
- 	int len, r = 0;
- 	static char str[6];
-+	struct property *type;
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 447f4c9..f002910 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -49,6 +49,7 @@ config ARCH_EP93XX
+ config ARCH_HIGHBANK
+ 	bool "Calxeda Highbank"
+ 	select HAS_DEBUG_LL
++	select ARCH_HAS_L2X0
+ 	select CPU_V7
+ 	select ARM_AMBA
+ 	select AMBA_SP804
+diff --git a/arch/arm/mach-highbank/Makefile b/arch/arm/mach-highbank/Makefile
+index 3f01cbb..6a7330f 100644
+--- a/arch/arm/mach-highbank/Makefile
++++ b/arch/arm/mach-highbank/Makefile
+@@ -1,3 +1,4 @@
+ obj-y += core.o
+ obj-y += devices.o
+ obj-y += reset.o
++obj-$(CONFIG_CACHE_L2X0) += cache-l2x0.o smc.o
+diff --git a/arch/arm/mach-highbank/cache-l2x0.c b/arch/arm/mach-highbank/cache-l2x0.c
+new file mode 100644
+index 0000000..f1e39dc
+--- /dev/null
++++ b/arch/arm/mach-highbank/cache-l2x0.c
+@@ -0,0 +1,45 @@
++/*
++ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; version 2 of
++ * the License.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
++ */
 +
-+	type = of_find_property(node, "device_type");
-+	if (!type)
-+		return -ENXIO;
- 
- 	of_bus_count_cells(node, &na, &nc);
- 
- 	reg = of_get_property(node, "reg", &len);
- 	if (!reg)
--		return 0;
-+		return -EINVAL;
- 
- 	endp = reg + (len / sizeof(__be32));
- 
-@@ -762,6 +767,9 @@ static int of_add_memory(struct device_node *node)
- 
-                 barebox_add_memory_bank(str, base, size);
- 
-+		if (dump)
-+			pr_info("%s: %s: 0x%llx@0x%llx\n", node->name, str, size, base);
++#include <common.h>
++#include <init.h>
++#include <io.h>
 +
- 		r++;
-         }
- 
-@@ -770,7 +778,7 @@ static int of_add_memory(struct device_node *node)
- 
- static int add_of_device_resource(struct device_node *node)
- {
--	struct property *reg, *type;
-+	struct property *reg;
- 	u64 address, size;
- 	struct resource *res;
- 	struct device_d *dev;
-@@ -783,9 +791,9 @@ static int add_of_device_resource(struct device_node *node)
- 		list_add_tail(&node->phandles, &phandle_list);
- 	}
- 
--	type = of_find_property(node, "device_type");
--	if (type)
--		return of_add_memory(node);
-+	ret = of_add_memory(node, false);
-+	if (ret != -ENXIO)
-+		return ret;
- 
- 	reg = of_find_property(node, "reg");
- 	if (!reg)
-diff --git a/include/of.h b/include/of.h
-index d413d72..4dc5b6c 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -132,6 +132,7 @@ int of_alias_get_id(struct device_node *np, const char *stem);
- int of_device_is_stdout_path(struct device_d *dev);
- const char *of_get_model(void);
- void *of_flatten_dtb(void);
-+int of_add_memory(struct device_node *node, bool dump);
- #else
- static inline int of_parse_partitions(const char *cdevname,
- 					  struct device_node *node)
-@@ -163,6 +164,11 @@ static inline void *of_flatten_dtb(void)
- {
- 	return NULL;
- }
++#include <asm/mmu.h>
++#include <asm/cache-l2x0.h>
 +
-+static inline int of_add_memory(struct device_node *node, bool dump)
++#include "core.h"
++
++static void highbank_l2x0_disable(void)
 +{
-+	return -EINVAL;
++	/* Disable PL310 L2 Cache controller */
++	highbank_smc1(0x102, 0x0);
 +}
- #endif
- 
- #endif /* __OF_H */
++
++static int highbank_l2x0_init(void)
++{
++	/* Enable PL310 L2 Cache controller */
++	highbank_smc1(0x102, 0x1);
++	l2x0_init(IOMEM(0xfff12000), 0, ~0UL);
++	outer_cache.disable = highbank_l2x0_disable;
++
++	return 0;
++}
++postmmu_initcall(highbank_l2x0_init);
+diff --git a/arch/arm/mach-highbank/core.h b/arch/arm/mach-highbank/core.h
+new file mode 100644
+index 0000000..e3f19b2
+--- /dev/null
++++ b/arch/arm/mach-highbank/core.h
+@@ -0,0 +1,2 @@
++
++extern void highbank_smc1(int fn, int arg);
+diff --git a/arch/arm/mach-highbank/smc.S b/arch/arm/mach-highbank/smc.S
+new file mode 100644
+index 0000000..b2118b4
+--- /dev/null
++++ b/arch/arm/mach-highbank/smc.S
+@@ -0,0 +1,27 @@
++/*
++ * Copied from omap44xx-smc.S Copyright (C) 2010 Texas Instruments, Inc.
++ * Copyright 2012 Calxeda, Inc.
++ *
++ * This program is free software,you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#include <linux/linkage.h>
++
++/*
++ * This is common routine to manage secure monitor API
++ * used to modify the PL310 secure registers.
++ * 'r0' contains the value to be modified and 'r12' contains
++ * the monitor API number.
++ * Function signature : void highbank_smc1(u32 fn, u32 arg)
++ */
++
++ENTRY(highbank_smc1)
++	stmfd	sp!, {r4-r11, lr}
++	mov	r12, r0
++	mov	r0, r1
++	dsb
++	smc	#0
++	ldmfd	sp!, {r4-r11, pc}
++ENDPROC(highbank_smc1)
 -- 
 1.7.10.4
 
