@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp3.mail.ru ([94.100.176.131])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5aip-0007Ay-2G
- for barebox@lists.infradead.org; Wed, 13 Feb 2013 11:41:55 +0000
+ id 1U5ais-0007Bl-8P
+ for barebox@lists.infradead.org; Wed, 13 Feb 2013 11:41:58 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Wed, 13 Feb 2013 15:41:38 +0400
-Message-Id: <1360755704-24105-3-git-send-email-shc_work@mail.ru>
+Date: Wed, 13 Feb 2013 15:41:40 +0400
+Message-Id: <1360755704-24105-5-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1360755704-24105-1-git-send-email-shc_work@mail.ru>
 References: <1360755704-24105-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,100 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/9] ARM: clps711x: Adds config option for CPU PLL
- multiplier
+Subject: [PATCH v2 5/9] ARM: clps711x: Mark private functions that not will be
+ used outside as static
 To: barebox@lists.infradead.org
 
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/boards/clep7212/lowlevel.c            |    6 +++++-
- arch/arm/mach-clps711x/Kconfig                 |   13 +++++++++++++
- arch/arm/mach-clps711x/include/mach/clps711x.h |    2 +-
- arch/arm/mach-clps711x/lowlevel.c              |    7 +++++--
- 4 files changed, 24 insertions(+), 4 deletions(-)
+ arch/arm/mach-clps711x/clock.c   |    8 +++-----
+ arch/arm/mach-clps711x/devices.c |    2 +-
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boards/clep7212/lowlevel.c b/arch/arm/boards/clep7212/lowlevel.c
-index b7d6d1d..fcf8285 100644
---- a/arch/arm/boards/clep7212/lowlevel.c
-+++ b/arch/arm/boards/clep7212/lowlevel.c
-@@ -14,9 +14,13 @@
+diff --git a/arch/arm/mach-clps711x/clock.c b/arch/arm/mach-clps711x/clock.c
+index 5cafba9..09cbaf9 100644
+--- a/arch/arm/mach-clps711x/clock.c
++++ b/arch/arm/mach-clps711x/clock.c
+@@ -15,13 +15,11 @@
  
  #include <mach/clps711x.h>
  
-+#if (CONFIG_CLPS711X_CPU_PLL_MULT < 20) || (CONFIG_CLPS711X_CPU_PLL_MULT > 50)
-+# error "CPU PLL multiplier out of range"
-+#endif
-+
- void __naked __bare_init barebox_arm_reset_vector(void)
- {
- 	arm_cpu_lowlevel_init();
+-struct clk {
++static struct clk {
+ 	unsigned long	rate;
+-};
+-
+-static struct clk uart_clk, bus_clk;
++} uart_clk, bus_clk;
  
--	clps711x_barebox_entry();
-+	clps711x_barebox_entry(CONFIG_CLPS711X_CPU_PLL_MULT);
+-uint64_t clocksource_read(void)
++static uint64_t clocksource_read(void)
+ {
+ 	return ~readw(TC2D);
  }
-diff --git a/arch/arm/mach-clps711x/Kconfig b/arch/arm/mach-clps711x/Kconfig
-index f0adeda..d2873b4 100644
---- a/arch/arm/mach-clps711x/Kconfig
-+++ b/arch/arm/mach-clps711x/Kconfig
-@@ -10,6 +10,19 @@ config MACH_CLEP7212
- 
- endchoice
- 
-+menu "CLPS711X specific settings"
-+
-+config CLPS711X_CPU_PLL_MULT
-+	int "CPU PLL multiplier (20-50)"
-+	range 20 50
-+	default "40"
-+	help
-+	  Define CPU PLL multiplier. PLL is calculated by formula:
-+	    PLL Frequency = (PLL Multiplier / 2) * 3686400 Hz
-+	  Default value is 40, for achieve 73 MHz.
-+
-+endmenu
-+
- config BOARDINFO
- 	default "Cirrus Logic CLEP7212" if MACH_CLEP7212
- 
-diff --git a/arch/arm/mach-clps711x/include/mach/clps711x.h b/arch/arm/mach-clps711x/include/mach/clps711x.h
-index 5b8fe82..cc65cc8 100644
---- a/arch/arm/mach-clps711x/include/mach/clps711x.h
-+++ b/arch/arm/mach-clps711x/include/mach/clps711x.h
-@@ -281,6 +281,6 @@
- #define MEMCFG_WAITSTATE_2_0	(14 << 2)
- #define MEMCFG_WAITSTATE_1_0	(15 << 2)
- 
--void clps711x_barebox_entry(void);
-+void clps711x_barebox_entry(u32);
- 
- #endif
-diff --git a/arch/arm/mach-clps711x/lowlevel.c b/arch/arm/mach-clps711x/lowlevel.c
-index cd3216a..193f61a 100644
---- a/arch/arm/mach-clps711x/lowlevel.c
-+++ b/arch/arm/mach-clps711x/lowlevel.c
-@@ -17,9 +17,8 @@
+diff --git a/arch/arm/mach-clps711x/devices.c b/arch/arm/mach-clps711x/devices.c
+index 08f27d2..de5813a 100644
+--- a/arch/arm/mach-clps711x/devices.c
++++ b/arch/arm/mach-clps711x/devices.c
+@@ -14,7 +14,7 @@
  
  #include <mach/clps711x.h>
  
--void __naked __bare_init clps711x_barebox_entry(void)
-+void __naked __bare_init clps711x_barebox_entry(u32 pllmult)
+-inline void _clps711x_setup_memcfg(int bank, u32 addr, u32 val)
++inline static void _clps711x_setup_memcfg(int bank, u32 addr, u32 val)
  {
--	const u32 pllmult = 50;
- 	u32 cpu, bus;
+ 	u32 tmp = readl(addr);
  
- 	/* Setup base clocking, Enable SDQM pins  */
-@@ -28,6 +27,10 @@ void __naked __bare_init clps711x_barebox_entry(void)
- 
- 	/* Check if we running from external 13 MHz clock */
- 	if (!(readl(SYSFLG2) & SYSFLG2_CKMODE)) {
-+		/* Check valid multiplier, default to 74 MHz */
-+		if ((pllmult < 20) || (pllmult > 50))
-+			pllmult = 40;
-+
- 		/* Setup PLL */
- 		writel(pllmult << 24, PLLW);
- 		asm("nop");
 -- 
 1.7.3.4
 
