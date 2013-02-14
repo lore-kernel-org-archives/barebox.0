@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.mo1.mail-out.ovh.net ([178.33.253.128]
- helo=mo1.mail-out.ovh.net)
+Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U5zDK-0006Dv-RD
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 13:51:04 +0000
-Received: from mail610.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 695C2FFB2C8
- for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 15:06:26 +0100 (CET)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Thu, 14 Feb 2013 14:50:51 +0100
-Message-Id: <1360849851-8321-1-git-send-email-eric@eukrea.com>
-In-Reply-To: <1360848017-8084-1-git-send-email-eric@eukrea.com>
-References: <1360848017-8084-1-git-send-email-eric@eukrea.com>
+ id 1U5zM0-0002yP-NR
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 14:00:01 +0000
+Message-ID: <511CEDD4.3020108@free-electrons.com>
+Date: Thu, 14 Feb 2013 14:59:48 +0100
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
 MIME-Version: 1.0
+References: <1360774211-10983-1-git-send-email-maxime.ripard@free-electrons.com>
+ <1360775819-5411-1-git-send-email-s.hauer@pengutronix.de>
+ <511CB116.8050705@free-electrons.com> <20130214113503.GN1906@pengutronix.de>
+In-Reply-To: <20130214113503.GN1906@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,53 +19,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3] falconwing: switch to generic peristent env
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] Add warning above get_ram_size
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQp2MzogYWxz
-byBmaXggdGhlIHR5cG8gaW4gdGhlIHByaW50Zgp2MjogZml4IHR5cG8gaW4gcGVyc2lzdGVudAoK
-IGFyY2gvYXJtL2JvYXJkcy9jaHVtYnlfZmFsY29ud2luZy9mYWxjb253aW5nLmMgfCA0MCArKy0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwg
-MzggZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2NodW1ieV9mYWxj
-b253aW5nL2ZhbGNvbndpbmcuYyBiL2FyY2gvYXJtL2JvYXJkcy9jaHVtYnlfZmFsY29ud2luZy9m
-YWxjb253aW5nLmMKaW5kZXggMDgxODY2Ni4uODBlZWJiYSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0v
-Ym9hcmRzL2NodW1ieV9mYWxjb253aW5nL2ZhbGNvbndpbmcuYworKysgYi9hcmNoL2FybS9ib2Fy
-ZHMvY2h1bWJ5X2ZhbGNvbndpbmcvZmFsY29ud2luZy5jCkBAIC0yNjUsNDIgKzI2NSw2IEBAIHN0
-YXRpYyBpbnQgZmFsY29ud2luZ19tZW1faW5pdCh2b2lkKQogfQogbWVtX2luaXRjYWxsKGZhbGNv
-bndpbmdfbWVtX2luaXQpOwogCi0vKioKLSAqIFRyeSB0byByZWdpc3RlciBhbiBlbnZpcm9ubWVu
-dCBzdG9yYWdlIG9uIHRoZSBhdHRhY2hlZCBNQ0kgY2FyZAotICogQHJldHVybiAwIG9uIHN1Y2Nl
-c3MKLSAqCi0gKiBXZSByZWx5IG9uIHRoZSBleGlzdGVuY2Ugb2YgYSB1c2FibGUgU0QgY2FyZCwg
-YWxyZWFkeSBhdHRhY2hlZCB0bwotICogb3VyIHN5c3RlbSwgdG8gZ2V0IHNvbWV0aGluZyBsaWtl
-IGEgcGVyc2lzdGVudCBtZW1vcnkgZm9yIG91ciBlbnZpcm9ubWVudC4KLSAqIElmIHRoaXMgU0Qg
-Y2FyZCBpcyBhbHNvIHRoZSBib290IG1lZGlhLCB3ZSBjYW4gdXNlIHRoZSBzZWNvbmQgcGFydGl0
-aW9uCi0gKiBmb3Igb3VyIGVudmlyb25tZW50IHB1cnBvc2UgKGlmIHByZXNlbnQhKS4KLSAqLwot
-c3RhdGljIGludCByZWdpc3Rlcl9wZXJzaXN0YW50X2Vudmlyb25tZW50KHZvaWQpCi17Ci0Jc3Ry
-dWN0IGNkZXYgKmNkZXY7Ci0KLQkvKgotCSAqIFRoZSBjaHVtYnkgb25lIG9ubHkgaGFzIG9uZSBN
-Q0kgY2FyZCBzb2NrZXQuCi0JICogU28sIHdlIGV4cGVjdCBpdHMgbmFtZSBhcyAiZGlzazAiLgot
-CSAqLwotCWNkZXYgPSBjZGV2X2J5X25hbWUoImRpc2swIik7Ci0JaWYgKGNkZXYgPT0gTlVMTCkg
-ewotCQlwcl9lcnIoIk5vIE1DSSBjYXJkIHByZXNldFxuIik7Ci0JCXJldHVybiAtRU5PREVWOwot
-CX0KLQotCS8qIE1DSSBjYXJkIGlzIHByZXNlbnQsIGFsc28gYSB1c2VhYmxlIHBhcnRpdGlvbiBv
-biBpdD8gKi8KLQljZGV2ID0gY2Rldl9ieV9uYW1lKCJkaXNrMC4xIik7Ci0JaWYgKGNkZXYgPT0g
-TlVMTCkgewotCQlwcl9lcnIoIk5vIHNlY29uZCBwYXJ0aXRpb24gYXZhaWxhYmxlXG4iKTsKLQkJ
-cHJfaW5mbygiUGxlYXNlIGNyZWF0ZSBhdCBsZWFzdCBhIHNlY29uZCBwYXJ0aXRpb24gd2l0aCIK
-LQkJCSIgMjU2IGtpQi4uLjUxMiBraUIgaW4gc2l6ZSAoeW91ciBjaG9pY2UpXG4iKTsKLQkJcmV0
-dXJuIC1FTk9ERVY7Ci0JfQotCi0JLyogdXNlIHRoZSBmdWxsIHBhcnRpdGlvbiBhcyBvdXIgcGVy
-c2lzdGVudCBlbnZpcm9ubWVudCBzdG9yYWdlICovCi0JcmV0dXJuIGRldmZzX2FkZF9wYXJ0aXRp
-b24oImRpc2swLjEiLCAwLCBjZGV2LT5zaXplLCBERVZGU19QQVJUSVRJT05fRklYRUQsICJlbnYw
-Iik7Ci19Ci0KICNkZWZpbmUgR1BJT19VU0JfSFVCX1JFU0VUCTI5CiAjZGVmaW5lIEdQSU9fVVNC
-X0hVQl9QT1dFUgkyNgogCkBAIC0zMzgsOSArMzAyLDkgQEAgc3RhdGljIGludCBmYWxjb253aW5n
-X2RldmljZXNfaW5pdCh2b2lkKQogCWFybWxpbnV4X3NldF9ib290cGFyYW1zKCh2b2lkICopSU1Y
-X01FTU9SWV9CQVNFICsgMHgxMDApOwogCWFybWxpbnV4X3NldF9hcmNoaXRlY3R1cmUoTUFDSF9U
-WVBFX0NIVU1CWSk7CiAKLQlyYyA9IHJlZ2lzdGVyX3BlcnNpc3RhbnRfZW52aXJvbm1lbnQoKTsK
-KwlyYyA9IHJlZ2lzdGVyX3BlcnNpc3RlbnRfZW52aXJvbm1lbnQoImRpc2swIiwgMSk7CiAJaWYg
-KHJjICE9IDApCi0JCXByaW50ZigiQ2Fubm90IGNyZWF0ZSB0aGUgJ2VudjAnIHBlcnNpc3RhbnQg
-ZW52aXJvbm1lbnQgc3RvcmFnZSAoJWQpXG4iLCByYyk7CisJCXByaW50ZigiQ2Fubm90IGNyZWF0
-ZSB0aGUgJ2VudjAnIHBlcnNpc3RlbnQgZW52aXJvbm1lbnQgc3RvcmFnZSAoJWQpXG4iLCByYyk7
-CiAKIAlyZXR1cm4gMDsKIH0KLS0gCjEuNy4xMS43CgoKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
-cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
-Zm8vYmFyZWJveAo=
+Hi Sascha,
+
+Le 14/02/2013 12:35, Sascha Hauer a =E9crit :
+> On Thu, Feb 14, 2013 at 10:40:38AM +0100, Maxime Ripard wrote:
+>> Hi Sascha,
+>>
+>> Le 13/02/2013 18:16, Sascha Hauer a =E9crit :
+>>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+>>> ---
+>>>  common/memsize.c |    3 +++
+>>>  1 file changed, 3 insertions(+)
+>>>
+>>> diff --git a/common/memsize.c b/common/memsize.c
+>>> index d149e41..ef6381b 100644
+>>> --- a/common/memsize.c
+>>> +++ b/common/memsize.c
+>>> @@ -33,6 +33,9 @@
+>>>   * Check memory range for valid RAM. A simple memory test determines
+>>>   * the actually available RAM size between addresses `base' and
+>>>   * `base + maxsize'.
+>>> + *
+>>> + * This function modifies the RAM. Do not use it if you're running from
+>>> + * the RAM you are going to detect!
+>>>   */
+>>
+>> Actually, I don't see how it modifies the RAM, at least permanently. The
+>> values it erase are backed up, and there's no concurrency at barebox
+>> level, so we are sure that the value saved will still be the one that
+>> would need to be backed up at the end of the function, right?
+> =
+
+> Yes, it restores the values, but how do you make sure the function does
+> not modify the instructions you are currently executing? You need bad
+> luck to hit this, but sooner or later this will happen.
+
+Ah, yes, this would be nasty indeed. Is there a way to know the end
+address of barebox into RAM ? or the address it has been loaded to and
+the size of its binary, so that we can just check the part that doesn't
+hold barebox?
+
+Maxime
+
+-- =
+
+Maxime Ripard, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
