@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U5gme-0002Cm-R4
- for barebox@lists.infradead.org; Wed, 13 Feb 2013 18:10:21 +0000
-Received: from mail406.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id B0DB8DC116A
- for <barebox@lists.infradead.org>; Wed, 13 Feb 2013 19:20:38 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 13 Feb 2013 19:09:05 +0100
-Message-Id: <1360778945-24743-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20130213173134.GG1906@pengutronix.de>
-References: <20130213173134.GG1906@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U5u11-0006aK-An
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 08:18:00 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Thu, 14 Feb 2013 09:16:36 +0100
+References: <1360773918-10663-1-git-send-email-maxime.ripard@free-electrons.com>
+ <1360773918-10663-2-git-send-email-maxime.ripard@free-electrons.com>
+In-Reply-To: <1360773918-10663-2-git-send-email-maxime.ripard@free-electrons.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201302140916.36347.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,46 +19,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] of_add_memory: check the device_type is memory
+Subject: Re: [PATCH 1/2] cfa-10036: Use the second MMC partition to store the
+ environment
 To: barebox@lists.infradead.org
+Cc: Maxime Ripard <maxime.ripard@free-electrons.com>, Brian Lilly <brian@crystalfontz.com>
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/of/base.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+Maxime Ripard wrote:
+> Since the only storage medium on the cfa-10036 is the MMC card, we need
+> to have a registered environment partition on it if we want to be able
+> to modify at runtime.
+>
+> Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+> ---
+>  arch/arm/boards/crystalfontz-cfa10036/cfa10036.c |   44
+> +++++++++++++++++++++- 1 file changed, 43 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+> index b59dbab..1821b10 100644 
+> --- a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+> +++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+> @@ -97,9 +97,46 @@ static int cfa10036_mem_init(void)
+>  }
+>  mem_initcall(cfa10036_mem_init);
+>
+> +/**
+> + * Try to register an environment storage on the attached MCI card
+> + * @return 0 on success
+> + *
+> + * We rely on the existence of a usable SD card, already attached to
+> + * our system, to get something like a persistent memory for our environment.
+> + * If this SD card is also the boot media, we can use the second partition
+> + * for our environment purpose (if present!). 
+> + */
+> +static int register_persistant_environment(void)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index f2986ab..fd9b8e1 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -738,12 +738,15 @@ int of_add_memory(struct device_node *node, bool dump)
- {
- 	int na, nc;
- 	const __be32 *reg, *endp;
--	int len, r = 0;
-+	int len, r = 0, ret;
- 	static char str[6];
--	struct property *type;
-+	const char *device_type;
- 
--	type = of_find_property(node, "device_type");
--	if (!type)
-+	ret = of_property_read_string(node, "device_type", &device_type);
-+	if (ret)
-+		return -ENXIO;
-+
-+	if (strcmp(device_type, "memory"))
- 		return -ENXIO;
- 
- 	of_bus_count_cells(node, &na, &nc);
+register_persist*e*nt_environment
+
+Seems a copy from my typo in the falconwing. I really should fix it :))
+
+> [...]
+
+jbe
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
