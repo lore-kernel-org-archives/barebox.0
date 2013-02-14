@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U5vKk-00080H-1Y
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 09:42:29 +0000
-Message-ID: <511CB169.4040108@free-electrons.com>
-Date: Thu, 14 Feb 2013 10:42:01 +0100
+ id 1U5vUv-0000Mo-QS
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 09:52:58 +0000
+Message-ID: <511CB3ED.4060504@free-electrons.com>
+Date: Thu, 14 Feb 2013 10:52:45 +0100
 From: Maxime Ripard <maxime.ripard@free-electrons.com>
 MIME-Version: 1.0
-References: <1360774211-10983-1-git-send-email-maxime.ripard@free-electrons.com>
- <20130213170941.GO19322@game.jcrosoft.org>
-In-Reply-To: <20130213170941.GO19322@game.jcrosoft.org>
+References: <1360773918-10663-1-git-send-email-maxime.ripard@free-electrons.com>
+ <1360773918-10663-2-git-send-email-maxime.ripard@free-electrons.com>
+ <20130213171230.GP19322@game.jcrosoft.org>
+In-Reply-To: <20130213171230.GP19322@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +23,76 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] cfa10036: Retrieve the RAM size at runtime
+Subject: Re: [PATCH 1/2] cfa-10036: Use the second MMC partition to store
+ the environment
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org, Brian Lilly <brian@crystalfontz.com>
 
 Hi Jean-Christophe,
 
-Le 13/02/2013 18:09, Jean-Christophe PLAGNIOL-VILLARD a =E9crit :
-> On 17:50 Wed 13 Feb     , Maxime Ripard wrote:
->> The cfa-10036 comes in two flavours, with either 128MB or 256MB of RAM
->> on it.
->>
->> Since it's not stored anywhere, we need to runtime detect it, thanks to
->> the get_ram_size function.
+Le 13/02/2013 18:12, Jean-Christophe PLAGNIOL-VILLARD a =E9crit :
+> On 17:45 Wed 13 Feb     , Maxime Ripard wrote:
+>> Since the only storage medium on the cfa-10036 is the MMC card, we need
+>> to have a registered environment partition on it if we want to be able
+>> to modify at runtime.
 >>
 >> Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
 >> ---
->>  arch/arm/boards/crystalfontz-cfa10036/cfa10036.c |    3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>  arch/arm/boards/crystalfontz-cfa10036/cfa10036.c |   44 +++++++++++++++=
+++++++-
+>>  1 file changed, 43 insertions(+), 1 deletion(-)
 >>
 >> diff --git a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c b/arch/arm=
 /boards/crystalfontz-cfa10036/cfa10036.c
->> index 1821b10..47a9520 100644
+>> index b59dbab..1821b10 100644
 >> --- a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
 >> +++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
->> @@ -91,7 +91,8 @@ static struct i2c_gpio_platform_data i2c_gpio_pdata =
-=3D {
+>> @@ -97,9 +97,46 @@ static int cfa10036_mem_init(void)
+>>  }
+>>  mem_initcall(cfa10036_mem_init);
 >>  =
 
->>  static int cfa10036_mem_init(void)
->>  {
->> -	arm_add_mem_device("ram0", IMX_MEMORY_BASE, 128 * 1024 * 1024);
->> +	arm_add_mem_device("ram0", IMX_MEMORY_BASE,
->> +			get_ram_size(IMX_MEMORY_BASE, 256 * SZ_1M));
-> check the sdram control register instead so you do not need to get_ram_si=
-ze
-> and specify a Max
+>> +/**
+>> + * Try to register an environment storage on the attached MCI card
+>> + * @return 0 on success
+>> + *
+>> + * We rely on the existence of a usable SD card, already attached to
+>> + * our system, to get something like a persistent memory for our enviro=
+nment.
+>> + * If this SD card is also the boot media, we can use the second partit=
+ion
+>> + * for our environment purpose (if present!).
+>> + */
+>> +static int register_persistant_environment(void)
+>> +{
+>> +	struct cdev *cdev;
+>> +
+>> +	/*
+>> +	 * The CFA-10036 only has one MCI card socket.
+>> +	 * So, we expect its name as "disk0".
+>> +	 */
+>> +	cdev =3D cdev_by_name("disk0");
+>> +	if (cdev =3D=3D NULL) {
+>> +		pr_err("No SD card found\n");
+>> +		return -ENODEV;
+>> +	}
+>> +
+>> +	/* MCI card is present, also a useable partition on it? */
+>> +	cdev =3D cdev_by_name("disk0.1");
+>> +	if (cdev =3D=3D NULL) {
+>> +		pr_err("No second partition available\n");
+>> +		pr_info("Please create at least a second partition with"
+>> +			" 256 kiB...512 kiB in size (your choice)\n");
+>> +		return -ENODEV;
+>> +	}
+>> +
+>> +	/* use the full partition as our persistent environment storage */
+>> +	return devfs_add_partition("disk0.1", 0, cdev->size,
+>> +						DEVFS_PARTITION_FIXED, "env0");
+>> +}
+> it's time to have a common code
 
-This is not possible, the first stage bootloader sets up the cs, lines
-and rows for 256MB, in every case, so we will always end up with 256MB here.
+I'm ok with doing it, where should it be stored?
 
 Maxime
 
