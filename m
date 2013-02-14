@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo1.mail-out.ovh.net ([178.32.108.172]
- helo=mo1.mail-out.ovh.net)
+Received: from 3.mo4.mail-out.ovh.net ([46.105.57.129]
+ helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U5yjk-0003F5-Al
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 13:20:29 +0000
-Received: from mail610.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id C62E1FFB161
- for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 14:35:50 +0100 (CET)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Thu, 14 Feb 2013 14:20:17 +0100
-Message-Id: <1360848017-8084-1-git-send-email-eric@eukrea.com>
-In-Reply-To: <201302141309.10776.jbe@pengutronix.de>
-References: <201302141309.10776.jbe@pengutronix.de>
+ id 1U5z9L-0005TT-FU
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 13:46:56 +0000
+Received: from mail242.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id E7F21104EE72
+ for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 14:44:57 +0100 (CET)
+Date: Thu, 14 Feb 2013 14:33:20 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130214133320.GS19322@game.jcrosoft.org>
+References: <1360833179-10324-1-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1360833179-10324-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,50 +22,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] falconwing: switch to generic peristent env
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM pbl: move piggydata before bss
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQp2MjogZml4
-IHR5cG8gb24gcGVyc2lzdGVudAoKIGFyY2gvYXJtL2JvYXJkcy9jaHVtYnlfZmFsY29ud2luZy9m
-YWxjb253aW5nLmMgfCAzOCArLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5n
-ZWQsIDEgaW5zZXJ0aW9uKCspLCAzNyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2Fy
-bS9ib2FyZHMvY2h1bWJ5X2ZhbGNvbndpbmcvZmFsY29ud2luZy5jIGIvYXJjaC9hcm0vYm9hcmRz
-L2NodW1ieV9mYWxjb253aW5nL2ZhbGNvbndpbmcuYwppbmRleCAwODE4NjY2Li4zZTgyNTk2IDEw
-MDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvY2h1bWJ5X2ZhbGNvbndpbmcvZmFsY29ud2luZy5j
-CisrKyBiL2FyY2gvYXJtL2JvYXJkcy9jaHVtYnlfZmFsY29ud2luZy9mYWxjb253aW5nLmMKQEAg
-LTI2NSw0MiArMjY1LDYgQEAgc3RhdGljIGludCBmYWxjb253aW5nX21lbV9pbml0KHZvaWQpCiB9
-CiBtZW1faW5pdGNhbGwoZmFsY29ud2luZ19tZW1faW5pdCk7CiAKLS8qKgotICogVHJ5IHRvIHJl
-Z2lzdGVyIGFuIGVudmlyb25tZW50IHN0b3JhZ2Ugb24gdGhlIGF0dGFjaGVkIE1DSSBjYXJkCi0g
-KiBAcmV0dXJuIDAgb24gc3VjY2VzcwotICoKLSAqIFdlIHJlbHkgb24gdGhlIGV4aXN0ZW5jZSBv
-ZiBhIHVzYWJsZSBTRCBjYXJkLCBhbHJlYWR5IGF0dGFjaGVkIHRvCi0gKiBvdXIgc3lzdGVtLCB0
-byBnZXQgc29tZXRoaW5nIGxpa2UgYSBwZXJzaXN0ZW50IG1lbW9yeSBmb3Igb3VyIGVudmlyb25t
-ZW50LgotICogSWYgdGhpcyBTRCBjYXJkIGlzIGFsc28gdGhlIGJvb3QgbWVkaWEsIHdlIGNhbiB1
-c2UgdGhlIHNlY29uZCBwYXJ0aXRpb24KLSAqIGZvciBvdXIgZW52aXJvbm1lbnQgcHVycG9zZSAo
-aWYgcHJlc2VudCEpLgotICovCi1zdGF0aWMgaW50IHJlZ2lzdGVyX3BlcnNpc3RhbnRfZW52aXJv
-bm1lbnQodm9pZCkKLXsKLQlzdHJ1Y3QgY2RldiAqY2RldjsKLQotCS8qCi0JICogVGhlIGNodW1i
-eSBvbmUgb25seSBoYXMgb25lIE1DSSBjYXJkIHNvY2tldC4KLQkgKiBTbywgd2UgZXhwZWN0IGl0
-cyBuYW1lIGFzICJkaXNrMCIuCi0JICovCi0JY2RldiA9IGNkZXZfYnlfbmFtZSgiZGlzazAiKTsK
-LQlpZiAoY2RldiA9PSBOVUxMKSB7Ci0JCXByX2VycigiTm8gTUNJIGNhcmQgcHJlc2V0XG4iKTsK
-LQkJcmV0dXJuIC1FTk9ERVY7Ci0JfQotCi0JLyogTUNJIGNhcmQgaXMgcHJlc2VudCwgYWxzbyBh
-IHVzZWFibGUgcGFydGl0aW9uIG9uIGl0PyAqLwotCWNkZXYgPSBjZGV2X2J5X25hbWUoImRpc2sw
-LjEiKTsKLQlpZiAoY2RldiA9PSBOVUxMKSB7Ci0JCXByX2VycigiTm8gc2Vjb25kIHBhcnRpdGlv
-biBhdmFpbGFibGVcbiIpOwotCQlwcl9pbmZvKCJQbGVhc2UgY3JlYXRlIGF0IGxlYXN0IGEgc2Vj
-b25kIHBhcnRpdGlvbiB3aXRoIgotCQkJIiAyNTYga2lCLi4uNTEyIGtpQiBpbiBzaXplICh5b3Vy
-IGNob2ljZSlcbiIpOwotCQlyZXR1cm4gLUVOT0RFVjsKLQl9Ci0KLQkvKiB1c2UgdGhlIGZ1bGwg
-cGFydGl0aW9uIGFzIG91ciBwZXJzaXN0ZW50IGVudmlyb25tZW50IHN0b3JhZ2UgKi8KLQlyZXR1
-cm4gZGV2ZnNfYWRkX3BhcnRpdGlvbigiZGlzazAuMSIsIDAsIGNkZXYtPnNpemUsIERFVkZTX1BB
-UlRJVElPTl9GSVhFRCwgImVudjAiKTsKLX0KLQogI2RlZmluZSBHUElPX1VTQl9IVUJfUkVTRVQJ
-MjkKICNkZWZpbmUgR1BJT19VU0JfSFVCX1BPV0VSCTI2CiAKQEAgLTMzOCw3ICszMDIsNyBAQCBz
-dGF0aWMgaW50IGZhbGNvbndpbmdfZGV2aWNlc19pbml0KHZvaWQpCiAJYXJtbGludXhfc2V0X2Jv
-b3RwYXJhbXMoKHZvaWQgKilJTVhfTUVNT1JZX0JBU0UgKyAweDEwMCk7CiAJYXJtbGludXhfc2V0
-X2FyY2hpdGVjdHVyZShNQUNIX1RZUEVfQ0hVTUJZKTsKIAotCXJjID0gcmVnaXN0ZXJfcGVyc2lz
-dGFudF9lbnZpcm9ubWVudCgpOworCXJjID0gcmVnaXN0ZXJfcGVyc2lzdGVudF9lbnZpcm9ubWVu
-dCgiZGlzazAiLCAxKTsKIAlpZiAocmMgIT0gMCkKIAkJcHJpbnRmKCJDYW5ub3QgY3JlYXRlIHRo
-ZSAnZW52MCcgcGVyc2lzdGFudCBlbnZpcm9ubWVudCBzdG9yYWdlICglZClcbiIsIHJjKTsKIAot
-LSAKMS43LjExLjcKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
-cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On 10:12 Thu 14 Feb     , Sascha Hauer wrote:
+> This decreases the pbl image size by the size of the bss segment.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/pbl/zbarebox.lds.S |   12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm/pbl/zbarebox.lds.S b/arch/arm/pbl/zbarebox.lds.S
+> index 564b3c6..2914fdd 100644
+> --- a/arch/arm/pbl/zbarebox.lds.S
+> +++ b/arch/arm/pbl/zbarebox.lds.S
+> @@ -59,18 +59,18 @@ SECTIONS
+>  	.data : { *(.data*) }
+>  
+>  	. = ALIGN(4);
+> -	__bss_start = .;
+> -	.bss : { *(.bss*) }
+> -	__bss_stop = .;
+> -	_end = .;
+> -
+> -	. = ALIGN(4);
+>  	__piggydata_start = .;
+>  	.piggydata : {
+>  		*(.piggydata)
+>  	}
+>  	__piggydata_end = .;
+>  
+> +	. = ALIGN(4);
+> +	__bss_start = .;
+> +	.bss : { *(.bss*) }
+> +	__bss_stop = .;
+> +	_end = .;
+
+I did this on purpose
+
+so we can load the pbl in sram without the piggydata
+
+so do not change it
+
+Best Regards,
+J.
+> +
+>  	_barebox_image_size = __piggydata_end - (TEXT_BASE - SZ_2M);
+>  	_barebox_pbl_size = __bss_start - (TEXT_BASE - SZ_2M);
+>  }
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
