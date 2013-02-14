@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5z9f-0005Wm-Gk
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 13:47:16 +0000
-Date: Thu, 14 Feb 2013 14:47:12 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130214134712.GS1906@pengutronix.de>
-References: <20130213100249.GL19322@game.jcrosoft.org>
+Received: from 13.mo1.mail-out.ovh.net ([178.33.253.128]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U5zDK-0006Dv-RD
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 13:51:04 +0000
+Received: from mail610.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 695C2FFB2C8
+ for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 15:06:26 +0100 (CET)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Thu, 14 Feb 2013 14:50:51 +0100
+Message-Id: <1360849851-8321-1-git-send-email-eric@eukrea.com>
+In-Reply-To: <1360848017-8084-1-git-send-email-eric@eukrea.com>
+References: <1360848017-8084-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130213100249.GL19322@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,128 +21,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/6 v3] arm: add Calxeda Highbank support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Rob Herring <rob.herring@calxeda.com>
+Subject: [PATCH v3] falconwing: switch to generic peristent env
+To: barebox@lists.infradead.org
 
-On Wed, Feb 13, 2013 at 11:02:49AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,
-> 
-> 	v3:
-> 	 reset: add missing wfi
-> 	 gpio: move probe to board
-> 	 add oftree probe support
-> 
-> 	v2:
-> 	 fix cc tag so Rob can receive the patch
-> 	 add oftree support to xgmac
-> 
-> 	The following patch serie add the support of the Quad Core Cortex-A9
-> 	Highbank from Calxeda
-> 
-> 	As I do not have the real hardware this is only tested on qemu
-> 
-> 	Rob could confirm if this work on real hw
-> 
-> 	This patch serie depends on the amba sp804 patch and the ahci patch serie
-> 
-> The following changes since commit ddec6455ac75cad442be1247ae265b539c54ebfe:
-> 
->   amba: add oftree probe support (2013-02-13 02:35:56 +0800)
-> 
-> are available in the git repository at:
-> 
->   git://git.jcrosoft.org/barebox.git delivery/highbank
-
-Applied, thanks
-
-Sascha
-
-> 
-> for you to fetch changes up to 1d6b912a9a89b0bdf7915026d938f40aba13b581:
-> 
->   highbank: use the provided dtb by the firmware to probe barebox device and mem size (2013-02-13 02:35:56 +0800)
-> 
-> ----------------------------------------------------------------
-> Jean-Christophe PLAGNIOL-VILLARD (6):
->       ahci-generic: add oftree support
->       of: make of_add_memory available for other board
->       highbank: add xgmac support
->       arm: add highbank support
->       highbank: add l2x0 support
->       highbank: use the provided dtb by the firmware to probe barebox device and mem size
-> 
->  arch/arm/Kconfig                               |   12 ++++
->  arch/arm/Makefile                              |    2 +
->  arch/arm/boards/highbank/Makefile              |    4 ++
->  arch/arm/boards/highbank/config.h              |    5 ++
->  arch/arm/boards/highbank/env/bin/init_board    |    7 +++
->  arch/arm/boards/highbank/env/config            |   34 +++++++++++
->  arch/arm/boards/highbank/init.c                |   86 ++++++++++++++++++++++++++
->  arch/arm/boards/highbank/lowlevel.c            |   17 ++++++
->  arch/arm/configs/highbank_defconfig            |   61 +++++++++++++++++++
->  arch/arm/mach-highbank/Kconfig                 |   18 ++++++
->  arch/arm/mach-highbank/Makefile                |    4 ++
->  arch/arm/mach-highbank/cache-l2x0.c            |   45 ++++++++++++++
->  arch/arm/mach-highbank/core.c                  |   49 +++++++++++++++
->  arch/arm/mach-highbank/core.h                  |    2 +
->  arch/arm/mach-highbank/devices.c               |   74 +++++++++++++++++++++++
->  arch/arm/mach-highbank/include/mach/clkdev.h   |    7 +++
->  arch/arm/mach-highbank/include/mach/debug_ll.h |   26 ++++++++
->  arch/arm/mach-highbank/include/mach/devices.h  |   17 ++++++
->  arch/arm/mach-highbank/include/mach/gpio.h     |    1 +
->  arch/arm/mach-highbank/reset.c                 |   21 +++++++
->  arch/arm/mach-highbank/smc.S                   |   27 +++++++++
->  arch/arm/mach-highbank/sysregs.h               |   52 ++++++++++++++++
->  drivers/ata/ahci.c                             |    9 +++
->  drivers/net/Kconfig                            |    3 +
->  drivers/net/Makefile                           |    1 +
->  drivers/net/xgmac.c                            |  740 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/of/base.c                              |   20 ++++--
->  include/of.h                                   |    6 ++
->  28 files changed, 1344 insertions(+), 6 deletions(-)
->  create mode 100644 arch/arm/boards/highbank/Makefile
->  create mode 100644 arch/arm/boards/highbank/config.h
->  create mode 100644 arch/arm/boards/highbank/env/bin/init_board
->  create mode 100644 arch/arm/boards/highbank/env/config
->  create mode 100644 arch/arm/boards/highbank/init.c
->  create mode 100644 arch/arm/boards/highbank/lowlevel.c
->  create mode 100644 arch/arm/configs/highbank_defconfig
->  create mode 100644 arch/arm/mach-highbank/Kconfig
->  create mode 100644 arch/arm/mach-highbank/Makefile
->  create mode 100644 arch/arm/mach-highbank/cache-l2x0.c
->  create mode 100644 arch/arm/mach-highbank/core.c
->  create mode 100644 arch/arm/mach-highbank/core.h
->  create mode 100644 arch/arm/mach-highbank/devices.c
->  create mode 100644 arch/arm/mach-highbank/include/mach/clkdev.h
->  create mode 100644 arch/arm/mach-highbank/include/mach/debug_ll.h
->  create mode 100644 arch/arm/mach-highbank/include/mach/devices.h
->  create mode 100644 arch/arm/mach-highbank/include/mach/gpio.h
->  create mode 100644 arch/arm/mach-highbank/reset.c
->  create mode 100644 arch/arm/mach-highbank/smc.S
->  create mode 100644 arch/arm/mach-highbank/sysregs.h
->  create mode 100644 drivers/net/xgmac.c
-> 
-> Best Regards,
-> J.
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQp2MzogYWxz
+byBmaXggdGhlIHR5cG8gaW4gdGhlIHByaW50Zgp2MjogZml4IHR5cG8gaW4gcGVyc2lzdGVudAoK
+IGFyY2gvYXJtL2JvYXJkcy9jaHVtYnlfZmFsY29ud2luZy9mYWxjb253aW5nLmMgfCA0MCArKy0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwg
+MzggZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2NodW1ieV9mYWxj
+b253aW5nL2ZhbGNvbndpbmcuYyBiL2FyY2gvYXJtL2JvYXJkcy9jaHVtYnlfZmFsY29ud2luZy9m
+YWxjb253aW5nLmMKaW5kZXggMDgxODY2Ni4uODBlZWJiYSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0v
+Ym9hcmRzL2NodW1ieV9mYWxjb253aW5nL2ZhbGNvbndpbmcuYworKysgYi9hcmNoL2FybS9ib2Fy
+ZHMvY2h1bWJ5X2ZhbGNvbndpbmcvZmFsY29ud2luZy5jCkBAIC0yNjUsNDIgKzI2NSw2IEBAIHN0
+YXRpYyBpbnQgZmFsY29ud2luZ19tZW1faW5pdCh2b2lkKQogfQogbWVtX2luaXRjYWxsKGZhbGNv
+bndpbmdfbWVtX2luaXQpOwogCi0vKioKLSAqIFRyeSB0byByZWdpc3RlciBhbiBlbnZpcm9ubWVu
+dCBzdG9yYWdlIG9uIHRoZSBhdHRhY2hlZCBNQ0kgY2FyZAotICogQHJldHVybiAwIG9uIHN1Y2Nl
+c3MKLSAqCi0gKiBXZSByZWx5IG9uIHRoZSBleGlzdGVuY2Ugb2YgYSB1c2FibGUgU0QgY2FyZCwg
+YWxyZWFkeSBhdHRhY2hlZCB0bwotICogb3VyIHN5c3RlbSwgdG8gZ2V0IHNvbWV0aGluZyBsaWtl
+IGEgcGVyc2lzdGVudCBtZW1vcnkgZm9yIG91ciBlbnZpcm9ubWVudC4KLSAqIElmIHRoaXMgU0Qg
+Y2FyZCBpcyBhbHNvIHRoZSBib290IG1lZGlhLCB3ZSBjYW4gdXNlIHRoZSBzZWNvbmQgcGFydGl0
+aW9uCi0gKiBmb3Igb3VyIGVudmlyb25tZW50IHB1cnBvc2UgKGlmIHByZXNlbnQhKS4KLSAqLwot
+c3RhdGljIGludCByZWdpc3Rlcl9wZXJzaXN0YW50X2Vudmlyb25tZW50KHZvaWQpCi17Ci0Jc3Ry
+dWN0IGNkZXYgKmNkZXY7Ci0KLQkvKgotCSAqIFRoZSBjaHVtYnkgb25lIG9ubHkgaGFzIG9uZSBN
+Q0kgY2FyZCBzb2NrZXQuCi0JICogU28sIHdlIGV4cGVjdCBpdHMgbmFtZSBhcyAiZGlzazAiLgot
+CSAqLwotCWNkZXYgPSBjZGV2X2J5X25hbWUoImRpc2swIik7Ci0JaWYgKGNkZXYgPT0gTlVMTCkg
+ewotCQlwcl9lcnIoIk5vIE1DSSBjYXJkIHByZXNldFxuIik7Ci0JCXJldHVybiAtRU5PREVWOwot
+CX0KLQotCS8qIE1DSSBjYXJkIGlzIHByZXNlbnQsIGFsc28gYSB1c2VhYmxlIHBhcnRpdGlvbiBv
+biBpdD8gKi8KLQljZGV2ID0gY2Rldl9ieV9uYW1lKCJkaXNrMC4xIik7Ci0JaWYgKGNkZXYgPT0g
+TlVMTCkgewotCQlwcl9lcnIoIk5vIHNlY29uZCBwYXJ0aXRpb24gYXZhaWxhYmxlXG4iKTsKLQkJ
+cHJfaW5mbygiUGxlYXNlIGNyZWF0ZSBhdCBsZWFzdCBhIHNlY29uZCBwYXJ0aXRpb24gd2l0aCIK
+LQkJCSIgMjU2IGtpQi4uLjUxMiBraUIgaW4gc2l6ZSAoeW91ciBjaG9pY2UpXG4iKTsKLQkJcmV0
+dXJuIC1FTk9ERVY7Ci0JfQotCi0JLyogdXNlIHRoZSBmdWxsIHBhcnRpdGlvbiBhcyBvdXIgcGVy
+c2lzdGVudCBlbnZpcm9ubWVudCBzdG9yYWdlICovCi0JcmV0dXJuIGRldmZzX2FkZF9wYXJ0aXRp
+b24oImRpc2swLjEiLCAwLCBjZGV2LT5zaXplLCBERVZGU19QQVJUSVRJT05fRklYRUQsICJlbnYw
+Iik7Ci19Ci0KICNkZWZpbmUgR1BJT19VU0JfSFVCX1JFU0VUCTI5CiAjZGVmaW5lIEdQSU9fVVNC
+X0hVQl9QT1dFUgkyNgogCkBAIC0zMzgsOSArMzAyLDkgQEAgc3RhdGljIGludCBmYWxjb253aW5n
+X2RldmljZXNfaW5pdCh2b2lkKQogCWFybWxpbnV4X3NldF9ib290cGFyYW1zKCh2b2lkICopSU1Y
+X01FTU9SWV9CQVNFICsgMHgxMDApOwogCWFybWxpbnV4X3NldF9hcmNoaXRlY3R1cmUoTUFDSF9U
+WVBFX0NIVU1CWSk7CiAKLQlyYyA9IHJlZ2lzdGVyX3BlcnNpc3RhbnRfZW52aXJvbm1lbnQoKTsK
+KwlyYyA9IHJlZ2lzdGVyX3BlcnNpc3RlbnRfZW52aXJvbm1lbnQoImRpc2swIiwgMSk7CiAJaWYg
+KHJjICE9IDApCi0JCXByaW50ZigiQ2Fubm90IGNyZWF0ZSB0aGUgJ2VudjAnIHBlcnNpc3RhbnQg
+ZW52aXJvbm1lbnQgc3RvcmFnZSAoJWQpXG4iLCByYyk7CisJCXByaW50ZigiQ2Fubm90IGNyZWF0
+ZSB0aGUgJ2VudjAnIHBlcnNpc3RlbnQgZW52aXJvbm1lbnQgc3RvcmFnZSAoJWQpXG4iLCByYyk7
+CiAKIAlyZXR1cm4gMDsKIH0KLS0gCjEuNy4xMS43CgoKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
+cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
+Zm8vYmFyZWJveAo=
