@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-f46.google.com ([74.125.83.46])
+Received: from mail-ee0-f42.google.com ([74.125.83.42])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5yXY-0002BE-4d
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 13:07:53 +0000
-Received: by mail-ee0-f46.google.com with SMTP id e49so1241949eek.19
- for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 05:07:50 -0800 (PST)
+ id 1U5yXV-0002Ab-2Z
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 13:07:50 +0000
+Received: by mail-ee0-f42.google.com with SMTP id b47so1214580eek.29
+ for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 05:07:47 -0800 (PST)
 From: Alexander Aring <alex.aring@gmail.com>
-Date: Thu, 14 Feb 2013 14:08:31 +0100
-Message-Id: <1360847311-16931-4-git-send-email-alex.aring@gmail.com>
-In-Reply-To: <1360847311-16931-1-git-send-email-alex.aring@gmail.com>
-References: <1360847311-16931-1-git-send-email-alex.aring@gmail.com>
+Date: Thu, 14 Feb 2013 14:08:28 +0100
+Message-Id: <1360847311-16931-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,49 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] nandtest: fix length calculation
+Subject: [PATCH 1/4] fs: fix return type of read
 To: barebox@lists.infradead.org
 
-Fix length calculation when offset isn't zero.
+Use ssize_t instead of int. Similar write function
+which uses ssize_t as return type, too.
 
 Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- commands/nandtest.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/fs.c      | 2 +-
+ include/fs.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/commands/nandtest.c b/commands/nandtest.c
-index 4e6024b..ba15ecf 100644
---- a/commands/nandtest.c
-+++ b/commands/nandtest.c
-@@ -112,7 +112,7 @@ static int erase_and_write(loff_t ofs, unsigned char *data,
- 					newstats.corrected - oldstats.corrected,
- 					ofs + memregion.offset + i);
- 			init_progression_bar(length);
--			show_progress(ofs);
-+			show_progress(ofs + i);
- 			if ((newstats.corrected-oldstats.corrected) >=
- 					MAX_ECC_BITS) {
- 				/* Increment ECC stats that
-@@ -130,7 +130,7 @@ static int erase_and_write(loff_t ofs, unsigned char *data,
- 			printf("\nECC failed at page 0x%08llx\n",
- 					ofs + memregion.offset + i);
- 			init_progression_bar(length);
--			show_progress(ofs);
-+			show_progress(ofs + i);
- 			oldstats.failed = newstats.failed;
- 			ecc_failed_cnt++;
- 		}
-@@ -292,8 +292,8 @@ static int do_nandtest(int argc, char *argv[])
+diff --git a/fs/fs.c b/fs/fs.c
+index f840516..48d1c89 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -754,7 +754,7 @@ int ioctl(int fd, int request, void *buf)
+ 	return ret;
+ }
  
- 	for (iter = 0; iter < nr_iterations; iter++) {
- 		init_progression_bar(length);
--		for (test_ofs = flash_offset;
--				test_ofs < flash_offset + length;
-+		for (test_ofs = 0;
-+				test_ofs < length;
- 				test_ofs += meminfo.erasesize) {
- 			show_progress(test_ofs);
- 			srand(seed);
+-int read(int fd, void *buf, size_t count)
++ssize_t read(int fd, void *buf, size_t count)
+ {
+ 	struct device_d *dev;
+ 	struct fs_driver_d *fsdrv;
+diff --git a/include/fs.h b/include/fs.h
+index 919daab..d6b22f7 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -113,7 +113,7 @@ int close(int fd);
+ int flush(int fd);
+ int lstat(const char *filename, struct stat *s);
+ int stat(const char *filename, struct stat *s);
+-int read(int fd, void *buf, size_t count);
++ssize_t read(int fd, void *buf, size_t count);
+ int ioctl(int fd, int request, void *buf);
+ ssize_t write(int fd, const void *buf, size_t count);
+ 
 -- 
 1.8.1.3
 
