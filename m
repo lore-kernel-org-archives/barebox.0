@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5xdv-0001vJ-RD
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 12:10:24 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 14 Feb 2013 13:09:10 +0100
-References: <20130214121716.1f3ef4f7@e6520eb>
- <1360843011-7807-1-git-send-email-eric@eukrea.com>
- <1360843011-7807-3-git-send-email-eric@eukrea.com>
-In-Reply-To: <1360843011-7807-3-git-send-email-eric@eukrea.com>
+ id 1U5xeR-000236-9S
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 12:10:55 +0000
+Date: Thu, 14 Feb 2013 13:10:53 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130214121053.GQ1906@pengutronix.de>
+References: <1360623899-10059-1-git-send-email-vicencb@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201302141309.10776.jbe@pengutronix.de>
+In-Reply-To: <1360623899-10059-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,23 +18,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] falconwing: switch to generic peristent env
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/2] Summary of last patches submitted
+To: Vicente Bergas <vicencb@gmail.com>
+Cc: barebox@lists.infradead.org
 
-RXJpYyBCw6luYXJkIHdyb3RlOgo+IFsuLi5dCj4gICNkZWZpbmUgR1BJT19VU0JfSFVCX1JFU0VU
-CTI5Cj4gICNkZWZpbmUgR1BJT19VU0JfSFVCX1BPV0VSCTI2Cj4KPiBAQCAtMzM4LDcgKzMwMiw3
-IEBAIHN0YXRpYyBpbnQgZmFsY29ud2luZ19kZXZpY2VzX2luaXQodm9pZCkKPiAgCWFybWxpbnV4
-X3NldF9ib290cGFyYW1zKCh2b2lkICopSU1YX01FTU9SWV9CQVNFICsgMHgxMDApOwo+ICAJYXJt
-bGludXhfc2V0X2FyY2hpdGVjdHVyZShNQUNIX1RZUEVfQ0hVTUJZKTsKPgo+IC0JcmMgPSByZWdp
-c3Rlcl9wZXJzaXN0YW50X2Vudmlyb25tZW50KCk7Cj4gKwlyYyA9IHJlZ2lzdGVyX3BlcnNpc3Rh
-bnRfZW52aXJvbm1lbnQoImRpc2swIiwgMSk7CiAgICAgICAgICAgICAgICAgICAgICAgICAgX19f
-Xgo6KQoKamJlCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIHwgSnVlcmdlbiBCZWlzZXJ0ICAgICAgICAgICAgIHwKTGludXggU29sdXRpb25zIGZvciBT
-Y2llbmNlIGFuZCBJbmR1c3RyeSAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Tue, Feb 12, 2013 at 12:04:57AM +0100, Vicente Bergas wrote:
+> Here are the last two patches I've submitted.
+> The first is a straightforward solution to a regression.
+> The second was first intended to provide devicetree support for booting an
+> omap4 based tablet. I've achieved booting it successfully, but after several
+> tries at bringing the mmc controller working I've realised that the Linux
+> kernel still has no support for devicetree on omap4 (it's almost there, but it
+> lacks dma configuration).
+> For more information see:
+> http://omappedia.org/wiki/Device_Tree#Drivers_.2F_Features_migration_status
+> So the second patch has been stripped and only provides generic support,
+> nothing related to the tablet.
+> 
+> The patches also include the changes reflecting the received feedback, thanks!
+> 
+> Vicente Bergas (2):
+>   ArchosG9: solve regression in second stage lowlevel init
+>   DeviceTree: add support for initrd in the DT
+
+Applied, thanks
+
+Sascha
+
+> 
+>  arch/arm/boards/archosg9/lowlevel.c |  7 ++--
+>  arch/arm/lib/armlinux.c             |  2 ++
+>  common/oftree.c                     | 66 +++++++++++++++++++++++++++++++++++++
+>  include/of.h                        |  8 +++++
+>  4 files changed, 81 insertions(+), 2 deletions(-)
+> 
+> -- 
+> 1.8.1.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
