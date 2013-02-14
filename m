@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5umx-00052u-2z
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 09:07:32 +0000
+ id 1U5umx-00052x-30
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 09:07:33 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 14 Feb 2013 10:07:25 +0100
-Message-Id: <1360832847-22414-4-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 14 Feb 2013 10:07:27 +0100
+Message-Id: <1360832847-22414-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1360832847-22414-1-git-send-email-s.hauer@pengutronix.de>
 References: <1360832847-22414-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,80 +21,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] USB ehci: Add platform specific init calls
+Subject: [PATCH 5/5] USB i.MX6: Add HSIC support
 To: barebox@lists.infradead.org
 
-Some USB cores need a platform specific init hook, add it to
-the ehci driver.
+HSIC needs some special setup for i.MX6. Most ugly detail is that
+the HSIC needs help of the IOMUX to configure a pullup on the strobe
+line. This has to be done after the ehci controller has started.
+Fortunately there is only one muxing possibility for the HSIC ports
+on i.MX6, so we can simply control the iomux from the usbmisc driver.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/host/ehci-hcd.c |   14 ++++++++++++++
- include/usb/ehci.h          |    5 +++++
- 2 files changed, 19 insertions(+)
+ drivers/usb/imx/imx-usb-misc.c |   60 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index d0d6ae4..d6dc1de 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -42,6 +42,10 @@ struct ehci_priv {
- 	struct qTD *td;
- 	int portreset;
- 	unsigned long flags;
-+
-+	int (*init)(void *drvdata);
-+	int (*post_init)(void *drvdata);
-+	void *drvdata;
+diff --git a/drivers/usb/imx/imx-usb-misc.c b/drivers/usb/imx/imx-usb-misc.c
+index d42f4c0..901ced4 100644
+--- a/drivers/usb/imx/imx-usb-misc.c
++++ b/drivers/usb/imx/imx-usb-misc.c
+@@ -17,6 +17,8 @@
+ #include <init.h>
+ #include <io.h>
+ #include <usb/chipidea-imx.h>
++#include <mach/imx6-regs.h>
++#include <mach/iomux-mx6.h>
+ 
+ #define MX25_OTG_SIC_SHIFT	29
+ #define MX25_OTG_SIC_MASK	(0x3 << MX25_OTG_SIC_SHIFT)
+@@ -345,14 +347,72 @@ static __maybe_unused struct imx_usb_misc_data mx5_data = {
+ 	.init = mx5_initialize_usb_hw,
  };
  
- #define to_ehci(ptr) container_of(ptr, struct ehci_priv, host)
-@@ -748,6 +752,9 @@ static int ehci_init(struct usb_host *host)
- 	if (ehci_reset(ehci) != 0)
- 		return -1;
- 
-+	if (ehci->init)
-+		ehci->init(ehci->drvdata);
++static void mx6_hsic_pullup(unsigned long reg, int on)
++{
++	u32 val;
 +
- 	ehci->qh_list->qh_link = cpu_to_hc32((uint32_t)ehci->qh_list | QH_LINK_TYPE_QH);
- 	ehci->qh_list->qh_endpt1 = cpu_to_hc32((1 << 15) | (USB_SPEED_HIGH << 12));
- 	ehci->qh_list->qh_curtd = cpu_to_hc32(QT_NEXT_TERMINATE);
-@@ -788,6 +795,9 @@ static int ehci_init(struct usb_host *host)
- 
- 	ehci->rootdev = 0;
- 
-+	if (ehci->post_init)
-+		ehci->post_init(ehci->drvdata);
++	val = readl(MX6_IOMUXC_BASE_ADDR + reg);
++
++	if (on)
++		val |= MX6_PAD_CTL_PUS_47K_UP;
++	else
++		val &= ~MX6_PAD_CTL_PUS_47K_UP;
++
++	writel(val, MX6_IOMUXC_BASE_ADDR + reg);
++}
++
+ static __maybe_unused int mx6_initialize_usb_hw(void __iomem *base, int port,
+ 		unsigned int flags)
+ {
++	switch (port) {
++	case 0:
++		break;
++	case 1:
++		break;
++	case 2: /* HSIC port */
++		mx6_hsic_pullup(0x388, 0);
++
++		writel(0x00003000, base + 0x8);
++		writel(0x80001842, base + 0x10);
++
++		break;
++	case 3: /* HSIC port */
++		writel(0x00003000, base + 0xc);
++		writel(0x80001842, base + 0x14);
++
++		mx6_hsic_pullup(0x398, 0);
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static __maybe_unused int mx6_post_init(void __iomem *base, int port,
++		unsigned int flags)
++{
++	switch (port) {
++	case 0:
++		break;
++	case 1:
++		break;
++	case 2: /* HSIC port */
++		mx6_hsic_pullup(0x388, 1);
++		break;
++	case 3: /* HSIC port */
++		mx6_hsic_pullup(0x398, 1);
++		break;
++	default:
++		return -EINVAL;
++	}
 +
  	return 0;
  }
  
-@@ -856,6 +866,10 @@ int ehci_register(struct device_d *dev, struct ehci_data *data)
- 		ehci->hcor = (void __iomem *)ehci->hccr +
- 			HC_LENGTH(ehci_readl(&ehci->hccr->cr_capbase));
- 
-+	ehci->drvdata = data->drvdata;
-+	ehci->init = data->init;
-+	ehci->post_init = data->post_init;
-+
- 	ehci->qh_list = dma_alloc_coherent(sizeof(struct QH) * NUM_TD);
- 	ehci->td = dma_alloc_coherent(sizeof(struct qTD) * NUM_TD);
- 
-diff --git a/include/usb/ehci.h b/include/usb/ehci.h
-index 4377116..93f980d 100644
---- a/include/usb/ehci.h
-+++ b/include/usb/ehci.h
-@@ -11,6 +11,11 @@ struct ehci_data {
- 	void __iomem *hccr;
- 	void __iomem *hcor;
- 	unsigned long flags;
-+
-+	/* platform specific init functions */
-+	int (*init)(void *drvdata);
-+	int (*post_init)(void *drvdata);
-+	void *drvdata;
+ static __maybe_unused struct imx_usb_misc_data mx6_data = {
+ 	.init = mx6_initialize_usb_hw,
++	.post_init = mx6_post_init,
  };
  
- #ifdef CONFIG_USB_EHCI
+ static struct platform_device_id imx_usbmisc_ids[] = {
 -- 
 1.7.10.4
 
