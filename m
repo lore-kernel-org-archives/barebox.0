@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo4.mail-out.ovh.net ([46.105.57.129]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U5z9L-0005TT-FU
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 13:46:56 +0000
-Received: from mail242.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id E7F21104EE72
- for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 14:44:57 +0100 (CET)
-Date: Thu, 14 Feb 2013 14:33:20 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130214133320.GS19322@game.jcrosoft.org>
-References: <1360833179-10324-1-git-send-email-s.hauer@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U5z9f-0005Wm-Gk
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 13:47:16 +0000
+Date: Thu, 14 Feb 2013 14:47:12 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130214134712.GS1906@pengutronix.de>
+References: <20130213100249.GL19322@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1360833179-10324-1-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <20130213100249.GL19322@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,64 +22,122 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM pbl: move piggydata before bss
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/6 v3] arm: add Calxeda Highbank support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org, Rob Herring <rob.herring@calxeda.com>
 
-On 10:12 Thu 14 Feb     , Sascha Hauer wrote:
-> This decreases the pbl image size by the size of the bss segment.
+On Wed, Feb 13, 2013 at 11:02:49AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/arm/pbl/zbarebox.lds.S |   12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+> 	v3:
+> 	 reset: add missing wfi
+> 	 gpio: move probe to board
+> 	 add oftree probe support
 > 
-> diff --git a/arch/arm/pbl/zbarebox.lds.S b/arch/arm/pbl/zbarebox.lds.S
-> index 564b3c6..2914fdd 100644
-> --- a/arch/arm/pbl/zbarebox.lds.S
-> +++ b/arch/arm/pbl/zbarebox.lds.S
-> @@ -59,18 +59,18 @@ SECTIONS
->  	.data : { *(.data*) }
->  
->  	. = ALIGN(4);
-> -	__bss_start = .;
-> -	.bss : { *(.bss*) }
-> -	__bss_stop = .;
-> -	_end = .;
-> -
-> -	. = ALIGN(4);
->  	__piggydata_start = .;
->  	.piggydata : {
->  		*(.piggydata)
->  	}
->  	__piggydata_end = .;
->  
-> +	. = ALIGN(4);
-> +	__bss_start = .;
-> +	.bss : { *(.bss*) }
-> +	__bss_stop = .;
-> +	_end = .;
-
-I did this on purpose
-
-so we can load the pbl in sram without the piggydata
-
-so do not change it
-
-Best Regards,
-J.
-> +
->  	_barebox_image_size = __piggydata_end - (TEXT_BASE - SZ_2M);
->  	_barebox_pbl_size = __bss_start - (TEXT_BASE - SZ_2M);
->  }
-> -- 
-> 1.7.10.4
+> 	v2:
+> 	 fix cc tag so Rob can receive the patch
+> 	 add oftree support to xgmac
 > 
+> 	The following patch serie add the support of the Quad Core Cortex-A9
+> 	Highbank from Calxeda
+> 
+> 	As I do not have the real hardware this is only tested on qemu
+> 
+> 	Rob could confirm if this work on real hw
+> 
+> 	This patch serie depends on the amba sp804 patch and the ahci patch serie
+> 
+> The following changes since commit ddec6455ac75cad442be1247ae265b539c54ebfe:
+> 
+>   amba: add oftree probe support (2013-02-13 02:35:56 +0800)
+> 
+> are available in the git repository at:
+> 
+>   git://git.jcrosoft.org/barebox.git delivery/highbank
+
+Applied, thanks
+
+Sascha
+
+> 
+> for you to fetch changes up to 1d6b912a9a89b0bdf7915026d938f40aba13b581:
+> 
+>   highbank: use the provided dtb by the firmware to probe barebox device and mem size (2013-02-13 02:35:56 +0800)
+> 
+> ----------------------------------------------------------------
+> Jean-Christophe PLAGNIOL-VILLARD (6):
+>       ahci-generic: add oftree support
+>       of: make of_add_memory available for other board
+>       highbank: add xgmac support
+>       arm: add highbank support
+>       highbank: add l2x0 support
+>       highbank: use the provided dtb by the firmware to probe barebox device and mem size
+> 
+>  arch/arm/Kconfig                               |   12 ++++
+>  arch/arm/Makefile                              |    2 +
+>  arch/arm/boards/highbank/Makefile              |    4 ++
+>  arch/arm/boards/highbank/config.h              |    5 ++
+>  arch/arm/boards/highbank/env/bin/init_board    |    7 +++
+>  arch/arm/boards/highbank/env/config            |   34 +++++++++++
+>  arch/arm/boards/highbank/init.c                |   86 ++++++++++++++++++++++++++
+>  arch/arm/boards/highbank/lowlevel.c            |   17 ++++++
+>  arch/arm/configs/highbank_defconfig            |   61 +++++++++++++++++++
+>  arch/arm/mach-highbank/Kconfig                 |   18 ++++++
+>  arch/arm/mach-highbank/Makefile                |    4 ++
+>  arch/arm/mach-highbank/cache-l2x0.c            |   45 ++++++++++++++
+>  arch/arm/mach-highbank/core.c                  |   49 +++++++++++++++
+>  arch/arm/mach-highbank/core.h                  |    2 +
+>  arch/arm/mach-highbank/devices.c               |   74 +++++++++++++++++++++++
+>  arch/arm/mach-highbank/include/mach/clkdev.h   |    7 +++
+>  arch/arm/mach-highbank/include/mach/debug_ll.h |   26 ++++++++
+>  arch/arm/mach-highbank/include/mach/devices.h  |   17 ++++++
+>  arch/arm/mach-highbank/include/mach/gpio.h     |    1 +
+>  arch/arm/mach-highbank/reset.c                 |   21 +++++++
+>  arch/arm/mach-highbank/smc.S                   |   27 +++++++++
+>  arch/arm/mach-highbank/sysregs.h               |   52 ++++++++++++++++
+>  drivers/ata/ahci.c                             |    9 +++
+>  drivers/net/Kconfig                            |    3 +
+>  drivers/net/Makefile                           |    1 +
+>  drivers/net/xgmac.c                            |  740 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  drivers/of/base.c                              |   20 ++++--
+>  include/of.h                                   |    6 ++
+>  28 files changed, 1344 insertions(+), 6 deletions(-)
+>  create mode 100644 arch/arm/boards/highbank/Makefile
+>  create mode 100644 arch/arm/boards/highbank/config.h
+>  create mode 100644 arch/arm/boards/highbank/env/bin/init_board
+>  create mode 100644 arch/arm/boards/highbank/env/config
+>  create mode 100644 arch/arm/boards/highbank/init.c
+>  create mode 100644 arch/arm/boards/highbank/lowlevel.c
+>  create mode 100644 arch/arm/configs/highbank_defconfig
+>  create mode 100644 arch/arm/mach-highbank/Kconfig
+>  create mode 100644 arch/arm/mach-highbank/Makefile
+>  create mode 100644 arch/arm/mach-highbank/cache-l2x0.c
+>  create mode 100644 arch/arm/mach-highbank/core.c
+>  create mode 100644 arch/arm/mach-highbank/core.h
+>  create mode 100644 arch/arm/mach-highbank/devices.c
+>  create mode 100644 arch/arm/mach-highbank/include/mach/clkdev.h
+>  create mode 100644 arch/arm/mach-highbank/include/mach/debug_ll.h
+>  create mode 100644 arch/arm/mach-highbank/include/mach/devices.h
+>  create mode 100644 arch/arm/mach-highbank/include/mach/gpio.h
+>  create mode 100644 arch/arm/mach-highbank/reset.c
+>  create mode 100644 arch/arm/mach-highbank/smc.S
+>  create mode 100644 arch/arm/mach-highbank/sysregs.h
+>  create mode 100644 drivers/net/xgmac.c
+> 
+> Best Regards,
+> J.
 > 
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
