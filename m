@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo5.mail-out.ovh.net ([178.33.45.10]
+Received: from 15.mo5.mail-out.ovh.net ([178.33.107.29]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U617y-0006EL-2n
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 15:53:41 +0000
+ id 1U6181-0006EO-J0
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 15:53:43 +0000
 Received: from mail624.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 993B91018175
- for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 17:04:10 +0100 (CET)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 42976101014F
+ for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 17:04:11 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 14 Feb 2013 16:52:23 +0100
-Message-Id: <1360857147-489-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20130214154759.GT19322@game.jcrosoft.org>
+Date: Thu, 14 Feb 2013 16:52:26 +0100
+Message-Id: <1360857147-489-4-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1360857147-489-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130214154759.GT19322@game.jcrosoft.org>
+ <1360857147-489-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,42 +26,129 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] linux/types: import __aligned_x64 from the kernel
+Subject: [PATCH 4/5] disk: introduce partition name
 To: barebox@lists.infradead.org
 Cc: Rob Herring <rob.herring@calxeda.com>
 
-need it by upcoming EFI GPT support
+so we can register partion with name as present in EFI GPT
 
 Cc: Rob Herring <rob.herring@calxeda.com>
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/linux/types.h |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ common/partitions.c        |   51 ++++++++++++++++++++++++++++++++++----------
+ common/partitions/parser.h |    2 ++
+ 2 files changed, 42 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/types.h b/include/linux/types.h
-index 76c6b67..14f8315 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -142,6 +142,19 @@ typedef __u64 __bitwise __be64;
- typedef __u16 __bitwise __sum16;
- typedef __u32 __bitwise __wsum;
- 
-+/*
-+ * aligned_u64 should be used in defining kernel<->userspace ABIs to avoid
-+ * common 32/64-bit compat problems.
-+ * 64-bit values align to 4-byte boundaries on x86_32 (and possibly other
-+ * architectures) and to 8-byte boundaries on 64-bit architectures.  The new
-+ * aligned_64 type enforces 8-byte alignment so that structs containing
-+ * aligned_64 values have the same alignment on 32-bit and 64-bit architectures.
-+ * No conversions are necessary between 32-bit user-space and a 64-bit kernel.
-+ */
-+#define __aligned_u64 __u64 __attribute__((aligned(8)))
-+#define __aligned_be64 __be64 __attribute__((aligned(8)))
-+#define __aligned_le64 __le64 __attribute__((aligned(8)))
+diff --git a/common/partitions.c b/common/partitions.c
+index 7cb8399..51a0fc2 100644
+--- a/common/partitions.c
++++ b/common/partitions.c
+@@ -44,15 +44,42 @@ LIST_HEAD(partition_parser_list);
+ static int register_one_partition(struct block_device *blk,
+ 					struct partition *part, int no)
+ {
+-	char partition_name[19];
++	char *partition_name;
++	int ret;
++	uint64_t start = part->first_sec * SECTOR_SIZE;
++	uint64_t size = part->size * SECTOR_SIZE;
 +
- #ifdef CONFIG_PHYS_ADDR_T_64BIT
- typedef u64 phys_addr_t;
- typedef u64 phys_size_t;
++	partition_name = asprintf("%s.%d", blk->cdev.name, no);
++	if (!partition_name)
++		return -ENOMEM;
++	dev_dbg(blk->dev, "Registering partition %s on drive %s\n",
++				partition_name, blk->cdev.name);
++	ret = devfs_add_partition(blk->cdev.name,
++				start, size, 0, partition_name);
++	if (ret)
++		goto out;
++
++	free(partition_name);
++	partition_name = asprintf("%s.%s", blk->cdev.name, part->name);
++	if (!partition_name) {
++		dev_warn(blk->dev, "Registering partition %s on drive %s failled\n",
++				part->name, blk->cdev.name);
++		return 0;
++	}
+ 
+-	sprintf(partition_name, "%s.%d", blk->cdev.name, no);
+ 	dev_dbg(blk->dev, "Registering partition %s on drive %s\n",
+ 				partition_name, blk->cdev.name);
+-	return devfs_add_partition(blk->cdev.name,
+-				part->first_sec * SECTOR_SIZE,
+-				part->size * SECTOR_SIZE,
+-				0, partition_name);
++	ret = devfs_add_partition(blk->cdev.name,
++				start, size, 0, partition_name);
++
++	if (ret)
++		dev_warn(blk->dev, "Registering partition %s on drive %s failled\n",
++				partition_name, blk->cdev.name);
++
++	ret = 0;
++out:
++	free(partition_name);
++	return 0;
+ }
+ 
+ static struct partition_parser *partition_parser_get_by_filetype(uint8_t *buf)
+@@ -79,12 +106,13 @@ static struct partition_parser *partition_parser_get_by_filetype(uint8_t *buf)
+  */
+ int parse_partition_table(struct block_device *blk)
+ {
+-	struct partition_desc pdesc = { .used_entries = 0, };
++	struct partition_desc *pdesc;
+ 	int i;
+ 	int rc = 0;
+ 	struct partition_parser *parser;
+ 	uint8_t *buf;
+ 
++	pdesc = xzalloc(sizeof(*pdesc));
+ 	buf = dma_alloc(SECTOR_SIZE * 2);
+ 
+ 	rc = blk->ops->read(blk, buf, 0, 2);
+@@ -97,14 +125,14 @@ int parse_partition_table(struct block_device *blk)
+ 	if (!parser)
+ 		goto on_error;
+ 
+-	parser->parse(buf, blk, &pdesc);
++	parser->parse(buf, blk, pdesc);
+ 
+-	if (!pdesc.used_entries)
++	if (!pdesc->used_entries)
+ 		return 0;
+ 
+ 	/* at least one partition description found */
+-	for (i = 0; i < pdesc.used_entries; i++) {
+-		rc = register_one_partition(blk, &pdesc.parts[i], i);
++	for (i = 0; i < pdesc->used_entries; i++) {
++		rc = register_one_partition(blk, &pdesc->parts[i], i);
+ 		if (rc != 0)
+ 			dev_err(blk->dev,
+ 				"Failed to register partition %d on %s (%d)\n",
+@@ -115,6 +143,7 @@ int parse_partition_table(struct block_device *blk)
+ 
+ on_error:
+ 	dma_free(buf);
++	free(pdesc);
+ 	return rc;
+ }
+ 
+diff --git a/common/partitions/parser.h b/common/partitions/parser.h
+index 61b1cf5..083c143 100644
+--- a/common/partitions/parser.h
++++ b/common/partitions/parser.h
+@@ -12,8 +12,10 @@
+ #include <linux/list.h>
+ 
+ #define MAX_PARTITION		8
++#define MAX_PARTITION_NAME	38
+ 
+ struct partition {
++	char name[MAX_PARTITION_NAME];
+ 	uint64_t first_sec;
+ 	uint64_t size;
+ };
 -- 
 1.7.10.4
 
